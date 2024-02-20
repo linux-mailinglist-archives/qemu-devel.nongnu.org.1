@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3788E85C4C4
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 20:27:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B99E85C4D2
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 20:30:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcVlV-0006Yj-46; Tue, 20 Feb 2024 14:26:53 -0500
+	id 1rcVp8-00042b-D9; Tue, 20 Feb 2024 14:30:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcVlP-0006XP-5a
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 14:26:49 -0500
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rcVof-00041u-Ug
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 14:30:10 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcVlN-0006Z6-Jx
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 14:26:46 -0500
-Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-2d228a132acso48085091fa.0
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 11:26:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rcVoe-00070R-FH
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 14:30:09 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1dc0e5b223eso14242685ad.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 11:30:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708457201; x=1709062001; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2hUt/YzOZmeP2AC1y1qRNyEeuFDCyV/aUnZ8Viy/DjY=;
- b=OTkJS3+M0Q0KRbMc7hAIOzKOU/B6vt8mFMLSG2IHRki3R/tJRa2kDNC2aLveL8xuxS
- 6ImbjdJVj4zU0j22gJHPriSmibS/ou+nCBJfHUuPJzOLLcjMh15Aa3w7mjK4MX+GJTpu
- hqQgblmNPKlKKy1jqBdYoTS2OQWBjItVGckvHSwQF3j+QoBGYEILQjyYio+KL4wApyKx
- Mp1NxHsaHWmHEMVKLfnWntB98vqABUFhE5+yulgtL/4dZry8TdNWkiFUUro+ZsA9DWLX
- VQn4PFST6TZimh2+87pYu1DRbe7rtZB3ax1UMTOGc1wyNTgQKxQyreaCK/bpqj6/oQpf
- a3pg==
+ d=linaro.org; s=google; t=1708457407; x=1709062207; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=KYLAWuYLscVyyFL7cmoAaFCNQY7kAVj3hjTzinkbW68=;
+ b=pw+hSLGBEhY6o5IppEqqarGS9QTsMhh/6GtAxnD9YEyBS066jLWUg9dRnug98/aRca
+ zDXkcA3+YA0D3y73Nusf55ipR5Nx0t3ouiE75TPTkZpR6mgPWP+ybti1R1CVhXuGWWub
+ uXODj0aYTOmG+zoB+xFERjtZ1DV3kGBiyZjDqvCGEsa3lMCj05jcGvHVK+KfMH+JgWLc
+ enJ8/ubRi0N7LaRTlX5wQ7JE3jXS7KK/+lDfI3NmKTwX7/o3frNbSH4pJXa0/2W6e+s/
+ 1CM7Wcb7hWkUzIp6B9AyN3lLSvBNBqUoptHm1hFoY1tobTvy+pLm2eAKAKJW58hi5zgi
+ Fqkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708457201; x=1709062001;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2hUt/YzOZmeP2AC1y1qRNyEeuFDCyV/aUnZ8Viy/DjY=;
- b=RVF1qD93W4ftzWqBGx/qrytpBGTMosJO6d1mO7L60ShmDhN7avjgcyvzQuGPCE7vjp
- zJSeQRldM8kGcuJF2ebZy05Jc6hLMqpENuF2TVANmgV8kkD33NjJQj7nWLUzkPM/9zzA
- p01h2kx/8sisGHDuVv6Ki+7IILFCwYLdTM3zGK25VQWdmPhwaW6rPIFQ6tKHR/ynP4DH
- mMGfaMCpkWn6cV+Y5fKFHcEdjatcOgSCEIpiw6j/iMKKNIdoKC8Wzmlvcz/ww0GXT0Vy
- 3H/lx+/qlR/szBcNDZHpkWjQfJ18oM1QZZF7W7QFmqoUyL8t+Zb53J5mPjVisDh3Qptd
- pMWw==
-X-Gm-Message-State: AOJu0Yyn3Lq+m9CgplPvAHPJd+IRt7KD1GTDWKNbHq+W6mvkfwhACmcN
- rLbwqzbCWoSZEYen9Sf2XjWKb+KgDvjsgb3eJPihUk++efU/b/YBxgkZ/qZnulFAbVakbS0y9qs
- 8
-X-Google-Smtp-Source: AGHT+IG3s/xpgkwMsR8rsCm87wdO6rXaSA7VLSIkNEuw8kVHsUmxKU6SwgIaBR3ABGS6Nfn/cwCLnw==
-X-Received: by 2002:a2e:8ec8:0:b0:2d2:2ee5:8212 with SMTP id
- e8-20020a2e8ec8000000b002d22ee58212mr6154400ljl.13.1708457200813; 
- Tue, 20 Feb 2024 11:26:40 -0800 (PST)
-Received: from m1x-phil.lan (mek33-h02-176-184-23-7.dsl.sta.abo.bbox.fr.
- [176.184.23.7]) by smtp.gmail.com with ESMTPSA id
- m8-20020a05600c4f4800b00411fb769583sm15737715wmq.27.2024.02.20.11.26.39
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 20 Feb 2024 11:26:40 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Bernhard Beschow <shentey@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, Alexander Graf <agraf@csgraf.de>,
- Anton Johansson <anjo@rev.ng>, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 2/2] hw/alpha/typhoon: Set CPU IRQs using QDev API
-Date: Tue, 20 Feb 2024 20:26:25 +0100
-Message-ID: <20240220192625.17944-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240220192625.17944-1-philmd@linaro.org>
-References: <20240220192625.17944-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1708457407; x=1709062207;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=KYLAWuYLscVyyFL7cmoAaFCNQY7kAVj3hjTzinkbW68=;
+ b=JBHoxhpFruvW3HsGWJCZ8n7KLy4S2FjLMrUMI3FDFpH1dH6OyLpKqM+xH1yW1uu1Ix
+ ZDeUdHYDJDaiykWlmpOMEt9DrbO4fdapmrr43gCMlfaecLk8CyM5/7YUVBqQqJTh/IVe
+ 9ytPfjpbFdVHCLsJhhnaGsKGRko4k4y2QulvbxzwHmWcZS36+b95jxQchN48hNnLCWni
+ LYco+syfZI8LRE15UPm+wpHK6auvlJgfD64gmj2ybFhRtk0s9clj2z8gpdvCdxxH1Kwk
+ cwwqJkjj9Dao9cuqSh6DbfOI57l65NUl/d44cUQwlTUpIX8fPvyb6QgNhCydttavsAby
+ a/gA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUOF3IuuSXOwYHF+7wPrKcMoIIrVRbKIRAuzaDybTrXusHRkTsB+15xpok1n9byDzBTIXB9/VDaTTDHt0k0Zws17pHcqdc=
+X-Gm-Message-State: AOJu0YzjAJQANH2gxME5IkbY2da0rAeHOSxqZkFu32SU7K6IpEhTegH1
+ 3y2ccmUUNZK8kxqSJhz7V4lB7xFrsJGboazhtS8YMXtYSUMej+wPbf/WhYhGuA0=
+X-Google-Smtp-Source: AGHT+IEtIxJ+8XVdsMlC15qaScBAoeFEM3hN/r1d9CsETFDduF8XMXafDGDg6a9YvTa8Ns4B0m7H/w==
+X-Received: by 2002:a17:902:e5c3:b0:1db:fcc8:7d96 with SMTP id
+ u3-20020a170902e5c300b001dbfcc87d96mr7014247plf.14.1708457407016; 
+ Tue, 20 Feb 2024 11:30:07 -0800 (PST)
+Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
+ [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
+ kj4-20020a17090306c400b001db9c3d6506sm6661754plb.209.2024.02.20.11.30.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 20 Feb 2024 11:30:06 -0800 (PST)
+Message-ID: <7566853d-e9d5-45df-9fbd-9ba71ad83f4c@linaro.org>
+Date: Tue, 20 Feb 2024 09:30:03 -1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22b.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/10] hw/i386: Store pointers to IDE buses in
+ PCMachineState
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>
+References: <20240220160622.114437-1-peter.maydell@linaro.org>
+ <20240220160622.114437-2-peter.maydell@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240220160622.114437-2-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,77 +103,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Keep a reference of CPU IRQs in the TyphoonCchip state.
-Resolve them once in typhoon_init(), and access them with
-the qemu_irq API.
+On 2/20/24 06:06, Peter Maydell wrote:
+> Add the two IDE bus BusState pointers to the set we keep in PCMachineState.
+> This allows us to avoid passing them to pc_cmos_init(), and also will
+> allow a refactoring of how we call pc_cmos_init_late().
+> 
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+> ---
+>   include/hw/i386/pc.h |  4 +++-
+>   hw/i386/pc.c         |  5 ++---
+>   hw/i386/pc_piix.c    | 16 +++++++---------
+>   hw/i386/pc_q35.c     |  9 ++++-----
+>   4 files changed, 16 insertions(+), 18 deletions(-)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/alpha/typhoon.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/hw/alpha/typhoon.c b/hw/alpha/typhoon.c
-index e8711ae16a..f038b6f000 100644
---- a/hw/alpha/typhoon.c
-+++ b/hw/alpha/typhoon.c
-@@ -26,6 +26,8 @@ typedef struct TyphoonCchip {
-     uint64_t dim[4];
-     uint32_t iic[4];
-     AlphaCPU *cpu[4];
-+    qemu_irq cpu_tmr[4];
-+    qemu_irq cpu_smp[4];
- } TyphoonCchip;
- 
- typedef struct TyphoonWindow {
-@@ -343,17 +345,16 @@ static MemTxResult cchip_write(void *opaque, hwaddr addr,
-             for (i = 0; i < 4; ++i) {
-                 AlphaCPU *cpu = s->cchip.cpu[i];
-                 if (cpu != NULL) {
--                    CPUState *cs = CPU(cpu);
-                     /* IPI can be either cleared or set by the write.  */
-                     if (newval & (1 << (i + 8))) {
--                        cpu_interrupt(cs, CPU_INTERRUPT_SMP);
-+                        qemu_irq_raise(s->cchip.cpu_smp[i]);
-                     } else {
--                        cpu_reset_interrupt(cs, CPU_INTERRUPT_SMP);
-+                        qemu_irq_lower(s->cchip.cpu_smp[i]);
-                     }
- 
-                     /* ITI can only be cleared by the write.  */
-                     if ((newval & (1 << (i + 4))) == 0) {
--                        cpu_reset_interrupt(cs, CPU_INTERRUPT_TIMER);
-+                        qemu_irq_lower(s->cchip.cpu_tmr[i]);
-                     }
-                 }
-             }
-@@ -802,7 +803,7 @@ static void typhoon_set_timer_irq(void *opaque, int irq, int level)
-                 /* Set the ITI bit for this cpu.  */
-                 s->cchip.misc |= 1 << (i + 4);
-                 /* And signal the interrupt.  */
--                cpu_interrupt(CPU(cpu), CPU_INTERRUPT_TIMER);
-+                qemu_irq_raise(s->cchip.cpu_tmr[i]);
-             }
-         }
-     }
-@@ -815,7 +816,7 @@ static void typhoon_alarm_timer(void *opaque)
- 
-     /* Set the ITI bit for this cpu.  */
-     s->cchip.misc |= 1 << (cpu + 4);
--    cpu_interrupt(CPU(s->cchip.cpu[cpu]), CPU_INTERRUPT_TIMER);
-+    qemu_irq_raise(s->cchip.cpu_tmr[cpu]);
- }
- 
- PCIBus *typhoon_init(MemoryRegion *ram, qemu_irq *p_isa_irq,
-@@ -845,6 +846,8 @@ PCIBus *typhoon_init(MemoryRegion *ram, qemu_irq *p_isa_irq,
-             cpu->alarm_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-                                                  typhoon_alarm_timer,
-                                                  (void *)((uintptr_t)s + i));
-+            s->cchip.cpu_tmr[i] = qdev_get_gpio_in_named(DEVICE(cpu), "TMR", 0);
-+            s->cchip.cpu_smp[i] = qdev_get_gpio_in_named(DEVICE(cpu), "SMP", 0);
-         }
-     }
- 
--- 
-2.41.0
-
+r~
 
