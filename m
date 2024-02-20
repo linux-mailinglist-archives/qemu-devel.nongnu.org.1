@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5400185B612
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:55:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31D8785B649
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:58:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcLsa-0000QM-Qy; Tue, 20 Feb 2024 03:53:32 -0500
+	id 1rcLsZ-0000QS-Si; Tue, 20 Feb 2024 03:53:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rcLsW-0000L6-Qs
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:28 -0500
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ id 1rcLsX-0000NE-Hs
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:29 -0500
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rcLsQ-0008D5-0Y
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:28 -0500
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a3e891b5e4eso202764866b.0
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:53:21 -0800 (PST)
+ id 1rcLsR-0008DP-Fb
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:29 -0500
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-563b7b3e3ecso6296397a12.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:53:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708419200; x=1709024000; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708419202; x=1709024002; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wInO8bPcUIy1thV+iCEEHgOMyRBvhF+gY8bxTe/IrWw=;
- b=tGsV/9nYK6KGO4LofCwDwwVgJSsrhx7luTmm/pG9ULXII7EbDPTuNOPGPiL2wP2Nev
- aIzMhdO1gprBauDsC2myCXvtyO/+dTnYtDrktwVIQ4f69u3b6PPoP0MKqC6b8OGcOZip
- 8ks7qTcDetjZOZOO5xjxPfd54z1bHI/n6jClh0jIA3ZrJLzgaXJbKqfcmNzJFQKbcmKK
- /OcP0qgspzUApuJEQoeaev74voMv0RciL0o1KefSPAVgfNsdjgu0neWn+gcdwvxonxTP
- EkZ0iGS/sgZlBQQvs/ZFyN9/dKVuvDjRVkmOilfkK5jtQPpLCNmoTGhHd/lr/sMzs++Z
- PnpA==
+ bh=tZji5wyrV5xt58PDS30yI8Y6P72XZ/u9rGD8EwbSOro=;
+ b=sbj+UnOzJtD3AikVf3btL27l8M86HLTS0o88w9xAZtXQHnnFeGno13Hqkt0eePKjDf
+ t/ungRJjDezBPdNHBwPq4tUNu3t+5zqJZSELlGiGvhTJ1L+BioJP8CK8Tri7y3d17RUt
+ G9KAOrHHZxM+Ad2LQO8lkRhjExKfefoke/9SiI7/bgUDM4O5frv9kGabrVceReXl3tQh
+ ugGpVZi4x/7R89Nh8mGxAqP/10VFX5GYTc8lVPuE1+XX8ng07IVFtU9cZ/AwqR1dtEdD
+ VVqkjooomPyPAQq8+pUVgtLssq4/GAMb9D6eRWHl5Ywkn/uDsXQNGuhyTexcW1x6HAZj
+ MWYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708419200; x=1709024000;
+ d=1e100.net; s=20230601; t=1708419202; x=1709024002;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wInO8bPcUIy1thV+iCEEHgOMyRBvhF+gY8bxTe/IrWw=;
- b=M+qEbXHXrgbrqYr5C6eqM9KHpLEfzwacbXxZnh+kR1dOP6F/m6Fmb/7IjYIZSJH4Vm
- vJ9zEAXo3L9m9Ma4Uo/guwX8zBQJ7RyzXZ9G7gj1+zw2qRVECmlErmHaNeFg/CMzjj38
- qTEXvMezeUGoyzXN1M05wItDRqLQxuuQ1eas1kZilqm7Cx0iB/IUF2oRk+coi6lQ+GvB
- X43F3LINvrx7EQe8WFCD4VF6ezqKCxnSj6RUV/bWdrd5hY1SP/+kqw+Qv5OIQ8hlV8Oe
- 1PUeTWDHx042Mnv+t+Ut0LLZbW7jbaEnS/5ZCX0oiPjzU/KTr6LFUm/ovS2TPhd5AKRM
- YM8w==
-X-Gm-Message-State: AOJu0YwLCYsFz4EANPl2/X7fMqlgozV24iX9wCvS8wz3Pe6rHSWQCQZM
- qSrMU6Jfvev8MEYpgeSXdPfL0n9JHzj1ZNkV6bBMjusrRJcPU/udebBzSIpy5vTnAOtKQD8wwN1
- fu1E=
-X-Google-Smtp-Source: AGHT+IHXxMtbuZiVe7Aa8Mle5ntWAs+56CJ3SEwLgEMUnoQh9LyMVjwHfUu5NBXP6rkZvHu1DQv+QA==
-X-Received: by 2002:a17:906:ff53:b0:a3e:c1ec:7bff with SMTP id
- zo19-20020a170906ff5300b00a3ec1ec7bffmr2476895ejb.68.1708419200743; 
- Tue, 20 Feb 2024 00:53:20 -0800 (PST)
+ bh=tZji5wyrV5xt58PDS30yI8Y6P72XZ/u9rGD8EwbSOro=;
+ b=sH8kf6l9TssKaAMggeZmmPD10f6RC0Xo8LD7IUr1Nkn64V6tTGFKXxfxnXIaqsxxla
+ WwqKlNq1YcWQ/pFZxt1sDyS/OmkXWhyEI7PAtXU47XvDfxL453eeBT0hRL04sdKUywMd
+ k17H4pyBTopAoRO138nNhDdFZTEMDXKUGKPgHojsLpJszZu4uwfRBXqX3NLWtJufIlWB
+ 865Rs5IdRO1rGUWOCshDplej+4HtQ/s+82zTXQ+IB1Mhroo8w+51evjyMTPVa5NREJjN
+ oJtwQ4homhyKcUZKuf4xyR29SkpcHQbKMlcwH+FGJD3zXAVruEsH6gD9PVmmodrAxSeQ
+ vOyw==
+X-Gm-Message-State: AOJu0Yzx0ggAeBrjtouXSyMLVC5AIViP3e7zN0+c+8H93tzskYx04mOo
+ 9jpMOO9/m45DF2yMEOx5w4tH5uPh8v7OJ146QtMzEm5A14v68eBN4RaVeWlQBMw=
+X-Google-Smtp-Source: AGHT+IElUnqH7706lYh8AhZYGRobTHibllu2I17T9nZLMCgOAlENqiN1aYsFpZ0vQR6rBOeeY9+XYA==
+X-Received: by 2002:a17:906:ff52:b0:a3e:9c2e:40d5 with SMTP id
+ zo18-20020a170906ff5200b00a3e9c2e40d5mr3099984ejb.5.1708419202262; 
+ Tue, 20 Feb 2024 00:53:22 -0800 (PST)
 Received: from localhost.localdomain (adsl-245.37.6.163.tellas.gr.
  [37.6.163.245]) by smtp.gmail.com with ESMTPSA id
- cu3-20020a170906ba8300b00a3d014fa12esm3747876ejd.196.2024.02.20.00.53.19
+ cu3-20020a170906ba8300b00a3d014fa12esm3747876ejd.196.2024.02.20.00.53.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Feb 2024 00:53:20 -0800 (PST)
+ Tue, 20 Feb 2024 00:53:22 -0800 (PST)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-trivial@nongnu.org
 Cc: qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
- Jonathan Cameron <jonathan.cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
-Subject: [PATCH v1 11/21] hw/cxl/cxl_device.h: correct typos
-Date: Tue, 20 Feb 2024 10:52:18 +0200
-Message-Id: <76ecf49e448d00c6b1b09446c832e007dd1f811a.1708419115.git.manos.pitsidianakis@linaro.org>
+ Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
+ Jason Wang <jasowang@redhat.com>, qemu-arm@nongnu.org
+Subject: [PATCH v1 12/21] hw/net/npcm_gmac.h: correct typos
+Date: Tue, 20 Feb 2024 10:52:19 +0200
+Message-Id: <c81005d5160a7f312d8e0f7120d601219e4e5e09.1708419115.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1708419115.git.manos.pitsidianakis@linaro.org>
 References: <cover.1708419115.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x62c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,31 +99,31 @@ Correct typos automatically found with the `typos` tool
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- include/hw/cxl/cxl_device.h | 4 ++--
+ include/hw/net/npcm_gmac.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index d8e184c4ba..279b276bda 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -268,7 +268,7 @@ void cxl_event_set_status(CXLDeviceState *cxl_dstate, CXLEventLogType log_type,
- /*
-  * Helper macro to initialize capability headers for CXL devices.
-  *
-- * In CXL r3.1 Section 8.2.8.2: CXL Device Capablity Header Register, this is
-+ * In CXL r3.1 Section 8.2.8.2: CXL Device Capability Header Register, this is
-  * listed as a 128b register, but in CXL r3.1 Section 8.2.8: CXL Device Register
-  * Interface, it says:
-  * > No registers defined in Section 8.2.8 are larger than 64-bits wide so that
-@@ -276,7 +276,7 @@ void cxl_event_set_status(CXLDeviceState *cxl_dstate, CXLEventLogType log_type,
-  * > followed, the behavior is undefined.
-  *
-  * > To illustrate how the fields fit together, the layouts ... are shown as
-- * > wider than a 64 bit register. Implemenations are expected to use any size
-+ * > wider than a 64 bit register. Implementations are expected to use any size
-  * > accesses for this information up to 64 bits without lost of functionality
-  *
-  * Here we've chosen to make it 4 dwords.
+diff --git a/include/hw/net/npcm_gmac.h b/include/hw/net/npcm_gmac.h
+index f2d9f08ec1..6340ffe92c 100644
+--- a/include/hw/net/npcm_gmac.h
++++ b/include/hw/net/npcm_gmac.h
+@@ -81,7 +81,7 @@ struct NPCMGMACRxDesc {
+ 
+ /* Disable Interrupt on Completion */
+ #define RX_DESC_RDES1_DIS_INTR_COMP_MASK BIT(31)
+-/* Recieve end of ring */
++/* Receive end of ring */
+ #define RX_DESC_RDES1_RC_END_RING_MASK BIT(25)
+ /* Second Address Chained */
+ #define RX_DESC_RDES1_SEC_ADDR_CHND_MASK BIT(24)
+@@ -213,7 +213,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(NPCMGMACState, NPCM_GMAC)
+ #define NPCM_DMA_STATUS_FBI BIT(13)
+ /* Early transmit Interrupt */
+ #define NPCM_DMA_STATUS_ETI BIT(10)
+-/* Receive Watchdog Timout */
++/* Receive Watchdog Timeout */
+ #define NPCM_DMA_STATUS_RWT BIT(9)
+ /* Receive Process Stopped */
+ #define NPCM_DMA_STATUS_RPS BIT(8)
 -- 
 γαῖα πυρί μιχθήτω
 
