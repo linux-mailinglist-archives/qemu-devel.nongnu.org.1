@@ -2,79 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A1F85BC36
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 13:31:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A6A85BC68
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 13:43:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcPHQ-0007rz-2j; Tue, 20 Feb 2024 07:31:24 -0500
+	id 1rcPRU-0003CE-QA; Tue, 20 Feb 2024 07:41:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rcPHM-0007rA-Of
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 07:31:20 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rcPHL-000763-38
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 07:31:20 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-5645960cd56so3174164a12.1
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 04:31:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708432277; x=1709037077; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=HIStiYXkXTcOJyvv/atc2ADxmhvcM7xyvK8iIss2cic=;
- b=XMEUh4AUf8d9slXLuN1GiM2OtN8RBWKi4PN1Vkc9HCXI9WK/flyWdU9fQxCCfytvOz
- V06rWlGVD/TriEMtrUJPrW+urH3TCq2LC7rzHeTVzFGI9sHTQImVoCeJ+mmXHMPzeelr
- i5kIqzNf3x6K/vMHYrzm7u2jfyYgFe0MZAA5kDP+HJneb98rR9CaSft8AnwrUkIrU/gy
- UwPqmrg+un9+925kF1oD6Y9EMh722S+cZ9U2hEve4yVbTj3/a/LMXCbr1imzzvp2bbnI
- OTYBZu8+ACUSjsf0hvKHBaylRnE6esaNUrreCQaxYwuE1ke1uoJo9/4vKqbr12kJka4J
- R4nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708432277; x=1709037077;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=HIStiYXkXTcOJyvv/atc2ADxmhvcM7xyvK8iIss2cic=;
- b=VMtNqHs9iaem5KhkcCjoA+YB3VyfztuQOhtE/F9zMy5crLZv9Wikbg0+PSDLiUw1Nh
- nj7cHXt/u1//NUb/u/oEWfTAqF369inZFhNWglpFcRjdFuaRv8xrZJ/FE2Ah/6xpz7z1
- TF8gsYo0hT1IBfHSindeciCy3OeUd0bkKwjmLbePzZDLpMwhnoZxas2egRVpyGbKTtSB
- E6GTQQ7oCjgpsniincUhtPnJSG5RLxJu4gn0MFXigLaSzcLCXNypN6HSpRqGGQmas635
- RkXF8N2G+sBy/UlWeihnvFEBSXF1q2A6/PrbFFgFUpbVI+Vx1OwdOJna9c7njwpJBNp5
- 34HQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUG+tVNKGx297C11xnuVMYKHa1UbSnfDqnjlwAJOhEUbZbvEjSRWFIbyPOnKKRlhoQer1OfxJgGHHkgQEqFRZUTw4x5BKY=
-X-Gm-Message-State: AOJu0YxeKiO53ZfUya6v3G7nMsfdb/a/cM+nAqd2TmW5z14Od9INt/m0
- GGDU+WefEeOnNdV7uK8jhGchlTc55wAMvZBk81mmjQsMg2Jll8E3UNRbwQe4jPIxir+WAky+bVN
- Jq6uzZndooT8Uyv6FXA8OThR8eL1KNPLsm4K0/Q==
-X-Google-Smtp-Source: AGHT+IFD3yG4a7UJ5e3h0jULdB0+RL/ZCaJMR8YzJdmaC5YvP3u3+j41sZuIFH7Sna6qqQAaT02to41u9vMLlEBt+7E=
-X-Received: by 2002:a50:ed03:0:b0:564:7350:cac8 with SMTP id
- j3-20020a50ed03000000b005647350cac8mr3664227eds.15.1708432276797; Tue, 20 Feb
- 2024 04:31:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1rcPRO-0003AB-Qk
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 07:41:42 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1rcPRH-0000D9-FB
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 07:41:42 -0500
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8Cxmej3ndRlMj8PAA--.20373S3;
+ Tue, 20 Feb 2024 20:41:28 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8CxPs_3ndRl5MM8AA--.25558S2; 
+ Tue, 20 Feb 2024 20:41:27 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: [PATCH 0/5] Add migration test for loongarch64
+Date: Tue, 20 Feb 2024 20:41:21 +0800
+Message-Id: <20240220124126.1164081-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-References: <20240220121752.490665-1-ruanjinjie@huawei.com>
- <20240220121752.490665-2-ruanjinjie@huawei.com>
-In-Reply-To: <20240220121752.490665-2-ruanjinjie@huawei.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 20 Feb 2024 12:31:05 +0000
-Message-ID: <CAFEAcA8jef+ZqSaj7MOwkneuj5aLayA6MZA=-LH+VvcDuFCtZA@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/3] target/arm: Implement FEAT_NMI to support
- Non-maskable Interrupt
-To: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org, 
- wangyanan55@huawei.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8CxPs_3ndRl5MM8AA--.25558S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7ZFy8Jr17WrWfCr15CryrKrX_yoW8Jw18pr
+ Z3Zw1fKa1xGF9xXF1kG398Wrn5Ar1xGr12qFsxtr10krZxCFyUZw1I9rWqvF95A340qry0
+ vwn5Ja47W3WDArbCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUk2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r126r13M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q6rW5McIj6I8E87Iv
+ 67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2
+ Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+ 6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0x
+ vE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
+ 42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+ kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUco7KUUUUU
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,34 +75,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 20 Feb 2024 at 12:19, Jinjie Ruan <ruanjinjie@huawei.com> wrote:
->
-> Enable Non-maskable Interrupt feature.
->
-> Enable HCRX register feature to support TALLINT read/write.
->
-> Add support for enable/disable NMI at qemu startup as below:
->
->         qemu-system-aarch64 -cpu cortex-a53/a57/a72/a76,nmi=[on/off]
->
-> Add support for allint read/write as follow:
->
->         mrs <xt>, ALLINT        // read allint
->         msr ALLINT, <xt>        // write allint with imm
->         msr ALLINT, #<imm>      // write allint with 1 or 0
+Migration test case is added for loongarch64 here. Since compat machine
+type is required for migration test case, also compat machine qemu 9.0
+is added for loongarch virt machine.
 
-Can I ask you to break this patchset down into smaller
-coherent pieces, please? When you write a commit message
-that has this sort of "list of four different things the
-patch does" structure, that's a sign that really it ought to
-be multiple different patches that do one thing each.
+Bibo Mao (5):
+  hw/loongarch: Rename LOONGARCH_MACHINE with VIRT_MACHINE.
+  hw/loongarch: Rename LoongArchMachineState with VirtMachineState
+  hw/loongarch: Add compat machine for 9.0
+  hw/loongarch: Set minimium memory size as 256M
+  tests: Add migration test for loongarch64
 
-Do we really need the command line option? Mostly we
-don't add that for new CPU features, unless there's a
-strong reason why users might need to turn it off: instead
-we just implement it if the CPU type and/or the board has
-the feature.
+ hw/loongarch/acpi-build.c                |  76 +++---
+ hw/loongarch/fw_cfg.c                    |   2 +-
+ hw/loongarch/fw_cfg.h                    |   2 +-
+ hw/loongarch/virt.c                      | 333 +++++++++++++----------
+ include/hw/loongarch/virt.h              |  10 +-
+ tests/migration/Makefile                 |   2 +-
+ tests/migration/loongarch64/Makefile     |  18 ++
+ tests/migration/loongarch64/a-b-kernel.S |  46 ++++
+ tests/migration/loongarch64/a-b-kernel.h |  13 +
+ tests/migration/migration-test.h         |   3 +
+ tests/qtest/meson.build                  |   4 +
+ tests/qtest/migration-test.c             |  10 +
+ 12 files changed, 323 insertions(+), 196 deletions(-)
+ create mode 100644 tests/migration/loongarch64/Makefile
+ create mode 100644 tests/migration/loongarch64/a-b-kernel.S
+ create mode 100644 tests/migration/loongarch64/a-b-kernel.h
 
-thanks
--- PMM
+
+base-commit: da96ad4a6a2ef26c83b15fa95e7fceef5147269c
+-- 
+2.39.3
+
 
