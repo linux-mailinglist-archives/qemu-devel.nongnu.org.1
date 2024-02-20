@@ -2,89 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F99B85B3E4
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 08:24:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9FDD85B40F
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 08:35:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcKU2-0007NB-TG; Tue, 20 Feb 2024 02:24:06 -0500
+	id 1rcKdy-0000bk-Qn; Tue, 20 Feb 2024 02:34:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcKU0-0007Mz-4K
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 02:24:04 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rcKdv-0000bY-FN
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 02:34:19 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcKTy-0001g6-KQ
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 02:24:03 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4126f486429so1865675e9.0
- for <qemu-devel@nongnu.org>; Mon, 19 Feb 2024 23:24:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rcKds-000314-AD
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 02:34:19 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1dbb47852cdso23733275ad.1
+ for <qemu-devel@nongnu.org>; Mon, 19 Feb 2024 23:32:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708413840; x=1709018640; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=YM1NlQyK5zbeCqLEXloo6PPnOIWmKmIp5G3ZeTymKIA=;
- b=HpI+uUNsIgHS74FayND8VElhB2XrtwXTjZc4iVTwxrzyCPFcKaXp4W30kwZpWpnEoA
- ujN9N2OSKQ7IL3dMSkHgCtcDM3W5EZw5npDv7gWP8Kzm7tvF883u0dyonZrmZIAusNIR
- qHLMGkNrxhoFzkdbkdG5fSFwUE11oX28nJSXq1dS9EmMOVVVIIpGXitJrxxiW7Ya+zMg
- 1Y3fbxtDJxndwJP4oDK0WsZNTJEfxevsa9Q3tfsyE5zghWG3qCJJQ+ihdvcbaxqtjwWD
- vIphGAC0sKTwJtV8BeavSzbZqOF+KJnCnmsNf34V/VMGjT3+Vql6x3gYodWZTsO4LxFh
- aD9Q==
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1708414332; x=1709019132;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=iDtx/n0c32kuN75bD+iP3DnUNXkzVFNWvXcPFS44MXM=;
+ b=BHJ4lnux+MIA5cKXV2nPna/1QBsDOHQ1TgLajTUU13MvU4k14MTejAlO3CaQPqyW2Z
+ +k9UaZ3uKn9ejdYlxB3HKjL51rCFBBMiOvorROS85bAfBJRe8Z4NTGudKyr0J7edkYE1
+ qNPOXJBnJu7U1Q4/AbEIIBLYQbqJeZ8thMvwqNAyru+oZFx2UZ/joXS6QPgxfjOBbqmK
+ Qj39H3/6F+ZUGnWaIQ4yziXekEK3tVEeCyy/VGHdrxEklhYQV4prpg5VnQfhUsbOR2fS
+ hE9Xo8/CwnLSM8bXWMpKjyW/d5/71SDblw1S7VkutK+ii4GnujhWVZGvYcS4YU8bqk3E
+ u+Bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708413840; x=1709018640;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YM1NlQyK5zbeCqLEXloo6PPnOIWmKmIp5G3ZeTymKIA=;
- b=dzGMsAOrCch9TQ0gvjebyQ3pBMpmdQvB3DJwkh7zla+bVkp1MNhij+YpX+RexdO54i
- p09Z8u+gBC7z1RCjdc54PcuP7eQqEF6pxJHqEyIWTNoUzPIU/KsB+2IQtWhLUmThK9bO
- EUNi1Y2mX6kH8WOMYh0qc4yzPRgKKSwS09iAJWCLLczGRCEwjC3ZUfOifEUJuz7goYBA
- 6mVHvBEZQ/95r/7Hm4G+xt1qtkv5HQYYIxnA6QLGGi2JwECaxl7Fuzr2aUs+0yctkQ7Z
- 00VYnOXlJwf2MgKQBRLq24DVlGP0T38YHzpi/BQCSLqAk9UBYhzE72/JwbKBo7gLaGih
- YGrA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWePYN6LmEW5pJpgb44GMj82ktBJoQXwwvcZl3/sFNnhazTMTI8QfZZNHvBB6NpDrY4o6hJ5E7F/HgywG9v2cgmj9GrY8o=
-X-Gm-Message-State: AOJu0YwvmYG11nTfp+kVXmRgzw9PqK/ySU6IxqgYcbTeICkFK29Y0m4O
- Lwf/Hw1zi3DCN29J19yNFxu8fGXLtNH02GrzYQL2OQETtXnj/rT49A46Hp6Oajw=
-X-Google-Smtp-Source: AGHT+IF5DoKgonF+tnO0MzgFZo3TQdtwhQWtFfmDuIWPWtYEWqXji1ffKHm2bQuoYJB8vMoFQuzmUA==
-X-Received: by 2002:a05:600c:5486:b0:411:eb73:243b with SMTP id
- iv6-20020a05600c548600b00411eb73243bmr11412824wmb.5.1708413840667; 
- Mon, 19 Feb 2024 23:24:00 -0800 (PST)
-Received: from [192.168.69.100] (mek33-h02-176-184-23-7.dsl.sta.abo.bbox.fr.
- [176.184.23.7]) by smtp.gmail.com with ESMTPSA id
- m6-20020a5d56c6000000b0033d56aa4f45sm4117974wrw.112.2024.02.19.23.23.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 19 Feb 2024 23:24:00 -0800 (PST)
-Message-ID: <197fa809-71f6-4cbf-b062-0edef3df36f7@linaro.org>
-Date: Tue, 20 Feb 2024 08:23:58 +0100
+ d=1e100.net; s=20230601; t=1708414332; x=1709019132;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=iDtx/n0c32kuN75bD+iP3DnUNXkzVFNWvXcPFS44MXM=;
+ b=XU3rDqB0bDugkokI7JZ65xxogDm95HbWMUUNnPRVlSmq0fX3Yd4B1IqhAr0larx8Rt
+ u5w5ukqfL8wdgekYWy+sG+MUOxbAAGNOsNED9eQzUdY6lBnc0NAbK5hgZTcZyZF1ULpn
+ lvD0arhjZnsUmwMuF9doVLpFH5OwhpfKmaYWmUwaSbrYki6cJUpdyANrZZDBlOnueH6g
+ zGqVkK3bfU55oNu7F0N92DQqKUJIgLXVyMMhdQxzOFsaDpBUdX539fFo4aw8+sl4mOPz
+ GzpwdTR2o6KyBc0AzOgonquAtOiRXT0bGSdPhugZ7BKHligFg3gN+MEjbwM7+QOoykDK
+ 2rEg==
+X-Gm-Message-State: AOJu0Yx8k2fwNCjQ19m/eHC+dUdjPEVA08tAIDRvNZ1TUjWcf7JkMFX8
+ /Tb3EgdGg8/zPfH21PHyrPJ2iJyXBq+7NpYdnjq3jfd+rqxmF+U5Qd/tX2HJ94IY/H9pFe2deVK
+ PVIpGRqJfTKOUR9/3V+znxtsrMQwGq+8YONkx7g==
+X-Google-Smtp-Source: AGHT+IEBBFa/O7aej8OyEuFvMFtmFx2lHB2H8Cr6XK7ngttO9asgctyVvxndM2I96M14EItP4B2j3tCJNA10OXMgkjk=
+X-Received: by 2002:a17:90a:bb0f:b0:298:d21a:976c with SMTP id
+ u15-20020a17090abb0f00b00298d21a976cmr11038634pjr.17.1708414331022; Mon, 19
+ Feb 2024 23:32:11 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] hw/i386/pc: Inline i8042_setup_a20_line() and remove
- it
-Content-Language: en-US
-To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost
- <eduardo@habkost.net>, "Michael S. Tsirkin" <mst@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>, Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>
-References: <20240218131701.91132-1-shentey@gmail.com>
- <20240218131701.91132-5-shentey@gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240218131701.91132-5-shentey@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <cover.1706586786.git.yong.huang@smartx.com>
+ <af7253711254128efbc37b25fb5c47b851367ce7.1706586786.git.yong.huang@smartx.com>
+ <87zfvwjzzd.fsf@pond.sub.org>
+In-Reply-To: <87zfvwjzzd.fsf@pond.sub.org>
+From: Yong Huang <yong.huang@smartx.com>
+Date: Tue, 20 Feb 2024 15:31:54 +0800
+Message-ID: <CAK9dgmY0rExYg+hfTY_okNvTTArZdn60jsWjCABgbbAG6XZiDw@mail.gmail.com>
+Subject: Re: [PATCH v4 2/7] qapi: Make parameter 'file' optional for
+ BlockdevCreateOptionsLUKS
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eric Blake <eblake@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>
+Content-Type: multipart/alternative; boundary="0000000000005481a10611cb35a7"
+Received-SPF: none client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x62b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,17 +92,224 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/2/24 14:17, Bernhard Beschow wrote:
-> This function is used once in the pc machines. Remove it since it contains one
-> line only.
-> 
-> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-> ---
->   include/hw/input/i8042.h | 1 -
->   hw/i386/pc.c             | 2 +-
->   hw/input/pckbd.c         | 5 -----
->   3 files changed, 1 insertion(+), 7 deletions(-)
+--0000000000005481a10611cb35a7
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On Tue, Feb 20, 2024 at 2:31=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
+m> wrote:
 
+> yong.huang@smartx.com writes:
+>
+> > From: Hyman Huang <yong.huang@smartx.com>
+> >
+> > To support detached LUKS header creation, make the existing 'file'
+> > field in BlockdevCreateOptionsLUKS optional.
+> >
+> > Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+> > Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>
+> [...]
+>
+> > diff --git a/qapi/block-core.json b/qapi/block-core.json
+> > index ae604c6019..69a88d613d 100644
+> > --- a/qapi/block-core.json
+> > +++ b/qapi/block-core.json
+> > @@ -4957,7 +4957,8 @@
+> >  #
+> >  # Driver specific image creation options for LUKS.
+> >  #
+> > -# @file: Node to create the image format on
+> > +# @file: Node to create the image format on, mandatory except when
+> > +#        'preallocation' is not requested
+>
+> You mean when @preallocation is "off"?
+>
+> Cases:
+>
+> 1. @file is mandatory
+>
+
+When @preallocation is specified to PREALLOC_MODE_ON, file
+is mandatory because preallocation aims to act on payload data that
+@file holds.
+
+
+> 2. @file is optional and present
+>
+
+When @preallocation is not specified or equals to PREALLOC_MODE_OFF,
+@file if optional.
+If @file present=EF=BC=8Cthere are two cases:
+1. @header is absent,  the creation process degenerate to the origin action=
+.
+2. @header is present,  the creation process would trunk the payload data
+image that @file holds and do the LUKS formatting on the image that
+@header refers;
+
+
+>
+> 3. @file is optional and absent
+>
+
+When @preallocation is not specified or equals to PREALLOC_MODE_OFF,
+@file if optional.
+If @file is absent, do the LUKS formatting only.
+Note that Either the parameter 'header' or 'file' must be specified.
+
+Here's my interpretation; do let me know if any of the points are off or
+need to be refactored.
+
+
+>
+> Ignorant question: behavior in each case?
+>
+> >  #
+> >  # @size: Size of the virtual disk in bytes
+> >  #
+> > @@ -4968,7 +4969,7 @@
+> >  ##
+> >  { 'struct': 'BlockdevCreateOptionsLUKS',
+> >    'base': 'QCryptoBlockCreateOptionsLUKS',
+> > -  'data': { 'file':             'BlockdevRef',
+> > +  'data': { '*file':            'BlockdevRef',
+> >              'size':             'size',
+> >              '*preallocation':   'PreallocMode' } }
+>
+>
+Thanks,
+
+Yong
+
+--=20
+Best regards
+
+--0000000000005481a10611cb35a7
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><br><div cla=
+ss=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Feb 20, 20=
+24 at 2:31=E2=80=AFPM Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat=
+.com">armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
+quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-=
+style:solid;border-left-color:rgb(204,204,204);padding-left:1ex"><a href=3D=
+"mailto:yong.huang@smartx.com" target=3D"_blank">yong.huang@smartx.com</a> =
+writes:<br>
+<br>
+&gt; From: Hyman Huang &lt;<a href=3D"mailto:yong.huang@smartx.com" target=
+=3D"_blank">yong.huang@smartx.com</a>&gt;<br>
+&gt;<br>
+&gt; To support detached LUKS header creation, make the existing &#39;file&=
+#39;<br>
+&gt; field in BlockdevCreateOptionsLUKS optional.<br>
+&gt;<br>
+&gt; Signed-off-by: Hyman Huang &lt;<a href=3D"mailto:yong.huang@smartx.com=
+" target=3D"_blank">yong.huang@smartx.com</a>&gt;<br>
+&gt; Reviewed-by: Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@re=
+dhat.com" target=3D"_blank">berrange@redhat.com</a>&gt;<br>
+<br>
+[...]<br>
+<br>
+&gt; diff --git a/qapi/block-core.json b/qapi/block-core.json<br>
+&gt; index ae604c6019..69a88d613d 100644<br>
+&gt; --- a/qapi/block-core.json<br>
+&gt; +++ b/qapi/block-core.json<br>
+&gt; @@ -4957,7 +4957,8 @@<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # Driver specific image creation options for LUKS.<br>
+&gt;=C2=A0 #<br>
+&gt; -# @file: Node to create the image format on<br>
+&gt; +# @file: Node to create the image format on, mandatory except when<br=
+>
+&gt; +#=C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;preallocation&#39; is not requested=
+<br>
+<br>
+You mean when @preallocation is &quot;off&quot;?<br>
+<br>
+Cases:<br>
+<br>
+1. @file is mandatory<br></blockquote><div><br></div><div class=3D"gmail_de=
+fault" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">When=C2=
+=A0@preallocation is specified to=C2=A0PREALLOC_MODE_ON, file</div><div cla=
+ss=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-se=
+rif">is mandatory because preallocation aims to act on payload data that</d=
+iv><div class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&qu=
+ot;,sans-serif">@file holds.=C2=A0</div><div class=3D"gmail_default" style=
+=3D"font-family:&quot;comic sans ms&quot;,sans-serif"><br></div><blockquote=
+ class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:=
+1px;border-left-style:solid;border-left-color:rgb(204,204,204);padding-left=
+:1ex">
+<br>
+2. @file is optional and present<br></blockquote><div><br></div><div><div c=
+lass=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-=
+serif">When @preallocation<span class=3D"gmail-Apple-converted-space">=C2=
+=A0is not specified or equals to=C2=A0</span>PREALLOC_MODE_OFF,</div><div c=
+lass=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-=
+serif">@file if optional.=C2=A0</div><div class=3D"gmail_default" style=3D"=
+font-family:&quot;comic sans ms&quot;,sans-serif">If <a class=3D"gmail_plus=
+reply" id=3D"plusReplyChip-4">@file</a>=C2=A0present=EF=BC=8Cthere are two =
+cases:</div><div class=3D"gmail_default" style=3D"font-family:&quot;comic s=
+ans ms&quot;,sans-serif">1. @header is absent, =C2=A0the creation process d=
+egenerate to the origin action.</div><div class=3D"gmail_default" style=3D"=
+font-family:&quot;comic sans ms&quot;,sans-serif">2. @header is present, =
+=C2=A0the creation process would trunk the payload data</div><div class=3D"=
+gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">i=
+mage that=C2=A0@file holds and do the LUKS formatting on the image that</di=
+v><div class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quo=
+t;,sans-serif">@header refers;=C2=A0</div></div><div>=C2=A0</div><blockquot=
+e class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width=
+:1px;border-left-style:solid;border-left-color:rgb(204,204,204);padding-lef=
+t:1ex">
+<br>
+3. @file is optional and absent<br></blockquote><div><br></div><div><div cl=
+ass=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-s=
+erif">When @preallocation<span class=3D"gmail-Apple-converted-space">=C2=A0=
+is not specified or equals to=C2=A0</span>PREALLOC_MODE_OFF,</div><div clas=
+s=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-ser=
+if">@file if optional.=C2=A0</div></div><div class=3D"gmail_default" style=
+=3D"font-family:&quot;comic sans ms&quot;,sans-serif">If=C2=A0<a class=3D"g=
+mail_plusreply" id=3D"gmail-plusReplyChip-4">@file is=C2=A0</a>absent, do t=
+he LUKS formatting only.</div><div class=3D"gmail_default" style=3D"font-fa=
+mily:&quot;comic sans ms&quot;,sans-serif">Note that=C2=A0Either the parame=
+ter &#39;header&#39; or &#39;file&#39; must=C2=A0be specified.</div><div cl=
+ass=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-s=
+erif"><br></div><div class=3D"gmail_default" style=3D"font-family:&quot;com=
+ic sans ms&quot;,sans-serif">Here&#39;s my interpretation; do let me know i=
+f any of the points are off or</div><div class=3D"gmail_default" style=3D"f=
+ont-family:&quot;comic sans ms&quot;,sans-serif">need to be refactored.</di=
+v><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0p=
+x 0px 0.8ex;border-left-width:1px;border-left-style:solid;border-left-color=
+:rgb(204,204,204);padding-left:1ex">
+<br>
+Ignorant question: behavior in each case?<br>
+<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # @size: Size of the virtual disk in bytes<br>
+&gt;=C2=A0 #<br>
+&gt; @@ -4968,7 +4969,7 @@<br>
+&gt;=C2=A0 ##<br>
+&gt;=C2=A0 { &#39;struct&#39;: &#39;BlockdevCreateOptionsLUKS&#39;,<br>
+&gt;=C2=A0 =C2=A0 &#39;base&#39;: &#39;QCryptoBlockCreateOptionsLUKS&#39;,<=
+br>
+&gt; -=C2=A0 &#39;data&#39;: { &#39;file&#39;:=C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0&#39;BlockdevRef&#39;,<br>
+&gt; +=C2=A0 &#39;data&#39;: { &#39;*file&#39;:=C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 &#39;BlockdevRef&#39;,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;size&#39;:=C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;size&#39;,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;*preallocation&#3=
+9;:=C2=A0 =C2=A0&#39;PreallocMode&#39; } }<br>
+<br>
+</blockquote></div><div><br></div><div class=3D"gmail_default" style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif">Thanks,</div><div class=3D"g=
+mail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif"><b=
+r></div><div class=3D"gmail_default" style=3D"font-family:&quot;comic sans =
+ms&quot;,sans-serif">Yong</div><div><br></div><span class=3D"gmail_signatur=
+e_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><div dir=
+=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best regards</font></div>=
+</div></div>
+
+--0000000000005481a10611cb35a7--
 
