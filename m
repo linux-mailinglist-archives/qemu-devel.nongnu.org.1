@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 401DD85B481
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:07:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B159985B4A4
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:12:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcL9L-0002kw-6Z; Tue, 20 Feb 2024 03:06:47 -0500
+	id 1rcLEX-00062g-KL; Tue, 20 Feb 2024 03:12:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rcL9J-0002kF-7K
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:06:45 -0500
+ id 1rcLEU-00062W-1A
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:12:06 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rcL9H-0000QZ-Rp
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:06:44 -0500
+ id 1rcLEH-0001JI-Qf
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:12:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708416403;
+ s=mimecast20190719; t=1708416712;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ilU+ngAoaU7FTHYc2Q8TyToaavovBkXrTxoRpdQ4t94=;
- b=fpEe/fZ0bobRfv01jMGB7+gh+leYCcwEjCrFSLHgv7K20+Mdgtd1ABnkAZmIOqtM+1Ssip
- Aihy72IYEtm78Yh6VDvjenQQzKdMuhTrzIblzPSyAfxI0geKySFW3YWhGtlVVMmAQzq3ku
- g/gZC5uQ7M/d/+hYOAqDuk3qIhjjV0k=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=CMnsr6hcGke44dd+ja2+9AFJ8eqcK1lbFVapTuTjVcM=;
+ b=ZoCnQBnpH4agaBWlU2aUQcDztRwTWu/K/xMRcLvf2+peUhc+2FM/H5iBACSE+V9i4Rsrem
+ TvbEexldZrnV3qIcnUn93sTBKU2JcfSUlzQdbN7yDBvmKfNYj/+ctK1AyJ5fWWzo83znBj
+ fWPhfJYGYLCP57Otwv/wNbPF6w5UCl0=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-371-D-jMGE9YPWmSvkHniJZobQ-1; Tue, 20 Feb 2024 03:06:41 -0500
-X-MC-Unique: D-jMGE9YPWmSvkHniJZobQ-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a3ee69976dfso28242166b.3
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:06:40 -0800 (PST)
+ us-mta-621-WYgHcnDqOkuOjzSzG5pNqg-1; Tue, 20 Feb 2024 03:11:51 -0500
+X-MC-Unique: WYgHcnDqOkuOjzSzG5pNqg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a3e6f366aceso68340366b.3
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:11:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708416399; x=1709021199;
+ d=1e100.net; s=20230601; t=1708416407; x=1709021207;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ilU+ngAoaU7FTHYc2Q8TyToaavovBkXrTxoRpdQ4t94=;
- b=rIw5I1vOaykECEv/MElpzY66A40zYRAvnx3zPPjmXhOBf5igYLVvD2StjrFSQ48TEY
- iY5pOCOzdhPeEvlsz4SO5ZwD8G6ZzljYpKBIcE7mOa384dMVeIYjBRvm9qtVglCbavdM
- twvfMq4T2bpeubWT0KlgsskAqL5fwdT29Lc0jDo9PzbXaSU2s9/w60y80wqm/vAltm52
- IWZPctK+lBUVsB3YslZZXRf8P8wTc5OcKIkO9ffBPtt6cDoU22v/SUi4hyIFHYe6pEpX
- uJBZBfuOx5AIy65mPbNKRMGbzQ5nG3/Pea7YPiA5K89vGh4/rNKHuONJLrPhROLYurXj
- pM9Q==
-X-Gm-Message-State: AOJu0YzbnS8DsIBNgH618EOLGD0Z+6cdLbb7WHO27eGuUQ1NgI0d+D8O
- TeZLjXiIefRq/vl4TrrbOe3ifN6qEAMx8e1yP0bIUT3N6rxOiZcUWVpyU73bpYUBi9MtgRnrOG4
- 5jp+snaOqsS4ys/ZWOI2C+TW9PLiLV8gN+kwt088H5PifOOEDSvncIHeRvU5ggOjtImaKvVsso2
- 29C4pF4YUCrVqFRO1D9Sr2zFbDZkKvyNZonnx4
-X-Received: by 2002:a17:906:b094:b0:a3d:1cbd:67f7 with SMTP id
- x20-20020a170906b09400b00a3d1cbd67f7mr9428994ejy.0.1708416399663; 
- Tue, 20 Feb 2024 00:06:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFcFia9P/w6iK9JN1YCStU2Plsx3QV42DboLuQrksPUPBLbVheRS7EIp8hXx3Vwy90HFLKAOw==
-X-Received: by 2002:a17:906:b094:b0:a3d:1cbd:67f7 with SMTP id
- x20-20020a170906b09400b00a3d1cbd67f7mr9428972ejy.0.1708416399359; 
- Tue, 20 Feb 2024 00:06:39 -0800 (PST)
+ bh=CMnsr6hcGke44dd+ja2+9AFJ8eqcK1lbFVapTuTjVcM=;
+ b=VVklq42phUY8ePKimh1aBEO9qNagGH/rhxg7on4kf/pB5oCnBz7VvKyRs+DVR6CLzB
+ vgqhfWmszZTjUaPeE77MXfzZVRoc//PU/l/ToMMxKU3CflqPv4LyDjMskhGbmvUI5dJ6
+ u3Nz+U+VTDq2aHqmlky80AYaYKl1W9GEaBDj6WYk2eKXx7pGcETrT+A0ZVMrynzXcZwr
+ 7vC8QgFz8AzaO467o0q5aQ4zlCNUua40z3SMHJIaRV8gUZmHSOF6FFTqeJaVydQEP84O
+ hZvVmETP+ScrOmOSGK0Fwxba6NNilN1kU6DCW5HDV0aNw13l/OsEiz4S6pqMdMnxq7TF
+ x6bg==
+X-Gm-Message-State: AOJu0YyzggL0ANsRXjjhOrJa67jJZ6R2qQmfrjP0/XN8TcrmZ9Lhbg20
+ rcaIz3vpjl5E2tKvioos4SAGS+9C1BEpGjWKcEYadAzxErs+ElQvi4L0QRvr7dgqT26tAdQ7CYR
+ BIVUTJ+q58VC6UySILhkCPPBWoogSAyScgKxarUDTRcjMS+e+HqdFHZU6GzSp5rXc1J9mHwS66F
+ 8JxCt8YSfSjSDuvYcM3ADkS6kyMwhgb4Uj2pHv
+X-Received: by 2002:a17:906:8d5:b0:a3d:993e:ad24 with SMTP id
+ o21-20020a17090608d500b00a3d993ead24mr8750576eje.59.1708416407079; 
+ Tue, 20 Feb 2024 00:06:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEuaeBfODDBMc9YFQ6ztRBfrlFrLuFoHQNPTJLUGIwLRcvEcc0dAwEJLZ1oPOYJpnr8f9xkkQ==
+X-Received: by 2002:a17:906:8d5:b0:a3d:993e:ad24 with SMTP id
+ o21-20020a17090608d500b00a3d993ead24mr8750563eje.59.1708416406794; 
+ Tue, 20 Feb 2024 00:06:46 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
  by smtp.gmail.com with ESMTPSA id
- rf23-20020a1709076a1700b00a3da5bf6aa5sm3707176ejc.211.2024.02.20.00.06.38
+ yj7-20020a170907708700b00a3e881b4b25sm2002779ejb.164.2024.02.20.00.06.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Feb 2024 00:06:38 -0800 (PST)
+ Tue, 20 Feb 2024 00:06:46 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
-	qemu-stable@nongnu.org
-Subject: [PULL 06/17] i386/cpuid: Decrease cpuid_i when skipping CPUID leaf 1F
-Date: Tue, 20 Feb 2024 09:05:47 +0100
-Message-ID: <20240220080558.365903-7-pbonzini@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: [PULL 07/17] i386/cpuid: Remove subleaf constraint on CPUID leaf 1F
+Date: Tue, 20 Feb 2024 09:05:48 +0100
+Message-ID: <20240220080558.365903-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240220080558.365903-1-pbonzini@redhat.com>
 References: <20240220080558.365903-1-pbonzini@redhat.com>
@@ -103,33 +102,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Existing code misses a decrement of cpuid_i when skip leaf 0x1F.
-There's a blank CPUID entry(with leaf, subleaf as 0, and all fields
-stuffed 0s) left in the CPUID array.
-
-It conflicts with correct CPUID leaf 0.
+No such constraint that subleaf index needs to be less than 64.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Reviewed-by:Yang Weijiang <weijiang.yang@intel.com>
-Message-ID: <20240125024016.2521244-2-xiaoyao.li@intel.com>
-Cc: qemu-stable@nongnu.org
+Message-ID: <20240125024016.2521244-3-xiaoyao.li@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/kvm.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/i386/kvm/kvm.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 76a66246eb7..dff9dedbd76 100644
+index dff9dedbd76..9758c83693e 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -1914,6 +1914,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
-         }
-         case 0x1f:
-             if (env->nr_dies < 2) {
-+                cpuid_i--;
-                 break;
-             }
-             /* fallthrough */
+@@ -1926,10 +1926,6 @@ int kvm_arch_init_vcpu(CPUState *cs)
+                     break;
+                 }
+ 
+-                if (i == 0x1f && j == 64) {
+-                    break;
+-                }
+-
+                 c->function = i;
+                 c->flags = KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
+                 c->index = j;
 -- 
 2.43.0
 
