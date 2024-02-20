@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D300885BC12
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 13:27:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2A8185BC05
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 13:26:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcPC3-0005Rv-1g; Tue, 20 Feb 2024 07:25:51 -0500
+	id 1rcPC6-0005bl-Jh; Tue, 20 Feb 2024 07:25:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rcPBv-00051M-1K
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 07:25:44 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1rcPBx-0005Ae-Tu
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 07:25:45 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rcPBr-0006DB-9I
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 07:25:42 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1d7232dcb3eso29456845ad.2
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 04:25:37 -0800 (PST)
+ id 1rcPBu-0006F1-PC
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 07:25:45 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1dc13fb0133so6435685ad.3
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 04:25:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708431937; x=1709036737;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708431941; x=1709036741;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=nx+YxyPM604jNXU1B1YXm0e5pQ0GXOm984QmGrq4zA4=;
- b=vrDGGXjhM+D8r8XfT0gOkLmM41n2DfCBo9r+2/vu5373ZQpr9V1VZSCf+6eCPzR8TI
- 6aBDG6D+qdap+dDdBkhvzRm9CDoJ2pVBDixdfY08tDi4eG7ROaXBO+ipmDJeC9jys2L0
- 1vy3eNcrWEeutYXEGIeghviqki1IYT9SavlvoVfprG1eouqtYIXPAzoc4VdI07BvljaW
- ZTUqj70yUQV7i8UGnDU8rOGd7etfYXHGc8CaEZcuECh49Y7kwjW6pHLHnVJociEbNVCT
- nzjdkIR9CLIXHI3xsnwrVIWAvV4CKQ58jTUt8ILIKNxq6oWbM4xvA+ya16WKT4/jvc0n
- zZmQ==
+ :reply-to; bh=2CSd9i6jUkmyRdPPv1psHKlWQIuoE+JKADHe2JQGZio=;
+ b=TeKG8FB5QHPAvbE4enKqIlJnuyNcHzesIehSYBpnBSXv7eFYmazhxbSNMdyIWX+uWj
+ rC4iJzh0GtTccSB64rptQSwoDPCg+x1tWnkwVr91a7NblAE1HmYBEZXyS2PX782XUskf
+ G9+ftqWFa6/nDYZI9h0/oLPEid3g4zopyp1OornP62PLg7g0A3iHayFizgoDfJrS2ETc
+ eVpo27b80t4Bi3Xgm3Xi634KP7BKHKCIoi27WWDAHvakZudrs4xthXIttZ1y+2x08gLj
+ oWZjvVNSStBaqOV/wRFLt8VNbkP3XO0E6y5RKCISRnUpVtYXTY8nf5h7T/k1BZd6PtlF
+ z6vA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708431937; x=1709036737;
+ d=1e100.net; s=20230601; t=1708431941; x=1709036741;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nx+YxyPM604jNXU1B1YXm0e5pQ0GXOm984QmGrq4zA4=;
- b=wZ2m4l4/0HOifxjfU8hNVbvlIgkfSgB4/6QWISpyTCII11pqlexb6ySe1EH0oDF1hs
- 35Heu6iHV9+YCoxj2tlZPra6ZTGnQUIgRD0SvHRUis2on/ikp7kJ5nYkY/ibvs1I7xye
- vA0XrelVrGPE6VnU5ny4WjDGmxcvS0OwqqdA+QEMm9hgO0budVYfvstazWexwHWDsos5
- yu2ZpFEpcJ7FgA973BUKjfw3iVGkjdEEFIl6AcFxPnzWX1/y5ZOnyV1E47AvxDAYABm2
- mxJXuziY0abc0xV19yiozQeM17PCbXI7/EA/ZY6i/bij1O38Ft9HZe0hijxV0vIIrbu8
- JEPg==
-X-Gm-Message-State: AOJu0YwyTODbmpX0azGvV9AAVQeHjfzIFXGDXhXDASOupzEksuvwsmJV
- RqSMYTWcpOV35VD6OUgU8Jk61l7XNtXuR2dqRkWpCRxTQAzxGvNC8AlBcasYvjQ=
-X-Google-Smtp-Source: AGHT+IHSUBJqKNlHfy15uOM+naw0VZ4F7WiW5P5MZkC93YvKH+ccoZFAFP5IiNrar1vkH3oNmebOiQ==
-X-Received: by 2002:a17:902:dac6:b0:1db:916e:d77a with SMTP id
- q6-20020a170902dac600b001db916ed77amr16352732plx.2.1708431936816; 
- Tue, 20 Feb 2024 04:25:36 -0800 (PST)
+ bh=2CSd9i6jUkmyRdPPv1psHKlWQIuoE+JKADHe2JQGZio=;
+ b=ewpttiUmsp8lQ9ZJbqsoBgyzyE9ABv/W9VgfJrfQm+wsKBR72yfIhe9ciCkY404WVY
+ wvO2l7d33tgnobcRdN2mnc/BUCvdOSnfQzc2VelS8KDJKuQbs36uKnueu5KT1eMeT9d3
+ vYqE2Nm9psj887sCaZS2SrN2x1Yzjt52tQ6A9wbrC0Ea2dWl/PhhGhHz2wxuahkFgELw
+ /iK8UcE1xCW3+r5UEyMYKj7GSh9nEQi1CrTbLHaAZyEu/ktz5InuRIjr9S+FcXjuKxwW
+ Hyxtxqzxrq6XxqEEV729RFqcn/POgTifs8Baw/sc6P51QE88YCZhZRe2kn0fchWpN7bG
+ G3dQ==
+X-Gm-Message-State: AOJu0YyVORpcyuIkcvUxgxE/Nbg5O1wg5OFNgp+xOSVIKHcMMsiD4iev
+ las5XLSSo8SFZNCVsWp5/m1d0uSvDmjN829yFjlXn1hDruF7chiaiB2O6vd/vto=
+X-Google-Smtp-Source: AGHT+IF3Zx+4V77tBK/Ad6xoliCjosSFH3K+Rze4e8kymnyK4KWltrL/5BMcZs1ZJQNqObq45NhtYQ==
+X-Received: by 2002:a17:902:b112:b0:1db:d184:c458 with SMTP id
+ q18-20020a170902b11200b001dbd184c458mr6049225plr.44.1708431941341; 
+ Tue, 20 Feb 2024 04:25:41 -0800 (PST)
 Received: from localhost ([157.82.203.206])
  by smtp.gmail.com with UTF8SMTPSA id
- a19-20020a170902ee9300b001dbb0348733sm4189838pld.67.2024.02.20.04.25.33
+ o16-20020a17090323d000b001db7e461d8asm6185261plh.130.2024.02.20.04.25.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Feb 2024 04:25:36 -0800 (PST)
+ Tue, 20 Feb 2024 04:25:41 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Tue, 20 Feb 2024 21:24:46 +0900
-Subject: [PATCH v6 11/15] pcie_sriov: Register VFs after migration
+Date: Tue, 20 Feb 2024 21:24:47 +0900
+Subject: [PATCH v6 12/15] hw/pci: Use -1 as a default value for rombar
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240220-reuse-v6-11-2e42a28b0cf2@daynix.com>
+Message-Id: <20240220-reuse-v6-12-2e42a28b0cf2@daynix.com>
 References: <20240220-reuse-v6-0-2e42a28b0cf2@daynix.com>
 In-Reply-To: <20240220-reuse-v6-0-2e42a28b0cf2@daynix.com>
 To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
@@ -79,8 +79,8 @@ To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::631;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x631.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -102,72 +102,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-pcie_sriov doesn't have code to restore its state after migration, but
-igb, which uses pcie_sriov, naively claimed its migration capability.
+Currently there is no way to distinguish the case that rombar is
+explicitly specified as 1 and the case that rombar is not specified.
 
-Add code to register VFs after migration and fix igb migration.
+Set rombar -1 by default to distinguish these cases just as it is done
+for addr and romsize. It was confirmed that changing the default value
+to -1 will not change the behavior by looking at occurences of rom_bar.
 
-Fixes: 3a977deebe6b ("Intrdocue igb device emulation")
+$ git grep -w rom_bar
+hw/display/qxl.c:328:    QXLRom *rom = memory_region_get_ram_ptr(&d->rom_bar);
+hw/display/qxl.c:431:    qxl_set_dirty(&qxl->rom_bar, 0, qxl->rom_size);
+hw/display/qxl.c:1048:    QXLRom *rom = memory_region_get_ram_ptr(&qxl->rom_bar);
+hw/display/qxl.c:2131:    memory_region_init_rom(&qxl->rom_bar, OBJECT(qxl), "qxl.vrom",
+hw/display/qxl.c:2154: PCI_BASE_ADDRESS_SPACE_MEMORY, &qxl->rom_bar);
+hw/display/qxl.h:101:    MemoryRegion       rom_bar;
+hw/pci/pci.c:74:    DEFINE_PROP_UINT32("rombar",  PCIDevice, rom_bar, 1),
+hw/pci/pci.c:2329:    if (!pdev->rom_bar) {
+hw/vfio/pci.c:1019:    if (vdev->pdev.romfile || !vdev->pdev.rom_bar) {
+hw/xen/xen_pt_load_rom.c:29:    if (dev->romfile || !dev->rom_bar) {
+include/hw/pci/pci_device.h:150:    uint32_t rom_bar;
+
+rom_bar refers to a different variable in qxl. It is only tested if
+the value is 0 or not in the other places.
+
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- include/hw/pci/pcie_sriov.h | 2 ++
- hw/pci/pci.c                | 7 +++++++
- hw/pci/pcie_sriov.c         | 7 +++++++
- 3 files changed, 16 insertions(+)
+ hw/pci/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/pci/pcie_sriov.h b/include/hw/pci/pcie_sriov.h
-index 793d03c5f12e..d576a8c6be19 100644
---- a/include/hw/pci/pcie_sriov.h
-+++ b/include/hw/pci/pcie_sriov.h
-@@ -57,6 +57,8 @@ void pcie_sriov_pf_add_sup_pgsize(PCIDevice *dev, uint16_t opt_sup_pgsize);
- void pcie_sriov_config_write(PCIDevice *dev, uint32_t address,
-                              uint32_t val, int len);
- 
-+void pcie_sriov_pf_post_load(PCIDevice *dev);
-+
- /* Reset SR/IOV */
- void pcie_sriov_pf_reset(PCIDevice *dev);
- 
 diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 750c2ba696d1..54b375da2d26 100644
+index 54b375da2d26..909c5b3ee4ee 100644
 --- a/hw/pci/pci.c
 +++ b/hw/pci/pci.c
-@@ -733,10 +733,17 @@ static bool migrate_is_not_pcie(void *opaque, int version_id)
-     return !pci_is_express((PCIDevice *)opaque);
- }
- 
-+static int pci_post_load(void *opaque, int version_id)
-+{
-+    pcie_sriov_pf_post_load(opaque);
-+    return 0;
-+}
-+
- const VMStateDescription vmstate_pci_device = {
-     .name = "PCIDevice",
-     .version_id = 2,
-     .minimum_version_id = 1,
-+    .post_load = pci_post_load,
-     .fields = (const VMStateField[]) {
-         VMSTATE_INT32_POSITIVE_LE(version_id, PCIDevice),
-         VMSTATE_BUFFER_UNSAFE_INFO_TEST(config, PCIDevice,
-diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
-index fb48c1a18c9a..09a53ed30027 100644
---- a/hw/pci/pcie_sriov.c
-+++ b/hw/pci/pcie_sriov.c
-@@ -239,6 +239,13 @@ void pcie_sriov_config_write(PCIDevice *dev, uint32_t address,
-     }
- }
- 
-+void pcie_sriov_pf_post_load(PCIDevice *dev)
-+{
-+    if (dev->exp.sriov_cap) {
-+        register_vfs(dev);
-+    }
-+}
-+
- 
- /* Reset SR/IOV */
- void pcie_sriov_pf_reset(PCIDevice *dev)
+@@ -71,7 +71,7 @@ static Property pci_props[] = {
+     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+     DEFINE_PROP_STRING("romfile", PCIDevice, romfile),
+     DEFINE_PROP_UINT32("romsize", PCIDevice, romsize, -1),
+-    DEFINE_PROP_UINT32("rombar",  PCIDevice, rom_bar, 1),
++    DEFINE_PROP_UINT32("rombar",  PCIDevice, rom_bar, -1),
+     DEFINE_PROP_BIT("multifunction", PCIDevice, cap_present,
+                     QEMU_PCI_CAP_MULTIFUNCTION_BITNR, false),
+     DEFINE_PROP_BIT("x-pcie-lnksta-dllla", PCIDevice, cap_present,
 
 -- 
 2.43.1
