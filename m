@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D747E85BFD1
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 16:26:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12C3385BFD2
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 16:26:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcS0H-0004oV-PD; Tue, 20 Feb 2024 10:25:53 -0500
+	id 1rcS0s-0005Mn-0Z; Tue, 20 Feb 2024 10:26:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rcS0D-0004le-I9
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 10:25:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rcS0C-0007Dk-0Y
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 10:25:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708442747;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=gI7ZKLNNQeK0mPjkkPY21k6GsO8VNr8GNrp4jxtMbGs=;
- b=DTbTvwO/w3PFxqfi4qj4cZ7DMWyrc6eUa+WaL2pNq2lHzYJHWltKuhF7gwhRuc/hmGAgAw
- ekQPRAjcZxJ1LgDF/vs6oZm4ti8x2il5/KkJ0mhh9NSXpPOmknWgmSqk9ihrQZKzGNEctt
- m1KOhWoUrScPVvWl2q29RsNiuH2Hx+o=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-22-cCr-AVy9Pf2uiw3Tqj_N2w-1; Tue,
- 20 Feb 2024 10:25:42 -0500
-X-MC-Unique: cCr-AVy9Pf2uiw3Tqj_N2w-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0731629AC03D;
- Tue, 20 Feb 2024 15:25:42 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.50])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A6702201154D;
- Tue, 20 Feb 2024 15:25:40 +0000 (UTC)
-Date: Tue, 20 Feb 2024 15:25:38 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, michael.roth@amd.com, jsnow@redhat.com,
- eblake@redhat.com, peter.maydell@linaro.org
-Subject: Re: [PATCH 16/16] qapi: Divorce QAPIDoc from QAPIParseError
-Message-ID: <ZdTEciiUzzPcndDf@redhat.com>
-References: <20240216145841.2099240-1-armbru@redhat.com>
- <20240216145841.2099240-17-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rcS0p-0005MP-Dc
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 10:26:27 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rcS0n-0007Fo-Km
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 10:26:27 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-563c595f968so6718953a12.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 07:26:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708442783; x=1709047583; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=OhnnnMv/gHEmsB2f1/LVlTDnoKPM0Mgphs4pdQ8AaHI=;
+ b=DeWPd/tpWe97bCY1Ja5P49JiBfLKQDfUeTKP9jHPuMW+hNUlsNCMWYF+27N3PkGdLp
+ 1gO7NCSVEHbxyQNGL2dqMF/GwTPZxfKVEBGcJ/pcHztvz597/plz4PeDOpKe5X6tNM4w
+ HC8qlxRMCIuDDFJWER5ISeYZSfa+jes/uaMJF/89qAVqYFTJlb4Ph6gF2pNWoGzjqphP
+ IGUH3I7uXKdC9wdjDCDIPRjEW12Mrj6ICob4r6WVgU3DuZGi7bUlfAZvYP/cAS2lof+Z
+ j8Tg7kRRG1pdbY+GophcM5B0V9U4YNA/akgt9qJEj0KvMwPhlEPvBgpMUzEHS8qytW/c
+ Tm5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708442783; x=1709047583;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=OhnnnMv/gHEmsB2f1/LVlTDnoKPM0Mgphs4pdQ8AaHI=;
+ b=g8DBLddDAqTZgg/BrH6rf+X6iopkXZkk2TxDiLJ0qiJDbJbaisWXl9DOQQ+ZYCrqQA
+ JBbmSRpl1MwLAlMuyJKdKEsdh/OzKC+Wyb2RpXs7O/WN9BUsXtwij0Xyfo/vMWSx0OE6
+ TFHeMkgmTFi5KMF4zZ3NV2gTGzrsocd+TspuVhsklDzH4nXSJlYXora4W80sJxv7fIay
+ 7VUyMoKeJTIKw8mFBUm/ihdCwB1ARFq5f87WN4jb8jyhx8JeIF2QAR+bCQZvAUMmJlBo
+ kUDJb6/tFpvcg/z68wJ9n6ZXAwaUwZ0Sn80j3OI8z+IIK1VAuqYmBaAmDNZaVzFElL0K
+ 7faw==
+X-Gm-Message-State: AOJu0Yy0N1coX0SPDYxERQSohtOZWjCKW4gILiBnYjIOqsgsdiJdjsmh
+ i0RBvsk8mZ8j+JrQ/IN0HZPn+xVTF05934PPPGnIPoM3zYxde2t4np1pLSemJw/5PaLtjsEB5Sb
+ iwUMkJeBkXhj0nunEpc/fGAIGPV3GnZMVDtR0rQKYUNrmJO2h
+X-Google-Smtp-Source: AGHT+IHCQJlOZ//W2XAZU7fZWLCdXIQuJovxU6/b5bqA4cxjilCDiq2vjvmts9DBQ74bZLQa1ha6KBg6aJbkXfX28rA=
+X-Received: by 2002:a50:fc02:0:b0:564:5973:56f2 with SMTP id
+ i2-20020a50fc02000000b00564597356f2mr4537382edr.7.1708442783098; Tue, 20 Feb
+ 2024 07:26:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240216145841.2099240-17-armbru@redhat.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20240216133140.3611100-1-marcandre.lureau@redhat.com>
+In-Reply-To: <20240216133140.3611100-1-marcandre.lureau@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 20 Feb 2024 15:26:11 +0000
+Message-ID: <CAFEAcA9QW7UHxJ8PWpSweiq4yA9w+=-ge=MUzbv4scNrWJ8Qfw@mail.gmail.com>
+Subject: Re: [PULL 0/7] Ui patches
+To: marcandre.lureau@redhat.com
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,40 +84,37 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 16, 2024 at 03:58:40PM +0100, Markus Armbruster wrote:
-> QAPIDoc stores a reference to QAPIParser just to pass it to
-> QAPIParseError.  The resulting error position depends on the state of
-> the parser.  It happens to be the current comment line.  Servicable,
-> but action at a distance.
-> 
-> The commit before previous moved most uses of QAPIParseError from
-> QAPIDoc to QAPIParser.  There are just three left.  Convert them to
-> QAPISemError.  This involves passing info to a few methods.  Then drop
-> the reference to QAPIParser.
-> 
-> The three errors lose the column number.  Not really interesting here:
-> it's the comment line's indentation.
-> 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->  scripts/qapi/parser.py                      | 66 +++++++++------------
->  tests/qapi-schema/doc-duplicated-arg.err    |  2 +-
->  tests/qapi-schema/doc-duplicated-return.err |  2 +-
->  tests/qapi-schema/doc-duplicated-since.err  |  2 +-
->  tests/qapi-schema/doc-empty-arg.err         |  2 +-
->  5 files changed, 32 insertions(+), 42 deletions(-)
+On Fri, 16 Feb 2024 at 13:31, <marcandre.lureau@redhat.com> wrote:
+>
+> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>
+> The following changes since commit 3ff11e4dcabe2b5b4c26e49d741018ec326f12=
+7f:
+>
+>   Merge tag 'pull-target-arm-20240215' of https://git.linaro.org/people/p=
+maydell/qemu-arm into staging (2024-02-15 17:36:30 +0000)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/marcandre.lureau/qemu.git tags/ui-pull-request
+>
+> for you to fetch changes up to 186acfbaf7f325833702f50f75ef5116dc29e233:
+>
+>   tests/qtest: Depend on dbus_display1_dep (2024-02-16 17:27:22 +0400)
+>
+> ----------------------------------------------------------------
+> UI-related fixes
+>
+> ----------------------------------------------------------------
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Applied, thanks.
 
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
+for any user-visible changes.
+
+-- PMM
 
