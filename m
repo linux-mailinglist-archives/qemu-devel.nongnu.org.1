@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D0885C0B7
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 17:07:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4915085C0C1
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 17:08:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcSdk-0002B7-GZ; Tue, 20 Feb 2024 11:06:40 -0500
+	id 1rcSdj-0002Ap-7a; Tue, 20 Feb 2024 11:06:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rcSdg-000292-2N
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 11:06:36 -0500
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ id 1rcSdf-00028X-7M
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 11:06:35 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rcSdc-0005Ft-LX
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 11:06:35 -0500
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2d09cf00214so61652191fa.0
+ id 1rcSdc-0005G0-FI
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 11:06:34 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-41269c801eeso13266925e9.2
  for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 08:06:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1708445190; x=1709049990; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=19euJWj2Bsd7+44lYFRoDEAxkKA5sWf1qGZsesZBvWY=;
- b=tkn6ECuCmoesHxSOsV0ZKKFXyGs9c1qULWX9ah9kscQsj7aHFxSvgkyKxUoydZF9Qe
- ue/Nu6XLpKO2n0E78b5Rdi9uh89OUGUZXSRP+Myk4o9sZk9Cl54UKG0hKfANzqWM2aUZ
- ExRPUFnb2rBxmZ6WscWmBfpY2jVGefp1YA1a2R47y+zuOB9Syp9B6soNeZ5f+vCiPYSM
- 7zsbPIm0iJH4Zd4sD8NsOstinikgVhB7mibOtrn2gW6H8ZLqtkcc4v5l2IU5gzDPpNpm
- dHJ2LUKGRqT/hayh4E3Nln/QH3I/PMsZ4FhfaivzoZybLQ9W6V883rRoV6zbfmyeW5QY
- yAKg==
+ bh=ItiTCkAfmzt4OaTQ5t65CWwnYcleCpOpQ9IF8gCFhuc=;
+ b=jcbstVlL9o8xKfoeXjqHmARA7c8+9YChtFy31J2nwUzA6GcUrjC4HcBy8BUgFBj9KQ
+ av7UHtgv1hIWqtUb7nCDmA8iiTPm05FhXCNeQvo0rO/ELdGxb8GofBxOSbYa0HVG25RH
+ LAjriSnZ1HjwBB1IQYOCt3ZVB3REO240z5PJCovCIRsNpR77EH7gvLdxHWg6evp4IdhZ
+ xHpM/scLG7CxX/pztj1hWFhzPYIX0QF2hCmrhHdIVQjYG23L84wO3DOe1GX2fyysOV3T
+ FKRlPlZQQnt0amakwga3fZH7O78APBcKaZA+tcRv3uTA5aluXUvE4S8TMyp4X/Hhvc+c
+ 3kWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1708445190; x=1709049990;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=19euJWj2Bsd7+44lYFRoDEAxkKA5sWf1qGZsesZBvWY=;
- b=HG90MbEWBDzDKlttfp4RfhyhTzUz+y+p5cQJ2KcroEp/sK7bcCICp0hPBdtZPYIr0O
- V6ssMRn9946KUHQi57AVorl1vGwy7SJfIiBpbTDoyV2D1TjlTyP31g7/48Qq5OMGO1mS
- 3NP/eFXkAgotcFTaouM/zg8B3HAhgaBTVXvBpYKhla1/ShXD+4ip+yUYclYQwAb/v2Xg
- zSbm5SK4qZ7cTiRKo7p4lhcTtdJ6g9J0PAfFKAGfD1oDcU6VXsux5BItQqfu4ODoZqiU
- U5L5KCVb4HVUF84YFm85lwiVahf9FOmaKeEHtT+HmOrs3A5RqgDMKM6VxhzehjUT1cH9
- U91Q==
-X-Gm-Message-State: AOJu0YwwtZIjY6zQ2kxCxA/sDFYsOeFzO5Jn1RnkbkXs9sCgd9GtFYiq
- FbGl1MF8HTk3hQd4YxWTW1nHDHz5oLix6hmPfb7lca2c5q62KVGJ87lmQlUXvSCJzopnWfew/4q
- H
-X-Google-Smtp-Source: AGHT+IHki7Nk0Mbp8jZhjdeDsU4PuIArylIsKGuc6ehaVBNeaISCJ7Bb6fwEm+MGKoKEu5cHuC7Cjg==
-X-Received: by 2002:a05:651c:1250:b0:2d2:3186:4597 with SMTP id
- h16-20020a05651c125000b002d231864597mr4262564ljh.25.1708445190048; 
+ bh=ItiTCkAfmzt4OaTQ5t65CWwnYcleCpOpQ9IF8gCFhuc=;
+ b=gecI4L9b2Aalbn/CvjGkRUO8phKv/m47w5YpnZ8GnbCAbcZzyKm2SKQ5euOAny/yn7
+ rmt4xDEvGoIH25/V3ABldvaGA86y+1Ip9cIxhzNSvb86wXdoGxOrphs1ESEHehCJDzys
+ uVTTJqx5fhbTt2Z8dy8il9KaGsK/zAitBbAB5YgcE2Z6phu8f6/5Pd9I+gSthIstm97J
+ V5y4CQp1ySae2gN0LrfRm46v2Bw4zluBe2cZ144tSRINVggjZ1uZkckbBDubTQFdOnEk
+ iGRBLmdNLSgQt5+rowhLSB3bZkxnJKV1IJjDkoHZgPh4BNbE4oYK/MSE95MLyDnImJcM
+ fuUA==
+X-Gm-Message-State: AOJu0Yyi1t1tg9qu7xXkQ1UqusR6Og02SD5DRw2H05UO2Q6+YST/7kNw
+ nlHMjMIcE7LAvJp8vhW0eSNxtZLFJR3A/baKH97NBWXsKbXXKt4BR5KjFlOR8ml+QbNiCmWRGWd
+ l
+X-Google-Smtp-Source: AGHT+IG5fA8cRiSQZMvAw0nvfAZ0CNed/B4mryIZdzif8FxC3m1+XlnhTHny8WnaRTLLkhdnPDB33g==
+X-Received: by 2002:a05:600c:4706:b0:412:7180:eaf7 with SMTP id
+ v6-20020a05600c470600b004127180eaf7mr792749wmo.6.1708445190608; 
  Tue, 20 Feb 2024 08:06:30 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- f8-20020a05600c4e8800b0040f0219c371sm15299927wmq.19.2024.02.20.08.06.29
+ f8-20020a05600c4e8800b0040f0219c371sm15299927wmq.19.2024.02.20.08.06.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Feb 2024 08:06:29 -0800 (PST)
+ Tue, 20 Feb 2024 08:06:30 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -66,17 +66,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  "Gonglei (Arei)" <arei.gonglei@huawei.com>
-Subject: [PATCH 09/10] hw/core/machine: Use qemu_register_resettable for
- sysbus reset
-Date: Tue, 20 Feb 2024 16:06:21 +0000
-Message-Id: <20240220160622.114437-10-peter.maydell@linaro.org>
+Subject: [PATCH 10/10] docs/devel/reset: Update to discuss system reset
+Date: Tue, 20 Feb 2024 16:06:22 +0000
+Message-Id: <20240220160622.114437-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240220160622.114437-1-peter.maydell@linaro.org>
 References: <20240220160622.114437-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x235.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,56 +98,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the reset of the sysbus (and thus all devices and buses anywhere
-on the qbus tree) from qemu_register_reset() to qemu_register_resettable().
-
-This is a behaviour change: because qemu_register_resettable() is
-aware of three-phase reset, this now means that:
- * 'enter' phase reset methods of devices and buses are called
-   before any legacy reset callbacks registered with qemu_register_reset()
- * 'exit' phase reset methods of devices and buses are called
-   after any legacy qemu_register_reset() callbacks
-
-Put another way, a qemu_register_reset() callback is now correctly
-ordered in the 'hold' phase along with any other 'hold' phase methods.
-
-The motivation for doing this is that we will now be able to resolve
-some reset-ordering issues using the three-phase mechanism, because
-the 'exit' phase is always after the 'hold' phase, even when the
-'hold' phase function was registered with qemu_register_reset().
+Now that system reset uses a three-phase-reset, update the reset
+documentation to include a section describing how this works.
+Include documentation of the current major beartrap in reset, which
+is that only devices on the qbus tree will get automatically reset.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
-I believe that given we don't make much use of enter/exit phases
-currently that this is unlikely to cause unexpected regressions due
-to an accidental reset-order dependency that is no longer satisfied,
-but it's always possible...
+This merely documents the current situation, and says nothing
+about what we might like to do with it in future...
 ---
- hw/core/machine.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ docs/devel/reset.rst | 44 ++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 42 insertions(+), 2 deletions(-)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index fb5afdcae4c..9ac5d5389a6 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -1577,14 +1577,13 @@ void qdev_machine_creation_done(void)
-     /* TODO: once all bus devices are qdevified, this should be done
-      * when bus is created by qdev.c */
-     /*
--     * TODO: If we had a main 'reset container' that the whole system
--     * lived in, we could reset that using the multi-phase reset
--     * APIs. For the moment, we just reset the sysbus, which will cause
-+     * This is where we arrange for the sysbus to be reset when the
-+     * whole simulation is reset. In turn, resetting the sysbus will cause
-      * all devices hanging off it (and all their child buses, recursively)
-      * to be reset. Note that this will *not* reset any Device objects
-      * which are not attached to some part of the qbus tree!
-      */
--    qemu_register_reset(resettable_cold_reset_fn, sysbus_get_default());
-+    qemu_register_resettable(OBJECT(sysbus_get_default()));
+diff --git a/docs/devel/reset.rst b/docs/devel/reset.rst
+index d4e79718bac..2ea85e7779b 100644
+--- a/docs/devel/reset.rst
++++ b/docs/devel/reset.rst
+@@ -11,8 +11,8 @@ whole group can be reset consistently. Each individual member object does not
+ have to care about others; in particular, problems of order (which object is
+ reset first) are addressed.
  
-     notifier_list_notify(&machine_init_done_notifiers, NULL);
+-As of now DeviceClass and BusClass implement this interface.
+-
++The main object types which implement this interface are DeviceClass
++and BusClass.
  
+ Triggering reset
+ ----------------
+@@ -288,3 +288,43 @@ There is currently 2 cases where this function is used:
+ 2. *hot bus change*; it means an existing live device is added, moved or
+    removed in the bus hierarchy. At the moment, it occurs only in the raspi
+    machines for changing the sdbus used by sd card.
++
++Reset of the complete system
++----------------------------
++
++Reset of the complete system is a little complicated. The typical
++flow is:
++
++1. Code which wishes to reset the entire system does so by calling
++   ``qemu_system_reset_request()``. This schedules a reset, but the
++   reset will happen asynchronously after the function returns.
++   That makes this safe to call from, for example, device models.
++
++2. The function which is called to make the reset happen is
++   ``qemu_system_reset()``. Generally only core system code should
++   call this directly.
++
++3. ``qemu_system_reset()`` calls the ``MachineClass::reset`` method of
++   the current machine, if it has one. That method must call
++   ``qemu_devices_reset()``. If the machine has no reset method,
++   ``qemu_system_reset()`` calls ``qemu_devices_reset()`` directly.
++
++4. ``qemu_devices_reset()`` performs a reset of the system, using
++   the three-phase mechanism listed above. It resets all objects
++   that were registered with it using ``qemu_register_resettable()``.
++   It also calls all the functions registered with it using
++   ``qemu_register_reset()``. Those functions are called during the
++   "hold" phase of this reset.
++
++5. The most important object that this reset resets is the
++   'sysbus' bus. The sysbus bus is the root of the qbus tree. This
++   means that all devices on the sysbus are reset, and all their
++   child buses, and all the devices on those child buses.
++
++6. Devices which are not on the qbus tree are *not* automatically
++   reset! (The most obvious example of this is CPU objects, but
++   anything that directly inherits from ``TYPE_OBJECT`` or ``TYPE_DEVICE``
++   rather than from ``TYPE_SYS_BUS_DEVICE`` or some other plugs-into-a-bus
++   type will be in this category.) You need to therefore arrange for these
++   to be reset in some other way (e.g. using ``qemu_register_resettable()``
++   or ``qemu_register_reset()``).
 -- 
 2.34.1
 
