@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EEB385C0B8
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 17:07:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C62985C0E1
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 17:14:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcSdw-0002GT-E5; Tue, 20 Feb 2024 11:06:52 -0500
+	id 1rcSkb-0002T8-Le; Tue, 20 Feb 2024 11:13:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcSdt-0002Fs-TH
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 11:06:49 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rcSkZ-0002Sw-Fb
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 11:13:43 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcSds-0005HS-D1
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 11:06:49 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rcSkX-0006Xn-TE
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 11:13:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708445207;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1708445620;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=32cBanNhjljKy6llJo9YO5zbEMv98kidnmGeKD9ArTE=;
- b=bI0eiVfyGglb/LgRvmgd08HbtrHPGswNWbkDMPQTMqwnTBHrS007BFOKkaxg0foYGQ9LO9
- SDTPsUO+3/Pwn+NKZ+oqCcO+DaGxbKlMofItrLNhyrb3qibe/+lFWbd6oYIu/eDTeqRtwJ
- ooio8+JzgrU+HjDt9zEMiGQqoDX3HKY=
+ bh=zVQFmTt8TSgKwfyZNv1oloKPfhVSkceX2a7Uakbb0AQ=;
+ b=R+G9nG0yBWicWeISGT+45q/WMNZg6lgjuDNQYpSbh+Bz4Wt3VUPW6O0mEFej09moAeGv5z
+ WtkUNObITprA6nLpnAGQr6tg0vsZMDbynYoehDskN5911eWqfxum86Yq1PtVCDd0qubTiw
+ ve36R4fc2BpadwImWgCMg4kasQ64oIs=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-407-bLB1u6THM6OyG1SbcmtUHQ-1; Tue, 20 Feb 2024 11:06:44 -0500
-X-MC-Unique: bLB1u6THM6OyG1SbcmtUHQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-149-MH-dupckOI-lB5tyG3UHEA-1; Tue, 20 Feb 2024 11:13:37 -0500
+X-MC-Unique: MH-dupckOI-lB5tyG3UHEA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 483A285A58E;
- Tue, 20 Feb 2024 16:06:43 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 261FA1812;
- Tue, 20 Feb 2024 16:06:43 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0D5E121E6740; Tue, 20 Feb 2024 17:06:42 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  michael.roth@amd.com,  jsnow@redhat.com,
- eblake@redhat.com,  peter.maydell@linaro.org
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AD61385A588;
+ Tue, 20 Feb 2024 16:13:36 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.50])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D4660403864F;
+ Tue, 20 Feb 2024 16:13:35 +0000 (UTC)
+Date: Tue, 20 Feb 2024 16:13:33 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, michael.roth@amd.com, jsnow@redhat.com,
+ eblake@redhat.com, peter.maydell@linaro.org
 Subject: Re: [PATCH 11/16] qapi: Recognize section tags and 'Features:' only
  after blank line
-In-Reply-To: <ZdTDn05noU8Ah7lK@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Tue, 20 Feb 2024 15:22:07 +0000")
+Message-ID: <ZdTPrVPcr5fy9C_B@redhat.com>
 References: <20240216145841.2099240-1-armbru@redhat.com>
  <20240216145841.2099240-12-armbru@redhat.com>
- <ZdTDn05noU8Ah7lK@redhat.com>
-Date: Tue, 20 Feb 2024 17:06:42 +0100
-Message-ID: <87v86j3yst.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ <ZdTDn05noU8Ah7lK@redhat.com> <87v86j3yst.fsf@pond.sub.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87v86j3yst.fsf@pond.sub.org>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -83,57 +83,67 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+On Tue, Feb 20, 2024 at 05:06:42PM +0100, Markus Armbruster wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
+> 
+> > On Fri, Feb 16, 2024 at 03:58:35PM +0100, Markus Armbruster wrote:
+> >> Putting a blank line before section tags and 'Features:' is good,
+> >> existing practice.  Enforce it.
+> >> 
+> >> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> >> ---
+> >>  docs/devel/qapi-code-gen.rst                 | 15 +++++++++------
+> >>  scripts/qapi/parser.py                       | 11 ++++++++---
+> >>  tests/qapi-schema/doc-duplicated-return.err  |  2 +-
+> >>  tests/qapi-schema/doc-duplicated-return.json |  1 +
+> >>  tests/qapi-schema/doc-duplicated-since.err   |  2 +-
+> >>  tests/qapi-schema/doc-duplicated-since.json  |  1 +
+> >>  tests/qapi-schema/doc-good.json              |  9 +++++++++
+> >>  tests/qapi-schema/doc-invalid-return.err     |  2 +-
+> >>  tests/qapi-schema/doc-invalid-return.json    |  1 +
+> >>  9 files changed, 32 insertions(+), 12 deletions(-)
+> >
+> > Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> >
+> >
+> >> @@ -574,9 +577,11 @@ def end_comment(self) -> None:
+> >>      def _match_at_name_colon(string: str) -> Optional[Match[str]]:
+> >>          return re.match(r'@([^:]*): *', string)
+> >>  
+> >> -    @staticmethod
+> >> -    def _match_section_tag(string: str) -> Optional[Match[str]]:
+> >> -        return re.match(r'(Returns|Since|Notes?|Examples?|TODO): *', string)
+> >> +    def _match_section_tag(self, string: str) -> Optional[Match[str]]:
+> >> +        if not self._first_line_in_paragraph:
+> >> +            return None
+> >> +        return re.match(r'(Returns|Since|Notes?|Examples?|TODO): *',
+> >> +                        string)
+> >
+> > I guess I have a minor worry that we're silently ignoring
+> > these tags when there's no blank line. Could result in
+> > docs silently rendering in the wrong way if (when) someone
+> > forgets the blank line.
+> 
+> True.
+> 
+> We could make it an error.  Can flag occurences in the middle of a
+> free-form paragraph that happen to be at the beginning of a line, but
+> that seems unlikely.
+> 
+> Of course, rST is full of similar syntactic traps anyway.  To quote
+> Paolo, "I find it to be the Perl of ASCII-based markups."
 
-> On Fri, Feb 16, 2024 at 03:58:35PM +0100, Markus Armbruster wrote:
->> Putting a blank line before section tags and 'Features:' is good,
->> existing practice.  Enforce it.
->>=20
->> Signed-off-by: Markus Armbruster <armbru@redhat.com>
->> ---
->>  docs/devel/qapi-code-gen.rst                 | 15 +++++++++------
->>  scripts/qapi/parser.py                       | 11 ++++++++---
->>  tests/qapi-schema/doc-duplicated-return.err  |  2 +-
->>  tests/qapi-schema/doc-duplicated-return.json |  1 +
->>  tests/qapi-schema/doc-duplicated-since.err   |  2 +-
->>  tests/qapi-schema/doc-duplicated-since.json  |  1 +
->>  tests/qapi-schema/doc-good.json              |  9 +++++++++
->>  tests/qapi-schema/doc-invalid-return.err     |  2 +-
->>  tests/qapi-schema/doc-invalid-return.json    |  1 +
->>  9 files changed, 32 insertions(+), 12 deletions(-)
->
-> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
->
->
->> @@ -574,9 +577,11 @@ def end_comment(self) -> None:
->>      def _match_at_name_colon(string: str) -> Optional[Match[str]]:
->>          return re.match(r'@([^:]*): *', string)
->>=20=20
->> -    @staticmethod
->> -    def _match_section_tag(string: str) -> Optional[Match[str]]:
->> -        return re.match(r'(Returns|Since|Notes?|Examples?|TODO): *', st=
-ring)
->> +    def _match_section_tag(self, string: str) -> Optional[Match[str]]:
->> +        if not self._first_line_in_paragraph:
->> +            return None
->> +        return re.match(r'(Returns|Since|Notes?|Examples?|TODO): *',
->> +                        string)
->
-> I guess I have a minor worry that we're silently ignoring
-> these tags when there's no blank line. Could result in
-> docs silently rendering in the wrong way if (when) someone
-> forgets the blank line.
+Yes, probably not worth the hassle.
 
-True.
-
-We could make it an error.  Can flag occurences in the middle of a
-free-form paragraph that happen to be at the beginning of a line, but
-that seems unlikely.
-
-Of course, rST is full of similar syntactic traps anyway.  To quote
-Paolo, "I find it to be the Perl of ASCII-based markups."
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
