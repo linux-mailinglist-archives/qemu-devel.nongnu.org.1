@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C72BA85B47C
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:07:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 401DD85B481
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:07:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcL9J-0002k8-He; Tue, 20 Feb 2024 03:06:45 -0500
+	id 1rcL9L-0002kw-6Z; Tue, 20 Feb 2024 03:06:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rcL9G-0002jV-VV
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:06:42 -0500
+ id 1rcL9J-0002kF-7K
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:06:45 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rcL9F-0000QG-9U
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:06:42 -0500
+ id 1rcL9H-0000QZ-Rp
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:06:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708416400;
+ s=mimecast20190719; t=1708416403;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MCJF7iMGMoLJv/RXZyxeTLRASb/UgT/sAKL+7AcIFUs=;
- b=AneRW4C9zh5JGFXvE25AStcBA8sXb3KBgPWfToNZrVmWr6J4qqDzAg3GvN1mq1DTRWdBU7
- CAcvl4bZmQEVfBis+00tt3I1/+wL30opEXMWwDlxITCqD4OWXERnqdfywTrtmp32gB4cTw
- Sxc1Cqv2ohSvPwdhWudrvs3Q/v6qwzM=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ilU+ngAoaU7FTHYc2Q8TyToaavovBkXrTxoRpdQ4t94=;
+ b=fpEe/fZ0bobRfv01jMGB7+gh+leYCcwEjCrFSLHgv7K20+Mdgtd1ABnkAZmIOqtM+1Ssip
+ Aihy72IYEtm78Yh6VDvjenQQzKdMuhTrzIblzPSyAfxI0geKySFW3YWhGtlVVMmAQzq3ku
+ g/gZC5uQ7M/d/+hYOAqDuk3qIhjjV0k=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-227-7AZopYIcNmy_Vuj2lVseSw-1; Tue, 20 Feb 2024 03:06:39 -0500
-X-MC-Unique: 7AZopYIcNmy_Vuj2lVseSw-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-5640681bc11so1963949a12.2
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:06:38 -0800 (PST)
+ us-mta-371-D-jMGE9YPWmSvkHniJZobQ-1; Tue, 20 Feb 2024 03:06:41 -0500
+X-MC-Unique: D-jMGE9YPWmSvkHniJZobQ-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a3ee69976dfso28242166b.3
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:06:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708416397; x=1709021197;
+ d=1e100.net; s=20230601; t=1708416399; x=1709021199;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MCJF7iMGMoLJv/RXZyxeTLRASb/UgT/sAKL+7AcIFUs=;
- b=JVdZwmrLmKV4Gwslyc1/xhfILiBLL8K6AKy5kpPgdfTG7nCrTcfI6K85Vuvrp82nfj
- guhnFNr8LGSXu9jQoKWtPhFuY3QMWMv2dTEyYquGtvZzaCI6DD/tTaHiJZAGHX8/2sFk
- Zw1N+mLFCabKQuyPlnLmDZ1ct92Yxz+plw/7Kox3ZV+iAW/FinU/NI1P/STs5nzi26hj
- jKngRyNdUlR3kM/vyMO9puJo5BfqDqDykoYGKDqKLi/QKtEsPvY+tLcMbEidaSfFj3A2
- NBKbdBQeHLI0np0CjqCR7yuXbX0iyfP5Ob8cwwByblgU2lK5aesj3ihAbFruBarWLY85
- 5A+g==
-X-Gm-Message-State: AOJu0YwairWROpzm0uM6MmrzsPSda3nZ0i1uD3kBCWVDKxeTn0HFKmPK
- i0zbDAQOPYT+eDGCqSizNUyYpJv5/9vn6nR9YS9hijh4lAIJ+uzi9Zu5c1YffNpSLQqXvVSCPGl
- iu1u2ui4pKFAghsZdW9PDTu+DoLt/h/tr8vlxJUcAA35AiTwiC7hPyKgTT7I3Acv8deEBHHFW+A
- pN13FpckjjZL2vMGgW7S+ICDtC2FuU+bggfIHE
-X-Received: by 2002:aa7:ca52:0:b0:563:ea79:fccd with SMTP id
- j18-20020aa7ca52000000b00563ea79fccdmr8044867edt.11.1708416397181; 
- Tue, 20 Feb 2024 00:06:37 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFaQTb6glt3K+r9vYFLfurLWMB1Aw7fpFhS4FXlRLIZAiBZMMtaQ9Gv2Tfv2xUss11SIJ9HfQ==
-X-Received: by 2002:aa7:ca52:0:b0:563:ea79:fccd with SMTP id
- j18-20020aa7ca52000000b00563ea79fccdmr8044853edt.11.1708416396844; 
- Tue, 20 Feb 2024 00:06:36 -0800 (PST)
+ bh=ilU+ngAoaU7FTHYc2Q8TyToaavovBkXrTxoRpdQ4t94=;
+ b=rIw5I1vOaykECEv/MElpzY66A40zYRAvnx3zPPjmXhOBf5igYLVvD2StjrFSQ48TEY
+ iY5pOCOzdhPeEvlsz4SO5ZwD8G6ZzljYpKBIcE7mOa384dMVeIYjBRvm9qtVglCbavdM
+ twvfMq4T2bpeubWT0KlgsskAqL5fwdT29Lc0jDo9PzbXaSU2s9/w60y80wqm/vAltm52
+ IWZPctK+lBUVsB3YslZZXRf8P8wTc5OcKIkO9ffBPtt6cDoU22v/SUi4hyIFHYe6pEpX
+ uJBZBfuOx5AIy65mPbNKRMGbzQ5nG3/Pea7YPiA5K89vGh4/rNKHuONJLrPhROLYurXj
+ pM9Q==
+X-Gm-Message-State: AOJu0YzbnS8DsIBNgH618EOLGD0Z+6cdLbb7WHO27eGuUQ1NgI0d+D8O
+ TeZLjXiIefRq/vl4TrrbOe3ifN6qEAMx8e1yP0bIUT3N6rxOiZcUWVpyU73bpYUBi9MtgRnrOG4
+ 5jp+snaOqsS4ys/ZWOI2C+TW9PLiLV8gN+kwt088H5PifOOEDSvncIHeRvU5ggOjtImaKvVsso2
+ 29C4pF4YUCrVqFRO1D9Sr2zFbDZkKvyNZonnx4
+X-Received: by 2002:a17:906:b094:b0:a3d:1cbd:67f7 with SMTP id
+ x20-20020a170906b09400b00a3d1cbd67f7mr9428994ejy.0.1708416399663; 
+ Tue, 20 Feb 2024 00:06:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFcFia9P/w6iK9JN1YCStU2Plsx3QV42DboLuQrksPUPBLbVheRS7EIp8hXx3Vwy90HFLKAOw==
+X-Received: by 2002:a17:906:b094:b0:a3d:1cbd:67f7 with SMTP id
+ x20-20020a170906b09400b00a3d1cbd67f7mr9428972ejy.0.1708416399359; 
+ Tue, 20 Feb 2024 00:06:39 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
  by smtp.gmail.com with ESMTPSA id
- p27-20020a056402501b00b00562d908daf4sm3501996eda.84.2024.02.20.00.06.34
+ rf23-20020a1709076a1700b00a3da5bf6aa5sm3707176ejc.211.2024.02.20.00.06.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Feb 2024 00:06:36 -0800 (PST)
+ Tue, 20 Feb 2024 00:06:38 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 05/17] physmem: replace function name with __func__ in
- ram_block_discard_range()
-Date: Tue, 20 Feb 2024 09:05:46 +0100
-Message-ID: <20240220080558.365903-6-pbonzini@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
+	qemu-stable@nongnu.org
+Subject: [PULL 06/17] i386/cpuid: Decrease cpuid_i when skipping CPUID leaf 1F
+Date: Tue, 20 Feb 2024 09:05:47 +0100
+Message-ID: <20240220080558.365903-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240220080558.365903-1-pbonzini@redhat.com>
 References: <20240220080558.365903-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
@@ -105,118 +103,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Use __func__ to avoid hard-coded function name.
+Existing code misses a decrement of cpuid_i when skip leaf 0x1F.
+There's a blank CPUID entry(with leaf, subleaf as 0, and all fields
+stuffed 0s) left in the CPUID array.
+
+It conflicts with correct CPUID leaf 0.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240125023328.2520888-1-xiaoyao.li@intel.com>
+Reviewed-by:Yang Weijiang <weijiang.yang@intel.com>
+Message-ID: <20240125024016.2521244-2-xiaoyao.li@intel.com>
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- system/physmem.c | 38 +++++++++++++++++---------------------
- 1 file changed, 17 insertions(+), 21 deletions(-)
+ target/i386/kvm/kvm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/system/physmem.c b/system/physmem.c
-index 5e66d9ae361..5e054650b88 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -3495,16 +3495,15 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-     uint8_t *host_startaddr = rb->host + start;
- 
-     if (!QEMU_PTR_IS_ALIGNED(host_startaddr, rb->page_size)) {
--        error_report("ram_block_discard_range: Unaligned start address: %p",
--                     host_startaddr);
-+        error_report("%s: Unaligned start address: %p",
-+                     __func__, host_startaddr);
-         goto err;
-     }
- 
-     if ((start + length) <= rb->max_length) {
-         bool need_madvise, need_fallocate;
-         if (!QEMU_IS_ALIGNED(length, rb->page_size)) {
--            error_report("ram_block_discard_range: Unaligned length: %zx",
--                         length);
-+            error_report("%s: Unaligned length: %zx", __func__, length);
-             goto err;
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 76a66246eb7..dff9dedbd76 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -1914,6 +1914,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
          }
- 
-@@ -3528,8 +3527,8 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-              * proper error message.
-              */
-             if (rb->flags & RAM_READONLY_FD) {
--                error_report("ram_block_discard_range: Discarding RAM"
--                             " with readonly files is not supported");
-+                error_report("%s: Discarding RAM with readonly files is not"
-+                             " supported", __func__);
-                 goto err;
- 
+         case 0x1f:
+             if (env->nr_dies < 2) {
++                cpuid_i--;
+                 break;
              }
-@@ -3544,27 +3543,26 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-              * file.
-              */
-             if (!qemu_ram_is_shared(rb)) {
--                warn_report_once("ram_block_discard_range: Discarding RAM"
-+                warn_report_once("%s: Discarding RAM"
-                                  " in private file mappings is possibly"
-                                  " dangerous, because it will modify the"
-                                  " underlying file and will affect other"
--                                 " users of the file");
-+                                 " users of the file", __func__);
-             }
- 
-             ret = fallocate(rb->fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
-                             start, length);
-             if (ret) {
-                 ret = -errno;
--                error_report("ram_block_discard_range: Failed to fallocate "
--                             "%s:%" PRIx64 " +%zx (%d)",
--                             rb->idstr, start, length, ret);
-+                error_report("%s: Failed to fallocate %s:%" PRIx64 " +%zx (%d)",
-+                             __func__, rb->idstr, start, length, ret);
-                 goto err;
-             }
- #else
-             ret = -ENOSYS;
--            error_report("ram_block_discard_range: fallocate not available/file"
-+            error_report("%s: fallocate not available/file"
-                          "%s:%" PRIx64 " +%zx (%d)",
--                         rb->idstr, start, length, ret);
-+                         __func__, rb->idstr, start, length, ret);
-             goto err;
- #endif
-         }
-@@ -3582,25 +3580,23 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-             }
-             if (ret) {
-                 ret = -errno;
--                error_report("ram_block_discard_range: Failed to discard range "
-+                error_report("%s: Failed to discard range "
-                              "%s:%" PRIx64 " +%zx (%d)",
--                             rb->idstr, start, length, ret);
-+                             __func__, rb->idstr, start, length, ret);
-                 goto err;
-             }
- #else
-             ret = -ENOSYS;
--            error_report("ram_block_discard_range: MADVISE not available"
--                         "%s:%" PRIx64 " +%zx (%d)",
--                         rb->idstr, start, length, ret);
-+            error_report("%s: MADVISE not available %s:%" PRIx64 " +%zx (%d)",
-+                         __func__, rb->idstr, start, length, ret);
-             goto err;
- #endif
-         }
-         trace_ram_block_discard_range(rb->idstr, host_startaddr, length,
-                                       need_madvise, need_fallocate, ret);
-     } else {
--        error_report("ram_block_discard_range: Overrun block '%s' (%" PRIu64
--                     "/%zx/" RAM_ADDR_FMT")",
--                     rb->idstr, start, length, rb->max_length);
-+        error_report("%s: Overrun block '%s' (%" PRIu64 "/%zx/" RAM_ADDR_FMT")",
-+                     __func__, rb->idstr, start, length, rb->max_length);
-     }
- 
- err:
+             /* fallthrough */
 -- 
 2.43.0
 
