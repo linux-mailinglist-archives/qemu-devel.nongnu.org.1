@@ -2,74 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D4185BFC7
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 16:23:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AED7985BFCD
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 16:25:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcRy0-0002GO-Ej; Tue, 20 Feb 2024 10:23:32 -0500
+	id 1rcRzL-0003P5-2D; Tue, 20 Feb 2024 10:24:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rcRxx-0002BB-Lj
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 10:23:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>)
+ id 1rcRz3-0003M7-3v; Tue, 20 Feb 2024 10:24:38 -0500
+Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rcRxw-0006m6-5n
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 10:23:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708442606;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=OC4LF1LVNzM2JvSRu4FAY4ECZLDxMMeO6ZMwK8GGnzY=;
- b=WlfP+nALUdbMiJVsKuHuMNiBY//wRw1yQiWqAyTRGzj0jou85M98MrtOhlA9TGMH/k4Yo7
- vbYWZ9HvSaq6zs1lmgwio4O8tRpoBfG5bumJMT9BWoyOrQc1f8LD1SpyEaIePwAkSfQHhe
- tynFKJ5qyS5b9NOu4IcOh4W4l//ITbc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-614-R9wczaM1OiipB2tMPEGuUA-1; Tue, 20 Feb 2024 10:23:23 -0500
-X-MC-Unique: R9wczaM1OiipB2tMPEGuUA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2707E185A784;
- Tue, 20 Feb 2024 15:23:23 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.50])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 4D8DE1121306;
- Tue, 20 Feb 2024 15:23:22 +0000 (UTC)
-Date: Tue, 20 Feb 2024 15:23:20 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, michael.roth@amd.com, jsnow@redhat.com,
- eblake@redhat.com, peter.maydell@linaro.org
-Subject: Re: [PATCH 13/16] qapi: Merge adjacent untagged sections
-Message-ID: <ZdTD6NeESM8QPR_Z@redhat.com>
-References: <20240216145841.2099240-1-armbru@redhat.com>
- <20240216145841.2099240-14-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>)
+ id 1rcRyw-0006qO-Ld; Tue, 20 Feb 2024 10:24:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=i6RY4gecdwbq1NUEYqmf3Ya4Lo6zn+ooot4wMwaeJKg=; b=RVlsvL7IcUXjsXoq69wBAessRd
+ HpHv+eAa/rHcR5jMn1AD8tJNtN7xRjb0+KyQFLM4EPFGebeZEjwRE6whKreiKf/6b3lp4dWDpNWOD
+ +tpmSaA0I/pCooM9q4DukA896H0fqBnFXUqnQFLSfAlzSrjg2OLQzeHiJQyBa0kpeMNI=;
+Date: Tue, 20 Feb 2024 16:24:44 +0100
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
+ qemu-trivial@nongnu.org, qemu-devel@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>, Alessandro Di Federico <ale@rev.ng>
+Subject: Re: [PATCH v1 18/21] hexagon: correct typos
+Message-ID: <gz2izpqkk5fesny6rtnsqka65uhgicafs4kc5zwdkmjobgselr@rdln67afg2pr>
+References: <cover.1708419115.git.manos.pitsidianakis@linaro.org>
+ <10db19d340ac3f275900f315661904d1aa004949.1708419115.git.manos.pitsidianakis@linaro.org>
+ <529a81a2-792f-4739-965e-6eecffa919b6@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240216145841.2099240-14-armbru@redhat.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+In-Reply-To: <529a81a2-792f-4739-965e-6eecffa919b6@linaro.org>
+Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,29 +59,25 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 16, 2024 at 03:58:37PM +0100, Markus Armbruster wrote:
-> The parser mostly doesn't create adjacent untagged sections, and
-> merging the ones it does create is hardly worth the bother.  I'm doing
-> it to avoid behavioral change in the next commit.
+On 20/02/24, Philippe Mathieu-Daudé wrote:
+> On 20/2/24 09:52, Manos Pitsidianakis wrote:
+> > Correct typos automatically found with the `typos` tool
+> > <https://crates.io/crates/typos>
+> > 
+> > Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> > ---
+> >   target/hexagon/idef-parser/macros.inc | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->  scripts/qapi/parser.py                   | 3 +++
->  tests/qapi-schema/doc-empty-features.out | 2 --
->  2 files changed, 3 insertions(+), 2 deletions(-)
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+> 
+Ah nice, havent seen the typos tool before!
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+Reviewed-by: Anton Johansson <anjo@rev.ng>
 
