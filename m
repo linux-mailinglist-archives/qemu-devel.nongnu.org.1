@@ -2,70 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 861E885B54E
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:34:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D71385B565
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:37:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcLYa-0000mG-Ca; Tue, 20 Feb 2024 03:32:52 -0500
+	id 1rcLcA-0002x6-7C; Tue, 20 Feb 2024 03:36:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rcLYI-0000lr-SO
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:32:35 -0500
-Received: from mgamail.intel.com ([192.198.163.8])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1rcLc6-0002wD-TT; Tue, 20 Feb 2024 03:36:30 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rcLYF-0004VJ-8c
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:32:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708417951; x=1739953951;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=4i3wXuUUCZl45VDOs9eLSI3djwSURdciX6oeG3Vvx9M=;
- b=KvY+QxNkcFgkzh7xF9HUarvhEl/zYmS1GWU8YPHkRlzEvNPL2AfF6w9Z
- IdY8dV5xsqbwCcY+4RacDNYoOUutSYYIxpRS6zfJ5jEoZBL6kk5UhV8s1
- 4ujAvCWb6dbXEdt5d+rg21IGH9kX9BBzBoOrNg2rfZZipn3XUB0fy5VaC
- SfjAGLGu3dVskrPWSmgEAqa3yGYWgKe/oacL8gGNPf3d2vn4Nw+wDhu/2
- 0Tcz1cHJsparF0hvCGoPzv3iIQNpSQq1CBFD54E56Ps5SZUNB+blXr3Zs
- qwcENQ2729z40rCo9kzXrpSMGSTd+GeC3aZcB4RSDBzaNmUSS5N5yOcrf Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="20040934"
-X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; d="scan'208";a="20040934"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2024 00:32:10 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
-   d="scan'208";a="4679611"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.12.199])
- ([10.93.12.199])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2024 00:32:08 -0800
-Message-ID: <b041fdb3-5b08-4a85-913a-ebb3c7dfbe1d@intel.com>
-Date: Tue, 20 Feb 2024 16:32:03 +0800
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1rcLc3-0004zX-9b; Tue, 20 Feb 2024 03:36:30 -0500
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41K8Z9HX018055; Tue, 20 Feb 2024 08:36:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=t2jLY1FONlHzmVHk6RZD2J6VOtbfJqqkgGj+pTAzSZY=;
+ b=FLk1Rpna+LOjJj+YP2VjhukXHl+TZhXFybLTS/tktAfxdiPpSzlEW60L2PS1mYwHZONL
+ z+PjuJkpcCcZg6q8IOT/rCQOUTzRlaNLtBcYApIHrWKAhYFIja33usc6y/Fi4V7HOJG2
+ DoKzpvyo59f4a+XDXfoNDUfz598Vuz8s0DEk8UG/0VJOF7YXVc2o3fCM8iAQn88KO2zK
+ MMTC2+dOOg+2ZncoU3P7rETCZWYP+nTPJJyntiktLprZ9VgDyiDCX6A+4rTdbVni+BWy
+ 2t0jGbmChXfBxHua3s1tCFmeaTPUhu3OUP5YmXCps+wi5+tx9oJ5DrANO/fMkpyiTzqi Fw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wcrk9r8yt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 20 Feb 2024 08:36:20 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41K8TGkO025049;
+ Tue, 20 Feb 2024 08:36:20 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wcrk9r8ya-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 20 Feb 2024 08:36:20 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41K7PYaV014339; Tue, 20 Feb 2024 08:36:19 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wb9u2edyv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 20 Feb 2024 08:36:19 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 41K8aDN722086220
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 20 Feb 2024 08:36:15 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 89E0720043;
+ Tue, 20 Feb 2024 08:36:13 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E121320040;
+ Tue, 20 Feb 2024 08:36:11 +0000 (GMT)
+Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.in.ibm.com (unknown
+ [9.109.243.35]) by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 20 Feb 2024 08:36:11 +0000 (GMT)
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+To: npiggin@gmail.com, qemu-ppc@nongnu.org
+Cc: clegoate@redhat.com, mikey@neuling.org, amachhiw@linux.vnet.ibm.com,
+ vaibhav@linux.ibm.com, sbhat@linux.ibm.com, danielhb413@gmail.com,
+ qemu-devel@nongnu.org
+Subject: [PATCH v4 00/15] Nested PAPR API (KVM on PowerVM)
+Date: Tue, 20 Feb 2024 14:05:54 +0530
+Message-Id: <20240220083609.748325-1-harshpb@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: cwoO1KVuKc2xLTImEfl2exbsG2nPdlpz
+X-Proofpoint-ORIG-GUID: 006mLDkFbTFZlNPeWU1fPYa7m8viMbIN
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] target/i386/kvm: Refine VMX controls setting for
- backward compatibility
-To: EwanHai <ewanhai-oc@zhaoxin.com>, pbonzini@redhat.com,
- mtosatti@redhat.com, kvm@vger.kernel.org, zhao1.liu@intel.com
-Cc: qemu-devel@nongnu.org, cobechen@zhaoxin.com, ewanhai@zhaoxin.com
-References: <20231127034326.257596-1-ewanhai-oc@zhaoxin.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20231127034326.257596-1-ewanhai-oc@zhaoxin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=192.198.163.8; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -1
-X-Spam_score: -0.2
-X-Spam_bar: /
-X-Spam_report: (-0.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.072,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-20_06,2024-02-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 malwarescore=0
+ clxscore=1011 impostorscore=0 phishscore=0 spamscore=0 mlxlogscore=950
+ mlxscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402200060
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,83 +110,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/27/2023 11:43 AM, EwanHai wrote:
-> Commit 4a910e1 ("target/i386: do not set unsupported VMX secondary
-> execution controls") implemented a workaround for hosts that have
-> specific CPUID features but do not support the corresponding VMX
-> controls, e.g., hosts support RDSEED but do not support RDSEED-Exiting.
-> 
-> In detail, commit 4a910e1 introduced a flag `has_msr_vmx_procbased_clts2`.
-> If KVM has `MSR_IA32_VMX_PROCBASED_CTLS2` in its msr list, QEMU would
-> use KVM's settings, avoiding any modifications to this MSR.
-> 
-> However, this commit (4a910e1) didn't account for cases in older Linux
-> kernels(<5.3) where `MSR_IA32_VMX_PROCBASED_CTLS2` is in
-> `kvm_feature_msrs`-obtained by ioctl(KVM_GET_MSR_FEATURE_INDEX_LIST),
-> but not in `kvm_msr_list`-obtained by ioctl(KVM_GET_MSR_INDEX_LIST).
-> As a result,it did not set the `has_msr_vmx_procbased_clts2` flag based
-> on `kvm_msr_list` alone, even though KVM maintains the value of this MSR.
-> 
-> This patch supplements the above logic, ensuring that
-> `has_msr_vmx_procbased_clts2` is correctly set by checking both MSR
-> lists, thus maintaining compatibility with older kernels.
-> 
-> Signed-off-by: EwanHai <ewanhai-oc@zhaoxin.com>
-> ---
-> In response to the suggestions from ZhaoLiu(zhao1.liu@intel.com),
-> the following changes have been implemented in v2:
-> - Adjusted some punctuation in the commit message as per the
->    suggestions.
-> - Added comments to the newly added code to indicate that it is a
->    compatibility fix.
-> 
-> v1 link:
-> https://lore.kernel.org/all/20230925071453.14908-1-ewanhai-oc@zhaoxin.com/
-> ---
->   target/i386/kvm/kvm.c | 14 ++++++++++++++
->   1 file changed, 14 insertions(+)
-> 
-> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-> index 11b8177eff..c8f6c0b531 100644
-> --- a/target/i386/kvm/kvm.c
-> +++ b/target/i386/kvm/kvm.c
-> @@ -2296,6 +2296,7 @@ void kvm_arch_do_init_vcpu(X86CPU *cpu)
->   static int kvm_get_supported_feature_msrs(KVMState *s)
->   {
->       int ret = 0;
-> +    int i;
->   
->       if (kvm_feature_msrs != NULL) {
->           return 0;
-> @@ -2330,6 +2331,19 @@ static int kvm_get_supported_feature_msrs(KVMState *s)
->           return ret;
->       }
->   
-> +    /*
-> +     * Compatibility fix:
-> +     * Older Linux kernels(<5.3) include the MSR_IA32_VMX_PROCBASED_CTLS2
+There is an existing Nested-HV API to enable nested guests on powernv
+machines. However, that is not supported on pseries/PowerVM LPARs.
+This patch series implements required hcall interfaces to enable nested
+guests with KVM on PowerVM.
+Unlike Nested-HV, with this API, entire L2 state is retained by L0
+during guest entry/exit and uses pre-defined Guest State Buffer (GSB)
+format to communicate guest state between L1 and L2 via L0.
 
-we can be more accurate, that kernel version 4.17 to 5.2, reports 
-MSR_IA32_VMX_PROCBASED_CTLS2 in KVM_GET_MSR_FEATURE_INDEX_LIST but not 
-KVM_GET_MSR_INDEX_LIST.
+L0 here refers to the phyp/PowerVM, or launching a Qemu TCG L0 with the
+newly introduced option cap-nested-papr=true.
+L1 refers to the LPAR host on PowerVM or Linux booted on Qemu TCG with
+above mentioned option cap-nested-papr=true.
+L2 refers to nested guest running on top of L1 using KVM.
+No SW changes needed for Qemu running in L1 Linux as well as L2 Kernel.
 
-> +     * only in feature msr list, but not in regular msr list. This lead to
-> +     * an issue in older kernel versions where QEMU, through the regular
-> +     * MSR list check, assumes the kernel doesn't maintain this msr,
-> +     * resulting in incorrect settings by QEMU for this msr.
-> +     */
-> +    for (i = 0; i < kvm_feature_msrs->nmsrs; i++) {
-> +        if (kvm_feature_msrs->indices[i] == MSR_IA32_VMX_PROCBASED_CTLS2) {
-> +            has_msr_vmx_procbased_ctls2 = true;
-> +        }
-> +    }
+Linux Kernel side support is already merged upstream:
+---
+commit 19d31c5f115754c369c0995df47479c384757f82
+Author: Jordan Niethe <jniethe5@gmail.com>
+Date:   Thu Sep 14 13:05:59 2023 +1000
 
-I'm wondering should we move all the initialization of has_msr_*, that 
-associated with feature MSRs, to here. e.g., has_msr_arch_capabs, 
-has_msr_vmx_vmfunc,...
+    KVM: PPC: Add support for nestedv2 guests
+---
+For more details, documentation can be referred in either of patch
+series.
 
->       return 0;
->   }
->   
+There are scripts available to assist in setting up an environment for
+testing nested guests at https://github.com/iamjpn/kvm-powervm-test
+
+A tree with this series is available at:
+https://github.com/planetharsh/qemu/tree/upstream-0219-v4
+
+Thanks to Michael Neuling, Shivaprasad Bhat, Amit Machhiwal, Kautuk
+Consul, Vaibhav Jain and Jordan Niethe.
+
+Changelog:
+v4: added hcall unreg helper to allow hcall re-registrations in caps apply.
+v3: https://lore.kernel.org/qemu-devel/20240118052438.1475437-1-harshpb@linux.ibm.com/
+v2: https://lore.kernel.org/qemu-devel/20231012104951.194876-1-harshpb@linux.ibm.com/
+v1: https://lore.kernel.org/qemu-devel/20230906043333.448244-1-harshpb@linux.ibm.com/
+
+Amit Machhiwal (1):
+  spapr: nested: Set the PCR when logical PVR is set
+
+Harsh Prateek Bora (14):
+  spapr: nested: register nested-hv api hcalls only for cap-nested-hv
+  spapr: nested: move nested part of spapr_get_pate into spapr_nested.c
+  spapr: nested: Introduce SpaprMachineStateNested to store related
+    info.
+  spapr: nested: keep nested-hv related code restricted to its API.
+  spapr: nested: Document Nested PAPR API
+  spapr: nested: Introduce H_GUEST_[GET|SET]_CAPABILITIES hcalls.
+  spapr: nested: Introduce H_GUEST_[CREATE|DELETE] hcalls.
+  spapr: nested: Introduce H_GUEST_CREATE_VCPU hcall.
+  spapr: nested: Extend nested_ppc_state for nested PAPR API
+  spapr: nested: Initialize the GSB elements lookup table.
+  spapr: nested: Introduce H_GUEST_[GET|SET]_STATE hcalls.
+  spapr: nested: Use correct source for parttbl info for nested PAPR
+    API.
+  spapr: nested: Introduce H_GUEST_RUN_VCPU hcall.
+  spapr: nested: Introduce cap-nested-papr for Nested PAPR API
+
+ docs/devel/nested-papr.txt    |  514 +++++++++++
+ include/hw/ppc/spapr.h        |   26 +-
+ include/hw/ppc/spapr_nested.h |  430 ++++++++-
+ target/ppc/cpu.h              |    4 +
+ hw/ppc/ppc.c                  |   10 +
+ hw/ppc/spapr.c                |   35 +-
+ hw/ppc/spapr_caps.c           |   59 ++
+ hw/ppc/spapr_hcall.c          |   24 +-
+ hw/ppc/spapr_nested.c         | 1552 ++++++++++++++++++++++++++++++++-
+ 9 files changed, 2599 insertions(+), 55 deletions(-)
+ create mode 100644 docs/devel/nested-papr.txt
+
+-- 
+2.39.3
 
 
