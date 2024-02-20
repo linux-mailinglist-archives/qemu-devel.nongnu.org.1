@@ -2,82 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D602085B63A
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:57:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F01A985B615
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:55:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcLsd-0000a9-V7; Tue, 20 Feb 2024 03:53:35 -0500
+	id 1rcLse-0000bC-R7; Tue, 20 Feb 2024 03:53:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rcLsZ-0000Qr-SS
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:31 -0500
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ id 1rcLsb-0000VR-Kc
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:33 -0500
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rcLsW-0008EQ-Nc
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:31 -0500
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a3e87b2de41so179889566b.2
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:53:26 -0800 (PST)
+ id 1rcLsX-0008F8-9d
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:33 -0500
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-a3cc2f9621aso548708166b.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:53:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708419205; x=1709024005; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708419207; x=1709024007; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7oYRntaNNMgPCCT0SX7UleETmeevTDso1L5CoXCo2/4=;
- b=YdmdMeXFVFsik+IorgnDv1Rfftp5D1jHNwHI+T0DElK5He75N+DihWNTfVvMyNHaP7
- k+5oj/64mIS4Kd+Ym6q7qbvC4qV6SwZQoYf6sGQrT7qsArJ6YnH5JvvfFqhvzPCvvWic
- F7573fOQG6Q8PhYnvvgtg2jafdaxPZm94rRt5dOP5++oqBZ4kTwAOHylrPLuEX1NLI5a
- gz13NLl4Q6393iBC/jeY2fyBvuW0ZajLjaVJRDOFkbykkVvQkZ17YeSmhRlsjjkmmfkf
- F1lvVO7ivSoOErTxMQFynxQ8g9ScnaqL3dMC0lyl5wAbrrztA5HQh+U/QAtlRgU+HpQT
- iAEA==
+ bh=iVGSDDuh83CPH0ZtXdDBtmjkmYoWaBhCuelQOBGBJXM=;
+ b=r4brvH6HJ/GfZN3mMe2U2ZhGV8FSuZPNeHNWOqVQLi873SInP4UmJ3gqWRKK/iv3NC
+ oubYY67Pmd9kPcaOYUbVJMW8xbEHTmn5Id/OUISQWWD3YLr/oe22ryWA7ReJMn2ItLIR
+ HCR3piTowuMkSqTz1yD4pi3RiD2KXMF6Vm52/ROUSNrSvhNvSCRUa/Y6pM7HpYx+Pwtz
+ hhAjzqBdhecIm5agHgpIWBi5+fixR4uEmcCSKQjVVZM71mg2YqRy2ai/5gWRc3CTXf4X
+ hUaInymicWdSQ9XJCpyw3xuWRFJCrFz5wBIxqWrw2idDGiZlUKiGVhIlwrn8M60ZLtkm
+ qkVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708419205; x=1709024005;
+ d=1e100.net; s=20230601; t=1708419207; x=1709024007;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7oYRntaNNMgPCCT0SX7UleETmeevTDso1L5CoXCo2/4=;
- b=E1PMkvCeOhIRpRIj9q44P5ZVjIYGnFJLqtHGA1MBJ35mUHGd+58LmEI8k8nDmhSTaJ
- ZicJSgOk5EgalEVkgSir6fwPeHX8sDI3KUEH+bZ8ph61sMcXK/JPgppuKUzvHAP9kHLB
- GHBfWtqick/+wSwWIcGQuPgqei3wrygIEE9rFhem14FfPWDJFF8hbRTQWF/Kw9blwAun
- eTQpFK4DA3KTh200yCPXvY40CE335BHJuG5BAj+D84ClZeAtLNwcO/M1xPvHET+1FJD5
- K8FqgwW06rxmbbS2YANzQKpQd+bgSEJttr0FqUqtHA7j1P0OUUYigV4NZO/nbZWgt7Ns
- lK6g==
-X-Gm-Message-State: AOJu0Yzda4y5e+Kw5B8pi2QbEHnHRzE39dj6GDQwOCYUXIaeQgHE+309
- 28rskJElgzx94z/fcjiK2bmd+d6XOewR2uPRDQTQwGXoYnthnTL95w2bjLRnCxU=
-X-Google-Smtp-Source: AGHT+IF8Ry0+Beac6Sx8cCpRJ1SkbxslngVsRNPeqT9w56ggTuQWHIkBuMu0GrqaICsOmH09ZkIb5w==
-X-Received: by 2002:a17:906:ae55:b0:a3e:ff4d:6302 with SMTP id
- lf21-20020a170906ae5500b00a3eff4d6302mr834173ejb.9.1708419205351; 
- Tue, 20 Feb 2024 00:53:25 -0800 (PST)
+ bh=iVGSDDuh83CPH0ZtXdDBtmjkmYoWaBhCuelQOBGBJXM=;
+ b=AFZo4kXxfg8SHN8bf8VxGAo2NvnJmmp5RvcHrgfPAkc4GGr6sw/XOwD30Wm4zvFUSV
+ 9dKej+rBlgh0U6qtyK0U63CCY+QCUBY0iFXJfh56+lSM4CG+0+H9kt7vdS4TF8jWV+Jw
+ RBapziRli60PSwvnKKpugC6JYJJb2jLw7M06YtbwviBc4zcMGNXf1ZLOj42JGNjus3IG
+ RCSRF27Eb2bBus+Ni6m+e7/LwUybr/Rn8j6QxNmcS/MOX3/QJvzMx/SgJXVSqYrm2lM3
+ j+OhsCC0gU4s6rqhwLAR2dTGgNnhvSrDCUDE4WqAVi7r7KViS1xpGBmGn+jPOQ4YRhIr
+ NY7A==
+X-Gm-Message-State: AOJu0YzEP04VrRBspVnSG7MVWfbBW9JjkhWRgISy9vbfKJEMVoY8RmAP
+ GJatVhUcZ8f56yhopOhEk86WOvoMCilyXrcAXAEVxZ9iUCpa0X8SvgLlU5hRrUpFpZdBohj6b0U
+ FC4Y=
+X-Google-Smtp-Source: AGHT+IHE6LTWqTn4TCP9TiKtgZGQ3JJ/Tt0dG5+iRdrHh49z7Am7MlQk6hJZ4pYios2ZDJ/NaMIrvw==
+X-Received: by 2002:a17:906:2785:b0:a3e:b523:6c8 with SMTP id
+ j5-20020a170906278500b00a3eb52306c8mr2124297ejc.67.1708419206913; 
+ Tue, 20 Feb 2024 00:53:26 -0800 (PST)
 Received: from localhost.localdomain (adsl-245.37.6.163.tellas.gr.
  [37.6.163.245]) by smtp.gmail.com with ESMTPSA id
- cu3-20020a170906ba8300b00a3d014fa12esm3747876ejd.196.2024.02.20.00.53.24
+ cu3-20020a170906ba8300b00a3d014fa12esm3747876ejd.196.2024.02.20.00.53.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Feb 2024 00:53:25 -0800 (PST)
+ Tue, 20 Feb 2024 00:53:26 -0800 (PST)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-trivial@nongnu.org
-Cc: qemu-devel@nongnu.org,
-	Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH v1 14/21] pc-bios/README: correct typos
-Date: Tue, 20 Feb 2024 10:52:21 +0200
-Message-Id: <300815e3494a5f016137a09f331bc4137f1ed9ff.1708419115.git.manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH v1 15/21] qapi/ui: correct typos
+Date: Tue, 20 Feb 2024 10:52:22 +0200
+Message-Id: <2b12236539211bfa887364cf7b621586addbb42e.1708419115.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1708419115.git.manos.pitsidianakis@linaro.org>
 References: <cover.1708419115.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x62c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,22 +101,31 @@ Correct typos automatically found with the `typos` tool
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- pc-bios/README | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ qapi/ui.json | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/pc-bios/README b/pc-bios/README
-index 4189bb28cc..b8a0210d24 100644
---- a/pc-bios/README
-+++ b/pc-bios/README
-@@ -67,7 +67,7 @@
-   and enable the use of well-known bootloaders such as U-Boot.
-   OpenSBI is distributed under the terms of the BSD 2-clause license
-   ("Simplified BSD License" or "FreeBSD License", SPDX: BSD-2-Clause). OpenSBI
--  source code also contains code reused from other projects desribed here:
-+  source code also contains code reused from other projects described here:
-   https://github.com/riscv/opensbi/blob/master/ThirdPartyNotices.md.
- 
- - npcm7xx_bootrom.bin is a simplified, free (Apache 2.0) boot ROM for Nuvoton
+diff --git a/qapi/ui.json b/qapi/ui.json
+index b6d7e142b7..1448eaca73 100644
+--- a/qapi/ui.json
++++ b/qapi/ui.json
+@@ -63,7 +63,7 @@
+ ##
+ # @SetPasswordOptionsVnc:
+ #
+-# Options for set_password specific to the VNC procotol.
++# Options for set_password specific to the VNC protocol.
+ #
+ # @display: The id of the display where the password should be
+ #     changed.  Defaults to the first.
+@@ -125,7 +125,7 @@
+ ##
+ # @ExpirePasswordOptionsVnc:
+ #
+-# Options for expire_password specific to the VNC procotol.
++# Options for expire_password specific to the VNC protocol.
+ #
+ # @display: The id of the display where the expiration should be
+ #     changed.  Defaults to the first.
 -- 
 γαῖα πυρί μιχθήτω
 
