@@ -2,72 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28E685B2F1
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 07:31:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5CCF85B21B
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 06:08:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcJf0-0004Lj-NB; Tue, 20 Feb 2024 01:31:22 -0500
+	id 1rcILN-0003Yf-Ec; Tue, 20 Feb 2024 00:07:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcJey-0004LW-Kf
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 01:31:20 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rcILK-0003YM-BP
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 00:06:59 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcJex-0001zd-9E
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 01:31:20 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rcILG-0005Ls-A6
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 00:06:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708410677;
+ s=mimecast20190719; t=1708405612;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:resent-to:
- resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references; 
- bh=P+PT/rgoYlq8/aIpySpstQu2/twqT94Q/QZI89qK8jk=;
- b=FZjJR8+/FVeXupfOT46tz5IN8HJ0r/AFDF3N0FoVHLVwUO3Ter3gRY46BUYZSkr5DNKv+n
- 5e6/1Q6AaFuxkJ7hDIYJEqZwrlrwHgwOqGPaYHeiEe8I9iEBv0cujCyr4zB05nM7/AIqHF
- BQOE3DfN1CcLbOhbTDTnXTP06tdPmDA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=M87Ia9CmtgFb0IUX089a21xxM8F56o6mFGRF1nzxB6Q=;
+ b=G96/im54aDTSyFKIx1J7hZT/X503kUmy3dGxT77Ib6bWI7N3FS8b6tz+74es2XH3NR5YVZ
+ ElRt0H4p4EgQAhFR24I0RtHnECoRLxWeHH4JQsOLoaCzJgc1uMeCbqjMWEq+6EY6a6DwKM
+ WeerMqq79KmVxCJSvHsrSowm8lX2xr0=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-335-EnhaFWb5OXqr68mJG6zofw-1; Tue, 20 Feb 2024 01:31:14 -0500
-X-MC-Unique: EnhaFWb5OXqr68mJG6zofw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 25FFA85A59C;
- Tue, 20 Feb 2024 06:31:14 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4E5901121306;
- Tue, 20 Feb 2024 06:31:01 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2257F21E66C8; Tue, 20 Feb 2024 07:31:13 +0100 (CET)
-Resent-To: yong.huang@smartx.com, qemu-devel@nongnu.org
-Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Tue, 20 Feb 2024 07:31:13 +0100
-Resent-Message-ID: <87sf1nejf2.fsf@pond.sub.org>
-From: Markus Armbruster <armbru@redhat.com>
-To: yong.huang@smartx.com
-Cc: qemu-devel@nongnu.org,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Eric
- Blake <eblake@redhat.com>,  Hanna Reitz <hreitz@redhat.com>,  Kevin Wolf
- <kwolf@redhat.com>
-Subject: Re: [PATCH v4 2/7] qapi: Make parameter 'file' optional for
- BlockdevCreateOptionsLUKS
-In-Reply-To: <af7253711254128efbc37b25fb5c47b851367ce7.1706586786.git.yong.huang@smartx.com>
- (yong huang's message of "Tue, 30 Jan 2024 13:37:20 +0800")
-References: <cover.1706586786.git.yong.huang@smartx.com>
- <af7253711254128efbc37b25fb5c47b851367ce7.1706586786.git.yong.huang@smartx.com>
-Date: Mon, 19 Feb 2024 15:22:14 +0100
-Message-ID: <87zfvwjzzd.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ us-mta-301-svTeHB7pNlqWhgoHhmOAHw-1; Tue, 20 Feb 2024 00:06:50 -0500
+X-MC-Unique: svTeHB7pNlqWhgoHhmOAHw-1
+Received: by mail-pf1-f200.google.com with SMTP id
+ d2e1a72fcca58-6db0e05548fso1374637b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 19 Feb 2024 21:06:50 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708405609; x=1709010409;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=M87Ia9CmtgFb0IUX089a21xxM8F56o6mFGRF1nzxB6Q=;
+ b=dy270/2hVSNYyy27pCQS6w1r9f8Fij5EiYxqhGpqK2sE4c+zKYwkayBLt2Y5TaI7oU
+ u+fex1ix+4UC52csDZtHE9c29B0uYYIOdVlSra7dr0njYq91i9sHNM0VNh00vNw0AzFD
+ HAXdaxhIQWqEHyWvtwLFfAFiZt7Asvh14NcgZbXDFwO5LkT3VCXyYiBAgajZZMNNqdUE
+ o73vPX9KzUTz6559A5ogKoDLPFgk0dh6WmaJY7iNu7qLk/W2t2Czk2yTjbzqAcxjGkWX
+ aemZv+/0HHdKnYu0xMCXnOPRofyQwfVFEVZc0QmjvJ6F+oKL8useTl3QVSmMiasdv4Rv
+ Xxug==
+X-Gm-Message-State: AOJu0YyUNgjF1wIDvwSU8qOouWjVApSZeSsGY/FRFq8aIu1MWv+bPzJo
+ aMCn3GsW3YZ2vErcxw901ksB7I1Kkk1AtZt6R19kH1HhYlOkmlpwguxxU23iuFCug1yuUQK8+hZ
+ O1oRZo20gvsGlZUc5lfdQhkE93OZ6EBRxOQ6jBEyLUSGhP/7L7EQ0
+X-Received: by 2002:a05:6a21:33a1:b0:1a0:b393:8d04 with SMTP id
+ yy33-20020a056a2133a100b001a0b3938d04mr1377855pzb.6.1708405609304; 
+ Mon, 19 Feb 2024 21:06:49 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH3mg6UdtO8hwCSgNzaBSVbO7OxkPWF82mz1FdVqJIvV+HlV+DX1wWYHg2TEY+x614EQGpNuw==
+X-Received: by 2002:a05:6a21:33a1:b0:1a0:b393:8d04 with SMTP id
+ yy33-20020a056a2133a100b001a0b3938d04mr1377832pzb.6.1708405608984; 
+ Mon, 19 Feb 2024 21:06:48 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ kn14-20020a170903078e00b001d8f82c61cdsm5234344plb.231.2024.02.19.21.06.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 19 Feb 2024 21:06:48 -0800 (PST)
+Date: Tue, 20 Feb 2024 13:06:37 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Mattias Nissler <mnissler@rivosinc.com>
+Cc: qemu-devel@nongnu.org, jag.raman@oracle.com, stefanha@redhat.com,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ john.levon@nutanix.com, David Hildenbrand <david@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>
+Subject: Re: [PATCH v7 0/5] Support message-based DMA in vfio-user server
+Message-ID: <ZdQzXQwYNOxMOgGp@x1n>
+References: <20240212080617.2559498-1-mnissler@rivosinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Lines: 47
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Disposition: inline
+In-Reply-To: <20240212080617.2559498-1-mnissler@rivosinc.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -91,52 +100,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-yong.huang@smartx.com writes:
+On Mon, Feb 12, 2024 at 12:06:12AM -0800, Mattias Nissler wrote:
+> Changes from v6:
+> 
+> * Rebase, resolve straightforward merge conflict in system/dma-helpers.c
 
-> From: Hyman Huang <yong.huang@smartx.com>
->
-> To support detached LUKS header creation, make the existing 'file'
-> field in BlockdevCreateOptionsLUKS optional.
->
-> Signed-off-by: Hyman Huang <yong.huang@smartx.com>
-> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+Hi, Mattias,
 
-[...]
+If the change is trivial, feel free to carry over my R-bs in the first two
+patches in the commit message.
 
-> diff --git a/qapi/block-core.json b/qapi/block-core.json
-> index ae604c6019..69a88d613d 100644
-> --- a/qapi/block-core.json
-> +++ b/qapi/block-core.json
-> @@ -4957,7 +4957,8 @@
->  #
->  # Driver specific image creation options for LUKS.
->  #
-> -# @file: Node to create the image format on
-> +# @file: Node to create the image format on, mandatory except when
-> +#        'preallocation' is not requested
+Thanks,
 
-You mean when @preallocation is "off"?
-
-Cases:
-
-1. @file is mandatory
-
-2. @file is optional and present
-
-3. @file is optional and absent
-
-Ignorant question: behavior in each case?
-
->  #
->  # @size: Size of the virtual disk in bytes
->  #
-> @@ -4968,7 +4969,7 @@
->  ##
->  { 'struct': 'BlockdevCreateOptionsLUKS',
->    'base': 'QCryptoBlockCreateOptionsLUKS',
-> -  'data': { 'file':             'BlockdevRef',
-> +  'data': { '*file':            'BlockdevRef',
->              'size':             'size',
->              '*preallocation':   'PreallocMode' } }
+-- 
+Peter Xu
 
 
