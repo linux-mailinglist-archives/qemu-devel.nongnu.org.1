@@ -2,72 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9068585CAF5
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 23:44:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDC7985CBCE
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 00:11:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcYpe-0006Qh-2D; Tue, 20 Feb 2024 17:43:22 -0500
+	id 1rcZFi-0003oK-Vs; Tue, 20 Feb 2024 18:10:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rcYpb-0006Jx-CS
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 17:43:19 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rcZFg-0003nK-JL
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 18:10:16 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rcYpZ-0006Vj-Dq
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 17:43:19 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-564372fb762so47339a12.0
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 14:43:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rcZFb-0002QZ-NR
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 18:10:16 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-5648d92919dso53880a12.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 15:10:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708468993; x=1709073793; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708470608; x=1709075408; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bTK+m10RJ63fhWgeGU2rnro1ZGMOe5siAMS1P2G0NKE=;
- b=SkM9fOQ4qlI/YA0mr04sWxAM16i7Ei8KxSui8heN32EsGvpbWOe1J0SR57f/xWvYCF
- nE5puF9UnwndbWPvtxwOC1LjtD3FbKJLxTmFn3ZC9HPoBu7XwzD3f4fsghnQbnBb77H7
- /fv7ozePqrk8rOvfh8GjM+pgB6b9CBtmFHEUal5J0LH7/Yt7W4fEHRVtjZbpjFUiDm+4
- 3Si5M+JR/y6MoywjTdOiOhcUNlu13Hx9N5iOvhKxu421qlxms1ZcnJdU8v1ViMiARPGj
- /NakN+QnReonC+fIaHbl/e8mqpoh0PWkqrfdSwBHvY8Culg9p3k2TIR/Mt8k38vgoBy7
- 2bdw==
+ bh=n8UcYpOUiQ0/DmlCXatWDpjMbWBRzbWwPcpErFxT4RI=;
+ b=c/Sjy2sPOhKRqwxsCLDRP5MTSwpH1eHigOqBYSiBiop0GfRdB/NVVjVwB2heuEM56g
+ g3GZu9njXUJDUqebosMIem2OY7xy4uJRq4CIJL15BVKqVy2ZYZKEMbpgRffoR1OHA4bn
+ grqIyXo+3eg2Gyyj+sfVTOUw8Pe/kGn3eFXyksJi8SKkl293iY1iR9xxYNBepbSmgUb0
+ a1VouafXK3cC6uI06tSKG4YI2gsuGlm0j3qTVKIssdKS47igRaucPG6eY6xRZV4fcGZU
+ Z7lH9HhJHO/8BMJNnc9ztvjPiiXLSozAJZVt0BVDJ3ykZ1bNcUyJDR2Bb/ttjhS0Rsm2
+ 6Tnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708468993; x=1709073793;
+ d=1e100.net; s=20230601; t=1708470608; x=1709075408;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bTK+m10RJ63fhWgeGU2rnro1ZGMOe5siAMS1P2G0NKE=;
- b=oaE8rq2opbZp1B9QM5h755GdKCYv9nt3WKLzbGfIdrQQtpumyFJ6Bx4qnXwwtcs5x0
- nsnJ0bvVWfjcqAAN5Q3P31qofrvMrIYhLzKARO/Ipn/GN0noMfkyxAbjt4xtmnuMma59
- nUy2W2GRpYKMFsH62XKDphVS2Bvr8KPzhBYd0+JTFBTcqnMtGgFG5bV7DOEgAUHxgps0
- xAJLSEpC9gNkKIX2YYjRfYWWXLT2amjC2e7Kv7PqXSBXCId7beaByROBEuF8bTBtFU4a
- n2XzqP22O7OzJ4dXNHHAaqtPgEOMko92DX7cadJjMj8+Vf9BbkZl368ZAxD9qWkuZ33w
- seqQ==
-X-Gm-Message-State: AOJu0Yw9kK2Wpxx/p+fqvQqc8AyXeU71oIwKwFCQRELpdVyNc5/MgZjR
- h8CtuNsxB+CdT9Zgu/wQx2wJobj1tQB16wjNmDvCH35u7e1359TVWsUtNxUV
-X-Google-Smtp-Source: AGHT+IHCu0o3Gu5t+4jUYyFv89oRzUTNBleaQBqnaElXJptEERFqVk4gnpNLl/Z3ADmcgu0BOyyiqQ==
-X-Received: by 2002:aa7:df14:0:b0:564:6b09:92f6 with SMTP id
- c20-20020aa7df14000000b005646b0992f6mr4455359edy.18.1708468993097; 
- Tue, 20 Feb 2024 14:43:13 -0800 (PST)
+ bh=n8UcYpOUiQ0/DmlCXatWDpjMbWBRzbWwPcpErFxT4RI=;
+ b=vD7V1DyQl3suk6RId0gaKMjj/goHrTeVDVaaQQaGjoV4LwDpDNNVXKqu/IPPt8kdOP
+ OmC5FLmGeBbMDVfwFi/+maANIlJd16ayqaaxgWDccMYDFS0zlR3IIXW1kGfHNsY9DcGC
+ oP/TBnH14DT6KxncuG1yiaK+2RKEl7EkGnxEzxLBAZnnxxYVUyREUO7M0h6ztENxXfqx
+ wyTwfBVpzo3g3/WoFNKx7heKje6Qt7bGqSCinRHxr8ZoZBwUB4ivdxaI8NDGKnaIMnk3
+ MVkPTs+TBnZ9GjRGHmsnMFRwBrLq90z5gtftqyyS13+aeb5vM6eowNEWstwjuiwACBOu
+ 6pXQ==
+X-Gm-Message-State: AOJu0Yzed895JXZO2jrk8FAqEXvGN7zId5DvkF1taOFrDBj7qb6FVVQt
+ cf7bqEnFEweqq/x20urghH3UfW3MonEZToJp3KkcJF1+Qi9AwDPpZ+w93Det
+X-Google-Smtp-Source: AGHT+IE87FLj1dpM0aoW6VhbMphTh2s62LIkE9SOqy1BpMe59EMVAeh0WFsNaHa1jQvixXQPRkvbDg==
+X-Received: by 2002:a05:6402:34f:b0:564:66d3:530f with SMTP id
+ r15-20020a056402034f00b0056466d3530fmr4898989edw.28.1708470608073; 
+ Tue, 20 Feb 2024 15:10:08 -0800 (PST)
 Received: from [127.0.0.1] (dynamic-089-014-092-079.89.14.pool.telefonica.de.
  [89.14.92.79]) by smtp.gmail.com with ESMTPSA id
- x17-20020aa7cd91000000b005649df0654asm1731216edv.21.2024.02.20.14.43.12
+ er25-20020a056402449900b00563f8233ba8sm4076733edb.7.2024.02.20.15.10.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Feb 2024 14:43:12 -0800 (PST)
-Date: Tue, 20 Feb 2024 22:43:10 +0000
+ Tue, 20 Feb 2024 15:10:07 -0800 (PST)
+Date: Tue, 20 Feb 2024 23:10:05 +0000
 From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
-CC: philmd@linaro.org
-Subject: Re: [PATCH] vl, pc: turn -no-fd-bootchk into a machine property
-In-Reply-To: <20240220155352.416710-1-pbonzini@redhat.com>
-References: <20240220155352.416710-1-pbonzini@redhat.com>
-Message-ID: <8FECF57F-7897-4AF8-9AC1-46A927C0FEC0@gmail.com>
+To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+CC: Paolo Bonzini <pbonzini@redhat.com>,
+ =?ISO-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_02/10=5D_hw/i386/pc=3A_Do_pc=5Fc?=
+ =?US-ASCII?Q?mos=5Finit=5Flate=28=29_from_pc=5Fmachine=5Fdone=28=29?=
+In-Reply-To: <20240220160622.114437-3-peter.maydell@linaro.org>
+References: <20240220160622.114437-1-peter.maydell@linaro.org>
+ <20240220160622.114437-3-peter.maydell@linaro.org>
+Message-ID: <5BB60433-8117-4AEA-ABDC-973B6305BC4C@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,181 +100,147 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-Am 20=2E Februar 2024 15:53:52 UTC schrieb Paolo Bonzini <pbonzini@redhat=
-=2Ecom>:
->Add a fd-bootchk property to PC machine types, so that -no-fd-bootchk
->returns an error if the machine does not support booting from floppies
->and checking for boot signatures therein=2E
+Am 20=2E Februar 2024 16:06:14 UTC schrieb Peter Maydell <peter=2Emaydell@=
+linaro=2Eorg>:
+>In the i386 PC machine, we want to run the pc_cmos_init_late()
+>function only once the IDE and floppy drive devices have been set up=2E
+>We currently do this using qemu_register_reset(), and then have the
+>function call qemu_unregister_reset() on itself, so it runs exactly
+>once=2E
 >
->Suggested-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
->Signed-off-by: Paolo Bonzini <pbonzini@redhat=2Ecom>
+>This was an expedient way to do it back in 2010 when we first added
+>this (in commit c0897e0cb94e8), but now we have a more obvious point
+>to do "machine initialization that has to happen after generic device
+>init": the machine-init-done hook=2E
+>
+>Do the pc_cmos_init_late() work from our existing PC machine init
+>done hook function, so we can drop the use of qemu_register_reset()
+>and qemu_unregister_reset()=2E
+>
+>Because the pointers to the devices we need (the IDE buses and the
+>RTC) are now all in the machine state, we don't need the
+>pc_cmos_init_late_arg struct and can just pass the PCMachineState
+>pointer=2E
+>
+>Signed-off-by: Peter Maydell <peter=2Emaydell@linaro=2Eorg>
 >---
-> include/hw/i386/pc=2Eh |  2 +-
-> hw/i386/pc=2Ec         | 30 +++++++++++++++++++++++++-----
-> system/globals=2Ec     |  1 -
-> system/vl=2Ec          |  2 +-
-> qemu-options=2Ehx      |  2 +-
-> 5 files changed, 28 insertions(+), 9 deletions(-)
+> hw/i386/pc=2Ec | 39 ++++++++++++++++-----------------------
+> 1 file changed, 16 insertions(+), 23 deletions(-)
 >
->diff --git a/include/hw/i386/pc=2Eh b/include/hw/i386/pc=2Eh
->index 02a0deedd3c=2E=2Ee5382a02e7a 100644
->--- a/include/hw/i386/pc=2Eh
->+++ b/include/hw/i386/pc=2Eh
->@@ -50,6 +50,7 @@ typedef struct PCMachineState {
->     bool hpet_enabled;
->     bool i8042_enabled;
->     bool default_bus_bypass_iommu;
->+    bool fd_bootchk;
->     uint64_t max_fw_size;
->=20
->     /* ACPI Memory hotplug IO base address */
->@@ -147,7 +148,6 @@ OBJECT_DECLARE_TYPE(PCMachineState, PCMachineClass, P=
-C_MACHINE)
-> GSIState *pc_gsi_create(qemu_irq **irqs, bool pci_enabled);
->=20
-> /* pc=2Ec */
->-extern int fd_bootchk;
->=20
-> void pc_acpi_smi_interrupt(void *opaque, int irq, int level);
->=20
 >diff --git a/hw/i386/pc=2Ec b/hw/i386/pc=2Ec
->index 28194014f82=2E=2E31f4bb25a3e 100644
+>index 8b0f54e284c=2E=2E4c3cfe9fc35 100644
 >--- a/hw/i386/pc=2Ec
 >+++ b/hw/i386/pc=2Ec
->@@ -399,8 +399,8 @@ static int boot_device2nibble(char boot_device)
->     return 0;
+>@@ -465,11 +465,6 @@ static void pc_cmos_init_floppy(MC146818RtcState *rt=
+c_state, ISADevice *floppy)
+>     mc146818rtc_set_cmos_data(rtc_state, REG_EQUIPMENT_BYTE, val);
 > }
 >=20
->-static void set_boot_dev(MC146818RtcState *s, const char *boot_device,
->-                         Error **errp)
->+static void set_boot_dev(PCMachineState *pcms, MC146818RtcState *s,
->+                         const char *boot_device, Error **errp)
+>-typedef struct pc_cmos_init_late_arg {
+>-    MC146818RtcState *rtc_state;
+>-    BusState *idebus[2];
+>-} pc_cmos_init_late_arg;
+>-
+> typedef struct check_fdc_state {
+>     ISADevice *floppy;
+>     bool multiple;
+>@@ -530,23 +525,25 @@ static ISADevice *pc_find_fdc0(void)
+>     return state=2Efloppy;
+> }
+>=20
+>-static void pc_cmos_init_late(void *opaque)
+>+static void pc_cmos_init_late(PCMachineState *pcms)
 > {
-> #define PC_MAX_BOOT_DEVICES 3
->     int nbds, bds[3] =3D { 0, };
->@@ -420,12 +420,14 @@ static void set_boot_dev(MC146818RtcState *s, const=
- char *boot_device,
->         }
->     }
->     mc146818rtc_set_cmos_data(s, 0x3d, (bds[1] << 4) | bds[0]);
->-    mc146818rtc_set_cmos_data(s, 0x38, (bds[2] << 4) | (fd_bootchk ? 0x0=
- : 0x1));
->+    mc146818rtc_set_cmos_data(s, 0x38, (bds[2] << 4) | !pcms->fd_bootchk=
-);
-> }
->=20
-> static void pc_boot_set(void *opaque, const char *boot_device, Error **e=
-rrp)
-> {
->-    set_boot_dev(opaque, boot_device, errp);
->+    PCMachineState *pcms =3D PC_MACHINE(current_machine);
->+
->+    set_boot_dev(pcms, opaque, boot_device, errp);
-> }
->=20
-> static void pc_cmos_init_floppy(MC146818RtcState *rtc_state, ISADevice *=
-floppy)
->@@ -617,6 +619,9 @@ void pc_cmos_init(PCMachineState *pcms,
->     mc146818rtc_set_cmos_data(s, 0x5c, val >> 8);
->     mc146818rtc_set_cmos_data(s, 0x5d, val >> 16);
->=20
->+    object_property_add_bool(obj, "fd-bootchk", pc_machine_get_fd_bootch=
-k,
->+                             pc_machine_set_fd_bootchk);
-
-Isn't it possible to turn this into a class property or add the property i=
-n pc_machine_initfn()? Aggregating properties in one place seems more compr=
-ehensible to me=2E
-
-Note that I've submitted a series attempting to simplify initialization of=
- the PC machines which still waits for reviews: https://patchew=2Eorg/QEMU/=
-20240208220349=2E4948-1-shentey@gmail=2Ecom/
-
-Thanks,
-Bernhard
-
->+
->     object_property_add_link(OBJECT(pcms), "rtc_state",
->                              TYPE_ISA_DEVICE,
->                              (Object **)&x86ms->rtc,
->@@ -625,7 +630,7 @@ void pc_cmos_init(PCMachineState *pcms,
->     object_property_set_link(OBJECT(pcms), "rtc_state", OBJECT(s),
->                              &error_abort);
->=20
->-    set_boot_dev(s, MACHINE(pcms)->boot_config=2Eorder, &error_fatal);
->+    set_boot_dev(pcms, s, MACHINE(pcms)->boot_config=2Eorder, &error_fat=
-al);
+>-    pc_cmos_init_late_arg *arg =3D opaque;
+>-    MC146818RtcState *s =3D arg->rtc_state;
+>+    X86MachineState *x86ms =3D X86_MACHINE(pcms);
+>+    MC146818RtcState *s =3D MC146818_RTC(x86ms->rtc);
+>     int16_t cylinders;
+>     int8_t heads, sectors;
+>     int val;
+>     int i, trans;
 >=20
 >     val =3D 0;
->     val |=3D 0x02; /* FPU is there */
->@@ -1559,6 +1564,20 @@ static void pc_machine_set_vmport(Object *obj, Vis=
-itor *v, const char *name,
->     visit_type_OnOffAuto(v, name, &pcms->vmport, errp);
+>-    if (arg->idebus[0] && ide_get_geometry(arg->idebus[0], 0,
+>-                                           &cylinders, &heads, &sectors)=
+ >=3D 0) {
+>+    if (pcms->idebus[0] &&
+>+        ide_get_geometry(pcms->idebus[0], 0,
+>+                         &cylinders, &heads, &sectors) >=3D 0) {
+>         cmos_init_hd(s, 0x19, 0x1b, cylinders, heads, sectors);
+>         val |=3D 0xf0;
+>     }
+>-    if (arg->idebus[0] && ide_get_geometry(arg->idebus[0], 1,
+>-                                           &cylinders, &heads, &sectors)=
+ >=3D 0) {
+>+    if (pcms->idebus[0] &&
+>+        ide_get_geometry(pcms->idebus[0], 1,
+>+                         &cylinders, &heads, &sectors) >=3D 0) {
+>         cmos_init_hd(s, 0x1a, 0x24, cylinders, heads, sectors);
+>         val |=3D 0x0f;
+>     }
+>@@ -558,10 +555,11 @@ static void pc_cmos_init_late(void *opaque)
+>            geometry=2E  It is always such that: 1 <=3D sects <=3D 63, 1
+>            <=3D heads <=3D 16, 1 <=3D cylinders <=3D 16383=2E The BIOS
+>            geometry can be different if a translation is done=2E */
+>-        if (arg->idebus[i / 2] &&
+>-            ide_get_geometry(arg->idebus[i / 2], i % 2,
+>+        BusState *idebus =3D pcms->idebus[i / 2];
+>+        if (idebus &&
+>+            ide_get_geometry(idebus, i % 2,
+>                              &cylinders, &heads, &sectors) >=3D 0) {
+>-            trans =3D ide_get_bios_chs_trans(arg->idebus[i / 2], i % 2) =
+- 1;
+>+            trans =3D ide_get_bios_chs_trans(idebus, i % 2) - 1;
+>             assert((trans & ~3) =3D=3D 0);
+>             val |=3D trans << (i * 2);
+>         }
+>@@ -569,15 +567,12 @@ static void pc_cmos_init_late(void *opaque)
+>     mc146818rtc_set_cmos_data(s, 0x39, val);
+>=20
+>     pc_cmos_init_floppy(s, pc_find_fdc0());
+>-
+>-    qemu_unregister_reset(pc_cmos_init_late, opaque);
 > }
 >=20
->+static bool pc_machine_get_fd_bootchk(Object *obj, Error **errp)
->+{
->+    PCMachineState *pcms =3D PC_MACHINE(obj);
->+
->+    return pcms->fd_bootchk;
->+}
->+
->+static void pc_machine_set_fd_bootchk(Object *obj, bool value, Error **e=
-rrp)
->+{
->+    PCMachineState *pcms =3D PC_MACHINE(obj);
->+
->+    pcms->fd_bootchk =3D value;
->+}
->+
-> static bool pc_machine_get_smbus(Object *obj, Error **errp)
+> void pc_cmos_init(PCMachineState *pcms,
+>                   ISADevice *rtc)
 > {
->     PCMachineState *pcms =3D PC_MACHINE(obj);
->@@ -1747,6 +1766,7 @@ static void pc_machine_initfn(Object *obj)
-> #ifdef CONFIG_HPET
->     pcms->hpet_enabled =3D true;
-> #endif
->+    pcms->fd_bootchk =3D true;
->     pcms->default_bus_bypass_iommu =3D false;
+>     int val;
+>-    static pc_cmos_init_late_arg arg;
+>     X86MachineState *x86ms =3D X86_MACHINE(pcms);
+>     MC146818RtcState *s =3D MC146818_RTC(rtc);
 >=20
->     pc_system_flash_create(pcms);
->diff --git a/system/globals=2Ec b/system/globals=2Ec
->index b6d4e72530e=2E=2E5d0046ba105 100644
->--- a/system/globals=2Ec
->+++ b/system/globals=2Ec
->@@ -41,7 +41,6 @@ int vga_interface_type =3D VGA_NONE;
-> bool vga_interface_created;
-> Chardev *parallel_hds[MAX_PARALLEL_PORTS];
-> int win2k_install_hack;
->-int fd_bootchk =3D 1;
-> int graphic_rotate;
-> QEMUOptionRom option_rom[MAX_OPTION_ROMS];
-> int nb_option_roms;
->diff --git a/system/vl=2Ec b/system/vl=2Ec
->index a82555ae155=2E=2E4627004304b 100644
->--- a/system/vl=2Ec
->+++ b/system/vl=2Ec
->@@ -2927,7 +2927,7 @@ void qemu_init(int argc, char **argv)
->                           optarg, FD_OPTS);
->                 break;
->             case QEMU_OPTION_no_fd_bootchk:
->-                fd_bootchk =3D 0;
->+                qdict_put_str(machine_opts_dict, "fd-bootchk", "off");
->                 break;
->             case QEMU_OPTION_netdev:
->                 default_net =3D 0;
->diff --git a/qemu-options=2Ehx b/qemu-options=2Ehx
->index 8547254dbf9=2E=2Ea9e0107b4f0 100644
->--- a/qemu-options=2Ehx
->+++ b/qemu-options=2Ehx
->@@ -2650,7 +2650,7 @@ DEF("no-fd-bootchk", 0, QEMU_OPTION_no_fd_bootchk,
-> SRST
-> ``-no-fd-bootchk``
->     Disable boot signature checking for floppy disks in BIOS=2E May be
->-    needed to boot from old floppy disks=2E
->+    needed to boot from old floppy disks=2E  Synonym of ``-m fd-bootchk=
-=3Doff``=2E
-> ERST
+>@@ -631,11 +626,7 @@ void pc_cmos_init(PCMachineState *pcms,
+>     val |=3D 0x04; /* PS/2 mouse installed */
+>     mc146818rtc_set_cmos_data(s, REG_EQUIPMENT_BYTE, val);
 >=20
-> DEF("acpitable", HAS_ARG, QEMU_OPTION_acpitable,
+>-    /* hard drives and FDC */
+>-    arg=2Ertc_state =3D s;
+>-    arg=2Eidebus[0] =3D pcms->idebus[0];
+>-    arg=2Eidebus[1] =3D pcms->idebus[1];
+>-    qemu_register_reset(pc_cmos_init_late, &arg);
+>+    /* hard drives and FDC are handled by pc_cmos_init_late() */
+> }
+>=20
+> static void handle_a20_line_change(void *opaque, int irq, int level)
+>@@ -703,6 +694,8 @@ void pc_machine_done(Notifier *notifier, void *data)
+>         /* update FW_CFG_NB_CPUS to account for -device added CPUs */
+>         fw_cfg_modify_i16(x86ms->fw_cfg, FW_CFG_NB_CPUS, x86ms->boot_cpu=
+s);
+>     }
+>+
+>+    pc_cmos_init_late(pcms);
+
+Nice=2E With https://patchew=2Eorg/QEMU/20240208220349=2E4948-1-shentey@gm=
+ail=2Ecom/20240208220349=2E4948-9-shentey@gmail=2Ecom/ on top it might be p=
+ossible to merge pc_cmos_init_late() and pc_cmos_init(), thus freeing pc_pi=
+ix and pc_q35 entirely from having to deal with it=2E
+
+Best regards,
+Bernhard
+
+> }
+>=20
+> void pc_guest_info_init(PCMachineState *pcms)
 
