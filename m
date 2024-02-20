@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B082485B490
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:09:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56B7285B48F
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:09:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcLBM-0000jK-O4; Tue, 20 Feb 2024 03:08:52 -0500
+	id 1rcLBL-0000Dg-DE; Tue, 20 Feb 2024 03:08:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rcLB0-0008VN-Aw
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:08:36 -0500
+ id 1rcLAy-0008SJ-EQ
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:08:34 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rcLAk-0000d7-R9
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:08:28 -0500
+ id 1rcLAt-0000dq-GF
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:08:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708416494;
+ s=mimecast20190719; t=1708416502;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aIuuW+wdt/l3qwd+9X1fX+swjCEROfFuJY+nqWv9slw=;
- b=W0TtFNVDp2RbGdHlN7WPSMFqrsQKXvKpzS2YE9oBP9jTTkxyNeAWq7uHT2jmI/aRioq+Kd
- 7blUiKAQbQVL5Cs18U8xhg8WFXwPeKItMF0/Fmdf3aH3ZbZ989bH9iVpvAJy2tMKx0EsTX
- LURyDMvAR5eqFnw1iVWGAuT1o1jc/BE=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=orF/B8kCpZl/r7yBFvkYvnBiF94OA2GnBZJaqOTj6E8=;
+ b=MtilRi0jhyNpR8RCL9sH1iNIYG5Dxr1uWJFL994fTfdrvVVQTwWnA7TXAZmFhVyF+7VwYk
+ 2Av70N884m3+bi8Qjdt2MEOtHGHUltdZPTaDClqr7CjfbzDADLzHFyAFlhIrnnRtqEm0gx
+ pMN2HjUDo3b4bbKU6qA8Ivi9ouLyl9k=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-142-WT4OC1-HMxWFaUd1NH2beA-1; Tue, 20 Feb 2024 03:08:11 -0500
-X-MC-Unique: WT4OC1-HMxWFaUd1NH2beA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a3bdd99a243so488653366b.0
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:08:11 -0800 (PST)
+ us-mta-496-PIaZKEX-N3aDC_p1rSFY6w-1; Tue, 20 Feb 2024 03:08:20 -0500
+X-MC-Unique: PIaZKEX-N3aDC_p1rSFY6w-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-563a2279f1bso5845316a12.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:08:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708416490; x=1709021290;
+ d=1e100.net; s=20230601; t=1708416499; x=1709021299;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aIuuW+wdt/l3qwd+9X1fX+swjCEROfFuJY+nqWv9slw=;
- b=kqJsoVhNTbgUjmGTjvfnn3Cgyp/sXrHReinm+ux8tiCCbL4TD7QAkOxebcYLjOvZAN
- B8s0MBPaH9kXC6K/7NayqwebMHDkSFL1dyLLHBQizgzIW3wtVn2tdJeJhj7IcVfr89OQ
- 91++mjoeW4K/AOi6Z4tlTMTtSSxX2HlDWhyTiBDYRBazoeUTDE+5Z3gh86IPXfvC+SN+
- XqWzVkGPClYHdWLaL4m8yzXfImLlxFVywl/Xb4lVK6QB8Tzi0gYmXp5gp7Ltf8BFn2ac
- csKnGS7ybMx1NgGRjxHR+iO0+p7I8dLGwbNeFI3di9N69ahfiv/lkz2malGGRsrm2EvB
- WMtQ==
-X-Gm-Message-State: AOJu0YyiaLZG5Nyv5gwt+oOlooh9sFz87ZeX5xD1RoeEXgj61QDkRpuP
- hGoW8HtGy418THMt/SmKi9+RY4+zFIbDydOhecjAxVFni8PeSAEEtntUPL23Bcn09Wro/rx2Sxz
- V+bTx+Y9e+JQE0OqmxK7d3suFNxrI7kLaEnh7oKKWnd79i9ScDAiFyp26iT64WlFKrfPMoGsLKj
- mXKm5K5SlfWQQdcbH4pKCGcaJU3VM7H5vQR+cd
-X-Received: by 2002:a17:906:d215:b0:a3e:7a1c:47ac with SMTP id
- w21-20020a170906d21500b00a3e7a1c47acmr5344463ejz.8.1708416490269; 
- Tue, 20 Feb 2024 00:08:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFW55noVnmT7sSYq9mthQ0weTf4shB48BW5A8fnMFjtDN6Ngf9hB2Wx9YioODLbBMGxi8OlPQ==
-X-Received: by 2002:a17:906:d215:b0:a3e:7a1c:47ac with SMTP id
- w21-20020a170906d21500b00a3e7a1c47acmr5344444ejz.8.1708416489998; 
- Tue, 20 Feb 2024 00:08:09 -0800 (PST)
+ bh=orF/B8kCpZl/r7yBFvkYvnBiF94OA2GnBZJaqOTj6E8=;
+ b=udCwquqI4roGirriaq6wyszdpfmDWYZagYi553GLgl8fBzz5XYBzKKweXA719Xa3sQ
+ l5l4Dqqu6nwSRTRWtNiFTyerm/uxi4N6aELFWmsD8jyCX4SP96zxHh4ZnktvWx3wQFdU
+ 1wu3J+8fFK99CZdeObYLg3v6DU3xIvGSSpwp7gBYDqX3cEL/JtAY6qLyRlFfj7IjM9oE
+ tNttpe97IeVGYC7y6jjHHrWcl7CxRqHU2k5/+0u5sH0A9X7osQOSk3XEGNk4vLqiBiVN
+ MoOyJUxcRHH3ZL0KF64gY2d6vN7tE6qy9R6nEZ0LcaynzmzOg8+s9r/kOO4jTJ3zAFic
+ drvw==
+X-Gm-Message-State: AOJu0YwDcUq38vYTFuzXuJK0UDLSVpP2orlMDRFG+NlwtzXGRcIhE1Dk
+ Ka3bPv0Hocs7FJ3oCX8DTp6ByEIkd/zZv+H7bBOFdIQt4WrMR5JyqQPCy+uXGfgm4rpkA+S10Td
+ kQy7wZlF5FK4PlYFydCgaflfTsC7zTcLUsuJA6uwps8ufNg23f02ZSCyjJU//ym4sUAVJttori2
+ ShJzK6ucUa1a22U5GC1DQKSx7/LPqEEjrZXuD4
+X-Received: by 2002:a05:6402:5414:b0:564:2d0c:b46c with SMTP id
+ ev20-20020a056402541400b005642d0cb46cmr7584181edb.0.1708416498939; 
+ Tue, 20 Feb 2024 00:08:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFJmcmfSx1hUKvd7D1zpV7UOvDIWN94jriFmHkaviM438Sa+yFWU2UmdlLX6s+tMWpr7660xg==
+X-Received: by 2002:a05:6402:5414:b0:564:2d0c:b46c with SMTP id
+ ev20-20020a056402541400b005642d0cb46cmr7584166edb.0.1708416498589; 
+ Tue, 20 Feb 2024 00:08:18 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
  by smtp.gmail.com with ESMTPSA id
- tl7-20020a170907c30700b00a3e5bcfe5b7sm2589628ejc.134.2024.02.20.00.08.06
+ fk2-20020a056402398200b0056418c5b6b2sm3263041edb.89.2024.02.20.00.08.15
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Feb 2024 00:08:09 -0800 (PST)
+ Tue, 20 Feb 2024 00:08:18 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>
-Subject: [PULL 13/17] configure: put all symlink creation together
-Date: Tue, 20 Feb 2024 09:05:54 +0100
-Message-ID: <20240220080558.365903-14-pbonzini@redhat.com>
+Subject: [PULL 14/17] i386: xen: fix compilation --without-default-devices
+Date: Tue, 20 Feb 2024 09:05:55 +0100
+Message-ID: <20240220080558.365903-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240220080558.365903-1-pbonzini@redhat.com>
 References: <20240220080558.365903-1-pbonzini@redhat.com>
@@ -78,13 +78,14 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.072,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,40 +101,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cc: Thomas Huth <thuth@redhat.com>
+The xenpv machine type requires XEN_BUS, so select it.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ accel/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/configure b/configure
-index 9cdb5a6818b..3cd736b139f 100755
---- a/configure
-+++ b/configure
-@@ -1538,6 +1538,11 @@ for f in $LINKS ; do
-     fi
- done
- 
-+# use included Linux headers for KVM architectures
-+if test "$host_os" = "linux" && test -n "$linux_arch"; then
-+  symlink "$source_path/linux-headers/asm-$linux_arch" linux-headers/asm
-+fi
-+
- echo "# Automatically generated by configure - do not modify" > Makefile.prereqs
- 
- # Mac OS X ships with a broken assembler
-@@ -1605,11 +1610,6 @@ echo "GENISOIMAGE=$genisoimage" >> $config_host_mak
- echo "MESON=$meson" >> $config_host_mak
- echo "NINJA=$ninja" >> $config_host_mak
- echo "EXESUF=$EXESUF" >> $config_host_mak
--# use included Linux headers for KVM architectures
--if test "$host_os" = "linux" && test -n "$linux_arch"; then
--  symlink "$source_path/linux-headers/asm-$linux_arch" linux-headers/asm
--fi
--
- if test "$default_targets" = "yes"; then
-   echo "CONFIG_DEFAULT_TARGETS=y" >> $config_host_mak
- fi
+diff --git a/accel/Kconfig b/accel/Kconfig
+index a30cf2eb483..794e0d18d21 100644
+--- a/accel/Kconfig
++++ b/accel/Kconfig
+@@ -16,3 +16,4 @@ config KVM
+ config XEN
+     bool
+     select FSDEV_9P if VIRTFS
++    select XEN_BUS
 -- 
 2.43.0
 
