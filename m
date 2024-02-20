@@ -2,156 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B8B85C3CF
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 19:44:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D663285C3EA
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 19:47:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcV5r-0002Bg-IF; Tue, 20 Feb 2024 13:43:51 -0500
+	id 1rcV8u-0003sZ-27; Tue, 20 Feb 2024 13:47:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1rcV5p-0002BK-PZ
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 13:43:49 -0500
-Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rcV8Y-0003nU-8L
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 13:46:47 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1rcV5k-0007TM-76
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 13:43:47 -0500
-Received: from pps.filterd (m0127843.ppops.net [127.0.0.1])
- by mx0b-002c1b01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
- 41KAgAF9022091; Tue, 20 Feb 2024 10:43:41 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- message-id:date:subject:to:cc:references:from:in-reply-to
- :content-type:content-transfer-encoding:mime-version; s=
- proofpoint20171006; bh=r+hk81/aDBsdKsHwy/7quvPCxWEXRJd899yEfdrQz
- n8=; b=B5TbRc9yXNlScxRXqt1SypIZX0JzlMpiAVPFdq31w8MALHWobCcOpMKIH
- 4hajzMwyR2Cuj0W60+mlBg8/hT3eExkisUPbCbAz83Iz16yoNKl1Mr4JjA1dw2eN
- lpuXDCR5TOdpGinh0G9VblDy1k7t0R+ZADutGnQeK7Hts1XaILHtIXDaPVZav2D4
- ZD9vBPdFy8ksME65sP9q3/48ydjmq0Cram9zGvIYmqUvqugUa8Ro9VnEfIRW0RjA
- sfoSy/lvd09We9KtunVf0RXb2pIQPGq6XFqi2A4vk+ZAOxSfH2YKIgMbE9sO1fP3
- PHpdZtTF4MW5H2ItSr0Nm+8yn0WvA==
-Received: from nam12-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam12lp2168.outbound.protection.outlook.com [104.47.59.168])
- by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3wausmetq5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Feb 2024 10:43:41 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NUKrxtpcPtDTHQ7Aqfww6IS5q5TBHbgZzLbqUtYB608BQ58emuKzeftwrRPXnV9lj0BBYLMZXxcrLDUFKu0u0cGBH/hE2owybfM92AqQwb6RdpVovGhsx30L2B9TdVR3xNSU161jBNDCPA4UBrjmCFeb9pE3xiGNVPxLUGDVsjIIMJB3gHqKSuihen4ORwrdP3GKOmS7YAv0soY/DFEqpsFqP0Adwv/R/wSr3ovm5jIdvgZN8WZinZdT/9GE5uSIAzxr/h7WbFbo4lAyMGCe53jU4YYOIBDE1IZQ3PwredsMDBFcjf/YKDzrrUMqDB5+s/zxe7XrxwNmM7UWS8jyUw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=r+hk81/aDBsdKsHwy/7quvPCxWEXRJd899yEfdrQzn8=;
- b=IsU+ANnlwGsGNRI5QZT6fCQiO9TRvF9VVTFb0DRUwmqgOdngjgMCktOAnKPai6WA41jcL60KqaDQuPhvDhTk0tEmEMtu6h2XF1RuYO29y4N/XRP1jMRkCB7niJRT3hko2rOWPJ+sXYc+BPQZdCcvwKmG0uZ68mTPj/0r2mC6oWowv6JwCpWsHYft54oNawlFcRolQ+SeSJ0Y1ZHplcW7UO0vLUE3i/3doOR7wwY2WA44CSVEmJb3ibtwfO9n/q0+hPjlQKhXJZJpGwKvfTo5+bbo9QNwn7lXBq7CvAnG3gmZwNfA33CcOGmZdtLow667pIpLMxFFTbVs1JD2Vx+mAQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r+hk81/aDBsdKsHwy/7quvPCxWEXRJd899yEfdrQzn8=;
- b=Ipq7m9XkKbEMoEP1lUCzzU6iRcaQf3JYpJMv1GjoAtKlO0PoYIjBNyk+u09rxiV2nttpUZ+1dQQ6A24u2Njz3LU/AoEfP5RJWJrsoddRR9jqK7t9lKQmhkPCeKWbDmgEc4XBT4sDQFP+Q+mF1CAFN154BgKm0dM/QibRTtgVHLb2Yxcf5Dkf0Zq9BpgBTkl3jeKLOW0V4kE5cgqcq6w8ZDaWxSzPi+w1vVT0NbjIGEr7mlV7GiA42yRr7rWvzmgIrFdsDJgcqxXjgs1htGpvLj2iulL33EDOCoFOM00iAHY5nbfBii45EEIPn2YN9KXiaGH1VFg/dGNgBTtdATT1yw==
-Received: from SJ2PR02MB9955.namprd02.prod.outlook.com (2603:10b6:a03:55f::16)
- by BY5PR02MB6518.namprd02.prod.outlook.com (2603:10b6:a03:1d6::14)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.39; Tue, 20 Feb
- 2024 18:43:39 +0000
-Received: from SJ2PR02MB9955.namprd02.prod.outlook.com
- ([fe80::225c:2edd:87e:7cf0]) by SJ2PR02MB9955.namprd02.prod.outlook.com
- ([fe80::225c:2edd:87e:7cf0%7]) with mapi id 15.20.7292.036; Tue, 20 Feb 2024
- 18:43:39 +0000
-Message-ID: <642fc44c-80d0-485f-91db-802db42a4bcd@nutanix.com>
-Date: Wed, 21 Feb 2024 00:13:32 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] qtest: migration: Introduce 'connect_channels' in
- MigrateCommon struct
-Content-Language: en-US
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, armbru@redhat.com, berrange@redhat.com,
- farosas@suse.de
-References: <20240216090624.75445-1-het.gala@nutanix.com>
- <20240216090624.75445-3-het.gala@nutanix.com> <ZdRBCYIOiOV39i2x@x1n>
-From: Het Gala <het.gala@nutanix.com>
-In-Reply-To: <ZdRBCYIOiOV39i2x@x1n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA0PR01CA0054.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:ac::6) To SJ2PR02MB9955.namprd02.prod.outlook.com
- (2603:10b6:a03:55f::16)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rcV8V-0007tf-W9
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 13:46:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1708454795;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=SFETm/m/y7pjDum5Cc4/Q1+5CdJyR6Zrf3UqNMIkQcQ=;
+ b=WdQRy20Yab44a2swzJ3JdYKpGYgf7N/+/C7CsZyICpkEMQAjVJymJtaauPqeyroQ65Oagz
+ DFGikbpuDAUafEbiPQMWR7CT1eJTMb42QHbt+wbMjB0HuCUVwMo3MmWcfOkGWDB9e9Jf8U
+ khAvPQbil2SINgtQ76k08THGzcnKKkQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-27-bbSbDIB0OLur2IDDvqaSZA-1; Tue, 20 Feb 2024 13:46:29 -0500
+X-MC-Unique: bbSbDIB0OLur2IDDvqaSZA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 50356185A784;
+ Tue, 20 Feb 2024 18:46:29 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.50])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9ABF01C060AF;
+ Tue, 20 Feb 2024 18:46:28 +0000 (UTC)
+Date: Tue, 20 Feb 2024 18:46:26 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org
+Subject: Re: [PATCH 22/23] qemu-img: implement short --help, remove global
+ help() function
+Message-ID: <ZdTzgmCVXu5N1R5r@redhat.com>
+References: <cover.1707513011.git.mjt@tls.msk.ru>
+ <e791b4d2a91baddca79811b7ceb71e7223796b4f.1707513012.git.mjt@tls.msk.ru>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR02MB9955:EE_|BY5PR02MB6518:EE_
-X-MS-Office365-Filtering-Correlation-Id: 485a08ea-8e83-4e5f-87bc-08dc3243da94
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: TJys6MjCRhS/VsOuURQI34RfngxSY5xgbbDzg4i/yMVZRUaZBg20psOLxAz4D1qXNTUY1QeyLc9Bu8VR61Xb1dj4sTRXPnvWeTJMbsYNch7j2q8ZSfCJaRbjzRzUlbRzDGMtdhVG8YX4+RnZDEYfvaFvPUTdkeiehTTGloMDf3DdWRSMC0Ka2oMjMe4CfqVoHte2Yt60Z3JFzJCl7tQdE0Di4c39+R6f06Mx7s5NtoTa8HUc4XLqFO+UVhug+VB4cevyTbaZBmT/UyPlCLAqM7cQtSRF8pSnZXB1fSMUkBRETPKfJNVimCuYntoHZ+/+gZi6hZGVUHoi7ksfHNKMN/MRg/HCzKW62Cv2DHUa5haozEbt4inwT1n61wqrIs5ZXdQzxXbD888+RXTSQFqhC6+ZJ441mqUQ/bkCl2D+DL7t30DYXo9TdNsZnZjLibwPOsJ0ghDP498ONJhaNVNzTCjjtEAogPk9Bpg/RlCsbYl/5MKwwu7QQk8OOPASgxZS/KRSBfceAhyc3hf7N7NE9VFt4Xs4NlX2b+WH+GatoL0=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ2PR02MB9955.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031); DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QlUxdDNtUWZMTG9jKytEdHBHR3Bxa0FZVTIwcEJFKzFmRDZjaEhLUmY0VkVX?=
- =?utf-8?B?bHlkV0VNZHBFWndjRXdYakVmL0VyT3dZbGl0ak9QUTI0NUhNUHFiQUlyaEQ3?=
- =?utf-8?B?NElCY0hWZzUwclo2N084TVhEZDByQUpIZGh4ckhlamZkR3lPU3lxd0tFMWZk?=
- =?utf-8?B?SzRjR0VHb2RKTlZmQXpUSURRVk5PR2QvdEFqcnhQVU5ya3Y0TkdvbnNYMGdy?=
- =?utf-8?B?TWxOYTE3QXdTYVhPN0pyY3IzcjMxQ3crT1BiaXh6M21od1krRHREQWsraGFK?=
- =?utf-8?B?Y01yN1hrSSsvNUUydm9BV2NYRG1WbHJINDBjc1JIMFdzTjgvKzBCRjVLSStr?=
- =?utf-8?B?b3JHSlZSajUzRi82YWd3b0VRblNZR3cxOG9JZUZ0MzZSZm8vWXVsTVU3cWtx?=
- =?utf-8?B?RURjOFJyQUhtWEtTVWJoV0p3Mm5MdkExOUk5OGVnMklEem81YzV0aVkxeWxk?=
- =?utf-8?B?c3c5VGl5akVQenN5UldOcmdraE8zRVhjNmFnWnBMZ0JjdUROWVV3YjE0U01P?=
- =?utf-8?B?UkphdjZ0RHhqdTF4TUFpNEV4VGE5K0Uxc3phZSt2M01KYmNtQ1ZtTzlSWFNw?=
- =?utf-8?B?eHU0Zm9EMUN0VW5FZXprWUJFSFUzV1pBb3RPMFFXUXp2c1FSWkJXSkpNNFZC?=
- =?utf-8?B?MUQ5WjAzWWQ5MGJWL2pnZTd2d3RDLzZTbjlYV2s3UUlBSEVZNFJOUFRRbVhh?=
- =?utf-8?B?bW1jZ04yWDRqTEpxY0NpOWRTcU1NK3RuN3lIQ0VkRmxhSEhsRnJZL0pYd3BP?=
- =?utf-8?B?RWlPNlhUbjJwZTFXbTlWWTduUTRucEZoeWd0OE5VWGVSUmdBMUJ2MFFmcmZq?=
- =?utf-8?B?elZKd3ZSSHR0MzBIYzFKbzAwYXpUVTlJY1pyRmN2YW53V1BVZ09mZXJtT21p?=
- =?utf-8?B?WkVaSGM5UEMvYS9sZzlFY0k2c05yc00vNEovcmh1WVFZK212d3dJaldReGFX?=
- =?utf-8?B?aHU2N0x0SzBZN1VpdldjS1g2a2ZKOHJkbU0vdEpCU1ZObTROWGJjQWVnUUlZ?=
- =?utf-8?B?MEgwVlk2MkpEOHlZZndJTkVhL2lEYkE5UE9OR2srNmNIS0NDc0YzQStGNzkr?=
- =?utf-8?B?QkJPSndWcm4rdWtaMFl2TWMwL2lkWUhPSFdWYXNOM3doUlBUM1I2SFp4NEE4?=
- =?utf-8?B?UkNJRjR0SVJobmEyY2NoUm9waTIwUU91NVlhY2ZIM2lLaWxiMVhtaWlrMEh1?=
- =?utf-8?B?dmc3c3RPakc3NkwwTHplZjFYZU91VVltOUxDRU1EaWdrc1RkQnZ4KzB3QWhO?=
- =?utf-8?B?dlNLRTF3ZGttS3FnUEVyNFdtdjMzditSSzJ1ZUJnZktlSHBEeThmVW81akhN?=
- =?utf-8?B?bHMyS2JPSnkrZ2cyRnlXeXFXbTBHU3JMZi9qMmZmNTJ6WUF4aEJ5VXZOZEFN?=
- =?utf-8?B?K0FzVkk2a2hxR1NTdVV0K1FqeTI1NTZSVkZUNXhrOW1mSHpPbXlKL1ZsbE44?=
- =?utf-8?B?WXJ1b2xwUXFuUUZQT29DbzJMcnF6SmdMUzRQeW9wWGlkdUZnYzN1NU85RkFX?=
- =?utf-8?B?Zk1hSi8xVlJmRXNheE1rRHh4bWZ4eDhGZmxRVFB1ZzZnZm0vVXMxcnZndXh1?=
- =?utf-8?B?ZkhGV3A0SDNEVE53WlcyOWRoTDFScjk5QVdQampDSzYrSit6RmNZNytueGN1?=
- =?utf-8?B?Z01GM1AzUGt0ZmJKRzRHQm9aNnRZQk5RS05lZFROb0VrYnBXY1FlWFZDc1l3?=
- =?utf-8?B?K3VvOWJzYWRlT25OUXdSV2pwRXdSM1c0aEpaK3pHd1p3cjRzWkc4RjRyZkFq?=
- =?utf-8?B?RExERUErTnhudXVkaEVxaW56d3haN3RIM0V0Z0xXY2JpMDhUTFU0TXZINXc5?=
- =?utf-8?B?RkRQRnVSeGRYTlJ5OWJwVGoxSFBycTRwaEdOR1FmK1JuYnVDS2pzaWd6S00w?=
- =?utf-8?B?TmtVQ3lPdGs3VmpKeVM5amRqaGdRYUpQblZDQnZkdHhzQUZ1RHNlcHpEcEdF?=
- =?utf-8?B?ZEozWXdzRW9tcWIraTBLSHVpMW5hNHZocjVYN1I2QStPWks3MEdRUlZNWEFq?=
- =?utf-8?B?Ym5YWVg2eDVvUzhGVEpqdys3ODdScTZmS2NHdlhQSksxVDZ5dVZjcVhaRXB4?=
- =?utf-8?B?SnIveDFrNHU2YTREcmpBQ2hVclJMbGttaGZnVnhUNUluSytSb3IwNEVYNXlr?=
- =?utf-8?Q?EUQpAIyvewNW4YSoP4U4Egb1O?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 485a08ea-8e83-4e5f-87bc-08dc3243da94
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR02MB9955.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2024 18:43:39.4446 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: y+MvYCjGHnSZpD5dEJynDC7cJkQXHa/WirgzAOGBVQr2Jd6DUSeJzSBeAmPkWoVVWvNgVuyHcSwkrYPDwj2xwg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR02MB6518
-X-Proofpoint-GUID: QrVOT1waz4gjZgCVr2vNwnOd7QBSLhNk
-X-Proofpoint-ORIG-GUID: QrVOT1waz4gjZgCVr2vNwnOd7QBSLhNk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-20_06,2024-02-20_01,2023-05-22_02
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.155.12; envelope-from=het.gala@nutanix.com;
- helo=mx0b-002c1b01.pphosted.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <e791b4d2a91baddca79811b7ceb71e7223796b4f.1707513012.git.mjt@tls.msk.ru>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -164,53 +79,304 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Sat, Feb 10, 2024 at 12:22:43AM +0300, Michael Tokarev wrote:
+> now once all individual subcommands has --help support, remove
+> the large unreadable help() thing and replace it with small
+> global --help, which refers to individual command --help for
+> more info.
+> 
+> While at it, also line-wrap list of formats after 74 chars.
+> 
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> ---
+>  qemu-img.c | 148 +++++++++++------------------------------------------
+>  1 file changed, 30 insertions(+), 118 deletions(-)
+> 
+> diff --git a/qemu-img.c b/qemu-img.c
+> index e2c8855ff5..d9c5c6078b 100644
+> --- a/qemu-img.c
+> +++ b/qemu-img.c
+> @@ -94,11 +94,6 @@ typedef enum OutputFormat {
+>  /* Default to cache=writeback as data integrity is not important for qemu-img */
+>  #define BDRV_DEFAULT_CACHE "writeback"
+>  
+> -static void format_print(void *opaque, const char *name)
+> -{
+> -    printf(" %s", name);
+> -}
+> -
+>  static G_NORETURN G_GNUC_PRINTF(2, 3)
+>  void error_exit(const img_cmd_t *ccmd, const char *fmt, ...)
+>  {
+> @@ -154,114 +149,6 @@ static OutputFormat parse_output_format(const img_cmd_t *ccmd, const char *arg)
+>      }
+>  }
+>  
+> -/* Please keep in synch with docs/tools/qemu-img.rst */
+> -static G_NORETURN
+> -void help(void)
+> -{
+> -    const char *help_msg =
+> -           QEMU_IMG_VERSION
+> -           "usage: qemu-img [standard options] command [command options]\n"
+> -           "QEMU disk image utility\n"
+> -           "\n"
+> -           "    '-h', '--help'       display this help and exit\n"
+> -           "    '-V', '--version'    output version information and exit\n"
+> -           "    '-T', '--trace'      [[enable=]<pattern>][,events=<file>][,file=<file>]\n"
+> -           "                         specify tracing options\n"
+> -           "\n"
+> -           "Command syntax:\n"
+> -#define DEF(option, callback, arg_string)        \
+> -           "  " arg_string "\n"
+> -#include "qemu-img-cmds.h"
+> -#undef DEF
+> -           "\n"
+> -           "Command parameters:\n"
+> -           "  'filename' is a disk image filename\n"
+> -           "  'objectdef' is a QEMU user creatable object definition. See the qemu(1)\n"
+> -           "    manual page for a description of the object properties. The most common\n"
+> -           "    object type is a 'secret', which is used to supply passwords and/or\n"
+> -           "    encryption keys.\n"
+> -           "  'fmt' is the disk image format. It is guessed automatically in most cases\n"
+> -           "  'cache' is the cache mode used to write the output disk image, the valid\n"
+> -           "    options are: 'none', 'writeback' (default, except for convert), 'writethrough',\n"
+> -           "    'directsync' and 'unsafe' (default for convert)\n"
+> -           "  'src_cache' is the cache mode used to read input disk images, the valid\n"
+> -           "    options are the same as for the 'cache' option\n"
+> -           "  'size' is the disk image size in bytes. Optional suffixes\n"
+> -           "    'k' or 'K' (kilobyte, 1024), 'M' (megabyte, 1024k), 'G' (gigabyte, 1024M),\n"
+> -           "    'T' (terabyte, 1024G), 'P' (petabyte, 1024T) and 'E' (exabyte, 1024P)  are\n"
+> -           "    supported. 'b' is ignored.\n"
+> -           "  'output_filename' is the destination disk image filename\n"
+> -           "  'output_fmt' is the destination format\n"
+> -           "  'options' is a comma separated list of format specific options in a\n"
+> -           "    name=value format. Use -o help for an overview of the options supported by\n"
+> -           "    the used format\n"
+> -           "  'snapshot_param' is param used for internal snapshot, format\n"
+> -           "    is 'snapshot.id=[ID],snapshot.name=[NAME]', or\n"
+> -           "    '[ID_OR_NAME]'\n"
+> -           "  '-c' indicates that target image must be compressed (qcow format only)\n"
+> -           "  '-u' allows unsafe backing chains. For rebasing, it is assumed that old and\n"
+> -           "       new backing file match exactly. The image doesn't need a working\n"
+> -           "       backing file before rebasing in this case (useful for renaming the\n"
+> -           "       backing file). For image creation, allow creating without attempting\n"
+> -           "       to open the backing file.\n"
+> -           "  '-h' with or without a command shows this help and lists the supported formats\n"
+> -           "  '-p' show progress of command (only certain commands)\n"
+> -           "  '-q' use Quiet mode - do not print any output (except errors)\n"
+> -           "  '-S' indicates the consecutive number of bytes (defaults to 4k) that must\n"
+> -           "       contain only zeros for qemu-img to create a sparse image during\n"
+> -           "       conversion. If the number of bytes is 0, the source will not be scanned for\n"
+> -           "       unallocated or zero sectors, and the destination image will always be\n"
+> -           "       fully allocated\n"
+> -           "  '--output' takes the format in which the output must be done (human or json)\n"
+> -           "  '-n' skips the target volume creation (useful if the volume is created\n"
+> -           "       prior to running qemu-img)\n"
+> -           "\n"
+> -           "Parameters to bitmap subcommand:\n"
+> -           "  'bitmap' is the name of the bitmap to manipulate, through one or more\n"
+> -           "       actions from '--add', '--remove', '--clear', '--enable', '--disable',\n"
+> -           "       or '--merge source'\n"
+> -           "  '-g granularity' sets the granularity for '--add' actions\n"
+> -           "  '-b source' and '-F src_fmt' tell '--merge' actions to find the source\n"
+> -           "       bitmaps from an alternative file\n"
+> -           "\n"
+> -           "Parameters to check subcommand:\n"
+> -           "  '-r' tries to repair any inconsistencies that are found during the check.\n"
+> -           "       '-r leaks' repairs only cluster leaks, whereas '-r all' fixes all\n"
+> -           "       kinds of errors, with a higher risk of choosing the wrong fix or\n"
+> -           "       hiding corruption that has already occurred.\n"
+> -           "\n"
+> -           "Parameters to convert subcommand:\n"
+> -           "  '--bitmaps' copies all top-level persistent bitmaps to destination\n"
+> -           "  '-m' specifies how many coroutines work in parallel during the convert\n"
+> -           "       process (defaults to 8)\n"
+> -           "  '-W' allow to write to the target out of order rather than sequential\n"
+> -           "\n"
+> -           "Parameters to snapshot subcommand:\n"
+> -           "  'snapshot' is the name of the snapshot to create, apply or delete\n"
+> -           "  '-a' applies a snapshot (revert disk to saved state)\n"
+> -           "  '-c' creates a snapshot\n"
+> -           "  '-d' deletes a snapshot\n"
+> -           "  '-l' lists all snapshots in the given image\n"
+> -           "\n"
+> -           "Parameters to compare subcommand:\n"
+> -           "  '-f' first image format\n"
+> -           "  '-F' second image format\n"
+> -           "  '-s' run in Strict mode - fail on different image size or sector allocation\n"
+> -           "\n"
+> -           "Parameters to dd subcommand:\n"
+> -           "  'bs=BYTES' read and write up to BYTES bytes at a time "
+> -           "(default: 512)\n"
+> -           "  'count=N' copy only N input blocks\n"
+> -           "  'if=FILE' read from FILE\n"
+> -           "  'of=FILE' write to FILE\n"
+> -           "  'skip=N' skip N bs-sized blocks at the start of input\n";
+> -
+> -    printf("%s\nSupported formats:", help_msg);
+> -    bdrv_iterate_format(format_print, NULL, false);
+> -    printf("\n\n" QEMU_HELP_BOTTOM "\n");
+> -    exit(EXIT_SUCCESS);
+> -}
+> -
+>  /*
+>   * Is @list safe for accumulate_options()?
+>   * It is when multiple of them can be joined together separated by ','.
+> @@ -5866,6 +5753,16 @@ static const img_cmd_t img_cmds[] = {
+>      { NULL, NULL, },
+>  };
+>  
+> +static void format_print(void *opaque, const char *name)
+> +{
+> +    int *np = opaque;
+> +    *np += printf(" %s", name);
+> +    if (*np > 74) {
+> +        printf("\n ");
+> +        *np = 1;
+> +    }
+> +}
+> +
+>  int main(int argc, char **argv)
+>  {
+>      const img_cmd_t *cmd;
+> @@ -5893,10 +5790,6 @@ int main(int argc, char **argv)
+>  
+>      module_call_init(MODULE_INIT_QOM);
+>      bdrv_init();
+> -    if (argc < 2) {
+> -        error_exit(NULL, "Not enough arguments");
+> -    }
+> -
+>      qemu_add_opts(&qemu_source_opts);
+>      qemu_add_opts(&qemu_trace_opts);
+>  
+> @@ -5909,7 +5802,22 @@ int main(int argc, char **argv)
+>              unrecognized_option(NULL, argv[optind - 1]);
+>              return 0;
+>          case 'h':
+> -            help();
+> +            printf(
+> +QEMU_IMG_VERSION
+> +"QEMU disk image utility\n"
 
-On 20/02/24 11:34 am, Peter Xu wrote:
-> On Fri, Feb 16, 2024 at 09:06:23AM +0000, Het Gala wrote:
->> migration QAPIs can now work with either 'channels' or 'uri' as their
->> argument.
->>
->> Signed-off-by: Het Gala <het.gala@nutanix.com>
->> ---
->>   tests/qtest/migration-test.c | 7 +++++++
->>   1 file changed, 7 insertions(+)
->>
->> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
->> index e7f2719dcf..0bc69b1943 100644
->> --- a/tests/qtest/migration-test.c
->> +++ b/tests/qtest/migration-test.c
->> @@ -704,6 +704,13 @@ typedef struct {
->>        */
->>       const char *connect_uri;
->>   
->> +    /*
->> +     * Optional: list of migration stream channels, each connected
->> +     * to a dst QEMU. It can be used instead of URI to carry out
->> +     * the same task as listen_uri or connect_uri.
->> +     */
->> +    MigrationChannelList *connect_channels;
->> +
->>       /* Optional: callback to run at start to set migration parameters */
->>       TestMigrateStartHook start_hook;
->>       /* Optional: callback to run at finish to cleanup */
-> Please squash this patch into the follow up patch that uses it.  Thanks,
+Add '\n'
 
-Yes sure.
+> +"usage: qemu-img [standard options] command [--help | command options]\n"
 
-I am also planning to convert this field into a bool (just say whether 
-connect_channels would be present or not). It would prove useful for 
-positive cases actually where only channel is being used, because if I 
-convert them before hand itself port is 0 but kernel converts port 0 and 
-gives a random port number for migration. And positive tests fail there.
+Add '\n'
 
-Will be more clear when I post the v2 patchset. Let me know, if it does 
-not sound right then.
+> +"Standard options:\n"
 
-Regards,
+Add '\n'
 
-Het Gala
+> +" -h|--help - display this help and exit\n"
+> +" -V|--version - display version info and exit\n"
+> +" -T|--trace TRACE - specify tracing options:\n"
+> +"   [[enable=]<pattern>][,events=<file>][,file=<file>]\n"
+
+Similar to sub-command help, I tink it reads better as
+
+ "  -h|--help\n"
+ "      display this help and exit\n"
+ "\n"
+ "  -V|--version\n"
+ "      display version info and exit\n"
+ "\n"
+ "  -T|--trace TRACE\n"
+ "      specify tracing options:\n"
+ "      [[enable=]<pattern>][,events=<file>][,file=<file>]\n"
+ "\n"
+
+
+
+> +"Recognized commands (run qemu-img command --help for command-specific help):\n");
+> +            for (cmd = img_cmds; cmd->name != NULL; cmd++) {
+> +                printf("  %s\n", cmd->name);
+> +            }
+
+An extra "\n"
+
+> +            c = printf("Supported image formats:");
+
+Add a trailing "\n"
+
+> +            bdrv_iterate_format(format_print, &c, false);
+> +            printf("\n" QEMU_HELP_BOTTOM "\n");
+>              return 0;
+>          case 'V':
+>              printf(QEMU_IMG_VERSION);
+> @@ -5920,6 +5828,10 @@ int main(int argc, char **argv)
+>          }
+>      }
+>  
+> +    if (argc < 2) {
+> +        error_exit(NULL, "Not enough arguments");
+> +    }
+> +
+>      cmdname = argv[optind];
+>  
+>      /* reset getopt_long scanning */
+
+Basically as an end result we get
+
+
+
+qemu-img version 8.2.50 (v8.2.0-1219-g51870ffcbb)
+Copyright (c) 2003-2023 Fabrice Bellard and the QEMU Project developers
+QEMU disk image utility
+
+usage: qemu-img [standard options] command [--help | command options]
+
+Standard options:
+
+  -h|--help
+      display this help and exit
+  -V|--version
+      display version info and exit
+  -T|--trace TRACE
+      specify tracing options:
+      [[enable=]<pattern>][,events=<file>][,file=<file>]
+
+Recognized commands (run qemu-img command --help for command-specific help):
+
+  amend - Update format-specific options of the image
+  bench - Run simple image benchmark
+  bitmap - Perform modifications of the persistent bitmap in the image
+  check - Check basic image integrity
+  commit - Commit image to its backing file
+  compare - Check if two images have the same contents
+  convert - Copy one image to another with optional format conversion
+  create - Create and format new image file
+  dd - Copy input to output with optional format conversion
+  info - Display information about image
+  map - Dump image metadata
+  measure - Calculate file size requred for a new image
+  rebase - Change backing file of the image
+  resize - Resize the image to the new size
+  snapshot - List or manipulate snapshots within image
+
+Supported image formats:
+  blkdebug blklogwrites blkverify bochs cloop compress copy-before-write
+  copy-on-read dmg file ftp ftps gluster host_cdrom host_device http
+  https io_uring iscsi iser luks nbd nfs null-aio null-co nvme nvme-io_uring
+  parallels preallocate qcow qcow2 qed quorum raw rbd replication snapshot-access
+  ssh throttle vdi vhdx virtio-blk-vfio-pci virtio-blk-vhost-user virtio-blk-vhost-vdpa
+  vmdk vpc vvfat
+
+See <https://qemu.org/contribute/report-a-bug> for how to report bugs.
+More information on the QEMU project at <https://qemu.org>.
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
