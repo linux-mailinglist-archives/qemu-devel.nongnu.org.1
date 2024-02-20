@@ -2,133 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E301B85B94F
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 11:41:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F3985B96B
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 11:45:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcNZH-00057s-3h; Tue, 20 Feb 2024 05:41:43 -0500
+	id 1rcNcL-0007kV-LR; Tue, 20 Feb 2024 05:44:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rcNZ6-00057S-JJ
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 05:41:32 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rcNZ5-0001y5-1S
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 05:41:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708425690;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=tS28AKmYaQCY4E+wjJOUAKHL1MXT7cM3NTOL2MiU4+I=;
- b=a/YF/1I5b53+EzO2j1eZ24Eczu7AVYjc8LVEa4mmkRTAPqSFJDgTkx22BW9AjbSmSUA6IN
- ivltexAQ5qG1C2xua09VRIEcIa2HJ4XwwEJX/V5UI6ifIqAHs4j+YB+Zu/oXTd2mB6hVbj
- ZCV/VoWRmIc5Os0Hl4M7ETJhuc+rJ/E=
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
- [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-541-72J6aYuPO2eudVNIUPYR7Q-1; Tue, 20 Feb 2024 05:41:28 -0500
-X-MC-Unique: 72J6aYuPO2eudVNIUPYR7Q-1
-Received: by mail-oi1-f200.google.com with SMTP id
- 5614622812f47-3c15bef104bso2403228b6e.1
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 02:41:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rcNcJ-0007k8-ST
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 05:44:51 -0500
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rcNcH-0002fW-VC
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 05:44:51 -0500
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-511976c126dso6437178e87.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 02:44:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708425888; x=1709030688; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=NDP3py1mD74J9J6jtctk4StkvJa47UeYUeejEIihAyw=;
+ b=yPxp7/DPTouy6Bnuds6vWkZqztpaVaI1CT8pTeKjjOBah1UtIcIj7iNUMIzB2y+YsH
+ 3WSRwiZjCOEVe+KuQB19JrcGMP/EIkAAinjrvtdBkH4j/7vJpksnGtxrlYfGyZHeDk/X
+ avtIM5Wh97gyQUCG5FcR5loURDbGYP/yKpIgxZbb+mv7kcBCyZWTRYvXXGtk1NrWIKk0
+ S64+p2O9MyUaKyL3QbDLWtCZEvXV6qUr39xaU3mFHzD24kX+oKKX0TStORWPwU6wSB7v
+ wcEkclgF/VzqIothIO9tKmKMHtwJmfBcskga892AnRPesbBA2YcnNQigg2UuQqZjmNPI
+ TafA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708425687; x=1709030487;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tS28AKmYaQCY4E+wjJOUAKHL1MXT7cM3NTOL2MiU4+I=;
- b=Pg331QnI1bleRTTSko89Cp6S8SVHZbnNM/WA/036+1VIFYRTcrWe5LK4qfVeGSA0Hj
- FIV2TxYHXEM0CbY+bliNNx/NDRHS719VSElf/E8NAB5omv1UTNNqFbjxnzLqiKBrc2iR
- NSrK1IzWTRCKZ+5nr1kf3Pj2VaaQ+d/dyloOxlqQCYuDuzX10n1+M2fJfGATSGzDD/0i
- UsmqXqINKVI+QaE8yPa9mfZ4AWVhtcSOGT9MikzpQM60CzKrz5G1dTTtyJu12jr6RzXc
- MB4vp88X1zgFWqqMXaDXj8mbHk9qpBDAMGABuODFKMoSJhdeikDo53wRQSE3nFcolfY3
- Wiuw==
-X-Gm-Message-State: AOJu0YwX2CGoPWsUFGF816WH5ieADBuNjRJKxcB/4NtS+zIjTKj1eUrH
- pIAdE3AYKf9zDivzi25ygpB0ULHzC9yRZeUlGH9itXm46GnoMgiSogdGUT9n0QrUTZvjc3XV2/P
- kiFuk0j5nwEdi+goJR+ffVefGGg4tZh4ySfrFcwB2rdlnX3hT/wHU
-X-Received: by 2002:a05:6808:3092:b0:3c1:5f15:2c74 with SMTP id
- bl18-20020a056808309200b003c15f152c74mr4366917oib.40.1708425687793; 
- Tue, 20 Feb 2024 02:41:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE1u48VXl1b1H40DKDdlKzyrMV9EscImFh1iKUKz52HbchkMANej4AN0JrlqtrY6w0uv8GZRQ==
-X-Received: by 2002:a05:6808:3092:b0:3c1:5f15:2c74 with SMTP id
- bl18-20020a056808309200b003c15f152c74mr4366900oib.40.1708425687445; 
- Tue, 20 Feb 2024 02:41:27 -0800 (PST)
-Received: from [192.168.0.9] (ip-109-43-178-100.web.vodafone.de.
- [109.43.178.100]) by smtp.gmail.com with ESMTPSA id
- ld11-20020a056214418b00b00686ac3c9db4sm4251417qvb.98.2024.02.20.02.41.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Feb 2024 02:41:27 -0800 (PST)
-Message-ID: <ac390641-2588-4b9a-8d77-91753f79e851@redhat.com>
-Date: Tue, 20 Feb 2024 11:41:22 +0100
+ d=1e100.net; s=20230601; t=1708425888; x=1709030688;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NDP3py1mD74J9J6jtctk4StkvJa47UeYUeejEIihAyw=;
+ b=U6/iQlh67vvzuOX2uH7Crgr8IxxeMyV/b2QPCkeTBLPai0EIvsAgSNjAQDbCqhefck
+ O7Aqpa9yiknNJNB11TdR77PeuTKXaPU3o13mffJ8Y4KpffzHLRSkQ8CrBd7sqgp87Df+
+ mfB2qRBtVWIzQBz8OfWqYT4gIySe6f1D0MfMbVj56gdtqFHaghe8PIhlf0mqf8RAYZJt
+ xqOZp8E/7vYQ7QtvfvuisDhGvTE8t3gyD4/ER1dYyz4l8HHWJKdSohapYNQ6SlYp17Bm
+ hqphr5BiDWz++/hjINbGPYVVe5xI+i6NMZGGq20rM+vonsET6eyLtvYHpHxpF9jdyB6W
+ m7/g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX/nuQT0btDCndT0AZ/zaLQHLbLCbyqzI59IfwXvYXOoTSNz4TX8GjxZaxK8+ILMyB4I8DIShfkKyTfBRVsjYCKNyXd3rU=
+X-Gm-Message-State: AOJu0YzSgMmZk3Vid0C1rEk2vqmSgrOnxz/KhvlZF95nAGVT8sfuuIGu
+ 1YdywmDAe4X/MBoaiyutPKilqGoeM8LdoNoNfGPmNOSs8K1L5WgrCZbwiYzYUq4=
+X-Google-Smtp-Source: AGHT+IGFxHUobSnV4ACIV1E8ZYrDaY7p/x8eOwJQUkRYVpK5sX3uXjrW8KXH+7XYQUteaarbsfKJ4A==
+X-Received: by 2002:a05:6512:3d8d:b0:512:be44:6570 with SMTP id
+ k13-20020a0565123d8d00b00512be446570mr2613745lfv.36.1708425887986; 
+ Tue, 20 Feb 2024 02:44:47 -0800 (PST)
+Received: from meli.delivery (adsl-101.37.6.0.tellas.gr. [37.6.0.101])
+ by smtp.gmail.com with ESMTPSA id
+ ew14-20020a056402538e00b005602346c3f5sm3537905edb.79.2024.02.20.02.44.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Feb 2024 02:44:47 -0800 (PST)
+Date: Tue, 20 Feb 2024 12:42:28 +0200
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-trivial@nongnu.org, qemu-devel@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>,
+ Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Hongren (Zenithal) Zheng <i@zenithal.me>,
+ "Canokeys.org" <contact@canokeys.org>
+Subject: Re: [PATCH v1 01/21] docs: correct typos
+User-Agent: meli 0.8.5-rc.3
+References: <cover.1708419115.git.manos.pitsidianakis@linaro.org>
+ <135bbfcb6dd09377cfd39fb73c862cd0fb66bb20.1708419115.git.manos.pitsidianakis@linaro.org>
+ <20240220053538-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20240220053538-mutt-send-email-mst@kernel.org>
+Message-ID: <95hul.sppswhjb0hah@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] tests/qtest: Add testcase for BCM2835 BSC
-Content-Language: en-US
-To: Rayhan Faizel <rayhan.faizel@gmail.com>
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, philmd@linaro.org,
- pbonzini@redhat.com, qemu-arm@nongnu.org, Laurent Vivier <lvivier@redhat.com>
-References: <20240219225958.2421873-1-rayhan.faizel@gmail.com>
- <20240219225958.2421873-4-rayhan.faizel@gmail.com>
- <e61e02ee-e181-4ea3-b079-638b50889742@redhat.com>
- <CAKUh+Qf5=kgUC3H9uWy6fAxB=76Tai28D6hPQ=qMwxc92YpNyA@mail.gmail.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <CAKUh+Qf5=kgUC3H9uWy6fAxB=76Tai28D6hPQ=qMwxc92YpNyA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x12b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.072,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -144,17 +104,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/02/2024 11.30, Rayhan Faizel wrote:
-> Hi Thomas,
-> 
-> Do you want me to add an SPDX line to the other two commits or will just 
-> this one suffice?
+On Tue, 20 Feb 2024 12:36, "Michael S. Tsirkin" <mst@redhat.com> wrote:
+>On Tue, Feb 20, 2024 at 10:52:08AM +0200, Manos Pitsidianakis wrote:
+>> Correct typos automatically found with the `typos` tool
+>> <https://crates.io/crates/typos>
+>> 
+>> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+>
+>Acked-by: Michael S. Tsirkin <mst@redhat.com>
+>
+>> ---
+>>  docs/devel/ci-jobs.rst.inc      | 2 +-
+>>  docs/devel/docs.rst             | 2 +-
+>>  docs/devel/testing.rst          | 2 +-
+>>  docs/interop/prl-xml.txt        | 2 +-
+>>  docs/interop/vhost-user.rst     | 2 +-
+>>  docs/system/devices/canokey.rst | 2 +-
+>>  6 files changed, 6 insertions(+), 6 deletions(-)
+>> 
+>> diff --git a/docs/devel/ci-jobs.rst.inc b/docs/devel/ci-jobs.rst.inc
+>> index 4c39cdb2d9..6678b4f4ef 100644
+>> --- a/docs/devel/ci-jobs.rst.inc
+>> +++ b/docs/devel/ci-jobs.rst.inc
+>> @@ -147,7 +147,7 @@ Set this variable to 1 to create the pipelines, but leave all
+>>  the jobs to be manually started from the UI
+>>  
+>>  Set this variable to 2 to create the pipelines and run all
+>> -the jobs immediately, as was historicaly behaviour
+>> +the jobs immediately, as was historically behaviour
+>
+>as long as we do this let's fix grammar too?
+>
+>as was historically the behaviour
 
-I think it wouldn't hurt to add them to the new files there, too, but 
-there's no rule in the QEMU development process that you have to do it, so 
-it's up to you.
+After the fact, I think it should be "as was historical behaviour".
 
-  Thomas
+I will re-spin with only this change, and keep the Acks/RoBs if that is 
+okay with everyone.
 
+Thanks,
 
+>
+>>  QEMU_CI_AVOCADO_TESTING
+>>  ~~~~~~~~~~~~~~~~~~~~~~~
+>> diff --git a/docs/devel/docs.rst b/docs/devel/docs.rst
+>> index 50ff0d67f8..a7768b5311 100644
+>> --- a/docs/devel/docs.rst
+>> +++ b/docs/devel/docs.rst
+>> @@ -21,7 +21,7 @@ are processed in two ways:
+>>  
+>>  The syntax of these ``.hx`` files is simple. It is broadly an
+>>  alternation of C code put into the C output and rST format text
+>> -put into the documention. A few special directives are recognised;
+>> +put into the documentation. A few special directives are recognised;
+>>  these are all-caps and must be at the beginning of the line.
+>>  
+>>  ``HXCOMM`` is the comment marker. The line, including any arbitrary
+>> diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
+>> index bd132306c1..aa96eacec5 100644
+>> --- a/docs/devel/testing.rst
+>> +++ b/docs/devel/testing.rst
+>> @@ -728,7 +728,7 @@ For example to setup the HPPA ports builds of Debian::
+>>      EXECUTABLE=(pwd)/qemu-hppa V=1
+>>  
+>>  The ``DEB_`` variables are substitutions used by
+>> -``debian-boostrap.pre`` which is called to do the initial debootstrap
+>> +``debian-bootstrap.pre`` which is called to do the initial debootstrap
+>>  of the rootfs before it is copied into the container. The second stage
+>>  is run as part of the build. The final image will be tagged as
+>>  ``qemu/debian-sid-hppa``.
+>> diff --git a/docs/interop/prl-xml.txt b/docs/interop/prl-xml.txt
+>> index 7031f8752c..cf9b3fba26 100644
+>> --- a/docs/interop/prl-xml.txt
+>> +++ b/docs/interop/prl-xml.txt
+>> @@ -122,7 +122,7 @@ Each Image element has following child elements:
+>>      * Type - image type of the element. It can be:
+>>               "Plain" for raw files.
+>>               "Compressed" for expanding disks.
+>> -    * File - path to image file. Path can be relative to DiskDecriptor.xml or
+>> +    * File - path to image file. Path can be relative to DiskDescriptor.xml or
+>>               absolute.
+>>  
+>>  == Snapshots element ==
+>> diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
+>> index ad6e142f23..d1ed39dfa0 100644
+>> --- a/docs/interop/vhost-user.rst
+>> +++ b/docs/interop/vhost-user.rst
+>> @@ -989,7 +989,7 @@ When reconnecting:
+>>  
+>>     #. If ``d.flags`` is not equal to the calculated flags value (means
+>>        back-end has submitted the buffer to guest driver before crash, so
+>> -      it has to commit the in-progres update), set ``old_free_head``,
+>> +      it has to commit the in-progress update), set ``old_free_head``,
+>>        ``old_used_idx``, ``old_used_wrap_counter`` to ``free_head``,
+>>        ``used_idx``, ``used_wrap_counter``
+>>  
+>> diff --git a/docs/system/devices/canokey.rst b/docs/system/devices/canokey.rst
+>> index cfa6186e48..7f3664963f 100644
+>> --- a/docs/system/devices/canokey.rst
+>> +++ b/docs/system/devices/canokey.rst
+>> @@ -14,7 +14,7 @@ CanoKey [1]_ is an open-source secure key with supports of
+>>  All these platform-independent features are in canokey-core [3]_.
+>>  
+>>  For different platforms, CanoKey has different implementations,
+>> -including both hardware implementions and virtual cards:
+>> +including both hardware implementations and virtual cards:
+>>  
+>>  * CanoKey STM32 [4]_
+>>  * CanoKey Pigeon [5]_
+>> -- 
+>> γαῖα πυρί μιχθήτω
+>
 
