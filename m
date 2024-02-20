@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8267985B625
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:56:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 251FF85B60A
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:54:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcLsM-0008Kc-MX; Tue, 20 Feb 2024 03:53:20 -0500
+	id 1rcLsQ-0008QT-KT; Tue, 20 Feb 2024 03:53:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rcLsI-0008Il-Vg
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:15 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ id 1rcLsK-0008Jg-ES
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:16 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rcLsH-00089W-8r
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:14 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-55c2cf644f3so6983492a12.1
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:53:12 -0800 (PST)
+ id 1rcLsI-00089t-Rv
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:16 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-564d780d55fso181533a12.3
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:53:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708419191; x=1709023991; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708419193; x=1709023993; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nQh9A56lkLDD4DdOG4kCUxj3FidOpLJjLkxaSgM2CaE=;
- b=lIDQNyl9kjjsab09AeHpSGkJCvVxkc+kZnGb2nJLWBgIJWO+HnSUjxwRfCY85Q7c09
- 3FrzOujvgtN3bYn1q+3VBQPLEMx/sK6k4RwRAUN6osExkoW3ZnS3O7RwHoregYzdBoSj
- p1cXo4ystrMk/tOv/7uJzCC2agwkMOi4MSOD37Gcumnt8R0sFuw2QLNPtMwB7WodZvEb
- WEajvB6uzM86drusGjgg1axYt/jP2/O89RcxgSrrudAslfBH3zMJMM3rpFWmFq/g68qn
- Wb/IFqcoQuuIC+4ahPEvcGNNWxc3kBZ3Ktu1Es6ri+2S5qzYldqnAqg8C78SrKAA+USd
- tAIQ==
+ bh=Ibal5kJU8cDAhCTBUG3CNnHg6SzZrp5LopRtcroEZos=;
+ b=WUQuaAfAUhGXQTJvMQvm45nquw3m7ofKqzS725wKuojj5BWOsdqfbuM54vPXpHQvPG
+ 8PSEpRlSNIjWc34eWINWBF5Mi8eht1qUUTR/9TJum3lxe5mpvKdUTXrtK4jAvEUS9S/f
+ z8VOHKmOPLNl40RZG/KYVt1fcYwk8K02R5JaKKlXglcASwbXBXLc+Ma69WayYoiipqe4
+ FyUBfMD/aXlR/pMpFJtPrNYnRIVbI8NUEvle2/EC2p8kiPT/25htipdXjmaStUHIabuX
+ SJHuf/TGg00NIFjqt2O6QVZCriYgUzyyunwXoqOzU6M1uaK3tg3sjwT1EksoFnZOSMS3
+ EQRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708419191; x=1709023991;
+ d=1e100.net; s=20230601; t=1708419193; x=1709023993;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nQh9A56lkLDD4DdOG4kCUxj3FidOpLJjLkxaSgM2CaE=;
- b=FIa3Xac3y15ioZi2YE+24YbFCwmeP7TjgdIMe8J+vPO4JEPTm2ud5k9uRM7580pL21
- iESAOUcG/5AMoW65PgshxK4kmBIuDPyA1MSKFZRK5cH201N5TjW3fTeCQS0cUz/uz8WC
- FGO3hC2rj7jPiBI9IJkNMTN0ul/fYK/MbumFCkd6tqv4kDw1gaFv44TmhHfHR7fFSmrx
- mLNc0BNLYmP4qVuoQM4dg5YmXzXps4LLRhDt3J1iSJTbnQ9fydReve/2sEhsGL6ohmkM
- pM4Sc7UOrENdNF8idT75YtMBfGBlYb3Y8epYM5nLcXusv4XC+z0brrcGXK2OxRQXnONb
- Y2Uw==
-X-Gm-Message-State: AOJu0YydhjjPZtRzb8TGvSWdiWN2+pbqnniPlszZi7lPjmAFya6IbEYd
- mME5uNtqH9DSEPGAJZaTvbvbCxCFfdKqOQh50eQajyptfeIOvPnlXz21gF1LnAg=
-X-Google-Smtp-Source: AGHT+IEC7c2r5N0afUGvXvJWPlWY4A+Dsrkpr8vqY9H3aPY7kySXvlvwTVLlbh0dC/Q/u7asR7L2+g==
-X-Received: by 2002:a17:906:fa0c:b0:a3e:998a:cab6 with SMTP id
- lo12-20020a170906fa0c00b00a3e998acab6mr3427880ejb.74.1708419191525; 
- Tue, 20 Feb 2024 00:53:11 -0800 (PST)
+ bh=Ibal5kJU8cDAhCTBUG3CNnHg6SzZrp5LopRtcroEZos=;
+ b=vF+vi+fS5drkTCNVfohq3DfTKhveumxFrLU5I+SwCgoFoaqQnGNt1q2Ggcms/zmRRu
+ yBurAoVcbxVwx+zOUIQ8/4ie3oBTfBwolX8wbDIyXUqicq78FluAkfdtM3xRaf+X4mg2
+ 3lD8OVWDzZz2pOhOFPNdNq6escLzZVCq6xQnyYSoh2eAcyvOGu+B5YJcNH6RA6yYvgjP
+ HK5k7d6TJGlJyNG/fWk0U/f6IKajABsQ+ugwijr2SGELNIkBaYDkuZq1gJTtVJwcOx2N
+ MmOqfNCFX/bdZGfNKWMTt4xsCHH1t3h+a7kExntpGIRApzHu9rAyB8mpEl7ivoXjTps+
+ RTrA==
+X-Gm-Message-State: AOJu0Ywj8URuR/34x7iWI4uDfcLXMqLG/R0jZyabzk49AjV7wfkhe2Pj
+ MSfaaJBsoU0BnLxpuJdrbqrjhm9h7Gz7nsoOcU9ddknSMeiXNFmP50Kt1w9aqj8=
+X-Google-Smtp-Source: AGHT+IGKrIgTriG0BwstuH6SgcnuLPqF2z//8LNow0szcvdnnCuYsdwmL6TQpxOfiPbwLcyO5AUsrg==
+X-Received: by 2002:a17:906:40cb:b0:a3e:405c:d5d1 with SMTP id
+ a11-20020a17090640cb00b00a3e405cd5d1mr4474359ejk.50.1708419193047; 
+ Tue, 20 Feb 2024 00:53:13 -0800 (PST)
 Received: from localhost.localdomain (adsl-245.37.6.163.tellas.gr.
  [37.6.163.245]) by smtp.gmail.com with ESMTPSA id
- cu3-20020a170906ba8300b00a3d014fa12esm3747876ejd.196.2024.02.20.00.53.10
+ cu3-20020a170906ba8300b00a3d014fa12esm3747876ejd.196.2024.02.20.00.53.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Feb 2024 00:53:11 -0800 (PST)
+ Tue, 20 Feb 2024 00:53:12 -0800 (PST)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-trivial@nongnu.org
 Cc: qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v1 04/21] accel/tcg: correct typos
-Date: Tue, 20 Feb 2024 10:52:11 +0200
-Message-Id: <a7bdde5bf92b22255cb6d280330bab94bdb59a79.1708419115.git.manos.pitsidianakis@linaro.org>
+ Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v1 05/21] loongson3: correct typos
+Date: Tue, 20 Feb 2024 10:52:12 +0200
+Message-Id: <62438f7dd20e0c31450372e5b09ef0a5a5f9b561.1708419115.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1708419115.git.manos.pitsidianakis@linaro.org>
 References: <cover.1708419115.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,22 +99,31 @@ Correct typos automatically found with the `typos` tool
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- accel/tcg/ldst_atomicity.c.inc | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/mips/loongson3_bootp.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
-index 33a04dec52..97dae70d53 100644
---- a/accel/tcg/ldst_atomicity.c.inc
-+++ b/accel/tcg/ldst_atomicity.c.inc
-@@ -76,7 +76,7 @@ static int required_atomicity(CPUState *cpu, uintptr_t p, MemOp memop)
-         /*
-          * Examine the alignment of p to determine if there are subobjects
-          * that must be aligned.  Note that we only really need ctz4() --
--         * any more sigificant bits are discarded by the immediately
-+         * any more significant bits are discarded by the immediately
-          * following comparison.
-          */
-         tmp = ctz32(p);
+diff --git a/hw/mips/loongson3_bootp.h b/hw/mips/loongson3_bootp.h
+index d525ab745a..1b0dd3b591 100644
+--- a/hw/mips/loongson3_bootp.h
++++ b/hw/mips/loongson3_bootp.h
+@@ -25,7 +25,7 @@
+ struct efi_memory_map_loongson {
+     uint16_t vers;               /* version of efi_memory_map */
+     uint32_t nr_map;             /* number of memory_maps */
+-    uint32_t mem_freq;           /* memory frequence */
++    uint32_t mem_freq;           /* memory frequency */
+     struct mem_map {
+         uint32_t node_id;        /* node_id which memory attached to */
+         uint32_t mem_type;       /* system memory, pci memory, pci io, etc. */
+@@ -156,7 +156,7 @@ struct board_devices {
+ 
+ struct loongson_special_attribute {
+     uint16_t vers;               /* version of this special */
+-    char special_name[64];       /* special_atribute_name */
++    char special_name[64];       /* special_attribute_name */
+     uint32_t loongson_special_type; /* type of special device */
+     /* for each device's resource */
+     struct resource_loongson resource[MAX_RESOURCE_NUMBER];
 -- 
 γαῖα πυρί μιχθήτω
 
