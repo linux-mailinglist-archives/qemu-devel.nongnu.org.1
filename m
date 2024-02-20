@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E722D85B64B
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:58:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5400185B612
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:55:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcLsZ-0000PY-Cs; Tue, 20 Feb 2024 03:53:31 -0500
+	id 1rcLsa-0000QM-Qy; Tue, 20 Feb 2024 03:53:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rcLsV-0000Eg-7c
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:27 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ id 1rcLsW-0000L6-Qs
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:28 -0500
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rcLsO-0008Cq-RY
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:26 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-a26fa294e56so819094366b.0
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:53:20 -0800 (PST)
+ id 1rcLsQ-0008D5-0Y
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:28 -0500
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-a3e891b5e4eso202764866b.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:53:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708419199; x=1709023999; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708419200; x=1709024000; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kfSQCPN1GGM5Zej4RQdSlhjLn3KZeYb7da7sMakzv6E=;
- b=WGXkxvlZ6X0ljqBuDLkDQUKYHZPNkK4xEiK0Q7QpmgnM2c8+/UnKk/TtuxEQOxlfBw
- /OJF9aQZRgw1rpTdv45AEImJTSo36yLxKRAjCR5VgGTDl7G/Dnkh8S4zlEiUy8SrjMEW
- 9OzUbgsSU0AsRlSSoQ1iB6T5C6xTpjeBc2cteKU6QG6MzAGOyNveJ2ZBOsKTPHyYVfUk
- PRTKpS7g4T4QMBhrkqEciDwMelQ6TP04kQu7xuXeO93TxoicO+Y7p1LOLm7VTdvfcPOh
- WJjSGhRvHo6XqRkNym5YsWAL5nLqMKJ5CgKrJjyDG6M4L7BJtMVGpMBHqTrR4mtfMczn
- yfRw==
+ bh=wInO8bPcUIy1thV+iCEEHgOMyRBvhF+gY8bxTe/IrWw=;
+ b=tGsV/9nYK6KGO4LofCwDwwVgJSsrhx7luTmm/pG9ULXII7EbDPTuNOPGPiL2wP2Nev
+ aIzMhdO1gprBauDsC2myCXvtyO/+dTnYtDrktwVIQ4f69u3b6PPoP0MKqC6b8OGcOZip
+ 8ks7qTcDetjZOZOO5xjxPfd54z1bHI/n6jClh0jIA3ZrJLzgaXJbKqfcmNzJFQKbcmKK
+ /OcP0qgspzUApuJEQoeaev74voMv0RciL0o1KefSPAVgfNsdjgu0neWn+gcdwvxonxTP
+ EkZ0iGS/sgZlBQQvs/ZFyN9/dKVuvDjRVkmOilfkK5jtQPpLCNmoTGhHd/lr/sMzs++Z
+ PnpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708419199; x=1709023999;
+ d=1e100.net; s=20230601; t=1708419200; x=1709024000;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kfSQCPN1GGM5Zej4RQdSlhjLn3KZeYb7da7sMakzv6E=;
- b=xE0EDVIytp3ETEiy4RPIMvFl0BPIlH7lJegBTXxlLI3M/1f1vatSKg5IzqzPONL9N/
- MMybOp/CwSiKSjIfCgG7E2DzTUX6YTrPDMalvJlHaIqI1F+lbwI/omiF8FRFuqFhT77U
- 7bK25b1Lo3Nq9RsU5mbI7ZmT75rm0UAEqj6EJqfsSfJvjmOM7PiiapTtSviELaUB0K9N
- 1F3EwFK8UTnLC9sSjwVRHtpxHR6DObm2kOxb39a5wZfzCsSON+63LbWG7OUJhc/chR1j
- qYjJV/+soiw/H4JO3civpItb9osWj2ybCU+xmJ7mpvkZHwBBJhCHBZw4iTD3zHtMvmhA
- la5w==
-X-Gm-Message-State: AOJu0YxMzRDP/ErIRZwn1MpVlrsaQDUX9dJgLfAALg8l3DSDgbQVP42R
- aF2Xt4Si+Mk1YvrygcG50dH4oQmum36lK45DS9aJOy+XM51vnN9M4TbDHA8NBmc=
-X-Google-Smtp-Source: AGHT+IEBSeLFPPqoXQckZq4L1F+fqEd0CwMFbo5YwT3y/6QTRKiRFcCb7D2n3ONZUh236DgQvtgwLQ==
-X-Received: by 2002:a17:906:f44:b0:a3d:d7f1:35fd with SMTP id
- h4-20020a1709060f4400b00a3dd7f135fdmr10250515ejj.9.1708419199506; 
- Tue, 20 Feb 2024 00:53:19 -0800 (PST)
+ bh=wInO8bPcUIy1thV+iCEEHgOMyRBvhF+gY8bxTe/IrWw=;
+ b=M+qEbXHXrgbrqYr5C6eqM9KHpLEfzwacbXxZnh+kR1dOP6F/m6Fmb/7IjYIZSJH4Vm
+ vJ9zEAXo3L9m9Ma4Uo/guwX8zBQJ7RyzXZ9G7gj1+zw2qRVECmlErmHaNeFg/CMzjj38
+ qTEXvMezeUGoyzXN1M05wItDRqLQxuuQ1eas1kZilqm7Cx0iB/IUF2oRk+coi6lQ+GvB
+ X43F3LINvrx7EQe8WFCD4VF6ezqKCxnSj6RUV/bWdrd5hY1SP/+kqw+Qv5OIQ8hlV8Oe
+ 1PUeTWDHx042Mnv+t+Ut0LLZbW7jbaEnS/5ZCX0oiPjzU/KTr6LFUm/ovS2TPhd5AKRM
+ YM8w==
+X-Gm-Message-State: AOJu0YwLCYsFz4EANPl2/X7fMqlgozV24iX9wCvS8wz3Pe6rHSWQCQZM
+ qSrMU6Jfvev8MEYpgeSXdPfL0n9JHzj1ZNkV6bBMjusrRJcPU/udebBzSIpy5vTnAOtKQD8wwN1
+ fu1E=
+X-Google-Smtp-Source: AGHT+IHXxMtbuZiVe7Aa8Mle5ntWAs+56CJ3SEwLgEMUnoQh9LyMVjwHfUu5NBXP6rkZvHu1DQv+QA==
+X-Received: by 2002:a17:906:ff53:b0:a3e:c1ec:7bff with SMTP id
+ zo19-20020a170906ff5300b00a3ec1ec7bffmr2476895ejb.68.1708419200743; 
+ Tue, 20 Feb 2024 00:53:20 -0800 (PST)
 Received: from localhost.localdomain (adsl-245.37.6.163.tellas.gr.
  [37.6.163.245]) by smtp.gmail.com with ESMTPSA id
- cu3-20020a170906ba8300b00a3d014fa12esm3747876ejd.196.2024.02.20.00.53.18
+ cu3-20020a170906ba8300b00a3d014fa12esm3747876ejd.196.2024.02.20.00.53.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Feb 2024 00:53:19 -0800 (PST)
+ Tue, 20 Feb 2024 00:53:20 -0800 (PST)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-trivial@nongnu.org
 Cc: qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
-Subject: [PATCH v1 10/21] hw/arm/omap.h: correct typos
-Date: Tue, 20 Feb 2024 10:52:17 +0200
-Message-Id: <3a8b80f6427bf84580eec8f7c5c411fab5419e1f.1708419115.git.manos.pitsidianakis@linaro.org>
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
+Subject: [PATCH v1 11/21] hw/cxl/cxl_device.h: correct typos
+Date: Tue, 20 Feb 2024 10:52:18 +0200
+Message-Id: <76ecf49e448d00c6b1b09446c832e007dd1f811a.1708419115.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1708419115.git.manos.pitsidianakis@linaro.org>
 References: <cover.1708419115.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,22 +99,31 @@ Correct typos automatically found with the `typos` tool
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- include/hw/arm/omap.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/hw/cxl/cxl_device.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/arm/omap.h b/include/hw/arm/omap.h
-index 067e9419f7..2f59220c0e 100644
---- a/include/hw/arm/omap.h
-+++ b/include/hw/arm/omap.h
-@@ -1008,7 +1008,7 @@ void omap_mpu_wakeup(void *opaque, int irq, int req);
-                       __func__, paddr)
- 
- /* OMAP-specific Linux bootloader tags for the ATAG_BOARD area
--   (Board-specifc tags are not here)  */
-+   (Board-specific tags are not here)  */
- #define OMAP_TAG_CLOCK		0x4f01
- #define OMAP_TAG_MMC		0x4f02
- #define OMAP_TAG_SERIAL_CONSOLE	0x4f03
+diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+index d8e184c4ba..279b276bda 100644
+--- a/include/hw/cxl/cxl_device.h
++++ b/include/hw/cxl/cxl_device.h
+@@ -268,7 +268,7 @@ void cxl_event_set_status(CXLDeviceState *cxl_dstate, CXLEventLogType log_type,
+ /*
+  * Helper macro to initialize capability headers for CXL devices.
+  *
+- * In CXL r3.1 Section 8.2.8.2: CXL Device Capablity Header Register, this is
++ * In CXL r3.1 Section 8.2.8.2: CXL Device Capability Header Register, this is
+  * listed as a 128b register, but in CXL r3.1 Section 8.2.8: CXL Device Register
+  * Interface, it says:
+  * > No registers defined in Section 8.2.8 are larger than 64-bits wide so that
+@@ -276,7 +276,7 @@ void cxl_event_set_status(CXLDeviceState *cxl_dstate, CXLEventLogType log_type,
+  * > followed, the behavior is undefined.
+  *
+  * > To illustrate how the fields fit together, the layouts ... are shown as
+- * > wider than a 64 bit register. Implemenations are expected to use any size
++ * > wider than a 64 bit register. Implementations are expected to use any size
+  * > accesses for this information up to 64 bits without lost of functionality
+  *
+  * Here we've chosen to make it 4 dwords.
 -- 
 γαῖα πυρί μιχθήτω
 
