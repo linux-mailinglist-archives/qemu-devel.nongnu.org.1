@@ -2,97 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 060CA85B930
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 11:37:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF6E85B948
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 11:41:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcNUd-0001y8-3c; Tue, 20 Feb 2024 05:36:55 -0500
+	id 1rcNYj-0004Xd-6O; Tue, 20 Feb 2024 05:41:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rcNUa-0001xb-TO
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 05:36:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rcNUY-0001GJ-Pp
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 05:36:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708425410;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=IZ1/3do3csR+939GBQz7EblHL3Am9aGcs6d7LZRxae8=;
- b=DzAcv/wvC4KqupNEQsVw/BbAlHtgAQ4bEKXgOBKDMAxESiJ/oPszCaXDoGR0Z6CVZSBHZ1
- /gzZlRGHY7AkQlLca+8pCooTLVbW9pZUIBPO2h9NV84WQoKr4cgwkx4nWRx7MEX1mcq7vB
- svBxp+iYTZvoQn+FgUKUcxFb6KwiQuQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-517-0RNgF6r8OM6Q2MrGcRrRqA-1; Tue, 20 Feb 2024 05:36:47 -0500
-X-MC-Unique: 0RNgF6r8OM6Q2MrGcRrRqA-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-411c650ec25so30601315e9.1
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 02:36:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rcNYg-0004XQ-MH
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 05:41:06 -0500
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rcNYe-0001uP-C7
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 05:41:05 -0500
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-a3e891b5e4eso215363766b.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 02:41:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708425662; x=1709030462; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=Fk/8xWzhbIT0C/mQXPqK/yaZTZF3wYuFrin0OLRQpfo=;
+ b=kLLYUaCE/OKgUNF9qXYhG5rQqm85f8jIfaL++tTpRP6Y2fswmFDpVgIjkCc5hCuamg
+ LxxvwDYvPlLZUot2JuXTHFtJl37Fb+ftIFhQt+6t34zYCbLs6mnHsvRH4lcJKBzAvM/T
+ U6qT7X+v2+yWNWVUGEsa1w7QtOVaH3RleojD5nBUcChlRKMXG++AKmAltiqmgZWox98r
+ GtgrbqDXs5/O21P/Zg5JP6BCRrBNLZW1ThNJn77BNgWi3kK5CxB+XjOyhCWsolLtUC/E
+ A6Q4TK3p4RaUy3F48uK9yAAgrzQm0SHH0/mWtIEEtGWC+/Lgr3KW9HIheDjNH46aQSHO
+ 1W/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708425406; x=1709030206;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IZ1/3do3csR+939GBQz7EblHL3Am9aGcs6d7LZRxae8=;
- b=tfnkvYWkcxjX9cz5pJoPetalfCz20qei8Wgqb6wyiJT56EsLAJtUuB0i3T0Pvmjbq5
- bnv08jxoDxvuUk2HEnaVposrzu2lgBa2t9A5YYfzyS16W2i9lBcy/+30bAes0ueV1Tzk
- q7Rqwkl87VtW71kPGHo+LhbeDvJsQKBLHqP3JBjAg6kVPandSw8Q/Bm2qKuDOrQOGVdl
- Y/rpWd3ZQtxFCzsc9t6rt0O5M824JeCd9JK0sX7qUVdgxK05wI9hHIiBZCqnC01aDU0e
- A2UNgVd1rakts4Zd81Qt/48/EJPvusto+patC5AkzR9aTlO/REk4hitxeRcdS/NlorA1
- F0SQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVSXMalGAKJXt0Q6Sd0cV7WH7RplqMZwPYsJ6FqBmdjz+p5i1q7OIKU+D1t8dF8Zha1Z3/SAiuQJ4srXnasFP0M/aSgbB0=
-X-Gm-Message-State: AOJu0YyXI4pBorAHh2+/afeY+Q+dPiZTIu0KCBss1w0NsZJgxOySB6NX
- Z5ZeCklWKizqTf+lzNoBzLWlSo8mYZgPJiilQi8y4ZKDzvanjJg8W6DYCaI07YAhrNTm3P4ydbO
- FAkZ7pwIRAJ5LLxQGlqKXdFNwrs9/oQbVyKF3kcwWrKmAjovtwpKG
-X-Received: by 2002:a05:600c:3147:b0:412:5af3:bf4f with SMTP id
- h7-20020a05600c314700b004125af3bf4fmr5111184wmo.4.1708425406630; 
- Tue, 20 Feb 2024 02:36:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IExcnrculQ+vehXsnDUiL1NBTflE+xykEai/C0tZgcgysZpzVYfM8qQ7o6D47W0OAKma1Fk/w==
-X-Received: by 2002:a05:600c:3147:b0:412:5af3:bf4f with SMTP id
- h7-20020a05600c314700b004125af3bf4fmr5111168wmo.4.1708425406224; 
- Tue, 20 Feb 2024 02:36:46 -0800 (PST)
-Received: from redhat.com ([2a02:14f:175:1376:5352:3710:49bb:419e])
+ d=1e100.net; s=20230601; t=1708425662; x=1709030462;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Fk/8xWzhbIT0C/mQXPqK/yaZTZF3wYuFrin0OLRQpfo=;
+ b=AcRwPmkGFrNLyOmjZYP9+td/kUoM+8LfXWklRpVTKnreRETHaRFwByxocaX+N7lv2a
+ +jjbrEjZlLq3sEqStqyb+FkNKc1EC0qEX9kKt/d4TZrB+5zSXUTdZPgQvoEQkjm1nmIG
+ mtuRLTfOaUrdIJgF0b7xSZQtQchg/YxctKvYJwlWq67nPH5l1x712jL5EuV2JemqPYav
+ Nr4mZ7qqp/WK/AyJ98Lb4htAOamifIjHy1bGz7tC2Eu+kChJByy+R72ZTwcgiEgoblnS
+ UeS0kFc0WqXc4gD96JVa4EGz8k4ScP5TxS6Eo0TD16UkP6jR3xkXTOU/srg85ORAXy6p
+ txaw==
+X-Gm-Message-State: AOJu0YwHYSZRAWWk/8eGBWRatYTULRww+m9ckyFFIZMpKQWHoJ5Q7l38
+ YnNWkR152W2XC+rlpu6Owo7QjK1DBrKo31QDiOn1d1//W5gAfFNmul3gAAG6KxZ/i0QFlhn3tuk
+ 5e4I=
+X-Google-Smtp-Source: AGHT+IF5J8BU+eU2gyUiMoEM/ZV5tgBOsTZmuTJr99IFEjM1GkKq4nlvZ/sMfSz7b3aIiOq6bDvx+A==
+X-Received: by 2002:a17:906:a1cd:b0:a3c:f0ec:cff9 with SMTP id
+ bx13-20020a170906a1cd00b00a3cf0eccff9mr7965873ejb.7.1708425662565; 
+ Tue, 20 Feb 2024 02:41:02 -0800 (PST)
+Received: from meli.delivery (adsl-101.37.6.0.tellas.gr. [37.6.0.101])
  by smtp.gmail.com with ESMTPSA id
- q17-20020a7bce91000000b00412656ba919sm6346436wmj.20.2024.02.20.02.36.43
+ af1-20020a170906998100b00a3ecfef7f1esm1201170ejc.189.2024.02.20.02.41.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Feb 2024 02:36:45 -0800 (PST)
-Date: Tue, 20 Feb 2024 05:36:41 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-trivial@nongnu.org, qemu-devel@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- "Hongren (Zenithal) Zheng" <i@zenithal.me>,
- "Canokeys.org" <contact@canokeys.org>
-Subject: Re: [PATCH v1 01/21] docs: correct typos
-Message-ID: <20240220053538-mutt-send-email-mst@kernel.org>
-References: <cover.1708419115.git.manos.pitsidianakis@linaro.org>
- <135bbfcb6dd09377cfd39fb73c862cd0fb66bb20.1708419115.git.manos.pitsidianakis@linaro.org>
+ Tue, 20 Feb 2024 02:41:02 -0800 (PST)
+Date: Tue, 20 Feb 2024 12:39:22 +0200
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-devel@nongnu.org, Albert Esteve <aesteve@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, stefanha@gmail.com,
+ alex.bennee@linaro.org, philmd@linaro.org, kraxel@redhat.com,
+ marcandre.lureau@gmail.com, Albert Esteve <aesteve@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Subject: Re: [PATCH v4 4/5] hw/virtio: cleanup shared resources
+User-Agent: meli 0.8.5-rc.3
+References: <20240219143423.272012-1-aesteve@redhat.com>
+ <20240219143423.272012-5-aesteve@redhat.com>
+In-Reply-To: <20240219143423.272012-5-aesteve@redhat.com>
+Message-ID: <95hoc.mwh14km4v8ef@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <135bbfcb6dd09377cfd39fb73c862cd0fb66bb20.1708419115.git.manos.pitsidianakis@linaro.org>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.072,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,106 +97,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 20, 2024 at 10:52:08AM +0200, Manos Pitsidianakis wrote:
-> Correct typos automatically found with the `typos` tool
-> <https://crates.io/crates/typos>
+On Mon, 19 Feb 2024 16:34, Albert Esteve <aesteve@redhat.com> wrote:
+>Ensure that we cleanup all virtio shared
+>resources when the vhost devices is cleaned
+>up (after a hot unplug, or a crash).
+>
+>To do so, we add a new function to the virtio_dmabuf
+>API called `virtio_dmabuf_vhost_cleanup`, which
+>loop through the table and removes all
+>resources owned by the vhost device parameter.
+>
+>Also, add a test to verify that the new
+>function in the API behaves as expected.
+>
+>Signed-off-by: Albert Esteve <aesteve@redhat.com>
+>Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+>---
+
+
+
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+
+
+> hw/display/virtio-dmabuf.c        | 21 ++++++++++++++++++++
+> hw/virtio/vhost.c                 |  3 +++
+> include/hw/virtio/virtio-dmabuf.h | 10 ++++++++++
+> tests/unit/test-virtio-dmabuf.c   | 33 +++++++++++++++++++++++++++++++
+> 4 files changed, 67 insertions(+)
+>
+>diff --git a/hw/display/virtio-dmabuf.c b/hw/display/virtio-dmabuf.c
+>index 961094a561..703b5bd979 100644
+>--- a/hw/display/virtio-dmabuf.c
+>+++ b/hw/display/virtio-dmabuf.c
+>@@ -141,6 +141,27 @@ SharedObjectType virtio_object_type(const QemuUUID *uuid)
+>     return vso->type;
+> }
 > 
-> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-
-> ---
->  docs/devel/ci-jobs.rst.inc      | 2 +-
->  docs/devel/docs.rst             | 2 +-
->  docs/devel/testing.rst          | 2 +-
->  docs/interop/prl-xml.txt        | 2 +-
->  docs/interop/vhost-user.rst     | 2 +-
->  docs/system/devices/canokey.rst | 2 +-
->  6 files changed, 6 insertions(+), 6 deletions(-)
+>+static bool virtio_dmabuf_resource_is_owned(gpointer key,
+>+                                            gpointer value,
+>+                                            gpointer dev)
+>+{
+>+    VirtioSharedObject *vso;
+>+
+>+    vso = (VirtioSharedObject *) value;
+>+    return vso->type == TYPE_VHOST_DEV && vso->value.dev == dev;
+>+}
+>+
+>+int virtio_dmabuf_vhost_cleanup(struct vhost_dev *dev)
+>+{
+>+    int num_removed;
+>+
+>+    WITH_QEMU_LOCK_GUARD(&lock) {
+>+        num_removed = g_hash_table_foreach_remove(
+>+            resource_uuids, (GHRFunc) virtio_dmabuf_resource_is_owned, dev);
+>+    }
+>+    return num_removed;
+>+}
+>+
+> void virtio_free_resources(void)
+> {
+>     WITH_QEMU_LOCK_GUARD(&lock) {
+>diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+>index 2c9ac79468..c5622eac14 100644
+>--- a/hw/virtio/vhost.c
+>+++ b/hw/virtio/vhost.c
+>@@ -16,6 +16,7 @@
+> #include "qemu/osdep.h"
+> #include "qapi/error.h"
+> #include "hw/virtio/vhost.h"
+>+#include "hw/virtio/virtio-dmabuf.h"
+> #include "qemu/atomic.h"
+> #include "qemu/range.h"
+> #include "qemu/error-report.h"
+>@@ -1599,6 +1600,8 @@ void vhost_dev_cleanup(struct vhost_dev *hdev)
+>     migrate_del_blocker(&hdev->migration_blocker);
+>     g_free(hdev->mem);
+>     g_free(hdev->mem_sections);
+>+    /* free virtio shared objects */
+>+    virtio_dmabuf_vhost_cleanup(hdev);
+>     if (hdev->vhost_ops) {
+>         hdev->vhost_ops->vhost_backend_cleanup(hdev);
+>     }
+>diff --git a/include/hw/virtio/virtio-dmabuf.h b/include/hw/virtio/virtio-dmabuf.h
+>index 627d84dce9..950cd24967 100644
+>--- a/include/hw/virtio/virtio-dmabuf.h
+>+++ b/include/hw/virtio/virtio-dmabuf.h
+>@@ -119,6 +119,16 @@ struct vhost_dev *virtio_lookup_vhost_device(const QemuUUID *uuid);
+>  */
+> SharedObjectType virtio_object_type(const QemuUUID *uuid);
 > 
-> diff --git a/docs/devel/ci-jobs.rst.inc b/docs/devel/ci-jobs.rst.inc
-> index 4c39cdb2d9..6678b4f4ef 100644
-> --- a/docs/devel/ci-jobs.rst.inc
-> +++ b/docs/devel/ci-jobs.rst.inc
-> @@ -147,7 +147,7 @@ Set this variable to 1 to create the pipelines, but leave all
->  the jobs to be manually started from the UI
->  
->  Set this variable to 2 to create the pipelines and run all
-> -the jobs immediately, as was historicaly behaviour
-> +the jobs immediately, as was historically behaviour
-
-as long as we do this let's fix grammar too?
-
-as was historically the behaviour
-
->  QEMU_CI_AVOCADO_TESTING
->  ~~~~~~~~~~~~~~~~~~~~~~~
-> diff --git a/docs/devel/docs.rst b/docs/devel/docs.rst
-> index 50ff0d67f8..a7768b5311 100644
-> --- a/docs/devel/docs.rst
-> +++ b/docs/devel/docs.rst
-> @@ -21,7 +21,7 @@ are processed in two ways:
->  
->  The syntax of these ``.hx`` files is simple. It is broadly an
->  alternation of C code put into the C output and rST format text
-> -put into the documention. A few special directives are recognised;
-> +put into the documentation. A few special directives are recognised;
->  these are all-caps and must be at the beginning of the line.
->  
->  ``HXCOMM`` is the comment marker. The line, including any arbitrary
-> diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
-> index bd132306c1..aa96eacec5 100644
-> --- a/docs/devel/testing.rst
-> +++ b/docs/devel/testing.rst
-> @@ -728,7 +728,7 @@ For example to setup the HPPA ports builds of Debian::
->      EXECUTABLE=(pwd)/qemu-hppa V=1
->  
->  The ``DEB_`` variables are substitutions used by
-> -``debian-boostrap.pre`` which is called to do the initial debootstrap
-> +``debian-bootstrap.pre`` which is called to do the initial debootstrap
->  of the rootfs before it is copied into the container. The second stage
->  is run as part of the build. The final image will be tagged as
->  ``qemu/debian-sid-hppa``.
-> diff --git a/docs/interop/prl-xml.txt b/docs/interop/prl-xml.txt
-> index 7031f8752c..cf9b3fba26 100644
-> --- a/docs/interop/prl-xml.txt
-> +++ b/docs/interop/prl-xml.txt
-> @@ -122,7 +122,7 @@ Each Image element has following child elements:
->      * Type - image type of the element. It can be:
->               "Plain" for raw files.
->               "Compressed" for expanding disks.
-> -    * File - path to image file. Path can be relative to DiskDecriptor.xml or
-> +    * File - path to image file. Path can be relative to DiskDescriptor.xml or
->               absolute.
->  
->  == Snapshots element ==
-> diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
-> index ad6e142f23..d1ed39dfa0 100644
-> --- a/docs/interop/vhost-user.rst
-> +++ b/docs/interop/vhost-user.rst
-> @@ -989,7 +989,7 @@ When reconnecting:
->  
->     #. If ``d.flags`` is not equal to the calculated flags value (means
->        back-end has submitted the buffer to guest driver before crash, so
-> -      it has to commit the in-progres update), set ``old_free_head``,
-> +      it has to commit the in-progress update), set ``old_free_head``,
->        ``old_used_idx``, ``old_used_wrap_counter`` to ``free_head``,
->        ``used_idx``, ``used_wrap_counter``
->  
-> diff --git a/docs/system/devices/canokey.rst b/docs/system/devices/canokey.rst
-> index cfa6186e48..7f3664963f 100644
-> --- a/docs/system/devices/canokey.rst
-> +++ b/docs/system/devices/canokey.rst
-> @@ -14,7 +14,7 @@ CanoKey [1]_ is an open-source secure key with supports of
->  All these platform-independent features are in canokey-core [3]_.
->  
->  For different platforms, CanoKey has different implementations,
-> -including both hardware implementions and virtual cards:
-> +including both hardware implementations and virtual cards:
->  
->  * CanoKey STM32 [4]_
->  * CanoKey Pigeon [5]_
-> -- 
-> γαῖα πυρί μιχθήτω
-
+>+/**
+>+ * virtio_dmabuf_vhost_cleanup() - Destroys all entries of the shared
+>+ * resources lookup table that are owned by the vhost backend
+>+ * @dev: the pointer to the vhost device that owns the entries. Data is owned
+>+ *       by the called of the function.
+>+ * 
+>+ * Return: the number of resource entries removed.
+>+ */
+>+int virtio_dmabuf_vhost_cleanup(struct vhost_dev *dev);
+>+
+> /**
+>  * virtio_free_resources() - Destroys all keys and values of the shared
+>  * resources lookup table, and frees them
+>diff --git a/tests/unit/test-virtio-dmabuf.c b/tests/unit/test-virtio-dmabuf.c
+>index 20213455ee..e5cf7ee19f 100644
+>--- a/tests/unit/test-virtio-dmabuf.c
+>+++ b/tests/unit/test-virtio-dmabuf.c
+>@@ -107,6 +107,38 @@ static void test_add_invalid_resource(void)
+>     }
+> }
+> 
+>+static void test_cleanup_res(void)
+>+{
+>+    QemuUUID uuids[20], uuid_alt;
+>+    struct vhost_dev *dev = g_new0(struct vhost_dev, 1);
+>+    struct vhost_dev *dev_alt = g_new0(struct vhost_dev, 1);
+>+    int i, num_removed;
+>+
+>+    for (i = 0; i < ARRAY_SIZE(uuids); ++i) {
+>+        qemu_uuid_generate(&uuids[i]);
+>+        virtio_add_vhost_device(&uuids[i], dev);
+>+        /* vhost device is found */
+>+        g_assert(virtio_lookup_vhost_device(&uuids[i]) != NULL);
+>+    }
+>+    qemu_uuid_generate(&uuid_alt);
+>+    virtio_add_vhost_device(&uuid_alt, dev_alt);
+>+    /* vhost device is found */
+>+    g_assert(virtio_lookup_vhost_device(&uuid_alt) != NULL);
+>+    /* cleanup all dev resources */
+>+    num_removed = virtio_dmabuf_vhost_cleanup(dev);
+>+    g_assert_cmpint(num_removed, ==, ARRAY_SIZE(uuids));
+>+    for (i = 0; i < ARRAY_SIZE(uuids); ++i) {
+>+        /* None of the dev resources is found after free'd */
+>+        g_assert_cmpint(virtio_lookup_dmabuf(&uuids[i]), ==, -1);
+>+    }
+>+    /* uuid_alt is still in the hash table */
+>+    g_assert(virtio_lookup_vhost_device(&uuid_alt) != NULL);
+>+
+>+    virtio_free_resources();
+>+    g_free(dev);
+>+    g_free(dev_alt);
+>+}
+>+
+> static void test_free_resources(void)
+> {
+>     QemuUUID uuids[20];
+>@@ -136,6 +168,7 @@ int main(int argc, char **argv)
+>                     test_remove_invalid_resource);
+>     g_test_add_func("/virtio-dmabuf/add_invalid_res",
+>                     test_add_invalid_resource);
+>+    g_test_add_func("/virtio-dmabuf/cleanup_dev", test_cleanup_res);
+>     g_test_add_func("/virtio-dmabuf/free_res", test_free_resources);
+> 
+>     return g_test_run();
+>-- 
+>2.43.1
+>
+>
 
