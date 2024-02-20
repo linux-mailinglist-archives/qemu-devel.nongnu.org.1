@@ -2,101 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C8AA85B576
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:38:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E61B685B580
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:39:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcLdC-0004AZ-BE; Tue, 20 Feb 2024 03:37:38 -0500
+	id 1rcLdI-0004mc-UL; Tue, 20 Feb 2024 03:37:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1rcLcd-0003IU-Iy; Tue, 20 Feb 2024 03:37:05 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1rcLdH-0004kX-28
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:37:43 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1rcLcY-00058v-DI; Tue, 20 Feb 2024 03:37:01 -0500
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41K8RjQZ004996; Tue, 20 Feb 2024 08:36:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=S9vqoazcrEdLeBpc4mGwKpGOENwIgnDDkIa+Dp2l8a8=;
- b=UVn1jqtQbiIDMwsD6+vH1m+4beGgChDlwl2/P1oXSN3l/fQc8q2x3xGi9R17TCdF0xWa
- VHN9UKbRtPSq56MwDfudcmYOvIqZMtbCuO6agsm9gNaua0hSIc5CuKr1YgzGDXX0T111
- R5JzOhRGDlLyrbF+G8cSw1+DoCmcaXHbKK35yu/CZmVnRRlTcqkJc09L0YvsbVL4SR9u
- aZ2EMJSJCZ3SiER7AjUOKBa/1V42tpKPJD1h7f2A/A3hsAeMRCMqS9fkwQazRltWsJ9J
- GLMO2NdpbSz1cLQSmKKzQbeWdLA/SkFR1ABW9wX/LqZmDI1QNiRW0T2zKjBBQHbhNyl7 GA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wcrk989db-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Feb 2024 08:36:54 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41K8S2GE006402;
- Tue, 20 Feb 2024 08:36:53 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wcrk989d3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Feb 2024 08:36:53 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41K5uMe2009627; Tue, 20 Feb 2024 08:36:53 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wb84p6xd8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Feb 2024 08:36:53 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 41K8al2R24380090
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 20 Feb 2024 08:36:49 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 987FB2004B;
- Tue, 20 Feb 2024 08:36:47 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F2AB220040;
- Tue, 20 Feb 2024 08:36:45 +0000 (GMT)
-Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.in.ibm.com (unknown
- [9.109.243.35]) by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 20 Feb 2024 08:36:45 +0000 (GMT)
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-To: npiggin@gmail.com, qemu-ppc@nongnu.org
-Cc: clegoate@redhat.com, mikey@neuling.org, amachhiw@linux.vnet.ibm.com,
- vaibhav@linux.ibm.com, sbhat@linux.ibm.com, danielhb413@gmail.com,
- qemu-devel@nongnu.org
-Subject: [PATCH v4 15/15] spapr: nested: Set the PCR when logical PVR is set
-Date: Tue, 20 Feb 2024 14:06:09 +0530
-Message-Id: <20240220083609.748325-16-harshpb@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240220083609.748325-1-harshpb@linux.ibm.com>
-References: <20240220083609.748325-1-harshpb@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1rcLdF-0005E3-6a
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:37:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1708418259;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=o5zH5xgE2VAb5ZwR78F7Diau66PyAUHwOynR1KXbx7E=;
+ b=fPAStalkQWNkQhS/9ZfpheJQHKMxx3O/XeH+AJSTxYGDCB1rOHto0z4pUo2MuacxEdgBbA
+ 47QR80L+CSSGO7f/3gElgka7pGJC4X0wu1I8H6+zvP9f/E69bsoNerRHZiBCg+OE0NNqkC
+ +bW32WDFurVfT1hT48KIijy+m/aedjo=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-357-NO4ciaKIPnaU3hKtzZCoXg-1; Tue, 20 Feb 2024 03:37:37 -0500
+X-MC-Unique: NO4ciaKIPnaU3hKtzZCoXg-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-5116d7eb706so4185042e87.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:37:36 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708418255; x=1709023055;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=o5zH5xgE2VAb5ZwR78F7Diau66PyAUHwOynR1KXbx7E=;
+ b=sf1IL3rZfm2/24p0DTIH5cxYHJklPx/KFm1bYtkpdEYiW6voVtG65nCSb/LaFiW4oI
+ 6qnucDPMWTipQjGvBqhm4/cSH0EDW5lfoD9TYEizQggf2Xtwnxv7tbnkv2mMQBcLq1St
+ V0dN2g8WV3xgttgQ/wWW08UO9dinQ2ai1YRuk8QVD8hN4mKz0KfoibrRVuyQYFTV3G3M
+ gcKzaqd2szp0euDQ7OdN6wqe+Zu/Y+LkwyJSMhLMZ55QGIp/83LSPjAztq2ZTIk+6FxU
+ lAsgyitQY0J7YYRaeueKKovvysgQDV+cNjtrNljzB4nLa3hw4uw0tJgF8aexrGOYkvdz
+ 0myg==
+X-Gm-Message-State: AOJu0YyTWpieh33wA8qVPwZfWGDhBVKQfKhlq4o9QnDpZqG4PFu1ytAT
+ 6K6BfIlLSCAHA/2716iKnVQC6FHxIPeSq/7eDPZxsOPToh4F83BBe2mKE5a8Ku9hVV+d6TP9/9S
+ cVlsZcNF8wyAIgP/S5jFqtmBFouKc4oOHdLTofaYV08Cr9nOYDhlNuYz1YYFQDzdCCUGBM3JlUh
+ omgrNNeEIgSoL0x4ZlFsuVcU9vPtk=
+X-Received: by 2002:a05:6512:1190:b0:512:bea2:f002 with SMTP id
+ g16-20020a056512119000b00512bea2f002mr1955254lfr.6.1708418255734; 
+ Tue, 20 Feb 2024 00:37:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEI3lMGNA1stGQRxvBng5Rzii5iqNxsHRHYMgjQP2gbBApychFNvOR2pcZo/bWAmBdacYO4BgkaCszkqoe/kyY=
+X-Received: by 2002:a05:6512:1190:b0:512:bea2:f002 with SMTP id
+ g16-20020a056512119000b00512bea2f002mr1955220lfr.6.1708418255394; Tue, 20 Feb
+ 2024 00:37:35 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: fgyVWuxnZugjF2t0xy3lA50kpzNwELB1
-X-Proofpoint-ORIG-GUID: VxSTjALgUp9AN-wzfUceKjsI6_me90F_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-20_06,2024-02-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- impostorscore=0 suspectscore=0 phishscore=0 priorityscore=1501 spamscore=0
- mlxlogscore=999 clxscore=1015 malwarescore=0 lowpriorityscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402200061
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <20240205074709.3613229-1-armbru@redhat.com>
+ <20240205074709.3613229-8-armbru@redhat.com>
+In-Reply-To: <20240205074709.3613229-8-armbru@redhat.com>
+From: Konstantin Kostiuk <kkostiuk@redhat.com>
+Date: Tue, 20 Feb 2024 10:37:24 +0200
+Message-ID: <CAPMcbCr3sTG4sXtrdd0sx2kpSxY5HSw-A=azJ0BMeJ83E+hcxQ@mail.gmail.com>
+Subject: Re: [PATCH 07/15] qga/qapi-schema: Clean up documentation of
+ guest-set-memory-blocks
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, arei.gonglei@huawei.com, berrange@redhat.com, 
+ eblake@redhat.com, eduardo@habkost.net, fan.ni@samsung.com, farosas@suse.de, 
+ hreitz@redhat.com, jasowang@redhat.com, jiri@resnulli.us, 
+ jonathan.cameron@huawei.com, kraxel@redhat.com, kwolf@redhat.com, 
+ lukasstraub2@web.de, marcandre.lureau@redhat.com, marcel.apfelbaum@gmail.com, 
+ michael.roth@amd.com, mst@redhat.com, pbonzini@redhat.com, 
+ peter.maydell@linaro.org, peterx@redhat.com, philmd@linaro.org, 
+ pizhenwei@bytedance.com, qemu-block@nongnu.org, stefanb@linux.ibm.com, 
+ wangyanan55@huawei.com
+Content-Type: multipart/alternative; boundary="0000000000003dab0f0611cc1fa2"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.072,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,90 +103,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Amit Machhiwal <amachhiw@linux.vnet.ibm.com>
+--0000000000003dab0f0611cc1fa2
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In APIv1, KVM L0 sets the PCR, while in the nested papr APIv2, this
-doesn't work as the PCR can't be set via the guest state buffer; the
-logical PVR is set via the GSB though.
+Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 
-This change sets the PCR whenever the logical PVR is set via the GSB.
-Also, unlike the other registers, the value 1 in a defined bit in the
-PCR makes the affected resources unavailable and the value 0 makes
-them available. Hence, the PCR is set accordingly.
+On Mon, Feb 5, 2024 at 9:47=E2=80=AFAM Markus Armbruster <armbru@redhat.com=
+> wrote:
 
-Signed-off-by: Amit Machhiwal <amachhiw@linux.vnet.ibm.com>
-Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
----
- include/hw/ppc/spapr_nested.h |  9 +++++++++
- hw/ppc/spapr_nested.c         | 24 ++++++++++++++++++++++++
- 2 files changed, 33 insertions(+)
+> The command's doc comment describes the argument, but it's not marked
+> up as such.  Easy enough to fix.
+>
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> ---
+>  qga/qapi-schema.json | 19 ++++++++++---------
+>  1 file changed, 10 insertions(+), 9 deletions(-)
+>
+> diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
+> index b9501c8c81..35bde36a1f 100644
+> --- a/qga/qapi-schema.json
+> +++ b/qga/qapi-schema.json
+> @@ -43,7 +43,6 @@
+>          'GuestDiskSmart',
+>          'GuestDiskStatsInfo',
+>          'GuestNVMeSmart',
+> -        'guest-set-memory-blocks',
+>          'guest-set-vcpus' ] } }
+>
+>  ##
+> @@ -1174,14 +1173,16 @@
+>  # Attempt to reconfigure (currently: enable/disable) state of memory
+>  # blocks inside the guest.
+>  #
+> -# The input list is processed node by node in order.  In each node
+> -# @phys-index is used to look up the guest MEMORY BLOCK, for which
+> -# @online specifies the requested state.  The set of distinct
+> -# @phys-index's is only required to be a subset of the guest-supported
+> -# identifiers.  There's no restriction on list length or on repeating
+> -# the same @phys-index (with possibly different @online field).
+> -# Preferably the input list should describe a modified subset of
+> -# @guest-get-memory-blocks' return value.
+> +# @mem-blks: The memory blocks to be reconfigured.  This list is
+> +#     processed node by node in order.  In each node @phys-index is
+> +#     used to look up the guest MEMORY BLOCK, for which @online
+> +#     specifies the requested state.  The set of distinct
+> +#     @phys-index's is only required to be a subset of the
+> +#     guest-supported identifiers.  There's no restriction on list
+> +#     length or on repeating the same @phys-index (with possibly
+> +#     different @online field).  Preferably the input list should
+> +#     describe a modified subset of @guest-get-memory-blocks' return
+> +#     value.
+>  #
+>  # Returns: The operation results, it is a list of
+>  #     @GuestMemoryBlockResponse, which is corresponding to the input
+> --
+> 2.43.0
+>
+>
 
-diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.h
-index da918d2dd0..f67c721f53 100644
---- a/include/hw/ppc/spapr_nested.h
-+++ b/include/hw/ppc/spapr_nested.h
-@@ -229,6 +229,15 @@ typedef struct SpaprMachineStateNestedGuest {
- #define GUEST_STATE_REQUEST_GUEST_WIDE       0x1
- #define GUEST_STATE_REQUEST_SET              0x2
- 
-+/* As per ISA v3.1B, following bits are reserved:
-+ *      0:2
-+ *      4:57  (ISA mentions bit 58 as well but it should be used for P10)
-+ *      61:63 (hence, haven't included PCR bits for v2.06 and v2.05
-+ *             in LOW BITS)
-+ */
-+#define PCR_LOW_BITS   (PCR_COMPAT_3_10 | PCR_COMPAT_3_00)
-+#define HVMASK_PCR     ~PCR_LOW_BITS
-+
- #define GUEST_STATE_ELEMENT(i, sz, s, f, ptr, c) { \
-     .id = (i),                                     \
-     .size = (sz),                                  \
-diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
-index 6e6a90616e..af8a482337 100644
---- a/hw/ppc/spapr_nested.c
-+++ b/hw/ppc/spapr_nested.c
-@@ -740,9 +740,11 @@ static void out_buf_min_size(void *a, void *b, bool set)
- 
- static void copy_logical_pvr(void *a, void *b, bool set)
- {
-+    SpaprMachineStateNestedGuest *guest;
-     uint32_t *buf; /* 1 word */
-     uint32_t *pvr_logical_ptr;
-     uint32_t pvr_logical;
-+    target_ulong pcr = 0;
- 
-     pvr_logical_ptr = a;
-     buf = b;
-@@ -755,6 +757,28 @@ static void copy_logical_pvr(void *a, void *b, bool set)
-     pvr_logical = be32_to_cpu(buf[0]);
- 
-     *pvr_logical_ptr = pvr_logical;
-+
-+    if (*pvr_logical_ptr) {
-+        switch (*pvr_logical_ptr) {
-+            case CPU_POWERPC_LOGICAL_3_10:
-+                pcr = PCR_COMPAT_3_10 | PCR_COMPAT_3_00;
-+                break;
-+            case CPU_POWERPC_LOGICAL_3_00:
-+                pcr = PCR_COMPAT_3_00;
-+                break;
-+            default:
-+                qemu_log_mask(LOG_GUEST_ERROR,
-+                    "Could not set PCR for LPVR=0x%08x\n", *pvr_logical_ptr);
-+                return;
-+        }
-+    }
-+
-+    guest = container_of(pvr_logical_ptr,
-+                         struct SpaprMachineStateNestedGuest,
-+                         pvr_logical);
-+    for (int i = 0; i < guest->vcpus; i++) {
-+        guest->vcpu[i].state.pcr = ~pcr | HVMASK_PCR;
-+    }
- }
- 
- static void copy_tb_offset(void *a, void *b, bool set)
--- 
-2.39.3
+--0000000000003dab0f0611cc1fa2
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Reviewed-by: Konstantin Kostiuk &lt;<a href=3D"mailto:kkos=
+tiuk@redhat.com" target=3D"_blank">kkostiuk@redhat.com</a>&gt;</div><br><di=
+v class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Feb 5=
+, 2024 at 9:47=E2=80=AFAM Markus Armbruster &lt;<a href=3D"mailto:armbru@re=
+dhat.com">armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gm=
+ail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,=
+204,204);padding-left:1ex">The command&#39;s doc comment describes the argu=
+ment, but it&#39;s not marked<br>
+up as such.=C2=A0 Easy enough to fix.<br>
+<br>
+Signed-off-by: Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.com" t=
+arget=3D"_blank">armbru@redhat.com</a>&gt;<br>
+---<br>
+=C2=A0qga/qapi-schema.json | 19 ++++++++++---------<br>
+=C2=A01 file changed, 10 insertions(+), 9 deletions(-)<br>
+<br>
+diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json<br>
+index b9501c8c81..35bde36a1f 100644<br>
+--- a/qga/qapi-schema.json<br>
++++ b/qga/qapi-schema.json<br>
+@@ -43,7 +43,6 @@<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;GuestDiskSmart&#39;,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;GuestDiskStatsInfo&#39;,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;GuestNVMeSmart&#39;,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;guest-set-memory-blocks&#39;,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;guest-set-vcpus&#39; ] } }<br>
+<br>
+=C2=A0##<br>
+@@ -1174,14 +1173,16 @@<br>
+=C2=A0# Attempt to reconfigure (currently: enable/disable) state of memory<=
+br>
+=C2=A0# blocks inside the guest.<br>
+=C2=A0#<br>
+-# The input list is processed node by node in order.=C2=A0 In each node<br=
+>
+-# @phys-index is used to look up the guest MEMORY BLOCK, for which<br>
+-# @online specifies the requested state.=C2=A0 The set of distinct<br>
+-# @phys-index&#39;s is only required to be a subset of the guest-supported=
+<br>
+-# identifiers.=C2=A0 There&#39;s no restriction on list length or on repea=
+ting<br>
+-# the same @phys-index (with possibly different @online field).<br>
+-# Preferably the input list should describe a modified subset of<br>
+-# @guest-get-memory-blocks&#39; return value.<br>
++# @mem-blks: The memory blocks to be reconfigured.=C2=A0 This list is<br>
++#=C2=A0 =C2=A0 =C2=A0processed node by node in order.=C2=A0 In each node @=
+phys-index is<br>
++#=C2=A0 =C2=A0 =C2=A0used to look up the guest MEMORY BLOCK, for which @on=
+line<br>
++#=C2=A0 =C2=A0 =C2=A0specifies the requested state.=C2=A0 The set of disti=
+nct<br>
++#=C2=A0 =C2=A0 =C2=A0@phys-index&#39;s is only required to be a subset of =
+the<br>
++#=C2=A0 =C2=A0 =C2=A0guest-supported identifiers.=C2=A0 There&#39;s no res=
+triction on list<br>
++#=C2=A0 =C2=A0 =C2=A0length or on repeating the same @phys-index (with pos=
+sibly<br>
++#=C2=A0 =C2=A0 =C2=A0different @online field).=C2=A0 Preferably the input =
+list should<br>
++#=C2=A0 =C2=A0 =C2=A0describe a modified subset of @guest-get-memory-block=
+s&#39; return<br>
++#=C2=A0 =C2=A0 =C2=A0value.<br>
+=C2=A0#<br>
+=C2=A0# Returns: The operation results, it is a list of<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0@GuestMemoryBlockResponse, which is correspondin=
+g to the input<br>
+-- <br>
+2.43.0<br>
+<br>
+</blockquote></div>
+
+--0000000000003dab0f0611cc1fa2--
 
 
