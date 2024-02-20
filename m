@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C709C85C0BB
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 17:08:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E18F85C0C5
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 17:08:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcSda-00023K-Gg; Tue, 20 Feb 2024 11:06:31 -0500
+	id 1rcSdc-00026U-AR; Tue, 20 Feb 2024 11:06:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rcSdY-00022I-C1
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 11:06:28 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1rcSdZ-00022r-59
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 11:06:29 -0500
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rcSdV-0005DD-S5
+ id 1rcSdX-0005Di-47
  for qemu-devel@nongnu.org; Tue, 20 Feb 2024 11:06:28 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4127109686fso3420365e9.2
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 08:06:25 -0800 (PST)
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2d23a22233fso27535541fa.2
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 08:06:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708445184; x=1709049984; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=IWfkHBkdzDSrTFv4hDCtDnmdBw30BzGt9RydlPH9ceo=;
- b=UPxudtjJEj3CdAoWlfruIRl9KscAaakgiwe1p1NV2pyitvM+JkVqxiMLC2KRpRj3zs
- m8lh1e7e99j8jPQ1uP6mACa2gY0Z+Ka5gHxET/1WTNDF4Uo52NYcsNqTHjeVmU74SkHc
- mNLSdVhfssfEVSM/YUKAMLrWQNkIRfYS24i+cm69G55n+0BwWPg/cC/L/CjsRKHnD0sW
- G/RR53FOnskZ+W8nxG0QdZT0mxGZGkswdbntVXhUz0K3CQqFg3dFstKOYGGS8+7cdnFy
- rcHDhNvbyNqgvOdIX8g2t7T+AdebU08JCutyZ7swMum4QzWf0J5u9A6vPPDNf154tE5L
- PBAQ==
+ d=linaro.org; s=google; t=1708445185; x=1709049985; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9wiR3lcsTzDl1fZCKpUeESX9s4fyTRWelZyXZYZsdUc=;
+ b=hCqcg+VhEj9bNSzHXRngiEI+kzjuYP/r/h2eMFzxLSJ2nPiKhgRbKCgopu4c3NVAuG
+ eHc9vShHcYqfdOVYRAK5g06gorKzzlFQJYoPoxI4Ze0rYYeFr+5030dDm4SmPaF6zuPO
+ 5deQOvW+YuV+cvRsZzFyfsSqS3/+N2DUggIEC/hqiRSR9Upjh6HMbN/U066Gh+7xOnXD
+ EDJRMAfoe4NgCgbLhwLVNdnKhButVsri2YPJLScr3t/l7OfP1jUI//ahbsoiGDhoEVzo
+ 9DKLMySDZqPUik7Ezt8lxIxsN0BbcKcoQIlh2bUh67YDxa9NmwveEiSdDJALOiL0zieQ
+ lF0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708445184; x=1709049984;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=IWfkHBkdzDSrTFv4hDCtDnmdBw30BzGt9RydlPH9ceo=;
- b=N/xCYc6O/u6DkQak6ExGvXe3Xj1htjHrGiumDl/vMRCzlWbw77eyzsxJm0gnU0iQFy
- Fu12HpERoJ+rQjyjZLUFmJnEge5a3nZMa6HXdpzPGriF/NNvc3LHeLjw+XlrLe2r+jSi
- Xn+a60cbGzoDZt21SqjXsNnUac1GX28Pqt9+1KJePZybG09pWU2ZkF8qMooXAUyp2Z2E
- P1U/EswRiaOArFWBzT+6b4RHiaMzh/4Ucurg+ccocXfptAugdjqgug/7hPfYPDa5OEH7
- caShoV+OOLdIH0C9Qzxgw9Tzs2gjU9KznA5QNGV352KyuWgA6GcV0nW5+wMrY+EVh2zf
- 5KXA==
-X-Gm-Message-State: AOJu0YyJwIiNyEfHJ1lx09wzvkx2AW/0kso9kvPqrDq4hrEov7xUKhGu
- XyTfS4TGqDFyflIxnOX2yGNpLtqzXj7Eth/6gZ6VOTi7LXDUt8Jm5MCYnfhBl1F8Yai91Lr59BV
- G
-X-Google-Smtp-Source: AGHT+IE+HoGPV0+WFqAkIl3n94FD6gbKqNxY/9CxTtqZ0NqPEmnbK9NsySqzQfrpdOytdeE768IVRQ==
-X-Received: by 2002:a05:600c:1d24:b0:412:6574:c9a6 with SMTP id
- l36-20020a05600c1d2400b004126574c9a6mr5261169wms.2.1708445184039; 
- Tue, 20 Feb 2024 08:06:24 -0800 (PST)
+ d=1e100.net; s=20230601; t=1708445185; x=1709049985;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=9wiR3lcsTzDl1fZCKpUeESX9s4fyTRWelZyXZYZsdUc=;
+ b=e4pDCqJvFGyaXeQKC/owEwjdImHEASsfzJncb6wX/x5WwV8lXOgRG9RcUG6dJ9pcpP
+ aYAZv+kLOOerktTr2/6VRhiME8ODX8kvFG+ig+bnOcw0IPT1ha40EStWhyz4EfBd8EF9
+ vuD06qcBZm3iz/zTi2NJGw3ddJP4eB4lnIGNcEpAGV/EFVPW1nfl6OXNL03r0ped1ZaN
+ xAbb2hYTAajf7TYTU9IgHdfIwz8xYB0nGGOZCuNjUBI5lgyIzn1Ar6PUW/TS5OeqeHY8
+ SyMbKop36B7uOOjT4AUSWtUGmbhcw74EzAqMTPbeSRNk0/ubYu2UqU/XESwjbUq9qsG6
+ Q8lQ==
+X-Gm-Message-State: AOJu0Yy79KlcIrI8d+iiBJONyPLLlsY5DKbr5LrSGA6XiC+EKKKil4K6
+ edZvwsanMd5N0LY30aFGE1zg/5Bi7uz6FJTGRCwS5uj1PteWebHmXdc4iEXOt3W6XMhCVtiUR/e
+ +
+X-Google-Smtp-Source: AGHT+IEamTj4KBKl/bX2+Tk1qjNpSTaAcx2EquDav82UUZz/ymddyRrGhPGy5TNCZXL/ra7HBU2M0A==
+X-Received: by 2002:a2e:920a:0:b0:2d2:2888:17eb with SMTP id
+ k10-20020a2e920a000000b002d2288817ebmr7101957ljg.6.1708445185181; 
+ Tue, 20 Feb 2024 08:06:25 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- f8-20020a05600c4e8800b0040f0219c371sm15299927wmq.19.2024.02.20.08.06.23
+ f8-20020a05600c4e8800b0040f0219c371sm15299927wmq.19.2024.02.20.08.06.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Feb 2024 08:06:23 -0800 (PST)
+ Tue, 20 Feb 2024 08:06:24 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -65,15 +66,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  "Gonglei (Arei)" <arei.gonglei@huawei.com>
-Subject: [PATCH 00/10] reset: Make whole system three-phase-reset aware
-Date: Tue, 20 Feb 2024 16:06:12 +0000
-Message-Id: <20240220160622.114437-1-peter.maydell@linaro.org>
+Subject: [PATCH 01/10] hw/i386: Store pointers to IDE buses in PCMachineState
+Date: Tue, 20 Feb 2024 16:06:13 +0000
+Message-Id: <20240220160622.114437-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240220160622.114437-1-peter.maydell@linaro.org>
+References: <20240220160622.114437-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::233;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x233.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,123 +98,171 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset is an incremental improvement to our reset handling that
-tries to roll out the "three-phase-reset" design we have for devices
-to a wider scope.
+Add the two IDE bus BusState pointers to the set we keep in PCMachineState.
+This allows us to avoid passing them to pc_cmos_init(), and also will
+allow a refactoring of how we call pc_cmos_init_late().
 
-At the moment devices and buses have a three-phase reset system, with
-separate 'enter', 'hold' and 'exit' phases. When the qbus tree is
-reset, first all the devices on it have their 'enter' method called,
-then they all have 'enter' called, and finally 'exit'. The idea is
-that we can use this, among other things, as a way to resolve annoying
-"this bit of reset work needs to happen before this other bit of reset
-work" ordering issues.
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ include/hw/i386/pc.h |  4 +++-
+ hw/i386/pc.c         |  5 ++---
+ hw/i386/pc_piix.c    | 16 +++++++---------
+ hw/i386/pc_q35.c     |  9 ++++-----
+ 4 files changed, 16 insertions(+), 18 deletions(-)
 
-However, there is still a "legacy" reset option, where you register a
-callback function with qemu_register_reset(). These functions know
-nothing about the three-phase system, and "reset the qbus" is just one
-of the things set up to happen at reset via qemu_register_reset().
-That means that a qemu_register_reset() function might happen before
-all the enter/hold/exit phases of device reset, or it might happen after
-all of them.
-
-This patchset provides a new way to register a three-phase-aware reset
-in this list of "reset the whole system" actions, and reimplements
-qemu_register_reset() in terms of that new mechanism. This means that
-qemu_register_reset() functions are now all called in the 'hold' phase
-of system reset. (This is an ordering change, so in theory it could
-introduce new bugs if we are accidentally depending on the current
-ordering; but we have very few enter and exit phase methods at the
-moment so I don't expect much trouble, if any.)
-
-The first three patches remove the only two places in the codebase
-that rely on "a reset callback can unregister itself within the
-callback"; this is awkward to continue to support in the new
-implementation, and an unusual thing to do given that reset is in
-principle supposed to be something you can do as many times as you
-like, not something that behaves differently the first time through.
-
-Patch 4 is an improvement to the QOM macros that's been on list as an
-RFC already.
-Patches 5 and 6 are the "new mechanism": qemu_register_resettable()
-takes any object that implements the Resettable interface. System
-reset is then doing 3-phase reset on all of these, so everything
-gets its 'enter' phase called, then everything gets 'hold', then
-everything gets 'exit'.
-
-Patch 7 reimplements the qemu_register_reset() API to be
-"qemu_register_resettable(), and the callback function is called
-in the 'hold' phase".
-
-Patch 8 makes the first real use of the new API: instead of
-doing the qbus reset via qemu_register_reset(), we pass the
-root of the qbus to qemu_register_resettable(). (This is where
-the ordering change I mention above happens, as device enter and
-exit method calls will now happen before and after all the
-qemu_register_reset() function callbacks, rather than in the
-middle of them.)
-
-Finally, patch 9 updates the developer docs to describe how a
-complete system reset currently works.
-
-This series doesn't actually do a great deal as it stands, but I
-think it's a necessary foundation for some cleanups:
- * the vfio reset ordering problem discussed on list a while back
-   should now hopefully be solvable by having the vfio code use
-   qemu_register_resettable() so it can arrange to do the "needs to
-   happen last" stuff in an exit phase method
- * there are some other missing pieces here, but eventually I think
-   it should be possible to get rid of the workarounds for
-   dependencies between ROM image loading and CPUs that want to
-   read an initial PC/SP on reset (eg arm, m68k)
-I also think it's a good idea to get it into the tree so that we
-have a chance to see if there are any unexpected regressions
-before we start putting in bugfixes etc that depend on it :-)
-
-After this, I think the next thing I'm going to look at is whether
-we can move the MachineState class from inheriting from TYPE_OBJECT
-to TYPE_DEVICE. This would allow us to have machine-level reset
-(and would bring "machine as a container of devices" into line
-with "SoC object as container of devices").
-
-thanks
--- PMM
-
-Peter Maydell (10):
-  hw/i386: Store pointers to IDE buses in PCMachineState
-  hw/i386/pc: Do pc_cmos_init_late() from pc_machine_done()
-  system/bootdevice: Don't unregister reset handler in
-    restore_boot_order()
-  include/qom/object.h: New OBJECT_DEFINE_SIMPLE_TYPE{,_WITH_INTERFACES}
-    macros
-  hw/core: Add documentation and license comments to reset.h
-  hw/core: Add ResetContainer which holds objects implementing
-    Resettable
-  hw/core/reset: Add qemu_{register,unregister}_resettable()
-  hw/core/reset: Implement qemu_register_reset via
-    qemu_register_resettable
-  hw/core/machine: Use qemu_register_resettable for sysbus reset
-  docs/devel/reset: Update to discuss system reset
-
- MAINTAINERS                      |  10 ++
- docs/devel/qom.rst               |  34 ++++++-
- docs/devel/reset.rst             |  44 +++++++-
- include/hw/core/resetcontainer.h |  48 +++++++++
- include/hw/i386/pc.h             |   4 +-
- include/qom/object.h             | 114 ++++++++++++++++-----
- include/sysemu/reset.h           | 113 +++++++++++++++++++++
- hw/core/machine.c                |   7 +-
- hw/core/reset.c                  | 166 +++++++++++++++++++++++++------
- hw/core/resetcontainer.c         |  76 ++++++++++++++
- hw/i386/pc.c                     |  40 +++-----
- hw/i386/pc_piix.c                |  16 ++-
- hw/i386/pc_q35.c                 |   9 +-
- system/bootdevice.c              |  25 +++--
- hw/core/meson.build              |   1 +
- 15 files changed, 587 insertions(+), 120 deletions(-)
- create mode 100644 include/hw/core/resetcontainer.h
- create mode 100644 hw/core/resetcontainer.c
-
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index ec0e5efcb28..8f8ac894b10 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -17,6 +17,8 @@
+ 
+ #define HPET_INTCAP "hpet-intcap"
+ 
++#define MAX_IDE_BUS 2
++
+ /**
+  * PCMachineState:
+  * @acpi_dev: link to ACPI PM device that performs ACPI hotplug handling
+@@ -37,6 +39,7 @@ typedef struct PCMachineState {
+     PFlashCFI01 *flash[2];
+     ISADevice *pcspk;
+     DeviceState *iommu;
++    BusState *idebus[MAX_IDE_BUS];
+ 
+     /* Configuration options: */
+     uint64_t max_ram_below_4g;
+@@ -182,7 +185,6 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+                           bool create_fdctrl,
+                           uint32_t hpet_irqs);
+ void pc_cmos_init(PCMachineState *pcms,
+-                  BusState *ide0, BusState *ide1,
+                   ISADevice *s);
+ void pc_nic_init(PCMachineClass *pcmc, ISABus *isa_bus, PCIBus *pci_bus);
+ 
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 196827531a5..8b0f54e284c 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -574,7 +574,6 @@ static void pc_cmos_init_late(void *opaque)
+ }
+ 
+ void pc_cmos_init(PCMachineState *pcms,
+-                  BusState *idebus0, BusState *idebus1,
+                   ISADevice *rtc)
+ {
+     int val;
+@@ -634,8 +633,8 @@ void pc_cmos_init(PCMachineState *pcms,
+ 
+     /* hard drives and FDC */
+     arg.rtc_state = s;
+-    arg.idebus[0] = idebus0;
+-    arg.idebus[1] = idebus1;
++    arg.idebus[0] = pcms->idebus[0];
++    arg.idebus[1] = pcms->idebus[1];
+     qemu_register_reset(pc_cmos_init_late, &arg);
+ }
+ 
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 999b7b806ca..8df88a6ccd1 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -68,7 +68,6 @@
+ #include "kvm/kvm-cpu.h"
+ #include "target/i386/cpu.h"
+ 
+-#define MAX_IDE_BUS 2
+ #define XEN_IOAPIC_NUM_PIRQS 128ULL
+ 
+ #ifdef CONFIG_IDE_ISA
+@@ -114,7 +113,6 @@ static void pc_init1(MachineState *machine,
+     Object *piix4_pm = NULL;
+     qemu_irq smi_irq;
+     GSIState *gsi_state;
+-    BusState *idebus[MAX_IDE_BUS];
+     ISADevice *rtc_state;
+     MemoryRegion *ram_memory;
+     MemoryRegion *pci_memory = NULL;
+@@ -299,8 +297,8 @@ static void pc_init1(MachineState *machine,
+         piix4_pm = object_resolve_path_component(OBJECT(pci_dev), "pm");
+         dev = DEVICE(object_resolve_path_component(OBJECT(pci_dev), "ide"));
+         pci_ide_create_devs(PCI_DEVICE(dev));
+-        idebus[0] = qdev_get_child_bus(dev, "ide.0");
+-        idebus[1] = qdev_get_child_bus(dev, "ide.1");
++        pcms->idebus[0] = qdev_get_child_bus(dev, "ide.0");
++        pcms->idebus[1] = qdev_get_child_bus(dev, "ide.1");
+     } else {
+         isa_bus = isa_bus_new(NULL, system_memory, system_io,
+                               &error_abort);
+@@ -312,8 +310,8 @@ static void pc_init1(MachineState *machine,
+ 
+         i8257_dma_init(OBJECT(machine), isa_bus, 0);
+         pcms->hpet_enabled = false;
+-        idebus[0] = NULL;
+-        idebus[1] = NULL;
++        pcms->idebus[0] = NULL;
++        pcms->idebus[1] = NULL;
+     }
+ 
+     if (x86ms->pic == ON_OFF_AUTO_ON || x86ms->pic == ON_OFF_AUTO_AUTO) {
+@@ -342,7 +340,7 @@ static void pc_init1(MachineState *machine,
+     pc_nic_init(pcmc, isa_bus, pci_bus);
+ 
+     if (pcmc->pci_enabled) {
+-        pc_cmos_init(pcms, idebus[0], idebus[1], rtc_state);
++        pc_cmos_init(pcms, rtc_state);
+     }
+ #ifdef CONFIG_IDE_ISA
+     else {
+@@ -361,9 +359,9 @@ static void pc_init1(MachineState *machine,
+              * second one.
+              */
+             busname[4] = '0' + i;
+-            idebus[i] = qdev_get_child_bus(DEVICE(dev), busname);
++            pcms->idebus[i] = qdev_get_child_bus(DEVICE(dev), busname);
+         }
+-        pc_cmos_init(pcms, idebus[0], idebus[1], rtc_state);
++        pc_cmos_init(pcms, rtc_state);
+     }
+ #endif
+ 
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index d346fa3b1d6..71402c36eb2 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -126,7 +126,6 @@ static void pc_q35_init(MachineState *machine)
+     PCIBus *host_bus;
+     PCIDevice *lpc;
+     DeviceState *lpc_dev;
+-    BusState *idebus[MAX_SATA_PORTS];
+     ISADevice *rtc_state;
+     MemoryRegion *system_memory = get_system_memory();
+     MemoryRegion *system_io = get_system_io();
+@@ -300,13 +299,13 @@ static void pc_q35_init(MachineState *machine)
+                                                          ICH9_SATA1_FUNC),
+                                                "ich9-ahci");
+         ich9 = ICH9_AHCI(pdev);
+-        idebus[0] = qdev_get_child_bus(DEVICE(pdev), "ide.0");
+-        idebus[1] = qdev_get_child_bus(DEVICE(pdev), "ide.1");
++        pcms->idebus[0] = qdev_get_child_bus(DEVICE(pdev), "ide.0");
++        pcms->idebus[1] = qdev_get_child_bus(DEVICE(pdev), "ide.1");
+         g_assert(MAX_SATA_PORTS == ich9->ahci.ports);
+         ide_drive_get(hd, ich9->ahci.ports);
+         ahci_ide_create_devs(&ich9->ahci, hd);
+     } else {
+-        idebus[0] = idebus[1] = NULL;
++        pcms->idebus[0] = pcms->idebus[1] = NULL;
+     }
+ 
+     if (machine_usb(machine)) {
+@@ -327,7 +326,7 @@ static void pc_q35_init(MachineState *machine)
+         smbus_eeprom_init(pcms->smbus, 8, NULL, 0);
+     }
+ 
+-    pc_cmos_init(pcms, idebus[0], idebus[1], rtc_state);
++    pc_cmos_init(pcms, rtc_state);
+ 
+     /* the rest devices to which pci devfn is automatically assigned */
+     pc_vga_init(isa_bus, host_bus);
 -- 
 2.34.1
 
