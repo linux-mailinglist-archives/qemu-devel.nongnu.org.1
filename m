@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BD3A85EB52
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:50:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1D9985EB54
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:51:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcuTz-0004dd-Lz; Wed, 21 Feb 2024 16:50:27 -0500
+	id 1rcuUG-0005MD-4H; Wed, 21 Feb 2024 16:50:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcuTm-0004KH-L4; Wed, 21 Feb 2024 16:50:14 -0500
+ id 1rcuTv-0004tn-B1; Wed, 21 Feb 2024 16:50:24 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcuTj-0007xz-NS; Wed, 21 Feb 2024 16:50:14 -0500
+ id 1rcuTo-0007yp-HX; Wed, 21 Feb 2024 16:50:22 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2F94E4F87C;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3F6D44F87D;
  Thu, 22 Feb 2024 00:47:48 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id CE3AC869FD;
+ by tsrv.corpit.ru (Postfix) with SMTP id DDBFA869FE;
  Thu, 22 Feb 2024 00:47:25 +0300 (MSK)
-Received: (nullmailer pid 2339921 invoked by uid 1000);
+Received: (nullmailer pid 2339924 invoked by uid 1000);
  Wed, 21 Feb 2024 21:47:23 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Tianlan Zhou <bobby825@126.com>,
+Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.10 32/33] ui/console: Fix console resize with placeholder
- surface
-Date: Thu, 22 Feb 2024 00:47:15 +0300
-Message-Id: <20240221214723.2339742-32-mjt@tls.msk.ru>
+Subject: [Stable-7.2.10 33/33] audio: Depend on dbus_display1_dep
+Date: Thu, 22 Feb 2024 00:47:16 +0300
+Message-Id: <20240221214723.2339742-33-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.10-20240221121815@cover.tls.msk.ru>
 References: <qemu-stable-7.2.10-20240221121815@cover.tls.msk.ru>
@@ -62,36 +61,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Tianlan Zhou <bobby825@126.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-In `qemu_console_resize()`, the old surface of the console is keeped if the new
-console size is the same as the old one. If the old surface is a placeholder,
-and the new size of console is the same as the placeholder surface (640*480),
-the surface won't be replace.
-In this situation, the surface's `QEMU_PLACEHOLDER_FLAG` flag is still set, so
-the console won't be displayed in SDL display mode.
-This patch fixes this problem by forcing a new surface if the old one is a
-placeholder.
+dbusaudio needs dbus_display1_dep.
 
-Signed-off-by: Tianlan Zhou <bobby825@126.com>
+Fixes: 739362d4205c ("audio: add "dbus" audio backend")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <20240207172024.8-1-bobby825@126.com>
-(cherry picked from commit 95b08fee8f68d284a5028d37fd28be7a70c8e92b)
+Message-Id: <20240214-dbus-v7-1-7eff29f04c34@daynix.com>
+(cherry picked from commit d67611907590a1e6c998b7c5a5cb4394acf84329)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: fixup in audio/meson.build due to missing v8.0.0-2306-ga95a464777
+ "audio: dbus requires pixman")
 
-diff --git a/ui/console.c b/ui/console.c
-index 52414d6aa3..269cf27163 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -2583,7 +2583,7 @@ void qemu_console_resize(QemuConsole *s, int width, int height)
-     assert(s->console_type == GRAPHIC_CONSOLE);
+diff --git a/audio/meson.build b/audio/meson.build
+index 34aed78342..ce171f710d 100644
+--- a/audio/meson.build
++++ b/audio/meson.build
+@@ -29,7 +29,8 @@ endforeach
  
-     if ((s->scanout.kind != SCANOUT_SURFACE ||
--         (surface && surface->flags & QEMU_ALLOCATED_FLAG)) &&
-+         (surface && !is_buffer_shared(surface) && !is_placeholder(surface))) &&
-         qemu_console_get_width(s, -1) == width &&
-         qemu_console_get_height(s, -1) == height) {
-         return;
+ if dbus_display
+     module_ss = ss.source_set()
+-    module_ss.add(when: gio, if_true: files('dbusaudio.c'))
++    module_ss.add(when: [gio, dbus_display1_dep],
++                  if_true: files('dbusaudio.c'))
+     audio_modules += {'dbus': module_ss}
+ endif
+ 
 -- 
 2.39.2
 
