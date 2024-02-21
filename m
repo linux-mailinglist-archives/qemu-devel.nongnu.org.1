@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0648A85E1D7
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:49:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5621B85E1EF
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:52:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoTv-0007Zg-8Q; Wed, 21 Feb 2024 10:26:00 -0500
+	id 1rcoWs-0007y1-Hp; Wed, 21 Feb 2024 10:29:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcoMB-0000wD-8u; Wed, 21 Feb 2024 10:18:03 -0500
+ id 1rcoOM-0001Rw-Qw; Wed, 21 Feb 2024 10:20:14 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rchvO-00034e-5k; Wed, 21 Feb 2024 03:25:56 -0500
+ id 1rchvM-00035v-RH; Wed, 21 Feb 2024 03:25:54 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7261A4F3F2;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8293D4F3F3;
  Wed, 21 Feb 2024 11:21:23 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 3E82B860D1;
+ by tsrv.corpit.ru (Postfix) with SMTP id 4E03D860D2;
  Wed, 21 Feb 2024 11:21:02 +0300 (MSK)
-Received: (nullmailer pid 2142146 invoked by uid 1000);
+Received: (nullmailer pid 2142149 invoked by uid 1000);
  Wed, 21 Feb 2024 08:20:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>,
+Cc: qemu-stable@nongnu.org, Ziqiao Kong <ziqiaokong@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.2 52/60] i386/cpuid: Move leaf 7 to correct group
-Date: Wed, 21 Feb 2024 11:20:40 +0300
-Message-Id: <20240221082058.2141850-52-mjt@tls.msk.ru>
+Subject: [Stable-8.2.2 53/60] target/i386: Generate an illegal opcode
+ exception on cmp instructions with lock prefix
+Date: Wed, 21 Feb 2024 11:20:41 +0300
+Message-Id: <20240221082058.2141850-53-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.2-20240221110049@cover.tls.msk.ru>
 References: <qemu-stable-8.2.2-20240221110049@cover.tls.msk.ru>
@@ -59,46 +60,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+From: Ziqiao Kong <ziqiaokong@gmail.com>
 
-CPUID leaf 7 was grouped together with SGX leaf 0x12 by commit
-b9edbadefb9e ("i386: Propagate SGX CPUID sub-leafs to KVM") by mistake.
+target/i386: As specified by Intel Manual Vol2 3-180, cmp instructions
+are not allowed to have lock prefix and a `UD` should be raised. Without
+this patch, s1->T0 will be uninitialized and used in the case OP_CMPL.
 
-SGX leaf 0x12 has its specific logic to check if subleaf (starting from 2)
-is valid or not by checking the bit 0:3 of corresponding EAX is 1 or
-not.
-
-Leaf 7 follows the logic that EAX of subleaf 0 enumerates the maximum
-valid subleaf.
-
-Fixes: b9edbadefb9e ("i386: Propagate SGX CPUID sub-leafs to KVM")
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Message-ID: <20240125024016.2521244-4-xiaoyao.li@intel.com>
+Signed-off-by: Ziqiao Kong <ziqiaokong@gmail.com>
+Message-ID: <20240215095015.570748-2-ziqiaokong@gmail.com>
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 0729857c707535847d7fe31d3d91eb8b2a118e3c)
+(cherry picked from commit 99d0dcd7f102c07a510200d768cae65e5db25d23)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index e68eb8f5e6..a0bc9ea7b1 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -1955,7 +1955,6 @@ int kvm_arch_init_vcpu(CPUState *cs)
-                 c = &cpuid_data.entries[cpuid_i++];
-             }
-             break;
--        case 0x7:
-         case 0x12:
-             for (j = 0; ; j++) {
-                 c->function = i;
-@@ -1975,6 +1974,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
-                 c = &cpuid_data.entries[cpuid_i++];
-             }
-             break;
-+        case 0x7:
-         case 0x14:
-         case 0x1d:
-         case 0x1e: {
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 8fd49ff474..83c2b40480 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -1480,12 +1480,13 @@ static bool check_iopl(DisasContext *s)
+ /* if d == OR_TMP0, it means memory operand (address in A0) */
+ static void gen_op(DisasContext *s1, int op, MemOp ot, int d)
+ {
++    /* Invalid lock prefix when destination is not memory or OP_CMPL. */
++    if ((d != OR_TMP0 || op == OP_CMPL) && s1->prefix & PREFIX_LOCK) {
++        gen_illegal_opcode(s1);
++        return;
++    }
++
+     if (d != OR_TMP0) {
+-        if (s1->prefix & PREFIX_LOCK) {
+-            /* Lock prefix when destination is not memory.  */
+-            gen_illegal_opcode(s1);
+-            return;
+-        }
+         gen_op_mov_v_reg(s1, ot, s1->T0, d);
+     } else if (!(s1->prefix & PREFIX_LOCK)) {
+         gen_op_ld_v(s1, ot, s1->T0, s1->A0);
 -- 
 2.39.2
 
