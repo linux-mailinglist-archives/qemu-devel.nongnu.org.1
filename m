@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05DE185E9CC
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:17:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8369A85E9E5
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:19:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rctxb-0002P4-31; Wed, 21 Feb 2024 16:16:59 -0500
+	id 1rctxr-0002e8-4k; Wed, 21 Feb 2024 16:17:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctxE-00020x-Ac; Wed, 21 Feb 2024 16:16:37 -0500
+ id 1rctxC-00020U-RR; Wed, 21 Feb 2024 16:16:36 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctxB-0000jK-22; Wed, 21 Feb 2024 16:16:35 -0500
+ id 1rctxB-0000jJ-0u; Wed, 21 Feb 2024 16:16:34 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EC8214F7E8;
- Thu, 22 Feb 2024 00:16:44 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 012274F7E9;
+ Thu, 22 Feb 2024 00:16:45 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 9E4B7869A1;
+ by tsrv.corpit.ru (Postfix) with SMTP id ABAE7869A2;
  Thu, 22 Feb 2024 00:16:22 +0300 (MSK)
-Received: (nullmailer pid 2335247 invoked by uid 1000);
+Received: (nullmailer pid 2335250 invoked by uid 1000);
  Wed, 21 Feb 2024 21:16:22 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-block@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 01/28] qemu-img: stop printing error twice in a few places
-Date: Thu, 22 Feb 2024 00:15:42 +0300
-Message-Id: <20240221211622.2335170-1-mjt@tls.msk.ru>
+Subject: [PATCH 02/28] qemu-img: measure: convert img_size to signed,
+ simplify handling
+Date: Thu, 22 Feb 2024 00:15:43 +0300
+Message-Id: <20240221211622.2335170-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1708544927.git.mjt@tls.msk.ru>
 References: <cover.1708544927.git.mjt@tls.msk.ru>
@@ -58,55 +59,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we have:
+qemu_opt_set_number() expects signed int64_t.
 
-  ./qemu-img resize none +10
-  qemu-img: Could not open 'none': Could not open 'none': No such file or directory
-
-stop printing the message twice, - local_err already has
-all the info, no need to prepend additional text there.
-
-There are a few other places like this, but I'm unsure
-about these.
+Use int64_t instead of uint64_t for img_size, use -1 as "unset"
+value instead of UINT64_MAX, and do not require temporary sval
+for conversion from string.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- qemu-img.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ qemu-img.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 7668f86769..5a756be600 100644
+index 5a756be600..ae14ed833d 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -404,7 +404,7 @@ static BlockBackend *img_open_file(const char *filename,
-     }
-     blk = blk_new_open(filename, NULL, options, flags, &local_err);
-     if (!blk) {
--        error_reportf_err(local_err, "Could not open '%s': ", filename);
-+        error_report_err(local_err);
-         return NULL;
-     }
-     blk_set_enable_write_cache(blk, !writethrough);
-@@ -597,7 +597,7 @@ static int img_create(int argc, char **argv)
-     bdrv_img_create(filename, fmt, base_filename, base_fmt,
-                     options, img_size, flags, quiet, &local_err);
-     if (local_err) {
--        error_reportf_err(local_err, "%s: ", filename);
-+        error_report_err(local_err);
-         goto fail;
+@@ -5362,7 +5362,7 @@ static int img_measure(int argc, char **argv)
+     QemuOpts *sn_opts = NULL;
+     QemuOptsList *create_opts = NULL;
+     bool image_opts = false;
+-    uint64_t img_size = UINT64_MAX;
++    int64_t img_size = -1;
+     BlockMeasureInfo *info = NULL;
+     Error *local_err = NULL;
+     int ret = 1;
+@@ -5420,16 +5420,11 @@ static int img_measure(int argc, char **argv)
+             }
+             break;
+         case OPTION_SIZE:
+-        {
+-            int64_t sval;
+-
+-            sval = cvtnum("image size", optarg);
+-            if (sval < 0) {
++            img_size = cvtnum("image size", optarg);
++            if (img_size < 0) {
+                 goto out;
+             }
+-            img_size = (uint64_t)sval;
+-        }
+-        break;
++            break;
+         }
      }
  
-@@ -5253,9 +5253,7 @@ static int img_dd(int argc, char **argv)
- 
-     ret = bdrv_create(drv, out.filename, opts, &local_err);
-     if (ret < 0) {
--        error_reportf_err(local_err,
--                          "%s: error while creating output image: ",
--                          out.filename);
-+        error_report_err(local_err);
-         ret = -1;
+@@ -5444,11 +5439,11 @@ static int img_measure(int argc, char **argv)
+         error_report("--image-opts, -f, and -l require a filename argument.");
          goto out;
      }
+-    if (filename && img_size != UINT64_MAX) {
++    if (filename && img_size != -1) {
+         error_report("--size N cannot be used together with a filename.");
+         goto out;
+     }
+-    if (!filename && img_size == UINT64_MAX) {
++    if (!filename && img_size == -1) {
+         error_report("Either --size N or one filename must be specified.");
+         goto out;
+     }
+@@ -5496,7 +5491,7 @@ static int img_measure(int argc, char **argv)
+             goto out;
+         }
+     }
+-    if (img_size != UINT64_MAX) {
++    if (img_size != -1) {
+         qemu_opt_set_number(opts, BLOCK_OPT_SIZE, img_size, &error_abort);
+     }
+ 
 -- 
 2.39.2
 
