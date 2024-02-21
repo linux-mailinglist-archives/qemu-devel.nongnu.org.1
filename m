@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 187CD85E4A4
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 18:34:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 992C085E4A6
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 18:35:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcqTh-00010M-EE; Wed, 21 Feb 2024 12:33:53 -0500
+	id 1rcqTh-00018a-PH; Wed, 21 Feb 2024 12:33:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <36jPWZQwKCt8OBCJIFTUFGBOHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--nabihestefan.bounces.google.com>)
- id 1rcqTR-0000rE-Rg
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 12:33:38 -0500
-Received: from mail-yb1-xb4a.google.com ([2607:f8b0:4864:20::b4a])
+ <37DPWZQwKCuEQDELKHVWHIDQJRRJOH.FRPTHPX-GHYHOQRQJQX.RUJ@flex--nabihestefan.bounces.google.com>)
+ id 1rcqTT-0000sy-8S
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 12:33:44 -0500
+Received: from mail-yb1-xb49.google.com ([2607:f8b0:4864:20::b49])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <36jPWZQwKCt8OBCJIFTUFGBOHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--nabihestefan.bounces.google.com>)
- id 1rcqTM-0002TN-SL
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 12:33:37 -0500
-Received: by mail-yb1-xb4a.google.com with SMTP id
- 3f1490d57ef6-dc64b659a9cso12258012276.3
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 09:33:31 -0800 (PST)
+ <37DPWZQwKCuEQDELKHVWHIDQJRRJOH.FRPTHPX-GHYHOQRQJQX.RUJ@flex--nabihestefan.bounces.google.com>)
+ id 1rcqTO-0002TZ-20
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 12:33:38 -0500
+Received: by mail-yb1-xb49.google.com with SMTP id
+ 3f1490d57ef6-dc6b26845cdso1280973276.3
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 09:33:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1708536810; x=1709141610; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:from:subject:message-id:references
- :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
- :reply-to; bh=nKuGCA+rZrH/qIGJuQohJmMqyiRVPoofVS99+gBVcJQ=;
- b=sPvojojgW7X3XYcZTD8yWIUet2A6vd0ce6d/QLmmtO3Psovi11zBbgaz9zuQnW0Gb/
- s7tJdjE3a7ryXVORAGxByP228spyBDZEH0woMjB4kgzQhpNoRMmuSgK7IKaYaSxSokr/
- nfeQinkNmtimVSFFa+2NE9/aaPAQ2dploOK0o/9I+g0/7YGPQ96EHojahNhj5c1fkquV
- ARpx4wleJpr1s1Ni/efkWaSLPLh6Vq9YrXjYUE3eUmw6Xt53UUF1DBYVZDPbGaqAUd6Z
- MZpAY0cpWgtj4LNnPmk0OkgNsvT+CnKfHvDpGFeH80VLcXQFdQXgHvrbzV+PijXhN5EM
- qhmQ==
+ d=google.com; s=20230601; t=1708536812; x=1709141612; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+ :date:from:to:cc:subject:date:message-id:reply-to;
+ bh=+9+8PfRfulApedC4nlWtcYgUGbJ4o3VdSnLLrjIzEPA=;
+ b=n3+Zfzpn0YSxuUhwDm+sLoF9XwsgVFg922SlmH9AxymcjJtgM+IDlsRh0A+cGuFIzq
+ OYbS3fEG0MHIMHnJ9IWxdOM54fCjIYd/gLatxUILoRRvR9QqyOpatkwcfNAqej0gEmW0
+ rTDBln5ZPscaarUGIN2dVQCI24SXgGn6w6JIpU8M5I/ysTZRVG9BGp5fcbRjMBhiks+U
+ 8nc2f/2CMOl5jOrzPiPJHT5BuQuY95waZJaZ6OAowhjABCzG+JKErXQKXVqzo2bzoGJE
+ fBL35wf7Jad5TOpFU0gsNrB1itKmKZB6YtMv/k6Nm6rKhDBn9H3/Dp0lAPkLFMoOdowA
+ 7rLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708536810; x=1709141610;
- h=content-transfer-encoding:cc:to:from:subject:message-id:references
- :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
- :date:message-id:reply-to;
- bh=nKuGCA+rZrH/qIGJuQohJmMqyiRVPoofVS99+gBVcJQ=;
- b=AoNXmV/Zbs41URErvEmlqRJd+Zd4LWsWAmYcfD4OnndiNLJFoTi+u6U2tMWyX3be8i
- wXuIPLfj51LGHrM5Up5EESuoMrsu/lEB26daJ9EhNofLMb6xfN6FdYcU3NAPj4CkuHKy
- 6pUYJgu3JRT/Qp/6k1V4jXiU6HgEbg7ieasvnhr3emaqgxPzRxrrFnLpOW1IIOdivXQc
- /Hr/Ou+CC+UITvdwrrbpEEWoD3Tt0wT4bY5b2kGhtXQtp1lKZdbkQ58mcRIWtLlFnuBj
- uEMvwc5WwT3LsEwGRN8oqPFLXnJzzr2+ZGBzFlFZQhoWxluPVk5aWzHlbmXMCzD2AU6+
- r4xw==
+ d=1e100.net; s=20230601; t=1708536812; x=1709141612;
+ h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+ :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+9+8PfRfulApedC4nlWtcYgUGbJ4o3VdSnLLrjIzEPA=;
+ b=vZ2ublDe9UoxaSvjVdGMMGdJURNSye+EnRw96s9482I6WhEe2CPx+ay3Ou9drLO99L
+ x5IbZZhy8ckrHA3jGnBcC1y9W9AYqnYSEdVzYNQJGSgjyNZDLwNrjrNa1Kn4KedBiqaC
+ YigAYbc9cetwb8NEuHZO63Mu2eEmPtGzwENu6lmaTphI/1HngrzawpFfeo+IJMzqONfa
+ SIAMRgQkW7Eea1T5lbc44WPkdQyrjYojdX252+jMyHl9X9puMURIeZvzFA7tWUkzbg4y
+ 0i84QiXDE3vBBQQfKlzw3iteWA/tgcYQY/QylFd+VcVAC7LohL+o2sV2hdUVsTEO2rJK
+ FQrg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXq5gnFGPBNf9kLPiZSM17i9j1Mj/WDyipsgZt8pmzI1tYBnJ1Id4FLOzOgcTYsytUxycTc5Amgph8HuUvNFeofUaFBQ/s=
-X-Gm-Message-State: AOJu0YypAcozbFh6LXNsoah3h3/8HoU0fvOlLxeQGN4zL3ZQZZRcgp1j
- rbNV/2Cmdy2iEMIu82brq/4LPcXAYQWv4dyvG0Yiqit7V4MINM7W0/QVMAAGnaDyEiTMldeqBeN
- oYXP+rniBnDl6z6T8qiRaGBnREw==
-X-Google-Smtp-Source: AGHT+IGTHqk+zzw6Aei7T0+8dlIobwB5c7dlCZCUi29oW+vxF9+KTvziSZt++jDWEbvn339bKgv32C/NIsWiwrdp5M4=
+ AJvYcCVmnnxYiIpTJYeZpPaH2h6HVqm2o95OtTF5xSNgjXfEuHq2D+jpEWRlz0Q4+MMDL0uUqAi5KhRNTTukL7s4+Po5f0Z51GM=
+X-Gm-Message-State: AOJu0YzTmQBqlWhc9eNUyYJnYmBKuUCTUe7VDZ87Lha88XqO+dqBP1NO
+ HurDBDVMCDeg+/mnDqjPzaujtccrbPidwe87sj8EGTt1VaLEBrKYK9JcPs8JxxKs6m199j3WLhG
+ BoZ6Dn+aHbeeRg7D0T5/wmlvaLQ==
+X-Google-Smtp-Source: AGHT+IHHegS9BiqqQsd4K3mHQP1OesSLBWhLCf6gVkCfxmhaQBH2LN/8ZsyV8oXdFBvBw5VLxVMnTNagOqR3q162vyg=
 X-Received: from nabihestefan.c.googlers.com
  ([fda3:e722:ac3:cc00:20:ed76:c0a8:2737])
- (user=nabihestefan job=sendgmr) by 2002:a25:aba4:0:b0:dc7:42:ecd with SMTP id
- v33-20020a25aba4000000b00dc700420ecdmr4655431ybi.6.1708536810474; Wed, 21 Feb
- 2024 09:33:30 -0800 (PST)
-Date: Wed, 21 Feb 2024 17:33:24 +0000
+ (user=nabihestefan job=sendgmr) by 2002:a25:840d:0:b0:dc6:519b:5425 with SMTP
+ id u13-20020a25840d000000b00dc6519b5425mr5001050ybk.11.1708536812182; Wed, 21
+ Feb 2024 09:33:32 -0800 (PST)
+Date: Wed, 21 Feb 2024 17:33:25 +0000
 In-Reply-To: <20240221173325.1494895-1-nabihestefan@google.com>
 Mime-Version: 1.0
 References: <20240221173325.1494895-1-nabihestefan@google.com>
 X-Mailer: git-send-email 2.44.0.rc0.258.g7320e95886-goog
-Message-ID: <20240221173325.1494895-2-nabihestefan@google.com>
-Subject: [PATCH 1/2] hw/intc/arm_gicv3_its_common: Increase DeviceID to 32 bits
+Message-ID: <20240221173325.1494895-3-nabihestefan@google.com>
+Subject: [PATCH 2/2] hw/intc/arm_gicv3_its: Use send_msi in the
+ GITS_TRANSLATER write
 From: Nabih Estefan <nabihestefan@google.com>
 To: peter.maydell@linaro.org
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-block@nongnu.org, 
  its@irrelevant.dk, kbusch@kernel.org, roqueh@google.com, 
  nabihestefan@google.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b4a;
- envelope-from=36jPWZQwKCt8OBCJIFTUFGBOHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--nabihestefan.bounces.google.com;
- helo=mail-yb1-xb4a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b49;
+ envelope-from=37DPWZQwKCuEQDELKHVWHIDQJRRJOH.FRPTHPX-GHYHOQRQJQX.RUJ@flex--nabihestefan.bounces.google.com;
+ helo=mail-yb1-xb49.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -99,50 +98,99 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Roque Arcudia Hernandez <roqueh@google.com>
 
-According to the =E2=80=9CGICv3 and GICv4 Software Overview=E2=80=9D the De=
-viceID is
-IMPLEMENTATION DEFINED. This patch increases the DeviceID in send_msi virtu=
-al
-function to 32 bits to allow the possibility of a redefinition of it with a
-bigger DeviceID.
+This is trying to achieve 2 things: To be able to redefine the send_msi in a
+derived class of arm_gicv3_its and/or to expose a method call interface to
+inject interrupts from another device.
 
 Signed-off-by: Roque Arcudia Hernandez <roqueh@google.com>
 Signed-off-by: Nabih Estefan <nabihestefan@google.com>
 ---
- hw/intc/arm_gicv3_its_kvm.c            | 2 +-
- include/hw/intc/arm_gicv3_its_common.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/intc/arm_gicv3_its.c                | 20 +++++++++-----------
+ include/hw/intc/arm_gicv3_its_common.h | 13 +++++++++++--
+ 2 files changed, 20 insertions(+), 13 deletions(-)
 
-diff --git a/hw/intc/arm_gicv3_its_kvm.c b/hw/intc/arm_gicv3_its_kvm.c
-index 3befc960db..4eaf1cfcad 100644
---- a/hw/intc/arm_gicv3_its_kvm.c
-+++ b/hw/intc/arm_gicv3_its_kvm.c
-@@ -42,7 +42,7 @@ struct KVMARMITSClass {
- };
-=20
-=20
--static int kvm_its_send_msi(GICv3ITSState *s, uint32_t value, uint16_t dev=
-id)
-+static int kvm_its_send_msi(GICv3ITSState *s, uint32_t value, uint32_t dev=
-id)
+diff --git a/hw/intc/arm_gicv3_its.c b/hw/intc/arm_gicv3_its.c
+index 52e9aca9c6..9342e96be3 100644
+--- a/hw/intc/arm_gicv3_its.c
++++ b/hw/intc/arm_gicv3_its.c
+@@ -20,16 +20,6 @@
+ #include "qom/object.h"
+ #include "qapi/error.h"
+ 
+-typedef struct GICv3ITSClass GICv3ITSClass;
+-/* This is reusing the GICv3ITSState typedef from ARM_GICV3_ITS_COMMON */
+-DECLARE_OBJ_CHECKERS(GICv3ITSState, GICv3ITSClass,
+-                     ARM_GICV3_ITS, TYPE_ARM_GICV3_ITS)
+-
+-struct GICv3ITSClass {
+-    GICv3ITSCommonClass parent_class;
+-    ResettablePhases parent_phases;
+-};
+-
+ /*
+  * This is an internal enum used to distinguish between LPI triggered
+  * via command queue and LPI triggered via gits_translater write.
+@@ -1561,7 +1551,8 @@ static MemTxResult gicv3_its_translation_write(void *opaque, hwaddr offset,
+     switch (offset) {
+     case GITS_TRANSLATER:
+         if (s->ctlr & R_GITS_CTLR_ENABLED_MASK) {
+-            result = do_process_its_cmd(s, attrs.requester_id, data, NONE);
++            GICv3ITSCommonClass *c = ARM_GICV3_ITS_COMMON_GET_CLASS(s);
++            result = c->send_msi(s, data, attrs.requester_id);
+         }
+         break;
+     default:
+@@ -1994,6 +1985,12 @@ static void gicv3_its_reset_hold(Object *obj)
+     }
+ }
+ 
++static int gicv3_its_send_msi(GICv3ITSState *s, uint32_t eventid,
++                              uint32_t devid)
++{
++    return do_process_its_cmd(s, devid, eventid, NONE);
++}
++
+ static void gicv3_its_post_load(GICv3ITSState *s)
  {
-     struct kvm_msi msi;
-=20
-diff --git a/include/hw/intc/arm_gicv3_its_common.h b/include/hw/intc/arm_g=
-icv3_its_common.h
-index 7dc712b38d..e072c36cca 100644
+     if (s->ctlr & R_GITS_CTLR_ENABLED_MASK) {
+@@ -2020,6 +2017,7 @@ static void gicv3_its_class_init(ObjectClass *klass, void *data)
+     resettable_class_set_parent_phases(rc, NULL, gicv3_its_reset_hold, NULL,
+                                        &ic->parent_phases);
+     icc->post_load = gicv3_its_post_load;
++    icc->send_msi = gicv3_its_send_msi;
+ }
+ 
+ static const TypeInfo gicv3_its_info = {
+diff --git a/include/hw/intc/arm_gicv3_its_common.h b/include/hw/intc/arm_gicv3_its_common.h
+index e072c36cca..c81bd0b26e 100644
 --- a/include/hw/intc/arm_gicv3_its_common.h
 +++ b/include/hw/intc/arm_gicv3_its_common.h
-@@ -117,7 +117,7 @@ struct GICv3ITSCommonClass {
-     SysBusDeviceClass parent_class;
-     /*< public >*/
-=20
--    int (*send_msi)(GICv3ITSState *s, uint32_t data, uint16_t devid);
-+    int (*send_msi)(GICv3ITSState *s, uint32_t data, uint32_t devid);
-     void (*pre_save)(GICv3ITSState *s);
-     void (*post_load)(GICv3ITSState *s);
- };
---=20
+@@ -25,8 +25,6 @@
+ #include "hw/intc/arm_gicv3_common.h"
+ #include "qom/object.h"
+ 
+-#define TYPE_ARM_GICV3_ITS "arm-gicv3-its"
+-
+ #define ITS_CONTROL_SIZE 0x10000
+ #define ITS_TRANS_SIZE   0x10000
+ #define ITS_SIZE         (ITS_CONTROL_SIZE + ITS_TRANS_SIZE)
+@@ -132,4 +130,15 @@ struct GICv3ITSCommonClass {
+  */
+ const char *its_class_name(void);
+ 
++#define TYPE_ARM_GICV3_ITS "arm-gicv3-its"
++typedef struct GICv3ITSClass GICv3ITSClass;
++/* This is reusing the GICv3ITSState typedef from ARM_GICV3_ITS_COMMON */
++DECLARE_OBJ_CHECKERS(GICv3ITSState, GICv3ITSClass,
++                     ARM_GICV3_ITS, TYPE_ARM_GICV3_ITS)
++
++struct GICv3ITSClass {
++    GICv3ITSCommonClass parent_class;
++    ResettablePhases parent_phases;
++};
++
+ #endif
+-- 
 2.44.0.rc0.258.g7320e95886-goog
 
 
