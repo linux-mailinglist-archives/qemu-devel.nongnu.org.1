@@ -2,43 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 921B985EB42
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:48:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBE4785EB4E
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:50:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcuRJ-0000w3-Oq; Wed, 21 Feb 2024 16:47:41 -0500
+	id 1rcuRO-00011r-CH; Wed, 21 Feb 2024 16:47:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcuRG-0000sn-8Q; Wed, 21 Feb 2024 16:47:38 -0500
+ id 1rcuRI-0000vT-3W; Wed, 21 Feb 2024 16:47:40 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcuRE-0007Ld-EP; Wed, 21 Feb 2024 16:47:37 -0500
+ id 1rcuRG-0007Lq-DB; Wed, 21 Feb 2024 16:47:39 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 593514F862;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6C68A4F863;
  Thu, 22 Feb 2024 00:47:46 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id F39B2869E3;
- Thu, 22 Feb 2024 00:47:23 +0300 (MSK)
-Received: (nullmailer pid 2339841 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 13D7C869E4;
+ Thu, 22 Feb 2024 00:47:24 +0300 (MSK)
+Received: (nullmailer pid 2339844 invoked by uid 1000);
  Wed, 21 Feb 2024 21:47:23 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.10 06/33] qemu-options.hx: Improve -serial option
- documentation
-Date: Thu, 22 Feb 2024 00:46:49 +0300
-Message-Id: <20240221214723.2339742-6-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Guenter Roeck <linux@roeck-us.net>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Nikita Ostrenkov <n.ostrenkov@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.10 07/33] pci-host: designware: Limit value range of iATU
+ viewport register
+Date: Thu, 22 Feb 2024 00:46:50 +0300
+Message-Id: <20240221214723.2339742-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.10-20240221121815@cover.tls.msk.ru>
 References: <qemu-stable-7.2.10-20240221121815@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,57 +62,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Guenter Roeck <linux@roeck-us.net>
 
-The -serial option documentation is a bit brief about '-serial none'
-and '-serial null'. In particular it's not very clear about the
-difference between them, and it doesn't mention that it's up to
-the machine model whether '-serial none' means "don't create the
-serial port" or "don't wire the serial port up to anything".
+The latest version of qemu (v8.2.0-869-g7a1dc45af5) crashes when booting
+the mcimx7d-sabre emulation with Linux v5.11 and later.
 
-Expand on these points.
+qemu-system-arm: ../system/memory.c:2750: memory_region_set_alias_offset: Assertion `mr->alias' failed.
 
+Problem is that the Designware PCIe emulation accepts the full value range
+for the iATU Viewport Register. However, both hardware and emulation only
+support four inbound and four outbound viewports.
+
+The Linux kernel determines the number of supported viewports by writing
+0xff into the viewport register and reading the value back. The expected
+value when reading the register is the highest supported viewport index.
+Match that code by masking the supported viewport value range when the
+register is written. With this change, the Linux kernel reports
+
+imx6q-pcie 33800000.pcie: iATU: unroll F, 4 ob, 4 ib, align 0K, limit 4G
+
+as expected and supported.
+
+Fixes: d64e5eabc4c7 ("pci: Add support for Designware IP block")
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Message-id: 20240129060055.2616989-1-linux@roeck-us.net
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240122163607.459769-3-peter.maydell@linaro.org
-(cherry picked from commit 747bfaf3a9d2f3cd51674763dc1f7575100cd200)
+(cherry picked from commit 8a73152020337a7fbf34daf0a006d4d89ec1494e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 379692da86..7f798ce47e 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -3968,7 +3968,8 @@ SRST
-     This option can be used several times to simulate up to 4 serial
-     ports.
+diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
+index bde3a343a2..c235b9daa3 100644
+--- a/hw/pci-host/designware.c
++++ b/hw/pci-host/designware.c
+@@ -340,6 +340,8 @@ static void designware_pcie_root_config_write(PCIDevice *d, uint32_t address,
+         break;
  
--    Use ``-serial none`` to disable all serial ports.
-+    You can use ``-serial none`` to suppress the creation of default
-+    serial devices.
+     case DESIGNWARE_PCIE_ATU_VIEWPORT:
++        val &= DESIGNWARE_PCIE_ATU_REGION_INBOUND |
++                (DESIGNWARE_PCIE_NUM_VIEWPORTS - 1);
+         root->atu_viewport = val;
+         break;
  
-     Available character devices are:
- 
-@@ -3990,10 +3991,17 @@ SRST
-         [Linux only] Pseudo TTY (a new PTY is automatically allocated)
- 
-     ``none``
--        No device is allocated.
-+        No device is allocated. Note that for machine types which
-+        emulate systems where a serial device is always present in
-+        real hardware, this may be equivalent to the ``null`` option,
-+        in that the serial device is still present but all output
-+        is discarded. For boards where the number of serial ports is
-+        truly variable, this suppresses the creation of the device.
- 
-     ``null``
--        void device
-+        A guest will see the UART or serial device as present in the
-+        machine, but all output is discarded, and there is no input.
-+        Conceptually equivalent to redirecting the output to ``/dev/null``.
- 
-     ``chardev:id``
-         Use a named character device defined with the ``-chardev``
 -- 
 2.39.2
 
