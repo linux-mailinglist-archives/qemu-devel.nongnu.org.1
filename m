@@ -2,84 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67D1685E4A3
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 18:34:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C64685E4B3
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 18:38:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcqUU-00026X-0G; Wed, 21 Feb 2024 12:34:42 -0500
+	id 1rcqXl-0005TN-KC; Wed, 21 Feb 2024 12:38:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcqUN-0001zD-6h
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 12:34:35 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcqXS-0005SU-Bt
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 12:37:47 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcqUH-0002YZ-Ck
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 12:34:34 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4126f486429so15413485e9.0
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 09:34:26 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcqXQ-00032E-F0
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 12:37:45 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-33d509c5706so2217690f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 09:37:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708536864; x=1709141664; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708537060; x=1709141860; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=opygqFMxwKpFcrJotDyy+OC7GLFJ9LkeAWNcIi6WAlw=;
- b=Y2+mXbAzNhzXWI4kD6Uo2p6AXl3qPFPDckHNobH356BEIQWrJ0CMwjQgFZI9H4qFNm
- Fdg2Em9TkS7oCNxflMSCS0Rpe4/JsWtlIpPI2CyJ46Ejyk/9bgoKgoFlLg6tnINbUl6F
- recwcFLmasBRwJ3s+LSHZgENLgta5Wjl3YH4J8hGPh3tNh6PLVc1lwOo4tBvWU+uAA2a
- EWmtpBf4r6OSDyVQcgruTFtEcP9IsoU4UPMXG+CwCPaXK6tkFs05iFptfLLDZLXeS/6y
- Zeyxpjymyr4/aX/MlEKDJgZEPr4eYdm/bLzzfZHTJwDXDmh5gjWXxbT3vgyGwNGy++N+
- 6b2Q==
+ bh=l48eRUfXjKDzXhAMlr3Ke0C/zNt7CtxuBSFFxpDPl3g=;
+ b=HoPx7VVrxzvzy6dse9EPimrY5IiNCdEhIBhM9CUJxSqORiGY7f2iPMXVvGsY90ls+A
+ zlqETjLZn/xgtFFTdkOrI2lySFMOmF1F+9uVH/afgGq3h9cFrtP8WF2yZbWF6wGNsdJe
+ 5ddiVgaVfHSAtZskJHnMhBWD+Vv19DwTD6IKQA8mWQz+05nFeLEQfT/lLD1542gSoHnk
+ Gvog8wl+F98pPxkdeML/H9Y3gh24F8dC6tiRI1Q7pDt4P53TDkL35qbWApOJQb4RNtuh
+ mrRvYQUIZso5OS1eCE94K4fQ2ezVwfgNQ5fIjIqgkeKUpKEPAFFdqh/0eoDhHLhVvooo
+ JvNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708536864; x=1709141664;
+ d=1e100.net; s=20230601; t=1708537060; x=1709141860;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=opygqFMxwKpFcrJotDyy+OC7GLFJ9LkeAWNcIi6WAlw=;
- b=OafMHc1T16zMnXb165bzd0ffLDIZuh8DbVXcrJP97xwkMLQbAQM+qxJovChxxxZVuo
- Kdca6UC9/Tz9Ee5dKe0CJJTUZvg0QeYuqga+aIXYANWJZAxntjV+e9Wu+6vHrKdjkyEf
- jhBDIP5nC5F14XeckMH90OUDfHmoNOq1p9jLerGOfRvv2ch9unkZf4SpyF6PrZye6Jxc
- CBQ4uYXn4WoGmLeN40dvYzDcyM+TBmCreCBsBNFCSqXR6ZJWF19dXcJ6jtLMZMq4auSI
- r63AcY9nAVKajM4PFp/XkoSekWq8+y8+i2uUfTIarCQ90eCFxANWfuZx3vsyTutxnhdA
- UpVw==
-X-Gm-Message-State: AOJu0Yy1Drhl4BMPZrzo6GBFAIcBrkEosUtvOrRwkJisp/7LWsc/MGqL
- o3PYnQxSW+l26e6DTy29ANilCw+cdrXqYx+i7Scdh4cKVRbxahqesjgE8tZGdlw=
-X-Google-Smtp-Source: AGHT+IElZo7+oKOyxDS7RBYSbpyDhD5ZFWh/xeE1n2Qu53aoIjPB4+odrbppF24EIJieGRdEASqPFg==
-X-Received: by 2002:a5d:658f:0:b0:33d:513a:9247 with SMTP id
- q15-20020a5d658f000000b0033d513a9247mr5906750wru.55.1708536864212; 
- Wed, 21 Feb 2024 09:34:24 -0800 (PST)
+ bh=l48eRUfXjKDzXhAMlr3Ke0C/zNt7CtxuBSFFxpDPl3g=;
+ b=iYoWkCKopYFmZndUQcWr+69NHLDB78md7ROGCejLboUVAW8hPemOg6WIzz47Jk5js7
+ eJrMGRfXa/ul5wFcX+9lmHEZpd8qvFTFeUVrcYbXcMEMTqnblDIR8EDazJZJwXmFYjEY
+ v9LkMKffMCjIDYz23b9lJ2C/QBqf6b3UIymWcMOGnl4yHnmTVgVxldAfSPSdwrcDx2tO
+ PZ8lDrTjx4QOMabFKW2nu/tit6jRmUzxlf0Yn5LoRdsXTXppvpqXvCceIpRo102WEcWQ
+ MXTfvuPVaVd2legohYMid5pH+cMu0ZV9nKOh2tC7W+aLvsDNQ0aUCblfaMlHoxJjHmqT
+ jWpQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXrhpheR7oL2aevGuVOE25ecmloPpMTKXk0lrXaxO4sBXzwK5lJBYxqyqx5Q+l56kIaoR7kIDJG6fuJXBsNFQWL3+ycPUs=
+X-Gm-Message-State: AOJu0YyeIzfVt8ddLQsW85oAYLctdHidnuUAG8pSwjsRzVYH1d01sPkT
+ tT+hPx7xrGf6+N0sQBEnx6XYYLYIK8TcOxfqaiHyaZZARr+S6VA58VlRPiOnIk0=
+X-Google-Smtp-Source: AGHT+IEq1k6+sth6krJGIPmfCvhApo/Y1KOjCet3kinWywFYD3DKFbRx7+f9AuxIHIHfyrni6Fa2GQ==
+X-Received: by 2002:adf:ef8f:0:b0:33d:277b:1ef3 with SMTP id
+ d15-20020adfef8f000000b0033d277b1ef3mr7887953wro.38.1708537060594; 
+ Wed, 21 Feb 2024 09:37:40 -0800 (PST)
 Received: from [192.168.69.100] ([176.187.211.34])
  by smtp.gmail.com with ESMTPSA id
- bq28-20020a5d5a1c000000b0033d73e1505bsm4174412wrb.18.2024.02.21.09.34.22
+ e6-20020adfa446000000b0033d76a5bec1sm3378760wra.15.2024.02.21.09.37.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Feb 2024 09:34:23 -0800 (PST)
-Message-ID: <1ce84d4b-876a-4f9c-a4b6-3bfd2f30d378@linaro.org>
-Date: Wed, 21 Feb 2024 18:34:21 +0100
+ Wed, 21 Feb 2024 09:37:39 -0800 (PST)
+Message-ID: <dd01fc4b-e522-44d0-9082-766866f42196@linaro.org>
+Date: Wed, 21 Feb 2024 18:37:37 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vl, pc: turn -no-fd-bootchk into a machine property
+Subject: Re: [PATCH 4/5] hw/i386/pc: Inline i8042_setup_a20_line() and remove
+ it
 Content-Language: en-US
-To: Bernhard Beschow <shentey@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>
-References: <20240220155352.416710-1-pbonzini@redhat.com>
- <8FECF57F-7897-4AF8-9AC1-46A927C0FEC0@gmail.com>
- <CABgObfb+BK4s0VtwQUDkdzvwhTwRAXim-pJ-Lg1nWvbhuOm55w@mail.gmail.com>
- <1A0875D0-5135-4F16-A252-BC9EBA9C567B@gmail.com>
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost
+ <eduardo@habkost.net>, "Michael S. Tsirkin" <mst@redhat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>
+References: <20240218131701.91132-1-shentey@gmail.com>
+ <20240218131701.91132-5-shentey@gmail.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <1A0875D0-5135-4F16-A252-BC9EBA9C567B@gmail.com>
+In-Reply-To: <20240218131701.91132-5-shentey@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,9 +101,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/2/24 10:47, Bernhard Beschow wrote:
+On 18/2/24 14:17, Bernhard Beschow wrote:
+> This function is used once in the pc machines. Remove it since it contains one
+> line only.
 
-> Great! I'll rebase my PC initialization series on top of Peter's reset cleanup series which probably results in folding cmos initialization into pc.c.
+Now reminds me of 
+https://lore.kernel.org/qemu-devel/20211218130437.1516929-6-f4bug@amsat.org/
 
-Don't, already done.
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> ---
+>   include/hw/input/i8042.h | 1 -
+>   hw/i386/pc.c             | 2 +-
+>   hw/input/pckbd.c         | 5 -----
+>   3 files changed, 1 insertion(+), 7 deletions(-)
+> 
+> diff --git a/include/hw/input/i8042.h b/include/hw/input/i8042.h
+> index 9fb3f8d787..e90f008b66 100644
+> --- a/include/hw/input/i8042.h
+> +++ b/include/hw/input/i8042.h
+> @@ -89,7 +89,6 @@ struct MMIOKBDState {
+>   
+>   
+>   void i8042_isa_mouse_fake_event(ISAKBDState *isa);
+> -void i8042_setup_a20_line(ISADevice *dev, qemu_irq a20_out);
+>   
+>   static inline bool i8042_present(void)
+>   {
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index 8b601ea6cf..1b2077dc32 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -1195,7 +1195,7 @@ static void pc_superio_init(ISABus *isa_bus, bool create_fdctrl,
+>       }
+>   
+>       a20_line = qemu_allocate_irqs(handle_a20_line_change, first_cpu, 1);
+> -    i8042_setup_a20_line(i8042, a20_line[0]);
+> +    qdev_connect_gpio_out_named(DEVICE(i8042), I8042_A20_LINE, 0, a20_line[0]);
+>       g_free(a20_line);
+>   }
+>   
+> diff --git a/hw/input/pckbd.c b/hw/input/pckbd.c
+> index 90a4d9eb40..74f10b640f 100644
+> --- a/hw/input/pckbd.c
+> +++ b/hw/input/pckbd.c
+> @@ -777,11 +777,6 @@ void i8042_isa_mouse_fake_event(ISAKBDState *isa)
+>       ps2_mouse_fake_event(&s->ps2mouse);
+>   }
+>   
+> -void i8042_setup_a20_line(ISADevice *dev, qemu_irq a20_out)
+> -{
+> -    qdev_connect_gpio_out_named(DEVICE(dev), I8042_A20_LINE, 0, a20_out);
+> -}
+> -
+>   static const VMStateDescription vmstate_kbd_isa = {
+>       .name = "pckbd",
+>       .version_id = 3,
+
 
