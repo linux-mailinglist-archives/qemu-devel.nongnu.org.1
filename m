@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F11685EA04
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:23:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05A9085E9E2
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:19:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rctxc-0002Yo-Hk; Wed, 21 Feb 2024 16:17:00 -0500
+	id 1rctxg-0002aN-FU; Wed, 21 Feb 2024 16:17:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctxK-000252-Oe; Wed, 21 Feb 2024 16:16:43 -0500
+ id 1rctxM-00026T-84; Wed, 21 Feb 2024 16:16:46 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctxH-0000lj-UI; Wed, 21 Feb 2024 16:16:42 -0500
+ id 1rctxK-0000mF-9P; Wed, 21 Feb 2024 16:16:43 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 28D744F7EC;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4187D4F7ED;
  Thu, 22 Feb 2024 00:16:45 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id D39D4869A5;
+ by tsrv.corpit.ru (Postfix) with SMTP id E1D5C869A6;
  Thu, 22 Feb 2024 00:16:22 +0300 (MSK)
-Received: (nullmailer pid 2335259 invoked by uid 1000);
+Received: (nullmailer pid 2335262 invoked by uid 1000);
  Wed, 21 Feb 2024 21:16:22 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-block@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 05/28] qemu-img: pass current cmd info into command handlers
-Date: Thu, 22 Feb 2024 00:15:46 +0300
-Message-Id: <20240221211622.2335170-5-mjt@tls.msk.ru>
+Subject: [PATCH 06/28] qemu-img: create: refresh options/--help
+Date: Thu, 22 Feb 2024 00:15:47 +0300
+Message-Id: <20240221211622.2335170-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1708544927.git.mjt@tls.msk.ru>
 References: <cover.1708544927.git.mjt@tls.msk.ru>
@@ -58,167 +58,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This info will be used to generate --help output.
+Create helper function cmd_help() to display command-specific
+help text, and use it to print --help for 'create' subcommand.
+
+Add missing long options (eg --format) in img_create().
+
+Remove usage of missing_argument()/unrecognized_option() in
+img_create().
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- qemu-img.c | 34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ qemu-img.c | 68 +++++++++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 60 insertions(+), 8 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 44dbf5be4f..38ac0f1845 100644
+index 38ac0f1845..7e4c993b9c 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -60,7 +60,7 @@
- 
- typedef struct img_cmd_t {
-     const char *name;
--    int (*handler)(int argc, char **argv);
-+    int (*handler)(const struct img_cmd_t *ccmd, int argc, char **argv);
- } img_cmd_t;
- 
- enum {
-@@ -514,7 +514,7 @@ static int64_t cvtnum(const char *name, const char *value)
-     return cvtnum_full(name, value, 0, INT64_MAX);
+@@ -132,6 +132,31 @@ void unrecognized_option(const char *option)
+     error_exit("qemu-img", "unrecognized option '%s'", option);
  }
  
--static int img_create(int argc, char **argv)
-+static int img_create(const img_cmd_t *ccmd, int argc, char **argv)
- {
-     int c;
-     int64_t img_size = -1;
-@@ -719,7 +719,7 @@ static int collect_image_check(BlockDriverState *bs,
-  *  3 - Check completed, image has leaked clusters, but is good otherwise
-  * 63 - Checks are not supported by the image format
-  */
--static int img_check(int argc, char **argv)
-+static int img_check(const img_cmd_t *ccmd, int argc, char **argv)
- {
-     int c, ret;
-     OutputFormat output_format = OFORMAT_HUMAN;
-@@ -951,7 +951,7 @@ static void run_block_job(BlockJob *job, Error **errp)
-     }
- }
- 
--static int img_commit(int argc, char **argv)
-+static int img_commit(const img_cmd_t *ccmd, int argc, char **argv)
- {
-     int c, ret, flags;
-     const char *filename, *fmt, *cache, *base;
-@@ -1358,7 +1358,7 @@ static int check_empty_sectors(BlockBackend *blk, int64_t offset,
-  * 1 - Images differ
-  * >1 - Error occurred
-  */
--static int img_compare(int argc, char **argv)
-+static int img_compare(const img_cmd_t *ccmd, int argc, char **argv)
- {
-     const char *fmt1 = NULL, *fmt2 = NULL, *cache, *filename1, *filename2;
-     BlockBackend *blk1, *blk2;
-@@ -2234,7 +2234,7 @@ static void set_rate_limit(BlockBackend *blk, int64_t rate_limit)
-     blk_set_io_limits(blk, &cfg);
- }
- 
--static int img_convert(int argc, char **argv)
-+static int img_convert(const img_cmd_t *ccmd, int argc, char **argv)
- {
-     int c, bs_i, flags, src_flags = BDRV_O_NO_SHARE;
-     const char *fmt = NULL, *out_fmt = NULL, *cache = "unsafe",
-@@ -3002,7 +3002,7 @@ err:
-     return NULL;
- }
- 
--static int img_info(int argc, char **argv)
-+static int img_info(const img_cmd_t *ccmd, int argc, char **argv)
- {
-     int c;
-     OutputFormat output_format = OFORMAT_HUMAN;
-@@ -3227,7 +3227,7 @@ static inline bool entry_mergeable(const MapEntry *curr, const MapEntry *next)
-     return true;
- }
- 
--static int img_map(int argc, char **argv)
-+static int img_map(const img_cmd_t *ccmd, int argc, char **argv)
- {
-     int c;
-     OutputFormat output_format = OFORMAT_HUMAN;
-@@ -3376,7 +3376,7 @@ out:
- #define SNAPSHOT_APPLY  3
- #define SNAPSHOT_DELETE 4
- 
--static int img_snapshot(int argc, char **argv)
-+static int img_snapshot(const img_cmd_t *ccmd, int argc, char **argv)
- {
-     BlockBackend *blk;
-     BlockDriverState *bs;
-@@ -3534,7 +3534,7 @@ static int img_snapshot(int argc, char **argv)
-     return 0;
- }
- 
--static int img_rebase(int argc, char **argv)
-+static int img_rebase(const img_cmd_t *ccmd, int argc, char **argv)
- {
-     BlockBackend *blk = NULL, *blk_old_backing = NULL, *blk_new_backing = NULL;
-     uint8_t *buf_old = NULL;
-@@ -4028,7 +4028,7 @@ out:
-     return 0;
- }
- 
--static int img_resize(int argc, char **argv)
-+static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
- {
-     Error *err = NULL;
-     int c, ret, relative;
-@@ -4241,7 +4241,7 @@ static int print_amend_option_help(const char *format)
-     return 0;
- }
- 
--static int img_amend(int argc, char **argv)
-+static int img_amend(const img_cmd_t *ccmd, int argc, char **argv)
- {
-     Error *err = NULL;
-     int c, ret = 0;
-@@ -4505,7 +4505,7 @@ static void bench_cb(void *opaque, int ret)
-     }
- }
- 
--static int img_bench(int argc, char **argv)
-+static int img_bench(const img_cmd_t *ccmd, int argc, char **argv)
- {
-     int c, ret = 0;
-     const char *fmt = NULL, *filename;
-@@ -4775,7 +4775,7 @@ typedef struct ImgBitmapAction {
-     QSIMPLEQ_ENTRY(ImgBitmapAction) next;
- } ImgBitmapAction;
- 
--static int img_bitmap(int argc, char **argv)
-+static int img_bitmap(const img_cmd_t *ccmd, int argc, char **argv)
- {
-     Error *err = NULL;
-     int c, ret = 1;
-@@ -5075,7 +5075,7 @@ static int img_dd_skip(const char *arg,
-     return 0;
- }
- 
--static int img_dd(int argc, char **argv)
-+static int img_dd(const img_cmd_t *ccmd, int argc, char **argv)
- {
-     int ret = 0;
-     char *arg = NULL;
-@@ -5341,7 +5341,7 @@ static void dump_json_block_measure_info(BlockMeasureInfo *info)
-     g_string_free(str, true);
- }
- 
--static int img_measure(int argc, char **argv)
-+static int img_measure(const img_cmd_t *ccmd, int argc, char **argv)
- {
-     static const struct option long_options[] = {
-         {"help", no_argument, 0, 'h'},
-@@ -5603,7 +5603,7 @@ int main(int argc, char **argv)
-     for (cmd = img_cmds; cmd->name != NULL; cmd++) {
-         if (!strcmp(cmdname, cmd->name)) {
-             argv[0] = g_strdup_printf("%s %s", argv[0], cmdname);
--            return cmd->handler(argc, argv);
-+            return cmd->handler(cmd, argc, argv);
++/*
++ * Print --help output for a command and exit.
++ * syntax and description are multi-line with trailing EOL
++ * (to allow easy extending of the text)
++ * syntax has each subsequent line indented by 8 chars.
++ * desrciption is indented by 2 chars for argument on each own line,
++ * and with 5 chars for argument description (like -h arg below).
++ */
++static G_NORETURN
++void cmd_help(const img_cmd_t *ccmd,
++              const char *syntax, const char *arguments)
++{
++    printf(
++"Usage:\n"
++"  %s %s %s"
++"\n"
++"Arguments:\n"
++"  -h, --help\n"
++"     print this help and exit\n"
++"%s\n",
++           "qemu-img", ccmd->name,
++           syntax, arguments);
++    exit(EXIT_SUCCESS);
++}
++
+ /* Please keep in synch with docs/tools/qemu-img.rst */
+ static G_NORETURN
+ void help(void)
+@@ -530,23 +555,48 @@ static int img_create(const img_cmd_t *ccmd, int argc, char **argv)
+     for(;;) {
+         static const struct option long_options[] = {
+             {"help", no_argument, 0, 'h'},
++            {"quiet", no_argument, 0, 'q'},
+             {"object", required_argument, 0, OPTION_OBJECT},
++            {"format", required_argument, 0, 'f'},
++            {"backing", required_argument, 0, 'b'},
++            {"backing-format", required_argument, 0, 'F'},
++            {"backing-unsafe", no_argument, 0, 'u'},
++            {"options", required_argument, 0, 'o'},
+             {0, 0, 0, 0}
+         };
+-        c = getopt_long(argc, argv, ":F:b:f:ho:qu",
++        c = getopt_long(argc, argv, "F:b:f:ho:qu",
+                         long_options, NULL);
+         if (c == -1) {
+             break;
+         }
+         switch(c) {
+-        case ':':
+-            missing_argument(argv[optind - 1]);
+-            break;
+-        case '?':
+-            unrecognized_option(argv[optind - 1]);
+-            break;
+         case 'h':
+-            help();
++            cmd_help(ccmd,
++"[-f FMT] [-o FMT_OPTS] [-b BACKING_FILENAME [-F BACKING_FMT]]\n"
++"        [--object OBJDEF] [-u] FILENAME [SIZE[bkKMGTPE]]\n"
++,
++"  -q, --quiet\n"
++"     quiet operations\n"
++"  -f, --format FMT\n"
++"     specifies format of the new image, default is raw\n"
++"  -o, --options FMT_OPTS\n"
++"     format-specific options ('-o list' for list)\n"
++"  -b, --backing BACKING_FILENAME\n"
++"     stack new image on top of BACKING_FILENAME\n"
++"     (for formats which support stacking)\n"
++"  -F, --backing-format BACKING_FMT\n"
++"     specify format of BACKING_FILENAME\n"
++"  -u, --backing-unsafe\n"
++"     do not fail if BACKING_FMT can not be read\n"
++"  --object OBJDEF\n"
++"     QEMU user-creatable object (eg encryption key)\n"
++"  FILENAME\n"
++"     image file to create.  It will be overridden if exists\n"
++"  SIZE\n"
++"     image size with optional suffix (multiplies in 1024)\n"
++"     SIZE is required unless BACKING_IMG is specified,\n"
++"     in which case it will be the same as size of BACKING_IMG\n"
++);
+             break;
+         case 'F':
+             base_fmt = optarg;
+@@ -571,6 +621,8 @@ static int img_create(const img_cmd_t *ccmd, int argc, char **argv)
+         case OPTION_OBJECT:
+             user_creatable_process_cmdline(optarg);
+             break;
++        default:
++            tryhelp(argv[0]);
          }
      }
  
