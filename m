@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF5685E0EC
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:24:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B7E585E1FB
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:54:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoPl-00062J-M9; Wed, 21 Feb 2024 10:21:42 -0500
+	id 1rcocv-00080K-Or; Wed, 21 Feb 2024 10:35:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcoM5-0001tO-5f
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:17:56 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcoak-0001kA-TT
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:33:02 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcnEW-000610-RN
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 09:06:06 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-33d26da3e15so2884894f8f.1
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 06:05:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcnGY-0006AZ-OH
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 09:08:08 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-41275971886so4928355e9.3
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 06:08:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708524357; x=1709129157; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708524483; x=1709129283; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=jToOqvLtcQbxy76UxGoAKsmsuFkgoQ92P/MuKUVl25M=;
- b=ueSzMcVAT/FxB4u99AdVIFC+kc1lXOtEGucCYJiYXkgz1DyD/HASPi7kNXU3XmwcON
- W45whsxBNJ4DbwOe3bm6df0WGggQG6S09g4hrjfqEdJ2fiEygFysnOkJ75cR4ZXraepE
- kQYno/nhiOzSEVNYpHiXsLKKd614NzRysFqqrQs50b4dzLwZ1L+8iAzmklUjrM5AoFad
- 04j2GejVBYqllVhfpHzpVWzSnpvDmw7hVBVjRJJrS9XkgIZvSmiS5WRruwj9Ua13QquL
- Euf4X5+sN/hoLEb0lt8a5FCUWZn1yj4QkqrXSVMXA1vxHMix0U/qLghmPaFn0KxkAxN6
- d4fQ==
+ bh=dvxVlg/e0FP+JmtR5W204+N0FWXnrrzSs/9Cl2xOz2M=;
+ b=z3HXdVJnqbapcoUIuKiFuh6wnZKMSDsdQRmnAkbZucJ9TSf4HNPxdp8RAFRgNJyJlP
+ eZmPCbkFPbI7TgzQn/bO1QPWeLyxN2nYcaRP222QhB3bNEMlnw+5JaDOF1blZ9gapzut
+ aNkswxm1AZN6zm/VJ/p7ezzBw8cXkDT+ABXZdKmo63SRNsR/J4JllUsngTTX0O1OBtVp
+ sm0GwU6IbQt56eZE1sg7Wll4JOTYcV90wGtbXivCnDZ57Nv5P2g8BdMBZa9q03Ngcp8n
+ 42okGtwyqh4D6OrRv2ITbypyZMnPS2BiTfdWqnunpUdOP2b3/7tKrJvUbLAwkB43YYiY
+ qQeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708524357; x=1709129157;
+ d=1e100.net; s=20230601; t=1708524483; x=1709129283;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jToOqvLtcQbxy76UxGoAKsmsuFkgoQ92P/MuKUVl25M=;
- b=cpF3cgwb+ZqBGG8CXL7Q3uDWqBo/MftAVUfEja3KRXSHoc/OdYh6x0h/ioD5ufnDVJ
- nFPupjeEV1IP9FMjK+jR9bIyKPouFNGr8FA0SVRtimZm1aaqRkft7Z4/eJzwt4jD2VeR
- 8OuSxQiZO9RvZeAZ0DfjcLmvzGeuhX0oryGv7TKkwRXRL3XTg2cfu6+k4kgtcRovPHN8
- 9l3PHjj8iSG7myyp0K2rJetKjnDl9FshiKpmbycHX18uLtPwosCI1ZUoxHrT4cDr2Wh9
- vUn0Fd70aZV8NSXRaGkfKPx3oW2ahGK2em093KVrBtMigX5QoBN9jiEhOBI6zotfQSBa
- ZvHQ==
+ bh=dvxVlg/e0FP+JmtR5W204+N0FWXnrrzSs/9Cl2xOz2M=;
+ b=eKdYhV2+yRFSRC/YZLXGx/v6Jd26jgTfp5JCc5Yc9Yw3WSQedfJzr5tAvgHBPYFCBE
+ Z+l19/9GiSLxKQjLElDbZjKsXboK04iNXyr/s6CNSpTUOGlNnVIh7sXskpkSQRUZUpsk
+ 5C5G+RIHGwtuKTE9uFEd7EVH3A7frKKTb3d3x6Ehts5XqXLkSh89pRzSDKLnxuPeM8Xk
+ SeeUx28D/oB2imvN1IHUg2A8diKBtpahozwi8GEEsgOPKkKjjvmVcqQ18V/hTz28Q3mZ
+ oDEwsv+ZZjvSrW8Lb1GuT53YgUBEd62gg5ZHbZGTXUwXKolu4KHtJLleQ/+1coq2CbaT
+ xG/w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVteZWwzEgUyZ2cExqM5XZ2KRVNkUPE68i6UkGmQS5Byb1tfk5YhlF6xUIHxKcjKnCHrD5wiMhb1j8WbpMryupb90YFTCQ=
-X-Gm-Message-State: AOJu0YxyODDjfaB0abmuB3fPz9ULaDA9raC9ISkxac8StCha2VP44P/x
- NQnFRPaSEHFrmx7Cc5b2itrLcONlsI7NF5c2mIYrPJxfQerj3JvJR72KMOAGxcY=
-X-Google-Smtp-Source: AGHT+IFIi9jZw1PN13M2gmLjp+mpIEcwqXL/v17iqUxcJ5Id9WH64Mbpa/5e/uG27pb251Icki6FRw==
-X-Received: by 2002:adf:f144:0:b0:33d:3cea:8484 with SMTP id
- y4-20020adff144000000b0033d3cea8484mr9666150wro.1.1708524357572; 
- Wed, 21 Feb 2024 06:05:57 -0800 (PST)
+ AJvYcCUsX5hy2poE74PjjqXVGMLDU8oFUHA5K3qoRcE9CFueTZjvh/1VgO75KOr9ABaJ7Qls+tKDfLtRBlX3BBRyBL81NF+fY0o=
+X-Gm-Message-State: AOJu0YzwNfqzww6qhCZDHvf0uMLMl9JQl4i3uhfJu5uFT1MRz4LonI2V
+ btIVdfJaK+v2q6ysk1f8hIUeR0K62POHYcxKiv/0JXxAMUSiznktGP8zQzx4/MU=
+X-Google-Smtp-Source: AGHT+IGIu9bpxh9ZSs8olx7byzqCkTXn5WknDtojeWHM4O2pqlfsOWghNdpuOY0uy/02vpv/2X1TkQ==
+X-Received: by 2002:a05:600c:1d89:b0:412:78c8:c665 with SMTP id
+ p9-20020a05600c1d8900b0041278c8c665mr741191wms.13.1708524483243; 
+ Wed, 21 Feb 2024 06:08:03 -0800 (PST)
 Received: from [192.168.245.175] ([81.185.169.168])
  by smtp.gmail.com with ESMTPSA id
- v4-20020a5d6784000000b0033d39626c27sm12603630wru.76.2024.02.21.06.05.55
+ js21-20020a05600c565500b0040fdb244485sm17930129wmb.40.2024.02.21.06.08.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Feb 2024 06:05:56 -0800 (PST)
-Message-ID: <5a8a7625-16ea-4ed4-8c50-72474423e228@linaro.org>
-Date: Wed, 21 Feb 2024 15:05:53 +0100
+ Wed, 21 Feb 2024 06:08:02 -0800 (PST)
+Message-ID: <71c88e69-e5e1-4729-a3b3-c4e82dce68d8@linaro.org>
+Date: Wed, 21 Feb 2024 15:08:00 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/9] hw/i386/pc_piix: Share pc_cmos_init() invocation
- between pc and isapc machines
+Subject: Re: [PATCH 3/9] hw/i386/x86: Turn apic_xrupt_override into class
+ attribute
 Content-Language: en-US
 To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>,
@@ -70,13 +70,13 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
 References: <20240208220349.4948-1-shentey@gmail.com>
- <20240208220349.4948-3-shentey@gmail.com>
+ <20240208220349.4948-4-shentey@gmail.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240208220349.4948-3-shentey@gmail.com>
+In-Reply-To: <20240208220349.4948-4-shentey@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,13 +100,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/2/24 23:03, Bernhard Beschow wrote:
-> Both invocations are the same and either one is always executed. Avoid this
-> redundancy.
+> The attribute isn't user-changeable and only true for pc-based machines. Turn it
+> into a class attribute which allows for inlining pc_guest_info_init() into
+> pc_machine_initfn().
 > 
 > Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 > ---
->   hw/i386/pc_piix.c | 8 +++-----
->   1 file changed, 3 insertions(+), 5 deletions(-)
+>   include/hw/i386/x86.h | 3 ++-
+>   hw/i386/acpi-common.c | 3 ++-
+>   hw/i386/pc.c          | 5 ++---
+>   3 files changed, 6 insertions(+), 5 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
