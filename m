@@ -2,84 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8732F85E125
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:31:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AEB585E1CD
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:47:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoTo-0006gp-Ga; Wed, 21 Feb 2024 10:25:52 -0500
+	id 1rcoZl-0003ij-LR; Wed, 21 Feb 2024 10:32:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcoMx-0004a7-Dy
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:18:47 -0500
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rciQI-0007DX-MW
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 03:58:03 -0500
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-512a9ae6c02so388746e87.2
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 00:57:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708505869; x=1709110669; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=7t6mAG1EUDAho6AiXqXIo3jBL8cJhhykuGlPnEoGADQ=;
- b=ygTDFL2J2K1mqisIUn9erLOcSxjnCn1LuFkzrzerCIpMpAHen1lLz23Z7mmHMFw+YJ
- De+P6p2UgNQwjobO1eWN/hZj7xZkLbIxqjXcFgBA8dhoyxaVyrW4WOusmFS2zNBMY+gC
- jlu7BjybmD3+r4Bzl8txKgFE95V2IGV6a4hvYQgMh5pe/DJc+Bn6raYOyua1lk90tXT7
- XT7q1I6dxumkGZ8EIpUQkDM1zTl9xTswgH5lFzgpVXjNcr7x8c0DCdyu4RxMHbzH+wd6
- +M0yBEYbOxlRDQwQTFyRbjTNTWsHjJcy6AexleHf01bvBNJv08fz1AtvIwNiMjaEVh2o
- N3Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708505869; x=1709110669;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7t6mAG1EUDAho6AiXqXIo3jBL8cJhhykuGlPnEoGADQ=;
- b=PA2289xT5qLJ9yX0lZfOxxCz0g2F/fI2jRafcC9/Gyen+QCMl4so7cc733O9s7B76l
- kXHpl2SIrUHhiKWz4fkUjxTnbTk1+0/Dp+MbSHn96x7V2/tX/FHlZf3JK+hrjLyvFtTu
- SjxWV30uASx3yQbwsvizaq1MK3VJKEtI9Ug1h3UsKSLrN/DEYCq0eYG+SNOWqCMifJn3
- OCejsCx32Nl6qS/7XIzjYTRJKMRiztrB0A0psj5eYEbYZT8wo7Mnt9giuGBs84zDzOIx
- tDPPcxfuNsiQ8GklH/tb3GYRHTsg5iXKOzml+i/0FsST14LDlrVDiRB6I1yoCSaJB/Lu
- 5tBA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVk+SQF0oLkCNjpk58M1khjPppkJXy3+291f3a4R08NjUGJJwZgE9hjHU2mmHXjiqAX7Xq7p2G/2b38iJK5iC35e0gEBac=
-X-Gm-Message-State: AOJu0YzBAxNXR3GNAdMqkFKOPoSqmSRkrxsYbZ2MhrBMEmRhFQM89L/d
- A+Vi5jqM909zWM+ETyMArFmjLIF8Eee31ytcvQDM/Mh8CXc7zqOa4Z7wTYsB1E0=
-X-Google-Smtp-Source: AGHT+IFBadK8X+1K0lQAkzgEncKrCdTlQRXYF6Q0eJCswNub8cCSL9RsOZOGIYwZ8AWwIJ3JW5ptTQ==
-X-Received: by 2002:ac2:546c:0:b0:511:6a0b:1035 with SMTP id
- e12-20020ac2546c000000b005116a0b1035mr10899639lfn.17.1708505868761; 
- Wed, 21 Feb 2024 00:57:48 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.211.159])
- by smtp.gmail.com with ESMTPSA id
- r1-20020a05600c298100b0041069adbd87sm1760797wmd.21.2024.02.21.00.57.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Feb 2024 00:57:48 -0800 (PST)
-Message-ID: <8289a482-4717-4b46-82b9-b4a1cb6070c3@linaro.org>
-Date: Wed, 21 Feb 2024 09:57:46 +0100
+ (Exim 4.90_1) (envelope-from <maxime.coquelin@redhat.com>)
+ id 1rcoOz-0004ZR-VV
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:20:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <maxime.coquelin@redhat.com>)
+ id 1rciUc-0007hV-RF
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 04:02:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1708506137;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=azwLzlnyPjgX5VLVt2HH/5+1YSAiygsKde1d3DmglQY=;
+ b=APMuNN5oB/4cIsr9znVE9LGNfWNjqAo+6sa0Xnfz7YE5+4GXIL04BvpcQqTMv2YaiRsNex
+ CvKEGcKesBwpmGAEDvUDj3bIWfM15rqsm1EOTZz9LtO/V1AM6Qe13C67n6Z4JKheMCCvgw
+ N3BmYFR2JWaPvt/0MfmduYv65SnvnnY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-617-9pUlW4eiPxC7gO3lKHxHug-1; Wed, 21 Feb 2024 04:02:13 -0500
+X-MC-Unique: 9pUlW4eiPxC7gO3lKHxHug-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A6BF310650E0;
+ Wed, 21 Feb 2024 09:02:12 +0000 (UTC)
+Received: from [10.39.208.17] (unknown [10.39.208.17])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 38349C03489;
+ Wed, 21 Feb 2024 09:02:10 +0000 (UTC)
+Message-ID: <f9111e6b-4094-4731-b2de-e442b1a4fa5f@redhat.com>
+Date: Wed, 21 Feb 2024 10:02:08 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/7] trans_rvv.c.inc: remove 'is_store' bool from
- load/store fns
+Subject: Re: [PATCH] vhost-user: fix the issue of vhost deadlock in nested
+ virtualization
 Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- richard.henderson@linaro.org, max.chou@sifive.com
-References: <20240221022252.252872-1-dbarboza@ventanamicro.com>
- <20240221022252.252872-3-dbarboza@ventanamicro.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240221022252.252872-3-dbarboza@ventanamicro.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>, Hao Chen <chenh@yusur.tech>
+Cc: "open list:All patches CC here" <qemu-devel@nongnu.org>,
+ huangml@yusur.tech, zy@yusur.tech
+References: <20240126100737.2509847-1-chenh@yusur.tech>
+ <20240213050258-mutt-send-email-mst@kernel.org>
+ <5176a8e4-dbdc-45e0-a1f2-d9cb3b71a6b1@redhat.com>
+ <20240220064027-mutt-send-email-mst@kernel.org>
+From: Maxime Coquelin <maxime.coquelin@redhat.com>
+Autocrypt: addr=maxime.coquelin@redhat.com; keydata=
+ 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
+ Mwqu3GQ=
+In-Reply-To: <20240220064027-mutt-send-email-mst@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=maxime.coquelin@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,15 +130,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/2/24 03:22, Daniel Henrique Barboza wrote:
-> After the 'mark_vs_dirty' changes from the previous patch the 'is_store'
-> bool is unused in all load/store functions that were changed. Remove it.
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->   target/riscv/insn_trans/trans_rvv.c.inc | 69 ++++++++++++-------------
->   1 file changed, 34 insertions(+), 35 deletions(-)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+On 2/20/24 12:43, Michael S. Tsirkin wrote:
+> On Tue, Feb 20, 2024 at 12:26:49PM +0100, Maxime Coquelin wrote:
+>>
+>>
+>> On 2/13/24 11:05, Michael S. Tsirkin wrote:
+>>> On Fri, Jan 26, 2024 at 06:07:37PM +0800, Hao Chen wrote:
+>>>> I run "dpdk-vdpa" and "qemur-L2" in "qemu-L1".
+>>>>
+>>>> In a nested virtualization environment, "qemu-L2" vhost-user socket sends
+>>>> a "VHOST_USER_IOTLB_MSG" message to "dpdk-vdpa" and blocks waiting for
+>>>> "dpdk-vdpa" to process the message.
+>>>> If "dpdk-vdpa" doesn't complete the processing of the "VHOST_USER_IOTLB_MSG"
+>>>> message and sends a message that needs to be replied in another thread,
+>>>> such as "VHOST_USER_SLAVE_VRING_HOST_NOTIFIER_MSG", "dpdk-vdpa" will also
+>>>> block and wait for "qemu-L2" to process this message. However, "qemu-L2"
+>>>> vhost-user's socket is blocking while waiting for a reply from "dpdk-vdpa"
+>>>> after processing the message "VHOSTr_USER_IOTLB_MSG", and
+>>>> "VHOST_USER_SLAVE_VRING_HOST_NOTIFIER_MSG" will not be processed.
+>>>> In this case, both "dpdk-vdpa" and "qemu-L2" are blocked on the
+>>>> vhost read, resulting in a deadlock.
+>>>>
+>>>> You can modify "VHOST_USER_SLAVE_VRING_HOST_NOTIFIER_MSG" or
+>>>> "VHOST_USER_IOTLB_MSG" to "no need reply" to fix this issue.
+>>>> There are too many messages in dpdk that are similar to
+>>>> "VHOST_USER_SLAVE_VRING_HOST_NOTIFIER_MSG", and I would prefer the latter.
+>>>>
+>>>> Fixes: 24e34754eb78 ("vhost-user: factor out msg head and payload")
+>>>>
+>>>> Signed-off-by: Hao Chen <chenh@yusur.tech>
+>>>
+>>> I would be very worried that IOTLB becomes stale and
+>>> guest memory is corrupted if we just proceed without waiting.
+>>>
+>>> Maxime what do you think? How would you address the issue?
+>>
+>> I agree with you, this is not possible.
+>> For example, in case of IOTLB invalidate, the frontend relies on the
+>> backend reply to ensure it is no more accessing the memory before
+>> proceeding.
+>>
+>> The reply-ack for VHOST_USER_BACKEND_VRING_HOST_NOTIFIER_MSG request is
+>> less important, if it fails the host notifications won't work but would
+>> not risk corruption. Maybe on Qemu side we could fail init if processing
+>> the request fails, as I think that if negotiated, we can expect it to
+>> succeed.
+>>
+>> What do you think about this proposal?
+>>
+>> Regards,
+>> Maxime
+> 
+> Fundamentally, I think that if qemu blocks guest waiting for a rely
+> that is ok but it really has to process incoming messages meanwhile.
+> Same should apply to backend I think ...
+
+I understand your point.
+For DPDK Vhost library, it will likely imply ABI breakage as it would
+require to asynchronous handling of Vhost-user requests. We would only
+be able to do it at next LTS release.
+
+Hao, as your driver is not available upstream it will be difficult to
+assist you more. But if you look at other DPDK vDPA driver like SFC for
+instance, the way they implemented host notification control should be
+safe against this kind of deadlocks.
+
+
+> 
+>>>
+>>>
+>>>> ---
+>>>>    hw/virtio/vhost-user.c | 10 ++--------
+>>>>    1 file changed, 2 insertions(+), 8 deletions(-)
+>>>>
+>>>> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+>>>> index f214df804b..02caa94b6c 100644
+>>>> --- a/hw/virtio/vhost-user.c
+>>>> +++ b/hw/virtio/vhost-user.c
+>>>> @@ -2371,20 +2371,14 @@ static int vhost_user_net_set_mtu(struct vhost_dev *dev, uint16_t mtu)
+>>>>    static int vhost_user_send_device_iotlb_msg(struct vhost_dev *dev,
+>>>>                                                struct vhost_iotlb_msg *imsg)
+>>>>    {
+>>>> -    int ret;
+>>>>        VhostUserMsg msg = {
+>>>>            .hdr.request = VHOST_USER_IOTLB_MSG,
+>>>>            .hdr.size = sizeof(msg.payload.iotlb),
+>>>> -        .hdr.flags = VHOST_USER_VERSION | VHOST_USER_NEED_REPLY_MASK,
+>>>> +        .hdr.flags = VHOST_USER_VERSION,
+>>>>            .payload.iotlb = *imsg,
+>>>>        };
+>>>> -    ret = vhost_user_write(dev, &msg, NULL, 0);
+>>>> -    if (ret < 0) {
+>>>> -        return ret;
+>>>> -    }
+>>>> -
+>>>> -    return process_message_reply(dev, &msg);
+>>>> +    return vhost_user_write(dev, &msg, NULL, 0);
+>>>>    }
+>>>> -- 
+>>>> 2.27.0
+>>>
+> 
 
 
