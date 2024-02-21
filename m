@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C529385E9F3
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:21:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 298DE85E9FF
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:22:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcu1B-0006jw-Hg; Wed, 21 Feb 2024 16:20:45 -0500
+	id 1rctyd-0004wW-T0; Wed, 21 Feb 2024 16:18:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcu02-0004ek-KG
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:19:32 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctyZ-0004dH-9o
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:17:59 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctzz-0001OW-Er
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:19:29 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-41276a43dc3so7479145e9.0
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:19:26 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctyX-00011N-Mn
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:17:59 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-412698cdd77so1284735e9.1
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:17:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708550364; x=1709155164; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NM3OaF5xVJiH79yUFzhlf4BJ4fqxcxDiXY4cqoH9BzE=;
- b=AdpoUhzfMXTC3rmgCYRewXCSVh3cBZKFmYxrAJ1KAbJu9a+BjkahyKyx/Ka+DoK7i+
- iWNk90ehBr8pseI39qjax8zZ6Tqg3pGKFo1tK8kDvdkAbfvlXnnvwg+SFwY9qrz1AsFw
- d9jGeIj9fbNsitQo4JEG3h40lk4FOlEYhzgBBF920oDEX7BQ66uV0t6FmD7XF75nr1Yq
- KMuqc28P8rxazbeo+SiljigLsMWv1ysw8lg/KWm8Le/ZzWAd6mUqYGnFbbtoOqGgRdDd
- dYAPKVMz6+zUfXlHRTaY4tUfq2uaN0Urcg0l1ZHdleGg0HfXOU1Xj9Q1LHQPzECw0MLR
- v9hA==
+ d=linaro.org; s=google; t=1708550276; x=1709155076; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=eeX4i0DK4SphSxibAwB75cUwYg+pHr9ZvM93pY2qrKc=;
+ b=YsthKlxpwx0ABbNuvx5StoyKbvdEd9X3dCodQt0+hypP4OTiIJibDZHDuMpK9mPWhO
+ g87nAYrNkl0HZcJwW6wqRwORIUtrgsgCaULte7NWuFBKATlV6olddEZzrF8ytXXcQTEk
+ YHhqerg/rL95wJedqTHtp9KJa1DkNxTvKuGGTe2PtYoCDibXb76UHMkbYFK8vD7S0j31
+ OB4Wasz1FKVgDtOSslv3L/BJzO/GUjr9sPuTSWONIbHKF5/LD99cIUWcyICsvQ+1UwJ6
+ Ew3Gy7F6WIZP3MuqKMav8wtiFuAOseSkS/OdN5eQZVNkPc9ad5tUX2EJUBTNfg97jyq2
+ qvyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708550364; x=1709155164;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NM3OaF5xVJiH79yUFzhlf4BJ4fqxcxDiXY4cqoH9BzE=;
- b=cN0lHutNGfcoFP2/sAkSlk+8MFvM3pLOU1kguVzp+NW5oK5VkW5gfAe5FgHcb+rXoh
- N0MqF7TSQH9IAsTcgbZeW6hWvAALlIwO2ORI2MB50NOfslx7NC4mgAfyAV183SM9af1v
- UzzyIcP3YCiUBrUswjA3ELYv/pTSkwrCJu2NjeHOjujHQF6BpR3iQVSE8cDD9Ut+c7dS
- AhyW5X/3m+p0MrKrcVK5+osNNc9SAPQX6w+lzcB4vq9DaxRLxAueTBjIujbg0kh3RaAP
- ZQUKrH4A8HoF2hLjfnHSCPnHAXDcjHgwt7gkFikr5T366nlu63++0m470rbxFkl1HzTo
- PnfA==
-X-Gm-Message-State: AOJu0Yw+e+6+WJs2kkFr9FxUkROsR6PFqb6QX7ZP/mG0LVVoMl8wepYl
- hbjaQ5XnBqS833GY3vBY6x7mH8aQpv+cnO9l2iV6i/stdLpdhcdZk6cWu/SnbxAYCYB73C64UGq
- PrwU=
-X-Google-Smtp-Source: AGHT+IH4TzS7Xe0OUBjI/T9APGMkVPdjFJDLtz24jL+Gq1/cmkyG3jbHz2oRavSrZyqQF06q0rLxuw==
-X-Received: by 2002:a05:600c:5250:b0:412:63e8:b2f3 with SMTP id
- fc16-20020a05600c525000b0041263e8b2f3mr9088273wmb.4.1708550364663; 
- Wed, 21 Feb 2024 13:19:24 -0800 (PST)
-Received: from m1x-phil.lan ([176.187.211.34])
+ d=1e100.net; s=20230601; t=1708550276; x=1709155076;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eeX4i0DK4SphSxibAwB75cUwYg+pHr9ZvM93pY2qrKc=;
+ b=B9fca6+gpiynvkG8y5nSHjtft2QrR0a8bAOrHyXlM42473jKP4ZYoSyaV8qL+sBBF9
+ w21TtakWk83sUu/n7KMjPxpuodmCY7r7bt8JoBQMAvRTQn76nGYPnsieNvkQoMn92Fl4
+ yFV0KYAi3HVoOfxDUAcHYJ6VeiZROvV5IskScL4Mcoaw74vU+R6sBJcEDZWeswEsE509
+ 8D/wt8tU8uskOm1kUUPYFBQMIAXhgh7Vt33V95mvs0rEO0c/aezEpLQQssoooKtK/fKd
+ 7r2IgYY5qqBUHcossNgJrK3Slld9+zkOzCnxTOrxY1n89dhuhUnwte0NMnNzz/+e+azo
+ iz6g==
+X-Gm-Message-State: AOJu0Yy5PNNK6tVGQ33XCY9TeblnOBtjJl5f3hjB6fLGNHDzsaXlKC2z
+ gzXRn6ggnol/Kdk74uRErPmG3c0NBsW6LkGHC5vMSqxmS9pBUM9wkgFrz7KVtX/3n4muiBHQ3L4
+ fzKQ=
+X-Google-Smtp-Source: AGHT+IFOj7PyKzNFCqo+SYS30UxmV+sSq12WHe/P4LXDe7KdIc+6yJB5mBYlVdXE29jZtMYzAiF4lQ==
+X-Received: by 2002:a05:600c:4686:b0:412:568b:50b5 with SMTP id
+ p6-20020a05600c468600b00412568b50b5mr614541wmo.14.1708550275864; 
+ Wed, 21 Feb 2024 13:17:55 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.211.34])
  by smtp.gmail.com with ESMTPSA id
- l20-20020a05600c1d1400b0041256ab5becsm16906430wms.26.2024.02.21.13.19.23
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 21 Feb 2024 13:19:24 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
- Frederic Konrad <konrad.frederic@yahoo.fr>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PULL 25/25] hw/sparc/leon3: Fix wrong usage of DO_UPCAST macro
-Date: Wed, 21 Feb 2024 22:16:25 +0100
-Message-ID: <20240221211626.48190-26-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240221211626.48190-1-philmd@linaro.org>
-References: <20240221211626.48190-1-philmd@linaro.org>
+ u7-20020a05600c00c700b0040fb783ad93sm18906438wmm.48.2024.02.21.13.17.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 21 Feb 2024 13:17:54 -0800 (PST)
+Message-ID: <a38ae499-a5a3-4fb7-81c5-1380ecb965a1@linaro.org>
+Date: Wed, 21 Feb 2024 22:17:53 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] hw/i386: Move SGX under KVM and use QDev API
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+References: <20240215142035.73331-1-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240215142035.73331-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,49 +97,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+On 15/2/24 15:20, Philippe Mathieu-Daudé wrote:
+> - Update MAINTAINERS
+> - Move SGX files with KVM ones
+> - Use QDev API
+> 
+> Supersedes: <20240213071613.72566-1-philmd@linaro.org>
+> 
+> Philippe Mathieu-Daudé (3):
+>    MAINTAINERS: Cover hw/i386/kvm/ in 'X86 KVM CPUs' section
+>    hw/i386: Move SGX files within the kvm/ directory
+>    hw/i386/sgx: Use QDev API
 
-leon3.c currently fails to compile with some compilers when the -Wvla
-option has been enabled:
-
- ../hw/sparc/leon3.c: In function ‘leon3_cpu_reset’:
- ../hw/sparc/leon3.c:153:5: error: ISO C90 forbids variable length array
-  ‘offset_must_be_zero’ [-Werror=vla]
-   153 |     ResetData *s = (ResetData *)DO_UPCAST(ResetData, info[id], info);
-       |     ^~~~~~~~~
- cc1: all warnings being treated as errors
-
-Looking at this code, the DO_UPCAST macro is indeed used in a wrong way
-here: DO_UPCAST is supposed to check that the second parameter is the
-first entry of the struct that the first parameter indicates, but since
-we use and index into the info[] array, this of course cannot work.
-
-The intention here was likely rather to use the container_of() macro
-instead, so switch the code accordingly.
-
-Fixes: d65aba8286 ("hw/sparc/leon3: implement multiprocessor")
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240221180751.190489-1-thuth@redhat.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/sparc/leon3.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/hw/sparc/leon3.c b/hw/sparc/leon3.c
-index 4873b59b6c..6aaa04cb19 100644
---- a/hw/sparc/leon3.c
-+++ b/hw/sparc/leon3.c
-@@ -150,7 +150,7 @@ static void leon3_cpu_reset(void *opaque)
- {
-     struct CPUResetData *info = (struct CPUResetData *) opaque;
-     int id = info->id;
--    ResetData *s = (ResetData *)DO_UPCAST(ResetData, info[id], info);
-+    ResetData *s = container_of(info, ResetData, info[id]);
-     CPUState *cpu = CPU(s->info[id].cpu);
-     CPUSPARCState *env = cpu_env(cpu);
- 
--- 
-2.41.0
+Ping?
 
 
