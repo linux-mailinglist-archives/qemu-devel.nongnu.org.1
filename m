@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBE1C85EB43
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:49:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96AAD85EB5C
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:51:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcuSJ-0004SS-VD; Wed, 21 Feb 2024 16:48:44 -0500
+	id 1rcuSP-0004o1-NC; Wed, 21 Feb 2024 16:48:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcuSH-0004L7-JY; Wed, 21 Feb 2024 16:48:41 -0500
+ id 1rcuSK-0004c1-Nb; Wed, 21 Feb 2024 16:48:44 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcuSE-0007WS-Q4; Wed, 21 Feb 2024 16:48:41 -0500
+ id 1rcuSJ-0007X6-14; Wed, 21 Feb 2024 16:48:44 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 22F534F86D;
+ by isrv.corpit.ru (Postfix) with ESMTP id 31F7A4F86E;
  Thu, 22 Feb 2024 00:47:47 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C1AFD869EE;
+ by tsrv.corpit.ru (Postfix) with SMTP id D0E72869EF;
  Thu, 22 Feb 2024 00:47:24 +0300 (MSK)
-Received: (nullmailer pid 2339874 invoked by uid 1000);
+Received: (nullmailer pid 2339877 invoked by uid 1000);
  Wed, 21 Feb 2024 21:47:23 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.10 17/33] hw/i386: Fix _STA return value for ACPI0017
-Date: Thu, 22 Feb 2024 00:47:00 +0300
-Message-Id: <20240221214723.2339742-17-mjt@tls.msk.ru>
+Subject: [Stable-7.2.10 18/33] tests/acpi: Update DSDT.cxl to reflect change
+ _STA return value.
+Date: Thu, 22 Feb 2024 00:47:01 +0300
+Message-Id: <20240221214723.2339742-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.10-20240221121815@cover.tls.msk.ru>
 References: <qemu-stable-7.2.10-20240221121815@cover.tls.msk.ru>
@@ -61,41 +62,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Found whilst testing a series for the linux kernel that actually
-bothers to check if enabled is set. 0xB is the option used
-for vast majority of DSDT entries in QEMU.
-It is a little odd for a device that doesn't really exist and
-is simply a hook to tell the OS there is a CEDT table but 0xB
-seems a reasonable choice and avoids need to special case
-this device in the OS.
-
-Means:
-* Device present.
-* Device enabled and decoding it's resources.
-* Not shown in UI
-* Functioning properly
-* No battery (on this device!)
+_STA will now return 0xB (in common with most other devices)
+rather than not setting the bits to indicate this fake device
+has not been enabled, and self tests haven't passed.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20240126120132.24248-12-Jonathan.Cameron@huawei.com>
+Message-Id: <20240126120132.24248-13-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit d9ae5802f656f6fb53b788747ba557a826b6e740)
+(cherry picked from commit b24a981b9f1c4767aaea815e504a2c7aeb405d72)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: rebuild tests/data/acpi/q35/DSDT.cxl for 7.2.x)
 
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index d9eaa5fc4d..f9cdacadb1 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -1311,7 +1311,7 @@ static void build_acpi0017(Aml *table)
-     aml_append(dev, aml_name_decl("_HID", aml_string("ACPI0017")));
- 
-     method = aml_method("_STA", 0, AML_NOTSERIALIZED);
--    aml_append(method, aml_return(aml_int(0x01)));
-+    aml_append(method, aml_return(aml_int(0x0B)));
-     aml_append(dev, method);
- 
-     aml_append(scope, dev);
+diff --git a/tests/data/acpi/q35/DSDT.cxl b/tests/data/acpi/q35/DSDT.cxl
+index f9c6dd4ee0..267709e4e4 100644
+Binary files a/tests/data/acpi/q35/DSDT.cxl and b/tests/data/acpi/q35/DSDT.cxl differ
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index 9ce0f596cc..dfb8523c8b 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1,2 +1 @@
+ /* List of comma-separated changed AML files to ignore */
+-"tests/data/acpi/q35/DSDT.cxl",
 -- 
 2.39.2
 
