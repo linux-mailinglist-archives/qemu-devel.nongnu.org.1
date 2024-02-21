@@ -2,79 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82F7685E0D9
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:20:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF6A785E196
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:41:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoNt-00006K-1j; Wed, 21 Feb 2024 10:19:45 -0500
+	id 1rcoa6-0005fA-Pv; Wed, 21 Feb 2024 10:32:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcoKC-0001XF-EX
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:16:03 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rcoQM-0007yB-AW
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:22:21 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcluz-00088c-25
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 07:41:47 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rclyw-0000kN-8v
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 07:46:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708519304;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:to:
- cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1708519548;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hfCTcbflO1YjVk3OzUtGo+Ok/3XvaaHLHZiWYZpHLsE=;
- b=L6j4F8Fie2m+OTpEH+2ROGLcei+OvVpYjl7tOsiioG1KjHIr63sZBvD1v3g+7NY48VhdFA
- hDw9hTucEUzMOtXlYe+sDs5RBZHvdguOhG5QCwHq6Xv3XJiBrXmXFHHJhSGHqqZof5EH3Y
- SEeQXczlxy+OVYOoZzV8pPGrSrC+klE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=h0rMCtexgvyL/jrBXkcmUZwK4PEevrktJT3ywti7/q4=;
+ b=cta4tJ7C1Y1I0pk64xuBpGc5Y5eaTZHxa/nTo/YWdGjCSNkV74dBtdxPxRmThYYMrohv48
+ awu+K96H1xgiiOmJmrVa9OiizbiJHTvFDTHc+T8t5A46G9cbWd2RKNjTaE8jwLNr2Eeo2U
+ TQjplwLmpQ2nOjjaL+qWCOt3YJQzmzE=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-438-SUvk1-neMiWrj2J9JMWqhw-1; Wed, 21 Feb 2024 07:41:39 -0500
-X-MC-Unique: SUvk1-neMiWrj2J9JMWqhw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4ED9A82DFE1;
- Wed, 21 Feb 2024 12:41:38 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 801DE8CE8;
- Wed, 21 Feb 2024 12:41:37 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 639E121E66C8; Wed, 21 Feb 2024 13:41:35 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,  Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,  "Michael S . Tsirkin"
- <mst@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Eric Blake <eblake@redhat.com>,  Marcelo
- Tosatti <mtosatti@redhat.com>,  qemu-devel@nongnu.org,
- kvm@vger.kernel.org,  Babu Moger <babu.moger@amd.com>,  Xiaoyao Li
- <xiaoyao.li@intel.com>,  Zhenyu Wang <zhenyu.z.wang@intel.com>,  Zhuocheng
- Ding <zhuocheng.ding@intel.com>,  Yongwei Ma <yongwei.ma@intel.com>,  Zhao
- Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v8 00/21] Introduce smp.modules for x86 in QEMU
-In-Reply-To: <20240131101350.109512-1-zhao1.liu@linux.intel.com> (Zhao Liu's
- message of "Wed, 31 Jan 2024 18:13:29 +0800")
-References: <20240131101350.109512-1-zhao1.liu@linux.intel.com>
-MTo: Zhao Liu <zhao1.liu@linux.intel.com>
-Date: Wed, 21 Feb 2024 13:41:35 +0100
-Message-ID: <87plwqgfb4.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ us-mta-67-QI4msnRPPxqN9g_PQlEgrg-1; Wed, 21 Feb 2024 07:45:46 -0500
+X-MC-Unique: QI4msnRPPxqN9g_PQlEgrg-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-68f8b4cc3f1so19201176d6.2
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 04:45:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708519546; x=1709124346;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=h0rMCtexgvyL/jrBXkcmUZwK4PEevrktJT3ywti7/q4=;
+ b=VNMkng1Emz4l4JxHp1bRy5BW2OOVHjV/wbV6GWWVt1tvDSFPrBKYQo7vdseDZ7v69Y
+ 3rYCk/fGZFKH7UkvvVenOrKNZpQhhJFAyJaBAEVoeZunNELtqkOd41jaeWp3sMpPSFMf
+ ZMRH5ZwB9y2yp4ngO8/KaCoqEYgiM/u9FfJfGvMDa7l23OvR0+TVeDkv/ODcOQDwOQOr
+ pN0rj9FZGXjQD28S69OCw6nVdlmr4vcBUbbP4iwTdr+OesSEs4gdOSOUHjAJk+IG1hUY
+ IGq7oP4+X6dklhNxWDVGhqAdvVO7E1tmIOL1012BTflsLSmhQgM3RxP6tYIToqHS8nGC
+ owsQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUD0rbUE28UpAOTOJBVHzpqLIp2Q/jF4rkfxHIzywfrgl65+GBsS3PYfVEc6QzoXixQxgIWgFFfiEWLfSjvI+qoGXCRFrg=
+X-Gm-Message-State: AOJu0Yy6xnReLwMObf7rmdS9t0wPPovMzB7PGtsBDShLRYzJCVicTQbz
+ jhRcdhNFnjpxj3W3brw4URGDwnZH6T/JheegIN7o9P9ArAXt0fYfKQdpXEVOOCQFVoPcgNQ5cmC
+ QZ3Jrs/KWMXR4boM0ZLnBQwOmPsFksHm3VOmM6IpYW+r0Q7o1aVMt
+X-Received: by 2002:a0c:f084:0:b0:68f:a250:7a07 with SMTP id
+ g4-20020a0cf084000000b0068fa2507a07mr1767883qvk.19.1708519545944; 
+ Wed, 21 Feb 2024 04:45:45 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHLrw+/3tMyJ+gBoAD3aLUKNifm7Y4Igdym/h7PHgz790+CvS8DGsc9LOPV25qD/+7wNDT9sw==
+X-Received: by 2002:a0c:f084:0:b0:68f:a250:7a07 with SMTP id
+ g4-20020a0cf084000000b0068fa2507a07mr1767863qvk.19.1708519545642; 
+ Wed, 21 Feb 2024 04:45:45 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ ng9-20020a0562143bc900b0068f455083fbsm5130548qvb.63.2024.02.21.04.45.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 21 Feb 2024 04:45:45 -0800 (PST)
+Message-ID: <fa751e58-0b98-4b86-900d-83b128d1c829@redhat.com>
+Date: Wed, 21 Feb 2024 13:45:42 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] virtio-iommu: Use qemu_real_host_page_mask as default
+ page_size_mask
+Content-Language: en-US
+To: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, alex.williamson@redhat.com,
+ clg@redhat.com, peter.maydell@linaro.org, Peter Xu <peterx@redhat.com>
+References: <20240117132039.332273-1-eric.auger@redhat.com>
+ <20240213044312-mutt-send-email-mst@kernel.org>
+ <6d4b5766-f8e2-4889-827d-01d3509239f7@redhat.com>
+ <20240213060731-mutt-send-email-mst@kernel.org>
+ <417ea71e-fb45-4e1d-b8e5-9d54d93dba3b@redhat.com>
+ <20240213064017-mutt-send-email-mst@kernel.org>
+ <8c0f6a91-7ae2-46c6-a8ad-18ca096a6115@redhat.com>
+ <20240221113106.GA4121556@myrica>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20240221113106.GA4121556@myrica>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- MISSING_HEADERS=1.021, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,99 +112,64 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Zhao Liu <zhao1.liu@linux.intel.com> writes:
 
-> From: Zhao Liu <zhao1.liu@intel.com>
->
-> Hi list,
->
-> This is the our v8 patch series, rebased on the master branch at the
-> commit 11be70677c70 ("Merge tag 'pull-vfio-20240129' of
-> https://github.com/legoater/qemu into staging").
->
-> Compared with v7 [1], v8 mainly has the following changes:
->   * Introduced smp.modules for x86 instead of reusing current
->     smp.clusters.
->   * Reworte the CPUID[0x1F] encoding.
->
-> Given the code change, I dropped the most previously gotten tags
-> (Acked-by/Reviewed-by/Tested-by from Michael & Babu, thanks for your
-> previous reviews and tests!) in v8.
->
-> With the description of the new modules added to x86 arch code in v7 [1]
-> cover letter, the following sections are mainly the description of
-> the newly added smp.modules (since v8) as supplement.
->
-> Welcome your comments!
->
->
-> Why We Need a New CPU Topology Level
-> ====================================
->
-> For the discussion in v7 about whether we should reuse current
-> smp.clusters for x86 module, the core point is what's the essential
-> differences between x86 module and general cluster.
->
-> Since, cluster (for ARM/riscv) lacks a comprehensive and rigorous
-> hardware definition, and judging from the description of smp.clusters
-> [2] when it was introduced by QEMU, x86 module is very similar to
-> general smp.clusters: they are all a layer above existing core level
-> to organize the physical cores and share L2 cache.
->
-> However, after digging deeper into the description and use cases of
-> cluster in the device tree [3], I realized that the essential
-> difference between clusters and modules is that cluster is an extremely
-> abstract concept:
->   * Cluster supports nesting though currently QEMU doesn't support
->     nested cluster topology. However, modules will not support nesting.
->   * Also due to nesting, there is great flexibility in sharing resources
->     on clusters, rather than narrowing cluster down to sharing L2 (and
->     L3 tags) as the lowest topology level that contains cores.
->   * Flexible nesting of cluster allows it to correspond to any level
->     between the x86 package and core.
->
-> Based on the above considerations, and in order to eliminate the naming
-> confusion caused by the mapping between general cluster and x86 module
-> in v7, we now formally introduce smp.modules as the new topology level.
->
->
-> Where to Place Module in Existing Topology Levels
-> =================================================
->
-> The module is, in existing hardware practice, the lowest layer that
-> contains the core, while the cluster is able to have a higher topological
-> scope than the module due to its nesting.
->
-> Thereby, we place the module between the cluster and the core, viz:
->
->     drawer/book/socket/die/cluster/module/core/thread
->
->
-> Additional Consideration on CPU Topology
-> ========================================
->
-> Beyond this patchset, nowadays, different arches have different topology
-> requirements, and maintaining arch-agnostic general topology in SMP
-> becomes to be an increasingly difficult thing due to differences in
-> sharing resources and special flexibility (e.g., nesting):
->   * It becomes difficult to put together all CPU topology hierarchies of
->     different arches to define complete topology order.
->   * It also becomes complex to ensure the correctness of the topology
->     calculations.
->       - Now the max_cpus is calculated by multiplying all topology
->         levels, and too many topology levels can easily cause omissions.
->
-> Maybe we should consider implementing arch-specfic topology hierarchies.
->
->
-> [1]: https://lore.kernel.org/qemu-devel/20240108082727.420817-1-zhao1.liu@linux.intel.com/
-> [2]: https://lists.gnu.org/archive/html/qemu-devel/2023-02/msg04051.html
-> [3]: https://www.kernel.org/doc/Documentation/devicetree/bindings/cpu/cpu-topology.txt
 
-Have you considered putting an abridged version of your lovely rationale
-into a commit message, so it can be found later more easily?
+On 2/21/24 12:31, Jean-Philippe Brucker wrote:
+> On Wed, Feb 21, 2024 at 11:41:57AM +0100, Eric Auger wrote:
+>> Hi,
+>>
+>> On 2/13/24 13:00, Michael S. Tsirkin wrote:
+>>> On Tue, Feb 13, 2024 at 12:24:22PM +0100, Eric Auger wrote:
+>>>> Hi Michael,
+>>>> On 2/13/24 12:09, Michael S. Tsirkin wrote:
+>>>>> On Tue, Feb 13, 2024 at 11:32:13AM +0100, Eric Auger wrote:
+>>>>>> Do you have an other concern?
+>>>>> I also worry a bit about migrating between hosts with different
+>>>>> page sizes. Not with kvm I am guessing but with tcg it does work I think?
+>>>> I have never tried but is it a valid use case? Adding Peter in CC.
+>>>>> Is this just for vfio and vdpa? Can we limit this to these setups
+>>>>> maybe?
+>>>> I am afraid we know the actual use case too later. If the VFIO device is
+>>>> hotplugged we have started working with 4kB granule.
+>>>>
+>>>> The other way is to introduce a min_granule option as done for aw-bits.
+>>>> But it is heavier.
+>>>>
+>>>> Thanks
+>>>>
+>>>> Eric
+>>> Let's say, if you are changing the default then we definitely want
+>>> a way to get the cmpatible behaviour for tcg.
+>>> So the compat machinery should be user-accessible too and documented.
+>> I guess I need to add a new option to guarantee the machine compat.
+>>
+>> I was thinking about an enum GranuleMode property taking the following
+>> values, 4KB, 64KB, host
+>> Jean, do you think there is a rationale offering something richer?
+> 16KB seems to be gaining popularity, we should include that (I think it's
+> the only granule supported by Apple IOMMU?). Hopefully that will be
+> enough.
+thank you for your prompt reply. I do agree.
+
+nevertheless I am going to prototype passing the whole page size mask I
+think. That could be useful to test some weird configs
+
+Thanks
+
+Eric
+>
+> Thanks,
+> Jean
+>
+>> Obviously being able to set the exact page_size_mask + host mode would
+>> be better but this does not really fit into any std property type.
+>>
+>> Thanks
+>>
+>> Eric
 
 
