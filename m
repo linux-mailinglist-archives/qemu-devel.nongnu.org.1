@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7437C85E14F
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:35:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B68785E1F4
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:53:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoW2-00053b-Ir; Wed, 21 Feb 2024 10:28:10 -0500
+	id 1rcoTs-0007M0-Sh; Wed, 21 Feb 2024 10:25:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rcoNL-0003Wj-5E; Wed, 21 Feb 2024 10:19:11 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190])
+ id 1rcoMr-0003Wj-3w; Wed, 21 Feb 2024 10:18:41 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rcmM2-0004uC-DP; Wed, 21 Feb 2024 08:09:44 -0500
-Received: from mail.maildlp.com (unknown [172.19.163.44])
- by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TfxQB5bv9z2BdDw;
- Wed, 21 Feb 2024 21:07:30 +0800 (CST)
+ id 1rcmM4-0004v1-66; Wed, 21 Feb 2024 08:09:45 -0500
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+ by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4TfxS249H1z1vtyr;
+ Wed, 21 Feb 2024 21:09:06 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id B66BA140154;
- Wed, 21 Feb 2024 21:09:39 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id C1CB41400CF;
+ Wed, 21 Feb 2024 21:09:40 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 21 Feb
- 2024 21:09:39 +0800
+ 2024 21:09:40 +0800
 To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [RFC PATCH v2 21/22] hw/intc/arm_gicv3: Implement NMI interrupt
- prioirty
-Date: Wed, 21 Feb 2024 13:08:22 +0000
-Message-ID: <20240221130823.677762-22-ruanjinjie@huawei.com>
+Subject: [RFC PATCH v2 22/22] hw/intc/arm_gicv3: Report the NMI interrupt in
+ gicv3_cpuif_update()
+Date: Wed, 21 Feb 2024 13:08:23 +0000
+Message-ID: <20240221130823.677762-23-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240221130823.677762-1-ruanjinjie@huawei.com>
 References: <20240221130823.677762-1-ruanjinjie@huawei.com>
@@ -43,13 +43,13 @@ Content-Type: text/plain
 X-Originating-IP: [10.67.174.55]
 X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
  kwepemi500008.china.huawei.com (7.221.188.139)
-Received-SPF: pass client-ip=45.249.212.190;
- envelope-from=ruanjinjie@huawei.com; helo=szxga04-in.huawei.com
+Received-SPF: pass client-ip=45.249.212.32; envelope-from=ruanjinjie@huawei.com;
+ helo=szxga06-in.huawei.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
 X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,142 +68,46 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If GICD_CTLR_DS bit is zero and the NMI is non-secure, the NMI prioirty
-is higher than 0x80, otherwise it is higher than 0x0. And save NMI
-super prioirty information in hppi.superprio to deliver NMI exception.
-Since both GICR and GICD can deliver NMI, it is both necessary to check
-whether the pending irq is NMI in gicv3_redist_update_noirqset and
-gicv3_update_noirqset. And In irqbetter(), only a non-NMI with the same
-priority and a smaller interrupt number can be preempted but not NMI.
+In CPU Interface, if the IRQ or FIQ has the superpriority property, report
+NMI to the corresponding PE and record the NMI interrupt type.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- hw/intc/arm_gicv3.c | 61 +++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 54 insertions(+), 7 deletions(-)
+ hw/intc/arm_gicv3_cpuif.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/hw/intc/arm_gicv3.c b/hw/intc/arm_gicv3.c
-index 0b8f79a122..e3281cffdc 100644
---- a/hw/intc/arm_gicv3.c
-+++ b/hw/intc/arm_gicv3.c
-@@ -21,7 +21,7 @@
- #include "hw/intc/arm_gicv3.h"
- #include "gicv3_internal.h"
+diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
+index f5bf8df32b..87bde1f897 100644
+--- a/hw/intc/arm_gicv3_cpuif.c
++++ b/hw/intc/arm_gicv3_cpuif.c
+@@ -931,6 +931,7 @@ void gicv3_cpuif_update(GICv3CPUState *cs)
+     /* Tell the CPU about its highest priority pending interrupt */
+     int irqlevel = 0;
+     int fiqlevel = 0;
++    int nmilevel = 0;
+     ARMCPU *cpu = ARM_CPU(cs->cpu);
+     CPUARMState *env = &cpu->env;
  
--static bool irqbetter(GICv3CPUState *cs, int irq, uint8_t prio)
-+static bool irqbetter(GICv3CPUState *cs, int irq, uint8_t prio, bool is_nmi)
- {
-     /* Return true if this IRQ at this priority should take
-      * precedence over the current recorded highest priority
-@@ -33,11 +33,21 @@ static bool irqbetter(GICv3CPUState *cs, int irq, uint8_t prio)
-     if (prio < cs->hppi.prio) {
-         return true;
-     }
-+
-+    /*
-+     * Current highest prioirity pending interrupt is not a NMI
-+     * and the new IRQ is a NMI with same priority.
-+     */
-+    if (prio == cs->hppi.prio && !cs->hppi.superprio && is_nmi) {
-+        return true;
-+    }
-+
-     /* If multiple pending interrupts have the same priority then it is an
-      * IMPDEF choice which of them to signal to the CPU. We choose to
-      * signal the one with the lowest interrupt number.
-      */
--    if (prio == cs->hppi.prio && irq <= cs->hppi.irq) {
-+    if (prio == cs->hppi.prio && !cs->hppi.superprio &&
-+        !is_nmi && irq <= cs->hppi.irq) {
-         return true;
-     }
-     return false;
-@@ -141,6 +151,8 @@ static void gicv3_redist_update_noirqset(GICv3CPUState *cs)
-     uint8_t prio;
-     int i;
-     uint32_t pend;
-+    bool is_nmi = 0;
-+    uint32_t superprio = 0;
+@@ -967,7 +968,10 @@ void gicv3_cpuif_update(GICv3CPUState *cs)
+             g_assert_not_reached();
+         }
  
-     /* Find out which redistributor interrupts are eligible to be
-      * signaled to the CPU interface.
-@@ -152,10 +164,26 @@ static void gicv3_redist_update_noirqset(GICv3CPUState *cs)
-             if (!(pend & (1 << i))) {
-                 continue;
-             }
--            prio = cs->gicr_ipriorityr[i];
--            if (irqbetter(cs, i, prio)) {
-+            superprio = extract32(cs->gicr_isuperprio, i, 1);
-+
-+            /* NMI */
-+            if (superprio) {
-+                is_nmi = 1;
-+
-+                /* DS = 0 & Non-secure NMI */
-+                if ((!(cs->gic->gicd_ctlr & GICD_CTLR_DS)) &&
-+                    extract32(cs->gicr_igroupr0, i, 1))
-+                    prio = 0x80;
-+                else
-+                    prio = 0x0;
-+            } else {
-+               is_nmi = 0;
-+               prio = cs->gicr_ipriorityr[i];
-+            }
-+            if (irqbetter(cs, i, prio, is_nmi)) {
-                 cs->hppi.irq = i;
-                 cs->hppi.prio = prio;
-+                cs->hppi.superprio = is_nmi;
-                 seenbetter = true;
-             }
-         }
-@@ -168,7 +196,7 @@ static void gicv3_redist_update_noirqset(GICv3CPUState *cs)
-     if ((cs->gicr_ctlr & GICR_CTLR_ENABLE_LPIS) && cs->gic->lpi_enable &&
-         (cs->gic->gicd_ctlr & GICD_CTLR_EN_GRP1NS) &&
-         (cs->hpplpi.prio != 0xff)) {
--        if (irqbetter(cs, cs->hpplpi.irq, cs->hpplpi.prio)) {
-+        if (irqbetter(cs, cs->hpplpi.irq, cs->hpplpi.prio, false)) {
-             cs->hppi.irq = cs->hpplpi.irq;
-             cs->hppi.prio = cs->hpplpi.prio;
-             cs->hppi.grp = cs->hpplpi.grp;
-@@ -212,7 +240,9 @@ static void gicv3_update_noirqset(GICv3State *s, int start, int len)
- {
-     int i;
-     uint8_t prio;
-+    bool is_nmi = 0;
-     uint32_t pend = 0;
-+    uint32_t superprio = 0;
+-        if (isfiq) {
++        if (cs->hppi.superprio) {
++            nmilevel = 1;
++            env->nmi_is_irq = !isfiq;
++        } else if (isfiq) {
+             fiqlevel = 1;
+         } else {
+             irqlevel = 1;
+@@ -978,6 +982,7 @@ void gicv3_cpuif_update(GICv3CPUState *cs)
  
-     assert(start >= GIC_INTERNAL);
-     assert(len > 0);
-@@ -240,10 +270,27 @@ static void gicv3_update_noirqset(GICv3State *s, int start, int len)
-              */
-             continue;
-         }
--        prio = s->gicd_ipriority[i];
--        if (irqbetter(cs, i, prio)) {
-+
-+        superprio = *gic_bmp_ptr32(s->superprio, i);
-+        /* NMI */
-+        if (superprio & (1 << (i & 0x1f))) {
-+            is_nmi = 1;
-+
-+            /* DS = 0 & Non-secure NMI */
-+            if ((!(s->gicd_ctlr & GICD_CTLR_DS)) &&
-+                gicv3_gicd_group_test(s, i))
-+                    prio = 0x80;
-+            else
-+                    prio = 0x0;
-+        } else {
-+            is_nmi = 0;
-+            prio = s->gicd_ipriority[i];
-+        }
-+
-+        if (irqbetter(cs, i, prio, is_nmi)) {
-             cs->hppi.irq = i;
-             cs->hppi.prio = prio;
-+            cs->hppi.superprio = is_nmi;
-             cs->seenbetter = true;
-         }
-     }
+     qemu_set_irq(cs->parent_fiq, fiqlevel);
+     qemu_set_irq(cs->parent_irq, irqlevel);
++    qemu_set_irq(cs->parent_nmi, nmilevel);
+ }
+ 
+ static uint64_t icc_pmr_read(CPUARMState *env, const ARMCPRegInfo *ri)
 -- 
 2.34.1
 
