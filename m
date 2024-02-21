@@ -2,72 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58B0685E139
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:33:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF4D785E13E
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:33:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoaQ-0007Ii-4I; Wed, 21 Feb 2024 10:32:42 -0500
+	id 1rcoPr-0006Zu-PW; Wed, 21 Feb 2024 10:21:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcoSD-0003RC-4n
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:24:13 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <chenh@yusur.tech>) id 1rcoM9-0001XF-57
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:17:57 -0500
+Received: from out28-5.mail.aliyun.com ([115.124.28.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcijE-0001Ro-BS
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 04:17:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708507043;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=hKemNzyEDxMR9dRSjFinPfyeeGDMuqmVo7SqJ7xLIK0=;
- b=fmdgtgXgseihgFDYh51jOLAzl7S4b1pcNWF8J+4/5ltIBCmg+xstIPbhN09JPiYc6/cT5P
- UAfsrLCVjG97tuvBWEMrvUdT3wkB9ZNYFYX78IoZM0hjXJ92yQH4eIQzt9RKnWNNZInKTc
- F3Dc5KT4pCi/VBTbMN2PM8xnUv2Rly4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-584-tStC8PaQO3uvM17QAyOpXw-1; Wed, 21 Feb 2024 04:17:18 -0500
-X-MC-Unique: tStC8PaQO3uvM17QAyOpXw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9EB148630C6;
- Wed, 21 Feb 2024 09:17:18 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 7C54D2022AAA;
- Wed, 21 Feb 2024 09:17:18 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 64CE121E6740; Wed, 21 Feb 2024 10:17:14 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  berrange@redhat.com,  Peter Xu
- <peterx@redhat.com>,  Claudio Fontana <cfontana@suse.de>,  Eric Blake
- <eblake@redhat.com>
-Subject: Re: [PATCH v4 27/34] migration: Add direct-io parameter
-In-Reply-To: <20240220224138.24759-28-farosas@suse.de> (Fabiano Rosas's
- message of "Tue, 20 Feb 2024 19:41:31 -0300")
-References: <20240220224138.24759-1-farosas@suse.de>
- <20240220224138.24759-28-farosas@suse.de>
-Date: Wed, 21 Feb 2024 10:17:14 +0100
-Message-ID: <87h6i2xjl1.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <chenh@yusur.tech>) id 1rcilB-0001oa-Gr
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 04:19:30 -0500
+X-Alimail-AntiSpam: AC=CONTINUE; BC=0.07437272|-1; CH=green;
+ DM=|CONTINUE|false|;
+ DS=CONTINUE|ham_system_inform|0.00380713-0.000468668-0.995724;
+ FP=0|0|0|0|0|-1|-1|-1; HT=ay29a033018047205; MF=chenh@yusur.tech; NM=1; PH=DS;
+ RN=5; RT=5; SR=0; TI=SMTPD_---.WWE4HjU_1708507155; 
+Received: from 10.2.26.57(mailfrom:chenh@yusur.tech
+ fp:SMTPD_---.WWE4HjU_1708507155) by smtp.aliyun-inc.com;
+ Wed, 21 Feb 2024 17:19:16 +0800
+Message-ID: <2a4862f8-e4f5-4ae3-be99-a7b3635da182@yusur.tech>
+Date: Wed, 21 Feb 2024 17:19:14 +0800
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] vhost-user: fix the issue of vhost deadlock in nested
+ virtualization
+To: Maxime Coquelin <maxime.coquelin@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Cc: "open list:All patches CC here" <qemu-devel@nongnu.org>,
+ huangml@yusur.tech, zy@yusur.tech
+References: <20240126100737.2509847-1-chenh@yusur.tech>
+ <20240213050258-mutt-send-email-mst@kernel.org>
+ <5176a8e4-dbdc-45e0-a1f2-d9cb3b71a6b1@redhat.com>
+ <20240220064027-mutt-send-email-mst@kernel.org>
+ <f9111e6b-4094-4731-b2de-e442b1a4fa5f@redhat.com>
+From: Hao Chen <chenh@yusur.tech>
+In-Reply-To: <f9111e6b-4094-4731-b2de-e442b1a4fa5f@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=115.124.28.5; envelope-from=chenh@yusur.tech;
+ helo=out28-5.mail.aliyun.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,104 +67,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
 
-> Add the direct-io migration parameter that tells the migration code to
-> use O_DIRECT when opening the migration stream file whenever possible.
->
-> This is currently only used with the fixed-ram migration that has a
-> clear window guaranteed to perform aligned writes.
->
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-[...]
-
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index 3fce5fe53e..41241a2178 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -878,6 +878,9 @@
->  # @mode: Migration mode. See description in @MigMode. Default is 'normal'.
->  #        (Since 8.2)
->  #
-> +# @direct-io: Open migration files with O_DIRECT when possible. This
-> +#     requires that the 'fixed-ram' capability is enabled. (since 9.0)
-
-'fixed-ram' is a cross-reference to MigrationCapability member
-fixed-ram.
-
-For local members, @name is better than 'name', because @name carries
-meaning, while 'name' could be anything.
-
-Currently, @name is merely shorthand for ``name``, which is an reST
-"inline literal", commonly used for short code snippets.  Rendered in
-fixed-width font, unlike 'name'.
-
-Making @name generating a link to the description would be a nice
-improvement.
-
-For non-local members, we can't make @name a link without also
-specifying the thing it's a member of.
-
-Let's stick to @name for member names, even non-local ones, so we get
-the same font for all of them.
-
-> +#
->  # Features:
->  #
->  # @deprecated: Member @block-incremental is deprecated.  Use
-> @@ -911,7 +914,8 @@
->             'block-bitmap-mapping',
->             { 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable'] },
->             'vcpu-dirty-limit',
-> -           'mode'] }
-> +           'mode',
-> +           'direct-io'] }
->  
->  ##
->  # @MigrateSetParameters:
-> @@ -1070,6 +1074,9 @@
->  # @mode: Migration mode. See description in @MigMode. Default is 'normal'.
->  #        (Since 8.2)
->  #
-> +# @direct-io: Open migration files with O_DIRECT when possible. This
-> +#     requires that the 'fixed-ram' capability is enabled. (since 9.0)
-> +#
->  # Features:
->  #
->  # @deprecated: Member @block-incremental is deprecated.  Use
-> @@ -1123,7 +1130,8 @@
->              '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
->                                              'features': [ 'unstable' ] },
->              '*vcpu-dirty-limit': 'uint64',
-> -            '*mode': 'MigMode'} }
-> +            '*mode': 'MigMode',
-> +            '*direct-io': 'bool' } }
->  
->  ##
->  # @migrate-set-parameters:
-> @@ -1298,6 +1306,9 @@
->  # @mode: Migration mode. See description in @MigMode. Default is 'normal'.
->  #        (Since 8.2)
->  #
-> +# @direct-io: Open migration files with O_DIRECT when possible. This
-> +#     requires that the 'fixed-ram' capability is enabled. (since 9.0)
-> +#
->  # Features:
->  #
->  # @deprecated: Member @block-incremental is deprecated.  Use
-> @@ -1348,7 +1359,8 @@
->              '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
->                                              'features': [ 'unstable' ] },
->              '*vcpu-dirty-limit': 'uint64',
-> -            '*mode': 'MigMode'} }
-> +            '*mode': 'MigMode',
-> +            '*direct-io': 'bool' } }
->  
->  ##
->  # @query-migrate-parameters:
-
-Other than that, QAPI schema
-Acked-by: Markus Armbruster <armbru@redhat.com>
-
+在 2024/2/21 17:02, Maxime Coquelin 写道:
+> 
+> 
+> On 2/20/24 12:43, Michael S. Tsirkin wrote:
+>> On Tue, Feb 20, 2024 at 12:26:49PM +0100, Maxime Coquelin wrote:
+>>>
+>>>
+>>> On 2/13/24 11:05, Michael S. Tsirkin wrote:
+>>>> On Fri, Jan 26, 2024 at 06:07:37PM +0800, Hao Chen wrote:
+>>>>> I run "dpdk-vdpa" and "qemur-L2" in "qemu-L1".
+>>>>>
+>>>>> In a nested virtualization environment, "qemu-L2" vhost-user socket 
+>>>>> sends
+>>>>> a "VHOST_USER_IOTLB_MSG" message to "dpdk-vdpa" and blocks waiting for
+>>>>> "dpdk-vdpa" to process the message.
+>>>>> If "dpdk-vdpa" doesn't complete the processing of the 
+>>>>> "VHOST_USER_IOTLB_MSG"
+>>>>> message and sends a message that needs to be replied in another 
+>>>>> thread,
+>>>>> such as "VHOST_USER_SLAVE_VRING_HOST_NOTIFIER_MSG", "dpdk-vdpa" 
+>>>>> will also
+>>>>> block and wait for "qemu-L2" to process this message. However, 
+>>>>> "qemu-L2"
+>>>>> vhost-user's socket is blocking while waiting for a reply from 
+>>>>> "dpdk-vdpa"
+>>>>> after processing the message "VHOSTr_USER_IOTLB_MSG", and
+>>>>> "VHOST_USER_SLAVE_VRING_HOST_NOTIFIER_MSG" will not be processed.
+>>>>> In this case, both "dpdk-vdpa" and "qemu-L2" are blocked on the
+>>>>> vhost read, resulting in a deadlock.
+>>>>>
+>>>>> You can modify "VHOST_USER_SLAVE_VRING_HOST_NOTIFIER_MSG" or
+>>>>> "VHOST_USER_IOTLB_MSG" to "no need reply" to fix this issue.
+>>>>> There are too many messages in dpdk that are similar to
+>>>>> "VHOST_USER_SLAVE_VRING_HOST_NOTIFIER_MSG", and I would prefer the 
+>>>>> latter.
+>>>>>
+>>>>> Fixes: 24e34754eb78 ("vhost-user: factor out msg head and payload")
+>>>>>
+>>>>> Signed-off-by: Hao Chen <chenh@yusur.tech>
+>>>>
+>>>> I would be very worried that IOTLB becomes stale and
+>>>> guest memory is corrupted if we just proceed without waiting.
+>>>>
+>>>> Maxime what do you think? How would you address the issue?
+>>>
+>>> I agree with you, this is not possible.
+>>> For example, in case of IOTLB invalidate, the frontend relies on the
+>>> backend reply to ensure it is no more accessing the memory before
+>>> proceeding.
+>>>
+>>> The reply-ack for VHOST_USER_BACKEND_VRING_HOST_NOTIFIER_MSG request is
+>>> less important, if it fails the host notifications won't work but would
+>>> not risk corruption. Maybe on Qemu side we could fail init if processing
+>>> the request fails, as I think that if negotiated, we can expect it to
+>>> succeed.
+>>>
+>>> What do you think about this proposal?
+>>>
+>>> Regards,
+>>> Maxime
+>>
+>> Fundamentally, I think that if qemu blocks guest waiting for a rely
+>> that is ok but it really has to process incoming messages meanwhile.
+>> Same should apply to backend I think ...
+> 
+> I understand your point.
+> For DPDK Vhost library, it will likely imply ABI breakage as it would
+> require to asynchronous handling of Vhost-user requests. We would only
+> be able to do it at next LTS release.
+> 
+> Hao, as your driver is not available upstream it will be difficult to
+> assist you more. But if you look at other DPDK vDPA driver like SFC for
+> instance, the way they implemented host notification control should be
+> safe against this kind of deadlocks.
+Okay, I can also avoid this issue by sending the 
+"VHOST_USER_SLAVE_VRING_HOSTNOTIFIER_MSG" message as late as possible to 
+avoid conflicts with the "VHOST-USER-IOTLB-MSG" message. In summary, 
+thank you.
+> 
+> 
+>>
+>>>>
+>>>>
+>>>>> ---
+>>>>>    hw/virtio/vhost-user.c | 10 ++--------
+>>>>>    1 file changed, 2 insertions(+), 8 deletions(-)
+>>>>>
+>>>>> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+>>>>> index f214df804b..02caa94b6c 100644
+>>>>> --- a/hw/virtio/vhost-user.c
+>>>>> +++ b/hw/virtio/vhost-user.c
+>>>>> @@ -2371,20 +2371,14 @@ static int vhost_user_net_set_mtu(struct 
+>>>>> vhost_dev *dev, uint16_t mtu)
+>>>>>    static int vhost_user_send_device_iotlb_msg(struct vhost_dev *dev,
+>>>>>                                                struct 
+>>>>> vhost_iotlb_msg *imsg)
+>>>>>    {
+>>>>> -    int ret;
+>>>>>        VhostUserMsg msg = {
+>>>>>            .hdr.request = VHOST_USER_IOTLB_MSG,
+>>>>>            .hdr.size = sizeof(msg.payload.iotlb),
+>>>>> -        .hdr.flags = VHOST_USER_VERSION | VHOST_USER_NEED_REPLY_MASK,
+>>>>> +        .hdr.flags = VHOST_USER_VERSION,
+>>>>>            .payload.iotlb = *imsg,
+>>>>>        };
+>>>>> -    ret = vhost_user_write(dev, &msg, NULL, 0);
+>>>>> -    if (ret < 0) {
+>>>>> -        return ret;
+>>>>> -    }
+>>>>> -
+>>>>> -    return process_message_reply(dev, &msg);
+>>>>> +    return vhost_user_write(dev, &msg, NULL, 0);
+>>>>>    }
+>>>>> -- 
+>>>>> 2.27.0
+>>>>
+>>
+> 
 
