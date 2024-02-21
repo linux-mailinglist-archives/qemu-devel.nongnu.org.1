@@ -2,90 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1299D85E1C5
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:47:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 985B585E209
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:55:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoTq-000771-NJ; Wed, 21 Feb 2024 10:25:54 -0500
+	id 1rcoX9-0002KW-E8; Wed, 21 Feb 2024 10:29:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcoMz-0001hh-9X
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:18:50 -0500
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcn0I-0003sQ-Qs
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 08:51:20 -0500
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-512d8950e3dso98316e87.2
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 05:51:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708523476; x=1709128276; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=HEdcTKEHO7Z7HcRMsNBjBNfl1WQ6V2HgRZLHF7lFnyY=;
- b=o4bMPC1v5vWknJ8bdRST+YpTUsPgIkzJS2Yhy4PiSgTvwCNsUmOh9rw4U5Cx/14T5S
- 7rHE3md577a0YmuSJebFIklwTI8Td9WniGaZIanQU6yhAx2pqL/EbS0AbQ9mOONcmhTN
- YCD8dRzvpy95hCXaO1hNzfCV9QENgkDaRMbpW+pzwcnodSsJIVEo5wixZZbUyFzuEs3d
- 1m2U6JDYapbD69T2RrrBZml0mG8PpbokM92bLFaGKOvXs7tCciVueJKeCRF0+MaNvMpI
- gRmXlnUvz9zZteTYS25/cNZJx9Tn6tM2b5Zk3IeEkur1+9HoNCqx+YnKfxMuR35dmQvf
- twIg==
+ (Exim 4.90_1) (envelope-from <aharivel@redhat.com>)
+ id 1rcoOo-0003GZ-7b
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:20:42 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <aharivel@redhat.com>)
+ id 1rcn1D-00042d-OE
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 08:52:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1708523535;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=NA9QNh3Ts4warO/TN+qO0jRa06vayUkXcLHH7BrdjRo=;
+ b=jNbURFv//lK0iOuYT2kDGFlQNi6CCItvka3q21Mrr3y76Z6wFMaBfke8PZjTFP86EknO1I
+ KRAy2IUVQlvoiuHsDYZC9kv/a9pGdrohtQwyAF5KekkR/uA9ryCwxEGyTVNwPwiQWZ2Wv3
+ kT6ZI8Zk7zz8u864osVw+pGJfnntG7s=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-120-H00PTE3rPO6SWtoPGDgaXQ-1; Wed, 21 Feb 2024 08:52:12 -0500
+X-MC-Unique: H00PTE3rPO6SWtoPGDgaXQ-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-33d10bd57d7so2239750f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 05:52:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708523476; x=1709128276;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HEdcTKEHO7Z7HcRMsNBjBNfl1WQ6V2HgRZLHF7lFnyY=;
- b=NtU0gf6xizmTgKBSXyb1pUlR78yY3ltJ/GQCF931U3wIPvnNTC7xZJyKmuQpKBhMU0
- BgvhzBUyUZ7B9DlKLKOO+bYR/SB0tINzyLbVyIAzAnCdeDqtfhOmN6PR5PlVFOvsJNJf
- NpRvkR6IzYKaqeS7BwpxOpLdOCxJi+QyJ9+g2gcHC2jC8ofKaoG19jX0rJSAZ1i+P/vB
- GeZhjJ4HT5tQj/2Sr7JAQ/apo76pkXjxA+D7h5V1dfuMPIVt2lWKawcsX7pLXa37jLX5
- /TYEdQ2puX9xBLS+Az3bU98IIUagu9KjOpLmyPb3MzuQAAl9FddK1OrP9a9RISj+HTZM
- oK5Q==
+ d=1e100.net; s=20230601; t=1708523531; x=1709128331;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=NA9QNh3Ts4warO/TN+qO0jRa06vayUkXcLHH7BrdjRo=;
+ b=UOuKOMaDKCKI8YQBv8lY1UCE+DIrnHmA1C3GbmtE1fGdw23wHXaaVNcRKqMu+MhU5S
+ nJlN5AMpkHPz7PlSpV6Ex+gcxKPxdNtxWRCNWNP5kCxAR80fK19cN+b1DjkJqLw2QNUX
+ FQ/aH8nW7rjEGJgNrZPnxk33JcojKymk2s0diFBnygOF9nY1qQ7iEwEcncz6fBZKE9DP
+ funtxGDs2+tKoQcb4uQi+Sv81s5nwuyImIYX8vwInmuPms/BvYWuxj6KtzzDSZVvbeZ6
+ ZyVuIpGjQgAx6d5G53rR/z1OqXH2xFRbB60w1RexlK7x9BPK6KQWUbQyETm8KHGczWbx
+ +QKQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWS5HWkCidrYbCcPLMitGKw6AuZjW4uSWOBZNflT4GCuNwiMfxlyxxEVoDAbz6l4FceJWO7teKZXsx2IpaXrbyVr0MY890=
-X-Gm-Message-State: AOJu0Ywmc3wrjNRtDLcSqlnhacPoU6jm72VStkv7DfMWG5JZVV0J4UHn
- X5E2HACcWJ2QJ9pbQqBZoey28XkBshEa0RHZ6EDS1qFwUqyXce+x/1lBF4UrGE14CPMIKTTiwtH
- 83bg=
-X-Google-Smtp-Source: AGHT+IF0fw4ktxfvx3ZIa2JiQg0IAYj1gwp+ukjYArxKGC7RQ37DpOa36hgJxeEGDHUjUGvEnn1u6w==
-X-Received: by 2002:a05:6512:3a92:b0:512:caa2:18db with SMTP id
- q18-20020a0565123a9200b00512caa218dbmr3418758lfu.35.1708523475747; 
- Wed, 21 Feb 2024 05:51:15 -0800 (PST)
-Received: from [192.168.245.175] (99.red-88-29-190.dynamicip.rima-tde.net.
- [88.29.190.99]) by smtp.gmail.com with ESMTPSA id
- w9-20020a05600c474900b00412684fbcf3sm8984487wmo.28.2024.02.21.05.51.13
+ AJvYcCWMk+GVrLqJRfATo3UsAK2WXggcRVsZN0AsJET5jZXzMhN4AFM4zDLP++VUYSf569ArKCXAUcCIbKgspXZk3cSri4Qwh44=
+X-Gm-Message-State: AOJu0YzJ4cJ7tSvOXC1kQf7kvVqLX6Ickau1QXDyMJgs/SaYsVrWnfgI
+ iFuwOneoNeFtBRPj9cS0YjYDCIpy288FVyLCjee2IkGKrIViDGcWijYdwkOETyx2B9aVlCtTPZY
+ J/XKyKMWbUpTA6rdscbngem2UQ61LdHj243d5YJQhTNmgxfFC8zgc
+X-Received: by 2002:a5d:4a8a:0:b0:33d:855d:7457 with SMTP id
+ o10-20020a5d4a8a000000b0033d855d7457mr459595wrq.21.1708523531114; 
+ Wed, 21 Feb 2024 05:52:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IERHxHceY72u24QPQWwZlnF2Vht/9nsjIWucMPGOsJOMKjgvmMGPnNO4yNo5JhyxukCs2Zw7Q==
+X-Received: by 2002:a5d:4a8a:0:b0:33d:855d:7457 with SMTP id
+ o10-20020a5d4a8a000000b0033d855d7457mr459580wrq.21.1708523530790; 
+ Wed, 21 Feb 2024 05:52:10 -0800 (PST)
+Received: from localhost ([2a01:e0a:a9a:c460:2827:8723:3c60:c84a])
+ by smtp.gmail.com with ESMTPSA id
+ i3-20020a05600011c300b0033cf453f2bbsm16975610wrx.35.2024.02.21.05.52.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Feb 2024 05:51:15 -0800 (PST)
-Message-ID: <4f94626c-7de3-43ef-99b3-cabada12307b@linaro.org>
-Date: Wed, 21 Feb 2024 14:51:12 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/10] hw/i386: Store pointers to IDE buses in
- PCMachineState
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>
-References: <20240220160622.114437-1-peter.maydell@linaro.org>
- <20240220160622.114437-2-peter.maydell@linaro.org>
- <65a89550-7932-4ee4-a693-3456322cdca1@linaro.org>
-In-Reply-To: <65a89550-7932-4ee4-a693-3456322cdca1@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ Wed, 21 Feb 2024 05:52:10 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 21 Feb 2024 14:52:10 +0100
+Message-Id: <CZAT1MBJ3ARY.2VJ27QSELNPGZ@fedora>
+Cc: "Paolo Bonzini" <pbonzini@redhat.com>, <mtosatti@redhat.com>,
+ <qemu-devel@nongnu.org>, <vchundur@redhat.com>
+Subject: Re: [PATCH v3 2/3] tools: build qemu-vmsr-helper
+From: "Anthony Harivel" <aharivel@redhat.com>
+To: =?utf-8?b?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?= <berrange@redhat.com>
+X-Mailer: aerc/0.15.2-111-g39195000e213
+References: <20240125072214.318382-1-aharivel@redhat.com>
+ <20240125072214.318382-3-aharivel@redhat.com> <Zbf0Fbhmg0tvMbxK@redhat.com>
+ <CABgObfaRGL8eOs6NRBjEMjTa_7UGyAn+Pic2GP=XbE+Qg-oBCQ@mail.gmail.com>
+ <ZbgAb3m6-rwUFxOO@redhat.com> <CZASCDCNT6TJ.1LP37HOBJVYGT@fedora>
+ <ZdX-6mJbpuMaRio9@redhat.com>
+In-Reply-To: <ZdX-6mJbpuMaRio9@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=aharivel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,80 +107,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/2/24 14:07, Philippe Mathieu-Daudé wrote:
-> Hi Peter,
-> 
-> On 20/2/24 17:06, Peter Maydell wrote:
->> Add the two IDE bus BusState pointers to the set we keep in 
->> PCMachineState.
->> This allows us to avoid passing them to pc_cmos_init(), and also will
->> allow a refactoring of how we call pc_cmos_init_late().
->>
->> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
->> ---
->>   include/hw/i386/pc.h |  4 +++-
->>   hw/i386/pc.c         |  5 ++---
->>   hw/i386/pc_piix.c    | 16 +++++++---------
->>   hw/i386/pc_q35.c     |  9 ++++-----
->>   4 files changed, 16 insertions(+), 18 deletions(-)
-> 
-> 
->> @@ -300,13 +299,13 @@ static void pc_q35_init(MachineState *machine)
->>                                                            
->> ICH9_SATA1_FUNC),
->>                                                  "ich9-ahci");
->>           ich9 = ICH9_AHCI(pdev);
->> -        idebus[0] = qdev_get_child_bus(DEVICE(pdev), "ide.0");
->> -        idebus[1] = qdev_get_child_bus(DEVICE(pdev), "ide.1");
->> +        pcms->idebus[0] = qdev_get_child_bus(DEVICE(pdev), "ide.0");
->> +        pcms->idebus[1] = qdev_get_child_bus(DEVICE(pdev), "ide.1");
->>           g_assert(MAX_SATA_PORTS == ich9->ahci.ports);
->>           ide_drive_get(hd, ich9->ahci.ports);
->>           ahci_ide_create_devs(&ich9->ahci, hd);
->>       } else {
->> -        idebus[0] = idebus[1] = NULL;
->> +        pcms->idebus[0] = pcms->idebus[1] = NULL;
-> 
-> Since PCMachineState is zero-initialized, this part is now
-> pointless.
-> 
-> Since my ICH9 series clashes with your patch, I'm inclined to
-> queue it in my hw-misc tree, with the following squashed:
-> 
-> -- >8 --
-> 
-> -    } else {
-> -        pcms->idebus[0] = pcms->idebus[1] = NULL;
-> 
-> ---
+Daniel P. Berrang=C3=A9, Feb 21, 2024 at 14:47:
+> On Wed, Feb 21, 2024 at 02:19:11PM +0100, Anthony Harivel wrote:
+> > Daniel P. Berrang=C3=A9, Jan 29, 2024 at 20:45:
+> > > On Mon, Jan 29, 2024 at 08:33:21PM +0100, Paolo Bonzini wrote:
+> > > > On Mon, Jan 29, 2024 at 7:53=E2=80=AFPM Daniel P. Berrang=C3=A9 <be=
+rrange@redhat.com> wrote:
+> > > > > > diff --git a/meson.build b/meson.build
+> > > > > > index d0329966f1b4..93fc233b0891 100644
+> > > > > > --- a/meson.build
+> > > > > > +++ b/meson.build
+> > > > > > @@ -4015,6 +4015,11 @@ if have_tools
+> > > > > >                 dependencies: [authz, crypto, io, qom, qemuutil=
+,
+> > > > > >                                libcap_ng, mpathpersist],
+> > > > > >                 install: true)
+> > > > > > +
+> > > > > > +    executable('qemu-vmsr-helper', files('tools/i386/qemu-vmsr=
+-helper.c'),
+> > > > >
+> > > > > I'd suggest 'tools/x86/' since this works fine on 64-bit too
+> > > >=20
+> > > > QEMU tends to use i386 in the source to mean both 32- and 64-bit.
+> > >
+> > > One day we should rename that to x86 too :-)
+> > >
+> > > > > You never answered my question from the previous posting of this
+> > > > >
+> > > > > This check is merely validating the the thread ID in the message
+> > > > > is a child of the process ID connected to the socket. Any process
+> > > > > on the entire host can satisfy this requirement.
+> > > > >
+> > > > > I don't see what is limiting this to only QEMU as claimed by the
+> > > > > commit message, unless you're expecting the UNIX socket permissio=
+ns
+> > > > > to be such that only processes under the qemu:qemu user:group pai=
+r
+> > > > > can access to the socket ? That would be a libvirt based permissi=
+ons
+> > > > > assumption though.
+> > > >=20
+> > > > Yes, this is why the systemd socket uses 600, like
+> > > > contrib/systemd/qemu-pr-helper.socket. The socket can be passed via
+> > > > SCM_RIGHTS by libvirt, or its permissions can be changed (e.g. 660 =
+and
+> > > > root:kvm would make sense on a Debian system), or a separate helper
+> > > > can be started by libvirt.
+> > > >=20
+> > > > Either way, the policy is left to the user rather than embedding it=
+ in
+> > > > the provided systemd unit.
+> > >
+> > > Ok, this code needs a comment to explain that we're relying on
+> > > socket permissions to control who/what can access the daemon,
+> > > combined with this PID+TID check to validate it is not spoofing
+> > > its identity, as without context the TID check looks pointless.
+> >=20
+> > Hi Daniel,
+> >=20
+> > would you prefer a comment in the code or a security section in the doc=
+=20
+> > (i.e docs/specs/rapl-msr.rst) ?
+>
+> I think it is worth creating a docs/specs/rapl-msr.rst to explain the
+> overall design & usage & security considerations.
 
-Sorry sent too fast. Squashing
+It was already included in the add-support-for-RAPL-MSRs-in-KVM-Qemu.patch=
+=20
+but indeed it needs now some updates for the v4 about security and=20
+change in design.
 
--- >8 --
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 8df88a6ccd..77d1b03fdf 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -311,6 +311,4 @@ static void pc_init1(MachineState *machine,
-          i8257_dma_init(OBJECT(machine), isa_bus, 0);
-          pcms->hpet_enabled = false;
--        pcms->idebus[0] = NULL;
--        pcms->idebus[1] = NULL;
-      }
+Regards,
+Anthony
 
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 71402c36eb..0e9bd27a6e 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -305,6 +305,4 @@ static void pc_q35_init(MachineState *machine)
-          ide_drive_get(hd, ich9->ahci.ports);
-          ahci_ide_create_devs(&ich9->ahci, hd);
--    } else {
--        pcms->idebus[0] = pcms->idebus[1] = NULL;
-      }
-
----
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>
+> With regards,
+> Daniel
+> --=20
+> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
+ge :|
+> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
+om :|
+> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
+ge :|
 
 
