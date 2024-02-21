@@ -2,57 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A4BD85E170
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:38:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1E985E194
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:41:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoWq-0007md-Hu; Wed, 21 Feb 2024 10:29:00 -0500
+	id 1rcoab-0000US-SX; Wed, 21 Feb 2024 10:32:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rcoOM-0001R2-Id
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:20:14 -0500
+ id 1rcoTC-0006J0-6D; Wed, 21 Feb 2024 10:25:14 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rclAF-0000r2-0k
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 06:53:28 -0500
+ id 1rclBo-0000vP-U5; Wed, 21 Feb 2024 06:55:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
  Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
  :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=qUwsIaIJkH507gOAw6tYExAUSgUlUU1LHsOYXVYM688=; b=1VBBQtLxzUt8ozxWr8g2CuSLYt
- GEbnDZmqxjBsN087XSJBJLbDeTXneKA/ZmYZimZjr0CZM6XxSVEMnd8tPBIhSlOmiRPB3Npza+FvM
- mCGJPh2MgTtg9t9uGI1Eba4t5X3tAlGZVBjArL7JO+U+lYXJ0Lq63bja64Zy/7tO31Rv1moSIpLFC
- iWPQZNC3Z2ToGdbIINOvyT6GrAj7G9rck9hYUf17JsmgFuhmW32q/AEjhb6Lkr7GUh0+UWdBb+arm
- Qy9g00DyPUa5N/QTAElK6ycggNUH3RMUQgfDTw+XP0a7ANSj1hmovZ58huUkvroKRqBNzoFYXtWdg
- oCK9VoF+I4qfoIigsZqHavX9kPsgD9yAOBFr8yji3DUZHW3Ho4S8ZkjzzLytCkZTz+6u6hFqqMHpZ
- tj8N77s/J23eNL3biH5PFvRyjKujOmSFByPgwIIS/O78hZ05OsS5yMfuQ4X8ZTfiqe024M4Prgikq
- A+68BNyUgnurPmMrFYtpNJDYE0gkyVFXRi937wEjk98uqP87Ey/eY3K0kFM2dkuXj2CBD6g3AZshJ
- RpHtp6/sfRSFAaGJb2m6yayxseQAlMj7Sxi6MuBUHD2MrGOpkdJQfWuH5zDxpq/PHNVruYOuYUKWc
- cptwtJ+H1h0/aSMuGWo1pMMB4YVO+H7TInXovxqg8=;
+ bh=1YhoWONXIpaW9qGOk56UkNXIr6FA0V3YLLDDXHffgU4=; b=OPJDJLgTMiqd4d236CMFfYV4gQ
+ DqytrWx+T3aLLi9zsVWplxKprUyKN1KUxISsl654A6lVR6zdGn2fpNzLIWbMGlmUDvwf9zc5BWAgd
+ IByju33mpDWF6RNDIul+kek06EGdxlHH5KAwbLOjZbuDCDwy9TG0Wjbhi6V9dJ6p0VdBTpjI9+IW3
+ mKTjhTU3n6yWYYHEr+oCnSHA8ldnNtkBx4ZP5qXJiQIW+iEsqsMbKp69qE9n6TUpQ6hHQDqOzO5fM
+ 87VCPk+xPg6sUq2PnAMpo7JYkmeEyddNTIG7qvK2aFiHoLUY7f0qb2Fjg0FkUk1fk9a8eIkcPUGhv
+ WTUxvfbc1imqcpIaEGxpSuRn2LjZGzTBalVrTDvPQ57+60BqkvRW6VgwBbGAZRDm5D2mTep9BPgzw
+ G1zU3+iznvC/FiXr4DKWFW5hKB43UH6bd5+Pc9941z/3mJDLAEBdaGz3ZdyN1H7hD/SqfPLqN2Pvm
+ S6B3vDADVt77SuB5wZdor7bpqpfVPdyp0xCQf3yN6wsz0R0aL2B6eYzSnXxwN79hQ9YXlwqzfX1yL
+ snaTW7SQhYIkJhhW64Lhd155/fLQPHdGadlKaZK1rNG70T0YvIosVI5iI2v9fJOmgQVFvfnOEVJeX
+ f83yc7qQZH7HK9YAp9NxfqZWKavGIRB66J6tsAeHU=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rcl9V-0008MU-1Q; Wed, 21 Feb 2024 11:52:41 +0000
-Message-ID: <6a2333d7-9dea-4a0e-9d91-0889e6205128@ilande.co.uk>
-Date: Wed, 21 Feb 2024 11:53:21 +0000
+ id 1rclB0-0008MU-MH; Wed, 21 Feb 2024 11:54:18 +0000
+Message-ID: <a468ae40-8d53-4048-9692-a9eb15f1fbd9@ilande.co.uk>
+Date: Wed, 21 Feb 2024 11:54:56 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Content-Language: en-US
-To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
- Aurelien Jarno <aurelien@aurel32.net>, Jiaxun Yang
- <jiaxun.yang@flygoat.com>, Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>
-References: <20240218131701.91132-1-shentey@gmail.com>
- <20240218131701.91132-4-shentey@gmail.com>
+To: Thomas Huth <thuth@redhat.com>, John Snow <jsnow@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: BALATON Zoltan <balaton@eik.bme.hu>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-block@nongnu.org
+References: <20240220085505.30255-1-thuth@redhat.com>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
@@ -78,13 +72,13 @@ Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
  KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
  imgcU9TTGC5qd9g=
-In-Reply-To: <20240218131701.91132-4-shentey@gmail.com>
+In-Reply-To: <20240220085505.30255-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 3/5] hw/isa: Embed TYPE_PORT92 in south bridges used in PC
- machines
+Subject: Re: [PATCH v2 0/7] hw/ide: Clean up hw/ide/qdev.c and
+ include/hw/ide/internal.h
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -110,320 +104,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/02/2024 13:16, Bernhard Beschow wrote:
+On 20/02/2024 08:54, Thomas Huth wrote:
 
-> Port 92 is an integral part of the PIIX and ICH south bridges, so instantiate it
-> there. The isapc machine now needs to instantiate it explicitly, analoguous to
-> the RTC.
+> While trying to make it possible to compile-out the CompactFlash IDE device
+> in downstream distributions (first patch), we noticed that there are more
+> things in the IDE code that could use a proper clean up:
 > 
-> Note that due to migration compatibility, port92 is optional in the south
-> bridges. It is always instantiated the isapc machine for simplicity.
+> First, hw/ide/qdev.c is quite a mix between IDE BUS specific functions
+> and (disk) device specific functions. Thus the second patch splits qdev.c
+> into two new separate files to make it more obvious which part belongs
+> to which kind of devices.
 > 
-> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-> ---
->   include/hw/i386/pc.h          |  2 +-
->   include/hw/southbridge/ich9.h |  4 ++++
->   include/hw/southbridge/piix.h |  3 +++
->   hw/i386/pc.c                  | 18 ++++++++++++------
->   hw/i386/pc_piix.c             |  9 +++++++--
->   hw/i386/pc_q35.c              |  8 +++++---
->   hw/isa/lpc_ich9.c             |  9 +++++++++
->   hw/isa/piix.c                 |  9 +++++++++
->   hw/isa/Kconfig                |  2 ++
->   9 files changed, 52 insertions(+), 12 deletions(-)
+> The remaining patches unentangle include/hw/ide/internal.h, which is meant
+> as a header that should only be used internally to the IDE subsystem, but
+> which is currently exposed to the world since include/hw/ide/pci.h includes
+> this header, too. Thus we move the definitions that are also required for
+> non-IDE code to other new header files, so we can finally change pci.h to
+> stop including internal.h. After these changes, internal.h is only included
+> by files in hw/ide/ as it should be.
 > 
-> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-> index b2987209b1..a9ff1f5ab3 100644
-> --- a/include/hw/i386/pc.h
-> +++ b/include/hw/i386/pc.h
-> @@ -178,7 +178,7 @@ uint64_t pc_pci_hole64_start(void);
->   DeviceState *pc_vga_init(ISABus *isa_bus, PCIBus *pci_bus);
->   void pc_basic_device_init(struct PCMachineState *pcms,
->                             ISABus *isa_bus, qemu_irq *gsi,
-> -                          ISADevice *rtc_state,
-> +                          ISADevice *rtc_state, ISADevice *port92,
->                             bool create_fdctrl,
->                             uint32_t hpet_irqs);
->   void pc_cmos_init(PCMachineState *pcms,
-> diff --git a/include/hw/southbridge/ich9.h b/include/hw/southbridge/ich9.h
-> index fd01649d04..d70a94f5e7 100644
-> --- a/include/hw/southbridge/ich9.h
-> +++ b/include/hw/southbridge/ich9.h
-> @@ -3,6 +3,7 @@
->   
->   #include "hw/isa/apm.h"
->   #include "hw/acpi/ich9.h"
-> +#include "hw/isa/port92.h"
->   #include "hw/intc/ioapic.h"
->   #include "hw/pci/pci.h"
->   #include "hw/pci/pci_device.h"
-> @@ -32,6 +33,7 @@ struct ICH9LPCState {
->       uint8_t irr[PCI_SLOT_MAX][PCI_NUM_PINS];
->   
->       MC146818RtcState rtc;
-> +    Port92State port92;
->       APMState apm;
->       ICH9LPCPMRegs pm;
->       uint32_t sci_level; /* track sci level */
-> @@ -54,6 +56,8 @@ struct ICH9LPCState {
->       uint8_t rst_cnt;
->       MemoryRegion rst_cnt_mem;
->   
-> +    bool has_port92;
-> +
->       /* SMI feature negotiation via fw_cfg */
->       uint64_t smi_host_features;       /* guest-invisible, host endian */
->       uint8_t smi_host_features_le[8];  /* guest-visible, read-only, little
-> diff --git a/include/hw/southbridge/piix.h b/include/hw/southbridge/piix.h
-> index 86709ba2e4..35058529d1 100644
-> --- a/include/hw/southbridge/piix.h
-> +++ b/include/hw/southbridge/piix.h
-> @@ -15,6 +15,7 @@
->   #include "hw/pci/pci_device.h"
->   #include "hw/acpi/piix4.h"
->   #include "hw/ide/pci.h"
-> +#include "hw/isa/port92.h"
->   #include "hw/rtc/mc146818rtc.h"
->   #include "hw/usb/hcd-uhci.h"
->   
-> @@ -56,6 +57,7 @@ struct PIIXState {
->       int32_t pci_irq_levels_vmstate[PIIX_NUM_PIRQS];
->   
->       MC146818RtcState rtc;
-> +    Port92State port92;
->       PCIIDEState ide;
->       UHCIState uhci;
->       PIIX4PMState pm;
-> @@ -71,6 +73,7 @@ struct PIIXState {
->       bool has_acpi;
->       bool has_pic;
->       bool has_pit;
-> +    bool has_port92;
->       bool has_usb;
->       bool smm_enabled;
->   };
-> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> index 0b11d4576e..8b601ea6cf 100644
-> --- a/hw/i386/pc.c
-> +++ b/hw/i386/pc.c
-> @@ -1160,7 +1160,7 @@ static void pc_superio_init(ISABus *isa_bus, bool create_fdctrl,
->       int i;
->       DriveInfo *fd[MAX_FD];
->       qemu_irq *a20_line;
-> -    ISADevice *fdc, *i8042, *port92, *vmmouse;
-> +    ISADevice *fdc, *i8042, *vmmouse;
->   
->       serial_hds_isa_init(isa_bus, 0, MAX_ISA_SERIAL_PORTS);
->       parallel_hds_isa_init(isa_bus, MAX_PARALLEL_PORTS);
-> @@ -1193,18 +1193,15 @@ static void pc_superio_init(ISABus *isa_bus, bool create_fdctrl,
->                                    &error_abort);
->           isa_realize_and_unref(vmmouse, isa_bus, &error_fatal);
->       }
-> -    port92 = isa_create_simple(isa_bus, TYPE_PORT92);
->   
-> -    a20_line = qemu_allocate_irqs(handle_a20_line_change, first_cpu, 2);
-> +    a20_line = qemu_allocate_irqs(handle_a20_line_change, first_cpu, 1);
->       i8042_setup_a20_line(i8042, a20_line[0]);
-> -    qdev_connect_gpio_out_named(DEVICE(port92),
-> -                                PORT92_A20_LINE, 0, a20_line[1]);
->       g_free(a20_line);
->   }
->   
->   void pc_basic_device_init(struct PCMachineState *pcms,
->                             ISABus *isa_bus, qemu_irq *gsi,
-> -                          ISADevice *rtc_state,
-> +                          ISADevice *rtc_state, ISADevice *port92,
->                             bool create_fdctrl,
->                             uint32_t hpet_irqs)
->   {
-> @@ -1296,6 +1293,15 @@ void pc_basic_device_init(struct PCMachineState *pcms,
->       /* Super I/O */
->       pc_superio_init(isa_bus, create_fdctrl, pcms->i8042_enabled,
->                       pcms->vmport != ON_OFF_AUTO_ON);
-> +
-> +    if (port92) {
-> +        qemu_irq *a20_line;
-> +
-> +        a20_line = qemu_allocate_irqs(handle_a20_line_change, first_cpu, 1);
-> +        qdev_connect_gpio_out_named(DEVICE(port92),
-> +                                    PORT92_A20_LINE, 0, a20_line[0]);
-> +        g_free(a20_line);
-> +    }
->   }
->   
->   void pc_nic_init(PCMachineClass *pcmc, ISABus *isa_bus, PCIBus *pci_bus)
-> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-> index 999b7b806c..dfdfd36551 100644
-> --- a/hw/i386/pc_piix.c
-> +++ b/hw/i386/pc_piix.c
-> @@ -115,7 +115,7 @@ static void pc_init1(MachineState *machine,
->       qemu_irq smi_irq;
->       GSIState *gsi_state;
->       BusState *idebus[MAX_IDE_BUS];
-> -    ISADevice *rtc_state;
-> +    ISADevice *rtc_state, *port92;
->       MemoryRegion *ram_memory;
->       MemoryRegion *pci_memory = NULL;
->       MemoryRegion *rom_memory = system_memory;
-> @@ -269,6 +269,8 @@ static void pc_init1(MachineState *machine,
->                                    &error_abort);
->           object_property_set_bool(OBJECT(pci_dev), "has-pit", false,
->                                    &error_abort);
-> +        object_property_set_bool(OBJECT(pci_dev), "has-port92",
-> +                                 pcms->i8042_enabled, &error_abort);
->           qdev_prop_set_uint32(DEVICE(pci_dev), "smb_io_base", 0xb100);
->           object_property_set_bool(OBJECT(pci_dev), "smm-enabled",
->                                    x86_machine_is_smm_enabled(x86ms),
-> @@ -296,6 +298,8 @@ static void pc_init1(MachineState *machine,
->           isa_bus = ISA_BUS(qdev_get_child_bus(DEVICE(pci_dev), "isa.0"));
->           rtc_state = ISA_DEVICE(object_resolve_path_component(OBJECT(pci_dev),
->                                                                "rtc"));
-> +        port92 = ISA_DEVICE(object_resolve_path_component(OBJECT(pci_dev),
-> +                                                          "port92"));
->           piix4_pm = object_resolve_path_component(OBJECT(pci_dev), "pm");
->           dev = DEVICE(object_resolve_path_component(OBJECT(pci_dev), "ide"));
->           pci_ide_create_devs(PCI_DEVICE(dev));
-> @@ -310,6 +314,7 @@ static void pc_init1(MachineState *machine,
->           qdev_prop_set_int32(DEVICE(rtc_state), "base_year", 2000);
->           isa_realize_and_unref(rtc_state, isa_bus, &error_fatal);
->   
-> +        port92 = isa_create_simple(isa_bus, TYPE_PORT92);
->           i8257_dma_init(OBJECT(machine), isa_bus, 0);
->           pcms->hpet_enabled = false;
->           idebus[0] = NULL;
-> @@ -336,7 +341,7 @@ static void pc_init1(MachineState *machine,
->       }
->   
->       /* init basic PC hardware */
-> -    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, rtc_state, true,
-> +    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, rtc_state, port92, true,
->                            0x4);
->   
->       pc_nic_init(pcmc, isa_bus, pci_bus);
-> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-> index d346fa3b1d..26bb1c2cb9 100644
-> --- a/hw/i386/pc_q35.c
-> +++ b/hw/i386/pc_q35.c
-> @@ -127,7 +127,7 @@ static void pc_q35_init(MachineState *machine)
->       PCIDevice *lpc;
->       DeviceState *lpc_dev;
->       BusState *idebus[MAX_SATA_PORTS];
-> -    ISADevice *rtc_state;
-> +    ISADevice *rtc_state, *port92;
->       MemoryRegion *system_memory = get_system_memory();
->       MemoryRegion *system_io = get_system_io();
->       MemoryRegion *pci_memory = g_new(MemoryRegion, 1);
-> @@ -238,6 +238,7 @@ static void pc_q35_init(MachineState *machine)
->       lpc = pci_new_multifunction(PCI_DEVFN(ICH9_LPC_DEV, ICH9_LPC_FUNC),
->                                   TYPE_ICH9_LPC_DEVICE);
->       lpc_dev = DEVICE(lpc);
-> +    qdev_prop_set_bit(lpc_dev, "has-port92", pcms->i8042_enabled);
->       qdev_prop_set_bit(lpc_dev, "smm-enabled",
->                         x86_machine_is_smm_enabled(x86ms));
->       pci_realize_and_unref(lpc, host_bus, &error_fatal);
-> @@ -246,6 +247,7 @@ static void pc_q35_init(MachineState *machine)
->       }
->   
->       rtc_state = ISA_DEVICE(object_resolve_path_component(OBJECT(lpc), "rtc"));
-> +    port92 = ISA_DEVICE(object_resolve_path_component(OBJECT(lpc), "port92"));
->   
->       object_property_add_link(OBJECT(machine), PC_MACHINE_ACPI_DEVICE_PROP,
->                                TYPE_HOTPLUG_HANDLER,
-> @@ -287,8 +289,8 @@ static void pc_q35_init(MachineState *machine)
->       }
->   
->       /* init basic PC hardware */
-> -    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, rtc_state, !mc->no_floppy,
-> -                         0xff0104);
-> +    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, rtc_state, port92,
-> +                         !mc->no_floppy, 0xff0104);
->   
->       if (pcms->sata_enabled) {
->           PCIDevice *pdev;
-> diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
-> index 70c6e8a093..3be5bc01b1 100644
-> --- a/hw/isa/lpc_ich9.c
-> +++ b/hw/isa/lpc_ich9.c
-> @@ -749,6 +749,14 @@ static void ich9_lpc_realize(PCIDevice *d, Error **errp)
->       irq = object_property_get_uint(OBJECT(&lpc->rtc), "irq", &error_fatal);
->       isa_connect_gpio_out(ISA_DEVICE(&lpc->rtc), 0, irq);
->   
-> +    if (lpc->has_port92) {
-> +        object_initialize_child(OBJECT(lpc), "port92", &lpc->port92,
-> +                                TYPE_PORT92);
-> +        if (!qdev_realize(DEVICE(&lpc->port92), BUS(isa_bus), errp)) {
-> +            return;
-> +        }
-> +    }
-> +
->       pci_bus_irqs(pci_bus, ich9_lpc_set_irq, d, ICH9_LPC_NB_PIRQS);
->       pci_bus_map_irqs(pci_bus, ich9_lpc_map_irq);
->       pci_bus_set_route_irq_fn(pci_bus, ich9_route_intx_pin_to_irq);
-> @@ -821,6 +829,7 @@ static Property ich9_lpc_properties[] = {
->       DEFINE_PROP_BOOL("noreboot", ICH9LPCState, pin_strap.spkr_hi, false),
->       DEFINE_PROP_BOOL("smm-compat", ICH9LPCState, pm.smm_compat, false),
->       DEFINE_PROP_BOOL("smm-enabled", ICH9LPCState, pm.smm_enabled, false),
-> +    DEFINE_PROP_BOOL("has-port92", ICH9LPCState, has_port92, true),
->       DEFINE_PROP_BIT64("x-smi-broadcast", ICH9LPCState, smi_host_features,
->                         ICH9_LPC_SMI_F_BROADCAST_BIT, true),
->       DEFINE_PROP_BIT64("x-smi-cpu-hotplug", ICH9LPCState, smi_host_features,
-> diff --git a/hw/isa/piix.c b/hw/isa/piix.c
-> index 2d30711b17..4c12855461 100644
-> --- a/hw/isa/piix.c
-> +++ b/hw/isa/piix.c
-> @@ -346,6 +346,14 @@ static void pci_piix_realize(PCIDevice *dev, const char *uhci_type,
->       irq = object_property_get_uint(OBJECT(&d->rtc), "irq", &error_fatal);
->       isa_connect_gpio_out(ISA_DEVICE(&d->rtc), 0, irq);
->   
-> +    /* Port 92 */
-> +    if (d->has_port92) {
-> +        object_initialize_child(OBJECT(d), "port92", &d->port92, TYPE_PORT92);
-> +        if (!qdev_realize(DEVICE(&d->port92), BUS(isa_bus), errp)) {
-> +            return;
-> +        }
-> +    }
-> +
->       /* IDE */
->       qdev_prop_set_int32(DEVICE(&d->ide), "addr", dev->devfn + 1);
->       if (!qdev_realize(DEVICE(&d->ide), BUS(pci_bus), errp)) {
-> @@ -413,6 +421,7 @@ static Property pci_piix_props[] = {
->       DEFINE_PROP_BOOL("has-acpi", PIIXState, has_acpi, true),
->       DEFINE_PROP_BOOL("has-pic", PIIXState, has_pic, true),
->       DEFINE_PROP_BOOL("has-pit", PIIXState, has_pit, true),
-> +    DEFINE_PROP_BOOL("has-port92", PIIXState, has_port92, true),
->       DEFINE_PROP_BOOL("has-usb", PIIXState, has_usb, true),
->       DEFINE_PROP_BOOL("smm-enabled", PIIXState, smm_enabled, false),
->       DEFINE_PROP_END_OF_LIST(),
-> diff --git a/hw/isa/Kconfig b/hw/isa/Kconfig
-> index efdf43e92c..f42a087c07 100644
-> --- a/hw/isa/Kconfig
-> +++ b/hw/isa/Kconfig
-> @@ -47,6 +47,7 @@ config PIIX
->       select IDE_PIIX
->       select ISA_BUS
->       select MC146818RTC
-> +    select PORT92
->       select USB_UHCI
->   
->   config PORT92
-> @@ -78,3 +79,4 @@ config LPC_ICH9
->       select ISA_BUS
->       select ACPI_ICH9
->       select MC146818RTC
-> +    select PORT92
+> v2:
+> - Change the order of the DMA patch and move typedef struct IDEDMAOps
+>    and typedef struct IDEDMA IDEDMA into ide-dma.h, too
+> - Make sure that the headers are self-contained (i.e. #include the
+>    right other headers)
+> - Remove some more remnants of include/hw/ide.h
+> 
+> Thomas Huth (7):
+>    hw/ide: Add the possibility to disable the CompactFlash device in the
+>      build
+>    hw/ide: Split qdev.c into ide-bus.c and ide-dev.c
+>    hw/ide: Move IDE DMA related definitions to a separate header
+>      ide-dma.h
+>    hw/ide: Move IDE device related definitions to ide-dev.h
+>    hw/ide: Move IDE bus related definitions to a new header ide-bus.h
+>    hw/ide: Remove the include/hw/ide.h legacy file
+>    hw/ide: Stop exposing internal.h to non-IDE files
+> 
+>   MAINTAINERS                  |   1 -
+>   include/hw/ide.h             |   9 --
+>   include/hw/ide/ide-bus.h     |  42 +++++++
+>   include/hw/ide/ide-dev.h     | 184 ++++++++++++++++++++++++++++++
+>   include/hw/ide/ide-dma.h     |  37 ++++++
+>   include/hw/ide/internal.h    | 211 +----------------------------------
+>   include/hw/ide/pci.h         |   2 +-
+>   hw/i386/pc.c                 |   2 +-
+>   hw/ide/cf.c                  |  58 ++++++++++
+>   hw/ide/cmd646.c              |   1 +
+>   hw/ide/ide-bus.c             | 111 ++++++++++++++++++
+>   hw/ide/{qdev.c => ide-dev.c} | 137 +----------------------
+>   hw/ide/pci.c                 |   1 +
+>   hw/ide/piix.c                |   1 +
+>   hw/ide/sii3112.c             |   1 +
+>   hw/ide/via.c                 |   1 +
+>   hw/arm/Kconfig               |   2 +
+>   hw/ide/Kconfig               |  32 ++++--
+>   hw/ide/meson.build           |   4 +-
+>   19 files changed, 470 insertions(+), 367 deletions(-)
+>   delete mode 100644 include/hw/ide.h
+>   create mode 100644 include/hw/ide/ide-bus.h
+>   create mode 100644 include/hw/ide/ide-dev.h
+>   create mode 100644 include/hw/ide/ide-dma.h
+>   create mode 100644 hw/ide/cf.c
+>   create mode 100644 hw/ide/ide-bus.c
+>   rename hw/ide/{qdev.c => ide-dev.c} (67%)
 
-I had a look at this (and did a bit of revision around 8042 and A20), and I am 
-starting to wonder if the PORT92 device isn't something that belongs to the 
-southbridge, but more specifically to the superio chip?
+I've had a quick skim of this series, and it looks like a good tidy-up to me so:
 
-A couple of thoughts as to why I came to this conclusion: firstly the superio chip is 
-generally considered to be a single integrated implementation of legacy IO devices, 
-so this feels like a natural home for the PORT92 device. Secondly the value of the 
-"has-port92" property is controlled by pcms->i8042_enabled, and this value is already 
-passed into functions such as pc_superio_init() for example.
-
-I think this would also help reduce the changes required for the individual machines, 
-however the devil is always in the details particularly when migration is involved.
+Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
 
 ATB,
