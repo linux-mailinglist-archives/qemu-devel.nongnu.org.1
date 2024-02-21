@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8933D85E586
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 19:22:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33E2D85E573
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 19:22:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcrDl-00088H-LY; Wed, 21 Feb 2024 13:21:29 -0500
+	id 1rcrDC-0007Tj-Vx; Wed, 21 Feb 2024 13:20:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1rcrDj-000842-7c
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 13:21:27 -0500
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <faiqueali.109@gmail.com>)
+ id 1rcrD9-0007TW-Df
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 13:20:51 -0500
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1rcrDg-0003Lu-Hg
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 13:21:26 -0500
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-5c229dabbb6so4005150a12.0
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 10:21:24 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <faiqueali.109@gmail.com>)
+ id 1rcrD6-0003GR-Os
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 13:20:51 -0500
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-55a035669d5so1792898a12.2
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 10:20:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708539683; x=1709144483; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lopfkfP/Wd4iBuj5Kqs/1syP004OyEXA8CH53rf8oR0=;
- b=Jd/5T/cFVaRqhykeOO9M5M0WYVUgsDT4OnavolpvLSdHNLVEmgFRODYUUKti3MlTPi
- e4HfEISIZVMeG0VvRK1n0MJwUT1tmQfZuKIw7aXvGfepNyafixhv8zBeNlGaKJPicRvB
- R3xnIpB5fuFQGP6TW8yir/1LQMQQOhKj8BY5hlxXF4LmdX0ed0e7hyHoDltaX0q5RuDp
- erpWYB+XoDbBpXSH0q9LvBUmw5qTQxg3Jvix17RlGgcc+lNgsaWubMHdfZHnCsu1T/pX
- 5O6mXoMZNhKJA3ZvfNOgs1pchqK5yZfOqKl7K3gMgLgJdVCkbxi01ivcWHADWwAWUX0F
- gX6w==
+ d=gmail.com; s=20230601; t=1708539647; x=1709144447; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=i+trvber0osnARKFr/wpEsjPF456J7xWZmCut5yxym0=;
+ b=WJY/Eoht/haNXsjeG+DkWzuJAmPmMTbCinwEEoLL6m+iTJxWcqdZ9VfIflf3ZbJBCf
+ nsxmNwCehD51zLXErsFC1mTqxNI1I36plTjLYLTMmW72aIdJF7fElpiJguysgfZj1ojo
+ l9zh1lmwbysVn2+Gsru9JNNbr9IQ93RDdG7Jmn93Up/86YD9DHwSu3vR50TS2C+UQLf7
+ aUDV5jSBtBf3NBcPmtNd2aGO3SkpODBjdsexfRxIUFdb9g56985Gfj78CW6wNWy/3dNC
+ ShtvWtNWktBSx7EjqXfK2I74QfytnK9rSI3dm7+cZ4fqq+/2PG7I4s1PbMYLz3sOrkiX
+ SFDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708539683; x=1709144483;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=lopfkfP/Wd4iBuj5Kqs/1syP004OyEXA8CH53rf8oR0=;
- b=rTz2EedPhPZjkLXs1iKhJ/C2dnYtNA/ACIRtGimEEVJCBN2oPXwdQaK1QmRxrIeHfc
- tw7wRVCRN2Ry2J4WUKnIE/7oCuUa6eu0ZEfSEQkGVMCOE2Cg9rc+Q4cJr6Rlnp9WmF5d
- JmldfpETDkpS5YtbMJsSgwKb2asXO+aSnJTbkV0M6EgVuzuDG8rCqEl+TEqkVm0DuqJf
- /54KGW2zbOIJAFP7h1XRV0pCkuu0x721c9Yzfn5kPhJ4ZQHYAvi5DcBiv0S0YmQFPRWW
- 7pnJcNwPfX9+FXZaxLHzcmaOoZG9HI7TQDn/UPyYZdhWYm7JxsYIQmrLi6jxUFNYVuvd
- JALg==
-X-Gm-Message-State: AOJu0Yy5wVPwVd1EP0002XBTQ/KcKcI6H72BbTtTbmlIxyTpsjUvgI7A
- mUbLiA3AmXMyHBnIQBsccu5UUYhy9I7dUF7rNiaLoeaAcfORoDPyDJVoNDbt
-X-Google-Smtp-Source: AGHT+IGI8ZUHUmT+j5cQpkDxDF7pWt+w5yGxEq/geBFaBWFR/5DdTtSK+rbAurJexC4zeUi0z++sIQ==
-X-Received: by 2002:a17:90a:f3cc:b0:29a:3bb5:7b91 with SMTP id
- ha12-20020a17090af3cc00b0029a3bb57b91mr601189pjb.2.1708539682849; 
- Wed, 21 Feb 2024 10:21:22 -0800 (PST)
-Received: from localhost.localdomain ([2601:641:300:14de:5692:7e41:13a2:69a])
- by smtp.gmail.com with ESMTPSA id
- cs16-20020a17090af51000b002992f49922csm9979009pjb.25.2024.02.21.10.21.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 Feb 2024 10:21:22 -0800 (PST)
-From: nifan.cxl@gmail.com
-To: qemu-devel@nongnu.org
-Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
- gregory.price@memverge.com, ira.weiny@intel.com, dan.j.williams@intel.com,
- a.manzanares@samsung.com, dave@stgolabs.net, nmtadam.samsung@gmail.com,
- nifan.cxl@gmail.com, jim.harris@samsung.com, Fan Ni <fan.ni@samsung.com>
-Subject: [PATCH v4 10/10] hw/mem/cxl_type3: Add dpa range validation for
- accesses to DC regions
-Date: Wed, 21 Feb 2024 10:16:03 -0800
-Message-ID: <20240221182020.1086096-11-nifan.cxl@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240221182020.1086096-1-nifan.cxl@gmail.com>
-References: <20240221182020.1086096-1-nifan.cxl@gmail.com>
+ d=1e100.net; s=20230601; t=1708539647; x=1709144447;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=i+trvber0osnARKFr/wpEsjPF456J7xWZmCut5yxym0=;
+ b=eOQ+BdQYFN/RbdIuUkct1prpnbM5m8SeMQstCoQvrjF348QO2Sk8aS8P5hyjA7xgJ4
+ QXSLdwuxK15vE3tcuC/zoBaj9LGG9M7Dld7evkPlwh8JRezpXHwQXV2ax5y17aJF2qh6
+ U27ktPR3pK2KmXgmivfsRb/IeSBcdxHoICBj4yQA8EcdCJLpMWbtg/1GnuTCzPcQZKXf
+ 9IaWO8ymYJgXR54OpffOzTc32sUwBTFLoExRRFhGnolyeKxZoirCIMvFmK668wfZ/SMw
+ LXF2byJrOfvMydZqdrvLkchfL4HCyGx21jh9Gp3fovFPAY2dxc3X1ChX6vQk8kFrt/xc
+ wEQA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU6JPcZ4IcgM71KhiAkWUBp+ynP8Vuv93CGc4vSClANy/Rdg8UbNA74nzPsGNswchIn58gx5xf48BLPg3I0bYRwGIS8aoY=
+X-Gm-Message-State: AOJu0YyjDjOnsTXZs5GQys0xhgQ1fiEJaatoh/lCU6VjA6vnjoDmLM7e
+ Ai2ZzJcC2o29bLuUIwO20fBv+oIFNOKUiQtKluB+GswcXA9awTcxdiuQBvuVVG0PCe+ODK4V8XL
+ 7NZ4ZPYm3furMAcfsGRFZhOR1DjqoO7JwDLM=
+X-Google-Smtp-Source: AGHT+IEU+FTmr+eR3UocLhv/MnkCT2BiVjR5jYaiUFGa7v0YZJBozwZaffvKvXYQONXlTqq0ETOws883f0ACITEPiRk=
+X-Received: by 2002:aa7:d052:0:b0:564:71:ccf0 with SMTP id
+ n18-20020aa7d052000000b005640071ccf0mr10986787edo.2.1708539646605; 
+ Wed, 21 Feb 2024 10:20:46 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=nifan.cxl@gmail.com; helo=mail-pg1-x52e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+References: <CAOpGCn+KdhjnXRHup6GXVbkoZkUBc7f-2urNzmvLjK1To_pp0A@mail.gmail.com>
+ <87a5nvci5n.fsf@draig.linaro.org>
+ <CAOpGCnLxVGhbJuAq+K+DNZBESEGGkSr8Sa0_cHsfMR7S-_ahkQ@mail.gmail.com>
+ <87y1bfawik.fsf@draig.linaro.org>
+ <CAOpGCn+_=5Uxi9mt-C1V3pguNT0OUJura-H3SwBOsJnW5tyJ4g@mail.gmail.com>
+ <CAFEAcA-03JYx9szd3FrQ_786gaRLWCJVHeMgjBxxvgH85f-78A@mail.gmail.com>
+ <CAOpGCn+vQ7wupMqeH8ZLarT0c4gD85R6cgRqBMhVeAXtZ1F_Mg@mail.gmail.com>
+ <CAFEAcA9Yp=ObPhgagAbf2Ev=6=D+9sCfHC_HCxPUr2JgvWa4oQ@mail.gmail.com>
+In-Reply-To: <CAFEAcA9Yp=ObPhgagAbf2Ev=6=D+9sCfHC_HCxPUr2JgvWa4oQ@mail.gmail.com>
+From: Faiq Ali Sayed <faiqueali.109@gmail.com>
+Date: Wed, 21 Feb 2024 19:20:35 +0100
+Message-ID: <CAOpGCn+BHsVPG1_2-avx6Ex10dc-nKYuVv=3VTct=MYRb4TmYw@mail.gmail.com>
+Subject: Re: QNX VM hang on Qemu
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000b87f5c0611e86223"
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=faiqueali.109@gmail.com; helo=mail-ed1-x529.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,199 +96,167 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fan Ni <fan.ni@samsung.com>
+--000000000000b87f5c0611e86223
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Not all dpa range in the DC regions is valid to access until an extent
-covering the range has been added. Add a bitmap for each region to
-record whether a DC block in the region has been backed by DC extent.
-For the bitmap, a bit in the bitmap represents a DC block. When a DC
-extent is added, all the bits of the blocks in the extent will be set,
-which will be cleared when the extent is released.
+> This is also useful information. I would suggest you look
+> at what the difference is between the image that boots and
+> the one that doesn't: is it the same format (and what format
+> is that)? is the way it is loaded on the real hardware the
+> same, or different?
 
-Signed-off-by: Fan Ni <fan.ni@samsung.com>
----
- hw/cxl/cxl-mailbox-utils.c  |  3 ++
- hw/mem/cxl_type3.c          | 82 +++++++++++++++++++++++++++++++++++++
- include/hw/cxl/cxl_device.h |  7 ++++
- 3 files changed, 92 insertions(+)
 
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 34c4ebbd12..fd3be2f9cf 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -1676,17 +1676,20 @@ static CXLRetCode cmd_dcd_release_dyn_cap(const struct cxl_cmd *cmd,
-                 found = true;
-                 cxl_remove_extent_from_extent_list(extent_list, ent);
-                 ct3d->dc.total_extent_count -= 1;
-+                ct3_clear_region_block_backed(ct3d, ent_start_dpa, ent_len);
- 
-                 if (len1) {
-                     cxl_insert_extent_to_extent_list(extent_list,
-                                                      ent_start_dpa, len1,
-                                                      NULL, 0);
-                     ct3d->dc.total_extent_count += 1;
-+                    ct3_set_region_block_backed(ct3d, ent_start_dpa, len1);
-                 }
-                 if (len2) {
-                     cxl_insert_extent_to_extent_list(extent_list, dpa + len,
-                                                      len2, NULL, 0);
-                     ct3d->dc.total_extent_count += 1;
-+                    ct3_set_region_block_backed(ct3d, dpa + len, len2);
-                 }
-                 break;
-                 /*Currently we reject the attempt to remove a superset*/
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index b8c4273e99..a56906db25 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -660,6 +660,7 @@ static bool cxl_create_dc_regions(CXLType3Dev *ct3d, Error **errp)
- 
-         region_base += region->len;
-         ct3d->dc.total_capacity += region->len;
-+        region->blk_bitmap = bitmap_new(region->len / region->block_size);
-     }
-     QTAILQ_INIT(&ct3d->dc.extents);
-     QTAILQ_INIT(&ct3d->dc.extents_pending_to_add);
-@@ -667,6 +668,17 @@ static bool cxl_create_dc_regions(CXLType3Dev *ct3d, Error **errp)
-     return true;
- }
- 
-+static void cxl_destroy_dc_regions(CXLType3Dev *ct3d)
-+{
-+    int i;
-+    struct CXLDCDRegion *region;
-+
-+    for (i = 0; i < ct3d->dc.num_regions; i++) {
-+        region = &ct3d->dc.regions[i];
-+        g_free(region->blk_bitmap);
-+    }
-+}
-+
- static bool cxl_setup_memory(CXLType3Dev *ct3d, Error **errp)
- {
-     DeviceState *ds = DEVICE(ct3d);
-@@ -860,6 +872,7 @@ err_free_special_ops:
-     g_free(regs->special_ops);
- err_address_space_free:
-     if (ct3d->dc.host_dc) {
-+        cxl_destroy_dc_regions(ct3d);
-         address_space_destroy(&ct3d->dc.host_dc_as);
-     }
-     if (ct3d->hostpmem) {
-@@ -881,6 +894,7 @@ static void ct3_exit(PCIDevice *pci_dev)
-     cxl_doe_cdat_release(cxl_cstate);
-     g_free(regs->special_ops);
-     if (ct3d->dc.host_dc) {
-+        cxl_destroy_dc_regions(ct3d);
-         address_space_destroy(&ct3d->dc.host_dc_as);
-     }
-     if (ct3d->hostpmem) {
-@@ -891,6 +905,70 @@ static void ct3_exit(PCIDevice *pci_dev)
-     }
- }
- 
-+/*
-+ * Mark the DPA range [dpa, dap + len) to be backed and accessible. This
-+ * happens when a DC extent is added and accepted by the host.
-+ */
-+void ct3_set_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-+                                 uint64_t len)
-+{
-+    CXLDCDRegion *region;
-+
-+    region = cxl_find_dc_region(ct3d, dpa, len);
-+    if (!region) {
-+        return;
-+    }
-+
-+    bitmap_set(region->blk_bitmap, (dpa - region->base) / region->block_size,
-+               len / region->block_size);
-+}
-+
-+/*
-+ * Check whether the DPA range [dpa, dpa + len) is backed with DC extents.
-+ * Used when validating read/write to dc regions
-+ */
-+bool ct3_test_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-+                                  uint64_t len)
-+{
-+    CXLDCDRegion *region;
-+    uint64_t nbits;
-+    long nr;
-+
-+    region = cxl_find_dc_region(ct3d, dpa, len);
-+    if (!region) {
-+        return false;
-+    }
-+
-+    nr = (dpa - region->base) / region->block_size;
-+    nbits = DIV_ROUND_UP(len, region->block_size);
-+    /*
-+     * if bits between [dpa, dpa + len) are all 1s, meaning the DPA range is
-+     * backed with DC extents, return true; else return false.
-+     */
-+    return find_next_zero_bit(region->blk_bitmap, nr + nbits, nr) == nr + nbits;
-+}
-+
-+/*
-+ * Mark the DPA range [dpa, dap + len) to be unbacked and inaccessible. This
-+ * happens when a dc extent is released by the host.
-+ */
-+void ct3_clear_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-+                                   uint64_t len)
-+{
-+    CXLDCDRegion *region;
-+    uint64_t nbits;
-+    long nr;
-+
-+    region = cxl_find_dc_region(ct3d, dpa, len);
-+    if (!region) {
-+        return;
-+    }
-+
-+    nr = (dpa - region->base) / region->block_size;
-+    nbits = len / region->block_size;
-+    bitmap_clear(region->blk_bitmap, nr, nbits);
-+}
-+
- static bool cxl_type3_dpa(CXLType3Dev *ct3d, hwaddr host_addr, uint64_t *dpa)
- {
-     int hdm_inc = R_CXL_HDM_DECODER1_BASE_LO - R_CXL_HDM_DECODER0_BASE_LO;
-@@ -996,6 +1074,10 @@ static int cxl_type3_hpa_to_as_and_dpa(CXLType3Dev *ct3d,
-         *as = &ct3d->hostpmem_as;
-         *dpa_offset -= vmr_size;
-     } else {
-+        if (!ct3_test_region_block_backed(ct3d, *dpa_offset, size)) {
-+            return -ENODEV;
-+        }
-+
-         *as = &ct3d->dc.host_dc_as;
-         *dpa_offset -= (vmr_size + pmr_size);
-     }
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index 1d31164bd3..10f0389b50 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -450,6 +450,7 @@ typedef struct CXLDCDRegion {
-     uint64_t block_size;
-     uint32_t dsmadhandle;
-     uint8_t flags;
-+    unsigned long *blk_bitmap;
- } CXLDCDRegion;
- 
- struct CXLType3Dev {
-@@ -557,4 +558,10 @@ void cxl_insert_extent_to_extent_list(CXLDCExtentList *list,
-                                       uint8_t *tag,
-                                       uint16_t shared_seq);
- bool test_any_bits_set(const unsigned long *addr, int nr, int size);
-+void ct3_set_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-+                                 uint64_t len);
-+void ct3_clear_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-+                                   uint64_t len);
-+bool ct3_test_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-+                                  uint64_t len);
- #endif
--- 
-2.43.0
+I am not able to distinguish between the images as they are in binary form,
+I noticed that the smaller size image can boot in Qemu.
+I normally put the image into an SD card of the real hardware to boot.
+so it is quite difficult for me now to distinguish.
 
+
+From the debug info from gdb you provided, the file clearly
+> is not a raw binary file -- the initial bytes seem to be
+> largely ASCII text. So it might be that this image is in
+> a file format that whatever the real-hardware loader
+> recognizes, but QEMU doesn't, whereas the images you have
+> that work are really raw binaries. In that case you'd want
+> to convert the image somehow to a format QEMU can understand
+> (eg ELF, or raw-binary).
+
+
+ahh, that also makes sense, ok now let me try to convert the images, and
+let's see.
+Does Qemu provide such a tool or do you know any?
+
+
+
+br!
+Faiq
+
+
+On Wed, Feb 21, 2024 at 5:02=E2=80=AFPM Peter Maydell <peter.maydell@linaro=
+.org>
+wrote:
+
+> On Tue, 20 Feb 2024 at 22:22, Faiq Ali Sayed <faiqueali.109@gmail.com>
+> wrote:
+> >
+> > The real hardware ( xlnx-zcu102 ) is being used for our software. The
+> software is in the development phase, and for that, I need to create a VM
+> for simulation purposes.
+> > Qemu has a machine type (-M xlnx-zcu102) which is supported with the
+> board/hardware.
+>
+> Cool. So in principle this should work and there's likely some
+> fixable issue with how you're loading the image.
+>
+> > I have two more images for the same hardware and I can create a VM usin=
+g
+> these two images, but in the VM some basic binaries are missing like mkdi=
+r
+> and virtual disk etc.
+>
+> This is also useful information. I would suggest you look
+> at what the difference is between the image that boots and
+> the one that doesn't: is it the same format (and what format
+> is that)? is the way it is loaded on the real hardware the
+> same, or different?
+>
+> From the debug info from gdb you provided, the file clearly
+> is not a raw binary file -- the initial bytes seem to be
+> largely ASCII text. So it might be that this image is in
+> a file format that whatever the real-hardware loader
+> recognizes, but QEMU doesn't, whereas the images you have
+> that work are really raw binaries. In that case you'd want
+> to convert the image somehow to a format QEMU can understand
+> (eg ELF, or raw-binary).
+>
+> thanks
+> -- PMM
+>
+
+
+--=20
+Kind Regard-
+Faiq Ali Sayed
+
+--000000000000b87f5c0611e86223
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><blockquote style=3D"margin:0 0 0 40px;border:none;padding=
+:0px"></blockquote><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex"><font color=3D"#741b47">This is also useful information. I would=
+ suggest you look<br>at what the difference is between the image that boots=
+ and<br>the one that doesn&#39;t: is it the same format (and what format<br=
+>is that)? is the way it is loaded on the real hardware the<br>same, or dif=
+ferent?</font></blockquote><div><br></div><div>I am not able to distinguish=
+=C2=A0between the images as they are in binary=C2=A0form,=C2=A0</div><div>I=
+ noticed that the smaller size=C2=A0image can boot in Qemu.</div><div>I nor=
+mally put the image into an SD card of the=C2=A0real hardware to boot.</div=
+><div>so it is quite difficult for me now to distinguish.</div><div><br></d=
+iv><div><br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px=
+ 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><font c=
+olor=3D"#741b47">From the debug info from gdb you provided, the file clearl=
+y<br>is not a raw binary file -- the initial bytes seem to be<br>largely AS=
+CII text. So it might be that this image is in<br>a file format that whatev=
+er the real-hardware loader<br>recognizes, but QEMU doesn&#39;t, whereas th=
+e images you have<br>that work are really raw binaries. In that case you&#3=
+9;d want<br>to convert the image somehow to a format QEMU can understand<br=
+>(eg ELF, or raw-binary).</font></blockquote><div><br></div><div>ahh, that =
+also makes sense, ok now let me try to convert the images, and let&#39;s se=
+e.</div><div>Does Qemu provide such a tool or do you know any?</div><div>=
+=C2=A0</div><div><br></div><div><br></div><div>br!</div><div>Faiq</div><blo=
+ckquote style=3D"margin:0 0 0 40px;border:none;padding:0px"></blockquote><b=
+lockquote style=3D"margin:0 0 0 40px;border:none;padding:0px"></blockquote>=
+<blockquote style=3D"margin:0 0 0 40px;border:none;padding:0px"></blockquot=
+e></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr=
+">On Wed, Feb 21, 2024 at 5:02=E2=80=AFPM Peter Maydell &lt;<a href=3D"mail=
+to:peter.maydell@linaro.org">peter.maydell@linaro.org</a>&gt; wrote:<br></d=
+iv><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bord=
+er-left:1px solid rgb(204,204,204);padding-left:1ex">On Tue, 20 Feb 2024 at=
+ 22:22, Faiq Ali Sayed &lt;<a href=3D"mailto:faiqueali.109@gmail.com" targe=
+t=3D"_blank">faiqueali.109@gmail.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; The real hardware ( xlnx-zcu102 ) is being used for our software. The =
+software is in the development phase, and for that, I need to create a VM f=
+or simulation purposes.<br>
+&gt; Qemu has a machine type (-M xlnx-zcu102) which is supported with the b=
+oard/hardware.<br>
+<br>
+Cool. So in principle this should work and there&#39;s likely some<br>
+fixable issue with how you&#39;re loading the image.<br>
+<br>
+&gt; I have two more images for the same hardware and I can create a VM usi=
+ng these two images, but in the VM some basic binaries are missing like mkd=
+ir and virtual disk etc.<br>
+<br>
+This is also useful information. I would suggest you look<br>
+at what the difference is between the image that boots and<br>
+the one that doesn&#39;t: is it the same format (and what format<br>
+is that)? is the way it is loaded on the real hardware the<br>
+same, or different?<br>
+<br>
+From the debug info from gdb you provided, the file clearly<br>
+is not a raw binary file -- the initial bytes seem to be<br>
+largely ASCII text. So it might be that this image is in<br>
+a file format that whatever the real-hardware loader<br>
+recognizes, but QEMU doesn&#39;t, whereas the images you have<br>
+that work are really raw binaries. In that case you&#39;d want<br>
+to convert the image somehow to a format QEMU can understand<br>
+(eg ELF, or raw-binary).<br>
+<br>
+thanks<br>
+-- PMM<br>
+</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
+iv dir=3D"ltr"><div dir=3D"ltr">
+<div><span style=3D"color:rgb(34,34,34)">Kind Regard-</span><br style=3D"co=
+lor:rgb(34,34,34)"><div dir=3D"ltr" style=3D"color:rgb(34,34,34)"><div dir=
+=3D"ltr"><div dir=3D"ltr"><font color=3D"#073763">Faiq Ali Sayed</font></di=
+v></div></div></div>
+<div><font style=3D"background-color:rgb(255,255,255)" size=3D"1"><br></fon=
+t></div><br></div></div></div>
+
+--000000000000b87f5c0611e86223--
 
