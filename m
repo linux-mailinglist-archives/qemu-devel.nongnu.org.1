@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7484285EA0B
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:23:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05DE185E9CC
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:17:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rctxv-0002st-Fw; Wed, 21 Feb 2024 16:17:19 -0500
+	id 1rctxb-0002P4-31; Wed, 21 Feb 2024 16:16:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctxm-0002gl-1R; Wed, 21 Feb 2024 16:17:12 -0500
+ id 1rctxE-00020x-Ac; Wed, 21 Feb 2024 16:16:37 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctxk-0000ts-9Y; Wed, 21 Feb 2024 16:17:09 -0500
+ id 1rctxB-0000jK-22; Wed, 21 Feb 2024 16:16:35 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A38434F7F5;
- Thu, 22 Feb 2024 00:16:45 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id EC8214F7E8;
+ Thu, 22 Feb 2024 00:16:44 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 8F010869A0;
+ by tsrv.corpit.ru (Postfix) with SMTP id 9E4B7869A1;
  Thu, 22 Feb 2024 00:16:22 +0300 (MSK)
-Received: (nullmailer pid 2335242 invoked by uid 1000);
+Received: (nullmailer pid 2335247 invoked by uid 1000);
  Wed, 21 Feb 2024 21:16:22 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-block@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH v2 00/28] qemu-img: refersh options and --help handling,
- cleanups
-Date: Thu, 22 Feb 2024 00:15:41 +0300
-Message-Id: <cover.1708544927.git.mjt@tls.msk.ru>
+Subject: [PATCH 01/28] qemu-img: stop printing error twice in a few places
+Date: Thu, 22 Feb 2024 00:15:42 +0300
+Message-Id: <20240221211622.2335170-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <cover.1708544927.git.mjt@tls.msk.ru>
+References: <cover.1708544927.git.mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,97 +58,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Quite big patchset trying to implement normal, readable qemu-img --help
-(and qemu-img COMMAND --help) output with readable descriptions, and
-adding many long options in the process.
+Currently we have:
 
-In the end I stopped using qemu-img-opts.hx in qemu-img.c, perhaps
-this can be avoided, with only list of commands and their desrciptions
-kept there, but I don't see big advantage here.  The same list should
-be included in docs/tools/qemu-img.rst, - this is not done now.
+  ./qemu-img resize none +10
+  qemu-img: Could not open 'none': Could not open 'none': No such file or directory
 
-Also each command syntax isn't reflected in the doc for now, because
-I want to give good names for options first, - and there, we've quite
-some inconsistences and questions.  For example, measure --output=OFMT
--O OFMT, - this is priceless :)  I've no idea why we have this ugly
---output=json thing, why not have --json? ;)  I gave the desired
-format long name --target-format to avoid clash with --output.
+stop printing the message twice, - local_err already has
+all the info, no need to prepend additional text there.
 
-For rebase, src vs tgt probably should be renamed in local variables
-too, and I'm not even sure I've got the caches right. For caches,
-the thing is inconsistent across commands.
+There are a few other places like this, but I'm unsure
+about these.
 
-For compare, I used --a-format/--b-format (for -f/-F), - this can
-be made --souce-format and --target-format, to compare source (file1)
-with target (file2).
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
+ qemu-img.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-For bitmap, things are scary, I'm not sure what -b SRC_FILENAME
-really means, - for now I gave it --source option, but this does
-not make it more clear, suggestions welcome.
-
-There are many other inconsistencies, I can't fix them all in one
-go.. :)
-
-Changes since v1:
-
- - reformatted help text to be less condensed
- - added cleanups (first 3 patches and last patch)
- - change argv[0] handling and getopt error reporting to
-   fix inherent bug (see patch 4 "global option processing"
-   for details)
- - removed missing_argument() & unrecognized_option()
-   and handling of '?' and ':' getopt return values
- - more robust handling of resize filename -size vs options
-   ("resize: do not always eat last argument")
- - larger cleanup in snapshot mode handling
-   ("snapshot: make -l (list) the default...")
- - cvtnum and number conversion and bugfixes
-   ("extend cvtnum() and use it in more places")
- - removed unused option_index variable in two places
- - added a few fixmes
- - various other minor changes
-
-I kept Dan's R-b for a few patches he reviewed
-despite the changed, - hopefully it's okay, since
-the new changes are not related to the initial ones.
-Keeping him in Cc for that.
-
-Michael Tokarev (28):
-  qemu-img: stop printing error twice in a few places
-  qemu-img: measure: convert img_size to signed, simplify handling
-  qemu-img: create: convert img_size to signed, simplify handling
-  qemu-img: global option processing and error printing
-  qemu-img: pass current cmd info into command handlers
-  qemu-img: create: refresh options/--help
-  qemu-img: factor out parse_output_format() and use it in the code
-  qemu-img: check: refresh options/--help
-  qemu-img: simplify --repair error message
-  qemu-img: commit: refresh options/--help
-  qemu-img: compare: refresh options/--help
-  qemu-img: convert: refresh options/--help
-  qemu-img: info: refresh options/--help
-  qemu-img: map: refresh options/--help
-  qemu-img: snapshot: allow specifying -f fmt
-  qemu-img: snapshot: make -l (list) the default
-  qemu-img: snapshot: refresh options/--help
-  qemu-img: rebase: refresh options/--help
-  qemu-img: resize: do not always eat last argument
-  qemu-img: resize: refresh options/--help
-  qemu-img: amend: refresh options/--help
-  qemu-img: bench: refresh options/--help
-  qemu-img: bitmap: refresh options/--help
-  qemu-img: dd: refresh options/--help
-  qemu-img: measure: refresh options/--help
-  qemu-img: implement short --help, remove global help() function
-  qemu-img: inline list of supported commands, remove qemu-img-cmds.h
-    include
-  qemu-img: extend cvtnum() and use it in more places
-
- docs/tools/qemu-img.rst |    4 +-
- qemu-img-cmds.hx        |    4 +-
- qemu-img.c              | 1143 +++++++++++++++++++++++----------------
- 3 files changed, 670 insertions(+), 481 deletions(-)
-
+diff --git a/qemu-img.c b/qemu-img.c
+index 7668f86769..5a756be600 100644
+--- a/qemu-img.c
++++ b/qemu-img.c
+@@ -404,7 +404,7 @@ static BlockBackend *img_open_file(const char *filename,
+     }
+     blk = blk_new_open(filename, NULL, options, flags, &local_err);
+     if (!blk) {
+-        error_reportf_err(local_err, "Could not open '%s': ", filename);
++        error_report_err(local_err);
+         return NULL;
+     }
+     blk_set_enable_write_cache(blk, !writethrough);
+@@ -597,7 +597,7 @@ static int img_create(int argc, char **argv)
+     bdrv_img_create(filename, fmt, base_filename, base_fmt,
+                     options, img_size, flags, quiet, &local_err);
+     if (local_err) {
+-        error_reportf_err(local_err, "%s: ", filename);
++        error_report_err(local_err);
+         goto fail;
+     }
+ 
+@@ -5253,9 +5253,7 @@ static int img_dd(int argc, char **argv)
+ 
+     ret = bdrv_create(drv, out.filename, opts, &local_err);
+     if (ret < 0) {
+-        error_reportf_err(local_err,
+-                          "%s: error while creating output image: ",
+-                          out.filename);
++        error_report_err(local_err);
+         ret = -1;
+         goto out;
+     }
 -- 
 2.39.2
 
