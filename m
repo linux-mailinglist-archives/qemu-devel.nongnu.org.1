@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A3685EB5F
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:52:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB04C85EB61
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:52:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcuSr-0007gk-EU; Wed, 21 Feb 2024 16:49:17 -0500
+	id 1rcuSt-0007u8-AZ; Wed, 21 Feb 2024 16:49:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcuSo-0007X3-W5; Wed, 21 Feb 2024 16:49:15 -0500
+ id 1rcuSr-0007ml-0u; Wed, 21 Feb 2024 16:49:17 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcuSn-0007bZ-1G; Wed, 21 Feb 2024 16:49:14 -0500
+ id 1rcuSp-0007bu-BA; Wed, 21 Feb 2024 16:49:16 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8656E4F873;
+ by isrv.corpit.ru (Postfix) with ESMTP id 973114F874;
  Thu, 22 Feb 2024 00:47:47 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2F6C0869F4;
+ by tsrv.corpit.ru (Postfix) with SMTP id 40121869F5;
  Thu, 22 Feb 2024 00:47:25 +0300 (MSK)
-Received: (nullmailer pid 2339893 invoked by uid 1000);
+Received: (nullmailer pid 2339896 invoked by uid 1000);
  Wed, 21 Feb 2024 21:47:23 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.10 23/33] iotests: Make 144 deterministic again
-Date: Thu, 22 Feb 2024 00:47:06 +0300
-Message-Id: <20240221214723.2339742-23-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Yang Weijiang <weijiang.yang@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.10 24/33] i386/cpu: Clear FEAT_XSAVE_XSS_LO/HI leafs when
+ CPUID_EXT_XSAVE is not available
+Date: Thu, 22 Feb 2024 00:47:07 +0300
+Message-Id: <20240221214723.2339742-24-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.10-20240221121815@cover.tls.msk.ru>
 References: <qemu-stable-7.2.10-20240221121815@cover.tls.msk.ru>
@@ -60,71 +61,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kevin Wolf <kwolf@redhat.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Since commit effd60c8 changed how QMP commands are processed, the order
-of the block-commit return value and job events in iotests 144 wasn't
-fixed and more and caused the test to fail intermittently.
+Leaf FEAT_XSAVE_XSS_LO and FEAT_XSAVE_XSS_HI also need to be cleared
+when CPUID_EXT_XSAVE is not set.
 
-Change the test to cache events first and then print them in a
-predefined order.
-
-Waiting three times for JOB_STATUS_CHANGE is a bit uglier than just
-waiting for the JOB_STATUS_CHANGE that has "status": "ready", but the
-tooling we have doesn't seem to allow the latter easily.
-
-Fixes: effd60c878176bcaf97fa7ce2b12d04bb8ead6f7
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2126
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-id: 20240209173103.239994-1-kwolf@redhat.com
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit cc29c12ec629ba68a4a6cb7d165c94cc8502815a)
+Fixes: 301e90675c3f ("target/i386: Enable support for XSAVES based features")
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Yang Weijiang <weijiang.yang@intel.com>
+Message-ID: <20240115091325.1904229-2-xiaoyao.li@intel.com>
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 81f5cad3858f27623b1b14467926032d229b76cc)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/qemu-iotests/144 b/tests/qemu-iotests/144
-index bdcc498fa2..d284a0e442 100755
---- a/tests/qemu-iotests/144
-+++ b/tests/qemu-iotests/144
-@@ -83,12 +83,22 @@ echo
- echo === Performing block-commit on active layer ===
- echo
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 0f71ff9fea..952fa5780f 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -6114,6 +6114,8 @@ static void x86_cpu_enable_xsave_components(X86CPU *cpu)
+     if (!(env->features[FEAT_1_ECX] & CPUID_EXT_XSAVE)) {
+         env->features[FEAT_XSAVE_XCR0_LO] = 0;
+         env->features[FEAT_XSAVE_XCR0_HI] = 0;
++        env->features[FEAT_XSAVE_XSS_LO] = 0;
++        env->features[FEAT_XSAVE_XSS_HI] = 0;
+         return;
+     }
  
-+capture_events="BLOCK_JOB_READY JOB_STATUS_CHANGE"
-+
- # Block commit on active layer, push the new overlay into base
- _send_qemu_cmd $h "{ 'execute': 'block-commit',
-                                 'arguments': {
-                                                  'device': 'virtio0'
-                                               }
--                    }" "READY"
-+                    }" "return"
-+
-+_wait_event $h "JOB_STATUS_CHANGE"
-+_wait_event $h "JOB_STATUS_CHANGE"
-+_wait_event $h "JOB_STATUS_CHANGE"
-+
-+_wait_event $h "BLOCK_JOB_READY"
-+
-+capture_events=
- 
- _send_qemu_cmd $h "{ 'execute': 'block-job-complete',
-                                 'arguments': {
-diff --git a/tests/qemu-iotests/144.out b/tests/qemu-iotests/144.out
-index b3b4812015..2245ddfa10 100644
---- a/tests/qemu-iotests/144.out
-+++ b/tests/qemu-iotests/144.out
-@@ -25,9 +25,9 @@ Formatting 'TEST_DIR/tmp.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off co
-                                                  'device': 'virtio0'
-                                               }
-                     }
-+{"return": {}}
- {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "virtio0"}}
- {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "virtio0"}}
--{"return": {}}
- {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "virtio0"}}
- {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "virtio0", "len": 0, "offset": 0, "speed": 0, "type": "commit"}}
- { 'execute': 'block-job-complete',
 -- 
 2.39.2
 
