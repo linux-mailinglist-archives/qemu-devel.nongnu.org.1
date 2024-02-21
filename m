@@ -2,40 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B1185EB57
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:51:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D82385EB4F
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:50:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcuRD-0000ju-AF; Wed, 21 Feb 2024 16:47:35 -0500
+	id 1rcuRE-0000kQ-0R; Wed, 21 Feb 2024 16:47:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcuRA-0000jI-Pn; Wed, 21 Feb 2024 16:47:32 -0500
+ id 1rcuRB-0000jf-PT; Wed, 21 Feb 2024 16:47:33 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcuR8-0007Kf-1L; Wed, 21 Feb 2024 16:47:31 -0500
+ id 1rcuR9-0007Kq-3P; Wed, 21 Feb 2024 16:47:33 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 118BE4F85E;
+ by isrv.corpit.ru (Postfix) with ESMTP id 20F764F85F;
  Thu, 22 Feb 2024 00:47:46 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B187A869DF;
+ by tsrv.corpit.ru (Postfix) with SMTP id BF8E0869E0;
  Thu, 22 Feb 2024 00:47:23 +0300 (MSK)
-Received: (nullmailer pid 2339829 invoked by uid 1000);
+Received: (nullmailer pid 2339832 invoked by uid 1000);
  Wed, 21 Feb 2024 21:47:23 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Yihuan Pan <xun794@gmail.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.10 02/33] qemu-docs: Update options for graphical
- frontends
-Date: Thu, 22 Feb 2024 00:46:45 +0300
-Message-Id: <20240221214723.2339742-2-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, "Richard W.M. Jones" <rjones@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.10 03/33] block/blkio: Make s->mem_region_alignment be 64
+ bits
+Date: Thu, 22 Feb 2024 00:46:46 +0300
+Message-Id: <20240221214723.2339742-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.10-20240221121815@cover.tls.msk.ru>
 References: <qemu-stable-7.2.10-20240221121815@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,36 +61,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yihuan Pan <xun794@gmail.com>
+From: "Richard W.M. Jones" <rjones@redhat.com>
 
-The command line options `-ctrl-grab` and `-alt-grab` have been removed
-in QEMU 7.1. Instead, use the `-display sdl,grab-mod=<modifiers>` option
-to specify the grab modifiers.
+With GCC 14 the code failed to compile on i686 (and was wrong for any
+version of GCC):
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2103
-Signed-off-by: Yihuan Pan <xun794@gmail.com>
+../block/blkio.c: In function ‘blkio_file_open’:
+../block/blkio.c:857:28: error: passing argument 3 of ‘blkio_get_uint64’ from incompatible pointer type [-Wincompatible-pointer-types]
+  857 |                            &s->mem_region_alignment);
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~
+      |                            |
+      |                            size_t * {aka unsigned int *}
+In file included from ../block/blkio.c:12:
+/usr/include/blkio.h:49:67: note: expected ‘uint64_t *’ {aka ‘long long unsigned int *’} but argument is of type ‘size_t *’ {aka ‘unsigned int *’}
+   49 | int blkio_get_uint64(struct blkio *b, const char *name, uint64_t *value);
+      |                                                         ~~~~~~~~~~^~~~~
+
+Signed-off-by: Richard W.M. Jones <rjones@redhat.com>
+Message-id: 20240130122006.2977938-1-rjones@redhat.com
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+(cherry picked from commit 615eaeab3d318ba239d54141a4251746782f65c1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit db101376af52e81f740a27f5fa38260ad171323c)
 
-diff --git a/docs/system/keys.rst.inc b/docs/system/keys.rst.inc
-index bd9b8e5f6f..2e2c97aa23 100644
---- a/docs/system/keys.rst.inc
-+++ b/docs/system/keys.rst.inc
-@@ -1,8 +1,9 @@
--During the graphical emulation, you can use special key combinations to
--change modes. The default key mappings are shown below, but if you use
--``-alt-grab`` then the modifier is Ctrl-Alt-Shift (instead of Ctrl-Alt)
--and if you use ``-ctrl-grab`` then the modifier is the right Ctrl key
--(instead of Ctrl-Alt):
-+During the graphical emulation, you can use special key combinations from
-+the following table to change modes. By default the modifier is Ctrl-Alt
-+(used in the table below) which can be changed with ``-display`` suboption
-+``mod=`` where appropriate. For example, ``-display sdl,
-+grab-mod=lshift-lctrl-lalt`` changes the modifier key to Ctrl-Alt-Shift,
-+while ``-display sdl,grab-mod=rctrl`` changes it to the right Ctrl key.
+diff --git a/block/blkio.c b/block/blkio.c
+index 5eae3adfaf..cb66160268 100644
+--- a/block/blkio.c
++++ b/block/blkio.c
+@@ -74,7 +74,7 @@ typedef struct {
+     CoQueue bounce_available;
  
- Ctrl-Alt-f
-    Toggle full screen
+     /* The value of the "mem-region-alignment" property */
+-    size_t mem_region_alignment;
++    uint64_t mem_region_alignment;
+ 
+     /* Can we skip adding/deleting blkio_mem_regions? */
+     bool needs_mem_regions;
 -- 
 2.39.2
 
