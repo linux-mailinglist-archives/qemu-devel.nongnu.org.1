@@ -2,77 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD58A85E9EE
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:20:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67BB685EA27
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:25:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcu0S-0005Sm-CK; Wed, 21 Feb 2024 16:19:56 -0500
+	id 1rcu0X-0006B5-3T; Wed, 21 Feb 2024 16:20:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctzp-0004M7-VP
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:19:20 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctzx-0004a3-4R
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:19:26 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctzm-0001MF-Ud
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:19:17 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4127a0d8ae1so3995335e9.2
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:19:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctzt-0001NV-Fl
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:19:23 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-33d44d78e5fso2020285f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:19:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708550352; x=1709155152; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708550359; x=1709155159; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=w/0nxiYdmkxhHFcoyS3JZWxjubFyxLiPoIZ7GwIxEsQ=;
- b=Gsel+bvNel7e5S+Im07IoAfEHdZcNSfwCNeXu2AQlCGD1vnkntdGhimisb02DgI/zO
- BIKD//3A3mZusoKRyNhAFs3eu5k4vxOzpAYz1ELUr6xAWlQSSN47H/K/UZCugHJ1ZWrL
- UodzjUQvprVTE4N9iSusTiGdY2SweNZFVBph/DB8Vq1Ld/ufDlA7gsKFF4M+eGQCEgig
- nkfczsDwYVM2z4DP0hnVBI8TWnokIM/+BXhQmAauDec/9kaBujGljtiw285VAsEwhhbV
- rzmQZoHj1jwGpvopXa3mVp6Udq6nflwr/WNtZzqah1oPCEbmGQxiIJafoRilHybkjNh/
- +Ruw==
+ bh=bSyJnKQkd93ud2FmPgc+3hwMsxOVnxzVCD11CZAAcfk=;
+ b=dHP54ZK/SlQkPy6n53VV6BW/1UlH9FWQ60TCS3VMtPP+u/C8oTFzu0a9U/yOQi9s2W
+ p79JQeFoWa2fD2A38Bvzxvc+fQASyrF0hOJs1ZbODUFoOpCoZiLWXyktXhPSaR0Vpqq7
+ vu3P3K0ipKmR/oS1faGh/ReXUVlv5LZeZ/jjVzENn986KKME0zOA3tR6fORxMi7E0uNb
+ L5FFE2YCTLFOWspEZW70Fe8in7tfBv6vCY+m+Nh4bvk6EMg6NMoMg5L6CQfLfviuVJh6
+ VA8OqKhtxGlj5VR156Ec67IWaxU5NbXfFMkacvkCgHi0JtJ85RznwHQmeHz/U0rvKc4O
+ 9MgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708550352; x=1709155152;
+ d=1e100.net; s=20230601; t=1708550359; x=1709155159;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=w/0nxiYdmkxhHFcoyS3JZWxjubFyxLiPoIZ7GwIxEsQ=;
- b=BzL/nJWz5ZJxmV/f8bk8XzV/qICwTgEWjzzD8D0D8qFnSipWQUE6qzOgeItc+vb7ez
- khEKdrG0qjBx86K1LkMgUGwGTBfx53GsEFFZ+PZkwUxPNxYXUnzEPne4j3fNSuPDmgT1
- w0WWuv5wNG8O5S45vKtrHH46k38mFy7HDFlg+EN9oy9hLRkYWbZynsmLeIn4iQaL4S7U
- AzaXQf6nlRlIFquxvQ/OC3/D4Hl24H4lE5xkbN6NVLxEaMV7U03t60XLf4dUQteWgmFA
- uKLtGTtcH8QrC8DlIiQrRg0EoY2ZUb01wBiGv4Ad6/4K7228Zs36RkiZlcvknxy6hB7c
- IYxQ==
-X-Gm-Message-State: AOJu0YwiZBrpTa65cyAmJefxtGY/99mxkZWlfh0dT82PKdT88dTgPK/U
- YOvDiBX4+uSpEo12zSywa8LZL0iEdVe6Mx0fcSS74ZbE58VMWH4iku3PPhMQc2QsljHt4CG2ym/
- DOFM=
-X-Google-Smtp-Source: AGHT+IHyN+IOXDgmMOArYsOeWjs3fsVaeo64Fgkqjs5KXLiQD8O+hDzV+x+4jDWPWqUL/uj4kRVAgQ==
-X-Received: by 2002:a05:6000:1542:b0:33d:28a9:2fd8 with SMTP id
- 2-20020a056000154200b0033d28a92fd8mr13726735wry.39.1708550351870; 
- Wed, 21 Feb 2024 13:19:11 -0800 (PST)
+ bh=bSyJnKQkd93ud2FmPgc+3hwMsxOVnxzVCD11CZAAcfk=;
+ b=udku5VdIeK0GTtinn2bPa4pWOT4TZDLhywt1p1kLBSglqDak5X5+1WhTeZUvbW8FY6
+ ZMHsqj0j6/H6yTjJi/dRURJzyQTaNDkr0x1P0t8jsfzUF8Ic9BaU6Z3CXphSxoA0lbFa
+ CD2S32CoU9eaDWDcwY/jHTIoQMI3eI7vjhfyg72QryfCAYC8zQLos/CIqQ9DGTghR8hM
+ FeK+SuUlWMCbRDj9ujw1IiC6aADCfl4Y7Kn5wOHvx+IuhCQBWK+zYQy36jEjWECqbJ5d
+ aicF95ypX2JqvWfkiQ0odXhI8m+JkDYljVbu1hPMpgbqKfnFLqxg8gbEOtX4GD6zlpqe
+ Kwdg==
+X-Gm-Message-State: AOJu0Ywa83cE76qpNpRKtfTIHJRLGCD/9HLuppI0j/FWlFS4N9/X+AZb
+ r9DpjSD0UAfBpHK8VMRQy+lQziDiYdeYBEMfMoDdaHO0yol3zTe7LdOqff/So3Wx00R1nPi65Jd
+ 3fac=
+X-Google-Smtp-Source: AGHT+IG0/TS12M26H3NQkwkNXV/cOJUAS0IUBeInj+gTqx2YkIHGntbYMj4+ad3B+rkq4bLtUN3V6Q==
+X-Received: by 2002:adf:fc90:0:b0:33d:3566:b5d1 with SMTP id
+ g16-20020adffc90000000b0033d3566b5d1mr9489249wrr.57.1708550358803; 
+ Wed, 21 Feb 2024 13:19:18 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.211.34])
  by smtp.gmail.com with ESMTPSA id
- bk26-20020a0560001d9a00b0033d568f8310sm10168971wrb.89.2024.02.21.13.19.10
+ p6-20020adfe606000000b0033cdbe335bcsm18113801wrm.71.2024.02.21.13.19.16
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 21 Feb 2024 13:19:11 -0800 (PST)
+ Wed, 21 Feb 2024 13:19:18 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- John Snow <jsnow@redhat.com>
-Subject: [PULL 23/25] hw/ide: Remove the include/hw/ide.h legacy file
-Date: Wed, 21 Feb 2024 22:16:23 +0100
-Message-ID: <20240221211626.48190-24-philmd@linaro.org>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ John Snow <jsnow@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PULL 24/25] hw/ide: Stop exposing internal.h to non-IDE files
+Date: Wed, 21 Feb 2024 22:16:24 +0100
+Message-ID: <20240221211626.48190-25-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240221211626.48190-1-philmd@linaro.org>
 References: <20240221211626.48190-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,76 +102,112 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-There was only one prototype left in this legacy file. Move it to
-ide-dev.h to finally get rid of it.
+include/hw/ide/internal.h is currently included by include/hw/ide/pci.h
+and thus exposed to a lot of files that are not part of the IDE subsystem.
+Stop including internal.h there and use the appropriate new headers
+ide-bus.h and ide-dma.h instead.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Message-ID: <20240220085505.30255-7-thuth@redhat.com>
+Message-ID: <20240220085505.30255-8-thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS               | 1 -
- include/hw/ide.h          | 9 ---------
- include/hw/ide/ide-dev.h  | 2 ++
- include/hw/ide/internal.h | 3 +--
- 4 files changed, 3 insertions(+), 12 deletions(-)
- delete mode 100644 include/hw/ide.h
+ include/hw/ide/pci.h | 2 +-
+ hw/i386/pc.c         | 2 +-
+ hw/ide/cmd646.c      | 1 +
+ hw/ide/pci.c         | 1 +
+ hw/ide/piix.c        | 1 +
+ hw/ide/sii3112.c     | 1 +
+ hw/ide/via.c         | 1 +
+ 7 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5535df4487..9dd98a923f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1937,7 +1937,6 @@ IDE
- M: John Snow <jsnow@redhat.com>
- L: qemu-block@nongnu.org
- S: Odd Fixes
--F: include/hw/ide.h
- F: include/hw/ide/
- F: hw/ide/
- F: hw/block/block.c
-diff --git a/include/hw/ide.h b/include/hw/ide.h
-deleted file mode 100644
-index db963bdb77..0000000000
---- a/include/hw/ide.h
-+++ /dev/null
-@@ -1,9 +0,0 @@
--#ifndef HW_IDE_H
--#define HW_IDE_H
--
--#include "exec/memory.h"
--
--/* ide/core.c */
--void ide_drive_get(DriveInfo **hd, int max_bus);
--
--#endif /* HW_IDE_H */
-diff --git a/include/hw/ide/ide-dev.h b/include/hw/ide/ide-dev.h
-index 1f62e58ebc..708cc0fda3 100644
---- a/include/hw/ide/ide-dev.h
-+++ b/include/hw/ide/ide-dev.h
-@@ -179,4 +179,6 @@ typedef struct IDEDrive {
+diff --git a/include/hw/ide/pci.h b/include/hw/ide/pci.h
+index a814a0a7c3..ef03764caa 100644
+--- a/include/hw/ide/pci.h
++++ b/include/hw/ide/pci.h
+@@ -1,7 +1,7 @@
+ #ifndef HW_IDE_PCI_H
+ #define HW_IDE_PCI_H
  
- void ide_dev_initfn(IDEDevice *dev, IDEDriveKind kind, Error **errp);
+-#include "hw/ide/internal.h"
++#include "hw/ide/ide-bus.h"
+ #include "hw/pci/pci_device.h"
+ #include "qom/object.h"
  
-+void ide_drive_get(DriveInfo **hd, int max_bus);
-+
- #endif
-diff --git a/include/hw/ide/internal.h b/include/hw/ide/internal.h
-index d3ec16a945..20dde37f45 100644
---- a/include/hw/ide/internal.h
-+++ b/include/hw/ide/internal.h
-@@ -4,10 +4,9 @@
- /*
-  * QEMU IDE Emulation -- internal header file
-  * only files in hw/ide/ are supposed to include this file.
-- * non-internal declarations are in hw/ide.h
-+ * non-internal declarations are in hw/include/ide-*.h
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 1ee41a5e56..f8eb684a49 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -31,7 +31,7 @@
+ #include "hw/i386/fw_cfg.h"
+ #include "hw/i386/vmport.h"
+ #include "sysemu/cpus.h"
+-#include "hw/ide/internal.h"
++#include "hw/ide/ide-bus.h"
+ #include "hw/timer/hpet.h"
+ #include "hw/loader.h"
+ #include "hw/rtc/mc146818rtc.h"
+diff --git a/hw/ide/cmd646.c b/hw/ide/cmd646.c
+index c0bcfa4414..23d213ff01 100644
+--- a/hw/ide/cmd646.c
++++ b/hw/ide/cmd646.c
+@@ -33,6 +33,7 @@
+ #include "sysemu/reset.h"
+ 
+ #include "hw/ide/pci.h"
++#include "hw/ide/internal.h"
+ #include "trace.h"
+ 
+ /* CMD646 specific */
+diff --git a/hw/ide/pci.c b/hw/ide/pci.c
+index ca85d8474c..73efeec7f4 100644
+--- a/hw/ide/pci.c
++++ b/hw/ide/pci.c
+@@ -30,6 +30,7 @@
+ #include "sysemu/dma.h"
+ #include "qemu/error-report.h"
+ #include "qemu/module.h"
++#include "hw/ide/internal.h"
+ #include "hw/ide/pci.h"
+ #include "trace.h"
+ 
+diff --git a/hw/ide/piix.c b/hw/ide/piix.c
+index 4e5e12935f..1773a068c3 100644
+--- a/hw/ide/piix.c
++++ b/hw/ide/piix.c
+@@ -30,6 +30,7 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "hw/pci/pci.h"
++#include "hw/ide/internal.h"
+ #include "hw/ide/piix.h"
+ #include "hw/ide/pci.h"
+ #include "trace.h"
+diff --git a/hw/ide/sii3112.c b/hw/ide/sii3112.c
+index 63dc4a0494..321b9e46a1 100644
+--- a/hw/ide/sii3112.c
++++ b/hw/ide/sii3112.c
+@@ -13,6 +13,7 @@
   */
  
--#include "hw/ide.h"
- #include "hw/ide/ide-bus.h"
+ #include "qemu/osdep.h"
++#include "hw/ide/internal.h"
+ #include "hw/ide/pci.h"
+ #include "qemu/module.h"
+ #include "trace.h"
+diff --git a/hw/ide/via.c b/hw/ide/via.c
+index 3f3c484253..cf151e70ec 100644
+--- a/hw/ide/via.c
++++ b/hw/ide/via.c
+@@ -25,6 +25,7 @@
+  */
  
- /* debug IDE devices */
+ #include "qemu/osdep.h"
++#include "hw/ide/internal.h"
+ #include "hw/pci/pci.h"
+ #include "migration/vmstate.h"
+ #include "qemu/module.h"
 -- 
 2.41.0
 
