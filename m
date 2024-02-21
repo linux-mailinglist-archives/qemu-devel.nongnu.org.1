@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 648A385E1CF
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:48:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9C9C85E21A
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:56:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcodO-00018w-8C; Wed, 21 Feb 2024 10:35:47 -0500
+	id 1rcoWt-0008C0-2M; Wed, 21 Feb 2024 10:29:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcobL-0003wN-81
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:33:44 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcoOO-0001fU-L8
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:20:16 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rclJh-000279-4D
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 07:03:14 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rclLM-0002U1-Ar
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 07:05:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708516992;
+ s=mimecast20190719; t=1708517095;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=X8P1VwozqjwEcL8Vm+hcwxwvLxo43Y7Huj9v/j1Fuco=;
- b=dhIzzDbiWwjvrDaOaKADJpgLvPdk68m2rCgNcURhPRNnhVPTJOSf/O/ZLS1Th/2lbaagb0
- YPVO7Te1uEHh2NddWtBzNGYMV586D5QW9F9nOIby2bqrDYx0l2yIuA/9F4RFO6VAOvf7EZ
- tGr6m/1kWVqgWcp06BWSCh8XlI1T3nc=
+ bh=Tx1O13Gnsie+xPpCJxw92CzPBEojqIPPjBASOTq07Hw=;
+ b=dv6xYrvo/Obvv4GkhR9jBj02HvJ4Cv6TXLSKwn/vKRq3O/MEygb5kp2hzxAaxogMM4awbT
+ HUf0Dv3gx3OfwiwmqdFKJ3n7pf3xSgsaqsRn9MFQeJZYOdE0pmgoSF9AiZnIrhDILxbygU
+ KdhqYkE2L7erRkO1zifQMYVDQ6z8oPs=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-335-pCaS7BgINaSlsJFCmyq-VA-1; Wed, 21 Feb 2024 07:03:07 -0500
-X-MC-Unique: pCaS7BgINaSlsJFCmyq-VA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ us-mta-411-04X_3TotNzuNcEnteRLy_Q-1; Wed, 21 Feb 2024 07:04:49 -0500
+X-MC-Unique: 04X_3TotNzuNcEnteRLy_Q-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8ECF6106D102;
- Wed, 21 Feb 2024 12:03:06 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A8EF683B827;
+ Wed, 21 Feb 2024 12:04:48 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6BB7C112132A;
- Wed, 21 Feb 2024 12:03:06 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 85415492BD7;
+ Wed, 21 Feb 2024 12:04:48 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5645A21E66D5; Wed, 21 Feb 2024 13:03:05 +0100 (CET)
+ id 9013B21E66D5; Wed, 21 Feb 2024 13:04:47 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: Hao Xiang <hao.xiang@bytedance.com>
 Cc: pbonzini@redhat.com,  berrange@redhat.com,  eduardo@habkost.net,
  peterx@redhat.com,  farosas@suse.de,  eblake@redhat.com,
  thuth@redhat.com,  lvivier@redhat.com,  qemu-devel@nongnu.org,
  jdenemar@redhat.com
-Subject: Re: [PATCH v2 1/7] migration/multifd: Add new migration option
- zero-page-detection.
-In-Reply-To: <20240216224002.1476890-2-hao.xiang@bytedance.com> (Hao Xiang's
- message of "Fri, 16 Feb 2024 22:39:56 +0000")
+Subject: Re: [PATCH v2 3/7] migration/multifd: Zero page transmission on the
+ multifd thread.
+In-Reply-To: <20240216224002.1476890-4-hao.xiang@bytedance.com> (Hao Xiang's
+ message of "Fri, 16 Feb 2024 22:39:58 +0000")
 References: <20240216224002.1476890-1-hao.xiang@bytedance.com>
- <20240216224002.1476890-2-hao.xiang@bytedance.com>
-Date: Wed, 21 Feb 2024 13:03:05 +0100
-Message-ID: <87y1bet47a.fsf@pond.sub.org>
+ <20240216224002.1476890-4-hao.xiang@bytedance.com>
+Date: Wed, 21 Feb 2024 13:04:47 +0100
+Message-ID: <87ttm2t44g.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -86,120 +86,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Hao Xiang <hao.xiang@bytedance.com> writes:
 
-> This new parameter controls where the zero page checking is running.
-> 1. If this parameter is set to 'legacy', zero page checking is
-> done in the migration main thread.
-> 2. If this parameter is set to 'none', zero page checking is disabled.
+> 1. Implements the zero page detection and handling on the multifd
+> threads for non-compression, zlib and zstd compression backends.
+> 2. Added a new value 'multifd' in ZeroPageDetection enumeration.
+> 3. Add proper asserts to ensure pages->normal are used for normal pages
+> in all scenarios.
 >
 > Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
 
 [...]
 
 > diff --git a/qapi/migration.json b/qapi/migration.json
-> index 5a565d9b8d..99843a8e95 100644
+> index 99843a8e95..e2450b92d4 100644
 > --- a/qapi/migration.json
 > +++ b/qapi/migration.json
-> @@ -653,6 +653,17 @@
->  { 'enum': 'MigMode',
->    'data': [ 'normal', 'cpr-reboot' ] }
+> @@ -660,9 +660,11 @@
+>  #
+>  # @none: Do not perform zero page checking.
+>  #
+> +# @multifd: Perform zero page checking on the multifd sender thread. (since 9.0)
+
+As pointed out in my review of PATCH 3, the entire type is since 9.0.
+
+> +#
+>  ##
+>  { 'enum': 'ZeroPageDetection',
+> -  'data': [ 'legacy', 'none' ] }
+> +  'data': [ 'legacy', 'none', 'multifd' ] }
 >  
-> +##
-> +# @ZeroPageDetection:
-> +#
-> +# @legacy: Perform zero page checking from main migration thread. (since 9.0)
-> +#
-> +# @none: Do not perform zero page checking.
-> +#
-> +##
-
-The entire type is since 9.0.  Thus:
-
-   ##
-   # @ZeroPageDetection:
-   #
-   # @legacy: Perform zero page checking from main migration thread.
-   #
-   # @none: Do not perform zero page checking.
-   #
-   # Since: 9.0
-   ##
-
-> +{ 'enum': 'ZeroPageDetection',
-> +  'data': [ 'legacy', 'none' ] }
-> +
 >  ##
 >  # @BitmapMigrationBitmapAliasTransform:
->  #
-> @@ -874,6 +885,9 @@
->  # @mode: Migration mode. See description in @MigMode. Default is 'normal'.
->  #        (Since 8.2)
->  #
-> +# @zero-page-detection: See description in @ZeroPageDetection.
-> +#     Default is 'legacy'. (Since 9.0)
 
-The description feels a bit lazy :)
-
-Suggest
-
-   # @zero-page-detection: Whether and how to detect zero pages.  Default
-   #     is 'legacy'.  (since 9.0)
-
-Same for the other two copies.
-
-> +#
->  # Features:
->  #
->  # @deprecated: Member @block-incremental is deprecated.  Use
-> @@ -907,7 +921,8 @@
->             'block-bitmap-mapping',
->             { 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable'] },
->             'vcpu-dirty-limit',
-> -           'mode'] }
-> +           'mode',
-> +           'zero-page-detection'] }
->  
->  ##
->  # @MigrateSetParameters:
-> @@ -1066,6 +1081,10 @@
->  # @mode: Migration mode. See description in @MigMode. Default is 'normal'.
->  #        (Since 8.2)
->  #
-> +# @zero-page-detection: See description in @ZeroPageDetection.
-> +#     Default is 'legacy'. (Since 9.0)
-> +#
-> +#
->  # Features:
->  #
->  # @deprecated: Member @block-incremental is deprecated.  Use
-> @@ -1119,7 +1138,8 @@
->              '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
->                                              'features': [ 'unstable' ] },
->              '*vcpu-dirty-limit': 'uint64',
-> -            '*mode': 'MigMode'} }
-> +            '*mode': 'MigMode',
-> +            '*zero-page-detection': 'ZeroPageDetection'} }
->  
->  ##
->  # @migrate-set-parameters:
-> @@ -1294,6 +1314,9 @@
->  # @mode: Migration mode. See description in @MigMode. Default is 'normal'.
->  #        (Since 8.2)
->  #
-> +# @zero-page-detection: See description in @ZeroPageDetection.
-> +#     Default is 'legacy'. (Since 9.0)
-> +#
->  # Features:
->  #
->  # @deprecated: Member @block-incremental is deprecated.  Use
-> @@ -1344,7 +1367,8 @@
->              '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
->                                              'features': [ 'unstable' ] },
->              '*vcpu-dirty-limit': 'uint64',
-> -            '*mode': 'MigMode'} }
-> +            '*mode': 'MigMode',
-> +            '*zero-page-detection': 'ZeroPageDetection'} }
->  
->  ##
->  # @query-migrate-parameters:
+I don't like having 'none' (don't detect) between the two ways to
+detect.  Put it either first or last.
 
 
