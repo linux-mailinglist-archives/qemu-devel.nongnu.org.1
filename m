@@ -2,85 +2,175 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D773A85E3F7
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B2185E3F9
 	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 18:04:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcpxe-0006Ve-5m; Wed, 21 Feb 2024 12:00:47 -0500
+	id 1rcpyX-0007MK-G0; Wed, 21 Feb 2024 12:01:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3MizWZQwKChkCz0763HI34zC5DD5A3.1DBF3BJ-23K3ACDC5CJ.DG5@flex--nabihestefan.bounces.google.com>)
- id 1rcpxY-0006Os-DX
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 12:00:40 -0500
-Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3MizWZQwKChkCz0763HI34zC5DD5A3.1DBF3BJ-23K3ACDC5CJ.DG5@flex--nabihestefan.bounces.google.com>)
- id 1rcpxW-00038K-CS
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 12:00:40 -0500
-Received: by mail-yw1-x114a.google.com with SMTP id
- 00721157ae682-608405e0340so14801997b3.0
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 09:00:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1rcpyR-0007BR-FS
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 12:01:36 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1rcpyN-0003F9-Vg
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 12:01:35 -0500
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41LDioe6021244; Wed, 21 Feb 2024 17:01:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-11-20;
+ bh=xIXAw+SQbiXUMgvYmvDKo9YUYV+iloGsR/l/NZ2kxL8=;
+ b=eBUvavlM8VwVKZyFb83uFqWelm99F5gixeFW5Ff9SVOnQU5q8PIHwyyFEnH7xduS689C
+ qRKcyNvGL9hW5fi4/CJedlmmb3uMSTa6ic7UXtHXmjF3ljahimu2SQdCZ0jBlNijRSQi
+ gZkCHaz0f9I1x6MO/Vz1XeWuzWsGxVMG0ljV7jxQgG5gj+NQctmD9/TQ1e2biwe+scKZ
+ e8hDvrdc0osOybPsOIK6y33quCoL3DuFfkgNG9uHBUCQlCtc+HNdyPgFqa4/ei54UWyg
+ bZ4NrMDV0J5ctf2+AWoqxvzaR9l+2Ot8Ao+q4z8dCxU86RFapMuKFoJsokMY7pudw9kj Jw== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wamud2dt6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 21 Feb 2024 17:01:27 +0000
+Received: from pps.filterd
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 41LGERID006641; Wed, 21 Feb 2024 17:01:26 GMT
+Received: from nam11-co1-obe.outbound.protection.outlook.com
+ (mail-co1nam11lp2169.outbound.protection.outlook.com [104.47.56.169])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3wak89hadv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 21 Feb 2024 17:01:26 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bBu1YzP31qj6zzIcCbnJA7eCVQdbQ444Ue+r9C6NG1M1pSQquc2atofEpkhUKjevEnHVfIYbInhjGXLLwz9Hs4P0Fk76CAt6G5Pu8Q6HAgM1Of6CtEvwaPO2rCX/HDtce2BKoUYd5bfAyR5RDwQdoNs52U5Dhm8iWJ/VWrRogANGxWXVveu5rISow7eW59MxyTHbwFFBgO3809H4OS5pz10s+Op2SPOMylCwCJbLooTDfh3pWxoFkNs6gxKab3rvMQj6s1Lk2oWLEu1PpRI6BX3KuHkf3yhxQ4Km8RaB4Gu4eHMaUAVDF4Dm7cD8v9J2yYz9KKWsr/Zaie2s0hW98Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xIXAw+SQbiXUMgvYmvDKo9YUYV+iloGsR/l/NZ2kxL8=;
+ b=X2haeYswihinPf5Rh490R1SyMPyXZJdhflg83klb6ns+sWQ+EdbIQb3o0hOjcvMbqMdF284vyuSAMpKD/iqDgxaq3m1mzpNYC2Lt/Pj19jAyfX+w4tFI0Vont4lnEr5vxMgaP6mHOOgU0TCfS/tuiQTmusJmZhNX9cFt2qi1QMbEZGZ9813prVqn1lMGHg5IxgVT/a2GsADlG9BMNmQFePclFgaYLIe2ahqUqqktZgDgU0/d8FORDnwDo3sutcmoG+sxPTruuWk6N8Luhef6NETcUSM6kw7eweBKzIA4/sOc9ORH5WWahiAfd9YVrGDGEcbfZa14w/CBGkslw0fsXw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1708534834; x=1709139634; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=pUXKy3XKiq+5p9TeSf8xJ6UxKnHtPGAsZsl63BQGiN8=;
- b=WcEJD6hlJGhEWv7Mf2v1HpEr9gBwOeGZ/C0zuemAUlWm5w9om1lBtVf53c+HxdiY9s
- 398LoKzhlbWpuoszx7As/WouCCkpDvMIH86VNvAoyYk5zbbSx0KUuo1edXpNx4JJRr/F
- Z8c9230E09V2kLTc4egrCDSpgAS3Tmeje5buuWDRsav+ff02I6fTS595ko+fibfPDWPK
- FpY2k6chR7RnJBZsk3FkxY/cfpVxQ4D4WKRjo+8aSUlJYPUcd43r15MIXjIOESCRWqkB
- W9nt/J8mJL+tfV9f2IkHROqMiBkhw9nd44p5y4K7Hg3ERO6A5N0ovg7/dSrtIMjMhBH0
- jAUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708534834; x=1709139634;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pUXKy3XKiq+5p9TeSf8xJ6UxKnHtPGAsZsl63BQGiN8=;
- b=fAEZarx0oEae9tEHEvoBwsfxryMPkeBTgVV05T46JH3pjO4pVozwPxt5QpqkuvV7Cs
- w/NObmZ2IBc8v2H0UEABBITSVDV5wLwk82dnXxVVE/p9X0FZGzLRu6KRzkyYsHrMQrCg
- K5jiUH8l0Pox7jw0yGyNDNksV8f1GkpQk5WNRGskV7F0v0ATCXkpd+1JR9XBO6EUjfWg
- HqdYf2+cjrPi5R7eU86AxYwd40vT90eU7xbjly495BAWNmZxC41ACuJO4Q66qOETDY6U
- NAH7PkFmt+bciLO6xoxeGSbjcHxbSICcbdV4qnyJ4lf/ixzZNOyQt4Xr9WZS6SZY5C27
- kjyA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWVsNuZhHVpaeGn2/VyWvVAq1w5AZPphaN8Rv6+Mom3eMVqqEw4JpRXhebfTzz5kg89iZGEehPont2NK0xfOYdmgy8diQo=
-X-Gm-Message-State: AOJu0YzbVI254ieShk434/fsBlLHVo43i6/hI9VjRfpax5+4sXt2esZM
- jrWNpmglTS3GF7TfSnC8Z1Ol7DJnJkORlU5HUvUKUc9kY5cQy76gYkM7hWPGAnir5NZMRvquVxu
- gEzX4zD28CtF+pr++CZmv/Uy8yg==
-X-Google-Smtp-Source: AGHT+IFundAyljS/0wGrrnfcyT5GcT6rdSWJljtZkw5WVSSIhsb9mZPjsepb6jSIQlTswmaHnKHFWEmABs8g07C4VQo=
-X-Received: from nabihestefan.c.googlers.com
- ([fda3:e722:ac3:cc00:20:ed76:c0a8:2737])
- (user=nabihestefan job=sendgmr) by 2002:a0d:e692:0:b0:608:6894:120 with SMTP
- id p140-20020a0de692000000b0060868940120mr1008189ywe.4.1708534834637; Wed, 21
- Feb 2024 09:00:34 -0800 (PST)
-Date: Wed, 21 Feb 2024 17:00:27 +0000
-In-Reply-To: <20240221170027.1027325-1-nabihestefan@google.com>
-Mime-Version: 1.0
-References: <20240221170027.1027325-1-nabihestefan@google.com>
-X-Mailer: git-send-email 2.44.0.rc0.258.g7320e95886-goog
-Message-ID: <20240221170027.1027325-3-nabihestefan@google.com>
-Subject: [PATCH 2/2] Implement SMBIOS type 9 v2.6
-From: Nabih Estefan <nabihestefan@google.com>
-To: peter.maydell@linaro.org
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-block@nongnu.org, 
- its@irrelevant.dk, kbusch@kernel.org, eric.auger@redhat.com, mst@redhat.com, 
- imammedo@redhat.com, anisinha@redhat.com, flwu@google.com, 
- nabihestefan@google.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
- envelope-from=3MizWZQwKChkCz0763HI34zC5DD5A3.1DBF3BJ-23K3ACDC5CJ.DG5@flex--nabihestefan.bounces.google.com;
- helo=mail-yw1-x114a.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xIXAw+SQbiXUMgvYmvDKo9YUYV+iloGsR/l/NZ2kxL8=;
+ b=p6QRJAgdVKDoW7VJqV293+Ye5+7pG1P7EPvJQLim/7RTpFtfFikQg30AGVn9RH2u+8G39NhKN21Rra+SMlcp9gl0cCj9caSPjzvo7Cz8YGyQQLj0x0pVFrCS1iovw4/LdeYqYRo5I0FnVgMN78Vwi7um7uAioqA1u3AKhQjzFCU=
+Received: from SA2PR10MB4684.namprd10.prod.outlook.com (2603:10b6:806:119::14)
+ by SJ0PR10MB5860.namprd10.prod.outlook.com (2603:10b6:a03:3ee::19)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.27; Wed, 21 Feb
+ 2024 17:01:23 +0000
+Received: from SA2PR10MB4684.namprd10.prod.outlook.com
+ ([fe80::c3ce:7c28:7db1:656b]) by SA2PR10MB4684.namprd10.prod.outlook.com
+ ([fe80::c3ce:7c28:7db1:656b%6]) with mapi id 15.20.7292.036; Wed, 21 Feb 2024
+ 17:01:23 +0000
+Message-ID: <5a07b1f0-8247-47a5-b9f0-7291504587b6@oracle.com>
+Date: Wed, 21 Feb 2024 12:01:20 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V4 1/5] util: strList_from_string
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+References: <1705099758-211963-1-git-send-email-steven.sistare@oracle.com>
+ <1705099758-211963-2-git-send-email-steven.sistare@oracle.com>
+ <875xyi3pz4.fsf@pond.sub.org>
+Content-Language: en-US
+From: Steven Sistare <steven.sistare@oracle.com>
+Organization: Oracle Corporation
+In-Reply-To: <875xyi3pz4.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY3PR03CA0025.namprd03.prod.outlook.com
+ (2603:10b6:a03:39a::30) To SA2PR10MB4684.namprd10.prod.outlook.com
+ (2603:10b6:806:119::14)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PR10MB4684:EE_|SJ0PR10MB5860:EE_
+X-MS-Office365-Filtering-Correlation-Id: e086ac0b-4473-4485-7a00-08dc32febbaa
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: OYbLStee99kOmaWK+uNkA4jAyhtGUpLK8t0m3bXtN4Aj38P5Xrm0cTr26GiuauwUu6K2o3rw8xE8dCn+3DoHBlQwsgBaFaWBBvAMen6GmeqNVtDt6EII9NEzp5Wgen6x7w9KR7cAT30aGm+EaxNX/cPRyW4VfzqqZqykdzAmIGx0LRlh+QFziG4uw2zh7vlYhJ4CnqMandVn5WFsuqRadbc3rP9S6uq2cRtPLVQnZtyYnfKwnjUCZSrtEy85PolUT/HbZ/aP+6Za/CFjneRDLWqsAXJgSP2vS9XC7ChYzPZOpLtOSCqwGS9+hl07w0ZmTAzopWeJVml/AfD8Oc42ua7EV+ckvLdy8mZ7+f+Qy7+eMeg2byIEquoOpPXiYBIQj+vMuFnlhvX9ydO6fbSj6LJuhoQDWFIzWtZHB2zjaxlSuspo/6QwVSclCjX683J2dL89/+nySUXRpCbiVtzwodyksz8F1PAkFSaKkpCG+lP89H4pVueo83xIsofztPLXtM/BrP5vgpSwrD79E3ppATN3QCr/mZtvmo1J/j1o4Qs=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SA2PR10MB4684.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?U1F3ZFFTbU9sazVzR3h6MXgvWWZoclJaVXlGZStwWTBQZUhFUWl2cUZoYnJC?=
+ =?utf-8?B?cTl0NWduZDQvR1JvbWVkQ3oxcTM2RmFaTG9Hek5DR0pST0R4RUFUNGpaY05s?=
+ =?utf-8?B?UHVnVE1Kd1VRQVRtSEZjL2h0b2gxSHY5NkpESUlDdnQvT0xVemZOYW9ZN0pJ?=
+ =?utf-8?B?RWp2TGFhRXJiRjFrcGpVcmpjejlNSmNqUWJwbDJoa2Zac3gwRnZVSWw2Mm5z?=
+ =?utf-8?B?ZHlWQUZKa3EvWHdBbmYvc1MxQUZLMEROWVNwYkFrRm93anMvcGg5d1VUb2dJ?=
+ =?utf-8?B?SG9MU3RHK2lySVRFWG4vR3pweG90VitWdXExcTlsSzh6Z3FSTjBTQUthUERS?=
+ =?utf-8?B?QitaTE56US90OUxoL3dOZ1U1d0taNGxkcnNOREprOEwwNjM3aTF0SEZ5VWcz?=
+ =?utf-8?B?cmVsM01iMjZkbkU3Q1RlNEl1RzRTeXl0ZjlPRU1CZlhMSU5jTXBoNG1oVWpj?=
+ =?utf-8?B?MHNrckdlNmZ5VlFTb2pLZTlBMmxaZDFMT2ZjSG0wL2svME92cEJQcytZLzc3?=
+ =?utf-8?B?YzdGM1FUcWJOeUlidkxWa3RKZGIvQ3BxWDVma21kMm42Y2E1Y0JhZmREdDVr?=
+ =?utf-8?B?UlZOUlJsb2FnSFdzSHpoT08vakZzbWU5bU5Fc3QrS0FlRURmdlpLU29DWVVU?=
+ =?utf-8?B?TFFCU2JZbzJEaERiVStRd3lqR1VVeDQ3VTF3eUV4TitJT2dhVENKaGx2ak0v?=
+ =?utf-8?B?ZmNmL1o0SWNTdjFYRUNuOFUvK3R5Qll1QWMrdnZMcGUyaEhqdXQ4SkxicHRa?=
+ =?utf-8?B?eklFR01BNWNiQ1F4SGpqZExnRU5Bd0xoRGR6MS8xUUs4NC9oY0FSbE1HZTVy?=
+ =?utf-8?B?V0VwRmtkYUVVYjNzK0UvNSsvTU53K1hKTWMxT0lQcVptekc3WVVBdWMxaGFG?=
+ =?utf-8?B?RWljYTJhQTBaVlMvOWxMNktYajAxaFQxUFc4ZUFoUGQ2TyszNkd6WTVIYlAw?=
+ =?utf-8?B?V0FCMm8wTTI1MXgxeUpLNEo1czhUSDkrenJITHdRdjdQNkc4NkJiNm03OVJO?=
+ =?utf-8?B?aVFtNWdVdUQ3ajJVYTB3ZjFsbERMVlE3cW9iT3VhcExIWWZGRnZTc216Wjd0?=
+ =?utf-8?B?VWtMaHNTaTE0WGVoMTlURHFPN0Z6MTc4VDlNT0h4MGFsdnRVMStWVEg5VTZz?=
+ =?utf-8?B?Z3RaN0d4OEZTSDk0S1dEZm1xMUZSa3dzRVc2ZFc4NG44OTJUQmNSNjY0VGNq?=
+ =?utf-8?B?VEtscjdKbTlLSG1jclQ2alpteWhTUEJnTmhvSnZWa1pJRE5naDBXRW50RFJJ?=
+ =?utf-8?B?dmY3OWQ0djc1WU5lNnY4TkRIQ2VBRXVNNUROVDdLTVJXR2dCTzZWOVI5eGN5?=
+ =?utf-8?B?Tll3SXhuZnFSMmlvYjBMKzRMTXhnUkhydzI3blE1cUU5d3g0K3BlNlBibitF?=
+ =?utf-8?B?ejk0QjRDTUpDYnB3ZjNRUUJOeGpPdVlUYzJ2VCtnU3E0N21zeUVocUd6emt3?=
+ =?utf-8?B?TCsyU3F1cE4wbGlKdmVNYXBsbVBqL1ZsbWc3aEc0bUxkdkpheStHVmFaWld3?=
+ =?utf-8?B?dkxLM0JQRW1yNGhISFJaaE1ZTEV0dzdkOGVMZEh3N1FoV0kzNittR1R4TGZX?=
+ =?utf-8?B?eDUybXJIUm9CdjA1bDRRRHYzQU1yMXNYUjhFVThFOThuRUtucXhYMDdPdzN2?=
+ =?utf-8?B?S0xnSjZXN3pDcTdRK216Rjh2bXF3bXBublloRlNhblJqN0xWVmdOTHJHREVE?=
+ =?utf-8?B?eXFjN0tKZzlUdG5KTVhESDlma1hZMElDejNWc3VkTjlxKzZldjBnc3diQjgr?=
+ =?utf-8?B?anMzaldCcTRvTXg2ZzZUZ2Q4K1VFUWZhTnpNSWVxSVp4Q1A3a2FCSjJ1Z2da?=
+ =?utf-8?B?UldENG1PbGg0K2JqS0hTMlo2eXk0TEZocm5IZHBNVTV4VHEwcExpeHZ3OEZz?=
+ =?utf-8?B?WnVTMnU2QWxiKzhseThMVmlQSzhJNDhkNUhkMWxJMzVyMEdCekFIbnpUVXo5?=
+ =?utf-8?B?TXIzTk41b3QwNDcxUEhXdllxdHYyakIvRG1Pek9BL3FpUTljRkZEeUhzZlpx?=
+ =?utf-8?B?OXY5VVptUk8vbFdYNEIrZTNmZ1FxZUE0QlpJQnU4Vk9iWHcxRCs0TUxNRC9w?=
+ =?utf-8?B?cEhNanJwUkRjREE5VDZJWndlMm5LWnA1WlFKVlBoemFvWUtmN0dwd1pzY3ZK?=
+ =?utf-8?B?Mml6MnJ5a3hGd1A5K1ZDQ1B1Qld0Z0hOUUQwNjRUMW9qUUZ2ejNlK21WOVNY?=
+ =?utf-8?B?VWc9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: mPUnHKfUp4KAZLiiztlWdo6aeiviNGPXVjr+YsV58Wrc0HmjSKGLqrOkmHfp5mQS3IFHJqmSETF7jckDfUBPaAYTK6aY/L0jlnXqzFVCam5bz/JhInE6OjZEZtRAZhDz5M3JK+e7BuMwFn2DE7eiTyAxPIHeTuCoaDz1oG/SaDH0PioVo0NDH0TBHNz5U69ChOn2NTA+iCPHD5faKHPeq4WZcJ7rJDbck142Sj+TxINJ7GcuPG3rG2Yi4Wwq019qeJinOBf4JI3YlYz1XY/4jxTi7gajNMJ3TjITptOCHGbBaM0dcURfbrWC6Wsb/qVn3t53kOGtQLgOotOfbos/Isp4sIW0OxBTevr+3hu7fdrvLt0IKPWPhETA8ZeARJp6dMa5+NYQBFUUD7jVlIhBR4tS+lviPQL4ghnXlyPEY6mEwbpScT8Rfs4o2mh9WvBLHCoQxcBnY3LgCZDJuUBOCEsVc0FNGUPI3RN44QvJupTZc1lor4gRZzeGYu5soigcu1AlooJ3mq/kYKntFBr8DRXZAkPF+1nvbP9NY+9pXdEnQlJ+x8xTE8SKUFHiQRz2WPftpsGexfJmYoEppMJa9KoVvUWpCsyVgK9/TM9f8sE=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e086ac0b-4473-4485-7a00-08dc32febbaa
+X-MS-Exchange-CrossTenant-AuthSource: SA2PR10MB4684.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2024 17:01:23.2766 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: i0Rg6jv4aMhguDMntrjyKCfTM6jY4Epc51fMx8yRZFMf+vG7zd4gAQtqMxf9K1FlImz6vqDCK5yOy2TUCHZFOMrGAvY8hEC8JNEll5glhnQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB5860
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-21_04,2024-02-21_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ suspectscore=0
+ mlxscore=0 spamscore=0 mlxlogscore=999 phishscore=0 bulkscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402210132
+X-Proofpoint-GUID: MMkx5UKnjV2zAk3LtmSz2rJ-jAg4k9f-
+X-Proofpoint-ORIG-GUID: MMkx5UKnjV2zAk3LtmSz2rJ-jAg4k9f-
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,140 +186,207 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Felix Wu <flwu@google.com>
+On 2/21/2024 8:29 AM, Markus Armbruster wrote:
+> I apologize for the lateness of my review.
 
-Signed-off-by: Felix Wu <flwu@google.com>
-Signed-off-by: Nabih Estefan <nabihestefan@google.com>
----
- hw/smbios/smbios.c           | 49 +++++++++++++++++++++++++++++++++---
- include/hw/firmware/smbios.h |  4 +++
- qemu-options.hx              |  2 +-
- 3 files changed, 51 insertions(+), 4 deletions(-)
+No problem.  Thanks for the review.
 
-diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-index 38b3ea172c..e3d5d8f2e2 100644
---- a/hw/smbios/smbios.c
-+++ b/hw/smbios/smbios.c
-@@ -123,7 +123,7 @@ static QTAILQ_HEAD(, type8_instance) type8 = QTAILQ_HEAD_INITIALIZER(type8);
- 
- /* type 9 instance for parsing */
- struct type9_instance {
--    const char *slot_designation;
-+    const char *slot_designation, *pcidev;
-     uint8_t slot_type, slot_data_bus_width, current_usage, slot_length,
-             slot_characteristics1, slot_characteristics2;
-     uint16_t slot_id;
-@@ -436,6 +436,11 @@ static const QemuOptDesc qemu_smbios_type9_opts[] = {
-         .type = QEMU_OPT_NUMBER,
-         .help = "slot characteristics2, see the spec",
-     },
-+    {
-+        .name = "pci_device",
-+        .type = QEMU_OPT_STRING,
-+        .help = "PCI device, if provided."
-+    }
- };
- 
- static const QemuOptDesc qemu_smbios_type11_opts[] = {
-@@ -866,7 +871,7 @@ static void smbios_build_type_8_table(void)
-     }
- }
- 
--static void smbios_build_type_9_table(void)
-+static void smbios_build_type_9_table(Error **errp)
- {
-     unsigned instance = 0;
-     struct type9_instance *t9;
-@@ -883,6 +888,43 @@ static void smbios_build_type_9_table(void)
-         t->slot_characteristics1 = t9->slot_characteristics1;
-         t->slot_characteristics2 = t9->slot_characteristics2;
- 
-+        if (t9->pcidev) {
-+            PCIDevice *pdev = NULL;
-+            int rc = pci_qdev_find_device(t9->pcidev, &pdev);
-+            if (rc != 0) {
-+                error_setg(errp,
-+                           "No PCI device %s for SMBIOS type 9 entry %s",
-+                           t9->pcidev, t9->slot_designation);
-+                return;
-+            }
-+            /*
-+             * We only handle the case were the device is attached to
-+             * the PCI root bus. The general case is more complex as
-+             * bridges are enumerated later and the table would need
-+             * to be updated at this moment.
-+             */
-+            if (!pci_bus_is_root(pci_get_bus(pdev))) {
-+                error_setg(errp,
-+                           "Cannot create type 9 entry for PCI device %s: "
-+                           "not attached to the root bus",
-+                           t9->pcidev);
-+                return;
-+            }
-+            t->segment_group_number = cpu_to_le16(0);
-+            t->bus_number = pci_dev_bus_num(pdev);
-+            t->device_number = pdev->devfn;
-+        } else {
-+            /*
-+             * Per SMBIOS spec, For slots that are not of the PCI, AGP, PCI-X,
-+             * or PCI-Express type that do not have bus/device/function
-+             * information, 0FFh should be populated in the fields of Segment
-+             * Group Number, Bus Number, Device/Function Number.
-+             */
-+            t->segment_group_number = 0xff;
-+            t->bus_number = 0xff;
-+            t->device_number = 0xff;
-+        }
-+
-         SMBIOS_BUILD_TABLE_POST;
-         instance++;
-     }
-@@ -1207,7 +1249,7 @@ void smbios_get_tables(MachineState *ms,
-         }
- 
-         smbios_build_type_8_table();
--        smbios_build_type_9_table();
-+        smbios_build_type_9_table(errp);
-         smbios_build_type_11_table();
- 
- #define MAX_DIMM_SZ (16 * GiB)
-@@ -1556,6 +1598,7 @@ void smbios_entry_add(QemuOpts *opts, Error **errp)
-             t->slot_id = qemu_opt_get_number(opts, "slot_id", 0);
-             t->slot_characteristics1 = qemu_opt_get_number(opts, "slot_characteristics1", 0);
-             t->slot_characteristics2 = qemu_opt_get_number(opts, "slot_characteristics2", 0);
-+            save_opt(&t->pcidev, opts, "pcidev");
-             QTAILQ_INSERT_TAIL(&type9, t, next);
-             return;
-         }
-diff --git a/include/hw/firmware/smbios.h b/include/hw/firmware/smbios.h
-index 9ab114aea2..c21b8d3285 100644
---- a/include/hw/firmware/smbios.h
-+++ b/include/hw/firmware/smbios.h
-@@ -222,6 +222,10 @@ struct smbios_type_9 {
-     uint16_t slot_id;
-     uint8_t slot_characteristics1;
-     uint8_t slot_characteristics2;
-+    /* SMBIOS spec v2.6+ */
-+    uint16_t segment_group_number;
-+    uint8_t bus_number;
-+    uint8_t device_number;
- } QEMU_PACKED;
- 
- /* SMBIOS type 11 - OEM strings */
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 9ddb1b1fb3..6a16b808cf 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -2717,7 +2717,7 @@ SRST
- ``-smbios type=4[,sock_pfx=str][,manufacturer=str][,version=str][,serial=str][,asset=str][,part=str][,processor-family=%d][,processor-id=%d]``
-     Specify SMBIOS type 4 fields
- 
--``-smbios type=9[,slot_designation=str][,slot_type=%d][,slot_data_bus_width=%d][,current_usage=%d][,slot_length=%d][,slot_id=%d][,slot_characteristics1=%d][,slot_characteristics12=%d]``
-+``-smbios type=9[,slot_designation=str][,slot_type=%d][,slot_data_bus_width=%d][,current_usage=%d][,slot_length=%d][,slot_id=%d][,slot_characteristics1=%d][,slot_characteristics12=%d][,pci_device=str]``
-     Specify SMBIOS type 9 fields
- 
- ``-smbios type=11[,value=str][,path=filename]``
--- 
-2.44.0.rc0.258.g7320e95886-goog
+> Steve Sistare <steven.sistare@oracle.com> writes:
+> 
+>> Generalize hmp_split_at_comma() to take any delimiter string, rename
+>> as strList_from_string(), and move it to util/strList.c.
+>>
+>> No functional change.
+>>
+>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> 
+> I can't see an actual use of generalized delimiters outside tests in
+> this series.  Do you have uses?
 
+In this series, it is called from hmp_announce_self and stats_filter; 
+those were formerly calls to hmp_split_at_comma.
+
+In my live update cpr-exec series, there is an additional call site, with a
+space delimiter instead of comma.  Live update V9 is posted but is old and obsolete.  
+I will post V10 soon, but I am hoping you can pull this series first, so I can 
+whittle down my pending patches and omit these from V10.
+
+>> ---
+>>  include/monitor/hmp.h  |  1 -
+>>  include/qemu/strList.h | 24 ++++++++++++++++++++++++
+>>  monitor/hmp-cmds.c     | 19 -------------------
+>>  net/net-hmp-cmds.c     |  3 ++-
+>>  stats/stats-hmp-cmds.c |  3 ++-
+>>  util/meson.build       |  1 +
+>>  util/strList.c         | 24 ++++++++++++++++++++++++
+>>  7 files changed, 53 insertions(+), 22 deletions(-)
+>>  create mode 100644 include/qemu/strList.h
+>>  create mode 100644 util/strList.c
+>>
+>> diff --git a/include/monitor/hmp.h b/include/monitor/hmp.h
+>> index 13f9a2d..2df661e 100644
+>> --- a/include/monitor/hmp.h
+>> +++ b/include/monitor/hmp.h
+>> @@ -19,7 +19,6 @@
+>>  
+>>  bool hmp_handle_error(Monitor *mon, Error *err);
+>>  void hmp_help_cmd(Monitor *mon, const char *name);
+>> -strList *hmp_split_at_comma(const char *str);
+>>  
+>>  void hmp_info_name(Monitor *mon, const QDict *qdict);
+>>  void hmp_info_version(Monitor *mon, const QDict *qdict);
+>> diff --git a/include/qemu/strList.h b/include/qemu/strList.h
+>> new file mode 100644
+>> index 0000000..010237f
+>> --- /dev/null
+>> +++ b/include/qemu/strList.h
+>> @@ -0,0 +1,24 @@
+>> +/*
+>> + * Copyright (c) 2022 - 2024 Oracle and/or its affiliates.
+>> + *
+>> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
+>> + * See the COPYING file in the top-level directory.
+>> + */
+>> +
+>> +#ifndef QEMU_STR_LIST_H
+>> +#define QEMU_STR_LIST_H
+>> +
+>> +#include "qapi/qapi-builtin-types.h"
+>> +
+>> +/*
+>> + * Break @in into a strList using the delimiter string @delim.
+>> + * The delimiter is not included in the result.
+>> + * Return NULL if @in is NULL or an empty string.
+>> + * A leading, trailing, or consecutive delimiter produces an
+>> + * empty string at that position in the output.
+>> + * All strings are g_strdup'd, and the result can be freed
+>> + * using qapi_free_strList.
+>> + */
+>> +strList *strList_from_string(const char *in, const char *delim);
+> 
+> The function name no longer tells us explicitly what the function does:
+> splitting the string.
+
+The first sentence does not say it?
+  "Break @in into a strList using the delimiter string @delim"
+
+Would you prefer this?
+  "Split string @in into a strList using the delimiter string @delim"
+
+- Steve
+
+>> +#endif
+>> diff --git a/monitor/hmp-cmds.c b/monitor/hmp-cmds.c
+>> index 871898a..66b68a0 100644
+>> --- a/monitor/hmp-cmds.c
+>> +++ b/monitor/hmp-cmds.c
+>> @@ -38,25 +38,6 @@ bool hmp_handle_error(Monitor *mon, Error *err)
+>>      return false;
+>>  }
+>>  
+>> -/*
+>> - * Split @str at comma.
+>> - * A null @str defaults to "".
+>> - */
+>> -strList *hmp_split_at_comma(const char *str)
+>> -{
+>> -    char **split = g_strsplit(str ?: "", ",", -1);
+>> -    strList *res = NULL;
+>> -    strList **tail = &res;
+>> -    int i;
+>> -
+>> -    for (i = 0; split[i]; i++) {
+>> -        QAPI_LIST_APPEND(tail, split[i]);
+>> -    }
+>> -
+>> -    g_free(split);
+>> -    return res;
+>> -}
+>> -
+>>  void hmp_info_name(Monitor *mon, const QDict *qdict)
+>>  {
+>>      NameInfo *info;
+>> diff --git a/net/net-hmp-cmds.c b/net/net-hmp-cmds.c
+>> index 41d326b..e893801 100644
+>> --- a/net/net-hmp-cmds.c
+>> +++ b/net/net-hmp-cmds.c
+>> @@ -26,6 +26,7 @@
+>>  #include "qemu/config-file.h"
+>>  #include "qemu/help_option.h"
+>>  #include "qemu/option.h"
+>> +#include "qemu/strList.h"
+>>  
+>>  void hmp_info_network(Monitor *mon, const QDict *qdict)
+>>  {
+>> @@ -72,7 +73,7 @@ void hmp_announce_self(Monitor *mon, const QDict *qdict)
+>>                                              migrate_announce_params());
+>>  
+>>      qapi_free_strList(params->interfaces);
+>> -    params->interfaces = hmp_split_at_comma(interfaces_str);
+>> +    params->interfaces = strList_from_string(interfaces_str, ",");
+>>      params->has_interfaces = params->interfaces != NULL;
+>>      params->id = g_strdup(id);
+>>      qmp_announce_self(params, NULL);
+>> diff --git a/stats/stats-hmp-cmds.c b/stats/stats-hmp-cmds.c
+>> index 1f91bf8..428c0e6 100644
+>> --- a/stats/stats-hmp-cmds.c
+>> +++ b/stats/stats-hmp-cmds.c
+>> @@ -10,6 +10,7 @@
+>>  #include "monitor/hmp.h"
+>>  #include "monitor/monitor.h"
+>>  #include "qemu/cutils.h"
+>> +#include "qemu/strList.h"
+>>  #include "hw/core/cpu.h"
+>>  #include "qapi/qmp/qdict.h"
+>>  #include "qapi/error.h"
+>> @@ -176,7 +177,7 @@ static StatsFilter *stats_filter(StatsTarget target, const char *names,
+>>              request->provider = provider_idx;
+>>              if (names && !g_str_equal(names, "*")) {
+>>                  request->has_names = true;
+>> -                request->names = hmp_split_at_comma(names);
+>> +                request->names = strList_from_string(names, ",");
+>>              }
+>>              QAPI_LIST_PREPEND(request_list, request);
+>>          }
+>> diff --git a/util/meson.build b/util/meson.build
+>> index af3bf56..e1d1e1f 100644
+>> --- a/util/meson.build
+>> +++ b/util/meson.build
+>> @@ -1,4 +1,5 @@
+>>  util_ss.add(files('osdep.c', 'cutils.c', 'unicode.c', 'qemu-timer-common.c'))
+>> +util_ss.add(files('strList.c'))
+>>  util_ss.add(files('thread-context.c'), numa)
+>>  if not config_host_data.get('CONFIG_ATOMIC64')
+>>    util_ss.add(files('atomic64.c'))
+>> diff --git a/util/strList.c b/util/strList.c
+>> new file mode 100644
+>> index 0000000..7991de3
+>> --- /dev/null
+>> +++ b/util/strList.c
+>> @@ -0,0 +1,24 @@
+>> +/*
+>> + * Copyright (c) 2023 Red Hat, Inc.
+>> + * Copyright (c) 2022 - 2024 Oracle and/or its affiliates.
+>> + *
+>> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
+>> + * See the COPYING file in the top-level directory.
+>> + */
+>> +
+>> +#include "qemu/osdep.h"
+>> +#include "qemu/strList.h"
+>> +
+>> +strList *strList_from_string(const char *str, const char *delim)
+>> +{
+>> +    g_autofree char **split = g_strsplit(str ?: "", delim, -1);
+>> +    strList *res = NULL;
+>> +    strList **tail = &res;
+>> +    int i;
+>> +
+>> +    for (i = 0; split[i]; i++) {
+>> +        QAPI_LIST_APPEND(tail, split[i]);
+>> +    }
+>> +
+>> +    return res;
+>> +}
+> 
 
