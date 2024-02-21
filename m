@@ -2,114 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F29985E142
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:33:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5743485E1A5
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:44:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoVm-0003v6-Dr; Wed, 21 Feb 2024 10:27:54 -0500
+	id 1rcocc-0006i5-Hr; Wed, 21 Feb 2024 10:34:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcoNK-0001hh-Vl
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:19:11 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rcoZb-0002ea-Tn
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:31:51 -0500
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcnr2-0005R2-Ec
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 09:45:49 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 712681FB65;
- Wed, 21 Feb 2024 14:45:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1708526746; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=dkmy2d2nkEn/+CcMopn+6oqlSq3tTk9T0gcrkl8pQhk=;
- b=gaE8mhxkyWoKLFgvgHA8aZNfH0qu+5yh59SxMoZbvHcSQvidrUtRN6Mibdb6eh997jxgt9
- qN7LsC1UhzOxC2ePxD05AGXvLt2fHX5MnbFydEFfFBkwiFe+kXNstCl8B51JHbyuDsndMo
- ZAYbbPT0wrKteurLBjWqMRIqeKQ095s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1708526746;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=dkmy2d2nkEn/+CcMopn+6oqlSq3tTk9T0gcrkl8pQhk=;
- b=vQUKOALnUGw7hbXpIKv7a4o55nRvK5KAhEd1NameIPQolaf4PELpwc/u/PiJy6IIyEXI2b
- eLPIkkznOdPZ8mAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1708526745; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=dkmy2d2nkEn/+CcMopn+6oqlSq3tTk9T0gcrkl8pQhk=;
- b=OdnvxJMtq8Otgjy/tvldiEP4pEUUwln1xmeDlZmclbD7X1TtxubILOrkjELPTDbrQ1SthV
- BLs1RdH42B/0m7IGwaY/nyadK2WE19QwC1CRqhDUCWaqYOl6vVcQ9eyD6geq1QeS7qnPPx
- d4KPsQjRqMatYX3PEkdvko9MyawpIkQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1708526745;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=dkmy2d2nkEn/+CcMopn+6oqlSq3tTk9T0gcrkl8pQhk=;
- b=OxjQHvY4RWCXL9fI+NHbwF6yvlsXfCBGZUGnh9ATxXfiJpLX6DeyuikGzHnurcdGVDsjLw
- J07Wo1YiVREwmKAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EDA75139D0;
- Wed, 21 Feb 2024 14:45:44 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 5qVdLJgM1mWZBwAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 21 Feb 2024 14:45:44 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Roman Khapov <rkhapov@yandex-team.ru>, qemu-devel@nongnu.org
-Cc: peterx@redhat.com, eblake@redhat.com, armbru@redhat.com,
- yc-core@yandex-team.ru, Roman Khapov <rkhapov@yandex-team.ru>
-Subject: Re: [PATCH v2 0/2] Field 'reason' for MIGRATION event
-In-Reply-To: <20240215122759.1438581-1-rkhapov@yandex-team.ru>
-References: <20240215122759.1438581-1-rkhapov@yandex-team.ru>
-Date: Wed, 21 Feb 2024 11:45:42 -0300
-Message-ID: <87jzmxc1ux.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rco3U-0007eq-53
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 09:58:41 -0500
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-2997c5fe6abso506856a91.1
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 06:58:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1708527518; x=1709132318; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=wyKGb7aupxH/I0YN4RmuhGFBq+ozkV6FJIxca5nyg/k=;
+ b=HhCj3tixCGk2bvfX2lRpPK2NNsRInzH/uB+nAFJCox6YwhEJ+3RszJnjCHF2ijKHPG
+ 9DpkOX0iRZ5elEWPEjlxDnBQ798Ik0n0aUwplBTcIQhGUQ1YuGiw2EpGHYSHSIeEc00m
+ VPXzrEeVPBn6T70lHn67RRR0OndoaBnTuosw06LGK7a/q5CENqHCxLcmO4dxMXC4SrYd
+ jW6gvCIGJPYKHAdCFrYVTrErFLPhNeKxwkWH8I/q+WgkX4A1UkufMDnb1sNCkyOBtYv7
+ po6spcF1ts+d3iYOxRtbMtQ670hKUfDdbQ3UFRsyogZFfBiLexXy/VhSfPcoIPYAd6Hg
+ /VSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708527518; x=1709132318;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wyKGb7aupxH/I0YN4RmuhGFBq+ozkV6FJIxca5nyg/k=;
+ b=KPM0ECm87xfQ384RpaUoxKxoP2NrszF25umqKbpKk0qpxRGu+2hNTnAsBrO0aEkeMW
+ xAaj0ND6VTLKdqjh7SpkWEWHGrAUnT5frjQvI/0P7cDl84b2sdn9urbDdX/arR2b9oZ6
+ BrNhJGmIbLUxPJKcL+m5Ee0ZEfypmnI0OuwQusRLIWO0yIG+Bo7eFa1GyyOw98JRbKWh
+ /PAUJUQYw5DhAnh+v7+YKT1zGV5MDgPHDRdIfdd7Y7Kif5CkvfNz+/RiVm+8WBOqV6il
+ pXGATEP4V2rZRyPdLQmD1pY97bSGVBeI7cC0xh5/yrqeKP93ZJfUVfCF+qFd3tRxq7zG
+ zItA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVaWbrhmAwK79sNf/gLM694cnZVAHVvajmB33MkLnp3WtVikKaXDbRoqovc5UuMxBI9YZOWPcZq1jR+Jx3zINRC+bgUoKg=
+X-Gm-Message-State: AOJu0Yy0uJPPZvIWflzYcOqnXAkt8O/itH81EAJA8/LEDyxZ2/gDeKMT
+ vdfJtGMbx5xksnFX89w33hY9ZApVMH7tFTrvfBN8w0mpa/jtxVSsTQ4opSEK8GY=
+X-Google-Smtp-Source: AGHT+IHXPSxlJG1PoMSsxFPcDXh152TtsRHepouoWKmixxeuSLmiw6R5hnrCEaLVg4OiaBdQ2ccqHA==
+X-Received: by 2002:a17:90b:33d1:b0:299:592a:7d19 with SMTP id
+ lk17-20020a17090b33d100b00299592a7d19mr10191947pjb.3.1708527518581; 
+ Wed, 21 Feb 2024 06:58:38 -0800 (PST)
+Received: from [192.168.68.110] ([177.94.15.159])
+ by smtp.gmail.com with ESMTPSA id
+ q69-20020a17090a17cb00b0029954a48c38sm10199016pja.38.2024.02.21.06.58.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 21 Feb 2024 06:58:38 -0800 (PST)
+Message-ID: <35a4d40c-9d0d-4a0a-a2c9-5d5f7def9b9c@ventanamicro.com>
+Date: Wed, 21 Feb 2024 11:58:33 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OdnvxJMt;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OxjQHvY4
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.51 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-1.00)[-1.000];
- RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
- RCPT_COUNT_SEVEN(0.00)[7];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-0.999];
- RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Score: -4.51
-X-Rspamd-Queue-Id: 712681FB65
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 0/8] Add Counter delegation ISA extension support
+To: Atish Patra <atishp@rivosinc.com>, qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ qemu-riscv@nongnu.org, Weiwei Li <liwei1518@gmail.com>, kaiwenxue1@gmail.com
+References: <20240217000134.3634191-1-atishp@rivosinc.com>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20240217000134.3634191-1-atishp@rivosinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x102c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,79 +98,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Roman Khapov <rkhapov@yandex-team.ru> writes:
+Hi Atish,
 
-Hi Roman,
+This series and its dependency, which I assume it's
 
-> This is resending of series 20240215082659.1378342-1-rkhapov@yandex-team.=
-ru,
-> where patch subjects numbers were broken in patch 2/2.
->
-> Sometimes, when migration fails, it is hard to find out
-> the cause of the problems: you have to grep qemu logs.
-> At the same time, there is MIGRATION event, which looks like
-> suitable place to hold such error descriptions.
+"[PATCH v4 0/5] Add ISA extension smcntrpmf support"
 
-query-migrate after the event is received should be enough for giving
-you the failure reason. We have that in error-desc. See commit
-c94143e587 ("migration: Display error in query-migrate irrelevant of
-status").
+Doesn't apply in neither master nor riscv-to-apply.next because of this patch:
 
->
-> To handle situation like this (maybe one day it will be useful
-> for other MIGRATION statuses to have additional 'reason' strings),
+"target/riscv: Use RISCVException as return type for all csr ops"
 
-I find it unlikely. There's no "reason" for making progress except
-that's how things work. Only the exceptional (i.e. failure) statuses
-would have a reason. Today that's FAILED only, maybe also
-POSTCOPY_PAUSED.
+That changed some functions from 'int' to "RISCVException" type. The conflicts
+from the v4 series are rather trivial but the conflicts for this RFC are annoying
+to deal with. It would be better if you could re-send both series rebased with
+the latest changes.
 
-> the general optional field 'reason' can be added.
->
-> The series proposes next changes:
->
-> 1. Adding optional 'reason' field of type str into
->    qapi/migration.json MIGRATION event
->
-> 2. Passing some error description as reason for every place, which
->    sets migration state to MIGRATION_STATUS_FAILED
->
-> After the series, MIGRATION event will looks like this:
-> {"execute": "qmp_capabilities"}
-> {"return": {}}
-> {"event": "MIGRATION", "data": {"status": "setup"}}
-> {"event": "MIGRATION", "data": {"status": "failed", "reason": "Failed to =
-connect to '/tmp/sock.sock': No such file or directory"}}
->
-> Roman Khapov (2):
->   qapi/migration.json: add reason to MIGRATION event
->   migration: add error reason for failed MIGRATION events
->
->  migration/colo.c      |   6 +-
->  migration/migration.c | 128 ++++++++++++++++++++++++++++--------------
->  migration/migration.h |   5 +-
->  migration/multifd.c   |  10 ++--
->  migration/savevm.c    |  24 ++++----
->  qapi/migration.json   |   3 +-
->  6 files changed, 112 insertions(+), 64 deletions(-)
+One more thing:
 
-Please remember to run make check:
+On 2/16/24 21:01, Atish Patra wrote:
+> This series adds the counter delegation extension support. The counter
+> delegation ISA extension(Smcdeleg/Ssccfg) actually depends on multiple ISA
+> extensions.
+> 
+> 1. S[m|s]csrind : The indirect CSR extension[1] which defines additional
+>     5 ([M|S|VS]IREG2-[M|S|VS]IREG6) register to address size limitation of
+>     RISC-V CSR address space.
+> 2. Smstateen: The stateen bit[60] controls the access to the registers
+>     indirectly via the above indirect registers.
+> 3. Smcdeleg/Ssccfg: The counter delegation extensions[2]
+> 
+> The counter delegation extension allows Supervisor mode to program the
+> hpmevent and hpmcounters directly without needing the assistance from the
+> M-mode via SBI calls. This results in a faster perf profiling and very
+> few traps. This extension also introduces a scountinhibit CSR which allows
+> to stop/start any counter directly from the S-mode. As the counter
+> delegation extension potentially can have more than 100 CSRs, the specificaiton
+> leverages the indirect CSR extension to save the precious CSR address range.
+> 
+> Due to the dependancy of these extensions, the following extensions must be
+> enabled to use the counter delegation feature in S-mode.
+> 
+> "smstateen=true,sscofpmf=true,ssccfg=true,smcdeleg=true,smcsrind=true,sscsrind=true"
+> 
+> This makes the qemu command line quite tedious. In stead of that, I think we
+> can enable these features by default if there is no objection.
 
-380/383 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test ERROR
-104.77s killed by signal 6 SIGABRT
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95
-stderr: Broken pipe ../tests/qtest/libqtest.c:204: kill_qemu() detected
-QEMU death from signal 11 (Segmentation fault) (core dumped)
+It wasn't need so far but, if needed, we can add specialized setters for extensions
+that has multiple dependencies. Instead of the usual setter we would do something
+like:
+
+cpu_set_ssccfg() {
+
+     if (enabled) {
+         smstateen=true
+         sscofpmf=true
+         smcdeleg=true
+         smcsrind=true
+         sscsrind=true
+     }
+}
 
 
-Most likely one of the new error_setg has broken postcopy recovery. Some
-of those paths are not intended to trigger cleanup.
+The advantage is that this setter would also work for CPUs that doesn't inherit defaults,
+like bare-cps and profile CPUs.
+
+That doesn't mean we can't add defaults for rv64, but for this particular case I wonder if
+the 'max' CPU wouldn't be better.
+
+
+Thanks,
+
+
+Daniel
+
+> 
+> The first 2 patches decouple the indirect CSR usage from AIA implementation
+> while patch3 adds stateen bits validation for AIA.
+> The PATCH4 implements indirect CSR extensions while remaining patches
+> implement the counter delegation extensions.
+> 
+> The Qemu patches can be found here:
+> https://github.com/atishp04/qemu/tree/counter_delegation_rfc
+> 
+> The opensbi patch can be found here:
+> https://github.com/atishp04/opensbi/tree/counter_delegation_v1
+> 
+> The Linux kernel patches can be found here:
+> https://github.com/atishp04/linux/tree/counter_delegation_rfc
+> 
+> [1] https://github.com/riscv/riscv-indirect-csr-access
+> [2] https://github.com/riscv/riscv-smcdeleg-ssccfg
+> 
+> Atish Patra (1):
+> target/riscv: Enable S*stateen bits for AIA
+> 
+> Kaiwen Xue (7):
+> target/riscv: Add properties for Indirect CSR Access extension
+> target/riscv: Decouple AIA processing from xiselect and xireg
+> target/riscv: Support generic CSR indirect access
+> target/riscv: Add smcdeleg/ssccfg properties
+> target/riscv: Add counter delegation definitions
+> target/riscv: Add select value range check for counter delegation
+> target/riscv: Add counter delegation/configuration support
+> 
+> target/riscv/cpu.c      |   8 +
+> target/riscv/cpu.h      |   1 +
+> target/riscv/cpu_bits.h |  34 +-
+> target/riscv/cpu_cfg.h  |   4 +
+> target/riscv/csr.c      | 713 +++++++++++++++++++++++++++++++++++++---
+> target/riscv/machine.c  |   1 +
+> 6 files changed, 722 insertions(+), 39 deletions(-)
+> 
+> --
+> 2.34.1
+> 
 
