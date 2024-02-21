@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB6B85E129
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:31:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC9AE85E11D
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:30:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoYH-0005T8-T5; Wed, 21 Feb 2024 10:30:29 -0500
+	id 1rcoRc-0002GK-OX; Wed, 21 Feb 2024 10:23:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rcoM9-0001hh-4F; Wed, 21 Feb 2024 10:17:57 -0500
+ id 1rcoL4-0001hh-KD; Wed, 21 Feb 2024 10:16:52 -0500
 Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rco1B-0007ME-4u; Wed, 21 Feb 2024 09:56:18 -0500
+ id 1rco2Z-0007Tg-3P; Wed, 21 Feb 2024 09:57:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708527377; x=1740063377;
+ t=1708527463; x=1740063463;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=GkDRFpSgEw4Jc9eQg/w5fzMP57UNmwkGjsPiSjtncj0=;
- b=ctcChPA3oBeHTYSiHnl5bvKZFvKnF0D5fgaHihfmnae8Fra7benpp9ND
- fVSxhro6WvWFwacqeDLbGVZCtlehEJMQdcm6q6q6WdER0E84PoArzKHJE
- V+o9xuZxtLDnNvfIP1F8mPRP4Q4p33Ohrx4r4zt+acxTrL2Wy61b8VVd6
- qQCnVB4W+/1bVs4W0mlhIoO1sUULLA7sp+kkC/7b2jcIEftBaK4LgafoI
- OED7J7D83SU/EceoNqR/wAmxU6PTWWgfQ9e6rqNfaTxRL8Rhd8dTbI2kT
- NF9cNFyrpV1UjGqf3CFwVTFEec03P3CpBEKI5NnDM9C68Gxa5yv/pVNl9 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="3173102"
+ bh=N/Rh861QxK57N9KeQmommhQkchtjVhc8QkT0maRgZQo=;
+ b=K9kdT/ZlExtJEnpjVVA61JAaJbV7ZjBqIkaAz2X63vrWuqzWEMQ0GBr8
+ aTCaZm28kBFB34ehyf3I3SeMFhoX3uUsMmLYWG2Wu6Rb5IfSHIYHBw8Sv
+ +Kp9vZ4RAh7IF237XrlkiUmSz/J+yKdS2TFixyBLneuNXd7REOp+ihWkW
+ /0+vnUIr5cOqjaI9wPGaMOE7HgjD3ueKziR9daN0e95W60Dd8E4WRSgqG
+ Y0PIJM9hycS8pdZziNjeh19qu7LUVo/mYZURHCAGVooJqgc3BygXXn+6E
+ 9GcQTpJnNrGarBrsvokSUys6kbUqy4JgqzrTYwOV2iNHT5GSkKcMyDqJx Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="3173218"
 X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="3173102"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+   d="scan'208";a="3173218"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2024 06:56:15 -0800
+ 21 Feb 2024 06:57:40 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="9782187"
+   d="scan'208";a="9752563"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by fmviesa005.fm.intel.com with ESMTP; 21 Feb 2024 06:56:11 -0800
-Date: Wed, 21 Feb 2024 23:09:49 +0800
+ by fmviesa004.fm.intel.com with ESMTP; 21 Feb 2024 06:57:33 -0800
+Date: Wed, 21 Feb 2024 23:11:12 +0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Markus Armbruster <armbru@redhat.com>
 Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
@@ -55,16 +55,16 @@ Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
  Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-trivial@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH 5/6] hw/pci-bridge/cxl_upstream: Fix missing ERRP_GUARD()
- in cxl_usp_realize()
-Message-ID: <ZdYSPYlZEL6jUobe@intel.com>
+Subject: Re: [PATCH 3/6] hw/mem/cxl_type3: Fix missing ERRP_GUARD() in
+ ct3_realize()
+Message-ID: <ZdYSkNRkZBsfHJea@intel.com>
 References: <20240221094317.994454-1-zhao1.liu@linux.intel.com>
- <20240221094317.994454-6-zhao1.liu@linux.intel.com>
- <87le7eujdx.fsf@pond.sub.org>
+ <20240221094317.994454-4-zhao1.liu@linux.intel.com>
+ <87zfvuuk18.fsf@pond.sub.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87le7eujdx.fsf@pond.sub.org>
+In-Reply-To: <87zfvuuk18.fsf@pond.sub.org>
 Received-SPF: none client-ip=192.198.163.16;
  envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -20
@@ -88,11 +88,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Feb 21, 2024 at 12:49:46PM +0100, Markus Armbruster wrote:
-> Date: Wed, 21 Feb 2024 12:49:46 +0100
+On Wed, Feb 21, 2024 at 12:35:47PM +0100, Markus Armbruster wrote:
+> Date: Wed, 21 Feb 2024 12:35:47 +0100
 > From: Markus Armbruster <armbru@redhat.com>
-> Subject: Re: [PATCH 5/6] hw/pci-bridge/cxl_upstream: Fix missing
->  ERRP_GUARD() in cxl_usp_realize()
+> Subject: Re: [PATCH 3/6] hw/mem/cxl_type3: Fix missing ERRP_GUARD() in
+>  ct3_realize()
 > 
 > Zhao Liu <zhao1.liu@linux.intel.com> writes:
 > 
@@ -116,12 +116,12 @@ On Wed, Feb 21, 2024 at 12:49:46PM +0100, Markus Armbruster wrote:
 > > * Using it when it's not needed is safe, but please avoid cluttering
 > > * the source with useless code.
 > >
-> > Currently, since cxl_usp_realize() - as a PCIDeviceClass.realize()
-> > method - doesn't get the NULL errp parameter, it doesn't trigger the
-> > dereference issue.
+> > Currently, since ct3_realize() - as a PCIDeviceClass.realize() method -
+> > doesn't get the NULL errp parameter, it doesn't trigger the dereference
+> > issue.
 > >
 > > To follow the requirement of errp, add missing ERRP_GUARD() in
-> > cxl_usp_realize()().
+> > ct3_realize().
 > >
 > > Suggested-by: Markus Armbruster <armbru@redhat.com>
 > > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
@@ -129,44 +129,43 @@ On Wed, Feb 21, 2024 at 12:49:46PM +0100, Markus Armbruster wrote:
 > > Suggested by credit:
 > >  Markus: Referred his explanation about ERRP_GUARD().
 > > ---
-> >  hw/pci-bridge/cxl_upstream.c | 1 +
+> >  hw/mem/cxl_type3.c | 1 +
 > >  1 file changed, 1 insertion(+)
 > >
-> > diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
-> > index e87eb4017713..03d123cca0ef 100644
-> > --- a/hw/pci-bridge/cxl_upstream.c
-> > +++ b/hw/pci-bridge/cxl_upstream.c
-> > @@ -289,6 +289,7 @@ static void free_default_cdat_table(CDATSubHeader **cdat_table, int num,
+> > diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> > index e8801805b90f..a3b0761f843b 100644
+> > --- a/hw/mem/cxl_type3.c
+> > +++ b/hw/mem/cxl_type3.c
+> > @@ -645,6 +645,7 @@ static DOEProtocol doe_cdat_prot[] = {
 > >  
-> >  static void cxl_usp_realize(PCIDevice *d, Error **errp)
+> >  static void ct3_realize(PCIDevice *pci_dev, Error **errp)
 > >  {
 > > +    ERRP_GUARD();
-> >      PCIEPort *p = PCIE_PORT(d);
-> >      CXLUpstreamPort *usp = CXL_USP(d);
-> >      CXLComponentState *cxl_cstate = &usp->cxl_cstate;
+> >      CXLType3Dev *ct3d = CXL_TYPE3(pci_dev);
+> >      CXLComponentState *cxl_cstate = &ct3d->cxl_cstate;
+> >      ComponentRegisters *regs = &cxl_cstate->crb;
 > 
 > The dereference is
 > 
 >        cxl_doe_cdat_init(cxl_cstate, errp);
 >        if (*errp) {
->            goto err_cap;
+>            goto err_free_special_ops;
 >        }
 > 
-> As noted in review of PATCH 3, we check *errp, because
-> cxl_doe_cdat_init() returns void.  Could be improved to return bool,
-> along with its callees ct3_load_cdat() and ct3_build_cdat(), but that's
-> a slightly more ambitious cleanup, so
+> We check *errp, because cxl_doe_cdat_init() returns void.  Could be
+> improved to return bool, along with its callees ct3_load_cdat() and
+> ct3_build_cdat(), but that's a slightly more ambitious cleanup, so
 > 
 > Reviewed-by: Markus Armbruster <armbru@redhat.com>
 >
 
-Thanks! It's a good idea and I can continue to consider such the cleanup
-in the follow up.
+Thanks! I can continue to consider such the cleanup in the follow up.
 
 Will also add the dereference description in commit message to make
 review easier.
 
 Regards,
 Zhao
+
 
 
