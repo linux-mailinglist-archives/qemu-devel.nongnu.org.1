@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB66585E9EC
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:20:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E7A85EA8C
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:27:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rctyj-0005KS-4q; Wed, 21 Feb 2024 16:18:09 -0500
+	id 1rctyn-0005zz-4a; Wed, 21 Feb 2024 16:18:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctyb-0004rF-Bb
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:18:01 -0500
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctyi-0005Tt-1p
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:18:08 -0500
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctyZ-00012x-6U
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:18:00 -0500
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-512cc3ea7a5so2518049e87.3
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:17:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctyf-000145-6g
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:18:07 -0500
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2d09cf00214so80603461fa.0
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:18:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708550277; x=1709155077; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708550283; x=1709155083; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=27hOzulyzznR+8+N4cQ8+ljTXaEP/WvWvivYVWJzeRw=;
- b=kex/o3hY7dTIqeyR0VHiV5Uq41H7oL+U6aqLO8K0kz1ICVxCGYdI+4PVIjKj5BHR/z
- k+bhIgU+Kxe5nIzWzFSN/v3bBZ9NOXGyGxdjKKK9xa1B7lcxzFQWVvmGExuAc4nMzmab
- E8oZy2giWmhTM5RayoRBAzx6u9j0UHQIUJScGLzfmeocBRpsPz3al5EJyp9wYe0WKT0r
- pazQZX8MVkjqHDu8gZJ7rxobnMKa5nwlX+jFOKL6Wk4/yCZTGvbGCcRDLSDwu+n6NXl7
- zfgiAVWu7VQdglxQUReAK/VKGJ0qhG3bivrHbRJ6AzoBGaLdjQ8iM2b9r8cTt4LEWFmY
- u2UQ==
+ bh=B1hBOWCBa8Kc+AFXTCFEtySegdqlIvAldt191B4hj40=;
+ b=bxlRPqzIWBooO6TMuH4aztPfAbHTT1axJyOtQibOOq8zFfeY2ppC9KmFb41u2P8Skl
+ cpxXphpQlh7QKvdlFyxhat7g+/6Ayxr2JYGpKqAirG+2yHXRuyE2+6ZvH8PTjqzW5SVL
+ 58RcIJX8QeExsFrpp/+Z2oU6o5rGyx+T56X5nwgWcntoMZybbD9vvyljH8xIQN8wqwiE
+ WDyY0qoqXSr6K+oJLkaaqOG4fST0y9dupmergl2sjpvrAnvcAMtl+n25u5A0YVIZZoVs
+ u1Rm3jouQ1qjubnfnPlw8wgUY8joBDwqBzMqnOn9Amy53OH/bq4vYIlcnIX1hCz0H6Ka
+ BY6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708550277; x=1709155077;
+ d=1e100.net; s=20230601; t=1708550283; x=1709155083;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=27hOzulyzznR+8+N4cQ8+ljTXaEP/WvWvivYVWJzeRw=;
- b=X4Qt/OUTnjpqwFl7nrkFABFiSBvHvbg/1AJ8vArvt/Uqj+Gb5yGyPAQgrugZmdR51h
- qa5GDzjrTFFkVxzmWxKAKDroUMTNSPnL5PvecO8t65j6DOCabRJBcE5QZaNc8LO+rlS8
- oOVPPVIsSi2qg6OQ4+sJt98C/ihSr3Qrz2DVGPTUZNdxZAhQFrmXZh0oHf97z9QEBeHI
- 8dorgkSAoo14AywdMkOdFRpIppsMJ7egKWDkt2RJKPG2CgolbR6Tb1+POMadJGWw4N8X
- ZwUjwCMLYooDHij+vm9EXFqRVhMXoVftHf95W5UvZ1tR/rPxtU1xwfk9FaHfweHfRs+9
- ZBvA==
-X-Gm-Message-State: AOJu0Yz8SM5NS9U8bTYl/VfdNV5r4k91hiSKhnYaoQB9bej80Nw0+bMZ
- jHxxBPZq9wxjTD36OKpQKDBszI8f7kiqpkGrIPlvcFN0Fc/25IDeyqXHcqz4LisWxHNJVJ9gwPL
- fgVc=
-X-Google-Smtp-Source: AGHT+IFzT8wTP8E+HGgD4Or9PcIuXyyx4pxAfJb3U4WBWtEU/CCrqqqaxt+yChCdtBqiw70PgVh+SA==
-X-Received: by 2002:a2e:878a:0:b0:2d2:3594:49f6 with SMTP id
- n10-20020a2e878a000000b002d2359449f6mr7329948lji.14.1708550277021; 
- Wed, 21 Feb 2024 13:17:57 -0800 (PST)
+ bh=B1hBOWCBa8Kc+AFXTCFEtySegdqlIvAldt191B4hj40=;
+ b=SYrPi21cGCpi3qfucxu9gxcb0OEyzkPvFoXhTBYMrWoaqBFVVDUyfH+xfSmK4/8K8x
+ dJN0r+ucpumKVr285cJliMsL4rwdeIw5TWN9gxBa+RniagEaVHV0eG8c+muFx3o/RkeW
+ zuZ66bG4V9J1DMjzvyuGU2YxThqE9wtI8ub9Liq0Zw7oA90fiaikbHfj76VtRyRPp6On
+ aOgA4QZ65z+1kZ14qDlwj/KmKVFJe6fTT11jA4QdK7HS7UaCrvIJQAAzoGrnpXl6w6sP
+ FhBdA3E9/KybEKkgEmXhcu94OAYCec7v0W4t9Hr9nBRdCDIA47Rk5azuGnSSkqCaLCHk
+ wBtg==
+X-Gm-Message-State: AOJu0YwE1d8w26vWNqZY5NmVGgqGnM8VwVTuMKusCUV+bj6f7ek340Js
+ 5OhnA8dVIhCz+6kv56GU7oD9xigOrv7N3wwJ9fy/OgrU/Sm3qBi9HkbMKc9y3r5MZFgDVhv+UeS
+ jTCM=
+X-Google-Smtp-Source: AGHT+IHSG+pVEm0escvoviBrtWNCskYg/LSnL+6r2RE2xQq+i7M8kTlUrrZwIAJxSgajDZ6FAjv36A==
+X-Received: by 2002:a05:651c:1543:b0:2d2:47e0:4427 with SMTP id
+ y3-20020a05651c154300b002d247e04427mr4972111ljp.41.1708550283044; 
+ Wed, 21 Feb 2024 13:18:03 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.211.34])
  by smtp.gmail.com with ESMTPSA id
- bs20-20020a056000071400b0033d449f5f65sm12676547wrb.4.2024.02.21.13.17.54
+ t11-20020a05600c198b00b0041270c2b95esm5969210wmq.29.2024.02.21.13.18.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 21 Feb 2024 13:17:56 -0800 (PST)
+ Wed, 21 Feb 2024 13:18:02 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- "Michael S . Tsirkin" <mst@redhat.com>,
+ Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 10/25] hw/i386/pc: Do pc_cmos_init_late() from pc_machine_done()
-Date: Wed, 21 Feb 2024 22:16:10 +0100
-Message-ID: <20240221211626.48190-11-philmd@linaro.org>
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 11/25] hw/i386/x86: Turn apic_xrupt_override into class
+ attribute
+Date: Wed, 21 Feb 2024 22:16:11 +0100
+Message-ID: <20240221211626.48190-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240221211626.48190-1-philmd@linaro.org>
 References: <20240221211626.48190-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,140 +99,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Bernhard Beschow <shentey@gmail.com>
 
-In the i386 PC machine, we want to run the pc_cmos_init_late()
-function only once the IDE and floppy drive devices have been set up.
-We currently do this using qemu_register_reset(), and then have the
-function call qemu_unregister_reset() on itself, so it runs exactly
-once.
+The attribute isn't user-changeable and only true for pc-based machines. Turn it
+into a class attribute which allows for inlining pc_guest_info_init() into
+pc_machine_initfn().
 
-This was an expedient way to do it back in 2010 when we first added
-this (in commit c0897e0cb94e8), but now we have a more obvious point
-to do "machine initialization that has to happen after generic device
-init": the machine-init-done hook.
-
-Do the pc_cmos_init_late() work from our existing PC machine init
-done hook function, so we can drop the use of qemu_register_reset()
-and qemu_unregister_reset().
-
-Because the pointers to the devices we need (the IDE buses and the
-RTC) are now all in the machine state, we don't need the
-pc_cmos_init_late_arg struct and can just pass the PCMachineState
-pointer.
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240220160622.114437-3-peter.maydell@linaro.org>
+Message-ID: <20240208220349.4948-4-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/pc.c | 39 ++++++++++++++++-----------------------
- 1 file changed, 16 insertions(+), 23 deletions(-)
+ include/hw/i386/x86.h | 3 ++-
+ hw/i386/acpi-common.c | 3 ++-
+ hw/i386/pc.c          | 5 ++---
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
+diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
+index da19ae1546..8e306db7bb 100644
+--- a/include/hw/i386/x86.h
++++ b/include/hw/i386/x86.h
+@@ -34,6 +34,8 @@ struct X86MachineClass {
+     bool save_tsc_khz;
+     /* use DMA capable linuxboot option rom */
+     bool fwcfg_dma_enabled;
++    /* CPU and apic information: */
++    bool apic_xrupt_override;
+ };
+ 
+ struct X86MachineState {
+@@ -57,7 +59,6 @@ struct X86MachineState {
+     uint64_t above_4g_mem_start;
+ 
+     /* CPU and apic information: */
+-    bool apic_xrupt_override;
+     unsigned pci_irq_mask;
+     unsigned apic_id_limit;
+     uint16_t boot_cpus;
+diff --git a/hw/i386/acpi-common.c b/hw/i386/acpi-common.c
+index 43dc23f7e0..cea4b3d71c 100644
+--- a/hw/i386/acpi-common.c
++++ b/hw/i386/acpi-common.c
+@@ -100,6 +100,7 @@ void acpi_build_madt(GArray *table_data, BIOSLinker *linker,
+     int i;
+     bool x2apic_mode = false;
+     MachineClass *mc = MACHINE_GET_CLASS(x86ms);
++    X86MachineClass *x86mc = X86_MACHINE_GET_CLASS(x86ms);
+     const CPUArchIdList *apic_ids = mc->possible_cpu_arch_ids(MACHINE(x86ms));
+     AcpiTable table = { .sig = "APIC", .rev = 3, .oem_id = oem_id,
+                         .oem_table_id = oem_table_id };
+@@ -122,7 +123,7 @@ void acpi_build_madt(GArray *table_data, BIOSLinker *linker,
+                      IO_APIC_SECONDARY_ADDRESS, IO_APIC_SECONDARY_IRQBASE);
+     }
+ 
+-    if (x86ms->apic_xrupt_override) {
++    if (x86mc->apic_xrupt_override) {
+         build_xrupt_override(table_data, 0, 2,
+             0 /* Flags: Conforms to the specifications of the bus */);
+     }
 diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 3e9ca6295f..1733dffc00 100644
+index 1733dffc00..d7183780bd 100644
 --- a/hw/i386/pc.c
 +++ b/hw/i386/pc.c
-@@ -465,11 +465,6 @@ static void pc_cmos_init_floppy(MC146818RtcState *rtc_state, ISADevice *floppy)
-     mc146818rtc_set_cmos_data(rtc_state, REG_EQUIPMENT_BYTE, val);
- }
- 
--typedef struct pc_cmos_init_late_arg {
--    MC146818RtcState *rtc_state;
--    BusState *idebus[2];
--} pc_cmos_init_late_arg;
--
- typedef struct check_fdc_state {
-     ISADevice *floppy;
-     bool multiple;
-@@ -530,23 +525,25 @@ static ISADevice *pc_find_fdc0(void)
-     return state.floppy;
- }
- 
--static void pc_cmos_init_late(void *opaque)
-+static void pc_cmos_init_late(PCMachineState *pcms)
- {
--    pc_cmos_init_late_arg *arg = opaque;
--    MC146818RtcState *s = arg->rtc_state;
-+    X86MachineState *x86ms = X86_MACHINE(pcms);
-+    MC146818RtcState *s = MC146818_RTC(x86ms->rtc);
-     int16_t cylinders;
-     int8_t heads, sectors;
-     int val;
-     int i, trans;
- 
-     val = 0;
--    if (arg->idebus[0] && ide_get_geometry(arg->idebus[0], 0,
--                                           &cylinders, &heads, &sectors) >= 0) {
-+    if (pcms->idebus[0] &&
-+        ide_get_geometry(pcms->idebus[0], 0,
-+                         &cylinders, &heads, &sectors) >= 0) {
-         cmos_init_hd(s, 0x19, 0x1b, cylinders, heads, sectors);
-         val |= 0xf0;
-     }
--    if (arg->idebus[0] && ide_get_geometry(arg->idebus[0], 1,
--                                           &cylinders, &heads, &sectors) >= 0) {
-+    if (pcms->idebus[0] &&
-+        ide_get_geometry(pcms->idebus[0], 1,
-+                         &cylinders, &heads, &sectors) >= 0) {
-         cmos_init_hd(s, 0x1a, 0x24, cylinders, heads, sectors);
-         val |= 0x0f;
-     }
-@@ -558,10 +555,11 @@ static void pc_cmos_init_late(void *opaque)
-            geometry.  It is always such that: 1 <= sects <= 63, 1
-            <= heads <= 16, 1 <= cylinders <= 16383. The BIOS
-            geometry can be different if a translation is done. */
--        if (arg->idebus[i / 2] &&
--            ide_get_geometry(arg->idebus[i / 2], i % 2,
-+        BusState *idebus = pcms->idebus[i / 2];
-+        if (idebus &&
-+            ide_get_geometry(idebus, i % 2,
-                              &cylinders, &heads, &sectors) >= 0) {
--            trans = ide_get_bios_chs_trans(arg->idebus[i / 2], i % 2) - 1;
-+            trans = ide_get_bios_chs_trans(idebus, i % 2) - 1;
-             assert((trans & ~3) == 0);
-             val |= trans << (i * 2);
-         }
-@@ -569,15 +567,12 @@ static void pc_cmos_init_late(void *opaque)
-     mc146818rtc_set_cmos_data(s, 0x39, val);
- 
-     pc_cmos_init_floppy(s, pc_find_fdc0());
--
--    qemu_unregister_reset(pc_cmos_init_late, opaque);
- }
- 
- void pc_cmos_init(PCMachineState *pcms,
-                   ISADevice *rtc)
- {
-     int val;
--    static pc_cmos_init_late_arg arg;
-     X86MachineState *x86ms = X86_MACHINE(pcms);
-     MC146818RtcState *s = MC146818_RTC(rtc);
- 
-@@ -631,11 +626,7 @@ void pc_cmos_init(PCMachineState *pcms,
-     val |= 0x04; /* PS/2 mouse installed */
-     mc146818rtc_set_cmos_data(s, REG_EQUIPMENT_BYTE, val);
- 
--    /* hard drives and FDC */
--    arg.rtc_state = s;
--    arg.idebus[0] = pcms->idebus[0];
--    arg.idebus[1] = pcms->idebus[1];
--    qemu_register_reset(pc_cmos_init_late, &arg);
-+    /* hard drives and FDC are handled by pc_cmos_init_late() */
- }
- 
- static void handle_a20_line_change(void *opaque, int irq, int level)
-@@ -703,6 +694,8 @@ void pc_machine_done(Notifier *notifier, void *data)
-         /* update FW_CFG_NB_CPUS to account for -device added CPUs */
-         fw_cfg_modify_i16(x86ms->fw_cfg, FW_CFG_NB_CPUS, x86ms->boot_cpus);
-     }
-+
-+    pc_cmos_init_late(pcms);
- }
+@@ -700,9 +700,6 @@ void pc_machine_done(Notifier *notifier, void *data)
  
  void pc_guest_info_init(PCMachineState *pcms)
+ {
+-    X86MachineState *x86ms = X86_MACHINE(pcms);
+-
+-    x86ms->apic_xrupt_override = true;
+     pcms->machine_done.notify = pc_machine_done;
+     qemu_add_machine_init_done_notifier(&pcms->machine_done);
+ }
+@@ -1795,6 +1792,7 @@ static bool pc_hotplug_allowed(MachineState *ms, DeviceState *dev, Error **errp)
+ static void pc_machine_class_init(ObjectClass *oc, void *data)
+ {
+     MachineClass *mc = MACHINE_CLASS(oc);
++    X86MachineClass *x86mc = X86_MACHINE_CLASS(oc);
+     PCMachineClass *pcmc = PC_MACHINE_CLASS(oc);
+     HotplugHandlerClass *hc = HOTPLUG_HANDLER_CLASS(oc);
+ 
+@@ -1814,6 +1812,7 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
+     pcmc->pvh_enabled = true;
+     pcmc->kvmclock_create_always = true;
+     pcmc->resizable_acpi_blob = true;
++    x86mc->apic_xrupt_override = true;
+     assert(!mc->get_hotplug_handler);
+     mc->get_hotplug_handler = pc_get_hotplug_handler;
+     mc->hotplug_allowed = pc_hotplug_allowed;
 -- 
 2.41.0
 
