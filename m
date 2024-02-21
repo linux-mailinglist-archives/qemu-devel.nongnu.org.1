@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2085A85E85F
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 20:55:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2231C85E860
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 20:55:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcsfS-0007Im-Ml; Wed, 21 Feb 2024 14:54:10 -0500
+	id 1rcsfT-0007K5-Fo; Wed, 21 Feb 2024 14:54:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <bobby825@126.com>)
- id 1rcsfQ-0007Hn-J6; Wed, 21 Feb 2024 14:54:08 -0500
-Received: from m16.mail.126.com ([220.197.31.6])
+ id 1rcsfS-0007J9-90; Wed, 21 Feb 2024 14:54:10 -0500
+Received: from m16.mail.126.com ([117.135.210.7])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
  (envelope-from <bobby825@126.com>)
- id 1rcsfM-0002ec-8t; Wed, 21 Feb 2024 14:54:08 -0500
+ id 1rcsfN-0002gp-1F; Wed, 21 Feb 2024 14:54:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
- s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=xUgF3
- eEwoaVx31GbAphfCzyKv6zNp1x84DqIbkUNDDs=; b=W+1Us/H2oKyBKcEfn5JNt
- dtCg20r1DqR2LWY7LT7IilZFPL+TSnkxak8hcTzKUdCevHaxcn40Pl4Zwewkbndq
- /i7G4vXbdwM5xV41CD0BURlvuHLHp/NJSOAGEOU+v7lySlhGa4OTaRVXDcC3rxa9
- 21V8zuqV2fzPD8U1A37T/0=
+ s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=DtmZ3
+ beYDhPgRkDo2uOLN8mhU0rXC+dqtTwCGAwFEAY=; b=CpgtBRvtbbwld+sjGdLFY
+ /GMfDu7Q1N30BgN3OvCm05aswuftRiHGBP25cQtJ7R1RCkTV5VWinCgstT0x9SFJ
+ 7oz28va3Y6Pnko38ezz/W+sDnVtk9MvRlVivN9CMpuwiy6SNgi+eK0e6dQFIYWY3
+ ULcavo1DkZkSGFH//UUmoo=
 Received: from localhost.localdomain (unknown [101.88.177.236])
- by gzga-smtp-mta-g1-2 (Coremail) with SMTP id _____wAnLoHJVNZlICNbAw--.46376S2;
- Thu, 22 Feb 2024 03:53:46 +0800 (CST)
+ by gzga-smtp-mta-g1-2 (Coremail) with SMTP id _____wAnLoHJVNZlICNbAw--.46376S3;
+ Thu, 22 Feb 2024 03:53:52 +0800 (CST)
 From: Tianlan Zhou <bobby825@126.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-trivial@nongnu.org,
  Tianlan Zhou <bobby825@126.com>
-Subject: [PATCH v2 0/2] Update description for input grab key
-Date: Thu, 22 Feb 2024 03:52:08 +0800
-Message-Id: <20240221195208.462-1-bobby825@126.com>
+Subject: [PATCH v2 1/2] docs/system: Update description for input grab key
+Date: Thu, 22 Feb 2024 03:52:09 +0800
+Message-Id: <20240221195208.462-2-bobby825@126.com>
 X-Mailer: git-send-email 2.38.1.windows.1
+In-Reply-To: <20240221195208.462-1-bobby825@126.com>
+References: <20240221195208.462-1-bobby825@126.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: _____wAnLoHJVNZlICNbAw--.46376S2
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
- VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU1ManUUUUU
+X-CM-TRANSID: _____wAnLoHJVNZlICNbAw--.46376S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
+ VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUrpnQUUUUU
 X-Originating-IP: [101.88.177.236]
-X-CM-SenderInfo: xereu5qysvqiyswou0bp/1tbiGA6LUmVLZ6CNzgAAsl
-Received-SPF: pass client-ip=220.197.31.6; envelope-from=bobby825@126.com;
+X-CM-SenderInfo: xereu5qysvqiyswou0bp/1tbiHBSLUmV20XxRYAAAse
+Received-SPF: pass client-ip=117.135.210.7; envelope-from=bobby825@126.com;
  helo=m16.mail.126.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,20 +69,24 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Input grab key should be Ctrl-Alt-g, not just Ctrl-Alt.
 
-v2:
-- Update help message in system/vl.c
-
-v1:
-- Initial patch
-
-Tianlan Zhou (2):
-  docs/system: Update description for input grab key
-  system/vl: Update description for input grab key
-
+Signed-off-by: Tianlan Zhou <bobby825@126.com>
+---
  docs/system/keys.rst.inc | 2 +-
- system/vl.c              | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/docs/system/keys.rst.inc b/docs/system/keys.rst.inc
+index 2e2c97aa23..59966a3fe7 100644
+--- a/docs/system/keys.rst.inc
++++ b/docs/system/keys.rst.inc
+@@ -29,7 +29,7 @@ Ctrl-Alt-n
+    *3*
+       Serial port
+ 
+-Ctrl-Alt
++Ctrl-Alt-g
+    Toggle mouse and keyboard grab.
+ 
+ In the virtual consoles, you can use Ctrl-Up, Ctrl-Down, Ctrl-PageUp and
 -- 
 2.38.1.windows.1
 
