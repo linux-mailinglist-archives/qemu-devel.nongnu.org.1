@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E8085EA00
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:22:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0DF185EADF
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:31:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rctxT-0002E8-Tb; Wed, 21 Feb 2024 16:16:52 -0500
+	id 1rctxV-0002GX-Tp; Wed, 21 Feb 2024 16:16:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctxG-00024F-A2; Wed, 21 Feb 2024 16:16:39 -0500
+ id 1rctxI-00024g-Rj; Wed, 21 Feb 2024 16:16:43 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctxE-0000kl-DD; Wed, 21 Feb 2024 16:16:37 -0500
+ id 1rctxF-0000lD-Ma; Wed, 21 Feb 2024 16:16:40 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0C1114F7EA;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1A6044F7EB;
  Thu, 22 Feb 2024 00:16:45 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B89E6869A3;
+ by tsrv.corpit.ru (Postfix) with SMTP id C5703869A4;
  Thu, 22 Feb 2024 00:16:22 +0300 (MSK)
-Received: (nullmailer pid 2335253 invoked by uid 1000);
+Received: (nullmailer pid 2335256 invoked by uid 1000);
  Wed, 21 Feb 2024 21:16:22 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-block@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 03/28] qemu-img: create: convert img_size to signed,
- simplify handling
-Date: Thu, 22 Feb 2024 00:15:44 +0300
-Message-Id: <20240221211622.2335170-3-mjt@tls.msk.ru>
+Subject: [PATCH 04/28] qemu-img: global option processing and error printing
+Date: Thu, 22 Feb 2024 00:15:45 +0300
+Message-Id: <20240221211622.2335170-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1708544927.git.mjt@tls.msk.ru>
 References: <cover.1708544927.git.mjt@tls.msk.ru>
@@ -59,46 +58,314 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Initializing an unsigned as -1, or using temporary
-sval for conversion is awkward.  Since we don't allow
-other "negative" values anyway, use signed value and
-pass it to bdrv_img_create() (where it is properly
-converted to unsigned), simplifying code.
+In order to correctly print executable name in various
+error messages, pass argv[0] to error_exit() function.
+This way, error messages will refer to actual executable
+name, which may be different from 'qemu-img'.
+
+For subcommands, pass whole argv[] array, so argv[0] is
+the executable name, not subcommand name.  In order to
+do that, avoid resetting optind but continue with the
+next option.  Also don't require at least 3 options on
+the command line: it makes no sense with options before
+subcommand.
+
+Before invoking a subcommand, replace argv[0] to include
+the subcommand name.
+
+Introduce tryhelp() function which just prints
+
+ try 'command-name --help' for more info
+
+and exits.  When tryhelp() is called from within a subcommand
+handler, the message will look like:
+
+ try 'command-name subcommand --help' for more info
+
+qemu-img uses getopt_long() with ':' as the first char in
+optstring parameter, which means it doesn't print error
+messages but return ':' or '?' instead, and qemu-img uses
+unrecognized_option() or missing_argument() function to
+print error messages.  But it doesn't quite work:
+
+ $ ./qemu-img -xx
+ qemu-img: unrecognized option './qemu-img'
+
+so the aim is to let getopt_long() to print regular error
+messages instead (removing ':' prefix from optstring) and
+remove handling of '?' and ':' "options" entirely.  With
+concatenated argv[0] and the subcommand, it all finally
+does the right thing in all cases.  This will be done in
+subsequent changes command by command, with main() done
+last.
+
+unrecognized_option() and missing_argument() functions
+prototypes aren't changed by this patch, since they're
+called from many places and will be removed a few patches
+later.  Only artifical "qemu-img" argv0 is provided in
+there for now.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- qemu-img.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ qemu-img.c | 75 +++++++++++++++++++++++++++---------------------------
+ 1 file changed, 38 insertions(+), 37 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index ae14ed833d..df425b2517 100644
+index df425b2517..44dbf5be4f 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -511,7 +511,7 @@ static int64_t cvtnum(const char *name, const char *value)
- static int img_create(int argc, char **argv)
- {
-     int c;
--    uint64_t img_size = -1;
-+    int64_t img_size = -1;
-     const char *fmt = "raw";
-     const char *base_fmt = NULL;
-     const char *filename;
-@@ -582,13 +582,10 @@ static int img_create(int argc, char **argv)
+@@ -101,8 +101,15 @@ static void format_print(void *opaque, const char *name)
+     printf(" %s", name);
+ }
  
-     /* Get image size, if specified */
-     if (optind < argc) {
--        int64_t sval;
--
--        sval = cvtnum("image size", argv[optind++]);
--        if (sval < 0) {
-+        img_size = cvtnum("image size", argv[optind++]);
-+        if (img_size < 0) {
-             goto fail;
+-static G_NORETURN G_GNUC_PRINTF(1, 2)
+-void error_exit(const char *fmt, ...)
++static G_NORETURN
++void tryhelp(const char *argv0)
++{
++    error_printf("Try '%s --help' for more info\n", argv0);
++    exit(EXIT_FAILURE);
++}
++
++static G_NORETURN G_GNUC_PRINTF(2, 3)
++void error_exit(const char *argv0, const char *fmt, ...)
+ {
+     va_list ap;
+ 
+@@ -110,20 +117,19 @@ void error_exit(const char *fmt, ...)
+     error_vreport(fmt, ap);
+     va_end(ap);
+ 
+-    error_printf("Try 'qemu-img --help' for more information\n");
+-    exit(EXIT_FAILURE);
++    tryhelp(argv0);
+ }
+ 
+ static G_NORETURN
+ void missing_argument(const char *option)
+ {
+-    error_exit("missing argument for option '%s'", option);
++    error_exit("qemu-img", "missing argument for option '%s'", option);
+ }
+ 
+ static G_NORETURN
+ void unrecognized_option(const char *option)
+ {
+-    error_exit("unrecognized option '%s'", option);
++    error_exit("qemu-img", "unrecognized option '%s'", option);
+ }
+ 
+ /* Please keep in synch with docs/tools/qemu-img.rst */
+@@ -576,7 +582,7 @@ static int img_create(int argc, char **argv)
+     }
+ 
+     if (optind >= argc) {
+-        error_exit("Expecting image file name");
++        error_exit(argv[0], "Expecting image file name");
+     }
+     optind++;
+ 
+@@ -588,7 +594,7 @@ static int img_create(int argc, char **argv)
          }
--        img_size = (uint64_t)sval;
      }
      if (optind != argc) {
-         error_exit("Unexpected argument: %s", argv[optind]);
+-        error_exit("Unexpected argument: %s", argv[optind]);
++        error_exit(argv[0], "Unexpected argument: %s", argv[optind]);
+     }
+ 
+     bdrv_img_create(filename, fmt, base_filename, base_fmt,
+@@ -770,7 +776,7 @@ static int img_check(int argc, char **argv)
+             } else if (!strcmp(optarg, "all")) {
+                 fix = BDRV_FIX_LEAKS | BDRV_FIX_ERRORS;
+             } else {
+-                error_exit("Unknown option value for -r "
++                error_exit(argv[0], "Unknown option value for -r "
+                            "(expecting 'leaks' or 'all'): %s", optarg);
+             }
+             break;
+@@ -795,7 +801,7 @@ static int img_check(int argc, char **argv)
+         }
+     }
+     if (optind != argc - 1) {
+-        error_exit("Expecting one image file name");
++        error_exit(argv[0], "Expecting one image file name");
+     }
+     filename = argv[optind++];
+ 
+@@ -1025,7 +1031,7 @@ static int img_commit(int argc, char **argv)
+     }
+ 
+     if (optind != argc - 1) {
+-        error_exit("Expecting one image file name");
++        error_exit(argv[0], "Expecting one image file name");
+     }
+     filename = argv[optind++];
+ 
+@@ -1446,7 +1452,7 @@ static int img_compare(int argc, char **argv)
+ 
+ 
+     if (optind != argc - 2) {
+-        error_exit("Expecting two image file names");
++        error_exit(argv[0], "Expecting two image file names");
+     }
+     filename1 = argv[optind++];
+     filename2 = argv[optind++];
+@@ -3056,7 +3062,7 @@ static int img_info(int argc, char **argv)
+         }
+     }
+     if (optind != argc - 1) {
+-        error_exit("Expecting one image file name");
++        error_exit(argv[0], "Expecting one image file name");
+     }
+     filename = argv[optind++];
+ 
+@@ -3296,7 +3302,7 @@ static int img_map(int argc, char **argv)
+         }
+     }
+     if (optind != argc - 1) {
+-        error_exit("Expecting one image file name");
++        error_exit(argv[0], "Expecting one image file name");
+     }
+     filename = argv[optind];
+ 
+@@ -3411,7 +3417,7 @@ static int img_snapshot(int argc, char **argv)
+             return 0;
+         case 'l':
+             if (action) {
+-                error_exit("Cannot mix '-l', '-a', '-c', '-d'");
++                error_exit(argv[0], "Cannot mix '-l', '-a', '-c', '-d'");
+                 return 0;
+             }
+             action = SNAPSHOT_LIST;
+@@ -3419,7 +3425,7 @@ static int img_snapshot(int argc, char **argv)
+             break;
+         case 'a':
+             if (action) {
+-                error_exit("Cannot mix '-l', '-a', '-c', '-d'");
++                error_exit(argv[0], "Cannot mix '-l', '-a', '-c', '-d'");
+                 return 0;
+             }
+             action = SNAPSHOT_APPLY;
+@@ -3427,7 +3433,7 @@ static int img_snapshot(int argc, char **argv)
+             break;
+         case 'c':
+             if (action) {
+-                error_exit("Cannot mix '-l', '-a', '-c', '-d'");
++                error_exit(argv[0], "Cannot mix '-l', '-a', '-c', '-d'");
+                 return 0;
+             }
+             action = SNAPSHOT_CREATE;
+@@ -3435,7 +3441,7 @@ static int img_snapshot(int argc, char **argv)
+             break;
+         case 'd':
+             if (action) {
+-                error_exit("Cannot mix '-l', '-a', '-c', '-d'");
++                error_exit(argv[0], "Cannot mix '-l', '-a', '-c', '-d'");
+                 return 0;
+             }
+             action = SNAPSHOT_DELETE;
+@@ -3457,7 +3463,7 @@ static int img_snapshot(int argc, char **argv)
+     }
+ 
+     if (optind != argc - 1) {
+-        error_exit("Expecting one image file name");
++        error_exit(argv[0], "Expecting one image file name");
+     }
+     filename = argv[optind++];
+ 
+@@ -3624,10 +3630,11 @@ static int img_rebase(int argc, char **argv)
+     }
+ 
+     if (optind != argc - 1) {
+-        error_exit("Expecting one image file name");
++        error_exit(argv[0], "Expecting one image file name");
+     }
+     if (!unsafe && !out_baseimg) {
+-        error_exit("Must specify backing file (-b) or use unsafe mode (-u)");
++        error_exit(argv[0],
++                   "Must specify backing file (-b) or use unsafe mode (-u)");
+     }
+     filename = argv[optind++];
+ 
+@@ -4051,7 +4058,7 @@ static int img_resize(int argc, char **argv)
+     /* Remove size from argv manually so that negative numbers are not treated
+      * as options by getopt. */
+     if (argc < 3) {
+-        error_exit("Not enough arguments");
++        error_exit(argv[0], "Not enough arguments");
+         return 1;
+     }
+ 
+@@ -4109,7 +4116,7 @@ static int img_resize(int argc, char **argv)
+         }
+     }
+     if (optind != argc - 1) {
+-        error_exit("Expecting image file name and size");
++        error_exit(argv[0], "Expecting image file name and size");
+     }
+     filename = argv[optind++];
+ 
+@@ -4306,7 +4313,7 @@ static int img_amend(int argc, char **argv)
+     }
+ 
+     if (!options) {
+-        error_exit("Must specify options (-o)");
++        error_exit(argv[0], "Must specify options (-o)");
+     }
+ 
+     if (quiet) {
+@@ -4668,7 +4675,7 @@ static int img_bench(int argc, char **argv)
+     }
+ 
+     if (optind != argc - 1) {
+-        error_exit("Expecting one image file name");
++        error_exit(argv[0], "Expecting one image file name");
+     }
+     filename = argv[argc - 1];
+ 
+@@ -5556,9 +5563,6 @@ int main(int argc, char **argv)
+ 
+     module_call_init(MODULE_INIT_QOM);
+     bdrv_init();
+-    if (argc < 2) {
+-        error_exit("Not enough arguments");
+-    }
+ 
+     qemu_add_opts(&qemu_source_opts);
+     qemu_add_opts(&qemu_trace_opts);
+@@ -5583,15 +5587,11 @@ int main(int argc, char **argv)
+         }
+     }
+ 
+-    cmdname = argv[optind];
+-
+-    /* reset getopt_long scanning */
+-    argc -= optind;
+-    if (argc < 1) {
+-        return 0;
++    if (optind >= argc) {
++        error_exit(argv[0], "Not enough arguments");
+     }
+-    argv += optind;
+-    qemu_reset_optind();
++
++    cmdname = argv[optind++];
+ 
+     if (!trace_init_backends()) {
+         exit(1);
+@@ -5602,10 +5602,11 @@ int main(int argc, char **argv)
+     /* find the command */
+     for (cmd = img_cmds; cmd->name != NULL; cmd++) {
+         if (!strcmp(cmdname, cmd->name)) {
++            argv[0] = g_strdup_printf("%s %s", argv[0], cmdname);
+             return cmd->handler(argc, argv);
+         }
+     }
+ 
+     /* not found */
+-    error_exit("Command not found: %s", cmdname);
++    error_exit(argv[0], "Command not found: %s", cmdname);
+ }
 -- 
 2.39.2
 
