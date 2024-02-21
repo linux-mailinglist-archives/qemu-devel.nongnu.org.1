@@ -2,110 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDA1D85E13A
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:33:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99FC985E192
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:41:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoUj-0002mo-Ad; Wed, 21 Feb 2024 10:26:52 -0500
+	id 1rcoax-0002Q7-19; Wed, 21 Feb 2024 10:33:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rcoMW-0003Rf-NT
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:18:24 -0500
-Received: from mail-io1-xd36.google.com ([2607:f8b0:4864:20::d36])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rcjZL-0001lx-9r
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 05:11:18 -0500
-Received: by mail-io1-xd36.google.com with SMTP id
- ca18e2360f4ac-7c4949a366fso253321339f.1
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 02:11:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708510274; x=1709115074;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=XPD8jhIbDSZIaggwaCTJVQeh546LjhKhNB7LZ3iOLyU=;
- b=ZEvWmFlffp1ZU+kNYIADFJnRD1GI4LTJw1IsWC1mvtHYTr3Xg0Cx7EJOEGix2DsIae
- ZDz+OWhzF3AcNhdeZUJCeRcC6WSTgA0khhlhxJZjt+8YLI9bLZGm7NHZDHzSBi8rDG0S
- 34OXHnFsOeqmQkT8GUrzKZWdbMtB+B++X93Y477520ivfCXHxQX3GT0pl0Vu6Txshzdl
- +0vhzZED/eaVpZrMcID1BFGgwU9nKhQVuFGHc3c4hAoo5kD6ttVy28gMo/VN2rsNsxdf
- KurISf8WToib+6/crW46tj/JJYE4HnE4VMIKK9DBJXQ5bvpFMU9dkPaYGPG5EW7LIWbz
- YC4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708510274; x=1709115074;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XPD8jhIbDSZIaggwaCTJVQeh546LjhKhNB7LZ3iOLyU=;
- b=NT1rSnbq1iPTnBlHSSjJ+n+ULoCXrF02qb6rpjK7L1p0eENmEV4tz37EUQwjPtVaVz
- Xwfm5Lvh1qv7nGE5TMKKZOg0vcbIHPVODfnV+Hu4Ou4KrcG/kbp6uPNPPZszbj7tQGhR
- 4ojooA0IJJmcRxYGuQizuZ9G7EvI24SeQWjvO+UiokV5QKifBv+LK9STo8qtxfoeEPR8
- NY5AFfKnVpy/si0clkaapobRAlpIFzLJLeCY/eRT3Sqt4mBnQG2pk+OMuwBbKBxx0As6
- 95TPPIssXgXxP49E/IHlJuOGIUVP2/3M3fVsY2krxQEUI4MLT/EhazV0SQ9yJYyScW3O
- /neA==
-X-Gm-Message-State: AOJu0YyVjY+wzU/VRo4K5EfY4oSs8U6rEgQC86cxNpebeYpCRIBzOjH7
- c9AI7LNZv4swudOmpr/Nr/zUblLUpGFmvhF0O/j8nX8hINc6RALirvPSE1aGUnA=
-X-Google-Smtp-Source: AGHT+IE7unUuLCbAK2t/Rvu+pMjVTIQBGYWgnPs3uyfsRXfNtlQE9xB+W0G6Wq5Jmoc53U6R0JsUzA==
-X-Received: by 2002:a05:6e02:214e:b0:364:2239:a89b with SMTP id
- d14-20020a056e02214e00b003642239a89bmr19188267ilv.11.1708510273879; 
- Wed, 21 Feb 2024 02:11:13 -0800 (PST)
-Received: from [157.82.203.206] ([157.82.203.206])
- by smtp.gmail.com with ESMTPSA id
- d188-20020a6336c5000000b005dc89957e06sm8034185pga.71.2024.02.21.02.11.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Feb 2024 02:11:13 -0800 (PST)
-Message-ID: <bf5e9471-c09f-47f2-a5a3-83713255c47a@daynix.com>
-Date: Wed, 21 Feb 2024 19:11:05 +0900
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rcoXP-0003jH-9f; Wed, 21 Feb 2024 10:29:38 -0500
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rck1r-0006Ej-Ih; Wed, 21 Feb 2024 05:40:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=6q4CEzvSxRYjSolwFvPNHljnOCfacR2GjxvgW/Q9bLE=; b=RgvHmcXx8xY1rrxQS7QvxQOufW
+ gb0em3Tqr5trJLM6CMlQRSoL0ndmPIcnKdakQTfLinpNnQMD9bs50hWgFF7XJUv7vgeIgUTP4O6ql
+ RqLv2qhkFmvv5TW9l3743XPaQ4S2TUTImr4uELc8bjNPsEcVrzS1VP0XBtjnanvSpjxSsAL5WK7GL
+ Rpi8ULxVBg60gisyiuztI0OdqVBtDlTITp+ZkbrK34DvV2p7ENjhmI90PG+0V/D+HJIt7yVxwSota
+ i05knSs61Z4Sf7CODTF3MZBzR3fB3wsuBlwBWnatS1Sd0+F3KVs5QR1oOkC3Kte0/qXi3aCOH/ZJ2
+ PsCGAIq+xblMPKxymSpp9CZfiK9p4fzeB7byoQnEZPmE7arNyUfqaMNtua5nsWaGew0lgJNmhYnNb
+ QYEdZLm/RQ/VI1vK5E01co0hQsIS2knc0P8tojB5I+LaPTJRJrdC2YCA4UGU9V1Kfd6sqK30bNmUs
+ VmyY0vqhT3Y+aRsNt6I68KfMScRRCIjN6d7RSEuNNAlIU8vjNL3UY/hlqNrGp8lCBjKXZPAaZHxs8
+ uAeyolKw0FLT1NyNmESMIWhDqpELlSagSaPgbnYOqx1ETzmC208BIZrjWREBYsxc6zkZdgEpxlR5G
+ WXwrO/p9jJK47bt7n7ysKB6eLWqg3S5bge2oYzjPI=;
+Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rck10-0007uS-HG; Wed, 21 Feb 2024 10:39:54 +0000
+Message-ID: <537d53f6-8094-4d6e-b4a8-20ade481deee@ilande.co.uk>
+Date: Wed, 21 Feb 2024 10:40:29 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 18/23] plugins: add an API to read registers
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- David Hildenbrand <david@redhat.com>, Weiwei Li <liwei1518@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Rolnik <mrolnik@gmail.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-ppc@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-riscv@nongnu.org,
- Cleber Rosa <crosa@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Song Gao <gaosong@loongson.cn>, qemu-arm@nongnu.org,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, John Snow
- <jsnow@redhat.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-s390x@nongnu.org,
- Laurent Vivier <laurent@vivier.eu>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Yanan Wang <wangyanan55@huawei.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Brian Cain
- <bcain@quicinc.com>, Mahmoud Mandour <ma.mandourr@gmail.com>,
- Alexandre Iooss <erdnaxe@crans.org>, Bin Meng <bin.meng@windriver.com>,
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Alistair Francis <alistair.francis@wdc.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-References: <20240216163025.424857-1-alex.bennee@linaro.org>
- <20240216163025.424857-19-alex.bennee@linaro.org>
- <c38a22b5-01e8-40f1-bfc4-4bba9bf7b516@daynix.com>
- <87il2jcje8.fsf@draig.linaro.org>
- <bf31a250-9539-448c-9c64-4168ab8741f1@daynix.com>
- <87bk8ab0f4.fsf@draig.linaro.org>
+ qemu-devel@nongnu.org, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ qemu-arm@nongnu.org, kvm@vger.kernel.org,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+References: <20240216153517.49422-1-philmd@linaro.org>
+ <20240216153517.49422-2-philmd@linaro.org>
+ <bcfd3f9d-04e3-79c9-c15f-c3c8d7669bdb@eik.bme.hu>
+ <2f8ec2e2-c4c7-48c3-9c3d-3e20bc3d6b9b@linaro.org>
+ <b40fd79f-4d41-4e04-90c1-6f4b2fde811d@linaro.org>
+ <00e2b898-3c5f-d19c-fddc-e657306e071f@eik.bme.hu>
+ <2b9ea923-c4f9-4ee4-8ed2-ba9f62c15579@linaro.org>
+ <6b5758d6-f464-2461-f9dd-71d2e15b610a@eik.bme.hu>
+ <bc5929e4-1782-4719-8231-fe04a9719c40@ilande.co.uk>
+ <CAFEAcA-Mvd4NVY2yDgNEdjZ_YPrN93PDZRyfCi7JyCjmPs4gAQ@mail.gmail.com>
+ <0a31f410-415d-474b-bcea-9cb18f41aeb2@ilande.co.uk>
+ <CAFEAcA9v4yh=K9+ND7R+KHC_0=fW39=fK7ScjE+HX-ip-KwQvw@mail.gmail.com>
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <87bk8ab0f4.fsf@draig.linaro.org>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <CAFEAcA9v4yh=K9+ND7R+KHC_0=fW39=fK7ScjE+HX-ip-KwQvw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::d36;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-io1-xd36.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 1/6] hw/arm: Inline sysbus_create_simple(PL110 / PL111)
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,84 +121,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/02/21 19:02, Alex Bennée wrote:
-> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
-> 
->> On 2024/02/20 23:14, Alex Bennée wrote:
->>> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
->>>
->>>> On 2024/02/17 1:30, Alex Bennée wrote:
->>>>> We can only request a list of registers once the vCPU has been
->>>>> initialised so the user needs to use either call the get function on
->>>>> vCPU initialisation or during the translation phase.
->>>>> We don't expose the reg number to the plugin instead hiding it
->>>>> behind
->>>>> an opaque handle. This allows for a bit of future proofing should the
->>>>> internals need to be changed while also being hashed against the
->>>>> CPUClass so we can handle different register sets per-vCPU in
->>>>> hetrogenous situations.
->>>>> Having an internal state within the plugins also allows us to expand
->>>>> the interface in future (for example providing callbacks on register
->>>>> change if the translator can track changes).
->>>>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1706
->>>>> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
->>>>> Message-Id: <20240103173349.398526-39-alex.bennee@linaro.org>
->>>>> Based-on: <20231025093128.33116-18-akihiko.odaki@daynix.com>
->>>>> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
->>>>> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>> <snip>
->>>>> +/*
->>>>> + * Register handles
->>>>> + *
->>>>> + * The plugin infrastructure keeps hold of these internal data
->>>>> + * structures which are presented to plugins as opaque handles. They
->>>>> + * are global to the system and therefor additions to the hash table
->>>>> + * must be protected by the @reg_handle_lock.
->>>>> + *
->>>>> + * In order to future proof for up-coming heterogeneous work we want
->>>>> + * different entries for each CPU type while sharing them in the
->>>>> + * common case of multiple cores of the same type.
->>>>> + */
->>>>> +
->>>>> +static QemuMutex reg_handle_lock;
->>>>> +
->>>>> +struct qemu_plugin_register {
->>>>> +    const char *name;
->>>>> +    int gdb_reg_num;
->>>>> +};
->>>>> +
->>>>> +static GHashTable *reg_handles; /* hash table of PluginReg */
->>>>> +
->>>>> +/* Generate a stable key - would xxhash be overkill? */
->>>>> +static gpointer cpu_plus_reg_to_key(CPUState *cs, int gdb_regnum)
->>>>> +{
->>>>> +    uintptr_t key = (uintptr_t) cs->cc;
->>>>> +    key ^= gdb_regnum;
->>>>> +    return GUINT_TO_POINTER(key);
->>>>> +}
->>>>
->>>> I have pointed out this is theoretically prone to collisions and
->>>> unsafe.
->>> How is it unsafe? The aim is to share handles for the same CPUClass
->>> rather than having a unique handle per register/cpu combo.
->>
->> THe intention is legitimate, but the implementation is not safe. It
->> assumes (uintptr)cs->cc ^ gdb_regnum is unique, but there is no such
->> guarantee. The key of GHashTable must be unique; generating hashes of
->> keys should be done with hash_func given to g_hash_table_new().
-> 
-> This isn't a hash its a non-unique key. It is however unique for
-> the same register on the same class of CPU so for each vCPU in a system
-> can share the same opaque handles.
-> 
-> The hashing is done internally by glib. We would assert if there was a
-> duplicate key referring to a different register.
-> 
-> I'm unsure what you want here? Do you have a suggestion for the key
-> generation algorithm? As the comment notes I did consider a more complex
-> mixing algorithm using xxhash but that wouldn't guarantee no clash
-> either.
+On 19/02/2024 13:35, Peter Maydell wrote:
 
-I suggest using a struct that holds both of cs->cc and gdb_regnum, and 
-pass g_direct_equal() and g_direct_hash() to g_hash_table_new().
+> On Mon, 19 Feb 2024 at 13:33, Mark Cave-Ayland
+> <mark.cave-ayland@ilande.co.uk> wrote:
+>>
+>> On 19/02/2024 13:05, Peter Maydell wrote:
+>>
+>>> On Mon, 19 Feb 2024 at 12:49, Mark Cave-Ayland
+>>> <mark.cave-ayland@ilande.co.uk> wrote:
+>>>>
+>>>> On 19/02/2024 12:00, BALATON Zoltan wrote:
+>>>>> For new people trying to contribute to QEMU QDev is overwhelming so having some way
+>>>>> to need less of it to do simple things would help them to get started.
+>>>>
+>>>> It depends what how you define "simple": for QEMU developers most people search for
+>>>> similar examples in the codebase and copy/paste them. I'd much rather have a slightly
+>>>> longer, but consistent API for setting properties rather than coming up with many
+>>>> special case wrappers that need to be maintained just to keep the line count down for
+>>>> "simplicity".
+>>>>
+>>>> I think that Phil's approach here is the best one for now, particularly given that it
+>>>> allows us to take another step towards heterogeneous machines. As the work in this
+>>>> area matures it might be that we can consider other approaches, but that's not a
+>>>> decision that can be made right now and so shouldn't be a reason to block this change.
+>>>
+>>> Mmm. It's unfortunate that we're working with C, so we're a bit limited
+>>> in what tools we have to try to make a better and lower-boilerplate
+>>> interface for the "create, configure, realize and wire up devices" task.
+>>> (I think you could do much better in a higher level language...)
+>>> sysbus_create_simple() was handy at the time, but it doesn't work so
+>>> well for more complicated SoC-based boards. It's noticeable that
+>>> if you look at the code that uses it, it's almost entirely the older
+>>> and less maintained board models, especially those which don't actually
+>>> model an SoC and just have the board code create all the devices.
+>>
+>> Yeah I was thinking that you'd use the DSL (e.g. YAML templates or similar) to
+>> provide some of the boilerplating around common actions, rather than the C API
+>> itself. Even better, once everything has been moved to use a DSL then the C API
+>> shouldn't really matter so much as it is no longer directly exposed to the user.
+> 
+> That does feel like it's rather a long way away, though, so there
+> might be scope for improving our C APIs in the meantime. (Also,
+> doing the boilerplating with fragments of YAML or whatever means
+> that checking of eg typos and other syntax errors shifts from
+> compile time to runtime, which is a shame.)
+
+I think most people who frequently use QOM/qdev have ideas as to how to improve the C 
+API, but what seems clear to me is that the analysis of scenarios by Phil, Markus and 
+others as part of the heterogeneous machine work is useful and should be used to help 
+guide future work in this area.
+
+If there are proposed changes in the C API, I'd be keen to see a short RFC detailing 
+the changes and their rationale to aid developers/reviewers before they are 
+introduced into the codebase.
+
+
+ATB,
+
+Mark.
 
