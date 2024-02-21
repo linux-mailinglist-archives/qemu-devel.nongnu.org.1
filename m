@@ -2,38 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA08085EB41
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:48:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 224B685EB46
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:49:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcuRF-0000kw-8z; Wed, 21 Feb 2024 16:47:37 -0500
+	id 1rcuRH-0000sy-Jq; Wed, 21 Feb 2024 16:47:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcuRD-0000kP-1o; Wed, 21 Feb 2024 16:47:35 -0500
+ id 1rcuRF-0000ox-0R; Wed, 21 Feb 2024 16:47:37 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcuRB-0007LA-5K; Wed, 21 Feb 2024 16:47:34 -0500
+ id 1rcuRD-0007LQ-71; Wed, 21 Feb 2024 16:47:36 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 323874F860;
+ by isrv.corpit.ru (Postfix) with ESMTP id 44E694F861;
  Thu, 22 Feb 2024 00:47:46 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id CF522869E1;
+ by tsrv.corpit.ru (Postfix) with SMTP id E0545869E2;
  Thu, 22 Feb 2024 00:47:23 +0300 (MSK)
-Received: (nullmailer pid 2339835 invoked by uid 1000);
+Received: (nullmailer pid 2339838 invoked by uid 1000);
  Wed, 21 Feb 2024 21:47:23 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Jan=20Kl=C3=B6tzke?= <jan.kloetzke@kernkonzept.com>,
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Bohdan Kostiv <bohdan.kostiv@tii.ae>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.10 04/33] target/arm: fix exception syndrome for AArch32
- bkpt insn
-Date: Thu, 22 Feb 2024 00:46:47 +0300
-Message-Id: <20240221214723.2339742-4-mjt@tls.msk.ru>
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.10 05/33] system/vl.c: Fix handling of '-serial none
+ -serial something'
+Date: Thu, 22 Feb 2024 00:46:48 +0300
+Message-Id: <20240221214723.2339742-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.10-20240221121815@cover.tls.msk.ru>
 References: <qemu-stable-7.2.10-20240221121815@cover.tls.msk.ru>
@@ -63,83 +64,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jan Klötzke <jan.kloetzke@kernkonzept.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Debug exceptions that target AArch32 Hyp mode are reported differently
-than on AAarch64. Internally, Qemu uses the AArch64 syndromes. Therefore
-such exceptions need to be either converted to a prefetch abort
-(breakpoints, vector catch) or a data abort (watchpoints).
+Currently if the user passes multiple -serial options on the command
+line, we mostly treat those as applying to the different serial
+devices in order, so that for example
+ -serial stdio -serial file:filename
+will connect the first serial port to stdio and the second to the
+named file.
+
+The exception to this is the '-serial none' serial device type.  This
+means "don't allocate this serial device", but a bug means that
+following -serial options are not correctly handled, so that
+ -serial none -serial stdio
+has the unexpected effect that stdio is connected to the first serial
+port, not the second.
+
+This is a very long-standing bug that dates back at least as far as
+commit 998bbd74b9d81 from 2009.
+
+Make the 'none' serial type move forward in the indexing of serial
+devices like all the other serial types, so that any subsequent
+-serial options are correctly handled.
+
+Note that if your commandline mistakenly had a '-serial none' that
+was being overridden by a following '-serial something' option, you
+should delete the unnecessary '-serial none'.  This will give you the
+same behaviour as before, on QEMU versions both with and without this
+bug fix.
 
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Jan Klötzke <jan.kloetzke@kernkonzept.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240127202758.3326381-1-jan.kloetzke@kernkonzept.com
+Reported-by: Bohdan Kostiv <bohdan.kostiv@tii.ae>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit f670be1aad33e801779af580398895b9455747ee)
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20240122163607.459769-2-peter.maydell@linaro.org
+Fixes: 998bbd74b9d81 ("default devices: core code & serial lines")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit d2019a9d0c34a4fdcb5b5df550d73040dc0637d9)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 02cfeece45..343acfab3a 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -9836,6 +9836,24 @@ static void arm_cpu_do_interrupt_aarch32(CPUState *cs)
-     }
+diff --git a/softmmu/vl.c b/softmmu/vl.c
+index ce88869618..ab4394c53d 100644
+--- a/softmmu/vl.c
++++ b/softmmu/vl.c
+@@ -1363,18 +1363,22 @@ static void qemu_create_default_devices(void)
+ static int serial_parse(const char *devname)
+ {
+     int index = num_serial_hds;
+-    char label[32];
  
-     if (env->exception.target_el == 2) {
-+        /* Debug exceptions are reported differently on AArch32 */
-+        switch (syn_get_ec(env->exception.syndrome)) {
-+        case EC_BREAKPOINT:
-+        case EC_BREAKPOINT_SAME_EL:
-+        case EC_AA32_BKPT:
-+        case EC_VECTORCATCH:
-+            env->exception.syndrome = syn_insn_abort(arm_current_el(env) == 2,
-+                                                     0, 0, 0x22);
-+            break;
-+        case EC_WATCHPOINT:
-+            env->exception.syndrome = syn_set_ec(env->exception.syndrome,
-+                                                 EC_DATAABORT);
-+            break;
-+        case EC_WATCHPOINT_SAME_EL:
-+            env->exception.syndrome = syn_set_ec(env->exception.syndrome,
-+                                                 EC_DATAABORT_SAME_EL);
-+            break;
+-    if (strcmp(devname, "none") == 0)
+-        return 0;
+-    snprintf(label, sizeof(label), "serial%d", index);
+     serial_hds = g_renew(Chardev *, serial_hds, index + 1);
+ 
+-    serial_hds[index] = qemu_chr_new_mux_mon(label, devname, NULL);
+-    if (!serial_hds[index]) {
+-        error_report("could not connect serial device"
+-                     " to character backend '%s'", devname);
+-        return -1;
++    if (strcmp(devname, "none") == 0) {
++        /* Don't allocate a serial device for this index */
++        serial_hds[index] = NULL;
++    } else {
++        char label[32];
++        snprintf(label, sizeof(label), "serial%d", index);
++
++        serial_hds[index] = qemu_chr_new_mux_mon(label, devname, NULL);
++        if (!serial_hds[index]) {
++            error_report("could not connect serial device"
++                         " to character backend '%s'", devname);
++            return -1;
 +        }
-         arm_cpu_do_interrupt_aarch32_hyp(cs);
-         return;
      }
-diff --git a/target/arm/syndrome.h b/target/arm/syndrome.h
-index 15334a3d15..75a3327a30 100644
---- a/target/arm/syndrome.h
-+++ b/target/arm/syndrome.h
-@@ -25,6 +25,8 @@
- #ifndef TARGET_ARM_SYNDROME_H
- #define TARGET_ARM_SYNDROME_H
- 
-+#include "qemu/bitops.h"
-+
- /* Valid Syndrome Register EC field values */
- enum arm_exception_class {
-     EC_UNCATEGORIZED          = 0x00,
-@@ -76,6 +78,7 @@ typedef enum {
-     SME_ET_InactiveZA,
- } SMEExceptionType;
- 
-+#define ARM_EL_EC_LENGTH 6
- #define ARM_EL_EC_SHIFT 26
- #define ARM_EL_IL_SHIFT 25
- #define ARM_EL_ISV_SHIFT 24
-@@ -87,6 +90,11 @@ static inline uint32_t syn_get_ec(uint32_t syn)
-     return syn >> ARM_EL_EC_SHIFT;
- }
- 
-+static inline uint32_t syn_set_ec(uint32_t syn, uint32_t ec)
-+{
-+    return deposit32(syn, ARM_EL_EC_SHIFT, ARM_EL_EC_LENGTH, ec);
-+}
-+
- /*
-  * Utility functions for constructing various kinds of syndrome value.
-  * Note that in general we follow the AArch64 syndrome values; in a
+     num_serial_hds++;
+     return 0;
 -- 
 2.39.2
 
