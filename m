@@ -2,102 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC34285E1F0
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:52:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD72285E16F
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:38:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoTv-0007oY-A6; Wed, 21 Feb 2024 10:25:59 -0500
+	id 1rcoak-0001gk-St; Wed, 21 Feb 2024 10:33:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rcoN7-0004xl-Fp
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:19:02 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rcoU5-0000w0-5P
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:26:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rck3A-0006NY-9H
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 05:42:06 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rckLa-0000xt-Hn
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 06:01:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708512122;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Nsnmg5mi/lerDRFafL3w6XSxkCdhTGMidZW9pcicK2c=;
- b=IYWZOv5X7QjCVbhi+tG4JyE70fLKdr3WwZ2Z1BufQB8/3VAv2sO0XoWk8vxifRV2Pl/esA
- QWQjyW6v5a2H3W6+pinVwKKRzypn2y6/t4Fa+VOCfob/2DqpZx4c0C+ZlVSfxyP/b79rzf
- J7QEu2xJXpHHAErl5lilH4tNNYecoWE=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1708513264;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=OMHhrbAanmo5lu+1OAkkg62WenW49sTgp4urIrYlrhY=;
+ b=Qmrpo/dfpRUGANuWiqRjRNRhq3vsTMxHX+I+kZATBGyTyvsFPGw+oX7/PX7c6QHxAT/1qM
+ yk3s7Bsx702q+SLwEEC2AdVkxP0h3fkulSOYPlcWP4mmkTMpQJQA0kAqvE6eK/ikW27D/s
+ 0DAPWC6CrvTWfWcPNeNsXEhcb/xoKWQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-183-yj_psGmXNlaGGPlxEcqpeg-1; Wed, 21 Feb 2024 05:42:00 -0500
-X-MC-Unique: yj_psGmXNlaGGPlxEcqpeg-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-33d308b0c76so1735616f8f.0
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 02:42:00 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708512120; x=1709116920;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Nsnmg5mi/lerDRFafL3w6XSxkCdhTGMidZW9pcicK2c=;
- b=Nfo6mf+kHoZ88iwl+JabLwiUdtOzYjdbHapE3EbfTUqxQMARgYR6W/h1tK5Wqr8e7O
- nV6DLGljlwhWA7bR44Mpfte/lg/WAyGacoumBGwCrJjY/H6s/EPopXAjKflYJRbWaju7
- WIcNPnXwLQeHWWKNxgbOpF+1G5IPdPkp+uljbAyuhZJ07ZYo8bjMOI5iszhbjmi31FoF
- /ykDSx6y8XVP8x3LkgC7sSE1h90xsOV5Mz9zmEZkvTmcxzs6cujq2bwkVCu+CFH1l0P/
- +jp1jK1rRSIlPs+d+EE6v0fqeZ1R9YH9PJI4C0AA7WVCP1RnudFul3fAoPYA8oRr7+5v
- deug==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXOHkK44X/Cu78NP/ZpzEXv4VCy46M9zJSWaCNG+qqaw5X+UoDBc/f1AE/Mw7LqZOlOA2ldeVf9BNn7JLE0baNtP+GF5L0=
-X-Gm-Message-State: AOJu0YwzUmH9baEwmOfgzoohCKvXByY6/WKM4dkoPCZYj0Qef0oQvGyP
- 0/+Jo3gBPW5tniYzLqcJydoRc0tP+/sK2MrDcS8s1tb1Ic/sTn0Pb0R4jOkxzqqTQ/bEGHrENEf
- wjD3WWuA5bSlr8OulkUhzjn9ISSaH0zmt9zJq0VxK33z+FqQN7RDz
-X-Received: by 2002:adf:ff8c:0:b0:33d:251c:78b2 with SMTP id
- j12-20020adfff8c000000b0033d251c78b2mr11514081wrr.28.1708512119869; 
- Wed, 21 Feb 2024 02:41:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFccVb7rN0npvu4Uk+AiVoe2vtq3XI1WnI8yylZ1RarnLjzJ2w8FRRnRpXZElrF5//VXjIMlQ==
-X-Received: by 2002:adf:ff8c:0:b0:33d:251c:78b2 with SMTP id
- j12-20020adfff8c000000b0033d251c78b2mr11514063wrr.28.1708512119575; 
- Wed, 21 Feb 2024 02:41:59 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- bt21-20020a056000081500b0033d1f25b798sm16542591wrb.82.2024.02.21.02.41.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Feb 2024 02:41:59 -0800 (PST)
-Message-ID: <8c0f6a91-7ae2-46c6-a8ad-18ca096a6115@redhat.com>
-Date: Wed, 21 Feb 2024 11:41:57 +0100
+ us-mta-580-S4ruVI8iNoq71RCxv7i-OA-1; Wed, 21 Feb 2024 06:01:02 -0500
+X-MC-Unique: S4ruVI8iNoq71RCxv7i-OA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2C13E811E81;
+ Wed, 21 Feb 2024 11:01:02 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.194.110])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C69371C060AF;
+ Wed, 21 Feb 2024 11:01:00 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+	Peter Maydell <peter.maydell@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
+ Fabiano Rosas <farosas@suse.de>
+Subject: [PATCH] hw/intc/Kconfig: Fix GIC settings when using
+ "--without-default-devices"
+Date: Wed, 21 Feb 2024 12:00:59 +0100
+Message-ID: <20240221110059.152665-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] virtio-iommu: Use qemu_real_host_page_mask as default
- page_size_mask
-Content-Language: en-US
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- jean-philippe@linaro.org, alex.williamson@redhat.com, clg@redhat.com,
- peter.maydell@linaro.org, Peter Xu <peterx@redhat.com>
-References: <20240117132039.332273-1-eric.auger@redhat.com>
- <20240213044312-mutt-send-email-mst@kernel.org>
- <6d4b5766-f8e2-4889-827d-01d3509239f7@redhat.com>
- <20240213060731-mutt-send-email-mst@kernel.org>
- <417ea71e-fb45-4e1d-b8e5-9d54d93dba3b@redhat.com>
- <20240213064017-mutt-send-email-mst@kernel.org>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20240213064017-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,48 +74,57 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+When using "--without-default-devices", the ARM_GICV3_TCG and ARM_GIC_KVM
+settings currently get disabled, though the arm virt machine is only of
+very limited use in that case. This also causes the migration-test to
+fail in such builds. Let's make sure that we always keep the GIC switches
+enabled in the --without-default-devices builds, too.
 
-On 2/13/24 13:00, Michael S. Tsirkin wrote:
-> On Tue, Feb 13, 2024 at 12:24:22PM +0100, Eric Auger wrote:
->> Hi Michael,
->> On 2/13/24 12:09, Michael S. Tsirkin wrote:
->>> On Tue, Feb 13, 2024 at 11:32:13AM +0100, Eric Auger wrote:
->>>> Do you have an other concern?
->>> I also worry a bit about migrating between hosts with different
->>> page sizes. Not with kvm I am guessing but with tcg it does work I think?
->> I have never tried but is it a valid use case? Adding Peter in CC.
->>> Is this just for vfio and vdpa? Can we limit this to these setups
->>> maybe?
->> I am afraid we know the actual use case too later. If the VFIO device is
->> hotplugged we have started working with 4kB granule.
->>
->> The other way is to introduce a min_granule option as done for aw-bits.
->> But it is heavier.
->>
->> Thanks
->>
->> Eric
-> Let's say, if you are changing the default then we definitely want
-> a way to get the cmpatible behaviour for tcg.
-> So the compat machinery should be user-accessible too and documented.
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ hw/intc/Kconfig | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-I guess I need to add a new option to guarantee the machine compat.
-
-I was thinking about an enum GranuleMode property taking the following
-values, 4KB, 64KB, host
-Jean, do you think there is a rationale offering something richer?
-
-Obviously being able to set the exact page_size_mask + host mode would
-be better but this does not really fit into any std property type.
-
-Thanks
-
-Eric
->
+diff --git a/hw/intc/Kconfig b/hw/intc/Kconfig
+index 97d550b06b..2b5b2d2301 100644
+--- a/hw/intc/Kconfig
++++ b/hw/intc/Kconfig
+@@ -12,10 +12,6 @@ config IOAPIC
+     bool
+     select I8259
+ 
+-config ARM_GIC
+-    bool
+-    select MSI_NONBROKEN
+-
+ config OPENPIC
+     bool
+     select MSI_NONBROKEN
+@@ -25,14 +21,18 @@ config APIC
+     select MSI_NONBROKEN
+     select I8259
+ 
++config ARM_GIC
++    bool
++    select ARM_GICV3_TCG if TCG
++    select ARM_GIC_KVM if KVM
++    select MSI_NONBROKEN
++
+ config ARM_GICV3_TCG
+     bool
+-    default y
+     depends on ARM_GIC && TCG
+ 
+ config ARM_GIC_KVM
+     bool
+-    default y
+     depends on ARM_GIC && KVM
+ 
+ config XICS
+-- 
+2.43.2
 
 
