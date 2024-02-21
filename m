@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A6E985E1D3
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:48:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8454D85E167
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:37:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoct-0007TN-0U; Wed, 21 Feb 2024 10:35:15 -0500
-Received: from eggs.gnu.org ([2001:470:142:3::10])
+	id 1rcoRh-0002Z0-Na; Wed, 21 Feb 2024 10:23:42 -0500
+Received: from eggs.gnu.org ([209.51.188.92])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcoY2-0004kQ-Bf; Wed, 21 Feb 2024 10:30:15 -0500
+ id 1rchte-00086k-Sw; Wed, 21 Feb 2024 03:24:06 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rchtT-0002Z4-7U; Wed, 21 Feb 2024 03:24:00 -0500
+ id 1rchtb-0002Zm-7v; Wed, 21 Feb 2024 03:24:06 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4E4064F3E1;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5EAFA4F3E2;
  Wed, 21 Feb 2024 11:21:22 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 191C9860C0;
+ by tsrv.corpit.ru (Postfix) with SMTP id 298DD860C1;
  Wed, 21 Feb 2024 11:21:01 +0300 (MSK)
-Received: (nullmailer pid 2142094 invoked by uid 1000);
+Received: (nullmailer pid 2142097 invoked by uid 1000);
  Wed, 21 Feb 2024 08:20:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Eric Auger <eric.auger@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.2 35/60] virtio_iommu: Clear IOMMUPciBus pointer cache
- when system reset
-Date: Wed, 21 Feb 2024 11:20:23 +0300
-Message-Id: <20240221082058.2141850-35-mjt@tls.msk.ru>
+Subject: [Stable-8.2.2 36/60] smmu: Clear SMMUPciBus pointer cache when system
+ reset
+Date: Wed, 21 Feb 2024 11:20:24 +0300
+Message-Id: <20240221082058.2141850-36-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.2-20240221110049@cover.tls.msk.ru>
 References: <qemu-stable-8.2.2-20240221110049@cover.tls.msk.ru>
@@ -44,8 +44,8 @@ X-Spam_score_int: -68
 X-Spam_score: -6.9
 X-Spam_bar: ------
 X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,49 +63,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-s->iommu_pcibus_by_bus_num is a IOMMUPciBus pointer cache indexed
+s->smmu_pcibus_by_bus_num is a SMMUPciBus pointer cache indexed
 by bus number, bus number may not always be a fixed value,
 i.e., guest reboot to different kernel which set bus number with
 different algorithm.
 
-This could lead to endpoint binding to wrong iommu MR in
-virtio_iommu_get_endpoint(), then vfio device setup wrong
-mapping from other device.
+This could lead to smmu_iommu_mr() providing the wrong iommu MR.
 
-Remove the memset in virtio_iommu_device_realize() to avoid
-redundancy with memset in system reset.
-
+Suggested-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Message-Id: <20240125073706.339369-2-zhenzhong.duan@intel.com>
+Message-Id: <20240125073706.339369-3-zhenzhong.duan@intel.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Tested-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 9a457383ce9d309d4679b079fafb51f0a2d949aa)
+(cherry picked from commit 8a6b3f4dc95a064e88adaca86374108da0ecb38d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index 9d463efc52..90a7ca2d25 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -1264,6 +1264,8 @@ static void virtio_iommu_system_reset(void *opaque)
+diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
+index 9a8ac45431..f58261bb81 100644
+--- a/hw/arm/smmu-common.c
++++ b/hw/arm/smmu-common.c
+@@ -675,6 +675,8 @@ static void smmu_base_reset_hold(Object *obj)
+ {
+     SMMUState *s = ARM_SMMU(obj);
  
-     trace_virtio_iommu_system_reset();
- 
-+    memset(s->iommu_pcibus_by_bus_num, 0, sizeof(s->iommu_pcibus_by_bus_num));
++    memset(s->smmu_pcibus_by_bus_num, 0, sizeof(s->smmu_pcibus_by_bus_num));
 +
-     /*
-      * config.bypass is sticky across device reset, but should be restored on
-      * system reset
-@@ -1302,8 +1304,6 @@ static void virtio_iommu_device_realize(DeviceState *dev, Error **errp)
- 
-     virtio_init(vdev, VIRTIO_ID_IOMMU, sizeof(struct virtio_iommu_config));
- 
--    memset(s->iommu_pcibus_by_bus_num, 0, sizeof(s->iommu_pcibus_by_bus_num));
--
-     s->req_vq = virtio_add_queue(vdev, VIOMMU_DEFAULT_QUEUE_SIZE,
-                              virtio_iommu_handle_command);
-     s->event_vq = virtio_add_queue(vdev, VIOMMU_DEFAULT_QUEUE_SIZE, NULL);
+     g_hash_table_remove_all(s->configs);
+     g_hash_table_remove_all(s->iotlb);
+ }
 -- 
 2.39.2
 
