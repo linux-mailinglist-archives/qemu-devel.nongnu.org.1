@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 888B785E154
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:35:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D62BD85E1A7
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:44:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoQW-0008BD-IN; Wed, 21 Feb 2024 10:22:29 -0500
+	id 1rcoZA-0007X9-VM; Wed, 21 Feb 2024 10:31:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rcoKw-0001hh-C1; Wed, 21 Feb 2024 10:16:43 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190])
+ id 1rcoNX-0007qA-Jc; Wed, 21 Feb 2024 10:19:30 -0500
+Received: from szxga02-in.huawei.com ([45.249.212.188])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rcmLv-0004qt-WE; Wed, 21 Feb 2024 08:09:37 -0500
-Received: from mail.maildlp.com (unknown [172.19.163.44])
- by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TfxQy2QSbz1xp0F;
- Wed, 21 Feb 2024 21:08:10 +0800 (CST)
+ id 1rcmLx-0004rK-Pb; Wed, 21 Feb 2024 08:09:40 -0500
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+ by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4TfxRs5bJrzLqBy;
+ Wed, 21 Feb 2024 21:08:57 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id 0F830140154;
+ by mail.maildlp.com (Postfix) with ESMTPS id CEC7E1404DB;
  Wed, 21 Feb 2024 21:09:33 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 21 Feb
- 2024 21:09:32 +0800
+ 2024 21:09:33 +0800
 To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [RFC PATCH v2 13/22] hw/intc/arm_gicv3: Add external IRQ lines for NMI
-Date: Wed, 21 Feb 2024 13:08:14 +0000
-Message-ID: <20240221130823.677762-14-ruanjinjie@huawei.com>
+Subject: [RFC PATCH v2 14/22] target/arm: Handle NMI in
+ arm_cpu_do_interrupt_aarch64()
+Date: Wed, 21 Feb 2024 13:08:15 +0000
+Message-ID: <20240221130823.677762-15-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240221130823.677762-1-ruanjinjie@huawei.com>
 References: <20240221130823.677762-1-ruanjinjie@huawei.com>
@@ -42,14 +43,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.67.174.55]
 X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
  kwepemi500008.china.huawei.com (7.221.188.139)
-Received-SPF: pass client-ip=45.249.212.190;
- envelope-from=ruanjinjie@huawei.com; helo=szxga04-in.huawei.com
+Received-SPF: pass client-ip=45.249.212.188;
+ envelope-from=ruanjinjie@huawei.com; helo=szxga02-in.huawei.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
 X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,54 +68,32 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Augment the GICv3's QOM device interface by adding one
-new set of sysbus IRQ line, to signal NMI to each CPU.
+The NMI exception trap entry behave like IRQ or FIQ which depends on
+the NMI interrupt type.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- hw/intc/arm_gicv3_common.c         | 3 +++
- include/hw/intc/arm_gic_common.h   | 1 +
- include/hw/intc/arm_gicv3_common.h | 1 +
- 3 files changed, 5 insertions(+)
+ target/arm/helper.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/hw/intc/arm_gicv3_common.c b/hw/intc/arm_gicv3_common.c
-index cb55c72681..6249c3edc9 100644
---- a/hw/intc/arm_gicv3_common.c
-+++ b/hw/intc/arm_gicv3_common.c
-@@ -299,6 +299,9 @@ void gicv3_init_irqs_and_mmio(GICv3State *s, qemu_irq_handler handler,
-     for (i = 0; i < s->num_cpu; i++) {
-         sysbus_init_irq(sbd, &s->cpu[i].parent_vfiq);
-     }
-+    for (i = 0; i < s->num_cpu; i++) {
-+        sysbus_init_irq(sbd, &s->cpu[i].parent_nmi);
-+    }
- 
-     memory_region_init_io(&s->iomem_dist, OBJECT(s), ops, s,
-                           "gicv3_dist", 0x10000);
-diff --git a/include/hw/intc/arm_gic_common.h b/include/hw/intc/arm_gic_common.h
-index 7080375008..fc89be96d4 100644
---- a/include/hw/intc/arm_gic_common.h
-+++ b/include/hw/intc/arm_gic_common.h
-@@ -71,6 +71,7 @@ struct GICState {
-     qemu_irq parent_fiq[GIC_NCPU];
-     qemu_irq parent_virq[GIC_NCPU];
-     qemu_irq parent_vfiq[GIC_NCPU];
-+    qemu_irq parent_nmi[GIC_NCPU];
-     qemu_irq maintenance_irq[GIC_NCPU];
- 
-     /* GICD_CTLR; for a GIC with the security extensions the NS banked version
-diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
-index 4e2fb518e7..1eb8c39239 100644
---- a/include/hw/intc/arm_gicv3_common.h
-+++ b/include/hw/intc/arm_gicv3_common.h
-@@ -155,6 +155,7 @@ struct GICv3CPUState {
-     qemu_irq parent_fiq;
-     qemu_irq parent_virq;
-     qemu_irq parent_vfiq;
-+    qemu_irq parent_nmi;
- 
-     /* Redistributor */
-     uint32_t level;                  /* Current IRQ level */
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 952ea7c02a..ac5f998e32 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -11466,6 +11466,13 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
+     case EXCP_VFIQ:
+         addr += 0x100;
+         break;
++    case EXCP_NMI:
++        if (env->nmi_is_irq) {
++            addr += 0x80;
++        } else {
++            addr += 0x100;
++        }
++        break;
+     case EXCP_VSERR:
+         addr += 0x180;
+         /* Construct the SError syndrome from IDS and ISS fields. */
 -- 
 2.34.1
 
