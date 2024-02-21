@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0CFC85D0F0
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 08:11:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F0CF85D0F1
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 08:12:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcgkO-00007k-T5; Wed, 21 Feb 2024 02:10:28 -0500
+	id 1rcgll-0001sJ-4M; Wed, 21 Feb 2024 02:11:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rcgkL-00007L-4N
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 02:10:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rcglj-0001rU-97
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 02:11:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rcgk9-00062r-1W
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 02:10:24 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rcglh-0006JA-Tx
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 02:11:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708499410;
+ s=mimecast20190719; t=1708499509;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=iqPLVOtSYfJum3uYFgOmy2G+Z0ylaCldui6mZhJ9mUo=;
- b=CEmLShYx6z1p4MTjP6cpcXkIdIOiHTAmjQlql6BUNrqNMAcQELU6p0xZCTpZhFTiuoOn0T
- 5Ugdrh+vfN7E7NLqvIJwCDnhG7X8qymyq21IoBntqbzKIZo28wsvPIN1lweUq9hImX4NmR
- m2cuhEu//BUZIVbBNHieJ6BcLnn0UWc=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=62Mb2OlfKN4UDaAuc6PsP06x7aQo7hLlvw4h8qPSDB4=;
+ b=LycrRDk7JU59rraNt5WgjjbD+1DBIxpAOeZQ7wVvBE3I+buk5TlsaHK6kCo7qPNJm3/8JO
+ WR8CbAD/4g3KqRyAjvZg2dBDfUCo9cmMjlM2LMEL14M7ezkQ+JlRJbh371BmF2Rf6pSi3h
+ sghss3Nd6wcoU50xwoTHe9AGVh7VUoI=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-231-GJ_RzVtBN3-lGxDh_v9ezQ-1; Wed, 21 Feb 2024 02:10:08 -0500
-X-MC-Unique: GJ_RzVtBN3-lGxDh_v9ezQ-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a35ef7abe08so355151466b.2
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 23:10:08 -0800 (PST)
+ us-mta-352-0uMJz--6PZqvtn0qNTA21g-1; Wed, 21 Feb 2024 02:11:47 -0500
+X-MC-Unique: 0uMJz--6PZqvtn0qNTA21g-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a30f9374db7so744205166b.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 23:11:47 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708499407; x=1709104207;
+ d=1e100.net; s=20230601; t=1708499506; x=1709104306;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iqPLVOtSYfJum3uYFgOmy2G+Z0ylaCldui6mZhJ9mUo=;
- b=HNLI0dszzq0lD651/murE9iz6zeUUTUkUH1dU6uhiplsXX5Xo98ne2qw/V4W9UdSS0
- f4hV3LCo79uNX/rqbOjs84tW6M2fNmv8YzBuiLlHt+qL80hA3wdJTQxZzalPRXXY4ybn
- fO3B2EeNbqrwRWEiDIGGeDO8AuhZV+8ax/jC60SLslMxhdMl5NErS+oRNvWHH2+iIVaT
- sUndxQ4M5gKBRlhCcuvSoNaHJtX+08O80sJ+qkDQeyA4tusKUNiZ5rU2k8wH+U5KA2KV
- rJaCSJCOlOH6qoR1uuDmBDPRnMo7ju2OdlM66QyE29C14ItOcBgCzaIL9uPrIMrABpkh
- QWow==
+ bh=62Mb2OlfKN4UDaAuc6PsP06x7aQo7hLlvw4h8qPSDB4=;
+ b=vwDnMeRIvQV4afNZec9fUTAvz3tqlDS8ekhXtxD7A5c5l4CpT9IzSe/InSYxNl/9IU
+ pf3DPrm4G/+LtOEL5z5v5j6Vt202w6kadX3vg0mgTqq7z8HjrDCCcNu2sFYUGnenQ+PO
+ NiMKewge/pSfQi+eVFEqW54l3O/VN8bQ2sYNp2vbLJKTqMYKsfjWq9hLe1QZoMUOIK4x
+ gpnTG9KJ6GXQpOKJ66OULTyWA9VBs7RkHxIl4PqaqblRVIf2Ppc2p96XLswiigHMSTma
+ aQcMRPJ8G/3FS5BH3GWZx01YILMnNoAAvEyCzH5aHJsj1kOr3iVFd5KqZCUdmFLHO4x/
+ AUKg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWkel4Mwe/Eui46En9Ef+Wu10kGdwTKPMU4WZzAQ0ioD3RYCZ7PNYfLcJBgkvDNRnCq28g9ru2fnmJ1gGceZuQgdryZci8=
-X-Gm-Message-State: AOJu0YwKkz1wOBLZLe3mg+kro5SroOvoQHnNW5eaQQ9VZrCMRonhlT5Q
- 34tYEbH9BRPpQl5seh/tfF5utKXyCL/2Te87XwIBPyxujUJkqYR00rAFnS6I0Cxp1Rin+lrkOka
- AHlTSKZY7SVc2yF3zYUExvT+S0nS62ggWaVBDLimQXtF0bZmTQPTL
-X-Received: by 2002:a17:906:b354:b0:a3e:d450:d3e0 with SMTP id
- cd20-20020a170906b35400b00a3ed450d3e0mr4092919ejb.43.1708499406851; 
- Tue, 20 Feb 2024 23:10:06 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE25KHy+cN6vEuiQv3L6xRRLrOzjqxoxOykRBeu7xKLFg0eoKoZc3XZMYXNtZztyTc67rmOIA==
-X-Received: by 2002:a17:906:b354:b0:a3e:d450:d3e0 with SMTP id
- cd20-20020a170906b35400b00a3ed450d3e0mr4092906ejb.43.1708499406575; 
- Tue, 20 Feb 2024 23:10:06 -0800 (PST)
+ AJvYcCUT2hlgoVeY+Krh0LIGZzhoskWdz34/cP1hQxbAE7LNrEree3d1W0y7AQHbDdFxn6l0o86tBSSjNZFTiqWAM1HfM4coPXI=
+X-Gm-Message-State: AOJu0YyKRzWXJTflpK0lricTPulqa30g5jch7EWNtgbgKIAZ3HhU5pNw
+ /DJm85RS47+F9RVVsojii/64DJJqZ2662R5mxR+BU06UWFoC3jPHgLLIuYhUj+tb78snKMb4iai
+ kg51WPVbl/ThIXilRqhQq4HUyrpm0/M5cheFAbPB5vPhIZWeAaRFT
+X-Received: by 2002:a17:907:d91:b0:a3e:ec63:8fa9 with SMTP id
+ go17-20020a1709070d9100b00a3eec638fa9mr5498845ejc.16.1708499506432; 
+ Tue, 20 Feb 2024 23:11:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGgFHNqoZDOs1geVXACmUbEoK0iaI0E+R888Gh3/zKLZJJ0peHbWRAQ3qCKl9VCy99NZmhuDA==
+X-Received: by 2002:a17:907:d91:b0:a3e:ec63:8fa9 with SMTP id
+ go17-20020a1709070d9100b00a3eec638fa9mr5498824ejc.16.1708499506184; 
+ Tue, 20 Feb 2024 23:11:46 -0800 (PST)
 Received: from [192.168.0.9] (ip-109-43-178-100.web.vodafone.de.
  [109.43.178.100]) by smtp.gmail.com with ESMTPSA id
- f6-20020a170906560600b00a3f106b6de9sm1043963ejq.216.2024.02.20.23.10.05
+ f6-20020a170906560600b00a3f106b6de9sm1043963ejq.216.2024.02.20.23.11.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Feb 2024 23:10:06 -0800 (PST)
-Message-ID: <15a0b0cc-eb78-437f-b82f-72dab7a51fb9@redhat.com>
-Date: Wed, 21 Feb 2024 08:10:05 +0100
+ Tue, 20 Feb 2024 23:11:45 -0800 (PST)
+Message-ID: <8bb8fc26-a408-4405-928f-5c87c3096ccf@redhat.com>
+Date: Wed, 21 Feb 2024 08:11:45 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] docs: Document that 32-bit Windows is unsupported
+Subject: Re: [PATCH 2/3] .gitlab-ci.d: Drop cross-win32-system job
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
 Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Yonggang Luo <luoyonggang@gmail.com>
 References: <20240220174412.155885-1-peter.maydell@linaro.org>
- <20240220174412.155885-2-peter.maydell@linaro.org>
+ <20240220174412.155885-3-peter.maydell@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -117,16 +117,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240220174412.155885-2-peter.maydell@linaro.org>
+In-Reply-To: <20240220174412.155885-3-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -145,23 +146,19 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 20/02/2024 18.44, Peter Maydell wrote:
-> ---
->   docs/about/build-platforms.rst  |  2 ++
->   docs/about/removed-features.rst | 15 +++++++++++++++
->   2 files changed, 17 insertions(+)
+> We don't support 32-bit Windows any more, so we don't need to defend it
+> with this CI job.
 > 
-> diff --git a/docs/about/build-platforms.rst b/docs/about/build-platforms.rst
-> index f2a7aec56ff..8fd7da140a3 100644
-> --- a/docs/about/build-platforms.rst
-> +++ b/docs/about/build-platforms.rst
-> @@ -139,6 +139,8 @@ unprivileged accounts can create symlinks if Developer Mode is enabled.
->   When Developer Mode is not available/enabled, the SeCreateSymbolicLinkPrivilege
->   privilege is required, or the process must be run as an administrator.
->   
-> +Only 64-bit Windows is supported.
-...
-
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   .gitlab-ci.d/container-cross.yml              |   5 -
+>   .gitlab-ci.d/crossbuilds.yml                  |  14 ---
+>   .../dockerfiles/fedora-win32-cross.docker     | 111 ------------------
+>   tests/lcitool/refresh                         |   5 -
+>   4 files changed, 135 deletions(-)
+>   delete mode 100644 tests/docker/dockerfiles/fedora-win32-cross.docker
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+
 
 
