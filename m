@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D723585E211
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:55:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAF9D85E11A
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:29:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoby-0004tg-6Y; Wed, 21 Feb 2024 10:34:18 -0500
+	id 1rcoPj-0005og-Tw; Wed, 21 Feb 2024 10:21:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rcoUP-0002Dm-0k; Wed, 21 Feb 2024 10:26:29 -0500
+ id 1rcoKR-0000wC-Tl; Wed, 21 Feb 2024 10:16:14 -0500
 Received: from szxga04-in.huawei.com ([45.249.212.190])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rcmLu-0004pA-AB; Wed, 21 Feb 2024 08:09:37 -0500
+ id 1rcmLz-0004pK-Mi; Wed, 21 Feb 2024 08:09:42 -0500
 Received: from mail.maildlp.com (unknown [172.19.162.112])
- by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TfxQp6YVQz1xnn0;
- Wed, 21 Feb 2024 21:08:02 +0800 (CST)
+ by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TfxPx3nPbz2Bd9w;
+ Wed, 21 Feb 2024 21:07:17 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id 9BA8A14011B;
- Wed, 21 Feb 2024 21:09:25 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 787D114011B;
+ Wed, 21 Feb 2024 21:09:26 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 21 Feb
@@ -30,9 +30,9 @@ To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [RFC PATCH v2 04/22] target/arm: Implement ALLINT MSR (immediate)
-Date: Wed, 21 Feb 2024 13:08:05 +0000
-Message-ID: <20240221130823.677762-5-ruanjinjie@huawei.com>
+Subject: [RFC PATCH v2 05/22] target/arm: Support MSR access to ALLINT
+Date: Wed, 21 Feb 2024 13:08:06 +0000
+Message-ID: <20240221130823.677762-6-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240221130823.677762-1-ruanjinjie@huawei.com>
 References: <20240221130823.677762-1-ruanjinjie@huawei.com>
@@ -67,98 +67,65 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add ALLINT MSR (immediate) to decodetree. And the EL0 check is necessary
-to ALLINT. Avoid the unconditional write to pc and use raise_exception_ra
-to unwind.
+Support ALLINT msr access as follow:
+	mrs <xt>, ALLINT	// read allint
+	msr ALLINT, <xt>	// write allint with imm
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- target/arm/tcg/a64.decode      |  1 +
- target/arm/tcg/helper-a64.c    | 24 ++++++++++++++++++++++++
- target/arm/tcg/helper-a64.h    |  1 +
- target/arm/tcg/translate-a64.c | 10 ++++++++++
- 4 files changed, 36 insertions(+)
+ target/arm/helper.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 8a20dce3c8..3588080024 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -207,6 +207,7 @@ MSR_i_DIT       1101 0101 0000 0 011 0100 .... 010 11111 @msr_i
- MSR_i_TCO       1101 0101 0000 0 011 0100 .... 100 11111 @msr_i
- MSR_i_DAIFSET   1101 0101 0000 0 011 0100 .... 110 11111 @msr_i
- MSR_i_DAIFCLEAR 1101 0101 0000 0 011 0100 .... 111 11111 @msr_i
-+MSR_i_ALLINT    1101 0101 0000 0 001 0100 .... 000 11111 @msr_i
- MSR_i_SVCR      1101 0101 0000 0 011 0100 0 mask:2 imm:1 011 11111
- 
- # MRS, MSR (register), SYS, SYSL. These are all essentially the
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index ebaa7f00df..3686926ada 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -66,6 +66,30 @@ void HELPER(msr_i_spsel)(CPUARMState *env, uint32_t imm)
-     update_spsel(env, imm);
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index a3062cb2ad..211156d640 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -4618,6 +4618,31 @@ static void aa64_daif_write(CPUARMState *env, const ARMCPRegInfo *ri,
+     env->daif = value & PSTATE_DAIF;
  }
  
-+static void allint_check(CPUARMState *env, uint32_t op,
-+                       uint32_t imm, uintptr_t ra)
++static void aa64_allint_write(CPUARMState *env, const ARMCPRegInfo *ri,
++                              uint64_t value)
 +{
-+    /* ALLINT update to PSTATE. */
++    env->allint = value & PSTATE_ALLINT;
++}
++
++static uint64_t aa64_allint_read(CPUARMState *env, const ARMCPRegInfo *ri)
++{
++    return env->allint & PSTATE_ALLINT;
++}
++
++static CPAccessResult aa64_allint_access(CPUARMState *env,
++                                         const ARMCPRegInfo *ri, bool isread)
++{
 +    if (arm_current_el(env) == 0) {
-+        raise_exception_ra(env, EXCP_UDEF,
-+                           syn_aa64_sysregtrap(0, extract32(op, 0, 3),
-+                                               extract32(op, 3, 3), 4,
-+                                               imm, 0x1f, 0),
-+                           exception_target_el(env), ra);
++        return CP_ACCESS_TRAP_UNCATEGORIZED;
 +    }
++
++    if (arm_current_el(env) == 1 && arm_is_el2_enabled(env) &&
++        cpu_isar_feature(aa64_hcx, env_archcpu(env)) &&
++        (env->cp15.hcrx_el2 & HCRX_TALLINT))
++        return CP_ACCESS_TRAP_EL2;
++    return CP_ACCESS_OK;
 +}
 +
-+void HELPER(msr_i_allint)(CPUARMState *env, uint32_t imm)
-+{
-+    allint_check(env, 0x8, imm, GETPC());
-+    if (imm == 1) {
-+        env->allint |= PSTATE_ALLINT;
-+    } else {
-+        env->allint &= ~PSTATE_ALLINT;
-+    }
-+    arm_rebuild_hflags(env);
-+}
-+
- static void daif_check(CPUARMState *env, uint32_t op,
-                        uint32_t imm, uintptr_t ra)
+ static uint64_t aa64_pan_read(CPUARMState *env, const ARMCPRegInfo *ri)
  {
-diff --git a/target/arm/tcg/helper-a64.h b/target/arm/tcg/helper-a64.h
-index 575a5dab7d..3aec703d4a 100644
---- a/target/arm/tcg/helper-a64.h
-+++ b/target/arm/tcg/helper-a64.h
-@@ -22,6 +22,7 @@ DEF_HELPER_FLAGS_1(rbit64, TCG_CALL_NO_RWG_SE, i64, i64)
- DEF_HELPER_2(msr_i_spsel, void, env, i32)
- DEF_HELPER_2(msr_i_daifset, void, env, i32)
- DEF_HELPER_2(msr_i_daifclear, void, env, i32)
-+DEF_HELPER_2(msr_i_allint, void, env, i32)
- DEF_HELPER_3(vfp_cmph_a64, i64, f16, f16, ptr)
- DEF_HELPER_3(vfp_cmpeh_a64, i64, f16, f16, ptr)
- DEF_HELPER_3(vfp_cmps_a64, i64, f32, f32, ptr)
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 340265beb0..f1800f7c71 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -2036,6 +2036,16 @@ static bool trans_MSR_i_DAIFCLEAR(DisasContext *s, arg_i *a)
-     return true;
- }
- 
-+static bool trans_MSR_i_ALLINT(DisasContext *s, arg_i *a)
-+{
-+    if (!dc_isar_feature(aa64_nmi, s) || s->current_el == 0) {
-+        return false;
-+    }
-+    gen_helper_msr_i_allint(tcg_env, tcg_constant_i32(a->imm));
-+    s->base.is_jmp = DISAS_TOO_MANY;
-+    return true;
-+}
-+
- static bool trans_MSR_i_SVCR(DisasContext *s, arg_MSR_i_SVCR *a)
- {
-     if (!dc_isar_feature(aa64_sme, s) || a->mask == 0) {
+     return env->pstate & PSTATE_PAN;
+@@ -5437,6 +5462,13 @@ static const ARMCPRegInfo v8_cp_reginfo[] = {
+       .access = PL0_RW, .accessfn = aa64_daif_access,
+       .fieldoffset = offsetof(CPUARMState, daif),
+       .writefn = aa64_daif_write, .resetfn = arm_cp_reset_ignore },
++    { .name = "ALLINT", .state = ARM_CP_STATE_AA64,
++      .opc0 = 3, .opc1 = 0, .opc2 = 0, .crn = 4, .crm = 3,
++      .type = ARM_CP_NO_RAW,
++      .access = PL1_RW, .accessfn = aa64_allint_access,
++      .fieldoffset = offsetof(CPUARMState, allint),
++      .writefn = aa64_allint_write, .readfn = aa64_allint_read,
++      .resetfn = arm_cp_reset_ignore },
+     { .name = "FPCR", .state = ARM_CP_STATE_AA64,
+       .opc0 = 3, .opc1 = 3, .opc2 = 0, .crn = 4, .crm = 4,
+       .access = PL0_RW, .type = ARM_CP_FPU | ARM_CP_SUPPRESS_TB_END,
 -- 
 2.34.1
 
