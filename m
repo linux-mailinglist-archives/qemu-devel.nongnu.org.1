@@ -2,48 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93AD485EA18
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:24:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FF0585EA0C
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:23:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rctzb-0001xh-6S; Wed, 21 Feb 2024 16:19:03 -0500
+	id 1rctyZ-0004X0-AL; Wed, 21 Feb 2024 16:17:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctzL-00010D-Le; Wed, 21 Feb 2024 16:18:47 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctzJ-00018S-3W; Wed, 21 Feb 2024 16:18:47 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 71FFE4F802;
- Thu, 22 Feb 2024 00:16:46 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 28B74869BA;
- Thu, 22 Feb 2024 00:16:24 +0300 (MSK)
-Received: (nullmailer pid 2335322 invoked by uid 1000);
- Wed, 21 Feb 2024 21:16:22 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org, qemu-block@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 26/28] qemu-img: implement short --help,
- remove global help() function
-Date: Thu, 22 Feb 2024 00:16:07 +0300
-Message-Id: <20240221211622.2335170-26-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1708544927.git.mjt@tls.msk.ru>
-References: <cover.1708544927.git.mjt@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctyP-0003WG-Q3
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:17:50 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctyN-0000z5-BJ
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:17:49 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-33d26da3e15so126531f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:17:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708550264; x=1709155064; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=TS/v5N8VdhzRmhkYhnKkjLky4Kvoae1G5ndSJvSbSPI=;
+ b=qe8mzHBkyj6O/Omp2SsxsOjnG1sBVQRdEBzjCBFGHCIm29qXDuHR0hCpUd68Ki/Cbp
+ nMxIMdYLvRjNvECbzOBEjd0oUiRii244jH720dTlMLxYQuhU8MoTTyCWeYY7YH3cQ5Ii
+ lLR00QW83OHR1u+uHQVxkI7KkNHZyTmNnN8a/ZkCAdehFOeJ64GUc6fglig71E/uVqnH
+ AQXNnB8qVRVtDCbnNmTu/0vTKkbydtHr3s9j2xXIuaSYKtqXOHD7owsXVr89rtOlfD0D
+ 3vSYjkwBzqZgW952fwZS5hkLUwKyK1fR+w9odJ7zFzZJ+7BUyn4c89aD/7mQmdBh9iPB
+ rFmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708550264; x=1709155064;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=TS/v5N8VdhzRmhkYhnKkjLky4Kvoae1G5ndSJvSbSPI=;
+ b=pJhSjmK9Y65kikdURIGUlZ+MNX+UQ5fmyhwGhCPEDXZvGNGwN/I8NmiDErOOntx7O5
+ YGMRfLTBSRPBg0PFE+95EIwh74ycbuiKDLLrF6kgj8em8LiFFZiTpJkwAUFtnUBAUHFQ
+ Yta7bFxLI4kZDxRcqQk4Duu9KAOrkoMgQwGRNIs/gv/idzLXyTzsLOjNgtltHDbwFuHL
+ 3V7HfA4JUFq/F0lyEM9K9DuTkE+vfwJrhO8ILafAH8CT+Ej0NMfT0SFIYiyzcYpJPZ4c
+ OV6pAmkCzN0utLidSDXh7mPueMpAjPV49vwd0DfTDXMBYfwoBCX3jsSPFxFSg6Yoh2ia
+ DF5g==
+X-Gm-Message-State: AOJu0Yx7vV24sDM078AOvMoLlK37jJw+4Q7O4e8TCMPBrH6mdRYr4onx
+ 3043TtkkMyhB54DQsvHFHl8K8v5j7f8axJPXUB2jHPRBHs2P9vTt3IpXO5b0Y7tRiv3xnv5APJv
+ D5Bo=
+X-Google-Smtp-Source: AGHT+IFfLHK3TMMn59JlfPjRduUTVlyACZCCgT6GwnUvXVCJEoySOCu4hkxH0a6W8hDsoGZgOljxfw==
+X-Received: by 2002:a5d:4fce:0:b0:33d:27c3:9f47 with SMTP id
+ h14-20020a5d4fce000000b0033d27c39f47mr480220wrw.35.1708550264622; 
+ Wed, 21 Feb 2024 13:17:44 -0800 (PST)
+Received: from m1x-phil.lan ([176.187.211.34])
+ by smtp.gmail.com with ESMTPSA id
+ q17-20020a05600c46d100b0041249ea88b9sm18846364wmo.16.2024.02.21.13.17.43
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 21 Feb 2024 13:17:44 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
+ Bernhard Beschow <shentey@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 08/25] hw/i386/pc_piix: Share pc_cmos_init() invocation between
+ pc and isapc machines
+Date: Wed, 21 Feb 2024 22:16:08 +0100
+Message-ID: <20240221211626.48190-9-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240221211626.48190-1-philmd@linaro.org>
+References: <20240221211626.48190-1-philmd@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,242 +99,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-now once all individual subcommands has --help support, remove
-the large unreadable help() thing and replace it with small
-global --help, which refers to individual command --help for
-more info.
+From: Bernhard Beschow <shentey@gmail.com>
 
-While at it, also line-wrap list of formats after 75 chars.
+Both invocations are the same and either one is always executed. Avoid this
+redundancy.
 
-Since missing_argument() and unrecognized_option() are now unused,
-remove them.
-
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240208220349.4948-3-shentey@gmail.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- qemu-img.c | 172 ++++++++++++-----------------------------------------
- 1 file changed, 39 insertions(+), 133 deletions(-)
+ hw/i386/pc_piix.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/qemu-img.c b/qemu-img.c
-index d72e1f565b..ea284dca2d 100644
---- a/qemu-img.c
-+++ b/qemu-img.c
-@@ -94,11 +94,6 @@ typedef enum OutputFormat {
- /* Default to cache=writeback as data integrity is not important for qemu-img */
- #define BDRV_DEFAULT_CACHE "writeback"
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 999b7b806c..9064511507 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -341,11 +341,8 @@ static void pc_init1(MachineState *machine,
  
--static void format_print(void *opaque, const char *name)
--{
--    printf(" %s", name);
--}
--
- static G_NORETURN
- void tryhelp(const char *argv0)
- {
-@@ -118,18 +113,6 @@ void error_exit(const char *argv0, const char *fmt, ...)
-     tryhelp(argv0);
- }
+     pc_nic_init(pcmc, isa_bus, pci_bus);
  
--static G_NORETURN
--void missing_argument(const char *option)
--{
--    error_exit("qemu-img", "missing argument for option '%s'", option);
--}
--
--static G_NORETURN
--void unrecognized_option(const char *option)
--{
--    error_exit("qemu-img", "unrecognized option '%s'", option);
--}
--
- /*
-  * Print --help output for a command and exit.
-  * syntax and description are multi-line with trailing EOL
-@@ -166,114 +149,6 @@ static OutputFormat parse_output_format(const char *argv0, const char *arg)
-     }
- }
+-    if (pcmc->pci_enabled) {
+-        pc_cmos_init(pcms, idebus[0], idebus[1], rtc_state);
+-    }
+ #ifdef CONFIG_IDE_ISA
+-    else {
++    if (!pcmc->pci_enabled) {
+         DriveInfo *hd[MAX_IDE_BUS * MAX_IDE_DEVS];
+         int i;
  
--/* Please keep in synch with docs/tools/qemu-img.rst */
--static G_NORETURN
--void help(void)
--{
--    const char *help_msg =
--           QEMU_IMG_VERSION
--           "usage: qemu-img [standard options] command [command options]\n"
--           "QEMU disk image utility\n"
--           "\n"
--           "    '-h', '--help'       display this help and exit\n"
--           "    '-V', '--version'    output version information and exit\n"
--           "    '-T', '--trace'      [[enable=]<pattern>][,events=<file>][,file=<file>]\n"
--           "                         specify tracing options\n"
--           "\n"
--           "Command syntax:\n"
--#define DEF(option, callback, arg_string)        \
--           "  " arg_string "\n"
--#include "qemu-img-cmds.h"
--#undef DEF
--           "\n"
--           "Command parameters:\n"
--           "  'filename' is a disk image filename\n"
--           "  'objectdef' is a QEMU user creatable object definition. See the qemu(1)\n"
--           "    manual page for a description of the object properties. The most common\n"
--           "    object type is a 'secret', which is used to supply passwords and/or\n"
--           "    encryption keys.\n"
--           "  'fmt' is the disk image format. It is guessed automatically in most cases\n"
--           "  'cache' is the cache mode used to write the output disk image, the valid\n"
--           "    options are: 'none', 'writeback' (default, except for convert), 'writethrough',\n"
--           "    'directsync' and 'unsafe' (default for convert)\n"
--           "  'src_cache' is the cache mode used to read input disk images, the valid\n"
--           "    options are the same as for the 'cache' option\n"
--           "  'size' is the disk image size in bytes. Optional suffixes\n"
--           "    'k' or 'K' (kilobyte, 1024), 'M' (megabyte, 1024k), 'G' (gigabyte, 1024M),\n"
--           "    'T' (terabyte, 1024G), 'P' (petabyte, 1024T) and 'E' (exabyte, 1024P)  are\n"
--           "    supported. 'b' is ignored.\n"
--           "  'output_filename' is the destination disk image filename\n"
--           "  'output_fmt' is the destination format\n"
--           "  'options' is a comma separated list of format specific options in a\n"
--           "    name=value format. Use -o help for an overview of the options supported by\n"
--           "    the used format\n"
--           "  'snapshot_param' is param used for internal snapshot, format\n"
--           "    is 'snapshot.id=[ID],snapshot.name=[NAME]', or\n"
--           "    '[ID_OR_NAME]'\n"
--           "  '-c' indicates that target image must be compressed (qcow format only)\n"
--           "  '-u' allows unsafe backing chains. For rebasing, it is assumed that old and\n"
--           "       new backing file match exactly. The image doesn't need a working\n"
--           "       backing file before rebasing in this case (useful for renaming the\n"
--           "       backing file). For image creation, allow creating without attempting\n"
--           "       to open the backing file.\n"
--           "  '-h' with or without a command shows this help and lists the supported formats\n"
--           "  '-p' show progress of command (only certain commands)\n"
--           "  '-q' use Quiet mode - do not print any output (except errors)\n"
--           "  '-S' indicates the consecutive number of bytes (defaults to 4k) that must\n"
--           "       contain only zeros for qemu-img to create a sparse image during\n"
--           "       conversion. If the number of bytes is 0, the source will not be scanned for\n"
--           "       unallocated or zero sectors, and the destination image will always be\n"
--           "       fully allocated\n"
--           "  '--output' takes the format in which the output must be done (human or json)\n"
--           "  '-n' skips the target volume creation (useful if the volume is created\n"
--           "       prior to running qemu-img)\n"
--           "\n"
--           "Parameters to bitmap subcommand:\n"
--           "  'bitmap' is the name of the bitmap to manipulate, through one or more\n"
--           "       actions from '--add', '--remove', '--clear', '--enable', '--disable',\n"
--           "       or '--merge source'\n"
--           "  '-g granularity' sets the granularity for '--add' actions\n"
--           "  '-b source' and '-F src_fmt' tell '--merge' actions to find the source\n"
--           "       bitmaps from an alternative file\n"
--           "\n"
--           "Parameters to check subcommand:\n"
--           "  '-r' tries to repair any inconsistencies that are found during the check.\n"
--           "       '-r leaks' repairs only cluster leaks, whereas '-r all' fixes all\n"
--           "       kinds of errors, with a higher risk of choosing the wrong fix or\n"
--           "       hiding corruption that has already occurred.\n"
--           "\n"
--           "Parameters to convert subcommand:\n"
--           "  '--bitmaps' copies all top-level persistent bitmaps to destination\n"
--           "  '-m' specifies how many coroutines work in parallel during the convert\n"
--           "       process (defaults to 8)\n"
--           "  '-W' allow to write to the target out of order rather than sequential\n"
--           "\n"
--           "Parameters to snapshot subcommand:\n"
--           "  'snapshot' is the name of the snapshot to create, apply or delete\n"
--           "  '-a' applies a snapshot (revert disk to saved state)\n"
--           "  '-c' creates a snapshot\n"
--           "  '-d' deletes a snapshot\n"
--           "  '-l' lists all snapshots in the given image\n"
--           "\n"
--           "Parameters to compare subcommand:\n"
--           "  '-f' first image format\n"
--           "  '-F' second image format\n"
--           "  '-s' run in Strict mode - fail on different image size or sector allocation\n"
--           "\n"
--           "Parameters to dd subcommand:\n"
--           "  'bs=BYTES' read and write up to BYTES bytes at a time "
--           "(default: 512)\n"
--           "  'count=N' copy only N input blocks\n"
--           "  'if=FILE' read from FILE\n"
--           "  'of=FILE' write to FILE\n"
--           "  'skip=N' skip N bs-sized blocks at the start of input\n";
--
--    printf("%s\nSupported formats:", help_msg);
--    bdrv_iterate_format(format_print, NULL, false);
--    printf("\n\n" QEMU_HELP_BOTTOM "\n");
--    exit(EXIT_SUCCESS);
--}
--
- /*
-  * Is @list safe for accumulate_options()?
-  * It is when multiple of them can be joined together separated by ','.
-@@ -5956,6 +5831,16 @@ static const img_cmd_t img_cmds[] = {
-     { NULL, NULL, },
- };
- 
-+static void format_print(void *opaque, const char *name)
-+{
-+    int *np = opaque;
-+    if (*np + strlen(name) > 75) {
-+        printf("\n ");
-+        *np = 1;
-+    }
-+    *np += printf(" %s", name);
-+}
-+
- int main(int argc, char **argv)
- {
-     const img_cmd_t *cmd;
-@@ -5987,16 +5872,35 @@ int main(int argc, char **argv)
-     qemu_add_opts(&qemu_source_opts);
-     qemu_add_opts(&qemu_trace_opts);
- 
--    while ((c = getopt_long(argc, argv, "+:hVT:", long_options, NULL)) != -1) {
-+    while ((c = getopt_long(argc, argv, "+hVT:", long_options, NULL)) != -1) {
-         switch (c) {
--        case ':':
--            missing_argument(argv[optind - 1]);
--            return 0;
--        case '?':
--            unrecognized_option(argv[optind - 1]);
--            return 0;
-         case 'h':
--            help();
-+            printf(
-+QEMU_IMG_VERSION
-+"QEMU disk image utility.  Usage:\n"
-+"\n"
-+"  qemu-img [standard options] COMMAND [--help | command options]\n"
-+"\n"
-+"Standard options:\n"
-+"  -h, --help\n"
-+"     display this help and exit\n"
-+"  -V, --version\n"
-+"     display version info and exit\n"
-+"  -T,--trace TRACE\n"
-+"     specify tracing options:\n"
-+"        [[enable=]<pattern>][,events=<file>][,file=<file>]\n"
-+"\n"
-+"Recognized commands (run qemu-img COMMAND --help for command-specific help):\n\n");
-+            for (cmd = img_cmds; cmd->name != NULL; cmd++) {
-+                printf("  %s\n", cmd->name);
-+            }
-+            printf("\nSupported image formats:\n");
-+            c = 99; /* force a newline */
-+            bdrv_iterate_format(format_print, &c, false);
-+            if (c) {
-+                printf("\n");
-+            }
-+            printf("\n" QEMU_HELP_BOTTOM "\n");
-             return 0;
-         case 'V':
-             printf(QEMU_IMG_VERSION);
-@@ -6004,6 +5908,8 @@ int main(int argc, char **argv)
-         case 'T':
-             trace_opt_parse(optarg);
-             break;
-+        default:
-+            tryhelp(argv[0]);
+@@ -363,10 +360,11 @@ static void pc_init1(MachineState *machine,
+             busname[4] = '0' + i;
+             idebus[i] = qdev_get_child_bus(DEVICE(dev), busname);
          }
+-        pc_cmos_init(pcms, idebus[0], idebus[1], rtc_state);
      }
+ #endif
+ 
++    pc_cmos_init(pcms, idebus[0], idebus[1], rtc_state);
++
+     if (piix4_pm) {
+         smi_irq = qemu_allocate_irq(pc_acpi_smi_interrupt, first_cpu, 0);
  
 -- 
-2.39.2
+2.41.0
 
 
