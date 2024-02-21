@@ -2,109 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99FC985E192
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:41:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC34285E1F0
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:52:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoax-0002Q7-19; Wed, 21 Feb 2024 10:33:15 -0500
+	id 1rcoTv-0007oY-A6; Wed, 21 Feb 2024 10:25:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rcoXP-0003jH-9f; Wed, 21 Feb 2024 10:29:38 -0500
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rcoN7-0004xl-Fp
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:19:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rck1r-0006Ej-Ih; Wed, 21 Feb 2024 05:40:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=6q4CEzvSxRYjSolwFvPNHljnOCfacR2GjxvgW/Q9bLE=; b=RgvHmcXx8xY1rrxQS7QvxQOufW
- gb0em3Tqr5trJLM6CMlQRSoL0ndmPIcnKdakQTfLinpNnQMD9bs50hWgFF7XJUv7vgeIgUTP4O6ql
- RqLv2qhkFmvv5TW9l3743XPaQ4S2TUTImr4uELc8bjNPsEcVrzS1VP0XBtjnanvSpjxSsAL5WK7GL
- Rpi8ULxVBg60gisyiuztI0OdqVBtDlTITp+ZkbrK34DvV2p7ENjhmI90PG+0V/D+HJIt7yVxwSota
- i05knSs61Z4Sf7CODTF3MZBzR3fB3wsuBlwBWnatS1Sd0+F3KVs5QR1oOkC3Kte0/qXi3aCOH/ZJ2
- PsCGAIq+xblMPKxymSpp9CZfiK9p4fzeB7byoQnEZPmE7arNyUfqaMNtua5nsWaGew0lgJNmhYnNb
- QYEdZLm/RQ/VI1vK5E01co0hQsIS2knc0P8tojB5I+LaPTJRJrdC2YCA4UGU9V1Kfd6sqK30bNmUs
- VmyY0vqhT3Y+aRsNt6I68KfMScRRCIjN6d7RSEuNNAlIU8vjNL3UY/hlqNrGp8lCBjKXZPAaZHxs8
- uAeyolKw0FLT1NyNmESMIWhDqpELlSagSaPgbnYOqx1ETzmC208BIZrjWREBYsxc6zkZdgEpxlR5G
- WXwrO/p9jJK47bt7n7ysKB6eLWqg3S5bge2oYzjPI=;
-Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rck10-0007uS-HG; Wed, 21 Feb 2024 10:39:54 +0000
-Message-ID: <537d53f6-8094-4d6e-b4a8-20ade481deee@ilande.co.uk>
-Date: Wed, 21 Feb 2024 10:40:29 +0000
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rck3A-0006NY-9H
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 05:42:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1708512122;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Nsnmg5mi/lerDRFafL3w6XSxkCdhTGMidZW9pcicK2c=;
+ b=IYWZOv5X7QjCVbhi+tG4JyE70fLKdr3WwZ2Z1BufQB8/3VAv2sO0XoWk8vxifRV2Pl/esA
+ QWQjyW6v5a2H3W6+pinVwKKRzypn2y6/t4Fa+VOCfob/2DqpZx4c0C+ZlVSfxyP/b79rzf
+ J7QEu2xJXpHHAErl5lilH4tNNYecoWE=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-183-yj_psGmXNlaGGPlxEcqpeg-1; Wed, 21 Feb 2024 05:42:00 -0500
+X-MC-Unique: yj_psGmXNlaGGPlxEcqpeg-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-33d308b0c76so1735616f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 02:42:00 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708512120; x=1709116920;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Nsnmg5mi/lerDRFafL3w6XSxkCdhTGMidZW9pcicK2c=;
+ b=Nfo6mf+kHoZ88iwl+JabLwiUdtOzYjdbHapE3EbfTUqxQMARgYR6W/h1tK5Wqr8e7O
+ nV6DLGljlwhWA7bR44Mpfte/lg/WAyGacoumBGwCrJjY/H6s/EPopXAjKflYJRbWaju7
+ WIcNPnXwLQeHWWKNxgbOpF+1G5IPdPkp+uljbAyuhZJ07ZYo8bjMOI5iszhbjmi31FoF
+ /ykDSx6y8XVP8x3LkgC7sSE1h90xsOV5Mz9zmEZkvTmcxzs6cujq2bwkVCu+CFH1l0P/
+ +jp1jK1rRSIlPs+d+EE6v0fqeZ1R9YH9PJI4C0AA7WVCP1RnudFul3fAoPYA8oRr7+5v
+ deug==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXOHkK44X/Cu78NP/ZpzEXv4VCy46M9zJSWaCNG+qqaw5X+UoDBc/f1AE/Mw7LqZOlOA2ldeVf9BNn7JLE0baNtP+GF5L0=
+X-Gm-Message-State: AOJu0YwzUmH9baEwmOfgzoohCKvXByY6/WKM4dkoPCZYj0Qef0oQvGyP
+ 0/+Jo3gBPW5tniYzLqcJydoRc0tP+/sK2MrDcS8s1tb1Ic/sTn0Pb0R4jOkxzqqTQ/bEGHrENEf
+ wjD3WWuA5bSlr8OulkUhzjn9ISSaH0zmt9zJq0VxK33z+FqQN7RDz
+X-Received: by 2002:adf:ff8c:0:b0:33d:251c:78b2 with SMTP id
+ j12-20020adfff8c000000b0033d251c78b2mr11514081wrr.28.1708512119869; 
+ Wed, 21 Feb 2024 02:41:59 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFccVb7rN0npvu4Uk+AiVoe2vtq3XI1WnI8yylZ1RarnLjzJ2w8FRRnRpXZElrF5//VXjIMlQ==
+X-Received: by 2002:adf:ff8c:0:b0:33d:251c:78b2 with SMTP id
+ j12-20020adfff8c000000b0033d251c78b2mr11514063wrr.28.1708512119575; 
+ Wed, 21 Feb 2024 02:41:59 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ bt21-20020a056000081500b0033d1f25b798sm16542591wrb.82.2024.02.21.02.41.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 21 Feb 2024 02:41:59 -0800 (PST)
+Message-ID: <8c0f6a91-7ae2-46c6-a8ad-18ca096a6115@redhat.com>
+Date: Wed, 21 Feb 2024 11:41:57 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: BALATON Zoltan <balaton@eik.bme.hu>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- qemu-arm@nongnu.org, kvm@vger.kernel.org,
- Igor Mitsyanko <i.mitsyanko@gmail.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-References: <20240216153517.49422-1-philmd@linaro.org>
- <20240216153517.49422-2-philmd@linaro.org>
- <bcfd3f9d-04e3-79c9-c15f-c3c8d7669bdb@eik.bme.hu>
- <2f8ec2e2-c4c7-48c3-9c3d-3e20bc3d6b9b@linaro.org>
- <b40fd79f-4d41-4e04-90c1-6f4b2fde811d@linaro.org>
- <00e2b898-3c5f-d19c-fddc-e657306e071f@eik.bme.hu>
- <2b9ea923-c4f9-4ee4-8ed2-ba9f62c15579@linaro.org>
- <6b5758d6-f464-2461-f9dd-71d2e15b610a@eik.bme.hu>
- <bc5929e4-1782-4719-8231-fe04a9719c40@ilande.co.uk>
- <CAFEAcA-Mvd4NVY2yDgNEdjZ_YPrN93PDZRyfCi7JyCjmPs4gAQ@mail.gmail.com>
- <0a31f410-415d-474b-bcea-9cb18f41aeb2@ilande.co.uk>
- <CAFEAcA9v4yh=K9+ND7R+KHC_0=fW39=fK7ScjE+HX-ip-KwQvw@mail.gmail.com>
+Subject: Re: [PATCH v2] virtio-iommu: Use qemu_real_host_page_mask as default
+ page_size_mask
 Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <CAFEAcA9v4yh=K9+ND7R+KHC_0=fW39=fK7ScjE+HX-ip-KwQvw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ jean-philippe@linaro.org, alex.williamson@redhat.com, clg@redhat.com,
+ peter.maydell@linaro.org, Peter Xu <peterx@redhat.com>
+References: <20240117132039.332273-1-eric.auger@redhat.com>
+ <20240213044312-mutt-send-email-mst@kernel.org>
+ <6d4b5766-f8e2-4889-827d-01d3509239f7@redhat.com>
+ <20240213060731-mutt-send-email-mst@kernel.org>
+ <417ea71e-fb45-4e1d-b8e5-9d54d93dba3b@redhat.com>
+ <20240213064017-mutt-send-email-mst@kernel.org>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20240213064017-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 1/6] hw/arm: Inline sysbus_create_simple(PL110 / PL111)
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,66 +110,48 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/02/2024 13:35, Peter Maydell wrote:
+Hi,
 
-> On Mon, 19 Feb 2024 at 13:33, Mark Cave-Ayland
-> <mark.cave-ayland@ilande.co.uk> wrote:
+On 2/13/24 13:00, Michael S. Tsirkin wrote:
+> On Tue, Feb 13, 2024 at 12:24:22PM +0100, Eric Auger wrote:
+>> Hi Michael,
+>> On 2/13/24 12:09, Michael S. Tsirkin wrote:
+>>> On Tue, Feb 13, 2024 at 11:32:13AM +0100, Eric Auger wrote:
+>>>> Do you have an other concern?
+>>> I also worry a bit about migrating between hosts with different
+>>> page sizes. Not with kvm I am guessing but with tcg it does work I think?
+>> I have never tried but is it a valid use case? Adding Peter in CC.
+>>> Is this just for vfio and vdpa? Can we limit this to these setups
+>>> maybe?
+>> I am afraid we know the actual use case too later. If the VFIO device is
+>> hotplugged we have started working with 4kB granule.
 >>
->> On 19/02/2024 13:05, Peter Maydell wrote:
+>> The other way is to introduce a min_granule option as done for aw-bits.
+>> But it is heavier.
 >>
->>> On Mon, 19 Feb 2024 at 12:49, Mark Cave-Ayland
->>> <mark.cave-ayland@ilande.co.uk> wrote:
->>>>
->>>> On 19/02/2024 12:00, BALATON Zoltan wrote:
->>>>> For new people trying to contribute to QEMU QDev is overwhelming so having some way
->>>>> to need less of it to do simple things would help them to get started.
->>>>
->>>> It depends what how you define "simple": for QEMU developers most people search for
->>>> similar examples in the codebase and copy/paste them. I'd much rather have a slightly
->>>> longer, but consistent API for setting properties rather than coming up with many
->>>> special case wrappers that need to be maintained just to keep the line count down for
->>>> "simplicity".
->>>>
->>>> I think that Phil's approach here is the best one for now, particularly given that it
->>>> allows us to take another step towards heterogeneous machines. As the work in this
->>>> area matures it might be that we can consider other approaches, but that's not a
->>>> decision that can be made right now and so shouldn't be a reason to block this change.
->>>
->>> Mmm. It's unfortunate that we're working with C, so we're a bit limited
->>> in what tools we have to try to make a better and lower-boilerplate
->>> interface for the "create, configure, realize and wire up devices" task.
->>> (I think you could do much better in a higher level language...)
->>> sysbus_create_simple() was handy at the time, but it doesn't work so
->>> well for more complicated SoC-based boards. It's noticeable that
->>> if you look at the code that uses it, it's almost entirely the older
->>> and less maintained board models, especially those which don't actually
->>> model an SoC and just have the board code create all the devices.
+>> Thanks
 >>
->> Yeah I was thinking that you'd use the DSL (e.g. YAML templates or similar) to
->> provide some of the boilerplating around common actions, rather than the C API
->> itself. Even better, once everything has been moved to use a DSL then the C API
->> shouldn't really matter so much as it is no longer directly exposed to the user.
-> 
-> That does feel like it's rather a long way away, though, so there
-> might be scope for improving our C APIs in the meantime. (Also,
-> doing the boilerplating with fragments of YAML or whatever means
-> that checking of eg typos and other syntax errors shifts from
-> compile time to runtime, which is a shame.)
+>> Eric
+> Let's say, if you are changing the default then we definitely want
+> a way to get the cmpatible behaviour for tcg.
+> So the compat machinery should be user-accessible too and documented.
 
-I think most people who frequently use QOM/qdev have ideas as to how to improve the C 
-API, but what seems clear to me is that the analysis of scenarios by Phil, Markus and 
-others as part of the heterogeneous machine work is useful and should be used to help 
-guide future work in this area.
+I guess I need to add a new option to guarantee the machine compat.
 
-If there are proposed changes in the C API, I'd be keen to see a short RFC detailing 
-the changes and their rationale to aid developers/reviewers before they are 
-introduced into the codebase.
+I was thinking about an enum GranuleMode property taking the following
+values, 4KB, 64KB, host
+Jean, do you think there is a rationale offering something richer?
 
+Obviously being able to set the exact page_size_mask + host mode would
+be better but this does not really fit into any std property type.
 
-ATB,
+Thanks
 
-Mark.
+Eric
+>
+
 
