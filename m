@@ -2,88 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F3A685E0DC
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:20:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2DE85E0EA
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:24:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoOO-0001Op-Oe; Wed, 21 Feb 2024 10:20:16 -0500
+	id 1rcoKd-0001VA-3f; Wed, 21 Feb 2024 10:16:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcoKS-00010D-F8
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:16:14 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcmum-0002qL-Aw
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 08:45:41 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-33d4c0b198aso424005f8f.2
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 05:45:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708523130; x=1709127930; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Fi2dhpL+qLMWxFcngjZldzHxIQ972VN9MgMUHj+ZWwQ=;
- b=wE0Zo6cb06S+DWw4KkY77ObErZKimpjOHAHXKQAlZ7qqc7UPCiSTWHpBpSBQ4jY90D
- p1oS7WEh4Grm1W2z7huceVM/CKSl5Z4KoGv5xGy2hYX/wi/xN7cvlZYfuRDY2oDZtrFF
- qrcSf1BT89g5sm1gYnU9Xkb2Tk26zRl64NJe/UH+wxkrP5O6P7yWWflkxvX1jyMfnIKk
- RPC+cDHu93ihLd8MSKyhY4z2iCUt9frlvgdeDRjLAosdN3csBKhmKMRBp/Jp8vgwsxj5
- M+v1CRmyQq4JMjuQy+7vrAbuxmHHYslfKgub9fmhriKBXsgm4VupiNi9ihpH1ECJ2HF9
- Da6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708523130; x=1709127930;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Fi2dhpL+qLMWxFcngjZldzHxIQ972VN9MgMUHj+ZWwQ=;
- b=LcqSzEr6Tunxx8FnWKDJQLtjTZTfmqOeMa4qLTEbKqSYYeaqddR5ZCmu7OYLh+AwRl
- EAYrsHL0w++6fri+yDNFzUyapZr8QfFQhqa/FTNsGh+35n4q/dH765TAQeiilnElk2hj
- /ccRV5rwFfTclJjhlT4uDQiNQT7Ys3vAmFHk6dldL7s3c3BKJEnHrqyjsNeDHeb4b9Ut
- 3uHS7YMVN+gu3GO2tzW1iSXVezCe3uDjQvajJAjRUgazO7c4KA0y1jun4sMmdRaCdgTY
- kzQyPymb9+OG3l39XYAHk32Yvy7Mzz+gSbAUIXwziV4zg2Liz4dqMYS+rcp4vq4LWQ26
- M+DQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX8qkcSOgSz1m0wApD2FZRzMQb5/8/h4qL/808XueKkTmPeFE6KcpQFDMVEaOgv+Qme0N2gPwrxYJfCt+LQQ1sYB7dhUis=
-X-Gm-Message-State: AOJu0YzD0UzviEE3HoPv5JmUntIpibDpo4f9w29LAxS8vJUOI45Azhy2
- WaJO6B5/65xe2LxPw90205U9kFhMiVUBHsYh3W3MJ/fTq+vz89/z4XftD62XgK4=
-X-Google-Smtp-Source: AGHT+IFT2+cVpKPUTuUdMzPxeTDttft+njFeJ3JTgfufCq5/t8hAkj8ZtbP0wSBTkswQEAp4MzSsjQ==
-X-Received: by 2002:a05:6000:184a:b0:33d:6b89:fbbb with SMTP id
- c10-20020a056000184a00b0033d6b89fbbbmr3932116wri.47.1708523129812; 
- Wed, 21 Feb 2024 05:45:29 -0800 (PST)
-Received: from [192.168.245.175] (99.red-88-29-190.dynamicip.rima-tde.net.
- [88.29.190.99]) by smtp.gmail.com with ESMTPSA id
- co3-20020a0560000a0300b0033d70dd0e04sm4790426wrb.8.2024.02.21.05.45.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Feb 2024 05:45:29 -0800 (PST)
-Message-ID: <65a89550-7932-4ee4-a693-3456322cdca1@linaro.org>
-Date: Wed, 21 Feb 2024 14:07:51 +0100
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1rcoJe-0000nB-4L; Wed, 21 Feb 2024 10:15:24 -0500
+Received: from szxga01-in.huawei.com ([45.249.212.187])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1rcmLx-0004oS-KG; Wed, 21 Feb 2024 08:09:40 -0500
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+ by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4TfxQP54w4zsX3R;
+ Wed, 21 Feb 2024 21:07:41 +0800 (CST)
+Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
+ by mail.maildlp.com (Postfix) with ESMTPS id 64E6A1404DB;
+ Wed, 21 Feb 2024 21:09:21 +0800 (CST)
+Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
+ (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 21 Feb
+ 2024 21:09:20 +0800
+To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
+ <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
+ <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
+CC: <ruanjinjie@huawei.com>
+Subject: [RFC PATCH v2 00/22] target/arm: Implement FEAT_NMI and FEAT_GICv3_NMI
+Date: Wed, 21 Feb 2024 13:08:01 +0000
+Message-ID: <20240221130823.677762-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/10] hw/i386: Store pointers to IDE buses in
- PCMachineState
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>
-References: <20240220160622.114437-1-peter.maydell@linaro.org>
- <20240220160622.114437-2-peter.maydell@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240220160622.114437-2-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.174.55]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemi500008.china.huawei.com (7.221.188.139)
+Received-SPF: pass client-ip=45.249.212.187;
+ envelope-from=ruanjinjie@huawei.com; helo=szxga01-in.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,64 +60,86 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jinjie Ruan <ruanjinjie@huawei.com>
+From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
+This patch set implements FEAT_NMI and FEAT_GICv3_NMI for armv8. These
+introduce support for a new category of interrupts in the architecture
+which we can use to provide NMI like functionality.
 
-On 20/2/24 17:06, Peter Maydell wrote:
-> Add the two IDE bus BusState pointers to the set we keep in PCMachineState.
-> This allows us to avoid passing them to pc_cmos_init(), and also will
-> allow a refactoring of how we call pc_cmos_init_late().
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   include/hw/i386/pc.h |  4 +++-
->   hw/i386/pc.c         |  5 ++---
->   hw/i386/pc_piix.c    | 16 +++++++---------
->   hw/i386/pc_q35.c     |  9 ++++-----
->   4 files changed, 16 insertions(+), 18 deletions(-)
+There are two modes for using this FEAT_NMI. When PSTATE.ALLINT or
+PSTATE.SP & SCTLR_ELx.SCTLR_SPINTMASK is set, any entry to ELx causes all
+interrupts including those with superpriority to be masked on entry to ELn
+until the mask is explicitly removed by software or hardware. PSTATE.ALLINT
+can be managed by software using the new register control ALLINT.ALLINT.
+Independent controls are provided for this feature at each EL, usage at EL1
+should not disrupt EL2 or EL3.
 
+I have tested it with the following linux patches which try to support
+FEAT_NMI in linux kernel:
 
-> @@ -300,13 +299,13 @@ static void pc_q35_init(MachineState *machine)
->                                                            ICH9_SATA1_FUNC),
->                                                  "ich9-ahci");
->           ich9 = ICH9_AHCI(pdev);
-> -        idebus[0] = qdev_get_child_bus(DEVICE(pdev), "ide.0");
-> -        idebus[1] = qdev_get_child_bus(DEVICE(pdev), "ide.1");
-> +        pcms->idebus[0] = qdev_get_child_bus(DEVICE(pdev), "ide.0");
-> +        pcms->idebus[1] = qdev_get_child_bus(DEVICE(pdev), "ide.1");
->           g_assert(MAX_SATA_PORTS == ich9->ahci.ports);
->           ide_drive_get(hd, ich9->ahci.ports);
->           ahci_ide_create_devs(&ich9->ahci, hd);
->       } else {
-> -        idebus[0] = idebus[1] = NULL;
-> +        pcms->idebus[0] = pcms->idebus[1] = NULL;
+	https://lore.kernel.org/linux-arm-kernel/Y4sH5qX5bK9xfEBp@lpieralisi/T/#mb4ba4a2c045bf72c10c2202c1dd1b82d3240dc88
 
-Since PCMachineState is zero-initialized, this part is now
-pointless.
+In the test, SGI, PPI and SPI interrupts can all be set to have super priority
+to be converted to a hardware NMI interrupt. The SGI is tested with kernel
+IPI as NMI framework, and the PPI interrupt is tested with "perf top" command
+with hardware NMI enabled, and the PPI interrupt is tested with a custom
+test module, in which NMI interrupts can be received and transmitted normally.
 
-Since my ICH9 series clashes with your patch, I'm inclined to
-queue it in my hw-misc tree, with the following squashed:
+Changes in v2:
+- Break up the patches so that each one does only one thing.
+- Remove the command line option and just implement it in "max" cpu.
 
--- >8 --
+Jinjie Ruan (22):
+  target/arm: Add FEAT_NMI to max
+  target/arm: Handle HCR_EL2 accesses for bits introduced with FEAT_NMI
+  target/arm: Add PSTATE.ALLINT
+  target/arm: Implement ALLINT MSR (immediate)
+  target/arm: Support MSR access to ALLINT
+  target/arm: Add support for Non-maskable Interrupt
+  target/arm: Add support for NMI event state
+  target/arm: Handle IS/FS in ISR_EL1 for NMI
+  target/arm: Add support for FEAT_NMI, Non-maskable Interrupt
+  target/arm: Handle PSTATE.ALLINT on taking an exception
+  target/arm: Set pstate.ALLINT in arm_cpu_reset_hold
+  hw/arm/virt: Wire NMI irq line from GIC to CPU
+  hw/intc/arm_gicv3: Add external IRQ lines for NMI
+  target/arm: Handle NMI in arm_cpu_do_interrupt_aarch64()
+  hw/intc/arm_gicv3_redist: Implement GICR_INMIR0
+  hw/intc/arm_gicv3: Implement GICD_INMIR
+  hw/intc: Enable FEAT_GICv3_NMI Feature
+  hw/arm/virt: Add FEAT_GICv3_NMI feature support in virt GIC
+  hw/intc/arm_gicv3: Add irq superpriority information
+  hw/intc/arm_gicv3: Add NMI handling CPU interface registers
+  hw/intc/arm_gicv3: Implement NMI interrupt prioirty
+  hw/intc/arm_gicv3: Report the NMI interrupt in gicv3_cpuif_update()
 
--    } else {
--        pcms->idebus[0] = pcms->idebus[1] = NULL;
+ docs/system/arm/emulation.rst      |  1 +
+ hw/arm/virt.c                      |  7 ++-
+ hw/intc/arm_gicv3.c                | 61 ++++++++++++++++++++++---
+ hw/intc/arm_gicv3_common.c         |  4 ++
+ hw/intc/arm_gicv3_cpuif.c          | 53 ++++++++++++++++++++--
+ hw/intc/arm_gicv3_dist.c           | 40 +++++++++++++++++
+ hw/intc/arm_gicv3_redist.c         | 23 ++++++++++
+ hw/intc/gicv3_internal.h           |  5 +++
+ include/hw/intc/arm_gic_common.h   |  1 +
+ include/hw/intc/arm_gicv3_common.h |  6 +++
+ target/arm/cpu-features.h          |  5 +++
+ target/arm/cpu-qom.h               |  3 +-
+ target/arm/cpu.c                   | 46 ++++++++++++++++---
+ target/arm/cpu.h                   | 15 ++++++-
+ target/arm/helper.c                | 72 ++++++++++++++++++++++++++++++
+ target/arm/internals.h             |  3 ++
+ target/arm/tcg/a64.decode          |  1 +
+ target/arm/tcg/cpu64.c             |  1 +
+ target/arm/tcg/helper-a64.c        | 24 ++++++++++
+ target/arm/tcg/helper-a64.h        |  1 +
+ target/arm/tcg/translate-a64.c     | 10 +++++
+ 21 files changed, 362 insertions(+), 20 deletions(-)
 
----
-
->       }
->   
->       if (machine_usb(machine)) {
-> @@ -327,7 +326,7 @@ static void pc_q35_init(MachineState *machine)
->           smbus_eeprom_init(pcms->smbus, 8, NULL, 0);
->       }
->   
-> -    pc_cmos_init(pcms, idebus[0], idebus[1], rtc_state);
-> +    pc_cmos_init(pcms, rtc_state);
->   
->       /* the rest devices to which pci devfn is automatically assigned */
->       pc_vga_init(isa_bus, host_bus);
+-- 
+2.34.1
 
 
