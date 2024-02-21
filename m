@@ -2,88 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77BB385E49B
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 18:31:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2877085E4A5
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 18:35:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcqRQ-0004Lw-LE; Wed, 21 Feb 2024 12:31:32 -0500
+	id 1rcqTj-0001B1-JQ; Wed, 21 Feb 2024 12:33:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rcqRL-0004HR-O7
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 12:31:30 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ (Exim 4.90_1) (envelope-from
+ <36DPWZQwKCt0M9AHGDRSDE9MFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--nabihestefan.bounces.google.com>)
+ id 1rcqTU-0000t8-NC
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 12:33:45 -0500
+Received: from mail-yw1-x1149.google.com ([2607:f8b0:4864:20::1149])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rcqRI-00025t-MH
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 12:31:27 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1dc29f1956cso6582965ad.0
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 09:31:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from
+ <36DPWZQwKCt0M9AHGDRSDE9MFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--nabihestefan.bounces.google.com>)
+ id 1rcqTM-0002T7-9q
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 12:33:40 -0500
+Received: by mail-yw1-x1149.google.com with SMTP id
+ 00721157ae682-60804b369c7so72029487b3.2
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 09:33:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1708536682; x=1709141482; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+V3z5cUg6GqXrunSorOWYDeSme866E99CGieQ/1mVy4=;
- b=dbOoW06AKy6JCfSJumAzqkiKMbxG0Zd7GHiT457Z+2nnKvQfIbEzqKxtWSHlEehmT3
- 3t19MXuhz6PJgYAyeIgCEajxCRLVjhDbnh9UKS2xKklfOiBGhVDyeAb9BM0YF8XvzV6e
- LKTq0A9KzYEUfy/bBXS8Azy+s8nVn55aTVpxU4vVx+crmS/dRzWvzHwP4gXR1ctTV7jY
- mdPKaKe0RNo7zFOqz5u3Tu+riAeD6WZy0Tg+mTnCj0NxCg2RSVW6UOyqiu/BR56iQQvO
- RRxwSTxtvjyCFpYz2NCZq2hypyPsKIB1EkIpMKRUIkucrliA0t6fwGRk66TrB95oc4Fi
- TLxA==
+ d=google.com; s=20230601; t=1708536808; x=1709141608; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=EcwbTVhF6/jNkSn+Rl6HkgY4LLv3UGKGBJOpP0BckOc=;
+ b=2g6ftT0n9W10ghhB5oapRHhPqiTQ/Xcn2r2HW3GizciK44erXLrqcTaKVoiclJPozb
+ Ky92/SKflwmh1wkK21G109aBlyrJne5zzLrqQxmKj4ztPUlloIz2IUg9xPTXcWoeT2b5
+ hJHejD7DaqgdG60Y9OaRjZCw5Rm+90QPDJhdJgqCuJKyUjWRVjBsBfyOO434iXVAmyqQ
+ Php7bt9+SW9WUUJPgPFqXSDhW0dzZxf/PqIwTH4UgstJjY2soJQZteSR6teERZpVRteD
+ T3pBOnDZHInk5q2I8eRBWB73GKBN7ktZXf9MRcSKiEWx+kgHhfZ1WBeKFwVbaOdgi3kG
+ F3RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708536682; x=1709141482;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+V3z5cUg6GqXrunSorOWYDeSme866E99CGieQ/1mVy4=;
- b=wI8jZKA02+zIHtJ1DDQY0u0ygPyClxHy3smgy0FyS+DUKb1TFuimg1AnaOcDTiBkJy
- PhXP9TuoYbX68b7xWXk42qp/jw+a155+b/7Hnc+x0YDqhl6XHEGtRtuRgdaQBv6Afxee
- 5mpM8cZJ0xBAO6uf4MTQE+0mZSNroIij8/72vGSDtibBSwCUadcZgXU+UVUBCxIXGEnI
- E+EkLuGavXj6gGEEfkrGg67xGqrgz/tmaC8hS4nREVoX+GnWT/sCSEJbH0pZ8nb6PVEg
- 5b5OwrA3nwWv/WJ9wDyUxZeGkvUHRBVx08JTdksfvjj8zMFqX6FiFZafjE8V8HAjHkGN
- s0/g==
+ d=1e100.net; s=20230601; t=1708536808; x=1709141608;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EcwbTVhF6/jNkSn+Rl6HkgY4LLv3UGKGBJOpP0BckOc=;
+ b=dQapnBoDcGpv4sp+5YR5oiUeqEluj5G4XI8lnEZhOnd5C8RYg6RI1OKjrsKP9pcBoa
+ z714rZEOR6oRndssCd/h3HZuZmI5sqlew0Opo2kK6uUAYUn2SqJtpkEztaKWgxwGsabt
+ ogx9OZ83lUKKIfkuGZfIzYof0cahux4vZHmABO0BSjoHRTBSk77Y3GfQ6JaFF8kpAfD7
+ 69QUl7N+0xlWdybX7nCNMt9+kM6qOhw0w/HyuoybWwXwBZN+YZI/SpSYjDOARu43TkMO
+ SOUzrP7m7TkU31qO2zQjjLvg0lwQWHiPzQ1+bFfqFfJtSjPTO2M5yVXKmj5yvcepy79h
+ qcOg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUtGg6zcKJO3fAII5The89fW6lfPen1RdXz0+5dH2xNxN60xBlXqyJql+XVKMJNuXxXbQYP1x6gDHPKrrNqqB9l87zXLqk=
-X-Gm-Message-State: AOJu0YxH2NfrWTzlsIWoq673SL4p4QXBW7H9lqPpEPF1yCczwUQEfxqo
- S6T/8V0OkXi8yEHA8Jd1qPxWvFaf4hicJHZgtmc0X88XH6B/DvE0NQv8gmDl2EM=
-X-Google-Smtp-Source: AGHT+IG3a7YYfeYH5E/Ok+hMAVkPc5mYlmwHWfAmoDTPlaqe66HZZ65Y5K/9hZl4/jLOuqnaSV7LDg==
-X-Received: by 2002:a17:903:11c8:b0:1d9:a91b:778 with SMTP id
- q8-20020a17090311c800b001d9a91b0778mr21077356plh.30.1708536682070; 
- Wed, 21 Feb 2024 09:31:22 -0800 (PST)
-Received: from [192.168.68.110] ([177.94.15.159])
- by smtp.gmail.com with ESMTPSA id
- q18-20020a170902c9d200b001db90df1283sm8318708pld.4.2024.02.21.09.31.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Feb 2024 09:31:21 -0800 (PST)
-Message-ID: <ec025245-ed62-4c8b-8110-0eb996280bde@ventanamicro.com>
-Date: Wed, 21 Feb 2024 14:31:18 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] target/riscv: Apply modularized matching conditions
- for watchpoint
-Content-Language: en-US
-To: Alvin Chang <alvinga@andestech.com>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org
-Cc: alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com
-References: <20240219032559.79665-1-alvinga@andestech.com>
- <20240219032559.79665-4-alvinga@andestech.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20240219032559.79665-4-alvinga@andestech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ AJvYcCW49AJu5vn0hkJ4hi44KenyqeHERMZinLOu5s5qtvpnyVqYJBA2FRaK4+VOJ6ABU9gnr8MdZpqhH0Xpq3JRgo1tMdxCB7U=
+X-Gm-Message-State: AOJu0Yy1DPCRhHgkHndu6KCIrKOQrjaHyqhwMHIF09FtX7OFBKv+FOD9
+ lWG6oiJt6DS/QN7NrBFP7To8doB9ZlXa0l9u+cP6w2sfhdt+f0xGRXTtr8pkOGLMHl4HYplgUBl
+ NH7B77k9JprjoMd8Xt6A/WoF3QA==
+X-Google-Smtp-Source: AGHT+IG6WE3zV5svLQ76mxt52tZmeFvCHce6AV3kOrbEWjl9Jlp5P4EA3uPqqGtss7y3JBSiCxSj2FjjNcDRfwVl0aI=
+X-Received: from nabihestefan.c.googlers.com
+ ([fda3:e722:ac3:cc00:20:ed76:c0a8:2737])
+ (user=nabihestefan job=sendgmr) by 2002:a81:a196:0:b0:604:9b11:ff2 with SMTP
+ id y144-20020a81a196000000b006049b110ff2mr4882082ywg.6.1708536808694; Wed, 21
+ Feb 2024 09:33:28 -0800 (PST)
+Date: Wed, 21 Feb 2024 17:33:23 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.44.0.rc0.258.g7320e95886-goog
+Message-ID: <20240221173325.1494895-1-nabihestefan@google.com>
+Subject: [PATCH 0/2] ARM GICv3 ITS DeviceID modification implementation
+From: Nabih Estefan <nabihestefan@google.com>
+To: peter.maydell@linaro.org
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ its@irrelevant.dk, kbusch@kernel.org, roqueh@google.com, 
+ nabihestefan@google.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1149;
+ envelope-from=36DPWZQwKCt0M9AHGDRSDE9MFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--nabihestefan.bounces.google.com;
+ helo=mail-yw1-x1149.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,85 +93,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This patch series modifies the ARM GICv3 ITS to use the already existing
+send_msi virtual function when writing the GITS_TRANSLATER in order to be able
+to modify the final DeviceID to an implementation specific version that requires
+extra information besides the BDF that comes in the requester_id. This is
+achieved by using inheritance and redefinition of the send_msi while the
+parent's send_msi could still be used to inject the modified DeviceID.
 
+Roque Arcudia Hernandez (2):
+  hw/intc/arm_gicv3_its_common: Increase DeviceID to 32 bits
+  hw/intc/arm_gicv3_its: Use send_msi in the GITS_TRANSLATER write
 
-On 2/19/24 00:25, Alvin Chang wrote:
-> We have implemented trigger_common_match(), which checks if the enabled
-> privilege levels of the trigger match CPU's current privilege level.
-> Remove the related code in riscv_cpu_debug_check_watchpoint() and invoke
-> trigger_common_match() to check the privilege levels of the type 2 and
-> type 6 triggers for the watchpoints.
-> 
-> Only load/store bits and loaded/stored address should be further checked
-> in riscv_cpu_debug_check_watchpoint().
-> 
-> Signed-off-by: Alvin Chang <alvinga@andestech.com>
-> ---
->   target/riscv/debug.c | 26 ++++++--------------------
->   1 file changed, 6 insertions(+), 20 deletions(-)
-> 
-> diff --git a/target/riscv/debug.c b/target/riscv/debug.c
-> index b971ed5d7a..67ba19c966 100644
-> --- a/target/riscv/debug.c
-> +++ b/target/riscv/debug.c
-> @@ -899,13 +899,12 @@ bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp)
->       for (i = 0; i < RV_MAX_TRIGGERS; i++) {
->           trigger_type = get_trigger_type(env, i);
->   
-> +        if (!trigger_common_match(env, trigger_type, i)) {
-> +            continue;
-> +        }
-> +
+ hw/intc/arm_gicv3_its.c                | 20 +++++++++-----------
+ hw/intc/arm_gicv3_its_kvm.c            |  2 +-
+ include/hw/intc/arm_gicv3_its_common.h | 15 ++++++++++++---
+ 3 files changed, 22 insertions(+), 15 deletions(-)
 
-The same comments I made in patch 2 also applies here. It's ok to change
-how the function behaves as long as we're doing it on purpose and explaining
-why in the commit message. Otherwise this if (!trigger_common_match()"
-conditional should "return false" instead of keep looping to maintain
-the existing behavior.
+-- 
+2.44.0.rc0.258.g7320e95886-goog
 
-Thanks,
-
-Daniel
-
->           switch (trigger_type) {
->           case TRIGGER_TYPE_AD_MATCH:
-> -            /* type 2 trigger cannot be fired in VU/VS mode */
-> -            if (env->virt_enabled) {
-> -                return false;
-> -            }
-> -
->               ctrl = env->tdata1[i];
->               addr = env->tdata2[i];
->               flags = 0;
-> @@ -918,10 +917,7 @@ bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp)
->               }
->   
->               if ((wp->flags & flags) && (wp->vaddr == addr)) {
-> -                /* check U/S/M bit against current privilege level */
-> -                if ((ctrl >> 3) & BIT(env->priv)) {
-> -                    return true;
-> -                }
-> +                return true;
->               }
->               break;
->           case TRIGGER_TYPE_AD_MATCH6:
-> @@ -937,17 +933,7 @@ bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp)
->               }
->   
->               if ((wp->flags & flags) && (wp->vaddr == addr)) {
-> -                if (env->virt_enabled) {
-> -                    /* check VU/VS bit against current privilege level */
-> -                    if ((ctrl >> 23) & BIT(env->priv)) {
-> -                        return true;
-> -                    }
-> -                } else {
-> -                    /* check U/S/M bit against current privilege level */
-> -                    if ((ctrl >> 3) & BIT(env->priv)) {
-> -                        return true;
-> -                    }
-> -                }
-> +                return true;
->               }
->               break;
->           default:
 
