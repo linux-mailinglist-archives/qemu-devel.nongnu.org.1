@@ -2,72 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E49B85E18B
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:41:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7D0C85E110
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:27:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcod0-0008Hs-Kh; Wed, 21 Feb 2024 10:35:22 -0500
+	id 1rcoPm-00063L-1c; Wed, 21 Feb 2024 10:21:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcob0-0002md-NX
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:33:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcmQh-0005fr-Bc
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 08:14:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708521270;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=eJAEW1CVsEUDJ8NvEH259oewIERAgHAVG1IR1MjnwxY=;
- b=Wt9fytlJJBeuJWn56k3XKZpwDEl/4McMYqxX+xKP4/djZ9oGSRjGWYLSC6eY9YfyhFr807
- h5PeGXuC1dR9IZh0YfugATBvSX6ftBx2ZmcqcQ1Trsv6rVVRmvtliDwfvpQcw2nHgaKv+m
- aCqPIWmA936PUrEFgqlDhpkU6vLbSi8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-55-qs-FrTo_Mg2zOmSuj8oc0A-1; Wed, 21 Feb 2024 08:14:24 -0500
-X-MC-Unique: qs-FrTo_Mg2zOmSuj8oc0A-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D2FFF86306E;
- Wed, 21 Feb 2024 13:14:23 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 850B6492BDA;
- Wed, 21 Feb 2024 13:14:23 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 61EC721E6740; Wed, 21 Feb 2024 14:14:21 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  Peter Xu
- <peterx@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  =?utf-8?Q?Marc-An?=
- =?utf-8?Q?dr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH V4 3/5] util: strv_from_strList
-In-Reply-To: <1705099758-211963-4-git-send-email-steven.sistare@oracle.com>
- (Steve Sistare's message of "Fri, 12 Jan 2024 14:49:16 -0800")
-References: <1705099758-211963-1-git-send-email-steven.sistare@oracle.com>
- <1705099758-211963-4-git-send-email-steven.sistare@oracle.com>
-Date: Wed, 21 Feb 2024 14:14:21 +0100
-Message-ID: <87le7e3qoi.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <bobby825@126.com>)
+ id 1rcoLz-0000nB-6Y; Wed, 21 Feb 2024 10:17:50 -0500
+Received: from m16.mail.126.com ([117.135.210.9])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <bobby825@126.com>)
+ id 1rcmYW-0007HV-9E; Wed, 21 Feb 2024 08:22:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+ s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=xzODs
+ 5HArcQllxvMJKW1Pp9/+9lRtWvgITaaiSsbcwc=; b=AFdmCInrFNnbj0H1JqHqJ
+ 8FAc3HY+7J9Lo7WMIi+dyebCvCjTfqCr0lyLlrCVWQXYrPhQ9Xk6Agi8X8p4kDUR
+ 6cwZB+rBv326EClC15kjgGR/iAY8KRePV4OTxC+OBunr7Re8ZgBeCu2g96LP0iHX
+ THLTHmrEtRyzyLjlNC0LU8=
+Received: from localhost.localdomain (unknown [101.88.177.236])
+ by gzga-smtp-mta-g0-5 (Coremail) with SMTP id _____wBH70cL+dVl9HxgAw--.45284S2;
+ Wed, 21 Feb 2024 21:22:21 +0800 (CST)
+From: Tianlan Zhou <bobby825@126.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org,
+	Tianlan Zhou <bobby825@126.com>
+Subject: [PATCH] docs/system: Fix key for input grab
+Date: Wed, 21 Feb 2024 21:19:01 +0800
+Message-Id: <20240221131900.2041-1-bobby825@126.com>
+X-Mailer: git-send-email 2.38.1.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: _____wBH70cL+dVl9HxgAw--.45284S2
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
+ VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjTRIksDDUUUU
+X-Originating-IP: [101.88.177.236]
+X-CM-SenderInfo: xereu5qysvqiyswou0bp/1tbiOg6LUmVEu7RDWwAAsb
+Received-SPF: pass client-ip=117.135.210.9; envelope-from=bobby825@126.com;
+ helo=m16.mail.126.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,62 +64,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Steve Sistare <steven.sistare@oracle.com> writes:
+Key for input grab should be Ctrl-Alt-g, not just Ctrl-Alt.
 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> ---
->  include/qemu/strList.h |  6 ++++++
->  util/strList.c         | 14 ++++++++++++++
->  2 files changed, 20 insertions(+)
->
-> diff --git a/include/qemu/strList.h b/include/qemu/strList.h
-> index 010237f..4b86aa6 100644
-> --- a/include/qemu/strList.h
-> +++ b/include/qemu/strList.h
-> @@ -21,4 +21,10 @@
->   */
->  strList *strList_from_string(const char *in, const char *delim);
->=20=20
-> +/*
-> + * Produce and return a NULL-terminated array of strings from @args.
-> + * The result is g_malloc'd and all strings are g_strdup'd.
-> + */
-> +GStrv strv_from_strList(const strList *args);
-> +
->  #endif
-> diff --git a/util/strList.c b/util/strList.c
-> index 7991de3..bad4187 100644
-> --- a/util/strList.c
-> +++ b/util/strList.c
-> @@ -22,3 +22,17 @@ strList *strList_from_string(const char *str, const ch=
-ar *delim)
->=20=20
->      return res;
->  }
-> +
-> +GStrv strv_from_strList(const strList *args)
+Signed-off-by: Tianlan Zhou <bobby825@126.com>
+---
 
-Suggest to name the argument @list.
+v1:
+- Initial patch
 
-> +{
-> +    const strList *arg;
+---
+ docs/system/keys.rst.inc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Suggest to name this @tail.
-
-> +    int i =3D 0;
-> +    GStrv argv =3D g_new(char *, QAPI_LIST_LENGTH(args) + 1);
-> +
-> +    for (arg =3D args; arg !=3D NULL; arg =3D arg->next) {
-> +        argv[i++] =3D g_strdup(arg->value);
-> +    }
-> +    argv[i] =3D NULL;
-> +
-> +    return argv;
-> +}
-
-Can we use char ** instread of GStrv?  I'd find that clearer.  For what
-it's worth, GLib documentation of functions like g_strsplit() doesn't
-use the GStrv typedef, either.
+diff --git a/docs/system/keys.rst.inc b/docs/system/keys.rst.inc
+index 2e2c97aa23..59966a3fe7 100644
+--- a/docs/system/keys.rst.inc
++++ b/docs/system/keys.rst.inc
+@@ -29,7 +29,7 @@ Ctrl-Alt-n
+    *3*
+       Serial port
+ 
+-Ctrl-Alt
++Ctrl-Alt-g
+    Toggle mouse and keyboard grab.
+ 
+ In the virtual consoles, you can use Ctrl-Up, Ctrl-Down, Ctrl-PageUp and
+-- 
+2.38.1.windows.1
 
 
