@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62BC885D27C
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 09:24:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58B6C85D278
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 09:24:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rchrX-0001i9-N8; Wed, 21 Feb 2024 03:21:55 -0500
+	id 1rchrY-0001kp-RR; Wed, 21 Feb 2024 03:21:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rchrM-0001ZL-G2; Wed, 21 Feb 2024 03:21:45 -0500
+ id 1rchrO-0001Zx-0y; Wed, 21 Feb 2024 03:21:46 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rchrK-0002Bj-JM; Wed, 21 Feb 2024 03:21:44 -0500
+ id 1rchrL-0002CO-Nb; Wed, 21 Feb 2024 03:21:45 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A7FC34F3CA;
+ by isrv.corpit.ru (Postfix) with ESMTP id B7F8A4F3CB;
  Wed, 21 Feb 2024 11:21:20 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 74664860A9;
+ by tsrv.corpit.ru (Postfix) with SMTP id 83886860AA;
  Wed, 21 Feb 2024 11:20:59 +0300 (MSK)
-Received: (nullmailer pid 2142022 invoked by uid 1000);
+Received: (nullmailer pid 2142025 invoked by uid 1000);
  Wed, 21 Feb 2024 08:20:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.2 12/60] tcg/loongarch64: Set vector registers call
- clobbered
-Date: Wed, 21 Feb 2024 11:20:00 +0300
-Message-Id: <20240221082058.2141850-12-mjt@tls.msk.ru>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.2 13/60] linux-user/aarch64: Add padding before
+ __kernel_rt_sigreturn
+Date: Wed, 21 Feb 2024 11:20:01 +0300
+Message-Id: <20240221082058.2141850-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.2-20240221110049@cover.tls.msk.ru>
 References: <qemu-stable-8.2.2-20240221110049@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,34 +64,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Because there are more call clobbered registers than
-call saved registers, we begin with all registers as
-call clobbered and then reset those that are saved.
+Without this padding, an unwind through the signal handler
+will pick up the unwind info for the preceding syscall.
 
-This was missed when we introduced the LSX support.
+This fixes gcc's 30_threads/thread/native_handle/cancel.cc.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 16288ded944 ("tcg/loongarch64: Lower basic tcg vec ops to LSX")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2136
+Fixes: ee95fae075c6 ("linux-user/aarch64: Add vdso")
+Resolves: https://linaro.atlassian.net/browse/GNU-974
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240201233414.500588-1-richard.henderson@linaro.org>
-(cherry picked from commit 45bf0e7aa648369cf8ab2333bd20144806fc1be3)
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20240202034427.504686-1-richard.henderson@linaro.org>
+(cherry picked from commit 6400be014f80e4c2c246eb8be709ea3a96428233)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-index bab0a173a3..dcf0205458 100644
---- a/tcg/loongarch64/tcg-target.c.inc
-+++ b/tcg/loongarch64/tcg-target.c.inc
-@@ -2327,7 +2327,7 @@ static void tcg_target_init(TCGContext *s)
-     tcg_target_available_regs[TCG_TYPE_I32] = ALL_GENERAL_REGS;
-     tcg_target_available_regs[TCG_TYPE_I64] = ALL_GENERAL_REGS;
- 
--    tcg_target_call_clobber_regs = ALL_GENERAL_REGS;
-+    tcg_target_call_clobber_regs = ALL_GENERAL_REGS | ALL_VECTOR_REGS;
-     tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_S0);
-     tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_S1);
-     tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_S2);
+diff --git a/linux-user/aarch64/vdso-be.so b/linux-user/aarch64/vdso-be.so
+index 6084f3d1a7..808206ade8 100755
+Binary files a/linux-user/aarch64/vdso-be.so and b/linux-user/aarch64/vdso-be.so differ
+diff --git a/linux-user/aarch64/vdso-le.so b/linux-user/aarch64/vdso-le.so
+index 947d534ec1..941aaf2993 100755
+Binary files a/linux-user/aarch64/vdso-le.so and b/linux-user/aarch64/vdso-le.so differ
+diff --git a/linux-user/aarch64/vdso.S b/linux-user/aarch64/vdso.S
+index 34d3a9ebd2..a0ac1487b0 100644
+--- a/linux-user/aarch64/vdso.S
++++ b/linux-user/aarch64/vdso.S
+@@ -63,7 +63,11 @@ vdso_syscall __kernel_clock_getres, __NR_clock_getres
+  * For now, elide the unwind info for __kernel_rt_sigreturn and rely on
+  * the libgcc fallback routine as we have always done.  This requires
+  * that the code sequence used be exact.
++ *
++ * Add a nop as a spacer to ensure that unwind does not pick up the
++ * unwind info from the preceding syscall.
+  */
++	nop
+ __kernel_rt_sigreturn:
+ 	/* No BTI C insn here -- we arrive via RET. */
+ 	mov	x8, #__NR_rt_sigreturn
 -- 
 2.39.2
 
