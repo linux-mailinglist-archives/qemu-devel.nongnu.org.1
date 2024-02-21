@@ -2,111 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AEB585E1CD
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:47:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87C2985E173
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:38:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoZl-0003ij-LR; Wed, 21 Feb 2024 10:32:01 -0500
+	id 1rcoPn-0006JN-7D; Wed, 21 Feb 2024 10:21:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maxime.coquelin@redhat.com>)
- id 1rcoOz-0004ZR-VV
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:20:54 -0500
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rcoKo-0000sX-Uh
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:16:36 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maxime.coquelin@redhat.com>)
- id 1rciUc-0007hV-RF
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 04:02:20 -0500
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rciWt-0008A4-4r
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 04:04:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708506137;
+ s=mimecast20190719; t=1708506278;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=azwLzlnyPjgX5VLVt2HH/5+1YSAiygsKde1d3DmglQY=;
- b=APMuNN5oB/4cIsr9znVE9LGNfWNjqAo+6sa0Xnfz7YE5+4GXIL04BvpcQqTMv2YaiRsNex
- CvKEGcKesBwpmGAEDvUDj3bIWfM15rqsm1EOTZz9LtO/V1AM6Qe13C67n6Z4JKheMCCvgw
- N3BmYFR2JWaPvt/0MfmduYv65SnvnnY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=D/Tk2oNGz3XzkXkLLisoFSz9dj2pFtxYP36p4UMDVJA=;
+ b=IDlmQsj1bN3meeA+bN+lHGwT1nT4w4+dVg3n8zp8EN7ZNQJQfgVxHcc6sa67ry9LqcP2TO
+ FNyza4AxP4vc0upDSEC2ptMK6NF+BzsVD0b/UYf2hVWNUMSInMZfbWSWUKK8469tb6Cm6S
+ 7dslXkAZI0WK1bnfqmBd4G7ntF+K9Xk=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-617-9pUlW4eiPxC7gO3lKHxHug-1; Wed, 21 Feb 2024 04:02:13 -0500
-X-MC-Unique: 9pUlW4eiPxC7gO3lKHxHug-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A6BF310650E0;
- Wed, 21 Feb 2024 09:02:12 +0000 (UTC)
-Received: from [10.39.208.17] (unknown [10.39.208.17])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 38349C03489;
- Wed, 21 Feb 2024 09:02:10 +0000 (UTC)
-Message-ID: <f9111e6b-4094-4731-b2de-e442b1a4fa5f@redhat.com>
-Date: Wed, 21 Feb 2024 10:02:08 +0100
+ us-mta-107-VYTfrBoiOI2Qpvyj720P3w-1; Wed, 21 Feb 2024 04:04:36 -0500
+X-MC-Unique: VYTfrBoiOI2Qpvyj720P3w-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-33d19eea6c3so177908f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 01:04:36 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708506274; x=1709111074;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=D/Tk2oNGz3XzkXkLLisoFSz9dj2pFtxYP36p4UMDVJA=;
+ b=XjCknjDH0wa0hJq7qLzlLFNXgarWNqXK8DJRYYoNo+kF0gEi7USlUKJfbFh5JgpoKF
+ NOzVdtsNfhfJbcFqfiR/3TfMs8zANb+p6PPOdEXlDALvwlYePy5D3GvhyNpMLkhvl2sJ
+ Z461Uxpb+7YVr+UTbCyGZYXinNQzaKisOpOQqh8O3qaoR+Q8Lgi9kyT1x/qH2V+Xh+jv
+ N8/s+HD4F4ZXNivrkZkhQaT6kHwsltf9fnIlCJYTZ/Bx6jIb5FNQ+bJlKIwAe0dYncC1
+ O21SVTf9xAAjy3fhkd1lIwVv1G+URZfrN4sF8ke/VxVHwX1nypJjGC/KGGeB7DFSd2bR
+ SjfA==
+X-Gm-Message-State: AOJu0YzWGN3pBW/HLZ51UWF/2lLIkCAxu735biAZiznNnwx+trKCUT6R
+ yCsFWUS0fJrnmu0pfnFOhBHUny0dqwpGQPgKvZaQiTOoryvpuT5u7/S8u7TGZlZwP4OqgUWRsZM
+ t3hQW65erRY4MFs1tPQp2onayAZfaLKwsmpInL6O7/yUcejQv0YkXDWFG2ksTDRLV3yIY/82t1O
+ PFdYhDXvrZT1iBSDm6tbCo8cpGe0Sy0FyOxaA=
+X-Received: by 2002:adf:e48d:0:b0:33d:269d:e222 with SMTP id
+ i13-20020adfe48d000000b0033d269de222mr8076408wrm.23.1708506274046; 
+ Wed, 21 Feb 2024 01:04:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEF7oRUKnAJyMAy3o9xqBbj0PoEmOEZl00rCk9Vh5gdSklmKvRFJJSbuAl22UMBuYU1gguNw0RPtNcKvKjmYUo=
+X-Received: by 2002:adf:e48d:0:b0:33d:269d:e222 with SMTP id
+ i13-20020adfe48d000000b0033d269de222mr8076392wrm.23.1708506273693; Wed, 21
+ Feb 2024 01:04:33 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vhost-user: fix the issue of vhost deadlock in nested
- virtualization
-Content-Language: en-US
-To: "Michael S. Tsirkin" <mst@redhat.com>, Hao Chen <chenh@yusur.tech>
-Cc: "open list:All patches CC here" <qemu-devel@nongnu.org>,
- huangml@yusur.tech, zy@yusur.tech
-References: <20240126100737.2509847-1-chenh@yusur.tech>
- <20240213050258-mutt-send-email-mst@kernel.org>
- <5176a8e4-dbdc-45e0-a1f2-d9cb3b71a6b1@redhat.com>
- <20240220064027-mutt-send-email-mst@kernel.org>
-From: Maxime Coquelin <maxime.coquelin@redhat.com>
-Autocrypt: addr=maxime.coquelin@redhat.com; keydata=
- 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
- Mwqu3GQ=
-In-Reply-To: <20240220064027-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=maxime.coquelin@redhat.com;
+References: <20240220155352.416710-1-pbonzini@redhat.com>
+ <8FECF57F-7897-4AF8-9AC1-46A927C0FEC0@gmail.com>
+In-Reply-To: <8FECF57F-7897-4AF8-9AC1-46A927C0FEC0@gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Wed, 21 Feb 2024 10:04:21 +0100
+Message-ID: <CABgObfb+BK4s0VtwQUDkdzvwhTwRAXim-pJ-Lg1nWvbhuOm55w@mail.gmail.com>
+Subject: Re: [PATCH] vl, pc: turn -no-fd-bootchk into a machine property
+To: Bernhard Beschow <shentey@gmail.com>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -130,108 +95,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, Feb 20, 2024 at 11:43=E2=80=AFPM Bernhard Beschow <shentey@gmail.co=
+m> wrote:
+>
+>
+>
+> Am 20. Februar 2024 15:53:52 UTC schrieb Paolo Bonzini <pbonzini@redhat.c=
+om>:
+> >Add a fd-bootchk property to PC machine types, so that -no-fd-bootchk
+> >returns an error if the machine does not support booting from floppies
+> >and checking for boot signatures therein.
+> >
+> >Suggested-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> >Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> >---
+> > include/hw/i386/pc.h |  2 +-
+> > hw/i386/pc.c         | 30 +++++++++++++++++++++++++-----
+> > system/globals.c     |  1 -
+> > system/vl.c          |  2 +-
+> > qemu-options.hx      |  2 +-
+> > 5 files changed, 28 insertions(+), 9 deletions(-)
+> >
+> >diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+> >index 02a0deedd3c..e5382a02e7a 100644
+> >--- a/include/hw/i386/pc.h
+> >+++ b/include/hw/i386/pc.h
+> >@@ -50,6 +50,7 @@ typedef struct PCMachineState {
+> >     bool hpet_enabled;
+> >     bool i8042_enabled;
+> >     bool default_bus_bypass_iommu;
+> >+    bool fd_bootchk;
+> >     uint64_t max_fw_size;
+> >
+> >     /* ACPI Memory hotplug IO base address */
+> >@@ -147,7 +148,6 @@ OBJECT_DECLARE_TYPE(PCMachineState, PCMachineClass, =
+PC_MACHINE)
+> > GSIState *pc_gsi_create(qemu_irq **irqs, bool pci_enabled);
+> >
+> > /* pc.c */
+> >-extern int fd_bootchk;
+> >
+> > void pc_acpi_smi_interrupt(void *opaque, int irq, int level);
+> >
+> >diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> >index 28194014f82..31f4bb25a3e 100644
+> >--- a/hw/i386/pc.c
+> >+++ b/hw/i386/pc.c
+> >@@ -399,8 +399,8 @@ static int boot_device2nibble(char boot_device)
+> >     return 0;
+> > }
+> >
+> >-static void set_boot_dev(MC146818RtcState *s, const char *boot_device,
+> >-                         Error **errp)
+> >+static void set_boot_dev(PCMachineState *pcms, MC146818RtcState *s,
+> >+                         const char *boot_device, Error **errp)
+> > {
+> > #define PC_MAX_BOOT_DEVICES 3
+> >     int nbds, bds[3] =3D { 0, };
+> >@@ -420,12 +420,14 @@ static void set_boot_dev(MC146818RtcState *s, cons=
+t char *boot_device,
+> >         }
+> >     }
+> >     mc146818rtc_set_cmos_data(s, 0x3d, (bds[1] << 4) | bds[0]);
+> >-    mc146818rtc_set_cmos_data(s, 0x38, (bds[2] << 4) | (fd_bootchk ? 0x=
+0 : 0x1));
+> >+    mc146818rtc_set_cmos_data(s, 0x38, (bds[2] << 4) | !pcms->fd_bootch=
+k);
+> > }
+> >
+> > static void pc_boot_set(void *opaque, const char *boot_device, Error **=
+errp)
+> > {
+> >-    set_boot_dev(opaque, boot_device, errp);
+> >+    PCMachineState *pcms =3D PC_MACHINE(current_machine);
+> >+
+> >+    set_boot_dev(pcms, opaque, boot_device, errp);
+> > }
+> >
+> > static void pc_cmos_init_floppy(MC146818RtcState *rtc_state, ISADevice =
+*floppy)
+> >@@ -617,6 +619,9 @@ void pc_cmos_init(PCMachineState *pcms,
+> >     mc146818rtc_set_cmos_data(s, 0x5c, val >> 8);
+> >     mc146818rtc_set_cmos_data(s, 0x5d, val >> 16);
+> >
+> >+    object_property_add_bool(obj, "fd-bootchk", pc_machine_get_fd_bootc=
+hk,
+> >+                             pc_machine_set_fd_bootchk);
+>
+> Isn't it possible to turn this into a class property or add the property =
+in pc_machine_initfn()? Aggregating properties in one place seems more comp=
+rehensible to me.
 
+Sure, I placed it in pc_cmos_init because rtc_state is already created here=
+.
 
-On 2/20/24 12:43, Michael S. Tsirkin wrote:
-> On Tue, Feb 20, 2024 at 12:26:49PM +0100, Maxime Coquelin wrote:
->>
->>
->> On 2/13/24 11:05, Michael S. Tsirkin wrote:
->>> On Fri, Jan 26, 2024 at 06:07:37PM +0800, Hao Chen wrote:
->>>> I run "dpdk-vdpa" and "qemur-L2" in "qemu-L1".
->>>>
->>>> In a nested virtualization environment, "qemu-L2" vhost-user socket sends
->>>> a "VHOST_USER_IOTLB_MSG" message to "dpdk-vdpa" and blocks waiting for
->>>> "dpdk-vdpa" to process the message.
->>>> If "dpdk-vdpa" doesn't complete the processing of the "VHOST_USER_IOTLB_MSG"
->>>> message and sends a message that needs to be replied in another thread,
->>>> such as "VHOST_USER_SLAVE_VRING_HOST_NOTIFIER_MSG", "dpdk-vdpa" will also
->>>> block and wait for "qemu-L2" to process this message. However, "qemu-L2"
->>>> vhost-user's socket is blocking while waiting for a reply from "dpdk-vdpa"
->>>> after processing the message "VHOSTr_USER_IOTLB_MSG", and
->>>> "VHOST_USER_SLAVE_VRING_HOST_NOTIFIER_MSG" will not be processed.
->>>> In this case, both "dpdk-vdpa" and "qemu-L2" are blocked on the
->>>> vhost read, resulting in a deadlock.
->>>>
->>>> You can modify "VHOST_USER_SLAVE_VRING_HOST_NOTIFIER_MSG" or
->>>> "VHOST_USER_IOTLB_MSG" to "no need reply" to fix this issue.
->>>> There are too many messages in dpdk that are similar to
->>>> "VHOST_USER_SLAVE_VRING_HOST_NOTIFIER_MSG", and I would prefer the latter.
->>>>
->>>> Fixes: 24e34754eb78 ("vhost-user: factor out msg head and payload")
->>>>
->>>> Signed-off-by: Hao Chen <chenh@yusur.tech>
->>>
->>> I would be very worried that IOTLB becomes stale and
->>> guest memory is corrupted if we just proceed without waiting.
->>>
->>> Maxime what do you think? How would you address the issue?
->>
->> I agree with you, this is not possible.
->> For example, in case of IOTLB invalidate, the frontend relies on the
->> backend reply to ensure it is no more accessing the memory before
->> proceeding.
->>
->> The reply-ack for VHOST_USER_BACKEND_VRING_HOST_NOTIFIER_MSG request is
->> less important, if it fails the host notifications won't work but would
->> not risk corruption. Maybe on Qemu side we could fail init if processing
->> the request fails, as I think that if negotiated, we can expect it to
->> succeed.
->>
->> What do you think about this proposal?
->>
->> Regards,
->> Maxime
-> 
-> Fundamentally, I think that if qemu blocks guest waiting for a rely
-> that is ok but it really has to process incoming messages meanwhile.
-> Same should apply to backend I think ...
-
-I understand your point.
-For DPDK Vhost library, it will likely imply ABI breakage as it would
-require to asynchronous handling of Vhost-user requests. We would only
-be able to do it at next LTS release.
-
-Hao, as your driver is not available upstream it will be difficult to
-assist you more. But if you look at other DPDK vDPA driver like SFC for
-instance, the way they implemented host notification control should be
-safe against this kind of deadlocks.
-
-
-> 
->>>
->>>
->>>> ---
->>>>    hw/virtio/vhost-user.c | 10 ++--------
->>>>    1 file changed, 2 insertions(+), 8 deletions(-)
->>>>
->>>> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
->>>> index f214df804b..02caa94b6c 100644
->>>> --- a/hw/virtio/vhost-user.c
->>>> +++ b/hw/virtio/vhost-user.c
->>>> @@ -2371,20 +2371,14 @@ static int vhost_user_net_set_mtu(struct vhost_dev *dev, uint16_t mtu)
->>>>    static int vhost_user_send_device_iotlb_msg(struct vhost_dev *dev,
->>>>                                                struct vhost_iotlb_msg *imsg)
->>>>    {
->>>> -    int ret;
->>>>        VhostUserMsg msg = {
->>>>            .hdr.request = VHOST_USER_IOTLB_MSG,
->>>>            .hdr.size = sizeof(msg.payload.iotlb),
->>>> -        .hdr.flags = VHOST_USER_VERSION | VHOST_USER_NEED_REPLY_MASK,
->>>> +        .hdr.flags = VHOST_USER_VERSION,
->>>>            .payload.iotlb = *imsg,
->>>>        };
->>>> -    ret = vhost_user_write(dev, &msg, NULL, 0);
->>>> -    if (ret < 0) {
->>>> -        return ret;
->>>> -    }
->>>> -
->>>> -    return process_message_reply(dev, &msg);
->>>> +    return vhost_user_write(dev, &msg, NULL, 0);
->>>>    }
->>>> -- 
->>>> 2.27.0
->>>
-> 
+Paolo
 
 
