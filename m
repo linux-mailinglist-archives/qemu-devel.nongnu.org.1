@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4513B85E16E
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:38:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1776A85E1C2
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:46:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoY5-0004iq-NI; Wed, 21 Feb 2024 10:30:17 -0500
+	id 1rcoa5-0005ID-BD; Wed, 21 Feb 2024 10:32:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcoPE-0005Dm-KF
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:21:10 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcoOo-0003Gq-Av
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:20:42 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcl6s-0000I7-8B
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 06:49:59 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rclA5-0000qN-8k
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 06:53:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708516196;
+ s=mimecast20190719; t=1708516396;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=HOuCJgn0aHyrvzHDwAt1bFkH1ADdZr58ytTLv9fml6I=;
- b=Ew5rpSYkl9LSHX8jCeKLvpUWpHYnvkrOkFUKTTPZSA/QI26WaJcHJjYi++p7A7kfnRYnKh
- LNhPF3kSKVSPC+Dxc5SIQmviH/00PVSB0ERU4CmpjFZ6DieCUWEigfToR7+mCTNfLQx49C
- 58r+4ZlSh77BjDQiXxMoNXIEcg2UNmY=
+ bh=WpWsv7TXPJRwiwzaQ7u0AhVyyYRTTjtj1qipgKCR3gg=;
+ b=ZSdDBET2k3CxRIgeX4+bl8fny9H4XHCBv8Rr53fiNYq7CYOq+5/6c/EK8VhCHcffkUcVZu
+ S1aSZvemB9IyGqiD/PjQCJool6Wm2c4y0AUhAh5Wm2DfJ9rlyAgm+x5m2dnIQoUjFsCSyT
+ 9byD5NUPN6pqKjDtD2vV9Jm8yKAxDps=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-170-_xvVJxn8OMG_MLfekMR0Tw-1; Wed,
- 21 Feb 2024 06:49:52 -0500
-X-MC-Unique: _xvVJxn8OMG_MLfekMR0Tw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-iSS_1aocPZGcr1kIRgCKQA-1; Wed,
+ 21 Feb 2024 06:53:12 -0500
+X-MC-Unique: iSS_1aocPZGcr1kIRgCKQA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9B14B28C976B;
- Wed, 21 Feb 2024 11:49:51 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F01503C0ED4E;
+ Wed, 21 Feb 2024 11:53:11 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 74E80C0335F;
- Wed, 21 Feb 2024 11:49:51 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C5CAF8CE8;
+ Wed, 21 Feb 2024 11:53:11 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2E15821E66D5; Wed, 21 Feb 2024 12:49:46 +0100 (CET)
+ id B82CB21E6740; Wed, 21 Feb 2024 12:53:10 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: Zhao Liu <zhao1.liu@linux.intel.com>
 Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,  Fan Ni
@@ -52,22 +52,22 @@ Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,  Fan Ni
  <marcel.apfelbaum@gmail.com>,  Alex Williamson
  <alex.williamson@redhat.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
  <clg@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Markus
- Armbruster
- <armbru@redhat.com>,  qemu-devel@nongnu.org,  qemu-arm@nongnu.org,
- qemu-trivial@nongnu.org,  Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH 5/6] hw/pci-bridge/cxl_upstream: Fix missing
- ERRP_GUARD() in cxl_usp_realize()
-In-Reply-To: <20240221094317.994454-6-zhao1.liu@linux.intel.com> (Zhao Liu's
- message of "Wed, 21 Feb 2024 17:43:16 +0800")
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org,  qemu-trivial@nongnu.org,  Zhao Liu
+ <zhao1.liu@intel.com>
+Subject: Re: [PATCH 6/6] hw/vfio/iommufd: Fix missing ERRP_GUARD() in
+ iommufd_cdev_getfd()
+In-Reply-To: <20240221094317.994454-7-zhao1.liu@linux.intel.com> (Zhao Liu's
+ message of "Wed, 21 Feb 2024 17:43:17 +0800")
 References: <20240221094317.994454-1-zhao1.liu@linux.intel.com>
- <20240221094317.994454-6-zhao1.liu@linux.intel.com>
-Date: Wed, 21 Feb 2024 12:49:46 +0100
-Message-ID: <87le7eujdx.fsf@pond.sub.org>
+ <20240221094317.994454-7-zhao1.liu@linux.intel.com>
+Date: Wed, 21 Feb 2024 12:53:10 +0100
+Message-ID: <87h6i2uj89.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -115,12 +115,13 @@ Zhao Liu <zhao1.liu@linux.intel.com> writes:
 > * Using it when it's not needed is safe, but please avoid cluttering
 > * the source with useless code.
 >
-> Currently, since cxl_usp_realize() - as a PCIDeviceClass.realize()
-> method - doesn't get the NULL errp parameter, it doesn't trigger the
-> dereference issue.
+> Currently, since vfio_attach_device() - the caller of
+> iommufd_cdev_getfd() - is always called in DeviceClass.realize() context
+> and won't get the NULL errp parameter, iommufd_cdev_getfd()
+> doesn't trigger the dereference issue.
 >
 > To follow the requirement of errp, add missing ERRP_GUARD() in
-> cxl_usp_realize()().
+> iommufd_cdev_getfd().
 >
 > Suggested-by: Markus Armbruster <armbru@redhat.com>
 > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
@@ -128,33 +129,27 @@ Zhao Liu <zhao1.liu@linux.intel.com> writes:
 > Suggested by credit:
 >  Markus: Referred his explanation about ERRP_GUARD().
 > ---
->  hw/pci-bridge/cxl_upstream.c | 1 +
+>  hw/vfio/iommufd.c | 1 +
 >  1 file changed, 1 insertion(+)
 >
-> diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
-> index e87eb4017713..03d123cca0ef 100644
-> --- a/hw/pci-bridge/cxl_upstream.c
-> +++ b/hw/pci-bridge/cxl_upstream.c
-> @@ -289,6 +289,7 @@ static void free_default_cdat_table(CDATSubHeader **cdat_table, int num,
+> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+> index 9bfddc136089..7baf49e6ee9e 100644
+> --- a/hw/vfio/iommufd.c
+> +++ b/hw/vfio/iommufd.c
+> @@ -116,6 +116,7 @@ static void iommufd_cdev_unbind_and_disconnect(VFIODevice *vbasedev)
 >  
->  static void cxl_usp_realize(PCIDevice *d, Error **errp)
+>  static int iommufd_cdev_getfd(const char *sysfs_path, Error **errp)
 >  {
 > +    ERRP_GUARD();
->      PCIEPort *p = PCIE_PORT(d);
->      CXLUpstreamPort *usp = CXL_USP(d);
->      CXLComponentState *cxl_cstate = &usp->cxl_cstate;
+>      long int ret = -ENOTTY;
+>      char *path, *vfio_dev_path = NULL, *vfio_path = NULL;
+>      DIR *dir = NULL;
 
-The dereference is
+The problematic use is
 
-       cxl_doe_cdat_init(cxl_cstate, errp);
        if (*errp) {
-           goto err_cap;
+           error_prepend(errp, VFIO_MSG_PREFIX, path);
        }
-
-As noted in review of PATCH 3, we check *errp, because
-cxl_doe_cdat_init() returns void.  Could be improved to return bool,
-along with its callees ct3_load_cdat() and ct3_build_cdat(), but that's
-a slightly more ambitious cleanup, so
 
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
 
