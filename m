@@ -2,51 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE1E985E194
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:41:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9986C85E1CA
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:47:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoab-0000US-SX; Wed, 21 Feb 2024 10:32:53 -0500
+	id 1rcoaq-0001sx-FV; Wed, 21 Feb 2024 10:33:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rcoTC-0006J0-6D; Wed, 21 Feb 2024 10:25:14 -0500
+ id 1rcoU6-00011I-DW
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:26:12 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rclBo-0000vP-U5; Wed, 21 Feb 2024 06:55:06 -0500
+ id 1rclFu-0001hF-Vz
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 06:59:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
  Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
  :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=1YhoWONXIpaW9qGOk56UkNXIr6FA0V3YLLDDXHffgU4=; b=OPJDJLgTMiqd4d236CMFfYV4gQ
- DqytrWx+T3aLLi9zsVWplxKprUyKN1KUxISsl654A6lVR6zdGn2fpNzLIWbMGlmUDvwf9zc5BWAgd
- IByju33mpDWF6RNDIul+kek06EGdxlHH5KAwbLOjZbuDCDwy9TG0Wjbhi6V9dJ6p0VdBTpjI9+IW3
- mKTjhTU3n6yWYYHEr+oCnSHA8ldnNtkBx4ZP5qXJiQIW+iEsqsMbKp69qE9n6TUpQ6hHQDqOzO5fM
- 87VCPk+xPg6sUq2PnAMpo7JYkmeEyddNTIG7qvK2aFiHoLUY7f0qb2Fjg0FkUk1fk9a8eIkcPUGhv
- WTUxvfbc1imqcpIaEGxpSuRn2LjZGzTBalVrTDvPQ57+60BqkvRW6VgwBbGAZRDm5D2mTep9BPgzw
- G1zU3+iznvC/FiXr4DKWFW5hKB43UH6bd5+Pc9941z/3mJDLAEBdaGz3ZdyN1H7hD/SqfPLqN2Pvm
- S6B3vDADVt77SuB5wZdor7bpqpfVPdyp0xCQf3yN6wsz0R0aL2B6eYzSnXxwN79hQ9YXlwqzfX1yL
- snaTW7SQhYIkJhhW64Lhd155/fLQPHdGadlKaZK1rNG70T0YvIosVI5iI2v9fJOmgQVFvfnOEVJeX
- f83yc7qQZH7HK9YAp9NxfqZWKavGIRB66J6tsAeHU=;
+ bh=SdrpIFjDFnDlqh1n6qGojGd8iD/1fx4+Nqk5dVrq9C8=; b=JJycK0PRFvCnbDk76MRNDkE30I
+ yvolb1LjXQKEkNi9xZqDo6ZeydRmlNHDCK9ohqz0F6uBNTKjuHZR5MxFH1CiSLZT5Cc4zLeooYN/o
+ kme0ePqiOzHm8wcQpshpvy2ruluOtCg4F3/UgF0fC7qo8nJBvOlf6l/QY/mHXM16ezE5liUdWD+8o
+ i81d5uu5OB3c4udCBA3IBe/pOJ0FQu4/sPapLZD2VzmlaM4Tuu4jwnjfPRc3Fb4YLVcOe3QkcM3w7
+ KDGQCVa1ZLDlrGtOWQPgyTAHwNF+PbEtNZY4hVdcfypC46NhAJu6RSE1QWtY/8Zq/a0mCL1lRqwRr
+ RTdSS2eI+Zp3w6yLL7GdDhZ194BWKzW8qNy0IYaI9sM87lrFHOiGR8AlDNdZfBShXinJh6JE8j3Vu
+ WvpvyykibbFKxs4mpMAeoFg1bi27koArN+JhJfZAnbd2nlHP+gbXkFuBTtxuKi18xSoXsruJHQruY
+ W1dpwIn5z+u4UQ0/xA575ASeH1IGTdCFofsSNkLf8u9/mDXRq+qRazwdGWkIQW8W4G5xUkSEyugFM
+ noM9aF9SDw0C2/g8wfeyIMzplpXNtHuLKHkb4Tc3JF1ZBdQZhuqiu5gQBnOW2KOQKnAhyVhSH570V
+ 8Gge7VEvlhbDhI0DcPsbwbUDoDFlTVs6onX1UIC1M=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rclB0-0008MU-MH; Wed, 21 Feb 2024 11:54:18 +0000
-Message-ID: <a468ae40-8d53-4048-9692-a9eb15f1fbd9@ilande.co.uk>
-Date: Wed, 21 Feb 2024 11:54:56 +0000
+ id 1rclF8-0008P4-7B; Wed, 21 Feb 2024 11:58:34 +0000
+Message-ID: <61d6f47c-1618-4509-91de-328cc5428a63@ilande.co.uk>
+Date: Wed, 21 Feb 2024 11:59:10 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, John Snow <jsnow@redhat.com>,
- qemu-devel@nongnu.org
-Cc: BALATON Zoltan <balaton@eik.bme.hu>,
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-block@nongnu.org
-References: <20240220085505.30255-1-thuth@redhat.com>
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>
+References: <20240220160622.114437-1-peter.maydell@linaro.org>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
@@ -72,13 +77,12 @@ Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
  KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
  imgcU9TTGC5qd9g=
-In-Reply-To: <20240220085505.30255-1-thuth@redhat.com>
+In-Reply-To: <20240220160622.114437-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v2 0/7] hw/ide: Clean up hw/ide/qdev.c and
- include/hw/ide/internal.h
+Subject: Re: [PATCH 00/10] reset: Make whole system three-phase-reset aware
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -104,74 +108,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/02/2024 08:54, Thomas Huth wrote:
+On 20/02/2024 16:06, Peter Maydell wrote:
 
-> While trying to make it possible to compile-out the CompactFlash IDE device
-> in downstream distributions (first patch), we noticed that there are more
-> things in the IDE code that could use a proper clean up:
+> This patchset is an incremental improvement to our reset handling that
+> tries to roll out the "three-phase-reset" design we have for devices
+> to a wider scope.
 > 
-> First, hw/ide/qdev.c is quite a mix between IDE BUS specific functions
-> and (disk) device specific functions. Thus the second patch splits qdev.c
-> into two new separate files to make it more obvious which part belongs
-> to which kind of devices.
+> At the moment devices and buses have a three-phase reset system, with
+> separate 'enter', 'hold' and 'exit' phases. When the qbus tree is
+> reset, first all the devices on it have their 'enter' method called,
+> then they all have 'enter' called, and finally 'exit'. The idea is
+> that we can use this, among other things, as a way to resolve annoying
+> "this bit of reset work needs to happen before this other bit of reset
+> work" ordering issues.
 > 
-> The remaining patches unentangle include/hw/ide/internal.h, which is meant
-> as a header that should only be used internally to the IDE subsystem, but
-> which is currently exposed to the world since include/hw/ide/pci.h includes
-> this header, too. Thus we move the definitions that are also required for
-> non-IDE code to other new header files, so we can finally change pci.h to
-> stop including internal.h. After these changes, internal.h is only included
-> by files in hw/ide/ as it should be.
+> However, there is still a "legacy" reset option, where you register a
+> callback function with qemu_register_reset(). These functions know
+> nothing about the three-phase system, and "reset the qbus" is just one
+> of the things set up to happen at reset via qemu_register_reset().
+> That means that a qemu_register_reset() function might happen before
+> all the enter/hold/exit phases of device reset, or it might happen after
+> all of them.
 > 
-> v2:
-> - Change the order of the DMA patch and move typedef struct IDEDMAOps
->    and typedef struct IDEDMA IDEDMA into ide-dma.h, too
-> - Make sure that the headers are self-contained (i.e. #include the
->    right other headers)
-> - Remove some more remnants of include/hw/ide.h
+> This patchset provides a new way to register a three-phase-aware reset
+> in this list of "reset the whole system" actions, and reimplements
+> qemu_register_reset() in terms of that new mechanism. This means that
+> qemu_register_reset() functions are now all called in the 'hold' phase
+> of system reset. (This is an ordering change, so in theory it could
+> introduce new bugs if we are accidentally depending on the current
+> ordering; but we have very few enter and exit phase methods at the
+> moment so I don't expect much trouble, if any.)
 > 
-> Thomas Huth (7):
->    hw/ide: Add the possibility to disable the CompactFlash device in the
->      build
->    hw/ide: Split qdev.c into ide-bus.c and ide-dev.c
->    hw/ide: Move IDE DMA related definitions to a separate header
->      ide-dma.h
->    hw/ide: Move IDE device related definitions to ide-dev.h
->    hw/ide: Move IDE bus related definitions to a new header ide-bus.h
->    hw/ide: Remove the include/hw/ide.h legacy file
->    hw/ide: Stop exposing internal.h to non-IDE files
+> The first three patches remove the only two places in the codebase
+> that rely on "a reset callback can unregister itself within the
+> callback"; this is awkward to continue to support in the new
+> implementation, and an unusual thing to do given that reset is in
+> principle supposed to be something you can do as many times as you
+> like, not something that behaves differently the first time through.
 > 
->   MAINTAINERS                  |   1 -
->   include/hw/ide.h             |   9 --
->   include/hw/ide/ide-bus.h     |  42 +++++++
->   include/hw/ide/ide-dev.h     | 184 ++++++++++++++++++++++++++++++
->   include/hw/ide/ide-dma.h     |  37 ++++++
->   include/hw/ide/internal.h    | 211 +----------------------------------
->   include/hw/ide/pci.h         |   2 +-
->   hw/i386/pc.c                 |   2 +-
->   hw/ide/cf.c                  |  58 ++++++++++
->   hw/ide/cmd646.c              |   1 +
->   hw/ide/ide-bus.c             | 111 ++++++++++++++++++
->   hw/ide/{qdev.c => ide-dev.c} | 137 +----------------------
->   hw/ide/pci.c                 |   1 +
->   hw/ide/piix.c                |   1 +
->   hw/ide/sii3112.c             |   1 +
->   hw/ide/via.c                 |   1 +
->   hw/arm/Kconfig               |   2 +
->   hw/ide/Kconfig               |  32 ++++--
->   hw/ide/meson.build           |   4 +-
->   19 files changed, 470 insertions(+), 367 deletions(-)
->   delete mode 100644 include/hw/ide.h
->   create mode 100644 include/hw/ide/ide-bus.h
->   create mode 100644 include/hw/ide/ide-dev.h
->   create mode 100644 include/hw/ide/ide-dma.h
->   create mode 100644 hw/ide/cf.c
->   create mode 100644 hw/ide/ide-bus.c
->   rename hw/ide/{qdev.c => ide-dev.c} (67%)
+> Patch 4 is an improvement to the QOM macros that's been on list as an
+> RFC already.
+> Patches 5 and 6 are the "new mechanism": qemu_register_resettable()
+> takes any object that implements the Resettable interface. System
+> reset is then doing 3-phase reset on all of these, so everything
+> gets its 'enter' phase called, then everything gets 'hold', then
+> everything gets 'exit'.
+> 
+> Patch 7 reimplements the qemu_register_reset() API to be
+> "qemu_register_resettable(), and the callback function is called
+> in the 'hold' phase".
+> 
+> Patch 8 makes the first real use of the new API: instead of
+> doing the qbus reset via qemu_register_reset(), we pass the
+> root of the qbus to qemu_register_resettable(). (This is where
+> the ordering change I mention above happens, as device enter and
+> exit method calls will now happen before and after all the
+> qemu_register_reset() function callbacks, rather than in the
+> middle of them.)
+> 
+> Finally, patch 9 updates the developer docs to describe how a
+> complete system reset currently works.
+> 
+> This series doesn't actually do a great deal as it stands, but I
+> think it's a necessary foundation for some cleanups:
+>   * the vfio reset ordering problem discussed on list a while back
+>     should now hopefully be solvable by having the vfio code use
+>     qemu_register_resettable() so it can arrange to do the "needs to
+>     happen last" stuff in an exit phase method
+>   * there are some other missing pieces here, but eventually I think
+>     it should be possible to get rid of the workarounds for
+>     dependencies between ROM image loading and CPUs that want to
+>     read an initial PC/SP on reset (eg arm, m68k)
 
-I've had a quick skim of this series, and it looks like a good tidy-up to me so:
+Absolutely, this would definitely help with m68k :)
 
-Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> I also think it's a good idea to get it into the tree so that we
+> have a chance to see if there are any unexpected regressions
+> before we start putting in bugfixes etc that depend on it :-)
+> 
+> After this, I think the next thing I'm going to look at is whether
+> we can move the MachineState class from inheriting from TYPE_OBJECT
+> to TYPE_DEVICE. This would allow us to have machine-level reset
+> (and would bring "machine as a container of devices" into line
+> with "SoC object as container of devices").
+
+This would be really useful! In particular, moving MachineState to inherit from 
+TYPE_DEVICE will allow setting MemoryRegion owners to the machine itself for 
+arbitrary registers implemented by the board.
+
+> thanks
+> -- PMM
+> 
+> Peter Maydell (10):
+>    hw/i386: Store pointers to IDE buses in PCMachineState
+>    hw/i386/pc: Do pc_cmos_init_late() from pc_machine_done()
+>    system/bootdevice: Don't unregister reset handler in
+>      restore_boot_order()
+>    include/qom/object.h: New OBJECT_DEFINE_SIMPLE_TYPE{,_WITH_INTERFACES}
+>      macros
+>    hw/core: Add documentation and license comments to reset.h
+>    hw/core: Add ResetContainer which holds objects implementing
+>      Resettable
+>    hw/core/reset: Add qemu_{register,unregister}_resettable()
+>    hw/core/reset: Implement qemu_register_reset via
+>      qemu_register_resettable
+>    hw/core/machine: Use qemu_register_resettable for sysbus reset
+>    docs/devel/reset: Update to discuss system reset
+> 
+>   MAINTAINERS                      |  10 ++
+>   docs/devel/qom.rst               |  34 ++++++-
+>   docs/devel/reset.rst             |  44 +++++++-
+>   include/hw/core/resetcontainer.h |  48 +++++++++
+>   include/hw/i386/pc.h             |   4 +-
+>   include/qom/object.h             | 114 ++++++++++++++++-----
+>   include/sysemu/reset.h           | 113 +++++++++++++++++++++
+>   hw/core/machine.c                |   7 +-
+>   hw/core/reset.c                  | 166 +++++++++++++++++++++++++------
+>   hw/core/resetcontainer.c         |  76 ++++++++++++++
+>   hw/i386/pc.c                     |  40 +++-----
+>   hw/i386/pc_piix.c                |  16 ++-
+>   hw/i386/pc_q35.c                 |   9 +-
+>   system/bootdevice.c              |  25 +++--
+>   hw/core/meson.build              |   1 +
+>   15 files changed, 587 insertions(+), 120 deletions(-)
+>   create mode 100644 include/hw/core/resetcontainer.h
+>   create mode 100644 hw/core/resetcontainer.c
 
 
 ATB,
