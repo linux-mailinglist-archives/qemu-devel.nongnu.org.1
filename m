@@ -2,45 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C6AF85E12B
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:32:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC0D385E229
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:58:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoRY-0001kv-4H; Wed, 21 Feb 2024 10:23:32 -0500
+	id 1rcoTt-0007WL-Td; Wed, 21 Feb 2024 10:25:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rcoKz-0000nB-7G; Wed, 21 Feb 2024 10:16:46 -0500
-Received: from mgamail.intel.com ([192.198.163.15])
+ id 1rcoMj-0004vg-Q8; Wed, 21 Feb 2024 10:18:38 -0500
+Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rcnwv-0006r8-V3; Wed, 21 Feb 2024 09:52:06 -0500
+ id 1rcnyC-0006w4-Bw; Wed, 21 Feb 2024 09:53:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708527114; x=1740063114;
+ t=1708527192; x=1740063192;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=4ak9kaacz/hdfQkekQ6mF744vrtw9wcS9x6gihIV+eE=;
- b=gjdx9/qC4J6PUSkGs7xJLsANmqsjO2md3l/xkYgmvSBBV3CqkX2KrYPp
- nnPKhJSXgQ3VC5OwDI/nbrC83KP6ISCVMrj1XrNFr3QOi3U5CeyX8183F
- kpA85/hbqWIzCecowZtWm7A4KOtaBZoVeFhxW3JmUnmtegcIXIfTyTZ1Y
- qkhzvrUC3YPBhD1UP6S1U+uTVuRFtsI8eGqnJK0F6dy51tS1kd7dX6+ds
- w+gR3bQiiHu6cZU1yh+ja5MEP3JPldBct7caOCBiI9MLNCmmZMb8koD99
- 6vTD76fyC6/SWBcGK9HwdLYAxoijBlHte0PMx31P3cxnbU4SM6fdVtThu w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="2827374"
+ bh=UGj5JoIo7Cr9pGUnX7V/P0tJcuLD76ovvoOQLggI0D8=;
+ b=it9xlkMuuFBVDvlQyist1CgBj7T6GYrUbkdDil2rbFT/GVkHhGygTnwK
+ y6qumUGgvOWZSshevTsrdhEVqT6sHjR4/7GBxZdzU2WQqr8emiY5GYdNk
+ TUNaQDgXfzTdwzG809Ql+WEbdZNzXjkBaRgzqtgPr2KtFMB30W3FW15hh
+ kGstlUvQ3+83zYR/8Hj1G7u6xHs75wdmc3ilJmUoTkYWR5ZoseLcRoxuC
+ gDHXQ0ODM6MaTAaJNHrvlvl605AIXha6hoHGtYzMl5wJgyEMAJzjOXNF7
+ KdNtgrscw9SYKfWfUaOv28Kjb//tSsT3t8XQMNdmsB81KrpLBBX5YSDjq w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="5643881"
 X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="2827374"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2024 06:51:51 -0800
+   d="scan'208";a="5643881"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Feb 2024 06:53:09 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="936655259"
-X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; d="scan'208";a="936655259"
+X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; d="scan'208";a="28302334"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by fmsmga001.fm.intel.com with ESMTP; 21 Feb 2024 06:51:47 -0800
-Date: Wed, 21 Feb 2024 23:05:27 +0800
+ by fmviesa002.fm.intel.com with ESMTP; 21 Feb 2024 06:53:04 -0800
+Date: Wed, 21 Feb 2024 23:06:44 +0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Markus Armbruster <armbru@redhat.com>
 Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
@@ -55,17 +54,17 @@ Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
  Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-trivial@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH 2/6] hw/display/macfb: Fix missing ERRP_GUARD() in
- macfb_nubus_realize()
-Message-ID: <ZdYRN+BchbdY1xm4@intel.com>
+Subject: Re: [PATCH 4/6] hw/misc/xlnx-versal-trng: Fix missing ERRP_GUARD()
+ in trng_prop_fault_event_set()
+Message-ID: <ZdYRhCWhTGlkM7up@intel.com>
 References: <20240221094317.994454-1-zhao1.liu@linux.intel.com>
- <20240221094317.994454-3-zhao1.liu@linux.intel.com>
- <874je2vyqs.fsf@pond.sub.org>
+ <20240221094317.994454-5-zhao1.liu@linux.intel.com>
+ <87ttm2ujhm.fsf@pond.sub.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <874je2vyqs.fsf@pond.sub.org>
-Received-SPF: none client-ip=192.198.163.15;
+In-Reply-To: <87ttm2ujhm.fsf@pond.sub.org>
+Received-SPF: none client-ip=192.198.163.13;
  envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -88,11 +87,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Feb 21, 2024 at 12:32:43PM +0100, Markus Armbruster wrote:
-> Date: Wed, 21 Feb 2024 12:32:43 +0100
+On Wed, Feb 21, 2024 at 12:47:33PM +0100, Markus Armbruster wrote:
+> Date: Wed, 21 Feb 2024 12:47:33 +0100
 > From: Markus Armbruster <armbru@redhat.com>
-> Subject: Re: [PATCH 2/6] hw/display/macfb: Fix missing ERRP_GUARD() in
->  macfb_nubus_realize()
+> Subject: Re: [PATCH 4/6] hw/misc/xlnx-versal-trng: Fix missing ERRP_GUARD()
+>  in trng_prop_fault_event_set()
 > 
 > Zhao Liu <zhao1.liu@linux.intel.com> writes:
 > 
@@ -116,12 +115,12 @@ On Wed, Feb 21, 2024 at 12:32:43PM +0100, Markus Armbruster wrote:
 > > * Using it when it's not needed is safe, but please avoid cluttering
 > > * the source with useless code.
 > >
-> > Currently, since macfb_nubus_realize() - as a DeviceClass.realize()
-> > method - doesn't get the NULL errp parameter, it doesn't trigger the
+> > Currently, since trng_prop_fault_event_set() doesn't get the NULL errp
+> > parameter as a "set" method of object property, it doesn't trigger the
 > > dereference issue.
 > >
 > > To follow the requirement of errp, add missing ERRP_GUARD() in
-> > macfb_nubus_realize().
+> > trng_prop_fault_event_set().
 > >
 > > Suggested-by: Markus Armbruster <armbru@redhat.com>
 > > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
@@ -129,37 +128,54 @@ On Wed, Feb 21, 2024 at 12:32:43PM +0100, Markus Armbruster wrote:
 > > Suggested by credit:
 > >  Markus: Referred his explanation about ERRP_GUARD().
 > > ---
-> >  hw/display/macfb.c | 1 +
-> >  1 file changed, 1 insertion(+)
+> >  hw/misc/xlnx-versal-trng.c | 2 ++
+> >  1 file changed, 2 insertions(+)
 > >
-> > diff --git a/hw/display/macfb.c b/hw/display/macfb.c
-> > index 418e99c8e18e..1ace341a0ff4 100644
-> > --- a/hw/display/macfb.c
-> > +++ b/hw/display/macfb.c
-> > @@ -714,6 +714,7 @@ static void macfb_nubus_set_irq(void *opaque, int n, int level)
-> >  
-> >  static void macfb_nubus_realize(DeviceState *dev, Error **errp)
+> > diff --git a/hw/misc/xlnx-versal-trng.c b/hw/misc/xlnx-versal-trng.c
+> > index b8111b8b6626..3579348a9d17 100644
+> > --- a/hw/misc/xlnx-versal-trng.c
+> > +++ b/hw/misc/xlnx-versal-trng.c
+> > @@ -33,6 +33,7 @@
+> >  #include "qemu/error-report.h"
+> >  #include "qemu/guest-random.h"
+> >  #include "qemu/timer.h"
+> > +#include "qapi/error.h"
+> >  #include "qapi/visitor.h"
+> >  #include "migration/vmstate.h"
+> >  #include "hw/qdev-properties.h"
+> > @@ -641,6 +642,7 @@ static void trng_prop_fault_event_set(Object *obj, Visitor *v,
+> >                                        const char *name, void *opaque,
+> >                                        Error **errp)
 > >  {
 > > +    ERRP_GUARD();
-> >      NubusDevice *nd = NUBUS_DEVICE(dev);
-> >      MacfbNubusState *s = NUBUS_MACFB(dev);
-> >      MacfbNubusDeviceClass *ndc = NUBUS_MACFB_GET_CLASS(dev);
+> >      Property *prop = opaque;
+> >      uint32_t *events = object_field_prop_ptr(obj, prop);
 > 
-> The dereference is
-> 
->        ndc->parent_realize(dev, errp);
+>        visit_type_uint32(v, name, events, errp);
 >        if (*errp) {
 >            return;
 >        }
 > 
-> We check *errp, because neither the callback returns void.
+> Please do this instead:
 > 
-> Reviewed-by: Markus Armbruster <armbru@redhat.com>
+> diff --git a/hw/misc/xlnx-versal-trng.c b/hw/misc/xlnx-versal-trng.c
+> index b8111b8b66..6495188dc7 100644
+> --- a/hw/misc/xlnx-versal-trng.c
+> +++ b/hw/misc/xlnx-versal-trng.c
+> @@ -644,8 +644,7 @@ static void trng_prop_fault_event_set(Object *obj, Visitor *v,
+>      Property *prop = opaque;
+>      uint32_t *events = object_field_prop_ptr(obj, prop);
+>  
+> -    visit_type_uint32(v, name, events, errp);
+> -    if (*errp) {
+> +    if (!visit_type_uint32(v, name, events, errp)) {
+>          return;
+>      }
+>  
 
-Thanks! Will add more description in commit message as you suggested.
+Thanks! I didn't think of that. Will do this.
 
 Regards,
 Zhao
-
 
 
