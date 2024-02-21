@@ -2,83 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47D5E85E115
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:28:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1F5A85E21E
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:56:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoPl-00067A-PP; Wed, 21 Feb 2024 10:21:41 -0500
+	id 1rcoOu-00046W-5c; Wed, 21 Feb 2024 10:20:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1rcoKp-0001tO-IL
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:16:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1rcjOt-0008RF-MZ
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 05:00:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708509623;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=42SecKXcOz47okkrRHbgTxl0Hcl8mRZrzLBuSKsVq2E=;
- b=DaMe+XDk4LXicr8qQ8eDuOLhfrEd1R1Jvn/BHkyKGNJ7jYp78aU3KBp3TEO6By0+YKTF0C
- IVgt+rRuL+BSn/dee6Wlf/V8U7r+1re6OzwOdBtQWIQinQiheeNDacmGuaHAfAwVCSDDoY
- QXcMbBaAVSil2H3HzXgUL2R4tNUz1hg=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-tdsE-VNENNCQgSlziWQHeQ-1; Wed, 21 Feb 2024 05:00:21 -0500
-X-MC-Unique: tdsE-VNENNCQgSlziWQHeQ-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2d23d2bd17fso23732181fa.1
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 02:00:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rcoL7-00010D-6d
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:16:54 -0500
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rcjQZ-0000HR-2j
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 05:02:14 -0500
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-512bb2ed1f7so3771716e87.3
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 02:02:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708509728; x=1709114528; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JUkWydTv2VrLHRINP4jDL5WI0AAuSIf64/VbYecvIRA=;
+ b=Nc0rXIkERZ4qxYYeANl4wY1nY2L3a6pFIqZ7G7oq/PCoKjAfKFzk/2FHq2EcLyXMNL
+ lE7z7uNVoWpPOT+yTMfKzpIwf66EwGHXHkIsdDUUi3gVNkVPLtONRGLRzE4eAjdxSQK0
+ 7/x8rdQ/fH+EN3P+x7uX26eUZfQbdEWjrP6h7xG9RRTGy6qMQ5jTHeDzOnngPy7tDg90
+ bJAd/BXVOfSqVAl+URDIeodnOoRyI8n0hmgykXan8p/eWSWtChoet52C3Q6mySkxO3yu
+ XSZ4yZOgXYoounQTM688vCx1NFI75UBFMAXBh+91rYqvMIL9+cxOgK3RGiYXjbiH9TXO
+ 2Vow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708509619; x=1709114419;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=42SecKXcOz47okkrRHbgTxl0Hcl8mRZrzLBuSKsVq2E=;
- b=YDcsHziXS/J44YaMkJDBz9IPxktZei9QMdcbd8cAYnLhlG4jmuFOBacAIdIMDJ2qv5
- 9O8KRieli3LpBSwyeGVQisv3uec69dP3NYSMkRMjekDEFEa/pKDCoP+4CZLomwTp+ug6
- EwYT5bDXs1CfsrRPGDiFU8Pkojr2MxOB76J27NTyWhCCRuRcLoV8DaqIueN/ce8jtkbw
- nbyZYqfc1xLyPjICrIZvUbu3GLXjcbHWpKRBMz14YaL2XwfKLp+mWstw8ZrztpI/zXe7
- XC/8UwI5uH19rzRPXM0dV0kBg1QLztarM7lyRQ5TPY2bnCqFpyaiL3tdZpHkSMvB8ouQ
- c3oQ==
-X-Gm-Message-State: AOJu0Yylq2VtDqDCtZlan/L8F8Nak0bvdANUl0Ji3R9mNDHhWr5UmnTC
- UlocBF/x55qfshia8ZXxkw3NIJzk7iYqQ/7HzBCLoxjzn4rDXf1SVTDhSmPtbYKUVUsiaXeEGAg
- vDd+A6ZZXLvLkToazhInrnq03WzhfcP6YZ3VK58fx3c+7NNr7n7bHamkVipIR+iCx5pn2lLoL9c
- l48uzEOXF3APIMXkYazyFZxayjELI=
-X-Received: by 2002:a2e:bc23:0:b0:2d2:230f:f14 with SMTP id
- b35-20020a2ebc23000000b002d2230f0f14mr11526516ljf.12.1708509619763; 
- Wed, 21 Feb 2024 02:00:19 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG+Vo7pjED4tYF605xYHdGPxTDds2n+IPxYdZ73a9eDL7MiBEyVEh47DNAu/gMowDvTz1HCT4GQZ3gK89vCBZs=
-X-Received: by 2002:a2e:bc23:0:b0:2d2:230f:f14 with SMTP id
- b35-20020a2ebc23000000b002d2230f0f14mr11526499ljf.12.1708509619493; Wed, 21
- Feb 2024 02:00:19 -0800 (PST)
+ d=1e100.net; s=20230601; t=1708509728; x=1709114528;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=JUkWydTv2VrLHRINP4jDL5WI0AAuSIf64/VbYecvIRA=;
+ b=HWn0HQ+HUplydq3gO2S24ssJDEZuNSZO8p+Qu85qPWfx5E851dIbYsG+YP/fplnW0y
+ 8p1SHJZf4ru0kRcDn4f1C1gRw+ucTXuwedFtABt3Iu0tukyz9tu9Bc16aC3qh0gBw8VQ
+ yEdYEppjWehzZqLCDIR7w+e+cHMyMsgCY7mmb+T3EQC9Uv4V/2AesgAmmokWBAftoF/X
+ W9Bj7aMhlDL/CUgsSr+XEtjOC2aBdzWkjlsWAQoiPuKbF86qiHacpzkHeFKoMhBS+2/i
+ /rwG7jZkGBzjbaxxVw76E61PpzTAwwOdvXSoHJ/Hyac7svfmho3+L4Yer9vzAU5egNr/
+ lcoA==
+X-Gm-Message-State: AOJu0Yz8J/Z4mnb3Hhhv+EgJKOuBOe2JooVCC2orUE+MY0DL7W61lnkV
+ AgejUqBRcgjlz7dezXqLMv2G6VKdfcAKukaPPC89izvbU6+XYwiocYBNYSjys6U=
+X-Google-Smtp-Source: AGHT+IHLeOd6gaUqT81BSIlTcz4al/LxL7/p7IM099mHYvt7ZJyCft9QPFAaUxmPD7CNpXvTgqdH4Q==
+X-Received: by 2002:a05:6512:1146:b0:512:b437:4b06 with SMTP id
+ m6-20020a056512114600b00512b4374b06mr4271003lfg.67.1708509728026; 
+ Wed, 21 Feb 2024 02:02:08 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ b13-20020a05600c11cd00b0040fddaf9ff4sm1935434wmi.40.2024.02.21.02.02.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 Feb 2024 02:02:07 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 34FBE5F875;
+ Wed, 21 Feb 2024 10:02:07 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org,  Yoshinori Sato <ysato@users.sourceforge.jp>,
+ David Hildenbrand <david@redhat.com>,  Weiwei Li <liwei1518@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,  Michael Rolnik
+ <mrolnik@gmail.com>,  Ilya Leoshkevich <iii@linux.ibm.com>,  Peter Maydell
+ <peter.maydell@linaro.org>,  qemu-ppc@nongnu.org,  Paolo Bonzini
+ <pbonzini@redhat.com>,  qemu-riscv@nongnu.org,  Cleber Rosa
+ <crosa@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Song Gao
+ <gaosong@loongson.cn>,  qemu-arm@nongnu.org,  Pierrick Bouvier
+ <pierrick.bouvier@linaro.org>,  John Snow <jsnow@redhat.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le
+ Goater <clg@kaod.org>,  Nicholas Piggin <npiggin@gmail.com>,
+ qemu-s390x@nongnu.org,  Laurent Vivier <laurent@vivier.eu>,  "Edgar E.
+ Iglesias" <edgar.iglesias@gmail.com>,  Daniel Henrique Barboza
+ <dbarboza@ventanamicro.com>,  Yanan Wang <wangyanan55@huawei.com>,  Palmer
+ Dabbelt <palmer@dabbelt.com>,  Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>,  Brian Cain <bcain@quicinc.com>,  Mahmoud
+ Mandour <ma.mandourr@gmail.com>,  Alexandre Iooss <erdnaxe@crans.org>,
+ Bin Meng <bin.meng@windriver.com>,  Philippe =?utf-8?Q?Mathieu-Daud?=
+ =?utf-8?Q?=C3=A9?=
+ <philmd@linaro.org>,  Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,  Alistair Francis
+ <alistair.francis@wdc.com>,  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: Re: [PATCH 18/23] plugins: add an API to read registers
+In-Reply-To: <bf31a250-9539-448c-9c64-4168ab8741f1@daynix.com> (Akihiko
+ Odaki's message of "Wed, 21 Feb 2024 13:45:16 +0900")
+References: <20240216163025.424857-1-alex.bennee@linaro.org>
+ <20240216163025.424857-19-alex.bennee@linaro.org>
+ <c38a22b5-01e8-40f1-bfc4-4bba9bf7b516@daynix.com>
+ <87il2jcje8.fsf@draig.linaro.org>
+ <bf31a250-9539-448c-9c64-4168ab8741f1@daynix.com>
+User-Agent: mu4e 1.11.28; emacs 29.1
+Date: Wed, 21 Feb 2024 10:02:07 +0000
+Message-ID: <87bk8ab0f4.fsf@draig.linaro.org>
 MIME-Version: 1.0
-References: <20240221095130.52711-1-demeng@redhat.com>
-In-Reply-To: <20240221095130.52711-1-demeng@redhat.com>
-From: Konstantin Kostiuk <kkostiuk@redhat.com>
-Date: Wed, 21 Feb 2024 12:00:08 +0200
-Message-ID: <CAPMcbCr9y89BiM+mTF3i2n6GfAA9Xnu3ovoS-KamLZFEiAhrSA@mail.gmail.com>
-Subject: Re: [PATCH] qga-win: Add support of Windows Server 2025 in get-osinfo
- command
-To: Dehan Meng <demeng@redhat.com>
-Cc: qemu-devel@nongnu.org, michael.roth@amd.com
-Content-Type: multipart/alternative; boundary="000000000000f730010611e164f7"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x131.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,85 +120,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000f730010611e164f7
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Akihiko Odaki <akihiko.odaki@daynix.com> writes:
 
-On Wed, Feb 21, 2024 at 11:51=E2=80=AFAM Dehan Meng <demeng@redhat.com> wro=
-te:
-
-> Add support of Windows Server 2025 in get-osinfo command
+> On 2024/02/20 23:14, Alex Benn=C3=A9e wrote:
+>> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+>>=20
+>>> On 2024/02/17 1:30, Alex Benn=C3=A9e wrote:
+>>>> We can only request a list of registers once the vCPU has been
+>>>> initialised so the user needs to use either call the get function on
+>>>> vCPU initialisation or during the translation phase.
+>>>> We don't expose the reg number to the plugin instead hiding it
+>>>> behind
+>>>> an opaque handle. This allows for a bit of future proofing should the
+>>>> internals need to be changed while also being hashed against the
+>>>> CPUClass so we can handle different register sets per-vCPU in
+>>>> hetrogenous situations.
+>>>> Having an internal state within the plugins also allows us to expand
+>>>> the interface in future (for example providing callbacks on register
+>>>> change if the translator can track changes).
+>>>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1706
+>>>> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>>> Message-Id: <20240103173349.398526-39-alex.bennee@linaro.org>
+>>>> Based-on: <20231025093128.33116-18-akihiko.odaki@daynix.com>
+>>>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>>>> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>> <snip>
+>>>> +/*
+>>>> + * Register handles
+>>>> + *
+>>>> + * The plugin infrastructure keeps hold of these internal data
+>>>> + * structures which are presented to plugins as opaque handles. They
+>>>> + * are global to the system and therefor additions to the hash table
+>>>> + * must be protected by the @reg_handle_lock.
+>>>> + *
+>>>> + * In order to future proof for up-coming heterogeneous work we want
+>>>> + * different entries for each CPU type while sharing them in the
+>>>> + * common case of multiple cores of the same type.
+>>>> + */
+>>>> +
+>>>> +static QemuMutex reg_handle_lock;
+>>>> +
+>>>> +struct qemu_plugin_register {
+>>>> +    const char *name;
+>>>> +    int gdb_reg_num;
+>>>> +};
+>>>> +
+>>>> +static GHashTable *reg_handles; /* hash table of PluginReg */
+>>>> +
+>>>> +/* Generate a stable key - would xxhash be overkill? */
+>>>> +static gpointer cpu_plus_reg_to_key(CPUState *cs, int gdb_regnum)
+>>>> +{
+>>>> +    uintptr_t key =3D (uintptr_t) cs->cc;
+>>>> +    key ^=3D gdb_regnum;
+>>>> +    return GUINT_TO_POINTER(key);
+>>>> +}
+>>>
+>>> I have pointed out this is theoretically prone to collisions and
+>>> unsafe.
+>> How is it unsafe? The aim is to share handles for the same CPUClass
+>> rather than having a unique handle per register/cpu combo.
 >
-> Signed-off-by: Dehan Meng <demeng@redhat.com>
-> ---
->  qga/commands-win32.c | 1 +
->  1 file changed, 1 insertion(+)
+> THe intention is legitimate, but the implementation is not safe. It
+> assumes (uintptr)cs->cc ^ gdb_regnum is unique, but there is no such
+> guarantee. The key of GHashTable must be unique; generating hashes of
+> keys should be done with hash_func given to g_hash_table_new().
+
+This isn't a hash its a non-unique key. It is however unique for
+the same register on the same class of CPU so for each vCPU in a system
+can share the same opaque handles.
+
+The hashing is done internally by glib. We would assert if there was a
+duplicate key referring to a different register.
+
+I'm unsure what you want here? Do you have a suggestion for the key
+generation algorithm? As the comment notes I did consider a more complex
+mixing algorithm using xxhash but that wouldn't guarantee no clash
+either.
+
+
 >
-> diff --git a/qga/commands-win32.c b/qga/commands-win32.c
-> index 697c65507c..f3c7e604c9 100644
-> --- a/qga/commands-win32.c
-> +++ b/qga/commands-win32.c
-> @@ -2154,6 +2154,7 @@ static ga_win_10_0_t const
-> WIN_10_0_SERVER_VERSION_MATRIX[4] =3D {
->
+>> Indeed if I add the following:
+>> --8<---------------cut here---------------start------------->8---
+>>     plugins/api.c
+>> @@ -482,6 +482,9 @@ static GArray *create_register_handles(CPUState *cs,=
+ GArray *gdbstub_regs)
+>>                   val->name =3D g_intern_string(grd->name);
+>>                     g_hash_table_insert(reg_handles, key, val);
+>> +            } else {
+>> +                /* make sure its not a clash */
+>> +                g_assert(val->gdb_reg_num =3D=3D grd->gdb_reg);
+>>               }
+>>                 /* Create a record for the plugin */
+>> modified   tests/plugin/insn.c
+>> @@ -46,6 +46,25 @@ typedef struct {
+>>       char *disas;
+>>   } Instruction;
+>>   +/*
+>> + * Initialise a new vcpu with reading the register list
+>> + */
+>> +static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
+>> +{
+>> +    g_autoptr(GArray) reg_list =3D qemu_plugin_get_registers();
+>> +    g_autoptr(GByteArray) reg_value =3D g_byte_array_new();
+>> +
+>> +    if (reg_list) {
+>> +        for (int i =3D 0; i < reg_list->len; i++) {
+>> +            qemu_plugin_reg_descriptor *rd =3D &g_array_index(
+>> +                reg_list, qemu_plugin_reg_descriptor, i);
+>> +            int count =3D qemu_plugin_read_register(rd->handle, reg_val=
+ue);
+>> +            g_assert(count > 0);
+>> +        }
+>> +    }
+>> +}
+>> +
+>> +
+>>   static void vcpu_insn_exec_before(unsigned int cpu_index, void *udata)
+>>   {
+>>       unsigned int i =3D cpu_index % MAX_CPUS;
+>> @@ -212,6 +231,8 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plug=
+in_id_t id,
+>>           sizes =3D g_array_new(true, true, sizeof(unsigned long));
+>>       }
+>>   +    /* Register init, translation block and exit callbacks */
+>> +    qemu_plugin_register_vcpu_init_cb(id, vcpu_init);
+>>       qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans);
+>>       qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
+>>       return 0;
+>> --8<---------------cut here---------------end--------------->8---
+>> Nothing trips up during check-tcg (after I fixed "gdbstub: Infer
+>> number
+>> of core registers from XML" to remove the microblaze check on
+>> cc->gdb_num_core_regs).
+<snip>
 
-You don't update the array size, there are out of range elements
-
-
->      {14393, "Microsoft Windows Server 2016",    "2016"},
->      {17763, "Microsoft Windows Server 2019",    "2019"},
->      {20344, "Microsoft Windows Server 2022",    "2022"},
-> +    {26040, "MIcrosoft Windows Server 2025",    "2025"},
->      {0, 0}
->  };
->
-> --
-> 2.35.1
->
->
-
---000000000000f730010611e164f7
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Feb 21, 2024 at 11:51=E2=80=
-=AFAM Dehan Meng &lt;<a href=3D"mailto:demeng@redhat.com">demeng@redhat.com=
-</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:=
-0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">=
-Add support of Windows Server 2025 in get-osinfo command<br>
-<br>
-Signed-off-by: Dehan Meng &lt;<a href=3D"mailto:demeng@redhat.com" target=
-=3D"_blank">demeng@redhat.com</a>&gt;<br>
----<br>
-=C2=A0qga/commands-win32.c | 1 +<br>
-=C2=A01 file changed, 1 insertion(+)<br>
-<br>
-diff --git a/qga/commands-win32.c b/qga/commands-win32.c<br>
-index 697c65507c..f3c7e604c9 100644<br>
---- a/qga/commands-win32.c<br>
-+++ b/qga/commands-win32.c<br>
-@@ -2154,6 +2154,7 @@ static ga_win_10_0_t const WIN_10_0_SERVER_VERSION_MA=
-TRIX[4] =3D {<br></blockquote><div><br></div><div>You don&#39;t update the =
-array size, there are out of range elements<br></div><div>=C2=A0</div><bloc=
-kquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:=
-1px solid rgb(204,204,204);padding-left:1ex">
-=C2=A0 =C2=A0 =C2=A0{14393, &quot;Microsoft Windows Server 2016&quot;,=C2=
-=A0 =C2=A0 &quot;2016&quot;},<br>
-=C2=A0 =C2=A0 =C2=A0{17763, &quot;Microsoft Windows Server 2019&quot;,=C2=
-=A0 =C2=A0 &quot;2019&quot;},<br>
-=C2=A0 =C2=A0 =C2=A0{20344, &quot;Microsoft Windows Server 2022&quot;,=C2=
-=A0 =C2=A0 &quot;2022&quot;},<br>
-+=C2=A0 =C2=A0 {26040, &quot;MIcrosoft Windows Server 2025&quot;,=C2=A0 =C2=
-=A0 &quot;2025&quot;},<br>
-=C2=A0 =C2=A0 =C2=A0{0, 0}<br>
-=C2=A0};<br>
-<br>
--- <br>
-2.35.1<br>
-<br>
-</blockquote></div></div>
-
---000000000000f730010611e164f7--
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
