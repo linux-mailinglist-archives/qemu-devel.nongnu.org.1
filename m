@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51F6585E0E1
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:21:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0648A85E1D7
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:49:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoNj-0007dl-4X; Wed, 21 Feb 2024 10:19:38 -0500
+	id 1rcoTv-0007Zg-8Q; Wed, 21 Feb 2024 10:26:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcoJo-0000wC-UJ; Wed, 21 Feb 2024 10:15:33 -0500
+ id 1rcoMB-0000wD-8u; Wed, 21 Feb 2024 10:18:03 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rchuz-00034B-QJ; Wed, 21 Feb 2024 03:25:32 -0500
+ id 1rchvO-00034e-5k; Wed, 21 Feb 2024 03:25:56 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 62E174F3F1;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7261A4F3F2;
  Wed, 21 Feb 2024 11:21:23 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2F2CC860D0;
+ by tsrv.corpit.ru (Postfix) with SMTP id 3E82B860D1;
  Wed, 21 Feb 2024 11:21:02 +0300 (MSK)
-Received: (nullmailer pid 2142143 invoked by uid 1000);
+Received: (nullmailer pid 2142146 invoked by uid 1000);
  Wed, 21 Feb 2024 08:20:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.2 51/60] i386/cpuid: Decrease cpuid_i when skipping CPUID
- leaf 1F
-Date: Wed, 21 Feb 2024 11:20:39 +0300
-Message-Id: <20240221082058.2141850-51-mjt@tls.msk.ru>
+Subject: [Stable-8.2.2 52/60] i386/cpuid: Move leaf 7 to correct group
+Date: Wed, 21 Feb 2024 11:20:40 +0300
+Message-Id: <20240221082058.2141850-52-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.2-20240221110049@cover.tls.msk.ru>
 References: <qemu-stable-8.2.2-20240221110049@cover.tls.msk.ru>
@@ -62,32 +61,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Existing code misses a decrement of cpuid_i when skip leaf 0x1F.
-There's a blank CPUID entry(with leaf, subleaf as 0, and all fields
-stuffed 0s) left in the CPUID array.
+CPUID leaf 7 was grouped together with SGX leaf 0x12 by commit
+b9edbadefb9e ("i386: Propagate SGX CPUID sub-leafs to KVM") by mistake.
 
-It conflicts with correct CPUID leaf 0.
+SGX leaf 0x12 has its specific logic to check if subleaf (starting from 2)
+is valid or not by checking the bit 0:3 of corresponding EAX is 1 or
+not.
 
+Leaf 7 follows the logic that EAX of subleaf 0 enumerates the maximum
+valid subleaf.
+
+Fixes: b9edbadefb9e ("i386: Propagate SGX CPUID sub-leafs to KVM")
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by:Yang Weijiang <weijiang.yang@intel.com>
-Message-ID: <20240125024016.2521244-2-xiaoyao.li@intel.com>
+Message-ID: <20240125024016.2521244-4-xiaoyao.li@intel.com>
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 10f92799af8ba3c3cef2352adcd4780f13fbab31)
+(cherry picked from commit 0729857c707535847d7fe31d3d91eb8b2a118e3c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 4ce80555b4..e68eb8f5e6 100644
+index e68eb8f5e6..a0bc9ea7b1 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -1914,6 +1914,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
-         }
-         case 0x1f:
-             if (env->nr_dies < 2) {
-+                cpuid_i--;
-                 break;
+@@ -1955,7 +1955,6 @@ int kvm_arch_init_vcpu(CPUState *cs)
+                 c = &cpuid_data.entries[cpuid_i++];
              }
-             /* fallthrough */
+             break;
+-        case 0x7:
+         case 0x12:
+             for (j = 0; ; j++) {
+                 c->function = i;
+@@ -1975,6 +1974,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
+                 c = &cpuid_data.entries[cpuid_i++];
+             }
+             break;
++        case 0x7:
+         case 0x14:
+         case 0x1d:
+         case 0x1e: {
 -- 
 2.39.2
 
