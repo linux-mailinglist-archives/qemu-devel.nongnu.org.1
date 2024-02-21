@@ -2,70 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 057C285E128
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:31:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DAA685E12A
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:32:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoYk-0005s0-4V; Wed, 21 Feb 2024 10:31:01 -0500
+	id 1rcoWl-0006hk-BD; Wed, 21 Feb 2024 10:28:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcoNM-0006Nd-JC
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:19:12 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1rcoN7-0000wD-B1; Wed, 21 Feb 2024 10:19:02 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcitP-0003Ab-5x
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 04:27:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708507674;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=UgCoAvodRLVzHJkgildrLHAc/XRACmSJVVWSYWw3g44=;
- b=cyGEFNsrmUwcB/yn8D0xrB3MFfBHE/xran4Ar84eJkLZQ/fIoCRAqX5WppdriQmVC46y3b
- kKTIjyb0Rk52XHTNLuqOp7+mb99b5sjAlEdkqrdxIjCZvbxOF0sEGdG1j0AqM6xHylRbnK
- Ydc6xDGLHtnijrTIjcvdcEmOrrn5jSw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-660-_MkwwRkmMkm-fha1rgxBBA-1; Wed,
- 21 Feb 2024 04:27:50 -0500
-X-MC-Unique: _MkwwRkmMkm-fha1rgxBBA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 159A538143AF;
- Wed, 21 Feb 2024 09:27:50 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E64B240C94A7;
- Wed, 21 Feb 2024 09:27:49 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E9D1321E6740; Wed, 21 Feb 2024 10:27:48 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  berrange@redhat.com,  Peter Xu
- <peterx@redhat.com>,  Claudio Fontana <cfontana@suse.de>
-Subject: Re: [PATCH v4 32/34] monitor: fdset: Match against O_DIRECT
-In-Reply-To: <20240220224138.24759-33-farosas@suse.de> (Fabiano Rosas's
- message of "Tue, 20 Feb 2024 19:41:36 -0300")
-References: <20240220224138.24759-1-farosas@suse.de>
- <20240220224138.24759-33-farosas@suse.de>
-Date: Wed, 21 Feb 2024 10:27:48 +0100
-Message-ID: <878r3exj3f.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1rcj8A-0005gM-L1; Wed, 21 Feb 2024 04:43:13 -0500
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41L8VBo2011104; Wed, 21 Feb 2024 09:42:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=2mcUGsz+G/CH4UyajAvWqzY66myYuYr8IqB6Vvmo+tU=;
+ b=cccbxpE/p50MM/EYEwEnrRNQQE4TyELPF1N4yYjQtamHcIn4WYC+7DYVFb/gbrnMI52G
+ M9lR5ILRtW/ghiMuFACRejlJSkOWKkwO5Kxu0rxYkp5aplRrj9J9CoPZ2Gb5na0VRerV
+ u8kk6g7zNm7CO07pu/x7S8Ok9ABknX2C1R0BgTnpgYzmLWVvJ502FqsHWYPKFJYo/HrB
+ JSWbFr9NmVErmMzWMAEvz35Q4UrjWa7GDxgeeotMhegwJYPWsF8jUHpAkA1qvdEwVFAk
+ WyPAXTaqBcOOaEEOqhY88398jvWr+TJ4SUgOMAh2xw1PREBtGCRUoWfrhIDXOJWJyfdS 6Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wdcqp31ur-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 21 Feb 2024 09:42:50 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41L9Vghn015773;
+ Wed, 21 Feb 2024 09:42:50 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wdcqp31ud-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 21 Feb 2024 09:42:50 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41L7DuOV031153; Wed, 21 Feb 2024 09:42:49 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wb9bkws6t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 21 Feb 2024 09:42:49 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
+ [10.39.53.228])
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 41L9gkpV18219564
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 21 Feb 2024 09:42:48 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7792A58055;
+ Wed, 21 Feb 2024 09:42:46 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4B44558076;
+ Wed, 21 Feb 2024 09:42:44 +0000 (GMT)
+Received: from [9.171.84.200] (unknown [9.171.84.200])
+ by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 21 Feb 2024 09:42:43 +0000 (GMT)
+Message-ID: <1309d0d0-f887-4634-9ba5-f3b9bb1eee1b@linux.ibm.com>
+Date: Wed, 21 Feb 2024 15:12:42 +0530
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 5/9] target/ppc: Simplify syscall exception handlers
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org
+References: <cover.1705614747.git.balaton@eik.bme.hu>
+ <62f95b82597580aadc559114992675bee721e887.1705614747.git.balaton@eik.bme.hu>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <62f95b82597580aadc559114992675bee721e887.1705614747.git.balaton@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: lYG7DE7XiPMFS8ilEiYZLrSawSjL3JM_
+X-Proofpoint-GUID: FX-ty8OAZ9bc1U2sttzmU1Hs0Ag2TZ_I
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-20_06,2024-02-20_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxscore=0
+ phishscore=0 impostorscore=0 malwarescore=0 mlxlogscore=772
+ priorityscore=1501 bulkscore=0 lowpriorityscore=0 spamscore=0
+ suspectscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311290000 definitions=main-2402210075
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,70 +115,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
 
-> We're about to enable the use of O_DIRECT in the migration code and
-> due to the alignment restrictions imposed by filesystems we need to
-> make sure the flag is only used when doing aligned IO.
->
-> The migration will do parallel IO to different regions of a file, so
-> we need to use more than one file descriptor. Those cannot be obtained
-> by duplicating (dup()) since duplicated file descriptors share the
-> file status flags, including O_DIRECT. If one migration channel does
-> unaligned IO while another sets O_DIRECT to do aligned IO, the
-> filesystem would fail the unaligned operation.
->
-> The add-fd QMP command along with the fdset code are specifically
-> designed to allow the user to pass a set of file descriptors with
-> different access flags into QEMU to be later fetched by code that
-> needs to alternate between those flags when doing IO.
->
-> Extend the fdset matching function to behave the same with the
-> O_DIRECT flag.
->
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+
+On 1/19/24 03:31, BALATON Zoltan wrote:
+> After previous changes the hypercall handling in 7xx and 74xx
+> exception handlers can be folded into one if statement to simpilfy
+> this code. Also add "unlikely" to mark the less freqiently used branch
+> for the compiler.
+> 
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+
+Nice cleanup.
+
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+
 > ---
->  monitor/fds.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/monitor/fds.c b/monitor/fds.c
-> index 9a28e4b72b..42bf3eb982 100644
-> --- a/monitor/fds.c
-> +++ b/monitor/fds.c
-> @@ -413,6 +413,12 @@ static bool monitor_fdset_flags_match(int flags, int fd_flags)
-   static bool monitor_fdset_flags_match(int flags, int fd_flags)
-   {
-       bool match = false;
-   
->      if ((flags & O_ACCMODE) == (fd_flags & O_ACCMODE)) {
->          match = true;
-> +
-> +#ifdef O_DIRECT
-> +        if ((flags & O_DIRECT) != (fd_flags & O_DIRECT)) {
-> +            match = false;
-> +        }
-> +#endif
->      }
->  
->      return match;
-   }
-
-I'd prefer something like
-
-   static bool monitor_fdset_flags_match(int flags, int fd_flags)
-   {
-   #ifdef O_DIRECT
-       if ((flags & O_DIRECT) != (fd_flags & O_DIRECT)) {
-           return false;
-       }
-   #endif
-
-       if ((flags & O_ACCMODE) != (fd_flags & O_ACCMODE)) {
-           return false;
-
-       }
-
-       return true;
-   }
-
+>   target/ppc/excp_helper.c | 24 ++++++++----------------
+>   1 file changed, 8 insertions(+), 16 deletions(-)
+> 
+> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+> index 411d67376c..035a9fd968 100644
+> --- a/target/ppc/excp_helper.c
+> +++ b/target/ppc/excp_helper.c
+> @@ -762,26 +762,22 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
+>       case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+>       {
+>           int lev = env->error_code;
+> -
+> -        if (lev == 1 && cpu->vhyp) {
+> -            dump_hcall(env);
+> -        } else {
+> -            dump_syscall(env);
+> -        }
+>           /*
+>            * The Virtual Open Firmware (VOF) relies on the 'sc 1'
+>            * instruction to communicate with QEMU. The pegasos2 machine
+>            * uses VOF and the 7xx CPUs, so although the 7xx don't have
+>            * HV mode, we need to keep hypercall support.
+>            */
+> -        if (lev == 1 && cpu->vhyp) {
+> +        if (unlikely(lev == 1 && cpu->vhyp)) {
+>               PPCVirtualHypervisorClass *vhc =
+>                   PPC_VIRTUAL_HYPERVISOR_GET_CLASS(cpu->vhyp);
+> +            dump_hcall(env);
+>               vhc->hypercall(cpu->vhyp, cpu);
+>               powerpc_reset_excp_state(cpu);
+>               return;
+> +        } else {
+> +            dump_syscall(env);
+>           }
+> -
+>           break;
+>       }
+>       case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
+> @@ -907,26 +903,22 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
+>       case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+>       {
+>           int lev = env->error_code;
+> -
+> -        if (lev == 1 && cpu->vhyp) {
+> -            dump_hcall(env);
+> -        } else {
+> -            dump_syscall(env);
+> -        }
+>           /*
+>            * The Virtual Open Firmware (VOF) relies on the 'sc 1'
+>            * instruction to communicate with QEMU. The pegasos2 machine
+>            * uses VOF and the 74xx CPUs, so although the 74xx don't have
+>            * HV mode, we need to keep hypercall support.
+>            */
+> -        if (lev == 1 && cpu->vhyp) {
+> +        if (unlikely(lev == 1 && cpu->vhyp)) {
+>               PPCVirtualHypervisorClass *vhc =
+>                   PPC_VIRTUAL_HYPERVISOR_GET_CLASS(cpu->vhyp);
+> +            dump_hcall(env);
+>               vhc->hypercall(cpu->vhyp, cpu);
+>               powerpc_reset_excp_state(cpu);
+>               return;
+> +        } else {
+> +            dump_syscall(env);
+>           }
+> -
+>           break;
+>       }
+>       case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
 
