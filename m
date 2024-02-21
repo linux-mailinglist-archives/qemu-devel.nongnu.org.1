@@ -2,68 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6194C85E0EB
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:24:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 648A385E1CF
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:48:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoP0-0004VD-0p; Wed, 21 Feb 2024 10:20:54 -0500
+	id 1rcodO-00018w-8C; Wed, 21 Feb 2024 10:35:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rcoL9-00010D-Hn
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:16:57 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcobL-0003wN-81
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:33:44 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rclIH-00021J-VF
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 07:01:47 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rclJh-000279-4D
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 07:03:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708516904;
+ s=mimecast20190719; t=1708516992;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=2GVyMoppQIVGnlcQxui5CGU/uqKWrw/Rgx65oFKrsIU=;
- b=IRd5Vn2zjlcOjemXKQloLJX7j1vT1Di58cy7TQ8a/wNrPPkBF46ZbcvQnZsxdhWAbXnynE
- 6DAsY/ftrJjBx3JSFJQ9X8nuJoh4YBW0NYpRKxBQltmoBwaoxegA5HkdGuJBg0r55ZS9HX
- 1jfJkVYrTpHp6+XlBsZm1TiSHXKxpTQ=
+ bh=X8P1VwozqjwEcL8Vm+hcwxwvLxo43Y7Huj9v/j1Fuco=;
+ b=dhIzzDbiWwjvrDaOaKADJpgLvPdk68m2rCgNcURhPRNnhVPTJOSf/O/ZLS1Th/2lbaagb0
+ YPVO7Te1uEHh2NddWtBzNGYMV586D5QW9F9nOIby2bqrDYx0l2yIuA/9F4RFO6VAOvf7EZ
+ tGr6m/1kWVqgWcp06BWSCh8XlI1T3nc=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-161--JhWZdOYMFKu1rKkqsh1RQ-1; Wed, 21 Feb 2024 07:01:41 -0500
-X-MC-Unique: -JhWZdOYMFKu1rKkqsh1RQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ us-mta-335-pCaS7BgINaSlsJFCmyq-VA-1; Wed, 21 Feb 2024 07:03:07 -0500
+X-MC-Unique: pCaS7BgINaSlsJFCmyq-VA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 31C5083B82A;
- Wed, 21 Feb 2024 12:01:41 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.193.134])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 75A1620169C6;
- Wed, 21 Feb 2024 12:01:40 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 450D81800DDB; Wed, 21 Feb 2024 13:01:39 +0100 (CET)
-Date: Wed, 21 Feb 2024 13:01:39 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: =?utf-8?B?IkRhbmllbCBQLiBCZXJyYW5nw6ki?= <berrange@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Eduardo Habkost <eduardo@habkost.net>, Igor Mammedov <imammedo@redhat.com>, 
- Julia Suvorova <jusual@redhat.com>, QEMU Developers <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v3] pc: q35: Bump max_cpus to 4096 vcpus
-Message-ID: <pksfgvk7xhb73veclelzlu4oys2y7a4xu2ayepzolw25g322cd@bebiiammn5a3>
-References: <20240220154204.29676-1-anisinha@redhat.com>
- <ZdTKYV5AuhYxvi1Q@redhat.com>
- <vp63d36mcuib6trlqyjqpy72ysxb7ftlodr3eldhqklfg7bqi6@zc74olpzwknw>
- <4608F5FA-584C-4FE9-A73A-EBEF1E7B7FEA@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8ECF6106D102;
+ Wed, 21 Feb 2024 12:03:06 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 6BB7C112132A;
+ Wed, 21 Feb 2024 12:03:06 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 5645A21E66D5; Wed, 21 Feb 2024 13:03:05 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Hao Xiang <hao.xiang@bytedance.com>
+Cc: pbonzini@redhat.com,  berrange@redhat.com,  eduardo@habkost.net,
+ peterx@redhat.com,  farosas@suse.de,  eblake@redhat.com,
+ thuth@redhat.com,  lvivier@redhat.com,  qemu-devel@nongnu.org,
+ jdenemar@redhat.com
+Subject: Re: [PATCH v2 1/7] migration/multifd: Add new migration option
+ zero-page-detection.
+In-Reply-To: <20240216224002.1476890-2-hao.xiang@bytedance.com> (Hao Xiang's
+ message of "Fri, 16 Feb 2024 22:39:56 +0000")
+References: <20240216224002.1476890-1-hao.xiang@bytedance.com>
+ <20240216224002.1476890-2-hao.xiang@bytedance.com>
+Date: Wed, 21 Feb 2024 13:03:05 +0100
+Message-ID: <87y1bet47a.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4608F5FA-584C-4FE9-A73A-EBEF1E7B7FEA@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -87,24 +84,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  Hi,
+Hao Xiang <hao.xiang@bytedance.com> writes:
 
-> Looking at the edk2 GH, are these the PR that are waiting for upstream review/merge that relate to vcpu scaling?
-> 
-> https://github.com/tianocore/edk2/pull/5375
-> https://github.com/tianocore/edk2/pull/5327
+> This new parameter controls where the zero page checking is running.
+> 1. If this parameter is set to 'legacy', zero page checking is
+> done in the migration main thread.
+> 2. If this parameter is set to 'none', zero page checking is disabled.
+>
+> Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
 
-These are draft MRs for running CI.
+[...]
 
-The current devel branches are:
-  https://github.com/kraxel/edk2/tree/devel/many-vcpus
-  https://github.com/kraxel/edk2/tree/devel/many-vcpus-mpinitlib
+> diff --git a/qapi/migration.json b/qapi/migration.json
+> index 5a565d9b8d..99843a8e95 100644
+> --- a/qapi/migration.json
+> +++ b/qapi/migration.json
+> @@ -653,6 +653,17 @@
+>  { 'enum': 'MigMode',
+>    'data': [ 'normal', 'cpr-reboot' ] }
+>  
+> +##
+> +# @ZeroPageDetection:
+> +#
+> +# @legacy: Perform zero page checking from main migration thread. (since 9.0)
+> +#
+> +# @none: Do not perform zero page checking.
+> +#
+> +##
 
-All of them will expire at some point though, so I don't think it is a
-good idea to include them in the commit message.  They will point into
-nowhere in a year or so.
+The entire type is since 9.0.  Thus:
 
-take care,
-  Gerd
+   ##
+   # @ZeroPageDetection:
+   #
+   # @legacy: Perform zero page checking from main migration thread.
+   #
+   # @none: Do not perform zero page checking.
+   #
+   # Since: 9.0
+   ##
+
+> +{ 'enum': 'ZeroPageDetection',
+> +  'data': [ 'legacy', 'none' ] }
+> +
+>  ##
+>  # @BitmapMigrationBitmapAliasTransform:
+>  #
+> @@ -874,6 +885,9 @@
+>  # @mode: Migration mode. See description in @MigMode. Default is 'normal'.
+>  #        (Since 8.2)
+>  #
+> +# @zero-page-detection: See description in @ZeroPageDetection.
+> +#     Default is 'legacy'. (Since 9.0)
+
+The description feels a bit lazy :)
+
+Suggest
+
+   # @zero-page-detection: Whether and how to detect zero pages.  Default
+   #     is 'legacy'.  (since 9.0)
+
+Same for the other two copies.
+
+> +#
+>  # Features:
+>  #
+>  # @deprecated: Member @block-incremental is deprecated.  Use
+> @@ -907,7 +921,8 @@
+>             'block-bitmap-mapping',
+>             { 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable'] },
+>             'vcpu-dirty-limit',
+> -           'mode'] }
+> +           'mode',
+> +           'zero-page-detection'] }
+>  
+>  ##
+>  # @MigrateSetParameters:
+> @@ -1066,6 +1081,10 @@
+>  # @mode: Migration mode. See description in @MigMode. Default is 'normal'.
+>  #        (Since 8.2)
+>  #
+> +# @zero-page-detection: See description in @ZeroPageDetection.
+> +#     Default is 'legacy'. (Since 9.0)
+> +#
+> +#
+>  # Features:
+>  #
+>  # @deprecated: Member @block-incremental is deprecated.  Use
+> @@ -1119,7 +1138,8 @@
+>              '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
+>                                              'features': [ 'unstable' ] },
+>              '*vcpu-dirty-limit': 'uint64',
+> -            '*mode': 'MigMode'} }
+> +            '*mode': 'MigMode',
+> +            '*zero-page-detection': 'ZeroPageDetection'} }
+>  
+>  ##
+>  # @migrate-set-parameters:
+> @@ -1294,6 +1314,9 @@
+>  # @mode: Migration mode. See description in @MigMode. Default is 'normal'.
+>  #        (Since 8.2)
+>  #
+> +# @zero-page-detection: See description in @ZeroPageDetection.
+> +#     Default is 'legacy'. (Since 9.0)
+> +#
+>  # Features:
+>  #
+>  # @deprecated: Member @block-incremental is deprecated.  Use
+> @@ -1344,7 +1367,8 @@
+>              '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
+>                                              'features': [ 'unstable' ] },
+>              '*vcpu-dirty-limit': 'uint64',
+> -            '*mode': 'MigMode'} }
+> +            '*mode': 'MigMode',
+> +            '*zero-page-detection': 'ZeroPageDetection'} }
+>  
+>  ##
+>  # @query-migrate-parameters:
 
 
