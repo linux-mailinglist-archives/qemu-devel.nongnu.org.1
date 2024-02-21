@@ -2,91 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739E985CDCA
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 03:14:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB41485CDEB
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 03:24:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcc7X-0000SR-65; Tue, 20 Feb 2024 21:14:03 -0500
+	id 1rccGG-00032h-QF; Tue, 20 Feb 2024 21:23:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rcc7V-0000PO-Ng
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 21:14:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rcc7T-00080m-TM
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 21:14:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708481638;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=RO+xt5lFKH/d2VYIcFsobSEtSGxghlf/ShLhSWPZyIY=;
- b=GBScBOFejnyKmHntJzPwkTyCqxGIINiG2JCTDGP2+/p/R8oM2xbgVt7rhxLWy6ZNQRgaQ/
- z/nTvWBvOfQRoC2sOBgtx6YRqV2yO+YTzBm7JofmCCstDz66LIiW2yh6fE9Rw6G6zKADjf
- DC0GM0sAtqkn9KJKn5zyMre+yA0mUjs=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-12-XfRljbI4Nz2PbjmH6vduFQ-1; Tue, 20 Feb 2024 21:13:57 -0500
-X-MC-Unique: XfRljbI4Nz2PbjmH6vduFQ-1
-Received: by mail-pg1-f200.google.com with SMTP id
- 41be03b00d2f7-5d57b2d2758so1818002a12.0
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 18:13:56 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rccGF-00032E-4V
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 21:23:03 -0500
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rccGD-0001FM-Fr
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 21:23:02 -0500
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6e466a679bfso114579b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 18:23:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1708482179; x=1709086979; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ehkq9tIAF8xs+P+vh+e2YJT5nFJW1cB1NMu2/G9UKOA=;
+ b=ROUGvzXLtEx+jycyJPGKnio6+TjZinoJ/gZSgMxlb/gEXp1LMoNGcI0laZHp4K21w4
+ CnSRDaY/slHWUgPJZzGMoaDFibpTORuhgi5mvVqpyoiv5q9W5S0CmhENdIeRepdoJjnQ
+ zT/dNE8nU6fg532npDJIj+U9IRwIFPu8qCU0Cnr6veQRpJVU/TGNim9tSowk52aZp/Mn
+ izfRHUMmSE6W2nNEPy1QA7ajyFv/Yt/yl0dFdua5ZCSMXxfh6yAfjoiD9avrJ14kNv1M
+ +EFp/o6WwPU4ZTHCs0Rg5gI5iOl6eq5u5yp2dUcF+q/n4hA373O9bY+dpqbxpR0N2TOv
+ nWfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708481636; x=1709086436;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=RO+xt5lFKH/d2VYIcFsobSEtSGxghlf/ShLhSWPZyIY=;
- b=HoCgoz/SX+V/wiKxKGPA9r5M+Uei2/d57+BJw0VYrxsFJH9CcD+19sxkt6/YZOs7CC
- JdUIsU29RJl5zvzgxNm7cwy2vSmXLqDvVCO44SZWEPAtK/T5w/GIdZQ0Bzl8Lhtkhftd
- 7QXstX3+OMv5/OzJO0lHHpNENVI6zq9L8gMnp6FYqVmqdVRDmLegjZscYz/wO9q65Gh7
- YsPuxUOXyP3TULhAU0IMQLjWAJjS1mAF5Q/VftEeOYZH1P39Dr9wLjCcravLsRi/wtd+
- Ujjrrk1MW+XSDPY7mG+oxJtAse/HFDHBFsSG6NI0TJAwJ+kZlsuOScD0j/X1bK/OPDfb
- goCg==
-X-Gm-Message-State: AOJu0Yy3TUvE6TwX9uoB0EPDDdIpx/DLl82FIXLGoryY+K/fCvPxDurC
- bNiV3CpEQdCVJDQUSLxbOtkEp+AkIYWsUXBNLkDV98T6ZT9JRLFyzD/MU+dIaCdqeoRqyG54d3u
- fa+ZCShONXYCFTSMWbgS8PqyJU5HZZetGT5IZeyFU/QI3SGl1vE47
-X-Received: by 2002:a05:6a20:6a24:b0:1a0:c2f4:89b4 with SMTP id
- p36-20020a056a206a2400b001a0c2f489b4mr203491pzk.5.1708481635939; 
- Tue, 20 Feb 2024 18:13:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGkDOisIP/rOi5C1hwqCjEREv8GSSeQ07BStqU0i1t05jEngV+enxHF8Rl8K+g7WiBB14r8zg==
-X-Received: by 2002:a05:6a20:6a24:b0:1a0:c2f4:89b4 with SMTP id
- p36-20020a056a206a2400b001a0c2f489b4mr203480pzk.5.1708481635643; 
- Tue, 20 Feb 2024 18:13:55 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- fn16-20020a056a002fd000b006e3dfb2ef4esm6191665pfb.95.2024.02.20.18.13.51
+ d=1e100.net; s=20230601; t=1708482179; x=1709086979;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ehkq9tIAF8xs+P+vh+e2YJT5nFJW1cB1NMu2/G9UKOA=;
+ b=i6ZAr23kL+mrm7H6jhLOtnOy1fZswLBZct0wAsozv+LrtxPe6NMptYIwDx4o4SFy1Z
+ MlO4PWBJBC8JysDURbCv6MCdv5I9icErkNUlHovxFfs8ZAOZXv41Z4m6mchGVsoTcDAz
+ PGlLlyQSTr0iO+I0Czp77NNYak1ukJ+xHboATOE8Hs3LxM/sIYSR9gFHYjAMorV52J8B
+ kg6ZJH1ngFy5H+smGIJrg3vqV7oaqLHTOzvx9SBwZPUcYDU4n75ZDTjwMUpdzCECjGDT
+ WAr+kPcQyQkziZ4M6cSxlvS9Pwhux2O+P2D/GdyEjgeBhkmLef3qaSSWrthUXei+eSNX
+ hpAw==
+X-Gm-Message-State: AOJu0YzPCnY1fqVILPGjIq2ycim7Oh9CYgzDDO7oLSTjmaT1X9BJHzKO
+ 5qPXfSP8KH86OWAoakthslMcMEbgVMUwtr5mTLw9vnbhDvLInWINaXQ22Lioetcr7ZXIw0Nq2Ae
+ 6
+X-Google-Smtp-Source: AGHT+IFmO7Ct6NdZo8qcrd4WsvKpTOaQp2ApAPVYmJFwFrKY4ml52zAcLecsSTGXMXSTXO0a3bA+RQ==
+X-Received: by 2002:a62:8185:0:b0:6e4:870c:19b0 with SMTP id
+ t127-20020a628185000000b006e4870c19b0mr2223060pfd.24.1708482179326; 
+ Tue, 20 Feb 2024 18:22:59 -0800 (PST)
+Received: from grind.dc1.ventanamicro.com ([177.94.15.159])
+ by smtp.gmail.com with ESMTPSA id
+ y5-20020a634945000000b005dc48e56191sm7183355pgk.11.2024.02.20.18.22.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Feb 2024 18:13:55 -0800 (PST)
-Date: Wed, 21 Feb 2024 10:13:48 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Marc-Andre Lureau <marcandre.lureau@redhat.com>,
- David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH V3 00/13] allow cpr-reboot for vfio
-Message-ID: <ZdVcXE89BviCPYXI@x1n>
-References: <1707418446-134863-1-git-send-email-steven.sistare@oracle.com>
- <ZdRZpiiD05JS_AkF@x1n>
- <3784e88c-b48a-46d3-8742-c3b94ad422c5@oracle.com>
+ Tue, 20 Feb 2024 18:22:58 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ richard.henderson@linaro.org, max.chou@sifive.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v5 0/7] riscv: set vstart_eq_zero on mark_vs_dirty
+Date: Tue, 20 Feb 2024 23:22:45 -0300
+Message-ID: <20240221022252.252872-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <3784e88c-b48a-46d3-8742-c3b94ad422c5@oracle.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,43 +92,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 20, 2024 at 05:32:34PM -0500, Steven Sistare wrote:
-> On 2/20/2024 2:49 AM, Peter Xu wrote:
-> > On Thu, Feb 08, 2024 at 10:53:53AM -0800, Steve Sistare wrote:
-> >> Allow cpr-reboot for vfio if the guest is in the suspended runstate.  The
-> >> guest drivers' suspend methods flush outstanding requests and re-initialize
-> >> the devices, and thus there is no device state to save and restore.  The
-> >> user is responsible for suspending the guest before initiating cpr, such as
-> >> by issuing guest-suspend-ram to the qemu guest agent.
-> >>
-> >> Most of the patches in this series enhance migration notifiers so they can
-> >> return an error status and message.  The last few patches register a notifier
-> >> for vfio that returns an error if the guest is not suspended.
-> >>
-> >> Changes in V3:
-> >>   * update to tip, add RB's
-> >>   * replace MigrationStatus with new enum MigrationEventType
-> >>   * simplify migrate_fd_connect error recovery
-> >>   * support vfio iommufd containers
-> >>   * add patches:
-> >>       migration: stop vm for cpr
-> >>       migration: update cpr-reboot description
-> > 
-> > This doesn't apply to master anymore, please rebase when repost, thanks.
-> 
-> Will do.  Before I do, any comments on "migration: update cpr-reboot description"?
-> After we converge on that short description, I will submit a longer treatment in
-> docs/devel/migration, which I see you have recently populated.
+Hi,
 
-Sounds good; yes I hope we have a file there, as it'll pop up later in
-https://www.qemu.org/docs/master/devel/migration/.
+In this new version we removed the remaining brconds() from
+trans_rvbf16.c.inc like Richard suggested in patch 3. Richard, I kept
+your ack in that patch.
 
-You can add a short sentence to forbid postcopy if that's the plan.  Other
-than that it looks good.
+This change caused the 'cpu_vstart' global to be unused. A new patch (4)
+was added to remove it.
 
-Thanks,
+Series based on alistair/riscv-to-apply.next.
+
+Patches missing acks: patch 4.
+
+Changes from v4:
+- patch 3:
+  - remove vstart >= vl and vl = 0 brconds from trans_fvbf16.c.inc
+- patch 4 (new):
+  - remove cpu_vstart
+- v4 link: https://lore.kernel.org/qemu-riscv/20240220222510.209448-1-dbarboza@ventanamicro.com/
+
+
+Daniel Henrique Barboza (6):
+  trans_rvv.c.inc: mark_vs_dirty() before loads and stores
+  trans_rvv.c.inc: remove 'is_store' bool from load/store fns
+  target/riscv: remove 'over' brconds from vector trans
+  target/riscv/translate.c: remove 'cpu_vstart' global
+  target/riscv/vector_helper.c: set vstart = 0 in GEN_VEXT_VSLIDEUP_VX()
+  trans_rvv.c.inc: remove redundant mark_vs_dirty() calls
+
+Ivan Klokov (1):
+  target/riscv: Clear vstart_qe_zero flag
+
+ target/riscv/insn_trans/trans_rvbf16.c.inc |  18 +-
+ target/riscv/insn_trans/trans_rvv.c.inc    | 292 ++++++---------------
+ target/riscv/insn_trans/trans_rvvk.c.inc   |  30 +--
+ target/riscv/translate.c                   |  10 +-
+ target/riscv/vector_helper.c               |   1 +
+ 5 files changed, 100 insertions(+), 251 deletions(-)
 
 -- 
-Peter Xu
+2.43.2
 
 
