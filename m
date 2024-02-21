@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 744C685EAF5
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:34:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A5A685EB0D
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:37:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcuD4-0006Dw-Py; Wed, 21 Feb 2024 16:32:58 -0500
+	id 1rcuGf-0005h6-Fa; Wed, 21 Feb 2024 16:36:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rcuCi-0005a1-9X
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:32:36 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rcuGd-0005g3-8M
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:36:39 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rcuCR-0004T2-R3
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:32:36 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1d8da50bffaso37160575ad.2
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:32:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rcuGb-0005UH-Ec
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:36:38 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1dc1ff697f9so17421265ad.0
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:36:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1708551137; x=1709155937; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pcNFT1PFZaOBecPCJAxz5rBCgAHoej/Vx9VoGAU8rlY=;
- b=J3dyc+nDQiFjlv4EG5wVj96PvZtGQYWYoQGaXnlPIqLek0bhaWOHgZpOKMAZwtAN8O
- 68u/6Nxm4V4tPMeyS9D98PGkPHH+U+AUAFEExA0XN3GdZjk53hCqlzxZRd4ZbUVRPvph
- wJ6mnVar8EaWctu+Bh4nleJq7hRaWIy5FmZBcGew9tls8tEdZwFvUjj++CxYZguIeJgG
- EIE11MdH5pBYpQ/zFE60cE5MVsxHmSbY8rjRL9saWi53a5A4Qbmg1mInuPwK1iPHaMYP
- uGnrKCgXC+e9bL5a2wOpGZCZU52GBe/B6ZW6AwA8MUUYIb1y6sPI62s2W2bHIujZ23AH
- 6/qQ==
+ d=linaro.org; s=google; t=1708551396; x=1709156196; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=2v9XGA/E18jXpKOpefIljoZ27yjt5k9rVr1O7vT2Qqc=;
+ b=gXYmLbpyKXomTgL1ekD+LnNRZ7Xj66RvqMa1pSL/G13lE/Kod1Ux6gwsbyyZzV6cHc
+ GPfz3vkBIvtVtPIDm8xg87QEMuMhxrgmBhzz+A62xwWyL9XAL8u80kddcA9K+v4ypTL/
+ AiMWRIfR9rdrcF4ESbG9V6c4pxo4vVLU6+lb/rdOrTJl3nEbdUHcNf0Z5k38yr94XTaQ
+ arUsBhw1h86vHlUAstrGv6EYP5DtR3wpQziFbUcC0cAjLQB8xC8pbyQgGq1d+rp7/Lee
+ W9jVFQMmjc4htCfwTyvdkFebu/9OZPlyjKYbnvCoZ/ZCWLqaokhDDCGweJIrLShScKuS
+ W9Dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708551137; x=1709155937;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pcNFT1PFZaOBecPCJAxz5rBCgAHoej/Vx9VoGAU8rlY=;
- b=fdfXopyTmkMcsRPf6GlmeOjP00AyFkTETVHtGdErhnOKpZ+z/AA7FS1MBvPoreBFYB
- lu6h7jR6+Y02br+L4g7oozBsmrKdK5rMxrD2ocTMZAEPlEXCmWm9Ld+8Iq2vo+0r49mD
- xsVB7VWsACk/Zt7H6IXPFuPkHp+2dAdS1jl2gWVLiaFaQ16UAd3cgnQM/wfTetMt3uHR
- 0Bn1xpPHeLtsppcEVhgTsHjYAbl7LCWlXOr+X2jawX/S7PoxG9qPEtoM2dG7D8AQ6hMN
- VOeG2xJC/M6MKB0mizrSNWte0WNPxSHSUGtNxrC3BsV5DkxthH6389R6GPTSZOky13In
- L62g==
-X-Gm-Message-State: AOJu0YzANXoQ+cshVbebxFrWxN7qTnx+qv0DV4Hhxqt7EGsRpWfTz7ra
- g60hDGMvPg42NMv7ZVWauHFLDX7YByBMb/cbMP+e/8kCVzFfsSvU8ytg5rBOxvL8Hw8sldQjAgU
- b
-X-Google-Smtp-Source: AGHT+IE0oMFdIC3eLKXokwWfVNq5dZ9HKw4GFmS2SCD54KbIiXJUD7T1j+2gZZNRg1tn/Q4SbZsFDQ==
-X-Received: by 2002:a17:902:dac4:b0:1db:f033:9f95 with SMTP id
- q4-20020a170902dac400b001dbf0339f95mr12181083plx.66.1708551137663; 
- Wed, 21 Feb 2024 13:32:17 -0800 (PST)
-Received: from grind.dc1.ventanamicro.com ([177.94.15.159])
- by smtp.gmail.com with ESMTPSA id
- a19-20020a170902ee9300b001dbb0348733sm6618051pld.67.2024.02.21.13.32.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 Feb 2024 13:32:17 -0800 (PST)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- richard.henderson@linaro.org, max.chou@sifive.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v6 9/9] target/riscv/vector_helper.c: optimize loops in ldst
- helpers
-Date: Wed, 21 Feb 2024 18:31:40 -0300
-Message-ID: <20240221213140.365232-10-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221213140.365232-1-dbarboza@ventanamicro.com>
-References: <20240221213140.365232-1-dbarboza@ventanamicro.com>
+ d=1e100.net; s=20230601; t=1708551396; x=1709156196;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=2v9XGA/E18jXpKOpefIljoZ27yjt5k9rVr1O7vT2Qqc=;
+ b=UPPz8GWukNEr+rgykFOCCP5CcFkpSf/4RSi5ccCTGmVSjC1wXR7HP4P6S42sdqpATy
+ GlwLpZ9HJq/kcyJwMxqBoUsSzG8r4DcDnR91xFzAOKpsEWsboAPADowuI8X9N7379gq2
+ MiY0fwavqxqR6alQ/J6ZvppcF3RwRMqq5n3Wqik6pS8NGR471vQ8iY/XzhqYEqF39r4y
+ uxl19vLQb4qSHPjhMF+llL/LNVc+qsuWRTpJFPLagB0gmHcJPPpfDCN+srWjOnfdDwu9
+ OlyJYj5WZyBYsGdMfAhUUQAM/fzFNJRBS8U+9WjODRw+09wkS0y14HZruyY4c1FYV80B
+ SMuA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUAo6fwmcg7s/aewJBVpt8LaBojjS4Dpy06psTEV0FenE7InzeM11drLC/cluEhoCzfGOQl39hX9XF1z/u+67ObK4sBWOE=
+X-Gm-Message-State: AOJu0Yy87dqpaj+uvDVcxPm7JZ4S9NwKR6fvm7rjlkPhr8GXpSRL+9Ci
+ +05xCm6pN/ulS/BL8htXW02El5PMucNg9uhaixd82A5+f8bys6V/tqQyGr7ZwoU=
+X-Google-Smtp-Source: AGHT+IFhvrMmbEYl2fGwaUjAHBp/pq/XNWwnu4XJH2uoqu6cdGxrXVcrQJ/D3BFRtumGTBg+963J6Q==
+X-Received: by 2002:a17:903:1c2:b0:1db:ea2b:d2b4 with SMTP id
+ e2-20020a17090301c200b001dbea2bd2b4mr11032096plh.15.1708551395897; 
+ Wed, 21 Feb 2024 13:36:35 -0800 (PST)
+Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
+ [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
+ u2-20020a17090282c200b001dbcf653017sm7878074plz.289.2024.02.21.13.36.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 21 Feb 2024 13:36:35 -0800 (PST)
+Message-ID: <edbe3faa-d83e-4410-811a-d15fe244817a@linaro.org>
+Date: Wed, 21 Feb 2024 11:36:32 -1000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62b.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 08/22] target/arm: Handle IS/FS in ISR_EL1 for NMI
+Content-Language: en-US
+To: Jinjie Ruan <ruanjinjie@huawei.com>, peter.maydell@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org
+References: <20240221130823.677762-1-ruanjinjie@huawei.com>
+ <20240221130823.677762-9-ruanjinjie@huawei.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240221130823.677762-9-ruanjinjie@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,48 +97,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Change the for loops in ldst helpers to do a single increment in the
-counter, and assign it env->vstart, to avoid re-reading from vstart
-every time.
+On 2/21/24 03:08, Jinjie Ruan via wrote:
+> Add IS and FS bit in ISR_EL1 and handle the read according to whether the
+> NMI is IRQ or FIQ.
+> 
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> ---
+>   target/arm/cpu.h    | 2 ++
+>   target/arm/helper.c | 9 +++++++++
+>   2 files changed, 11 insertions(+)
+> 
+> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+> index 051e589e19..e2d07e3312 100644
+> --- a/target/arm/cpu.h
+> +++ b/target/arm/cpu.h
+> @@ -1476,6 +1476,8 @@ FIELD(CPTR_EL3, TCPAC, 31, 1)
+>   #define CPSR_N (1U << 31)
+>   #define CPSR_NZCV (CPSR_N | CPSR_Z | CPSR_C | CPSR_V)
+>   #define CPSR_AIF (CPSR_A | CPSR_I | CPSR_F)
+> +#define ISR_FS (1U << 9)
+> +#define ISR_IS (1U << 10)
+>   
+>   #define CPSR_IT (CPSR_IT_0_1 | CPSR_IT_2_7)
+>   #define CACHED_CPSR_BITS (CPSR_T | CPSR_AIF | CPSR_GE | CPSR_IT | CPSR_Q \
+> diff --git a/target/arm/helper.c b/target/arm/helper.c
+> index 0bd7a87e51..62c8e5d611 100644
+> --- a/target/arm/helper.c
+> +++ b/target/arm/helper.c
+> @@ -2022,6 +2022,10 @@ static uint64_t isr_read(CPUARMState *env, const ARMCPRegInfo *ri)
+>           if (cs->interrupt_request & CPU_INTERRUPT_HARD) {
+>               ret |= CPSR_I;
+>           }
+> +
+> +        if ((cs->interrupt_request & CPU_INTERRUPT_NMI) && env->nmi_is_irq) {
+> +            ret |= ISR_IS;
+> +        }
+>       }
+>   
+>       if (hcr_el2 & HCR_FMO) {
+> @@ -2032,6 +2036,11 @@ static uint64_t isr_read(CPUARMState *env, const ARMCPRegInfo *ri)
+>           if (cs->interrupt_request & CPU_INTERRUPT_FIQ) {
+>               ret |= CPSR_F;
+>           }
+> +
+> +        if ((cs->interrupt_request & CPU_INTERRUPT_NMI) &&
+> +            (!env->nmi_is_irq)) {
+> +            ret |= ISR_FS;
+> +        }
+>       }
 
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- target/riscv/vector_helper.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+The external CPU_INTERRUPT_NMI will never signal FIQ.
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index cc7290a1bb..1ab386830a 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -208,7 +208,7 @@ vext_ldst_stride(void *vd, void *v0, target_ulong base,
-     uint32_t esz = 1 << log2_esz;
-     uint32_t vma = vext_vma(desc);
- 
--    for (i = env->vstart; i < env->vl; i++, env->vstart++) {
-+    for (i = env->vstart; i < env->vl; env->vstart = ++i) {
-         k = 0;
-         while (k < nf) {
-             if (!vm && !vext_elem_mask(v0, i)) {
-@@ -274,7 +274,7 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-     uint32_t esz = 1 << log2_esz;
- 
-     /* load bytes from guest memory */
--    for (i = env->vstart; i < evl; i++, env->vstart++) {
-+    for (i = env->vstart; i < evl; env->vstart = ++i) {
-         k = 0;
-         while (k < nf) {
-             target_ulong addr = base + ((i * nf + k) << log2_esz);
-@@ -388,7 +388,7 @@ vext_ldst_index(void *vd, void *v0, target_ulong base,
-     uint32_t vma = vext_vma(desc);
- 
-     /* load bytes from guest memory */
--    for (i = env->vstart; i < env->vl; i++, env->vstart++) {
-+    for (i = env->vstart; i < env->vl; env->vstart = ++i) {
-         k = 0;
-         while (k < nf) {
-             if (!vm && !vext_elem_mask(v0, i)) {
--- 
-2.43.2
+With CPU_INTERRUPT_NMI, both CPSR_I and ISR_IS must be set.
+
+Missing is the handling of HCRX_EL2.{VFNMI,VINMI} to signal vFIQ and vIRQ with 
+superpriority.  Unless I missed it, I don't see HCRX_EL2 adjusted for FEAT_NMI at all.
+
+
+r~
 
 
