@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3758685E106
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:26:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D723585E211
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:55:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoNw-0000XC-Mq; Wed, 21 Feb 2024 10:19:52 -0500
+	id 1rcoby-0004tg-6Y; Wed, 21 Feb 2024 10:34:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rcoJv-0000sX-2c; Wed, 21 Feb 2024 10:15:44 -0500
+ id 1rcoUP-0002Dm-0k; Wed, 21 Feb 2024 10:26:29 -0500
 Received: from szxga04-in.huawei.com ([45.249.212.190])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rcmLz-0004p2-KD; Wed, 21 Feb 2024 08:09:42 -0500
-Received: from mail.maildlp.com (unknown [172.19.163.17])
- by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TfxQp0br0z1xnml;
+ id 1rcmLu-0004pA-AB; Wed, 21 Feb 2024 08:09:37 -0500
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+ by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TfxQp6YVQz1xnn0;
  Wed, 21 Feb 2024 21:08:02 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id C4CF31A0172;
- Wed, 21 Feb 2024 21:09:24 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 9BA8A14011B;
+ Wed, 21 Feb 2024 21:09:25 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 21 Feb
- 2024 21:09:24 +0800
+ 2024 21:09:25 +0800
 To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [RFC PATCH v2 03/22] target/arm: Add PSTATE.ALLINT
-Date: Wed, 21 Feb 2024 13:08:04 +0000
-Message-ID: <20240221130823.677762-4-ruanjinjie@huawei.com>
+Subject: [RFC PATCH v2 04/22] target/arm: Implement ALLINT MSR (immediate)
+Date: Wed, 21 Feb 2024 13:08:05 +0000
+Message-ID: <20240221130823.677762-5-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240221130823.677762-1-ruanjinjie@huawei.com>
 References: <20240221130823.677762-1-ruanjinjie@huawei.com>
@@ -67,89 +67,98 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ALLINT bit in PSTATE is used to mask all IRQ or FIQ interrupts.
-
-Place this in its own field within ENV, as that will
-make it easier to reset from within TCG generated code.
-
-With the change to pstate_read/write, exception entry
-and return are automatically handled.
+Add ALLINT MSR (immediate) to decodetree. And the EL0 check is necessary
+to ALLINT. Avoid the unconditional write to pc and use raise_exception_ra
+to unwind.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- target/arm/cpu.c | 3 +++
- target/arm/cpu.h | 9 +++++++--
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ target/arm/tcg/a64.decode      |  1 +
+ target/arm/tcg/helper-a64.c    | 24 ++++++++++++++++++++++++
+ target/arm/tcg/helper-a64.h    |  1 +
+ target/arm/tcg/translate-a64.c | 10 ++++++++++
+ 4 files changed, 36 insertions(+)
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 5fa86bc8d5..5e5978c302 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -1104,6 +1104,9 @@ static void aarch64_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-     if (cpu_isar_feature(aa64_bti, cpu)) {
-         qemu_fprintf(f, "  BTYPE=%d", (psr & PSTATE_BTYPE) >> 10);
-     }
-+    if (cpu_isar_feature(aa64_nmi, cpu)) {
-+        qemu_fprintf(f, "  ALLINT=%d", (psr & PSTATE_ALLINT) >> 13);
-+    }
-     qemu_fprintf(f, "%s%s%s",
-                  (hcr & HCR_NV) ? " NV" : "",
-                  (hcr & HCR_NV1) ? " NV1" : "",
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 63f31e0d98..f9646dbbfb 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -224,6 +224,7 @@ typedef struct CPUArchState {
-      *    semantics as for AArch32, as described in the comments on each field)
-      *  nRW (also known as M[4]) is kept, inverted, in env->aarch64
-      *  DAIF (exception masks) are kept in env->daif
-+     *  ALLINT (all IRQ or FIQ interrupts masks) are kept in env->allint
-      *  BTYPE is kept in env->btype
-      *  SM and ZA are kept in env->svcr
-      *  all other bits are stored in their correct places in env->pstate
-@@ -261,6 +262,7 @@ typedef struct CPUArchState {
-     uint32_t btype;  /* BTI branch type.  spsr[11:10].  */
-     uint64_t daif; /* exception masks, in the bits they are in PSTATE */
-     uint64_t svcr; /* PSTATE.{SM,ZA} in the bits they are in SVCR */
-+    uint64_t allint; /* All IRQ or FIQ interrupt mask, in the bit in PSTATE */
+diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
+index 8a20dce3c8..3588080024 100644
+--- a/target/arm/tcg/a64.decode
++++ b/target/arm/tcg/a64.decode
+@@ -207,6 +207,7 @@ MSR_i_DIT       1101 0101 0000 0 011 0100 .... 010 11111 @msr_i
+ MSR_i_TCO       1101 0101 0000 0 011 0100 .... 100 11111 @msr_i
+ MSR_i_DAIFSET   1101 0101 0000 0 011 0100 .... 110 11111 @msr_i
+ MSR_i_DAIFCLEAR 1101 0101 0000 0 011 0100 .... 111 11111 @msr_i
++MSR_i_ALLINT    1101 0101 0000 0 001 0100 .... 000 11111 @msr_i
+ MSR_i_SVCR      1101 0101 0000 0 011 0100 0 mask:2 imm:1 011 11111
  
-     uint64_t elr_el[4]; /* AArch64 exception link regs  */
-     uint64_t sp_el[4]; /* AArch64 banked stack pointers */
-@@ -1543,6 +1545,7 @@ FIELD(VTCR, SL2, 33, 1)
- #define PSTATE_D (1U << 9)
- #define PSTATE_BTYPE (3U << 10)
- #define PSTATE_SSBS (1U << 12)
-+#define PSTATE_ALLINT (1U << 13)
- #define PSTATE_IL (1U << 20)
- #define PSTATE_SS (1U << 21)
- #define PSTATE_PAN (1U << 22)
-@@ -1555,7 +1558,8 @@ FIELD(VTCR, SL2, 33, 1)
- #define PSTATE_N (1U << 31)
- #define PSTATE_NZCV (PSTATE_N | PSTATE_Z | PSTATE_C | PSTATE_V)
- #define PSTATE_DAIF (PSTATE_D | PSTATE_A | PSTATE_I | PSTATE_F)
--#define CACHED_PSTATE_BITS (PSTATE_NZCV | PSTATE_DAIF | PSTATE_BTYPE)
-+#define CACHED_PSTATE_BITS (PSTATE_NZCV | PSTATE_DAIF | PSTATE_BTYPE | \
-+                            PSTATE_ALLINT)
- /* Mode values for AArch64 */
- #define PSTATE_MODE_EL3h 13
- #define PSTATE_MODE_EL3t 12
-@@ -1595,7 +1599,7 @@ static inline uint32_t pstate_read(CPUARMState *env)
-     ZF = (env->ZF == 0);
-     return (env->NF & 0x80000000) | (ZF << 30)
-         | (env->CF << 29) | ((env->VF & 0x80000000) >> 3)
--        | env->pstate | env->daif | (env->btype << 10);
-+        | env->pstate | env->allint | env->daif | (env->btype << 10);
+ # MRS, MSR (register), SYS, SYSL. These are all essentially the
+diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
+index ebaa7f00df..3686926ada 100644
+--- a/target/arm/tcg/helper-a64.c
++++ b/target/arm/tcg/helper-a64.c
+@@ -66,6 +66,30 @@ void HELPER(msr_i_spsel)(CPUARMState *env, uint32_t imm)
+     update_spsel(env, imm);
  }
  
- static inline void pstate_write(CPUARMState *env, uint32_t val)
-@@ -1604,6 +1608,7 @@ static inline void pstate_write(CPUARMState *env, uint32_t val)
-     env->NF = val;
-     env->CF = (val >> 29) & 1;
-     env->VF = (val << 3) & 0x80000000;
-+    env->allint = val & PSTATE_ALLINT;
-     env->daif = val & PSTATE_DAIF;
-     env->btype = (val >> 10) & 3;
-     env->pstate = val & ~CACHED_PSTATE_BITS;
++static void allint_check(CPUARMState *env, uint32_t op,
++                       uint32_t imm, uintptr_t ra)
++{
++    /* ALLINT update to PSTATE. */
++    if (arm_current_el(env) == 0) {
++        raise_exception_ra(env, EXCP_UDEF,
++                           syn_aa64_sysregtrap(0, extract32(op, 0, 3),
++                                               extract32(op, 3, 3), 4,
++                                               imm, 0x1f, 0),
++                           exception_target_el(env), ra);
++    }
++}
++
++void HELPER(msr_i_allint)(CPUARMState *env, uint32_t imm)
++{
++    allint_check(env, 0x8, imm, GETPC());
++    if (imm == 1) {
++        env->allint |= PSTATE_ALLINT;
++    } else {
++        env->allint &= ~PSTATE_ALLINT;
++    }
++    arm_rebuild_hflags(env);
++}
++
+ static void daif_check(CPUARMState *env, uint32_t op,
+                        uint32_t imm, uintptr_t ra)
+ {
+diff --git a/target/arm/tcg/helper-a64.h b/target/arm/tcg/helper-a64.h
+index 575a5dab7d..3aec703d4a 100644
+--- a/target/arm/tcg/helper-a64.h
++++ b/target/arm/tcg/helper-a64.h
+@@ -22,6 +22,7 @@ DEF_HELPER_FLAGS_1(rbit64, TCG_CALL_NO_RWG_SE, i64, i64)
+ DEF_HELPER_2(msr_i_spsel, void, env, i32)
+ DEF_HELPER_2(msr_i_daifset, void, env, i32)
+ DEF_HELPER_2(msr_i_daifclear, void, env, i32)
++DEF_HELPER_2(msr_i_allint, void, env, i32)
+ DEF_HELPER_3(vfp_cmph_a64, i64, f16, f16, ptr)
+ DEF_HELPER_3(vfp_cmpeh_a64, i64, f16, f16, ptr)
+ DEF_HELPER_3(vfp_cmps_a64, i64, f32, f32, ptr)
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 340265beb0..f1800f7c71 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -2036,6 +2036,16 @@ static bool trans_MSR_i_DAIFCLEAR(DisasContext *s, arg_i *a)
+     return true;
+ }
+ 
++static bool trans_MSR_i_ALLINT(DisasContext *s, arg_i *a)
++{
++    if (!dc_isar_feature(aa64_nmi, s) || s->current_el == 0) {
++        return false;
++    }
++    gen_helper_msr_i_allint(tcg_env, tcg_constant_i32(a->imm));
++    s->base.is_jmp = DISAS_TOO_MANY;
++    return true;
++}
++
+ static bool trans_MSR_i_SVCR(DisasContext *s, arg_MSR_i_SVCR *a)
+ {
+     if (!dc_isar_feature(aa64_sme, s) || a->mask == 0) {
 -- 
 2.34.1
 
