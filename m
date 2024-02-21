@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DE2B85E119
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:29:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D689185E1A8
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:44:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoTw-0007zK-Kn; Wed, 21 Feb 2024 10:26:00 -0500
+	id 1rcod6-0000Sr-Jv; Wed, 21 Feb 2024 10:35:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcoMx-0003Rf-NB; Wed, 21 Feb 2024 10:18:50 -0500
+ id 1rcobf-00048t-8m; Wed, 21 Feb 2024 10:33:59 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rchsI-0002IU-Rk; Wed, 21 Feb 2024 03:22:45 -0500
+ id 1rchsh-0002J7-8h; Wed, 21 Feb 2024 03:23:08 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 793DF4F3D6;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9A8314F3D8;
  Wed, 21 Feb 2024 11:21:21 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 43D82860B5;
+ by tsrv.corpit.ru (Postfix) with SMTP id 65612860B7;
  Wed, 21 Feb 2024 11:21:00 +0300 (MSK)
-Received: (nullmailer pid 2142059 invoked by uid 1000);
+Received: (nullmailer pid 2142066 invoked by uid 1000);
  Wed, 21 Feb 2024 08:20:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- Michael Tokarev <mjt@tls.msk.ru>, Ani Sinha <anisinha@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>
-Subject: [Stable-8.2.2 24/60] hw/smbios: Fix OEM strings table option
- validation
-Date: Wed, 21 Feb 2024 11:20:12 +0300
-Message-Id: <20240221082058.2141850-24-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Sven Schnelle <svens@stackframe.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Helge Deller <deller@gmx.de>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.2 26/60] hw/net/tulip: add chip status register values
+Date: Wed, 21 Feb 2024 11:20:14 +0300
+Message-Id: <20240221082058.2141850-26-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.2-20240221110049@cover.tls.msk.ru>
 References: <qemu-stable-8.2.2-20240221110049@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,45 +61,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Sven Schnelle <svens@stackframe.org>
 
-qemu_smbios_type11_opts did not have the list terminator and that
-resulted in out-of-bound memory access. It also needs to have an element
-for the type option.
+Netbsd isn't able to detect a link on the emulated tulip card. That's
+because netbsd reads the Chip Status Register of the Phy (address
+0x14). The default phy data in the qemu tulip driver is all zero,
+which means no link is established and autonegotation isn't complete.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 2d6dcbf93fb0 ("smbios: support setting OEM strings table")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Ani Sinha <anisinha@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Therefore set the register to 0x3b40, which means:
+
+Link is up, Autonegotation complete, Full Duplex, 100MBit/s Link
+speed.
+
+Also clear the mask because this register is read only.
+
+Signed-off-by: Sven Schnelle <svens@stackframe.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Helge Deller <deller@gmx.de>
+Tested-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
+(cherry picked from commit 9b60a3ed5569a70bbdd29e3c9ec4c5d4685c6e2c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit cd8a35b913c24248267c682cb9a348461c106139)
 
-diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-index 2a90601ac5..522ed1ed9f 100644
---- a/hw/smbios/smbios.c
-+++ b/hw/smbios/smbios.c
-@@ -369,6 +369,11 @@ static const QemuOptDesc qemu_smbios_type8_opts[] = {
+diff --git a/hw/net/tulip.c b/hw/net/tulip.c
+index 962086aae4..f21b8ca62b 100644
+--- a/hw/net/tulip.c
++++ b/hw/net/tulip.c
+@@ -421,7 +421,7 @@ static uint16_t tulip_mdi_default[] = {
+     /* MDI Registers 8 - 15 */
+     0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
+     /* MDI Registers 16 - 31 */
+-    0x0003, 0x0000, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
++    0x0003, 0x0000, 0x0001, 0x0000, 0x3b40, 0x0000, 0x0000, 0x0000,
+     0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
  };
  
- static const QemuOptDesc qemu_smbios_type11_opts[] = {
-+    {
-+        .name = "type",
-+        .type = QEMU_OPT_NUMBER,
-+        .help = "SMBIOS element type",
-+    },
-     {
-         .name = "value",
-         .type = QEMU_OPT_STRING,
-@@ -379,6 +384,7 @@ static const QemuOptDesc qemu_smbios_type11_opts[] = {
-         .type = QEMU_OPT_STRING,
-         .help = "OEM string data from file",
-     },
-+    { /* end of list */ }
+@@ -429,7 +429,7 @@ static uint16_t tulip_mdi_default[] = {
+ static const uint16_t tulip_mdi_mask[] = {
+     0x0000, 0xffff, 0xffff, 0xffff, 0xc01f, 0xffff, 0xffff, 0x0000,
+     0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
+-    0x0fff, 0x0000, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
++    0x0fff, 0x0000, 0xffff, 0xffff, 0x0000, 0xffff, 0xffff, 0xffff,
+     0xffff, 0xffff, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
  };
  
- static const QemuOptDesc qemu_smbios_type17_opts[] = {
 -- 
 2.39.2
 
