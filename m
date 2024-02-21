@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6858B85EA05
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:23:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C46A85E9E6
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:19:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rctz2-0007YR-EM; Wed, 21 Feb 2024 16:18:28 -0500
+	id 1rctz3-0007Xx-OB; Wed, 21 Feb 2024 16:18:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctyu-0006rt-8L; Wed, 21 Feb 2024 16:18:20 -0500
+ id 1rctyx-0007B0-4Y; Wed, 21 Feb 2024 16:18:24 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctys-00016N-AS; Wed, 21 Feb 2024 16:18:19 -0500
+ id 1rctyv-00017X-9C; Wed, 21 Feb 2024 16:18:22 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3EB294F7FF;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4B71B4F800;
  Thu, 22 Feb 2024 00:16:46 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id EABD8869B7;
- Thu, 22 Feb 2024 00:16:23 +0300 (MSK)
-Received: (nullmailer pid 2335313 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 03738869B8;
+ Thu, 22 Feb 2024 00:16:24 +0300 (MSK)
+Received: (nullmailer pid 2335316 invoked by uid 1000);
  Wed, 21 Feb 2024 21:16:22 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-block@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 23/28] qemu-img: bitmap: refresh options/--help
-Date: Thu, 22 Feb 2024 00:16:04 +0300
-Message-Id: <20240221211622.2335170-23-mjt@tls.msk.ru>
+Subject: [PATCH 24/28] qemu-img: dd: refresh options/--help
+Date: Thu, 22 Feb 2024 00:16:05 +0300
+Message-Id: <20240221211622.2335170-24-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1708544927.git.mjt@tls.msk.ru>
 References: <cover.1708544927.git.mjt@tls.msk.ru>
@@ -62,65 +62,73 @@ Add missing long options and --help output.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- qemu-img.c | 40 ++++++++++++++++++++++++++++++++--------
- 1 file changed, 32 insertions(+), 8 deletions(-)
+ qemu-img.c | 39 +++++++++++++++++++++++++++++----------
+ 1 file changed, 29 insertions(+), 10 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 8455832d34..e4027ece20 100644
+index e4027ece20..af7841573c 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -5168,20 +5168,42 @@ static int img_bitmap(const img_cmd_t *ccmd, int argc, char **argv)
-             {"source-format", required_argument, 0, 'F'},
-             {0, 0, 0, 0}
-         };
--        c = getopt_long(argc, argv, ":b:f:F:g:h", long_options, NULL);
-+        c = getopt_long(argc, argv, "b:f:F:g:h",
-+                        long_options, NULL);
-         if (c == -1) {
+@@ -5502,31 +5502,48 @@ static int img_dd(const img_cmd_t *ccmd, int argc, char **argv)
+     const struct option long_options[] = {
+         { "help", no_argument, 0, 'h'},
+         { "object", required_argument, 0, OPTION_OBJECT},
++        { "format", required_argument, 0, 'f'},
++        { "output-format", required_argument, 0, 'O'},
+         { "image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
+         { "force-share", no_argument, 0, 'U'},
+         { 0, 0, 0, 0 }
+     };
+ 
+-    while ((c = getopt_long(argc, argv, ":hf:O:U", long_options, NULL))) {
++    while ((c = getopt_long(argc, argv, "hf:O:U", long_options, NULL))) {
+         if (c == EOF) {
              break;
          }
- 
          switch (c) {
++        case 'h':
++            cmd_help(ccmd,
++"[-f FMT|--image-opts] [-O OUTPUT_FMT] [-U]\n"
++"        [bs=BLOCK_SIZE] [count=BLOCKS] if=INPUT of=OUTPUT\n"
++,
++"  -f, --format FMT\n"
++"     specify format for INPUT explicitly\n"
++"  --image-opts\n"
++"     indicates that INPUT is a complete image specification\n"
++"     instead of a file name (incompatible with --format)\n"
++"  -O, --output-format OUTPUT_FMT\n"
++"     format of the OUTPUT (default raw)\n"
++"  -U, --force-share\n"
++"     open images in shared mode for concurrent access\n"
++"  bs=BLOCK_SIZE[kKMGTP]\n"
++"     size of I/O block (default 512)\n"
++"  count=COUNT\n"
++"     number of blocks to convert (default whole INPUT)\n"
++"  if=INPUT\n"
++"     input file name (or image specification with --image-opts)\n"
++"  of=OUTPUT\n"
++"     output file name to create\n"
++);
++            break;
+         case 'O':
+             out_fmt = optarg;
+             break;
+         case 'f':
+             fmt = optarg;
+             break;
 -        case ':':
 -            missing_argument(argv[optind - 1]);
 -            break;
 -        case '?':
 -            unrecognized_option(argv[optind - 1]);
 -            break;
-         case 'h':
+-        case 'h':
 -            help();
-+            cmd_help(ccmd,
-+"( --merge SOURCE | --add | --remove | --clear |\n"
-+"                --enable | --disable ).. [-f FMT | --image-opts]\n"
-+"        [ -b SRC_FILENAME [-F SOURCE_FMT]] [-g GRANULARITY] [--object OBJDEF]\n"
-+"        FILENAME BITMAP\n"
-+,
-+"  -f, --format FMT\n"
-+"     specify FILENAME format explicitly\n"
-+"  --image-opts\n"
-+"     indicates that FILENAME is a complete image specification\n"
-+"     instead of a file name (incompatible with --format)\n"
-+"  --add\n"
-+"     creates BITMAP, enables to record future edits\n"
-+"   -g, --granularity GRANULARITY\n"
-+"     sets non-default granularity for --add\n"
-+"  --remove\n"
-+"     removes BITMAP\n"
-+"  --clear\n"
-+"     clears BITMAP\n"
-+"  --enable, --disable\n"
-+"     starts and stops recording future edits to BITMAP\n"
-+"  --merge SRC_FILENAME\n"
-+"     merges contents of SRC_FILENAME bitmap into BITMAP\n"
-+"   -b, --source-file SRC_FILENAME\n"
-+"     select alternative source file for --merge\n"
-+"   -F, --source-format SRC_FMT\n"
-+"     specify format for SRC_FILENAME explicitly\n"
-+);
+-            break;
+         case 'U':
+             force_share = true;
              break;
-         case 'b':
-             src_filename = optarg;
-@@ -5237,6 +5259,8 @@ static int img_bitmap(const img_cmd_t *ccmd, int argc, char **argv)
+@@ -5536,6 +5553,8 @@ static int img_dd(const img_cmd_t *ccmd, int argc, char **argv)
          case OPTION_IMAGE_OPTS:
              image_opts = true;
              break;
