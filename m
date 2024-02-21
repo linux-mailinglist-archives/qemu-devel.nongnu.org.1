@@ -2,35 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67FE385E153
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:35:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 799C785E0C7
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:17:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoZY-0002KP-Sa; Wed, 21 Feb 2024 10:31:49 -0500
+	id 1rcoJF-0000ji-18; Wed, 21 Feb 2024 10:14:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcoOs-00047D-UD; Wed, 21 Feb 2024 10:20:46 -0500
+ id 1rchu5-0000w1-2o; Wed, 21 Feb 2024 03:24:33 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rchtc-0002cJ-Ln; Wed, 21 Feb 2024 03:24:07 -0500
+ id 1rchu3-0002fb-5Z; Wed, 21 Feb 2024 03:24:32 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6DF634F3E3;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9ED754F3E6;
  Wed, 21 Feb 2024 11:21:22 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 3A452860C2;
+ by tsrv.corpit.ru (Postfix) with SMTP id 69C8C860C5;
  Wed, 21 Feb 2024 11:21:01 +0300 (MSK)
-Received: (nullmailer pid 2142100 invoked by uid 1000);
+Received: (nullmailer pid 2142109 invoked by uid 1000);
  Wed, 21 Feb 2024 08:20:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.2 37/60] tests/acpi: Allow update of DSDT.cxl
-Date: Wed, 21 Feb 2024 11:20:25 +0300
-Message-Id: <20240221082058.2141850-37-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.2 40/60] linux-user/aarch64: Choose SYNC as the preferred
+ MTE mode
+Date: Wed, 21 Feb 2024 11:20:28 +0300
+Message-Id: <20240221082058.2141850-40-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.2-20240221110049@cover.tls.msk.ru>
 References: <qemu-stable-8.2.2-20240221110049@cover.tls.msk.ru>
@@ -59,27 +61,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-The _STA value returned currently indicates the ACPI0017 device
-is not enabled.  Whilst this isn't a real device, setting _STA
-like this may prevent an OS from enumerating it correctly and
-hence from parsing the CEDT table.
+The API does not generate an error for setting ASYNC | SYNC; that merely
+constrains the selection vs the per-cpu default.  For qemu linux-user,
+choose SYNC as the default.
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20240126120132.24248-11-Jonathan.Cameron@huawei.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 14ec4ff3e4293635240ba5a7afe7a0f3ba447d31)
+Cc: qemu-stable@nongnu.org
+Reported-by: Gustavo Romero <gustavo.romero@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Tested-by: Gustavo Romero <gustavo.romero@linaro.org>
+Message-id: 20240207025210.8837-2-richard.henderson@linaro.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 681dfc0d552963d4d598350d26097a692900b408)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..9ce0f596cc 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,2 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/q35/DSDT.cxl",
+diff --git a/linux-user/aarch64/target_prctl.h b/linux-user/aarch64/target_prctl.h
+index 5067e7d731..aa8e203c15 100644
+--- a/linux-user/aarch64/target_prctl.h
++++ b/linux-user/aarch64/target_prctl.h
+@@ -173,21 +173,26 @@ static abi_long do_prctl_set_tagged_addr_ctrl(CPUArchState *env, abi_long arg2)
+     env->tagged_addr_enable = arg2 & PR_TAGGED_ADDR_ENABLE;
+ 
+     if (cpu_isar_feature(aa64_mte, cpu)) {
+-        switch (arg2 & PR_MTE_TCF_MASK) {
+-        case PR_MTE_TCF_NONE:
+-        case PR_MTE_TCF_SYNC:
+-        case PR_MTE_TCF_ASYNC:
+-            break;
+-        default:
+-            return -EINVAL;
+-        }
+-
+         /*
+          * Write PR_MTE_TCF to SCTLR_EL1[TCF0].
+-         * Note that the syscall values are consistent with hw.
++         *
++         * The kernel has a per-cpu configuration for the sysadmin,
++         * /sys/devices/system/cpu/cpu<N>/mte_tcf_preferred,
++         * which qemu does not implement.
++         *
++         * Because there is no performance difference between the modes, and
++         * because SYNC is most useful for debugging MTE errors, choose SYNC
++         * as the preferred mode.  With this preference, and the way the API
++         * uses only two bits, there is no way for the program to select
++         * ASYMM mode.
+          */
+-        env->cp15.sctlr_el[1] =
+-            deposit64(env->cp15.sctlr_el[1], 38, 2, arg2 >> PR_MTE_TCF_SHIFT);
++        unsigned tcf = 0;
++        if (arg2 & PR_MTE_TCF_SYNC) {
++            tcf = 1;
++        } else if (arg2 & PR_MTE_TCF_ASYNC) {
++            tcf = 2;
++        }
++        env->cp15.sctlr_el[1] = deposit64(env->cp15.sctlr_el[1], 38, 2, tcf);
+ 
+         /*
+          * Write PR_MTE_TAG to GCR_EL1[Exclude].
 -- 
 2.39.2
 
