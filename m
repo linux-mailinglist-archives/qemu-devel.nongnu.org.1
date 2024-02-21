@@ -2,87 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4193B85E20D
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:55:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BFC985E219
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:56:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcouN-0005RG-S3; Wed, 21 Feb 2024 10:53:19 -0500
+	id 1rcovy-0001UL-1a; Wed, 21 Feb 2024 10:54:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcouF-0004lX-43
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:53:12 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcovf-0001IO-Ru
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:54:42 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcouC-0003ka-O5
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:53:10 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-41278553215so4337035e9.2
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 07:53:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708530786; x=1709135586; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=miTX8Ft8lx0FOfvhh6Kzngy4bFsa5OAExlzmetUdYTY=;
- b=yKBGDg5QjsZcVpUg2HvA9f+dRxg8jNE06IHo1tnBWDvgxumVAQyKCoA///cbdWR4kj
- MRr3fhy0QUuYu6grByNGWCEHEL62KqKnp3dqylY2f91WTW9A39Zod5YpLIWuONOPepYO
- 0QEMAah9ahnfBgHdwmIrn4xOWgb6/d4tmipk3yfaxSPn2Bdz3bdy9FIGqVoag2Pf/6Up
- uXNQ9rAUFOP+0yIniNvstcZjNUbuQ9Bro4n3eINphFbu75CHUarWvfYm1RBLcgEdPhQ+
- BIOf5QsXpA5ROxDOn4CDhGDVoVY9c+CB8i6jlqoaKQqmZtNr3cnozcoJCERHM2Mf+TmQ
- yKzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708530786; x=1709135586;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=miTX8Ft8lx0FOfvhh6Kzngy4bFsa5OAExlzmetUdYTY=;
- b=WBETHfJnIrp0BeI39PtcbIVRV+5Vb3mqp1ic1egBDXTueUi3NatmPfwV6ZrFZgli/e
- ze+J3jXCXjVgc4GraIIERKOS3JG7oRTZ7obXSlfRTIU6kd7b5FWo6pR+4ic6FmqiP1W7
- 4a4W+msPUrZFjTfBPsUUeA5i8cpsc0KxnI4xHegFyq1x3C89r3U7wwzJstms66rdeQAH
- tHFcCvxEBXZtAdvrnHYGBhbPqxMc7ObqcjrPCWxB9w8nJZzb9I/o75gpRa/LfK3/oZ4p
- 0Jqmp+UnKZQPMTUksCgya0G37vaej+fn0pKMOZcWj+GwWlo9NzXz3Drz8MqtvMciP1LL
- S2ZA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW74lL0u96SCyzIk9Hq6zfZqGKkDe1CjrVenGhbkainKunDCQd5Qxi4zVkUKo+H1wzpBpJ5oq2vqn5Rq/Dhean0WaMA9/g=
-X-Gm-Message-State: AOJu0Yw9up0FAFG5CZ3UvZHmOkGY3kupHWEc0+xilywcve10TBR0YpzG
- tcPiI8bTmMLX9F167jWs5J+tSPbL4mjy/SG6dj9Ci1LveL2a/l6a2w4cJpeMRB0=
-X-Google-Smtp-Source: AGHT+IH3N860ye4oTMSB7E9K/CNTd/IzONO3/Twhkz/rSbaEbPuUqXfsZxsk9sxeBnqr6hmLe9aIUw==
-X-Received: by 2002:a05:600c:35d3:b0:412:6c30:59ff with SMTP id
- r19-20020a05600c35d300b004126c3059ffmr4460984wmq.0.1708530785970; 
- Wed, 21 Feb 2024 07:53:05 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.211.34])
- by smtp.gmail.com with ESMTPSA id
- fs14-20020a05600c3f8e00b00411a595d56bsm18338787wmb.14.2024.02.21.07.53.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Feb 2024 07:53:05 -0800 (PST)
-Message-ID: <4244146b-9ce0-4a59-962b-4bfe2be1bb3e@linaro.org>
-Date: Wed, 21 Feb 2024 16:53:03 +0100
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcovb-0004G1-SH
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:54:39 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 9513721F92;
+ Wed, 21 Feb 2024 15:54:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1708530871; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=UIx96oIz4O6iSjptgRUvurFujPK8ytNpkKVWuHmoBqw=;
+ b=Rfmx2Sah7/OkheMA6a+NDiqzwKYWexJ6n5q0ISjC04IHnQx/iIhAIEryNLLr/ePVRjc3yw
+ sTsgKlTsSzhKYsk5woCYFYSp43iaAKOOyMf7aGdX+Wf7p5hvWakrySgje3sAsJy+gW/u+I
+ EpjFmW5eGN75SNUXN8wl/QxfKRVQa0Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1708530871;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=UIx96oIz4O6iSjptgRUvurFujPK8ytNpkKVWuHmoBqw=;
+ b=SElCyVZeYo81UQOorLS3EPcu202YWfVQnXSJQMc7Iku+XKS9sd4bSAjanXrbkgG+Xe9HL8
+ eooMDqO3sENoocCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1708530871; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=UIx96oIz4O6iSjptgRUvurFujPK8ytNpkKVWuHmoBqw=;
+ b=Rfmx2Sah7/OkheMA6a+NDiqzwKYWexJ6n5q0ISjC04IHnQx/iIhAIEryNLLr/ePVRjc3yw
+ sTsgKlTsSzhKYsk5woCYFYSp43iaAKOOyMf7aGdX+Wf7p5hvWakrySgje3sAsJy+gW/u+I
+ EpjFmW5eGN75SNUXN8wl/QxfKRVQa0Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1708530871;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=UIx96oIz4O6iSjptgRUvurFujPK8ytNpkKVWuHmoBqw=;
+ b=SElCyVZeYo81UQOorLS3EPcu202YWfVQnXSJQMc7Iku+XKS9sd4bSAjanXrbkgG+Xe9HL8
+ eooMDqO3sENoocCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1FF6C13A69;
+ Wed, 21 Feb 2024 15:54:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id wAsBNrYc1mX+FgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 21 Feb 2024 15:54:30 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>, Michael Roth
+ <michael.roth@amd.com>, Peter Xu <peterx@redhat.com>, =?utf-8?Q?Marc-Andr?=
+ =?utf-8?Q?=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>, Steve Sistare <steven.sistare@oracle.com>
+Subject: Re: [PATCH V4 5/5] migration: simplify exec migration functions
+In-Reply-To: <87msrtc479.fsf@suse.de>
+References: <1705099758-211963-1-git-send-email-steven.sistare@oracle.com>
+ <1705099758-211963-6-git-send-email-steven.sistare@oracle.com>
+ <87msrtc479.fsf@suse.de>
+Date: Wed, 21 Feb 2024 12:54:28 -0300
+Message-ID: <87edd5byob.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/9] hw/i386/pc: Defer smbios_set_defaults() to
- machine_done
-Content-Language: en-US
-To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
- Sergio Lopez <slp@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-References: <20240208220349.4948-1-shentey@gmail.com>
- <20240208220349.4948-6-shentey@gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240208220349.4948-6-shentey@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Rfmx2Sah;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SElCyVZe
+X-Spamd-Result: default: False [-2.36 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; BAYES_HAM(-2.05)[95.33%];
+ MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
+ RCPT_COUNT_SEVEN(0.00)[7];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 9513721F92
+X-Spam-Score: -2.36
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,51 +124,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/2/24 23:03, Bernhard Beschow wrote:
-> Handling most of smbios data generation in the machine_done notifier is similar
-> to how the ARM virt machine handles it which also calls smbios_set_defaults()
-> there. The result is that all pc machines are freed from explicitly worrying
-> about smbios setup.
-> 
-> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-> ---
->   hw/i386/fw_cfg.h     |  3 ++-
->   include/hw/i386/pc.h |  1 -
->   hw/i386/fw_cfg.c     | 12 +++++++++++-
->   hw/i386/pc.c         |  2 +-
->   hw/i386/pc_piix.c    | 10 ----------
->   hw/i386/pc_q35.c     |  9 ---------
->   6 files changed, 14 insertions(+), 23 deletions(-)
-> 
-> diff --git a/hw/i386/fw_cfg.h b/hw/i386/fw_cfg.h
-> index 86ca7c1c0c..1e1de6b4a3 100644
-> --- a/hw/i386/fw_cfg.h
-> +++ b/hw/i386/fw_cfg.h
-> @@ -10,6 +10,7 @@
->   #define HW_I386_FW_CFG_H
+Fabiano Rosas <farosas@suse.de> writes:
 
+> Steve Sistare <steven.sistare@oracle.com> writes:
+>
+>> Simplify the exec migration code by using list utility functions.
+>>
+>> As a side effect, this also fixes a minor memory leak.  On function return,
+>> "g_auto(GStrv) argv" frees argv and each element, which is wrong, because
+>> the function does not own the individual elements.  To compensate, the code
+>> uses g_steal_pointer which NULLs argv and prevents the destructor from
+>> running, but argv is leaked.
+>>
+>> Fixes: cbab4face57b ("migration: convert exec backend ...")
+>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+>
+> Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
-> @@ -22,7 +23,7 @@
->   FWCfgState *fw_cfg_arch_create(MachineState *ms,
->                                  uint16_t boot_cpus,
->                                  uint16_t apic_id_limit);
-> -void fw_cfg_build_smbios(MachineState *ms, FWCfgState *fw_cfg);
-> +void fw_cfg_build_smbios(PCMachineState *ms, FWCfgState *fw_cfg);
+You'll have to reintroduce the qemu/cutils.h include:
 
-s/ms/pcms/
-
-Otherwise, nice cleanup:
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-> diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
-> index 7362daa45a..98a478c276 100644
-> --- a/hw/i386/fw_cfg.c
-> +++ b/hw/i386/fw_cfg.c
-> @@ -48,15 +48,25 @@ const char *fw_cfg_arch_key_name(uint16_t key)
->       return NULL;
->   }
->   
-> -void fw_cfg_build_smbios(MachineState *ms, FWCfgState *fw_cfg)
-> +void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg)
-
+../migration/exec.c: In function 'exec_get_cmd_path':
+../migration/exec.c:37:5: error: implicit declaration of function 'pstrcat'; did you mean 'strcat'? [-Werror=implicit-function-declaration]
+   37 |     pstrcat(detected_path, MAX_PATH, "\\cmd.exe");
+      |     ^~~~~~~
+      |     strcat
+../migration/exec.c:37:5: error: nested extern declaration of 'pstrcat' [-Werror=nested-externs]
 
