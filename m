@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67BB685EA27
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:25:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C529385E9F3
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:21:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcu0X-0006B5-3T; Wed, 21 Feb 2024 16:20:02 -0500
+	id 1rcu1B-0006jw-Hg; Wed, 21 Feb 2024 16:20:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctzx-0004a3-4R
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:19:26 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcu02-0004ek-KG
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:19:32 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctzt-0001NV-Fl
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:19:23 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-33d44d78e5fso2020285f8f.1
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:19:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctzz-0001OW-Er
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:19:29 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-41276a43dc3so7479145e9.0
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:19:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708550359; x=1709155159; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708550364; x=1709155164; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bSyJnKQkd93ud2FmPgc+3hwMsxOVnxzVCD11CZAAcfk=;
- b=dHP54ZK/SlQkPy6n53VV6BW/1UlH9FWQ60TCS3VMtPP+u/C8oTFzu0a9U/yOQi9s2W
- p79JQeFoWa2fD2A38Bvzxvc+fQASyrF0hOJs1ZbODUFoOpCoZiLWXyktXhPSaR0Vpqq7
- vu3P3K0ipKmR/oS1faGh/ReXUVlv5LZeZ/jjVzENn986KKME0zOA3tR6fORxMi7E0uNb
- L5FFE2YCTLFOWspEZW70Fe8in7tfBv6vCY+m+Nh4bvk6EMg6NMoMg5L6CQfLfviuVJh6
- VA8OqKhtxGlj5VR156Ec67IWaxU5NbXfFMkacvkCgHi0JtJ85RznwHQmeHz/U0rvKc4O
- 9MgQ==
+ bh=NM3OaF5xVJiH79yUFzhlf4BJ4fqxcxDiXY4cqoH9BzE=;
+ b=AdpoUhzfMXTC3rmgCYRewXCSVh3cBZKFmYxrAJ1KAbJu9a+BjkahyKyx/Ka+DoK7i+
+ iWNk90ehBr8pseI39qjax8zZ6Tqg3pGKFo1tK8kDvdkAbfvlXnnvwg+SFwY9qrz1AsFw
+ d9jGeIj9fbNsitQo4JEG3h40lk4FOlEYhzgBBF920oDEX7BQ66uV0t6FmD7XF75nr1Yq
+ KMuqc28P8rxazbeo+SiljigLsMWv1ysw8lg/KWm8Le/ZzWAd6mUqYGnFbbtoOqGgRdDd
+ dYAPKVMz6+zUfXlHRTaY4tUfq2uaN0Urcg0l1ZHdleGg0HfXOU1Xj9Q1LHQPzECw0MLR
+ v9hA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708550359; x=1709155159;
+ d=1e100.net; s=20230601; t=1708550364; x=1709155164;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bSyJnKQkd93ud2FmPgc+3hwMsxOVnxzVCD11CZAAcfk=;
- b=udku5VdIeK0GTtinn2bPa4pWOT4TZDLhywt1p1kLBSglqDak5X5+1WhTeZUvbW8FY6
- ZMHsqj0j6/H6yTjJi/dRURJzyQTaNDkr0x1P0t8jsfzUF8Ic9BaU6Z3CXphSxoA0lbFa
- CD2S32CoU9eaDWDcwY/jHTIoQMI3eI7vjhfyg72QryfCAYC8zQLos/CIqQ9DGTghR8hM
- FeK+SuUlWMCbRDj9ujw1IiC6aADCfl4Y7Kn5wOHvx+IuhCQBWK+zYQy36jEjWECqbJ5d
- aicF95ypX2JqvWfkiQ0odXhI8m+JkDYljVbu1hPMpgbqKfnFLqxg8gbEOtX4GD6zlpqe
- Kwdg==
-X-Gm-Message-State: AOJu0Ywa83cE76qpNpRKtfTIHJRLGCD/9HLuppI0j/FWlFS4N9/X+AZb
- r9DpjSD0UAfBpHK8VMRQy+lQziDiYdeYBEMfMoDdaHO0yol3zTe7LdOqff/So3Wx00R1nPi65Jd
- 3fac=
-X-Google-Smtp-Source: AGHT+IG0/TS12M26H3NQkwkNXV/cOJUAS0IUBeInj+gTqx2YkIHGntbYMj4+ad3B+rkq4bLtUN3V6Q==
-X-Received: by 2002:adf:fc90:0:b0:33d:3566:b5d1 with SMTP id
- g16-20020adffc90000000b0033d3566b5d1mr9489249wrr.57.1708550358803; 
- Wed, 21 Feb 2024 13:19:18 -0800 (PST)
+ bh=NM3OaF5xVJiH79yUFzhlf4BJ4fqxcxDiXY4cqoH9BzE=;
+ b=cN0lHutNGfcoFP2/sAkSlk+8MFvM3pLOU1kguVzp+NW5oK5VkW5gfAe5FgHcb+rXoh
+ N0MqF7TSQH9IAsTcgbZeW6hWvAALlIwO2ORI2MB50NOfslx7NC4mgAfyAV183SM9af1v
+ UzzyIcP3YCiUBrUswjA3ELYv/pTSkwrCJu2NjeHOjujHQF6BpR3iQVSE8cDD9Ut+c7dS
+ AhyW5X/3m+p0MrKrcVK5+osNNc9SAPQX6w+lzcB4vq9DaxRLxAueTBjIujbg0kh3RaAP
+ ZQUKrH4A8HoF2hLjfnHSCPnHAXDcjHgwt7gkFikr5T366nlu63++0m470rbxFkl1HzTo
+ PnfA==
+X-Gm-Message-State: AOJu0Yw+e+6+WJs2kkFr9FxUkROsR6PFqb6QX7ZP/mG0LVVoMl8wepYl
+ hbjaQ5XnBqS833GY3vBY6x7mH8aQpv+cnO9l2iV6i/stdLpdhcdZk6cWu/SnbxAYCYB73C64UGq
+ PrwU=
+X-Google-Smtp-Source: AGHT+IH4TzS7Xe0OUBjI/T9APGMkVPdjFJDLtz24jL+Gq1/cmkyG3jbHz2oRavSrZyqQF06q0rLxuw==
+X-Received: by 2002:a05:600c:5250:b0:412:63e8:b2f3 with SMTP id
+ fc16-20020a05600c525000b0041263e8b2f3mr9088273wmb.4.1708550364663; 
+ Wed, 21 Feb 2024 13:19:24 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.211.34])
  by smtp.gmail.com with ESMTPSA id
- p6-20020adfe606000000b0033cdbe335bcsm18113801wrm.71.2024.02.21.13.19.16
+ l20-20020a05600c1d1400b0041256ab5becsm16906430wms.26.2024.02.21.13.19.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 21 Feb 2024 13:19:18 -0800 (PST)
+ Wed, 21 Feb 2024 13:19:24 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
+ Frederic Konrad <konrad.frederic@yahoo.fr>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- John Snow <jsnow@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 24/25] hw/ide: Stop exposing internal.h to non-IDE files
-Date: Wed, 21 Feb 2024 22:16:24 +0100
-Message-ID: <20240221211626.48190-25-philmd@linaro.org>
+ Artyom Tarasenko <atar4qemu@gmail.com>
+Subject: [PULL 25/25] hw/sparc/leon3: Fix wrong usage of DO_UPCAST macro
+Date: Wed, 21 Feb 2024 22:16:25 +0100
+Message-ID: <20240221211626.48190-26-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240221211626.48190-1-philmd@linaro.org>
 References: <20240221211626.48190-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,112 +99,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-include/hw/ide/internal.h is currently included by include/hw/ide/pci.h
-and thus exposed to a lot of files that are not part of the IDE subsystem.
-Stop including internal.h there and use the appropriate new headers
-ide-bus.h and ide-dma.h instead.
+leon3.c currently fails to compile with some compilers when the -Wvla
+option has been enabled:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+ ../hw/sparc/leon3.c: In function ‘leon3_cpu_reset’:
+ ../hw/sparc/leon3.c:153:5: error: ISO C90 forbids variable length array
+  ‘offset_must_be_zero’ [-Werror=vla]
+   153 |     ResetData *s = (ResetData *)DO_UPCAST(ResetData, info[id], info);
+       |     ^~~~~~~~~
+ cc1: all warnings being treated as errors
+
+Looking at this code, the DO_UPCAST macro is indeed used in a wrong way
+here: DO_UPCAST is supposed to check that the second parameter is the
+first entry of the struct that the first parameter indicates, but since
+we use and index into the info[] array, this of course cannot work.
+
+The intention here was likely rather to use the container_of() macro
+instead, so switch the code accordingly.
+
+Fixes: d65aba8286 ("hw/sparc/leon3: implement multiprocessor")
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Message-ID: <20240220085505.30255-8-thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240221180751.190489-1-thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/ide/pci.h | 2 +-
- hw/i386/pc.c         | 2 +-
- hw/ide/cmd646.c      | 1 +
- hw/ide/pci.c         | 1 +
- hw/ide/piix.c        | 1 +
- hw/ide/sii3112.c     | 1 +
- hw/ide/via.c         | 1 +
- 7 files changed, 7 insertions(+), 2 deletions(-)
+ hw/sparc/leon3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/ide/pci.h b/include/hw/ide/pci.h
-index a814a0a7c3..ef03764caa 100644
---- a/include/hw/ide/pci.h
-+++ b/include/hw/ide/pci.h
-@@ -1,7 +1,7 @@
- #ifndef HW_IDE_PCI_H
- #define HW_IDE_PCI_H
+diff --git a/hw/sparc/leon3.c b/hw/sparc/leon3.c
+index 4873b59b6c..6aaa04cb19 100644
+--- a/hw/sparc/leon3.c
++++ b/hw/sparc/leon3.c
+@@ -150,7 +150,7 @@ static void leon3_cpu_reset(void *opaque)
+ {
+     struct CPUResetData *info = (struct CPUResetData *) opaque;
+     int id = info->id;
+-    ResetData *s = (ResetData *)DO_UPCAST(ResetData, info[id], info);
++    ResetData *s = container_of(info, ResetData, info[id]);
+     CPUState *cpu = CPU(s->info[id].cpu);
+     CPUSPARCState *env = cpu_env(cpu);
  
--#include "hw/ide/internal.h"
-+#include "hw/ide/ide-bus.h"
- #include "hw/pci/pci_device.h"
- #include "qom/object.h"
- 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 1ee41a5e56..f8eb684a49 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -31,7 +31,7 @@
- #include "hw/i386/fw_cfg.h"
- #include "hw/i386/vmport.h"
- #include "sysemu/cpus.h"
--#include "hw/ide/internal.h"
-+#include "hw/ide/ide-bus.h"
- #include "hw/timer/hpet.h"
- #include "hw/loader.h"
- #include "hw/rtc/mc146818rtc.h"
-diff --git a/hw/ide/cmd646.c b/hw/ide/cmd646.c
-index c0bcfa4414..23d213ff01 100644
---- a/hw/ide/cmd646.c
-+++ b/hw/ide/cmd646.c
-@@ -33,6 +33,7 @@
- #include "sysemu/reset.h"
- 
- #include "hw/ide/pci.h"
-+#include "hw/ide/internal.h"
- #include "trace.h"
- 
- /* CMD646 specific */
-diff --git a/hw/ide/pci.c b/hw/ide/pci.c
-index ca85d8474c..73efeec7f4 100644
---- a/hw/ide/pci.c
-+++ b/hw/ide/pci.c
-@@ -30,6 +30,7 @@
- #include "sysemu/dma.h"
- #include "qemu/error-report.h"
- #include "qemu/module.h"
-+#include "hw/ide/internal.h"
- #include "hw/ide/pci.h"
- #include "trace.h"
- 
-diff --git a/hw/ide/piix.c b/hw/ide/piix.c
-index 4e5e12935f..1773a068c3 100644
---- a/hw/ide/piix.c
-+++ b/hw/ide/piix.c
-@@ -30,6 +30,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "hw/pci/pci.h"
-+#include "hw/ide/internal.h"
- #include "hw/ide/piix.h"
- #include "hw/ide/pci.h"
- #include "trace.h"
-diff --git a/hw/ide/sii3112.c b/hw/ide/sii3112.c
-index 63dc4a0494..321b9e46a1 100644
---- a/hw/ide/sii3112.c
-+++ b/hw/ide/sii3112.c
-@@ -13,6 +13,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "hw/ide/internal.h"
- #include "hw/ide/pci.h"
- #include "qemu/module.h"
- #include "trace.h"
-diff --git a/hw/ide/via.c b/hw/ide/via.c
-index 3f3c484253..cf151e70ec 100644
---- a/hw/ide/via.c
-+++ b/hw/ide/via.c
-@@ -25,6 +25,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "hw/ide/internal.h"
- #include "hw/pci/pci.h"
- #include "migration/vmstate.h"
- #include "qemu/module.h"
 -- 
 2.41.0
 
