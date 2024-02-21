@@ -2,165 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B04A285E18D
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:41:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E66C385E179
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:39:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoUE-0000ys-Df; Wed, 21 Feb 2024 10:26:19 -0500
+	id 1rcoU4-0000Lx-OC; Wed, 21 Feb 2024 10:26:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1rcoMP-0000wC-It
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:18:14 -0500
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rcoML-0000wk-Fu
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:18:12 -0500
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1rcl0k-0007Za-8z
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 06:43:46 -0500
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41L9iGPH021488; Wed, 21 Feb 2024 11:43:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=QUhJ/NFYNAAXdeXUVN1+sGjWk5iH/spMqFYFWLwphOw=;
- b=IpeaFLKAMtOvcOg+OkqID9yYdrE8gZaMN3ZMFS88C8OH8G2RQX4eEEyMbYzs5hKF5b8U
- vmd5lSFnem3MiSa6SM6jioL3MNqtn7rGHAfDgsD3syTIp1VQWwsDJwpl5PIU2kgSLdcM
- TbQf3YiS9ESbAUay33t0kKspoRnvaPNpBNzmRZI6nu5U0ZnV/wj2Cq1qBqv4imw3Mw5C
- xioVZHQSkfQBEeHZXm0ry5/LvyVoegbfcX8n1sU1hG8bv4PmTybyShX9fxirGZRkvuID
- diRAWZ7PqXUbdji8nczRPeeVU0EMhTwsOjBKgyYKZ6B/D9eKjWitU6SOuleFq+lg13Rv Zg== 
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wakqc9gtv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 21 Feb 2024 11:43:29 +0000
-Received: from pps.filterd
- (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 41LA26Oo020995; Wed, 21 Feb 2024 11:43:28 GMT
-Received: from nam12-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam12lp2168.outbound.protection.outlook.com [104.47.59.168])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3wak8962ef-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 21 Feb 2024 11:43:28 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mt26Zngy82uiJaHa3ehRVWP5fP89m3xf1Gk+1gPKri4ZufBqMljkWQXUcaYIW1LQW9d65NPAgLfa7EmoVey12PfrvJ33hMbWYP8Pqn/qUvFTQI1JorOgnjvZObsfCic2psOEXLnvwihrEonhbUa/RnAVDa3laxOFPHFFBKqRaVneqh+uSItIlJlyT9RKVTmXVemVlApptpFt1yy4lyhMsWljfNWpCES4QO5ErlpeOsAzTv3VtsarwEZOM9QFGBm5iYVAqzvX/xsqZnlmg8rdMV2L3MFGp/kufojJnaSdaGnjsLAOVKibi77yu6TypVR2jXduyaN6lcYZN31KNlw7TA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QUhJ/NFYNAAXdeXUVN1+sGjWk5iH/spMqFYFWLwphOw=;
- b=RNuKjUfJfl8TpcK3EVeRjeqXmGfWjPmaJC41NSQso2vUZOv2OCsYCY9edaOWIYJmgk61Qbt/XQLh+oGWCqDw35lUOtBpUrXuzieWpogpX5QUvyG7ayhziljq0qn1ZvuUunUKsvlJ1kQhRYcjw9kX6pfaSuLbyMyHW6OP3Ex8lQkDp61LbFprmeuDgqBejUvjSM530FXB70qU2J7i2FoPdDKX/eIXwQTLCpUym+ITP/3SyZaqB3zWXfYJ2YQ4VHDINDV5bSr+4JYyXgd1T4HUK9nTrbKVwV9A6TObVxfpqUcXomc6IYhYnssjZ8REhEA8iO//PXXEo2eoLqcQC2JcIw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QUhJ/NFYNAAXdeXUVN1+sGjWk5iH/spMqFYFWLwphOw=;
- b=Mc8E0GO4GeX8LLTbZrsDBmYWSh29m/u9BljaRyQqn2IBE8eiJgLLWDv2Ewsxwrpt0BKNVsdBkiv4OTK59jIUCOXK84LzUokfhW8uqc1yKXS7n9hQ1gU2QPzcTFtswDJ3ZtA1KncsEzYR6ZvAYOst2MC/Lz39QQzFyqfsYpYK9yk=
-Received: from PH0PR10MB5893.namprd10.prod.outlook.com (2603:10b6:510:149::11)
- by DS7PR10MB5197.namprd10.prod.outlook.com (2603:10b6:5:3ab::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.22; Wed, 21 Feb
- 2024 11:42:58 +0000
-Received: from PH0PR10MB5893.namprd10.prod.outlook.com
- ([fe80::3356:4cc1:701e:dde3]) by PH0PR10MB5893.namprd10.prod.outlook.com
- ([fe80::3356:4cc1:701e:dde3%4]) with mapi id 15.20.7292.036; Wed, 21 Feb 2024
- 11:42:58 +0000
-Message-ID: <178d53f9-26bf-4e78-b670-223c30be7b14@oracle.com>
-Date: Wed, 21 Feb 2024 11:42:51 +0000
-Subject: Re: [PATCH v4 0/3] Fix MCE handling on AMD hosts
-Content-Language: en-US
-To: John Allen <john.allen@amd.com>, pbonzini@redhat.com
-Cc: william.roche@oracle.com, yazen.ghannam@amd.com, michael.roth@amd.com,
- babu.moger@amd.com, richard.henderson@linaro.org, eduardo@habkost.net,
- qemu-devel@nongnu.org, "peterx@redhat.com" <peterx@redhat.com>
-References: <20230912211824.90952-1-john.allen@amd.com>
- <afc99063-1916-4a0c-a763-f515a4595e73@oracle.com>
- <ZdTg5y6P0iuNYzZZ@AUS-L1-JOHALLEN.amd.com>
-From: Joao Martins <joao.m.martins@oracle.com>
-In-Reply-To: <ZdTg5y6P0iuNYzZZ@AUS-L1-JOHALLEN.amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P265CA0306.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:a5::30) To PH0PR10MB5893.namprd10.prod.outlook.com
- (2603:10b6:510:149::11)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rcl0k-0007Zm-95
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 06:43:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=7k30ACzpKa2rKS5+dmRM7qfouc1yR7zIpJ7tiHdP5g0=; b=s/Zmez0C4bsE6VmyIW5XM8+wJq
+ ljXvrWHQLq7BtoXnyOQaBBTnt5qk4ropLBvxZkNmZqsC4StSek8tzWvWPMi/pTBZ3oBTEg2BshLFv
+ lu6lpNExc65GoQ6m2mz6KLo1361piHNbkx7G56QzVLXlk/vEwEtec4OKg+e6b7UqlwinIgpESAxI3
+ jWEei6QMTZMNayCT9Fwb/LrEmaCZWqj55Epe1wsTMquGLPLhYi8A+T6GUvZRgZwmd1MX0ax8WR0sN
+ ekUDcwh7SRm42+ZHNq9NY+Xlevgc9LNqq8B7vNzlVfLRXz30I/gh2qvuUkkR6J7hkfvIqYtKQEQlt
+ ++y+etf0NdkDKy/98jNyxkS25OI3ECS2Hv1IAxQ3uKjGKklvZScTFGyXtyDGXQgDhLZTnziQRX3U1
+ SzcoahnAhaKrcmy03LFMl/o0QPvIcBNnuXlJYreRt/ixywUCEgpwaTQWcsmSo88NPo5MhPqTYYqwo
+ MtHnO/07fiTXrzykXgCFTFc68KqTRX0qGFITNkNwHDJXrajw2MW9meqgpvRENfCmUGN6S2gqPb/PT
+ PKfyFQ9UZJ9yxtLhLiimO2YgQYusqa7dDzmYM/3N9hVERCd6iZ0ycM4hJnVD+J/MKC4/Hll21Rn61
+ rUG7eqb2kj3rL3l+NmKlf+pAr5OxC68BANk4BqQJk=;
+Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rckzw-0008HQ-HS; Wed, 21 Feb 2024 11:42:52 +0000
+Message-ID: <26f9ca25-b828-4ca5-983a-5e8667239d01@ilande.co.uk>
+Date: Wed, 21 Feb 2024 11:43:30 +0000
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5893:EE_|DS7PR10MB5197:EE_
-X-MS-Office365-Filtering-Correlation-Id: 85ddbdf2-bc35-406e-3c9a-08dc32d24047
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: SdV6yJFoLIqPTAePKv8X8wu9yh6OS8bY7vvhDNRARSXVQU98UhS6Zr06oHNU6KXD9y30TbJ1KcK3MaTrjvp7+ekdY91MqMn0Sx67spr6nUh4g7KIhZ8obmxvK3xMbnmbVTc7/xtKjXncYUho96tl13SCWlSTueoRv/VxT5u2EivN/jwwhKGmY4sBYhUEjQuOFFt2Xis4SKRvMV5Bteh64S/BUbIyPm0WciL36UXRk9DYYPsqD/8DObN3Q6H1bROHnrK4r4A8kfTqFdKf1Og7AdBYZZL4MAzVvJJEbpwQ0EJ7qug1Z8T5mwyvbpcODkn+pXiOao89XymNH5KoxzE1b/QzU3xXltkQ5Dv5mTqWi6LnN367Aj2E0b5Tsw5T5ZDoBBfqiPON8Tz5hUPGhaY9BO/fWZ8ga6FyMmT9Ibdkdvw0R8rArWsnSa7+lnxgbKDq40p9imQu/mfDCmnIxSCZzPePT4uSWWO2zTily/PEXxTVOIFoHiFPHbOc3LPeX00i8LN3gfVT9ATsknEwjs+smQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR10MB5893.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NW1ZVitwb2ZDUnp2MEVqVktJRkRQcnRRNWVaNzNxRDNQRHBudHd5eUpCQVI2?=
- =?utf-8?B?QVdYYVA5M2N2TDc4NUZmWGg0Q25LNmY0MFFVU3BBODlpUkxuZ1RIaHFiVElD?=
- =?utf-8?B?azNYMDZKWmpMSDE0cjR3MlVrK1h6dC9lVWJJMUlmeGZHVEFHangvR3hJSWht?=
- =?utf-8?B?ZFp0T0l2NDlNZUlDZG5laWViNDNrMEdVa3Npb3J2UWxjZDRqSnVnRlVIRDBZ?=
- =?utf-8?B?SmJ2cm1UK25UUUZSQ0N3T0FIWmpJNG92dm93Q25oMHlZZkZOYlRKdzVCK05F?=
- =?utf-8?B?UUpmeW5BcmUvWHJ1NExEZXlGZFpBM3RhVk9nL3BBUjB0WHhYVUN4NVVjL0pa?=
- =?utf-8?B?SkJFMDRDTVVpZUprR2ZXenR5VzUySjRXR0YyaTQzamhjMDZaNHYrVEIrYVEv?=
- =?utf-8?B?dkVIZXh3bmp5OHFvT3B1NVkvbTlIU3EvSnVHNkJnbFIvMHMvVHpiR2grVHJH?=
- =?utf-8?B?QnR0ZFhvTDJSNlVCaGlxZFBuU1kxbEVOeGUwNWlKUXpXZTdKbENXVmJ5WU9Q?=
- =?utf-8?B?enVxeWhTYVhsd1NXcWJIdVYvaC9uajFocVYycUFYbnRNL0k2TWNiOXFxaGcv?=
- =?utf-8?B?dXFHZzlZek5YYU5obmJCMXFlTmtoRkxhTkNYaU5Ud0w3UU1TUWdOQTZubWRR?=
- =?utf-8?B?WW9HYUhQbkJUSk90T2Y3SnErODhvdk9BazRqeDd2ZytHSVJVTjUrenJkdWVG?=
- =?utf-8?B?bHM0NGNoSUQ0MFNBcmtpZGtIaWx2UWVLaDNMM0hIUHV0SWozTHRoc2FIVU9l?=
- =?utf-8?B?VEN0VVpwUHE5WUdVbGVDS1dpN0sxODUrcXdZNmVYRWhMVzFjcWpZcllxZzd2?=
- =?utf-8?B?RUtNSGZmUVR6Z2t1dTB1b0R0amZyM1RBYUFBbkVEc2owcUM3NjlQRUNpRHhO?=
- =?utf-8?B?d3RhWm1sbUd3SXRSbTh3a0U3Y1NST3JjdnZxOUdPaWF0TjhaKzJhN2xHL0Vl?=
- =?utf-8?B?S2VINU4zandYUWdRRlBtMkxrNXRmRTZLTnRZT1orWXc3U0JJeDB4RU5MYy9u?=
- =?utf-8?B?MjFkQ3d1enE4TjZTM1VjdHlrWkdZdWRJcjROQTJ0NGtMb05pcmo1amJvOTly?=
- =?utf-8?B?VGdsaG5veHc0WkQ5S1Awa1NyWjUrSnJSditxZ0RhdXF6NVBHdUtXbWhUaE03?=
- =?utf-8?B?SldVQXY3My9NV1MyWFNuUjdIZmJvVy9rZUlteWl5endxbEhianZoY2ZFYVcy?=
- =?utf-8?B?b0hVSSt3RFZQaVgrKytHd1p6aVNYSWtPZXY0TUZ6QzFsRHU1emJzdFJwbEpM?=
- =?utf-8?B?NFV2ZzQrYmdTc01YcktRdlFHUHVyRzViOVljb0pTbzZNeXpxQndHeHdEK2pv?=
- =?utf-8?B?VEJWaGVNT01vRytIZXgyNUdSMUxnN0Z0Q09hMWs3YlpCUjNnYnBBc2c2V0JX?=
- =?utf-8?B?aDhXV2Ric0RPaUs4TmJzMEt4amdvcXlqbFo2M2Rkb0F0Mnlyc1FJZkRhOGhv?=
- =?utf-8?B?cm11VlhXRVhEVklOQUxQb3AyOVhhOElSTmVJQWxBYUxmVGNzeXhjTU5jU3Rj?=
- =?utf-8?B?RUU0WEs2QmpQMmhkc0NxWWdKWkkzeXZJY0swTWRoaE5HNy9xL1RUNm9aTUhD?=
- =?utf-8?B?RkpqWU9PdCtFNHFjVE5mN2hTcHBNOGJtT1ZjWkJ6bXo2U3pOMkJhS0Vwck1I?=
- =?utf-8?B?ZDBweUxDVEhhdTErNVE1UCtnWVNUZHU0SGZ1TVg2Q2I5VHhmYi9Nd2tPcUFM?=
- =?utf-8?B?K0UyTmFZN2Qxc0ovMDFGa01Rc3UzOENidDdLZzN3Nnh6a0IxRFo5ZjFPZzJH?=
- =?utf-8?B?ZWx0Rm4wNXhEMDJyNkpzUnppZ1Q2dDhjK1AwY2IxaWZIU2cwYWZCY0pKWmFx?=
- =?utf-8?B?eXRXdUFIRlVSNlRxTEg0OEZMZWF4WnduZW9Tc1I1RzU4MStvcjA5clhpUGFV?=
- =?utf-8?B?dU9HMEYvaXAxNURvMGRNbnptaXhTMGpmald6MnlrTkNEcXg4RDUvLytLcVoz?=
- =?utf-8?B?a29XZDdPOW53WjRQZ2JFM2o3YTl0Q1RqbktUWlRZcVNkZisvRWk2Nmd0K1Fj?=
- =?utf-8?B?b2FKSU9aLzJpVFp2enBHV3FHU3J2Z2YyTnpUb3g1WGh5UFNFRjd1eThTYmc4?=
- =?utf-8?B?aVNVSkFrTy9KdWhCaWFzYWhEbVZES3k2VWwvQ0ZaQjVKYUR5cnFQMWRvZkNX?=
- =?utf-8?B?MDhCWC92SnpxbWE5bXAzVE4yK1E3SmUyZHF5U0g2MkVhZk8xd3Y0OVBLaXUv?=
- =?utf-8?B?aXc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 45GfHsnAjTCHP/37EgFQitdCLPw7uiTjM44HyUm1IfKfff9AusyXfjhSa0nRLwhqzXBOPxGXpLbKD1+ij0iYW2mRkXIO/JwnhLHbuL0hzHgg4NiVP3yGEKKO2LOc33kWHBdV3qmpnjtATaksCuiz+A7iAMboPv4noRBaEXWiyKqXSKBCLwo8zXvEnYUf3WOVQg7Y7Avj3zLoY0fDTX+8tYpDJEUtl3CtrqzWaD97inrpHB6yQ8lFYSgRtpm/qypZn1coiDcUatWUfMd8DRaU9rbUvGAecp/vutK6mr4day2acgSYtGUPMap8tdUnHijO9W/U1cSxgwCoRdWppRrmtF4RYvRCwNBxCvLCMVZkJb7HBsj3G9Q+jE2hLKVYFJkhE8+LY/vF5/474sD7ehBQBiNABLy/p3vEDqqhIWsg/lE1aCQd8kUP6QsAcfzZBXZeeM7SSZmyWOTJsgUwhLnXHXz0ODFBWuVWdxQBr37oKuSlpcKT8/IyUPPKfZ/YzKSUWIHZgklwnwkJ7ZjfEjkJ+EETYIn7DJz8XhnQuNVHq5OR8LqHaAaBl0eso7xV1BZim4HWF8/VzPz6QjnOGWpLfo/QFL9Bo+VUAS42PnXS07Y=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 85ddbdf2-bc35-406e-3c9a-08dc32d24047
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5893.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2024 11:42:58.5146 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: k/sFmwiN+jNXQT7JIPWx7lSzq9vORfNKfp5wUe1u65tIqRfuIgw+0BNHQnzEAH6uXN5SvEsI0Z8F9rjSCYwlj538FX1NDxzhAzINB3ox1Ys=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR10MB5197
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-20_06,2024-02-21_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- mlxscore=0 adultscore=0
- mlxlogscore=999 bulkscore=0 malwarescore=0 phishscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2402210091
-X-Proofpoint-GUID: wGnT4J7MSxhn8a3EzU1UHPI-XeDrnXgg
-X-Proofpoint-ORIG-GUID: wGnT4J7MSxhn8a3EzU1UHPI-XeDrnXgg
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Aurelien Jarno <aurelien@aurel32.net>, Jiaxun Yang
+ <jiaxun.yang@flygoat.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>
+References: <20240218131701.91132-1-shentey@gmail.com>
+ <20240218131701.91132-3-shentey@gmail.com>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <20240218131701.91132-3-shentey@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 2/5] hw/i386/port92: Allow for TYPE_PORT92 to be embedded
+ in devices
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -182,76 +110,210 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/02/2024 17:27, John Allen wrote:
-> On Wed, Feb 07, 2024 at 11:21:05AM +0000, Joao Martins wrote:
->> On 12/09/2023 22:18, John Allen wrote:
->>> In the event that a guest process attempts to access memory that has
->>> been poisoned in response to a deferred uncorrected MCE, an AMD system
->>> will currently generate a SIGBUS error which will result in the entire
->>> guest being shutdown. Ideally, we only want to kill the guest process
->>> that accessed poisoned memory in this case.
->>>
->>> This support has been included in qemu for Intel hosts for a long time,
->>> but there are a couple of changes needed for AMD hosts. First, we will
->>> need to expose the SUCCOR cpuid bit to guests. Second, we need to modify
->>> the MCE injection code to avoid Intel specific behavior when we are
->>> running on an AMD host.
->>>
->>
->> Is there any update with respect to this series?
->>
->> John's series should fix MCE injection on AMD; as today it is just crashing the
->> guest (sadly) when an MCE happens in the hypervisor.
->>
->> William, Paolo, I think the sort-of-dependency(?) of this where we block
->> migration if there was a poisoned page on is already in Peter's migration
->> tree[1] (CC'ed). So perhaps this series just needs John to resend it given that
->> it's been a couple months since v4?
+On 18/02/2024 13:16, Bernhard Beschow wrote:
+
+> Port 92 is an integral part of south bridges. Allow for embedding it there.
 > 
-> It looks like this series still applies cleanly to latest qemu, but I
-> can resend if needed.
+> South bridges aren't architecture-specific, so move port92.c to hw/isa which is
+> accessible to other architectures than x86.
 > 
-That's great I suppose.
-
-I was hoping Paolo responds, to understand next steps.
-
-There's also the other kernel patch that Paolo suggested[0], to declare the
-SUCCOR bit in the kvm supported CPUID? Maybe it's being held up because of that?
-
-[0]
-https://lore.kernel.org/qemu-devel/d4c1bb9b-8438-ed00-c79d-e8ad2a7e4eed@redhat.com/
-
-> Thanks,
-> John
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> ---
+>   include/hw/i386/pc.h      |  5 -----
+>   include/hw/isa/port92.h   | 30 ++++++++++++++++++++++++++++++
+>   hw/i386/pc.c              |  1 +
+>   hw/{i386 => isa}/port92.c | 14 +-------------
+>   hw/i386/Kconfig           |  1 +
+>   hw/i386/meson.build       |  3 +--
+>   hw/i386/trace-events      |  4 ----
+>   hw/isa/Kconfig            |  3 +++
+>   hw/isa/meson.build        |  1 +
+>   hw/isa/trace-events       |  4 ++++
+>   10 files changed, 42 insertions(+), 24 deletions(-)
+>   create mode 100644 include/hw/isa/port92.h
+>   rename hw/{i386 => isa}/port92.c (91%)
 > 
->>
->> [1]
->> https://lore.kernel.org/qemu-devel/20240130190640.139364-2-william.roche@oracle.com/
->>
->>> v2:
->>>   - Add "succor" feature word.
->>>   - Add case to kvm_arch_get_supported_cpuid for the SUCCOR feature.
->>>
->>> v3:
->>>   - Reorder series. Only enable SUCCOR after bugs have been fixed.
->>>   - Introduce new patch ignoring AO errors.
->>>
->>> v4:
->>>   - Remove redundant check for AO errors.
->>>
->>> John Allen (2):
->>>   i386: Fix MCE support for AMD hosts
->>>   i386: Add support for SUCCOR feature
->>>
->>> William Roche (1):
->>>   i386: Explicitly ignore unsupported BUS_MCEERR_AO MCE on AMD guest
->>>
->>>  target/i386/cpu.c     | 18 +++++++++++++++++-
->>>  target/i386/cpu.h     |  4 ++++
->>>  target/i386/helper.c  |  4 ++++
->>>  target/i386/kvm/kvm.c | 28 ++++++++++++++++++++--------
->>>  4 files changed, 45 insertions(+), 9 deletions(-)
->>>
->>
+> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+> index ec0e5efcb2..b2987209b1 100644
+> --- a/include/hw/i386/pc.h
+> +++ b/include/hw/i386/pc.h
+> @@ -188,11 +188,6 @@ void pc_nic_init(PCMachineClass *pcmc, ISABus *isa_bus, PCIBus *pci_bus);
+>   
+>   void pc_i8259_create(ISABus *isa_bus, qemu_irq *i8259_irqs);
+>   
+> -/* port92.c */
+> -#define PORT92_A20_LINE "a20"
+> -
+> -#define TYPE_PORT92 "port92"
+> -
+>   /* pc_sysfw.c */
+>   void pc_system_flash_create(PCMachineState *pcms);
+>   void pc_system_flash_cleanup_unused(PCMachineState *pcms);
+> diff --git a/include/hw/isa/port92.h b/include/hw/isa/port92.h
+> new file mode 100644
+> index 0000000000..214783d071
+> --- /dev/null
+> +++ b/include/hw/isa/port92.h
+> @@ -0,0 +1,30 @@
+> +/*
+> + * QEMU I/O port 0x92 (System Control Port A, to handle Fast Gate A20)
+> + *
+> + * Copyright (c) 2003-2004 Fabrice Bellard
+> + *
+> + * SPDX-License-Identifier: MIT
+> + */
+> +
+> +#ifndef HW_PORT92_H
+> +#define HW_PORT92_H
+> +
+> +#include "exec/memory.h"
+> +#include "hw/irq.h"
+> +#include "hw/isa/isa.h"
+> +#include "qom/object.h"
+> +
+> +#define TYPE_PORT92 "port92"
+> +OBJECT_DECLARE_SIMPLE_TYPE(Port92State, PORT92)
+> +
+> +struct Port92State {
+> +    ISADevice parent_obj;
+> +
+> +    MemoryRegion io;
+> +    uint8_t outport;
+> +    qemu_irq a20_out;
+> +};
+> +
+> +#define PORT92_A20_LINE "a20"
+> +
+> +#endif /* HW_PORT92_H */
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index 196827531a..0b11d4576e 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -32,6 +32,7 @@
+>   #include "hw/i386/vmport.h"
+>   #include "sysemu/cpus.h"
+>   #include "hw/ide/internal.h"
+> +#include "hw/isa/port92.h"
+>   #include "hw/timer/hpet.h"
+>   #include "hw/loader.h"
+>   #include "hw/rtc/mc146818rtc.h"
+> diff --git a/hw/i386/port92.c b/hw/isa/port92.c
+> similarity index 91%
+> rename from hw/i386/port92.c
+> rename to hw/isa/port92.c
+> index 1070bfbf36..06df06b088 100644
+> --- a/hw/i386/port92.c
+> +++ b/hw/isa/port92.c
+> @@ -9,20 +9,8 @@
+>   #include "qemu/osdep.h"
+>   #include "sysemu/runstate.h"
+>   #include "migration/vmstate.h"
+> -#include "hw/irq.h"
+> -#include "hw/i386/pc.h"
+> +#include "hw/isa/port92.h"
+>   #include "trace.h"
+> -#include "qom/object.h"
+> -
+> -OBJECT_DECLARE_SIMPLE_TYPE(Port92State, PORT92)
+> -
+> -struct Port92State {
+> -    ISADevice parent_obj;
+> -
+> -    MemoryRegion io;
+> -    uint8_t outport;
+> -    qemu_irq a20_out;
+> -};
+>   
+>   static void port92_write(void *opaque, hwaddr addr, uint64_t val,
+>                            unsigned size)
+> diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
+> index a1846be6f7..ccf6de4a00 100644
+> --- a/hw/i386/Kconfig
+> +++ b/hw/i386/Kconfig
+> @@ -37,6 +37,7 @@ config PC
+>       select I8254
+>       select PCKBD
+>       select PCSPK
+> +    select PORT92
+>       select I8257
+>       select MC146818RTC
+>       # For ACPI builder:
+> diff --git a/hw/i386/meson.build b/hw/i386/meson.build
+> index b9c1ca39cb..94d558edd6 100644
+> --- a/hw/i386/meson.build
+> +++ b/hw/i386/meson.build
+> @@ -24,8 +24,7 @@ i386_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-common.c'))
+>   i386_ss.add(when: 'CONFIG_PC', if_true: files(
+>     'pc.c',
+>     'pc_sysfw.c',
+> -  'acpi-build.c',
+> -  'port92.c'))
+> +  'acpi-build.c'))
+>   i386_ss.add(when: 'CONFIG_X86_FW_OVMF', if_true: files('pc_sysfw_ovmf.c'),
+>                                           if_false: files('pc_sysfw_ovmf-stubs.c'))
+>   
+> diff --git a/hw/i386/trace-events b/hw/i386/trace-events
+> index 53c02d7ac8..b730589394 100644
+> --- a/hw/i386/trace-events
+> +++ b/hw/i386/trace-events
+> @@ -118,10 +118,6 @@ vmport_command(unsigned char command) "command: 0x%02x"
+>   x86_gsi_interrupt(int irqn, int level) "GSI interrupt #%d level:%d"
+>   x86_pic_interrupt(int irqn, int level) "PIC interrupt #%d level:%d"
+>   
+> -# port92.c
+> -port92_read(uint8_t val) "port92: read 0x%02x"
+> -port92_write(uint8_t val) "port92: write 0x%02x"
+> -
+>   # vmmouse.c
+>   vmmouse_get_status(void) ""
+>   vmmouse_mouse_event(int x, int y, int dz, int buttons_state) "event: x=%d y=%d dz=%d state=%d"
+> diff --git a/hw/isa/Kconfig b/hw/isa/Kconfig
+> index 73c6470805..efdf43e92c 100644
+> --- a/hw/isa/Kconfig
+> +++ b/hw/isa/Kconfig
+> @@ -49,6 +49,9 @@ config PIIX
+>       select MC146818RTC
+>       select USB_UHCI
+>   
+> +config PORT92
+> +    bool
+> +
+>   config VT82C686
+>       bool
+>       select ISA_BUS
+> diff --git a/hw/isa/meson.build b/hw/isa/meson.build
+> index 3219282217..fb7cd44984 100644
+> --- a/hw/isa/meson.build
+> +++ b/hw/isa/meson.build
+> @@ -5,6 +5,7 @@ system_ss.add(when: 'CONFIG_ISA_BUS', if_true: files('isa-bus.c'))
+>   system_ss.add(when: 'CONFIG_ISA_SUPERIO', if_true: files('isa-superio.c'))
+>   system_ss.add(when: 'CONFIG_PC87312', if_true: files('pc87312.c'))
+>   system_ss.add(when: 'CONFIG_PIIX', if_true: files('piix.c'))
+> +system_ss.add(when: 'CONFIG_PORT92', if_true: files('port92.c'))
+>   system_ss.add(when: 'CONFIG_SMC37C669', if_true: files('smc37c669-superio.c'))
+>   system_ss.add(when: 'CONFIG_VT82C686', if_true: files('vt82c686.c'))
+>   
+> diff --git a/hw/isa/trace-events b/hw/isa/trace-events
+> index 1816e8307a..bb5d9f1078 100644
+> --- a/hw/isa/trace-events
+> +++ b/hw/isa/trace-events
+> @@ -10,6 +10,10 @@ superio_create_ide(int id, uint16_t base, unsigned int irq) "id=%d, base 0x%03x,
+>   pc87312_io_read(uint32_t addr, uint32_t val) "read addr=0x%x val=0x%x"
+>   pc87312_io_write(uint32_t addr, uint32_t val) "write addr=0x%x val=0x%x"
+>   
+> +# port92.c
+> +port92_read(uint8_t val) "port92: read 0x%02x"
+> +port92_write(uint8_t val) "port92: write 0x%02x"
+> +
+>   # apm.c
+>   apm_io_read(uint8_t addr, uint8_t val) "read addr=0x%x val=0x%02x"
+>   apm_io_write(uint8_t addr, uint8_t val) "write addr=0x%x val=0x%02x"
+
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+
+
+ATB,
+
+Mark.
 
 
