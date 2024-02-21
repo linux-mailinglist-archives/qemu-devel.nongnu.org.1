@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04A7185E9CE
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:17:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4E4585E9DA
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:18:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rctxy-0002ts-Ns; Wed, 21 Feb 2024 16:17:22 -0500
+	id 1rcty0-0002uy-Rx; Wed, 21 Feb 2024 16:17:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctxZ-0002Ue-0d; Wed, 21 Feb 2024 16:16:57 -0500
+ id 1rctxy-0002uH-6O; Wed, 21 Feb 2024 16:17:22 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctxX-0000pQ-2j; Wed, 21 Feb 2024 16:16:56 -0500
+ id 1rctxu-0000qR-EL; Wed, 21 Feb 2024 16:17:21 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 946BA4F7F3;
+ by isrv.corpit.ru (Postfix) with ESMTP id A13E24F7F4;
  Thu, 22 Feb 2024 00:16:45 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4B47F869AC;
+ by tsrv.corpit.ru (Postfix) with SMTP id 597F9869AD;
  Thu, 22 Feb 2024 00:16:23 +0300 (MSK)
-Received: (nullmailer pid 2335280 invoked by uid 1000);
+Received: (nullmailer pid 2335283 invoked by uid 1000);
  Wed, 21 Feb 2024 21:16:22 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-block@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 12/28] qemu-img: convert: refresh options/--help
-Date: Thu, 22 Feb 2024 00:15:53 +0300
-Message-Id: <20240221211622.2335170-12-mjt@tls.msk.ru>
+Subject: [PATCH 13/28] qemu-img: info: refresh options/--help
+Date: Thu, 22 Feb 2024 00:15:54 +0300
+Message-Id: <20240221211622.2335170-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1708544927.git.mjt@tls.msk.ru>
 References: <cover.1708544927.git.mjt@tls.msk.ru>
@@ -59,137 +59,102 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Add missing long options and --help output.
+Also add -b short option for --backing-chain, and remove
+now-unused OPTION_BACKING_CHAIN.
 
-convert uses -B for --backing, - why not -b?
+While at it, remove unused option_index variable.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- qemu-img.c | 90 ++++++++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 81 insertions(+), 9 deletions(-)
+ qemu-img.c | 40 +++++++++++++++++++++++++++-------------
+ 1 file changed, 27 insertions(+), 13 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index fd61b25ea7..911cdc159c 100644
+index 911cdc159c..cc51da31cf 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -2403,30 +2403,100 @@ static int img_convert(const img_cmd_t *ccmd, int argc, char **argv)
+@@ -65,7 +65,6 @@ typedef struct img_cmd_t {
+ 
+ enum {
+     OPTION_OUTPUT = 256,
+-    OPTION_BACKING_CHAIN = 257,
+     OPTION_OBJECT = 258,
+     OPTION_IMAGE_OPTS = 259,
+     OPTION_PATTERN = 260,
+@@ -3219,31 +3218,44 @@ static int img_info(const img_cmd_t *ccmd, int argc, char **argv)
+ 
+     fmt = NULL;
      for(;;) {
+-        int option_index = 0;
          static const struct option long_options[] = {
              {"help", no_argument, 0, 'h'},
-+            {"quiet", no_argument, 0, 'q'},
+             {"format", required_argument, 0, 'f'},
+             {"output", required_argument, 0, OPTION_OUTPUT},
+-            {"backing-chain", no_argument, 0, OPTION_BACKING_CHAIN},
++            {"backing-chain", no_argument, 0, 'b'},
              {"object", required_argument, 0, OPTION_OBJECT},
              {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
-+            {"source-image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
-+            {"source-format", required_argument, 0, 'f'},
-+            {"source-cache", required_argument, 0, 'T'},
-+            {"snapshot", required_argument, 0, 'l'},
-+            {"sparse-size", required_argument, 0, 'S'},
-+            {"output-format", required_argument, 0, 'O'},
-+            {"options", required_argument, 0, 'o'},
-+            {"output-cache", required_argument, 0, 't'},
-+            {"backing", required_argument, 0, 'B'},
-+            {"backing-format", required_argument, 0, 'F'},
              {"force-share", no_argument, 0, 'U'},
-             {"target-image-opts", no_argument, 0, OPTION_TARGET_IMAGE_OPTS},
-             {"salvage", no_argument, 0, OPTION_SALVAGE},
-             {"target-is-zero", no_argument, 0, OPTION_TARGET_IS_ZERO},
-             {"bitmaps", no_argument, 0, OPTION_BITMAPS},
-             {"skip-broken-bitmaps", no_argument, 0, OPTION_SKIP_BROKEN},
-+            {"rate", required_argument, 0, 'r'},
-+            {"parallel", required_argument, 0, 'm'},
-+            {"oob-writes", no_argument, 0, 'W'},
-+            {"copy-range-offloading", no_argument, 0, 'C'},
              {0, 0, 0, 0}
          };
--        c = getopt_long(argc, argv, ":hf:O:B:CcF:o:l:S:pt:T:qnm:WUr:",
-+        c = getopt_long(argc, argv, "hf:O:B:CcF:o:l:S:pt:T:qnm:WUr:",
-                         long_options, NULL);
+-        c = getopt_long(argc, argv, ":f:hU",
+-                        long_options, &option_index);
++        c = getopt_long(argc, argv, "f:hbU",
++                        long_options, NULL);
          if (c == -1) {
              break;
          }
--        switch(c) {
+         switch(c) {
 -        case ':':
 -            missing_argument(argv[optind - 1]);
 -            break;
 -        case '?':
 -            unrecognized_option(argv[optind - 1]);
 -            break;
-+        switch (c) {
          case 'h':
 -            help();
 +            cmd_help(ccmd,
-+"[-f SRC_FMT|--image-opts] [-T SRC_CACHE] [--bitmaps [--skip-broken-bitmaps]]\n"
-+"        [-o TGT_OPTS|--target-image-opts] [-t TGT_CACHE] [-n]\n"
-+"        [-B BACKING_FILENAME [-F BACKING_FMT]]\n"
-+"        SRC_FILENAME [SRC_FILENAME2 [...]] TGT_FILENAME\n"
++"[-f FMT | --image-opts] [-b] [-U] [--object OBJDEF]\n"
++"        [--output human|json] FILENAME\n"
 +,
-+"  -q, --quiet\n"
-+"     quiet operations\n"
-+"  -p, --progress\n"
-+"     show operation progress\n"
-+"  -f, --source-format SRC_FMT\n"
-+"     specify SRC_FILENAME source image format explicitly\n"
-+"  --source-image-opts\n"
-+"     indicates that SRC_FILENAME is a complete image specification\n"
-+"     instead of a file name (incompatible with --source-format)\n"
-+"  -l, --source-snapshot SNAPSHOT_PARAMS\n"
-+"     specify source snapshot parameters\n"
-+"  -T, --source-cache SRC_CACHE\n"
-+"     source image(s) cache mode (" BDRV_DEFAULT_CACHE ")\n"
-+"  -O, --target-format TGT_FMT\n"
-+"     specify TGT_FILENAME image format (default is raw)\n"
-+"  --target-image-opts\n"
-+"     indicates that TGT_FILENAME is a complete image specification\n"
-+"     instead of a file name (incompatible with --output-format)\n"
-+"  -o, --target-options TGT_OPTS\n"
-+"     TARGET_FMT-specific options\n"
-+"  -c, --compress\n"
-+"     create compressed output image (qcow and qcow2 format only)\n"
-+"  -t, --target-cache TGT_CACHE\n"
-+"     cache mode when opening output image (unsafe)\n"
-+"  -B, --backing BACKING_FILENAME\n"
-+"     create output to be a CoW on top of BACKING_FILENAME\n"
-+"  -F, --backing-format BACKING_FMT\n"
-+"     specify BACKING_FILENAME image format explicitly\n"
-+"  -n, --no-create\n"
-+"     omit target volume creation (eg on rbd)\n"
-+"  --target-is-zero\n"
-+"  -S, --sparse-size SPARSE_SIZE\n"
-+"     XXX todo\n"
-+"  --bitmaps\n"
-+"     also copy any persistent bitmaps present in source\n"
-+"  --skip-broken-bitmaps\n"
-+"     skip (do not error out) any broken bitmaps\n"
++"  -f, --format FMT\n"
++"     specify FILENAME image format explicitly\n"
++"  --image-opts\n"
++"     indicates that FILENAME is a complete image specification\n"
++"     instead of a file name (incompatible with --format)\n"
++"  -b, --backing-chain\n"
++"     display information about backing chaing\n"
++"  (in case the image is stacked\n"
 +"  -U, --force-share\n"
-+"     open images in shared mode for concurrent access\n"
-+"  -r, --rate RATE\n"
-+"     I/O rate limit\n"
-+"  -m, --parallel NUM_COROUTINES\n"
-+"     specify parallelism (default 8)\n"
-+"  -C, --copy-range-offloading\n"
-+"     use copy_range offloading\n"
-+"  --salvage\n"
-+"     XXX todo\n"
-+"  -W, --oob-writes\n"
-+"     enable out-of-order writes to improve performance\n"
++"     open image in shared mode for concurrent access\n"
 +"  --object OBJDEF\n"
 +"     QEMU user-creatable object (eg encryption key)\n"
-+"  SRC_FILENAME\n"
-+"     source image file name (or specification with --image-opts)\n"
-+"  TGT_FILENAME\n"
-+"     target (output) image file name\n"
++"  --output human|json\n"
++"     specify output format name (default human)\n"
++"  FILENAME\n"
++"     image file name (or specification with --image-opts)\n"
 +);
              break;
          case 'f':
              fmt = optarg;
-@@ -2545,6 +2615,8 @@ static int img_convert(const img_cmd_t *ccmd, int argc, char **argv)
-         case OPTION_SKIP_BROKEN:
-             skip_broken = true;
+@@ -3254,7 +3266,7 @@ static int img_info(const img_cmd_t *ccmd, int argc, char **argv)
+         case OPTION_OUTPUT:
+             output_format = parse_output_format(argv[0], optarg);
+             break;
+-        case OPTION_BACKING_CHAIN:
++        case 'b':
+             chain = true;
+             break;
+         case OPTION_OBJECT:
+@@ -3263,6 +3275,8 @@ static int img_info(const img_cmd_t *ccmd, int argc, char **argv)
+         case OPTION_IMAGE_OPTS:
+             image_opts = true;
              break;
 +        default:
 +            tryhelp(argv[0]);
          }
      }
- 
+     if (optind != argc - 1) {
 -- 
 2.39.2
 
