@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C0C685E9D9
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:18:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04A7185E9CE
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:17:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcty1-0002vV-FN; Wed, 21 Feb 2024 16:17:25 -0500
+	id 1rctxy-0002ts-Ns; Wed, 21 Feb 2024 16:17:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctxi-0002eb-RR; Wed, 21 Feb 2024 16:17:06 -0500
+ id 1rctxZ-0002Ue-0d; Wed, 21 Feb 2024 16:16:57 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctxU-0000oM-3N; Wed, 21 Feb 2024 16:17:06 -0500
+ id 1rctxX-0000pQ-2j; Wed, 21 Feb 2024 16:16:56 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 862D84F7F2;
+ by isrv.corpit.ru (Postfix) with ESMTP id 946BA4F7F3;
  Thu, 22 Feb 2024 00:16:45 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 3E9BD869AB;
+ by tsrv.corpit.ru (Postfix) with SMTP id 4B47F869AC;
  Thu, 22 Feb 2024 00:16:23 +0300 (MSK)
-Received: (nullmailer pid 2335277 invoked by uid 1000);
+Received: (nullmailer pid 2335280 invoked by uid 1000);
  Wed, 21 Feb 2024 21:16:22 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-block@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 11/28] qemu-img: compare: refresh options/--help
-Date: Thu, 22 Feb 2024 00:15:52 +0300
-Message-Id: <20240221211622.2335170-11-mjt@tls.msk.ru>
+Subject: [PATCH 12/28] qemu-img: convert: refresh options/--help
+Date: Thu, 22 Feb 2024 00:15:53 +0300
+Message-Id: <20240221211622.2335170-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1708544927.git.mjt@tls.msk.ru>
 References: <cover.1708544927.git.mjt@tls.msk.ru>
@@ -37,11 +37,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -57,79 +58,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Add missing long options and --help output.
+
+convert uses -B for --backing, - why not -b?
+
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- qemu-img.c | 45 +++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 37 insertions(+), 8 deletions(-)
+ qemu-img.c | 90 ++++++++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 81 insertions(+), 9 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 1271217272..fd61b25ea7 100644
+index fd61b25ea7..911cdc159c 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -1487,25 +1487,52 @@ static int img_compare(const img_cmd_t *ccmd, int argc, char **argv)
-     for (;;) {
+@@ -2403,30 +2403,100 @@ static int img_convert(const img_cmd_t *ccmd, int argc, char **argv)
+     for(;;) {
          static const struct option long_options[] = {
              {"help", no_argument, 0, 'h'},
 +            {"quiet", no_argument, 0, 'q'},
              {"object", required_argument, 0, OPTION_OBJECT},
-+            {"cache", required_argument, 0, 'T'},
              {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
-+            {"a-format", required_argument, 0, 'f'},
-+            {"left-format", required_argument, 0, 'f'},
-+            {"b-format", required_argument, 0, 'F'},
-+            {"right-format", required_argument, 0, 'F'},
++            {"source-image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
++            {"source-format", required_argument, 0, 'f'},
++            {"source-cache", required_argument, 0, 'T'},
++            {"snapshot", required_argument, 0, 'l'},
++            {"sparse-size", required_argument, 0, 'S'},
++            {"output-format", required_argument, 0, 'O'},
++            {"options", required_argument, 0, 'o'},
++            {"output-cache", required_argument, 0, 't'},
++            {"backing", required_argument, 0, 'B'},
++            {"backing-format", required_argument, 0, 'F'},
              {"force-share", no_argument, 0, 'U'},
-+            {"strict", no_argument, 0, 's'},
-+            {"progress", no_argument, 0, 'p'},
+             {"target-image-opts", no_argument, 0, OPTION_TARGET_IMAGE_OPTS},
+             {"salvage", no_argument, 0, OPTION_SALVAGE},
+             {"target-is-zero", no_argument, 0, OPTION_TARGET_IS_ZERO},
+             {"bitmaps", no_argument, 0, OPTION_BITMAPS},
+             {"skip-broken-bitmaps", no_argument, 0, OPTION_SKIP_BROKEN},
++            {"rate", required_argument, 0, 'r'},
++            {"parallel", required_argument, 0, 'm'},
++            {"oob-writes", no_argument, 0, 'W'},
++            {"copy-range-offloading", no_argument, 0, 'C'},
              {0, 0, 0, 0}
          };
--        c = getopt_long(argc, argv, ":hf:F:T:pqsU",
-+        c = getopt_long(argc, argv, "hf:F:T:pqsU",
+-        c = getopt_long(argc, argv, ":hf:O:B:CcF:o:l:S:pt:T:qnm:WUr:",
++        c = getopt_long(argc, argv, "hf:O:B:CcF:o:l:S:pt:T:qnm:WUr:",
                          long_options, NULL);
          if (c == -1) {
              break;
          }
-         switch (c) {
+-        switch(c) {
 -        case ':':
 -            missing_argument(argv[optind - 1]);
 -            break;
 -        case '?':
 -            unrecognized_option(argv[optind - 1]);
 -            break;
++        switch (c) {
          case 'h':
 -            help();
 +            cmd_help(ccmd,
-+"[--image-opts | [-f FMT] [-F FMT]] [-s]\n"
-+"        [-T CACHE] [-U] [--object OBJDEF] FILENAME1 FILENAME2\n"
++"[-f SRC_FMT|--image-opts] [-T SRC_CACHE] [--bitmaps [--skip-broken-bitmaps]]\n"
++"        [-o TGT_OPTS|--target-image-opts] [-t TGT_CACHE] [-n]\n"
++"        [-B BACKING_FILENAME [-F BACKING_FMT]]\n"
++"        SRC_FILENAME [SRC_FILENAME2 [...]] TGT_FILENAME\n"
 +,
 +"  -q, --quiet\n"
-+"     quiet operation\n"
++"     quiet operations\n"
 +"  -p, --progress\n"
 +"     show operation progress\n"
-+"  -f, --a-format FMT\n"
-+"     specify FILENAME1 image format explicitly\n"
-+"  -F, --b-format FMT\n"
-+"     specify FILENAME2 image format explicitly\n"
-+"  --image-opts\n"
-+"     indicates that FILENAMEs are complete image specifications\n"
-+"     instead of file names (incompatible with --a-format and --b-format)\n"
-+"  -s, --strict\n"
-+"     strict mode, also check if sizes are equal\n"
-+"  -T, --cache CACHE_MODE\n"
-+"     images caching mode (" BDRV_DEFAULT_CACHE ")\n"
++"  -f, --source-format SRC_FMT\n"
++"     specify SRC_FILENAME source image format explicitly\n"
++"  --source-image-opts\n"
++"     indicates that SRC_FILENAME is a complete image specification\n"
++"     instead of a file name (incompatible with --source-format)\n"
++"  -l, --source-snapshot SNAPSHOT_PARAMS\n"
++"     specify source snapshot parameters\n"
++"  -T, --source-cache SRC_CACHE\n"
++"     source image(s) cache mode (" BDRV_DEFAULT_CACHE ")\n"
++"  -O, --target-format TGT_FMT\n"
++"     specify TGT_FILENAME image format (default is raw)\n"
++"  --target-image-opts\n"
++"     indicates that TGT_FILENAME is a complete image specification\n"
++"     instead of a file name (incompatible with --output-format)\n"
++"  -o, --target-options TGT_OPTS\n"
++"     TARGET_FMT-specific options\n"
++"  -c, --compress\n"
++"     create compressed output image (qcow and qcow2 format only)\n"
++"  -t, --target-cache TGT_CACHE\n"
++"     cache mode when opening output image (unsafe)\n"
++"  -B, --backing BACKING_FILENAME\n"
++"     create output to be a CoW on top of BACKING_FILENAME\n"
++"  -F, --backing-format BACKING_FMT\n"
++"     specify BACKING_FILENAME image format explicitly\n"
++"  -n, --no-create\n"
++"     omit target volume creation (eg on rbd)\n"
++"  --target-is-zero\n"
++"  -S, --sparse-size SPARSE_SIZE\n"
++"     XXX todo\n"
++"  --bitmaps\n"
++"     also copy any persistent bitmaps present in source\n"
++"  --skip-broken-bitmaps\n"
++"     skip (do not error out) any broken bitmaps\n"
 +"  -U, --force-share\n"
 +"     open images in shared mode for concurrent access\n"
++"  -r, --rate RATE\n"
++"     I/O rate limit\n"
++"  -m, --parallel NUM_COROUTINES\n"
++"     specify parallelism (default 8)\n"
++"  -C, --copy-range-offloading\n"
++"     use copy_range offloading\n"
++"  --salvage\n"
++"     XXX todo\n"
++"  -W, --oob-writes\n"
++"     enable out-of-order writes to improve performance\n"
 +"  --object OBJDEF\n"
 +"     QEMU user-creatable object (eg encryption key)\n"
-+"  FILENAME1, FILENAME2\n"
-+"     image files (or specifications) to compare\n"
++"  SRC_FILENAME\n"
++"     source image file name (or specification with --image-opts)\n"
++"  TGT_FILENAME\n"
++"     target (output) image file name\n"
 +);
              break;
          case 'f':
-             fmt1 = optarg;
-@@ -1546,6 +1573,8 @@ static int img_compare(const img_cmd_t *ccmd, int argc, char **argv)
-         case OPTION_IMAGE_OPTS:
-             image_opts = true;
+             fmt = optarg;
+@@ -2545,6 +2615,8 @@ static int img_convert(const img_cmd_t *ccmd, int argc, char **argv)
+         case OPTION_SKIP_BROKEN:
+             skip_broken = true;
              break;
 +        default:
 +            tryhelp(argv[0]);
