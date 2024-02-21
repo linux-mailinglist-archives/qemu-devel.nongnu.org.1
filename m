@@ -2,49 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C6A85EB55
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:51:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA17185EB3D
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:47:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcuTK-0001bi-6L; Wed, 21 Feb 2024 16:49:46 -0500
+	id 1rcuQw-0000Jf-Ba; Wed, 21 Feb 2024 16:47:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcuTD-0001NF-K6; Wed, 21 Feb 2024 16:49:40 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcuTA-0007c6-Ez; Wed, 21 Feb 2024 16:49:38 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A7E4A4F875;
- Thu, 22 Feb 2024 00:47:47 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 50D9A869F6;
- Thu, 22 Feb 2024 00:47:25 +0300 (MSK)
-Received: (nullmailer pid 2339899 invoked by uid 1000);
- Wed, 21 Feb 2024 21:47:23 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>,
- Yang Weijiang <weijiang.yang@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.10 25/33] i386/cpu: Mask with XCR0/XSS mask for
- FEAT_XSAVE_XCR0_HI and FEAT_XSAVE_XSS_HI leafs
-Date: Thu, 22 Feb 2024 00:47:08 +0300
-Message-Id: <20240221214723.2339742-25-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <qemu-stable-7.2.10-20240221121815@cover.tls.msk.ru>
-References: <qemu-stable-7.2.10-20240221121815@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rcuQu-0000Fg-Ex
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:47:16 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rcuQs-0007JR-UA
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:47:16 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1d7431e702dso70817595ad.1
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:47:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708552033; x=1709156833; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=xaHEju4N6XZEKAd1TC8U2j6QNIS2DMzjyHv3tA7Eee4=;
+ b=b0iX2NC8Dzm1XqaXvtQIimFUUalBjO80mmQyO86p/oGE5vwGQDME5Mtuq+/XnBfRGJ
+ V8HnTrbVmwIp4Gi4NmwsWrSobwPeMyDdz0hXUpa5+Cqnkx5P22JoBDBFyCoVZUYf0img
+ 0VtsjjNEE9RvxyBwdILT5pmThppGxEHEkyq0AM+TRwAoqH6KQLXsCjAWZ3fdzGMgy8yr
+ FLpRQNevOF0rFgKgMByeAhVSO6ddulktBEaVLogwqBmbp+HfzD3GXF6nTedQzuCAlRG/
+ W2gtdl5yh0fQXL8xRUkA0qLLLn/ZHdYonnQdz2QP24DEnWIwcSCvShHIZWg/DlV8eyaM
+ 3r8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708552033; x=1709156833;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xaHEju4N6XZEKAd1TC8U2j6QNIS2DMzjyHv3tA7Eee4=;
+ b=uU7bwWL/9GDnjXJFSc5OKwg6whXusM1kG74V+Ihl7OJdgEIo/m0N8ZoW3fIL4pjVji
+ O9l/WXArpSgp3mZirOdHNEl3j0+N1zDS/1XFvQgmJCs1JapCFlTHg5CEaUTp1ftbpnX7
+ Jugf0+uEwJXEtYwWOKIJpyBICiL7zO10MTIAqKT3BsYBiNY/Ny1H9fu053uScpUhWqt4
+ FTLCxnVBmPzThMgblWsZqZzy96FxdYTq83Aa9uIXYpYfdcOQypqN1ZM+sCxovpGSKJpb
+ dYHT5wnc07rxBzC7j+CRauCIWQGcaz0l79rxhTgaGpQlH7w26M1Wc0S1nsCkNE6N7gfq
+ e7oA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUgXFZeqMweyJkLIjFri1TaLRmfvCpBtT+ZR5i3iqdpb6nUj2nQ4tbrpA5ImMMA8jmYkKgBdaOZgHzjUAp7sQSZXynkSZI=
+X-Gm-Message-State: AOJu0YxJXaBLNKDQE5su+Lqq81GhOuGoetrzlDGGOGWYUK6laidyON8a
+ FAyff4woh/QAVKFWVmQF7EspSmVz8r6UEgZmpxIGk7Ll+2WBlzlurFTeEmCNI6nmZLUKzJ3WMd5
+ I
+X-Google-Smtp-Source: AGHT+IHmvtPB+gIXRiTXx2JyW4lMwDQHl/2wdwF+VhHWzP18HzZ3bLATj/DCedmBQqGBe4tjGF8t2w==
+X-Received: by 2002:a17:903:2346:b0:1db:ab71:a4ae with SMTP id
+ c6-20020a170903234600b001dbab71a4aemr14723192plh.42.1708552033309; 
+ Wed, 21 Feb 2024 13:47:13 -0800 (PST)
+Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
+ [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
+ ke8-20020a170903340800b001d901c2087esm8577345plb.302.2024.02.21.13.47.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 21 Feb 2024 13:47:12 -0800 (PST)
+Message-ID: <f5f07aa2-6fe3-4030-b045-5110cfa0db74@linaro.org>
+Date: Wed, 21 Feb 2024 11:47:09 -1000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 18/22] hw/arm/virt: Add FEAT_GICv3_NMI feature
+ support in virt GIC
+Content-Language: en-US
+To: Jinjie Ruan <ruanjinjie@huawei.com>, peter.maydell@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org
+References: <20240221130823.677762-1-ruanjinjie@huawei.com>
+ <20240221130823.677762-19-ruanjinjie@huawei.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240221130823.677762-19-ruanjinjie@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -61,38 +99,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+On 2/21/24 03:08, Jinjie Ruan via wrote:
+> Included support FEAT_GICv3_NMI feature as part of virt platform
+> GIC initialization.
+> 
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> ---
+>   hw/arm/virt.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index c442652d0f..0359dbd8bd 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -772,6 +772,8 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+>           qdev_prop_set_array(vms->gic, "redist-region-count",
+>                               redist_region_count);
+>   
+> +        qdev_prop_set_bit(vms->gic, "has-nmi", true);
 
-The value of FEAT_XSAVE_XCR0_HI leaf and FEAT_XSAVE_XSS_HI leaf also
-need to be masked by XCR0 and XSS mask respectively, to make it
-logically correct.
+This should be set based on whether the cpu class created has FEAT_NMI.
 
-Fixes: 301e90675c3f ("target/i386: Enable support for XSAVES based features")
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Yang Weijiang <weijiang.yang@intel.com>
-Message-ID: <20240115091325.1904229-3-xiaoyao.li@intel.com>
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit a11a365159b944e05be76f3ec3b98c8b38cb70fd)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 952fa5780f..52a3020032 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6134,9 +6134,9 @@ static void x86_cpu_enable_xsave_components(X86CPU *cpu)
-     }
- 
-     env->features[FEAT_XSAVE_XCR0_LO] = mask & CPUID_XSTATE_XCR0_MASK;
--    env->features[FEAT_XSAVE_XCR0_HI] = mask >> 32;
-+    env->features[FEAT_XSAVE_XCR0_HI] = (mask & CPUID_XSTATE_XCR0_MASK) >> 32;
-     env->features[FEAT_XSAVE_XSS_LO] = mask & CPUID_XSTATE_XSS_MASK;
--    env->features[FEAT_XSAVE_XSS_HI] = mask >> 32;
-+    env->features[FEAT_XSAVE_XSS_HI] = (mask & CPUID_XSTATE_XSS_MASK) >> 32;
- }
- 
- /***** Steps involved on loading and filtering CPUID data
--- 
-2.39.2
+r~
 
 
