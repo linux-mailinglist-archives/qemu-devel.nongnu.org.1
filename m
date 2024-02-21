@@ -2,83 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B21285E159
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:36:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F29985E142
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:33:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoZj-0003RU-DJ; Wed, 21 Feb 2024 10:31:59 -0500
+	id 1rcoVm-0003v6-Dr; Wed, 21 Feb 2024 10:27:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rcoOz-0004Xl-Pi
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:20:53 -0500
-Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcoNK-0001hh-Vl
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:19:11 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rcnas-0001oX-MM
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 09:29:09 -0500
-Received: by mail-ot1-x333.google.com with SMTP id
- 46e09a7af769-6e458a77be3so1521167a34.1
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 06:29:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1708525745; x=1709130545;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7r0K83xygSbOqxKBX8JoryJgPptOcBnumWJOEFdSHes=;
- b=IagRgFgvm8DKKGbZ4q3MOBd94+z4GSgL4m6Sd9CjrgJ9bw423c7m2pkL6zVoNkq4Gs
- k7W9ks5flC+UK0UsTmexhaz/z4NNaVRXdBSqV4oKaeLkcNMYefub0/HlbQ/zQXvB/bsh
- /x3z2JspTOuR8GzRuVZxWpMuPTzLhgunp66dj6+hXQr7Cx28+4OD5S393FGs5hcSa/fu
- vL+qKXvA4iOjPCrd/U3zOYp9e1i1xibZ9HPsI+svVb3j6dU5AfWWLDVVva8BoE9Nskhx
- ntdLK8YzF/kpga5CttCP5IzjTU4t98ubjrSdXegnlx+Zu52W9lHoU9/W4gUauJ4phMYt
- qh4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708525745; x=1709130545;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7r0K83xygSbOqxKBX8JoryJgPptOcBnumWJOEFdSHes=;
- b=pTEpszZPNOwBMhVcnu//Qa63xGp2K5JxXHHs6EF5v2nBJuBUoKHs8tM9Jds4fKyUR7
- VWdgL1zbDWvh5NdSz49GOhi8xtk4Vo1tcgBDK9usuRpv5exMmf/7yhnwZAA/SH9KIwWz
- 9w+jsz2C3wcIHjfo+1FzC8REoOCGfsoZ0kWpj0dCIGJmryaSey3hg6uWrc29SLE3x2eA
- 0xQD+9LB2C5FX5/0WOoyXuKeRLwwbxoxuWp5QtxWloeEi+J9UQOovERdWexsaaiNqYOj
- +0gqWrghnL05tueCz0IWGdPbcJS8+qh5WhRw2NYpIo9xWRDp9lhotgml24syodZ1sZhX
- 0Fxw==
-X-Gm-Message-State: AOJu0YzlWgYl408WfSZFvdpU0MMiFQ2IvsZTzU1Hw0/EcvK7Km4hzc1Y
- RfB4p9eYuhXCd5Hz7VWhhDNAHHk7m+SpWpsDOBB5o1vVfYNUrfH+UiNkVhSkRDEOkoSkqPxGo5M
- lYH8Wyg==
-X-Google-Smtp-Source: AGHT+IFv9Q7eUxVPqCIHCqvRmuVESuj/qaZ3BNl1mzfZQHAGfvb0DozbacXzmHZrtfY8YRZ94hVn0g==
-X-Received: by 2002:a05:6358:7f0d:b0:17b:638d:ac4f with SMTP id
- p13-20020a0563587f0d00b0017b638dac4fmr798588rwn.6.1708525744483; 
- Wed, 21 Feb 2024 06:29:04 -0800 (PST)
-Received: from anolis-dev.zelin.local ([221.122.98.162])
- by smtp.gmail.com with ESMTPSA id
- p129-20020a625b87000000b006e4762b5f3bsm4480030pfb.172.2024.02.21.06.29.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 Feb 2024 06:29:04 -0800 (PST)
-From: Hyman Huang <yong.huang@smartx.com>
-To: qemu-devel@nongnu.org
-Cc: "Michael S . Tsirkin" <mst@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, yong.huang@smartx.com
-Subject: [PATCH v4 3/3] qapi: Define VhostDeviceProtocols and
- VirtioDeviceFeatures as plain C types
-Date: Wed, 21 Feb 2024 22:28:53 +0800
-Message-Id: <8c1c1c6982854c64af0e30982aaead3db24a99c9.1708525606.git.yong.huang@smartx.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <cover.1708525606.git.yong.huang@smartx.com>
-References: <cover.1708525606.git.yong.huang@smartx.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcnr2-0005R2-Ec
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 09:45:49 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 712681FB65;
+ Wed, 21 Feb 2024 14:45:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1708526746; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=dkmy2d2nkEn/+CcMopn+6oqlSq3tTk9T0gcrkl8pQhk=;
+ b=gaE8mhxkyWoKLFgvgHA8aZNfH0qu+5yh59SxMoZbvHcSQvidrUtRN6Mibdb6eh997jxgt9
+ qN7LsC1UhzOxC2ePxD05AGXvLt2fHX5MnbFydEFfFBkwiFe+kXNstCl8B51JHbyuDsndMo
+ ZAYbbPT0wrKteurLBjWqMRIqeKQ095s=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1708526746;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=dkmy2d2nkEn/+CcMopn+6oqlSq3tTk9T0gcrkl8pQhk=;
+ b=vQUKOALnUGw7hbXpIKv7a4o55nRvK5KAhEd1NameIPQolaf4PELpwc/u/PiJy6IIyEXI2b
+ eLPIkkznOdPZ8mAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1708526745; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=dkmy2d2nkEn/+CcMopn+6oqlSq3tTk9T0gcrkl8pQhk=;
+ b=OdnvxJMtq8Otgjy/tvldiEP4pEUUwln1xmeDlZmclbD7X1TtxubILOrkjELPTDbrQ1SthV
+ BLs1RdH42B/0m7IGwaY/nyadK2WE19QwC1CRqhDUCWaqYOl6vVcQ9eyD6geq1QeS7qnPPx
+ d4KPsQjRqMatYX3PEkdvko9MyawpIkQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1708526745;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=dkmy2d2nkEn/+CcMopn+6oqlSq3tTk9T0gcrkl8pQhk=;
+ b=OxjQHvY4RWCXL9fI+NHbwF6yvlsXfCBGZUGnh9ATxXfiJpLX6DeyuikGzHnurcdGVDsjLw
+ J07Wo1YiVREwmKAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EDA75139D0;
+ Wed, 21 Feb 2024 14:45:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 5qVdLJgM1mWZBwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 21 Feb 2024 14:45:44 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Roman Khapov <rkhapov@yandex-team.ru>, qemu-devel@nongnu.org
+Cc: peterx@redhat.com, eblake@redhat.com, armbru@redhat.com,
+ yc-core@yandex-team.ru, Roman Khapov <rkhapov@yandex-team.ru>
+Subject: Re: [PATCH v2 0/2] Field 'reason' for MIGRATION event
+In-Reply-To: <20240215122759.1438581-1-rkhapov@yandex-team.ru>
+References: <20240215122759.1438581-1-rkhapov@yandex-team.ru>
+Date: Wed, 21 Feb 2024 11:45:42 -0300
+Message-ID: <87jzmxc1ux.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::333;
- envelope-from=yong.huang@smartx.com; helo=mail-ot1-x333.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OdnvxJMt;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OxjQHvY4
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.51 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
+ RCPT_COUNT_SEVEN(0.00)[7];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-0.999];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
+X-Spam-Score: -4.51
+X-Rspamd-Queue-Id: 712681FB65
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,95 +125,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VhostDeviceProtocols and VirtioDeviceFeatures are only used in
-virtio-hmp-cmds.c.  So define them as plain C types there, and drop
-them from the QAPI schema.
+Roman Khapov <rkhapov@yandex-team.ru> writes:
 
-Signed-off-by: Hyman Huang <yong.huang@smartx.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
----
- hw/virtio/virtio-hmp-cmds.c | 16 +++++++++++++++
- qapi/virtio.json            | 39 -------------------------------------
- 2 files changed, 16 insertions(+), 39 deletions(-)
+Hi Roman,
 
-diff --git a/hw/virtio/virtio-hmp-cmds.c b/hw/virtio/virtio-hmp-cmds.c
-index f95bad0069..045b472228 100644
---- a/hw/virtio/virtio-hmp-cmds.c
-+++ b/hw/virtio/virtio-hmp-cmds.c
-@@ -29,6 +29,22 @@
- 
- #include CONFIG_DEVICES
- 
-+typedef struct VhostDeviceProtocols VhostDeviceProtocols;
-+struct VhostDeviceProtocols {
-+    strList *protocols;
-+    bool has_unknown_protocols;
-+    uint64_t unknown_protocols;
-+};
-+
-+typedef struct VirtioDeviceFeatures VirtioDeviceFeatures;
-+struct VirtioDeviceFeatures {
-+    strList *transports;
-+    bool has_dev_features;
-+    strList *dev_features;
-+    bool has_unknown_dev_features;
-+    uint64_t unknown_dev_features;
-+};
-+
- #define FEATURE_ENTRY(name, desc) (qmp_virtio_feature_map_t) \
-     { .virtio_bit = name, .feature_desc = desc }
- 
-diff --git a/qapi/virtio.json b/qapi/virtio.json
-index 26516fb29c..42dbc87f2f 100644
---- a/qapi/virtio.json
-+++ b/qapi/virtio.json
-@@ -300,45 +300,6 @@
-   'data': { 'statuses': [ 'str' ],
-             '*unknown-statuses': 'uint8' } }
- 
--##
--# @VhostDeviceProtocols:
--#
--# A structure defined to list the vhost user protocol features of a
--# Vhost User device
--#
--# @protocols: List of decoded vhost user protocol features of a vhost
--#     user device
--#
--# @unknown-protocols: Vhost user device protocol features bitmap that
--#     have not been decoded
--#
--# Since: 7.2
--##
--{ 'struct': 'VhostDeviceProtocols',
--  'data': { 'protocols': [ 'str' ],
--            '*unknown-protocols': 'uint64' } }
--
--##
--# @VirtioDeviceFeatures:
--#
--# The common fields that apply to most Virtio devices.  Some devices
--# may not have their own device-specific features (e.g. virtio-rng).
--#
--# @transports: List of transport features of the virtio device
--#
--# @dev-features: List of device-specific features (if the device has
--#     unique features)
--#
--# @unknown-dev-features: Virtio device features bitmap that have not
--#     been decoded
--#
--# Since: 7.2
--##
--{ 'struct': 'VirtioDeviceFeatures',
--  'data': { 'transports': [ 'str' ],
--            '*dev-features': [ 'str' ],
--            '*unknown-dev-features': 'uint64' } }
--
- ##
- # @VirtQueueStatus:
- #
--- 
-2.39.3
+> This is resending of series 20240215082659.1378342-1-rkhapov@yandex-team.=
+ru,
+> where patch subjects numbers were broken in patch 2/2.
+>
+> Sometimes, when migration fails, it is hard to find out
+> the cause of the problems: you have to grep qemu logs.
+> At the same time, there is MIGRATION event, which looks like
+> suitable place to hold such error descriptions.
 
+query-migrate after the event is received should be enough for giving
+you the failure reason. We have that in error-desc. See commit
+c94143e587 ("migration: Display error in query-migrate irrelevant of
+status").
+
+>
+> To handle situation like this (maybe one day it will be useful
+> for other MIGRATION statuses to have additional 'reason' strings),
+
+I find it unlikely. There's no "reason" for making progress except
+that's how things work. Only the exceptional (i.e. failure) statuses
+would have a reason. Today that's FAILED only, maybe also
+POSTCOPY_PAUSED.
+
+> the general optional field 'reason' can be added.
+>
+> The series proposes next changes:
+>
+> 1. Adding optional 'reason' field of type str into
+>    qapi/migration.json MIGRATION event
+>
+> 2. Passing some error description as reason for every place, which
+>    sets migration state to MIGRATION_STATUS_FAILED
+>
+> After the series, MIGRATION event will looks like this:
+> {"execute": "qmp_capabilities"}
+> {"return": {}}
+> {"event": "MIGRATION", "data": {"status": "setup"}}
+> {"event": "MIGRATION", "data": {"status": "failed", "reason": "Failed to =
+connect to '/tmp/sock.sock': No such file or directory"}}
+>
+> Roman Khapov (2):
+>   qapi/migration.json: add reason to MIGRATION event
+>   migration: add error reason for failed MIGRATION events
+>
+>  migration/colo.c      |   6 +-
+>  migration/migration.c | 128 ++++++++++++++++++++++++++++--------------
+>  migration/migration.h |   5 +-
+>  migration/multifd.c   |  10 ++--
+>  migration/savevm.c    |  24 ++++----
+>  qapi/migration.json   |   3 +-
+>  6 files changed, 112 insertions(+), 64 deletions(-)
+
+Please remember to run make check:
+
+380/383 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test ERROR
+104.77s killed by signal 6 SIGABRT
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95
+stderr: Broken pipe ../tests/qtest/libqtest.c:204: kill_qemu() detected
+QEMU death from signal 11 (Segmentation fault) (core dumped)
+
+
+Most likely one of the new error_setg has broken postcopy recovery. Some
+of those paths are not intended to trigger cleanup.
 
