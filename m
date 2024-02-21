@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE64B85EADB
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:31:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F8485EA7F
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:26:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcu5l-0007kK-0U; Wed, 21 Feb 2024 16:25:25 -0500
+	id 1rcu5m-0007uO-MA; Wed, 21 Feb 2024 16:25:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rcu5U-0007S4-9w
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:25:09 -0500
-Received: from mail-il1-x12e.google.com ([2607:f8b0:4864:20::12e])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rcu5c-0007ZV-Ps
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:25:19 -0500
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rcu5R-00030T-6a
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:25:07 -0500
-Received: by mail-il1-x12e.google.com with SMTP id
- e9e14a558f8ab-364efe11f6aso34880665ab.1
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:25:04 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rcu5a-00031l-MY
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:25:15 -0500
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-5bdbe2de25fso856594a12.3
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:25:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1708550703; x=1709155503; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1708550713; x=1709155513; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ly+eHYKQZikrFS/T0BXws43a/vi7lieY+J3mVy2jsZA=;
- b=cKpfn2OF7PG9IWt7MZR/tCp+InOVmwZkddvfBAhX/Iw7w6eNUiigKKsrLeRKkpXKj+
- q/8DlEXG/g/seGicKLJ2UzHfuY1GGOCkQU3s2zj9QZciwhNtDqW0x37qNdBeKG9KJl0n
- z42v3gyxGZQkQ+z2LTBmyo+FlWBhZ4dy3SPNHbSgd9tvmzrmCwH8Mgx22FvlX6opfojM
- K2ecqnNtx13QNmPjGHlsbTvMqNT9pCsD+9+H4e5lPVj9NtNQImAOJK10giYmvRhpEmmE
- DsF36KJnGZ4CeLpDZXaUTJkFsniVe5hU8pdgP4Y6Wllzh+y6x757mYigrbRtRAXtEZ5H
- geJQ==
+ bh=C8rTpqcFY6RIbKXI6WMmNyepei8T7VjsWXfq+i09mnA=;
+ b=nh6PZyH/2U+g9vsU8GTYpLd3SNyW3tuRkgaO/F4A9ImjjLF9iB5XaDuIGpm+6cCC/n
+ Wvh8KRFF5Mq+CLin8p5kBszFlSYY3gT3YMG4AYfrrqf/RFCjHAe6EKB3CXMFoSqM29hX
+ c1jbK4HkF9319POQi4UlxReo0iUiHLiv8OTWDWMVMC971dxS1EuocFdwL1XsCdZcEBWP
+ ryDbyYsoWH2s+uDUJA6CrsP5qsRuxyYP1QqZh/rDRnBV/iyyuE3TBUcqcwqh+oIaZkck
+ GiSDQv5ponftpdRyH3dullkF45+vgKMPjtsvirykGVR7pwwIdk8waW16CeW4U7E0NxKt
+ UCIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708550703; x=1709155503;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1708550713; x=1709155513;
+ h=content-transfer-encoding:in-reply-to:references:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ly+eHYKQZikrFS/T0BXws43a/vi7lieY+J3mVy2jsZA=;
- b=G9lYkf1miGFEVm1ZzdxSvvKy/EPdIWXWHnXjNNJdIMn7wiH4BPz+dKokrDtwcpQbIe
- EC85fCn+fB/ag5IjuglnrWnPYgGqJdIKmQDJuTeDYwqjZW7Q8B+hFWTwNB0vhL2z4d8b
- r/QkKbopTJrGJ8aCkEQmLzwTo4oRChKxfHwppidoIkgH13A3VuyjIYPYtk6ddsWC2Kjm
- l0o40wHm5YeceCgXWAEWbIHFq7cuauR95AEA3aK6g8rhpwanYyXI3pk4AucmtJcSgdSJ
- cL8L93iW8hKz99yDwqlONVlg2VCKmGrRDNvcwBavfRlIl/Abq+jalE9A2fb74NCJwMO6
- JPag==
-X-Gm-Message-State: AOJu0YyL9ZbinymQtIn6uBn7iDHB/P5bscowCYcAN1UXJw5SkIcdDMSO
- Cd79w9dZd4ozci8hIhlvJMljTe2R6NScbPReXk0cjntOkjxOMmF3YRwmwy/FEIXNLheYZTeGhaf
- 4
-X-Google-Smtp-Source: AGHT+IGK6pT3x21ohZeqqOWJP2Rl/lBGvx8tHnhd/lf68oxWonH5oSiywYNblf/BsErpk5NMJhmLfA==
-X-Received: by 2002:a92:db4b:0:b0:365:2575:6d3 with SMTP id
- w11-20020a92db4b000000b00365257506d3mr12339494ilq.30.1708550703268; 
- Wed, 21 Feb 2024 13:25:03 -0800 (PST)
-Received: from [192.168.68.110] ([177.94.15.159])
- by smtp.gmail.com with ESMTPSA id
- h17-20020a63e151000000b005dc884e9f5bsm9138691pgk.38.2024.02.21.13.25.00
+ bh=C8rTpqcFY6RIbKXI6WMmNyepei8T7VjsWXfq+i09mnA=;
+ b=uKFh0RNafQE6hbcEyz6PAafPUYaO+sVH7sSRoQRQUVU7un8kvWyCoPDlOyKZZqVlV/
+ ngMLe43gX5MUjfbyHO35Hb4ic0jhxowC6r1HJPv9cLKfbJaXVK7mIycapV1jJlJ7dNCB
+ C5JR1I4EA2hgkiLrXBtAK8fMerHbuQEs3KgcZDPdP3Xg/Y11kqjRg6l2hJqpc4kx5vjJ
+ 4opcJTPbR8CS2vYW7bq8u0wduZtTdwpPztG+tV0Im/ebSwQdQ1Qra8oGDaqYjjiskwcX
+ QY0GHqQdxVfh42I5N5N0VH+5MLD64rNumUK20RG1pSNHcCXet7vJJUzIlHs2lL38nOke
+ WWnw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUtFJOpwBumiwVrCWBt2RMQj0p+AtH7ODk2MucFm2PWOWGUqm87YcKqtdYyBY4mV/70FnT29/YEFWT09tS/H+9OYtnn19o=
+X-Gm-Message-State: AOJu0YyYCUssbKWObyYpuxxEfc1qMHf2ESCT5dellvBNFStDRBxPwLFo
+ 44x+miKq3kecXx+LLXg8VA227cFpbp7AIfJ/a2F6OpFzfc+PdXbANiqxKR64vHg=
+X-Google-Smtp-Source: AGHT+IEw9XuilwyEf7JcruSDIdaFc1VcfRwpGAF32MydgV0YuGbNNQ05iUBoyfL9V6DAmluL8wPKoA==
+X-Received: by 2002:a05:6a21:2d06:b0:19e:67b0:9ac6 with SMTP id
+ tw6-20020a056a212d0600b0019e67b09ac6mr28379760pzb.1.1708550713369; 
+ Wed, 21 Feb 2024 13:25:13 -0800 (PST)
+Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
+ [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
+ y4-20020a056a00190400b006e1463c18f8sm9369983pfi.37.2024.02.21.13.25.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Feb 2024 13:25:02 -0800 (PST)
-Message-ID: <401679a5-ff0e-4911-acef-5774681f2e1d@ventanamicro.com>
-Date: Wed, 21 Feb 2024 18:24:58 -0300
+ Wed, 21 Feb 2024 13:25:12 -0800 (PST)
+Message-ID: <a4c733be-450b-4d28-b869-fd80630f3ecb@linaro.org>
+Date: Wed, 21 Feb 2024 11:25:09 -1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/7] riscv: set vstart_eq_zero on mark_vs_dirty
+Subject: Re: [RFC PATCH v2 07/22] target/arm: Add support for NMI event state
 Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- richard.henderson@linaro.org, max.chou@sifive.com
-References: <20240221022252.252872-1-dbarboza@ventanamicro.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20240221022252.252872-1-dbarboza@ventanamicro.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+To: Jinjie Ruan <ruanjinjie@huawei.com>, peter.maydell@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org
+References: <20240221130823.677762-1-ruanjinjie@huawei.com>
+ <20240221130823.677762-8-ruanjinjie@huawei.com>
+ <c02228ea-4f24-46f9-b6b3-34cba3059d69@linaro.org>
+In-Reply-To: <c02228ea-4f24-46f9-b6b3-34cba3059d69@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12e;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-il1-x12e.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,57 +98,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Richard,
+On 2/21/24 10:10, Richard Henderson wrote:
+> On 2/21/24 03:08, Jinjie Ruan via wrote:
+>> The NMI exception state include whether the interrupt with super priority
+>> is IRQ or FIQ, so add a nmi_is_irq flag in CPUARMState to distinguish it.
+>>
+>> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+>> ---
+>>   target/arm/cpu.h    | 2 ++
+>>   target/arm/helper.c | 9 +++++++++
+>>   2 files changed, 11 insertions(+)
+>>
+>> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+>> index 5257343bcb..051e589e19 100644
+>> --- a/target/arm/cpu.h
+>> +++ b/target/arm/cpu.h
+>> @@ -603,6 +603,8 @@ typedef struct CPUArchState {
+>>       /* State of our input IRQ/FIQ/VIRQ/VFIQ lines */
+>>       uint32_t irq_line_state;
+>> +    bool nmi_is_irq;
+> 
+> Why would you need to add this to CPUARMState?
+> This has the appearance of requiring only a local variable.
+> But it is hard to tell since you do not set it within this patch at all.
 
-On 2/20/24 23:22, Daniel Henrique Barboza wrote:
-> Hi,
-> 
-> In this new version we removed the remaining brconds() from
-> trans_rvbf16.c.inc like Richard suggested in patch 3. Richard, I kept
-> your ack in that patch.
-> 
-> This change caused the 'cpu_vstart' global to be unused. A new patch (4)
-> was added to remove it.
-> 
-> Series based on alistair/riscv-to-apply.next.
-> 
-> Patches missing acks: patch 4.
+According to Arm GIC section 4.6.3 Interrupt superpriority, NMI is always IRQ, never FIQ, 
+so this is never required.
 
 
-I missed your acks from v4 in patches 1 and 2 . I'll add them back in the next
-version.
+r~
 
-
-Thanks,
-
-
-Daniel
-
-> 
-> Changes from v4:
-> - patch 3:
->    - remove vstart >= vl and vl = 0 brconds from trans_fvbf16.c.inc
-> - patch 4 (new):
->    - remove cpu_vstart
-> - v4 link: https://lore.kernel.org/qemu-riscv/20240220222510.209448-1-dbarboza@ventanamicro.com/
-> 
-> 
-> Daniel Henrique Barboza (6):
->    trans_rvv.c.inc: mark_vs_dirty() before loads and stores
->    trans_rvv.c.inc: remove 'is_store' bool from load/store fns
->    target/riscv: remove 'over' brconds from vector trans
->    target/riscv/translate.c: remove 'cpu_vstart' global
->    target/riscv/vector_helper.c: set vstart = 0 in GEN_VEXT_VSLIDEUP_VX()
->    trans_rvv.c.inc: remove redundant mark_vs_dirty() calls
-> 
-> Ivan Klokov (1):
->    target/riscv: Clear vstart_qe_zero flag
-> 
->   target/riscv/insn_trans/trans_rvbf16.c.inc |  18 +-
->   target/riscv/insn_trans/trans_rvv.c.inc    | 292 ++++++---------------
->   target/riscv/insn_trans/trans_rvvk.c.inc   |  30 +--
->   target/riscv/translate.c                   |  10 +-
->   target/riscv/vector_helper.c               |   1 +
->   5 files changed, 100 insertions(+), 251 deletions(-)
-> 
 
