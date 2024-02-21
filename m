@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C7FA85E9F9
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:21:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B027685EA80
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:26:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcu08-0004D4-HJ; Wed, 21 Feb 2024 16:19:36 -0500
+	id 1rcu0U-0005wO-2h; Wed, 21 Feb 2024 16:19:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctzf-0002lS-6K
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:19:07 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctzv-0004ZX-NK
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:19:26 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctza-0001Jj-TX
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:19:06 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-412698ac6f9so1289045e9.0
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:19:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctzh-0001Kl-2s
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:19:23 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-33d26da3e15so127025f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:19:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708550341; x=1709155141; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708550346; x=1709155146; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xFzn/uz4uT8liK1wRCr+n2ERXfHQX8sWgAYNC3jQl+0=;
- b=n2dttVdBCvZ3XNufC5L9oz2YztjKdNL8T24gkYt5DLdIBJqg1UTz9fuNtn4hLFfk9n
- +PvxjYaCDXoPAZdo9FaYdC8EJkoPROnWXhWqL4+eXYPFN7RdbMghWtoFwUwhJl/Yv9G2
- Da/EG1l8RiNLd8flO2JsQTg8bry2tNi3b+Ng6RNzHiedbThRnSDcUXzeNUhNIW4gSUqB
- YhlgpTwKPt2rLqyfDobEETEAsW4uJcHnoV6xkNOktyedThsqIlUQokOk1bWQ5eCUroJt
- RwBow/tZiLpWx4Tog8GmRqP0UA7lltQGCIZCq9r6ZCQUbqnuaRb9tsb2ed2xBLfUVbNt
- g2+Q==
+ bh=NpDez5BJ9vbQ7QvGPKHbANOGqK0wCG2QqegQsAENy/M=;
+ b=JhhImJ34pZsm+yXJkMhkg39DZC5rn7ZSVufvqv6DoCpYcp9it9GKYW2BTJFrYdNsOH
+ NUwwWGq32qv2M6b9duDLUkgyAtaTeZwl+yvqpwDVoVt/yNaeWGbYUI0Sqzz13ZdUOJyb
+ led7Y+1HusAtJypdCDRENxmTSGm17DnxOuT7lTGUfmRvdJUi//2nHQ3gcX1K1O1MgBqw
+ Vtp/k2uzM+I0w/AxEn9yurNwmURSbqXfivWB8QzePn6n0Z+nQ0mXMl11Ozj8/BW46wr/
+ OWuaLvaeXx6Or+aGF9OIIQcCq7viHcz6PWoyTNmh2/eJ6AOIoPDwW8gRAA+GYdhuz7jl
+ 3D6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708550341; x=1709155141;
+ d=1e100.net; s=20230601; t=1708550346; x=1709155146;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xFzn/uz4uT8liK1wRCr+n2ERXfHQX8sWgAYNC3jQl+0=;
- b=ojIlMfdyHPXQVcGQqlgHWgtaiUGTnqbKJIYvmhvfgt9e5PtfJdZDpeEsM8UyWSpCk9
- 3NhV0cHoeys5JSU7eGOnLCCAUiajCZ7i/9V5XOerxxaY2S9pb/ltlABsZ6HUoMMt593G
- rq1GmjwrBGLq8yjlkMWYHuk6MBxpovlZjuyT6391HzUVQkKnMF1ccd4gPcUsRhVSVKTO
- s0DbJ/EK837w3N10Nib18fHNgkRyZ48j6ep9DCHhzX/Bk490pez2JKsWg9NHHaCthabk
- 12cGqG6Lpsaj//6zFHmdbjbjBSwfYBdYJ+3Gxn94C/jotUhKXM6jaYrbxUTKK68+B2rA
- TONw==
-X-Gm-Message-State: AOJu0YwK/Bv0qnL0eCqYGoOAlTNvYsvgazVUMbJW/v7OAYU5uwn6RJtq
- vk9K4lwG/imc92nrtYvZn1zIIMh+fwWyuE6q5hheB6mGYlsSXwVam4PAXrtIoGcC7LzL/0CKSst
- uuP0=
-X-Google-Smtp-Source: AGHT+IHf9EQhiCU8LHUlBdO0p3JrfPu98BpjiTZ0nGDY8kx3KV7sY1HdG089qjEqbX6G39NNiKGoHw==
-X-Received: by 2002:a5d:4d8e:0:b0:33d:2012:6d64 with SMTP id
- b14-20020a5d4d8e000000b0033d20126d64mr609702wru.4.1708550340703; 
- Wed, 21 Feb 2024 13:19:00 -0800 (PST)
+ bh=NpDez5BJ9vbQ7QvGPKHbANOGqK0wCG2QqegQsAENy/M=;
+ b=jT/2aYTJdDVCCK2fJ2knc007ka53yrgSLrj+QWBlc+MW5UG0Zbl30IreGvapbKsKH4
+ kNvKRwOWi84QD2Mc4rWMtxvxgrllQqKlWiEShP11/bGFIt+pzeypvlaHCs1UmRB9tKUQ
+ hP/5WzvMhSZyYOSJjVhtg/wFGt5gkd1r77LeJkcOWW6CVu5fc8vapUYihNbTtkyjoyqA
+ 3N05B6apw0/qkhdWYuDUJQXcegmuWvE6fCVw8Sm/eqOtPRGuEfGTD+vrpGX4NL2XrRxr
+ KlQQzCJp3qMYrPZ1Cn7e7NA7ZDjPql0ijOGneEW0KinLE3JH2eyr0KIgllTQVr1j+zq5
+ KIkA==
+X-Gm-Message-State: AOJu0Yw8XS5tSY+eag9TeBu+1e3JC5r8j0eL9CMqoN65dQT7UKuUM78N
+ ktFNw/+xuekmi30HnmflUnFeNS0rDQTwwI0Ywzgc9QzEDYN1Wc8RNBq/QvhnQRUS0Ve66JPIsQe
+ e7rs=
+X-Google-Smtp-Source: AGHT+IEiZ0yx9stEBXUpom8+/tY1+MsXEq20M8a4XHguZUGteJL27fk7hNVVLQyX4kl9h7jI/8coZA==
+X-Received: by 2002:adf:f78c:0:b0:33d:3490:6e05 with SMTP id
+ q12-20020adff78c000000b0033d34906e05mr639495wrp.27.1708550346251; 
+ Wed, 21 Feb 2024 13:19:06 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.211.34])
  by smtp.gmail.com with ESMTPSA id
- r2-20020a05600c35c200b004123b049f86sm19731963wmq.37.2024.02.21.13.18.59
+ e4-20020adfe384000000b0033cfa00e497sm17842766wrm.64.2024.02.21.13.19.05
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 21 Feb 2024 13:19:00 -0800 (PST)
+ Wed, 21 Feb 2024 13:19:05 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
@@ -62,17 +62,18 @@ Cc: qemu-arm@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>
-Subject: [PULL 21/25] hw/ide: Move IDE device related definitions to ide-dev.h
-Date: Wed, 21 Feb 2024 22:16:21 +0100
-Message-ID: <20240221211626.48190-22-philmd@linaro.org>
+Subject: [PULL 22/25] hw/ide: Move IDE bus related definitions to a new header
+ ide-bus.h
+Date: Wed, 21 Feb 2024 22:16:22 +0100
+Message-ID: <20240221211626.48190-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240221211626.48190-1-philmd@linaro.org>
 References: <20240221211626.48190-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,373 +98,136 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-Untangle internal.h by moving public IDE device related
-definitions to ide-dev.h.
+Let's consolidate the public IDE bus related functions in a separate
+header.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240220085505.30255-5-thuth@redhat.com>
+Message-ID: <20240220085505.30255-6-thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/ide/ide-dev.h  | 143 +++++++++++++++++++++++++++++++++++++-
- include/hw/ide/internal.h | 143 +-------------------------------------
- hw/ide/ide-dev.c          |   1 +
- 3 files changed, 144 insertions(+), 143 deletions(-)
+ include/hw/ide/ide-bus.h  | 42 +++++++++++++++++++++++++++++++++++++++
+ include/hw/ide/internal.h | 40 +------------------------------------
+ 2 files changed, 43 insertions(+), 39 deletions(-)
+ create mode 100644 include/hw/ide/ide-bus.h
 
-diff --git a/include/hw/ide/ide-dev.h b/include/hw/ide/ide-dev.h
-index 7e9663cda9..1f62e58ebc 100644
---- a/include/hw/ide/ide-dev.h
-+++ b/include/hw/ide/ide-dev.h
-@@ -20,9 +20,150 @@
- #ifndef IDE_DEV_H
- #define IDE_DEV_H
- 
-+#include "sysemu/dma.h"
- #include "hw/qdev-properties.h"
- #include "hw/block/block.h"
--#include "hw/ide/internal.h"
+diff --git a/include/hw/ide/ide-bus.h b/include/hw/ide/ide-bus.h
+new file mode 100644
+index 0000000000..4841a7dcd6
+--- /dev/null
++++ b/include/hw/ide/ide-bus.h
+@@ -0,0 +1,42 @@
++#ifndef HW_IDE_BUS_H
++#define HW_IDE_BUS_H
 +
-+typedef struct IDEDevice IDEDevice;
-+typedef struct IDEState IDEState;
-+typedef struct IDEBus IDEBus;
++#include "exec/ioport.h"
++#include "hw/ide/ide-dev.h"
++#include "hw/ide/ide-dma.h"
 +
-+typedef void EndTransferFunc(IDEState *);
++struct IDEBus {
++    BusState qbus;
++    IDEDevice *master;
++    IDEDevice *slave;
++    IDEState ifs[2];
++    QEMUBH *bh;
 +
-+#define MAX_IDE_DEVS 2
-+
-+#define TYPE_IDE_DEVICE "ide-device"
-+OBJECT_DECLARE_TYPE(IDEDevice, IDEDeviceClass, IDE_DEVICE)
-+
-+typedef enum { IDE_HD, IDE_CD, IDE_CFATA } IDEDriveKind;
-+
-+struct unreported_events {
-+    bool eject_request;
-+    bool new_media;
-+};
-+
-+enum ide_dma_cmd {
-+    IDE_DMA_READ = 0,
-+    IDE_DMA_WRITE,
-+    IDE_DMA_TRIM,
-+    IDE_DMA_ATAPI,
-+    IDE_DMA__COUNT
-+};
-+
-+/* NOTE: IDEState represents in fact one drive */
-+struct IDEState {
-+    IDEBus *bus;
++    int bus_id;
++    int max_units;
++    IDEDMA *dma;
 +    uint8_t unit;
-+    /* ide config */
-+    IDEDriveKind drive_kind;
-+    int drive_heads, drive_sectors;
-+    int cylinders, heads, sectors, chs_trans;
-+    int64_t nb_sectors;
-+    int mult_sectors;
-+    int identify_set;
-+    uint8_t identify_data[512];
-+    int drive_serial;
-+    char drive_serial_str[21];
-+    char drive_model_str[41];
-+    uint64_t wwn;
-+    /* ide regs */
-+    uint8_t feature;
-+    uint8_t error;
-+    uint32_t nsector;
-+    uint8_t sector;
-+    uint8_t lcyl;
-+    uint8_t hcyl;
-+    /* other part of tf for lba48 support */
-+    uint8_t hob_feature;
-+    uint8_t hob_nsector;
-+    uint8_t hob_sector;
-+    uint8_t hob_lcyl;
-+    uint8_t hob_hcyl;
++    uint8_t cmd;
++    qemu_irq irq; /* bus output */
 +
-+    uint8_t select;
-+    uint8_t status;
-+
-+    bool io8;
-+    bool reset_reverts;
-+
-+    /* set for lba48 access */
-+    uint8_t lba48;
-+    BlockBackend *blk;
-+    char version[9];
-+    /* ATAPI specific */
-+    struct unreported_events events;
-+    uint8_t sense_key;
-+    uint8_t asc;
-+    bool tray_open;
-+    bool tray_locked;
-+    uint8_t cdrom_changed;
-+    int packet_transfer_size;
-+    int elementary_transfer_size;
-+    int32_t io_buffer_index;
-+    int lba;
-+    int cd_sector_size;
-+    int atapi_dma; /* true if dma is requested for the packet cmd */
-+    BlockAcctCookie acct;
-+    BlockAIOCB *pio_aiocb;
-+    QEMUIOVector qiov;
-+    QLIST_HEAD(, IDEBufferedRequest) buffered_requests;
-+    /* ATA DMA state */
-+    uint64_t io_buffer_offset;
-+    int32_t io_buffer_size;
-+    QEMUSGList sg;
-+    /* PIO transfer handling */
-+    int req_nb_sectors; /* number of sectors per interrupt */
-+    EndTransferFunc *end_transfer_func;
-+    uint8_t *data_ptr;
-+    uint8_t *data_end;
-+    uint8_t *io_buffer;
-+    /* PIO save/restore */
-+    int32_t io_buffer_total_len;
-+    int32_t cur_io_buffer_offset;
-+    int32_t cur_io_buffer_len;
-+    uint8_t end_transfer_fn_idx;
-+    QEMUTimer *sector_write_timer; /* only used for win2k install hack */
-+    uint32_t irq_count; /* counts IRQs when using win2k install hack */
-+    /* CF-ATA extended error */
-+    uint8_t ext_error;
-+    /* CF-ATA metadata storage */
-+    uint32_t mdata_size;
-+    uint8_t *mdata_storage;
-+    int media_changed;
-+    enum ide_dma_cmd dma_cmd;
-+    /* SMART */
-+    uint8_t smart_enabled;
-+    uint8_t smart_autosave;
-+    int smart_errors;
-+    uint8_t smart_selftest_count;
-+    uint8_t *smart_selftest_data;
-+    /* AHCI */
-+    int ncq_queues;
++    int error_status;
++    uint8_t retry_unit;
++    int64_t retry_sector_num;
++    uint32_t retry_nsector;
++    PortioList portio_list;
++    PortioList portio2_list;
++    VMChangeStateEntry *vmstate;
 +};
 +
-+struct IDEDeviceClass {
-+    DeviceClass parent_class;
-+    void (*realize)(IDEDevice *dev, Error **errp);
-+};
++#define TYPE_IDE_BUS "IDE"
++OBJECT_DECLARE_SIMPLE_TYPE(IDEBus, IDE_BUS)
 +
-+struct IDEDevice {
-+    DeviceState qdev;
-+    uint32_t unit;
-+    BlockConf conf;
-+    int chs_trans;
-+    char *version;
-+    char *serial;
-+    char *model;
-+    uint64_t wwn;
-+    /*
-+     * 0x0000        - rotation rate not reported
-+     * 0x0001        - non-rotating medium (SSD)
-+     * 0x0002-0x0400 - reserved
-+     * 0x0401-0xffe  - rotations per minute
-+     * 0xffff        - reserved
-+     */
-+    uint16_t rotation_rate;
-+};
- 
- typedef struct IDEDrive {
-     IDEDevice dev;
++void ide_bus_init(IDEBus *idebus, size_t idebus_size, DeviceState *dev,
++                  int bus_id, int max_units);
++IDEDevice *ide_bus_create_drive(IDEBus *bus, int unit, DriveInfo *drive);
++
++int ide_get_geometry(BusState *bus, int unit,
++                     int16_t *cyls, int8_t *heads, int8_t *secs);
++int ide_get_bios_chs_trans(BusState *bus, int unit);
++
++#endif
 diff --git a/include/hw/ide/internal.h b/include/hw/ide/internal.h
-index a3a6702eec..1aab89b27b 100644
+index 1aab89b27b..d3ec16a945 100644
 --- a/include/hw/ide/internal.h
 +++ b/include/hw/ide/internal.h
-@@ -8,23 +8,17 @@
+@@ -8,16 +8,10 @@
   */
  
  #include "hw/ide.h"
--#include "sysemu/dma.h"
--#include "hw/block/block.h"
- #include "exec/ioport.h"
- #include "hw/ide/ide-dma.h"
-+#include "hw/ide/ide-dev.h"
+-#include "exec/ioport.h"
+-#include "hw/ide/ide-dma.h"
+-#include "hw/ide/ide-dev.h"
++#include "hw/ide/ide-bus.h"
  
  /* debug IDE devices */
  #define USE_DMA_CDROM
- #include "qom/object.h"
- 
--typedef struct IDEDevice IDEDevice;
--typedef struct IDEState IDEState;
+-#include "qom/object.h"
 -
- #define TYPE_IDE_BUS "IDE"
- OBJECT_DECLARE_SIMPLE_TYPE(IDEBus, IDE_BUS)
+-#define TYPE_IDE_BUS "IDE"
+-OBJECT_DECLARE_SIMPLE_TYPE(IDEBus, IDE_BUS)
  
--#define MAX_IDE_DEVS 2
--
  /* Device/Head ("select") Register */
  #define ATA_DEV_SELECT          0x10
- /* ATA1,3: Defined as '1'.
-@@ -327,23 +321,6 @@ OBJECT_DECLARE_SIMPLE_TYPE(IDEBus, IDE_BUS)
- #define SMART_DISABLE         0xd9
- #define SMART_STATUS          0xda
- 
--typedef enum { IDE_HD, IDE_CD, IDE_CFATA } IDEDriveKind;
--
--typedef void EndTransferFunc(IDEState *);
--
--struct unreported_events {
--    bool eject_request;
--    bool new_media;
--};
--
--enum ide_dma_cmd {
--    IDE_DMA_READ = 0,
--    IDE_DMA_WRITE,
--    IDE_DMA_TRIM,
--    IDE_DMA_ATAPI,
--    IDE_DMA__COUNT
--};
--
- extern const char *IDE_DMA_CMD_lookup[IDE_DMA__COUNT];
- 
- extern const MemoryRegionPortio ide_portio_list[];
-@@ -361,97 +338,6 @@ typedef struct IDEBufferedRequest {
+@@ -338,29 +332,6 @@ typedef struct IDEBufferedRequest {
      bool orphaned;
  } IDEBufferedRequest;
  
--/* NOTE: IDEState represents in fact one drive */
--struct IDEState {
--    IDEBus *bus;
+-struct IDEBus {
+-    BusState qbus;
+-    IDEDevice *master;
+-    IDEDevice *slave;
+-    IDEState ifs[2];
+-    QEMUBH *bh;
+-
+-    int bus_id;
+-    int max_units;
+-    IDEDMA *dma;
 -    uint8_t unit;
--    /* ide config */
--    IDEDriveKind drive_kind;
--    int drive_heads, drive_sectors;
--    int cylinders, heads, sectors, chs_trans;
--    int64_t nb_sectors;
--    int mult_sectors;
--    int identify_set;
--    uint8_t identify_data[512];
--    int drive_serial;
--    char drive_serial_str[21];
--    char drive_model_str[41];
--    uint64_t wwn;
--    /* ide regs */
--    uint8_t feature;
--    uint8_t error;
--    uint32_t nsector;
--    uint8_t sector;
--    uint8_t lcyl;
--    uint8_t hcyl;
--    /* other part of tf for lba48 support */
--    uint8_t hob_feature;
--    uint8_t hob_nsector;
--    uint8_t hob_sector;
--    uint8_t hob_lcyl;
--    uint8_t hob_hcyl;
+-    uint8_t cmd;
+-    qemu_irq irq; /* bus output */
 -
--    uint8_t select;
--    uint8_t status;
--
--    bool io8;
--    bool reset_reverts;
--
--    /* set for lba48 access */
--    uint8_t lba48;
--    BlockBackend *blk;
--    char version[9];
--    /* ATAPI specific */
--    struct unreported_events events;
--    uint8_t sense_key;
--    uint8_t asc;
--    bool tray_open;
--    bool tray_locked;
--    uint8_t cdrom_changed;
--    int packet_transfer_size;
--    int elementary_transfer_size;
--    int32_t io_buffer_index;
--    int lba;
--    int cd_sector_size;
--    int atapi_dma; /* true if dma is requested for the packet cmd */
--    BlockAcctCookie acct;
--    BlockAIOCB *pio_aiocb;
--    QEMUIOVector qiov;
--    QLIST_HEAD(, IDEBufferedRequest) buffered_requests;
--    /* ATA DMA state */
--    uint64_t io_buffer_offset;
--    int32_t io_buffer_size;
--    QEMUSGList sg;
--    /* PIO transfer handling */
--    int req_nb_sectors; /* number of sectors per interrupt */
--    EndTransferFunc *end_transfer_func;
--    uint8_t *data_ptr;
--    uint8_t *data_end;
--    uint8_t *io_buffer;
--    /* PIO save/restore */
--    int32_t io_buffer_total_len;
--    int32_t cur_io_buffer_offset;
--    int32_t cur_io_buffer_len;
--    uint8_t end_transfer_fn_idx;
--    QEMUTimer *sector_write_timer; /* only used for win2k install hack */
--    uint32_t irq_count; /* counts IRQs when using win2k install hack */
--    /* CF-ATA extended error */
--    uint8_t ext_error;
--    /* CF-ATA metadata storage */
--    uint32_t mdata_size;
--    uint8_t *mdata_storage;
--    int media_changed;
--    enum ide_dma_cmd dma_cmd;
--    /* SMART */
--    uint8_t smart_enabled;
--    uint8_t smart_autosave;
--    int smart_errors;
--    uint8_t smart_selftest_count;
--    uint8_t *smart_selftest_data;
--    /* AHCI */
--    int ncq_queues;
--};
--
- struct IDEBus {
-     BusState qbus;
-     IDEDevice *master;
-@@ -475,33 +361,6 @@ struct IDEBus {
-     VMChangeStateEntry *vmstate;
- };
- 
--#define TYPE_IDE_DEVICE "ide-device"
--OBJECT_DECLARE_TYPE(IDEDevice, IDEDeviceClass, IDE_DEVICE)
--
--struct IDEDeviceClass {
--    DeviceClass parent_class;
--    void (*realize)(IDEDevice *dev, Error **errp);
--};
--
--struct IDEDevice {
--    DeviceState qdev;
--    uint32_t unit;
--    BlockConf conf;
--    int chs_trans;
--    char *version;
--    char *serial;
--    char *model;
--    uint64_t wwn;
--    /*
--     * 0x0000        - rotation rate not reported
--     * 0x0001        - non-rotating medium (SSD)
--     * 0x0002-0x0400 - reserved
--     * 0x0401-0xffe  - rotations per minute
--     * 0xffff        - reserved
--     */
--    uint16_t rotation_rate;
+-    int error_status;
+-    uint8_t retry_unit;
+-    int64_t retry_sector_num;
+-    uint32_t retry_nsector;
+-    PortioList portio_list;
+-    PortioList portio2_list;
+-    VMChangeStateEntry *vmstate;
 -};
 -
  /* These are used for the error_status field of IDEBus */
  #define IDE_RETRY_MASK 0xf8
  #define IDE_RETRY_DMA  0x08
-diff --git a/hw/ide/ide-dev.c b/hw/ide/ide-dev.c
-index 15d088fd06..c8e2033469 100644
---- a/hw/ide/ide-dev.c
-+++ b/hw/ide/ide-dev.c
-@@ -23,6 +23,7 @@
- #include "qemu/error-report.h"
- #include "qemu/module.h"
- #include "hw/ide/ide-dev.h"
-+#include "hw/ide/internal.h"
- #include "sysemu/block-backend.h"
- #include "sysemu/blockdev.h"
- #include "sysemu/sysemu.h"
+@@ -477,15 +448,6 @@ void ide_cancel_dma_sync(IDEState *s);
+ void ide_atapi_cmd(IDEState *s);
+ void ide_atapi_cmd_reply_end(IDEState *s);
+ 
+-/* hw/ide/qdev.c */
+-void ide_bus_init(IDEBus *idebus, size_t idebus_size, DeviceState *dev,
+-                  int bus_id, int max_units);
+-IDEDevice *ide_bus_create_drive(IDEBus *bus, int unit, DriveInfo *drive);
+-
+-int ide_get_geometry(BusState *bus, int unit,
+-                     int16_t *cyls, int8_t *heads, int8_t *secs);
+-int ide_get_bios_chs_trans(BusState *bus, int unit);
+-
+ int ide_handle_rw_error(IDEState *s, int error, int op);
+ 
+ #endif /* HW_IDE_INTERNAL_H */
 -- 
 2.41.0
 
