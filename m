@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9DC585E223
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:57:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C3D85E193
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:41:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoaM-0007HW-6r; Wed, 21 Feb 2024 10:32:42 -0500
+	id 1rcoe6-0003Wy-GH; Wed, 21 Feb 2024 10:36:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcoPH-0005EJ-S9
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:21:18 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcocE-0005ln-4C
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:34:42 -0500
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcoPD-0004Ic-25
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:21:11 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4127a0d8ae1so1160815e9.2
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 07:21:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcoc1-0006z9-Mx
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:34:31 -0500
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2d208d0b282so90183021fa.0
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 07:34:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708528864; x=1709133664; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708529657; x=1709134457; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=N7rGT8yZCvAdoVTuAMhRwm2ubb3JgqYFNPXxnz7r5cI=;
- b=nB6Xr7lnYNBGoBEU3w1VflH1R1ReinON5oE2J/f2IseDjk/bbgiJ/ETU1c1QHxdM3v
- +cD+NRVOQf+Bnp6RyyKFnyQneMnnAPJZvBVpev+bhrd1QU6TOCgtCMSqhKeH+d9io5d4
- az2KqLGvpka/fdpGB+XEno6X+nxynrvinEZYaUxto5db8gDINepWaihxjJzkXgFomUx6
- MfVi32znXQn29dvGrIofFVkihlcrOnjG06zHbWKP7VC3zx8vi2vF/l9tfzMHfB7u2Cy6
- Pqfa1VzRQDoos7afQ5qUGPIZwjh1LL9SNc5WGNX7pqYPwM5ZgBLbzewuhfCvFc4E313O
- COhA==
+ bh=nJicVomqJWqUlt+x/Pps7oEzJ5tHMf/y9OG5tcXzKWM=;
+ b=F0qM7L39YWAHF8AQ+ejctBrBVPdZ5yEPfc8z2AM81lIROYUzW/ZAOCzDZ46Uq8KM3w
+ TIwtn+LebV7IxD0cOJBhsgRhZ+lHm+ARtm/ox6GADg88iqN3Z4e/S+vj3oH4di8hAoke
+ VWaIaRoxR2bZ+BUXl4B/27EnL6S5esIlXpCDS4LclloEIgGFq4/TSWw0Rv5tKknuYbGP
+ 6C9M/epNUVQxYH4KgCVBY8iKhf7QTK1c8/LbiD7a4BffB6TUORJBMBntuaRMMBQ/cgTm
+ Z1P4/JblGbPmgMohyGYDPbWQuabCdGKyKE3XrF3m80kl8KAQWilORq3rTPtXNXAZj8Xw
+ tJZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708528864; x=1709133664;
+ d=1e100.net; s=20230601; t=1708529657; x=1709134457;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=N7rGT8yZCvAdoVTuAMhRwm2ubb3JgqYFNPXxnz7r5cI=;
- b=pN0JVRBl6nJ4B3YOjGe8EqsmSPUG0CDfXpBqf8ILgwZ9AKEHALlYObMEQV8kTVus+Y
- Y+tyLrwLobu2IEPFSY1lMM3c1B9ksHvx6SeFKpmjD0uWLC4ErO/fubBDxzh0mRe0HsHI
- hXnmsAZ47eTXlwLY2YpThgAR1xTCMpvIT2E1tjUjEr7IMaRXnMRjxR2CReFxbbN569Ds
- 5iBe1Vzjxjy9KEA5Yv1pbrE/Eh9fHqeat1Qyt6CdGLqowz4RIF/1AZomLTRCX6g2IaZ5
- kU6EgDuzJmKLLbMZqQVcVm0oYOzAQyhFh+Q2Z9wAiPwrZ1WsCRutZ6BpT4iJwiLoegcZ
- M6xg==
+ bh=nJicVomqJWqUlt+x/Pps7oEzJ5tHMf/y9OG5tcXzKWM=;
+ b=YROb2BYjzRlybLZ/1Mx4IbCQnPbnqs8CmSNEBnPXyaZ5YuYJN+i7RFw0caCzVOP58d
+ nU6dLjiDSSgkFck84bGw5KBsU1zJzgBKplccQ/+s55lbuqmxFaPU1Dono3u+/w1qyClN
+ RE6h4fJiJ5Ag7J5Ypil18RMBTWnIdpCrLdmP+cBRjq/UHyKRpugA0fBTBW6jOWhWTiyK
+ 7Cz3T/+5I9rsePg+b/6iXOzmxbcisnDNzMhhzM7F3/jg/MFkdsdbzDUw0hAQJqivr4qb
+ v90MF7ZMy1tOZUYYR0PC02zAVmHSoIDdWPpSiZ7ZKvhSzSe2eAKHBjD1a12NRl28tbYv
+ hoWw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU00XapxoF6AhNBXIbp3ahGrNxXaaiTQRVG6dSDR7PYvT1byT51Cjc2XsT7DbqNIkA3L1jdZUzlnwl2LcSYlhbCNdxy8V8=
-X-Gm-Message-State: AOJu0YykCHsth/3hLugT5kWyXcbqcrEnD+uFhKpv0iIgUZPnv+KuqLws
- VT1nL4/ZgvBGtpNgmtmAtSWROOd+2xSeM/uYP7zO0uW+VjZina8ZmXNFhi7igFM=
-X-Google-Smtp-Source: AGHT+IGJm+aHfTqk17QohLqvqvgJ1905KXyxZup2B2MbulSNHTddU548WfYPTXE841pUYNVS4/Oj7w==
-X-Received: by 2002:a05:600c:2184:b0:411:c9c0:eddf with SMTP id
- e4-20020a05600c218400b00411c9c0eddfmr13923149wme.36.1708528864617; 
- Wed, 21 Feb 2024 07:21:04 -0800 (PST)
+ AJvYcCWcVEtekmcZg9DLivUB9j1okA/21TKiRIeg30lvyXOlm6aAV/i5Kf0Ob4CYGWYzqnReBEcw3dQKIOgGP5fF0p492jFCgLo=
+X-Gm-Message-State: AOJu0YwHjAbgEnUPaxl3DB4IkiHFhSSwJ2mDS0OWbep26TsYdp0Ir1Sw
+ hIAuDMU4DehYk7k8JAq8YTrKT1p+uSUKqdQvBnYK5wMND0rTFpwWbYIFwjrZh7o=
+X-Google-Smtp-Source: AGHT+IELC9hszz5wbXH5VwuTgsuKsztwZ2zBbv6apftDbUNWeGCNcJOxbj6C3oGOFjmtMZSLVX5Ylw==
+X-Received: by 2002:a2e:870a:0:b0:2d2:35af:e8a5 with SMTP id
+ m10-20020a2e870a000000b002d235afe8a5mr6964421lji.24.1708529657211; 
+ Wed, 21 Feb 2024 07:34:17 -0800 (PST)
 Received: from [192.168.69.100] ([176.187.211.34])
  by smtp.gmail.com with ESMTPSA id
- s7-20020a05600c45c700b0041279707ffbsm793673wmo.15.2024.02.21.07.21.03
+ k25-20020a05600c0b5900b00410dd253008sm2862767wmr.42.2024.02.21.07.34.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Feb 2024 07:21:04 -0800 (PST)
-Message-ID: <a5bd04e4-6f41-4e2b-a99f-d5150682e53a@linaro.org>
-Date: Wed, 21 Feb 2024 16:21:02 +0100
+ Wed, 21 Feb 2024 07:34:16 -0800 (PST)
+Message-ID: <55058f62-b59b-43ee-812c-628b8df9745e@linaro.org>
+Date: Wed, 21 Feb 2024 16:34:14 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/10] hw/i386/pc: Do pc_cmos_init_late() from
- pc_machine_done()
+Subject: Re: [PATCH 06/10] hw/core: Add ResetContainer which holds objects
+ implementing Resettable
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -71,13 +71,13 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  "Gonglei (Arei)" <arei.gonglei@huawei.com>
 References: <20240220160622.114437-1-peter.maydell@linaro.org>
- <20240220160622.114437-3-peter.maydell@linaro.org>
+ <20240220160622.114437-7-peter.maydell@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240220160622.114437-3-peter.maydell@linaro.org>
+In-Reply-To: <20240220160622.114437-7-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x229.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,34 +101,55 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 20/2/24 17:06, Peter Maydell wrote:
-> In the i386 PC machine, we want to run the pc_cmos_init_late()
-> function only once the IDE and floppy drive devices have been set up.
-> We currently do this using qemu_register_reset(), and then have the
-> function call qemu_unregister_reset() on itself, so it runs exactly
-> once.
+> Implement a ResetContainer.  This is a subclass of Object, and it
+> implements the Resettable interface.  The container holds a list of
+> arbitrary other objects which implement Resettable, and when the
+> container is reset, all the objects it contains are also reset.
 > 
-> This was an expedient way to do it back in 2010 when we first added
-> this (in commit c0897e0cb94e8), but now we have a more obvious point
-> to do "machine initialization that has to happen after generic device
-> init": the machine-init-done hook.
+> This will allow us to have a 3-phase-reset equivalent of the old
+> qemu_register_reset() API: we will have a single "simulation reset"
+> top level ResetContainer, and objects in it are the equivalent of the
+> old QEMUResetHandler functions.
 > 
-> Do the pc_cmos_init_late() work from our existing PC machine init
-> done hook function, so we can drop the use of qemu_register_reset()
-> and qemu_unregister_reset().
+> The qemu_register_reset() API manages its list of callbacks using a
+> QTAILQ, but here we use a GPtrArray for our list of Resettable
+> children: we expect the "remove" operation (which will need to do an
+> iteration through the list) to be fairly uncommon, and we get simpler
+> code with fewer memory allocations.
 > 
-> Because the pointers to the devices we need (the IDE buses and the
-> RTC) are now all in the machine state, we don't need the
-> pc_cmos_init_late_arg struct and can just pass the PCMachineState
-> pointer.
-
-Even if we remove the IDEBus/RTC pointers from PCMachineState,
-we can still QOM-resolve them from it in pc_cmos_init_late().
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+> Since there is currently no listed owner in MAINTAINERS for the
+> existing reset-related source files, create a new section for
+> them, and add these new files there also.
+> 
 > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->   hw/i386/pc.c | 39 ++++++++++++++++-----------------------
->   1 file changed, 16 insertions(+), 23 deletions(-)
+>   MAINTAINERS                      | 10 +++++
+>   include/hw/core/resetcontainer.h | 48 ++++++++++++++++++++
+>   hw/core/resetcontainer.c         | 76 ++++++++++++++++++++++++++++++++
+>   hw/core/meson.build              |  1 +
+>   4 files changed, 135 insertions(+)
+>   create mode 100644 include/hw/core/resetcontainer.h
+>   create mode 100644 hw/core/resetcontainer.c
+
+
+> +static void resettable_container_child_foreach(Object *obj,
+> +                                               ResettableChildCallback cb,
+> +                                               void *opaque, ResetType type)
+> +{
+> +    ResettableContainer *rc = RESETTABLE_CONTAINER(obj);
+> +    unsigned int len = rc->children->len;
+> +
+> +    for (unsigned int i = 0; i < len; i++) {
+
+Worth a pair of trace events around the callback call.
+
+> +        cb(g_ptr_array_index(rc->children, i), opaque, type);
+
+> +        /* Detect callbacks trying to unregister themselves */
+> +        assert(len == rc->children->len);
+> +    }
+> +}
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
