@@ -2,73 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C2B485E216
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:56:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68D2E85E12E
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:32:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoNL-0005cp-2o; Wed, 21 Feb 2024 10:19:11 -0500
+	id 1rcoU0-0008LY-Hi; Wed, 21 Feb 2024 10:26:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcoJk-0000sX-05; Wed, 21 Feb 2024 10:15:28 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rcoNE-0001hh-P8
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:19:06 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rclZl-0004nS-Er; Wed, 21 Feb 2024 07:19:50 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D0DC54F4F8;
- Wed, 21 Feb 2024 15:20:07 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 406118639A;
- Wed, 21 Feb 2024 15:19:46 +0300 (MSK)
-Message-ID: <fc340966-40d5-4776-8ce1-b93a8f9a64ed@tls.msk.ru>
-Date: Wed, 21 Feb 2024 15:19:46 +0300
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rcld6-0005OG-CC
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 07:23:18 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 21FDC4E6006;
+ Wed, 21 Feb 2024 13:23:11 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id X2afBcmoLxhu; Wed, 21 Feb 2024 13:23:09 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 2A42C4E6004; Wed, 21 Feb 2024 13:23:09 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 27F527456B4;
+ Wed, 21 Feb 2024 13:23:09 +0100 (CET)
+Date: Wed, 21 Feb 2024 13:23:09 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+cc: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Aurelien Jarno <aurelien@aurel32.net>, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ =?ISO-8859-15?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>
+Subject: Re: [PATCH 3/5] hw/isa: Embed TYPE_PORT92 in south bridges used in
+ PC machines
+In-Reply-To: <6a2333d7-9dea-4a0e-9d91-0889e6205128@ilande.co.uk>
+Message-ID: <477ea9cd-7f2b-b09a-db60-f13defa5c6d3@eik.bme.hu>
+References: <20240218131701.91132-1-shentey@gmail.com>
+ <20240218131701.91132-4-shentey@gmail.com>
+ <6a2333d7-9dea-4a0e-9d91-0889e6205128@ilande.co.uk>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 15/23] qemu-img: resize: do not always eat last argument
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org
-References: <cover.1707513011.git.mjt@tls.msk.ru>
- <7e0e7cb2470d572e8c0a48ba85c993be3bdb1c07.1707513011.git.mjt@tls.msk.ru>
- <ZdToIERLC8RaHhhg@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <ZdToIERLC8RaHhhg@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,53 +73,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-20.02.2024 20:57, Daniel P. Berrangé пишет:
-> On Sat, Feb 10, 2024 at 12:22:36AM +0300, Michael Tokarev wrote:
->> 'qemu-img resize --help' does not work, since it wants more arguments.
->> Only eat last option at the beginning if it starts like -N.., and allow
->> getopt() to do its work, and eat it up at the end if not already eaten.
->> This will not allow to mix options and size anyway, but it is better
->> than now.
->>
->> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+On Wed, 21 Feb 2024, Mark Cave-Ayland wrote:
+> On 18/02/2024 13:16, Bernhard Beschow wrote:
+>> Port 92 is an integral part of the PIIX and ICH south bridges, so 
+>> instantiate it
+>> there. The isapc machine now needs to instantiate it explicitly, analoguous 
+>> to
+>> the RTC.
+>> 
+>> Note that due to migration compatibility, port92 is optional in the south
+>> bridges. It is always instantiated the isapc machine for simplicity.
+>> 
+>> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 >> ---
->>   qemu-img.c | 15 +++++++++------
->>   1 file changed, 9 insertions(+), 6 deletions(-)
->>
->> diff --git a/qemu-img.c b/qemu-img.c
->> index 69d41e0a92..929a25a021 100644
->> --- a/qemu-img.c
->> +++ b/qemu-img.c
->> @@ -4271,13 +4271,13 @@ static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
->>   
->>       /* Remove size from argv manually so that negative numbers are not treated
->>        * as options by getopt. */
->> -    if (argc < 3) {
->> -        error_exit(ccmd, "Not enough arguments");
->> -        return 1;
->> +    if (argc > 1 && argv[argc - 1][0] == '-'
->> +        && argv[argc-1][1] >= '0' && argv[argc-1][1] <= '9') {
->> +        size = argv[--argc];
->> +    } else {
->> +        size = NULL;
->>       }
-> 
-> We already have a variable 'int relative' that is set to '-1'
-> or '+1' depending on whether we have a -ve or +ve size.
-> 
-> I think it is clearer to follow if we just set 'relative' much
-> earlier before parsing by moving this chunk of code to before
-> the getopt:
+>>   include/hw/i386/pc.h          |  2 +-
+>>   include/hw/southbridge/ich9.h |  4 ++++
+>>   include/hw/southbridge/piix.h |  3 +++
+>>   hw/i386/pc.c                  | 18 ++++++++++++------
+>>   hw/i386/pc_piix.c             |  9 +++++++--
+>>   hw/i386/pc_q35.c              |  8 +++++---
+>>   hw/isa/lpc_ich9.c             |  9 +++++++++
+>>   hw/isa/piix.c                 |  9 +++++++++
+>>   hw/isa/Kconfig                |  2 ++
+>>   9 files changed, 52 insertions(+), 12 deletions(-)
+[...] 
+>> diff --git a/hw/isa/Kconfig b/hw/isa/Kconfig
+>> index efdf43e92c..f42a087c07 100644
+>> --- a/hw/isa/Kconfig
+>> +++ b/hw/isa/Kconfig
+>> @@ -47,6 +47,7 @@ config PIIX
+>>       select IDE_PIIX
+>>       select ISA_BUS
+>>       select MC146818RTC
+>> +    select PORT92
+>>       select USB_UHCI
+>>     config PORT92
+>> @@ -78,3 +79,4 @@ config LPC_ICH9
+>>       select ISA_BUS
+>>       select ACPI_ICH9
+>>       select MC146818RTC
+>> +    select PORT92
+>
+> I had a look at this (and did a bit of revision around 8042 and A20), and I 
+> am starting to wonder if the PORT92 device isn't something that belongs to 
+> the southbridge, but more specifically to the superio chip?
+>
+> A couple of thoughts as to why I came to this conclusion: firstly the superio 
+> chip is generally considered to be a single integrated implementation of 
+> legacy IO devices, so this feels like a natural home for the PORT92 device. 
+> Secondly the value of the "has-port92" property is controlled by 
+> pcms->i8042_enabled, and this value is already passed into functions such as 
+> pc_superio_init() for example.
 
-Well, we'll also have to repeat the same switch after getopt, since
-there, I only test for -[0-9], not +[0-9] or [0-9].   But yes, it
-can be done too.
+One more argument for that may be that this A20 gate was originally 
+controlled by the keyboard controller and that's part of the superio. The 
+VIA southbridge docs even mention something about the KBC and this port92 
+register controlling the A20 gate together. So to implement that correctly 
+it may need to be in the same device. However this may be specific to the 
+VIA chip so not sure if this implementation can be shared by all the 
+southbridge devices.
 
-But this is more interesting, - I think we should switch getopt to
-use 'return in order' option, and process options together with
-getopt, looking at the next option at each iteration, - if it looks
-like [+-]size if we already got the filename part.  Lemme try to
-do that..
+> I think this would also help reduce the changes required for the individual 
+> machines, however the devil is always in the details particularly when 
+> migration is involved.
 
-/mjt
+One thing that bothers me very much about this port92 device is that we 
+have about 100 lines of code of which the actual functionality is just a 
+qemu_irq and an uint8_t controlling it and storing the register value. 
+That shouldn't be more than 10 lines or maybe 20 with migration support, 
+it's only 100 lines because it's wrapped in a QDev. Bernhard wanted to 
+move it out from the PC machines to clean those up but as a result this 
+mess is just pushed down in the southbridge (or into superio as you 
+propose). It could easily be implemented in the southbridge or superio by 
+just adding the qemu_irq and the register value and maybe export it as a 
+property so the machine can set it for migration compatibility and then we 
+don't need a separate QDev wrapper around it as the superio or southbridge 
+is already a QDev and has the needed stuff to store this.
+
+But one could also argue that while these southbridges implement this 
+functionality, it's only used on the PC machines so as we already have it 
+modelled in a separate object we could just let the PC machines 
+instantiate it and leave it as it is and don't add this to other machines 
+where it's not needed.
+
+(I like Mark's proposal a bit better only because that leaves the 
+southbridge untouched and changes the superio instead that I care less 
+about but the issue is the same there.)
+
+Regards,
+BALATON Zoltan
 
