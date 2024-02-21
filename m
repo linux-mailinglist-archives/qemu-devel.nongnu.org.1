@@ -2,113 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68DEC85E0FA
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:25:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F3A685E0DC
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:20:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoLy-00034r-9L; Wed, 21 Feb 2024 10:17:47 -0500
+	id 1rcoOO-0001Op-Oe; Wed, 21 Feb 2024 10:20:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcoJi-00010D-Jx
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:15:27 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcoKS-00010D-F8
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:16:14 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcmB8-0002k4-3A
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 07:58:30 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id E38D71FB5F;
- Wed, 21 Feb 2024 12:58:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1708520303; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8aPHSPg83enyEei2ubBFt8cVj2zSFz5eeEh0QqNXjjw=;
- b=U42wSQ90lj6XUZifZBZOK504+S+6MMecxmA3YPj0hi68+m+F3tF87/rZjLkLLwAyWfxwG/
- +RY2d6HOXqtqIhk2FeNJVmq71ZIWmcYuSrPn5kbKLXgvy+AwtGynshV+dFFT9mFgO0Gvn9
- sekfR69udJZSqKey4jh4qyqCbd4oRZU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1708520303;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8aPHSPg83enyEei2ubBFt8cVj2zSFz5eeEh0QqNXjjw=;
- b=W1Vl6E12gWO+i5e3EEHSASaIxP8E6DpncForjzqYudPbJPdmPN732HwLCSxTL8vGr2ERhH
- zlOB7WL1CC9rksCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1708520302; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8aPHSPg83enyEei2ubBFt8cVj2zSFz5eeEh0QqNXjjw=;
- b=fDqWTxPMT2UEdKAvn4OfjRIMAxGPPvZcGJ7l4KnQQX8rBgt6pYQ7Nz2+vUIM6bJOKw6h0x
- MrW4tOaxKrVcYO93l13kUajpVbgGqDfV66nXg1Hvytkmk+Vdu7V1rT9MdIEreQWaGtFvc4
- g7aGs9dSQ9vPNMtgtMBZ4PMN284Xkoc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1708520302;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8aPHSPg83enyEei2ubBFt8cVj2zSFz5eeEh0QqNXjjw=;
- b=zdQ5VASh6luST3pMBgGe2jyoPTf7yUmQ+0mAnan7IXngPIEtToZ92LFbrJ4JvNl8PHApPn
- QEHw52tE/elBClDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5EB59139D0;
- Wed, 21 Feb 2024 12:58:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id sK+PCW7z1WX+awAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 21 Feb 2024 12:58:22 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Avihai Horon <avihaih@nvidia.com>, =?utf-8?Q?Da?=
- =?utf-8?Q?niel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Subject: Re: [PATCH 2/2] migration/multifd: Drop registered_yank
-In-Reply-To: <ZdVr8qTb7MKFgnHO@x1n>
-References: <20240208035126.370620-1-peterx@redhat.com>
- <20240208035126.370620-3-peterx@redhat.com> <871q9nceam.fsf@suse.de>
- <ZdVr8qTb7MKFgnHO@x1n>
-Date: Wed, 21 Feb 2024 09:58:19 -0300
-Message-ID: <87v86ias9g.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcmum-0002qL-Aw
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 08:45:41 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-33d4c0b198aso424005f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 05:45:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708523130; x=1709127930; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Fi2dhpL+qLMWxFcngjZldzHxIQ972VN9MgMUHj+ZWwQ=;
+ b=wE0Zo6cb06S+DWw4KkY77ObErZKimpjOHAHXKQAlZ7qqc7UPCiSTWHpBpSBQ4jY90D
+ p1oS7WEh4Grm1W2z7huceVM/CKSl5Z4KoGv5xGy2hYX/wi/xN7cvlZYfuRDY2oDZtrFF
+ qrcSf1BT89g5sm1gYnU9Xkb2Tk26zRl64NJe/UH+wxkrP5O6P7yWWflkxvX1jyMfnIKk
+ RPC+cDHu93ihLd8MSKyhY4z2iCUt9frlvgdeDRjLAosdN3csBKhmKMRBp/Jp8vgwsxj5
+ M+v1CRmyQq4JMjuQy+7vrAbuxmHHYslfKgub9fmhriKBXsgm4VupiNi9ihpH1ECJ2HF9
+ Da6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708523130; x=1709127930;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Fi2dhpL+qLMWxFcngjZldzHxIQ972VN9MgMUHj+ZWwQ=;
+ b=LcqSzEr6Tunxx8FnWKDJQLtjTZTfmqOeMa4qLTEbKqSYYeaqddR5ZCmu7OYLh+AwRl
+ EAYrsHL0w++6fri+yDNFzUyapZr8QfFQhqa/FTNsGh+35n4q/dH765TAQeiilnElk2hj
+ /ccRV5rwFfTclJjhlT4uDQiNQT7Ys3vAmFHk6dldL7s3c3BKJEnHrqyjsNeDHeb4b9Ut
+ 3uHS7YMVN+gu3GO2tzW1iSXVezCe3uDjQvajJAjRUgazO7c4KA0y1jun4sMmdRaCdgTY
+ kzQyPymb9+OG3l39XYAHk32Yvy7Mzz+gSbAUIXwziV4zg2Liz4dqMYS+rcp4vq4LWQ26
+ M+DQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX8qkcSOgSz1m0wApD2FZRzMQb5/8/h4qL/808XueKkTmPeFE6KcpQFDMVEaOgv+Qme0N2gPwrxYJfCt+LQQ1sYB7dhUis=
+X-Gm-Message-State: AOJu0YzD0UzviEE3HoPv5JmUntIpibDpo4f9w29LAxS8vJUOI45Azhy2
+ WaJO6B5/65xe2LxPw90205U9kFhMiVUBHsYh3W3MJ/fTq+vz89/z4XftD62XgK4=
+X-Google-Smtp-Source: AGHT+IFT2+cVpKPUTuUdMzPxeTDttft+njFeJ3JTgfufCq5/t8hAkj8ZtbP0wSBTkswQEAp4MzSsjQ==
+X-Received: by 2002:a05:6000:184a:b0:33d:6b89:fbbb with SMTP id
+ c10-20020a056000184a00b0033d6b89fbbbmr3932116wri.47.1708523129812; 
+ Wed, 21 Feb 2024 05:45:29 -0800 (PST)
+Received: from [192.168.245.175] (99.red-88-29-190.dynamicip.rima-tde.net.
+ [88.29.190.99]) by smtp.gmail.com with ESMTPSA id
+ co3-20020a0560000a0300b0033d70dd0e04sm4790426wrb.8.2024.02.21.05.45.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 21 Feb 2024 05:45:29 -0800 (PST)
+Message-ID: <65a89550-7932-4ee4-a693-3456322cdca1@linaro.org>
+Date: Wed, 21 Feb 2024 14:07:51 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fDqWTxPM;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zdQ5VASh
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.51 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
- TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- MIME_GOOD(-0.10)[text/plain];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- BAYES_HAM(-3.00)[100.00%]; NEURAL_HAM_LONG(-1.00)[-1.000];
- RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]
-X-Spam-Score: -4.51
-X-Rspamd-Queue-Id: E38D71FB5F
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/10] hw/i386: Store pointers to IDE buses in
+ PCMachineState
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>
+References: <20240220160622.114437-1-peter.maydell@linaro.org>
+ <20240220160622.114437-2-peter.maydell@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240220160622.114437-2-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,79 +100,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+Hi Peter,
 
-> On Thu, Feb 08, 2024 at 09:48:33AM -0300, Fabiano Rosas wrote:
->> peterx@redhat.com writes:
->> 
->> > From: Peter Xu <peterx@redhat.com>
->> >
->> > With a clear definition of p->c protocol, where we only set it up if the
->> > channel is fully established (TLS or non-TLS), registered_yank boolean will
->> > have equal meaning of "p->c != NULL".
->> >
->> > Drop registered_yank by checking p->c instead.
->> >
->> > Reviewed-by: Fabiano Rosas <farosas@suse.de>
->> > Signed-off-by: Peter Xu <peterx@redhat.com>
->> > ---
->> >  migration/multifd.h | 2 --
->> >  migration/multifd.c | 7 +++----
->> >  2 files changed, 3 insertions(+), 6 deletions(-)
->> >
->> > diff --git a/migration/multifd.h b/migration/multifd.h
->> > index 8a1cad0996..b3fe27ae93 100644
->> > --- a/migration/multifd.h
->> > +++ b/migration/multifd.h
->> > @@ -78,8 +78,6 @@ typedef struct {
->> >      bool tls_thread_created;
->> >      /* communication channel */
->> >      QIOChannel *c;
->> > -    /* is the yank function registered */
->> > -    bool registered_yank;
->> >      /* packet allocated len */
->> >      uint32_t packet_len;
->> >      /* guest page size */
->> > diff --git a/migration/multifd.c b/migration/multifd.c
->> > index 4a85a6b7b3..278453cf84 100644
->> > --- a/migration/multifd.c
->> > +++ b/migration/multifd.c
->> > @@ -648,11 +648,11 @@ static int multifd_send_channel_destroy(QIOChannel *send)
->> >  
->> >  static bool multifd_send_cleanup_channel(MultiFDSendParams *p, Error **errp)
->> >  {
->> > -    if (p->registered_yank) {
->> > +    if (p->c) {
->> >          migration_ioc_unregister_yank(p->c);
->> > +        multifd_send_channel_destroy(p->c);
->> 
->> At socket_send_channel_destroy the clean up of outgoing_args.saddr will
->> now be skipped. The failure at multifd_new_send_channel_async might have
->> been due to TLS, in which case all of plain socket setup will have
->> happened properly.
->
-> Right, IMHO it's a hack to free globals in a per-channel helper.  We should
-> have moved:
->
->     if (outgoing_args.saddr) {
->         qapi_free_SocketAddress(outgoing_args.saddr);
->         outgoing_args.saddr = NULL;
->     }
->
-> Outside irrelevant of that..
->
-> That could be done later I guess, because we have one more guard:
->
-> socket_start_outgoing_migration():
->     /* in case previous migration leaked it */
->     qapi_free_SocketAddress(outgoing_args.saddr);
->     outgoing_args.saddr = addr;
->
-> If you think proper, I can add one more patch to do that cleanup, IOW, move
-> above free() into multifd_send_cleanup_state().
+On 20/2/24 17:06, Peter Maydell wrote:
+> Add the two IDE bus BusState pointers to the set we keep in PCMachineState.
+> This allows us to avoid passing them to pc_cmos_init(), and also will
+> allow a refactoring of how we call pc_cmos_init_late().
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   include/hw/i386/pc.h |  4 +++-
+>   hw/i386/pc.c         |  5 ++---
+>   hw/i386/pc_piix.c    | 16 +++++++---------
+>   hw/i386/pc_q35.c     |  9 ++++-----
+>   4 files changed, 16 insertions(+), 18 deletions(-)
 
-Sounds good.
 
->
-> Thanks,
+> @@ -300,13 +299,13 @@ static void pc_q35_init(MachineState *machine)
+>                                                            ICH9_SATA1_FUNC),
+>                                                  "ich9-ahci");
+>           ich9 = ICH9_AHCI(pdev);
+> -        idebus[0] = qdev_get_child_bus(DEVICE(pdev), "ide.0");
+> -        idebus[1] = qdev_get_child_bus(DEVICE(pdev), "ide.1");
+> +        pcms->idebus[0] = qdev_get_child_bus(DEVICE(pdev), "ide.0");
+> +        pcms->idebus[1] = qdev_get_child_bus(DEVICE(pdev), "ide.1");
+>           g_assert(MAX_SATA_PORTS == ich9->ahci.ports);
+>           ide_drive_get(hd, ich9->ahci.ports);
+>           ahci_ide_create_devs(&ich9->ahci, hd);
+>       } else {
+> -        idebus[0] = idebus[1] = NULL;
+> +        pcms->idebus[0] = pcms->idebus[1] = NULL;
+
+Since PCMachineState is zero-initialized, this part is now
+pointless.
+
+Since my ICH9 series clashes with your patch, I'm inclined to
+queue it in my hw-misc tree, with the following squashed:
+
+-- >8 --
+
+-    } else {
+-        pcms->idebus[0] = pcms->idebus[1] = NULL;
+
+---
+
+>       }
+>   
+>       if (machine_usb(machine)) {
+> @@ -327,7 +326,7 @@ static void pc_q35_init(MachineState *machine)
+>           smbus_eeprom_init(pcms->smbus, 8, NULL, 0);
+>       }
+>   
+> -    pc_cmos_init(pcms, idebus[0], idebus[1], rtc_state);
+> +    pc_cmos_init(pcms, rtc_state);
+>   
+>       /* the rest devices to which pci devfn is automatically assigned */
+>       pc_vga_init(isa_bus, host_bus);
+
 
