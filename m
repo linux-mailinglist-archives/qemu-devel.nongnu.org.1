@@ -2,91 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3179385E0CD
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:19:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FAC685E168
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:37:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoJj-000120-Mv; Wed, 21 Feb 2024 10:15:27 -0500
+	id 1rcoVm-00040R-FN; Wed, 21 Feb 2024 10:27:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcoJO-0000nB-6o
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:15:06 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rcoNP-0006jE-0p
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:19:15 -0500
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcmtx-0002bw-U4
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 08:44:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708523084;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- resent-to:resent-from:resent-message-id:in-reply-to:in-reply-to:
- references:references; bh=yom5qVcNfraWQaHI7ahibAxGsXgPAW0YgsRkhiRCSlc=;
- b=SC8GlQ/Tlbv8UjICoNPwn9LqmWI04hhdyprcd04r1hVjSxYqMprJmdrPPE90kP6YrxOSEV
- g42rf2O6x0CBMzPHCI1HLgjk0J+B+RWdqCHDy4tJRSDzHWNI/712SXyyiE0kifv6uHCPNT
- o/5QjDFlbzLDBWJil7Nt4DVVv7cEj9c=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-20-CukR6-3kPBaPeB6KchUj_g-1; Wed,
- 21 Feb 2024 08:44:39 -0500
-X-MC-Unique: CukR6-3kPBaPeB6KchUj_g-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DC6CE3C2B607;
- Wed, 21 Feb 2024 13:44:38 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D4AB82166B32;
- Wed, 21 Feb 2024 13:44:36 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 906F021E66D5; Wed, 21 Feb 2024 14:44:35 +0100 (CET)
-Resent-To: alistair@alistair23.me, edgar.iglesias@gmail.com,
- marcel.apfelbaum@gmail.com, jonathan.cameron@huawei.com,
- zhao1.liu@intel.com, peter.maydell@linaro.org, philmd@linaro.org,
- zhao1.liu@linux.intel.com, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- qemu-trivial@nongnu.org, fan.ni@samsung.com, laurent@vivier.eu
-Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Wed, 21 Feb 2024 14:44:35 +0100
-Resent-Message-ID: <87v86i2apo.fsf@pond.sub.org>
-From: Markus Armbruster <armbru@redhat.com>
-To: Zhao Liu <zhao1.liu@linux.intel.com>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,  Fan Ni
- <fan.ni@samsung.com>,  Laurent Vivier <laurent@vivier.eu>,  Alistair
- Francis <alistair@alistair23.me>,  "Edgar E . Iglesias"
- <edgar.iglesias@gmail.com>,  Peter Maydell <peter.maydell@linaro.org>,
- "Michael S . Tsirkin" <mst@redhat.com>,  Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>,  Alex Williamson
- <alex.williamson@redhat.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org,
- qemu-arm@nongnu.org,  qemu-trivial@nongnu.org,  Zhao Liu
- <zhao1.liu@intel.com>
-Subject: Re: [PATCH 3/6] hw/mem/cxl_type3: Fix missing ERRP_GUARD() in
- ct3_realize()
-In-Reply-To: <20240221094317.994454-4-zhao1.liu@linux.intel.com> (Zhao Liu's
- message of "Wed, 21 Feb 2024 17:43:14 +0800")
-References: <20240221094317.994454-1-zhao1.liu@linux.intel.com>
- <20240221094317.994454-4-zhao1.liu@linux.intel.com>
-Date: Wed, 21 Feb 2024 12:35:47 +0100
-Message-ID: <87zfvuuk18.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rckzP-0007C2-Dj
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 06:42:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=XjkSQ6FFuUq1H3Y+40/Af8oEqKH3vQWBHpb1ItFfoF8=; b=SCUb3/piRgvblfRe4LuIz79EvL
+ SCgl4zwhjatIaqDp99yEzy1Z46YYiMKjpWCUKiSK3hJpjM7COrzQ4NnZMJIMFZ806XOtdIT5Afxf4
+ HCsfBICdTUeWFypv50yf9RKRG1uYyneXOUGXoQh88OneliABLsp4SpzD8q2H/1FuBvDpuS+eNCwUR
+ m2b6StjQorGWiUJmYATQP6aGGEemNbgsE+OcqLBXvMgPOWaBaTW/bXEUs+6wzUNSlykt7as/vJgjN
+ wDYK6WfKpA/L9Gisvy7xvS2M7a7zs4ebfrG6GEMP1DQaEWTHYv7FBxRyEPZNpv7J5Yje4M80WPIJ1
+ JmgdmIuvOAtkLWniVquEU3gAZ5jk6DflTbffbnXGMiYUYhWkaE5z5LZeJFUirTCNxPAxJ9GGLs36H
+ 2wdgYzyLP/UYNfnDilbvzCXdWiUEyQkfrbN6GqWJRPKfSgT3QvoDboteD8+z7uFAZliNkTXJs5gp4
+ +ZbMPHhyQCD8t4Sr3sVRTZUEESPTLrOsCKNT38xPLC0upYYBhlUFS3X0ySPsg1Q/6HaUk08FRtDcb
+ NIQUqqQwLXB56kYLNmdFVRIHj3cLBALeKtUiUKXCfYgCMVln/Clqp5b+gcVNpC9lELaWhB4zdB5hp
+ qo2QztJfDMajhlJTGjYF+4FypVgiLjgaFFJlQzbCg=;
+Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rckyZ-0008HQ-LW; Wed, 21 Feb 2024 11:41:27 +0000
+Message-ID: <ace897a6-fb87-4375-ade1-9c96d39cd583@ilande.co.uk>
+Date: Wed, 21 Feb 2024 11:42:04 +0000
 MIME-Version: 1.0
-Content-Type: text/plain
-Lines: 63
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Aurelien Jarno <aurelien@aurel32.net>, Jiaxun Yang
+ <jiaxun.yang@flygoat.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>
+References: <20240218131701.91132-1-shentey@gmail.com>
+ <20240218131701.91132-2-shentey@gmail.com>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <20240218131701.91132-2-shentey@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 1/5] hw/isa/meson.build: Sort alphabetically
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,68 +109,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Zhao Liu <zhao1.liu@linux.intel.com> writes:
+On 18/02/2024 13:16, Bernhard Beschow wrote:
 
-> From: Zhao Liu <zhao1.liu@intel.com>
->
-> As the comment in qapi/error, dereferencing @errp requires
-> ERRP_GUARD():
->
-> * = Why, when and how to use ERRP_GUARD() =
-> *
-> * Without ERRP_GUARD(), use of the @errp parameter is restricted:
-> * - It must not be dereferenced, because it may be null.
-> * - It should not be passed to error_prepend() or
-> *   error_append_hint(), because that doesn't work with &error_fatal.
-> * ERRP_GUARD() lifts these restrictions.
-> *
-> * To use ERRP_GUARD(), add it right at the beginning of the function.
-> * @errp can then be used without worrying about the argument being
-> * NULL or &error_fatal.
-> *
-> * Using it when it's not needed is safe, but please avoid cluttering
-> * the source with useless code.
->
-> Currently, since ct3_realize() - as a PCIDeviceClass.realize() method -
-> doesn't get the NULL errp parameter, it doesn't trigger the dereference
-> issue.
->
-> To follow the requirement of errp, add missing ERRP_GUARD() in
-> ct3_realize().
->
-> Suggested-by: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> Fixes: fbd758008f0f "hw/isa: extract FDC37M81X to a separate file"
+> 
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 > ---
-> Suggested by credit:
->  Markus: Referred his explanation about ERRP_GUARD().
-> ---
->  hw/mem/cxl_type3.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> index e8801805b90f..a3b0761f843b 100644
-> --- a/hw/mem/cxl_type3.c
-> +++ b/hw/mem/cxl_type3.c
-> @@ -645,6 +645,7 @@ static DOEProtocol doe_cdat_prot[] = {
->  
->  static void ct3_realize(PCIDevice *pci_dev, Error **errp)
->  {
-> +    ERRP_GUARD();
->      CXLType3Dev *ct3d = CXL_TYPE3(pci_dev);
->      CXLComponentState *cxl_cstate = &ct3d->cxl_cstate;
->      ComponentRegisters *regs = &cxl_cstate->crb;
+>   hw/isa/meson.build | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/isa/meson.build b/hw/isa/meson.build
+> index f650b39507..3219282217 100644
+> --- a/hw/isa/meson.build
+> +++ b/hw/isa/meson.build
+> @@ -1,10 +1,10 @@
+>   system_ss.add(when: 'CONFIG_APM', if_true: files('apm.c'))
+> +system_ss.add(when: 'CONFIG_FDC37M81X', if_true: files('fdc37m81x-superio.c'))
+>   system_ss.add(when: 'CONFIG_I82378', if_true: files('i82378.c'))
+>   system_ss.add(when: 'CONFIG_ISA_BUS', if_true: files('isa-bus.c'))
+>   system_ss.add(when: 'CONFIG_ISA_SUPERIO', if_true: files('isa-superio.c'))
+>   system_ss.add(when: 'CONFIG_PC87312', if_true: files('pc87312.c'))
+>   system_ss.add(when: 'CONFIG_PIIX', if_true: files('piix.c'))
+> -system_ss.add(when: 'CONFIG_FDC37M81X', if_true: files('fdc37m81x-superio.c'))
+>   system_ss.add(when: 'CONFIG_SMC37C669', if_true: files('smc37c669-superio.c'))
+>   system_ss.add(when: 'CONFIG_VT82C686', if_true: files('vt82c686.c'))
 
-The dereference is
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-       cxl_doe_cdat_init(cxl_cstate, errp);
-       if (*errp) {
-           goto err_free_special_ops;
-       }
 
-We check *errp, because cxl_doe_cdat_init() returns void.  Could be
-improved to return bool, along with its callees ct3_load_cdat() and
-ct3_build_cdat(), but that's a slightly more ambitious cleanup, so
+ATB,
 
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Mark.
 
 
