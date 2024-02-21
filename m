@@ -2,48 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D5CE85E12F
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:32:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66BDB85E1C6
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:47:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoZC-0007YA-4v; Wed, 21 Feb 2024 10:31:26 -0500
+	id 1rcoah-0001Rk-SA; Wed, 21 Feb 2024 10:32:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcoNq-0008To-Bp; Wed, 21 Feb 2024 10:19:42 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcoTw-00088G-D6
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:26:00 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rchvy-0003Bp-AH; Wed, 21 Feb 2024 03:26:31 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 08F754F3FA;
- Wed, 21 Feb 2024 11:21:24 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C9126860D9;
- Wed, 21 Feb 2024 11:21:02 +0300 (MSK)
-Received: (nullmailer pid 2142171 invoked by uid 1000);
- Wed, 21 Feb 2024 08:20:59 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.2 60/60] tests/qtest: Depend on dbus_display1_dep
-Date: Wed, 21 Feb 2024 11:20:48 +0300
-Message-Id: <20240221082058.2141850-60-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <qemu-stable-8.2.2-20240221110049@cover.tls.msk.ru>
-References: <qemu-stable-8.2.2-20240221110049@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rchta-0002Zv-UV
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 03:24:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1708503837;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=o3PsEXYR947T0UX4nW866y8pC0Gophy84Mt6DrFM8Xw=;
+ b=dvUB3wQr+TBMnes7CA57uNarvrXxN+DVo/rQ886wpIfkVQnItTO6nLIQwx8YBMZBEz0hR9
+ 9dJjAK/5DEEGyt1NP0K8T/RzwEVb76644Z72UB+Dn63Y7ho5vTtYKaaTw+Cjm9m4aEZ5to
+ bt91eWMGvkBzZkWftmuRLwX2KzRtMR8=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-570-MBJzYqmtNM2bZkgteIxHBQ-1; Wed,
+ 21 Feb 2024 03:23:55 -0500
+X-MC-Unique: MBJzYqmtNM2bZkgteIxHBQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7134F28B7405;
+ Wed, 21 Feb 2024 08:23:55 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4FA72C185D2;
+ Wed, 21 Feb 2024 08:23:55 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 1E12A21E66D5; Wed, 21 Feb 2024 09:23:54 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Het Gala <het.gala@nutanix.com>
+Cc: Markus Armbruster <armbru@redhat.com>,  qemu-devel@nongnu.org,  Peter Xu
+ <peterx@redhat.com>,  Fabiano =?utf-8?Q?Fid=C3=AAncio?=
+ <fabiano@fidencio.org>,  Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH] qapi: Misc cleanups to migrate QAPIs
+In-Reply-To: <b1ce8254-24e8-487e-8da0-d8916f53fcb4@nutanix.com> (Het Gala's
+ message of "Wed, 21 Feb 2024 12:36:57 +0530")
+References: <20240216195659.189091-1-het.gala@nutanix.com>
+ <87edd61ezt.fsf@pond.sub.org>
+ <b1ce8254-24e8-487e-8da0-d8916f53fcb4@nutanix.com>
+Date: Wed, 21 Feb 2024 09:23:54 +0100
+Message-ID: <87a5nuz0md.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -61,30 +84,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Het Gala <het.gala@nutanix.com> writes:
 
-It ensures dbus-display1.c will not be recompiled.
+> Sorry Markus, firstly I thought its just regarding qapi documentation so migration maintainers might not be needed ? but then I realize the commit message fails to specify that
+>
+> IIRC, you are one of the maintainers for qapi. So, just cc'd to you, but you are right, should have done to migration maintainers also.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20240214-dbus-v7-3-7eff29f04c34@daynix.com>
-(cherry picked from commit 186acfbaf7f325833702f50f75ef5116dc29e233)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Cc'ing me was definitely appropriate.
 
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index fc14ae95a3..f096cf3ecd 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -333,7 +333,7 @@ if vnc.found()
- endif
- 
- if dbus_display
--  qtests += {'dbus-display-test': [dbus_display1, gio]}
-+  qtests += {'dbus-display-test': [dbus_display1_dep, gio]}
- endif
- 
- qtest_executables = {}
--- 
-2.39.2
+You can use scripts/get_maintainer.pl to help you figugure out who to
+cc.  For this patch, its output is
+
+    Eric Blake <eblake@redhat.com> (supporter:QAPI Schema)
+    Markus Armbruster <armbru@redhat.com> (supporter:QAPI Schema)
+    Peter Xu <peterx@redhat.com> (maintainer:Migration)
+    Fabiano Rosas <farosas@suse.de> (maintainer:Migration)
+    qemu-devel@nongnu.org (open list:All patches CC here)
+
+> Have we got the wrong Fabiano here ? Isn't Fabiano Rosas the migration maintainer ?
+
+We do!  Butterfingers...
+
+> cc'ing to Fabiano Rosas too.
+
+Thanks for paying attention :)
 
 
