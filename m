@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF94E85E0BB
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:15:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AD3F85E0DA
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:20:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoJK-0000mG-Cc; Wed, 21 Feb 2024 10:15:03 -0500
+	id 1rcoOS-0001we-8d; Wed, 21 Feb 2024 10:20:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rchua-0001iS-8j; Wed, 21 Feb 2024 03:25:04 -0500
+ id 1rcoKw-0000wk-BN; Wed, 21 Feb 2024 10:16:43 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rchuY-0002rG-AH; Wed, 21 Feb 2024 03:25:03 -0500
+ id 1rchuv-00031M-Pt; Wed, 21 Feb 2024 03:25:27 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 219694F3ED;
+ by isrv.corpit.ru (Postfix) with ESMTP id 322174F3EE;
  Wed, 21 Feb 2024 11:21:23 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E0694860CC;
+ by tsrv.corpit.ru (Postfix) with SMTP id F1495860CD;
  Wed, 21 Feb 2024 11:21:01 +0300 (MSK)
-Received: (nullmailer pid 2142131 invoked by uid 1000);
+Received: (nullmailer pid 2142134 invoked by uid 1000);
  Wed, 21 Feb 2024 08:20:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.2 47/60] iotests: Make 144 deterministic again
-Date: Wed, 21 Feb 2024 11:20:35 +0300
-Message-Id: <20240221082058.2141850-47-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.2 48/60] .gitlab-ci/windows.yml: Don't install libusb or
+ spice packages on 32-bit
+Date: Wed, 21 Feb 2024 11:20:36 +0300
+Message-Id: <20240221082058.2141850-48-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.2-20240221110049@cover.tls.msk.ru>
 References: <qemu-stable-8.2.2-20240221110049@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,71 +62,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kevin Wolf <kwolf@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Since commit effd60c8 changed how QMP commands are processed, the order
-of the block-commit return value and job events in iotests 144 wasn't
-fixed and more and caused the test to fail intermittently.
+When msys2 updated their libusb packages to libusb 1.0.27, they
+dropped support for building them for mingw32, leaving only mingw64
+packages.  This broke our CI job, as the 'pacman' package install now
+fails with:
 
-Change the test to cache events first and then print them in a
-predefined order.
+error: target not found: mingw-w64-i686-libusb
+error: target not found: mingw-w64-i686-usbredir
 
-Waiting three times for JOB_STATUS_CHANGE is a bit uglier than just
-waiting for the JOB_STATUS_CHANGE that has "status": "ready", but the
-tooling we have doesn't seem to allow the latter easily.
+(both these binary packages are from the libusb source package).
 
-Fixes: effd60c878176bcaf97fa7ce2b12d04bb8ead6f7
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2126
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-id: 20240209173103.239994-1-kwolf@redhat.com
+Similarly, spice is now 64-bit only:
+error: target not found: mingw-w64-i686-spice
+
+Fix this by dropping these packages from the list we install for our
+msys2-32bit build.  We do this with a simple mechanism for the
+msys2-64bit and msys2-32bit jobs to specify a list of extra packages
+to install on top of the common ones we install for both jobs.
+
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2160
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit cc29c12ec629ba68a4a6cb7d165c94cc8502815a)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Message-id: 20240215155009.2422335-1-peter.maydell@linaro.org
+(cherry picked from commit 8e31b744fdf2c5d933681e4128acee72a83af4b8)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/qemu-iotests/144 b/tests/qemu-iotests/144
-index bdcc498fa2..d284a0e442 100755
---- a/tests/qemu-iotests/144
-+++ b/tests/qemu-iotests/144
-@@ -83,12 +83,22 @@ echo
- echo === Performing block-commit on active layer ===
- echo
- 
-+capture_events="BLOCK_JOB_READY JOB_STATUS_CHANGE"
-+
- # Block commit on active layer, push the new overlay into base
- _send_qemu_cmd $h "{ 'execute': 'block-commit',
-                                 'arguments': {
-                                                  'device': 'virtio0'
-                                               }
--                    }" "READY"
-+                    }" "return"
-+
-+_wait_event $h "JOB_STATUS_CHANGE"
-+_wait_event $h "JOB_STATUS_CHANGE"
-+_wait_event $h "JOB_STATUS_CHANGE"
-+
-+_wait_event $h "BLOCK_JOB_READY"
-+
-+capture_events=
- 
- _send_qemu_cmd $h "{ 'execute': 'block-job-complete',
-                                 'arguments': {
-diff --git a/tests/qemu-iotests/144.out b/tests/qemu-iotests/144.out
-index b3b4812015..2245ddfa10 100644
---- a/tests/qemu-iotests/144.out
-+++ b/tests/qemu-iotests/144.out
-@@ -25,9 +25,9 @@ Formatting 'TEST_DIR/tmp.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off co
-                                                  'device': 'virtio0'
-                                               }
-                     }
-+{"return": {}}
- {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "virtio0"}}
- {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "virtio0"}}
--{"return": {}}
- {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "virtio0"}}
- {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "virtio0", "len": 0, "offset": 0, "speed": 0, "type": "commit"}}
- { 'execute': 'block-job-complete',
+diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
+index f7645f72b7..5c1e385dc8 100644
+--- a/.gitlab-ci.d/windows.yml
++++ b/.gitlab-ci.d/windows.yml
+@@ -88,7 +88,6 @@
+       $MINGW_TARGET-libpng
+       $MINGW_TARGET-libssh
+       $MINGW_TARGET-libtasn1
+-      $MINGW_TARGET-libusb
+       $MINGW_TARGET-lzo2
+       $MINGW_TARGET-nettle
+       $MINGW_TARGET-ninja
+@@ -98,9 +97,8 @@
+       $MINGW_TARGET-SDL2
+       $MINGW_TARGET-SDL2_image
+       $MINGW_TARGET-snappy
+-      $MINGW_TARGET-spice
+-      $MINGW_TARGET-usbredir
+-      $MINGW_TARGET-zstd "
++      $MINGW_TARGET-zstd
++      $EXTRA_PACKAGES "
+   - Write-Output "Running build at $(Get-Date -Format u)"
+   - $env:CHERE_INVOKING = 'yes'  # Preserve the current working directory
+   - $env:MSYS = 'winsymlinks:native' # Enable native Windows symlink
+@@ -123,6 +121,8 @@ msys2-64bit:
+   variables:
+     MINGW_TARGET: mingw-w64-x86_64
+     MSYSTEM: MINGW64
++    # msys2 only ship these packages for 64-bit, not 32-bit
++    EXTRA_PACKAGES: $MINGW_TARGET-libusb $MINGW_TARGET-usbredir $MINGW_TARGET-spice
+     # do not remove "--without-default-devices"!
+     # commit 9f8e6cad65a6 ("gitlab-ci: Speed up the msys2-64bit job by using --without-default-devices"
+     # changed to compile QEMU with the --without-default-devices switch
+@@ -137,5 +137,6 @@ msys2-32bit:
+   variables:
+     MINGW_TARGET: mingw-w64-i686
+     MSYSTEM: MINGW32
++    EXTRA_PACKAGES:
+     CONFIGURE_ARGS:  --target-list=ppc64-softmmu -Ddebug=false -Doptimization=0
+     TEST_ARGS: --no-suite qtest
 -- 
 2.39.2
 
