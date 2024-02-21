@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8CB885D092
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 07:44:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA38B85D082
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 07:35:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcgKF-00086e-V4; Wed, 21 Feb 2024 01:43:28 -0500
+	id 1rcgB5-00052i-2w; Wed, 21 Feb 2024 01:33:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcgKB-00086L-2J
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 01:43:23 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rcgB1-00050l-QF
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 01:33:55 -0500
+Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcgK8-0001iT-AU
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 01:43:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708497798;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=2/PM6D9tq35kldXsGaNiaWRtuIMHcq8jTBMZdxFoQbs=;
- b=CGRC5AP1PYMYOgqU0IFEYUNX0Ho1d0auZgUgzvD7v2F3Jnvo7VPrT3DM+Ps5tXqj6EKQbc
- WD0zYlp4CoY6Dt3HHM1QGrDU8nOPoGZj6zCQnUWeyHBpcb4oPibsrx+7BWlcapeycHgzN6
- dIyZg99U+fVpymo6aKM6kmyo2/LgrvU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-168-DWpgrn1zMOykg4ylhPduHA-1; Wed, 21 Feb 2024 01:43:14 -0500
-X-MC-Unique: DWpgrn1zMOykg4ylhPduHA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9E0D085A589;
- Wed, 21 Feb 2024 06:43:14 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 634EF40C1065;
- Wed, 21 Feb 2024 06:43:14 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3F54521E66D5; Wed, 21 Feb 2024 07:43:08 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Hyman Huang <yong.huang@smartx.com>
-Cc: qemu-devel@nongnu.org,  Kevin Wolf <kwolf@redhat.com>,  Hanna Reitz
- <hreitz@redhat.com>,  Eric Blake <eblake@redhat.com>
-Subject: Re: [PATCH] qapi: Craft the BlockdevCreateOptionsLUKS comment
-In-Reply-To: <91c52e03e46ff0a96559b4e7d66ded582b2ec4e1.1708486450.git.yong.huang@smartx.com>
- (Hyman Huang's message of "Wed, 21 Feb 2024 11:36:58 +0800")
-References: <91c52e03e46ff0a96559b4e7d66ded582b2ec4e1.1708486450.git.yong.huang@smartx.com>
-Date: Wed, 21 Feb 2024 07:43:08 +0100
-Message-ID: <874je22u83.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rcgAz-000073-4b
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 01:33:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1708497233; x=1740033233;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=JIJqq8etKgBFDk+nUooig/25yql7LCBCLbbx9r1h6+k=;
+ b=BKzxMxsp7TAhx9Z5PgFMbJBFv/k2DWpA9GRA0d9oRdzL5vJ2hGbLpDYW
+ dKN/qHFDpSn3BrAgwz/yVSiqMdaqWxbc4wJ9vtSr8885HxKq2C8T6ghAD
+ TIaUCCrFuji5Ocsa2qcSlMPFS4r/aLS1rAiBGnoAseKNc05VvocfgeoyM
+ tV96E+MCDfPwA0ifo1KpG9uYvlbIDGSq/S5M4n90/2CeaTsSzHkkWvDDd
+ +Kk+8m2d2DHO25+1tEghe1pW/RxdligVwoYfMUocIqZoSxWZ/eZCxEY1w
+ Ov/k0Axv4N9B/c3fCPVTyYs8EMlv75XDT8uQ8YGK2PYkN5HMnUzwIGORI w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="2778524"
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="2778524"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Feb 2024 22:33:50 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="5341712"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa007.jf.intel.com with ESMTP; 20 Feb 2024 22:33:48 -0800
+Date: Wed, 21 Feb 2024 14:47:27 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, qemu-devel@nongnu.org,
+ Xiaoling Song <xiaoling.song@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH 0/8] tests/unit/test-smp-parse.c: Add more CPU topology
+ test cases
+Message-ID: <ZdWcf0pC6S9P/9FY@intel.com>
+References: <20240118144857.2124034-1-zhao1.liu@linux.intel.com>
+ <ZbdyEDhz/pjuZNVE@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZbdyEDhz/pjuZNVE@intel.com>
+Received-SPF: none client-ip=192.198.163.15;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,91 +81,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hyman Huang <yong.huang@smartx.com> writes:
+Hi Philippe,
 
-> Add comment in detail for commit 433957bb7f (qapi:
-> Make parameter 'file' optional for
-> BlockdevCreateOptionsLUKS).
->
-> Signed-off-by: Hyman Huang <yong.huang@smartx.com>
-> ---
->  qapi/block-core.json | 20 +++++++++++++++++++-
->  1 file changed, 19 insertions(+), 1 deletion(-)
->
-> diff --git a/qapi/block-core.json b/qapi/block-core.json
-> index ab5a93a966..42b0840d43 100644
-> --- a/qapi/block-core.json
-> +++ b/qapi/block-core.json
-> @@ -4973,7 +4973,25 @@
->  ##
->  # @BlockdevCreateOptionsLUKS:
->  #
-> -# Driver specific image creation options for LUKS.
-> +# Driver specific image creation options for LUKS. Note that
-> +# @file is required if @preallocation is specified and equals
-> +# PREALLOC_MODE_ON. The following three scenarios determine how
-> +# creation logic behaves when @preallocation is either equal to
-> +# PREALLOC_MODE_OFF or is not given:
-> +#
-> +#  1) When @file is given only, format the block device referenced
-> +#     by @file as the LUKS specification and trunk it to the @size.
+Could you pls help me review this series?
 
-Do you mean "truncate it to @size"?
+...Except you, I'm not sure the other machine core maintainers will
+review this.
 
-> +#     In this case, the @size should reflect amount of space made
-> +#     available to the guest, so the trunk size must take account
-> +#     of that which will be used by the crypto header.
-> +#
-> +#  2) When @header is given only, just format the block device
-> +#     referenced by @header as the LUKS specification.
-> +#
-> +#  3) When both @file and @header are given, block device
-> +#     referenced by @file should be trunked to @size, and block
-> +#     device referenced by @header should be formatted as the LUKS
-> +#     specification.
->  #
->  # @file: Node to create the image format on, mandatory except when
->  #        'preallocation' is not requested
+If this series is acceptable, next I can add module level test case,
+cache topology test case and more clean up based on this.
 
-Let's see whether I understand.
+Thanks,
+Zhao
 
-blockdev-create with "driver": "luks" can work in three different ways:
-
-1. Create an image with a LUKS header
-
-2. Create just a detached LUKS header
-
-3. Create an image and a detached LUKS header
-
-Correct?
-
-@file and @header are BlockdevRef, which means they refer to existing
-images with arbitrary driver.  Could be "file", "qcow2", or anything.
-
-Correct?
-
-To get 1., specify @file, but not @header.
-
-To get 2., specify @header, but not @file.
-
-To get 3., specify both.
-
-Specifying neither is an error.
-
-Correct?
-
-In any case, @size is the logical size of the image (how much data it
-can hold).
-
-With 1., the actual image size is a bit larger due to the LUKS header.
-The @file image is resized to that size: if it's shorter, it's grown, if
-it's longer, it's truncated.
-
-With 2., @size is merely recorded in the detached LUKS header.
-
-With 3., @size is recorded in the detached LUKS header, and the @file
-image is resized as with 1.
-
-Correct?
-
+On Mon, Jan 29, 2024 at 05:38:24PM +0800, Zhao Liu wrote:
+> Date: Mon, 29 Jan 2024 17:38:24 +0800
+> From: Zhao Liu <zhao1.liu@linux.intel.com>
+> Subject: Re: [PATCH 0/8] tests/unit/test-smp-parse.c: Add more CPU topology
+>  test cases
+> 
+> Hi Philippe,
+> 
+> A kindly ping.
+> 
+> Thanks,
+> Zhao
+> 
+> On Thu, Jan 18, 2024 at 10:48:49PM +0800, Zhao Liu wrote:
+> > Date: Thu, 18 Jan 2024 22:48:49 +0800
+> > From: Zhao Liu <zhao1.liu@linux.intel.com>
+> > Subject: [PATCH 0/8] tests/unit/test-smp-parse.c: Add more CPU topology
+> >  test cases
+> > X-Mailer: git-send-email 2.34.1
+> > 
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> > 
+> > Hi list,
+> > 
+> > Currently, test-smp-parse lacks the following cases:
+> > * The case to cover drawer and book parameters parsing in -smp.
+> > * The case to cover the full topology (with total 7 levels) to ensure
+> >   that the topology-related calculations are correct.
+> > * The case to check smp_props.has_clusters of MachineClass.
+> > 
+> > Thus, add the above cases to improve test coverage.
+> > 
+> > In addition, people is trying to bump max_cpus to 4096 for PC machine
+> > [1]. Without considering other changes, it's only a matter of time
+> > before the maximum CPUs is raised. Therefore, aslo bump max_cpus to 4096
+> > in -smp related test cases as a start.
+> > 
+> > [1]: https://lore.kernel.org/qemu-devel/20231208122611.32311-1-anisinha@redhat.com/
+> > 
+> > Regards,
+> > Zhao
+> > 
+> > ---
+> > Zhao Liu (8):
+> >   tests/unit/test-smp-parse.c: Use CPU number macros in invalid topology
+> >     case
+> >   tests/unit/test-smp-parse.c: Bump max_cpus to 4096
+> >   tests/unit/test-smp-parse.c: Make test cases aware of the book/drawer
+> >   tests/unit/test-smp-parse.c: Test "books" parameter in -smp
+> >   tests/unit/test-smp-parse.c: Test "drawers" parameter in -smp
+> >   tests/unit/test-smp-parse.c: Test "drawers" and "books" combination
+> >     case
+> >   tests/unit/test-smp-parse.c: Test the full 7-levels topology hierarchy
+> >   tests/unit/test-smp-parse.c: Test smp_props.has_clusters
+> > 
+> >  tests/unit/test-smp-parse.c | 515 ++++++++++++++++++++++++++++++++++--
+> >  1 file changed, 494 insertions(+), 21 deletions(-)
+> > 
+> > -- 
+> > 2.34.1
+> > 
+> > 
+> 
 
