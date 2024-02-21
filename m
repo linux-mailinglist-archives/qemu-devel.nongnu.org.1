@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0DF185EADF
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:31:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F11685EA04
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:23:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rctxV-0002GX-Tp; Wed, 21 Feb 2024 16:16:54 -0500
+	id 1rctxc-0002Yo-Hk; Wed, 21 Feb 2024 16:17:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctxI-00024g-Rj; Wed, 21 Feb 2024 16:16:43 -0500
+ id 1rctxK-000252-Oe; Wed, 21 Feb 2024 16:16:43 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctxF-0000lD-Ma; Wed, 21 Feb 2024 16:16:40 -0500
+ id 1rctxH-0000lj-UI; Wed, 21 Feb 2024 16:16:42 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1A6044F7EB;
+ by isrv.corpit.ru (Postfix) with ESMTP id 28D744F7EC;
  Thu, 22 Feb 2024 00:16:45 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C5703869A4;
+ by tsrv.corpit.ru (Postfix) with SMTP id D39D4869A5;
  Thu, 22 Feb 2024 00:16:22 +0300 (MSK)
-Received: (nullmailer pid 2335256 invoked by uid 1000);
+Received: (nullmailer pid 2335259 invoked by uid 1000);
  Wed, 21 Feb 2024 21:16:22 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-block@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 04/28] qemu-img: global option processing and error printing
-Date: Thu, 22 Feb 2024 00:15:45 +0300
-Message-Id: <20240221211622.2335170-4-mjt@tls.msk.ru>
+Subject: [PATCH 05/28] qemu-img: pass current cmd info into command handlers
+Date: Thu, 22 Feb 2024 00:15:46 +0300
+Message-Id: <20240221211622.2335170-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1708544927.git.mjt@tls.msk.ru>
 References: <cover.1708544927.git.mjt@tls.msk.ru>
@@ -58,314 +58,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In order to correctly print executable name in various
-error messages, pass argv[0] to error_exit() function.
-This way, error messages will refer to actual executable
-name, which may be different from 'qemu-img'.
-
-For subcommands, pass whole argv[] array, so argv[0] is
-the executable name, not subcommand name.  In order to
-do that, avoid resetting optind but continue with the
-next option.  Also don't require at least 3 options on
-the command line: it makes no sense with options before
-subcommand.
-
-Before invoking a subcommand, replace argv[0] to include
-the subcommand name.
-
-Introduce tryhelp() function which just prints
-
- try 'command-name --help' for more info
-
-and exits.  When tryhelp() is called from within a subcommand
-handler, the message will look like:
-
- try 'command-name subcommand --help' for more info
-
-qemu-img uses getopt_long() with ':' as the first char in
-optstring parameter, which means it doesn't print error
-messages but return ':' or '?' instead, and qemu-img uses
-unrecognized_option() or missing_argument() function to
-print error messages.  But it doesn't quite work:
-
- $ ./qemu-img -xx
- qemu-img: unrecognized option './qemu-img'
-
-so the aim is to let getopt_long() to print regular error
-messages instead (removing ':' prefix from optstring) and
-remove handling of '?' and ':' "options" entirely.  With
-concatenated argv[0] and the subcommand, it all finally
-does the right thing in all cases.  This will be done in
-subsequent changes command by command, with main() done
-last.
-
-unrecognized_option() and missing_argument() functions
-prototypes aren't changed by this patch, since they're
-called from many places and will be removed a few patches
-later.  Only artifical "qemu-img" argv0 is provided in
-there for now.
+This info will be used to generate --help output.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- qemu-img.c | 75 +++++++++++++++++++++++++++---------------------------
- 1 file changed, 38 insertions(+), 37 deletions(-)
+ qemu-img.c | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index df425b2517..44dbf5be4f 100644
+index 44dbf5be4f..38ac0f1845 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -101,8 +101,15 @@ static void format_print(void *opaque, const char *name)
-     printf(" %s", name);
+@@ -60,7 +60,7 @@
+ 
+ typedef struct img_cmd_t {
+     const char *name;
+-    int (*handler)(int argc, char **argv);
++    int (*handler)(const struct img_cmd_t *ccmd, int argc, char **argv);
+ } img_cmd_t;
+ 
+ enum {
+@@ -514,7 +514,7 @@ static int64_t cvtnum(const char *name, const char *value)
+     return cvtnum_full(name, value, 0, INT64_MAX);
  }
  
--static G_NORETURN G_GNUC_PRINTF(1, 2)
--void error_exit(const char *fmt, ...)
-+static G_NORETURN
-+void tryhelp(const char *argv0)
-+{
-+    error_printf("Try '%s --help' for more info\n", argv0);
-+    exit(EXIT_FAILURE);
-+}
-+
-+static G_NORETURN G_GNUC_PRINTF(2, 3)
-+void error_exit(const char *argv0, const char *fmt, ...)
+-static int img_create(int argc, char **argv)
++static int img_create(const img_cmd_t *ccmd, int argc, char **argv)
  {
-     va_list ap;
- 
-@@ -110,20 +117,19 @@ void error_exit(const char *fmt, ...)
-     error_vreport(fmt, ap);
-     va_end(ap);
- 
--    error_printf("Try 'qemu-img --help' for more information\n");
--    exit(EXIT_FAILURE);
-+    tryhelp(argv0);
- }
- 
- static G_NORETURN
- void missing_argument(const char *option)
+     int c;
+     int64_t img_size = -1;
+@@ -719,7 +719,7 @@ static int collect_image_check(BlockDriverState *bs,
+  *  3 - Check completed, image has leaked clusters, but is good otherwise
+  * 63 - Checks are not supported by the image format
+  */
+-static int img_check(int argc, char **argv)
++static int img_check(const img_cmd_t *ccmd, int argc, char **argv)
  {
--    error_exit("missing argument for option '%s'", option);
-+    error_exit("qemu-img", "missing argument for option '%s'", option);
+     int c, ret;
+     OutputFormat output_format = OFORMAT_HUMAN;
+@@ -951,7 +951,7 @@ static void run_block_job(BlockJob *job, Error **errp)
+     }
  }
  
- static G_NORETURN
- void unrecognized_option(const char *option)
+-static int img_commit(int argc, char **argv)
++static int img_commit(const img_cmd_t *ccmd, int argc, char **argv)
  {
--    error_exit("unrecognized option '%s'", option);
-+    error_exit("qemu-img", "unrecognized option '%s'", option);
+     int c, ret, flags;
+     const char *filename, *fmt, *cache, *base;
+@@ -1358,7 +1358,7 @@ static int check_empty_sectors(BlockBackend *blk, int64_t offset,
+  * 1 - Images differ
+  * >1 - Error occurred
+  */
+-static int img_compare(int argc, char **argv)
++static int img_compare(const img_cmd_t *ccmd, int argc, char **argv)
+ {
+     const char *fmt1 = NULL, *fmt2 = NULL, *cache, *filename1, *filename2;
+     BlockBackend *blk1, *blk2;
+@@ -2234,7 +2234,7 @@ static void set_rate_limit(BlockBackend *blk, int64_t rate_limit)
+     blk_set_io_limits(blk, &cfg);
  }
  
- /* Please keep in synch with docs/tools/qemu-img.rst */
-@@ -576,7 +582,7 @@ static int img_create(int argc, char **argv)
-     }
+-static int img_convert(int argc, char **argv)
++static int img_convert(const img_cmd_t *ccmd, int argc, char **argv)
+ {
+     int c, bs_i, flags, src_flags = BDRV_O_NO_SHARE;
+     const char *fmt = NULL, *out_fmt = NULL, *cache = "unsafe",
+@@ -3002,7 +3002,7 @@ err:
+     return NULL;
+ }
  
-     if (optind >= argc) {
--        error_exit("Expecting image file name");
-+        error_exit(argv[0], "Expecting image file name");
-     }
-     optind++;
+-static int img_info(int argc, char **argv)
++static int img_info(const img_cmd_t *ccmd, int argc, char **argv)
+ {
+     int c;
+     OutputFormat output_format = OFORMAT_HUMAN;
+@@ -3227,7 +3227,7 @@ static inline bool entry_mergeable(const MapEntry *curr, const MapEntry *next)
+     return true;
+ }
  
-@@ -588,7 +594,7 @@ static int img_create(int argc, char **argv)
-         }
-     }
-     if (optind != argc) {
--        error_exit("Unexpected argument: %s", argv[optind]);
-+        error_exit(argv[0], "Unexpected argument: %s", argv[optind]);
-     }
+-static int img_map(int argc, char **argv)
++static int img_map(const img_cmd_t *ccmd, int argc, char **argv)
+ {
+     int c;
+     OutputFormat output_format = OFORMAT_HUMAN;
+@@ -3376,7 +3376,7 @@ out:
+ #define SNAPSHOT_APPLY  3
+ #define SNAPSHOT_DELETE 4
  
-     bdrv_img_create(filename, fmt, base_filename, base_fmt,
-@@ -770,7 +776,7 @@ static int img_check(int argc, char **argv)
-             } else if (!strcmp(optarg, "all")) {
-                 fix = BDRV_FIX_LEAKS | BDRV_FIX_ERRORS;
-             } else {
--                error_exit("Unknown option value for -r "
-+                error_exit(argv[0], "Unknown option value for -r "
-                            "(expecting 'leaks' or 'all'): %s", optarg);
-             }
-             break;
-@@ -795,7 +801,7 @@ static int img_check(int argc, char **argv)
-         }
-     }
-     if (optind != argc - 1) {
--        error_exit("Expecting one image file name");
-+        error_exit(argv[0], "Expecting one image file name");
-     }
-     filename = argv[optind++];
+-static int img_snapshot(int argc, char **argv)
++static int img_snapshot(const img_cmd_t *ccmd, int argc, char **argv)
+ {
+     BlockBackend *blk;
+     BlockDriverState *bs;
+@@ -3534,7 +3534,7 @@ static int img_snapshot(int argc, char **argv)
+     return 0;
+ }
  
-@@ -1025,7 +1031,7 @@ static int img_commit(int argc, char **argv)
-     }
+-static int img_rebase(int argc, char **argv)
++static int img_rebase(const img_cmd_t *ccmd, int argc, char **argv)
+ {
+     BlockBackend *blk = NULL, *blk_old_backing = NULL, *blk_new_backing = NULL;
+     uint8_t *buf_old = NULL;
+@@ -4028,7 +4028,7 @@ out:
+     return 0;
+ }
  
-     if (optind != argc - 1) {
--        error_exit("Expecting one image file name");
-+        error_exit(argv[0], "Expecting one image file name");
-     }
-     filename = argv[optind++];
+-static int img_resize(int argc, char **argv)
++static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
+ {
+     Error *err = NULL;
+     int c, ret, relative;
+@@ -4241,7 +4241,7 @@ static int print_amend_option_help(const char *format)
+     return 0;
+ }
  
-@@ -1446,7 +1452,7 @@ static int img_compare(int argc, char **argv)
+-static int img_amend(int argc, char **argv)
++static int img_amend(const img_cmd_t *ccmd, int argc, char **argv)
+ {
+     Error *err = NULL;
+     int c, ret = 0;
+@@ -4505,7 +4505,7 @@ static void bench_cb(void *opaque, int ret)
+     }
+ }
  
+-static int img_bench(int argc, char **argv)
++static int img_bench(const img_cmd_t *ccmd, int argc, char **argv)
+ {
+     int c, ret = 0;
+     const char *fmt = NULL, *filename;
+@@ -4775,7 +4775,7 @@ typedef struct ImgBitmapAction {
+     QSIMPLEQ_ENTRY(ImgBitmapAction) next;
+ } ImgBitmapAction;
  
-     if (optind != argc - 2) {
--        error_exit("Expecting two image file names");
-+        error_exit(argv[0], "Expecting two image file names");
-     }
-     filename1 = argv[optind++];
-     filename2 = argv[optind++];
-@@ -3056,7 +3062,7 @@ static int img_info(int argc, char **argv)
-         }
-     }
-     if (optind != argc - 1) {
--        error_exit("Expecting one image file name");
-+        error_exit(argv[0], "Expecting one image file name");
-     }
-     filename = argv[optind++];
+-static int img_bitmap(int argc, char **argv)
++static int img_bitmap(const img_cmd_t *ccmd, int argc, char **argv)
+ {
+     Error *err = NULL;
+     int c, ret = 1;
+@@ -5075,7 +5075,7 @@ static int img_dd_skip(const char *arg,
+     return 0;
+ }
  
-@@ -3296,7 +3302,7 @@ static int img_map(int argc, char **argv)
-         }
-     }
-     if (optind != argc - 1) {
--        error_exit("Expecting one image file name");
-+        error_exit(argv[0], "Expecting one image file name");
-     }
-     filename = argv[optind];
+-static int img_dd(int argc, char **argv)
++static int img_dd(const img_cmd_t *ccmd, int argc, char **argv)
+ {
+     int ret = 0;
+     char *arg = NULL;
+@@ -5341,7 +5341,7 @@ static void dump_json_block_measure_info(BlockMeasureInfo *info)
+     g_string_free(str, true);
+ }
  
-@@ -3411,7 +3417,7 @@ static int img_snapshot(int argc, char **argv)
-             return 0;
-         case 'l':
-             if (action) {
--                error_exit("Cannot mix '-l', '-a', '-c', '-d'");
-+                error_exit(argv[0], "Cannot mix '-l', '-a', '-c', '-d'");
-                 return 0;
-             }
-             action = SNAPSHOT_LIST;
-@@ -3419,7 +3425,7 @@ static int img_snapshot(int argc, char **argv)
-             break;
-         case 'a':
-             if (action) {
--                error_exit("Cannot mix '-l', '-a', '-c', '-d'");
-+                error_exit(argv[0], "Cannot mix '-l', '-a', '-c', '-d'");
-                 return 0;
-             }
-             action = SNAPSHOT_APPLY;
-@@ -3427,7 +3433,7 @@ static int img_snapshot(int argc, char **argv)
-             break;
-         case 'c':
-             if (action) {
--                error_exit("Cannot mix '-l', '-a', '-c', '-d'");
-+                error_exit(argv[0], "Cannot mix '-l', '-a', '-c', '-d'");
-                 return 0;
-             }
-             action = SNAPSHOT_CREATE;
-@@ -3435,7 +3441,7 @@ static int img_snapshot(int argc, char **argv)
-             break;
-         case 'd':
-             if (action) {
--                error_exit("Cannot mix '-l', '-a', '-c', '-d'");
-+                error_exit(argv[0], "Cannot mix '-l', '-a', '-c', '-d'");
-                 return 0;
-             }
-             action = SNAPSHOT_DELETE;
-@@ -3457,7 +3463,7 @@ static int img_snapshot(int argc, char **argv)
-     }
- 
-     if (optind != argc - 1) {
--        error_exit("Expecting one image file name");
-+        error_exit(argv[0], "Expecting one image file name");
-     }
-     filename = argv[optind++];
- 
-@@ -3624,10 +3630,11 @@ static int img_rebase(int argc, char **argv)
-     }
- 
-     if (optind != argc - 1) {
--        error_exit("Expecting one image file name");
-+        error_exit(argv[0], "Expecting one image file name");
-     }
-     if (!unsafe && !out_baseimg) {
--        error_exit("Must specify backing file (-b) or use unsafe mode (-u)");
-+        error_exit(argv[0],
-+                   "Must specify backing file (-b) or use unsafe mode (-u)");
-     }
-     filename = argv[optind++];
- 
-@@ -4051,7 +4058,7 @@ static int img_resize(int argc, char **argv)
-     /* Remove size from argv manually so that negative numbers are not treated
-      * as options by getopt. */
-     if (argc < 3) {
--        error_exit("Not enough arguments");
-+        error_exit(argv[0], "Not enough arguments");
-         return 1;
-     }
- 
-@@ -4109,7 +4116,7 @@ static int img_resize(int argc, char **argv)
-         }
-     }
-     if (optind != argc - 1) {
--        error_exit("Expecting image file name and size");
-+        error_exit(argv[0], "Expecting image file name and size");
-     }
-     filename = argv[optind++];
- 
-@@ -4306,7 +4313,7 @@ static int img_amend(int argc, char **argv)
-     }
- 
-     if (!options) {
--        error_exit("Must specify options (-o)");
-+        error_exit(argv[0], "Must specify options (-o)");
-     }
- 
-     if (quiet) {
-@@ -4668,7 +4675,7 @@ static int img_bench(int argc, char **argv)
-     }
- 
-     if (optind != argc - 1) {
--        error_exit("Expecting one image file name");
-+        error_exit(argv[0], "Expecting one image file name");
-     }
-     filename = argv[argc - 1];
- 
-@@ -5556,9 +5563,6 @@ int main(int argc, char **argv)
- 
-     module_call_init(MODULE_INIT_QOM);
-     bdrv_init();
--    if (argc < 2) {
--        error_exit("Not enough arguments");
--    }
- 
-     qemu_add_opts(&qemu_source_opts);
-     qemu_add_opts(&qemu_trace_opts);
-@@ -5583,15 +5587,11 @@ int main(int argc, char **argv)
-         }
-     }
- 
--    cmdname = argv[optind];
--
--    /* reset getopt_long scanning */
--    argc -= optind;
--    if (argc < 1) {
--        return 0;
-+    if (optind >= argc) {
-+        error_exit(argv[0], "Not enough arguments");
-     }
--    argv += optind;
--    qemu_reset_optind();
-+
-+    cmdname = argv[optind++];
- 
-     if (!trace_init_backends()) {
-         exit(1);
-@@ -5602,10 +5602,11 @@ int main(int argc, char **argv)
-     /* find the command */
+-static int img_measure(int argc, char **argv)
++static int img_measure(const img_cmd_t *ccmd, int argc, char **argv)
+ {
+     static const struct option long_options[] = {
+         {"help", no_argument, 0, 'h'},
+@@ -5603,7 +5603,7 @@ int main(int argc, char **argv)
      for (cmd = img_cmds; cmd->name != NULL; cmd++) {
          if (!strcmp(cmdname, cmd->name)) {
-+            argv[0] = g_strdup_printf("%s %s", argv[0], cmdname);
-             return cmd->handler(argc, argv);
+             argv[0] = g_strdup_printf("%s %s", argv[0], cmdname);
+-            return cmd->handler(argc, argv);
++            return cmd->handler(cmd, argc, argv);
          }
      }
  
-     /* not found */
--    error_exit("Command not found: %s", cmdname);
-+    error_exit(argv[0], "Command not found: %s", cmdname);
- }
 -- 
 2.39.2
 
