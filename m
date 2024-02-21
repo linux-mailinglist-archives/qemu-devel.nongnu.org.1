@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9583C85E9DC
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:18:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B199885EA55
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:26:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rctyy-00073U-Bu; Wed, 21 Feb 2024 16:18:24 -0500
+	id 1rctz4-0007nD-7P; Wed, 21 Feb 2024 16:18:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctys-0006gI-F1
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:18:18 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctyy-0007GL-M3
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:18:24 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctyq-00015l-2g
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:18:17 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-33d8d208b6cso595f8f.2
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:18:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctyw-00017z-0c
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:18:24 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4126f48411dso1366555e9.0
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:18:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708550294; x=1709155094; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708550300; x=1709155100; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2NDbYpJ4EdF7CcKKuGkJjZq3a85KtwD7y7arPJ8C56o=;
- b=Fcy48vvJC/x4A5u1WeCitCOwaTN71l2VQcECTFTZ22Rr+V93KuX88rQ3CWmOWOUh05
- B1bp2SHHSrLPDI9XhGKbKafEP0Cavhva9vRUs6WJ4W7JE5+GnVi1dbUbq7zzkc3z/5M5
- PP/SnK586LUNmAXtw8nJTutPoABAKP4VVHrpz5wc1r0mnCObZvNvQgYuB1UzDHU8DVRh
- 1Opl6xAAdxnu30FESgKlcwWOequgKOLUy2wCXeQ/aCfRkV52VgtBwRc/Mt/uCQiwW7FF
- Tf6nR72AwY4ElxKRQV5uN6I7LcuBFS+1J9UUdre+p6gvz5P6SyZ7Fo4/55i96S6YnQoi
- 6Sng==
+ bh=AbWaENVXrPEDOnkXsgR9cEbYG3NY0XwtRW+JhFfX4HQ=;
+ b=h68HLyehp/sb1F348DsrxBHvI+gwHeXPYbxRRPQyGc2Cp7tibkHTL95Yslhije+exx
+ vp85F7ZfldhmcK4J9ZKRvJR6sQnCpRWM19O5rXiciGDZ/y7zctc51nywtAt8wJb2ZKCA
+ Z2/rK9ZhNJ2w5lMvpw7sXBMTuAXsanmMM4rHQd6bMVsT6P7EdFaVJ8tNSVh0zJlZCeS+
+ tPm7B1l5v+85Tdj68hh73BoVz8TXpudVzwrZbi010556OY8N/pTY6DC4X7UAkY1TvEh7
+ H/4nw3GY43QN6YJzWcxBYLKRBh14/5UtYymgQUl6fmFP7ITjPujldOwYDoulInw5ogW1
+ ZWiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708550294; x=1709155094;
+ d=1e100.net; s=20230601; t=1708550300; x=1709155100;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2NDbYpJ4EdF7CcKKuGkJjZq3a85KtwD7y7arPJ8C56o=;
- b=iAjRFRoxO1JOtX91HNBoCIfH5Xko/LZYyzDn81Jk8A1IRSY7sUCmIjuA8GGekmEBiD
- xFVX1aSGp31nqiQtmkPgNP/+zZFbQY8iyqNfo9mfIP+ZLl66tR2taU7lz53nBcKKz8zH
- i3VY14yGBF2HlG8yegcLbe5eZDpG4uZLbyhQK6LWHp1gD45Q5GEe7LOC/+xMMX28VUw7
- CvE8zPVwydCZpThQQOOzMGsa0c1MIiRsh1ioEI8p3EikVpFsEs0WGJJGy2DpNg5J97nN
- vWEp2PcOxpurqvUa/BVq/xtE+79ua1YJ3/lQOAyzxkXdKz704LBEDcAvwOwObN+K1B2l
- JVGw==
-X-Gm-Message-State: AOJu0YzSNh8xslXpdA6fGEOqn1GSbIihUO+T8hAOkuSVdwA9HE+d9K26
- fEfekHgEqUYTaP/1sYJoatuBJmwEBBuVqwCr5j/g9FWdc6zV3iZKqmxfvtUoZYJZyBm7OHN03Kf
- 7WBs=
-X-Google-Smtp-Source: AGHT+IFAx7WCd1TmdeuPOUJGYz3Po7jcSdPBcpZ4VkRMx4n8rWfj2TcxiZ5Yag6MirfHH2ycOOKfpA==
-X-Received: by 2002:adf:d1ef:0:b0:33d:2198:f2fc with SMTP id
- g15-20020adfd1ef000000b0033d2198f2fcmr15766982wrd.2.1708550294459; 
- Wed, 21 Feb 2024 13:18:14 -0800 (PST)
+ bh=AbWaENVXrPEDOnkXsgR9cEbYG3NY0XwtRW+JhFfX4HQ=;
+ b=eAJsnIGYyf1jx9VBIZGq0IaKMcgoMH+lVQ87i4FIxidbitzjYTgg29MRboH8PNDoLd
+ M+70iKFlNUD1c2rp9zH04GsnBme9A2ghcASYaKXs5K2iKbrzOn8r2lWnsaIr99710KJU
+ CSMJKf/qSGSpU53cUa526r61uTXndFVa9QMvkvvCIfWjI+16h55ERq9Zju3sanAbHHcg
+ cQNRwumy1PUDLZJUHlFANEDvmzJkzGBbHA3pilhtG5m2UnEfT+eVD9SjUnqrodcyX+XR
+ FYCmE45+AMeOe84iLH66Nqx7l9Sl01U2eUe6nn1bFVhqT/CEIzizT0D9TOonswcor2r6
+ 5ucA==
+X-Gm-Message-State: AOJu0YwjzQIrBPVLayJnXmSocaRaHLqKL6ql7BfH9PQOOdEJo371rsLH
+ LI9c80WCFCzly5cuWzBJ74vtvVs9IOz9aH5bR5mzJBZIMM26e+680kZinP7XtVXZBzp04OwjnpT
+ 5Wus=
+X-Google-Smtp-Source: AGHT+IF0jNEPnhSUj95rWqtZjH+AbQriP9iNbGmANFZLQa84Bbg3OPddEHv7yeTpnf1HLGCm4/u+Cw==
+X-Received: by 2002:a05:600c:6029:b0:412:6e83:b89d with SMTP id
+ az41-20020a05600c602900b004126e83b89dmr603451wmb.8.1708550300263; 
+ Wed, 21 Feb 2024 13:18:20 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.211.34])
  by smtp.gmail.com with ESMTPSA id
- e6-20020adffd06000000b0033cf60e268fsm17873029wrr.116.2024.02.21.13.18.12
+ m2-20020a5d6a02000000b0033d071c0477sm17903145wru.59.2024.02.21.13.18.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 21 Feb 2024 13:18:13 -0800 (PST)
+ Wed, 21 Feb 2024 13:18:19 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
@@ -65,17 +65,17 @@ Cc: qemu-arm@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 13/25] hw/i386/pc: Defer smbios_set_defaults() to machine_done
-Date: Wed, 21 Feb 2024 22:16:13 +0100
-Message-ID: <20240221211626.48190-14-philmd@linaro.org>
+Subject: [PULL 14/25] hw/i386/pc: Confine system flash handling to pc_sysfw
+Date: Wed, 21 Feb 2024 22:16:14 +0100
+Message-ID: <20240221211626.48190-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240221211626.48190-1-philmd@linaro.org>
 References: <20240221211626.48190-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,156 +100,90 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-Handling most of smbios data generation in the machine_done notifier is similar
-to how the ARM virt machine handles it which also calls smbios_set_defaults()
-there. The result is that all pc machines are freed from explicitly worrying
-about smbios setup.
+Rather than distributing PC system flash handling across three files, let's
+confine it to one. Now, pc_system_firmware_init() creates, configures and cleans
+up the system flash which makes the code easier to understand. It also avoids
+the extra call to pc_system_flash_cleanup_unused() in the Xen case.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240208220349.4948-6-shentey@gmail.com>
+Message-ID: <20240208220349.4948-7-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/fw_cfg.h     |  3 ++-
- include/hw/i386/pc.h |  1 -
- hw/i386/fw_cfg.c     | 12 +++++++++++-
- hw/i386/pc.c         |  2 +-
- hw/i386/pc_piix.c    | 10 ----------
- hw/i386/pc_q35.c     |  9 ---------
- 6 files changed, 14 insertions(+), 23 deletions(-)
+ include/hw/i386/pc.h | 2 --
+ hw/i386/pc.c         | 1 -
+ hw/i386/pc_piix.c    | 1 -
+ hw/i386/pc_sysfw.c   | 6 ++++--
+ 4 files changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/hw/i386/fw_cfg.h b/hw/i386/fw_cfg.h
-index 86ca7c1c0c..1e1de6b4a3 100644
---- a/hw/i386/fw_cfg.h
-+++ b/hw/i386/fw_cfg.h
-@@ -10,6 +10,7 @@
- #define HW_I386_FW_CFG_H
- 
- #include "hw/boards.h"
-+#include "hw/i386/pc.h"
- #include "hw/nvram/fw_cfg.h"
- 
- #define FW_CFG_IO_BASE     0x510
-@@ -22,7 +23,7 @@
- FWCfgState *fw_cfg_arch_create(MachineState *ms,
-                                uint16_t boot_cpus,
-                                uint16_t apic_id_limit);
--void fw_cfg_build_smbios(MachineState *ms, FWCfgState *fw_cfg);
-+void fw_cfg_build_smbios(PCMachineState *ms, FWCfgState *fw_cfg);
- void fw_cfg_build_feature_control(MachineState *ms, FWCfgState *fw_cfg);
- void fw_cfg_add_acpi_dsdt(Aml *scope, FWCfgState *fw_cfg);
- 
 diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 39cdb9b933..0a8a96600c 100644
+index 0a8a96600c..e8f4af5d5c 100644
 --- a/include/hw/i386/pc.h
 +++ b/include/hw/i386/pc.h
-@@ -12,7 +12,6 @@
- #include "hw/hotplug.h"
- #include "qom/object.h"
- #include "hw/i386/sgx-epc.h"
--#include "hw/firmware/smbios.h"
- #include "hw/cxl/cxl.h"
+@@ -193,8 +193,6 @@ void pc_i8259_create(ISABus *isa_bus, qemu_irq *i8259_irqs);
+ #define TYPE_PORT92 "port92"
  
- #define HPET_INTCAP "hpet-intcap"
-diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
-index 7362daa45a..98a478c276 100644
---- a/hw/i386/fw_cfg.c
-+++ b/hw/i386/fw_cfg.c
-@@ -48,15 +48,25 @@ const char *fw_cfg_arch_key_name(uint16_t key)
-     return NULL;
- }
- 
--void fw_cfg_build_smbios(MachineState *ms, FWCfgState *fw_cfg)
-+void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg)
- {
- #ifdef CONFIG_SMBIOS
-     uint8_t *smbios_tables, *smbios_anchor;
-     size_t smbios_tables_len, smbios_anchor_len;
-     struct smbios_phys_mem_area *mem_array;
-     unsigned i, array_count;
-+    MachineState *ms = MACHINE(pcms);
-+    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
-+    MachineClass *mc = MACHINE_GET_CLASS(pcms);
-     X86CPU *cpu = X86_CPU(ms->possible_cpus->cpus[0].cpu);
- 
-+    if (pcmc->smbios_defaults) {
-+        /* These values are guest ABI, do not change */
-+        smbios_set_defaults("QEMU", mc->desc, mc->name,
-+                            pcmc->smbios_legacy_mode, pcmc->smbios_uuid_encoded,
-+                            pcms->smbios_entry_point_type);
-+    }
-+
-     /* tell smbios about cpuid version and features */
-     smbios_set_cpuid(cpu->env.cpuid_version, cpu->env.features[FEAT_1_EDX]);
- 
+ /* pc_sysfw.c */
+-void pc_system_flash_create(PCMachineState *pcms);
+-void pc_system_flash_cleanup_unused(PCMachineState *pcms);
+ void pc_system_firmware_init(PCMachineState *pcms, MemoryRegion *rom_memory);
+ bool pc_system_ovmf_table_find(const char *entry, uint8_t **data,
+                                int *data_len);
 diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 694de8e130..e526498164 100644
+index e526498164..1ee41a5e56 100644
 --- a/hw/i386/pc.c
 +++ b/hw/i386/pc.c
-@@ -689,7 +689,7 @@ void pc_machine_done(Notifier *notifier, void *data)
+@@ -1733,7 +1733,6 @@ static void pc_machine_initfn(Object *obj)
+ #endif
+     pcms->default_bus_bypass_iommu = false;
  
-     acpi_setup();
-     if (x86ms->fw_cfg) {
--        fw_cfg_build_smbios(MACHINE(pcms), x86ms->fw_cfg);
-+        fw_cfg_build_smbios(pcms, x86ms->fw_cfg);
-         fw_cfg_build_feature_control(MACHINE(pcms), x86ms->fw_cfg);
-         /* update FW_CFG_NB_CPUS to account for -device added CPUs */
-         fw_cfg_modify_i16(x86ms->fw_cfg, FW_CFG_NB_CPUS, x86ms->boot_cpus);
+-    pc_system_flash_create(pcms);
+     pcms->pcspk = isa_new(TYPE_PC_SPEAKER);
+     object_property_add_alias(OBJECT(pcms), "pcspk-audiodev",
+                               OBJECT(pcms->pcspk), "audiodev");
 diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index eeca725504..34203927e1 100644
+index 34203927e1..ec7c07b362 100644
 --- a/hw/i386/pc_piix.c
 +++ b/hw/i386/pc_piix.c
-@@ -36,7 +36,6 @@
- #include "hw/rtc/mc146818rtc.h"
- #include "hw/southbridge/piix.h"
- #include "hw/display/ramfb.h"
--#include "hw/firmware/smbios.h"
- #include "hw/pci/pci.h"
- #include "hw/pci/pci_ids.h"
- #include "hw/usb.h"
-@@ -225,15 +224,6 @@ static void pc_init1(MachineState *machine,
-                                                &error_abort);
+@@ -231,7 +231,6 @@ static void pc_init1(MachineState *machine,
+         assert(machine->ram_size == x86ms->below_4g_mem_size +
+                                     x86ms->above_4g_mem_size);
+ 
+-        pc_system_flash_cleanup_unused(pcms);
+         if (machine->kernel_filename != NULL) {
+             /* For xen HVM direct kernel boot, load linux here */
+             xen_load_linux(pcms);
+diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
+index c8d9e71b88..b4c3833352 100644
+--- a/hw/i386/pc_sysfw.c
++++ b/hw/i386/pc_sysfw.c
+@@ -91,7 +91,7 @@ static PFlashCFI01 *pc_pflash_create(PCMachineState *pcms,
+     return PFLASH_CFI01(dev);
+ }
+ 
+-void pc_system_flash_create(PCMachineState *pcms)
++static void pc_system_flash_create(PCMachineState *pcms)
+ {
+     PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+ 
+@@ -103,7 +103,7 @@ void pc_system_flash_create(PCMachineState *pcms)
+     }
+ }
+ 
+-void pc_system_flash_cleanup_unused(PCMachineState *pcms)
++static void pc_system_flash_cleanup_unused(PCMachineState *pcms)
+ {
+     char *prop_name;
+     int i;
+@@ -212,6 +212,8 @@ void pc_system_firmware_init(PCMachineState *pcms,
+         return;
      }
  
--    if (pcmc->smbios_defaults) {
--        MachineClass *mc = MACHINE_GET_CLASS(machine);
--        /* These values are guest ABI, do not change */
--        smbios_set_defaults("QEMU", mc->desc,
--                            mc->name, pcmc->smbios_legacy_mode,
--                            pcmc->smbios_uuid_encoded,
--                            pcms->smbios_entry_point_type);
--    }
--
-     /* allocate ram and load rom/bios */
-     if (!xen_enabled()) {
-         pc_memory_init(pcms, system_memory, rom_memory, hole64_size);
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 8053d8cccb..ab7750c346 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -45,7 +45,6 @@
- #include "hw/i386/amd_iommu.h"
- #include "hw/i386/intel_iommu.h"
- #include "hw/display/ramfb.h"
--#include "hw/firmware/smbios.h"
- #include "hw/ide/pci.h"
- #include "hw/ide/ahci-pci.h"
- #include "hw/intc/ioapic.h"
-@@ -188,14 +187,6 @@ static void pc_q35_init(MachineState *machine)
-         kvmclock_create(pcmc->kvmclock_create_always);
-     }
- 
--    if (pcmc->smbios_defaults) {
--        /* These values are guest ABI, do not change */
--        smbios_set_defaults("QEMU", mc->desc,
--                            mc->name, pcmc->smbios_legacy_mode,
--                            pcmc->smbios_uuid_encoded,
--                            pcms->smbios_entry_point_type);
--    }
--
-     /* create pci host bus */
-     phb = OBJECT(qdev_new(TYPE_Q35_HOST_DEVICE));
- 
++    pc_system_flash_create(pcms);
++
+     /* Map legacy -drive if=pflash to machine properties */
+     for (i = 0; i < ARRAY_SIZE(pcms->flash); i++) {
+         pflash_cfi01_legacy_drive(pcms->flash[i],
 -- 
 2.41.0
 
