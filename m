@@ -2,73 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514ED85E1DE
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:50:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5958C85E15B
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:36:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcocw-0007y1-JS; Wed, 21 Feb 2024 10:35:18 -0500
+	id 1rcoX1-0001GH-V4; Wed, 21 Feb 2024 10:29:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rkhapov@yandex-team.ru>)
- id 1rcoaG-00077j-5x
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:32:32 -0500
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rkhapov@yandex-team.ru>)
- id 1rcmmG-00010M-Ji
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 08:36:51 -0500
-Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:9328:0:640:5832:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 93B9B60BC3;
- Wed, 21 Feb 2024 16:36:39 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:8113::1:1c] (unknown
- [2a02:6b8:b081:8113::1:1c])
- by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id aaSav20iB4Y0-SNPsgyOg; Wed, 21 Feb 2024 16:36:38 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1708522598;
- bh=uKgDMQw1Rf7Un0gEEOS0l9WOjKuJSyFOjqqLOXiDoIY=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=e2OJ0h4aMdaOw+1P58ly2Jed1iVC5LkLlt5qeYm3+fChsORpXb+CGw9k0akrFGy03
- oFzNoGtz399Ry2UacWxNUnVR4YhlqDhFI0UwN1sFa35St8M0vdhnBBTo+9MUjxVcsK
- uFqqz9FyN+U0Qg7Sn2hBFHw6SmSfcOYGxBCb0p9Q=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <f5435d60-8941-4ad7-b851-c7f320d6522f@yandex-team.ru>
-Date: Wed, 21 Feb 2024 18:36:36 +0500
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] qapi/migration.json: add reason to MIGRATION event
-Content-Language: en-US
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcoKm-0000wC-JM
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:16:33 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcmn7-000145-Vo
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 08:37:44 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 7C34122194;
+ Wed, 21 Feb 2024 13:37:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1708522660; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=9xnYPWPhqsQOkwdJ0QbnA+RyUTsNDuS9nqE1qxrBWRc=;
+ b=Zb6i8Et1doRPKhHqeQv0mTN8Txbv0pm+GD9dx9g2s00cqPusAIgREqPQ84ivxz5igWHJZI
+ PoFi/OmvHrm3o/ZU9srrbeHQtVMCGj+d9uvMULSXojAy7EXO+hXcWuUx3GdnuYxusRgXJn
+ 0HgO1o3VrdpbSonpx3YYtXPOhcoAkZY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1708522660;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=9xnYPWPhqsQOkwdJ0QbnA+RyUTsNDuS9nqE1qxrBWRc=;
+ b=V546OEb3gCkRVVh4j+ybaZTQ3X/lqRHA7Fadt/iomstqKZvxZSTCGfqR1ctfLvv+kcvQlV
+ KZkDVTLSODYiUqBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1708522660; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=9xnYPWPhqsQOkwdJ0QbnA+RyUTsNDuS9nqE1qxrBWRc=;
+ b=Zb6i8Et1doRPKhHqeQv0mTN8Txbv0pm+GD9dx9g2s00cqPusAIgREqPQ84ivxz5igWHJZI
+ PoFi/OmvHrm3o/ZU9srrbeHQtVMCGj+d9uvMULSXojAy7EXO+hXcWuUx3GdnuYxusRgXJn
+ 0HgO1o3VrdpbSonpx3YYtXPOhcoAkZY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1708522660;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=9xnYPWPhqsQOkwdJ0QbnA+RyUTsNDuS9nqE1qxrBWRc=;
+ b=V546OEb3gCkRVVh4j+ybaZTQ3X/lqRHA7Fadt/iomstqKZvxZSTCGfqR1ctfLvv+kcvQlV
+ KZkDVTLSODYiUqBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0511A139D0;
+ Wed, 21 Feb 2024 13:37:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 8Jw4L6P81WX1dQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 21 Feb 2024 13:37:39 +0000
+From: Fabiano Rosas <farosas@suse.de>
 To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, peterx@redhat.com, farosas@suse.de,
- eblake@redhat.com, yc-core@yandex-team.ru
-References: <20240215122759.1438581-1-rkhapov@yandex-team.ru>
- <20240215122759.1438581-2-rkhapov@yandex-team.ru>
- <87il2p0w78.fsf@pond.sub.org>
- <d1f73aaa-f5cb-4366-a567-fad7d965b76e@yandex-team.ru>
- <87le7hrmf0.fsf@pond.sub.org>
-From: Roman Khapov <rkhapov@yandex-team.ru>
-In-Reply-To: <87le7hrmf0.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=rkhapov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, Peter Xu
+ <peterx@redhat.com>, Claudio Fontana <cfontana@suse.de>
+Subject: Re: [PATCH v4 32/34] monitor: fdset: Match against O_DIRECT
+In-Reply-To: <878r3exj3f.fsf@pond.sub.org>
+References: <20240220224138.24759-1-farosas@suse.de>
+ <20240220224138.24759-33-farosas@suse.de> <878r3exj3f.fsf@pond.sub.org>
+Date: Wed, 21 Feb 2024 10:37:37 -0300
+Message-ID: <87plwqaqfy.fsf@suse.de>
+MIME-Version: 1.0
+Content-Type: text/plain
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Zb6i8Et1;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=V546OEb3
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-1.52 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; BAYES_HAM(-0.01)[46.90%];
+ MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ RCPT_COUNT_FIVE(0.00)[5]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]
+X-Spam-Score: -1.52
+X-Rspamd-Queue-Id: 7C34122194
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -80,33 +121,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The reason in MIGRATION event can be used, when there is some helpful 
-message, that can be added to improve debugging\understanding of the 
-reason of migration status changing.
+Markus Armbruster <armbru@redhat.com> writes:
 
-I propose the next usage - when qemu sends (MIGRATION status=failed) 
-event, the error message describing the problem can be sent in that 
-event too. This is more comfortable way to understand the problem 
-comparing to reading qemu logs, especially in some cases, where qemu are 
-launched and monitored through various automation processes (examples: 
-cloud environments, some 'integration' tests of the qemu, etc). 
-Probably, there are some other cases when the accompanying message can 
-be useful, not only in failed migrations, but now I don't know that cases.
-
-If we have common understanding with that, I will improve the doc 
-comment and the commit message of the first path too in the next version 
-of the series.
-
-On 2/19/24 11:35, Markus Armbruster wrote:
-> Roman Khapov <rkhapov@yandex-team.ru> writes:
+> Fabiano Rosas <farosas@suse.de> writes:
 >
->> To be clear: you meant that the description of the event must be extended, similar to its description on the commit message? Or you don't see its proper usage at all?
-> The commit message doesn't really tell me either why and how anybody
-> would use @reason.  Once we have a common understanding there, improving
-> the doc comment should be straightforward.
+>> We're about to enable the use of O_DIRECT in the migration code and
+>> due to the alignment restrictions imposed by filesystems we need to
+>> make sure the flag is only used when doing aligned IO.
+>>
+>> The migration will do parallel IO to different regions of a file, so
+>> we need to use more than one file descriptor. Those cannot be obtained
+>> by duplicating (dup()) since duplicated file descriptors share the
+>> file status flags, including O_DIRECT. If one migration channel does
+>> unaligned IO while another sets O_DIRECT to do aligned IO, the
+>> filesystem would fail the unaligned operation.
+>>
+>> The add-fd QMP command along with the fdset code are specifically
+>> designed to allow the user to pass a set of file descriptors with
+>> different access flags into QEMU to be later fetched by code that
+>> needs to alternate between those flags when doing IO.
+>>
+>> Extend the fdset matching function to behave the same with the
+>> O_DIRECT flag.
+>>
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> ---
+>>  monitor/fds.c | 6 ++++++
+>>  1 file changed, 6 insertions(+)
+>>
+>> diff --git a/monitor/fds.c b/monitor/fds.c
+>> index 9a28e4b72b..42bf3eb982 100644
+>> --- a/monitor/fds.c
+>> +++ b/monitor/fds.c
+>> @@ -413,6 +413,12 @@ static bool monitor_fdset_flags_match(int flags, int fd_flags)
+>    static bool monitor_fdset_flags_match(int flags, int fd_flags)
+>    {
+>        bool match = false;
+>    
+>>      if ((flags & O_ACCMODE) == (fd_flags & O_ACCMODE)) {
+>>          match = true;
+>> +
+>> +#ifdef O_DIRECT
+>> +        if ((flags & O_DIRECT) != (fd_flags & O_DIRECT)) {
+>> +            match = false;
+>> +        }
+>> +#endif
+>>      }
+>>  
+>>      return match;
+>    }
+>
+> I'd prefer something like
+>
+>    static bool monitor_fdset_flags_match(int flags, int fd_flags)
+>    {
+>    #ifdef O_DIRECT
+>        if ((flags & O_DIRECT) != (fd_flags & O_DIRECT)) {
+>            return false;
+>        }
+>    #endif
+>
+>        if ((flags & O_ACCMODE) != (fd_flags & O_ACCMODE)) {
+>            return false;
+>
+>        }
+>
+>        return true;
+>    }
 
--- 
-Best regards,
-Roman Khapov
+This makes the O_DIRECT flag dictate the outcome when it's present. I
+want O_DIRECT to be considered only when all other flags have matched.
 
+Otherwise we regress the original use-case if the user happened to have
+put O_DIRECT in the flags. A non-match due to different O_ACCMODE would
+become a match due to (possibly) matching O_DIRECT.
 
