@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EC9885EB50
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:50:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9691E85EB47
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:49:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcuRX-0001QR-GZ; Wed, 21 Feb 2024 16:47:55 -0500
+	id 1rcuRb-0001WJ-Pp; Wed, 21 Feb 2024 16:47:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcuRU-0001PY-HS; Wed, 21 Feb 2024 16:47:52 -0500
+ id 1rcuRY-0001Ug-OU; Wed, 21 Feb 2024 16:47:56 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcuRO-0007N6-QI; Wed, 21 Feb 2024 16:47:52 -0500
+ id 1rcuRV-0007Q2-Th; Wed, 21 Feb 2024 16:47:56 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B04684F867;
+ by isrv.corpit.ru (Postfix) with ESMTP id C47454F868;
  Thu, 22 Feb 2024 00:47:46 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 554F8869E8;
+ by tsrv.corpit.ru (Postfix) with SMTP id 6A61E869E9;
  Thu, 22 Feb 2024 00:47:24 +0300 (MSK)
-Received: (nullmailer pid 2339856 invoked by uid 1000);
+Received: (nullmailer pid 2339859 invoked by uid 1000);
  Wed, 21 Feb 2024 21:47:23 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -30,9 +30,9 @@ Cc: qemu-stable@nongnu.org, Ira Weiny <ira.weiny@intel.com>,
  Huai-Cheng Kuo <hchkuo@avery-design.com.tw>, Dave Jiang <dave.jiang@intel.com>,
  Fan Ni <fan.ni@samsung.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.10 11/33] cxl/cdat: Handle cdat table build errors
-Date: Thu, 22 Feb 2024 00:46:54 +0300
-Message-Id: <20240221214723.2339742-11-mjt@tls.msk.ru>
+Subject: [Stable-7.2.10 12/33] cxl/cdat: Fix header sum value in CDAT checksum
+Date: Thu, 22 Feb 2024 00:46:55 +0300
+Message-Id: <20240221214723.2339742-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.10-20240221121815@cover.tls.msk.ru>
 References: <qemu-stable-7.2.10-20240221121815@cover.tls.msk.ru>
@@ -63,37 +63,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ira Weiny <ira.weiny@intel.com>
 
-The callback for building CDAT tables may return negative error codes.
-This was previously unhandled and will result in potentially huge
-allocations later on in ct3_build_cdat()
+The addition of the DCD support for CXL type-3 devices extended the CDAT
+table large enough that the checksum being returned was incorrect.[1]
 
-Detect the negative error code and defer cdat building.
+This was because the checksum value was using the header length field
+rather than each of the 4 bytes of the length field.  This was
+previously not seen because the length of the CDAT data was less than
+256 thus resulting in an equivalent checksum value.
 
-Fixes: f5ee7413d592 ("hw/mem/cxl-type3: Add CXL CDAT Data Object Exchange")
+Properly calculate the checksum for the CDAT header.
+
+[1] https://lore.kernel.org/all/20231116-fix-cdat-devm-free-v1-1-b148b40707d7@intel.com/
+
+Fixes: aba578bdace5 ("hw/cxl/cdat: CXL CDAT Data Object Exchange implementation")
 Cc: Huai-Cheng Kuo <hchkuo@avery-design.com.tw>
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 Reviewed-by: Fan Ni <fan.ni@samsung.com>
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20240126120132.24248-2-Jonathan.Cameron@huawei.com>
+
+Message-Id: <20240126120132.24248-5-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit c62926f730d08450502d36548e28dd727c998ace)
+(cherry picked from commit 64fdad5e67587e88c2f1d8f294e89403856a4a31)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/cxl/cxl-cdat.c b/hw/cxl/cxl-cdat.c
-index 3653aa56f0..931693f02d 100644
+index 931693f02d..0cde11854e 100644
 --- a/hw/cxl/cxl-cdat.c
 +++ b/hw/cxl/cxl-cdat.c
-@@ -62,7 +62,7 @@ static void ct3_build_cdat(CDATObject *cdat, Error **errp)
+@@ -49,6 +49,7 @@ static void ct3_build_cdat(CDATObject *cdat, Error **errp)
+     g_autofree CDATTableHeader *cdat_header = NULL;
+     g_autofree CDATEntry *cdat_st = NULL;
+     uint8_t sum = 0;
++    uint8_t *hdr_buf;
+     int ent, i;
  
-     cdat->built_buf_len = cdat->build_cdat_table(&cdat->built_buf, cdat->private);
+     /* Use default table if fopen == NULL */
+@@ -94,8 +95,12 @@ static void ct3_build_cdat(CDATObject *cdat, Error **errp)
+     /* For now, no runtime updates */
+     cdat_header->sequence = 0;
+     cdat_header->length += sizeof(CDATTableHeader);
+-    sum += cdat_header->revision + cdat_header->sequence +
+-        cdat_header->length;
++
++    hdr_buf = (uint8_t *)cdat_header;
++    for (i = 0; i < sizeof(*cdat_header); i++) {
++        sum += hdr_buf[i];
++    }
++
+     /* Sum of all bytes including checksum must be 0 */
+     cdat_header->checksum = ~sum + 1;
  
--    if (!cdat->built_buf_len) {
-+    if (cdat->built_buf_len <= 0) {
-         /* Build later as not all data available yet */
-         cdat->to_update = true;
-         return;
 -- 
 2.39.2
 
