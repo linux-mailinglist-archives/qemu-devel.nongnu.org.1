@@ -2,40 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5621B85E1EF
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:52:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D75B385E1B4
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:45:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoWs-0007y1-Hp; Wed, 21 Feb 2024 10:29:02 -0500
+	id 1rcoZh-00032d-H3; Wed, 21 Feb 2024 10:31:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rcoOM-0001Rw-Qw; Wed, 21 Feb 2024 10:20:14 -0500
+ id 1rcoOQ-0001zu-PL; Wed, 21 Feb 2024 10:20:18 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rchvM-00035v-RH; Wed, 21 Feb 2024 03:25:54 -0500
+ id 1rchvQ-00036H-O2; Wed, 21 Feb 2024 03:25:57 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8293D4F3F3;
+ by isrv.corpit.ru (Postfix) with ESMTP id 917344F3F4;
  Wed, 21 Feb 2024 11:21:23 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4E03D860D2;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5DA06860D3;
  Wed, 21 Feb 2024 11:21:02 +0300 (MSK)
-Received: (nullmailer pid 2142149 invoked by uid 1000);
+Received: (nullmailer pid 2142152 invoked by uid 1000);
  Wed, 21 Feb 2024 08:20:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Ziqiao Kong <ziqiaokong@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.2 53/60] target/i386: Generate an illegal opcode
- exception on cmp instructions with lock prefix
-Date: Wed, 21 Feb 2024 11:20:41 +0300
-Message-Id: <20240221082058.2141850-53-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.2 54/60] ui: reject extended clipboard message if not
+ activated
+Date: Wed, 21 Feb 2024 11:20:42 +0300
+Message-Id: <20240221082058.2141850-54-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.2-20240221110049@cover.tls.msk.ru>
 References: <qemu-stable-8.2.2-20240221110049@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,42 +63,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ziqiao Kong <ziqiaokong@gmail.com>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-target/i386: As specified by Intel Manual Vol2 3-180, cmp instructions
-are not allowed to have lock prefix and a `UD` should be raised. Without
-this patch, s1->T0 will be uninitialized and used in the case OP_CMPL.
+The extended clipboard message protocol requires that the client
+activate the extension by requesting a psuedo encoding. If this
+is not done, then any extended clipboard messages from the client
+should be considered invalid and the client dropped.
 
-Signed-off-by: Ziqiao Kong <ziqiaokong@gmail.com>
-Message-ID: <20240215095015.570748-2-ziqiaokong@gmail.com>
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 99d0dcd7f102c07a510200d768cae65e5db25d23)
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-Id: <20240115095119.654271-1-berrange@redhat.com>
+(cherry picked from commit 4cba8388968b70fe20e290221dc421c717051fdd)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 8fd49ff474..83c2b40480 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -1480,12 +1480,13 @@ static bool check_iopl(DisasContext *s)
- /* if d == OR_TMP0, it means memory operand (address in A0) */
- static void gen_op(DisasContext *s1, int op, MemOp ot, int d)
- {
-+    /* Invalid lock prefix when destination is not memory or OP_CMPL. */
-+    if ((d != OR_TMP0 || op == OP_CMPL) && s1->prefix & PREFIX_LOCK) {
-+        gen_illegal_opcode(s1);
-+        return;
-+    }
-+
-     if (d != OR_TMP0) {
--        if (s1->prefix & PREFIX_LOCK) {
--            /* Lock prefix when destination is not memory.  */
--            gen_illegal_opcode(s1);
--            return;
--        }
-         gen_op_mov_v_reg(s1, ot, s1->T0, d);
-     } else if (!(s1->prefix & PREFIX_LOCK)) {
-         gen_op_ld_v(s1, ot, s1->T0, s1->A0);
+diff --git a/ui/vnc.c b/ui/vnc.c
+index 4f23a0fa79..3b2c71e653 100644
+--- a/ui/vnc.c
++++ b/ui/vnc.c
+@@ -2445,6 +2445,11 @@ static int protocol_client_msg(VncState *vs, uint8_t *data, size_t len)
+         }
+ 
+         if (read_s32(data, 4) < 0) {
++            if (!vnc_has_feature(vs, VNC_FEATURE_CLIPBOARD_EXT)) {
++                error_report("vnc: extended clipboard message while disabled");
++                vnc_client_error(vs);
++                break;
++            }
+             if (dlen < 4) {
+                 error_report("vnc: malformed payload (header less than 4 bytes)"
+                              " in extended clipboard pseudo-encoding.");
 -- 
 2.39.2
 
