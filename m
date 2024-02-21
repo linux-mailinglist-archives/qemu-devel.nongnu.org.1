@@ -2,74 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46CFC85E1C9
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:47:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B08D885E1B3
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:45:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcocp-0007B1-F3; Wed, 21 Feb 2024 10:35:11 -0500
+	id 1rcobx-0004eP-4R; Wed, 21 Feb 2024 10:34:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rcoa2-0005LV-SN; Wed, 21 Feb 2024 10:32:19 -0500
-Received: from mgamail.intel.com ([192.198.163.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rcivf-0003QN-Kc; Wed, 21 Feb 2024 04:30:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708507816; x=1740043816;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=ZoOw7oZSsgWoryzBsNZfJlqiBLjXl5nzRum0ygARlNs=;
- b=fucxyC/kNOGG6zBZBp6QY7JL4y4k6Nc2z3CbbORIU6cMAiXjUsHnVk/c
- zusNW4sNfRmI7Mvi2QC14UziiPoxjAJL7o7krHuALJZ2wXBcSWJhzkJ3z
- OH5/3oWGQzGa8iE76rWradcmutHC0S6VkF4sO1qxbA9KHEqs2051u28/Z
- OBvfPDPpFbSZQrAA26QDckXXdFyDV/FqnpISc89zUU7aUukyjiS2nR/IC
- BVNnc3Is3tDXbT1fdQgUnAOTo+tFoguZ7yW/IAKczFOuxi+6kr8srJ4m0
- kOm80KH9sgQ7P3vQ6s2k4+vaeNLsbiCs9I0dVRC2utwUYvu5mJerGcOv3 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="2795509"
-X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="2795509"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2024 01:30:10 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="9720217"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa003.jf.intel.com with ESMTP; 21 Feb 2024 01:30:06 -0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>,
- Fan Ni <fan.ni@samsung.com>, Laurent Vivier <laurent@vivier.eu>,
- Alistair Francis <alistair@alistair23.me>,
- "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rcoZB-00083k-Vu
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:31:26 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rcjy0-0005jn-SO
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 05:36:46 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-5643eccad0bso5635054a12.1
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 02:36:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1708511803; x=1709116603; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=o24wv8lV9on2u1UYDjvUk0mzdYoqAn9lCRieFI1C+9c=;
+ b=KaCgfuoGZMBDSqp8PZfo5Ay6UMyDLAR59DRUuXxSWng9jleyER8v1w+n+LE1pSalj6
+ dJNSvBVebi+MC2Vdba7cjxxkAQXvmGsXJlUnyRabPbNFov2k8anLR5hEuU8f0jC5zC6P
+ rxSfmtF7NTk9KUzsOQPsrJlugqpjVOOwMeuYGQcibIcNcqS+eGyH+dlWi5A2Y8M+YMik
+ zRfsNZxXxSdgzhRU3Wx3jCMazp21nlELwc/Et/zu4IeqcgyayiUDs9ECOA2g6ywDkGTo
+ wHvyoDya6U0RT4K8I53CVgc46PVIHTudSf97VdV4aIGOy31uN8+RCFsgOy8XOK883hqK
+ Mq+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708511803; x=1709116603;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=o24wv8lV9on2u1UYDjvUk0mzdYoqAn9lCRieFI1C+9c=;
+ b=EJYTN4JSX0nA6CYQUmrB2Evwz4Mo4IrRMSFCewGBHYq9okuuda2IEfFoPz52x1SuZO
+ t2e27lBW4xatvl0xo7Ocg58pTNPmggiapZZ+6N65sLw4nNdMop4cnNq4G0DWWqa8ZTHV
+ bpTnhnwbvhRng54L73BX2OQDDtwW7iazKslJgxjRGseitTIvpYV8jlFh/qT42d/180vL
+ On1oAvQil6VxipL/7VZJBmwR4OgHDOKwwSn2H6fMdjuYI/9VoW5uAjkM4S2UFmPurIfL
+ 2oyxfZ0DA+VB1ztdJ//uZogdpbCn86S4WhnbWJDMyxnp/p4rJFtrHFwgjlRrAtMV/u9I
+ Nrcw==
+X-Gm-Message-State: AOJu0YyvKK3r3NijqKw1aGB7b9cncveVyydl8j/BCQXFHzPyIG+6u5a7
+ 9b4z4hxbLzESComopSIF2aUEkI2m6ZvYkTVbpYmi4kRvYicOpD8Qq2WQzY2h
+X-Google-Smtp-Source: AGHT+IGkKFjdUCIz4qTU6QmZLYEaxC4h/n0M7s0+Ov7dyjgMDF5/aPQ9b+LGQiRvcpzZQ9xEH5BMrQ==
+X-Received: by 2002:a17:906:1312:b0:a3e:9e4d:dafb with SMTP id
+ w18-20020a170906131200b00a3e9e4ddafbmr5107643ejb.29.1708511803072; 
+ Wed, 21 Feb 2024 02:36:43 -0800 (PST)
+Received: from [127.0.0.1] ([90.187.110.129]) by smtp.gmail.com with ESMTPSA id
+ vb7-20020a170907d04700b00a3d6737afe2sm4822757ejc.138.2024.02.21.02.36.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 21 Feb 2024 02:36:42 -0800 (PST)
+Date: Wed, 21 Feb 2024 09:47:18 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+CC: qemu-devel@nongnu.org, philmd@linaro.org,
  Peter Maydell <peter.maydell@linaro.org>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-trivial@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 6/6] hw/vfio/iommufd: Fix missing ERRP_GUARD() in
- iommufd_cdev_getfd()
-Date: Wed, 21 Feb 2024 17:43:17 +0800
-Message-Id: <20240221094317.994454-7-zhao1.liu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240221094317.994454-1-zhao1.liu@linux.intel.com>
-References: <20240221094317.994454-1-zhao1.liu@linux.intel.com>
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH] vl, pc: turn -no-fd-bootchk into a machine property
+In-Reply-To: <CABgObfb+BK4s0VtwQUDkdzvwhTwRAXim-pJ-Lg1nWvbhuOm55w@mail.gmail.com>
+References: <20240220155352.416710-1-pbonzini@redhat.com>
+ <8FECF57F-7897-4AF8-9AC1-46A927C0FEC0@gmail.com>
+ <CABgObfb+BK4s0VtwQUDkdzvwhTwRAXim-pJ-Lg1nWvbhuOm55w@mail.gmail.com>
+Message-ID: <1A0875D0-5135-4F16-A252-BC9EBA9C567B@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=192.198.163.15;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,56 +93,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
 
-As the comment in qapi/error, dereferencing @errp requires
-ERRP_GUARD():
 
-* = Why, when and how to use ERRP_GUARD() =
-*
-* Without ERRP_GUARD(), use of the @errp parameter is restricted:
-* - It must not be dereferenced, because it may be null.
-* - It should not be passed to error_prepend() or
-*   error_append_hint(), because that doesn't work with &error_fatal.
-* ERRP_GUARD() lifts these restrictions.
-*
-* To use ERRP_GUARD(), add it right at the beginning of the function.
-* @errp can then be used without worrying about the argument being
-* NULL or &error_fatal.
-*
-* Using it when it's not needed is safe, but please avoid cluttering
-* the source with useless code.
+Am 21=2E Februar 2024 09:04:21 UTC schrieb Paolo Bonzini <pbonzini@redhat=
+=2Ecom>:
+>On Tue, Feb 20, 2024 at 11:43=E2=80=AFPM Bernhard Beschow <shentey@gmail=
+=2Ecom> wrote:
+>>
+>>
+>>
+>> Am 20=2E Februar 2024 15:53:52 UTC schrieb Paolo Bonzini <pbonzini@redh=
+at=2Ecom>:
+>> >Add a fd-bootchk property to PC machine types, so that -no-fd-bootchk
+>> >returns an error if the machine does not support booting from floppies
+>> >and checking for boot signatures therein=2E
+>> >
+>> >Suggested-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
+>> >Signed-off-by: Paolo Bonzini <pbonzini@redhat=2Ecom>
+>> >---
+>> > include/hw/i386/pc=2Eh |  2 +-
+>> > hw/i386/pc=2Ec         | 30 +++++++++++++++++++++++++-----
+>> > system/globals=2Ec     |  1 -
+>> > system/vl=2Ec          |  2 +-
+>> > qemu-options=2Ehx      |  2 +-
+>> > 5 files changed, 28 insertions(+), 9 deletions(-)
+>> >
+>> >diff --git a/include/hw/i386/pc=2Eh b/include/hw/i386/pc=2Eh
+>> >index 02a0deedd3c=2E=2Ee5382a02e7a 100644
+>> >--- a/include/hw/i386/pc=2Eh
+>> >+++ b/include/hw/i386/pc=2Eh
+>> >@@ -50,6 +50,7 @@ typedef struct PCMachineState {
+>> >     bool hpet_enabled;
+>> >     bool i8042_enabled;
+>> >     bool default_bus_bypass_iommu;
+>> >+    bool fd_bootchk;
+>> >     uint64_t max_fw_size;
+>> >
+>> >     /* ACPI Memory hotplug IO base address */
+>> >@@ -147,7 +148,6 @@ OBJECT_DECLARE_TYPE(PCMachineState, PCMachineClass=
+, PC_MACHINE)
+>> > GSIState *pc_gsi_create(qemu_irq **irqs, bool pci_enabled);
+>> >
+>> > /* pc=2Ec */
+>> >-extern int fd_bootchk;
+>> >
+>> > void pc_acpi_smi_interrupt(void *opaque, int irq, int level);
+>> >
+>> >diff --git a/hw/i386/pc=2Ec b/hw/i386/pc=2Ec
+>> >index 28194014f82=2E=2E31f4bb25a3e 100644
+>> >--- a/hw/i386/pc=2Ec
+>> >+++ b/hw/i386/pc=2Ec
+>> >@@ -399,8 +399,8 @@ static int boot_device2nibble(char boot_device)
+>> >     return 0;
+>> > }
+>> >
+>> >-static void set_boot_dev(MC146818RtcState *s, const char *boot_device=
+,
+>> >-                         Error **errp)
+>> >+static void set_boot_dev(PCMachineState *pcms, MC146818RtcState *s,
+>> >+                         const char *boot_device, Error **errp)
+>> > {
+>> > #define PC_MAX_BOOT_DEVICES 3
+>> >     int nbds, bds[3] =3D { 0, };
+>> >@@ -420,12 +420,14 @@ static void set_boot_dev(MC146818RtcState *s, co=
+nst char *boot_device,
+>> >         }
+>> >     }
+>> >     mc146818rtc_set_cmos_data(s, 0x3d, (bds[1] << 4) | bds[0]);
+>> >-    mc146818rtc_set_cmos_data(s, 0x38, (bds[2] << 4) | (fd_bootchk ? =
+0x0 : 0x1));
+>> >+    mc146818rtc_set_cmos_data(s, 0x38, (bds[2] << 4) | !pcms->fd_boot=
+chk);
+>> > }
+>> >
+>> > static void pc_boot_set(void *opaque, const char *boot_device, Error =
+**errp)
+>> > {
+>> >-    set_boot_dev(opaque, boot_device, errp);
+>> >+    PCMachineState *pcms =3D PC_MACHINE(current_machine);
+>> >+
+>> >+    set_boot_dev(pcms, opaque, boot_device, errp);
+>> > }
+>> >
+>> > static void pc_cmos_init_floppy(MC146818RtcState *rtc_state, ISADevic=
+e *floppy)
+>> >@@ -617,6 +619,9 @@ void pc_cmos_init(PCMachineState *pcms,
+>> >     mc146818rtc_set_cmos_data(s, 0x5c, val >> 8);
+>> >     mc146818rtc_set_cmos_data(s, 0x5d, val >> 16);
+>> >
+>> >+    object_property_add_bool(obj, "fd-bootchk", pc_machine_get_fd_boo=
+tchk,
+>> >+                             pc_machine_set_fd_bootchk);
+>>
+>> Isn't it possible to turn this into a class property or add the propert=
+y in pc_machine_initfn()? Aggregating properties in one place seems more co=
+mprehensible to me=2E
+>
+>Sure, I placed it in pc_cmos_init because rtc_state is already created he=
+re=2E
 
-Currently, since vfio_attach_device() - the caller of
-iommufd_cdev_getfd() - is always called in DeviceClass.realize() context
-and won't get the NULL errp parameter, iommufd_cdev_getfd()
-doesn't trigger the dereference issue.
+Great! I'll rebase my PC initialization series on top of Peter's reset cle=
+anup series which probably results in folding cmos initialization into pc=
+=2Ec=2E
 
-To follow the requirement of errp, add missing ERRP_GUARD() in
-iommufd_cdev_getfd().
+Best regards,
+Bernhard
 
-Suggested-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
-Suggested by credit:
- Markus: Referred his explanation about ERRP_GUARD().
----
- hw/vfio/iommufd.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 9bfddc136089..7baf49e6ee9e 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -116,6 +116,7 @@ static void iommufd_cdev_unbind_and_disconnect(VFIODevice *vbasedev)
- 
- static int iommufd_cdev_getfd(const char *sysfs_path, Error **errp)
- {
-+    ERRP_GUARD();
-     long int ret = -ENOTTY;
-     char *path, *vfio_dev_path = NULL, *vfio_path = NULL;
-     DIR *dir = NULL;
--- 
-2.34.1
-
+>
+>Paolo
+>
 
