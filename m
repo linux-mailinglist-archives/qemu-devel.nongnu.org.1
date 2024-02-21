@@ -2,66 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BC5685E148
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:34:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB43185E1DA
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 16:49:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcoZY-0002JG-9V; Wed, 21 Feb 2024 10:31:48 -0500
+	id 1rcoVv-0004cd-6J; Wed, 21 Feb 2024 10:28:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1rcoPd-0005Yw-Kx
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:21:35 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rcoMr-0004vi-5i
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 10:18:41 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1rcjGN-0006rN-9Y
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 04:51:40 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rcjN4-00085m-Oo
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 04:58:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708509098;
+ s=mimecast20190719; t=1708509514;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=MZFrzMSAp3WcUMLxcFM+e6FN2UmU3TwbhgcKXD9+458=;
- b=DBegrXGFJ+X+5O8++N3lL/edhDWMO9Ilys8nGiceLQN4/xQz8DXo8GcLdp4tckmLat8lD/
- yO/X9JEly4r5SxnajxIkIxjJKF4AgUgW0y4gWzBcpl9t6Z9Z0NGqVpLX9b86uhRFjJCMrt
- dmw5Le4AHX0jwUhO2DjhaLwFG9WTtxw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-147-vIAzX9LdNFirbJxqFTn3vQ-1; Wed,
- 21 Feb 2024 04:51:35 -0500
-X-MC-Unique: vIAzX9LdNFirbJxqFTn3vQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 590AD3804075;
- Wed, 21 Feb 2024 09:51:35 +0000 (UTC)
-Received: from dhcp-8-237.nay.redhat.com (dhcp-8-237.nay.redhat.com
- [10.66.8.237])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8445E492BE9;
- Wed, 21 Feb 2024 09:51:33 +0000 (UTC)
-From: Dehan Meng <demeng@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: demeng@redhat.com,
-	kkostiuk@redhat.com,
-	michael.roth@amd.com
-Subject: [PATCH] qga-win: Add support of Windows Server 2025 in get-osinfo
- command
-Date: Wed, 21 Feb 2024 17:51:30 +0800
-Message-Id: <20240221095130.52711-1-demeng@redhat.com>
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=tQq2OGiEvUR13+YGwxea3l3F67Nk2MzZ6m4iHz1Wq60=;
+ b=Zcs60qdinuldoKIJlBp3LyqVEccxJuhA2a+uNLburv8+RISM2fCabM0PkYo4zM5bSLx7k/
+ 460rRNr6vrQPy21Gs8dnfi+AuwlUTIJxRkEtwlpWJ6P3rrYuGFrfVuBxX6zRA28bLgvTk9
+ nfgKqlUEG18faev56hY2LPuBi7B5yqY=
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
+ [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-461-HuCYohnkNsaVK7zufSTYIQ-1; Wed, 21 Feb 2024 04:58:32 -0500
+X-MC-Unique: HuCYohnkNsaVK7zufSTYIQ-1
+Received: by mail-pg1-f197.google.com with SMTP id
+ 41be03b00d2f7-5ce9b15f4ccso2810042a12.0
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 01:58:32 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708509511; x=1709114311;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tQq2OGiEvUR13+YGwxea3l3F67Nk2MzZ6m4iHz1Wq60=;
+ b=f7DVjK13syebTN9OoWxa6rNYmal0odxyGcd8A4yjhQkdC1AGh56thhcn3UlPO4iB9R
+ vxI+XGdB2G5CFxoEV8uz5pyWW0/UEhsZJl1cf9H8MD0uXDXWBiPaE7WxHY9/MEAQUw5w
+ EqXmMr6IJ5pc6bet9731Mb4pOYg9VJqluq2x3HiQhlcV8OwRKh3FsL8x66npGlhYylGA
+ Kyot3jhFtipKrXbdOwtudy70nf4bpPGhApQhRx6jd+RDMyas/fgurt70NwakW6aLk7e7
+ P2I8igEq4maOsSFpTPZrS4THOy3OpEZbv4/aCrJwkG+76nmL9lj96nFjjluM2fIMTOd0
+ De+Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX1FIi4zU/r8CBo7h+/cLqRFTzB/pnSpsBnbFGmN447QC+Hw3xyz9yC0coWRs6Tc/1kucHXOfi52a/kHcQURdysMGyIcrw=
+X-Gm-Message-State: AOJu0YzoZXxC3npFWizZ9Hb/4Hr/xMi3WBCsPEm2Qz6Zh8YO9UgjNMB2
+ U/COen39qHzHvj2RChZuWMUkMiSaqdssNMVmraWxyiq5l2nPOLxrhuqi5CcUJ9BTfkL6hJiPJl3
+ /taCsnk6OxpmcxDt8FOuwLp2M7pdMeOh1oqU+aRot6KtAzHWwLlKC
+X-Received: by 2002:a05:6a20:72a5:b0:1a0:b3c0:a080 with SMTP id
+ o37-20020a056a2072a500b001a0b3c0a080mr5303689pzk.4.1708509511417; 
+ Wed, 21 Feb 2024 01:58:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFVNbfgzu+D14nGvoXEMtul3WAzdFIrhuIYWZii7HbKGziAkmdU7hbJIzn9A6t25J9w/gK59g==
+X-Received: by 2002:a05:6a20:72a5:b0:1a0:b3c0:a080 with SMTP id
+ o37-20020a056a2072a500b001a0b3c0a080mr5303678pzk.4.1708509511062; 
+ Wed, 21 Feb 2024 01:58:31 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ bn23-20020a056a00325700b006e0416c42c3sm8456508pfb.198.2024.02.21.01.58.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 Feb 2024 01:58:30 -0800 (PST)
+Date: Wed, 21 Feb 2024 17:58:24 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org,
+ Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH] qapi: Misc cleanups to migrate QAPIs
+Message-ID: <ZdXJQEK5jd_nVyWo@x1n>
+References: <20240216195659.189091-1-het.gala@nutanix.com>
+ <87edd61ezt.fsf@pond.sub.org>
+ <b1ce8254-24e8-487e-8da0-d8916f53fcb4@nutanix.com>
+ <ZdWzmbOuCVk8GZMn@x1n> <87sf1mxlqb.fsf@pond.sub.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=demeng@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87sf1mxlqb.fsf@pond.sub.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
+X-Spam_score_int: -6
+X-Spam_score: -0.7
+X-Spam_bar: /
+X-Spam_report: (-0.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_SORBS_WEB=1.5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,26 +101,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add support of Windows Server 2025 in get-osinfo command
+On Wed, Feb 21, 2024 at 09:30:52AM +0100, Markus Armbruster wrote:
+> Peter Xu <peterx@redhat.com> writes:
+> 
+> > Thanks, Markus.
+> 
+> [...]
+> 
+> > Reviewed-by: Peter Xu <peterx@redhat.com>
+> >
+> > Markus, do you want us to pick it up, or let it go via qapi?
+> 
+> I can stick it into my next qapi PR in a few days, if you guys don't
+> beat me to the punch.
 
-Signed-off-by: Dehan Meng <demeng@redhat.com>
----
- qga/commands-win32.c | 1 +
- 1 file changed, 1 insertion(+)
+That works, thanks!
 
-diff --git a/qga/commands-win32.c b/qga/commands-win32.c
-index 697c65507c..f3c7e604c9 100644
---- a/qga/commands-win32.c
-+++ b/qga/commands-win32.c
-@@ -2154,6 +2154,7 @@ static ga_win_10_0_t const WIN_10_0_SERVER_VERSION_MATRIX[4] = {
-     {14393, "Microsoft Windows Server 2016",    "2016"},
-     {17763, "Microsoft Windows Server 2019",    "2019"},
-     {20344, "Microsoft Windows Server 2022",    "2022"},
-+    {26040, "MIcrosoft Windows Server 2025",    "2025"},
-     {0, 0}
- };
- 
 -- 
-2.35.1
+Peter Xu
 
 
