@@ -2,67 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AEC585E533
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 19:09:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7718885E574
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 19:22:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcr0n-000552-5n; Wed, 21 Feb 2024 13:08:05 -0500
+	id 1rcrDh-0007tm-Qv; Wed, 21 Feb 2024 13:21:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rcr0l-0004wF-Au
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 13:08:03 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rcr0i-0000hW-Jm
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 13:08:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708538878;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=5N9kQmsXi811xBmhKN5vWVkLXcdGsB/xJVwLIj9WQEE=;
- b=htBoiaX7P+50qbS9vv2Go80CduXPKer8Y+bRRgKWyXPxgIHO5gcyTZMcge9bYMunCF1ty+
- EsiitXjZdteLcAk5bpZs/tagcfAsqjZbI8gVTOqdV+tInu5MH4r6c3LGJBTmc7XTMjDcqK
- QeBMrsoybApqPRlsKZtznUmTVWqJcyg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-393-XSKf2OcqMxCBTUQbG2h32g-1; Wed, 21 Feb 2024 13:07:54 -0500
-X-MC-Unique: XSKf2OcqMxCBTUQbG2h32g-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7DAA0887E41;
- Wed, 21 Feb 2024 18:07:54 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.194.110])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5D23D2166B32;
- Wed, 21 Feb 2024 18:07:52 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
- Frederic Konrad <konrad.frederic@yahoo.fr>, qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH] hw/sparc/leon3: Fix wrong usage of DO_UPCAST macro
-Date: Wed, 21 Feb 2024 19:07:51 +0100
-Message-ID: <20240221180751.190489-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1rcrDY-0007g5-Vx
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 13:21:17 -0500
+Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1rcrDV-0003Iw-EI
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 13:21:16 -0500
+Received: by mail-ot1-x331.google.com with SMTP id
+ 46e09a7af769-6e2e6bcc115so3875426a34.3
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 10:21:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1708539671; x=1709144471; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=rF+lzU6VXn8MzeIYj12jMaidQDet+Jk/8usd9xFeU4E=;
+ b=HJ19q2J2jf81j8LJiFt84T9ciG02HBeTw+1tJA21/PnKHNbT333vwn3vAVXhoxGB4R
+ tSnFBoQZd+itRx6wFUMYJksaQS9p54/DyT7S4rLuzt2URSyUXCLpd99muszttLScRmQ4
+ MbPFKf1Y2sKRnOArI+JKNHJSTDR/2E0zFxLcPNbA1AK5VWbD+7a0RUqmsMl72fsE0rlg
+ jyq1FflokIJkddadgsWKM3sD8lWUBbki99TT32IyNsHJiOXh+KMwf585pCBgzBDBQxT3
+ JoJAfKcyvaA9Pnh5uTPtFJ8rEXW6bt/mb+pW5fgImPLwVJfFwE4GX5O6ecx/vxpLtOyd
+ Bftg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708539671; x=1709144471;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rF+lzU6VXn8MzeIYj12jMaidQDet+Jk/8usd9xFeU4E=;
+ b=Db0/7MKKVUwEmLGHuRL9iqLSKGzTaReq6wgS9EQCsFKP7jXcrTvA19jzf+PYQJURtj
+ T3rNQr2uvrX7MsNKLMFFkigRnBCpcpc9k64Ur10TbYnFmE7NyEWAFBmaKYWrVew/GJdi
+ +zKTbQr4L/IhMN56EzPZpk4ptK0nFizJOvRLFJp2YmR5DyRCYtYiJ0on5GNsKZwKjsr1
+ /h+oO+hqus4AS0QW5KfCuc0847KS2GPWSG9S1iFBX6Fz/pNfU6zRHqUjuCuCPwTUlW+c
+ IdcNKHq0z8YSeXTJxVshYtRhI0DDP3ZpWE1uninfPRUezlKj1cMLgD2S5f0A9CkMaMVI
+ eIJQ==
+X-Gm-Message-State: AOJu0Yysa5pF65CMjIoevwYlosyqWFPxrc7gVgsgsD3R5NE11YP2N6Zw
+ UCRd1FO3U0fCG0BjHKPw054bgTaQASqPFQtBmQS9q25aJWtle8QyEKkEwIfp
+X-Google-Smtp-Source: AGHT+IEeZFxdjaqyZAi2dnWva5Y087szRR+YGolJKt82BgzIVoI5c1BjJh3XQtisJrtTNdd4YlBcJA==
+X-Received: by 2002:a05:6358:65a7:b0:17b:57f3:3b9 with SMTP id
+ x39-20020a05635865a700b0017b57f303b9mr3776609rwh.14.1708539670465; 
+ Wed, 21 Feb 2024 10:21:10 -0800 (PST)
+Received: from localhost.localdomain ([2601:641:300:14de:5692:7e41:13a2:69a])
+ by smtp.gmail.com with ESMTPSA id
+ cs16-20020a17090af51000b002992f49922csm9979009pjb.25.2024.02.21.10.21.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 Feb 2024 10:21:10 -0800 (PST)
+From: nifan.cxl@gmail.com
+To: qemu-devel@nongnu.org
+Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
+ gregory.price@memverge.com, ira.weiny@intel.com, dan.j.williams@intel.com,
+ a.manzanares@samsung.com, dave@stgolabs.net, nmtadam.samsung@gmail.com,
+ nifan.cxl@gmail.com, jim.harris@samsung.com, Fan Ni <fan.ni@samsung.com>
+Subject: [PATCH v4 00/10] Enabling DCD emulation support in Qemu
+Date: Wed, 21 Feb 2024 10:15:53 -0800
+Message-ID: <20240221182020.1086096-1-nifan.cxl@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
+ envelope-from=nifan.cxl@gmail.com; helo=mail-ot1-x331.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,43 +91,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-leon3.c currently fails to compile with some compilers when the -Wvla
-option has been enabled:
+From: Fan Ni <fan.ni@samsung.com>
 
- ../hw/sparc/leon3.c: In function ‘leon3_cpu_reset’:
- ../hw/sparc/leon3.c:153:5: error: ISO C90 forbids variable length array
-  ‘offset_must_be_zero’ [-Werror=vla]
-   153 |     ResetData *s = (ResetData *)DO_UPCAST(ResetData, info[id], info);
-       |     ^~~~~~~~~
- cc1: all warnings being treated as errors
+v3[1]->v4: 
 
-Looking at this code, the DO_UPCAST macro is indeed used in a wrong way
-here: DO_UPCAST is supposed to check that the second parameter is the
-first entry of the struct that the first parameter indicates, but since
-we use and index into the info[] array, this of course cannot work.
+The code is rebased on mainstream QEMU with the following patch series:
 
-The intention here was likely rather to use the container_of() macro
-instead, so switch the code accordingly.
+hw/cxl/mailbox: change CCI cmd set structure to be a member, not a reference
+hw/cxl/mailbox: interface to add CCI commands to an existing CCI
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- hw/sparc/leon3.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Main changes include:
 
-diff --git a/hw/sparc/leon3.c b/hw/sparc/leon3.c
-index 4873b59b6c..6aaa04cb19 100644
---- a/hw/sparc/leon3.c
-+++ b/hw/sparc/leon3.c
-@@ -150,7 +150,7 @@ static void leon3_cpu_reset(void *opaque)
- {
-     struct CPUResetData *info = (struct CPUResetData *) opaque;
-     int id = info->id;
--    ResetData *s = (ResetData *)DO_UPCAST(ResetData, info[id], info);
-+    ResetData *s = container_of(info, ResetData, info[id]);
-     CPUState *cpu = CPU(s->info[id].cpu);
-     CPUSPARCState *env = cpu_env(cpu);
- 
+1. Updated the specification references to align with cxl spec r3.1.
+2. Add extra elements to get dc region configuration output payload and
+procecced accordingly in mailbox command 4800h.
+3. Removed the unwanted space.
+4. Refactored ct3_build_cdat_entries_for_mr and extract it as a separate patch.
+5. Updated cxl_create_dc_regions function to derive region len from host
+backend size.
+6. Changed the logic for creating DC regions when host backend and address
+space processing is introduced, now cxl_create_dc_regions is called only
+when host backend exists.
+7. Updated the name of the definitions related to DC extents for consistency.
+7. Updated dynamic capacity event record definition to align with spec r3.1.
+9. Changed the dynamic capacity request process logic, for release request,
+extra checks are done against the pending list to remove the extent yet added.
+10. Changed the return value of cxl_create_dc_regions so the return can be used
+to Remove the extent for the list if needed.
+11. offset and size in the qmp interface are changed to be byte-wise while the
+original is MiB-wise.
+12. Fixed bugs in handling bitmap for dpa range existence.
+13. NOTE: in previous version DC is set to non-volatile, while in this version
+we change it to volatile per Jonathan's suggestion.
+14. Updated the doc in qapi/cxl.json.
+
+Thank Jonathan for the detailed review of the last version[1].
+
+The code is tested with Ira's last kernel DCD patch set [2] with some minor
+bug fixes[3]. Tested operations include:
+1. create DC region;
+2. Add/release DC extents;
+3. convert DC capacity into system RAM (no real read/write to DCD tested);
+
+
+v3: 
+[1] https://lore.kernel.org/linux-cxl/20231107180907.553451-1-nifan.cxl@gmail.com/T/#t
+[2] https://github.com/weiny2/linux-kernel/tree/dcd-v3-2023-10-30
+[3] https://github.com/moking/linux-dcd/commit/9d24fa6e5d39f934623220953caecc080f93e964
+
+Fan Ni (10):
+  hw/cxl/cxl-mailbox-utils: Add dc_event_log_size field to output
+    payload of identify memory device command
+  hw/cxl/cxl-mailbox-utils: Add dynamic capacity region representative
+    and mailbox command support
+  include/hw/cxl/cxl_device: Rename mem_size as static_mem_size for
+    type3 memory devices
+  hw/mem/cxl_type3: Add support to create DC regions to type3 memory
+    devices
+  hw/mem/cxl-type3: Refactor ct3_build_cdat_entries_for_mr to take mr
+    size insead of mr as argument
+  hw/mem/cxl_type3: Add host backend and address space handling for DC
+    regions
+  hw/mem/cxl_type3: Add DC extent list representative and get DC extent
+    list mailbox support
+  hw/cxl/cxl-mailbox-utils: Add mailbox commands to support add/release
+    dynamic capacity response
+  hw/cxl/events: Add qmp interfaces to add/release dynamic capacity
+    extents
+  hw/mem/cxl_type3: Add dpa range validation for accesses to DC regions
+
+ hw/cxl/cxl-mailbox-utils.c  | 507 +++++++++++++++++++++++++++++++-
+ hw/mem/cxl_type3.c          | 559 +++++++++++++++++++++++++++++++++---
+ hw/mem/cxl_type3_stubs.c    |  14 +
+ include/hw/cxl/cxl_device.h |  61 +++-
+ include/hw/cxl/cxl_events.h |  18 ++
+ qapi/cxl.json               |  61 +++-
+ 6 files changed, 1174 insertions(+), 46 deletions(-)
+
 -- 
-2.43.2
+2.43.0
 
 
