@@ -2,87 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01A9A85EB48
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:49:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9098685EB7D
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 23:00:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcuSB-0003Cx-JP; Wed, 21 Feb 2024 16:48:35 -0500
+	id 1rcuc9-0004Ko-RQ; Wed, 21 Feb 2024 16:58:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rcuS8-0002wU-CV
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:48:32 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1rcuc7-0004H5-Gx
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:58:51 -0500
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rcuRw-0007Tx-5u
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:48:32 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1dc418fa351so1807805ad.1
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:48:17 -0800 (PST)
+ id 1rcuc3-0000wn-RT
+ for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:58:51 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1dc1ff58fe4so18583985ad.1
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:58:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708552097; x=1709156897; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1708552726; x=1709157526; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=hlxAVMQey/7xdYaZGT3WiiNZ5rWp9+/Qa2oiSDnORXc=;
- b=bCnCZo+uyy+2xGEtQNuGqmzfbnQCOzXD5QlHoQlg7UJiwrTmu1+FIGb6wPftLwTfX/
- EU4605k/L1AuZ07xyU+wd9xgdOT+DMRkpmP9eShqEPx96rlJcIfEk62TPNdDCsU1omjm
- dlVBSsTRq96fnOHSbhiuxPnK8IsMKLZiyXeeVQRHg2kwqD0L9YflNAuxOvQtRy3Lb861
- AYDmPAjdUfCCjoTV+iPbIB5m+zVE8n3o4yu619nd6ry+0XCOrQyzKyoyZMs9Bj+Ug5Gi
- ryR9/NXkRXKLCQDda84x5QsveBOqlAZ+3d2R0GRYuHicjYi62QjuywWvZmSIBtJxaoQC
- Yyqg==
+ bh=n9A+cu7xXPk9cD8IaN/wEZD9MJ03QTnk70UdEcyhrkw=;
+ b=C7zCjbFNa+iujCsyYra30hQF7HegLHmNiKVCYFty9Xe1dfJnBjNwz/1DwL/0o+uCa0
+ M+NZesAF7Zvomtuyh5cTUEEQzWyHVkDqop7qRd3j5QyghGcL+hkilmQ5NfKaguqnLrAr
+ MLXocCB4AlKOVQht+beFt5YrN+Vqk2lK17XE6+8oHXxqoQEgb5+u+wXC7MIAY5dt4Hqu
+ 6IfnZm9oX0lpMM9L+3QxdWt0r1GTsyc6Ys9+1fQRvBv036K0n1yYxvkKgQciaDfshMEE
+ Lo7YRh4ZkO5NF4gNuEzqY7WrpwL5t+rxMLzm0Btm/nfhxQDaoDr419nw2DCbjhm64zf2
+ NbEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708552097; x=1709156897;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20230601; t=1708552726; x=1709157526;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hlxAVMQey/7xdYaZGT3WiiNZ5rWp9+/Qa2oiSDnORXc=;
- b=NJrcM2q9y71eh6T4LzHw/MRLqUz2DdH9F+enYe8AkIDdDxCZewqBXF9Rcscwiju+Zc
- Z9zX4m33YxwdpAlDiMjb+D6VHPUqROAkKU8kjD3ttxVeumcplqQzIRObjX8Gd3awJr1w
- 0ATxSAGL/cZz8MtRixTeBObGmynuJT6r1BRgIi9/i8fFacsu0T2nU3+Mg+aLAOnYsuwN
- 1beJj460Wit5zxC16ALIiCGQKxgAswlH/3M/g9VwEHjqRBylLZKdyMekoFdUKBRrQA6Z
- c69yXaLgsmtiX9PgrJSu9q98lgRMs40SdwCXtBU5QmiQndcRm45AUgKgBh3dveT3vkU3
- T5Yw==
+ bh=n9A+cu7xXPk9cD8IaN/wEZD9MJ03QTnk70UdEcyhrkw=;
+ b=IkBcsHwDfoz+T8VrexQoLXMcZjpX0Oz1m5TZjzjsZLRFt/vIZCxY2+LHEXUkU/una9
+ gKE3BBnAXFzjrHqD7obMHR4ngkKfp4sV45cdI6mJzKFa53ccfqbr3vCzQl4vNKjgvKeu
+ xcc4bg3CYHT6Xhn50wv/dY7hrYHnrIp1k6yrMAzPzLd1wL3ykg20Sj8/0aS6GFnf4BCn
+ 6CWBvyfVJgNUvsOLMaNkPYLmYOo3kKFBLuiE4t1iKoM1FCvL7G8UMNi9ja3y0uhdXqho
+ 3NlT4jXSk2JrgQCh24l+4gYLLpLTsFJbk53A4ob2IuE+hEKJunEVdjxQSxqA7adcvyZe
+ 12KA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWbULW6oPtPd7KDHnULSIk+RV66ZTF4AfVTwIsGluOcUS+mckzFbas8zCfETweTcJo4PpClo5QYwihhLCCf/Wf5Vym7aOk=
-X-Gm-Message-State: AOJu0YzdGdMcA2dU9mbnjvggZK1d+qGtfoQ4I3mHCEWwYB9YE3B7obwo
- zVaA4LD4PjJLjrhU3KRfU7vapFBU30KQujGUfrA7thY99eNDs1WCyYwZ15L0jhw=
-X-Google-Smtp-Source: AGHT+IHdnitkhPNAGHhCQuyGQ84AVqtwv+Hgl5KMpUjDTfleiW4P/AAtMckmW0bX59szMXa8fTdUTA==
-X-Received: by 2002:a17:903:22cb:b0:1db:e41f:bab with SMTP id
- y11-20020a17090322cb00b001dbe41f0babmr979199plg.32.1708552096832; 
- Wed, 21 Feb 2024 13:48:16 -0800 (PST)
+ AJvYcCX/Do82RYu4odmwnfOLLfYI88e72nfQgf9fG1Nf957mazoew7C0w6Lqp//Rg3zkL/NZuS7eXKlo1zs1aE5BqxXn3tC1B44=
+X-Gm-Message-State: AOJu0Yw/QC2LIuCEpXE+dJgpeuFNfRJz133fMZAQCLMjbiPKc3kUQqzL
+ KsVtIFv48XQ4MeJdSMZNDTCNzPbC/qTh7Hr7DF86YQgjZ7UsbEDDg26iDd+eZU0=
+X-Google-Smtp-Source: AGHT+IHKrzjLk9Xm92cuptbvdT7dofVawjajN39d2kk202PZMMG+QqKloZhCLNstuxsgfxox8oU0DQ==
+X-Received: by 2002:a17:902:6808:b0:1dc:1bc2:5d3d with SMTP id
+ h8-20020a170902680800b001dc1bc25d3dmr4807885plk.8.1708552726120; 
+ Wed, 21 Feb 2024 13:58:46 -0800 (PST)
 Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
  [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
- ke8-20020a170903340800b001d901c2087esm8577345plb.302.2024.02.21.13.48.15
+ h15-20020a170902f7cf00b001db4433ef95sm8515886plw.152.2024.02.21.13.58.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Feb 2024 13:48:16 -0800 (PST)
-Message-ID: <d2f050c9-070a-4cff-b9c0-754f5d30afab@linaro.org>
-Date: Wed, 21 Feb 2024 11:48:13 -1000
+ Wed, 21 Feb 2024 13:58:45 -0800 (PST)
+Message-ID: <a3cefe21-f988-4269-9048-ffe4c5d18508@linaro.org>
+Date: Wed, 21 Feb 2024 11:58:36 -1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 19/22] hw/intc/arm_gicv3: Add irq superpriority
- information
+Subject: Re: [PATCH v3 1/3] qdev: Add a granule_mode property
 Content-Language: en-US
-To: Jinjie Ruan <ruanjinjie@huawei.com>, peter.maydell@linaro.org,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
- wangyanan55@huawei.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org
-References: <20240221130823.677762-1-ruanjinjie@huawei.com>
- <20240221130823.677762-20-ruanjinjie@huawei.com>
+To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, mst@redhat.com,
+ jean-philippe@linaro.org, peter.maydell@linaro.org, clg@redhat.com,
+ yanghliu@redhat.com
+Cc: alex.williamson@redhat.com, zhenzhong.duan@intel.com,
+ jasowang@redhat.com, pbonzini@redhat.com, berrange@redhat.com
+References: <20240221205926.40066-1-eric.auger@redhat.com>
+ <20240221205926.40066-2-eric.auger@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240221130823.677762-20-ruanjinjie@huawei.com>
+In-Reply-To: <20240221205926.40066-2-eric.auger@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,18 +100,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/21/24 03:08, Jinjie Ruan via wrote:
-> A SPI, PPI or SGI interrupt can have a superpriority property. So
-> maintain superpriority information in PendingIrq and GICR/GICD.
+On 2/21/24 10:58, Eric Auger wrote:
+> Introduce a new enum type property allowing to set an
+> IOMMU granule. Values are 4K, 16K, 64K and host. This
+> latter indicates the vIOMMU granule will matches the
+> host page size.
 > 
-> Signed-off-by: Jinjie Ruan<ruanjinjie@huawei.com>
+> A subsequent patch will add such a property to the
+> virtio-iommu device.
+> 
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
 > ---
->   include/hw/intc/arm_gicv3_common.h | 4 ++++
->   1 file changed, 4 insertions(+)
+>   include/hw/qdev-properties-system.h |  3 +++
+>   include/hw/virtio/virtio-iommu.h    | 11 +++++++++++
+>   hw/core/qdev-properties-system.c    | 15 +++++++++++++++
+>   hw/virtio/virtio-iommu.c            | 10 ++++++++++
+>   4 files changed, 39 insertions(+)
+> 
+> diff --git a/include/hw/qdev-properties-system.h b/include/hw/qdev-properties-system.h
+> index 06c359c190..626be87dd3 100644
+> --- a/include/hw/qdev-properties-system.h
+> +++ b/include/hw/qdev-properties-system.h
+> @@ -8,6 +8,7 @@ extern const PropertyInfo qdev_prop_macaddr;
+>   extern const PropertyInfo qdev_prop_reserved_region;
+>   extern const PropertyInfo qdev_prop_multifd_compression;
+>   extern const PropertyInfo qdev_prop_mig_mode;
+> +extern const PropertyInfo qdev_prop_granule_mode;
+>   extern const PropertyInfo qdev_prop_losttickpolicy;
+>   extern const PropertyInfo qdev_prop_blockdev_on_error;
+>   extern const PropertyInfo qdev_prop_bios_chs_trans;
+> @@ -47,6 +48,8 @@ extern const PropertyInfo qdev_prop_iothread_vq_mapping_list;
+>   #define DEFINE_PROP_MIG_MODE(_n, _s, _f, _d) \
+>       DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_mig_mode, \
+>                          MigMode)
+> +#define DEFINE_PROP_GRANULE_MODE(_n, _s, _f, _d) \
+> +    DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_granule_mode, GranuleMode)
+>   #define DEFINE_PROP_LOSTTICKPOLICY(_n, _s, _f, _d) \
+>       DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_losttickpolicy, \
+>                           LostTickPolicy)
+> diff --git a/include/hw/virtio/virtio-iommu.h b/include/hw/virtio/virtio-iommu.h
+> index 5fbe4677c2..a82c4fa471 100644
+> --- a/include/hw/virtio/virtio-iommu.h
+> +++ b/include/hw/virtio/virtio-iommu.h
+> @@ -31,6 +31,16 @@ OBJECT_DECLARE_SIMPLE_TYPE(VirtIOIOMMU, VIRTIO_IOMMU)
+>   
+>   #define TYPE_VIRTIO_IOMMU_MEMORY_REGION "virtio-iommu-memory-region"
+>   
+> +typedef enum GranuleMode {
+> +    GRANULE_MODE_4K,
+> +    GRANULE_MODE_16K,
+> +    GRANULE_MODE_64K,
+> +    GRANULE_MODE_HOST,
+> +    GRANULE_MODE__MAX,
+> +} GranuleMode;
+> +
+> +extern const QEnumLookup GranuleMode_lookup;
+> +
+>   typedef struct IOMMUDevice {
+>       void         *viommu;
+>       PCIBus       *bus;
+> @@ -67,6 +77,7 @@ struct VirtIOIOMMU {
+>       Notifier machine_done;
+>       bool granule_frozen;
+>       uint8_t aw_bits;
+> +    GranuleMode granule_mode;
+>   };
+>   
+>   #endif
+> diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+> index 1a396521d5..3a0b36a7a7 100644
+> --- a/hw/core/qdev-properties-system.c
+> +++ b/hw/core/qdev-properties-system.c
+> @@ -34,6 +34,7 @@
+>   #include "net/net.h"
+>   #include "hw/pci/pci.h"
+>   #include "hw/pci/pcie.h"
+> +#include "hw/virtio/virtio-iommu.h"
+>   #include "hw/i386/x86.h"
+>   #include "util/block-helpers.h"
+>   
+> @@ -679,6 +680,20 @@ const PropertyInfo qdev_prop_mig_mode = {
+>       .set_default_value = qdev_propinfo_set_default_value_enum,
+>   };
+>   
+> +/* --- GranuleMode --- */
+> +
+> +QEMU_BUILD_BUG_ON(sizeof(GranuleMode) != sizeof(int));
+> +
+> +const PropertyInfo qdev_prop_granule_mode = {
+> +    .name = "GranuleMode",
+> +    .description = "granule_mode values, "
+> +                   "4K, 16K, 64K, host",
+> +    .enum_table = &GranuleMode_lookup,
+> +    .get = qdev_propinfo_get_enum,
+> +    .set = qdev_propinfo_set_enum,
+> +    .set_default_value = qdev_propinfo_set_default_value_enum,
+> +};
+> +
+>   /* --- Reserved Region --- */
+>   
+>   /*
+> diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+> index 2ec5ef3cd1..2ce5839c60 100644
+> --- a/hw/virtio/virtio-iommu.c
+> +++ b/hw/virtio/virtio-iommu.c
+> @@ -44,6 +44,16 @@
+>   #define VIOMMU_DEFAULT_QUEUE_SIZE 256
+>   #define VIOMMU_PROBE_SIZE 512
+>   
+> +const QEnumLookup GranuleMode_lookup = {
+> +    .array = (const char *const[]) {
+> +        [GRANULE_MODE_4K]  = "4K",
+> +        [GRANULE_MODE_16K] = "16K",
+> +        [GRANULE_MODE_64K] = "64K",
+> +        [GRANULE_MODE_HOST] = "host",
+> +    },
+> +    .size = GRANULE_MODE__MAX
+> +};
 
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Does it ever make sense to use anything other than host?
+Especially since 4k fails on a 64k host, as you report.
+Why would we want to be able to select a granule that doesn't work?
 
-Though this patch is mis-ordered compared to its uses.
+There are a few older hosts with 8k pages, e.g. Alpha, MIPS, Sparc.
 
 
 r~
