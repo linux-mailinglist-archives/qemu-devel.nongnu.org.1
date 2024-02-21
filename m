@@ -2,41 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81B6A85E9D3
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:18:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DDCC85EA31
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:25:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rctxs-0002nf-Cu; Wed, 21 Feb 2024 16:17:16 -0500
+	id 1rctxu-0002qy-OR; Wed, 21 Feb 2024 16:17:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctxO-00028R-Lw; Wed, 21 Feb 2024 16:16:48 -0500
+ id 1rctxQ-0002CO-CO; Wed, 21 Feb 2024 16:16:48 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rctxM-0000mS-8a; Wed, 21 Feb 2024 16:16:46 -0500
+ id 1rctxN-0000mx-Ko; Wed, 21 Feb 2024 16:16:47 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 511E44F7EE;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5E7484F7EF;
  Thu, 22 Feb 2024 00:16:45 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 06B24869A7;
+ by tsrv.corpit.ru (Postfix) with SMTP id 16916869A8;
  Thu, 22 Feb 2024 00:16:23 +0300 (MSK)
-Received: (nullmailer pid 2335265 invoked by uid 1000);
+Received: (nullmailer pid 2335268 invoked by uid 1000);
  Wed, 21 Feb 2024 21:16:22 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-block@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 07/28] qemu-img: factor out parse_output_format() and use it
- in the code
-Date: Thu, 22 Feb 2024 00:15:48 +0300
-Message-Id: <20240221211622.2335170-7-mjt@tls.msk.ru>
+Cc: Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PATCH 08/28] qemu-img: check: refresh options/--help
+Date: Thu, 22 Feb 2024 00:15:49 +0300
+Message-Id: <20240221211622.2335170-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1708544927.git.mjt@tls.msk.ru>
 References: <cover.1708544927.git.mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,177 +58,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use common code and simplify error message
+Add missing long options and --help output.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- qemu-img.c | 63 ++++++++++++++++--------------------------------------
- 1 file changed, 18 insertions(+), 45 deletions(-)
+ qemu-img.c | 38 ++++++++++++++++++++++++++++++--------
+ 1 file changed, 30 insertions(+), 8 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 7e4c993b9c..01894c097b 100644
+index 01894c097b..69fa9701e9 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -157,6 +157,17 @@ void cmd_help(const img_cmd_t *ccmd,
-     exit(EXIT_SUCCESS);
- }
- 
-+static OutputFormat parse_output_format(const char *argv0, const char *arg)
-+{
-+    if (!strcmp(arg, "json")) {
-+        return OFORMAT_JSON;
-+    } else if (!strcmp(arg, "human")) {
-+        return OFORMAT_HUMAN;
-+    } else {
-+        error_exit(argv0, "--output expects 'human' or 'json' not '%s'", arg);
-+    }
-+}
-+
- /* Please keep in synch with docs/tools/qemu-img.rst */
- static G_NORETURN
- void help(void)
-@@ -775,7 +786,7 @@ static int img_check(const img_cmd_t *ccmd, int argc, char **argv)
- {
-     int c, ret;
-     OutputFormat output_format = OFORMAT_HUMAN;
--    const char *filename, *fmt, *output, *cache;
-+    const char *filename, *fmt, *cache;
-     BlockBackend *blk;
-     BlockDriverState *bs;
-     int fix = 0;
-@@ -787,7 +798,6 @@ static int img_check(const img_cmd_t *ccmd, int argc, char **argv)
-     bool force_share = false;
- 
-     fmt = NULL;
--    output = NULL;
-     cache = BDRV_DEFAULT_CACHE;
- 
-     for(;;) {
-@@ -833,7 +843,7 @@ static int img_check(const img_cmd_t *ccmd, int argc, char **argv)
-             }
-             break;
-         case OPTION_OUTPUT:
--            output = optarg;
-+            output_format = parse_output_format(argv[0], optarg);
-             break;
-         case 'T':
-             cache = optarg;
-@@ -857,15 +867,6 @@ static int img_check(const img_cmd_t *ccmd, int argc, char **argv)
-     }
-     filename = argv[optind++];
- 
--    if (output && !strcmp(output, "json")) {
--        output_format = OFORMAT_JSON;
--    } else if (output && !strcmp(output, "human")) {
--        output_format = OFORMAT_HUMAN;
--    } else if (output) {
--        error_report("--output must be used with human or json as argument.");
--        return 1;
--    }
--
-     ret = bdrv_parse_cache_mode(cache, &flags, &writethrough);
-     if (ret < 0) {
-         error_report("Invalid source cache option: %s", cache);
-@@ -3059,13 +3060,12 @@ static int img_info(const img_cmd_t *ccmd, int argc, char **argv)
-     int c;
-     OutputFormat output_format = OFORMAT_HUMAN;
-     bool chain = false;
--    const char *filename, *fmt, *output;
-+    const char *filename, *fmt;
-     BlockGraphInfoList *list;
-     bool image_opts = false;
-     bool force_share = false;
- 
-     fmt = NULL;
--    output = NULL;
-     for(;;) {
+@@ -804,7 +804,9 @@ static int img_check(const img_cmd_t *ccmd, int argc, char **argv)
          int option_index = 0;
          static const struct option long_options[] = {
-@@ -3100,7 +3100,7 @@ static int img_info(const img_cmd_t *ccmd, int argc, char **argv)
-             force_share = true;
+             {"help", no_argument, 0, 'h'},
++            {"quiet", no_argument, 0, 'q'},
+             {"format", required_argument, 0, 'f'},
++            {"cache", required_argument, 0, 'T'},
+             {"repair", required_argument, 0, 'r'},
+             {"output", required_argument, 0, OPTION_OUTPUT},
+             {"object", required_argument, 0, OPTION_OBJECT},
+@@ -812,20 +814,38 @@ static int img_check(const img_cmd_t *ccmd, int argc, char **argv)
+             {"force-share", no_argument, 0, 'U'},
+             {0, 0, 0, 0}
+         };
+-        c = getopt_long(argc, argv, ":hf:r:T:qU",
++        c = getopt_long(argc, argv, "hf:r:T:qU",
+                         long_options, &option_index);
+         if (c == -1) {
              break;
-         case OPTION_OUTPUT:
--            output = optarg;
-+            output_format = parse_output_format(argv[0], optarg);
+         }
+         switch(c) {
+-        case ':':
+-            missing_argument(argv[optind - 1]);
+-            break;
+-        case '?':
+-            unrecognized_option(argv[optind - 1]);
+-            break;
+         case 'h':
+-            help();
++            cmd_help(ccmd,
++"[-f FMT | --image-opts] [-T CACHE_MODE] [-r] [-u]\n"
++"        [--output human|json] [--object OBJDEF] FILENAME\n"
++,
++"  -q, --quiet\n"
++"     quiet operations\n"
++"  -f, --format FMT\n"
++"     specifies format of the image explicitly\n"
++"  --image-opts\n"
++"     indicates that FILENAME is a complete image specification\n"
++"     instead of a file name (incompatible with --format)\n"
++"  -T, --cache CACHE_MODE\n"
++"     image cache mode (" BDRV_DEFAULT_CACHE ")\n"
++"  -U, --force-share\n"
++"     open image in shared mode for concurrent access\n"
++"  --output human|json\n"
++"     output format\n"
++"  -r, --repair leaks|all\n"
++"     repair particular aspect of the image\n"
++"     (image will be open in read-write mode, incompatible with --force-share)\n"
++"  --object OBJDEF\n"
++"     QEMU user-creatable object (eg encryption key)\n"
++"  FILENAME\n"
++"     the image file (or image specification) to operate on\n"
++);
              break;
-         case OPTION_BACKING_CHAIN:
-             chain = true;
-@@ -3118,15 +3118,6 @@ static int img_info(const img_cmd_t *ccmd, int argc, char **argv)
-     }
-     filename = argv[optind++];
- 
--    if (output && !strcmp(output, "json")) {
--        output_format = OFORMAT_JSON;
--    } else if (output && !strcmp(output, "human")) {
--        output_format = OFORMAT_HUMAN;
--    } else if (output) {
--        error_report("--output must be used with human or json as argument.");
--        return 1;
--    }
--
-     list = collect_image_info_list(image_opts, filename, fmt, chain,
-                                    force_share);
-     if (!list) {
-@@ -3285,7 +3276,7 @@ static int img_map(const img_cmd_t *ccmd, int argc, char **argv)
-     OutputFormat output_format = OFORMAT_HUMAN;
-     BlockBackend *blk;
-     BlockDriverState *bs;
--    const char *filename, *fmt, *output;
-+    const char *filename, *fmt;
-     int64_t length;
-     MapEntry curr = { .length = 0 }, next;
-     int ret = 0;
-@@ -3295,7 +3286,6 @@ static int img_map(const img_cmd_t *ccmd, int argc, char **argv)
-     int64_t max_length = -1;
- 
-     fmt = NULL;
--    output = NULL;
-     for (;;) {
-         int option_index = 0;
-         static const struct option long_options[] = {
-@@ -3331,7 +3321,7 @@ static int img_map(const img_cmd_t *ccmd, int argc, char **argv)
-             force_share = true;
-             break;
-         case OPTION_OUTPUT:
--            output = optarg;
-+            output_format = parse_output_format(argv[0], optarg);
-             break;
-         case 's':
-             start_offset = cvtnum("start offset", optarg);
-@@ -3358,15 +3348,6 @@ static int img_map(const img_cmd_t *ccmd, int argc, char **argv)
-     }
-     filename = argv[optind];
- 
--    if (output && !strcmp(output, "json")) {
--        output_format = OFORMAT_JSON;
--    } else if (output && !strcmp(output, "human")) {
--        output_format = OFORMAT_HUMAN;
--    } else if (output) {
--        error_report("--output must be used with human or json as argument.");
--        return 1;
--    }
--
-     blk = img_open(image_opts, filename, fmt, 0, false, false, force_share);
-     if (!blk) {
-         return 1;
-@@ -5465,15 +5446,7 @@ static int img_measure(const img_cmd_t *ccmd, int argc, char **argv)
+         case 'f':
+             fmt = optarg;
+@@ -860,6 +880,8 @@ static int img_check(const img_cmd_t *ccmd, int argc, char **argv)
+         case OPTION_IMAGE_OPTS:
              image_opts = true;
              break;
-         case OPTION_OUTPUT:
--            if (!strcmp(optarg, "json")) {
--                output_format = OFORMAT_JSON;
--            } else if (!strcmp(optarg, "human")) {
--                output_format = OFORMAT_HUMAN;
--            } else {
--                error_report("--output must be used with human or json "
--                             "as argument.");
--                goto out;
--            }
-+            output_format = parse_output_format(argv[0], optarg);
-             break;
-         case OPTION_SIZE:
-             img_size = cvtnum("image size", optarg);
++        default:
++            tryhelp(argv[0]);
+         }
+     }
+     if (optind != argc - 1) {
 -- 
 2.39.2
 
