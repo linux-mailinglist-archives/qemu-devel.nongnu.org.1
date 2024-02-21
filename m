@@ -2,85 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BE0285E9C1
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:16:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7484285EA0B
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Feb 2024 22:23:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rctwU-0001Op-Lc; Wed, 21 Feb 2024 16:15:50 -0500
+	id 1rctxv-0002st-Fw; Wed, 21 Feb 2024 16:17:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctwS-0001Nz-IO
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:15:48 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rctwQ-0000bC-0B
- for qemu-devel@nongnu.org; Wed, 21 Feb 2024 16:15:48 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5650ac9a440so1403864a12.3
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 13:15:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708550144; x=1709154944; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Jr+eux/dBX8kmIR3Ayd3qq7P8Y3vpvqeXNoEhGDigII=;
- b=RZXEDt0+lDXGNpHF8Rw4phcFqHns/oTEF+IBq0/B2Cdkc39PPqq/hOavehr1J52IJo
- gs16lC1H2lBTXk3rgCMDOwco3GKwz+uXI2sG12W+NRVAxMZvgLIvCo/ppiPaUJMy9H2G
- 5Y47nOeFrPHLOM+b46bMPA6GYY5wGAZi+AxVcyzpIAwBi/PK9K+HG/YIqR9apPT2mV+6
- vSpVNi5tcdZf1+1vXuIzB7gktrumLOMNxQlCB2ICAEeZiuABaBTq/H55Ow22hTN6FFfQ
- Mo5qVqxoqb0TfvvwXTX/6TbU+TGT/2qERc65UBaVS8kEIXM75YE5NNf0f9HhavyfNRfa
- ngbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708550144; x=1709154944;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Jr+eux/dBX8kmIR3Ayd3qq7P8Y3vpvqeXNoEhGDigII=;
- b=QmdpOygVDHy4xf1mZ6RBVree4Z+rlnte8nnKZhaejKdY0Tg8Y3LbNpg0XPPVWboiT9
- T6bFI6k0x6T7WPfOejkEliVHZ6dXc47Ckpr6f2UCXemtFbzr8kovQymXAG05Sox6H90n
- HdtHZiBIUw5ecnDjPttpW0/EZjOSKaTejbzNBrMRMsk5MCUGfDhc1lvOzgVTXKS7JhP5
- DbjW6GDh5EiiTMaLDRYHbQSM7A4GWPT3AVhNCvP6ASFiKsD19Unxm2rfLmHz9ElPqxjg
- bNy7Hqrfnp5DexTDmRoR4KPwCSX0j8vrUiGp9w8yaxxw6WbBKnXV/ejvnQy2+AmVaZxC
- DEhw==
-X-Gm-Message-State: AOJu0Yx8WST0GJvnoe2wdRX7Jw5DNUr/cQ0hktMt81S7mBE/EOR39RZn
- cQsF6nvy3Kq7RNnxBxyOaYOQQh17+/sN+et3JksrTMPZevIVYHf1GgUmK533zF+cR1OnqWFe/CR
- /wF4=
-X-Google-Smtp-Source: AGHT+IF7IT6dJ/MB7YgezzT9dXxWa55gV+7lqZvp/6nPFZbCXN4b7h7tUXetXJAOSWGI1So9NlLw1Q==
-X-Received: by 2002:a50:bb2e:0:b0:565:11c5:c7db with SMTP id
- y43-20020a50bb2e000000b0056511c5c7dbmr1375982ede.5.1708550144108; 
- Wed, 21 Feb 2024 13:15:44 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.211.34])
- by smtp.gmail.com with ESMTPSA id
- f23-20020a50a6d7000000b0056392b7d85fsm5242896edc.9.2024.02.21.13.15.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Feb 2024 13:15:43 -0800 (PST)
-Message-ID: <79cfbd5b-2be8-4688-9d62-869955116433@linaro.org>
-Date: Wed, 21 Feb 2024 22:15:41 +0100
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rctxm-0002gl-1R; Wed, 21 Feb 2024 16:17:12 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rctxk-0000ts-9Y; Wed, 21 Feb 2024 16:17:09 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id A38434F7F5;
+ Thu, 22 Feb 2024 00:16:45 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 8F010869A0;
+ Thu, 22 Feb 2024 00:16:22 +0300 (MSK)
+Received: (nullmailer pid 2335242 invoked by uid 1000);
+ Wed, 21 Feb 2024 21:16:22 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org, qemu-block@nongnu.org
+Cc: Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PATCH v2 00/28] qemu-img: refersh options and --help handling,
+ cleanups
+Date: Thu, 22 Feb 2024 00:15:41 +0300
+Message-Id: <cover.1708544927.git.mjt@tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/4] hw/pci-host: Build ppc4xx_pci.c/ppc440_pcix.c once
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Thomas Huth <thuth@redhat.com>
-References: <20240215105017.57748-1-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240215105017.57748-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,14 +58,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/2/24 11:50, Philippe Mathieu-Daudé wrote:
+Quite big patchset trying to implement normal, readable qemu-img --help
+(and qemu-img COMMAND --help) output with readable descriptions, and
+adding many long options in the process.
 
-> Philippe Mathieu-Daudé (4):
->    hw/ppc/ppc4xx_pci: Remove unused "hw/ppc/ppc.h" header
->    hw/ppc/ppc4xx_pci: Extract PCI host definitions to
->      hw/pci-host/ppc4xx.h
->    hw/ppc/ppc4xx_pci: Move ppc4xx_pci.c to hw/pci-host/
->    hw/ppc/ppc440_pcix: Move ppc440_pcix.c to hw/pci-host/
+In the end I stopped using qemu-img-opts.hx in qemu-img.c, perhaps
+this can be avoided, with only list of commands and their desrciptions
+kept there, but I don't see big advantage here.  The same list should
+be included in docs/tools/qemu-img.rst, - this is not done now.
 
-Series queued.
+Also each command syntax isn't reflected in the doc for now, because
+I want to give good names for options first, - and there, we've quite
+some inconsistences and questions.  For example, measure --output=OFMT
+-O OFMT, - this is priceless :)  I've no idea why we have this ugly
+--output=json thing, why not have --json? ;)  I gave the desired
+format long name --target-format to avoid clash with --output.
+
+For rebase, src vs tgt probably should be renamed in local variables
+too, and I'm not even sure I've got the caches right. For caches,
+the thing is inconsistent across commands.
+
+For compare, I used --a-format/--b-format (for -f/-F), - this can
+be made --souce-format and --target-format, to compare source (file1)
+with target (file2).
+
+For bitmap, things are scary, I'm not sure what -b SRC_FILENAME
+really means, - for now I gave it --source option, but this does
+not make it more clear, suggestions welcome.
+
+There are many other inconsistencies, I can't fix them all in one
+go.. :)
+
+Changes since v1:
+
+ - reformatted help text to be less condensed
+ - added cleanups (first 3 patches and last patch)
+ - change argv[0] handling and getopt error reporting to
+   fix inherent bug (see patch 4 "global option processing"
+   for details)
+ - removed missing_argument() & unrecognized_option()
+   and handling of '?' and ':' getopt return values
+ - more robust handling of resize filename -size vs options
+   ("resize: do not always eat last argument")
+ - larger cleanup in snapshot mode handling
+   ("snapshot: make -l (list) the default...")
+ - cvtnum and number conversion and bugfixes
+   ("extend cvtnum() and use it in more places")
+ - removed unused option_index variable in two places
+ - added a few fixmes
+ - various other minor changes
+
+I kept Dan's R-b for a few patches he reviewed
+despite the changed, - hopefully it's okay, since
+the new changes are not related to the initial ones.
+Keeping him in Cc for that.
+
+Michael Tokarev (28):
+  qemu-img: stop printing error twice in a few places
+  qemu-img: measure: convert img_size to signed, simplify handling
+  qemu-img: create: convert img_size to signed, simplify handling
+  qemu-img: global option processing and error printing
+  qemu-img: pass current cmd info into command handlers
+  qemu-img: create: refresh options/--help
+  qemu-img: factor out parse_output_format() and use it in the code
+  qemu-img: check: refresh options/--help
+  qemu-img: simplify --repair error message
+  qemu-img: commit: refresh options/--help
+  qemu-img: compare: refresh options/--help
+  qemu-img: convert: refresh options/--help
+  qemu-img: info: refresh options/--help
+  qemu-img: map: refresh options/--help
+  qemu-img: snapshot: allow specifying -f fmt
+  qemu-img: snapshot: make -l (list) the default
+  qemu-img: snapshot: refresh options/--help
+  qemu-img: rebase: refresh options/--help
+  qemu-img: resize: do not always eat last argument
+  qemu-img: resize: refresh options/--help
+  qemu-img: amend: refresh options/--help
+  qemu-img: bench: refresh options/--help
+  qemu-img: bitmap: refresh options/--help
+  qemu-img: dd: refresh options/--help
+  qemu-img: measure: refresh options/--help
+  qemu-img: implement short --help, remove global help() function
+  qemu-img: inline list of supported commands, remove qemu-img-cmds.h
+    include
+  qemu-img: extend cvtnum() and use it in more places
+
+ docs/tools/qemu-img.rst |    4 +-
+ qemu-img-cmds.hx        |    4 +-
+ qemu-img.c              | 1143 +++++++++++++++++++++++----------------
+ 3 files changed, 670 insertions(+), 481 deletions(-)
+
+-- 
+2.39.2
+
 
