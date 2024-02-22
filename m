@@ -2,86 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDCAF85F559
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 11:11:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAED885F564
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 11:13:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd622-0006xG-US; Thu, 22 Feb 2024 05:10:22 -0500
+	id 1rd64q-00007M-FW; Thu, 22 Feb 2024 05:13:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rd61z-0006uY-Mf
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 05:10:19 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rd61y-0001Ji-5G
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 05:10:19 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-41279203064so9334085e9.1
- for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 02:10:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708596617; x=1709201417; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=SIfQhlM8i9KIYuh54HREiBAAIFec/DKc01PRCZ9ZVyA=;
- b=BlufdZTb5IBUVKtcojpCnlWgOLgHfqoMDapZkr1NOgUdUPf786vOGcRs/rI0MSw21b
- dipUIhfXFyeRd60acmwmDg27j80iL9OcPKH2v4iJy8TeMkmw3b4lAbQBpaKxCK/LgJZV
- GNoJzC+pi0cS3uhed5msaNk8gdPa6baHsqKrP7xb2YzhvQRACGUzgdjc9r63z7nJHf6P
- 0KJc2SXsI3hZHi5Xfi8Jp1cSucLOazKpeTeZkQBs/v6XYWBnAYudUbYjXi0cDXeuJ7XD
- 9fQQMgU/68sc9b62IGFUYiw/ynOkgemsdtkQymFLhy7f+ySsaTuw4fZtxtXs/tuQOEix
- GhQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708596617; x=1709201417;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=SIfQhlM8i9KIYuh54HREiBAAIFec/DKc01PRCZ9ZVyA=;
- b=UaYVN8U8DnjX/q6jiconkJvQsGVD+TzMbIV4rQj2KmwHrrUUngIqp+1zYbAQqnpfS5
- xSgkXi0KExX60fjZ1XRG4hQQckKXBSy+Y53Nc+gjO8zeJgxmxBV7J+hj2GXsOJY/oCA8
- 9aiO9PpOZLsp4AQTlO8AHFcpo8uVuMtfrTrsEGXg2PfL7BI5ZOR/vOXW8oh9ayoLn55h
- vLdSw9cNb+FynjuBNN44N/4U0TftbP4g50koKZZCNJ15HA2X2P3kKjFPRQOo1tWRInaw
- 20x7ddMQPM026fGRdHs5cZNXzpK6FuHxEBkW8abRhYSgHM6VmZca9S2JkfcPwINaDHgl
- CCRQ==
-X-Gm-Message-State: AOJu0YypAKnfh8BTqYtXrGFF/j289LNn+5Ec/6fS9Yh0grjt/V9dbQ8q
- IoIbDzDKwuwaFMpW8a9GARJa8zrmDOLuO5/1Mvk/ElXS/Zq+miv9ASqb/syidJQ=
-X-Google-Smtp-Source: AGHT+IFs8nAnu+ERsGueLqAkeXUnmE9SpqHiC2y78Bp9OoTi/33sPTfEIuqoDJjA0nFaVkFGStDtnw==
-X-Received: by 2002:a05:600c:4fc3:b0:411:a70e:3d20 with SMTP id
- o3-20020a05600c4fc300b00411a70e3d20mr15687268wmq.1.1708596616676; 
- Thu, 22 Feb 2024 02:10:16 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- f14-20020a056000128e00b0033d87da9ab3sm2556802wrx.110.2024.02.22.02.10.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Feb 2024 02:10:16 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 02A695F89B;
- Thu, 22 Feb 2024 10:10:16 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Jessica Clarke <jrtc27@jrtc27.com>
-Cc: qemu-devel@nongnu.org,  qemu-arm@nongnu.org,  Peter Maydell
- <peter.maydell@linaro.org>
-Subject: Re: [PATCH] pl031: Update last RTCLR value on write in case it's
- read back
-In-Reply-To: <20240222000341.1562443-1-jrtc27@jrtc27.com> (Jessica Clarke's
- message of "Thu, 22 Feb 2024 00:03:41 +0000")
-References: <20240222000341.1562443-1-jrtc27@jrtc27.com>
-User-Agent: mu4e 1.11.28; emacs 29.1
-Date: Thu, 22 Feb 2024 10:10:15 +0000
-Message-ID: <87il2gajy0.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1rd64k-00006U-7M; Thu, 22 Feb 2024 05:13:10 -0500
+Received: from out3-smtp.messagingengine.com ([66.111.4.27])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1rd64h-0001Yk-Va; Thu, 22 Feb 2024 05:13:09 -0500
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+ by mailout.nyi.internal (Postfix) with ESMTP id 27F365C00C9;
+ Thu, 22 Feb 2024 05:13:06 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute6.internal (MEProxy); Thu, 22 Feb 2024 05:13:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-type:content-type:date:date:from:from
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:subject:subject:to:to; s=fm3; t=1708596786; x=
+ 1708683186; bh=7/6hbQYSLlrGJ5jAW+4VhpXCqUEZi6bfd+Kl1LOMg2k=; b=f
+ XeFWvtyI4DFhKboxDNgrY98ovQmFNMAmnfXcccoZFgv+1JbG1jOIrIsf5FHqAvu9
+ TssPVuLBlwlZuv9g2GE9wtrVn5J90YIvXZDPLoq/btdSymZ3ivh5saXnDnMFe7T2
+ 7ldVIIPJZmpU07Uxb/wnzFqwKWWvmR4qksX1r5EnH4QIXfWcnfDKSXisbg4KSCZs
+ 597v37bPM7Hxk4K+lTyCp6hUE3UUErPxK6y3B2Wp8dfqpLwpLz8wSbLl0H9XLkX9
+ y30olm8qakDpMstwNT2mpZw4z2lOlXMsFAChrtP0MQ/V/58fvKj593Y3Ut7jzr/m
+ FaqrgAcMi9iFGvmebqrww==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:subject:subject:to
+ :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+ fm1; t=1708596786; x=1708683186; bh=7/6hbQYSLlrGJ5jAW+4VhpXCqUEZ
+ i6bfd+Kl1LOMg2k=; b=TIUIBrMCS2twHDe/tLxtuy6QooC6scd1FoSLlv9cdCZX
+ b4JO3i2oQqrMvJje3g9Yv4iAj/bJwKH5jI2TT7meW9MlPNKNOK5eau04a+zUgWrD
+ v+oJENCXsjO38FQzILHiBB2DQM1/Nk5PDh0UOUYO1RcRRceW0g46g2+7GZbhYBPD
+ hlL8VvSEt1MdtT9Sy3KW5CX6Z+S02HaWIUAzftTjISkiCWOX0ILrFGc/zOE5HJKv
+ 3C2jSWJoaOcM/yU6lIawQPH0eDrgp7kDbH7xsX3xVathkeAw8uGA7Qxi/OmOFhkV
+ eFklr8kTlTUZDFdyDdK1OwTx17XomlT55NCKy7WnDQ==
+X-ME-Sender: <xms:MR7XZU5n1HOOXDUxNieYOqRSVvyLNAPXXzPCU--8x4AGLpbKjb0BEw>
+ <xme:MR7XZV4sHk5utuC-rIxcHIIAxFJPsidjp_TNcLaA37RFhNjcCz4FTvJoX6J49ibfU
+ P4e_NNYwEJ_JEJj0MU>
+X-ME-Received: <xmr:MR7XZTewvcD4ZwP1ro26v4D_PDmQqrouulFxXRUixUORP5jVOi4eqmTk-jUd>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfeeggdduvdcutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+ fjughrpeffhffvvefukfhfgggtuggjsehgtdorredttdejnecuhfhrohhmpefmlhgruhhs
+ ucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrghtth
+ gvrhhnpeeivefffffhledukeehhfetueelkeffudeuieektdegtefhgeefleeiudelveel
+ keenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehith
+ hssehirhhrvghlvghvrghnthdrughk
+X-ME-Proxy: <xmx:MR7XZZLdrOa3oopAqRoLaoharDYXzTmK_qFXOz6V3Z04vHX1kPzcng>
+ <xmx:MR7XZYJHh6G1MYrn6I2rYxbaWgLrVkktQJ5cO4ess4A5GnYeQ5Ne8w>
+ <xmx:MR7XZazalnlljsXPcDOgp20b57RKObhM9BLeaQkDnv6-HA5-k-CYxw>
+ <xmx:Mh7XZQ88gsw19aP0IOeOlJZcw3Sy6SuYmrwkyxdPTZcDemO02eounQ>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 22 Feb 2024 05:13:05 -0500 (EST)
+Date: Thu, 22 Feb 2024 11:13:00 +0100
+From: Klaus Jensen <its@irrelevant.dk>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Keith Busch <kbusch@kernel.org>, qemu-block@nongnu.org,
+ qemu-devel@nongnu.org, Klaus Jensen <k.jensen@samsung.com>,
+ Kevin Wolf <kwolf@redhat.com>
+Subject: Re: [PATCH] hw/nvme: fix invalid endian conversion
+Message-ID: <ZdceLDayLzLsGWJq@cormorant.local>
+References: <20240222-fix-sriov-numcntl-v1-1-d60bea5e72d0@samsung.com>
+ <42681015-53e0-40df-8de3-3f93e83ba002@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="XIwDPZuthy6JqNu0"
+Content-Disposition: inline
+In-Reply-To: <42681015-53e0-40df-8de3-3f93e83ba002@linaro.org>
+Received-SPF: pass client-ip=66.111.4.27; envelope-from=its@irrelevant.dk;
+ helo=out3-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,18 +102,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Jessica Clarke <jrtc27@jrtc27.com> writes:
 
-> The PL031 allows you to read RTCLR, which is meant to give you the last
-> value written. PL031State has an lr field which is used when reading
-> from RTCLR, and is present in the VM migration state, but we never
-> actually update it, so it always reads as its initial 0 value.
->
-> Signed-off-by: Jessica Clarke <jrtc27@jrtc27.com>
+--XIwDPZuthy6JqNu0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+On Feb 22 11:08, Philippe Mathieu-Daud=C3=A9 wrote:
+> Hi Klaus,
+>=20
+> On 22/2/24 10:29, Klaus Jensen wrote:
+> > From: Klaus Jensen <k.jensen@samsung.com>
+> >=20
+> > numcntl is one byte and so is max_vfs. Using cpu_to_le16 on big endian
+> > hosts results in numcntl being set to 0.
+> >=20
+> > Fix by dropping the endian conversion.
+> >=20
+> > Fixes: 746d42b13368 ("hw/nvme: Initialize capability structures for pri=
+mary/secondary controllers")
+>=20
+> Isn't it commit 99f48ae7ae ("Add support for Secondary Controller
+> List") instead?
+>=20
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Thanks Philippe,
+
+Yes, that is the commit that had the bug originally. I'll fix it up.
+
+--XIwDPZuthy6JqNu0
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmXXHisACgkQTeGvMW1P
+DelCAQf/bSgoW+cNxrqA2HqbiVotijwoIFolT3wXrAuh0U4oO+0N5+FiYSNzqMJl
+Lo4IOG018WjsUN+8ZldrwTJMloft8NgFnXWebPr3lEqS/8pMnRMcy/muWFsKPm7m
+lo7xyOh4tZN3xKUc9lnhcQGEJ+VGK0gNC7dDKbFd5DjTrb/U4ESCTigVZduRyzlh
+VY4Yp5344gKPaP2toXcW3PAEpTYSk3WZGqiMrbiHyfwdfd5LwO3Uj5/3BWTPNa94
+85EyDT9YRTMv2+NIHTB/qq0X36HnQAt4b2KHj804Rifwwg2fWJNy5A+op9PhFbbl
+trg1GaW8YDPMKqjM6wJwcbNM74e0nQ==
+=G089
+-----END PGP SIGNATURE-----
+
+--XIwDPZuthy6JqNu0--
 
