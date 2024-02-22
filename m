@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 550098603D2
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 21:44:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE598603CF
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 21:43:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdFum-0006vU-FT; Thu, 22 Feb 2024 15:43:32 -0500
+	id 1rdFuo-0006xS-3c; Thu, 22 Feb 2024 15:43:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rdFul-0006td-8R
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 15:43:31 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1rdFum-0006vW-1R
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 15:43:32 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rdFuj-0002Zb-0j
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 15:43:30 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1d731314e67so460395ad.1
- for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 12:43:28 -0800 (PST)
+ id 1rdFuk-0002Zm-89
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 15:43:31 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1dbb47852cdso580245ad.1
+ for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 12:43:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708634607; x=1709239407; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708634609; x=1709239409; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6bGhiDlU0H1FunNKKdUnN7eps2A5T8/N/TZO0RrbQvI=;
- b=KXUG7fKqV+wD9Bd0gYjuGGkHLnN1Vb8hqhqy8PAQmrb0+SFXsWXecWt7RlHeSipmzq
- x+s+3etnKwc0po28IcZRiDZTsfTDvP4t1LRQfdRHUCzM7h1ePCSF/nXpuJGhW+BLoPfj
- fFe/9Zp6BrpTXRSdCdDecaJFZ0Y8CsPFioYXyRDmL/Y/km39C/isDpuPVa+bGxZcF/MY
- ZVjKojlOD5AXjbD5muSnvxjhdncUlyZl3++E3sQe9FHal39NxY4mZmqeVMIl5Vzk0VCg
- +oEOgxHIOPhZMfUnvfEJxkaV8uTG5LxKchxgCVJdnZdYaQ6WSIO5TLK36fEE/oFB3HvP
- DQRQ==
+ bh=riDxx/Iexj1qjgzxqR/EG3iYXorkzbFxBXBzbTLKvNo=;
+ b=yNhIpPPe2TUFEU4hQVPE79G4RZfzCeGPK6Im71PSFrGvJ2NiQ0cKmxAvosIPrsWCKt
+ eGTenUqYkfNHfS1Mh+6AUauwtaSbI/iwxHDW2EhOdCsGFifyKBhigGZKtReN1jEBB/3d
+ KSUj/uVe5zi1zMJVTZl/4CvC/lVvD+wjQMgzGOTG1G3+G/zJm6zsJG/WFkwuaukX0Nhe
+ iX2uC2XIfXilRMe8Y32EVM8h26qNs2P2hTUCCK5rpqVrTOi9h/XBShuU11XvQSJpeY1K
+ xxehCEX6xYnqF/T7KbGu8OcjrT4em4r/qUShxPDZWFn0AfJja4MdXeN8n/EXJ2tWDb0l
+ zL2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708634607; x=1709239407;
+ d=1e100.net; s=20230601; t=1708634609; x=1709239409;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6bGhiDlU0H1FunNKKdUnN7eps2A5T8/N/TZO0RrbQvI=;
- b=JJ2MBV1nRrk79Te2YwIXvEiq8+wZdrdzmgkcOtQvuTUJkFZXNe+3ximSiopSVKED07
- 4/zJV0B68gTqboi8MWSPNvKVJwu4zr3xwZKx27iG3NOuatSdaFFCUbpApGEOC6RDVNQp
- WQCqexEwGU8jguX1tf86inEbArBTeeLZWxVwmAM8G8qdXdK1q5pZXYzSeHSAG9WYNjRK
- sy/nmTROzHcSBL0kV2IqCETshFWr23tBKX5fxwbJDH4RD18J4/xQOo/3Zb8IIgI5FFsc
- rPGNbcO1mXlciCRyvzTr13PW5A3ORYX15eyHPKZmfOZvf6yxBZxG1vCDQJVLvlQlG/aW
- Akpw==
-X-Gm-Message-State: AOJu0Yx76OogZTL1qkYO5szJbla2DdFQJPv/JczO05TLs/U9WOFoV/eG
- cuFNZscODTxjTP0NN5+4mYDPrL0ys04guJwgx1Tt1hfCn0lsRnuOArCV6xXYl8tYEKcc6sW9w+5
- B
-X-Google-Smtp-Source: AGHT+IGV+DNcAIjYL2CRgDuAA3BrvJQe/tICE//QVX2rWx+a5IY5VlKzgBOyq+5AYqKF3vlIskqamA==
-X-Received: by 2002:a17:902:da8f:b0:1db:e7a4:9d4d with SMTP id
- j15-20020a170902da8f00b001dbe7a49d4dmr17151169plx.46.1708634607498; 
- Thu, 22 Feb 2024 12:43:27 -0800 (PST)
+ bh=riDxx/Iexj1qjgzxqR/EG3iYXorkzbFxBXBzbTLKvNo=;
+ b=YBx3eaa+uP7bQ+jtPaNcA1aFxwPN02MhMJGyAy9MBQNrfSkdQho7KyCL9kBvFxWzqe
+ 8StFFDVcZw7/VXW4nTVA59SIw7QPPjItHGDXRGUrYAT0gEDD2/nuAGZs1Aecak6toi/5
+ Nttx9/TpX0T0tPH9Ef+ht1Ba3kCOWcheh2lx5oyJy0dWZb3kkFOnU8yvPFZgk8Dde3FO
+ tZ+TTAen4jFpkX34nMdTY5ZveWXBtr0B1HeAodO+clYXIcoogQdQWrcC5PP5UZwqEhJo
+ 13EpvQqKn6/r+ftaCfjjQ6/67IoSkXcDBAI2ZEp+XR8cklJTwpaZ2gK4L67ojCG3vPiP
+ SzWQ==
+X-Gm-Message-State: AOJu0YxnztMCOOh/IahrTE/5mLfmWdJESeXnphdpN9Rpv8cr60rqlWTo
+ BTcbmO6uA4XMtQyqBzayPmvBuq1qezM+Qxhgc5jOVamMeOUnBsS9IJgH5xeww8didwpHS4gx4PL
+ +
+X-Google-Smtp-Source: AGHT+IFTayTEfEFMciAD+6EPaRRK5cfQpJ10W5TGmNtU6UiQyNrqCn5Czg/EGKkqUMDMUg5eI2DMpg==
+X-Received: by 2002:a17:902:ec8b:b0:1dc:11f:d954 with SMTP id
+ x11-20020a170902ec8b00b001dc011fd954mr13067965plg.54.1708634608825; 
+ Thu, 22 Feb 2024 12:43:28 -0800 (PST)
 Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
  by smtp.gmail.com with ESMTPSA id
- l12-20020a170902d34c00b001d8f81ecebesm10275500plk.192.2024.02.22.12.43.26
+ l12-20020a170902d34c00b001d8f81ecebesm10275500plk.192.2024.02.22.12.43.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Feb 2024 12:43:27 -0800 (PST)
+ Thu, 22 Feb 2024 12:43:28 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 01/39] tcg/aarch64: Apple does not align __int128_t in even
- registers
-Date: Thu, 22 Feb 2024 10:42:45 -1000
-Message-Id: <20240222204323.268539-2-richard.henderson@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PULL 02/39] accel/tcg: Set can_do_io at at start of lookup_tb_ptr
+ helper
+Date: Thu, 22 Feb 2024 10:42:46 -1000
+Message-Id: <20240222204323.268539-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240222204323.268539-1-richard.henderson@linaro.org>
 References: <20240222204323.268539-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,40 +94,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From https://developer.apple.com/documentation/xcode/writing-arm64-code-for-apple-platforms
+From: Peter Maydell <peter.maydell@linaro.org>
 
-  When passing an argument with 16-byte alignment in integer registers,
-  Apple platforms allow the argument to start in an odd-numbered xN
-  register. The standard ABI requires it to begin in an even-numbered
-  xN register.
+If a page table is in IO memory and lookup_tb_ptr probes
+the TLB it can result in a page table walk for the instruction
+fetch.  If this hits IO memory and io_prepare falsely assumes
+it needs to do a TLB recompile.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 5427a9a7604 ("tcg: Add TCG_TARGET_CALL_{RET,ARG}_I128")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2169
+Avoid that by setting can_do_io at the start of lookup_tb_ptr.
+
+Link: https://lore.kernel.org/qemu-devel/CAFEAcA_a_AyQ=Epz3_+CheAT8Crsk9mOu894wbNW_FywamkZiw@mail.gmail.com/#t
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-Id: <20240219173153.12114-2-Jonathan.Cameron@huawei.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <9fc0c2c7-dd57-459e-aecb-528edb74b4a7@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tcg/aarch64/tcg-target.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ accel/tcg/cpu-exec.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tcg/aarch64/tcg-target.h b/tcg/aarch64/tcg-target.h
-index ef5ebe91bd..85d5746e47 100644
---- a/tcg/aarch64/tcg-target.h
-+++ b/tcg/aarch64/tcg-target.h
-@@ -55,7 +55,11 @@ typedef enum {
- #define TCG_TARGET_CALL_STACK_OFFSET    0
- #define TCG_TARGET_CALL_ARG_I32         TCG_CALL_ARG_NORMAL
- #define TCG_TARGET_CALL_ARG_I64         TCG_CALL_ARG_NORMAL
--#define TCG_TARGET_CALL_ARG_I128        TCG_CALL_ARG_EVEN
-+#ifdef CONFIG_DARWIN
-+# define TCG_TARGET_CALL_ARG_I128       TCG_CALL_ARG_NORMAL
-+#else
-+# define TCG_TARGET_CALL_ARG_I128       TCG_CALL_ARG_EVEN
-+#endif
- #define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_NORMAL
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 977576ca14..52239a441f 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -396,6 +396,14 @@ const void *HELPER(lookup_tb_ptr)(CPUArchState *env)
+     uint64_t cs_base;
+     uint32_t flags, cflags;
  
- #define have_lse    (cpuinfo & CPUINFO_LSE)
++    /*
++     * By definition we've just finished a TB, so I/O is OK.
++     * Avoid the possibility of calling cpu_io_recompile() if
++     * a page table walk triggered by tb_lookup() calling
++     * probe_access_internal() happens to touch an MMIO device.
++     * The next TB, if we chain to it, will clear the flag again.
++     */
++    cpu->neg.can_do_io = true;
+     cpu_get_tb_cpu_state(env, &pc, &cs_base, &flags);
+ 
+     cflags = curr_cflags(cpu);
 -- 
 2.34.1
 
