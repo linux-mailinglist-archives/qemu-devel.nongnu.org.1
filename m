@@ -2,69 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2CE85F50F
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 10:54:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C255C85F4A3
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 10:40:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd5lt-0007ZL-N5; Thu, 22 Feb 2024 04:53:41 -0500
+	id 1rd5Z3-0001am-AR; Thu, 22 Feb 2024 04:40:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rd5lp-0007Z4-Pp
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 04:53:37 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rd5Z1-0001aa-Rw; Thu, 22 Feb 2024 04:40:23 -0500
+Received: from mgamail.intel.com ([198.175.65.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rd5li-0006on-Ic
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 04:53:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708595609;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9Om+IE0ZDA+aPoI3NoSAM26F72wV5hnac5vdNwv/5Lk=;
- b=GuzaHnoTW0umGe5/yii4ZHXfjw/61IOrAOz2krB96S8viWvC3xilC3SW87nTZcBHhHQtfD
- nokPRtP9oVkLnSXZhTTYeK46RM/E8lJV0cOa0pkZt2hjREX5zQ+jpvRJO3KptmMiX3p7i+
- R26OnjnvWVsgyOcV+00DmTIU4UKSvt0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-209-6c4mhx3VPvayNQQXJPVpvQ-1; Thu,
- 22 Feb 2024 04:53:26 -0500
-X-MC-Unique: 6c4mhx3VPvayNQQXJPVpvQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 13E4F3816444;
- Thu, 22 Feb 2024 09:53:26 +0000 (UTC)
-Received: from x1n.redhat.com (unknown [10.72.116.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 304F78CED;
- Thu, 22 Feb 2024 09:53:22 +0000 (UTC)
-From: peterx@redhat.com
-To: qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>, peterx@redhat.com,
- Avihai Horon <avihaih@nvidia.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 5/5] migration/multifd: Drop unnecessary helper to destroy
- IOC
-Date: Thu, 22 Feb 2024 17:53:01 +0800
-Message-ID: <20240222095301.171137-6-peterx@redhat.com>
-In-Reply-To: <20240222095301.171137-1-peterx@redhat.com>
-References: <20240222095301.171137-1-peterx@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rd5Z0-0004wz-CP; Thu, 22 Feb 2024 04:40:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1708594823; x=1740130823;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=WMfjDfOaYdoWAGl+7j/dbKwh8zQImmdcruxGlBVuoyE=;
+ b=UUIcfSuK8HBMxS8BI+I4owPoCkiYtTYP71tpeAKR20yOmj+K387v9vzH
+ uL5BJ5F4sp4lS/1IzXdFa2WcLvm2Hq2aK9LDFQ6GMRQoXXC6Dpn6HR08O
+ eUfZePtTOfh9Yht4gjEh30oOGjZ1zg7eN4cPGfg9w3hy5JtzXsOFD5c67
+ FgSGQ/i2s593wP4h3RaCm62+76dM6kavy2/Nij9CuF4MTvauiM4RKJHhj
+ HfrLtiHm3UnEvIgdTLHXnDMo2p9MX1lcfl/fA9hUvpmDWsmB0lvwPxOkZ
+ VGsWQuKJAh3Tz3V0YgdtQgiHqcLSWIKV+X9IB3eZFbEyuF3kzb7ywqki+ A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="2669308"
+X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
+   d="scan'208";a="2669308"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Feb 2024 01:40:17 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
+   d="scan'208";a="5376817"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa009.jf.intel.com with ESMTP; 22 Feb 2024 01:40:15 -0800
+Date: Thu, 22 Feb 2024 17:53:54 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-block@nongnu.org,
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: Re: [PATCH 09/21] hw/usb: Inline usb_try_new()
+Message-ID: <ZdcZstyZNB+xdasn@intel.com>
+References: <20240216110313.17039-1-philmd@linaro.org>
+ <20240216110313.17039-10-philmd@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+In-Reply-To: <20240216110313.17039-10-philmd@linaro.org>
+Received-SPF: pass client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,73 +79,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Xu <peterx@redhat.com>
+On Fri, Feb 16, 2024 at 12:03:00PM +0100, Philippe Mathieu-Daudé wrote:
+> Date: Fri, 16 Feb 2024 12:03:00 +0100
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH 09/21] hw/usb: Inline usb_try_new()
+> X-Mailer: git-send-email 2.41.0
+> 
+> Inline the single use of usb_try_new().
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  hw/usb/bus.c | 7 +------
+>  1 file changed, 1 insertion(+), 6 deletions(-)
 
-Both socket_send_channel_destroy() and multifd_send_channel_destroy() are
-unnecessary wrappers to destroy an IOC, as the only thing to do is to
-release the final IOC reference.  We have plenty of code that destroys an
-IOC using direct unref() already; keep that style.
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- migration/socket.h  | 1 -
- migration/multifd.c | 7 +------
- migration/socket.c  | 7 -------
- 3 files changed, 1 insertion(+), 14 deletions(-)
-
-diff --git a/migration/socket.h b/migration/socket.h
-index 5f52eddd4c..46c233ecd2 100644
---- a/migration/socket.h
-+++ b/migration/socket.h
-@@ -23,7 +23,6 @@
- 
- void socket_send_channel_create(QIOTaskFunc f, void *data);
- QIOChannel *socket_send_channel_create_sync(Error **errp);
--int socket_send_channel_destroy(QIOChannel *send);
- 
- void socket_start_incoming_migration(SocketAddress *saddr, Error **errp);
- 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index e901b32c19..c2eac0c3e6 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -641,16 +641,11 @@ static void multifd_send_terminate_threads(void)
-     }
- }
- 
--static int multifd_send_channel_destroy(QIOChannel *send)
--{
--    return socket_send_channel_destroy(send);
--}
--
- static bool multifd_send_cleanup_channel(MultiFDSendParams *p, Error **errp)
- {
-     if (p->c) {
-         migration_ioc_unregister_yank(p->c);
--        multifd_send_channel_destroy(p->c);
-+        object_unref(OBJECT(p->c));
-         p->c = NULL;
-     }
-     qemu_sem_destroy(&p->sem);
-diff --git a/migration/socket.c b/migration/socket.c
-index 3184c7c3c1..9ab89b1e08 100644
---- a/migration/socket.c
-+++ b/migration/socket.c
-@@ -60,13 +60,6 @@ QIOChannel *socket_send_channel_create_sync(Error **errp)
-     return QIO_CHANNEL(sioc);
- }
- 
--int socket_send_channel_destroy(QIOChannel *send)
--{
--    /* Remove channel */
--    object_unref(OBJECT(send));
--    return 0;
--}
--
- struct SocketConnectData {
-     MigrationState *s;
-     char *hostname;
--- 
-2.43.0
-
+> 
+> diff --git a/hw/usb/bus.c b/hw/usb/bus.c
+> index 59c39945dd..148224f06a 100644
+> --- a/hw/usb/bus.c
+> +++ b/hw/usb/bus.c
+> @@ -334,11 +334,6 @@ USBDevice *usb_new(const char *name)
+>      return USB_DEVICE(qdev_new(name));
+>  }
+>  
+> -static USBDevice *usb_try_new(const char *name)
+> -{
+> -    return USB_DEVICE(qdev_try_new(name));
+> -}
+> -
+>  bool usb_realize_and_unref(USBDevice *dev, USBBus *bus, Error **errp)
+>  {
+>      return qdev_realize_and_unref(&dev->qdev, &bus->qbus, errp);
+> @@ -447,7 +442,7 @@ void usb_claim_port(USBDevice *dev, Error **errp)
+>      } else {
+>          if (bus->nfree == 1 && strcmp(object_get_typename(OBJECT(dev)), "usb-hub") != 0) {
+>              /* Create a new hub and chain it on */
+> -            hub = usb_try_new("usb-hub");
+> +            hub = USB_DEVICE(qdev_try_new("usb-hub"));
+>              if (hub) {
+>                  usb_realize_and_unref(hub, bus, NULL);
+>              }
+> -- 
+> 2.41.0
+> 
+> 
 
