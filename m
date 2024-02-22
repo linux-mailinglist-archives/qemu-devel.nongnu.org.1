@@ -2,82 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1771C85F909
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 13:59:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6C485FB7E
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 15:44:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd8eq-0004c6-PQ; Thu, 22 Feb 2024 07:58:36 -0500
+	id 1rdAIA-0003VW-PG; Thu, 22 Feb 2024 09:43:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd8eo-0004bt-Qo
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 07:58:35 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd8ec-0005Wd-EK
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 07:58:34 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-412888029baso3065145e9.2
- for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 04:58:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708606700; x=1709211500; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qDWDehg/c5eR8sRlMxjCzGpqSPDjiJU2WvamJAzoTIs=;
- b=qNhyeBCMZq0jwasSuyolTk4MwzJQ/dvzJodceurdiOtR6dxo5ZI+CQrHwF6/yybx1Y
- KGS6haiCsTRo7wNGz+QiaUH/ZnrfQxnaJdSbpcUHI1aPQy77zSTB40/mNMLaoviISKBR
- XeeY9XUyj3qBY8LijGHu0OIPv06XvZIcAG/h5WeUV3VCkW5trEYXzDk7SrPrS/oBClqb
- zdA/UbZJ5bbZB1CvI8VHF74dwfNb+r9zUJnq+m3Rwae+3kvFPxfCIeS7Z5qbyyDUI/a3
- wPW8xFqxVTL48BTUiiUBhfKe49cqusn2cUWRbfZ47B5Xc73/kXMs3f1ox4MgpqYDSxbS
- EyEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708606700; x=1709211500;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qDWDehg/c5eR8sRlMxjCzGpqSPDjiJU2WvamJAzoTIs=;
- b=J+ZzxgMX446YK42FBRJESMx20/BPuuaAG1z0BcavULhuhlhmg3Io+LOy/Vq4Mw5cDL
- vYH1IBmXjmATKlJQ+MLP+jfiej02lwJY93KZ7nikDV88tYAUiPHP0m5sj951zl9aMXlK
- 9RchGwJKQuqRU1IA6YVYh0wYwvNgFIz0pJ2mcZRZGsAjshEhXBcdvINzZ0XmWm3aQPs6
- krflql32A4b4nO7DauEbQc9Z3gbgjXYTFF+L5aS5t22Fl+Jar25kU7Vhhj6vg86dpcFs
- F/abHaRAnY5Y3DbxxwNtxuxGfyalszo5fDFlDrq4qesIvExVjqhTvQB94M4qOxlJvKKF
- ofvQ==
-X-Gm-Message-State: AOJu0YwbbSWoUqzxtfpoSZd/sbH2xdhmk4LVDL1qwmeZVHIQ+p861/zR
- bAcLCNwCfp7U0kQGTtq+eJDchmlE4AOjDX3G/PVerGdxmHybPDH6+GeIIUVzGP8wBXM1LAfxgoK
- WY6w=
-X-Google-Smtp-Source: AGHT+IFuuOR18YWoOgkWy8Dtt8Ai/rJ6rSd3NLtzrSt/7y0+wgH5RC7TcTT/YcsZsSbHTVpUcvjhxw==
-X-Received: by 2002:a05:600c:4f53:b0:412:5f58:53a5 with SMTP id
- m19-20020a05600c4f5300b004125f5853a5mr10143303wmq.24.1708606700537; 
- Thu, 22 Feb 2024 04:58:20 -0800 (PST)
-Received: from m1x-phil.lan ([176.187.211.34])
- by smtp.gmail.com with ESMTPSA id
- cc3-20020a5d5c03000000b0033d5e3c6835sm12112551wrb.5.2024.02.22.04.58.19
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 22 Feb 2024 04:58:19 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 00/32] Misc HW patches for 2024-02-22
-Date: Thu, 22 Feb 2024 13:58:09 +0100
-Message-ID: <20240222125809.67291-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240222125517.67131-1-philmd@linaro.org>
-References: <20240222125517.67131-1-philmd@linaro.org>
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <wj28.lee@samsung.com>)
+ id 1rd3m6-0004kr-6v
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 02:45:47 -0500
+Received: from mailout3.samsung.com ([203.254.224.33])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <wj28.lee@samsung.com>)
+ id 1rd3lx-00042g-Sz
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 02:45:45 -0500
+Received: from epcas2p4.samsung.com (unknown [182.195.41.56])
+ by mailout3.samsung.com (KnoxPortal) with ESMTP id
+ 20240222074526epoutp03451c027007487a068337d8127d2fa7c3~2H6q15emV3035230352epoutp03t
+ for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 07:45:26 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com
+ 20240222074526epoutp03451c027007487a068337d8127d2fa7c3~2H6q15emV3035230352epoutp03t
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1708587926;
+ bh=WO5vv8iXnfXWEVyIv/JdS6NWHIGqgzMh1bKqgfERsw8=;
+ h=Subject:Reply-To:From:To:CC:In-Reply-To:Date:References:From;
+ b=L9U4vdB3EeJVKM3qPgptB8iboTxca9r4tOhiJU9//cfw17NnRtuhoKD9gqTL+gcZ1
+ RE5VeTydQEkBnvrf9+fNK3gg25CDcdTXpcQtQ3v/YXE5VvuVqbYK1ZFadaB4NTZFHf
+ m/8KOO11M5sck3I+JguSAYTKv0bki6L4VqTVoK18=
+Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
+ epcas2p1.samsung.com (KnoxPortal) with ESMTP id
+ 20240222074526epcas2p174c274773d75015c457c7f1738a67aa1~2H6qQ-6QR2971329713epcas2p1F;
+ Thu, 22 Feb 2024 07:45:26 +0000 (GMT)
+Received: from epsmges2p1.samsung.com (unknown [182.195.36.98]) by
+ epsnrtp3.localdomain (Postfix) with ESMTP id 4TgQD53sl2z4x9QM; Thu, 22 Feb
+ 2024 07:45:25 +0000 (GMT)
+X-AuditID: b6c32a45-3ebfd70000002716-62-65d6fb95a1f2
+Received: from epcas2p2.samsung.com ( [182.195.41.54]) by
+ epsmges2p1.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 01.77.10006.59BF6D56; Thu, 22 Feb 2024 16:45:25 +0900 (KST)
+Mime-Version: 1.0
+Subject: RE: [PATCH v4 02/10] hw/cxl/cxl-mailbox-utils: Add dynamic capacity
+ region representative and mailbox command support
+From: Wonjae Lee <wj28.lee@samsung.com>
+To: "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+CC: "jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>,
+ "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+ "gregory.price@memverge.com" <gregory.price@memverge.com>,
+ "ira.weiny@intel.com" <ira.weiny@intel.com>, "dan.j.williams@intel.com"
+ <dan.j.williams@intel.com>, Adam Manzanares <a.manzanares@samsung.com>,
+ "dave@stgolabs.net" <dave@stgolabs.net>, "nmtadam.samsung@gmail.com"
+ <nmtadam.samsung@gmail.com>, Jim Harris <jim.harris@samsung.com>, Fan Ni
+ <fan.ni@samsung.com>, KyungSan Kim <ks0204.kim@samsung.com>, Hojin Nam
+ <hj96.nam@samsung.com>
+X-Priority: 3
+X-Content-Kind-Code: NORMAL
+In-Reply-To: <20240221182020.1086096-3-nifan.cxl@gmail.com>
+X-CPGS-Detection: blocking_info_exchange
+X-Drm-Type: N,general
+X-Msg-Generator: Mail
+X-Msg-Type: PERSONAL
+X-Reply-Demand: N
+Message-ID: <20240222074525epcms2p1099bf72b0683889b36a5c5c06bdc2dff@epcms2p1>
+Date: Thu, 22 Feb 2024 16:45:25 +0900
+X-CMS-MailID: 20240222074525epcms2p1099bf72b0683889b36a5c5c06bdc2dff
+Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Sendblock-Type: AUTO_CONFIDENTIAL
+CMS-TYPE: 102P
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrCJsWRmVeSWpSXmKPExsWy7bCmme7U39dSDV7OkrWYfljRYvrUC4wW
+ q2+uYbRoWn2X1aKh6RGLxYc3/1gs9j99zmKx9ICGxaqF19gsju7hsDg/6xSLxd9texktli55
+ xGxxvHcHiwOfx85Zd9k9Wo68ZfVYvOclk8fGj//ZPZ5c28zk0bdlFaPH1Nn1Hp83yQVwRGXb
+ ZKQmpqQWKaTmJeenZOal2yp5B8c7x5uaGRjqGlpamCsp5CXmptoqufgE6Lpl5gAdraRQlphT
+ ChQKSCwuVtK3synKLy1JVcjILy6xVUotSMkpMC/QK07MLS7NS9fLSy2xMjQwMDIFKkzIzjh9
+ 5gFLQRt3Rff8b8wNjD2cXYycHBICJhIn+54zdzFycQgJ7GCUaGmexNbFyMHBKyAo8XeHMEiN
+ sEADo8ShnzkgtpCAnMTd26eYIOKaEm+mrWIBsdkE1CV+dJ4Ei4sIJElMmLIIbCazwAEWiY7H
+ PxghlvFKzGh/ygJhS0tsX74VLM4pYC1xdOoCqLiGxI9lvcwQtqjEzdVv2WHs98fmQ80RkWi9
+ dxaqRlDiwc/dUHEpia8n/rKD3C8hUC7xZr05yA0SIPc/WfkXao65xIQ9E8FsXgFficsXf4Ad
+ zSKgKnHmzQk2iBoXiWmTT4HdwywgL7H97RxmkJnMQA+v36UPMV5Z4sgtqAo+iY7DMNN5JXbM
+ e8IEYStJTGk7AnWZhERD41ao6R4Sp7c8ZJ3AqDgLEdCzkOyahbBrASPzKkax1ILi3PTUYqMC
+ Q3jcJufnbmIEJ18t1x2Mk99+0DvEyMTBeIhRgoNZSYSXpfxKqhBvSmJlVWpRfnxRaU5q8SFG
+ U6AvJzJLiSbnA9N/Xkm8oYmlgYmZmaG5kamBuZI4773WuSlCAumJJanZqakFqUUwfUwcnFIN
+ TLPcRdXnL9Nyrfe/nX705ouzLW7HA+YtePNBOO6g54e5NzUcOlemn+4K/e1u9LP+3L1ZHoW6
+ W47sXdH/bb9HTEWcjdBkqSOz+BvU5c8EaYiUTdp0bL/8Qavvb9NFBRrXn16ZneNT5Hw3edOf
+ nRrXJz974ZPO81869A77npv+82Xsrzz4fP6ChEr+768lK9xLUw+x+Ozr6frJ37JULeJp0R7u
+ veZT654f/322k4dhM8vldRMeRwVtnPO05WmTylFLj9akDQf9Iqe7G2RsOP6jjaEh93NGRWfS
+ rCufGPjX/7dUufuB9aFarXTGyvCJe0wWqD9ZfGpemG7aU6kZHc+PN0v/Dc396u7/Lm32j9xn
+ uauVWIozEg21mIuKEwEBQIGhRwQAAA==
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20240221182126epcas2p1b684f9239e4262f17ff484939658a382
+References: <20240221182020.1086096-3-nifan.cxl@gmail.com>
+ <20240221182020.1086096-1-nifan.cxl@gmail.com>
+ <CGME20240221182126epcas2p1b684f9239e4262f17ff484939658a382@epcms2p1>
+Received-SPF: pass client-ip=203.254.224.33; envelope-from=wj28.lee@samsung.com;
+ helo=mailout3.samsung.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 22 Feb 2024 09:43:13 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,168 +120,49 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: wj28.lee@samsung.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 760b4dcdddba4a40b9fa0eb78fdfc7eda7cb83d0:
+On Wed, Feb 21, 2024 at 10:15:55AM -0800, nifan.cxl@gmail.com wrote:
+> From: Fan Ni <fan.ni@samsung.com>
+>
+> Per cxl spec r3.1, add dynamic capacity region representative based on
+> Table 8-165 and extend the cxl type3 device definition to include dc region
+> information. Also, based on info in 8.2.9.9.9.1, add 'Get Dynamic Capacity
+> Configuration' mailbox support.
+>
+> Note: decode_len of a dc region is aligned to 256*MiB, divided by
+> 256 * MiB before returned to the host for "Get Dynamic Capacity Configuration"
+> mailbox command.
+>
+> Signed-off-by: Fan Ni <fan.ni@samsung.com>
+> ---
+>  hw/cxl/cxl-mailbox-utils.c  | 110 ++++++++++++++++++++++++++++++++++++
+>  include/hw/cxl/cxl_device.h |  16 ++++++
+>  2 files changed, 126 insertions(+)
+>
+> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> index ba1d9901df..88e3b733e3 100644
+> --- a/hw/cxl/cxl-mailbox-utils.c
+> +++ b/hw/cxl/cxl-mailbox-utils.c
+> @@ -22,6 +22,7 @@
+>
 
-  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-02-20 10:11:08 +0000)
+[snip]
 
-are available in the Git repository at:
+> +#ifdef CXL_SPEC_AFTER_R30
+> +    /*FIXME: need to set valid values in the future*/
+> +    stq_le_p(&extra_out->num_extents_supported, 0);
+> +    stq_le_p(&extra_out->num_extents_available, 0);
+> +    stq_le_p(&extra_out->num_tags_supported, 0);
+> +    stq_le_p(&extra_out->num_tags_available, 0);
 
-  https://github.com/philmd/qemu.git tags/hw-misc-20240222
+Hello,
 
-for you to fetch changes up to 7164f7e4028ad3b01a5f98c27482587b401ad420:
+It's a trivial comment and doesn't have any impact yet, but shouldn't it
+be stl_le_p()?
 
-  hw/sparc/leon3: Fix wrong usage of DO_UPCAST macro (2024-02-22 12:47:40 +0100)
-
-Supersedes: <20240221211626.48190-1-philmd@linaro.org>
-
-Following checkpatch.pl error ignored:
-
-  ERROR: Macros with complex values should be enclosed in parenthesis
-  #62: FILE: include/hw/ide/ide-dev.h:31:
-  +#define DEFINE_IDE_DEV_PROPERTIES()                     \
-  +    DEFINE_BLOCK_PROPERTIES(IDEDrive, dev.conf),        \
-  +    DEFINE_BLOCK_ERROR_PROPERTIES(IDEDrive, dev.conf),  \
-  +    DEFINE_PROP_STRING("ver",  IDEDrive, dev.version),  \
-  +    DEFINE_PROP_UINT64("wwn",  IDEDrive, dev.wwn, 0),   \
-  +    DEFINE_PROP_STRING("serial",  IDEDrive, dev.serial),\
-  +    DEFINE_PROP_STRING("model", IDEDrive, dev.model)
-
-----------------------------------------------------------------
-Misc HW patch queue
-
-- Remove sysbus_add_io (Phil)
-- Build PPC 4xx PCI host bridges once (Phil)
-- Display QOM path while debugging SMBus targets (Joe)
-- Simplify x86 PC code (Bernhard)
-- Remove qemu_[un]register_reset() calls in x86 PC CMOS (Peter)
-- Fix wiring of ICH9 LPC interrupts (Bernhard)
-- Split core IDE as device / bus / dma (Thomas)
-- Prefer QDev API over QOM for devices (Phil)
-- Fix invalid use of DO_UPCAST() in Leon3 (Thomas)
-
-----------------------------------------------------------------
-
-Bernhard Beschow (8):
-  hw/i386/pc_piix: Share pc_cmos_init() invocation between pc and isapc
-    machines
-  hw/i386/x86: Turn apic_xrupt_override into class attribute
-  hw/i386/pc: Merge pc_guest_info_init() into pc_machine_initfn()
-  hw/i386/pc: Defer smbios_set_defaults() to machine_done
-  hw/i386/pc: Confine system flash handling to pc_sysfw
-  hw/i386/pc_sysfw: Inline pc_system_flash_create() and remove it
-  hw/i386/pc_q35: Populate interrupt handlers before realizing LPC PCI
-    function
-  hw/isa/meson.build: Sort alphabetically
-
-Joe Komlodi (1):
-  hw/i2c/smbus_slave: Add object path on error prints
-
-Peter Maydell (2):
-  hw/i386/pc: Store pointers to IDE buses in PCMachineState
-  hw/i386/pc: Do pc_cmos_init_late() from pc_machine_done()
-
-Philippe Mathieu-Daudé (13):
-  hw/input/pckbd: Open-code i8042_setup_a20_line() wrapper
-  hw/sysbus: Inline and remove sysbus_add_io()
-  hw/ppc/ppc4xx_pci: Remove unused "hw/ppc/ppc.h" header
-  hw/ppc/ppc4xx_pci: Extract PCI host definitions to
-    hw/pci-host/ppc4xx.h
-  hw/ppc/ppc4xx_pci: Move ppc4xx_pci.c to hw/pci-host/
-  hw/ppc/ppc440_pcix: Move ppc440_pcix.c to hw/pci-host/
-  hw/ppc/spapr_cpu: Use qdev_is_realized() instead of QOM API
-  hw/ppc/pnv_bmc: Use qdev_new() instead of QOM API
-  hw/tricore/testboard: Use qdev_new() instead of QOM basic API
-  hw/i386/pc_sysfw: Use qdev_is_realized() instead of QOM API
-  hw/acpi: Include missing 'qapi/qapi-types-acpi.h' generated header
-  hw/acpi/cpu: Use CPUState typedef
-  hw/acpi/ich9_tco: Include missing 'migration/vmstate.h' header
-
-Thomas Huth (8):
-  hw/ide: Add the possibility to disable the CompactFlash device in the
-    build
-  hw/ide: Split qdev.c into ide-bus.c and ide-dev.c
-  hw/ide: Move IDE DMA related definitions to a separate header
-    ide-dma.h
-  hw/ide: Move IDE device related definitions to ide-dev.h
-  hw/ide: Move IDE bus related definitions to a new header ide-bus.h
-  hw/ide: Remove the include/hw/ide.h legacy file
-  hw/ide: Stop exposing internal.h to non-IDE files
-  hw/sparc/leon3: Fix wrong usage of DO_UPCAST macro
-
- MAINTAINERS                             |   5 +-
- hw/i386/fw_cfg.h                        |   3 +-
- include/hw/acpi/cpu.h                   |   3 +-
- include/hw/acpi/ich9_tco.h              |   1 +
- include/hw/acpi/memory_hotplug.h        |   1 +
- include/hw/i386/pc.h                    |   9 +-
- include/hw/i386/x86.h                   |   3 +-
- include/hw/ide.h                        |   9 -
- include/hw/ide/ide-bus.h                |  42 +++++
- include/hw/ide/ide-dev.h                | 184 +++++++++++++++++++++
- include/hw/ide/ide-dma.h                |  37 +++++
- include/hw/ide/internal.h               | 211 +-----------------------
- include/hw/ide/pci.h                    |   2 +-
- include/hw/input/i8042.h                |   1 -
- include/hw/pci-host/ppc4xx.h            |  17 ++
- include/hw/ppc/ppc4xx.h                 |   5 -
- include/hw/sysbus.h                     |   2 -
- include/hw/tricore/tricore_testdevice.h |   3 -
- hw/core/sysbus.c                        |   6 -
- hw/i2c/smbus_slave.c                    |   8 +-
- hw/i386/acpi-common.c                   |   3 +-
- hw/i386/fw_cfg.c                        |  12 +-
- hw/i386/kvmvapic.c                      |   3 +-
- hw/i386/pc.c                            |  60 +++----
- hw/i386/pc_piix.c                       |  31 +---
- hw/i386/pc_q35.c                        |  22 +--
- hw/i386/pc_sysfw.c                      |  23 +--
- hw/ide/cf.c                             |  58 +++++++
- hw/ide/cmd646.c                         |   1 +
- hw/ide/ide-bus.c                        | 111 +++++++++++++
- hw/ide/{qdev.c => ide-dev.c}            | 137 +--------------
- hw/ide/pci.c                            |   1 +
- hw/ide/piix.c                           |   1 +
- hw/ide/sii3112.c                        |   1 +
- hw/ide/via.c                            |   1 +
- hw/input/pckbd.c                        |   5 -
- hw/mips/mipssim.c                       |   3 +-
- hw/nvram/fw_cfg.c                       |   6 +-
- hw/{ppc => pci-host}/ppc440_pcix.c      |   3 +-
- hw/{ppc => pci-host}/ppc4xx_pci.c       |   3 +-
- hw/pci-host/ppce500.c                   |   2 +-
- hw/ppc/pnv_bmc.c                        |  10 +-
- hw/ppc/ppc440_bamboo.c                  |   1 +
- hw/ppc/ppc440_uc.c                      |   1 +
- hw/ppc/sam460ex.c                       |   1 +
- hw/ppc/spapr_cpu_core.c                 |   3 +-
- hw/sparc/leon3.c                        |   2 +-
- hw/tricore/tricore_testboard.c          |   4 +-
- hw/arm/Kconfig                          |   2 +
- hw/ide/Kconfig                          |  32 ++--
- hw/ide/meson.build                      |   4 +-
- hw/isa/meson.build                      |   2 +-
- hw/pci-host/Kconfig                     |   8 +
- hw/pci-host/meson.build                 |   2 +
- hw/pci-host/trace-events                |  12 ++
- hw/ppc/Kconfig                          |   3 +-
- hw/ppc/meson.build                      |   3 +-
- hw/ppc/trace-events                     |  12 --
- 58 files changed, 607 insertions(+), 534 deletions(-)
- delete mode 100644 include/hw/ide.h
- create mode 100644 include/hw/ide/ide-bus.h
- create mode 100644 include/hw/ide/ide-dev.h
- create mode 100644 include/hw/ide/ide-dma.h
- create mode 100644 include/hw/pci-host/ppc4xx.h
- create mode 100644 hw/ide/cf.c
- create mode 100644 hw/ide/ide-bus.c
- rename hw/ide/{qdev.c => ide-dev.c} (67%)
- rename hw/{ppc => pci-host}/ppc440_pcix.c (99%)
- rename hw/{ppc => pci-host}/ppc4xx_pci.c (99%)
-
--- 
-2.41.0
-
+Thanks,
+Wonjae
 
