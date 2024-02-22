@@ -2,87 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 858B485FC4F
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 16:26:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB2485FC5A
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 16:29:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdAwl-0002eY-6M; Thu, 22 Feb 2024 10:25:15 -0500
+	id 1rdB08-00059d-BC; Thu, 22 Feb 2024 10:28:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rdAwh-0002eC-3H
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 10:25:11 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rdAwf-0007xc-7I
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 10:25:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708615507;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=nvLcEKFoeqR+bYgHg9r5skCMskVASqgKSTlChKlJ+2Y=;
- b=hQNnF05kmaW3ocuqGW6moOKNrJ2BL/eE502dBwCaDwjmXMKAy9rDIsoAA/5ZNjjQQ9ZGSb
- sJohWiC2YATRqq7Su8H8vUewr6otCLtIQ/L3dLkjW0VqbnH+CSHeI1Fdx9RRIp42XGWI3z
- P/OKxGbPdCD2EgUv6DM05uwvfHTn0uw=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-249-dEu3VZ2iPV-PWU6sVFEONA-1; Thu, 22 Feb 2024 10:25:06 -0500
-X-MC-Unique: dEu3VZ2iPV-PWU6sVFEONA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-412829eab17so4253505e9.0
- for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 07:25:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rdB05-00059E-Rn
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 10:28:41 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rdB04-0000Nb-57
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 10:28:41 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-41279488d3cso11598245e9.2
+ for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 07:28:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708615718; x=1709220518; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=4MwHCNZiA3Visjen24c/hVnCKAjTkYsBMXtfe/ZJmuA=;
+ b=gZlMiBRJf/a7UGGXS6naz2QSklBfEYoulXP5cHWNmftWfnumqXLzYXS+gMp0bhfmzJ
+ M/p2BwNsj+cVFRBvCxliBsfrKSjqdJ3au0LlWn1W+s+1rKqA3hGDu4EyRqdTT3aERdqH
+ +Mxm5Zb42aW7dpkiVm4pJVTvLiJn6GdMwGJ/gk5TqLDBs7C9FbgxQbpsJ+5QDV90xV37
+ wZn5QEek0RXUOP5XeJcZ9uhfWj9BsXvTENP8A/P/q/OpVziCFag0RuQbOyAY9gQMb+bG
+ tXwrM3rrV6Rwe/pyY/DMuOLEiMWPQ8dVTfFw4u8fPcrazhhulbbhJm1tlDroag0ySXB2
+ wRlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708615505; x=1709220305;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=nvLcEKFoeqR+bYgHg9r5skCMskVASqgKSTlChKlJ+2Y=;
- b=Qf2jsh7p9DLljXj/Zs4kFullQK8U4IxHLWOS/KUFAdOus+sb7Stapx0Y8MGGuE/YU6
- PcMF5p6jN43aTnZIlh4V4aose2CKLCy/Mj/c2YDGzfDHmRSv7zRv5b+VGhK/9RMejYWX
- cYwZ3lSdiMS/Ha4STVLoWWVGn9487FuDMdShsqm3Dq5k0vD5ljPd7XkXLQpBnTKUb7Zi
- wqbrZ4Y7i0HJSVv+wOPJpOvnjnIPB46m5uK4tTZbUTSQbOAS2hIL3Pbv9Uxxu5hIjgnw
- voHCD10PVRbqeGCe97a/oB/mjqHYj2jeBRKrn6p8DfFc7Vw7pjigRWHIuO37T7dCkrXV
- RoKA==
-X-Gm-Message-State: AOJu0YyxtyH5c4z3N5v4vJyMbNP13jJXFfReglByiGutwqLULmvVNOsU
- vcrWcKHhKxMkaM8LcxpJ2LjtxWzk7sOiSAIfFrlNBENHt4aRDemhUu3hpD6JAtqOMgjrspsgLjO
- teu4YDeMKdCAqGYeYsTHDzIchg5uaxn//I6fPChsTVjnLM3j9unym
-X-Received: by 2002:a05:600c:3106:b0:412:7b4d:4518 with SMTP id
- g6-20020a05600c310600b004127b4d4518mr1879433wmo.23.1708615504914; 
- Thu, 22 Feb 2024 07:25:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGgZLhpn/L0v+gaHoAu5heI2TyMH/25AXnvkzSUB2qX2a4/29+nWmLAwElCO/UqF2K5hLGUgA==
-X-Received: by 2002:a05:600c:3106:b0:412:7b4d:4518 with SMTP id
- g6-20020a05600c310600b004127b4d4518mr1879415wmo.23.1708615504605; 
- Thu, 22 Feb 2024 07:25:04 -0800 (PST)
-Received: from redhat.com ([2a06:c701:73fa:1600:1669:f0ad:816d:4f7])
- by smtp.gmail.com with ESMTPSA id
- p9-20020a7bcc89000000b00412393ddac2sm6355972wma.6.2024.02.22.07.25.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Feb 2024 07:25:04 -0800 (PST)
-Date: Thu, 22 Feb 2024 10:25:01 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Bernhard Beschow <shentey@gmail.com>
-Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- Paolo Bonzini <pbonzini@redhat.com>, Sergio Lopez <slp@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: Re: [PATCH 0/9] Simplify initialization of PC machines
-Message-ID: <20240222102414-mutt-send-email-mst@kernel.org>
-References: <20240208220349.4948-1-shentey@gmail.com>
+ d=1e100.net; s=20230601; t=1708615718; x=1709220518;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=4MwHCNZiA3Visjen24c/hVnCKAjTkYsBMXtfe/ZJmuA=;
+ b=Qe/1Yn/gHCcfTumAdyDWZGvewJEpwBuic2czyGiwIt1nnnOmJxeo1pWapCQ8pR3VLi
+ /7LTPadmluLtEt+yY2RN7rnapWn+7LqCjvCO6IPMvPcaCtZim7PtgYTRGMsUIvLvW/S2
+ ElU5Is1IlvispS0txGJzC9V+ih4G7ceuycH3kOizDTFYBMMoPtJ4DfFg+BEzdRo2tIBN
+ 8VFOz62rD6gyW6gKG0+pASOPmZKCn6GvNRG5X3W8ybVmlTGAwBRiqCDHquajbWAzkOy4
+ GyEV6OagTVjMvko0HTg/tc8igp3xoUqDkVGVk61K/FSFlEIJANnaPLbh5yFaVsaC9rA2
+ PtQA==
+X-Gm-Message-State: AOJu0YxQjsrUKo7YN0BfVtRCPtPDcSwFzoYezMYoEnG1AGvuotz0mcYt
+ qDwtSDg1PbRBV6K1gr9b8EaCDz3gQsTg09Nf7XAYKY/vpVk86YpOK3NOYTcms2BcO8WmKeb/Hqe
+ wfgg=
+X-Google-Smtp-Source: AGHT+IF2NK0K6ceeP/8gS4/jlGm01Ohwg7qYN1Dey+YfeBz7cLHsn+NyVUtFmfQqF9nohdSQkeUnBw==
+X-Received: by 2002:a05:600c:45cf:b0:412:8560:1bb8 with SMTP id
+ s15-20020a05600c45cf00b0041285601bb8mr1386292wmo.27.1708615717903; 
+ Thu, 22 Feb 2024 07:28:37 -0800 (PST)
+Received: from m1x-phil.lan (sto95-h01-176-184-18-96.dsl.sta.abo.bbox.fr.
+ [176.184.18.96]) by smtp.gmail.com with ESMTPSA id
+ j25-20020a05600c1c1900b0040fd3121c4asm2938941wms.46.2024.02.22.07.28.36
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 22 Feb 2024 07:28:37 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org,
+	Dehan Meng <demeng@redhat.com>
+Cc: Konstantin Kostiuk <kkostiuk@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 0/3] qga/commands-win32: Style cleanups before adding
+ Windows Server 2025
+Date: Thu, 22 Feb 2024 16:28:32 +0100
+Message-ID: <20240222152835.72095-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240208220349.4948-1-shentey@gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.002,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,52 +92,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Feb 08, 2024 at 11:03:40PM +0100, Bernhard Beschow wrote:
-> The series aims to simplify the initialization process of all PC-based machines.
-> 
-> It consists of streamlining redundant code, as well as consolidating the setup
-> of system flash and generation of smbios data which are currently fairly
-> distributed.
-> 
-> These changes are expected to make the code easier to understand and maintain.
-> 
-> Best regards,
-> Bernhard
+Respin of Dehan's v2 since I had the changes stashed.
 
+Supersedes: <20240222025437.58996-1-demeng@redhat.com>
 
-This looks good to me overall.
+Dehan Meng (1):
+  qga-win: Add support of Windows Server 2025 in get-osinfo command
 
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Philippe Mathieu-Daudé (2):
+  qga/commands-win32: Declare const qualifier before type
+  qga/commands-win32: Do not set matrix_lookup_t/win_10_0_t arrays size
 
-I see Philippe started queueing these, fine by me.
+ qga/commands-win32.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-> Bernhard Beschow (9):
->   hw/i386/x86: Let ioapic_init_gsi() take parent as pointer
->   hw/i386/pc_piix: Share pc_cmos_init() invocation between pc and isapc
->     machines
->   hw/i386/x86: Turn apic_xrupt_override into class attribute
->   hw/i386/pc: Merge pc_guest_info_init() into pc_machine_initfn()
->   hw/i386/pc: Defer smbios_set_defaults() to machine_done
->   hw/i386/pc: Confine system flash handling to pc_sysfw
->   hw/i386/pc_sysfw: Inline pc_system_flash_create() and remove it
->   hw/i386/pc: Populate RTC attribute directly
->   hw/i386/pc_{piix,q35}: Eliminate local pci_bus/pci_host variables
-> 
->  hw/i386/fw_cfg.h      |  3 ++-
->  include/hw/i386/pc.h  |  5 ----
->  include/hw/i386/x86.h |  5 ++--
->  hw/i386/acpi-common.c |  3 ++-
->  hw/i386/fw_cfg.c      | 12 +++++++++-
->  hw/i386/microvm.c     |  2 +-
->  hw/i386/pc.c          | 25 +++++---------------
->  hw/i386/pc_piix.c     | 55 ++++++++++++++-----------------------------
->  hw/i386/pc_q35.c      | 38 ++++++++++--------------------
->  hw/i386/pc_sysfw.c    | 17 ++++---------
->  hw/i386/x86.c         |  7 +++---
->  11 files changed, 62 insertions(+), 110 deletions(-)
-> 
-> -- 
-> 2.43.0
-> 
+-- 
+2.41.0
 
 
