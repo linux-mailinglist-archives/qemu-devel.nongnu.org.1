@@ -2,90 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10C0285F3D7
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 10:04:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F0F985F3B3
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 09:59:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd4ze-0006rz-00; Thu, 22 Feb 2024 04:03:50 -0500
+	id 1rd4us-0005AH-41; Thu, 22 Feb 2024 03:58:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rd4zY-0006o8-2R
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 04:03:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rd4up-00059Y-LD; Thu, 22 Feb 2024 03:58:51 -0500
+Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rd4zV-0007X0-6f
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 04:03:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708592619;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=yv05f8x5vWm0P1YxxQcwmUCsgVjCkIE6X02d5uoaJgM=;
- b=J7fln5JyxrIUQEqu0laOu6wxpAcsEGGYOsvy4iuDOyHAj1+sqSits/KOQEOikrCwwH4uw5
- sdrlCT6I9Gfow7d2oTdx/BAlp/nT19QDaqHSQtkYM+AlqmM8owI1ezjrcpboj0t0AW4YGL
- F2SAm8F2UX6F8B65mtDTzzj1LlzX6DQ=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-582-rCYK7ptBPWC2Oy95aYTAQA-1; Thu, 22 Feb 2024 04:03:37 -0500
-X-MC-Unique: rCYK7ptBPWC2Oy95aYTAQA-1
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-29a16254a66so514088a91.0
- for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 01:03:37 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708592617; x=1709197417;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yv05f8x5vWm0P1YxxQcwmUCsgVjCkIE6X02d5uoaJgM=;
- b=qyO7aCd8PaWrJCrxigv3Sl8eBQSwMvhGxKdFNBPCGFK7peixFYf6SqKPWfJzn2UYD9
- TUokr9BrnJaFl4r3IoToKFoUV+7CsFM/s00xoZmtD9e8atW6gtUSk8QbESRV5ypoZIem
- 8Jsxj7qx+9YhjTfF7Nk/w7zjYYJDFkYU1nrSpyH0QbS9WHPFHI7KP94tzQQRL/SmvNJ0
- 1a9SNw3PjLgGZzlxHRZ2YRiYIPNFx9czvCGQ+DrHGHSj8lkZqd3WhqXrIMa0qJu5Bsqo
- 7VcY9K5xwLsC8+F64aKaHNXCTA8BjhuzhM6DsE1Ynlwcksvcl+zrVlOkUwe7Xx1XP/ZE
- 4zfw==
-X-Gm-Message-State: AOJu0YwVVIb71bgjMJ2egAv7UMuyJrnJldnCcDDI9QthKmeGEDfRutJZ
- p0P+RZzwnf7cKoRLX+LkxuzwBlXfysM5mEXVPGfEdLTzQFrxOlafhzHUgCKmPEsAM65mULWbr6e
- 7zHd086g1/DQrIrLTxfsP08hCnB/1QeR/Phmzb+hMiMFywPbukCFq
-X-Received: by 2002:a17:90a:985:b0:299:3258:fdfb with SMTP id
- 5-20020a17090a098500b002993258fdfbmr15115865pjo.4.1708592616871; 
- Thu, 22 Feb 2024 01:03:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHEVAMU0S5qNV+hzL4QKez6tnoeRD9VHxHLpXR9dv5T7G+CMCXOz68iH3qAjNsJ90rfoMcjEw==
-X-Received: by 2002:a17:90a:985:b0:299:3258:fdfb with SMTP id
- 5-20020a17090a098500b002993258fdfbmr15115851pjo.4.1708592616530; 
- Thu, 22 Feb 2024 01:03:36 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- g15-20020a17090a708f00b0029937909580sm10888856pjk.52.2024.02.22.01.03.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Feb 2024 01:03:36 -0800 (PST)
-Date: Thu, 22 Feb 2024 17:03:28 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Marc-Andre Lureau <marcandre.lureau@redhat.com>,
- David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH V3 10/13] migration: stop vm for cpr
-Message-ID: <ZdcN4L0nNhsrkxB-@x1n>
-References: <1707418446-134863-1-git-send-email-steven.sistare@oracle.com>
- <1707418446-134863-11-git-send-email-steven.sistare@oracle.com>
- <ZdRVz7gvh-qGNxXZ@x1n>
- <b573d625-154c-4df6-9e86-2b1bbff38ac0@oracle.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rd4um-0006fr-Nj; Thu, 22 Feb 2024 03:58:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1708592329; x=1740128329;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=tK9iJX/PGYxRl6fiAZa/42LQrJHsPlP9pIA09b3Rftw=;
+ b=Y0wAjawUA+QHx1QjsjkegLtW6ZLCErZU0alCpEia8M79bmQUOnbqa1lN
+ Mo3ZWxOvFv86JXAPPgBXpORc8iHgo6faxVD+s3IVNQsvtG6+7F+iOB/SU
+ 5H/LZ0BczXAs4pB+y484+K0nB9IKOb+gihVEkIKGSMac/GYK4B+J05Wdb
+ Q7Vx12KPK2ujj/kKV0QClqiqO1yYyXy9CeQi9FcufpHrQkULJiNVPd7Ou
+ 1aeh6PcqbqO5CXSuf6sboQTYCAu2DPyPynjoeaRFZHtfSPNMvo6d3XFiS
+ NGP1ttqPbMwmJhD8XolwvXipK2W7JwSYSUCnJ9c7V83TqdMCxndWMwkQz A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="2688574"
+X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
+   d="scan'208";a="2688574"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Feb 2024 00:58:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
+   d="scan'208";a="5367625"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa009.fm.intel.com with ESMTP; 22 Feb 2024 00:58:39 -0800
+Date: Thu, 22 Feb 2024 17:12:20 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-block@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: Re: [PATCH 01/21] hw/i386/pc: Do not use C99 mixed-declarations style
+Message-ID: <ZdcP9A7n5w7RJqii@intel.com>
+References: <20240216110313.17039-1-philmd@linaro.org>
+ <20240216110313.17039-2-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <b573d625-154c-4df6-9e86-2b1bbff38ac0@oracle.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240216110313.17039-2-philmd@linaro.org>
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -103,31 +83,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Feb 21, 2024 at 04:23:07PM -0500, Steven Sistare wrote:
-> > How about postcopy?  I know it's nonsense to enable postcopy for cpr.. but
-> > iiuc we don't yet forbid an user doing so.  Maybe we should?
-> 
-> How about this?
-> 
-> -------------------------------------------
-> @@ -3600,6 +3600,11 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
->          return;
->      }
-> 
-> +    if (migrate_mode_is_cpr(s) && migrate_postcopy()) {
-> +        error_setg(&local_err, "cannot mix postcopy and cpr");
-> +        goto fail;
-> +    }
-> +
->      if (resume) {
->          /* This is a resumed migration */
->          rate_limit = migrate_max_postcopy_bandwidth();
-> ------------------------------------------------
+Hi Philippe,
 
-migrate_fd_connect() will be a bit late, the error won't be able to be
-attached in the "migrate" request.  Perhaps, migrate_prepare()?
+On Fri, Feb 16, 2024 at 12:02:52PM +0100, Philippe Mathieu-Daudé wrote:
+> Date: Fri, 16 Feb 2024 12:02:52 +0100
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH 01/21] hw/i386/pc: Do not use C99 mixed-declarations style
+> X-Mailer: git-send-email 2.41.0
+> 
+> QEMU's coding style generally forbids C99 mixed declarations.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  hw/i386/pc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index 196827531a..3c00a87317 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -1227,6 +1227,7 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+>       */
+>      if (pcms->hpet_enabled) {
+>          qemu_irq rtc_irq;
+> +        uint8_t compat;
+>  
+>          hpet = qdev_try_new(TYPE_HPET);
+>          if (!hpet) {
+> @@ -1238,8 +1239,7 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+>           * use IRQ16~23, IRQ8 and IRQ2.  If the user has already set
+>           * the property, use whatever mask they specified.
+>           */
+> -        uint8_t compat = object_property_get_uint(OBJECT(hpet),
+> -                HPET_INTCAP, NULL);
+> +        compat = object_property_get_uint(OBJECT(hpet), HPET_INTCAP, NULL);
+>          if (!compat) {
+>              qdev_prop_set_uint32(hpet, HPET_INTCAP, hpet_irqs);
+>          }
 
--- 
-Peter Xu
+"compat" is only used here to check. So, what about getting rid of this
+variable?
+
+if (!object_property_get_uint(OBJECT(hpet), HPET_INTCAP, NULL)) {
+    qdev_prop_set_uint32(hpet, HPET_INTCAP, hpet_irqs);
+}
 
 
