@@ -2,71 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8890285F40B
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 10:12:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BB5885F453
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 10:27:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd57G-00014e-4k; Thu, 22 Feb 2024 04:11:42 -0500
+	id 1rd5Lw-0006vY-69; Thu, 22 Feb 2024 04:26:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rd574-0000xX-J5; Thu, 22 Feb 2024 04:11:32 -0500
-Received: from mgamail.intel.com ([192.198.163.18])
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1rd5Ln-0006uX-E3; Thu, 22 Feb 2024 04:26:45 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rd56x-0000JW-9b; Thu, 22 Feb 2024 04:11:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708593083; x=1740129083;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=csgdIDIEe+p+QSO7aSnhEL+gvYE3xf6SLHunqV3yQ9M=;
- b=n5QCPuSwCMgEeLz3hNrcMyntOmKcSDfKXUjIAY+T3F+Tmc0gD3WsBrth
- p8zf45SuBjU3hkD7I4wmtLsIhyFE7OJ2KCSMoaLIILwZORiWOQPiqX7/T
- dX5L8ImsmH2ISVFr81dB4ZTbdbOJyD5CY/dkmJULe82nEe2C5nyklT/7x
- 0lJPTmftXEvNPKzbznIXGevsOdX29WndsbxlgOitOIB2GlrDzHJdCEfYS
- 5l+yPs4mKMVNfcMkXYSMogW87HVxC5jGan6UrTqP0rFfTxp3Q0iKNVcUS
- wKTLe5be84NniScUTYVqO2QcVoEZDATsyvFb++LFCOeCzLqEBvdXVm7I+ w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="2690449"
-X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
-   d="scan'208";a="2690449"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Feb 2024 01:11:14 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
-   d="scan'208";a="5804246"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa008.jf.intel.com with ESMTP; 22 Feb 2024 01:11:10 -0800
-Date: Thu, 22 Feb 2024 17:24:50 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
- qemu-ppc@nongnu.org, qemu-block@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH 17/21] hw/i386/iommu: Prefer object_initialize_child over
- object_initialize
-Message-ID: <ZdcS4qWnUt2vSqHT@intel.com>
-References: <20240216110313.17039-1-philmd@linaro.org>
- <20240216110313.17039-18-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1rd5Lj-0002d7-HX; Thu, 22 Feb 2024 04:26:42 -0500
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+ by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TgSQJ6NqKz2BdJZ;
+ Thu, 22 Feb 2024 17:24:24 +0800 (CST)
+Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
+ by mail.maildlp.com (Postfix) with ESMTPS id 90F54140411;
+ Thu, 22 Feb 2024 17:26:34 +0800 (CST)
+Received: from [10.67.109.254] (10.67.109.254) by
+ kwepemi500008.china.huawei.com (7.221.188.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 22 Feb 2024 17:26:33 +0800
+Message-ID: <864e2313-ca3e-b704-ade0-f4ae7583c275@huawei.com>
+Date: Thu, 22 Feb 2024 17:26:33 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [RFC PATCH v2 06/22] target/arm: Add support for Non-maskable
+ Interrupt
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>,
+ <peter.maydell@linaro.org>, <eduardo@habkost.net>,
+ <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
+ <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
+References: <20240221130823.677762-1-ruanjinjie@huawei.com>
+ <20240221130823.677762-7-ruanjinjie@huawei.com>
+ <2e1ad5a4-b706-44a9-b686-6ddeb41722e2@linaro.org>
+In-Reply-To: <2e1ad5a4-b706-44a9-b686-6ddeb41722e2@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240216110313.17039-18-philmd@linaro.org>
-Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Originating-IP: [10.67.109.254]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemi500008.china.huawei.com (7.221.188.139)
+Received-SPF: pass client-ip=45.249.212.190;
+ envelope-from=ruanjinjie@huawei.com; helo=szxga04-in.huawei.com
+X-Spam_score_int: -74
+X-Spam_score: -7.5
+X-Spam_bar: -------
+X-Spam_report: (-7.5 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.297,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -81,56 +68,43 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jinjie Ruan <ruanjinjie@huawei.com>
+From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Philippe,
 
-On Fri, Feb 16, 2024 at 12:03:08PM +0100, Philippe Mathieu-Daud� wrote:
-> Date: Fri, 16 Feb 2024 12:03:08 +0100
-> From: Philippe Mathieu-Daud� <philmd@linaro.org>
-> Subject: [PATCH 17/21] hw/i386/iommu: Prefer object_initialize_child over
->  object_initialize
-> X-Mailer: git-send-email 2.41.0
-> 
-> When the QOM parent is available, prefer object_initialize_child()
-> over object_initialize(), since it create the parent relationship.
-> 
-> Rename the 'klass' variable as 'obj' since the argument holds a
-> reference to an instance object and not a class one.
-> 
-> Signed-off-by: Philippe Mathieu-Daud� <philmd@linaro.org>
-> ---
->  hw/i386/amd_iommu.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-> index 7329553ad3..c3afbc4130 100644
-> --- a/hw/i386/amd_iommu.c
-> +++ b/hw/i386/amd_iommu.c
-> @@ -1616,11 +1616,11 @@ static const VMStateDescription vmstate_amdvi_sysbus = {
->      .unmigratable = 1
->  };
->  
-> -static void amdvi_sysbus_instance_init(Object *klass)
-> +static void amdvi_sysbus_instance_init(Object *obj)
->  {
-> -    AMDVIState *s = AMD_IOMMU_DEVICE(klass);
-> +    AMDVIState *s = AMD_IOMMU_DEVICE(obj);
->  
-> -    object_initialize(&s->pci, sizeof(s->pci), TYPE_AMD_IOMMU_PCI);
-> +    object_initialize_child(obj, "iommu", &s->pci, TYPE_AMD_IOMMU_PCI);
 
-What about this name "amd-iommu"?
-
-This is more accurate and differentiates it from the other intel-iommu
-related implementations.
-
->  }
->  
->  static void amdvi_sysbus_class_init(ObjectClass *klass, void *data)
-> -- 
-> 2.41.0
+On 2024/2/22 5:23, Richard Henderson wrote:
+> On 2/21/24 03:08, Jinjie Ruan via wrote:
+>> This only implements the external delivery method via the GICv3.
+>>
+>> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+>> ---
+>>   target/arm/cpu-qom.h |  3 ++-
+>>   target/arm/cpu.c     | 39 ++++++++++++++++++++++++++++++++++-----
+>>   target/arm/cpu.h     |  2 ++
+>>   target/arm/helper.c  |  1 +
+>>   4 files changed, 39 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/target/arm/cpu-qom.h b/target/arm/cpu-qom.h
+>> index 8e032691db..66d555a605 100644
+>> --- a/target/arm/cpu-qom.h
+>> +++ b/target/arm/cpu-qom.h
+>> @@ -36,11 +36,12 @@ DECLARE_CLASS_CHECKERS(AArch64CPUClass, AARCH64_CPU,
+>>   #define ARM_CPU_TYPE_SUFFIX "-" TYPE_ARM_CPU
+>>   #define ARM_CPU_TYPE_NAME(name) (name ARM_CPU_TYPE_SUFFIX)
+>>   -/* Meanings of the ARMCPU object's four inbound GPIO lines */
+>> +/* Meanings of the ARMCPU object's five inbound GPIO lines */
+>>   #define ARM_CPU_IRQ 0
+>>   #define ARM_CPU_FIQ 1
+>>   #define ARM_CPU_VIRQ 2
+>>   #define ARM_CPU_VFIQ 3
+>> +#define ARM_CPU_NMI 4
+> 
+> You need a 6th GPIO for vNMI.
+Thank you! I'll fix it.
 > 
 > 
+> r~
 
