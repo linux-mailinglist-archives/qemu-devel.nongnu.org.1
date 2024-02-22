@@ -2,60 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C255C85F4A3
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 10:40:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2974F85F4AF
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 10:41:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd5Z3-0001am-AR; Thu, 22 Feb 2024 04:40:25 -0500
+	id 1rd5Zt-0002C4-PW; Thu, 22 Feb 2024 04:41:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rd5Z1-0001aa-Rw; Thu, 22 Feb 2024 04:40:23 -0500
-Received: from mgamail.intel.com ([198.175.65.19])
+ id 1rd5Zq-0002BP-1W; Thu, 22 Feb 2024 04:41:14 -0500
+Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rd5Z0-0004wz-CP; Thu, 22 Feb 2024 04:40:23 -0500
+ id 1rd5Zl-00051A-5r; Thu, 22 Feb 2024 04:41:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708594823; x=1740130823;
+ t=1708594869; x=1740130869;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=WMfjDfOaYdoWAGl+7j/dbKwh8zQImmdcruxGlBVuoyE=;
- b=UUIcfSuK8HBMxS8BI+I4owPoCkiYtTYP71tpeAKR20yOmj+K387v9vzH
- uL5BJ5F4sp4lS/1IzXdFa2WcLvm2Hq2aK9LDFQ6GMRQoXXC6Dpn6HR08O
- eUfZePtTOfh9Yht4gjEh30oOGjZ1zg7eN4cPGfg9w3hy5JtzXsOFD5c67
- FgSGQ/i2s593wP4h3RaCm62+76dM6kavy2/Nij9CuF4MTvauiM4RKJHhj
- HfrLtiHm3UnEvIgdTLHXnDMo2p9MX1lcfl/fA9hUvpmDWsmB0lvwPxOkZ
- VGsWQuKJAh3Tz3V0YgdtQgiHqcLSWIKV+X9IB3eZFbEyuF3kzb7ywqki+ A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="2669308"
-X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
-   d="scan'208";a="2669308"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Feb 2024 01:40:17 -0800
+ bh=//cILPlV8ZtEIE5OOllf2iCg88j8tXpTlvuQ7BDcJRY=;
+ b=WJFUQ1SdFjh3Xmnfo/Z6EN3r6AQ5kP+q1hb3zKs2Sfx+BXwZ6ryHJJGB
+ 52NOuCbXLlLvZxKT7IB1OmgXjFWRCxyKgnEqbbsUT/r/jO2ADPNk1WP+7
+ 7sHaanUhO8J3cvvkmxef8MqawpjYGOYt0u/QMbomQ/yRvQQ3+3UIqk6az
+ T5nDKox4vvWhn1pZBSNHLEIXijZgd+9DlVP1l3OzS1P4btQDsXGvWKA6h
+ PqLbeNXVdo4umOEdT6lZrzBj9iNchX6npNEFlaTZa/oY6gfM9gBZIqqy0
+ pmMcTuOwLlVIgCvDYD4ZZb70IGVLX1hoKv803aH1Yey7SdELNVByCNN4X g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="13936000"
+X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; d="scan'208";a="13936000"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Feb 2024 01:41:04 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
-   d="scan'208";a="5376817"
+   d="scan'208";a="5805540"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orviesa009.jf.intel.com with ESMTP; 22 Feb 2024 01:40:15 -0800
-Date: Thu, 22 Feb 2024 17:53:54 +0800
+ by orviesa006.jf.intel.com with ESMTP; 22 Feb 2024 01:41:02 -0800
+Date: Thu, 22 Feb 2024 17:54:41 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
  qemu-ppc@nongnu.org, qemu-block@nongnu.org,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH 09/21] hw/usb: Inline usb_try_new()
-Message-ID: <ZdcZstyZNB+xdasn@intel.com>
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Max Filippov <jcmvbkbc@gmail.com>
+Subject: Re: [PATCH 07/21] target: Replace DEVICE(object_new) -> qdev_new()
+Message-ID: <ZdcZ4TPGX9ZJ0GRL@intel.com>
 References: <20240216110313.17039-1-philmd@linaro.org>
- <20240216110313.17039-10-philmd@linaro.org>
+ <20240216110313.17039-8-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240216110313.17039-10-philmd@linaro.org>
-Received-SPF: pass client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20240216110313.17039-8-philmd@linaro.org>
+Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -79,47 +81,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 16, 2024 at 12:03:00PM +0100, Philippe Mathieu-Daudé wrote:
-> Date: Fri, 16 Feb 2024 12:03:00 +0100
+On Fri, Feb 16, 2024 at 12:02:58PM +0100, Philippe Mathieu-Daudé wrote:
+> Date: Fri, 16 Feb 2024 12:02:58 +0100
 > From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH 09/21] hw/usb: Inline usb_try_new()
+> Subject: [PATCH 07/21] target: Replace DEVICE(object_new) -> qdev_new()
 > X-Mailer: git-send-email 2.41.0
 > 
-> Inline the single use of usb_try_new().
+> Prefer QDev API for QDev objects, avoid the underlying QOM layer.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  hw/usb/bus.c | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
+>  target/mips/cpu.c   | 2 +-
+>  target/xtensa/cpu.c | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 > 
-> diff --git a/hw/usb/bus.c b/hw/usb/bus.c
-> index 59c39945dd..148224f06a 100644
-> --- a/hw/usb/bus.c
-> +++ b/hw/usb/bus.c
-> @@ -334,11 +334,6 @@ USBDevice *usb_new(const char *name)
->      return USB_DEVICE(qdev_new(name));
->  }
->  
-> -static USBDevice *usb_try_new(const char *name)
-> -{
-> -    return USB_DEVICE(qdev_try_new(name));
-> -}
-> -
->  bool usb_realize_and_unref(USBDevice *dev, USBBus *bus, Error **errp)
+> diff --git a/target/mips/cpu.c b/target/mips/cpu.c
+> index d644adbc77..6b3909ee08 100644
+> --- a/target/mips/cpu.c
+> +++ b/target/mips/cpu.c
+> @@ -649,7 +649,7 @@ MIPSCPU *mips_cpu_create_with_clock(const char *cpu_type, Clock *cpu_refclk)
 >  {
->      return qdev_realize_and_unref(&dev->qdev, &bus->qbus, errp);
-> @@ -447,7 +442,7 @@ void usb_claim_port(USBDevice *dev, Error **errp)
->      } else {
->          if (bus->nfree == 1 && strcmp(object_get_typename(OBJECT(dev)), "usb-hub") != 0) {
->              /* Create a new hub and chain it on */
-> -            hub = usb_try_new("usb-hub");
-> +            hub = USB_DEVICE(qdev_try_new("usb-hub"));
->              if (hub) {
->                  usb_realize_and_unref(hub, bus, NULL);
->              }
+>      DeviceState *cpu;
+>  
+> -    cpu = DEVICE(object_new(cpu_type));
+> +    cpu = qdev_new(cpu_type);
+>      qdev_connect_clock_in(cpu, "clk-in", cpu_refclk);
+>      qdev_realize(cpu, NULL, &error_abort);
+>  
+> diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
+> index 79f91819df..4f9408e1a0 100644
+> --- a/target/xtensa/cpu.c
+> +++ b/target/xtensa/cpu.c
+> @@ -205,7 +205,7 @@ XtensaCPU *xtensa_cpu_create_with_clock(const char *cpu_type, Clock *cpu_refclk)
+>  {
+>      DeviceState *cpu;
+>  
+> -    cpu = DEVICE(object_new(cpu_type));
+> +    cpu = qdev_new(cpu_type);
+>      qdev_connect_clock_in(cpu, "clk-in", cpu_refclk);
+>      qdev_realize(cpu, NULL, &error_abort);
+>  
 > -- 
 > 2.41.0
 > 
