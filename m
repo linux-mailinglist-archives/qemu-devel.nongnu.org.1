@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD90860520
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 22:49:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DFE886051C
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 22:49:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdGvo-0000td-Gn; Thu, 22 Feb 2024 16:48:44 -0500
+	id 1rdGvX-0000oK-Gj; Thu, 22 Feb 2024 16:48:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rdGvF-0000mh-6F
+ id 1rdGvF-0000mi-Cl
  for qemu-devel@nongnu.org; Thu, 22 Feb 2024 16:48:06 -0500
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rdGvC-0005Po-4r
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 16:48:04 -0500
+ id 1rdGvC-0005Py-CR
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 16:48:05 -0500
 Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41MIRPlB001370; Thu, 22 Feb 2024 21:47:57 GMT
+ 41MIRQmR001400; Thu, 22 Feb 2024 21:47:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-type : content-transfer-encoding; s=corp-2023-11-20;
- bh=LQ9BKDqKz9A1siUplL40xH0xVuGzpE8cGQF2aiXOues=;
- b=o2bLlr9TRWJ1N4pyaflvd7OPszae7zNBF8DK8gvykI/x2dYMSTqApuy9JEDpWBY1baN+
- F4JuquewYrXgQUrsxrt8GmbYAy34uios8P6qRptJjniOqOPM8Up5AfTGPggJUxuFpC78
- cbwlZz9dnCdnzUyWHpd2Fq4hncLjp5StxCwvsCxF/vAo9jGT36lSrXIjbsTN42LrsYw1
- a9UsHwJ+LXLCPY+/atXpqteWwF63xViT+mJ05IQk5S4yFpdtvvk28gomI/f1NVKDWUjA
- PCJZMzUvF8WQ2Q7nrrt6DC/AWo5TF2+crDJDTUPtGpFn91oRNgs2jnczpxA3UxEbwcTo HQ== 
+ bh=RnPc4eYUt0g0xAZDD5FUqWBAvFTUt2l2aFTg/OWv1i0=;
+ b=MQdFtkKzgFtCnqv2j0Y2MWg/4briExUQAjfh4YnZxJvHMAnsVFzRGh8gP+4gqpm36wZZ
+ /u22UH4gvI5dU6qGta/WH/bP4OARrgWn6gF3ZXPF7lKl90lRizqxhBdwtTnIkEkg3p9H
+ 4qrNBkvxyAHK2XLmsipIXVgQ2rA2jEdJbZ5UOvdD7iDKa/326byyfJC5yfOO0TomCVTn
+ Z637AiMo6jZzz3Ra0/EBOTSXkSnPGmY2vWcCIWG47WyGLIu4YXQrq+owy0vxQUYlUTh8
+ IBAQIPUjdjRWkhguC7Xvqe15MSb7uA4LP/rcySdcio4euBe90/pDrR7TwjRrrsPaFVuI /Q== 
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wamud6105-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wamud6106-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Feb 2024 21:47:57 +0000
+ Thu, 22 Feb 2024 21:47:58 +0000
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 41MKq8Hs022235; Thu, 22 Feb 2024 21:47:56 GMT
+ with ESMTP id 41MKxcK4022224; Thu, 22 Feb 2024 21:47:57 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3wak8bft6a-1
+ 3wak8bft6q-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Feb 2024 21:47:56 +0000
+ Thu, 22 Feb 2024 21:47:57 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41MLlqUD037274;
- Thu, 22 Feb 2024 21:47:56 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41MLlqUF037274;
+ Thu, 22 Feb 2024 21:47:57 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3wak8bft40-4; Thu, 22 Feb 2024 21:47:56 +0000
+ ESMTP id 3wak8bft40-5; Thu, 22 Feb 2024 21:47:57 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V5 3/5] util: strv_from_strList
-Date: Thu, 22 Feb 2024 13:47:48 -0800
-Message-Id: <1708638470-114846-4-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V5 4/5] util: strList unit tests
+Date: Thu, 22 Feb 2024 13:47:49 -0800
+Message-Id: <1708638470-114846-5-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1708638470-114846-1-git-send-email-steven.sistare@oracle.com>
 References: <1708638470-114846-1-git-send-email-steven.sistare@oracle.com>
@@ -75,8 +75,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
  mlxscore=0 spamscore=0 mlxlogscore=999 phishscore=0 bulkscore=0
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2402220169
-X-Proofpoint-GUID: h9Dp4syZAY47e-eFWztGFpBaySE3_VLz
-X-Proofpoint-ORIG-GUID: h9Dp4syZAY47e-eFWztGFpBaySE3_VLz
+X-Proofpoint-GUID: jOfdfrmH6h244bNZ9eT0EP9HAHb8XHQB
+X-Proofpoint-ORIG-GUID: jOfdfrmH6h244bNZ9eT0EP9HAHb8XHQB
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -105,46 +105,108 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- include/qemu/strList.h |  6 ++++++
- util/strList.c         | 14 ++++++++++++++
- 2 files changed, 20 insertions(+)
+ tests/unit/meson.build    |  1 +
+ tests/unit/test-strList.c | 80 +++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 81 insertions(+)
+ create mode 100644 tests/unit/test-strList.c
 
-diff --git a/include/qemu/strList.h b/include/qemu/strList.h
-index 0f26116..c1eb1dd 100644
---- a/include/qemu/strList.h
-+++ b/include/qemu/strList.h
-@@ -21,4 +21,10 @@
-  */
- strList *str_split(const char *str, const char *delim);
- 
+diff --git a/tests/unit/meson.build b/tests/unit/meson.build
+index cae925c..9984860 100644
+--- a/tests/unit/meson.build
++++ b/tests/unit/meson.build
+@@ -35,6 +35,7 @@ tests = {
+   'test-rcu-simpleq': [],
+   'test-rcu-tailq': [],
+   'test-rcu-slist': [],
++  'test-strList': [],
+   'test-qdist': [],
+   'test-qht': [],
+   'test-qtree': [],
+diff --git a/tests/unit/test-strList.c b/tests/unit/test-strList.c
+new file mode 100644
+index 0000000..40af6b2
+--- /dev/null
++++ b/tests/unit/test-strList.c
+@@ -0,0 +1,80 @@
 +/*
-+ * Produce and return a NULL-terminated array of strings from @list.
-+ * The result is g_malloc'd and all strings are g_strdup'd.
++ * Copyright (c) 2022 - 2024 Oracle and/or its affiliates.
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
 + */
-+char **strv_from_strList(const strList *list);
 +
- #endif
-diff --git a/util/strList.c b/util/strList.c
-index 7588c7c..6da6762 100644
---- a/util/strList.c
-+++ b/util/strList.c
-@@ -22,3 +22,17 @@ strList *str_split(const char *str, const char *delim)
- 
-     return res;
- }
++#include "qemu/osdep.h"
++#include "qemu/strList.h"
 +
-+char **strv_from_strList(const strList *list)
++static strList *make_list(int length)
 +{
-+    const strList *tail;
-+    int i = 0;
-+    char **argv = g_new(char *, QAPI_LIST_LENGTH(list) + 1);
++    strList *head = 0, *list, **prev = &head;
 +
-+    for (tail = list; tail != NULL; tail = tail->next) {
-+        argv[i++] = g_strdup(tail->value);
++    while (length--) {
++        list = *prev = g_new0(strList, 1);
++        list->value = g_strdup("aaa");
++        prev = &list->next;
 +    }
-+    argv[i] = NULL;
++    return head;
++}
 +
-+    return argv;
++static void test_length(void)
++{
++    strList *list;
++    int i;
++
++    for (i = 0; i < 5; i++) {
++        list = make_list(i);
++        g_assert_cmpint(i, ==, QAPI_LIST_LENGTH(list));
++        qapi_free_strList(list);
++    }
++}
++
++struct {
++    const char *string;
++    const char *delim;
++    const char *argv[5];
++} list_data[] = {
++    { NULL, ",", { NULL } },
++    { "", ",", { NULL } },
++    { "a", ",", { "a", NULL } },
++    { "a,b", ",", { "a", "b", NULL } },
++    { "a,b,c", ",", { "a", "b", "c", NULL } },
++    { "first last", " ", { "first", "last", NULL } },
++    { "a:", ":", { "a", "", NULL } },
++    { "a::b", ":", { "a", "", "b", NULL } },
++    { ":", ":", { "", "", NULL } },
++    { ":a", ":", { "", "a", NULL } },
++    { "::a", ":", { "", "", "a", NULL } },
++};
++
++static void test_strv(void)
++{
++    int i, j;
++    const char **expect;
++    strList *list;
++    char **argv;
++
++    for (i = 0; i < ARRAY_SIZE(list_data); i++) {
++        expect = list_data[i].argv;
++        list = str_split(list_data[i].string, list_data[i].delim);
++        argv = strv_from_strList(list);
++        qapi_free_strList(list);
++        for (j = 0; expect[j] && argv[j]; j++) {
++            g_assert_cmpstr(expect[j], ==, argv[j]);
++        }
++        g_assert_null(expect[j]);
++        g_assert_null(argv[j]);
++        g_strfreev(argv);
++    }
++}
++
++int main(int argc, char **argv)
++{
++    g_test_init(&argc, &argv, NULL);
++    g_test_add_func("/test-string/length", test_length);
++    g_test_add_func("/test-string/strv", test_strv);
++    return g_test_run();
 +}
 -- 
 1.8.3.1
