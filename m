@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9AAF85F550
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 11:09:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 962BE85F558
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 11:11:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd60i-00069N-66; Thu, 22 Feb 2024 05:09:00 -0500
+	id 1rd621-0006u1-PG; Thu, 22 Feb 2024 05:10:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd60f-00068t-QB
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 05:08:57 -0500
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd61t-0006sW-WD
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 05:10:15 -0500
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd60c-0000z8-Cx
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 05:08:57 -0500
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-5101cd91017so9998007e87.2
- for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 02:08:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd61p-0001I9-6Y
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 05:10:13 -0500
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-512b4388dafso5166862e87.2
+ for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 02:10:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708596530; x=1709201330; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708596607; x=1709201407; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=2O1ZP6YM8mByvFm8LuvOyrbrlbHKRJ8TBcU1nuzTwIk=;
- b=xiKzLxKCpOtV0pRe7wC8TLWKBooir+1LLKmygg0HzpmqwG6f5d7eAxc0rurHJ/+VeX
- G5cGPXgHTNrl5M3jJJOyO60hQC70lHVFRmd3Nc5uqbpTx+p2Bw37F2tqvB6v8tVuf9c/
- 7gio0CYhoYkjQfkFWQTAqDk/7igVxup4TCmFSizFF0xt2JKCQhRdHlnzzRFebWdIvVmF
- vsDQt0Ib6p1u356HkYg34KBNVYrQ0XiuIS9qRvy2siCLKnGrQpDeHjOK0GdPiP8oeNxP
- gSwJpoPLHBnAEQELQCLR9V1pOXSK4bU0B3kiVug98wnh5GbkS+WvFMfrdz9Q9RJMIS2/
- RQtQ==
+ bh=MpRQRvPMdTz33T7Nn52zSwd0okxqNSiTPY20Y4YiyDw=;
+ b=Cc2cq064id9+h/nB1gAeieR/2SUI+/Lj3v1jg9DtFiCIte5iNFgkNhnTSnPWP4b5vo
+ 5f/Y2B435FTLUCj2qYmjgcrmWMo2OTwxvJlK2NbN4ocRwaBUjZ4wm3hRDEJB7FTaff6z
+ AzLu9eZAxF/6M1Aa8l9GZZ0lY1Z1p+3Awqk2Mz8e6B2j+DXNyBZr913ioVgMSXNtTxIL
+ VfOQWzP5Y3NbX3YzmYBLdr9hcbz8twV0kL3K0w9Vfilf8RpnWNod7LeoDUIlDfVs7lG8
+ zRnZURHMboC5tNfdyRwmVuZuK5Fa1k/TNeIdH/U82YY/TGxvStWHSK7hVE7LPFWJDreB
+ KdeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708596530; x=1709201330;
+ d=1e100.net; s=20230601; t=1708596607; x=1709201407;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2O1ZP6YM8mByvFm8LuvOyrbrlbHKRJ8TBcU1nuzTwIk=;
- b=p07WL+AQHliA4FPv0H76x/6mm474sosBxoPL3ay5VZyBSwcNK8ZfOkxTCXFGmPvVyy
- mbLRI2o287G9AONlNxGfUv3FP3m06pVyPtEVpuTvpDlcAAuyOevVixx0ByY2aaE4ulLS
- yjxFQMo7c6SW5BWQ/lWbFSDfvwwnU678bxnrU/LS3u68BfwqGSo/U5kQdrkqbu9/iwMW
- K0CO1kjYRSYBB9fOnj39wYIxEoP6PYnDmfELXZluNzaP+2Jqzpz+xAfRP4DNlhyEI13L
- hfR9UW8I625m7rznTbK8Y1Mu8uQAwbAjGpM5E1awtoG6AYiM6ya/gnE+ZSIDfaGPNX8h
- OmPQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVfH6XmxQYW/TxP54kOQy+qT20U7TKnpbkEpAON4F9FQ3g/Zp6fZNQFb/CHAlJB+sDraNIOBFyabNTRkL1USa8AC0M/Uks=
-X-Gm-Message-State: AOJu0YxRDcufrSuWNMsUXbtGbb1p5ek7WlsWWKxPgSRi3E35HZ4ZHOTW
- tYJ6j7OBeAdPFWFc3sBWrGuZUfFK7Dc599FrAKSTneUxaN0wZBKGSZpb60cYZoU=
-X-Google-Smtp-Source: AGHT+IG3kp3dSA8TrDZ1IrvnxgopwKes+ChIYQR8WawEWdVavh6DyaOppqBE/TrMnmFRWnRh51Fvsw==
-X-Received: by 2002:a05:6512:3ba8:b0:512:a743:3ce3 with SMTP id
- g40-20020a0565123ba800b00512a7433ce3mr11865932lfv.23.1708596530622; 
- Thu, 22 Feb 2024 02:08:50 -0800 (PST)
+ bh=MpRQRvPMdTz33T7Nn52zSwd0okxqNSiTPY20Y4YiyDw=;
+ b=pCgeLPEMddnepG8koDvzMTN+ArwBr9fEEOpKyaiL/ydwM4ZxIObv4QbrWdhfieunJn
+ ZJQRD4AB/6P3Cd2+6lU8EsB1unq3mXHO/y24vMyRRTNAaFiHgFi9RhY+N4QwEaUlMBaG
+ p0zmJH5PtkSFvU42NwVlVkm2mN5up7qskeLnseG6zDTyd4EoyLPR3Z0yFkrqjLxc56HW
+ uykLkuGrMLLl7HWDzEG4JH6qKAr6qVs9Qbij7ApLUlQOg4QJ9tQ2x6ajKrMYyQkpzc6W
+ wrAOEbOEXUwo8P7m9XuV82Dvh8mCtr6bnLswMlIv1AGvsvosevApqNU+Irk3Zr9p6Dk7
+ wWHg==
+X-Gm-Message-State: AOJu0YxYkGqhNV00xZTww+dZpoNSl3DKc6xHOEZSCMk2iW/Z3XnG5Ic0
+ Vp/Uy0JFM7yeB4n6BJ53Hk+9fyVnZhPT7i2IV6/9kM7v62EBiIZNh/evZvP8rbQ=
+X-Google-Smtp-Source: AGHT+IGUHB79ncU7QcKsdC0a0ggzrkUAHIDmgTPg/Gaqejy79ETPKbtfkv8wJWCo8cqJANORovkOzg==
+X-Received: by 2002:a05:6512:398f:b0:512:dde1:2226 with SMTP id
+ j15-20020a056512398f00b00512dde12226mr911157lfu.47.1708596607205; 
+ Thu, 22 Feb 2024 02:10:07 -0800 (PST)
 Received: from [192.168.247.175] (41.red-95-127-32.staticip.rima-tde.net.
  [95.127.32.41]) by smtp.gmail.com with ESMTPSA id
- f21-20020ac25335000000b00512d86c2c78sm375667lfh.88.2024.02.22.02.08.48
+ f21-20020ac25335000000b00512d86c2c78sm375667lfh.88.2024.02.22.02.10.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 Feb 2024 02:08:50 -0800 (PST)
-Message-ID: <42681015-53e0-40df-8de3-3f93e83ba002@linaro.org>
-Date: Thu, 22 Feb 2024 11:08:45 +0100
+ Thu, 22 Feb 2024 02:10:06 -0800 (PST)
+Message-ID: <caa10a96-729a-4ee8-93f4-9bfd2b032e2b@linaro.org>
+Date: Thu, 22 Feb 2024 11:10:03 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/nvme: fix invalid endian conversion
+Subject: Re: [PATCH 01/21] hw/i386/pc: Do not use C99 mixed-declarations style
 Content-Language: en-US
-To: Klaus Jensen <its@irrelevant.dk>, Keith Busch <kbusch@kernel.org>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Klaus Jensen <k.jensen@samsung.com>, Kevin Wolf <kwolf@redhat.com>
-References: <20240222-fix-sriov-numcntl-v1-1-d60bea5e72d0@samsung.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-block@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+References: <20240216110313.17039-1-philmd@linaro.org>
+ <20240216110313.17039-2-philmd@linaro.org> <ZdcP9A7n5w7RJqii@intel.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240222-fix-sriov-numcntl-v1-1-d60bea5e72d0@samsung.com>
+In-Reply-To: <ZdcP9A7n5w7RJqii@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x135.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,45 +98,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Klaus,
+On 22/2/24 10:12, Zhao Liu wrote:
+> Hi Philippe,
+> 
+> On Fri, Feb 16, 2024 at 12:02:52PM +0100, Philippe Mathieu-Daudé wrote:
+>> Date: Fri, 16 Feb 2024 12:02:52 +0100
+>> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Subject: [PATCH 01/21] hw/i386/pc: Do not use C99 mixed-declarations style
+>> X-Mailer: git-send-email 2.41.0
+>>
+>> QEMU's coding style generally forbids C99 mixed declarations.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   hw/i386/pc.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+>> index 196827531a..3c00a87317 100644
+>> --- a/hw/i386/pc.c
+>> +++ b/hw/i386/pc.c
+>> @@ -1227,6 +1227,7 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+>>        */
+>>       if (pcms->hpet_enabled) {
+>>           qemu_irq rtc_irq;
+>> +        uint8_t compat;
+>>   
+>>           hpet = qdev_try_new(TYPE_HPET);
+>>           if (!hpet) {
+>> @@ -1238,8 +1239,7 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+>>            * use IRQ16~23, IRQ8 and IRQ2.  If the user has already set
+>>            * the property, use whatever mask they specified.
+>>            */
+>> -        uint8_t compat = object_property_get_uint(OBJECT(hpet),
+>> -                HPET_INTCAP, NULL);
+>> +        compat = object_property_get_uint(OBJECT(hpet), HPET_INTCAP, NULL);
+>>           if (!compat) {
+>>               qdev_prop_set_uint32(hpet, HPET_INTCAP, hpet_irqs);
+>>           }
+> 
+> "compat" is only used here to check. So, what about getting rid of this
+> variable?
+> 
+> if (!object_property_get_uint(OBJECT(hpet), HPET_INTCAP, NULL)) {
+>      qdev_prop_set_uint32(hpet, HPET_INTCAP, hpet_irqs);
+> }
 
-On 22/2/24 10:29, Klaus Jensen wrote:
-> From: Klaus Jensen <k.jensen@samsung.com>
-> 
-> numcntl is one byte and so is max_vfs. Using cpu_to_le16 on big endian
-> hosts results in numcntl being set to 0.
-> 
-> Fix by dropping the endian conversion.
-> 
-> Fixes: 746d42b13368 ("hw/nvme: Initialize capability structures for primary/secondary controllers")
-
-Isn't it commit 99f48ae7ae ("Add support for Secondary Controller
-List") instead?
-
-> Reported-by: Kevin Wolf <kwolf@redhat.com>
-> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
-> ---
->   hw/nvme/ctrl.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-> index f026245d1e9e..76fe0397045b 100644
-> --- a/hw/nvme/ctrl.c
-> +++ b/hw/nvme/ctrl.c
-> @@ -7924,7 +7924,7 @@ static void nvme_init_state(NvmeCtrl *n)
->       n->aer_reqs = g_new0(NvmeRequest *, n->params.aerl + 1);
->       QTAILQ_INIT(&n->aer_queue);
->   
-> -    list->numcntl = cpu_to_le16(max_vfs);
-> +    list->numcntl = max_vfs;
->       for (i = 0; i < max_vfs; i++) {
->           sctrl = &list->sec[i];
->           sctrl->pcid = cpu_to_le16(n->cntlid);
-> 
-> ---
-> base-commit: 760b4dcdddba4a40b9fa0eb78fdfc7eda7cb83d0
-> change-id: 20240222-fix-sriov-numcntl-5ebe46a42176
-> 
-> Best regards,
+Ah yeah, I didn't noticed, thanks!
 
 
