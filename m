@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE7CA85F906
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 13:57:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E2F85F8FB
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 13:57:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd8cX-0006Sv-74; Thu, 22 Feb 2024 07:56:13 -0500
+	id 1rd8ce-0006Zq-Ar; Thu, 22 Feb 2024 07:56:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd8cP-0006Gz-Rj
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 07:56:07 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd8cY-0006Wr-Bl
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 07:56:14 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd8cN-00057C-9S
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 07:56:05 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-33d146737e6so5194002f8f.0
- for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 04:56:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd8cW-0005AK-Im
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 07:56:13 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-41282f05409so4658555e9.0
+ for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 04:56:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708606561; x=1709211361; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708606567; x=1709211367; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7fiMAHxMKyZo0atwcCXeNwXI7oIw0a2AWdKKNEO+8KQ=;
- b=VMR+cqXzncKn+tBrEvJ9rICGNY0FU62FsKmsYACOnXUb/tT4Rchox6nFj1GPTlFLNf
- I0Gb84VjbClL6VutIjZYRHdBeskPwiUtHfKOGSVul959+UnmspOUkFU8ijs2+vUH/xoW
- c4J/xklRMNl3AuOLAbUhdcDUZJADl9u4VexyIVghcGec1B8yQ4Tc2HCp24LZUEZ2ipzJ
- 3u7PaI68n34jFAltBwbN2USo5ODineNZ44L83xr/u4l/m+04lPvWC/KaF6VHTkX0e83W
- TyDGL+MAzaou+v0StRl43nCs97WfAu+qMS0ai/7Q7tnLGrwX0a5+y8XhGfsDFRsriE50
- UMjg==
+ bh=I7XkfKPxz7eBX4abxuH9t9ZpbmlF01x5HTkfTXvGamo=;
+ b=vXtxlrb8bhPU0SKRELbiri0A2XAfrAIi2rThuuhUBl0Urvq1I+Jv0rbULbW88fYNnk
+ xfokphEGRlHVU2igZmjmSW8IDtqb16c5BBNicgoT8GnkrkQR10Ms+RlQg0plhxeW6s9c
+ YIO0M2mpYarmGCOSht19B5aTi0Xds6hwrmOgR9Erm6DIOKd01vd3tqpiprQ7BYaZKHl+
+ v5taCDjlvzhZxoPGWz7WqHCLo7KeWmASQvsuTyGpmpYn61GNiZpZeYW3+K+cr6kHmJ5p
+ 7L48sEXO6V3ufMxfERrb3EHkJRXh+tAGe8w2Wc5wHL0BbI5XhjmRiQWJE0Qd7xln2NJR
+ jPVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708606561; x=1709211361;
+ d=1e100.net; s=20230601; t=1708606567; x=1709211367;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7fiMAHxMKyZo0atwcCXeNwXI7oIw0a2AWdKKNEO+8KQ=;
- b=Q63hv2lHIz9dsIUFHB+Npk/05hZRDk1fp9mjUV/ca+x7FexOMY2zA6EzZYQ0mAhwMe
- GjenglcKP2Ppc2XQc49ZvaTLwjXNHRlh0w4swDt3Vi3GAMMzj+iROpFXYizXvXrvIUEy
- 9yt08UWb/W+xX9K9blMT7ainQFWLPTVCX6xchqpeju+1y8/jY3PTLrbeLHOymJxkAdRl
- D5ZRUgOeTfGM+fq9yy7tYXCkuacc+nOIbapprnzgSRQZOEUu+h7ZqLwmN79e/x0QP1g6
- /lFWjD1yZZP8V89hT9ondw2D3Vb8jNawXxLvzKAXLYic781JEh1W9r8GB2A4IWDY5pvB
- 4Shg==
-X-Gm-Message-State: AOJu0YyvyfCi6cdql4ucGO6PV6p2EjFHjqp/8vVYxd4jU5YimyVCSlV9
- ACb+lcTTGGo7ai3fcERY2RCK29HEwwrpv8Cc/PMUsaZ6Ywswb/vjQJCbZM2bQw4XDPA2SyaFgrs
- X6Rw=
-X-Google-Smtp-Source: AGHT+IGTmRTAz9Ol8N/pTaq7wrVi+PC6G/sOgUWTzvPBcVNGltf0aYqLjtVY0i+eXvRqybwXgTp/UA==
-X-Received: by 2002:a5d:5645:0:b0:33d:3b82:ab2a with SMTP id
- j5-20020a5d5645000000b0033d3b82ab2amr9485069wrw.19.1708606561338; 
- Thu, 22 Feb 2024 04:56:01 -0800 (PST)
+ bh=I7XkfKPxz7eBX4abxuH9t9ZpbmlF01x5HTkfTXvGamo=;
+ b=TUaoUzVW1Daai0h5WlMYE5TbAqkr4HF0suP3jVlYrebTD7oDe+v6katD0uiVsk13N1
+ vJMJLv8OagYE1K3oZhIyl1ASyZaCKGS953MfInNwKrgt/2yBli47Z5hMz+x8fUCTL+mB
+ +Vkh2kQv6XDV3oiC/rON7J/0C1WGwc1ajpgUndxzKzaPhh9vCD9H7dUUcTsW+Ryf7XC2
+ XZF+Of2BLQKHq5dCEsPzx3bMPWvoxEaCCQ85awFdfR3BPFA2LR4ndsR3HizrefPN+Skj
+ VyfDoY20+EgvWrs5Ox+8sY+TAqDGoQSFfk11/FBofToXeT5i5FTtbygLWbcXMX5zAF2J
+ c3NQ==
+X-Gm-Message-State: AOJu0YxZ8OEMVI5kjmx8lbnLEu14WkpOG6LRki7aRxOtRiwYmLu+ng9B
+ 9Kq7VEMZgMwNLcEDlL9Lm0ah2LCBgQUEJCSwu8hWg1VEGB6kI56Bo8pcT4RcK/cwhwXSaafIvRe
+ 5iCc=
+X-Google-Smtp-Source: AGHT+IEijIWXV7Q+slmM+fPSZSIDrDDYtHHmgpC8hhG0K4kqtO/pk5tyqILU0HPEn9GEUs8S/xrG+w==
+X-Received: by 2002:a05:600c:3581:b0:412:6a78:d4db with SMTP id
+ p1-20020a05600c358100b004126a78d4dbmr7395532wmq.14.1708606567589; 
+ Thu, 22 Feb 2024 04:56:07 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.211.34])
  by smtp.gmail.com with ESMTPSA id
- b7-20020adfe647000000b0033b406bc689sm20495892wrn.75.2024.02.22.04.55.59
+ s7-20020a7bc387000000b004107dfa6aebsm5938919wmj.28.2024.02.22.04.56.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 22 Feb 2024 04:56:00 -0800 (PST)
+ Thu, 22 Feb 2024 04:56:07 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 24/32] hw/acpi/ich9_tco: Include missing 'migration/vmstate.h'
- header
-Date: Thu, 22 Feb 2024 13:55:15 +0100
-Message-ID: <20240222125517.67131-8-philmd@linaro.org>
+ =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
+ Frederic Konrad <konrad.frederic@yahoo.fr>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>
+Subject: [PULL 32/32] hw/sparc/leon3: Fix wrong usage of DO_UPCAST macro
+Date: Thu, 22 Feb 2024 13:55:16 +0100
+Message-ID: <20240222125517.67131-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240222125517.67131-1-philmd@linaro.org>
 References: <20240222125517.67131-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,28 +97,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We need the VMStateDescription structure definition from
-"migration/vmstate.h" in order to declare vmstate_tco_io_sts.
+From: Thomas Huth <thuth@redhat.com>
 
+leon3.c currently fails to compile with some compilers when the -Wvla
+option has been enabled:
+
+ ../hw/sparc/leon3.c: In function ‘leon3_cpu_reset’:
+ ../hw/sparc/leon3.c:153:5: error: ISO C90 forbids variable length array
+  ‘offset_must_be_zero’ [-Werror=vla]
+   153 |     ResetData *s = (ResetData *)DO_UPCAST(ResetData, info[id], info);
+       |     ^~~~~~~~~
+ cc1: all warnings being treated as errors
+
+Looking at this code, the DO_UPCAST macro is indeed used in a wrong way
+here: DO_UPCAST is supposed to check that the second parameter is the
+first entry of the struct that the first parameter indicates, but since
+we use and index into the info[] array, this of course cannot work.
+
+The intention here was likely rather to use the container_of() macro
+instead, so switch the code accordingly.
+
+Fixes: d65aba8286 ("hw/sparc/leon3: implement multiprocessor")
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240221180751.190489-1-thuth@redhat.com>
+Tested-by: Clément Chigot <chigot@adacore.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20240219141412.71418-4-philmd@linaro.org>
 ---
- include/hw/acpi/ich9_tco.h | 1 +
- 1 file changed, 1 insertion(+)
+ hw/sparc/leon3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/acpi/ich9_tco.h b/include/hw/acpi/ich9_tco.h
-index c4393caee0..2562a7cf39 100644
---- a/include/hw/acpi/ich9_tco.h
-+++ b/include/hw/acpi/ich9_tco.h
-@@ -11,6 +11,7 @@
- #define HW_ACPI_TCO_H
+diff --git a/hw/sparc/leon3.c b/hw/sparc/leon3.c
+index 4873b59b6c..6aaa04cb19 100644
+--- a/hw/sparc/leon3.c
++++ b/hw/sparc/leon3.c
+@@ -150,7 +150,7 @@ static void leon3_cpu_reset(void *opaque)
+ {
+     struct CPUResetData *info = (struct CPUResetData *) opaque;
+     int id = info->id;
+-    ResetData *s = (ResetData *)DO_UPCAST(ResetData, info[id], info);
++    ResetData *s = container_of(info, ResetData, info[id]);
+     CPUState *cpu = CPU(s->info[id].cpu);
+     CPUSPARCState *env = cpu_env(cpu);
  
- #include "exec/memory.h"
-+#include "migration/vmstate.h"
- 
- /* As per ICH9 spec, the internal timer has an error of ~0.6s on every tick */
- #define TCO_TICK_NSEC 600000000LL
 -- 
 2.41.0
 
