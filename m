@@ -2,88 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E27E785F441
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 10:24:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8890285F40B
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 10:12:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd5IG-00060y-Cj; Thu, 22 Feb 2024 04:23:04 -0500
+	id 1rd57G-00014e-4k; Thu, 22 Feb 2024 04:11:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rd5I9-00060k-8p
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 04:22:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rd574-0000xX-J5; Thu, 22 Feb 2024 04:11:32 -0500
+Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rd5I4-00028B-BI
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 04:22:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708593770;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=hVsZscbCBZmdHksZO1pddkEO3JQCt8go1PJ2oOhmt6U=;
- b=QzBBu1eOQmcPJQAVm7JdOo/edrmI/nmFWlNsgPaofLVWgLgUeG7b+gOSt90oX+wECZ8DkL
- TVCJ8jwQEMF5Vngmb71rj7Da4biQ4r2nfNB6Rhxt+U4pNut5IzVPsAt8sLarYXulRfYVsE
- E+wQr53Xmp0LYyu+ckLUhhJoZzqx6XQ=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-319-Z2duMHxVMo-I6ypHqTRY8w-1; Thu, 22 Feb 2024 04:22:48 -0500
-X-MC-Unique: Z2duMHxVMo-I6ypHqTRY8w-1
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-1da0dd1dec4so27155955ad.1
- for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 01:22:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708593768; x=1709198568;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hVsZscbCBZmdHksZO1pddkEO3JQCt8go1PJ2oOhmt6U=;
- b=FHkBj1/WH/QG8bZuqIh6EiZSD09OhgQ6ydQnJw2vDQiTS+SPgydqtWuv1urUwMNHzt
- 2X3pOOOkfrukqDqd13Y5JZv+Zf2LFyJF6V80GxIuxgXt+gg+z+NUEEr7l+c0H8cBFMT/
- JpAiky9xJZ3aFNyKQLUL9Y8qbybfJbn6LsGPIJXcvPsHaFqk3O/9ixNHXXk+3QsAJ6lN
- kPDGkPk8QFyqs+eU2u8Nx3yD20qB+mDCbgUPyqzPGf2Da8OQbq7Y9pbWbIqFAQi3a81w
- VOTyBDg/xm7LnaZc/gGS+E7havrbVanSFNy2bHnilaniLEUo36FmjtWS2IpdDUIfOduT
- D4Lg==
-X-Gm-Message-State: AOJu0YwgYlDIIjRdY+1GsRfP1/BSq2UMM/cDw9yNIlEavQd1Tsez0GaP
- yquTEB5CDG9grGUmBvw17WurRZQrk3O840YVXGKhD9v/42SX5ONAeiQqsnOEgJ44Vg42YGAZ4al
- /WilzpS02SQ4dc4Z1thYLJ+1EJEqeGl3i68Q7xstJB/qm0Wv/5vjv
-X-Received: by 2002:a17:902:b113:b0:1dc:e32:d0b7 with SMTP id
- q19-20020a170902b11300b001dc0e32d0b7mr8773552plr.0.1708593767915; 
- Thu, 22 Feb 2024 01:22:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEXJlrGLAyNg7CTFYJLJkvNaNX8u+e6nfySE//IY8Thjd0gLIEVkHGwkRzWk29ZPlDMhspaSg==
-X-Received: by 2002:a17:902:b113:b0:1dc:e32:d0b7 with SMTP id
- q19-20020a170902b11300b001dc0e32d0b7mr8773534plr.0.1708593767440; 
- Thu, 22 Feb 2024 01:22:47 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- o7-20020a170902778700b001dc391cc28fsm2209959pll.121.2024.02.22.01.22.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Feb 2024 01:22:47 -0800 (PST)
-Date: Thu, 22 Feb 2024 17:22:40 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Roman Khapov <rkhapov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, farosas@suse.de, eblake@redhat.com,
- armbru@redhat.com, yc-core@yandex-team.ru
-Subject: Re: [PATCH v2 1/2] qapi/migration.json: add reason to MIGRATION event
-Message-ID: <ZdcSYEtQe8M69Uza@x1n>
-References: <20240215122759.1438581-1-rkhapov@yandex-team.ru>
- <20240215122759.1438581-2-rkhapov@yandex-team.ru>
- <ZdQ7C5dHIQsTVQE8@x1n>
- <a804edf0-67d4-4752-b79f-c3e1ef3d72ff@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rd56x-0000JW-9b; Thu, 22 Feb 2024 04:11:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1708593083; x=1740129083;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=csgdIDIEe+p+QSO7aSnhEL+gvYE3xf6SLHunqV3yQ9M=;
+ b=n5QCPuSwCMgEeLz3hNrcMyntOmKcSDfKXUjIAY+T3F+Tmc0gD3WsBrth
+ p8zf45SuBjU3hkD7I4wmtLsIhyFE7OJ2KCSMoaLIILwZORiWOQPiqX7/T
+ dX5L8ImsmH2ISVFr81dB4ZTbdbOJyD5CY/dkmJULe82nEe2C5nyklT/7x
+ 0lJPTmftXEvNPKzbznIXGevsOdX29WndsbxlgOitOIB2GlrDzHJdCEfYS
+ 5l+yPs4mKMVNfcMkXYSMogW87HVxC5jGan6UrTqP0rFfTxp3Q0iKNVcUS
+ wKTLe5be84NniScUTYVqO2QcVoEZDATsyvFb++LFCOeCzLqEBvdXVm7I+ w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="2690449"
+X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
+   d="scan'208";a="2690449"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Feb 2024 01:11:14 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
+   d="scan'208";a="5804246"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa008.jf.intel.com with ESMTP; 22 Feb 2024 01:11:10 -0800
+Date: Thu, 22 Feb 2024 17:24:50 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-block@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: Re: [PATCH 17/21] hw/i386/iommu: Prefer object_initialize_child over
+ object_initialize
+Message-ID: <ZdcS4qWnUt2vSqHT@intel.com>
+References: <20240216110313.17039-1-philmd@linaro.org>
+ <20240216110313.17039-18-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <a804edf0-67d4-4752-b79f-c3e1ef3d72ff@yandex-team.ru>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -6
-X-Spam_score: -0.7
-X-Spam_bar: /
-X-Spam_report: (-0.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240216110313.17039-18-philmd@linaro.org>
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_SORBS_WEB=1.5,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,43 +84,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Feb 21, 2024 at 06:47:47PM +0500, Roman Khapov wrote:
-> If I understood you right, you suggest to improve migrate_generate_event to
-> accept MigrationState* instead of int* state (which is pointing to field
-> MigrationState.state in all usages), and get error reason from
-> MigrationState.error, if the new state is MIGRATION_STATE_FAILED, is it?
+Hi Philippe,
 
-migrate_generate_event() is a migration internal function, it can directly
-reference s->error with error_mutex held.
-
+On Fri, Feb 16, 2024 at 12:03:08PM +0100, Philippe Mathieu-Daudé wrote:
+> Date: Fri, 16 Feb 2024 12:03:08 +0100
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH 17/21] hw/i386/iommu: Prefer object_initialize_child over
+>  object_initialize
+> X-Mailer: git-send-email 2.41.0
 > 
-> That sounds reasonable, thanks!
+> When the QOM parent is available, prefer object_initialize_child()
+> over object_initialize(), since it create the parent relationship.
 > 
-> But I'm not sure if I got the idea of changing migrate_set_error correctly,
-> can you explain in more details, please?
-
-I fat-fingered.. sorry.  I wanted to say migrate_set_state() below, and I
-think migrate_set_state() can be kept untouched.
-
-But please consider the other reviewer's comment first: if query-migrate
-(or HMP "info migrate") works for you, then this interface is not needed.
-
+> Rename the 'klass' variable as 'obj' since the argument holds a
+> reference to an instance object and not a class one.
 > 
-> On 2/20/24 10:39, Peter Xu wrote:
-> > On Thu, Feb 15, 2024 at 05:27:58PM +0500, Roman Khapov wrote:
-> > >       migrate_set_state(&mis->state, MIGRATION_STATUS_COLO,
-> > > -                      MIGRATION_STATUS_COMPLETED);
-> > > +                      MIGRATION_STATUS_COMPLETED, NULL);
-> > Instead of enforcing migrate_set_error() to always pass an error, maybe we
-> > can allow migrate_generate_event() to fetch s->error in FAILED state, if
-> > that hint ever existed?
-> > 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  hw/i386/amd_iommu.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+> index 7329553ad3..c3afbc4130 100644
+> --- a/hw/i386/amd_iommu.c
+> +++ b/hw/i386/amd_iommu.c
+> @@ -1616,11 +1616,11 @@ static const VMStateDescription vmstate_amdvi_sysbus = {
+>      .unmigratable = 1
+>  };
+>  
+> -static void amdvi_sysbus_instance_init(Object *klass)
+> +static void amdvi_sysbus_instance_init(Object *obj)
+>  {
+> -    AMDVIState *s = AMD_IOMMU_DEVICE(klass);
+> +    AMDVIState *s = AMD_IOMMU_DEVICE(obj);
+>  
+> -    object_initialize(&s->pci, sizeof(s->pci), TYPE_AMD_IOMMU_PCI);
+> +    object_initialize_child(obj, "iommu", &s->pci, TYPE_AMD_IOMMU_PCI);
+
+What about this name "amd-iommu"?
+
+This is more accurate and differentiates it from the other intel-iommu
+related implementations.
+
+>  }
+>  
+>  static void amdvi_sysbus_class_init(ObjectClass *klass, void *data)
 > -- 
-> Best regards,
-> Roman Khapov
+> 2.41.0
 > 
-
--- 
-Peter Xu
-
+> 
 
