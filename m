@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3689585F6FE
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 12:33:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34E5A85F6FA
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 12:32:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd7ET-0008MA-6e; Thu, 22 Feb 2024 06:27:21 -0500
+	id 1rd7Ei-0008RQ-Jo; Thu, 22 Feb 2024 06:27:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rd7EM-0008KT-IJ; Thu, 22 Feb 2024 06:27:10 -0500
+ id 1rd7EO-0008LC-EV; Thu, 22 Feb 2024 06:27:12 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rd7EK-00054K-P4; Thu, 22 Feb 2024 06:27:10 -0500
+ id 1rd7EM-00054k-N5; Thu, 22 Feb 2024 06:27:12 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6E1D44FB52;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7CF584FB53;
  Thu, 22 Feb 2024 14:26:26 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E93F88717E;
- Thu, 22 Feb 2024 14:26:02 +0300 (MSK)
-Received: (nullmailer pid 2526189 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 037248717F;
+ Thu, 22 Feb 2024 14:26:03 +0300 (MSK)
+Received: (nullmailer pid 2526192 invoked by uid 1000);
  Thu, 22 Feb 2024 11:26:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 16/34] loongson3: correct typos
-Date: Thu, 22 Feb 2024 14:25:43 +0300
-Message-Id: <20240222112601.2526057-17-mjt@tls.msk.ru>
+Subject: [PULL 17/34] ppc: correct typos
+Date: Thu, 22 Feb 2024 14:25:44 +0300
+Message-Id: <20240222112601.2526057-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240222112601.2526057-1-mjt@tls.msk.ru>
 References: <20240222112601.2526057-1-mjt@tls.msk.ru>
@@ -66,33 +66,25 @@ Correct typos automatically found with the `typos` tool
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+(mjt: remove 2 "arbitrer" hunks, suggested by BALATON)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/mips/loongson3_bootp.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/ppc/translate/vmx-impl.c.inc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/mips/loongson3_bootp.h b/hw/mips/loongson3_bootp.h
-index d525ab745a..1b0dd3b591 100644
---- a/hw/mips/loongson3_bootp.h
-+++ b/hw/mips/loongson3_bootp.h
-@@ -25,7 +25,7 @@
- struct efi_memory_map_loongson {
-     uint16_t vers;               /* version of efi_memory_map */
-     uint32_t nr_map;             /* number of memory_maps */
--    uint32_t mem_freq;           /* memory frequence */
-+    uint32_t mem_freq;           /* memory frequency */
-     struct mem_map {
-         uint32_t node_id;        /* node_id which memory attached to */
-         uint32_t mem_type;       /* system memory, pci memory, pci io, etc. */
-@@ -156,7 +156,7 @@ struct board_devices {
+diff --git a/target/ppc/translate/vmx-impl.c.inc b/target/ppc/translate/vmx-impl.c.inc
+index 4b91c3489d..b56e615c24 100644
+--- a/target/ppc/translate/vmx-impl.c.inc
++++ b/target/ppc/translate/vmx-impl.c.inc
+@@ -1183,7 +1183,7 @@ static void glue(gen_, name)(DisasContext *ctx)                         \
  
- struct loongson_special_attribute {
-     uint16_t vers;               /* version of this special */
--    char special_name[64];       /* special_atribute_name */
-+    char special_name[64];       /* special_attribute_name */
-     uint32_t loongson_special_type; /* type of special device */
-     /* for each device's resource */
-     struct resource_loongson resource[MAX_RESOURCE_NUMBER];
+ /*
+  * Support for Altivec instructions that use bit 31 (Rc) as an opcode
+- * bit but also use bit 21 as an actual Rc bit.  In general, thse pairs
++ * bit but also use bit 21 as an actual Rc bit.  In general, these pairs
+  * come from different versions of the ISA, so we must also support a
+  * pair of flags for each instruction.
+  */
 -- 
 2.39.2
 
