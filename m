@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F22A85F6E5
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 12:30:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A9BA85F6FF
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 12:33:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd7E4-0008AG-D3; Thu, 22 Feb 2024 06:26:52 -0500
+	id 1rd7EA-0008F3-Sv; Thu, 22 Feb 2024 06:26:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rd7Dq-00086W-Hi; Thu, 22 Feb 2024 06:26:38 -0500
+ id 1rd7Du-00087h-LK; Thu, 22 Feb 2024 06:26:43 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rd7Dp-00051d-1K; Thu, 22 Feb 2024 06:26:38 -0500
+ id 1rd7Dq-000527-CY; Thu, 22 Feb 2024 06:26:40 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0079F4FB4C;
+ by isrv.corpit.ru (Postfix) with ESMTP id 0EB5A4FB4D;
  Thu, 22 Feb 2024 14:26:26 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7B4BB87178;
+ by tsrv.corpit.ru (Postfix) with SMTP id 89ACC87179;
  Thu, 22 Feb 2024 14:26:02 +0300 (MSK)
-Received: (nullmailer pid 2526170 invoked by uid 1000);
+Received: (nullmailer pid 2526173 invoked by uid 1000);
  Thu, 22 Feb 2024 11:26:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 10/34] hw/acpi/cpu_hotplug: Include 'pci_device.h' instead of
- 'pci.h'
-Date: Thu, 22 Feb 2024 14:25:37 +0300
-Message-Id: <20240222112601.2526057-11-mjt@tls.msk.ru>
+Subject: [PULL 11/34] hw/acpi/cpu_hotplug: Include 'x86.h' instead of 'pc.h'
+Date: Thu, 22 Feb 2024 14:25:38 +0300
+Message-Id: <20240222112601.2526057-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240222112601.2526057-1-mjt@tls.msk.ru>
 References: <20240222112601.2526057-1-mjt@tls.msk.ru>
@@ -63,7 +62,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-cpu_hotplug.c only needs the PCI *device* definitions.
+X86 CPU hotplug isn't specific to PC machines.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
@@ -74,18 +73,18 @@ Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/acpi/cpu_hotplug.c b/hw/acpi/cpu_hotplug.c
-index 6f78db0ccb..f7fe905e0a 100644
+index f7fe905e0a..83b8bc5deb 100644
 --- a/hw/acpi/cpu_hotplug.c
 +++ b/hw/acpi/cpu_hotplug.c
-@@ -14,7 +14,7 @@
+@@ -13,7 +13,7 @@
+ #include "hw/acpi/cpu_hotplug.h"
  #include "qapi/error.h"
  #include "hw/core/cpu.h"
- #include "hw/i386/pc.h"
--#include "hw/pci/pci.h"
-+#include "hw/pci/pci_device.h"
+-#include "hw/i386/pc.h"
++#include "hw/i386/x86.h"
+ #include "hw/pci/pci_device.h"
  #include "qemu/error-report.h"
  
- #define CPU_EJECT_METHOD "CPEJ"
 -- 
 2.39.2
 
