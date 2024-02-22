@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2340085FF5D
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 18:29:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44FEA85FF5A
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 18:29:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdCsh-0004qu-Nb; Thu, 22 Feb 2024 12:29:11 -0500
+	id 1rdCsw-0005bO-OZ; Thu, 22 Feb 2024 12:29:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rdCsf-0004q8-Dy
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 12:29:09 -0500
+ id 1rdCsu-0005U2-2F
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 12:29:24 -0500
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rdCsa-0003FL-Md
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 12:29:09 -0500
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ id 1rdCsr-0003KF-To
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 12:29:23 -0500
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41MGtnIe018397; Thu, 22 Feb 2024 17:29:03 GMT
+ 41MH9aGn031377; Thu, 22 Feb 2024 17:29:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=xATcafse/wUuxDOzzgHfYRL4vsb0ilbGj2zzju+9HeY=;
- b=OMndT/PjPlD6SyEh+5peqoJ8x+qcUCyD2P9JnlLEcUM1fKwlS03dNDxk6dIKYEY4BqHL
- /F/lGpwVnwRq29dSksBzlVtf0vqonUePd3djd8Tdl3uZa8Pxnon5DWApGahskKZjKJis
- By6WKXdz8B/l/Olv6l9YppDfBq2yvDPHEZAu461QVv3bia4+gnxCOBTA5L8oHlyTjaaX
- HK2yPsTTbTdNCqBY3JstnTMVuAbDSI/gGJlqe0s/Gr72p7pAzEE8YSgkrH0i96UA+rvy
- T7rGMCu8rW01E2e59upwf/CrKldd1lfXgZgcfVaQ44mRo1Fbv7nZJoLZCeby2OkPQna+ tw== 
+ bh=wVz1B2cs/KV7XZxdXZrfE7CvTr69TpbqwHL6XmEN+qU=;
+ b=ku8yryDrKE3red+r8gwv4RZML4qGZA/vLKAXOaQ799xwFJE9VQyOH52k37Evk+/jquTW
+ 3pXeasRt0yyZo+cUrc0h1hSNWNhXmj34+PYbLmqxmPx4Z3TQ1pqavf9KUejrE/sguAUz
+ DUfqzFQibDSLsPUvrxKfKGZgG1afbpWIEv8T1lpMfCpmFmhKH4Z/au2Tw4rv7W7db6bc
+ GvyKYbtmUthCkkEwXUU9mdGZTNWTyKDew5JjLZKW7uauZEJoF6gX2qVUgqnanKrrkOft
+ RQ99jaZLHIHNZzOpCMQKo2SQBFEnvdShuay0QkmKFG4sMVvR/jUW6FlSrKcBFLcYl6uY Uw== 
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wanbvn9yw-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wakd2dfyv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Feb 2024 17:29:03 +0000
+ Thu, 22 Feb 2024 17:29:20 +0000
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 41MG4la8024355; Thu, 22 Feb 2024 17:29:01 GMT
+ with ESMTP id 41MHSVQp024791; Thu, 22 Feb 2024 17:29:03 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3wak8ayrxx-1
+ 3wak8ays03-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Feb 2024 17:29:01 +0000
+ Thu, 22 Feb 2024 17:29:03 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41MHSgAF032453;
- Thu, 22 Feb 2024 17:29:01 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41MHSgAH032453;
+ Thu, 22 Feb 2024 17:29:02 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3wak8ayre4-14; Thu, 22 Feb 2024 17:29:00 +0000
+ ESMTP id 3wak8ayre4-15; Thu, 22 Feb 2024 17:29:02 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -60,9 +60,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Marc-Andre Lureau <marcandre.lureau@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V4 13/14] migration: update cpr-reboot description
-Date: Thu, 22 Feb 2024 09:28:39 -0800
-Message-Id: <1708622920-68779-14-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V4 14/14] migration: options incompatible with cpr
+Date: Thu, 22 Feb 2024 09:28:40 -0800
+Message-Id: <1708622920-68779-15-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1708622920-68779-1-git-send-email-steven.sistare@oracle.com>
 References: <1708622920-68779-1-git-send-email-steven.sistare@oracle.com>
@@ -74,8 +74,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
  suspectscore=0 mlxscore=0 bulkscore=0 spamscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2402220138
-X-Proofpoint-GUID: DwRjC9gQ-oOgKkAedkzOJdcrM2LVRuHy
-X-Proofpoint-ORIG-GUID: DwRjC9gQ-oOgKkAedkzOJdcrM2LVRuHy
+X-Proofpoint-GUID: GD-xtRYXNFAjQWLWt2k1e94V9rvhjn2J
+X-Proofpoint-ORIG-GUID: GD-xtRYXNFAjQWLWt2k1e94V9rvhjn2J
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -20
@@ -100,59 +100,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Clarify qapi for cpr-reboot migration mode, and add vfio support.
+Fail the migration request if options are set that are incompatible
+with cpr.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- qapi/migration.json | 35 ++++++++++++++++++++++-------------
- 1 file changed, 22 insertions(+), 13 deletions(-)
+ migration/migration.c | 17 +++++++++++++++++
+ qapi/migration.json   |  2 ++
+ 2 files changed, 19 insertions(+)
 
+diff --git a/migration/migration.c b/migration/migration.c
+index 90a9094..7652fd4 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -1953,6 +1953,23 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
+         return false;
+     }
+ 
++    if (migrate_mode_is_cpr(s)) {
++        const char *conflict = NULL;
++
++        if (migrate_postcopy()) {
++            conflict = "postcopy";
++        } else if (migrate_background_snapshot()) {
++            conflict = "background snapshot";
++        } else if (migrate_colo()) {
++            conflict = "COLO";
++        }
++
++        if (conflict) {
++            error_setg(errp, "Cannot use %s with CPR", conflict);
++            return false;
++        }
++    }
++
+     if (blk || blk_inc) {
+         if (migrate_colo()) {
+             error_setg(errp, "No disk migration is required in COLO mode");
 diff --git a/qapi/migration.json b/qapi/migration.json
-index 5a565d9..0990297 100644
+index 0990297..c6bfe2e 100644
 --- a/qapi/migration.json
 +++ b/qapi/migration.json
-@@ -636,19 +636,28 @@
+@@ -657,6 +657,8 @@
+ #     shared backend must be be non-volatile across reboot, such as by backing
+ #     it with a dax device.
  #
- # @normal: the original form of migration. (since 8.2)
- #
--# @cpr-reboot: The migrate command saves state to a file, allowing one to
--#              quit qemu, reboot to an updated kernel, and restart an updated
--#              version of qemu.  The caller must specify a migration URI
--#              that writes to and reads from a file.  Unlike normal mode,
--#              the use of certain local storage options does not block the
--#              migration, but the caller must not modify guest block devices
--#              between the quit and restart.  To avoid saving guest RAM to the
--#              file, the memory backend must be shared, and the @x-ignore-shared
--#              migration capability must be set.  Guest RAM must be non-volatile
--#              across reboot, such as by backing it with a dax device, but this
--#              is not enforced.  The restarted qemu arguments must match those
--#              used to initially start qemu, plus the -incoming option.
--#              (since 8.2)
-+# @cpr-reboot: The migrate command stops the VM and saves state to the URI.
-+#     After quitting qemu, the user resumes by running qemu -incoming.
++#     cpr-reboot may not be used with postcopy, colo, or background-snapshot.
 +#
-+#     This mode allows the user to quit qemu, and restart an updated version
-+#     of qemu.  The user may even update and reboot the OS before restarting,
-+#     as long as the URI persists across a reboot.
-+#
-+#     Unlike normal mode, the use of certain local storage options does not
-+#     block the migration, but the user must not modify guest block devices
-+#     between the quit and restart.
-+#
-+#     This mode supports vfio devices provided the user first puts the guest
-+#     in the suspended runstate, such as by issuing guest-suspend-ram to the
-+#     qemu guest agent.
-+#
-+#     Best performance is achieved when the memory backend is shared and the
-+#     @x-ignore-shared migration capability is set, but this is not required.
-+#     Further, if the user reboots before restarting such a configuration, the
-+#     shared backend must be be non-volatile across reboot, such as by backing
-+#     it with a dax device.
-+#
-+#     (since 8.2)
+ #     (since 8.2)
  ##
  { 'enum': 'MigMode',
-   'data': [ 'normal', 'cpr-reboot' ] }
 -- 
 1.8.3.1
 
