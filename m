@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7322D8603E8
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 21:47:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A8018603E7
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 21:47:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdFvG-0007Ot-3V; Thu, 22 Feb 2024 15:44:02 -0500
+	id 1rdFvH-0007RX-PY; Thu, 22 Feb 2024 15:44:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rdFv9-0007IX-SW
+ id 1rdFvA-0007Ji-UE
  for qemu-devel@nongnu.org; Thu, 22 Feb 2024 15:43:56 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rdFv7-0002hZ-Ky
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 15:43:55 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1d71cb97937so2312355ad.3
- for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 12:43:53 -0800 (PST)
+ id 1rdFv9-0002i0-A2
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 15:43:56 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1dbd32cff0bso2134855ad.0
+ for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 12:43:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708634632; x=1709239432; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708634634; x=1709239434; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dE6xy9+D6Je1Etl+ajN+bavVnxpk9B7ygAyJhkrFQtk=;
- b=ZPcjilfwiB9pFaFEHttDEb2Zqa4XhyG/2l8moqjrSCn/w9R25x7xGFDkWu0w/kw1YI
- WEyxXOLWded6ejm55hxcbttaXTUOS+nYyj/LuKHA5AP7/lednII02b2YT1PECRiZv+DV
- nj65aUd9YtRwB7efmyKgT1eAjfmrqeqoRtwB9tdV3aU/49DehUz9oN4WbsgwNX8nv/a4
- tcb+fl9XDTnoe3XZDteo0cd1hhttqaRMB3x3IlWIQNuWGqMILH2V4xuJJDcbxmPl81k8
- 54dWUX3dAQiZuT2Ek9R1ObdDBz72EnFoOUmnO6coEWQAQ5dCjexwLnllugQp87VN62f/
- 8aSw==
+ bh=MJwI7j8qAfDRGrC+KBy3NdL40EXjR4qHacqKh2GDQwg=;
+ b=RsyXnn73y57gyDkwUIBbtfDXsXCLbEgFRPqiHqLp6amJH+kLAIDmwi8MJjINWCFoME
+ wXouhiMID6n8fYRH+kj1g3K1NL3wb6l98oacuiUY/q/8MPRteHv5kQNTlMNuu0H6sTFb
+ GtPfSiTspdPDWlxXHtp7McSJvGQQK+hJ+yR/OCmIOIRNJi+4fUGzAOLMoVyNHTascPZR
+ EgKDdgXYBU1suo1HRRPEuUh2HCnGyYzbgS8V8jCWFnjmofnhxAmLOdvsMQmWgA51qmIO
+ PpEoAH7LMG8cDXGeMc1CbZ4UPJsuHAYw4VP6HP6hayayhybTDipNufgR2Zl+wIrjeqXH
+ /xlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708634632; x=1709239432;
+ d=1e100.net; s=20230601; t=1708634634; x=1709239434;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dE6xy9+D6Je1Etl+ajN+bavVnxpk9B7ygAyJhkrFQtk=;
- b=NNncZmAyFlsaDs8khgXNbEkEYq53ZB3/wVWgvnUUcTbYzRet4Zrn4qVLhjM7Jux/fM
- fhLkwJnfzaEPvKhhoyedxje5pfkTPOtb3elUuzGugSffxsOtxTJTcPzpiFZvRGX7TCF3
- zg8KHG3xkLMqd2ztsRXHtEA8yPNNca4msc5aVgdLtcfb/Rh5YqLkwElR/mYvxz06YUFZ
- OcAEDp89SMpZMhXREn4RrPpVyd0iMwMZZIfviO5owA1eiv1ZlWeSlxTaO+IdTX9hshHx
- XmFTXUjKxH9+vemYdSXUvBY9JQF2xtBODk+rsLZMC0ORughHHIz4L4nVi3M9wh8RccOY
- 06nQ==
-X-Gm-Message-State: AOJu0Ywn+jxUxEYQ+4sM5tbzJCwe+AfFXK3lI9CklmMlfSYd+sZITyBn
- /hQrtidS5Qma/9eFLSdoj38Vu3sYKELx9PTho/37ROVGFzpY71jpRT82X28CV/JhGTtfflzzFAO
- g
-X-Google-Smtp-Source: AGHT+IG9+60t4gx+wBn0FPSNh0kEcv84Q0jrmCfcpRCHkWKGRJM2X453l6ukGYgTwNvpEz3GCpy3KA==
-X-Received: by 2002:a17:903:2442:b0:1db:fc18:2db9 with SMTP id
- l2-20020a170903244200b001dbfc182db9mr12395566pls.64.1708634632438; 
- Thu, 22 Feb 2024 12:43:52 -0800 (PST)
+ bh=MJwI7j8qAfDRGrC+KBy3NdL40EXjR4qHacqKh2GDQwg=;
+ b=TT0DvIduE7/opdyHNJQvtK6Aqjp3VOTXbnJM9rZ8FZcuepVxEC05wGvwasrjf7enjJ
+ fCrqr0P/ofnr/8jOBEjDBTeIkexHnWpp8ftnyj+ouV+zrwmxVsdhTSFeKvDeasDyUeKw
+ aSeF8Nt4KD7g14AXv32QfB4bXafb5QZVdcDBrbHbMTqDxxyL9RwSQLawPMzWEh8XqLfP
+ QqfXwP6f+znxmixs7q8EWeWyTUFpcgVO0hFBoyxxTDUoKGNre36WWP0GZPbFtcBPewOj
+ 91gNcUWQoBhiT76/cKvYg9HUOH+khqDZGzx03pTavveLGkOH8Qdl602KbAzGA0yLLjaW
+ 3qNg==
+X-Gm-Message-State: AOJu0YwjMxuokF7tlpMdosFfi0SNwNzcrw0+zP3bO0wbh4VmgCZXO7Q9
+ leZFyupzyJmp3dGGYjzVGBXq3raZygnBRBI+JoajwzXPlSxN7hgAOjwTKFCvchMn19NmrncQ26X
+ L
+X-Google-Smtp-Source: AGHT+IF1Hzlxd2DbvHsKIwLQSpwa+5XE8Z79DClSdlRPbx+SPNUadnHfWBWfTGFtWORSGe1uLxHsjg==
+X-Received: by 2002:a17:902:ecc1:b0:1dc:43d:964 with SMTP id
+ a1-20020a170902ecc100b001dc043d0964mr12783669plh.48.1708634633879; 
+ Thu, 22 Feb 2024 12:43:53 -0800 (PST)
 Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
  by smtp.gmail.com with ESMTPSA id
- l12-20020a170902d34c00b001d8f81ecebesm10275500plk.192.2024.02.22.12.43.51
+ l12-20020a170902d34c00b001d8f81ecebesm10275500plk.192.2024.02.22.12.43.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Feb 2024 12:43:51 -0800 (PST)
+ Thu, 22 Feb 2024 12:43:53 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Helge Deller <deller@gmx.de>
-Subject: [PULL 17/39] softmmu/physmem: Remove HOST_PAGE_ALIGN
-Date: Thu, 22 Feb 2024 10:43:01 -1000
-Message-Id: <20240222204323.268539-18-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Helge Deller <deller@gmx.de>
+Subject: [PULL 18/39] linux-user: Remove qemu_host_page_size from main
+Date: Thu, 22 Feb 2024 10:43:02 -1000
+Message-Id: <20240222204323.268539-19-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240222204323.268539-1-richard.henderson@linaro.org>
 References: <20240222204323.268539-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,62 +94,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Align allocation sizes to the maximum of host and target page sizes.
+Use qemu_real_host_page_size() instead.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Acked-by: Helge Deller <deller@gmx.de>
-Message-Id: <20240102015808.132373-15-richard.henderson@linaro.org>
+Message-Id: <20240102015808.132373-16-richard.henderson@linaro.org>
 ---
- system/physmem.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ linux-user/main.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/system/physmem.c b/system/physmem.c
-index 3b08e064ff..3adda08ebf 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -1680,7 +1680,8 @@ int qemu_ram_resize(RAMBlock *block, ram_addr_t newsize, Error **errp)
- 
-     assert(block);
- 
--    newsize = HOST_PAGE_ALIGN(newsize);
-+    newsize = TARGET_PAGE_ALIGN(newsize);
-+    newsize = REAL_HOST_PAGE_ALIGN(newsize);
- 
-     if (block->used_length == newsize) {
-         /*
-@@ -1916,7 +1917,9 @@ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, MemoryRegion *mr,
-         return NULL;
+diff --git a/linux-user/main.c b/linux-user/main.c
+index 74b2fbb393..e540acb84a 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -781,7 +781,7 @@ int main(int argc, char **argv, char **envp)
      }
+     cpu_type = parse_cpu_option(cpu_model);
  
--    size = HOST_PAGE_ALIGN(size);
-+    size = TARGET_PAGE_ALIGN(size);
-+    size = REAL_HOST_PAGE_ALIGN(size);
+-    /* init tcg before creating CPUs and to get qemu_host_page_size */
++    /* init tcg before creating CPUs */
+     {
+         AccelState *accel = current_accel();
+         AccelClass *ac = ACCEL_GET_CLASS(accel);
+@@ -804,8 +804,10 @@ int main(int argc, char **argv, char **envp)
+      */
+     max_reserved_va = MAX_RESERVED_VA(cpu);
+     if (reserved_va != 0) {
+-        if ((reserved_va + 1) % qemu_host_page_size) {
+-            char *s = size_to_str(qemu_host_page_size);
++        int host_page_size = qemu_real_host_page_size();
 +
-     file_size = get_file_size(fd);
-     if (file_size > offset && file_size < (offset + size)) {
-         error_setg(errp, "backing store size 0x%" PRIx64
-@@ -2014,13 +2017,17 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
- {
-     RAMBlock *new_block;
-     Error *local_err = NULL;
-+    int align;
- 
-     assert((ram_flags & ~(RAM_SHARED | RAM_RESIZEABLE | RAM_PREALLOC |
-                           RAM_NORESERVE)) == 0);
-     assert(!host ^ (ram_flags & RAM_PREALLOC));
- 
--    size = HOST_PAGE_ALIGN(size);
--    max_size = HOST_PAGE_ALIGN(max_size);
-+    align = qemu_real_host_page_size();
-+    align = MAX(align, TARGET_PAGE_SIZE);
-+    size = ROUND_UP(size, align);
-+    max_size = ROUND_UP(max_size, align);
-+
-     new_block = g_malloc0(sizeof(*new_block));
-     new_block->mr = mr;
-     new_block->resized = resized;
++        if ((reserved_va + 1) % host_page_size) {
++            char *s = size_to_str(host_page_size);
+             fprintf(stderr, "Reserved virtual address not aligned mod %s\n", s);
+             g_free(s);
+             exit(EXIT_FAILURE);
+@@ -902,7 +904,7 @@ int main(int argc, char **argv, char **envp)
+      * If we're in a chroot with no /proc, fall back to 1 page.
+      */
+     if (mmap_min_addr == 0) {
+-        mmap_min_addr = qemu_host_page_size;
++        mmap_min_addr = qemu_real_host_page_size();
+         qemu_log_mask(CPU_LOG_PAGE,
+                       "host mmap_min_addr=0x%lx (fallback)\n",
+                       mmap_min_addr);
 -- 
 2.34.1
 
