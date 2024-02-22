@@ -2,65 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5726685F1D7
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 08:17:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B304485F220
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 08:48:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd3J5-0006lJ-Ai; Thu, 22 Feb 2024 02:15:47 -0500
+	id 1rd3n4-0004pd-Bd; Thu, 22 Feb 2024 02:46:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rd3J2-0006kY-O5; Thu, 22 Feb 2024 02:15:44 -0500
-Received: from mgamail.intel.com ([192.198.163.13])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rd3J0-0006ZD-5E; Thu, 22 Feb 2024 02:15:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708586142; x=1740122142;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=iAtPZcPDPQdHRcdaRyXRYOc5/6MG+WumigWKJ0gbMLU=;
- b=kB5/fX1BjV52laECzMa292faoXhqjqJoKoU450sYZuSeH8gGVVJtZ/pd
- byUQSYQwD6k4guBJE8Hz4cVfYIl0scy01D3TqqSJJMRhgs02TuEnMWiKV
- 2hxgrj4zcE1OfnfwjCrdWqnKLV7RKVoGy9W5+DAjLqv/dacH8bNcQjDVY
- 6t0gaVcIGynFPquKRFpWf+69sH6LDSytAxrj90JezWPS9RzksiNhqjnj+
- GCR0OQSD5TNPMjyn+B4JWy7f44xfplKf/XXHp4NAjjQJvRIqRvu9l6bMP
- 5HmZZGj597nCR0byQj5pdkuGPQo/ARnYREb8XHpMrSj9hVSTW9PmnOUyI w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="5742774"
-X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
-   d="scan'208";a="5742774"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2024 23:15:36 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; d="scan'208";a="10077039"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 21 Feb 2024 23:15:35 -0800
-Date: Thu, 22 Feb 2024 15:29:15 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-trivial@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH 0/6] [PATCH 0/6] Fix missing ERRP_GUARD() when
- dereference @errp
-Message-ID: <Zdb3yxXbiHt9h46u@intel.com>
-References: <20240221094317.994454-1-zhao1.liu@linux.intel.com>
- <34f501b4-94d3-4cb1-96b8-1d2a77013817@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd3mo-0004p8-AU
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 02:46:31 -0500
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd3mm-00049S-55
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 02:46:29 -0500
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-512bce554a5so4925972e87.3
+ for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 23:46:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708587985; x=1709192785; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=kmLBSTMxj1HbXs6MbsBQhqOwNKgLSOcVt5+zcBSMtkM=;
+ b=qmlqdtdrnLi8K2lgufQuxk/U6GjkP6G4DumL0fjxfikX3fqZybQj4LdKGlE1a+LXnY
+ 2VbeyzptVugaTV3GoBcNGenP/ddkbMkd6jkI3kdCebJge7uCP0nE/+JO7c5GRSX7oMzo
+ fwH96j6UVP7rkAG1UkQG0PNZ7xLKO/3r/igwJsN2aFxrxzlnrSrDHh0MaltJiFMA7Y3L
+ XO3MNMNn5xOIApT9aJrpBp0MjRzOREX+IWeAghgJQcB8RiIXH40OFiGJU1T+pJV7Wckt
+ /AL8xbRO6u45fy0HrFJmHW2APpWi+k8i3aipWtRuimXHvsEGKBfbRuD8+1r4ZnhMNU4o
+ O+5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708587985; x=1709192785;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=kmLBSTMxj1HbXs6MbsBQhqOwNKgLSOcVt5+zcBSMtkM=;
+ b=S/8ETWnTuOxSHDYPIARhcTy9bD2leeOlLFGCX6CmX2TeBcn2qr4fN70w/3kTcLWs8/
+ AEcNl/HLvzbExqZ/BQZDzDk89OVwP91oLPnWEXt+1j7X5ce66tv0FvzQ9wMia8J8XdpY
+ fhXoRLvXKIaqwOJdzbMH5ErjK/zP8C7JffgMKGoCuw7xdfqJcS92Si27UcY6V5eXrezO
+ c1OO8ugu7WSaRMxUchFfn6U955frVY7DVxekU404VIr9N1yx+GRg/hbPiHALgOUY9S7T
+ x3HA4ac54ZLwTwPSS5hp8znRUZrExuqsodwFt5NSdW57miozUrz0Kv+jex5gBsEPTHHY
+ TNoA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWWOMy4zhuRBZTNZdsaMLQ/IyJfKP6YbpdHjrXC2VbClqG7EdyaSRtaUbAAuUzPIKX45CIGVTkXk+YlYamLYDGkwOC4N6I=
+X-Gm-Message-State: AOJu0YywxwZF+Hk+UOBdKGl0chV4HVA+AYNc+Y7Rob2fn0vuL9BEoR1c
+ Z8YAuby+0PhU1JblDJK1wXIdUwy46xiU8b7273Ax3mAI8u06oa+w0tYT2fEqSxw=
+X-Google-Smtp-Source: AGHT+IF0YlO3y1wjSRcsPpRpG0glA+HXdep4vpQ5n10C9p+949OzDrPYLo/EBd+WMkzPVxUE+Dxuow==
+X-Received: by 2002:a05:6512:1384:b0:512:cb9f:a25b with SMTP id
+ fc4-20020a056512138400b00512cb9fa25bmr4797916lfb.28.1708587984867; 
+ Wed, 21 Feb 2024 23:46:24 -0800 (PST)
+Received: from [192.168.184.175] ([92.88.171.240])
+ by smtp.gmail.com with ESMTPSA id
+ jd3-20020a05600c68c300b004122fbf9253sm5120999wmb.39.2024.02.21.23.46.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 21 Feb 2024 23:46:24 -0800 (PST)
+Message-ID: <0a37899f-ca73-4749-8f6f-2b61b92cb560@linaro.org>
+Date: Thu, 22 Feb 2024 08:46:22 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <34f501b4-94d3-4cb1-96b8-1d2a77013817@tls.msk.ru>
-Received-SPF: none client-ip=192.198.163.13;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/sparc/leon3: Fix wrong usage of DO_UPCAST macro
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Cl=C3=A9ment_Chigot?=
+ <chigot@adacore.com>, Frederic Konrad <konrad.frederic@yahoo.fr>,
+ qemu-devel@nongnu.org
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20240221180751.190489-1-thuth@redhat.com>
+ <99813a8e-45ec-460e-a944-c696eb853b75@linaro.org>
+ <1ed3ee21-20ff-4503-98ea-de00c490b83a@linaro.org>
+In-Reply-To: <1ed3ee21-20ff-4503-98ea-de00c490b83a@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,43 +99,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Feb 22, 2024 at 09:04:14AM +0300, Michael Tokarev wrote:
-> Date: Thu, 22 Feb 2024 09:04:14 +0300
-> From: Michael Tokarev <mjt@tls.msk.ru>
-> Subject: Re: [PATCH 0/6] [PATCH 0/6] Fix missing ERRP_GUARD() when
->  dereference @errp
+On 21/2/24 19:49, Philippe Mathieu-Daudé wrote:
+> On 21/2/24 19:47, Philippe Mathieu-Daudé wrote:
+>> On 21/2/24 19:07, Thomas Huth wrote:
+>>> leon3.c currently fails to compile with some compilers when the -Wvla
+>>> option has been enabled:
+>>>
+>>>   ../hw/sparc/leon3.c: In function ‘leon3_cpu_reset’:
+>>>   ../hw/sparc/leon3.c:153:5: error: ISO C90 forbids variable length 
+>>> array
+>>>    ‘offset_must_be_zero’ [-Werror=vla]
+>>>     153 |     ResetData *s = (ResetData *)DO_UPCAST(ResetData, 
+>>> info[id], info);
+>>>         |     ^~~~~~~~~
+>>>   cc1: all warnings being treated as errors
+>>>
+>>> Looking at this code, the DO_UPCAST macro is indeed used in a wrong way
+>>> here: DO_UPCAST is supposed to check that the second parameter is the
+>>> first entry of the struct that the first parameter indicates, but since
+>>> we use and index into the info[] array, this of course cannot work.
+>>>
+>>> The intention here was likely rather to use the container_of() macro
+>>> instead, so switch the code accordingly.
 > 
-> 21.02.2024 12:43, Zhao Liu wrote:
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> > 
-> > Hi all,
-> > 
-> > Thanks to Markus's explanation about ERRP_GUARD() on my previsou
-> > patch [1],
-> > 
-> > I realize that perhaps more @errp dereference cases need to be
-> > double-checked to ensure that ERRP_GUARD() is being used correctly.
-> > 
-> > Therefore, there're the patches to add more missing ERRP_GUARD().
-> > 
-> > [1]: https://lore.kernel.org/qemu-devel/875xz0ojg7.fsf@pond.sub.org/
+> Fixes: d65aba8286 ("hw/sparc/leon3: implement multiprocessor")
 > 
-> Hi!
-> 
-> Since you're going to respin (it looks like), please include the initial
-> patch (hw/intc one) into the series as well, so it's all in one go.
-> 
-> I'm not sure this should come via trivial-patches tree though.  Looks
-> trivial enough :)
-> 
+>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>>> ---
+>>>   hw/sparc/leon3.c | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>
 
-Hi Michael,
-
-Sure, I'll add that one into this series.
-I understand that such small fixes across multiple parts are suited for
-trivial-tree.
-
-Thanks,
-Zhao
+Patch queued!
 
 
