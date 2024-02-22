@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBFE085FB84
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 15:47:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EC2E85FB8C
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 15:49:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdAML-0008Ab-3R; Thu, 22 Feb 2024 09:47:37 -0500
+	id 1rdANm-0001Zl-Da; Thu, 22 Feb 2024 09:49:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rdAM9-00087f-TM
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 09:47:31 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rdANk-0001ZF-Ff
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 09:49:04 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rdAM8-0001nq-4G
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 09:47:25 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-33d32f74833so1310642f8f.3
- for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 06:47:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rdANi-0001zk-KG
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 09:49:04 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-55f279dca99so2498353a12.3
+ for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 06:49:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708613242; x=1709218042; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ig1zQ5yAhvNeIG9dSEvmApyUP139yhXRSsTZspye650=;
- b=D1PDvOb84K3aSx9v/A6FYEl69vmlqofiDN6Bm0d3nX4C/FCZGBlO+fdRVUSyl3QMOk
- cwFsAf2c6SBsH0pVdVYtwJ85NQzUXngrD2mvCIZxaXkTqLL6IuJ/kwtNXgb48YXoTd1b
- 4uQRbtrVNAyqxCCKpq2y6WR0b9eGMLz8h09LC5ODBFQ2GtX8BGb/cjZ8rec9XbRcTy+l
- s+APEUhqANYhRyOPn69HYsig8bjYjjiYt3otYGj86HC7GQAHpT07eoaW/VRQZT7uk0oE
- AmVikWcQJ7VsBNYmN7N+3rxIOeDN9L7eeNX/SuiqDCk9DweaqFm0xSeIDH1z6Ul3rbhO
- IqnA==
+ d=linaro.org; s=google; t=1708613341; x=1709218141; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=SBVxAd1xw+R421Krq2oc+p5N+ClgNjuUthb5mJzQT5U=;
+ b=zDmnbyHDRUzO+NQJLCVCGGlI/ylzPZPNcDRKFc2wrn1VvJpHe3Uf/TQJGXqpItJeKe
+ OOPBPDGsnWS5QuPK2XMgAW6TcOoIrDExZRUyftMCAH9HM4OE/9IWZBPBaYtc17D14wSe
+ rQpP/IFB7RHUeRG8qbABJsSVgKzlt0mocEN03fm7pAx8YYJjwSc9DlafYw2lWRvw/658
+ +VpfIEjYGJ+x8ZK9PJKyEHJNjw/gd9Snsxp0EyuamVjezycfP9qB2JA36/75YF9jnF3j
+ sKUcSMnyKsE8ckceQa1J2FEqom886sIYR7rNQh25hADVJwx+37o27F0UngSUJixsE9ap
+ ctiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708613242; x=1709218042;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ig1zQ5yAhvNeIG9dSEvmApyUP139yhXRSsTZspye650=;
- b=uDxzP68X61UuDo2X3RJr+bSWGdSbdYltoY0LPxr6AX7TRVYcWPysYe8Ifym8/bpwCw
- qPf9fuDpyCgT7ZtiVzOtIYeOYmo/w7gyuBhH/lIeaFeCBh8RiebRE01RNogAlcFbdj5e
- N11xlX6rCWYdJG3ydt/WiDbqIroSf4APYTT6uDGFOyoKGAn36pX0o8CQqAM7/rNaFIRS
- zTSHabBSxA2t4I4m5Y+Bw5mwmmqmCaoE57Aej8RwQVRdZVlIIfiPzsdyXHkmMJ3FYZwx
- CVk49X+Lzpq4Wvx8ykcgOLzB2Q7pt774JPW78tumvPvSedewDMbqcUz/AKIe2MwO4tuB
- y9lw==
+ d=1e100.net; s=20230601; t=1708613341; x=1709218141;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=SBVxAd1xw+R421Krq2oc+p5N+ClgNjuUthb5mJzQT5U=;
+ b=TswaqlCG0kgK7mG0OMGgqZYEZhRt9YxAA+4N00U+lPBF+ov8JbzegSJz/y3vmUHEkW
+ AcCa45NPolQs2u4RG1GsPPUOKChMFxFcgP+acWDarg/u1YoWlBeYtWl9h3X9y1HXDgPz
+ 166VSRs262E7IWy5qKYdZO6J/8r0gjFhMXFV+reET9RdpLnebBY38kU4Lv0mmEDeUvxZ
+ GgQNO5HSRF2FgKRzUKKKPgTjeG8vVxcAnqFRvqlRCfR5VwQk9/5yjUr3JCa2LDsvOyVM
+ MFAocWeV7qyz9xkcJWpB/h7zZtvgka0ZpaYWA0Zt0sOTjNXthVTkWNhFwfKwvGf3q1XF
+ /edQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV11gipGEINTrEIM3qtoc9cixXLrZOyN1Jg3QWMj9lw1Fl8Qt9ubl3aG505yeqMns3SfMazR38TQGbWtnU/yqFNyem9Aqs=
-X-Gm-Message-State: AOJu0Yy8+F8TScNeyss+fbXhfEsWk3+S7yaoBPXW2R1Mxk6SdmiMxAkm
- e3MoFyi3w22Euki9NbaNP11e661LlQoPFng2A6q5GppQbuPAvfbkzYGep4SRwBE=
-X-Google-Smtp-Source: AGHT+IHzO4C/HHgUmxAV4JJFLSC92PSbv6ZbYvSpW0d4vhsFfUbovstJ0ayKa/dCf+4Ie2xlWvvXMA==
-X-Received: by 2002:adf:f60d:0:b0:33d:27cf:6208 with SMTP id
- t13-20020adff60d000000b0033d27cf6208mr10477182wrp.7.1708613242063; 
- Thu, 22 Feb 2024 06:47:22 -0800 (PST)
-Received: from [192.168.69.100] (sto95-h01-176-184-18-96.dsl.sta.abo.bbox.fr.
- [176.184.18.96]) by smtp.gmail.com with ESMTPSA id
- df2-20020a5d5b82000000b0033d6c928a95sm8796319wrb.63.2024.02.22.06.47.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 Feb 2024 06:47:21 -0800 (PST)
-Message-ID: <aedde374-0a7a-4a38-9149-7002c627b743@linaro.org>
-Date: Thu, 22 Feb 2024 15:47:20 +0100
+ AJvYcCUkQbjS+e8RGTSIdEauAEnLUoZxKPhjvR+fmM8WZJTEdYuVLzvTIUcm9ItScQBDv/vQyGhIzEDEMtNUeotLlLvYHstU0no=
+X-Gm-Message-State: AOJu0YydioVatLyYAaE6iYq5+wGtv1k7W38lphrejGK8DQxIljhTMSs/
+ mkJyoIou2oiNIrFD7uG0+Sh1SukvKtpykbIydb9H3tbFO7e7s2qU8O2s0QxIyFIBsViAAog2Y2D
+ 1UQzNgq11Pi+SUEYaKN2P6wnJwOX0mN4aRZLbrQ==
+X-Google-Smtp-Source: AGHT+IEnIAco88m4IVgBZ9vL4YlGK0Z7m/1VfbIDBu905gqxa8DJZc1wLYVfKVPplQTbRJU3i8eA0x+OGJo5gxSlCCE=
+X-Received: by 2002:aa7:cf11:0:b0:565:21a8:1e35 with SMTP id
+ a17-20020aa7cf11000000b0056521a81e35mr2059824edy.3.1708613341070; Thu, 22 Feb
+ 2024 06:49:01 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/3] hw/i2c: smbus: Reset fixes
-Content-Language: en-US
-To: minyard@acm.org, Joe Komlodi <komlodi@google.com>
-Cc: venture@google.com, peter.maydell@linaro.org, qemu-devel@nongnu.org
-References: <20240220211123.2664977-1-komlodi@google.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240220211123.2664977-1-komlodi@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+References: <20240115101643.2165387-1-daniel@0x0f.com>
+ <30980866-7fe8-4900-a75b-01fe735e14e1@redhat.com>
+ <5388387b-f7aa-4fa2-a65b-d3a3b52e23d9@ilande.co.uk>
+ <CAFEAcA_RorzeXwHkBiq1Vjsxsh-u3ymGnJ-xY-4aBj7ivS-rtw@mail.gmail.com>
+ <04785ac8-eaad-4acf-9ef0-236b3b29135d@ilande.co.uk>
+In-Reply-To: <04785ac8-eaad-4acf-9ef0-236b3b29135d@ilande.co.uk>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 22 Feb 2024 14:48:50 +0000
+Message-ID: <CAFEAcA_mZkCZv+2iNaC3MPOsTWU=cV8i0bn2wFLF+Rb3JyvMuA@mail.gmail.com>
+Subject: Re: [PATCH] target/m68k: Fix exception frame format for 68010
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: Thomas Huth <thuth@redhat.com>, Daniel Palmer <daniel@0x0f.com>,
+ laurent@vivier.eu, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,75 +92,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Joe,
+On Thu, 22 Feb 2024 at 13:50, Mark Cave-Ayland
+<mark.cave-ayland@ilande.co.uk> wrote:
+>
+> On 22/02/2024 13:37, Peter Maydell wrote:
+>
+> > On Thu, 22 Feb 2024 at 13:34, Mark Cave-Ayland
+> > <mark.cave-ayland@ilande.co.uk> wrote:
+> >
+> >> This is also:
+> >> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2164
+> >
+> > "Resolves:" for gitlab bug URLs; "Fixes:" is for git commits.
+>
+> I think GitLab will happily accept either form (see
+> https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
+> which appears to be supported by the git history? But I can certainly make a note of
+> this convention for the future.
 
-On 20/2/24 22:11, Joe Komlodi wrote:
-> Changelog:
+Yes, gitlab's regex for detecting this is quite wide; the
+intention is to try to keep the semantic uses "note which
+git commit this change is correcting" and "note the bug
+which this change is resolving" distinct.
 
-> This series adds some resets for SMBus and for the I2C core. Along with
-> it, we make SMBus slave error printing a little more helpful.
-> 
-> These reset issues were very infrequent, they would maybe occur in 1 out
-> of hundreds of resets in our testing, but the way they happen is pretty
-> straightforward.
-> 
-> Basically as long as a reset happens in the middle of a transaction, the
-> state of the old transaction would still partially be there after the
-> reset. Once a new transaction comes in, the partial stale state can
-> cause the new transaction to incorrectly fail.
-
-Sorry for jumping late, at v4. I'm a bit confused by this series.
-
-- AFAICT there is no in-band or RESET line with I2C, but
-   the AN10216 document mentions:
-
-   I2C Bus recovery
-
-   • Typical case is when masters fails when doing a read
-     operation in a slave
-   • SDA line is then non usable anymore because of the
-     “Slave-Transmitter” mode.
-   • Methods to recover the SDA line are:
-     – Reset the slave device (assuming the device has a
-       Reset pin)
-     – Use a bus recovery sequence to leave the “Slave-
-       Transmitter” mode
-   • Bus recovery sequence is done as following:
-     1 - Send 9 clock pulses on SCL line
-     2 - Ask the master to keep SDA High until the “Slave-
-         Transmitter” releases the SDA line to perform the
-         ACK operation
-     3 - Keeping SDA High during the ACK means that the
-         “Master-Receiver” does not acknowledge the previous
-         byte receive
-     4 - The “Slave-Transmitter” then goes in an idle state
-     5 - The master then sends a STOP command initializing
-         completely the bus
-
-- For SMBus Specification Version 2.0:
-
-   3.1.4.2 Power-on reset
-
-   SMBus devices detect a power-on event in one of three ways:
-   • By detecting that power is being applied to the device,
-   • By an external reset signal that is being asserted or
-   • For self-powered or always powered devices, by detecting
-     that the SMBus is active (clock and data lines have gone
-     high after being low for more than 2 1/2 seconds).
-
-Questions:
-
-- Is the first patch "hw/i2c: core: Add reset" really for
-   I2C? Otherwise we could expand smbus form i2cbus, and have
-   this reset only for smbus.
-
-- Should we model the "I2C bus recovery sequence" before
-   triggering reset?
-
-- Shouldn't we model the smbus 2.5s timeout before triggering
-   the reset?
-
-Thanks,
-
-Phil.
+-- PMM
 
