@@ -2,80 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 518B985F8FA
+	by mail.lfdr.de (Postfix) with ESMTPS id 419EE85F8F9
 	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 13:57:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd8cI-00066f-5K; Thu, 22 Feb 2024 07:55:58 -0500
+	id 1rd8cU-0006Lx-CW; Thu, 22 Feb 2024 07:56:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd8c9-00063N-4D
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 07:55:49 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd8cE-00067f-Ed
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 07:55:56 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd8c6-0004pU-3z
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 07:55:48 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-33d118a181fso4157753f8f.1
- for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 04:55:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd8cB-00053I-C8
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 07:55:53 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-41279488d3cso10238915e9.2
+ for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 04:55:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708606544; x=1709211344; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708606550; x=1709211350; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uRGIpW70+JCu0X7x3ntc2AVzHCNC5IMABlVBK4pcGGo=;
- b=NqnX49VQEUL4rdFt3fe5ZFoouFmxkrr3E4MO2d3GD8XJUMjQkWPr4IVATuHIvsaVSH
- Pmm/1bUCy20vKN8qA+8NBf+2djsAEzPDUespYJTFTR2akoFOcHnkZQH3WuOjT87wqxW7
- BROQ4G8eHn+y8qhh1HvVDjYMhfU1QpdCuS9tXjphGslp343lC8SdPCyprTu+VtGwz0JG
- Pr8RrZD4E2B5IDVG6IFu2qLClfcdIVWmqls4mbxn7JF51iYL2Y80771Hlt8ocLBedy58
- aDRmlZAnk4sDwN0Djvm2x0CH/eABrQSb1OMNxZKqGDmHpIVXUf5eabORB3artj2Ljwyl
- 4cRw==
+ bh=haz8xWPEOIi2z03nhQKaHcW8uQbVkLIuqEbGOCYseVA=;
+ b=JPxg0jzhI9/K6/rPTOvkP0+Ah1sEWIgSt2xOIm3ww73x8I7SsEDR7cOz22aqS073HV
+ h28IaWaRSRHJW5iaw8PLKC+yJG9FIMSZMfVonPZ7dmHhT//GYkWobl2oCjdOIDJBt69A
+ lTt30vrxUgGAE43JMQnP3E5o8LnwY4KR3fQSkzNWPkyIoJ3pS11gSTrOCP5ZioY5yowm
+ ir063k0+5gC8bjfNdgLHPnA1lO2oujLw97GwOI3YLAlgUopB56mRXFIEN06UbZhkrw8W
+ QHJHhhJqiy6WWMJA+bBsqhsRZM3Oz3rg2WKZAJVpsjRtSv3oYPnzdXj8mr80FSeN0LHv
+ 5NYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708606544; x=1709211344;
+ d=1e100.net; s=20230601; t=1708606550; x=1709211350;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uRGIpW70+JCu0X7x3ntc2AVzHCNC5IMABlVBK4pcGGo=;
- b=seqrvQcdo5tOZmGxkmUwBGMhrMpsVzYvcfkBkunqVrT5O+cevnbR+AcWc/oINVm1+g
- JUk2q0N9JPbQHX2Wn1G+8bb0My/8daTdwD7Izr3lYlt5xH2hB0UtGTWjCEFhKYPKc9un
- rD9bQUtUZ0+V8MCyvSuoK+/OUSd+RdqBb/n9Z7Vsw9eTAdWu9sU+jMPd3WOqhkxSOi04
- XBiT6ygRXpjmwZYAiviZiPYdIfOTJgBhJjZuF7X49r2rOcPs9oGrhgnoEqJrYZXpHXc/
- s5pk5EcRCh2CyEYbz2G1u9ptOYaUJunBjn7Q3cH0tRU6JOCfrPN5qaMcUJ2EOs34qktI
- dHAQ==
-X-Gm-Message-State: AOJu0YzSwoGqtzh1EEjVmttSgcozJa726McA2qxsLJEtFIGDK2lwBaQH
- +cFBpYKSi3Q2z69c2kAKmgw0sK8AzQJC7qO3j/EbkJqnO/UCFAKnK9pFZfRNo19ofJruT0EeVq3
- fhXc=
-X-Google-Smtp-Source: AGHT+IFByVao65aOERJNukoTTia4BHk2GOS6oGktluL9zXORr8DJ5RV6/KgmT7ei71yEmm3V1/OdFQ==
-X-Received: by 2002:a05:6000:1f0e:b0:33d:6fd8:90d3 with SMTP id
- bv14-20020a0560001f0e00b0033d6fd890d3mr6031207wrb.4.1708606543937; 
- Thu, 22 Feb 2024 04:55:43 -0800 (PST)
+ bh=haz8xWPEOIi2z03nhQKaHcW8uQbVkLIuqEbGOCYseVA=;
+ b=HDuJ5q6l0dBWH0ZUN7qVUzd64dK4WCLcP6p9NhmCo2aysEtC2wLLgSNmsJbWo7MbK0
+ fd+pyVEJHSDAmIyFuKH46eJQQdEEfIHkSKfBZdroEOB9j0YaaCchoMFX+qeZQuJ5lukO
+ dlqtzIMeFsdkmjAhfARH0eDz1vX+bQweaciTzoROB2tCcbOfjDMjMWtpMXDnC7oWF1Lm
+ znXbuAkTe1N2UUNt3zjCzdNaPLvxcpXyddIYyr4xzncQXcOFn8CaDF8SZo/Upms+o2sq
+ jFVf4/5euTsZVm0E0ofBuQsFx6rZWsUuWQkICyw0E62qw/MLr4UviAKnpVUGITV+MdX1
+ s9rg==
+X-Gm-Message-State: AOJu0YxnOzbi/qnoxt9bzJV55OCWk1XOXXfhAwcKuZXXNJls1MtzzpCO
+ EDrXQH+jJiDF3mYMVhDk1f4vY1CVj740DZ2gnESFB7sMheweCfmCDS97ewPlLDeRLaxt2Scq3Gh
+ PUyg=
+X-Google-Smtp-Source: AGHT+IGvFODj/yr1I9Iw7wICafwh6VhUyzSkOWiiJy9Bhjhf3R/9ZfFWycYyXqZ5WaVRJ/QStgmYnw==
+X-Received: by 2002:a05:600c:1384:b0:410:c128:2bed with SMTP id
+ u4-20020a05600c138400b00410c1282bedmr16176314wmf.20.1708606549802; 
+ Thu, 22 Feb 2024 04:55:49 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.211.34])
  by smtp.gmail.com with ESMTPSA id
- x11-20020a5d444b000000b0033b7ce8b496sm20291719wrr.108.2024.02.22.04.55.42
+ x14-20020a05600c21ce00b00412704a0e4asm5983207wmj.2.2024.02.22.04.55.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 22 Feb 2024 04:55:43 -0800 (PST)
+ Thu, 22 Feb 2024 04:55:49 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 19/32] hw/i386/pc_sysfw: Use qdev_is_realized() instead of QOM
- API
-Date: Thu, 22 Feb 2024 13:55:12 +0100
-Message-ID: <20240222125517.67131-5-philmd@linaro.org>
+ Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 22/32] hw/acpi: Include missing 'qapi/qapi-types-acpi.h'
+ generated header
+Date: Thu, 22 Feb 2024 13:55:13 +0100
+Message-ID: <20240222125517.67131-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240222125517.67131-1-philmd@linaro.org>
 References: <20240222125517.67131-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,39 +95,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prefer QDev API for QDev objects, avoid the underlying QOM layer.
+ACPIOSTInfo is a QAPI generated structure:
+
+  $ git grep -w ACPIOSTInfo
+  qapi/acpi.json:81:# @ACPIOSTInfo:
+  qapi/acpi.json:99:{ 'struct': 'ACPIOSTInfo',
+  qapi/acpi.json:109:# Return a list of ACPIOSTInfo for devices that support status
+
+Include the "qapi/qapi-types-acpi.h" header to avoid the following
+errors when including "hw/acpi/cpu.h" or "hw/acpi/memory_hotplug.h"
+elsewhere:
+
+  include/hw/acpi/cpu.h:67:52: error: unknown type name 'ACPIOSTInfoList'
+  void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList ***list);
+                                                     ^
+  include/hw/acpi/memory_hotplug.h:51:55: error: unknown type name 'ACPIOSTInfoList'
+  void acpi_memory_ospm_status(MemHotplugState *mem_st, ACPIOSTInfoList ***list);
+                                                        ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20240216110313.17039-3-philmd@linaro.org>
+Message-Id: <20240219141412.71418-2-philmd@linaro.org>
 ---
- hw/i386/pc_sysfw.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ include/hw/acpi/cpu.h            | 1 +
+ include/hw/acpi/memory_hotplug.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
-index 2dcaa116ad..b02e285579 100644
---- a/hw/i386/pc_sysfw.c
-+++ b/hw/i386/pc_sysfw.c
-@@ -95,17 +95,15 @@ static void pc_system_flash_cleanup_unused(PCMachineState *pcms)
- {
-     char *prop_name;
-     int i;
--    Object *dev_obj;
+diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h
+index bc901660fb..e011d01adf 100644
+--- a/include/hw/acpi/cpu.h
++++ b/include/hw/acpi/cpu.h
+@@ -12,6 +12,7 @@
+ #ifndef ACPI_CPU_H
+ #define ACPI_CPU_H
  
-     assert(PC_MACHINE_GET_CLASS(pcms)->pci_enabled);
++#include "qapi/qapi-types-acpi.h"
+ #include "hw/qdev-core.h"
+ #include "hw/acpi/acpi.h"
+ #include "hw/acpi/aml-build.h"
+diff --git a/include/hw/acpi/memory_hotplug.h b/include/hw/acpi/memory_hotplug.h
+index dfe9cf3fde..38841d7b06 100644
+--- a/include/hw/acpi/memory_hotplug.h
++++ b/include/hw/acpi/memory_hotplug.h
+@@ -1,6 +1,7 @@
+ #ifndef QEMU_HW_ACPI_MEMORY_HOTPLUG_H
+ #define QEMU_HW_ACPI_MEMORY_HOTPLUG_H
  
-     for (i = 0; i < ARRAY_SIZE(pcms->flash); i++) {
--        dev_obj = OBJECT(pcms->flash[i]);
--        if (!object_property_get_bool(dev_obj, "realized", &error_abort)) {
-+        if (!qdev_is_realized(DEVICE(pcms->flash[i]))) {
-             prop_name = g_strdup_printf("pflash%d", i);
-             object_property_del(OBJECT(pcms), prop_name);
-             g_free(prop_name);
--            object_unparent(dev_obj);
-+            object_unparent(OBJECT(pcms->flash[i]));
-             pcms->flash[i] = NULL;
-         }
-     }
++#include "qapi/qapi-types-acpi.h"
+ #include "hw/qdev-core.h"
+ #include "hw/acpi/acpi.h"
+ #include "hw/acpi/aml-build.h"
 -- 
 2.41.0
 
