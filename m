@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A03D85F6D8
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 12:30:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 599CD85F6CC
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 12:28:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd7E4-0008A3-Hp; Thu, 22 Feb 2024 06:26:52 -0500
+	id 1rd7E9-0008D5-AJ; Thu, 22 Feb 2024 06:26:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rd7Dm-00086E-Pu; Thu, 22 Feb 2024 06:26:36 -0500
+ id 1rd7Do-00086N-Vh; Thu, 22 Feb 2024 06:26:37 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rd7Dk-0004x1-8N; Thu, 22 Feb 2024 06:26:33 -0500
+ id 1rd7Dm-00050z-Sq; Thu, 22 Feb 2024 06:26:36 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D74564FB4A;
+ by isrv.corpit.ru (Postfix) with ESMTP id E5EB54FB4B;
  Thu, 22 Feb 2024 14:26:25 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 5DEE387176;
+ by tsrv.corpit.ru (Postfix) with SMTP id 6C5A487177;
  Thu, 22 Feb 2024 14:26:02 +0300 (MSK)
-Received: (nullmailer pid 2526164 invoked by uid 1000);
+Received: (nullmailer pid 2526167 invoked by uid 1000);
  Thu, 22 Feb 2024 11:26:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 08/34] hw/i386/acpi: Declare pc_madt_cpu_entry() in
- 'acpi-common.h'
-Date: Thu, 22 Feb 2024 14:25:35 +0300
-Message-Id: <20240222112601.2526057-9-mjt@tls.msk.ru>
+Subject: [PULL 09/34] hw/i386/port92: Add missing 'hw/isa/isa.h' header
+Date: Thu, 22 Feb 2024 14:25:36 +0300
+Message-Id: <20240222112601.2526057-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240222112601.2526057-1-mjt@tls.msk.ru>
 References: <20240222112601.2526057-1-mjt@tls.msk.ru>
@@ -63,70 +62,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Since pc_madt_cpu_entry() is only used by:
- - hw/i386/acpi-build.c   // single call
- - hw/i386/acpi-common.c  // definition
-there is no need to expose it outside of hw/i386/.
-Declare it in "acpi-common.h".
-acpi-build.c doesn't need "hw/i386/pc.h" anymore.
+TYPE_PORT92 inherits TYPE_ISA_DEVICE, so need to include
+"hw/isa/isa.h" to get its declarations (currently we
+indirectly include this header via "hw/i386/pc.h").
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Reviewed-by: Luc Michel <luc.michel@amd.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/i386/acpi-common.c | 1 -
- hw/i386/acpi-common.h | 3 +++
- include/hw/i386/pc.h  | 4 ----
- 3 files changed, 3 insertions(+), 5 deletions(-)
+ hw/i386/port92.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/i386/acpi-common.c b/hw/i386/acpi-common.c
-index 43dc23f7e0..f1a11f833a 100644
---- a/hw/i386/acpi-common.c
-+++ b/hw/i386/acpi-common.c
-@@ -27,7 +27,6 @@
- #include "hw/acpi/acpi.h"
- #include "hw/acpi/aml-build.h"
- #include "hw/acpi/utils.h"
--#include "hw/i386/pc.h"
- #include "target/i386/cpu.h"
- 
- #include "acpi-build.h"
-diff --git a/hw/i386/acpi-common.h b/hw/i386/acpi-common.h
-index b3c56ee014..e305aaac15 100644
---- a/hw/i386/acpi-common.h
-+++ b/hw/i386/acpi-common.h
-@@ -1,12 +1,15 @@
- #ifndef HW_I386_ACPI_COMMON_H
- #define HW_I386_ACPI_COMMON_H
- 
-+#include "hw/boards.h"
- #include "hw/acpi/bios-linker-loader.h"
- #include "hw/i386/x86.h"
- 
- /* Default IOAPIC ID */
- #define ACPI_BUILD_IOAPIC_ID 0x0
- 
-+void pc_madt_cpu_entry(int uid, const CPUArchIdList *apic_ids,
-+                       GArray *entry, bool force_enabled);
- void acpi_build_madt(GArray *table_data, BIOSLinker *linker,
-                      X86MachineState *x86ms,
-                      const char *oem_id, const char *oem_table_id);
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index c0e6c43fbd..d7c7f930ed 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -199,10 +199,6 @@ bool pc_system_ovmf_table_find(const char *entry, uint8_t **data,
-                                int *data_len);
- void pc_system_parse_ovmf_flash(uint8_t *flash_ptr, size_t flash_size);
- 
--/* hw/i386/acpi-common.c */
--void pc_madt_cpu_entry(int uid, const CPUArchIdList *apic_ids,
--                       GArray *entry, bool force_enabled);
--
- /* sgx.c */
- void pc_machine_init_sgx_epc(PCMachineState *pcms);
- 
+diff --git a/hw/i386/port92.c b/hw/i386/port92.c
+index 1070bfbf36..b25157f6e4 100644
+--- a/hw/i386/port92.c
++++ b/hw/i386/port92.c
+@@ -10,6 +10,7 @@
+ #include "sysemu/runstate.h"
+ #include "migration/vmstate.h"
+ #include "hw/irq.h"
++#include "hw/isa/isa.h"
+ #include "hw/i386/pc.h"
+ #include "trace.h"
+ #include "qom/object.h"
 -- 
 2.39.2
 
