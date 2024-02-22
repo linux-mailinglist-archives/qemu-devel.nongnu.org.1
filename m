@@ -2,109 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60CC185FB7D
+	by mail.lfdr.de (Postfix) with ESMTPS id 548F885FB7C
 	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 15:44:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdAIA-0003VV-MA; Thu, 22 Feb 2024 09:43:18 -0500
+	id 1rdAI9-0003VK-LU; Thu, 22 Feb 2024 09:43:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wj28.lee@samsung.com>)
- id 1rd5IM-00062D-4G
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 04:23:10 -0500
-Received: from mailout1.samsung.com ([203.254.224.24])
+ (Exim 4.90_1) (envelope-from <t-8ch@linutronix.de>)
+ id 1rd6Z3-0006tB-DZ
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 05:44:31 -0500
+Received: from galois.linutronix.de ([2a0a:51c0:0:12e:550::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wj28.lee@samsung.com>)
- id 1rd5IG-00028P-8R
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 04:23:09 -0500
-Received: from epcas2p1.samsung.com (unknown [182.195.41.53])
- by mailout1.samsung.com (KnoxPortal) with ESMTP id
- 20240222092253epoutp014c46c350c7e959d6ec96b290e43885d5~2JPwM73JV3222032220epoutp01k
- for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 09:22:53 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com
- 20240222092253epoutp014c46c350c7e959d6ec96b290e43885d5~2JPwM73JV3222032220epoutp01k
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1708593773;
- bh=9Qn95HhIpP1AEQTS+0y7WcQCdI46naaZBS28xs4HSII=;
- h=Subject:Reply-To:From:To:CC:In-Reply-To:Date:References:From;
- b=U4zhF0U59cotCi4WwQZIkNRcP6PeOvqcfRv3aS7f4jn51XyIaaBVu4J5NZh4Fa7Ci
- OTjr/paM2YR18sjTlmfwYCAC2LBEbYuZmuWELH1WJf1YsqOBrOGe9tOi/dKmhTpGRF
- K8XdcK/O0T9vrBdhaqUO0z/wRpf9wzkAk+MM7h0Q=
-Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
- epcas2p4.samsung.com (KnoxPortal) with ESMTP id
- 20240222092253epcas2p4a2127c39f6cc42c8b21242a34d9f29ae~2JPvztQll1752517525epcas2p4I;
- Thu, 22 Feb 2024 09:22:53 +0000 (GMT)
-Received: from epsmges2p2.samsung.com (unknown [182.195.36.92]) by
- epsnrtp1.localdomain (Postfix) with ESMTP id 4TgSNX4grQz4x9Pv; Thu, 22 Feb
- 2024 09:22:52 +0000 (GMT)
-X-AuditID: b6c32a46-d61ff70000002596-8d-65d7126cf026
-Received: from epcas2p4.samsung.com ( [182.195.41.56]) by
- epsmges2p2.samsung.com (Symantec Messaging Gateway) with SMTP id
- E3.70.09622.C6217D56; Thu, 22 Feb 2024 18:22:52 +0900 (KST)
-Mime-Version: 1.0
-Subject: RE: [PATCH v4 06/10] hw/mem/cxl_type3: Add host backend and address
- space handling for DC regions
-From: Wonjae Lee <wj28.lee@samsung.com>
-To: "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: "jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>,
- "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
- "gregory.price@memverge.com" <gregory.price@memverge.com>,
- "ira.weiny@intel.com" <ira.weiny@intel.com>, "dan.j.williams@intel.com"
- <dan.j.williams@intel.com>, Adam Manzanares <a.manzanares@samsung.com>,
- "dave@stgolabs.net" <dave@stgolabs.net>, "nmtadam.samsung@gmail.com"
- <nmtadam.samsung@gmail.com>, Jim Harris <jim.harris@samsung.com>, Fan Ni
- <fan.ni@samsung.com>
-X-Priority: 3
-X-Content-Kind-Code: NORMAL
-In-Reply-To: <20240221182020.1086096-7-nifan.cxl@gmail.com>
-X-CPGS-Detection: blocking_info_exchange
-X-Drm-Type: N,general
-X-Msg-Generator: Mail
-X-Msg-Type: PERSONAL
-X-Reply-Demand: N
-Message-ID: <20240222092252epcms2p389f3b87b6ee63cf6a0e95aaf8968970d@epcms2p3>
-Date: Thu, 22 Feb 2024 18:22:52 +0900
-X-CMS-MailID: 20240222092252epcms2p389f3b87b6ee63cf6a0e95aaf8968970d
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: AUTO_CONFIDENTIAL
-CMS-TYPE: 102P
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrNJsWRmVeSWpSXmKPExsWy7bCmhW6O0PVUgz0NChbTDytaTJ96gdFi
- 9c01jBZNq++yWjQ0PWKx2P/0OYvF0gMaFqsWXmOzOD/rFIvF3217GS2WLnnEbHG8dweLA4/H
- zll32T1ajrxl9Vi85yWTx8aP/9k9nlzbzOTRt2UVo8fU2fUenzfJBXBEZdtkpCampBYppOYl
- 56dk5qXbKnkHxzvHm5oZGOoaWlqYKynkJeam2iq5+AToumXmAN2qpFCWmFMKFApILC5W0rez
- KcovLUlVyMgvLrFVSi1IySkwL9ArTswtLs1L18tLLbEyNDAwMgUqTMjOWP7tJXtBP1tF9+vH
- rA2MG1i7GDk5JARMJBZ/uM3excjFISSwg1Fi+csbbF2MHBy8AoISf3cIg9QIC+RI9P1cwAhi
- CwnISdy9fYoJIq4p8WbaKhYQm01AXeJH50mwuIhAksSEKYuYQWYyC3xlljj6bgELxDJeiRnt
- T6FsaYnty7eCDeUUsJa42fOFGSKuIfFjWS+ULSpxc/Vbdhj7/bH5jBC2iETrvbNQNYISD37u
- hopLSXw98Zcd5H4JgXKJN+vNQW6QEGhglHiy8i/UHHOJCXsmgtm8Ar4SM660gQOCRUBVYuPt
- BmiguEg8PfMc7E5mAW2JZQtfM4PMZAZ6eP0ufYjxyhJHbkFV8El0HIaZziuxY94TJghbSWJK
- 2xGoyyQkGhq3skHYHhJrZ+9mnMCoOAsR0LOQ7JqFsGsBI/MqRrHUguLc9NRiowIjeNwm5+du
- YgSnWi23HYxT3n7QO8TIxMF4iFGCg1lJhJel/EqqEG9KYmVValF+fFFpTmrxIUZToC8nMkuJ
- JucDk31eSbyhiaWBiZmZobmRqYG5kjjvvda5KUIC6YklqdmpqQWpRTB9TBycUg1Mez8e/FIl
- OX+v/1+lknlhDLNtuAtln5nocWyZ23XF10P1TIXWzEOHdoj+a1tV/9V1+eseww+tX2bPZprw
- 3ubmXa4KkUndF387fMk9qVO/fs+eHlV9vrvWm6Xrnabxq3Td2KRwtOkE8+Rna8uX3muOWmeY
- 1LDLtOmWgo0Bm8sBRe+j5Y1a017puRQ+ufJ5w+eg5wui/s41+fHAyUHWWr/6mKbXx79/Zgvw
- GvbICel//b/J88J/p83+bTotC3M3PV36xfd8zAdhRS1N94eronOe2U5bLKe+UFdhtfB3wbCM
- qQV/M8/8TFy58c/XjIpfiwwFTThKX1+8n97Zz8lp/qfhH6uJZdOEFn6FZmf70MxMJZbijERD
- Leai4kQAk6k1FT4EAAA=
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20240221182137epcas2p276d22514caaa9412d0119ded6f9a63d4
-References: <20240221182020.1086096-7-nifan.cxl@gmail.com>
- <20240221182020.1086096-1-nifan.cxl@gmail.com>
- <CGME20240221182137epcas2p276d22514caaa9412d0119ded6f9a63d4@epcms2p3>
-Received-SPF: pass client-ip=203.254.224.24; envelope-from=wj28.lee@samsung.com;
- helo=mailout1.samsung.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
+ (Exim 4.90_1) (envelope-from <t-8ch@linutronix.de>)
+ id 1rd6Z1-0006WY-HJ
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 05:44:29 -0500
+Date: Thu, 22 Feb 2024 11:44:13 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020; t=1708598654;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gjbDWuFJ81UXR1RyBPAkcnHfofF5Icts5BWudkMNPHg=;
+ b=3CEhM6byRrFLUlK12QuTbT2nLQTOwnsrdr4vjnmndyqg1hlj7rrNh5V0SbHiYu9pcBRzmu
+ HBy3/3Q0IfG3vDToSIiTcGsray78LYPltZ8gcLZabdFSDgCvdbAfKrCBH+AkWgtBmWakyK
+ 4QUZ5I3bUoMElgFTbVb/hFOwbwgXM2ndyzg9o14asYzkvZp4WXu9YSD9oLNlTvJnHUIe49
+ 8meCOaV4qPlTfWLbumqL1fNpt8ZDzfwMcIJQHg809fQMRT3YUE4wdvN/D9+n4kGMjFQ6Pu
+ iot2qhTXuicmuSWfa5vSaP7YSVgZCmSM25DMOYcJ3twmuVybf6U5u8x14bBLNw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020e; t=1708598654;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gjbDWuFJ81UXR1RyBPAkcnHfofF5Icts5BWudkMNPHg=;
+ b=2gd2GdmCXlvUFh2h8l/f0NEV8vEYLcjM/IJhnCh/b4jEroVFhrfFkiGA2Xz77qpaJjtVNT
+ EgnnvkYYfMbGZ+CA==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Nicholas Ngai <nicholas@ngai.me>
+Cc: qemu-devel@nongnu.org, Samuel Thibault <samuel.thibault@gnu.org>, 
+ Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH] net/slirp: Use newer slirp_*_hostxfwd API
+Message-ID: <20240222111726-198aca86-5ac7-4177-a7d7-3aeb1808add1@linutronix.de>
+References: <20210925214820.18078-1-nicholas@ngai.me>
+ <8143f015-056c-6362-2d3e-7fed66aaffe7@ngai.me>
+ <20211005235613.kuwbfixvp74sv5en@begin>
+ <807f262d-bc28-865f-dda5-2e503f5ebf31@ngai.me>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <807f262d-bc28-865f-dda5-2e503f5ebf31@ngai.me>
+Received-SPF: pass client-ip=2a0a:51c0:0:12e:550::1;
+ envelope-from=t-8ch@linutronix.de; helo=galois.linutronix.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-Mailman-Approved-At: Thu, 22 Feb 2024 09:43:15 -0500
@@ -119,22 +77,39 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: wj28.lee@samsung.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Feb 21, 2024 at 10:15:59AM -0800, nifan.cxl=40gmail.com wrote:
-> From: Fan Ni <fan.ni=40samsung.com>
->
-> Add (file/memory backed) host backend, all the dynamic capacity regions
-> will share a single, large enough host backend. Set up address space for
-> DC regions to support read/write operations to dynamic capacity for DCD.
->
-> With the change, following supports are added:
-> 1. Add a new property to type3 device =22volatile-dc-memdev=22 to point t=
-o host
->=C2=A0=20=C2=A0=20memory=20backend=20for=20dynamic=20capacity.=20Currently=
-,=20all=20dc=20regions=20share=20one=0D=0A>=C2=A0=20=C2=A0=20one=20host=20b=
-ackend.=0D=0A=0D=0AHello,=20I=20know=20that=20it's=20too=20minor=20comment,=
-=20but=20'one'=20was=20used=20twice.=0D=0A=0D=0AThanks,=0D=0AWonjae
+Hi Nicholas,
+
+On Tue, Mar 22, 2022 at 06:58:36PM -0700, Nicholas Ngai wrote:
+> Pinging this. It’s a bit old, though the patch still applies cleanly to
+> master as far as I can tell.
+> 
+> Link to patchew is
+> https://patchew.org/QEMU/20210925214820.18078-1-nicholas@ngai.me/.
+> 
+> I’d love to get https://gitlab.com/qemu-project/qemu/-/issues/347 addressed
+> once libslirp makes a release with added Unix-to-TCP support in the hostxfwd
+> API, but this patch is a requirement for that first.
+
+I'm also interested in this PATCH and a resolution to issue 347.
+
+FYI your patch triggers checkpatch warnings, see [0].
+Maybe you can resend the patch with the review tags and the checkpatch
+warnings cleaned up.
+
+Also it would be useful to know how the patch changes the version
+requirements of the libslirp dependency.
+(The version requirement should also be enforced in meson.build)
+Also the commit in subprojects/slirp.wrap should be high enough,
+which seems to already be the case however.
+
+It seems it requires libslirp 4.6.0 from 2021-06-14, which is only
+available from Debian 12 or Ubuntu 22.04 and no release of RHEL.
+
+
+Thomas
+
+[0] https://patchew.org/QEMU/20210925214820.18078-1-nicholas@ngai.me/logs/testing.checkpatch/
 
