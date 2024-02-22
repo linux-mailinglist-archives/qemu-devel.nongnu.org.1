@@ -2,85 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C98A85F243
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 08:58:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90C7285F245
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 08:59:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd3xD-0001WF-Gb; Thu, 22 Feb 2024 02:57:15 -0500
+	id 1rd3yx-0002og-NT; Thu, 22 Feb 2024 02:59:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd3x9-0001VV-Sp
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 02:57:11 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd3x6-0005Sz-Sl
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 02:57:10 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-41241f64c6bso10867775e9.0
- for <qemu-devel@nongnu.org>; Wed, 21 Feb 2024 23:57:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708588626; x=1709193426; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=D17irSf/U4JZXEZRBRyY2WFC9+zjHUToxM5yrrVq2TI=;
- b=OCco5PcdYncicnvallLKaByHMIyPRGNRgHIT4xC2z94TEh2TxeyKJnNtueeIHdBxN2
- Y9FwNwG5sUshHUUGB0BPOG47eIrFhcHKUi5K8SSzpgNUrfvWgoVg2DLWa/aKSmncDGAb
- HDx6paNzgxQeGG+T1Q94aqVdkzDkuLIAveIgI2fYs0cVL/PUp63ZghqXyr5d+2U4oILU
- SzZr5lB0HETh3EQ6KyDZKT3ugsNuHUQBm6qVF5L7p/P28FI70m0ujKiu6cahVeVxAttc
- xqImgy2o1Zd/PSHFA8ohscx2fkWy8KhOGIw1Fiac1EadwSkya2VwDsQ+9i9eeqtnIbM0
- NI4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708588626; x=1709193426;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=D17irSf/U4JZXEZRBRyY2WFC9+zjHUToxM5yrrVq2TI=;
- b=vp2OhpgGTPn6CJFayqqhdO5lyDLb4bToIzR4TaGZ2L1WMbjZCXkL9RCys81WcEuco5
- SxedD+10kK8H5GCINR60bAyVtirlS44LJtUiJb9Dw3OzUa480P6YY8WAsbuyhwQ5GB6y
- 8jRzrWoFqzXQLzBgwoAtIPSDxk66iFJYhm6DDC9Fti80z+XXqQzfJESuejIVV/mtM5fb
- upxC76BgC6I0dhcdK5XUUbNv5ZbnyU/BSnNDsFO8zSb/+d5u2blfRV8zQ9UH6eLSkkvf
- Xb58urXrj7pFIb8F22Upqj9RZ0o9lPIDiTStfYC7Yq/ZAFegHf1zXfl3QKkueq0SqNOm
- zzHA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUJO9Tn8yW+bvNkF8JEsW4zG6d0VPwdu8dN5zEmxngGzydYP9tI0Mzs1lCxG+VD2Hjer+MwknC8T9ZCVTpsihDn13cmDJI=
-X-Gm-Message-State: AOJu0YwvACMWGagjevYWaNuWg7mAdFCBbvN52RlPP7yrJXROLVWv/Qop
- D26tGXgqkCCvJhXe2/yFuOhswEd067wI99v2AB5aIE6UNbLC9wONXnNPZPAoYYg=
-X-Google-Smtp-Source: AGHT+IEAbOe7u/xS4q8BIY5U9vHOZ0HUbyrNaE+0F6isHlB3wNZ9niYav9Xy2N1k0zMAmNIFZf4/7w==
-X-Received: by 2002:a05:600c:1988:b0:412:6dd7:1d44 with SMTP id
- t8-20020a05600c198800b004126dd71d44mr5327431wmq.17.1708588626458; 
- Wed, 21 Feb 2024 23:57:06 -0800 (PST)
-Received: from [192.168.184.175] (41.red-95-127-32.staticip.rima-tde.net.
- [95.127.32.41]) by smtp.gmail.com with ESMTPSA id
- g17-20020a05600c4ed100b0040ecdd672fasm21184179wmq.13.2024.02.21.23.57.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Feb 2024 23:57:05 -0800 (PST)
-Message-ID: <a1f44a85-b13e-4ab8-aea6-94200637c836@linaro.org>
-Date: Thu, 22 Feb 2024 08:57:02 +0100
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rd3yr-0002hb-HX
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 02:58:59 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rd3yo-0005ZF-FA
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 02:58:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1708588733;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=UU39IqS43PDUiY4FECJHL6DHlFpahH/0+K1fiQNtlqs=;
+ b=CU+kDdJERptcAhQBnNj4d+SCfQNlBhpV1Ebk5kmvbhBa2CFQ4+ZSnRJRfWgJbwwOsNeC9F
+ z2yip3lILdVk1wsHkXoLI68DBAYzxb5Qall2VkXcq/CM9hyEL5UodWzpTog8alsjxZ94eg
+ v7lDd7N4ZaVJmjweH2DpWlKm1kyQw/o=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-677-10lLxtTiPjaJSW4Ee0qhOA-1; Thu, 22 Feb 2024 02:58:51 -0500
+X-MC-Unique: 10lLxtTiPjaJSW4Ee0qhOA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 995791064FA0;
+ Thu, 22 Feb 2024 07:58:51 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5EC0840C94A7;
+ Thu, 22 Feb 2024 07:58:50 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 3640821E66D5; Thu, 22 Feb 2024 08:58:49 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Hyman Huang <yong.huang@smartx.com>
+Cc: qemu-devel@nongnu.org,  "Michael S . Tsirkin" <mst@redhat.com>,  Eric
+ Blake <eblake@redhat.com>
+Subject: Re: [PATCH v4 2/3] virtio: Declare the decoding functions to static
+In-Reply-To: <64ad4aeff59e41df84466fa8d28b21813defcb07.1708525606.git.yong.huang@smartx.com>
+ (Hyman Huang's message of "Wed, 21 Feb 2024 22:28:52 +0800")
+References: <cover.1708525606.git.yong.huang@smartx.com>
+ <64ad4aeff59e41df84466fa8d28b21813defcb07.1708525606.git.yong.huang@smartx.com>
+Date: Thu, 22 Feb 2024 08:58:49 +0100
+Message-ID: <877cixx746.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/intc/Kconfig: Fix GIC settings when using
- "--without-default-devices"
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
- Fabiano Rosas <farosas@suse.de>
-References: <20240221110059.152665-1-thuth@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240221110059.152665-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,68 +81,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/2/24 12:00, Thomas Huth wrote:
-> When using "--without-default-devices", the ARM_GICV3_TCG and ARM_GIC_KVM
-> settings currently get disabled, though the arm virt machine is only of
-> very limited use in that case. This also causes the migration-test to
-> fail in such builds. Let's make sure that we always keep the GIC switches
-> enabled in the --without-default-devices builds, too.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   hw/intc/Kconfig | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/hw/intc/Kconfig b/hw/intc/Kconfig
-> index 97d550b06b..2b5b2d2301 100644
-> --- a/hw/intc/Kconfig
-> +++ b/hw/intc/Kconfig
-> @@ -12,10 +12,6 @@ config IOAPIC
->       bool
->       select I8259
->   
-> -config ARM_GIC
-> -    bool
-> -    select MSI_NONBROKEN
-> -
->   config OPENPIC
->       bool
->       select MSI_NONBROKEN
-> @@ -25,14 +21,18 @@ config APIC
->       select MSI_NONBROKEN
->       select I8259
->   
-> +config ARM_GIC
-> +    bool
-> +    select ARM_GICV3_TCG if TCG
-> +    select ARM_GIC_KVM if KVM
+Hyman Huang <yong.huang@smartx.com> writes:
 
-This is odd, we usually 'select' dependencies.
+> qmp_decode_protocols(), qmp_decode_status(), and qmp_decode_features()
+> are now only used in virtio-hmp-cmds.c.  So move them into there,
+> redeclare them to static, and replace the qmp_ prefix with hmp_.
+>
+> Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 
-> +    select MSI_NONBROKEN
-> +
->   config ARM_GICV3_TCG
->       bool
-> -    default y
-
-Don't we want instead:
-
-        default y if TCG
-
->       depends on ARM_GIC && TCG
->   
->   config ARM_GIC_KVM
->       bool
-> -    default y
-
-and:
-
-        default y if KVM
-
-?
-
->       depends on ARM_GIC && KVM
->   
->   config XICS
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 
 
