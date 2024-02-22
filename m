@@ -2,77 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1386885F4DF
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 10:46:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D0EF85F54F
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 11:08:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd5eP-000746-4O; Thu, 22 Feb 2024 04:45:57 -0500
+	id 1rd5y7-0004T3-Kc; Thu, 22 Feb 2024 05:06:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rd5eN-00071r-3P; Thu, 22 Feb 2024 04:45:55 -0500
-Received: from mgamail.intel.com ([192.198.163.9])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1rd5y5-0004SZ-Ao; Thu, 22 Feb 2024 05:06:17 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rd5e9-0005ap-0G; Thu, 22 Feb 2024 04:45:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708595141; x=1740131141;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=ygelKKtftfpkZ77QNd+mRGBqXa2fzaaVubxUabmKpZs=;
- b=m5yDDw//eeQNPmF2Z6ZQlxGsqpuBmsSbY66xksRxe7JgA+Xjr7wgnaW1
- Zi2+7+GIbAznes+PJDkHa6bnSsU5lMyJ4Vy3mDzzmjYmUz7zf7gxXH6VG
- 7BEsVA6AUSeaymSZvpV95GesTU4v0xt+E+4/Aet7tguXF00LnepO6kvsE
- 1hncmAFYvHpdVKG+QaEp2k8LLJRlzYfW1nNaNv9JqC3z3sQh4rF0HDjm1
- WLYycR/exQD+ItV1S/+bij8oLY5thwhuiMOdoko62GI5u8XwTA7nYUqct
- dser+ZAemg2ErJPg3qxiRL6pu01nBnI682uXun5IX1t+xmEx7nnh9IhPl w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="13506989"
-X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; d="scan'208";a="13506989"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Feb 2024 01:45:29 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; d="scan'208";a="10022376"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa004.fm.intel.com with ESMTP; 22 Feb 2024 01:45:25 -0800
-Date: Thu, 22 Feb 2024 17:59:05 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
- qemu-ppc@nongnu.org, qemu-block@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: Re: [PATCH 21/21] hw: Add QOM parentship relation with CPUs
-Message-ID: <Zdca6ZYOzgSXIlpr@intel.com>
-References: <20240216110313.17039-1-philmd@linaro.org>
- <20240216110313.17039-22-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1rd5y2-0000da-VW; Thu, 22 Feb 2024 05:06:17 -0500
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41M9m2df018071; Thu, 22 Feb 2024 10:06:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=7yCuldceSyJz3Ap78sQDAsienMAXu3g0BfrHBqSf+qs=;
+ b=SLInFg9gt4X1Frq7kkpIJEfZbDczP7xvLl9xVhXyHuQvAOKu2KA3HcXel8kb4IkRe1tN
+ TJwEbBlzhD4jVJ3n5e4btEi3Wqd8utJDEBdYfMwIT/ZQK4EuY0zlnSJXEcQrJj9vWAtj
+ 8fEYsszezkfa2ZyMRdDvuK8ihkY+nkm6D5Kzifp36zVQVkzhF26SFOOjqMenSehuf2Q6
+ N6VYL4qIYLD8xNoC4W/Wm4kHLymoBgkaSAa2e+opzpnlTqRFi+c4zgV/HnuDt8+eSDnV
+ +ncXSki60voLR7zbA+YzAQtoi5JBMwMZrvj6h2/uQgT9r4TCZ6rfS0NtMForDr1ux4jo UQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3we3y10fkh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 22 Feb 2024 10:06:03 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41M9mdbI019300;
+ Thu, 22 Feb 2024 10:06:03 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3we3y10fk8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 22 Feb 2024 10:06:03 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41M97Otl009540; Thu, 22 Feb 2024 10:06:02 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wb84pnbs5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 22 Feb 2024 10:06:02 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 41MA606q13304444
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 22 Feb 2024 10:06:02 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 08E495806F;
+ Thu, 22 Feb 2024 10:06:00 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0D63A5805D;
+ Thu, 22 Feb 2024 10:05:58 +0000 (GMT)
+Received: from [9.179.15.237] (unknown [9.179.15.237])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 22 Feb 2024 10:05:57 +0000 (GMT)
+Message-ID: <b8ea8222-ee3b-4bf9-85b0-636d6a4d6f3a@linux.ibm.com>
+Date: Thu, 22 Feb 2024 15:35:56 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240216110313.17039-22-philmd@linaro.org>
-Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 9/9] target/ppc: Remove interrupt handler wrapper
+ functions
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org
+References: <cover.1705614747.git.balaton@eik.bme.hu>
+ <281ce504db0192be0673f3525ea59d425bb1e5e0.1705614747.git.balaton@eik.bme.hu>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <281ce504db0192be0673f3525ea59d425bb1e5e0.1705614747.git.balaton@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: XssZUiIHfmnZ2AWfq6QdfN7HhH7X9mtr
+X-Proofpoint-GUID: Sc2u4RgddR_pHhQt1KBQe6iJ8MPL3E-N
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-22_06,2024-02-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxscore=0
+ bulkscore=0 suspectscore=0 priorityscore=1501 phishscore=0 malwarescore=0
+ mlxlogscore=999 impostorscore=0 lowpriorityscore=0 clxscore=1015
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402220078
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,115 +116,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 16, 2024 at 12:03:12PM +0100, Philippe Mathieu-Daudé wrote:
-> Date: Fri, 16 Feb 2024 12:03:12 +0100
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH 21/21] hw: Add QOM parentship relation with CPUs
-> X-Mailer: git-send-email 2.41.0
+
+
+On 1/19/24 03:31, BALATON Zoltan wrote:
+> These wrappers call out to handle POWER7 and newer in separate
+> functions but reduce to the generic case when TARGET_PPC64 is not
+> defined. It is easy enough to include the switch in the beginning of
+> the generic functions to branch out to the specific functions and get
+> rid of these wrappers. This avoids one indirection and entitely
+
+s/entitely/entirely
+
+> compiles out the switch without TARGET_PPC64.
 > 
-> QDev objects created with object_new() need to manually add
-> their parent relationship with object_property_add_child().
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 > ---
->  hw/i386/x86.c                            | 1 +
->  hw/microblaze/petalogix_ml605_mmu.c      | 1 +
->  hw/microblaze/petalogix_s3adsp1800_mmu.c | 1 +
->  hw/mips/cps.c                            | 1 +
->  hw/nios2/10m50_devboard.c                | 1 +
->  hw/ppc/e500.c                            | 1 +
->  hw/ppc/spapr.c                           | 1 +
->  7 files changed, 7 insertions(+)
+>   target/ppc/excp_helper.c | 70 ++++++++++++++++++----------------------
+>   1 file changed, 31 insertions(+), 39 deletions(-)
+> 
+> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+> index 5124c3e6b5..de51627c4c 100644
+> --- a/target/ppc/excp_helper.c
+> +++ b/target/ppc/excp_helper.c
+> @@ -1921,8 +1921,21 @@ static int p9_next_unmasked_interrupt(CPUPPCState *env)
+>   }
+>   #endif /* TARGET_PPC64 */
+>   
+> -static int ppc_next_unmasked_interrupt_generic(CPUPPCState *env)
+> +static int ppc_next_unmasked_interrupt(CPUPPCState *env)
+>   {
+> +#ifdef TARGET_PPC64
+> +    switch (env->excp_model) {
+> +    case POWERPC_EXCP_POWER7:
+> +        return p7_next_unmasked_interrupt(env);
+> +    case POWERPC_EXCP_POWER8:
+> +        return p8_next_unmasked_interrupt(env);
+> +    case POWERPC_EXCP_POWER9:
+> +    case POWERPC_EXCP_POWER10:
+> +        return p9_next_unmasked_interrupt(env);
+> +    default:
+> +        break;
+> +    }
+> +#endif
+>       bool async_deliver;
+>   
+>       /* External reset */
+> @@ -2033,23 +2046,6 @@ static int ppc_next_unmasked_interrupt_generic(CPUPPCState *env)
+>       return 0;
+>   }
+>   
+> -static int ppc_next_unmasked_interrupt(CPUPPCState *env)
+> -{
+> -    switch (env->excp_model) {
+> -#ifdef TARGET_PPC64
+> -    case POWERPC_EXCP_POWER7:
+> -        return p7_next_unmasked_interrupt(env);
+> -    case POWERPC_EXCP_POWER8:
+> -        return p8_next_unmasked_interrupt(env);
+> -    case POWERPC_EXCP_POWER9:
+> -    case POWERPC_EXCP_POWER10:
+> -        return p9_next_unmasked_interrupt(env);
+> -#endif
+> -    default:
+> -        return ppc_next_unmasked_interrupt_generic(env);
+> -    }
+> -}
+> -
+>   /*
+>    * Sets CPU_INTERRUPT_HARD if there is at least one unmasked interrupt to be
+>    * delivered and clears CPU_INTERRUPT_HARD otherwise.
+> @@ -2279,8 +2275,24 @@ static void p9_deliver_interrupt(CPUPPCState *env, int interrupt)
+>   }
+>   #endif /* TARGET_PPC64 */
+>   
+> -static void ppc_deliver_interrupt_generic(CPUPPCState *env, int interrupt)
+> +static void ppc_deliver_interrupt(CPUPPCState *env, int interrupt)
+>   {
+> +#ifdef TARGET_PPC64
+> +    switch (env->excp_model) {
+> +    case POWERPC_EXCP_POWER7:
+> +        p7_deliver_interrupt(env, interrupt);
+> +        return;
+> +    case POWERPC_EXCP_POWER8:
+> +        p8_deliver_interrupt(env, interrupt);
+> +        return;
+> +    case POWERPC_EXCP_POWER9:
+> +    case POWERPC_EXCP_POWER10:
+> +        p9_deliver_interrupt(env, interrupt);
+> +        return;
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+These return statements could be clubbed with the function call itself.
 
-> 
-> diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-> index 684dce90e9..7021419d91 100644
-> --- a/hw/i386/x86.c
-> +++ b/hw/i386/x86.c
-> @@ -102,6 +102,7 @@ void x86_cpu_new(X86MachineState *x86ms, int64_t apic_id, Error **errp)
->      if (!object_property_set_uint(cpu, "apic-id", apic_id, errp)) {
->          goto out;
->      }
-> +    object_property_add_child(OBJECT(x86ms), "cpu[*]", OBJECT(cpu));
->      qdev_realize(DEVICE(cpu), NULL, errp);
->  
->  out:
-> diff --git a/hw/microblaze/petalogix_ml605_mmu.c b/hw/microblaze/petalogix_ml605_mmu.c
-> index 0f5fabc32e..dfd881322d 100644
-> --- a/hw/microblaze/petalogix_ml605_mmu.c
-> +++ b/hw/microblaze/petalogix_ml605_mmu.c
-> @@ -83,6 +83,7 @@ petalogix_ml605_init(MachineState *machine)
->  
->      /* init CPUs */
->      cpu = MICROBLAZE_CPU(object_new(TYPE_MICROBLAZE_CPU));
-> +    object_property_add_child(OBJECT(machine), "cpu", OBJECT(cpu));
->      object_property_set_str(OBJECT(cpu), "version", "8.10.a", &error_abort);
->      /* Use FPU but don't use floating point conversion and square
->       * root instructions
-> diff --git a/hw/microblaze/petalogix_s3adsp1800_mmu.c b/hw/microblaze/petalogix_s3adsp1800_mmu.c
-> index dad46bd7f9..255d8d4d47 100644
-> --- a/hw/microblaze/petalogix_s3adsp1800_mmu.c
-> +++ b/hw/microblaze/petalogix_s3adsp1800_mmu.c
-> @@ -70,6 +70,7 @@ petalogix_s3adsp1800_init(MachineState *machine)
->      MemoryRegion *sysmem = get_system_memory();
->  
->      cpu = MICROBLAZE_CPU(object_new(TYPE_MICROBLAZE_CPU));
-> +    object_property_add_child(OBJECT(machine), "cpu", OBJECT(cpu));
->      object_property_set_str(OBJECT(cpu), "version", "7.10.d", &error_abort);
->      qdev_realize(DEVICE(cpu), NULL, &error_abort);
->  
-> diff --git a/hw/mips/cps.c b/hw/mips/cps.c
-> index 07b73b0a1f..6b4e918807 100644
-> --- a/hw/mips/cps.c
-> +++ b/hw/mips/cps.c
-> @@ -84,6 +84,7 @@ static void mips_cps_realize(DeviceState *dev, Error **errp)
->          /* All cores use the same clock tree */
->          qdev_connect_clock_in(DEVICE(cpu), "clk-in", s->clock);
->  
-> +        object_property_add_child(OBJECT(dev), "cpu[*]", OBJECT(cpu));
->          if (!qdev_realize_and_unref(DEVICE(cpu), NULL, errp)) {
->              return;
->          }
-> diff --git a/hw/nios2/10m50_devboard.c b/hw/nios2/10m50_devboard.c
-> index 6cb32f777b..f6a691d340 100644
-> --- a/hw/nios2/10m50_devboard.c
-> +++ b/hw/nios2/10m50_devboard.c
-> @@ -95,6 +95,7 @@ static void nios2_10m50_ghrd_init(MachineState *machine)
->      cpu->exception_addr = 0xc8000120;
->      cpu->fast_tlb_miss_addr = 0xc0000100;
->  
-> +    object_property_add_child(OBJECT(machine), "cpu", OBJECT(cpu));
->      qdev_realize_and_unref(DEVICE(cpu), NULL, &error_fatal);
->  
->      if (nms->vic) {
-> diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-> index 3bd12b54ab..77b7d2858c 100644
-> --- a/hw/ppc/e500.c
-> +++ b/hw/ppc/e500.c
-> @@ -956,6 +956,7 @@ void ppce500_init(MachineState *machine)
->           */
->          object_property_set_bool(OBJECT(cs), "start-powered-off", i != 0,
->                                   &error_abort);
-> +        object_property_add_child(OBJECT(machine), "cpu[*]", OBJECT(cpu));
->          qdev_realize_and_unref(DEVICE(cs), NULL, &error_fatal);
->  
->          if (!firstenv) {
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index 0d72d286d8..b6e5caa0d2 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -2715,6 +2715,7 @@ static void spapr_init_cpus(SpaprMachineState *spapr)
->                                      &error_fatal);
->              object_property_set_int(core, CPU_CORE_PROP_CORE_ID, core_id,
->                                      &error_fatal);
-> +            object_property_add_child(OBJECT(spapr), "cpu[*]", OBJECT(core));
->              qdev_realize(DEVICE(core), NULL, &error_fatal);
->  
->              object_unref(core);
-> -- 
-> 2.41.0
-> 
-> 
+With the suggested fixes,
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+
+> +    default:
+> +        break;
+> +    }
+> +#endif
+>       PowerPCCPU *cpu = env_archcpu(env);
+>   
+>       switch (interrupt) {
+> @@ -2383,26 +2395,6 @@ static void ppc_deliver_interrupt_generic(CPUPPCState *env, int interrupt)
+>       }
+>   }
+>   
+> -static void ppc_deliver_interrupt(CPUPPCState *env, int interrupt)
+> -{
+> -    switch (env->excp_model) {
+> -#ifdef TARGET_PPC64
+> -    case POWERPC_EXCP_POWER7:
+> -        p7_deliver_interrupt(env, interrupt);
+> -        break;
+> -    case POWERPC_EXCP_POWER8:
+> -        p8_deliver_interrupt(env, interrupt);
+> -        break;
+> -    case POWERPC_EXCP_POWER9:
+> -    case POWERPC_EXCP_POWER10:
+> -        p9_deliver_interrupt(env, interrupt);
+> -        break;
+> -#endif
+> -    default:
+> -        ppc_deliver_interrupt_generic(env, interrupt);
+> -    }
+> -}
+> -
+>   void ppc_cpu_do_system_reset(CPUState *cs)
+>   {
+>       PowerPCCPU *cpu = POWERPC_CPU(cs);
 
