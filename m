@@ -2,86 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C86B85F9A0
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 14:24:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19A9E85F92D
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 14:10:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd7qK-0000oT-9I; Thu, 22 Feb 2024 07:06:24 -0500
+	id 1rd8pO-0000uC-ID; Thu, 22 Feb 2024 08:09:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd7q9-0000mh-1Y
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 07:06:13 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rd8pK-0000tb-5V
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 08:09:26 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd7q6-00034t-TK
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 07:06:12 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3392b045e0aso5089234f8f.2
- for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 04:06:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rd8pI-00085s-64
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 08:09:25 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4128cfb6c1aso2281865e9.0
+ for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 05:09:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708603567; x=1709208367; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=wh1n0IlApG9nfGWmUY0P2DXl/J+TkQv1FOPChcfQcDg=;
- b=fyomQt7Bpt0CAYrOHcLOprKFuh5pp930k7HLg3eh9MGLfqEMLooiK28KKqkoVifB+w
- iYPvvGDIzzAOAMnjvk+0mSnGMi62HOGzLtZWgAMriLo4XImlajF5Yssa5luL+c1JEI4p
- /xXHjhl29cCgwFKe7rpoKiltPvLE79DYe79ZitqgaRltuu8x/4LNxKOU1MqpkN9zYJHm
- e6/Fy7/m8E1jqwGzwQRRTYk3HYBnLPMNj9Er6lUrqX6k68AscYgSGbxHmgFtDTTbYyBP
- 0q6rOnVbwhqUDC5hq8A+JcnqCOVdnZIHN1kriTi4m7xJMiSaXqSjbUqtwZaWQGuLx8q2
- 0ikg==
+ d=linaro.org; s=google; t=1708607361; x=1709212161; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Sj5SqmgaoIdnoP+EWMp9G0M1jv1sVcZURPegVsoY//w=;
+ b=QDuLO4iVpUpOIRX2K8qOUUF1vek73BbQ8blnXIIj2Rvi9fnIa7nmI835w3pecXLb+R
+ kTQnGBD4mOCErrTc8gSm/Px05v44XlRPje7UYaJzYSR/YX0YQjbAwe4M1/mgo3NSoS+3
+ Cz4f9ZTlRSDHhfYsuNnsGPbu+xtG3zYKCtlCf7Mt+OpUWs/HU67v8U3ZV2gMLvcf7rF2
+ qmPwIqL1TonD7sRBltPDZN+sbvvh4r4L0Sf3POZszon4w7zson+8WhPGty8zsrL6Bem6
+ KwSfR5WEasXX/35gzppXAQTzy2AUJ5FHMh0GviYs1Rll7oH5jHBb29VEOiYM+Dy8Iv4y
+ 1NLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708603567; x=1709208367;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wh1n0IlApG9nfGWmUY0P2DXl/J+TkQv1FOPChcfQcDg=;
- b=KQSrbO4Kh9vLxVubM5a2JOT2PK3kidwmGmTJ3/1tDuwU+xdj//eTpBTsjFrPNjtGDi
- QSy6t+WnEoEn2TA9Gy+UA8/w1k8UeCZgAMRnl/iT6H02xcgmyXQXmEEScY/8BJchtpzU
- DwLjwE5K5JwNUd1gfCJW6hG0z9ebyrAXpd6Sj6i3oCvze9U/Gpi/XBVxUOhQVB5z5c0m
- YX6xHe497Vulk8al+kyj1Gn6x10ZpUaxBdjngbvWggYycT45rzY2xEmIpHN3E40NlqFY
- BjwJ6Q3eawyQR3PiPuJWaVulPYVqARA9qblNpY4ocY702yUXErMECq2nf8ABLJrsTH19
- iFfw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWKr8/FSoIfHoS3WLGAz2bhtr6R/9shUzDL3164vBmaHPuhdrRtT33rkkboqDXewcv4Rim87vsEvCqv36PWzKZA4p6CGK0=
-X-Gm-Message-State: AOJu0YzeZGgPGXJLFRGrILJDwzK8+HB6RY05T4QsWLt4KZn0kQRSHYL3
- DEQxAS6hScE//12Hb0doPPbufeyUtYjVSZi8K7bv6NNwBlpB//D8PLNnkrvl3kE=
-X-Google-Smtp-Source: AGHT+IHb3egbgSAYiHL7X0ZLlFWdWAOxCUYepx0ieyFDrrDEkzyaAi37I2E42s7dJXeqP8s9RUkreg==
-X-Received: by 2002:a5d:4688:0:b0:33d:86a4:d167 with SMTP id
- u8-20020a5d4688000000b0033d86a4d167mr2390625wrq.51.1708603567181; 
- Thu, 22 Feb 2024 04:06:07 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.211.34])
+ d=1e100.net; s=20230601; t=1708607361; x=1709212161;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Sj5SqmgaoIdnoP+EWMp9G0M1jv1sVcZURPegVsoY//w=;
+ b=m7ffZ6w/9zz9cvXGUBrNBtLi0nikKvyVqvPAVNgMPJ5Kf+ErvqTTM2Dat0D3aWI1Ck
+ +/Z3Up1Kt/2TJ1RS7DQJkNEBK8UPSw/53qqdOqckko2ebC7nRLzU3J8SRJZ39jyJkrHq
+ EPSrIrn4qH31YgHE30ytV1eV1Q/+YrV0r73iwqAMdspTVqZ6USYaw/3r8COinuSLXs+y
+ CNCsl8cOML5XYHh0dRZXBoTCKBKX+VeaCxXEvjhjrwp0APBnHP621uJb+TgozsMJg8b3
+ yfvV3NjVt28XtcfqXezsz/H6YxLxfpxGhSLRb3FNz/tTQeShBXtk0TVz3TfGcPLyPE7z
+ jRZw==
+X-Gm-Message-State: AOJu0Yz5gjytVcsxIPrIg3A5S8fnCYe63fSwq/6OEz3/LHX5syPF1JEG
+ PD93qgweA76UYaa0ByvMiUij/6tUi/fEoXKfV0Hn7pa1WReU3VvgiQ7McSBbV6rRLDxbDrXiEN/
+ y
+X-Google-Smtp-Source: AGHT+IFc/zwIz6eEAx27j1xrfn6Bos2q6XwXobdOzgLZqME9qHJ6aqnYQl0CgZS5i4Ij/hrnWVxZSQ==
+X-Received: by 2002:a05:600c:3b90:b0:412:7b4d:23ac with SMTP id
+ n16-20020a05600c3b9000b004127b4d23acmr2312627wms.0.1708607361478; 
+ Thu, 22 Feb 2024 05:09:21 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- b7-20020adfe647000000b0033b406bc689sm20354338wrn.75.2024.02.22.04.06.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 Feb 2024 04:06:06 -0800 (PST)
-Message-ID: <199e4f18-61d1-4fed-9e40-1ffdd3b5731f@linaro.org>
-Date: Thu, 22 Feb 2024 13:06:04 +0100
+ f19-20020a05600c155300b00411ff030f06sm22434458wmg.9.2024.02.22.05.09.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 22 Feb 2024 05:09:21 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Yonggang Luo <luoyonggang@gmail.com>
+Subject: [PATCH v2 0/3] Drop 32-bit Windows as a supported platform
+Date: Thu, 22 Feb 2024 13:09:17 +0000
+Message-Id: <20240222130920.362517-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/9] target/ppc: Use env_cpu for cpu_abort in
- excp_helper
-Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org
-References: <cover.1708601065.git.balaton@eik.bme.hu>
- <54466229ad8572ff0906c381712234ba0750e4fa.1708601065.git.balaton@eik.bme.hu>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <54466229ad8572ff0906c381712234ba0750e4fa.1708601065.git.balaton@eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,17 +92,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/2/24 12:33, BALATON Zoltan wrote:
-> Use the env_cpu function to get the CPUState for cpu_abort. These are
-> only needed in case of fatal errors so this allows to avoid casting
-> and storing CPUState in a local variable wnen not needed.
-> 
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-> ---
->   target/ppc/excp_helper.c | 118 +++++++++++++++++++++------------------
->   1 file changed, 63 insertions(+), 55 deletions(-)
+This is the not-for-stable part of dropping 32-bit Windows support:
+ * document it
+ * drop the cross-win32-system job so we don't spend CI
+   defending a config we no longer support
+ * drop the shared-msys2 yaml template
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+v2 changes:
+ - drop now-unused MINGW_TARGET variable
+ - document why we need to set MSYSTEM
+ - restore comment text truncated in commit 11961d08fcbddf
+ - add missing Signed-off-by line to patch 1 :-)
+
+Based-on: 20240220165602.135695-1-peter.maydell@linaro.org
+(".gitlab-ci.d/windows.yml: Drop msys2-32bit job")
+
+I haven't done anything about possible adjustment of
+what we cover with Windows compiles; we can do that as a
+separate patch afterwards if we want to.
+
+Patches 1 and 2 have been reviewed, so only 3 needs attention.
+
+thanks
+-- PMM
+
+
+Peter Maydell (3):
+  docs: Document that 32-bit Windows is unsupported
+  .gitlab-ci.d: Drop cross-win32-system job
+  .gitlab-ci.d/windows.yml: Remove shared-msys2 abstraction
+
+ docs/about/build-platforms.rst                |   2 +
+ docs/about/removed-features.rst               |  15 +++
+ .gitlab-ci.d/container-cross.yml              |   5 -
+ .gitlab-ci.d/crossbuilds.yml                  |  14 ---
+ .gitlab-ci.d/windows.yml                      |  85 +++++++-------
+ .../dockerfiles/fedora-win32-cross.docker     | 111 ------------------
+ tests/lcitool/refresh                         |   5 -
+ 7 files changed, 58 insertions(+), 179 deletions(-)
+ delete mode 100644 tests/docker/dockerfiles/fedora-win32-cross.docker
+
+-- 
+2.34.1
 
 
