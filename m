@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701048603D0
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 21:44:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ED6E8603D4
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 21:44:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdFur-0006yD-4a; Thu, 22 Feb 2024 15:43:37 -0500
+	id 1rdFut-0006z1-46; Thu, 22 Feb 2024 15:43:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rdFuo-0006xs-QX
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 15:43:34 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1rdFuq-0006yM-Kr
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 15:43:36 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rdFun-0002bl-73
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 15:43:34 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1d934c8f8f7so520585ad.2
- for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 12:43:32 -0800 (PST)
+ id 1rdFup-0002by-3n
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 15:43:36 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1d7232dcb3eso353865ad.2
+ for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 12:43:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708634612; x=1709239412; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708634614; x=1709239414; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=G2VXMZpzicQ4Dm28fmEM7ZpGthYgfI6UDANYII3bJPA=;
- b=SwfpMlbChj9GimvK00b40lmzlQeHldHj7r499f+741B7BIeowbyP6D6si+/My+1Cfx
- RmKgqCK/QVkLZ8u5CftMrA4vjSdzIcwXVcRC5lTlBIedSiXBJ8PRiPdsLk2ouekQATc4
- Z4lYMeKg/Xkwfq0mQOsDeG2YdondWjStf8SOu7/g0j6sD0QfZoM1aSYk27hf4GA0s6dV
- QGsZQT8FFMGS4hCwNbzgqEPlV5h+2NfSMqL2rcOwZWgzfbYIbLhW7JPnP9v3eGU2UgZ8
- ceZ65KvMKlFg5Bj7NbWD+WZhbvJmAuRp36BZb8yrpg0I8nC3LY3ZzbCTcHuHOPILL4mh
- tzjA==
+ bh=sNAOuzYKunseGhjt30zEM/eN7uq1Wl50v8pWc8K9LWs=;
+ b=PfLkPevn825ugMpAo702PT0p+t/DiRPWWi5tRdvAsEwz8Kyr2X1SfG7nG9Mr3zGzzR
+ ksxL2VORDPbAq4d4gt5uM/on0aGA0V2hSNKzRrVBzTaR5ZGS+8mVfY4qAFT4LIripzZT
+ 3+td0U6EcgGp9US50orQeQcRJrahbgUF+E5R3yzBSVdXRRTD3O/qJDCDJWAIlw5RXawZ
+ Xc3Pcl9gXRTNGTKUw19mjOxQLMoIsayFmpEOoRF+a6ZLIbkpSM26prwHKlcB9d87YdKd
+ eK5qCT41wcPCS85J5XFgPoybMgBOgYXL3IH49l9BUMyw/7dZ1fJ4Xr51wJBPdexM+MG1
+ kiNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708634612; x=1709239412;
+ d=1e100.net; s=20230601; t=1708634614; x=1709239414;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=G2VXMZpzicQ4Dm28fmEM7ZpGthYgfI6UDANYII3bJPA=;
- b=j3CUbG4GqH3NVvoMfNouqz9Vo43wvUtvudhEIS0J+YdYJnS/LL5Z0Pi3OmsGinynSo
- vFf65Wt9Q0uTcwbw6qhEPD9xWq5n062VbS6LcAbnOK+gUQmn2NhstvVy/Nbxasi+3XPK
- w7WNVaSqFAHWUxG81m7yHjgTdtG6nnyCWDbc/t3+IIbEGjieMNrusfpv7wSh4Op1Skxq
- FS9Sgn8dbcxNpfH4A0mJOXRypxY2xfJ2JkjMQD2mXB4M8di+eXQ//8jQ1G/VYM5gr0gX
- T4fOL41InaF26ig/tavrhdxJPq9zcrJJ4Hh0OponFfvEtPzE0lfwPw0YtZ+IK/Kq9A0N
- 9sgA==
-X-Gm-Message-State: AOJu0YzXh9BAHPcjI5wpiIbgv+RvguIzyLdEc5h/g2jY69aet3C7mSO2
- uu+NTVL4C7EpDubDPQorv20yqe8yiVjssq53YbpmHJooWdPNe6p9qSzpn4Cxdcv/R2GmC+xjiOH
- V
-X-Google-Smtp-Source: AGHT+IHslhyFBJCm6uPiyIGzPEI7Rf8m5cp/0bXtqZF8LH667ETcoPoyOEUE3pdQwWYdYkjOOSZzsQ==
-X-Received: by 2002:a17:902:6ac8:b0:1d9:f83e:3a54 with SMTP id
- i8-20020a1709026ac800b001d9f83e3a54mr17359368plt.64.1708634611972; 
- Thu, 22 Feb 2024 12:43:31 -0800 (PST)
+ bh=sNAOuzYKunseGhjt30zEM/eN7uq1Wl50v8pWc8K9LWs=;
+ b=kp6eBu23YiEqk/wrZ9kZuC6gxDbC70/Fc7TNv1Hh7eKoZjtx4urq7hV94OcLDUl+VP
+ Ed9PBq8VXvb/4s//gaMSoEFyBteuuD1Y6fJoKf/mC0MBZOmOtv7P+QBY7hHC85iznTe6
+ ycxy+y8szdI5rod11MRExtv7SSNxcUh2QlskouUgkSG1K3vtBx9ji7XtX6I9CMG/Hg0g
+ wpGSUpNUW2IYoz/KODqukVJ5oLY0JAi4tRmKPb4HpbWcKejbJJANabSc7mX/V1MZPQjg
+ 0imgJBOxwD0doWQdxi2qJbY2mhlSMdXUN0IB0t2QwGQz3qK568HluiW8836muIbRTRZn
+ gW0A==
+X-Gm-Message-State: AOJu0YyFoVoj9THP83ZTYj/iseqGIV+K1tAZwlD2/svCqPqUwOF0MH6B
+ SWCm91py0O7AeExUdQoyAlErWaZ7gpHY28IYRvC8gf7IO9bldkkZrCJ0jmQPrd0WFFEoTlE7KQP
+ R
+X-Google-Smtp-Source: AGHT+IF5q5UPALYgHWNKN4dHd3H6eNGItd9ca+N9As9VGDOe/3/wGV0sI09yoZ0wEYWIaBD1vQm1Tg==
+X-Received: by 2002:a17:902:7d84:b0:1d9:7095:7e3c with SMTP id
+ a4-20020a1709027d8400b001d970957e3cmr19202644plm.57.1708634613748; 
+ Thu, 22 Feb 2024 12:43:33 -0800 (PST)
 Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
  by smtp.gmail.com with ESMTPSA id
- l12-20020a170902d34c00b001d8f81ecebesm10275500plk.192.2024.02.22.12.43.30
+ l12-20020a170902d34c00b001d8f81ecebesm10275500plk.192.2024.02.22.12.43.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Feb 2024 12:43:31 -0800 (PST)
+ Thu, 22 Feb 2024 12:43:33 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Helge Deller <deller@gmx.de>
-Subject: [PULL 04/39] accel/tcg: Remove qemu_host_page_size from
- page_protect/page_unprotect
-Date: Thu, 22 Feb 2024 10:42:48 -1000
-Message-Id: <20240222204323.268539-5-richard.henderson@linaro.org>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Helge Deller <deller@gmx.de>
+Subject: [PULL 05/39] linux-user: Adjust SVr4 NULL page mapping
+Date: Thu, 22 Feb 2024 10:42:49 -1000
+Message-Id: <20240222204323.268539-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240222204323.268539-1-richard.henderson@linaro.org>
 References: <20240222204323.268539-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,84 +94,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use qemu_real_host_page_size instead.  Except for the final mprotect
-within page_protect, we already handled host < target page size.
+Use TARGET_PAGE_SIZE and MAP_FIXED_NOREPLACE.
+
+We really should be attending to this earlier during
+probe_guest_base, as well as better detection and
+emulation of various Linux personalities.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Acked-by: Helge Deller <deller@gmx.de>
-Message-Id: <20240102015808.132373-2-richard.henderson@linaro.org>
+Message-Id: <20240102015808.132373-3-richard.henderson@linaro.org>
 ---
- accel/tcg/user-exec.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ linux-user/elfload.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 68b252cb8e..69b7429e31 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -651,16 +651,17 @@ void page_protect(tb_page_addr_t address)
- {
-     PageFlagsNode *p;
-     target_ulong start, last;
-+    int host_page_size = qemu_real_host_page_size();
-     int prot;
- 
-     assert_memory_lock();
- 
--    if (qemu_host_page_size <= TARGET_PAGE_SIZE) {
-+    if (host_page_size <= TARGET_PAGE_SIZE) {
-         start = address & TARGET_PAGE_MASK;
-         last = start + TARGET_PAGE_SIZE - 1;
-     } else {
--        start = address & qemu_host_page_mask;
--        last = start + qemu_host_page_size - 1;
-+        start = address & -host_page_size;
-+        last = start + host_page_size - 1;
-     }
- 
-     p = pageflags_find(start, last);
-@@ -671,7 +672,7 @@ void page_protect(tb_page_addr_t address)
- 
-     if (unlikely(p->itree.last < last)) {
-         /* More than one protection region covers the one host page. */
--        assert(TARGET_PAGE_SIZE < qemu_host_page_size);
-+        assert(TARGET_PAGE_SIZE < host_page_size);
-         while ((p = pageflags_next(p, start, last)) != NULL) {
-             prot |= p->flags;
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index b8eef893d0..e918a13748 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -3912,8 +3912,9 @@ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
+                and some applications "depend" upon this behavior.  Since
+                we do not have the power to recompile these, we emulate
+                the SVr4 behavior.  Sigh.  */
+-            target_mmap(0, qemu_host_page_size, PROT_READ | PROT_EXEC,
+-                        MAP_FIXED | MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++            target_mmap(0, TARGET_PAGE_SIZE, PROT_READ | PROT_EXEC,
++                        MAP_FIXED_NOREPLACE | MAP_PRIVATE | MAP_ANONYMOUS,
++                        -1, 0);
          }
-@@ -679,7 +680,7 @@ void page_protect(tb_page_addr_t address)
- 
-     if (prot & PAGE_WRITE) {
-         pageflags_set_clear(start, last, 0, PAGE_WRITE);
--        mprotect(g2h_untagged(start), qemu_host_page_size,
-+        mprotect(g2h_untagged(start), last - start + 1,
-                  prot & (PAGE_READ | PAGE_EXEC) ? PROT_READ : PROT_NONE);
-     }
- }
-@@ -725,18 +726,19 @@ int page_unprotect(target_ulong address, uintptr_t pc)
-         }
- #endif
-     } else {
-+        int host_page_size = qemu_real_host_page_size();
-         target_ulong start, len, i;
-         int prot;
- 
--        if (qemu_host_page_size <= TARGET_PAGE_SIZE) {
-+        if (host_page_size <= TARGET_PAGE_SIZE) {
-             start = address & TARGET_PAGE_MASK;
-             len = TARGET_PAGE_SIZE;
-             prot = p->flags | PAGE_WRITE;
-             pageflags_set_clear(start, start + len - 1, PAGE_WRITE, 0);
-             current_tb_invalidated = tb_invalidate_phys_page_unwind(start, pc);
-         } else {
--            start = address & qemu_host_page_mask;
--            len = qemu_host_page_size;
-+            start = address & -host_page_size;
-+            len = host_page_size;
-             prot = 0;
- 
-             for (i = 0; i < len; i += TARGET_PAGE_SIZE) {
+ #ifdef TARGET_MIPS
+         info->interp_fp_abi = interp_info.fp_abi;
 -- 
 2.34.1
 
