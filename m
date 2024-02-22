@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C6288605A4
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 23:26:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3401C8605A3
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 23:26:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdHUd-0002fp-F6; Thu, 22 Feb 2024 17:24:39 -0500
+	id 1rdHUh-0002ht-Dm; Thu, 22 Feb 2024 17:24:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1rdHUb-0002fJ-8c
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 17:24:37 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1rdHUe-0002go-S2
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 17:24:40 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1rdHUZ-0003DS-0c
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 17:24:37 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1d95d67ff45so1013025ad.2
- for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 14:24:34 -0800 (PST)
+ id 1rdHUc-0003Dy-Hg
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 17:24:40 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1dc3b4b9b62so2717545ad.1
+ for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 14:24:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708640673; x=1709245473; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708640677; x=1709245477; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HX02PeSmvlZ6JSpGgvLOAz55jZu9nn1Y4vVQAH0ZIkk=;
- b=QiN2jtmpebe+p0wmeE17sgGw81zznSNbeixmUzuHQ1g/cgRWEjUBGDOQqvb3Fl28UG
- HeB0DbA0BM15Rk7ATMMi0Bo98f3N1VNoV77nyySi2FN9QP/4B5ikSD8gwKbhLAJO4LYd
- HBjaV9D1QWzERZZ7oEW9g0il5mFgKcdap3/Z+mTOLfeiqHAfVA8osFXVNwrk4N+aZVOd
- lshj4H9QtacGl2RFHzF6xBtp0kgTq9yh8FIH1josEzsrYqV855SCvgLrdw1Uk1V9XeY/
- +dPBN40GtdifzMlTc3bKsmJvSuMdA9OltOweb/yaf722J5Cso/py/nORHlqmwUs6VKVS
- hlhQ==
+ bh=gEU9egN9+/NfXTjj920HZmiXCFvNCQE5eANcITvsGZ4=;
+ b=GFIJ4+XWUfjW25jAznwolT4AKarz/4gK4BLV6FokPfabpBX6wcvHWhlKxjoIlMZh2Z
+ O+qcpvlRikRa4XN81JJqa3h57N0pxZorQapD+MJY5Az+meAQ/dHhV4skwBZxthDOxJc4
+ 9twkHF+9VvAwxNEd+G94VxUxABSlLlTxt+/t7h0S2ocMPKExy5OkxEjHXWbYMfPwl8fe
+ gtkiRMYRaL38W7YpxXppi8mMxcuEAHnjx6U55ZJy2Er3IoV4PupusHdy5Afpdi3ADulm
+ E5HWAnrZ5kkiiB1KL4/EWQnh0jcy/j0+4DTODa3eSCkDZIKk03gdMssxKg+SLkq3DqqB
+ BtHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708640673; x=1709245473;
+ d=1e100.net; s=20230601; t=1708640677; x=1709245477;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HX02PeSmvlZ6JSpGgvLOAz55jZu9nn1Y4vVQAH0ZIkk=;
- b=vJBn3/SR2d7RUU0NlEXiOB2oY34aIYfVzDWBi2J9z4uuFo3RrR3B5/1umMg7ck2XM+
- mbeMZBPfOlswdTbkwZfbwJ3rjF1eacpFVSmtjBOyFf2AlJbqcX1Zvdk/W12prrtHL3Mq
- Yt03ZgtxfLF9OyTow5Bre8n5r7jJ390LjjxMr885oW2lQlfrxWgf3z6bCyzwAsaJtHXE
- m6tEbMJ5JP//qgvyNNwmXajjcbxrReqE/yVlsSySk1Xc0EzsEX+WXE1bs+scV1YZDFRD
- ydQXyWsh8BcK0TflPjUzQUjJEWLs0Jw4jcOxi2UgkJmVzrOCCAd/mVw3V9iamy1ym1ni
- 85/Q==
-X-Gm-Message-State: AOJu0YzXQRXrm7lEdgukzeZf/aE6NMSooKozDwcrZRAsGxdzmO7gVgYL
- r+DWO6VM0tBKGzvjblkC3Oq5LzXDPhWriJ5nCS7S1Deq0esBnNpjLv+aF65AVYd1vPTYAvX+LtN
- r3jw=
-X-Google-Smtp-Source: AGHT+IGc5qrg6HGM7HwUGWC74zdOuc2ILG70JQkm3sSCNjFPzSDIpXwqL2d8dfXydCqs6tFyKBy/Ug==
-X-Received: by 2002:a17:902:b20b:b0:1d7:4353:aba5 with SMTP id
- t11-20020a170902b20b00b001d74353aba5mr120331plr.58.1708640673193; 
- Thu, 22 Feb 2024 14:24:33 -0800 (PST)
+ bh=gEU9egN9+/NfXTjj920HZmiXCFvNCQE5eANcITvsGZ4=;
+ b=Qi29ikw9ma3j+h/TFZehvKnCROzNzRmNFHodeGnaRXQdyAjkhU0sZ8pKq1of+J8vTR
+ SZcwbmVnIRyE5x7bfUkbu2Qp6xkNly0Su5m2LioB31M+dDUXwQb44vQhryjwUpkUzLTr
+ 6wACkM/RYzx2cpE235IMR9/0I5naeMZRo5vaoxzGWAggfYqv14kjv3Wo+w7zj/7oz1fz
+ /jFNDCuNTzVpu+c12+zItC3vsrLlYOQ2MlomEetLW83yWtZ9U5MjNg+mNddPhiXU9wVD
+ zYkbrW9lft9d50plvFcO8uTjBBb7Rz/IayaZA89MrVjr2X6XGkmfXJUVrbUvsrQZCEEU
+ tjDg==
+X-Gm-Message-State: AOJu0Yxfcm816v4clUU25d6SA8OUBVc/rPWsxhC6RDhivJssgmRgsbZn
+ VzPGRjQ9pvKK60VPKZlfopOk5jdadSOc0g9uSOH93A9U38TFRW1hhOUrcEoN3NrqUTvGPle6TPG
+ OCps=
+X-Google-Smtp-Source: AGHT+IGNOMSD9riyu2cofAAWxJEM4CZrHHAP+ZMDGSyuPu9XpA2wqyBcKFEIB9Ba57Jn4K41dSjUqg==
+X-Received: by 2002:a17:902:e890:b0:1db:e514:1cfd with SMTP id
+ w16-20020a170902e89000b001dbe5141cfdmr518768plg.21.1708640676599; 
+ Thu, 22 Feb 2024 14:24:36 -0800 (PST)
 Received: from amd.. ([2804:7f0:b400:285a:3e7c:3fff:fe7a:e83b])
  by smtp.gmail.com with ESMTPSA id
- ji7-20020a170903324700b001d7057c2fbasm10457210plb.100.2024.02.22.14.24.30
+ ji7-20020a170903324700b001d7057c2fbasm10457210plb.100.2024.02.22.14.24.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Feb 2024 14:24:32 -0800 (PST)
+ Thu, 22 Feb 2024 14:24:35 -0800 (PST)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org,
 	philmd@linaro.org
@@ -64,17 +64,17 @@ Cc: thuth@redhat.com, lvivier@redhat.com, qemu-arm@nongnu.org,
  alex.bennee@linaro.org, pbonzini@redhat.com, anton.kochkov@proton.me,
  richard.henderson@linaro.org, peter.maydell@linaro.org,
  gustavo.romero@linaro.org
-Subject: [PATCH 5/6] tests/qtest: Reorganize common code in ivshmem-test
-Date: Thu, 22 Feb 2024 22:22:17 +0000
-Message-Id: <20240222222218.2261956-6-gustavo.romero@linaro.org>
+Subject: [PATCH 6/6] tests/qtest: Add ivshmem-flat test
+Date: Thu, 22 Feb 2024 22:22:18 +0000
+Message-Id: <20240222222218.2261956-7-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240222222218.2261956-1-gustavo.romero@linaro.org>
 References: <20240222222218.2261956-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,463 +97,380 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit reorganizes the ivshmem-test qtest by moving common structs,
-functions, and code that can be utilized by other ivshmem qtests into
-two new files: ivshmem-utils.h and ivshmem-utils.c.
+This commit adds a qtest for the ivshmem-flat device to test memory
+sharing, IRQ triggering, and the memory mapped registers in the device.
 
-Enum Reg, struct ServerThread, and mktempshm() have been relocated to
-these new files. Two new functions have been introduced to handle the
-ivshmem server start/stop: test_ivshmem_server_{start,stop}.
-
-To accommodate the new way for starting/stopping the ivshmem server,
-struct ServerThread now includes two new members: 'server', previously
-present but not a member of any struct; and 'status', a new member of a
-new type, ServerStartStatus, used to track and handle service
-termination properly.
-
-Additionally, a new function, mktempsocket(), has been added to help
-create a unix socket filename, similar to what mktempshm() does for the
-creation of a shm file.
-
-Finally, the ivshmem-test qtest has been adapted to use the new ivhsmem
-utils. Adjustments in that sense have also been made to meson.build;
-also 'rt' have been removed as a lib dependency for ivhsmem-test.c.
-
-Two lines unrelated to these changes have had their line indentation
-also fixed in meson.build.
-
-Message-ID: <20231127052024.435743-3-gustavo.romero@linaro.org>
+Based-on: https://lists.gnu.org/archive/html/qemu-devel/2023-11/msg03176.html
+Message-ID: <20231127052024.435743-4-gustavo.romero@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 ---
- tests/qtest/ivshmem-test.c  | 113 ++------------------------
- tests/qtest/ivshmem-utils.c | 156 ++++++++++++++++++++++++++++++++++++
- tests/qtest/ivshmem-utils.h |  56 +++++++++++++
- tests/qtest/meson.build     |   6 +-
- 4 files changed, 222 insertions(+), 109 deletions(-)
- create mode 100644 tests/qtest/ivshmem-utils.c
- create mode 100644 tests/qtest/ivshmem-utils.h
+ tests/qtest/ivshmem-flat-test.c | 338 ++++++++++++++++++++++++++++++++
+ tests/qtest/meson.build         |   2 +
+ 2 files changed, 340 insertions(+)
+ create mode 100644 tests/qtest/ivshmem-flat-test.c
 
-diff --git a/tests/qtest/ivshmem-test.c b/tests/qtest/ivshmem-test.c
-index 9bf8e78df6..5ce43e2f76 100644
---- a/tests/qtest/ivshmem-test.c
-+++ b/tests/qtest/ivshmem-test.c
-@@ -3,17 +3,17 @@
-  *
-  * Copyright (c) 2014 SUSE LINUX Products GmbH
-  * Copyright (c) 2015 Red Hat, Inc.
-+ * Copyright (c) 2023 Linaro Ltd.
-  *
-  * This work is licensed under the terms of the GNU GPL, version 2 or later.
-  * See the COPYING file in the top-level directory.
-  */
- 
--#include "qemu/osdep.h"
--#include <glib/gstdio.h>
--#include "contrib/ivshmem-server/ivshmem-server.h"
+diff --git a/tests/qtest/ivshmem-flat-test.c b/tests/qtest/ivshmem-flat-test.c
+new file mode 100644
+index 0000000000..b6f59bba54
+--- /dev/null
++++ b/tests/qtest/ivshmem-flat-test.c
+@@ -0,0 +1,338 @@
++/*
++ * Inter-VM Shared Memory Flat Device qtests
++ *
++ * SPDX-FileCopyrightText: 2023 Linaro Ltd.
++ * SPDX-FileContributor: Gustavo Romero <gustavo.romero@linaro.org>
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ */
++
 +#include "ivshmem-utils.h"
- #include "libqos/libqos-pc.h"
- #include "libqos/libqos-spapr.h"
--#include "libqtest.h"
++
++#define IVSHMEM_FLAT_MMR_ADDR 0x400FF000
++#define IVSHMEM_FLAT_SHM_ADDR 0x40100000
++#define SHM_SIZE 131072 /* 128k */
 +
 +static ServerThread thread;
- 
- #define TMPSHMSIZE (1 << 20)
- static char *tmpshm;
-@@ -45,13 +45,6 @@ typedef struct _IVState {
-     QPCIDevice *dev;
- } IVState;
- 
--enum Reg {
--    INTRMASK = 0,
--    INTRSTATUS = 4,
--    IVPOSITION = 8,
--    DOORBELL = 12,
--};
--
- static const char* reg2str(enum Reg reg) {
-     switch (reg) {
-     case INTRMASK:
-@@ -241,54 +234,6 @@ static void test_ivshmem_pair(void)
-     g_free(data);
- }
- 
--typedef struct ServerThread {
--    GThread *thread;
--    IvshmemServer *server;
--    int pipe[2]; /* to handle quit */
--} ServerThread;
--
--static void *server_thread(void *data)
--{
--    ServerThread *t = data;
--    IvshmemServer *server = t->server;
--
--    while (true) {
--        fd_set fds;
--        int maxfd, ret;
--
--        FD_ZERO(&fds);
--        FD_SET(t->pipe[0], &fds);
--        maxfd = t->pipe[0] + 1;
--
--        ivshmem_server_get_fds(server, &fds, &maxfd);
--
--        ret = select(maxfd, &fds, NULL, NULL, NULL);
--
--        if (ret < 0) {
--            if (errno == EINTR) {
--                continue;
--            }
--
--            g_critical("select error: %s\n", strerror(errno));
--            break;
--        }
--        if (ret == 0) {
--            continue;
--        }
--
--        if (FD_ISSET(t->pipe[0], &fds)) {
--            break;
--        }
--
--        if (ivshmem_server_handle_fds(server, &fds, maxfd) < 0) {
--            g_critical("ivshmem_server_handle_fds() failed\n");
--            break;
--        }
--    }
--
--    return NULL;
--}
--
- static void setup_vm_with_server(IVState *s, int nvectors)
- {
-     char *cmd;
-@@ -304,27 +249,12 @@ static void setup_vm_with_server(IVState *s, int nvectors)
- 
- static void test_ivshmem_server(void)
- {
--    g_autoptr(GError) err = NULL;
-     IVState state1, state2, *s1, *s2;
--    ServerThread thread;
--    IvshmemServer server;
-     int ret, vm1, vm2;
-     int nvectors = 2;
-     guint64 end_time = g_get_monotonic_time() + 5 * G_TIME_SPAN_SECOND;
- 
--    ret = ivshmem_server_init(&server, tmpserver, tmpshm, true,
--                              TMPSHMSIZE, nvectors,
--                              g_test_verbose());
--    g_assert_cmpint(ret, ==, 0);
--
--    ret = ivshmem_server_start(&server);
--    g_assert_cmpint(ret, ==, 0);
--
--    thread.server = &server;
--    g_unix_open_pipe(thread.pipe, FD_CLOEXEC, &err);
--    g_assert_no_error(err);
--    thread.thread = g_thread_new("ivshmem-server", server_thread, &thread);
--    g_assert(thread.thread != NULL);
-+    test_ivshmem_server_start(&thread, tmpserver, tmpshm, nvectors);
- 
-     setup_vm_with_server(&state1, nvectors);
-     s1 = &state1;
-@@ -367,15 +297,7 @@ static void test_ivshmem_server(void)
-     cleanup_vm(s2);
-     cleanup_vm(s1);
- 
--    if (qemu_write_full(thread.pipe[1], "q", 1) != 1) {
--        g_error("qemu_write_full: %s", g_strerror(errno));
--    }
--
--    g_thread_join(thread.thread);
--
--    ivshmem_server_close(&server);
--    close(thread.pipe[1]);
--    close(thread.pipe[0]);
-+    test_ivshmem_server_stop(&thread);
- }
- 
- static void test_ivshmem_hotplug_q35(void)
-@@ -454,31 +376,10 @@ static void cleanup(void)
- 
- static void abrt_handler(void *data)
- {
-+    test_ivshmem_server_stop(&thread);
-     cleanup();
- }
- 
--static gchar *mktempshm(int size, int *fd)
--{
--    while (true) {
--        gchar *name;
--
--        name = g_strdup_printf("/qtest-%u-%u", getpid(), g_test_rand_int());
--        *fd = shm_open(name, O_CREAT|O_RDWR|O_EXCL,
--                       S_IRWXU|S_IRWXG|S_IRWXO);
--        if (*fd > 0) {
--            g_assert(ftruncate(*fd, size) == 0);
--            return name;
--        }
--
--        g_free(name);
--
--        if (errno != EEXIST) {
--            perror("shm_open");
--            return NULL;
--        }
--    }
--}
--
- int main(int argc, char **argv)
- {
-     int ret, fd;
-diff --git a/tests/qtest/ivshmem-utils.c b/tests/qtest/ivshmem-utils.c
-new file mode 100644
-index 0000000000..c2fc3463dd
---- /dev/null
-+++ b/tests/qtest/ivshmem-utils.c
-@@ -0,0 +1,156 @@
-+/*
-+ * Common utilities for testing ivshmem devices
-+ *
-+ * SPDX-FileCopyrightText: 2012 SUSE LINUX Products GmbH
-+ * SPDX-FileCopyrightText: 2021 Red Hat, Inc.
-+ * SPDX-FileCopyrightText: 2023 Linaro Ltd.
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ */
 +
-+#include "ivshmem-utils.h"
++uint32_t *shm_ptr;
++char *shm_rel_path;
++char *server_socket_path;
 +
-+gchar *mktempshm(int size, int *fd)
++static void cleanup(void)
 +{
-+    while (true) {
-+        /* Relative path to the shm filesystem, e.g. '/dev/shm'. */
-+        gchar *shm_rel_path;
++    if (shm_ptr) {
++        munmap(shm_ptr, SHM_SIZE);
++        shm_ptr = NULL;
++    }
 +
-+        shm_rel_path = g_strdup_printf("/ivshmem_qtest-%u-%u", getpid(),
-+                                       g_test_rand_int());
-+        *fd = shm_open(shm_rel_path, O_CREAT | O_RDWR | O_EXCL,
-+                       S_IRWXU | S_IRWXG | S_IRWXO);
-+        if (*fd > 0) {
-+            g_assert(ftruncate(*fd, size) == 0);
-+            return shm_rel_path;
-+        }
++    if (shm_rel_path) {
++        shm_unlink(shm_rel_path);
++        shm_rel_path = NULL;
++    }
 +
-+        g_free(shm_rel_path);
-+
-+        if (errno != EEXIST) {
-+            perror("shm_open");
-+            return NULL;
-+        }
++    if (server_socket_path) {
++        unlink(server_socket_path);
++        server_socket_path = NULL;
 +    }
 +}
 +
-+gchar *mktempsocket(void)
++static void abort_handler(void *data)
 +{
-+    gchar *server_socket_path;
-+
-+    server_socket_path = g_strdup_printf("%s/ivshmem_socket_qtest-%u-%u",
-+                                         g_get_tmp_dir(), getpid(),
-+                                         g_test_rand_int());
-+    return server_socket_path;
++    test_ivshmem_server_stop(&thread);
++    cleanup();
 +}
 +
-+static void *server_thread(void *data)
++/*
++ * Check if exactly 1 positive pulse (low->high->low) on 'irq' qtest IRQ line
++ * happens. N.B.: 'irq' must be intercepted using qtest_irq_intercept_* before
++ * this function can be used on it. It returns 0 when pulse is detected,
++ * otherwise 1.
++ */
++static int test_ivshmem_flat_irq_positive_pulse(QTestState *qts, int irq)
 +{
-+    ServerThread *t = data;
-+    IvshmemServer *server = &t->server;
++    uint64_t num_raises = 0;
++    uint64_t num_lows = 0;
++    int attempts = 0;
 +
-+    while (true) {
-+        fd_set fds;
-+        int maxfd, ret;
-+
-+        FD_ZERO(&fds);
-+        FD_SET(t->pipe[0], &fds);
-+        maxfd = t->pipe[0] + 1;
-+
-+        ivshmem_server_get_fds(server, &fds, &maxfd);
-+
-+        ret = select(maxfd, &fds, NULL, NULL, NULL);
-+
-+        if (ret < 0) {
-+            if (errno == EINTR) {
-+                continue;
++    while (attempts < 5) {
++        num_raises = qtest_get_irq_raised_counter(qts, 0);
++        if (num_raises) {
++            num_lows = qtest_get_irq_lowered_counter(qts, 0);
++            /* Check for exactly 1 raise and 1 low IRQ event */
++            if (num_raises == num_lows && num_lows == 1) {
++                return 0; /* Pulse detected */
 +            }
-+
-+            g_critical("select error: %s\n", strerror(errno));
-+            break;
-+        }
-+        if (ret == 0) {
-+            continue;
 +        }
 +
-+        if (FD_ISSET(t->pipe[0], &fds)) {
-+            break;
-+        }
-+
-+        if (ivshmem_server_handle_fds(server, &fds, maxfd) < 0) {
-+            g_critical("ivshmem_server_handle_fds() failed\n");
-+            break;
-+        }
++	g_usleep(10000);
++	attempts++;
 +    }
 +
-+    return NULL;
++    g_message("%s: Timeout expired", __func__);
++    return 1;
 +}
 +
-+void test_ivshmem_server_start(ServerThread *thread,
-+                               const char *server_socket_path,
-+                               const char *shm_rel_path, unsigned num_vectors)
++static inline uint32_t read_reg(QTestState *qts, enum Reg reg)
 +{
-+    g_autoptr(GError) err = NULL;
-+    int ret;
-+    struct stat shm_st;
-+    char *shm_path;
++    uint32_t v;
 +
-+    g_assert(thread != NULL);
-+    g_assert(server_socket_path != NULL);
-+    g_assert_cmpint(num_vectors, >, 0);
-+    g_assert(shm_rel_path != NULL);
++    qtest_memread(qts, IVSHMEM_FLAT_MMR_ADDR + reg, &v, sizeof(v));
 +
-+    /*
-+     * Find out shm size. shm_open() deals with relative paths but stat() needs
-+     * the full path to the shm file.
-+     */
-+    shm_path = g_strdup_printf("/dev/shm%s", shm_rel_path);
-+    ret = stat(shm_path, &shm_st);
-+    g_assert_cmpint(ret, ==, 0);
-+    g_assert_cmpint(shm_st.st_size, >, 0);
-+
-+    ret = ivshmem_server_init(&thread->server, server_socket_path, shm_rel_path,
-+    true, shm_st.st_size, num_vectors, g_test_verbose());
-+    g_assert_cmpint(ret, ==, 0);
-+    ret = ivshmem_server_start(&thread->server);
-+    g_assert_cmpint(ret, ==, 0);
-+    thread->status = SERVER;
-+
-+    g_unix_open_pipe(thread->pipe, FD_CLOEXEC, &err);
-+    g_assert_no_error(err);
-+    thread->status |= PIPE;
-+
-+    thread->thread = g_thread_new("ivshmem-server", server_thread, thread);
-+    g_assert(thread->thread != NULL);
-+    thread->status |= THREAD;
++    return v;
 +}
 +
-+void test_ivshmem_server_stop(ServerThread *thread)
++static inline void write_reg(QTestState *qts, enum Reg reg, uint32_t v)
 +{
-+    /*
-+     * This function can be called any time on a test error/abort (e.g., it can
-+     * be called from the abort handler), including from the
-+     * test_ivshmem_server_start(). Therefore, the start steps (server started,
-+     * pipe created, and thread created) are tracked when the server starts and
-+     * then checked below accordingly for proper termination.
-+     */
-+
-+    if (thread->status & THREAD) {
-+        /* Ask to exit from thread. */
-+        if (qemu_write_full(thread->pipe[1], "q", 1) != 1) {
-+            g_error("qemu_write_full: %s", g_strerror(errno));
-+        }
-+
-+        /* Wait thread to exit. */
-+        g_thread_join(thread->thread);
-+     }
-+
-+    if (thread->status & PIPE)  {
-+        close(thread->pipe[1]);
-+        close(thread->pipe[0]);
-+    }
-+
-+    if (thread->status & SERVER) {
-+        ivshmem_server_close(&thread->server);
-+    }
++    qtest_memwrite(qts, IVSHMEM_FLAT_MMR_ADDR + reg, &v, sizeof(v));
 +}
-diff --git a/tests/qtest/ivshmem-utils.h b/tests/qtest/ivshmem-utils.h
-new file mode 100644
-index 0000000000..c43661caac
---- /dev/null
-+++ b/tests/qtest/ivshmem-utils.h
-@@ -0,0 +1,56 @@
++
 +/*
-+ * Common utilities for testing ivshmem devices
-+ *
-+ * SPDX-FileCopyrightText: 2012 SUSE LINUX Products GmbH
-+ * SPDX-FileCopyrightText: 2021 Red Hat, Inc.
-+ * SPDX-FileCopyrightText: 2023 Linaro Ltd.
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
++ * Setup a test VM with ivshmem-flat device attached, IRQ properly set, and
++ * connected to the ivshmem-server.
 + */
++static QTestState *setup_vm(void)
++{
++    QTestState *qts;
++    const char *cmd_line;
 +
-+#ifndef QTEST_IVSHMEM_UTILS_H
-+#define QTEST_IVSHMEM_UTILS_H
-+
-+#include "qemu/osdep.h"
-+#include <glib/gstdio.h>
-+#include "contrib/ivshmem-server/ivshmem-server.h"
-+#include "libqtest.h"
-+
-+enum Reg {
-+    INTRMASK = 0,
-+    INTRSTATUS = 4,
-+    IVPOSITION = 8,
-+    DOORBELL = 12,
-+};
-+
-+enum ServerStartStatus {
-+    SERVER = 1, /* Ivshmem server started */
-+    THREAD = 2, /* Thread for monitoring fds created */
-+    PIPE = 4,   /* Pipe created */
-+};
-+
-+typedef struct ServerThread {
-+    GThread *thread;
-+    IvshmemServer server;
 +    /*
-+     * Pipe is used to communicate with the thread, asking it to terminate on
-+     * receiving 'q'.
++     * x-bus-address-{iomem,shmem} are just random addresses that don't conflict
++     * with any other address in the lm3s6965evb machine. shmem-size used is
++     * much smaller than the ivshmem server default (4 MiB) to save memory
++     * resources when testing.
 +     */
-+    int pipe[2];
++    cmd_line = g_strdup_printf("-machine lm3s6965evb "
++                               "-chardev socket,path=%s,id=ivshm "
++                               "-device ivshmem-flat,chardev=ivshm,"
++                               "x-irq-qompath='/machine/soc/v7m/nvic/unnamed-gpio-in[0]',"
++                               "x-bus-address-iomem=%#x,"
++                               "x-bus-address-shmem=%#x,"
++                               "shmem-size=%d",
++                               server_socket_path,
++                               IVSHMEM_FLAT_MMR_ADDR,
++                               IVSHMEM_FLAT_SHM_ADDR,
++                               SHM_SIZE);
++
++    qts = qtest_init(cmd_line);
++
++    return qts;
++}
++
++static void test_ivshmem_flat_irq(void)
++{
++    QTestState *vm_state;
++    uint16_t own_id;
++
++    vm_state = setup_vm();
++
++    qtest_irq_intercept_out_named(vm_state,
++                                  "/machine/peripheral-anon/device[0]",
++                                  "sysbus-irq");
++
++    /* IVPOSTION has the device's own ID distributed by the ivshmem-server. */
++    own_id = read_reg(vm_state, IVPOSITION);
++
++    /* Make device notify itself. */
++    write_reg(vm_state, DOORBELL, (own_id << 16) | 0 /* vector 0 */);
++
 +    /*
-+     * Server statuses are used to keep track of thread/server/pipe start since
-+     * test_ivshmem_server_stop can be called at any time on a test error,
-+     * even from test_ivshmem_server_start itself, therefore, they are used for
-+     * proper service termination.
++     * Check intercepted device's IRQ output line. 'sysbus-irq' was associated
++     * to qtest IRQ 0 when intercepted and after self notification qtest IRQ 0
++     * must be toggled by the device. The test fails if no toggling is detected.
 +     */
-+    enum ServerStartStatus status;
-+} ServerThread;
++    g_assert(test_ivshmem_flat_irq_positive_pulse(vm_state,
++                                                  0 /* qtest IRQ */) == 0);
 +
-+gchar *mktempshm(int size, int *fd);
-+gchar *mktempsocket(void);
-+void test_ivshmem_server_start(ServerThread *thread,
-+                               const char *server_socket_path,
-+                               const char *shm_rel_path, unsigned num_vectors);
-+void test_ivshmem_server_stop(ServerThread *thread);
++    qtest_quit(vm_state);
++}
 +
-+#endif /* QTEST_IVSHMEM_UTILS_H */
++static void test_ivshmem_flat_shm_write(void)
++{
++    QTestState *vm_state;
++    int num_elements, i;
++    uint32_t  *data;
++
++    vm_state = setup_vm();
++
++    /* Prepare test data with random values. */
++    data = g_malloc(SHM_SIZE);
++    num_elements = SHM_SIZE / sizeof(*data);
++    for (i = 0; i < num_elements; i++) {
++        data[i] = g_test_rand_int();
++    }
++
++    /*
++     * Write test data to VM address IVSHMEM_FLAT_SHM_ADDR, where the shared
++     * memory region is located.
++     */
++    qtest_memwrite(vm_state, IVSHMEM_FLAT_SHM_ADDR, data, SHM_SIZE);
++
++    /*
++     * Since the shared memory fd is mmapped into this test process VMA at
++     * shm_ptr, every byte written by the VM in its shared memory region should
++     * also be available in the test process via shm_ptr. Thus, data in shm_ptr
++     * is compared back against the original test data.
++     */
++    for (i = 0; i < num_elements; i++) {
++        g_assert_cmpint(shm_ptr[i], ==, data[i]);
++    }
++
++    qtest_quit(vm_state);
++}
++
++static void test_ivshmem_flat_shm_read(void)
++{
++    QTestState *vm_state;
++    int num_elements, i;
++    uint32_t  *data;
++    uint32_t v;
++
++    vm_state = setup_vm();
++
++    /* Prepare test data with random values. */
++    data = g_malloc(SHM_SIZE);
++    num_elements = SHM_SIZE / sizeof(*data);
++    for (i = 0; i < num_elements; i++) {
++        data[i] = g_test_rand_int();
++    }
++
++    /*
++     * Copy test data to the shared memory region so it can be read from the VM
++     * (IVSHMEM_FLAT_SHM_ADDR location).
++     */
++    memcpy(shm_ptr, data, SHM_SIZE);
++
++    /* Check data */
++    for (i = 0; i < num_elements; i++) {
++        qtest_memread(vm_state, IVSHMEM_FLAT_SHM_ADDR + i * sizeof(v), &v,
++                      sizeof(v));
++        g_assert_cmpint(v, ==, data[i]);
++    }
++
++    qtest_quit(vm_state);
++}
++
++static void test_ivshmem_flat_shm_pair(void)
++{
++    QTestState *vm0_state, *vm1_state;
++    uint16_t vm0_peer_id, vm1_peer_id;
++    int num_elements, i;
++    uint32_t  *data;
++    uint32_t v;
++
++    vm0_state = setup_vm();
++    vm1_state = setup_vm();
++
++    /* Get peer ID for the VM so it can be used for one notify each other. */
++    vm0_peer_id = read_reg(vm0_state, IVPOSITION);
++    vm1_peer_id = read_reg(vm1_state, IVPOSITION);
++
++    /* Observe vm1 IRQ output line first. */
++    qtest_irq_intercept_out_named(vm1_state,
++                                  "/machine/peripheral-anon/device[0]",
++                                  "sysbus-irq");
++
++    /* Notify (interrupt) VM1 from VM0. */
++    write_reg(vm0_state, DOORBELL, (vm1_peer_id << 16) | 0 /* vector 0 */);
++
++    /* Check if VM1 IRQ output line is toggled after notification from VM0. */
++    g_assert(test_ivshmem_flat_irq_positive_pulse(vm1_state,
++                                                  0 /* qtest IRQ */) == 0);
++
++    /* Secondly, observe VM0 IRQ output line first. */
++    qtest_irq_intercept_out_named(vm0_state,
++                                  "/machine/peripheral-anon/device[0]",
++                                  "sysbus-irq");
++
++    /* ... and do the opposite: notify (interrupt) VM0 from VM1. */
++    write_reg(vm1_state, DOORBELL, (vm0_peer_id << 16) | 0 /* vector 0 */);
++
++    /* Check if VM0 IRQ output line is toggled after notification from VM0. */
++    g_assert(test_ivshmem_flat_irq_positive_pulse(vm0_state,
++                                                  0 /* qtest IRQ */) == 0);
++
++    /* Prepare test data with random values. */
++    data = g_malloc(SHM_SIZE);
++    num_elements = SHM_SIZE / sizeof(*data);
++    for (i = 0; i < num_elements; i++) {
++        data[i] = g_test_rand_int();
++    }
++
++    /* Write test data on VM0. */
++    qtest_memwrite(vm0_state, IVSHMEM_FLAT_SHM_ADDR, data, SHM_SIZE);
++
++    /* Check test data on VM1. */
++    for (i = 0; i < num_elements; i++) {
++        qtest_memread(vm1_state, IVSHMEM_FLAT_SHM_ADDR + i * sizeof(v), &v,
++                      sizeof(v));
++        g_assert_cmpint(v, ==, data[i]);
++    }
++
++    /* Prepare new test data with random values. */
++    for (i = 0; i < num_elements; i++) {
++        data[i] = g_test_rand_int();
++    }
++
++    /* Write test data on VM1. */
++    qtest_memwrite(vm1_state, IVSHMEM_FLAT_SHM_ADDR, data, SHM_SIZE);
++
++    /* Check test data on VM0. */
++    for (i = 0; i < num_elements; i++) {
++        qtest_memread(vm0_state, IVSHMEM_FLAT_SHM_ADDR + i * sizeof(v), &v,
++                      sizeof(v));
++        g_assert_cmpint(v, ==, data[i]);
++    }
++
++    qtest_quit(vm0_state);
++    qtest_quit(vm1_state);
++}
++
++int main(int argc, char *argv[])
++{
++    int shm_fd, r;
++
++    g_test_init(&argc, &argv, NULL);
++
++    if (!qtest_has_machine("lm3s6965evb")) {
++        g_test_skip("Machine Stellaris (lm3s6965evb) not found, "
++                    "skipping ivshmem-flat device test.");
++        return 0;
++    }
++
++    /* If test fails, stop server, cleanup socket and shm files. */
++    qtest_add_abrt_handler(abort_handler, NULL);
++
++    shm_rel_path = mktempshm(SHM_SIZE, &shm_fd);
++    g_assert(shm_rel_path);
++
++    /*
++     * Map shm to this test's VMA so it's possible to read/write from/to it. For
++     * VMs with the ivhsmem-flat device attached, this region will also be
++     * mapped in their own memory layout, at IVSHMEM_FLAT_SHM_ADDR (default).
++     */
++    shm_ptr = mmap(0, SHM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
++    g_assert(shm_ptr != MAP_FAILED);
++
++    server_socket_path = mktempsocket();
++    /* It never fails, so no assert(). */
++
++    /*
++     * Currently, ivshmem-flat device only supports notification via 1 vector,
++     * i.e. vector 0.
++     */
++    test_ivshmem_server_start(&thread, server_socket_path, shm_rel_path, 1);
++
++    /* Register tests. */
++    qtest_add_func("/ivshmem-flat/irq", test_ivshmem_flat_irq);
++    qtest_add_func("/ivshmem-flat/shm-write", test_ivshmem_flat_shm_write);
++    qtest_add_func("/ivshmem-flat/shm-read", test_ivshmem_flat_shm_read);
++    qtest_add_func("/ivshmem-flat/pair", test_ivshmem_flat_shm_pair);
++
++    r = g_test_run();
++
++    test_ivshmem_server_stop(&thread);
++    cleanup();
++
++    return r;
++}
 diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 2b89e8634b..bc6457220c 100644
+index bc6457220c..c0468bc6e0 100644
 --- a/tests/qtest/meson.build
 +++ b/tests/qtest/meson.build
-@@ -59,9 +59,9 @@ qtests_i386 = \
-   (config_all_devices.has_key('CONFIG_PVPANIC_ISA') ? ['pvpanic-test'] : []) +              \
-   (config_all_devices.has_key('CONFIG_PVPANIC_PCI') ? ['pvpanic-pci-test'] : []) +          \
-   (config_all_devices.has_key('CONFIG_HDA') ? ['intel-hda-test'] : []) +                    \
--  (config_all_devices.has_key('CONFIG_I82801B11') ? ['i82801b11-test'] : []) +             \
-+  (config_all_devices.has_key('CONFIG_I82801B11') ? ['i82801b11-test'] : []) +              \
-   (config_all_devices.has_key('CONFIG_IOH3420') ? ['ioh3420-test'] : []) +                  \
--  (config_all_devices.has_key('CONFIG_LPC_ICH9') ? ['lpc-ich9-test'] : []) +              \
-+  (config_all_devices.has_key('CONFIG_LPC_ICH9') ? ['lpc-ich9-test'] : []) +                \
-   (config_all_devices.has_key('CONFIG_USB_UHCI') ? ['usb-hcd-uhci-test'] : []) +            \
-   (config_all_devices.has_key('CONFIG_USB_UHCI') and                                        \
-    config_all_devices.has_key('CONFIG_USB_EHCI') ? ['usb-hcd-ehci-test'] : []) +            \
-@@ -319,7 +319,7 @@ qtests = {
-   'cdrom-test': files('boot-sector.c'),
+@@ -205,6 +205,7 @@ qtests_stm32l4x5 = \
+    'stm32l4x5_syscfg-test']
+ 
+ qtests_arm = \
++  (config_all_devices.has_key('CONFIG_IVSHMEM_FLAT_DEVICE') ? ['ivshmem-flat-test'] : []) + \
+   (config_all_devices.has_key('CONFIG_MPS2') ? ['sse-timer-test'] : []) + \
+   (config_all_devices.has_key('CONFIG_CMSDK_APB_DUALTIMER') ? ['cmsdk-apb-dualtimer-test'] : []) + \
+   (config_all_devices.has_key('CONFIG_CMSDK_APB_TIMER') ? ['cmsdk-apb-timer-test'] : []) + \
+@@ -320,6 +321,7 @@ qtests = {
    'dbus-vmstate-test': files('migration-helpers.c') + dbus_vmstate1,
    'erst-test': files('erst-test.c'),
--  'ivshmem-test': [rt, '../../contrib/ivshmem-server/ivshmem-server.c'],
-+  'ivshmem-test': ['ivshmem-utils.c', '../../contrib/ivshmem-server/ivshmem-server.c'],
+   'ivshmem-test': ['ivshmem-utils.c', '../../contrib/ivshmem-server/ivshmem-server.c'],
++  'ivshmem-flat-test': ['ivshmem-utils.c', '../../contrib/ivshmem-server/ivshmem-server.c'],
    'migration-test': migration_files,
    'pxe-test': files('boot-sector.c'),
    'qos-test': [chardev, io, qos_test_ss.apply({}).sources()],
