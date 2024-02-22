@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E6D85F6E6
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 12:31:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20EF385F6C6
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 12:28:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd7E4-0008AH-DI; Thu, 22 Feb 2024 06:26:52 -0500
+	id 1rd7E9-0008D4-Fr; Thu, 22 Feb 2024 06:26:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rd7Dg-00085u-94; Thu, 22 Feb 2024 06:26:28 -0500
+ id 1rd7Dl-00086A-CI; Thu, 22 Feb 2024 06:26:34 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rd7Dd-0004um-HJ; Thu, 22 Feb 2024 06:26:27 -0500
+ id 1rd7Dg-0004vg-9Q; Thu, 22 Feb 2024 06:26:33 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BAC284FB48;
+ by isrv.corpit.ru (Postfix) with ESMTP id C90074FB49;
  Thu, 22 Feb 2024 14:26:25 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4123B87174;
+ by tsrv.corpit.ru (Postfix) with SMTP id 4F8DF87175;
  Thu, 22 Feb 2024 14:26:02 +0300 (MSK)
-Received: (nullmailer pid 2526158 invoked by uid 1000);
+Received: (nullmailer pid 2526161 invoked by uid 1000);
  Thu, 22 Feb 2024 11:26:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 06/34] hw/timer: Move HPET_INTCAP definition to "hpet.h"
-Date: Thu, 22 Feb 2024 14:25:33 +0300
-Message-Id: <20240222112601.2526057-7-mjt@tls.msk.ru>
+Subject: [PULL 07/34] hw/isa/lpc_ich9: Remove unused 'hw/i386/pc.h'
+Date: Thu, 22 Feb 2024 14:25:34 +0300
+Message-Id: <20240222112601.2526057-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240222112601.2526057-1-mjt@tls.msk.ru>
 References: <20240222112601.2526057-1-mjt@tls.msk.ru>
@@ -62,57 +62,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-HPET_INTCAP is specific to TYPE_HPET, so define it there.
-hpet.c doesn't need to include "hw/i386/pc.h" anymore.
+Commit c461f3e382 ("hw/acpi/acpi_dev_interface: Remove now unused
+madt_cpu virtual method") removed the need for "hw/i386/pc.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Reviewed-by: Luc Michel <luc.michel@amd.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/timer/hpet.c         | 1 -
- include/hw/i386/pc.h    | 2 --
- include/hw/timer/hpet.h | 2 ++
- 3 files changed, 2 insertions(+), 3 deletions(-)
+ hw/isa/lpc_ich9.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
-index 1672faa4f2..01efe4885d 100644
---- a/hw/timer/hpet.c
-+++ b/hw/timer/hpet.c
-@@ -25,7 +25,6 @@
-  */
- 
- #include "qemu/osdep.h"
+diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
+index 70c6e8a093..bd727b2320 100644
+--- a/hw/isa/lpc_ich9.c
++++ b/hw/isa/lpc_ich9.c
+@@ -41,7 +41,6 @@
+ #include "hw/isa/apm.h"
+ #include "hw/pci/pci.h"
+ #include "hw/southbridge/ich9.h"
 -#include "hw/i386/pc.h"
- #include "hw/irq.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 02a0deedd3..c0e6c43fbd 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -15,8 +15,6 @@
- #include "hw/firmware/smbios.h"
- #include "hw/cxl/cxl.h"
- 
--#define HPET_INTCAP "hpet-intcap"
--
- /**
-  * PCMachineState:
-  * @acpi_dev: link to ACPI PM device that performs ACPI hotplug handling
-diff --git a/include/hw/timer/hpet.h b/include/hw/timer/hpet.h
-index f04c4d3238..d17a8d4319 100644
---- a/include/hw/timer/hpet.h
-+++ b/include/hw/timer/hpet.h
-@@ -78,6 +78,8 @@ extern struct hpet_fw_config hpet_cfg;
- 
- #define TYPE_HPET "hpet"
- 
-+#define HPET_INTCAP "hpet-intcap"
-+
- static inline bool hpet_find(void)
- {
-     return object_resolve_path_type("", TYPE_HPET, NULL);
+ #include "hw/acpi/acpi.h"
+ #include "hw/acpi/ich9.h"
+ #include "hw/pci/pci_bus.h"
 -- 
 2.39.2
 
