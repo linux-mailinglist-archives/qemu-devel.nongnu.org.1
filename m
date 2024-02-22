@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EC2E85FB8C
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 15:49:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 097DB85FBE7
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 16:11:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdANm-0001Zl-Da; Thu, 22 Feb 2024 09:49:06 -0500
+	id 1rdAhW-0003cM-7I; Thu, 22 Feb 2024 10:09:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdANk-0001ZF-Ff
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 09:49:04 -0500
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ id 1rdAhU-0003bn-5s
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 10:09:28 -0500
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdANi-0001zk-KG
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 09:49:04 -0500
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-55f279dca99so2498353a12.3
- for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 06:49:02 -0800 (PST)
+ id 1rdAhS-00053V-F5
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 10:09:27 -0500
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-512cba0f953so3114445e87.2
+ for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 07:09:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708613341; x=1709218141; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=SBVxAd1xw+R421Krq2oc+p5N+ClgNjuUthb5mJzQT5U=;
- b=zDmnbyHDRUzO+NQJLCVCGGlI/ylzPZPNcDRKFc2wrn1VvJpHe3Uf/TQJGXqpItJeKe
- OOPBPDGsnWS5QuPK2XMgAW6TcOoIrDExZRUyftMCAH9HM4OE/9IWZBPBaYtc17D14wSe
- rQpP/IFB7RHUeRG8qbABJsSVgKzlt0mocEN03fm7pAx8YYJjwSc9DlafYw2lWRvw/658
- +VpfIEjYGJ+x8ZK9PJKyEHJNjw/gd9Snsxp0EyuamVjezycfP9qB2JA36/75YF9jnF3j
- sKUcSMnyKsE8ckceQa1J2FEqom886sIYR7rNQh25hADVJwx+37o27F0UngSUJixsE9ap
- ctiw==
+ d=linaro.org; s=google; t=1708614563; x=1709219363; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=1f7PihdvzC749X3ukZxJaCxCkQyD49sC6eocxx1JwJ0=;
+ b=yldMRkQDjnFfImGiRTkRK/YSrNmRRaLSh+B3yzUy9Cqgdz4bJY2X30RqcLkYFh/HCd
+ 1jNj6+x7d5BrOZjTRBvCriExs5TJhCWAY5ktzl9P8CggW2WiwcwXm+IxTcJ0R2fZYYiG
+ wyUoKZxSmMiHrwkTPEJyNeOiHo6w4bmhQRnmiL+7zxKyAzwTvohD2/RxD29rtU92nmox
+ TXDjRbhi9hfw3d/06nLgcaVOkuNuQzmVu/8Y0GmGEXDFQGi5cj+iSN9wyfwoJqGcWou0
+ cKlLrJ+gMHRUJoMw3YeqV6ivsTCIAC04Z6VrxriWZFTcl8sCb8CSfBn1DFfD+xzh34sC
+ lz0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708613341; x=1709218141;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SBVxAd1xw+R421Krq2oc+p5N+ClgNjuUthb5mJzQT5U=;
- b=TswaqlCG0kgK7mG0OMGgqZYEZhRt9YxAA+4N00U+lPBF+ov8JbzegSJz/y3vmUHEkW
- AcCa45NPolQs2u4RG1GsPPUOKChMFxFcgP+acWDarg/u1YoWlBeYtWl9h3X9y1HXDgPz
- 166VSRs262E7IWy5qKYdZO6J/8r0gjFhMXFV+reET9RdpLnebBY38kU4Lv0mmEDeUvxZ
- GgQNO5HSRF2FgKRzUKKKPgTjeG8vVxcAnqFRvqlRCfR5VwQk9/5yjUr3JCa2LDsvOyVM
- MFAocWeV7qyz9xkcJWpB/h7zZtvgka0ZpaYWA0Zt0sOTjNXthVTkWNhFwfKwvGf3q1XF
- /edQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUkQbjS+e8RGTSIdEauAEnLUoZxKPhjvR+fmM8WZJTEdYuVLzvTIUcm9ItScQBDv/vQyGhIzEDEMtNUeotLlLvYHstU0no=
-X-Gm-Message-State: AOJu0YydioVatLyYAaE6iYq5+wGtv1k7W38lphrejGK8DQxIljhTMSs/
- mkJyoIou2oiNIrFD7uG0+Sh1SukvKtpykbIydb9H3tbFO7e7s2qU8O2s0QxIyFIBsViAAog2Y2D
- 1UQzNgq11Pi+SUEYaKN2P6wnJwOX0mN4aRZLbrQ==
-X-Google-Smtp-Source: AGHT+IEnIAco88m4IVgBZ9vL4YlGK0Z7m/1VfbIDBu905gqxa8DJZc1wLYVfKVPplQTbRJU3i8eA0x+OGJo5gxSlCCE=
-X-Received: by 2002:aa7:cf11:0:b0:565:21a8:1e35 with SMTP id
- a17-20020aa7cf11000000b0056521a81e35mr2059824edy.3.1708613341070; Thu, 22 Feb
- 2024 06:49:01 -0800 (PST)
+ d=1e100.net; s=20230601; t=1708614563; x=1709219363;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=1f7PihdvzC749X3ukZxJaCxCkQyD49sC6eocxx1JwJ0=;
+ b=AaPMUSKCkJLGMGWUidqLpuJIDQBG1Oi+nbm9bzAiVRGK1UnuQo2sDvYgCEekSJJ90J
+ AOAmPDKLT8smFJB6PlbBSeN+RDn+zu5ugJkJVxZFZlCiUy5YTbx8btbQ9mrmj802K1zG
+ PhNlcgv8+/inNS9mRF6Frh1kMJHsULbBmsF6hIl+1wvWczb8kIOyWyV8BrHLnb1esU53
+ tLOTxR7aSsFqwagg7ZNdG/QeV99Ozeer+msAmMyiATtRS3B25GglZEjbRGt8oCpfqGHc
+ jJ4g+u4PCYHc6SEfKJxJUyc7TycpPQq1qbSS7RlCgAb9iKH0JFWBwndJb4r2sgX/wIkE
+ YYyA==
+X-Gm-Message-State: AOJu0YxMjIHHUd6v1q9lsS2UdpY7mdMcmXoIkiIFiGnDVPYpquIDtUU6
+ eooS5KIfoGmVN68XwB4+pFzD6c+BP2grOw8vpgr3BCuwJONlPrpKj601HbGnBadCpVL/SICXL4d
+ X6Z1s8JXoNmJ7KZYqGUT9XTjoAV0/k39No+tt6Q==
+X-Google-Smtp-Source: AGHT+IFqFE7vop9gRwFstbR79kC4MMQ28ruunjfhdVgAPpEspvetlriZ7GLdQPM8A/wcLrDktockynoEKA31e5+DZuY=
+X-Received: by 2002:ac2:46c3:0:b0:512:c363:fda1 with SMTP id
+ p3-20020ac246c3000000b00512c363fda1mr5376105lfo.12.1708614563184; Thu, 22 Feb
+ 2024 07:09:23 -0800 (PST)
 MIME-Version: 1.0
-References: <20240115101643.2165387-1-daniel@0x0f.com>
- <30980866-7fe8-4900-a75b-01fe735e14e1@redhat.com>
- <5388387b-f7aa-4fa2-a65b-d3a3b52e23d9@ilande.co.uk>
- <CAFEAcA_RorzeXwHkBiq1Vjsxsh-u3ymGnJ-xY-4aBj7ivS-rtw@mail.gmail.com>
- <04785ac8-eaad-4acf-9ef0-236b3b29135d@ilande.co.uk>
-In-Reply-To: <04785ac8-eaad-4acf-9ef0-236b3b29135d@ilande.co.uk>
+References: <20240220184145.106107-1-ines.varhol@telecom-paris.fr>
+ <20240220184145.106107-3-ines.varhol@telecom-paris.fr>
+In-Reply-To: <20240220184145.106107-3-ines.varhol@telecom-paris.fr>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 22 Feb 2024 14:48:50 +0000
-Message-ID: <CAFEAcA_mZkCZv+2iNaC3MPOsTWU=cV8i0bn2wFLF+Rb3JyvMuA@mail.gmail.com>
-Subject: Re: [PATCH] target/m68k: Fix exception frame format for 68010
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: Thomas Huth <thuth@redhat.com>, Daniel Palmer <daniel@0x0f.com>,
- laurent@vivier.eu, qemu-devel@nongnu.org
+Date: Thu, 22 Feb 2024 15:09:11 +0000
+Message-ID: <CAFEAcA-Vq+r2ivjttHMhZyyFBcPpNst2CQNQN9TRbCZ9WfiSAQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] tests/qtest: Check that EXTI fan-in irqs are
+ correctly connected
+To: =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
+ Samuel Tardieu <samuel.tardieu@telecom-paris.fr>,
+ Alistair Francis <alistair@alistair23.me>, 
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,28 +94,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 22 Feb 2024 at 13:50, Mark Cave-Ayland
-<mark.cave-ayland@ilande.co.uk> wrote:
+On Tue, 20 Feb 2024 at 18:41, In=C3=A8s Varhol <ines.varhol@telecom-paris.f=
+r> wrote:
 >
-> On 22/02/2024 13:37, Peter Maydell wrote:
+> This commit adds a QTest that verifies each input line of a specific
+> EXTI OR gate can influence the output line.
 >
-> > On Thu, 22 Feb 2024 at 13:34, Mark Cave-Ayland
-> > <mark.cave-ayland@ilande.co.uk> wrote:
-> >
-> >> This is also:
-> >> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2164
-> >
-> > "Resolves:" for gitlab bug URLs; "Fixes:" is for git commits.
+> Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
 >
-> I think GitLab will happily accept either form (see
-> https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-> which appears to be supported by the git history? But I can certainly make a note of
-> this convention for the future.
+> Hello,
+>
+> I expected this test to fail after switching the two patch commits,
+> but it didn't.
+> I'm mentionning it in case it reveals a problem with the test I didn't no=
+tice.
 
-Yes, gitlab's regex for detecting this is quite wide; the
-intention is to try to keep the semantic uses "note which
-git commit this change is correcting" and "note the bug
-which this change is resolving" distinct.
+The specific thing that goes wrong if you don't have the OR
+gate handling is that the NVIC input will see every up
+and down transition from each input separately. (This happens
+because a GPIO/irq 'input' in QEMU is basically a function,
+and wiring up an 'output' to an 'input' is setting "this
+is the function pointer you should call when the output
+changes". Nothing syntactically stops you passing the
+same function pointer to multiple outputs.)
 
+So if you have for instance
+ raise A; raise B; drop B; drop A
+where A and B are ORed together into an NVIC input,
+the NVIC input is supposed to see the line go high
+at "raise A" and only drop at the last "drop B". Without
+the OR gate, it will see it go high at "raise A", and then
+drop at "drop B". (Well, it sees "level is 1", "level is 1",
+"level is 0", "level is 0", but inputs expect to sometimes see
+calls for "level happens to be the same thing it was
+previously", so it doesn't cause the NVIC to change state.)
+
+Your test case doesn't as far as I can see check this situation,
+because it's (a) testing every input in order, not checking
+what happens when multiple inputs are raised and lowered
+in overlapping ways and (b) using rising-edge interrupts.
+So that's why it doesn't fail even without the bug fix in
+the previous patch.
+
+>  #define EXTI0_IRQ 6
+>  #define EXTI1_IRQ 7
+> +#define EXTI5_9_IRQ 23
+>  #define EXTI35_IRQ 1
+>
+>  static void enable_nvic_irq(unsigned int n)
+> @@ -499,6 +500,40 @@ static void test_interrupt(void)
+>      g_assert_false(check_nvic_pending(EXTI1_IRQ));
+>  }
+>
+> +static void test_orred_interrupts(void)
+> +{
+> +    /*
+> +     * For lines EXTI5..9 (fanned-in to NVIC irq 23),
+> +     * test that raising the line pends interrupt
+> +     * 23 in NVIC.
+> +     */
+> +    enable_nvic_irq(EXTI5_9_IRQ);
+> +    /* Check that there are no interrupts already pending in PR */
+> +    g_assert_cmpuint(exti_readl(EXTI_PR1), =3D=3D, 0x00000000);
+> +    /* Check that this specific interrupt isn't pending in NVIC */
+> +    g_assert_false(check_nvic_pending(EXTI5_9_IRQ));
+> +
+> +    /* Enable interrupt lines EXTI[5..9] */
+> +    exti_writel(EXTI_IMR1, (0x1F << 5));
+> +
+> +    /* Configure interrupt on rising edge */
+> +    exti_writel(EXTI_RTSR1, (0x1F << 5));
+> +
+> +    /* Raise GPIO line i, check that the interrupt is pending */
+> +    for (unsigned i =3D 5; i < 10; i++) {
+> +        exti_set_irq(i, 1);
+> +        g_assert_cmpuint(exti_readl(EXTI_PR1), =3D=3D, 1 << i);
+> +        g_assert_true(check_nvic_pending(EXTI5_9_IRQ));
+> +
+> +        exti_writel(EXTI_PR1, 1 << i);
+> +        g_assert_cmpuint(exti_readl(EXTI_PR1), =3D=3D, 0x00000000);
+> +        g_assert_true(check_nvic_pending(EXTI5_9_IRQ));
+> +
+> +        unpend_nvic_irq(EXTI5_9_IRQ);
+> +        g_assert_false(check_nvic_pending(EXTI5_9_IRQ));
+> +    }
+> +}
+> +
+>  int main(int argc, char **argv)
+>  {
+>      int ret;
+> @@ -515,6 +550,8 @@ int main(int argc, char **argv)
+>      qtest_add_func("stm32l4x5/exti/masked_interrupt", test_masked_interr=
+upt);
+>      qtest_add_func("stm32l4x5/exti/interrupt", test_interrupt);
+>      qtest_add_func("stm32l4x5/exti/test_edge_selector", test_edge_select=
+or);
+> +    qtest_add_func("stm32l4x5/exti/test_orred_interrupts",
+> +                   test_orred_interrupts);
+>
+>      qtest_start("-machine b-l475e-iot01a");
+>      ret =3D g_test_run();
+> --
+> 2.43.2
+
+thanks
 -- PMM
 
