@@ -2,53 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B37985F50E
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F17985F511
 	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 10:54:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd5ld-0007Wj-VP; Thu, 22 Feb 2024 04:53:25 -0500
+	id 1rd5lf-0007Xb-GZ; Thu, 22 Feb 2024 04:53:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rd5lZ-0007Vz-D7
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 04:53:22 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rd5ld-0007Wp-MZ
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 04:53:25 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rd5lX-0006mm-7G
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 04:53:20 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rd5lc-0006oL-7p
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 04:53:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708595598;
+ s=mimecast20190719; t=1708595602;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3Z3cYZesheFU8Ptb72/fxhAVHZz9C+CAeZTQZ83R9eo=;
- b=Uw3lLBs26NMUogSlXV5OzDgLbGcHlsctiFzs2+VBY42tjI4iEKN1y+0vy0p5OTBuMMMSmC
- qIgVOhdxaTCVVJih1ppMr8f5f/EN+fleAFcAFgZrhRErfRafF7pa2VYeUpG/noCt5XzxC0
- KpJzl5rGAqt+tQESQaqzyWW/LUcYEGs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-615-g24eAK3MPQKx0-JWvaj8GA-1; Thu, 22 Feb 2024 04:53:15 -0500
-X-MC-Unique: g24eAK3MPQKx0-JWvaj8GA-1
+ bh=YrjZy0FuhbxBEP9u9XFV47cbHOZBoaPzqp9FQlFMFqk=;
+ b=Og0uUGVWC0Cz1+zUHFXGjgnZlkUxz9Jo0SDMxxHXstwUsAF2DMNuctzzoI/vqsy1+GEMhr
+ tS2XaPIyatRvE4unUkvZPQCF6YqhY/iUZQNettRrmZ4kOIL0t3UZOqttQE2cbDhhaZBScM
+ hJjVIpqQzVLWLKG/L04FO1zcg1CUKq8=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-617-AKpTQ6ePNOSj7b_D8gJDDA-1; Thu,
+ 22 Feb 2024 04:53:18 -0500
+X-MC-Unique: AKpTQ6ePNOSj7b_D8gJDDA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E11EF835346;
- Thu, 22 Feb 2024 09:53:14 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 94AAB3C11C67;
+ Thu, 22 Feb 2024 09:53:18 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3553E8CE8;
- Thu, 22 Feb 2024 09:53:10 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 976418CED;
+ Thu, 22 Feb 2024 09:53:15 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, peterx@redhat.com,
  Avihai Horon <avihaih@nvidia.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 2/5] migration/multifd: Drop registered_yank
-Date: Thu, 22 Feb 2024 17:52:58 +0800
-Message-ID: <20240222095301.171137-3-peterx@redhat.com>
+Subject: [PATCH v2 3/5] migration/multifd: Make multifd_channel_connect()
+ return void
+Date: Thu, 22 Feb 2024 17:52:59 +0800
+Message-ID: <20240222095301.171137-4-peterx@redhat.com>
 In-Reply-To: <20240222095301.171137-1-peterx@redhat.com>
 References: <20240222095301.171137-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -80,59 +81,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-With a clear definition of p->c protocol, where we only set it up if the
-channel is fully established (TLS or non-TLS), registered_yank boolean will
-have equal meaning of "p->c != NULL".
+It never fails, drop the retval and also the Error**.
 
-Drop registered_yank by checking p->c instead.
-
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Suggested-by: Avihai Horon <avihaih@nvidia.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/multifd.h | 2 --
- migration/multifd.c | 7 +++----
- 2 files changed, 3 insertions(+), 6 deletions(-)
+ migration/multifd.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/migration/multifd.h b/migration/multifd.h
-index 8a1cad0996..b3fe27ae93 100644
---- a/migration/multifd.h
-+++ b/migration/multifd.h
-@@ -78,8 +78,6 @@ typedef struct {
-     bool tls_thread_created;
-     /* communication channel */
-     QIOChannel *c;
--    /* is the yank function registered */
--    bool registered_yank;
-     /* packet allocated len */
-     uint32_t packet_len;
-     /* guest page size */
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 6b89a6c885..da2e7c1db1 100644
+index da2e7c1db1..f52f01ca85 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -648,11 +648,11 @@ static int multifd_send_channel_destroy(QIOChannel *send)
+@@ -925,9 +925,7 @@ static bool multifd_tls_channel_connect(MultiFDSendParams *p,
+     return true;
+ }
  
- static bool multifd_send_cleanup_channel(MultiFDSendParams *p, Error **errp)
+-static bool multifd_channel_connect(MultiFDSendParams *p,
+-                                    QIOChannel *ioc,
+-                                    Error **errp)
++static void multifd_channel_connect(MultiFDSendParams *p, QIOChannel *ioc)
  {
--    if (p->registered_yank) {
-+    if (p->c) {
-         migration_ioc_unregister_yank(p->c);
-+        multifd_send_channel_destroy(p->c);
-+        p->c = NULL;
-     }
--    multifd_send_channel_destroy(p->c);
--    p->c = NULL;
-     qemu_sem_destroy(&p->sem);
-     qemu_sem_destroy(&p->sem_sync);
-     g_free(p->name);
-@@ -932,7 +932,6 @@ static bool multifd_channel_connect(MultiFDSendParams *p,
      qio_channel_set_delay(ioc, false);
  
-     migration_ioc_register_yank(ioc);
--    p->registered_yank = true;
-     /* Setup p->c only if the channel is completely setup */
-     p->c = ioc;
+@@ -938,7 +936,6 @@ static bool multifd_channel_connect(MultiFDSendParams *p,
+     p->thread_created = true;
+     qemu_thread_create(&p->thread, p->name, multifd_send_thread, p,
+                        QEMU_THREAD_JOINABLE);
+-    return true;
+ }
  
+ /*
+@@ -970,7 +967,8 @@ static void multifd_new_send_channel_async(QIOTask *task, gpointer opaque)
+             return;
+         }
+     } else {
+-        ret = multifd_channel_connect(p, ioc, &local_err);
++        multifd_channel_connect(p, ioc);
++        ret = true;
+     }
+ 
+ out:
 -- 
 2.43.0
 
