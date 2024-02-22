@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EDD485F8FD
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 13:57:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE7CA85F906
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 13:57:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd8cY-0006Ut-9A; Thu, 22 Feb 2024 07:56:14 -0500
+	id 1rd8cX-0006Sv-74; Thu, 22 Feb 2024 07:56:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd8cK-0006AE-Gz
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 07:56:00 -0500
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd8cP-0006Gz-Rj
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 07:56:07 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd8cH-00055T-Pw
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 07:56:00 -0500
-Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-2d180d6bd32so90478861fa.1
- for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 04:55:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rd8cN-00057C-9S
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 07:56:05 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-33d146737e6so5194002f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 04:56:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708606555; x=1709211355; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708606561; x=1709211361; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VVZ+VNqHmOLRPOXAqtL522gDrsWtXXCXM5mqlJag8Eg=;
- b=up/ubXLt10k3QO9vkwX6g75lvOJJffifWJ5o6q5dZPkORoguw2VqOmVLaLTnWlNqkE
- 4uUWlo+g4s/Vg2caSShVMalvoBJmXK83nR0IFZw8foBAc44AY1wk/Mty1Fys/bxntVbQ
- EAFTBtPLwDXFP5DHZwNQOHU1UmjW/QFQltW+hcscqWwvhwuKLaMwYIlAtfkMKLL7VIrN
- CZoFL5ScPKiaZhiikT0j3z8ASq9Wb0P0JVoKNZchehWSb2ovDd58NAXvWFZXG5p70GGF
- iq/WSW+uK1LxDPiT1IUmqtSStlS81xfge9PUz52CVQwEyd+wRsCI059/WVARkjJuW5nQ
- 8giA==
+ bh=7fiMAHxMKyZo0atwcCXeNwXI7oIw0a2AWdKKNEO+8KQ=;
+ b=VMR+cqXzncKn+tBrEvJ9rICGNY0FU62FsKmsYACOnXUb/tT4Rchox6nFj1GPTlFLNf
+ I0Gb84VjbClL6VutIjZYRHdBeskPwiUtHfKOGSVul959+UnmspOUkFU8ijs2+vUH/xoW
+ c4J/xklRMNl3AuOLAbUhdcDUZJADl9u4VexyIVghcGec1B8yQ4Tc2HCp24LZUEZ2ipzJ
+ 3u7PaI68n34jFAltBwbN2USo5ODineNZ44L83xr/u4l/m+04lPvWC/KaF6VHTkX0e83W
+ TyDGL+MAzaou+v0StRl43nCs97WfAu+qMS0ai/7Q7tnLGrwX0a5+y8XhGfsDFRsriE50
+ UMjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708606555; x=1709211355;
+ d=1e100.net; s=20230601; t=1708606561; x=1709211361;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VVZ+VNqHmOLRPOXAqtL522gDrsWtXXCXM5mqlJag8Eg=;
- b=GLu7DEheoD/exMIYsBwW3YqtvAUj5mApJlbOsnOtXvvpAJHNp8Ztw16CgVHWWYCNJd
- j5mascRAa4KRV+36SjbyrUuojWjjhA1MAiBYOGvR5DcwmMwFyDyIYZkIU2U/zl5b480W
- OE3jCJOz6mPIggU6wMaIuybiZxNSf9I7zvCc5bWrd8pDKxkfBOhZWU6IBefWH5xKSLT/
- hKMnxItudKRe8Gs/wMKnRcq55bCe8utCNfgd3Ktgvozu/gG5rPF9DhrnYUbqtHzXw0Zd
- cY+gA+wT99XgP3equaV7VoZacTadQwx5syyOMgB6K4GI08vJlatVIpblHRaHzBsvB5vY
- UxNw==
-X-Gm-Message-State: AOJu0YzPmIT8yx559eWhBfmjxOhWFfd3XkiMujIl079aHWWiRzQiNVfW
- NhEV3skRxV3iKA/lm7ZOarB7gMYXqunRimEtwQeEXMFpBrc9CrLMxILA/hiQoLa94UrOWlQSrpp
- Xb/U=
-X-Google-Smtp-Source: AGHT+IH+5m4FP6Rw8ECLndls6vPlryhMExW7aHeIfdvZ0AQt8MHfnbmecs0xcZ6SU4d6sEGxusU3fQ==
-X-Received: by 2002:a2e:9807:0:b0:2d2:43ef:e4c with SMTP id
- a7-20020a2e9807000000b002d243ef0e4cmr5926953ljj.45.1708606555634; 
- Thu, 22 Feb 2024 04:55:55 -0800 (PST)
+ bh=7fiMAHxMKyZo0atwcCXeNwXI7oIw0a2AWdKKNEO+8KQ=;
+ b=Q63hv2lHIz9dsIUFHB+Npk/05hZRDk1fp9mjUV/ca+x7FexOMY2zA6EzZYQ0mAhwMe
+ GjenglcKP2Ppc2XQc49ZvaTLwjXNHRlh0w4swDt3Vi3GAMMzj+iROpFXYizXvXrvIUEy
+ 9yt08UWb/W+xX9K9blMT7ainQFWLPTVCX6xchqpeju+1y8/jY3PTLrbeLHOymJxkAdRl
+ D5ZRUgOeTfGM+fq9yy7tYXCkuacc+nOIbapprnzgSRQZOEUu+h7ZqLwmN79e/x0QP1g6
+ /lFWjD1yZZP8V89hT9ondw2D3Vb8jNawXxLvzKAXLYic781JEh1W9r8GB2A4IWDY5pvB
+ 4Shg==
+X-Gm-Message-State: AOJu0YyvyfCi6cdql4ucGO6PV6p2EjFHjqp/8vVYxd4jU5YimyVCSlV9
+ ACb+lcTTGGo7ai3fcERY2RCK29HEwwrpv8Cc/PMUsaZ6Ywswb/vjQJCbZM2bQw4XDPA2SyaFgrs
+ X6Rw=
+X-Google-Smtp-Source: AGHT+IGTmRTAz9Ol8N/pTaq7wrVi+PC6G/sOgUWTzvPBcVNGltf0aYqLjtVY0i+eXvRqybwXgTp/UA==
+X-Received: by 2002:a5d:5645:0:b0:33d:3b82:ab2a with SMTP id
+ j5-20020a5d5645000000b0033d3b82ab2amr9485069wrw.19.1708606561338; 
+ Thu, 22 Feb 2024 04:56:01 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.211.34])
  by smtp.gmail.com with ESMTPSA id
- fs14-20020a05600c3f8e00b00411a595d56bsm21418920wmb.14.2024.02.22.04.55.54
+ b7-20020adfe647000000b0033b406bc689sm20495892wrn.75.2024.02.22.04.55.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 22 Feb 2024 04:55:55 -0800 (PST)
+ Thu, 22 Feb 2024 04:56:00 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 23/32] hw/acpi/cpu: Use CPUState typedef
-Date: Thu, 22 Feb 2024 13:55:14 +0100
-Message-ID: <20240222125517.67131-7-philmd@linaro.org>
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 24/32] hw/acpi/ich9_tco: Include missing 'migration/vmstate.h'
+ header
+Date: Thu, 22 Feb 2024 13:55:15 +0100
+Message-ID: <20240222125517.67131-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240222125517.67131-1-philmd@linaro.org>
 References: <20240222125517.67131-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,30 +96,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU coding style recommend using structure typedefs:
-https://www.qemu.org/docs/master/devel/style.html#typedefs
+We need the VMStateDescription structure definition from
+"migration/vmstate.h" in order to declare vmstate_tco_io_sts.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20240126220407.95022-2-philmd@linaro.org>
+Message-Id: <20240219141412.71418-4-philmd@linaro.org>
 ---
- include/hw/acpi/cpu.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/hw/acpi/ich9_tco.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h
-index e011d01adf..e6e1a9ef59 100644
---- a/include/hw/acpi/cpu.h
-+++ b/include/hw/acpi/cpu.h
-@@ -20,7 +20,7 @@
- #include "hw/hotplug.h"
+diff --git a/include/hw/acpi/ich9_tco.h b/include/hw/acpi/ich9_tco.h
+index c4393caee0..2562a7cf39 100644
+--- a/include/hw/acpi/ich9_tco.h
++++ b/include/hw/acpi/ich9_tco.h
+@@ -11,6 +11,7 @@
+ #define HW_ACPI_TCO_H
  
- typedef struct AcpiCpuStatus {
--    struct CPUState *cpu;
-+    CPUState *cpu;
-     uint64_t arch_id;
-     bool is_inserting;
-     bool is_removing;
+ #include "exec/memory.h"
++#include "migration/vmstate.h"
+ 
+ /* As per ICH9 spec, the internal timer has an error of ~0.6s on every tick */
+ #define TCO_TICK_NSEC 600000000LL
 -- 
 2.41.0
 
