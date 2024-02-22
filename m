@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26FB5860028
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 18:56:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C1D0860109
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 19:22:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdDHp-0007nr-9W; Thu, 22 Feb 2024 12:55:09 -0500
+	id 1rdDgo-0002Vf-5b; Thu, 22 Feb 2024 13:20:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdDHj-0007mt-Bx
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 12:55:04 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdDHh-00080n-2v
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 12:55:03 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-56559248adcso467209a12.0
- for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 09:55:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708624499; x=1709229299; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=bx3KBbR0xVU0uc+ydHpKxX1ggOCwvwbxtqZweBfpygA=;
- b=k3zkSdLSPCfvtJ7oy1vk2zBqZVAh0G30HUEKR1A4sl6T91km2VIZF6UHRy37AwNZwv
- JnmhE3CjRbtn695QFFhuUhp0arbQ/PYDuHh1yGlWm09UCKoP0vkJSk0EDp/HvHi9Mczf
- qgKmOBnWcXSAPlGS8uYZjqkbbpfYcqNzYXWlcwcULRrVDT+MhYAT46ToiTQolSiV+Jx9
- omgwjZVdCOyeU/Pc6s9L/TTf/vw6uyrN+vHOTtQ1nTKf5iJXyeYv4RZDrmtnFO3U6pwk
- AXpG2ZGAmMBWSUBTryZF1+xGTTQAg9ctRXmmo4yNLalbfXOsCgM/R5kAFr0ZObMGeDHw
- JzBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708624499; x=1709229299;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=bx3KBbR0xVU0uc+ydHpKxX1ggOCwvwbxtqZweBfpygA=;
- b=sPwA0IG2xV9CPJ3VjHwxDkgd1M4likcYtheyrSWQhV0pi2Oo433h7KEyh2w1BJsUdI
- EO7ssxCQflA1KBLcSZ0bMCiKJQlytnG9d9kshggVjn+tyigh9GjBGrNAKqmmDyLR0bXe
- xGICBpP7XhJE5alVzlMVWDqtkUgU6Thb/IzrLiZ0FEUPmxFq9a0XkOmpnBJqYu/NlMiz
- 9+ztjE/p+hjmASvQAZFwdrgnVgxv/ss633bZfxZdvFI/bJRWByBJLAw9cY0fPvdRoR+c
- +0xKhVzDymAYq4FcVHaF643pZjUR/1mU6iAJheAq2gJd9ybsZ2gw6i03ZRhITGab7M2O
- WNKQ==
-X-Gm-Message-State: AOJu0YxhnKtBbw/BihyrY+RCGDGcw7SlUx2yN1R16Sz26ogs/taeCSPJ
- 5PAUkvVlUxsDgUG5lg7sCH1CQSdG9qD/9vLgqe2TuHkjXUvN5D3LXNdC485GNtqyFhpGcGHYxuw
- Yig4E18gOgrZNoo5kUj5l7QyDgS7wXS/JEZQFuQ==
-X-Google-Smtp-Source: AGHT+IHzxZ4iZplLjV5IySEG8FVP3e/eDeg/uJkbvPQt63DDqNuOUkwdlv54wTEmJuA1k8Tf0IXCjFVdLcmxzwT4D+8=
-X-Received: by 2002:aa7:d851:0:b0:564:59ba:2cf3 with SMTP id
- f17-20020aa7d851000000b0056459ba2cf3mr9086898eds.9.1708624499395; Thu, 22 Feb
- 2024 09:54:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <sergey.kambalin@auriga.com>)
+ id 1rdDgj-0002Uv-E4; Thu, 22 Feb 2024 13:20:53 -0500
+Received: from hq-ms.auriga.com ([82.97.202.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sergey.kambalin@auriga.com>)
+ id 1rdDgh-00045P-2X; Thu, 22 Feb 2024 13:20:53 -0500
+Received: from HQ-MS1.office.auriga.msk (82.97.202.32) by
+ hq-ms1.office.auriga.msk (82.97.202.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Thu, 22 Feb 2024 21:15:39 +0300
+Received: from HQ-MS1.office.auriga.msk ([fe80::e2f8:5f63:adc1:868f]) by
+ hq-ms1.office.auriga.msk ([fe80::e2f8:5f63:adc1:868f%7]) with mapi id
+ 15.02.1258.028; Thu, 22 Feb 2024 21:15:39 +0300
+From: "Kambalin, Sergey" <sergey.kambalin@auriga.com>
+To: Peter Maydell <peter.maydell@linaro.org>, Sergey Kambalin
+ <serg.oker@gmail.com>
+CC: "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v5 00/41] Raspberry Pi 4B machine
+Thread-Topic: [PATCH v5 00/41] Raspberry Pi 4B machine
+Thread-Index: AQHaYtGCfqkL7B0Tb0KILu02iBHW8bEWbf6AgABB86g=
+Date: Thu, 22 Feb 2024 18:15:39 +0000
+Message-ID: <caf1110f9e9445cab3aa00ebab24d263@auriga.com>
+References: <20240219011739.2316619-1-sergey.kambalin@auriga.com>,
+ <CAFEAcA-Wir3M7dVV5247uMPxCtrYs8j4Z3S7nucCx3Ha8pA1dg@mail.gmail.com>
+In-Reply-To: <CAFEAcA-Wir3M7dVV5247uMPxCtrYs8j4Z3S7nucCx3Ha8pA1dg@mail.gmail.com>
+Accept-Language: ru-RU, en-US
+Content-Language: ru-RU
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.55.54.50]
+x-tm-as-product-ver: SMEX-14.0.0.1158-9.0.1002-28208.000
+x-tm-as-result: No-10--23.857400-8.000000
+x-tmase-matchedrid: h5TVo972vkSJVA+ukO+5MWg4D2QV/2zL6r3HCixfuKcc4ri4RJV/1W/R
+ DAZTdSI3QnEYvg6//klFmXhQ6rgRVOyDy8V8lTWUzH6d90mb4+Ih6cl1707zKlZxVB3B2qbP6Xk
+ ezPna397QLE3MitZAfl9/IWsrV5Ek1LFdtmiebE5itzfafzhYerzutTz14s8p0fmBwOcEOYMwrh
+ SFC/dJGEZSxU13SYvpALYX+A8A0O0PTrDKsCYT0OKLvlSV0+r2rLALtod6A6ZmNqUsn94Y20FEM
+ +pwiCobBt8n8fEuJJVX0KLFo/pn8fp4lWjAX1OzlOneJcroAxT3Oai+medFbKlOQjQcrzOl1jOm
+ H0YwN7E45PBNB8uybZsbsj1AjTF7LdR5g5YGhzKj5gmRCefvLmHWZvjZxlUH33Nl3elSfsrGdRf
+ PKx6LHMD46MsbWPCAmEKHz5YiYlQf0H3tYJmWPRMXUu1hb2VrrB85uDT3cKRvKpAGRBjcb9nfJr
+ USEbFDd4EWkOs0kBZq+rSiPqZuvsQTSPZE5H8gOIQ9GP2P2u8cDDLReGt4PZTYluj+pBVBngIgp
+ j8eDcAPEIloOPJwnn0GyL/mi/M8OMB0shqXhHpB7zALuogCGAYqv4YJG1FYtRdrdgLuMyW7mZq8
+ BJXPF1kSgZIgXtrH
+x-tm-as-user-approved-sender: No
+x-tm-as-user-blocked-sender: No
+x-tmase-result: 10--23.857400-8.000000
+x-tmase-version: SMEX-14.0.0.1158-9.0.1002-28208.000
+x-tm-snts-smtp: 87E843C24A95885FD72591806D2F0CB8A0A582E6A0C336A4E8704232656EEB592000:8
+Content-Type: multipart/alternative;
+ boundary="_000_caf1110f9e9445cab3aa00ebab24d263aurigacom_"
 MIME-Version: 1.0
-References: <20240220134120.2961059-1-rayhan.faizel@gmail.com>
-In-Reply-To: <20240220134120.2961059-1-rayhan.faizel@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 22 Feb 2024 17:54:48 +0000
-Message-ID: <CAFEAcA8GFFQ-L6zGcft9q8arJxuggraHYRhcAf4q+Oi+VMSP3Q@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] Add support for I2C in BCM2835 boards
-To: Rayhan Faizel <rayhan.faizel@gmail.com>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org, pbonzini@redhat.com, 
- qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=82.97.202.32;
+ envelope-from=sergey.kambalin@auriga.com; helo=hq-ms.auriga.com
+X-Spam_score_int: 5
+X-Spam_score: 0.5
+X-Spam_bar: /
+X-Spam_report: (0.5 / 5.0 requ) BAYES_00=-1.9, HTML_MESSAGE=0.001,
+ MIME_CHARSET_FARAWAY=2.45, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,31 +84,185 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 20 Feb 2024 at 13:42, Rayhan Faizel <rayhan.faizel@gmail.com> wrote:
->
-> This patch series implements support for the Broadcom Serial Controller used
-> by BCM2835 based boards for I2C.
->
-> [Changes in v3]
->
-> - Add SPDX license identifiers.
-> - Fix a few minor whitespace issues.
->
-> [Changes in v2]
->
-> - Fixed and simplified writing to status register
->
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/481
-> Signed-off-by: Rayhan Faizel <rayhan.faizel@gmail.com>
->
-> Rayhan Faizel (3):
->   hw/i2c: Implement Broadcom Serial Controller (BSC)
->   hw/arm: Connect BSC to BCM2835 board as I2C0, I2C1 and I2C2
->   tests/qtest: Add testcase for BCM2835 BSC
+--_000_caf1110f9e9445cab3aa00ebab24d263aurigacom_
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Peter!
+
+Sorry, it wasn't intentional.
 
 
+How can I keep the tags from v4?
 
-Applied to target-arm.next, thanks.
 
+Thanks,
+Sergey Kambalin
+Software Developer,
+Auriga Inc.
+
+
+________________________________
+=EF=D4: Peter Maydell <peter.maydell@linaro.org>
+=EF=D4=D0=D2=C1=D7=CC=C5=CE=CF: 22 =C6=C5=D7=D2=C1=CC=D1 2024 =C7. 11:17:07
+=EB=CF=CD=D5: Sergey Kambalin
+=EB=CF=D0=C9=D1: qemu-arm@nongnu.org; qemu-devel@nongnu.org; Kambalin, Serg=
+ey
+=F4=C5=CD=C1: Re: [PATCH v5 00/41] Raspberry Pi 4B machine
+
+On Mon, 19 Feb 2024 at 01:19, Sergey Kambalin <serg.oker@gmail.com> wrote:
+>
+> Introducing Raspberry Pi 4B model.
+> It contains new BCM2838 SoC, PCIE subsystem,
+> RNG200, Thermal sensor and Genet network controller.
+>
+> It can work with recent linux kernels 6.x.x.
+> Two avocado tests was added to check that.
+>
+> Unit tests has been made as read/write operations
+> via mailbox properties.
+>
+> Genet integration test is under development.
+>
+> Every single commit
+> 1) builds without errors
+> 2) passes regression tests
+> 3) passes style check*
+> *the only exception is bcm2838-mbox-property-test.c file
+> containing heavy macros usage which cause a lot of
+> false-positives of checkpatch.pl.
+>
+> I did my best to keep the commits less than 200 changes,
+> but had to make some of them a bit more in order to
+> keep their integrity.
+>
+> This is v5 patchset with the most of v1..v4 comments fixed.
+
+I reviewed quite a lot of v4, but I don't see any of
+my Reviewed-by tags in this version. Did you really change
+every patch so much you had to drop the tags?
+
+thanks
 -- PMM
+
+--_000_caf1110f9e9445cab3aa00ebab24d263aurigacom_
+Content-Type: text/html; charset="koi8-r"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dkoi8-r">
+<meta name=3D"Generator" content=3D"Microsoft Exchange Server">
+<!-- converted from text --><style><!-- .EmailQuote { margin-left: 1pt; pad=
+ding-left: 4pt; border-left: #800000 2px solid; } --></style>
+</head>
+<body>
+<meta content=3D"text/html; charset=3DUTF-8">
+<style type=3D"text/css" style=3D"">
+<!--
+p
+	{margin-top:0;
+	margin-bottom:0}
+-->
+</style>
+<div dir=3D"ltr">
+<div id=3D"x_divtagdefaultwrapper" dir=3D"ltr" style=3D"font-size:12pt; col=
+or:#000000; font-family:Calibri,Helvetica,sans-serif">
+<p>Hi Peter!&nbsp;<br>
+<br>
+<span>Sorry, it wasn't intentional</span>.<br>
+<br>
+</p>
+<p>How can I keep the tags from v4?</p>
+<p><br>
+</p>
+<div id=3D"x_Signature">
+<div id=3D"x_divtagdefaultwrapper" dir=3D"ltr" style=3D"font-size:12pt; col=
+or:rgb(0,0,0); font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;App=
+le Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe =
+UI Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols">
+<p><span lang=3D"en-US"><font size=3D"3" face=3D"Calibri,Helvetica,sans-ser=
+if" color=3D"black" style=3D"font-family:Calibri,Helvetica,sans-serif,serif=
+,&quot;EmojiFont&quot;"><span dir=3D"ltr" id=3D"x_divtagdefaultwrapper" sty=
+le=3D"font-size:12pt"><font size=3D"3" face=3D"Calibri,Helvetica,sans-serif=
+,EmojiFont,Apple Color Emoji,Segoe UI Emoji,NotoColorEmoji,Segoe UI Symbol,=
+Android Emoji,EmojiSymbols" color=3D"black"><span id=3D"x_divtagdefaultwrap=
+per" style=3D"font-size:12pt"></span></font></span></font></span></p>
+<font size=3D"3" face=3D"Calibri,Helvetica,sans-serif" color=3D"black" styl=
+e=3D"font-family:Calibri,Helvetica,sans-serif,serif,&quot;EmojiFont&quot;">=
+<font size=3D"3" face=3D"Calibri,Helvetica,sans-serif,EmojiFont,Apple Color=
+ Emoji,Segoe UI Emoji,NotoColorEmoji,Segoe UI Symbol,Android Emoji,EmojiSym=
+bols" color=3D"black">
+<div style=3D"margin-top:0; margin-bottom:0"><i><span style=3D"font-size:10=
+pt">Thanks,</span></i></div>
+<i><span style=3D"font-size:10pt"></span></i>
+<div style=3D"margin-top:0; margin-bottom:0"><i><span style=3D"font-size:10=
+pt">Sergey Kambalin</span></i><i><br>
+</i></div>
+<i><span style=3D"font-size:10pt"></span></i>
+<div style=3D"margin-top:0; margin-bottom:0"><i><span style=3D"font-size:10=
+pt">Software Developer,</span></i></div>
+<div style=3D"margin-top:0; margin-bottom:0"><i><span style=3D"font-size:10=
+pt"><span>Auriga Inc.</span><br>
+</span></i></div>
+</font></font><br>
+<p></p>
+</div>
+</div>
+</div>
+<hr tabindex=3D"-1" style=3D"display:inline-block; width:98%">
+<div id=3D"x_divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" =
+color=3D"#000000" style=3D"font-size:11pt"><b>=EF=D4:</b> Peter Maydell &lt=
+;peter.maydell@linaro.org&gt;<br>
+<b>=EF=D4=D0=D2=C1=D7=CC=C5=CE=CF:</b> 22 =C6=C5=D7=D2=C1=CC=D1 2024 =C7. 1=
+1:17:07<br>
+<b>=EB=CF=CD=D5:</b> Sergey Kambalin<br>
+<b>=EB=CF=D0=C9=D1:</b> qemu-arm@nongnu.org; qemu-devel@nongnu.org; Kambali=
+n, Sergey<br>
+<b>=F4=C5=CD=C1:</b> Re: [PATCH v5 00/41] Raspberry Pi 4B machine</font>
+<div>&nbsp;</div>
+</div>
+</div>
+<font size=3D"2"><span style=3D"font-size:10pt;">
+<div class=3D"PlainText">On Mon, 19 Feb 2024 at 01:19, Sergey Kambalin &lt;=
+serg.oker@gmail.com&gt; wrote:<br>
+&gt;<br>
+&gt; Introducing Raspberry Pi 4B model.<br>
+&gt; It contains new BCM2838 SoC, PCIE subsystem,<br>
+&gt; RNG200, Thermal sensor and Genet network controller.<br>
+&gt;<br>
+&gt; It can work with recent linux kernels 6.x.x.<br>
+&gt; Two avocado tests was added to check that.<br>
+&gt;<br>
+&gt; Unit tests has been made as read/write operations<br>
+&gt; via mailbox properties.<br>
+&gt;<br>
+&gt; Genet integration test is under development.<br>
+&gt;<br>
+&gt; Every single commit<br>
+&gt; 1) builds without errors<br>
+&gt; 2) passes regression tests<br>
+&gt; 3) passes style check*<br>
+&gt; *the only exception is bcm2838-mbox-property-test.c file<br>
+&gt; containing heavy macros usage which cause a lot of<br>
+&gt; false-positives of checkpatch.pl.<br>
+&gt;<br>
+&gt; I did my best to keep the commits less than 200 changes,<br>
+&gt; but had to make some of them a bit more in order to<br>
+&gt; keep their integrity.<br>
+&gt;<br>
+&gt; This is v5 patchset with the most of v1..v4 comments fixed.<br>
+<br>
+I reviewed quite a lot of v4, but I don't see any of<br>
+my Reviewed-by tags in this version. Did you really change<br>
+every patch so much you had to drop the tags?<br>
+<br>
+thanks<br>
+-- PMM<br>
+</div>
+</span></font>
+</body>
+</html>
+
+--_000_caf1110f9e9445cab3aa00ebab24d263aurigacom_--
 
