@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C62385F6D5
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 12:29:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88C7A85F6F9
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Feb 2024 12:32:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rd7FI-0001Eo-J6; Thu, 22 Feb 2024 06:28:08 -0500
+	id 1rd7FO-0001gd-0g; Thu, 22 Feb 2024 06:28:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rd7FG-0001EU-Mc; Thu, 22 Feb 2024 06:28:06 -0500
+ id 1rd7FK-0001Ud-LH; Thu, 22 Feb 2024 06:28:10 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rd7FC-00058x-JX; Thu, 22 Feb 2024 06:28:05 -0500
+ id 1rd7FF-00059Q-DX; Thu, 22 Feb 2024 06:28:10 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D4AF14FB59;
+ by isrv.corpit.ru (Postfix) with ESMTP id E2A044FB5A;
  Thu, 22 Feb 2024 14:26:26 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 5B84B87185;
+ by tsrv.corpit.ru (Postfix) with SMTP id 6976E87186;
  Thu, 22 Feb 2024 14:26:03 +0300 (MSK)
-Received: (nullmailer pid 2526210 invoked by uid 1000);
+Received: (nullmailer pid 2526213 invoked by uid 1000);
  Thu, 22 Feb 2024 11:26:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 23/34] hw/riscv/virt.h: correct typos
-Date: Thu, 22 Feb 2024 14:25:50 +0300
-Message-Id: <20240222112601.2526057-24-mjt@tls.msk.ru>
+Subject: [PULL 24/34] pc-bios/README: correct typos
+Date: Thu, 22 Feb 2024 14:25:51 +0300
+Message-Id: <20240222112601.2526057-25-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240222112601.2526057-1-mjt@tls.msk.ru>
 References: <20240222112601.2526057-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -65,33 +66,26 @@ Correct typos automatically found with the `typos` tool
 <https://crates.io/crates/typos>
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- include/hw/riscv/virt.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ pc-bios/README | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
-index f89790fd58..3db839160f 100644
---- a/include/hw/riscv/virt.h
-+++ b/include/hw/riscv/virt.h
-@@ -144,13 +144,13 @@ uint32_t imsic_num_bits(uint32_t count);
- #define VIRT_IMSIC_GROUP_MAX_SIZE      (1U << IMSIC_MMIO_GROUP_MIN_SHIFT)
- #if VIRT_IMSIC_GROUP_MAX_SIZE < \
-     IMSIC_GROUP_SIZE(VIRT_CPUS_MAX_BITS, VIRT_IRQCHIP_MAX_GUESTS_BITS)
--#error "Can't accomodate single IMSIC group in address space"
-+#error "Can't accommodate single IMSIC group in address space"
- #endif
+diff --git a/pc-bios/README b/pc-bios/README
+index 4189bb28cc..b8a0210d24 100644
+--- a/pc-bios/README
++++ b/pc-bios/README
+@@ -67,7 +67,7 @@
+   and enable the use of well-known bootloaders such as U-Boot.
+   OpenSBI is distributed under the terms of the BSD 2-clause license
+   ("Simplified BSD License" or "FreeBSD License", SPDX: BSD-2-Clause). OpenSBI
+-  source code also contains code reused from other projects desribed here:
++  source code also contains code reused from other projects described here:
+   https://github.com/riscv/opensbi/blob/master/ThirdPartyNotices.md.
  
- #define VIRT_IMSIC_MAX_SIZE            (VIRT_SOCKETS_MAX * \
-                                         VIRT_IMSIC_GROUP_MAX_SIZE)
- #if 0x4000000 < VIRT_IMSIC_MAX_SIZE
--#error "Can't accomodate all IMSIC groups in address space"
-+#error "Can't accommodate all IMSIC groups in address space"
- #endif
- 
- #endif
+ - npcm7xx_bootrom.bin is a simplified, free (Apache 2.0) boot ROM for Nuvoton
 -- 
 2.39.2
 
