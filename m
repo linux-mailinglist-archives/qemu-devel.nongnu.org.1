@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B76E861677
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 16:55:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9FA38616B6
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:01:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdXrh-0006T9-Ii; Fri, 23 Feb 2024 10:53:33 -0500
+	id 1rdXxx-0006Gz-WE; Fri, 23 Feb 2024 11:00:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXjC-0005es-NZ; Fri, 23 Feb 2024 10:44:46 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1rdXjF-0005fD-Np; Fri, 23 Feb 2024 10:44:49 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXjA-0006Nk-Pj; Fri, 23 Feb 2024 10:44:46 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1d93edfa76dso7381555ad.1; 
- Fri, 23 Feb 2024 07:44:43 -0800 (PST)
+ id 1rdXjE-0006O3-3C; Fri, 23 Feb 2024 10:44:49 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1d8da50bffaso3030925ad.2; 
+ Fri, 23 Feb 2024 07:44:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708703082; x=1709307882; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708703086; x=1709307886; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DNu7LbnPyEXqAmNz1J8vUk98CtltlRUnNqB1Qw24DM8=;
- b=DeDONqHDSymA/XFfOc8YHLJ+0uJbYCG3Nadcfu6QTGHOkLOku7wLyz5lDK1iF39K+T
- xp8UE43upovGOuit4KExFDEinOdcAjexGxbIQm2cy/IQ7W1X6V+9QL8xdz2LOsQwljn8
- 9OlRmfQZEoz6x+BY2VP3ZqyNqgFIb3/8JJNEeSKTXmIFt4JRezMagIW5P54ydd2Ay8xm
- HRsVf16NP0XHBHsbW/Ti6/UcLaTlSDBbv6FUkTc6VB+o8niMv4FJPiYWMM+8Y7LJEtEw
- Abe+idO1Dso2QmZzOWKP+wY5bb85ajBEuPj/69eNvH7bIdXiEy/qpx8CnE4sMx7qdp5x
- bEFg==
+ bh=gChk1GwQ4BpEFZkklczw0ka4p8ifxr/kGa99Ydgw00k=;
+ b=PJlZcX8hWRzI8S0kcb/tOzm3Dqq6NIZYuLj142ai57lTmuQ9sRrOdekJs4Ny5FoSRJ
+ dkEs9pyoOOQzqdHAWPdwrzMbAp39x7tapdTz3YAQWq82y39yZtuZC7dDOB39bbwyFA08
+ 3S3TWkXzszBWk5GAgIq2lWNJMuruNBsHeJ3/nEvO/p0UaDxBJypGJHi/Kiz3Zxfrx77s
+ XBAOYfuwrF2s8c0eJJg9eP2pvjzSvG4o7TEBdvuR85INJSPe2zFF0N9BRwdJySEvvUpu
+ sHMN6t21jua9L9mzPs5qocqxFmsVZTuslJaoXP93KKXN/SIbQwrFE+P2CR7Ijc3JElAI
+ bsaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708703082; x=1709307882;
+ d=1e100.net; s=20230601; t=1708703086; x=1709307886;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DNu7LbnPyEXqAmNz1J8vUk98CtltlRUnNqB1Qw24DM8=;
- b=JzhQRXMmwjQ6HymYdSh+r4NZlt39gb+hxJGZlVspeEnDi71vVy2i2p4MKTdVO6v0yv
- lGgb0wqv6B8jj8NQU0WGrtr9vhWvUHhQnPjYfV/AOnlLwxBCv0BjnFhohItdBg6vJAZI
- FbpQ+7ebFvi5oFDxXMlvWtILpfZsZE7jl7Sdyk768u/i0gNQx0ZuyB8NmIAoWoCO1/oz
- Rb4wjL5OEgLlHcBk8wrOiT08hX5rH3p1J9klMqt5MV9jxfhtARYEhvaaeGHIAmHbkoRl
- 6GRXwRGoMCUxAARg5ksHdkOmLnoK9HZZX9dEYpvPBD6DANDPHwT7TDpS5tasa2LhJosn
- hckw==
+ bh=gChk1GwQ4BpEFZkklczw0ka4p8ifxr/kGa99Ydgw00k=;
+ b=m8tyjMGIrtaGnx8aMyA5pPVEIyWXZsMRGft94toXdWaE9kgCVLDwswA8h1MhOiAjhD
+ 6j5y3Av1F6Fim/jhNgyUVH4hOenTsIPhQDi8j+oj8Ho4Fe76W3GfK3I2wdXGpnRq5+uY
+ uQrsxY+E5MfdP+l91h9s/YMRItzOyL5aoWq2huXKoIdq7dH7PGjNqzWN8TtrVidMVdwB
+ XTjLUGaMvwvFb9mvIKfv9mVoMjvvrbA62kDMlksGySQ82B89tqewBPBRMgYZREzyoEmA
+ 6wNJkp1Axu+Y3BL5XIY7dT9I7hylvBQWycUp92Ba44LL1MXFbDIGO0ALjTTzJfA5FvO4
+ GNPA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUKRyxzdhAE/I3GgtOtuUIpWRDYeAZCL3UogBMqeHoPFER59vP4qDC1Pim9Ep2SDlFVTCa9qfXqeGFtiuclJOxH9819
-X-Gm-Message-State: AOJu0Yy9GIx8jxAMOZiVp0Y9Gpm4ivCf3jFD92Yaae2AqS/ykEoBT9h7
- r3EZoYMD2DGYhjINaaICxalKPLfaBS0cukBC+nJQ3ZZflzHgkp2A0MMW/Rlf
-X-Google-Smtp-Source: AGHT+IHw1f8jyhcV7XTIcLCsdweiCWL+3+t5UY38Pi1YwwSfz3cssz0gEjdsLwrPhvuTPEj+9YqLcQ==
-X-Received: by 2002:a17:903:1246:b0:1db:f830:c381 with SMTP id
- u6-20020a170903124600b001dbf830c381mr166747plh.44.1708703081956; 
- Fri, 23 Feb 2024 07:44:41 -0800 (PST)
+ AJvYcCVGLbalg9hb8MdvMEJbOsXNOi4HRd/33hv4IanCEW1Vrw8VDn4CJmGmTqRCyminHP8OAiZPcTtgYIhy1x+p+9ZIzwwo
+X-Gm-Message-State: AOJu0YzSjE8FwUy1dyRsJjatAzUZfuf7PH09OWbIULmVchTf6cIOHHez
+ 18MzFScbuaLAH5oNtioLpqrl8a5YXymzQUKfiMmcj3eOGFtu0S8r+d6ZmWjb
+X-Google-Smtp-Source: AGHT+IG2Ou+yDNstdN98NAC2zG/wXrRy/DMJ/ceuMPuMkfJp8OiT3LnDKMQrlh+LfI4Z8bj4PZb52w==
+X-Received: by 2002:a17:902:dac1:b0:1db:f033:9f95 with SMTP id
+ q1-20020a170902dac100b001dbf0339f95mr222715plx.66.1708703086265; 
+ Fri, 23 Feb 2024 07:44:46 -0800 (PST)
 Received: from wheely.local0.net (220-235-194-103.tpgi.com.au.
  [220.235.194.103]) by smtp.gmail.com with ESMTPSA id
- h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.44.38
+ h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.44.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 07:44:41 -0800 (PST)
+ Fri, 23 Feb 2024 07:44:45 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
@@ -63,17 +63,18 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Glenn Miles <milesg@linux.vnet.ibm.com>
-Subject: [PULL 23/47] ppc/pnv: New powernv10-rainier machine type
-Date: Sat, 24 Feb 2024 01:41:42 +1000
-Message-ID: <20240223154211.1001692-24-npiggin@gmail.com>
+Subject: [PULL 24/47] ppc/pnv: Add pca9552 to powernv10-rainier for PCIe
+ hotplug power control
+Date: Sat, 24 Feb 2024 01:41:43 +1000
+Message-ID: <20240223154211.1001692-25-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240223154211.1001692-1-npiggin@gmail.com>
 References: <20240223154211.1001692-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,72 +99,104 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Glenn Miles <milesg@linux.vnet.ibm.com>
 
-Create a new powernv machine type, powernv10-rainier, that
-will contain rainier-specific devices.
+The Power Hypervisor code expects to see a pca9552 device connected
+to the 3rd PNV I2C engine on port 1 at I2C address 0x63 (or left-
+justified address of 0xC6).  This is used by hypervisor code to
+control PCIe slot power during hotplug events.
 
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/pnv.c | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ hw/ppc/Kconfig       |  1 +
+ hw/ppc/pnv.c         | 25 +++++++++++++++++++++++++
+ include/hw/ppc/pnv.h |  1 +
+ 3 files changed, 27 insertions(+)
 
+diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
+index 99d571fa20..0e5acfd1c4 100644
+--- a/hw/ppc/Kconfig
++++ b/hw/ppc/Kconfig
+@@ -32,6 +32,7 @@ config POWERNV
+     select XIVE
+     select FDT_PPC
+     select PCI_POWERNV
++    select PCA9552
+ 
+ config PPC405
+     bool
 diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index b949398689..33b905f854 100644
+index 33b905f854..78f5c6262a 100644
 --- a/hw/ppc/pnv.c
 +++ b/hw/ppc/pnv.c
-@@ -2249,7 +2249,7 @@ static void pnv_machine_power9_class_init(ObjectClass *oc, void *data)
-     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
+@@ -790,6 +790,7 @@ static void pnv_init(MachineState *machine)
+     const char *bios_name = machine->firmware ?: FW_FILE_NAME;
+     PnvMachineState *pnv = PNV_MACHINE(machine);
+     MachineClass *mc = MACHINE_GET_CLASS(machine);
++    PnvMachineClass *pmc = PNV_MACHINE_GET_CLASS(machine);
+     char *fw_filename;
+     long fw_size;
+     uint64_t chip_ram_start = 0;
+@@ -979,6 +980,13 @@ static void pnv_init(MachineState *machine)
+      */
+     pnv->powerdown_notifier.notify = pnv_powerdown_notify;
+     qemu_register_powerdown_notifier(&pnv->powerdown_notifier);
++
++    /*
++     * Create/Connect any machine-specific I2C devices
++     */
++    if (pmc->i2c_init) {
++        pmc->i2c_init(pnv);
++    }
  }
  
--static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
-+static void pnv_machine_p10_common_class_init(ObjectClass *oc, void *data)
+ /*
+@@ -1879,6 +1887,21 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
+                               qdev_get_gpio_in(DEVICE(&chip10->psi),
+                                                PSIHB9_IRQ_SBE_I2C));
+     }
++
++}
++
++static void pnv_rainier_i2c_init(PnvMachineState *pnv)
++{
++    int i;
++    for (i = 0; i < pnv->num_chips; i++) {
++        Pnv10Chip *chip10 = PNV10_CHIP(pnv->chips[i]);
++
++        /*
++         * Add a PCA9552 I2C device for PCIe hotplug control
++         * to engine 2, bus 1, address 0x63
++         */
++        i2c_slave_create_simple(chip10->i2c[2].busses[1], "pca9552", 0x63);
++    }
+ }
+ 
+ static uint32_t pnv_chip_power10_xscom_pcba(PnvChip *chip, uint64_t addr)
+@@ -2286,9 +2309,11 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
+ static void pnv_machine_p10_rainier_class_init(ObjectClass *oc, void *data)
  {
      MachineClass *mc = MACHINE_CLASS(oc);
-     PnvMachineClass *pmc = PNV_MACHINE_CLASS(oc);
-@@ -2261,7 +2261,6 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
-         { TYPE_PNV_PHB_ROOT_PORT, "version", "5" },
-     };
++    PnvMachineClass *pmc = PNV_MACHINE_CLASS(oc);
  
--    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10";
-     mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
-     compat_props_add(mc->compat_props, phb_compat, G_N_ELEMENTS(phb_compat));
- 
-@@ -2276,6 +2275,22 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
-     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
+     pnv_machine_p10_common_class_init(oc, data);
+     mc->desc = "IBM PowerNV (Non-Virtualized) POWER10 Rainier";
++    pmc->i2c_init = pnv_rainier_i2c_init;
  }
  
-+static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
-+{
-+    MachineClass *mc = MACHINE_CLASS(oc);
-+
-+    pnv_machine_p10_common_class_init(oc, data);
-+    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10";
-+}
-+
-+static void pnv_machine_p10_rainier_class_init(ObjectClass *oc, void *data)
-+{
-+    MachineClass *mc = MACHINE_CLASS(oc);
-+
-+    pnv_machine_p10_common_class_init(oc, data);
-+    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10 Rainier";
-+}
-+
  static bool pnv_machine_get_hb(Object *obj, Error **errp)
- {
-     PnvMachineState *pnv = PNV_MACHINE(obj);
-@@ -2381,6 +2396,11 @@ static void pnv_machine_class_init(ObjectClass *oc, void *data)
-     }
+diff --git a/include/hw/ppc/pnv.h b/include/hw/ppc/pnv.h
+index 7e5fef7c43..110ac9aace 100644
+--- a/include/hw/ppc/pnv.h
++++ b/include/hw/ppc/pnv.h
+@@ -76,6 +76,7 @@ struct PnvMachineClass {
+     int compat_size;
  
- static const TypeInfo types[] = {
-+    {
-+        .name          = MACHINE_TYPE_NAME("powernv10-rainier"),
-+        .parent        = MACHINE_TYPE_NAME("powernv10"),
-+        .class_init    = pnv_machine_p10_rainier_class_init,
-+    },
-     {
-         .name          = MACHINE_TYPE_NAME("powernv10"),
-         .parent        = TYPE_PNV_MACHINE,
+     void (*dt_power_mgt)(PnvMachineState *pnv, void *fdt);
++    void (*i2c_init)(PnvMachineState *pnv);
+ };
+ 
+ struct PnvMachineState {
 -- 
 2.42.0
 
