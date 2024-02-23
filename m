@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E72D8616F1
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:06:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE9D08616FD
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:07:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdY2G-0000QJ-7E; Fri, 23 Feb 2024 11:04:28 -0500
+	id 1rdY16-0005tJ-92; Fri, 23 Feb 2024 11:03:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXkP-0007Ws-Hq; Fri, 23 Feb 2024 10:46:02 -0500
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1rdXkS-0007cs-QF; Fri, 23 Feb 2024 10:46:04 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXkM-0006iu-Nb; Fri, 23 Feb 2024 10:46:00 -0500
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6e4751b97eeso350219b3a.1; 
- Fri, 23 Feb 2024 07:45:56 -0800 (PST)
+ id 1rdXkP-0006jS-Q4; Fri, 23 Feb 2024 10:46:04 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1dc13fb0133so7537935ad.3; 
+ Fri, 23 Feb 2024 07:46:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708703156; x=1709307956; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708703160; x=1709307960; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yFqipXJsXEnafgLcmtHeug1c4B0ygbUJpknek1Zmhr0=;
- b=AFcProYWLJTJUZBvcZ2ZiXmP4zTcDw9Z3G18HW2T8AEmaNfhUrp47amUxkwi9tR3AO
- pS1Lk72zQ+s6RBUlAPMusmb5DF1UshXPsLzg2cgmWoFJ2BXUlY3+8ral7gwz/nNBPdrr
- nHykWgDwtsuRdFCMni+JhUxbeKwwsj+vUctWmPUfZZgQWZ/C9mo/uNW1V5RQX53WeP37
- PNAZgFgYYj5EaMYbThqyrm4zTnFt26Fmu7FjgvqkYZkAccDpvG46qnphOoFvWYv91Y0z
- of4mczUU3wCHXqF3o4oXIn4KgmpTabjIY7WIg1FEfq08aQAtP+LFwWDIeB6rUqAdcyOj
- PArA==
+ bh=DrRZ61wOnwt9hhs6OE9xukgw6eXlMPtoB/Awq7rJA7I=;
+ b=FgQby1VBsXjsK4OGmmXFkgVOBo4CNZmIiiFxFNH1V//gmlGHsCg6odT+f354n5phua
+ iDrQCg+2iw3DFdrsbhrpGGuV4xPGGEe0WxTO8wlxk3Bt5HZsIFpsfaSSPK6Gf+04bVSx
+ 2NB5VtSq1WzTVZyZBar6pBSC3N4jXE900pS7fidNT/nlBdiqPWm9G+VDRzYLdHn0j4It
+ GuTDD7SxH7qd2jz+rceNJOv5oUTowRR5sUJHwD1y9HgwU0A0cNyaAqZm6PLN00CymEld
+ shNQ92QoqFeDIsdgalSf6bZkLXB2GlVORpjQpNKngCU5Y5WPxxsdKthbhAkv6X61Z6mC
+ cgQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708703156; x=1709307956;
+ d=1e100.net; s=20230601; t=1708703160; x=1709307960;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yFqipXJsXEnafgLcmtHeug1c4B0ygbUJpknek1Zmhr0=;
- b=c+v+xUrI4Pe2hImFu4USjCof/QeQRZtfhnB/OBwkDgmdXjdBZD1ZKE39n3q/pSSpBh
- cLxFk3xpL0JyQuTkfcywxgmpteMoPfMRCUHDerZFjeMFIDsNu1x95eQ8ZfyQ4X0lRtd9
- 92qHTt2PiIpAN391esvqxnUl9iItyCtTvKyJLxbuSHEyuFbn/6l31BULsGkFkxVqeSb6
- inEsuSPbwbjBid0m2EtR4z3+mLf4tUuPFvTt29SNEoRiDV3AdXlf0RHk3KruscUvlRmm
- qMfa7XksvANYia9za4bGnYPeKxYO2Nr4PwYXcmukUzm6u0MClEwJMej/OMyNvDOegEG7
- 3I0w==
+ bh=DrRZ61wOnwt9hhs6OE9xukgw6eXlMPtoB/Awq7rJA7I=;
+ b=FCe6bnLS0Ijca1MpoEa1tWKJQCsnj4VYYF/p0os77dt48FNVeMwWPBqK8XhDsZcQHj
+ Khn3ClCNav5Yf5PEABX3FrJc9n4yzHQiJiO3w8F9A0aF5j5rM2cQmjtlGClWvCqMq2CA
+ 5p9iCimUkYIdh/Ycjuf5bWaiu+RC2PPLGdMlbW4wu0ZAmGOZhvK2fRPoDFYs2Sew591Z
+ ub9qTXjKXPRPuCoZmUJ/78SfVBT0FmhecmZRXZifNIEUTueGP5aNFfkfIJd8G4y8RWBz
+ D9sxIIgtn8+98sMP9MPetmFTBMJ+xTLTb0E+znnqlvlhGcO5ZNviYAC4Qctzco0I/UXi
+ X4EQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUfLMSiDUC0uvd8EWHNUIF2jqJK9Cw+zDABmfCJru+G/0SvZG/oOWizQ33KoDoXG8o2RrL8ZXar22MW4C6cMfBVRzUU
-X-Gm-Message-State: AOJu0YzF4ZIf42PeklVpbtefNmnADStcbAA9YUg9NpT2BUSM2DwSry8k
- QIDuJEoHDQcfJeKvMwnxya+0D68L8knuxljYx0QgVkIhHHui6rgHGxy4/UGZ
-X-Google-Smtp-Source: AGHT+IEPl8WYQOgACvDQm+IPNmPrWo8ntElGxRCpDHP8/r8ec/O/c5tu+zirT2oL/vFhsi6fSkz7mg==
-X-Received: by 2002:a05:6a20:9c8d:b0:1a0:cd54:6d9f with SMTP id
- mj13-20020a056a209c8d00b001a0cd546d9fmr109732pzb.23.1708703155726; 
- Fri, 23 Feb 2024 07:45:55 -0800 (PST)
+ AJvYcCUzqWIQMcUehJk9VVw6fY8AJDazpNdonTwnMA8V8NbpZCkVXkLJyuGkVlBACpXdEeuwoa/+kOrKWuqHxsRkaK59DJA1
+X-Gm-Message-State: AOJu0YwvajHLq0tSxpmvtAH9Nvx4CVTS6KWp+UiWXaNbIqLlDsiSqSER
+ 5gTjesEo/nY4ZY1Oux8ujMPXn7eGg5M+qDxdZZjR93eovOXRxQ3wtdUc3TdE
+X-Google-Smtp-Source: AGHT+IHPcWpjyPTIXwNnFjNfT0SP2LpoI3MCpdOaKIA51f4GuPcVeG8uPAU+2cgxnK9XqQQVftvKtg==
+X-Received: by 2002:a17:902:9a4c:b0:1db:d184:c458 with SMTP id
+ x12-20020a1709029a4c00b001dbd184c458mr142829plv.44.1708703159732; 
+ Fri, 23 Feb 2024 07:45:59 -0800 (PST)
 Received: from wheely.local0.net (220-235-194-103.tpgi.com.au.
  [220.235.194.103]) by smtp.gmail.com with ESMTPSA id
- h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.45.52
+ h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.45.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 07:45:55 -0800 (PST)
+ Fri, 23 Feb 2024 07:45:59 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
@@ -63,17 +63,18 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 43/47] target/ppc: Factor out 4xx ppcemb_tlb_t flushing
-Date: Sat, 24 Feb 2024 01:42:02 +1000
-Message-ID: <20240223154211.1001692-44-npiggin@gmail.com>
+Subject: [PULL 44/47] target/ppc: 4xx don't flush TLB for a newly written
+ software TLB entry
+Date: Sat, 24 Feb 2024 01:42:03 +1000
+Message-ID: <20240223154211.1001692-45-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240223154211.1001692-1-npiggin@gmail.com>
 References: <20240223154211.1001692-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,74 +97,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Flushing the TCG TLB pages that cache a software TLB is a common
-operation, factor it into its own function.
+BookE software TLB is implemented by flushing old translations from the
+relevant TCG TLB whenever software TLB entries change. This means a new
+software TLB entry should not have any corresponding cached TCG TLB
+translations, so there is nothing to flush. The exception is multiple
+software TLBs that cover the same address and address space, but that is
+a programming error and results in undefined behaviour, and flushing
+does not give an obviously better outcome in that case either.
+
+Remove the unnecessary flush of a newly written software TLB entry.
 
 Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
 Acked-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu_helper.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ target/ppc/mmu_helper.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
 diff --git a/target/ppc/mmu_helper.c b/target/ppc/mmu_helper.c
-index c140f3c96d..949ae87f4f 100644
+index 949ae87f4f..68632bf54e 100644
 --- a/target/ppc/mmu_helper.c
 +++ b/target/ppc/mmu_helper.c
-@@ -749,12 +749,20 @@ target_ulong helper_4xx_tlbre_lo(CPUPPCState *env, target_ulong entry)
-     return ret;
- }
- 
-+static void ppcemb_tlb_flush(CPUState *cs, ppcemb_tlb_t *tlb)
-+{
-+    target_ulong ea;
-+
-+    for (ea = tlb->EPN; ea < tlb->EPN + tlb->size; ea += TARGET_PAGE_SIZE) {
-+        tlb_flush_page(cs, ea);
-+    }
-+}
-+
- void helper_4xx_tlbwe_hi(CPUPPCState *env, target_ulong entry,
-                          target_ulong val)
- {
-     CPUState *cs = env_cpu(env);
-     ppcemb_tlb_t *tlb;
--    target_ulong page, end;
- 
-     qemu_log_mask(CPU_LOG_MMU, "%s entry %d val " TARGET_FMT_lx "\n",
-                   __func__, (int)entry,
-@@ -763,13 +771,10 @@ void helper_4xx_tlbwe_hi(CPUPPCState *env, target_ulong entry,
-     tlb = &env->tlb.tlbe[entry];
-     /* Invalidate previous TLB (if it's valid) */
-     if (tlb->prot & PAGE_VALID) {
--        end = tlb->EPN + tlb->size;
-         qemu_log_mask(CPU_LOG_MMU, "%s: invalidate old TLB %d start "
-                       TARGET_FMT_lx " end " TARGET_FMT_lx "\n", __func__,
--                      (int)entry, tlb->EPN, end);
--        for (page = tlb->EPN; page < end; page += TARGET_PAGE_SIZE) {
--            tlb_flush_page(cs, page);
--        }
-+                      (int)entry, tlb->EPN, tlb->EPN + tlb->size);
-+        ppcemb_tlb_flush(cs, tlb);
-     }
-     tlb->size = booke_tlb_to_page_size((val >> PPC4XX_TLBHI_SIZE_SHIFT)
-                                        & PPC4XX_TLBHI_SIZE_MASK);
-@@ -805,13 +810,10 @@ void helper_4xx_tlbwe_hi(CPUPPCState *env, target_ulong entry,
+@@ -808,13 +808,6 @@ void helper_4xx_tlbwe_hi(CPUPPCState *env, target_ulong entry,
+                   tlb->prot & PAGE_WRITE ? 'w' : '-',
+                   tlb->prot & PAGE_EXEC ? 'x' : '-',
                    tlb->prot & PAGE_VALID ? 'v' : '-', (int)tlb->PID);
-     /* Invalidate new TLB (if valid) */
-     if (tlb->prot & PAGE_VALID) {
--        end = tlb->EPN + tlb->size;
-         qemu_log_mask(CPU_LOG_MMU, "%s: invalidate TLB %d start "
-                       TARGET_FMT_lx " end " TARGET_FMT_lx "\n", __func__,
--                      (int)entry, tlb->EPN, end);
--        for (page = tlb->EPN; page < end; page += TARGET_PAGE_SIZE) {
--            tlb_flush_page(cs, page);
--        }
-+                      (int)entry, tlb->EPN, tlb->EPN + tlb->size);
-+        ppcemb_tlb_flush(cs, tlb);
-     }
+-    /* Invalidate new TLB (if valid) */
+-    if (tlb->prot & PAGE_VALID) {
+-        qemu_log_mask(CPU_LOG_MMU, "%s: invalidate TLB %d start "
+-                      TARGET_FMT_lx " end " TARGET_FMT_lx "\n", __func__,
+-                      (int)entry, tlb->EPN, tlb->EPN + tlb->size);
+-        ppcemb_tlb_flush(cs, tlb);
+-    }
  }
  
+ void helper_4xx_tlbwe_lo(CPUPPCState *env, target_ulong entry,
 -- 
 2.42.0
 
