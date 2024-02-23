@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9014D8616FA
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:07:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D0F9861696
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 16:58:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdY21-0007Mf-RI; Fri, 23 Feb 2024 11:04:14 -0500
+	id 1rdXu8-0003cj-IR; Fri, 23 Feb 2024 10:56:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXin-0005bL-5r; Fri, 23 Feb 2024 10:44:21 -0500
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ id 1rdXip-0005bk-To; Fri, 23 Feb 2024 10:44:23 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXil-0006Jo-MU; Fri, 23 Feb 2024 10:44:20 -0500
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-5ce9555d42eso795744a12.2; 
- Fri, 23 Feb 2024 07:44:17 -0800 (PST)
+ id 1rdXio-0006KQ-Dg; Fri, 23 Feb 2024 10:44:23 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1dbf1fe91fcso7847665ad.3; 
+ Fri, 23 Feb 2024 07:44:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708703057; x=1709307857; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708703060; x=1709307860; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=G8ZPb3xPbgkM4M/2MGFfCLB8pnr23xttugE2MsKokaE=;
- b=TBozMG1hDv8/gQY0lwm5Q8ZuInZfKqzhWpYZhdQqHRiaVZS6RL6KRHnPMJ1t7SmjFg
- 5UMP1TiRBPCUpyjdTS3Yex0hUrHlY2Jhf8moK5ZylM6G6CkVzbYXVfvDLprObr8AcxLE
- 8ycEsQHine+sbKr2Z/0O5aC/509/xJGWgYhV4mPlcHcsl44+y+jhijkfKWIRDekc6Um7
- y+64UIQVDl3DyFNewfXezz6/fn5ZKrBuDMobjyu3pszmZ5LWv7Gt/ykR6n2bViO+BIeE
- 2Uvuw9oRDz6DpNglxd4h6CLSauB95Axz4I9PeYbFkONKe/OfCwAKCOSHSjeY+EKtCh7O
- 5x2g==
+ bh=xN8nmdXHN5XCjfxtSnns0I9puDQ9du3yvTk36PUt1SI=;
+ b=GdGZHgMBxxq4A9yiaGw9J+JGo9rU+FO1zr0sRRsVChL1hFz/Hyp1MmL40rFReezgzg
+ TeTjk2Ncs7d2UznMlM9a3j4BD1liMz9uqVgDznDtqS+Hil4zO2j1fIa59STcwdgZJuTI
+ scZSbOUoUBfrV2OjkCiYxMA5msH/LZUWnZKJzpGt3WsW7goYiR4uSpEtT7bBhWwKGdG8
+ mARO4RsyunxzuPTIDNacI3tVzrtxWETUtXzISx2vlBZANyIXVIMQmsycixyrm5nNy1SJ
+ OgMFuApc1fElxaPKvw29iTuWqJOOseJMeiExopfAMwQBpL+ldBptD9rZgIQmp9x3igGa
+ fIgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708703057; x=1709307857;
+ d=1e100.net; s=20230601; t=1708703060; x=1709307860;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=G8ZPb3xPbgkM4M/2MGFfCLB8pnr23xttugE2MsKokaE=;
- b=isbDYqT/o8lPOH/MO55C21Smf3bBVSqDKm4Wf403iQlFJh4R81wzpW+YRXsxlVAI3B
- i6ZUvubq+zuD417COx1x1Hg7H3JAmKv/QHPl0YBiFxVs+aHqTICNZb0JOVd0XLb4grU6
- FMCFkTsrM1MT86bXqostJoomv2qgKqxRhnBKCUiDd+zfVlfyHeiWXCO6wDW5x6DQEGrv
- ja6VVTDMGslFa0um+dyu5E7b3p/Y3KWUwL8zBUCp6y6MQlE5ba0ET1IhO8EQcuNDNc1J
- NZN2Ec6r5skWfyI/MusNy7jxMCGfLFmVRbJdrNInJabrCqTGDvSfqk69YNiJnp+SpgQf
- Z/6g==
+ bh=xN8nmdXHN5XCjfxtSnns0I9puDQ9du3yvTk36PUt1SI=;
+ b=PBsgygKpxn9Sb7tCcj9SAIa0gVv+ff+kDYpYnEKIZWtu42yjR/rtQNWwZuQSsKXKnU
+ w3Uw+Gguo6KXjfAAdXxUmZEPlplzojJXIbsogvTayqPeminOvJH4/enBf0MpWaLqMuBi
+ 9UnC1CJcJzGIwfMOko2GPC82Uf+SD4qhYxyDBuOcJ8EbLlKmK0/iOtlvncJIlC36+G9L
+ Jie0wcaMxZzNMNU1VokA1Xzm6V+3E2M6OpZ9Llc+HwkrvHOQAuCOWrAx1YyYejTse+Pc
+ aJP3qFQEZyW0ZJ9+t6JPZT0/AXGYtQnlX0D2mUaGf9EgPLnVO2+8bGKefazxhd8J588f
+ ceIQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVcIDEscRc5ntmB9z5E7aIHhbODxtu4s1eb0hngUlmfpaT3cI4I1kngSY5lbtgBbTnJ7f5K8EDYTRE7Ln4jwDbpzACO
-X-Gm-Message-State: AOJu0YxKXg3X6Q0EE6RkzSc+x8uLAEqY+7aJawWXJwM0KtnUpJC/9MNA
- KwNQBbwLhPZ6hOpOlZxdb7a9ToHdCXOjb+tWuVVpy4djNcpB5tcHRqkcAw7q
-X-Google-Smtp-Source: AGHT+IE8r3VKx8NJwqiOUt78vFXosUqUNZDZEL3uUSene0I4CTZKT+t1JRGzGOvnM+4u3CsyKLAO7A==
-X-Received: by 2002:a05:6a20:c90a:b0:1a0:ccf2:8f44 with SMTP id
- gx10-20020a056a20c90a00b001a0ccf28f44mr301686pzb.21.1708703056690; 
- Fri, 23 Feb 2024 07:44:16 -0800 (PST)
+ AJvYcCXAuRs7fTRlyf56XRkacYTUiV57ZDbUgcfZH1SrVR5QqE6E8NcKuX8rbsA/mHgv+CUqLgtotzWiwgoAVvNVE4+lKdkI
+X-Gm-Message-State: AOJu0YxiXlOqWyfzcD1isusvPEzhXG0jVGkVOxzeKwj0S+i+A+Yb3n32
+ +cq5Ptb8lQUIHKlIaaUULSF7jHPtUCjfWx/bTzLrxaXQmDVGbkz8AoPh0cxA
+X-Google-Smtp-Source: AGHT+IG1slZUNN/KG6bEXQ1IX0ZFFEz2pKF8n6J4d0lEjjW6SxOut4QvVKYAthQgHtLwqQUUZ5sp1w==
+X-Received: by 2002:a17:902:6942:b0:1db:8eae:b98e with SMTP id
+ k2-20020a170902694200b001db8eaeb98emr156227plt.38.1708703060364; 
+ Fri, 23 Feb 2024 07:44:20 -0800 (PST)
 Received: from wheely.local0.net (220-235-194-103.tpgi.com.au.
  [220.235.194.103]) by smtp.gmail.com with ESMTPSA id
- h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.44.13
+ h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.44.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 07:44:16 -0800 (PST)
+ Fri, 23 Feb 2024 07:44:20 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
@@ -63,18 +63,18 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Kowshik Jois <kowsjois@linux.ibm.com>
-Subject: [PULL 16/47] ppc/spapr: Introduce SPAPR_IRQ_NR_IPIS to refer IRQ
- range for CPU IPIs.
-Date: Sat, 24 Feb 2024 01:41:35 +1000
-Message-ID: <20240223154211.1001692-17-npiggin@gmail.com>
+Subject: [PULL 17/47] ppc/spapr: Initialize max_cpus limit to
+ SPAPR_IRQ_NR_IPIS.
+Date: Sat, 24 Feb 2024 01:41:36 +1000
+Message-ID: <20240223154211.1001692-18-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240223154211.1001692-1-npiggin@gmail.com>
 References: <20240223154211.1001692-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x52d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,79 +99,73 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-spapr_irq_init currently uses existing macro SPAPR_XIRQ_BASE to refer to
-the range of CPU IPIs during initialization of nr-irqs property.
-It is more appropriate to have its own define which can be further
-reused as appropriate for correct interpretation.
+Initialize the machine specific max_cpus limit as per the maximum range
+of CPU IPIs available. Keeping between 4096 to 8192 will throw IRQ not
+free error due to XIVE/XICS limitation and keeping beyond 8192 will hit
+assert in tcg_region_init or spapr_xive_claim_irq.
 
-Suggested-by: Cedric Le Goater <clg@kaod.org>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Logs:
+
+Without patch fix:
+
+[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=4097
+qemu-system-ppc64: IRQ 4096 is not free
+[root@host build]#
+
+On LPAR:
+[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=8193
+**
+ERROR:../tcg/region.c:774:tcg_region_init: assertion failed:
+(region_size >= 2 * page_size)
+Bail out! ERROR:../tcg/region.c:774:tcg_region_init: assertion failed:
+(region_size >= 2 * page_size)
+Aborted (core dumped)
+[root@host build]#
+
+On x86:
+[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=8193
+qemu-system-ppc64: ../hw/intc/spapr_xive.c:596: spapr_xive_claim_irq:
+Assertion `lisn < xive->nr_irqs' failed.
+Aborted (core dumped)
+[root@host build]#
+
+With patch fix:
+[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=4097
+qemu-system-ppc64: Invalid SMP CPUs 4097. The max CPUs supported by
+machine 'pseries-8.2' is 4096
+[root@host build]#
+
+
+Reported-by: Kowshik Jois <kowsjois@linux.ibm.com>
 Tested-by: Kowshik Jois <kowsjois@linux.ibm.com>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr_irq.c         |  6 ++++--
- include/hw/ppc/spapr_irq.h | 14 +++++++++++++-
- 2 files changed, 17 insertions(+), 3 deletions(-)
+ hw/ppc/spapr.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/hw/ppc/spapr_irq.c b/hw/ppc/spapr_irq.c
-index a0d1e1298e..97b2fc42ab 100644
---- a/hw/ppc/spapr_irq.c
-+++ b/hw/ppc/spapr_irq.c
-@@ -23,6 +23,8 @@
- 
- #include "trace.h"
- 
-+QEMU_BUILD_BUG_ON(SPAPR_IRQ_NR_IPIS > SPAPR_XIRQ_BASE);
-+
- static const TypeInfo spapr_intc_info = {
-     .name = TYPE_SPAPR_INTC,
-     .parent = TYPE_INTERFACE,
-@@ -329,7 +331,7 @@ void spapr_irq_init(SpaprMachineState *spapr, Error **errp)
-         int i;
- 
-         dev = qdev_new(TYPE_SPAPR_XIVE);
--        qdev_prop_set_uint32(dev, "nr-irqs", smc->nr_xirqs + SPAPR_XIRQ_BASE);
-+        qdev_prop_set_uint32(dev, "nr-irqs", smc->nr_xirqs + SPAPR_IRQ_NR_IPIS);
-         /*
-          * 8 XIVE END structures per CPU. One for each available
-          * priority
-@@ -356,7 +358,7 @@ void spapr_irq_init(SpaprMachineState *spapr, Error **errp)
-     }
- 
-     spapr->qirqs = qemu_allocate_irqs(spapr_set_irq, spapr,
--                                      smc->nr_xirqs + SPAPR_XIRQ_BASE);
-+                                      smc->nr_xirqs + SPAPR_IRQ_NR_IPIS);
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 0d72d286d8..0028ce0b67 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -4639,13 +4639,10 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
+     mc->block_default_type = IF_SCSI;
  
      /*
-      * Mostly we don't actually need this until reset, except that not
-diff --git a/include/hw/ppc/spapr_irq.h b/include/hw/ppc/spapr_irq.h
-index c22a72c9e2..4fd2d5853d 100644
---- a/include/hw/ppc/spapr_irq.h
-+++ b/include/hw/ppc/spapr_irq.h
-@@ -14,9 +14,21 @@
- #include "qom/object.h"
+-     * Setting max_cpus to INT32_MAX. Both KVM and TCG max_cpus values
+-     * should be limited by the host capability instead of hardcoded.
+-     * max_cpus for KVM guests will be checked in kvm_init(), and TCG
+-     * guests are welcome to have as many CPUs as the host are capable
+-     * of emulate.
++     * While KVM determines max cpus in kvm_init() using kvm_max_vcpus(),
++     * In TCG the limit is restricted by the range of CPU IPIs available.
+      */
+-    mc->max_cpus = INT32_MAX;
++    mc->max_cpus = SPAPR_IRQ_NR_IPIS;
  
- /*
-- * IRQ range offsets per device type
-+ * The XIVE IRQ backend uses the same layout as the XICS backend but
-+ * covers the full range of the IRQ number space. The IRQ numbers for
-+ * the CPU IPIs are allocated at the bottom of this space, below 4K,
-+ * to preserve compatibility with XICS which does not use that range.
-+ */
-+
-+/*
-+ * CPU IPI range (XIVE only)
-  */
- #define SPAPR_IRQ_IPI        0x0
-+#define SPAPR_IRQ_NR_IPIS    0x1000
-+
-+/*
-+ * IRQ range offsets per device type
-+ */
- 
- #define SPAPR_XIRQ_BASE      XICS_IRQ_BASE /* 0x1000 */
- #define SPAPR_IRQ_EPOW       (SPAPR_XIRQ_BASE + 0x0000)
+     mc->no_parallel = 1;
+     mc->default_boot_order = "";
 -- 
 2.42.0
 
