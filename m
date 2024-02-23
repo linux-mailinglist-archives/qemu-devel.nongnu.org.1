@@ -2,78 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F8186190D
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 18:13:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ADB0861943
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 18:20:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdZ4E-0007lr-Ur; Fri, 23 Feb 2024 12:10:34 -0500
+	id 1rdZCL-0002Ns-9w; Fri, 23 Feb 2024 12:18:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdYrZ-00008J-M9
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:57:31 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rdYtf-0005NX-7B
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:59:39 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdYrR-0004LL-Tw
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:57:28 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-563c0f13cabso891389a12.3
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 08:57:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rdYtd-0004cn-Iw
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:59:38 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-412960dbb0eso4301785e9.1
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 08:59:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708707429; x=1709312229; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=xsDhYDGOw5CqhnAyZ1mUQnkbXRXKZJFQMDnbXbJP7ck=;
- b=cpvI2nBY9jmCV7SHejOX8n9n8JG+RlrFnju5+Ocv5oh6dHBE5+m6wdtqEnKd6sB2Uu
- ldfnTpp7hjcTsMjkTwLlz+2HN9W4y5IUUC+PxaeQgMxITKPlfmHGwKLZD0Wvz9iaNEWr
- EmNaEeCrEJZ0HJmRlrQSOQkbBn1gQ5aaKaZb0C/C0X/UR8Pds/tGQ7TzCHq5SWRvW6SD
- X/DrbP1WZF8ZBTUNAKI/TR+gRzs09TM3R4aABV5l5rRhZTxBZEunle1SjsIFzSzFJiin
- O0AtPr04adN7p4se0MhzL6pkuI8VsZQom6ihKs6+/73sXkWClPwapNpY0qTa/aPK6Ccg
- w3aA==
+ d=linaro.org; s=google; t=1708707575; x=1709312375; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EJtDN3jvV6Bj8KTt6+nIvPG6r5VgNuaGUyPGz//FAD8=;
+ b=mrNmyZ/6xHdE11+UqVtl1vttGu73S/uHaWfbCfwxEq4wO05TKbEA5qbv/jhYQJ3Dle
+ E0j1gJJbq98uLiMwLAfUuSuf6bz3zdRCUeY980RkkhFxs2P3n8Ovj6Gv5cwEHucNVXO/
+ OwwGeu98xgdtml42zYrS6RAXln5wPCIcbJAhU/a3lSuKlGrCY5c5YKuoTRjTKUzWReDt
+ c0kzRaEVxVnq/NEWsZTZBoGnBcAfZbsuiFngPRsS3WNV8hz/3GGyrzo1lQiFBMCSsIIA
+ MIzCTBjrUpnlXxvl+dESyIlsR1PgoDcqVTD4P4GiU9FUCGKk1qae8Dd3HXbWRS59aznR
+ 2uzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708707429; x=1709312229;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=xsDhYDGOw5CqhnAyZ1mUQnkbXRXKZJFQMDnbXbJP7ck=;
- b=R3Z+CWlc5I67ScJU+nCBpwyvefI7xv7VIGYSwE3+SBQQHj8tmarwQTLTzp8JmWrTYD
- KL1M3sByh8mJw6Gz91cZ33SmYKzfH6Bs8LPCphyiUdNzriLe5TJUXdNMCdeoo7UZbXZN
- 39ghKy+0UDw6GfP3w0ozrmjiEuC1M6G7fLWfTERCdyiCl7wSJjDUXAgV1MvbEk1TgH2E
- +C4LqL/MbYO7zVG7O6vB4FoPyY2S9EzW/J9dNyNiFWZeRzbTBz5sfA54R/JTlGHOKcFP
- 6sSjz7H+SAJ7hcVoZ4b8CP6yDUdsJTYPE6tPESlZLieY0jCv+AFsoNMJD8v+fzXDwMZf
- z+kw==
+ d=1e100.net; s=20230601; t=1708707575; x=1709312375;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EJtDN3jvV6Bj8KTt6+nIvPG6r5VgNuaGUyPGz//FAD8=;
+ b=UZ+kjdM1qY+cQXH6lo/qNJIl0fDjT+4VVn8Em2dPGaP/ynPz4Hd1o5KtMa4s1Yz9e4
+ hBz5lpwXIdWkKo9BQGNyJlghYzj9rVepdtBCxoguYnrbuNlVGtf9gRNDBLqg/9tAtctY
+ X7g/9pig9JZXn3dUqtdT4CHvskQWTPfLjlT91QVV1sRDlT0RdcKSK90JPSBZsfIiR2IC
+ J8U8dgEZA09/n3oUxJT0yh6p8REmx7M00qUVTSB0kPXBjAjiDjKLC+D7idgWjfLr29QS
+ dN1Jhi/MZ/oi0FYoZYQdkWDe7i3pIOFdhjmGw7JpUDNTW/1q6zdzKWQLYrdOKOjAOfZu
+ tKfg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXwP7RYb8mOPqOXdW1ccou4S/HSJuo+HIYQsevviKp0Jj7oBLsVXEXUbrAPHdzaS0Hyn7ipyBZdrFoW6yJgTo/z4HNsbLs=
-X-Gm-Message-State: AOJu0YyYXRPKfFgIGJaaWY/5H4pJkOfcU0rTdI1RIb4s6yRlQJN1oM2v
- 7y6LctZ3F54zTB0p9M50JEY62zIonzIt/H/ktmySDP3s1xvoOHjEkzXm8fJ7YMuIz5izE5qrdyh
- GZ41hHyBl0emQXNmMO6xX0isle6m3HBZLiixhBw==
-X-Google-Smtp-Source: AGHT+IFOcAemeN9d+xcwiY1NHvlaE8CkJ1mjdhQrNvZv1uH1/CaLSNjuwrIDwW7GynEbt1/dTxRouoPFbv4MDiv2q90=
-X-Received: by 2002:aa7:d0d4:0:b0:565:665b:9c82 with SMTP id
- u20-20020aa7d0d4000000b00565665b9c82mr247097edo.8.1708707429234; Fri, 23 Feb
- 2024 08:57:09 -0800 (PST)
+ AJvYcCU5mzrtKB28o7W0OvNLBUUOxC1+7y6z5l8LLNPnB+2vpEnOnR4VUaYB5KiQOSjsD0iVwNgp6ZQ+WGOlqqMvr7PN0i7gRng=
+X-Gm-Message-State: AOJu0YxaeZW8bMxi30HDm9NZW8d+Bt2nhWrQOe9c5qGcMoAI4UdQFwaF
+ pCUzkdzmpEpBhhETdrTEA+ktAzlaDJz+fTWlS9aKcg+oAgvxP3EKf88k3+cFyXI=
+X-Google-Smtp-Source: AGHT+IGKslzmCY5IMrPdT60Bb19x427lwsGWjnZLW4wSNAMk+LEKHdzOGO0hjl8uZCC97P2g80IXQw==
+X-Received: by 2002:a05:600c:45ca:b0:412:7880:3da8 with SMTP id
+ s10-20020a05600c45ca00b0041278803da8mr298496wmo.16.1708707574983; 
+ Fri, 23 Feb 2024 08:59:34 -0800 (PST)
+Received: from [192.168.69.100] (xbn44-h02-176-184-35-109.dsl.sta.abo.bbox.fr.
+ [176.184.35.109]) by smtp.gmail.com with ESMTPSA id
+ m6-20020a7bce06000000b00410bca333b7sm2939507wmc.27.2024.02.23.08.59.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 23 Feb 2024 08:59:34 -0800 (PST)
+Message-ID: <e44fde31-ca7f-4b79-87ab-bf94881d1be7@linaro.org>
+Date: Fri, 23 Feb 2024 17:59:33 +0100
 MIME-Version: 1.0
-References: <20240219011739.2316619-1-sergey.kambalin@auriga.com>
- <20240219011739.2316619-42-sergey.kambalin@auriga.com>
-In-Reply-To: <20240219011739.2316619-42-sergey.kambalin@auriga.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 23 Feb 2024 16:56:57 +0000
-Message-ID: <CAFEAcA9Ly8PVajPtjuPiuBejwjTf34sgNArJjL+vxFUefwRmMA@mail.gmail.com>
-Subject: Re: [PATCH v5 41/41] Add RPi4B to paspi.rst
-To: Sergey Kambalin <serg.oker@gmail.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- Sergey Kambalin <sergey.kambalin@auriga.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/ide: Remove last two uses of ide/internal.h outside of
+ hw/ide
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org
+Cc: John Snow <jsnow@redhat.com>, Thomas Huth <thuth@redhat.com>
+References: <20240223142633.933694E6004@zero.eik.bme.hu>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240223142633.933694E6004@zero.eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,17 +95,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 19 Feb 2024 at 01:23, Sergey Kambalin <serg.oker@gmail.com> wrote:
->
-> Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
+On 23/2/24 15:26, BALATON Zoltan wrote:
+> Remove last two includes of hw/ide/intarnal.h outside of hw/ide and
+> replace them with newly added public header to allow moving internal.h
+> into hw/ide to really stop exposing it.
+> 
+> Fixes: a11f439a0e (hw/ide: Stop exposing internal.h to non-IDE files)
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 > ---
->  docs/system/arm/raspi.rst | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
+>   hw/arm/sbsa-ref.c                 | 2 +-
+>   {include/hw => hw}/ide/internal.h | 0
+>   include/hw/misc/macio/macio.h     | 2 +-
+>   3 files changed, 2 insertions(+), 2 deletions(-)
+>   rename {include/hw => hw}/ide/internal.h (100%)
 
-Still has the typo in the commit message subject.
-Otherwise
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-thanks
--- PMM
 
