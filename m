@@ -2,111 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FAE686184B
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:45:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98844861872
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:49:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdYdP-0003ol-Kf; Fri, 23 Feb 2024 11:42:51 -0500
+	id 1rdYjC-00039L-U1; Fri, 23 Feb 2024 11:48:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rdYLW-0004oS-CG
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:24:22 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1rdYU7-00005g-W8
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:33:16 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rdYLU-0006RJ-Ly
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:24:22 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-412949fd224so3529695e9.1
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 08:24:20 -0800 (PST)
+ id 1rdYU6-00087I-A3
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:33:15 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-33d9c3f36c2so299243f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 08:33:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708705459; x=1709310259; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708705992; x=1709310792; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QDPoOTgJFDyrZUjFq6GO84tsxgKNaYK3146PG7chcsI=;
- b=Gj37GkUQcP6zSxIy+CjCifCbiSqLR5OL4gacQEIEEHKDnrS8yIEsRflxfY1SyA4P0c
- nbhDEmORnF2pWFrFIQMfgdO/KM86RCQMrKaJzT5Bg2poSEJ3jrO3kcepoQm/ISNZc4lo
- u1zLJw2RsQFCwMlIIe3G8kU2G5TU5wHaY0OLL+VHNhRnq3KelEIafuUzasf/bFIXBHdK
- BsMmaJqhh2Dcol6Zzjy5zoL204cJbp5zXAQ93x2nbiYnpo2JKGAaYdCz+pl+7iOE5hrd
- vd1oY3+FQvXOSpz0ZXZ9MdoiW/EvjUF+Z7jp5cKH3hrMev++fIvr3g9U5kc6p+OHCR8E
- XL8A==
+ bh=AdAqcPISjCpda4bvmvurEoPcFsLJ6rzzW5hX9Mb98eY=;
+ b=AgbuL3n8pwiThPwqLc6hdmujdlbTDNbFajYsGuxMtvnCUnpX5IxCNtvYG2nUJdCDg7
+ 5iOwlKMXAvLzqW0spI8B2YRw200eazhA7mboGD3R0Zu51xeSa2GuaXiIM1jFCbw0VJho
+ IFMzAtPubwu2PydRNCSNN5au+xU2S1h+W5D2ysJT4HzBMukvkCronET/khWFIetF2lJQ
+ 1GTIe4c+Qt03JROuxWTXsVw3j7FhbweX9KMtymYiySlWYA3e/P+4svg5YU59Z/Akgpas
+ NrVDGM49toL2RiFKjI9WB247rZz6zSIABIZ2LwWqLLFsCVTmC0ahzqFWC9GOnCEkPV9E
+ OLgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708705459; x=1709310259;
+ d=1e100.net; s=20230601; t=1708705992; x=1709310792;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=QDPoOTgJFDyrZUjFq6GO84tsxgKNaYK3146PG7chcsI=;
- b=HaQO2rrDjVzBvqp5MBTw+eETmr6PKMNSWHmgK6CZn5Nwib5S8DOllGvFjA4nDIbgJ/
- KUQunExoYX/h8jbsWxXAWPcfuylYDcY6J3+SFqmY0u7xhu3R40etbep31rRg7tAMm38e
- DSIV91IoUIvw9LZGI6+GudOrRz7cyADXlXh4Ry15/8UTYIhBUbjwZEaXM6Gzbg/UBOsz
- BAWe/u4XXxDH8a9orHlAPo60GABmpghjKtKGyH/27V5TpGeKtDWykz1wNNP8HyNz5lFi
- ItY6Z94uxCAdJtS13Akk2m8r/RHjRQlGuNwG1/QJ1zi/uloBXpfRCiHw+clfprexdQgV
- NKNA==
-X-Gm-Message-State: AOJu0YwlsnfL7nUT/ckAXTMmnhP+UjcLNarPKZQK+wjnSntRjUu8CtbN
- 8MVey7AA28Wyy3HKMiBYEIm5o6erS7f2c05U/AjxZ5HhVrSx0gLcnoNRpnjtQcg=
-X-Google-Smtp-Source: AGHT+IHVOSb6IIVrzAwdQtzoDJL6yukrRYIWP9JeoowWDn2K3rCxPxP9veXekKt8dcJyOeXfsGB2CA==
-X-Received: by 2002:a05:600c:35ca:b0:411:c8a7:7b09 with SMTP id
- r10-20020a05600c35ca00b00411c8a77b09mr284914wmq.10.1708705459248; 
- Fri, 23 Feb 2024 08:24:19 -0800 (PST)
+ bh=AdAqcPISjCpda4bvmvurEoPcFsLJ6rzzW5hX9Mb98eY=;
+ b=Bk8FXn/MP/cBj/1H3TJFBskESMRELEMgM8LAaREz5loKsHKlbWRxs0HgGGyaWUeMu/
+ FGvqZPxFeCrisNv75rtcI2GbfKLpp2TVEDrGGuRM0ZpJIvweNi5nIlm9QhA/Pxjy2DBN
+ KnpdRUaP+UUZ3gPZixIyeBATFfrThQC44zMKqfVQJIxJIe5NzZlC0KKYpqN6mVw2dbWQ
+ +TxIzbsmSRQhhUKxv9Bp0UCcLxQB9KzEMtylveMnesUeymorc667luDJFZJeepIYLHhK
+ Ix1ASae/96qz2UdVF6qgfB41u8qa5xryqg+AcMptbh51DTGqSF02IifRYBzzwzeo57Bk
+ zNpQ==
+X-Gm-Message-State: AOJu0YyxTh2IeTGzQhopym36+RErq2iD2PT/9mbjrcFnchvBhG8OvVS1
+ zutmeFr3p6gUrXTI+kAlpHaFsnU7m465SzwMesJbOvV2YMTVTJEb4hJzkwQr3Qc=
+X-Google-Smtp-Source: AGHT+IEZnLDgNVHquA56sm+4tgHOkxe0Ul+tCfu72PxxjAQevIcsEO9BFkYzhDQxj7a60e0s5RaDtw==
+X-Received: by 2002:a5d:4802:0:b0:33d:b376:89ed with SMTP id
+ l2-20020a5d4802000000b0033db37689edmr39962wrq.8.1708705992627; 
+ Fri, 23 Feb 2024 08:33:12 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ba16-20020a0560001c1000b0033b2799815csm3561519wrb.86.2024.02.23.08.24.18
+ y6-20020adfe6c6000000b0033d06dfcf84sm3302754wrm.100.2024.02.23.08.33.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 08:24:18 -0800 (PST)
+ Fri, 23 Feb 2024 08:33:12 -0800 (PST)
 Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 80FBD5F781;
- Fri, 23 Feb 2024 16:24:18 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id E58255F754;
+ Fri, 23 Feb 2024 16:33:11 +0000 (GMT)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org,  Yoshinori Sato <ysato@users.sourceforge.jp>,
- David Hildenbrand <david@redhat.com>,  Weiwei Li <liwei1518@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,  Michael Rolnik
- <mrolnik@gmail.com>,  Ilya Leoshkevich <iii@linux.ibm.com>,  Peter Maydell
- <peter.maydell@linaro.org>,  qemu-ppc@nongnu.org,  Paolo Bonzini
- <pbonzini@redhat.com>,  qemu-riscv@nongnu.org,  Cleber Rosa
- <crosa@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Song Gao
- <gaosong@loongson.cn>,  qemu-arm@nongnu.org,  Pierrick Bouvier
- <pierrick.bouvier@linaro.org>,  John Snow <jsnow@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le
- Goater <clg@kaod.org>,  Nicholas Piggin <npiggin@gmail.com>,
- qemu-s390x@nongnu.org,  Laurent Vivier <laurent@vivier.eu>,  "Edgar E.
- Iglesias" <edgar.iglesias@gmail.com>,  Daniel Henrique Barboza
- <dbarboza@ventanamicro.com>,  Yanan Wang <wangyanan55@huawei.com>,  Palmer
- Dabbelt <palmer@dabbelt.com>,  Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>,  Brian Cain <bcain@quicinc.com>,  Mahmoud
- Mandour <ma.mandourr@gmail.com>,  Alexandre Iooss <erdnaxe@crans.org>,
- Bin Meng <bin.meng@windriver.com>,  Philippe =?utf-8?Q?Mathieu-Daud?=
- =?utf-8?Q?=C3=A9?=
- <philmd@linaro.org>,  Daniel Henrique Barboza <danielhb413@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,  Alistair Francis
- <alistair.francis@wdc.com>,  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: Re: [PATCH 18/23] plugins: add an API to read registers
-In-Reply-To: <87jzmv8kwx.fsf@draig.linaro.org> ("Alex =?utf-8?Q?Benn=C3=A9?=
- =?utf-8?Q?e=22's?= message of "Fri, 23 Feb 2024 11:44:30 +0000")
-References: <20240216163025.424857-1-alex.bennee@linaro.org>
- <20240216163025.424857-19-alex.bennee@linaro.org>
- <c38a22b5-01e8-40f1-bfc4-4bba9bf7b516@daynix.com>
- <87il2jcje8.fsf@draig.linaro.org>
- <bf31a250-9539-448c-9c64-4168ab8741f1@daynix.com>
- <87bk8ab0f4.fsf@draig.linaro.org>
- <bf5e9471-c09f-47f2-a5a3-83713255c47a@daynix.com>
- <87zfvtaoqq.fsf@draig.linaro.org>
- <7e4b4ba6-3683-464f-ac37-3b7f19455643@daynix.com>
- <87cysoajhl.fsf@draig.linaro.org>
- <f4b0b535-9e2b-47c7-a84b-afd851deb88a@daynix.com>
- <87plwo8l56.fsf@draig.linaro.org>
- <308de8f7-5871-4d3d-847c-f4f55fb6f790@daynix.com>
- <87jzmv8kwx.fsf@draig.linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org,  Artyom Tarasenko <atar4qemu@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Markus
+ Armbruster
+ <armbru@redhat.com>,  Eduardo Habkost <ehabkost@redhat.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  Mark Cave-Ayland
+ <mark.cave-ayland@ilande.co.uk>
+Subject: Re: [PATCH] hw/rtc/sun4v-rtc: Relicense to GPLv2-or-later
+In-Reply-To: <20240223161300.938542-1-peter.maydell@linaro.org> (Peter
+ Maydell's message of "Fri, 23 Feb 2024 16:13:00 +0000")
+References: <20240223161300.938542-1-peter.maydell@linaro.org>
 User-Agent: mu4e 1.11.28; emacs 29.1
-Date: Fri, 23 Feb 2024 16:24:18 +0000
-Message-ID: <878r3b87yl.fsf@draig.linaro.org>
+Date: Fri, 23 Feb 2024 16:33:11 +0000
+Message-ID: <8734tj87js.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -129,32 +100,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
-<snip>
->>> What about if I just key based of gdb_regnum and we accept that that
->>> might break the one heterogeneous system we model today?
->>>=20
->>
->> That's the best option in my opinion. gdbstub won't work well with
->> such a system anyway, and fixing it will need something similar to
->> GHashTable. But if I would fix gdbstub for a heterogeneous system, I
->> would add a field to CPUClass instead of having a GHashTable keyed
->> with tuples of CPUClass pointers and register numbers. It should be
->> fine considering that CPUState already has gdbstub-specific fields
->> like gdb_regs.
+> The sun4v RTC device model added under commit a0e893039cf2ce0 in 2016
+> was unfortunately added with a license of GPL-v3-or-later, which is
+> not compatible with other QEMU code which has a GPL-v2-only license.
 >
-> It would be nice to move all register code into CPUClass to avoid
-> repeating ourselves but I suspect that is quite an invasive change for a
-> later series. Currently all the CPUClass values are set on init and
-> shouldn't really be changed after that otherwise we'll have to start
-> messing with locking.
+> Relicense the code in the .c and the .h file to GPL-v2-or-later,
+> to make it compatible with the rest of QEMU.
+>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
-Peter pointed out we can see different register sets for the same
-CPUClass but with different features enabled which kills that idea. I've
-just sent v2 which re-factors the plugin data a little and stores a per
-CPUPluginState hash table.
+Acked-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
 --=20
 Alex Benn=C3=A9e
