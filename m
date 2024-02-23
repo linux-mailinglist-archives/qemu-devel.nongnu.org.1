@@ -2,72 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65AA8861BE8
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 19:41:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F95C861BF7
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 19:44:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdaSt-0001HR-GL; Fri, 23 Feb 2024 13:40:07 -0500
+	id 1rdaWT-0005Zx-Vq; Fri, 23 Feb 2024 13:43:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdaA5-0005w8-Jz
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 13:20:43 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rdaBI-0006kW-8w
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 13:22:01 -0500
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdaA2-0002E0-HM
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 13:20:40 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-41298a20278so412085e9.3
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 10:20:37 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rdaBE-0002Nx-KS
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 13:21:55 -0500
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6e332bc65b3so694537b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 10:21:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708712436; x=1709317236; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=VEpDvpjnE0RxyFhulg9l08v8f2Wz7OaL2p5ANskUvHo=;
- b=CiAbumHMFUMo+387KLFSX+AVv0XvXcmlLiCGgzRucsEOac+OpmEbREfUEwax27wfzn
- jZ+4EQhhs9ZikP6n7YzfmeKC1iSvealmRD2YbFE+sjLvOPWZE4bMfoCrSaH0x8EQIk0G
- l0tltue2fPCoRkEqvk6ZM5zRFhe7nozl/PzYYAnS2ps98W1A7PjOD/xMo75y3bY1p9zS
- pepPT+RlRBE3ZQkZMBP+eJj9QTcLukuNl9LMoSLIHPQWDpEIlV+dUAWG8EeDuALcTO3C
- yTaj6eWKmAKFGZdDgAjPMmqVc+k50Yc9rznrWB/5Upe7S9z8MyGeO2rxIlYv5g0+HLY3
- uqTw==
+ d=linaro.org; s=google; t=1708712506; x=1709317306; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=7YKUGCOPT+JdTEjJ4JcaQB9kUWGXFYEylDzP9pi6MO0=;
+ b=Fq9Ba3pcwGMifIqeXsPTqQgzAqwalojiNFb61eojSiQlhLOCiugEO3Y77kDneY+vqR
+ TB87yafEnQpi2ku2/n6/P6FwcmyKW6WRAJM5l5WS1CyL9z9Evtickgz5Dz6WeAgdIT8D
+ yIVZ65+yFE+Hz82mhPHhtdiyxtE4F7urOKYeZU66r/sya/+XQR9dmkSe8c0xlr8U7AbG
+ ytIKRkptSm8lwxAH/LiMZgdosD5UTTyziM8no54E0NixUndcVsOVt+EYQaGnjKdSKPI+
+ N7pgbtPD76TgWFQxQxrfpnTQhHtHITkdZeyKqFDWDSkRt6eoHW+jTrcsLK9zRLqzXfeC
+ kG2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708712436; x=1709317236;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=VEpDvpjnE0RxyFhulg9l08v8f2Wz7OaL2p5ANskUvHo=;
- b=V/FUVCPrZ6OhpiUJ0xlPmwLyj+4wmYvcUcucvSClNC69a3ATiv1CZ6KXhia/8uPcTe
- 47J/lgAWZ785nT5cgGOoZSo3eZsekq+WO/I097J4zC4RwYcdQ9uYTRC5BXZL8BNVYYXX
- lXy/ahQ6VkFcy4Y13UbAbBMO9NkVMDwavQ692ZExPw6mAaMkpys6rRHbQs6SPevzQoik
- YaXrZyJg6mcJoFMH+MdwTW88Z2D+RgnxqFjbDnE1kqChe9G+bNIsAOJt57TrZ5P1TOXc
- FJ3FASv4MhqDZa/ctica3T7bPVBx0jUBdqpM4jQHwti56+K34AfrY6QBh9BdRK12cWeZ
- yZ4A==
-X-Gm-Message-State: AOJu0Ywl7wJwgqTQ/uNZguwNxqOqwb6K8Bg+Ob2pO51rq8yzPRZnLur/
- xaXAuAMIqe2SwNXrfZ3Re2jra7kejWWHccJxY+2G7b9orEUDv2Mclcqmi/A5eu6MM0BRYuuE1gv
- p
-X-Google-Smtp-Source: AGHT+IGXdsgXTCGdFTOCXQYzVz/s7LsCvchREGu744mP/9iwhGoLCM3ZpNktoFZSLo3sbuGKzOAwRw==
-X-Received: by 2002:adf:fa8f:0:b0:33d:3908:4f29 with SMTP id
- h15-20020adffa8f000000b0033d39084f29mr336939wrr.57.1708712436550; 
- Fri, 23 Feb 2024 10:20:36 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- bk28-20020a0560001d9c00b0033b728190c1sm3627432wrb.79.2024.02.23.10.20.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 10:20:36 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH] atomic.h: Reword confusing comment for qatomic_cmpxchg
-Date: Fri, 23 Feb 2024 18:20:35 +0000
-Message-Id: <20240223182035.1048541-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ d=1e100.net; s=20230601; t=1708712506; x=1709317306;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7YKUGCOPT+JdTEjJ4JcaQB9kUWGXFYEylDzP9pi6MO0=;
+ b=B+Eq8W+M/cb44Lj08ZHI1kKFox47lWjrKnH2wQJOlJh2bWWaI6mmfUKDcWcgv5UaDJ
+ c+Dw0YwAVeDdH8GLSRUg605+eypMQ4tLiC6LPE9PL3JcsmJLduHbbKhgmJIQYrhCjG5S
+ I4UuD2OrDqEfYVtg/IWfk2L4Sk8h49fnG8w/P0WM2sHqgSd45e5wH28P1GNhchOBWVsQ
+ uoYZ31naAiUEYDZFGGxudo0bCntxP9aG4f2bmiuY04dLTo9QMo4GFeVPbsGb1hXwBxL4
+ /3KzKVIsbzXCjLQGFdrkUaTNVAtCqlFvcTLCe590r/gefmKU6u95EWgs9nmnkNU0vsaF
+ 6YfQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUXH4zhXDBbuCIoE8W84I3wM3iKeVrSOZugHOik4qm0A6y6RM86gEkwjzXNIEazkG2Pf7TtNGbIB8ihU1IO3il3iqVSQpY=
+X-Gm-Message-State: AOJu0YzDoo9wrQxP6O4eXnuh1m5EsdnEALwaa1lxrF/xwzFgQH691y7s
+ V+yYqGCZrEn3lGzQMA3lnPAnaMpJA47K9ol+McjaqVsqwXV/zErI0RP5jQMgxLMWJyKOiQqbFsW
+ g
+X-Google-Smtp-Source: AGHT+IGe7rJ+I/rBfmY3V0XlmVEP964Z0SqlEKs1QKQzc0Xp/7hEcvEinllhYrvxMy4gVU2iPjzM3A==
+X-Received: by 2002:aa7:9984:0:b0:6e0:9149:a964 with SMTP id
+ k4-20020aa79984000000b006e09149a964mr515721pfh.10.1708712506010; 
+ Fri, 23 Feb 2024 10:21:46 -0800 (PST)
+Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
+ [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
+ e18-20020a656792000000b005dc389409c1sm10901115pgr.93.2024.02.23.10.21.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 23 Feb 2024 10:21:45 -0800 (PST)
+Message-ID: <808e13f8-11da-4ec1-969d-d2495cbd3a88@linaro.org>
+Date: Fri, 23 Feb 2024 08:21:42 -1000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] atomic.h: Reword confusing comment for qatomic_cmpxchg
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20240223182035.1048541-1-peter.maydell@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240223182035.1048541-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,33 +96,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The qatomic_cmpxchg() and qatomic_cmpxchg__nocheck() macros have
-a comment that reads:
- Returns the eventual value, failed or not
+On 2/23/24 08:20, Peter Maydell wrote:
+> The qatomic_cmpxchg() and qatomic_cmpxchg__nocheck() macros have
+> a comment that reads:
+>   Returns the eventual value, failed or not
+> 
+> This is somewhere between cryptic and wrong, since the value actually
+> returned is the value that was in memory before the cmpxchg.  Reword
+> to match how we describe these macros in atomics.rst.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   include/qemu/atomic.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/qemu/atomic.h b/include/qemu/atomic.h
+> index f1d3d1702a9..99110abefb3 100644
+> --- a/include/qemu/atomic.h
+> +++ b/include/qemu/atomic.h
+> @@ -202,7 +202,7 @@
+>       qatomic_xchg__nocheck(ptr, i);                          \
+>   })
+>   
+> -/* Returns the eventual value, failed or not */
+> +/* Returns the old value of '*ptr' (whether the cmpxchg failed or not) */
+>   #define qatomic_cmpxchg__nocheck(ptr, old, new)    ({                   \
+>       typeof_strip_qual(*ptr) _old = (old);                               \
+>       (void)__atomic_compare_exchange_n(ptr, &_old, new, false,           \
 
-This is somewhere between cryptic and wrong, since the value actually
-returned is the value that was in memory before the cmpxchg.  Reword
-to match how we describe these macros in atomics.rst.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- include/qemu/atomic.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/include/qemu/atomic.h b/include/qemu/atomic.h
-index f1d3d1702a9..99110abefb3 100644
---- a/include/qemu/atomic.h
-+++ b/include/qemu/atomic.h
-@@ -202,7 +202,7 @@
-     qatomic_xchg__nocheck(ptr, i);                          \
- })
- 
--/* Returns the eventual value, failed or not */
-+/* Returns the old value of '*ptr' (whether the cmpxchg failed or not) */
- #define qatomic_cmpxchg__nocheck(ptr, old, new)    ({                   \
-     typeof_strip_qual(*ptr) _old = (old);                               \
-     (void)__atomic_compare_exchange_n(ptr, &_old, new, false,           \
--- 
-2.34.1
-
+r~
 
