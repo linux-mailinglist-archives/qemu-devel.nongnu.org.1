@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E8E28616B5
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:01:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F608616CA
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:04:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdXxr-0006A6-J3; Fri, 23 Feb 2024 10:59:55 -0500
+	id 1rdY1f-0006Jy-I4; Fri, 23 Feb 2024 11:03:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXhl-0004u0-IX; Fri, 23 Feb 2024 10:43:17 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1rdXho-000536-HT; Fri, 23 Feb 2024 10:43:20 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXhj-00065M-SK; Fri, 23 Feb 2024 10:43:17 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1dc3b4b9b62so8664845ad.1; 
- Fri, 23 Feb 2024 07:43:14 -0800 (PST)
+ id 1rdXhn-00065n-4H; Fri, 23 Feb 2024 10:43:20 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1dba177c596so7080265ad.0; 
+ Fri, 23 Feb 2024 07:43:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708702993; x=1709307793; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708702997; x=1709307797; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iBXeq96+UfEXt+7jPCdQXfYO8ZB/kavEKYzoN0HqVio=;
- b=BM7uEMiAUl/JJTnb2r2ojb76PeLojduGKBvqKB0+3pfJYitlvg2YhXlw9upTW0DSjV
- 7cVfrTR35MV9DHvOmi28a0xDM3Go00K3GN/bM7SVj0RZ3ViJ/bax9FTHOHFF0xr7T3DX
- nCvtUFpDwokG/tKuuBKVS8Jwj/Q05Gtp+Ln0HFMUg9aZTN6CmJYbqpXrqR+tA/sAGegl
- Lyx8AOZ+E1rF4BdGeRSVHaEO4EuMvhHg0x5IS39oI677UG+7Zxx1GSPMY/WVvXfm8ij3
- L14ALxY1RijYiVLoFTQPXeq7OdZfM5LxqBT4Vy86eFzB0t3gbS1nBYvgstG0Nksdj50X
- 9Keg==
+ bh=DO+NKJ+3Dy+CDPyb9WGb2hSYId/P5Aznfwy/ttcELlo=;
+ b=SveWfWBE8xq66js3xJ3l3H2CPhKLsHvnlQNfLzMpgFndKPl7/nMS3r/GkjKlK7Z67G
+ LPg/d7+YX1X9udHnWt/qRs57TD0vuoUHgGQg9HIkHdsYKfbpL7wcaxJhPemzA0RPfqHe
+ lRJ43MxFhv3IyAzW4iUlrJ9COx170aTx2H2Di2THSRpOsfxVf+9ADBMx7qNf2OSi3WZp
+ 2Y1HMY9+oC/wiNacbJNr7weHPKXnHjjaQP3g/ZT8fdGlyO+qWzvwt4mBzjFtGkzO9sFn
+ Lbe1Zgd1SkSeqmmi9MG8JlzpaaXyQx9+OEzv177AC+2GlFyKBCAe5rIKEgxwmoT8J+21
+ oAvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708702993; x=1709307793;
+ d=1e100.net; s=20230601; t=1708702997; x=1709307797;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iBXeq96+UfEXt+7jPCdQXfYO8ZB/kavEKYzoN0HqVio=;
- b=uv4V+aYbFGzJsHi8VjwSHwSd8Ea7TqmgIJZXWuPOS8d6q1FKUT5Qpyt5Cyowd+WAMa
- q4Tfg5/Bmt9EGtRVPd9Uj002nHrNHxxzdoxMRIR+eajyJBRLl+2S7aixm7s0azSBNdP2
- zkkkYuZr4CyaXl426x+MYo7TTOch7DeAuVQUwWtTIW1Xt3/JfM93kO870yRR8UlTg+bW
- kgM5SEoHO4y88D7FwRorGQeelKmFYHPOIOO4fnW/7BP1EF0v/dcH83yNTh6LjKnVUVdG
- ZxzHTrD/zfmX8xlquf+xwdcEHbhFdwE9BlDiA0Qb9sU+gPV9LS2OlCDIDryFyuhZ8Ifd
- xEsw==
+ bh=DO+NKJ+3Dy+CDPyb9WGb2hSYId/P5Aznfwy/ttcELlo=;
+ b=XO+9OUqIzherotOnporbxsyPKd6RPWTIz7pPaXBX3sPUEPekPykKtsBm5vexg2eVa8
+ q2SnBpT9Y0rRZIvPQOTdHtp8e9SiDH3NLLZYSAC50EmGdgOGx9oOTqTAF2XFUcm/+FVw
+ MlBLyuyXYI5YOwJaBABvYWLRFxjjafYEavJlDb2TDpVv1snFg7gn3L8+ganNUpruzKSy
+ 2T7vQxPuBgTZrZBIJoHi92kTjRoswN73o6Wl/DWoP6tyk08/SNTqLKbwq59VikpdYnwb
+ NZchQpB5ySswfn466BehqVj6QXQ4QzmDzxLd3tmJ1vLKh2APPrIc085cYWNRnf0yAJ0G
+ 95ww==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXOHrsCCa7ltpwbJoRRFYXZUlI2c8rXJxPKx5Asp/vD3mhTkUdGTrkuwwPWq38VlJKEvC/pZ+SW+GX5e2aLnRHOFxG9
-X-Gm-Message-State: AOJu0YyC/7tK5Ntg4ifVXAWooBU0kbBsDTB+fLAQPD3UeNk3LFtLplu7
- XSxcpM1BA2gynE1GMCHda79G/x+E5StGRKJx+zrZC3DThcEo8Zzshe1igqgO
-X-Google-Smtp-Source: AGHT+IGEeeaWn74Nc/+1IMJaIJVM0TtyvoSZDh/LkcIDhJL29E/AiPTUAYZ+eicNA9MvRjSPMSIVHw==
-X-Received: by 2002:a17:902:db0a:b0:1db:c113:29bb with SMTP id
- m10-20020a170902db0a00b001dbc11329bbmr130684plx.34.1708702993474; 
- Fri, 23 Feb 2024 07:43:13 -0800 (PST)
+ AJvYcCWGcTAkIgSCv67HqKbZ2auEeXKwra4OMCsUsg+PtKuXqb5j4PAFRfrC913n1ZAZxgXO7nhaGbWjF9niC80zghX1iM5C
+X-Gm-Message-State: AOJu0YxboWLN7ub7/mWFuBeBMBKNSq7whoF5V+Qw1MrS9Y5phllZhowf
+ 3ijkpm32w3uLchz1wwANppXVhf7hSvQmDaY/WArk9/RzWFybpmu24ZM9wWGs
+X-Google-Smtp-Source: AGHT+IHsAQtnBhJp7NYP2hh+MKyn05SJETvVUGOfmvWSK9BaJz3TiEmMP0dvFbewdPNeUcBmsnuBnw==
+X-Received: by 2002:a17:903:18d:b0:1d9:30e3:ea84 with SMTP id
+ z13-20020a170903018d00b001d930e3ea84mr206469plg.2.1708702996996; 
+ Fri, 23 Feb 2024 07:43:16 -0800 (PST)
 Received: from wheely.local0.net (220-235-194-103.tpgi.com.au.
  [220.235.194.103]) by smtp.gmail.com with ESMTPSA id
- h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.43.10
+ h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.43.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 07:43:13 -0800 (PST)
+ Fri, 23 Feb 2024 07:43:16 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 06/47] tests/avocado: Add ppc pseries and powernv hash MMU tests
-Date: Sat, 24 Feb 2024 01:41:25 +1000
-Message-ID: <20240223154211.1001692-7-npiggin@gmail.com>
+Subject: [PULL 07/47] tests/avocado: Add pseries KVM boot_linux test
+Date: Sat, 24 Feb 2024 01:41:26 +1000
+Message-ID: <20240223154211.1001692-8-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240223154211.1001692-1-npiggin@gmail.com>
 References: <20240223154211.1001692-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,117 +95,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-POWER CPUs support hash and radix MMU modes. Linux supports running in
-either mode, but defaults to radix. To keep up testing of QEMU's hash
-MMU implementation, add some Linux hash boot tests.
+ppc has no avocado tests for the KVM backend. Add a KVM boot_linux.py
+test for pseries.
 
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- tests/avocado/ppc_powernv.py | 23 +++++++++++++++++++----
- tests/avocado/ppc_pseries.py | 20 +++++++++++++++++---
- 2 files changed, 36 insertions(+), 7 deletions(-)
+ tests/avocado/boot_linux.py | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tests/avocado/ppc_powernv.py b/tests/avocado/ppc_powernv.py
-index d0e5c07bde..4342941d5d 100644
---- a/tests/avocado/ppc_powernv.py
-+++ b/tests/avocado/ppc_powernv.py
-@@ -12,11 +12,11 @@
- class powernvMachine(QemuSystemTest):
+diff --git a/tests/avocado/boot_linux.py b/tests/avocado/boot_linux.py
+index de4c8805f7..cdce4cbcba 100644
+--- a/tests/avocado/boot_linux.py
++++ b/tests/avocado/boot_linux.py
+@@ -103,6 +103,15 @@ def test_pseries_tcg(self):
+         self.vm.add_args("-accel", "tcg")
+         self.launch_and_wait(set_up_ssh_connection=False)
  
-     timeout = 90
--    KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
-+    KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 console=hvc0 '
-     panic_message = 'Kernel panic - not syncing'
-     good_message = 'VFS: Cannot open root device'
- 
--    def do_test_linux_boot(self):
-+    def do_test_linux_boot(self, command_line = KERNEL_COMMON_COMMAND_LINE):
-         self.require_accelerator("tcg")
-         kernel_url = ('https://archives.fedoraproject.org/pub/archive'
-                       '/fedora-secondary/releases/29/Everything/ppc64le/os'
-@@ -25,9 +25,8 @@ def do_test_linux_boot(self):
-         kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
- 
-         self.vm.set_console()
--        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=hvc0'
-         self.vm.add_args('-kernel', kernel_path,
--                         '-append', kernel_command_line)
-+                         '-append', command_line)
-         self.vm.launch()
- 
-     def test_linux_boot(self):
-@@ -54,6 +53,22 @@ def test_linux_smp_boot(self):
-         wait_for_console_pattern(self, console_pattern, self.panic_message)
-         wait_for_console_pattern(self, self.good_message, self.panic_message)
- 
-+    def test_linux_smp_hpt_boot(self):
++    def test_pseries_kvm(self):
 +        """
-+        :avocado: tags=arch:ppc64
-+        :avocado: tags=machine:powernv
-+        :avocado: tags=accel:tcg
-+        """
-+
-+        self.vm.add_args('-smp', '4')
-+        self.do_test_linux_boot(self.KERNEL_COMMON_COMMAND_LINE +
-+                                'disable_radix')
-+        console_pattern = 'smp: Brought up 1 node, 4 CPUs'
-+        wait_for_console_pattern(self, 'hash-mmu: Initializing hash mmu',
-+                                 self.panic_message)
-+        wait_for_console_pattern(self, console_pattern, self.panic_message)
-+        wait_for_console_pattern(self, self.good_message, self.panic_message)
-+
-     def test_linux_smt_boot(self):
-         """
-         :avocado: tags=arch:ppc64
-diff --git a/tests/avocado/ppc_pseries.py b/tests/avocado/ppc_pseries.py
-index a8311e6555..74aaa4ac4a 100644
---- a/tests/avocado/ppc_pseries.py
-+++ b/tests/avocado/ppc_pseries.py
-@@ -12,11 +12,11 @@
- class pseriesMachine(QemuSystemTest):
- 
-     timeout = 90
--    KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
-+    KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 console=hvc0 '
-     panic_message = 'Kernel panic - not syncing'
-     good_message = 'VFS: Cannot open root device'
- 
--    def do_test_ppc64_linux_boot(self):
-+    def do_test_ppc64_linux_boot(self, kernel_command_line = KERNEL_COMMON_COMMAND_LINE):
-         kernel_url = ('https://archives.fedoraproject.org/pub/archive'
-                       '/fedora-secondary/releases/29/Everything/ppc64le/os'
-                       '/ppc/ppc64/vmlinuz')
-@@ -24,7 +24,6 @@ def do_test_ppc64_linux_boot(self):
-         kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
- 
-         self.vm.set_console()
--        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=hvc0'
-         self.vm.add_args('-kernel', kernel_path,
-                          '-append', kernel_command_line)
-         self.vm.launch()
-@@ -62,6 +61,21 @@ def test_ppc64_linux_smp_boot(self):
-         wait_for_console_pattern(self, console_pattern, self.panic_message)
-         wait_for_console_pattern(self, self.good_message, self.panic_message)
- 
-+    def test_ppc64_linux_hpt_smp_boot(self):
-+        """
-+        :avocado: tags=arch:ppc64
 +        :avocado: tags=machine:pseries
++        :avocado: tags=accel:kvm
 +        """
-+
-+        self.vm.add_args('-smp', '4')
-+        self.do_test_ppc64_linux_boot(self.KERNEL_COMMON_COMMAND_LINE +
-+                                      'disable_radix')
-+        console_pattern = 'smp: Brought up 1 node, 4 CPUs'
-+        wait_for_console_pattern(self, 'hash-mmu: Initializing hash mmu',
-+                                 self.panic_message)
-+        wait_for_console_pattern(self, console_pattern, self.panic_message)
-+        wait_for_console_pattern(self, self.good_message, self.panic_message)
-+
-     def test_ppc64_linux_smt_boot(self):
-         """
-         :avocado: tags=arch:ppc64
++        self.require_accelerator("kvm")
++        self.vm.add_args("-accel", "kvm")
++        self.vm.add_args("-machine", "cap-ccf-assist=off")
++        self.launch_and_wait(set_up_ssh_connection=False)
+ 
+ class BootLinuxS390X(LinuxTest):
+     """
 -- 
 2.42.0
 
