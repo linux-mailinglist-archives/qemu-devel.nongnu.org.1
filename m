@@ -2,175 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E231E86138E
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 15:05:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D78D8613A3
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 15:10:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdW9c-0002J8-57; Fri, 23 Feb 2024 09:03:56 -0500
+	id 1rdWEx-0004EQ-MZ; Fri, 23 Feb 2024 09:09:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rdW81-00029z-8q
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 09:02:17 -0500
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rdW7z-0002BW-FM
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 09:02:17 -0500
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41NCYnxX008424; Fri, 23 Feb 2024 14:01:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=3jPsCVYp8mlCV/FnFdT95SJ4HVvCF9hM0u1A+vfsJUM=;
- b=gXmH7nR/ow29k1zJ8Bf4q/lPt2NomVdsJkpo5UnkhuSq7f9iB28gyXj2kiZctzPyA08t
- 0AMOq8hjH5KIc1C7wNgs/3FUbmFhkLygvMPRxeHO2F45iMyWf1sI3IB06oJGPaT1KsPi
- EJQTRASG3+PIBMx4AfXT/rq0p3MpXIOtyFXR4VctnPYRo7vCwS1j0xC4Fz0p5LIO0EyA
- B3N9tvu5DUf1t+rFXm4KEw2OLv22QxRvigSOEpLGFGqICg2lHqYlpIxztCMfDiAnCyyr
- HZGLs7gD6rNh3d68UUup8FrqwY1HOi/wjwaky8Z/abUYQze6Tz9vCc1l1rOpyx0WLoh8 qA== 
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wakd2fuju-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 23 Feb 2024 14:01:57 +0000
-Received: from pps.filterd
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 41NC675b020273; Fri, 23 Feb 2024 14:01:56 GMT
-Received: from nam04-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam04lp2041.outbound.protection.outlook.com [104.47.73.41])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3wak8cbwr2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 23 Feb 2024 14:01:56 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QsKnImPy82LHXCi4y/iXYD5TBWHF6gFbSr4JyI8Zmw71a6HN2WBWbb5qOwFEun740yALQlhcuS9JWBX7JYIEYhnY8QQg/DJjQ8ExVWJBwZJupmnjkL8ioiAz3U/xOgyiqLKHCRLznrYBNhvX2e1A+tEw9UXdK323b6gYYzazBk0XCY7mavUulpaV6goHzvWGO4095OkGcGiXXvfN7bK+vbPodd3usMtEyk40P91CUVzAX5NLIm1JpFcSqLwSfucqNjz2qHT5srXR4fcVSUeYt4XhDKAp6S7Ds8e+rIAZSPdodsG3gy3DYAbF2QeJKIuKc5RoQSnYRyhNZANmLpCQSw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3jPsCVYp8mlCV/FnFdT95SJ4HVvCF9hM0u1A+vfsJUM=;
- b=B4ocLi/nKb++IFmCbU1w5MpbEYmgbK5UIeuzkBs0KEO4iUOPuTWNq2oyMr0AuZT3zz8uCk/UNb/2rhcYVo7h2S/4Xk2PRPQEnywYrM650zQIsQVESUtUfwTyzzfecYDAJvlMAuBII5ORgDkAHOlKPsuZ2YiiTiLzMHqUl8QEyMn4QUg1jQIlR4dQ1OVQVfW8StYQmEfeGrLNfzqQlg/psct6wcKq4GGt3EHdKm34DN9sbNHCM+zonogHpuLUXaYT4KnXZNU70clz0Tx3YqeQU23jRPKWxMxyonBBFtTZy7fYHiyTmjyneikf8DCIZBOZuxyD5OB5sepV+ysM+gtEoA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3jPsCVYp8mlCV/FnFdT95SJ4HVvCF9hM0u1A+vfsJUM=;
- b=Ursj7OCbpmQMni7EY51NtMK27HK7nvLSwYIP3YFXwoIC3VD6HEg2PTVFMLAnMmPgWTu58sgXM0ZqfL391ajR6jHrIzNUvsT7dmNNN4KjUOLRxnT3dZSx8WLwnN1KyyS0yXwCki1pz6zDJn8MRpMA5f3S/2KOto0fMX3QT/2Zs+Y=
-Received: from SA2PR10MB4684.namprd10.prod.outlook.com (2603:10b6:806:119::14)
- by CO1PR10MB4659.namprd10.prod.outlook.com (2603:10b6:303:6c::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.24; Fri, 23 Feb
- 2024 14:01:54 +0000
-Received: from SA2PR10MB4684.namprd10.prod.outlook.com
- ([fe80::c3ce:7c28:7db1:656b]) by SA2PR10MB4684.namprd10.prod.outlook.com
- ([fe80::c3ce:7c28:7db1:656b%6]) with mapi id 15.20.7292.036; Fri, 23 Feb 2024
- 14:01:54 +0000
-Message-ID: <34d846ab-64e9-4fd4-8d99-62315a7c0f3b@oracle.com>
-Date: Fri, 23 Feb 2024 09:01:49 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V5 1/5] util: str_split
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>, Michael Roth
- <michael.roth@amd.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-References: <1708638470-114846-1-git-send-email-steven.sistare@oracle.com>
- <1708638470-114846-2-git-send-email-steven.sistare@oracle.com>
- <ac4a19b6-9290-4c97-bc7d-eabfef079895@linaro.org>
-From: Steven Sistare <steven.sistare@oracle.com>
-Organization: Oracle Corporation
-In-Reply-To: <ac4a19b6-9290-4c97-bc7d-eabfef079895@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BYAPR07CA0009.namprd07.prod.outlook.com
- (2603:10b6:a02:bc::22) To SA2PR10MB4684.namprd10.prod.outlook.com
- (2603:10b6:806:119::14)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rdWBb-0003Ft-OY
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 09:06:00 -0500
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rdWBM-0002QG-EU
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 09:05:59 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 96D5B1FC0C;
+ Fri, 23 Feb 2024 14:05:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1708697137; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WRFO619Q0T38SNvvhNye80eHoeQUTPoPTzkSIqzloYw=;
+ b=A8YOdioV/QfAoACce8t7IJdxB97MdCqkqFKxVputIKOYYyAOXGy37GC/+ar1lZHsi7w9II
+ 5pcc55jbprPSOJfKdfnA88vGKzpkWnuMj1R/hgpKxPT1wZ8RfFzTnllHs4h1KGoPMlH803
+ Opda0T74vu52HhSQMxtqLlkDLZbphTY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1708697137;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WRFO619Q0T38SNvvhNye80eHoeQUTPoPTzkSIqzloYw=;
+ b=ZiM1EqUmaNrd3bSRJ2ZnVJcB3/p4AxJq8KJIQWIJPVdmqaeXeyUElRHpnw8Qy/+YQaB9Gm
+ CneQsTw3TwaP2fAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1708697137; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WRFO619Q0T38SNvvhNye80eHoeQUTPoPTzkSIqzloYw=;
+ b=A8YOdioV/QfAoACce8t7IJdxB97MdCqkqFKxVputIKOYYyAOXGy37GC/+ar1lZHsi7w9II
+ 5pcc55jbprPSOJfKdfnA88vGKzpkWnuMj1R/hgpKxPT1wZ8RfFzTnllHs4h1KGoPMlH803
+ Opda0T74vu52HhSQMxtqLlkDLZbphTY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1708697137;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WRFO619Q0T38SNvvhNye80eHoeQUTPoPTzkSIqzloYw=;
+ b=ZiM1EqUmaNrd3bSRJ2ZnVJcB3/p4AxJq8KJIQWIJPVdmqaeXeyUElRHpnw8Qy/+YQaB9Gm
+ CneQsTw3TwaP2fAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1F7EB132C7;
+ Fri, 23 Feb 2024 14:05:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id wEXkNTCm2GU4DgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 23 Feb 2024 14:05:36 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+ qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>
+Subject: Re: [RFC PATCH 14/14] migration: Fix return-path thread exit
+In-Reply-To: <ZdgfnWJNYeiNYeGN@x1n>
+References: <20240207133347.1115903-1-clg@redhat.com>
+ <20240207133347.1115903-15-clg@redhat.com> <87v86zaxtv.fsf@suse.de>
+ <50ca9637-bc18-4002-abc3-52c1bb834038@redhat.com> <87mss2pywv.fsf@suse.de>
+ <2b7d3773-3cc0-41b1-8dc8-0aff90107771@redhat.com> <87sf1s8g81.fsf@suse.de>
+ <ZdgfnWJNYeiNYeGN@x1n>
+Date: Fri, 23 Feb 2024 11:05:34 -0300
+Message-ID: <87cysn9sy9.fsf@suse.de>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PR10MB4684:EE_|CO1PR10MB4659:EE_
-X-MS-Office365-Filtering-Correlation-Id: a54b3e19-3024-44e3-b13d-08dc3477fdb4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: AWGm2fsH4TiYbvIQk7Yfb+2WT8Cqhje3Y/6W0rIzDM0tJj1BuTx1MvAeSNOABEPJ4paRyfBcb2xs3Cl0tvYylXZrYrZ/X5OikJSN4OKwdKk0SBrrvUzQ/0w0OdZdZD/EcXXMnH3VTt1g6hLHog/jZbr3I6mkiG94YUdtFnDv97ocFGn3URL5dyfUDfaWXD2yQT5vYNr8eCDpZxg/BPNnSuIFbQcJy1Opvgyzc1dEM6QEZncAw4OjZDI38q6qo0aG1OwT026DTdkQR1AQVFiYgR/HiICg+vyTUi67Kvxm0tJ8gDuWtRGm030QV0uPzjGWFJOfOWsfolxSoNnnxS3Y9jGIJKwdQT8nuzJj3GevTUrR2hHB8x6WP15EyyJZs+44/6MHlIY3AEJRZaBDTLD3Maxo6H3dExsrF4QQwKtw4RD1lTuPGI0JE/+ESfmGq7ZYB+T01cZivrrDLaZ1RBaaV5LecenrfB2ioDVQr/rY4K4nhFaDHa4wC3SebEIbrQ0hYcfc/IecipPMEeWZqzxl4Wv10TSwc79xVG1s9L+dCWk=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SA2PR10MB4684.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TTlobFh5b2x0SWhpLzR0TERBYWw5MjRaR09pVXp0dlg3eDVkeWRDTmo1d0JG?=
- =?utf-8?B?dERBamlLL3ZqRnlUSnZwWWk5MVNGczZaV1ZWTzdOVmFGOWxWYXNyQU5LTlVK?=
- =?utf-8?B?WkhUOGc3cWd5eVRSZlRQU2RmcSt3V0UzRE9LOWlmU2hrVHFiaCs0QUE3THBZ?=
- =?utf-8?B?MDUxdUhCUEhFaXBCd0kwQUtIRXVSMnhTYVlqQzh0S3loRCtlQUhGZGRuQUJO?=
- =?utf-8?B?bVNwcTJvQWQweVFEcnZmdm9PdVRYRytFdk1MNjFxRmNKUXZFOG5NNU5WTXJX?=
- =?utf-8?B?OWpJRGZ4MG5QRVF0OExnMkxEOUw0OVNwcWpBWHQwaVVBMmdXcktIQ3lTZ1Bm?=
- =?utf-8?B?d0RHei9RSlNtK0NxM043c0drQW96U2dSc3RZTjYvQUg1dFR2dDNYMTBoSnJQ?=
- =?utf-8?B?SDI5N2NOZlNMQlBlaGc0QmplT1BzNWN6SkZIUUhQY3N0UDRMWGpXODF5Zmlv?=
- =?utf-8?B?bVF6enBCaFo1ZzJ0VEg5aWVBUWJwc2g4b2xENmRwSDJ1M3dRRXpCV0VUcFd5?=
- =?utf-8?B?VjcwWWFKaS9QZzJLY3ZCNHNXeTBnUmVNSEdxcVE1b2RxeC9tQ3Q1RFlhM2s1?=
- =?utf-8?B?dWRpVitNckNwT2tzdHBJTVgrZG1RZzdtWktSSGYwVFQ4czdtSTRySDJzV3pp?=
- =?utf-8?B?VjVCRFdTMXlIMVpxZmpwdHhKUUF2clRTeFRmTkM0UWMrcDVlcEp0TmxvNDc0?=
- =?utf-8?B?QnJhODBNYXJiS054c1BXUFdVbUxPdlBERmR5bUVoUFV2VkxNT3ZsTi9zUkl6?=
- =?utf-8?B?SG5xVWkxSjgyeFVhVmZKMEdhb29EQ2pMQWl6UGx3YS9pVUd2a2owKzN0K3po?=
- =?utf-8?B?RWdVSUZmdGNOTnB2eE5SZm5vSllRVjFOSmZwaFVDUy9xUTFuN0ZBbkxrMG5h?=
- =?utf-8?B?Tk9HU3NEQVdJMUNIMVhuY2tObkU4empyVmlXL3pMeC9WaDFWWTlKdzFBK1Ey?=
- =?utf-8?B?RXRGZGxDUW9FTC9TdVMvcExjbkE4YWUzakxpQ0ZZODNRSmtScHV2bmlUQzh0?=
- =?utf-8?B?QlNzVzBrbHY0WGFRSzVwQ0RMR1ZXV3RnaGhvZ3FqdUdhNGV1T0FxcFNJNmsx?=
- =?utf-8?B?SmRoa2VKZFFzdmxjc2t5R1phTGg1Y2J3OVVpQVF2RGFNcGp5bTV1STVCcU15?=
- =?utf-8?B?bHJBbzVsMFZQTTROZ3RaYTJDdk9sSkdFN0R3cnpsMjVxY0w2eEtVL216NWg1?=
- =?utf-8?B?N3JMYzNNMzN6NlpObVJMbzlIVDVhSGtmam9pb1djRVduaHNhSVNDMk8wVlFr?=
- =?utf-8?B?Yzl4UG8yTmlIcTNCblBRbzVHLyszSStRbC9IN09LRzVLNjdKVm9FV2xvWUhD?=
- =?utf-8?B?b1FRQ1pwZ1FWT2lxVUNNUVRVaG13SXBjREZDeHVKVzFDSFFGaUpMT2ZOS1hK?=
- =?utf-8?B?MWxoMGlkWnh1dEl4MnMrL3pWZWFUV1d1MnVwb1RQekFWUG13TTlkTVBnZExM?=
- =?utf-8?B?dTg1RFllakIxand6dEZNWTJaRklIMXhYRFE2T0xzRlhMcW9PYmltR0lLdWJ0?=
- =?utf-8?B?UG4zTTBZV2ZLK0pvc3lPWURKMUt6RHNqZnU2cFVzdGNPSkNkU212T3ZwS0JW?=
- =?utf-8?B?S0NuQmNTRG1ZYkNoYkhvcDdKa1BSTnNpejV0QUIrd2xGQ1lpU2dwUjdaMVE4?=
- =?utf-8?B?ZXNlb1RGWjg3eGRsK3B6WEMrK2VzSG9zQ3hXSzdyaG55ZUZTOU9VRW5xQUJD?=
- =?utf-8?B?YmZzMGdPeUFESVMyQzRYaERhMUFtL3NRMnBnMjFNNlhKODdaK0lxZUNyOXRN?=
- =?utf-8?B?WmFWUjVUbDU4d1lJelpnc2VMYjl5NEpGVkV5NC9lekJZUnRta210ZXoyMHI1?=
- =?utf-8?B?YVUzMld2V2wwSWMyZEZ0MGJ6Y1hHQjFzNnhnaWVKQkEwTmQ5cEJkRzh2M2tY?=
- =?utf-8?B?NXZOeXE4VXVYdTVWMUlxS2JkMkI3SkhETU1HRUgrUVJOWS8rTG5aeS9xcWlG?=
- =?utf-8?B?R09RWGNNcUJlZDF0K1E3dG8vc3hEclpuTGlZVzFwMWJkQXF5SW5oU21YN0k1?=
- =?utf-8?B?bGl3UG5BNDg2VUZYUjBHQnBNMWlnUGEvUm5ic2ljdUszZ1dDUlhkK3dxYUJh?=
- =?utf-8?B?WjBkZXBkSU9QQ2ErdjN2RHRUeVJmWUJNYTNxekRUUXBEYlBsWjh0ZVBXWis2?=
- =?utf-8?B?K1ZDNkE0Y3RoNi9wSWprVkpyQlYra212WlVqYmJSajZYSUpnSnh0c3ZSZkQ5?=
- =?utf-8?B?d3c9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 30Jd016RYdRjOs4hAWBVz06O5i3sbR606KjyztCMORpsMbEOz0TmL6odlLuZJi+QjEL1Yl4r9BUIK8cKhxbm1oFdbaNnktkyF07QGGm9KikU1dik1iH9kQr3HnDfjiSbokWKc/oZKysZfgSZ+41U7nrtOijxBz1JgOZjwlffT6PeZkFceEO1C2BZbCGzCm4fW65Q32pklMYgb0fabCzLmhrJhFn1oFrdsgvWDm6OvnC6lmU61lwfL92l/YbNsxcewE3ecr+B0gBMDvPsRdQBwLHzTNq+VH/piEVE3ZBt8rkOsMh4iCH91gJA3orN108Cyt7gG1jRdO9K5+gYDdigMk5bXxYXnSw1ybcflTwF31+wjGxEMbQYk/uyNOmv4RRnPaqVcnGI0wZ5mCYvFoBIJLhKo3knVx688juIlnUH07H6b4N+zGWCdlUtA51JGQJgba2i73GIActcGu4qt25UQDY5esbAGMe/64OOmM0+3aaaKr/KyoQ5ZZrTsMdMfHfiy7R5DczbUuhF4N0m7LfF7+T1pJ81t1wOmY0as/TVoHW7PiHYG5799CGIZpucfpJZE3Y7bQ+MZ0zZvPw6eoRWVIGjVCqIiY1QTWZmE+lMQ/I=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a54b3e19-3024-44e3-b13d-08dc3477fdb4
-X-MS-Exchange-CrossTenant-AuthSource: SA2PR10MB4684.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2024 14:01:54.3519 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /Kc8lykXIxip/dK0sT1S3ykmqkuX2KRXF3A8m3yY77PYQ3pHCRq+nQA5NFeX4KgUVGal9h8/NQjy9WxtJycZLQjdsQbxMkKf/28NR2bu3Wk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR10MB4659
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-22_15,2024-02-23_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- suspectscore=0
- mlxscore=0 spamscore=0 mlxlogscore=999 phishscore=0 bulkscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402230102
-X-Proofpoint-GUID: _gJMCrfz-zjU8d_t7u2hMcPFjEqK6hzt
-X-Proofpoint-ORIG-GUID: _gJMCrfz-zjU8d_t7u2hMcPFjEqK6hzt
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spamd-Result: default: False [-3.10 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+X-Spam-Score: -3.10
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -187,54 +119,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/23/2024 1:01 AM, Philippe Mathieu-Daudé wrote:
-> On 22/2/24 22:47, Steve Sistare wrote:
->> Generalize hmp_split_at_comma() to take any delimiter string, rename
->> as str_split(), and move it to util/strList.c.
->>
->> No functional change.
->>
->> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
->> ---
->>   include/monitor/hmp.h  |  1 -
->>   include/qemu/strList.h | 24 ++++++++++++++++++++++++
->>   monitor/hmp-cmds.c     | 19 -------------------
->>   net/net-hmp-cmds.c     |  3 ++-
->>   stats/stats-hmp-cmds.c |  3 ++-
->>   util/meson.build       |  1 +
->>   util/strList.c         | 24 ++++++++++++++++++++++++
->>   7 files changed, 53 insertions(+), 22 deletions(-)
->>   create mode 100644 include/qemu/strList.h
->>   create mode 100644 util/strList.c
-> 
-> 
->> +#include "qapi/qapi-builtin-types.h"
->> +
->> +/*
->> + * Split @str into a strList using the delimiter string @delim.
->> + * The delimiter is not included in the result.
->> + * Return NULL if @str is NULL or an empty string.
->> + * A leading, trailing, or consecutive delimiter produces an
->> + * empty string at that position in the output.
->> + * All strings are g_strdup'd, and the result can be freed
->> + * using qapi_free_strList.
-> 
-> Note "qapi/qapi-builtin-types.h" defines:
-> 
->   G_DEFINE_AUTOPTR_CLEANUP_FUNC(strList, qapi_free_strList)
-> 
-> Maybe mention we can also use:
-> 
->   g_autoptr(strList)
+Peter Xu <peterx@redhat.com> writes:
 
-Thanks Philippe.  If we get to V6 for this series, I will mention this,
-and also mention g_autoptr(GStrv) in the header comment for strv_from_strlist.
+> On Fri, Feb 16, 2024 at 02:35:26PM -0300, Fabiano Rosas wrote:
+>> C=C3=A9dric Le Goater <clg@redhat.com> writes:
+>>=20
+>> > Hello Fabiano
+>> >
+>> > On 2/14/24 21:35, Fabiano Rosas wrote:
+>> >> C=C3=A9dric Le Goater <clg@redhat.com> writes:
+>> >>=20
+>> >>> Hello Fabiano
+>> >>>
+>> >>> On 2/8/24 14:29, Fabiano Rosas wrote:
+>> >>>> C=C3=A9dric Le Goater <clg@redhat.com> writes:
+>> >>>>
+>> >>>>> In case of error, close_return_path_on_source() can perform a shut=
+down
+>> >>>>> to exit the return-path thread.  However, in migrate_fd_cleanup(),
+>> >>>>> 'to_dst_file' is closed before calling close_return_path_on_source=
+()
+>> >>>>> and the shutdown fails, leaving the source and destination waiting=
+ for
+>> >>>>> an event to occur.
+>> >>>>
+>> >>>> Hi, C=C3=A9dric
+>> >>>>
+>> >>>> Are you sure this is not caused by patch 13?
+>> >>>
+>> >>> It happens with upstream QEMU without any patch.
+>> >>=20
+>> >> I might have taken that "shutdown fails" in the commit message too
+>> >> literaly. Anyway, I have a proposed solution:
+>> >>=20
+>> >> -->8--
+>> >>  From 729aa7b5b7f130f756d41649fdd0862bd2e90430 Mon Sep 17 00:00:00 20=
+01
+>> >> From: Fabiano Rosas <farosas@suse.de>
+>> >> Date: Wed, 14 Feb 2024 16:45:43 -0300
+>> >> Subject: [PATCH] migration: Join the return path thread before releas=
+ing
+>> >>   to_dst_file
+>> >> MIME-Version: 1.0
+>> >> Content-Type: text/plain; charset=3DUTF-8
+>> >> Content-Transfer-Encoding: 8bit
+>> >>=20
+>> >> The return path thread might hang at a blocking system call. Before
+>> >> joining the thread we might need to issue a shutdown() on the socket
+>> >> file descriptor to release it. To determine whether the shutdown() is
+>> >> necessary we look at the QEMUFile error.
+>> >>=20
+>> >> Make sure we only clean up the QEMUFile after the return path has been
+>> >> waited for.
+>> >
+>> > Yes. That's the important part.
+>> >
+>> >> This fixes a hang when qemu_savevm_state_setup() produced an error
+>> >> that was detected by migration_detect_error(). That skips
+>> >> migration_completion() so close_return_path_on_source() would get
+>> >> stuck waiting for the RP thread to terminate.
+>> >>=20
+>> >> At migrate_fd_cleanup() I'm keeping the relative order of joining the
+>> >> migration thread and the return path just in case.
+>> >
+>> > That doesn't look necessary.
+>>=20
+>> Indeed. But I don't trust the migration code, it's full of undocumented
+>> dependencies like that.
+>>=20
+>> > What was the reason to join the migration thread only when
+>> > s->to_dst_file is valid ?
+>>=20
+>> I didn't find any explicit reason looking through the history. It seems
+>> we used to rely on to_dst_file before migration_thread_running was
+>> introduced.
+>>=20
+>> I wouldn't mind keeping that 'if' there.
+>>=20
+>> Let's see what Peter thinks about it.
+>
+> Frankly I don't have a strong opinion on current patch 14 or the new
+> proposal, but it seems we reached a consensus.
+>
+> Fabiano, would you repost with a formal patch, with the proper tags?
 
-- Steve
+Yes, I'll post it soon.
 
->> + */
->> +strList *str_split(const char *str, const char *delim);
->> +
->> +#endif
-> 
+>
+> One thing I am still not sure is whether we should still have patch 13
+> altogether? Please see my other reply on whether it's possible to have
+> migrate_get_error() =3D=3D true but qemu_file_get_error() =3D=3D false.
+
+I'll include it then.
+
+> In
+> postcopy_pause(), currently we constantly shutdown() so the join() should
+> always work:
+>
+>         qemu_file_shutdown(file);
+>         qemu_fclose(file);
+>
+>         /*
+>          * We're already pausing, so ignore any errors on the return
+>          * path and just wait for the thread to finish. It will be
+>          * re-created when we resume.
+>          */
+>         close_return_path_on_source(s);
+>
+> If move close_return_path_on_source() upper, qemu_file_shutdown() may not
+> be needed? And I think we need to make sure close_return_path_on_source()
+> will always properly kick the other thread.
+
 
