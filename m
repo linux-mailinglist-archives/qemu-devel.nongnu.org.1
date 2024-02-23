@@ -2,103 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A3BB860CFB
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 09:38:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC89860D17
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 09:44:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdR4d-0006bX-C2; Fri, 23 Feb 2024 03:38:27 -0500
+	id 1rdR9Y-0003GI-Vf; Fri, 23 Feb 2024 03:43:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rdR4Z-0006YQ-O3
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 03:38:23 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rdR9V-0003Ew-U2; Fri, 23 Feb 2024 03:43:29 -0500
+Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rdR4Y-0007hp-5w
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 03:38:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708677501;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BmzESXaHkihpPVFRXL/jKinH8c8bgeSFI8rWJ5sEJbg=;
- b=RAXgyDKjpJtV8t774kYdufhROmjU4wxxy8BmytlnfqUWqo6oJ1PyaA0089THqFhnRNG9lt
- 2Pnf1TIk2BY02WIZBiXV8uTB9HPFBHoj6ye9UXk03p/6+vHCFPAG132KmYeD9BgAETmEZ/
- lOKc6tQoua/qzEQOerUqcYlCz4IYOt0=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-539-LH8d4SQqOtW7JxZULjN41g-1; Fri, 23 Feb 2024 03:38:19 -0500
-X-MC-Unique: LH8d4SQqOtW7JxZULjN41g-1
-Received: by mail-yw1-f200.google.com with SMTP id
- 00721157ae682-608a1a2723cso10141037b3.0
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 00:38:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708677499; x=1709282299;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=BmzESXaHkihpPVFRXL/jKinH8c8bgeSFI8rWJ5sEJbg=;
- b=L65uz/Y54iYaL8LNxwpUY8Ga+5O1/8jjKivzGtUdAOSH/H/A1BuT1iUbP2KAmBzE0J
- nbIycxyavPsMxVoDax8WtxM8aQKEgOXYDF1Fc6psMdqGDvyrM2sqU9zKwmBDjs0DYpnM
- 8U0RwaddIiiD1I47aM25VDMfmII0fmwgRrrF/KeZkwdCnfsc7aGb8sKx3SlUnWp3bLVP
- AOqGbOf1ihD0r7/sb3qQB+wJd1oBgOzuWdFVqKxyC6QAZOshiXoYpQ5rWD9jYdPzsTF6
- jQUIAIAdjj0PvKc+ZZJgNJgnZQyXGjOmO2x+ywLILBQQtV8c2NQDuQoVp4NggaLx4TKk
- oW5A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXX2ZBXrlSYsFiqo6PV4OfjujGDmNDEo19BzCe8qUlAUUsWXggzIG0gIckqr2KP68i2pAJKR9UCeBRYpsf64Ymz8Y84XEs=
-X-Gm-Message-State: AOJu0YxXLBsIXSrzqYnp84+ykEd5w/mg8PipGP5bptqHQipmscv/NuKV
- FXNdHuOCwcaSuJdtH5tGut4uAX6vtOn93m7SKmYIDdDI4ZNvAA1Yvmb0xFY6ZMAoIqHMFnEVhw/
- jdlM+od0ownVtsYoWXGIJ5pUjJpVusgSxFppcE3PJKYCDPXqJE64U
-X-Received: by 2002:a81:b71e:0:b0:607:6ad3:8746 with SMTP id
- v30-20020a81b71e000000b006076ad38746mr1426838ywh.46.1708677498869; 
- Fri, 23 Feb 2024 00:38:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGXD4wfZor91Zq+xwR00Cuo8VdzWEIoYHcM2ygK5dJnWiLLLimbc9+EDRFQd2sfkACiKDU4xg==
-X-Received: by 2002:a81:b71e:0:b0:607:6ad3:8746 with SMTP id
- v30-20020a81b71e000000b006076ad38746mr1426818ywh.46.1708677498211; 
- Fri, 23 Feb 2024 00:38:18 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- p20-20020a05622a049400b0042c6ec8247bsm6174121qtx.94.2024.02.23.00.38.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 23 Feb 2024 00:38:17 -0800 (PST)
-Message-ID: <c12ba73f-5eeb-47b7-bd16-cf686f13d108@redhat.com>
-Date: Fri, 23 Feb 2024 09:38:13 +0100
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rdR9T-000050-Lr; Fri, 23 Feb 2024 03:43:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1708677808; x=1740213808;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=GxcEpKUJhcD8tp/cNKnafhshJBtXmwMwR7V4Pnc77B4=;
+ b=eu1nVhwa2mO53YNnul35/Zfwk21St744Aig2WH2n36BgXSdfyJkcWcsj
+ cgnODusfgyFQXT4LwJW284cEQL4RoOtR17jgdKykRjLt41i+zW01GgEkz
+ RHxItTR9roAHvaXTZuD6ioghMgGCdy8ws09sFqBJkwrUYgkWZ1jjharFm
+ vLqmB4p1uTP1uJGLEkUQN706htr+ivG2mDS3syZBVLgQVebZ4fdx/hK84
+ Y83V8G0vvXycyAEPP2HCPNLt/6Bmgbz2akl8mDdU7tQrsloboMuRophgS
+ Y2TUlDEhKBgdWCW9Mgv2GVQhVZD7IBj3U8M6fjCHrICeg+Mwu3LgMw5e6 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="28413789"
+X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; d="scan'208";a="28413789"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Feb 2024 00:43:23 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
+   d="scan'208";a="5731723"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by fmviesa007.fm.intel.com with ESMTP; 23 Feb 2024 00:43:19 -0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Fan Ni <fan.ni@samsung.com>, Laurent Vivier <laurent@vivier.eu>,
+ Alistair Francis <alistair@alistair23.me>,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-trivial@nongnu.org,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v2 0/7] Cleanup and fix @errp dereference
+Date: Fri, 23 Feb 2024 16:56:46 +0800
+Message-Id: <20240223085653.1255438-1-zhao1.liu@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] virtio-iommu: Change the default granule to the
- host page size
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- mst@redhat.com, jean-philippe@linaro.org, peter.maydell@linaro.org,
- clg@redhat.com, yanghliu@redhat.com,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: alex.williamson@redhat.com, zhenzhong.duan@intel.com,
- jasowang@redhat.com, pbonzini@redhat.com, berrange@redhat.com
-References: <20240223074459.63422-1-eric.auger@redhat.com>
- <20240223074459.63422-4-eric.auger@redhat.com>
- <bdab51cf-fca8-4fe7-9e47-31bd10259dfa@linaro.org>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <bdab51cf-fca8-4fe7-9e47-31bd10259dfa@linaro.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: none client-ip=192.198.163.7;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.002,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.002,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,87 +79,73 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Zhao Liu <zhao1.liu@intel.com>
+
+Hi all,
+
+This is my v2 series to clean and fix @errp dereference.
+
+Introduction
+============
+
+The patches 1-6 fix the cases that deference @errp without
+ERRP_GUARD(), and they are based on my previsous v1 [1].
+
+The patch 7 is merged in this series from another single patch [2].
+
+Based on v1, v2 mainly add more description about problematic codes to
+make review easier (with Markus' suggestion) and avoid dereferencing
+@errp in patch 3's special case.
 
 
-On 2/23/24 09:08, Philippe Mathieu-Daudé wrote:
-> Hi Eric,
->
-> On 23/2/24 08:27, Eric Auger wrote:
->> We used to set the default granule to 4KB but with VFIO assignment
->> it makes more sense to use the actual host page size.
->>
->> Indeed when hotplugging a VFIO device protected by a virtio-iommu
->> on a 64kB/64kB host/guest config, we current get a qemu crash:
->>
->> "vfio: DMA mapping failed, unable to continue"
->>
->> This is due to the hot-attached VFIO device calling
->> memory_region_iommu_set_page_size_mask() with 64kB granule
->> whereas the virtio-iommu granule was already frozen to 4KB on
->> machine init done.
->>
->> Set the granule property to "host" and introduce a new compat.
->>
->> Note that the new default will prevent 4kB guest on 64kB host
->> because the granule will be set to 64kB which would be larger
->> than the guest page size. In that situation, the virtio-iommu
->> driver fails on viommu_domain_finalise() with
->> "granule 0x10000 larger than system page size 0x1000".
->>
->> In that case the workaround is to request 4K granule.
->>
->> The current limitation of global granule in the virtio-iommu
->> should be removed and turned into per domain granule. But
->> until we get this upgraded, this new default is probably
->> better because I don't think anyone is currently interested in
->> running a 4KB page size guest with virtio-iommu on a 64KB host.
->> However supporting 64kB guest on 64kB host with virtio-iommu and
->> VFIO looks a more important feature.
->>
->> Signed-off-by: Eric Auger <eric.auger@redhat.com>
->> ---
->>   hw/core/machine.c        | 1 +
->>   hw/virtio/virtio-iommu.c | 2 +-
->>   2 files changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/hw/core/machine.c b/hw/core/machine.c
->> index 70ac96954c..38851df4b8 100644
->> --- a/hw/core/machine.c
->> +++ b/hw/core/machine.c
->> @@ -35,6 +35,7 @@
->>     GlobalProperty hw_compat_8_2[] = {
->>       { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "64" },
->> +    { TYPE_VIRTIO_IOMMU_PCI, "granule", "4K" },
->
-> IIUC the current value is qemu_target_page_mask(), not 4KiB.
-> Could this be an issue for arm / mips / mips / sparc64 guests?
-The virtio-iommu currently is only supported on ARM and x86 where
-qemu_target_page_mask() corresponds to a 4K granule. So I don't think it
-makes any issue.
+Future Work
+===========
 
-Thanks
+Additionally, I realized that my journey to fix @errp with ERRP_GUARD()
+is still not over, because @errp's second restriction said:
 
-Eric
->
->>   };
->>   const size_t hw_compat_8_2_len = G_N_ELEMENTS(hw_compat_8_2);
->>   diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
->> index 0461b87ef2..e9e44a8ad8 100644
->> --- a/hw/virtio/virtio-iommu.c
->> +++ b/hw/virtio/virtio-iommu.c
->> @@ -1558,7 +1558,7 @@ static Property virtio_iommu_properties[] = {
->>       DEFINE_PROP_BOOL("boot-bypass", VirtIOIOMMU, boot_bypass, true),
->>       DEFINE_PROP_UINT8("aw-bits", VirtIOIOMMU, aw_bits, 0),
->>       DEFINE_PROP_GRANULE_MODE("granule", VirtIOIOMMU, granule_mode,
->> -                             GRANULE_MODE_4K),
->> +                             GRANULE_MODE_HOST),
->>       DEFINE_PROP_END_OF_LIST(),
->>   };
->>   
->
+* Without ERRP_GUARD(), use of the @errp parameter is restricted:
+...
+* - It should not be passed to error_prepend() or
+*   error_append_hint(), because that doesn't work with &error_fatal.
+* ERRP_GUARD() lifts these restrictions.
+
+With this restrication, there're still many places need to add missing
+ERRP_GUARD().
+
+[1]: https://lore.kernel.org/qemu-devel/20240221094317.994454-1-zhao1.liu@linux.intel.com/
+[2]: https://lore.kernel.org/qemu-devel/20240221073948.768828-1-zhao1.liu@linux.intel.com/
+
+Thanks and Best Regards,
+Zhao
+
+---
+Zhao Liu (7):
+  hw/cxl/cxl-host: Fix missing ERRP_GUARD() in
+    cxl_fixed_memory_window_config()
+  hw/display/macfb: Fix missing ERRP_GUARD() in macfb_nubus_realize()
+  hw/mem/cxl_type3: Fix missing ERRP_GUARD() in ct3_realize()
+  hw/misc/xlnx-versal-trng: Check returned bool in
+    trng_prop_fault_event_set()
+  hw/pci-bridge/cxl_upstream: Fix missing ERRP_GUARD() in
+    cxl_usp_realize()
+  hw/vfio/iommufd: Fix missing ERRP_GUARD() in iommufd_cdev_getfd()
+  hw/intc: Check @errp to handle the error of
+    IOAPICCommonClass.realize()
+
+ hw/cxl/cxl-host.c            | 1 +
+ hw/display/macfb.c           | 1 +
+ hw/intc/ioapic_common.c      | 4 ++++
+ hw/mem/cxl_type3.c           | 1 +
+ hw/misc/xlnx-versal-trng.c   | 3 +--
+ hw/pci-bridge/cxl_upstream.c | 1 +
+ hw/vfio/iommufd.c            | 1 +
+ 7 files changed, 10 insertions(+), 2 deletions(-)
+
+-- 
+2.34.1
 
 
