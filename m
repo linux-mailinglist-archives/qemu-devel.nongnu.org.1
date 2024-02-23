@@ -2,89 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94234861263
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 14:14:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0127861341
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 14:49:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdVNf-0005VZ-AN; Fri, 23 Feb 2024 08:14:24 -0500
+	id 1rdVuj-0001zK-Dq; Fri, 23 Feb 2024 08:48:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rdVJn-0002b8-UO
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 08:10:23 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rdVJh-0000TA-66
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 08:10:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708693814;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fnQ7i5ueTC+xlo8UAzRXXauDN9cg2kKCLhjsqVL+gjQ=;
- b=IqXZj2NGjw+7LiegsAQ1yOGBOqVpzwWama/wKlMPUle5DD1VtmQyNYMnnCdsaCMP/RXkyO
- Nm7RvI7pDqaO5SJ49JBb+AKB35rdedwEcZ1Lup0CpLri/0adW6gHIH7xsuxM9tHZKmD+Zn
- OxrdOhZ0Gk/IjfsdcRyZ+2QZygIbVA0=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-327-_BmBdEPEMlSimcFuVcDmKw-1; Fri, 23 Feb 2024 08:10:13 -0500
-X-MC-Unique: _BmBdEPEMlSimcFuVcDmKw-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2d27386667eso2558301fa.2
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 05:10:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rdVsM-0007o7-9c
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 08:46:06 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rdVsH-0007Vl-4W
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 08:46:06 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5643ae47cd3so1002392a12.3
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 05:46:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708695958; x=1709300758; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=sJk7csTCqjXdjH4hGqlv98RKvqueNLyFlM6+zsyWkog=;
+ b=pe6kYM8se6a7KoqcmgrrpIerjNyDP8pcvxxerXB8IWneAa9qvxgyzVWBf1S15jHior
+ rwDH/EuY3E/EIYvQ9/izLjZB4jIm5WsCeK3nTFGuClDkT9565UsnxQnWtNNiSgj7ErtS
+ IOXZFLKzFv6styuz7jti05+4zXoMGajnpdwvJv7Z0MddZ+RiZQK6UpVIWuyRI/pYoKXB
+ ebZcgmedNoEStq24M8eN1LTBwNeSCg9GVdqSP/KdkNgysLDVtqa+uYGBi0VEOa3Zsv4P
+ UlEg7aLElA9FF6eDOTz4/QQZoBgIfPtxuoC+bAgS6YIxHzbrCgZyrV3RHspiUjMnjmnQ
+ OP3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708693810; x=1709298610;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=fnQ7i5ueTC+xlo8UAzRXXauDN9cg2kKCLhjsqVL+gjQ=;
- b=CDd+wcUeabW/8nmcpOVx1W7of3ReSU9UZLuXbgPQ/VyPPfeQsR+JHp0FYcmpOVwE68
- cND01nyNYzaMEwM42R/gMixVh5w1jnN6evzYdrBLJqkP6S9wSzV2/UZnwOg6kHLL8p52
- q8aZTp7ehqHisb97/8BjroYc9kKpqDyMfmUcl2LsXQ+123gF4Gxvs4Dmjc20/jA6DiXD
- iBF/n6HKuS5Qt7M0dmWA8Iy1WaZtFCJIo/KOR7UtAoXivW4G9mzS9/b/eZbo43ulsYwX
- 2o7hKurVSsE9nMjkEBghGdXzJL9by6H+qhjW0sfAUNhtIrztAGvR8OkZekdHspDm7Zg5
- c/yg==
-X-Gm-Message-State: AOJu0YwGfaeoPvXN32H83OJTJisdR3abjZNKW4duHYSv0eKzqxmibelE
- COUlPCdPZ4jfRs1Le90tG8AVCtkbo0PR+q/pmd66Q99bNsHzf74ZWybEuGhmYNpmNjsz8ed/AzJ
- y7ca/klSsVMY3OaCI/AAuzCl5gBgMmkcOrFQ67uKXsoXr9Gj12qMo36SBYhPlbqkKVpzjPrw3Hr
- bZCg5OBy5Mivz2lSQb8LLRIqfSNbydpb5c7hyH
-X-Received: by 2002:a2e:a78e:0:b0:2d2:39ab:eee1 with SMTP id
- c14-20020a2ea78e000000b002d239abeee1mr1705204ljf.32.1708693810464; 
- Fri, 23 Feb 2024 05:10:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IElP3c5/uDGrDGmeAi97RUXbnQQgyKcu1VdqWxjWVIWvgYhFWLy7diaD3riy6szGHec702ezw==
-X-Received: by 2002:a2e:a78e:0:b0:2d2:39ab:eee1 with SMTP id
- c14-20020a2ea78e000000b002d239abeee1mr1705178ljf.32.1708693810148; 
- Fri, 23 Feb 2024 05:10:10 -0800 (PST)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
- by smtp.gmail.com with ESMTPSA id
- n22-20020a2e86d6000000b002d0acb57c89sm2563335ljj.64.2024.02.23.05.10.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 05:10:09 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org,
-	mcb30@ipxe.org
-Subject: [PATCH v2 7/7] target/i386: leave the A20 bit set in the final NPT
- walk
-Date: Fri, 23 Feb 2024 14:09:48 +0100
-Message-ID: <20240223130948.237186-8-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240223130948.237186-1-pbonzini@redhat.com>
-References: <20240223130948.237186-1-pbonzini@redhat.com>
+ d=1e100.net; s=20230601; t=1708695958; x=1709300758;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=sJk7csTCqjXdjH4hGqlv98RKvqueNLyFlM6+zsyWkog=;
+ b=BN7N5xsUn2YQ7K9uAYPGoHp8LwPUiZtgyVw1E2a6At2eqZCJgbhtsQeoQzGf5EXlyx
+ GNOo2f4JhZFi4vnhpZJWipMIaUM9I2i2BJHIq8elYnnEjEWyARfk/95nhXCrn4U9W6OU
+ G/uoF2wZXD1ki1yuuhuSCLAwlgCCZyro50Y5sMLTMfiGlPED+sm9keBMbs46BacxyG6g
+ unbAx2gheutKIknHOk4t/OxiePqO66+RzXm/l2/piC9Ln727kOOsbwHkJsGhPY8GpNE6
+ 9LAfjFaZcU+Lr3/gG7EqKhwr8W/Jigp4T6aMtPENrj6oLX4/s4EqL4e8DuSyVLC+DqwU
+ dZ/A==
+X-Gm-Message-State: AOJu0YwjBlbaIghrH9on2vfgql/JmApP1ylOnMRIvpkZNvbdWKzGWpgC
+ BDN7ZGPR/o1Fh+iiVajT31k504iVr4Q83fsNeDM8qMllhb00QPYncnmveNPAc2OOKzYc15Esdex
+ DMOmzO4qQvxdtkar8rqaaVpj4n0rAvJOPkKGMgw==
+X-Google-Smtp-Source: AGHT+IFpC2geouvZG5vinc64bb2KOlrM5zb3AoMyn8matytSFIADt9K5UAjUSWxwH/gDoTnPHbhHTecfiIzJZpSJx7I=
+X-Received: by 2002:aa7:d958:0:b0:565:4ff4:56bd with SMTP id
+ l24-20020aa7d958000000b005654ff456bdmr1403885eds.15.1708695957590; Fri, 23
+ Feb 2024 05:45:57 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20240222204323.268539-1-richard.henderson@linaro.org>
+In-Reply-To: <20240222204323.268539-1-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 23 Feb 2024 13:45:46 +0000
+Message-ID: <CAFEAcA8jChwScfQikL+0wxHJgdnLz8_Ed-RKmZ4-UFMhWShkqA@mail.gmail.com>
+Subject: Re: [PULL 00/39] tcg and linux-user patch queue
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,57 +85,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The A20 mask is only applied to the final memory access.  Nested
-page tables are always walked with the raw guest-physical address.
+On Thu, 22 Feb 2024 at 20:49, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> The following changes since commit 6630bc04bccadcf868165ad6bca5a964bb69b067:
+>
+>   Merge tag 'pull-trivial-patches' of https://gitlab.com/mjt0k/qemu into staging (2024-02-22 12:42:52 +0000)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20240222
+>
+> for you to fetch changes up to a06efc2615a1283e139e35ae8a8875925766268f:
+>
+>   linux-user: Remove pgb_dynamic alignment assertion (2024-02-22 09:04:05 -1000)
+>
+> ----------------------------------------------------------------
+> tcg/aarch64: Apple does not align __int128_t in even registers
+> accel/tcg: Fixes for page tables in mmio memory
+> linux-user: Remove qemu_host_page_{size,mask}, HOST_PAGE_ALIGN
+> migration: Remove qemu_host_page_size
+> hw/tpm: Remove qemu_host_page_size
+> softmmu: Remove qemu_host_page_{size,mask}, HOST_PAGE_ALIGN
+> linux-user: Split and reorganize target_mmap.
+> *-user: Deprecate and disable -p pagesize
+> linux-user: Allow TARGET_PAGE_BITS_VARY
+> target/alpha: Enable TARGET_PAGE_BITS_VARY for user-only
+> target/arm: Enable TARGET_PAGE_BITS_VARY for AArch64 user-only
+> target/ppc: Enable TARGET_PAGE_BITS_VARY for user-only
+> linux-user: Remove pgb_dynamic alignment assertion
+>
+> ----------------------------------------------------------------
 
-Unlike the previous patch, in this one the masking must be kept, but
-it was done too early.
+bsd-user fails to compile:
+https://gitlab.com/qemu-project/qemu/-/jobs/6241616724
 
-Fixes: 4a1e9d4d11c ("target/i386: Use atomic operations for pte updates", 2022-10-18)
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- target/i386/tcg/sysemu/excp_helper.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+../bsd-user/main.c:379:30: error: use of undeclared identifier 'arg';
+did you mean 'argv'?
+if (qemu_strtoui(arg, NULL, 10, &size) || size != want) {
+                 ^~~
 
-diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
-index 2ddc08b4bb6..8f7011d9663 100644
---- a/target/i386/tcg/sysemu/excp_helper.c
-+++ b/target/i386/tcg/sysemu/excp_helper.c
-@@ -134,7 +134,6 @@ static inline bool ptw_setl(const PTETranslate *in, uint32_t old, uint32_t set)
- static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-                           TranslateResult *out, TranslateFault *err)
- {
--    const int32_t a20_mask = x86_get_a20_mask(env);
-     const target_ulong addr = in->addr;
-     const int pg_mode = in->pg_mode;
-     const bool is_user = is_mmu_index_user(in->mmu_idx);
-@@ -417,10 +416,13 @@ do_check_protect_pse36:
-         }
-     }
- 
--    /* align to page_size */
--    paddr = (pte & a20_mask & PG_ADDRESS_MASK & ~(page_size - 1))
--          | (addr & (page_size - 1));
-+    /* merge offset within page */
-+    paddr = (pte & PG_ADDRESS_MASK & ~(page_size - 1)) | (addr & (page_size - 1));
- 
-+    /*
-+     * Note that NPT is walked (for both paging structures and final guest
-+     * addresses) using the address with the A20 bit set.
-+     */
-     if (in->ptw_idx == MMU_NESTED_IDX) {
-         CPUTLBEntryFull *full;
-         int flags, nested_page_size;
-@@ -459,7 +461,7 @@ do_check_protect_pse36:
-         }
-     }
- 
--    out->paddr = paddr;
-+    out->paddr = paddr & x86_get_a20_mask(env);
-     out->prot = prot;
-     out->page_size = page_size;
-     return true;
--- 
-2.43.0
 
+
+thanks
+-- PMM
 
