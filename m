@@ -2,101 +2,121 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 477E48611BC
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 13:43:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 722B88611BE
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 13:44:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdUs2-0007YC-N4; Fri, 23 Feb 2024 07:41:42 -0500
+	id 1rdUuP-0000Fr-AG; Fri, 23 Feb 2024 07:44:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rdUpy-00075z-T4
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 07:39:34 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rdUpq-00038e-UB
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 07:39:34 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 19CEF1FBB5;
- Fri, 23 Feb 2024 12:39:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1708691965; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dK2rCsMw+TNlWZOeP8q1If5eK1wEPcLB+ZfWbg+Ez7w=;
- b=A0zRymI9PG3nsUhAYnDX7dmcqsxxvEv25HTaEBdb1CXuKDjEE2gaNnD23f01Xp0W58u7Xs
- jNFd7EKvJWfw1ToThKlBeFakW/wtJs+/Cfdw2an2CJ3J8LlDMO8pmGz0fZaLPfCBQdaDTn
- DT6oGMaAhZTLeRcmXG1CBEH4sVNSUgU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1708691965;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dK2rCsMw+TNlWZOeP8q1If5eK1wEPcLB+ZfWbg+Ez7w=;
- b=DimnQKCc1g8e0qypvGuVX7UOeZNpFA+edpnpgQzVGqmzCyDyd9B/VfydgJg8worWbkhX1o
- 9YxRxvUsal7TJtAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1708691963; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dK2rCsMw+TNlWZOeP8q1If5eK1wEPcLB+ZfWbg+Ez7w=;
- b=JBWNEXiJHhpdDJMEcD69EJNYZ/gb1fNEgNLc4sG3thXuwhayrPlHP8MiJ6JnA+Mr8zBVX2
- 18uTuBthjGn4NDRDZhtoZ2ukVb4/2Ewn85PHkBfRFvNoXhW0Bw573eb6k4IWfOclhUe/TT
- X4BjO3ILumf++MRuhupxNahfeXlyec4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1708691963;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dK2rCsMw+TNlWZOeP8q1If5eK1wEPcLB+ZfWbg+Ez7w=;
- b=FjAhaZ2igQm+wORMCqIGk6peJ30jf0cCKUk9SfWv/RyLISiSMCg9tsWpjDCLBZhN9cqO+f
- F1K8LKCCTfmTIbBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 95E5D133DC;
- Fri, 23 Feb 2024 12:39:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id VVKNF/qR2GXNdgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 23 Feb 2024 12:39:22 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH] migration: Fix qmp_query_migrate mbps value
-In-Reply-To: <Zdfh7oOARA6p-Iob@x1n>
-References: <20240219194457.26923-1-farosas@suse.de> <ZdVlUsTDJA4hdNhg@x1n>
- <87y1beascb.fsf@suse.de> <ZdcWmVffLWhNB-Q8@x1n> <ZddMRroqCeuRWGFA@x1n>
- <87ttm0a9t3.fsf@suse.de> <Zdfh7oOARA6p-Iob@x1n>
-Date: Fri, 23 Feb 2024 09:39:12 -0300
-Message-ID: <87frxj9wy7.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <ankita@nvidia.com>)
+ id 1rdUtF-00080t-W1; Fri, 23 Feb 2024 07:42:59 -0500
+Received: from mail-dm3nam02on20601.outbound.protection.outlook.com
+ ([2a01:111:f403:2405::601]
+ helo=NAM02-DM3-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ankita@nvidia.com>)
+ id 1rdUtB-0003l9-HZ; Fri, 23 Feb 2024 07:42:57 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=h2J9VNV0a6TYBdyBpxjiJaXrkGHpcvIwy5jyb8lr+v+ZGdH+ZSi1y3F34hlg++cVWi8IIpS3w+PZWTVP/GKRDQKCIRhgbfgX/ef4oTaOuS9w9uliXkpyEomLjmw/W2vwgX9dJag0IJvP5SzLCUCIoSsKOAb1sEEH5fbaZvMzJGQlp7xpJax6fZPHCBp1zoIgKyXoQEa/mJoYooZJ+FP2x6DXP2goS0vBdCHFPNB8QHRtt1a08OkO3cwkF2vY0BATZSeO0MoMDhsp1Bd6dTo+aAfN3ZOZXmVvjblKlLC03LnpGfz5T3q5PnWTO6kWZbCA9N7U7CZ5LMzj71+PsVO76Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AzcquAmQCcwJssB6bOGQTQOk55IttVlUgc5yvgr9EGU=;
+ b=ncfqhYBLYO3gWkW8F9knIYmt4YWZta49SrPIV7iN5yEqqgjCoSl/CvUgHZNKlQf3ncVDZMXfBJHgoaBrOqPi5U8afEdxuA1djNm6/HnSh8NULzVrHVTLhEhLXG1k9jvsAUOjHyBk8AC0tp3hvCoUgt8ZIfy7+Kl89Oe4SBEgQib7aKCDhTUB83rYCWOk1IgkwH98VFTDGbhWNTX8VOIjWFoyJf6JuEh+DgvoyFjXXDBH0mbg55gdYDmvgT7QOG8vc3lFDNlKP+74RnxMNfvhoV7m3Omc0kzUaj0Ofi/mP+0W1TByRFUrpbvq039hlfP8RlL16rXZJ35YVuYGyQ6YxA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AzcquAmQCcwJssB6bOGQTQOk55IttVlUgc5yvgr9EGU=;
+ b=riGyjU2F3L03RQvZCXhkTNtgnmFpI7dZtkKpIK9hKfACFxq16fVzKhPE6f4pHMJhPgvb+sN7RqT7rB0Njxt7uyREVGkhVsBzQ8q7WUg+/1kk69dPTB9UrW8obT5p8NdLKM5fvz2+nKfENxlQvWh8/peiJVXjBB+ESefitCFO4CDpDsM41vZKAnzh6WcaJcbpimRw1GNxc8SAdRqcCNi1Y5eomn22kIOEjqEwwm7bRpsdX7l4oMVmY/cH9A/fKELlOyx6dFt/mizM2+0h8/gcqVijC6cSJjAtWN2+n7hYzHekHQ6ktIzZkeg/0+sYbNEJ+tz8AuxSwMOA+DJhb3s/+A==
+Received: from MW4PR03CA0275.namprd03.prod.outlook.com (2603:10b6:303:b5::10)
+ by MN6PR12MB8471.namprd12.prod.outlook.com (2603:10b6:208:473::19)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.21; Fri, 23 Feb
+ 2024 12:42:46 +0000
+Received: from CO1PEPF000042A8.namprd03.prod.outlook.com
+ (2603:10b6:303:b5:cafe::e3) by MW4PR03CA0275.outlook.office365.com
+ (2603:10b6:303:b5::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.45 via Frontend
+ Transport; Fri, 23 Feb 2024 12:42:45 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CO1PEPF000042A8.mail.protection.outlook.com (10.167.243.37) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7292.25 via Frontend Transport; Fri, 23 Feb 2024 12:42:45 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Fri, 23 Feb
+ 2024 04:42:25 -0800
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Fri, 23 Feb
+ 2024 04:42:24 -0800
+Received: from localhost.nvc.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12 via Frontend
+ Transport; Fri, 23 Feb 2024 04:42:23 -0800
+From: <ankita@nvidia.com>
+To: <ankita@nvidia.com>, <jgg@nvidia.com>, <alex.williamson@redhat.com>,
+ <clg@redhat.com>, <shannon.zhaosl@gmail.com>, <peter.maydell@linaro.org>,
+ <ani@anisinha.ca>, <berrange@redhat.com>, <eduardo@habkost.net>,
+ <imammedo@redhat.com>, <mst@redhat.com>, <eblake@redhat.com>,
+ <armbru@redhat.com>, <david@redhat.com>, <gshan@redhat.com>,
+ <Jonathan.Cameron@huawei.com>, <zhiw@nvidia.com>, <mochs@nvidia.com>,
+ <pbonzini@redhat.com>
+CC: <aniketa@nvidia.com>, <cjia@nvidia.com>, <kwankhede@nvidia.com>,
+ <targupta@nvidia.com>, <vsethi@nvidia.com>, <acurrid@nvidia.com>,
+ <dnigam@nvidia.com>, <udhoke@nvidia.com>, <qemu-arm@nongnu.org>,
+ <qemu-devel@nongnu.org>
+Subject: [PATCH v7 0/2] acpi: report numa nodes for device memory using GI
+Date: Fri, 23 Feb 2024 12:42:21 +0000
+Message-ID: <20240223124223.800078-1-ankita@nvidia.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spamd-Result: default: False [-3.10 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
- RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_TWO(0.00)[2];
- DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.com:url,suse.de:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Score: -3.10
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000042A8:EE_|MN6PR12MB8471:EE_
+X-MS-Office365-Filtering-Correlation-Id: dcd217e1-9a99-49b4-ff60-08dc346cef44
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: wrVGEgsmf5tGdyHFvisBkVtMTxBeBo3gLSblVbH63H2rzuKc8ZxQF9eWbiyri3rWv9WHAPjZ3NSxkCh8HSihkMGbfLO1ACf2O9uNLdInU5GZEqcwIISo835kExa0VDSOQl4PpFyRrnWSju4QamOrseD4O1ZARQI3uJRelYCSz5jm7q1E7w8hxqBOuCXrcwGoz6dgrLiUAKz6m7R9doxMqGMfcYL6/zWPKTws44LCDe4/HCNt/5EgKAx58SGblCYpJKrelvU23FOj3JuJQL4Mujdz6VLcaqGahbrSz68s5XxUZCTyBQ3ylcAV8aK5q3Bux25j69kuwRaDVPY/anWubnPRKg4Q16X6qXE/2bEpzGoKdL1GbksHDgLyFikl8INZ8bElmCp6bwQWHoKbGj79QvAoFz4tu0iRXb+Eztg9C0fQqSxZIVJ1xaGmXFq4Gh1JiJrzJQrDSOzlZOMgvBuhGJVBRIz95BMzkbaAzuydXgt6kiR9w5Pbi/4jz6ukPBXyMLs9f77/2TJJi0zbzb84pVhFUbj/VM2R115y1K5hBfnpTcqkpzPmlZNB48rQ0k6yJBuCGii0CY0uXM+WcjZVhTcoL3qks4Yp8fhN7nRQLExf9k11ElVkTdwNXht5l1dzbD3tl4OTUl9rRtt2AN74dMeCtF4ctMP/YxcleA8O/68VDWpNB1Wgh2cmdJO/+QTdtzg5be622xCY+i+VMKSJuA==
+X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
+ SFS:(13230031)(36860700004)(46966006)(40470700004)(921011); DIR:OUT; SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2024 12:42:45.3594 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: dcd217e1-9a99-49b4-ff60-08dc346cef44
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000042A8.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8471
+Received-SPF: softfail client-ip=2a01:111:f403:2405::601;
+ envelope-from=ankita@nvidia.com;
+ helo=NAM02-DM3-obe.outbound.protection.outlook.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,143 +133,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+From: Ankit Agrawal <ankita@nvidia.com>
 
-> On Thu, Feb 22, 2024 at 10:49:12AM -0300, Fabiano Rosas wrote:
->> Peter Xu <peterx@redhat.com> writes:
->> 
->> > On Thu, Feb 22, 2024 at 05:40:41PM +0800, Peter Xu wrote:
->> >> On Wed, Feb 21, 2024 at 09:56:36AM -0300, Fabiano Rosas wrote:
->> >> > Peter Xu <peterx@redhat.com> writes:
->> >> > 
->> >> > > On Mon, Feb 19, 2024 at 04:44:57PM -0300, Fabiano Rosas wrote:
->> >> > >> The QMP command query_migrate might see incorrect throughput numbers
->> >> > >> if it runs after we've set the migration completion status but before
->> >> > >> migration_calculate_complete() has updated s->total_time and s->mbps.
->> >> > >> 
->> >> > >> The migration status would show COMPLETED, but the throughput value
->> >> > >> would be the one from the last iteration and not the one from the
->> >> > >> whole migration. This will usually be a larger value due to the time
->> >> > >> period being smaller (one iteration).
->> >> > >> 
->> >> > >> Move migration_calculate_complete() earlier so that the status
->> >> > >> MIGRATION_STATUS_COMPLETED is only emitted after the final counters
->> >> > >> update.
->> >> > >> 
->> >> > >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> >> > >> ---
->> >> > >> CI run: https://gitlab.com/farosas/qemu/-/pipelines/1182405776
->> >> > >> ---
->> >> > >>  migration/migration.c | 10 ++++++----
->> >> > >>  1 file changed, 6 insertions(+), 4 deletions(-)
->> >> > >> 
->> >> > >> diff --git a/migration/migration.c b/migration/migration.c
->> >> > >> index ab21de2cad..7486d59da0 100644
->> >> > >> --- a/migration/migration.c
->> >> > >> +++ b/migration/migration.c
->> >> > >> @@ -102,6 +102,7 @@ static int migration_maybe_pause(MigrationState *s,
->> >> > >>                                   int new_state);
->> >> > >>  static void migrate_fd_cancel(MigrationState *s);
->> >> > >>  static bool close_return_path_on_source(MigrationState *s);
->> >> > >> +static void migration_calculate_complete(MigrationState *s);
->> >> > >>  
->> >> > >>  static void migration_downtime_start(MigrationState *s)
->> >> > >>  {
->> >> > >> @@ -2746,6 +2747,7 @@ static void migration_completion(MigrationState *s)
->> >> > >>          migrate_set_state(&s->state, MIGRATION_STATUS_ACTIVE,
->> >> > >>                            MIGRATION_STATUS_COLO);
->> >> > >>      } else {
->> >> > >> +        migration_calculate_complete(s);
->> >> > >>          migrate_set_state(&s->state, current_active_state,
->> >> > >>                            MIGRATION_STATUS_COMPLETED);
->> >> > >>      }
->> >> > >> @@ -2784,6 +2786,7 @@ static void bg_migration_completion(MigrationState *s)
->> >> > >>          goto fail;
->> >> > >>      }
->> >> > >>  
->> >> > >> +    migration_calculate_complete(s);
->> >> > >>      migrate_set_state(&s->state, current_active_state,
->> >> > >>                        MIGRATION_STATUS_COMPLETED);
->> >> > >>      return;
->> >> > >> @@ -2993,12 +2996,15 @@ static void migration_calculate_complete(MigrationState *s)
->> >> > >>      int64_t end_time = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
->> >> > >>      int64_t transfer_time;
->> >> > >>  
->> >> > >> +    /* QMP could read from these concurrently */
->> >> > >> +    bql_lock();
->> >> > >>      migration_downtime_end(s);
->> >> > >>      s->total_time = end_time - s->start_time;
->> >> > >>      transfer_time = s->total_time - s->setup_time;
->> >> > >>      if (transfer_time) {
->> >> > >>          s->mbps = ((double) bytes * 8.0) / transfer_time / 1000;
->> >> > >>      }
->> >> > >> +    bql_unlock();
->> >> > >
->> >> > > The lock is not needed?
->> >> > >
->> >> > > AFAIU that was needed because of things like runstate_set() rather than
->> >> > > setting of these fields.
->> >> > >
->> >> > 
->> >> > Don't we need to keep the total_time and mbps update atomic? Otherwise
->> >> > query-migrate might see (say) total_time=0 and mbps=<correct value> or
->> >> > total_time=<correct value> and mbps=<previous value>.
->> >> 
->> >> I thought it wasn't a major concern, but what you said makes sense; taking
->> >> it one more time doesn't really hurt after all to provide such benefit.
->> >> 
->> >> > 
->> >> > Also, what orders s->mbps update before the s->state update? I'd say we
->> >> > should probably hold the lock around the whole total_time,mbps,state
->> >> > update.
->> >> 
->> >> IMHO that's fine; mutex unlock implies a RELEASE.  See atomic.rst:
->> >> 
->> >> - ``pthread_mutex_lock`` has acquire semantics, ``pthread_mutex_unlock`` has
->> >>   release semantics and synchronizes with a ``pthread_mutex_lock`` for the
->> >>   same mutex.
->> >
->> > Hmm perhaps I wrote too soon.. it should only guarantee the ordering of the
->> > update on the lock variable itself v.s. any previous R&Ws, nothing else.
->> > Only if the other side uses bql_lock() will it guarantee proper ordering.
->> >
->> > Put them in bql should work, but I hesitate such use to start using bql
->> > to protect state updates.
->> 
->> Well, on the other hand that's a major use-case of the BQL: protecting
->> state that's used by QMP.
->> 
->> >
->> > How about we drop the lock, but use an explicit smp_mb_release()?  We may
->> > also want to use smb_load_acquire() in fill_source_migration_info() to use
->> > on reading &s->state (all will need some comment).  To me, making sure the
->> > total mbps is valid seems more important; while the other races are less
->> > harmful, and may not be a major concern?
->> 
->> That more closely reflects the problem we're trying to solve, which is
->> just an ordering one. However, the QMP code already holds the BQL, we
->> could just take benefit of that instead of adding more complex
->> synchronization primitives.
->> 
->> May I suggest we keep it simple and move that last migrate_set_state
->> into the BQL as well?
->
-> It's okay to me, but then let's also extend the comment a little bit on the
-> two exact requirements we're persuing (atomicity of updating fields,
-> ordering of state update v.s. mbps)?
+There are upcoming devices which allow CPU to cache coherently access
+their memory. It is sensible to expose such memory as NUMA nodes separate
+from the sysmem node to the OS. The ACPI spec provides a scheme in SRAT
+called Generic Initiator Affinity Structure [1] to allow an association
+between a Proximity Domain (PXM) and a Generic Initiator (GI) (e.g.
+heterogeneous processors and accelerators, GPUs, and I/O devices with
+integrated compute or DMA engines).
 
-Ok, I'll respin with these changes.
+While a single node per device may cover several use cases, it is however
+insufficient for a full utilization of the NVIDIA GPUs MIG
+(Mult-Instance GPUs) [2] feature. The feature allows partitioning of the
+GPU device resources (including device memory) into several (upto 8)
+isolated instances. Each of the partitioned memory requires a dedicated NUMA
+node to operate. The partitions are not fixed and they can be created/deleted
+at runtime.
 
->
-> We can also rename migration_calculate_complete() to something like
-> migration_completion_finalize()?  Then move the state update into it.
+Linux OS does not provide a means to dynamically create/destroy NUMA nodes
+and such feature implementation is expected to be non-trivial. The nodes
+that OS discovers at the boot time while parsing SRAT remains fixed. So we
+utilize the GI Affinity structures that allows association between nodes
+and devices. Multiple GI structures per device/BDF is possible, allowing
+creation of multiple nodes in the VM by exposing unique PXM in each of these
+structures.
 
-I've been planning to merge migration_completion() and
-migration_iteration_finish(). It's too unintuitive to do the completion
-routine deep inside migration_iteration_run(). AFAICS those are all tail
-calls, so we could bring migration_completion() up into the
-migration_thread top level.
+Implement the mechanism to build the GI affinity structures as Qemu currently
+does not. Introduce a new acpi-generic-initiator object to allow host admin
+link a device with an associated NUMA node. Qemu maintains this association
+and use this object to build the requisite GI Affinity Structure.
 
-So if you'll allow me I think I'll refrain from moving the state into
-migration_calculate_complete() for now.
+When multiple numa nodes are associated with a device, it is required to
+create those many number of acpi-generic-initiator objects, each representing
+a unique device:node association.
+
+Following is one of a decoded GI affinity structure in VM ACPI SRAT.
+[0C8h 0200   1]                Subtable Type : 05 [Generic Initiator Affinity]
+[0C9h 0201   1]                       Length : 20
+
+[0CAh 0202   1]                    Reserved1 : 00
+[0CBh 0203   1]           Device Handle Type : 01
+[0CCh 0204   4]             Proximity Domain : 00000007
+[0D0h 0208  16]                Device Handle : 00 00 20 00 00 00 00 00 00 00 00
+00 00 00 00 00
+[0E0h 0224   4]        Flags (decoded below) : 00000001
+                                     Enabled : 1
+[0E4h 0228   4]                    Reserved2 : 00000000
+
+[0E8h 0232   1]                Subtable Type : 05 [Generic Initiator Affinity]
+[0E9h 0233   1]                       Length : 20
+
+On Grace Hopper systems, an admin will create a range of 8 nodes and associate
+them with the device using the acpi-generic-initiator object. While a
+configuration of less than 8 nodes per device is allowed, such configuration
+will prevent utilization of the feature to the fullest. This setting is
+applicable to all the Grace+Hopper systems. The following is an example of
+the Qemu command line arguments to create 8 nodes and link them to the device
+'dev0':
+
+-numa node,nodeid=2 -numa node,nodeid=3 -numa node,nodeid=4 \
+-numa node,nodeid=5 -numa node,nodeid=6 -numa node,nodeid=7 \
+-numa node,nodeid=8 -numa node,nodeid=9 \
+-device vfio-pci-nohotplug,host=0009:01:00.0,bus=pcie.0,addr=04.0,rombar=0,id=dev0 \
+-object acpi-generic-initiator,id=gi0,pci-dev=dev0,node=2 \
+-object acpi-generic-initiator,id=gi1,pci-dev=dev0,node=3 \
+-object acpi-generic-initiator,id=gi2,pci-dev=dev0,node=4 \
+-object acpi-generic-initiator,id=gi3,pci-dev=dev0,node=5 \
+-object acpi-generic-initiator,id=gi4,pci-dev=dev0,node=6 \
+-object acpi-generic-initiator,id=gi5,pci-dev=dev0,node=7 \
+-object acpi-generic-initiator,id=gi6,pci-dev=dev0,node=8 \
+-object acpi-generic-initiator,id=gi7,pci-dev=dev0,node=9 \
+
+The performance benefits can be realized by providing the NUMA node distances
+appropriately (through libvirt tags or Qemu params). The admin can get the
+distance among nodes in hardware using `numactl -H`.
+
+This series goes along with the vfio-pci variant driver [3] under review.
+
+Applied over v8.2.1.
+base commit: f48c205fb42be48e2e47b7e1cd9a2802e5ca17b0
+
+[1] ACPI Spec 6.3, Section 5.2.16.6
+[2] https://www.nvidia.com/en-in/technologies/multi-instance-gpu
+[3] https://lore.kernel.org/all/20240220115055.23546-4-ankita@nvidia.com/
+
+Link for v6:
+https://lore.kernel.org/all/20231225045603.7654-1-ankita@nvidia.com/
+
+v6 -> v7
+- Updated code and the commit message to make acpi-generic-initiator
+  define a 1:1 relationship between device and node based on
+  Jonathan Cameron's suggestion.
+- Updated commit message to include the decoded GI entry in the SRAT.
+- Rebased to v8.2.1.
+
+v5 -> v6
+- Updated commit message for the [1/2] and the cover letter.
+- Updated the acpi-generic-initiator object comment description for
+  clarity on the input host-nodes.
+- Rebased to v8.2.0-rc4.
+
+v4 -> v5
+- Removed acpi-dev option until full support.
+- The numa nodes are saved as bitmap instead of uint16List.
+- Replaced asserts to exit calls.
+- Addressed other miscellaneous comments.
+
+v3 -> v4
+- changed the ':' delimited way to a uint16 array to communicate the
+nodes associated with the device.
+- added asserts to handle invalid inputs.
+- addressed other miscellaneous v3 comments.
+
+v2 -> v3
+- changed param to accept a ':' delimited list of numa nodes, instead
+of a range.
+- Removed nvidia-acpi-generic-initiator object.
+- Addressed miscellaneous comments in v2.
+
+v1 -> v2
+- Removed dependency on sysfs to communicate the feature with variant module.
+- Use GI Affinity SRAT structure instead of Memory Affinity.
+- No DSDT entries needed to communicate the PXM for the device. SRAT GI
+structure is used instead.
+- New objects introduced to establish link between device and nodes.
+
+Ankit Agrawal (2):
+  qom: new object to associate device to numa node
+  hw/acpi: Implement the SRAT GI affinity structure
+
+ hw/acpi/acpi-generic-initiator.c         | 154 +++++++++++++++++++++++
+ hw/acpi/meson.build                      |   1 +
+ hw/arm/virt-acpi-build.c                 |   3 +
+ include/hw/acpi/acpi-generic-initiator.h |  58 +++++++++
+ qapi/qom.json                            |  17 +++
+ 5 files changed, 233 insertions(+)
+ create mode 100644 hw/acpi/acpi-generic-initiator.c
+ create mode 100644 include/hw/acpi/acpi-generic-initiator.h
+
+-- 
+2.34.1
+
 
