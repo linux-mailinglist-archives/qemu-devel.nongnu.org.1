@@ -2,132 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE88861D5D
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 21:19:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C1A5861D4B
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 21:11:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdc02-0005mM-89; Fri, 23 Feb 2024 15:18:26 -0500
+	id 1rdbrF-00083O-Oz; Fri, 23 Feb 2024 15:09:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rdb9O-0004jU-NE
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:24:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rdb9M-0000la-Ku
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:24:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708716239;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=FI6NALMnRssrxJhK1u6w8pb11/25tCigeIRjQOikSCA=;
- b=Kq7bdZe+t+RyphjAah4IWnqBUJzH5tViEiAI9di6lkmeWOC8MEB52HOG0o1rE0sneopfAV
- cH/2Rj297OBCKmirJbaQfQjuFkq0TvrOBi3Yergs+9eh6bcfpVFKfq96ORe7s1rLlYnFYm
- uIEGYtInafJt3TLFB1V2IPK2d+bw92U=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-65-fqvT_g3AOz-Exdi7eFafAg-1; Fri, 23 Feb 2024 14:23:57 -0500
-X-MC-Unique: fqvT_g3AOz-Exdi7eFafAg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4128defb707so6058425e9.0
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 11:23:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rdbeC-0008PK-Ru
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:56:15 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rdbe0-0000RG-H9
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:55:48 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1dc0d11d1b7so6539965ad.2
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 11:55:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708718135; x=1709322935; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/TrAgSKYB/hWwJb+u0d6mqJR/NMd+hWHz7I91cQWFCM=;
+ b=UzoxODvpRj/Rz3+oPhf4JfIpgDUxlxCPNm0ecOwqEMZmGcI0PjvSdp7p/VZn2SG8G5
+ yJubV7SjGWNnxBHZyY+d0Vtvt49il403Ze7HJRzm1z2MP0kPtKutMwoCBYwj1Sn/Ac7t
+ cY+mmV9DY2JDgYGKh5gJSRD15Uhw4BZpg1RilUeO5CmZxEb75fjDtGjChte1w3bmbsmb
+ AK17CV5Y+NKcY+ku37yM5GgXvJxsu21BK+XFBdRslUukSFODv7Eh0wmWci4SgrgY5FTD
+ Uydh1ztKoHpB+mjc8vZFTScu5DHmgiab/hXRwD5il8y+1OXcy3PPfmq6gcieewcx+da6
+ ss0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708716236; x=1709321036;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1708718135; x=1709322935;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FI6NALMnRssrxJhK1u6w8pb11/25tCigeIRjQOikSCA=;
- b=F15nx4Ip5A37YePD2Xsj9K6xeKxVfpqCq7MZfUrPh+k1BZJ2Vy207/+TB7zwYV9N2L
- ZqDsbIczo9p/+qyxq2dO4t6tfZrxDfRUUhVZmGGAg9LD3nlxd4X5Jb1uL0mhgjNU9qmN
- 8GALjNqEpXvCtXw5hvOliU1QQsqO8GqcNFvwmqvmsj+3Bu0NIK4xj2TbTHfVWw05CdF1
- 7BiqBsPFtyI/1850tu2LAtYKFDadzUwPjDWHCb8irzeLD9ZTRCpAz9y7E2skSQFDxXLy
- ubO5pp2w7s0gPJPHdpuSFxeVYw7u6SbjMfeEdo5UyMQZiYD/dgiHAfS0x8GBQyrdupNe
- JSzQ==
+ bh=/TrAgSKYB/hWwJb+u0d6mqJR/NMd+hWHz7I91cQWFCM=;
+ b=A4SglIQYhlmktLgAgOMd91DelTg4d8QY7umWuqiaexoamkqm7zQMgMzkwyff6tTsyg
+ iPm0VhFxGWG7r+9bS7ZIXo6G2PcWTDadH8Wie/SRJ5yeKj+Aemzthbmw7j4qyINPa6fZ
+ 7Fe5tkR0zi59nJGuSFXLJjSmewGMdTkWAajLMMaUQzAb6w1xC8Uh55L0PYvleTNCocCB
+ dIiD+xiWFdl+mtOffgMTf+27y/whsl9dO6nRCBYdTdglhAW6fFhRzy+d/ITFpBrEJemr
+ oMn3pQB6C4d7aqFCakKHCnsFUodaFnlEaKmwmYzGRoy3qnkiVK9uz877zvFlZLmmAFj6
+ cj9Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVWiSeTBEt2V8mrq3R1MAv0+35JzAEQy0QyULbyBPVouCNSI3FfdnINOq1KW6Z68w1dLqTDyPch9N8FeManWBUC6dVk3iw=
-X-Gm-Message-State: AOJu0YzVJd+sQPF88WUcvXAyZ5V3ld21zue8GSdtetgsHRNteeTfrjNX
- /eTY+cgLeRE/Who+LS5trCSYUhwvUZ+uxOVJD95aw0ZN2olzHz53kBscqxui7H9rS1RHqzCXv75
- NvU7NhyRrFxRm7KJ6e0IqdptOePuaNk07g/IbuprGZ3JZW8vnnw/s
-X-Received: by 2002:a05:600c:46d0:b0:412:5fbe:3740 with SMTP id
- q16-20020a05600c46d000b004125fbe3740mr470424wmo.24.1708716236796; 
- Fri, 23 Feb 2024 11:23:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHJzI9ucWUCK6qgWxloeDwwgIxwDgxlkEeLOGwQSEdyORyWzD70L6dPRpbxycamRdW7M13KjA==
-X-Received: by 2002:a05:600c:46d0:b0:412:5fbe:3740 with SMTP id
- q16-20020a05600c46d000b004125fbe3740mr470415wmo.24.1708716236460; 
- Fri, 23 Feb 2024 11:23:56 -0800 (PST)
-Received: from [192.168.0.9] (ip-109-43-176-215.web.vodafone.de.
- [109.43.176.215]) by smtp.gmail.com with ESMTPSA id
- ba14-20020a0560001c0e00b0033da66e7bedsm3564604wrb.66.2024.02.23.11.23.55
+ AJvYcCXJ36vTyZd1+FngmuGbFUfMzk3I2/QifI4WWnqemXXPZt6o+P92RQ22yQSuo4xIHU3Msjcl25aF5PrGdBpHhSYtcgvaoKs=
+X-Gm-Message-State: AOJu0YzsZXDitlRiMV7OZC2yszzRFbkPdb8ptjJiA8edU0urGD0K6Efw
+ YTZQ4L/MB+si2LarpWZHrhs+DmISEw3aEDXeQO8fmrH+iPWrzzqq1davJ7RSudE=
+X-Google-Smtp-Source: AGHT+IFKz/J+jHRtow1t9nob9DFhAmz/xgr17C0dEKH+yCLPj7h4W4p+7tXHEbpEM+koMhZUzlPFmw==
+X-Received: by 2002:a17:902:f804:b0:1db:f372:a93c with SMTP id
+ ix4-20020a170902f80400b001dbf372a93cmr672680plb.43.1708718135074; 
+ Fri, 23 Feb 2024 11:55:35 -0800 (PST)
+Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
+ [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
+ d17-20020a170903209100b001d9ef7f4bfdsm12036798plc.164.2024.02.23.11.55.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 23 Feb 2024 11:23:55 -0800 (PST)
-Message-ID: <50972788-77b0-4494-b956-367e227575b6@redhat.com>
-Date: Fri, 23 Feb 2024 20:23:54 +0100
+ Fri, 23 Feb 2024 11:55:34 -0800 (PST)
+Message-ID: <ff7f83e0-c68d-49a0-b41b-aa6c13165333@linaro.org>
+Date: Fri, 23 Feb 2024 09:55:31 -1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/10] hppa: do not require CONFIG_USB
+Subject: Re: [RFC PATCH v3 06/21] target/arm: Add support for Non-maskable
+ Interrupt
 Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: philmd@linaro.org, balaton@eik.bme.hu
-References: <20240223124406.234509-1-pbonzini@redhat.com>
- <20240223124406.234509-6-pbonzini@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240223124406.234509-6-pbonzini@redhat.com>
+To: Jinjie Ruan <ruanjinjie@huawei.com>, peter.maydell@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org
+References: <20240223103221.1142518-1-ruanjinjie@huawei.com>
+ <20240223103221.1142518-7-ruanjinjie@huawei.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240223103221.1142518-7-ruanjinjie@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -143,45 +98,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/02/2024 13.44, Paolo Bonzini wrote:
-> With --without-default-devices it is possible to build a binary that
-> does not include any USB host controller and therefore that does not
-> include the code guarded by CONFIG_USB.  While the simpler creation
-> functions such as usb_create_simple can be inlined, this is not true
-> of usb_bus_find().  Remove it, replacing it with a search of the single
-> USB bus on the machine.
+On 2/23/24 00:32, Jinjie Ruan via wrote:
+> This only implements the external delivery method via the GICv3.
 > 
-> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 > ---
->   hw/hppa/machine.c | 7 ++++---
->   hw/hppa/Kconfig   | 2 +-
->   2 files changed, 5 insertions(+), 4 deletions(-)
+> v3:
+> - Not include CPU_INTERRUPT_NMI when FEAT_NMI not enabled
+> - Add ARM_CPU_VNMI.
+> - Refator nmi mask in arm_excp_unmasked().
+> - Test SCTLR_ELx.NMI for ALLINT mask for NMI.
+> ---
+>   target/arm/cpu-qom.h |  4 +++-
+>   target/arm/cpu.c     | 54 ++++++++++++++++++++++++++++++++++++--------
+>   target/arm/cpu.h     |  4 ++++
+>   target/arm/helper.c  |  2 ++
+>   4 files changed, 54 insertions(+), 10 deletions(-)
 > 
-> diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-> index 5fcaf5884be..11982d5776c 100644
-> --- a/hw/hppa/machine.c
-> +++ b/hw/hppa/machine.c
-> @@ -396,10 +396,11 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
+> diff --git a/target/arm/cpu-qom.h b/target/arm/cpu-qom.h
+> index 8e032691db..e0c9e18036 100644
+> --- a/target/arm/cpu-qom.h
+> +++ b/target/arm/cpu-qom.h
+> @@ -36,11 +36,13 @@ DECLARE_CLASS_CHECKERS(AArch64CPUClass, AARCH64_CPU,
+>   #define ARM_CPU_TYPE_SUFFIX "-" TYPE_ARM_CPU
+>   #define ARM_CPU_TYPE_NAME(name) (name ARM_CPU_TYPE_SUFFIX)
+>   
+> -/* Meanings of the ARMCPU object's four inbound GPIO lines */
+> +/* Meanings of the ARMCPU object's six inbound GPIO lines */
+>   #define ARM_CPU_IRQ 0
+>   #define ARM_CPU_FIQ 1
+>   #define ARM_CPU_VIRQ 2
+>   #define ARM_CPU_VFIQ 3
+> +#define ARM_CPU_NMI 4
+> +#define ARM_CPU_VNMI 5
+>   
+>   /* For M profile, some registers are banked secure vs non-secure;
+>    * these are represented as a 2-element array where the first element
+> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+> index 5fa86bc8d5..d40ada9c75 100644
+> --- a/target/arm/cpu.c
+> +++ b/target/arm/cpu.c
+> @@ -126,11 +126,20 @@ static bool arm_cpu_has_work(CPUState *cs)
+>   {
+>       ARMCPU *cpu = ARM_CPU(cs);
+>   
+> -    return (cpu->power_state != PSCI_OFF)
+> -        && cs->interrupt_request &
+> -        (CPU_INTERRUPT_FIQ | CPU_INTERRUPT_HARD
+> -         | CPU_INTERRUPT_VFIQ | CPU_INTERRUPT_VIRQ | CPU_INTERRUPT_VSERR
+> -         | CPU_INTERRUPT_EXITTB);
+> +    if (cpu_isar_feature(aa64_nmi, cpu)) {
+> +        return (cpu->power_state != PSCI_OFF)
+> +            && cs->interrupt_request &
+> +            (CPU_INTERRUPT_FIQ | CPU_INTERRUPT_HARD
+> +             | CPU_INTERRUPT_NMI | CPU_INTERRUPT_VNMI
+> +             | CPU_INTERRUPT_VFIQ | CPU_INTERRUPT_VIRQ | CPU_INTERRUPT_VSERR
+> +             | CPU_INTERRUPT_EXITTB);
+> +    } else {
+> +        return (cpu->power_state != PSCI_OFF)
+> +            && cs->interrupt_request &
+> +            (CPU_INTERRUPT_FIQ | CPU_INTERRUPT_HARD
+> +             | CPU_INTERRUPT_VFIQ | CPU_INTERRUPT_VIRQ | CPU_INTERRUPT_VSERR
+> +             | CPU_INTERRUPT_EXITTB);
+> +    }
+
+This can be factored better, to avoid repeating everything.
+
+However, I am reconsidering my previous advice to ignore NMI if FEAT_NMI is not present.
+
+Consider R_MHWBP, where IRQ with Superpriority, with SCTLR_ELx.NMI == 0, is masked 
+identically with IRQ without Superpriority.  Moreover, if the GIC is configured so that 
+FEAT_GICv3_NMI is only set if FEAT_NMI is set, then we won't ever see CPU_INTERRUPT_*NMI 
+anyway.
+
+So we might as well accept NMI here unconditionally.  But document this choice here with a 
+comment.
+
+
+> @@ -678,13 +688,26 @@ static inline bool arm_excp_unmasked(CPUState *cs, unsigned int excp_idx,
+>           return false;
 >       }
 >   
->       /* create USB OHCI controller for USB keyboard & mouse on Astro machines */
-> -    if (!lasi_dev && machine->enable_graphics) {
-> +    if (!lasi_dev && machine->enable_graphics && defaults_enabled()) {
+> +    if (cpu_isar_feature(aa64_nmi, env_archcpu(env))) {
+> +        nmi_unmasked = (cur_el == target_el) &&
+> +                       (((env->cp15.sctlr_el[target_el] & SCTLR_NMI) &&
+> +                        (env->allint & PSTATE_ALLINT)) ||
+> +                        ((env->cp15.sctlr_el[target_el] & SCTLR_SPINTMASK) &&
+> +                        (env->pstate & PSTATE_SP)));
 
-Do we need the defaults_enabled() here? Isn't enable_graphics already 
-disabled if defaults_enabled() is not set?
+In the manual, this is "allintmask".  It is easier to follow the logic if you use this...
 
-  Thomas
+> +        nmi_unmasked = !nmi_unmasked;
+
+... and not the inverse.
+
+>       case EXCP_FIQ:
+> -        pstate_unmasked = !(env->daif & PSTATE_F);
+> +        pstate_unmasked = (!(env->daif & PSTATE_F)) & nmi_unmasked;
+
+Clearer with "&&".
+
+> +    if (cpu_isar_feature(aa64_nmi, env_archcpu(env))) {
+> +        if (interrupt_request & CPU_INTERRUPT_NMI) {
+> +            excp_idx = EXCP_NMI;
+> +            target_el = arm_phys_excp_target_el(cs, excp_idx, cur_el, secure);
+> +            if (arm_excp_unmasked(cs, excp_idx, target_el,
+> +                                  cur_el, secure, hcr_el2)) {
+> +                goto found;
+> +            }
+> +        }
+> +    }
+
+Handling for vNMI?
+
+> @@ -957,6 +992,7 @@ static void arm_cpu_set_irq(void *opaque, int irq, int level)
+>           break;
+>       case ARM_CPU_IRQ:
+>       case ARM_CPU_FIQ:
+> +    case ARM_CPU_NMI:
+>           if (level) {
+>               cpu_interrupt(cs, mask[irq]);
+>           } else {
+
+Likewise.
 
 
->           pci_create_simple(pci_bus, -1, "pci-ohci");
-> -        usb_create_simple(usb_bus_find(-1), "usb-kbd");
-> -        usb_create_simple(usb_bus_find(-1), "usb-mouse");
-> +        Object *usb_bus = object_resolve_type_unambiguous(TYPE_USB_BUS, &error_abort);
-> +        usb_create_simple(USB_BUS(usb_bus), "usb-kbd");
-> +        usb_create_simple(USB_BUS(usb_bus), "usb-mouse");
->       }
-
-
+r~
 
