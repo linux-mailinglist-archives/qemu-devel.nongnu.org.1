@@ -2,55 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 109DA861D4A
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 21:11:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D8B861D57
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 21:17:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdbrG-00083Q-Fz; Fri, 23 Feb 2024 15:09:22 -0500
+	id 1rdbyK-0003xC-0m; Fri, 23 Feb 2024 15:16:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rdbee-00007M-Nq
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:56:36 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rdbeY-0000it-Af
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:56:16 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 3720D4E602C;
- Fri, 23 Feb 2024 20:56:09 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id SyPAy-nHsocc; Fri, 23 Feb 2024 20:56:07 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 412704E6004; Fri, 23 Feb 2024 20:56:07 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 3F95A745708;
- Fri, 23 Feb 2024 20:56:07 +0100 (CET)
-Date: Fri, 23 Feb 2024 20:56:07 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Thomas Huth <thuth@redhat.com>
-cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org, 
- philmd@linaro.org
-Subject: Re: [PATCH 05/10] hppa: do not require CONFIG_USB
-In-Reply-To: <50972788-77b0-4494-b956-367e227575b6@redhat.com>
-Message-ID: <ab8ce4b2-d0c4-867e-44cf-44137e91a610@eik.bme.hu>
-References: <20240223124406.234509-1-pbonzini@redhat.com>
- <20240223124406.234509-6-pbonzini@redhat.com>
- <50972788-77b0-4494-b956-367e227575b6@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rdbgo-0000gU-2j
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:58:34 -0500
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rdbgk-0001CG-Sd
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:58:33 -0500
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-5cfd95130c6so466038a12.1
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 11:58:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708718308; x=1709323108; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=pfOUAy1mh5dsDQ4iDIJnm3V+EpuC9KpvDAEDhgMgZYc=;
+ b=XB2VpLDOWVoFHUf60usdZZPZxTbNf36AOhITfNiLKKz8pG5rqNunVN22ZX8rQfmZ84
+ Wx6it62B5WYY/EkpqLN4JnijwxW1Q6krwlDFjilNgZln3CMKQ777ys1bHKtBsL0fDHpl
+ /Of5JPklT3OoJ2DT2H98UNTIRWxb7wT1Q/WmhJtqjzHIiw3zuCvwPaHXYRA+abSSmG0v
+ GZBEKHetOPWME9gYuLtHvi2MC1ISLZ9mI2txU87FFs463kWZYp3RuqqQrKbYn++TyFZL
+ JFAYnRV3DrhoOV0lOxhjcG7A3fPW8meDDG4E27gE/j0BQwShVuzXGONE5zOvwiUPiAKM
+ aK2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708718308; x=1709323108;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pfOUAy1mh5dsDQ4iDIJnm3V+EpuC9KpvDAEDhgMgZYc=;
+ b=DGOiFpUKq4Eu7rQmslotPDFNKvwgAUukHd1Y5kB7HY4ScSTQwt4+k3ebBVlPOVkRs8
+ XezwOVto7PdKJQ9CWQZSU9D78srY7cVxsUzLgfuvXdCRFVu3xtcCCcPFkArWVFgTuJAM
+ kds2Pci4mb8IduQoVayFPmfIvd/aFL6JsY4cDewJWN0sqUY/Zrr0MWfDe1d/+YPkVtvw
+ 91TK4jF4XSy8p01jyWX8YrxcRWK1iJu3iKddHm7beb4kzVGEBz099xe/rttGeEgbfk4F
+ F0OpEeDYjye9d9s33Zoq+2sJc6iOPznxxlIJIRiqVZGeD6DORsiXbeb8K2PbbKm3K37e
+ KLgw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVcRfkqHz5eCWxeGk7sQ4YhKfrZOfVMngLrI6HZ1/L8VDp4dGKlOrdPR8WOE0kCHn39WlyJQxgTKMLgoBvGIl2oQIpI6eo=
+X-Gm-Message-State: AOJu0Yz9Z++OHjIkHSLFPoAvqLjhjmXsfr4wCLdqokYF+xSCu5OgGa+L
+ ySJ4tkcL+vn1JE+VRLNqxrxEfp6NzzhP4TUahMyqheCL4FdwCudUGXCsKM70XVk=
+X-Google-Smtp-Source: AGHT+IHCqHET36lnO+8/9bDZBRBLNzQbaG1YpVxeFAm4cpla0YxqRs1PjndYHaXjtUXvcv9XktuoEA==
+X-Received: by 2002:a17:90b:4c49:b0:29a:9316:6f4f with SMTP id
+ np9-20020a17090b4c4900b0029a93166f4fmr908513pjb.23.1708718308326; 
+ Fri, 23 Feb 2024 11:58:28 -0800 (PST)
+Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
+ [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
+ oe4-20020a17090b394400b0029724370ea9sm1907224pjb.47.2024.02.23.11.58.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 23 Feb 2024 11:58:27 -0800 (PST)
+Message-ID: <1ea2e320-9ca0-4efb-94f0-3f9aa6f585ea@linaro.org>
+Date: Fri, 23 Feb 2024 09:58:24 -1000
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-226990619-1708718167=:36853"
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 07/21] target/arm: Add support for NMI in
+ arm_phys_excp_target_el()
+Content-Language: en-US
+To: Jinjie Ruan <ruanjinjie@huawei.com>, peter.maydell@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org
+References: <20240223103221.1142518-1-ruanjinjie@huawei.com>
+ <20240223103221.1142518-8-ruanjinjie@huawei.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240223103221.1142518-8-ruanjinjie@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,64 +98,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On 2/23/24 00:32, Jinjie Ruan via wrote:
+> According to Arm GIC section 4.6.3 Interrupt superpriority, the interrupt
+> with superpriority is always IRQ, never FIQ, so handle NMI same as IRQ in
+> arm_phys_excp_target_el().
+> 
+> Signed-off-by: Jinjie Ruan<ruanjinjie@huawei.com>
+> ---
+> v3:
+> - Remove nmi_is_irq flag in CPUARMState.
+> - Handle NMI same as IRQ in arm_phys_excp_target_el()
+> ---
+>   target/arm/helper.c | 1 +
+>   1 file changed, 1 insertion(+)
 
---3866299591-226990619-1708718167=:36853
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-On Fri, 23 Feb 2024, Thomas Huth wrote:
-> On 23/02/2024 13.44, Paolo Bonzini wrote:
->> With --without-default-devices it is possible to build a binary that
->> does not include any USB host controller and therefore that does not
->> include the code guarded by CONFIG_USB.  While the simpler creation
->> functions such as usb_create_simple can be inlined, this is not true
->> of usb_bus_find().  Remove it, replacing it with a search of the single
->> USB bus on the machine.
->> 
->> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
->> ---
->>   hw/hppa/machine.c | 7 ++++---
->>   hw/hppa/Kconfig   | 2 +-
->>   2 files changed, 5 insertions(+), 4 deletions(-)
->> 
->> diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
->> index 5fcaf5884be..11982d5776c 100644
->> --- a/hw/hppa/machine.c
->> +++ b/hw/hppa/machine.c
->> @@ -396,10 +396,11 @@ static void machine_HP_common_init_tail(MachineState 
->> *machine, PCIBus *pci_bus,
->>       }
->>         /* create USB OHCI controller for USB keyboard & mouse on Astro 
->> machines */
->> -    if (!lasi_dev && machine->enable_graphics) {
->> +    if (!lasi_dev && machine->enable_graphics && defaults_enabled()) {
->
-> Do we need the defaults_enabled() here? Isn't enable_graphics already 
-> disabled if defaults_enabled() is not set?
-
-Isn't enable_graphics controlled by -nographic and defaults_enabled 
-controlled by -nodefaults? I think they are independent but maybe that 
-does not answer the question if it's needed or not.
-
-Regards,
-BALATON Zoltan
-
-> Thomas
->
->
->>           pci_create_simple(pci_bus, -1, "pci-ohci");
->> -        usb_create_simple(usb_bus_find(-1), "usb-kbd");
->> -        usb_create_simple(usb_bus_find(-1), "usb-mouse");
->> +        Object *usb_bus = object_resolve_type_unambiguous(TYPE_USB_BUS, 
->> &error_abort);
->> +        usb_create_simple(USB_BUS(usb_bus), "usb-kbd");
->> +        usb_create_simple(USB_BUS(usb_bus), "usb-mouse");
->>       }
->
->
->
---3866299591-226990619-1708718167=:36853--
+r~
 
