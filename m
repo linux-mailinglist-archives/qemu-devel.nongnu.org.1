@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EBAA860F77
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 11:36:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 516F0860F8F
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 11:39:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdSt4-000462-Re; Fri, 23 Feb 2024 05:34:38 -0500
+	id 1rdSu1-0004y3-NF; Fri, 23 Feb 2024 05:35:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rdSsY-0003eK-Oe; Fri, 23 Feb 2024 05:34:08 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191])
+ id 1rdSsV-0003bz-90; Fri, 23 Feb 2024 05:34:05 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rdSsP-0001wP-PO; Fri, 23 Feb 2024 05:34:06 -0500
-Received: from mail.maildlp.com (unknown [172.19.88.234])
- by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Th5sJ2bZ3z1h05D;
- Fri, 23 Feb 2024 18:31:32 +0800 (CST)
+ id 1rdSsP-0001wW-Rj; Fri, 23 Feb 2024 05:34:02 -0500
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+ by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Th5tB6Gxsz1xpGp;
+ Fri, 23 Feb 2024 18:32:18 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id C420F1400CC;
- Fri, 23 Feb 2024 18:33:42 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 9E1341A016B;
+ Fri, 23 Feb 2024 18:33:43 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 23 Feb
- 2024 18:33:42 +0800
+ 2024 18:33:43 +0800
 To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [RFC PATCH v3 09/21] target/arm: Handle PSTATE.ALLINT on taking an
- exception
-Date: Fri, 23 Feb 2024 10:32:09 +0000
-Message-ID: <20240223103221.1142518-10-ruanjinjie@huawei.com>
+Subject: [RFC PATCH v3 10/21] hw/arm/virt: Wire NMI and VNMI irq lines from
+ GIC to CPU
+Date: Fri, 23 Feb 2024 10:32:10 +0000
+Message-ID: <20240223103221.1142518-11-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240223103221.1142518-1-ruanjinjie@huawei.com>
 References: <20240223103221.1142518-1-ruanjinjie@huawei.com>
@@ -43,8 +43,8 @@ Content-Type: text/plain
 X-Originating-IP: [10.67.174.55]
 X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
  kwepemi500008.china.huawei.com (7.221.188.139)
-Received-SPF: pass client-ip=45.249.212.191;
- envelope-from=ruanjinjie@huawei.com; helo=szxga05-in.huawei.com
+Received-SPF: pass client-ip=45.249.212.190;
+ envelope-from=ruanjinjie@huawei.com; helo=szxga04-in.huawei.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
@@ -68,38 +68,41 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Set or clear PSTATE.ALLINT on taking an exception to ELx according to the
-SCTLR_ELx.SPINTMASK bit.
+Wire the new NMI and VNMI interrupt line from the GIC to each CPU.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
 v3:
-- Add Reviewed-by.
+- Also add VNMI wire.
 ---
- target/arm/helper.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ hw/arm/virt.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index eb97ce0356..0a69638651 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -11532,6 +11532,15 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
-         }
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 0af1943697..2d4a187fd5 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -804,7 +804,8 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+ 
+     /* Wire the outputs from each CPU's generic timer and the GICv3
+      * maintenance interrupt signal to the appropriate GIC PPI inputs,
+-     * and the GIC's IRQ/FIQ/VIRQ/VFIQ interrupt outputs to the CPU's inputs.
++     * and the GIC's IRQ/FIQ/VIRQ/VFIQ/NMI/VNMI interrupt outputs to the
++     * CPU's inputs.
+      */
+     for (i = 0; i < smp_cpus; i++) {
+         DeviceState *cpudev = DEVICE(qemu_get_cpu(i));
+@@ -848,6 +849,10 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+                            qdev_get_gpio_in(cpudev, ARM_CPU_VIRQ));
+         sysbus_connect_irq(gicbusdev, i + 3 * smp_cpus,
+                            qdev_get_gpio_in(cpudev, ARM_CPU_VFIQ));
++        sysbus_connect_irq(gicbusdev, i + 4 * smp_cpus,
++                           qdev_get_gpio_in(cpudev, ARM_CPU_NMI));
++        sysbus_connect_irq(gicbusdev, i + 5 * smp_cpus,
++                           qdev_get_gpio_in(cpudev, ARM_CPU_VNMI));
      }
  
-+    if (cpu_isar_feature(aa64_nmi, cpu) &&
-+        (env->cp15.sctlr_el[new_el] & SCTLR_NMI)) {
-+        if (!(env->cp15.sctlr_el[new_el] & SCTLR_SPINTMASK)) {
-+            new_mode |= PSTATE_ALLINT;
-+        } else {
-+            new_mode &= ~PSTATE_ALLINT;
-+        }
-+    }
-+
-     pstate_write(env, PSTATE_DAIF | new_mode);
-     env->aarch64 = true;
-     aarch64_restore_sp(env, new_el);
+     fdt_add_gic_node(vms);
 -- 
 2.34.1
 
