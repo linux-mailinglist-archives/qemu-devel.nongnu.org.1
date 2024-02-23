@@ -2,86 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42ED486091C
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 04:02:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0DB5860922
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 04:03:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdLos-0001v7-W3; Thu, 22 Feb 2024 22:01:51 -0500
+	id 1rdLqI-0002bV-Au; Thu, 22 Feb 2024 22:03:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rdLoq-0001uj-Ca
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 22:01:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rdLop-0000Tf-0z
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 22:01:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708657306;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=INtrFyP7qpgbCVyzPLuBu8mQ792fSvsfq+2a6pqjDBk=;
- b=gNQEd6/6PoyF3a+FEq4lfoJJFvYtWI13OVq3EydpDdvQE6TYljU3yE/4I4GsaZcwsibLKW
- 60W2FK+DaBX90CHKgjPtckYBgvrDm5TdaH4eVm9Kvo+Xe2j3trBv77nElqu366+dLMXEEl
- 8u9h7stg2hWBFWsvAaW71hHdYoOWKqc=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-522-6lXtNim8PDadyEvmnc4BEw-1; Thu, 22 Feb 2024 22:01:44 -0500
-X-MC-Unique: 6lXtNim8PDadyEvmnc4BEw-1
-Received: by mail-pg1-f198.google.com with SMTP id
- 41be03b00d2f7-5cf8663f2d6so89240a12.1
- for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 19:01:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rdLqG-0002az-F5
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 22:03:16 -0500
+Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rdLqE-0000cI-OY
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 22:03:16 -0500
+Received: by mail-oo1-xc29.google.com with SMTP id
+ 006d021491bc7-5a03384d67aso252541eaf.1
+ for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 19:03:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708657392; x=1709262192; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=YhpMR5lUhX3c0OnF4PmN3YYRI3RFsWvxUeHtsDXP7dY=;
+ b=IcXa1n9h10HHXDtbLR4UU/xYeAK9Zofi0FSI3SGaWpZgz6wF9uDXtIiNOFHWbCnhNT
+ mogE4gEW8ePnzPFVgWzfKmzWasfdVC5mHbTl4kFtDdjeU/Twm9czDs8wnbcpT1j4nw8l
+ pQh2wdU+gLUS5TYRnwHiYgOeMRTV051BNwek+jeRekoFruJteUJmJAJrORR1DPT3J28I
+ ka7++ie8UnhqIBRhpkySmgGAcAj+S2NztMwy6r9LuI+iOjWAerf4ZJ0ZVxb5DYiFC0VN
+ zIfKrmv3WL9nh5A6P/MCw1MtvES0k1b3lWKJ2mOtES4N26p2Ofd4Qt3gN1iizPg3rOhd
+ lqFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708657303; x=1709262103;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=INtrFyP7qpgbCVyzPLuBu8mQ792fSvsfq+2a6pqjDBk=;
- b=VNZdCMq/j66N28KZk6Z+EL0F0hBWUycuf9wgza6M9MIYuAJNn6hzkq+SkY9Ia9YkZ9
- 7pnSRPs5gqIeb7gR3w+bvGT4zxbCG/5PRRzRBnxvrqnClAh1OKohyD5n8k1RgJQBmUc1
- Byrp+7WVwCJwDStiyoL84kHf/rfA7wMzG9b9+k+cVkPNGmWZBvRculhRPRzOQ3UGzgQo
- RDhJQLeXpMBTCvA0TFe9ITUWWeY6DvbGeTe6vL0pECdW3fhlrFGj80TVwkiu/pVdwMcw
- dcVIpFGuUIjY0lcScRdksOmAoy+n0muEIf1h07TXlZGv+1fWYnecAb5EJ+F9x4CckVud
- A8MQ==
-X-Gm-Message-State: AOJu0YzULCPOM4ctvfwLRVBeEp2kDtOutadisvnlCXeIR5lUxVq2iU03
- Wc8+Yin2EEUdMzXskrbsHt4BkTV9gONsT1GQXJcnMYAhwmr0dD5Np1a62OeWbnvvWHVsVSCh0KX
- JEeQuth94DRebQ9HcOZochldP7bTel2PEbfBgvISSZ2J2Fc4rUD9r
-X-Received: by 2002:a17:902:d344:b0:1db:ce31:96b1 with SMTP id
- l4-20020a170902d34400b001dbce3196b1mr691608plk.6.1708657303564; 
- Thu, 22 Feb 2024 19:01:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEMY9lUBuy7gAczhTokRVP8xBlZFCz1w2dpW2uj01r53VyPzzmvk9SBt/PEnYjxg1FSe/O6/w==
-X-Received: by 2002:a17:902:d344:b0:1db:ce31:96b1 with SMTP id
- l4-20020a170902d34400b001dbce3196b1mr691596plk.6.1708657303269; 
- Thu, 22 Feb 2024 19:01:43 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- t17-20020a170902d29100b001db5ecb2899sm10706965plc.162.2024.02.22.19.01.40
+ d=1e100.net; s=20230601; t=1708657392; x=1709262192;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=YhpMR5lUhX3c0OnF4PmN3YYRI3RFsWvxUeHtsDXP7dY=;
+ b=aSjZqbeTG3CZAcPolx/iSj0S/uamQ4yN8jkYOe3i/5XhioqbLhlujUpLPSIOybMGf0
+ k1b9scQEQbknusBqCCZEBGrk/kWwGuUq6WJaV2OyyJhLPlUPbP9nYhkHZ89S8wwkH68c
+ z0+wIQTFaLd9XCNBgfZOOD8baskaj4LxXYqmeEjBNnFZK1wBITXLkF2Ks2xc0/usXSYY
+ cn7pFDt7Lil87z63KXhq7/lHAJU5l5/ZqnZazquZ7vnM4k2Lbkm56wF9+nz5DJfYQ84Z
+ esA869JSV8N3dEpt0EBHU3UX1ZeS4eRjDn72hS2kBre7/+9uZP0dpX0/Uu8XMY/eShhC
+ tHZQ==
+X-Gm-Message-State: AOJu0Yzc8+0jwz5UAXdeClVDxUaYoeQgkSe824AkHKR8W1qVd93C1YYP
+ z5Q9criA/cgdSAJixFMU0IWTQxON/vvQwQaZA/XGUoaAcH+cy+YDBwre1gG4huc1On5xBf3MpfB
+ V
+X-Google-Smtp-Source: AGHT+IFOKI9tqf3oc8LC2KrR5RdA2f/7WlVwpGoJdHT+qH5YAOVOZh8s6QzRaKVdEd0Nw1B+bbYh4g==
+X-Received: by 2002:a05:6358:4a7:b0:17b:62a1:c35b with SMTP id
+ x39-20020a05635804a700b0017b62a1c35bmr785085rwi.6.1708657392558; 
+ Thu, 22 Feb 2024 19:03:12 -0800 (PST)
+Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
+ by smtp.gmail.com with ESMTPSA id
+ n38-20020a056a000d6600b006e31f615af6sm11594159pfv.17.2024.02.22.19.03.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Feb 2024 19:01:42 -0800 (PST)
-Date: Fri, 23 Feb 2024 11:01:28 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
- Claudio Fontana <cfontana@suse.de>
-Subject: Re: [PATCH v4 01/34] docs/devel/migration.rst: Document the file
- transport
-Message-ID: <ZdgKiMcQS7yiVxnw@x1n>
-References: <20240220224138.24759-1-farosas@suse.de>
- <20240220224138.24759-2-farosas@suse.de>
+ Thu, 22 Feb 2024 19:03:12 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: laurent@vivier.eu, iii@linux.ibm.com, richard.purdie@linuxfoundation.org,
+ mjt@tls.msk.ru
+Subject: [PATCH 0/3] linux-user: Rewrite target_shmat
+Date: Thu, 22 Feb 2024 17:03:06 -1000
+Message-Id: <20240223030309.458451-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240220224138.24759-2-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc29.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.002,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,15 +90,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 20, 2024 at 07:41:05PM -0300, Fabiano Rosas wrote:
-> When adding the support for file migration with the file: transport,
-> we missed adding documentation for it.
-> 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+There are multiple issues with the implementation of shmat().
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+(1) With reserved_va, which is the default for 32-on-64-bit, we mmap the
+    entire guest address space.  Unlike mmap, shmat refuses to replace an
+    existing mapping without setting SHM_REMAP.  This is the original
+    subject of issue #115, though it quicky gets distracted by
+    something else.
+
+(2) With target page size > host page size, and a shm area
+    that is not a multiple of the target page size, we leave
+    an unmapped hole that the target expects to be mapped.
+    This is the subject of 
+
+	https://lore.kernel.org/qemu-devel/2no4imvz2zrar5kchz2l3oddqbgpj77jgwcuf7aritkn2ok763@i2mvpcihztho/
+
+    wherein qemu itself expects a mapping to exist, and
+    dies in open_self_maps_2.
+
+So: reimplement the thing.
+
+There are a number of target page size != host page size and
+target SHMLBA != host SHMLBA corner cases that are not implementable
+without softmmu and a non-linear host to target address space.
+I simply bail out in these situations and return EINVAL.
+
+Based-on: <20240222204323.268539-1-richard.henderson@linaro.org>
+("[PULL 00/39] tcg and linux-user patch queue")
+
+
+r~
+
+
+Richard Henderson (3):
+  linux-user/loongarch64: Remove TARGET_FORCE_SHMLBA
+  linux-user: Add strace for shmat
+  linux-user: Rewrite target_shmat
+
+ linux-user/loongarch64/target_syscall.h |   7 --
+ linux-user/mmap.c                       | 146 ++++++++++++++++++------
+ linux-user/strace.c                     |  23 ++++
+ linux-user/strace.list                  |   2 +-
+ 4 files changed, 134 insertions(+), 44 deletions(-)
 
 -- 
-Peter Xu
+2.34.1
 
 
