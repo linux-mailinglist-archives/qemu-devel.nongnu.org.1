@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C46428616FE
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:07:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D33861705
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:08:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdY11-0005oO-At; Fri, 23 Feb 2024 11:03:11 -0500
+	id 1rdY2D-0008BZ-Mk; Fri, 23 Feb 2024 11:04:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXjw-0006Q0-3m; Fri, 23 Feb 2024 10:45:32 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1rdXjy-0006Tj-CO; Fri, 23 Feb 2024 10:45:34 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXjt-0006eK-Qy; Fri, 23 Feb 2024 10:45:31 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1dc13fb0133so7532105ad.3; 
- Fri, 23 Feb 2024 07:45:28 -0800 (PST)
+ id 1rdXjw-0006fE-U8; Fri, 23 Feb 2024 10:45:34 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1dc0d11d1b7so3957495ad.2; 
+ Fri, 23 Feb 2024 07:45:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708703128; x=1709307928; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708703131; x=1709307931; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=G9dQsFszCC0E9Sl3E2+C8E6JRrg7A7/jy0wn4Bw7w60=;
- b=Py7uAfkwxjj9ANNJU35xPGtFR2/d40JOY/Gi8hQCa1sbYvQ+rZsovBGogVx7XU8oUl
- 9CZ5Q1yUtU9IfRXFLGxNIRcXV3DbV24oFaFYU/HzM80Va92TOokwfz8lHhDMLcII53Kw
- twhMyxlBnkOWDt/nyPbLYB0xW4zoDsHvjQZp8VxYMc4qzGU0YX94cFyf5Xvu3Gt/hNpB
- FBxl4jJR8nakI36lJbC8O2fBQgvDJMi6tOCsEUF9QMkjP7q15spG+npjPE5qCHWfZ6Os
- OHhnllL2IuMFjfpInbFibACFvpcT6yd+OSmmpw6Pa5+8VWCfJmxdIFA2NS/57MEx19qQ
- xSvQ==
+ bh=+MgGrqvKSu+YKIpZl9V799cCN3k/dXGAwCukmkEClIQ=;
+ b=X2i0XT10cF2tJCJfj5uRfnORNppRKGuJ46hxLq/oRw+N+m0iP0ZcIBgqTui0L1tEFl
+ vQhEGzXkyO08R7WBjrV8jDyXiLjaM9Jc+vG7AeMA0zNAnz5NCD1n9o6U6jMX4rQhbAiv
+ yGTT1+srzzlDNNyHq7F+XuA9MR5lrN65GTJ/eG0Vlu1MeqVesLgpTBLwz/iRqg7sL10N
+ fXTXVkH1SHE0EuF6yWB7RXpmVMuNML3J1lNObIzLPO3R0fYyDRZmGLN1YpqdAkxjYGIb
+ EGF1eYoipxlExcvn6FkPNoO39+kXxeRLhvd99I0KCqRyZr7ksPzCl5HDt3flQSXpYepf
+ 4W8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708703128; x=1709307928;
+ d=1e100.net; s=20230601; t=1708703131; x=1709307931;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=G9dQsFszCC0E9Sl3E2+C8E6JRrg7A7/jy0wn4Bw7w60=;
- b=SA1aLBKu/cP2ljjuzhBzBMH5tggAvG8MkNx1c42vxUvSqQl1rVyN2z5YfEgBA4c8CH
- r9m/hLP1ssViIjoL6T7ESnrpNMwnU4l+x3XU7jcgE4H1dOWrCVdn87HsL1VHXmgxtdo+
- MOTGQnXVQAki8PwHHzyWrMXlyjhwisr6gZtZejHijXCAUxFTA/w7xRTDBfFJJ8CX81cF
- VFonaM5FBm2fbLEFVarqiqVTQuG8YxVSN/nFS/TqciuQDDMSGsHfb6RMjsvZwc5LcUR7
- Z4ZQXfZUGrzoaz0NJ+bcgLJaRVYlO9CdhNsaSPlE9RTUn0XpGuSJImE39j75iwIPEsgc
- Tovw==
+ bh=+MgGrqvKSu+YKIpZl9V799cCN3k/dXGAwCukmkEClIQ=;
+ b=heLvD+y7AdkYeymsJKKcjfiOhCS3KJliZfR38dznpeDfr20/9noI8muT6nCNkE/aFw
+ OTJyj3UtY6WohfmxUD6dGM+mXIzq7ZJhlpHC75BPkNyDZjPy0Jig+aMW5JgC/ZlxdZtT
+ 6fvs8uo7SJ1+nVauyO5K+pjIlEE2hLM1lZp8VmLiii13G2VsVl6B5xzhKfjLvOetpRnG
+ RJi6IzlmeN7yboG9zDh7NVXrLpQHgmGDDjrk4B+qNVXZbypjk68LM9J8zzUT/mS7uip1
+ rI8cBboW1BfWxogZQVD0eJNobJrfSYoaH4CrPXFeCQ4pYJeU+u9Sb4z1MrzhfPruYo+2
+ rx3Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVpmGgbJs9xP450q/Vp7U2n1MOffichFUeWLy6Ra355GwNnMD9x7KYH0ZvwJQ+lGzwuVTgt53vEA/WjK6oFy88/Zs8S
-X-Gm-Message-State: AOJu0Yz/KOavTeXfmMb11LvfeCYvhwASYDh334JxMkeYXyqribOdRnMY
- GcitiTCNjrzYP2uuVZD8omelyjSh1WHp+043stzZ88auipOaP8tnKqrVqcyk
-X-Google-Smtp-Source: AGHT+IHFB8kUF2f3GYHigcdvDgVYXZAwq86SRr/f/U76rurBg6hClCgFXfzzBpht+IHZq6YZMCEc5A==
-X-Received: by 2002:a17:902:d4c8:b0:1db:a94f:903d with SMTP id
- o8-20020a170902d4c800b001dba94f903dmr230284plg.36.1708703127756; 
- Fri, 23 Feb 2024 07:45:27 -0800 (PST)
+ AJvYcCWzXSkY0UfC5P1bsAdQwmth2V+XFb0HjH1E7UBvwkQHQj6pT0RM63lcSDJyE72yzOkRBtqSHhJM46yw6ZIGiLGeP6Ys
+X-Gm-Message-State: AOJu0Yzx81eYh+65fXv/Eh8gNc5yNiWtXXHCn/ODfAGHhqppOYp6BbyX
+ 6NJ8t6RDtOXo+1ITAfRWrLEKYUjoUWPs8eCDLc3SGWlH5MsnVBvLIkmLCWYq
+X-Google-Smtp-Source: AGHT+IG53qQwPw/Vv/VnvVzAGsgkgqB/l4SfNOFBPoMJIYBeyoe7HvaLFoYIRyD73/8Ag2t81f648w==
+X-Received: by 2002:a17:902:7c92:b0:1db:c3cb:b088 with SMTP id
+ y18-20020a1709027c9200b001dbc3cbb088mr188724pll.35.1708703131003; 
+ Fri, 23 Feb 2024 07:45:31 -0800 (PST)
 Received: from wheely.local0.net (220-235-194-103.tpgi.com.au.
  [220.235.194.103]) by smtp.gmail.com with ESMTPSA id
- h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.45.24
+ h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.45.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 07:45:27 -0800 (PST)
+ Fri, 23 Feb 2024 07:45:30 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 35/47] target/ppc: Improve timebase register defines naming
-Date: Sat, 24 Feb 2024 01:41:54 +1000
-Message-ID: <20240223154211.1001692-36-npiggin@gmail.com>
+Subject: [PULL 36/47] target/ppc: Fix move-to timebase SPR access permissions
+Date: Sat, 24 Feb 2024 01:41:55 +1000
+Message-ID: <20240223154211.1001692-37-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240223154211.1001692-1-npiggin@gmail.com>
 References: <20240223154211.1001692-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,84 +95,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The timebase in ppc started out with the mftb instruction which is like
-mfspr but addressed timebase registers (TBRs) rather than SPRs. These
-instructions could be used to read TB and TBU at 268 and 269. Timebase
-could be written via the TBL and TBU SPRs at 284 and 285.
-
-The ISA changed around v2.03 to bring TB and TBU reads into the SPR
-space at 268 and 269 (access via mftb TBR-space is still supported
-but will be phased out). Later, VTB was added which is an entirely
-different register.
-
-The SPR number defines in QEMU are understandably inconsistently named.
-Change SPR 268, 269, 284, 285 to TBL, TBU, WR_TBL, WR_TBU, respectively.
+The move-to timebase registers TBU and TBL can not be read, and they
+can not be written in supervisor mode on hypervisor-capable CPUs.
 
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/cpu.h         |  8 ++++----
- target/ppc/helper_regs.c | 10 +++++-----
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ target/ppc/helper_regs.c | 31 +++++++++++++++++++++++--------
+ 1 file changed, 23 insertions(+), 8 deletions(-)
 
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index a44de22ca4..16baea609c 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -1750,8 +1750,8 @@ void ppc_compat_add_property(Object *obj, const char *name,
- #define SPR_USPRG5            (0x105)
- #define SPR_USPRG6            (0x106)
- #define SPR_USPRG7            (0x107)
--#define SPR_VTBL              (0x10C)
--#define SPR_VTBU              (0x10D)
-+#define SPR_TBL               (0x10C)
-+#define SPR_TBU               (0x10D)
- #define SPR_SPRG0             (0x110)
- #define SPR_SPRG1             (0x111)
- #define SPR_SPRG2             (0x112)
-@@ -1764,8 +1764,8 @@ void ppc_compat_add_property(Object *obj, const char *name,
- #define SPR_SPRG7             (0x117)
- #define SPR_ASR               (0x118)
- #define SPR_EAR               (0x11A)
--#define SPR_TBL               (0x11C)
--#define SPR_TBU               (0x11D)
-+#define SPR_WR_TBL            (0x11C)
-+#define SPR_WR_TBU            (0x11D)
- #define SPR_TBU40             (0x11E)
- #define SPR_SVR               (0x11E)
- #define SPR_BOOKE_PIR         (0x11E)
 diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
-index 8f5bd1536e..94c9a5a5c1 100644
+index 94c9a5a5c1..410b39c231 100644
 --- a/target/ppc/helper_regs.c
 +++ b/target/ppc/helper_regs.c
-@@ -461,22 +461,22 @@ void register_generic_sprs(PowerPCCPU *cpu)
+@@ -468,18 +468,33 @@ void register_generic_sprs(PowerPCCPU *cpu)
+                  &spr_read_tbl, SPR_NOACCESS,
+                  &spr_read_tbl, SPR_NOACCESS,
+                  0x00000000);
+-    spr_register(env, SPR_WR_TBL, "TBL",
+-                 &spr_read_tbl, SPR_NOACCESS,
+-                 &spr_read_tbl, &spr_write_tbl,
+-                 0x00000000);
+     spr_register(env, SPR_TBU, "TBU",
+                  &spr_read_tbu, SPR_NOACCESS,
+                  &spr_read_tbu, SPR_NOACCESS,
+                  0x00000000);
+-    spr_register(env, SPR_WR_TBU, "TBU",
+-                 &spr_read_tbu, SPR_NOACCESS,
+-                 &spr_read_tbu, &spr_write_tbu,
+-                 0x00000000);
++#ifndef CONFIG_USER_ONLY
++    if (env->has_hv_mode) {
++        spr_register_hv(env, SPR_WR_TBL, "TBL",
++                        SPR_NOACCESS, SPR_NOACCESS,
++                        SPR_NOACCESS, SPR_NOACCESS,
++                        SPR_NOACCESS, &spr_write_tbl,
++                        0x00000000);
++        spr_register_hv(env, SPR_WR_TBU, "TBU",
++                        SPR_NOACCESS, SPR_NOACCESS,
++                        SPR_NOACCESS, SPR_NOACCESS,
++                        SPR_NOACCESS, &spr_write_tbu,
++                        0x00000000);
++    } else {
++        spr_register(env, SPR_WR_TBL, "TBL",
++                     SPR_NOACCESS, SPR_NOACCESS,
++                     SPR_NOACCESS, &spr_write_tbl,
++                     0x00000000);
++        spr_register(env, SPR_WR_TBU, "TBU",
++                     SPR_NOACCESS, SPR_NOACCESS,
++                     SPR_NOACCESS, &spr_write_tbu,
++                     0x00000000);
++    }
++#endif
+ }
  
-     /* Time base */
- #if defined(TARGET_PPC64)
--    spr_register(env, SPR_VTBL,  "TB",
-+    spr_register(env, SPR_TBL, "TB",
- #else
--    spr_register(env, SPR_VTBL,  "TBL",
-+    spr_register(env, SPR_TBL, "TBL",
- #endif
-                  &spr_read_tbl, SPR_NOACCESS,
-                  &spr_read_tbl, SPR_NOACCESS,
-                  0x00000000);
--    spr_register(env, SPR_TBL,   "TBL",
-+    spr_register(env, SPR_WR_TBL, "TBL",
-                  &spr_read_tbl, SPR_NOACCESS,
-                  &spr_read_tbl, &spr_write_tbl,
-                  0x00000000);
--    spr_register(env, SPR_VTBU,  "TBU",
-+    spr_register(env, SPR_TBU, "TBU",
-                  &spr_read_tbu, SPR_NOACCESS,
-                  &spr_read_tbu, SPR_NOACCESS,
-                  0x00000000);
--    spr_register(env, SPR_TBU,   "TBU",
-+    spr_register(env, SPR_WR_TBU, "TBU",
-                  &spr_read_tbu, SPR_NOACCESS,
-                  &spr_read_tbu, &spr_write_tbu,
-                  0x00000000);
+ void register_non_embedded_sprs(CPUPPCState *env)
 -- 
 2.42.0
 
