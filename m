@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5503861890
+	by mail.lfdr.de (Postfix) with ESMTPS id 2995E86188E
 	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:58:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdYqJ-0007px-C6; Fri, 23 Feb 2024 11:56:11 -0500
+	id 1rdYqP-0007uA-Cc; Fri, 23 Feb 2024 11:56:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdYY4-0002qM-Fu
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:37:23 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ id 1rdYYr-0004L0-J3
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:38:11 -0500
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdYY1-0000Ff-CA
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:37:20 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-564fd9eea75so779708a12.3
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 08:37:16 -0800 (PST)
+ id 1rdYYq-0000QI-5l
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:38:09 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-5640fef9fa6so1331614a12.0
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 08:38:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708706235; x=1709311035; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708706286; x=1709311086; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=gbDuLMC+h941sbR5rr+vKCnvv/J26lTcKlZI0jpKbJA=;
- b=IRUNvu+v9mOJy+jPFZtaxkVcccvbAzhL6m/mc/Dyh1UsrmlyplKeNypX3QRT9A98p/
- 2IbuJPxDuYXGyU7ZGzQBZO/59lDfEa/+/mmrV9GOR3rvURrppCyQNbhWVixbdrOuH66A
- ZLboWJ8L3vjZeKL61vh/B5SfsMiNfMAQzxcVbCRro4NAWmRA2oH9WwzEZGPA/cvXOEoi
- 2N3t8WaDMDVoVgdQOVX286MUKIybm8pVULLrufH8eNYT1UQ4dYII4Rd4y7vS9Lj8gUEY
- KPq/fwdLu0UuCkxIuO4TpeLuxFgy1pAJYa2Fdcgdyxh69knGeP+rio+iizmz0dG/XfyG
- 0Vqw==
+ bh=pZc25dn41Pr5mgn7N8TPAoYH29m0vSeYFNGuMqZaUnA=;
+ b=DZhz1JfPlkKwdj1ZkX7JFlcApFIE1iU/PiH8X+GB2c5faMGe5XjO29qkz7miQ4NQpQ
+ BrWBZ4H+MRRfGXWqPFYK1Ocdbc5CvXylPZbto1WXwzxcvPDZmWbfTwQmOqpz/OCGLuBn
+ elaIsTjJFPbAg38kSIteRSZ76qG+fRwRDa9QOvH+ar0J1dzLvQkSDiarGAiJhDkxp7sT
+ CChCtKM7frZgFwpQdvkJpKZC5A0rMUsPQpcD3HWAkSNFatwMqYe6DSEzijugr4NtohWo
+ sAGcJBxaMGqbLIMqiwiUJ/n7uuBpmgvl/G0mTV5iClG/Hwx3TODIFQafmIUT/dB/fDnr
+ uQUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708706235; x=1709311035;
+ d=1e100.net; s=20230601; t=1708706286; x=1709311086;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=gbDuLMC+h941sbR5rr+vKCnvv/J26lTcKlZI0jpKbJA=;
- b=qdrHsL4hG684/u9ivWh5UgEGfqZrRy4R9ZG1td97v9FsKensPPZBTyNftRWNvgcw72
- zYa+MfI+WGzQMg4Y2MKs11TuogpmQjrsicYx6+w03YEpWt6saP9FjEcLKgcMKsaLZKcj
- JDJpsMbxRHBrsODB64+AaGdWeRHQ4a6SVA72BI4Ug/z+Ntnn90uAQvuTWYnsk5IXzvpA
- voyb5mXt3CLIppKoR1Qzc1KaPTdIWedeGaF+4a8ozJ9CXVvywGI0VzERNrwD59IlERzO
- sHrTh6nOwUsrp8QTwKMcEBzlsM4rDgDJVOgwrx5Nuu/zWe2vzgJnKU4u909vmYpgzgVs
- Cnhw==
+ bh=pZc25dn41Pr5mgn7N8TPAoYH29m0vSeYFNGuMqZaUnA=;
+ b=pROCS30DPeARyOyJwlB3td+l0Gw3aM7TH4PMsRv06YFsodK1AVLt6GD5PFZNpBP8pz
+ /DJ9JQ/XhkBji2Z56BlD829daU5PgCh0AuEMPSdSSN5JM//OlcqsR7noSHZpAieWtcNF
+ uwaIPFMqBxLxIgV6Mx9oJyhejXqUzSuEWCiiu7Nuwz+uaOuWwk/Ni8ZQgfEX+ftQJ8DE
+ YanAijmD97rweQwVoR6KgRgLSdOB0M6y9T9HzaHt4rpVS2bMHuUv4Lo5IvvQu1kyhSgq
+ yfB4SXgFYCvlpsxTdCjwlq5iPfZiWteBp3sNLWku5qkYMN3iZCiOIpOyP5G7dDVszEtX
+ aJ/A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUIkWHe/ab9T0QN71x+JIMBXhXjGIsOeKZ8SybmvpnEnM4lOzrMJCUtoCSvxbRbJeH9rvqz6OnpDbNUElnr2VK5y405CDs=
-X-Gm-Message-State: AOJu0Ywwb3QzpPYCkpidlsLVDdzeBe679cPt7KanjkCojNZ2hbNxqHkW
- Rk11g8v1KQ+EBInCaRfQVQbsOMhE6Po1XbsFjxThPJ6EmBooy/YAA8V80APCKcdCuNItXYs3uUs
- XuXeOz+0evRDrOb4NuO9JsiEkksVtsUqx73Z3Ow==
-X-Google-Smtp-Source: AGHT+IGGPoQyKvTuuBO3LJGnUAtvLS87Wf3ZocowHof6PaMO58Ytm0CXzqtVCUp/jzLQ/4dTl3UjDzrFWVU3oL3Sc7o=
-X-Received: by 2002:a05:6402:3411:b0:564:7350:cac8 with SMTP id
- k17-20020a056402341100b005647350cac8mr268230edc.15.1708706235607; Fri, 23 Feb
- 2024 08:37:15 -0800 (PST)
+ AJvYcCXbN4OSMCtGdDMP/n8ygdpeOKCv68YzAMTkpX1WMEBUWV4JiapHQgHUogfW/MgO+M4h4Cc3BIX5CTc5dTfcnKvPTf4VIW4=
+X-Gm-Message-State: AOJu0Yxy//KS1gwvXVeaT9MYI+XHvQo/7IaN91zjWpbcfc6zg4Eib6Wo
+ LDBHbYpUf2QpXHMGxrcKjCXDhXZci1fsEUgZ0cYOPRXqDqT3WcPTJNgg+KpCufr/CgMVszM6Znl
+ ov7ruqg0T9iRndg/EjgasQF+8Ryqn/+5ejQ+Ezw==
+X-Google-Smtp-Source: AGHT+IEO62JGTtyWFYTtTBuRIeykeBiDbHeesuOer7H8xnPeG+RAknPHeu5ytFXwjEd+nY2g23hdAmD/rtOLPAxuW9Q=
+X-Received: by 2002:aa7:c0da:0:b0:565:7ce5:abce with SMTP id
+ j26-20020aa7c0da000000b005657ce5abcemr248485edp.20.1708706286597; Fri, 23 Feb
+ 2024 08:38:06 -0800 (PST)
 MIME-Version: 1.0
 References: <20240219011739.2316619-1-sergey.kambalin@auriga.com>
- <20240219011739.2316619-2-sergey.kambalin@auriga.com>
-In-Reply-To: <20240219011739.2316619-2-sergey.kambalin@auriga.com>
+ <20240219011739.2316619-3-sergey.kambalin@auriga.com>
+In-Reply-To: <20240219011739.2316619-3-sergey.kambalin@auriga.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 23 Feb 2024 16:37:04 +0000
-Message-ID: <CAFEAcA8kOKhd=BH9m8kWFsaJ2NQHOdfwg+9JnCHDNDsni58tiQ@mail.gmail.com>
-Subject: Re: [PATCH v5 01/41] Split out common part of BCM283X classes
+Date: Fri, 23 Feb 2024 16:37:55 +0000
+Message-ID: <CAFEAcA862NjREpcjGmSbB_7zAG8vD=t0AkpqdwwVQj8FnVSUUA@mail.gmail.com>
+Subject: Re: [PATCH v5 02/41] Split out common part of peripherals
 To: Sergey Kambalin <serg.oker@gmail.com>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
  Sergey Kambalin <sergey.kambalin@auriga.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,9 +89,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 19 Feb 2024 at 01:18, Sergey Kambalin <serg.oker@gmail.com> wrote:
+On Mon, 19 Feb 2024 at 01:19, Sergey Kambalin <serg.oker@gmail.com> wrote:
 >
-> Pre setup for BCM2838 introduction
+> Pre-setup for BCM2838 introduction
 >
 > Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 > ---
