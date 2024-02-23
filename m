@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B103C861CC4
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 20:44:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBE88861D5D
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 21:19:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdbSM-0007ib-0H; Fri, 23 Feb 2024 14:43:39 -0500
+	id 1rdc02-0005mM-89; Fri, 23 Feb 2024 15:18:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rdb5N-0002GF-O5
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:19:54 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rdb9O-0004jU-NE
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:24:16 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rdb5K-0007nq-5n
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:19:51 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rdb9M-0000la-Ku
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:24:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708715988;
+ s=mimecast20190719; t=1708716239;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=ZpqHWqbAN/MBEhiC/FJWHqxhIj4aptI5ngFUgePBW6Y=;
- b=h7HtwJJmGQLCzhfuBnkvlEt0+UF9KUkWYKhD9IHHmrbj+xd4cmEp/UVomFd0E3joHBlL97
- VkpkB7/78v+Hv46AMMHiHK5EdLjc19EdQJvwkscmIbaeJmDvJo5opBpTxZQBqnmhgivE3D
- yKI3zl3MIms/fHCUVBn6aC/G0OYYwL4=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=FI6NALMnRssrxJhK1u6w8pb11/25tCigeIRjQOikSCA=;
+ b=Kq7bdZe+t+RyphjAah4IWnqBUJzH5tViEiAI9di6lkmeWOC8MEB52HOG0o1rE0sneopfAV
+ cH/2Rj297OBCKmirJbaQfQjuFkq0TvrOBi3Yergs+9eh6bcfpVFKfq96ORe7s1rLlYnFYm
+ uIEGYtInafJt3TLFB1V2IPK2d+bw92U=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-654-Ukj6UyqzMhOdzo5jAwZ2-Q-1; Fri, 23 Feb 2024 14:19:47 -0500
-X-MC-Unique: Ukj6UyqzMhOdzo5jAwZ2-Q-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-33dadb50731so380917f8f.1
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 11:19:46 -0800 (PST)
+ us-mta-65-fqvT_g3AOz-Exdi7eFafAg-1; Fri, 23 Feb 2024 14:23:57 -0500
+X-MC-Unique: fqvT_g3AOz-Exdi7eFafAg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4128defb707so6058425e9.0
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 11:23:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708715986; x=1709320786;
+ d=1e100.net; s=20230601; t=1708716236; x=1709321036;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZpqHWqbAN/MBEhiC/FJWHqxhIj4aptI5ngFUgePBW6Y=;
- b=M1dN+lRsWvav1fhup+rxmKrcvBbP8b1/gYmF4RGAGExS7HuEmv4+ZCLUQSIM0tCMPK
- teEh6VQEm5cWRz7mweS1GaEjbS7c2tbBlRIY85oDIbXyi7IV97hZFZgGdPgTUMCNYSKn
- 5ESKZqxQ78e+MjZ3zN1VUncewsdZsD2u8I0FDdXHFdj8GA/6MmvtGXSGIn+7xXWrjb09
- BYuO87NVxbKpZR4Ubu2pnHrYR30KwBfSYAOBna/W+/wveqmQw6y0wUxFNgBEW2B1bRg9
- ZQLwZfAn1Rv0sYwgvhCQANZW3np+OVCRkwRQoCISTy0jrTgDlbQIjikPHGrFuzkGmZHA
- Nn4w==
+ bh=FI6NALMnRssrxJhK1u6w8pb11/25tCigeIRjQOikSCA=;
+ b=F15nx4Ip5A37YePD2Xsj9K6xeKxVfpqCq7MZfUrPh+k1BZJ2Vy207/+TB7zwYV9N2L
+ ZqDsbIczo9p/+qyxq2dO4t6tfZrxDfRUUhVZmGGAg9LD3nlxd4X5Jb1uL0mhgjNU9qmN
+ 8GALjNqEpXvCtXw5hvOliU1QQsqO8GqcNFvwmqvmsj+3Bu0NIK4xj2TbTHfVWw05CdF1
+ 7BiqBsPFtyI/1850tu2LAtYKFDadzUwPjDWHCb8irzeLD9ZTRCpAz9y7E2skSQFDxXLy
+ ubO5pp2w7s0gPJPHdpuSFxeVYw7u6SbjMfeEdo5UyMQZiYD/dgiHAfS0x8GBQyrdupNe
+ JSzQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXDVrrJ2k7+eghLz2uI9+lmQrrf2uyq7zTBlW5AY3O4m4eMndQyLHfmzWpC2q6iI+OiZ9G7UzoMA9vYliWiuXCkZUbCby0=
-X-Gm-Message-State: AOJu0YyCrAOG5q3pLfzM0oP+oSDqESQwXUggSUQUoI+2HJaiPNc2SW/2
- ChJoFz/n77YmW10Rl2bli6zbchpDfdkRjrC80/vxhpvVQQ7T5XRG/GziMUR7T1R6i87TjIbk40+
- i/0gmcOrt5bIFo1Td9r0eDW9VOIfhXaSEEmrEd6mZ5LSS2uMCNlji
-X-Received: by 2002:adf:f88f:0:b0:33d:2226:a26b with SMTP id
- u15-20020adff88f000000b0033d2226a26bmr502484wrp.24.1708715986082; 
- Fri, 23 Feb 2024 11:19:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF8BiqXEeDAx149bgRRErhjY5XVfClhAxL/0iGzOU+nMKqaraGJdWQRUXUBRx/Im6k5yigq4A==
-X-Received: by 2002:adf:f88f:0:b0:33d:2226:a26b with SMTP id
- u15-20020adff88f000000b0033d2226a26bmr502473wrp.24.1708715985766; 
- Fri, 23 Feb 2024 11:19:45 -0800 (PST)
+ AJvYcCVWiSeTBEt2V8mrq3R1MAv0+35JzAEQy0QyULbyBPVouCNSI3FfdnINOq1KW6Z68w1dLqTDyPch9N8FeManWBUC6dVk3iw=
+X-Gm-Message-State: AOJu0YzVJd+sQPF88WUcvXAyZ5V3ld21zue8GSdtetgsHRNteeTfrjNX
+ /eTY+cgLeRE/Who+LS5trCSYUhwvUZ+uxOVJD95aw0ZN2olzHz53kBscqxui7H9rS1RHqzCXv75
+ NvU7NhyRrFxRm7KJ6e0IqdptOePuaNk07g/IbuprGZ3JZW8vnnw/s
+X-Received: by 2002:a05:600c:46d0:b0:412:5fbe:3740 with SMTP id
+ q16-20020a05600c46d000b004125fbe3740mr470424wmo.24.1708716236796; 
+ Fri, 23 Feb 2024 11:23:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHJzI9ucWUCK6qgWxloeDwwgIxwDgxlkEeLOGwQSEdyORyWzD70L6dPRpbxycamRdW7M13KjA==
+X-Received: by 2002:a05:600c:46d0:b0:412:5fbe:3740 with SMTP id
+ q16-20020a05600c46d000b004125fbe3740mr470415wmo.24.1708716236460; 
+ Fri, 23 Feb 2024 11:23:56 -0800 (PST)
 Received: from [192.168.0.9] (ip-109-43-176-215.web.vodafone.de.
  [109.43.176.215]) by smtp.gmail.com with ESMTPSA id
- ay28-20020a5d6f1c000000b0033d60cba289sm3950786wrb.68.2024.02.23.11.19.44
+ ba14-20020a0560001c0e00b0033da66e7bedsm3564604wrb.66.2024.02.23.11.23.55
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 23 Feb 2024 11:19:45 -0800 (PST)
-Message-ID: <3936c63a-b67a-484d-b7c0-5297b4c3aed4@redhat.com>
-Date: Fri, 23 Feb 2024 20:19:44 +0100
+ Fri, 23 Feb 2024 11:23:55 -0800 (PST)
+Message-ID: <50972788-77b0-4494-b956-367e227575b6@redhat.com>
+Date: Fri, 23 Feb 2024 20:23:54 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/ide: Remove last two uses of ide/internal.h outside of
- hw/ide
+Subject: Re: [PATCH 05/10] hppa: do not require CONFIG_USB
 Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org
-Cc: John Snow <jsnow@redhat.com>, philmd@linaro.org
-References: <20240223142633.933694E6004@zero.eik.bme.hu>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: philmd@linaro.org, balaton@eik.bme.hu
+References: <20240223124406.234509-1-pbonzini@redhat.com>
+ <20240223124406.234509-6-pbonzini@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -117,19 +116,18 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240223142633.933694E6004@zero.eik.bme.hu>
+In-Reply-To: <20240223124406.234509-6-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -145,53 +143,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/02/2024 15.26, BALATON Zoltan wrote:
-> Remove last two includes of hw/ide/intarnal.h outside of hw/ide and
-> replace them with newly added public header to allow moving internal.h
-> into hw/ide to really stop exposing it.
+On 23/02/2024 13.44, Paolo Bonzini wrote:
+> With --without-default-devices it is possible to build a binary that
+> does not include any USB host controller and therefore that does not
+> include the code guarded by CONFIG_USB.  While the simpler creation
+> functions such as usb_create_simple can be inlined, this is not true
+> of usb_bus_find().  Remove it, replacing it with a search of the single
+> USB bus on the machine.
 > 
-> Fixes: a11f439a0e (hw/ide: Stop exposing internal.h to non-IDE files)
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   hw/arm/sbsa-ref.c                 | 2 +-
->   {include/hw => hw}/ide/internal.h | 0
->   include/hw/misc/macio/macio.h     | 2 +-
->   3 files changed, 2 insertions(+), 2 deletions(-)
->   rename {include/hw => hw}/ide/internal.h (100%)
+>   hw/hppa/machine.c | 7 ++++---
+>   hw/hppa/Kconfig   | 2 +-
+>   2 files changed, 5 insertions(+), 4 deletions(-)
 > 
-> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-> index 5d3a574664..f027622a75 100644
-> --- a/hw/arm/sbsa-ref.c
-> +++ b/hw/arm/sbsa-ref.c
-> @@ -36,7 +36,7 @@
->   #include "hw/arm/smmuv3.h"
->   #include "hw/block/flash.h"
->   #include "hw/boards.h"
-> -#include "hw/ide/internal.h"
-> +#include "hw/ide/ide-bus.h"
->   #include "hw/ide/ahci_internal.h"
->   #include "hw/ide/ahci-sysbus.h"
->   #include "hw/intc/arm_gicv3_common.h"
-> diff --git a/include/hw/ide/internal.h b/hw/ide/internal.h
-> similarity index 100%
-> rename from include/hw/ide/internal.h
-> rename to hw/ide/internal.h
-> diff --git a/include/hw/misc/macio/macio.h b/include/hw/misc/macio/macio.h
-> index 86df2c2b60..2b54da6b31 100644
-> --- a/include/hw/misc/macio/macio.h
-> +++ b/include/hw/misc/macio/macio.h
-> @@ -28,7 +28,7 @@
+> diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+> index 5fcaf5884be..11982d5776c 100644
+> --- a/hw/hppa/machine.c
+> +++ b/hw/hppa/machine.c
+> @@ -396,10 +396,11 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
+>       }
 >   
->   #include "hw/char/escc.h"
->   #include "hw/pci/pci_device.h"
-> -#include "hw/ide/internal.h"
-> +#include "hw/ide/ide-bus.h"
->   #include "hw/intc/heathrow_pic.h"
->   #include "hw/misc/macio/cuda.h"
->   #include "hw/misc/macio/gpio.h"
+>       /* create USB OHCI controller for USB keyboard & mouse on Astro machines */
+> -    if (!lasi_dev && machine->enable_graphics) {
+> +    if (!lasi_dev && machine->enable_graphics && defaults_enabled()) {
 
-Oh, I was sure that I got them all ... thanks for double checking!
+Do we need the defaults_enabled() here? Isn't enable_graphics already 
+disabled if defaults_enabled() is not set?
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+  Thomas
+
+
+>           pci_create_simple(pci_bus, -1, "pci-ohci");
+> -        usb_create_simple(usb_bus_find(-1), "usb-kbd");
+> -        usb_create_simple(usb_bus_find(-1), "usb-mouse");
+> +        Object *usb_bus = object_resolve_type_unambiguous(TYPE_USB_BUS, &error_abort);
+> +        usb_create_simple(USB_BUS(usb_bus), "usb-kbd");
+> +        usb_create_simple(USB_BUS(usb_bus), "usb-mouse");
+>       }
+
 
 
