@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 622AB86184E
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:46:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD1C4861817
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:37:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdYfG-00084X-Pq; Fri, 23 Feb 2024 11:44:46 -0500
+	id 1rdYVs-0000gO-Ih; Fri, 23 Feb 2024 11:35:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rdYJz-0004J7-3k
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:22:47 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1rdYJx-0004IK-SP
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:22:45 -0500
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rdYJW-00069H-HI
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:22:46 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4129738cc81so3226305e9.3
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 08:22:17 -0800 (PST)
+ id 1rdYJU-00068f-RV
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:22:45 -0500
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2d269b2ff48so6324251fa.3
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 08:22:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708705337; x=1709310137; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708705335; x=1709310135; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Xq3bg3O489fduJkQRD4v3a7EWyBdeXHXm96vjazL+zo=;
- b=MIK0d9YU/+uEF/HLW/C5QTSGMEhMoU2796qkHHDP3PSQdS8DvjJs/3xeYN+VbEyUs1
- i2t+06rlsjhnscoSUdZE4WYk79O+ZXBQa/QDyo78XTchSU43pLdLy4D1NxJTssmXbjhq
- 9SyJAIrLxv8P7xFOdTIlevkAFy3X6NT5cs612XVD+yWNjwq8V4UNehrgZIjk+eMhaAKv
- gpokbvhZImoNs85NHA11HDRGc9t9D7rbHX1js0gY0h/Gi/KFghrnJ+hlYpLlnABSuRQH
- J3NVKrJoXYCqXRVlsp4GxgjqZVi/AGAkDLAD3lAyBXscpuSC2OHRixwuQ+8710LF6WTR
- dD1A==
+ bh=DS/EGY2tGxoW2u4p636lnzJLhbzW+SUrMSj5Qfa0kZY=;
+ b=gr609NOKI+9ho6OomofVKW8jj7VnF8pSJiKrKtVhlCJCLLiOBiFFqAr+kDHpJL8RZ3
+ gAv/4a4cUupPGzsNUFHw3kS4CYlQqvrieIcOZaNLJu5+jR4o6vJzYj7yYbWQZ8ZmKptW
+ sKA9nrhsAxFIXJ94YuXB8yxUHgFhYXsDZaJ8N6+SIP/+dW3aDMu5e5wnKfkf4VN7Y05+
+ Chmvqezaklq5wgHkpSATTbaQb8NPcEhoURa8xf//2yir0db9NEww5nmNF7ANdxjJWYdo
+ M8qmcI+8vKQMfXbI6YruB/OF0rMaWAFfzsSzlvYzdRkVdjRWpENtZJHTIPFGM98Nhslc
+ YGfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708705337; x=1709310137;
+ d=1e100.net; s=20230601; t=1708705335; x=1709310135;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Xq3bg3O489fduJkQRD4v3a7EWyBdeXHXm96vjazL+zo=;
- b=Hg7CUXY6S00X0h0BDwVWr+BeUquWKiZiCc3/zIJx5Cj8PG9iqL3X5k0lC9lliG+cge
- vIod26t8grqbbHotMuUdw1OcOxzwN3uEsJ9rYx4u0GBjCbE4EqA5FhtGQ2wxlREi4ukc
- aNFqjxJuG6wEIUNoVsMjiRu/VUXnDJl3JK510EDrQD+6oDToDmEkGLO4Y3XnwiDiyMLo
- mCHpKerqxul98thUMY5lO/1QNpxoJYfKg3q0M9aWbpC1TRklCReAVcGb1ycsXwY3RHkI
- du4nz7t+rPHUs8MfJjIZ+Dx/BJOPdhVDBOx3obPq28bK5/Ed85gY9JvLN0/Uypb8INqI
- ClHA==
-X-Gm-Message-State: AOJu0Yxz6HCjRqoeH3QjPshUSx9YUXi2EdObnEivW0KTrfXf/tsq8/U6
- g1Qj5GPObvMcb0pT+/7bMIq8wHcTBcinx8YSpCIKmVOWz6DtJVIN4pNOaburqgA=
-X-Google-Smtp-Source: AGHT+IHUoWsoQPBJE5WysWi1/w2FG/FEByV23K29KRZtnX85r4fuBoTqKM6Fm4br13XuD/TPAT8Xhw==
-X-Received: by 2002:a05:600c:4894:b0:412:952d:3c66 with SMTP id
- j20-20020a05600c489400b00412952d3c66mr218886wmp.38.1708705337016; 
- Fri, 23 Feb 2024 08:22:17 -0800 (PST)
+ bh=DS/EGY2tGxoW2u4p636lnzJLhbzW+SUrMSj5Qfa0kZY=;
+ b=EZVND5DY0JeFwk7hULqpizP0k//tTIpyKK3LAljKH7OjN4AuXTQGdKra+x/PtirAW4
+ JlraidVGT8PMuu9Tt+7RV5mKV9Neu3d0M8HVoIYqeY/d1R4fLugD5TrmROJo4JlChx8d
+ jr0BX+CzEoUN7bH/mwMmHmuuI8LFP/Eeky1ZQLynn8dCmvlX+VuRdhZ6uNFdtjLBxAHG
+ ha+7C8llY57UkHeYLpvnpMrjHgl4Ach8/6NhbvCX8gSagnrbsZ1eDkoIugoAE4fD9wJt
+ iYX1/5R9kjClVOQ+0I/SBLqivBMVak9v1DqmmprHtxlhbIv4jMOA5OsA0o4Fo/E3Tltm
+ cVtA==
+X-Gm-Message-State: AOJu0YzEEBrKKiQfAGj7ks/lWV2ipGXlM6DOYRNXskVCmJMyaKy+OTPP
+ jGVF0zRg0UC3J+PtGpAwmpN8xLH8ucBXKHOF3OXUv8fDP+mmoFZWDOwmEcYNrzs=
+X-Google-Smtp-Source: AGHT+IEfPGR9BBDQFxWL7BA0WYTIhiZ+qr0jGHmFDImoxQlfEnCAg+xrv4Dx1JPnswXJdxd95WzcKg==
+X-Received: by 2002:a2e:be8b:0:b0:2d2:2fc3:7b03 with SMTP id
+ a11-20020a2ebe8b000000b002d22fc37b03mr255281ljr.41.1708705335232; 
+ Fri, 23 Feb 2024 08:22:15 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- l28-20020a05600c1d1c00b0041276d96351sm3030020wms.3.2024.02.23.08.22.07
+ l4-20020a5d5604000000b0033d4adb3ebbsm3293200wrv.26.2024.02.23.08.22.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 23 Feb 2024 08:22:11 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 073655F930;
+ by draig.lan (Postfix) with ESMTP id 19A2F5F931;
  Fri, 23 Feb 2024 16:22:04 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -87,17 +87,17 @@ Cc: Song Gao <gaosong@loongson.cn>, qemu-s390x@nongnu.org,
  Brian Cain <bcain@quicinc.com>, Paolo Bonzini <pbonzini@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Michael Rolnik <mrolnik@gmail.com>
-Subject: [PATCH v2 15/27] plugins: fix order of init/idle/resume callback
-Date: Fri, 23 Feb 2024 16:21:50 +0000
-Message-Id: <20240223162202.1936541-16-alex.bennee@linaro.org>
+Subject: [PATCH v2 16/27] linux-user: ensure nios2 processes queued work
+Date: Fri, 23 Feb 2024 16:21:51 +0000
+Message-Id: <20240223162202.1936541-17-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240223162202.1936541-1-alex.bennee@linaro.org>
 References: <20240223162202.1936541-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -120,50 +120,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+While async processes are rare for linux-user we do use them from time
+to time. The most obvious one is tb_flush when we run out of
+translation space. We will also need this when we move plugin
+vcpu_init to an async task.
 
-We found that vcpu_init_hook was called *after* idle callback.
-vcpu_init is called from cpu_realize_fn, while idle/resume cb are called
-from qemu_wait_io_event (in vcpu thread).
+Fix nios2 to follow its older, wiser and more stable siblings.
 
-This change ensures we only call idle and resume cb only once a plugin
-was init for a given vcpu.
-
-Next change in the series will run vcpu_init asynchronously, which will
-make it run *after* resume callback as well. So we fix this now.
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20240213094009.150349-4-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- plugins/core.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ linux-user/nios2/cpu_loop.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/plugins/core.c b/plugins/core.c
-index caa66311351..2392bbb8889 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -391,12 +391,17 @@ void qemu_plugin_vcpu_syscall_ret(CPUState *cpu, int64_t num, int64_t ret)
+diff --git a/linux-user/nios2/cpu_loop.c b/linux-user/nios2/cpu_loop.c
+index da77ede76bd..7fe08c87501 100644
+--- a/linux-user/nios2/cpu_loop.c
++++ b/linux-user/nios2/cpu_loop.c
+@@ -32,6 +32,7 @@ void cpu_loop(CPUNios2State *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
++        process_queued_cpu_work(cs);
  
- void qemu_plugin_vcpu_idle_cb(CPUState *cpu)
- {
--    plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_IDLE);
-+    /* idle and resume cb may be called before init, ignore in this case */
-+    if (cpu->cpu_index < plugin.num_vcpus) {
-+        plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_IDLE);
-+    }
- }
- 
- void qemu_plugin_vcpu_resume_cb(CPUState *cpu)
- {
--    plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_RESUME);
-+    if (cpu->cpu_index < plugin.num_vcpus) {
-+        plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_RESUME);
-+    }
- }
- 
- void qemu_plugin_register_vcpu_idle_cb(qemu_plugin_id_t id,
+         switch (trapnr) {
+         case EXCP_INTERRUPT:
 -- 
 2.39.2
 
