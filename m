@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3DA1861703
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:08:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E7CC8616D2
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:04:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdY11-0005oa-EU; Fri, 23 Feb 2024 11:03:11 -0500
+	id 1rdY27-0007xs-OJ; Fri, 23 Feb 2024 11:04:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXjw-0006Py-3g; Fri, 23 Feb 2024 10:45:32 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1rdXjv-0006OY-BW; Fri, 23 Feb 2024 10:45:31 -0500
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXjs-0006dS-Su; Fri, 23 Feb 2024 10:45:31 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1dc13fb0133so7530625ad.3; 
- Fri, 23 Feb 2024 07:45:18 -0800 (PST)
+ id 1rdXjs-0006df-RN; Fri, 23 Feb 2024 10:45:31 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1db6e0996ceso7889225ad.2; 
+ Fri, 23 Feb 2024 07:45:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708703117; x=1709307917; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708703122; x=1709307922; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=87BnQC30icaZczwd/UfBwrie1Am0WCArYW99YEPQzm0=;
- b=JnTyipDhHyr97HsSux+QDCgiuWYWqKvUDmaN/KCiT8Sv1x1sFZ2cqbXDXT0uwvJLQV
- JMHnrcUUW56sqSSmod2Z9kVErQ+36PjJodqj+qL0CWVayfyenN+Cn1e2SWB0YiZ5y+Aj
- Rb6ex2U3V6FCOjXgjddXpAYCvawWSzBj5jHMRvOGdkHkNCpnNPIXWQ6YstJlL7fA4sWh
- x/59b2rYLW5zCdgpe35Eqr5MO9i+pEMegRbv0Aa+kbHDu+MxrnMjoBh3FFNN0MIKSxSR
- Ry747/fa1F+FkNTDcdKqQQcPDMRjN4kzSf9dasKVLgWx23dey7U+ytPa3m00WKERJpRJ
- dj7A==
+ bh=1ncHIEJMy4cYDbqfVJNjY8yl/TUUZBGM2GIItC5uR+8=;
+ b=lryJRjz22gVl5BGU1a6Sg0Qtv8Tdpqsc3lrJEFgJWya2dqCUiw31Sw17sNHT1eJUrO
+ dG1wqLhD5r+UJLYs7PTUmV3vB93ZYuNlRp+S5+/BgRQTqjxLZqT/WXADhnwr/HhLwTUq
+ YNbCGHL3ONMhaNdEsOp2zgZ5fbQDsPUGanVx3/Rvb0+cpBl32hZU5RKb12CclBLwsw6v
+ pgMLidm/55/YhO/yEACni6T0QjcBrweA5DcAnnHnifBBRELDMfR1dSaENZZE5w2YMOmC
+ PGTXizl7glmOeN1PoSxMe+i80uhiXKCK7yk8DK1diIKckig9PGvgRxx2+Z5r2ow4Szco
+ qQqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708703117; x=1709307917;
+ d=1e100.net; s=20230601; t=1708703122; x=1709307922;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=87BnQC30icaZczwd/UfBwrie1Am0WCArYW99YEPQzm0=;
- b=LfdJNSwTDw7hXRKw0zNvATTIL/xwLISg7GfQb/TgC1kH6FimT7yJ419lUEXjt6iCf8
- sUhT496OVEf8eupY62nwUbRSmW8e6jnyoWx6LDwitwNA2jdau3cOYlYGC+zeaKxYf4sZ
- hH2PN9sWV5Ty7img7Sx4lZVSN1X9wPJNzJr6pgvsl5pjsI/BB/u3jGqtUCtCYDAyzBMP
- ZS/e7VVMSrkHR9KckUUAzpDiDMB5ZoiorjKMqK080f/le+U2YsGbNYIJFMpaHW85HgH/
- FWGZRt/ADOD2uRqogY50evKVRxPg8vw9lmHkCjofWvjwa4sm9Bj8vkVY0aBvABg98MLB
- gGCQ==
+ bh=1ncHIEJMy4cYDbqfVJNjY8yl/TUUZBGM2GIItC5uR+8=;
+ b=wxh76cE7tZNvj6JfcsO2l6jEFOCE5TQ8Fp+sxFLJOkdH4ekhpdbCMorNiitW10hkYr
+ nQd2oViqxTYxn1KrqkIPdmyhI/5BbJ/YacX5uJHfDgot5fsOPCcXO1MKdepdAbmksfwP
+ qSKHzNi7Hrx2zQC7Tj5qhiny3Ehzu4xofEVk7Gtm7oEtOjv4Kj9ECFf/athNly/E5m10
+ wP8WyoEWTp1M/PjB4QYGobBnbG9ncz5TvXRs+b0jV3baQMOl3AjlJ1G6Jq0+yIfWoe/z
+ L1AsT+A7fF6skho753LfZMuFOpT48de8hnuyWLVWgXJx5tY9mU7nupai8GzojQd0H/HT
+ /48g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUrjIEpHIQLk2PRnDPkk2QgQzddgYVQDUbB4GA7E5AiCy9NfW3wxv2dWG36LRLFoPqXStMcFnZFMSxqALXvRQAK3ngi
-X-Gm-Message-State: AOJu0Yzj4WZS4JmfDwhebiLzXRIKWxso9rml/59Bo7PZ8qclUM3J/sZT
- lCAS0/BAeZgz8877FnX3VM0wB4/IwELRodjEbgXmWXZgKVQ9Vv2EipziyiS0
-X-Google-Smtp-Source: AGHT+IElh1IzN3ssVTo2VyqzpZtJfdR9MYhAVtodPUopgXaiiF8HIngv+rIRvJ2awH7K9NSYkK+X6A==
-X-Received: by 2002:a17:902:e80d:b0:1dc:75ea:8561 with SMTP id
- u13-20020a170902e80d00b001dc75ea8561mr221020plg.17.1708703117179; 
- Fri, 23 Feb 2024 07:45:17 -0800 (PST)
+ AJvYcCWWvGYY6MWNvrtuCRKrwIPnwH/Vjw0KikeWh78pOV3e1zBesbG4kHWSsF/rz6t3PfxQYkOIs+Q5Bn3Lbt1pkNWudKX/
+X-Gm-Message-State: AOJu0Yxfx8LhS+wsHBK/a6/9ibWhTI6rONvYsFf87KMvDSvpwdszZI6S
+ 5oYCBgugoC0OuYWHqHU6XTTuM3vJ646bv7AoE8oHGyYbcfgUbjFgGt7jlPB+
+X-Google-Smtp-Source: AGHT+IEaalKABNvFq8hA5IDkWl0NW40bLXgL6uEkABdeFRg0fICeH725tSMKcNHWyqBMf6YTXhQ7Gw==
+X-Received: by 2002:a17:902:eccc:b0:1dc:4649:43df with SMTP id
+ a12-20020a170902eccc00b001dc464943dfmr240246plh.16.1708703120763; 
+ Fri, 23 Feb 2024 07:45:20 -0800 (PST)
 Received: from wheely.local0.net (220-235-194-103.tpgi.com.au.
  [220.235.194.103]) by smtp.gmail.com with ESMTPSA id
- h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.45.14
+ h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.45.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 07:45:17 -0800 (PST)
+ Fri, 23 Feb 2024 07:45:20 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Chalapathi V <chalapathi.v@linux.ibm.com>
-Subject: [PULL 32/47] hw/ppc: N1 chiplet wiring
-Date: Sat, 24 Feb 2024 01:41:51 +1000
-Message-ID: <20240223154211.1001692-33-npiggin@gmail.com>
+ Saif Abrar <saif.abrar@linux.vnet.ibm.com>
+Subject: [PULL 33/47] target/ppc: Update gdbstub to read SPR's CFAR, DEC, HDEC,
+ TB-L/U
+Date: Sat, 24 Feb 2024 01:41:52 +1000
+Message-ID: <20240223154211.1001692-34-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240223154211.1001692-1-npiggin@gmail.com>
 References: <20240223154211.1001692-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,71 +96,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Chalapathi V <chalapathi.v@linux.ibm.com>
+From: Saif Abrar <saif.abrar@linux.vnet.ibm.com>
 
-This part of the patchset connects the nest1 chiplet model to p10 chip.
+SPR's CFAR, DEC, HDEC, TB-L/U are not implemented as part of CPUPPCState.
+Hence, gdbstub is not able to access them using (CPUPPCState *)env->spr[] array.
+Update gdb_get_spr_reg() method to handle these SPR's specifically.
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Saif Abrar <saif.abrar@linux.vnet.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/pnv.c              | 15 +++++++++++++++
- include/hw/ppc/pnv_chip.h |  2 ++
- 2 files changed, 17 insertions(+)
+ target/ppc/gdbstub.c | 40 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 38 insertions(+), 2 deletions(-)
 
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 0755fab155..acc4db00c1 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -1688,6 +1688,8 @@ static void pnv_chip_power10_instance_init(Object *obj)
-     object_initialize_child(obj, "occ",  &chip10->occ, TYPE_PNV10_OCC);
-     object_initialize_child(obj, "sbe",  &chip10->sbe, TYPE_PNV10_SBE);
-     object_initialize_child(obj, "homer", &chip10->homer, TYPE_PNV10_HOMER);
-+    object_initialize_child(obj, "n1-chiplet", &chip10->n1_chiplet,
-+                            TYPE_PNV_N1_CHIPLET);
+diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
+index ec5731e5d6..dfe31d0f47 100644
+--- a/target/ppc/gdbstub.c
++++ b/target/ppc/gdbstub.c
+@@ -394,7 +394,32 @@ static int gdb_get_spr_reg(CPUPPCState *env, GByteArray *buf, int n)
+     }
  
-     chip->num_pecs = pcc->num_pecs;
- 
-@@ -1857,6 +1859,19 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion(get_system_memory(), PNV10_HOMER_BASE(chip),
-                                 &chip10->homer.regs);
- 
-+    /* N1 chiplet */
-+    if (!qdev_realize(DEVICE(&chip10->n1_chiplet), NULL, errp)) {
-+        return;
+     len = TARGET_LONG_SIZE;
+-    gdb_get_regl(buf, env->spr[reg]);
++
++    /* Handle those SPRs that are not part of the env->spr[] array */
++    target_ulong val;
++    switch (reg) {
++#if defined(TARGET_PPC64)
++    case SPR_CFAR:
++        val = env->cfar;
++        break;
++#endif
++    case SPR_HDEC:
++        val = cpu_ppc_load_hdecr(env);
++        break;
++    case SPR_TBL:
++        val = cpu_ppc_load_tbl(env);
++        break;
++    case SPR_TBU:
++        val = cpu_ppc_load_tbu(env);
++        break;
++    case SPR_DECR:
++        val = cpu_ppc_load_decr(env);
++        break;
++    default:
++        val = env->spr[reg];
 +    }
-+    pnv_xscom_add_subregion(chip, PNV10_XSCOM_N1_CHIPLET_CTRL_REGS_BASE,
-+             &chip10->n1_chiplet.nest_pervasive.xscom_ctrl_regs_mr);
++    gdb_get_regl(buf, val);
 +
-+    pnv_xscom_add_subregion(chip, PNV10_XSCOM_N1_PB_SCOM_EQ_BASE,
-+                           &chip10->n1_chiplet.xscom_pb_eq_mr);
-+
-+    pnv_xscom_add_subregion(chip, PNV10_XSCOM_N1_PB_SCOM_ES_BASE,
-+                           &chip10->n1_chiplet.xscom_pb_es_mr);
-+
-     /* PHBs */
-     pnv_chip_power10_phb_realize(chip, &local_err);
-     if (local_err) {
-diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-index 0ab5c42308..9b06c8d87c 100644
---- a/include/hw/ppc/pnv_chip.h
-+++ b/include/hw/ppc/pnv_chip.h
-@@ -4,6 +4,7 @@
- #include "hw/pci-host/pnv_phb4.h"
- #include "hw/ppc/pnv_core.h"
- #include "hw/ppc/pnv_homer.h"
-+#include "hw/ppc/pnv_n1_chiplet.h"
- #include "hw/ppc/pnv_lpc.h"
- #include "hw/ppc/pnv_occ.h"
- #include "hw/ppc/pnv_psi.h"
-@@ -113,6 +114,7 @@ struct Pnv10Chip {
-     PnvOCC       occ;
-     PnvSBE       sbe;
-     PnvHomer     homer;
-+    PnvN1Chiplet     n1_chiplet;
+     ppc_maybe_bswap_register(env, gdb_get_reg_ptr(buf, len), len);
+     return len;
+ }
+@@ -411,7 +436,18 @@ static int gdb_set_spr_reg(CPUPPCState *env, uint8_t *mem_buf, int n)
  
-     uint32_t     nr_quads;
-     PnvQuad      *quads;
+     len = TARGET_LONG_SIZE;
+     ppc_maybe_bswap_register(env, mem_buf, len);
+-    env->spr[reg] = ldn_p(mem_buf, len);
++
++    /* Handle those SPRs that are not part of the env->spr[] array */
++    target_ulong val = ldn_p(mem_buf, len);
++    switch (reg) {
++#if defined(TARGET_PPC64)
++    case SPR_CFAR:
++        env->cfar = val;
++        break;
++#endif
++    default:
++        env->spr[reg] = val;
++    }
+ 
+     return len;
+ }
 -- 
 2.42.0
 
