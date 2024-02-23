@@ -2,110 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00654861E31
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 21:54:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D468861DAF
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 21:35:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdcYE-0000MN-Cj; Fri, 23 Feb 2024 15:53:46 -0500
+	id 1rdcFc-00008g-Gj; Fri, 23 Feb 2024 15:34:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rdbuq-0002uO-82
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 15:13:04 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rdbvu-0002zx-Eh
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 15:14:15 -0500
+Received: from mail-il1-x134.google.com ([2607:f8b0:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rdbun-0005gq-6U
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 15:13:03 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id DCF4921F5A;
- Fri, 23 Feb 2024 20:12:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1708719176; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=n74DUAWBwx3xDeSsRQwzKa9rFx6qh8ucOS9fd350eh0=;
- b=EZ+5tF7cmGztwnZOEle8w/+AMFQA7Y1F0eq0qypQNo6EN6MZJ4KGgfs+60ntEMeyFUuQbJ
- AkoeNbdvApyJWKc3OWRuDcjpA8mssS9QHi6IfwddMOmvlGXXBE6puI3577mEOxGlbJQ0Wm
- pb2265HNHOmK4lsH8JeEf5wFtHnFHPo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1708719176;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=n74DUAWBwx3xDeSsRQwzKa9rFx6qh8ucOS9fd350eh0=;
- b=Y2Q75eaVUI+O/K4Vva5fpfAYfqvwB43IDZ9/N6Q/MEIcjHjHLs0H5YjZZwkiJ1Ln7isHWI
- BBYKL7pv+a6nwhDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1708719175; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=n74DUAWBwx3xDeSsRQwzKa9rFx6qh8ucOS9fd350eh0=;
- b=DiYXOEKd6XsEjoqOBzpVBoZhMBY6t0N2D697QufeNLxL9ELvUT7l4cWJwR22Ky9vCM+x1q
- dGcu9HqZ8iVpa4sZPCiuF3LVhxm+/LUYUGkFHPJVG9W0tGcNXQb2eABU0xUyLoWpWFAwWx
- 5zHQbJEA7XPCuqYuy3AHz9cQFDshMIY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1708719175;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=n74DUAWBwx3xDeSsRQwzKa9rFx6qh8ucOS9fd350eh0=;
- b=jA86Y3H4Fgv9dGgyVdGAgzSaOdiYouWLfkJBkuPzzVwWmnERIkudYlLus/GUGsdo3FSTg9
- aawsUJv1fsBF0+Dw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 67284132C7;
- Fri, 23 Feb 2024 20:12:55 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id JafOC0f82GU+YwAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 23 Feb 2024 20:12:55 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com, thuth@redhat.com, lvivier@redhat.com,
- pbonzini@redhat.com, peterx@redhat.com, Het Gala <het.gala@nutanix.com>
-Subject: Re: [PATCH v2 1/3] qtest: migration: Enhance qtest migration
- functions to support 'channels' argument
-In-Reply-To: <20240223152517.7834-2-het.gala@nutanix.com>
-References: <20240223152517.7834-1-het.gala@nutanix.com>
- <20240223152517.7834-2-het.gala@nutanix.com>
-Date: Fri, 23 Feb 2024 17:12:52 -0300
-Message-ID: <87zfvr7xdn.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rdbvt-0005sU-0g
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 15:14:10 -0500
+Received: by mail-il1-x134.google.com with SMTP id
+ e9e14a558f8ab-364f791a428so2695665ab.3
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 12:14:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708719246; x=1709324046; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=I700NpAcGVLc6L+nJDp9JAzh6V9ItdFTitqNh9gY0Zg=;
+ b=oItaXYxVYAcMC898XqkMWQN3mal/g0g1K9PH8V42U5KOvuuzJKoOP/aM5d+G+lGoNQ
+ fw9Erl+xEsa7EvyGJAxKlV9tf+U9D2BZM4oS2g0x4eZP6iuLHVL39FfbQ4iChIFB9Uau
+ plvzcY/rOhD3axSQVIV2iwJA6zEsh/g2xVDqoINhieLQu5yLyOXDRd2Cxu1kkxUmxNA3
+ pq+B8O93DgyZuxeaAD/drOJInbJwkwPVONXgEhqExaztF1oX+jcO9FSC3A5gN216FUIV
+ LGvooDWXkQAeBUn/fGSLvrwSOrmD55jy6D9WDicjj/Mod/gdNIjWNOUDOAAh8iUsB/Tj
+ LMOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708719246; x=1709324046;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=I700NpAcGVLc6L+nJDp9JAzh6V9ItdFTitqNh9gY0Zg=;
+ b=SDm0qpH8F9QiQCfzsJ+w1yeyrXpBODrEnbdKxatE/UNuPHaDSkI0SIiAMhqcECxdan
+ nZtH7VQ1bC1Zh35nXgXtdr7yylC9OcaBO/omoHFbiT3IAR+vNSsHq2gk6fsmY2QA4rZ8
+ fZCHksvkP7qZSSyQNZf97fI7BOJNr7UN6ZpS3jyifX/z4W+Ki5NiP6CMhWeqvsB3Jb64
+ Xq2bP6LGVR4z145JI9AWESveE6fUYkEOnRhA3yQKzv47a8lISSKuW5DD5UETfyTMfPYW
+ JL9x9Ev6SFmvdcANbOv2oEcBLpsS75H/syTAKLhItxtBEmBHWXuybgneRpFhn+aLAleu
+ jlXg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWVGHSlbSioSNeSDJgZkXJSJ4n11ykFXL2CoHSys6teaMO776XrKz/lTvyrky2ffepxIwxF3vMavNmuzE6U9ANzs9vZ7CY=
+X-Gm-Message-State: AOJu0Yw8OJD9hD2laaFrHHEqXGnr9PgpANUB1PKzDaXGhZ67ovl4YI/d
+ Cbxh7CSl7YZp3eDDkAZuPh6lZekP/Q6CLg7syQSepM6kVVhDvX9wVgSKtIVQid0=
+X-Google-Smtp-Source: AGHT+IGEi7UWAcwTpcwedsB6Y5SSbFIW1/dam9DxRmVpvrUCI5L9MhQGo1WK63ufzk3HwwqKUgu4JA==
+X-Received: by 2002:a05:6e02:522:b0:363:bb5a:3329 with SMTP id
+ h2-20020a056e02052200b00363bb5a3329mr984256ils.1.1708719246654; 
+ Fri, 23 Feb 2024 12:14:06 -0800 (PST)
+Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
+ [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
+ z28-20020a637e1c000000b005dccf9e3b74sm12361418pgc.92.2024.02.23.12.14.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 23 Feb 2024 12:14:06 -0800 (PST)
+Message-ID: <ca6cd116-8dae-4ddc-95ae-db19e18ae5b5@linaro.org>
+Date: Fri, 23 Feb 2024 10:14:02 -1000
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DiYXOEKd;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jA86Y3H4
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-3.79 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; BAYES_HAM(-0.28)[74.23%];
- MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-1.00)[-1.000];
- DWL_DNSWL_MED(-2.00)[suse.de:dkim]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
- RCPT_COUNT_SEVEN(0.00)[8];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,nutanix.com:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Score: -3.79
-X-Rspamd-Queue-Id: DCF4921F5A
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 14/21] hw/intc/arm_gicv3_redist: Implement
+ GICR_INMIR0
+Content-Language: en-US
+To: Jinjie Ruan <ruanjinjie@huawei.com>, peter.maydell@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org
+References: <20240223103221.1142518-1-ruanjinjie@huawei.com>
+ <20240223103221.1142518-15-ruanjinjie@huawei.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240223103221.1142518-15-ruanjinjie@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::134;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x134.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -122,77 +98,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Het Gala <het.gala@nutanix.com> writes:
+On 2/23/24 00:32, Jinjie Ruan via wrote:
+> Add GICR_INMIR0 register and support access GICR_INMIR0.
+> 
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> ---
+>   hw/intc/arm_gicv3_redist.c | 23 +++++++++++++++++++++++
+>   hw/intc/gicv3_internal.h   |  1 +
+>   2 files changed, 24 insertions(+)
+> 
+> diff --git a/hw/intc/arm_gicv3_redist.c b/hw/intc/arm_gicv3_redist.c
+> index 8153525849..87e7823f34 100644
+> --- a/hw/intc/arm_gicv3_redist.c
+> +++ b/hw/intc/arm_gicv3_redist.c
+> @@ -35,6 +35,15 @@ static int gicr_ns_access(GICv3CPUState *cs, int irq)
+>       return extract32(cs->gicr_nsacr, irq * 2, 2);
+>   }
+>   
+> +static void gicr_write_bitmap_reg(GICv3CPUState *cs, MemTxAttrs attrs,
+> +                                  uint32_t *reg, uint32_t val)
+> +{
+> +    /* Helper routine to implement writing to a "set" register */
+> +    val &= mask_group(cs, attrs);
+> +    *reg = val;
+> +    gicv3_redist_update(cs);
+> +}
+> +
+>   static void gicr_write_set_bitmap_reg(GICv3CPUState *cs, MemTxAttrs attrs,
+>                                         uint32_t *reg, uint32_t val)
+>   {
+> @@ -406,6 +415,13 @@ static MemTxResult gicr_readl(GICv3CPUState *cs, hwaddr offset,
+>           *data = value;
+>           return MEMTX_OK;
+>       }
+> +    case GICR_INMIR0:
+> +        if (!cs->gic->nmi_support) {
+> +            *data = 0;
+> +            return MEMTX_OK;
+> +        }
+> +        *data = gicr_read_bitmap_reg(cs, attrs, cs->gicr_isuperprio);
+> +        return MEMTX_OK;
 
-> Introduce support for adding a 'channels' argument to migrate_qmp_fail,
-> migrate_incoming_qmp and migrate_qmp functions within the migration qtest
-> framework, enabling enhanced control over migration scenarios.
+Clearer as
 
-Can't we just pass a channels string like you did in the original series
-with migrate_postcopy_prepare?
+     *data = (cs->gic->nmi_support
+              ? gicr_read_bitmap_reg(cs, attrs, cs->gicr_isuperprio)
+              : 0);
+     return MEMTX_OK;
 
-We'd change migrate_* functions like this:
+> +    case GICR_INMIR0:
+> +        if (!cs->gic->nmi_support) {
+> +            return MEMTX_OK;
+> +        }
+> +        gicr_write_bitmap_reg(cs, attrs, &cs->gicr_isuperprio, value);
+> +        return MEMTX_OK;
 
-  void migrate_qmp(QTestState *who, const char *uri, const char *channels,
-                   const char *fmt, ...)
-  {
-  ...
-      g_assert(!qdict_haskey(args, "uri"));
-      if (uri) {
-          qdict_put_str(args, "uri", uri);
-      }
-  
-      g_assert(!qdict_haskey(args, "channels"));
-      if (channels) {
-          qdict_put_str(args, "channels", channels);
-      }
-  }
+Likewise,
 
-Write the test like this:
+     if (cs->gic->nmi_support) {
+         gicr_write_bitmap_reg(cs, attrs, &cs->gicr_isuperprio, value);
+     }
+     return MEMTX_OK;
 
-  static void test_multifd_tcp_none_channels(void)
-  {
-      MigrateCommon args = {
-          .listen_uri = "defer",
-          .start_hook = test_migrate_precopy_tcp_multifd_start,
-          .live = true,
-          .connect_channels = "'channels': [ { 'channel-type': 'main',"
-                              "      'addr': { 'transport': 'socket',"
-                              "                'type': 'inet',"
-                              "                'host': '127.0.0.1',"
-                              "                'port': '0' } } ]",
-          .connect_uri = NULL;
-                               
-      };
-      test_precopy_common(&args);
-  }
 
-  static void do_test_validate_uri_channel(MigrateCommon *args)
-  {
-      QTestState *from, *to;
-      g_autofree char *connect_uri = NULL;
-  
-      if (test_migrate_start(&from, &to, args->listen_uri, &args->start)) {
-          return;
-      }
-  
-      wait_for_serial("src_serial");
-  
-      if (args->result == MIG_TEST_QMP_ERROR) {
-          migrate_qmp_fail(from, args->connect_uri, args->connect_channels, "{}");
-      } else {
-          migrate_qmp(from, args->connect_uri, args->connect_channels, "{}");
-      }
-  
-      test_migrate_end(from, to, false);
-  }
-
-It's better to require test writers to pass in their own uri and channel
-strings. Otherwise any new transport added will require people to modify
-these conversion helpers.
-
-Also, using the same string as the user would use in QMP helps with
-development in general. One could refer to the tests to see how to
-invoke the migration or experiment with the string in the tests during
-development.
+r~
 
