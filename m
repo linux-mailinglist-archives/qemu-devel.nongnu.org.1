@@ -2,84 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 364E5860F2F
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 11:26:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09FEB860F80
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 11:37:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdSjV-0001f8-3l; Fri, 23 Feb 2024 05:24:45 -0500
+	id 1rdSt0-0003so-Bw; Fri, 23 Feb 2024 05:34:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1rdSjS-0001es-AX
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 05:24:42 -0500
-Received: from fout5-smtp.messagingengine.com ([103.168.172.148])
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1rdSsS-0003bQ-VQ; Fri, 23 Feb 2024 05:34:02 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1rdSjP-0008S6-VO
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 05:24:42 -0500
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
- by mailfout.nyi.internal (Postfix) with ESMTP id C022B13800A5;
- Fri, 23 Feb 2024 05:24:36 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute6.internal (MEProxy); Fri, 23 Feb 2024 05:24:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:content-type:content-type:date:date:from:from:in-reply-to
- :message-id:mime-version:reply-to:subject:subject:to:to; s=fm3;
- t=1708683876; x=1708770276; bh=WWEo1IMUSNdbN/to8orlTB/j9PdB8Jbh
- rrSo2TGsJUE=; b=RXN1VLKjxVcJUPaCuBQoWdxBo5vAv467PFPuccGahiWKDIu0
- SMr8OwhTmm7NqiUjYcOZDJERjqbEQIWi+TdlpsNOf6AnvWvIIyh8FofpyfLGZPjl
- 9xL4aX+TRbRAeVb91FCQ+1n8GWe4FxopQsO4AYxE379gG67wHZM6sQls9urQyjnZ
- mwD2rlDWkxdiYOnEfC9axEhUgTKEaiL8cejo8x287J4L/DMAPL/vr0qUr5W3m81/
- L9MY0nqrHJCIKE+Pj26Wv2Y2AsUidMbvloPRj/sIFB2UzS5Icvnk/MpsX29cr03O
- gK2Cvkw+uIIkrzryOK8X2FQynSqj4uEH9ZyCkw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:message-id
- :mime-version:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
- 1708683876; x=1708770276; bh=WWEo1IMUSNdbN/to8orlTB/j9PdB8JbhrrS
- o2TGsJUE=; b=bZVbc7+zgaO+NyKXc5Sh/n3zf+tvZCHXyZeuuOgIXltshJj200E
- BjRW0p4bCXSowh+XoMWpGpjrHoYR7KY3KyYVLi6AQ+c4blg52YAkaO9b31BN2v/p
- CuYRzSkFVwK0vUFelui13d37m1CRL6JwKJ5eruG6KmolMmuSNtgbXBK2ISZ0JfzL
- bzkMt/U7LgdWCgbr449FgicQcQg1ognV4jR9DMAQnB2PqwlNNiM2e/A5QvMzGNlp
- xGSgT4ArHRqNcHtvXQuWlR1uTMmm9mzGwDHfu+NjVSenNflvSyrZ+jb3aLBz+Acu
- nY1vF8cN7cuRl4620+bczWQgvsMK3/tmKmw==
-X-ME-Sender: <xms:ZHLYZQ-1u5C-GP4prhU78LI2-jTuPpdF3PE6QApGjg2lIdxbM5etgw>
- <xme:ZHLYZYutYXjbREaQWURaTVzI5F-omWI7qjdPPm2MUXxHGyH4sLHWHbyOjjM-z6zQ-
- Ml-sdQvszaQtTNiMcU>
-X-ME-Received: <xmr:ZHLYZWAeBoG5QFNMYJGUC_tAg1wQGRBXJCAYw1LHMi_D-TuZFzutzXWMRq8e>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfeeigdduhecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecunecujfgurhepfffhvffukfggtggusehgtderredttd
- ejnecuhfhrohhmpefmlhgruhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghn
- thdrughkqeenucggtffrrghtthgvrhhnpedvuefgkeffhedvkefhueegkeeukeegieetve
- eihfeuuedutdfhudethfdvvedtudenucffohhmrghinhepghhithhlrggsrdgtohhmnecu
- vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihhtshesih
- hrrhgvlhgvvhgrnhhtrdgukh
-X-ME-Proxy: <xmx:ZHLYZQebSPQyf_jhXkdTfRjW73oWw5zIHA7vmykEnYqo7yKWt3MTJA>
- <xmx:ZHLYZVMQ6nY7KvJ1vk4EK1rC_kfICWMVRbOrbUFwAX1G8mOYURh1SA>
- <xmx:ZHLYZakhvnPnySj7hoAzMV6ydWnT7_wSnrQXYoWtsQT8XJ8rYnPvlQ>
- <xmx:ZHLYZea0GVpE6cXy1JzF1QVyFPY0xfBYi6AY-Lsv4fmoCh6pDHqJ5Q>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 23 Feb 2024 05:24:35 -0500 (EST)
-Date: Fri, 23 Feb 2024 11:24:31 +0100
-From: Klaus Jensen <its@irrelevant.dk>
-To: qemu-devel@nongnu.org
-Subject: Clarification on cross-version compatibility requirements
-Message-ID: <ZdhyX0eufxK1M8og@cormorant.local>
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1rdSsO-0001td-Td; Fri, 23 Feb 2024 05:34:00 -0500
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+ by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4Th5ty0SfJz1vtZm;
+ Fri, 23 Feb 2024 18:32:58 +0800 (CST)
+Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
+ by mail.maildlp.com (Postfix) with ESMTPS id 17E301A016B;
+ Fri, 23 Feb 2024 18:33:33 +0800 (CST)
+Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
+ (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 23 Feb
+ 2024 18:33:32 +0800
+To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
+ <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
+ <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
+CC: <ruanjinjie@huawei.com>
+Subject: [RFC PATCH v3 00/21] target/arm: Implement FEAT_NMI and FEAT_GICv3_NMI
+Date: Fri, 23 Feb 2024 10:32:00 +0000
+Message-ID: <20240223103221.1142518-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="FQoOh2UGzWE75+Qx"
-Content-Disposition: inline
-Received-SPF: pass client-ip=103.168.172.148; envelope-from=its@irrelevant.dk;
- helo=fout5-smtp.messagingengine.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.174.55]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemi500008.china.huawei.com (7.221.188.139)
+Received-SPF: pass client-ip=45.249.212.32; envelope-from=ruanjinjie@huawei.com;
+ helo=szxga06-in.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,63 +60,116 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jinjie Ruan <ruanjinjie@huawei.com>
+From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This patch set implements FEAT_NMI and FEAT_GICv3_NMI for armv8. These
+introduce support for a new category of interrupts in the architecture
+which we can use to provide NMI like functionality.
 
---FQoOh2UGzWE75+Qx
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+There are two modes for using this FEAT_NMI. When PSTATE.ALLINT or
+PSTATE.SP & SCTLR_ELx.SCTLR_SPINTMASK is set, any entry to ELx causes all
+interrupts including those with superpriority to be masked on entry to ELn
+until the mask is explicitly removed by software or hardware. PSTATE.ALLINT
+can be managed by software using the new register control ALLINT.ALLINT.
+Independent controls are provided for this feature at each EL, usage at EL1
+should not disrupt EL2 or EL3.
 
-Hi all,
+I have tested it with the following linux patches which try to support
+FEAT_NMI in linux kernel:
 
-Yesterday, a bug but in hw/nvme (#2184) was filed
+	https://lore.kernel.org/linux-arm-kernel/Y4sH5qX5bK9xfEBp@lpieralisi/T/#mb4ba4a2c045bf72c10c2202c1dd1b82d3240dc88
 
-	https://gitlab.com/qemu-project/qemu/-/issues/2184)
+In the test, SGI, PPI and SPI interrupts can all be set to have super priority
+to be converted to a hardware NMI interrupt. The SGI is tested with kernel
+IPI as NMI framework, and the PPI interrupt is tested with "perf top" command
+with hardware NMI enabled, and the PPI interrupt is tested with a custom
+test module, in which NMI interrupts can be received and transmitted normally.
 
-The reporter ran into an issue with hibernating a guest from QEMU v4.1.0
-and trying to resume it on v8.2.1. hw/nvme has received some changes
-since then, including a change in the BAR layout which causes the boot
-to fail.
+         +-------------------------------------------------+
+         |               Distributor                       |
+         +-------------------------------------------------+
+             SPI |  NMI                         |  NMI
+                \ /                            \ /
+            +--------+                     +-------+
+            | Redist |                     | Redist|
+            +--------+                     +-------+
+            SGI  | NMI                     PPI | NMI
+                \ /                           \ /
+          +-------------+             +---------------+
+          |CPU Interface|   ...       | CPU Interface |
+          +-------------+             +---------------+
+               | NMI                         | NMI
+              \ /                           \ /
+            +-----+                       +-----+
+            |  PE |                       |  PE |
+            +-----+                       +-----+
 
-Now, hw/nvme is marked 'unmigratable'. I realize that this is only
-observed and checked under live migration, but I honestly did not know
-that hw/nvme were expected to ensure that the kind of "hibernation
-migration" works.
+Changes in v3:
+- Remove the FIQ NMI.
+- Adjust the patches Sequence.
+- Reomve the patch "Set pstate.ALLINT in arm_cpu_reset_hold".
+- Check whether support FEAT_NMI and FEAT_GICv3 for FEAT_GICv3_NMI.
+- With CPU_INTERRUPT_NMI, both CPSR_I and ISR_IS must be set.
+- Not include NMI logic when FEAT_NMI or SCTLR_ELx.NMI not enabled.
+- Refator nmi mask in arm_excp_unmasked().
+- Add VNMI definitions, add HCRX_VINMI and HCRX_VFNMI support in HCRX_EL2.
+- Add Reviewed-by and Acked-by.
+- Update the commit message.
 
-I already have a potential fix for the issue (because I don't just want
-to say "wontfix", I'd like to fix it), but it got me thinking about what
-the general requirements are. And I couldn't find any good documentation
-on it.
+Changes in v2:
+- Break up the patches so that each one does only one thing.
+- Remove the command line option and just implement it in "max" cpu.
 
-So, my question is: when is an emulated device required to support such
-version compatibility? I'm asking because we've also deprecated some
-stuff, like the device originally using an internal Intel PCI device id
-that we wanted to get rid of. But now, I don't think I can actually
-remove that parameter, I need to keep it around for hw/core/machine.c to
-set if necessary.
+Jinjie Ruan (21):
+  target/arm: Handle HCR_EL2 accesses for bits introduced with FEAT_NMI
+  target/arm: Add PSTATE.ALLINT
+  target/arm: Add support for FEAT_NMI, Non-maskable Interrupt
+  target/arm: Implement ALLINT MSR (immediate)
+  target/arm: Support MSR access to ALLINT
+  target/arm: Add support for Non-maskable Interrupt
+  target/arm: Add support for NMI in arm_phys_excp_target_el()
+  target/arm: Handle IS/FS in ISR_EL1 for NMI
+  target/arm: Handle PSTATE.ALLINT on taking an exception
+  hw/arm/virt: Wire NMI and VNMI irq lines from GIC to CPU
+  hw/intc/arm_gicv3: Add external IRQ lines for NMI
+  target/arm: Handle NMI in arm_cpu_do_interrupt_aarch64()
+  hw/intc/arm_gicv3: Add irq superpriority information
+  hw/intc/arm_gicv3_redist: Implement GICR_INMIR0
+  hw/intc/arm_gicv3: Implement GICD_INMIR
+  hw/intc: Enable FEAT_GICv3_NMI Feature
+  hw/intc/arm_gicv3: Add NMI handling CPU interface registers
+  hw/intc/arm_gicv3: Implement NMI interrupt prioirty
+  hw/intc/arm_gicv3: Report the NMI interrupt in gicv3_cpuif_update()
+  target/arm: Add FEAT_NMI to max
+  hw/arm/virt: Add FEAT_GICv3_NMI feature support in virt GIC
 
-Can anyone enlighten me on the guidelines (de-facto requirements) for
-this?
+ docs/system/arm/emulation.rst      |  1 +
+ hw/arm/virt.c                      | 25 +++++++++++-
+ hw/intc/arm_gicv3.c                | 63 ++++++++++++++++++++++++++----
+ hw/intc/arm_gicv3_common.c         |  7 ++++
+ hw/intc/arm_gicv3_cpuif.c          | 52 ++++++++++++++++++++++--
+ hw/intc/arm_gicv3_dist.c           | 40 +++++++++++++++++++
+ hw/intc/arm_gicv3_redist.c         | 23 +++++++++++
+ hw/intc/gicv3_internal.h           |  5 +++
+ include/hw/intc/arm_gic_common.h   |  2 +
+ include/hw/intc/arm_gicv3_common.h |  7 ++++
+ target/arm/cpu-features.h          |  5 +++
+ target/arm/cpu-qom.h               |  4 +-
+ target/arm/cpu.c                   | 54 ++++++++++++++++++++-----
+ target/arm/cpu.h                   | 15 ++++++-
+ target/arm/helper.c                | 58 +++++++++++++++++++++++++++
+ target/arm/internals.h             |  3 ++
+ target/arm/tcg/a64.decode          |  1 +
+ target/arm/tcg/cpu64.c             |  1 +
+ target/arm/tcg/helper-a64.c        | 24 ++++++++++++
+ target/arm/tcg/helper-a64.h        |  1 +
+ target/arm/tcg/translate-a64.c     | 10 +++++
+ 21 files changed, 377 insertions(+), 24 deletions(-)
 
+-- 
+2.34.1
 
-Thanks,
-Klaus
-
---FQoOh2UGzWE75+Qx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmXYcl4ACgkQTeGvMW1P
-Denf1Qf/RFmDUD6F0nv8r4U//3xAyCHhlQAndu3M7Wk2v1CarNb4JToRn25dJvxP
-anynsaFbWKxq2mTXzzduRgRorgoxXh0X2GM0bVdUQ12t/y1ym2AxtbZw6015gwy4
-pleR5ijovFs3PRQHAm4YyZfQ0JFL50JpEfj746+Da9SugcSm5RMNlHToGVZYsm88
-7JR1lLbeM5gJMrWanTQanKRBHJFSFoIQVqIPOBoeowgn9GgWAv44jdAjSzpInqng
-ySsIu6PTa9W0++HMMSXwrFbXcpYNDdVGNrvUuITsM0unWqUfP1PwP69KLQbDD49g
-OyINWtld+tMNHeTCnvY8cII7pES20g==
-=BktK
------END PGP SIGNATURE-----
-
---FQoOh2UGzWE75+Qx--
 
