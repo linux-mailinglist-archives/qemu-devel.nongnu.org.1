@@ -2,84 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23102861B07
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 19:02:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 091B1861B83
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 19:25:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdZrI-0001AC-Bk; Fri, 23 Feb 2024 13:01:16 -0500
+	id 1rdaDS-0000Hf-1N; Fri, 23 Feb 2024 13:24:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rdZfh-0007az-FM
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 12:49:18 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rdZis-0002ih-4Y
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 12:52:34 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rdZff-0005HQ-N8
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 12:49:17 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-412988afac9so811895e9.1
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 09:49:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rdZip-0005mV-DU
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 12:52:33 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-4129833e069so1935085e9.2
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 09:52:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708710554; x=1709315354; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708710749; x=1709315549; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=sYMViQZxpZ/oKbU6saSaPZG3/uaTby0qs1bVK8UlTCE=;
- b=c0Hy3X1lrQ7QtHNoXPdJF1O8JX8oUrKm+V4lirK9rEeaiZMNyEPPvZyAl6Y3xaYKwY
- jEZaaibePqmOdQZlPFJgFbncdEZ0F/py3yN0vVU0Sf2JPlp0+K11hv0plXyyPfRSMF+F
- mHhdziA+b7SxKZ2+ghB4xm7HHsMmiFhcGarPoqaFWw0jRT9B7rpm97CLRwG4u/JgGC8W
- mbQml+dlojm7cohumC8XKvrQBiO9rcKAizJj5SR2Tmys+cEcktZPMYOb5ANhqFQKv9MU
- FoWJaW+mZxPsVe6IR6K1bu8Ioey/RR1xvrswfZ/KWTaJXyGSFW+mCAdQxDSf0Jt2Ym6I
- NwKQ==
+ bh=Dc0dCMziFbBR5ys92M7RMKGPfrVHJeCpcr0ldbOMoew=;
+ b=RqzkwfcOoFaUSjGgynYmxS0OFI/tbU05RbmelXtJ00/2YzOFA57w54DGhINX4CHDrN
+ 8bzdFBDHndApvfbFTcisf1UWlwIqctU94yIAFjPt6qe8mbs8c9jZkRqk81saRbZQlwld
+ zidQL/W96Fr+O4GK2CbOffqInJGj+jd0X8sd/EGga0g8mxFm0s/3+aUaaXNUKicVSo8l
+ +mEJy3Bso8xw1y3Qssx/7bAcZIAZkIADueVDhcu7Q/amwNUydlVKU1BqUC9ZK1PA4+z3
+ E1ujH/kmfHrsUKwg/i0hZIxQNvobbgazDmgIFSXA8WayyqKOI6yFrg4sjEHrYRFEs4u8
+ zbAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708710554; x=1709315354;
+ d=1e100.net; s=20230601; t=1708710749; x=1709315549;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sYMViQZxpZ/oKbU6saSaPZG3/uaTby0qs1bVK8UlTCE=;
- b=dw/ai4HnkfK0tsoFxlEycloWrRXJocCE6l1YtNwi1kw5W6cfQyKNTduJwqZMfooOuG
- kbwMMcJbDgwgxC4qPoPpyWMj3pt+REwUOJCtWjYjUD2TcH1xZ0PHIWuI78btyC+s0HpC
- ZfRKrpMaoUwiToH9ANIzjz8hTBC09ttspX56I1hglvdJqZrFCXWBGXe7xnuJ9cDyW0ir
- N1dfI0PIkVUyOn8EQ3Ir2yTgNg97zGJS8g9skfu8xN39NT7ZBExR8hD4UpAeM+HB2UJD
- GOtSs5Z1sOiMpngxi7aub0dGa7qpGtDTXcPOAQ0BTw9qJJUwc8bYkOMpap34seoKY0A8
- zIFw==
-X-Gm-Message-State: AOJu0YzR8mha0G5k5C0oe396Z5F2XrLUQZPFo1lwE/8+7ub5Ip4/Z9E8
- JJDINUw8VaL/cdD6uYesD5Pbe1B0LyBFxGhG+8gX7HfDhRdMseWkNVALzCAuWqNj3DbwY1ZRJLc
- v
-X-Google-Smtp-Source: AGHT+IH1NrjFGll7w3yAhhYPa+Vimff/lyIxU8ApKurGWlz/YUH5GLdxUatcr8YuYy1+0wUNiTJdfA==
-X-Received: by 2002:adf:ee06:0:b0:33d:746b:f365 with SMTP id
- y6-20020adfee06000000b0033d746bf365mr285524wrn.52.1708710553767; 
- Fri, 23 Feb 2024 09:49:13 -0800 (PST)
+ bh=Dc0dCMziFbBR5ys92M7RMKGPfrVHJeCpcr0ldbOMoew=;
+ b=XaqBuLILnjgdxzP+ejsJInyJXgbcdmizH5IkraquXE/xj0/QHiMGkkGuf3j/QKoOw4
+ alx2CkfSq1gXLu0pcg/v7UFbbIVSY0I3I0Cg2HUNK7NWY+Iyh4heTUd+S0M9utr5Pb0q
+ OTOdHLx/hPGSEDziQNhSXPClpKn3k60/lzGMbU8d1wFmhv8H/kiCzSHnaRdm72bWBJLj
+ ZQ5TlAooOFeSYKRA2M4whIIAP7rI6MTZHhngGnSL7j7cm3wSkbIqyzEelDGRc3F7xvrz
+ awfcYLwJlYCn09ZIpJa1A5U2qV6uWq0/qXWAZbNB5mPrTYWtXVttGLZPxzrDXcJxbrG3
+ UMrA==
+X-Gm-Message-State: AOJu0Yx1WRRhUOPHe7m2ZaZkdPwErigfYmSSzHa67Lk3EG4TEn+qd5z8
+ ZpCHx4Jp3mzrjPXJaFZji9TUm6iWciWfGyHcjM+X9nnOqD1EQQdaGmt1IWd+WzE=
+X-Google-Smtp-Source: AGHT+IEiUm6Bgi2hDv727QEWx3GfWDftJrDQ5CFDN9u45DLKGu6SZf6UcSbXSmZuslo4ow2GDLlWHA==
+X-Received: by 2002:a05:600c:548a:b0:412:84d0:6a71 with SMTP id
+ iv10-20020a05600c548a00b0041284d06a71mr382393wmb.18.1708710749234; 
+ Fri, 23 Feb 2024 09:52:29 -0800 (PST)
 Received: from [192.168.69.100] (xbn44-h02-176-184-35-109.dsl.sta.abo.bbox.fr.
  [176.184.35.109]) by smtp.gmail.com with ESMTPSA id
- v9-20020a5d59c9000000b0033daaef7afcsm3054872wry.83.2024.02.23.09.49.12
+ fm23-20020a05600c0c1700b00412952d3cc6sm2858181wmb.7.2024.02.23.09.52.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 23 Feb 2024 09:49:13 -0800 (PST)
-Message-ID: <c7a5d4a6-99e3-41ac-998c-5d7a320dfe99@linaro.org>
-Date: Fri, 23 Feb 2024 18:49:11 +0100
+ Fri, 23 Feb 2024 09:52:28 -0800 (PST)
+Message-ID: <26daecfd-4216-4a70-a680-22fe69b42f9b@linaro.org>
+Date: Fri, 23 Feb 2024 18:52:26 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] qga/commands-win32: Do not set
- matrix_lookup_t/win_10_0_t arrays size
+Subject: Re: [PATCH v2 7/7] hw/intc: Check @errp to handle the error of
+ IOAPICCommonClass.realize()
 Content-Language: en-US
-To: qemu-devel@nongnu.org, Dehan Meng <demeng@redhat.com>
-Cc: Konstantin Kostiuk <kkostiuk@redhat.com>,
- Michael Roth <michael.roth@amd.com>
-References: <20240222152835.72095-1-philmd@linaro.org>
- <20240222152835.72095-3-philmd@linaro.org>
+To: Zhao Liu <zhao1.liu@linux.intel.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>,
+ Laurent Vivier <laurent@vivier.eu>, Alistair Francis
+ <alistair@alistair23.me>, "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-trivial@nongnu.org,
+ Zhao Liu <zhao1.liu@intel.com>
+References: <20240223085653.1255438-1-zhao1.liu@linux.intel.com>
+ <20240223085653.1255438-8-zhao1.liu@linux.intel.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240222152835.72095-3-philmd@linaro.org>
+In-Reply-To: <20240223085653.1255438-8-zhao1.liu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,40 +104,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/2/24 16:28, Philippe Mathieu-Daudé wrote:
-> ga_get_win_name() iterates over all elements in the arrays by
-> checking the 'version' field is non-NULL. Since the arrays are
-> guarded by a NULL terminating element, we don't need to specify
-> their size:
+On 23/2/24 09:56, Zhao Liu wrote:
+> From: Zhao Liu <zhao1.liu@intel.com>
 > 
->    static char *ga_get_win_name(...)
->    {
->        ...
->        const ga_matrix_lookup_t *table = WIN_VERSION_MATRIX[tbl_idx];
->        const ga_win_10_0_t *win_10_0_table = ...
->        ...
->        while (table->version != NULL) {
->                      ^^^^^^^^^^^^^^^
->                while (win_10_0_table->version != NULL) {
->                                       ^^^^^^^^^^^^^^^
+> IOAPICCommonClass implements its own private realize(), and this private
+> realize() allows error.
 > 
-> This will simplify maintenance when adding new entries to these
-> arrays.
+> Since IOAPICCommonClass.realize() returns void, to check the error,
+> dereference @errp with ERRP_GUARD().
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 > ---
->   qga/commands-win32.c | 19 +++++++++----------
->   1 file changed, 9 insertions(+), 10 deletions(-)
+> v2:
+>   * Add the missing ERRP_GUARD(). (Markus)
+>   * Move this single patch into @errp fixing series. (Micheal)
+> ---
+>   hw/intc/ioapic_common.c | 4 ++++
+>   1 file changed, 4 insertions(+)
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
->   typedef struct _ga_win_10_0_t {
->       int first_build;
-> -    const char *version;
-> -    const char *version_id;
-> +    char const *version;
-> +    char const *version_id;
-
-Oops, missed rebase.
-
->   } ga_win_10_0_t;
 
