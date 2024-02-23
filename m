@@ -2,118 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F4F0861463
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 15:45:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C80786150A
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 16:01:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdWmK-0005Oz-TQ; Fri, 23 Feb 2024 09:43:56 -0500
+	id 1rdX2j-0005QQ-Ms; Fri, 23 Feb 2024 10:00:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rdWgy-0004Yv-65
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 09:38:24 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rdWnb-0005wS-23
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 09:45:15 -0500
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rdWgw-0002fj-26
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 09:38:23 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 3C6F621EFD;
- Fri, 23 Feb 2024 14:38:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1708699100; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=iy9u19WtuGN34285HK6n9KImIsJ5Jj6gq6oG1yo2U3E=;
- b=oBoUOZG/R7J8I+RC3SSs47/7crbzTxqKKrij2VqaP4TZiJ37vhyJmkShGLEvBxXgR/c6ID
- iya0JnAmE/+xPITC98ho4SYAb2uKgPUecphwtlrWwnfHJrlVxmqW9afk7glDwZCTTgyhvN
- C1r/rSNokfwmUWcYqEZD6o1Hc1YGKoQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1708699100;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=iy9u19WtuGN34285HK6n9KImIsJ5Jj6gq6oG1yo2U3E=;
- b=HsmbGWbQJUivwGTcIc/7A5TZyaE1LkweZb5XB1FgWndgTxmyPo9XCx6KaehhzX23/4jtzE
- tiw45aqYCo4yweBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1708699100; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=iy9u19WtuGN34285HK6n9KImIsJ5Jj6gq6oG1yo2U3E=;
- b=oBoUOZG/R7J8I+RC3SSs47/7crbzTxqKKrij2VqaP4TZiJ37vhyJmkShGLEvBxXgR/c6ID
- iya0JnAmE/+xPITC98ho4SYAb2uKgPUecphwtlrWwnfHJrlVxmqW9afk7glDwZCTTgyhvN
- C1r/rSNokfwmUWcYqEZD6o1Hc1YGKoQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1708699100;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=iy9u19WtuGN34285HK6n9KImIsJ5Jj6gq6oG1yo2U3E=;
- b=HsmbGWbQJUivwGTcIc/7A5TZyaE1LkweZb5XB1FgWndgTxmyPo9XCx6KaehhzX23/4jtzE
- tiw45aqYCo4yweBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B0ADE133DC;
- Fri, 23 Feb 2024 14:38:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id N+FKHdut2GVIFgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 23 Feb 2024 14:38:19 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Hao Xiang <hao.xiang@bytedance.com>
-Cc: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
- peterx@redhat.com, eblake@redhat.com, armbru@redhat.com, thuth@redhat.com,
- lvivier@redhat.com, qemu-devel@nongnu.org, jdenemar@redhat.com
-Subject: Re: [External] Re: [PATCH v2 4/7] migration/multifd: Enable zero
- page checking from multifd threads.
-In-Reply-To: <CAAYibXhGx=m8wbGMbpfy4vMQAQURaemLFOvCDEAMeGUiLXDfdg@mail.gmail.com>
-References: <20240216224002.1476890-1-hao.xiang@bytedance.com>
- <20240216224002.1476890-5-hao.xiang@bytedance.com>
- <875xyhbk8k.fsf@suse.de>
- <CAAYibXhGx=m8wbGMbpfy4vMQAQURaemLFOvCDEAMeGUiLXDfdg@mail.gmail.com>
-Date: Fri, 23 Feb 2024 11:38:17 -0300
-Message-ID: <877civ9rfq.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rdWnY-0004B8-Ur
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 09:45:14 -0500
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-563f675be29so546821a12.0
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 06:45:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708699511; x=1709304311; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=SVrfzhpcE1N1cO/77qkeeLpyBFhnWsyghu2a7bD9Nxc=;
+ b=heuJDTTNQGzFjTl5GjotT8C4zsfCkKMGGYbvQWxvcYRGR+espzt2B7trPCYo0d031K
+ e57eMwUOWRO/GTvmi+U6adyrTYl2S2Fe7UFQtExJ9OESKxRT1bZXlOpFiLyDl4OCxTNE
+ NyOcxGo12KYFB6MRdZVQHB42vVCFiSQK1M1YpHgbnIr65mV7d2n6KSNWnK61+lolzk8D
+ zQMXWZjYl9EpQ/dEedaoEZT1MRO0OBsgz1NCPtLVLALZulBbCGHsWiIOwbM3vjcDjeuS
+ 40U0fglm+Koi6idEweB4TcX1QKRSQ2CTbTHwJelCEx9BnDpu5ogQYtMqrhKu9GokJHUG
+ BDmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708699511; x=1709304311;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=SVrfzhpcE1N1cO/77qkeeLpyBFhnWsyghu2a7bD9Nxc=;
+ b=GYgthFXnqaQm9RmrWN+OXQA87KE1OkvZJz9zeD5KA0XC+oj5u1sqxziIswGSlG5D2G
+ oc1qloA+VGhwtTnymVXVPF5/bab/bHN7BgJHrp0JartiHwd+Ig12Dxe0LJc2tAk/A+5O
+ NiA2ISutFnFAHLXgGojPlvRAnq3ch0be3sMF39BcOEkE3TSLXCpzWzCxvb7PwSHfDrVX
+ y5vYkdQFTFC7luwAts1XXD1kqyigPMsWcyCpx1J4jor/HTsPh3UYvhaNmoJ6fn923rgT
+ nl+XRrENLj0foU9DZyekvm/+L9+OF//SHgd++0jT7re+r+XFqfLKNRUbDhepwjZ/ES9s
+ ISCw==
+X-Gm-Message-State: AOJu0YwJNsQDepjWYTYhW78VXlwSVOQCtWxBrJor1X2k7ecWKNNrxFEm
+ QrdwOf4yJeUUNPVvPPqN1jxFxbB4z+iurFJ41vhLEAVGg+8GaupnowowUemwsaqXTT+QEvBVszp
+ USS6DgZSGDv0J0h0xElXy9C4Ng5H3svk3UcRj6KJ4IfyB71fO
+X-Google-Smtp-Source: AGHT+IFayHGW6ViLDUpDPaXYv9gA8TIKsQ7wXr7/dNAsED3XDAbM8d5ibVrMzwmkFw2wg1/IHsWTeIXI8DGpYafwz/o=
+X-Received: by 2002:aa7:cccd:0:b0:565:8130:5b91 with SMTP id
+ y13-20020aa7cccd000000b0056581305b91mr15722edt.34.1708699511173; Fri, 23 Feb
+ 2024 06:45:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240219200908.49551-1-arnaud.minier@telecom-paris.fr>
+ <20240219200908.49551-3-arnaud.minier@telecom-paris.fr>
+In-Reply-To: <20240219200908.49551-3-arnaud.minier@telecom-paris.fr>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 23 Feb 2024 14:44:59 +0000
+Message-ID: <CAFEAcA_EVoayec6Qec4EoU6atXhG7fdqb+QtFEvSQge88xJNPg@mail.gmail.com>
+Subject: Re: [PATCH v5 2/8] Add an internal clock multiplexer object
+To: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, 
+ Laurent Vivier <lvivier@redhat.com>,
+ =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>, 
+ Samuel Tardieu <samuel.tardieu@telecom-paris.fr>, qemu-arm@nongnu.org, 
+ Alistair Francis <alistair@alistair23.me>, Paolo Bonzini <pbonzini@redhat.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b="oBoUOZG/";
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=HsmbGWbQ
-X-Spamd-Result: default: False [-4.31 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- MIME_GOOD(-0.10)[text/plain];
- DWL_DNSWL_LOW(-1.00)[suse.de:dkim]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
- RCPT_COUNT_SEVEN(0.00)[11];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 3C6F621EFD
-X-Spam-Score: -4.31
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -130,245 +93,171 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hao Xiang <hao.xiang@bytedance.com> writes:
+On Mon, 19 Feb 2024 at 20:12, Arnaud Minier
+<arnaud.minier@telecom-paris.fr> wrote:
+>
+> This object is used to represent every multiplexer in the clock tree as
+> well as every clock output, every presecaler, frequency multiplier, etc.
+> This allows to use a generic approach for every component of the clock tr=
+ee
+> (except the PLLs).
+>
+> Wasn't sure about how to handle the reset and the migration so used the
+> same appproach as the BCM2835 CPRMAN.
 
-> On Wed, Feb 21, 2024 at 1:06=E2=80=AFPM Fabiano Rosas <farosas@suse.de> w=
-rote:
->>
->> Hao Xiang <hao.xiang@bytedance.com> writes:
->>
->> > This change adds a dedicated handler for MigrationOps::ram_save_target=
-_page in
->>
->> nit: Add a dedicated handler...
->>
->> Usually "this patch/change" is used only when necessary to avoid
->> ambiguity.
->
-> Will do.
->
->>
->> > multifd live migration. Now zero page checking can be done in the mult=
-ifd threads
->> > and this becomes the default configuration. We still provide backward =
-compatibility
->> > where zero page checking is done from the migration main thread.
->> >
->> > Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
->> > ---
->> >  migration/multifd.c |  1 +
->> >  migration/options.c |  2 +-
->> >  migration/ram.c     | 53 ++++++++++++++++++++++++++++++++++-----------
->> >  3 files changed, 42 insertions(+), 14 deletions(-)
->> >
->> > diff --git a/migration/multifd.c b/migration/multifd.c
->> > index fbb40ea10b..ef5dad1019 100644
->> > --- a/migration/multifd.c
->> > +++ b/migration/multifd.c
->> > @@ -13,6 +13,7 @@
->> >  #include "qemu/osdep.h"
->> >  #include "qemu/cutils.h"
->>
->> This include...
->>
->> >  #include "qemu/rcu.h"
->> > +#include "qemu/cutils.h"
->>
->> is there already.
->>
->> >  #include "exec/target_page.h"
->> >  #include "sysemu/sysemu.h"
->> >  #include "exec/ramblock.h"
->> > diff --git a/migration/options.c b/migration/options.c
->> > index 3c603391b0..3c79b6ccd4 100644
->> > --- a/migration/options.c
->> > +++ b/migration/options.c
->> > @@ -181,7 +181,7 @@ Property migration_properties[] =3D {
->> >                        MIG_MODE_NORMAL),
->> >      DEFINE_PROP_ZERO_PAGE_DETECTION("zero-page-detection", MigrationS=
-tate,
->> >                         parameters.zero_page_detection,
->> > -                       ZERO_PAGE_DETECTION_LEGACY),
->> > +                       ZERO_PAGE_DETECTION_MULTIFD),
->>
->> I think we'll need something to avoid a 9.0 -> 8.2 migration with this
->> enabled. Otherwise it will go along happily until we get data corruption
->> because the new QEMU didn't send any zero pages on the migration thread
->> and the old QEMU did not look for them in the multifd packet.
->>
->> Perhaps bumping the MULTIFD_VERSION when ZERO_PAGE_DETECTION_MULTIFD is
->> in use. We'd just need to fix the test in the new QEMU to check
->> (msg.version > MULTIFD_VERSION) instead of (msg.version !=3D MULTIFD_VER=
-SION).
->>
->> >
->> >      /* Migration capabilities */
->> >      DEFINE_PROP_MIG_CAP("x-xbzrle", MIGRATION_CAPABILITY_XBZRLE),
->> > diff --git a/migration/ram.c b/migration/ram.c
->> > index 5ece9f042e..b088c5a98c 100644
->> > --- a/migration/ram.c
->> > +++ b/migration/ram.c
->> > @@ -1123,10 +1123,6 @@ static int save_zero_page(RAMState *rs, PageSea=
-rchStatus *pss,
->> >      QEMUFile *file =3D pss->pss_channel;
->> >      int len =3D 0;
->> >
->> > -    if (migrate_zero_page_detection() !=3D ZERO_PAGE_DETECTION_LEGACY=
-) {
->> > -        return 0;
->> > -    }
->>
->> How does 'none' work now?
->
-> I tested it and all pages are transferred with payload (including the
-> zero pages).
->
->>
->> > -
->> >      if (!buffer_is_zero(p, TARGET_PAGE_SIZE)) {
->> >          return 0;
->> >      }
->> > @@ -1256,6 +1252,10 @@ static int ram_save_page(RAMState *rs, PageSear=
-chStatus *pss)
->> >
->> >  static int ram_save_multifd_page(RAMBlock *block, ram_addr_t offset)
->> >  {
->> > +    assert(migrate_multifd());
->> > +    assert(!migrate_compress());
->> > +    assert(!migration_in_postcopy());
->>
->> Drop these, please. Keep only the asserts that are likely to trigger
->> during development, such as the existing ones at multifd_send_pages.
->
-> I think I have got enough feedback regarding too many asserts. I will
-> drop these. assert is not compiled into the free build, correct?
->
+I think hw/misc/zynq_sclr.c is also probably a good model to look at.
 
-From include/qemu/osdep.h:
+AIUI the way it works is:
+ * input Clock objects must be migrated
+ * output Clock objects do not need to be migrated
+ * your reset needs to be a three-phase one:
+   - in the 'enter' method you reset register values (including
+     all the values that define oscillator frequencies, enable bits, etc)
+   - in the 'hold' method you compute the values for the output clocks
+     as if the input clock is disabled, and propagate them
+   - in the 'exit' method you compute the values for the output clocks
+     according to the value of the input clock, and propagate them
 
-  /*
-   * We have a lot of unaudited code that may fail in strange ways, or
-   * even be a security risk during migration, if you disable assertions
-   * at compile-time.  You may comment out these safety checks if you
-   * absolutely want to disable assertion overhead, but it is not
-   * supported upstream so the risk is all yours.  Meanwhile, please
-   * submit patches to remove any side-effects inside an assertion, or
-   * fixing error handling that should use Error instead of assert.
-   */
-  #ifdef NDEBUG
-  #error building with NDEBUG is not supported
-  #endif
-  #ifdef G_DISABLE_ASSERT
-  #error building with G_DISABLE_ASSERT is not supported
-  #endif
 
->>
->> > +
->> >      if (!multifd_queue_page(block, offset)) {
->> >          return -1;
->> >      }
->> > @@ -2046,7 +2046,6 @@ static bool save_compress_page(RAMState *rs, Pag=
-eSearchStatus *pss,
->> >   */
->> >  static int ram_save_target_page_legacy(RAMState *rs, PageSearchStatus=
- *pss)
->> >  {
->> > -    RAMBlock *block =3D pss->block;
->> >      ram_addr_t offset =3D ((ram_addr_t)pss->page) << TARGET_PAGE_BITS;
->> >      int res;
->> >
->> > @@ -2062,17 +2061,40 @@ static int ram_save_target_page_legacy(RAMStat=
-e *rs, PageSearchStatus *pss)
->> >          return 1;
->> >      }
->> >
->> > +    return ram_save_page(rs, pss);
->>
->> Look at where git put this! Are you using the default diff algorithm? If
->> not try using --patience to see if it improves the diff.
+
+> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+> Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+> Acked-by: Alistair Francis <alistair.francis@wdc.com>
+> ---
+>  hw/misc/stm32l4x5_rcc.c                   | 158 ++++++++++++++++++++++
+>  hw/misc/trace-events                      |   5 +
+>  include/hw/misc/stm32l4x5_rcc.h           | 119 ++++++++++++++++
+>  include/hw/misc/stm32l4x5_rcc_internals.h |  29 ++++
+>  4 files changed, 311 insertions(+)
 >
-> I used the default diff algorithm.
+> diff --git a/hw/misc/stm32l4x5_rcc.c b/hw/misc/stm32l4x5_rcc.c
+> index 38ca8aad7d..ed10832f88 100644
+> --- a/hw/misc/stm32l4x5_rcc.c
+> +++ b/hw/misc/stm32l4x5_rcc.c
+> @@ -36,6 +36,132 @@
+>  #define LSE_FRQ 32768ULL
+>  #define LSI_FRQ 32000ULL
 >
->>
->> > +}
->> > +
->> > +/**
->> > + * ram_save_target_page_multifd: save one target page
->> > + *
->> > + * Returns the number of pages written
->>
->> We could be more precise here:
->>
->>  ram_save_target_page_multifd: send one target page to multifd workers
->>
->>  Returns 1 if the page was queued, -1 otherwise.
->
-> Will do.
->
->>
->> > + *
->> > + * @rs: current RAM state
->> > + * @pss: data about the page we want to send
->> > + */
->> > +static int ram_save_target_page_multifd(RAMState *rs, PageSearchStatu=
-s *pss)
->> > +{
->> > +    RAMBlock *block =3D pss->block;
->> > +    ram_addr_t offset =3D ((ram_addr_t)pss->page) << TARGET_PAGE_BITS;
->> > +
->> > +    /* Multifd is not compatible with old compression. */
->> > +    assert(!migrate_compress());
->>
->> This should already be enforced at options.c.
->>
->> > +
->> > +    /* Multifd is not compabible with postcopy. */
->> > +    assert(!migration_in_postcopy());
->>
->> Same here.
->>
->> > +
->> >      /*
->> > -     * Do not use multifd in postcopy as one whole host page should be
->> > -     * placed.  Meanwhile postcopy requires atomic update of pages, s=
-o even
->> > -     * if host page size =3D=3D guest page size the dest guest during=
- run may
->> > -     * still see partially copied pages which is data corruption.
->> > +     * Backward compatibility support. While using multifd live
->> > +     * migration, we still need to handle zero page checking on the
->> > +     * migration main thread.
->> >       */
->> > -    if (migrate_multifd() && !migration_in_postcopy()) {
->> > -        return ram_save_multifd_page(block, offset);
->> > +    if (migrate_zero_page_detection() =3D=3D ZERO_PAGE_DETECTION_LEGA=
-CY) {
->> > +        if (save_zero_page(rs, pss, offset)) {
->> > +            return 1;
->> > +        }
->> >      }
->> >
->> > -    return ram_save_page(rs, pss);
->> > +    return ram_save_multifd_page(block, offset);
->> >  }
->> >
->> >  /* Should be called before sending a host page */
->> > @@ -2984,7 +3006,12 @@ static int ram_save_setup(QEMUFile *f, void *op=
-aque)
->> >      }
->> >
->> >      migration_ops =3D g_malloc0(sizeof(MigrationOps));
->> > -    migration_ops->ram_save_target_page =3D ram_save_target_page_lega=
-cy;
->> > +
->> > +    if (migrate_multifd()) {
->> > +        migration_ops->ram_save_target_page =3D ram_save_target_page_=
-multifd;
->> > +    } else {
->> > +        migration_ops->ram_save_target_page =3D ram_save_target_page_=
-legacy;
->> > +    }
->> >
->> >      bql_unlock();
->> >      ret =3D multifd_send_sync_main();
+> +static void clock_mux_update(RccClockMuxState *mux)
+> +{
+> +    uint64_t src_freq, old_freq, freq;
+> +
+> +    src_freq =3D clock_get_hz(mux->srcs[mux->src]);
+> +    old_freq =3D clock_get_hz(mux->out);
+
+You should try to avoid using clock_get_hz() and clock_update_hz()
+when doing clock calculations like this. There is inherently
+rounding involved if the clock isn't running at an exact number of Hz.
+It's best to use clock_get() and clock_set(), which work with
+the clock period specified in units of 2^-32ns.
+
+
+> +
+> +    if (!mux->enabled || !mux->divider) {
+> +        freq =3D 0;
+> +    } else {
+> +        freq =3D muldiv64(src_freq, mux->multiplier, mux->divider);
+
+Consider whether you can use the Clock's builtin period
+multiplier/divider (clock_set_mul_div()).
+
+> +    }
+> +
+> +    /* No change, early return to avoid log spam and useless propagation=
+ */
+> +    if (old_freq =3D=3D freq) {
+> +        return;
+> +    }
+> +
+> +    clock_update_hz(mux->out, freq);
+> +    trace_stm32l4x5_rcc_mux_update(mux->id, mux->src, src_freq, freq);
+> +}
+> +
+> +static void clock_mux_src_update(void *opaque, ClockEvent event)
+> +{
+> +    RccClockMuxState **backref =3D opaque;
+> +    RccClockMuxState *s =3D *backref;
+> +    /*
+> +     * The backref value is equal to:
+> +     * s->backref + (sizeof(RccClockMuxState *) * update_src).
+> +     * By subtracting we can get back the index of the updated clock.
+> +     */
+> +    const uint32_t update_src =3D backref - s->backref;
+> +    /* Only update if the clock that was updated is the current source*/
+> +    if (update_src =3D=3D s->src) {
+> +        clock_mux_update(s);
+> +    }
+> +}
+> +
+> +static void clock_mux_init(Object *obj)
+> +{
+> +    RccClockMuxState *s =3D RCC_CLOCK_MUX(obj);
+> +    size_t i;
+> +
+> +    for (i =3D 0; i < RCC_NUM_CLOCK_MUX_SRC; i++) {
+> +        char *name =3D g_strdup_printf("srcs[%zu]", i);
+> +        s->backref[i] =3D s;
+> +        s->srcs[i] =3D qdev_init_clock_in(DEVICE(s), name,
+> +                                        clock_mux_src_update,
+> +                                        &s->backref[i],
+> +                                        ClockUpdate);
+> +        g_free(name);
+> +    }
+> +
+> +    s->out =3D qdev_init_clock_out(DEVICE(s), "out");
+> +}
+> +
+> +static void clock_mux_reset_hold(Object *obj)
+> +{ }
+> +
+> +static const VMStateDescription clock_mux_vmstate =3D {
+> +    .name =3D TYPE_RCC_CLOCK_MUX,
+> +    .version_id =3D 1,
+> +    .minimum_version_id =3D 1,
+> +    .fields =3D (VMStateField[]) {
+> +        VMSTATE_UINT32(id, RccClockMuxState),
+> +        VMSTATE_ARRAY_CLOCK(srcs, RccClockMuxState,
+> +                            RCC_NUM_CLOCK_MUX_SRC),
+> +        VMSTATE_CLOCK(out, RccClockMuxState),
+
+Output clocks don't need VMSTATE_CLOCK lines. (We trust
+the device on the other end to migrate its state as needed.)
+
+> +        VMSTATE_BOOL(enabled, RccClockMuxState),
+> +        VMSTATE_UINT32(src, RccClockMuxState),
+> +        VMSTATE_UINT32(multiplier, RccClockMuxState),
+> +        VMSTATE_UINT32(divider, RccClockMuxState),
+> +        VMSTATE_END_OF_LIST()
+> +    }
+> +};
+
+
+> diff --git a/hw/misc/trace-events b/hw/misc/trace-events
+> index 62a7599353..d5e471811c 100644
+> --- a/hw/misc/trace-events
+> +++ b/hw/misc/trace-events
+> @@ -177,6 +177,11 @@ stm32l4x5_exti_write(uint64_t addr, uint64_t data) "=
+reg write: addr: 0x%" PRIx64
+>  # stm32l4x5_rcc.c
+>  stm32l4x5_rcc_read(uint64_t addr, uint32_t data) "RCC: Read <0x%" PRIx64=
+ "> -> 0x%" PRIx32 ""
+>  stm32l4x5_rcc_write(uint64_t addr, uint32_t data) "RCC: Write <0x%" PRIx=
+64 "> <- 0x%" PRIx32 ""
+> +stm32l4x5_rcc_mux_enable(uint32_t mux_id) "RCC: Mux %d enabled"
+> +stm32l4x5_rcc_mux_disable(uint32_t mux_id) "RCC: Mux %d disabled"
+> +stm32l4x5_rcc_mux_set_factor(uint32_t mux_id, uint32_t old_multiplier, u=
+int32_t new_multiplier, uint32_t old_divider, uint32_t new_divider) "RCC: M=
+ux %d factor changed: multiplier (%u -> %u), divider (%u -> %u)"
+> +stm32l4x5_rcc_mux_set_src(uint32_t mux_id, uint32_t old_src, uint32_t ne=
+w_src) "RCC: Mux %d source changed: from %u to %u"
+> +stm32l4x5_rcc_mux_update(uint32_t mux_id, uint32_t src, uint64_t src_fre=
+q, uint64_t new_freq) "RCC: Mux %d src %d update: src_freq %" PRIu64 " new_=
+freq %" PRIu64 ""
+
+You don't need the trailing "" in this kind of string
+concatenation with a PRIu64 or similar: adding the empty
+string on the end of a string has no effect.
+
+thanks
+-- PMM
 
