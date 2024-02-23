@@ -2,85 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61D44861B5A
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 19:16:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2181F861B77
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 19:22:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rda4x-0002Hy-U7; Fri, 23 Feb 2024 13:15:23 -0500
+	id 1rdaAu-0006Mj-Lj; Fri, 23 Feb 2024 13:21:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1rdZva-00059L-3d
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 13:05:42 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rdZyA-0006zG-1w
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 13:08:23 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1rdZvX-0008Qp-IT
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 13:05:41 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1dc1ff697f9so9660305ad.0
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 10:05:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rdZy8-0000OB-Bl
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 13:08:21 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5656e5754ccso1186039a12.0
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 10:08:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708711538; x=1709316338; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
- bh=eQu9k1UzQBTg1+2+F/9lTUaNsdI0drlaEmh//0+Ixko=;
- b=U4CPkAd8a+H3yPhpwQ7IPdnfjeNk6os8PxNuj3sZ9yDI08uxzJKXb+3WgxOGK2XJQ7
- n/686wHOaqDkXA+r7X+ePJu35ih4akGZR/zxxJr1qYfaZEIwLoyBV8AAuj3nHfPT6/4u
- dSd4jJqqosPJAoSij716lvxdZ7UCVXyCMSdY/7jhRq9d8uIOKp2d4zwD5VK4HMCAgfqy
- WTV+6Rthtl4VLdEZhNNThRzZj5p2HRrxLTgIojtVuVYxf252fqENqG/0cEDYRV9HKb4y
- Vh1Ap3nPSxoZr7jqYGX7Oo8XKmtSuVEa+IKu+igtVGNGUHGPotQQOo5tQKDAkpIKSo/W
- 5/9w==
+ d=linaro.org; s=google; t=1708711698; x=1709316498; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=D4KlUf4NvI8CaEz8acJMhi7UYxE8P+SRzNi66VI/NLA=;
+ b=cZVJMYxUzG2esLOF46mT6zUwV0d01DzdNR9i4yu1Xbc28s2kGzZBydmZ5zrHi8lvRj
+ H/xlAZRxXx1ASCAxYCL/ycj0N0Tp5G8K7Qc9c6iMfG8oZPWjXHGdZW3OXe6YVDypVu+P
+ GxkoT5byV3Il/zZGUum3gFqyPRmCOACU46nURqlSCHhUmYZ0zsF2cbHNZQRlYImPhAoy
+ ENzq9/qoWhfTtbK167ChhaG9PCHsJAZQOG5kIiSyTLr3tA5Nsb7iKXSreSY4bz7omFLE
+ NoG6kMs5rWYUnvD1RRaTQWys4jS057TZfmKZtiUc/nZKty7W1blDliqq8uLzrr2rRlmj
+ Sbaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708711538; x=1709316338;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eQu9k1UzQBTg1+2+F/9lTUaNsdI0drlaEmh//0+Ixko=;
- b=srJaNWnVKqE33RJcXQhOk0krZZu+WTZDEsH5RIDAhf7doiIlvaq7qsJrPvhgZDPpOv
- 2QpKPbH/o3V78mpHS7yHgDaNSJ8o/ef4Fg9NkAU/INFbVRmAQSj4DSgRGfhs2D9vrxAv
- IcyMtjbbDPrhgEbHHGIivE0JRAS6IfTDfC1Tg3vNoWyWp9gJwTViannEQMpKHsupONyK
- rgtPVJoAOYOxhQT8ghOspaqlQXURXxSf3CrZqaUUqwBbyMDKWnL6HrhzwXTpXuv9Kqob
- oOl41l7WF+EzgXlTDLe2lEwOi8FqDvgMVSuJw29iJZ9WLq3JZ/HL5KquwPqSLUg5eXkO
- bDFQ==
-X-Gm-Message-State: AOJu0YyvxapOmJZtcx6uQEv1oKGcf6UXWmiCKaxR4o3bS7TbXLWNUhwt
- e7VrPx3X0NPZ0phgV6lB2C5oFZsclp3XH/hV322/5U264PjZxkiL
-X-Google-Smtp-Source: AGHT+IFn0SQfg5gTo1ErHfP8GnU4kmfGB6tPgeGrlP76MP0bAlBtL9Xi9l8o2ieIevSa0Qktl39emw==
-X-Received: by 2002:a17:903:449:b0:1da:2c01:fef5 with SMTP id
- iw9-20020a170903044900b001da2c01fef5mr544455plb.56.1708711537268; 
- Fri, 23 Feb 2024 10:05:37 -0800 (PST)
-Received: from debian ([2601:641:300:14de:2595:938c:d7c1:5827])
- by smtp.gmail.com with ESMTPSA id
- jc13-20020a17090325cd00b001db6de983d3sm11947607plb.85.2024.02.23.10.05.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 10:05:36 -0800 (PST)
-From: fan <nifan.cxl@gmail.com>
-X-Google-Original-From: fan <fan@debian>
-Date: Fri, 23 Feb 2024 10:05:20 -0800
-To: nifan.cxl@gmail.com, wj28.lee@gmail.com
-Cc: qemu-devel@nongnu.org, jonathan.cameron@huawei.com,
- linux-cxl@vger.kernel.org, gregory.price@memverge.com,
- ira.weiny@intel.com, dan.j.williams@intel.com,
- a.manzanares@samsung.com, dave@stgolabs.net,
- nmtadam.samsung@gmail.com, jim.harris@samsung.com,
- Fan Ni <fan.ni@samsung.com>
-Subject: Re: [PATCH v4 00/10] Enabling DCD emulation support in Qemu
-Message-ID: <ZdjeYMqmik0nszR5@debian>
-References: <20240221182020.1086096-1-nifan.cxl@gmail.com>
+ d=1e100.net; s=20230601; t=1708711698; x=1709316498;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=D4KlUf4NvI8CaEz8acJMhi7UYxE8P+SRzNi66VI/NLA=;
+ b=IraOs1p63cfExo87zLsKhcpSZQU9d2lN+xIlxvfL+HpKWFx0CMZxUpeGTTQ3GcD4ge
+ MEUMDHbYLsoDF8a6pKB+8JplTOo8IkO4xRZ4hBoLfk1/PIj4U6eVOMqN7qYRSHqY4KgG
+ TCWOXNVNwK8DFkmP6mx/2JxPAMYiEFaD12RdOcoohHjHO4LWTkTa3dGpBTh5GGBuThzQ
+ R+zJLPXx0cpqIv/fAGb/94roz51+Dndj4JmtbOctDNvjjXKG2HglO+gKY/DBEqNvdf9I
+ Y/FYwoX3hMaHWl08NVfHtVks9vQro/QMUYatpwCQHyyvVQRlYGfZQUUsxFNBfrwO78w0
+ IsRA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX6giS9qyBpuFO4n8OiJITCM+tD+Mle17/hrEKzuLogcWTzOwz/lFfRpu1LQxOq4zXiflywfhRZWpWoy0euqYzSBvcFYJk=
+X-Gm-Message-State: AOJu0YzFoQkiE7iZ5QR+uxF6VOj/V7SjyuJ4AYkUckE4rVJU7WZR196p
+ Ebi7T5Y+kgJZ9ag8mine8DHLv1TB8ogu9TTDK7L8pbz043bnF2OR04I6gv9hlQ+EZpWmsHJEWUH
+ eqlHfF72wcVvXDw/nZy44mMNLQ6TDt+UIbJa7QQ==
+X-Google-Smtp-Source: AGHT+IHTtL/naajQPWYkAVKf3/gHgybRpPeodwPovbg12I0GwByOVkI3/m6D/uRGouLZG4+LJ1fgbRlNKd/0v/A96rg=
+X-Received: by 2002:aa7:d0d4:0:b0:565:76b6:920c with SMTP id
+ u20-20020aa7d0d4000000b0056576b6920cmr349720edo.9.1708711698452; Fri, 23 Feb
+ 2024 10:08:18 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240221182020.1086096-1-nifan.cxl@gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=nifan.cxl@gmail.com; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- FREEMAIL_REPLY=1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+References: <20240219161229.11776-1-Jonathan.Cameron@huawei.com>
+ <cfa50d25-3a82-48f5-b715-1daf16932fc2@linaro.org>
+ <CAFEAcA9g5dSDj1tQmk8og6DG+wQc14W5XvftZY0Y2XRd96PNWg@mail.gmail.com>
+In-Reply-To: <CAFEAcA9g5dSDj1tQmk8og6DG+wQc14W5XvftZY0Y2XRd96PNWg@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 23 Feb 2024 18:08:07 +0000
+Message-ID: <CAFEAcA9bB5JVtRAu0+P+6=DzOXQSzLoFJaodRR7Dh80RpoQ+gw@mail.gmail.com>
+Subject: Re: [RFC PATCH v2] arm/ptw: Handle atomic updates of page tables
+ entries in MMIO during PTW.
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, qemu-devel@nongnu.org, 
+ Gregory Price <gregory.price@memverge.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ linux-cxl@vger.kernel.org, linuxarm@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,109 +93,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Feb 21, 2024 at 10:15:53AM -0800, nifan.cxl@gmail.com wrote:
-> From: Fan Ni <fan.ni@samsung.com>
-> 
-> v3[1]->v4: 
-> 
-> The code is rebased on mainstream QEMU with the following patch series:
-> 
-> hw/cxl/mailbox: change CCI cmd set structure to be a member, not a reference
-> hw/cxl/mailbox: interface to add CCI commands to an existing CCI
-> 
-> Main changes include:
-> 
-> 1. Updated the specification references to align with cxl spec r3.1.
-> 2. Add extra elements to get dc region configuration output payload and
-> procecced accordingly in mailbox command 4800h.
-> 3. Removed the unwanted space.
-> 4. Refactored ct3_build_cdat_entries_for_mr and extract it as a separate patch.
-> 5. Updated cxl_create_dc_regions function to derive region len from host
-> backend size.
-> 6. Changed the logic for creating DC regions when host backend and address
-> space processing is introduced, now cxl_create_dc_regions is called only
-> when host backend exists.
-> 7. Updated the name of the definitions related to DC extents for consistency.
-> 7. Updated dynamic capacity event record definition to align with spec r3.1.
-> 9. Changed the dynamic capacity request process logic, for release request,
-> extra checks are done against the pending list to remove the extent yet added.
-> 10. Changed the return value of cxl_create_dc_regions so the return can be used
-> to Remove the extent for the list if needed.
-> 11. offset and size in the qmp interface are changed to be byte-wise while the
-> original is MiB-wise.
-> 12. Fixed bugs in handling bitmap for dpa range existence.
-> 13. NOTE: in previous version DC is set to non-volatile, while in this version
-> we change it to volatile per Jonathan's suggestion.
-> 14. Updated the doc in qapi/cxl.json.
-> 
-> Thank Jonathan for the detailed review of the last version[1].
-> 
-> The code is tested with Ira's last kernel DCD patch set [2] with some minor
-> bug fixes[3]. Tested operations include:
-> 1. create DC region;
-> 2. Add/release DC extents;
-> 3. convert DC capacity into system RAM (no real read/write to DCD tested);
-> 
-> 
-> v3: 
-> [1] https://lore.kernel.org/linux-cxl/20231107180907.553451-1-nifan.cxl@gmail.com/T/#t
-> [2] https://github.com/weiny2/linux-kernel/tree/dcd-v3-2023-10-30
-> [3] https://github.com/moking/linux-dcd/commit/9d24fa6e5d39f934623220953caecc080f93e964
-> 
-> Fan Ni (10):
->   hw/cxl/cxl-mailbox-utils: Add dc_event_log_size field to output
->     payload of identify memory device command
->   hw/cxl/cxl-mailbox-utils: Add dynamic capacity region representative
->     and mailbox command support
->   include/hw/cxl/cxl_device: Rename mem_size as static_mem_size for
->     type3 memory devices
->   hw/mem/cxl_type3: Add support to create DC regions to type3 memory
->     devices
->   hw/mem/cxl-type3: Refactor ct3_build_cdat_entries_for_mr to take mr
->     size insead of mr as argument
->   hw/mem/cxl_type3: Add host backend and address space handling for DC
->     regions
->   hw/mem/cxl_type3: Add DC extent list representative and get DC extent
->     list mailbox support
->   hw/cxl/cxl-mailbox-utils: Add mailbox commands to support add/release
->     dynamic capacity response
->   hw/cxl/events: Add qmp interfaces to add/release dynamic capacity
->     extents
->   hw/mem/cxl_type3: Add dpa range validation for accesses to DC regions
-> 
->  hw/cxl/cxl-mailbox-utils.c  | 507 +++++++++++++++++++++++++++++++-
->  hw/mem/cxl_type3.c          | 559 +++++++++++++++++++++++++++++++++---
->  hw/mem/cxl_type3_stubs.c    |  14 +
->  include/hw/cxl/cxl_device.h |  61 +++-
->  include/hw/cxl/cxl_events.h |  18 ++
->  qapi/cxl.json               |  61 +++-
->  6 files changed, 1174 insertions(+), 46 deletions(-)
-> 
-> -- 
-> 2.43.0
-> 
+On Fri, 23 Feb 2024 at 10:02, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> On Thu, 22 Feb 2024 at 21:21, Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+> >
+> > On 2/19/24 06:12, Jonathan Cameron wrote:
+> > > I'm far from confident this handling here is correct. Hence
+> > > RFC.  In particular not sure on what locks I should hold for this
+> > > to be even moderately safe.
+> > >
+> > > The function already appears to be inconsistent in what it returns
+> > > as the CONFIG_ATOMIC64 block returns the endian converted 'eventual'
+> > > value of the cmpxchg whereas the TCG_OVERSIZED_GUEST case returns
+> > > the previous value.
+>
+> I think this is a bug in the TCG_OVERSIZED_GUEST handling,
+> which we've never noticed because you only see that case
+> on a 32-bit host.
 
-Hi,
+Having looked through the code and talked to Richard on IRC,
+I think that the TCG_OVERSIZED_GUEST handling is correct.
+The return value of qatomic_cmpxchg__nocheck() is the value
+that was in memory before the cmpxchg. So the TCG_OVERSIZED_GUEST
+code's semantics are the same as the normal path. (The comment on
+qatomic_cmpxchg__nocheck() that describes this as the
+"eventual value" is rather confusing so we should improve that.)
 
-I fixed some issues mentioned by Wonjae Lee (wj28.lee@gmail.com) in his
-review comments and pushed the changes to my local tree:
-https://github.com/moking/qemu/tree/dcd-v4
-
-This is no functional changes to the code, mainly fixes include:
-1. Did spell check for the patchset and fixed 2 typos;
-2. Fixed a misuse of stq_le_p and replaced it with stl_le_p in
-cmd_dcd_get_dyn_cap_config;
-3. Removed unnecessary switch case in patch 9;
-4. Capitalized ""opcode" to "Opcode" in two code comments;
-5. Updated one reference text to the spec;
-6. Minor text change in qapi/cxl.json.
-
-Thanks Wonjae for the careful review.
-
-
-I will wait until next week to send out v5 to see if there are further
-comments to come in.
-
-Fan
-
+thanks
+-- PMM
 
