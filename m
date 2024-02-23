@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE4CE860D16
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 09:44:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3E8E860D1A
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 09:44:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdR9i-0003J3-8b; Fri, 23 Feb 2024 03:43:42 -0500
+	id 1rdR9l-0003M6-U9; Fri, 23 Feb 2024 03:43:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rdR9e-0003Ih-L9; Fri, 23 Feb 2024 03:43:38 -0500
+ id 1rdR9i-0003K6-K5; Fri, 23 Feb 2024 03:43:42 -0500
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rdR9d-00006f-5o; Fri, 23 Feb 2024 03:43:38 -0500
+ id 1rdR9g-00006f-VD; Fri, 23 Feb 2024 03:43:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708677817; x=1740213817;
+ t=1708677821; x=1740213821;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=MHvQ5woW3Z+EugV6VPlTEN8ySg00SOJs4AJTsCdkA7k=;
- b=JbMHDuvKL5q/vzofxjrkEIXocgCaZ8MTEUV5+gOKmrzMxERI3uKiEpaf
- AY3utzys4KgVJGwp1WxfCRIn4Z7Ej6Geus60R2icGq+1iJ0rbfXK1yvLC
- zQTHOpZEcwV7En1dM+lmWmNg2e+7wF+6NPFYdpehM3VEQ0NORCdty2KJ8
- siucRRRFfg3ueAothVT2OgS+TIiM3q2xyXJeVP5r5yifqj2ckfP1fYWSd
- 4YYSkqV/NAmBw6nc2SkZjlpcuIH5nXVd66NeL7BcP1itoos/wdf4ThTVz
- +i3UNINKDNNH9eUxHhGYpK52ELsarOWg0TAMYPSMc3h/dWdcEGACP79jr Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="28413839"
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; d="scan'208";a="28413839"
+ bh=7QWx7fmzjgK24CK+pej4cEHInJmThr5dADvX24YS+7Q=;
+ b=SRjkvBZ1KSXYHA/6xy45UcNOt96PUwxErF6URpeys7x8Ie4hKsCcsP+c
+ ar40p/o9YQPPddQ/G6QIT1xgYUJsh2sAmewIOfEqE4rzLGPtIQBChu0e1
+ jadgASs2gp5skH+iMh3FvzTZDs9lG2VWN5w6NE3y5gz7k72anzvikNtYw
+ 1e7Fx34tCxUhCA3pId6GoItqtZL5/Zj8u3efNbrRPmZxxXFACIRASpnMw
+ /EDSur5NUu8bVp32lsUEf/Ft2T91J1hZ3KoDLpBefKOEurdQwuGnIzJHJ
+ rOf4uKpiPVn37GzW0K0e/CLcFoF/H148nJZqGNP3iKj/0xymPEvvCDz84 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="28413855"
+X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; d="scan'208";a="28413855"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Feb 2024 00:43:35 -0800
+ 23 Feb 2024 00:43:39 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
-   d="scan'208";a="5731795"
+   d="scan'208";a="5731812"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa007.fm.intel.com with ESMTP; 23 Feb 2024 00:43:31 -0800
+ by fmviesa007.fm.intel.com with ESMTP; 23 Feb 2024 00:43:35 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Jonathan Cameron <jonathan.cameron@huawei.com>,
  Fan Ni <fan.ni@samsung.com>, Laurent Vivier <laurent@vivier.eu>,
@@ -53,10 +53,10 @@ To: Jonathan Cameron <jonathan.cameron@huawei.com>,
  Michael Tokarev <mjt@tls.msk.ru>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-trivial@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 3/7] hw/mem/cxl_type3: Fix missing ERRP_GUARD() in
- ct3_realize()
-Date: Fri, 23 Feb 2024 16:56:49 +0800
-Message-Id: <20240223085653.1255438-4-zhao1.liu@linux.intel.com>
+Subject: [PATCH v2 4/7] hw/misc/xlnx-versal-trng: Check returned bool in
+ trng_prop_fault_event_set()
+Date: Fri, 23 Feb 2024 16:56:50 +0800
+Message-Id: <20240223085653.1255438-5-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240223085653.1255438-1-zhao1.liu@linux.intel.com>
 References: <20240223085653.1255438-1-zhao1.liu@linux.intel.com>
@@ -104,24 +104,24 @@ ERRP_GUARD():
 * Using it when it's not needed is safe, but please avoid cluttering
 * the source with useless code.
 
-But in ct3_realize(), @errp is dereferenced without ERRP_GUARD():
+But in trng_prop_fault_event_set, @errp is dereferenced without
+ERRP_GUARD():
 
-cxl_doe_cdat_init(cxl_cstate, errp);
+visit_type_uint32(v, name, events, errp);
 if (*errp) {
-    goto err_free_special_ops;
+    return;
 }
 
-Here we check *errp, because cxl_doe_cdat_init() returns void. And
-ct3_realize() - as a PCIDeviceClass.realize() method - doesn't get the
-NULL @errp parameter, it hasn't triggered the bug that dereferencing
-the NULL @errp.
+Currently, since trng_prop_fault_event_set() doesn't get the NULL @errp
+parameter as a "set" method of object property, it hasn't triggered the
+bug that dereferencing the NULL @errp.
 
-To follow the requirement of @errp, add missing ERRP_GUARD() in
-ct3_realize().
+And since visit_type_uint32() returns bool, check the returned bool
+directly instead of dereferencing @errp, then we needn't the add missing
+ERRP_GUARD().
 
 Suggested-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
 ---
 Suggested by credit:
  Markus: Referred his explanation about ERRP_GUARD().
@@ -129,22 +129,25 @@ Suggested by credit:
 v2:
  * Add the @errp dereference code in commit message to make review
    easier. (Markus)
+ * Check the returned bool instead of dereferencing @errp. (Markus)
 ---
- hw/mem/cxl_type3.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/misc/xlnx-versal-trng.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index e8801805b90f..a3b0761f843b 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -645,6 +645,7 @@ static DOEProtocol doe_cdat_prot[] = {
+diff --git a/hw/misc/xlnx-versal-trng.c b/hw/misc/xlnx-versal-trng.c
+index b8111b8b6626..6495188dc748 100644
+--- a/hw/misc/xlnx-versal-trng.c
++++ b/hw/misc/xlnx-versal-trng.c
+@@ -644,8 +644,7 @@ static void trng_prop_fault_event_set(Object *obj, Visitor *v,
+     Property *prop = opaque;
+     uint32_t *events = object_field_prop_ptr(obj, prop);
  
- static void ct3_realize(PCIDevice *pci_dev, Error **errp)
- {
-+    ERRP_GUARD();
-     CXLType3Dev *ct3d = CXL_TYPE3(pci_dev);
-     CXLComponentState *cxl_cstate = &ct3d->cxl_cstate;
-     ComponentRegisters *regs = &cxl_cstate->crb;
+-    visit_type_uint32(v, name, events, errp);
+-    if (*errp) {
++    if (!visit_type_uint32(v, name, events, errp)) {
+         return;
+     }
+ 
 -- 
 2.34.1
 
