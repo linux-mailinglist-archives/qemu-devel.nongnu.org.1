@@ -2,80 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3630D861F85
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 23:20:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 569F686200C
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 23:50:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rddsT-0008H1-MN; Fri, 23 Feb 2024 17:18:45 -0500
+	id 1rdeLu-0002Um-Vz; Fri, 23 Feb 2024 17:49:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rdddH-0002AJ-C5
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 17:03:05 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1rde0X-0004qU-Fj
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 17:27:14 -0500
+Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rdddE-0002KT-JE
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 17:03:02 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1dc13fb0133so10995695ad.3
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 14:02:59 -0800 (PST)
+ id 1rde0V-0006Su-5x
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 17:27:05 -0500
+Received: by mail-oo1-xc31.google.com with SMTP id
+ 006d021491bc7-5a027fda5aeso680891eaf.1
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 14:27:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708725778; x=1709330578; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708727221; x=1709332021; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Gnb5KADM9/0vveYxc+cXc7XU6tL8RQmHf1g+yfBguPM=;
- b=V/8sMWPJs0ZR1lLjL0tuRjCK6Zl8C4XiWvH67+OdzJl4FMEvWRwtuN337ZvFOAe9Wj
- c6R7G/24bzmE6rkuliuWSm162ciy7ieoqFdjYe7JIWkLflkk0Y6Neiwedur5w3hLJW8D
- 2vXyLsSFmKpFsKLb7B7J51gV19jX4GIP+DT5LYRURgsby/3B3thwLOQSysiVUpUCdK9w
- KLJjtt8GsuW2l53JV5DvoFG+xszR3bS3zSh1s1BfUVIHZ2uOjYzJid2C+B+uLH8mr4tp
- AV5UayenSC8gGW5luXC7nBvq090EPdgH1o4s08qB7qFCjYQC0V6Ts62JTA/+LN2zVNoW
- 0XFw==
+ bh=h6sS8PkCJMQluzisGMcenbsk9akHBkUGAnM7ELliy7E=;
+ b=QzO5pAuNIlF84twPz3zeWS4Qa0mJerz1yN6Xhp1oIY7qfoU26YzDFsqiVlk7rvflEj
+ MJ7/KC2i/3vgy+s0Nk0XbqDMrJZJO1jbSMMgqaUdxsv4F4YiCdUpDTwcpeYfRJc4HiHS
+ invCjfsbf8myyxz0djCX1QCuT9j4fO7AkK1YGSKO4s9oQ+RHgMDF0nleCGqvXA//dwSm
+ 6edyaLeJJs4qDLY6C8D3K7+0jAQCOdEd6xnwwVWg1t0tCQIWh+aby8MZJTITUjwD7mmh
+ SC/hlW2gMx+oLh2vI7aVX0+ST3TgGJ7MYOeYvng56hr0YqU2I8dGp0sOPAc1p1OnOwvj
+ CA+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708725778; x=1709330578;
+ d=1e100.net; s=20230601; t=1708727221; x=1709332021;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Gnb5KADM9/0vveYxc+cXc7XU6tL8RQmHf1g+yfBguPM=;
- b=dUXTLP3vYfJn/dNmh+A3m7WtJWkukbqXu2Om+oeejgzo3IBh3EfOlhfcVx1inLEma7
- iSxJRaNkPSggL3uf6vc9htnZzBIZU5hYMhe4G9ixpW3UbqxbSYR6y32HZCvKGarKSVVm
- bontjB98OXnzpzac9ozue4f7HRFwM/Y8bSQqdH9CHkoPKiu/JPM14isI8xOEMfgHOkhN
- TqlDrFWz3cV5K46w/RCpt41IJkBeXCj5ErVwCWJc/U8L51D5qDUb0iftNHpLkHe0TKUY
- p/theTiQNUDAATh4xd1xi0d25+PPM92WuHMQM3joeR53gDYDOuHbLDc81Ww726jNQdIn
- nk9Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCULLW2CsbH8JkXPG9Jwc70rtZvdc/zmDS3Qhvnd/nbkzxaDrUc9tgnpL+NYDdI3yarQKGUoRP6HUvn6cfHfYRw3KBG4W6E=
-X-Gm-Message-State: AOJu0Yz+5WmF42RihZoDmO8sJJQDqM8kI/FJvMDv/anUKZssoGpOICpq
- RJq1QhGfO/0wrxVgSD8QFFfnIsQzyttJ+ItuSNcrcBrDs1FQgCR0OoQ8NvALRI7pXrRD9yi4XcG
- G
-X-Google-Smtp-Source: AGHT+IGyFRprTnuklIAo/z3+skxh0ebP22IpciEsn/33jdzQQBA2nH+YQAAG6Y7YahokVd8CnGCJbA==
-X-Received: by 2002:a17:902:ec85:b0:1dc:652d:708f with SMTP id
- x5-20020a170902ec8500b001dc652d708fmr1497599plg.15.1708725778129; 
- Fri, 23 Feb 2024 14:02:58 -0800 (PST)
+ bh=h6sS8PkCJMQluzisGMcenbsk9akHBkUGAnM7ELliy7E=;
+ b=u9CPITlfS8xaDYzWcENTBnRwHDzBvFP6CrbLKfo46Rg5WuqihLMNZfNfTMOl5J9DNP
+ ZPmDZpnL0TUGbXag/hPObDitMnDZ7hbZ5UYi1dpIHptwFzSls+OWWP7+Q1BPcfGsQMHb
+ Xzmax/UYOdsuYd7mXzt8Sq6oDn1/fhcYIEDtaI27jSRc1RTbwS7JWgs9QcZALS+RYk2Y
+ mlmB+KIk3EFvQa5NmSPYwkJq8x1LiZjpCdDehstz7XfPhFyaUKQH4esS51ZNqgpptN++
+ 3f/WylSjNkcU6/IY6IW0ksoczhWXXkeuMJg8rbFdYw+BSmR68LQjm8M5xYWO2AGF8wHn
+ ZQzQ==
+X-Gm-Message-State: AOJu0YzbsrLJBOEp+KUxyqRx/CGY4vbfmNFtb/51tkGmYovPzbIbdqhI
+ tYH5F0yOwOd1sYfIscvwyiUme/4MGbOMoIYQmDzH7fITuqmINcNSwXIoHdbfs9A=
+X-Google-Smtp-Source: AGHT+IECou8zA6cR+Sf7ewDVM8qFG+SkCdRjZMYq5GcwDukkU7WXOfK1qDDuA/Lw04lEkdwIvOyCcw==
+X-Received: by 2002:a05:6358:7f9d:b0:178:be64:c3bb with SMTP id
+ c29-20020a0563587f9d00b00178be64c3bbmr1608571rwo.14.1708727221490; 
+ Fri, 23 Feb 2024 14:27:01 -0800 (PST)
 Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
  [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
- 6-20020a170902e9c600b001d706e373a9sm12052710plk.292.2024.02.23.14.02.56
+ s23-20020a656917000000b005d8b2f04eb7sm11054487pgq.62.2024.02.23.14.27.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 23 Feb 2024 14:02:57 -0800 (PST)
-Message-ID: <1e5d8d7c-d3e2-41c8-834f-6241f037999c@linaro.org>
-Date: Fri, 23 Feb 2024 12:02:53 -1000
+ Fri, 23 Feb 2024 14:27:01 -0800 (PST)
+Message-ID: <d4fadd4e-5f5f-41b3-9152-fe94a1e9fefb@linaro.org>
+Date: Fri, 23 Feb 2024 12:26:53 -1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] linux-user: Rewrite target_shmat
+Subject: Re: [PULL 00/39] tcg and linux-user patch queue
 Content-Language: en-US
-To: Ilya Leoshkevich <iii@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: laurent@vivier.eu, richard.purdie@linuxfoundation.org, mjt@tls.msk.ru
-References: <20240223030309.458451-1-richard.henderson@linaro.org>
- <20240223030309.458451-4-richard.henderson@linaro.org>
- <jwyuvao4apydvykmsnvacwshdgy3ixv7qvkh4dbxm3jkwgnttw@k4wpaayou7oq>
+To: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org
+References: <20240222204323.268539-1-richard.henderson@linaro.org>
+ <CAFEAcA8jChwScfQikL+0wxHJgdnLz8_Ed-RKmZ4-UFMhWShkqA@mail.gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <jwyuvao4apydvykmsnvacwshdgy3ixv7qvkh4dbxm3jkwgnttw@k4wpaayou7oq>
+In-Reply-To: <CAFEAcA8jChwScfQikL+0wxHJgdnLz8_Ed-RKmZ4-UFMhWShkqA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc31.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,34 +95,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/23/24 01:35, Ilya Leoshkevich wrote:
-> On Thu, Feb 22, 2024 at 05:03:09PM -1000, Richard Henderson wrote:
->> Handle combined host and guest alignment requirements.
->> Handle host and guest page size differences.
->> Handle SHM_EXEC.
->>
->> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/115
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   linux-user/mmap.c | 146 ++++++++++++++++++++++++++++++++++------------
->>   1 file changed, 110 insertions(+), 36 deletions(-)
+On 2/23/24 03:45, Peter Maydell wrote:
+> bsd-user fails to compile:
+> https://gitlab.com/qemu-project/qemu/-/jobs/6241616724
 > 
-> [...]
-> 
->> -    /* find out the length of the shared memory segment */
->> +    /*
->> +     * Because we can't use host shmat() unless the address is sufficiently
->> +     * aligned for the host, we'll need to check both.
->> +     * TODO: Could be fixed with softmmu.
->> +     */
-> 
-> Are there any plans to introduce softmmu to qemu-user?
+> ../bsd-user/main.c:379:30: error: use of undeclared identifier 'arg';
+> did you mean 'argv'?
+> if (qemu_strtoui(arg, NULL, 10, &size) || size != want) {
+>                   ^~~
 
-Long-term ones, yes.  There are *so* many places for which emulation doesn't quite work 
-unless the host and guest page size match.  There are projects like asan which don't work 
-unless the guest has a *very* specific memory layout, which often conflicts with the host.
-
+Grr.  I think it is An Error that make vm-build-freebsd does not test this.
+Alex?
 
 
 r~
+
 
