@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F31AA861673
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 16:55:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F9B68616BB
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:02:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdXrd-0006Pb-8U; Fri, 23 Feb 2024 10:53:29 -0500
+	id 1rdXxr-00068Z-1z; Fri, 23 Feb 2024 10:59:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXhb-0004ls-G3; Fri, 23 Feb 2024 10:43:08 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1rdXhi-0004nP-Nz; Fri, 23 Feb 2024 10:43:14 -0500
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXhZ-00064Q-R1; Fri, 23 Feb 2024 10:43:07 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1dc0e5b223eso7724495ad.1; 
- Fri, 23 Feb 2024 07:43:04 -0800 (PST)
+ id 1rdXhd-00064z-Vm; Fri, 23 Feb 2024 10:43:14 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1dc75972f25so2907325ad.1; 
+ Fri, 23 Feb 2024 07:43:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708702983; x=1709307783; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708702988; x=1709307788; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qY6dAGjuanBxfUNkm+Wp8HJhSgEw1pVuG7LX12CZpas=;
- b=cxxWGvKPzJwwfivqSoB2+7wTaK0LyswMPT3w/Jy+QNI8UI3Vg27a3CVTHnnJVMnB9P
- ggL0wArCmhIu45Ac1TXnxUKO4BG9fjPW8FnlcxOK00rBBqlb9SzqwmhQoP7KIaeOd1a1
- dFGGtTD0o5xKzfzgqBJlWaFRYbtlbEfCC0V+QaZC3dat5+sLmQNoBHg7jE5KEzMYl9N9
- 6v0YY8ay3brf+OHrO4dzlI25nsui1Bdf+K0TfuBky3y4E/gMBt9RAM6A+mmQutjGyvPg
- EMr/QlOt+x8gz8cCMVEB82B8M+Ym9g8yteARXOB5E5HOnA8fOOvfzN9I+Xsxb/Yf23if
- FmiQ==
+ bh=eZINW/4P9SwnnIKpdjz8GObx2nHGX756vAFyLFtYVyw=;
+ b=CYYouh54PmN9MRcZzJuaCQgscCzPN1mQ7w6TK+qbdRdE4Jgqy6DK2pCqHmSzxDSQkp
+ /TJjA5pRd3K6Oyqf8T7Gbn7FEjQCaB/3HsGu4DYnQYLY8rj/wMA05vCcth+/HwXGoJ6o
+ qU/0wHNmUG+xn92Owq+ECdsh0EpSHHyz/NkWQQvoLgfV5xbOLGA1MzMdjWOce5GQIJgY
+ 8CzLgAsYZs3LsUPOyzGfdamj3lzxKb3qasjJY3dfHbyHk+Ua9F82vv35pUQ37OX53Bwf
+ gKEg/cuyFRlwsWfDEghuNH2cANRTwRyCMsldUD0LK+ER8Gh9i/9tlEsiGQijKUQWbn00
+ YGXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708702983; x=1709307783;
+ d=1e100.net; s=20230601; t=1708702988; x=1709307788;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qY6dAGjuanBxfUNkm+Wp8HJhSgEw1pVuG7LX12CZpas=;
- b=DWVg+qOidEXynI8gwmOgiNvFAr7dezUoyh387K/OJU6WkyqWTWOVTZ1Pt5+oY735SY
- AGWdbxZq08dFTency0Y/f66rUh9V97rtase94z4yRkVdjmpA56muGlGVDrrv2UJK/Yke
- b2QKJotsgcPYBHLux1rnFJo1z7sR1abijkK4yrjq08m9f4+afPfowOB4DFdmIJSSRIB3
- xweIXe3VnBCqG/q3xiLg10Als+NTuu7f2aL/rjbaITTjdjiGtC9GZ44hu0aGgpTAEw5z
- eHCWVbV8aUixYa06mH0V5xGXgie8xTbvgWk24n9X/qK5DKikxE8sg+AqVYOdg6cdbO14
- EhLQ==
+ bh=eZINW/4P9SwnnIKpdjz8GObx2nHGX756vAFyLFtYVyw=;
+ b=wQ30YLOJAuoO282HPuEJT/exhuhlxfNZ9M+ZSiiT/+mT2Qr7Lkf8sUBDE2J+JON9cS
+ fsQpTRARTykzR0IquYEGA+07R/80lj1NOpiH4Scfvrkj1T8i7eQN1GpT7XcYoKnEg+Mp
+ 4irzYAHLzwWGN6+HjZCkMGF92Qq42m81lzCYy1vwwbatMBqeuEHt7vtyWUbN3sQCSI2w
+ 8k8j/oyAZbCejBB3R/XiqOzCD2GeFDOvoPcV+ZEQoICwCQK7uJtJ82kwb8InFYKQhuXJ
+ vuO6q2bAC1gK6dIK3icTkRWKEmkU7/Xw4EFjLbzb5CM5PUjxuztwknOWzK2q8YwTEbp2
+ wMnQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX0hxnlrw/HYFHUiXDHHMQxgdDjlJ4p4b7JRF7p6KImns3GJ1ahF0K9xKHWd/pZb23crwEu9LQHM1I0PA+Qdc+IUx9i
-X-Gm-Message-State: AOJu0YxNDem07tHSwkAT09+JKYx2fIJnwqyBWr1goocklt243KT18MgE
- 8x+0xEOEZrweR/i0cfdrUCG5SdD4YtwIC8QaONGBpc/IyWjIs6qKdDsrwzfD
-X-Google-Smtp-Source: AGHT+IHrBbDbyOPOdD4aAylp4Cvl1wOf/b4Xl9Ar9H6ILM9MV4w8c8ul2RVAqxNvjH7yTs0c9dZy/g==
-X-Received: by 2002:a17:903:8c7:b0:1dc:7362:7365 with SMTP id
- lk7-20020a17090308c700b001dc73627365mr209232plb.4.1708702983234; 
- Fri, 23 Feb 2024 07:43:03 -0800 (PST)
+ AJvYcCXe+WmkyXxAj3VpCggG/xfuh917PgWeBw/AOFX1fedkVPqXddXXmBBrtGclZHlV8q5B06eHXiHcnbH/kgdKKcAXmcTq
+X-Gm-Message-State: AOJu0YxdtiRSnI3BaeqikryZ+lgP+YndTuZlcK5j8KA2g4Yamw6zzxTR
+ KTgAREQyhjf2cjk2k3L7ODJlql9n7gWaZnmX7X5WgiYvXrDt6SesJXcOrcVP
+X-Google-Smtp-Source: AGHT+IGVIPzLbs6Xaz2BWRww8t1tpSZBDldBjTugSttww54n2S7cstec4PbQENLOrg5mH5lyuJRR9A==
+X-Received: by 2002:a17:902:c146:b0:1dc:5ae8:174c with SMTP id
+ 6-20020a170902c14600b001dc5ae8174cmr179747plj.17.1708702986642; 
+ Fri, 23 Feb 2024 07:43:06 -0800 (PST)
 Received: from wheely.local0.net (220-235-194-103.tpgi.com.au.
  [220.235.194.103]) by smtp.gmail.com with ESMTPSA id
- h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.43.00
+ h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.43.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 07:43:02 -0800 (PST)
+ Fri, 23 Feb 2024 07:43:06 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 03/47] tests/avocado: mark boot_linux.py long runtime instead
- of flaky
-Date: Sat, 24 Feb 2024 01:41:22 +1000
-Message-ID: <20240223154211.1001692-4-npiggin@gmail.com>
+Subject: [PULL 04/47] tests/avocado: improve flaky ppc/pnv
+ boot_linux_console.py test
+Date: Sat, 24 Feb 2024 01:41:23 +1000
+Message-ID: <20240223154211.1001692-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240223154211.1001692-1-npiggin@gmail.com>
 References: <20240223154211.1001692-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,81 +96,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ppc64 and s390x tests were first marked skipIf GITLAB_CI by commit
-c0c8687ef0f ("tests/avocado: disable BootLinuxPPC64 test in CI"), and
-commit 0f26d94ec9e ("tests/acceptance: skip s390x_ccw_vrtio_tcg on
-GitLab") due to being very heavy-weight for gitlab CI.
-
-Commit 9b45cc99318 ("docs/devel: rationalise unstable gitlab tests under
-FLAKY_TESTS") changed this to being flaky but it isn't really, it just
-had a long runtime.
-
-So take the SPEED=slow variable from qtests and introduce it to avocado,
-and make these tests require it.
+The expected MTD partition detection output does not always appear on
+the console, despite the test reaching the boot loader and the string
+appearing in dmesg. Possibly due to an init script that quietens the
+console output. Using an earlier log message improves reliability.
 
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- docs/devel/testing.rst      | 11 +++++++++++
- tests/avocado/boot_linux.py |  8 ++------
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ tests/avocado/boot_linux_console.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
-index aa96eacec5..fa28e3ecb2 100644
---- a/docs/devel/testing.rst
-+++ b/docs/devel/testing.rst
-@@ -1346,6 +1346,17 @@ the environment.
- The definition of *large* is a bit arbitrary here, but it usually means an
- asset which occupies at least 1GB of size on disk when uncompressed.
+diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
+index 3f0180e1f8..af104fff1c 100644
+--- a/tests/avocado/boot_linux_console.py
++++ b/tests/avocado/boot_linux_console.py
+@@ -1368,7 +1368,8 @@ def do_test_ppc64_powernv(self, proc):
+         self.wait_for_console_pattern("CPU: " + proc + " generation processor")
+         self.wait_for_console_pattern("zImage starting: loaded")
+         self.wait_for_console_pattern("Run /init as init process")
+-        self.wait_for_console_pattern("Creating 1 MTD partitions")
++        # Device detection output driven by udev probing is sometimes cut off
++        # from console output, suspect S14silence-console init script.
  
-+SPEED
-+^^^^^
-+Tests which have a long runtime will not be run unless ``SPEED=slow`` is
-+exported on the environment.
-+
-+The definition of *long* is a bit arbitrary here, and it depends on the
-+usefulness of the test too. A unique test is worth spending more time on,
-+small variations on existing tests perhaps less so. As a rough guide,
-+a test or set of similar tests which take more than 100 seconds to
-+complete.
-+
- AVOCADO_ALLOW_UNTRUSTED_CODE
- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- There are tests which will boot a kernel image or firmware that can be
-diff --git a/tests/avocado/boot_linux.py b/tests/avocado/boot_linux.py
-index 7c4769904e..de4c8805f7 100644
---- a/tests/avocado/boot_linux.py
-+++ b/tests/avocado/boot_linux.py
-@@ -93,13 +93,11 @@ class BootLinuxPPC64(LinuxTest):
- 
-     timeout = 360
- 
--    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
--
-+    @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
-     def test_pseries_tcg(self):
+     def test_ppc_powernv8(self):
          """
-         :avocado: tags=machine:pseries
-         :avocado: tags=accel:tcg
--        :avocado: tags=flaky
-         """
-         self.require_accelerator("tcg")
-         self.vm.add_args("-accel", "tcg")
-@@ -113,13 +111,11 @@ class BootLinuxS390X(LinuxTest):
- 
-     timeout = 240
- 
--    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
--
-+    @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
-     def test_s390_ccw_virtio_tcg(self):
-         """
-         :avocado: tags=machine:s390-ccw-virtio
-         :avocado: tags=accel:tcg
--        :avocado: tags=flaky
-         """
-         self.require_accelerator("tcg")
-         self.vm.add_args("-accel", "tcg")
 -- 
 2.42.0
 
