@@ -2,67 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8B5860915
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 04:00:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEC39860930
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 04:10:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdLmI-0000NP-Mp; Thu, 22 Feb 2024 21:59:10 -0500
+	id 1rdLvI-0007oO-69; Thu, 22 Feb 2024 22:08:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rdLmF-0000Mv-B0
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 21:59:07 -0500
-Received: from mgamail.intel.com ([198.175.65.20])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rdLvG-0007nv-4D
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 22:08:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rdLmC-0008CW-2q
- for qemu-devel@nongnu.org; Thu, 22 Feb 2024 21:59:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708657144; x=1740193144;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=lYf315eDkP0LzIDpbuMezRD5udJ+FvuHc99oYsTfVnI=;
- b=DfEbz6m1S8tB9+mVAu2hcxDdJ7rdCTJFvZxNlDfYdQpdq+X2ZAoGTzew
- u2Shce7U53zwzGIOeb47Q2jnpe6R9WLopz6KP9sUuSny+kKiu+f3C2jND
- 3LzWr9lkggRUPtXB5MLOFSFmHjoWIYDa12BPaaFcmPSbGHQxTjXs4pMRx
- jW3T0i22IADeVktUM1KZightIzZ9HXZiJEKVe1k09dbrdlxxdxDcSetMN
- hLzUziRGnloHweO/llIbpPV0Rr+5++SFFHAKG43DdeLdd8xZAD0lgRAZj
- eV55dt3JYkihUtAvPWJwRDm0tY3fGPgNLlZYsvDonXfhoTQpp/sRjzIuX w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="2838514"
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
-   d="scan'208";a="2838514"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Feb 2024 18:59:01 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="936985813"
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; d="scan'208";a="936985813"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmsmga001.fm.intel.com with ESMTP; 22 Feb 2024 18:58:59 -0800
-Date: Fri, 23 Feb 2024 11:12:40 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, pbonzini@redhat.com,
- xiaoyao.li@intel.com, chao.gao@intel.com, robert.hu@linux.intel.com
-Subject: Re: [PATCH v4 1/2] target/i386: add support for LAM in CPUID
- enumeration
-Message-ID: <ZdgNKDW+jTcXPvyH@intel.com>
-References: <20240112060042.19925-1-binbin.wu@linux.intel.com>
- <20240112060042.19925-2-binbin.wu@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rdLvE-0001V1-LD
+ for qemu-devel@nongnu.org; Thu, 22 Feb 2024 22:08:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1708657703;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=q3mSsZU9QcUX0krqZZf0MkZ3EARMTAJ8CYrelJx+Ec0=;
+ b=WxI68obsTw/dzniapx8m4wTGP2m+/thH2pKK742KTc+HJpVlfWmkiGhLwqHGrynJHXfcsh
+ TpwRYSF6BHUmaEkULZIpkb6flX0Qt0mlJedyq2XMCWGjvdEWBpE5rzdlwd9PpEw/4LY1Em
+ yjpuzOzgV3WLOvJZ4nDsFrlAuvhO2/o=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-104-KDxndx8rNIW7sIbTaosFHw-1; Thu, 22 Feb 2024 22:08:21 -0500
+X-MC-Unique: KDxndx8rNIW7sIbTaosFHw-1
+Received: by mail-pl1-f199.google.com with SMTP id
+ d9443c01a7336-1dc2d4c7310so674435ad.0
+ for <qemu-devel@nongnu.org>; Thu, 22 Feb 2024 19:08:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708657700; x=1709262500;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=q3mSsZU9QcUX0krqZZf0MkZ3EARMTAJ8CYrelJx+Ec0=;
+ b=UMwRf/Uqw186CkFj/sceIwRjhb8a9QRtEGns5Ht3vfNSEDGD2+zKOZ6vd/A9lSAKr9
+ 8KseBkf7sN6ywWEbrIMMhQgbbLG4cNfLc6YErRAlnFjdU7aCMHKZGqppKznRdEtHeLjP
+ V9NHWzxFDPukICWHtiQhBcDAiEa4qZu538NLAV+ehncmz1lWwSsRtb2QxVho6ZicJGsp
+ R2OL29iP2oy9+28XfWnP2oM1pR6Pj8Cdlo0MzCgCKuqSybhUwmk6UND8WlKFx6UwkLWh
+ cz7CoU7/9uHoRSA/E/Qi4wAhbCc/1XFnXZ8/hiOFPoFsjzXjMJPX+JL6d+dPQxumpDDr
+ Waug==
+X-Gm-Message-State: AOJu0Yxf+lJKIE4hICc/ODN+BFIbupn1Lwy2hfA667+XP7mvcRDmjQ2N
+ hB9XCTIPldiuZUlBxtBaZSiw078eWlzxSEqeia+68VZCwvxXCPxSbTVGle+0tjOAY+zycdv5iX9
+ C0De1TTZh78Vhe0fg7SsjXEGEqYnOZSKtrDbQipV6N4OzB1xiGn3h
+X-Received: by 2002:a17:902:ee81:b0:1dc:51ac:88ef with SMTP id
+ a1-20020a170902ee8100b001dc51ac88efmr688404pld.6.1708657700726; 
+ Thu, 22 Feb 2024 19:08:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHexuqDgsWT7onYX1WJUWLpzzfJ5lAm+Uqu6iP+ozsxhFhtjeXJE3Sa66OYtgq8113tUd3UNA==
+X-Received: by 2002:a17:902:ee81:b0:1dc:51ac:88ef with SMTP id
+ a1-20020a170902ee8100b001dc51ac88efmr688393pld.6.1708657700455; 
+ Thu, 22 Feb 2024 19:08:20 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ 17-20020a170902c21100b001dc23e877c9sm4664381pll.106.2024.02.22.19.08.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 22 Feb 2024 19:08:20 -0800 (PST)
+Date: Fri, 23 Feb 2024 11:08:11 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
+ Claudio Fontana <cfontana@suse.de>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v4 03/34] tests/qtest/migration: Add a fd + file test
+Message-ID: <ZdgMG9KMseYMcoAF@x1n>
+References: <20240220224138.24759-1-farosas@suse.de>
+ <20240220224138.24759-4-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240112060042.19925-2-binbin.wu@linux.intel.com>
-Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
+In-Reply-To: <20240220224138.24759-4-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.002,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,70 +98,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 12, 2024 at 02:00:41PM +0800, Binbin Wu wrote:
-> Date: Fri, 12 Jan 2024 14:00:41 +0800
-> From: Binbin Wu <binbin.wu@linux.intel.com>
-> Subject: [PATCH v4 1/2] target/i386: add support for LAM in CPUID
->  enumeration
-> X-Mailer: git-send-email 2.25.1
+On Tue, Feb 20, 2024 at 07:41:07PM -0300, Fabiano Rosas wrote:
+> The fd URI supports an fd that is backed by a file. The code should
+> select between QIOChannelFile and QIOChannelSocket, depending on the
+> type of the fd. Add a test for that.
 > 
-> From: Robert Hoo <robert.hu@linux.intel.com>
-> 
-> Linear Address Masking (LAM) is a new Intel CPU feature, which allows
-> software to use of the untranslated address bits for metadata.
-> 
-> The bit definition:
-> CPUID.(EAX=7,ECX=1):EAX[26]
-> 
-> Add CPUID definition for LAM.
-> 
-> Note LAM feature is not supported for TCG of target-i386, LAM CPIUD bit
-> will not be added to TCG_7_1_EAX_FEATURES.
-> 
-> More info can be found in Intel ISE Chapter "LINEAR ADDRESS MASKING(LAM)"
-> https://cdrdv2.intel.com/v1/dl/getContent/671368
-> 
-> Signed-off-by: Robert Hoo <robert.hu@linux.intel.com>
-> Co-developed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Tested-by: Xuelian Guo <xuelian.guo@intel.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> ---
->  target/i386/cpu.c | 2 +-
->  target/i386/cpu.h | 2 ++
->  2 files changed, 3 insertions(+), 1 deletion(-)
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-> 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 2524881ce2..fc862dfeb1 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -967,7 +967,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
->              "fsrc", NULL, NULL, NULL,
->              NULL, NULL, NULL, NULL,
->              NULL, "amx-fp16", NULL, "avx-ifma",
-> -            NULL, NULL, NULL, NULL,
-> +            NULL, NULL, "lam", NULL,
->              NULL, NULL, NULL, NULL,
->          },
->          .cpuid = {
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index 7f0786e8b9..18ea755644 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -925,6 +925,8 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
->  #define CPUID_7_1_EAX_AMX_FP16          (1U << 21)
->  /* Support for VPMADD52[H,L]UQ */
->  #define CPUID_7_1_EAX_AVX_IFMA          (1U << 23)
-> +/* Linear Address Masking */
-> +#define CPUID_7_1_EAX_LAM               (1U << 26)
->  
->  /* Support for VPDPB[SU,UU,SS]D[,S] */
->  #define CPUID_7_1_EDX_AVX_VNNI_INT8     (1U << 4)
-> -- 
-> 2.25.1
-> 
-> 
+-- 
+Peter Xu
+
 
