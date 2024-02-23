@@ -2,75 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2181F861B77
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 19:22:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 743E0861BAB
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 19:32:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdaAu-0006Mj-Lj; Fri, 23 Feb 2024 13:21:32 -0500
+	id 1rdaJr-0003qJ-Px; Fri, 23 Feb 2024 13:30:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdZyA-0006zG-1w
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 13:08:23 -0500
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rda9T-0005Zd-Oa
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 13:20:03 -0500
+Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdZy8-0000OB-Bl
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 13:08:21 -0500
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-5656e5754ccso1186039a12.0
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 10:08:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rda9R-0001vq-VL
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 13:20:03 -0500
+Received: by mail-oi1-x22a.google.com with SMTP id
+ 5614622812f47-3c132695f1bso463046b6e.2
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 10:20:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708711698; x=1709316498; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=D4KlUf4NvI8CaEz8acJMhi7UYxE8P+SRzNi66VI/NLA=;
- b=cZVJMYxUzG2esLOF46mT6zUwV0d01DzdNR9i4yu1Xbc28s2kGzZBydmZ5zrHi8lvRj
- H/xlAZRxXx1ASCAxYCL/ycj0N0Tp5G8K7Qc9c6iMfG8oZPWjXHGdZW3OXe6YVDypVu+P
- GxkoT5byV3Il/zZGUum3gFqyPRmCOACU46nURqlSCHhUmYZ0zsF2cbHNZQRlYImPhAoy
- ENzq9/qoWhfTtbK167ChhaG9PCHsJAZQOG5kIiSyTLr3tA5Nsb7iKXSreSY4bz7omFLE
- NoG6kMs5rWYUnvD1RRaTQWys4jS057TZfmKZtiUc/nZKty7W1blDliqq8uLzrr2rRlmj
- Sbaw==
+ d=linaro.org; s=google; t=1708712400; x=1709317200; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=LklWzCbZx7Ck0JRACSyFYvfkFz2hYYkazCbjgi1SDKE=;
+ b=f7hdXjKipwO3q5ywO7wkcKu5Z1JINqcB5PXxLnVDge2br1zntM0lENUBgvvte1NqgB
+ TcLzpeyGIdJlKjfL+tvW1b2/WB+akrTdaIRzZT8FXVHxwDQp2Hp1rMQDMHhJcjML5r1u
+ l4wJMd2bKgPvAw1wS7cGGIReg1IXqM3CYpLxDrPotCnIKHAj6Is1yHxw/zESciAX3KgD
+ ozSV7NUuC+xOPbjr+GmiokRRMKsMNvwCIOhjC0DvywgrRkHtToN2bBXbSTyDW9xtjayB
+ Op59IOAeUwjPW0XIplkCGhzjcDqto7Z+7W0z5P7nxl/fk/gfP7+RbMmSKxL7CgyxhCh9
+ JbCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708711698; x=1709316498;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=D4KlUf4NvI8CaEz8acJMhi7UYxE8P+SRzNi66VI/NLA=;
- b=IraOs1p63cfExo87zLsKhcpSZQU9d2lN+xIlxvfL+HpKWFx0CMZxUpeGTTQ3GcD4ge
- MEUMDHbYLsoDF8a6pKB+8JplTOo8IkO4xRZ4hBoLfk1/PIj4U6eVOMqN7qYRSHqY4KgG
- TCWOXNVNwK8DFkmP6mx/2JxPAMYiEFaD12RdOcoohHjHO4LWTkTa3dGpBTh5GGBuThzQ
- R+zJLPXx0cpqIv/fAGb/94roz51+Dndj4JmtbOctDNvjjXKG2HglO+gKY/DBEqNvdf9I
- Y/FYwoX3hMaHWl08NVfHtVks9vQro/QMUYatpwCQHyyvVQRlYGfZQUUsxFNBfrwO78w0
- IsRA==
+ d=1e100.net; s=20230601; t=1708712400; x=1709317200;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=LklWzCbZx7Ck0JRACSyFYvfkFz2hYYkazCbjgi1SDKE=;
+ b=hVDjV2KufDJM6nRwX21YS+TPDK3AcDvnHOmBQlfoAKb0wlgBJT2bRD3zU3RTDrfXhL
+ LkwoHOlTgfjiClRPNA/J5UGPuX7cr6DNF/FqwM6RcEHICf2IEXSOF4kzOE/O1h5h0LSg
+ WdxbNYiVKLuYV4CfbocrgMV0h4Svf5rAAcEKuHxMrVeSVlW6NXHk2cyl34U6TYL5WT8r
+ YQUnkPfu903vN/wV+1zoVFKBh8laLEXAoagtCluJWUaAKXyAqM2NvXSrzYdnR/jnS53o
+ GlrC5V+b553MntgmbSqvXeUfiMqgMhAMzMWzkQW8Pnkwz5fKvcbZ/Xf5kP/Cyl/BSL7f
+ 7SDg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX6giS9qyBpuFO4n8OiJITCM+tD+Mle17/hrEKzuLogcWTzOwz/lFfRpu1LQxOq4zXiflywfhRZWpWoy0euqYzSBvcFYJk=
-X-Gm-Message-State: AOJu0YzFoQkiE7iZ5QR+uxF6VOj/V7SjyuJ4AYkUckE4rVJU7WZR196p
- Ebi7T5Y+kgJZ9ag8mine8DHLv1TB8ogu9TTDK7L8pbz043bnF2OR04I6gv9hlQ+EZpWmsHJEWUH
- eqlHfF72wcVvXDw/nZy44mMNLQ6TDt+UIbJa7QQ==
-X-Google-Smtp-Source: AGHT+IHTtL/naajQPWYkAVKf3/gHgybRpPeodwPovbg12I0GwByOVkI3/m6D/uRGouLZG4+LJ1fgbRlNKd/0v/A96rg=
-X-Received: by 2002:aa7:d0d4:0:b0:565:76b6:920c with SMTP id
- u20-20020aa7d0d4000000b0056576b6920cmr349720edo.9.1708711698452; Fri, 23 Feb
- 2024 10:08:18 -0800 (PST)
+ AJvYcCXrOQyBHSDJSGYHB7XLORaBIelT75MMWc8KQ0yZ5bzox+HIC40ZS/00lLH3hgD0Ot4TfqruA7okEBJERnLd3PEmFr9YTHY=
+X-Gm-Message-State: AOJu0YzfGwtR3O7QwkH0BUPfd2xF8qGFBoaALoAVDX10XsqGQ6icFf5W
+ syh0lVjpAT4pFXaaW7cWZiHwN0HNb57s+9l6bUsMzN4a79rPhmrIlVS0NLaUtpE=
+X-Google-Smtp-Source: AGHT+IHLome3EF/8wSzFbHPRxEopmaWUd7kVWnhOMJyUCshJRInWlfI5JqADDBK+g5fkQ6ZST6xm4w==
+X-Received: by 2002:a05:6870:c992:b0:21f:c7fa:753b with SMTP id
+ hi18-20020a056870c99200b0021fc7fa753bmr312202oab.16.1708712400045; 
+ Fri, 23 Feb 2024 10:20:00 -0800 (PST)
+Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
+ [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
+ b13-20020a63eb4d000000b005dc9439c56bsm12397324pgk.13.2024.02.23.10.19.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 23 Feb 2024 10:19:59 -0800 (PST)
+Message-ID: <47974032-2c22-481c-a9e1-1fc5990340d6@linaro.org>
+Date: Fri, 23 Feb 2024 08:19:55 -1000
 MIME-Version: 1.0
-References: <20240219161229.11776-1-Jonathan.Cameron@huawei.com>
- <cfa50d25-3a82-48f5-b715-1daf16932fc2@linaro.org>
- <CAFEAcA9g5dSDj1tQmk8og6DG+wQc14W5XvftZY0Y2XRd96PNWg@mail.gmail.com>
-In-Reply-To: <CAFEAcA9g5dSDj1tQmk8og6DG+wQc14W5XvftZY0Y2XRd96PNWg@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 23 Feb 2024 18:08:07 +0000
-Message-ID: <CAFEAcA9bB5JVtRAu0+P+6=DzOXQSzLoFJaodRR7Dh80RpoQ+gw@mail.gmail.com>
-Subject: Re: [RFC PATCH v2] arm/ptw: Handle atomic updates of page tables
- entries in MMIO during PTW.
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, qemu-devel@nongnu.org, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] arm/ptw: Handle atomic updates of page tables entries
+ in MMIO during PTW.
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>,
  Gregory Price <gregory.price@memverge.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- linux-cxl@vger.kernel.org, linuxarm@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: linux-cxl@vger.kernel.org, linuxarm@huawei.com
+References: <20240223180102.7657-1-Jonathan.Cameron@huawei.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240223180102.7657-1-Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,33 +99,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 23 Feb 2024 at 10:02, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> On Thu, 22 Feb 2024 at 21:21, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
-> >
-> > On 2/19/24 06:12, Jonathan Cameron wrote:
-> > > I'm far from confident this handling here is correct. Hence
-> > > RFC.  In particular not sure on what locks I should hold for this
-> > > to be even moderately safe.
-> > >
-> > > The function already appears to be inconsistent in what it returns
-> > > as the CONFIG_ATOMIC64 block returns the endian converted 'eventual'
-> > > value of the cmpxchg whereas the TCG_OVERSIZED_GUEST case returns
-> > > the previous value.
->
-> I think this is a bug in the TCG_OVERSIZED_GUEST handling,
-> which we've never noticed because you only see that case
-> on a 32-bit host.
+On 2/23/24 08:01, Jonathan Cameron wrote:
+> Seen testing of CXL emulation on arm64 (currently out of tree).
+> 
+> CXL interleave occurs at subpage granularity so is emulated using an IO
+> Memory Region. The memory is general purpose and as such may contain page
+> tables. FEAT_HADFS using atomic accesses from the page table walkers to
+> update accessed and dirty bits.
+> 
+> Note that disabling kernel support this ARM 8.1 feature avoids this issue
+> as the PTW no longer does an atomic update of the page table entries, but
+> that is a nasty workaround beyond its use in root causing this issue.
+> 
+> Signed-off-by: Jonathan Cameron<Jonathan.Cameron@huawei.com>
+> ---
 
-Having looked through the code and talked to Richard on IRC,
-I think that the TCG_OVERSIZED_GUEST handling is correct.
-The return value of qatomic_cmpxchg__nocheck() is the value
-that was in memory before the cmpxchg. So the TCG_OVERSIZED_GUEST
-code's semantics are the same as the normal path. (The comment on
-qatomic_cmpxchg__nocheck() that describes this as the
-"eventual value" is rather confusing so we should improve that.)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-thanks
--- PMM
+r~
 
