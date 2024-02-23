@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 800228616C7
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:03:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA74E86168B
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 16:57:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdY13-0005qb-4W; Fri, 23 Feb 2024 11:03:13 -0500
+	id 1rdXuU-0004yp-Sg; Fri, 23 Feb 2024 10:56:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXkM-0007TG-EP; Fri, 23 Feb 2024 10:46:00 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1rdXkN-0007TI-J4; Fri, 23 Feb 2024 10:46:00 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXkG-0006h8-UT; Fri, 23 Feb 2024 10:45:58 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1dc1ff697f9so8320725ad.0; 
- Fri, 23 Feb 2024 07:45:49 -0800 (PST)
+ id 1rdXkK-0006hM-Sy; Fri, 23 Feb 2024 10:45:58 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1dc3b4b9b62so8688225ad.1; 
+ Fri, 23 Feb 2024 07:45:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708703148; x=1709307948; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708703152; x=1709307952; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Cj2GXCYeb41VUqeJDMhLER/F3DyOo9GZz37Ujh30ois=;
- b=a8Se8XOn6ciC4FOndw8cGZukDhj4EJSyoM2a82QSPBgbEbj175KUk5azVCDbnjAyyJ
- EUtYNpp58RpOpmfmAlONMNKxmUPU+aSPdHfQRxHHQZVjm8/D0Vpz+Umj1tf7ehEq/J24
- FBpTKayjwH9bGiVH00HNhnvcjIJUrBMqyVsy+9vcBvH/0paTwJ2dfFPYy3u1uO8MK9Wf
- aJips0jpulxqdujkAJV1JbdESdbks7jLcW17YGYmtD8K01h9VLVekLLcn+L+IpPq98+Y
- FnTZAIthn97sxZwtqOUSb8HAsa5GN0TierCG9dQxPZIY11nu7o0k2mAHwP59fCA2Vb0x
- BQzw==
+ bh=iZdatq3vYOtwDhs+2bqO9//78PD1EpkdiB+KCSZTTMM=;
+ b=SkCzFTx9QAKi8Qq7NP7hrAsfe7CAy4LowqNdwbswY/Q8pqKswXo9CBkFmUlcV3sAgs
+ 95VDNGk4bpKYfglRwk30n2yZZP0aFgHsbjkMIQSWZ2jtwoIIDhwmVP+wnEnPVq+20DVQ
+ Oux/FB9/kML6ZMldXOrolKBDBoQxLQO+iC/La9roT2x4TA5Lv1d3T4d0ECkN0nnJnGTR
+ gNsWUylXg54BZycmqzy02iWZ28SEFw9Gjz9mkjWyMM4wcIFDa9oPxV5mQtKz36ow+JAM
+ H7MQuv1Gugw/BmnptcD5a8ErkXwqTm/dbs2tSdaJ6gFhiFGdQTDyQ5vC/mDDsoj1NelL
+ OW7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708703148; x=1709307948;
+ d=1e100.net; s=20230601; t=1708703152; x=1709307952;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Cj2GXCYeb41VUqeJDMhLER/F3DyOo9GZz37Ujh30ois=;
- b=k/a5U6eQHAye0mPIE3UluMoaYGftXIV2GZpl9TUIOIY1psM1YtW0+EyzqNOTN7HR7J
- yaPmb/EiAucOGslllyxJGbtaNeF9c1i279tD2zmt+lMC+AEMQ96kCk6Q5kY1ZLupMjJC
- 90YmQVKMqD6+vDEewztbVzYGHKmYxFu5rUoNUBHv/kT+d0JHqgLkup8h+pdyZfIRIqTG
- qTRIKX0uavYEyUfEjwVjOYUHaW1FPCzmwGjZwVuuCkuIXMCIm/8YdJUWPp0miw6QmzOE
- 8K6Aq72hz1HtPCPaagGbgJRfR7fNx3XpemgaIf7ygkiJZKtf+a2jDtz0r/nRyO+XVsCt
- I2iQ==
+ bh=iZdatq3vYOtwDhs+2bqO9//78PD1EpkdiB+KCSZTTMM=;
+ b=wx/bQNo8L8CQh7ko/NwshLzfLBVJqk59r3TZTwSqolRwujRF3bQabseCsVKhUoBa0f
+ aoxPLdpsHI0se4/Vc8nlNfXLdxvLdR3P87eR72bfC46EkWKCtY5Sksjam9oGXNXz+6Wh
+ Vdn4wvk9zvpcfsDNQEx9uLvHDf0Gob1YVqSFTQv6fviSIV1QP6HjMujieyzffVKsl1sD
+ g/SHsAg17iH3Hztbzl13KhCB6MPJXDQBPocePXf3hY14TDV4WSSC97SBpK0vzvaGaPxl
+ wia4pZnpU8QmlbGTakEVnWc+SfikFOuePVDD3qLO0a1ZHfeI9SsLyMaxr83wcu6jeNZl
+ gZAQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW1RJIUOXovxT4Fa+BZ5OQWvrWhtzEzVNfJQMMaB9iYfRhoIBPRhut82zeTRLgHwHZQhh3OdXH0LsyQ82BOI27N4pZq
-X-Gm-Message-State: AOJu0YzLIYwTpxGYFzpXTemZTRnNdpTht3dBfqIicUkA33q+Nu3P3G43
- Y5en4O4IL6wBMk7ref8xhVRLIPvxgDbzUu6Bokh3mC5Tz7yPxrdB0LlcSu7j
-X-Google-Smtp-Source: AGHT+IEUtCnZiPqkXoJP5Ry7TYyVQ9SXwX2kbX8J2UUURilT17v0N+jUajSHNqarOl2RwqU6VozhXw==
-X-Received: by 2002:a17:902:c402:b0:1dc:3ab7:cc80 with SMTP id
- k2-20020a170902c40200b001dc3ab7cc80mr213652plk.48.1708703148431; 
- Fri, 23 Feb 2024 07:45:48 -0800 (PST)
+ AJvYcCWVFnY8ZgjcCnry3oa2y8wLtFrCokBz1egQCWxQHRXrjVRPIIMci9rlbAmQFBNIzogpVLiUR4JSDiwEwjHWGlnE+j1D
+X-Gm-Message-State: AOJu0YzfLGy2YfFeR/WbCfENfab2YC/NoNfBCbil5Bbe2QvAaSd+12az
+ mF7IuPkz8vb9QplYChwcy5ZnTNgWOjWu1G6aHqwm+c/AAQD9Joq9nJN8gLpR
+X-Google-Smtp-Source: AGHT+IHvj8aczwj9U/oL7uK2Ja5QVpepaKCFWHqr+rvUa1EyNyI90MdDQzyDtFvgS/jz5Z3feEl9qw==
+X-Received: by 2002:a17:902:f7c1:b0:1dc:6071:60ad with SMTP id
+ h1-20020a170902f7c100b001dc607160admr124459plw.24.1708703152013; 
+ Fri, 23 Feb 2024 07:45:52 -0800 (PST)
 Received: from wheely.local0.net (220-235-194-103.tpgi.com.au.
  [220.235.194.103]) by smtp.gmail.com with ESMTPSA id
- h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.45.45
+ h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.45.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 07:45:48 -0800 (PST)
+ Fri, 23 Feb 2024 07:45:51 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 41/47] target/ppc: Add SMT support to time facilities
-Date: Sat, 24 Feb 2024 01:42:00 +1000
-Message-ID: <20240223154211.1001692-42-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PULL 42/47] target/ppc: Fix 440 tlbwe TLB invalidation gaps
+Date: Sat, 24 Feb 2024 01:42:01 +1000
+Message-ID: <20240223154211.1001692-43-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240223154211.1001692-1-npiggin@gmail.com>
 References: <20240223154211.1001692-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,300 +96,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The TB, VTB, PURR, HDEC SPRs are per-LPAR registers, and the TFMR is a
-per-core register. Add the necessary SMT synchronisation and value
-sharing.
+The 440 tlbwe (write entry) instruction misses several cases that must
+flush the TCG TLB:
 
-The TFMR can only drive the timebase state machine via thread 0 of the
-core, which is almost certainly not right, but it is enough for skiboot
-and certain other proprietary firmware.
+- If the new size is smaller than the existing size, the EA no longer
+  covered should be flushed. This looks like an inverted inequality
+  test.
+- If the TLB PID changes.
+- If the TLB attr bit 0 (translation address space) changes.
+- If low prot (access control) bits change.
 
+Fix this by removing tricks to avoid TLB flushes, and just invalidate
+the TLB if any valid entry is being changed, similarly to 4xx.
+Optimisations will be introduced in subsequent changes.
+
+Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
 Acked-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/timebase_helper.c | 105 ++++++++++++++++++++++++++++++++---
- target/ppc/translate.c       |  42 +++++++++++++-
- 2 files changed, 136 insertions(+), 11 deletions(-)
+ target/ppc/mmu_helper.c | 35 ++++++++++-------------------------
+ 1 file changed, 10 insertions(+), 25 deletions(-)
 
-diff --git a/target/ppc/timebase_helper.c b/target/ppc/timebase_helper.c
-index b8b9afe0b6..39d397416e 100644
---- a/target/ppc/timebase_helper.c
-+++ b/target/ppc/timebase_helper.c
-@@ -60,19 +60,55 @@ target_ulong helper_load_purr(CPUPPCState *env)
- 
- void helper_store_purr(CPUPPCState *env, target_ulong val)
+diff --git a/target/ppc/mmu_helper.c b/target/ppc/mmu_helper.c
+index f87d35379a..c140f3c96d 100644
+--- a/target/ppc/mmu_helper.c
++++ b/target/ppc/mmu_helper.c
+@@ -855,49 +855,34 @@ void helper_440_tlbwe(CPUPPCState *env, uint32_t word, target_ulong entry,
+                       target_ulong value)
  {
--    cpu_ppc_store_purr(env, val);
-+    CPUState *cs = env_cpu(env);
-+    CPUState *ccs;
-+    uint32_t nr_threads = cs->nr_threads;
-+
-+    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
-+        cpu_ppc_store_purr(env, val);
-+        return;
-+    }
-+
-+    THREAD_SIBLING_FOREACH(cs, ccs) {
-+        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-+        cpu_ppc_store_purr(cenv, val);
-+    }
- }
- #endif
+     ppcemb_tlb_t *tlb;
+-    target_ulong EPN, RPN, size;
+-    int do_flush_tlbs;
  
- #if !defined(CONFIG_USER_ONLY)
- void helper_store_tbl(CPUPPCState *env, target_ulong val)
- {
--    cpu_ppc_store_tbl(env, val);
-+    CPUState *cs = env_cpu(env);
-+    CPUState *ccs;
-+    uint32_t nr_threads = cs->nr_threads;
+     qemu_log_mask(CPU_LOG_MMU, "%s word %d entry %d value " TARGET_FMT_lx "\n",
+                   __func__, word, (int)entry, value);
+-    do_flush_tlbs = 0;
+     entry &= 0x3F;
+     tlb = &env->tlb.tlbe[entry];
 +
-+    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
-+        cpu_ppc_store_tbl(env, val);
-+        return;
++    /* Invalidate previous TLB (if it's valid) */
++    if (tlb->prot & PAGE_VALID) {
++        tlb_flush(env_cpu(env));
 +    }
 +
-+    THREAD_SIBLING_FOREACH(cs, ccs) {
-+        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-+        cpu_ppc_store_tbl(cenv, val);
-+    }
- }
- 
- void helper_store_tbu(CPUPPCState *env, target_ulong val)
- {
--    cpu_ppc_store_tbu(env, val);
-+    CPUState *cs = env_cpu(env);
-+    CPUState *ccs;
-+    uint32_t nr_threads = cs->nr_threads;
-+
-+    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
-+        cpu_ppc_store_tbu(env, val);
-+        return;
-+    }
-+
-+    THREAD_SIBLING_FOREACH(cs, ccs) {
-+        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-+        cpu_ppc_store_tbu(cenv, val);
-+    }
- }
- 
- void helper_store_atbl(CPUPPCState *env, target_ulong val)
-@@ -102,17 +138,53 @@ target_ulong helper_load_hdecr(CPUPPCState *env)
- 
- void helper_store_hdecr(CPUPPCState *env, target_ulong val)
- {
--    cpu_ppc_store_hdecr(env, val);
-+    CPUState *cs = env_cpu(env);
-+    CPUState *ccs;
-+    uint32_t nr_threads = cs->nr_threads;
-+
-+    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
-+        cpu_ppc_store_hdecr(env, val);
-+        return;
-+    }
-+
-+    THREAD_SIBLING_FOREACH(cs, ccs) {
-+        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-+        cpu_ppc_store_hdecr(cenv, val);
-+    }
- }
- 
- void helper_store_vtb(CPUPPCState *env, target_ulong val)
- {
--    cpu_ppc_store_vtb(env, val);
-+    CPUState *cs = env_cpu(env);
-+    CPUState *ccs;
-+    uint32_t nr_threads = cs->nr_threads;
-+
-+    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
-+        cpu_ppc_store_vtb(env, val);
-+        return;
-+    }
-+
-+    THREAD_SIBLING_FOREACH(cs, ccs) {
-+        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-+        cpu_ppc_store_vtb(cenv, val);
-+    }
- }
- 
- void helper_store_tbu40(CPUPPCState *env, target_ulong val)
- {
--    cpu_ppc_store_tbu40(env, val);
-+    CPUState *cs = env_cpu(env);
-+    CPUState *ccs;
-+    uint32_t nr_threads = cs->nr_threads;
-+
-+    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
-+        cpu_ppc_store_tbu40(env, val);
-+        return;
-+    }
-+
-+    THREAD_SIBLING_FOREACH(cs, ccs) {
-+        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-+        cpu_ppc_store_tbu40(cenv, val);
-+    }
- }
- 
- target_ulong helper_load_40x_pit(CPUPPCState *env)
-@@ -211,6 +283,21 @@ static uint64_t tfmr_new_tb_state(uint64_t tfmr, unsigned int tbst)
-     return tfmr;
- }
- 
-+static void write_tfmr(CPUPPCState *env, target_ulong val)
-+{
-+    CPUState *cs = env_cpu(env);
-+
-+    if (cs->nr_threads == 1) {
-+        env->spr[SPR_TFMR] = val;
-+    } else {
-+        CPUState *ccs;
-+        THREAD_SIBLING_FOREACH(cs, ccs) {
-+            CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-+            cenv->spr[SPR_TFMR] = val;
-+        }
-+    }
-+}
-+
- static void tb_state_machine_step(CPUPPCState *env)
- {
-     uint64_t tfmr = env->spr[SPR_TFMR];
-@@ -224,7 +311,7 @@ static void tb_state_machine_step(CPUPPCState *env)
-         env->pnv_tod_tbst.tb_sync_pulse_timer--;
-     } else {
-         tfmr |= TFMR_TB_SYNC_OCCURED;
--        env->spr[SPR_TFMR] = tfmr;
-+        write_tfmr(env, tfmr);
-     }
- 
-     if (env->pnv_tod_tbst.tb_state_timer) {
-@@ -262,7 +349,7 @@ static void tb_state_machine_step(CPUPPCState *env)
+     switch (word) {
+     default:
+         /* Just here to please gcc */
+     case 0:
+-        EPN = value & 0xFFFFFC00;
+-        if ((tlb->prot & PAGE_VALID) && EPN != tlb->EPN) {
+-            do_flush_tlbs = 1;
+-        }
+-        tlb->EPN = EPN;
+-        size = booke_tlb_to_page_size((value >> 4) & 0xF);
+-        if ((tlb->prot & PAGE_VALID) && tlb->size < size) {
+-            do_flush_tlbs = 1;
+-        }
+-        tlb->size = size;
++        tlb->EPN = value & 0xFFFFFC00;
++        tlb->size = booke_tlb_to_page_size((value >> 4) & 0xF);
+         tlb->attr &= ~0x1;
+         tlb->attr |= (value >> 8) & 1;
+         if (value & 0x200) {
+             tlb->prot |= PAGE_VALID;
+         } else {
+-            if (tlb->prot & PAGE_VALID) {
+-                tlb->prot &= ~PAGE_VALID;
+-                do_flush_tlbs = 1;
+-            }
++            tlb->prot &= ~PAGE_VALID;
          }
-     }
- 
--    env->spr[SPR_TFMR] = tfmr;
-+    write_tfmr(env, tfmr);
- }
- 
- target_ulong helper_load_tfmr(CPUPPCState *env)
-@@ -357,7 +444,7 @@ void helper_store_tfmr(CPUPPCState *env, target_ulong val)
-     }
- 
- out:
--    env->spr[SPR_TFMR] = tfmr;
-+    write_tfmr(env, tfmr);
- }
- #endif
- 
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 049f636927..28fc7791af 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -247,13 +247,24 @@ static inline bool gen_serialize(DisasContext *ctx)
-     return true;
- }
- 
--#if defined(TARGET_PPC64) && !defined(CONFIG_USER_ONLY)
-+#if !defined(CONFIG_USER_ONLY)
-+#if defined(TARGET_PPC64)
-+static inline bool gen_serialize_core(DisasContext *ctx)
-+{
-+    if (ctx->flags & POWERPC_FLAG_SMT) {
-+        return gen_serialize(ctx);
-+    }
-+    return true;
-+}
-+#endif
-+
- static inline bool gen_serialize_core_lpar(DisasContext *ctx)
- {
-+#if defined(TARGET_PPC64)
-     if (ctx->flags & POWERPC_FLAG_SMT_1LPAR) {
-         return gen_serialize(ctx);
-     }
--
-+#endif
-     return true;
- }
- #endif
-@@ -667,12 +678,20 @@ void spr_read_atbu(DisasContext *ctx, int gprn, int sprn)
- #if !defined(CONFIG_USER_ONLY)
- void spr_write_tbl(DisasContext *ctx, int sprn, int gprn)
- {
-+    if (!gen_serialize_core_lpar(ctx)) {
-+        return;
-+    }
-+
-     translator_io_start(&ctx->base);
-     gen_helper_store_tbl(tcg_env, cpu_gpr[gprn]);
- }
- 
- void spr_write_tbu(DisasContext *ctx, int sprn, int gprn)
- {
-+    if (!gen_serialize_core_lpar(ctx)) {
-+        return;
-+    }
-+
-     translator_io_start(&ctx->base);
-     gen_helper_store_tbu(tcg_env, cpu_gpr[gprn]);
- }
-@@ -696,6 +715,9 @@ void spr_read_purr(DisasContext *ctx, int gprn, int sprn)
- 
- void spr_write_purr(DisasContext *ctx, int sprn, int gprn)
- {
-+    if (!gen_serialize_core_lpar(ctx)) {
-+        return;
-+    }
-     translator_io_start(&ctx->base);
-     gen_helper_store_purr(tcg_env, cpu_gpr[gprn]);
- }
-@@ -709,6 +731,9 @@ void spr_read_hdecr(DisasContext *ctx, int gprn, int sprn)
- 
- void spr_write_hdecr(DisasContext *ctx, int sprn, int gprn)
- {
-+    if (!gen_serialize_core_lpar(ctx)) {
-+        return;
-+    }
-     translator_io_start(&ctx->base);
-     gen_helper_store_hdecr(tcg_env, cpu_gpr[gprn]);
- }
-@@ -721,12 +746,18 @@ void spr_read_vtb(DisasContext *ctx, int gprn, int sprn)
- 
- void spr_write_vtb(DisasContext *ctx, int sprn, int gprn)
- {
-+    if (!gen_serialize_core_lpar(ctx)) {
-+        return;
-+    }
-     translator_io_start(&ctx->base);
-     gen_helper_store_vtb(tcg_env, cpu_gpr[gprn]);
- }
- 
- void spr_write_tbu40(DisasContext *ctx, int sprn, int gprn)
- {
-+    if (!gen_serialize_core_lpar(ctx)) {
-+        return;
-+    }
-     translator_io_start(&ctx->base);
-     gen_helper_store_tbu40(tcg_env, cpu_gpr[gprn]);
- }
-@@ -1220,11 +1251,18 @@ void spr_write_hmer(DisasContext *ctx, int sprn, int gprn)
- 
- void spr_read_tfmr(DisasContext *ctx, int gprn, int sprn)
- {
-+    /* Reading TFMR can cause it to be updated, so serialize threads here too */
-+    if (!gen_serialize_core(ctx)) {
-+        return;
-+    }
-     gen_helper_load_tfmr(cpu_gpr[gprn], tcg_env);
- }
- 
- void spr_write_tfmr(DisasContext *ctx, int sprn, int gprn)
- {
-+    if (!gen_serialize_core(ctx)) {
-+        return;
-+    }
-     gen_helper_store_tfmr(tcg_env, cpu_gpr[gprn]);
- }
- 
+         tlb->PID = env->spr[SPR_440_MMUCR] & 0x000000FF;
+-        if (do_flush_tlbs) {
+-            tlb_flush(env_cpu(env));
+-        }
+         break;
+     case 1:
+-        RPN = value & 0xFFFFFC0F;
+-        if ((tlb->prot & PAGE_VALID) && tlb->RPN != RPN) {
+-            tlb_flush(env_cpu(env));
+-        }
+-        tlb->RPN = RPN;
++        tlb->RPN = value & 0xFFFFFC0F;
+         break;
+     case 2:
+         tlb->attr = (tlb->attr & 0x1) | (value & 0x0000FF00);
 -- 
 2.42.0
 
