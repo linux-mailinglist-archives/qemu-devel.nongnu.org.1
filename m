@@ -2,89 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98844861872
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:49:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5503861890
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:58:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdYjC-00039L-U1; Fri, 23 Feb 2024 11:48:50 -0500
+	id 1rdYqJ-0007px-C6; Fri, 23 Feb 2024 11:56:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rdYU7-00005g-W8
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:33:16 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rdYY4-0002qM-Fu
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:37:23 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rdYU6-00087I-A3
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:33:15 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-33d9c3f36c2so299243f8f.2
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 08:33:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rdYY1-0000Ff-CA
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:37:20 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-564fd9eea75so779708a12.3
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 08:37:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708705992; x=1709310792; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AdAqcPISjCpda4bvmvurEoPcFsLJ6rzzW5hX9Mb98eY=;
- b=AgbuL3n8pwiThPwqLc6hdmujdlbTDNbFajYsGuxMtvnCUnpX5IxCNtvYG2nUJdCDg7
- 5iOwlKMXAvLzqW0spI8B2YRw200eazhA7mboGD3R0Zu51xeSa2GuaXiIM1jFCbw0VJho
- IFMzAtPubwu2PydRNCSNN5au+xU2S1h+W5D2ysJT4HzBMukvkCronET/khWFIetF2lJQ
- 1GTIe4c+Qt03JROuxWTXsVw3j7FhbweX9KMtymYiySlWYA3e/P+4svg5YU59Z/Akgpas
- NrVDGM49toL2RiFKjI9WB247rZz6zSIABIZ2LwWqLLFsCVTmC0ahzqFWC9GOnCEkPV9E
- OLgQ==
+ d=linaro.org; s=google; t=1708706235; x=1709311035; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=gbDuLMC+h941sbR5rr+vKCnvv/J26lTcKlZI0jpKbJA=;
+ b=IRUNvu+v9mOJy+jPFZtaxkVcccvbAzhL6m/mc/Dyh1UsrmlyplKeNypX3QRT9A98p/
+ 2IbuJPxDuYXGyU7ZGzQBZO/59lDfEa/+/mmrV9GOR3rvURrppCyQNbhWVixbdrOuH66A
+ ZLboWJ8L3vjZeKL61vh/B5SfsMiNfMAQzxcVbCRro4NAWmRA2oH9WwzEZGPA/cvXOEoi
+ 2N3t8WaDMDVoVgdQOVX286MUKIybm8pVULLrufH8eNYT1UQ4dYII4Rd4y7vS9Lj8gUEY
+ KPq/fwdLu0UuCkxIuO4TpeLuxFgy1pAJYa2Fdcgdyxh69knGeP+rio+iizmz0dG/XfyG
+ 0Vqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708705992; x=1709310792;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=AdAqcPISjCpda4bvmvurEoPcFsLJ6rzzW5hX9Mb98eY=;
- b=Bk8FXn/MP/cBj/1H3TJFBskESMRELEMgM8LAaREz5loKsHKlbWRxs0HgGGyaWUeMu/
- FGvqZPxFeCrisNv75rtcI2GbfKLpp2TVEDrGGuRM0ZpJIvweNi5nIlm9QhA/Pxjy2DBN
- KnpdRUaP+UUZ3gPZixIyeBATFfrThQC44zMKqfVQJIxJIe5NzZlC0KKYpqN6mVw2dbWQ
- +TxIzbsmSRQhhUKxv9Bp0UCcLxQB9KzEMtylveMnesUeymorc667luDJFZJeepIYLHhK
- Ix1ASae/96qz2UdVF6qgfB41u8qa5xryqg+AcMptbh51DTGqSF02IifRYBzzwzeo57Bk
- zNpQ==
-X-Gm-Message-State: AOJu0YyxTh2IeTGzQhopym36+RErq2iD2PT/9mbjrcFnchvBhG8OvVS1
- zutmeFr3p6gUrXTI+kAlpHaFsnU7m465SzwMesJbOvV2YMTVTJEb4hJzkwQr3Qc=
-X-Google-Smtp-Source: AGHT+IEZnLDgNVHquA56sm+4tgHOkxe0Ul+tCfu72PxxjAQevIcsEO9BFkYzhDQxj7a60e0s5RaDtw==
-X-Received: by 2002:a5d:4802:0:b0:33d:b376:89ed with SMTP id
- l2-20020a5d4802000000b0033db37689edmr39962wrq.8.1708705992627; 
- Fri, 23 Feb 2024 08:33:12 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- y6-20020adfe6c6000000b0033d06dfcf84sm3302754wrm.100.2024.02.23.08.33.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 08:33:12 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E58255F754;
- Fri, 23 Feb 2024 16:33:11 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org,  Artyom Tarasenko <atar4qemu@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Markus
- Armbruster
- <armbru@redhat.com>,  Eduardo Habkost <ehabkost@redhat.com>,  Paolo
- Bonzini <pbonzini@redhat.com>,  Mark Cave-Ayland
- <mark.cave-ayland@ilande.co.uk>
-Subject: Re: [PATCH] hw/rtc/sun4v-rtc: Relicense to GPLv2-or-later
-In-Reply-To: <20240223161300.938542-1-peter.maydell@linaro.org> (Peter
- Maydell's message of "Fri, 23 Feb 2024 16:13:00 +0000")
-References: <20240223161300.938542-1-peter.maydell@linaro.org>
-User-Agent: mu4e 1.11.28; emacs 29.1
-Date: Fri, 23 Feb 2024 16:33:11 +0000
-Message-ID: <8734tj87js.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1708706235; x=1709311035;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=gbDuLMC+h941sbR5rr+vKCnvv/J26lTcKlZI0jpKbJA=;
+ b=qdrHsL4hG684/u9ivWh5UgEGfqZrRy4R9ZG1td97v9FsKensPPZBTyNftRWNvgcw72
+ zYa+MfI+WGzQMg4Y2MKs11TuogpmQjrsicYx6+w03YEpWt6saP9FjEcLKgcMKsaLZKcj
+ JDJpsMbxRHBrsODB64+AaGdWeRHQ4a6SVA72BI4Ug/z+Ntnn90uAQvuTWYnsk5IXzvpA
+ voyb5mXt3CLIppKoR1Qzc1KaPTdIWedeGaF+4a8ozJ9CXVvywGI0VzERNrwD59IlERzO
+ sHrTh6nOwUsrp8QTwKMcEBzlsM4rDgDJVOgwrx5Nuu/zWe2vzgJnKU4u909vmYpgzgVs
+ Cnhw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUIkWHe/ab9T0QN71x+JIMBXhXjGIsOeKZ8SybmvpnEnM4lOzrMJCUtoCSvxbRbJeH9rvqz6OnpDbNUElnr2VK5y405CDs=
+X-Gm-Message-State: AOJu0Ywwb3QzpPYCkpidlsLVDdzeBe679cPt7KanjkCojNZ2hbNxqHkW
+ Rk11g8v1KQ+EBInCaRfQVQbsOMhE6Po1XbsFjxThPJ6EmBooy/YAA8V80APCKcdCuNItXYs3uUs
+ XuXeOz+0evRDrOb4NuO9JsiEkksVtsUqx73Z3Ow==
+X-Google-Smtp-Source: AGHT+IGGPoQyKvTuuBO3LJGnUAtvLS87Wf3ZocowHof6PaMO58Ytm0CXzqtVCUp/jzLQ/4dTl3UjDzrFWVU3oL3Sc7o=
+X-Received: by 2002:a05:6402:3411:b0:564:7350:cac8 with SMTP id
+ k17-20020a056402341100b005647350cac8mr268230edc.15.1708706235607; Fri, 23 Feb
+ 2024 08:37:15 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
+References: <20240219011739.2316619-1-sergey.kambalin@auriga.com>
+ <20240219011739.2316619-2-sergey.kambalin@auriga.com>
+In-Reply-To: <20240219011739.2316619-2-sergey.kambalin@auriga.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 23 Feb 2024 16:37:04 +0000
+Message-ID: <CAFEAcA8kOKhd=BH9m8kWFsaJ2NQHOdfwg+9JnCHDNDsni58tiQ@mail.gmail.com>
+Subject: Re: [PATCH v5 01/41] Split out common part of BCM283X classes
+To: Sergey Kambalin <serg.oker@gmail.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Sergey Kambalin <sergey.kambalin@auriga.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,20 +89,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Maydell <peter.maydell@linaro.org> writes:
-
-> The sun4v RTC device model added under commit a0e893039cf2ce0 in 2016
-> was unfortunately added with a license of GPL-v3-or-later, which is
-> not compatible with other QEMU code which has a GPL-v2-only license.
+On Mon, 19 Feb 2024 at 01:18, Sergey Kambalin <serg.oker@gmail.com> wrote:
 >
-> Relicense the code in the .c and the .h file to GPL-v2-or-later,
-> to make it compatible with the rest of QEMU.
+> Pre setup for BCM2838 introduction
 >
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
+> ---
 
-Acked-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+thanks
+-- PMM
 
