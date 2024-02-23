@@ -2,90 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C02586107A
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 12:35:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 981238610A6
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 12:42:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdToA-0007cg-W9; Fri, 23 Feb 2024 06:33:39 -0500
+	id 1rdTw1-0004Hp-Ku; Fri, 23 Feb 2024 06:41:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rdTo5-0007VB-H6
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 06:33:35 -0500
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rdTo3-0006VN-2m
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 06:33:32 -0500
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-a3d01a9a9a2so77846866b.1
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 03:33:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708688008; x=1709292808; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2Rjdgl8h7xkEjAmUXGBg3htLnGe4QIxkWGOMpc374Yw=;
- b=TGjRUnI4GzVAIz0x1vWOYUoKtBLU/LyAssGnGl6QkOx+pKrXdxOyeYrMXgmMHRoJfH
- cNY2i5VAosPgMB0hJjcqCMrtR+bOCLi+FppT8gktyxR6ykD/3C4uu2JAxyJu1gGr3JV2
- aVZ1eluTmgAGasoaPvPLKOYpHbEfvbUozwKZsU8iopoC2gARxjmlWsR+HKfDTi6Zuun2
- 3nbasMbZZmSdtak59vv8gN56SWfYdFwK4u8gniulO7JeP38f7GjWLijDhjqfiBdpgeQ4
- BpLgJolTJCqfc9pHCnV+eTtxUCzdFnWuYt/z9um8cMWxNkRz3LhQrITN6ti22Avd/zUF
- 9aGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708688008; x=1709292808;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2Rjdgl8h7xkEjAmUXGBg3htLnGe4QIxkWGOMpc374Yw=;
- b=Oq69ROERJQWdwK4+0DB+h6cyapdvGLhP8To9KSS3OP+TQnIOYCQZq0B8SI9B4K3hL3
- VCj1dO/L+1pyUeodZHPyG3vivDa7OPDzK1EuqqhDYsdvoNg20SGEa6Q2d6XY4eyw5tI/
- uU9rmdLfdLdNr8Zh1Hk8HTx5K5LXtQT52RH+vanKcRe3bePnVFwhJMTpOM5O4ucKrfCV
- nvJ+2cISgK6nrCXxYFN8xcmG0rbkhXt/00dkwKGCgyGhQutbcHbjJ0yjQnLvwMD/In8P
- 0YMV/8w8pstREhW8CX5HlTNh4ts5wmFscz4NiXgOd6AllT1uVKg9HNX85XLnlwc7j0Fu
- wBCQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWYEUMxKrSkMPttAJOlBjwt9z/+iDU9pmBoW3/WdtLd0MpWrKzsYQVBhMx/zJzyBJo2is4gia4Q5wakae5qxgoIToP1YZU=
-X-Gm-Message-State: AOJu0Yx4TP3FlXjc1duqVaYvwyHpWPA8+/WsLGWpFOCGoZh7Ny38qbCI
- 1SkKIUDItvDUDAD9hmFXVny5Z7tZfeQmACa4a1MPhcpCODCzZ1yzOtT6Vd0E2g4=
-X-Google-Smtp-Source: AGHT+IGJ3tnDUlJbEZE28+/To9ybFbZR2vIzyWIO1GPN8IydpF26unItnxS+yLelTeQBWvyfuz/X1w==
-X-Received: by 2002:a17:906:7fd8:b0:a3e:96f4:492e with SMTP id
- r24-20020a1709067fd800b00a3e96f4492emr985467ejs.31.1708688007640; 
- Fri, 23 Feb 2024 03:33:27 -0800 (PST)
-Received: from [192.168.69.100] (sto95-h01-176-184-18-96.dsl.sta.abo.bbox.fr.
- [176.184.18.96]) by smtp.gmail.com with ESMTPSA id
- ts7-20020a170907c5c700b00a3f4bb02bc8sm2260206ejc.42.2024.02.23.03.33.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 23 Feb 2024 03:33:27 -0800 (PST)
-Message-ID: <bdf48012-fdc4-449d-be12-fbbe985cc428@linaro.org>
-Date: Fri, 23 Feb 2024 12:33:24 +0100
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rdTvr-0004Et-HI
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 06:41:36 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rdTvo-0007fs-S1
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 06:41:35 -0500
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41NBQUkR001815; Fri, 23 Feb 2024 11:41:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=pp1; bh=g2YxLLFyeM3iIfpaniyHQL/cb0ntAFdsPXsagh9+o4I=;
+ b=cI37sjNCn53LlqdRG2DX9IxpHov8+yWkavyEJPsLmwrN+EVboon/2jz0hJ6vMt+lyVTE
+ f/IhJ3o4oswgarE/h41pcaIrNOJ6jlKCUsuULsLwcFCGvZ0QD5ZVrpYs/HVtwNrP5Omd
+ 0PYXSykKU/obiwcGecj85tBM4sM0aQ1F4uDDQnN5JycClamZ/djwH+MeSaZv0XvW1F9X
+ arYU6bCgmhgL4k4GYH+svMiwQkBmpUGGVdAR7EKKOs36QgSSs8OgtwFlf5kdkDbdKpKd
+ Rxi0Sn1iB0jsKWlECB6OE9g4GyxP+uvcpzVZfThh72MWHon+ATAYW8TZJ3PI0UHiRVLi 9Q== 
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wet26938d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 23 Feb 2024 11:41:28 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41N9o0OH031187; Fri, 23 Feb 2024 11:36:03 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wb9bmckwe-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 23 Feb 2024 11:36:03 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 41NBZxcB45351318
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 23 Feb 2024 11:36:01 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 53A5920043;
+ Fri, 23 Feb 2024 11:35:59 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F118420040;
+ Fri, 23 Feb 2024 11:35:58 +0000 (GMT)
+Received: from heavy (unknown [9.171.81.52])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+ Fri, 23 Feb 2024 11:35:58 +0000 (GMT)
+Date: Fri, 23 Feb 2024 12:35:57 +0100
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: laurent@vivier.eu, richard.purdie@linuxfoundation.org, mjt@tls.msk.ru
+Subject: Re: [PATCH 3/3] linux-user: Rewrite target_shmat
+Message-ID: <jwyuvao4apydvykmsnvacwshdgy3ixv7qvkh4dbxm3jkwgnttw@k4wpaayou7oq>
+References: <20240223030309.458451-1-richard.henderson@linaro.org>
+ <20240223030309.458451-4-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240223030309.458451-4-richard.henderson@linaro.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: VxXYAbKjHe8Rvqyrgf-suqneyjCTBkZU
+X-Proofpoint-GUID: VxXYAbKjHe8Rvqyrgf-suqneyjCTBkZU
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] virtio-iommu: Change the default granule to the
- host page size
-Content-Language: en-US
-To: eric.auger@redhat.com, eric.auger.pro@gmail.com, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org,
- peter.maydell@linaro.org, clg@redhat.com, yanghliu@redhat.com,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: alex.williamson@redhat.com, zhenzhong.duan@intel.com,
- jasowang@redhat.com, pbonzini@redhat.com, berrange@redhat.com
-References: <20240223074459.63422-1-eric.auger@redhat.com>
- <20240223074459.63422-4-eric.auger@redhat.com>
- <bdab51cf-fca8-4fe7-9e47-31bd10259dfa@linaro.org>
- <c12ba73f-5eeb-47b7-bd16-cf686f13d108@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <c12ba73f-5eeb-47b7-bd16-cf686f13d108@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-22_15,2024-02-23_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ priorityscore=1501 mlxlogscore=999 lowpriorityscore=0 phishscore=0
+ adultscore=0 malwarescore=0 clxscore=1015 suspectscore=0 mlxscore=0
+ spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402230084
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,89 +104,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/2/24 09:38, Eric Auger wrote:
+On Thu, Feb 22, 2024 at 05:03:09PM -1000, Richard Henderson wrote:
+> Handle combined host and guest alignment requirements.
+> Handle host and guest page size differences.
+> Handle SHM_EXEC.
 > 
-> 
-> On 2/23/24 09:08, Philippe Mathieu-Daudé wrote:
->> Hi Eric,
->>
->> On 23/2/24 08:27, Eric Auger wrote:
->>> We used to set the default granule to 4KB but with VFIO assignment
->>> it makes more sense to use the actual host page size.
->>>
->>> Indeed when hotplugging a VFIO device protected by a virtio-iommu
->>> on a 64kB/64kB host/guest config, we current get a qemu crash:
->>>
->>> "vfio: DMA mapping failed, unable to continue"
->>>
->>> This is due to the hot-attached VFIO device calling
->>> memory_region_iommu_set_page_size_mask() with 64kB granule
->>> whereas the virtio-iommu granule was already frozen to 4KB on
->>> machine init done.
->>>
->>> Set the granule property to "host" and introduce a new compat.
->>>
->>> Note that the new default will prevent 4kB guest on 64kB host
->>> because the granule will be set to 64kB which would be larger
->>> than the guest page size. In that situation, the virtio-iommu
->>> driver fails on viommu_domain_finalise() with
->>> "granule 0x10000 larger than system page size 0x1000".
->>>
->>> In that case the workaround is to request 4K granule.
->>>
->>> The current limitation of global granule in the virtio-iommu
->>> should be removed and turned into per domain granule. But
->>> until we get this upgraded, this new default is probably
->>> better because I don't think anyone is currently interested in
->>> running a 4KB page size guest with virtio-iommu on a 64KB host.
->>> However supporting 64kB guest on 64kB host with virtio-iommu and
->>> VFIO looks a more important feature.
->>>
->>> Signed-off-by: Eric Auger <eric.auger@redhat.com>
->>> ---
->>>    hw/core/machine.c        | 1 +
->>>    hw/virtio/virtio-iommu.c | 2 +-
->>>    2 files changed, 2 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/hw/core/machine.c b/hw/core/machine.c
->>> index 70ac96954c..38851df4b8 100644
->>> --- a/hw/core/machine.c
->>> +++ b/hw/core/machine.c
->>> @@ -35,6 +35,7 @@
->>>      GlobalProperty hw_compat_8_2[] = {
->>>        { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "64" },
->>> +    { TYPE_VIRTIO_IOMMU_PCI, "granule", "4K" },
->>
->> IIUC the current value is qemu_target_page_mask(), not 4KiB.
->> Could this be an issue for arm / mips / mips / sparc64 guests?
-> The virtio-iommu currently is only supported on ARM and x86 where
-> qemu_target_page_mask() corresponds to a 4K granule. So I don't think it
-> makes any issue.
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/115
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  linux-user/mmap.c | 146 ++++++++++++++++++++++++++++++++++------------
+>  1 file changed, 110 insertions(+), 36 deletions(-)
 
-Thanks, please explicit that in the commit description.
+[...]
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> -    /* find out the length of the shared memory segment */
+> +    /*
+> +     * Because we can't use host shmat() unless the address is sufficiently
+> +     * aligned for the host, we'll need to check both.
+> +     * TODO: Could be fixed with softmmu.
+> +     */
 
-Regards,
+Are there any plans to introduce softmmu to qemu-user?
 
-Phil.
+[...]
 
->>>    };
->>>    const size_t hw_compat_8_2_len = G_N_ELEMENTS(hw_compat_8_2);
->>>    diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
->>> index 0461b87ef2..e9e44a8ad8 100644
->>> --- a/hw/virtio/virtio-iommu.c
->>> +++ b/hw/virtio/virtio-iommu.c
->>> @@ -1558,7 +1558,7 @@ static Property virtio_iommu_properties[] = {
->>>        DEFINE_PROP_BOOL("boot-bypass", VirtIOIOMMU, boot_bypass, true),
->>>        DEFINE_PROP_UINT8("aw-bits", VirtIOIOMMU, aw_bits, 0),
->>>        DEFINE_PROP_GRANULE_MODE("granule", VirtIOIOMMU, granule_mode,
->>> -                             GRANULE_MODE_4K),
->>> +                             GRANULE_MODE_HOST),
->>>        DEFINE_PROP_END_OF_LIST(),
->>>    };
->>>    
->>
-> 
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+
+
+
+Please consider adding the reproducer to the series:
+
+From 964164ada4de55ac01a56613f7b759e538803fc9 Mon Sep 17 00:00:00 2001
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+Date: Fri, 23 Feb 2024 12:31:40 +0100
+Subject: [PATCH] tests/tcg: Check that shmat() does not break /proc/self/maps
+
+Add a regression test for a recently fixed issue, where shmat()
+desynced the guest and the host view of the address space and caused
+open("/proc/self/maps") to SEGV.
+
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ tests/tcg/multiarch/linux/linux-shmat-maps.c | 40 ++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
+ create mode 100644 tests/tcg/multiarch/linux/linux-shmat-maps.c
+
+diff --git a/tests/tcg/multiarch/linux/linux-shmat-maps.c b/tests/tcg/multiarch/linux/linux-shmat-maps.c
+new file mode 100644
+index 00000000000..4090bc77ba7
+--- /dev/null
++++ b/tests/tcg/multiarch/linux/linux-shmat-maps.c
+@@ -0,0 +1,40 @@
++/*
++ * Test that shmat() does not break /proc/self/maps.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#include <assert.h>
++#include <fcntl.h>
++#include <stdlib.h>
++#include <sys/ipc.h>
++#include <sys/shm.h>
++#include <unistd.h>
++
++int main(void)
++{
++    char buf[128];
++    int err, fd;
++    int shmid;
++    ssize_t n;
++    void *p;
++
++    shmid = shmget(IPC_PRIVATE, 0x400, IPC_CREAT | 0600);
++    assert(shmid != -1);
++    p = shmat(shmid, (void *)0x800000, 0);
++    assert(p != (void *)-1);
++
++    fd = open("/proc/self/maps", O_RDONLY);
++    assert(fd != -1);
++    do {
++        n = read(fd, buf, sizeof(buf));
++        assert(n >= 0);
++    } while (n != 0);
++    close(fd);
++
++    err = shmdt(p);
++    assert(err == 0);
++    err = shmctl(shmid, IPC_RMID, NULL);
++    assert(err == 0);
++
++    return EXIT_SUCCESS;
++}
+-- 
+2.34.1
 
 
