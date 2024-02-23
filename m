@@ -2,84 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABC7F8617FE
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:32:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB7B861820
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:38:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdYSI-0006pN-CN; Fri, 23 Feb 2024 11:31:22 -0500
+	id 1rdYZ9-0004uN-AZ; Fri, 23 Feb 2024 11:38:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdYAc-00053w-9Z
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:13:07 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rdYJd-00043T-FM
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:22:26 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdYAZ-0003Ob-V7
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:13:05 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-33d754746c3so669106f8f.1
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 08:13:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rdYJJ-00062x-8p
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:22:25 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-41298159608so1581945e9.0
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 08:22:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708704782; x=1709309582; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708705323; x=1709310123; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=P4/qqHdd11nezC5l/Dlb0EfBKSAYDCgSWSGGYpw9f+U=;
- b=Wn2Y8NqVgMMqU1hdJlozIzrRlbEQ1GkUtTxYmMdi1jD7qQTiT321xb2tXqxTcRiR9y
- nsx+naiFkmwhKqaqoGWSIX9W9/7y44Fhq44hHgn0r885RExURnpAAzHu6JvZ8+FJ/0tU
- 8plzWLV7Rr02aFEdNto09xztQer76pUD9pXUntsesFrLfH7uVbHPwkcpE8ZQ4yNRQZUk
- nG4qRa1LBNSWGOhKH/zw0S7In1+ArwRyHlrMBH4/Yt07KWC8j9Oi0xZa3FfA37tr4I24
- SLeEyGBBIrlcAU1USuQ/j9jokSunjxyUi6qp7NKmrCteVSEXWJ9RQWd/5s75YXnhimwQ
- ljig==
+ bh=ToD11vo/8rUjKiESU6uoSvQq8es5VKhsflbTNHBU+9U=;
+ b=P+Xc1adjeuPn0EaJjMw/fsjWQrrq4AGksWO7/9s4UqXphxkN8SGhYXup4PQuqJibYW
+ +W/9DbsFn9VszcwdS0P+ehwu3qdJdmSuGqXYl+lIkjLA544Aam8SVaOtlgTvVVtksK8L
+ aFhyhj8eX/0gH7IFogMDKJ52tWHc3GkMJc+GYXDCi3o9n93m5ARsnI8iPiAo6F6M89cw
+ h3Mgh0DRZBOrXekOkSXQ/ykzpqNNM3Y6N6dGRDZ71gN/5RSBJNjj2l+/JVZZugrTOx6g
+ he68awEYFys3W/nzoyChEXUcxBVR7UttVUBwO/8aH6jNx0r9TW1dPPDP7w9DLrfrvYeC
+ 5zww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708704782; x=1709309582;
+ d=1e100.net; s=20230601; t=1708705323; x=1709310123;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=P4/qqHdd11nezC5l/Dlb0EfBKSAYDCgSWSGGYpw9f+U=;
- b=iDZXsrEC8Sv6ebyHKm1IZ1zBWNli1mV9L+IqnC6zQCKX64MXAUyBeNbQ70zbEi5Nfq
- 6HWUFrohZeAjVVwed15cKM4i2T8nqOxGBQQ2TpnU9lT2xvWDHOdbcg+BgDiNLVmWZjvR
- GdDVBKRjNVEBu9bK4m584jmkYHD0aW8IgyjY36ir6ZRxWV1brt5sw7juvdg8kpjMou0o
- tDDSo2wGpWiNtGLvLp2uo8d6LPUx99O0/+KzO6NtGj4fv+Jwb0f0EK4wsLGQAaxQDUk1
- DdpPzSlSGGFKIetCIwj/wr6eJkAhj1+4aY1X/YR+dHqmGnMnKV+r1Ij3dKIW53TPkk3r
- ADpw==
-X-Gm-Message-State: AOJu0YyeJvoef+wifP008GuqQ5E0CP3WEUYGXr5ZG4k9ZAaLo9J0nhrM
- c5UJ+esmxduPnz09z3jxTciEp4xScK8USlNqsByddnYDJWJqgzwEl9N+Tmola5+geNXHzO+/DfT
- T
-X-Google-Smtp-Source: AGHT+IHOqZ7iX7+8bLZx+TCzsCD/+kvBieEvRstjlQtAuNeRZ7Ayo5dWGFa1pZZvNNGqA2cnR4SYBQ==
-X-Received: by 2002:a5d:5392:0:b0:33b:237b:22c2 with SMTP id
- d18-20020a5d5392000000b0033b237b22c2mr165872wrv.21.1708704781979; 
- Fri, 23 Feb 2024 08:13:01 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- co18-20020a0560000a1200b0033b684d6d5csm3956031wrb.20.2024.02.23.08.13.01
+ bh=ToD11vo/8rUjKiESU6uoSvQq8es5VKhsflbTNHBU+9U=;
+ b=LFnTzRc+iFfIx2XB52CjaH7GuCNinnN0YQCU2KMLCkJFUd1w/D+gWYpEGp0NJWGsiL
+ oL/LIrY52fXJ4WfAHmb7q5buF9lLQAeyWTYLJGmL+afltCvozjHQiTzNbidbQQcQt2JP
+ 0zrk4YaffdpRcJVyiFvFITPlyvamIAulEs277SLQ3Qyqq9bLKxH9l8aQNHthd9neoZtT
+ ngd4aQSytTI+E/Qn2xEy/UguD2rynT8t+7dmSirbm+NQj9rbyx+wiYYOIr9AEXUmzg6L
+ 8bQC3mECNdUF2DT+c742CR5TdBRqX5Qh3RYJcQhgzc/1aR0mmq9C4dvLihZilO4EnTsT
+ 6tpQ==
+X-Gm-Message-State: AOJu0YxmkNVT5GIMZRwgJGbLmE4UlAeNP3AkYJIWZ1DTU99jVCkvX3e5
+ 7JL7UodN9OVruaMaqThiOET5bO2LSt4t78xF9L/tnm+fmIK3Pw5RzEy8NXT1k5U=
+X-Google-Smtp-Source: AGHT+IGwumETXu35Zg4OUcqgtG+TNEDWi2tQeGUoypUmeyBDhWVhSYMzc4Bs8DvjAxKbB1LtHRCmog==
+X-Received: by 2002:a05:600c:3505:b0:412:937c:169f with SMTP id
+ h5-20020a05600c350500b00412937c169fmr300059wmq.5.1708705323121; 
+ Fri, 23 Feb 2024 08:22:03 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ z15-20020a05600c220f00b004126e26f756sm2771875wml.43.2024.02.23.08.22.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 08:13:01 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
+ Fri, 23 Feb 2024 08:22:02 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 671585F8A2;
+ Fri, 23 Feb 2024 16:22:02 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Artyom Tarasenko <atar4qemu@gmail.com>,
+Cc: Song Gao <gaosong@loongson.cn>, qemu-s390x@nongnu.org,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Bin Meng <bin.meng@windriver.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Laurent Vivier <laurent@vivier.eu>, qemu-ppc@nongnu.org,
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Cleber Rosa <crosa@redhat.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <ehabkost@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PATCH] hw/rtc/sun4v-rtc: Relicense to GPLv2-or-later
-Date: Fri, 23 Feb 2024 16:13:00 +0000
-Message-Id: <20240223161300.938542-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-arm@nongnu.org,
+ qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, John Snow <jsnow@redhat.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Brian Cain <bcain@quicinc.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Michael Rolnik <mrolnik@gmail.com>
+Subject: [PATCH v2 00/27] maintainer updates for 9.0 pre-PR (tests,
+ plugin register support)
+Date: Fri, 23 Feb 2024 16:21:35 +0000
+Message-Id: <20240223162202.1936541-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,63 +118,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The sun4v RTC device model added under commit a0e893039cf2ce0 in 2016
-was unfortunately added with a license of GPL-v3-or-later, which is
-not compatible with other QEMU code which has a GPL-v2-only license.
+The test patch is a simple house keeping one to clean up some
+inadvertent GPLv3 tagging to GPLv2-or-later. I've also increased the
+timeout for check-tcg due to TCI timesouts.
 
-Relicense the code in the .c and the .h file to GPL-v2-or-later,
-to make it compatible with the rest of QEMU.
+The main bulk of this series is register reading support for TCG
+plugins. The main change to the API is that the get/read_register
+functions are now implicitly vCPU context only so have dropped the
+vcpu index parameter and use current_cpu instead. This avoids the need
+for locking the gdbstub structures in case there is a cross-vCPU
+access.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-Before we can commit this to either head-of-git or any stable branch,
-we need a Signed-off-by: from everybody who's touched this file (or,
-for corporate contributions, from somebody from the relevant company
-who can confirm that the company is OK with the licensing, which is
-RedHat and Linaro in this case).
+I've pulled in some patches from Pierrick's inline enhancement series
+that allow this to happen (making sure the init callback is in the
+vCPU context).
 
-The full list of people who've made changes to the file is:
- Artyom Tarasenko <atar4qemu@gmail.com>
- Philippe Mathieu-Daudé <philmd@linaro.org>
- Markus Armbruster <armbru@redhat.com>
- Eduardo Habkost <ehabkost@redhat.com>
+Changes for v2:
 
-(Artyom is the original author; everybody else's changes are largely
-mechanical, refactoring, etc.  We've done some behind-the-scenes
-coordination so I don't anticipate any problems getting the
-signoffs.)
----
- include/hw/rtc/sun4v-rtc.h | 2 +-
- hw/rtc/sun4v-rtc.c         | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+After lots of back and forth in the last review I've dropped trying to
+be clever with CPUClass as it was pointed out even with a common
+CPUClass we might see different sets of registers depending on what
+features are enabled on a CPU. Now I just have a hash per CPUState
+(stored in the new CPUPluginState structure) with a simple reg_num key.
 
-diff --git a/include/hw/rtc/sun4v-rtc.h b/include/hw/rtc/sun4v-rtc.h
-index fc54dfcba47..26a9eb61967 100644
---- a/include/hw/rtc/sun4v-rtc.h
-+++ b/include/hw/rtc/sun4v-rtc.h
-@@ -5,7 +5,7 @@
-  *
-  * Copyright (c) 2016 Artyom Tarasenko
-  *
-- * This code is licensed under the GNU GPL v3 or (at your option) any later
-+ * This code is licensed under the GNU GPL v2 or (at your option) any later
-  * version.
-  */
- 
-diff --git a/hw/rtc/sun4v-rtc.c b/hw/rtc/sun4v-rtc.c
-index e037acd1b56..ffcc0aa25d9 100644
---- a/hw/rtc/sun4v-rtc.c
-+++ b/hw/rtc/sun4v-rtc.c
-@@ -5,7 +5,7 @@
-  *
-  * Copyright (c) 2016 Artyom Tarasenko
-  *
-- * This code is licensed under the GNU GPL v3 or (at your option) any later
-+ * This code is licensed under the GNU GPL v2 or (at your option) any later
-  * version.
-  */
- 
+I also fixed a bug in nios2-linux-user.
+
+The following still need review:
+
+  contrib/plugins: extend execlog to track register changes
+  tests/tcg: expand insn test case to exercise register API
+  plugins: create CPUPluginState and migrate plugin_mask
+  gdbstub: expose api to find registers
+  linux-user: ensure nios2 processes queued work
+  tests/tcg: bump TCG test timeout to 120s
+
+But I'd like to get this merged soon so its not a mad rush before soft
+freeze and so we can get the new inline support stabilised and merged.
+
+Alex.
+
+Akihiko Odaki (11):
+  target/arm: Use GDBFeature for dynamic XML
+  target/ppc: Use GDBFeature for dynamic XML
+  target/riscv: Use GDBFeature for dynamic XML
+  gdbstub: Use GDBFeature for gdb_register_coprocessor
+  gdbstub: Use GDBFeature for GDBRegisterState
+  gdbstub: Change gdb_get_reg_cb and gdb_set_reg_cb
+  gdbstub: Simplify XML lookup
+  gdbstub: Infer number of core registers from XML
+  hw/core/cpu: Remove gdb_get_dynamic_xml member
+  gdbstub: Add members to identify registers to GDBFeature
+  plugins: Use different helpers when reading registers
+
+Alex Bennée (11):
+  tests/tcg: update licenses to GPLv2 as intended
+  tests/tcg: bump TCG test timeout to 120s
+  linux-user: ensure nios2 processes queued work
+  gdbstub: expose api to find registers
+  plugins: create CPUPluginState and migrate plugin_mask
+  plugins: add an API to read registers
+  tests/tcg: expand insn test case to exercise register API
+  contrib/plugins: fix imatch
+  contrib/plugins: extend execlog to track register changes
+  docs/devel: lift example and plugin API sections up
+  docs/devel: document some plugin assumptions
+
+Pierrick Bouvier (5):
+  plugins: remove previous n_vcpus functions from API
+  plugins: add qemu_plugin_num_vcpus function
+  plugins: fix order of init/idle/resume callback
+  cpu: call plugin init hook asynchronously
+  docs/devel: plugins can trigger a tb flush
+
+ docs/devel/multi-thread-tcg.rst               |   1 +
+ docs/devel/tcg-plugins.rst                    |  72 +++-
+ accel/tcg/plugin-helpers.h                    |   3 +-
+ include/exec/gdbstub.h                        |  43 ++-
+ include/hw/core/cpu.h                         |  18 +-
+ include/qemu/plugin.h                         |  16 +
+ include/qemu/qemu-plugin.h                    |  59 +++-
+ include/qemu/typedefs.h                       |   1 +
+ plugins/plugin.h                              |   6 +-
+ target/arm/cpu.h                              |  27 +-
+ target/arm/internals.h                        |  14 +-
+ target/hexagon/internal.h                     |   4 +-
+ target/microblaze/cpu.h                       |   4 +-
+ target/ppc/cpu-qom.h                          |   1 +
+ target/ppc/cpu.h                              |   5 +-
+ target/riscv/cpu.h                            |   5 +-
+ target/s390x/cpu.h                            |   2 -
+ tests/tcg/aarch64/semicall.h                  |   4 +-
+ tests/tcg/arm/semicall.h                      |   4 +-
+ tests/tcg/multiarch/float_helpers.h           |   4 +-
+ tests/tcg/riscv64/semicall.h                  |   4 +-
+ accel/tcg/plugin-gen.c                        |  46 ++-
+ contrib/plugins/cache.c                       |   2 +-
+ contrib/plugins/execlog.c                     | 318 +++++++++++++++---
+ gdbstub/gdbstub.c                             | 169 ++++++----
+ hw/core/cpu-common.c                          |  15 +-
+ linux-user/nios2/cpu_loop.c                   |   1 +
+ plugins/api.c                                 | 129 +++++--
+ plugins/core.c                                |  27 +-
+ target/arm/cpu.c                              |   2 -
+ target/arm/cpu64.c                            |   1 -
+ target/arm/gdbstub.c                          | 230 ++++++-------
+ target/arm/gdbstub64.c                        | 122 +++----
+ target/avr/cpu.c                              |   1 -
+ target/hexagon/cpu.c                          |   4 +-
+ target/hexagon/gdbstub.c                      |  10 +-
+ target/i386/cpu.c                             |   2 -
+ target/loongarch/cpu.c                        |   2 -
+ target/loongarch/gdbstub.c                    |  13 +-
+ target/m68k/cpu.c                             |   1 -
+ target/m68k/helper.c                          |  26 +-
+ target/microblaze/cpu.c                       |   6 +-
+ target/microblaze/gdbstub.c                   |  14 +-
+ target/ppc/cpu_init.c                         |   7 -
+ target/ppc/gdbstub.c                          | 114 ++++---
+ target/riscv/cpu.c                            |  15 -
+ target/riscv/gdbstub.c                        | 145 ++++----
+ target/rx/cpu.c                               |   1 -
+ target/s390x/cpu.c                            |   1 -
+ target/s390x/gdbstub.c                        | 105 +++---
+ tests/plugin/insn.c                           |  21 ++
+ .../multiarch/arm-compat-semi/semiconsole.c   |   4 +-
+ .../multiarch/arm-compat-semi/semihosting.c   |   4 +-
+ tests/tcg/multiarch/float_convd.c             |   4 +-
+ tests/tcg/multiarch/float_convs.c             |   4 +-
+ tests/tcg/multiarch/float_madds.c             |   4 +-
+ tests/tcg/multiarch/libs/float_helpers.c      |   4 +-
+ plugins/qemu-plugins.symbols                  |   5 +-
+ scripts/feature_to_c.py                       |  14 +-
+ tests/tcg/Makefile.target                     |   9 +-
+ tests/tcg/i386/system/boot.S                  |   6 +-
+ tests/tcg/x86_64/system/boot.S                |   6 +-
+ 62 files changed, 1257 insertions(+), 654 deletions(-)
+
 -- 
-2.34.1
+2.39.2
 
 
