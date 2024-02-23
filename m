@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E7CC8616D2
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:04:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E078616C9
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:03:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdY27-0007xs-OJ; Fri, 23 Feb 2024 11:04:19 -0500
+	id 1rdY13-0005r6-Ba; Fri, 23 Feb 2024 11:03:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXjv-0006OY-BW; Fri, 23 Feb 2024 10:45:31 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1rdXjw-0006Pw-3p; Fri, 23 Feb 2024 10:45:32 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXjs-0006df-RN; Fri, 23 Feb 2024 10:45:31 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1db6e0996ceso7889225ad.2; 
- Fri, 23 Feb 2024 07:45:23 -0800 (PST)
+ id 1rdXjt-0006dp-1M; Fri, 23 Feb 2024 10:45:31 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1dc1ff697f9so8317315ad.0; 
+ Fri, 23 Feb 2024 07:45:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708703122; x=1709307922; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708703124; x=1709307924; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1ncHIEJMy4cYDbqfVJNjY8yl/TUUZBGM2GIItC5uR+8=;
- b=lryJRjz22gVl5BGU1a6Sg0Qtv8Tdpqsc3lrJEFgJWya2dqCUiw31Sw17sNHT1eJUrO
- dG1wqLhD5r+UJLYs7PTUmV3vB93ZYuNlRp+S5+/BgRQTqjxLZqT/WXADhnwr/HhLwTUq
- YNbCGHL3ONMhaNdEsOp2zgZ5fbQDsPUGanVx3/Rvb0+cpBl32hZU5RKb12CclBLwsw6v
- pgMLidm/55/YhO/yEACni6T0QjcBrweA5DcAnnHnifBBRELDMfR1dSaENZZE5w2YMOmC
- PGTXizl7glmOeN1PoSxMe+i80uhiXKCK7yk8DK1diIKckig9PGvgRxx2+Z5r2ow4Szco
- qQqA==
+ bh=AqJcwEYF2slviNbCC3uKHS3/EJsPd3jqqt+Z7W2Nd+A=;
+ b=WvbX7lvjWijBCcHjySJNb6qTYgbXs1hiZv3Q8Wx3NFfOxsm9rRkV400vPYy72R8vNq
+ Q6egigVpufq7Zoy0dhHg3QBJTJhplnnXYYyxyy3JFip55nnN1obMwMxNXKNGga1xqBVs
+ dpG1Mmjiyqawie1dqm6T4NV4IIS0ufQRQKMMWUt0HVyIE3C2oyR9KSyo2xev0SOEygrP
+ 6YOsT4+JZ+vf67mUZaSBICyCv3x7/xr9PcMAuE5Z0/5fSkqYRj0dJYf15rI3vEUTJ9ZK
+ mVy4WEeEBDv/0Pww/cq/cmf1bC1MtTyjcxTTqA4Lt4GBhzZUQIUD7S0zCbcOnOD4In4w
+ eftw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708703122; x=1709307922;
+ d=1e100.net; s=20230601; t=1708703124; x=1709307924;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1ncHIEJMy4cYDbqfVJNjY8yl/TUUZBGM2GIItC5uR+8=;
- b=wxh76cE7tZNvj6JfcsO2l6jEFOCE5TQ8Fp+sxFLJOkdH4ekhpdbCMorNiitW10hkYr
- nQd2oViqxTYxn1KrqkIPdmyhI/5BbJ/YacX5uJHfDgot5fsOPCcXO1MKdepdAbmksfwP
- qSKHzNi7Hrx2zQC7Tj5qhiny3Ehzu4xofEVk7Gtm7oEtOjv4Kj9ECFf/athNly/E5m10
- wP8WyoEWTp1M/PjB4QYGobBnbG9ncz5TvXRs+b0jV3baQMOl3AjlJ1G6Jq0+yIfWoe/z
- L1AsT+A7fF6skho753LfZMuFOpT48de8hnuyWLVWgXJx5tY9mU7nupai8GzojQd0H/HT
- /48g==
+ bh=AqJcwEYF2slviNbCC3uKHS3/EJsPd3jqqt+Z7W2Nd+A=;
+ b=mGFpzh03ZQQOo0JCsGbmxpneq1k4KxDu3d6YMlfmbtVc8UiL9kCTDRneUYEoI/fBLT
+ N3FFskHYpdy+Jtz3m/ClYj4KUyw972VZoD+x3dBjKKlyfMt6G268lRSzL6P1pqGbTbtC
+ YXcvD1cIZtpuwBFhDRsDdEFaYEvbnoN+ZbsifVPi8K1AaJHsf22Hsh9TiuITpCexcvb9
+ zQZ1jsRiKDwePPRx5vzRsZRLibnfyXxBO/eRz5P36sDTKIWZmFnFq5gP+hLiR8ptkggL
+ lPyhkniDdJQvU/1VCrS6nJENyv504qHXWdtlPsPfrhG512mGGU0UeBNrptJdjXaJho4+
+ UBYQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWWvGYY6MWNvrtuCRKrwIPnwH/Vjw0KikeWh78pOV3e1zBesbG4kHWSsF/rz6t3PfxQYkOIs+Q5Bn3Lbt1pkNWudKX/
-X-Gm-Message-State: AOJu0Yxfx8LhS+wsHBK/a6/9ibWhTI6rONvYsFf87KMvDSvpwdszZI6S
- 5oYCBgugoC0OuYWHqHU6XTTuM3vJ646bv7AoE8oHGyYbcfgUbjFgGt7jlPB+
-X-Google-Smtp-Source: AGHT+IEaalKABNvFq8hA5IDkWl0NW40bLXgL6uEkABdeFRg0fICeH725tSMKcNHWyqBMf6YTXhQ7Gw==
-X-Received: by 2002:a17:902:eccc:b0:1dc:4649:43df with SMTP id
- a12-20020a170902eccc00b001dc464943dfmr240246plh.16.1708703120763; 
- Fri, 23 Feb 2024 07:45:20 -0800 (PST)
+ AJvYcCXWzLepz/1ceJRDv+05TI3ydgCRKuzeWu9pmAEdLVX2Pzs7Cm5SXeCAL1jgRi+eks8TS//xicjcos0wJIB5pSpehlSE
+X-Gm-Message-State: AOJu0Yz20lxIFwvD0THNZZ7AIEjrIDFPge+I+B4wSPR8AAZVlMoQmDI9
+ VyCAD/6yqCWxehIxS9dMMyeR83EavVQv05lU9cDkZ2wh9jGmNHlQsXftAGXt
+X-Google-Smtp-Source: AGHT+IEaIMOzX1OmpgIIwLVeGBI+ygeJRse3g0jULO7jxBFwqstbKW4XfsaAIleETaU+qk2CLC+INQ==
+X-Received: by 2002:a17:903:2343:b0:1db:d256:9327 with SMTP id
+ c3-20020a170903234300b001dbd2569327mr241969plh.19.1708703124323; 
+ Fri, 23 Feb 2024 07:45:24 -0800 (PST)
 Received: from wheely.local0.net (220-235-194-103.tpgi.com.au.
  [220.235.194.103]) by smtp.gmail.com with ESMTPSA id
- h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.45.17
+ h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.45.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 07:45:20 -0800 (PST)
+ Fri, 23 Feb 2024 07:45:24 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Saif Abrar <saif.abrar@linux.vnet.ibm.com>
-Subject: [PULL 33/47] target/ppc: Update gdbstub to read SPR's CFAR, DEC, HDEC,
- TB-L/U
-Date: Sat, 24 Feb 2024 01:41:52 +1000
-Message-ID: <20240223154211.1001692-34-npiggin@gmail.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 34/47] target/ppc: Rename TBL to TB on 64-bit
+Date: Sat, 24 Feb 2024 01:41:53 +1000
+Message-ID: <20240223154211.1001692-35-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240223154211.1001692-1-npiggin@gmail.com>
 References: <20240223154211.1001692-1-npiggin@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,77 +96,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Saif Abrar <saif.abrar@linux.vnet.ibm.com>
+From the earliest PowerPC ISA, TBR (later SPR) 268 has been called TB
+and accessed with mftb instruction. The problem is that TB is the name
+of the 64-bit register, and 32-bit implementations can only read the
+lower half with one instruction, so 268 has also been called TBL and
+it does only read TBL on 32-bit.
 
-SPR's CFAR, DEC, HDEC, TB-L/U are not implemented as part of CPUPPCState.
-Hence, gdbstub is not able to access them using (CPUPPCState *)env->spr[] array.
-Update gdb_get_spr_reg() method to handle these SPR's specifically.
+Change SPR 268 to be called TB on 64-bit implementations.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Saif Abrar <saif.abrar@linux.vnet.ibm.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/gdbstub.c | 40 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 38 insertions(+), 2 deletions(-)
+ target/ppc/helper_regs.c  | 4 ++++
+ target/ppc/ppc-qmp-cmds.c | 4 ++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
-index ec5731e5d6..dfe31d0f47 100644
---- a/target/ppc/gdbstub.c
-+++ b/target/ppc/gdbstub.c
-@@ -394,7 +394,32 @@ static int gdb_get_spr_reg(CPUPPCState *env, GByteArray *buf, int n)
+diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
+index 8324ff22db..8f5bd1536e 100644
+--- a/target/ppc/helper_regs.c
++++ b/target/ppc/helper_regs.c
+@@ -460,7 +460,11 @@ void register_generic_sprs(PowerPCCPU *cpu)
      }
  
-     len = TARGET_LONG_SIZE;
--    gdb_get_regl(buf, env->spr[reg]);
-+
-+    /* Handle those SPRs that are not part of the env->spr[] array */
-+    target_ulong val;
-+    switch (reg) {
+     /* Time base */
 +#if defined(TARGET_PPC64)
-+    case SPR_CFAR:
-+        val = env->cfar;
-+        break;
++    spr_register(env, SPR_VTBL,  "TB",
++#else
+     spr_register(env, SPR_VTBL,  "TBL",
 +#endif
-+    case SPR_HDEC:
-+        val = cpu_ppc_load_hdecr(env);
-+        break;
-+    case SPR_TBL:
-+        val = cpu_ppc_load_tbl(env);
-+        break;
-+    case SPR_TBU:
-+        val = cpu_ppc_load_tbu(env);
-+        break;
-+    case SPR_DECR:
-+        val = cpu_ppc_load_decr(env);
-+        break;
-+    default:
-+        val = env->spr[reg];
-+    }
-+    gdb_get_regl(buf, val);
-+
-     ppc_maybe_bswap_register(env, gdb_get_reg_ptr(buf, len), len);
-     return len;
- }
-@@ -411,7 +436,18 @@ static int gdb_set_spr_reg(CPUPPCState *env, uint8_t *mem_buf, int n)
- 
-     len = TARGET_LONG_SIZE;
-     ppc_maybe_bswap_register(env, mem_buf, len);
--    env->spr[reg] = ldn_p(mem_buf, len);
-+
-+    /* Handle those SPRs that are not part of the env->spr[] array */
-+    target_ulong val = ldn_p(mem_buf, len);
-+    switch (reg) {
+                  &spr_read_tbl, SPR_NOACCESS,
+                  &spr_read_tbl, SPR_NOACCESS,
+                  0x00000000);
+diff --git a/target/ppc/ppc-qmp-cmds.c b/target/ppc/ppc-qmp-cmds.c
+index c0c137d9d7..ee0b99fce7 100644
+--- a/target/ppc/ppc-qmp-cmds.c
++++ b/target/ppc/ppc-qmp-cmds.c
+@@ -103,7 +103,11 @@ const MonitorDef monitor_defs[] = {
+     { "xer", 0, &monitor_get_xer },
+     { "msr", offsetof(CPUPPCState, msr) },
+     { "tbu", 0, &monitor_get_tbu, },
 +#if defined(TARGET_PPC64)
-+    case SPR_CFAR:
-+        env->cfar = val;
-+        break;
++    { "tb", 0, &monitor_get_tbl, },
++#else
+     { "tbl", 0, &monitor_get_tbl, },
 +#endif
-+    default:
-+        env->spr[reg] = val;
-+    }
+     { NULL },
+ };
  
-     return len;
- }
 -- 
 2.42.0
 
