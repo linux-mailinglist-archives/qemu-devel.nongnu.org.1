@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D29861CB6
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 20:39:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C15861C98
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 20:34:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdbNT-0001Sn-5I; Fri, 23 Feb 2024 14:38:35 -0500
+	id 1rdbH3-0007Rf-PJ; Fri, 23 Feb 2024 14:31:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rdawG-0005nD-Pa
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rdawH-0005nR-6B
  for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:10:35 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rdawA-0005E2-2Q
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:10:25 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rdawC-0005Fp-Of
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:10:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708715420;
+ s=mimecast20190719; t=1708715423;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DgAxyS6IW8O7GbuGWIGuj6wMTsF+Z7lreojznlOTU8E=;
- b=MR3bFY0U296iY51Ey/nHYzXd0nloNqUXOYTxwDeZhfzhNbhczFP3RR65g3+DU+CiQZbKaE
- ufIO56XXJ3XFpsVpBKupTgM8kCQy1n0BdL/kyl6DUuFYHjv7GzKG6BpOFXybJb2cACOV59
- i/1zt5wRO7k4e+gvb70QXcPVeKR+O3M=
+ bh=AuBn9YK65/VJijo7z361xypecvvLSdypK1RNAkg3cAg=;
+ b=g7Ytn+tjRDJ9eCnC7bjQhAB3QiBTVJVb/xgfvaXcoJlZNMhiBiKq7GczSJQW8DM/+Xsl65
+ 8tkgd/HRT+FMUI7hgleDKSz6Cqpy21NxAXdyoY1NU/I8UF18E88sc13i/RRCc7EAiODCD9
+ db3Ru63XRsvDMlUo5HO+fR+Noo/qoUk=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-32-Afn-iO_3P6yO_6_NztL7Yw-1; Fri, 23 Feb 2024 14:10:18 -0500
-X-MC-Unique: Afn-iO_3P6yO_6_NztL7Yw-1
+ us-mta-164-HeE8df90NE-BtQ5AmfahDw-1; Fri, 23 Feb 2024 14:10:19 -0500
+X-MC-Unique: HeE8df90NE-BtQ5AmfahDw-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0D072800074;
- Fri, 23 Feb 2024 19:10:18 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 782E888CDCF;
+ Fri, 23 Feb 2024 19:10:19 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.20])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CEF7D8CED;
- Fri, 23 Feb 2024 19:10:16 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 74B1E8CED;
+ Fri, 23 Feb 2024 19:10:18 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 09/11] .gitlab-ci.d: Drop cross-win32-system job
-Date: Fri, 23 Feb 2024 20:10:01 +0100
-Message-ID: <20240223191003.6268-10-thuth@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 10/11] .gitlab-ci.d/windows.yml: Remove shared-msys2 abstraction
+Date: Fri, 23 Feb 2024 20:10:02 +0100
+Message-ID: <20240223191003.6268-11-thuth@redhat.com>
 In-Reply-To: <20240223191003.6268-1-thuth@redhat.com>
 References: <20240223191003.6268-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -82,197 +82,133 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-We don't support 32-bit Windows any more, so we don't need to defend it
-with this CI job.
+Now we don't build msys2-32bit we don't need the abstraction out of the
+common msys2 handling from the 32-vs-64-bit specifics. Collapse it
+down into the msys2-64bit job definition.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: "Daniel P. Berrangé" <berrange@redhat.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20240222130920.362517-3-peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240222130920.362517-4-peter.maydell@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- .gitlab-ci.d/container-cross.yml              |   5 -
- .gitlab-ci.d/crossbuilds.yml                  |  14 ---
- .../dockerfiles/fedora-win32-cross.docker     | 111 ------------------
- tests/lcitool/refresh                         |   5 -
- 4 files changed, 135 deletions(-)
- delete mode 100644 tests/docker/dockerfiles/fedora-win32-cross.docker
+ .gitlab-ci.d/windows.yml | 85 +++++++++++++++++++---------------------
+ 1 file changed, 41 insertions(+), 44 deletions(-)
 
-diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
-index 8d235cbea0..e3103940a0 100644
---- a/.gitlab-ci.d/container-cross.yml
-+++ b/.gitlab-ci.d/container-cross.yml
-@@ -101,11 +101,6 @@ cris-fedora-cross-container:
+diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
+index 8fc08218d2..f116b8012d 100644
+--- a/.gitlab-ci.d/windows.yml
++++ b/.gitlab-ci.d/windows.yml
+@@ -1,4 +1,4 @@
+-.shared_msys2_builder:
++msys2-64bit:
+   extends: .base_job_template
+   tags:
+   - shared-windows
+@@ -14,9 +14,20 @@
+   stage: build
+   timeout: 100m
    variables:
-     NAME: fedora-cris-cross
- 
--win32-fedora-cross-container:
--  extends: .container_job_template
++    # Select the "64 bit, gcc and MSVCRT" MSYS2 environment
++    MSYSTEM: MINGW64
+     # This feature doesn't (currently) work with PowerShell, it stops
+     # the echo'ing of commands being run and doesn't show any timing
+     FF_SCRIPT_SECTIONS: 0
++    # do not remove "--without-default-devices"!
++    # commit 9f8e6cad65a6 ("gitlab-ci: Speed up the msys2-64bit job by using --without-default-devices"
++    # changed to compile QEMU with the --without-default-devices switch
++    # for this job, because otherwise the build could not complete within
++    # the project timeout.
++    CONFIGURE_ARGS:  --target-list=x86_64-softmmu --without-default-devices -Ddebug=false -Doptimization=0
++    # qTests don't run successfully with "--without-default-devices",
++    # so let's exclude the qtests from CI for now.
++    TEST_ARGS: --no-suite qtest
+   artifacts:
+     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
+     expire_in: 7 days
+@@ -72,33 +83,35 @@
+   - .\msys64\usr\bin\bash -lc "pacman -Sy --noconfirm --needed
+       bison diffutils flex
+       git grep make sed
+-      $MINGW_TARGET-binutils
+-      $MINGW_TARGET-capstone
+-      $MINGW_TARGET-ccache
+-      $MINGW_TARGET-curl
+-      $MINGW_TARGET-cyrus-sasl
+-      $MINGW_TARGET-dtc
+-      $MINGW_TARGET-gcc
+-      $MINGW_TARGET-glib2
+-      $MINGW_TARGET-gnutls
+-      $MINGW_TARGET-gtk3
+-      $MINGW_TARGET-libgcrypt
+-      $MINGW_TARGET-libjpeg-turbo
+-      $MINGW_TARGET-libnfs
+-      $MINGW_TARGET-libpng
+-      $MINGW_TARGET-libssh
+-      $MINGW_TARGET-libtasn1
+-      $MINGW_TARGET-lzo2
+-      $MINGW_TARGET-nettle
+-      $MINGW_TARGET-ninja
+-      $MINGW_TARGET-pixman
+-      $MINGW_TARGET-pkgconf
+-      $MINGW_TARGET-python
+-      $MINGW_TARGET-SDL2
+-      $MINGW_TARGET-SDL2_image
+-      $MINGW_TARGET-snappy
+-      $MINGW_TARGET-zstd
+-      $EXTRA_PACKAGES "
++      mingw-w64-x86_64-binutils
++      mingw-w64-x86_64-capstone
++      mingw-w64-x86_64-ccache
++      mingw-w64-x86_64-curl
++      mingw-w64-x86_64-cyrus-sasl
++      mingw-w64-x86_64-dtc
++      mingw-w64-x86_64-gcc
++      mingw-w64-x86_64-glib2
++      mingw-w64-x86_64-gnutls
++      mingw-w64-x86_64-gtk3
++      mingw-w64-x86_64-libgcrypt
++      mingw-w64-x86_64-libjpeg-turbo
++      mingw-w64-x86_64-libnfs
++      mingw-w64-x86_64-libpng
++      mingw-w64-x86_64-libssh
++      mingw-w64-x86_64-libtasn1
++      mingw-w64-x86_64-libusb
++      mingw-w64-x86_64-lzo2
++      mingw-w64-x86_64-nettle
++      mingw-w64-x86_64-ninja
++      mingw-w64-x86_64-pixman
++      mingw-w64-x86_64-pkgconf
++      mingw-w64-x86_64-python
++      mingw-w64-x86_64-SDL2
++      mingw-w64-x86_64-SDL2_image
++      mingw-w64-x86_64-snappy
++      mingw-w64-x86_64-spice
++      mingw-w64-x86_64-usbredir
++      mingw-w64-x86_64-zstd"
+   - Write-Output "Running build at $(Get-Date -Format u)"
+   - $env:CHERE_INVOKING = 'yes'  # Preserve the current working directory
+   - $env:MSYS = 'winsymlinks:native' # Enable native Windows symlink
+@@ -115,19 +128,3 @@
+   - ..\msys64\usr\bin\bash -lc "make check MTESTARGS='$TEST_ARGS' || { cat meson-logs/testlog.txt; exit 1; } ;"
+   - ..\msys64\usr\bin\bash -lc "ccache --show-stats"
+   - Write-Output "Finished build at $(Get-Date -Format u)"
+-
+-msys2-64bit:
+-  extends: .shared_msys2_builder
 -  variables:
--    NAME: fedora-win32-cross
--
- win64-fedora-cross-container:
-   extends: .container_job_template
-   variables:
-diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
-index d19d98cde0..987ba9694b 100644
---- a/.gitlab-ci.d/crossbuilds.yml
-+++ b/.gitlab-ci.d/crossbuilds.yml
-@@ -159,20 +159,6 @@ cross-mips64el-kvm-only:
-     IMAGE: debian-mips64el-cross
-     EXTRA_CONFIGURE_OPTS: --disable-tcg --target-list=mips64el-softmmu
- 
--cross-win32-system:
--  extends: .cross_system_build_job
--  needs:
--    job: win32-fedora-cross-container
--  variables:
--    IMAGE: fedora-win32-cross
--    EXTRA_CONFIGURE_OPTS: --enable-fdt=internal
--    CROSS_SKIP_TARGETS: alpha-softmmu avr-softmmu hppa-softmmu m68k-softmmu
--                        microblazeel-softmmu mips64el-softmmu nios2-softmmu
--  artifacts:
--    when: on_success
--    paths:
--      - build/qemu-setup*.exe
--
- cross-win64-system:
-   extends: .cross_system_build_job
-   needs:
-diff --git a/tests/docker/dockerfiles/fedora-win32-cross.docker b/tests/docker/dockerfiles/fedora-win32-cross.docker
-deleted file mode 100644
-index 08799219f9..0000000000
---- a/tests/docker/dockerfiles/fedora-win32-cross.docker
-+++ /dev/null
-@@ -1,111 +0,0 @@
--# THIS FILE WAS AUTO-GENERATED
--#
--#  $ lcitool dockerfile --layers all --cross-arch mingw32 fedora-38 qemu
--#
--# https://gitlab.com/libvirt/libvirt-ci
--
--FROM registry.fedoraproject.org/fedora:38
--
--RUN dnf install -y nosync && \
--    printf '#!/bin/sh\n\
--if test -d /usr/lib64\n\
--then\n\
--    export LD_PRELOAD=/usr/lib64/nosync/nosync.so\n\
--else\n\
--    export LD_PRELOAD=/usr/lib/nosync/nosync.so\n\
--fi\n\
--exec "$@"\n' > /usr/bin/nosync && \
--    chmod +x /usr/bin/nosync && \
--    nosync dnf update -y && \
--    nosync dnf install -y \
--               bash \
--               bc \
--               bison \
--               bzip2 \
--               ca-certificates \
--               ccache \
--               ctags \
--               dbus-daemon \
--               diffutils \
--               findutils \
--               flex \
--               gcc \
--               gcovr \
--               git \
--               glib2-devel \
--               glibc-langpack-en \
--               hostname \
--               llvm \
--               make \
--               meson \
--               mtools \
--               ninja-build \
--               nmap-ncat \
--               openssh-clients \
--               pcre-static \
--               python3 \
--               python3-PyYAML \
--               python3-numpy \
--               python3-opencv \
--               python3-pillow \
--               python3-pip \
--               python3-sphinx \
--               python3-sphinx_rtd_theme \
--               sed \
--               socat \
--               sparse \
--               spice-protocol \
--               swtpm \
--               tar \
--               tesseract \
--               tesseract-langpack-eng \
--               util-linux \
--               which \
--               xorriso \
--               zstd && \
--    nosync dnf autoremove -y && \
--    nosync dnf clean all -y
--
--ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
--ENV LANG "en_US.UTF-8"
--ENV MAKE "/usr/bin/make"
--ENV NINJA "/usr/bin/ninja"
--ENV PYTHON "/usr/bin/python3"
--
--RUN nosync dnf install -y \
--               mingw32-SDL2 \
--               mingw32-SDL2_image \
--               mingw32-bzip2 \
--               mingw32-curl \
--               mingw32-gcc \
--               mingw32-gcc-c++ \
--               mingw32-gettext \
--               mingw32-glib2 \
--               mingw32-gnutls \
--               mingw32-gtk3 \
--               mingw32-libepoxy \
--               mingw32-libgcrypt \
--               mingw32-libjpeg-turbo \
--               mingw32-libpng \
--               mingw32-libtasn1 \
--               mingw32-nettle \
--               mingw32-nsis \
--               mingw32-pixman \
--               mingw32-pkg-config && \
--    nosync dnf clean all -y && \
--    rpm -qa | sort > /packages.txt && \
--    mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/i686-w64-mingw32-c++ && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/i686-w64-mingw32-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/i686-w64-mingw32-g++ && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/i686-w64-mingw32-gcc
--
--ENV ABI "i686-w64-mingw32"
--ENV MESON_OPTS "--cross-file=/usr/share/mingw/toolchain-mingw32.meson"
--ENV QEMU_CONFIGURE_OPTS --cross-prefix=i686-w64-mingw32-
--ENV DEF_TARGET_LIST i386-softmmu
--# As a final step configure the user (if env is defined)
--ARG USER
--ARG UID
--RUN if [ "${USER}" ]; then \
--  id ${USER} 2>/dev/null || useradd -u ${UID} -U ${USER}; fi
-diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index 0c93557ad6..fe7692c500 100755
---- a/tests/lcitool/refresh
-+++ b/tests/lcitool/refresh
-@@ -192,11 +192,6 @@ try:
-                         trailer=cross_build("s390x-linux-gnu-",
-                                             "s390x-softmmu,s390x-linux-user"))
- 
--    generate_dockerfile("fedora-win32-cross", "fedora-38",
--                        cross="mingw32",
--                        trailer=cross_build("i686-w64-mingw32-",
--                                            "i386-softmmu"))
--
-     generate_dockerfile("fedora-win64-cross", "fedora-38",
-                         cross="mingw64",
-                         trailer=cross_build("x86_64-w64-mingw32-",
+-    MINGW_TARGET: mingw-w64-x86_64
+-    MSYSTEM: MINGW64
+-    # msys2 only ship these packages for 64-bit, not 32-bit
+-    EXTRA_PACKAGES: $MINGW_TARGET-libusb $MINGW_TARGET-usbredir $MINGW_TARGET-spice
+-    # do not remove "--without-default-devices"!
+-    # commit 9f8e6cad65a6 ("gitlab-ci: Speed up the msys2-64bit job by using --without-default-devices"
+-    # changed to compile QEMU with the --without-default-devices switch
+-    # for the msys2 64-bit job, due to the build could not complete within
+-    CONFIGURE_ARGS:  --target-list=x86_64-softmmu --without-default-devices -Ddebug=false -Doptimization=0
+-    # qTests don't run successfully with "--without-default-devices",
+-    # so let's exclude the qtests from CI for now.
+-    TEST_ARGS: --no-suite qtest
 -- 
 2.43.2
 
