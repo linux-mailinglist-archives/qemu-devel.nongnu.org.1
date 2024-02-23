@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEB098618C8
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 18:05:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EFE2861947
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 18:20:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdYx1-000189-Gx; Fri, 23 Feb 2024 12:03:07 -0500
+	id 1rdZBz-0002JL-GP; Fri, 23 Feb 2024 12:18:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdYi0-0000fR-FY
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:47:36 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ id 1rdYhM-0005aM-6c
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:46:57 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdYhy-0002Fh-Oc
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:47:36 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-565468bec51so1966612a12.1
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 08:47:34 -0800 (PST)
+ id 1rdYhK-00022z-Gr
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:46:55 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-564d9b0e96dso743439a12.2
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 08:46:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708706853; x=1709311653; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708706810; x=1709311610; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=llXsudmdYQAx5QfO0HXhkgqlqTsadywEAWz29qbJw8E=;
- b=THFyZ0bUAX/JeW6eF0ayyVSJ6WGvt0abosdMJBcUT4XE1Z/u7KS9Nq8q4mOdWgPTy/
- PwdNm48z6Qy9koh62scD3UYHg5FIHEkdkVekdsKHCR4ooUZkqdNSe/8PM/+lMI5kVuZF
- D9O+q4TazgMj4VNWIXaWqXPo9usAv+qgujUz18vSuM8Cq4UAkC7GEB9nbxq9uCC2PsJv
- VmHU62/bQDKBHKBXaUhSJCHCqKBN9Kyk8rp1uYO+tbA+RLuUV36lDnsluxGxO3L3ivnR
- C0DRxX2CSLX1bnBg9X5x0hgZ2Gmxa5DZPJhp1WYBBQke7VqJMfJ1q7Pd7R1sFhlgpcV8
- ORyw==
+ bh=TsQucG+omhJ6mgWABCcp5FJT07Qhvpa41K0AC8Xithw=;
+ b=cIeUsYOLdC0CFTLwZzx9414w3fZUFS7Dg8hUR1iDUxwvZRJy5t7sb/a1M/vJqBrRV6
+ 8oPkGAoEGa7p8EMEe+CVk+FiJgryCfWgfZefAAKfNy/BmP1+sUpBArO+je5LA72LHO3v
+ l9vXzRWZ1XosBWqyne7U51KnTfDQ1O50w3mLCsw66JlZi75/9iF4szTj6AN/semu67Z/
+ rJHm/Zako5oeiaZox1uKGPTnu5Aix6HAFmdsPY1GGM18iLksHe36vZgmVlA6EsiIfPb9
+ +jv6TwAEBDKX8pa7yh/n3i9/6y2xf7IOqT/XoF2YWvKu07SbZip5pQkoHytgVkh0xiyA
+ CLVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708706853; x=1709311653;
+ d=1e100.net; s=20230601; t=1708706810; x=1709311610;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=llXsudmdYQAx5QfO0HXhkgqlqTsadywEAWz29qbJw8E=;
- b=R1N2yTs+SAq8/heFDuWnlM7/iIHxQnvRd8vTf1mQa9FL8NJ3iWAr9bCEXTSenrfuIt
- y//zEJgGkA5lpJm0B4904f9ENPsfIXNvV5hVTqRxRotJo3u/Lw/sJrxBqxUHIwhUYze6
- PNdYJUvIlbCIDMa5Ay5Js2r48WY28roykvoBLNC/uMVIVZX8JOUqueCJ8YPVJYNBQZDD
- B293V0oYUgYZDQh1RJKgmIX5oHvHJJuxBA2iYQqggcHgHJn5qzvlfeYesYacTh8r/W9B
- JfvqIo3gWKxtFDl9N2bY3lxqQF325XiTZzVv+aFpgBlvzb7N0/pP8CDDxgMTx+zJNF3A
- BUYw==
+ bh=TsQucG+omhJ6mgWABCcp5FJT07Qhvpa41K0AC8Xithw=;
+ b=vUrJfSll55eAnfBeEZRDbGRZ7yM8EZLDYgn1T0JCdE36BoA2DZp1XHXmQhE9zNGhjw
+ N7HI1A5uNq1Ejo0M0mWHB44xAVbR0OTbBt+Osr2Sa6W49lWrEi4fBEwO1lovvRQTDEvW
+ GbmsTmRRjP6zzZe87JS2HNLW2PtKCPTx4/zBepJF0V9c0fzLPb4VdULfGy0Rw2/fhElN
+ JxRFQQ3vw68sK7yPtxwH/8my3TcLRv9TPcG7QleJqzlLHxWvAmuXdyBAocPNmWjQWXHr
+ MxcVAVxH/u25kldbvZVdLpvMlLA1JVuGlRadVjdtMN2f2JC6VzFG/5X/0qEeh9Hruq5N
+ NU+A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVYkAfjmWeXzbfyVlBeyWmbIbju+DCSxv/87N8G0rXzcukMteNkIT+e4ErTwrrZlFPR7KLLGEriMFZxm6/zPABuWZcn5Rk=
-X-Gm-Message-State: AOJu0YzANOa9VWQiD0FvJTaTZVxHAIGuKTt0Cw72QR7x+Zu+jP35LHip
- oXYfdtB9wgV0n7FrIFB5phhAiJBA+DMbXEjNOvc42nYYhgTSBMGZy6RzHd+RBEz4WoWJVWRVfPR
- S6QM/NhAMg5fgS3M3E1GuyOoart0BJySWtp1LnQ==
-X-Google-Smtp-Source: AGHT+IGFGiIg5DaqkXk+xQecfC5BnXAf+/MOPsvM2aJQtY9kpBTO6Hta6d9qcfsbP6fY6JB8BmxHAYYDIB4ktIxHwoQ=
-X-Received: by 2002:a05:6402:40d1:b0:565:949e:1530 with SMTP id
- z17-20020a05640240d100b00565949e1530mr135399edb.7.1708706853260; Fri, 23 Feb
- 2024 08:47:33 -0800 (PST)
+ AJvYcCU8rD0rjxNqWWVJkDTZamX2R+Z2q9iLcpoNJabr1k7yaNi2kq0cpLLwg64inuokg4Yb81nNY0Z75TfOmmweBsic2e/sd3g=
+X-Gm-Message-State: AOJu0Yw73FOqtrbdr0NnL65wc0oOqRP2NJY7w4y77Q1SGPQN7+6lWxfc
+ l+vIIaL8QNGkKAxzAmk+vUUxvi69nT4pLrR2OW/ENq3JKf5f0musNc/dgNZu/s75u/UCqOH2WvF
+ AzpQA1XUjiGzFWfMYjapQ3zDxH2rG7yo6HCLIngM3esW03shc
+X-Google-Smtp-Source: AGHT+IHCJBjvVMtnVI9ZEgXLIT+Fu+xKphSMAXl3/bKXjFcxSGFT7PPy3REYYycpbKf6UUWW1JVRBVHbMInbz39+SSc=
+X-Received: by 2002:aa7:d916:0:b0:564:4504:cc2 with SMTP id
+ a22-20020aa7d916000000b0056445040cc2mr283059edr.16.1708706810594; Fri, 23 Feb
+ 2024 08:46:50 -0800 (PST)
 MIME-Version: 1.0
 References: <20240219011739.2316619-1-sergey.kambalin@auriga.com>
- <20240219011739.2316619-13-sergey.kambalin@auriga.com>
-In-Reply-To: <20240219011739.2316619-13-sergey.kambalin@auriga.com>
+ <20240219011739.2316619-12-sergey.kambalin@auriga.com>
+In-Reply-To: <20240219011739.2316619-12-sergey.kambalin@auriga.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 23 Feb 2024 16:47:22 +0000
-Message-ID: <CAFEAcA9Fc2oHp+vVxRgY0PMGeHcEW187rFFK5-4viQGb3hHgaQ@mail.gmail.com>
-Subject: Re: [PATCH v5 12/41] Add memory region for BCM2837 RPiVid ASB
+Date: Fri, 23 Feb 2024 16:46:39 +0000
+Message-ID: <CAFEAcA8Uj1z4e9=OYo3ExxKZiCCQE4fuL4Cuwe_F730hFcEvGg@mail.gmail.com>
+Subject: Re: [PATCH v5 11/41] Temporarily disable unimplemented rpi4b devices
 To: Sergey Kambalin <serg.oker@gmail.com>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
  Sergey Kambalin <sergey.kambalin@auriga.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,14 +89,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 19 Feb 2024 at 01:23, Sergey Kambalin <serg.oker@gmail.com> wrote:
+On Mon, 19 Feb 2024 at 01:21, Sergey Kambalin <serg.oker@gmail.com> wrote:
+>
+> This commit adds RPi4B device tree modifications:
+> - disable pcie, rng200, thermal sensor and genet devices
+>   (they're going to be re-enabled in the following commits)
+> - create additional memory region in device tree
+>   if RAM amount exceeds VC base address.
 >
 > Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
-> ---
->  hw/arm/bcm2838_peripherals.c         | 3 +++
->  include/hw/arm/bcm2838_peripherals.h | 2 ++
->  include/hw/arm/raspi_platform.h      | 2 +-
->  3 files changed, 6 insertions(+), 1 deletion(-)
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
