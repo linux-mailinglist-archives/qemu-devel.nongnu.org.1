@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4736860D1C
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 09:44:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE4CE860D16
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 09:44:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdR9c-0003Hp-EA; Fri, 23 Feb 2024 03:43:36 -0500
+	id 1rdR9i-0003J3-8b; Fri, 23 Feb 2024 03:43:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rdR9a-0003HI-7q; Fri, 23 Feb 2024 03:43:34 -0500
+ id 1rdR9e-0003Ih-L9; Fri, 23 Feb 2024 03:43:38 -0500
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rdR9Y-000050-KV; Fri, 23 Feb 2024 03:43:33 -0500
+ id 1rdR9d-00006f-5o; Fri, 23 Feb 2024 03:43:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708677813; x=1740213813;
+ t=1708677817; x=1740213817;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=vXMvs1cSNIKepRdMS6u3iCUNAtDkq5tZ/DJExY7Ps00=;
- b=Czhk255JDjFy1wi7jmydhAj6VVVVy/enBElULpp5ZPXlKuq5sdRBZXn1
- T8G5cQnHlqi3fLRiZcYOZTyvAU55QYzLEbNi1+F39uHEri7T3sVy742+m
- TBo3pyIyt81Q28hugmj0CS6bANpELJatdR8/53L5mMv7bBtuwQ7oPV4HR
- Mpuj1JrvbhE+NNkaJW4jZxlqJa8XBtbJO2ZSHYx+mfA59kZcnBnN5nBws
- 5g+wllIk782XTU4/yaMgv35tn10ibS/HWkLx2M8P53cMOFeDKNtazxZKW
- 2B/lao3yWgyGzzGfCYNJGkBze3haY1a68Co8d2Pzqg2y3f5a8aalOQRst A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="28413824"
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; d="scan'208";a="28413824"
+ bh=MHvQ5woW3Z+EugV6VPlTEN8ySg00SOJs4AJTsCdkA7k=;
+ b=JbMHDuvKL5q/vzofxjrkEIXocgCaZ8MTEUV5+gOKmrzMxERI3uKiEpaf
+ AY3utzys4KgVJGwp1WxfCRIn4Z7Ej6Geus60R2icGq+1iJ0rbfXK1yvLC
+ zQTHOpZEcwV7En1dM+lmWmNg2e+7wF+6NPFYdpehM3VEQ0NORCdty2KJ8
+ siucRRRFfg3ueAothVT2OgS+TIiM3q2xyXJeVP5r5yifqj2ckfP1fYWSd
+ 4YYSkqV/NAmBw6nc2SkZjlpcuIH5nXVd66NeL7BcP1itoos/wdf4ThTVz
+ +i3UNINKDNNH9eUxHhGYpK52ELsarOWg0TAMYPSMc3h/dWdcEGACP79jr Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="28413839"
+X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; d="scan'208";a="28413839"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Feb 2024 00:43:31 -0800
+ 23 Feb 2024 00:43:35 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
-   d="scan'208";a="5731774"
+   d="scan'208";a="5731795"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa007.fm.intel.com with ESMTP; 23 Feb 2024 00:43:27 -0800
+ by fmviesa007.fm.intel.com with ESMTP; 23 Feb 2024 00:43:31 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Jonathan Cameron <jonathan.cameron@huawei.com>,
  Fan Ni <fan.ni@samsung.com>, Laurent Vivier <laurent@vivier.eu>,
@@ -53,10 +53,10 @@ To: Jonathan Cameron <jonathan.cameron@huawei.com>,
  Michael Tokarev <mjt@tls.msk.ru>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-trivial@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 2/7] hw/display/macfb: Fix missing ERRP_GUARD() in
- macfb_nubus_realize()
-Date: Fri, 23 Feb 2024 16:56:48 +0800
-Message-Id: <20240223085653.1255438-3-zhao1.liu@linux.intel.com>
+Subject: [PATCH v2 3/7] hw/mem/cxl_type3: Fix missing ERRP_GUARD() in
+ ct3_realize()
+Date: Fri, 23 Feb 2024 16:56:49 +0800
+Message-Id: <20240223085653.1255438-4-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240223085653.1255438-1-zhao1.liu@linux.intel.com>
 References: <20240223085653.1255438-1-zhao1.liu@linux.intel.com>
@@ -104,22 +104,20 @@ ERRP_GUARD():
 * Using it when it's not needed is safe, but please avoid cluttering
 * the source with useless code.
 
-But in macfb_nubus_realize(), @errp is dereferenced without
-ERRP_GUARD():
+But in ct3_realize(), @errp is dereferenced without ERRP_GUARD():
 
-ndc->parent_realize(dev, errp);
+cxl_doe_cdat_init(cxl_cstate, errp);
 if (*errp) {
-    return;
+    goto err_free_special_ops;
 }
 
-Here we check *errp, because the ndc->parent_realize(), as a
-DeviceClass.realize() callback, returns void. And since
-macfb_nubus_realize(), also as a DeviceClass.realize(), doesn't get the
-NULL @errp parameter, it hasn't triggered the bug that dereferencing the
-NULL @errp.
+Here we check *errp, because cxl_doe_cdat_init() returns void. And
+ct3_realize() - as a PCIDeviceClass.realize() method - doesn't get the
+NULL @errp parameter, it hasn't triggered the bug that dereferencing
+the NULL @errp.
 
 To follow the requirement of @errp, add missing ERRP_GUARD() in
-macfb_nubus_realize().
+ct3_realize().
 
 Suggested-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
@@ -132,21 +130,21 @@ v2:
  * Add the @errp dereference code in commit message to make review
    easier. (Markus)
 ---
- hw/display/macfb.c | 1 +
+ hw/mem/cxl_type3.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/hw/display/macfb.c b/hw/display/macfb.c
-index 418e99c8e18e..1ace341a0ff4 100644
---- a/hw/display/macfb.c
-+++ b/hw/display/macfb.c
-@@ -714,6 +714,7 @@ static void macfb_nubus_set_irq(void *opaque, int n, int level)
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index e8801805b90f..a3b0761f843b 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -645,6 +645,7 @@ static DOEProtocol doe_cdat_prot[] = {
  
- static void macfb_nubus_realize(DeviceState *dev, Error **errp)
+ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
  {
 +    ERRP_GUARD();
-     NubusDevice *nd = NUBUS_DEVICE(dev);
-     MacfbNubusState *s = NUBUS_MACFB(dev);
-     MacfbNubusDeviceClass *ndc = NUBUS_MACFB_GET_CLASS(dev);
+     CXLType3Dev *ct3d = CXL_TYPE3(pci_dev);
+     CXLComponentState *cxl_cstate = &ct3d->cxl_cstate;
+     ComponentRegisters *regs = &cxl_cstate->crb;
 -- 
 2.34.1
 
