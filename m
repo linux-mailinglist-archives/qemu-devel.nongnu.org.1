@@ -2,64 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5D87861538
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 16:08:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7142686156C
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 16:22:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdX8A-0002Pi-6J; Fri, 23 Feb 2024 10:06:30 -0500
+	id 1rdXLw-0002Tt-Ld; Fri, 23 Feb 2024 10:20:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdX1D-0004Tf-Gg
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 09:59:19 -0500
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ id 1rdX9d-00043I-02
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 10:08:02 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdX19-000789-RD
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 09:59:18 -0500
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-563b7b3e3ecso1167348a12.0
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 06:59:15 -0800 (PST)
+ id 1rdX9X-000091-Aw
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 10:08:00 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-5654f700705so1179871a12.1
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 07:07:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708700354; x=1709305154; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708700872; x=1709305672; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YhchQYK3xHNaMo+pI6y4G3x/L4qt4KFgd4CPdCCxneo=;
- b=dK2KRFdBLHo5vuGIVaBi9vijbfPNjO/GrFBffUEqjuQHxj75rtfGtrGWPWStlzcO+e
- s/mTvyImMset+71UiOpO0a/UGkOan0PwUFvtiNfyzoyFCe9DClt4cH5FZj57ULeLVJbr
- ISMvok6XRxi8zbYXVUp5xeO0JhzgH3fMVChrhTYUbLMlCgtFxMXSIaPHFujwkx4a7d/4
- INbXksuejfuOMgvV2uE8ieRT/N+u+qW58ZDzCrgOevi+QZt8XAth2mz9RGKVMlIqnXVW
- Fuy59xwBzT9s2Q1XAXeGrESDHR2/EPLl47VsHmk1sv27gOOLu39pz7BSXMIkAs9hfNba
- Ughw==
+ bh=oIv1Gk06z9tD/JisRcZsFGEjcZYehPqjDSC/Xnt5HDE=;
+ b=Qoe//JRjwV6wk5fUAyiqD5ayaZDoLHEec8lq43e+5yBAWlAIewzhP6a7KAYcyo4HvZ
+ oz8Xq3P7LPzV7WA2MPrThZHWsNw6JV+S0sSkeX2C5xx2MpOHvwYJHX7agWTsZKB6CubE
+ MN93nM1G1tQOHsubpcmAYhu1eeLaqiJ+3hqW3Cx0JTQ2Igt0IjLq7/Z4/l36snT+Y74r
+ zGy5IYX28UQx1QVRrQw8vttgdVQVHsy5kNbYsJ+Y7ITCH0Ud/Sh5j+ysCwVeEZN2WSOK
+ XS+GdqDo303qqz/acaR8E7xIRqVtwW0yDSDbyRMKBtrp/B9KiodS4LtmXeGKPTQOeXy5
+ CEkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708700354; x=1709305154;
+ d=1e100.net; s=20230601; t=1708700872; x=1709305672;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YhchQYK3xHNaMo+pI6y4G3x/L4qt4KFgd4CPdCCxneo=;
- b=aeOTBblMuG+62GowHvEJen/7NEVPyUcjOK+651VNUy6wKtuNZZxP7V3ZTVcv4+5nZQ
- ImcBM8T33k4zpjUlKNO6904ElSgpEe6k0asame7xinMX4LY+t+AI5ZyrMSnrVAJNHsOB
- JXgLWildYiIJ+wR3q3I+aXkcwHRCgcjhT7i/E9SUsHTwNJvQj6MOCPcSQbDCOBazN3Dj
- +pRyWq3R/H9uTT5hx78IrfsRClSSL0+qJ7Wx74CojXVu2M/hlnfA07wuYDPPGl9RbwBe
- xbPWWr3elEHRRmx2fZe3gJ+8a1uZ+rnVRsBE99IEcsGVoyY8T0TxKJiFcsgmriUUNUXx
- HqtA==
-X-Gm-Message-State: AOJu0Yzxj/XZIAfmOZLY8qE+TlArZWQ5/BclCpguK0IGBzQwhWbtBtzy
- JOfIfGeiIZet7oBnvYw7fExnBERpnkahkNXKaAWSkwIc/ruAF/4NWc7NHHQ7bgXT9vWBi+FaybO
- Ces8I7JJXALdjCuh8fsv6GXGwECvv+A1qLQi2CYz9LajE/LTc
-X-Google-Smtp-Source: AGHT+IHt2OdYGgf5/dzBNwVZGuXgPykrx82wvAuewiT96fZ52vJPNNfNSoDtKjdBSCJZOo6mJ1TYhXFJo92jb60l29s=
-X-Received: by 2002:aa7:d297:0:b0:563:ccd1:26bd with SMTP id
- w23-20020aa7d297000000b00563ccd126bdmr54907edq.2.1708700353897; Fri, 23 Feb
- 2024 06:59:13 -0800 (PST)
+ bh=oIv1Gk06z9tD/JisRcZsFGEjcZYehPqjDSC/Xnt5HDE=;
+ b=YgmHWqv+CKF6Ir1QbixNYmbT17PV6VWXsLPezwjSZPMK+Yw5mUXH4AaImvcC3tunjt
+ yVXIO6P1km8MMNyBAnMIQwmqI78vYQqor41+I57SdKEegtk/yihTbnPmAj6V+aSrJLAZ
+ MYmUHvgDjRhDu1YgaJjsbr9xZfqrMzg05/s/1GOzzJAgFYDjso9vUwJzs2VFyPMz87Dx
+ iYVA7saMKb7YqJVqAnT9n9evAiYOnWBtdt6tmBtSwK2miw1nvZ5kW+2v7yiIJl5hostz
+ CuRzfPyp+wjUy1YsJ4wZKtrmD37JzNo5swkkn6Tc0/Ln6M785fgZz88dlJhRPwJLUaQW
+ o6GA==
+X-Gm-Message-State: AOJu0YwOwI3c84zImgUHtpmS4WU7r72roEA74RZbD2zO5IcIarUaHMP4
+ coHhyOFqp1HlVrTMdjp0PpGmA9kkIKuPbeeUYhJnuy4+oUnNBGlNdhr2be7bVui7+o64eZQNty1
+ q7i9F6TFAPbDIf6vSKgTuUFT2KCKme/EaJE+LQQ==
+X-Google-Smtp-Source: AGHT+IEdXSLypu3BBsI7G1VNCkZwMFrDMF4KClpNbM4D6DySkJMllARArp6r/BF5+W0CpbqBarogDJLG0sJ/dtXhHW8=
+X-Received: by 2002:aa7:d912:0:b0:565:6c31:9a47 with SMTP id
+ a18-20020aa7d912000000b005656c319a47mr88048edr.39.1708700872202; Fri, 23 Feb
+ 2024 07:07:52 -0800 (PST)
 MIME-Version: 1.0
 References: <20240219200908.49551-1-arnaud.minier@telecom-paris.fr>
- <20240219200908.49551-7-arnaud.minier@telecom-paris.fr>
-In-Reply-To: <20240219200908.49551-7-arnaud.minier@telecom-paris.fr>
+In-Reply-To: <20240219200908.49551-1-arnaud.minier@telecom-paris.fr>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 23 Feb 2024 14:59:03 +0000
-Message-ID: <CAFEAcA_B=soMv78uDsDv-F5-0XQWDXfUr-i0iTUJHr0=VHmvkA@mail.gmail.com>
-Subject: Re: [PATCH v5 6/8] Add write protections to CR register
+Date: Fri, 23 Feb 2024 15:07:40 +0000
+Message-ID: <CAFEAcA9Lhw3KLEKwra86JskDrNgvi8N91efTH1aZO=YTHUknAA@mail.gmail.com>
+Subject: Re: [PATCH v5 0/8] Add device STM32L4x5 RCC
 To: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, 
  Laurent Vivier <lvivier@redhat.com>,
@@ -68,8 +67,8 @@ Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
  Alistair Francis <alistair@alistair23.me>, Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,105 +91,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 19 Feb 2024 at 20:16, Arnaud Minier
+On Mon, 19 Feb 2024 at 20:09, Arnaud Minier
 <arnaud.minier@telecom-paris.fr> wrote:
 >
-> Add write protections for the fields in the CR register.
-> PLL configuration write protections (among others) have not
-> been handled yet. This is planned in a future patch set.
-
-Can you make sure you include a suitable prefix (eg
-"hw/misc/stm32l4x5_rcc: ") at the front of patch subjects, please?
-
+> This patch adds the STM32L4x5 RCC (Reset and Clock Control) device and is=
+ part
+> of a series implementing the STM32L4x5 with a few peripherals.
 >
-> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-> Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-> ---
->  hw/misc/stm32l4x5_rcc.c | 164 ++++++++++++++++++++++++++++------------
->  1 file changed, 114 insertions(+), 50 deletions(-)
+> Due to the high number of lines, I tried to split the patch into several =
+independent commits.
+> Each commit compiles on its own but I had to add temporary workarounds in=
+ intermediary commits to allow them to compile even if some functions are n=
+ot used. However, they have been removed once the functions were used. Tell=
+ me if this is ok or if I should remove them.
 >
-> diff --git a/hw/misc/stm32l4x5_rcc.c b/hw/misc/stm32l4x5_rcc.c
-> index a3b192e61b..198c6238b6 100644
-> --- a/hw/misc/stm32l4x5_rcc.c
-> +++ b/hw/misc/stm32l4x5_rcc.c
-> @@ -346,9 +346,47 @@ static void rcc_update_irq(Stm32l4x5RccState *s)
->      }
->  }
->
-> -static void rcc_update_cr_register(Stm32l4x5RccState *s)
-> +static void rcc_update_msi(Stm32l4x5RccState *s, uint32_t previous_value=
-)
-> +{
-> +    uint32_t val;
-> +
-> +    static const uint32_t msirange[] =3D {
-> +        100000, 200000, 400000, 800000, 1000000, 2000000,
-> +        4000000, 8000000, 16000000, 24000000, 32000000, 48000000
-> +    };
-> +    /* MSIRANGE and MSIRGSEL */
-> +    val =3D extract32(s->cr, R_CR_MSIRGSEL_SHIFT, R_CR_MSIRGSEL_LENGTH);
+> Also, the tests are not very exhaustive for the moment. I have not found =
+a way to test the clocks' frequency from the qtests, which limits severely =
+the exhaustiveness of the tests.
 
-registerfields.h provides macros for "extract a named field", so you
-can write this
-    val =3D FIELD_EX32(s->cr, CR, MSIRGSEL);
+Where you have a device connected to an output clock that produces some
+useful behaviour dependent on the clock frequency it is given (eg if
+it is a timer device that has a timer count register you can read or
+which will fire an interrupt or set a status bit after a certain time),
+you can do something like:
+ * configure the RCC for a given frequency
+ * advance the simulation time with clock_step()
+ * check that the device connected to that clock has changed
+   in the way you expect it to
 
-> +    if (val) {
-> +        /* MSIRGSEL is set, use the MSIRANGE field */
-> +        val =3D extract32(s->cr, R_CR_MSIRANGE_SHIFT, R_CR_MSIRANGE_LENG=
-TH);
+But you're right that we don't have any handy way to look specifically
+at the outputs of a clock-controller to check the frequency they're set to.
+It would probably be possible to add one, but we'd need to enhance
+the qtest protocol to add a "for the Clock specified by this QOM path,
+return the period it's currently set to".
 
-and these as val =3D extract32(s->cr, CR, MSIRANGE)
-and so on.
-
-> +    } else {
-> +        /* MSIRGSEL is not set, use the MSISRANGE field */
-> +        val =3D extract32(s->csr, R_CSR_MSISRANGE_SHIFT, R_CSR_MSISRANGE=
-_LENGTH);
-> +    }
-> +
-> +    if (val < ARRAY_SIZE(msirange)) {
-> +        clock_update_hz(s->msi_rc, msirange[val]);
-> +    } else {
-> +        /*
-> +         * There is a hardware write protection if the value is out of b=
-ound.
-> +         * Restore the previous value.
-> +         */
-> +        s->cr =3D (s->cr & ~R_CSR_MSISRANGE_MASK) |
-> +                (previous_value & R_CSR_MSISRANGE_MASK);
-> +    }
-> +}
-> +
-
-> -    /* HSEON and update HSERDY */
-> +    /*
-> +     * HSEON and update HSERDY.
-> +     * HSEON cannot be reset if the HSE oscillator is used directly or
-> +     * indirectly as the system clock.
-> +     */
->      val =3D extract32(s->cr, R_CR_HSEON_SHIFT, R_CR_HSEON_LENGTH);
-> -    s->cr =3D (s->cr & ~R_CR_HSERDY_MASK) |
-> -            (val << R_CR_HSERDY_SHIFT);
-> -    if (val) {
-> -        clock_update_hz(s->hse, s->hse_frequency);
-> -        if (s->cier & R_CIER_HSERDYIE_MASK) {
-> -            s->cifr |=3D R_CIFR_HSERDYF_MASK;
-> +    if (extract32(s->cfgr, R_CFGR_SWS_SHIFT, R_CFGR_SWS_LENGTH) !=3D 0b1=
-0 &&
-> +        current_pll_src !=3D RCC_CLOCK_MUX_SRC_HSE) {
-> +        s->cr =3D (s->cr & ~R_CR_HSERDY_MASK) |
-> +                (val << R_CR_HSERDY_SHIFT);
-> +        if (val) {
-> +            clock_update_hz(s->hse, s->hse_frequency);
-> +            if (s->cier & R_CIER_HSERDYIE_MASK) {
-> +                s->cifr |=3D R_CIFR_HSERDYF_MASK;
-> +            }
-> +        } else {
-> +            clock_update_hz(s->hse, 0);
-
-As I mentioned earlier, please avoid clock_update_hz() for
-clock calculations if possible.
-
-thanks
 -- PMM
 
