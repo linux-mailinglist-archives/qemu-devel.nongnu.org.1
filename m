@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25720860D18
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 09:44:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4882860D1D
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 09:45:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdRA9-0003pM-1k; Fri, 23 Feb 2024 03:44:09 -0500
+	id 1rdRA8-0003o5-3D; Fri, 23 Feb 2024 03:44:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rdRA0-0003la-KT; Fri, 23 Feb 2024 03:44:02 -0500
+ id 1rdRA0-0003lb-RG; Fri, 23 Feb 2024 03:44:02 -0500
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rdR9x-0000Bk-Of; Fri, 23 Feb 2024 03:43:59 -0500
+ id 1rdR9z-0000BO-7B; Fri, 23 Feb 2024 03:44:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708677838; x=1740213838;
+ t=1708677839; x=1740213839;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=6V97dsmp4JAIBUgFfbzez7o/O5Yd5Mg3yF5DrdVp9Q8=;
- b=LYrd125rsjKyo0dRsUoemLhJvyaK3IWVEPDBc2rHoGT41XIGRwguXNGk
- Taw62Er00YbS6vD9IjBJkScFRxptQS2lyZPjq0V8mVEi9gX9fRsT9Kn/J
- O2XVmx4CaULHmjncOxu2g8MlFDP1leLcloei0xe5PNpf0ZCKzCVjJha6I
- +3puC3k2ls1oRCMqBgqaRn9150dAh2BfgXwP9WlAi3sv85WkMS4pV6//8
- fLtQEYkyyZya/yPSWrrI6JAUJ8a0SMnmpHuJr4N918ysvwqmWeNQRrwQy
- CFht5ncR+2bQNw1n65xlJjhCxt05gcbeNeeq2MASiG68HWcnEYNfzNabn A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="28413893"
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; d="scan'208";a="28413893"
+ bh=MdIfh/jYydArR3D22MnTaJm9imdQCnDqtGGlbaFl++w=;
+ b=JUCrwAi9HXFCrFIz9r7w0S/eZ3/WNjN+rEZE1zrp/wNGnZuACQ3u3lu9
+ vzUEZeQklvzHG8TFgFhXEPqHwvmxox3OAHanNxY1mEbzQQ/uJAnHQjUoR
+ 74KDJZsGygFQjX/LBYUnwXzF9aPAy+G4zMx2N/Pqs0qcKYaM2wlvX1cFu
+ uTugGlgPv6dCErZZ1PncweFQeGdsxICjbXjEj0hF75hJRXGTYnL4jwsFU
+ OlRzEn9Mk25fb2V5HlYbiEMa1QTo5RL82SPvy2BQ+b08bBRHheQJGsZ/F
+ Q20iWGNVGy3hq7OUHl2g/V9mvjEwVMPsce5mkXitw+HHBmVdbLYuDvNlz w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="28413916"
+X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; d="scan'208";a="28413916"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Feb 2024 00:43:48 -0800
+ 23 Feb 2024 00:43:52 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
-   d="scan'208";a="5731867"
+   d="scan'208";a="5731881"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa007.fm.intel.com with ESMTP; 23 Feb 2024 00:43:44 -0800
+ by fmviesa007.fm.intel.com with ESMTP; 23 Feb 2024 00:43:48 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Jonathan Cameron <jonathan.cameron@huawei.com>,
  Fan Ni <fan.ni@samsung.com>, Laurent Vivier <laurent@vivier.eu>,
@@ -53,10 +53,10 @@ To: Jonathan Cameron <jonathan.cameron@huawei.com>,
  Michael Tokarev <mjt@tls.msk.ru>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-trivial@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 6/7] hw/vfio/iommufd: Fix missing ERRP_GUARD() in
- iommufd_cdev_getfd()
-Date: Fri, 23 Feb 2024 16:56:52 +0800
-Message-Id: <20240223085653.1255438-7-zhao1.liu@linux.intel.com>
+Subject: [PATCH v2 7/7] hw/intc: Check @errp to handle the error of
+ IOAPICCommonClass.realize()
+Date: Fri, 23 Feb 2024 16:56:53 +0800
+Message-Id: <20240223085653.1255438-8-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240223085653.1255438-1-zhao1.liu@linux.intel.com>
 References: <20240223085653.1255438-1-zhao1.liu@linux.intel.com>
@@ -87,63 +87,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-As the comment in qapi/error, dereferencing @errp requires
-ERRP_GUARD():
+IOAPICCommonClass implements its own private realize(), and this private
+realize() allows error.
 
-* = Why, when and how to use ERRP_GUARD() =
-*
-* Without ERRP_GUARD(), use of the @errp parameter is restricted:
-* - It must not be dereferenced, because it may be null.
-...
-* ERRP_GUARD() lifts these restrictions.
-*
-* To use ERRP_GUARD(), add it right at the beginning of the function.
-* @errp can then be used without worrying about the argument being
-* NULL or &error_fatal.
-*
-* Using it when it's not needed is safe, but please avoid cluttering
-* the source with useless code.
+Since IOAPICCommonClass.realize() returns void, to check the error,
+dereference @errp with ERRP_GUARD().
 
-But in iommufd_cdev_getfd(), @errp is dereferenced without ERRP_GUARD():
-
-if (*errp) {
-    error_prepend(errp, VFIO_MSG_PREFIX, path);
-}
-
-Currently, since vfio_attach_device() - the caller of
-iommufd_cdev_getfd() - is always called in DeviceClass.realize() context
-and doesn't get the NULL @errp parameter, iommufd_cdev_getfd()
-hasn't triggered the bug that dereferencing the NULL @errp.
-
-To follow the requirement of @errp, add missing ERRP_GUARD() in
-iommufd_cdev_getfd().
-
-Suggested-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
----
-Suggested by credit:
- Markus: Referred his explanation about ERRP_GUARD().
 ---
 v2:
- * Add the @errp dereference code in commit message to make review
-   easier. (Markus)
+ * Add the missing ERRP_GUARD(). (Markus)
+ * Move this single patch into @errp fixing series. (Micheal)
 ---
- hw/vfio/iommufd.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/intc/ioapic_common.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 9bfddc136089..7baf49e6ee9e 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -116,6 +116,7 @@ static void iommufd_cdev_unbind_and_disconnect(VFIODevice *vbasedev)
+diff --git a/hw/intc/ioapic_common.c b/hw/intc/ioapic_common.c
+index cb9bf6214608..efbe6958c8d7 100644
+--- a/hw/intc/ioapic_common.c
++++ b/hw/intc/ioapic_common.c
+@@ -152,6 +152,7 @@ static int ioapic_dispatch_post_load(void *opaque, int version_id)
  
- static int iommufd_cdev_getfd(const char *sysfs_path, Error **errp)
+ static void ioapic_common_realize(DeviceState *dev, Error **errp)
  {
 +    ERRP_GUARD();
-     long int ret = -ENOTTY;
-     char *path, *vfio_dev_path = NULL, *vfio_path = NULL;
-     DIR *dir = NULL;
+     IOAPICCommonState *s = IOAPIC_COMMON(dev);
+     IOAPICCommonClass *info;
+ 
+@@ -162,6 +163,9 @@ static void ioapic_common_realize(DeviceState *dev, Error **errp)
+ 
+     info = IOAPIC_COMMON_GET_CLASS(s);
+     info->realize(dev, errp);
++    if (*errp) {
++        return;
++    }
+ 
+     sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->io_memory);
+     ioapic_no++;
 -- 
 2.34.1
 
