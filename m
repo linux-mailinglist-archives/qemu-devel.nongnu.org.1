@@ -2,73 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0127861341
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 14:49:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF63E8613A0
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 15:09:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdVuj-0001zK-Dq; Fri, 23 Feb 2024 08:48:33 -0500
+	id 1rdWDr-0003ZD-Rg; Fri, 23 Feb 2024 09:08:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdVsM-0007o7-9c
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 08:46:06 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1rdVv1-0002GU-PJ
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 08:48:52 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdVsH-0007Vl-4W
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 08:46:06 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-5643ae47cd3so1002392a12.3
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 05:46:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708695958; x=1709300758; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=sJk7csTCqjXdjH4hGqlv98RKvqueNLyFlM6+zsyWkog=;
- b=pe6kYM8se6a7KoqcmgrrpIerjNyDP8pcvxxerXB8IWneAa9qvxgyzVWBf1S15jHior
- rwDH/EuY3E/EIYvQ9/izLjZB4jIm5WsCeK3nTFGuClDkT9565UsnxQnWtNNiSgj7ErtS
- IOXZFLKzFv6styuz7jti05+4zXoMGajnpdwvJv7Z0MddZ+RiZQK6UpVIWuyRI/pYoKXB
- ebZcgmedNoEStq24M8eN1LTBwNeSCg9GVdqSP/KdkNgysLDVtqa+uYGBi0VEOa3Zsv4P
- UlEg7aLElA9FF6eDOTz4/QQZoBgIfPtxuoC+bAgS6YIxHzbrCgZyrV3RHspiUjMnjmnQ
- OP3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708695958; x=1709300758;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=sJk7csTCqjXdjH4hGqlv98RKvqueNLyFlM6+zsyWkog=;
- b=BN7N5xsUn2YQ7K9uAYPGoHp8LwPUiZtgyVw1E2a6At2eqZCJgbhtsQeoQzGf5EXlyx
- GNOo2f4JhZFi4vnhpZJWipMIaUM9I2i2BJHIq8elYnnEjEWyARfk/95nhXCrn4U9W6OU
- G/uoF2wZXD1ki1yuuhuSCLAwlgCCZyro50Y5sMLTMfiGlPED+sm9keBMbs46BacxyG6g
- unbAx2gheutKIknHOk4t/OxiePqO66+RzXm/l2/piC9Ln727kOOsbwHkJsGhPY8GpNE6
- 9LAfjFaZcU+Lr3/gG7EqKhwr8W/Jigp4T6aMtPENrj6oLX4/s4EqL4e8DuSyVLC+DqwU
- dZ/A==
-X-Gm-Message-State: AOJu0YwjBlbaIghrH9on2vfgql/JmApP1ylOnMRIvpkZNvbdWKzGWpgC
- BDN7ZGPR/o1Fh+iiVajT31k504iVr4Q83fsNeDM8qMllhb00QPYncnmveNPAc2OOKzYc15Esdex
- DMOmzO4qQvxdtkar8rqaaVpj4n0rAvJOPkKGMgw==
-X-Google-Smtp-Source: AGHT+IFpC2geouvZG5vinc64bb2KOlrM5zb3AoMyn8matytSFIADt9K5UAjUSWxwH/gDoTnPHbhHTecfiIzJZpSJx7I=
-X-Received: by 2002:aa7:d958:0:b0:565:4ff4:56bd with SMTP id
- l24-20020aa7d958000000b005654ff456bdmr1403885eds.15.1708695957590; Fri, 23
- Feb 2024 05:45:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1rdVv0-0007pZ-1d
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 08:48:51 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 3C2E621228;
+ Fri, 23 Feb 2024 13:48:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1708696126; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=w4nMuBBmidA/+rwVLIkJYi8NHFXTXlngsc2OgvHtFdY=;
+ b=tqcI7BobCLIdLoTFhV5gtrulu2Oo6thGtgRG1KUDAy/+FbtUcVf6tPSMlu9I0zbTWLZGnu
+ QzYiLGbBNyorvgLQhquIl5ulazKtnE/HM97k6Ekah93lrt1ZT3CohtG94TawRLl+lkjc1v
+ YFCN6A4JiNQcKhIhNd8WWVTpVeI74Qc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1708696126;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=w4nMuBBmidA/+rwVLIkJYi8NHFXTXlngsc2OgvHtFdY=;
+ b=JeiJLz2NOTAWigJTx6vdczj5Ky2gir31DJc3mEwX3+Jw9ekDVMSUMcrNu4VnVJdi+KebOC
+ FXKCssGHVQKZu1DQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1708696126; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=w4nMuBBmidA/+rwVLIkJYi8NHFXTXlngsc2OgvHtFdY=;
+ b=tqcI7BobCLIdLoTFhV5gtrulu2Oo6thGtgRG1KUDAy/+FbtUcVf6tPSMlu9I0zbTWLZGnu
+ QzYiLGbBNyorvgLQhquIl5ulazKtnE/HM97k6Ekah93lrt1ZT3CohtG94TawRLl+lkjc1v
+ YFCN6A4JiNQcKhIhNd8WWVTpVeI74Qc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1708696126;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=w4nMuBBmidA/+rwVLIkJYi8NHFXTXlngsc2OgvHtFdY=;
+ b=JeiJLz2NOTAWigJTx6vdczj5Ky2gir31DJc3mEwX3+Jw9ekDVMSUMcrNu4VnVJdi+KebOC
+ FXKCssGHVQKZu1DQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F08EA132C7;
+ Fri, 23 Feb 2024 13:48:45 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id m1vmOD2i2GW9CQAAD6G6ig
+ (envelope-from <cfontana@suse.de>); Fri, 23 Feb 2024 13:48:45 +0000
+Message-ID: <7e972804-8490-bfe4-6cc3-b926a91244ed@suse.de>
+Date: Fri, 23 Feb 2024 14:48:45 +0100
 MIME-Version: 1.0
-References: <20240222204323.268539-1-richard.henderson@linaro.org>
-In-Reply-To: <20240222204323.268539-1-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 23 Feb 2024 13:45:46 +0000
-Message-ID: <CAFEAcA8jChwScfQikL+0wxHJgdnLz8_Ed-RKmZ4-UFMhWShkqA@mail.gmail.com>
-Subject: Re: [PULL 00/39] tcg and linux-user patch queue
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH v4 00/34] migration: File based migration with multifd and
+ fixed-ram
+Content-Language: en-US
+To: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com
+References: <20240220224138.24759-1-farosas@suse.de> <ZdgKJgxUqb1DrzRt@x1n>
+From: Claudio Fontana <cfontana@suse.de>
+In-Reply-To: <ZdgKJgxUqb1DrzRt@x1n>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: -2.35
+X-Spamd-Result: default: False [-2.35 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-1.05)[87.72%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_FIVE(0.00)[5];
+ RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-0.997];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=cfontana@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.533,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,48 +120,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 22 Feb 2024 at 20:49, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> The following changes since commit 6630bc04bccadcf868165ad6bca5a964bb69b067:
->
->   Merge tag 'pull-trivial-patches' of https://gitlab.com/mjt0k/qemu into staging (2024-02-22 12:42:52 +0000)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20240222
->
-> for you to fetch changes up to a06efc2615a1283e139e35ae8a8875925766268f:
->
->   linux-user: Remove pgb_dynamic alignment assertion (2024-02-22 09:04:05 -1000)
->
-> ----------------------------------------------------------------
-> tcg/aarch64: Apple does not align __int128_t in even registers
-> accel/tcg: Fixes for page tables in mmio memory
-> linux-user: Remove qemu_host_page_{size,mask}, HOST_PAGE_ALIGN
-> migration: Remove qemu_host_page_size
-> hw/tpm: Remove qemu_host_page_size
-> softmmu: Remove qemu_host_page_{size,mask}, HOST_PAGE_ALIGN
-> linux-user: Split and reorganize target_mmap.
-> *-user: Deprecate and disable -p pagesize
-> linux-user: Allow TARGET_PAGE_BITS_VARY
-> target/alpha: Enable TARGET_PAGE_BITS_VARY for user-only
-> target/arm: Enable TARGET_PAGE_BITS_VARY for AArch64 user-only
-> target/ppc: Enable TARGET_PAGE_BITS_VARY for user-only
-> linux-user: Remove pgb_dynamic alignment assertion
->
-> ----------------------------------------------------------------
+On 2/23/24 03:59, Peter Xu wrote:
+> On Tue, Feb 20, 2024 at 07:41:04PM -0300, Fabiano Rosas wrote:
+>> Latest numbers
+>> ==============
+>>
+>> => guest: 128 GB RAM - 120 GB dirty - 1 vcpu in tight loop dirtying memory
+>> => host: 128 CPU AMD EPYC 7543 - 2 NVMe disks in RAID0 (8586 MiB/s) - xfs
+>> => pinned vcpus w/ NUMA shortest distances - average of 3 runs - results
+>>    from query-migrate
+>>
+>> non-live           | time (ms)   pages/s   mb/s   MB/s
+>> -------------------+-----------------------------------
+>> file               |    110512    256258   9549   1193
+>>   + bg-snapshot    |    245660    119581   4303    537
+> 
+> Is this the one using userfault?  I'm surprised it's much slower when
+> enabled; logically for a non-live snapshot it should take similar loops
+> like a normal migration as it should have zero faults, then it should be
+> similar performance.
+> 
+>> -------------------+-----------------------------------
+>> fixed-ram          |    157975    216877   6672    834
+>>   + multifd 8 ch.  |     95922    292178  10982   1372
+>>      + direct-io   |     23268   1936897  45330   5666
+>> -------------------------------------------------------
+>>
+>> live               | time (ms)   pages/s   mb/s   MB/s
+>> -------------------+-----------------------------------
+>> file               |         -         -      -      - (file grew 4x the VM size)
+>>   + bg-snapshot    |    357635    141747   2974    371
+>> -------------------+-----------------------------------
+>> fixed-ram          |         -         -      -      - (no convergence in 5 min)
+>>   + multifd 8 ch.  |    230812    497551  14900   1862
+>>      + direct-io   |     27475   1788025  46736   5842
+>> -------------------------------------------------------
+> 
+> Also surprised on direct-io too.. that is definitely something tremendous.
+> 
 
-bsd-user fails to compile:
-https://gitlab.com/qemu-project/qemu/-/jobs/6241616724
+Awesome! Can't wait to have this available for our customers.
 
-../bsd-user/main.c:379:30: error: use of undeclared identifier 'arg';
-did you mean 'argv'?
-if (qemu_strtoui(arg, NULL, 10, &size) || size != want) {
-                 ^~~
+Ciao,
+
+Claudio
 
 
-
-thanks
--- PMM
 
