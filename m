@@ -2,81 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0EA0861AB0
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 18:53:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE0B1861B28
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 19:06:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdZjV-0002mh-5B; Fri, 23 Feb 2024 12:53:13 -0500
+	id 1rdZvX-00051V-8L; Fri, 23 Feb 2024 13:05:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rdZYU-0002lu-8r
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 12:41:50 -0500
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rdZak-0003AO-Nx
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 12:44:10 -0500
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rdZYS-00049c-Ij
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 12:41:50 -0500
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a3eafbcb1c5so143177266b.0
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 09:41:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rdZai-0004dD-MR
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 12:44:10 -0500
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-a3f5808b0dfso152489166b.1
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 09:44:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708710107; x=1709314907; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1708710247; x=1709315047; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=VeQzTf1HI27j/S4e2f74MNw0Ba1I3PGZ0n6sLFJ50k0=;
- b=CEQ7ynGCndRbCCkGwzDu2iXn7AXrjiHLky56hvCvq+AvtwpKxGRPPntB95RegfembF
- IvwuC5N5V/a0M9+CGZ/YlnaNhPoPMER7kGcNCv94hn4kdNXtkDZUthOaRUV37YO34VLh
- XlP0wKhO16xv9H9Wy5MgEOlRXP4FYWWZ5jmca4L96GLaefdJWVEp4E2m85HcqOMYe5pr
- QlDPOnXzaHcN7O+HuQlPwQECG9rAe8jYsJl+O7ir3NtbOnF9DFfVmZhk6rtr61G5VcTe
- g/Zxn9xA7OXLBCHwo1FrVPzmRLjE72LKju4BzmvvHxd///eDMa+lbPexLTCAv00ljtJw
- 6zCQ==
+ bh=6af/0QDU+kWNVY1p8K0vhdMQDrlBcIdcr0+mt/stI2c=;
+ b=OMCmJVbBJ8Iw2V/VcfkPBR5V/wmsAOYObxwBZ5+6/mu9NkTlItF44R5BsuscfXhNPR
+ oHy5Nr/duq/7y0vDwfYd/W8OeKVZjH/uYtrg24dXLIQ9LFhw0pp4PYcP+oKgAVEQDDxd
+ 2oaxbIYJfHGApEXvkjGJfmdA+inxhoRhgXC+6fy7YOaLS2dzWl7h/zStl9UnNpfbtowe
+ d2IHn2Y7IFLUkNPqJ/bswY8R8mdEn834eNBD2ejP9O19Krpsj7+0qn1r2a2UGfsTH4SB
+ 2Ajh14o2bc86LNfQUEN1kPSSJPfKYTpTz8DjU9m/c5N8fSI2JEjaomZd+nxB0TjDUF7x
+ ugrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708710107; x=1709314907;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1708710247; x=1709315047;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VeQzTf1HI27j/S4e2f74MNw0Ba1I3PGZ0n6sLFJ50k0=;
- b=HmIXExlIqfJfJntqM9WFYIhIOXIGTef1/F7e61fE7Gby+Ndk8UGy5MT5j5WbKcRDUS
- SyYu6oyePpPvNNhukHWKItKFpGjwUBPYMwe6ibv7wDNMBwv4ypH01doEbu7y8cSOo9eq
- M5bWjr6cyf+81qi7ZKVncnTvo9eyUFXvyVHErJVUHAjAaoNn/tvETMDgu7PVzw4UWQa0
- N6ldr2RhdWLM0CMO10a5y2PT8ViPt49QQeUyeHhk8Hh0CE3kkP6xoh3Lnqt/L52sSGzR
- hFwRrWNQObbDDTd7BV//sNkdm9CBcAUQiKxLVGge0Z2OU0sdSziq9X51aSWbmW3pSlUR
- +gpg==
+ bh=6af/0QDU+kWNVY1p8K0vhdMQDrlBcIdcr0+mt/stI2c=;
+ b=JZ2Os9dRjM9U/vjSu8JrD1IGH8eRVKBJyIq+qYX4M2jleOoPA7c7UKTIgGEBlHDIgf
+ UMkYDWLkPBjdWD7detyY7ks8AU7KO+Y2VYYqf4siOT2JWcseIA+pK1616cryf9f+6Im6
+ Hy32VTiRtnOs/vZe+XFkc+xhtAeUX/sK6mdbhUgHGlKgzNHZJFn+COfqTZUcS2xb5rw2
+ NpTVZrjxEbfmbxGc5Vao17e9aRO23GwbhBysEB0U1D3caetPV4f3k2HU24+7H2IFoNpF
+ QllXGm1fXoYG+/pOnl3684zQJM/f+4n7GSkw0mizdWywNcGTL8XGf3SA9HUsEND8ev+L
+ XHqA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU0SJ1loMR2PHHbkLF8W0/t8hlk7L/qzRz45uAdzTR5ibdltFhO1hXkPmjiSDds8jIZsfOARbfmuHLiwXoCIv8PWnF0knE=
-X-Gm-Message-State: AOJu0YxzyLjC27F5mv4TYN4ppztoxH7n7LECxaIwbR2Wyz//H61B6EG/
- 9HoFjmUZWhWAMctF9Oge1ZoX6KrfS4MLmadt8Ta7yEs61BJ+WIiTezUOhDiUOQE=
-X-Google-Smtp-Source: AGHT+IGD+WDVvPlW8d5Gj/Xu4dx3qa1hFd32oG5cuU8SEccC9VWRmwh1dE0iEPOMf/kbY3vXvwO71Q==
-X-Received: by 2002:a17:906:19c5:b0:a3f:9d69:3643 with SMTP id
- h5-20020a17090619c500b00a3f9d693643mr304788ejd.32.1708710106855; 
- Fri, 23 Feb 2024 09:41:46 -0800 (PST)
+ AJvYcCUIGqH49QIz/1n/XLHNp0pTiAlpzQ9tved+O3ATtOzjjqQWOJPKEPXlUVWxZGXHWpup/PYFJTd+riN3JfXo0GSyYJGSwkg=
+X-Gm-Message-State: AOJu0YxAiOY5r2gg+o//ojSRYrPnx24yXAVsbgAmkEeWKlLCZbFPcEzL
+ 01rmF5yidPjqqnLyy9iH5+2sxKj3UHKmz1P0Op3709QYT1OgIEyTI1iIiz4YY9o=
+X-Google-Smtp-Source: AGHT+IGjt19ZafItpn9Wg+pZr1cpOViXcrUcE2ULc0fqgTEGua6O/Y76Slzd4Dsd74sScngBm71JxQ==
+X-Received: by 2002:a17:906:260d:b0:a3e:5de6:701d with SMTP id
+ h13-20020a170906260d00b00a3e5de6701dmr348222ejc.50.1708710247297; 
+ Fri, 23 Feb 2024 09:44:07 -0800 (PST)
 Received: from [192.168.69.100] (xbn44-h02-176-184-35-109.dsl.sta.abo.bbox.fr.
  [176.184.35.109]) by smtp.gmail.com with ESMTPSA id
- rf20-20020a1709076a1400b00a3f2bf468b9sm2937337ejc.173.2024.02.23.09.41.45
+ cx7-20020a170907168700b00a3f1bf036d5sm3258323ejd.16.2024.02.23.09.44.05
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 23 Feb 2024 09:41:46 -0800 (PST)
-Message-ID: <ed0f8248-81d0-41a7-a8a5-05fe0575e2c4@linaro.org>
-Date: Fri, 23 Feb 2024 18:41:44 +0100
+ Fri, 23 Feb 2024 09:44:06 -0800 (PST)
+Message-ID: <ca9faf4d-e5ee-479e-88f7-043f6bb8cea6@linaro.org>
+Date: Fri, 23 Feb 2024 18:44:04 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V5 1/5] util: str_split
+Subject: Re: [PATCH v3 0/3] nubus: add nubus-virtio-mmio device
 Content-Language: en-US
-To: Steven Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>, Michael Roth
- <michael.roth@amd.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-References: <1708638470-114846-1-git-send-email-steven.sistare@oracle.com>
- <1708638470-114846-2-git-send-email-steven.sistare@oracle.com>
- <ac4a19b6-9290-4c97-bc7d-eabfef079895@linaro.org>
- <34d846ab-64e9-4fd4-8d99-62315a7c0f3b@oracle.com>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
+ qemu-devel@nongnu.org, elliotnunn@fastmail.com
+References: <20240111102954.449462-1-mark.cave-ayland@ilande.co.uk>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <34d846ab-64e9-4fd4-8d99-62315a7c0f3b@oracle.com>
+In-Reply-To: <20240111102954.449462-1-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,52 +93,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/2/24 15:01, Steven Sistare wrote:
-> On 2/23/2024 1:01 AM, Philippe Mathieu-Daudé wrote:
->> On 22/2/24 22:47, Steve Sistare wrote:
->>> Generalize hmp_split_at_comma() to take any delimiter string, rename
->>> as str_split(), and move it to util/strList.c.
->>>
->>> No functional change.
->>>
->>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
->>> ---
->>>    include/monitor/hmp.h  |  1 -
->>>    include/qemu/strList.h | 24 ++++++++++++++++++++++++
->>>    monitor/hmp-cmds.c     | 19 -------------------
->>>    net/net-hmp-cmds.c     |  3 ++-
->>>    stats/stats-hmp-cmds.c |  3 ++-
->>>    util/meson.build       |  1 +
->>>    util/strList.c         | 24 ++++++++++++++++++++++++
->>>    7 files changed, 53 insertions(+), 22 deletions(-)
->>>    create mode 100644 include/qemu/strList.h
->>>    create mode 100644 util/strList.c
->>
->>
->>> +#include "qapi/qapi-builtin-types.h"
->>> +
->>> +/*
->>> + * Split @str into a strList using the delimiter string @delim.
->>> + * The delimiter is not included in the result.
->>> + * Return NULL if @str is NULL or an empty string.
->>> + * A leading, trailing, or consecutive delimiter produces an
->>> + * empty string at that position in the output.
->>> + * All strings are g_strdup'd, and the result can be freed
->>> + * using qapi_free_strList.
->>
->> Note "qapi/qapi-builtin-types.h" defines:
->>
->>    G_DEFINE_AUTOPTR_CLEANUP_FUNC(strList, qapi_free_strList)
->>
->> Maybe mention we can also use:
->>
->>    g_autoptr(strList)
-> 
-> Thanks Philippe.  If we get to V6 for this series, I will mention this,
-> and also mention g_autoptr(GStrv) in the header comment for strv_from_strlist.
+On 11/1/24 11:29, Mark Cave-Ayland wrote:
 
-If there is no need for v6, do you mind sharing here what would be
-the resulting comment? Maybe Markus can update it directly...
-(assuming he takes your series).
+> Mark Cave-Ayland (3):
+>    nubus-device: round Declaration ROM memory region address to
+>      qemu_target_page_size()
+>    nubus.h: increase maximum Declaration ROM size from 128k to 1Mb
+>    nubus: add nubus-virtio-mmio device
 
+Thanks, series queued.
 
