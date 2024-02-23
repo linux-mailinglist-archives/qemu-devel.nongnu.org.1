@@ -2,91 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B518E8612FA
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 14:42:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8AFF86125A
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 14:13:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdVnu-0004jt-Co; Fri, 23 Feb 2024 08:41:30 -0500
+	id 1rdVLu-000439-Pm; Fri, 23 Feb 2024 08:12:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wj28.lee@gmail.com>)
- id 1rdUTV-0008Jk-Qa
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 07:16:21 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wj28.lee@gmail.com>)
- id 1rdUTO-0006EH-L1
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 07:16:21 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1dc1ff3ba1aso5603055ad.3
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 04:16:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708690572; x=1709295372; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
- :cc:subject:date:message-id:reply-to;
- bh=liGPk6TzyipF2EkGC5C5VT5uk5qnMjBqkU56Aj0oaVE=;
- b=TRVM3a076gaCe2AIB75bHoZ6708gdmSP0qn/tWyMfp38xbTu2AHlrHuvEi7wEfoou3
- xuC3srrxT7u2j7lHYT6FsGoGPdZbWT1nXvKBp1xXkFeNhCYGmh9zA2jXuXCLqY3tzP5p
- A4lNuF0st04Pro/TNCAL7NY2WKTlIE4rXlAKVca21+OiiVKvTdAgNa67jlkzVGVvrOTO
- uOy73xvDg6debeDpY9SLONjETNYSNxvy5JzXqecD9K7btXz0OxA1/eTykDef7HfYN0Ow
- Jq0z+IBvMlEsv1MlRvPvFusrhkDvvtn1wOqoKxCD6vLcoPazX1dQ4cYEqLtAILWA2+cY
- Bizw==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rdVJO-0002WY-2r
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 08:10:00 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rdVJM-0000BH-B5
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 08:09:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1708693795;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=qm/rBH9oLjW78fYs4V3sjoGNdUZeKsMBdZxY7URs6FA=;
+ b=duow8umLfEo/CzspKHxnyXdEuEYIURL6nL6yusDkoyfOmeooOTRfxlRsGgYwhkd4gDUck9
+ mNk5snC48kPDzFpJ09SUGweYnuVns+vEORVBlB4Faht48sZcR3yw6hVh3RnvWWh+0HdgVx
+ s9uWRxMBcW1W6uSh6dc72z/Nmu5jm0g=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-523-HQ4Yqp0hPguWtEYrip5iog-1; Fri, 23 Feb 2024 08:09:54 -0500
+X-MC-Unique: HQ4Yqp0hPguWtEYrip5iog-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-512a00a2629so317969e87.1
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 05:09:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708690572; x=1709295372;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:subject:from:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=liGPk6TzyipF2EkGC5C5VT5uk5qnMjBqkU56Aj0oaVE=;
- b=wtuk2klJPab7kkoygeBYepthXs1mDiaGoRSpMeDzC3vh709V6TdHENd26yrTjZqFrS
- UwWHTQMokdvLup5xnqEGPnR1u0hyMwkCO2iVyft2BIv7A9t8nejjzxyu+y2KOzLarVEi
- MOmY7GpXqilrgC7gvmP7DX/rlZeM8clA8FOju5gW26Gouoa5WXUaGBm/ZOh8mkL0dDQs
- WodyCNMC94zzLR4rSQoRlfRX/hKtnTtYTEBLvjLL/xtpO8PqDKqPhRZ/H0nWFuDq1HfZ
- 6T8ZSGGIQTnbZ5D5ALYKR6Q0xs9zBwQWa2p6Zt83InPPDZvnc4TnTFzn2Kn4oIopsurE
- 3wjA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWVrPiisnLXV66Ex0rLHuymKJU+GYmIF8/SD6hinuMyJeUd+uqxDLxh+PFfRl0J4ua0rTItKcWgFls5l6DGI6rIbRwABi0=
-X-Gm-Message-State: AOJu0Yw3PsUcUQi7yNQue3p8l0ccCLsUhvjvHGkvz5h+qpdgLCvX4Fxo
- VqW9epYqjwNHPxmXfqNkkWe+UY6uz3qxwjCBIrIZwsZxOVf6d0em
-X-Google-Smtp-Source: AGHT+IFU8YdKN/dHPvCC6fzGrj67uMLL5vUeoVjuOlk3cvj+Az3TprmEw2T/vXWIrEQQFf48CHLlgw==
-X-Received: by 2002:a17:903:2307:b0:1db:f1e2:84f4 with SMTP id
- d7-20020a170903230700b001dbf1e284f4mr2041534plh.38.1708690571879; 
- Fri, 23 Feb 2024 04:16:11 -0800 (PST)
-Received: from [192.168.0.9] ([121.137.152.114])
+ d=1e100.net; s=20230601; t=1708693791; x=1709298591;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qm/rBH9oLjW78fYs4V3sjoGNdUZeKsMBdZxY7URs6FA=;
+ b=mYF3Q/HZGK+kVVtWtuaMixQs18FERPycUeWjrTZLsrY9otZZmVJ5O8qNMZ0g3g9n5/
+ oixKLXeh33Y1G/ycCkJBasGSQ6hoK8LQtM+fLkbipnYXXQQmZTS0x9jBd0UCMKNuyyCi
+ XFW1KGUxVL64UwAwdA4LHwgo10BeRynvQbNnspwWkj0THVAb9kGMUJYgfwFpwlB+lYKI
+ Z/820FqlfClJaVFKIp6xOWtAYNRfbB+WCG2eyKbwmzaPycPKXMkUZ4rirTwgTlhIxtzW
+ Fatp4gdFgv7i0lX4QZNy08OXvJyTfwZfzdIljgiH4Yy0gsTPb1Jy2RiXqMz4YO+oTwkX
+ PCsA==
+X-Gm-Message-State: AOJu0YxLOwCI25FXORoTfN0/uX+UvOzM7RxCRQbDwDiwkdk78+/ViLiN
+ XaTquoY0FihTKfEtCjAJwTEP8TtP5rmnm6SUfZzu6t/wVkAomd7pfQ3PGG9l8fl9agrIO/YVmX+
+ n2/8quLsYAbMoFf6vRa9kVgThWyL9xPMnI3NirRrOIs3qlI8mjaCDVAOFQyj2ThE4guOFMk7E+V
+ CG2Yk2eqTJ9ivW2mUEQx4Wj5GGhacoY7j0ZZ0R
+X-Received: by 2002:ac2:5ded:0:b0:512:e506:1c66 with SMTP id
+ z13-20020ac25ded000000b00512e5061c66mr1298845lfq.26.1708693791666; 
+ Fri, 23 Feb 2024 05:09:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHug5z7o87JvVM8An8SYZxjHf5INd7edHZ6i6vSXGMpeT9r863lk07743L1mOx7OT1r/87i5w==
+X-Received: by 2002:ac2:5ded:0:b0:512:e506:1c66 with SMTP id
+ z13-20020ac25ded000000b00512e5061c66mr1298817lfq.26.1708693791127; 
+ Fri, 23 Feb 2024 05:09:51 -0800 (PST)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- g18-20020a170902c99200b001db6a228c3esm11432557plc.307.2024.02.23.04.16.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 23 Feb 2024 04:16:11 -0800 (PST)
-Message-ID: <4da6524a-8a30-4872-8168-441105e8f7b5@gmail.com>
-Date: Fri, 23 Feb 2024 21:16:06 +0900
+ f25-20020a19ae19000000b00512e6d0304dsm241879lfc.68.2024.02.23.05.09.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 23 Feb 2024 05:09:50 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org,
+	mcb30@ipxe.org
+Subject: [PATCH v2 0/7] target/i386: Fix physical address masking bugs
+Date: Fri, 23 Feb 2024 14:09:41 +0100
+Message-ID: <20240223130948.237186-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Wonjae Lee <wj28.lee@gmail.com>
-Subject: Re: [PATCH v4 09/10] hw/cxl/events: Add qmp interfaces to add/release
- dynamic capacity extents
-To: nifan.cxl@gmail.com, qemu-devel@nongnu.org
-Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
- gregory.price@memverge.com, ira.weiny@intel.com, dan.j.williams@intel.com,
- a.manzanares@samsung.com, dave@stgolabs.net, nmtadam.samsung@gmail.com,
- jim.harris@samsung.com, Fan Ni <fan.ni@samsung.com>
-References: <20240221182020.1086096-1-nifan.cxl@gmail.com>
- <20240221182020.1086096-10-nifan.cxl@gmail.com>
-Content-Language: en-US
-In-Reply-To: <20240221182020.1086096-10-nifan.cxl@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=wj28.lee@gmail.com; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 23 Feb 2024 08:35:47 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,70 +98,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024-02-22 오전 3:16, nifan.cxl@gmail.com wrote:
-> From: Fan Ni <fan.ni@samsung.com>
-> 
-> Since fabric manager emulation is not supported yet, the change implements
-> the functions to add/release dynamic capacity extents as QMP interfaces.
-> 
-> Note: we skips any FM issued extent release request if the exact extent
-> does not exist in the extent list of the device. We will loose the
-> restriction later once we have partial release support in the kernel.
-> 
+The address translation logic in get_physical_address() will currently
+truncate physical addresses to 32 bits unless long mode is enabled.
+This is incorrect when using physical address extensions (PAE) outside
+of long mode, with the result that a 32-bit operating system using PAE
+to access memory above 4G will experience undefined behaviour.
+Instead, truncation must be applied to the linear address.  Because
+this truncation is diffent between 32- and 64-bit modes, the series
+opts to split 32- and 64-bit modes to separate MMU indices, which is
+the simplest way to ensure that, for example, a kernel that runs both
+32-bit and 64-bit programs looks up the correct address in the
+(64-bit) page tables.
 
-[snip]
+Furthermore, when inspecting the code I noticed that the A20 mask is
+applied incorrectly when NPT is active.  The mask should not be applied
+to the addresses that are looked up in the NPT, only to the physical
+addresses.  Obviously no hypervisor is going to leave A20 masking on,
+but the code actually becomes simpler so let's do it.
 
-> +/* CXL r3.1 Table 8-50: Dynanic Capacity Event Record */
+Patches 1 and 2 fix cases in which the addresses must be masked,
+or overflow is otherwise invalid, for MMU_PHYS_IDX accesses.
 
-It needs a spell check. Dynamic.
+Patches 3 and 4 introduce separate MMU indexes for 32- and 64-bit
+accesses.
 
-...
+Patch 5 fixes the bug, by limiting the masking to the 32-bit MMU indexes.
 
-> +    switch (type) {
-> +    case DC_EVENT_ADD_CAPACITY:
-> +        break;
-> +    default:
-> +        break;
-> +    }
+Patches 6 and 7 further clean up the MMU functions to centralize
+application of the A20 mask and fix bugs in the process.
 
-Perhaps this switch statement has become unnecessary in the revision to 
-patch v4?
+Tested with kvm-unit-tests SVM tests and with an old 32-bit Debian image.
 
-...
+Paolo Bonzini (7):
+  target/i386: mask high bits of CR3 in 32-bit mode
+  target/i386: check validity of VMCB addresses
+  target/i386: introduce function to query MMU indices
+  target/i386: use separate MMU indexes for 32-bit accesses
+  target/i386: Fix physical address truncation
+  target/i386: remove unnecessary/wrong application of the A20 mask
+  target/i386: leave the A20 bit set in the final NPT walk
 
-> diff --git a/qapi/cxl.json b/qapi/cxl.json
-> index 8cc4c72fa9..19927629c7 100644
-> --- a/qapi/cxl.json
-> +++ b/qapi/cxl.json
+ target/i386/cpu.h                    | 46 +++++++++++++++++++-----
+ target/i386/cpu.c                    |  9 +++--
+ target/i386/tcg/sysemu/excp_helper.c | 52 +++++++++++++---------------
+ target/i386/tcg/sysemu/misc_helper.c |  3 ++
+ target/i386/tcg/sysemu/svm_helper.c  | 27 +++++++++++----
+ 5 files changed, 92 insertions(+), 45 deletions(-)
 
-[snip]
+-- 
+2.43.0
 
-> +##
-> +# @cxl-add-dynamic-capacity:
-> +#
-> +# Command to start add dynamic capacity extents flow. The device will
-> +# have to ackowledged the acceptance of the extents before they are usable.
-> +#
-> +# @path: CXL DCD canonical QOM path
-> +# @region-id: id of the region where the extent to add/release
-
-How about just using "add" instead of "add/release"?
-
-...
-
-> +##
-> +# @cxl-release-dynamic-capacity:
-> +#
-> +# Command to start release dynamic capacity extents flow. The host will
-> +# need to respond to indicate that it has released the capacity before it
-> +# is made unavailable for read and write and can be re-added.
-> +#
-> +# @path: CXL DCD canonical QOM path
-> +# @region-id: id of the region where the extent to add/release
-
-And here. Only "release"?
-
-
-Thanks,
-Wonjae
 
