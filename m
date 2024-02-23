@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B418616F3
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:07:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE0F861686
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 16:56:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdY2G-0000QF-6M; Fri, 23 Feb 2024 11:04:28 -0500
+	id 1rdXuT-0004oW-GZ; Fri, 23 Feb 2024 10:56:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXk8-0006p3-09; Fri, 23 Feb 2024 10:45:44 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1rdXk9-0006uJ-Lx; Fri, 23 Feb 2024 10:45:45 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXk6-0006gO-5t; Fri, 23 Feb 2024 10:45:43 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1d918008b99so3573125ad.3; 
- Fri, 23 Feb 2024 07:45:41 -0800 (PST)
+ id 1rdXk7-0006gU-G3; Fri, 23 Feb 2024 10:45:45 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1dc1e7c0e29so2609445ad.1; 
+ Fri, 23 Feb 2024 07:45:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708703140; x=1709307940; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708703142; x=1709307942; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9/uun2ht8z2zSr5QuOFbjyHW38BHeMwKID+9VW8Ltwg=;
- b=ABL1wszizwP9l6XqrMh31X2tLCf1i8N5nK2JtAGz//GhBI2KuXR0+k8Yg3piQJb7Dt
- KRTDkDEu+15I1IEpbhwz6vDhknV78CIjDkSiFnEIuGf28uV7sYmQagJimcGlTR6pNECY
- yxoo8eov7bMFpfQpuKRXSR/hIWW4CfRvMIq/b9rrD8/Le0BlNmVMI7i4kbBjNww/sjcb
- 4HaiHUU2V/+sRrGSTC0+DyUMfWFIKhD2PmR29Z/jBBwIbWmItPM6vsrhoxmW9cnG4EzC
- bM9FNPHIolQzYp6frzm3B+V3+kk2wP/Q/k5vgf++9WM8flZbIx/rh5sbQideDRaXopXE
- YoBg==
+ bh=qnb2MkOZFPUeH1yh62P5aTEWIUtL79vmsTCtISegskM=;
+ b=JP27ocIIitW01EgQRp6ktM9F0RIwdb1ZxMrCqXWAQWz/MisCYHrDYQNKr3Tz+4ClsI
+ Xkh20bzw2VjBCiubco16NV0tkwdAWBepI4/QQchV3cCbs1LV3V2j+h3EVYQOT/yfnghj
+ w3Pv5lZVMnJaG3XCSj13Iynw0x9MEH4YEAzvEetqBrAK+0trCewzIGZl9V8k1EKcbyC9
+ V1nj6w/M/2geXuJNhSjvx0fSDiSXf+khH2n9GPkB+IF9qgvKnKa6P2jgtLCtrNKWVAYY
+ 6ex50hAuytDQwpzSCSBv6ZTXud9rIeT+xWFMh0Te4w+0ESxBfvKDYC54H7MHNQ0iXUSK
+ xu4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708703140; x=1709307940;
+ d=1e100.net; s=20230601; t=1708703142; x=1709307942;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9/uun2ht8z2zSr5QuOFbjyHW38BHeMwKID+9VW8Ltwg=;
- b=oOVeblei2L+2IWTimcWYU+/BrO49+r0nxOjBXGcGRuKiQ9JhkWZsmCcATmaTEbN2Ob
- tRYXc1+xc9JpoylPnSZFUGayUEGybIc5ChXpBVOhXOEteMSi3Gi0tz+e5BMvtS8NOgoz
- VWYcyPogWPFl/LLNmMyD59WQvV85XAvZcnZIg+wu9hV0Z61gnAwdlPsWepyX+OraQcXZ
- cES1Nj9fZjhs+VnatY2PHgTKlxud6ioOXsRkSm7pJioYmL20cbWuWKG7TkUC9qXTOJAm
- dKvuukMH8P5pyBlFW9dZ2BfBKdhtfO+FrR6639Fsk9kvk/Xcnypx9cGTu9yLgQ2xdn66
- vxZw==
+ bh=qnb2MkOZFPUeH1yh62P5aTEWIUtL79vmsTCtISegskM=;
+ b=xCIlQpBmmLqHs+vtxN72Sn/KeLExXfBzyIdFOlVhwQaLAiTawTKtZe2d2GfSG8dLQs
+ WVRZnYmLCofysqUC9Pq/puDMhedTIyR3VAZXBqVS0hZ0sZ6yGW/pHEfy+2bDwlXgU9TZ
+ MQHrya/QhV+aLPuxvtT4BtxY+ggU2LTAKaY5th3C9QMGBd/Apw7tFKeRiElCZOz1pbRw
+ xUmgOHxaTQAvY/zHeImJAmly6X2OLssw3f4sBYyr6cojn1lXQmvnNGiE4qzK0+ELmcM6
+ rKSxHwzw25vEvpB/nMFmezzxDFQ5evRhgzwQF59oPT9SDs7G20TENdHUQERvclhiXs9v
+ MwLg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV459cx96CFDnGi9Iqa39aZx9nqWAu5EWnfgrvKvZKAgYrcZlmEmxdlL3nH67/uPwGv58BoXLO2pf2/mGzCKAcwn4po
-X-Gm-Message-State: AOJu0YzzQ7JbQTYhpMWSeKIhi6dNcX8U76aCAg8LJI3mly3C3FVWtJX6
- bPTT8FiXwXVqh2Iees3TvVjq+3bLl05hRR+KeFzlwha9pHiHgxHKeYDL2N85
-X-Google-Smtp-Source: AGHT+IH9mqVV29N91/NEMwtI8WKClQv6RJcOTjqpUBvbbdKOpi95vVWUYxb/c1Vu9I1VShzuu9/few==
-X-Received: by 2002:a17:902:c40d:b0:1d9:d341:b150 with SMTP id
- k13-20020a170902c40d00b001d9d341b150mr195585plk.40.1708703138323; 
- Fri, 23 Feb 2024 07:45:38 -0800 (PST)
+ AJvYcCXe2ZyEHugP2cY+rKXLijMFUQhrRkPoYcv9bPhTqUvj16LVWT07+zS4stFGy4cynywlKLlpJczxfu9EE5iFavAD08V4
+X-Gm-Message-State: AOJu0YxhAIyxN4XwNfCkM8EsCoSWMq7zyicA/+PwX+41eHQsp6RDBYm/
+ yIkvyEWRNMGmxm+x5X+xkHX7GBtzykARaH6fAvGlJ+/hNu2qxB51GLS7El59
+X-Google-Smtp-Source: AGHT+IHX54K2jDWQnCIJOddSBY3zOC3F+4UlCKJgDHqY+e0g8tfpIjhJ73q9g9FCVWcrvtkL8ViJjA==
+X-Received: by 2002:a17:903:1206:b0:1db:68d5:6281 with SMTP id
+ l6-20020a170903120600b001db68d56281mr221061plh.35.1708703141631; 
+ Fri, 23 Feb 2024 07:45:41 -0800 (PST)
 Received: from wheely.local0.net (220-235-194-103.tpgi.com.au.
  [220.235.194.103]) by smtp.gmail.com with ESMTPSA id
- h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.45.35
+ h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.45.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 07:45:38 -0800 (PST)
+ Fri, 23 Feb 2024 07:45:41 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 38/47] ppc/pnv: Wire ChipTOD model to powernv9 and powernv10
- machines
-Date: Sat, 24 Feb 2024 01:41:57 +1000
-Message-ID: <20240223154211.1001692-39-npiggin@gmail.com>
+Subject: [PULL 39/47] ppc/pnv: Implement the ChipTOD to Core transfer
+Date: Sat, 24 Feb 2024 01:41:58 +1000
+Message-ID: <20240223154211.1001692-40-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240223154211.1001692-1-npiggin@gmail.com>
 References: <20240223154211.1001692-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,106 +95,305 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Wire the ChipTOD model to powernv9 and powernv10 machines.
+One of the functions of the ChipTOD is to transfer TOD to the Core
+(aka PC - Pervasive Core) timebase facility.
 
-Suggested-by-by: Cédric Le Goater <clg@kaod.org>
+The ChipTOD can be programmed with a target address to send the TOD
+value to. The hardware implementation seems to perform this by
+sending the TOD value to a SCOM address.
+
+This implementation grabs the core directly and manipulates the
+timebase facility state in the core. This is a hack, but it works
+enough for now. A better implementation would implement the transfer
+to the PnvCore xscom register and drive the timebase state machine
+from there.
+
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/pnv.c              | 30 ++++++++++++++++++++++++++++++
- include/hw/ppc/pnv_chip.h |  3 +++
- 2 files changed, 33 insertions(+)
+ hw/ppc/pnv.c                 |  15 ++++
+ hw/ppc/pnv_chiptod.c         | 132 +++++++++++++++++++++++++++++++++++
+ include/hw/ppc/pnv.h         |   2 +
+ include/hw/ppc/pnv_chiptod.h |   4 ++
+ target/ppc/cpu.h             |  13 ++++
+ 5 files changed, 166 insertions(+)
 
 diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index acc4db00c1..8beddb1313 100644
+index 8beddb1313..0b47b92baa 100644
 --- a/hw/ppc/pnv.c
 +++ b/hw/ppc/pnv.c
-@@ -1427,6 +1427,8 @@ static void pnv_chip_power9_instance_init(Object *obj)
+@@ -2121,6 +2121,21 @@ static void pnv_chip_class_init(ObjectClass *klass, void *data)
+     dc->desc = "PowerNV Chip";
+ }
  
-     object_initialize_child(obj, "lpc", &chip9->lpc, TYPE_PNV9_LPC);
- 
-+    object_initialize_child(obj, "chiptod", &chip9->chiptod, TYPE_PNV9_CHIPTOD);
++PnvCore *pnv_chip_find_core(PnvChip *chip, uint32_t core_id)
++{
++    int i;
 +
-     object_initialize_child(obj, "occ", &chip9->occ, TYPE_PNV9_OCC);
- 
-     object_initialize_child(obj, "sbe", &chip9->sbe, TYPE_PNV9_SBE);
-@@ -1573,6 +1575,19 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
-     chip->dt_isa_nodename = g_strdup_printf("/lpcm-opb@%" PRIx64 "/lpc@0",
-                                             (uint64_t) PNV9_LPCM_BASE(chip));
- 
-+    /* ChipTOD */
-+    object_property_set_bool(OBJECT(&chip9->chiptod), "primary",
-+                             chip->chip_id == 0, &error_abort);
-+    object_property_set_bool(OBJECT(&chip9->chiptod), "secondary",
-+                             chip->chip_id == 1, &error_abort);
-+    object_property_set_link(OBJECT(&chip9->chiptod), "chip", OBJECT(chip),
-+                             &error_abort);
-+    if (!qdev_realize(DEVICE(&chip9->chiptod), NULL, errp)) {
-+        return;
++    for (i = 0; i < chip->nr_cores; i++) {
++        PnvCore *pc = chip->cores[i];
++        CPUCore *cc = CPU_CORE(pc);
++
++        if (cc->core_id == core_id) {
++            return pc;
++        }
 +    }
-+    pnv_xscom_add_subregion(chip, PNV9_XSCOM_CHIPTOD_BASE,
-+                            &chip9->chiptod.xscom_regs);
++    return NULL;
++}
 +
-     /* Create the simplified OCC model */
-     if (!qdev_realize(DEVICE(&chip9->occ), NULL, errp)) {
-         return;
-@@ -1685,6 +1700,8 @@ static void pnv_chip_power10_instance_init(Object *obj)
-                               "xive-fabric");
-     object_initialize_child(obj, "psi", &chip10->psi, TYPE_PNV10_PSI);
-     object_initialize_child(obj, "lpc", &chip10->lpc, TYPE_PNV10_LPC);
-+    object_initialize_child(obj, "chiptod", &chip10->chiptod,
-+                            TYPE_PNV10_CHIPTOD);
-     object_initialize_child(obj, "occ",  &chip10->occ, TYPE_PNV10_OCC);
-     object_initialize_child(obj, "sbe",  &chip10->sbe, TYPE_PNV10_SBE);
-     object_initialize_child(obj, "homer", &chip10->homer, TYPE_PNV10_HOMER);
-@@ -1820,6 +1837,19 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-     chip->dt_isa_nodename = g_strdup_printf("/lpcm-opb@%" PRIx64 "/lpc@0",
-                                             (uint64_t) PNV10_LPCM_BASE(chip));
+ PowerPCCPU *pnv_chip_find_cpu(PnvChip *chip, uint32_t pir)
+ {
+     int i, j;
+diff --git a/hw/ppc/pnv_chiptod.c b/hw/ppc/pnv_chiptod.c
+index 6ac3eac9d0..3831a72101 100644
+--- a/hw/ppc/pnv_chiptod.c
++++ b/hw/ppc/pnv_chiptod.c
+@@ -210,6 +210,79 @@ static void chiptod_power10_broadcast_ttype(PnvChipTOD *sender,
+     }
+ }
  
-+    /* ChipTOD */
-+    object_property_set_bool(OBJECT(&chip10->chiptod), "primary",
-+                             chip->chip_id == 0, &error_abort);
-+    object_property_set_bool(OBJECT(&chip10->chiptod), "secondary",
-+                             chip->chip_id == 1, &error_abort);
-+    object_property_set_link(OBJECT(&chip10->chiptod), "chip", OBJECT(chip),
-+                             &error_abort);
-+    if (!qdev_realize(DEVICE(&chip10->chiptod), NULL, errp)) {
-+        return;
++static PnvCore *pnv_chip_get_core_by_xscom_base(PnvChip *chip,
++                                                uint32_t xscom_base)
++{
++    PnvChipClass *pcc = PNV_CHIP_GET_CLASS(chip);
++    int i;
++
++    for (i = 0; i < chip->nr_cores; i++) {
++        PnvCore *pc = chip->cores[i];
++        CPUCore *cc = CPU_CORE(pc);
++        int core_hwid = cc->core_id;
++
++        if (pcc->xscom_core_base(chip, core_hwid) == xscom_base) {
++            return pc;
++        }
 +    }
-+    pnv_xscom_add_subregion(chip, PNV10_XSCOM_CHIPTOD_BASE,
-+                            &chip10->chiptod.xscom_regs);
++    return NULL;
++}
 +
-     /* Create the simplified OCC model */
-     if (!qdev_realize(DEVICE(&chip10->occ), NULL, errp)) {
-         return;
-diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-index 9b06c8d87c..af4cd7a8b8 100644
---- a/include/hw/ppc/pnv_chip.h
-+++ b/include/hw/ppc/pnv_chip.h
-@@ -2,6 +2,7 @@
- #define PPC_PNV_CHIP_H
++static PnvCore *chiptod_power9_tx_ttype_target(PnvChipTOD *chiptod,
++                                               uint64_t val)
++{
++    /*
++     * skiboot uses Core ID for P9, though SCOM should work too.
++     */
++    if (val & PPC_BIT(35)) { /* SCOM addressing */
++        uint32_t addr = val >> 32;
++        uint32_t reg = addr & 0xfff;
++
++        if (reg != PC_TOD) {
++            qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: SCOM addressing: "
++                          "unimplemented slave register 0x%" PRIx32 "\n", reg);
++            return NULL;
++        }
++
++        return pnv_chip_get_core_by_xscom_base(chiptod->chip, addr & ~0xfff);
++
++    } else { /* Core ID addressing */
++        uint32_t core_id = GETFIELD(TOD_TX_TTYPE_PIB_SLAVE_ADDR, val) & 0x1f;
++        return pnv_chip_find_core(chiptod->chip, core_id);
++    }
++}
++
++static PnvCore *chiptod_power10_tx_ttype_target(PnvChipTOD *chiptod,
++                                               uint64_t val)
++{
++    /*
++     * skiboot uses SCOM for P10 because Core ID was unable to be made to
++     * work correctly. For this reason only SCOM addressing is implemented.
++     */
++    if (val & PPC_BIT(35)) { /* SCOM addressing */
++        uint32_t addr = val >> 32;
++        uint32_t reg = addr & 0xfff;
++
++        if (reg != PC_TOD) {
++            qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: SCOM addressing: "
++                          "unimplemented slave register 0x%" PRIx32 "\n", reg);
++            return NULL;
++        }
++
++        /*
++         * This may not deal with P10 big-core addressing at the moment.
++         * The big-core code in skiboot syncs small cores, but it targets
++         * the even PIR (first small-core) when syncing second small-core.
++         */
++        return pnv_chip_get_core_by_xscom_base(chiptod->chip, addr & ~0xfff);
++
++    } else { /* Core ID addressing */
++        qemu_log_mask(LOG_UNIMP, "pnv_chiptod: TX TTYPE Core ID "
++                      "addressing is not implemented for POWER10\n");
++        return NULL;
++    }
++}
++
+ static void pnv_chiptod_xscom_write(void *opaque, hwaddr addr,
+                                     uint64_t val, unsigned size)
+ {
+@@ -231,6 +304,22 @@ static void pnv_chiptod_xscom_write(void *opaque, hwaddr addr,
+         chiptod->pss_mss_ctrl_reg = val & PPC_BITMASK(0, 31);
+         break;
  
- #include "hw/pci-host/pnv_phb4.h"
-+#include "hw/ppc/pnv_chiptod.h"
- #include "hw/ppc/pnv_core.h"
- #include "hw/ppc/pnv_homer.h"
- #include "hw/ppc/pnv_n1_chiplet.h"
-@@ -79,6 +80,7 @@ struct Pnv9Chip {
-     PnvXive      xive;
-     Pnv9Psi      psi;
-     PnvLpcController lpc;
-+    PnvChipTOD   chiptod;
-     PnvOCC       occ;
-     PnvSBE       sbe;
-     PnvHomer     homer;
-@@ -111,6 +113,7 @@ struct Pnv10Chip {
-     PnvXive2     xive;
-     Pnv9Psi      psi;
-     PnvLpcController lpc;
-+    PnvChipTOD   chiptod;
-     PnvOCC       occ;
-     PnvSBE       sbe;
-     PnvHomer     homer;
++    case TOD_TX_TTYPE_CTRL_REG:
++        /*
++         * This register sets the target of the TOD value transfer initiated
++         * by TOD_MOVE_TOD_TO_TB. The TOD is able to send the address to
++         * any target register, though in practice only the PC TOD register
++         * should be used. ChipTOD has a "SCOM addressing" mode which fully
++         * specifies the SCOM address, and a core-ID mode which uses the
++         * core ID to target the PC TOD for a given core.
++         */
++        chiptod->slave_pc_target = pctc->tx_ttype_target(chiptod, val);
++        if (!chiptod->slave_pc_target) {
++            qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: xscom write reg"
++                          " TOD_TX_TTYPE_CTRL_REG val 0x%" PRIx64
++                          " invalid slave address\n", val);
++        }
++        break;
+     case TOD_ERROR_REG:
+         chiptod->tod_error &= ~val;
+         break;
+@@ -256,6 +345,47 @@ static void pnv_chiptod_xscom_write(void *opaque, hwaddr addr,
+             }
+         }
+         break;
++
++    case TOD_MOVE_TOD_TO_TB_REG:
++        /*
++         * XXX: it should be a cleaner model to have this drive a SCOM
++         * transaction to the target address, and implement the state machine
++         * in the PnvCore. For now, this hack makes things work.
++         */
++        if (chiptod->tod_state != tod_running) {
++            qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: xscom write reg"
++                          " TOD_MOVE_TOD_TO_TB_REG in bad state %d\n",
++                          chiptod->tod_state);
++        } else if (!(val & PPC_BIT(0))) {
++            qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: xscom write reg"
++                          " TOD_MOVE_TOD_TO_TB_REG with bad val 0x%" PRIx64"\n",
++                          val);
++        } else if (chiptod->slave_pc_target == NULL) {
++            qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: xscom write reg"
++                          " TOD_MOVE_TOD_TO_TB_REG with no slave target\n");
++        } else {
++            PowerPCCPU *cpu = chiptod->slave_pc_target->threads[0];
++            CPUPPCState *env = &cpu->env;
++
++            /*
++             * Moving TOD to TB will set the TB of all threads in a
++             * core, so skiboot only does this once per thread0, so
++             * that is where we keep the timebase state machine.
++             *
++             * It is likely possible for TBST to be driven from other
++             * threads in the core, but for now we only implement it for
++             * thread 0.
++             */
++
++            if (env->pnv_tod_tbst.tb_ready_for_tod) {
++                env->pnv_tod_tbst.tod_sent_to_tb = 1;
++            } else {
++                qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: xscom write reg"
++                              " TOD_MOVE_TOD_TO_TB_REG with TB not ready to"
++                              " receive TOD\n");
++            }
++        }
++        break;
+     case TOD_START_TOD_REG:
+         if (chiptod->tod_state != tod_stopped) {
+             qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: LOAD_TOG_REG in "
+@@ -340,6 +470,7 @@ static void pnv_chiptod_power9_class_init(ObjectClass *klass, void *data)
+     xdc->dt_xscom = pnv_chiptod_power9_dt_xscom;
+ 
+     pctc->broadcast_ttype = chiptod_power9_broadcast_ttype;
++    pctc->tx_ttype_target = chiptod_power9_tx_ttype_target;
+ 
+     pctc->xscom_size = PNV_XSCOM_CHIPTOD_SIZE;
+ }
+@@ -375,6 +506,7 @@ static void pnv_chiptod_power10_class_init(ObjectClass *klass, void *data)
+     xdc->dt_xscom = pnv_chiptod_power10_dt_xscom;
+ 
+     pctc->broadcast_ttype = chiptod_power10_broadcast_ttype;
++    pctc->tx_ttype_target = chiptod_power10_tx_ttype_target;
+ 
+     pctc->xscom_size = PNV_XSCOM_CHIPTOD_SIZE;
+ }
+diff --git a/include/hw/ppc/pnv.h b/include/hw/ppc/pnv.h
+index 110ac9aace..476b136146 100644
+--- a/include/hw/ppc/pnv.h
++++ b/include/hw/ppc/pnv.h
+@@ -28,6 +28,7 @@
+ 
+ #define TYPE_PNV_CHIP "pnv-chip"
+ 
++typedef struct PnvCore PnvCore;
+ typedef struct PnvChip PnvChip;
+ typedef struct Pnv8Chip Pnv8Chip;
+ typedef struct Pnv9Chip Pnv9Chip;
+@@ -56,6 +57,7 @@ DECLARE_INSTANCE_CHECKER(PnvChip, PNV_CHIP_POWER9,
+ DECLARE_INSTANCE_CHECKER(PnvChip, PNV_CHIP_POWER10,
+                          TYPE_PNV_CHIP_POWER10)
+ 
++PnvCore *pnv_chip_find_core(PnvChip *chip, uint32_t core_id);
+ PowerPCCPU *pnv_chip_find_cpu(PnvChip *chip, uint32_t pir);
+ 
+ typedef struct PnvPHB PnvPHB;
+diff --git a/include/hw/ppc/pnv_chiptod.h b/include/hw/ppc/pnv_chiptod.h
+index ca770525d9..fde569bcbf 100644
+--- a/include/hw/ppc/pnv_chiptod.h
++++ b/include/hw/ppc/pnv_chiptod.h
+@@ -25,6 +25,8 @@ enum tod_state {
+     tod_stopped = 1,
+ };
+ 
++typedef struct PnvCore PnvCore;
++
+ struct PnvChipTOD {
+     DeviceState xd;
+ 
+@@ -36,12 +38,14 @@ struct PnvChipTOD {
+     enum tod_state tod_state;
+     uint64_t tod_error;
+     uint64_t pss_mss_ctrl_reg;
++    PnvCore *slave_pc_target;
+ };
+ 
+ struct PnvChipTODClass {
+     DeviceClass parent_class;
+ 
+     void (*broadcast_ttype)(PnvChipTOD *sender, uint32_t trigger);
++    PnvCore *(*tx_ttype_target)(PnvChipTOD *chiptod, uint64_t val);
+ 
+     int xscom_size;
+ };
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index 16baea609c..0e932838aa 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -1183,6 +1183,13 @@ DEXCR_ASPECT(SRAPD, 4)
+ DEXCR_ASPECT(NPHIE, 5)
+ DEXCR_ASPECT(PHIE, 6)
+ 
++/*****************************************************************************/
++/* PowerNV ChipTOD and TimeBase State Machine */
++struct pnv_tod_tbst {
++    int tb_ready_for_tod; /* core TB ready to receive TOD from chiptod */
++    int tod_sent_to_tb;   /* chiptod sent TOD to the core TB */
++};
++
+ /*****************************************************************************/
+ /* The whole PowerPC CPU context */
+ 
+@@ -1258,6 +1265,12 @@ struct CPUArchState {
+     uint32_t tlb_need_flush; /* Delayed flush needed */
+ #define TLB_NEED_LOCAL_FLUSH   0x1
+ #define TLB_NEED_GLOBAL_FLUSH  0x2
++
++#if defined(TARGET_PPC64)
++    /* PowerNV chiptod / timebase facility state. */
++    /* Would be nice to put these into PnvCore */
++    struct pnv_tod_tbst pnv_tod_tbst;
++#endif
+ #endif
+ 
+     /* Other registers */
 -- 
 2.42.0
 
