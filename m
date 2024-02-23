@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 772DB8616CB
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:04:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B3B48616B4
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:01:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdY17-0005tr-30; Fri, 23 Feb 2024 11:03:17 -0500
+	id 1rdXy5-0006S6-DB; Fri, 23 Feb 2024 11:00:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXkV-0007nR-21; Fri, 23 Feb 2024 10:46:07 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1rdXkY-0007pA-On; Fri, 23 Feb 2024 10:46:10 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXkT-0006js-Hq; Fri, 23 Feb 2024 10:46:06 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1dc49afb495so3570335ad.2; 
- Fri, 23 Feb 2024 07:46:04 -0800 (PST)
+ id 1rdXkX-0006kC-Af; Fri, 23 Feb 2024 10:46:10 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1d911c2103aso2962035ad.0; 
+ Fri, 23 Feb 2024 07:46:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708703163; x=1709307963; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708703167; x=1709307967; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1m7BhFt0ST6ChSL1LESi22LcAsHCg1BKFvnmGi1yDfU=;
- b=kqNI7win+Pj4cAfCUDspBpW4KJd1lJVY7219H/Ho/SRFdBhIOaetQSOjw5PlJtNSMW
- 5u5a3G/vxxgJ9VFJ3ObGnL8/cuztETJbLPLKqHf0db4XrvW5MLgC4im1qSN5D3Xht2fT
- smh/Ub2pJvB0UgDGeEr5tObIJGAtUqTol+pamqdOkpYoFFvTtKTZx/MBA1SZhcKom0L8
- EPBif7WIALMNhcnt0ev4LP2Lx3PS00dp+Ir7sa9Q7WK1Lly341y5ksR1FZ6SCPQQGZmY
- xYL+Stz+rGqgloue2Gk5mFfcxKANKwbvJ6fziu5jOt+ZI/MG4uljJ0uZgzRZJRr9TXRW
- 4jmA==
+ bh=riaL4bBi2Km9JTxExie0v3jTFoU1wbNnTnAEl0s+MTk=;
+ b=VxLXarSMExff3YfzO3gJuzbH9i9qhUuCdPusr5tb5UU9XgqU6GXlrak30p7Jy9lMoV
+ oU6F95nByauv8Q3+ufjFBRc9QHeDEud+ZM6lVW7VsQND2s3EWpYNmwSpmIEwn6VY7tX5
+ 3p6uDIBpX1yvtNKmyR9XH8aLkexFt4++mhNXFRIdBZ+r4SnkiecLePfo11taxXcvzggF
+ MSBXXZ1cL+cnWirYNozffNnp32cqbZh4l53WF9OcYVGYfbm2XWllj2pMusi1s2CPSYcW
+ xf8Xe5t0WGl2yk84E/Wnq8tZTqrLM12EkF9RJu0rmenlDGyvgsWTBXtHyQuhh1rZChx+
+ dCBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708703163; x=1709307963;
+ d=1e100.net; s=20230601; t=1708703167; x=1709307967;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1m7BhFt0ST6ChSL1LESi22LcAsHCg1BKFvnmGi1yDfU=;
- b=f+Xc6KUnAsM8gubB4oDqQBePpHusJTIlL0e69gzHqrTMlmJTUGLtQqA7BZ2ANQ/YvM
- a6ZnXHAYiUGvM8PkxjuaWILsUQH3EbqlHNai9fRaT25mO5WNV9ldI9Afu7sN5J7/QeSq
- 4CG0ZtF0geBqT07pVnpru2uqDkMEFXO5lZ8NT9AAPpkXRrNzyYoANiLoBiWPLxdCiswT
- IxABeplpQOtB/SbnKTS5/k3l+kkkq1uzOn1bA73N9xwjGHW22JC4E+R7Oz+8QVtIT2wi
- u9HfSpBUeAUpsl3pd+l6BVA5kjFpPM0Z5tEgtslXWJwnvUNiI2zExfUfHmvgaBft0yLp
- DWpw==
+ bh=riaL4bBi2Km9JTxExie0v3jTFoU1wbNnTnAEl0s+MTk=;
+ b=DN/VlphrB3Zo1WlWeG44XhMt3e4WK1Q8G6hqoX8KpP+Yu+dZ86LsmBenHlv3KN89FD
+ fY3mcXOMlflrRoa7mE2CXaUZnJ/qvsSCqBeGXzizDuDzVtcFG3BSVxQHj3Yw/8CrwVvy
+ wTOGEB4Hu/KaD3Dwl8/qNAnva4f5UeOfDFVQmqBE4Bl7ySH3TlpSukHwEsNZgcnn4Je9
+ 4KWwtiG7Ne/FZTZm2u+HLUWj+or7NdcEouHWCIyiTkrRVNE18Fz3QlAW6T8LlMu5oV8b
+ bf/yMf8xYgP04pjp/XEQZgvyDL9tQcD50brDysuTgHnPf7DM7qm8mJt/o1Dd3ePlyMgh
+ SCaw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW64+jotbUeLp6Z1In81lUgAVkxj1Xrppsx+tli/NRpnfWWYquK8EsGZGJFJIksVc/acY3fwi6CGReipDWlD8R/ZqnA
-X-Gm-Message-State: AOJu0Yzk/JEliLl8MQLQZmp+5mDLrQerMX003HE8eSA6ncmWwWDwjLR/
- u8AthEZhijueXyL1DWAGt/8K9eXiU09NifI7xGEKBIeqF4y2ZU0VK0KIEMoF
-X-Google-Smtp-Source: AGHT+IGlqQmeuqHm+6kfYl/G2FXJDLgmgsy9PKc6nMQUsKjs1iZm+RwTQr1PuMFSdE/t0xcc6L4vAQ==
-X-Received: by 2002:a17:902:db0e:b0:1dc:6af:65e with SMTP id
- m14-20020a170902db0e00b001dc06af065emr186545plx.59.1708703163461; 
- Fri, 23 Feb 2024 07:46:03 -0800 (PST)
+ AJvYcCX79u0HZwTcX/qFwbkoed6x/x8rpIox0eaheHvSyOQ02i5UqMMVwBwW5kUjC/O53bgbJ6BGBp4tdV900pCFULUEFhag
+X-Gm-Message-State: AOJu0YxjjFO7gbTFNfJDDSNBsw4oKZrfacsAa/5pNAPEuPqjUzZn2Ex9
+ ME7TJL59MxVjWc4mLwwDGQuMOiuHZFzWipCwj8Gb4DJOd6VanFfuo/+U+WXx
+X-Google-Smtp-Source: AGHT+IEDj+BWWAHuHAx8scE99T4ca0Xhtj3nVnkd95VePsyP56fvmAwydnuRgEksIfmBIPRjr4PyGA==
+X-Received: by 2002:a17:902:e887:b0:1db:efef:f912 with SMTP id
+ w7-20020a170902e88700b001dbefeff912mr321281plg.2.1708703167306; 
+ Fri, 23 Feb 2024 07:46:07 -0800 (PST)
 Received: from wheely.local0.net (220-235-194-103.tpgi.com.au.
  [220.235.194.103]) by smtp.gmail.com with ESMTPSA id
- h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.46.00
+ h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.46.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 07:46:03 -0800 (PST)
+ Fri, 23 Feb 2024 07:46:07 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
@@ -63,17 +63,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 45/47] target/ppc: 4xx optimise tlbwe_lo TLB flushing
-Date: Sat, 24 Feb 2024 01:42:04 +1000
-Message-ID: <20240223154211.1001692-46-npiggin@gmail.com>
+Subject: [PULL 46/47] target/ppc: 440 optimise tlbwe TLB flushing
+Date: Sat, 24 Feb 2024 01:42:05 +1000
+Message-ID: <20240223154211.1001692-47-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240223154211.1001692-1-npiggin@gmail.com>
 References: <20240223154211.1001692-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,50 +96,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rather than tlbwe_lo always flushing all TCG TLBs, have it flush just
-those corresponding to the old software TLB, and only if it was valid.
+Have 440 tlbwe flush only the range corresponding to the addresses
+covered by the software TLB entry being modified rather than the
+entire TLB. This matches what 4xx does.
 
 Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
 Acked-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu_helper.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ target/ppc/mmu_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/target/ppc/mmu_helper.c b/target/ppc/mmu_helper.c
-index 68632bf54e..923779d052 100644
+index 923779d052..ba965f1779 100644
 --- a/target/ppc/mmu_helper.c
 +++ b/target/ppc/mmu_helper.c
-@@ -813,12 +813,20 @@ void helper_4xx_tlbwe_hi(CPUPPCState *env, target_ulong entry,
- void helper_4xx_tlbwe_lo(CPUPPCState *env, target_ulong entry,
-                          target_ulong val)
- {
-+    CPUState *cs = env_cpu(env);
-     ppcemb_tlb_t *tlb;
+@@ -864,7 +864,7 @@ void helper_440_tlbwe(CPUPPCState *env, uint32_t word, target_ulong entry,
  
-     qemu_log_mask(CPU_LOG_MMU, "%s entry %i val " TARGET_FMT_lx "\n",
-                   __func__, (int)entry, val);
-     entry &= PPC4XX_TLB_ENTRY_MASK;
-     tlb = &env->tlb.tlbe[entry];
-+    /* Invalidate previous TLB (if it's valid) */
-+    if (tlb->prot & PAGE_VALID) {
-+        qemu_log_mask(CPU_LOG_MMU, "%s: invalidate old TLB %d start "
-+                      TARGET_FMT_lx " end " TARGET_FMT_lx "\n", __func__,
-+                      (int)entry, tlb->EPN, tlb->EPN + tlb->size);
-+        ppcemb_tlb_flush(cs, tlb);
-+    }
-     tlb->attr = val & PPC4XX_TLBLO_ATTR_MASK;
-     tlb->RPN = val & PPC4XX_TLBLO_RPN_MASK;
-     tlb->prot = PAGE_READ;
-@@ -836,8 +844,6 @@ void helper_4xx_tlbwe_lo(CPUPPCState *env, target_ulong entry,
-                   tlb->prot & PAGE_WRITE ? 'w' : '-',
-                   tlb->prot & PAGE_EXEC ? 'x' : '-',
-                   tlb->prot & PAGE_VALID ? 'v' : '-', (int)tlb->PID);
--
--    env->tlb_need_flush |= TLB_NEED_LOCAL_FLUSH;
- }
+     /* Invalidate previous TLB (if it's valid) */
+     if (tlb->prot & PAGE_VALID) {
+-        tlb_flush(env_cpu(env));
++        ppcemb_tlb_flush(env_cpu(env), tlb);
+     }
  
- target_ulong helper_4xx_tlbsx(CPUPPCState *env, target_ulong address)
+     switch (word) {
 -- 
 2.42.0
 
