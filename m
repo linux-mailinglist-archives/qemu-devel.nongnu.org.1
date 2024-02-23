@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D468861DAF
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 21:35:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0893861DB2
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 21:36:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdcFc-00008g-Gj; Fri, 23 Feb 2024 15:34:32 -0500
+	id 1rdcHU-0001Nj-Ai; Fri, 23 Feb 2024 15:36:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rdbvu-0002zx-Eh
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 15:14:15 -0500
-Received: from mail-il1-x134.google.com ([2607:f8b0:4864:20::134])
+ id 1rdbwl-0003GJ-Kg
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 15:15:03 -0500
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rdbvt-0005sU-0g
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 15:14:10 -0500
-Received: by mail-il1-x134.google.com with SMTP id
- e9e14a558f8ab-364f791a428so2695665ab.3
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 12:14:07 -0800 (PST)
+ id 1rdbwj-0005yt-HZ
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 15:15:03 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1d94b222a3aso12469885ad.2
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 12:15:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708719246; x=1709324046; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708719300; x=1709324100; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=I700NpAcGVLc6L+nJDp9JAzh6V9ItdFTitqNh9gY0Zg=;
- b=oItaXYxVYAcMC898XqkMWQN3mal/g0g1K9PH8V42U5KOvuuzJKoOP/aM5d+G+lGoNQ
- fw9Erl+xEsa7EvyGJAxKlV9tf+U9D2BZM4oS2g0x4eZP6iuLHVL39FfbQ4iChIFB9Uau
- plvzcY/rOhD3axSQVIV2iwJA6zEsh/g2xVDqoINhieLQu5yLyOXDRd2Cxu1kkxUmxNA3
- pq+B8O93DgyZuxeaAD/drOJInbJwkwPVONXgEhqExaztF1oX+jcO9FSC3A5gN216FUIV
- LGvooDWXkQAeBUn/fGSLvrwSOrmD55jy6D9WDicjj/Mod/gdNIjWNOUDOAAh8iUsB/Tj
- LMOA==
+ bh=8uDi7gCXvxb+kzzxAh5BpmLIXt9IBNHlQ6pVHKq6Q+U=;
+ b=OtxNRgTk/GtkmXr24nPC7SWvfP1eddo64yYY48jSH/eiwwr1a8O/ZIXABLuhUrPV4R
+ oofXpSQIyEsByQWYu78RwLHzU1H/tPa3tLCD22Rc3x/u9S39/er8WlrsoYRmBHJ0V/Mq
+ oXesgawqET0rd9uptPRwlyqZsT6SOPU+I6tZ4R6BskRmZR/HjyqmVfElH5B1AFp0daVI
+ YfV99cHNXlbW2/eBSxfkd0VX0NYt4vTW2KLNQBoN0ApknEyolGE2dCy1G2WXjN10tl+0
+ aY2yAsPiwbkkHt9mnl62/1mAmKIk3gZQHWJ+XjhBE2e9ymuXq69OMiHdKGKftKhk/Cit
+ OQ5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708719246; x=1709324046;
+ d=1e100.net; s=20230601; t=1708719300; x=1709324100;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=I700NpAcGVLc6L+nJDp9JAzh6V9ItdFTitqNh9gY0Zg=;
- b=SDm0qpH8F9QiQCfzsJ+w1yeyrXpBODrEnbdKxatE/UNuPHaDSkI0SIiAMhqcECxdan
- nZtH7VQ1bC1Zh35nXgXtdr7yylC9OcaBO/omoHFbiT3IAR+vNSsHq2gk6fsmY2QA4rZ8
- fZCHksvkP7qZSSyQNZf97fI7BOJNr7UN6ZpS3jyifX/z4W+Ki5NiP6CMhWeqvsB3Jb64
- Xq2bP6LGVR4z145JI9AWESveE6fUYkEOnRhA3yQKzv47a8lISSKuW5DD5UETfyTMfPYW
- JL9x9Ev6SFmvdcANbOv2oEcBLpsS75H/syTAKLhItxtBEmBHWXuybgneRpFhn+aLAleu
- jlXg==
+ bh=8uDi7gCXvxb+kzzxAh5BpmLIXt9IBNHlQ6pVHKq6Q+U=;
+ b=qM4Fek+qmU//HTebTcboDyB4SFFLSOItPsk/D6HvUUhij0ow6YY+OswlDvci8U8rEK
+ 6hst7hklhvEmR+vSducW2x7+RNUUUifxvHGz7TwZW5GbfVRJw21Br+9u/PpIbONRXPyO
+ ltxkuEP5IczUXNpatwpQMtEYMyWoZT3qzZHAoVJ8jqUmC9U0I/C0PAqkg7Cb9sMpYscc
+ 6dU/LR9evJcomgV6Q7bgh0YX94+WNnRXb5Egep/f6RvyGoHcldP06Zo0EenbqDlSs3zM
+ YA/XrMLUYNRVHG2DkIg2pdPX+R/BEWPyxJT7BMOzx6ep8af9w947D7ni0REQuJT7Xkua
+ CX6g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWVGHSlbSioSNeSDJgZkXJSJ4n11ykFXL2CoHSys6teaMO776XrKz/lTvyrky2ffepxIwxF3vMavNmuzE6U9ANzs9vZ7CY=
-X-Gm-Message-State: AOJu0Yw8OJD9hD2laaFrHHEqXGnr9PgpANUB1PKzDaXGhZ67ovl4YI/d
- Cbxh7CSl7YZp3eDDkAZuPh6lZekP/Q6CLg7syQSepM6kVVhDvX9wVgSKtIVQid0=
-X-Google-Smtp-Source: AGHT+IGEi7UWAcwTpcwedsB6Y5SSbFIW1/dam9DxRmVpvrUCI5L9MhQGo1WK63ufzk3HwwqKUgu4JA==
-X-Received: by 2002:a05:6e02:522:b0:363:bb5a:3329 with SMTP id
- h2-20020a056e02052200b00363bb5a3329mr984256ils.1.1708719246654; 
- Fri, 23 Feb 2024 12:14:06 -0800 (PST)
+ AJvYcCWVBzMdmwoVLoYHTM0VyC++1pZJxfPUfqINOD9GEj/w0rgvO3FfiPnj9ZMzsLGEn57Bs2QTBZl3hnNZWBxuJNaZ+hG6s+4=
+X-Gm-Message-State: AOJu0YxXN8H0tbsuIG9/FsoOTTqrAuzBCIIQ5Akwkh9POj1/sZ99upS4
+ D/YnvlzJjTyQmAsThtXA4vbHJnI0KtuoKu9N+s3Z4iV5hWgUUtrx8x/6gO/lXEe9xOQrb0D6X1w
+ c
+X-Google-Smtp-Source: AGHT+IFVPuVonaTebBGJ+P5Go1YcOHQTjBxXR7SDvJZPrce+401Fyo+zWYk0nl22uCWw8EYK87yMPQ==
+X-Received: by 2002:a17:902:da8c:b0:1d7:5943:21b8 with SMTP id
+ j12-20020a170902da8c00b001d7594321b8mr1041613plx.16.1708719299837; 
+ Fri, 23 Feb 2024 12:14:59 -0800 (PST)
 Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
  [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
- z28-20020a637e1c000000b005dccf9e3b74sm12361418pgc.92.2024.02.23.12.14.05
+ z28-20020a637e1c000000b005dccf9e3b74sm12361418pgc.92.2024.02.23.12.14.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 23 Feb 2024 12:14:06 -0800 (PST)
-Message-ID: <ca6cd116-8dae-4ddc-95ae-db19e18ae5b5@linaro.org>
-Date: Fri, 23 Feb 2024 10:14:02 -1000
+ Fri, 23 Feb 2024 12:14:59 -0800 (PST)
+Message-ID: <eee38cfe-5d3d-4015-ae30-744dd21e8935@linaro.org>
+Date: Fri, 23 Feb 2024 10:14:56 -1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 14/21] hw/intc/arm_gicv3_redist: Implement
- GICR_INMIR0
+Subject: Re: [RFC PATCH v3 16/21] hw/intc: Enable FEAT_GICv3_NMI Feature
 Content-Language: en-US
 To: Jinjie Ruan <ruanjinjie@huawei.com>, peter.maydell@linaro.org,
  eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
  wangyanan55@huawei.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org
 References: <20240223103221.1142518-1-ruanjinjie@huawei.com>
- <20240223103221.1142518-15-ruanjinjie@huawei.com>
+ <20240223103221.1142518-17-ruanjinjie@huawei.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240223103221.1142518-15-ruanjinjie@huawei.com>
+In-Reply-To: <20240223103221.1142518-17-ruanjinjie@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::134;
- envelope-from=richard.henderson@linaro.org; helo=mail-il1-x134.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,67 +99,18 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 2/23/24 00:32, Jinjie Ruan via wrote:
-> Add GICR_INMIR0 register and support access GICR_INMIR0.
+> Added properties to enable FEAT_GICv3_NMI feature, setup distributor
+> and redistributor registers to indicate NMI support.
 > 
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> Signed-off-by: Jinjie Ruan<ruanjinjie@huawei.com>
 > ---
->   hw/intc/arm_gicv3_redist.c | 23 +++++++++++++++++++++++
->   hw/intc/gicv3_internal.h   |  1 +
->   2 files changed, 24 insertions(+)
-> 
-> diff --git a/hw/intc/arm_gicv3_redist.c b/hw/intc/arm_gicv3_redist.c
-> index 8153525849..87e7823f34 100644
-> --- a/hw/intc/arm_gicv3_redist.c
-> +++ b/hw/intc/arm_gicv3_redist.c
-> @@ -35,6 +35,15 @@ static int gicr_ns_access(GICv3CPUState *cs, int irq)
->       return extract32(cs->gicr_nsacr, irq * 2, 2);
->   }
->   
-> +static void gicr_write_bitmap_reg(GICv3CPUState *cs, MemTxAttrs attrs,
-> +                                  uint32_t *reg, uint32_t val)
-> +{
-> +    /* Helper routine to implement writing to a "set" register */
-> +    val &= mask_group(cs, attrs);
-> +    *reg = val;
-> +    gicv3_redist_update(cs);
-> +}
-> +
->   static void gicr_write_set_bitmap_reg(GICv3CPUState *cs, MemTxAttrs attrs,
->                                         uint32_t *reg, uint32_t val)
->   {
-> @@ -406,6 +415,13 @@ static MemTxResult gicr_readl(GICv3CPUState *cs, hwaddr offset,
->           *data = value;
->           return MEMTX_OK;
->       }
-> +    case GICR_INMIR0:
-> +        if (!cs->gic->nmi_support) {
-> +            *data = 0;
-> +            return MEMTX_OK;
-> +        }
-> +        *data = gicr_read_bitmap_reg(cs, attrs, cs->gicr_isuperprio);
-> +        return MEMTX_OK;
+>   hw/intc/arm_gicv3_common.c         | 1 +
+>   hw/intc/arm_gicv3_dist.c           | 2 ++
+>   hw/intc/gicv3_internal.h           | 1 +
+>   include/hw/intc/arm_gicv3_common.h | 1 +
+>   4 files changed, 5 insertions(+)
 
-Clearer as
-
-     *data = (cs->gic->nmi_support
-              ? gicr_read_bitmap_reg(cs, attrs, cs->gicr_isuperprio)
-              : 0);
-     return MEMTX_OK;
-
-> +    case GICR_INMIR0:
-> +        if (!cs->gic->nmi_support) {
-> +            return MEMTX_OK;
-> +        }
-> +        gicr_write_bitmap_reg(cs, attrs, &cs->gicr_isuperprio, value);
-> +        return MEMTX_OK;
-
-Likewise,
-
-     if (cs->gic->nmi_support) {
-         gicr_write_bitmap_reg(cs, attrs, &cs->gicr_isuperprio, value);
-     }
-     return MEMTX_OK;
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
