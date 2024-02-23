@@ -2,52 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD258861C90
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 20:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B4FB861C9D
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 20:35:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdbHP-0007rE-H5; Fri, 23 Feb 2024 14:32:27 -0500
+	id 1rdbK1-000174-2e; Fri, 23 Feb 2024 14:35:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rdaw7-0005ls-3G
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:10:30 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rdawB-0005m6-4U
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:10:34 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rdavz-0005AX-IR
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:10:17 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rdaw0-0005At-Ow
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:10:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708715409;
+ s=mimecast20190719; t=1708715410;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=sgm+HM9BVkTRT49ENMfGGk+hx49sqTHuHj8Y05J2TdE=;
- b=JSbHqa/gr7H62rQMyiFwgBm5nvR/qbzY4mFh4xjy8D3QZ9TeqcN2cMi1HPFke55Rccy1fS
- cStVxv76ao+KV6qDmL2n4jMQpUghM/GTAqVF5RJaWdE38INSz547SucSrEs8ohZwhywOIg
- 9hQXQlqC6mW4g12sFDZ7JcJ1e7wwV0g=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=o3bEtATyp9tRxwVqQamHVsA7dwSgZbW9H9fEsU3qThM=;
+ b=ANThoY3R3b0hfY55teEbMr2+wOeiBymfXwq64fzb3pbQRR0L23Z3lW9vDRSSaNqJwYpq2b
+ uu1ISEt+Vb6kQyoStMkT9pjsd9pmtle3aAMxlvVKnt4ApquvQcCVNucDVc0tdH3m42+q/0
+ nD7UbpVfjVQBRA/MfDNqgCNFRFLJZDQ=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-202-0tSzlzmMM0CVxOcN-m0dPg-1; Fri, 23 Feb 2024 14:10:05 -0500
-X-MC-Unique: 0tSzlzmMM0CVxOcN-m0dPg-1
+ us-mta-528-Y48CuBOZO0OWDsmoXEx3ZQ-1; Fri, 23 Feb 2024 14:10:07 -0500
+X-MC-Unique: Y48CuBOZO0OWDsmoXEx3ZQ-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 71D6188CDCC;
- Fri, 23 Feb 2024 19:10:05 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D77EE85A589;
+ Fri, 23 Feb 2024 19:10:06 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.20])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9AE558CED;
- Fri, 23 Feb 2024 19:10:04 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B6DBB10800;
+ Fri, 23 Feb 2024 19:10:05 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 00/11] Test and misc patches
-Date: Fri, 23 Feb 2024 20:09:52 +0100
-Message-ID: <20240223191003.6268-1-thuth@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Daniel Palmer <daniel@0x0f.com>
+Subject: [PULL 01/11] target/m68k: Fix exception frame format for 68010
+Date: Fri, 23 Feb 2024 20:09:53 +0100
+Message-ID: <20240223191003.6268-2-thuth@redhat.com>
+In-Reply-To: <20240223191003.6268-1-thuth@redhat.com>
+References: <20240223191003.6268-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -75,69 +77,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
- Hi Peter!
+From: Daniel Palmer <daniel@0x0f.com>
 
-The following changes since commit 3d54cbf269d63ff1d500b35b2bcf4565ff8ad485:
+From the 68010 a word with the frame format and exception vector
+are placed on the stack before the PC and SR.
 
-  Merge tag 'hw-misc-20240222' of https://github.com/philmd/qemu into staging (2024-02-22 15:44:29 +0000)
+M68K_FEATURE_QUAD_MULDIV is currently checked to workout if to do
+this or not for the configured CPU but that flag isn't set for
+68010 so currently the exception stack when 68010 is configured
+is incorrect.
 
-are available in the Git repository at:
+It seems like checking M68K_FEATURE_MOVEFROMSR_PRIV would do but
+adding a new flag that shows exactly what is going on here is
+maybe clearer.
 
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2024-02-23
+Add a new flag for the behaviour, M68K_FEATURE_EXCEPTION_FORMAT_VEC,
+and set it for 68010 and above, and then use it to control if the
+format and vector word are pushed/pop during exception entry/exit.
 
-for you to fetch changes up to 028ade14da9eb31a8c5dde48dd5b140e49888908:
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2164
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+Message-ID: <20240115101643.2165387-1-daniel@0x0f.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ target/m68k/cpu.h       | 2 ++
+ target/m68k/cpu.c       | 4 +++-
+ target/m68k/op_helper.c | 4 ++--
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
-  target/i386: do not filter processor tracing features except on KVM (2024-02-23 08:13:52 +0100)
-
-----------------------------------------------------------------
-* m68k: Fix exception frame format for 68010
-* Add cdrom test for LoongArch virt machine
-* Fix qtests when using --without-default-devices
-* Enable -Wvla
-* Windows 32-bit removal
-* Silence warnings in the test-x86-cpuid-compat qtest
-
-----------------------------------------------------------------
-Bibo Mao (1):
-      tests/cdrom-test: Add cdrom test for LoongArch virt machine
-
-Daniel Palmer (1):
-      target/m68k: Fix exception frame format for 68010
-
-Marc-André Lureau (1):
-      tests: skip dbus-display tests that need a console
-
-Paolo Bonzini (1):
-      target/i386: do not filter processor tracing features except on KVM
-
-Peter Maydell (4):
-      meson: Enable -Wvla
-      docs: Document that 32-bit Windows is unsupported
-      .gitlab-ci.d: Drop cross-win32-system job
-      .gitlab-ci.d/windows.yml: Remove shared-msys2 abstraction
-
-Thomas Huth (3):
-      tests/qtest: Fix boot-serial-test when using --without-default-devices
-      target/ppc/kvm: Replace variable length array in kvmppc_save_htab()
-      target/ppc/kvm: Replace variable length array in kvmppc_read_hptes()
-
- docs/about/build-platforms.rst                     |   2 +
- docs/about/removed-features.rst                    |  15 +++
- meson.build                                        |   1 +
- target/m68k/cpu.h                                  |   2 +
- target/i386/cpu.c                                  |  11 +-
- target/m68k/cpu.c                                  |   4 +-
- target/m68k/op_helper.c                            |   4 +-
- target/ppc/kvm.c                                   |   6 +-
- tests/qtest/boot-serial-test.c                     |   2 +-
- tests/qtest/cdrom-test.c                           |   5 +
- tests/qtest/dbus-display-test.c                    |  16 ++-
- .gitlab-ci.d/container-cross.yml                   |   5 -
- .gitlab-ci.d/crossbuilds.yml                       |  14 ---
- .gitlab-ci.d/windows.yml                           |  85 ++++++++--------
- tests/docker/dockerfiles/fedora-win32-cross.docker | 111 ---------------------
- tests/lcitool/refresh                              |   5 -
- 16 files changed, 99 insertions(+), 189 deletions(-)
- delete mode 100644 tests/docker/dockerfiles/fedora-win32-cross.docker
+diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
+index 646cacbdf1..346427e144 100644
+--- a/target/m68k/cpu.h
++++ b/target/m68k/cpu.h
+@@ -550,6 +550,8 @@ enum m68k_features {
+     M68K_FEATURE_TRAPCC,
+     /* MOVE from SR privileged (from 68010) */
+     M68K_FEATURE_MOVEFROMSR_PRIV,
++    /* Exception frame with format+vector (from 68010) */
++    M68K_FEATURE_EXCEPTION_FORMAT_VEC,
+ };
+ 
+ static inline bool m68k_feature(CPUM68KState *env, int feature)
+diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
+index 8a8392e694..d5a71c6315 100644
+--- a/target/m68k/cpu.c
++++ b/target/m68k/cpu.c
+@@ -142,7 +142,8 @@ static void m68000_cpu_initfn(Object *obj)
+ }
+ 
+ /*
+- * Adds BKPT, MOVE-from-SR *now priv instr, and MOVEC, MOVES, RTD
++ * Adds BKPT, MOVE-from-SR *now priv instr, and MOVEC, MOVES, RTD,
++ *      format+vector in exception frame.
+  */
+ static void m68010_cpu_initfn(Object *obj)
+ {
+@@ -155,6 +156,7 @@ static void m68010_cpu_initfn(Object *obj)
+     m68k_set_feature(env, M68K_FEATURE_BKPT);
+     m68k_set_feature(env, M68K_FEATURE_MOVEC);
+     m68k_set_feature(env, M68K_FEATURE_MOVEFROMSR_PRIV);
++    m68k_set_feature(env, M68K_FEATURE_EXCEPTION_FORMAT_VEC);
+ }
+ 
+ /*
+diff --git a/target/m68k/op_helper.c b/target/m68k/op_helper.c
+index 47b4173bb9..956e76eb5f 100644
+--- a/target/m68k/op_helper.c
++++ b/target/m68k/op_helper.c
+@@ -52,7 +52,7 @@ throwaway:
+     sp += 2;
+     env->pc = cpu_ldl_mmuidx_ra(env, sp, MMU_KERNEL_IDX, 0);
+     sp += 4;
+-    if (m68k_feature(env, M68K_FEATURE_QUAD_MULDIV)) {
++    if (m68k_feature(env, M68K_FEATURE_EXCEPTION_FORMAT_VEC)) {
+         /*  all except 68000 */
+         fmt = cpu_lduw_mmuidx_ra(env, sp, MMU_KERNEL_IDX, 0);
+         sp += 2;
+@@ -256,7 +256,7 @@ static inline void do_stack_frame(CPUM68KState *env, uint32_t *sp,
+                                   uint16_t format, uint16_t sr,
+                                   uint32_t addr, uint32_t retaddr)
+ {
+-    if (m68k_feature(env, M68K_FEATURE_QUAD_MULDIV)) {
++    if (m68k_feature(env, M68K_FEATURE_EXCEPTION_FORMAT_VEC)) {
+         /*  all except 68000 */
+         CPUState *cs = env_cpu(env);
+         switch (format) {
+-- 
+2.43.2
 
 
