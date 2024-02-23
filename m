@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB0B4861674
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 16:55:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0522A861679
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 16:56:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdXrq-0006V1-Si; Fri, 23 Feb 2024 10:53:42 -0500
+	id 1rdXu6-0003Q2-MD; Fri, 23 Feb 2024 10:56:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXhV-0004kX-0o; Fri, 23 Feb 2024 10:43:01 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1rdXhX-0004l7-RV; Fri, 23 Feb 2024 10:43:03 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXhT-00063m-Cp; Fri, 23 Feb 2024 10:43:00 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1dc13fb0133so7508495ad.3; 
- Fri, 23 Feb 2024 07:42:57 -0800 (PST)
+ id 1rdXhW-000641-0y; Fri, 23 Feb 2024 10:43:03 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1dc0e5b223eso7723885ad.1; 
+ Fri, 23 Feb 2024 07:43:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708702976; x=1709307776; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708702980; x=1709307780; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ShLSid0lWwDAPWdEt6CxaC3vrH2IH2n6pSaKvP23E60=;
- b=DE6/N/tSMeVTivDXrK0RYaspOzQ+i6WNi6k9SMHX9CFTUUYlHJWfamK0lWyOWDQ074
- Nlj5JatAOd+BpO5jluXdCEUV6la7m6ZI0OD0MudKBbCY+Vi1lIbQsCk159gNRYUGpFmt
- D2i2SjeISjyaoARWOdsNzvGTtLnLVOGKXbiYgELbqjS4MJFRMiSd6Lf++HQsaHgKBgGg
- OgIrGd8Y3i3pcz67eQMYmGvS12Ry2KE6tRVZhrilNRWTsk+4k4+SNpEhgcDBpHDINRMV
- Bf/vKL7Rs/hh/+fMPzQ+FlzXfVT18SSCQdfKWVCCo+8RLRklyVxU7q2kRTB+akC5gueu
- 8+KQ==
+ bh=FP9KRL+SerwXW0dsmmqgLA3tloMgPQHHxabviXvEun8=;
+ b=D/NP2aeEdH9DaI1Ald5YcjajCOpdcXsWYAeTmljLBnXDorVzFVTNzFk+EfQmqiqY+2
+ pHBJGeHwv5ZthF9FzM5BEdiFhDlnzIGHBIkOqK8N7fefiJRD90q4/5ZJN9zWdna7yRRF
+ wpgVUv3aKXLXyRK1ET8Xxc8VCh8VbWi1+btpI/Ep6c0zLAjFUis0jbOQw+1ZKOJVQEej
+ 63x0HN1F2OHEp3WsXGzfgH7IwRmQpwjXqi+ganyEtJr/3WVAL3fS7G3EC/jRNLnQ3t7K
+ kb3oE9jZR4GiE5ZWab6NgnpUcvMFAo5G5zP0FA7lzbPXTM9UMQ3XP5r+yC5w3VA1sRLK
+ 0MFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708702976; x=1709307776;
+ d=1e100.net; s=20230601; t=1708702980; x=1709307780;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ShLSid0lWwDAPWdEt6CxaC3vrH2IH2n6pSaKvP23E60=;
- b=VPicrWyclFLA5kBDt8lgh+Q3JfXnFEt7kmMES4uiybnbDeNSgGd99GCl8PypETJKtD
- iaWUwOEARlW0N3nI3UI3DPJYSvD24vYSiUtzrskd3EtBulCx19Nszw8LgI+KEHh/gPG2
- FpD7xAy+OtAwuDE/SoHv+BXL+bwieUU+8dK2f5NyrSK4RWPAcpENJhMviuR7+L4FzM/T
- b7VSZsOGNlx6F9WKSrjAs6+TwXHSloObGN+KppHkJe4ONGiajyc/4zlNrejHEh3flwdF
- PYUjeBPE+iddkP1D6ZrKFUJtRzzwv0UbFSn3YyHtRmQRLlBVod/13HLSMdm/56oK1oNg
- GFHQ==
+ bh=FP9KRL+SerwXW0dsmmqgLA3tloMgPQHHxabviXvEun8=;
+ b=DwO7anWHxkzFdi1TjhEBKOS7dnvr22efI0C0zGOZauj5PZst43PbFaMQ6Qi/NDuv2C
+ ol7VyhEdf++dsLC03NuA7Qqlwm7zwtBZNdQGhW6udzm99Vc+EvO4mLf5uI9+SkNNRTsj
+ 7B3qNvb9iBJKZNh2z43Al2FIPFejAEynZWnlNYFmAYEsen+AqhqWeBXSXFcOimvyOVp5
+ LaoLTKQWIKgUZuQ+vk5jFdF281LhE/o8/zEFs0p+Q2ADOeV1mR8gdsQAL5uTdxE42KaQ
+ 9fr/qKJJ1HVjjJDQkbRZ1NJnw0RtyRJCVDoaYoAN3zwSsfk9v3057VMVFZiz1acyLk+d
+ Dn1g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXUEiuKqyTMTYNydfuYtvwEfjvv4IA7xRKFj6jW8kFlYfUL1YUFnrtTMw1NtifeSbvIom4eGQiVCgscWlcQFxsxlUoaQrq+Fn0DrWgXubuIYfuqQThmKvwAglRJ
-X-Gm-Message-State: AOJu0YyOHfh9gV2VIfqSQqbF5HrgobUD77UdKWIBCRRzuEaxoCCYa2OW
- BVUe61+263fy7vg0qRVf5RqGEY+k5Lb/AehHgOag194Q8Hjo4FiWJyX+ueVO
-X-Google-Smtp-Source: AGHT+IEX6sKvQGrmZQMep5w9ibyIF7sZbbgrJM9S4oHctiQM22nd1d8WKb2G6JJxzUbE7LvJ5ISrUQ==
-X-Received: by 2002:a17:902:bb89:b0:1db:4c13:b67b with SMTP id
- m9-20020a170902bb8900b001db4c13b67bmr135477pls.61.1708702975851; 
- Fri, 23 Feb 2024 07:42:55 -0800 (PST)
+ AJvYcCUF9CfpUl7lNXaC4cEJ0XeCwlFWLYHdkabL3VzgPtaaO8IPkwKbhqMNxMTF1PLyicp0BGPjj75Gqq12m5pVNzeF9zDhv14TgyCk9YBk3zSXl2JDIT1/n38my3yJ
+X-Gm-Message-State: AOJu0Yy31bjQXIMz0umFniS37wB0e4nWPF/8KIqNfEXo56NnvHFMH/Wt
+ qtCTkQWabYxl1eu3R0QdR+MczLp0Mn9x+lsrQaGNkppwpZ3+msDRlZv77CDu
+X-Google-Smtp-Source: AGHT+IECEf1HuITZ2tDNxR+a3DKYH49h3PZeGfnQwmI0C52utuFyyjM8i0J6mOTPKRVu862yp9lATQ==
+X-Received: by 2002:a17:902:d543:b0:1db:9fa4:c770 with SMTP id
+ z3-20020a170902d54300b001db9fa4c770mr207968plf.34.1708702979583; 
+ Fri, 23 Feb 2024 07:42:59 -0800 (PST)
 Received: from wheely.local0.net (220-235-194-103.tpgi.com.au.
  [220.235.194.103]) by smtp.gmail.com with ESMTPSA id
- h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.42.52
+ h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.42.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 07:42:55 -0800 (PST)
+ Fri, 23 Feb 2024 07:42:59 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-stable@nongnu.org,
- Joel Stanley <joel@jms.id.au>
-Subject: [PULL 01/47] target/ppc: Fix lxv/stxv MSR facility check
-Date: Sat, 24 Feb 2024 01:41:20 +1000
-Message-ID: <20240223154211.1001692-2-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-stable@nongnu.org
+Subject: [PULL 02/47] target/ppc: Fix crash on machine check caused by ifetch
+Date: Sat, 24 Feb 2024 01:41:21 +1000
+Message-ID: <20240223154211.1001692-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240223154211.1001692-1-npiggin@gmail.com>
 References: <20240223154211.1001692-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,41 +95,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The move to decodetree flipped the inequality test for the VEC / VSX
-MSR facility check.
+is_prefix_insn_excp() loads the first word of the instruction address
+which caused an exception, to determine whether or not it was prefixed
+so the prefix bit can be set in [H]SRR1.
 
-This caused application crashes under Linux, where these facility
-unavailable interrupts are used for lazy-switching of VEC/VSX register
-sets. Getting the incorrect interrupt would result in wrong registers
-being loaded, potentially overwriting live values and/or exposing
-stale ones.
+This works if the instruction image can be loaded, but if the exception
+was caused by an ifetch, this load could fail and cause a recursive
+exception and crash. Machine checks caused by ifetch are not excluded
+from the prefix check and can crash (see issue 2108 for an example).
+
+Fix this by excluding machine checks caused by ifetch from the prefix
+check.
 
 Cc: qemu-stable@nongnu.org
-Reported-by: Joel Stanley <joel@jms.id.au>
-Fixes: 70426b5bb738 ("target/ppc: moved stxvx and lxvx from legacy to decodtree")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1769
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Tested-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Tested-by: Cédric Le Goater <clg@kaod.org>
+Acked-by: Cédric Le Goater <clg@kaod.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2108
+Fixes: 55a7fa34f89 ("target/ppc: Machine check on invalid real address access on POWER9/10")
+Fixes: 5a5d3b23cb2 ("target/ppc: Add SRR1 prefix indication to interrupt handlers")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/translate/vsx-impl.c.inc | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/ppc/excp_helper.c | 36 +++++++++++++++++++++++++-----------
+ 1 file changed, 25 insertions(+), 11 deletions(-)
 
-diff --git a/target/ppc/translate/vsx-impl.c.inc b/target/ppc/translate/vsx-impl.c.inc
-index 6db87ab336..0266f09119 100644
---- a/target/ppc/translate/vsx-impl.c.inc
-+++ b/target/ppc/translate/vsx-impl.c.inc
-@@ -2268,7 +2268,7 @@ static bool do_lstxv(DisasContext *ctx, int ra, TCGv displ,
- 
- static bool do_lstxv_D(DisasContext *ctx, arg_D *a, bool store, bool paired)
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index 2ec6429e36..98952de267 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -1312,6 +1312,10 @@ static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
  {
--    if (paired || a->rt >= 32) {
-+    if (paired || a->rt < 32) {
-         REQUIRE_VSX(ctx);
-     } else {
-         REQUIRE_VECTOR(ctx);
+     CPUPPCState *env = &cpu->env;
+ 
++    if (!(env->insns_flags2 & PPC2_ISA310)) {
++        return false;
++    }
++
+     if (!tcg_enabled()) {
+         /*
+          * This does not load instructions and set the prefix bit correctly
+@@ -1322,6 +1326,15 @@ static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
+     }
+ 
+     switch (excp) {
++    case POWERPC_EXCP_MCHECK:
++        if (!(env->error_code & PPC_BIT(42))) {
++            /*
++             * Fetch attempt caused a machine check, so attempting to fetch
++             * again would cause a recursive machine check.
++             */
++            return false;
++        }
++        break;
+     case POWERPC_EXCP_HDSI:
+         /* HDSI PRTABLE_FAULT has the originating access type in error_code */
+         if ((env->spr[SPR_HDSISR] & DSISR_PRTABLE_FAULT) &&
+@@ -1332,10 +1345,10 @@ static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
+              * instruction at NIP would cause recursive faults with the same
+              * translation).
+              */
+-            break;
++            return false;
+         }
+-        /* fall through */
+-    case POWERPC_EXCP_MCHECK:
++        break;
++
+     case POWERPC_EXCP_DSI:
+     case POWERPC_EXCP_DSEG:
+     case POWERPC_EXCP_ALIGN:
+@@ -1346,17 +1359,13 @@ static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
+     case POWERPC_EXCP_VPU:
+     case POWERPC_EXCP_VSXU:
+     case POWERPC_EXCP_FU:
+-    case POWERPC_EXCP_HV_FU: {
+-        uint32_t insn = ppc_ldl_code(env, env->nip);
+-        if (is_prefix_insn(env, insn)) {
+-            return true;
+-        }
++    case POWERPC_EXCP_HV_FU:
+         break;
+-    }
+     default:
+-        break;
++        return false;
+     }
+-    return false;
++
++    return is_prefix_insn(env, ppc_ldl_code(env, env->nip));
+ }
+ #else
+ static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
+@@ -3224,6 +3233,7 @@ void ppc_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
+ 
+     switch (env->excp_model) {
+ #if defined(TARGET_PPC64)
++    case POWERPC_EXCP_POWER8:
+     case POWERPC_EXCP_POWER9:
+     case POWERPC_EXCP_POWER10:
+         /*
+@@ -3245,6 +3255,10 @@ void ppc_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
+             env->error_code |= PPC_BIT(42);
+ 
+         } else { /* Fetch */
++            /*
++             * is_prefix_insn_excp() tests !PPC_BIT(42) to avoid fetching
++             * the instruction, so that must always be clear for fetches.
++             */
+             env->error_code = PPC_BIT(36) | PPC_BIT(44) | PPC_BIT(45);
+         }
+         break;
 -- 
 2.42.0
 
