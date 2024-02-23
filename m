@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA17861861
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:47:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7925E861829
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:39:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdYhU-00063G-9P; Fri, 23 Feb 2024 11:47:04 -0500
+	id 1rdYZI-0005UI-Fd; Fri, 23 Feb 2024 11:38:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rdYQM-00063o-0g
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:29:22 -0500
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ id 1rdYQU-00064z-Sc
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:29:31 -0500
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rdYPx-0007Hz-9Y
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:29:21 -0500
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-512ed314881so307209e87.2
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 08:28:54 -0800 (PST)
+ id 1rdYQ3-0007JK-65
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:29:26 -0500
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2d269b2ff48so6403631fa.3
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 08:28:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708705733; x=1709310533; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708705735; x=1709310535; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=t+Lu1aUTzILJv+8PeOqcfRU9ypZOJg6L0bg1/V/uBfw=;
- b=J/KRmmowADFlAtBnGoqzU1KZyO+jTwJQG+wWxx1iYc24huxWQiuq+ppWtYJrauVuTV
- mQ8Ib0QlPwvi0IVai74tSd9BTRuFh66GktmCpMxMMxFSQ5WyG0st05LY7hmupGu3pqn8
- td+5BLfhLuzi0GHEoYrPw5ucDQWw9lNVxNLifBzpkU5RnCAxtDWCM1aFV1EuxqaNurJa
- nAHg4OHgEXi/bUEOlQeXOg3sSVaET3kbH36NqW3oXk9NW6dnosiqGxKSqT8Ye+i/hFBJ
- Pkp+QOueVKs/MJYlMWxXejsYJLV0JVh/KP1+8G90OzckcXMN5yIaT8zxeRueJcHzQ6V/
- A2cg==
+ bh=zMZ+pFdg1P4n/cHnfp4DZXoxUsYEnk+lXnRUtGdShK8=;
+ b=vjjV7psm0ahi2D9CymFO6KnJ9ylP7XpmCPT2m9GU6eHeg3mPTZ0UVmlOO0TlSTPI8N
+ zeMKsWQ/7Q8PsUcq6MUViL8zoZTgPU5ljGdCbInDElidQX/z4ZdgX2vqYgmJQ02g180Y
+ 69r6YO+UVM3RerMdOlOfSpOipfdBgmq2Qx9m2yrvHhYpdEcOlLixNST7KSfWwkEmV7kz
+ fFJ+9tF+4up+fDre1g4xeuRl6E88sM9ktPK8sGPbI5XgY0HVC7meKEn92XitcSigyzXD
+ IfA4ZrcsfYq1bBNKPbsIx11XP8wN1R3Dvpj7bH5e1ZnZDmU3BhWReZHQRbzXLjmY+WEl
+ /w1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708705733; x=1709310533;
+ d=1e100.net; s=20230601; t=1708705735; x=1709310535;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=t+Lu1aUTzILJv+8PeOqcfRU9ypZOJg6L0bg1/V/uBfw=;
- b=InYTNRAaNfTzSIOxTlP1wZ5pM3oJOtlQ8i2ULNRK/TVn1QRAxV3017S0/+8jAhRny2
- hDMUMK+XFifP7n7fALGsO0Zpt0vWj46duWtI+kkLcwby8kdkaX0tecuOHl0/viIOs7PC
- Wkn9PFzlnwI25K81JBbhysiRdk3zJfXYbpir0vGZH4sqFaKc0zUOZg81rFF+tZffFEnO
- BvFH4OV3RiBgnxAdI5QLYbS1mWitA5vlYF5euipnuuQjcszyOv53n0Tw4F0q2hfCtYfH
- mBDfhfeBJFLWTzoFrjT/RryuV+TvcY69sBmmxEfHBPnAdmwVlxXJ+GjG3Jnu/A68luH4
- Hghw==
-X-Gm-Message-State: AOJu0YyVlpXUgK4C4ZzLZg6XBDCnYd4OyiKhdiCHY0tmseAX2QyNPogo
- ngwlM+jzHMuB8gR2SoBGw/8631WAeLu7sOBsTFhW/4Th6eap+Oz54it2frrAEao=
-X-Google-Smtp-Source: AGHT+IGplN59rkQLEB1uSrd2cCAiWoie3bboaYuyype8i1MvIe/5fGf1ZlOLRAjTeemqlxnv/K4+Iw==
-X-Received: by 2002:a05:6512:ba2:b0:512:e394:5357 with SMTP id
- b34-20020a0565120ba200b00512e3945357mr251388lfv.54.1708705733398; 
- Fri, 23 Feb 2024 08:28:53 -0800 (PST)
+ bh=zMZ+pFdg1P4n/cHnfp4DZXoxUsYEnk+lXnRUtGdShK8=;
+ b=tetnb+1CpSkDDISQVn/Vf9IeUAnmAUFE0AN0eWO6+o8Y4LdbP7HhPJ9LKHXko2fUq0
+ LdMaUpX0WM3QRWr2ZV9yDFe8efDAQyIutffEJmxiqW9ZkGThmZcL4lkFlHhrrGWRufxD
+ HrFlXYxX5NM9DSKsQ4LKnI9+5ic62NG0lWdDJg2p4cFpT6v/fXMKmE2j/jY38bqJ8fDZ
+ A+DmSUiO+FQrL8zvXnBIOm85RsZNz4Rk6kq9/Yx5dzHJz4Eq95xRsYmGN10f82Mwuwin
+ j/dDAcQvgTRCzSEQsVF8AUYWpaehm++KXWvYgpaXkcRaRJhOZ5F83q01LEVq7e/wWtFD
+ vffw==
+X-Gm-Message-State: AOJu0Yxgqkn2tWtVqT7H58RbiL3+ulO564okbcWZOHCnFVn9LJlSuET5
+ WZCoECVN3+XvG/fQuKSfIZO1ZPj82Qc3PTY8FyrYdoPMlFKKChwpqgIS2uG3Wfw=
+X-Google-Smtp-Source: AGHT+IHed1MYrPpG4m4cYlIb7jJk+Q/X3PN1dRy9SJyY0mEtX5xh9AB4J2GxL3dH9xrcqirEAbaN9g==
+X-Received: by 2002:a2e:820b:0:b0:2d2:3a77:b304 with SMTP id
+ w11-20020a2e820b000000b002d23a77b304mr219062ljg.1.1708705734751; 
+ Fri, 23 Feb 2024 08:28:54 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- z6-20020a05600c0a0600b0041266f5b041sm2984960wmp.34.2024.02.23.08.28.47
+ w21-20020a05600c015500b004128da16dddsm2772246wmm.15.2024.02.23.08.28.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 23 Feb 2024 08:28:52 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id D92085F93B;
+ by draig.lan (Postfix) with ESMTP id ED5455F93C;
  Fri, 23 Feb 2024 16:22:04 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -87,17 +87,17 @@ Cc: Song Gao <gaosong@loongson.cn>, qemu-s390x@nongnu.org,
  Brian Cain <bcain@quicinc.com>, Paolo Bonzini <pbonzini@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Michael Rolnik <mrolnik@gmail.com>
-Subject: [PATCH v2 25/27] docs/devel: lift example and plugin API sections up
-Date: Fri, 23 Feb 2024 16:22:00 +0000
-Message-Id: <20240223162202.1936541-26-alex.bennee@linaro.org>
+Subject: [PATCH v2 26/27] docs/devel: document some plugin assumptions
+Date: Fri, 23 Feb 2024 16:22:01 +0000
+Message-Id: <20240223162202.1936541-27-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240223162202.1936541-1-alex.bennee@linaro.org>
 References: <20240223162202.1936541-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x134.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -120,41 +120,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This makes them a bit more visible in the TCG emulation menu rather
-than hiding them away bellow the ToC limit.
+While we attempt to hide implementation details from the plugin we
+shouldn't be totally obtuse. Let the user know what they can and can't
+expect with the various instrumentation options.
 
-Message-Id: <20240103173349.398526-43-alex.bennee@linaro.org>
+Message-Id: <20240103173349.398526-44-alex.bennee@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- docs/devel/tcg-plugins.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ docs/devel/tcg-plugins.rst | 49 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 49 insertions(+)
 
 diff --git a/docs/devel/tcg-plugins.rst b/docs/devel/tcg-plugins.rst
-index fa7421279f5..535a74684c5 100644
+index 535a74684c5..9cc09d8c3da 100644
 --- a/docs/devel/tcg-plugins.rst
 +++ b/docs/devel/tcg-plugins.rst
-@@ -143,7 +143,7 @@ requested. The plugin isn't completely uninstalled until the safe work
- has executed while all vCPUs are quiescent.
+@@ -112,6 +112,55 @@ details are opaque to plugins. The plugin is able to query select
+ details of instructions and system configuration only through the
+ exported *qemu_plugin* functions.
  
- Example Plugins
-----------------
-+===============
++However the following assumptions can be made:
++
++Translation Blocks
++++++++++++++++++++
++
++All code will go through a translation phase although not all
++translations will be necessarily be executed. You need to instrument
++actual executions to track what is happening.
++
++It is quite normal to see the same address translated multiple times.
++If you want to track the code in system emulation you should examine
++the underlying physical address (``qemu_plugin_insn_haddr``) to take
++into account the effects of virtual memory although if the system does
++paging this will change too.
++
++Not all instructions in a block will always execute so if its
++important to track individual instruction execution you need to
++instrument them directly. However asynchronous interrupts will not
++change control flow mid-block.
++
++Instructions
++++++++++++++
++
++Instruction instrumentation runs before the instruction executes. You
++can be can be sure the instruction will be dispatched, but you can't
++be sure it will complete. Generally this will be because of a
++synchronous exception (e.g. SIGILL) triggered by the instruction
++attempting to execute. If you want to be sure you will need to
++instrument the next instruction as well. See the ``execlog.c`` plugin
++for examples of how to track this and finalise details after execution.
++
++Memory Accesses
+++++++++++++++++
++
++Memory callbacks are called after a successful load or store.
++Unsuccessful operations (i.e. faults) will not be visible to memory
++instrumentation although the execution side effects can be observed
++(e.g. entering a exception handler).
++
++System Idle and Resume States
+++++++++++++++++++++++++++++++
++
++The ``qemu_plugin_register_vcpu_idle_cb`` and
++``qemu_plugin_register_vcpu_resume_cb`` functions can be used to track
++when CPUs go into and return from sleep states when waiting for
++external I/O. Be aware though that these may occur less frequently
++than in real HW due to the inefficiencies of emulation giving less
++chance for the CPU to idle.
++
+ Internals
+ ---------
  
- There are a number of plugins included with QEMU and you are
- encouraged to contribute your own plugins plugins upstream. There is a
-@@ -591,8 +591,8 @@ The plugin has a number of arguments, all of them are optional:
-   configuration arguments implies ``l2=on``.
-   (default: N = 2097152 (2MB), B = 64, A = 16)
- 
--API
-----
-+Plugin API
-+==========
- 
- The following API is generated from the inline documentation in
- ``include/qemu/qemu-plugin.h``. Please ensure any updates to the API
 -- 
 2.39.2
 
