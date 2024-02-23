@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE57E860F84
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 11:38:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EAF1860F74
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 11:36:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdSst-0003nT-IC; Fri, 23 Feb 2024 05:34:27 -0500
+	id 1rdSu4-0005Fz-8d; Fri, 23 Feb 2024 05:35:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rdSsY-0003e1-3p; Fri, 23 Feb 2024 05:34:06 -0500
+ id 1rdSsZ-0003fZ-65; Fri, 23 Feb 2024 05:34:08 -0500
 Received: from szxga05-in.huawei.com ([45.249.212.191])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rdSsV-0001yj-8n; Fri, 23 Feb 2024 05:34:05 -0500
+ id 1rdSsW-0001yk-8q; Fri, 23 Feb 2024 05:34:06 -0500
 Received: from mail.maildlp.com (unknown [172.19.88.214])
- by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Th5pG6dzQz1FLHM;
- Fri, 23 Feb 2024 18:28:54 +0800 (CST)
+ by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Th5pH5gLLz1FLHj;
+ Fri, 23 Feb 2024 18:28:55 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id C626C1A016B;
- Fri, 23 Feb 2024 18:33:48 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id A338D1A016B;
+ Fri, 23 Feb 2024 18:33:49 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 23 Feb
- 2024 18:33:48 +0800
+ 2024 18:33:49 +0800
 To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [RFC PATCH v3 16/21] hw/intc: Enable FEAT_GICv3_NMI Feature
-Date: Fri, 23 Feb 2024 10:32:16 +0000
-Message-ID: <20240223103221.1142518-17-ruanjinjie@huawei.com>
+Subject: [RFC PATCH v3 17/21] hw/intc/arm_gicv3: Add NMI handling CPU
+ interface registers
+Date: Fri, 23 Feb 2024 10:32:17 +0000
+Message-ID: <20240223103221.1142518-18-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240223103221.1142518-1-ruanjinjie@huawei.com>
 References: <20240223103221.1142518-1-ruanjinjie@huawei.com>
@@ -67,73 +68,117 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Added properties to enable FEAT_GICv3_NMI feature, setup distributor
-and redistributor registers to indicate NMI support.
+Add the NMIAR CPU interface registers which deal with acknowledging NMI.
+
+When introduce NMI interrupt, there are some updates to the semantics for the
+register ICC_IAR1_EL1 and ICC_HPPIR1_EL1. For ICC_IAR1_EL1 register, it
+should return 1022 if the intid has super priority. And for ICC_NMIAR1_EL1
+register, it should return 1023 if the intid do not have super priority.
+Howerever, these are not necessary for ICC_HPPIR1_EL1 register.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- hw/intc/arm_gicv3_common.c         | 1 +
- hw/intc/arm_gicv3_dist.c           | 2 ++
- hw/intc/gicv3_internal.h           | 1 +
- include/hw/intc/arm_gicv3_common.h | 1 +
- 4 files changed, 5 insertions(+)
+ hw/intc/arm_gicv3_cpuif.c | 46 ++++++++++++++++++++++++++++++++++++---
+ hw/intc/gicv3_internal.h  |  1 +
+ 2 files changed, 44 insertions(+), 3 deletions(-)
 
-diff --git a/hw/intc/arm_gicv3_common.c b/hw/intc/arm_gicv3_common.c
-index c52f060026..2d2cea6858 100644
---- a/hw/intc/arm_gicv3_common.c
-+++ b/hw/intc/arm_gicv3_common.c
-@@ -569,6 +569,7 @@ static Property arm_gicv3_common_properties[] = {
-     DEFINE_PROP_UINT32("num-irq", GICv3State, num_irq, 32),
-     DEFINE_PROP_UINT32("revision", GICv3State, revision, 3),
-     DEFINE_PROP_BOOL("has-lpi", GICv3State, lpi_enable, 0),
-+    DEFINE_PROP_BOOL("has-nmi", GICv3State, nmi_support, 0),
-     DEFINE_PROP_BOOL("has-security-extensions", GICv3State, security_extn, 0),
-     /*
-      * Compatibility property: force 8 bits of physical priority, even
-diff --git a/hw/intc/arm_gicv3_dist.c b/hw/intc/arm_gicv3_dist.c
-index 2f7280c524..65e7ca29cf 100644
---- a/hw/intc/arm_gicv3_dist.c
-+++ b/hw/intc/arm_gicv3_dist.c
-@@ -412,6 +412,7 @@ static bool gicd_readl(GICv3State *s, hwaddr offset,
-          *                      by GICD_TYPER.IDbits)
-          * MBIS == 0 (message-based SPIs not supported)
-          * SecurityExtn == 1 if security extns supported
-+         * NMI = 1 if Non-maskable interrupt property is supported
-          * CPUNumber == 0 since for us ARE is always 1
-          * ITLinesNumber == (((max SPI IntID + 1) / 32) - 1)
-          */
-@@ -425,6 +426,7 @@ static bool gicd_readl(GICv3State *s, hwaddr offset,
-         bool dvis = s->revision >= 4;
+diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
+index e1a60d8c15..f5bf8df32b 100644
+--- a/hw/intc/arm_gicv3_cpuif.c
++++ b/hw/intc/arm_gicv3_cpuif.c
+@@ -1097,7 +1097,8 @@ static uint64_t icc_hppir0_value(GICv3CPUState *cs, CPUARMState *env)
+     return cs->hppi.irq;
+ }
  
-         *data = (1 << 25) | (1 << 24) | (dvis << 18) | (sec_extn << 10) |
-+            (s->nmi_support << GICD_TYPER_NMI_SHIFT) |
-             (s->lpi_enable << GICD_TYPER_LPIS_SHIFT) |
-             (0xf << 19) | itlinesnumber;
-         return true;
+-static uint64_t icc_hppir1_value(GICv3CPUState *cs, CPUARMState *env)
++static uint64_t icc_hppir1_value(GICv3CPUState *cs, CPUARMState *env,
++                                 bool is_nmi, bool is_hppi)
+ {
+     /* Return the highest priority pending interrupt register value
+      * for group 1.
+@@ -1108,6 +1109,16 @@ static uint64_t icc_hppir1_value(GICv3CPUState *cs, CPUARMState *env)
+         return INTID_SPURIOUS;
+     }
+ 
++    if (!is_hppi) {
++        if (is_nmi && (!cs->hppi.superprio)) {
++            return INTID_SPURIOUS;
++        }
++
++        if ((!is_nmi) && cs->hppi.superprio) {
++            return INTID_NMI;
++        }
++    }
++
+     /* Check whether we can return the interrupt or if we should return
+      * a special identifier, as per the CheckGroup1ForSpecialIdentifiers
+      * pseudocode. (We can simplify a little because for us ICC_SRE_EL1.RM
+@@ -1168,7 +1179,30 @@ static uint64_t icc_iar1_read(CPUARMState *env, const ARMCPRegInfo *ri)
+     if (!icc_hppi_can_preempt(cs)) {
+         intid = INTID_SPURIOUS;
+     } else {
+-        intid = icc_hppir1_value(cs, env);
++        intid = icc_hppir1_value(cs, env, false, false);
++    }
++
++    if (!gicv3_intid_is_special(intid)) {
++        icc_activate_irq(cs, intid);
++    }
++
++    trace_gicv3_icc_iar1_read(gicv3_redist_affid(cs), intid);
++    return intid;
++}
++
++static uint64_t icc_nmiar1_read(CPUARMState *env, const ARMCPRegInfo *ri)
++{
++    GICv3CPUState *cs = icc_cs_from_env(env);
++    uint64_t intid;
++
++    if (icv_access(env, HCR_IMO)) {
++        return icv_iar_read(env, ri);
++    }
++
++    if (!icc_hppi_can_preempt(cs)) {
++        intid = INTID_SPURIOUS;
++    } else {
++        intid = icc_hppir1_value(cs, env, true, false);
+     }
+ 
+     if (!gicv3_intid_is_special(intid)) {
+@@ -1555,7 +1589,7 @@ static uint64_t icc_hppir1_read(CPUARMState *env, const ARMCPRegInfo *ri)
+         return icv_hppir_read(env, ri);
+     }
+ 
+-    value = icc_hppir1_value(cs, env);
++    value = icc_hppir1_value(cs, env, false, true);
+     trace_gicv3_icc_hppir1_read(gicv3_redist_affid(cs), value);
+     return value;
+ }
+@@ -2344,6 +2378,12 @@ static const ARMCPRegInfo gicv3_cpuif_reginfo[] = {
+       .access = PL1_R, .accessfn = gicv3_irq_access,
+       .readfn = icc_iar1_read,
+     },
++    { .name = "ICC_NMIAR1_EL1", .state = ARM_CP_STATE_BOTH,
++      .opc0 = 3, .opc1 = 0, .crn = 12, .crm = 9, .opc2 = 5,
++      .type = ARM_CP_IO | ARM_CP_NO_RAW,
++      .access = PL1_R, .accessfn = gicv3_irq_access,
++      .readfn = icc_nmiar1_read,
++    },
+     { .name = "ICC_EOIR1_EL1", .state = ARM_CP_STATE_BOTH,
+       .opc0 = 3, .opc1 = 0, .crn = 12, .crm = 12, .opc2 = 1,
+       .type = ARM_CP_IO | ARM_CP_NO_RAW,
 diff --git a/hw/intc/gicv3_internal.h b/hw/intc/gicv3_internal.h
-index a1fc34597e..8d793243f4 100644
+index 8d793243f4..93e56b3726 100644
 --- a/hw/intc/gicv3_internal.h
 +++ b/hw/intc/gicv3_internal.h
-@@ -70,6 +70,7 @@
- #define GICD_CTLR_E1NWF             (1U << 7)
- #define GICD_CTLR_RWP               (1U << 31)
+@@ -511,6 +511,7 @@ FIELD(VTE, RDBASE, 42, RDBASE_PROCNUM_LENGTH)
+ /* Special interrupt IDs */
+ #define INTID_SECURE 1020
+ #define INTID_NONSECURE 1021
++#define INTID_NMI 1022
+ #define INTID_SPURIOUS 1023
  
-+#define GICD_TYPER_NMI_SHIFT           9
- #define GICD_TYPER_LPIS_SHIFT          17
- 
- /* 16 bits EventId */
-diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
-index df4380141d..16c5fa7256 100644
---- a/include/hw/intc/arm_gicv3_common.h
-+++ b/include/hw/intc/arm_gicv3_common.h
-@@ -251,6 +251,7 @@ struct GICv3State {
-     uint32_t num_irq;
-     uint32_t revision;
-     bool lpi_enable;
-+    bool nmi_support;
-     bool security_extn;
-     bool force_8bit_prio;
-     bool irq_reset_nonsecure;
+ /* Functions internal to the emulated GICv3 */
 -- 
 2.34.1
 
