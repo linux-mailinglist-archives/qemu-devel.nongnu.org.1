@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420218614E4
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 15:56:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAA16861539
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 16:08:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdWxA-0000l4-Sq; Fri, 23 Feb 2024 09:55:09 -0500
+	id 1rdX8g-0002YG-GY; Fri, 23 Feb 2024 10:07:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdWq8-0007SM-0n
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 09:47:52 -0500
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ id 1rdWwe-0000Ve-Bo
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 09:54:36 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rdWpq-0004d5-7e
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 09:47:51 -0500
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-512b700c8ebso1183844e87.0
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 06:47:32 -0800 (PST)
+ id 1rdWwc-0005xC-Qa
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 09:54:36 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-5648d92919dso1031968a12.1
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 06:54:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708699650; x=1709304450; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708700070; x=1709304870; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MtMECOTgbIYKJrB18i1RsCPckJqPd1NJ+cu4GtcN1dU=;
- b=Du0WK3U9kqVZFfTsikIq+AeYacVAhhi/34D/gEDdmAJOblfOzpnfzDkeIxcL2ETQ1D
- 0yh966JA1gNepfHf5Xx5cSz5/+jlDI4H2R9hlYTiSk+95lqLQMEypXKn76Jxh9ow97/i
- U0wCHjCCJAUY/VZdt1N/C1zc3Eh7ABVQf14p9h9ST8PDBFHSEt7Ta47ofo5kd8hHJ8LF
- hy1oXxotDvTlvq92huTC6z4XYursdae4m8ginZmJ7YbUMMLZedtlDdpAVAfDg5WXaXKh
- PEp24vLCIORWrHcwfHIg4ZmzPbRUHYxRWbiJMuMvq4UKW0NnnBGSykKXN75Q9Ihwd/J2
- q1Xw==
+ bh=WPQfjQWIvQBLRJ6qvfBoFUVUFt5Qf/N+PgIdEHrJilU=;
+ b=wKs4m66SpUeojcxrG0baQVYJj64GQvgMkpRo6ugRKhjrHaR2sKsu+1GN5fxzIiHi3N
+ XTxE5EJPGEqLn8CTDMbV2tt/QbdlF0lTOg5HC5yf3iKMHp0FtvH+eKTErjGUoQBUoMPT
+ 56LaSMQxSKnN18uUEuWRq7h54oRpRq6LDncbSzkMpi23X/6oA0FXOfMyW7pBknaYY2bR
+ HzEqru2t/ThCYEs6JGFXk20jzRKaxZVtzCSrLpuQ2tAS6kf+U97xK5/3THAhDQChX/pb
+ cdySDi+ik3XJ7+lKg2L8cPB4ZO0Bi3D9PdWWpYADL6SSs9QXdfT6uBbP9uGkwajjWvIQ
+ aLTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708699650; x=1709304450;
+ d=1e100.net; s=20230601; t=1708700070; x=1709304870;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MtMECOTgbIYKJrB18i1RsCPckJqPd1NJ+cu4GtcN1dU=;
- b=A51pE8faewgdfcnURrJ+MNSbpLmKGEiDnbfPFA2Qjbt7YGdgJE4NetiE8BuZ+q47mP
- Ei8uMlVbl0Ma7lfFwDOA/BUfSgK2Ie2t6u9dJ3RgaUK6BDRjRMWQXLIiJWdMW1/hvEOy
- IE+VBED1KsdqgalSyZ2xUHM0q/WJxZfk+k4L3oIoy59e13uUr+0ytq75YsNH0fTy33YS
- 8Z1TAa7EDuB+FCn8nYWMMbJOKuzAUpdZH2NkZhCrkYBozvLANb/i61pYxmRKy5xl7RYB
- 0fLUWvUYRgbgLiyRxGrdpnq2dSf3T/XyyfSwv1HgKP9pqD0XRGoB1yvk32fSj+ie5feC
- HhOw==
-X-Gm-Message-State: AOJu0YwQjfOw1tX1rz3rJhbhdQO/k4NLwMcTYik1bToDzjjyeCX9dMLV
- CAXERG2kUasfMjxCpWLmJUjUQIHbSt4UuLSViodMk3G57nsOJey8dWKeFSp+E4jGFqg1h32I2FU
- Pnbnacckwl9g60K3Xey9RCboaiPVguywbDxhadQ==
-X-Google-Smtp-Source: AGHT+IEBpynMezLxwpPNSISwCwfcs8mgjgBtkKDcVuoRZn+1VBdiuKHLsyAP3frm//4bQvQHerOsPyzCj8AGsjU6H+4=
-X-Received: by 2002:a05:6512:1103:b0:512:ec79:3bd1 with SMTP id
- l3-20020a056512110300b00512ec793bd1mr40252lfg.0.1708699650426; Fri, 23 Feb
- 2024 06:47:30 -0800 (PST)
+ bh=WPQfjQWIvQBLRJ6qvfBoFUVUFt5Qf/N+PgIdEHrJilU=;
+ b=YQ2B2gBvn6KdeOx9hDVcdquZ3Dg8NCHjNq8b6Q9+GkOWtTHhH8JS3Xfs4POHdMqgok
+ EYQ3TWptCOHNZtr/d/9iPrrGxf2QBgqXZ62OvfkP5yLat844CpreU8WUWX1jn5VfAXG5
+ 4F8RmnRPH0n2yqcmGS9NSd6dqwzj7pnEw2zHuxaFMebB2PC0VDbAMKMKKd+nVIti0ifR
+ Mj2egWRZWnqoD1YoVBB40yIWBmU+WSZyHgY2Hbj0ZiQ+A4gABcTk1Ux/y6drjI03VFxx
+ olaFsNldmVlXo/FUkQuJyg8UpCB96V3xFERj8SHTb3b7p1UNPXryfsV6O3oGHv6RERrf
+ 00pg==
+X-Gm-Message-State: AOJu0YxxdcpwbGgZ8hpjMCf1lj+f+72jhUke2rSp4N8s1S70xaLbJ0j0
+ 0KZA3T66AeRwsJ/uXdNQROGrTJnnwz+8qiYYfbaV+MEXV7zmg8Rr5f0D5lyES5BvOjsynf8u4B6
+ GJa5262O6c0r8Vgy9Dx0Bs0PHyTzG8RMgTytG1g==
+X-Google-Smtp-Source: AGHT+IFDKCPKLInO3LzhjwkJhTSK4tXr8wSHM3qhHeK9oim2424hXcp/9Iq5VmIhlW4J4fcnVmhj+kcn//s8XaOO5Ws=
+X-Received: by 2002:a05:6402:895:b0:563:d16b:a04f with SMTP id
+ e21-20020a056402089500b00563d16ba04fmr46877edy.42.1708700070578; Fri, 23 Feb
+ 2024 06:54:30 -0800 (PST)
 MIME-Version: 1.0
 References: <20240219200908.49551-1-arnaud.minier@telecom-paris.fr>
- <20240219200908.49551-8-arnaud.minier@telecom-paris.fr>
-In-Reply-To: <20240219200908.49551-8-arnaud.minier@telecom-paris.fr>
+ <20240219200908.49551-9-arnaud.minier@telecom-paris.fr>
+In-Reply-To: <20240219200908.49551-9-arnaud.minier@telecom-paris.fr>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 23 Feb 2024 14:47:19 +0000
-Message-ID: <CAFEAcA_GO_mD7mQ69X-k=-NqH-WV4euCqZnBh2POh+M1dVi8kA@mail.gmail.com>
-Subject: Re: [PATCH v5 7/8] STM32L4x5: Use the RCC Sysclk
+Date: Fri, 23 Feb 2024 14:54:19 +0000
+Message-ID: <CAFEAcA-GPocNOoe=dp_3dwXvTbVuDOJJRQvhSkCqiwsLybavWw@mail.gmail.com>
+Subject: Re: [PATCH v5 8/8] Add tests for the STM32L4x5_RCC
 To: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, 
  Laurent Vivier <lvivier@redhat.com>,
  =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>, 
  Samuel Tardieu <samuel.tardieu@telecom-paris.fr>, qemu-arm@nongnu.org, 
- Alistair Francis <alistair@alistair23.me>, Paolo Bonzini <pbonzini@redhat.com>,
- Alistair Francis <alistair.francis@wdc.com>
+ Alistair Francis <alistair@alistair23.me>, Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,18 +92,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 19 Feb 2024 at 20:17, Arnaud Minier
+On Mon, 19 Feb 2024 at 20:18, Arnaud Minier
 <arnaud.minier@telecom-paris.fr> wrote:
 >
-> Now that we can generate reliable clock frequencies from the RCC, remove
-> the hacky definition of the sysclk in the b_l475e_iot01a initialisation
-> code and use the correct RCC clock.
+> Tests:
+> - the ability to change the sysclk of the device
+> - the ability to enable/disable/configure the PLLs
+> - if the clock multiplexers work
+> - the register flags and the generation of irqs
 >
 > Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 > Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-> Acked-by: Alistair Francis <alistair.francis@wdc.com>
+> Acked-by: Thomas Huth <thuth@redhat.com>
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+
+> +static bool qts_wait_for_flag(QTestState *qts, uint32_t event_addr,
+> +                              uint32_t flag, uint32_t value)
+> +{
+> +    /* Wait at most 5 seconds */
+> +    for (int i =3D 0; i < 5000; i++) {
+> +        if ((qtest_readl(qts, event_addr) & flag) =3D=3D value) {
+> +            return true;
+> +        }
+> +        g_usleep(1000);
+> +    }
+> +
+> +    return false;
+> +}
+
+Tests using the qtest accelerator shouldn't wait for real
+wall time to pass. The system under the test does not actually
+run, it only moves forward the system clock when the test
+asks it to do so by calling clock_step(). (We have only a few
+tests under tests/qtest which need to really run guest code
+and so can't use the qtest accelerator. Those may have a reason
+for wallclock timeouts, but need to take care because the timeout
+that works fine on a fast developer workstation may be insufficient
+on a slow heavily loaded server running a CI job...)
+
+Either the device being tested here will immediately
+set the flag we're waiting for here, in which case we don't
+need to do this loop at all, or else it will only set the
+flag after some amount of simulation time has passed, in which
+case the loop will always time out because simulation time won't
+pass until you call clock_step().
+
+Most device tests don't need to call clock_step(), because we tend
+to write our device models so that things that take time on real
+hardware (e.g. waiting for a PLL to settle) happen instantaneously.
+Timer device tests are the ones that usually do want to see what
+happens after simulation time has passed: you can look at
+tests/qtest/cmsdk-apb-timer-test.c for a simple example of that.
 
 thanks
 -- PMM
