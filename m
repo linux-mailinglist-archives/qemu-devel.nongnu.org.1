@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC5D0860D1B
+	by mail.lfdr.de (Postfix) with ESMTPS id 25720860D18
 	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 09:44:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdRA5-0003mS-9T; Fri, 23 Feb 2024 03:44:05 -0500
+	id 1rdRA9-0003pM-1k; Fri, 23 Feb 2024 03:44:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rdR9y-0003l7-1Q; Fri, 23 Feb 2024 03:43:58 -0500
+ id 1rdRA0-0003la-KT; Fri, 23 Feb 2024 03:44:02 -0500
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rdR9w-0000BO-Cm; Fri, 23 Feb 2024 03:43:57 -0500
+ id 1rdR9x-0000Bk-Of; Fri, 23 Feb 2024 03:43:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708677836; x=1740213836;
+ t=1708677838; x=1740213838;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=F8skAR9lhlBSxUk/sclMG9tzN4DHjUmO6+uY1BPToZ0=;
- b=Xeo0nutKpIQ8BzicXiZOay9j4/u+95iBOF2KsgLtDEAlnV1czK3PwD3i
- oknKCjcUs3RlvOyj6x8TG7dGnosZ1YjylKIN2WkFgigP5w9idmbv0LEwY
- xrOlxK9gvpgb4yHBIpnIohYy171Ilgt1nsbvHrh2m11vibxDK7TUtKPso
- 9KCqxxuZ+3UFYMPCzWVyoh8ofpDj72YZTLrxhOGgeGXeo0Rr1G2FuvzLf
- /BITIQJ61CYL0JiDwwwN7zODfpZm0XWELCni/1I426L1W8pYGFki1dj3d
- E5S1qR+DjwNzKKGkj9btrluZo4uVrK2QgSoku8MU0jcWIA//65dVLq2yK g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="28413872"
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; d="scan'208";a="28413872"
+ bh=6V97dsmp4JAIBUgFfbzez7o/O5Yd5Mg3yF5DrdVp9Q8=;
+ b=LYrd125rsjKyo0dRsUoemLhJvyaK3IWVEPDBc2rHoGT41XIGRwguXNGk
+ Taw62Er00YbS6vD9IjBJkScFRxptQS2lyZPjq0V8mVEi9gX9fRsT9Kn/J
+ O2XVmx4CaULHmjncOxu2g8MlFDP1leLcloei0xe5PNpf0ZCKzCVjJha6I
+ +3puC3k2ls1oRCMqBgqaRn9150dAh2BfgXwP9WlAi3sv85WkMS4pV6//8
+ fLtQEYkyyZya/yPSWrrI6JAUJ8a0SMnmpHuJr4N918ysvwqmWeNQRrwQy
+ CFht5ncR+2bQNw1n65xlJjhCxt05gcbeNeeq2MASiG68HWcnEYNfzNabn A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="28413893"
+X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; d="scan'208";a="28413893"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Feb 2024 00:43:44 -0800
+ 23 Feb 2024 00:43:48 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
-   d="scan'208";a="5731852"
+   d="scan'208";a="5731867"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa007.fm.intel.com with ESMTP; 23 Feb 2024 00:43:39 -0800
+ by fmviesa007.fm.intel.com with ESMTP; 23 Feb 2024 00:43:44 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Jonathan Cameron <jonathan.cameron@huawei.com>,
  Fan Ni <fan.ni@samsung.com>, Laurent Vivier <laurent@vivier.eu>,
@@ -53,10 +53,10 @@ To: Jonathan Cameron <jonathan.cameron@huawei.com>,
  Michael Tokarev <mjt@tls.msk.ru>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-trivial@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 5/7] hw/pci-bridge/cxl_upstream: Fix missing ERRP_GUARD()
- in cxl_usp_realize()
-Date: Fri, 23 Feb 2024 16:56:51 +0800
-Message-Id: <20240223085653.1255438-6-zhao1.liu@linux.intel.com>
+Subject: [PATCH v2 6/7] hw/vfio/iommufd: Fix missing ERRP_GUARD() in
+ iommufd_cdev_getfd()
+Date: Fri, 23 Feb 2024 16:56:52 +0800
+Message-Id: <20240223085653.1255438-7-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240223085653.1255438-1-zhao1.liu@linux.intel.com>
 References: <20240223085653.1255438-1-zhao1.liu@linux.intel.com>
@@ -104,20 +104,19 @@ ERRP_GUARD():
 * Using it when it's not needed is safe, but please avoid cluttering
 * the source with useless code.
 
-But in cxl_usp_realize(), @errp is dereferenced without ERRP_GUARD():
+But in iommufd_cdev_getfd(), @errp is dereferenced without ERRP_GUARD():
 
-cxl_doe_cdat_init(cxl_cstate, errp);
 if (*errp) {
-    goto err_cap;
+    error_prepend(errp, VFIO_MSG_PREFIX, path);
 }
 
-Here we check *errp, because cxl_doe_cdat_init() returns void. And since
-cxl_usp_realize() - as a PCIDeviceClass.realize() method - doesn't get
-the NULL @errp parameter, it hasn't triggered the bug that dereferencing
-the NULL @errp.
+Currently, since vfio_attach_device() - the caller of
+iommufd_cdev_getfd() - is always called in DeviceClass.realize() context
+and doesn't get the NULL @errp parameter, iommufd_cdev_getfd()
+hasn't triggered the bug that dereferencing the NULL @errp.
 
 To follow the requirement of @errp, add missing ERRP_GUARD() in
-cxl_usp_realize().
+iommufd_cdev_getfd().
 
 Suggested-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
@@ -130,21 +129,21 @@ v2:
  * Add the @errp dereference code in commit message to make review
    easier. (Markus)
 ---
- hw/pci-bridge/cxl_upstream.c | 1 +
+ hw/vfio/iommufd.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
-index e87eb4017713..03d123cca0ef 100644
---- a/hw/pci-bridge/cxl_upstream.c
-+++ b/hw/pci-bridge/cxl_upstream.c
-@@ -289,6 +289,7 @@ static void free_default_cdat_table(CDATSubHeader **cdat_table, int num,
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index 9bfddc136089..7baf49e6ee9e 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -116,6 +116,7 @@ static void iommufd_cdev_unbind_and_disconnect(VFIODevice *vbasedev)
  
- static void cxl_usp_realize(PCIDevice *d, Error **errp)
+ static int iommufd_cdev_getfd(const char *sysfs_path, Error **errp)
  {
 +    ERRP_GUARD();
-     PCIEPort *p = PCIE_PORT(d);
-     CXLUpstreamPort *usp = CXL_USP(d);
-     CXLComponentState *cxl_cstate = &usp->cxl_cstate;
+     long int ret = -ENOTTY;
+     char *path, *vfio_dev_path = NULL, *vfio_path = NULL;
+     DIR *dir = NULL;
 -- 
 2.34.1
 
