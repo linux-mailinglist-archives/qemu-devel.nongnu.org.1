@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C7F4860F70
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 11:35:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4EEF860F75
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 11:36:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdStd-0004IA-0x; Fri, 23 Feb 2024 05:35:15 -0500
+	id 1rdStz-0004Ps-WF; Fri, 23 Feb 2024 05:35:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rdSsT-0003ba-RY; Fri, 23 Feb 2024 05:34:02 -0500
-Received: from szxga02-in.huawei.com ([45.249.212.188])
+ id 1rdSsS-0003bP-VT; Fri, 23 Feb 2024 05:34:02 -0500
+Received: from szxga01-in.huawei.com ([45.249.212.187])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rdSsP-0001wF-Ot; Fri, 23 Feb 2024 05:34:01 -0500
+ id 1rdSsP-0001wM-Jj; Fri, 23 Feb 2024 05:34:00 -0500
 Received: from mail.maildlp.com (unknown [172.19.163.174])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Th5sW4XNvzXhFj;
- Fri, 23 Feb 2024 18:31:43 +0800 (CST)
+ by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Th5sq5zCpztQRr;
+ Fri, 23 Feb 2024 18:31:59 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id 130D71400CA;
- Fri, 23 Feb 2024 18:33:41 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 04AEE1400CA;
+ Fri, 23 Feb 2024 18:33:42 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 23 Feb
- 2024 18:33:40 +0800
+ 2024 18:33:41 +0800
 To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [RFC PATCH v3 07/21] target/arm: Add support for NMI in
- arm_phys_excp_target_el()
-Date: Fri, 23 Feb 2024 10:32:07 +0000
-Message-ID: <20240223103221.1142518-8-ruanjinjie@huawei.com>
+Subject: [RFC PATCH v3 08/21] target/arm: Handle IS/FS in ISR_EL1 for NMI
+Date: Fri, 23 Feb 2024 10:32:08 +0000
+Message-ID: <20240223103221.1142518-9-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240223103221.1142518-1-ruanjinjie@huawei.com>
 References: <20240223103221.1142518-1-ruanjinjie@huawei.com>
@@ -43,13 +42,13 @@ Content-Type: text/plain
 X-Originating-IP: [10.67.174.55]
 X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
  kwepemi500008.china.huawei.com (7.221.188.139)
-Received-SPF: pass client-ip=45.249.212.188;
- envelope-from=ruanjinjie@huawei.com; helo=szxga02-in.huawei.com
+Received-SPF: pass client-ip=45.249.212.187;
+ envelope-from=ruanjinjie@huawei.com; helo=szxga01-in.huawei.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
 X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,31 +67,48 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to Arm GIC section 4.6.3 Interrupt superpriority, the interrupt
-with superpriority is always IRQ, never FIQ, so handle NMI same as IRQ in
-arm_phys_excp_target_el().
+Add IS and FS bit in ISR_EL1 and handle the read. With CPU_INTERRUPT_NMI, both
+CPSR_I and ISR_IS must be set.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
----
+--
 v3:
-- Remove nmi_is_irq flag in CPUARMState.
-- Handle NMI same as IRQ in arm_phys_excp_target_el()
+- CPU_INTERRUPT_NMI do not set FIQ, so remove it.
+- With CPU_INTERRUPT_NMI, both CPSR_I and ISR_IS must be set.
 ---
- target/arm/helper.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/arm/cpu.h    | 2 ++
+ target/arm/helper.c | 5 +++++
+ 2 files changed, 7 insertions(+)
 
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index b23be7fc24..ae9a75d717 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -1476,6 +1476,8 @@ FIELD(CPTR_EL3, TCPAC, 31, 1)
+ #define CPSR_N (1U << 31)
+ #define CPSR_NZCV (CPSR_N | CPSR_Z | CPSR_C | CPSR_V)
+ #define CPSR_AIF (CPSR_A | CPSR_I | CPSR_F)
++#define ISR_FS (1U << 9)
++#define ISR_IS (1U << 10)
+ 
+ #define CPSR_IT (CPSR_IT_0_1 | CPSR_IT_2_7)
+ #define CACHED_CPSR_BITS (CPSR_T | CPSR_AIF | CPSR_GE | CPSR_IT | CPSR_Q \
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 376e0d91ff..2f54413b01 100644
+index 2f54413b01..eb97ce0356 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -10571,6 +10571,7 @@ uint32_t arm_phys_excp_target_el(CPUState *cs, uint32_t excp_idx,
-     hcr_el2 = arm_hcr_el2_eff(env);
-     switch (excp_idx) {
-     case EXCP_IRQ:
-+    case EXCP_NMI:
-         scr = ((env->cp15.scr_el3 & SCR_IRQ) == SCR_IRQ);
-         hcr = hcr_el2 & HCR_IMO;
-         break;
+@@ -2022,6 +2022,11 @@ static uint64_t isr_read(CPUARMState *env, const ARMCPRegInfo *ri)
+         if (cs->interrupt_request & CPU_INTERRUPT_HARD) {
+             ret |= CPSR_I;
+         }
++
++        if (cs->interrupt_request & CPU_INTERRUPT_NMI) {
++            ret |= ISR_IS;
++            ret |= CPSR_I;
++        }
+     }
+ 
+     if (hcr_el2 & HCR_FMO) {
 -- 
 2.34.1
 
