@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F9B68616BB
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 17:02:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A730861684
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 16:56:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdXxr-00068Z-1z; Fri, 23 Feb 2024 10:59:55 -0500
+	id 1rdXu9-0003hR-5X; Fri, 23 Feb 2024 10:56:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXhi-0004nP-Nz; Fri, 23 Feb 2024 10:43:14 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1rdXhj-0004oi-8p; Fri, 23 Feb 2024 10:43:15 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rdXhd-00064z-Vm; Fri, 23 Feb 2024 10:43:14 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1dc75972f25so2907325ad.1; 
- Fri, 23 Feb 2024 07:43:09 -0800 (PST)
+ id 1rdXhf-000655-MH; Fri, 23 Feb 2024 10:43:14 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1dc49b00bdbso8035985ad.3; 
+ Fri, 23 Feb 2024 07:43:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708702988; x=1709307788; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708702990; x=1709307790; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eZINW/4P9SwnnIKpdjz8GObx2nHGX756vAFyLFtYVyw=;
- b=CYYouh54PmN9MRcZzJuaCQgscCzPN1mQ7w6TK+qbdRdE4Jgqy6DK2pCqHmSzxDSQkp
- /TJjA5pRd3K6Oyqf8T7Gbn7FEjQCaB/3HsGu4DYnQYLY8rj/wMA05vCcth+/HwXGoJ6o
- qU/0wHNmUG+xn92Owq+ECdsh0EpSHHyz/NkWQQvoLgfV5xbOLGA1MzMdjWOce5GQIJgY
- 8CzLgAsYZs3LsUPOyzGfdamj3lzxKb3qasjJY3dfHbyHk+Ua9F82vv35pUQ37OX53Bwf
- gKEg/cuyFRlwsWfDEghuNH2cANRTwRyCMsldUD0LK+ER8Gh9i/9tlEsiGQijKUQWbn00
- YGXQ==
+ bh=EbqCxehm0a8dcFpNHIyygMku+fKTrkl8BbyDwKaDinw=;
+ b=lchO0CkdiZI2lSBOvFfUCN8kdOzqwGRxv1+tEPH6/oaCIbGHM19a3yMfUZ+5TFCE86
+ 9v3GslyzUJLXiUuMaQuX5P2lUqbghUqKgz10S4slsvgngsqL9gDPiGlRsnSAANmCDxDb
+ 48NHemEeHBWxMAAPnz2OzHfKmhlPGVL3+4AHCj9upeDiWTAnnOfHiwZ07CHFRrFOLt16
+ e+pKwXxe0UCFePKx/C5C1E9bDsiKqusDvc/+zw2a6hYXaSnGfFmnZw/DW+PoP4vWregU
+ tf6+Q5i7CQ/ZvX/tVimihAjtXzpkXHwBpIqdARlkrT02AcvzY/iOd651W543uPvGS/Tj
+ 4spA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708702988; x=1709307788;
+ d=1e100.net; s=20230601; t=1708702990; x=1709307790;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eZINW/4P9SwnnIKpdjz8GObx2nHGX756vAFyLFtYVyw=;
- b=wQ30YLOJAuoO282HPuEJT/exhuhlxfNZ9M+ZSiiT/+mT2Qr7Lkf8sUBDE2J+JON9cS
- fsQpTRARTykzR0IquYEGA+07R/80lj1NOpiH4Scfvrkj1T8i7eQN1GpT7XcYoKnEg+Mp
- 4irzYAHLzwWGN6+HjZCkMGF92Qq42m81lzCYy1vwwbatMBqeuEHt7vtyWUbN3sQCSI2w
- 8k8j/oyAZbCejBB3R/XiqOzCD2GeFDOvoPcV+ZEQoICwCQK7uJtJ82kwb8InFYKQhuXJ
- vuO6q2bAC1gK6dIK3icTkRWKEmkU7/Xw4EFjLbzb5CM5PUjxuztwknOWzK2q8YwTEbp2
- wMnQ==
+ bh=EbqCxehm0a8dcFpNHIyygMku+fKTrkl8BbyDwKaDinw=;
+ b=SpP9yainQgJxcGUVz6li2eLtmV90Z3lbT22jvtpnpwplUKcO7ryCNgP1tsPKi4PslH
+ 0EvWNTukRq2UvCEX9t5aXQ9aieLqs5LYFVQp6QirCN12lejDAfVXKku3J+u8ZWKpTBEW
+ BlLQF4VG1MktQFrh/7GHlDFO2toAGed5XOEFS0XusyOXENs26jowaIPkxpAvt9RFnvoa
+ xPXJ/nAXhA+t7aESqnfVaeoMlbp5xcUolOomSXMAAvcaaNLRCpzLSK8XP6J+8m4BRlwt
+ 5bwhL7C+gqbqBKV/wLJlxidw8iCJAcmRrbBbx1E2kfMqPhvZhXX+XjGZ0pw/JmFLRY9u
+ yKsw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXe+WmkyXxAj3VpCggG/xfuh917PgWeBw/AOFX1fedkVPqXddXXmBBrtGclZHlV8q5B06eHXiHcnbH/kgdKKcAXmcTq
-X-Gm-Message-State: AOJu0YxdtiRSnI3BaeqikryZ+lgP+YndTuZlcK5j8KA2g4Yamw6zzxTR
- KTgAREQyhjf2cjk2k3L7ODJlql9n7gWaZnmX7X5WgiYvXrDt6SesJXcOrcVP
-X-Google-Smtp-Source: AGHT+IGVIPzLbs6Xaz2BWRww8t1tpSZBDldBjTugSttww54n2S7cstec4PbQENLOrg5mH5lyuJRR9A==
-X-Received: by 2002:a17:902:c146:b0:1dc:5ae8:174c with SMTP id
- 6-20020a170902c14600b001dc5ae8174cmr179747plj.17.1708702986642; 
- Fri, 23 Feb 2024 07:43:06 -0800 (PST)
+ AJvYcCWU66DlEWkDd5aWu/LL4CYvGS2/MlVAtuQP+f2banDeCGS+Cbmd+MUrkXV5bqA/V3z5vgv3ZYChV76/fowwA1rh81bD
+X-Gm-Message-State: AOJu0YxiICrGcvRN2II5PUUXzjFNE1HzNADcDbTjgYNY/mte4BYmNhf/
+ KUR3kIKfK+f+f9VCWzAG1XqVmXXGy4Pk/7J1pFPI1xvMDvZP2DiDim77wE0l
+X-Google-Smtp-Source: AGHT+IFTETRb627SrVBa2l0sr9u7KSrcjmro7J1PyLWCSQaWwBbNdOjux+ykKWwct90NMHZ5qEIwFw==
+X-Received: by 2002:a17:902:c943:b0:1db:916e:d77a with SMTP id
+ i3-20020a170902c94300b001db916ed77amr192679pla.2.1708702990032; 
+ Fri, 23 Feb 2024 07:43:10 -0800 (PST)
 Received: from wheely.local0.net (220-235-194-103.tpgi.com.au.
  [220.235.194.103]) by smtp.gmail.com with ESMTPSA id
- h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.43.03
+ h18-20020a170902f2d200b001d913992d8csm11808208plc.242.2024.02.23.07.43.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 07:43:06 -0800 (PST)
+ Fri, 23 Feb 2024 07:43:09 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 04/47] tests/avocado: improve flaky ppc/pnv
- boot_linux_console.py test
-Date: Sat, 24 Feb 2024 01:41:23 +1000
-Message-ID: <20240223154211.1001692-5-npiggin@gmail.com>
+Subject: [PULL 05/47] tests/avocado: ppc add powernv10 boot_linux_console test
+Date: Sat, 24 Feb 2024 01:41:24 +1000
+Message-ID: <20240223154211.1001692-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240223154211.1001692-1-npiggin@gmail.com>
 References: <20240223154211.1001692-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,31 +95,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The expected MTD partition detection output does not always appear on
-the console, despite the test reaching the boot loader and the string
-appearing in dmesg. Possibly due to an init script that quietens the
-console output. Using an earlier log message improves reliability.
+Add test for POWER10.
 
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- tests/avocado/boot_linux_console.py | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/avocado/boot_linux_console.py | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-index 3f0180e1f8..af104fff1c 100644
+index af104fff1c..a00202df3c 100644
 --- a/tests/avocado/boot_linux_console.py
 +++ b/tests/avocado/boot_linux_console.py
-@@ -1368,7 +1368,8 @@ def do_test_ppc64_powernv(self, proc):
-         self.wait_for_console_pattern("CPU: " + proc + " generation processor")
-         self.wait_for_console_pattern("zImage starting: loaded")
-         self.wait_for_console_pattern("Run /init as init process")
--        self.wait_for_console_pattern("Creating 1 MTD partitions")
-+        # Device detection output driven by udev probing is sometimes cut off
-+        # from console output, suspect S14silence-console init script.
- 
-     def test_ppc_powernv8(self):
+@@ -1387,6 +1387,14 @@ def test_ppc_powernv9(self):
          """
+         self.do_test_ppc64_powernv('P9')
+ 
++    def test_ppc_powernv10(self):
++        """
++        :avocado: tags=arch:ppc64
++        :avocado: tags=machine:powernv10
++        :avocado: tags=accel:tcg
++        """
++        self.do_test_ppc64_powernv('P10')
++
+     def test_ppc_g3beige(self):
+         """
+         :avocado: tags=arch:ppc
 -- 
 2.42.0
 
