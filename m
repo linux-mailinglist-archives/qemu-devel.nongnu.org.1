@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D8B861D57
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 21:17:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9499F861DB0
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 21:35:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdbyK-0003xC-0m; Fri, 23 Feb 2024 15:16:40 -0500
+	id 1rdcFb-000086-B2; Fri, 23 Feb 2024 15:34:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rdbgo-0000gU-2j
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:58:34 -0500
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ id 1rdbnx-00031O-Sw
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 15:05:58 -0500
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rdbgk-0001CG-Sd
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 14:58:33 -0500
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-5cfd95130c6so466038a12.1
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 11:58:30 -0800 (PST)
+ id 1rdbnf-0003KB-VJ
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 15:05:54 -0500
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-5bdbe2de25fso1003835a12.3
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 12:05:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708718308; x=1709323108; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708718735; x=1709323535; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=pfOUAy1mh5dsDQ4iDIJnm3V+EpuC9KpvDAEDhgMgZYc=;
- b=XB2VpLDOWVoFHUf60usdZZPZxTbNf36AOhITfNiLKKz8pG5rqNunVN22ZX8rQfmZ84
- Wx6it62B5WYY/EkpqLN4JnijwxW1Q6krwlDFjilNgZln3CMKQ777ys1bHKtBsL0fDHpl
- /Of5JPklT3OoJ2DT2H98UNTIRWxb7wT1Q/WmhJtqjzHIiw3zuCvwPaHXYRA+abSSmG0v
- GZBEKHetOPWME9gYuLtHvi2MC1ISLZ9mI2txU87FFs463kWZYp3RuqqQrKbYn++TyFZL
- JFAYnRV3DrhoOV0lOxhjcG7A3fPW8meDDG4E27gE/j0BQwShVuzXGONE5zOvwiUPiAKM
- aK2A==
+ bh=BSKus13F2QZ/NOGwIn/uNhTJoGgg1VTqL9wjKKBLFMw=;
+ b=iDynX55om2oKaMSOunDExk+uwe/NtFJP+gVraFjq3am4SI1W3kebBZlJGqIOVXZr3z
+ dcA+1MhhslR4f79VN4BjWEImfxs1LYQ6dE2A9s/9t+n4PNY0CYfl43waIoYFEtGtMoh/
+ pQmZLK5GAMXp13UUGg/WZ512bh2tMEztDhz1pM0FJbmF66mIdTAHkdhN63+arF42xGAo
+ WThVIBPmoMsuhVziIhkpwYpb1cs306YYGk0k8b2dYEVT2W4ANxcCwPXjlKSAZpJrXAzz
+ J14sNJ9LSKradg7V49b5goeSCwrlPL1eJymSSAdwoSHAUGoSrSEUDiHMaPoMkZ7ZCqUr
+ vRKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708718308; x=1709323108;
+ d=1e100.net; s=20230601; t=1708718735; x=1709323535;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pfOUAy1mh5dsDQ4iDIJnm3V+EpuC9KpvDAEDhgMgZYc=;
- b=DGOiFpUKq4Eu7rQmslotPDFNKvwgAUukHd1Y5kB7HY4ScSTQwt4+k3ebBVlPOVkRs8
- XezwOVto7PdKJQ9CWQZSU9D78srY7cVxsUzLgfuvXdCRFVu3xtcCCcPFkArWVFgTuJAM
- kds2Pci4mb8IduQoVayFPmfIvd/aFL6JsY4cDewJWN0sqUY/Zrr0MWfDe1d/+YPkVtvw
- 91TK4jF4XSy8p01jyWX8YrxcRWK1iJu3iKddHm7beb4kzVGEBz099xe/rttGeEgbfk4F
- F0OpEeDYjye9d9s33Zoq+2sJc6iOPznxxlIJIRiqVZGeD6DORsiXbeb8K2PbbKm3K37e
- KLgw==
+ bh=BSKus13F2QZ/NOGwIn/uNhTJoGgg1VTqL9wjKKBLFMw=;
+ b=YR40gtwrZSeK2QDFFWOxDCyM996R4+BGDYwFbtSnqMG9InoeMaff8e6sB8bklSzoPU
+ oTvOidPoBPEm+aBOeB5hh22WxtROEAw6YBmbOJToU9iwLISDmXOTRGfpgR+Nw72l9z/u
+ T5UukWJhMxC5jlx/0paAjidYruztNuaV4OgVXYPCmQit9Z+4EDwKd0CjyoA6V+lBTm0R
+ XaobDNzMmNRKWzoqBSfKECZCARIgAiTyiElGkyktWH7ClN/2c/3hPa6GdDZlvQ2dWxqq
+ R8dLPymZMrtI6ukz9wKnvkDDWIlZ89OehZl95Bu348hhcvGIDFAclsLhYWNymwT4yswu
+ r6Hg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVcRfkqHz5eCWxeGk7sQ4YhKfrZOfVMngLrI6HZ1/L8VDp4dGKlOrdPR8WOE0kCHn39WlyJQxgTKMLgoBvGIl2oQIpI6eo=
-X-Gm-Message-State: AOJu0Yz9Z++OHjIkHSLFPoAvqLjhjmXsfr4wCLdqokYF+xSCu5OgGa+L
- ySJ4tkcL+vn1JE+VRLNqxrxEfp6NzzhP4TUahMyqheCL4FdwCudUGXCsKM70XVk=
-X-Google-Smtp-Source: AGHT+IHCqHET36lnO+8/9bDZBRBLNzQbaG1YpVxeFAm4cpla0YxqRs1PjndYHaXjtUXvcv9XktuoEA==
-X-Received: by 2002:a17:90b:4c49:b0:29a:9316:6f4f with SMTP id
- np9-20020a17090b4c4900b0029a93166f4fmr908513pjb.23.1708718308326; 
- Fri, 23 Feb 2024 11:58:28 -0800 (PST)
+ AJvYcCU2j0Lb5CCHpun/m0y4mRE1cL8XM9F3PuqaSwipxkpQmqNM6EHW5W89TFLxQF+nRLM15oVPEgrVWGBQMGb/0JlkygUFKLo=
+X-Gm-Message-State: AOJu0YxDMdCHwsQCfXbq9x9ZZuI/eu050ScFgQF6gXExnlibVXIaw3bk
+ ZpQ7WGr5XDybCrAauxr9Lvie5ttUjDRCQNvt3HSbq22ebK1FMNS0ItrVQ/BQwac=
+X-Google-Smtp-Source: AGHT+IFjE4qj2oZpS22JWOnP8WgdoyGjiTZ2qQ22BeuBK7NJFS1Dpmk35wkfy5bEJIBnJFy4GyYCLA==
+X-Received: by 2002:a17:90b:48c6:b0:299:592a:7d19 with SMTP id
+ li6-20020a17090b48c600b00299592a7d19mr873040pjb.3.1708718735210; 
+ Fri, 23 Feb 2024 12:05:35 -0800 (PST)
 Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
  [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
- oe4-20020a17090b394400b0029724370ea9sm1907224pjb.47.2024.02.23.11.58.26
+ lj10-20020a17090b344a00b00298ca46547fsm1885987pjb.36.2024.02.23.12.05.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 23 Feb 2024 11:58:27 -0800 (PST)
-Message-ID: <1ea2e320-9ca0-4efb-94f0-3f9aa6f585ea@linaro.org>
-Date: Fri, 23 Feb 2024 09:58:24 -1000
+ Fri, 23 Feb 2024 12:05:34 -0800 (PST)
+Message-ID: <b92a47ca-bb2d-40d5-8356-e554327a76e5@linaro.org>
+Date: Fri, 23 Feb 2024 10:05:27 -1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 07/21] target/arm: Add support for NMI in
- arm_phys_excp_target_el()
+Subject: Re: [RFC PATCH v3 08/21] target/arm: Handle IS/FS in ISR_EL1 for NMI
 Content-Language: en-US
 To: Jinjie Ruan <ruanjinjie@huawei.com>, peter.maydell@linaro.org,
  eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
  wangyanan55@huawei.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org
 References: <20240223103221.1142518-1-ruanjinjie@huawei.com>
- <20240223103221.1142518-8-ruanjinjie@huawei.com>
+ <20240223103221.1142518-9-ruanjinjie@huawei.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240223103221.1142518-8-ruanjinjie@huawei.com>
+In-Reply-To: <20240223103221.1142518-9-ruanjinjie@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,20 +98,52 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 2/23/24 00:32, Jinjie Ruan via wrote:
-> According to Arm GIC section 4.6.3 Interrupt superpriority, the interrupt
-> with superpriority is always IRQ, never FIQ, so handle NMI same as IRQ in
-> arm_phys_excp_target_el().
+> Add IS and FS bit in ISR_EL1 and handle the read. With CPU_INTERRUPT_NMI, both
+> CPSR_I and ISR_IS must be set.
 > 
-> Signed-off-by: Jinjie Ruan<ruanjinjie@huawei.com>
-> ---
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> --
 > v3:
-> - Remove nmi_is_irq flag in CPUARMState.
-> - Handle NMI same as IRQ in arm_phys_excp_target_el()
+> - CPU_INTERRUPT_NMI do not set FIQ, so remove it.
+> - With CPU_INTERRUPT_NMI, both CPSR_I and ISR_IS must be set.
 > ---
->   target/arm/helper.c | 1 +
->   1 file changed, 1 insertion(+)
+>   target/arm/cpu.h    | 2 ++
+>   target/arm/helper.c | 5 +++++
+>   2 files changed, 7 insertions(+)
+> 
+> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+> index b23be7fc24..ae9a75d717 100644
+> --- a/target/arm/cpu.h
+> +++ b/target/arm/cpu.h
+> @@ -1476,6 +1476,8 @@ FIELD(CPTR_EL3, TCPAC, 31, 1)
+>   #define CPSR_N (1U << 31)
+>   #define CPSR_NZCV (CPSR_N | CPSR_Z | CPSR_C | CPSR_V)
+>   #define CPSR_AIF (CPSR_A | CPSR_I | CPSR_F)
+> +#define ISR_FS (1U << 9)
+> +#define ISR_IS (1U << 10)
+>   
+>   #define CPSR_IT (CPSR_IT_0_1 | CPSR_IT_2_7)
+>   #define CACHED_CPSR_BITS (CPSR_T | CPSR_AIF | CPSR_GE | CPSR_IT | CPSR_Q \
+> diff --git a/target/arm/helper.c b/target/arm/helper.c
+> index 2f54413b01..eb97ce0356 100644
+> --- a/target/arm/helper.c
+> +++ b/target/arm/helper.c
+> @@ -2022,6 +2022,11 @@ static uint64_t isr_read(CPUARMState *env, const ARMCPRegInfo *ri)
+>           if (cs->interrupt_request & CPU_INTERRUPT_HARD) {
+>               ret |= CPSR_I;
+>           }
+> +
+> +        if (cs->interrupt_request & CPU_INTERRUPT_NMI) {
+> +            ret |= ISR_IS;
+> +            ret |= CPSR_I;
+> +        }
+>       }
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Need to handle CPU_INTERRUPT_VNMI (which can be raised from the GIC).
+
+Need to handle HCRX_EL2.VFNMI with CPU_INTERRUPT_VFIQ (which cannot be raised from the 
+GIC, so we can determine VFIQ superpriority based solely on the cpu state).
+
 
 r~
 
