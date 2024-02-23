@@ -2,74 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4882860D1D
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 09:45:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A22860D6C
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 10:00:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdRA8-0003o5-3D; Fri, 23 Feb 2024 03:44:08 -0500
+	id 1rdROv-0002iQ-MH; Fri, 23 Feb 2024 03:59:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rdRA0-0003lb-RG; Fri, 23 Feb 2024 03:44:02 -0500
-Received: from mgamail.intel.com ([192.198.163.7])
+ (Exim 4.90_1) (envelope-from <shiju.jose@huawei.com>)
+ id 1rdROt-0002ho-7S
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 03:59:23 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rdR9z-0000BO-7B; Fri, 23 Feb 2024 03:44:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708677839; x=1740213839;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=MdIfh/jYydArR3D22MnTaJm9imdQCnDqtGGlbaFl++w=;
- b=JUCrwAi9HXFCrFIz9r7w0S/eZ3/WNjN+rEZE1zrp/wNGnZuACQ3u3lu9
- vzUEZeQklvzHG8TFgFhXEPqHwvmxox3OAHanNxY1mEbzQQ/uJAnHQjUoR
- 74KDJZsGygFQjX/LBYUnwXzF9aPAy+G4zMx2N/Pqs0qcKYaM2wlvX1cFu
- uTugGlgPv6dCErZZ1PncweFQeGdsxICjbXjEj0hF75hJRXGTYnL4jwsFU
- OlRzEn9Mk25fb2V5HlYbiEMa1QTo5RL82SPvy2BQ+b08bBRHheQJGsZ/F
- Q20iWGNVGy3hq7OUHl2g/V9mvjEwVMPsce5mkXitw+HHBmVdbLYuDvNlz w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="28413916"
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; d="scan'208";a="28413916"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Feb 2024 00:43:52 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
-   d="scan'208";a="5731881"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa007.fm.intel.com with ESMTP; 23 Feb 2024 00:43:48 -0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>,
- Fan Ni <fan.ni@samsung.com>, Laurent Vivier <laurent@vivier.eu>,
- Alistair Francis <alistair@alistair23.me>,
- "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-trivial@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 7/7] hw/intc: Check @errp to handle the error of
- IOAPICCommonClass.realize()
-Date: Fri, 23 Feb 2024 16:56:53 +0800
-Message-Id: <20240223085653.1255438-8-zhao1.liu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240223085653.1255438-1-zhao1.liu@linux.intel.com>
-References: <20240223085653.1255438-1-zhao1.liu@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <shiju.jose@huawei.com>)
+ id 1rdROq-0002up-Ql
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 03:59:22 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Th3jt3rLbz6K6cC;
+ Fri, 23 Feb 2024 16:54:58 +0800 (CST)
+Received: from lhrpeml500006.china.huawei.com (unknown [7.191.161.198])
+ by mail.maildlp.com (Postfix) with ESMTPS id 20D221414C4;
+ Fri, 23 Feb 2024 16:59:07 +0800 (CST)
+Received: from SecurePC30232.china.huawei.com (10.122.247.234) by
+ lhrpeml500006.china.huawei.com (7.191.161.198) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 23 Feb 2024 08:59:06 +0000
+To: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>
+CC: <dave@stgolabs.net>, <fan.ni@samsung.com>, <jonathan.cameron@huawei.com>, 
+ <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>, <linuxarm@huawei.com>,
+ <shiju.jose@huawei.com>
+Subject: [PATCH v5 0/3] hw/cxl/cxl-mailbox-utils: Add feature commands,
+ device patrol scrub control and DDR5 ECS control features
+Date: Fri, 23 Feb 2024 16:58:59 +0800
+Message-ID: <20240223085902.1549-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.35.1.windows.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=192.198.163.7;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.002,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Originating-IP: [10.122.247.234]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500006.china.huawei.com (7.191.161.198)
+Received-SPF: pass client-ip=185.176.79.56; envelope-from=shiju.jose@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,48 +63,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  <shiju.jose@huawei.com>
+From: shiju.jose--- via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: Shiju Jose <shiju.jose@huawei.com>
 
-IOAPICCommonClass implements its own private realize(), and this private
-realize() allows error.
+Add support for the feature commands, device patrol scrub control and
+DDR5 ECS control features.
 
-Since IOAPICCommonClass.realize() returns void, to check the error,
-dereference @errp with ERRP_GUARD().
+CXL spec 3.1 section 8.2.9.6 describes optional device specific features.
+CXL spec 3.1 section 8.2.9.9.11.1 describes the device patrol scrub control
+feature.
+CXL spec 3.1 section 8.2.9.9.11.2 describes the DDR5 Error Check Scrub (ECS)
+control feature.
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
-v2:
- * Add the missing ERRP_GUARD(). (Markus)
- * Move this single patch into @errp fixing series. (Micheal)
----
- hw/intc/ioapic_common.c | 4 ++++
- 1 file changed, 4 insertions(+)
+The patches are available here,
+https://gitlab.com/shiju.jose/qemu.git branch: cxl-scrub-2024-02-22
+and is based on Jonathan's branch
+https://gitlab.com/jic23/qemu/-/tree/cxl-2024-02-14 
 
-diff --git a/hw/intc/ioapic_common.c b/hw/intc/ioapic_common.c
-index cb9bf6214608..efbe6958c8d7 100644
---- a/hw/intc/ioapic_common.c
-+++ b/hw/intc/ioapic_common.c
-@@ -152,6 +152,7 @@ static int ioapic_dispatch_post_load(void *opaque, int version_id)
- 
- static void ioapic_common_realize(DeviceState *dev, Error **errp)
- {
-+    ERRP_GUARD();
-     IOAPICCommonState *s = IOAPIC_COMMON(dev);
-     IOAPICCommonClass *info;
- 
-@@ -162,6 +163,9 @@ static void ioapic_common_realize(DeviceState *dev, Error **errp)
- 
-     info = IOAPIC_COMMON_GET_CLASS(s);
-     info->realize(dev, errp);
-+    if (*errp) {
-+        return;
-+    }
- 
-     sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->io_memory);
-     ioapic_no++;
+Changes
+v4 -> v5
+1. Changes for Jonathan's comments. Thanks.
+  - Changed for separate scrub controls per CXL type3 device.
+  - Added config flag settings for the feature entries.
+  - Changed to for loop in the cmd_features_get_supported()
+    function.
+  - Changes for supporting multipart feature data transfers.
+	etc.
+
+v3 -> v4
+1. Rebased to Jonathan's latest branch cxl-2024-02-14.
+2. Changes for Davidlohr's comments. Thanks.
+  - Changed CXL feature attributes to static.
+  - Rename attrb -> attr.
+  - Use MIN().
+3. Added Reviewed-by: Fan Ni <fan.ni@samsung.com>
+
+v2 -> v3
+1. Rebased and updated for 3.1 specification.
+
+v1 -> v2
+1. Changes for Davidlohr's comments. Thanks.
+ - Changed CXL SET feature data transfer flags as enum.
+ - Modified pointer supported_feats to get_feats_out.
+ - Removed an unnecessary branch.
+ - Use MIN().
+ - Move setting of hdr.nsuppfeats further down.
+ - Return CXL_MBOX_UNSUPPORTED if non-zero selection flag is passed.
+ - Add more IMMEDIATE_*.* flags set_feature.  
+ - Corrected a spelling error.
+
+Shiju Jose (3):
+  hw/cxl/cxl-mailbox-utils: Add support for feature commands (8.2.9.6)
+  hw/cxl/cxl-mailbox-utils: Add device patrol scrub control feature
+  hw/cxl/cxl-mailbox-utils: Add device DDR5 ECS control feature
+
+ hw/cxl/cxl-mailbox-utils.c  | 395 ++++++++++++++++++++++++++++++++++++
+ hw/mem/cxl_type3.c          |  23 +++
+ include/hw/cxl/cxl_device.h |  57 ++++++
+ 3 files changed, 475 insertions(+)
+
 -- 
 2.34.1
 
