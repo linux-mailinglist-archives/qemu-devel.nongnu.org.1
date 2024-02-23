@@ -2,84 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ADB0861943
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A4E4861944
 	for <lists+qemu-devel@lfdr.de>; Fri, 23 Feb 2024 18:20:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdZCL-0002Ns-9w; Fri, 23 Feb 2024 12:18:57 -0500
+	id 1rdZCM-0002OS-2t; Fri, 23 Feb 2024 12:18:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rdYtf-0005NX-7B
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:59:39 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rdYuM-0006To-Fq
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 12:00:22 -0500
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rdYtd-0004cn-Iw
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 11:59:38 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-412960dbb0eso4301785e9.1
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 08:59:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rdYuK-0004uH-Ow
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 12:00:22 -0500
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2d2533089f6so11302561fa.1
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 09:00:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708707575; x=1709312375; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=EJtDN3jvV6Bj8KTt6+nIvPG6r5VgNuaGUyPGz//FAD8=;
- b=mrNmyZ/6xHdE11+UqVtl1vttGu73S/uHaWfbCfwxEq4wO05TKbEA5qbv/jhYQJ3Dle
- E0j1gJJbq98uLiMwLAfUuSuf6bz3zdRCUeY980RkkhFxs2P3n8Ovj6Gv5cwEHucNVXO/
- OwwGeu98xgdtml42zYrS6RAXln5wPCIcbJAhU/a3lSuKlGrCY5c5YKuoTRjTKUzWReDt
- c0kzRaEVxVnq/NEWsZTZBoGnBcAfZbsuiFngPRsS3WNV8hz/3GGyrzo1lQiFBMCSsIIA
- MIzCTBjrUpnlXxvl+dESyIlsR1PgoDcqVTD4P4GiU9FUCGKk1qae8Dd3HXbWRS59aznR
- 2uzg==
+ d=linaro.org; s=google; t=1708707619; x=1709312419; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mjjoirrMxnh4yMzTkZ/szcOQkV/WVwXLs4TG8QKAN28=;
+ b=jsNbsrGZTJsy038DncK+qLK3OIAAXlwcemofk01R5S6b938vot1CR5kTMK4K1w3ZmE
+ Lu3E5q4rMQwd1EBSlylr365tq87ES7wew/FNTVtLvvneZsJc+LCgRORCaLRK8noBukhF
+ 6OuEFNjitRLXjhLBJqw1CvODCjNpyADJJFAXXq3LCzYMS7hkdElNPZkY9WVITrKzvhzi
+ 4iH70uq+W/e0TDJXdiNNwSBw4zNfPNexqBCxvb8Si3L0FRSqOMNE2OWLwPY6BNpGmTzB
+ NMky/P54n2TzSmMSyXzw9VcDckaENKTSDU0t198SJ0WOgBkmtJQxrAd/7bVU0LFSNLMn
+ qgAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708707575; x=1709312375;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EJtDN3jvV6Bj8KTt6+nIvPG6r5VgNuaGUyPGz//FAD8=;
- b=UZ+kjdM1qY+cQXH6lo/qNJIl0fDjT+4VVn8Em2dPGaP/ynPz4Hd1o5KtMa4s1Yz9e4
- hBz5lpwXIdWkKo9BQGNyJlghYzj9rVepdtBCxoguYnrbuNlVGtf9gRNDBLqg/9tAtctY
- X7g/9pig9JZXn3dUqtdT4CHvskQWTPfLjlT91QVV1sRDlT0RdcKSK90JPSBZsfIiR2IC
- J8U8dgEZA09/n3oUxJT0yh6p8REmx7M00qUVTSB0kPXBjAjiDjKLC+D7idgWjfLr29QS
- dN1Jhi/MZ/oi0FYoZYQdkWDe7i3pIOFdhjmGw7JpUDNTW/1q6zdzKWQLYrdOKOjAOfZu
- tKfg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU5mzrtKB28o7W0OvNLBUUOxC1+7y6z5l8LLNPnB+2vpEnOnR4VUaYB5KiQOSjsD0iVwNgp6ZQ+WGOlqqMvr7PN0i7gRng=
-X-Gm-Message-State: AOJu0YxaeZW8bMxi30HDm9NZW8d+Bt2nhWrQOe9c5qGcMoAI4UdQFwaF
- pCUzkdzmpEpBhhETdrTEA+ktAzlaDJz+fTWlS9aKcg+oAgvxP3EKf88k3+cFyXI=
-X-Google-Smtp-Source: AGHT+IGKslzmCY5IMrPdT60Bb19x427lwsGWjnZLW4wSNAMk+LEKHdzOGO0hjl8uZCC97P2g80IXQw==
-X-Received: by 2002:a05:600c:45ca:b0:412:7880:3da8 with SMTP id
- s10-20020a05600c45ca00b0041278803da8mr298496wmo.16.1708707574983; 
- Fri, 23 Feb 2024 08:59:34 -0800 (PST)
-Received: from [192.168.69.100] (xbn44-h02-176-184-35-109.dsl.sta.abo.bbox.fr.
- [176.184.35.109]) by smtp.gmail.com with ESMTPSA id
- m6-20020a7bce06000000b00410bca333b7sm2939507wmc.27.2024.02.23.08.59.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 23 Feb 2024 08:59:34 -0800 (PST)
-Message-ID: <e44fde31-ca7f-4b79-87ab-bf94881d1be7@linaro.org>
-Date: Fri, 23 Feb 2024 17:59:33 +0100
+ d=1e100.net; s=20230601; t=1708707619; x=1709312419;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=mjjoirrMxnh4yMzTkZ/szcOQkV/WVwXLs4TG8QKAN28=;
+ b=U4UYV5VNyQtcbPxXVmKnWffWjH48/nTR4U3Tlef/wRklm/znjFS3WWU7N00yj0o/3L
+ i1FvHu3f6H/KQq8+gHph0wYHk0R7B0ax9yQ6e7YujfZk4ogyDWzFCHDqT9stMO/KmjvF
+ lYfYUp7jfeyDP/+HPnWJLvKxARjA5+h6gPV8eQUUzXO/NqAkd3deIAJGiFOuk+vXxkn3
+ r0rsGZtRmRAk1p1LTXV9WgllpXmdO6HD+q8a0Tr2Mc8fxuaTA44bv7J87KdabdV9g+O/
+ 1HwW/3uH6KE2jryiI1ngpjg92czTxtwv7TXVB4i9tVEuNN89XRiaJJyvByHVHMfMFZqB
+ QlGg==
+X-Gm-Message-State: AOJu0YxDT7ZSfPIob+Kz4KycfO7m7nv/5P2ORU819OD3vdosUGQtTr9w
+ TMslj8g1F7tQnrse4bo3nQxEiOtA5jED2BqXxmZnVwLDgflSQ/MdV2sSUxO3CDI=
+X-Google-Smtp-Source: AGHT+IG7NjkbcQxQ+9Xw72lAeuS5MYHUaszKOUOdKc539mXnA51zjHsHb5djxyQNrWHpX39Upn9fAQ==
+X-Received: by 2002:a2e:99d5:0:b0:2d2:2948:afb with SMTP id
+ l21-20020a2e99d5000000b002d229480afbmr258588ljj.24.1708707618767; 
+ Fri, 23 Feb 2024 09:00:18 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ hi17-20020a05600c535100b0041290251dc2sm2844000wmb.14.2024.02.23.09.00.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 23 Feb 2024 09:00:18 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id B5ADE5F79A;
+ Fri, 23 Feb 2024 17:00:17 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org,  Artyom Tarasenko <atar4qemu@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Markus
+ Armbruster
+ <armbru@redhat.com>,  Eduardo Habkost <ehabkost@redhat.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  Mark Cave-Ayland
+ <mark.cave-ayland@ilande.co.uk>
+Subject: Re: [PATCH] hw/rtc/sun4v-rtc: Relicense to GPLv2-or-later
+In-Reply-To: <8734tj87js.fsf@draig.linaro.org> ("Alex =?utf-8?Q?Benn=C3=A9?=
+ =?utf-8?Q?e=22's?= message of "Fri, 23 Feb 2024 16:33:11 +0000")
+References: <20240223161300.938542-1-peter.maydell@linaro.org>
+ <8734tj87js.fsf@draig.linaro.org>
+User-Agent: mu4e 1.11.28; emacs 29.1
+Date: Fri, 23 Feb 2024 17:00:17 +0000
+Message-ID: <87wmqv6rq6.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/ide: Remove last two uses of ide/internal.h outside of
- hw/ide
-Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org
-Cc: John Snow <jsnow@redhat.com>, Thomas Huth <thuth@redhat.com>
-References: <20240223142633.933694E6004@zero.eik.bme.hu>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240223142633.933694E6004@zero.eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,20 +101,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/2/24 15:26, BALATON Zoltan wrote:
-> Remove last two includes of hw/ide/intarnal.h outside of hw/ide and
-> replace them with newly added public header to allow moving internal.h
-> into hw/ide to really stop exposing it.
-> 
-> Fixes: a11f439a0e (hw/ide: Stop exposing internal.h to non-IDE files)
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
->   hw/arm/sbsa-ref.c                 | 2 +-
->   {include/hw => hw}/ide/internal.h | 0
->   include/hw/misc/macio/macio.h     | 2 +-
->   3 files changed, 2 insertions(+), 2 deletions(-)
->   rename {include/hw => hw}/ide/internal.h (100%)
+Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Peter Maydell <peter.maydell@linaro.org> writes:
+>
+>> The sun4v RTC device model added under commit a0e893039cf2ce0 in 2016
+>> was unfortunately added with a license of GPL-v3-or-later, which is
+>> not compatible with other QEMU code which has a GPL-v2-only license.
+>>
+>> Relicense the code in the .c and the .h file to GPL-v2-or-later,
+>> to make it compatible with the rest of QEMU.
+>>
+>> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+>
+> Acked-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
+Or a
+
+Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+if you prefer.
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
