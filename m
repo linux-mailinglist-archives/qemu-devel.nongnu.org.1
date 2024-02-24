@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB9C78623DC
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 Feb 2024 10:26:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8DF8623DD
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 Feb 2024 10:26:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdoHB-0006NN-Fi; Sat, 24 Feb 2024 04:24:57 -0500
+	id 1rdoHD-0006Ob-4Q; Sat, 24 Feb 2024 04:24:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rdoH6-0006Mx-Ob
- for qemu-devel@nongnu.org; Sat, 24 Feb 2024 04:24:52 -0500
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ id 1rdoHA-0006O6-Pb
+ for qemu-devel@nongnu.org; Sat, 24 Feb 2024 04:24:57 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rdoH4-0002OO-4A
- for qemu-devel@nongnu.org; Sat, 24 Feb 2024 04:24:52 -0500
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-5d8b887bb0cso994374a12.2
- for <qemu-devel@nongnu.org>; Sat, 24 Feb 2024 01:24:49 -0800 (PST)
+ id 1rdoH9-0002PR-En
+ for qemu-devel@nongnu.org; Sat, 24 Feb 2024 04:24:56 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1d7881b1843so13215495ad.3
+ for <qemu-devel@nongnu.org>; Sat, 24 Feb 2024 01:24:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708766689; x=1709371489;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708766693; x=1709371493;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=WM47wdy4Cb/mp1eobpOxgb3rFoDQbhprTWLPDZcJhAo=;
- b=Jw5VziREcZXm+KaeC7Nz/u4JKI8auv6uWSEVcFwK4zFd7Mm1K5/WRPBLx5Pcs7KACJ
- tOu8sGkBZuZmvgZ4wl4Iy7xrhQGymoYLpdTlLqr+yyxj6UR8hLbbund0sdac7oIjAuOH
- 2lkmE7veBV5kR8pbfiJdygDO5y4azYzmpmZfLRAhn6OS1CjYdtH1NLqaWHLUdLmTXjWw
- t2DhWSf3NT4EJJfjVb+iWUIAFIV275h31y5yHiWXhzTgYSTBqj0LIFucLkyD3QRlw05O
- A7cDBpheOCVu3IzRBawf5ZSisaSVxKLjqVJRpl8mWufUK6XLfmUmz/uAbTNTDF3kfE1M
- 6OUw==
+ :reply-to; bh=XAlWXKGj/Qs8kksBVXE9dWWgaRg5MiFxbRpTNiPgudE=;
+ b=ozPO0iJomh2e8W3GZsXF4FcL5wHqPbgWJpoi04kakJBiKB6LGqe+0NudiL21gbzIOE
+ Pzf/Pnjk+u/XZIQFxGPYaLb2D94XzvOQi47VILb+Te+NibBl2+zPwvVXFWpQl/SwMTR+
+ Vqv3DO0WQZpjlVa4pz9mJmpUL32vhJrp7Td02YoOf3C0YzDnYIkHnzZrarikndXBocms
+ DfHrD+P3NRoG6eYoo26kyZVmIYj2n8+tBkFBYyPyDLA7/tz7V0tEk/R2SFnYcSrexU88
+ mojQA9MW7tF2UWfcqMKeil7pfeW2+mRtGka8v+brI8RshQcDvtbyqpDqJ8gXGusv9voz
+ k1dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708766689; x=1709371489;
+ d=1e100.net; s=20230601; t=1708766693; x=1709371493;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WM47wdy4Cb/mp1eobpOxgb3rFoDQbhprTWLPDZcJhAo=;
- b=wmrsQScFZO+TCGtKD/itlvHuEyVn+LNbSJ7SV729WzHg5viUWe9RZUBzNaEUBisVeC
- h6+U/3dHOpJlnzrU+/mMi6mQcvj0kIjGroiLVgn7KuukYG4CVy/sKL5XnBeBIkIosy1c
- MUYF4laEovCsvYLDQaVO3PeS9HfNfMFq1zSWiuPcd1fFS5DxQU78hM34mtf7sNxzP5jG
- UGC6o6Z0KglSieZnoRz0sg59ghh/bxaZDRzLtG8+Cd9DjyvmHEc6t3Cfw8BKEy/cyOXA
- mfrGbDrLdZMaNG7v8URfhIzsj0t8UdsbV7WUnmKIDBuGU/mbSCGtAcYHzYTtDIj6RL0J
- GbOg==
-X-Gm-Message-State: AOJu0YzYPYAIuegVBLMw/bikxuQ4h/D9pySJmpXIoVxKXbMwdXTQN/Ig
- /tnpQ4I7qMNXgsZpwFyjwdm8dgzY3csmfUp9BqGUpor9oEY75OMLfxdwlrbkUjo=
-X-Google-Smtp-Source: AGHT+IE0yG8WWCvGvj47WhDiA+0B4UNhyixLdJAXLuDFT+Ng66ZIyT7oP0LQaIceIuM1RtGwsf3BfQ==
-X-Received: by 2002:a05:6a20:e507:b0:1a0:cce6:d526 with SMTP id
- ne7-20020a056a20e50700b001a0cce6d526mr1998665pzb.41.1708766688891; 
- Sat, 24 Feb 2024 01:24:48 -0800 (PST)
+ bh=XAlWXKGj/Qs8kksBVXE9dWWgaRg5MiFxbRpTNiPgudE=;
+ b=nNgYY/vuek4+L1pk6BHWG4jMLGZ3RmvPuQotDQPEmNoZLFtRavSJw32cfINKEmKT0L
+ 5pO4T5NL0+8I2q4FZ296BQgy7iXtF1NqkIwgLIUPqya3peEDYZ5hnpKfpFbVEt9eGb7S
+ mH3PnA0pjUCFIrFkqP8dFd1fVdvS5P2ttAODJZMq2glPfPKQIpSYCkSAGZx7DhstsL+C
+ AZxflTbcYZ1V6GApg4MAwdtExYMFtNaeF3Nj21lG5rLFUw/83aTcGT39dLnOh0jtp9G7
+ k3xAJ+hLdPdEnMeomNqstVyzU4WrNr/ZMwPfGNnHziNrOIMezO/Abdg+waU7eNc/H2N6
+ IGQw==
+X-Gm-Message-State: AOJu0YwadBSrLF5TmIGjpqwf4gDTNL2CxV+nHdYceQYSflTELcegdNKy
+ NFdEOjem/qv3zyHIuJkLGUqdtf6UpbE6B4s2mb1L1vU5iCFWGraqKxsIf/rcDtc=
+X-Google-Smtp-Source: AGHT+IGbRtdYYQG2GEF/VDgDfeiO1qHT4p/K4DIg34O/4elLXo34dw2jYOWxcaNRTfgMOOuDSgtBMg==
+X-Received: by 2002:a17:902:bb16:b0:1dc:688e:188a with SMTP id
+ im22-20020a170902bb1600b001dc688e188amr1926990plb.21.1708766693653; 
+ Sat, 24 Feb 2024 01:24:53 -0800 (PST)
 Received: from localhost ([157.82.203.206])
  by smtp.gmail.com with UTF8SMTPSA id
- fx3-20020a056a00820300b006e47e57d976sm745892pfb.166.2024.02.24.01.24.45
+ w19-20020a170902d3d300b001d911dd145esm658040plb.219.2024.02.24.01.24.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 24 Feb 2024 01:24:48 -0800 (PST)
+ Sat, 24 Feb 2024 01:24:53 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 24 Feb 2024 18:24:33 +0900
-Subject: [PATCH v7 01/16] hw/nvme: Use pcie_sriov_num_vfs()
+Date: Sat, 24 Feb 2024 18:24:34 +0900
+Subject: [PATCH v7 02/16] pcie_sriov: Validate NumVFs
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240224-reuse-v7-1-29c14bcb952e@daynix.com>
+Message-Id: <20240224-reuse-v7-2-29c14bcb952e@daynix.com>
 References: <20240224-reuse-v7-0-29c14bcb952e@daynix.com>
 In-Reply-To: <20240224-reuse-v7-0-29c14bcb952e@daynix.com>
 To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
@@ -79,8 +79,8 @@ To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-stable@nongnu.org
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::52e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52e.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -103,80 +103,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-nvme_sriov_pre_write_ctrl() used to directly inspect SR-IOV
-configurations to know the number of VFs being disabled due to SR-IOV
-configuration writes, but the logic was flawed and resulted in
-out-of-bound memory access.
-
-It assumed PCI_SRIOV_NUM_VF always has the number of currently enabled
-VFs, but it actually doesn't in the following cases:
-- PCI_SRIOV_NUM_VF has been set but PCI_SRIOV_CTRL_VFE has never been.
-- PCI_SRIOV_NUM_VF was written after PCI_SRIOV_CTRL_VFE was set.
-- VFs were only partially enabled because of realization failure.
-
-It is a responsibility of pcie_sriov to interpret SR-IOV configurations
-and pcie_sriov does it correctly, so use pcie_sriov_num_vfs(), which it
-provides, to get the number of enabled VFs before and after SR-IOV
-configuration writes.
+The guest may write NumVFs greater than TotalVFs and that can lead
+to buffer overflow in VF implementations.
 
 Cc: qemu-stable@nongnu.org
-Fixes: CVE-2024-26328
-Fixes: 11871f53ef8e ("hw/nvme: Add support for the Virtualization Management command")
-Suggested-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: CVE-2024-26327
+Fixes: 7c0fa8dff811 ("pcie: Add support for Single Root I/O Virtualization (SR/IOV)")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/nvme/ctrl.c | 26 ++++++++------------------
- 1 file changed, 8 insertions(+), 18 deletions(-)
+ hw/pci/pcie_sriov.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index f026245d1e9e..7a56e7b79b4d 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -8466,36 +8466,26 @@ static void nvme_pci_reset(DeviceState *qdev)
-     nvme_ctrl_reset(n, NVME_RESET_FUNCTION);
- }
+diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
+index a1fe65f5d801..da209b7f47fd 100644
+--- a/hw/pci/pcie_sriov.c
++++ b/hw/pci/pcie_sriov.c
+@@ -176,6 +176,9 @@ static void register_vfs(PCIDevice *dev)
  
--static void nvme_sriov_pre_write_ctrl(PCIDevice *dev, uint32_t address,
--                                      uint32_t val, int len)
-+static void nvme_sriov_post_write_config(PCIDevice *dev, uint16_t old_num_vfs)
- {
-     NvmeCtrl *n = NVME(dev);
-     NvmeSecCtrlEntry *sctrl;
--    uint16_t sriov_cap = dev->exp.sriov_cap;
--    uint32_t off = address - sriov_cap;
--    int i, num_vfs;
-+    int i;
+     assert(sriov_cap > 0);
+     num_vfs = pci_get_word(dev->config + sriov_cap + PCI_SRIOV_NUM_VF);
++    if (num_vfs > pci_get_word(dev->config + sriov_cap + PCI_SRIOV_TOTAL_VF)) {
++        return;
++    }
  
--    if (!sriov_cap) {
--        return;
--    }
--
--    if (range_covers_byte(off, len, PCI_SRIOV_CTRL)) {
--        if (!(val & PCI_SRIOV_CTRL_VFE)) {
--            num_vfs = pci_get_word(dev->config + sriov_cap + PCI_SRIOV_NUM_VF);
--            for (i = 0; i < num_vfs; i++) {
--                sctrl = &n->sec_ctrl_list.sec[i];
--                nvme_virt_set_state(n, le16_to_cpu(sctrl->scid), false);
--            }
--        }
-+    for (i = pcie_sriov_num_vfs(dev); i < old_num_vfs; i++) {
-+        sctrl = &n->sec_ctrl_list.sec[i];
-+        nvme_virt_set_state(n, le16_to_cpu(sctrl->scid), false);
-     }
- }
+     dev->exp.sriov_pf.vf = g_new(PCIDevice *, num_vfs);
  
- static void nvme_pci_write_config(PCIDevice *dev, uint32_t address,
-                                   uint32_t val, int len)
- {
--    nvme_sriov_pre_write_ctrl(dev, address, val, len);
-+    uint16_t old_num_vfs = pcie_sriov_num_vfs(dev);
-+
-     pci_default_write_config(dev, address, val, len);
-     pcie_cap_flr_write_config(dev, address, val, len);
-+    nvme_sriov_post_write_config(dev, old_num_vfs);
- }
- 
- static const VMStateDescription nvme_vmstate = {
 
 -- 
 2.43.2
