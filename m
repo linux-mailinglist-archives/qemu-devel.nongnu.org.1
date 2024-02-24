@@ -2,83 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E698626E1
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 Feb 2024 20:08:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 584C3862793
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 Feb 2024 21:33:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdxM5-0004kb-Ch; Sat, 24 Feb 2024 14:06:37 -0500
+	id 1rdygp-0003pf-An; Sat, 24 Feb 2024 15:32:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rdxM3-0004kQ-Ay
- for qemu-devel@nongnu.org; Sat, 24 Feb 2024 14:06:35 -0500
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
+ id 1rdygk-0003nd-4A; Sat, 24 Feb 2024 15:32:02 -0500
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rdxM0-00089u-TN
- for qemu-devel@nongnu.org; Sat, 24 Feb 2024 14:06:35 -0500
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-512eb0f0616so2046017e87.3
- for <qemu-devel@nongnu.org>; Sat, 24 Feb 2024 11:06:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
+ id 1rdygi-00062l-Hg; Sat, 24 Feb 2024 15:32:01 -0500
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-563d32ee33aso2389220a12.2; 
+ Sat, 24 Feb 2024 12:31:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1708801585; x=1709406385; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xnBYEUpcfxOBBv+CnhBeSl0C37kpDQCXoY37KCY9FuU=;
- b=f69B4FKJ8akHuhnSrxRKXxB7lYjB3A2KaBuF+AZRODbg1zKEQREFGgqlHBqMHMnZxN
- Z6P/VzN2VMBXjtx9tcYkSUC4wDSLWP4N8b9IwbU8kgQDhnUeA6ulEORMphpsbkc3oHD4
- OAaGMpPa6LeEPhNPZTCT5k3TOtSC0Rs9r239wu0SeYxnPeo8EDwVKunsifqB8f8DlnRj
- /pY2frug24dWG2ViH+dUyJU7VnhoMs1NKsULkxkeCHCKRsx0lPYQTLfDiOu3X0NSgaQq
- rcbhZZCDuDyAKBTMOPQz/uqlKrtGHhtro5+4EbTFl3/xKB0WzhyXD7qC+0IwX7Mw1rF3
- tuFw==
+ d=gmail.com; s=20230601; t=1708806718; x=1709411518; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=uO/1+DSLbdpP01ytLRRf3V5DtpTT0RYEyj28N1ovinE=;
+ b=iyat8votN7ng3UTTdpnpaD4Hlp+v81/s7ODOA2ialbGEipR9Zks5sTFYmcViK5cYIe
+ D/IzMF36XawDsl6ralO6/3TyMkd6tiq0p4dZth6Nn83r3lmLdBh6iM47EIrDB1M7DWuz
+ sZV1q5nvWC4ETEqImAz3LL2JCT/Zr7ZM6RFT6Qks5+VwYW92g+4vycK0n9WVohZwoRzM
+ WbTRi66uRQd3FHIuQl4TF6xEL+U+i4/za+zuGPGhrAz2eUL+Di12lyh8Ng5UWt4eU/U5
+ poxaZkPHBTFsJ6v7qrXj94ZuOUiUHekqfjB6v7XL9Mro31vpVohOoRi+Uq/w+uGphAbi
+ fpVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708801585; x=1709406385;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xnBYEUpcfxOBBv+CnhBeSl0C37kpDQCXoY37KCY9FuU=;
- b=g7eG+ZIEaSJ10+1enoC1p0clqwSZeYUa2QMjOQmzwEqZuGdHgbAcpgWRvEv4gPwEy/
- t64fGVDcOxXPdEttWvvUByFO1JOEIWobIivpM29bs5VypPNhlN+DCB+f23regykWfFXB
- ymEXWIvkFPMqDOXLrDEsJYIAnQbAMTXQYYLiSfsCod+icAcGuFStfnbg5asvRU4FCwO1
- FGFqa/AGODW/1HjgW9LzKqKAcSpWGS3ve/t4yQ7gV7vjHU1NSvfYIPK3b1yohXtQsgsU
- E14eGFYItgVU18ijo3xxoj2pP84PmgPmOX+IFolXGLHVkQvdAfLVMdAxcPOvK7KJ0UcO
- 6gsw==
+ d=1e100.net; s=20230601; t=1708806718; x=1709411518;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=uO/1+DSLbdpP01ytLRRf3V5DtpTT0RYEyj28N1ovinE=;
+ b=MyNPq+1RorZtRME43UgfHQj2V9K1tsL9DmQ+Jq+6NdC76cNMzrU/JoZ9EV9BEPl8GK
+ n8YTRtiRp2Hs5YzqdmP7GSlTvK6URGk61cuAocbclJducLaXiqi25yedwTNPAO1Su1EF
+ sjb240hjJhyBlGzS6MnFizU5EzSCBGOoW941u/bEQVzTdnWdsdnwTxDdjVVJQiE9I5xM
+ n+9eTPyQw5JW3wI8SaGFEt2xkeRJfxx9s9zpAQAjtQjRP5zeMZDiQzwb8+V6WMAfSgoT
+ MECHzoyBUwYhvbYBDnXHj2JUTfycIeQqMAFLShFBhICdu4ts3yvHPfXXs5jHi4HuJ6zK
+ 4A5w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXhHr80CVTYcE5m3eIcHBTmlDaOAVTjg5B/re+QURtHLsSJVaEpCa7jT17QasX1vJCmTpITN83tBwqJyq9w3ybNTHZ0yog=
-X-Gm-Message-State: AOJu0YwZP0KgYAx91Nv0ZA1zDzK/+3xrC8gscQxGjxqvtWx49x0J8JMY
- 3dGqRI36YSWU0o9YboxeRX9f5U6Vmh+WPWftK2hoauZm4cDUaRcSowQ7NYNDK0uKCPThMobWO7w
- yBcjk6HMOLIk7gsFoa3r/RdDf1FIy7MSb2Ho0NQ==
-X-Google-Smtp-Source: AGHT+IFGxN6Uq2JawQ+9hpGlwZW/9u0sxG0MR0mLrAVmJGO3pzDBm77UM8J6vS0A6ufxGmWyokGHwZf3/at+yKMpfwk=
-X-Received: by 2002:a05:6512:3b2c:b0:512:f719:aec5 with SMTP id
- f44-20020a0565123b2c00b00512f719aec5mr270258lfv.9.1708801585360; Sat, 24 Feb
- 2024 11:06:25 -0800 (PST)
+ AJvYcCVMetDpkGqw/l+p8AoR6kjdWUGo8uvCn+8Msqu3yGaFKnxLrEoi4mBPFgX4+aX3PYb6wGEW24yitzZbeoC2CzGhB74G
+X-Gm-Message-State: AOJu0YwTT1iBTCwhNNJdtGvEKJENjS8WmsWzgvsRjYxBC3DMgS9aiNLD
+ U29vmlUkDwgU1EwK/WUTsCn+aBBj1t5pj7iB2DF3TimpacGmKsrpM1OGyVLz
+X-Google-Smtp-Source: AGHT+IFoWglhoAup7wvly6jqrAfjps4V2mZEG1pHeetq5eu8AkpighVhKJ2XZUgxZnS8/xIpVyz+Fw==
+X-Received: by 2002:a17:906:5959:b0:a40:75e8:3891 with SMTP id
+ g25-20020a170906595900b00a4075e83891mr2045889ejr.7.1708806717698; 
+ Sat, 24 Feb 2024 12:31:57 -0800 (PST)
+Received: from localhost.localdomain ([212.70.108.232])
+ by smtp.gmail.com with ESMTPSA id
+ n11-20020a170906088b00b00a3d636e412bsm863405eje.123.2024.02.24.12.31.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 24 Feb 2024 12:31:57 -0800 (PST)
+From: Rayhan Faizel <rayhan.faizel@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, philmd@linaro.org, pbonzini@redhat.com,
+ qemu-arm@nongnu.org, Rayhan Faizel <rayhan.faizel@gmail.com>
+Subject: [PATCH v5 0/3] Add support for I2C in BCM2835 boards
+Date: Sun, 25 Feb 2024 00:40:35 +0530
+Message-Id: <20240224191038.2409945-1-rayhan.faizel@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240216224002.1476890-1-hao.xiang@bytedance.com>
- <20240216224002.1476890-4-hao.xiang@bytedance.com>
- <5265633a-9d28-44b9-96d7-a310c2a2a304@linaro.org>
- <CAAYibXgWXah+sLGLzTA4g+fufY7xDb3LY3P5T-DM+Ci04AME1A@mail.gmail.com>
-In-Reply-To: <CAAYibXgWXah+sLGLzTA4g+fufY7xDb3LY3P5T-DM+Ci04AME1A@mail.gmail.com>
-From: Hao Xiang <hao.xiang@bytedance.com>
-Date: Sat, 24 Feb 2024 11:06:14 -0800
-Message-ID: <CAAYibXib+TWnJpV22E=adncdBmwXJRqgRjJXK7X71J=bDfaxDg@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v2 3/7] migration/multifd: Zero page
- transmission on the multifd thread.
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net, 
- peterx@redhat.com, farosas@suse.de, eblake@redhat.com, armbru@redhat.com, 
- thuth@redhat.com, lvivier@redhat.com, qemu-devel@nongnu.org, 
- jdenemar@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=hao.xiang@bytedance.com; helo=mail-lf1-x131.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=rayhan.faizel@gmail.com; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,35 +89,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Feb 22, 2024 at 8:38=E2=80=AFPM Hao Xiang <hao.xiang@bytedance.com>=
- wrote:
->
-> On Fri, Feb 16, 2024 at 9:08=E2=80=AFPM Richard Henderson
-> <richard.henderson@linaro.org> wrote:
-> >
-> > On 2/16/24 12:39, Hao Xiang wrote:
-> > > +void multifd_zero_page_check_recv(MultiFDRecvParams *p)
-> > > +{
-> > > +    for (int i =3D 0; i < p->zero_num; i++) {
-> > > +        void *page =3D p->host + p->zero[i];
-> > > +        if (!buffer_is_zero(page, p->page_size)) {
-> > > +            memset(page, 0, p->page_size);
-> > > +        }
-> > > +    }
-> > > +}
-> >
-> > You should not check the buffer is zero here, you should just zero it.
->
-> I will fix it in the next version.
+This patch series implements support for the Broadcom Serial Controller used
+by BCM2835 based boards for I2C.
 
-I tested with zero out all pages but the performance is bad compared
-to previously. In my test case, most pages are zero pages. I think
-what happened is that the destination host already has the pages being
-zero so performing a memcmp is much faster than memset on all zero
-pages.
+[Changes in v5]
 
->
-> >
-> >
-> > r~
+- Improper whitespace again.
+
+[Changes in v4]
+
+- Added IRQ or-gate for common BSC IRQ.
+- Added valid sizes to MemoryRegionOps.
+- Use version tag instead of master
+
+[Changes in v3]
+
+- Add SPDX license identifiers.
+- Fix a few minor whitespace issues.
+
+[Changes in v2]
+
+- Fixed and simplified writing to status register
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/481
+Signed-off-by: Rayhan Faizel <rayhan.faizel@gmail.com>
+
+Rayhan Faizel (3):
+  hw/i2c: Implement Broadcom Serial Controller (BSC)
+  hw/arm: Connect BSC to BCM2835 board as I2C0, I2C1 and I2C2
+  tests/qtest: Add testcase for BCM2835 BSC
+
+ docs/system/arm/raspi.rst            |   1 +
+ hw/arm/Kconfig                       |   1 +
+ hw/arm/bcm2835_peripherals.c         |  45 ++++-
+ hw/i2c/Kconfig                       |   4 +
+ hw/i2c/bcm2835_i2c.c                 | 282 +++++++++++++++++++++++++++
+ hw/i2c/meson.build                   |   1 +
+ include/hw/arm/bcm2835_peripherals.h |   4 +-
+ include/hw/i2c/bcm2835_i2c.h         |  80 ++++++++
+ tests/qtest/bcm2835-i2c-test.c       | 115 +++++++++++
+ tests/qtest/meson.build              |   2 +-
+ 10 files changed, 530 insertions(+), 5 deletions(-)
+ create mode 100644 hw/i2c/bcm2835_i2c.c
+ create mode 100644 include/hw/i2c/bcm2835_i2c.h
+ create mode 100644 tests/qtest/bcm2835-i2c-test.c
+
+-- 
+2.34.1
+
 
