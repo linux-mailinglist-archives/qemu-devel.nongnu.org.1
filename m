@@ -2,92 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BD738623DF
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 Feb 2024 10:26:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28C5F86245C
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 Feb 2024 11:56:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdoIM-0008DM-3N; Sat, 24 Feb 2024 04:26:10 -0500
+	id 1rdpfu-0004CD-JH; Sat, 24 Feb 2024 05:54:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rdoIH-0008C4-B7
- for qemu-devel@nongnu.org; Sat, 24 Feb 2024 04:26:05 -0500
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rdoIF-00034S-PQ
- for qemu-devel@nongnu.org; Sat, 24 Feb 2024 04:26:05 -0500
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-5ca29c131ebso1289823a12.0
- for <qemu-devel@nongnu.org>; Sat, 24 Feb 2024 01:26:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708766761; x=1709371561;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=FEXfVsaC8WiwQLHzBhL9P9YmKLGvJ5rGOGPmQWC7dng=;
- b=WTUF1Tza1XqfASJ3O88x2F/o8EAE6EKSfZoJGFLIObujtDteWGEtInzoC6SbuEpqfd
- mLL2s7QHeoLP4CS4E47O7+suP6ObFatTiXwrM5NFAbS+FnKJrIuYcDtKidpfgsngf9b0
- IKPyt9mJJ1s2DMQu/VhIyh0+B5LffzoP5wak0S21rdl5VEaRjvG6eHqOC1ywD5+XDhGZ
- ootHsPcdaoNMSBDGe60FtkTZZ8FfQkQoywIr3F2ZpxZ0Cq054TvTcuBNFf3biBn3oKWm
- xnXm8Utxp5D9TlpZx52SGCbgF8lg+hqJj5P8m8iULDicKWbAnv6CSrTrqM4c4zRuDkOM
- tWrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708766761; x=1709371561;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=FEXfVsaC8WiwQLHzBhL9P9YmKLGvJ5rGOGPmQWC7dng=;
- b=cOqIrpVRquhWkOXuy+/ILriOLl8QT9B5LZucyoCGChdQfvzdRWGfAfMixkMr4eccts
- L5DsaGwlAuHxCP8IQ0r/zYrO+gqYLr0w555ZdKFHZlu+8gOLVWmWtGtLYbdbtSiCOSCl
- xUgaZu0jCw9YLlL0J1NYS/8UQEqHhe9aSQz7U/A+Y29vCNqxHq7CwKzKrHFV1eO+X3S5
- AvC9GRN88FhG+2lsXE1DGDNXvlaMEQXJ51ydZVgF8KpYiUDjgWUJ4j1P/+luKaNp/oA/
- loiK3AVnjSE7UdZLq9dbuha2NoYPb0eihqv3j4CEkznkcXrBTvwl5gjZuTXznJdh/DhU
- Mcpw==
-X-Gm-Message-State: AOJu0Yz33OC3ozCTCDXs1DqXOMZIqmfYE1vm3uanTf8zKbu0qD1Srmf3
- ZuS9eXbubqdkj+iutMzM7Wf42Bj6C01UjgDcy29gvzIGmbCu5dDvkDjWA6X2hgE=
-X-Google-Smtp-Source: AGHT+IGaLjdgP5krYgwf6HXi1q9/8/pOXNaYZkIYsqW9ZF3fXUVZtSVryX/NDJnMItOrXBC/N8lL5A==
-X-Received: by 2002:a05:6a20:9d92:b0:1a0:6496:84c1 with SMTP id
- mu18-20020a056a209d9200b001a0649684c1mr2546192pzb.37.1708766761374; 
- Sat, 24 Feb 2024 01:26:01 -0800 (PST)
-Received: from localhost ([157.82.203.206])
- by smtp.gmail.com with UTF8SMTPSA id
- k25-20020a635619000000b005bdbe9a597fsm744828pgb.57.2024.02.24.01.25.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 24 Feb 2024 01:26:01 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 24 Feb 2024 18:24:48 +0900
-Subject: [PATCH v7 16/16] hw/qdev: Remove opts member
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rdpfr-0004Au-Fn; Sat, 24 Feb 2024 05:54:31 -0500
+Received: from zproxy1.enst.fr ([137.194.2.220])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rdpfp-0003MT-3B; Sat, 24 Feb 2024 05:54:31 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy1.enst.fr (Postfix) with ESMTP id 595D5C07A3;
+ Sat, 24 Feb 2024 11:54:26 +0100 (CET)
+Received: from zproxy1.enst.fr ([IPv6:::1])
+ by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id 2WH-2omtthdW; Sat, 24 Feb 2024 11:54:25 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy1.enst.fr (Postfix) with ESMTP id 71718C0C92;
+ Sat, 24 Feb 2024 11:54:25 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy1.enst.fr 71718C0C92
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1708772065;
+ bh=aPcc7JOhQRBPYJ0O4vbJVBvXNe6xZ+TUkYH7f9RLaFg=;
+ h=From:To:Date:Message-ID:MIME-Version;
+ b=Im1siKSulEFBKBjm7Gyl+cUkvtm2P8cIexYN+HYTMzErff/l4O795twxAAdG8OwJV
+ 4Yh+OfN7eIhECq9LMa7A0QBn6wBpfHLVgXKllKsDnqN/3jCePJ3SU9aRPQw6liWH/c
+ pvKlaPq0ERv+DtzPyi5DpnR3hmfDrAlLl5XLCnXk=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy1.enst.fr ([IPv6:::1])
+ by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id 1LbHAA6AbB48; Sat, 24 Feb 2024 11:54:25 +0100 (CET)
+Received: from inesv-Inspiron-3501.lan (unknown
+ [IPv6:2001:861:4680:b1b0:34c1:5884:a33c:51fd])
+ by zproxy1.enst.fr (Postfix) with ESMTPSA id 0826CC0642;
+ Sat, 24 Feb 2024 11:54:24 +0100 (CET)
+From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
+To: qemu-devel@nongnu.org
+Cc: Samuel Tardieu <samuel.tardieu@telecom-paris.fr>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Alistair Francis <alistair@alistair23.me>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ Laurent Vivier <lvivier@redhat.com>, qemu-arm@nongnu.org
+Subject: [PATCH v6 0/3] Add device STM32L4x5 GPIO
+Date: Sat, 24 Feb 2024 11:47:31 +0100
+Message-ID: <20240224105417.195674-1-ines.varhol@telecom-paris.fr>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240224-reuse-v7-16-29c14bcb952e@daynix.com>
-References: <20240224-reuse-v7-0-29c14bcb952e@daynix.com>
-In-Reply-To: <20240224-reuse-v7-0-29c14bcb952e@daynix.com>
-To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Alex Williamson <alex.williamson@redhat.com>, 
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, 
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>, 
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>, 
- Klaus Jensen <its@irrelevant.dk>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
- Akihiko Odaki <akihiko.odaki@daynix.com>, 
- Markus Armbruster <armbru@redhat.com>
-X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::532;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x532.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=137.194.2.220;
+ envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy1.enst.fr
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,78 +81,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is no longer used.
+This patch adds a new device STM32L4x5 GPIO device and is part
+of a series implementing the STM32L4x5 with a few peripherals.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
----
- include/hw/qdev-core.h |  4 ----
- hw/core/qdev.c         |  1 -
- system/qdev-monitor.c  | 12 +++++++-----
- 3 files changed, 7 insertions(+), 10 deletions(-)
+Changes from v5 :
+- remove duplicate macro constant `GPIO_NUM_PINS` from syscfg.h
+(it's defined in gpio.h)
+- moving definition of constant `NUM_GPIOS` from syscfg.h to gpio.h
+- soc.c : replacing a hardcoded 16 by the correct `GPIO_NUM_PINS`
 
-diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index 9228e96c87e9..5954404dcbfe 100644
---- a/include/hw/qdev-core.h
-+++ b/include/hw/qdev-core.h
-@@ -237,10 +237,6 @@ struct DeviceState {
-      * @pending_deleted_expires_ms: optional timeout for deletion events
-      */
-     int64_t pending_deleted_expires_ms;
--    /**
--     * @opts: QDict of options for the device
--     */
--    QDict *opts;
-     /**
-      * @hotplugged: was device added after PHASE_MACHINE_READY?
-      */
-diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index c68d0f7c512f..7349c9a86be8 100644
---- a/hw/core/qdev.c
-+++ b/hw/core/qdev.c
-@@ -706,7 +706,6 @@ static void device_finalize(Object *obj)
-         dev->canonical_path = NULL;
-     }
- 
--    qobject_unref(dev->opts);
-     g_free(dev->id);
- }
- 
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index a13db763e5dd..71c00f62ee38 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -625,6 +625,7 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
-     char *id;
-     DeviceState *dev = NULL;
-     BusState *bus = NULL;
-+    QDict *properties;
- 
-     driver = qdict_get_try_str(opts, "driver");
-     if (!driver) {
-@@ -705,13 +706,14 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
-     }
- 
-     /* set properties */
--    dev->opts = qdict_clone_shallow(opts);
--    qdict_del(dev->opts, "driver");
--    qdict_del(dev->opts, "bus");
--    qdict_del(dev->opts, "id");
-+    properties = qdict_clone_shallow(opts);
-+    qdict_del(properties, "driver");
-+    qdict_del(properties, "bus");
-+    qdict_del(properties, "id");
- 
--    object_set_properties_from_keyval(&dev->parent_obj, dev->opts, from_json,
-+    object_set_properties_from_keyval(&dev->parent_obj, properties, from_json,
-                                       errp);
-+    qobject_unref(properties);
-     if (*errp) {
-         goto err_del_dev;
-     }
+Changes from v4 :
+- gpio.c : use helpers `is_pull_up()`, `is_pull_down()`, `is_output()`
+for more clarity
+- gpio.c : correct `update_gpio_idr()` in case of open-drain pin
+set to 1 in ODR and set to 0 externally
+- gpio.c : rename `get_gpio_pins_to_disconnect()` to
+`get_gpio_pinmask_to_disconnect()` and associated comments
+- gpio.c : correct coding style issues (alignment and declaration)
+- soc.c : unite structs `gpio_addr` and `stm32l4x5_gpio_initval`
 
--- 
+Changes from v3 :
+- replacing occurences of '16' with the correct macro `GPIO_NUM_PINS`
+- updating copyright year
+- rebasing on latest version of STM32L4x5 RCC
+
+Changes from v2 :
+- correct memory leaks caused by re-assigning a `g_autofree`
+pointer without freeing it
+- gpio-test : test that reset values (and not just initialization
+values) are correct, correct `stm32l4x5_gpio_reset()` accordingly
+- adding a `clock-freq-hz` object property to test that
+enabling GPIO clock in RCC sets the GPIO clocks
+
+Changes from v1 :
+- replacing test GPIO register `DISCONNECTED_PINS` with an object
+property accessed using `qtest_qmp()` in the qtest (through helpers
+`get_disconnected_pins()` and `disconnect_all_pins()`)
+- removing GPIO subclasses and storing MODER, OSPEEDR and PUPDR reset
+values in properties
+- adding a `name` property and using it for more lisible traces
+- using `g_strdup_printf()` to facilitate setting irqs in the qtest,
+and initializing GPIO children in soc_initfn
+
+Changes from RFC v1 :
+- `stm32l4x5-gpio-test.c` : correct typos, make the test generic,
+add a test for bitwise writing in register ODR
+- `stm32l4x5_soc.c` : connect gpios to their clock, use an
+array of GpioState
+- `stm32l4x5_gpio.c` : correct comments in `update_gpio_idr()`,
+correct `get_gpio_pins_to_disconnect()`, correct `stm32l4x5_gpio_init()`
+and initialize the clock, add a realize function
+- update MAINAINERS
+
+Based-on: 20240219200908.49551-1-arnaud.minier@telecom-paris.fr
+([PATCH v5 0/8] Add device STM32L4x5 RCC)
+
+Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+
+In=C3=A8s Varhol (3):
+  hw/gpio: Implement STM32L4x5 GPIO
+  hw/arm: Connect STM32L4x5 GPIO to STM32L4x5 SoC
+  tests/qtest: Add STM32L4x5 GPIO QTest testcase
+
+ MAINTAINERS                        |   1 +
+ docs/system/arm/b-l475e-iot01a.rst |   2 +-
+ include/hw/arm/stm32l4x5_soc.h     |   2 +
+ include/hw/gpio/stm32l4x5_gpio.h   |  71 ++++
+ include/hw/misc/stm32l4x5_syscfg.h |   3 +-
+ hw/arm/stm32l4x5_soc.c             |  71 +++-
+ hw/gpio/stm32l4x5_gpio.c           | 477 +++++++++++++++++++++++
+ hw/misc/stm32l4x5_syscfg.c         |   1 +
+ tests/qtest/stm32l4x5_gpio-test.c  | 586 +++++++++++++++++++++++++++++
+ hw/arm/Kconfig                     |   3 +-
+ hw/gpio/Kconfig                    |   3 +
+ hw/gpio/meson.build                |   1 +
+ hw/gpio/trace-events               |   6 +
+ tests/qtest/meson.build            |   3 +-
+ 14 files changed, 1210 insertions(+), 20 deletions(-)
+ create mode 100644 include/hw/gpio/stm32l4x5_gpio.h
+ create mode 100644 hw/gpio/stm32l4x5_gpio.c
+ create mode 100644 tests/qtest/stm32l4x5_gpio-test.c
+
+--=20
 2.43.2
 
 
