@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1523862508
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 Feb 2024 13:45:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6F3B86250B
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 Feb 2024 13:45:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdrO5-0002Bt-NO; Sat, 24 Feb 2024 07:44:17 -0500
+	id 1rdrO8-0002CF-O9; Sat, 24 Feb 2024 07:44:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rdrO3-0002BT-1q
- for qemu-devel@nongnu.org; Sat, 24 Feb 2024 07:44:15 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1rdrO6-0002C5-Iw
+ for qemu-devel@nongnu.org; Sat, 24 Feb 2024 07:44:18 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rdrO1-0006x0-MU
- for qemu-devel@nongnu.org; Sat, 24 Feb 2024 07:44:14 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1d944e8f367so12560125ad.0
- for <qemu-devel@nongnu.org>; Sat, 24 Feb 2024 04:44:13 -0800 (PST)
+ id 1rdrO5-0006xn-1g
+ for qemu-devel@nongnu.org; Sat, 24 Feb 2024 07:44:18 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1d95d67ff45so11255405ad.2
+ for <qemu-devel@nongnu.org>; Sat, 24 Feb 2024 04:44:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708778652; x=1709383452;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708778656; x=1709383456;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=XUF9MB/GVHxuW0Msr+KnJ49oqKxKjgQPdnE3teHps84=;
- b=VPzkYaF5kwD+HNMcUSNirXthahSgeeq30cw/URwT4N+DJoMLucu+p48nxcH2C5GBmZ
- 9esAvodsoFcDJeB2DtlVQnOQut67EjRPbC4o3/QhX5iWt3WzBwt655sQz4baJilXT3F4
- 0tnchL+w95QoTlnfWfyvvkFMjkI+IfyUlioU51Ulj6rR0V0na3FrtXLRyijg92oYeA5F
- H8x3slciW4M8AbpioTNXJJV8blVduHI8Yv5Q/y59AtnU8YcsS7MkJLtfJvFevw3WV93z
- zU6rb8JRkah0XKerbM56uNcjL91iHrsUwViXnKUKn9hgtM6cThu8zeds+sUPC8yu+pky
- Pf8A==
+ :reply-to; bh=jqtng6eTMtQKGpQNRytiSork9i3+Tz3l9sTU1dsSA4k=;
+ b=wTa8W2I8ButUqG8AvFmDCmqCChKKW/imSFNkkQ4bLEzKfrerSQnHY4SI2f6oM8Tdo5
+ gVDYfuXUa2wysNgdLnqOOXSzoJFnodLPchfI8wvAbZtemCQtVYwfsbBoCBZIROrVLSok
+ 2C5cO2s77mqiYgYUU7k1/+LIbVfi8kMyHHO7FhxP+pdHaoZ+p5iburGHTvAC5iiqzDRd
+ YVC25g74lRi/olEXSfTXd5+tPv4eMncegUmuX5Kz4pPy3qNA6zdkJyFlg2HKbrQJZaOd
+ d6BmRP/VjNwhEfKpz1rz5rt8fdFCfAv/g7TU4ljgsvd4Dcp2WdnjJrPpD/BKqaK1BJ31
+ HKaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708778652; x=1709383452;
+ d=1e100.net; s=20230601; t=1708778656; x=1709383456;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XUF9MB/GVHxuW0Msr+KnJ49oqKxKjgQPdnE3teHps84=;
- b=DdfXULs3bCw2mM5/0MviIMhBq1v7W3L4hr5FTtdmoGDIyZUMFDlwz/ugYgL9VA0INA
- zm9eBASVd73ngOOYrEn4CMP7t4xOhyfRR36d0RDr68y1KxlORHigDfFJ+WgXhKpIdED2
- FXmNwcNkBIntLKm3Zv0vW6nBMEjQpBm38R8yZ9fRzbGuSGsnFLVSvgCobObVvNPd3UqB
- kFB/tTWiJ3zO1E50Hekxl0v8bVv25t/0XELdGT/9/Cy1i/sxyDhERQfMv7i3w4GX61gm
- GIUJthQd/MJSb+NZS0qQu1xIkaKiRwPxUbWkTFEttLhWmOln+Nk9L9fcQwYL0Pp9ROvB
- Clhw==
-X-Gm-Message-State: AOJu0YzhyZoUnsZEd88OfR1efxH2Pp01t0HM6BkRjUmZGYqIxwogVJdd
- WOqRnRUulC4crDzXvN/i2bE+WL8fjKhBktdkexZ4vVEzuCXJFHaAR9inb5O1HvA=
-X-Google-Smtp-Source: AGHT+IF6yzYv+1j2Qxz3JW308dryYtd20ZDnnZjARd9eWkk8ZK/47FUllbvekFT4B+n5XgbzJP75IQ==
-X-Received: by 2002:a17:902:dac1:b0:1dc:5edc:61d2 with SMTP id
- q1-20020a170902dac100b001dc5edc61d2mr3453558plx.59.1708778652229; 
- Sat, 24 Feb 2024 04:44:12 -0800 (PST)
+ bh=jqtng6eTMtQKGpQNRytiSork9i3+Tz3l9sTU1dsSA4k=;
+ b=MhVh89uXfre93Nn0yaiRNNEYqjnN9XyWDWhlYtWAO+GRTHE1C6NZbzJp3wyyRpAUVg
+ eivKKO8jOsBZt5PE6iSeX4EysdE1dnd1IIz4zWE0vMlVSCvcAkOL9fFFPUVOUe/7cPhu
+ OFk+HfuH+lU47K6kwKUyZ5kLg87PMmtPmW7IqtqowTA11xPWSCQlOA3ZbFRWCgj5KV+o
+ s+DuRJTseJS2s9aDXNNCzjY29/fiGimNYzIvLJhbZEJ3eRx0fbqfQPCIEkSjlDqauqos
+ a7MtR2Gu/mpcpKl1LgbSFlYPZXwpLX5pok5+WEOSZyzLqE9PuoNx9AvDmQl5iBY4xgSS
+ gXvw==
+X-Gm-Message-State: AOJu0YyM3szaRT96RoIuExFWi0XaUGnp9My1ltxDk8CePBMfxQgDzWbE
+ npInckYzGqTDRhyVKRWNeLVoaHc3CXyT0vfSAc5KDo8p7MOdXv8vWe5YbQi1wPM=
+X-Google-Smtp-Source: AGHT+IF2Ute0k5bWDUygAaUdeqJGFJ8UIkSu+OXUfsDZOGe79DVEk2/usZZpam3DjUrfA3pgvG3W8g==
+X-Received: by 2002:a17:902:720c:b0:1db:51ee:8677 with SMTP id
+ ba12-20020a170902720c00b001db51ee8677mr2622657plb.59.1708778655889; 
+ Sat, 24 Feb 2024 04:44:15 -0800 (PST)
 Received: from localhost ([157.82.203.206])
  by smtp.gmail.com with UTF8SMTPSA id
- bj12-20020a170902850c00b001d9c1d8a401sm948119plb.191.2024.02.24.04.44.10
+ y18-20020a170902b49200b001d94e6a7685sm953135plr.234.2024.02.24.04.44.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 24 Feb 2024 04:44:11 -0800 (PST)
+ Sat, 24 Feb 2024 04:44:15 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 24 Feb 2024 21:43:40 +0900
-Subject: [PATCH v12 09/10] ui/cocoa: Call console_select() with the BQL
+Date: Sat, 24 Feb 2024 21:43:41 +0900
+Subject: [PATCH v12 10/10] ui/cocoa: Remove stretch_video flag
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240224-cocoa-v12-9-e89f70bdda71@daynix.com>
+Message-Id: <20240224-cocoa-v12-10-e89f70bdda71@daynix.com>
 References: <20240224-cocoa-v12-0-e89f70bdda71@daynix.com>
 In-Reply-To: <20240224-cocoa-v12-0-e89f70bdda71@daynix.com>
 To: Peter Maydell <peter.maydell@linaro.org>, 
@@ -73,8 +73,8 @@ To: Peter Maydell <peter.maydell@linaro.org>,
  Rene Engel <ReneEngel80@emailn.de>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::62d;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::629;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,30 +96,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-[-QemuCocoaView displayConsole:] can be called anytime so explicitly
-take the BQL before it calls console_select().
+Evaluate [normalWindow styleMask] & NSWindowStyleMaskResizable instead.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- ui/cocoa.m | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ ui/cocoa.m | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
 diff --git a/ui/cocoa.m b/ui/cocoa.m
-index cebfae04d9e8..33d31b82bcab 100644
+index 33d31b82bcab..b33842e70280 100644
 --- a/ui/cocoa.m
 +++ b/ui/cocoa.m
-@@ -1360,7 +1360,9 @@ - (void)zoomToFit:(id) sender
- /* Displays the console on the screen */
- - (void)displayConsole:(id)sender
+@@ -102,7 +102,6 @@ static void cocoa_switch(DisplayChangeListener *dcl,
+ static int left_command_key_enabled = 1;
+ static bool swap_opt_cmd;
+ 
+-static bool stretch_video;
+ static NSTextField *pauseLabel;
+ 
+ static bool allow_events;
+@@ -514,7 +513,7 @@ - (void) resizeWindow
  {
--    console_select([sender tag]);
-+    with_bql(^{
-+        console_select([sender tag]);
-+    });
+     [[self window] setContentAspectRatio:NSMakeSize(screen.width, screen.height)];
+ 
+-    if (!stretch_video) {
++    if (!([[self window] styleMask] & NSWindowStyleMaskResizable)) {
+         [[self window] setContentSize:NSMakeSize(screen.width, screen.height)];
+         [[self window] center];
+     } else if ([[self window] styleMask] & NSWindowStyleMaskFullScreen) {
+@@ -1346,15 +1345,10 @@ - (void)showQEMUDoc:(id)sender
+ /* Stretches video to fit host monitor size */
+ - (void)zoomToFit:(id) sender
+ {
+-    stretch_video = !stretch_video;
+-    if (stretch_video == true) {
+-        [cocoaView window].styleMask |= NSWindowStyleMaskResizable;
+-        [sender setState: NSControlStateValueOn];
+-    } else {
+-        [cocoaView window].styleMask &= ~NSWindowStyleMaskResizable;
+-        [cocoaView resizeWindow];
+-        [sender setState: NSControlStateValueOff];
+-    }
++    NSWindowStyleMask styleMask = [[cocoaView window] styleMask] ^ NSWindowStyleMaskResizable;
++
++    [[cocoaView window] setStyleMask:styleMask];
++    [sender setState:styleMask & NSWindowStyleMaskResizable ? NSControlStateValueOn : NSControlStateValueOff];
  }
  
- /* Pause the guest */
+ /* Displays the console on the screen */
+@@ -1619,7 +1613,7 @@ static void create_initial_menus(void)
+     menu = [[NSMenu alloc] initWithTitle:@"View"];
+     [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Enter Fullscreen" action:@selector(doToggleFullScreen:) keyEquivalent:@"f"] autorelease]]; // Fullscreen
+     menuItem = [[[NSMenuItem alloc] initWithTitle:@"Zoom To Fit" action:@selector(zoomToFit:) keyEquivalent:@""] autorelease];
+-    [menuItem setState: stretch_video ? NSControlStateValueOn : NSControlStateValueOff];
++    [menuItem setState: [[cocoaView window] styleMask] & NSWindowStyleMaskResizable ? NSControlStateValueOn : NSControlStateValueOff];
+     [menu addItem: menuItem];
+     menuItem = [[[NSMenuItem alloc] initWithTitle:@"View" action:nil keyEquivalent:@""] autorelease];
+     [menuItem setSubmenu:menu];
+@@ -2005,7 +1999,6 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
+     }
+ 
+     if (opts->u.cocoa.has_zoom_to_fit && opts->u.cocoa.zoom_to_fit) {
+-        stretch_video = true;
+         [cocoaView window].styleMask |= NSWindowStyleMaskResizable;
+     }
+ 
 
 -- 
 2.43.2
