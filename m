@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF3D786258A
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 Feb 2024 15:00:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CA00862586
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 Feb 2024 15:00:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdsYn-0004Ed-20; Sat, 24 Feb 2024 08:59:25 -0500
+	id 1rdsYk-0004EC-PO; Sat, 24 Feb 2024 08:59:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rdsYd-0004Aj-0d
- for qemu-devel@nongnu.org; Sat, 24 Feb 2024 08:59:15 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rdsYb-0002lP-09
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rdsYc-0004Ah-To
  for qemu-devel@nongnu.org; Sat, 24 Feb 2024 08:59:14 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-33d754746c3so1119819f8f.1
- for <qemu-devel@nongnu.org>; Sat, 24 Feb 2024 05:59:11 -0800 (PST)
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rdsYb-0002m0-13
+ for qemu-devel@nongnu.org; Sat, 24 Feb 2024 08:59:14 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3392b045e0aso1314160f8f.2
+ for <qemu-devel@nongnu.org>; Sat, 24 Feb 2024 05:59:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708783149; x=1709387949; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708783150; x=1709387950; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VTdkrGOWau5O1oWIpKtyS7r/bUo0AcrbvBTNN+p9aWY=;
- b=ccFSBSQQhACfMwGil5eNc5qmsO7t+xoBqbpA4MWRoRmwHtg4x+O7gLBwJq2ny3FRjM
- D1uAPutgrptN9VlApbgDjbXxdlYoUG0ssUyyC2WkdIaoltddUE2GhiqmWUOGqx3pH2W9
- c2k8/AW5J2KMS1zJuyasqD+6aoW/I73ceifJmDk6bPl4u1NsvoaUNf50QlxjeTLED3R/
- WxLZeG3zThDnP+/0FQeyuhoc+AbbY1mInQGUSLI9bdM4mrw9TidcpufaJaOx7vdvSXPV
- 3zVGBmbOzE+aJP7HyFJF/R5dFlbvHxsZkeI8eweKA77Wo9QMS4ZTDaVi+U/CmNcKijD0
- iuDw==
+ bh=eSTZZKZJd9onOmZuoGSDc/R40/Oc/o39d6sBD3S+k2A=;
+ b=CHvu3BXfpqhjcQLQTbwVgi4PFE2MjqMymbfnfNPZtjXlGa3cUtzn10B9nhp6WS3Bou
+ TRBuUi0hL5rarL6wCjPzV1uhRNSTeWyHCSao0OF2YaVP5TbhdI6/9kxkv+BhvcruGOyW
+ J6VACOnLRsQZrasrkXAJqlQR64ZxalsDcBdwg5VHvtHqHvcanWLIkj7AwRb/842/KKkc
+ cslfi9Ch8ngvSKI/s1VCAzt1xO+cr3jIxZobx4a23miLpoHZY3ceebdP9La3Xh0j6vhI
+ UmCMYdtdCSC0RS6eO5wvxivBXnMa5oE5QKBuTSvvqtDkBBGQaKobUYZXtqFAj/tN64dA
+ QOdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708783149; x=1709387949;
+ d=1e100.net; s=20230601; t=1708783150; x=1709387950;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VTdkrGOWau5O1oWIpKtyS7r/bUo0AcrbvBTNN+p9aWY=;
- b=gxU3eUWOYxDxfZQItImHSqFt/Ga8oDxBzJhvdwhUspaP7Ky7bLaxyFvFzIaw78fIy5
- SuGsBdT+k96kozjxT2GWa10eOt3QxDZu+tZR6HK2wO4ogB64UOC4SS39/mR2UtifkHEg
- MLUPVcNiXvJ9aN65z1SfthWGo7fHv9Q+L7oldh9QmqftDZCzC/vsMMuJS37ilUybxe2j
- n9lBY4hxGhhyDrB5pATvECV8DyaID7F4sPPYGJKpl9ZlD8yZ295iRjZqirViSqs/CMsa
- QVCZT4fDC1XKUFitvR25JboG8FWT0A+wp/X4F03m9xyMN5OQ3oVfHy+irEz5L/KpZur3
- aP8Q==
-X-Gm-Message-State: AOJu0YzQRlv+Gzc+uSW4ijL5OrcHN8wzIFDAnp8q7E/JcJBlNA++Vkf3
- RJJzY9yhbewTXkYIwaKY90uWP85fX/kdpCRZoXr3iFbfLfV63Ka25tQ+5JRK
-X-Google-Smtp-Source: AGHT+IHWG6GVhsAavmdPOpNxd/LDQlwv7DZoSQKkU5mcq7WCe8ODfHGGS7V7oq/cbihATq/Nk7KglQ==
-X-Received: by 2002:a5d:56cb:0:b0:33d:6186:3ca0 with SMTP id
- m11-20020a5d56cb000000b0033d61863ca0mr1588880wrw.19.1708783148865; 
- Sat, 24 Feb 2024 05:59:08 -0800 (PST)
+ bh=eSTZZKZJd9onOmZuoGSDc/R40/Oc/o39d6sBD3S+k2A=;
+ b=hOQ4e/UbWF3QpKEUZMy+6D3YGBuoRUEeADbLAS2I2KnT5eH0n8LcHSwZYfow7+8CVY
+ HOfwa8OBSrKD/OgvWXUmxY3bzkQ5c1fSsV1fKwDfZSV8j/vLoklWgHoVvcBnubT4nXnW
+ CPQeTe/QrbIDtL33iH4cDUkqsNlWN3efHSyu+5favxDbbcJ6N5LOnsCxDk2/wnLHSBJo
+ QvGrNS0d8jjkl3IAyYfguHsHR62m3NANloCOX2HRIkDyyEbVgdxfx+XWf2RDPGL4ZX/E
+ +0tmpivMfM60fI+GskJPP15Kxby9MkRIphVM4TnD9yn6oMHSjDiiAt6YxmFZ7ngnk0rw
+ SOpA==
+X-Gm-Message-State: AOJu0Yy9i1HkLpP8kPWKNFFFjjS03beuGXhxCe958+HpC3AVRDSD2oTc
+ Zguv+bZoJCrkVLzRqq331xT8PmbHRIJUWhOlk5fw/wUeXUgMSkWmaydOoPGf
+X-Google-Smtp-Source: AGHT+IEDelizaLxsH9REnnjXKRVT9AC2w8qLDghH4sPV9ZmjXoSfpnCJTRYYrXhArVbpLG1ofC0UCw==
+X-Received: by 2002:a5d:6743:0:b0:33c:f9d6:fb20 with SMTP id
+ l3-20020a5d6743000000b0033cf9d6fb20mr1849577wrw.45.1708783150577; 
+ Sat, 24 Feb 2024 05:59:10 -0800 (PST)
 Received: from archlinux.. (dynamic-089-012-138-060.89.12.pool.telefonica.de.
  [89.12.138.60]) by smtp.gmail.com with ESMTPSA id
- n8-20020a056000170800b0033d817eddd3sm2285542wrc.13.2024.02.24.05.59.07
+ n8-20020a056000170800b0033d817eddd3sm2285542wrc.13.2024.02.24.05.59.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 24 Feb 2024 05:59:08 -0800 (PST)
+ Sat, 24 Feb 2024 05:59:09 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Ani Sinha <anisinha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -65,16 +65,17 @@ Cc: Ani Sinha <anisinha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Jason Wang <jasowang@redhat.com>,
  David Woodhouse <dwmw2@infradead.org>, Sergio Lopez <slp@redhat.com>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v2 5/6] hw/i386/pc: Populate RTC attribute directly
-Date: Sat, 24 Feb 2024 14:58:50 +0100
-Message-ID: <20240224135851.100361-6-shentey@gmail.com>
+Subject: [PATCH v2 6/6] hw/i386/pc: Inline pc_cmos_init() into
+ pc_cmos_init_late() and remove it
+Date: Sat, 24 Feb 2024 14:58:51 +0100
+Message-ID: <20240224135851.100361-7-shentey@gmail.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240224135851.100361-1-shentey@gmail.com>
 References: <20240224135851.100361-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=shentey@gmail.com; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,130 +98,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both the piix and the q35 machines introduce an rtc_state variable and defer the
-initialization of the X86MachineState::rtc attribute to pc_cmos_init(). Resolve
-this complication which makes pc_cmos_init() do what it says on the tin.
+Now that pc_cmos_init() doesn't populate the X86MachineState::rtc attribute any
+longer, its duties can be merged into pc_cmos_init_late() which is called within
+machine_done notifier. This frees pc_piix and pc_q35 from explicit CMOS
+initialization.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/pc.c      |  8 --------
- hw/i386/pc_piix.c | 15 +++++++--------
- hw/i386/pc_q35.c  |  7 +++----
- 3 files changed, 10 insertions(+), 20 deletions(-)
+ include/hw/i386/pc.h |  2 --
+ hw/i386/pc.c         | 10 ----------
+ hw/i386/pc_piix.c    |  2 --
+ hw/i386/pc_q35.c     |  2 --
+ 4 files changed, 16 deletions(-)
 
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 4bb1899602..2b7c53d619 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -178,8 +178,6 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+                           ISADevice *rtc_state,
+                           bool create_fdctrl,
+                           uint32_t hpet_irqs);
+-void pc_cmos_init(PCMachineState *pcms,
+-                  ISADevice *s);
+ void pc_nic_init(PCMachineClass *pcmc, ISABus *isa_bus, PCIBus *pci_bus);
+ 
+ void pc_i8259_create(ISABus *isa_bus, qemu_irq *i8259_irqs);
 diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index a80f809b83..880e95de26 100644
+index 880e95de26..fad4c54512 100644
 --- a/hw/i386/pc.c
 +++ b/hw/i386/pc.c
-@@ -611,14 +611,6 @@ void pc_cmos_init(PCMachineState *pcms,
-     mc146818rtc_set_cmos_data(s, 0x5c, val >> 8);
-     mc146818rtc_set_cmos_data(s, 0x5d, val >> 16);
+@@ -567,14 +567,6 @@ static void pc_cmos_init_late(PCMachineState *pcms)
+     mc146818rtc_set_cmos_data(s, 0x39, val);
  
--    object_property_add_link(OBJECT(pcms), "rtc_state",
--                             TYPE_ISA_DEVICE,
--                             (Object **)&x86ms->rtc,
--                             object_property_allow_set_link,
--                             OBJ_PROP_LINK_STRONG);
--    object_property_set_link(OBJECT(pcms), "rtc_state", OBJECT(s),
--                             &error_abort);
+     pc_cmos_init_floppy(s, pc_find_fdc0());
+-}
 -
-     set_boot_dev(s, MACHINE(pcms)->boot_config.order, &error_fatal);
+-void pc_cmos_init(PCMachineState *pcms,
+-                  ISADevice *rtc)
+-{
+-    int val;
+-    X86MachineState *x86ms = X86_MACHINE(pcms);
+-    MC146818RtcState *s = MC146818_RTC(rtc);
  
-     val = 0;
+     /* various important CMOS locations needed by PC/Bochs bios */
+ 
+@@ -617,8 +609,6 @@ void pc_cmos_init(PCMachineState *pcms,
+     val |= 0x02; /* FPU is there */
+     val |= 0x04; /* PS/2 mouse installed */
+     mc146818rtc_set_cmos_data(s, REG_EQUIPMENT_BYTE, val);
+-
+-    /* hard drives and FDC are handled by pc_cmos_init_late() */
+ }
+ 
+ static void handle_a20_line_change(void *opaque, int irq, int level)
 diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 49d5d48db9..ce6aad758d 100644
+index ce6aad758d..637f4d38be 100644
 --- a/hw/i386/pc_piix.c
 +++ b/hw/i386/pc_piix.c
-@@ -112,7 +112,6 @@ static void pc_init1(MachineState *machine,
-     Object *piix4_pm = NULL;
-     qemu_irq smi_irq;
-     GSIState *gsi_state;
--    ISADevice *rtc_state;
-     MemoryRegion *ram_memory;
-     MemoryRegion *pci_memory = NULL;
-     MemoryRegion *rom_memory = system_memory;
-@@ -276,8 +275,8 @@ static void pc_init1(MachineState *machine,
-         }
- 
-         isa_bus = ISA_BUS(qdev_get_child_bus(DEVICE(pci_dev), "isa.0"));
--        rtc_state = ISA_DEVICE(object_resolve_path_component(OBJECT(pci_dev),
--                                                             "rtc"));
-+        x86ms->rtc = ISA_DEVICE(object_resolve_path_component(OBJECT(pci_dev),
-+                                                              "rtc"));
-         piix4_pm = object_resolve_path_component(OBJECT(pci_dev), "pm");
-         dev = DEVICE(object_resolve_path_component(OBJECT(pci_dev), "ide"));
-         pci_ide_create_devs(PCI_DEVICE(dev));
-@@ -288,9 +287,9 @@ static void pc_init1(MachineState *machine,
-                               &error_abort);
-         isa_bus_register_input_irqs(isa_bus, x86ms->gsi);
- 
--        rtc_state = isa_new(TYPE_MC146818_RTC);
--        qdev_prop_set_int32(DEVICE(rtc_state), "base_year", 2000);
--        isa_realize_and_unref(rtc_state, isa_bus, &error_fatal);
-+        x86ms->rtc = isa_new(TYPE_MC146818_RTC);
-+        qdev_prop_set_int32(DEVICE(x86ms->rtc), "base_year", 2000);
-+        isa_realize_and_unref(x86ms->rtc, isa_bus, &error_fatal);
- 
-         i8257_dma_init(OBJECT(machine), isa_bus, 0);
-         pcms->hpet_enabled = false;
-@@ -316,7 +315,7 @@ static void pc_init1(MachineState *machine,
-     }
- 
-     /* init basic PC hardware */
--    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, rtc_state, true,
-+    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, x86ms->rtc, true,
-                          0x4);
- 
-     pc_nic_init(pcmc, isa_bus, pcms->pcibus);
-@@ -343,7 +342,7 @@ static void pc_init1(MachineState *machine,
+@@ -342,8 +342,6 @@ static void pc_init1(MachineState *machine,
      }
  #endif
  
--    pc_cmos_init(pcms, rtc_state);
-+    pc_cmos_init(pcms, x86ms->rtc);
- 
+-    pc_cmos_init(pcms, x86ms->rtc);
+-
      if (piix4_pm) {
          smi_irq = qemu_allocate_irq(pc_acpi_smi_interrupt, first_cpu, 0);
+ 
 diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 2fa4efb52f..e0b3f55a02 100644
+index e0b3f55a02..df0a5f934c 100644
 --- a/hw/i386/pc_q35.c
 +++ b/hw/i386/pc_q35.c
-@@ -124,7 +124,6 @@ static void pc_q35_init(MachineState *machine)
-     Object *phb;
-     PCIDevice *lpc;
-     DeviceState *lpc_dev;
--    ISADevice *rtc_state;
-     MemoryRegion *system_memory = get_system_memory();
-     MemoryRegion *system_io = get_system_io();
-     MemoryRegion *pci_memory = g_new(MemoryRegion, 1);
-@@ -231,7 +230,7 @@ static void pc_q35_init(MachineState *machine)
-     }
-     pci_realize_and_unref(lpc, pcms->pcibus, &error_fatal);
- 
--    rtc_state = ISA_DEVICE(object_resolve_path_component(OBJECT(lpc), "rtc"));
-+    x86ms->rtc = ISA_DEVICE(object_resolve_path_component(OBJECT(lpc), "rtc"));
- 
-     object_property_add_link(OBJECT(machine), PC_MACHINE_ACPI_DEVICE_PROP,
-                              TYPE_HOTPLUG_HANDLER,
-@@ -273,7 +272,7 @@ static void pc_q35_init(MachineState *machine)
-     }
- 
-     /* init basic PC hardware */
--    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, rtc_state, !mc->no_floppy,
-+    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, x86ms->rtc, !mc->no_floppy,
-                          0xff0104);
- 
-     if (pcms->sata_enabled) {
-@@ -311,7 +310,7 @@ static void pc_q35_init(MachineState *machine)
+@@ -310,8 +310,6 @@ static void pc_q35_init(MachineState *machine)
          smbus_eeprom_init(pcms->smbus, 8, NULL, 0);
      }
  
--    pc_cmos_init(pcms, rtc_state);
-+    pc_cmos_init(pcms, x86ms->rtc);
- 
+-    pc_cmos_init(pcms, x86ms->rtc);
+-
      /* the rest devices to which pci devfn is automatically assigned */
      pc_vga_init(isa_bus, pcms->pcibus);
+     pc_nic_init(pcmc, isa_bus, pcms->pcibus);
 -- 
 2.44.0
 
