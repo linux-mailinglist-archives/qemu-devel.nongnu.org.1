@@ -2,71 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA0AD86216C
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 Feb 2024 02:06:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B683786216D
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 Feb 2024 02:07:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdgTq-0006FN-JG; Fri, 23 Feb 2024 20:05:30 -0500
+	id 1rdgTq-0006FL-6w; Fri, 23 Feb 2024 20:05:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rdgTl-0006Eg-H3
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 20:05:25 -0500
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ id 1rdgTl-0006El-Qm
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 20:05:26 -0500
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rdgTi-0006qR-Mz
- for qemu-devel@nongnu.org; Fri, 23 Feb 2024 20:05:24 -0500
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-5cdbc4334edso1023991a12.3
- for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 17:05:22 -0800 (PST)
+ id 1rdgTk-0006qV-5J
+ for qemu-devel@nongnu.org; Fri, 23 Feb 2024 20:05:25 -0500
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-6e46b5e7c43so589488b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 23 Feb 2024 17:05:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708736721; x=1709341521; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=bVVwWHYL5fqEiUV6/+r1NeamRJp1tuqDaCQyL3sc6a4=;
- b=FJjwYJM5KJdTpuJp3CZ8P8dlhpPV2HJBAQ7kkvd6gymIAw5Aa1ZKSBa+EXOOrhBhqh
- BjDyBZ8osf1cKA4Jet2ZdyPfCaBb7/lYrSB8bhWgaQA46z6B+TmNqASBJ/BZxuIb0YB+
- eVoWt5oQdAT46gUfOHgCS03ZjwmE7a3d/Bhi6qHaHpIdPFTV+VbBYsg4M/Ib+xlOzxTs
- 2Wc6XSQRiyEFkF8SP+j2lwCSor7rikLZoBD9Qm62CQqNPGT/ZI1KbD8Ok35OZzjiju4B
- 2340Bq04JmPFEb9knjhsJEzi7pJuHBQRuxw8KgL4N4wtDViJ1bmK0eUofjItVKQxc1gh
- Y3PQ==
+ d=linaro.org; s=google; t=1708736722; x=1709341522; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=xfZZqsebUHyUVLONNyqFeLCKzRlol9H6yrC5xBxB6h0=;
+ b=xfN+vP47w542nj7U7ySVg+ZwYyKT234mFOMWOuyKaHdhcTuKe4WhoWeu+ZVMU5KJRy
+ bVIW2HLmgx7jVguSpobKPy0LMIg+Od3RrCwp+hKpF6qr9aS6fhzkXd9hbk/gI9GMjuap
+ W/0Nyoy+1eiv4u+VqIDfAPE2pDmddjpfw0cx0xnNlDsdolCvIQQAPEu9tWnVQ2u7aQxD
+ 0pB4wCTMfp1NFOPpGLx3pQnleYYFPUFLd0NrVaQPvmWGg74m9OIEtyT9zVpoIeS0XSbd
+ 6wh1BA39/shGUwR9G76HQGtBzdkT0hKVglEctPgR/cgCS/BNe1qq/ZOGJ8oD5PdZhVUb
+ SVYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708736721; x=1709341521;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bVVwWHYL5fqEiUV6/+r1NeamRJp1tuqDaCQyL3sc6a4=;
- b=g2DYQ+/f4dobEtEzBi5TLue/0exnZbCg4oUeWsdc9yyQfcg5LDYF+f2SDAFEfgnzDa
- kc9TdgxtzWDJ1AFZx4bmidADkN/rxh0IEzB/sY+F2qYoWwOxbtmNmXSGb+XL/DJmjX5c
- jvcbVZvwzgUoGartTUABCS+wul+LeBTvwcIF8BN26rdSrUpqp6BrZnRklk8iDVMU8xAj
- tGhO+IRSBjM0S/YhfTJQE/oFaLqWpN8gZDSG9XuboTteSvOxHTxlPpuoWvbM1rVDZyXM
- KceQMXNeibMLV5sAIazCbqUtz+yDBwIjGmrqHv6ZPPEU7+wU/D4Pri/PChmL36EXcTC/
- kNiA==
-X-Gm-Message-State: AOJu0YydbBjc3kqTHK4xW+gm9AbhQJzpB59zGnnGSakX2QSvL0w/Elug
- ksjIwAFbJdBoacAJyGdsb+rL1XleWdd7YWxPTseU8EcDYOud5b9nXW7CNafS/hDfTuaV8n6acY6
- S
-X-Google-Smtp-Source: AGHT+IFyPpnPmU/vXpCYV5shQAxAJdbvmS0TmtEbIIfQBgWPuWBTKwp24lxAYbYuNUn7F8t4DCAVPQ==
-X-Received: by 2002:a05:6a21:1799:b0:1a0:9939:c7f9 with SMTP id
- nx25-20020a056a21179900b001a09939c7f9mr1936939pzb.13.1708736720847; 
- Fri, 23 Feb 2024 17:05:20 -0800 (PST)
+ d=1e100.net; s=20230601; t=1708736722; x=1709341522;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=xfZZqsebUHyUVLONNyqFeLCKzRlol9H6yrC5xBxB6h0=;
+ b=SbqMWMa2okA5gtngJ/2Lk3hVa4z90PtYSmFZT/dxavZaHh0E0w5dRJmoU3HiOtlBo4
+ +6gV4Ycbz/DvNw5G75I/jom8oTZLzAi3C8+zB+gcltVq5akWTtzvtxfRXEcMK/Dj8152
+ 6bkgAVT7KE1h3AbqpQTXZTej6jhtA2DoWrUmoCVdCtTDDFv2d/1XEd0jjEQccdAVHK7A
+ Nj5E/oFKO9sSUy+lRr414M2c1aaZSvyWPvWTvOs/TQe3zdW8sH2qJOKzGXm0fzCpNcpT
+ Q+dUWTFweqgOaSpjKifWvWTOVZvwm5zxoQGbVVb7/7iL5XhhQG65kM6u5NXeFhq/gHeF
+ t5YQ==
+X-Gm-Message-State: AOJu0Yz+iM6qsyulsB5TN2ZkCv/Alt4/pG6qd/E6vBBpyBGHD8DRsRam
+ E+iT8fUXu8NYn7qiKY8ImRoW9m8zF2MuwnEwSHPBUQBs2be6Gkxh/XbEYSFFTFgm5s+LsViv2LF
+ c
+X-Google-Smtp-Source: AGHT+IGd+Mbe0pZO4QS/37LvPQ7jfS3B2OFDATPqnUAlgOaBExmecKAXytvFI8Gwmb/3CiyJO9scYg==
+X-Received: by 2002:aa7:9a1d:0:b0:6e4:8793:61ff with SMTP id
+ w29-20020aa79a1d000000b006e4879361ffmr1342628pfj.32.1708736722374; 
+ Fri, 23 Feb 2024 17:05:22 -0800 (PST)
 Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
  by smtp.gmail.com with ESMTPSA id
- g17-20020a62e311000000b006ddc7ed6edfsm93513pfh.51.2024.02.23.17.05.19
- for <qemu-devel@nongnu.org>
+ g17-20020a62e311000000b006ddc7ed6edfsm93513pfh.51.2024.02.23.17.05.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Feb 2024 17:05:20 -0800 (PST)
+ Fri, 23 Feb 2024 17:05:22 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL v2 00/39] tcg and linux-user patch queue
-Date: Fri, 23 Feb 2024 15:05:15 -1000
-Message-Id: <20240224010517.619640-1-richard.henderson@linaro.org>
+Cc: Warner Losh <imp@bsdimp.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Helge Deller <deller@gmx.de>
+Subject: [PULL v2 31/39] *-user: Deprecate and disable -p pagesize
+Date: Fri, 23 Feb 2024 15:05:16 -1000
+Message-Id: <20240224010517.619640-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240224010517.619640-1-richard.henderson@linaro.org>
+References: <20240224010517.619640-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,119 +95,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v2: Fix bsd-user build errors.
+This option controls the host page size.  From the mis-usage in
+our own testsuite, this is easily confused with guest page size.
 
+The only thing that occurs when changing the host page size is
+that stuff breaks, because one cannot actually change the host
+page size.  Therefore reject all but the no-op setting as part
+of the deprecation process.
 
-r~
+Reviewed-by: Warner Losh <imp@bsdimp.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Helge Deller <deller@gmx.de>
+Message-Id: <20240102015808.132373-27-richard.henderson@linaro.org>
+---
+ docs/about/deprecated.rst | 10 ++++++++++
+ docs/user/main.rst        |  3 ---
+ bsd-user/main.c           | 11 ++++++-----
+ linux-user/main.c         | 12 ++++++------
+ 4 files changed, 22 insertions(+), 14 deletions(-)
 
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 5a2305ccd6..3074303b9c 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -63,6 +63,16 @@ as short-form boolean values, and passed to plugins as ``arg_name=on``.
+ However, short-form booleans are deprecated and full explicit ``arg_name=on``
+ form is preferred.
+ 
++User-mode emulator command line arguments
++-----------------------------------------
++
++``-p`` (since 9.0)
++''''''''''''''''''
++
++The ``-p`` option pretends to control the host page size.  However,
++it is not possible to change the host page size, and using the
++option only causes failures.
++
+ QEMU Machine Protocol (QMP) commands
+ ------------------------------------
+ 
+diff --git a/docs/user/main.rst b/docs/user/main.rst
+index 7e7ad07409..d5fbb78d3c 100644
+--- a/docs/user/main.rst
++++ b/docs/user/main.rst
+@@ -87,9 +87,6 @@ Debug options:
+    Activate logging of the specified items (use '-d help' for a list of
+    log items)
+ 
+-``-p pagesize``
+-   Act as if the host page size was 'pagesize' bytes
+-
+ ``-g port``
+    Wait gdb connection to port
+ 
+diff --git a/bsd-user/main.c b/bsd-user/main.c
+index e5efb7b845..6ab3efd6c0 100644
+--- a/bsd-user/main.c
++++ b/bsd-user/main.c
+@@ -364,11 +364,12 @@ int main(int argc, char **argv)
+         } else if (!strcmp(r, "L")) {
+             interp_prefix = argv[optind++];
+         } else if (!strcmp(r, "p")) {
+-            qemu_host_page_size = atoi(argv[optind++]);
+-            if (qemu_host_page_size == 0 ||
+-                (qemu_host_page_size & (qemu_host_page_size - 1)) != 0) {
+-                fprintf(stderr, "page size must be a power of two\n");
+-                exit(1);
++            unsigned size, want = qemu_real_host_page_size();
++
++            r = argv[optind++];
++            if (qemu_strtoui(r, NULL, 10, &size) || size != want) {
++                warn_report("Deprecated page size option cannot "
++                            "change host page size (%u)", want);
+             }
+         } else if (!strcmp(r, "g")) {
+             gdbstub = g_strdup(argv[optind++]);
+diff --git a/linux-user/main.c b/linux-user/main.c
+index e540acb84a..bad03f06d3 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -332,11 +332,11 @@ static void handle_arg_ld_prefix(const char *arg)
+ 
+ static void handle_arg_pagesize(const char *arg)
+ {
+-    qemu_host_page_size = atoi(arg);
+-    if (qemu_host_page_size == 0 ||
+-        (qemu_host_page_size & (qemu_host_page_size - 1)) != 0) {
+-        fprintf(stderr, "page size must be a power of two\n");
+-        exit(EXIT_FAILURE);
++    unsigned size, want = qemu_real_host_page_size();
++
++    if (qemu_strtoui(arg, NULL, 10, &size) || size != want) {
++        warn_report("Deprecated page size option cannot "
++                    "change host page size (%u)", want);
+     }
+ }
+ 
+@@ -496,7 +496,7 @@ static const struct qemu_argument arg_table[] = {
+     {"D",          "QEMU_LOG_FILENAME", true, handle_arg_log_filename,
+      "logfile",     "write logs to 'logfile' (default stderr)"},
+     {"p",          "QEMU_PAGESIZE",    true,  handle_arg_pagesize,
+-     "pagesize",   "set the host page size to 'pagesize'"},
++     "pagesize",   "deprecated change to host page size"},
+     {"one-insn-per-tb",
+                    "QEMU_ONE_INSN_PER_TB",  false, handle_arg_one_insn_per_tb,
+      "",           "run with one guest instruction per emulated TB"},
+-- 
+2.34.1
 
-The following changes since commit 3d54cbf269d63ff1d500b35b2bcf4565ff8ad485:
-
-  Merge tag 'hw-misc-20240222' of https://github.com/philmd/qemu into staging (2024-02-22 15:44:29 +0000)
-
-are available in the Git repository at:
-
-  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20240222-2
-
-for you to fetch changes up to fcc6ad372f56d3f47b6d5457a904916b48b9e114:
-
-  linux-user: Remove pgb_dynamic alignment assertion (2024-02-23 15:07:03 -0800)
-
-----------------------------------------------------------------
-tcg/aarch64: Apple does not align __int128_t in even registers
-accel/tcg: Fixes for page tables in mmio memory
-linux-user: Remove qemu_host_page_{size,mask}, HOST_PAGE_ALIGN
-migration: Remove qemu_host_page_size
-hw/tpm: Remove qemu_host_page_size
-softmmu: Remove qemu_host_page_{size,mask}, HOST_PAGE_ALIGN
-linux-user: Split and reorganize target_mmap.
-*-user: Deprecate and disable -p pagesize
-linux-user: Allow TARGET_PAGE_BITS_VARY
-target/alpha: Enable TARGET_PAGE_BITS_VARY for user-only
-target/arm: Enable TARGET_PAGE_BITS_VARY for AArch64 user-only
-target/ppc: Enable TARGET_PAGE_BITS_VARY for user-only
-linux-user: Remove pgb_dynamic alignment assertion
-
-----------------------------------------------------------------
-Jonathan Cameron (1):
-      tcg: Avoid double lock if page tables happen to be in mmio memory.
-
-Peter Maydell (1):
-      accel/tcg: Set can_do_io at at start of lookup_tb_ptr helper
-
-Richard Henderson (37):
-      tcg/aarch64: Apple does not align __int128_t in even registers
-      accel/tcg: Remove qemu_host_page_size from page_protect/page_unprotect
-      linux-user: Adjust SVr4 NULL page mapping
-      linux-user: Remove qemu_host_page_{size, mask} in probe_guest_base
-      linux-user: Remove qemu_host_page_size from create_elf_tables
-      linux-user/hppa: Simplify init_guest_commpage
-      linux-user/nios2: Remove qemu_host_page_size from init_guest_commpage
-      linux-user/arm: Remove qemu_host_page_size from init_guest_commpage
-      linux-user: Remove qemu_host_page_{size, mask} from mmap.c
-      linux-user: Remove REAL_HOST_PAGE_ALIGN from mmap.c
-      linux-user: Remove HOST_PAGE_ALIGN from mmap.c
-      migration: Remove qemu_host_page_size
-      hw/tpm: Remove HOST_PAGE_ALIGN from tpm_ppi_init
-      softmmu/physmem: Remove qemu_host_page_size
-      softmmu/physmem: Remove HOST_PAGE_ALIGN
-      linux-user: Remove qemu_host_page_size from main
-      linux-user: Split out target_mmap__locked
-      linux-user: Move some mmap checks outside the lock
-      linux-user: Fix sub-host-page mmap
-      linux-user: Split out mmap_end
-      linux-user: Do early mmap placement only for reserved_va
-      linux-user: Split out do_munmap
-      linux-user: Use do_munmap for target_mmap failure
-      linux-user: Split out mmap_h_eq_g
-      linux-user: Split out mmap_h_lt_g
-      linux-user: Split out mmap_h_gt_g
-      tests/tcg: Remove run-test-mmap-*
-      tests/tcg: Extend file in linux-madvise.c
-      *-user: Deprecate and disable -p pagesize
-      cpu: Remove page_size_init
-      accel/tcg: Disconnect TargetPageDataNode from page size
-      linux-user: Allow TARGET_PAGE_BITS_VARY
-      target/arm: Enable TARGET_PAGE_BITS_VARY for AArch64 user-only
-      linux-user: Bound mmap_min_addr by host page size
-      target/ppc: Enable TARGET_PAGE_BITS_VARY for user-only
-      target/alpha: Enable TARGET_PAGE_BITS_VARY for user-only
-      linux-user: Remove pgb_dynamic alignment assertion
-
- docs/about/deprecated.rst                 |  10 +
- docs/user/main.rst                        |   3 -
- bsd-user/qemu.h                           |   7 +
- include/exec/cpu-common.h                 |   7 -
- include/hw/core/cpu.h                     |   2 -
- target/alpha/cpu-param.h                  |  16 +-
- target/arm/cpu-param.h                    |   6 +-
- target/ppc/cpu-param.h                    |   9 +-
- tcg/aarch64/tcg-target.h                  |   6 +-
- accel/tcg/cpu-exec.c                      |   8 +
- accel/tcg/cputlb.c                        |  34 +-
- accel/tcg/translate-all.c                 |   1 -
- accel/tcg/user-exec.c                     |  31 +-
- bsd-user/main.c                           |  23 +-
- cpu-target.c                              |  16 -
- hw/tpm/tpm_ppi.c                          |   6 +-
- linux-user/elfload.c                      |  68 +--
- linux-user/main.c                         |  34 +-
- linux-user/mmap.c                         | 767 ++++++++++++++++++------------
- migration/ram.c                           |  22 +-
- system/physmem.c                          |  17 +-
- system/vl.c                               |   1 -
- target/arm/cpu.c                          |  51 +-
- tests/tcg/multiarch/linux/linux-madvise.c |   2 +
- tests/tcg/alpha/Makefile.target           |   3 -
- tests/tcg/arm/Makefile.target             |   3 -
- tests/tcg/hppa/Makefile.target            |   3 -
- tests/tcg/i386/Makefile.target            |   3 -
- tests/tcg/m68k/Makefile.target            |   3 -
- tests/tcg/multiarch/Makefile.target       |   9 -
- tests/tcg/ppc/Makefile.target             |  12 -
- tests/tcg/sh4/Makefile.target             |   3 -
- tests/tcg/sparc64/Makefile.target         |   6 -
- 33 files changed, 701 insertions(+), 491 deletions(-)
- delete mode 100644 tests/tcg/ppc/Makefile.target
- delete mode 100644 tests/tcg/sparc64/Makefile.target
 
