@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89AC286250C
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 Feb 2024 13:45:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC25786250A
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 Feb 2024 13:45:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdrNx-00028G-CG; Sat, 24 Feb 2024 07:44:09 -0500
+	id 1rdrO1-0002B1-Vd; Sat, 24 Feb 2024 07:44:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rdrNw-000286-1K
- for qemu-devel@nongnu.org; Sat, 24 Feb 2024 07:44:08 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1rdrO0-0002Aa-Ri
+ for qemu-devel@nongnu.org; Sat, 24 Feb 2024 07:44:12 -0500
+Received: from mail-oo1-xc2d.google.com ([2607:f8b0:4864:20::c2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rdrNu-0006u1-EG
- for qemu-devel@nongnu.org; Sat, 24 Feb 2024 07:44:07 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1dc418fa351so7465235ad.1
- for <qemu-devel@nongnu.org>; Sat, 24 Feb 2024 04:44:05 -0800 (PST)
+ id 1rdrNy-0006ui-H0
+ for qemu-devel@nongnu.org; Sat, 24 Feb 2024 07:44:12 -0500
+Received: by mail-oo1-xc2d.google.com with SMTP id
+ 006d021491bc7-599f5e71d85so1225951eaf.3
+ for <qemu-devel@nongnu.org>; Sat, 24 Feb 2024 04:44:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708778644; x=1709383444;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708778649; x=1709383449;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=nt57ujv4NnZB25s+B3l5Rc+AeEqYc9k3QAlhH6Vn4XQ=;
- b=gi68XU313FwCz0IQ6zF4ENuuIBUGdm6DLqWTsbP64N8hjsbQH7gM541W1D+8JiPgUi
- A+ZH90Vm+JHISNVuJNZCSGeJUhRvhCp7rgiOk+CN1NcpLwGrcyuaNCcIrxIfxEDqEr5Z
- a+nIScuAnpgwl1H2VgRYIgeGGh1hLKiqVfl9ujKoibiKPYcSYuVbO/5F0X1dvKH92f5y
- B7ibEqDUwWVQ7Br+ORAUz19y3eGI6KA4MlmK5AGtR5YLLIyRSJayzorDXRJYvuCjQQRc
- Ed5C9EUWCe7PTdv9yj9HY97S2QRzpzm6k++DTZW1o8Y1qF9SUg+Kx5wllKFvNqqVE+S1
- Rdtw==
+ :reply-to; bh=quIPhkmGqk/yzrPnEiTwezMNDD4NMK43Kc2jTugQyzc=;
+ b=WP/UNA/fiWbga2aZWy5vnbSWmTFmqyIKjdrBMb/4R6roPufHV9qFlJxARi4zpt3MIi
+ O2y4TPJhiQpB3o7X9TFq9kbKgDKAgcn67F4oS0pZ8tZY1rMt8PqJBP62/8ZmMuZGjXoT
+ igoSTKIgWK2kpjU3qH8KdVXH3SND63KiVnAfcBZtClEot1AHTQH72cvFSuOERSFikI/m
+ VFp34I/Y8QXR8eYz5MtCYBLneFFDJWhH0+4mZlzl0+aPkLWChLI71fQpT+wPdgbFewJF
+ qKej+hjc3LPowGrXqsL/haWqbASOVFLTtXeDZG8p6Bl4GOYvt00sM3XjgjMWAjI2stVe
+ Xi5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708778644; x=1709383444;
+ d=1e100.net; s=20230601; t=1708778649; x=1709383449;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nt57ujv4NnZB25s+B3l5Rc+AeEqYc9k3QAlhH6Vn4XQ=;
- b=oIb4ry3tgVDX6EUPndgVtM52f3KOLhhKcmSX58ydIE8qew/+p3zIQlRFF5T+MWXwy8
- qV8zK9Y38bPXdRTy13mUzkkBtlSSbzA9rP9zhn8CfXeIYD9GRUeMCYKTlKwgbw4573W7
- jDSp5uau7NimHAQ1zznIwEth4aQIHDLbEwIRrMipG4SKakpDsAZ2DVox1BKIU7jfdw+U
- UTHk2ph1rFBORbvwdrUqBm2bfML05p1zvYt/256tFELj1ehMEaUTq6WIwBKp+auujGXm
- a1EBs3oHqy0KlfRSnS1lXbugBie+uPEj5CEiJN5NTVEQ548WGw/aJdOdlVhtYBIwgyrp
- 5GgA==
-X-Gm-Message-State: AOJu0YykEWnDiHgcgB/uq2p2iCJytjSUa3xgZfirYH5qavdH35ouGTDn
- 4w2xZC674oXX9W4z4pZkVQrfKb1gw7yL22e6TkroImW2fSShor1brGyXbbIilx0=
-X-Google-Smtp-Source: AGHT+IHNcZDxhg1DJ9UepZI/UUGve8G0YCSJHWvOyeyoIGJ4tm56PiY1WHTrYPwbsKxo14WlXHNrvA==
-X-Received: by 2002:a17:902:ea0b:b0:1dc:7101:58c0 with SMTP id
- s11-20020a170902ea0b00b001dc710158c0mr3326114plg.22.1708778644181; 
- Sat, 24 Feb 2024 04:44:04 -0800 (PST)
+ bh=quIPhkmGqk/yzrPnEiTwezMNDD4NMK43Kc2jTugQyzc=;
+ b=UNp+0MxszOOoUtPksQHq0IxY532v6qg+SyekWh5Rz3kdYnuWaXZRAbgDmsqhD/+6az
+ txkYUDn+9tAEt3C9RFXTYXYP/Dzaunt7or8cVGJA9IE6BebMAuGkH2De2aCH6i0/DWZ9
+ 5kpI2BO3cIoE02lI0uFPP5Rw8x+73Fqj7WngyEjGiPAM23THK/vOF/MTi8YBv1ICk+c8
+ TIBLCfLaiO9784P2jthYZlcDhmE9Dek4igcqOSFPnnkkylhv3gv5rXQmnerYUhVpi9wy
+ 8mw0piPkxT9VRBNjVja3J/th2taN38o2HUid9DnTQ/+BYG3NF/hJ7JQy7gmTVvkcxNTD
+ 9Y+A==
+X-Gm-Message-State: AOJu0Yy+jrBSCczn6D7d4Qym1E26jL21uMTn4z963mwogKY5o1ff6UUw
+ Cy9wW1iFd1IawVX/3iDt0MBTZhVZLdnt0zKY2hAQ5Qsm2fFDv9kBXP5lbc3dYsc=
+X-Google-Smtp-Source: AGHT+IECVgOsib4PfzgLWg+OSbRtOgsYIHms35kijUmDnt8mro5ybPXVRCF/3KvXSe6utOgKZZMtKA==
+X-Received: by 2002:a05:6358:7f87:b0:17b:c8d:f396 with SMTP id
+ c7-20020a0563587f8700b0017b0c8df396mr3331471rwo.29.1708778648566; 
+ Sat, 24 Feb 2024 04:44:08 -0800 (PST)
 Received: from localhost ([157.82.203.206])
  by smtp.gmail.com with UTF8SMTPSA id
- w19-20020a170902c79300b001db6a228c3esm961057pla.307.2024.02.24.04.44.02
+ q10-20020a056a00084a00b006e45e20e3ecsm1054167pfk.60.2024.02.24.04.44.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 24 Feb 2024 04:44:03 -0800 (PST)
+ Sat, 24 Feb 2024 04:44:08 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 24 Feb 2024 21:43:38 +0900
-Subject: [PATCH v12 07/10] ui/cocoa: Remove normalWindow
+Date: Sat, 24 Feb 2024 21:43:39 +0900
+Subject: [PATCH v12 08/10] ui/cocoa: Make window resizable
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240224-cocoa-v12-7-e89f70bdda71@daynix.com>
+Message-Id: <20240224-cocoa-v12-8-e89f70bdda71@daynix.com>
 References: <20240224-cocoa-v12-0-e89f70bdda71@daynix.com>
 In-Reply-To: <20240224-cocoa-v12-0-e89f70bdda71@daynix.com>
 To: Peter Maydell <peter.maydell@linaro.org>, 
@@ -73,8 +73,8 @@ To: Peter Maydell <peter.maydell@linaro.org>,
  Rene Engel <ReneEngel80@emailn.de>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::633;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x633.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::c2d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc2d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,108 +96,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QemuCocoaView used to have fullScreenWindow but now it's gone, so we
-do no longer have to call the window specifically "normalWindow".
-Instead, refer to it with [-QemuCocoaView window].
+The window will be resizable when zoom-to-fit is on.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- ui/cocoa.m | 33 +++++++++++++++++----------------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+ ui/cocoa.m | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/ui/cocoa.m b/ui/cocoa.m
-index 88684af6f38b..05c91e4eed53 100644
+index 05c91e4eed53..cebfae04d9e8 100644
 --- a/ui/cocoa.m
 +++ b/ui/cocoa.m
-@@ -89,7 +89,6 @@ static void cocoa_switch(DisplayChangeListener *dcl,
- 
- static void cocoa_refresh(DisplayChangeListener *dcl);
- 
--static NSWindow *normalWindow;
- static const DisplayChangeListenerOps dcl_ops = {
-     .dpy_name          = "cocoa",
-     .dpy_gfx_update = cocoa_update,
-@@ -1063,9 +1062,9 @@ - (void) grabMouse
-     COCOA_DEBUG("QemuCocoaView: grabMouse\n");
- 
-     if (qemu_name)
--        [normalWindow setTitle:[NSString stringWithFormat:@"QEMU %s - (Press  " UC_CTRL_KEY " " UC_ALT_KEY " G  to release Mouse)", qemu_name]];
-+        [[self window] setTitle:[NSString stringWithFormat:@"QEMU %s - (Press  " UC_CTRL_KEY " " UC_ALT_KEY " G  to release Mouse)", qemu_name]];
-     else
--        [normalWindow setTitle:@"QEMU - (Press  " UC_CTRL_KEY " " UC_ALT_KEY " G  to release Mouse)"];
-+        [[self window] setTitle:@"QEMU - (Press  " UC_CTRL_KEY " " UC_ALT_KEY " G  to release Mouse)"];
-     [self hideCursor];
-     CGAssociateMouseAndMouseCursorPosition(isAbsoluteEnabled);
-     isMouseGrabbed = TRUE; // while isMouseGrabbed = TRUE, QemuCocoaApp sends all events to [cocoaView handleEvent:]
-@@ -1076,9 +1075,9 @@ - (void) ungrabMouse
-     COCOA_DEBUG("QemuCocoaView: ungrabMouse\n");
- 
-     if (qemu_name)
--        [normalWindow setTitle:[NSString stringWithFormat:@"QEMU %s", qemu_name]];
-+        [[self window] setTitle:[NSString stringWithFormat:@"QEMU %s", qemu_name]];
-     else
--        [normalWindow setTitle:@"QEMU"];
-+        [[self window] setTitle:@"QEMU"];
-     [self unhideCursor];
-     CGAssociateMouseAndMouseCursorPosition(TRUE);
-     isMouseGrabbed = FALSE;
-@@ -1149,6 +1148,8 @@ - (void)adjustSpeed:(id)sender;
- @implementation QemuCocoaAppController
- - (id) init
+@@ -1348,8 +1348,10 @@ - (void)zoomToFit:(id) sender
  {
-+    NSWindow *window;
-+
-     COCOA_DEBUG("QemuCocoaAppController: init\n");
- 
-     self = [super init];
-@@ -1162,20 +1163,20 @@ - (id) init
-         }
- 
-         // create a window
--        normalWindow = [[NSWindow alloc] initWithContentRect:[cocoaView frame]
-+        window = [[NSWindow alloc] initWithContentRect:[cocoaView frame]
-             styleMask:NSWindowStyleMaskTitled|NSWindowStyleMaskMiniaturizable|NSWindowStyleMaskClosable
-             backing:NSBackingStoreBuffered defer:NO];
--        if(!normalWindow) {
-+        if(!window) {
-             error_report("(cocoa) can't create window");
-             exit(1);
-         }
--        [normalWindow setAcceptsMouseMovedEvents:YES];
--        [normalWindow setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary];
--        [normalWindow setTitle:qemu_name ? [NSString stringWithFormat:@"QEMU %s", qemu_name] : @"QEMU"];
--        [normalWindow setContentView:cocoaView];
--        [normalWindow makeKeyAndOrderFront:self];
--        [normalWindow center];
--        [normalWindow setDelegate: self];
-+        [window setAcceptsMouseMovedEvents:YES];
-+        [window setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary];
-+        [window setTitle:qemu_name ? [NSString stringWithFormat:@"QEMU %s", qemu_name] : @"QEMU"];
-+        [window setContentView:cocoaView];
-+        [window makeKeyAndOrderFront:self];
-+        [window center];
-+        [window setDelegate: self];
- 
-         /* Used for displaying pause on the screen */
-         pauseLabel = [NSTextField new];
-@@ -1298,7 +1299,7 @@ - (void) windowDidResignKey: (NSNotification *)aNotification
-  */
- - (void) doToggleFullScreen:(id)sender
- {
--    [normalWindow toggleFullScreen:sender];
-+    [[cocoaView window] toggleFullScreen:sender];
- }
- 
- - (void) setFullGrab:(id)sender
-@@ -1982,7 +1983,7 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
- 
-     /* if fullscreen mode is to be used */
-     if (opts->has_full_screen && opts->full_screen) {
--        [normalWindow toggleFullScreen: nil];
-+        [[cocoaView window] toggleFullScreen: nil];
+     stretch_video = !stretch_video;
+     if (stretch_video == true) {
++        [cocoaView window].styleMask |= NSWindowStyleMaskResizable;
+         [sender setState: NSControlStateValueOn];
+     } else {
++        [cocoaView window].styleMask &= ~NSWindowStyleMaskResizable;
+         [cocoaView resizeWindow];
+         [sender setState: NSControlStateValueOff];
      }
-     if (opts->u.cocoa.has_full_grab && opts->u.cocoa.full_grab) {
-         [controller setFullGrab: nil];
+@@ -2002,6 +2004,7 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
+ 
+     if (opts->u.cocoa.has_zoom_to_fit && opts->u.cocoa.zoom_to_fit) {
+         stretch_video = true;
++        [cocoaView window].styleMask |= NSWindowStyleMaskResizable;
+     }
+ 
+     create_initial_menus();
 
 -- 
 2.43.2
