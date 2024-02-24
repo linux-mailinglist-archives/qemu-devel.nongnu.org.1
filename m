@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0639862598
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 Feb 2024 15:21:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 190D48625A5
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 Feb 2024 15:38:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdssM-0008FY-Sk; Sat, 24 Feb 2024 09:19:38 -0500
+	id 1rdt9Q-0007Fr-Pn; Sat, 24 Feb 2024 09:37:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rdssK-0008F9-RG
- for qemu-devel@nongnu.org; Sat, 24 Feb 2024 09:19:36 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rdt9N-0007El-Tx
+ for qemu-devel@nongnu.org; Sat, 24 Feb 2024 09:37:13 -0500
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rdssJ-0006QI-2b
- for qemu-devel@nongnu.org; Sat, 24 Feb 2024 09:19:36 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1dc49b00bdbso15733725ad.3
- for <qemu-devel@nongnu.org>; Sat, 24 Feb 2024 06:19:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rdt9L-0000Qw-2t
+ for qemu-devel@nongnu.org; Sat, 24 Feb 2024 09:37:13 -0500
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-5e4613f2b56so269073a12.1
+ for <qemu-devel@nongnu.org>; Sat, 24 Feb 2024 06:35:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708784373; x=1709389173;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1708785306; x=1709390106;
  darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=sL7AXmg2/WGVYQ0ZtRCkJnAzTFCjo6PV+RI/0vO+oPQ=;
- b=g1lmAj7qqpGsAKgdLtmbPEerx6QFoFOg/eLxPRwzEcEpgT5UyGSfk9YvsqkzgLMWKX
- BaRTfSQk980BO8wQ3c9w+i3NZKWdgZGu2SWmx2KSduET6+NG3G9bWMFAO9GG54mgaMda
- j9EUUQAW8uVFHbloRSpObefjYm9D8HNWrpsX8KGi8UirwCl+HYvGaErqwZOkTuWImteh
- cb+eINBkhMdcMWe+80gTweAxl6GxuO6kl8Igf+1+9TG5LQgv9LZpaYNJHFqDvjRqjvXO
- 5rBkEUJubFapk+AHw2gVg4hgFEICa73xX/PgqUlNk45rvLZPOx8w3P7LlTTTHmpFxGS3
- ESaQ==
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=PN+CWBhaN2gB9YFYU8FfAdp8Amirq1IuOnaz6hT1Bio=;
+ b=awkuu9pYRmbHwjw3H5mzazk5Y7e0D0bS8oIbtOV8LXCf0roW+iJPSiDt153IpLXSFl
+ PNQWsBWMg0Qyt9NqzxHrpfX0PCTbu8W2pJsAY1GGJ14TYEPFaZW43o6WBOF3dggowO6v
+ 0OtjVWOLFUcXARM+j9Qv/nMw+lAcMaA2CpnIg3kjhqTxaXKHS3pvcoETy1EFAxfTnb8M
+ ivkXDFvYBh9RxQtCbwm153gc7vzt//VWfmVZdg5dE7oxsuQKupgkrADBZQartWidWKiU
+ XFHWXHhcJg1In/HOLmT5kCqUaWdf/Ar8OSgdnjYbbBfbnoQWjfGz8bMvU710bYZaxdC4
+ hB8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708784373; x=1709389173;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sL7AXmg2/WGVYQ0ZtRCkJnAzTFCjo6PV+RI/0vO+oPQ=;
- b=vH8X5hzLx2gqax/MEAlrsRpVzx2bfQommzXPYKLZ1EKYp4wgOBFwo6/lzbPIxvk+1H
- l1CXbI1Bjj6ngmplM+ldzJ+rOmEdWARpYVGbRDRfUBECKWXUkaSIPibbJ723GxPHLGTg
- PQ8/WfksTrbOqe7yynS/g5sZnqrKilqUGGTnMRgy4+jSmGsolmsyaEZg+7AbnYPjnhOR
- Q7cRMhaOQgnRdrDlGOau9lIDvJeb2G0QNE878R/WXaoPyqRm33KIfrz3EMXcmIHgtMHN
- mGvuwa8oR3Pe4yQixb42XyhMv/VbtjqAObqT2Y+B6KEXidtoFSphh3tEI56EdFEIecVf
- yUFw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU6d3tj2KO6mRs/3Swod5ZOEDO297aXUc39pNrlB7SyJ0EN2XFqrReFgcJ1Khpb7bMfemMGmfqSnJHCD2KrZEMRACWAQT8=
-X-Gm-Message-State: AOJu0YwAylkVSVASpaTWyiQJcNZ/VwRkY67XX8zjWKphqAIdP4xdY/uk
- pHhCnUuL9Oe1QlkWGvTktkhY5vyKABFEVT/yQngvSnUWXp40bFFfuByQcxD5YyM=
-X-Google-Smtp-Source: AGHT+IGICiVaPlJTeYuTBlvwzO8G+l1hK+AfqS2ImDhvz0b5s04GC7R5shHgQ8HxuT2ql1ybTiWvPA==
-X-Received: by 2002:a17:902:e84e:b0:1db:f965:471e with SMTP id
- t14-20020a170902e84e00b001dbf965471emr2996092plg.58.1708784373587; 
- Sat, 24 Feb 2024 06:19:33 -0800 (PST)
-Received: from ?IPV6:2400:4050:a840:1e00:9ac7:6d57:2b16:6932?
- ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
+ d=1e100.net; s=20230601; t=1708785306; x=1709390106;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PN+CWBhaN2gB9YFYU8FfAdp8Amirq1IuOnaz6hT1Bio=;
+ b=jgbDShnDyxDx+ER64PukqoMgrwhQTmi37bQgKtBGo5SPYGoNmYVXB4Da0fjtysbuto
+ M6/9zQty299F1bT6ASNj053sus8gt9bu64Qt5nWJ/PMVUBWXjYnz228h4y4V3QOQykB4
+ qLFnwZehM9MGefkjgXh1A9O1doqSJ4k5DgwXa1mIs3zwk1SRKsWhgK00NHF+B0cOgJ9D
+ cHQlyybta7fjKRydc3GY2sC6K/obZIbM+bWKlcCiWpyVE/V8ad7rQkWT+GRrH1w/v4Z9
+ St/JsjSK5FyW9NzOg//NLxqYmj5pEA+RT+2671uPF8J3eEtg9bIq0XxElYTtsYpl/2DE
+ NDVQ==
+X-Gm-Message-State: AOJu0YyJeNQOnt+WRZTAIIaPHvLs2p64Trlep1fJ9MBmqiIvVfgMKUmG
+ QtyGFVSGS9TAzfO82bHMXUwTynk8mC4FN9E5MJthHrPFNcU1HQVBZXiw1+SMccoWucMyshaIu+v
+ Vd78HLg==
+X-Google-Smtp-Source: AGHT+IH4bwwWWDc8iqdAyt0SYMxXcRzr144MjBkS0ujn5Kzjoja+sJ7MeBIMlnKOuh9imruBm/pb+g==
+X-Received: by 2002:a17:90b:c15:b0:29a:6903:e6d4 with SMTP id
+ bp21-20020a17090b0c1500b0029a6903e6d4mr1944711pjb.39.1708785305722; 
+ Sat, 24 Feb 2024 06:35:05 -0800 (PST)
+Received: from anolis-dev.zelin.local ([221.122.98.162])
  by smtp.gmail.com with ESMTPSA id
- kx4-20020a170902f94400b001dc214f7353sm1076942plb.249.2024.02.24.06.19.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 24 Feb 2024 06:19:32 -0800 (PST)
-Message-ID: <0dfce9a1-568c-4a1c-8d96-0523674c6873@daynix.com>
-Date: Sat, 24 Feb 2024 23:19:29 +0900
+ u22-20020a632356000000b005dc49afed53sm1181887pgm.55.2024.02.24.06.35.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 24 Feb 2024 06:35:05 -0800 (PST)
+From: Hyman Huang <yong.huang@smartx.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ yong.huang@smartx.com
+Subject: [PATCH RFC 0/3] Support GM/T 0018-2012 cryptographic standard
+Date: Sat, 24 Feb 2024 22:34:55 +0800
+Message-Id: <cover.1708527979.git.yong.huang@smartx.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] ui/cocoa: Fix window clipping on macOS 14
-Content-Language: en-US
-To: David Parsons <dave@daveparsons.net>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, mjt@tls.msk.ru, philmd@linaro.org,
- kraxel@redhat.com, marcandre.lureau@redhat.com
-References: <20240224140620.39200-1-dave@daveparsons.net>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20240224140620.39200-1-dave@daveparsons.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::634;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x634.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::533;
+ envelope-from=yong.huang@smartx.com; helo=mail-pg1-x533.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,46 +95,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/02/24 23:06, David Parsons wrote:
-> macOS Sonoma changes the NSView.clipsToBounds to false by default
-> where it was true in earlier version of macOS. This causes the window
-> contents to be occluded by the frame at the top of the window. This
-> fixes the issue by conditionally compiling the clipping on Sonoma to
-> true. NSView only exposes the clipToBounds in macOS 14 and so has
-> to be fixed via conditional compilation.
-> 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1994
-> Signed-off-by: David Parsons <dave@daveparsons.net>
+This patchset introduce GM/T 0018-2012 as a crypto backend driver,
+which is applied for block encryption. Currently, we support SM4
+cipher algorithm only.
 
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+GM/T 0018-2012 is a cryptographic standard issued by the State
+Cryptography Administration of China. Visit https://hbba.sacinfo.org.cn
+search GM/T 0018-2012 for brief introduction.
 
-> ---
->   ui/cocoa.m | 7 +++++++
->   1 file changed, 7 insertions(+)
-> 
-> diff --git a/ui/cocoa.m b/ui/cocoa.m
-> index eb99064bee..bbf9704b8c 100644
-> --- a/ui/cocoa.m
-> +++ b/ui/cocoa.m
-> @@ -54,6 +54,10 @@
->   #define MAC_OS_X_VERSION_10_13 101300
->   #endif
->   
-> +#ifndef MAC_OS_VERSION_14_0
-> +#define MAC_OS_VERSION_14_0 140000
-> +#endif
-> +
->   /* 10.14 deprecates NSOnState and NSOffState in favor of
->    * NSControlStateValueOn/Off, which were introduced in 10.13.
->    * Define for older versions
-> @@ -365,6 +369,9 @@ - (id)initWithFrame:(NSRect)frameRect
->           screen.width = frameRect.size.width;
->           screen.height = frameRect.size.height;
->           kbd = qkbd_state_init(dcl.con);
-> +#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_VERSION_14_0
-> +        [self setClipsToBounds:YES];
-> +#endif
->   
->       }
->       return self;
+The objective of the standard is to develop a uniform application
+interface standard for the service-based cryptography device under
+the public key cryptographic infrastructure application framework,
+and to call the cryptography device through this interface to
+provide basic cryptographic services for the uppler layer. For
+more information about contents of the standard, download the
+specificaiton from:
+"https://github.com/guanzhi/GM-Standards/blob/master/GMT密码行标/
+GMT 00018-2012 密码设备应用接口规范.pdf"
+
+There are two benefits to doing this, at least.
+ * Performance - using a cryptography device for block encryption
+                 offers an opportunity to enhance the input/output
+                 performance once the hardware is certified
+ * Secrecy - hardware manufacturers may fortify cryptography
+             equipment with security features, so increasing the
+             secrecy of block encryption.
+
+The precise way that vendors implement the standard APIs for data
+encryption using the cryptographic device is uncoupled from the
+GM/T 0018-2012 specification. Thus, if developers enable this
+functionality with the following conditions met, we could accomplish
+the general implementation:
+
+1. rename the header file provided by vendor to gmt-0018-2012.h
+   and copy it to the /usr/include directory.
+2. rename the dynamic library provided by vendor to
+   gmt_0018_2012.so and copy it to the /usr/lib64 or any directory
+   that linker could find before compiling QEMU.
+3. enable crypto_gmt option when compiling QEMU and make the feature
+   availiable.
+
+By offering a development package for GM/T 0018-2012, the above
+provisions could be standardized; unfortunately, the hardware
+manufacturer has not completed this task. So developers who don't
+work with the vendor to obtain the cryptography device and related
+library may not be able to test this functionality because the
+standard implementation depends on the cryptography device supplied
+by the hardware vendor. We are hesitant to contribute to this series
+as a result.
+
+After all, we uploaded this series with the intention of receiving
+feedback, as the title suggests. We would welcome any suggestions
+and feedback regarding this feature. 
+
+Hyman Huang (3):
+  crypto: Introduce GM/T 0018-2012 cryptographic driver
+  meson.build: Support GM/T 0018-2012 cryptographic standard
+  crypto: Allow GM/T 0018-2012 to support SM4 cipher algorithm
+
+ MAINTAINERS                   |   3 +-
+ crypto/block-luks.c           |   4 +-
+ crypto/cipher-gmt.c           | 263 ++++++++++++++++++++++++++++++++++
+ crypto/cipher.c               |   6 +-
+ crypto/cipherpriv.h           |   6 +
+ crypto/meson.build            |   3 +
+ meson.build                   |  30 ++++
+ meson_options.txt             |   2 +
+ scripts/meson-buildoptions.sh |   3 +
+ 9 files changed, 315 insertions(+), 5 deletions(-)
+ create mode 100644 crypto/cipher-gmt.c
+
+-- 
+2.39.3
+
 
