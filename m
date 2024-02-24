@@ -2,80 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CA00862586
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 Feb 2024 15:00:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B80386258E
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 Feb 2024 15:05:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rdsYk-0004EC-PO; Sat, 24 Feb 2024 08:59:22 -0500
+	id 1rdsce-0008Ku-19; Sat, 24 Feb 2024 09:03:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rdsYc-0004Ah-To
- for qemu-devel@nongnu.org; Sat, 24 Feb 2024 08:59:14 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rdscJ-0007z1-41
+ for qemu-devel@nongnu.org; Sat, 24 Feb 2024 09:03:05 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rdsYb-0002m0-13
- for qemu-devel@nongnu.org; Sat, 24 Feb 2024 08:59:14 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3392b045e0aso1314160f8f.2
- for <qemu-devel@nongnu.org>; Sat, 24 Feb 2024 05:59:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rdscH-0003di-4T
+ for qemu-devel@nongnu.org; Sat, 24 Feb 2024 09:03:02 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-412a071e7b3so19625e9.0
+ for <qemu-devel@nongnu.org>; Sat, 24 Feb 2024 06:02:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708783150; x=1709387950; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1708783377; x=1709388177; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eSTZZKZJd9onOmZuoGSDc/R40/Oc/o39d6sBD3S+k2A=;
- b=CHvu3BXfpqhjcQLQTbwVgi4PFE2MjqMymbfnfNPZtjXlGa3cUtzn10B9nhp6WS3Bou
- TRBuUi0hL5rarL6wCjPzV1uhRNSTeWyHCSao0OF2YaVP5TbhdI6/9kxkv+BhvcruGOyW
- J6VACOnLRsQZrasrkXAJqlQR64ZxalsDcBdwg5VHvtHqHvcanWLIkj7AwRb/842/KKkc
- cslfi9Ch8ngvSKI/s1VCAzt1xO+cr3jIxZobx4a23miLpoHZY3ceebdP9La3Xh0j6vhI
- UmCMYdtdCSC0RS6eO5wvxivBXnMa5oE5QKBuTSvvqtDkBBGQaKobUYZXtqFAj/tN64dA
- QOdQ==
+ bh=kXIBmyws/qTI8KznVVclL9rm21o38u00OCMwMNsceNk=;
+ b=iqlTkIucssXS9nBHc/15psxsR1+RFIeRczP/Z5isIeBVF6rw2jTox/MGTHue7hW8cy
+ ywC38BknC1VfSfSoj3hKbR5aHkCiMeUcv0hOkBHYMWGWRYcM1HH9eKFXSE/AFKBwBlZY
+ A7wPfkNOYbJDlNzTvU/ehnjAhXVpmt2lGHtlNAIAp7Y8L+GXsaSB3+PiVPIdfQ7P5pBk
+ LwvQM9Znc2CgiYxCSC0Anb4oZtwap9t4FijjSqU/j3VBWvAD+ZymmYxAKIGNFlFcRIFg
+ 4XKJGJm+7y4LxspUZ7z9M6XEgx2qdosNOQmhS+M0D7e8dnIaqsUFbuv6vaihjnmgo5CO
+ KUgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708783150; x=1709387950;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1708783377; x=1709388177;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eSTZZKZJd9onOmZuoGSDc/R40/Oc/o39d6sBD3S+k2A=;
- b=hOQ4e/UbWF3QpKEUZMy+6D3YGBuoRUEeADbLAS2I2KnT5eH0n8LcHSwZYfow7+8CVY
- HOfwa8OBSrKD/OgvWXUmxY3bzkQ5c1fSsV1fKwDfZSV8j/vLoklWgHoVvcBnubT4nXnW
- CPQeTe/QrbIDtL33iH4cDUkqsNlWN3efHSyu+5favxDbbcJ6N5LOnsCxDk2/wnLHSBJo
- QvGrNS0d8jjkl3IAyYfguHsHR62m3NANloCOX2HRIkDyyEbVgdxfx+XWf2RDPGL4ZX/E
- +0tmpivMfM60fI+GskJPP15Kxby9MkRIphVM4TnD9yn6oMHSjDiiAt6YxmFZ7ngnk0rw
- SOpA==
-X-Gm-Message-State: AOJu0Yy9i1HkLpP8kPWKNFFFjjS03beuGXhxCe958+HpC3AVRDSD2oTc
- Zguv+bZoJCrkVLzRqq331xT8PmbHRIJUWhOlk5fw/wUeXUgMSkWmaydOoPGf
-X-Google-Smtp-Source: AGHT+IEDelizaLxsH9REnnjXKRVT9AC2w8qLDghH4sPV9ZmjXoSfpnCJTRYYrXhArVbpLG1ofC0UCw==
-X-Received: by 2002:a5d:6743:0:b0:33c:f9d6:fb20 with SMTP id
- l3-20020a5d6743000000b0033cf9d6fb20mr1849577wrw.45.1708783150577; 
- Sat, 24 Feb 2024 05:59:10 -0800 (PST)
-Received: from archlinux.. (dynamic-089-012-138-060.89.12.pool.telefonica.de.
+ bh=kXIBmyws/qTI8KznVVclL9rm21o38u00OCMwMNsceNk=;
+ b=dBADRCqu2Wm87ujIGrvHbSuaEqvoCQqlyjtzG3jbAHtWTP/nBIGVWZvahYhK3CI6P5
+ fypONUtlQEVov9KwvT51i25LmECU2+KOEECNWmSmLmCTKuTNNWBSANe37TilyqDxN59E
+ xMAdVOALefRKZXjV9rXoZzmV2BpFcF81yqK9zl7jK+OwqT8lNqH3tQhhRvQI9okUWyqB
+ IyjNeBy9kJpA9Zn/WJN2jyyUhJHGJwOXzz/XL51a8ppE3EfVfeo+zVrGrYhqpH3pJJoa
+ BI3SRHF2Wgcn6mNa4X/R9J0jazQlycNZky5LoxcrFbZbEpSrYlQFZmREUIAHccWrbiZh
+ QeOA==
+X-Gm-Message-State: AOJu0Yz2eNwkV7JaZm9xpN8UVeJh4Wt+3MRLfKsbEUbGPW3oN3N/wwR3
+ bupXq4JdYMEjf04aPpOTq857fJD79xjLawk0BMLO+v9X0KbSKHNx
+X-Google-Smtp-Source: AGHT+IFilZNh4d59kht7c909wdCT4O3eFu30l7LOHcsljKLpjOAkN0wrc8Ru5pZsKaF7JQsl6zhx7A==
+X-Received: by 2002:a5d:6187:0:b0:33d:26af:db44 with SMTP id
+ j7-20020a5d6187000000b0033d26afdb44mr1584255wru.7.1708783377025; 
+ Sat, 24 Feb 2024 06:02:57 -0800 (PST)
+Received: from [127.0.0.1] (dynamic-089-012-138-060.89.12.pool.telefonica.de.
  [89.12.138.60]) by smtp.gmail.com with ESMTPSA id
- n8-20020a056000170800b0033d817eddd3sm2285542wrc.13.2024.02.24.05.59.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 24 Feb 2024 05:59:09 -0800 (PST)
+ bv20-20020a0560001f1400b0033d73e1505bsm2268815wrb.18.2024.02.24.06.02.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 24 Feb 2024 06:02:56 -0800 (PST)
+Date: Sat, 24 Feb 2024 14:02:55 +0000
 From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Ani Sinha <anisinha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+To: "Michael S. Tsirkin" <mst@redhat.com>
+CC: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Paolo Bonzini <pbonzini@redhat.com>, Sergio Lopez <slp@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Paul Durrant <paul@xen.org>,
- Igor Mammedov <imammedo@redhat.com>, Jason Wang <jasowang@redhat.com>,
- David Woodhouse <dwmw2@infradead.org>, Sergio Lopez <slp@redhat.com>,
- Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v2 6/6] hw/i386/pc: Inline pc_cmos_init() into
- pc_cmos_init_late() and remove it
-Date: Sat, 24 Feb 2024 14:58:51 +0100
-Message-ID: <20240224135851.100361-7-shentey@gmail.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240224135851.100361-1-shentey@gmail.com>
-References: <20240224135851.100361-1-shentey@gmail.com>
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: [PATCH 0/9] Simplify initialization of PC machines
+In-Reply-To: <20240222102414-mutt-send-email-mst@kernel.org>
+References: <20240208220349.4948-1-shentey@gmail.com>
+ <20240222102414-mutt-send-email-mst@kernel.org>
+Message-ID: <ABC6BC9E-8140-4165-AE96-BDA5B2CD0C7E@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x433.google.com
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,87 +94,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that pc_cmos_init() doesn't populate the X86MachineState::rtc attribute any
-longer, its duties can be merged into pc_cmos_init_late() which is called within
-machine_done notifier. This frees pc_piix and pc_q35 from explicit CMOS
-initialization.
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
----
- include/hw/i386/pc.h |  2 --
- hw/i386/pc.c         | 10 ----------
- hw/i386/pc_piix.c    |  2 --
- hw/i386/pc_q35.c     |  2 --
- 4 files changed, 16 deletions(-)
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 4bb1899602..2b7c53d619 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -178,8 +178,6 @@ void pc_basic_device_init(struct PCMachineState *pcms,
-                           ISADevice *rtc_state,
-                           bool create_fdctrl,
-                           uint32_t hpet_irqs);
--void pc_cmos_init(PCMachineState *pcms,
--                  ISADevice *s);
- void pc_nic_init(PCMachineClass *pcmc, ISABus *isa_bus, PCIBus *pci_bus);
- 
- void pc_i8259_create(ISABus *isa_bus, qemu_irq *i8259_irqs);
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 880e95de26..fad4c54512 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -567,14 +567,6 @@ static void pc_cmos_init_late(PCMachineState *pcms)
-     mc146818rtc_set_cmos_data(s, 0x39, val);
- 
-     pc_cmos_init_floppy(s, pc_find_fdc0());
--}
--
--void pc_cmos_init(PCMachineState *pcms,
--                  ISADevice *rtc)
--{
--    int val;
--    X86MachineState *x86ms = X86_MACHINE(pcms);
--    MC146818RtcState *s = MC146818_RTC(rtc);
- 
-     /* various important CMOS locations needed by PC/Bochs bios */
- 
-@@ -617,8 +609,6 @@ void pc_cmos_init(PCMachineState *pcms,
-     val |= 0x02; /* FPU is there */
-     val |= 0x04; /* PS/2 mouse installed */
-     mc146818rtc_set_cmos_data(s, REG_EQUIPMENT_BYTE, val);
--
--    /* hard drives and FDC are handled by pc_cmos_init_late() */
- }
- 
- static void handle_a20_line_change(void *opaque, int irq, int level)
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index ce6aad758d..637f4d38be 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -342,8 +342,6 @@ static void pc_init1(MachineState *machine,
-     }
- #endif
- 
--    pc_cmos_init(pcms, x86ms->rtc);
--
-     if (piix4_pm) {
-         smi_irq = qemu_allocate_irq(pc_acpi_smi_interrupt, first_cpu, 0);
- 
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index e0b3f55a02..df0a5f934c 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -310,8 +310,6 @@ static void pc_q35_init(MachineState *machine)
-         smbus_eeprom_init(pcms->smbus, 8, NULL, 0);
-     }
- 
--    pc_cmos_init(pcms, x86ms->rtc);
--
-     /* the rest devices to which pci devfn is automatically assigned */
-     pc_vga_init(isa_bus, pcms->pcibus);
-     pc_nic_init(pcmc, isa_bus, pcms->pcibus);
--- 
-2.44.0
+Am 22=2E Februar 2024 15:25:01 UTC schrieb "Michael S=2E Tsirkin" <mst@red=
+hat=2Ecom>:
+>On Thu, Feb 08, 2024 at 11:03:40PM +0100, Bernhard Beschow wrote:
+>> The series aims to simplify the initialization process of all PC-based =
+machines=2E
+>>=20
+>> It consists of streamlining redundant code, as well as consolidating th=
+e setup
+>> of system flash and generation of smbios data which are currently fairl=
+y
+>> distributed=2E
+>>=20
+>> These changes are expected to make the code easier to understand and ma=
+intain=2E
+>>=20
+>> Best regards,
+>> Bernhard
+>
+>
+>This looks good to me overall=2E
+>
+>Reviewed-by: Michael S=2E Tsirkin <mst@redhat=2Ecom>
+>
+>I see Philippe started queueing these, fine by me=2E
 
+Thanks so far to all involved! I've just sent v2: https://lore=2Ekernel=2E=
+org/qemu-devel/20240224135851=2E100361-1-shentey@gmail=2Ecom/
+
+Best regars,
+Bernhard
+
+>
+>> Bernhard Beschow (9):
+>>   hw/i386/x86: Let ioapic_init_gsi() take parent as pointer
+>>   hw/i386/pc_piix: Share pc_cmos_init() invocation between pc and isapc
+>>     machines
+>>   hw/i386/x86: Turn apic_xrupt_override into class attribute
+>>   hw/i386/pc: Merge pc_guest_info_init() into pc_machine_initfn()
+>>   hw/i386/pc: Defer smbios_set_defaults() to machine_done
+>>   hw/i386/pc: Confine system flash handling to pc_sysfw
+>>   hw/i386/pc_sysfw: Inline pc_system_flash_create() and remove it
+>>   hw/i386/pc: Populate RTC attribute directly
+>>   hw/i386/pc_{piix,q35}: Eliminate local pci_bus/pci_host variables
+>>=20
+>>  hw/i386/fw_cfg=2Eh      |  3 ++-
+>>  include/hw/i386/pc=2Eh  |  5 ----
+>>  include/hw/i386/x86=2Eh |  5 ++--
+>>  hw/i386/acpi-common=2Ec |  3 ++-
+>>  hw/i386/fw_cfg=2Ec      | 12 +++++++++-
+>>  hw/i386/microvm=2Ec     |  2 +-
+>>  hw/i386/pc=2Ec          | 25 +++++---------------
+>>  hw/i386/pc_piix=2Ec     | 55 ++++++++++++++---------------------------=
+--
+>>  hw/i386/pc_q35=2Ec      | 38 ++++++++++--------------------
+>>  hw/i386/pc_sysfw=2Ec    | 17 ++++---------
+>>  hw/i386/x86=2Ec         |  7 +++---
+>>  11 files changed, 62 insertions(+), 110 deletions(-)
+>>=20
+>> --=20
+>> 2=2E43=2E0
+>>=20
+>
 
