@@ -2,57 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0BE2862CDB
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 Feb 2024 21:30:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76138862D3B
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 Feb 2024 22:40:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reL77-0001Hf-8I; Sun, 25 Feb 2024 15:28:45 -0500
+	id 1reMD1-0008Qp-Ug; Sun, 25 Feb 2024 16:38:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1reL74-0001Gn-RC; Sun, 25 Feb 2024 15:28:42 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1reL71-0006Va-Rj; Sun, 25 Feb 2024 15:28:42 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 29C564E6099;
- Sun, 25 Feb 2024 21:28:35 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id lQzbAKF0xXt6; Sun, 25 Feb 2024 21:28:33 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 22A944E609C; Sun, 25 Feb 2024 21:28:33 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 205777456FE;
- Sun, 25 Feb 2024 21:28:33 +0100 (CET)
-Date: Sun, 25 Feb 2024 21:28:33 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Leif Lindholm <quic_llindhol@quicinc.com>, 
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, 
- Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org, 
- John Snow <jsnow@redhat.com>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: Re: [PATCH v2 3/3] hw/ide: Include 'ide_internal.h' from current path
-In-Reply-To: <20240225171637.4709-4-philmd@linaro.org>
-Message-ID: <feffd329-59e0-0291-0dd6-76a625da190b@eik.bme.hu>
-References: <20240225171637.4709-1-philmd@linaro.org>
- <20240225171637.4709-4-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
+ id 1reMCz-0008QU-UU
+ for qemu-devel@nongnu.org; Sun, 25 Feb 2024 16:38:53 -0500
+Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
+ id 1reMCy-0000u6-8J
+ for qemu-devel@nongnu.org; Sun, 25 Feb 2024 16:38:53 -0500
+Received: by mail-ot1-x32a.google.com with SMTP id
+ 46e09a7af769-6e49812ba77so350721a34.2
+ for <qemu-devel@nongnu.org>; Sun, 25 Feb 2024 13:38:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1708897131; x=1709501931; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=us8G/Byu5G78tf+FwbD6ydw9ev0wN0j/EMModdVh+mk=;
+ b=c4UzA3VB34Cf5iGXs08/qnU6PK139uvfO583CnPR6/x9kFsQrlDsdhTm8vL2KD2qZ6
+ X5zN/XSAh6EUH6lg5MR0Xo5exXDghu5MNoHqaCfna0xQyEydiZRQGcEMv4SX7ZD3XUWL
+ vGLVB4ASeSymJ0r8PvJT0vAOpk5r+p3xBOWwNHLApkOPhdui/u+4IkpA0R0NE5mqL4/6
+ MirK3AWa7VTCQ7gsbARkoR38Fp0BH67QKs8kliVC/UoF2T1gycWp6M7RB4vQKEEuKzrM
+ GgGp/V26badV/+ENb0mWHj0j7VmDIEm58FhAj6wfQwjkgEe1pzHxPdjIUIfitb+5bA+2
+ vmow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708897131; x=1709501931;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=us8G/Byu5G78tf+FwbD6ydw9ev0wN0j/EMModdVh+mk=;
+ b=ky6WtXaJ+JmIZGPdxgwywJ4zSHDPyR7F+22yhPnXozoIkoax6DmqdHmxcI/xZW2fK+
+ lfc4cZ9rkvGwVWS9lkbHiRy8YOIw8v/ZgacbHmqNEi4eP7eZxVV5czHAzrueC+/FuRL8
+ OyMXOfIR0tw87NE/ZOhUwYlr5rvQzdVZ9kuhE4Bahul73CsdmagE+g3kr6IaCtMxj571
+ 2HnMgipKZgIZdoxrnZGnKf7JAs9bRwWdOvVYobol6R8vaVH3ZpBVmiYDHoxse35QAs7Q
+ fmGZhBUem1kXlsuEaiiTtHkkPDykXff1S3WB4dpMJejHvQFjp0OUPhJM1haUkHWXBc6u
+ kHqw==
+X-Gm-Message-State: AOJu0YwWMUim8r/SGv7ODwhU2SkFM2USFJlomIHtVPg6jy9Z9jynFCmd
+ RKsIu44hkZipQyPtjrdzzFd1D01lNlpnLVuKlMqL0HpUS2WUctYR
+X-Google-Smtp-Source: AGHT+IF2Fz+F+Y4vW7TK4tjNf1/qHV4U19cfyNcP56TOeJSV5tKs1oP236bnMn9CW9U5i8poLik/pA==
+X-Received: by 2002:a05:6830:120c:b0:6e4:7be4:393a with SMTP id
+ r12-20020a056830120c00b006e47be4393amr6977458otp.5.1708897130697; 
+ Sun, 25 Feb 2024 13:38:50 -0800 (PST)
+Received: from valdaarhun.localnet ([223.233.82.79])
+ by smtp.gmail.com with ESMTPSA id
+ f6-20020a63f746000000b005dcc8a3b26esm2716500pgk.16.2024.02.25.13.38.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 25 Feb 2024 13:38:50 -0800 (PST)
+From: Sahil <icegambit91@gmail.com>
+To: eperezma@redhat.com, sgarzare@redhat.com
+Cc: qemu-devel@nongnu.org
+Subject: Intention to work on GSoC project
+Date: Mon, 26 Feb 2024 03:08:47 +0530
+Message-ID: <13625712.uLZWGnKmhe@valdaarhun>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-190602859-1708892913=:78302"
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
+ envelope-from=icegambit91@gmail.com; helo=mail-ot1-x32a.google.com
+X-Spam_score_int: 15
+X-Spam_score: 1.5
+X-Spam_bar: +
+X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
+ FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,269 +89,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi,
 
---3866299591-190602859-1708892913=:78302
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+My name is Sahil and I go by the pseudonym 'valdaarhun' on Github. I have
+never contributed to QEMU before but I have used it a few times as an end
+user. I developed an interest in virtualization during my internship at
+VMware and would like to dive deeper in this subfield.
 
-On Sun, 25 Feb 2024, Philippe Mathieu-Daudé wrote:
-> Rename "internal.h" as "ide_internal.h", and include
+My current full-time job does not allow me to take part in external programs
+that are paid. I would like to work on one of the proposed projects outside
+of GSoC. I have gone through QEMU's list of GSoC '24 projects [1] and am
+interested in two of them:
 
-Is there a convention about using underscore or dash in file names? The 
-headers Thomas added are using - as well as ahci-allwinner.c, only 
-ahci_internal.h has _ (but there are others elsewhere such as 
-pci_device.h). Maybe we should be consistent at least within IDE and this 
-series is now a good opportunity for renaming these headers to match. But 
-it's just a small nit, thanks for picking this up.
+1. Add packed virtqueue to Shadow Virtqueue
+2. vhost-user memory isolation
+
+Based on what I have understood, they are somewhat related and are part
+of the migration subsystem. I feel the learning curve of the first project
+will be less steep and will make me better prepared to tackle the second
+project as well.
+
+I have read the "Getting Started for Developers" [2] wiki page. I have also
+built QEMU from source.
+
+I think my next step should be to read the documentation on the migration
+subsystem [3], the blog posts attached in the first project's description
+and virtqueue's implementation. Would you also recommend that I work on a
+QEMU issue that is open on Gitlab and related to virtqueues/virtio to 
+familiarize
+myself with the codebase? I went through the issues tagged as "device:virtio" 
+[4]
+but can't really tell if any of them are good for beginners. One of them has 
+the
+"bite-size" tag [5]. It also has a patch attached but hasn't been merged. 
+Shall I
+work on getting that merged?
+
+I have worked on a few smaller systems programming issues in other
+organizations (eg: strace [6], htop [7]) in the past.
+
+I look forward to hearing from you.
 
 Regards,
-BALATON Zoltan
+Sahil
+https://github.com/valdaarhun
 
-> it via its relative local path, instead of absolute
-> to the project root path.
->
-> Mechanical patch doing:
->
->  $ sed -i -e 's#hw/ide/internal.h#ide_internal.h#' \
->        $(git grep -l hw/ide/internal)
->  $ git mv hw/ide/internal.h hw/ide/ide_internal.h
->
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
-> hw/ide/ahci_internal.h                | 2 +-
-> hw/ide/{internal.h => ide_internal.h} | 0
-> hw/ide/ahci.c                         | 2 +-
-> hw/ide/atapi.c                        | 2 +-
-> hw/ide/cmd646.c                       | 2 +-
-> hw/ide/core.c                         | 2 +-
-> hw/ide/ide-bus.c                      | 2 +-
-> hw/ide/ide-dev.c                      | 2 +-
-> hw/ide/ioport.c                       | 2 +-
-> hw/ide/isa.c                          | 2 +-
-> hw/ide/macio.c                        | 2 +-
-> hw/ide/microdrive.c                   | 2 +-
-> hw/ide/mmio.c                         | 2 +-
-> hw/ide/pci.c                          | 2 +-
-> hw/ide/piix.c                         | 2 +-
-> hw/ide/sii3112.c                      | 2 +-
-> hw/ide/via.c                          | 2 +-
-> 17 files changed, 16 insertions(+), 16 deletions(-)
-> rename hw/ide/{internal.h => ide_internal.h} (100%)
->
-> diff --git a/hw/ide/ahci_internal.h b/hw/ide/ahci_internal.h
-> index 4e13329bb2..34f3d50ca9 100644
-> --- a/hw/ide/ahci_internal.h
-> +++ b/hw/ide/ahci_internal.h
-> @@ -25,7 +25,7 @@
-> #define HW_IDE_AHCI_INTERNAL_H
->
-> #include "hw/ide/ahci.h"
-> -#include "hw/ide/internal.h"
-> +#include "ide_internal.h"
-> #include "hw/pci/pci_device.h"
->
-> #define AHCI_MEM_BAR_SIZE         0x1000
-> diff --git a/hw/ide/internal.h b/hw/ide/ide_internal.h
-> similarity index 100%
-> rename from hw/ide/internal.h
-> rename to hw/ide/ide_internal.h
-> diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-> index 54c9685495..c2af344ac5 100644
-> --- a/hw/ide/ahci.c
-> +++ b/hw/ide/ahci.c
-> @@ -34,7 +34,7 @@
-> #include "qemu/module.h"
-> #include "sysemu/block-backend.h"
-> #include "sysemu/dma.h"
-> -#include "hw/ide/internal.h"
-> +#include "ide_internal.h"
-> #include "hw/ide/pci.h"
-> #include "hw/ide/ahci-pci.h"
-> #include "hw/ide/ahci-sysbus.h"
-> diff --git a/hw/ide/atapi.c b/hw/ide/atapi.c
-> index dcc39df9a4..8ac99f64d2 100644
-> --- a/hw/ide/atapi.c
-> +++ b/hw/ide/atapi.c
-> @@ -24,7 +24,7 @@
->  */
->
-> #include "qemu/osdep.h"
-> -#include "hw/ide/internal.h"
-> +#include "ide_internal.h"
-> #include "hw/scsi/scsi.h"
-> #include "sysemu/block-backend.h"
-> #include "scsi/constants.h"
-> diff --git a/hw/ide/cmd646.c b/hw/ide/cmd646.c
-> index 23d213ff01..be72f4d3ed 100644
-> --- a/hw/ide/cmd646.c
-> +++ b/hw/ide/cmd646.c
-> @@ -33,7 +33,7 @@
-> #include "sysemu/reset.h"
->
-> #include "hw/ide/pci.h"
-> -#include "hw/ide/internal.h"
-> +#include "ide_internal.h"
-> #include "trace.h"
->
-> /* CMD646 specific */
-> diff --git a/hw/ide/core.c b/hw/ide/core.c
-> index 9c4a812902..8f2004f93b 100644
-> --- a/hw/ide/core.c
-> +++ b/hw/ide/core.c
-> @@ -41,7 +41,7 @@
-> #include "qemu/cutils.h"
-> #include "sysemu/replay.h"
-> #include "sysemu/runstate.h"
-> -#include "hw/ide/internal.h"
-> +#include "ide_internal.h"
-> #include "trace.h"
->
-> /* These values were based on a Seagate ST3500418AS but have been modified
-> diff --git a/hw/ide/ide-bus.c b/hw/ide/ide-bus.c
-> index 57fe67b29c..32e9f62137 100644
-> --- a/hw/ide/ide-bus.c
-> +++ b/hw/ide/ide-bus.c
-> @@ -21,7 +21,7 @@
-> #include "qapi/error.h"
-> #include "qemu/error-report.h"
-> #include "qemu/module.h"
-> -#include "hw/ide/internal.h"
-> +#include "ide_internal.h"
-> #include "sysemu/block-backend.h"
-> #include "sysemu/blockdev.h"
-> #include "sysemu/runstate.h"
-> diff --git a/hw/ide/ide-dev.c b/hw/ide/ide-dev.c
-> index c8e2033469..832293ca69 100644
-> --- a/hw/ide/ide-dev.c
-> +++ b/hw/ide/ide-dev.c
-> @@ -23,7 +23,7 @@
-> #include "qemu/error-report.h"
-> #include "qemu/module.h"
-> #include "hw/ide/ide-dev.h"
-> -#include "hw/ide/internal.h"
-> +#include "ide_internal.h"
-> #include "sysemu/block-backend.h"
-> #include "sysemu/blockdev.h"
-> #include "sysemu/sysemu.h"
-> diff --git a/hw/ide/ioport.c b/hw/ide/ioport.c
-> index 0b283ac783..7a80c549ec 100644
-> --- a/hw/ide/ioport.c
-> +++ b/hw/ide/ioport.c
-> @@ -25,7 +25,7 @@
->
-> #include "qemu/osdep.h"
-> #include "hw/isa/isa.h"
-> -#include "hw/ide/internal.h"
-> +#include "ide_internal.h"
-> #include "trace.h"
->
-> int ide_init_ioport(IDEBus *bus, ISADevice *dev, int iobase, int iobase2)
-> diff --git a/hw/ide/isa.c b/hw/ide/isa.c
-> index cc865c83dc..2fc28d64b6 100644
-> --- a/hw/ide/isa.c
-> +++ b/hw/ide/isa.c
-> @@ -32,7 +32,7 @@
-> #include "sysemu/dma.h"
->
-> #include "hw/ide/isa.h"
-> -#include "hw/ide/internal.h"
-> +#include "ide_internal.h"
-> #include "qom/object.h"
->
-> /***********************************************************/
-> diff --git a/hw/ide/macio.c b/hw/ide/macio.c
-> index 0d2c6ba910..7611a99ef5 100644
-> --- a/hw/ide/macio.c
-> +++ b/hw/ide/macio.c
-> @@ -33,7 +33,7 @@
-> #include "sysemu/block-backend.h"
-> #include "sysemu/dma.h"
->
-> -#include "hw/ide/internal.h"
-> +#include "ide_internal.h"
->
-> /* debug MACIO */
-> // #define DEBUG_MACIO
-> diff --git a/hw/ide/microdrive.c b/hw/ide/microdrive.c
-> index a7f415f0fc..09781658f9 100644
-> --- a/hw/ide/microdrive.c
-> +++ b/hw/ide/microdrive.c
-> @@ -31,7 +31,7 @@
-> #include "sysemu/dma.h"
-> #include "hw/irq.h"
->
-> -#include "hw/ide/internal.h"
-> +#include "ide_internal.h"
-> #include "qom/object.h"
->
-> #define TYPE_MICRODRIVE "microdrive"
-> diff --git a/hw/ide/mmio.c b/hw/ide/mmio.c
-> index e8f41c0610..1ba2541b40 100644
-> --- a/hw/ide/mmio.c
-> +++ b/hw/ide/mmio.c
-> @@ -30,7 +30,7 @@
-> #include "sysemu/dma.h"
->
-> #include "hw/ide/mmio.h"
-> -#include "hw/ide/internal.h"
-> +#include "ide_internal.h"
-> #include "hw/qdev-properties.h"
->
-> /***********************************************************/
-> diff --git a/hw/ide/pci.c b/hw/ide/pci.c
-> index 73efeec7f4..855cbb031d 100644
-> --- a/hw/ide/pci.c
-> +++ b/hw/ide/pci.c
-> @@ -30,7 +30,7 @@
-> #include "sysemu/dma.h"
-> #include "qemu/error-report.h"
-> #include "qemu/module.h"
-> -#include "hw/ide/internal.h"
-> +#include "ide_internal.h"
-> #include "hw/ide/pci.h"
-> #include "trace.h"
->
-> diff --git a/hw/ide/piix.c b/hw/ide/piix.c
-> index 1773a068c3..886cf840f1 100644
-> --- a/hw/ide/piix.c
-> +++ b/hw/ide/piix.c
-> @@ -30,7 +30,7 @@
-> #include "qemu/osdep.h"
-> #include "qapi/error.h"
-> #include "hw/pci/pci.h"
-> -#include "hw/ide/internal.h"
-> +#include "ide_internal.h"
-> #include "hw/ide/piix.h"
-> #include "hw/ide/pci.h"
-> #include "trace.h"
-> diff --git a/hw/ide/sii3112.c b/hw/ide/sii3112.c
-> index 321b9e46a1..e28bbd160d 100644
-> --- a/hw/ide/sii3112.c
-> +++ b/hw/ide/sii3112.c
-> @@ -13,7 +13,7 @@
->  */
->
-> #include "qemu/osdep.h"
-> -#include "hw/ide/internal.h"
-> +#include "ide_internal.h"
-> #include "hw/ide/pci.h"
-> #include "qemu/module.h"
-> #include "trace.h"
-> diff --git a/hw/ide/via.c b/hw/ide/via.c
-> index cf151e70ec..ceecb3aa01 100644
-> --- a/hw/ide/via.c
-> +++ b/hw/ide/via.c
-> @@ -25,7 +25,7 @@
->  */
->
-> #include "qemu/osdep.h"
-> -#include "hw/ide/internal.h"
-> +#include "ide_internal.h"
-> #include "hw/pci/pci.h"
-> #include "migration/vmstate.h"
-> #include "qemu/module.h"
->
---3866299591-190602859-1708892913=:78302--
+[1] https://wiki.qemu.org/Google_Summer_of_Code_2024
+[2] https://wiki.qemu.org/Documentation/GettingStartedDevelopers
+[3] https://qemu-project.gitlab.io/qemu/devel/migration/index.html
+[4] https://gitlab.com/qemu-project/qemu/-/issues/?
+label_name%5B%5D=device%3Avirtio
+[5] https://gitlab.com/qemu-project/qemu/-/issues/230
+[6] https://github.com/strace/strace/commits?author=valdaarhun
+[7] https://github.com/htop-dev/htop/commits?author=valdaarhun
+
+
 
