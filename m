@@ -2,83 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 735C1862BE9
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 Feb 2024 17:50:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBB7A862C21
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 Feb 2024 17:56:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reHge-0006l8-KK; Sun, 25 Feb 2024 11:49:12 -0500
+	id 1reHmq-0008N6-Kg; Sun, 25 Feb 2024 11:55:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reHga-0006gH-4M
- for qemu-devel@nongnu.org; Sun, 25 Feb 2024 11:49:08 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <sw@weilnetz.de>) id 1reHmm-0008Mn-40
+ for qemu-devel@nongnu.org; Sun, 25 Feb 2024 11:55:32 -0500
+Received: from mail.weilnetz.de ([37.120.169.71]
+ helo=mail.v2201612906741603.powersrv.de)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reHgY-00065P-IR
- for qemu-devel@nongnu.org; Sun, 25 Feb 2024 11:49:07 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-412a4b42c03so1263725e9.3
- for <qemu-devel@nongnu.org>; Sun, 25 Feb 2024 08:49:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708879745; x=1709484545; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=cQ93+U4iF7Lp6xVGeVCZ93z2WCS/RCy7fhk0Vh/5pHY=;
- b=pb3ncUXeenJGC+qqCaa3hc7czLb+XsB2KP2Gkjx2oWE95rJg6UG1YJmvaQWfkR49ZR
- Trl6Mdd7TsWDC+p8WDsvorPKwDfdGdVlRXA8VHm4mI0EwDBHUZykZl602amO7DzWJy4A
- U6lLrnA7Z9m6O8ouldF6cYwve2KuSUio/p1p47cP9+047rp93Jlht8cLuIqDeiBU0m3u
- i6Tkry6a3dNyh5B7KBZFUydwQqguoCq2uinq0i2ulmdOyNafQJkWs2n3q+es4znMaZB7
- 8nm97/9AT5t5U/HchT2RtMc26w93+3V1qZ27ci14VR9nHk6iaK7LYCtbXn2v/eg9hP/h
- Sx2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708879745; x=1709484545;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cQ93+U4iF7Lp6xVGeVCZ93z2WCS/RCy7fhk0Vh/5pHY=;
- b=JtN56WK0Qktkm7G/n0UX4bwXxDFP5bemAjHj1DCROracJYsHsaoBkXwc3FS86mBH+L
- AOg3G0YQ2OXcmHMHtXP09lqAptn6OGAQRz47+IvFY4d6/xj3RV96DAERViavU7ax2YKI
- p9dqG1Ky2kZw5fsqyYiGDDDgxEPPGWXbjazXCtjufg86mTijWZobn16ih6XUBaI9PIvL
- DdnFG8T9vyD2l/QypFBWE3O6EHrNHegh4SwIngnJNA+LngYB6qM7Ga8LbXjMFBe6p62y
- DnWG05Sd6iqlXYJbyWJfqAMVtAwv7GqhpR60wJxUqPwdrh4KmdbheXofT4m2rqMsrazJ
- gI9w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUjJ9LLvSpmKC8N0cLbCYu23sX9SU6U285/+pyLNu7dJ32KxAUeLdyaMgVhKvs5CI6H1LzQ88XAQh6AQ97S3schf55+WHo=
-X-Gm-Message-State: AOJu0Yy2yC0ooflxkwPOrr+KKg8Kg2uMgvhIqNAFs+VrtLvPZQMiu9BH
- 6Dm6jKd+pvRyYK90n0UPPT6aNTyN2IVS6vEn4qWB84V9GaGsHLS0eIlIazuczc7dJan2spQEyTL
- a
-X-Google-Smtp-Source: AGHT+IFwr04bKRwYcQOWkROh2+PK8cHsjqoQCqqEuJq8LlXhDX3Vi4ddqM2FmeQ5nYpZRSAQ6inJRw==
-X-Received: by 2002:a05:600c:a385:b0:412:96e2:96aa with SMTP id
- hn5-20020a05600ca38500b0041296e296aamr3725947wmb.28.1708879744742; 
- Sun, 25 Feb 2024 08:49:04 -0800 (PST)
-Received: from [192.168.69.100] ([176.176.164.69])
- by smtp.gmail.com with ESMTPSA id
- u16-20020a05600c211000b004126732390asm9333876wml.37.2024.02.25.08.49.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 25 Feb 2024 08:49:04 -0800 (PST)
-Message-ID: <d3bd9fa7-3034-4423-b3fa-d3761c3008ce@linaro.org>
-Date: Sun, 25 Feb 2024 17:49:02 +0100
+ (Exim 4.90_1) (envelope-from <sw@weilnetz.de>) id 1reHmk-0007xL-3k
+ for qemu-devel@nongnu.org; Sun, 25 Feb 2024 11:55:31 -0500
+Received: from [192.168.178.59] (p57b42e65.dip0.t-ipconnect.de [87.180.46.101])
+ (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.v2201612906741603.powersrv.de (Postfix) with ESMTPSA id 9980BDA06B6;
+ Sun, 25 Feb 2024 17:55:26 +0100 (CET)
+Message-ID: <e2ab2851-3f0b-4f26-8099-4350cfea8b06@weilnetz.de>
+Date: Sun, 25 Feb 2024 17:55:26 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] target/riscv: Fix shift count overflow
-Content-Language: en-US
-To: "demin.han" <demin.han@starfivetech.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, dbarboza@ventanamicro.com, alistair.francis@wdc.com
-References: <20240225032720.375078-1-demin.han@starfivetech.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240225032720.375078-1-demin.han@starfivetech.com>
+Subject: Files without license statement
+To: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20210223095931.16908-1-alex.bennee@linaro.org>
+Autocrypt: addr=sw@weilnetz.de; keydata=
+ xsFNBFXCNBcBEACUbHx9FWsS1ATrhLGAS+Nc6bFQHPR3CpUQ4v++RiMg25bF6Ov1RsYEcovI
+ 0DXGh6Ma+l6dRlvUXV8tMvNwqghDUr5KY7LN6tgcFKjBbXdv9VlKiWiMLKBrARcFKxx1sfLp
+ 1P8RiaUdKsgy2Hq4T1PPy9ENTL1/FBG6P/Rw0rO9zOB+yNHcRJ5diDnERbi3x7qoaPUra2Ig
+ lmQk/uxXKC0aNIhpNLNiQ+YpwTUN9q3eG6B9/3CG8RGtFzH9vDPlLvtUX+01a2gCifTi3iH3
+ 8EEK8ACXIRs2dszlxMneKTvflXfvyCM1O+59wGcICQxltxLLhHSCJjOQyWdR2JUtn//XjVWM
+ mf6bBT7Imx3DhhfFRlA+/Lw9Zah66DJrZgiV0LqoN/2f031TzD3FCBiGQEMC072MvSQ1DdJN
+ OiRE1iWO0teLOxaFSbvJS9ij8CFSQQTnSVZs0YXGBal+1kMeaKo9sO4tkaAR2190IlMNanig
+ CTJfeFqxzZkoki378grSHdGUTGKfwNPflTOA6Pw6xuUcxW55LB3lBsPqb0289P8o9dTR7582
+ e6XTkpzqe/z/fYmfI9YXIjGY8WBMRbsuQA30JLq1/n/zwxAOr2P9y4nqTMMgFOtQS8w4G46K
+ UMY/5IspZp2VnPwvazUo2zpYiUSLo1hFHx2jrePYNu2KLROXpwARAQABzRxTdGVmYW4gV2Vp
+ bCA8c3dAd2VpbG5ldHouZGU+wsF6BBMBCAAkAhsDBQsJCAcDBRUKCQgLBRYCAwEAAh4BAheA
+ BQJV04LlAhkBAAoJEOCMIdVndFCtP5QP/1U8yWZzHeHufRFxtMsK1PERiLuKyGRH2oE5NWVc
+ 5QQHZZ2ypXu53o2ZbZxmdy8+4lXiPWWwYVqto3V7bPaMTvQhIT0I3c3ZEZsvwyEEE6QdRs52
+ haZwX+TzNMQ5mOePdM2m4WqO0oU7YHU2WFf54MBmAGtj3FAQEAlZAaMiJs2aApw/4t35ICL1
+ Sb0FY8d8lKBbIFOAaFfrlQTC3y8eMTk1QxOVtdXpRrOl6OE0alWn97NRqeZlBm0P+BEvdgTP
+ Qt+9rxbe4ulgKME2LkbDhLqf0m2+xMXb7T4LiHbQYnnWKGZyogpFaw3PuRVd9m8uxx1F8b4U
+ jNzI9x2Ez5LDv8NHpSY0LGwvVmkgELYbcbyiftbuw81gJuM7k4IW5GR85kTH6y/Sq6JNaI4p
+ 909IK8X4eeoCkAqEVmDOo1D5DytgxIV/PErrin82OIDXLENzOWfPPtUTO+H7qUe80NS2HLPG
+ IveYSjuYKBB6n2JhPkUD7xxMEdh5Ukqi1WIBSV4Tuk3/ubHajP5bqg4QP3Wo1AyICX09A1QQ
+ DajtMkyxXhYxr826EGcRD2WUUprGNYwaks4YiPuvOAJxSYprKWT6UDHzE3S8u4uZZm9H8cyg
+ Fa3pysJwTmbmrBAP1lMolwXHky60dPnKPmFyArGC0utAH7QELXzBybnE/vSNttNT1D+HzsFN
+ BFXcnj0BEAC32cCu2MWeqZEcvShjkoKsXk42mHrGbeuh/viVn8JOQbTO706GZtazoww2weAz
+ uVEYhwqi7u9RATz9MReHf7R5F0KIRhc/2NhNNeixT/7L+E5jffH1LD+0IQdeLPoz6unvg7U/
+ 7OpdKWbHzPM3Lfd0N1dRP5sXULpjtYQKEgiOU58sc4F5rM10KoPFEMz8Ip4j9RbH/CbTPUM0
+ S4PxytRciB3Fjd0ECbVsErTjX7cZc/yBgs3ip7BPVWgbflhrc+utML/MwC6ZqCOIXf/U0ICY
+ fp5I7PDbUSWgMFHvorWegMYJ9EzZ2nTvytL8E75C2U3j5RZAuQH5ysfGpdaTS76CRrYDtkEc
+ ViTL+hRUgrX9qvqzCdNEePbQZr6u6TNx3FBEnaTAZ5GuosfUk7ynvam2+zAzLNU+GTywTZL2
+ WU+tvOePp9z1/mbLnH2LkWHgy3bPu77AFJ1yTbBXl5OEQ/PtTOJeC1urvgeNru26hDFSFyk4
+ gFcqXxswu2PGU7tWYffXZXN+IFipCS718eDcT8eL66ifZ8lqJ8Vu5WJmp9mr1spP9RYbT7Rw
+ pzZ3iiz7e7AZyOtpSMIVJeYZTbtiqJbyN4zukhrTdCgCFYgf0CkA5UGpYXp2sXPr+gVxKX2p
+ tj/gid4n95vR7KMeWV6DJ0YS4hKGtdhkuJCpJfjKP/e8TwARAQABwsFfBBgBCAAJBQJV3J49
+ AhsMAAoJEOCMIdVndFCtYRoQAJOu3RZTEvUBPoFqsnd849VmOKKg77cs+HD3xyLtp95JwQrz
+ hwa/4ouDFrC86jt1vARfpVx5C8nQtNnWhg+5h5kyOIbtB1/27CCTdXAd/hL2k3GyrJXEc+i0
+ 31E9bCqgf2KGY7+aXu4LeAfRIWJT9FGVzdz1f+77pJuRIRRmtSs8VAond2l+OcDdEI9Mjd9M
+ qvyPJwDkDkDvsNptrcv4xeNzvX+2foxkJmYru6dJ+leritsasiAxacUowGB5E41RZEUg6bmV
+ F4SMseIAEKWLy3hPGvYBOzADhq2YLgnM/wn9Y9Z7bEMy+w5e75saBbkFI7TncxDPUnIl/UTE
+ KU1ORi5WWbvXYkUTtfNzZyD0/v3oojcIoZvK1OlpOtXHdlqOodjXF9nLe8eiVHyl8ZnzFxhe
+ EW2QPvX8FLKqmSs9W9saQtk6bhv9LNYIYINjH3EEH/+bbmV+ln4O7a73Wm8L3tnpC3LmdGn2
+ Rm8B6J2ZK6ci1TRDiMpCUWefpnIuE+TibC5VJR5zx0Yh11rxxBFob8mWktRmLZyeEoCcZoBo
+ sbJxD80QxWO03zPpkcJ7d4BrVsQ/BJkBtEe4Jn4iqHqA/OcrzwuEZSv+/MdgoqfblBZhDusm
+ LYfVy7wFDeVClG6eQIiK2EnmDChLRkVIQzbkV0iG+NJVVJHLGK7/OsO47+zq
+In-Reply-To: <20210223095931.16908-1-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=37.120.169.71; envelope-from=sw@weilnetz.de;
+ helo=mail.v2201612906741603.powersrv.de
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,44 +95,26 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Stefan Weil <sw@weilnetz.de>
+From:  Stefan Weil via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/2/24 04:27, demin.han wrote:
-> The result of (8 - 3 - vlmul) is negtive when vlmul >= 6,
+Hi Paolo,
 
-Typo "negative".
+I just noticed that scripts/fix-multiline-comments.sh has a copyright 
+statement, but no license statement. Should that be fixed?
 
-> and results in wrong vill.
-> 
-> Signed-off-by: demin.han <demin.han@starfivetech.com>
-> ---
->   target/riscv/vector_helper.c | 5 ++---
->   1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-> index 84cec73eb2..fe56c007d5 100644
-> --- a/target/riscv/vector_helper.c
-> +++ b/target/riscv/vector_helper.c
-> @@ -44,6 +44,7 @@ target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
->       target_ulong reserved = s2 &
->                               MAKE_64BIT_MASK(R_VTYPE_RESERVED_SHIFT,
->                                               xlen - 1 - R_VTYPE_RESERVED_SHIFT);
-> +    uint16_t vlen = cpu->cfg.vlenb << 3;
->       int8_t lmul;
->   
->       if (vlmul & 4) {
-> @@ -53,10 +54,8 @@ target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
->            * VLEN * LMUL >= SEW
->            * VLEN >> (8 - lmul) >= sew
->            * (vlenb << 3) >> (8 - lmul) >= sew
-> -         * vlenb >> (8 - 3 - lmul) >= sew
->            */
-> -        if (vlmul == 4 ||
-> -            cpu->cfg.vlenb >> (8 - 3 - vlmul) < sew) {
-> +        if (vlmul == 4 || (vlen >> (8 - vlmul)) < sew) {
->               vill = true;
->           }
->       }
+It looks like there exist more files with the same problem (if it is a 
+problem), for example docs/devel/loads-stores.rst (written by Peter).
 
+LICENSE says that "Source files with no licensing information are 
+released under the GNU General Public License [...]". Does that include 
+shell and Python scripts, documentation and other files which might not 
+be regarded as "source files"? Or should that be updated to "Any files 
+with no licensing information [...]" which would also include files 
+which have neither a copyright nor a license statement?
+
+Kind regards
+Stefan W.
 
