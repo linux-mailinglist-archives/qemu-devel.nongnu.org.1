@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A134862C41
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 Feb 2024 18:18:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D158B862C3F
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 Feb 2024 18:18:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reI7K-0001rZ-RQ; Sun, 25 Feb 2024 12:16:46 -0500
+	id 1reI7Q-0001tl-G0; Sun, 25 Feb 2024 12:16:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reI7J-0001qm-D6
- for qemu-devel@nongnu.org; Sun, 25 Feb 2024 12:16:45 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reI7O-0001sa-Qa
+ for qemu-devel@nongnu.org; Sun, 25 Feb 2024 12:16:50 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reI7H-0003vb-4w
- for qemu-devel@nongnu.org; Sun, 25 Feb 2024 12:16:45 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-33d38c9ca5bso1190425f8f.2
- for <qemu-devel@nongnu.org>; Sun, 25 Feb 2024 09:16:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reI7M-0003wV-LX
+ for qemu-devel@nongnu.org; Sun, 25 Feb 2024 12:16:50 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-412a4a932f4so1526245e9.0
+ for <qemu-devel@nongnu.org>; Sun, 25 Feb 2024 09:16:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708881401; x=1709486201; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Nb2EkkM4HFBzPufUcNJ/oJaQMVNp/FOLKGxdMc6L4GE=;
- b=fCj/b/PTKYbehiBJ450x2N7BMGfTf+cJqKt/DAby3sb8riWQ/SORxCi+Blt8s3MLFo
- 3fFHsJdJB2pOBEhlPFLiFbLW3E6Mx1fx8oRZuVrtrPpkP9OIVMc3ykPHez3YBGxrBHn7
- YCrYJ6iZspy5n0gdyiiUJtr5iLBM1+GYrIkZ+soijo0K23+tOzG5Cgle1+Lpn8QXJTMx
- mRVwo52u0NJOnPEA81mfr6hQUPSN4rR9jORLGaSxSsgPYZz+mxGroGu3fi6pghb4ROup
- fKd1OwcduVAJlb9hqVI7+eC3aT+L7Rs0Eoj5yn85bSCReh0lcFC0qo9ncfdGYkij3+39
- 2nfQ==
+ d=linaro.org; s=google; t=1708881407; x=1709486207; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cwzDlmu7+joT64q6lgoDz20T+b1NRYPG1wt4e7xF0MU=;
+ b=RA5Ff0nswQF68hFCVjnzAqGpfIcCUpWYAfxEh7MIafWZl7bfLl14dGPni7Oe3frnYx
+ YBHBN+ptiGyLNnOiUPuO6oHpZFSKo/FGB6Kf+7PEJsKC5SqVrYcGnwdgShX+5d0spDn1
+ NojeOS8r5KCc6tqaQXwwvnIQGO7QTrkZwh/4ansm6vhTRW8HEiyQfIT/4v2y/FK6MyzA
+ fc4fgkr+3IxUeymk5IEbEFkTpNlIazkK1qipzSZvCmy4b/81UKveri1HnI5zVxUI+5MC
+ NO/d14eZZVn9gsmO4kv9cW5kRBRWHOi8h1n8qoeUnb3PmtJAo8K7x/zizenlZgGEXnpU
+ rgKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708881401; x=1709486201;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Nb2EkkM4HFBzPufUcNJ/oJaQMVNp/FOLKGxdMc6L4GE=;
- b=AhBI+aVihYhzLPj7p0n4igFZGhkJSK/PY5fNWhNPKQJ2HjYP7ArCigsLnznOY8d/PM
- ogXNyvEg3qQxS1hfR42kXs9NS98KWAmAJSQabudcobsN+TCdx62I9vimJeiNii+JsTLG
- u9lwoDk+nL0KT7DLQ5HIyOt9qb2h9gv1PHQusfcBu5/Mz5Rcfz02ZNM4ep3KmBU71JVC
- RRetsCjT6upuuDE+BEwei1KlMHwGjLwgDlu3hxK+dmA1TGDTX82wyIpY5YM1/e8t8q/Y
- 7lhYbBLiR/t9emBnHbhPioU2eMtzzdxhsHJhPCN5yrYmE6evpau1d8BjiCy/Rm4bDCwa
- KM1g==
-X-Gm-Message-State: AOJu0YwXpLuml5VLE5+FXDHR7hXtXOyNk7RMSmGMsgUtXy7QmdY4T/bV
- 6LeenOGZPBlMY2yEInsmdKKTh4B5JKphzV21hax4fPyeirwEeMENSnWe3cgyhxutNva6Q91PA49
+ d=1e100.net; s=20230601; t=1708881407; x=1709486207;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cwzDlmu7+joT64q6lgoDz20T+b1NRYPG1wt4e7xF0MU=;
+ b=w4K6N//WFeK+KzbtTsZwN5LQuzo5e8CaGIi3H/H1ESQ3Yqu9lB3lDRzsyhTfuuH51f
+ Q6YFlGXiTYNMNVFBNWLMCUfZMn5tp8QzrPEb+NPTr3SKYmze9c3KOKIlQEeRzFCjXZUW
+ mNlObKpkCqQ4NSeZ8KuxxI8r/NS9+p9htlSUPXQo4Bb7C4/qq+axvMaWMhZMTLVUlRnh
+ WkimqBa5c/jPrurjkr/BKs3ifDUchB93QWViS63dzgbPCccmA6hUGG/B5a7/X6B3gCUk
+ D8Yi3YGTC0rtjlwqZL7fqJYOdw+4ScGKqQO+w4tCjY39wxzMuaoCwDkyVTMqYINu+V17
+ qudw==
+X-Gm-Message-State: AOJu0Yy28iQ5WZ6qfHPnhjgT6s+Hol2a1pVbM/37Nw1gcvfdfg5AqFPR
+ bXFlXf3QULhZwBDqVd+D9GqEVFPC3mJ+Pql3zx2dZIFsRYdPb0yTbZw9n6v99cJsB0L8toaLd36
  o
-X-Google-Smtp-Source: AGHT+IEsuvO84CjhDWGJNooUMUqefkyHGiuRed5d5w26eSfLpurmDxAmkp/YoALCDjcSOd5hhqHc8A==
-X-Received: by 2002:a5d:49ce:0:b0:33d:1392:7469 with SMTP id
- t14-20020a5d49ce000000b0033d13927469mr3042088wrs.67.1708881400800; 
- Sun, 25 Feb 2024 09:16:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGDIX2D7AbqyFrO/24RCh5vKznW9+AVVhucB+k0Jge+FwpDWlNy2pQYV/U57X8P3Lxs6O20Aw==
+X-Received: by 2002:a05:600c:41c2:b0:412:9018:74ca with SMTP id
+ t2-20020a05600c41c200b00412901874camr3943606wmh.35.1708881406794; 
+ Sun, 25 Feb 2024 09:16:46 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.164.69])
  by smtp.gmail.com with ESMTPSA id
- l11-20020a5d4bcb000000b0033db2fe4d76sm5669594wrt.4.2024.02.25.09.16.39
+ l6-20020a1c7906000000b0040fddaf9ff4sm9297419wme.40.2024.02.25.09.16.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 25 Feb 2024 09:16:40 -0800 (PST)
+ Sun, 25 Feb 2024 09:16:46 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
@@ -63,15 +64,18 @@ Cc: qemu-ppc@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
  qemu-block@nongnu.org, John Snow <jsnow@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 0/3] hw/ide: Make "ide_internal.h" really internal
-Date: Sun, 25 Feb 2024 18:16:34 +0100
-Message-ID: <20240225171637.4709-1-philmd@linaro.org>
+Subject: [PATCH v2 1/3] hw/arm/sbsa-ref: Do not open-code
+ ahci_ide_create_devs()
+Date: Sun, 25 Feb 2024 18:16:35 +0100
+Message-ID: <20240225171637.4709-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240225171637.4709-1-philmd@linaro.org>
+References: <20240225171637.4709-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,41 +98,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since v1:
-- Remove use of "ahci_internal.h" in SBSA-Ref
-- Rename "internal.h" -> "ide_internal.h"
+Use ahci_ide_create_devs() instead of open-coding it.
+Not accessing AHCIDevice internals anymore allows to
+remove "hw/ide/ahci_internal.h" (which isn't really a
+public header).
 
-Supersedes: <20240223142633.933694E6004@zero.eik.bme.hu>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/arm/sbsa-ref.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-BALATON Zoltan (1):
-  hw/ide: Remove last two uses of ide/internal.h outside of hw/ide/
-
-Philippe Mathieu-Daudé (2):
-  hw/arm/sbsa-ref: Do not open-code ahci_ide_create_devs()
-  hw/ide: Include 'ide_internal.h' from current path
-
- hw/ide/ahci_internal.h                             |  2 +-
- include/hw/ide/internal.h => hw/ide/ide_internal.h |  0
- include/hw/misc/macio/macio.h                      |  2 +-
- hw/arm/sbsa-ref.c                                  | 11 ++---------
- hw/ide/ahci.c                                      |  2 +-
- hw/ide/atapi.c                                     |  2 +-
- hw/ide/cmd646.c                                    |  2 +-
- hw/ide/core.c                                      |  2 +-
- hw/ide/ide-bus.c                                   |  2 +-
- hw/ide/ide-dev.c                                   |  2 +-
- hw/ide/ioport.c                                    |  2 +-
- hw/ide/isa.c                                       |  2 +-
- hw/ide/macio.c                                     |  2 +-
- hw/ide/microdrive.c                                |  2 +-
- hw/ide/mmio.c                                      |  2 +-
- hw/ide/pci.c                                       |  2 +-
- hw/ide/piix.c                                      |  2 +-
- hw/ide/sii3112.c                                   |  2 +-
- hw/ide/via.c                                       |  2 +-
- 19 files changed, 19 insertions(+), 26 deletions(-)
- rename include/hw/ide/internal.h => hw/ide/ide_internal.h (100%)
-
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index 5d3a574664..995c7be23e 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -37,7 +37,6 @@
+ #include "hw/block/flash.h"
+ #include "hw/boards.h"
+ #include "hw/ide/internal.h"
+-#include "hw/ide/ahci_internal.h"
+ #include "hw/ide/ahci-sysbus.h"
+ #include "hw/intc/arm_gicv3_common.h"
+ #include "hw/intc/arm_gicv3_its_common.h"
+@@ -572,7 +571,6 @@ static void create_ahci(const SBSAMachineState *sms)
+     DriveInfo *hd[NUM_SATA_PORTS];
+     SysbusAHCIState *sysahci;
+     AHCIState *ahci;
+-    int i;
+ 
+     dev = qdev_new("sysbus-ahci");
+     qdev_prop_set_uint32(dev, "num-ports", NUM_SATA_PORTS);
+@@ -583,12 +581,7 @@ static void create_ahci(const SBSAMachineState *sms)
+     sysahci = SYSBUS_AHCI(dev);
+     ahci = &sysahci->ahci;
+     ide_drive_get(hd, ARRAY_SIZE(hd));
+-    for (i = 0; i < ahci->ports; i++) {
+-        if (hd[i] == NULL) {
+-            continue;
+-        }
+-        ide_bus_create_drive(&ahci->dev[i].port, 0, hd[i]);
+-    }
++    ahci_ide_create_devs(ahci, hd);
+ }
+ 
+ static void create_xhci(const SBSAMachineState *sms)
 -- 
 2.41.0
 
