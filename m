@@ -2,47 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1A71866CAF
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:43:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F985866CD2
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:47:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reWZz-0006EH-7m; Mon, 26 Feb 2024 03:43:19 -0500
+	id 1reWd5-0002ba-B1; Mon, 26 Feb 2024 03:46:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1reWZy-0006E2-2m
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:43:18 -0500
-Received: from mgamail.intel.com ([192.198.163.12])
+ id 1reWd3-0002b9-VU
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:46:29 -0500
+Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1reWZw-0007xZ-7u
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:43:17 -0500
+ id 1reWd1-0000OS-VG
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:46:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708936996; x=1740472996;
+ t=1708937188; x=1740473188;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=5du1ZNf9adi2dAeM9Sm6epTKF73eeoRKt0chtDMR+s0=;
- b=cK5WchQ/wjzrL4pqcKyAWOnwo53jd/+QcJEgZkXwxA+RLggUe0JqOArz
- 7+Z22fpfyQ7klNKPZu3LbbFgfS8u1NhkRVOmVW8ZhJ+bMOwTeBpwMkTOc
- i6dCfEXLafxuzKBUVmZ+RZWgFaO0HQBEviG6iW4ykiyph+I7wfbIG6lmF
- 8F75CEJ+NN16SdLE/YKKbXS/KlWSyDiPz0gSw/K6ETh6qPxq+ErxI4ToR
- G7qNVpQ63xPdk0zQ+ouUKlQHLM9hU7vGHDgqmMJcxt/QVopf8WjXWPOeL
- bg6Gw6SZkgpMoq1m5j4zEap28kPUNBfn5b2mJmMj8Mr4LfxGvmsslNeYg g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="6994824"
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="6994824"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 00:43:14 -0800
+ mime-version:in-reply-to;
+ bh=VELNa9s31lV8M3/meRGyZIK73J8vxwFi/ZmTbYrOvrI=;
+ b=BDAiP0czKEve7hfinCi10RVzDLONlI/dVuENqieZhIhWO76jNXlttuL8
+ +236Lwo/oshBVXPjQLnTfm4Rl9iBJJ/68T0H6FBkId4BcZrpPFfUkysAC
+ cJy9IkdwDX944Sl19bRgvG/mq46Qh9Q0Z+3h8ZLjPsdc0vXBRNhj6gh0C
+ qZBS0uYC2oUrPoYtsViq5swmEjZVI2V/jd86blquQU/aNcHVrVttJqieA
+ +G9lKzXAS76I4QfxHZd+pBy3Lgy6fz1yjaK7cCPmjJL9HjIeFK8tGiIL3
+ ZGn66mQB1vqEwFZHph00Bas/GS5XJ7hnF4qw6T2jgamGA/fbuHd4CJddc g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="20753646"
+X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; d="scan'208";a="20753646"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2024 00:46:26 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="7116540"
+X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; d="scan'208";a="11313196"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orviesa008.jf.intel.com with ESMTP; 26 Feb 2024 00:43:10 -0800
-Date: Mon, 26 Feb 2024 16:56:52 +0800
+ by orviesa003.jf.intel.com with ESMTP; 26 Feb 2024 00:46:23 -0800
+Date: Mon, 26 Feb 2024 17:00:04 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Bernhard Beschow <shentey@gmail.com>
 Cc: qemu-devel@nongnu.org, Ani Sinha <anisinha@redhat.com>,
@@ -54,16 +52,16 @@ Cc: qemu-devel@nongnu.org, Ani Sinha <anisinha@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Paul Durrant <paul@xen.org>,
  Igor Mammedov <imammedo@redhat.com>, Jason Wang <jasowang@redhat.com>,
  David Woodhouse <dwmw2@infradead.org>, Sergio Lopez <slp@redhat.com>
-Subject: Re: [PATCH v2 2/6] hw/i386/pc: Rename "bus" attribute to "pcibus"
-Message-ID: <ZdxSVGAMmK+D/l+t@intel.com>
+Subject: Re: [PATCH v2 3/6] hw/i386/pc_{piix, q35}: Eliminate local
+ pci_bus/pci_host variables
+Message-ID: <ZdxTFI2uHA/efhCE@intel.com>
 References: <20240224135851.100361-1-shentey@gmail.com>
- <20240224135851.100361-3-shentey@gmail.com>
+ <20240224135851.100361-4-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240224135851.100361-3-shentey@gmail.com>
-Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20240224135851.100361-4-shentey@gmail.com>
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -87,180 +85,157 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Feb 24, 2024 at 02:58:47PM +0100, Bernhard Beschow wrote:
-> Date: Sat, 24 Feb 2024 14:58:47 +0100
+On Sat, Feb 24, 2024 at 02:58:48PM +0100, Bernhard Beschow wrote:
+> Date: Sat, 24 Feb 2024 14:58:48 +0100
 > From: Bernhard Beschow <shentey@gmail.com>
-> Subject: [PATCH v2 2/6] hw/i386/pc: Rename "bus" attribute to "pcibus"
+> Subject: [PATCH v2 3/6] hw/i386/pc_{piix, q35}: Eliminate local
+>  pci_bus/pci_host variables
 > X-Mailer: git-send-email 2.44.0
 > 
-> The attribute is of type PCIBus; reflect that in the name. It will also make the
-> next change more intuitive.
+> There is no advantage in having these local variables which 1/ needlessly have
+> different identifiers in both machines and 2/ which are redundant to pcms->bus
+> which is almost as short.
 > 
-> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 > ---
->  include/hw/i386/pc.h     | 2 +-
->  hw/i386/acpi-build.c     | 2 +-
->  hw/i386/amd_iommu.c      | 2 +-
->  hw/i386/intel_iommu.c    | 2 +-
->  hw/i386/kvm/xen_evtchn.c | 2 +-
->  hw/i386/pc.c             | 8 ++++----
->  hw/i386/pc_piix.c        | 6 +++---
->  hw/i386/pc_q35.c         | 2 +-
->  hw/i386/x86-iommu.c      | 2 +-
->  9 files changed, 14 insertions(+), 14 deletions(-)
+>  hw/i386/pc_piix.c | 14 ++++++--------
+>  hw/i386/pc_q35.c  | 16 +++++++---------
+>  2 files changed, 13 insertions(+), 17 deletions(-)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 > 
-> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-> index e88468131a..27834043c3 100644
-> --- a/include/hw/i386/pc.h
-> +++ b/include/hw/i386/pc.h
-> @@ -31,7 +31,7 @@ typedef struct PCMachineState {
->      Notifier machine_done;
->  
->      /* Pointers to devices and objects: */
-> -    PCIBus *bus;
-> +    PCIBus *pcibus;
->      I2CBus *smbus;
->      PFlashCFI01 *flash[2];
->      ISADevice *pcspk;
-> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-> index d3ce96dd9f..cd3f2d0148 100644
-> --- a/hw/i386/acpi-build.c
-> +++ b/hw/i386/acpi-build.c
-> @@ -1556,7 +1556,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
->      }
->  
->      crs_range_set_init(&crs_range_set);
-> -    bus = PC_MACHINE(machine)->bus;
-> +    bus = PC_MACHINE(machine)->pcibus;
->      if (bus) {
->          QLIST_FOREACH(bus, &bus->child, sibling) {
->              uint8_t bus_num = pci_bus_num(bus);
-> diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-> index 7329553ad3..6d4fde72f9 100644
-> --- a/hw/i386/amd_iommu.c
-> +++ b/hw/i386/amd_iommu.c
-> @@ -1584,7 +1584,7 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
->      MachineState *ms = MACHINE(qdev_get_machine());
->      PCMachineState *pcms = PC_MACHINE(ms);
->      X86MachineState *x86ms = X86_MACHINE(ms);
-> -    PCIBus *bus = pcms->bus;
-> +    PCIBus *bus = pcms->pcibus;
->  
->      s->iotlb = g_hash_table_new_full(amdvi_uint64_hash,
->                                       amdvi_uint64_equal, g_free, g_free);
-> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-> index cf933189d3..cc8e59674e 100644
-> --- a/hw/i386/intel_iommu.c
-> +++ b/hw/i386/intel_iommu.c
-> @@ -4183,7 +4183,7 @@ static void vtd_realize(DeviceState *dev, Error **errp)
->      MachineState *ms = MACHINE(qdev_get_machine());
->      PCMachineState *pcms = PC_MACHINE(ms);
->      X86MachineState *x86ms = X86_MACHINE(ms);
-> -    PCIBus *bus = pcms->bus;
-> +    PCIBus *bus = pcms->pcibus;
->      IntelIOMMUState *s = INTEL_IOMMU_DEVICE(dev);
->      X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
->  
-> diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
-> index 0171ef6d59..a5052c0ea3 100644
-> --- a/hw/i386/kvm/xen_evtchn.c
-> +++ b/hw/i386/kvm/xen_evtchn.c
-> @@ -371,7 +371,7 @@ static int set_callback_pci_intx(XenEvtchnState *s, uint64_t param)
->          return 0;
->      }
->  
-> -    pdev = pci_find_device(pcms->bus, bus, devfn);
-> +    pdev = pci_find_device(pcms->pcibus, bus, devfn);
->      if (!pdev) {
->          return 0;
->      }
-> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> index f8eb684a49..353edeb2ea 100644
-> --- a/hw/i386/pc.c
-> +++ b/hw/i386/pc.c
-> @@ -675,7 +675,7 @@ void pc_machine_done(Notifier *notifier, void *data)
->                                          PCMachineState, machine_done);
->      X86MachineState *x86ms = X86_MACHINE(pcms);
->  
-> -    cxl_hook_up_pxb_registers(pcms->bus, &pcms->cxl_devices_state,
-> +    cxl_hook_up_pxb_registers(pcms->pcibus, &pcms->cxl_devices_state,
->                                &error_fatal);
->  
->      if (pcms->cxl_devices_state.is_enabled) {
-> @@ -685,7 +685,7 @@ void pc_machine_done(Notifier *notifier, void *data)
->      /* set the number of CPUs */
->      x86_rtc_set_cpus_count(x86ms->rtc, x86ms->boot_cpus);
->  
-> -    fw_cfg_add_extra_pci_roots(pcms->bus, x86ms->fw_cfg);
-> +    fw_cfg_add_extra_pci_roots(pcms->pcibus, x86ms->fw_cfg);
->  
->      acpi_setup();
->      if (x86ms->fw_cfg) {
-> @@ -1250,8 +1250,8 @@ void pc_basic_device_init(struct PCMachineState *pcms,
->          xen_evtchn_create(IOAPIC_NUM_PINS, gsi);
->          xen_gnttab_create();
->          xen_xenstore_create();
-> -        if (pcms->bus) {
-> -            pci_create_simple(pcms->bus, -1, "xen-platform");
-> +        if (pcms->pcibus) {
-> +            pci_create_simple(pcms->pcibus, -1, "xen-platform");
->          }
->          xen_bus_init();
->          xen_be_init();
 > diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-> index 7724396ead..3393b93007 100644
+> index 3393b93007..814d24326d 100644
 > --- a/hw/i386/pc_piix.c
 > +++ b/hw/i386/pc_piix.c
-> @@ -216,7 +216,7 @@ static void pc_init1(MachineState *machine,
->          pci_bus_map_irqs(pci_bus,
+> @@ -108,7 +108,6 @@ static void pc_init1(MachineState *machine,
+>      MemoryRegion *system_memory = get_system_memory();
+>      MemoryRegion *system_io = get_system_io();
+>      Object *phb = NULL;
+> -    PCIBus *pci_bus = NULL;
+>      ISABus *isa_bus;
+>      Object *piix4_pm = NULL;
+>      qemu_irq smi_irq;
+> @@ -212,11 +211,10 @@ static void pc_init1(MachineState *machine,
+>                                  &error_fatal);
+>          sysbus_realize_and_unref(SYS_BUS_DEVICE(phb), &error_fatal);
+>  
+> -        pci_bus = PCI_BUS(qdev_get_child_bus(DEVICE(phb), "pci.0"));
+> -        pci_bus_map_irqs(pci_bus,
+> +        pcms->pcibus = PCI_BUS(qdev_get_child_bus(DEVICE(phb), "pci.0"));
+> +        pci_bus_map_irqs(pcms->pcibus,
 >                           xen_enabled() ? xen_pci_slot_get_pirq
 >                                         : pc_pci_slot_get_pirq);
-> -        pcms->bus = pci_bus;
-> +        pcms->pcibus = pci_bus;
+> -        pcms->pcibus = pci_bus;
 >  
 >          hole64_size = object_property_get_uint(phb,
 >                                                 PCI_HOST_PROP_PCI_HOLE64_SIZE,
-> @@ -480,8 +480,8 @@ static void pc_xen_hvm_init(MachineState *machine)
+> @@ -261,7 +259,7 @@ static void pc_init1(MachineState *machine,
+>          for (i = 0; i < ISA_NUM_IRQS; i++) {
+>              qdev_connect_gpio_out_named(dev, "isa-irqs", i, x86ms->gsi[i]);
+>          }
+> -        pci_realize_and_unref(pci_dev, pci_bus, &error_fatal);
+> +        pci_realize_and_unref(pci_dev, pcms->pcibus, &error_fatal);
+>  
+>          if (xen_enabled()) {
+>              pci_device_set_intx_routing_notifier(
+> @@ -273,7 +271,7 @@ static void pc_init1(MachineState *machine,
+>               * connected to the IOAPIC directly.
+>               * These additional routes can be discovered through ACPI.
+>               */
+> -            pci_bus_irqs(pci_bus, xen_intx_set_irq, pci_dev,
+> +            pci_bus_irqs(pcms->pcibus, xen_intx_set_irq, pci_dev,
+>                           XEN_IOAPIC_NUM_PIRQS);
+>          }
+>  
+> @@ -310,7 +308,7 @@ static void pc_init1(MachineState *machine,
+>          x86_register_ferr_irq(x86ms->gsi[13]);
 >      }
 >  
->      pc_xen_hvm_init_pci(machine);
-> -    xen_igd_reserve_slot(pcms->bus);
-> -    pci_create_simple(pcms->bus, -1, "xen-platform");
-> +    xen_igd_reserve_slot(pcms->pcibus);
-> +    pci_create_simple(pcms->pcibus, -1, "xen-platform");
->  }
->  #endif
+> -    pc_vga_init(isa_bus, pcmc->pci_enabled ? pci_bus : NULL);
+> +    pc_vga_init(isa_bus, pcmc->pci_enabled ? pcms->pcibus : NULL);
 >  
+>      assert(pcms->vmport != ON_OFF_AUTO__MAX);
+>      if (pcms->vmport == ON_OFF_AUTO_AUTO) {
+> @@ -321,7 +319,7 @@ static void pc_init1(MachineState *machine,
+>      pc_basic_device_init(pcms, isa_bus, x86ms->gsi, rtc_state, true,
+>                           0x4);
+>  
+> -    pc_nic_init(pcmc, isa_bus, pci_bus);
+> +    pc_nic_init(pcmc, isa_bus, pcms->pcibus);
+>  
+>  #ifdef CONFIG_IDE_ISA
+>      if (!pcmc->pci_enabled) {
 > diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-> index c89ff63579..734d9bedb2 100644
+> index 734d9bedb2..2fa4efb52f 100644
 > --- a/hw/i386/pc_q35.c
 > +++ b/hw/i386/pc_q35.c
-> @@ -217,7 +217,7 @@ static void pc_q35_init(MachineState *machine)
+> @@ -122,7 +122,6 @@ static void pc_q35_init(MachineState *machine)
+>      PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+>      X86MachineState *x86ms = X86_MACHINE(machine);
+>      Object *phb;
+> -    PCIBus *host_bus;
+>      PCIDevice *lpc;
+>      DeviceState *lpc_dev;
+>      ISADevice *rtc_state;
+> @@ -216,8 +215,7 @@ static void pc_q35_init(MachineState *machine)
+>      sysbus_realize_and_unref(SYS_BUS_DEVICE(phb), &error_fatal);
 >  
 >      /* pci */
->      host_bus = PCI_BUS(qdev_get_child_bus(DEVICE(phb), "pcie.0"));
-> -    pcms->bus = host_bus;
-> +    pcms->pcibus = host_bus;
+> -    host_bus = PCI_BUS(qdev_get_child_bus(DEVICE(phb), "pcie.0"));
+> -    pcms->pcibus = host_bus;
+> +    pcms->pcibus = PCI_BUS(qdev_get_child_bus(DEVICE(phb), "pcie.0"));
 >  
 >      /* irq lines */
 >      gsi_state = pc_gsi_create(&x86ms->gsi, true);
-> diff --git a/hw/i386/x86-iommu.c b/hw/i386/x86-iommu.c
-> index 726e9e1d16..60af896225 100644
-> --- a/hw/i386/x86-iommu.c
-> +++ b/hw/i386/x86-iommu.c
-> @@ -101,7 +101,7 @@ static void x86_iommu_realize(DeviceState *dev, Error **errp)
->      QLIST_INIT(&x86_iommu->iec_notifiers);
->      bool irq_all_kernel = kvm_irqchip_in_kernel() && !kvm_irqchip_is_split();
+> @@ -231,7 +229,7 @@ static void pc_q35_init(MachineState *machine)
+>      for (i = 0; i < IOAPIC_NUM_PINS; i++) {
+>          qdev_connect_gpio_out_named(lpc_dev, ICH9_GPIO_GSI, i, x86ms->gsi[i]);
+>      }
+> -    pci_realize_and_unref(lpc, host_bus, &error_fatal);
+> +    pci_realize_and_unref(lpc, pcms->pcibus, &error_fatal);
 >  
-> -    if (!pcms || !pcms->bus) {
-> +    if (!pcms || !pcms->pcibus) {
->          error_setg(errp, "Machine-type '%s' not supported by IOMMU",
->                     mc->name);
->          return;
+>      rtc_state = ISA_DEVICE(object_resolve_path_component(OBJECT(lpc), "rtc"));
+>  
+> @@ -283,7 +281,7 @@ static void pc_q35_init(MachineState *machine)
+>          AHCIPCIState *ich9;
+>  
+>          /* ahci and SATA device, for q35 1 ahci controller is built-in */
+> -        pdev = pci_create_simple_multifunction(host_bus,
+> +        pdev = pci_create_simple_multifunction(pcms->pcibus,
+>                                                 PCI_DEVFN(ICH9_SATA1_DEV,
+>                                                           ICH9_SATA1_FUNC),
+>                                                 "ich9-ahci");
+> @@ -297,14 +295,14 @@ static void pc_q35_init(MachineState *machine)
+>  
+>      if (machine_usb(machine)) {
+>          /* Should we create 6 UHCI according to ich9 spec? */
+> -        ehci_create_ich9_with_companions(host_bus, 0x1d);
+> +        ehci_create_ich9_with_companions(pcms->pcibus, 0x1d);
+>      }
+>  
+>      if (pcms->smbus_enabled) {
+>          PCIDevice *smb;
+>  
+>          /* TODO: Populate SPD eeprom data.  */
+> -        smb = pci_create_simple_multifunction(host_bus,
+> +        smb = pci_create_simple_multifunction(pcms->pcibus,
+>                                                PCI_DEVFN(ICH9_SMB_DEV,
+>                                                          ICH9_SMB_FUNC),
+>                                                TYPE_ICH9_SMB_DEVICE);
+> @@ -316,8 +314,8 @@ static void pc_q35_init(MachineState *machine)
+>      pc_cmos_init(pcms, rtc_state);
+>  
+>      /* the rest devices to which pci devfn is automatically assigned */
+> -    pc_vga_init(isa_bus, host_bus);
+> -    pc_nic_init(pcmc, isa_bus, host_bus);
+> +    pc_vga_init(isa_bus, pcms->pcibus);
+> +    pc_nic_init(pcmc, isa_bus, pcms->pcibus);
+>  
+>      if (machine->nvdimms_state->is_enabled) {
+>          nvdimm_init_acpi_state(machine->nvdimms_state, system_io,
 > -- 
 > 2.44.0
 > 
