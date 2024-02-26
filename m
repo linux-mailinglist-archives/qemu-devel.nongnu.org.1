@@ -2,43 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FEB4867D18
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 17:59:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB078867D1C
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 17:59:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reeHl-0005WB-KP; Mon, 26 Feb 2024 11:57:01 -0500
+	id 1reeHp-0005ZJ-0M; Mon, 26 Feb 2024 11:57:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1reeHb-0005Vp-Vg
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:56:51 -0500
+ id 1reeHl-0005XN-7C
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:57:01 -0500
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1reeHW-0007aN-Vz
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:56:51 -0500
+ id 1reeHX-0007aO-4T
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:56:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
- Content-Type; bh=qGzozfvyrFyaHAFm0qp6cbQu5Ext7ilnNDT8CZ5WezQ=; b=ZZfjv56mJvQc
- imRkKvmWF5vfw70NRG9UA8h/86hxqxurpeDA12gbJz/Hhev63qK4W1zEY5hqNmE/NCyftTuRmUWy2
- UUpOv2xqbelEJI1RnSm5oes/7F1gVqp7eEYc+NC5kKFNIGTOfNdk1v6svLHvh5PjLQEwyNhgbAf+C
- /fvxW+ccBIy0EdjwR3X1hESeUw2NklHjHeMmrr4WyVA89QyeEUNHcW0JrYl4r20L218hOho0xmj8s
- r+2Hv6uZfexDuPheXSCyYjJl24tQj3yOvTHg14p3YeDcu78h37hAqujDAxmHideOL41qCpBiOGuCi
- f3gLjn4bfA8codrr5knr7g==;
+ Content-Type; bh=kV26etjdgrTttBHqNO1xlpqvRXHOfMKajDrhdh/+Zqo=; b=ijy1WUQl4gy5
+ 15u8ifI9ORKKzhR+7noCc41HWvc7WQUipIoFtoNkaDQp+ck3KFKT8Y/UayQkaluF+CEi07yvtnrLG
+ upOA3l81RBtlj7/5vjjvi/s+rGUj53ZOTco4EQI3Dhl1kGup0mnlWev94HtwdK7W4+zTu6QDGNzZD
+ fkbf/vNu+axs+c/csFxD8ZcElFHR8j7iC+XSUfYTqdFJksPixOsIZQT3gUpBq+q3ZQyM3U1yb8oEz
+ JKgTk2VmuwpHPZ0PQiHZecL30T0OoPB5nw2m62mOVCmXVk7QX4Yb4E7DrivpYa9OuNy89RhPZus9M
+ dMZXwiO7YalqOFj+i9DyBg==;
 Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1reeG2-001AD7-35;
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1reeG3-001AD7-02;
  Mon, 26 Feb 2024 17:56:34 +0100
 From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 To: qemu-devel@nongnu.org
 Cc: michael.roth@amd.com, kkostiuk@redhat.com, marcandre.lureau@redhat.com,
  andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH 0/7] qga/commands-posix: replace code duplicating commands
- with a helper
-Date: Mon, 26 Feb 2024 18:56:35 +0200
-Message-Id: <20240226165642.807350-1-andrey.drobyshev@virtuozzo.com>
+Subject: [PATCH 1/7] qga/commands-posix: return fsinfo values directly as
+ reported by statvfs
+Date: Mon, 26 Feb 2024 18:56:36 +0200
+Message-Id: <20240226165642.807350-2-andrey.drobyshev@virtuozzo.com>
 X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20240226165642.807350-1-andrey.drobyshev@virtuozzo.com>
+References: <20240226165642.807350-1-andrey.drobyshev@virtuozzo.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=130.117.225.111;
@@ -48,8 +50,8 @@ X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,28 +67,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series simply replaces repeating fork()/exec() pattern with a
-separate helper to avoid code duplication.  It's easier to setup and use
-than g_spawn_async_with_pipes() (which we'd need since some commands require
-input).  While here, also make qmp_guest_get_fsinfo return more
-straightforward values.
+Since the commit 25b5ff1a86 ("qga: add mountpoint usage info to
+GuestFilesystemInfo") we have 2 values reported in guest-get-fsinfo:
+used = (f_blocks - f_bfree), total = (f_blocks - f_bfree + f_bavail).
+These calculations might be obscure for the end user and require one to
+actually get into QGA source to understand how they're obtained. Let's
+just report the values f_blocks, f_bfree, f_bavail (in bytes) from
+statvfs() as they are, letting the user decide how to process them further.
 
-Andrey Drobyshev (7):
-  qga/commands-posix: return fsinfo values directly as reported by
-    statvfs
-  qga: introduce ga_run_command() helper for guest cmd execution
-  qga/commands-posix: qmp_guest_shutdown: use ga_run_command helper
-  qga/commands-posix: qmp_guest_set_time: use ga_run_command helper
-  qga/commands-posix: execute_fsfreeze_hook: use ga_run_command helper
-  qga/commands-posix: use ga_run_command helper when suspending via
-    sysfs
-  qga/commands-posix: qmp_guest_set_user_password: use ga_run_command
-    helper
+Originally-by: Yuri Pudgorodskiy <yur@virtuozzo.com>
+Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+---
+ qga/commands-posix.c | 16 +++++++---------
+ qga/qapi-schema.json | 11 +++++++----
+ 2 files changed, 14 insertions(+), 13 deletions(-)
 
- qga/commands-posix.c | 402 +++++++++++++++++++------------------------
- qga/qapi-schema.json |  11 +-
- 2 files changed, 181 insertions(+), 232 deletions(-)
-
+diff --git a/qga/commands-posix.c b/qga/commands-posix.c
+index 26008db497..752ef509d0 100644
+--- a/qga/commands-posix.c
++++ b/qga/commands-posix.c
+@@ -1554,8 +1554,7 @@ static GuestFilesystemInfo *build_guest_fsinfo(struct FsMount *mount,
+                                                Error **errp)
+ {
+     GuestFilesystemInfo *fs = g_malloc0(sizeof(*fs));
+-    struct statvfs buf;
+-    unsigned long used, nonroot_total, fr_size;
++    struct statvfs st;
+     char *devpath = g_strdup_printf("/sys/dev/block/%u:%u",
+                                     mount->devmajor, mount->devminor);
+ 
+@@ -1563,15 +1562,14 @@ static GuestFilesystemInfo *build_guest_fsinfo(struct FsMount *mount,
+     fs->type = g_strdup(mount->devtype);
+     build_guest_fsinfo_for_device(devpath, fs, errp);
+ 
+-    if (statvfs(fs->mountpoint, &buf) == 0) {
+-        fr_size = buf.f_frsize;
+-        used = buf.f_blocks - buf.f_bfree;
+-        nonroot_total = used + buf.f_bavail;
+-        fs->used_bytes = used * fr_size;
+-        fs->total_bytes = nonroot_total * fr_size;
++    if (statvfs(fs->mountpoint, &st) == 0) {
++        fs->total_bytes = st.f_blocks * st.f_frsize;
++        fs->free_bytes = st.f_bfree * st.f_frsize;
++        fs->avail_bytes = st.f_bavail * st.f_frsize;
+ 
+         fs->has_total_bytes = true;
+-        fs->has_used_bytes = true;
++        fs->has_free_bytes = true;
++        fs->has_avail_bytes = true;
+     }
+ 
+     g_free(devpath);
+diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
+index b8efe31897..1cce3c1df5 100644
+--- a/qga/qapi-schema.json
++++ b/qga/qapi-schema.json
+@@ -1030,9 +1030,12 @@
+ #
+ # @type: file system type string
+ #
+-# @used-bytes: file system used bytes (since 3.0)
++# @total-bytes: total file system size in bytes (since 8.3)
+ #
+-# @total-bytes: non-root file system total bytes (since 3.0)
++# @free-bytes: amount of free space in file system in bytes (since 8.3)
++#
++# @avail-bytes: amount of free space in file system for unprivileged
++#     users in bytes (since 8.3)
+ #
+ # @disk: an array of disk hardware information that the volume lies
+ #     on, which may be empty if the disk type is not supported
+@@ -1041,8 +1044,8 @@
+ ##
+ { 'struct': 'GuestFilesystemInfo',
+   'data': {'name': 'str', 'mountpoint': 'str', 'type': 'str',
+-           '*used-bytes': 'uint64', '*total-bytes': 'uint64',
+-           'disk': ['GuestDiskAddress']} }
++           '*total-bytes': 'uint64', '*free-bytes': 'uint64',
++           '*avail-bytes': 'uint64', 'disk': ['GuestDiskAddress']} }
+ 
+ ##
+ # @guest-get-fsinfo:
 -- 
 2.39.3
 
