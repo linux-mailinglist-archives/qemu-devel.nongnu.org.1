@@ -2,47 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3F1F866DF7
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 10:16:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A93AF866E03
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 10:17:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reX5z-000671-Op; Mon, 26 Feb 2024 04:16:23 -0500
+	id 1reX6R-0001N5-Sc; Mon, 26 Feb 2024 04:16:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1reX5o-0005YD-7x
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 04:16:13 -0500
-Received: from mgamail.intel.com ([198.175.65.18])
+ id 1reX6O-000180-Vr
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 04:16:49 -0500
+Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1reX5l-0005Ed-GK
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 04:16:10 -0500
+ id 1reX6N-0005Ia-2x
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 04:16:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708938970; x=1740474970;
+ t=1708939007; x=1740475007;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=D3VCQcSIYtmJo33WujhjaN36kDnBJPCB3R1M3Sh3ntE=;
- b=XYxY2ILO8uU1EybSd6sJo+bA0tMaUA1ReG8zOjv5F5XWcYVWJXd7UKlH
- ykYIHq2y+V29vSvkjEOsG7V7IbS3vYcDYIjLcbh2Q5FdKXeXwZhCj5zgg
- RTuDR/yRhBVc/rQHWf/utFBQE1modtG+BpUX3F253lcTd3nmP0iAHGCzT
- 9sE3MK1aexE4Cz29QODt/YHF2YR/xpjj4oUtTBzixDiES02YIyZZKoLIG
- I/Oh/EZbGhCynxaAGuujgkA72GOsmR75BE4dRkX/ocMyR+G9SfXYzYbDj
- gJs2Zp2/xo+FSbKP3DUYZllDZXCOmE+y6z7C8gtRSPRaiIb0zbt/oTQLi w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="3330817"
+ bh=qo09Acd2MIkytaUm6uMem8Jq45c+4/AqxqE1ouSNAc4=;
+ b=NhY7zba2YRq0DgTREsCir06oywfr5HPaj6No7eTtrmeilwNninsMn7Jg
+ 6c05qPAQOIadVy6AbH75XSvgvBeaX45x7Bp0k/56koZD2S29vdtbyYRuY
+ YIVY4cc53Aef21I/+AAkF9CzDJYPjIlHj0ONnHII4w+Hdv+UW7KMau7GN
+ hwM968g7kG1X+88jDhLGVSNr91wpSnFGhFxhZdZ5twzD2UQDf1YdgHF10
+ NlSuih0T8nrEsvR+WAu9ayQa5EP9+xt5QWf0YEmLWkC6iCYzxPZ6ee4IR
+ 6bYD8vGF59y+18FXK+o2k1b96Zpt5jEWPk/X+oFgD4aJQsmhtMDg61IAE g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="3053290"
 X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="3330817"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 01:16:08 -0800
+   d="scan'208";a="3053290"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2024 01:16:42 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="6749314"
+X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; d="scan'208";a="11248675"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by fmviesa008.fm.intel.com with ESMTP; 26 Feb 2024 01:16:05 -0800
-Date: Mon, 26 Feb 2024 17:29:47 +0800
+ by fmviesa004.fm.intel.com with ESMTP; 26 Feb 2024 01:16:40 -0800
+Date: Mon, 26 Feb 2024 17:30:22 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
@@ -50,16 +49,17 @@ Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Ani Sinha <anisinha@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH v2 1/2] hw/acpi/ich9: Include missing headers
-Message-ID: <ZdxaC8aTdbo5hh9A@intel.com>
+Subject: Re: [PATCH v2 2/2] hw/i386/q35: Include missing 'hw/acpi/acpi.h'
+ header
+Message-ID: <ZdxaLk24J/2ol+Ch@intel.com>
 References: <20240226090600.31952-1-philmd@linaro.org>
- <20240226090600.31952-2-philmd@linaro.org>
+ <20240226090600.31952-3-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240226090600.31952-2-philmd@linaro.org>
-Received-SPF: pass client-ip=198.175.65.18; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20240226090600.31952-3-philmd@linaro.org>
+Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -83,69 +83,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Feb 26, 2024 at 10:05:59AM +0100, Philippe Mathieu-Daudé wrote:
-> Date: Mon, 26 Feb 2024 10:05:59 +0100
+On Mon, Feb 26, 2024 at 10:06:00AM +0100, Philippe Mathieu-Daudé wrote:
+> Date: Mon, 26 Feb 2024 10:06:00 +0100
 > From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH v2 1/2] hw/acpi/ich9: Include missing headers
+> Subject: [PATCH v2 2/2] hw/i386/q35: Include missing 'hw/acpi/acpi.h' header
 > X-Mailer: git-send-email 2.41.0
 > 
-> The ICH9LPCPMRegs structure has MemoryRegion and
-> Notifier fields, so requires the "qemu/notify.h"
-
-Just nit ;-)
-
-s/requires/it requires/
-
-> and "exec/memory.h" headers.
+> "hw/acpi/acpi.h" is implicitly included. Include it
+> explicitly to avoid the following error when refactoring
+> headers:
 > 
-> However nothing from "hw/acpi/acpi_dev_interface.h"
-> is required, so reduce its inclusion to hw/acpi/ich9.c
-> source file where it is used.
+> hw/i386/pc_q35.c:209:43: error: use of undeclared identifier 'ACPI_PM_PROP_ACPI_PCIHP_BRIDGE'
+>                               ACPI_PM_PROP_ACPI_PCIHP_BRIDGE,
+>                               ^
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  include/hw/acpi/ich9.h | 3 ++-
->  hw/acpi/ich9.c         | 2 +-
->  2 files changed, 3 insertions(+), 2 deletions(-)
+>  hw/i386/pc_q35.c | 1 +
+>  1 file changed, 1 insertion(+)
 
 Thanks!
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 > 
-> diff --git a/include/hw/acpi/ich9.h b/include/hw/acpi/ich9.h
-> index 2faf7f0cae..215de3c91f 100644
-> --- a/include/hw/acpi/ich9.h
-> +++ b/include/hw/acpi/ich9.h
-> @@ -21,12 +21,13 @@
->  #ifndef HW_ACPI_ICH9_H
->  #define HW_ACPI_ICH9_H
+> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+> index e0b3f55a02..45a4102e75 100644
+> --- a/hw/i386/pc_q35.c
+> +++ b/hw/i386/pc_q35.c
+> @@ -30,6 +30,7 @@
 >  
-> +#include "qemu/notify.h"
-> +#include "exec/memory.h"
->  #include "hw/acpi/acpi.h"
->  #include "hw/acpi/cpu_hotplug.h"
->  #include "hw/acpi/cpu.h"
->  #include "hw/acpi/pcihp.h"
->  #include "hw/acpi/memory_hotplug.h"
-> -#include "hw/acpi/acpi_dev_interface.h"
->  #include "hw/acpi/ich9_tco.h"
->  
->  #define ACPI_PCIHP_ADDR_ICH9 0x0cc0
-> diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
-> index 573d032e8e..6205de6046 100644
-> --- a/hw/acpi/ich9.c
-> +++ b/hw/acpi/ich9.c
-> @@ -34,8 +34,8 @@
->  #include "sysemu/reset.h"
->  #include "sysemu/runstate.h"
->  #include "hw/acpi/acpi.h"
-> +#include "hw/acpi/acpi_dev_interface.h"
->  #include "hw/acpi/ich9_tco.h"
-> -
->  #include "hw/southbridge/ich9.h"
->  #include "hw/mem/pc-dimm.h"
->  #include "hw/mem/nvdimm.h"
+>  #include "qemu/osdep.h"
+>  #include "qemu/units.h"
+> +#include "hw/acpi/acpi.h"
+>  #include "hw/char/parallel-isa.h"
+>  #include "hw/loader.h"
+>  #include "hw/i2c/smbus_eeprom.h"
 > -- 
 > 2.41.0
 > 
