@@ -2,64 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7616A866C5E
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:34:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E0A2866CEE
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:48:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reWRH-0005V2-LH; Mon, 26 Feb 2024 03:34:20 -0500
+	id 1reWey-000465-9Z; Mon, 26 Feb 2024 03:48:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1reWPR-0004XJ-Vu
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:32:31 -0500
-Received: from mgamail.intel.com ([192.198.163.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1reWPP-0005zE-0V
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:32:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708936343; x=1740472343;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=WsTR/gAkAzlIQ57Tf6rwYKhkUCHa2v9haeK6E/saU2c=;
- b=nXtADgs2ct/qt+Arb8v7KY1h0AixT9Bjk0Z+WQj1pCtx4lyTtcdDvO9E
- fQMqv8aSRk2VL/GduMJtt6cHW5BdaPLtSSJcfFGPKl8Gn2c3Zyz4CpS+i
- 6uulTSISJHP2xQludEo1Jzj+rnMRyxmZI9pD7hhHDozJEFitFUDCRBJjZ
- 4xc2siue6llnlXzPsiXjXX5f7oQ5hJVzS7TEZbcFWOJVhKpjm+2AjY2i9
- k8hoUlLVaUVJ2iA8Ri0j2+Y2dAFQ1DNFVCGHu4wPJldOioQ3TqzeMwIE4
- rGEH54D5eLsPIAV8txH+YXIH7e97n1BjPNyzxNYs2OVzYQu2Yxg6uX5gg A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="13849589"
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; d="scan'208";a="13849589"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 00:32:20 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; d="scan'208";a="11181198"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 26 Feb 2024 00:32:19 -0800
-Date: Mon, 26 Feb 2024 16:46:01 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH] atomic.h: Reword confusing comment for qatomic_cmpxchg
-Message-ID: <ZdxPyeqBPAP5hWZD@intel.com>
-References: <20240223182035.1048541-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reWel-00043y-KF
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:48:15 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reWeg-0000gq-Vc
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:48:13 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-33dc3fe739aso722663f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 00:48:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708937289; x=1709542089; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=o4QuUVMa/8riGap4wQPSzLfqOnNru0vzY7BsLOLWHSE=;
+ b=RIs65FJpUY7Q0acLr0xujBSY7T0Wtl2EYQzHSNLq/DY7JjrsHHv55flAPrT8nSntwa
+ TwvldOpj3/7B91NDz80732jiqgkdZQTTZ/oUZocdgM+TtrykUjsx6l2/RlO/sIMVyd4m
+ PqgOQy7w3xWLOZJY/+MfuFwH4Kxkj2Vvd9Zn2tTASbfp/OFkL+ePAyDPbMFqeXREzeZ5
+ 79Q2dFReeikbut64aOh2aubiX/v2U2ocVyef0ufsPLMjq0IvQjDOSspbJfAjmYB60Yu+
+ fYccbA/qEZLA8Gu8g9usL8iSvVS/AfYHRkac+vVW9oRiwQcHdq8y11swBZW+wYsKVflk
+ 8ltQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708937289; x=1709542089;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=o4QuUVMa/8riGap4wQPSzLfqOnNru0vzY7BsLOLWHSE=;
+ b=BOqJXC4M3wgOJOf5z06QUAkSgKsGcvGKR9qztwoj6XSX5cK6M3biEoFCimVnkUyPAc
+ t6U3T6XXKmT0iCZ5GoTGUYO6zYr+cUsLDL7UhjXQrJkJdRbQ0AMFdxWjtn9zAYZFzC4z
+ yCNrH77adfGRk9lDVSx/9YpEopfrmpkHEh7etuq3X2DTj4YhirSS6ejUOd7qB6xIEVAk
+ zxKxVZHq9oy62a9YW3GIeIdtrnJSAE0jLHtZqvFbnVqlfpd2QRC8dQLsRMoA96bnZ0VT
+ N5ztbU3A4NCnJXZ94UWV5UbmgRxxqlL3BKwog6lGm0yJNOnh+gIr4/7cDiuTShqp79+I
+ kyAA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUEVjSU1uih73gsNEE72OJ04Su8HUq12jkt3EWTXAx6Ag3p4WZ0puYtVrsWQw7Rq+VZgba6iPLUbJ490RX6Tln9LXeVmlc=
+X-Gm-Message-State: AOJu0YzRU+3EhPj9UrfgrWlyFUMlLCdE/opeS2b8TsIi/4wnFYfVFqTn
+ mcP6ETXYOY04OF7IWYlbHZu1suSCkU3n+mLBMh8j43J+tNv/BlLRIBCPI+8DSL6DxXtDUeElkz/
+ h
+X-Google-Smtp-Source: AGHT+IFVVBxgIny3rkSUlHtywxq7Pi75bQ+ik9Bkyyzzi+PoX3L9SACJ47r2B4OfyMG4JGXVHQG/ng==
+X-Received: by 2002:a05:6000:1007:b0:33d:8ebf:4f6 with SMTP id
+ a7-20020a056000100700b0033d8ebf04f6mr4797923wrx.20.1708937289450; 
+ Mon, 26 Feb 2024 00:48:09 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.164.69])
+ by smtp.gmail.com with ESMTPSA id
+ e3-20020a5d4e83000000b0033d12895cfdsm7555529wru.61.2024.02.26.00.48.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 Feb 2024 00:48:09 -0800 (PST)
+Message-ID: <ec5f9189-9ec5-4b04-8da2-cfb9969970eb@linaro.org>
+Date: Mon, 26 Feb 2024 09:48:07 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240223182035.1048541-1-peter.maydell@linaro.org>
-Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tests/unit/test-util-sockets: Remove temporary file after
+ test
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-trivial@nongnu.org
+References: <20240226082728.249753-1-thuth@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240226082728.249753-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.097,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,43 +97,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 23, 2024 at 06:20:35PM +0000, Peter Maydell wrote:
-> Date: Fri, 23 Feb 2024 18:20:35 +0000
-> From: Peter Maydell <peter.maydell@linaro.org>
-> Subject: [PATCH] atomic.h: Reword confusing comment for qatomic_cmpxchg
-> X-Mailer: git-send-email 2.34.1
+On 26/2/24 09:27, Thomas Huth wrote:
+> test-util-sockets leaves the temporary socket files around in the
+> temporary files folder. Let's better remove them at the end of the
+> testing.
 > 
-> The qatomic_cmpxchg() and qatomic_cmpxchg__nocheck() macros have
-> a comment that reads:
->  Returns the eventual value, failed or not
-> 
-> This is somewhere between cryptic and wrong, since the value actually
-> returned is the value that was in memory before the cmpxchg.  Reword
-> to match how we describe these macros in atomics.rst.
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->  include/qemu/atomic.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>   tests/unit/test-util-sockets.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/tests/unit/test-util-sockets.c b/tests/unit/test-util-sockets.c
+> index 63909ccb2b..4c9dd0b271 100644
+> --- a/tests/unit/test-util-sockets.c
+> +++ b/tests/unit/test-util-sockets.c
+> @@ -326,6 +326,7 @@ static void test_socket_unix_abstract(void)
+>           test_socket_unix_abstract_row(&matrix[i]);
+>       }
+>   
+> +    unlink(addr.u.q_unix.path);
+>       g_free(addr.u.q_unix.path);
+>   }
+>   
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Maybe:
+Fixes: 4d3a329af5 ("tests/util-sockets: add abstract unix socket cases")
 
-> 
-> diff --git a/include/qemu/atomic.h b/include/qemu/atomic.h
-> index f1d3d1702a9..99110abefb3 100644
-> --- a/include/qemu/atomic.h
-> +++ b/include/qemu/atomic.h
-> @@ -202,7 +202,7 @@
->      qatomic_xchg__nocheck(ptr, i);                          \
->  })
->  
-> -/* Returns the eventual value, failed or not */
-> +/* Returns the old value of '*ptr' (whether the cmpxchg failed or not) */
->  #define qatomic_cmpxchg__nocheck(ptr, old, new)    ({                   \
->      typeof_strip_qual(*ptr) _old = (old);                               \
->      (void)__atomic_compare_exchange_n(ptr, &_old, new, false,           \
-> -- 
-> 2.34.1
-> 
-> 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
