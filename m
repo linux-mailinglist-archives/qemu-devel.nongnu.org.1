@@ -2,93 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7785F866784
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 02:31:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A22C866785
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 02:31:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rePpA-0003cp-RJ; Sun, 25 Feb 2024 20:30:32 -0500
+	id 1rePpg-0004Eo-OD; Sun, 25 Feb 2024 20:31:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rePp8-0003cZ-Ew
- for qemu-devel@nongnu.org; Sun, 25 Feb 2024 20:30:30 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rePp6-0005fI-FZ
- for qemu-devel@nongnu.org; Sun, 25 Feb 2024 20:30:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708911026;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=7oI6jky+EMal3JJCUROYhMsQNix/76ib3oBPptJk3Ac=;
- b=KbnbNq4vyTTX0+zb7BknckxjRJmpm+dm63tUlA5ZF5+z18RJxekZzz5DDdOLy0QVCdmjjM
- AT3O5RQo6/riQy8jOvHW8foflua8b18UQFBbyjjKVvBrhLA1Bopf+9J/2f6UjyT2AwfByt
- Toea3G+MU1nO7pGsNGVAJS0R+oYe9bA=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-444-CVCGsdifOWGwQk_rI1DrsA-1; Sun, 25 Feb 2024 20:30:24 -0500
-X-MC-Unique: CVCGsdifOWGwQk_rI1DrsA-1
-Received: by mail-pj1-f71.google.com with SMTP id
- 98e67ed59e1d1-299180d546bso279891a91.0
- for <qemu-devel@nongnu.org>; Sun, 25 Feb 2024 17:30:24 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708911023; x=1709515823;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rePpc-00042f-1M; Sun, 25 Feb 2024 20:31:02 -0500
+Received: from mail-vs1-xe29.google.com ([2607:f8b0:4864:20::e29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rePpa-0005qo-9c; Sun, 25 Feb 2024 20:30:59 -0500
+Received: by mail-vs1-xe29.google.com with SMTP id
+ ada2fe7eead31-470455b5352so214185137.2; 
+ Sun, 25 Feb 2024 17:30:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1708911056; x=1709515856; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7oI6jky+EMal3JJCUROYhMsQNix/76ib3oBPptJk3Ac=;
- b=IWonIMTCchE2hoo687qfKLN+AfY1fWn6L/88Oxa1XrmtB31M69OloLlf1VumG6FSIK
- sR0pIPnZsajeC60w0AxavEycpZyNEBPEhhkuwhrhxqgltVipqyBND6lhTkKH88YUaS7R
- oCYjezJk5htZUNO8E1RmGVGVOpORgXMD0SUnzQepnbuRs3adOQZmpD81QGuAcvOpHDw8
- 6U/xGxz9aHxtVPn5OuYGtvkE3RfbOCGvCpou6Suuo7urp22wnDDCk3sMZoJRE287vNat
- XWruR2C2I3cvHgNvy8+WT5AzlIS8Ic42N6DHlJv7rgn4rzSfD2wHHKPDigN7cgsvTJAr
- rfdQ==
+ bh=aw6ECpiZ/6pa5Zm4d20dhxdHqh31U2O8+oXwDb52nLw=;
+ b=TppUJFe/9gTaMbN+7AhfO26ZptnnmS1nh/9BQNXKtsiSSSkt+4Z147FqA3HONa6pId
+ uXvbjvMW7XkPcrPruOtTvAsaPqR1nMWSN7xwYfGvnlXjK5Rqj3Z8OPcaay2ebBmiiLOZ
+ 9t95+i6rZeSA2xSJGcgdW3KYQ5K4+S69RTxhi9lJHrUSlIIs2jLZXvBq8pz1xv/m3Ieq
+ RrsMLzSm6HqMT1L3DA7UJmkeFupt/24VdHk0b1G7wm4LWxBksyMvXlfBepE5KDaLP340
+ 02eGFkccja8S17rOOi830w9k2AMyEmw/KziHjL4kEOdnVK392mF9WrXO13a7nLMk84mp
+ INCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708911056; x=1709515856;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=aw6ECpiZ/6pa5Zm4d20dhxdHqh31U2O8+oXwDb52nLw=;
+ b=dz1Z4my9w1jQPySb0lPredEpEXBUBu93eoX364kfY1QDS3hXkOLhmkhLRkylBd7w01
+ P7oaf71+uRGCO/xSUMlSa1rExGjmVJmR+fPXtXvjPWG10vohlt88v5Wmt7fZapoCx+Eq
+ 7ceIeOog3h2vkvvlmrvSa92Ru2jPjj0PwUkiJvQ+4sZl7JfMYtctfsUsVryaLGOrM/ZM
+ eLlANsYBQXvyi3Unf0X4ZPjsN0TyCkqtOOfaLkQcOcluPbx8Qx+YnBPXnbl1hoopvMZ3
+ +iVa0u9C3I1F3XXqIq8vdNlZjJ6W7rhodC8qlSXZjTP56iNGU3O7u0e2uFttsbVjcHi7
+ YeFQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXSVFAq7OuIdG5wRwqCqyikJrT8Ax9fjXiJRM1pUc9treF6Ul4uE2hGLPXXsZgjm5nfmMnAVvXSD1gdCHmXzeXGTSjwc0M=
-X-Gm-Message-State: AOJu0YxhO0836UrU4YosrwGZIVYil6ASV8BtTjtECE5sRRvqlp47rChp
- 3wk0H2Q+UhoZWO1j2oek8U8vApe1bT8COB3TTv2eqiY9m5WRwKHCK3/X00L75iVQLGnXnW8MnG+
- wcHVDjh7KdCzuAj7eKQPunHJL6sfwKQ1xO2bi4CugI34bHf8e3+wF
-X-Received: by 2002:a17:903:1c5:b0:1dc:8790:67f4 with SMTP id
- e5-20020a17090301c500b001dc879067f4mr5022320plh.0.1708911023242; 
- Sun, 25 Feb 2024 17:30:23 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEc5v5z3qAdTuu28rnsZCXXZ1gblePsHypSU/pmAFnbu3l430ziZhoBRew99R6W9OnIzRcDCQ==
-X-Received: by 2002:a17:903:1c5:b0:1dc:8790:67f4 with SMTP id
- e5-20020a17090301c500b001dc879067f4mr5022295plh.0.1708911022806; 
- Sun, 25 Feb 2024 17:30:22 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- e8-20020a170902744800b001d9a42f6183sm2741368plt.45.2024.02.25.17.30.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 25 Feb 2024 17:30:22 -0800 (PST)
-Date: Mon, 26 Feb 2024 09:30:12 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Hao Xiang <hao.xiang@bytedance.com>
-Cc: Fabiano Rosas <farosas@suse.de>, pbonzini@redhat.com,
- berrange@redhat.com, eduardo@habkost.net, eblake@redhat.com,
- armbru@redhat.com, thuth@redhat.com, lvivier@redhat.com,
- qemu-devel@nongnu.org, jdenemar@redhat.com
-Subject: Re: [External] Re: [PATCH v2 3/7] migration/multifd: Zero page
- transmission on the multifd thread.
-Message-ID: <ZdvppKlR1FHMwOl6@x1n>
-References: <20240216224002.1476890-1-hao.xiang@bytedance.com>
- <20240216224002.1476890-4-hao.xiang@bytedance.com>
- <877cixbkc5.fsf@suse.de> <ZdgA-Wv9xlZbedD5@x1n>
- <CAAYibXiPEqFdypDwK2e=6D+A1O_Q3OLdakqjanT3PaPKgXtg2w@mail.gmail.com>
- <CAAYibXhA=U8mp5Mid30OvgGfSOD5Ly2ESKjc67sPsouO429Xeg@mail.gmail.com>
+ AJvYcCV1ISAdkhHyDQ1eXt6WcpWjkhbivsquMyRookD6rEncpdsQT6Q/1IKaZc5IjcYq1IRTVivRCCiJHNSmVJv56DXZCoKDuNg=
+X-Gm-Message-State: AOJu0Yzku0uIfGKtSGmyna/nkenUlyV+Qw+rz9m+iTGXOK/Mt+PpSBCQ
+ Yt7CdhU/j3jO5xUoeDtp02aVz/W5nY/h9BDy+W7bbX6jTynXdygV6zYgs1Sezb8/bq4LYWm5e+e
+ upcdeKnX0Saq5uFbMpraZL+p4wcQ=
+X-Google-Smtp-Source: AGHT+IGLe1t9cX7Xp/D4t5A62wyEMI9wSmqfdpkhsIWeStY52g+oPTF4+8HXJrnafNVcgNXL6RiVWKa/0DSctmCkvr4=
+X-Received: by 2002:a05:6102:117c:b0:470:390d:41d8 with SMTP id
+ k28-20020a056102117c00b00470390d41d8mr3829723vsg.27.1708911056463; Sun, 25
+ Feb 2024 17:30:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAAYibXhA=U8mp5Mid30OvgGfSOD5Ly2ESKjc67sPsouO429Xeg@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.097,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20240207122256.902627-1-christoph.muellner@vrull.eu>
+ <20240207122256.902627-3-christoph.muellner@vrull.eu>
+In-Reply-To: <20240207122256.902627-3-christoph.muellner@vrull.eu>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 26 Feb 2024 11:30:30 +1000
+Message-ID: <CAKmqyKNYYTZia-mSgWbbEse0dHr69JMCVN6U-u8B_8+zmF9PWg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] linux-user/riscv: Add Ztso extension to hwprobe
+To: =?UTF-8?Q?Christoph_M=C3=BCllner?= <christoph.muellner@vrull.eu>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ Philipp Tomsich <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Andrew Jones <ajones@ventanamicro.com>, Laurent Vivier <laurent@vivier.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e29;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe29.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,59 +94,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Feb 24, 2024 at 02:56:15PM -0800, Hao Xiang wrote:
-> > > > I don't think it's super clean to have three arrays offset, zero and
-> > > > normal, all sized for the full packet size. It might be possible to just
-> > > > carry a bitmap of non-zero pages along with pages->offset and operate on
-> > > > that instead.
-> > > >
-> > > > What do you think?
-> > > >
-> > > > Peter, any ideas? Should we just leave this for another time?
-> > >
-> > > Yeah I think a bitmap should save quite a few fields indeed, it'll however
-> > > make the latter iteration slightly harder by walking both (offset[],
-> > > bitmap), process the page only if bitmap is set for the offset.
-> > >
-> > > IIUC we perhaps don't even need a bitmap?  AFAIU what we only need in
-> > > Multifdpages_t is one extra field to mark "how many normal pages", aka,
-> > > normal_num here (zero_num can be calculated from num-normal_num).  Then
-> > > the zero page detection logic should do two things:
-> > >
-> > >   - Sort offset[] array so that it starts with normal pages, followed up by
-> > >     zero pages
-> > >
-> > >   - Setup normal_num to be the number of normal pages
-> > >
-> > > Then we reduce 2 new arrays (normal[], zero[]) + 2 new fields (normal_num,
-> > > zero_num) -> 1 new field (normal_num).  It'll also be trivial to fill the
-> > > packet header later because offset[] is exactly that.
-> > >
-> > > Side note - I still think it's confusing to read this patch and previous
-> > > patch separately.  Obviously previous patch introduced these new fields
-> > > without justifying their values yet.  IMHO it'll be easier to review if you
-> > > merge the two patches.
-> >
-> > Fabiano, thanks for catching this. I totally missed the backward
-> > compatibility thing.
-> > Peter, I will code the sorting and merge this patch with the previous one.
-> >
-> It turns out that we still need to add a "zero_pages" field in
-> MultiFDPacket_t because the existing field "pages_alloc" is not the
-> total number of pages in "offset". So source can set "zero_pages" from
-> pages->num - pages->num_normal but "zero_pages" needs to be set in the
-> packet.
+On Wed, Feb 7, 2024 at 10:25=E2=80=AFPM Christoph M=C3=BCllner
+<christoph.muellner@vrull.eu> wrote:
+>
+> This patch exposes Ztso via hwprobe in QEMU's user space emulator.
+>
+> Signed-off-by: Christoph M=C3=BCllner <christoph.muellner@vrull.eu>
 
-Yes, one more field should be needed in MultiFDPacket_t.  Noet that what I
-said above was about Multifdpages_t, not MultiFDPacket_t (which is the wire
-protocol instead).  To support zero page offloading we should need one more
-field for each.
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
-IMHO MultiFDPacket_t.pages_alloc is redundant and actually not useful..
-It's just that it existed in the wire protocol already so maybe we'd still
-better keep it there..
+Alistair
 
--- 
-Peter Xu
-
+> ---
+>  linux-user/syscall.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+> index 3ba20f99ad..24fa11d946 100644
+> --- a/linux-user/syscall.c
+> +++ b/linux-user/syscall.c
+> @@ -8826,6 +8826,7 @@ static int do_getdents64(abi_long dirfd, abi_long a=
+rg2, abi_long count)
+>  #define                RISCV_HWPROBE_EXT_ZVFH          (1 << 30)
+>  #define                RISCV_HWPROBE_EXT_ZVFHMIN       (1 << 31)
+>  #define                RISCV_HWPROBE_EXT_ZFA           (1ULL << 32)
+> +#define                RISCV_HWPROBE_EXT_ZTSO          (1ULL << 33)
+>  #define                RISCV_HWPROBE_EXT_ZACAS         (1ULL << 34)
+>  #define                RISCV_HWPROBE_EXT_ZICOND        (1ULL << 35)
+>
+> @@ -8940,6 +8941,8 @@ static void risc_hwprobe_fill_pairs(CPURISCVState *=
+env,
+>                       RISCV_HWPROBE_EXT_ZVFHMIN : 0;
+>              value |=3D cfg->ext_zfa ?
+>                       RISCV_HWPROBE_EXT_ZFA : 0;
+> +            value |=3D cfg->ext_ztso ?
+> +                     RISCV_HWPROBE_EXT_ZTSO : 0;
+>              value |=3D cfg->ext_zacas ?
+>                       RISCV_HWPROBE_EXT_ZACAS : 0;
+>              value |=3D cfg->ext_zicond ?
+> --
+> 2.43.0
+>
+>
 
