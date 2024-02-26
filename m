@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56EC5867C82
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 17:50:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21FF5867C85
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 17:50:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reeAj-00069V-06; Mon, 26 Feb 2024 11:49:45 -0500
+	id 1reeAh-00063o-Bd; Mon, 26 Feb 2024 11:49:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reeAg-00065O-Fe
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:49:42 -0500
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reeAe-0005y9-Jf
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:49:40 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reeAW-0006FU-1e
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:49:42 -0500
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2d22fa5c822so48223531fa.2
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 08:49:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reeAc-0006Gn-Hc
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:49:40 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-412a57832fcso7833435e9.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 08:49:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708966170; x=1709570970; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708966176; x=1709570976; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=g6KcXi7ub1LWF1H0fHJ1E8fzi9Cbgex9iIz41HyRMbc=;
- b=EsJYmrflOD26LJS/wXzRlmsdfyjuqIZABXSpJA2z53EEm4cUm21itVZ1g0xdCCRrdW
- KmSAYNgO1NCaflghcL+PRcCqvENPxTpVj8ANrM/eJfGWcXhimy7EYzE6PWVY779tmSEk
- rY2wTlD5ZobSVSUy6gHlFaY9rH2W4FpAFKqJJdYJx+D71K75p1knsqkXaE2NmjyMAFLV
- ZTaPog0o9VKSdNGuFVlD4cqglMdIuK6ePBMg8Ti9POx0gS+GRYyJLGe+fRGkfxa7Utra
- lNS0ymkqVx+Xy5Ql858uubgNiMPl5HkW/CQayUUN1Vheun+xAidef9VP+c4W06v7ksFU
- aUEg==
+ bh=BSZsP7iZ+WCm1GRQ6l/dckqzk5JVKU9/jCan+ZQ8ppM=;
+ b=GPopM5Kgqxq1LK39e2qEN0yZEP86Ffebq/R8Mc2TB/iZuZsU9M4vu9z18xHV0/evAK
+ yRBmmQYB1o+DRTO6eitcl/qT+RY+nWy34KAv6mq2CdTFK42lxLGoA0NvsRigrOM8H0L7
+ 7EQ/NSCTBsTa++I/tumLwWgkk9CAJEiqJNZVEqU9TbjER+UObQSWOk0Nirpzr+4A/8G7
+ OAvQR3vwpwMVrp6aGNq88629H1e+4xFv9vIVS/DSNMY+4eqdKvmxh5dA53c758kmh3O6
+ dXUgXqnElSPFplYgI9jCgDGtAvHbnpm7krZQp7nz9PgRl1EOB5fSknU2iJafwa4/zbpc
+ MtQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708966170; x=1709570970;
+ d=1e100.net; s=20230601; t=1708966176; x=1709570976;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=g6KcXi7ub1LWF1H0fHJ1E8fzi9Cbgex9iIz41HyRMbc=;
- b=OhR8PWq+NeKE0uLTdPD//ZOEVjz7VPlAIEcwDWvW5ZB7VGFKGgbg+1bv+XYCr3p4+c
- 7+GfuTNgJd2ywpI+uOHgvw3D8EeHV/5F9jq3b7D+KhKfrGcH7SHENhNGc7mgsbRYQTyr
- sTLv3F05qpe/MVcSYusWmQ5s+tqQIqe10/xdVYxaJhuJJwiDn/24Ml2RySuo3duHPYrp
- UFCJLraama0YPeO0H+JXroyJ3zedo9mr1NsrfDTjfiv+Tqm4PD115h/4h+TqTqDQ++OL
- RJFEQ+Tb2MIBZ0OueXFwY1W3Bkz/ugRlUfE50TafRp86glDLNtzwotT8WORnjBBwRipX
- GiQQ==
-X-Gm-Message-State: AOJu0Yze2c3uaMUBQOIS09Sb8Qm1NJpMWY6ugYas1O7TNkvwViGsCwRU
- DXHmGOBpTXpgpl/TeKLJtDf+J/CaWLG8wt3CQLj/xCGjIAFp4e9xoCxPAVngw/Ul9MX+1i4IcHy
- H
-X-Google-Smtp-Source: AGHT+IHnpast/mEXTrJrNkX7+tF6NW5v7o3OTkGG3SWMa3Jg87IZlLHPQIBrDGZB/A9izdRwo7aPfA==
-X-Received: by 2002:a2e:9607:0:b0:2d2:8a6c:3e54 with SMTP id
- v7-20020a2e9607000000b002d28a6c3e54mr2444119ljh.16.1708966170014; 
- Mon, 26 Feb 2024 08:49:30 -0800 (PST)
+ bh=BSZsP7iZ+WCm1GRQ6l/dckqzk5JVKU9/jCan+ZQ8ppM=;
+ b=VbXiFbwEqcTtVSybF20idAE37JiuColuyDETxvqTNMrr81DpYF144d+s+TL/sHgGYs
+ npBDqd9LH8io/z3fI49WjbYGVV+SSD+GjqqEXPBeBbU/MlG8RdU4u+LnnTKwkeSYP55/
+ 8ZkRYVSoUMSvg1PSDAElwafVmYiqH4aFpPMQDnOhY1Is6M5QHFZxh/yyFk7ntH0psXWO
+ cssKfhnrfLTsmsOK5cjJUSFc02Rc/xhj4Lk65IHdcmnMXwZfOHqwUqttc1C9BVavr/AA
+ BwtPZoxUS25hcxMtBa6IZK9oCId4OOsYkw/1Gfj4yQewH3vCgJq9V1ZHU11UbzKfcTvA
+ eLyA==
+X-Gm-Message-State: AOJu0YxSaL/OWlltdS6qgcFP1yXUQwCcZd0Jwb+yvGIisAP/HAa7rz7h
+ D/g8CpqKo31Yy+CE0tlrn5UzI/GTTQ6lN2G2r/5+05X4hzvQ1XSV7gaJfoOmT45RWbxneZ7nsfl
+ S
+X-Google-Smtp-Source: AGHT+IFSqJhGU2EosIlK+UpRwF6yY5sOcOjxBheJ49rYM49QKig+cwz48xBMpyY0ZV2EeaJixfFq6A==
+X-Received: by 2002:a05:600c:1f86:b0:412:8306:a7bb with SMTP id
+ je6-20020a05600c1f8600b004128306a7bbmr6393130wmb.12.1708966176308; 
+ Mon, 26 Feb 2024 08:49:36 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.223.153])
  by smtp.gmail.com with ESMTPSA id
- l6-20020a1c7906000000b0040fddaf9ff4sm12391603wme.40.2024.02.26.08.49.27
+ o5-20020a05600c510500b00412157dc70bsm8942178wms.30.2024.02.26.08.49.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 26 Feb 2024 08:49:29 -0800 (PST)
+ Mon, 26 Feb 2024 08:49:35 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
@@ -71,23 +71,25 @@ Cc: Thomas Huth <thuth@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Laszlo Ersek <lersek@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/5] hw/i386/piix: Set CPU SMI# interrupt using QDev GPIO API
-Date: Mon, 26 Feb 2024 17:49:09 +0100
-Message-ID: <20240226164913.94077-3-philmd@linaro.org>
+Subject: [RFC PATCH 3/5] hw/ahci/ich9_tco: Set CPU SMI# interrupt using QDev
+ GPIO API
+Date: Mon, 26 Feb 2024 17:49:10 +0100
+Message-ID: <20240226164913.94077-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240226164913.94077-1-philmd@linaro.org>
 References: <20240226164913.94077-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,64 +106,139 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Use the CPU "SMI" IRQ, removing a call to cpu_interrupt()
-from hw/.
+from hw/. Keep a reference to the IRQ in the TCOIORegs
+structure, which while being names with the Regs suffix
+doesn't contain only registers. Remove ich9_generate_smi().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/i386/pc.h | 2 --
- hw/i386/pc.c         | 9 ---------
- hw/i386/pc_piix.c    | 4 ++--
- 3 files changed, 2 insertions(+), 13 deletions(-)
+I suppose ideally ICH9 TCO would be a QOM object...
+---
+ include/hw/acpi/ich9.h     |  1 +
+ include/hw/acpi/ich9_tco.h |  4 ++--
+ hw/acpi/ich9.c             |  3 ++-
+ hw/acpi/ich9_tco.c         | 13 ++++++++++---
+ hw/isa/ich9_lpc.c          |  5 -----
+ 5 files changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 4bb1899602..c8227e18c3 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -148,8 +148,6 @@ GSIState *pc_gsi_create(qemu_irq **irqs, bool pci_enabled);
- /* pc.c */
- extern int fd_bootchk;
+diff --git a/include/hw/acpi/ich9.h b/include/hw/acpi/ich9.h
+index 3587a35c9f..84e1557257 100644
+--- a/include/hw/acpi/ich9.h
++++ b/include/hw/acpi/ich9.h
+@@ -49,6 +49,7 @@ typedef struct ICH9LPCPMRegs {
+     uint32_t smi_sts;
  
--void pc_acpi_smi_interrupt(void *opaque, int irq, int level);
--
- #define PCI_HOST_PROP_RAM_MEM          "ram-mem"
- #define PCI_HOST_PROP_PCI_MEM          "pci-mem"
- #define PCI_HOST_PROP_SYSTEM_MEM       "system-mem"
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 880e95de26..1df9f5ba90 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -651,15 +651,6 @@ static gboolean pc_init_ne2k_isa(ISABus *bus, NICInfo *nd, Error **errp)
-     return true;
+     qemu_irq irq;      /* SCI */
++    qemu_irq smi;      /* SMI */
+ 
+     uint32_t pm_io_base;
+     Notifier powerdown_notifier;
+diff --git a/include/hw/acpi/ich9_tco.h b/include/hw/acpi/ich9_tco.h
+index 68ee64942f..31730b8e14 100644
+--- a/include/hw/acpi/ich9_tco.h
++++ b/include/hw/acpi/ich9_tco.h
+@@ -73,10 +73,10 @@ typedef struct TCOIORegs {
+     uint8_t timeouts_no;
+ 
+     MemoryRegion io;
++    qemu_irq smi;
+ } TCOIORegs;
+ 
+-void ich9_acpi_pm_tco_init(TCOIORegs *tr, MemoryRegion *parent);
+-void ich9_generate_smi(void);
++void ich9_acpi_pm_tco_init(TCOIORegs *tr, MemoryRegion *parent, qemu_irq smi);
+ 
+ extern const VMStateDescription vmstate_ich9_sm_tco;
+ 
+diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
+index 1f41ab49c4..e0b3838365 100644
+--- a/hw/acpi/ich9.c
++++ b/hw/acpi/ich9.c
+@@ -318,7 +318,8 @@ void ich9_pm_init(PCIDevice *lpc_pci, ICH9LPCPMRegs *pm, qemu_irq sci_irq)
+     memory_region_add_subregion(&pm->io, ICH9_PMIO_SMI_EN, &pm->io_smi);
+ 
+     if (pm->enable_tco) {
+-        ich9_acpi_pm_tco_init(&pm->tco_regs, &pm->io);
++        pm->smi = qdev_get_gpio_in_named(DEVICE(first_cpu), "SMI", 0);
++        ich9_acpi_pm_tco_init(&pm->tco_regs, &pm->io, pm->smi);
+     }
+ 
+     if (pm->acpi_pci_hotplug.use_acpi_hotplug_bridge) {
+diff --git a/hw/acpi/ich9_tco.c b/hw/acpi/ich9_tco.c
+index 7499ec17db..1061b18b7e 100644
+--- a/hw/acpi/ich9_tco.c
++++ b/hw/acpi/ich9_tco.c
+@@ -14,6 +14,7 @@
+ 
+ #include "hw/acpi/ich9_tco.h"
+ #include "hw/isa/ich9_lpc.h"
++#include "hw/irq.h"
+ #include "trace.h"
+ 
+ enum {
+@@ -31,6 +32,11 @@ enum {
+     SW_IRQ_GEN_DEFAULT      = 0x03,
+ };
+ 
++static void ich9_generate_smi(TCOIORegs *tr)
++{
++    qemu_irq_raise(tr->smi);
++}
++
+ static inline void tco_timer_reload(TCOIORegs *tr)
+ {
+     int ticks = tr->tco.tmr & TCO_TMR_MASK;
+@@ -72,7 +78,7 @@ static void tco_timer_expired(void *opaque)
+     }
+ 
+     if (pm->smi_en & ICH9_PMIO_SMI_EN_TCO_EN) {
+-        ich9_generate_smi();
++        ich9_generate_smi(tr);
+     }
+     tr->tco.rld = tr->tco.tmr;
+     tco_timer_reload(tr);
+@@ -154,7 +160,7 @@ static void tco_ioport_writew(TCOIORegs *tr, uint32_t addr, uint32_t val)
+     case TCO_DAT_IN:
+         tr->tco.din = val;
+         tr->tco.sts1 |= SW_TCO_SMI;
+-        ich9_generate_smi();
++        ich9_generate_smi(tr);
+         break;
+     case TCO_DAT_OUT:
+         tr->tco.dout = val;
+@@ -225,7 +231,7 @@ static const MemoryRegionOps tco_io_ops = {
+     .endianness = DEVICE_LITTLE_ENDIAN,
+ };
+ 
+-void ich9_acpi_pm_tco_init(TCOIORegs *tr, MemoryRegion *parent)
++void ich9_acpi_pm_tco_init(TCOIORegs *tr, MemoryRegion *parent, qemu_irq smi)
+ {
+     *tr = (TCOIORegs) {
+         .tco = {
+@@ -245,6 +251,7 @@ void ich9_acpi_pm_tco_init(TCOIORegs *tr, MemoryRegion *parent)
+         .tco_timer     = timer_new_ns(QEMU_CLOCK_VIRTUAL, tco_timer_expired, tr),
+         .expire_time   = -1,
+         .timeouts_no   = 0,
++        .smi = smi,
+     };
+     memory_region_init_io(&tr->io, memory_region_owner(parent),
+                           &tco_io_ops, tr, "sm-tco", ICH9_PMIO_TCO_LEN);
+diff --git a/hw/isa/ich9_lpc.c b/hw/isa/ich9_lpc.c
+index 2339f66e0f..b1f41158c5 100644
+--- a/hw/isa/ich9_lpc.c
++++ b/hw/isa/ich9_lpc.c
+@@ -353,11 +353,6 @@ static PCIINTxRoute ich9_route_intx_pin_to_irq(void *opaque, int pirq_pin)
+     return route;
  }
  
--void pc_acpi_smi_interrupt(void *opaque, int irq, int level)
+-void ich9_generate_smi(void)
 -{
--    X86CPU *cpu = opaque;
--
--    if (level) {
--        cpu_interrupt(CPU(cpu), CPU_INTERRUPT_SMI);
--    }
+-    cpu_interrupt(first_cpu, CPU_INTERRUPT_SMI);
 -}
 -
- static
- void pc_machine_done(Notifier *notifier, void *data)
+ /* Returns -1 on error, IRQ number on success */
+ static int ich9_lpc_sci_irq(ICH9LPCState *lpc)
  {
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index ce6aad758d..447130ade1 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -345,9 +345,9 @@ static void pc_init1(MachineState *machine,
-     pc_cmos_init(pcms, x86ms->rtc);
- 
-     if (piix4_pm) {
--        smi_irq = qemu_allocate_irq(pc_acpi_smi_interrupt, first_cpu, 0);
--
-+        smi_irq = qdev_get_gpio_in_named(DEVICE(first_cpu), "SMI", 0);
-         qdev_connect_gpio_out_named(DEVICE(piix4_pm), "smi-irq", 0, smi_irq);
-+
-         pcms->smbus = I2C_BUS(qdev_get_child_bus(DEVICE(piix4_pm), "i2c"));
-         /* TODO: Populate SPD eeprom data.  */
-         smbus_eeprom_init(pcms->smbus, 8, NULL, 0);
 -- 
 2.41.0
 
