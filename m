@@ -2,94 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3165866D6E
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 10:01:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2A2C866D3E
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:55:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reWrS-0004VU-OX; Mon, 26 Feb 2024 04:01:22 -0500
+	id 1reWkX-0000ZE-TL; Mon, 26 Feb 2024 03:54:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1reWrR-0004Uu-Cu
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 04:01:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1reWkT-0000YM-VO
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:54:10 -0500
+Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1reWrP-0002l5-Vu
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 04:01:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708938078;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=LG1v1RlOEltJThm61dDzjy4J1Pxvqzv2IToclSKtxgY=;
- b=DFB7zu8K0/4LIxHxbVWY5ETOBHfZwlu70rbj+zEs+aTYb51JPWeZlUAmXlhR5z/Ny5zBFW
- IuDvJo95oWvEbK0jE8+OzAiBEjyxsynf/6MQc3gkpKMt9PtYcrvG1LU4Ha5VU4HaWtuLJR
- GRSLiYZyh7mPGVOZwupmBAdyTJWQZ3o=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-642-ZUtnGmhnPN-JsdrhFj1GqA-1; Mon, 26 Feb 2024 04:01:17 -0500
-X-MC-Unique: ZUtnGmhnPN-JsdrhFj1GqA-1
-Received: by mail-pg1-f200.google.com with SMTP id
- 41be03b00d2f7-5dc97ac2facso1330250a12.0
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 01:01:16 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708938076; x=1709542876;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LG1v1RlOEltJThm61dDzjy4J1Pxvqzv2IToclSKtxgY=;
- b=r0tQYDLfoINzY80uljgWgRsHsCu5++w71QNrSaf6z79VcfP+NtzxkBFVgWvABYgVn6
- oEgPgGBpWBOZRByDlKwOywED3Hq8rt3pl0L4DvwSbzuGe3LB9+J0j6Ws8N05hAc3lX14
- 5TOdpAWDqXn5xczvA5w21WDS3ngIhl3ufdzhpIW7pfjzXpvOxnCt8ts8RThNqD8y9u+0
- Gw/XrvHmpjOnR/FTxi5/jc7K32jNqRSJrV9udsCvayXIE7LIAvvk9JeisWI3o8VqlUT2
- 3i8VS29J74Og9Txa61jJrWoZ6hrXVYhqagNHSv9MOKiI/WQsbKFq629lltPPPTB3kCGj
- Hlgw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXZrAmpX0D9gNUZu8wASI87BtZBd7z/jVQoByt9ECqYXDj/0uqj9Odl/boHejyV/Y+Y3BASXpo9UkFckDiAr2uVW+ugAFw=
-X-Gm-Message-State: AOJu0YyeknM49hgWurjnNou/zZvOxkibFPUXrmoB2H2M8pYLJOMw7aEy
- IaBD+eboWXnVNaNrn+i1UPQuB9gkfhFtQH3y04ugQmHlupnYvlKu3J6JU3ZMm1SO3fno07Hrm6O
- dxWKB1aqtEoLlq4pKtBIvRCCYPsH0KolAoOSuGprQhSTRAWb9fuFX
-X-Received: by 2002:a17:90a:15cf:b0:298:bc90:3b69 with SMTP id
- w15-20020a17090a15cf00b00298bc903b69mr4529321pjd.3.1708938075625; 
- Mon, 26 Feb 2024 01:01:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFAjZMCh67wJMNYUiDxAb36Ccns6tsemyoMqVkLvslDw1kCn1Fl7dHwEbv7joFVQhbf8WQHRw==
-X-Received: by 2002:a17:90a:15cf:b0:298:bc90:3b69 with SMTP id
- w15-20020a17090a15cf00b00298bc903b69mr4529300pjd.3.1708938075308; 
- Mon, 26 Feb 2024 01:01:15 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- cu12-20020a17090afa8c00b00298f2ad430csm3931334pjb.0.2024.02.26.01.01.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Feb 2024 01:01:15 -0800 (PST)
-Date: Mon, 26 Feb 2024 17:01:08 +0800
-From: Peter Xu <peterx@redhat.com>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Cc: Steven Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org,
- David Hildenbrand <david@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Marc-Andre Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH V4 00/14] allow cpr-reboot for vfio
-Message-ID: <ZdxTVHJ8p4lYRPxo@x1n>
-References: <1708622920-68779-1-git-send-email-steven.sistare@oracle.com>
- <c95b3c15-0154-438c-baa0-98f4c539355a@oracle.com>
- <Zdv0BNtJxkd8413g@x1n>
- <02bf2132-ed34-4ecd-841b-5f93eded7ea4@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1reWkQ-0001Zk-4D
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:54:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1708937646; x=1740473646;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=U40E5/5sv6h+//U6p9gFhgvAFzDdkN3emXgdd1nAFMs=;
+ b=nwP2vh8RAd759K+0X/FPsH5ggb7t5uskgvLYi2TLP6PTQRbYK5wMw7+s
+ TaB7n+HY4Glci148EsN+ssndXNGwO2NBZO2U4/us2KibY2ad++Etc136f
+ Eb+0oH2fMKHA7RFvBGg/Iv/O0gzfnzkBNsItZe6Wy/pHoLJtQCLIjlXeD
+ ApOApWuXPTocpUtHeLYocLC09qM7UG8rUKOWQhPA6UROefuBUqL8LzQmY
+ jJqo7MnmbZ6RYeGMNWLchWZZaWzlQ2ZSjHKiEvxgcIi5n9VEGjLaTfAt9
+ AILkWMQso8H6XsMQxnjW7ZJ4NdpW2jfmRH8PLpxIYSSTbJkQEoAYy20p/ A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="14626364"
+X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; d="scan'208";a="14626364"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2024 00:54:03 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; d="scan'208";a="11377175"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa005.jf.intel.com with ESMTP; 26 Feb 2024 00:54:00 -0800
+Date: Mon, 26 Feb 2024 17:07:41 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Bernhard Beschow <shentey@gmail.com>
+Cc: qemu-devel@nongnu.org, Ani Sinha <anisinha@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Paul Durrant <paul@xen.org>,
+ Igor Mammedov <imammedo@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ David Woodhouse <dwmw2@infradead.org>,
+ Sergio Lopez <slp@redhat.com>, Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v2 4/6] hw/i386/pc: Remove unneeded class attribute
+ "kvmclock_enabled"
+Message-ID: <ZdxU3Wb4IY/ON4iY@intel.com>
+References: <20240224135851.100361-1-shentey@gmail.com>
+ <20240224135851.100361-5-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <02bf2132-ed34-4ecd-841b-5f93eded7ea4@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+In-Reply-To: <20240224135851.100361-5-shentey@gmail.com>
+Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.097,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -107,14 +86,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Feb 26, 2024 at 09:49:46AM +0100, Cédric Le Goater wrote:
-> Go ahead. It will help me for the changes I am doing on error reporting
-> for VFIO migration. I will rebase on top.
+On Sat, Feb 24, 2024 at 02:58:49PM +0100, Bernhard Beschow wrote:
+> Date: Sat, 24 Feb 2024 14:58:49 +0100
+> From: Bernhard Beschow <shentey@gmail.com>
+> Subject: [PATCH v2 4/6] hw/i386/pc: Remove unneeded class attribute
+>  "kvmclock_enabled"
+> X-Mailer: git-send-email 2.44.0
+> 
+> PCMachineClass introduces the attribute into the class hierarchy and sets it to
+> true. There is no sub class overriding the attribute. Commit 30d2a17b46e9
+> "hw/i386: Remove the deprecated machines 0.12 up to 0.15" removed the last
+> overrides of this attribute. The attribute is now unneeded and can be removed.
+> 
+> Fixes: 30d2a17b46e9 "hw/i386: Remove the deprecated machines 0.12 up to 0.15"
+> Cc: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> ---
+>  include/hw/i386/pc.h | 1 -
+>  hw/i386/pc.c         | 1 -
+>  hw/i386/pc_piix.c    | 2 +-
+>  3 files changed, 1 insertion(+), 3 deletions(-)
 
-Thanks for confirming.  I queued the migration patches then, but leave the
-two vfio one for further discussion.
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
--- 
-Peter Xu
-
+> 
+> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+> index 27834043c3..4bb1899602 100644
+> --- a/include/hw/i386/pc.h
+> +++ b/include/hw/i386/pc.h
+> @@ -92,7 +92,6 @@ struct PCMachineClass {
+>  
+>      /* Device configuration: */
+>      bool pci_enabled;
+> -    bool kvmclock_enabled;
+>      const char *default_south_bridge;
+>  
+>      /* Compat options: */
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index 353edeb2ea..a80f809b83 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -1799,7 +1799,6 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
+>      pcmc->smbios_uuid_encoded = true;
+>      pcmc->gigabyte_align = true;
+>      pcmc->has_reserved_memory = true;
+> -    pcmc->kvmclock_enabled = true;
+>      pcmc->enforce_aligned_dimm = true;
+>      pcmc->enforce_amd_1tb_hole = true;
+>      /* BIOS ACPI tables: 128K. Other BIOS datastructures: less than 4K reported
+> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+> index 814d24326d..49d5d48db9 100644
+> --- a/hw/i386/pc_piix.c
+> +++ b/hw/i386/pc_piix.c
+> @@ -184,7 +184,7 @@ static void pc_init1(MachineState *machine,
+>      pc_machine_init_sgx_epc(pcms);
+>      x86_cpus_init(x86ms, pcmc->default_cpu_version);
+>  
+> -    if (kvm_enabled() && pcmc->kvmclock_enabled) {
+> +    if (kvm_enabled()) {
+>          kvmclock_create(pcmc->kvmclock_create_always);
+>      }
+>  
+> -- 
+> 2.44.0
+> 
+> 
 
