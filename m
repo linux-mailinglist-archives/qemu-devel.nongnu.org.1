@@ -2,87 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60504866C4B
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:32:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF107866C67
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:35:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reWNb-0002T5-Ni; Mon, 26 Feb 2024 03:30:31 -0500
+	id 1reWND-00020T-5Q; Mon, 26 Feb 2024 03:30:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1reWNW-0002Qg-45
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:30:26 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1reWNU-0005iV-EL
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:30:25 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1dc09556599so24259035ad.1
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 00:30:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708936223; x=1709541023; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AQuCe4WHCbklHlT19DTaQUw/vc5/AugcEjGjIpSmyJk=;
- b=VkopBpRfcB3vV4GKmQSISWbSJrCOcQnJxdoGTgsiI4fmFR5iPhbeCeDsZH/PEO8nP+
- cFt+tN2h2G3wXyT8QyigDOOz0PFM1vGG1IILr7t4oUPQy/pNv/AUydz4lp8tqGYOBgsC
- sATaYUpBUjcFuZmFG3tbnwn+N8mKA3zzq1nDjGZ+jK6/BKzipZ9ISriYnDig8R8Dvu/G
- 1D4HI0nRznEt11L11WpCIDZrTJ9T/401MIC6/QjPcqBUf+Dj4Ojtrj+zXx9QL3PYrVEC
- i/47q8FjmBNrdgWyDpczu8FUH9zcda+VoCkKQ47GQ/gRS59BPkG9+/IW9on2U0T5DYEQ
- G52w==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1reWN2-0001zE-0x
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:29:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1reWN0-0005Pm-4t
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:29:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1708936193;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=M1eDmbIANOn5GUFnwUNctW2wFwCkHAYHYCToWMrxESA=;
+ b=CDvxwg7uiVtqq9Cw6yAFwnLBJfp0INFrYpO9dwl1Nz+LpD4mmjJHxH7HFcBuG4hCEoqQeT
+ AGMElfQvGasS1zn6NkwCkpVw5MCIkm1bzNogEZuZ8Mtc4pQ+ee3PEkEfejHD6z6V4VuuCR
+ am/srYuMxRl+gL50U/mTQNWOdoazkJQ=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-403-LV2HJsL6PyKYlaCdauIpUA-1; Mon, 26 Feb 2024 03:29:48 -0500
+X-MC-Unique: LV2HJsL6PyKYlaCdauIpUA-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a431a294ebeso32232466b.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 00:29:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708936223; x=1709541023;
+ d=1e100.net; s=20230601; t=1708936187; x=1709540987;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AQuCe4WHCbklHlT19DTaQUw/vc5/AugcEjGjIpSmyJk=;
- b=It/nbBWGhPOTz3GjsAqupsTbzeNW+y26N7yDoaS4tffJBTYKSKVYBlRdZd4HzBEocN
- WHlTsxGU5LMG/EX3+B2RkDjhHtR0BlIKhc2ezxycpW9ee3gIwQeJu1JnEYagxeck3fCJ
- XLYphm39cCBhnNW7g9i4ZSdd/vqZZOyLHO/iB/xJudC3DP/oscu2rg3sZ78bV47zpYs8
- 7qinqcaYWM3E7SWew+3deI08AD/5F6TtLX+XuiyCGA3bK+kKUffJWHy4gO9g60A7s+Gg
- BvZ+tk4CNAf8wk6KeDW6B4CE8FefN14+4vN3UVBunMgFR7u+o+qZhxGsZDA3t+q9uxJ8
- Lzig==
-X-Gm-Message-State: AOJu0Yxw3pX/xUjDxBi343Fw0HaZcdsy56Kl+9U1mnRF+mwESWnt8JaP
- Y06zWGdauJITPnIEkzC1KVeSb36bSVMLlIgIItCNObrDnJZduTliTRsMWwnb
-X-Google-Smtp-Source: AGHT+IFHPAJZZbd282Gn6yrVKd0J8Ika6JlAfhK8qRmTVQsLfph7xSVpChW59Uyn6Vvg++JDy0ndHQ==
-X-Received: by 2002:a17:902:ef48:b0:1dc:8eba:42c3 with SMTP id
- e8-20020a170902ef4800b001dc8eba42c3mr6740617plx.23.1708936222765; 
- Mon, 26 Feb 2024 00:30:22 -0800 (PST)
-Received: from wheely.local0.net ([1.146.74.212])
+ bh=M1eDmbIANOn5GUFnwUNctW2wFwCkHAYHYCToWMrxESA=;
+ b=e+dPiZt2U1WvXr7KMp0SFhKX/k+z/0X46sICDDS3PPoIVSdEqI8HEAhL0aLZjBWdVz
+ eSc5R7L/GQLlstlZeOoAPKBMMCsjgAwtLQA4vDj6L+U84V7Ib1GG/wMMktRWnIuyLsvx
+ cyqsJs7PudZFkx/wHt82MYKnTalFPOdNnlTxuXzKo2KihOlMq46duwuR+H74NiZTX/p1
+ Pkf7wqet1UHW/XfbY9bPE29xFxBP2nFI3PC8PBU/7APKwJDNuyEdoStUW+Ivp3jtCQ6+
+ Y09eN3eSHz0+9isqoS8ax5jWh/vIA8+s9dBCnOmNeOB6Mhl3GQQx+CQu574HrGSagYi+
+ ggGg==
+X-Gm-Message-State: AOJu0YzcGkKv5yKHVe/l389c8fIxfde4RwQ9Vq69qXKEhdd62KVJuJqX
+ sWiBqr4dujDJrN3GN7HJ8cOP9ezMW1mXyFIW4rnyNz6leBEQs1yFkUTgaPwND5WxjJ5iSeSgZiE
+ w9WWoiXerNOGWiPoH6lj2N2Ja7HpgzbkuyvKyrwoMricCvhFH5fH1+eCFy9v1MQ3w2mXIYjuunr
+ rJRBD/rqA5cwKoAY85Ca/qJd678gX4bdis/WhG
+X-Received: by 2002:a17:906:aed5:b0:a3f:ee60:4e15 with SMTP id
+ me21-20020a170906aed500b00a3fee604e15mr4144270ejb.55.1708936187054; 
+ Mon, 26 Feb 2024 00:29:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGdFpKpC7Ruhw9H/LpSIe8mncILi6Ijo6d8qGOe++uiDEGkhYUABuXwcZGXjGmbYEw3V7sl7A==
+X-Received: by 2002:a17:906:aed5:b0:a3f:ee60:4e15 with SMTP id
+ me21-20020a170906aed500b00a3fee604e15mr4144254ejb.55.1708936186482; 
+ Mon, 26 Feb 2024 00:29:46 -0800 (PST)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- w16-20020a1709026f1000b001d9641003cfsm3511260plk.142.2024.02.26.00.30.17
+ kx5-20020a170907774500b00a3d81b90ffcsm2162974ejc.218.2024.02.26.00.29.43
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Feb 2024 00:30:22 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
+ Mon, 26 Feb 2024 00:29:46 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
- Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH v3 4/9] replay: allow runstate shutdown->running when
- replaying trace
-Date: Mon, 26 Feb 2024 18:29:40 +1000
-Message-ID: <20240226082945.1452499-5-npiggin@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240226082945.1452499-1-npiggin@gmail.com>
-References: <20240226082945.1452499-1-npiggin@gmail.com>
+Subject: [PATCH 1/2] ide: collapse parameters to ide_init_drive
+Date: Mon, 26 Feb 2024 09:29:40 +0100
+Message-ID: <20240226082941.90364-2-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240226082941.90364-1-pbonzini@redhat.com>
+References: <20240226082941.90364-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.097,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,89 +100,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When replaying a trace, it is possible to go from shutdown to running
-with a reverse-debugging step. This can be useful if the problem being
-debugged triggers a reset or shutdown.
+All calls to ide_init_drive comes from ide_dev_initfn.  Just pass down the
+IDEDevice (IDEState is kinda obsolete and should be merged into IDEDevice).
 
-This can be tested by making a recording of a machine that shuts down,
-then using -action shutdown=pause when replaying it. Continuing to the
-end of the trace then reverse-stepping in gdb crashes due to invalid
-runstate transition.
-
-Just permitting the transition seems to be all that's necessary for
-reverse-debugging to work well in such a state.
-
-Reviewed-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/sysemu/runstate.h |  1 +
- replay/replay.c           |  2 ++
- system/runstate.c         | 19 +++++++++++++++++++
- 3 files changed, 22 insertions(+)
+ include/hw/ide/internal.h |  6 +-----
+ hw/ide/core.c             | 40 ++++++++++++++++++---------------------
+ hw/ide/qdev.c             |  5 +----
+ 3 files changed, 20 insertions(+), 31 deletions(-)
 
-diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
-index 0117d243c4..fe25eed3c0 100644
---- a/include/sysemu/runstate.h
-+++ b/include/sysemu/runstate.h
-@@ -9,6 +9,7 @@ void runstate_set(RunState new_state);
- RunState runstate_get(void);
- bool runstate_is_running(void);
- bool runstate_needs_reset(void);
-+void runstate_replay_enable(void);
+diff --git a/include/hw/ide/internal.h b/include/hw/ide/internal.h
+index 3bdcc75597d..0ad0d59d578 100644
+--- a/include/hw/ide/internal.h
++++ b/include/hw/ide/internal.h
+@@ -614,11 +614,7 @@ uint32_t ide_data_readw(void *opaque, uint32_t addr);
+ void ide_data_writel(void *opaque, uint32_t addr, uint32_t val);
+ uint32_t ide_data_readl(void *opaque, uint32_t addr);
  
- typedef void VMChangeStateHandler(void *opaque, bool running, RunState state);
- 
-diff --git a/replay/replay.c b/replay/replay.c
-index 3fd241a4fc..2951eed3bd 100644
---- a/replay/replay.c
-+++ b/replay/replay.c
-@@ -383,6 +383,8 @@ static void replay_enable(const char *fname, int mode)
-         /* go to the beginning */
-         fseek(replay_file, HEADER_SIZE, SEEK_SET);
-         replay_fetch_data_kind();
-+
-+        runstate_replay_enable();
-     }
- 
-     replay_init_events();
-diff --git a/system/runstate.c b/system/runstate.c
-index d6ab860eca..bd0fed8657 100644
---- a/system/runstate.c
-+++ b/system/runstate.c
-@@ -182,6 +182,12 @@ static const RunStateTransition runstate_transitions_def[] = {
-     { RUN_STATE__MAX, RUN_STATE__MAX },
+-int ide_init_drive(IDEState *s, BlockBackend *blk, IDEDriveKind kind,
+-                   const char *version, const char *serial, const char *model,
+-                   uint64_t wwn,
+-                   uint32_t cylinders, uint32_t heads, uint32_t secs,
+-                   int chs_trans, Error **errp);
++int ide_init_drive(IDEState *s, IDEDevice *dev, IDEDriveKind kind, Error **errp);
+ void ide_exit(IDEState *s);
+ void ide_bus_init_output_irq(IDEBus *bus, qemu_irq irq_out);
+ int ide_init_ioport(IDEBus *bus, ISADevice *isa, int iobase, int iobase2);
+diff --git a/hw/ide/core.c b/hw/ide/core.c
+index 9c4a8129028..3c42d72ac25 100644
+--- a/hw/ide/core.c
++++ b/hw/ide/core.c
+@@ -2589,24 +2589,20 @@ static const BlockDevOps ide_hd_block_ops = {
+     .resize_cb = ide_resize_cb,
  };
  
-+static const RunStateTransition replay_runstate_transitions_def[] = {
-+    { RUN_STATE_SHUTDOWN, RUN_STATE_RUNNING},
-+
-+    { RUN_STATE__MAX, RUN_STATE__MAX },
-+};
-+
- static bool runstate_valid_transitions[RUN_STATE__MAX][RUN_STATE__MAX];
+-int ide_init_drive(IDEState *s, BlockBackend *blk, IDEDriveKind kind,
+-                   const char *version, const char *serial, const char *model,
+-                   uint64_t wwn,
+-                   uint32_t cylinders, uint32_t heads, uint32_t secs,
+-                   int chs_trans, Error **errp)
++int ide_init_drive(IDEState *s, IDEDevice *dev, IDEDriveKind kind, Error **errp)
+ {
+     uint64_t nb_sectors;
  
- bool runstate_check(RunState state)
-@@ -189,6 +195,19 @@ bool runstate_check(RunState state)
-     return current_run_state == state;
+-    s->blk = blk;
++    s->blk = dev->conf.blk;
+     s->drive_kind = kind;
+ 
+-    blk_get_geometry(blk, &nb_sectors);
+-    s->cylinders = cylinders;
+-    s->heads = s->drive_heads = heads;
+-    s->sectors = s->drive_sectors = secs;
+-    s->chs_trans = chs_trans;
++    blk_get_geometry(s->blk, &nb_sectors);
++    s->cylinders = dev->conf.cyls;
++    s->heads = s->drive_heads = dev->conf.heads;
++    s->sectors = s->drive_sectors = dev->conf.secs;
++    s->chs_trans = dev->chs_trans;
+     s->nb_sectors = nb_sectors;
+-    s->wwn = wwn;
++    s->wwn = dev->wwn;
+     /* The SMART values should be preserved across power cycles
+        but they aren't.  */
+     s->smart_enabled = 1;
+@@ -2614,26 +2610,26 @@ int ide_init_drive(IDEState *s, BlockBackend *blk, IDEDriveKind kind,
+     s->smart_errors = 0;
+     s->smart_selftest_count = 0;
+     if (kind == IDE_CD) {
+-        blk_set_dev_ops(blk, &ide_cd_block_ops, s);
++        blk_set_dev_ops(s->blk, &ide_cd_block_ops, s);
+     } else {
+         if (!blk_is_inserted(s->blk)) {
+             error_setg(errp, "Device needs media, but drive is empty");
+             return -1;
+         }
+-        if (!blk_is_writable(blk)) {
++        if (!blk_is_writable(s->blk)) {
+             error_setg(errp, "Can't use a read-only drive");
+             return -1;
+         }
+-        blk_set_dev_ops(blk, &ide_hd_block_ops, s);
++        blk_set_dev_ops(s->blk, &ide_hd_block_ops, s);
+     }
+-    if (serial) {
+-        pstrcpy(s->drive_serial_str, sizeof(s->drive_serial_str), serial);
++    if (dev->serial) {
++        pstrcpy(s->drive_serial_str, sizeof(s->drive_serial_str), dev->serial);
+     } else {
+         snprintf(s->drive_serial_str, sizeof(s->drive_serial_str),
+                  "QM%05d", s->drive_serial);
+     }
+-    if (model) {
+-        pstrcpy(s->drive_model_str, sizeof(s->drive_model_str), model);
++    if (dev->model) {
++        pstrcpy(s->drive_model_str, sizeof(s->drive_model_str), dev->model);
+     } else {
+         switch (kind) {
+         case IDE_CD:
+@@ -2648,14 +2644,14 @@ int ide_init_drive(IDEState *s, BlockBackend *blk, IDEDriveKind kind,
+         }
+     }
+ 
+-    if (version) {
+-        pstrcpy(s->version, sizeof(s->version), version);
++    if (dev->version) {
++        pstrcpy(s->version, sizeof(s->version), dev->version);
+     } else {
+         pstrcpy(s->version, sizeof(s->version), qemu_hw_version());
+     }
+ 
+     ide_reset(s);
+-    blk_iostatus_enable(blk);
++    blk_iostatus_enable(s->blk);
+     return 0;
  }
  
-+void runstate_replay_enable(void)
-+{
-+    const RunStateTransition *p;
-+
-+    assert(replay_mode == REPLAY_MODE_PLAY);
-+
-+    for (p = &replay_runstate_transitions_def[0]; p->from != RUN_STATE__MAX;
-+         p++) {
-+        runstate_valid_transitions[p->from][p->to] = true;
-+    }
-+
-+}
-+
- static void runstate_init(void)
- {
-     const RunStateTransition *p;
+diff --git a/hw/ide/qdev.c b/hw/ide/qdev.c
+index 1b3b4da01df..9244c5a0fdb 100644
+--- a/hw/ide/qdev.c
++++ b/hw/ide/qdev.c
+@@ -208,10 +208,7 @@ static void ide_dev_initfn(IDEDevice *dev, IDEDriveKind kind, Error **errp)
+         return;
+     }
+ 
+-    if (ide_init_drive(s, dev->conf.blk, kind,
+-                       dev->version, dev->serial, dev->model, dev->wwn,
+-                       dev->conf.cyls, dev->conf.heads, dev->conf.secs,
+-                       dev->chs_trans, errp) < 0) {
++    if (ide_init_drive(s, dev, kind, errp) < 0) {
+         return;
+     }
+ 
 -- 
-2.42.0
+2.43.2
 
 
