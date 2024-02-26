@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4917866C65
+	by mail.lfdr.de (Postfix) with ESMTPS id B0685866C66
 	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:35:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reWPX-00045O-Vu; Mon, 26 Feb 2024 03:32:34 -0500
+	id 1reWQY-0005AP-Jy; Mon, 26 Feb 2024 03:33:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1reWNt-0002wS-Ht
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:30:54 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1reWNy-00035H-Ns
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:31:05 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1reWNs-0005mi-0O
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:30:49 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1dca3951ad9so5383085ad.3
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 00:30:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1reWNw-0005nL-Og
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:30:54 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1dca3951ad9so5383865ad.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 00:30:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708936245; x=1709541045; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708936251; x=1709541051; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ylQ7cG8ZxhS/Ow0dss1QvZgVNdYukV9TtCfdFWWomLA=;
- b=YtwKnT6nXEobL5QTWxW1dawYekO6IVJyPVvKLacs50beClLHp89BdaD9sPMts+ZZDu
- qBu0uXNuUc4R8U0hPEo7NfrVvG/cYojrzKYTlYb6z42YjR8XX1PXHfLV30nUbsq7yCZF
- 2P0vUUDJVZUsPX8Xb9V+wFrhcf8LDBcr+1wmCEw7UaN1AHDoESv3d65NkYaUhBXe3q+8
- SWM8kOFb7Kzi9MaGwlAdbiC60R1ScFXFvSHrPKJmW7ZGr+qkqWrEKJfOoky0+i6nLHKI
- QXjilexBQ/eb64MQJ9eKW5XHuGm57ZWkHELOVkTBtzo8T51uwWFqTt1vC8S/QCFZd2wF
- 618A==
+ bh=1GhIegaqPh+2F5bGtrPWjGv3DhZxRhRPtOUxR87HPoU=;
+ b=k3Gye/DGP1U5R3/W6VCnlJ03rFO/A0VBFiaU40jfy4BErQMUt8Nl8vkI2JJv105bcI
+ F6rZoKmINEevlx8S8naoN2q5WyIXUaaxhbBhVe0pSyaPgxBQUK6PeIr/1eM4ry3Xf4Zv
+ 3T5Ze+ldSsG9+WbkF8RKmZDMjO6evkMtexmoS291X9euP6Xalwy2PiBkyiLu4ewmYT/B
+ e5vpqNY1iDHTbIzATC0s3DGwPs12Krf67Q0ZQLL7WWC4JdR7Ffk3w389662/2oR97s2/
+ iTxPfdm18JG6cYNs49FNLwlIKzRE3GjFB1/T+ILPfXIvK/hkaBe/UroAN7nCasLn1icn
+ fCAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708936245; x=1709541045;
+ d=1e100.net; s=20230601; t=1708936251; x=1709541051;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ylQ7cG8ZxhS/Ow0dss1QvZgVNdYukV9TtCfdFWWomLA=;
- b=s5PRz6ylr+3EBqAa6lLN0x0DCZoZZKBH6puRZJ1qGlxmPyfsd2iJ+PRb3S8xc9LhlR
- 8h77HVdS7wbL8me7Wk+qYKgEC+GYO+Y684driTj8irJcyGK0kEuSOOokzvWu48r3oAzz
- y0IyOpbr50guSAuQqIck2BWxscSae9jjkRy0B+BIxm9hNnCRpBDOHw04rsCCjhhPObLm
- c/Ct7CspevlABdilhGzvEzyvdT7DYB5mNr5w54W/H28zTqaPsDoTx7/RZiulJmWcQA2O
- eAVkcIorWNnP4w2XtKNR7U9YifeDU1PqJa79JxsNipkiQFAHP0cCbAEYyW6Tke+o2VtZ
- e9Cg==
-X-Gm-Message-State: AOJu0YxISoMIgM5ETPjyrSIutkAtpZKhpNV4x2gyBPwAOxoDkpIxdy5v
- akbjIECFE7f+wgfpOlTq4yFzJpgkVMtanP4I5C40cM8tJpJjmxvZKUDt2Ahv
-X-Google-Smtp-Source: AGHT+IFTF1HJu+wK4KicZHqGLPJMzGv5rfFpMc0AqsSCpU+xbQjGsC9IQSF3QuytmK2riLP8YnQ8cg==
-X-Received: by 2002:a17:903:24c:b0:1da:190c:3481 with SMTP id
- j12-20020a170903024c00b001da190c3481mr8726448plh.34.1708936245385; 
- Mon, 26 Feb 2024 00:30:45 -0800 (PST)
+ bh=1GhIegaqPh+2F5bGtrPWjGv3DhZxRhRPtOUxR87HPoU=;
+ b=N/wi+9lnOIc0QQevAiziDXY6gogfwHwS1wrrDMtIoovvC9KaLm6iDiRXutZQabt1Tq
+ 3L6CioQ90qUfJsR/Sh1VOzdNNJLP44iF5GxHVwodb1YiccxYjVk4VAvHrWVwvwdEiVQA
+ CYkJmD0d3xmCgtKUVDPP/HmAELWr5KRNgStEexQD9cLunvZi1dcmVWhs2kv1/uIz8+z5
+ DATxYV13vCQUoh2+iY1aV7VbgfMZBiLBh8QyEYIT1Ot2axPKJrl0wRFy0ycZM4D/Pdc2
+ 9wrq3DPqh9pfLyVW/vX4+VXq/Orq7jMWKGD4RWVu5R6HNMc3+N9XOMQRT+Q8V74qAbdm
+ SApA==
+X-Gm-Message-State: AOJu0YxpmRzIpiDGUGeiBybIkXB3ij728sUEWNvKhFAHbLsBt5p3tAgQ
+ eatdve2daWbi4jmOAvnk30PPv/FG8qZEvcnxmV5A6KyTznmB4PWEqELiiBQt
+X-Google-Smtp-Source: AGHT+IGtaVwieVvTt5edonRqVilmhepCSSW8NYN+I2NllhVZeG2//+/e6dUERcqSwvdZtr2M9R075A==
+X-Received: by 2002:a17:902:c942:b0:1dc:a681:ca08 with SMTP id
+ i2-20020a170902c94200b001dca681ca08mr1646050pla.28.1708936251379; 
+ Mon, 26 Feb 2024 00:30:51 -0800 (PST)
 Received: from wheely.local0.net ([1.146.74.212])
  by smtp.gmail.com with ESMTPSA id
- w16-20020a1709026f1000b001d9641003cfsm3511260plk.142.2024.02.26.00.30.40
+ w16-20020a1709026f1000b001d9641003cfsm3511260plk.142.2024.02.26.00.30.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Feb 2024 00:30:45 -0800 (PST)
+ Mon, 26 Feb 2024 00:30:51 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -65,16 +65,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH v3 8/9] replay: Fix migration replay_mutex locking
-Date: Mon, 26 Feb 2024 18:29:44 +1000
-Message-ID: <20240226082945.1452499-9-npiggin@gmail.com>
+Subject: [PATCH v3 9/9] tests/avocado/reverse_debugging.py: mark aarch64 and
+ pseries as not flaky
+Date: Mon, 26 Feb 2024 18:29:45 +1000
+Message-ID: <20240226082945.1452499-10-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240226082945.1452499-1-npiggin@gmail.com>
 References: <20240226082945.1452499-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,115 +98,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Migration causes a number of events that need to go in the replay
-trace, such as vm state transitions. The replay_mutex lock needs to
-be held for these.
+These seem to be quite solid, including on several gitlab CI runs.
+Enabling them should help catch breakage in future.
 
-The simplest approach seems to be just take it up-front when taking
-the bql.
+And update the powernv comment -- gitlab isn't the problem, there are
+known gaps in implementation.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- migration/migration.h |  2 --
- migration/migration.c | 11 ++++++++++-
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ tests/avocado/reverse_debugging.py | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/migration/migration.h b/migration/migration.h
-index f2c8b8f286..0621479a4e 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -543,6 +543,4 @@ int migration_rp_wait(MigrationState *s);
-  */
- void migration_rp_kick(MigrationState *s);
+diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse_debugging.py
+index 92855a02a5..8fe76ff921 100644
+--- a/tests/avocado/reverse_debugging.py
++++ b/tests/avocado/reverse_debugging.py
+@@ -223,9 +223,6 @@ class ReverseDebugging_AArch64(ReverseDebugging):
  
--int migration_stop_vm(RunState state);
+     REG_PC = 32
+ 
+-    # unidentified gitlab timeout problem
+-    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
 -
- #endif
-diff --git a/migration/migration.c b/migration/migration.c
-index 2e794db75c..80a5ce17d1 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -24,6 +24,7 @@
- #include "socket.h"
- #include "sysemu/runstate.h"
- #include "sysemu/sysemu.h"
-+#include "sysemu/replay.h"
- #include "sysemu/cpu-throttle.h"
- #include "rdma.h"
- #include "ram.h"
-@@ -162,7 +163,7 @@ static gint page_request_addr_cmp(gconstpointer ap, gconstpointer bp)
-     return (a > b) - (a < b);
- }
+     def test_aarch64_virt(self):
+         """
+         :avocado: tags=arch:aarch64
+@@ -248,14 +245,10 @@ class ReverseDebugging_ppc64(ReverseDebugging):
  
--int migration_stop_vm(RunState state)
-+static int migration_stop_vm(RunState state)
- {
-     int ret = vm_stop_force_state(state);
+     REG_PC = 0x40
  
-@@ -2433,6 +2434,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-     }
+-    # unidentified gitlab timeout problem
+-    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
+-
+     def test_ppc64_pseries(self):
+         """
+         :avocado: tags=arch:ppc64
+         :avocado: tags=machine:pseries
+-        :avocado: tags=flaky
+         """
+         # SLOF branches back to its entry point, which causes this test
+         # to take the 'hit a breakpoint again' path. That's not a problem,
+@@ -264,7 +257,7 @@ def test_ppc64_pseries(self):
+         self.reverse_debugging()
  
-     trace_postcopy_start();
-+    replay_mutex_lock();
-     bql_lock();
-     trace_postcopy_start_set_run();
+     # See https://gitlab.com/qemu-project/qemu/-/issues/1992
+-    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
++    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'powernv migration support is incomplete so rr debugging is flaky')
  
-@@ -2542,6 +2544,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-     migration_downtime_end(ms);
- 
-     bql_unlock();
-+    replay_mutex_unlock();
- 
-     if (migrate_postcopy_ram()) {
-         /*
-@@ -2583,6 +2586,7 @@ fail:
-         }
-     }
-     bql_unlock();
-+    replay_mutex_unlock();
-     return -1;
- }
- 
-@@ -2634,6 +2638,7 @@ static int migration_completion_precopy(MigrationState *s,
- {
-     int ret;
- 
-+    replay_mutex_lock();
-     bql_lock();
-     migration_downtime_start(s);
- 
-@@ -2662,6 +2667,7 @@ static int migration_completion_precopy(MigrationState *s,
-                                              s->block_inactive);
- out_unlock:
-     bql_unlock();
-+    replay_mutex_unlock();
-     return ret;
- }
- 
-@@ -3485,6 +3491,7 @@ static void *bg_migration_thread(void *opaque)
-     trace_migration_thread_setup_complete();
-     migration_downtime_start(s);
- 
-+    replay_mutex_lock();
-     bql_lock();
- 
-     s->vm_old_state = runstate_get();
-@@ -3522,6 +3529,7 @@ static void *bg_migration_thread(void *opaque)
-      */
-     migration_bh_schedule(bg_migration_vm_start_bh, s);
-     bql_unlock();
-+    replay_mutex_unlock();
- 
-     while (migration_is_active(s)) {
-         MigIterateState iter_state = bg_migration_iteration_run(s);
-@@ -3551,6 +3559,7 @@ fail:
-         migrate_set_state(&s->state, MIGRATION_STATUS_ACTIVE,
-                 MIGRATION_STATUS_FAILED);
-         bql_unlock();
-+        replay_mutex_unlock();
-     }
- 
-     bg_migration_iteration_finish(s);
+     def test_ppc64_powernv(self):
+         """
 -- 
 2.42.0
 
