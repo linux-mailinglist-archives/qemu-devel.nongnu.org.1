@@ -2,132 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BA77866A89
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 08:15:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C953866A8F
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 08:16:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reVC1-00016c-SZ; Mon, 26 Feb 2024 02:14:29 -0500
+	id 1reVDr-0003ES-EI; Mon, 26 Feb 2024 02:16:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1reVBy-00015n-EE
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 02:14:26 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1reVBw-0006hk-5J
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 02:14:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708931663;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Ryahn8oWBoNVpAVOinE/8svlC57vuBgTLQW9sWBOC40=;
- b=TNm4EQlOLAOGY5bEtE3S0PUY4LyDRZpBKRiG90Mt0WwqoKO1TTNvlu207rx33kk14Xw62O
- aVMDgVXOs0cvvZj3dqX7UXMfIdNzqOpY/hsI721SOn/OfzdsevPg2RMni2HXdxiP/jvM1t
- 7jRRWFRyc2hKPYZrpEDqylx0SAoZsZ0=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-612-ccA3XCX5Mcu8Lwf3Qn122g-1; Mon, 26 Feb 2024 02:14:21 -0500
-X-MC-Unique: ccA3XCX5Mcu8Lwf3Qn122g-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-33d29de76abso1594287f8f.3
- for <qemu-devel@nongnu.org>; Sun, 25 Feb 2024 23:14:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reVDo-0003Cv-I0
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 02:16:20 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reVDm-000763-9b
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 02:16:20 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-33d0a7f2424so1842116f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 25 Feb 2024 23:16:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708931776; x=1709536576; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ldSdLgR0z/gFEvYgw7WIwGkgqZGirLeKihbYn6YrZMo=;
+ b=Lh/SMwc+KviB1yVQJyGp5MYvO7nw3xk0ADKb831sLFOu6ybxmon0MXEyPaneRAqfI6
+ H4USaJTlyguLYsjf91kKkbJD6TJ8itD25OJQ2VF3KGGxj8j50E5rppbqxXCOfqol2z0t
+ wDWRM+Cdvz7syVuFkG+mwGhDACTJAAttQIkcuxC0rdSlAfDzeQT3ScRMMgLLNED6RIOF
+ YnwjOeI5+18+UlLCo8d6oFiF/6qdadrpUv0MtoJbHHuEsHmCEMcFrrex9TpwmPGIkjRO
+ EYNvBIr8JuGj+eZ+WmnILE2Rj0SC7sc/lHnICtbemqL6pwlpHmr0MgE5IMSSkRo3bDho
+ d01w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708931660; x=1709536460;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1708931776; x=1709536576;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ryahn8oWBoNVpAVOinE/8svlC57vuBgTLQW9sWBOC40=;
- b=KPDckfKCsM87TtxQs6S4byILtF0G7ZGvFjMFO9rYRavxegsfrvf0BfH+llmuq3JuhR
- bpspy+ZnrVg3ydPDTe7lGpnnssnaLG8tNyvsHcn3wIl9wteLcsldjMA/8dEaZgvGI3k3
- XMBEDDadd3m7GjmmpUYZi8FyzhPAsvBdQsRc5xJ1/rKKT6KVrK2Q5r1GJH5RKF33U+8j
- vevDCSKm5bH8nWTgqf8dNsqiWT3obfA31uowkU7BiohRDoOFbNueNRYpn6eKoC5qKgCL
- sovVRmGOf+baOal/WkwS4lGGy+Hv+rgEddByta/GFQROHghREgHBdrNMjut/sBebxsgV
- ohEA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWrZAk085vS8ZaIL41j8UzFOFXeY1XuPL5up2Dcos80zyDVi9UygOS9PwZnqhZPPinz242HGpu1zn2rM2dPd/QEIVAVNjo=
-X-Gm-Message-State: AOJu0YzLi2TPuO81Pcrmgou/SQqJabjvCoq8p4+KurF6LTcj+Us9XSib
- JU8FAkwQjEGJlVNRNF2x28kFHyGWru90QSrVuvaOZphdFZKU422tfOplMe6t1+BT2AARjXets1E
- P2Ayjf9S8OxgxjuOsmWF9w2X9MgOntP8mvkxQnH19OvgVRGBIdKg+azF8oCGX
-X-Received: by 2002:a5d:59a8:0:b0:33d:c771:a253 with SMTP id
- p8-20020a5d59a8000000b0033dc771a253mr2863605wrr.14.1708931660460; 
- Sun, 25 Feb 2024 23:14:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IES8dGFOuTIaql3talA9qC66qfsDMmUY+f+B4sObvG8sB362iIwzms77rEBwW9SxsDwRAkqrQ==
-X-Received: by 2002:a5d:59a8:0:b0:33d:c771:a253 with SMTP id
- p8-20020a5d59a8000000b0033dc771a253mr2863589wrr.14.1708931660127; 
- Sun, 25 Feb 2024 23:14:20 -0800 (PST)
-Received: from [192.168.0.9] (ip-109-43-176-215.web.vodafone.de.
- [109.43.176.215]) by smtp.gmail.com with ESMTPSA id
- d9-20020a5d6449000000b0033d9ee8b5dcsm7276636wrw.15.2024.02.25.23.14.19
+ bh=ldSdLgR0z/gFEvYgw7WIwGkgqZGirLeKihbYn6YrZMo=;
+ b=iMvprK3oRxqw53JkG7LIe9FMNurptcSVh4UaUKHuDJb6zqxKkN6Jm4uCgicuPu7MO7
+ ADfOPYYVzDMbB+V8gR0PKyDUgusc1cxtVN927WFMRHwdmG3gCA2pxMqUhFD+BwJcCqem
+ g9byubVeHeKwYWm8mrzLEIRPGwdsiam4pP4RhHWVPbKRBSAWWB8DbhXUDKhoktLGw70y
+ /xTByu5nWDLF18e4xTWpbmqSHVWyiitNEpS8UV4Bf0wX5XOqv+ZMvX2lO9rxerxojJvt
+ S221mhEKKEJOckMssIzN1z3ia4Njkllbcmh6/cBq620pTSGu5n88fdyXMN2ilt/s2h/M
+ ISTQ==
+X-Gm-Message-State: AOJu0YztTx83Fx17s6U96VdjlwTjlEhn5oHxvZ7YBrcVA/hq6eTnx+nK
+ jcO5tLzjjT7hYwb2WCF+KXwcij7XTwkqqDMwmU8IAYBTbz1fMlLYyIHHfF8DCpCSwHD0VwhqdTb
+ h
+X-Google-Smtp-Source: AGHT+IHTQoPg6J9YyOP0F9/k5cVQv7nMcqVF3hpjSXsBgsqOd7aE6kjZtN1wzX+9ck6XjHk0sDGCIw==
+X-Received: by 2002:a5d:5b85:0:b0:33d:87e9:5900 with SMTP id
+ df5-20020a5d5b85000000b0033d87e95900mr4059192wrb.62.1708931776195; 
+ Sun, 25 Feb 2024 23:16:16 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.164.69])
+ by smtp.gmail.com with ESMTPSA id
+ v6-20020a5d6786000000b0033dd4783058sm3203766wru.9.2024.02.25.23.16.14
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 25 Feb 2024 23:14:19 -0800 (PST)
-Message-ID: <3a8be4f5-212f-4c5c-8014-321e085a2830@redhat.com>
-Date: Mon, 26 Feb 2024 08:14:18 +0100
+ Sun, 25 Feb 2024 23:16:15 -0800 (PST)
+Message-ID: <3dd4aab1-4a12-44dd-a925-b5578b387492@linaro.org>
+Date: Mon, 26 Feb 2024 08:16:13 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/10] usb: extract sysbus-ohci to a separate file
+Subject: Re: support on risc-v 128bits
 Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: philmd@linaro.org, balaton@eik.bme.hu
-References: <20240223124406.234509-1-pbonzini@redhat.com>
- <20240223124406.234509-10-pbonzini@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240223124406.234509-10-pbonzini@redhat.com>
+To: Alistair Francis <alistair23@gmail.com>,
+ =?UTF-8?Q?Jean-Christophe_=C3=89n=C3=A9e?=
+ <jean-christophe@blues-softwares.net>
+Cc: qemu-devel@nongnu.org
+References: <03553894ee4f79b3f63979a9e9ac87e635c75933.camel@blues-softwares.net>
+ <CAKmqyKN3zWD7Pb5_u8MiJreRZnZ8J-e1E9m-L6vuZvhq_W9u3w@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAKmqyKN3zWD7Pb5_u8MiJreRZnZ8J-e1E9m-L6vuZvhq_W9u3w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.097,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -144,74 +95,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/02/2024 13.44, Paolo Bonzini wrote:
-> Split the sysbus version to a separate file so that it is not
-> included in PCI-only machines, and adjust Kconfig for machines
-> that do need sysbus-ohci.  The copyrights are based on the
-> time and employer of balrog and Paul Brook's contributions.
+On 26/2/24 00:57, Alistair Francis wrote:
+> On Mon, Feb 26, 2024 at 9:30 AM Jean-Christophe Énée
+> <jean-christophe@blues-softwares.net> wrote:
+>>
+>> hi,
+>> i would like developpe my OS on risc-v 128 bits.
+>> after search the support isn´t fully operational
 > 
-> While adjusting the SM501 dependency, move it to the right place
-> instead of keeping it in the R4D machine.
+> We have some basic 128-bit support, but it isn't complete. The RISC-V
+> spec states:
 > 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   hw/usb/hcd-ohci-sysbus.c | 91 ++++++++++++++++++++++++++++++++++++++++
->   hw/usb/hcd-ohci.c        | 58 ------------------------
->   hw/arm/Kconfig           | 12 +++--
->   hw/display/Kconfig       |  1 +
->   hw/ppc/Kconfig           |  2 +-
->   hw/sh4/Kconfig           |  1 -
->   hw/usb/Kconfig           |  4 ++
->   hw/usb/meson.build       |  1 +
->   8 files changed, 105 insertions(+), 65 deletions(-)
->   create mode 100644 hw/usb/hcd-ohci-sysbus.c
+> ```
+> The design of the RV128I base ISA is not yet complete, and while much
+> of the remainder of this specification is expected to apply to RV128,
+> this version of the document focuses only on RV32 and RV64
+> ```
 > 
-> diff --git a/hw/usb/hcd-ohci-sysbus.c b/hw/usb/hcd-ohci-sysbus.c
-> new file mode 100644
-> index 00000000000..4e4481232b6
-> --- /dev/null
-> +++ b/hw/usb/hcd-ohci-sysbus.c
-> @@ -0,0 +1,91 @@
-> +/*
-> + * QEMU USB OHCI Emulation
-> + * Copyright (c) 2006 Openedhand Ltd.
-> + * Copyright (c) 2010 CodeSourcery
-> + * Copyright (c) 2024 Red Hat, Inc.
-> + *
-> + * This library is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU Lesser General Public
-> + * License as published by the Free Software Foundation; either
-> + * version 2.1 of the License, or (at your option) any later version.
-> + *
-> + * This library is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-> + * Lesser General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU Lesser General Public
-> + * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "hw/irq.h"
-> +#include "qapi/error.h"
-> +#include "qemu/module.h"
-> +#include "qemu/timer.h"
-> +#include "hw/usb.h"
-> +#include "migration/vmstate.h"
-> +#include "hw/sysbus.h"
-> +#include "hw/qdev-dma.h"
-> +#include "hw/qdev-properties.h"
-> +#include "trace.h"
-> +#include "hcd-ohci.h"
-> +
-> +
-> +static void ohci_realize_pxa(DeviceState *dev, Error **errp)
+> so the spec isn't finished either. AFAIK there is also no guest
+> software we can use for testing.
+> 
+>>
+>> how can i help, and in the same learn risc-v 128 bits
+> 
+> At this point there isn't really too much to do. There is some basic
+> support, so maybe you could try and port your OS to that? I'm not sure
+> how you would compile it for 128-bit support though, as I don't think
+> any compilers support 128-bits.
 
-Maybe this could be renamed to ohci_sysbs_realize() now since the code is 
-used in non-pxa devices nowadays, too?
+You can also have a look at TinyEMU from Fabrice Bellard:
 
-Anyway:
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+https://bellard.org/tinyemu/readme.txt
+
+- RISC-V system emulator supporting the RV128IMAFDQC base ISA (user
+   level ISA version 2.2, priviledged architecture version 1.10)
+   including:
+
+   - 32/64/128 bit integer registers
+   - 32/64/128 bit floating point instructions
+   - Compressed instructions
+   - dynamic XLEN change
+
+...
+
+4) Technical notes
+------------------
+
+4.1) 128 bit support
+
+The RISC-V specification does not define all the instruction encodings
+for the 128 bit integer and floating point operations. The missing
+ones were interpolated from the 32 and 64 ones.
+
+Unfortunately there is no RISC-V 128 bit toolchain nor OS now
+(volunteers for the Linux port ?), so rv128test.bin may be the first
+128 bit code for RISC-V !
 
 
