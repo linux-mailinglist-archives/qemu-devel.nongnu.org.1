@@ -2,68 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66119867584
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 13:47:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 182E48675ED
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 14:03:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reaNA-0001vZ-42; Mon, 26 Feb 2024 07:46:20 -0500
+	id 1reacT-0007Jp-Fj; Mon, 26 Feb 2024 08:02:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1reaMz-0001sh-RA
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 07:46:09 -0500
-Received: from mgamail.intel.com ([192.198.163.8])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1reaMx-000294-SP
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 07:46:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708951568; x=1740487568;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=1n9Gx8mBT4NzaqxK8Nl9wpoyjAT6B0cx8aQmqjCBAfc=;
- b=Hl+UXFbZ30Iys7Yzyu3HyYYMrVNQd3EPt7s9OQBKyQpW9LpfvcpEu8RJ
- 8Z4Lf0v0b1IJTI/4i38EDOAibQv6WdQZd0SH5mxpzpa+1rMNLlv867jYs
- xKQ7aQvYuD7JGxALLL92d67RAQ/+IwCJ3dugl7DRuuYvV1nFOAeJ62Qk0
- ey7hbDjuXTS4EOzlRJVnktBWQ0IwayZInt3JWm8LoAyiOacjmEzSxmhC7
- CcGmfemaOP/xdvgYgQlogsjSYDaHkxxlXSuZbwF0MydVlcKgvp5smBf1l
- TdkE+P0K4fbpl+liP9MAvoXuZkzCF4WzN/k4IQEIOK+1SpRkwXccYHgKt A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="20777361"
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; d="scan'208";a="20777361"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 04:46:04 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; d="scan'208";a="44133873"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa001.jf.intel.com with ESMTP; 26 Feb 2024 04:46:03 -0800
-Date: Mon, 26 Feb 2024 20:59:45 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, mcb30@ipxe.org
-Subject: Re: [PATCH v2 4/7] target/i386: use separate MMU indexes for 32-bit
- accesses
-Message-ID: <ZdyLQcDGryczl/7V@intel.com>
-References: <20240223130948.237186-1-pbonzini@redhat.com>
- <20240223130948.237186-5-pbonzini@redhat.com>
- <ZdxNkStjZyB6iJtk@intel.com>
- <CABgObfYz0MitUFmLkm3YncpmLFpQ=YOspr=KrYYWn7cFiuouKw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1reacO-0007Hv-A5
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 08:02:04 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1reacM-0005So-6v
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 08:02:04 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 54F3022514;
+ Mon, 26 Feb 2024 13:01:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1708952519; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=6m7Fd/UTfb75LGBYIxqas0FTZMYEzeGq9U2F2ucSRxw=;
+ b=x2sM+hKUFCtZEt4Klfzx5TXoEMvwVzHZLh8/4lUk/paoysDoT1HC+YqR5Yxby4RANsmRVb
+ 7P6apUmoFsa5BCUDwr3Sei10cXNN5df33jdv/83PALqsPWyNGvWrP5miZ59CZ9LwoOd6om
+ DP6zwxW1kaJYflYhSv9xtNw6P3GkNr4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1708952519;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=6m7Fd/UTfb75LGBYIxqas0FTZMYEzeGq9U2F2ucSRxw=;
+ b=gt1xaaDRTC4rSgOtoVLw063tLhQd9Ex5r8MnNFxpvcuqI94meTzeMsDqB+BQVkUQGz8YNp
+ MZzvlS+vjdn8g8CQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1708952519; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=6m7Fd/UTfb75LGBYIxqas0FTZMYEzeGq9U2F2ucSRxw=;
+ b=x2sM+hKUFCtZEt4Klfzx5TXoEMvwVzHZLh8/4lUk/paoysDoT1HC+YqR5Yxby4RANsmRVb
+ 7P6apUmoFsa5BCUDwr3Sei10cXNN5df33jdv/83PALqsPWyNGvWrP5miZ59CZ9LwoOd6om
+ DP6zwxW1kaJYflYhSv9xtNw6P3GkNr4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1708952519;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=6m7Fd/UTfb75LGBYIxqas0FTZMYEzeGq9U2F2ucSRxw=;
+ b=gt1xaaDRTC4rSgOtoVLw063tLhQd9Ex5r8MnNFxpvcuqI94meTzeMsDqB+BQVkUQGz8YNp
+ MZzvlS+vjdn8g8CQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D3C9D13A58;
+ Mon, 26 Feb 2024 13:01:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id nCA5JsaL3GVXVwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 26 Feb 2024 13:01:58 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org
+Cc: marcandre.lureau@redhat.com, thuth@redhat.com, lvivier@redhat.com,
+ pbonzini@redhat.com, peterx@redhat.com
+Subject: Re: [PATCH v2 1/3] qtest: migration: Enhance qtest migration
+ functions to support 'channels' argument
+In-Reply-To: <1988bb0f-6ebe-4335-b761-d11313c772fd@nutanix.com>
+References: <20240223152517.7834-1-het.gala@nutanix.com>
+ <20240223152517.7834-2-het.gala@nutanix.com> <87zfvr7xdn.fsf@suse.de>
+ <1988bb0f-6ebe-4335-b761-d11313c772fd@nutanix.com>
+Date: Mon, 26 Feb 2024 10:01:56 -0300
+Message-ID: <87bk83bcqj.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABgObfYz0MitUFmLkm3YncpmLFpQ=YOspr=KrYYWn7cFiuouKw@mail.gmail.com>
-Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.014,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=x2sM+hKU;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=gt1xaaDR
+X-Spamd-Result: default: False [-3.31 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ BAYES_HAM(-3.00)[100.00%]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
+ RCPT_COUNT_SEVEN(0.00)[7];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 54F3022514
+X-Spam-Score: -3.31
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,56 +121,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Paolo,
+Het Gala <het.gala@nutanix.com> writes:
 
-On Mon, Feb 26, 2024 at 10:55:14AM +0100, Paolo Bonzini wrote:
-> Date: Mon, 26 Feb 2024 10:55:14 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: Re: [PATCH v2 4/7] target/i386: use separate MMU indexes for
->  32-bit accesses
-> 
-> On Mon, Feb 26, 2024 at 9:22 AM Zhao Liu <zhao1.liu@intel.com> wrote:
-> > On Fri, Feb 23, 2024 at 02:09:45PM +0100, Paolo Bonzini wrote:
-> > > Accesses from a 32-bit environment (32-bit code segment for instruction
-> > > accesses, EFER.LMA==0 for processor accesses) have to mask away the
-> > > upper 32 bits of the address.  While a bit wasteful, the easiest way
-> > > to do so is to use separate MMU indexes.  These days, QEMU anyway is
-> > > compiled with a fixed value for NB_MMU_MODES.  Split MMU_USER_IDX,
-> > > MMU_KSMAP_IDX and MMU_KNOSMAP_IDX in two.
-> >
-> > Maybe s/in/into/ ?
-> 
-> Both are acceptable grammar.
-> 
-> > >  static inline int cpu_mmu_index_kernel(CPUX86State *env)
-> > >  {
-> > > -    return !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP_IDX :
-> > > -        ((env->hflags & HF_CPL_MASK) < 3 && (env->eflags & AC_MASK))
-> > > -        ? MMU_KNOSMAP_IDX : MMU_KSMAP_IDX;
-> > > +    int mmu_index_32 = (env->hflags & HF_LMA_MASK) ? 1 : 0;
-> > > +    int mmu_index_base =
-> > > +        !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP64_IDX :
-> > > +        ((env->hflags & HF_CPL_MASK) < 3 && (env->eflags & AC_MASK)) ? MMU_KNOSMAP64_IDX : MMU_KSMAP64_IDX;
-> 
-> > Change the line?
-> 
-> It's reformatted but the logic is the same.
-> 
-> - if !SMAP -> MMU_KNOSMAP_IDX
-> 
-> - if CPL < 3 && EFLAGS.AC - MMU_KNOSMAP_IDX
-> 
-> - else MMU_KSMAP_IDX
-> 
-> The only change is adding the "64" suffix, which is then changed to
-> 32-bit if needed via mmu_index_32.
-> 
+> On 24/02/24 1:42 am, Fabiano Rosas wrote:
+>> Het Gala<het.gala@nutanix.com>  writes:
+>>
+>>> Introduce support for adding a 'channels' argument to migrate_qmp_fail,
+>>> migrate_incoming_qmp and migrate_qmp functions within the migration qtest
+>>> framework, enabling enhanced control over migration scenarios.
+>> Can't we just pass a channels string like you did in the original series
+>> with migrate_postcopy_prepare?
+>>
+>> We'd change migrate_* functions like this:
+>>
+>>    void migrate_qmp(QTestState *who, const char *uri, const char *channels,
+>>                     const char *fmt, ...)
+>>    {
+>>    ...
+>>        g_assert(!qdict_haskey(args, "uri"));
+>>        if (uri) {
+>>            qdict_put_str(args, "uri", uri);
+>>        }
+>>    
+>>        g_assert(!qdict_haskey(args, "channels"));
+>>        if (channels) {
+>>            qdict_put_str(args, "channels", channels);
+>>        }
+>>    }
+>>
+>> Write the test like this:
+>>
+>>    static void test_multifd_tcp_none_channels(void)
+>>    {
+>>        MigrateCommon args = {
+>>            .listen_uri = "defer",
+>>            .start_hook = test_migrate_precopy_tcp_multifd_start,
+>>            .live = true,
+>>            .connect_channels = "'channels': [ { 'channel-type': 'main',"
+>>                                "      'addr': { 'transport': 'socket',"
+>>                                "                'type': 'inet',"
+>>                                "                'host': '127.0.0.1',"
+>>                                "                'port': '0' } } ]",
+>>            .connect_uri = NULL;
+>>                                 
+>>        };
+>>        test_precopy_common(&args);
+>>    }
+>
+> this was the same first approach that I attempted. It won't work because
+>
+> The final 'migrate' QAPI with channels string would look like
+>
+> { "execute": "migrate", "arguments": { "channels": "[ { "channel-type": 
+> "main", "addr": { "transport": "socket", "type": "inet", "host": 
+> "10.117.29.84", "port": "4000" }, "multifd-channels": 2 } ]" } }
+>
+> instead of
+>
+> { "execute": "migrate", "arguments": { "channels": [ { "channel-type": 
+> "main", "addr": { "transport": "socket", "type": "inet", "host": 
+> "10.117.29.84", "port": "4000" }, "multifd-channels": 2 } ] } }
+>
+> It would complain, that channels should be an *array* and not a string.
+>
+> So, that's the reason parsing was required in qtest too.
+>
+> I would be glad to hear if there are any ideas to convert /string -> 
+> json object -> add it inside qdict along with uri/ ?
+>
 
-Thanks for the explanation, I get your point.
-Similarly, I also understand your change in x86_cpu_mmu_index().
+Isn't this what the various qobject_from_json do? How does it work with
+the existing tests?
 
-LGTM, please allow me to add my review tag:
+    qtest_qmp_assert_success(to, "{ 'execute': 'migrate-incoming',"
+                             "  'arguments': { "
+                             "      'channels': [ { 'channel-type': 'main',"
+                             "      'addr': { 'transport': 'socket',"
+                             "                'type': 'inet',"
+                             "                'host': '127.0.0.1',"
+                             "                'port': '0' } } ] } }");
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+We can pass this^ string successfully to QMP somehow...
 
+>>    static void do_test_validate_uri_channel(MigrateCommon *args)
+>>    {
+>>        QTestState *from, *to;
+>>        g_autofree char *connect_uri = NULL;
+>>    
+>>        if (test_migrate_start(&from, &to, args->listen_uri, &args->start)) {
+>>            return;
+>>        }
+>>    
+>>        wait_for_serial("src_serial");
+>>    
+>>        if (args->result == MIG_TEST_QMP_ERROR) {
+>>            migrate_qmp_fail(from, args->connect_uri, args->connect_channels, "{}");
+>>        } else {
+>>            migrate_qmp(from, args->connect_uri, args->connect_channels, "{}");
+>>        }
+>>    
+>>        test_migrate_end(from, to, false);
+>>    }
+>>
+>> It's better to require test writers to pass in their own uri and channel
+>> strings. Otherwise any new transport added will require people to modify
+>> these conversion helpers.
+> I agree with your point here. I was thinking to have a general but a 
+> hacky version of migrate_uri_parse() but that too seemed like a 
+> overkill. I don't have a better solution to this right now
+>> Also, using the same string as the user would use in QMP helps with
+>> development in general. One could refer to the tests to see how to
+>> invoke the migration or experiment with the string in the tests during
+>> development.
+>
+> For examples, I think - enough examples with 'channel' argument are 
+> provided where 'migrate' QAPI is defined. users can directly copy the 
+> qmp command from there itself.
+>
+>
+> Regards,
+>
+> Het Gala
 
