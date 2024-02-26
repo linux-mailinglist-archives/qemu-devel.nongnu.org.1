@@ -2,59 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 999608672F8
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 12:24:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF762867315
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 12:31:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reZ4R-0004hB-OM; Mon, 26 Feb 2024 06:22:55 -0500
+	id 1reZBP-0007gP-Pv; Mon, 26 Feb 2024 06:30:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1reZ4P-0004g7-01; Mon, 26 Feb 2024 06:22:53 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1reZBI-0007fR-Q8; Mon, 26 Feb 2024 06:30:01 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1reZ4M-0001h6-3r; Mon, 26 Feb 2024 06:22:52 -0500
-Received: from mail.maildlp.com (unknown [172.19.163.44])
- by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4TjypN5Xffz1h0dB;
- Mon, 26 Feb 2024 19:20:28 +0800 (CST)
-Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id D39BC1402CE;
- Mon, 26 Feb 2024 19:22:41 +0800 (CST)
-Received: from [10.67.109.254] (10.67.109.254) by
- kwepemi500008.china.huawei.com (7.221.188.139) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 26 Feb 2024 19:22:41 +0800
-Message-ID: <caa15abf-4b9b-8d72-afb4-be18223ad56a@huawei.com>
-Date: Mon, 26 Feb 2024 19:22:40 +0800
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1reZBF-00032P-8b; Mon, 26 Feb 2024 06:29:58 -0500
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41Q9EHoD017013; Mon, 26 Feb 2024 11:29:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ content-transfer-encoding : in-reply-to; s=pp1;
+ bh=3Yt0HHcfgQJQ2mVUFCVFY7JwRkHlZOjHbpu/ccz6oww=;
+ b=LgDctyMEr9PUjd/hIY3RSzFX/MRH7Xfvy/Bo6z2NGr9II6JmM04WjwsqL0rfi6859Hbc
+ js05rZdCQ5szr2/xVN30vcfTU2al/57t66yehvQxAL62EfcTIQgUlBY/VPL5tfkT8ud1
+ qRcqyk8FdxCm8C7KMqnFWYkuwkmgJuSgat6kbLgcdU5L1pETI2WjwrX8IN3XzyiHngHY
+ FBtK6E4BX5bOOT0Gd63i4sfwauFuIAM3C7g6oa2RroeFY8oZdHXLRWIC1jvOtBnhCtW1
+ ZEpLKm7U0AGMHNfytKa1J6Gj5UHIZJ+Qm6fFGIUuR5VJVGpd9iYwMmrwshNteKkS1x3p iA== 
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wg56yuntu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 26 Feb 2024 11:29:53 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41QAi5Kc012338; Mon, 26 Feb 2024 11:29:53 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wfwg206ka-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 26 Feb 2024 11:29:52 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 41QBTnHP16581292
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 26 Feb 2024 11:29:51 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2A4C22004B;
+ Mon, 26 Feb 2024 11:29:49 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C94EE20040;
+ Mon, 26 Feb 2024 11:29:48 +0000 (GMT)
+Received: from heavy (unknown [9.171.71.141])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+ Mon, 26 Feb 2024 11:29:48 +0000 (GMT)
+Date: Mon, 26 Feb 2024 12:29:47 +0100
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ qemu-stable@nongnu.org
+Subject: Re: [PATCH] linux-user: Make TARGET_NR_setgroups affect only the
+ current thread
+Message-ID: <vqmdjxoplrifjs53kkl2e7td3rymw6t6p66gkqgsa4y7mhooct@y54pgwyceatk>
+References: <20240131001851.15932-1-iii@linux.ibm.com>
+ <f39cb7d6-beaa-4365-bbd8-7fc8546cf655@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [RFC PATCH v3 17/21] hw/intc/arm_gicv3: Add NMI handling CPU
- interface registers
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- <peter.maydell@linaro.org>, <eduardo@habkost.net>,
- <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
- <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
-References: <20240223103221.1142518-1-ruanjinjie@huawei.com>
- <20240223103221.1142518-18-ruanjinjie@huawei.com>
- <81167528-32e3-4741-84e4-3c70b788fc2c@linaro.org>
-In-Reply-To: <81167528-32e3-4741-84e4-3c70b788fc2c@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.109.254]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemi500008.china.huawei.com (7.221.188.139)
-Received-SPF: pass client-ip=45.249.212.191;
- envelope-from=ruanjinjie@huawei.com; helo=szxga05-in.huawei.com
-X-Spam_score_int: -65
-X-Spam_score: -6.6
-X-Spam_bar: ------
-X-Spam_report: (-6.6 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.331,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+In-Reply-To: <f39cb7d6-beaa-4365-bbd8-7fc8546cf655@linaro.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: gN5tOhq47WQt2YGRe0q2DZFall6ZvC9l
+X-Proofpoint-ORIG-GUID: gN5tOhq47WQt2YGRe0q2DZFall6ZvC9l
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-26_07,2024-02-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 mlxscore=0
+ lowpriorityscore=0 malwarescore=0 mlxlogscore=952 suspectscore=0
+ phishscore=0 spamscore=0 adultscore=0 clxscore=1011 impostorscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402260086
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,137 +105,26 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jinjie Ruan <ruanjinjie@huawei.com>
-From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, Jan 31, 2024 at 02:10:55PM +0100, Philippe Mathieu-Daud� wrote:
+> On 31/1/24 01:18, Ilya Leoshkevich wrote:
+> > Like TARGET_NR_setuid, TARGET_NR_setgroups should affect only the
+> > calling thread, and not the entire process. Therefore, implement it
+> > using a syscall, and not a libc call.
+> > 
+> > Cc: qemu-stable@nongnu.org
+> > Fixes: 19b84f3c35d7 ("added setgroups and getgroups syscalls")
+> > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> > ---
+> >   linux-user/syscall.c | 10 ++++++++--
+> >   1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> Reviewed-by: Philippe Mathieu-Daud� <philmd@linaro.org>
 
+Thanks for the review!
 
-On 2024/2/24 4:52, Richard Henderson wrote:
-> On 2/23/24 00:32, Jinjie Ruan via wrote:
->> Add the NMIAR CPU interface registers which deal with acknowledging NMI.
->>
->> When introduce NMI interrupt, there are some updates to the semantics
->> for the
->> register ICC_IAR1_EL1 and ICC_HPPIR1_EL1. For ICC_IAR1_EL1 register, it
->> should return 1022 if the intid has super priority. And for
->> ICC_NMIAR1_EL1
->> register, it should return 1023 if the intid do not have super priority.
->> Howerever, these are not necessary for ICC_HPPIR1_EL1 register.
->>
->> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
->> ---
->>   hw/intc/arm_gicv3_cpuif.c | 46 ++++++++++++++++++++++++++++++++++++---
->>   hw/intc/gicv3_internal.h  |  1 +
->>   2 files changed, 44 insertions(+), 3 deletions(-)
->>
->> diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
->> index e1a60d8c15..f5bf8df32b 100644
->> --- a/hw/intc/arm_gicv3_cpuif.c
->> +++ b/hw/intc/arm_gicv3_cpuif.c
->> @@ -1097,7 +1097,8 @@ static uint64_t icc_hppir0_value(GICv3CPUState
->> *cs, CPUARMState *env)
->>       return cs->hppi.irq;
->>   }
->>   -static uint64_t icc_hppir1_value(GICv3CPUState *cs, CPUARMState *env)
->> +static uint64_t icc_hppir1_value(GICv3CPUState *cs, CPUARMState *env,
->> +                                 bool is_nmi, bool is_hppi)
->>   {
->>       /* Return the highest priority pending interrupt register value
->>        * for group 1.
->> @@ -1108,6 +1109,16 @@ static uint64_t icc_hppir1_value(GICv3CPUState
->> *cs, CPUARMState *env)
->>           return INTID_SPURIOUS;
->>       }
->>   +    if (!is_hppi) {
->> +        if (is_nmi && (!cs->hppi.superprio)) {
->> +            return INTID_SPURIOUS;
->> +        }
->> +
->> +        if ((!is_nmi) && cs->hppi.superprio) {
->> +            return INTID_NMI;
->> +        }
->> +    }
->> +
->>       /* Check whether we can return the interrupt or if we should return
->>        * a special identifier, as per the
->> CheckGroup1ForSpecialIdentifiers
->>        * pseudocode. (We can simplify a little because for us
->> ICC_SRE_EL1.RM
->> @@ -1168,7 +1179,30 @@ static uint64_t icc_iar1_read(CPUARMState *env,
->> const ARMCPRegInfo *ri)
->>       if (!icc_hppi_can_preempt(cs)) {
->>           intid = INTID_SPURIOUS;
->>       } else {
->> -        intid = icc_hppir1_value(cs, env);
->> +        intid = icc_hppir1_value(cs, env, false, false);
->> +    }
->> +
->> +    if (!gicv3_intid_is_special(intid)) {
->> +        icc_activate_irq(cs, intid);
->> +    }
->> +
->> +    trace_gicv3_icc_iar1_read(gicv3_redist_affid(cs), intid);
->> +    return intid;
->> +}
-> 
-> This is incorrect.  For icc_iar1_read, you need something like
-> 
->     if (!is_hppi
->         && cs->hppi.superprio
->         && env->cp15.sctlr_el[current_el] & SCTLR_NMI) {
->         return INTID_NMI;
->     }
-> 
-> I think that if SCTLR_NMI is not set, the whole system ignores
-> Superpriority entirely, so returning SPURIOUS here would be incorrect. 
-> This would make sense, letting an OS that is not configured for FEAT_NMI
-> to run on ARMv8.8 hardware without modification.
-
-You are right. SCTLR_ELx.NMI decide whether IRQ and FIQ interrupts to
-have Superpriority as an additional attribute.
-
-> 
-> 
->> +
->> +static uint64_t icc_nmiar1_read(CPUARMState *env, const ARMCPRegInfo
->> *ri)
->> +{
->> +    GICv3CPUState *cs = icc_cs_from_env(env);
->> +    uint64_t intid;
->> +
->> +    if (icv_access(env, HCR_IMO)) {
->> +        return icv_iar_read(env, ri);
->> +    }
->> +
->> +    if (!icc_hppi_can_preempt(cs)) {
->> +        intid = INTID_SPURIOUS;
->> +    } else {
->> +        intid = icc_hppir1_value(cs, env, true, false);
-> 
-> Here... believe that the result *should* only consider superpriority.  I
-> guess SPURIOUS is the correct result when there is no pending interrupt
-> with superpriority?  It's really unclear to me from the register
-> description.
-> 
-> Peter?
-> 
->> @@ -2344,6 +2378,12 @@ static const ARMCPRegInfo gicv3_cpuif_reginfo[]
->> = {
->>         .access = PL1_R, .accessfn = gicv3_irq_access,
->>         .readfn = icc_iar1_read,
->>       },
->> +    { .name = "ICC_NMIAR1_EL1", .state = ARM_CP_STATE_BOTH,
->> +      .opc0 = 3, .opc1 = 0, .crn = 12, .crm = 9, .opc2 = 5,
->> +      .type = ARM_CP_IO | ARM_CP_NO_RAW,
->> +      .access = PL1_R, .accessfn = gicv3_irq_access,
->> +      .readfn = icc_nmiar1_read,
->> +    },
-> 
-> This register is UNDEFINED if FEAT_GICv3_NMI is not implemented.
-> You need to register this separately.
-> 
-> 
-> r~
+A few weeks have passed and I wonder if this patch fell through the
+cracks. Do I need to do something to have it applied?
 
