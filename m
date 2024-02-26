@@ -2,31 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D6FC867B38
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 17:10:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E16A9867B41
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 17:11:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1redWQ-0006bf-4N; Mon, 26 Feb 2024 11:08:06 -0500
+	id 1redWf-0006gF-FG; Mon, 26 Feb 2024 11:08:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1redWK-0006a2-1t; Mon, 26 Feb 2024 11:08:00 -0500
+ id 1redWd-0006fX-IX; Mon, 26 Feb 2024 11:08:19 -0500
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1redW5-00060O-NV; Mon, 26 Feb 2024 11:07:59 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Tk5495DZWz6JBV0;
- Tue, 27 Feb 2024 00:02:49 +0800 (CST)
+ id 1redWJ-0006BC-Gs; Mon, 26 Feb 2024 11:08:17 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Tk54x2wtJz6K6MM;
+ Tue, 27 Feb 2024 00:03:29 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 3B896140C98;
- Tue, 27 Feb 2024 00:07:23 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 6002A140A35;
+ Tue, 27 Feb 2024 00:07:48 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 26 Feb
- 2024 16:07:22 +0000
-Date: Mon, 26 Feb 2024 16:07:21 +0000
+ 2024 16:07:47 +0000
+Date: Mon, 26 Feb 2024 16:07:46 +0000
 To: Zhao Liu <zhao1.liu@linux.intel.com>
 CC: Fan Ni <fan.ni@samsung.com>, Laurent Vivier <laurent@vivier.eu>, Alistair
  Francis <alistair@alistair23.me>, "Edgar E . Iglesias"
@@ -38,12 +38,12 @@ CC: Fan Ni <fan.ni@samsung.com>, Laurent Vivier <laurent@vivier.eu>, Alistair
  <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev
  <mjt@tls.msk.ru>, <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>,
  <qemu-trivial@nongnu.org>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v2 3/7] hw/mem/cxl_type3: Fix missing ERRP_GUARD() in
- ct3_realize()
-Message-ID: <20240226160721.000056ea@Huawei.com>
-In-Reply-To: <20240223085653.1255438-4-zhao1.liu@linux.intel.com>
+Subject: Re: [PATCH v2 5/7] hw/pci-bridge/cxl_upstream: Fix missing
+ ERRP_GUARD() in cxl_usp_realize()
+Message-ID: <20240226160746.00004dc3@Huawei.com>
+In-Reply-To: <20240223085653.1255438-6-zhao1.liu@linux.intel.com>
 References: <20240223085653.1255438-1-zhao1.liu@linux.intel.com>
- <20240223085653.1255438-4-zhao1.liu@linux.intel.com>
+ <20240223085653.1255438-6-zhao1.liu@linux.intel.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
@@ -57,9 +57,8 @@ Received-SPF: pass client-ip=185.176.79.56;
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,7 +76,7 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 23 Feb 2024 16:56:49 +0800
+On Fri, 23 Feb 2024 16:56:51 +0800
 Zhao Liu <zhao1.liu@linux.intel.com> wrote:
 
 > From: Zhao Liu <zhao1.liu@intel.com>
@@ -99,20 +98,20 @@ Zhao Liu <zhao1.liu@linux.intel.com> wrote:
 > * Using it when it's not needed is safe, but please avoid cluttering
 > * the source with useless code.
 > 
-> But in ct3_realize(), @errp is dereferenced without ERRP_GUARD():
+> But in cxl_usp_realize(), @errp is dereferenced without ERRP_GUARD():
 > 
 > cxl_doe_cdat_init(cxl_cstate, errp);
 > if (*errp) {
->     goto err_free_special_ops;
+>     goto err_cap;
 > }
 > 
-> Here we check *errp, because cxl_doe_cdat_init() returns void. And
-> ct3_realize() - as a PCIDeviceClass.realize() method - doesn't get the
-> NULL @errp parameter, it hasn't triggered the bug that dereferencing
+> Here we check *errp, because cxl_doe_cdat_init() returns void. And since
+> cxl_usp_realize() - as a PCIDeviceClass.realize() method - doesn't get
+> the NULL @errp parameter, it hasn't triggered the bug that dereferencing
 > the NULL @errp.
 > 
 > To follow the requirement of @errp, add missing ERRP_GUARD() in
-> ct3_realize().
+> cxl_usp_realize().
 > 
 > Suggested-by: Markus Armbruster <armbru@redhat.com>
 > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
@@ -127,20 +126,20 @@ Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >  * Add the @errp dereference code in commit message to make review
 >    easier. (Markus)
 > ---
->  hw/mem/cxl_type3.c | 1 +
+>  hw/pci-bridge/cxl_upstream.c | 1 +
 >  1 file changed, 1 insertion(+)
 > 
-> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> index e8801805b90f..a3b0761f843b 100644
-> --- a/hw/mem/cxl_type3.c
-> +++ b/hw/mem/cxl_type3.c
-> @@ -645,6 +645,7 @@ static DOEProtocol doe_cdat_prot[] = {
+> diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
+> index e87eb4017713..03d123cca0ef 100644
+> --- a/hw/pci-bridge/cxl_upstream.c
+> +++ b/hw/pci-bridge/cxl_upstream.c
+> @@ -289,6 +289,7 @@ static void free_default_cdat_table(CDATSubHeader **cdat_table, int num,
 >  
->  static void ct3_realize(PCIDevice *pci_dev, Error **errp)
+>  static void cxl_usp_realize(PCIDevice *d, Error **errp)
 >  {
 > +    ERRP_GUARD();
->      CXLType3Dev *ct3d = CXL_TYPE3(pci_dev);
->      CXLComponentState *cxl_cstate = &ct3d->cxl_cstate;
->      ComponentRegisters *regs = &cxl_cstate->crb;
+>      PCIEPort *p = PCIE_PORT(d);
+>      CXLUpstreamPort *usp = CXL_USP(d);
+>      CXLComponentState *cxl_cstate = &usp->cxl_cstate;
 
 
