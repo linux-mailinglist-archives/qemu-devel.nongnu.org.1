@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 777DF8681D6
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E138681D2
 	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 21:19:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rehQ2-0001gW-0C; Mon, 26 Feb 2024 15:17:46 -0500
+	id 1rehQ0-0001gB-GF; Mon, 26 Feb 2024 15:17:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1rehQ0-0001g9-0L
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 15:17:44 -0500
-Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
+ id 1rehPx-0001ew-CN
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 15:17:41 -0500
+Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1rehPt-00080p-SI
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 15:17:42 -0500
-Received: by mail-oi1-x231.google.com with SMTP id
- 5614622812f47-3c199237eaeso1896267b6e.0
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 12:17:37 -0800 (PST)
+ id 1rehPv-000811-BM
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 15:17:41 -0500
+Received: by mail-oi1-x232.google.com with SMTP id
+ 5614622812f47-3bb9b28acb4so2482133b6e.2
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 12:17:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708978656; x=1709583456; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708978657; x=1709583457; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5r8V+dWA3RVhS5vfjxAmsItqAa6Frdq+W5yFoj18eJ8=;
- b=KuyxHXqSF0tKC0XvdygtDxYYZ9+wqyODIBRQe00/rwNQc8ZAyANSq7iyHLwIVqbRXB
- fbFIxHbb5nPnLwEslVhhOPX0UrwXnzE0ZtWFLiammDOVgtTHNcnIpmOVDQkcniKlDY3x
- /sjEKMXK/tP8AGxqv7d7ZJA5wdrFtR+9EJRhlBW2q9RPYdq5heBErCaYWjoUSNiesrLI
- FWvRCGtcLA3xCVsTRKgYNbPlCEPyGNSs9NHq3kRyVKgRIZd0QHUFtl52DJRAwgFkZNR1
- klB6JQdTkfbAiZ6lvn+MVZMdUvGaRkZCzSCqdVsPp4qnO2k5h3qQYkRLyXGd3Qc2nlNi
- id1w==
+ bh=2kAEgIdBp6Ue1btIM+Uj1VoaSgxC8giYiH5Kmbwpsfk=;
+ b=X0jRWafIfmHCQy4wudzjJon6cdZ6nMaQbT1QBUZZgd/HS7aQVqMxAnaZ9zfX2Xg6H7
+ MfZcBIDvdzJ5EftWNnjSnZztVddg4pV7IP173ZSITblHUgBatjIQKvgjIUukSfvmI/Bk
+ fTleKwOBfn0SfxwKD54nUp+8dld/e5BT7VCOjzx1Sj8lHyk/EOM9CS2AgpRoc0JAAmAV
+ gwteBUL9qc03wezJZJIg/o4q93bePKk5kr4FedaMkelDKEfbMO4rpoTUQwN+NONdNT+L
+ xImQwap2zxirupCI+RV0SbBDS5QW3vb3T9e5YYK+3oETyDe3NeAmmUdxlcJD+J7B1nj7
+ WEzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708978656; x=1709583456;
+ d=1e100.net; s=20230601; t=1708978657; x=1709583457;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5r8V+dWA3RVhS5vfjxAmsItqAa6Frdq+W5yFoj18eJ8=;
- b=mram3a9Ba0meDBh7HoAzNgM2GDMLdheiG0kXawyHhf3QprHmbR59E13VTsz0a2rrl/
- 6sVzKanpqUm2a8xftGZPUJZjEH8kg+vZ31iyQoChp7Aal7b5pExt4a0vwBdsTsDKL0BF
- Ak0zsGt6H3ihQbRDorCpX1fDUq2oTtaucsYhi35/oUCvqxK2mjqJ37EDPmI5CI2UWXDH
- OCiKY3POP62Rp24EDHFCkw7ScmFhiAQYTNjdHMyrDdZxoyy8PNRs2Lz6GpkeXsMcI7vh
- JloMVfaubkKGyhciTU8pcWZGxFls0MxHaIOJ00yuhsXKr5fH4hEHYNJzPmZOOiBHjUzU
- 8AvA==
-X-Gm-Message-State: AOJu0YxtUyxaANuxnRAjPiE5frczxoKQo7jIyQ+9k682Ct6bDSFQvjPX
- PtHclMVuIXJiaq4/pzl8zzZv8yGcSOtVpa/GYr0zhLffLo2sEQhrZ+R6tDVDMpA=
-X-Google-Smtp-Source: AGHT+IF3a893SMloMtD5gR4asIlbjvL5GwLKGfmH0MIPtNOfhCb1MnHkhP0sMvFBFA+wuNojQ0AqLQ==
-X-Received: by 2002:a05:6808:15a9:b0:3c0:34ff:891f with SMTP id
- t41-20020a05680815a900b003c034ff891fmr217745oiw.57.1708978655785; 
- Mon, 26 Feb 2024 12:17:35 -0800 (PST)
+ bh=2kAEgIdBp6Ue1btIM+Uj1VoaSgxC8giYiH5Kmbwpsfk=;
+ b=DxZ1sFYZ8u65K/PE/6mz4SrIeZbSR57LQgN19xto6qV3/ivkiJjGFc9azhJgpWgUnd
+ tuS4tEBV2MN5nFJUt6owfEQkqTbKIccpWTWaq1BNJHh6TaL2dwagdofYV82+fCMGJV93
+ 9KLiF4PXiv/9lOBKujqbWDqhrMhA/VmO3fPyeiz3zY3cKnAhTziRRHwaQx2TjjfP+oq4
+ W+xJLyuScc3v6mc/w+jgo+OngQfRTYTUcV0TvN5wzb5PGi+hbQyO+OVl/rTaiTh7qWOn
+ YyHT0N92YVMqokjrEQM/Y04vvttpdyaxhpR6iXdfDAGIZa4gmsHf3WCW+Ct26uHK0EwP
+ 6gig==
+X-Gm-Message-State: AOJu0YwoPP/m6H741kyuwJNDf2v6E453rYlokMT4MGadG6p1krYgdsrA
+ jhrJ87ju+PaoPBHMgVK+rk1L2/fCUhwPrWIrHhYTWcebWGpCTzU/SqXq6vZBNxI=
+X-Google-Smtp-Source: AGHT+IGIC2MNmJJaHD7E3Ew6yvs00WWSjxluTznzDrPZxeqVIlr8drzbSNVdgyUEFxxpJFCgShyqBw==
+X-Received: by 2002:a05:6808:2189:b0:3bf:fdb2:ca5b with SMTP id
+ be9-20020a056808218900b003bffdb2ca5bmr223210oib.3.1708978657341; 
+ Mon, 26 Feb 2024 12:17:37 -0800 (PST)
 Received: from taylor-ubuntu.austin.rr.com (068-203-008-061.res.spectrum.com.
  [68.203.8.61]) by smtp.gmail.com with ESMTPSA id
- by11-20020a056808340b00b003c1a4a9ad17sm330594oib.46.2024.02.26.12.17.34
+ by11-20020a056808340b00b003c1a4a9ad17sm330594oib.46.2024.02.26.12.17.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Feb 2024 12:17:35 -0800 (PST)
+ Mon, 26 Feb 2024 12:17:36 -0800 (PST)
 From: Taylor Simpson <ltaylorsimpson@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: bcain@quicinc.com, quic_mathbern@quicinc.com, sidneym@quicinc.com,
  quic_mliebel@quicinc.com, richard.henderson@linaro.org, philmd@linaro.org,
  ale@rev.ng, anjo@rev.ng, ltaylorsimpson@gmail.com
-Subject: [PATCH 7/9] Hexagon (target/hexagon) Remove gen_op_regs.py
-Date: Mon, 26 Feb 2024 13:17:20 -0700
-Message-Id: <20240226201722.391879-8-ltaylorsimpson@gmail.com>
+Subject: [PATCH 8/9] Hexagon (target/hexagon) Remove gen_shortcode.py
+Date: Mon, 26 Feb 2024 13:17:21 -0700
+Message-Id: <20240226201722.391879-9-ltaylorsimpson@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240226201722.391879-1-ltaylorsimpson@gmail.com>
 References: <20240226201722.391879-1-ltaylorsimpson@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-oi1-x231.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-oi1-x232.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01,
- WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,32 +94,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This data structure is not used
+
 Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
 ---
- target/hexagon/README         |   1 -
- target/hexagon/gen_op_regs.py | 125 ----------------------------------
- target/hexagon/meson.build    |  14 +---
- 3 files changed, 2 insertions(+), 138 deletions(-)
- delete mode 100755 target/hexagon/gen_op_regs.py
+ target/hexagon/opcodes.c        |  7 ----
+ target/hexagon/README           |  1 -
+ target/hexagon/gen_shortcode.py | 63 ---------------------------------
+ target/hexagon/meson.build      | 10 ------
+ 4 files changed, 81 deletions(-)
+ delete mode 100755 target/hexagon/gen_shortcode.py
 
+diff --git a/target/hexagon/opcodes.c b/target/hexagon/opcodes.c
+index 02ae9cf787..c8bde2f9e9 100644
+--- a/target/hexagon/opcodes.c
++++ b/target/hexagon/opcodes.c
+@@ -37,13 +37,6 @@ const char * const opcode_names[] = {
+ };
+ 
+ 
+-const char * const opcode_short_semantics[] = {
+-#define DEF_SHORTCODE(TAG, SHORTCODE)              [TAG] = #SHORTCODE,
+-#include "shortcode_generated.h.inc"
+-#undef DEF_SHORTCODE
+-    NULL
+-};
+-
+ DECLARE_BITMAP(opcode_attribs[XX_LAST_OPCODE], A_ZZ_LASTATTRIB);
+ 
+ static void init_attribs(int tag, ...)
 diff --git a/target/hexagon/README b/target/hexagon/README
-index 746ebec378..065c05154d 100644
+index 065c05154d..65b4fcc0fa 100644
 --- a/target/hexagon/README
 +++ b/target/hexagon/README
-@@ -43,7 +43,6 @@ target/hexagon/gen_semantics.c.  This step produces
- That file is consumed by the following python scripts to produce the indicated
- header files in <BUILD_DIR>/target/hexagon
-         gen_opcodes_def.py              -> opcodes_def_generated.h.inc
--        gen_op_regs.py                  -> op_regs_generated.h.inc
+@@ -46,7 +46,6 @@ header files in <BUILD_DIR>/target/hexagon
          gen_printinsn.py                -> printinsn_generated.h.inc
          gen_op_attribs.py               -> op_attribs_generated.h.inc
          gen_helper_protos.py            -> helper_protos_generated.h.inc
-diff --git a/target/hexagon/gen_op_regs.py b/target/hexagon/gen_op_regs.py
+-        gen_shortcode.py                -> shortcode_generated.h.inc
+         gen_tcg_funcs.py                -> tcg_funcs_generated.c.inc
+         gen_tcg_func_table.py           -> tcg_func_table_generated.c.inc
+         gen_helper_funcs.py             -> helper_funcs_generated.c.inc
+diff --git a/target/hexagon/gen_shortcode.py b/target/hexagon/gen_shortcode.py
 deleted file mode 100755
-index 7b7b33895a..0000000000
---- a/target/hexagon/gen_op_regs.py
+index deb94446c4..0000000000
+--- a/target/hexagon/gen_shortcode.py
 +++ /dev/null
-@@ -1,125 +0,0 @@
+@@ -1,63 +0,0 @@
 -#!/usr/bin/env python3
 -
 -##
@@ -146,150 +166,70 @@ index 7b7b33895a..0000000000
 -import hex_common
 -
 -
--##
--##     Generate the register and immediate operands for each instruction
--##
--def calculate_regid_reg(tag):
--    def letter_inc(x):
--        return chr(ord(x) + 1)
--
--    ordered_implregs = ["SP", "FP", "LR"]
--    srcdst_lett = "X"
--    src_lett = "S"
--    dst_lett = "D"
--    retstr = ""
--    mapdict = {}
--    for reg in ordered_implregs:
--        reg_rd = 0
--        reg_wr = 0
--        if ("A_IMPLICIT_WRITES_" + reg) in hex_common.attribdict[tag]:
--            reg_wr = 1
--        if reg_rd and reg_wr:
--            retstr += srcdst_lett
--            mapdict[srcdst_lett] = reg
--            srcdst_lett = letter_inc(srcdst_lett)
--        elif reg_rd:
--            retstr += src_lett
--            mapdict[src_lett] = reg
--            src_lett = letter_inc(src_lett)
--        elif reg_wr:
--            retstr += dst_lett
--            mapdict[dst_lett] = reg
--            dst_lett = letter_inc(dst_lett)
--    return retstr, mapdict
--
--
--def calculate_regid_letters(tag):
--    retstr, mapdict = calculate_regid_reg(tag)
--    return retstr
--
--
--def strip_reg_prefix(x):
--    y = x.replace("UREG.", "")
--    y = y.replace("MREG.", "")
--    return y.replace("GREG.", "")
+-def gen_shortcode(f, tag):
+-    f.write(f"DEF_SHORTCODE({tag}, {hex_common.semdict[tag]})\n")
 -
 -
 -def main():
 -    hex_common.read_semantics_file(sys.argv[1])
 -    hex_common.read_attribs_file(sys.argv[2])
--    hex_common.init_registers()
--    tagregs = hex_common.get_tagregs(full=True)
+-    hex_common.calculate_attribs()
+-    tagregs = hex_common.get_tagregs()
 -    tagimms = hex_common.get_tagimms()
 -
 -    with open(sys.argv[3], "w") as f:
--        for tag in hex_common.tags:
--            regs = tagregs[tag]
--            rregs = []
--            wregs = []
--            regids = ""
--            for regtype, regid, _, numregs in regs:
--                reg = hex_common.get_register(tag, regtype, regid)
--                if reg.is_read():
--                    if regid[0] not in regids:
--                        regids += regid[0]
--                    rregs.append(regtype + regid + numregs)
--                if reg.is_written():
--                    wregs.append(regtype + regid + numregs)
--                    if regid[0] not in regids:
--                        regids += regid[0]
--            for attrib in hex_common.attribdict[tag]:
--                if hex_common.attribinfo[attrib]["rreg"]:
--                    rregs.append(strip_reg_prefix(attribinfo[attrib]["rreg"]))
--                if hex_common.attribinfo[attrib]["wreg"]:
--                    wregs.append(strip_reg_prefix(attribinfo[attrib]["wreg"]))
--            regids += calculate_regid_letters(tag)
--            f.write(
--                f'REGINFO({tag},"{regids}",\t/*RD:*/\t"{",".join(rregs)}",'
--                f'\t/*WR:*/\t"{",".join(wregs)}")\n'
--            )
+-        f.write("#ifndef DEF_SHORTCODE\n")
+-        f.write("#define DEF_SHORTCODE(TAG,SHORTCODE)    /* Nothing */\n")
+-        f.write("#endif\n")
 -
 -        for tag in hex_common.tags:
--            imms = tagimms[tag]
--            f.write(f"IMMINFO({tag}")
--            if not imms:
--                f.write(""",'u',0,0,'U',0,0""")
--            for sign, size, shamt in imms:
--                if sign == "r":
--                    sign = "s"
--                if not shamt:
--                    shamt = "0"
--                f.write(f""",'{sign}',{size},{shamt}""")
--            if len(imms) == 1:
--                if sign.isupper():
--                    myu = "u"
--                else:
--                    myu = "U"
--                f.write(f""",'{myu}',0,0""")
--            f.write(")\n")
+-            ## Skip the priv instructions
+-            if "A_PRIV" in hex_common.attribdict[tag]:
+-                continue
+-            ## Skip the guest instructions
+-            if "A_GUEST" in hex_common.attribdict[tag]:
+-                continue
+-            ## Skip the diag instructions
+-            if tag == "Y6_diag":
+-                continue
+-            if tag == "Y6_diag0":
+-                continue
+-            if tag == "Y6_diag1":
+-                continue
+-
+-            gen_shortcode(f, tag)
+-
+-        f.write("#undef DEF_SHORTCODE\n")
 -
 -
 -if __name__ == "__main__":
 -    main()
 diff --git a/target/hexagon/meson.build b/target/hexagon/meson.build
-index fb480afc03..b3a0944d3b 100644
+index b3a0944d3b..988e7489ba 100644
 --- a/target/hexagon/meson.build
 +++ b/target/hexagon/meson.build
-@@ -1,5 +1,5 @@
- ##
--##  Copyright(c) 2020-2023 Qualcomm Innovation Center, Inc. All Rights Reserved.
-+##  Copyright(c) 2020-2024 Qualcomm Innovation Center, Inc. All Rights Reserved.
- ##
- ##  This program is free software; you can redistribute it and/or modify
- ##  it under the terms of the GNU General Public License as published by
-@@ -45,7 +45,6 @@ hexagon_ss.add(semantics_generated)
- #     shortcode_generated.h.inc
+@@ -42,21 +42,11 @@ hexagon_ss.add(semantics_generated)
+ #
+ # Step 2
+ # We use Python scripts to generate the following files
+-#     shortcode_generated.h.inc
  #     tcg_func_table_generated.c.inc
  #     printinsn_generated.h.inc
--#     op_regs_generated.h.inc
  #     op_attribs_generated.h.inc
  #     opcodes_def_generated.h.inc
  #
-@@ -76,15 +75,6 @@ printinsn_generated = custom_target(
- )
- hexagon_ss.add(printinsn_generated)
- 
--op_regs_generated = custom_target(
--    'op_regs_generated.h.inc',
--    output: 'op_regs_generated.h.inc',
+-shortcode_generated = custom_target(
+-    'shortcode_generated.h.inc',
+-    output: 'shortcode_generated.h.inc',
 -    depends: [semantics_generated],
 -    depend_files: [hex_common_py, attribs_def],
--    command: [python, files('gen_op_regs.py'), semantics_generated, attribs_def, '@OUTPUT@'],
+-    command: [python, files('gen_shortcode.py'), semantics_generated, attribs_def, '@OUTPUT@'],
 -)
--hexagon_ss.add(op_regs_generated)
+-hexagon_ss.add(shortcode_generated)
 -
- op_attribs_generated = custom_target(
-     'op_attribs_generated.h.inc',
-     output: 'op_attribs_generated.h.inc',
-@@ -110,7 +100,7 @@ hexagon_ss.add(opcodes_def_generated)
- #
- gen_dectree_import = executable(
-     'gen_dectree_import',
--    'gen_dectree_import.c', opcodes_def_generated, op_regs_generated,
-+    'gen_dectree_import.c', opcodes_def_generated,
-     native: true, build_by_default: false)
- 
- iset_py = custom_target(
+ tcg_func_table_generated = custom_target(
+     'tcg_func_table_generated.c.inc',
+     output: 'tcg_func_table_generated.c.inc',
 -- 
 2.34.1
 
