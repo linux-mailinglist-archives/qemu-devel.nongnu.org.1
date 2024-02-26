@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D4B867D23
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 18:00:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45500867D49
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 18:03:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reeHt-0005Zk-0i; Mon, 26 Feb 2024 11:57:10 -0500
+	id 1reeHo-0005ZL-WE; Mon, 26 Feb 2024 11:57:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1reeHl-0005XP-84
+ id 1reeHl-0005XL-3j
  for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:57:01 -0500
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1reeHX-0007aK-4k
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:57:00 -0500
+ id 1reeHX-0007aQ-6I
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:56:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
- Content-Type; bh=fW7rtp0/UXuP9tIVplL8g9pjh+RyEaa4l4hEMmcNHFA=; b=nkY4k8MS0xF8
- r4MB6ZHqkaB9xTq8bPvnwlDWesqsfW2ddsyVyZ3aQ4DyQuzL+MGj0qyIsQD9FytrKx+aeYqCEmXoz
- 6DMwxBwzdAapfcJbnBo/Ct7od0MTyBn/mHirqg/bzrvXEarfT4u4RiUxEV1J8c3qRroACuDM4+E0y
- eqdJpvipc4dQZDWJUahje0Z07HFIsaMB6MQZWB3NQTdkZw21fyhp547R9gz+U+OKAfHPLpyOhfZ88
- PIKNjoG5RITg5IHVFnfqpaEkjQuErHv9k7VE4iSaULjVtXMVhsoBZijpxp2w62WZFROVbkWrGDTkJ
- HCSRwIOzK+HzXaFZeOcsUw==;
+ Content-Type; bh=GQCJppOxjtPPvX5ALSUce3CAX9D6q9BlO733MTw3eZ8=; b=EhZFv336uK5p
+ hbJeDqDNsKsfEfsqz1u0vKebwC1u7R1Rl0f793xxH79+aaA83rca/TTueSxd71Se66STdSZ48NBhc
+ dChNCdLnGexCJjboIO8RPnPN1JoQY4ywwNfglCwWu1ab1X7UrZMZgnKxna9sVusAFzazduvKoXKIK
+ cXrd/eyw8dLPtbxVOJdftkw/eg7eKFdk5A9S86S2yihQz0TauVKly1YM1fqxNj+0Z+NbxyawgSwEY
+ hg8tqw01m3XJgZUioQfeltopM+geOowCKMuhQBKOBf1Riv2z2379O65lNq5k1/4GXC0VKmBokmVnc
+ lVGLo6OlU5bt5ojv+p6CDg==;
 Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1reeG3-001AD7-0C;
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1reeG3-001AD7-0N;
  Mon, 26 Feb 2024 17:56:34 +0100
 From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 To: qemu-devel@nongnu.org
 Cc: michael.roth@amd.com, kkostiuk@redhat.com, marcandre.lureau@redhat.com,
  andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH 2/7] qga: introduce ga_run_command() helper for guest cmd
- execution
-Date: Mon, 26 Feb 2024 18:56:37 +0200
-Message-Id: <20240226165642.807350-3-andrey.drobyshev@virtuozzo.com>
+Subject: [PATCH 3/7] qga/commands-posix: qmp_guest_shutdown: use
+ ga_run_command helper
+Date: Mon, 26 Feb 2024 18:56:38 +0200
+Message-Id: <20240226165642.807350-4-andrey.drobyshev@virtuozzo.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240226165642.807350-1-andrey.drobyshev@virtuozzo.com>
 References: <20240226165642.807350-1-andrey.drobyshev@virtuozzo.com>
@@ -45,12 +45,13 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=130.117.225.111;
  envelope-from=andrey.drobyshev@virtuozzo.com; helo=relay.virtuozzo.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,172 +67,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When executing guest commands in *nix environment, we repeat the same
-fork/exec pattern multiple times.  Let's just separate it into a single
-helper which would also be able to feed input data into the launched
-process' stdin.  This way we can avoid code duplication.
+Also remove the G_GNUC_UNUSED attribute added in the previous commit from
+the helper.
 
-To keep the history more bisectable, let's replace qmp commands
-implementations one by one.  Also add G_GNUC_UNUSED attribute to the
-helper and remove it in the next commit.
-
-Originally-by: Yuri Pudgorodskiy <yur@virtuozzo.com>
 Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 ---
- qga/commands-posix.c | 140 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 140 insertions(+)
+ qga/commands-posix.c | 39 ++++++---------------------------------
+ 1 file changed, 6 insertions(+), 33 deletions(-)
 
 diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index 752ef509d0..510b902b1a 100644
+index 510b902b1a..4b64716bab 100644
 --- a/qga/commands-posix.c
 +++ b/qga/commands-posix.c
-@@ -76,6 +76,146 @@ static void ga_wait_child(pid_t pid, int *status, Error **errp)
-     g_assert(rpid == pid);
- }
- 
-+static void ga_pipe_read_str(int fd[2], char **str, size_t *len)
-+{
-+    ssize_t n;
-+    char buf[1024];
-+    close(fd[1]);
-+    fd[1] = -1;
-+    while ((n = read(fd[0], buf, sizeof(buf))) != 0) {
-+        if (n < 0) {
-+            if (errno == EINTR) {
-+                continue;
-+            } else {
-+                break;
-+            }
-+        }
-+        *str = g_realloc(*str, *len + n);
-+        memcpy(*str + *len, buf, n);
-+        *len += n;
-+    }
-+    close(fd[0]);
-+    fd[0] = -1;
-+}
-+
-+/*
-+ * Helper to run command with input/output redirection,
-+ * sending string to stdin and taking error message from
-+ * stdout/err.
-+ */
-+G_GNUC_UNUSED
-+static int ga_run_command(const char *argv[], const char *in_str,
-+                          const char *action, Error **errp)
-+{
-+    pid_t pid;
-+    int status;
-+    int retcode = -1;
-+    int infd[2] = { -1, -1 };
-+    int outfd[2] = { -1, -1 };
-+    char *str = NULL;
-+    size_t len = 0;
-+
-+    if ((in_str && !g_unix_open_pipe(infd, FD_CLOEXEC, NULL)) ||
-+        !g_unix_open_pipe(outfd, FD_CLOEXEC, NULL)) {
-+        error_setg(errp, "cannot create pipe FDs");
-+        goto out;
-+    }
-+
-+    pid = fork();
-+    if (pid == 0) {
-+        char *cherr = NULL;
-+
-+        setsid();
-+
-+        if (in_str) {
-+            /* Redirect stdin to infd. */
-+            close(infd[1]);
-+            dup2(infd[0], 0);
-+            close(infd[0]);
-+        } else {
-+            reopen_fd_to_null(0);
-+        }
-+
-+        /* Redirect stdout/stderr to outfd. */
-+        close(outfd[0]);
-+        dup2(outfd[1], 1);
-+        dup2(outfd[1], 2);
-+        close(outfd[1]);
-+
-+        execvp(argv[0], (char *const *)argv);
-+
-+        /* Write the cause of failed exec to pipe for the parent to read it. */
-+        cherr = g_strdup_printf("failed to exec '%s'", argv[0]);
-+        perror(cherr);
-+        g_free(cherr);
-+        _exit(EXIT_FAILURE);
-+    } else if (pid < 0) {
-+        error_setg_errno(errp, errno, "failed to create child process");
-+        goto out;
-+    }
-+
-+    if (in_str) {
-+        close(infd[0]);
-+        infd[0] = -1;
-+        if (qemu_write_full(infd[1], in_str, strlen(in_str)) !=
-+                strlen(in_str)) {
-+            error_setg_errno(errp, errno, "%s: cannot write to stdin pipe",
-+                             action);
-+            goto out;
-+        }
-+        close(infd[1]);
-+        infd[1] = -1;
-+    }
-+
-+    ga_pipe_read_str(outfd, &str, &len);
-+
-+    ga_wait_child(pid, &status, errp);
-+    if (*errp) {
-+        goto out;
-+    }
-+
-+    if (!WIFEXITED(status)) {
-+        if (len) {
-+            error_setg(errp, "child process has terminated abnormally: %s",
-+                       str);
-+        } else {
-+            error_setg(errp, "child process has terminated abnormally");
-+        }
-+        goto out;
-+    }
-+
-+    retcode = WEXITSTATUS(status);
-+
-+    if (WEXITSTATUS(status)) {
-+        if (len) {
-+            error_setg(errp, "child process has failed to %s: %s",
-+                       action, str);
-+        } else {
-+            error_setg(errp, "child process has failed to %s: exit status %d",
-+                       action, WEXITSTATUS(status));
-+        }
-+        goto out;
-+    }
-+
-+out:
-+    g_free(str);
-+
-+    if (infd[0] != -1) {
-+        close(infd[0]);
-+    }
-+    if (infd[1] != -1) {
-+        close(infd[1]);
-+    }
-+    if (outfd[0] != -1) {
-+        close(outfd[0]);
-+    }
-+    if (outfd[1] != -1) {
-+        close(outfd[1]);
-+    }
-+
-+    return retcode;
-+}
-+
- void qmp_guest_shutdown(const char *mode, Error **errp)
+@@ -103,7 +103,6 @@ static void ga_pipe_read_str(int fd[2], char **str, size_t *len)
+  * sending string to stdin and taking error message from
+  * stdout/err.
+  */
+-G_GNUC_UNUSED
+ static int ga_run_command(const char *argv[], const char *in_str,
+                           const char *action, Error **errp)
+ {
+@@ -220,8 +219,6 @@ void qmp_guest_shutdown(const char *mode, Error **errp)
  {
      const char *shutdown_flag;
+     Error *local_err = NULL;
+-    pid_t pid;
+-    int status;
+ 
+ #ifdef CONFIG_SOLARIS
+     const char *powerdown_flag = "-i5";
+@@ -250,46 +247,22 @@ void qmp_guest_shutdown(const char *mode, Error **errp)
+         return;
+     }
+ 
+-    pid = fork();
+-    if (pid == 0) {
+-        /* child, start the shutdown */
+-        setsid();
+-        reopen_fd_to_null(0);
+-        reopen_fd_to_null(1);
+-        reopen_fd_to_null(2);
+-
++    const char *argv[] = {"/sbin/shutdown",
+ #ifdef CONFIG_SOLARIS
+-        execl("/sbin/shutdown", "shutdown", shutdown_flag, "-g0", "-y",
+-              "hypervisor initiated shutdown", (char *)NULL);
++                          shutdown_flag, "-g0", "-y",
+ #elif defined(CONFIG_BSD)
+-        execl("/sbin/shutdown", "shutdown", shutdown_flag, "+0",
+-               "hypervisor initiated shutdown", (char *)NULL);
++                          shutdown_flag, "+0",
+ #else
+-        execl("/sbin/shutdown", "shutdown", "-h", shutdown_flag, "+0",
+-               "hypervisor initiated shutdown", (char *)NULL);
++                          "-h", shutdown_flag, "+0",
+ #endif
+-        _exit(EXIT_FAILURE);
+-    } else if (pid < 0) {
+-        error_setg_errno(errp, errno, "failed to create child process");
+-        return;
+-    }
++                          "hypervisor initiated shutdown", (char *) NULL};
+ 
+-    ga_wait_child(pid, &status, &local_err);
++    ga_run_command(argv, NULL, "shutdown", &local_err);
+     if (local_err) {
+         error_propagate(errp, local_err);
+         return;
+     }
+ 
+-    if (!WIFEXITED(status)) {
+-        error_setg(errp, "child process has terminated abnormally");
+-        return;
+-    }
+-
+-    if (WEXITSTATUS(status)) {
+-        error_setg(errp, "child process has failed to shutdown");
+-        return;
+-    }
+-
+     /* succeeded */
+ }
+ 
 -- 
 2.39.3
 
