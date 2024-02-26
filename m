@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66368867D0E
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 17:58:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13105867D38
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 18:01:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reeJ3-0008Et-Nc; Mon, 26 Feb 2024 11:58:21 -0500
+	id 1reeKS-0003gt-Ek; Mon, 26 Feb 2024 11:59:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1reeJ1-00087F-1e
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:58:19 -0500
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ id 1reeKH-0003Ku-3m
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:59:37 -0500
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1reeIz-00088c-Jz
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:58:18 -0500
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-565a2c4cc1aso3067059a12.2
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 08:58:17 -0800 (PST)
+ id 1reeKF-0008RI-Ca
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:59:36 -0500
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-564372fb762so4818320a12.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 08:59:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708966696; x=1709571496; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708966774; x=1709571574; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=2hBTiUiKlIrbsy1mY0gurx7qrfA7VwktbNBJNWgaEsc=;
- b=pxASy44gS4xq/7+tAtPr/MfuFJ5PXzIasi4UrTWV6cpU1zeNN/R+e3ULQd8tvZ7rre
- l7jTZRlpUAdouY76kV3J5UQ9LDREy/37bJ8Zm31Vc9e+vk37GcriZt0DUJJw/oawIQEl
- qrFooGl7ImJmLlRTQJe9rqtTD693hyFLTGbUaCaJorpfoVCziOqUnPmQhvjaN3i9iW7y
- 7e0EB4ByglPWld3C/Cr6/xW/E3R9KFj8Y1xvJMpeCOUE6qzLFrbgbwGTTVbLntaE5BZT
- UFVSsdIl7KcE/k365NJyhmL1u5G0Jw6Br49YDcJGirqtNg6LAbwEOAs4fXdIdji0naRj
- cbYw==
+ bh=Ya2shY/nt43apiK8vLwsK44nVhf72rHSHbc3EW7QxoM=;
+ b=uh4JLBgp4EMdmecZp/vWx8wkAGrpZ3ru98zyJY11jTq2JQwResr7CXxCpqcs1LeRc8
+ pru7kCNI6aefHJ1y55OchttfUvY8UFlnh48Ht4KwYsCZl3Y1Rl02DpdiPxVdtCqjs/mk
+ GthIPUeQT9Sz8RMialgTZUqjeDbFIPYlHTNwPS4WNwlXOouZIrOtmBaqaoYn0bZ+L3S9
+ BrHcLQrHhMlZRtXkGXyqXY1f1UXbAyEVRihaPhc7jfPbKSEggI00W5r+9FV4jXQnHghX
+ 9KbUXko3KEh5LKMCLm/+4CiBSK+qiLtr1AzWhSPLRmVgOL92JjDS78LDazOghkpvF0E3
+ REmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708966696; x=1709571496;
+ d=1e100.net; s=20230601; t=1708966774; x=1709571574;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=2hBTiUiKlIrbsy1mY0gurx7qrfA7VwktbNBJNWgaEsc=;
- b=u73wll2g/GfYPySviu7qpmir7PesaZIS+PjFDhSqdee9D7NpmWS9KJcV8gQQyxRDrJ
- ccklDGk1/p7jALDa9WnEZzMYpjTXgynW8LERL51IckJYTnph1ceshLtQDRAItEiPbTl+
- X2IAV6mFHBlppk7t0Rwsx1KvjORhe/5RQSULPPpmLEaiC1ek8LCcFujkatHOj6MtbxLO
- iCtfa5ekQT0wrC3k0F71TQMo+HC5y+3ndNt+XsNWErmzILZ2ONYGU46wps6AlkgJpzLl
- /QtnBIyd3sGg4IUk9Yc0l/DqLWtHwbUznJZ9Eeqv4IHk3n/fP8u23/inbbPQiq1GhZM1
- CPBw==
+ bh=Ya2shY/nt43apiK8vLwsK44nVhf72rHSHbc3EW7QxoM=;
+ b=FXZ+wY3kMLc18AZcHZeX9XsK8yq4hWlPn6KyhC4XQJXPPxKSSDdGCsQ7CRavzc2j+l
+ TeJzQNXzrvwMSYVfNDleklyH/L1Qzxjk2TFNI5hK2j2DPQQQ3W4fl3Kq78VWtlCVG5q3
+ /idUp4X+Tb9d18MnltkI+d7ewiUBihkbIEbXU+RmnlGISPN8IRqo9uVn5TGmOQq8nxVa
+ sb5jk5YvhKpBWQLk6owpeRIw6XCYuYFVafEAm0gB25YsIog1cWCtAFN/kFueRGake707
+ ZB4epMdGM77NVk9jx3Q91fj9VBZcvu603bb5Yl4lrY9Ra/+1kMNJw51JAwALiQIgytvF
+ 4aow==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVc2VF0dK7ZhWczjhgMlGM6P3WVEaP/eC0VEwdivbv/GitcpHyMQehaw3pWTHnI52QUB/bxen/m9DU2rB/jVwZ9CdRbCh4=
-X-Gm-Message-State: AOJu0YylcrNg2mYxhbWp+AuN8HVFjbPnAjSuV+P2G8NYnKm4iFLYBLek
- lYxHrJcFsh+pPezOgaqJd8wtelZMaPVu9u+A1++7oxpXUdQHj/s9nQEgDR1IFmpINloKj4P8p1m
- SX9Pk0r7Li+ZKRN2lKq3Rc6NY0umQNca3LORWRw==
-X-Google-Smtp-Source: AGHT+IEENXAdERoq2CaXAa8028s4Jwnj0gEsi2CIDNbZxfRle6heLLG6hI22SFsjolY+6SN4Njsy38ucNy8z5sOe7zE=
-X-Received: by 2002:aa7:d513:0:b0:564:aa72:78e1 with SMTP id
- y19-20020aa7d513000000b00564aa7278e1mr4715985edq.9.1708966696043; Mon, 26 Feb
- 2024 08:58:16 -0800 (PST)
+ AJvYcCWSjGNhDn7bTZ2XGfEW0rgf7iel0H0HU1WU+trXI2YVb4lq/BpAwtbwT8HI2CNBNxaUOWzclF1tfA+ItHz1C+a1k+vium0=
+X-Gm-Message-State: AOJu0Yy5JzJwbW/Z0CYH4Hp/yrMzLp+hSjwi1ztMyZ9SuR9QXt7+jiPU
+ Gq6hkTOD0+yHOu5YxUT7taoSoOb76cdRTEvaCA75WNTwUULrSmx4UJsxIYOOnPYR5PGBG9U/KWa
+ d71IFofTFfGStDdAaML1+qyKoW0kFBYahgGMLIw==
+X-Google-Smtp-Source: AGHT+IG05R9sNInXR+XwoTkQOKSNTG9Bt/v+D7JGfPg4DfxMiwMHv0RDaszErCWLoX51hMjhabbYtUxtSGfUj7Qu7TQ=
+X-Received: by 2002:a05:6402:14d4:b0:565:dce3:66fd with SMTP id
+ f20-20020a05640214d400b00565dce366fdmr2855039edx.23.1708966773731; Mon, 26
+ Feb 2024 08:59:33 -0800 (PST)
 MIME-Version: 1.0
 References: <20240224-cocoa-v12-0-e89f70bdda71@daynix.com>
- <20240224-cocoa-v12-1-e89f70bdda71@daynix.com>
-In-Reply-To: <20240224-cocoa-v12-1-e89f70bdda71@daynix.com>
+ <20240224-cocoa-v12-2-e89f70bdda71@daynix.com>
+In-Reply-To: <20240224-cocoa-v12-2-e89f70bdda71@daynix.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 26 Feb 2024 16:58:05 +0000
-Message-ID: <CAFEAcA8-dTpqK=H+D-s+3j+eUmK59xqp6eiioy4ZoSeWDqRyNA@mail.gmail.com>
-Subject: Re: [PATCH v12 01/10] ui/cocoa: Split [-QemuCocoaView
- handleEventLocked:]
+Date: Mon, 26 Feb 2024 16:59:22 +0000
+Message-ID: <CAFEAcA-C+T9vpx9KmPtFX-tkoujwQ3RdHX4UCShLpqUOuubgSg@mail.gmail.com>
+Subject: Re: [PATCH v12 02/10] ui/cocoa: Immediately call [-QemuCocoaView
+ handleMouseEvent:buttons:]
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
  Gerd Hoffmann <kraxel@redhat.com>,
@@ -69,8 +69,8 @@ Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>,
  Marek Glogowski <smarkusg@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>, 
  Rene Engel <ReneEngel80@emailn.de>, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,17 +95,10 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Sat, 24 Feb 2024 at 12:43, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
 >
-> Currently [-QemuCocoaView handleEventLocked:] parses the passed event,
-> stores operations to be done to variables, and perform them according
-> to the variables. This construct will be cluttered with variables and
-> hard to read when we need more different operations for different
-> events.
->
-> Split the methods so that we can call appropriate methods depending on
-> events instead of relying on variables.
+> Instead of using mouse_event variable to tell to handle a mouse event
+> later, immediately call [-QemuCocoaView handleMouseEvent:buttons:].
 >
 > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
