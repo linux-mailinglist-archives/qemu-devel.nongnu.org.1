@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D2986836F
+	by mail.lfdr.de (Postfix) with ESMTPS id 05F5386836E
 	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 23:00:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rej0P-0004oy-IS; Mon, 26 Feb 2024 16:59:25 -0500
+	id 1rej0Q-0004p8-5O; Mon, 26 Feb 2024 16:59:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rej0M-0004nX-Ck
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 16:59:22 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rej0O-0004oJ-J8
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 16:59:24 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rej0K-0007gn-65
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 16:59:21 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-412a87d5afcso6530755e9.3
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 13:59:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rej0M-0007h1-4r
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 16:59:23 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-41241f64c6bso28374365e9.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 13:59:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708984757; x=1709589557; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708984759; x=1709589559; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4klEzet8aHWpX9bQlWaepUmSR2xNV2bS+e5k8Ehj/tQ=;
- b=hbTj0JlixwAHTiDytZdy2Q+fgq1pGKqGDAtSxPiPVxArdm18gVNLEDQPDOSGuMy8Ej
- /5R6Hsxppwcs/t5XkVWjD6o1zPqKI760ITDkUZlYouVc5X7ZqXKIHR9gG5CsXmgprxwx
- EKPwdS8u349f1C2q8Dm/hyNa8jLT0B60PWhxIbJnqPigaSLsKJoGye61RH14EjsTDq6F
- HE3g0SHOsqGCYsX0uC30WQq4VFgwhpXxPHVlBpfaY6IhbY2Pz/xh3gohpyu3SWuswSJ8
- 12/z32rCsn46JkDhECzdIotk9SrfjWavTWIsEN0wPVBn72xBErdifP2RraMQiNHDKJ2b
- ZR+w==
+ bh=3YYRUkefd8YL5Lg3wVrT05FHUF/ngn4lf4vkoMHN3l4=;
+ b=FUzWcOvNjtR0QAAbcJfpVVQM3ezEczjXxkcSY0AxcekVxXjq4clvCdoxDk26ThtiKm
+ 5OxNXPUE8p/FOt0FDhzEGLMWskEgpFGd75tBd5wjodwMeFqmXYN3JuJiORMzM0/2op3W
+ nKhxyI9gUmg3e/oCnRPhFPVe/d+Jh0lE+lf9SAt/dR+NB+enMu7LmiTYR2Ql0BZSeIzr
+ w7OhIyBVNz4ZmCpQK/uFmuwrvVy1OyfEmi31nEFpbc0pIUTYNHrhxBGLpg5hdBv20pQ6
+ xXF6oc7zmo70uC2PVAruQSUJdWdx4lPi0kdN9PU+Jq3W6rIeiVxce3d0J2qO1g2H1Ddi
+ QRtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708984757; x=1709589557;
+ d=1e100.net; s=20230601; t=1708984759; x=1709589559;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4klEzet8aHWpX9bQlWaepUmSR2xNV2bS+e5k8Ehj/tQ=;
- b=fzp9ZeQDUFxz0BCh6DqbtWypOwxoPRHyT4GhBMIERHHGlQXrvtNWujzyIg1kg8Joad
- ZJd9Fv7FiepkJ0yJBGiEGsjUKmwKfPzxjvdQqZW1GNUqh5d9jjLxEyo6DmE6WV0jlByx
- 01ZaKEN2xQrhW+/I9FRUgfbkiB6+kYgz2hKnMjFB8SYhd/k0hz22QXwTD2ZB1YLPDlzR
- MgUG8QxA4cQ2PJPxC3DTtXz1o69qCsmrcLrTVYxYI7/sJfXwxtGGkAU9PM0Xwry0KOnp
- ouMLQfTeM5DrwFJlRWXptfweTr42nIGNSazJ4l746neA6yQKxhWC0dToEKE7G1EN7/qv
- rFKw==
-X-Gm-Message-State: AOJu0YxMLWgnD8p7h4PWWViPwxv16fRVeeatYiKYTBHcFk7EMQxcGDsv
- X43anI6PHCShkzWbyRr5NaI5CY/03MeL9FFuvdrAMHSooQneVsSYFCyOWxg2
-X-Google-Smtp-Source: AGHT+IEAKoiB/SwRzqiWIZzu4KXctDE4U3g4bGT5PFx4HLAKgV2za+crwHUQoQ2ges2LUVUsTSt1Lw==
-X-Received: by 2002:a5d:4b4f:0:b0:33d:81ca:532e with SMTP id
- w15-20020a5d4b4f000000b0033d81ca532emr6358708wrs.47.1708984757438; 
- Mon, 26 Feb 2024 13:59:17 -0800 (PST)
+ bh=3YYRUkefd8YL5Lg3wVrT05FHUF/ngn4lf4vkoMHN3l4=;
+ b=Ztz9TA4VJaXDcB4HV9tdF1DatidNQULLuzXIXM2MVONkvdU2YcHx/3DSg4H5jFmMxJ
+ s52j4KDpb/w8W6rqTKCT6a3kymxwJjWMw469pECzOMXJ0c0EJTazuywYUqdrCMEEi03r
+ YK37dVqd5rh1M9W4sU38vt1dzEUDPsjWN7uBUZ31ztN2C0QWPy+YFsKiKzFNBachUHjE
+ 7vOTZzWuj1fyarcaFM5tk6zuZ0tFpEU6fXUUTaktdkEZ3ysrAkCCkaJ/8XcjSxi3YfyN
+ LOADTjlPmaQ8VStqbH+LULlT2iP0BZMOuRXVUDtPGDkMYlxvSxcNYHhO1CFl8pL/iHiI
+ nTew==
+X-Gm-Message-State: AOJu0YySyOm6esPjNen2KUpwUs8Qr1dvcdgl7aOkuQE4wbiLf5FLqJmH
+ WuaXNuEGK4A7xkKf/n4coRg4SamTg7ppJl9tKX7KbRZKkBd66YmPMqhQozzf
+X-Google-Smtp-Source: AGHT+IHUe2zMYyrHVEKmMKgh3HAg6L05m+JxACtac3xclKzSE9tZJokMxjvR7R2Et6pNzoIiqfFBJw==
+X-Received: by 2002:a05:6000:2aa:b0:33d:4978:6e37 with SMTP id
+ l10-20020a05600002aa00b0033d49786e37mr7662757wry.71.1708984758844; 
+ Mon, 26 Feb 2024 13:59:18 -0800 (PST)
 Received: from Provence.localdomain
  (dynamic-077-188-008-186.77.188.pool.telefonica.de. [77.188.8.186])
  by smtp.gmail.com with ESMTPSA id
- h4-20020a05600016c400b0033dda0e82e5sm3985753wrf.32.2024.02.26.13.59.16
+ h4-20020a05600016c400b0033dda0e82e5sm3985753wrf.32.2024.02.26.13.59.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 26 Feb 2024 13:59:17 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
@@ -63,18 +63,20 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 1/2] Revert "hw/i386/pc_sysfw: Inline pc_system_flash_create()
- and remove it"
-Date: Mon, 26 Feb 2024 22:59:08 +0100
-Message-ID: <20240226215909.30884-2-shentey@gmail.com>
+ Bernhard Beschow <shentey@gmail.com>,
+ =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>
+Subject: [PATCH 2/2] Revert "hw/i386/pc: Confine system flash handling to
+ pc_sysfw"
+Date: Mon, 26 Feb 2024 22:59:09 +0100
+Message-ID: <20240226215909.30884-3-shentey@gmail.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240226215909.30884-1-shentey@gmail.com>
 References: <20240226215909.30884-1-shentey@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,52 +99,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 6f6ad2b24582 "hw/i386/pc: Confine system flash handling to pc_sysfw"
-causes a regression when specifying the property `-M pflash0` in the PCI PC
-machines:
+Specifying the property `-M pflash0` results in a regression:
   qemu-system-x86_64: Property 'pc-q35-9.0-machine.pflash0' not found
-In order to revert the commit, the commit below must be reverted first.
+Revert the change for now until a solution is found.
 
-This reverts commit cb05cc16029bb0a61ac5279ab7b3b90dcf2aa69f.
+This reverts commit 6f6ad2b24582593d8feb00434ce2396840666227.
 
+Reported-by: Volker Rümelin <vr_qemu@t-online.de>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/i386/pc_sysfw.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ include/hw/i386/pc.h | 2 ++
+ hw/i386/pc.c         | 1 +
+ hw/i386/pc_piix.c    | 1 +
+ hw/i386/pc_sysfw.c   | 6 ++----
+ 4 files changed, 6 insertions(+), 4 deletions(-)
 
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index e88468131a..0f9c1a45fc 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -191,6 +191,8 @@ void pc_i8259_create(ISABus *isa_bus, qemu_irq *i8259_irqs);
+ #define TYPE_PORT92 "port92"
+ 
+ /* pc_sysfw.c */
++void pc_system_flash_create(PCMachineState *pcms);
++void pc_system_flash_cleanup_unused(PCMachineState *pcms);
+ void pc_system_firmware_init(PCMachineState *pcms, MemoryRegion *rom_memory);
+ bool pc_system_ovmf_table_find(const char *entry, uint8_t **data,
+                                int *data_len);
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index f8eb684a49..2ad8de5097 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1733,6 +1733,7 @@ static void pc_machine_initfn(Object *obj)
+ #endif
+     pcms->default_bus_bypass_iommu = false;
+ 
++    pc_system_flash_create(pcms);
+     pcms->pcspk = isa_new(TYPE_PC_SPEAKER);
+     object_property_add_alias(OBJECT(pcms), "pcspk-audiodev",
+                               OBJECT(pcms->pcspk), "audiodev");
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index ec7c07b362..34203927e1 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -231,6 +231,7 @@ static void pc_init1(MachineState *machine,
+         assert(machine->ram_size == x86ms->below_4g_mem_size +
+                                     x86ms->above_4g_mem_size);
+ 
++        pc_system_flash_cleanup_unused(pcms);
+         if (machine->kernel_filename != NULL) {
+             /* For xen HVM direct kernel boot, load linux here */
+             xen_load_linux(pcms);
 diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
-index b02e285579..b9c1eb352d 100644
+index b9c1eb352d..3efabbbab2 100644
 --- a/hw/i386/pc_sysfw.c
 +++ b/hw/i386/pc_sysfw.c
-@@ -91,6 +91,18 @@ static PFlashCFI01 *pc_pflash_create(PCMachineState *pcms,
+@@ -91,7 +91,7 @@ static PFlashCFI01 *pc_pflash_create(PCMachineState *pcms,
      return PFLASH_CFI01(dev);
  }
  
-+static void pc_system_flash_create(PCMachineState *pcms)
-+{
-+    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
-+
-+    if (pcmc->pci_enabled) {
-+        pcms->flash[0] = pc_pflash_create(pcms, "system.flash0",
-+                                          "pflash0");
-+        pcms->flash[1] = pc_pflash_create(pcms, "system.flash1",
-+                                          "pflash1");
-+    }
-+}
-+
- static void pc_system_flash_cleanup_unused(PCMachineState *pcms)
+-static void pc_system_flash_create(PCMachineState *pcms)
++void pc_system_flash_create(PCMachineState *pcms)
+ {
+     PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+ 
+@@ -103,7 +103,7 @@ static void pc_system_flash_create(PCMachineState *pcms)
+     }
+ }
+ 
+-static void pc_system_flash_cleanup_unused(PCMachineState *pcms)
++void pc_system_flash_cleanup_unused(PCMachineState *pcms)
  {
      char *prop_name;
-@@ -198,8 +210,7 @@ void pc_system_firmware_init(PCMachineState *pcms,
+     int i;
+@@ -210,8 +210,6 @@ void pc_system_firmware_init(PCMachineState *pcms,
          return;
      }
  
--    pcms->flash[0] = pc_pflash_create(pcms, "system.flash0", "pflash0");
--    pcms->flash[1] = pc_pflash_create(pcms, "system.flash1", "pflash1");
-+    pc_system_flash_create(pcms);
- 
+-    pc_system_flash_create(pcms);
+-
      /* Map legacy -drive if=pflash to machine properties */
      for (i = 0; i < ARRAY_SIZE(pcms->flash); i++) {
+         pflash_cfi01_legacy_drive(pcms->flash[i],
 -- 
 2.44.0
 
