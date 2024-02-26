@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0054B866E4D
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 10:25:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3F1F866DF7
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 10:16:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reXDu-00089M-QE; Mon, 26 Feb 2024 04:24:34 -0500
+	id 1reX5z-000671-Op; Mon, 26 Feb 2024 04:16:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1reXDq-00088j-Pq
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 04:24:30 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1reX5o-0005YD-7x
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 04:16:13 -0500
+Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1reXDp-0006dJ-1S
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 04:24:30 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8A0B550919;
- Mon, 26 Feb 2024 12:24:56 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 20FA1895EC;
- Mon, 26 Feb 2024 12:24:25 +0300 (MSK)
-Message-ID: <4965a0a5-e161-4953-89a0-09fd1bd73286@tls.msk.ru>
-Date: Mon, 26 Feb 2024 12:24:25 +0300
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1reX5l-0005Ed-GK
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 04:16:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1708938970; x=1740474970;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=D3VCQcSIYtmJo33WujhjaN36kDnBJPCB3R1M3Sh3ntE=;
+ b=XYxY2ILO8uU1EybSd6sJo+bA0tMaUA1ReG8zOjv5F5XWcYVWJXd7UKlH
+ ykYIHq2y+V29vSvkjEOsG7V7IbS3vYcDYIjLcbh2Q5FdKXeXwZhCj5zgg
+ RTuDR/yRhBVc/rQHWf/utFBQE1modtG+BpUX3F253lcTd3nmP0iAHGCzT
+ 9sE3MK1aexE4Cz29QODt/YHF2YR/xpjj4oUtTBzixDiES02YIyZZKoLIG
+ I/Oh/EZbGhCynxaAGuujgkA72GOsmR75BE4dRkX/ocMyR+G9SfXYzYbDj
+ gJs2Zp2/xo+FSbKP3DUYZllDZXCOmE+y6z7C8gtRSPRaiIb0zbt/oTQLi w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="3330817"
+X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
+   d="scan'208";a="3330817"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2024 01:16:08 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
+   d="scan'208";a="6749314"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa008.fm.intel.com with ESMTP; 26 Feb 2024 01:16:05 -0800
+Date: Mon, 26 Feb 2024 17:29:47 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH v2 1/2] hw/acpi/ich9: Include missing headers
+Message-ID: <ZdxaC8aTdbo5hh9A@intel.com>
+References: <20240226090600.31952-1-philmd@linaro.org>
+ <20240226090600.31952-2-philmd@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] ide, vl: turn -win2k-hack into a property on IDE
- devices
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20240226082941.90364-1-pbonzini@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240226082941.90364-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240226090600.31952-2-philmd@linaro.org>
+Received-SPF: pass client-ip=198.175.65.18; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.097,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,28 +83,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-26.02.2024 11:29, Paolo Bonzini wrote:
-> As per $SUBJECT, one less global and one more syntactic sugar property.
-> Like -no-fd-bootchk, this could be deprecated but it can be done
-> separately---and would slightly worsen documentation, so I'm leaving
-> it aside for now.
+On Mon, Feb 26, 2024 at 10:05:59AM +0100, Philippe Mathieu-Daudé wrote:
+> Date: Mon, 26 Feb 2024 10:05:59 +0100
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH v2 1/2] hw/acpi/ich9: Include missing headers
+> X-Mailer: git-send-email 2.41.0
+> 
+> The ICH9LPCPMRegs structure has MemoryRegion and
+> Notifier fields, so requires the "qemu/notify.h"
 
-At this time, I don't think touching these options is a good thing.
+Just nit ;-)
 
-On one hand, it is all over the internet, suggested when some old
-OS doesn't work.
+s/requires/it requires/
 
-On another hand, these aren't used often these days.  This particular
-option isn't necessary with windows 2000, at least with two different
-kits of it which I have locally.  So finding the thing when you actually
-need it (if it gets moved elsewhere) will be difficult.
+> and "exec/memory.h" headers.
+> 
+> However nothing from "hw/acpi/acpi_dev_interface.h"
+> is required, so reduce its inclusion to hw/acpi/ich9.c
+> source file where it is used.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  include/hw/acpi/ich9.h | 3 ++-
+>  hw/acpi/ich9.c         | 2 +-
+>  2 files changed, 3 insertions(+), 2 deletions(-)
 
-On yet another, the code to handle this stuff is small enough and does
-not require much to maintain, -- at least for now, maybe in future it
-will be more difficult.
+Thanks!
 
-Thanks,
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-/mjt
-
+> 
+> diff --git a/include/hw/acpi/ich9.h b/include/hw/acpi/ich9.h
+> index 2faf7f0cae..215de3c91f 100644
+> --- a/include/hw/acpi/ich9.h
+> +++ b/include/hw/acpi/ich9.h
+> @@ -21,12 +21,13 @@
+>  #ifndef HW_ACPI_ICH9_H
+>  #define HW_ACPI_ICH9_H
+>  
+> +#include "qemu/notify.h"
+> +#include "exec/memory.h"
+>  #include "hw/acpi/acpi.h"
+>  #include "hw/acpi/cpu_hotplug.h"
+>  #include "hw/acpi/cpu.h"
+>  #include "hw/acpi/pcihp.h"
+>  #include "hw/acpi/memory_hotplug.h"
+> -#include "hw/acpi/acpi_dev_interface.h"
+>  #include "hw/acpi/ich9_tco.h"
+>  
+>  #define ACPI_PCIHP_ADDR_ICH9 0x0cc0
+> diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
+> index 573d032e8e..6205de6046 100644
+> --- a/hw/acpi/ich9.c
+> +++ b/hw/acpi/ich9.c
+> @@ -34,8 +34,8 @@
+>  #include "sysemu/reset.h"
+>  #include "sysemu/runstate.h"
+>  #include "hw/acpi/acpi.h"
+> +#include "hw/acpi/acpi_dev_interface.h"
+>  #include "hw/acpi/ich9_tco.h"
+> -
+>  #include "hw/southbridge/ich9.h"
+>  #include "hw/mem/pc-dimm.h"
+>  #include "hw/mem/nvdimm.h"
+> -- 
+> 2.41.0
+> 
 
