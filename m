@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9185866C99
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:41:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A71866CAF
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:43:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reWXZ-0005I8-Q4; Mon, 26 Feb 2024 03:40:49 -0500
+	id 1reWZz-0006EH-7m; Mon, 26 Feb 2024 03:43:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1reWXX-0005Hj-0T
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:40:47 -0500
+ id 1reWZy-0006E2-2m
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:43:18 -0500
 Received: from mgamail.intel.com ([192.198.163.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1reWXV-0007Iq-0g
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:40:46 -0500
+ id 1reWZw-0007xZ-7u
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:43:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708936845; x=1740472845;
+ t=1708936996; x=1740472996;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=br1WkH1phXgm1RMAK2+mgUZNLEHz4CnmsvUPZjpmXU0=;
- b=lWy18JME83xa3ictx6uD6dsckEMpR356YFlJPbcR7tQ7F/Xek3ZVGU7I
- BX/gi0YIptJX7BMeHpMyFS/lfKwMj7q9tDX5PhAYxK1KUU9PwTtjPWa0a
- JGrU1Iac/ht92VLhxoaGjeDmhGedpOefQ+2XRXzmOrfMeSxfZN6Y45eAL
- D89jeNZBaR522xColQXgkK7Eq9ZLnXDYm0hs6GER6Ui9ie5CF1vyJTUzy
- bdk2aMXD3IUoT/1WWihMt2NhXbzS9q2faBqFTuEMDSzpPdkceY5+MQZvy
- S4jn+PTWjN9IUPoNVohJRwZtA4wd5mBuE1k1SUUo2cw/9HGv5vT/73fMT A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="6994274"
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=5du1ZNf9adi2dAeM9Sm6epTKF73eeoRKt0chtDMR+s0=;
+ b=cK5WchQ/wjzrL4pqcKyAWOnwo53jd/+QcJEgZkXwxA+RLggUe0JqOArz
+ 7+Z22fpfyQ7klNKPZu3LbbFgfS8u1NhkRVOmVW8ZhJ+bMOwTeBpwMkTOc
+ i6dCfEXLafxuzKBUVmZ+RZWgFaO0HQBEviG6iW4ykiyph+I7wfbIG6lmF
+ 8F75CEJ+NN16SdLE/YKKbXS/KlWSyDiPz0gSw/K6ETh6qPxq+ErxI4ToR
+ G7qNVpQ63xPdk0zQ+ouUKlQHLM9hU7vGHDgqmMJcxt/QVopf8WjXWPOeL
+ bg6Gw6SZkgpMoq1m5j4zEap28kPUNBfn5b2mJmMj8Mr4LfxGvmsslNeYg g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="6994824"
 X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="6994274"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+   d="scan'208";a="6994824"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 00:40:42 -0800
+ 26 Feb 2024 00:43:14 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; d="scan'208";a="37595417"
+X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
+   d="scan'208";a="7116540"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by fmviesa001.fm.intel.com with ESMTP; 26 Feb 2024 00:40:39 -0800
-Date: Mon, 26 Feb 2024 16:54:21 +0800
+ by orviesa008.jf.intel.com with ESMTP; 26 Feb 2024 00:43:10 -0800
+Date: Mon, 26 Feb 2024 16:56:52 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Bernhard Beschow <shentey@gmail.com>
 Cc: qemu-devel@nongnu.org, Ani Sinha <anisinha@redhat.com>,
@@ -53,15 +54,15 @@ Cc: qemu-devel@nongnu.org, Ani Sinha <anisinha@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Paul Durrant <paul@xen.org>,
  Igor Mammedov <imammedo@redhat.com>, Jason Wang <jasowang@redhat.com>,
  David Woodhouse <dwmw2@infradead.org>, Sergio Lopez <slp@redhat.com>
-Subject: Re: [PATCH v2 1/6] hw/i386/x86: Let ioapic_init_gsi() take parent as
- pointer
-Message-ID: <ZdxRvRw1hUXoHvbr@intel.com>
+Subject: Re: [PATCH v2 2/6] hw/i386/pc: Rename "bus" attribute to "pcibus"
+Message-ID: <ZdxSVGAMmK+D/l+t@intel.com>
 References: <20240224135851.100361-1-shentey@gmail.com>
- <20240224135851.100361-2-shentey@gmail.com>
+ <20240224135851.100361-3-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240224135851.100361-2-shentey@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240224135851.100361-3-shentey@gmail.com>
 Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -21
@@ -86,128 +87,180 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Feb 24, 2024 at 02:58:46PM +0100, Bernhard Beschow wrote:
-> Date: Sat, 24 Feb 2024 14:58:46 +0100
+On Sat, Feb 24, 2024 at 02:58:47PM +0100, Bernhard Beschow wrote:
+> Date: Sat, 24 Feb 2024 14:58:47 +0100
 > From: Bernhard Beschow <shentey@gmail.com>
-> Subject: [PATCH v2 1/6] hw/i386/x86: Let ioapic_init_gsi() take parent as
->  pointer
+> Subject: [PATCH v2 2/6] hw/i386/pc: Rename "bus" attribute to "pcibus"
 > X-Mailer: git-send-email 2.44.0
 > 
-> Rather than taking a QOM name which has to be resolved, let's pass the parent
-> directly as pointer. This simplifies the code.
+> The attribute is of type PCIBus; reflect that in the name. It will also make the
+> next change more intuitive.
 > 
+> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 > ---
->  include/hw/i386/x86.h | 2 +-
->  hw/i386/microvm.c     | 2 +-
->  hw/i386/pc_piix.c     | 7 +++----
->  hw/i386/pc_q35.c      | 2 +-
->  hw/i386/x86.c         | 7 +++----
->  5 files changed, 9 insertions(+), 11 deletions(-)
+>  include/hw/i386/pc.h     | 2 +-
+>  hw/i386/acpi-build.c     | 2 +-
+>  hw/i386/amd_iommu.c      | 2 +-
+>  hw/i386/intel_iommu.c    | 2 +-
+>  hw/i386/kvm/xen_evtchn.c | 2 +-
+>  hw/i386/pc.c             | 8 ++++----
+>  hw/i386/pc_piix.c        | 6 +++---
+>  hw/i386/pc_q35.c         | 2 +-
+>  hw/i386/x86-iommu.c      | 2 +-
+>  9 files changed, 14 insertions(+), 14 deletions(-)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 > 
-> diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
-> index 8e306db7bb..4dc30dcb4d 100644
-> --- a/include/hw/i386/x86.h
-> +++ b/include/hw/i386/x86.h
-> @@ -139,7 +139,7 @@ typedef struct GSIState {
+> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+> index e88468131a..27834043c3 100644
+> --- a/include/hw/i386/pc.h
+> +++ b/include/hw/i386/pc.h
+> @@ -31,7 +31,7 @@ typedef struct PCMachineState {
+>      Notifier machine_done;
 >  
->  qemu_irq x86_allocate_cpu_irq(void);
->  void gsi_handler(void *opaque, int n, int level);
-> -void ioapic_init_gsi(GSIState *gsi_state, const char *parent_name);
-> +void ioapic_init_gsi(GSIState *gsi_state, Object *parent);
->  DeviceState *ioapic_init_secondary(GSIState *gsi_state);
->  
->  /* pc_sysfw.c */
-> diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
-> index ca55aecc3b..61a772dfe6 100644
-> --- a/hw/i386/microvm.c
-> +++ b/hw/i386/microvm.c
-> @@ -175,7 +175,7 @@ static void microvm_devices_init(MicrovmMachineState *mms)
->                            &error_abort);
->      isa_bus_register_input_irqs(isa_bus, x86ms->gsi);
->  
-> -    ioapic_init_gsi(gsi_state, "machine");
-> +    ioapic_init_gsi(gsi_state, OBJECT(mms));
->      if (ioapics > 1) {
->          x86ms->ioapic2 = ioapic_init_secondary(gsi_state);
+>      /* Pointers to devices and objects: */
+> -    PCIBus *bus;
+> +    PCIBus *pcibus;
+>      I2CBus *smbus;
+>      PFlashCFI01 *flash[2];
+>      ISADevice *pcspk;
+> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+> index d3ce96dd9f..cd3f2d0148 100644
+> --- a/hw/i386/acpi-build.c
+> +++ b/hw/i386/acpi-build.c
+> @@ -1556,7 +1556,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
 >      }
+>  
+>      crs_range_set_init(&crs_range_set);
+> -    bus = PC_MACHINE(machine)->bus;
+> +    bus = PC_MACHINE(machine)->pcibus;
+>      if (bus) {
+>          QLIST_FOREACH(bus, &bus->child, sibling) {
+>              uint8_t bus_num = pci_bus_num(bus);
+> diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+> index 7329553ad3..6d4fde72f9 100644
+> --- a/hw/i386/amd_iommu.c
+> +++ b/hw/i386/amd_iommu.c
+> @@ -1584,7 +1584,7 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+>      MachineState *ms = MACHINE(qdev_get_machine());
+>      PCMachineState *pcms = PC_MACHINE(ms);
+>      X86MachineState *x86ms = X86_MACHINE(ms);
+> -    PCIBus *bus = pcms->bus;
+> +    PCIBus *bus = pcms->pcibus;
+>  
+>      s->iotlb = g_hash_table_new_full(amdvi_uint64_hash,
+>                                       amdvi_uint64_equal, g_free, g_free);
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index cf933189d3..cc8e59674e 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -4183,7 +4183,7 @@ static void vtd_realize(DeviceState *dev, Error **errp)
+>      MachineState *ms = MACHINE(qdev_get_machine());
+>      PCMachineState *pcms = PC_MACHINE(ms);
+>      X86MachineState *x86ms = X86_MACHINE(ms);
+> -    PCIBus *bus = pcms->bus;
+> +    PCIBus *bus = pcms->pcibus;
+>      IntelIOMMUState *s = INTEL_IOMMU_DEVICE(dev);
+>      X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
+>  
+> diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
+> index 0171ef6d59..a5052c0ea3 100644
+> --- a/hw/i386/kvm/xen_evtchn.c
+> +++ b/hw/i386/kvm/xen_evtchn.c
+> @@ -371,7 +371,7 @@ static int set_callback_pci_intx(XenEvtchnState *s, uint64_t param)
+>          return 0;
+>      }
+>  
+> -    pdev = pci_find_device(pcms->bus, bus, devfn);
+> +    pdev = pci_find_device(pcms->pcibus, bus, devfn);
+>      if (!pdev) {
+>          return 0;
+>      }
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index f8eb684a49..353edeb2ea 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -675,7 +675,7 @@ void pc_machine_done(Notifier *notifier, void *data)
+>                                          PCMachineState, machine_done);
+>      X86MachineState *x86ms = X86_MACHINE(pcms);
+>  
+> -    cxl_hook_up_pxb_registers(pcms->bus, &pcms->cxl_devices_state,
+> +    cxl_hook_up_pxb_registers(pcms->pcibus, &pcms->cxl_devices_state,
+>                                &error_fatal);
+>  
+>      if (pcms->cxl_devices_state.is_enabled) {
+> @@ -685,7 +685,7 @@ void pc_machine_done(Notifier *notifier, void *data)
+>      /* set the number of CPUs */
+>      x86_rtc_set_cpus_count(x86ms->rtc, x86ms->boot_cpus);
+>  
+> -    fw_cfg_add_extra_pci_roots(pcms->bus, x86ms->fw_cfg);
+> +    fw_cfg_add_extra_pci_roots(pcms->pcibus, x86ms->fw_cfg);
+>  
+>      acpi_setup();
+>      if (x86ms->fw_cfg) {
+> @@ -1250,8 +1250,8 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+>          xen_evtchn_create(IOAPIC_NUM_PINS, gsi);
+>          xen_gnttab_create();
+>          xen_xenstore_create();
+> -        if (pcms->bus) {
+> -            pci_create_simple(pcms->bus, -1, "xen-platform");
+> +        if (pcms->pcibus) {
+> +            pci_create_simple(pcms->pcibus, -1, "xen-platform");
+>          }
+>          xen_bus_init();
+>          xen_be_init();
 > diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-> index ec7c07b362..7724396ead 100644
+> index 7724396ead..3393b93007 100644
 > --- a/hw/i386/pc_piix.c
 > +++ b/hw/i386/pc_piix.c
-> @@ -107,6 +107,7 @@ static void pc_init1(MachineState *machine,
->      X86MachineState *x86ms = X86_MACHINE(machine);
->      MemoryRegion *system_memory = get_system_memory();
->      MemoryRegion *system_io = get_system_io();
-> +    Object *phb = NULL;
->      PCIBus *pci_bus = NULL;
->      ISABus *isa_bus;
->      Object *piix4_pm = NULL;
-> @@ -189,8 +190,6 @@ static void pc_init1(MachineState *machine,
+> @@ -216,7 +216,7 @@ static void pc_init1(MachineState *machine,
+>          pci_bus_map_irqs(pci_bus,
+>                           xen_enabled() ? xen_pci_slot_get_pirq
+>                                         : pc_pci_slot_get_pirq);
+> -        pcms->bus = pci_bus;
+> +        pcms->pcibus = pci_bus;
+>  
+>          hole64_size = object_property_get_uint(phb,
+>                                                 PCI_HOST_PROP_PCI_HOLE64_SIZE,
+> @@ -480,8 +480,8 @@ static void pc_xen_hvm_init(MachineState *machine)
 >      }
 >  
->      if (pcmc->pci_enabled) {
-> -        Object *phb;
-> -
->          pci_memory = g_new(MemoryRegion, 1);
->          memory_region_init(pci_memory, NULL, "pci", UINT64_MAX);
->          rom_memory = pci_memory;
-> @@ -303,8 +302,8 @@ static void pc_init1(MachineState *machine,
->          pc_i8259_create(isa_bus, gsi_state->i8259_irq);
->      }
+>      pc_xen_hvm_init_pci(machine);
+> -    xen_igd_reserve_slot(pcms->bus);
+> -    pci_create_simple(pcms->bus, -1, "xen-platform");
+> +    xen_igd_reserve_slot(pcms->pcibus);
+> +    pci_create_simple(pcms->pcibus, -1, "xen-platform");
+>  }
+>  #endif
 >  
-> -    if (pcmc->pci_enabled) {
-> -        ioapic_init_gsi(gsi_state, "i440fx");
-> +    if (phb) {
-> +        ioapic_init_gsi(gsi_state, phb);
->      }
->  
->      if (tcg_enabled()) {
 > diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-> index 53fb3db26d..c89ff63579 100644
+> index c89ff63579..734d9bedb2 100644
 > --- a/hw/i386/pc_q35.c
 > +++ b/hw/i386/pc_q35.c
-> @@ -263,7 +263,7 @@ static void pc_q35_init(MachineState *machine)
->          pc_i8259_create(isa_bus, gsi_state->i8259_irq);
->      }
+> @@ -217,7 +217,7 @@ static void pc_q35_init(MachineState *machine)
 >  
-> -    ioapic_init_gsi(gsi_state, "q35");
-> +    ioapic_init_gsi(gsi_state, OBJECT(phb));
+>      /* pci */
+>      host_bus = PCI_BUS(qdev_get_child_bus(DEVICE(phb), "pcie.0"));
+> -    pcms->bus = host_bus;
+> +    pcms->pcibus = host_bus;
 >  
->      if (tcg_enabled()) {
->          x86_register_ferr_irq(x86ms->gsi[13]);
-> diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-> index 684dce90e9..807e09bcdb 100644
-> --- a/hw/i386/x86.c
-> +++ b/hw/i386/x86.c
-> @@ -640,20 +640,19 @@ void gsi_handler(void *opaque, int n, int level)
->      }
->  }
+>      /* irq lines */
+>      gsi_state = pc_gsi_create(&x86ms->gsi, true);
+> diff --git a/hw/i386/x86-iommu.c b/hw/i386/x86-iommu.c
+> index 726e9e1d16..60af896225 100644
+> --- a/hw/i386/x86-iommu.c
+> +++ b/hw/i386/x86-iommu.c
+> @@ -101,7 +101,7 @@ static void x86_iommu_realize(DeviceState *dev, Error **errp)
+>      QLIST_INIT(&x86_iommu->iec_notifiers);
+>      bool irq_all_kernel = kvm_irqchip_in_kernel() && !kvm_irqchip_is_split();
 >  
-> -void ioapic_init_gsi(GSIState *gsi_state, const char *parent_name)
-> +void ioapic_init_gsi(GSIState *gsi_state, Object *parent)
->  {
->      DeviceState *dev;
->      SysBusDevice *d;
->      unsigned int i;
->  
-> -    assert(parent_name);
-> +    assert(parent);
->      if (kvm_ioapic_in_kernel()) {
->          dev = qdev_new(TYPE_KVM_IOAPIC);
->      } else {
->          dev = qdev_new(TYPE_IOAPIC);
->      }
-> -    object_property_add_child(object_resolve_path(parent_name, NULL),
-> -                              "ioapic", OBJECT(dev));
-> +    object_property_add_child(parent, "ioapic", OBJECT(dev));
->      d = SYS_BUS_DEVICE(dev);
->      sysbus_realize_and_unref(d, &error_fatal);
->      sysbus_mmio_map(d, 0, IO_APIC_DEFAULT_ADDRESS);
+> -    if (!pcms || !pcms->bus) {
+> +    if (!pcms || !pcms->pcibus) {
+>          error_setg(errp, "Machine-type '%s' not supported by IOMMU",
+>                     mc->name);
+>          return;
 > -- 
 > 2.44.0
 > 
