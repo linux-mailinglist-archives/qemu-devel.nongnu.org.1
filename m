@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AAD18672CC
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 12:15:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C136B8672CD
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 12:15:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reYwi-00014X-Bc; Mon, 26 Feb 2024 06:14:56 -0500
+	id 1reYwr-0001I8-Jg; Mon, 26 Feb 2024 06:15:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reYwg-00010o-37
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 06:14:54 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reYwp-0001Gx-Cj
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 06:15:03 -0500
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reYwe-0008Sr-Ig
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 06:14:53 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-412a882bd4eso1781865e9.1
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 03:14:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reYwk-0008Td-Ua
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 06:15:03 -0500
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-512fb30dbc9so882386e87.2
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 03:14:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708946090; x=1709550890; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708946097; x=1709550897; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=teclhIdRp9DBtUYfsv1Nj0vfraIqiRBxDKPN1DGCTw4=;
- b=cLlyIZzyIwzRA8+E+YhA565O3kTpK4rTG7rsM6QpkCw7PZ4T/BhnxDdcqtEljjNp7z
- 5nWKqg/28lh9qjXIs7657b9LRIVCL88cuboP6PiV8SAFUrImG3Gl2VpXiYtaCoVrNRhr
- usi4hFXuKy7JUkTRhPv/C35sk0XTJjZdu1CGfCTpgV1T83EZNa5EoXG0YeIGDbtlgmb6
- O4hTn2lwN+3BRKSTNTFzUrnoOB/Ayv7/UcWjcmwM05geqgrOFq80JQi9d8Nhulc58DJQ
- Se1ZobVstz6JqyO+1FvQyCWUjvoTbC3dXMi5/4lb5K0iMwrRWUzhy/dNTX/4yZBXN2y6
- wWmw==
+ bh=TigdV5o9U2RQOXS96IAt9eTEOL4XXPfJaJK2cWAa5tc=;
+ b=JiYzeFN6IcMsr85i2AppNruUhCx4XRyZMaBkz3K9CPgtKXQRZ59fXQasRc1C16caxw
+ zucdTF5BF2D3wyyZNmXyW0RpC3uJwzkSkcRM1rD6RW6dP/OmEEviWAXaCyHqy4LgX1CY
+ 14WU7nVrWoPl/BuN9f4IB9yKBR6YyuMWXF+wpUGFz1WAAV4F+wMi2xHWp+ZgfMOgR/1X
+ UKm0uQ61Gclxvl05t5c2hAtSH49Q/imEbvJbZoT7Kw9YzdfQD2egllcaCK0i6BqUUEHD
+ zchRHRf63ZWIOxskoUAW2TNctOqQ84uthbQNcsJm5Qcj6Ffpo+jB9XZ/GxEpRjN1V+vE
+ Afuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708946090; x=1709550890;
+ d=1e100.net; s=20230601; t=1708946097; x=1709550897;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=teclhIdRp9DBtUYfsv1Nj0vfraIqiRBxDKPN1DGCTw4=;
- b=uLsG0SBGk4ow15eGWyQrit9HFhtFiEd/RpYJZSiuFZKt6MBRzb81H3OOhiDPzbAy3q
- WOK4jW1w8mwkB3J6VTR/4nIh2SYCjZ6g3SXbkSoq89U/AXBm+QtxSMRl4duNyZNtntBA
- GCPeTlkdrT2WWGKYD1w5EUeYUdxONldWKdbqchfRcifhRkAQZcPOj1IYxlFATFU0UjB7
- rhzL2SyG9pyyAYb+Jkv9JGpS4P2+I3dzEVMEAR530z7LgH41YjqgWHtYKKQ1HfD9FzH8
- iVWjWsRJRkS8/doI5PYyoY/fqpcPXi/gQ6Y9oEUmgj4FdSa5gakzBiv98BbR93j78eXN
- myAg==
-X-Gm-Message-State: AOJu0YyUx2ocZaLpTxBl5B28zMYWHAmPMh0i1tTBC9gKf1QL8qEk6WXH
- 9Cq3UPKSyvCizvn1A5HBBtoXKwG8kYSVW/hjaQCJLBE13DsOm6E3gIMr4XGnD7X8zyzx+yn4T3F
- +
-X-Google-Smtp-Source: AGHT+IEb8lmEgruTmqOdHDSINt4LCZH94mpBFNVUdcpjkGjXh2rFYin8Flm/Xj4osK87Z9UcAkYCMg==
-X-Received: by 2002:a05:600c:190b:b0:412:a266:c296 with SMTP id
- j11-20020a05600c190b00b00412a266c296mr3234019wmq.33.1708946090548; 
- Mon, 26 Feb 2024 03:14:50 -0800 (PST)
+ bh=TigdV5o9U2RQOXS96IAt9eTEOL4XXPfJaJK2cWAa5tc=;
+ b=dudK9NN8evMOwO8eD8vmRudWg2hk5oeC5ttdT7ReWuei4yrFjkTZ3ltL0OEYfKje7b
+ VrOKwcLoQCrpWt5lQ+qCxcBTjdmYonz88mU2/O/XPJ0sOso9kkPTAS5feV+Nf65GVDvr
+ 33+Hdhsseqddwa9/S7etrRf31Nf68D/gyc2oNiB+oiP70X7dpGX0wFpd0LPE73Lsy4We
+ v2dYIYWpke9ZRbnL8SPPUiGCMFN+3kZCS1ms8jyHMEc9sJPvW3sWyxdkXgt1o4FB/5lA
+ SP7EdS6qLMtD31xamFzzCy6DzWN/Y91hSAZjVEaGbQT5Hjsdkox8F6s/LDQCV/u8YzUc
+ OKTw==
+X-Gm-Message-State: AOJu0YxlisNt45y2Zk6A7VMnN1D1zg+l8p2tPKNoR7eetHPVzip1VwsU
+ iUIpv4qXF0avGvc0Mqj59OxMhd5tvaIphZz50Txp3K9Ponnmnv3LyHNiz3Gfx2Ddl4lAfp5IsW2
+ f
+X-Google-Smtp-Source: AGHT+IEBnqjD6zs6CrSNLxvyWNO0CgoOrS55AUsQ8EO8yOauMI9sYEzf6JTjtpvvGuTnorfBRkNDSw==
+X-Received: by 2002:a05:6512:1599:b0:512:e594:885f with SMTP id
+ bp25-20020a056512159900b00512e594885fmr4691679lfb.55.1708946096682; 
+ Mon, 26 Feb 2024 03:14:56 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.164.69])
  by smtp.gmail.com with ESMTPSA id
- z9-20020a05600c114900b004128fa77216sm11619502wmz.1.2024.02.26.03.14.48
+ p15-20020a05600c468f00b004128f41a13fsm8040564wmo.38.2024.02.26.03.14.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 26 Feb 2024 03:14:50 -0800 (PST)
+ Mon, 26 Feb 2024 03:14:56 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Bernhard Beschow <shentey@gmail.com>
@@ -67,18 +67,17 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 05/15] hw/acpi/ich9_tco: Restrict ich9_generate_smi()
- declaration
-Date: Mon, 26 Feb 2024 12:14:04 +0100
-Message-ID: <20240226111416.39217-6-philmd@linaro.org>
+Subject: [PATCH v2 06/15] hw/ide: Rename ich.c -> ich9_ahci.c
+Date: Mon, 26 Feb 2024 12:14:05 +0100
+Message-ID: <20240226111416.39217-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240226111416.39217-1-philmd@linaro.org>
 References: <20240226111416.39217-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,40 +100,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Only files including "hw/acpi/ich9_tco.h" require
-the ich9_generate_smi() declaration.
+Most ICH9-related files use the 'ich9_' prefix.
+Mention 'AHCI' in the file name.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/acpi/ich9_tco.h    | 1 +
- include/hw/southbridge/ich9.h | 2 --
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ hw/ide/{ich.c => ich9_ahci.c} | 0
+ hw/ide/meson.build            | 2 +-
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+ rename hw/ide/{ich.c => ich9_ahci.c} (100%)
 
-diff --git a/include/hw/acpi/ich9_tco.h b/include/hw/acpi/ich9_tco.h
-index 1c99781a79..68ee64942f 100644
---- a/include/hw/acpi/ich9_tco.h
-+++ b/include/hw/acpi/ich9_tco.h
-@@ -76,6 +76,7 @@ typedef struct TCOIORegs {
- } TCOIORegs;
- 
- void ich9_acpi_pm_tco_init(TCOIORegs *tr, MemoryRegion *parent);
-+void ich9_generate_smi(void);
- 
- extern const VMStateDescription vmstate_ich9_sm_tco;
- 
-diff --git a/include/hw/southbridge/ich9.h b/include/hw/southbridge/ich9.h
-index 1ac4238f7e..bee522a4cf 100644
---- a/include/hw/southbridge/ich9.h
-+++ b/include/hw/southbridge/ich9.h
-@@ -11,8 +11,6 @@
- #include "qemu/notify.h"
- #include "qom/object.h"
- 
--void ich9_generate_smi(void);
--
- #define ICH9_CC_SIZE (16 * 1024) /* 16KB. Chipset configuration registers */
- 
- #define TYPE_ICH9_LPC_DEVICE "ICH9-LPC"
+diff --git a/hw/ide/ich.c b/hw/ide/ich9_ahci.c
+similarity index 100%
+rename from hw/ide/ich.c
+rename to hw/ide/ich9_ahci.c
+diff --git a/hw/ide/meson.build b/hw/ide/meson.build
+index d09705cac0..2a7cd8405d 100644
+--- a/hw/ide/meson.build
++++ b/hw/ide/meson.build
+@@ -1,5 +1,5 @@
+ system_ss.add(when: 'CONFIG_AHCI', if_true: files('ahci.c'))
+-system_ss.add(when: 'CONFIG_AHCI_ICH9', if_true: files('ich.c'))
++system_ss.add(when: 'CONFIG_AHCI_ICH9', if_true: files('ich9_ahci.c'))
+ system_ss.add(when: 'CONFIG_ALLWINNER_A10', if_true: files('ahci-allwinner.c'))
+ system_ss.add(when: 'CONFIG_IDE_BUS', if_true: files('ide-bus.c'))
+ system_ss.add(when: 'CONFIG_IDE_CF', if_true: files('cf.c'))
 -- 
 2.41.0
 
