@@ -2,87 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A549F86818F
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 20:58:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0829B8681B0
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 21:05:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reh6A-0000nU-MV; Mon, 26 Feb 2024 14:57:17 -0500
+	id 1rehD1-0007Gq-UY; Mon, 26 Feb 2024 15:04:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1reh65-0000me-Hf
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 14:57:09 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1reh5z-0004c0-HC
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 14:57:05 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-33d2b354c72so2549781f8f.1
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 11:57:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708977422; x=1709582222; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jTIUmYvDBeHjOkm9JVYv4ARKyMqKfxarRP+pX7+NEwY=;
- b=nnA2WJZHhQOapvJxEXnzkxpZF4bwZXzPR6P7ukvCHIv5VV8u1dP9QeEx8kJ57SqGXe
- c/OG6si0a22H7TluXi/R771nUXXJlE2MAp3k3zj4PuTeNyTHSYh/XtnmqTrEH/ntKaVk
- FG3qySwk8God1WULzCif59VKOhElNFs5i3i0QX8+JqIMb2whmSReVySqxwNVui8KweaH
- FIRNDaffdUNcH5/FbSHMZFEjWUx4MNaWn4I8UZQ+8/HvXgTSkTsLst9iCUjZHrqLDYqf
- I7UAny3SS9y1eHegOP/E0fryhnS9imsJn2VN1xVg9u1BEojPlm36zFmGey4IWdySolz0
- BCyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708977422; x=1709582222;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=jTIUmYvDBeHjOkm9JVYv4ARKyMqKfxarRP+pX7+NEwY=;
- b=JOuEvRHV5h3VykZSMLuGY2446l2aKNSO/u/4h+QWcgY3G6Wrr/RkHCN7XnJMtVMUmk
- B2/uu+hisdnMYNpIrklR9i+pesPtqqhhNl8mXIGtkGlscRHQkWP/2fpHMknIdxZgVxgM
- nxWKdv8XKqMgMltrUPQfQO8xnj4shtNFVLwhLpg9toLKsS9q9YEvUOjHSRgyhU1WAcUL
- 8i8nTGQiH6yuzV1RievI3RiwVwPxlZlt7eHsalwH+kEV7CtQwCiAMjBqpsFEofomTHqj
- uxB7VubPhjKqmSlVujRlgCIFfWwJDJ6PLcOgt6l5+oEvGB9u3aXxMFpXiHLm7eJC8rth
- p49A==
-X-Gm-Message-State: AOJu0YyZnlKPAer2WAE5mTA2isZn8eUE73RvAK2rcSDDgN0x8lGhCP4U
- qIN+ZDIaWf9rIrLvMAgAYgb8amdMu2YIc4dUcr6rCD32p4NcfnhEz1V6L1KYGqtvsRDEaagujiT
- F
-X-Google-Smtp-Source: AGHT+IGhsOKsIS1GvNXuR11cQ5me5Wa//kYHulf5G9vyYj0Mrl4SVINEGWIG/X0H+7eru3KNE/F76Q==
-X-Received: by 2002:adf:f291:0:b0:33d:264d:6dfc with SMTP id
- k17-20020adff291000000b0033d264d6dfcmr6200408wro.63.1708977421876; 
- Mon, 26 Feb 2024 11:57:01 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- c3-20020adfe703000000b0033d6fe3f6absm9165384wrm.62.2024.02.26.11.57.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Feb 2024 11:57:01 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E0D9C5F7B1;
- Mon, 26 Feb 2024 19:57:00 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,  Warner Losh <imp@bsdimp.com>,
- Kyle Evans <kevans@freebsd.org>
-Subject: Re: 'make vm-build-openbsd' tries to download nonexistent 7.2
- installer ISO
-In-Reply-To: <CAFEAcA-3gSBhEv3GY9XeC-5nxjk9ymc7BnhUYF+Cu73tNE3uyA@mail.gmail.com>
- (Peter Maydell's message of "Mon, 26 Feb 2024 13:37:48 +0000")
-References: <CAFEAcA-3gSBhEv3GY9XeC-5nxjk9ymc7BnhUYF+Cu73tNE3uyA@mail.gmail.com>
-User-Agent: mu4e 1.12.0; emacs 29.1
-Date: Mon, 26 Feb 2024 19:57:00 +0000
-Message-ID: <87h6hvdmnn.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rehCy-0007GV-EM; Mon, 26 Feb 2024 15:04:17 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rehCw-0005gz-FC; Mon, 26 Feb 2024 15:04:16 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 9BD1F4E601E;
+ Mon, 26 Feb 2024 21:04:08 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id wLBUWJt-thNp; Mon, 26 Feb 2024 21:04:06 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 9F81E4E6005; Mon, 26 Feb 2024 21:04:06 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 9D6CA7456B4;
+ Mon, 26 Feb 2024 21:04:06 +0100 (CET)
+Date: Mon, 26 Feb 2024 21:04:06 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+ Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org, 
+ =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, qemu-arm@nongnu.org, 
+ kvm@vger.kernel.org, Igor Mitsyanko <i.mitsyanko@gmail.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Markus Armbruster <armbru@redhat.com>, 
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: Re: [PATCH 1/6] hw/arm: Inline sysbus_create_simple(PL110 / PL111)
+In-Reply-To: <c5d5f835-5b7f-46bb-8393-6d638cbad012@linaro.org>
+Message-ID: <14dc34ed-be4a-e3d1-dfae-95d141519d3f@eik.bme.hu>
+References: <20240216153517.49422-1-philmd@linaro.org>
+ <20240216153517.49422-2-philmd@linaro.org>
+ <bcfd3f9d-04e3-79c9-c15f-c3c8d7669bdb@eik.bme.hu>
+ <2f8ec2e2-c4c7-48c3-9c3d-3e20bc3d6b9b@linaro.org>
+ <b40fd79f-4d41-4e04-90c1-6f4b2fde811d@linaro.org>
+ <00e2b898-3c5f-d19c-fddc-e657306e071f@eik.bme.hu>
+ <2b9ea923-c4f9-4ee4-8ed2-ba9f62c15579@linaro.org>
+ <6b5758d6-f464-2461-f9dd-71d2e15b610a@eik.bme.hu>
+ <bc5929e4-1782-4719-8231-fe04a9719c40@ilande.co.uk>
+ <CAFEAcA-Mvd4NVY2yDgNEdjZ_YPrN93PDZRyfCi7JyCjmPs4gAQ@mail.gmail.com>
+ <0a31f410-415d-474b-bcea-9cb18f41aeb2@ilande.co.uk>
+ <9ef2075b-b26b-41d2-a7d0-456cec3b104a@eik.bme.hu>
+ <c5d5f835-5b7f-46bb-8393-6d638cbad012@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-2026228376-1708977846=:54539"
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,42 +83,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Maydell <peter.maydell@linaro.org> writes:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-> 'make vm-build-openbsd' has stopped working -- I suspect that this
-> line from the logs is probably relevant:
->
-> http://cdn.openbsd.org/pub/OpenBSD/7.2/packages/amd64/: no such dir
->
-> though we don't eventually fail until much later, in 'make check' with
->         gmake --output-sync -j8 check V=3D1;
->
-> Pseudo-terminal will not be allocated because stdin is not a terminal.
-> Warning: Permanently added '[127.0.0.1]:33847' (ED25519) to the list
-> of known hosts.
->
-> ERROR: Python not found. Use --python=3D/path/to/python
->
->
-> tests/vm/openbsd currently has:
->     link =3D "https://cdn.openbsd.org/pub/OpenBSD/7.2/amd64/install72.iso"
-> but the webserver doesn't have 7.2 any more.
->
-> Could somebody look at what we need to do to update this to 7.4
-> (most recent release), please?
+--3866299591-2026228376-1708977846=:54539
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-Sadly the installer has changed some strings so we need to update the
-expect sequence.
-
+On Mon, 26 Feb 2024, Philippe Mathieu-Daudé wrote:
+> On 19/2/24 15:05, BALATON Zoltan wrote:
+>> On Mon, 19 Feb 2024, Mark Cave-Ayland wrote:
+>>> On 19/02/2024 13:05, Peter Maydell wrote:
+>>>> On Mon, 19 Feb 2024 at 12:49, Mark Cave-Ayland
+>>>> <mark.cave-ayland@ilande.co.uk> wrote:
+>>>>> 
+>>>>> On 19/02/2024 12:00, BALATON Zoltan wrote:
+>>>>>> For new people trying to contribute to QEMU QDev is overwhelming so 
+>>>>>> having some way
+>>>>>> to need less of it to do simple things would help them to get started.
+>>>>> 
+>>>>> It depends what how you define "simple": for QEMU developers most people 
+>>>>> search for
+>>>>> similar examples in the codebase and copy/paste them. I'd much rather 
+>>>>> have a slightly
+>>>>> longer, but consistent API for setting properties rather than coming up 
+>>>>> with many
+>>>>> special case wrappers that need to be maintained just to keep the line 
+>>>>> count down for
+>>>>> "simplicity".
+>>>>> 
+>>>>> I think that Phil's approach here is the best one for now, particularly 
+>>>>> given that it
+>>>>> allows us to take another step towards heterogeneous machines. As the 
+>>>>> work in this
+>>>>> area matures it might be that we can consider other approaches, but 
+>>>>> that's not a
+>>>>> decision that can be made right now and so shouldn't be a reason to 
+>>>>> block this change.
+>>>> 
+>>>> Mmm. It's unfortunate that we're working with C, so we're a bit limited
+>>>> in what tools we have to try to make a better and lower-boilerplate
+>>>> interface for the "create, configure, realize and wire up devices" task.
+>>>> (I think you could do much better in a higher level language...)
+>>>> sysbus_create_simple() was handy at the time, but it doesn't work so
+>>>> well for more complicated SoC-based boards. It's noticeable that
+>>>> if you look at the code that uses it, it's almost entirely the older
+>>>> and less maintained board models, especially those which don't actually
+>>>> model an SoC and just have the board code create all the devices.
+>>> 
+>>> Yeah I was thinking that you'd use the DSL (e.g. YAML templates or 
+>>> similar) to provide some of the boilerplating around common actions, 
+>>> rather than the C API itself. Even better, once everything has been moved 
+>>> to use a DSL then the C API shouldn't really matter so much as it is no 
+>>> longer directly exposed to the user.
+>> 
+>> That may be a few more releases away (although Philippe is doing an 
+>> excellent job with doing this all alone and as efficient as he is it might 
+>> be reached sooner). So I think board code will stay for a while therefore 
+>> if something can be done to keep it simple with not much work then maybe 
+>> that's worth considering. That's why I did not propose to keep 
+>> sysbus_create_simple and add properties to it because that might need 
+>> something like a properties array with values that's hard to describe in C 
+>> so it would be a bit more involved to implement and defining such arrays 
+>> would only make it a litle less cluttered. So just keeping the parts that 
+>> work for simple devices in sysbus_realize_simple and also keep 
+>> sysbus_create_simple where it's already used is probably enough now rather 
+>> than converting those to low level calls everywhere now.
+>> 
+>> Then we'll see how well the declarative machines will turn out and then if 
+>> we no longer need to write board code these wrappers could go away then but 
+>> for now it may be too early when we still have a lot of board code to 
+>> maintain.
 >
-> I filed
-> https://gitlab.com/qemu-project/qemu/-/issues/2192
-> to track this.
->
-> thanks
-> -- PMM
+> I'll keep forward with this patch inlining sysbus_create_simple();
+> if we notice in few releases the DSL experiment is a failure, I don't
+> mind going back reverting it.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+I'm OK with that. Just thought that keeping a sysbus_realize_simple 
+function that's the same as sysbus_create simple minus creating the device 
+would not be a big change and cause less churn. But if you plan te remove 
+this completely in near future so another API would be needed anyway then 
+maybe not worth keeping it. Having only low level functions to create and 
+wire devices seems impractical for writing boeards in C so eventually some 
+replacement will be needed. I doubt every board can be quickly converted 
+to a new declarative way soon but you can prove me wrong. If this helps 
+you to progress to that direction then I'm not attached to it to much but 
+would like to keep some simplicity in board code wherever possible as it's 
+already quite complex to do simple things with low level APIs so I'd 
+prefer if convenience APIs don't go away.
+
+Regards,
+BALATON Zoltan
+--3866299591-2026228376-1708977846=:54539--
 
