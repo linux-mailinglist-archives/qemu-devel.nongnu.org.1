@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E8F68677E2
+	by mail.lfdr.de (Postfix) with ESMTPS id E16288677E5
 	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 15:12:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rebhi-0003Bz-7a; Mon, 26 Feb 2024 09:11:38 -0500
+	id 1rebhk-0003Cu-VD; Mon, 26 Feb 2024 09:11:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rebhd-0003BR-Ev
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 09:11:33 -0500
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rebhj-0003Ca-9V
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 09:11:39 -0500
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rebhb-00024l-Pt
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 09:11:33 -0500
-Received: by mail-lj1-x22e.google.com with SMTP id
- 38308e7fff4ca-2d204e102a9so36270061fa.0
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 06:11:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rebhh-00026Z-IO
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 09:11:39 -0500
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-51197ca63f5so4704273e87.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 06:11:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708956690; x=1709561490; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708956696; x=1709561496; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ECJWBAuFizFY5M+8BFfcvUn+iW291fgpghDCdO55uQY=;
- b=yPR99tnn/j98GrzA5rhv2EpShQjrtUSgsqSBFpdxnFXCHdC+WMPfwDyUGvv8WZuWlk
- tANTbiqOLqgtsVt1/btZpmsrmWscyrPZrH0dQe90JArkLaQZTO9wyZE1utETGXCGcOMb
- z0DUEme3tGQ3V8NhSuaf8EHHR7gchRex4pB5/nRtJ2xqtStSPEDDcraV3MuYPqpZrdz0
- a8lkmZMFXqJSHB28yhjjQm9ZK7pbZUAr3SYziv2tQXZhRmiIDQnjhA+9NSq3g/yzLf/P
- 9/Y7STi0mlzh7FBx3pu5rvea+NGXJadVp/0PDkPf54x8vVCt2tewG745ehBJqWs9M7wW
- tFHg==
+ bh=WqJvgmD2xSxG0JQjLIcAdWT5nW/VU/NqNnXte/SlaSQ=;
+ b=fDCz4KaVpB+M2bdcQdv/WbPRVXaODcE/twaxehBDIPvMpuobHDplE7ofy9iwdwQb4g
+ 2Jere7GIvGEtBH+JZas/e1G8U6reHsQY8V48QTm6zOpHmONj1AqtllxL/WixjMQo0D7H
+ UY98DUE/hFxN2x6bMqTH/y32p9m7LFHOvBrr6vQ/lmkof4ndRPEkrFyyxc7pwVKQHAB+
+ fgisbkZ/lIRJI1XAvYhJnFB6eEAVEiZgszvsZ81p3F6QxEPGU0/Of1wMZPeyGBR4oh7O
+ WhXha1CVHPuVYnimM4olkmRdP0fXn2fCWHNzw5YDZrZc2BC0sFwNcvesJq/GQBNqatXX
+ DOMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708956690; x=1709561490;
+ d=1e100.net; s=20230601; t=1708956696; x=1709561496;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ECJWBAuFizFY5M+8BFfcvUn+iW291fgpghDCdO55uQY=;
- b=m/Ex5bk+BrnGf35MFj2uYsXolod4LTGXLCQxDctneuKAGG4hglojQabBqhq6Gqsg80
- a56t2kVTM4sJhcHsWI3cRZ9juDmSl133iYuyF2I7QkIwimFKxqvWWmsXJ9408xfN+PwD
- nPHmdCht71Z6OZDa9WCL0Ne8ECXGdt/r6vuMLQrds4/ekbYBtiDECkXm//8tzVUOOO3t
- xUk/T76QkNokctTzESQrY6qy7Hf4keRcxUfd+nrw//wSQgUfqexLjcbIQCt2QTL6mH/j
- oXMmasjm+xRqGsNkxlnTczOGLErveMpZrZKrAdwZ5VqQKyDEIIyv8Ma4IwPfBsjD4cJj
- xGow==
+ bh=WqJvgmD2xSxG0JQjLIcAdWT5nW/VU/NqNnXte/SlaSQ=;
+ b=NCVT9q+2/plKAkG8LEnyULGMkNcqFHXrseumUwspyi3xy9Gdrch17rjieT7Cl9hH/r
+ obt0JxZpcV+KXafW7EkX/a36JHLvKXATe8WQODbOWEcT5tmvKObJ+OUFEZ4EH8mQ7LZY
+ fsJMmjiU0tgoX0aKBrzLq5lWcyyjcMW5xaurP9zMwc+vVyxUDv0dbya+NYcbbiFTsbFi
+ iKyLH/iaxuKvokX/pe1SJcLZpRf6hoKB3F77u+C0Qzu/NI2lsQJosZ7C0WUjR88t+XaD
+ 5P7QIkeRFQ3FAnCGlxN0/JbvmwNrPtxECXTUf0reiJqnET/VkrM1ZaDJgOeh+nCoRzCM
+ Qr8A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWXlMDIjoblbZn1iOE/MvSGG92DPRGrytep2tIRy31QyMebEqfaZ0B+AogujSEN+es+hyvV0LwcgLZgjS45wp5/LksMRK0=
-X-Gm-Message-State: AOJu0YyAe+O3XSk9aNtw4X6FsNuic8RxiMZJc4weNKk0buEcNtt0e+5a
- SnRyeM3YNyISK8V3oNqiYklAewhhhUcel1ylzTAOORXb3Aijgpj5bL7DcKFkXDA=
-X-Google-Smtp-Source: AGHT+IEPkgQkCpspdhaP96yTf1JqLnTZw0O7hCCeEzaCub6DsRYfYXaUBI+4AeKoCQT1NglpriGtZg==
-X-Received: by 2002:a05:6512:3b2c:b0:512:f719:aec5 with SMTP id
- f44-20020a0565123b2c00b00512f719aec5mr4068070lfv.9.1708956689785; 
- Mon, 26 Feb 2024 06:11:29 -0800 (PST)
+ AJvYcCUxVX0BJQ+9GMYYIF0yDT8b50n96uy3YPQOe8DaVOZqLWqI0PFF5rHsx8Cn+Imkai/J1lfphla2Kivx/BGo/CfhoTtW5kU=
+X-Gm-Message-State: AOJu0YyG/A3ZZF4xvrAq35QifDjfIhHTnNbaGF4OPRnALfWgaX+DYWe0
+ NuYU8WU8/MH1uuGrlWXjQiNwYufs4cVbiwV6SAybuY+tGO+2IhQzEPht0tTE1yg=
+X-Google-Smtp-Source: AGHT+IFy7Kz8UxGVoTYHzdHFYMQ5Kogk9oFyxnqGzEnLlbDRElYDdUN1yJ05h9Ebt3hS6L+tibMPRw==
+X-Received: by 2002:ac2:4344:0:b0:512:bebf:1a with SMTP id
+ o4-20020ac24344000000b00512bebf001amr4798235lfl.57.1708956695939; 
+ Mon, 26 Feb 2024 06:11:35 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.223.153])
  by smtp.gmail.com with ESMTPSA id
- gq9-20020a170906e24900b00a3fa275de38sm2438554ejb.162.2024.02.26.06.11.28
+ vo9-20020a170907a80900b00a4136d18988sm2452797ejc.36.2024.02.26.06.11.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 26 Feb 2024 06:11:29 -0800 (PST)
+ Mon, 26 Feb 2024 06:11:35 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
  Steve Sistare <steven.sistare@oracle.com>
@@ -63,17 +63,17 @@ Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
  Jason Wang <jasowang@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v6 3/5] util: strv_from_strList
-Date: Mon, 26 Feb 2024 15:11:05 +0100
-Message-ID: <20240226141108.73664-4-philmd@linaro.org>
+Subject: [PATCH v6 4/5] util: strList unit tests
+Date: Mon, 26 Feb 2024 15:11:06 +0100
+Message-ID: <20240226141108.73664-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240226141108.73664-1-philmd@linaro.org>
 References: <20240226141108.73664-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,52 +100,111 @@ From: Steve Sistare <steven.sistare@oracle.com>
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <1708638470-114846-4-git-send-email-steven.sistare@oracle.com>
-Message-ID: <d126c937-c705-476f-baa5-d5e258780cc0@oracle.com>
+Message-ID: <1708638470-114846-5-git-send-email-steven.sistare@oracle.com>
 ---
- include/qemu/strList.h |  8 ++++++++
- util/strList.c         | 14 ++++++++++++++
- 2 files changed, 22 insertions(+)
+ tests/unit/test-strList.c | 80 +++++++++++++++++++++++++++++++++++++++
+ tests/unit/meson.build    |  1 +
+ 2 files changed, 81 insertions(+)
+ create mode 100644 tests/unit/test-strList.c
 
-diff --git a/include/qemu/strList.h b/include/qemu/strList.h
-index 4e2e78624e..b13bd539c3 100644
---- a/include/qemu/strList.h
-+++ b/include/qemu/strList.h
-@@ -22,4 +22,12 @@
-  */
- strList *str_split(const char *str, const char *delim);
- 
+diff --git a/tests/unit/test-strList.c b/tests/unit/test-strList.c
+new file mode 100644
+index 0000000000..40af6b2ad1
+--- /dev/null
++++ b/tests/unit/test-strList.c
+@@ -0,0 +1,80 @@
 +/*
-+ * Produce and return a NULL-terminated array of strings from @list.
-+ * The result is g_malloc'd and all strings are g_strdup'd.  The result
-+ * can be freed using g_strfreev, or by declaring a local variable with
-+ * g_auto(GStrv).
++ * Copyright (c) 2022 - 2024 Oracle and/or its affiliates.
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
 + */
-+char **strv_from_strList(const strList *list);
 +
- #endif
-diff --git a/util/strList.c b/util/strList.c
-index 7588c7c797..6da6762c08 100644
---- a/util/strList.c
-+++ b/util/strList.c
-@@ -22,3 +22,17 @@ strList *str_split(const char *str, const char *delim)
- 
-     return res;
- }
++#include "qemu/osdep.h"
++#include "qemu/strList.h"
 +
-+char **strv_from_strList(const strList *list)
++static strList *make_list(int length)
 +{
-+    const strList *tail;
-+    int i = 0;
-+    char **argv = g_new(char *, QAPI_LIST_LENGTH(list) + 1);
++    strList *head = 0, *list, **prev = &head;
 +
-+    for (tail = list; tail != NULL; tail = tail->next) {
-+        argv[i++] = g_strdup(tail->value);
++    while (length--) {
++        list = *prev = g_new0(strList, 1);
++        list->value = g_strdup("aaa");
++        prev = &list->next;
 +    }
-+    argv[i] = NULL;
-+
-+    return argv;
++    return head;
 +}
++
++static void test_length(void)
++{
++    strList *list;
++    int i;
++
++    for (i = 0; i < 5; i++) {
++        list = make_list(i);
++        g_assert_cmpint(i, ==, QAPI_LIST_LENGTH(list));
++        qapi_free_strList(list);
++    }
++}
++
++struct {
++    const char *string;
++    const char *delim;
++    const char *argv[5];
++} list_data[] = {
++    { NULL, ",", { NULL } },
++    { "", ",", { NULL } },
++    { "a", ",", { "a", NULL } },
++    { "a,b", ",", { "a", "b", NULL } },
++    { "a,b,c", ",", { "a", "b", "c", NULL } },
++    { "first last", " ", { "first", "last", NULL } },
++    { "a:", ":", { "a", "", NULL } },
++    { "a::b", ":", { "a", "", "b", NULL } },
++    { ":", ":", { "", "", NULL } },
++    { ":a", ":", { "", "a", NULL } },
++    { "::a", ":", { "", "", "a", NULL } },
++};
++
++static void test_strv(void)
++{
++    int i, j;
++    const char **expect;
++    strList *list;
++    char **argv;
++
++    for (i = 0; i < ARRAY_SIZE(list_data); i++) {
++        expect = list_data[i].argv;
++        list = str_split(list_data[i].string, list_data[i].delim);
++        argv = strv_from_strList(list);
++        qapi_free_strList(list);
++        for (j = 0; expect[j] && argv[j]; j++) {
++            g_assert_cmpstr(expect[j], ==, argv[j]);
++        }
++        g_assert_null(expect[j]);
++        g_assert_null(argv[j]);
++        g_strfreev(argv);
++    }
++}
++
++int main(int argc, char **argv)
++{
++    g_test_init(&argc, &argv, NULL);
++    g_test_add_func("/test-string/length", test_length);
++    g_test_add_func("/test-string/strv", test_strv);
++    return g_test_run();
++}
+diff --git a/tests/unit/meson.build b/tests/unit/meson.build
+index cae925c132..9984860f0f 100644
+--- a/tests/unit/meson.build
++++ b/tests/unit/meson.build
+@@ -35,6 +35,7 @@ tests = {
+   'test-rcu-simpleq': [],
+   'test-rcu-tailq': [],
+   'test-rcu-slist': [],
++  'test-strList': [],
+   'test-qdist': [],
+   'test-qht': [],
+   'test-qtree': [],
 -- 
 2.41.0
 
