@@ -2,90 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FDEC8672D6
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 12:17:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 999608672F8
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 12:24:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reYyU-0003xO-S6; Mon, 26 Feb 2024 06:16:46 -0500
+	id 1reZ4R-0004hB-OM; Mon, 26 Feb 2024 06:22:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reYxj-0002xf-0x
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 06:16:02 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reYxf-0000S6-6K
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 06:15:57 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-33dc3fe739aso828118f8f.0
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 03:15:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708946152; x=1709550952; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NakYM+jWDMcLHNPOOXYJjk0hTuKh2AH8qxOcwl0V/RA=;
- b=ZjCLDfeTOHrdJ9H0MsgCia5loQblM/OWcqJSOR6/Y2P7u/RwYNg8MWf5jXobAp6yZa
- HSWWMaAXSMCjnSGbJb3J2b4+dLbmIK2kdG7eDxbgJavoFgN0kfA5Y/NvYq8c7h7xhAVe
- fhWIallJbR85XBt2RQrUbsi5iBqIHTVQS/TSChPhCAZcGMHdnnBBhtC09iGuokrqPN+d
- dX4RpdmqGvP+PvQI6fsXKuOFHd9VNu/SIjCC7uu2/fo8YyttU5PB5o1SNBf09FdlOnRl
- p74xUPch+z4Yx7HBMdnWS90fH3fNggQxakbMtu3qtOnqi3IJGQvg7JOyeYsC0eF2enu4
- 7mvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708946152; x=1709550952;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NakYM+jWDMcLHNPOOXYJjk0hTuKh2AH8qxOcwl0V/RA=;
- b=DgFMX3HRkqd7UcjjfXjFogJa3XMYPcARh5mPE/tcwi6pt7nck4XGchle+RVAhFzKdW
- lYlPVPdkcgbWbzewEdK33D04pgQcmo4A7FOZ1eIRCbocyPWaKCviQF4aWGYTAL+07eyb
- PC1pyek2R7zRT+nTvDlXIsruxMHswX9pgeeeJrkKlJJfgfN6ASwWPa9EXYiI1IjNAh6x
- /FIv2vVajPBcqYAsEu2y59ieVO+PT+yWAD+P4/9qTZ0UNP/ktG0GWto58FfrXGgdLjn6
- vI8KGC7Euy5bLwgBcaXYr8lzSrWOW2/6eSdCaHCgGRjQvuew0DglGx/qjs5G9nzDLIPY
- rNig==
-X-Gm-Message-State: AOJu0YxRXcYs0rigdApCYj9fCm5nrtAKY+d32wXx3efLV2q2QpO/IXNL
- 5ZWoxDTLAJSpadNMGWMNmpoSaIiffkmabtLisqu/iuKufJyDjXDHM3gPI6lK1MFU6Ho2YzwbN3+
- e
-X-Google-Smtp-Source: AGHT+IGEe+7RhEBIaT1I5YKLlMeKEK0DxU6RaOXo6TAWssiOiM2DfXepLVmdDt2AL2yBMO/24f6nFA==
-X-Received: by 2002:a5d:4b8f:0:b0:33d:d7be:5852 with SMTP id
- b15-20020a5d4b8f000000b0033dd7be5852mr2096555wrt.2.1708946151894; 
- Mon, 26 Feb 2024 03:15:51 -0800 (PST)
-Received: from m1x-phil.lan ([176.176.164.69])
- by smtp.gmail.com with ESMTPSA id
- q1-20020adffec1000000b0033cf80ad6f5sm7903422wrs.60.2024.02.26.03.15.50
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 26 Feb 2024 03:15:51 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org,
-	Bernhard Beschow <shentey@gmail.com>
-Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>, Ani Sinha <anisinha@redhat.com>,
- qemu-block@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, John Snow <jsnow@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 15/15] hw/southbridge/ich9: Add the LPC / ISA bridge
- function
-Date: Mon, 26 Feb 2024 12:14:14 +0100
-Message-ID: <20240226111416.39217-16-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240226111416.39217-1-philmd@linaro.org>
-References: <20240226111416.39217-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1reZ4P-0004g7-01; Mon, 26 Feb 2024 06:22:53 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1reZ4M-0001h6-3r; Mon, 26 Feb 2024 06:22:52 -0500
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+ by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4TjypN5Xffz1h0dB;
+ Mon, 26 Feb 2024 19:20:28 +0800 (CST)
+Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
+ by mail.maildlp.com (Postfix) with ESMTPS id D39BC1402CE;
+ Mon, 26 Feb 2024 19:22:41 +0800 (CST)
+Received: from [10.67.109.254] (10.67.109.254) by
+ kwepemi500008.china.huawei.com (7.221.188.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 26 Feb 2024 19:22:41 +0800
+Message-ID: <caa15abf-4b9b-8d72-afb4-be18223ad56a@huawei.com>
+Date: Mon, 26 Feb 2024 19:22:40 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [RFC PATCH v3 17/21] hw/intc/arm_gicv3: Add NMI handling CPU
+ interface registers
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>,
+ <peter.maydell@linaro.org>, <eduardo@habkost.net>,
+ <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
+ <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
+References: <20240223103221.1142518-1-ruanjinjie@huawei.com>
+ <20240223103221.1142518-18-ruanjinjie@huawei.com>
+ <81167528-32e3-4741-84e4-3c70b788fc2c@linaro.org>
+In-Reply-To: <81167528-32e3-4741-84e4-3c70b788fc2c@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Originating-IP: [10.67.109.254]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemi500008.china.huawei.com (7.221.188.139)
+Received-SPF: pass client-ip=45.249.212.191;
+ envelope-from=ruanjinjie@huawei.com; helo=szxga05-in.huawei.com
+X-Spam_score_int: -65
+X-Spam_score: -6.6
+X-Spam_bar: ------
+X-Spam_report: (-6.6 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.331,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,182 +68,137 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jinjie Ruan <ruanjinjie@huawei.com>
+From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instantiate TYPE_ICH9_LPC_DEVICE in TYPE_ICH9_SOUTHBRIDGE.
 
-Expose the SMM property so the Q35 machine can disable it
-(depending on the accelerator used).
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/hw/southbridge/ich9.h |  4 ----
- hw/i386/pc_q35.c              | 20 ++++++--------------
- hw/isa/ich9_lpc.c             |  3 +++
- hw/southbridge/ich9.c         | 15 +++++++++++++++
- hw/i386/Kconfig               |  1 -
- hw/southbridge/Kconfig        |  1 +
- 6 files changed, 25 insertions(+), 19 deletions(-)
+On 2024/2/24 4:52, Richard Henderson wrote:
+> On 2/23/24 00:32, Jinjie Ruan via wrote:
+>> Add the NMIAR CPU interface registers which deal with acknowledging NMI.
+>>
+>> When introduce NMI interrupt, there are some updates to the semantics
+>> for the
+>> register ICC_IAR1_EL1 and ICC_HPPIR1_EL1. For ICC_IAR1_EL1 register, it
+>> should return 1022 if the intid has super priority. And for
+>> ICC_NMIAR1_EL1
+>> register, it should return 1023 if the intid do not have super priority.
+>> Howerever, these are not necessary for ICC_HPPIR1_EL1 register.
+>>
+>> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+>> ---
+>>   hw/intc/arm_gicv3_cpuif.c | 46 ++++++++++++++++++++++++++++++++++++---
+>>   hw/intc/gicv3_internal.h  |  1 +
+>>   2 files changed, 44 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
+>> index e1a60d8c15..f5bf8df32b 100644
+>> --- a/hw/intc/arm_gicv3_cpuif.c
+>> +++ b/hw/intc/arm_gicv3_cpuif.c
+>> @@ -1097,7 +1097,8 @@ static uint64_t icc_hppir0_value(GICv3CPUState
+>> *cs, CPUARMState *env)
+>>       return cs->hppi.irq;
+>>   }
+>>   -static uint64_t icc_hppir1_value(GICv3CPUState *cs, CPUARMState *env)
+>> +static uint64_t icc_hppir1_value(GICv3CPUState *cs, CPUARMState *env,
+>> +                                 bool is_nmi, bool is_hppi)
+>>   {
+>>       /* Return the highest priority pending interrupt register value
+>>        * for group 1.
+>> @@ -1108,6 +1109,16 @@ static uint64_t icc_hppir1_value(GICv3CPUState
+>> *cs, CPUARMState *env)
+>>           return INTID_SPURIOUS;
+>>       }
+>>   +    if (!is_hppi) {
+>> +        if (is_nmi && (!cs->hppi.superprio)) {
+>> +            return INTID_SPURIOUS;
+>> +        }
+>> +
+>> +        if ((!is_nmi) && cs->hppi.superprio) {
+>> +            return INTID_NMI;
+>> +        }
+>> +    }
+>> +
+>>       /* Check whether we can return the interrupt or if we should return
+>>        * a special identifier, as per the
+>> CheckGroup1ForSpecialIdentifiers
+>>        * pseudocode. (We can simplify a little because for us
+>> ICC_SRE_EL1.RM
+>> @@ -1168,7 +1179,30 @@ static uint64_t icc_iar1_read(CPUARMState *env,
+>> const ARMCPRegInfo *ri)
+>>       if (!icc_hppi_can_preempt(cs)) {
+>>           intid = INTID_SPURIOUS;
+>>       } else {
+>> -        intid = icc_hppir1_value(cs, env);
+>> +        intid = icc_hppir1_value(cs, env, false, false);
+>> +    }
+>> +
+>> +    if (!gicv3_intid_is_special(intid)) {
+>> +        icc_activate_irq(cs, intid);
+>> +    }
+>> +
+>> +    trace_gicv3_icc_iar1_read(gicv3_redist_affid(cs), intid);
+>> +    return intid;
+>> +}
+> 
+> This is incorrect.  For icc_iar1_read, you need something like
+> 
+>     if (!is_hppi
+>         && cs->hppi.superprio
+>         && env->cp15.sctlr_el[current_el] & SCTLR_NMI) {
+>         return INTID_NMI;
+>     }
+> 
+> I think that if SCTLR_NMI is not set, the whole system ignores
+> Superpriority entirely, so returning SPURIOUS here would be incorrect. 
+> This would make sense, letting an OS that is not configured for FEAT_NMI
+> to run on ARMv8.8 hardware without modification.
 
-diff --git a/include/hw/southbridge/ich9.h b/include/hw/southbridge/ich9.h
-index d6c3b5ece3..a8da4a8665 100644
---- a/include/hw/southbridge/ich9.h
-+++ b/include/hw/southbridge/ich9.h
-@@ -16,10 +16,6 @@ OBJECT_DECLARE_SIMPLE_TYPE(ICH9State, ICH9_SOUTHBRIDGE)
- #define ICH9_PCIE_DEV                           28
- #define ICH9_PCIE_FUNC_MAX                      6
- 
--/* D31:F1 LPC controller */
--#define ICH9_LPC_DEV                            31
--#define ICH9_LPC_FUNC                           0
--
- #define ICH9_GPIO_GSI "gsi"
- 
- #define ICH9_LPC_SMI_NEGOTIATED_FEAT_PROP "x-smi-negotiated-features"
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 14df9e910b..31ab0ae77b 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -50,7 +50,6 @@
- #include "hw/ide/ahci-pci.h"
- #include "hw/intc/ioapic.h"
- #include "hw/southbridge/ich9.h"
--#include "hw/isa/ich9_lpc.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "sysemu/numa.h"
-@@ -67,9 +66,7 @@ static void pc_q35_init(MachineState *machine)
-     X86MachineState *x86ms = X86_MACHINE(machine);
-     Object *phb;
-     DeviceState *ich9;
--    PCIDevice *lpc;
-     Object *lpc_obj;
--    DeviceState *lpc_dev;
-     MemoryRegion *system_memory = get_system_memory();
-     MemoryRegion *system_io = get_system_io();
-     MemoryRegion *pci_memory = g_new(MemoryRegion, 1);
-@@ -168,24 +165,19 @@ static void pc_q35_init(MachineState *machine)
-     object_property_add_child(OBJECT(machine), "ich9", OBJECT(ich9));
-     object_property_set_link(OBJECT(ich9), "mch-pcie-bus",
-                              OBJECT(pcms->pcibus), &error_abort);
-+    for (i = 0; i < IOAPIC_NUM_PINS; i++) {
-+        qdev_connect_gpio_out_named(ich9, ICH9_GPIO_GSI, i, x86ms->gsi[i]);
-+    }
-     qdev_prop_set_bit(ich9, "d2p-enabled", false);
-+    qdev_prop_set_bit(ich9, "smm-enabled", x86_machine_is_smm_enabled(x86ms));
-     qdev_prop_set_bit(ich9, "sata-enabled", pcms->sata_enabled);
-     qdev_prop_set_bit(ich9, "smbus-enabled", pcms->smbus_enabled);
-     /* Should we create 6 UHCI according to ich9 spec? */
-     qdev_prop_set_uint8(ich9, "ehci-count", machine_usb(machine) ? 1 : 0);
-     qdev_realize_and_unref(ich9, NULL, &error_fatal);
- 
--    /* create ISA bus */
--    lpc = pci_new_multifunction(PCI_DEVFN(ICH9_LPC_DEV, ICH9_LPC_FUNC),
--                                TYPE_ICH9_LPC_DEVICE);
--    lpc_obj = OBJECT(lpc);
--    lpc_dev = DEVICE(lpc);
--    qdev_prop_set_bit(lpc_dev, "smm-enabled",
--                      x86_machine_is_smm_enabled(x86ms));
--    for (i = 0; i < IOAPIC_NUM_PINS; i++) {
--        qdev_connect_gpio_out_named(lpc_dev, ICH9_GPIO_GSI, i, x86ms->gsi[i]);
--    }
--    pci_realize_and_unref(lpc, pcms->pcibus, &error_fatal);
-+    /* ISA bus */
-+    lpc_obj = object_resolve_path_component(OBJECT(ich9), "lpc");
- 
-     x86ms->rtc = ISA_DEVICE(object_resolve_path_component(lpc_obj, "rtc"));
- 
-diff --git a/hw/isa/ich9_lpc.c b/hw/isa/ich9_lpc.c
-index 17d4a95bd2..2339f66e0f 100644
---- a/hw/isa/ich9_lpc.c
-+++ b/hw/isa/ich9_lpc.c
-@@ -54,6 +54,9 @@
- #include "hw/acpi/acpi_aml_interface.h"
- #include "trace.h"
- 
-+#define ICH9_LPC_DEV                            31
-+#define ICH9_LPC_FUNC                           0
-+
- #define ICH9_A2_LPC_REVISION                    0x2
- #define ICH9_LPC_NB_PIRQS                       8       /* PCI A-H */
- 
-diff --git a/hw/southbridge/ich9.c b/hw/southbridge/ich9.c
-index f05012959d..521925b462 100644
---- a/hw/southbridge/ich9.c
-+++ b/hw/southbridge/ich9.c
-@@ -13,6 +13,7 @@
- #include "hw/southbridge/ich9.h"
- #include "hw/pci/pci.h"
- #include "hw/pci-bridge/ich9_dmi.h"
-+#include "hw/isa/ich9_lpc.h"
- #include "hw/ide/ahci-pci.h"
- #include "hw/ide/ide-dev.h"
- #include "hw/i2c/ich9_smbus.h"
-@@ -21,6 +22,7 @@
- #include "hw/usb/hcd-uhci.h"
- 
- #define ICH9_D2P_DEVFN          PCI_DEVFN(30, 0)
-+#define ICH9_LPC_DEVFN          PCI_DEVFN(31, 0)
- #define ICH9_SATA1_DEVFN        PCI_DEVFN(31, 2)
- #define ICH9_SMB_DEVFN          PCI_DEVFN(31, 3)
- #define ICH9_EHCI_FUNC          7
-@@ -34,6 +36,7 @@ struct ICH9State {
- 
-     I82801b11Bridge d2p;
-     AHCIPCIState sata0;
-+    ICH9LPCState lpc;
-     ICH9SMBState smb;
-     EHCIPCIState ehci[EHCI_PER_FN];
-     UHCIState uhci[EHCI_PER_FN * UHCI_PER_FN];
-@@ -57,6 +60,14 @@ static Property ich9_props[] = {
- 
- static void ich9_init(Object *obj)
- {
-+    ICH9State *s = ICH9_SOUTHBRIDGE(obj);
-+
-+    object_initialize_child(obj, "lpc", &s->lpc, TYPE_ICH9_LPC_DEVICE);
-+    qdev_pass_gpios(DEVICE(&s->lpc), DEVICE(s), ICH9_GPIO_GSI);
-+    qdev_prop_set_int32(DEVICE(&s->lpc), "addr", ICH9_LPC_DEVFN);
-+    qdev_prop_set_bit(DEVICE(&s->lpc), "multifunction", true);
-+    object_property_add_alias(obj, "smm-enabled",
-+                              OBJECT(&s->lpc), "smm-enabled");
- }
- 
- static bool ich9_realize_d2p(ICH9State *s, Error **errp)
-@@ -163,6 +174,10 @@ static void ich9_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
-+    if (!qdev_realize(DEVICE(&s->lpc), BUS(s->pci_bus), errp)) {
-+        return;
-+    }
-+
-     if (s->sata_enabled && !ich9_realize_sata(s, errp)) {
-         return;
-     }
-diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
-index 226d7f6916..eccc834e49 100644
---- a/hw/i386/Kconfig
-+++ b/hw/i386/Kconfig
-@@ -100,7 +100,6 @@ config Q35
-     select PC_ACPI
-     select PCI_EXPRESS_Q35
-     select ICH9
--    select LPC_ICH9
-     select DIMM
-     select SMBIOS
-     select FW_CFG_DMA
-diff --git a/hw/southbridge/Kconfig b/hw/southbridge/Kconfig
-index 31eb125bf7..8ce62b703c 100644
---- a/hw/southbridge/Kconfig
-+++ b/hw/southbridge/Kconfig
-@@ -8,3 +8,4 @@ config ICH9
-     select ACPI_ICH9
-     imply USB_EHCI_PCI
-     imply USB_UHCI
-+    select LPC_ICH9
--- 
-2.41.0
+You are right. SCTLR_ELx.NMI decide whether IRQ and FIQ interrupts to
+have Superpriority as an additional attribute.
 
+> 
+> 
+>> +
+>> +static uint64_t icc_nmiar1_read(CPUARMState *env, const ARMCPRegInfo
+>> *ri)
+>> +{
+>> +    GICv3CPUState *cs = icc_cs_from_env(env);
+>> +    uint64_t intid;
+>> +
+>> +    if (icv_access(env, HCR_IMO)) {
+>> +        return icv_iar_read(env, ri);
+>> +    }
+>> +
+>> +    if (!icc_hppi_can_preempt(cs)) {
+>> +        intid = INTID_SPURIOUS;
+>> +    } else {
+>> +        intid = icc_hppir1_value(cs, env, true, false);
+> 
+> Here... believe that the result *should* only consider superpriority.  I
+> guess SPURIOUS is the correct result when there is no pending interrupt
+> with superpriority?  It's really unclear to me from the register
+> description.
+> 
+> Peter?
+> 
+>> @@ -2344,6 +2378,12 @@ static const ARMCPRegInfo gicv3_cpuif_reginfo[]
+>> = {
+>>         .access = PL1_R, .accessfn = gicv3_irq_access,
+>>         .readfn = icc_iar1_read,
+>>       },
+>> +    { .name = "ICC_NMIAR1_EL1", .state = ARM_CP_STATE_BOTH,
+>> +      .opc0 = 3, .opc1 = 0, .crn = 12, .crm = 9, .opc2 = 5,
+>> +      .type = ARM_CP_IO | ARM_CP_NO_RAW,
+>> +      .access = PL1_R, .accessfn = gicv3_irq_access,
+>> +      .readfn = icc_nmiar1_read,
+>> +    },
+> 
+> This register is UNDEFINED if FEAT_GICv3_NMI is not implemented.
+> You need to register this separately.
+> 
+> 
+> r~
 
