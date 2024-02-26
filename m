@@ -2,110 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C678674B8
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 13:23:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C23668675AF
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 13:54:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rea0B-0005IB-RI; Mon, 26 Feb 2024 07:22:36 -0500
+	id 1reaTf-0004LF-Mf; Mon, 26 Feb 2024 07:53:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rea05-0005Cc-8C
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 07:22:29 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1reZzz-00065x-Jw
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 07:22:28 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1dbae7b8ff2so12480115ad.3
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 04:22:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708950142; x=1709554942;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=cDlHDrC2sXx/wFIpF7ENRE5ZHGFJqcpEgzRWGY9SY5M=;
- b=RBVZlXCxkwQnBKa/et4HcGrvdfuArIpp4qrLDuF46Ivbnx6J8VK2i1Ou0t+2EythtV
- 6qVFTIg8WGBirhASrYASK5rkrYlPmRog4BewSqcagSTADeEb7Rc5ua98YeMQq5BwgN7s
- Oi0oUjgbxbO2CduFjHA46q/mkeK3UEPQb5ECfRiuEiHY1vwQyVJZ0gCzcKUbli9+KxjU
- Wo7LRfLAT81vS4EtAaxncfu23ShMcHjKTICvl354/RtKc0q2WLwbyQxWXqTXKR+r/XeH
- coq8pZzDluTc1/Vn6WbXN1/PemDpOksnjiuIQkQyMQMspvLlENMP+7R0YL3zRiFw2kQT
- TVRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708950142; x=1709554942;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cDlHDrC2sXx/wFIpF7ENRE5ZHGFJqcpEgzRWGY9SY5M=;
- b=KSu87lwxMru+jJMIt6F4q6DpeJQZsVPuYthXIaik7tjE9kGkKTFOVFGq0AwKCRPTP5
- W14YkqCzxWN2KMNsF4rfOGD0keh9eUeNpg4HMgQfQ6EAIjFUkRk2t+8XzGdgCd44a8vc
- 5ZIWkK8O5kvrDxkRdgpHY5DvJZn0hmYb7ZEppq+H8Yyj6JoYcnG3VbA78SVDeSdTAm2/
- vksZBLVqo7Kn28L697mHK7k97tB07u4HsBzbxvARYwcffym1/QwACDtmiXWsFB3OJA88
- EG/Yp09av83gawLOe2x+dk7w6NDjaAVevlJk9PvIjyJFhzvBuhZ9inZXY2bMGf01tn4r
- 5EGQ==
-X-Gm-Message-State: AOJu0YzPOjPHIDtVkhuPRFn+T3khCufPm071cmkNf5YYPIgfZky1emHq
- n0gYUh4EAS/3aKL/qT7khNcmCblRKiSkNXLcCXBK+y4+pRJNr/nBLuT5l7xiXhY=
-X-Google-Smtp-Source: AGHT+IGujwpUcOVein8hvIc4zxJU7gkmldLs7Wdd8XjfOVtMmR3NGgwcvrIXettxCaZdoiq1724PjQ==
-X-Received: by 2002:a17:902:aa81:b0:1d9:3843:3f07 with SMTP id
- d1-20020a170902aa8100b001d938433f07mr6396069plr.61.1708950142073; 
- Mon, 26 Feb 2024 04:22:22 -0800 (PST)
-Received: from ?IPV6:2400:4050:a840:1e00:9ac7:6d57:2b16:6932?
- ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
- by smtp.gmail.com with ESMTPSA id
- j5-20020a170902c3c500b001d5f1005096sm3801042plj.55.2024.02.26.04.22.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Feb 2024 04:22:21 -0800 (PST)
-Message-ID: <691af6af-bc4f-45ce-b017-7a82269e9381@daynix.com>
-Date: Mon, 26 Feb 2024 21:22:14 +0900
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1reaTd-0004KS-2Z; Mon, 26 Feb 2024 07:53:01 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1reaTa-0003ON-SN; Mon, 26 Feb 2024 07:53:00 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id BA0C34E601F;
+ Mon, 26 Feb 2024 13:52:50 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id dv-mcUeUCaej; Mon, 26 Feb 2024 13:52:48 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id BD3D24E601E; Mon, 26 Feb 2024 13:52:48 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id BB48A7456FE;
+ Mon, 26 Feb 2024 13:52:48 +0100 (CET)
+Date: Mon, 26 Feb 2024 13:52:48 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+cc: qemu-devel@nongnu.org, Bernhard Beschow <shentey@gmail.com>, 
+ Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, 
+ Ani Sinha <anisinha@redhat.com>, qemu-block@nongnu.org, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, John Snow <jsnow@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Igor Mammedov <imammedo@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: Re: [PATCH v2 06/15] hw/ide: Rename ich.c -> ich9_ahci.c
+In-Reply-To: <20240226111416.39217-7-philmd@linaro.org>
+Message-ID: <54e1f04b-bef5-7587-f6d3-a87e9e036740@eik.bme.hu>
+References: <20240226111416.39217-1-philmd@linaro.org>
+ <20240226111416.39217-7-philmd@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 21/27] plugins: add an API to read registers
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Song Gao <gaosong@loongson.cn>,
- qemu-s390x@nongnu.org, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Bin Meng <bin.meng@windriver.com>, Yanan Wang <wangyanan55@huawei.com>,
- Laurent Vivier <laurent@vivier.eu>, qemu-ppc@nongnu.org,
- David Hildenbrand <david@redhat.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Cleber Rosa <crosa@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>, Peter Maydell
- <peter.maydell@linaro.org>, Daniel Henrique Barboza <danielhb413@gmail.com>,
- qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Mahmoud Mandour
- <ma.mandourr@gmail.com>, John Snow <jsnow@redhat.com>,
- Weiwei Li <liwei1518@gmail.com>, Alistair Francis
- <alistair.francis@wdc.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Brian Cain <bcain@quicinc.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Michael Rolnik <mrolnik@gmail.com>
-References: <20240223162202.1936541-1-alex.bennee@linaro.org>
- <20240223162202.1936541-22-alex.bennee@linaro.org>
- <2a7f0e06-0bc9-4fad-add7-9675a4cc2a0a@daynix.com>
- <87y1b7eay6.fsf@draig.linaro.org>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <87y1b7eay6.fsf@draig.linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62e.google.com
+Content-Type: multipart/mixed;
+ boundary="3866299591-143728475-1708951968=:37179"
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,64 +70,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/02/26 20:12, Alex Bennée wrote:
-> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
-> 
->> On 2024/02/24 1:21, Alex Bennée wrote:
->>> We can only request a list of registers once the vCPU has been
->>> initialised so the user needs to use either call the get function on
->>> vCPU initialisation or during the translation phase.
->>> We don't expose the reg number to the plugin instead hiding it
->>> behind
->>> an opaque handle. As the register set is potentially different for
->>> each vCPU we store a separate set of handles for each vCPU. This will
->>> become more important if we are able to emulate more heterogeneous
->>> systems.
->>> Having an internal state within the plugins also allows us to expand
->>> the interface in future (for example providing callbacks on register
->>> change if the translator can track changes).
-> <snip>
->>> +
->>> +/*
->>> + * Register handles
->>> + *
->>> + * The plugin infrastructure keeps hold of these internal data
->>> + * structures which are presented to plugins as opaque handles. They
->>> + * are local to each vCPU as there can be slight variations for each
->>> + * vCPU depending on enabled features. We track this in
->>> + * CPUPluginState.
->>> + */
->>
->> Since we do no longer coalesce registers for different classes, I need
->> to bring my old question back: Why don't you just cast register
->> numbers into pointers and use it as handles?
-> 
-> In the interest of getting this merged before the fast approaching
-> soft-freeze I shall do this for now. However once the plugin system has
-> knowledge of individual registers exposed by TCG it will need to track
-> internal state so will need some sort of container for that.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Indeed it's likely that we would have containers for registers, but we 
-don't know who would own them yet.
+--3866299591-143728475-1708951968=:37179
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-These containers may not be held by vCPU classes as you previously 
-proposed because we may support different configurations of one vCPU class.
+On Mon, 26 Feb 2024, Philippe Mathieu-Daudé wrote:
+> Most ICH9-related files use the 'ich9_' prefix.
+> Mention 'AHCI' in the file name.
+>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+> hw/ide/{ich.c => ich9_ahci.c} | 0
 
-The current proposal to allocate handles for each vCPU may not be what 
-we would want to do in the future either. To support SMP debugging with 
-gdbstub, gdbstub must know sets of vCPUs that have identical registers, 
-and once it does, it's better to allocate handles for each of such sets, 
-not each of vCPUs.
+That would rather be ahci-ich9.h then analogous to ahci-allwinnet.c 
+maybe?
 
-Let's figure out how we should manage containers when a need arises.
+Regsards,
+BALATON Zoltan
 
-> 
->> You can even just expose gdb_reg_num with the interface.
-> 
-> As I have explained before I don't want plugins to treat the handle as
-> a pure index in case they start providing numbers that aren't in the
-> list provided by qemu_plugin_get_registers.
-> 
-
-You can assert the given number has an associated name.
+> hw/ide/meson.build            | 2 +-
+> 2 files changed, 1 insertion(+), 1 deletion(-)
+> rename hw/ide/{ich.c => ich9_ahci.c} (100%)
+>
+> diff --git a/hw/ide/ich.c b/hw/ide/ich9_ahci.c
+> similarity index 100%
+> rename from hw/ide/ich.c
+> rename to hw/ide/ich9_ahci.c
+> diff --git a/hw/ide/meson.build b/hw/ide/meson.build
+> index d09705cac0..2a7cd8405d 100644
+> --- a/hw/ide/meson.build
+> +++ b/hw/ide/meson.build
+> @@ -1,5 +1,5 @@
+> system_ss.add(when: 'CONFIG_AHCI', if_true: files('ahci.c'))
+> -system_ss.add(when: 'CONFIG_AHCI_ICH9', if_true: files('ich.c'))
+> +system_ss.add(when: 'CONFIG_AHCI_ICH9', if_true: files('ich9_ahci.c'))
+> system_ss.add(when: 'CONFIG_ALLWINNER_A10', if_true: files('ahci-allwinner.c'))
+> system_ss.add(when: 'CONFIG_IDE_BUS', if_true: files('ide-bus.c'))
+> system_ss.add(when: 'CONFIG_IDE_CF', if_true: files('cf.c'))
+>
+--3866299591-143728475-1708951968=:37179--
 
