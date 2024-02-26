@@ -2,79 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED687866CAC
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:43:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45244866CBB
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:45:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reWZw-0006Dk-M0; Mon, 26 Feb 2024 03:43:16 -0500
+	id 1reWbC-000829-Di; Mon, 26 Feb 2024 03:44:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1reWZu-0006DE-7c
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:43:14 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1reWbA-00081s-Ds
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:44:32 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1reWZs-0007vt-Sh
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:43:13 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1reWb7-0008I7-SI
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:44:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708936992;
+ s=mimecast20190719; t=1708937068;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mya3+oH4xz1pSWDGrx0wqrrmE1foMW+BKNf5sXwT45w=;
- b=RhENQDj1zXn+q54Gd0W35GOa2ngwXy8gwdBKmJGb6sbztx8yTcgaOhGhqOkBClNj0DMi0j
- VT1IELH0bf4yL//L4sQ9BbyuT8pnS6LaKFiD7iqig+tgf7bqSdf06RmcHP7/aHy9AdjBtU
- +8vywAEJt/qMRysqXc2+bLegXAXP14k=
-Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
- [209.85.161.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DyoCVd1Ywjhoxv5w3cLMTrD5JvpmEIF2qFqVN/J1mD8=;
+ b=dzLhUEQnNClziN4XcCSNYHomEq1s+0wJDGkmMpSAOtA8CG3HQKoOXNSm0hx81MQx/g4A9Z
+ pwKxMgMe7DqWFIk4doLCoiSrtikdvVNHIIk01FzgEhWDbXVpJ5lCHlkYHQXGw0O8dFO4cc
+ NO+3P/xpHYqvIjrKNlgdjpN4LG6vDkw=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-488-bSy9EvVYOf6s1n0anyDvZg-1; Mon, 26 Feb 2024 03:43:10 -0500
-X-MC-Unique: bSy9EvVYOf6s1n0anyDvZg-1
-Received: by mail-oo1-f72.google.com with SMTP id
- 006d021491bc7-5a0494c8929so450703eaf.1
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 00:43:10 -0800 (PST)
+ us-mta-414-b4-6MNg1NCOexdBLxAP71A-1; Mon, 26 Feb 2024 03:44:27 -0500
+X-MC-Unique: b4-6MNg1NCOexdBLxAP71A-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-69009cbf840so7864176d6.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 00:44:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708936989; x=1709541789;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mya3+oH4xz1pSWDGrx0wqrrmE1foMW+BKNf5sXwT45w=;
- b=hwifpxk6NNjvG0mYl7xKr49Z6aliVb4r8q78A1DrZWpWHYTKUK4btq5otSptK8/zIm
- RZg37/F7LLFfqhXQuUvIo5CgIXdG3yANrn/zG0H7sZ8HykJXmyeTXBgi0XxZcwxaSfAI
- PF2qyPjXubw2JvxntWXzzTtyRAZ/9xqpgssukwWtoePnnp7rBFZ0kh2UR52PiaeUQd4p
- VXcPG6tAJDPOYb2n3R9RPKnQGxOjTdLr3XyI1Nvd6b3c3mv5k6glcOntJT0Jnm5gBp1R
- k2WcFMmN7GK4jYYxc9DoEj2zQF3Jqz3+8f4FXjHIwIL5wDKEQFYOGi8Wg2f2w0DvQ6xd
- j3oA==
-X-Gm-Message-State: AOJu0YwQes9PDA5RQa4Hg1OMeK52G3w8pSpnlAWbdWotNzLT2ChdgDJt
- 387TnTM8vMn7h0xwUMC9Vd5GmU0VsAdxmbAuL4/anIn6p2arb77D3GKPFbmRMY1XlNMwWBP97lN
- YIEn1SPQc6rkv9LCc/tCHT3qj+Gs6VvZM8fpnWg15FdVTYlSjlMdq
-X-Received: by 2002:a05:6359:6e88:b0:17b:b540:e1ce with SMTP id
- ti8-20020a0563596e8800b0017bb540e1cemr24668rwb.0.1708936989442; 
- Mon, 26 Feb 2024 00:43:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE3E7UpV6yrCU9/SHRtWW2qmT4F6UKFo4FDRPjPfH9se4yoQu6FnybbNOoplUrc6jFhDqLKFA==
-X-Received: by 2002:a05:6359:6e88:b0:17b:b540:e1ce with SMTP id
- ti8-20020a0563596e8800b0017bb540e1cemr24655rwb.0.1708936989091; 
- Mon, 26 Feb 2024 00:43:09 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- fn11-20020a056a002fcb00b006e0737f2bafsm3486778pfb.45.2024.02.26.00.43.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Feb 2024 00:43:08 -0800 (PST)
-Date: Mon, 26 Feb 2024 16:42:59 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
- Claudio Fontana <cfontana@suse.de>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v4 26/34] tests/qtest/migration: Add a multifd +
- fixed-ram migration test
-Message-ID: <ZdxPE5tsyc4oek_R@x1n>
-References: <20240220224138.24759-1-farosas@suse.de>
- <20240220224138.24759-27-farosas@suse.de>
+ d=1e100.net; s=20230601; t=1708937067; x=1709541867;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DyoCVd1Ywjhoxv5w3cLMTrD5JvpmEIF2qFqVN/J1mD8=;
+ b=B8iDiU0AqA4ChndTlb79pj8mxkabujGy0UtZDt61SOh0+WCfwuPg9yDf8ceeajycZ/
+ /VZFUvGFA5S9ERq7qZSi6zaPNlWATI0K/TWV3hXM11ZFdZJcPm9pn6jgWg1Is+iAJd9R
+ eMw91J7yDA+NeaheO/FJGLfJaiS0Vnw7vk26RFWOa9hXXGbSLDq7eCN/mSlXTKD3iB2B
+ vE7uydzgcrVpvHzgs8Af2NZZ3LRT50d0lJvuaSGXbKQfMskkzbz8ScopmGgjfpnE40YI
+ XHLYvrFjmMSbKL/UEEDob/RPL++57QM5PvGu1Nl/ixdIpA7maHLVAXtMi6m54L3uGSPf
+ BQbg==
+X-Gm-Message-State: AOJu0YyAPh92hH4D28KgvbiywKG97c5aSZD5CUTBrr7ASYG3nUs5P0zl
+ 2P5PPWichNa/CkBGLXffrcmrdM6uMifxizicljT0p9yGXJSshFBBdrUqSKEkzL/6YZsb+tFDSxH
+ CrMT0r9gqFHXovc8pc6IagDomow6aaruXBATxDHM/HS6elc+MxX4q
+X-Received: by 2002:a05:6214:27ca:b0:68f:e43d:a253 with SMTP id
+ ge10-20020a05621427ca00b0068fe43da253mr8253843qvb.2.1708937066788; 
+ Mon, 26 Feb 2024 00:44:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHDwsnsdG5dyzIuBCPN/tdM1q+vK7fRBcoWKd0Q1lzKFk9XoM18Jryt4Vcj4ZTPUv5Q78I2Hg==
+X-Received: by 2002:a05:6214:27ca:b0:68f:e43d:a253 with SMTP id
+ ge10-20020a05621427ca00b0068fe43da253mr8253832qvb.2.1708937066528; 
+ Mon, 26 Feb 2024 00:44:26 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ l7-20020ad44247000000b0068f128fc550sm2659101qvq.131.2024.02.26.00.44.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 Feb 2024 00:44:26 -0800 (PST)
+Message-ID: <e3173995-1aab-4d19-b5c8-9cf3998cbb50@redhat.com>
+Date: Mon, 26 Feb 2024 09:44:24 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240220224138.24759-27-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 14/14] migration: Fix return-path thread exit
+Content-Language: en-US, fr
+To: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>
+References: <20240207133347.1115903-1-clg@redhat.com>
+ <20240207133347.1115903-15-clg@redhat.com> <87v86zaxtv.fsf@suse.de>
+ <50ca9637-bc18-4002-abc3-52c1bb834038@redhat.com> <87mss2pywv.fsf@suse.de>
+ <2b7d3773-3cc0-41b1-8dc8-0aff90107771@redhat.com> <87sf1s8g81.fsf@suse.de>
+ <ZdgfnWJNYeiNYeGN@x1n> <87cysn9sy9.fsf@suse.de>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <87cysn9sy9.fsf@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -99,32 +104,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 20, 2024 at 07:41:30PM -0300, Fabiano Rosas wrote:
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+On 2/23/24 15:05, Fabiano Rosas wrote:
+> Peter Xu <peterx@redhat.com> writes:
+> 
+>> On Fri, Feb 16, 2024 at 02:35:26PM -0300, Fabiano Rosas wrote:
+>>> Cédric Le Goater <clg@redhat.com> writes:
+>>>
+>>>> Hello Fabiano
+>>>>
+>>>> On 2/14/24 21:35, Fabiano Rosas wrote:
+>>>>> Cédric Le Goater <clg@redhat.com> writes:
+>>>>>
+>>>>>> Hello Fabiano
+>>>>>>
+>>>>>> On 2/8/24 14:29, Fabiano Rosas wrote:
+>>>>>>> Cédric Le Goater <clg@redhat.com> writes:
+>>>>>>>
+>>>>>>>> In case of error, close_return_path_on_source() can perform a shutdown
+>>>>>>>> to exit the return-path thread.  However, in migrate_fd_cleanup(),
+>>>>>>>> 'to_dst_file' is closed before calling close_return_path_on_source()
+>>>>>>>> and the shutdown fails, leaving the source and destination waiting for
+>>>>>>>> an event to occur.
+>>>>>>>
+>>>>>>> Hi, Cédric
+>>>>>>>
+>>>>>>> Are you sure this is not caused by patch 13?
+>>>>>>
+>>>>>> It happens with upstream QEMU without any patch.
+>>>>>
+>>>>> I might have taken that "shutdown fails" in the commit message too
+>>>>> literaly. Anyway, I have a proposed solution:
+>>>>>
+>>>>> -->8--
+>>>>>   From 729aa7b5b7f130f756d41649fdd0862bd2e90430 Mon Sep 17 00:00:00 2001
+>>>>> From: Fabiano Rosas <farosas@suse.de>
+>>>>> Date: Wed, 14 Feb 2024 16:45:43 -0300
+>>>>> Subject: [PATCH] migration: Join the return path thread before releasing
+>>>>>    to_dst_file
+>>>>> MIME-Version: 1.0
+>>>>> Content-Type: text/plain; charset=UTF-8
+>>>>> Content-Transfer-Encoding: 8bit
+>>>>>
+>>>>> The return path thread might hang at a blocking system call. Before
+>>>>> joining the thread we might need to issue a shutdown() on the socket
+>>>>> file descriptor to release it. To determine whether the shutdown() is
+>>>>> necessary we look at the QEMUFile error.
+>>>>>
+>>>>> Make sure we only clean up the QEMUFile after the return path has been
+>>>>> waited for.
+>>>>
+>>>> Yes. That's the important part.
+>>>>
+>>>>> This fixes a hang when qemu_savevm_state_setup() produced an error
+>>>>> that was detected by migration_detect_error(). That skips
+>>>>> migration_completion() so close_return_path_on_source() would get
+>>>>> stuck waiting for the RP thread to terminate.
+>>>>>
+>>>>> At migrate_fd_cleanup() I'm keeping the relative order of joining the
+>>>>> migration thread and the return path just in case.
+>>>>
+>>>> That doesn't look necessary.
+>>>
+>>> Indeed. But I don't trust the migration code, it's full of undocumented
+>>> dependencies like that.
+>>>
+>>>> What was the reason to join the migration thread only when
+>>>> s->to_dst_file is valid ?
+>>>
+>>> I didn't find any explicit reason looking through the history. It seems
+>>> we used to rely on to_dst_file before migration_thread_running was
+>>> introduced.
+>>>
+>>> I wouldn't mind keeping that 'if' there.
+>>>
+>>> Let's see what Peter thinks about it.
+>>
+>> Frankly I don't have a strong opinion on current patch 14 or the new
+>> proposal, but it seems we reached a consensus.
+>>
+>> Fabiano, would you repost with a formal patch, with the proper tags?
+> 
+> Yes, I'll post it soon.
+> 
+>>
+>> One thing I am still not sure is whether we should still have patch 13
+>> altogether? Please see my other reply on whether it's possible to have
+>> migrate_get_error() == true but qemu_file_get_error() == false.
+> 
+> I'll include it then.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Thanks for taking over.
 
-One question to double check with you:
+I have included :
 
-[...]
+  [PATCH] migration: Join the return path thread before releasing to_dst_file
 
-> +#ifndef _WIN32
-> +    migration_test_add("/migration/multifd/fd/fixed-ram",
-> +                       test_multifd_fd_fixed_ram);
-> +#endif
+in my series and dropped 13-14. I hope to send a follow up on :
 
-I know we mostly ever use _WIN32 to check these, but why not CONFIG_POSIX?
+   https://lore.kernel.org/qemu-devel/20240207133347.1115903-1-clg@redhat.com/
 
-commit d7613ee2165769303d0fa31069c4b6a840f0dae2
-Author: Bin Meng <bin.meng@windriver.com>
-Date:   Wed Aug 24 17:39:59 2022 +0800
+before we reach soft freeze. It's growing quite a lot.
 
-    tests/qtest: migration-test: Skip running test_migrate_fd_proto on win32
-
-It wanted to avoid socketpair(), which makes sense.  However e.g. qmp cmd
-"getfd" is with CONFIG_POSIX.
-
--- 
-Peter Xu
+C.
 
 
