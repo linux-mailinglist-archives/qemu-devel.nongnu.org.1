@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16288677E5
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B0068677E3
 	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 15:12:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rebhk-0003Cu-VD; Mon, 26 Feb 2024 09:11:40 -0500
+	id 1rebhu-0003FU-BL; Mon, 26 Feb 2024 09:11:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rebhj-0003Ca-9V
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 09:11:39 -0500
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rebho-0003ER-VT
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 09:11:47 -0500
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rebhh-00026Z-IO
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 09:11:39 -0500
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-51197ca63f5so4704273e87.1
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 06:11:37 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rebhn-00026p-CP
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 09:11:44 -0500
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-a437a2a46b1so67995766b.2
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 06:11:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708956696; x=1709561496; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708956702; x=1709561502; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WqJvgmD2xSxG0JQjLIcAdWT5nW/VU/NqNnXte/SlaSQ=;
- b=fDCz4KaVpB+M2bdcQdv/WbPRVXaODcE/twaxehBDIPvMpuobHDplE7ofy9iwdwQb4g
- 2Jere7GIvGEtBH+JZas/e1G8U6reHsQY8V48QTm6zOpHmONj1AqtllxL/WixjMQo0D7H
- UY98DUE/hFxN2x6bMqTH/y32p9m7LFHOvBrr6vQ/lmkof4ndRPEkrFyyxc7pwVKQHAB+
- fgisbkZ/lIRJI1XAvYhJnFB6eEAVEiZgszvsZ81p3F6QxEPGU0/Of1wMZPeyGBR4oh7O
- WhXha1CVHPuVYnimM4olkmRdP0fXn2fCWHNzw5YDZrZc2BC0sFwNcvesJq/GQBNqatXX
- DOMw==
+ bh=eYUzkIrd2Io/eKJ09aaUbtIZJEnxRyBXW0AQqqMbZXw=;
+ b=impZdyADCj9awrzTG6hDalX5GtWW6MJK/zbfMfW+hovc44OrHI+SnydVQT6bY59fZL
+ CUwqtaHlv1Bj2NutnuJEtFaxarEelh9FLSjCDWPN/Mk6RChWtpHJjeI+VQPqVltB69UI
+ vqUs9NtnxxpvLHZPooeLL4UQEcy3yqi6swYfoSa05Fy2/xWiFyYbEFANLYHg/ryz91Vj
+ AfVUS9NfKNP475sDXmKVvN++nSTKAifLqlMSqOHkJ0xaPQabyCv59nvqbULfXpjWWPBR
+ OQs7NAIEGk5PxELcqnvc/gUUg4H4qxh+C9Lt83spOpKMBrQ7b+ErOBY3QwHtWncp+rWn
+ JiUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708956696; x=1709561496;
+ d=1e100.net; s=20230601; t=1708956702; x=1709561502;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WqJvgmD2xSxG0JQjLIcAdWT5nW/VU/NqNnXte/SlaSQ=;
- b=NCVT9q+2/plKAkG8LEnyULGMkNcqFHXrseumUwspyi3xy9Gdrch17rjieT7Cl9hH/r
- obt0JxZpcV+KXafW7EkX/a36JHLvKXATe8WQODbOWEcT5tmvKObJ+OUFEZ4EH8mQ7LZY
- fsJMmjiU0tgoX0aKBrzLq5lWcyyjcMW5xaurP9zMwc+vVyxUDv0dbya+NYcbbiFTsbFi
- iKyLH/iaxuKvokX/pe1SJcLZpRf6hoKB3F77u+C0Qzu/NI2lsQJosZ7C0WUjR88t+XaD
- 5P7QIkeRFQ3FAnCGlxN0/JbvmwNrPtxECXTUf0reiJqnET/VkrM1ZaDJgOeh+nCoRzCM
- Qr8A==
+ bh=eYUzkIrd2Io/eKJ09aaUbtIZJEnxRyBXW0AQqqMbZXw=;
+ b=QGfKY4PvJGVL6txsxZqDoLfjk5aEJFLKjHWh9w1ktMpMXN49DueQN06I6mbslSpWMV
+ jfVxh1tyOhxASN/aGsjvDLU220MDt2d9KFKZ8P6UX4xuVyYWM3hYRtGbKlnLlXS9/gLw
+ RHQUy28kyvFRWYUrcEL806rzcpUk5jUAmCANfIFdwv1PtBSMAu0UjvdZJt5sVTHlTcUF
+ eZHpGMotDVV2vkEBfPa6cTXIqkYa4B3dOJzJ969XoqzJuf4lOH5L9OwVk/8jxTifANBw
+ K9TbtwHaIeGUXj7h+an6T9VDUTemiPfK1qFSo7sUVkHjX4WxcNlMFNxSrALz3+MljKVw
+ N5/g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUxVX0BJQ+9GMYYIF0yDT8b50n96uy3YPQOe8DaVOZqLWqI0PFF5rHsx8Cn+Imkai/J1lfphla2Kivx/BGo/CfhoTtW5kU=
-X-Gm-Message-State: AOJu0YyG/A3ZZF4xvrAq35QifDjfIhHTnNbaGF4OPRnALfWgaX+DYWe0
- NuYU8WU8/MH1uuGrlWXjQiNwYufs4cVbiwV6SAybuY+tGO+2IhQzEPht0tTE1yg=
-X-Google-Smtp-Source: AGHT+IFy7Kz8UxGVoTYHzdHFYMQ5Kogk9oFyxnqGzEnLlbDRElYDdUN1yJ05h9Ebt3hS6L+tibMPRw==
-X-Received: by 2002:ac2:4344:0:b0:512:bebf:1a with SMTP id
- o4-20020ac24344000000b00512bebf001amr4798235lfl.57.1708956695939; 
- Mon, 26 Feb 2024 06:11:35 -0800 (PST)
+ AJvYcCU8qekCCej40zS1RdTQENIFyTwpK2T4iWW/KrEMKj5UCXpGk+x6ZHZd93sv1HA7RGyjOHvaXcxVIxpuoXJAB13WDDSKqeE=
+X-Gm-Message-State: AOJu0Yx6yAd3X7oGN0Vse0irluXQdmND7bJV+oVmI0bJRCV85fNfSMsl
+ X8uYycCCmiKgRZHuKS0nM563S/sxXly2sRjlzZUkjys+4E4sh4owaaHU7xjxnmY=
+X-Google-Smtp-Source: AGHT+IHYfK9hmkc4J6P7Fo51Pp0AOm8ul8y2aewVLJkMTrG1ankM5rND0PGiQl1aPxOqSROblQHjGw==
+X-Received: by 2002:a17:906:c30f:b0:a43:8f7e:4249 with SMTP id
+ s15-20020a170906c30f00b00a438f7e4249mr201861ejz.72.1708956701849; 
+ Mon, 26 Feb 2024 06:11:41 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.223.153])
  by smtp.gmail.com with ESMTPSA id
- vo9-20020a170907a80900b00a4136d18988sm2452797ejc.36.2024.02.26.06.11.34
+ ty6-20020a170907c70600b00a4354b9893csm892192ejc.74.2024.02.26.06.11.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 26 Feb 2024 06:11:35 -0800 (PST)
+ Mon, 26 Feb 2024 06:11:41 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
  Steve Sistare <steven.sistare@oracle.com>
 Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
  Jason Wang <jasowang@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v6 4/5] util: strList unit tests
-Date: Mon, 26 Feb 2024 15:11:06 +0100
-Message-ID: <20240226141108.73664-5-philmd@linaro.org>
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Subject: [PATCH v6 5/5] migration: simplify exec migration functions
+Date: Mon, 26 Feb 2024 15:11:07 +0100
+Message-ID: <20240226141108.73664-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240226141108.73664-1-philmd@linaro.org>
 References: <20240226141108.73664-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,113 +96,113 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <1708638470-114846-5-git-send-email-steven.sistare@oracle.com>
----
- tests/unit/test-strList.c | 80 +++++++++++++++++++++++++++++++++++++++
- tests/unit/meson.build    |  1 +
- 2 files changed, 81 insertions(+)
- create mode 100644 tests/unit/test-strList.c
+Simplify the exec migration code by using list utility functions.
 
-diff --git a/tests/unit/test-strList.c b/tests/unit/test-strList.c
-new file mode 100644
-index 0000000000..40af6b2ad1
---- /dev/null
-+++ b/tests/unit/test-strList.c
-@@ -0,0 +1,80 @@
-+/*
-+ * Copyright (c) 2022 - 2024 Oracle and/or its affiliates.
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
+As a side effect, this also fixes a minor memory leak.  On function return,
+"g_auto(GStrv) argv" frees argv and each element, which is wrong, because
+the function does not own the individual elements.  To compensate, the code
+uses g_steal_pointer which NULLs argv and prevents the destructor from
+running, but argv is leaked.
+
+Fixes: cbab4face57b ("migration: convert exec backend ...")
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Message-ID: <1708638470-114846-6-git-send-email-steven.sistare@oracle.com>
+---
+ migration/exec.c | 57 +++++++-----------------------------------------
+ 1 file changed, 8 insertions(+), 49 deletions(-)
+
+diff --git a/migration/exec.c b/migration/exec.c
+index 47d2f3b8fb..15184096ac 100644
+--- a/migration/exec.c
++++ b/migration/exec.c
+@@ -19,6 +19,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/error-report.h"
 +#include "qemu/strList.h"
-+
-+static strList *make_list(int length)
-+{
-+    strList *head = 0, *list, **prev = &head;
-+
-+    while (length--) {
-+        list = *prev = g_new0(strList, 1);
-+        list->value = g_strdup("aaa");
-+        prev = &list->next;
-+    }
-+    return head;
-+}
-+
-+static void test_length(void)
-+{
-+    strList *list;
-+    int i;
-+
-+    for (i = 0; i < 5; i++) {
-+        list = make_list(i);
-+        g_assert_cmpint(i, ==, QAPI_LIST_LENGTH(list));
-+        qapi_free_strList(list);
-+    }
-+}
-+
-+struct {
-+    const char *string;
-+    const char *delim;
-+    const char *argv[5];
-+} list_data[] = {
-+    { NULL, ",", { NULL } },
-+    { "", ",", { NULL } },
-+    { "a", ",", { "a", NULL } },
-+    { "a,b", ",", { "a", "b", NULL } },
-+    { "a,b,c", ",", { "a", "b", "c", NULL } },
-+    { "first last", " ", { "first", "last", NULL } },
-+    { "a:", ":", { "a", "", NULL } },
-+    { "a::b", ":", { "a", "", "b", NULL } },
-+    { ":", ":", { "", "", NULL } },
-+    { ":a", ":", { "", "a", NULL } },
-+    { "::a", ":", { "", "", "a", NULL } },
-+};
-+
-+static void test_strv(void)
-+{
-+    int i, j;
-+    const char **expect;
-+    strList *list;
-+    char **argv;
-+
-+    for (i = 0; i < ARRAY_SIZE(list_data); i++) {
-+        expect = list_data[i].argv;
-+        list = str_split(list_data[i].string, list_data[i].delim);
-+        argv = strv_from_strList(list);
-+        qapi_free_strList(list);
-+        for (j = 0; expect[j] && argv[j]; j++) {
-+            g_assert_cmpstr(expect[j], ==, argv[j]);
-+        }
-+        g_assert_null(expect[j]);
-+        g_assert_null(argv[j]);
-+        g_strfreev(argv);
-+    }
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+    g_test_add_func("/test-string/length", test_length);
-+    g_test_add_func("/test-string/strv", test_strv);
-+    return g_test_run();
-+}
-diff --git a/tests/unit/meson.build b/tests/unit/meson.build
-index cae925c132..9984860f0f 100644
---- a/tests/unit/meson.build
-+++ b/tests/unit/meson.build
-@@ -35,6 +35,7 @@ tests = {
-   'test-rcu-simpleq': [],
-   'test-rcu-tailq': [],
-   'test-rcu-slist': [],
-+  'test-strList': [],
-   'test-qdist': [],
-   'test-qht': [],
-   'test-qtree': [],
+ #include "channel.h"
+ #include "exec.h"
+ #include "migration.h"
+@@ -39,51 +40,16 @@ const char *exec_get_cmd_path(void)
+ }
+ #endif
+ 
+-/* provides the length of strList */
+-static int
+-str_list_length(strList *list)
+-{
+-    int len = 0;
+-    strList *elem;
+-
+-    for (elem = list; elem != NULL; elem = elem->next) {
+-        len++;
+-    }
+-
+-    return len;
+-}
+-
+-static void
+-init_exec_array(strList *command, char **argv, Error **errp)
+-{
+-    int i = 0;
+-    strList *lst;
+-
+-    for (lst = command; lst; lst = lst->next) {
+-        argv[i++] = lst->value;
+-    }
+-
+-    argv[i] = NULL;
+-    return;
+-}
+-
+ void exec_start_outgoing_migration(MigrationState *s, strList *command,
+                                    Error **errp)
+ {
+-    QIOChannel *ioc;
+-
+-    int length = str_list_length(command);
+-    g_auto(GStrv) argv = (char **) g_new0(const char *, length + 1);
+-
+-    init_exec_array(command, argv, errp);
++    QIOChannel *ioc = NULL;
++    g_auto(GStrv) argv = strv_from_strList(command);
++    const char * const *args = (const char * const *) argv;
+     g_autofree char *new_command = g_strjoinv(" ", (char **)argv);
+ 
+     trace_migration_exec_outgoing(new_command);
+-    ioc = QIO_CHANNEL(
+-        qio_channel_command_new_spawn(
+-                            (const char * const *) g_steal_pointer(&argv),
+-                            O_RDWR,
+-                            errp));
++    ioc = QIO_CHANNEL(qio_channel_command_new_spawn(args, O_RDWR, errp));
+     if (!ioc) {
+         return;
+     }
+@@ -105,19 +71,12 @@ static gboolean exec_accept_incoming_migration(QIOChannel *ioc,
+ void exec_start_incoming_migration(strList *command, Error **errp)
+ {
+     QIOChannel *ioc;
+-
+-    int length = str_list_length(command);
+-    g_auto(GStrv) argv = (char **) g_new0(const char *, length + 1);
+-
+-    init_exec_array(command, argv, errp);
++    g_auto(GStrv) argv = strv_from_strList(command);
++    const char * const *args = (const char * const *) argv;
+     g_autofree char *new_command = g_strjoinv(" ", (char **)argv);
+ 
+     trace_migration_exec_incoming(new_command);
+-    ioc = QIO_CHANNEL(
+-        qio_channel_command_new_spawn(
+-                            (const char * const *) g_steal_pointer(&argv),
+-                            O_RDWR,
+-                            errp));
++    ioc = QIO_CHANNEL(qio_channel_command_new_spawn(args, O_RDWR, errp));
+     if (!ioc) {
+         return;
+     }
 -- 
 2.41.0
 
