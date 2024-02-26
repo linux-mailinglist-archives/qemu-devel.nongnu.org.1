@@ -2,72 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5509D8677F5
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 15:14:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D2E186787D
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 15:30:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rebkC-0006vD-Df; Mon, 26 Feb 2024 09:14:12 -0500
+	id 1rebya-00077E-34; Mon, 26 Feb 2024 09:29:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rebjt-0006gg-V3
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 09:13:55 -0500
-Received: from mgamail.intel.com ([192.198.163.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rebjr-0002Pq-L0
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 09:13:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708956831; x=1740492831;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=uiIBa4NE10MCDcFb1wCFmJuVpzEfYoLwaY2GrJ7E7O4=;
- b=eKFJFHISP6gYcwFDOhUAlZ8IZVUIa2Usn8S0b/xHYqbzP7U5D/odKato
- rA+UaKU4gQF+5knywPm/ccOWeSgnSE9Mq0pfaUrs570U0Ovkg7ahawgkp
- /2u/4TGXxeBCsZoDZ8DtfY2CemNlr2IOMAC3U0zFQPqlL1Lb1SH7AYUv0
- u+6cKLC+Wzs8I3Huq9rWFyr3ajjzeX1xY8fMWRMXBQi/+X6JP0QqEP2rS
- oamYytQ+Cgn5yfAeveA0rtEr/TEIrDtrC6k5Oz9GwcnaNvnieoo00eSz9
- DO9Z57OwuAwFOAhrzHItg6yQScVpDzKIxbJxKCAwOOYct92kMEv5dkGzl w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="13884842"
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; d="scan'208";a="13884842"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 06:13:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="6708041"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa009.jf.intel.com with ESMTP; 26 Feb 2024 06:13:45 -0800
-Date: Mon, 26 Feb 2024 22:27:27 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>
-Subject: Re: [PATCH 05/10] hw/core: Add documentation and license comments to
- reset.h
-Message-ID: <Zdyfz8kc9/iumCAA@intel.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rebyO-000764-G5
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 09:28:52 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rebyM-0005RB-SR
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 09:28:52 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5654f700705so4191578a12.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 06:28:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708957728; x=1709562528; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=UaHnE8xFuk5fF0E94JeQzivSpvLKFREUCdWaCX88pEg=;
+ b=TRd06k2Q7iG0RhknUoad8oQzxAyrEHiWuKJhsrFNb82mEK8pq6WbbSGtRujSZyb3gs
+ qIBtZ48UkjfagV8BsFOJlTSyqn91Vd3k7mWS5vd57xxfXAqjqOG/LgReYFnwBt6pIhso
+ ueTxZFhOOXtoEVp3EOIWEInj3eGaobji9nqi4R15A0xy4kYkpuM2lr13hu+ggIWLUzA6
+ j2tvFDt0bGSXV6eaYdfcrOuCfqYLO3s9pyySEzHwiMrLtNLpAh/Pzs8bvBajotu+eq0c
+ iCJzPpbsHuvs7Oj1jIU+xJnxXDtZKxbfrKULyWsEt54VIYOPkVEvRD3t7G9rU2c5+Sla
+ THsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708957728; x=1709562528;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=UaHnE8xFuk5fF0E94JeQzivSpvLKFREUCdWaCX88pEg=;
+ b=sBTCPcXZzHptHCXBcZxnxaRb/L3DlS36bX5LWYRDbn6dFzeyp79DWtlO2x2EnGstdQ
+ wF4Tl6Dl+MEMtZRG2BldchtZnaIfC2O6+Lf6RAEVwNN5GULWuI2e8ov9xRETzJQVAbn/
+ 8yDrE0fYx3zCIQPU0YdyMiHo7XzTacIW9TEo/Ix+tZSAvVimXyPA9OW4eGHXOJ9ih3Hf
+ H2Kzxl3lUmV53DxnQSRytQi/5V7/os4OlXRTw3NQSl1nIF992a6a8VcTssUyrMhPNhYC
+ rZGMmc58LvCLNmXnDbeCbCGq1dFmn0DbfphLjR/LYlWCtuAcqEbyLqzZqNQVaXmYagqM
+ jOUg==
+X-Gm-Message-State: AOJu0YyRoDYQ2SlkWtFFnL4Asi0uSAXppgz1DfeJHi1QhtNF5fSBkUvc
+ YGb24Pmli+IMZjO45b62kOm8VGTS9vRm4nK8VS4Ul95heZm52LRQrfAt5C5Ljyw5lXwaAAYBBZc
+ 5JlAFDR92iWEftf1DDMn7uxFDRlxjJY1OsLEndg==
+X-Google-Smtp-Source: AGHT+IEg5c6DFhQTd8s2Np8vblFmoNuz25GpAZWZ9UwimC9IXAzSuy9rIe3UNYccmKriKfgb9tXfWhpeO+l1QG/6Ks4=
+X-Received: by 2002:a05:6402:393:b0:566:ca0:4a91 with SMTP id
+ o19-20020a056402039300b005660ca04a91mr1249593edv.2.1708957728166; Mon, 26 Feb
+ 2024 06:28:48 -0800 (PST)
+MIME-Version: 1.0
 References: <20240220160622.114437-1-peter.maydell@linaro.org>
  <20240220160622.114437-6-peter.maydell@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240220160622.114437-6-peter.maydell@linaro.org>
-Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
+ <Zdyfz8kc9/iumCAA@intel.com>
+In-Reply-To: <Zdyfz8kc9/iumCAA@intel.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 26 Feb 2024 14:28:37 +0000
+Message-ID: <CAFEAcA_ZzSmgSbsgE92PNxnDxTxrprMAMOdWwT2Q6aZ-my8NbQ@mail.gmail.com>
+Subject: Re: [PATCH 05/10] hw/core: Add documentation and license comments to
+ reset.h
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.014,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,89 +94,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
+On Mon, 26 Feb 2024 at 14:13, Zhao Liu <zhao1.liu@intel.com> wrote:
+>
+> Hi Peter,
+>
+> On Tue, Feb 20, 2024 at 04:06:17PM +0000, Peter Maydell wrote:
+> > Date: Tue, 20 Feb 2024 16:06:17 +0000
+> > From: Peter Maydell <peter.maydell@linaro.org>
+> > Subject: [PATCH 05/10] hw/core: Add documentation and license comments to
+> >  reset.h
+> > X-Mailer: git-send-email 2.34.1
+> >
+> > Add the usual boilerplate license/copyright comment to reset.h (using
+> > the text from reset.c), and document the existing functions.
+> >
+> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> > ---
+> >  include/sysemu/reset.h | 79 ++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 79 insertions(+)
+> >
+> > diff --git a/include/sysemu/reset.h b/include/sysemu/reset.h
+> > index 609e4d50c26..6aa11846a69 100644
+> > --- a/include/sysemu/reset.h
+> > +++ b/include/sysemu/reset.h
+> > @@ -1,3 +1,29 @@
+> > +/*
+> > + *  Reset handlers.
+> > + *
+> > + * Copyright (c) 2003-2008 Fabrice Bellard
+> > + * Copyright (c) 2016 Red Hat, Inc.
+> > + * Copyright (c) 2024 Linaro, Ltd.
+>
+> An additional question, when there is a new (notable) contribution to a
+> file, then it's time to add the company's copyright. Right?
 
-On Tue, Feb 20, 2024 at 04:06:17PM +0000, Peter Maydell wrote:
-> Date: Tue, 20 Feb 2024 16:06:17 +0000
-> From: Peter Maydell <peter.maydell@linaro.org>
-> Subject: [PATCH 05/10] hw/core: Add documentation and license comments to
->  reset.h
-> X-Mailer: git-send-email 2.34.1
-> 
-> Add the usual boilerplate license/copyright comment to reset.h (using
-> the text from reset.c), and document the existing functions.
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->  include/sysemu/reset.h | 79 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 79 insertions(+)
-> 
-> diff --git a/include/sysemu/reset.h b/include/sysemu/reset.h
-> index 609e4d50c26..6aa11846a69 100644
-> --- a/include/sysemu/reset.h
-> +++ b/include/sysemu/reset.h
-> @@ -1,3 +1,29 @@
-> +/*
-> + *  Reset handlers.
-> + *
-> + * Copyright (c) 2003-2008 Fabrice Bellard
-> + * Copyright (c) 2016 Red Hat, Inc.
-> + * Copyright (c) 2024 Linaro, Ltd.
+It's OK to do that; it's not obligatory. If you're contributing
+on behalf of a company you should generally follow whatever
+that company's policies are for copyright lines etc in open
+source projects.
 
-An additional question, when there is a new (notable) contribution to a
-file, then it's time to add the company's copyright. Right?
+> > + * We assume that the caller holds the BQL.
+>
+> HMM, what does BQL stand for?
 
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a copy
-> + * of this software and associated documentation files (the "Software"), to deal
-> + * in the Software without restriction, including without limitation the rights
-> + * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-> + * copies of the Software, and to permit persons to whom the Software is
-> + * furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be included in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-> + * THE SOFTWARE.
-> + */
-> +
->  #ifndef QEMU_SYSEMU_RESET_H
->  #define QEMU_SYSEMU_RESET_H
->  
-> @@ -5,9 +31,62 @@
->  
->  typedef void QEMUResetHandler(void *opaque);
->  
-> +/**
-> + * qemu_register_reset: Register a callback for system reset
-> + * @func: function to call
-> + * @opaque: opaque data to pass to @func
-> + *
-> + * Register @func on the list of functions which are called when the
-> + * entire system is reset. The functions are called in the order in
-> + * which they are registered.
-> + *
-> + * In general this function should not be used in new code where possible;
-> + * for instance device model reset is better accomplished using the
+"Big QEMU Lock", the one you get via BQL_LOCK_GUARD().
+BQL is the standard abbreviation -- we already use it
+extensively both in comments in include/ and in docs/devel/.
 
-s/for instance device/for instance, device/
-
-> + * methods on DeviceState.
-> + *
-> + * It is not permitted to register or unregister reset functions from
-> + * within the @func callback.
-> + *
-> + * We assume that the caller holds the BQL.
-
-HMM, what does BQL stand for?
-
-Others LGTM.
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+-- PMM
 
