@@ -2,83 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2E186787D
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 15:30:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF55867817
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 15:20:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rebya-00077E-34; Mon, 26 Feb 2024 09:29:04 -0500
+	id 1rebpu-0002ai-BS; Mon, 26 Feb 2024 09:20:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rebyO-000764-G5
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 09:28:52 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rebyM-0005RB-SR
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 09:28:52 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-5654f700705so4191578a12.1
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 06:28:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708957728; x=1709562528; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=UaHnE8xFuk5fF0E94JeQzivSpvLKFREUCdWaCX88pEg=;
- b=TRd06k2Q7iG0RhknUoad8oQzxAyrEHiWuKJhsrFNb82mEK8pq6WbbSGtRujSZyb3gs
- qIBtZ48UkjfagV8BsFOJlTSyqn91Vd3k7mWS5vd57xxfXAqjqOG/LgReYFnwBt6pIhso
- ueTxZFhOOXtoEVp3EOIWEInj3eGaobji9nqi4R15A0xy4kYkpuM2lr13hu+ggIWLUzA6
- j2tvFDt0bGSXV6eaYdfcrOuCfqYLO3s9pyySEzHwiMrLtNLpAh/Pzs8bvBajotu+eq0c
- iCJzPpbsHuvs7Oj1jIU+xJnxXDtZKxbfrKULyWsEt54VIYOPkVEvRD3t7G9rU2c5+Sla
- THsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708957728; x=1709562528;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=UaHnE8xFuk5fF0E94JeQzivSpvLKFREUCdWaCX88pEg=;
- b=sBTCPcXZzHptHCXBcZxnxaRb/L3DlS36bX5LWYRDbn6dFzeyp79DWtlO2x2EnGstdQ
- wF4Tl6Dl+MEMtZRG2BldchtZnaIfC2O6+Lf6RAEVwNN5GULWuI2e8ov9xRETzJQVAbn/
- 8yDrE0fYx3zCIQPU0YdyMiHo7XzTacIW9TEo/Ix+tZSAvVimXyPA9OW4eGHXOJ9ih3Hf
- H2Kzxl3lUmV53DxnQSRytQi/5V7/os4OlXRTw3NQSl1nIF992a6a8VcTssUyrMhPNhYC
- rZGMmc58LvCLNmXnDbeCbCGq1dFmn0DbfphLjR/LYlWCtuAcqEbyLqzZqNQVaXmYagqM
- jOUg==
-X-Gm-Message-State: AOJu0YyRoDYQ2SlkWtFFnL4Asi0uSAXppgz1DfeJHi1QhtNF5fSBkUvc
- YGb24Pmli+IMZjO45b62kOm8VGTS9vRm4nK8VS4Ul95heZm52LRQrfAt5C5Ljyw5lXwaAAYBBZc
- 5JlAFDR92iWEftf1DDMn7uxFDRlxjJY1OsLEndg==
-X-Google-Smtp-Source: AGHT+IEg5c6DFhQTd8s2Np8vblFmoNuz25GpAZWZ9UwimC9IXAzSuy9rIe3UNYccmKriKfgb9tXfWhpeO+l1QG/6Ks4=
-X-Received: by 2002:a05:6402:393:b0:566:ca0:4a91 with SMTP id
- o19-20020a056402039300b005660ca04a91mr1249593edv.2.1708957728166; Mon, 26 Feb
- 2024 06:28:48 -0800 (PST)
-MIME-Version: 1.0
-References: <20240220160622.114437-1-peter.maydell@linaro.org>
- <20240220160622.114437-6-peter.maydell@linaro.org>
- <Zdyfz8kc9/iumCAA@intel.com>
-In-Reply-To: <Zdyfz8kc9/iumCAA@intel.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 26 Feb 2024 14:28:37 +0000
-Message-ID: <CAFEAcA_ZzSmgSbsgE92PNxnDxTxrprMAMOdWwT2Q6aZ-my8NbQ@mail.gmail.com>
-Subject: Re: [PATCH 05/10] hw/core: Add documentation and license comments to
- reset.h
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rebpq-0002Uy-HV
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 09:20:02 -0500
+Received: from mgamail.intel.com ([198.175.65.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rebpl-0003bu-Ea
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 09:20:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1708957198; x=1740493198;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=KLP3B+wCxwfRglhatYPIhzy08cQ/1bNM9k1WtUV5ytY=;
+ b=kNX/NkviIWbwTHs/cPoIMlsuRidatJEW+8XhJlc0HFrJzeiqhVeGu65g
+ VMlrRLj5hbxONpnUl9VJwXLL40x+ar+7CKlwxtU0qRdyfT61g1542x5v7
+ CH6NJ+C5BLhEBT3eEbu40JhMycoP9tpPbH1nnyvFzd0KXanW07yk5jE8H
+ Uu3KbftvuGl+JOapQYP7ZkyWd30BvDaRMHx+ENoaxGIsNnCOjtjKHYLG6
+ mSYmSEYAHu1mFRJ4vJ9ob6sORJfBe2j/UDVOc1pTGMBOYuDf+ve7ve/DO
+ h1c8uQP9x510lCNoP2EvqUMAOjQAOtx9ObavYHJyE8n16pBmNs2BnGgNe Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="20691629"
+X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; d="scan'208";a="20691629"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2024 06:19:55 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
+   d="scan'208";a="7221671"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa008.jf.intel.com with ESMTP; 26 Feb 2024 06:19:52 -0800
+Date: Mon, 26 Feb 2024 22:33:34 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  "Gonglei (Arei)" <arei.gonglei@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+Subject: Re: [PATCH 04/10] include/qom/object.h: New
+ OBJECT_DEFINE_SIMPLE_TYPE{, _WITH_INTERFACES} macros
+Message-ID: <ZdyhPvj4LK8OaHg2@intel.com>
+References: <20240220160622.114437-1-peter.maydell@linaro.org>
+ <20240220160622.114437-5-peter.maydell@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240220160622.114437-5-peter.maydell@linaro.org>
+Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.014,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,52 +85,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 26 Feb 2024 at 14:13, Zhao Liu <zhao1.liu@intel.com> wrote:
+On Tue, Feb 20, 2024 at 04:06:16PM +0000, Peter Maydell wrote:
+> Date: Tue, 20 Feb 2024 16:06:16 +0000
+> From: Peter Maydell <peter.maydell@linaro.org>
+> Subject: [PATCH 04/10] include/qom/object.h: New
+>  OBJECT_DEFINE_SIMPLE_TYPE{, _WITH_INTERFACES} macros
+> X-Mailer: git-send-email 2.34.1
+> 
+> We have an OBJECT_DEFINE_TYPE_EXTENDED macro, plus several variations
+> on it, which emits the boilerplate for the TypeInfo and ensures it is
+> registered with the type system.  However, all the existing macros
+> insist that the type being defined has its own FooClass struct, so
+> they aren't useful for the common case of a simple leaf class which
+> doesn't have any new methods or any other need for its own class
+> struct (that is, for the kind of type that OBJECT_DECLARE_SIMPLE_TYPE
+> declares).
+> 
+> Pull the actual implementation of OBJECT_DEFINE_TYPE_EXTENDED out
+> into a new DO_OBJECT_DEFINE_TYPE_EXTENDED which parameterizes the
+> value we use for the class_size field.  This lets us add a new
+> OBJECT_DEFINE_SIMPLE_TYPE which does the same job as the various
+> existing OBJECT_DEFINE_*_TYPE_* family macros for this kind of simple
+> type, and the variant OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES for
+> when the type will implement some interfaces.
+> 
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>  docs/devel/qom.rst   |  34 +++++++++++--
+>  include/qom/object.h | 114 +++++++++++++++++++++++++++++++++----------
+>  2 files changed, 117 insertions(+), 31 deletions(-)
 >
-> Hi Peter,
->
-> On Tue, Feb 20, 2024 at 04:06:17PM +0000, Peter Maydell wrote:
-> > Date: Tue, 20 Feb 2024 16:06:17 +0000
-> > From: Peter Maydell <peter.maydell@linaro.org>
-> > Subject: [PATCH 05/10] hw/core: Add documentation and license comments to
-> >  reset.h
-> > X-Mailer: git-send-email 2.34.1
-> >
-> > Add the usual boilerplate license/copyright comment to reset.h (using
-> > the text from reset.c), and document the existing functions.
-> >
-> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> > ---
-> >  include/sysemu/reset.h | 79 ++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 79 insertions(+)
-> >
-> > diff --git a/include/sysemu/reset.h b/include/sysemu/reset.h
-> > index 609e4d50c26..6aa11846a69 100644
-> > --- a/include/sysemu/reset.h
-> > +++ b/include/sysemu/reset.h
-> > @@ -1,3 +1,29 @@
-> > +/*
-> > + *  Reset handlers.
-> > + *
-> > + * Copyright (c) 2003-2008 Fabrice Bellard
-> > + * Copyright (c) 2016 Red Hat, Inc.
-> > + * Copyright (c) 2024 Linaro, Ltd.
->
-> An additional question, when there is a new (notable) contribution to a
-> file, then it's time to add the company's copyright. Right?
 
-It's OK to do that; it's not obligatory. If you're contributing
-on behalf of a company you should generally follow whatever
-that company's policies are for copyright lines etc in open
-source projects.
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-> > + * We assume that the caller holds the BQL.
->
-> HMM, what does BQL stand for?
-
-"Big QEMU Lock", the one you get via BQL_LOCK_GUARD().
-BQL is the standard abbreviation -- we already use it
-extensively both in comments in include/ and in docs/devel/.
-
--- PMM
 
