@@ -2,72 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A40E4867754
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 14:56:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD38E8677E0
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 15:12:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rebT0-0006JC-B0; Mon, 26 Feb 2024 08:56:26 -0500
+	id 1rebhM-00037G-84; Mon, 26 Feb 2024 09:11:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rebSi-0006IH-Nk
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 08:56:08 -0500
-Received: from mgamail.intel.com ([192.198.163.9])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rebSf-0007yN-Sg
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 08:56:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708955766; x=1740491766;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=RjE2hXjKIY2J3+psJTzlcUkkch1XdbF0A6fZS1slcAY=;
- b=UvLn6kQOenv1qxH9Y4gSPwk1/jyaungQAHk03oPHH1I2MiZ6tJOo1NWS
- PbK7z9NBXwxiGtlD8jq9xvXfs2yIIaMzIsd4n0JS1/bj81Lz4iv3FRD+i
- 8OrjjKTtVs8Nu5Ph61lmhxOWxMCE93F3vHzWk+A2cbiirCYCQ8CnSIN1b
- NGAqM4jYxlhxW6vSxUvxkxOevKS0BNIvNn9c4gE7PoPOvbhCPRYq45xbj
- AX09gQ2MTR/DuCbVw+xpN35WQkl827AX6LO2Cc9hbgcaYwUs1IkPGnGrD
- pKyXhOLLTnxb5WCqYxe5Nrb4T+FsDiq0Cy+VesFMY0rLVYNBsagrxtetn g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="13934107"
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; d="scan'208";a="13934107"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 05:56:02 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="6662934"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa010.jf.intel.com with ESMTP; 26 Feb 2024 05:56:00 -0800
-Date: Mon, 26 Feb 2024 22:09:42 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>
-Subject: Re: [PATCH 02/10] hw/i386/pc: Do pc_cmos_init_late() from
- pc_machine_done()
-Message-ID: <ZdybpokP2q+ayi2Z@intel.com>
-References: <20240220160622.114437-1-peter.maydell@linaro.org>
- <20240220160622.114437-3-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rebhK-00036z-IJ
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 09:11:14 -0500
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rebhI-00023P-VF
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 09:11:14 -0500
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a26fa294e56so537890266b.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 06:11:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708956671; x=1709561471; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IhvcWs1xcDSEDBqqBHd4sfNHg5BFoMMt+2CzoTmQ4us=;
+ b=N6rx9LbyNxLCC6YMzZImtjlR2zuM0icEAhyNzi5eNWK5uRi3U341psOoZP8x1o2AlE
+ 0nXWUF6G2bbWUDW9ItJLrPM+cRpFLTJwLP7kRnRqVAAqcKHqPrL7qQJwzqSDCmfyBzxT
+ jJBFmhw8V2Dsb/Z2rEDQ3V1kd7y22yzaoRWi48BvFwk0AVqzynaPEKoOv4spCkZ5qJKp
+ U+M4scUARhQeVs6Q4ah770wQmFLbr+rGR9AjBDKfIaxD+qcHRmtLeVQxAgWrHqBYc0oO
+ jXyrzwtoyyVm6Vrn1ioyK+ELBdjlCQgTNqqyYW7ZjBc2ue45JDNCmY3idasamZAY1opx
+ SVxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708956671; x=1709561471;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IhvcWs1xcDSEDBqqBHd4sfNHg5BFoMMt+2CzoTmQ4us=;
+ b=SHvHdHklGYsYoQtfx6tXtau4A5f4aCXuTkmV032ZeNXSkhnFq2fss+4KaE7401l+fW
+ daRLWNnB26Sb3ge4MyGGVsd5LS7J48O/20XJ5L1IM54QnODjQQbjUDfn8WSZAGN7Yjac
+ CTUMcPbo+TuZz609KMtwUkHc32zO3lYiRWwlJkrkb7PD6Vup9vUcXLKG/Lhy55G9WtqB
+ Z4Gwgt1efE0xSyHXYZNIHN2ypOwoZeHcb2MQTFIbntTdwZVdMjkc3vsUgxzW65R71jsX
+ cvodu2xUiZaKb7c/Zo8ijo+SL3jjRk8N+Y9FsifZkzjZBVYiOEKiZc5P/kjPAIzzbMJA
+ j5Vw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV5fO1T9kEKuNvpRC0g78mq+CqyJmIDVfumOBipgNC02qjbjPXzZOLjx6Gn/YdBWJS3u/b+uPNhuQSHmihwtei76SxfHY8=
+X-Gm-Message-State: AOJu0Yz6BuIiaeSIlftTA4hqaaBzPA3Zx8AFMv2/hUxxuvKkRYZ0i9Bf
+ hUj78gF5XLd7swus/V9KXB3UUdvycV5Uo6duKN2JqF9K9pix3dUU0Nkg5w9s5GU=
+X-Google-Smtp-Source: AGHT+IEmTzKBeoABVgf9PChDJTeT4Cc9IPdT44DTIGW/EE68eIfjg/1jSNbQ4l9Xo6NX2Sp/6xqfyg==
+X-Received: by 2002:a17:906:3912:b0:a3e:8b9d:dfea with SMTP id
+ f18-20020a170906391200b00a3e8b9ddfeamr5025923eje.66.1708956671441; 
+ Mon, 26 Feb 2024 06:11:11 -0800 (PST)
+Received: from m1x-phil.lan ([176.187.223.153])
+ by smtp.gmail.com with ESMTPSA id
+ rv7-20020a17090710c700b00a3efce660c2sm2455332ejb.198.2024.02.26.06.11.09
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 26 Feb 2024 06:11:10 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ Steve Sistare <steven.sistare@oracle.com>
+Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Jason Wang <jasowang@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v6 0/5] string list functions
+Date: Mon, 26 Feb 2024 15:11:02 +0100
+Message-ID: <20240226141108.73664-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240220160622.114437-3-peter.maydell@linaro.org>
-Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.014,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,38 +93,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 20, 2024 at 04:06:14PM +0000, Peter Maydell wrote:
-> Date: Tue, 20 Feb 2024 16:06:14 +0000
-> From: Peter Maydell <peter.maydell@linaro.org>
-> Subject: [PATCH 02/10] hw/i386/pc: Do pc_cmos_init_late() from
->  pc_machine_done()
-> X-Mailer: git-send-email 2.34.1
-> 
-> In the i386 PC machine, we want to run the pc_cmos_init_late()
-> function only once the IDE and floppy drive devices have been set up.
-> We currently do this using qemu_register_reset(), and then have the
-> function call qemu_unregister_reset() on itself, so it runs exactly
-> once.
-> 
-> This was an expedient way to do it back in 2010 when we first added
-> this (in commit c0897e0cb94e8), but now we have a more obvious point
-> to do "machine initialization that has to happen after generic device
-> init": the machine-init-done hook.
-> 
-> Do the pc_cmos_init_late() work from our existing PC machine init
-> done hook function, so we can drop the use of qemu_register_reset()
-> and qemu_unregister_reset().
-> 
-> Because the pointers to the devices we need (the IDE buses and the
-> RTC) are now all in the machine state, we don't need the
-> pc_cmos_init_late_arg struct and can just pass the PCMachineState
-> pointer.
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->  hw/i386/pc.c | 39 ++++++++++++++++-----------------------
->  1 file changed, 16 insertions(+), 23 deletions(-)
+Hi Markus,
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Here are the patches I queued until you told me you'd
+object to the CamelCase filename strList.[ch].
+
+Steve, please take over ;)
+
+Since v5:
+- Cover files in MAINTAINERS
+- Complete @docstring mentioning g_auto.
+
+v5: https://lore.kernel.org/qemu-devel/1708638470-114846-3-git-send-email-steven.sistare@oracle.com/
+
+Steve Sistare (5):
+  util: str_split
+  qapi: QAPI_LIST_LENGTH
+  util: strv_from_strList
+  util: strList unit tests
+  migration: simplify exec migration functions
+
+ MAINTAINERS               |  2 +
+ include/monitor/hmp.h     |  1 -
+ include/qapi/util.h       | 13 +++++++
+ include/qemu/strList.h    | 33 ++++++++++++++++
+ migration/exec.c          | 57 ++++------------------------
+ monitor/hmp-cmds.c        | 19 ----------
+ net/net-hmp-cmds.c        |  3 +-
+ stats/stats-hmp-cmds.c    |  3 +-
+ tests/unit/test-strList.c | 80 +++++++++++++++++++++++++++++++++++++++
+ util/strList.c            | 38 +++++++++++++++++++
+ tests/unit/meson.build    |  1 +
+ util/meson.build          |  1 +
+ 12 files changed, 180 insertions(+), 71 deletions(-)
+ create mode 100644 include/qemu/strList.h
+ create mode 100644 tests/unit/test-strList.c
+ create mode 100644 util/strList.c
+
+-- 
+2.41.0
 
 
