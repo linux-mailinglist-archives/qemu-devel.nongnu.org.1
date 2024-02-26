@@ -2,67 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9DD4866B65
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 08:53:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16A76866BBD
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:08:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reVms-0007Ea-AD; Mon, 26 Feb 2024 02:52:34 -0500
+	id 1reW0Z-0004Yf-6k; Mon, 26 Feb 2024 03:06:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1reVmp-0007EO-1s
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 02:52:31 -0500
-Received: from mgamail.intel.com ([198.175.65.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1reVmb-0007Jo-Qx
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 02:52:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708933938; x=1740469938;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=sqzyhp8PDv/oEhB/u2EqGaZR7JoP1mphizz5058AedU=;
- b=LSPBNyLdMI+yvQ4GHhGOIYeDvIgm8B8AEyntOI3Gl0bkdTs8YJHGEhpr
- uWxSBjlRdoEDNRYvOGc7P8zg9bzKIhb3UaE74OCob6FSg9n/x8AI/oefC
- 7b5RqYnHZyBxqQFfEmkGOewhESolkKUgxN5lvK2qhFtu8Yd307StwSL85
- opZoFo4THvNDRjUdHHcV996mpuKFXO0RfMVR6IX6rEktA+qLj3huxMhaf
- c+YIEIln+u9I9YOGOTPBGAbkF8L9ItHNepPxIZmcJyvsF2LwmvIrIoZJ/
- vlJs+HS5EtxDDU/pHbgk0+HgEVhPdF7/jLVJimj6lMY70HX5i/fMDIr8n Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="13755523"
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; d="scan'208";a="13755523"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2024 23:52:16 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="6786720"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa006.fm.intel.com with ESMTP; 25 Feb 2024 23:52:14 -0800
-Date: Mon, 26 Feb 2024 16:05:56 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, mcb30@ipxe.org
-Subject: Re: [PATCH v2 3/7] target/i386: introduce function to query MMU
- indices
-Message-ID: <ZdxGZPMXAB5rTIZl@intel.com>
-References: <20240223130948.237186-1-pbonzini@redhat.com>
- <20240223130948.237186-4-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reW0X-0004XX-B8
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:06:41 -0500
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reW0U-0001bj-Oe
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:06:41 -0500
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-512e1991237so2114864e87.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 00:06:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708934797; x=1709539597; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=QpvoCsIbtwiY1HT5bcdk+eqvDrOmo4Ep9MNjGeKLbL8=;
+ b=qRHjyq9OIgfdfugl3Xq2T/6C9wQ/PYGwWWXEUrz84CRdyHWO0CeHS0nyNZuU8/6l0/
+ qkMa2V8Np7wxlRk/vRanLGJ8ndtYsICY4+hF+AhVY6EB/2fdg1fsa2bQnlGGLAbOfTEb
+ z2TR7OqyFWiI+/+pulbYrwVSQq/fEy+teiaXaOMxyxdUw6T4l92oh3E221GlvXcuGv6D
+ XqAqw+3txazo4wzWuv8VVX1ERi9Qqa/9VPean86ng55TAiidOlVA+mP82GELyJf/BZKM
+ oUttJLIhK+33o27QGsmaR5a417GQqidhmnnbqI4HRPIuoCYoWVnBZ+HynYgkOxBx2SAa
+ NumA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708934797; x=1709539597;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QpvoCsIbtwiY1HT5bcdk+eqvDrOmo4Ep9MNjGeKLbL8=;
+ b=OIeuwHG+3E1BacANUj/EGK3F7fdJA9iBxF19qHUxuplCPtw5LL/6saKUpH3UeK1e3r
+ Fke+bBgwXfATwpg5yuItnGOKUTpqOcxRcUFaeTHMe1nrWhZyNVIg8+S5jRdgZ7kA0u4H
+ 6x+zv1m1603B7aMzFb+WMNVWYN4Ixmp494ma56ckfB4B6MIAvLReuIsD2RdLwz4TOMbA
+ sNop0I48xCbAlilDDdA3wTXy6pKkjOIypOpENAef+5ii1cuSzyeUyFjknqG8toOFpWo6
+ 7ffQd48eOFwq3gL1Vg8nMElT3qNPFNyAhZLFONN3XrsI29AzVJYSYYn/UVgKZdabHEHw
+ vWVw==
+X-Gm-Message-State: AOJu0Yy5057rC472EB6dJbGmCVvdXBHNguxKgpaCdqxOniP/k1PW0BIT
+ OvsaJiTy5ENuvVRyaoZq+rpITKkHpaEh6D2KIBe5DmZ9ZuRmwd9/Rzs6Bx9ZU5HCZDTcD5/GDzf
+ j
+X-Google-Smtp-Source: AGHT+IGhPhxQBg5UCRWmPKpyYNLmhzOF/f1t+2tx1sTKr2jd9F/y5jjss3+yDlxRsv1LCqg+uc81cw==
+X-Received: by 2002:ac2:4145:0:b0:511:463c:32c1 with SMTP id
+ c5-20020ac24145000000b00511463c32c1mr1591499lfi.19.1708934796730; 
+ Mon, 26 Feb 2024 00:06:36 -0800 (PST)
+Received: from m1x-phil.lan ([176.176.164.69])
+ by smtp.gmail.com with ESMTPSA id
+ o26-20020ac25b9a000000b00512e1361dacsm754030lfn.299.2024.02.26.00.06.34
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 26 Feb 2024 00:06:36 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ John Snow <jsnow@redhat.com>, Leif Lindholm <quic_llindhol@quicinc.com>,
+ qemu-block@nongnu.org, Radoslaw Biernacki <rad@semihalf.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, qemu-ppc@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 0/3] hw/ide: Make "ide_internal.h" really internal
+Date: Mon, 26 Feb 2024 09:06:28 +0100
+Message-ID: <20240226080632.9596-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240223130948.237186-4-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.097,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,70 +95,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 23, 2024 at 02:09:44PM +0100, Paolo Bonzini wrote:
-> Date: Fri, 23 Feb 2024 14:09:44 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH v2 3/7] target/i386: introduce function to query MMU indices
-> X-Mailer: git-send-email 2.43.0
-> 
-> Remove knowledge of specific MMU indexes (other than MMU_NESTED_IDX and
-> MMU_PHYS_IDX) from mmu_translate().  This will make it possible to split
-> 32-bit and 64-bit MMU indexes.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  target/i386/cpu.h                    | 10 ++++++++++
->  target/i386/tcg/sysemu/excp_helper.c |  4 ++--
->  2 files changed, 12 insertions(+), 2 deletions(-)
+Missing review: 3
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Since v2:
+- Remove local 'ahci' variable
+- Rename "ide_internal.h" -> "ide-internal.h" (Zoltan)
 
-> 
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index dfe43b82042..8c271ca62e5 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -2305,6 +2305,16 @@ uint64_t cpu_get_tsc(CPUX86State *env);
->  #define MMU_NESTED_IDX  3
->  #define MMU_PHYS_IDX    4
->  
-> +static inline bool is_mmu_index_smap(int mmu_index)
-> +{
-> +    return mmu_index == MMU_KSMAP_IDX;
-> +}
-> +
-> +static inline bool is_mmu_index_user(int mmu_index)
-> +{
-> +    return mmu_index == MMU_USER_IDX;
-> +}
-> +
->  static inline int cpu_mmu_index_kernel(CPUX86State *env)
->  {
->      return !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP_IDX :
-> diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
-> index 11126c860d4..a0d5ce39300 100644
-> --- a/target/i386/tcg/sysemu/excp_helper.c
-> +++ b/target/i386/tcg/sysemu/excp_helper.c
-> @@ -137,7 +137,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
->      const int32_t a20_mask = x86_get_a20_mask(env);
->      const target_ulong addr = in->addr;
->      const int pg_mode = in->pg_mode;
-> -    const bool is_user = (in->mmu_idx == MMU_USER_IDX);
-> +    const bool is_user = is_mmu_index_user(in->mmu_idx);
->      const MMUAccessType access_type = in->access_type;
->      uint64_t ptep, pte, rsvd_mask;
->      PTETranslate pte_trans = {
-> @@ -363,7 +363,7 @@ do_check_protect_pse36:
->      }
->  
->      int prot = 0;
-> -    if (in->mmu_idx != MMU_KSMAP_IDX || !(ptep & PG_USER_MASK)) {
-> +    if (!is_mmu_index_smap(in->mmu_idx) || !(ptep & PG_USER_MASK)) {
->          prot |= PAGE_READ;
->          if ((ptep & PG_RW_MASK) || !(is_user || (pg_mode & PG_MODE_WP))) {
->              prot |= PAGE_WRITE;
-> -- 
-> 2.43.0
-> 
-> 
+Since v1:
+- Remove use of "ahci_internal.h" in SBSA-Ref
+- Rename "internal.h" -> "ide_internal.h"
+
+Supersedes: <20240223142633.933694E6004@zero.eik.bme.hu>
+
+BALATON Zoltan (1):
+  hw/ide: Remove last two uses of ide/internal.h outside of hw/ide/
+
+Philippe Mathieu-Daudé (2):
+  hw/arm/sbsa-ref: Do not open-code ahci_ide_create_devs()
+  hw/ide: Include 'ide_internal.h' from current path
+
+ hw/ide/ahci_internal.h                             |  2 +-
+ include/hw/ide/internal.h => hw/ide/ide-internal.h |  0
+ include/hw/misc/macio/macio.h                      |  2 +-
+ hw/arm/sbsa-ref.c                                  | 13 ++-----------
+ hw/ide/ahci.c                                      |  2 +-
+ hw/ide/atapi.c                                     |  2 +-
+ hw/ide/cmd646.c                                    |  2 +-
+ hw/ide/core.c                                      |  2 +-
+ hw/ide/ide-bus.c                                   |  2 +-
+ hw/ide/ide-dev.c                                   |  2 +-
+ hw/ide/ioport.c                                    |  2 +-
+ hw/ide/isa.c                                       |  2 +-
+ hw/ide/macio.c                                     |  2 +-
+ hw/ide/microdrive.c                                |  2 +-
+ hw/ide/mmio.c                                      |  2 +-
+ hw/ide/pci.c                                       |  2 +-
+ hw/ide/piix.c                                      |  2 +-
+ hw/ide/sii3112.c                                   |  2 +-
+ hw/ide/via.c                                       |  2 +-
+ 19 files changed, 19 insertions(+), 28 deletions(-)
+ rename include/hw/ide/internal.h => hw/ide/ide-internal.h (100%)
+
+-- 
+2.41.0
+
 
