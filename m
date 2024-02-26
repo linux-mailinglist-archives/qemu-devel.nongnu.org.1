@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA665867D84
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 18:08:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3EAC867D65
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 18:06:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reeMB-0006il-FB; Mon, 26 Feb 2024 12:01:35 -0500
+	id 1reeN0-0001gc-L9; Mon, 26 Feb 2024 12:02:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1reeLj-000652-G3
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 12:01:10 -0500
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1reeMi-0001La-JE
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 12:02:22 -0500
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1reeLg-0000Si-3Z
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 12:01:05 -0500
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-5648d92919dso4349192a12.1
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 09:01:03 -0800 (PST)
+ id 1reeMh-0000i8-6F
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 12:02:08 -0500
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-512ed314881so3183309e87.2
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 09:02:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708966862; x=1709571662; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708966925; x=1709571725; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=GXvsRrUPveDb3zsGpf6ad4dx8sWIyepWGFL6PdKE7tk=;
- b=t6feIVfhNsF12uXacI02SdfY7afpnkF7dY9aEDBBVOS4HHZ5SaUPyPpv4Ym90ySll8
- 8rP29ei9oLsGdYCv+p2xH1EqP/eajrK40yppul4XtsKYO5pibD2QX2wJMnwALXDOeGMF
- uDsWlXc1LGUkpEB9DA2cXVGGrv7DxDR+eQZkT/mNVYNiypjHZaPTXRY6Q2NoCCYYMDJt
- OBj7kopHqN7tqiBoVRZnM0lj2kzHHDr4ysFnRzpolj/Ycsl44U7sr/3YIX+t5k27Ew00
- haf0+h9QX2HX3M+He5+/hmN/g3JyPNi4f1Vo1DTs19JOm2SK2zr/YUUrGTqo8aBp0slf
- VjvQ==
+ bh=mDQlHq0G8B8G4OTR+Cvh2hLL3vo9Xrq+fM4d7Yiqtqk=;
+ b=jCt1hHFnR7r/KnHKVbwS8g80b8/3yq7Z935YHkQqbN9RtH5lOjDUAcgscqPXf4bhNz
+ NbglNudJbBbOqGj7Z/FsTzs2QG35XkeToeINqzIV2fZQPIH0XSwUHhTcJ/oJodMaNFTE
+ ggMFnSyKdqJryQ59inHnKURQY4dyAA6qA/EWaiBB8YCWYde1OqnFgiUeGDQuCJzpYmLz
+ O+W6IRhSfugXteCaznxWa2fdeZUoYuPG9ke65TLR53ZrUYiPlN9kZEj97FOeVmQQuiyJ
+ yHMz4E9T7upv3FCCPJnCpRL/svaZvRT5YlJVgkgKQZXtNwN7dLNHAnvPr2mBdUtI8/9W
+ xifg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708966862; x=1709571662;
+ d=1e100.net; s=20230601; t=1708966925; x=1709571725;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=GXvsRrUPveDb3zsGpf6ad4dx8sWIyepWGFL6PdKE7tk=;
- b=aMPzN1bW8tZifvMRIPmnMaUYSTyM81hs2SKCEAzz+6b3leNdpBHx9bpdCcv1LAT9yF
- WY/pBYOYx9Gwkm7EaGmXjOfAsImkbVK/d+8TvCK+7Jc/cXJbSc6SzaQHjhbSsouHohER
- dDto//eYa4wOX5g0HRd1wx+QJwC0O2kTLI3DwUoEHl35yaEpN/TH9vK/gz0N6v+loCdt
- 3dOl8G/BbupMtvBHBFq/xNJslfAMjtqAegcWgtEHVZef8E9yNdovdzDOLaqhsWer94wL
- JP+Rlmu+cZ4Dn9qWUeW0B73o5NPc2FwySth3lAbgMU7B1X1sEP1ksrmiqP3kEQoW4ONd
- giWQ==
+ bh=mDQlHq0G8B8G4OTR+Cvh2hLL3vo9Xrq+fM4d7Yiqtqk=;
+ b=MudXkY2gNIc4+rAKRuQaCP4nKJOqre7iZRO5NdcIm3mVn9uTpVAgvIxVY1ORa4MBcr
+ Qv8AIJBuqyseBNxHzJhfoiAbF40QiDsbipvzVRWdYeihL8hk36VcUr5htcMs51+tfaM+
+ wwCqO1S9PWkbPlQOpgqMaXoxIzrbpW13RCTBSuB1jPNmYxwAyBwpfNoCVLkYf2OPtV7J
+ Wp2QOaDiIyFg2Ixl0PAnV4Sme3DyeUT0rbHdG65tLconKr0lwtBOdEzGoqttPsY9NyHN
+ 8+acDRzQ1AC2Z44vtTpzi5+s61sYKzbia5yc6ehR6XJOdjeBW5B41T9JgZf0QyBN7GxY
+ JVYQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUiLktKv+zcXkoQKbDdxJAedLv7KRr8TOGucEUXbyfUzUSjWLDOg+9jxyOyYnW8mzpGtPWqMfo2+xj7GYiyxIwFxCpuDa8=
-X-Gm-Message-State: AOJu0Yx4Mux4usfwHiDjhasmEUZp678iskzFf+BLTYefOiybxN6IFK89
- YdzZOfxBI3EUMVwiIZW4d17Pz+uihlwaFcVsTJ1bMGCoYxkalkP6+HfvC3lYsNbmtz35q4hbs60
- l0tna0PeeITEhz0FieSCfSxsS2D6Q/UPnHOi98A==
-X-Google-Smtp-Source: AGHT+IHiH4e8G5+541SE2zxBB01H2/72ap9GmCYHQIa9Dp50fK8f065kTToW7jJiPR7CIyMyj9gwx4dRWzYGf4majEA=
-X-Received: by 2002:aa7:c695:0:b0:566:ef9:a499 with SMTP id
- n21-20020aa7c695000000b005660ef9a499mr1362944edq.1.1708966862601; Mon, 26 Feb
- 2024 09:01:02 -0800 (PST)
+ AJvYcCVr9VXbQmWBeeQ8HEEBdBUmcqYcNgcBVCc4JyfHvuL+t6J/Gn8hv2l+EkA70BmSsuFHzspqhtws7cumfH/HmRZ0Zxev2v4=
+X-Gm-Message-State: AOJu0YxqGaPdWZQE4cQa/9Dp1ZjK/KuTVQxfSP3tm3BzJsvuU3Ni0jlz
+ m2CDymh6QYV/1WDoxhaLZRdtLrlSwQ44XAB2cIEHZACFXDZEjokCiLjX/2Xjl3t215dkx0B1Yz5
+ 1suLYRmcoIScw+C14lbXxbHKKnsAZ+3a2Kd+hVg==
+X-Google-Smtp-Source: AGHT+IH1knRZvYl5gVnOXEz4DUsh4YV83puaE0PF1c7spwBz+0vcpJe7q5gx/XBSWHFNuI8LdSdS0w5T5GlrRk7NcZo=
+X-Received: by 2002:a05:6512:3ca1:b0:513:b6:df58 with SMTP id
+ h33-20020a0565123ca100b0051300b6df58mr1390605lfv.38.1708966925256; Mon, 26
+ Feb 2024 09:02:05 -0800 (PST)
 MIME-Version: 1.0
 References: <20240224-cocoa-v12-0-e89f70bdda71@daynix.com>
- <20240224-cocoa-v12-3-e89f70bdda71@daynix.com>
-In-Reply-To: <20240224-cocoa-v12-3-e89f70bdda71@daynix.com>
+ <20240224-cocoa-v12-5-e89f70bdda71@daynix.com>
+In-Reply-To: <20240224-cocoa-v12-5-e89f70bdda71@daynix.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 26 Feb 2024 17:00:51 +0000
-Message-ID: <CAFEAcA_h0cYY45Dwz2aOc6bBc5QErd-Uj42swNXf_MZRwncMsA@mail.gmail.com>
-Subject: Re: [PATCH v12 03/10] ui/cocoa: Release specific mouse buttons
+Date: Mon, 26 Feb 2024 17:01:54 +0000
+Message-ID: <CAFEAcA_Q+PpyEDNARShyuFHSTByfaaGbQUGWHQYFwh9zENeX6w@mail.gmail.com>
+Subject: Re: [PATCH v12 05/10] ui/cocoa: Fix pause label coordinates
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
  Gerd Hoffmann <kraxel@redhat.com>,
@@ -68,8 +68,8 @@ Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>,
  Marek Glogowski <smarkusg@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>, 
  Rene Engel <ReneEngel80@emailn.de>, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,15 +94,12 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Sat, 24 Feb 2024 at 12:43, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
 >
-> ui/cocoa used to release all mouse buttons when it sees
-> NSEventTypeLeftMouseUp, NSEventTypeRightMouseUp, or
-> NSEventTypeOtherMouseUp, but it can instead release specific one
-> according to the delivered event.
+> A subview is positioned in the superview so the superview's frame
+> should be used instead of one of the window to determine the
+> coordinates.
 >
 > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->  ui/cocoa.m | 36 +++++++++++++++---------------------
->  1 file changed, 15 insertions(+), 21 deletions(-)
+
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
 thanks
