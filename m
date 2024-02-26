@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F12188681D0
+	by mail.lfdr.de (Postfix) with ESMTPS id 010458681D1
 	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 21:19:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rehPr-0001bt-0C; Mon, 26 Feb 2024 15:17:35 -0500
+	id 1rehPr-0001cL-JE; Mon, 26 Feb 2024 15:17:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1rehPo-0001bE-Vw
+ id 1rehPp-0001bb-T0
  for qemu-devel@nongnu.org; Mon, 26 Feb 2024 15:17:33 -0500
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
+Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1rehPn-0007zS-2X
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 15:17:32 -0500
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-3bbbc6bcc78so2686305b6e.1
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 12:17:30 -0800 (PST)
+ id 1rehPo-0007zh-6T
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 15:17:33 -0500
+Received: by mail-oi1-x236.google.com with SMTP id
+ 5614622812f47-3bb9b28acb4so2482055b6e.2
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 12:17:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708978648; x=1709583448; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708978650; x=1709583450; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=34hyOq9fT2wY/9uJL975rSySKZ4ZdVHzRHf6WhirkXw=;
- b=CYbgfOBa374bDvWsey0snO37YHu/6zF5sC2oeVjXU+G/McgbCueSFd7g73DxBQqR94
- UI9Wkk+3tfE2g9vdR96nW6a4nXSMdcZwswTpzQ8JylO6i8Oa0Erdf+gzuG1s4rKwo4ab
- TBpqXrrNeKFKGBamVR15oZkV6bQryQomnl0xWPCZd3jUpEKG5wVVDjfCp42P8JPGbvMc
- nGpD4N2JKPqSgeoopwbU8Z4/gmRdGjeTb9GFD5UKLOiZwgLiFYCKXSW+ClcryL8kjADI
- 8j88n3JGJndH/inHk1+cdzwHxlRO9yb10RgsYZqBvHdNnXHnjrqxWQbBXraXxQNo1D6i
- 6d2w==
+ bh=IKDpTWyScsaSBI11X+2N+qTatk0v8tuwGtm68rKYDSc=;
+ b=fDJfjxdsXXog2SQOST/zChPImlnccMqkCvbsgoADahMjLbI5IK8IUEouIAKSu2gZkU
+ 8A/M4J2vc2b5Z0IVbDl9Na4R3UnD57a1Dya85lfspHsu8bgcRtumyBPzJ041FveCvY/l
+ GSYH1RFYR01CREK9H+QMiqE07KhLdSgLItLV6ZfbQWhNuIp3SMxXrfFakWlmBYz1VwVY
+ Q14rxF2nOsiv81c+1vbx3qJ/51DoPocMCtc56YPFi31rQlxHwz88vvznPAVzzmBFragZ
+ CTQ9RJYYMh1JtQj4aY039qQdIn1m3x/xbtEKQkj/bwQdaWIpRjyX6K0iuA1HDyGTWZVr
+ XELQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708978648; x=1709583448;
+ d=1e100.net; s=20230601; t=1708978650; x=1709583450;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=34hyOq9fT2wY/9uJL975rSySKZ4ZdVHzRHf6WhirkXw=;
- b=OKlfnp4yOGxivsWHz7/D67ppJQUWXWCDRJhE5WIpL+QnZltqJHLaFAV+ZwCmyXwEIj
- 3drtPSMbCvgV6ILZ41+wOkYhWpm2BfR7ocdWpcuMvJnJC2gUQi4hnUtSEbB4IDnXDVQv
- qa8QDjMFvjYTXQlHGeTVHeqqZw+tZa6u9wspCsY8+laj2R4SEPNY29U7+0l+1wJ7dYAQ
- qZ52cZf8q3oXw4CnOBN8PiTNZysZw1iDFa7TmXITs7NFQ0fraNioWrOkpk2O4XBD/6Pc
- //bLYhIc3t6+BcaE4/bZqdbh8WcQ5Y1MwiGkcWW5ZyxvuVyi7wQK/Qzf4muq5BsgeZnB
- SGFw==
-X-Gm-Message-State: AOJu0Yw/kF/+8H9a/emgipfI8EADYg06cC7n/yhXKt9aB8AllM5dDEZt
- czEURhbq0Pljt8ri5SZ6EvJOWdG3a+5a5/ZSzvvlBQyoMXSdRX5X3bfnI41Rq5c=
-X-Google-Smtp-Source: AGHT+IFMnfcuz/BXJtpbev/b7IA7y65QBd6hv40SImK1PfsehBx87OTUNsQ85p/oxW3H9HrvbTYHhQ==
-X-Received: by 2002:a05:6808:11c1:b0:3c1:78b0:9ce1 with SMTP id
- p1-20020a05680811c100b003c178b09ce1mr264941oiv.13.1708978648442; 
- Mon, 26 Feb 2024 12:17:28 -0800 (PST)
+ bh=IKDpTWyScsaSBI11X+2N+qTatk0v8tuwGtm68rKYDSc=;
+ b=qqPazthVnoePMORDXQpIBXs2jbnaCUuG7xQMxrizihqD1ONAd7sB7JCEAO5fq8Asao
+ NxWpK9mN8yBRMjWlD9c4tGg4yRAaAvKR8cECqV9ACf52n0vdpAtXPGs0wRn0+z7N/Yco
+ OKdzJX3a4zptyQJzCtBB1pU6W17eLwlF3CvwCvzCQq7RD4zcQ6rTYGqzMgnv5mblUqMm
+ q+GrhR293pQSMHJb9uZ/i5PJwus6L+sijN1/x14s/DEFn4xW5bN5CK60/5txJB/o/2Jp
+ zilZcpzhzma6n3wvDUO4hLRxF2oYJA4EKAgj0Zmxjuc8aK6dzZX6EgvFhXY64xC7uJ5U
+ MpxA==
+X-Gm-Message-State: AOJu0YwtDZ3O9PliGnFKyswPNrpTdjaLzThePxRM2AsK4CHFS/FQKblL
+ rYQheLtdVCtnceeg1+8ZMKWoiPHQEsaHTsEJruSGZ/cSrLHi8lJQGZ3WxxyezSM=
+X-Google-Smtp-Source: AGHT+IEVH0ezXJDe2WjAD+U30CNhVeDx+5TgV1dWJQd9Q0jS57IeWHDd107TwZPYXhyCQ6kAoTrjsw==
+X-Received: by 2002:a05:6808:1286:b0:3c0:3e27:b122 with SMTP id
+ a6-20020a056808128600b003c03e27b122mr184923oiw.39.1708978650061; 
+ Mon, 26 Feb 2024 12:17:30 -0800 (PST)
 Received: from taylor-ubuntu.austin.rr.com (068-203-008-061.res.spectrum.com.
  [68.203.8.61]) by smtp.gmail.com with ESMTPSA id
- by11-20020a056808340b00b003c1a4a9ad17sm330594oib.46.2024.02.26.12.17.27
+ by11-20020a056808340b00b003c1a4a9ad17sm330594oib.46.2024.02.26.12.17.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Feb 2024 12:17:27 -0800 (PST)
+ Mon, 26 Feb 2024 12:17:29 -0800 (PST)
 From: Taylor Simpson <ltaylorsimpson@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: bcain@quicinc.com, quic_mathbern@quicinc.com, sidneym@quicinc.com,
  quic_mliebel@quicinc.com, richard.henderson@linaro.org, philmd@linaro.org,
  ale@rev.ng, anjo@rev.ng, ltaylorsimpson@gmail.com
-Subject: [PATCH 2/9] Hexagon (target/hexagon) Mark new_read_idx in trans
- functions
-Date: Mon, 26 Feb 2024 13:17:15 -0700
-Message-Id: <20240226201722.391879-3-ltaylorsimpson@gmail.com>
+Subject: [PATCH 3/9] Hexagon (target/hexagon) Mark dest_idx in trans functions
+Date: Mon, 26 Feb 2024 13:17:16 -0700
+Message-Id: <20240226201722.391879-4-ltaylorsimpson@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240226201722.391879-1-ltaylorsimpson@gmail.com>
 References: <20240226201722.391879-1-ltaylorsimpson@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-oi1-x230.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::236;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-oi1-x236.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,103 +94,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Check that the value matches opcode_reginfo
+Check that the value matches opcode_reginfo/opcode_wregs
 
 Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
 ---
- target/hexagon/insn.h                   |  3 ++-
- target/hexagon/decode.c                 |  2 ++
- target/hexagon/mmvec/decode_ext_mmvec.c |  2 ++
- target/hexagon/gen_trans_funcs.py       | 15 ++++++++++-----
- 4 files changed, 16 insertions(+), 6 deletions(-)
+ target/hexagon/insn.h                   | 1 +
+ target/hexagon/decode.c                 | 2 ++
+ target/hexagon/mmvec/decode_ext_mmvec.c | 2 ++
+ target/hexagon/gen_trans_funcs.py       | 4 ++++
+ 4 files changed, 9 insertions(+)
 
 diff --git a/target/hexagon/insn.h b/target/hexagon/insn.h
-index 3e7a22c91e..36502bf056 100644
+index 36502bf056..a770379958 100644
 --- a/target/hexagon/insn.h
 +++ b/target/hexagon/insn.h
-@@ -1,5 +1,5 @@
- /*
-- *  Copyright(c) 2019-2022 Qualcomm Innovation Center, Inc. All Rights Reserved.
-+ *  Copyright(c) 2019-2024 Qualcomm Innovation Center, Inc. All Rights Reserved.
-  *
-  *  This program is free software; you can redistribute it and/or modify
-  *  it under the terms of the GNU General Public License as published by
-@@ -39,6 +39,7 @@ struct Instruction {
-     uint32_t slot:3;
+@@ -40,6 +40,7 @@ struct Instruction {
      uint32_t which_extended:1;    /* If has an extender, which immediate */
      uint32_t new_value_producer_slot:4;
-+    int32_t new_read_idx;
+     int32_t new_read_idx;
++    int32_t dest_idx;
  
      bool part1;              /*
                                * cmp-jumps are split into two insns.
 diff --git a/target/hexagon/decode.c b/target/hexagon/decode.c
-index a40210ca1e..4595e30384 100644
+index 4595e30384..a4d8500fea 100644
 --- a/target/hexagon/decode.c
 +++ b/target/hexagon/decode.c
-@@ -131,6 +131,8 @@ decode_fill_newvalue_regno(Packet *packet)
-                 use_regidx = strchr(opcode_reginfo[use_opcode], 's') -
-                     opcode_reginfo[use_opcode];
-             }
-+            g_assert(packet->insn[i].new_read_idx != -1 &&
-+                     packet->insn[i].new_read_idx == use_regidx);
+@@ -184,6 +184,8 @@ decode_fill_newvalue_regno(Packet *packet)
  
+             /* Now patch up the consumer with the register number */
+             dst_idx = dststr - opcode_reginfo[def_opcode];
++            g_assert(packet->insn[def_idx].dest_idx != -1 &&
++                     packet->insn[def_idx].dest_idx == dst_idx);
+             packet->insn[i].regno[use_regidx] =
+                 packet->insn[def_idx].regno[dst_idx];
              /*
-              * What's encoded at the N-field is the offset to who's producing
 diff --git a/target/hexagon/mmvec/decode_ext_mmvec.c b/target/hexagon/mmvec/decode_ext_mmvec.c
-index 202d84c7c0..e9007f5d71 100644
+index e9007f5d71..c1320406df 100644
 --- a/target/hexagon/mmvec/decode_ext_mmvec.c
 +++ b/target/hexagon/mmvec/decode_ext_mmvec.c
-@@ -41,6 +41,8 @@ check_new_value(Packet *pkt)
-             GET_ATTRIB(use_opcode, A_STORE)) {
-             int use_regidx = strchr(opcode_reginfo[use_opcode], 's') -
-                 opcode_reginfo[use_opcode];
-+            g_assert(pkt->insn[i].new_read_idx != -1 &&
-+                     pkt->insn[i].new_read_idx == use_regidx);
-             /*
-              * What's encoded at the N-field is the offset to who's producing
-              * the value.
+@@ -86,6 +86,8 @@ check_new_value(Packet *pkt)
+                     /* still not there, we have a bad packet */
+                     g_assert_not_reached();
+                 }
++                g_assert(pkt->insn[def_idx].dest_idx != -1 &&
++                         pkt->insn[def_idx].dest_idx == dststr - reginfo);
+                 int def_regnum = pkt->insn[def_idx].regno[dststr - reginfo];
+                 /* Now patch up the consumer with the register number */
+                 pkt->insn[i].regno[use_regidx] = def_regnum ^ def_oreg;
 diff --git a/target/hexagon/gen_trans_funcs.py b/target/hexagon/gen_trans_funcs.py
-index 53e844a44b..79475b2946 100755
+index 79475b2946..07292e0170 100755
 --- a/target/hexagon/gen_trans_funcs.py
 +++ b/target/hexagon/gen_trans_funcs.py
-@@ -84,14 +84,15 @@ def gen_trans_funcs(f):
-                 insn->opcode = {tag};
+@@ -85,6 +85,7 @@ def gen_trans_funcs(f):
          """))
  
--        regno = 0
--        for reg in regs:
--            reg_type = reg[0]
--            reg_id = reg[1]
-+        new_read_idx = -1
-+        for regno, regstruct in enumerate(regs):
-+            reg_type, reg_id, _, _ = regstruct
-+            reg = hex_common.get_register(tag, reg_type, reg_id)
-             f.write(code_fmt(f"""\
-                 insn->regno[{regno}] = args->{reg_type}{reg_id};
+         new_read_idx = -1
++        dest_idx = -1
+         for regno, regstruct in enumerate(regs):
+             reg_type, reg_id, _, _ = regstruct
+             reg = hex_common.get_register(tag, reg_type, reg_id)
+@@ -93,6 +94,8 @@ def gen_trans_funcs(f):
              """))
--            regno += 1
-+            if reg.is_read() and reg.is_new():
-+                new_read_idx = regno
+             if reg.is_read() and reg.is_new():
+                 new_read_idx = regno
++            if reg.is_written() and dest_idx == -1:
++                dest_idx = regno
  
          if len(imms) != 0:
              mark_which_imm_extended(f, tag)
-@@ -112,6 +113,9 @@ def gen_trans_funcs(f):
-                     insn->immed[{immno}] = args->{imm_type}{imm_letter};
-                 """))
+@@ -115,6 +118,7 @@ def gen_trans_funcs(f):
  
-+        f.write(code_fmt(f"""\
-+            insn->new_read_idx = {new_read_idx};
-+        """))
+         f.write(code_fmt(f"""\
+             insn->new_read_idx = {new_read_idx};
++            insn->dest_idx = {dest_idx};
+         """))
          f.write(textwrap.dedent(f"""\
                  return true;
-             {close_curly}
-@@ -120,5 +124,6 @@ def gen_trans_funcs(f):
- 
- if __name__ == "__main__":
-     hex_common.read_semantics_file(sys.argv[1])
-+    hex_common.init_registers()
-     with open(sys.argv[2], "w") as f:
-         gen_trans_funcs(f)
 -- 
 2.34.1
 
