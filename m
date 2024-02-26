@@ -2,46 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDEBE867C3B
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 17:41:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C50788679EE
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 16:18:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ree1A-000682-Ea; Mon, 26 Feb 2024 11:39:52 -0500
+	id 1recjP-0005DS-AM; Mon, 26 Feb 2024 10:17:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ree16-00066t-A6; Mon, 26 Feb 2024 11:39:48 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ree14-0004NM-7w; Mon, 26 Feb 2024 11:39:48 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5889B50B05;
- Mon, 26 Feb 2024 19:40:15 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2BF9D89AE8;
- Mon, 26 Feb 2024 19:39:43 +0300 (MSK)
-Received: (nullmailer pid 3691372 invoked by uid 1000);
- Mon, 26 Feb 2024 16:39:43 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-Date: Thu, 22 Feb 2024 00:13:22 +0300
-Subject: [PATCH v2.1 04/28] qemu-img: global option processing and error
- printing
-References: <Zdyw6Z1a8r8atJqi@redhat.com>
-In-Reply-To: <Zdyw6Z1a8r8atJqi@redhat.com>
-To: qemu-devel@nongnu.org, qemu-block@nongnu.org
-Cc: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1recjM-0005D5-Tv
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 10:17:24 -0500
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1recjJ-0005mT-ND
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 10:17:24 -0500
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-a43488745bcso167374766b.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 07:17:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708960639; x=1709565439; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=f52QYFCaGWCpRHsCufjr2Sr63Rl3JmmvQZfQyxIx2gE=;
+ b=Sy4QDyaT7fH+g8p1bgkw0YLv1jxE0eyL5zVFLwxUNZDunC22ezPVC6INABRLd1+/G6
+ j9uwAyJhBfHnb1pm8e0M4lK7PnSfN7rCx92U1x2RDV13ILhChf3A0vCIeqsK6/naTF8/
+ ZG2m2vOYzq5svJI7dMXtje4kWJHHcwfAiimONr5tloBAM905cUR0VcyeAXoWp/zI4QW4
+ UhTLEmo+t7kN4/Es2hfXOEX7e96JLOIS264VEUtLgBq1UG2Yhpvow4spj7uF0dk6/0NU
+ d1iAsf8FxgkHySFFQyotm8zx4RtEQct1C1zg/6ggRKiD+EApTFYOM7fp2IU8KbSk2MZL
+ MdXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708960639; x=1709565439;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=f52QYFCaGWCpRHsCufjr2Sr63Rl3JmmvQZfQyxIx2gE=;
+ b=Ow4BQAIWigy+6rACIishJw8FdjoUGowRTf8ak7CHsGtcCVIwLCQuwfBuYwZDQ9ozps
+ 0AWJEW4TTEk0GE1tHM7pNgjqfMihaFR/mAjO3JLM8yw+C3tCMCydfdTIHnvULADa7raF
+ fkAfMHyDuTIThy0fz7RKGEaXzNNs0gVrB6jfGjyjk4TSSBVjbaoYFENRDQAMi8wvdF+r
+ Ok+oWTyJHx0TPdskO0/Ki2VGNxJDjZupp6G2NF/kN+RUsZWvnnwqw/UWI0Yf3FXuilVk
+ iS3dVOMLWx306Lt1m2c+OSOXpJ8sKh3HSxEWGDrwq+VyxawYZlmM7yGVsEvfVvOWZbX5
+ czbw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV2GcePYxhOU9G8KxzyhqOmKf7HyhyrV9e9FkvXb+MxZBWORsuvdAun18ECu24BzFIULNUhflg02Wsmj5gIWXhV3GH1998=
+X-Gm-Message-State: AOJu0YzrWfR0N/zpPTJuFANWk2TYp5/raKn88nT6wOuXinkzaJCPBBcE
+ 82crs43wDlO//xBAWVckO8+48ioiNg/2mxTn/vG6VVbAL0lk/tcX5zdi21M11IA=
+X-Google-Smtp-Source: AGHT+IGItYR0Xtm+uGiBYOpGPUEBwDaS6EWhOV2n9ljJsvyzi7F9JcMNtdqEdWn6eMQxTDmikJaysA==
+X-Received: by 2002:a17:906:64b:b0:a3f:bcff:18b8 with SMTP id
+ t11-20020a170906064b00b00a3fbcff18b8mr4861285ejb.27.1708960638639; 
+ Mon, 26 Feb 2024 07:17:18 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.223.153])
+ by smtp.gmail.com with ESMTPSA id
+ qo4-20020a170907874400b00a431fca6a2esm1667445ejc.37.2024.02.26.07.17.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 Feb 2024 07:17:18 -0800 (PST)
+Message-ID: <26ebeef5-9e71-4d11-9d90-01d63fb1d124@linaro.org>
+Date: Mon, 26 Feb 2024 16:17:15 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Message-Id: <1708965583.011593.3691371.nullmailer@tls.msk.ru>
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 2/3] hw/isa/lpc_ich9: add broadcast SMI feature
+Content-Language: en-US
+To: Laszlo Ersek <lersek@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
+ Igor Mammedov <imammedo@redhat.com>, Bernhard Beschow <shentey@gmail.com>, 
+ Kevin O'Connor <kevin@koconnor.net>,
+ qemu devel list <qemu-devel@nongnu.org>
+References: <20170126014416.11211-1-lersek@redhat.com>
+ <20170126014416.11211-3-lersek@redhat.com>
+ <50ad98bf-cee9-44f7-bf4d-ada2a02e330b@linaro.org>
+ <e0c25486-a369-f8d5-c9ce-5984083d475a@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <e0c25486-a369-f8d5-c9ce-5984083d475a@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -58,316 +99,199 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In order to correctly print executable name in various
-error messages, pass argv[0] to error_exit() function.
-This way, error messages will refer to actual executable
-name, which may be different from 'qemu-img'.
+On 20/2/24 11:09, Laszlo Ersek wrote:
 
-For subcommands, pass original command name from the
-qemu-img argv[0], plus the subcommand name, as its own
-argv[0] element, so error messages can be more useful.
-Also don't require at least 3 options on the command
-line: it makes no sense with options before subcommand.
+(Cc'ing Kevin too)
 
-Introduce tryhelp() function which just prints
+> On 2/20/24 08:58, Philippe Mathieu-Daudé wrote:
+>> Hi Laszlo, Igor, Gerd,
+>>
+>> (old patch, now commit 5ce45c7a2b)
+>>
+>> On 26/1/17 02:44, Laszlo Ersek wrote:
+>>> The generic edk2 SMM infrastructure prefers
+>>> EFI_SMM_CONTROL2_PROTOCOL.Trigger() to inject an SMI on each
+>>> processor. If
+>>> Trigger() only brings the current processor into SMM, then edk2
+>>> handles it
+>>> in the following ways:
+>>>
+>>> (1) If Trigger() is executed by the BSP (which is guaranteed before
+>>>       ExitBootServices(), but is not necessarily true at runtime), then:
+>>>
+>>>       (a) If edk2 has been configured for "traditional" SMM
+>>> synchronization,
+>>>           then the BSP sends directed SMIs to the APs with APIC delivery,
+>>>           bringing them into SMM individually. Then the BSP runs the SMI
+>>>           handler / dispatcher.
+>>>
+>>>       (b) If edk2 has been configured for "relaxed" SMM synchronization,
+>>>           then the APs that are not already in SMM are not brought in, and
+>>>           the BSP runs the SMI handler / dispatcher.
+>>>
+>>> (2) If Trigger() is executed by an AP (which is possible after
+>>>       ExitBootServices(), and can be forced e.g. by "taskset -c 1
+>>>       efibootmgr"), then the AP in question brings in the BSP with a
+>>>       directed SMI, and the BSP runs the SMI handler / dispatcher.
+>>>
+>>> The smaller problem with (1a) and (2) is that the BSP and AP
+>>> synchronization is slow. For example, the "taskset -c 1 efibootmgr"
+>>> command from (2) can take more than 3 seconds to complete, because
+>>> efibootmgr accesses non-volatile UEFI variables intensively.
+>>>
+>>> The larger problem is that QEMU's current behavior diverges from the
+>>> behavior usually seen on physical hardware, and that keeps exposing
+>>> obscure corner cases, race conditions and other instabilities in edk2,
+>>> which generally expects / prefers a software SMI to affect all CPUs at
+>>> once.
+>>>
+>>> Therefore introduce the "broadcast SMI" feature that causes QEMU to
+>>> inject
+>>> the SMI on all VCPUs.
+>>
+>> I'm trying to remove cpu_interrupt() API from hw/ and found this odd
+>> case.
+>>
+>> IIUC, the code you added is closer to what real HW is doing:
+>>
+>>    CPU_FOREACH(cs) { cpu_interrupt(cs, CPU_INTERRUPT_SMI); }
+>>
+>> and previous implementation was bogus:
+>>
+>>    cpu_interrupt(current_cpu, CPU_INTERRUPT_SMI);
+>>
+>> but to avoid breaking older VMs ready to deal with bogus impl,
+>> you have to add a virtual (non-HW) ICH9_LPC_SMI_F_BROADCAST bit
+>> so new VMs can detect (negotiating) it and use normal expected
+>> HW behavior.
+>>
+>> If so, and since this change was almost 7 years ago, can we
+>> expect that most of today's VMs use ICH9_LPC_SMI_F_BROADCAST_BIT,
+>> and would it be possible to deprecate it, so it become the only
+>> possibility, allowing us to remove this bogus call?
+>>
+>>    cpu_interrupt(current_cpu, CPU_INTERRUPT_SMI);
+> 
+> For OVMF guests: yes, said deprecation should be safe.
+> 
+> Note however that the "current_cpu" case (the original case) had been in
+> place minimally for SeaBIOS. I don't know how exactly the deprecation /
+> removal in QEMU would work, but if you build SeaBIOS with
+> CONFIG_USE_SMM, it might still depend on the "current_cpu" branch.
+> 
+> FWIW, "roms/config.seabios-128k" and "roms/config.seabios-microvm" both
+> contain CONFIG_USE_SMM=n, so the deprecation likely wouldn't matter for
+> those SeaBIOS binaries (bundled with QEMU). But it could matter for
+> SeaBIOS binaries from other sources; plus "roms/config.seabios-256k"
+> does *not* contain a setting like that (and the SeaBIOS default is "y",
+> when building for QEMU).
+> 
+> For another data point: as far as I remember, we had disabled
+> CONFIG_USE_SMM in RHEL; there had been stability issues.
+> 
+> ... I can't describe *all* the uses that SeaBIOS has for SMM. *One* use
+> is from commit 55215cd425d3 ("Implement call32 mechanism using SMIs.",
+> 2014-10-15) -- "this allows SeaBIOS to transition to 32bit mode even
+> when called in vm86 mode". Because that commit modifies "stacks.c", I
+> think it must be related to the "cooperative multi-tasking system"
+> described here: <https://www.seabios.org/Execution_and_code_flow#Threads>.
+> 
+> I'm really rusty on this [*], but here's one potential symptom I can
+> theorize about: assuming you silently make broadcast SMI the default in
+> QEMU, and SeaBIOS raises an SMI (expecting it to only affect the BSP),
+> the SMI could become pending on all the APs (which would all be in RESET
+> state at that point [**]). And when Linux booted those APs with
+> INIT-SIPI-SIPI sequences, the pending SMIs could be delivered
+> immediately, and the APs would launch immediately into SMM. That would
+> likely not be expected.
+> 
+> [*] Using earlier edk2 commit cbccf995920a ("OvmfPkg/CpuHotplugSmm: fix
+> CPU hotplug race just after SMI broadcast", 2020-08-27) as cheat-sheet.
+> IIRC, I consulted the Intel SDM extensively back when I was working on
+> that patch.
+> 
+> [**] Hm... wait. It seems SeaBIOS does boot all APs in the system. The
+> APs apparently end up penned in a HLT-loop; see at the end of
+> "entry_smp" in "romlayout.S". In that case, the problem could be worse I
+> guess? The broadcast SMI could wake all APs from their halted states.
+> SeaBIOS doesn't seem to relocate SMBASE for the APs, so if multiple
+> processors start executing in SMM at the same time, the results are not
+> going to be stellar.
 
- try 'command-name --help' for more info
+Thanks a lot Laszlo for this detailed historical information, it is
+very helpful. I'll preserve current behavior as a kludge, because it
+helps demonstrate part of my heterogeneous prototype, and see later
+if we can deprecate that to eventually remove the kludge.
 
-and exits.  When tryhelp() is called from within a subcommand
-handler, the message will look like:
+Regards,
 
- try 'command-name subcommand --help' for more info
+Phil.
 
-qemu-img uses getopt_long() with ':' as the first char in
-optstring parameter, which means it doesn't print error
-messages but return ':' or '?' instead, and qemu-img uses
-unrecognized_option() or missing_argument() function to
-print error messages.  But it doesn't quite work:
-
- $ ./qemu-img -xx
- qemu-img: unrecognized option './qemu-img'
-
-so the aim is to let getopt_long() to print regular error
-messages instead (removing ':' prefix from optstring) and
-remove handling of '?' and ':' "options" entirely.  With
-concatenated argv[0] and the subcommand, it all finally
-does the right thing in all cases.  This will be done in
-subsequent changes command by command, with main() done
-last.
-
-unrecognized_option() and missing_argument() functions
-prototypes aren't changed by this patch, since they're
-called from many places and will be removed a few patches
-later.  Only artifical "qemu-img" argv0 is provided in
-there for now.
-
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
----
- qemu-img.c | 80 +++++++++++++++++++++++++++++-------------------------
- 1 file changed, 43 insertions(+), 37 deletions(-)
-
-diff --git a/qemu-img.c b/qemu-img.c
-index df425b2517..d73a5d8fdb 100644
---- a/qemu-img.c
-+++ b/qemu-img.c
-@@ -101,8 +101,15 @@ static void format_print(void *opaque, const char *name)
-     printf(" %s", name);
- }
- 
--static G_NORETURN G_GNUC_PRINTF(1, 2)
--void error_exit(const char *fmt, ...)
-+static G_NORETURN
-+void tryhelp(const char *argv0)
-+{
-+    error_printf("Try '%s --help' for more info\n", argv0);
-+    exit(EXIT_FAILURE);
-+}
-+
-+static G_NORETURN G_GNUC_PRINTF(2, 3)
-+void error_exit(const char *argv0, const char *fmt, ...)
- {
-     va_list ap;
- 
-@@ -110,20 +117,19 @@ void error_exit(const char *fmt, ...)
-     error_vreport(fmt, ap);
-     va_end(ap);
- 
--    error_printf("Try 'qemu-img --help' for more information\n");
--    exit(EXIT_FAILURE);
-+    tryhelp(argv0);
- }
- 
- static G_NORETURN
- void missing_argument(const char *option)
- {
--    error_exit("missing argument for option '%s'", option);
-+    error_exit("qemu-img", "missing argument for option '%s'", option);
- }
- 
- static G_NORETURN
- void unrecognized_option(const char *option)
- {
--    error_exit("unrecognized option '%s'", option);
-+    error_exit("qemu-img", "unrecognized option '%s'", option);
- }
- 
- /* Please keep in synch with docs/tools/qemu-img.rst */
-@@ -576,7 +582,7 @@ static int img_create(int argc, char **argv)
-     }
- 
-     if (optind >= argc) {
--        error_exit("Expecting image file name");
-+        error_exit(argv[0], "Expecting image file name");
-     }
-     optind++;
- 
-@@ -588,7 +594,7 @@ static int img_create(int argc, char **argv)
-         }
-     }
-     if (optind != argc) {
--        error_exit("Unexpected argument: %s", argv[optind]);
-+        error_exit(argv[0], "Unexpected argument: %s", argv[optind]);
-     }
- 
-     bdrv_img_create(filename, fmt, base_filename, base_fmt,
-@@ -770,7 +776,7 @@ static int img_check(int argc, char **argv)
-             } else if (!strcmp(optarg, "all")) {
-                 fix = BDRV_FIX_LEAKS | BDRV_FIX_ERRORS;
-             } else {
--                error_exit("Unknown option value for -r "
-+                error_exit(argv[0], "Unknown option value for -r "
-                            "(expecting 'leaks' or 'all'): %s", optarg);
-             }
-             break;
-@@ -795,7 +801,7 @@ static int img_check(int argc, char **argv)
-         }
-     }
-     if (optind != argc - 1) {
--        error_exit("Expecting one image file name");
-+        error_exit(argv[0], "Expecting one image file name");
-     }
-     filename = argv[optind++];
- 
-@@ -1025,7 +1031,7 @@ static int img_commit(int argc, char **argv)
-     }
- 
-     if (optind != argc - 1) {
--        error_exit("Expecting one image file name");
-+        error_exit(argv[0], "Expecting one image file name");
-     }
-     filename = argv[optind++];
- 
-@@ -1446,7 +1452,7 @@ static int img_compare(int argc, char **argv)
- 
- 
-     if (optind != argc - 2) {
--        error_exit("Expecting two image file names");
-+        error_exit(argv[0], "Expecting two image file names");
-     }
-     filename1 = argv[optind++];
-     filename2 = argv[optind++];
-@@ -3056,7 +3062,7 @@ static int img_info(int argc, char **argv)
-         }
-     }
-     if (optind != argc - 1) {
--        error_exit("Expecting one image file name");
-+        error_exit(argv[0], "Expecting one image file name");
-     }
-     filename = argv[optind++];
- 
-@@ -3296,7 +3302,7 @@ static int img_map(int argc, char **argv)
-         }
-     }
-     if (optind != argc - 1) {
--        error_exit("Expecting one image file name");
-+        error_exit(argv[0], "Expecting one image file name");
-     }
-     filename = argv[optind];
- 
-@@ -3411,7 +3417,7 @@ static int img_snapshot(int argc, char **argv)
-             return 0;
-         case 'l':
-             if (action) {
--                error_exit("Cannot mix '-l', '-a', '-c', '-d'");
-+                error_exit(argv[0], "Cannot mix '-l', '-a', '-c', '-d'");
-                 return 0;
-             }
-             action = SNAPSHOT_LIST;
-@@ -3419,7 +3425,7 @@ static int img_snapshot(int argc, char **argv)
-             break;
-         case 'a':
-             if (action) {
--                error_exit("Cannot mix '-l', '-a', '-c', '-d'");
-+                error_exit(argv[0], "Cannot mix '-l', '-a', '-c', '-d'");
-                 return 0;
-             }
-             action = SNAPSHOT_APPLY;
-@@ -3427,7 +3433,7 @@ static int img_snapshot(int argc, char **argv)
-             break;
-         case 'c':
-             if (action) {
--                error_exit("Cannot mix '-l', '-a', '-c', '-d'");
-+                error_exit(argv[0], "Cannot mix '-l', '-a', '-c', '-d'");
-                 return 0;
-             }
-             action = SNAPSHOT_CREATE;
-@@ -3435,7 +3441,7 @@ static int img_snapshot(int argc, char **argv)
-             break;
-         case 'd':
-             if (action) {
--                error_exit("Cannot mix '-l', '-a', '-c', '-d'");
-+                error_exit(argv[0], "Cannot mix '-l', '-a', '-c', '-d'");
-                 return 0;
-             }
-             action = SNAPSHOT_DELETE;
-@@ -3457,7 +3463,7 @@ static int img_snapshot(int argc, char **argv)
-     }
- 
-     if (optind != argc - 1) {
--        error_exit("Expecting one image file name");
-+        error_exit(argv[0], "Expecting one image file name");
-     }
-     filename = argv[optind++];
- 
-@@ -3624,10 +3630,11 @@ static int img_rebase(int argc, char **argv)
-     }
- 
-     if (optind != argc - 1) {
--        error_exit("Expecting one image file name");
-+        error_exit(argv[0], "Expecting one image file name");
-     }
-     if (!unsafe && !out_baseimg) {
--        error_exit("Must specify backing file (-b) or use unsafe mode (-u)");
-+        error_exit(argv[0],
-+                   "Must specify backing file (-b) or use unsafe mode (-u)");
-     }
-     filename = argv[optind++];
- 
-@@ -4051,7 +4058,7 @@ static int img_resize(int argc, char **argv)
-     /* Remove size from argv manually so that negative numbers are not treated
-      * as options by getopt. */
-     if (argc < 3) {
--        error_exit("Not enough arguments");
-+        error_exit(argv[0], "Not enough arguments");
-         return 1;
-     }
- 
-@@ -4109,7 +4116,7 @@ static int img_resize(int argc, char **argv)
-         }
-     }
-     if (optind != argc - 1) {
--        error_exit("Expecting image file name and size");
-+        error_exit(argv[0], "Expecting image file name and size");
-     }
-     filename = argv[optind++];
- 
-@@ -4306,7 +4313,7 @@ static int img_amend(int argc, char **argv)
-     }
- 
-     if (!options) {
--        error_exit("Must specify options (-o)");
-+        error_exit(argv[0], "Must specify options (-o)");
-     }
- 
-     if (quiet) {
-@@ -4668,7 +4675,7 @@ static int img_bench(int argc, char **argv)
-     }
- 
-     if (optind != argc - 1) {
--        error_exit("Expecting one image file name");
-+        error_exit(argv[0], "Expecting one image file name");
-     }
-     filename = argv[argc - 1];
- 
-@@ -5556,9 +5563,6 @@ int main(int argc, char **argv)
- 
-     module_call_init(MODULE_INIT_QOM);
-     bdrv_init();
--    if (argc < 2) {
--        error_exit("Not enough arguments");
--    }
- 
-     qemu_add_opts(&qemu_source_opts);
-     qemu_add_opts(&qemu_trace_opts);
-@@ -5583,15 +5587,11 @@ int main(int argc, char **argv)
-         }
-     }
- 
--    cmdname = argv[optind];
--
--    /* reset getopt_long scanning */
--    argc -= optind;
--    if (argc < 1) {
--        return 0;
-+    if (optind >= argc) {
-+        error_exit(argv[0], "Not enough arguments");
-     }
--    argv += optind;
--    qemu_reset_optind();
-+
-+    cmdname = argv[optind];
- 
-     if (!trace_init_backends()) {
-         exit(1);
-@@ -5602,10 +5602,16 @@ int main(int argc, char **argv)
-     /* find the command */
-     for (cmd = img_cmds; cmd->name != NULL; cmd++) {
-         if (!strcmp(cmdname, cmd->name)) {
-+            g_autofree char *argv0 = g_strdup_printf("%s %s", argv[0], cmdname);
-+            /* reset options and getopt processing (incl return order) */
-+            argv += optind;
-+            argc -= optind;
-+            qemu_reset_optind();
-+            argv[0] = argv0;
-             return cmd->handler(argc, argv);
-         }
-     }
- 
-     /* not found */
--    error_exit("Command not found: %s", cmdname);
-+    error_exit(argv[0], "Command not found: %s", cmdname);
- }
--- 
-2.39.2
+> Laszlo
+> 
+>>
+>>> While the original posting of this patch
+>>> <http://lists.nongnu.org/archive/html/qemu-devel/2015-10/msg05658.html>
+>>> only intended to speed up (2), based on our recent "stress testing" of
+>>> SMM
+>>> this patch actually provides functional improvements.
+>>>
+>>> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+>>> Cc: Gerd Hoffmann <kraxel@redhat.com>
+>>> Cc: Igor Mammedov <imammedo@redhat.com>
+>>> Cc: Paolo Bonzini <pbonzini@redhat.com>
+>>> Signed-off-by: Laszlo Ersek <lersek@redhat.com>
+>>> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+>>> Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+>>> ---
+>>>
+>>> Notes:
+>>>       v7:
+>>>       - no changes, pick up Igor's R-b
+>>>            v6:
+>>>       - no changes, pick up Michael's R-b
+>>>            v5:
+>>>       - replace the ICH9_LPC_SMI_F_BROADCAST bit value with the
+>>>         ICH9_LPC_SMI_F_BROADCAST_BIT bit position (necessary for
+>>>         DEFINE_PROP_BIT() in the next patch)
+>>>
+>>>    include/hw/i386/ich9.h |  3 +++
+>>>    hw/isa/lpc_ich9.c      | 10 +++++++++-
+>>>    2 files changed, 12 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/include/hw/i386/ich9.h b/include/hw/i386/ich9.h
+>>> index da1118727146..18dcca7ebcbf 100644
+>>> --- a/include/hw/i386/ich9.h
+>>> +++ b/include/hw/i386/ich9.h
+>>> @@ -250,4 +250,7 @@ Object *ich9_lpc_find(void);
+>>>    #define ICH9_SMB_HST_D1                         0x06
+>>>    #define ICH9_SMB_HOST_BLOCK_DB                  0x07
+>>>    +/* bit positions used in fw_cfg SMI feature negotiation */
+>>> +#define ICH9_LPC_SMI_F_BROADCAST_BIT            0
+>>> +
+>>>    #endif /* HW_ICH9_H */
+>>> diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
+>>> index 376b7801a42c..ced6f803a4f2 100644
+>>> --- a/hw/isa/lpc_ich9.c
+>>> +++ b/hw/isa/lpc_ich9.c
+>>> @@ -437,7 +437,15 @@ static void ich9_apm_ctrl_changed(uint32_t val,
+>>> void *arg)
+>>>          /* SMI_EN = PMBASE + 30. SMI control and enable register */
+>>>        if (lpc->pm.smi_en & ICH9_PMIO_SMI_EN_APMC_EN) {
+>>> -        cpu_interrupt(current_cpu, CPU_INTERRUPT_SMI);
+>>> +        if (lpc->smi_negotiated_features &
+>>> +            (UINT64_C(1) << ICH9_LPC_SMI_F_BROADCAST_BIT)) {
+>>> +            CPUState *cs;
+>>> +            CPU_FOREACH(cs) {
+>>> +                cpu_interrupt(cs, CPU_INTERRUPT_SMI);
+>>> +            }
+>>> +        } else {
+>>> +            cpu_interrupt(current_cpu, CPU_INTERRUPT_SMI);
+>>> +        }
+>>>        }
+>>>    }
+>>>    
+>>
+> 
 
 
