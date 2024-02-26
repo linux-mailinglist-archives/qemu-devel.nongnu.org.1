@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B966866BBF
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:08:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2C9E866BBC
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:08:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reW0g-0004bM-Fy; Mon, 26 Feb 2024 03:06:50 -0500
+	id 1reW0n-0004g6-FP; Mon, 26 Feb 2024 03:06:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reW0e-0004ad-PQ
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:06:48 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reW0l-0004eh-CH
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:06:55 -0500
 Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reW0c-0001cU-8M
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:06:48 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reW0j-0001dF-5B
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:06:55 -0500
 Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2d28051376eso19479631fa.0
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 00:06:45 -0800 (PST)
+ 38308e7fff4ca-2d109e82bd0so32792231fa.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 00:06:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708934804; x=1709539604; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708934811; x=1709539611; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TW5vUBh5Q5ZFKmDEE6klQHKiK8fu6o3OGFQfw41qJcU=;
- b=dnkuiS03buxQQpV7IkRbudnH6i3SNEk33ahUQLNW86E8Yytgwmfi1Ng9t83TJKSZqC
- EdhXg2JuX0yV+Lq7k+3VvLtOqKxCfHev4oVJH0erlBuhNYdr1YAj4czF9UYHB2kT0/JB
- 0CDFrfAj50i11DeOu/lNZ6tnqEqGt+Iuu5I7hhNfQeTUHuo4XRAZ4X1S6sTm4ZQSOkE8
- XubtNTmuZJe8YEh3Z64ZhRhWEm4mQXThogTzyDZHQNlGT9RCbL8kuZb5yE/HGPoQ/qKO
- KiTGUBRb09flanpZDt9x2FFVy5pvPMoV9XdDJP/uxZZ5EmkcCm/eHJxE26EE15Rncnls
- 6LHA==
+ bh=scR0cVRlUQ+FFZFfcolEQrGBOQjFaxkZH3KxNR75t0E=;
+ b=eYZzuphjZKw3vm3Rf8/6HUtXUzPpf6O1Y/rIvn3QmnlaSKM8PRADxCIU2psatcc667
+ MuYVgjp3lf38Kn8NaWbzpDaHAIy1vFiS/AdTHOZyOxUIwwVc1ZtbA4yzoat34yKIkPvU
+ g8GDjxGmZNlQu6/9yhiQbm7pG1gMXDeF3WyzcoN1BLN7U17klCnRKM4F/AqIztP7iHd7
+ tvYK1wUDo9koPgyU3ysu2qh0xzHcsO6qPRi8tUfvP2j5/5ZyGGna7B3kndBuKipduFDK
+ UuxKulDKV1jRFiGudE7t0Gq3AlO1exCEu+kIFfgeEOeZBaj3f/ORr7OQAunBllxwK2Kt
+ 1L+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708934804; x=1709539604;
+ d=1e100.net; s=20230601; t=1708934811; x=1709539611;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TW5vUBh5Q5ZFKmDEE6klQHKiK8fu6o3OGFQfw41qJcU=;
- b=Hrs4yZUt4ttsgP8D9byGOel4OoP2ut6mZ3ryj7//z/btB2ZxGcHUhqZxdFKvfapHVi
- n3/IJlRpZS3UQx7VCv0Wlf+SeLRonldpRy1urEHSFGqa7qQG73Nz7XroonQcSUw4NqOb
- UKhotSPbWl3uqtPVQhtcIp9UErhiMiMOsIeP05XlKvtqLwlcyo4NmURtOBnpzS7/4Clk
- SMwb4XmAIKveq1c9XYKws7g5/joyTh3kJIv4CoXWYAvBr4lmghj14HkfS/epSzUOZmlo
- r5qaAw47bEbirwFktfjDf4pI16NpPtgvQeIuPWAj6qohXbc+4bk6LKe3hsF8uV8irS8V
- nLVg==
-X-Gm-Message-State: AOJu0YwEozaprml8xsHts+ps0JnUck8ZZ3VMs2Ibn5N18t4WzxqbD6mF
- xpieGGbu8Y1pDWSZRUqP3uwA9G/P3Q+0bogb5T/Zvh8ExMZzQL1cUV4C9e4JZHHquRRJFZFwOXp
- 7
-X-Google-Smtp-Source: AGHT+IE8DBrx+CLAFyys1gynecqpmj5o5SEF7gyPLCJiIvvPXoJ0oBIkVJ+hqk6HA8q1XWZics6SyQ==
-X-Received: by 2002:a05:651c:509:b0:2d2:8b07:cca5 with SMTP id
- o9-20020a05651c050900b002d28b07cca5mr1359774ljp.39.1708934804005; 
- Mon, 26 Feb 2024 00:06:44 -0800 (PST)
+ bh=scR0cVRlUQ+FFZFfcolEQrGBOQjFaxkZH3KxNR75t0E=;
+ b=euTvtk61Rm4lUm73LFhP97VSqtkzJ+1mq7JpTMRtnXr7bTINRDurx6xP1rzsUUkT+G
+ VgsFYnwkXHjc/8atp8R4qH/15p6Uq4IkgiVWjcvl+f0p1RPcmIZlydXHV5vrDHPoDXDM
+ KP+v32v1XKcamMX/46Ib2siEZvlzwLZXgdcM+r2rl7hea40/XcA+nLQbzAo5MmXyVr8H
+ i6YWkYhVERcT+DXzacO6JhoXZYXr/JMpITtDS9Dg50t7dGa6MyT5cs1L21Gxo4SmbBWx
+ UcGkUjgFIx5Cbhdo2hET80pc1YQv9dzUMUnl/MOly7U59RI0pRYdtZi+stbv9foIHAfS
+ kt5Q==
+X-Gm-Message-State: AOJu0Yzy2E9p3X12Yembk1Ez/SOYUmtqooOILlkZli0f6HoDJgLhLOtP
+ rjv9xc7ge3QFjTZ8TssTxOFHefDmh7H2rLtHryVWNIug020DWnodTMrtd6WhcHtrFihzAsMrrz3
+ h
+X-Google-Smtp-Source: AGHT+IHvKCQ/D9Ia7u7jl5WKNzW5hrTeei1SFPL+TV15MHWcDpatxBrkhxEryihDY7WXO9FwQ2F1wA==
+X-Received: by 2002:a05:6512:3290:b0:512:dc3d:6bf8 with SMTP id
+ p16-20020a056512329000b00512dc3d6bf8mr2955095lfe.56.1708934811087; 
+ Mon, 26 Feb 2024 00:06:51 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.164.69])
  by smtp.gmail.com with ESMTPSA id
- k5-20020a2e8885000000b002d2671dec20sm790389lji.99.2024.02.26.00.06.41
+ z1-20020a056512376100b00512d252759bsm756622lft.212.2024.02.26.00.06.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 26 Feb 2024 00:06:43 -0800 (PST)
+ Mon, 26 Feb 2024 00:06:50 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
@@ -66,10 +66,10 @@ Cc: qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v3 1/3] hw/arm/sbsa-ref: Do not open-code
- ahci_ide_create_devs()
-Date: Mon, 26 Feb 2024 09:06:29 +0100
-Message-ID: <20240226080632.9596-2-philmd@linaro.org>
+Subject: [PATCH v3 2/3] hw/ide: Remove last two uses of ide/internal.h outside
+ of hw/ide/
+Date: Mon, 26 Feb 2024 09:06:30 +0100
+Message-ID: <20240226080632.9596-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240226080632.9596-1-philmd@linaro.org>
 References: <20240226080632.9596-1-philmd@linaro.org>
@@ -100,54 +100,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use ahci_ide_create_devs() instead of open-coding it.
-Not accessing AHCIDevice internals anymore allows to
-remove "hw/ide/ahci_internal.h" (which isn't really a
-public header).
+From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Remove last two includes of hw/ide/intarnal.h outside of hw/ide and
+replace them with newly added public header to allow moving internal.h
+into hw/ide to really stop exposing it.
+
+Fixes: a11f439a0e (hw/ide: Stop exposing internal.h to non-IDE files)
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20240223142633.933694E6004@zero.eik.bme.hu>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/sbsa-ref.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ {include/hw => hw}/ide/internal.h | 0
+ include/hw/misc/macio/macio.h     | 2 +-
+ hw/arm/sbsa-ref.c                 | 2 +-
+ 3 files changed, 2 insertions(+), 2 deletions(-)
+ rename {include/hw => hw}/ide/internal.h (100%)
 
+diff --git a/include/hw/ide/internal.h b/hw/ide/internal.h
+similarity index 100%
+rename from include/hw/ide/internal.h
+rename to hw/ide/internal.h
+diff --git a/include/hw/misc/macio/macio.h b/include/hw/misc/macio/macio.h
+index 86df2c2b60..2b54da6b31 100644
+--- a/include/hw/misc/macio/macio.h
++++ b/include/hw/misc/macio/macio.h
+@@ -28,7 +28,7 @@
+ 
+ #include "hw/char/escc.h"
+ #include "hw/pci/pci_device.h"
+-#include "hw/ide/internal.h"
++#include "hw/ide/ide-bus.h"
+ #include "hw/intc/heathrow_pic.h"
+ #include "hw/misc/macio/cuda.h"
+ #include "hw/misc/macio/gpio.h"
 diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index 5d3a574664..4a59e2fd37 100644
+index 4a59e2fd37..13dde50cba 100644
 --- a/hw/arm/sbsa-ref.c
 +++ b/hw/arm/sbsa-ref.c
-@@ -37,7 +37,6 @@
+@@ -36,7 +36,7 @@
+ #include "hw/arm/smmuv3.h"
  #include "hw/block/flash.h"
  #include "hw/boards.h"
- #include "hw/ide/internal.h"
--#include "hw/ide/ahci_internal.h"
+-#include "hw/ide/internal.h"
++#include "hw/ide/ide-bus.h"
  #include "hw/ide/ahci-sysbus.h"
  #include "hw/intc/arm_gicv3_common.h"
  #include "hw/intc/arm_gicv3_its_common.h"
-@@ -571,8 +570,6 @@ static void create_ahci(const SBSAMachineState *sms)
-     DeviceState *dev;
-     DriveInfo *hd[NUM_SATA_PORTS];
-     SysbusAHCIState *sysahci;
--    AHCIState *ahci;
--    int i;
- 
-     dev = qdev_new("sysbus-ahci");
-     qdev_prop_set_uint32(dev, "num-ports", NUM_SATA_PORTS);
-@@ -581,14 +578,8 @@ static void create_ahci(const SBSAMachineState *sms)
-     sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, qdev_get_gpio_in(sms->gic, irq));
- 
-     sysahci = SYSBUS_AHCI(dev);
--    ahci = &sysahci->ahci;
-     ide_drive_get(hd, ARRAY_SIZE(hd));
--    for (i = 0; i < ahci->ports; i++) {
--        if (hd[i] == NULL) {
--            continue;
--        }
--        ide_bus_create_drive(&ahci->dev[i].port, 0, hd[i]);
--    }
-+    ahci_ide_create_devs(&sysahci->ahci, hd);
- }
- 
- static void create_xhci(const SBSAMachineState *sms)
 -- 
 2.41.0
 
