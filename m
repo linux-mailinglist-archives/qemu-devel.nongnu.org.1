@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A7F5866737
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 01:11:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 591EF866724
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 01:07:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reOUu-0000eq-9S; Sun, 25 Feb 2024 19:05:32 -0500
+	id 1reOUa-00007P-0L; Sun, 25 Feb 2024 19:05:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1reOT7-0006sS-3d; Sun, 25 Feb 2024 19:03:41 -0500
-Received: from mail-yw1-x1134.google.com ([2607:f8b0:4864:20::1134])
+ id 1reOT8-0006ta-7L; Sun, 25 Feb 2024 19:03:42 -0500
+Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1reOT5-0000Wr-GU; Sun, 25 Feb 2024 19:03:40 -0500
-Received: by mail-yw1-x1134.google.com with SMTP id
- 00721157ae682-607eefeea90so24211107b3.1; 
- Sun, 25 Feb 2024 16:03:38 -0800 (PST)
+ id 1reOT6-0000Xh-7e; Sun, 25 Feb 2024 19:03:41 -0500
+Received: by mail-yw1-x112f.google.com with SMTP id
+ 00721157ae682-608ccac1899so18581457b3.1; 
+ Sun, 25 Feb 2024 16:03:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708905817; x=1709510617; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708905819; x=1709510619; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ew6YCPyRzsR4OvP0dhPLsagtmi7jAL+CxSm+Z7Aj5ns=;
- b=DkBxMpn9zwRXJipzGEOW0o4UaCcB84veKMUWACS12Y9v4MtmLkGbmjBcEcP+qCE5c7
- EIyTi9ohvHHeufP6gyu1Zau896mwVATfdu43Pyw3ca5urYJu4S7IuILGqhy7BdtAovx6
- pQ1zSR1HCGVm1rpmPiHTLMma6YSBKcHtTawmsIyYwcDpBrucFlO1GUcw7E3UEjO4hf2H
- vs9e+OMPQAkMCdpvnRBG2rM75JDteOXIpDFZ1RCwT+MD7fEdSeX6xqjaeJ+Ro5XVwu91
- W4TEt0NatvTq6uICXslHgWD1wmlMPtmYxtb2GDwBM8rGi/63lD/ffO9yaedRaP+O1CpW
- uJkw==
+ bh=wwyrNxzUk6DFg1jGtMujWHpBnYqnB9ANI0mGns0fyyU=;
+ b=S01RO5zwoaEfqyxxlDUUU/9FV5IOH2B8Yleww76TUkxcPIT2LhYvxIo7GQWrtaKRXg
+ aBi0J5hXuo3OQubWG3NVXYeTYMy9k35qb3pEBH414KDS5HN6YaNKvhd3NOabTlq7Aw1X
+ fTdnfA+w5PBT2Q5hSzQ/V03F6qejhd0EZgesDR4SmmMDQL7eSTyyLg6QHGlVwIkoCMsb
+ wt/wIyMwH06vj74XhFu7WcwLX04XqwkkZTx8S7/GitNXCi9wuRPBH1KIqz3BH8l9XrTA
+ uc0qP1UakW/ZbCPHDrtl4MNIaRya6M/IT/f1vQf6elH50eh+3H1poQuqCz966OvEu3XB
+ gfcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708905817; x=1709510617;
+ d=1e100.net; s=20230601; t=1708905819; x=1709510619;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ew6YCPyRzsR4OvP0dhPLsagtmi7jAL+CxSm+Z7Aj5ns=;
- b=grVm96SCtm3b7rzcG88m8GFnqpnPjGQ3LLuPw/gLYr2Lvn6fkPokQKGLI3oS9OlEX/
- h8gzWktZvE6Z3aBy38HxhIoinc5k8WcCEN0U/G8gOjMY6Ycr4FTE0Y6Id3UOCfJzjvi1
- jRfCsxJh8nC+5mSolWq2WKnSKiQgsZSVhCA3QSkRcZim+ghxLdTD0rmJVxWBB2wDjxj2
- Pez87KrlbPSul/eUlPbXEs5qLUC0sTitjVu8PnVJrmm12Co1zuOVyqItagQloCne2mSd
- VktL7d75DOzI2MmcjoWPlxiAAX5hNNAJx2IxI+ld3RoSsZsyXezX5CwJ9BQ4P/TbK3Ds
- Fl6w==
-X-Gm-Message-State: AOJu0YxvsUUdjET2tBtaylw0h0yURAsrvDI+88jz1TaBXGD1kIk2kVHb
- tigsIsP3X4tcQv7gqi4WQyDpwF/xWcF2GENyzeptUgmsHwjqgCivw6Rt4i3VNCkWrQ==
-X-Google-Smtp-Source: AGHT+IHU1/z5SxiYoty/SEQJ9NIAr/Ko98Mu6Y2k9045OjxE8dzC1zRp/MTa9DUVxq3BsTSx4dJyig==
-X-Received: by 2002:a81:ad12:0:b0:608:9594:8de with SMTP id
- l18-20020a81ad12000000b00608959408demr2786620ywh.26.1708905817611; 
- Sun, 25 Feb 2024 16:03:37 -0800 (PST)
+ bh=wwyrNxzUk6DFg1jGtMujWHpBnYqnB9ANI0mGns0fyyU=;
+ b=V7FTHlzU5qJZKDhCeQi5NrbHWDky/1ftPsJLzqkNeMXq2Rr9siKwHl/oR6ky7NPaGO
+ h7YA6svlyRvxu4G9O8uXA+gv8D21JztJTkgO5pNBOc5pAJnDVj+pZ0OxfHH30Oa/ffsU
+ lXaGa9wF4sEw3akAA53WGYE+GNgxV8SXpjfWP7iOBh8NJ1EXcwrLV59ZTCPK7CTSxZMo
+ tmqzJisB/dsnT4EvN1rM7HhT4FPEaeIRv9LkelvgU/oN4pPUg7AzPfBeukuSrDKI/a6h
+ DAuTX177gbTOUIPUzmE6pJ63SAbBdVgtt1oU0HEZMPVpzuE93+9tMsDXFfeiqztKFFRa
+ nCUw==
+X-Gm-Message-State: AOJu0YziBgZcPR1IBPYWfYFebVzCgzSLkb9zYUYT0TDb4RO3B8HPNU8G
+ o81T6QaqcFm23fYGl0zr3nA2Q6W8VbhxLYT9hl53kpxWmLVfP3yCpg0JRgw9IYD4dw==
+X-Google-Smtp-Source: AGHT+IGQ2LOhHNlMlqB5Sfk04dFjfvWAVsLSYtnh04IiKIM6imsqxOdGtX9fEl60sovtM7UrElkwpA==
+X-Received: by 2002:a0d:cc51:0:b0:608:ecf2:bd28 with SMTP id
+ o78-20020a0dcc51000000b00608ecf2bd28mr1466849ywd.28.1708905818654; 
+ Sun, 25 Feb 2024 16:03:38 -0800 (PST)
 Received: from localhost.localdomain ([201.203.117.224])
  by smtp.gmail.com with ESMTPSA id
- t18-20020a818312000000b00607bfa1913csm938171ywf.114.2024.02.25.16.03.36
+ t18-20020a818312000000b00607bfa1913csm938171ywf.114.2024.02.25.16.03.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 25 Feb 2024 16:03:37 -0800 (PST)
+ Sun, 25 Feb 2024 16:03:38 -0800 (PST)
 From: Sergey Kambalin <serg.oker@gmail.com>
 X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org,
 	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH v6 29/41] Enable BCM2838 GENET controller
-Date: Sun, 25 Feb 2024 18:02:47 -0600
-Message-Id: <20240226000259.2752893-30-sergey.kambalin@auriga.com>
+Subject: [PATCH v6 30/41] Add Rpi4b boot tests
+Date: Sun, 25 Feb 2024 18:02:48 -0600
+Message-Id: <20240226000259.2752893-31-sergey.kambalin@auriga.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240226000259.2752893-1-sergey.kambalin@auriga.com>
 References: <20240226000259.2752893-1-sergey.kambalin@auriga.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1134;
- envelope-from=serg.oker@gmail.com; helo=mail-yw1-x1134.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
+ envelope-from=serg.oker@gmail.com; helo=mail-yw1-x112f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,109 +93,112 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 ---
- hw/arm/bcm2838.c                     |  6 ++++++
- hw/arm/bcm2838_peripherals.c         | 11 +++++++++++
- hw/arm/raspi4b.c                     | 20 +-------------------
- include/hw/arm/bcm2838_peripherals.h |  2 ++
- 4 files changed, 20 insertions(+), 19 deletions(-)
+ tests/avocado/boot_linux_console.py | 92 +++++++++++++++++++++++++++++
+ 1 file changed, 92 insertions(+)
 
-diff --git a/hw/arm/bcm2838.c b/hw/arm/bcm2838.c
-index c330322bd5..a873162f09 100644
---- a/hw/arm/bcm2838.c
-+++ b/hw/arm/bcm2838.c
-@@ -239,6 +239,12 @@ static void bcm2838_realize(DeviceState *dev, Error **errp)
-                                       int_n);
-     }
+diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
+index a00202df3c..f5ec6de0f1 100644
+--- a/tests/avocado/boot_linux_console.py
++++ b/tests/avocado/boot_linux_console.py
+@@ -501,6 +501,98 @@ def test_arm_raspi2_initrd(self):
+         # Wait for VM to shut down gracefully
+         self.vm.wait()
  
-+    /* Connect Gigabit Ethernet controller to the interrupt controller */
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&ps->genet), 0,
-+                       qdev_get_gpio_in(gicdev, GIC_SPI_INTERRUPT_GENET_A));
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&ps->genet), 1,
-+                       qdev_get_gpio_in(gicdev, GIC_SPI_INTERRUPT_GENET_B));
++    def test_arm_raspi4(self):
++        """
++        :avocado: tags=arch:aarch64
++        :avocado: tags=machine:raspi4b-2g
++        :avocado: tags=device:pl011
++        :avocado: tags=accel:tcg
++        :avocado: tags=rpi4b
 +
-     /* Pass through inbound GPIO lines to the GIC */
-     qdev_init_gpio_in(dev, bcm2838_gic_set_irq, GIC_NUM_IRQS);
- 
-diff --git a/hw/arm/bcm2838_peripherals.c b/hw/arm/bcm2838_peripherals.c
-index 1f41028649..c6083e36de 100644
---- a/hw/arm/bcm2838_peripherals.c
-+++ b/hw/arm/bcm2838_peripherals.c
-@@ -47,6 +47,10 @@ static void bcm2838_peripherals_init(Object *obj)
-     object_initialize_child(obj, "pcie-host", &s->pcie_host,
-                             TYPE_BCM2838_PCIE_HOST);
- 
-+    /* Gigabit Ethernet */
-+    object_initialize_child(obj, "genet", &s->genet, TYPE_BCM2838_GENET);
-+    qemu_configure_nic_device(DEVICE(&s->genet), true, NULL);
++        The kernel can be rebuilt using the kernel source referenced
++        and following the instructions on the on:
++        https://www.raspberrypi.org/documentation/linux/kernel/building.md
++        """
 +
-     /* Extended Mass Media Controller 2 */
-     object_initialize_child(obj, "emmc2", &s->emmc2, TYPE_SYSBUS_SDHCI);
- 
-@@ -231,6 +235,13 @@ static void bcm2838_peripherals_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion(get_system_memory(), PCIE_MMIO_ARM_OFFSET,
-                                 mmio_mr);
- 
-+    /* Gigabit Ethernet */
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->genet), errp)) {
-+        return;
-+    }
-+    regs_mr = sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->genet), 0);
-+    memory_region_add_subregion(&s->peri_low_mr, GENET_OFFSET, regs_mr);
++        deb_url = ('http://archive.raspberrypi.org/debian/'
++            'pool/main/r/raspberrypi-firmware/'
++            'raspberrypi-kernel_1.20230106-1_arm64.deb')
++        deb_hash = '08dc55696535b18a6d4fe6fa10d4c0d905cbb2ed'
++        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
++        kernel_path = self.extract_from_deb(deb_path, '/boot/kernel8.img')
++        dtb_path = self.extract_from_deb(deb_path, '/boot/bcm2711-rpi-4-b.dtb')
 +
-     create_unimp(s_base, &s->clkisp, "bcm2835-clkisp", CLOCK_ISP_OFFSET,
-                  CLOCK_ISP_SIZE);
- 
-diff --git a/hw/arm/raspi4b.c b/hw/arm/raspi4b.c
-index 175fd2c4fa..d498bc6215 100644
---- a/hw/arm/raspi4b.c
-+++ b/hw/arm/raspi4b.c
-@@ -63,25 +63,7 @@ static int raspi_add_memory_node(void *fdt, hwaddr mem_base, hwaddr mem_len)
- 
- static void raspi4_modify_dtb(const struct arm_boot_info *info, void *fdt)
- {
--    uint64_t ram_size;
--
--    /* Temporarily disable following devices until they are implemented */
--    const char *nodes_to_remove[] = {
--        "brcm,bcm2711-genet-v5",
--    };
--
--    for (int i = 0; i < ARRAY_SIZE(nodes_to_remove); i++) {
--        const char *dev_str = nodes_to_remove[i];
--
--        int offset = fdt_node_offset_by_compatible(fdt, -1, dev_str);
--        if (offset >= 0) {
--            if (!fdt_nop_node(fdt, offset)) {
--                warn_report("bcm2711 dtc: %s has been disabled!", dev_str);
--            }
--        }
--    }
--
--    ram_size = board_ram_size(info->board_id);
-+    uint64_t ram_size = board_ram_size(info->board_id);
- 
-     if (info->ram_size > UPPER_RAM_BASE) {
-         raspi_add_memory_node(fdt, UPPER_RAM_BASE, ram_size - UPPER_RAM_BASE);
-diff --git a/include/hw/arm/bcm2838_peripherals.h b/include/hw/arm/bcm2838_peripherals.h
-index 555d3a393f..5588b99098 100644
---- a/include/hw/arm/bcm2838_peripherals.h
-+++ b/include/hw/arm/bcm2838_peripherals.h
-@@ -13,6 +13,7 @@
- #include "hw/misc/bcm2838_rng200.h"
- #include "hw/misc/bcm2838_thermal.h"
- #include "hw/arm/bcm2838_pcie.h"
-+#include "hw/net/bcm2838_genet.h"
- #include "hw/sd/sdhci.h"
- #include "hw/gpio/bcm2838_gpio.h"
- 
-@@ -73,6 +74,7 @@ struct BCM2838PeripheralState {
-     SDHCIState emmc2;
-     BCM2838PcieHostState pcie_host;
-     BCM2838GpioState gpio;
-+    BCM2838GenetState genet;
- 
-     OrIRQState mmc_irq_orgate;
-     OrIRQState dma_7_8_irq_orgate;
++        self.vm.set_console()
++        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
++                               'earlycon=pl011,mmio32,0xfe201000 ' +
++                               'console=ttyAMA0,115200 ' +
++                               'root=/dev/mmcblk1p2 rootwait ' +
++                               'dwc_otg.fiq_fsm_enable=0')
++        self.vm.add_args('-kernel', kernel_path,
++                         '-dtb', dtb_path,
++                         '-append', kernel_command_line,
++                         '-device', 'qemu-xhci,bus=pcie.1,id=xhci',
++                         '-device', 'usb-kbd,bus=xhci.0')
++        self.vm.launch()
++        console_pattern = 'Kernel command line: %s' % kernel_command_line
++        self.wait_for_console_pattern(console_pattern)
++        console_pattern = 'Product: QEMU USB Keyboard'
++        self.wait_for_console_pattern(console_pattern)
++
++
++    def test_arm_raspi4_initrd(self):
++        """
++        :avocado: tags=arch:aarch64
++        :avocado: tags=machine:raspi4b-2g
++        :avocado: tags=device:pl011
++        :avocado: tags=accel:tcg
++        :avocado: tags=rpi4b
++
++        The kernel can be rebuilt using the kernel source referenced
++        and following the instructions on the on:
++        https://www.raspberrypi.org/documentation/linux/kernel/building.md
++        """
++        deb_url = ('http://archive.raspberrypi.org/debian/'
++            'pool/main/r/raspberrypi-firmware/'
++            'raspberrypi-kernel_1.20230106-1_arm64.deb')
++        deb_hash = '08dc55696535b18a6d4fe6fa10d4c0d905cbb2ed'
++        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
++        kernel_path = self.extract_from_deb(deb_path, '/boot/kernel8.img')
++        dtb_path = self.extract_from_deb(deb_path, '/boot/bcm2711-rpi-4-b.dtb')
++
++        initrd_url = ('https://github.com/groeck/linux-build-test/raw/'
++                      '86b2be1384d41c8c388e63078a847f1e1c4cb1de/rootfs/'
++                      'arm64/rootfs.cpio.gz')
++        initrd_hash = 'f3d4f9fa92a49aa542f1b44d34be77bbf8ca5b9d'
++        initrd_path_gz = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
++        initrd_path = os.path.join(self.workdir, 'rootfs.cpio')
++        archive.gzip_uncompress(initrd_path_gz, initrd_path)
++
++        self.vm.set_console()
++        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
++                               'earlycon=pl011,mmio32,0xfe201000 ' +
++                               'console=ttyAMA0,115200 ' +
++                               'panic=-1 noreboot ' +
++                               'dwc_otg.fiq_fsm_enable=0')
++        self.vm.add_args('-kernel', kernel_path,
++                         '-dtb', dtb_path,
++                         '-initrd', initrd_path,
++                         '-append', kernel_command_line,
++                         '-device', 'qemu-xhci,bus=pcie.1,id=xhci',
++                         '-device', 'usb-kbd,bus=xhci.0',
++                         '-no-reboot')
++        self.vm.launch()
++        self.wait_for_console_pattern('Boot successful.')
++
++        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
++                                                'BCM2835')
++        exec_command_and_wait_for_pattern(self, 'cat /proc/iomem',
++                                                'cprman@7e101000')
++        exec_command_and_wait_for_pattern(self, 'halt', 'reboot: System halted')
++        # TODO: Raspberry Pi4 doesn't shut down properly with recent kernels
++        # Wait for VM to shut down gracefully
++        #self.vm.wait()
++
+     def test_arm_exynos4210_initrd(self):
+         """
+         :avocado: tags=arch:arm
 -- 
 2.34.1
 
