@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD71866C6A
+	by mail.lfdr.de (Postfix) with ESMTPS id 95BE2866C6B
 	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:35:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reWOd-0003Ex-O7; Mon, 26 Feb 2024 03:31:37 -0500
+	id 1reWOq-0003OM-4J; Mon, 26 Feb 2024 03:31:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1reWNj-0002iI-T3
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:30:40 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1reWNm-0002pG-QY
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:30:50 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1reWNg-0005ly-2Y
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:30:39 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1d944e8f367so18803545ad.0
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 00:30:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1reWNl-0005mO-Bx
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:30:42 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1dc09556599so24260895ad.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 00:30:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708936234; x=1709541034; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708936239; x=1709541039; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zYd02SLfgP/LCWG+Mrru0HvWw0TZYZU2hsjtTtlA/n0=;
- b=AGq5JgMLLfr0xL8WLi0hsvG3oK24dqexlmr9MhTd6cE2HMrfQbMpeI3FNC6+VQiQrX
- kfQ076nFw97wrWshcbnxhJJkRPp/di/NRVkBPnbv9XVeMTE5EWiGu9TJ/vtOvDeRCWAN
- MVU5QbYeGLmL5iMtpRFdU/91VPKi/YtQKuRwwZvg6YZR/6RK68G0fGImST7RUmbj9Au2
- 0rMtgo21TctNtr00xeQVAha6e0sUMsuSgOrt+RyHXpyegN17Pw34UWP2l/yw3RIqpgeM
- EV+GkOIFYREI7SqYCAJxkG/m7FoFenz+7UI5xwzj1WAmmfcpch5e8gb3whTFbmKe3Dp+
- JMFQ==
+ bh=sX+3Krub3diCCCNJrHu+195GG4MbJLHurBfYcEWAXIE=;
+ b=DHZzNmeyhVbrH004LOM04B2jSbXOOjfbd1/WJTxuEN9SuzENNWoEa31mTuKa2MhLJ+
+ yuVp4EqzEJJD8Zo7gQWI9v+xrOKpP0MY4M2kalfVbRJKfTON7PuWg4IpDDA676xka0As
+ 6jSuAck484WfGAtWh/MAg+8YKA+YzRVkOeiyQLfsRRc09UTDmufr3phKX0PLhgLO1bui
+ hUdlEqa8L6EA4A4syPyQ05Gs5kcXQ4PXJX/06vBh8dMomnp3L6nOJdpJA4Ad9+pDwpj9
+ qbHeRfyHtot1FBeeM3uCsp3fEhkfenNpYs+hEEb0GDlex87aWIiTmk4NX4WX1U/z3MWr
+ JlYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708936234; x=1709541034;
+ d=1e100.net; s=20230601; t=1708936239; x=1709541039;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zYd02SLfgP/LCWG+Mrru0HvWw0TZYZU2hsjtTtlA/n0=;
- b=Au33BgwePgbLQeHtRktu9VsYqf7yWWd4ynd0ASptObWy5gNmXxoRxPqsfoL4dVThnT
- llHNZ9uoq1hy9y8/i7/FzR1geBKCFGOYV6iNZ7xFGNIRfV7fV3YF4zWUu9Sz1JbG4Shr
- pFkQ8DX2xTwuu8kWice2XM7X6gmOsXETorEbE+mqqmySEBfCBv0uSaVD53bNrjkRcU0/
- C+GzJzc491ev5k6msreONE0I7KvK49PVwY7dkP58DCcYnHP0nuBtsQsjFvuZTX6Aj/Nd
- tvni0F/15ibW5cj3CKo+IRXAH6nXWWgon1c1fESfxxXpD2H2h5vQSUPm9Zc/pAVJIfpm
- hRBA==
-X-Gm-Message-State: AOJu0YwVoxF3jW4sECpkrkemynel9dUs6tg+x509Z7Q2z3RCX7MI1kxH
- TTLq9hEtiik1GVSvfn5+98Ouu1XPDEYB6TppX5SeTK904k1Suj8POfsbzqqa
-X-Google-Smtp-Source: AGHT+IF06vW+rgzrCQoP9CAbjzhrZ501ApCh3EqJTIYUcz5qVlDJjykmW9r/4yHgZNVZ4VYLAa4bdw==
-X-Received: by 2002:a17:902:cf0d:b0:1dc:affd:6510 with SMTP id
- i13-20020a170902cf0d00b001dcaffd6510mr171831plg.49.1708936234272; 
- Mon, 26 Feb 2024 00:30:34 -0800 (PST)
+ bh=sX+3Krub3diCCCNJrHu+195GG4MbJLHurBfYcEWAXIE=;
+ b=sfl4gFkVRPIQYzuXIz8u0Wvkw/CFmDUIos/e631QI51HhZThuVW+4orErszc28sA8w
+ r2B/bALQ/XDTvKRdLZskgS+odVp39r9QPKRxpP/YhCumQ2eVqD3TJPOUUkbo/Hekg24e
+ e2h1D8VZo1BUVubBj7xB0UXmGu1Qp7tnnTWkpd18n2CrVUzCWVIRbb/F4ar12lgvp5v8
+ iNuKrKpwSOpozWw7V7rLhG7BW5764Yk1XlJPWINIWEkmRAEDya7/rElFvdJLaQZXiEJS
+ h02ojtn6oIIeKqhh8K0btw34vbkY4z6FufZVGFZvUgolVCCfl3PYyrwEVoAIHr5F0aEl
+ eOug==
+X-Gm-Message-State: AOJu0YwKRIirugOMzsxLDu6PLPK+9TfvyIG54HJkqPYdmvBzhYaeA/bv
+ oxvfMR13Ub6isMh4TziHJ7u3aLe4NpItny6M0XMpjMzg7B1kEa89TX2ny9ji
+X-Google-Smtp-Source: AGHT+IHmTn9JIgmWhSBi+6XQYvJUtdfRfGZUdkQ+N54vLeHeOlM7NxlgyKLrjRRIpYqe4D0MrUA4fg==
+X-Received: by 2002:a17:902:f544:b0:1db:e672:3704 with SMTP id
+ h4-20020a170902f54400b001dbe6723704mr9670516plf.33.1708936239680; 
+ Mon, 26 Feb 2024 00:30:39 -0800 (PST)
 Received: from wheely.local0.net ([1.146.74.212])
  by smtp.gmail.com with ESMTPSA id
- w16-20020a1709026f1000b001d9641003cfsm3511260plk.142.2024.02.26.00.30.29
+ w16-20020a1709026f1000b001d9641003cfsm3511260plk.142.2024.02.26.00.30.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Feb 2024 00:30:34 -0800 (PST)
+ Mon, 26 Feb 2024 00:30:39 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -65,17 +65,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH v3 6/9] chardev: set record/replay on the base device of a
- muxed device
-Date: Mon, 26 Feb 2024 18:29:42 +1000
-Message-ID: <20240226082945.1452499-7-npiggin@gmail.com>
+Subject: [PATCH v3 7/9] replay: Fix migration use of clock
+Date: Mon, 26 Feb 2024 18:29:43 +1000
+Message-ID: <20240226082945.1452499-8-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240226082945.1452499-1-npiggin@gmail.com>
 References: <20240226082945.1452499-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,150 +97,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-chardev events to a muxed device don't get recorded because e.g.,
-qemu_chr_be_write() checks whether the base device has the record flag
-set.
-
-This can be seen when replaying a trace that has characters typed into
-the console, an examination of the log shows they are not recorded.
-
-Setting QEMU_CHAR_FEATURE_REPLAY on the base chardev fixes the problem.
+Migration reads host clocks when not holding the replay_mutex, which
+asserts when recording a trace. It seems that the times should be host
+times like other statistics in MigrationState, so this can easily be
+converted.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- chardev/char.c | 71 +++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 50 insertions(+), 21 deletions(-)
+ migration/migration.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/chardev/char.c b/chardev/char.c
-index 3c43fb1278..ba847b6e9e 100644
---- a/chardev/char.c
-+++ b/chardev/char.c
-@@ -615,11 +615,24 @@ ChardevBackend *qemu_chr_parse_opts(QemuOpts *opts, Error **errp)
-     return backend;
- }
- 
--Chardev *qemu_chr_new_from_opts(QemuOpts *opts, GMainContext *context,
--                                Error **errp)
-+static void qemu_chardev_set_replay(Chardev *chr, Error **errp)
-+{
-+    if (replay_mode != REPLAY_MODE_NONE) {
-+        if (CHARDEV_GET_CLASS(chr)->chr_ioctl) {
-+            error_setg(errp, "Replay: ioctl is not supported "
-+                             "for serial devices yet");
-+            return;
-+        }
-+        qemu_chr_set_feature(chr, QEMU_CHAR_FEATURE_REPLAY);
-+        replay_register_char_driver(chr);
-+    }
-+}
-+
-+static Chardev *__qemu_chr_new_from_opts(QemuOpts *opts, GMainContext *context,
-+                                         bool replay, Error **errp)
+diff --git a/migration/migration.c b/migration/migration.c
+index ab21de2cad..2e794db75c 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -3316,7 +3316,7 @@ static void *migration_thread(void *opaque)
  {
-     const ChardevClass *cc;
--    Chardev *chr = NULL;
-+    Chardev *base = NULL, *chr = NULL;
-     ChardevBackend *backend = NULL;
-     const char *name = qemu_opt_get(opts, "backend");
-     const char *id = qemu_opts_id(opts);
-@@ -657,11 +670,11 @@ Chardev *qemu_chr_new_from_opts(QemuOpts *opts, GMainContext *context,
-     chr = qemu_chardev_new(bid ? bid : id,
-                            object_class_get_name(OBJECT_CLASS(cc)),
-                            backend, context, errp);
--
-     if (chr == NULL) {
-         goto out;
-     }
+     MigrationState *s = opaque;
+     MigrationThread *thread = NULL;
+-    int64_t setup_start = qemu_clock_get_ms(QEMU_CLOCK_HOST);
++    int64_t setup_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
+     MigThrError thr_error;
+     bool urgent = false;
  
-+    base = chr;
-     if (bid) {
-         Chardev *mux;
-         qapi_free_ChardevBackend(backend);
-@@ -681,11 +694,25 @@ Chardev *qemu_chr_new_from_opts(QemuOpts *opts, GMainContext *context,
- out:
-     qapi_free_ChardevBackend(backend);
-     g_free(bid);
-+
-+    if (replay && base) {
-+        /* RR should be set on the base device, not the mux */
-+        qemu_chardev_set_replay(base, errp);
-+    }
-+
-     return chr;
- }
+@@ -3368,7 +3368,7 @@ static void *migration_thread(void *opaque)
+     qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP,
+                                MIGRATION_STATUS_ACTIVE);
  
--Chardev *qemu_chr_new_noreplay(const char *label, const char *filename,
--                               bool permit_mux_mon, GMainContext *context)
-+Chardev *qemu_chr_new_from_opts(QemuOpts *opts, GMainContext *context,
-+                                Error **errp)
-+{
-+    /* XXX: should this really not record/replay? */
-+    return __qemu_chr_new_from_opts(opts, context, false, errp);
-+}
-+
-+static Chardev *__qemu_chr_new(const char *label, const char *filename,
-+                               bool permit_mux_mon, GMainContext *context,
-+                               bool replay)
- {
-     const char *p;
-     Chardev *chr;
-@@ -693,14 +720,22 @@ Chardev *qemu_chr_new_noreplay(const char *label, const char *filename,
-     Error *err = NULL;
+-    s->setup_time = qemu_clock_get_ms(QEMU_CLOCK_HOST) - setup_start;
++    s->setup_time = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) - setup_start;
  
-     if (strstart(filename, "chardev:", &p)) {
--        return qemu_chr_find(p);
-+        chr = qemu_chr_find(p);
-+        if (replay) {
-+            qemu_chardev_set_replay(chr, &err);
-+            if (err) {
-+                error_report_err(err);
-+                return NULL;
-+            }
-+        }
-+        return chr;
-     }
+     trace_migration_thread_setup_complete();
  
-     opts = qemu_chr_parse_compat(label, filename, permit_mux_mon);
-     if (!opts)
-         return NULL;
+@@ -3447,7 +3447,7 @@ static void *bg_migration_thread(void *opaque)
  
--    chr = qemu_chr_new_from_opts(opts, context, &err);
-+    chr = __qemu_chr_new_from_opts(opts, context, replay, &err);
-     if (!chr) {
-         error_report_err(err);
-         goto out;
-@@ -722,24 +757,18 @@ out:
-     return chr;
- }
+     migration_rate_set(RATE_LIMIT_DISABLED);
  
-+Chardev *qemu_chr_new_noreplay(const char *label, const char *filename,
-+                               bool permit_mux_mon, GMainContext *context)
-+{
-+    return __qemu_chr_new(label, filename, permit_mux_mon, context, false);
-+}
-+
- static Chardev *qemu_chr_new_permit_mux_mon(const char *label,
-                                           const char *filename,
-                                           bool permit_mux_mon,
-                                           GMainContext *context)
- {
--    Chardev *chr;
--    chr = qemu_chr_new_noreplay(label, filename, permit_mux_mon, context);
--    if (chr) {
--        if (replay_mode != REPLAY_MODE_NONE) {
--            qemu_chr_set_feature(chr, QEMU_CHAR_FEATURE_REPLAY);
--        }
--        if (qemu_chr_replay(chr) && CHARDEV_GET_CLASS(chr)->chr_ioctl) {
--            error_report("Replay: ioctl is not supported "
--                         "for serial devices yet");
--        }
--        replay_register_char_driver(chr);
--    }
--    return chr;
-+    return __qemu_chr_new(label, filename, permit_mux_mon, context, true);
- }
+-    setup_start = qemu_clock_get_ms(QEMU_CLOCK_HOST);
++    setup_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
+     /*
+      * We want to save vmstate for the moment when migration has been
+      * initiated but also we want to save RAM content while VM is running.
+@@ -3480,7 +3480,7 @@ static void *bg_migration_thread(void *opaque)
+     qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP,
+                                MIGRATION_STATUS_ACTIVE);
  
- Chardev *qemu_chr_new(const char *label, const char *filename,
+-    s->setup_time = qemu_clock_get_ms(QEMU_CLOCK_HOST) - setup_start;
++    s->setup_time = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) - setup_start;
+ 
+     trace_migration_thread_setup_complete();
+     migration_downtime_start(s);
 -- 
 2.42.0
 
