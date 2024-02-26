@@ -2,62 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F2C886773A
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 14:52:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B92DB867747
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 14:55:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rebOO-0004Cv-3A; Mon, 26 Feb 2024 08:51:40 -0500
+	id 1rebRJ-0005QQ-0Y; Mon, 26 Feb 2024 08:54:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rebOK-0004Bh-Mv; Mon, 26 Feb 2024 08:51:36 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rebOI-000702-UM; Mon, 26 Feb 2024 08:51:36 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 8EDC14E601F;
- Mon, 26 Feb 2024 14:51:30 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id AHlv1dYjZ3Dj; Mon, 26 Feb 2024 14:51:28 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 98B4E4E601E; Mon, 26 Feb 2024 14:51:28 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 9735B7456B4;
- Mon, 26 Feb 2024 14:51:28 +0100 (CET)
-Date: Mon, 26 Feb 2024 14:51:28 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org, 
- qemu-ppc@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>, 
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, 
- Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org, 
- John Snow <jsnow@redhat.com>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: Re: [PATCH v2 3/3] hw/ide: Include 'ide_internal.h' from current path
-In-Reply-To: <5dfafae8-c429-4d2d-9ec4-240b8d4290ca@linaro.org>
-Message-ID: <4b9a55da-96b1-be86-c9d3-49db4930cc7b@eik.bme.hu>
-References: <20240225171637.4709-1-philmd@linaro.org>
- <20240225171637.4709-4-philmd@linaro.org>
- <feffd329-59e0-0291-0dd6-76a625da190b@eik.bme.hu>
- <878r37lll6.fsf@pond.sub.org>
- <fd0fba89-cd93-4113-9f3d-2ee20f2217d9@linaro.org>
- <90219760-aad5-82b2-41aa-be563f52fdf9@eik.bme.hu>
- <5dfafae8-c429-4d2d-9ec4-240b8d4290ca@linaro.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rebRH-0005Q8-MF
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 08:54:39 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rebRF-0007TQ-Ut
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 08:54:39 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-564647bcdbfso3055811a12.2
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 05:54:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708955676; x=1709560476; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=QciyHgdpbvK4vbD420qln7gWc4lW77b8IPkbdD0k6Qw=;
+ b=jQxfItkmrrpyvTL8ey5PSsR/pPwR2ZJQ3pp1PiQjXfeNQNfhCQBiwOUivqkMMjDdAH
+ S36ZEK/eB0tH13F5iiTIMLkOywnoXnC+9zYJ10rXuh05eo6QI+gbThF9kMQ6wU9wUa9U
+ YmacFqk76Yg2S9JU8ykyUAWaeNrkH6AOWWsV1LWg4OO+l/9XEvNDddEk1rpCV6S09ugU
+ zNdS6U7MdlJJIJ+0DqtdbxxVbtOXAYyT0TVOLOlv8nFCRSfCD8CinG9a2bEs/LWF/sU3
+ H3dsMVTT/xmiy3TPF6desM1MeBncFEuvFVG21A7E07SGHb1QFto/KXo+g5sRj7Umbjtl
+ InQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708955676; x=1709560476;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QciyHgdpbvK4vbD420qln7gWc4lW77b8IPkbdD0k6Qw=;
+ b=C0RHopVD6KcDJS7u5urJ6ZjC9tslQTO9k9sC45kPM74ZpeZl+cz0kzXmanz4Djk5fQ
+ fioEcycjqQ9UDMnU2rqP+4ibc4vv2waGV/KbnwCMSNUepXuHSzhpyWX6BNGgEughQZIr
+ 5HsIzDriyt45MEYByiAAsNkslng5ry/u/JSrZ9Pqs6HMpG9zdc/fcJysuRT5+wdO76bC
+ Jvh+2E8S1xu/ZPkHKPqqFg/4oLx5JiK3O9yRfTFGMZV5SXFdgCfS7L2nEC9CWibxgKNn
+ PTf8ZxNDwm3O8/WXDaokGY8PVi3jqgQeYhUHMZQWoikJgq3LpuRgdhTm2QfllLR5RZ3q
+ 2epQ==
+X-Gm-Message-State: AOJu0Yy5LeK8m8klEicpYf0wsUaMt6Ufi4kBEZ5l7uGqvxc7xtXc2LyV
+ 96KtuGnQHZ8ixwgIRVxVymA6dSBmerJ9mVIsE16hsJzTO55TWjOPlCUf6YHzi4Wq2UxvTe6hxPk
+ JJS3P/QUnfl3+r+WqK2E/y0N3XS4k5yg9UKiRTg==
+X-Google-Smtp-Source: AGHT+IGKL03oAwgYeDuRA6Y6EblY7JtTg1Z91ZeXLGZmuLAxIAa9lxc/QxlJ/UGqhUDT/VPBQZQbAD9SbAqUn0j9xAM=
+X-Received: by 2002:aa7:c695:0:b0:566:ef9:a499 with SMTP id
+ n21-20020aa7c695000000b005660ef9a499mr1011682edq.1.1708955676071; Mon, 26 Feb
+ 2024 05:54:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1863778230-1708955488=:37179"
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20240226104954.3781985-1-armbru@redhat.com>
+In-Reply-To: <20240226104954.3781985-1-armbru@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 26 Feb 2024 13:54:25 +0000
+Message-ID: <CAFEAcA_tbkGdK9jXCGzWHRaDjDvGYhaJ8U+LUsxoxMzBtyLmwQ@mail.gmail.com>
+Subject: Re: [PULL 00/17] QAPI patches patches for 2024-02-26
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,52 +85,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---3866299591-1863778230-1708955488=:37179
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
-
-On Mon, 26 Feb 2024, Philippe Mathieu-Daudé wrote:
-> On 26/2/24 11:50, BALATON Zoltan wrote:
->> On Mon, 26 Feb 2024, Philippe Mathieu-Daudé wrote:
->>> On 26/2/24 08:40, Markus Armbruster wrote:
->>>> BALATON Zoltan <balaton@eik.bme.hu> writes:
->>>> 
->>>>> On Sun, 25 Feb 2024, Philippe Mathieu-Daudé wrote:
->>>>>> Rename "internal.h" as "ide_internal.h", and include
->>>>> 
->>>>> Is there a convention about using underscore or dash in file names? The 
->>>>> headers Thomas added are using - as well as ahci-allwinner.c, only 
->>>>> ahci_internal.h has _ (but there are others elsewhere such as 
->>>>> pci_device.h). Maybe we should be consistent at least within IDE and 
->>>>> this series is now a good opportunity for renaming these headers to 
->>>>> match. But it's just a small nit, thanks for picking this up.
->>>> 
->>>> This is one of the many unnecessary inconsistencies we're inflicting on
->>>> ourselves.
->>>> 
->>>> We have more than 3600 file names containing '-', and more almost 2700
->>>> containing '_'.  Bizarrely, 68 of them contain both.
->>>> 
->>>> I strongly prefer '_' myself.
->>>> 
->>>> Zoltan is making a local consistency argument for '-'.
->>>> 
->>>> Let's use '-' here.
->>> 
->>> Fine, patch updated.
->> 
->> And then please also rename ahci_internal.h to use '-' to be really 
->> consistent.
+On Mon, 26 Feb 2024 at 10:49, Markus Armbruster <armbru@redhat.com> wrote:
 >
-> I'm sorry but I don't have time. Maybe fill a ByteSized task?
+> The following changes since commit dd88d696ccecc0f3018568f8e281d3d526041e6f:
+>
+>   Merge tag 'pull-request-2024-02-23' of https://gitlab.com/thuth/qemu into staging (2024-02-24 16:12:51 +0000)
+>
+> are available in the Git repository at:
+>
+>   https://repo.or.cz/qemu/armbru.git tags/pull-qapi-2024-02-26
+>
+> for you to fetch changes up to adb0193b90bd1fecd7d6dda70fc1c2d2e45ceae0:
+>
+>   qapi: Divorce QAPIDoc from QAPIParseError (2024-02-26 10:43:56 +0100)
+>
+> ----------------------------------------------------------------
+> QAPI patches patches for 2024-02-26
+>
 
-No problem, just noted in case you'd respin it for some other reason. 
-Otherwise somebody can send a patch later.
 
-Regards,
-BALATON Zoltan
---3866299591-1863778230-1708955488=:37179--
+Applied, thanks.
+
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
+for any user-visible changes.
+
+-- PMM
 
