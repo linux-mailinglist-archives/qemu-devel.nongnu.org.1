@@ -2,74 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF2D28676CC
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 14:40:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 200AB8676F2
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 14:44:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rebDL-0007TX-7z; Mon, 26 Feb 2024 08:40:15 -0500
+	id 1rebGa-0000mk-DP; Mon, 26 Feb 2024 08:43:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rebDI-0007Sv-7Y
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 08:40:12 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rebGY-0000kh-4r
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 08:43:34 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rebDG-000561-Io
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 08:40:11 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-565d1656c12so2283068a12.1
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 05:40:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rebGV-0005WC-Fa
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 08:43:33 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-412a7b68809so3990665e9.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 05:43:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708954809; x=1709559609; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jieytYaQ+nN4bXnK0Fs+GW555aeEe4W+nRHFe6bD0Og=;
- b=UqQWX75R4GRiaj4lmFuDFlBtOrb0408soJhfPLMeuc8l1OBvVCOcIja7D/KRtnyihl
- BUvyJaZGNvGPY10KG3EI/GqB78w3esR6noZ9/G4qpdXUBPHDvW7p2b4JOb4UF7NYmANL
- yCfVaJ3sRSaNIM6HNaPsoUEGFibc3uxAwk2P4Fu0OfqWmkadEOM7zyy0omzwifxrv5ZF
- EjezDVQgvuGPncWvXkqyYmT68kQTrYCTEg6v6jaCNWaEpvPsI1otiLD3DnAydh1ZOQEA
- b8BNIbd8Ki+VSCx6u4z5lJ6RYmIhmnqd3F7/sqUx8ETSBSFKQdMpmtoQxWOgZ9r1/blV
- buMQ==
+ d=linaro.org; s=google; t=1708955010; x=1709559810; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=p5V6T/S23ro90/XXslrjXWQ3eNACND7aZH/oW8xf9V8=;
+ b=SPgkj17byEVLFWVdrcAexxRnGPd0NloCPN4VXMAHkwRBSvaBP+a1z7iTD+VFtNz1OR
+ dkOBrGN+knH3prV/2pyY5JxEv1M005YwaVC0f+P0FK1AnZU12Mv6cMrBvWouwXvdL/MG
+ nueYL3k7GkMmdHvmid5uXnQFTHrsTuaTwBXA7ANqF8HydEkd+8SiRYOeHh9OD+WC/Tdd
+ PAlpmsNdtLD8Sf3fyIVY0JhDhltA3uC/MPCOWKzMEZ/SlxYYsq2UPLUiyBhc+zI9N1pY
+ +L8S84P6VbaR7jSzjH5u8/SUy5vdSIsKzzKRzPScNSXRoIGZ07SUZrscTH5uCHGX2ZSb
+ 36Fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708954809; x=1709559609;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jieytYaQ+nN4bXnK0Fs+GW555aeEe4W+nRHFe6bD0Og=;
- b=cl+F0MswdoUeociYSccJOEGHDgEZ6ZxBTOvo4rIQlxUrJJYqkEjJQ1oNUM0wQr2zB4
- G5pvRkY74pQHNmVAhyDBj8nPL1O72WZQEagRB72WVAEhXv9hVWT/Jr64/BFlzw35C/1H
- TVOQipKOHTnnDVxahuj1YfXYtnN6XJxfth2SPBCRqOnByp4DcAgCRlM114N0FzEROpFx
- JZmU3R2gPWkxERVVXx6pg0VRr85H5nIwBMfJZfrSCJrJIqVMCrU6A12quS73T2f8eMok
- a+Y9js8EqgIDb2H3hUHBBLoygLofVtIDPjjXpZ7vqaSrmeteXOmsX5IHcZhV6eibBveq
- 1yFA==
+ d=1e100.net; s=20230601; t=1708955010; x=1709559810;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=p5V6T/S23ro90/XXslrjXWQ3eNACND7aZH/oW8xf9V8=;
+ b=SUVMcY2ef3Tzgn5wY7jQYs3HnI1S6sJ4wFkEZ6SHEFKkZ0O8jeE1HtEFFpMgBjHwWv
+ aZBPKB2DBYkFWQJe24Vnr+OPVbWfahSZf0ZtjxowyQJx2+RJ0EkCaN8CSFsclojteI8K
+ o3Ap9py1ZGb+9AugCv5oIIUhfuiIo/6RqI5DgPUlAuzs84sktEP9N6mwdOPAJzvt1Yo+
+ sYsAad4OzYWTuxVijq0OkeZWyWKn0pbNv1FnW+8oaE63w7/5MbXXgO9LmFnM6PuxPtzb
+ 0/jNxkV1nlKdV4ta6xYud03NlqLgoW4roQ2HGKDxKsSpXCAd4GS1NDRoSFJgDtBgnj/Q
+ p4JQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVaoxr2ol9fNAo3RbCsynKttYXPjBx4vQhZMh0+Lg3X6wrp/4rdefiJeLJ+zfWW3erG3I5Q+2mYXLk0mhl1AR/xWWoYUJ0=
-X-Gm-Message-State: AOJu0Yz+/e2eGhLRwuqADt7LUGV0EXa5auDkt1ZB0/BtDHvqcuHbh4D5
- SGhBIaGxgHGAP6WJWc2iBmRtcJZ7ueXIn3D7q7xSZiG0NrtGhyVLnDUTGA/5vwplU99CvsRxDEM
- 8ar7ne9LBgiph4y+Dszino1kRKMq2AcLcfK1OWg==
-X-Google-Smtp-Source: AGHT+IHgjTPGTFL2ihz6/yzk90+fMvUcQtdar+Sa9NHW9hg0wabtmAYo8QQaqQSxQJRhT2alxcq+ulvMUrNSRfjnR2c=
-X-Received: by 2002:aa7:c39a:0:b0:565:ff41:472f with SMTP id
- k26-20020aa7c39a000000b00565ff41472fmr1624282edq.21.1708954808876; Mon, 26
- Feb 2024 05:40:08 -0800 (PST)
+ AJvYcCUm2HiI1AgMP6eXG0xx8X2YAyow+0BfUgyNf2sbSxl9+vR8uGU0zkURqVEgEaufQIBqay6iKoj5MdO7lJox+8ZcaKupq0c=
+X-Gm-Message-State: AOJu0Ywl5DPd7DbRBPWVBLCtR1xomP7gEujCvv3TczQ3WZpCOBEC/Zp7
+ AstoQiHp9wJRJkwXGNQ6bfV+lxynTvBiF11RjICKcCB6jZdH/XkoBLzkZ6CTIP0=
+X-Google-Smtp-Source: AGHT+IGIZ9hBmiQMOxOtbvM37It0r5GwzKWfjr3s9MfGnEWZF/Iqq2k1mM1bmr/Bhd69ktMmf2uwxQ==
+X-Received: by 2002:a05:6000:110:b0:33d:ca9:1fab with SMTP id
+ o16-20020a056000011000b0033d0ca91fabmr4687694wrx.5.1708955009696; 
+ Mon, 26 Feb 2024 05:43:29 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.223.153])
+ by smtp.gmail.com with ESMTPSA id
+ d3-20020adffbc3000000b0033dd2c3131fsm4573228wrs.65.2024.02.26.05.43.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 Feb 2024 05:43:29 -0800 (PST)
+Message-ID: <5dfafae8-c429-4d2d-9ec4-240b8d4290ca@linaro.org>
+Date: Mon, 26 Feb 2024 14:43:27 +0100
 MIME-Version: 1.0
-References: <20240226000259.2752893-1-sergey.kambalin@auriga.com>
- <20240226000259.2752893-12-sergey.kambalin@auriga.com>
- <2ab7b523-816b-409b-a58a-f09e3f71ff8e@linaro.org>
-In-Reply-To: <2ab7b523-816b-409b-a58a-f09e3f71ff8e@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 26 Feb 2024 13:39:58 +0000
-Message-ID: <CAFEAcA-WwWQnAQTmoCixaW5aeRWrdx__YoSHp_VyGEbk-rOkpg@mail.gmail.com>
-Subject: Re: [PATCH v6 11/41] Temporarily disable unimplemented rpi4b devices
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: Sergey Kambalin <serg.oker@gmail.com>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org, Sergey Kambalin <sergey.kambalin@auriga.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] hw/ide: Include 'ide_internal.h' from current path
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
+ John Snow <jsnow@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+References: <20240225171637.4709-1-philmd@linaro.org>
+ <20240225171637.4709-4-philmd@linaro.org>
+ <feffd329-59e0-0291-0dd6-76a625da190b@eik.bme.hu>
+ <878r37lll6.fsf@pond.sub.org>
+ <fd0fba89-cd93-4113-9f3d-2ee20f2217d9@linaro.org>
+ <90219760-aad5-82b2-41aa-be563f52fdf9@eik.bme.hu>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <90219760-aad5-82b2-41aa-be563f52fdf9@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,47 +104,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 26 Feb 2024 at 13:35, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> On 26/2/24 01:02, Sergey Kambalin wrote:
-> > +static void raspi4_modify_dtb(const struct arm_boot_info *info, void *=
-fdt)
-> > +{
-> > +    uint64_t ram_size;
-> > +
-> > +    /* Temporarily disable following devices until they are implemente=
-d */
-> > +    const char *nodes_to_remove[] =3D {
-> > +        "brcm,bcm2711-pcie",
-> > +        "brcm,bcm2711-rng200",
-> > +        "brcm,bcm2711-thermal",
-> > +        "brcm,bcm2711-genet-v5",
-> > +    };
-> > +
-> > +    for (int i =3D 0; i < ARRAY_SIZE(nodes_to_remove); i++) {
-> > +        const char *dev_str =3D nodes_to_remove[i];
-> > +
-> > +        int offset =3D fdt_node_offset_by_compatible(fdt, -1, dev_str)=
-;
-> > +        if (offset >=3D 0) {
-> > +            if (!fdt_nop_node(fdt, offset)) {
->
-> Peter, I remember a discussion where you wre not keen on altering DTB
-> for non-Virt machines.
->
-> Since these devices are all implemented at the end of the series, why
-> not add the devices then the raspi4 board at the end, so this patch is
-> not even required?
+On 26/2/24 11:50, BALATON Zoltan wrote:
+> On Mon, 26 Feb 2024, Philippe Mathieu-Daudé wrote:
+>> On 26/2/24 08:40, Markus Armbruster wrote:
+>>> BALATON Zoltan <balaton@eik.bme.hu> writes:
+>>>
+>>>> On Sun, 25 Feb 2024, Philippe Mathieu-Daudé wrote:
+>>>>> Rename "internal.h" as "ide_internal.h", and include
+>>>>
+>>>> Is there a convention about using underscore or dash in file names? 
+>>>> The headers Thomas added are using - as well as ahci-allwinner.c, 
+>>>> only ahci_internal.h has _ (but there are others elsewhere such as 
+>>>> pci_device.h). Maybe we should be consistent at least within IDE and 
+>>>> this series is now a good opportunity for renaming these headers to 
+>>>> match. But it's just a small nit, thanks for picking this up.
+>>>
+>>> This is one of the many unnecessary inconsistencies we're inflicting on
+>>> ourselves.
+>>>
+>>> We have more than 3600 file names containing '-', and more almost 2700
+>>> containing '_'.  Bizarrely, 68 of them contain both.
+>>>
+>>> I strongly prefer '_' myself.
+>>>
+>>> Zoltan is making a local consistency argument for '-'.
+>>>
+>>> Let's use '-' here.
+>>
+>> Fine, patch updated.
+> 
+> And then please also rename ahci_internal.h to use '-' to be really 
+> consistent.
 
-I'm not super-keen on it, but as you say it goes away once all
-the devices are implemented, so I'm not too worried.
+I'm sorry but I don't have time. Maybe fill a ByteSized task?
 
-Doing it this way around would let us take the first 11 patches
-in the series into git now (they've all been reviewed), which
-gives us (I think) a functional raspi4 with some missing devices,
-which seems useful in the interim until the rest of the series
-gets reviewed and committed.
-
--- PMM
 
