@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE24F86673C
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 01:12:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3CFA866749
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 01:19:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reOYp-00074n-KP; Sun, 25 Feb 2024 19:09:38 -0500
+	id 1reOhC-0005ql-Rr; Sun, 25 Feb 2024 19:18:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1reOY9-0006i5-CP; Sun, 25 Feb 2024 19:08:55 -0500
-Received: from mail-ua1-x935.google.com ([2607:f8b0:4864:20::935])
+ id 1reOhA-0005qX-7z; Sun, 25 Feb 2024 19:18:12 -0500
+Received: from mail-ua1-x933.google.com ([2607:f8b0:4864:20::933])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1reOY2-0001xj-H7; Sun, 25 Feb 2024 19:08:48 -0500
-Received: by mail-ua1-x935.google.com with SMTP id
- a1e0cc1a2514c-7cedcea89a0so1679431241.1; 
- Sun, 25 Feb 2024 16:08:45 -0800 (PST)
+ id 1reOh8-0005St-8d; Sun, 25 Feb 2024 19:18:11 -0500
+Received: by mail-ua1-x933.google.com with SMTP id
+ a1e0cc1a2514c-7d2940ad0e1so1471698241.1; 
+ Sun, 25 Feb 2024 16:18:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708906125; x=1709510925; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708906688; x=1709511488; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9oXWvLBhmXWKmclMs2SgW8qE+t3mFOBzF7BBgUy0c5s=;
- b=iBydyl82owwzpUGZAiXlbx6k0qbfuEWSWrC1yBNKMD6JicnwfQN8bEaEzCI9g5BI7C
- dGTeMH6XBNAdMWaxkFeUYP1wba2ENiE3F7ZA7kyM3vUNW86A0Rj3ya1cJvxjpJUstyeQ
- QEX3cBsWDMUXfMf7sfIwEcsjlvBAHN5JXZHnwX+mBZxn+C+FUGmWjDYCGDjhxLWXV5Qy
- ba+f+6K/v7rwQoRxFUJIijfBqMvSe1S+TM1qkNFRaLBbZFg7LBpJaGj++/pcrQX/4zn/
- 6yIHSPScSKwV49M8FeeR31n9QLf0xDiYR2NP30avuYZlfNZrrz7RskqV4Y/eGSuN5kHd
- dc0A==
+ bh=QhaANUWuN8fK3c9zHQX7xQLw2JO7i6h0XPTTn/pdIBQ=;
+ b=WvD3O5jc8mNtGxOR1xKkbOixoZjk4gKrhpUsuS7O01fD4z6mClrlJzSPz+2bebh7XS
+ WEAgi/NhCwXtopI/rpi2avGLcdWrYnv19IRf0+szjEeQH7DcKoTbjaWNxpMhT33nYBQk
+ oV2XmP3gkMMC8RlWfRNh6wAFeM8dqzTTYbRoG7zPyu1RWKnuSq37wyT3GsiZ8M6V6CkI
+ 6f8/ZoNAd3ZYyvWQy5r3EOs2WMXVOYQ1oSRQSvkMsf88sPTAjSVHaPyKfW5h2MoAhElr
+ 3710/Vt7hN5P04vaMmEoy7YSSm3jXkz5Gz9tEntSvV1GmzNEAM/EmvVLLmgS8DWhCDPp
+ JpmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708906125; x=1709510925;
+ d=1e100.net; s=20230601; t=1708906688; x=1709511488;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9oXWvLBhmXWKmclMs2SgW8qE+t3mFOBzF7BBgUy0c5s=;
- b=SiPGW7qPIosIsAH++lZAGD4Cb7V5PyNQO1EpsoESemrjd+KDActkkFKqfC9wvzmpLl
- 7Fb2F5aVFCyIVcU2CKjZ/4hVzUngDZDIvaEdq9xM+V2CHP8hTTrvXDa9D51iFHFqpmwK
- s3eqaWadG3FG+r/FXHk/stgagB1KMyEtfMuQ/FUfcNi/jfNhAN8jvRUe5VY8SRRxR1E5
- Orw7VeKaHmxPI4RFt3SyPn1mcvSk94SIykh6uWfEGkP22ed8yZrP9rhGlkUHm57SZByp
- S9Yv9M6kWxwmC33MxswPLx07wH4YqmPLc5WjuVzFQMeWpxS/Mek7dRKrhxL61f2XNfIP
- MLLw==
+ bh=QhaANUWuN8fK3c9zHQX7xQLw2JO7i6h0XPTTn/pdIBQ=;
+ b=adXe/UuwFtjtEUOjLA6WEA1awz+0NCtIjSyw/ezEwQVD6B9lYgnekUtOwZUQoe0khz
+ dHp6Y3VQed7qOW+IHe+tdxl5LsuiFrPbNqe6ejNl++BBSt4QF/XocmhLZ7cHapVAznIa
+ hc9rZCzNZEQ3tL3iXs85MGTj22vA/RV1eQ8cn1RG0tep0A24XyI0aZ2j8WPJjs138mQd
+ kSG9JRZ6HCxjGJGwFzJ1Pjlk3P6l5C5SV1NWgsftFkFFmL3asKS/6c1YP3BsOvq+x5AD
+ oF2osFraXciSFXh1J/YMuyXPOcr+nuFaaiZvQMFor4UUEiLIdxdoF3fxHUnHzTHlTvAE
+ JKQQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV73Mf05atPDD/7icfiMOQy86Chi9T8DLBQJv61DwZGi6Ie5rhevNgDXbCT9rl2iq9p3Up4mgHM20Dgq3snz0dQJGaM
-X-Gm-Message-State: AOJu0YwYtP7b25Y824ADoRGpHCjtcoCy8RpX2B+F8agzFMhJ7Ullx1Bw
- AUvaQRk5ymoKcvQhfN+G2j8KGBTtIdrWXn1rAoBwOqoLl+YVX2FRUWHCtQ7kG0DZ8SZa2y3PfE6
- gUvoVp2ecIbzCAXanflKKlqsvFpM=
-X-Google-Smtp-Source: AGHT+IFvVaahOlFs5AKVDtqqFvziPFmo+fmi4H2JUvH86M5yeft1q5fP37+APmY/SQNNgV2nJcbohwd4wa71jEZ9WqI=
-X-Received: by 2002:a67:be06:0:b0:471:e254:ea29 with SMTP id
- x6-20020a67be06000000b00471e254ea29mr1865933vsq.9.1708906125018; Sun, 25 Feb
- 2024 16:08:45 -0800 (PST)
+ AJvYcCX4uLX+qF+H2B4z94aUUfLUhodXP+A/+tnyOiJ1ZBKAKFHMjYCQfdvfx6YdeAJ0Jry9ztwVmJ+HmiUKmh+btFzz5hBO
+X-Gm-Message-State: AOJu0YyZwE+pv1UzXfybapijQ9G0lCukFSkc6xE2Ux7x6Jc9UEHRjQPD
+ Qa22EozqVXLOsPv3BohqPkUNlD/VFYE67Ut0QS2d1OID2ATJXaBMnJcSR63jkX+mUnQamv+/+Pd
+ 4LVvvaUCF2ymxjTKoO+3ZUrMiJSg=
+X-Google-Smtp-Source: AGHT+IFiexFvrVA3is6kMdqYuf4XxOoe92RAolGi+Wy9gSHVxaoV3ymPsRLeS0qgJN0Uicn0h48x7q78DXh3r5p/Lyc=
+X-Received: by 2002:a05:6102:3234:b0:470:3a5d:a711 with SMTP id
+ x20-20020a056102323400b004703a5da711mr2608860vsf.6.1708906688588; Sun, 25 Feb
+ 2024 16:18:08 -0800 (PST)
 MIME-Version: 1.0
-References: <20240224105417.195674-1-ines.varhol@telecom-paris.fr>
- <20240224105417.195674-3-ines.varhol@telecom-paris.fr>
-In-Reply-To: <20240224105417.195674-3-ines.varhol@telecom-paris.fr>
+References: <20240220184145.106107-1-ines.varhol@telecom-paris.fr>
+ <20240220184145.106107-2-ines.varhol@telecom-paris.fr>
+In-Reply-To: <20240220184145.106107-2-ines.varhol@telecom-paris.fr>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 26 Feb 2024 10:08:19 +1000
-Message-ID: <CAKmqyKOvHDMAidNsWUcYKv5TZBfiHwFREfcVvDcMqTxy+C3cWQ@mail.gmail.com>
-Subject: Re: [PATCH v6 2/3] hw/arm: Connect STM32L4x5 GPIO to STM32L4x5 SoC
+Date: Mon, 26 Feb 2024 10:17:42 +1000
+Message-ID: <CAKmqyKMSUNBgMnNA1H8=suyotrmM-cN9=V_d7iRTbR0zbBVAhQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] hw/arm: Use TYPE_OR_IRQ when connecting STM32L4x5
+ EXTI fan-in IRQs
 To: =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>
-Cc: qemu-devel@nongnu.org, Samuel Tardieu <samuel.tardieu@telecom-paris.fr>, 
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
+ Samuel Tardieu <samuel.tardieu@telecom-paris.fr>,
+ Alistair Francis <alistair@alistair23.me>, 
  Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Thomas Huth <thuth@redhat.com>, Alistair Francis <alistair@alistair23.me>, 
- Paolo Bonzini <pbonzini@redhat.com>,
  Arnaud Minier <arnaud.minier@telecom-paris.fr>, 
- Laurent Vivier <lvivier@redhat.com>, qemu-arm@nongnu.org
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::935;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x935.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::933;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x933.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,245 +96,192 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Feb 24, 2024 at 8:56=E2=80=AFPM In=C3=A8s Varhol
+On Wed, Feb 21, 2024 at 4:42=E2=80=AFAM In=C3=A8s Varhol
 <ines.varhol@telecom-paris.fr> wrote:
 >
-> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+> Fixes: 52671f69f7a4 ("[PATCH v8 0/3] Add device STM32L4x5 EXTI")
 > Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
 Acked-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
 > ---
->  include/hw/arm/stm32l4x5_soc.h     |  2 +
->  include/hw/gpio/stm32l4x5_gpio.h   |  1 +
->  include/hw/misc/stm32l4x5_syscfg.h |  3 +-
->  hw/arm/stm32l4x5_soc.c             | 71 +++++++++++++++++++++++-------
->  hw/misc/stm32l4x5_syscfg.c         |  1 +
->  hw/arm/Kconfig                     |  3 +-
->  6 files changed, 63 insertions(+), 18 deletions(-)
+>  include/hw/arm/stm32l4x5_soc.h |  4 ++
+>  hw/arm/stm32l4x5_soc.c         | 80 +++++++++++++++++++++++++++++-----
+>  2 files changed, 74 insertions(+), 10 deletions(-)
 >
 > diff --git a/include/hw/arm/stm32l4x5_soc.h b/include/hw/arm/stm32l4x5_so=
 c.h
-> index 1f71298b45..cb4da08629 100644
+> index baf70410b5..4f314b7a93 100644
 > --- a/include/hw/arm/stm32l4x5_soc.h
 > +++ b/include/hw/arm/stm32l4x5_soc.h
-> @@ -29,6 +29,7 @@
+> @@ -26,6 +26,7 @@
+>
+>  #include "exec/memory.h"
+>  #include "hw/arm/armv7m.h"
+> +#include "hw/or-irq.h"
 >  #include "hw/misc/stm32l4x5_syscfg.h"
 >  #include "hw/misc/stm32l4x5_exti.h"
->  #include "hw/misc/stm32l4x5_rcc.h"
-> +#include "hw/gpio/stm32l4x5_gpio.h"
 >  #include "qom/object.h"
+> @@ -36,12 +37,15 @@
+>  #define TYPE_STM32L4X5XG_SOC "stm32l4x5xg-soc"
+>  OBJECT_DECLARE_TYPE(Stm32l4x5SocState, Stm32l4x5SocClass, STM32L4X5_SOC)
 >
->  #define TYPE_STM32L4X5_SOC "stm32l4x5-soc"
-> @@ -45,6 +46,7 @@ struct Stm32l4x5SocState {
+> +#define NUM_EXTI_OR_GATES 4
+> +
+>  struct Stm32l4x5SocState {
+>      SysBusDevice parent_obj;
+>
+>      ARMv7MState armv7m;
+>
 >      Stm32l4x5ExtiState exti;
+> +    OrIRQState exti_or_gates[NUM_EXTI_OR_GATES];
 >      Stm32l4x5SyscfgState syscfg;
->      Stm32l4x5RccState rcc;
-> +    Stm32l4x5GpioState gpio[NUM_GPIOS];
 >
 >      MemoryRegion sram1;
->      MemoryRegion sram2;
-> diff --git a/include/hw/gpio/stm32l4x5_gpio.h b/include/hw/gpio/stm32l4x5=
-_gpio.h
-> index 0d361f3410..878bd19fc9 100644
-> --- a/include/hw/gpio/stm32l4x5_gpio.h
-> +++ b/include/hw/gpio/stm32l4x5_gpio.h
-> @@ -25,6 +25,7 @@
->  #define TYPE_STM32L4X5_GPIO "stm32l4x5-gpio"
->  OBJECT_DECLARE_SIMPLE_TYPE(Stm32l4x5GpioState, STM32L4X5_GPIO)
->
-> +#define NUM_GPIOS 8
->  #define GPIO_NUM_PINS 16
->
->  struct Stm32l4x5GpioState {
-> diff --git a/include/hw/misc/stm32l4x5_syscfg.h b/include/hw/misc/stm32l4=
-x5_syscfg.h
-> index 29c3522f9d..23bb564150 100644
-> --- a/include/hw/misc/stm32l4x5_syscfg.h
-> +++ b/include/hw/misc/stm32l4x5_syscfg.h
-> @@ -26,12 +26,11 @@
->
->  #include "hw/sysbus.h"
->  #include "qom/object.h"
-> +#include "hw/gpio/stm32l4x5_gpio.h"
->
->  #define TYPE_STM32L4X5_SYSCFG "stm32l4x5-syscfg"
->  OBJECT_DECLARE_SIMPLE_TYPE(Stm32l4x5SyscfgState, STM32L4X5_SYSCFG)
->
-> -#define NUM_GPIOS 8
-> -#define GPIO_NUM_PINS 16
->  #define SYSCFG_NUM_EXTICR 4
->
->  struct Stm32l4x5SyscfgState {
 > diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
-> index 347a5377e5..072671bdfb 100644
+> index f470ff74ec..d1786e0da1 100644
 > --- a/hw/arm/stm32l4x5_soc.c
 > +++ b/hw/arm/stm32l4x5_soc.c
-> @@ -27,6 +27,7 @@
+> @@ -26,6 +26,7 @@
+>  #include "qapi/error.h"
 >  #include "exec/address-spaces.h"
 >  #include "sysemu/sysemu.h"
+> +#include "hw/or-irq.h"
 >  #include "hw/arm/stm32l4x5_soc.h"
-> +#include "hw/gpio/stm32l4x5_gpio.h"
 >  #include "hw/qdev-clock.h"
 >  #include "hw/misc/unimp.h"
+> @@ -42,21 +43,24 @@
+>  #define NUM_EXTI_IRQ 40
+>  /* Match exti line connections with their CPU IRQ number */
+>  /* See Vector Table (Reference Manual p.396) */
+> +/*
+> + * Some IRQs are connected to the same CPU IRQ (denoted by -1)
+> + * and require an intermediary OR gate to function correctly.
+> + */
+>  static const int exti_irq[NUM_EXTI_IRQ] =3D {
+>      6,                      /* GPIO[0]                 */
+>      7,                      /* GPIO[1]                 */
+>      8,                      /* GPIO[2]                 */
+>      9,                      /* GPIO[3]                 */
+>      10,                     /* GPIO[4]                 */
+> -    23, 23, 23, 23, 23,     /* GPIO[5..9]              */
+> -    40, 40, 40, 40, 40, 40, /* GPIO[10..15]            */
+> -    1,                      /* PVD                     */
+> +    -1, -1, -1, -1, -1,     /* GPIO[5..9] OR gate 23   */
+> +    -1, -1, -1, -1, -1, -1, /* GPIO[10..15] OR gate 40 */
+> +    -1,                     /* PVD OR gate 1           */
+>      67,                     /* OTG_FS_WKUP, Direct     */
+>      41,                     /* RTC_ALARM               */
+>      2,                      /* RTC_TAMP_STAMP2/CSS_LSE */
+>      3,                      /* RTC wakeup timer        */
+> -    63,                     /* COMP1                   */
+> -    63,                     /* COMP2                   */
+> +    -1, -1,                 /* COMP[1..2] OR gate 63   */
+>      31,                     /* I2C1 wakeup, Direct     */
+>      33,                     /* I2C2 wakeup, Direct     */
+>      72,                     /* I2C3 wakeup, Direct     */
+> @@ -69,18 +73,39 @@ static const int exti_irq[NUM_EXTI_IRQ] =3D {
+>      65,                     /* LPTIM1, Direct          */
+>      66,                     /* LPTIM2, Direct          */
+>      76,                     /* SWPMI1 wakeup, Direct   */
+> -    1,                      /* PVM1 wakeup             */
+> -    1,                      /* PVM2 wakeup             */
+> -    1,                      /* PVM3 wakeup             */
+> -    1,                      /* PVM4 wakeup             */
+> +    -1, -1, -1, -1,         /* PVM[1..4] OR gate 1     */
+>      78                      /* LCD wakeup, Direct      */
+>  };
 >
-> @@ -78,6 +79,22 @@ static const int exti_irq[NUM_EXTI_IRQ] =3D {
->  #define RCC_BASE_ADDRESS 0x40021000
->  #define RCC_IRQ 5
->
-> +static const struct {
-> +    uint32_t addr;
-> +    uint32_t moder_reset;
-> +    uint32_t ospeedr_reset;
-> +    uint32_t pupdr_reset;
-> +} stm32l4x5_gpio_cfg[NUM_GPIOS] =3D {
-> +    { 0x48000000, 0xABFFFFFF, 0x0C000000, 0x64000000 },
-> +    { 0x48000400, 0xFFFFFEBF, 0x00000000, 0x00000100 },
-> +    { 0x48000800, 0xFFFFFFFF, 0x00000000, 0x00000000 },
-> +    { 0x48000C00, 0xFFFFFFFF, 0x00000000, 0x00000000 },
-> +    { 0x48001000, 0xFFFFFFFF, 0x00000000, 0x00000000 },
-> +    { 0x48001400, 0xFFFFFFFF, 0x00000000, 0x00000000 },
-> +    { 0x48001800, 0xFFFFFFFF, 0x00000000, 0x00000000 },
-> +    { 0x48001C00, 0x0000000F, 0x00000000, 0x00000000 },
+> +static const int exti_or_gates_out[NUM_EXTI_OR_GATES] =3D {
+> +    23, 40, 63, 1,
+> +};
+> +
+> +static const int exti_or_gates_num_lines_in[NUM_EXTI_OR_GATES] =3D {
+> +    5, 6, 2, 5,
+> +};
+> +
+> +/* 3 OR gates with consecutive inputs */
+> +#define NUM_EXTI_SIMPLE_OR_GATES 3
+> +static const int exti_or_gates_first_line_in[NUM_EXTI_SIMPLE_OR_GATES] =
+=3D {
+> +    5, 10, 21,
+> +};
+> +
+> +/* 1 OR gate with non-consecutive inputs */
+> +#define EXTI_OR_GATE1_NUM_LINES_IN 5
+> +static const int exti_or_gate1_lines_in[EXTI_OR_GATE1_NUM_LINES_IN] =3D =
+{
+> +    16, 35, 36, 37, 38,
 > +};
 > +
 >  static void stm32l4x5_soc_initfn(Object *obj)
 >  {
 >      Stm32l4x5SocState *s =3D STM32L4X5_SOC(obj);
-> @@ -85,6 +102,11 @@ static void stm32l4x5_soc_initfn(Object *obj)
+>
 >      object_initialize_child(obj, "exti", &s->exti, TYPE_STM32L4X5_EXTI);
+> +    for (unsigned i =3D 0; i < NUM_EXTI_OR_GATES; i++) {
+> +        object_initialize_child(obj, "exti_or_gates[*]", &s->exti_or_gat=
+es[i],
+> +                                TYPE_OR_IRQ);
+> +    }
 >      object_initialize_child(obj, "syscfg", &s->syscfg, TYPE_STM32L4X5_SY=
 SCFG);
->      object_initialize_child(obj, "rcc", &s->rcc, TYPE_STM32L4X5_RCC);
-> +
-> +    for (unsigned i =3D 0; i < NUM_GPIOS; i++) {
-> +        g_autofree char *name =3D g_strdup_printf("gpio%c", 'a' + i);
-> +        object_initialize_child(obj, name, &s->gpio[i], TYPE_STM32L4X5_G=
-PIO);
-> +    }
->  }
 >
->  static void stm32l4x5_soc_realize(DeviceState *dev_soc, Error **errp)
-> @@ -93,8 +115,9 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc=
-, Error **errp)
->      Stm32l4x5SocState *s =3D STM32L4X5_SOC(dev_soc);
->      const Stm32l4x5SocClass *sc =3D STM32L4X5_SOC_GET_CLASS(dev_soc);
->      MemoryRegion *system_memory =3D get_system_memory();
-> -    DeviceState *armv7m;
-> +    DeviceState *armv7m, *dev;
->      SysBusDevice *busdev;
-> +    uint32_t pin_index;
->
->      if (!memory_region_init_rom(&s->flash, OBJECT(dev_soc), "flash",
->                                  sc->flash_size, errp)) {
-> @@ -135,17 +158,43 @@ static void stm32l4x5_soc_realize(DeviceState *dev_=
-soc, Error **errp)
+>      s->sysclk =3D qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0)=
+;
+> @@ -175,8 +200,43 @@ static void stm32l4x5_soc_realize(DeviceState *dev_s=
+oc, Error **errp)
 >          return;
 >      }
->
-> +    /* GPIOs */
-> +    for (unsigned i =3D 0; i < NUM_GPIOS; i++) {
-> +        g_autofree char *name =3D g_strdup_printf("%c", 'A' + i);
-> +        dev =3D DEVICE(&s->gpio[i]);
-> +        qdev_prop_set_string(dev, "name", name);
-> +        qdev_prop_set_uint32(dev, "mode-reset",
-> +                             stm32l4x5_gpio_cfg[i].moder_reset);
-> +        qdev_prop_set_uint32(dev, "ospeed-reset",
-> +                             stm32l4x5_gpio_cfg[i].ospeedr_reset);
-> +        qdev_prop_set_uint32(dev, "pupd-reset",
-> +                            stm32l4x5_gpio_cfg[i].pupdr_reset);
-> +        busdev =3D SYS_BUS_DEVICE(&s->gpio[i]);
-> +        g_free(name);
-> +        name =3D g_strdup_printf("gpio%c-out", 'a' + i);
-> +        qdev_connect_clock_in(DEVICE(&s->gpio[i]), "clk",
-> +            qdev_get_clock_out(DEVICE(&(s->rcc)), name));
-> +        if (!sysbus_realize(busdev, errp)) {
+>      sysbus_mmio_map(busdev, 0, EXTI_ADDR);
+> +
+> +    /* IRQs with fan-in that require an OR gate */
+> +    for (unsigned i =3D 0; i < NUM_EXTI_OR_GATES; i++) {
+> +        if (!object_property_set_int(OBJECT(&s->exti_or_gates[i]), "num-=
+lines",
+> +                                     exti_or_gates_num_lines_in[i], errp=
+)) {
 > +            return;
 > +        }
-> +        sysbus_mmio_map(busdev, 0, stm32l4x5_gpio_cfg[i].addr);
-> +    }
+> +        if (!qdev_realize(DEVICE(&s->exti_or_gates[i]), NULL, errp)) {
+> +            return;
+> +        }
 > +
->      /* System configuration controller */
->      busdev =3D SYS_BUS_DEVICE(&s->syscfg);
->      if (!sysbus_realize(busdev, errp)) {
->          return;
->      }
->      sysbus_mmio_map(busdev, 0, SYSCFG_ADDR);
-> -    /*
-> -     * TODO: when the GPIO device is implemented, connect it
-> -     * to SYCFG using `qdev_connect_gpio_out`, NUM_GPIOS and
-> -     * GPIO_NUM_PINS.
-> -     */
+> +        qdev_connect_gpio_out(DEVICE(&s->exti_or_gates[i]), 0,
+> +            qdev_get_gpio_in(armv7m, exti_or_gates_out[i]));
 > +
-> +    for (unsigned i =3D 0; i < NUM_GPIOS; i++) {
-> +        for (unsigned j =3D 0; j < GPIO_NUM_PINS; j++) {
-> +            pin_index =3D GPIO_NUM_PINS * i + j;
-> +            qdev_connect_gpio_out(DEVICE(&s->gpio[i]), j,
-> +                                  qdev_get_gpio_in(DEVICE(&s->syscfg),
-> +                                  pin_index));
+> +        if (i < NUM_EXTI_SIMPLE_OR_GATES) {
+> +            /* consecutive inputs for OR gates 23, 40, 63 */
+> +            for (unsigned j =3D 0; j < exti_or_gates_num_lines_in[i]; j+=
++) {
+> +                sysbus_connect_irq(SYS_BUS_DEVICE(&s->exti),
+> +                    exti_or_gates_first_line_in[i] + j,
+> +                    qdev_get_gpio_in(DEVICE(&s->exti_or_gates[i]), j));
+> +            }
+> +        } else {
+> +            /* non-consecutive inputs for OR gate 1 */
+> +            for (unsigned j =3D 0; j < EXTI_OR_GATE1_NUM_LINES_IN; j++) =
+{
+> +                sysbus_connect_irq(SYS_BUS_DEVICE(&s->exti),
+> +                    exti_or_gate1_lines_in[j],
+> +                    qdev_get_gpio_in(DEVICE(&s->exti_or_gates[i]), j));
+> +            }
 > +        }
 > +    }
->
->      /* EXTI device */
->      busdev =3D SYS_BUS_DEVICE(&s->exti);
-> @@ -157,7 +206,7 @@ static void stm32l4x5_soc_realize(DeviceState *dev_so=
-c, Error **errp)
->          sysbus_connect_irq(busdev, i, qdev_get_gpio_in(armv7m, exti_irq[=
+> +
+> +    /* IRQs that don't require fan-in */
+>      for (unsigned i =3D 0; i < NUM_EXTI_IRQ; i++) {
+> -        sysbus_connect_irq(busdev, i, qdev_get_gpio_in(armv7m, exti_irq[=
 i]));
+> +        if (exti_irq[i] !=3D -1) {
+> +            sysbus_connect_irq(busdev, i,
+> +                               qdev_get_gpio_in(armv7m, exti_irq[i]));
+> +        }
 >      }
 >
-> -    for (unsigned i =3D 0; i < 16; i++) {
-> +    for (unsigned i =3D 0; i < GPIO_NUM_PINS; i++) {
->          qdev_connect_gpio_out(DEVICE(&s->syscfg), i,
->                                qdev_get_gpio_in(DEVICE(&s->exti), i));
->      }
-> @@ -242,14 +291,6 @@ static void stm32l4x5_soc_realize(DeviceState *dev_s=
-oc, Error **errp)
->      /* RESERVED:    0x40024400, 0x7FDBC00 */
->
->      /* AHB2 BUS */
-> -    create_unimplemented_device("GPIOA",     0x48000000, 0x400);
-> -    create_unimplemented_device("GPIOB",     0x48000400, 0x400);
-> -    create_unimplemented_device("GPIOC",     0x48000800, 0x400);
-> -    create_unimplemented_device("GPIOD",     0x48000C00, 0x400);
-> -    create_unimplemented_device("GPIOE",     0x48001000, 0x400);
-> -    create_unimplemented_device("GPIOF",     0x48001400, 0x400);
-> -    create_unimplemented_device("GPIOG",     0x48001800, 0x400);
-> -    create_unimplemented_device("GPIOH",     0x48001C00, 0x400);
->      /* RESERVED:    0x48002000, 0x7FDBC00 */
->      create_unimplemented_device("OTG_FS",    0x50000000, 0x40000);
->      create_unimplemented_device("ADC",       0x50040000, 0x400);
-> diff --git a/hw/misc/stm32l4x5_syscfg.c b/hw/misc/stm32l4x5_syscfg.c
-> index fd68cb800b..3dafc00b49 100644
-> --- a/hw/misc/stm32l4x5_syscfg.c
-> +++ b/hw/misc/stm32l4x5_syscfg.c
-> @@ -27,6 +27,7 @@
->  #include "hw/irq.h"
->  #include "migration/vmstate.h"
->  #include "hw/misc/stm32l4x5_syscfg.h"
-> +#include "hw/gpio/stm32l4x5_gpio.h"
->
->  #define SYSCFG_MEMRMP 0x00
->  #define SYSCFG_CFGR1 0x04
-> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-> index 92b72d56dc..5776dbb19f 100644
-> --- a/hw/arm/Kconfig
-> +++ b/hw/arm/Kconfig
-> @@ -463,9 +463,10 @@ config STM32L4X5_SOC
->      bool
->      select ARM_V7M
->      select OR_IRQ
-> -    select STM32L4X5_SYSCFG
->      select STM32L4X5_EXTI
-> +    select STM32L4X5_SYSCFG
->      select STM32L4X5_RCC
-> +    select STM32L4X5_GPIO
->
->  config XLNX_ZYNQMP_ARM
->      bool
+>      for (unsigned i =3D 0; i < 16; i++) {
 > --
 > 2.43.2
 >
