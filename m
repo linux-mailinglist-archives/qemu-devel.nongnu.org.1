@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C326986671F
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 01:06:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94E0A866726
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 01:07:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reOV0-0001lk-5o; Sun, 25 Feb 2024 19:05:38 -0500
+	id 1reOUI-00084k-0Q; Sun, 25 Feb 2024 19:04:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1reOTH-0006yA-6x; Sun, 25 Feb 2024 19:03:54 -0500
-Received: from mail-yw1-x112c.google.com ([2607:f8b0:4864:20::112c])
+ id 1reOTH-0006yB-6g; Sun, 25 Feb 2024 19:03:54 -0500
+Received: from mail-yw1-x1133.google.com ([2607:f8b0:4864:20::1133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1reOTA-0000a1-Rx; Sun, 25 Feb 2024 19:03:48 -0500
-Received: by mail-yw1-x112c.google.com with SMTP id
- 00721157ae682-608c40666e0so12441437b3.2; 
- Sun, 25 Feb 2024 16:03:43 -0800 (PST)
+ id 1reOTD-0000a8-DB; Sun, 25 Feb 2024 19:03:48 -0500
+Received: by mail-yw1-x1133.google.com with SMTP id
+ 00721157ae682-608d55ab7b0so10822237b3.1; 
+ Sun, 25 Feb 2024 16:03:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708905822; x=1709510622; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708905823; x=1709510623; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xDMTaxB0TWxp4LTnEEK1r7+Pg3vnDkkuQfxuwY3SDHI=;
- b=nKOMwjsyoBne5q7iXGqI5lisG+NkOdjEHMGOnHv0fpMTiGl5lcTmAHq3sTudb2mOSZ
- zmT6Gpw/RR1Y3HfJOxdNYep1IRdUtsl3zYehE7j/ciGLUoZLJASY4qOo40melID88Yjx
- jGl3kDC1tL479Wvrbr6yA8KsgfDC16wHeUJf8IcVwCzg9P4LKgziB22dDX0lF0RuyMyB
- ykbon8sTEm7iQRPvBeLQVIyqkGNfZQfLHtzC5JkCGvKqRbHXtRSczoD/q4zt7EG4OXMV
- XajCRHpWG5+hMaF4l5wFshv3N52pHBDzg1jSjxd18eINQHmCOjX0ZfZgrfSYxrpm1Yyp
- 427g==
+ bh=R+5nn8hCwpZzaVfTQwWnore40MHayijwV/Mz9d7pKPI=;
+ b=WzcZi59r3r2TqTywgC3qUw3Hcrw14XzwzToJP7ilrilPBc8izWOyTDI13M/F6gPDdv
+ X377AKUEZhpiI0GLWO2y143B4lFoQCFLovBe3OGsoPO3P/CzEos37x3X3bQqlJ82Xush
+ 3ahPRPaQhckpziMhcn2SXuRGxqhTJy+A0TfStk/GsKIfzikmEDF7MMhBz3RoVWd+iT8D
+ VWr74vLZ0n2kKF0lNHRxGBZEDjmeBoqu+fnQXfx/PIG4yjkoHADoLx9dFW40iLCF31OL
+ C35qXI9Bv+Pzw4Rgo3zeD1pDlMhp61YlI4bGztg9zfeKM/l9X9Z53iD9y3fwhg/psD41
+ Ri5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708905822; x=1709510622;
+ d=1e100.net; s=20230601; t=1708905823; x=1709510623;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xDMTaxB0TWxp4LTnEEK1r7+Pg3vnDkkuQfxuwY3SDHI=;
- b=BX7WLdEqsBmZ3fEMfT6SITG5LQnh3+CZBVrKUhL9D6wj0AwabNegttKmGauad00xui
- xTW+5oI/GQUa/W7GsS2uobamdQx2eLLzqAPzZJlQ+MzcFbVUqskSLuPW4iUjGTrgt5RW
- fXHo1PzzO1HSi6pc23S0yh5YiRBYTh6gjTWK5cTe+p6pTagjhxeR5u6URGwzBV5Bk0lj
- WdMx0IklNGuh6RuPOMAFyYvXHtrRcyjaYpp1qSx7J9HQ0D4FCjrqtEqV0wgZ/XXYS9rf
- F+xjaTIKOpsxYVIkry0qAPHaWRUn+Sf9ttaSHc/hn1EMnZRpsvnc03O7y5iqUEC8u6fj
- gQ9w==
-X-Gm-Message-State: AOJu0Ywl4QZMNfpC1I/Ga6NyGTS1Bxb/fTVkaJELSu/pnVMDF13jYfrw
- SYSndB3P1BgolL74veGvJ+EFWarbJSrYIhAQpdJc7wMMgQbNm8TCTGdJUz9vYpbrkg==
-X-Google-Smtp-Source: AGHT+IG8Zf4elndbIUXe879R7BRHjiDDX8sNU88RpsCarUQmF67FKGiaQlRurIn/OKR3eqKuFeQq/Q==
-X-Received: by 2002:a81:b650:0:b0:604:a081:c198 with SMTP id
- h16-20020a81b650000000b00604a081c198mr3197795ywk.42.1708905822344; 
- Sun, 25 Feb 2024 16:03:42 -0800 (PST)
+ bh=R+5nn8hCwpZzaVfTQwWnore40MHayijwV/Mz9d7pKPI=;
+ b=IXBshOOusRAuBgl36fXljox/abtO67HCfAInffQM3XaiGnIJnjIAW0NcJWPBG8lmTA
+ iyWUGM5fZRrJwann4JS08TNglS7IRsZeszMrz+ZSjqz763veYNdR+/liWwnGD72U4FAo
+ CoYqBynBbIgEkun8rJrVoXNtQlabhCCk8ZCA1dlRM7F5IxEENwZhjj8OjtrgRVUGzhx4
+ E2SIJ/q6b/rLFuPkKQ6hqxSFoMtBc5xd4wP/DywWMN5rrVCXvskP3c9VEnnBD8jGKPsr
+ sQSpVlvvZ84gcVmXrlWYmgv9FA/7Q/wyJkKPBU+PbkFxQmre1pgWAF/ZORAtc8fOjQbw
+ GwOQ==
+X-Gm-Message-State: AOJu0Yx32XxDaCWIEa4NQcZYdg/EszwSwsOIhU5iRPCnhEd9CURFR4dp
+ 2hfF31NBzfTChHAYDeJAvqP3b2J1L43FH4VTZaSeK+u1wRBPtLWGRTR0vY/tfBm9xQ==
+X-Google-Smtp-Source: AGHT+IEU1MDKCBBh6S7aTh1NgOKTEtmuYE1u7ap/m1xQwENYjRWFtGSWCjMnBxz/iWBVXVZVU7hEaA==
+X-Received: by 2002:a81:94c3:0:b0:608:ddd9:812e with SMTP id
+ l186-20020a8194c3000000b00608ddd9812emr3523737ywg.42.1708905823571; 
+ Sun, 25 Feb 2024 16:03:43 -0800 (PST)
 Received: from localhost.localdomain ([201.203.117.224])
  by smtp.gmail.com with ESMTPSA id
- t18-20020a818312000000b00607bfa1913csm938171ywf.114.2024.02.25.16.03.41
+ t18-20020a818312000000b00607bfa1913csm938171ywf.114.2024.02.25.16.03.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 25 Feb 2024 16:03:42 -0800 (PST)
+ Sun, 25 Feb 2024 16:03:43 -0800 (PST)
 From: Sergey Kambalin <serg.oker@gmail.com>
 X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org,
 	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH v6 33/41] Add mailbox tests tags. Part 1
-Date: Sun, 25 Feb 2024 18:02:51 -0600
-Message-Id: <20240226000259.2752893-34-sergey.kambalin@auriga.com>
+Subject: [PATCH v6 34/41] Add mailbox tests tags. Part 2
+Date: Sun, 25 Feb 2024 18:02:52 -0600
+Message-Id: <20240226000259.2752893-35-sergey.kambalin@auriga.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240226000259.2752893-1-sergey.kambalin@auriga.com>
 References: <20240226000259.2752893-1-sergey.kambalin@auriga.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112c;
- envelope-from=serg.oker@gmail.com; helo=mail-yw1-x112c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1133;
+ envelope-from=serg.oker@gmail.com; helo=mail-yw1-x1133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,197 +93,172 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 ---
- tests/qtest/bcm2838-mailbox.h | 177 ++++++++++++++++++++++++++++++++++
- 1 file changed, 177 insertions(+)
+ tests/qtest/bcm2838-mailbox.h | 152 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 152 insertions(+)
 
 diff --git a/tests/qtest/bcm2838-mailbox.h b/tests/qtest/bcm2838-mailbox.h
-index 9222b38bad..1360fbb8cf 100644
+index 1360fbb8cf..b4f7b7b314 100644
 --- a/tests/qtest/bcm2838-mailbox.h
 +++ b/tests/qtest/bcm2838-mailbox.h
-@@ -116,6 +116,183 @@ typedef struct {                                                        \
-     };                                                                  \
- } TypeName
+@@ -294,6 +294,158 @@ DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_SET_VIRTUAL_WIDTH_HEIGHT_t,
+         uint32_t height;
+     });
  
-+DECLARE_TAG_TYPE(TAG_GET_FIRMWARE_REVISION_t,
++DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_GET_DEPTH_t,
 +    struct {},
 +    struct {
-+        uint32_t revision;
++        uint32_t bpp;
 +    });
 +
-+DECLARE_TAG_TYPE(TAG_GET_FIRMWARE_VARIANT_t,
++DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_TEST_DEPTH_t,
++    struct {
++        uint32_t bpp;
++    },
++    struct {
++        uint32_t bpp;
++    });
++
++DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_SET_DEPTH_t,
++    struct {
++        uint32_t bpp;
++    },
++    struct {
++        uint32_t bpp;
++    });
++
++DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_GET_PIXEL_ORDER_t,
 +    struct {},
 +    struct {
-+        uint32_t variant;
++        uint32_t pixel_order;
 +    });
 +
-+DECLARE_TAG_TYPE(TAG_GET_BOARD_REVISION_t,
++DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_TEST_PIXEL_ORDER_t,
++    struct {
++        uint32_t pixel_order;
++    },
++    struct {
++        uint32_t pixel_order;
++    });
++
++DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_SET_PIXEL_ORDER_t,
++    struct {
++        uint32_t pixel_order;
++    },
++    struct {
++        uint32_t pixel_order;
++    });
++
++DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_GET_ALPHA_MODE_t,
 +    struct {},
 +    struct {
-+        uint32_t revision;
++        uint32_t alpha_mode;
 +    });
 +
-+DECLARE_TAG_TYPE(TAG_GET_ARM_MEMORY_t,
++DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_TEST_ALPHA_MODE_t,
++    struct {
++        uint32_t alpha_mode;
++    },
++    struct {
++        uint32_t alpha_mode;
++    });
++
++DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_SET_ALPHA_MODE_t,
++    struct {
++        uint32_t alpha_mode;
++    },
++    struct {
++        uint32_t alpha_mode;
++    });
++
++DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_GET_PITCH_t,
 +    struct {},
 +    struct {
-+        uint32_t base;
-+        uint32_t size;
++        uint32_t pitch;
 +    });
 +
-+DECLARE_TAG_TYPE(TAG_GET_VC_MEMORY_t,
++DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_SET_PITCH_t,
++    struct {
++        uint32_t pitch;
++    },
++    struct {});
++
++DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_GET_VIRTUAL_OFFSET_t,
 +    struct {},
 +    struct {
-+        uint32_t base;
-+        uint32_t size;
++        uint32_t x;
++        uint32_t y;
 +    });
 +
-+DECLARE_TAG_TYPE(TAG_SET_POWER_STATE_t,
++DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_TEST_VIRTUAL_OFFSET_t,
 +    struct {
-+        uint32_t device_id;
-+        uint32_t cmd;
++        uint32_t x;
++        uint32_t y;
 +    },
 +    struct {
-+        uint32_t device_id;
-+        uint32_t cmd;
++        uint32_t x;
++        uint32_t y;
 +    });
 +
-+DECLARE_TAG_TYPE(TAG_GET_CLOCK_STATE_t,
++DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_SET_VIRTUAL_OFFSET_t,
 +    struct {
-+        uint32_t clock_id;
++        uint32_t x;
++        uint32_t y;
 +    },
 +    struct {
-+        uint32_t clock_id;
-+        uint32_t cmd;
++        uint32_t x;
++        uint32_t y;
 +    });
 +
-+DECLARE_TAG_TYPE(TAG_GET_CLOCK_RATE_t,
-+    struct {
-+        uint32_t clock_id;
-+    },
-+    struct {
-+        uint32_t clock_id;
-+        uint32_t rate;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_GET_MAX_CLOCK_RATE_t,
-+    struct {
-+        uint32_t clock_id;
-+    },
-+    struct {
-+        uint32_t clock_id;
-+        uint32_t rate;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_GET_MIN_CLOCK_RATE_t,
-+    struct {
-+        uint32_t clock_id;
-+    },
-+    struct {
-+        uint32_t clock_id;
-+        uint32_t rate;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_GET_CLOCKS_t,
++DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_GET_OVERSCAN_t,
 +    struct {},
 +    struct {
-+        uint32_t root_clock;
-+        uint32_t arm_clock;
++        uint32_t top;
++        uint32_t bottom;
++        uint32_t left;
++        uint32_t right;
 +    });
 +
-+DECLARE_TAG_TYPE(TAG_GET_TEMPERATURE_t,
++DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_TEST_OVERSCAN_t,
 +    struct {
-+        uint32_t temperature_id;
++        uint32_t top;
++        uint32_t bottom;
++        uint32_t left;
++        uint32_t right;
 +    },
 +    struct {
-+        uint32_t temperature_id;
-+        uint32_t temperature;
++        uint32_t top;
++        uint32_t bottom;
++        uint32_t left;
++        uint32_t right;
 +    });
 +
-+DECLARE_TAG_TYPE(TAG_GET_MAX_TEMPERATURE_t,
++DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_SET_OVERSCAN_t,
 +    struct {
-+        uint32_t temperature_id;
++        uint32_t top;
++        uint32_t bottom;
++        uint32_t left;
++        uint32_t right;
 +    },
 +    struct {
-+        uint32_t temperature_id;
-+        uint32_t temperature;
++        uint32_t top;
++        uint32_t bottom;
++        uint32_t left;
++        uint32_t right;
 +    });
 +
-+DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_ALLOCATE_t,
-+    struct {
-+        uint32_t alignment;
-+    },
-+    struct {
-+        uint32_t base;
-+        uint32_t size;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_RELEASE_t,
++DECLARE_TAG_TYPE(TAG_GET_COMMAND_LINE_t,
 +    struct {},
 +    struct {});
 +
-+DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_BLANK_t,
-+    struct {
-+        uint32_t on;
-+    },
-+    struct {
-+        uint32_t on;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_GET_PHYSICAL_WIDTH_HEIGHT_t,
++DECLARE_TAG_TYPE(TAG_GET_DMA_CHANNELS_t,
 +    struct {},
 +    struct {
-+        uint32_t width;
-+        uint32_t height;
++        uint32_t mask;
 +    });
 +
-+DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_TEST_PHYSICAL_WIDTH_HEIGHT_t,
-+    struct {
-+        uint32_t width;
-+        uint32_t height;
-+    },
-+    struct {
-+        uint32_t width;
-+        uint32_t height;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_SET_PHYSICAL_WIDTH_HEIGHT_t,
-+    struct {
-+        uint32_t width;
-+        uint32_t height;
-+    },
-+    struct {
-+        uint32_t width;
-+        uint32_t height;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_GET_VIRTUAL_WIDTH_HEIGHT_t,
-+    struct {},
-+    struct {
-+        uint32_t width;
-+        uint32_t height;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_TEST_VIRTUAL_WIDTH_HEIGHT_t,
-+    struct {
-+        uint32_t width;
-+        uint32_t height;
-+    },
-+    struct {
-+        uint32_t width;
-+        uint32_t height;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_FRAMEBUFFER_SET_VIRTUAL_WIDTH_HEIGHT_t,
-+    struct {
-+        uint32_t width;
-+        uint32_t height;
-+    },
-+    struct {
-+        uint32_t width;
-+        uint32_t height;
-+    });
- 
  int mbox0_has_data(void);
  void mbox0_read_message(uint8_t channel, void *msgbuf, size_t msgbuf_size);
+ void mbox1_write_message(uint8_t channel, uint32_t msg_addr);
 -- 
 2.34.1
 
