@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D3F868193
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 20:59:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A549F86818F
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 20:58:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reh77-0001KA-7D; Mon, 26 Feb 2024 14:58:13 -0500
+	id 1reh6A-0000nU-MV; Mon, 26 Feb 2024 14:57:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1reh74-0001J3-UD
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 14:58:10 -0500
-Received: from mail-vk1-xa31.google.com ([2607:f8b0:4864:20::a31])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1reh65-0000me-Hf
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 14:57:09 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1reh6x-0004vN-JP
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 14:58:10 -0500
-Received: by mail-vk1-xa31.google.com with SMTP id
- 71dfb90a1353d-4cbc49dacc2so1893375e0c.1
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 11:58:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1reh5z-0004c0-HC
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 14:57:05 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-33d2b354c72so2549781f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 11:57:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1708977481; x=1709582281; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1708977422; x=1709582222; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Q+PTBS3KKeQY3OK8H3H0sBlsb0C06FUYzlAVrOFK09Y=;
- b=jwxwwBFPxwHnukQ2veUsNHzbBtBEG6F7OFiEXAIM8IHG0MVGEC7PzwakYOByt/rEdM
- ysUDtyD4gq0gv8MP/bc/1gFXIDWWELC0dkVId9GCg8DN7ddxXf0b9lc7kVMCh7otUVXz
- JfCnKP2fAijiB9DUxYPVlCtnY4KYFDnCT5LwGLi5XPp7Q9ivG4o+tPcKyAnGwFlKMzJ+
- rWZqbHhajLPhKTlcp0FK8eu9EtIcpyjajDl3h3xru9n/K8fw7H6BY33deIWQEsH647tS
- grisAM4y76WflhqrX1wWS9z3iK4ihp3YaFdrGMT8Hldoz9Y4BaOgQnRVrEzNpUPl03FQ
- QhhQ==
+ bh=jTIUmYvDBeHjOkm9JVYv4ARKyMqKfxarRP+pX7+NEwY=;
+ b=nnA2WJZHhQOapvJxEXnzkxpZF4bwZXzPR6P7ukvCHIv5VV8u1dP9QeEx8kJ57SqGXe
+ c/OG6si0a22H7TluXi/R771nUXXJlE2MAp3k3zj4PuTeNyTHSYh/XtnmqTrEH/ntKaVk
+ FG3qySwk8God1WULzCif59VKOhElNFs5i3i0QX8+JqIMb2whmSReVySqxwNVui8KweaH
+ FIRNDaffdUNcH5/FbSHMZFEjWUx4MNaWn4I8UZQ+8/HvXgTSkTsLst9iCUjZHrqLDYqf
+ I7UAny3SS9y1eHegOP/E0fryhnS9imsJn2VN1xVg9u1BEojPlm36zFmGey4IWdySolz0
+ BCyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708977481; x=1709582281;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Q+PTBS3KKeQY3OK8H3H0sBlsb0C06FUYzlAVrOFK09Y=;
- b=hhUuREJmSpGjyPnjMTm0F5hSG+QGMKaIi+Wj0YYZOk1wxWysrhYvRMhq5CmoHHQLSa
- zOl6H2zOmCbn+PRq1YuRNoVfBNIqviJYyiw5XZdBJhCxIlgSwneQK1pcn6YngnHjM0lY
- /hVctnjbLQmT2F2vgQyKORmVcygoebWg15efZcLsydMFh3dZMjway67z+BlQJsLIiE4j
- qkPPC/2nfXjV22opgTjYDP4OF8mhDw36wXJyaTynGc73KEmtw8qkpZaVmVsNf+1yWXfZ
- FUn0wSVK/B+UeLqXCRy0rzNDRR8LOFXjrhJu9mo+IIjyO4OlnhC7puKXz93xRGYMNf5I
- UkrQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWwQ8GPthiBFvUXY+K4HFSJFwQOd9PyrgNEC/5KxyQ9kPhWwxQTmKOr67hbsvoZwAHyhsrnYUTVhAr3omlL/taEEd16HNo=
-X-Gm-Message-State: AOJu0YycI3D0Kj9KN8FzYrp8/qtVG9iOdua/6xlQ5aKYS/Dfdm9QjjhQ
- LTnst0QLkF4PVi2XJE60ktJVr3tyGlBWKRbH5bd5QSMF1iOtvXMr4ASrpDQZmMI=
-X-Google-Smtp-Source: AGHT+IHtxxekvVzB/trJeF2/orsW8jpD2AX84jZC+UwDYMCwJW7WI/gNPwWleeX6kf6ZaQhlWChq+g==
-X-Received: by 2002:a1f:dac3:0:b0:4cc:b98:43d2 with SMTP id
- r186-20020a1fdac3000000b004cc0b9843d2mr5944422vkg.4.1708977481510; 
- Mon, 26 Feb 2024 11:58:01 -0800 (PST)
-Received: from n231-230-216.byted.org ([130.44.212.95])
- by smtp.gmail.com with ESMTPSA id
- ej5-20020a056122270500b004ca3dc45886sm712738vkb.47.2024.02.26.11.58.00
+ d=1e100.net; s=20230601; t=1708977422; x=1709582222;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=jTIUmYvDBeHjOkm9JVYv4ARKyMqKfxarRP+pX7+NEwY=;
+ b=JOuEvRHV5h3VykZSMLuGY2446l2aKNSO/u/4h+QWcgY3G6Wrr/RkHCN7XnJMtVMUmk
+ B2/uu+hisdnMYNpIrklR9i+pesPtqqhhNl8mXIGtkGlscRHQkWP/2fpHMknIdxZgVxgM
+ nxWKdv8XKqMgMltrUPQfQO8xnj4shtNFVLwhLpg9toLKsS9q9YEvUOjHSRgyhU1WAcUL
+ 8i8nTGQiH6yuzV1RievI3RiwVwPxlZlt7eHsalwH+kEV7CtQwCiAMjBqpsFEofomTHqj
+ uxB7VubPhjKqmSlVujRlgCIFfWwJDJ6PLcOgt6l5+oEvGB9u3aXxMFpXiHLm7eJC8rth
+ p49A==
+X-Gm-Message-State: AOJu0YyZnlKPAer2WAE5mTA2isZn8eUE73RvAK2rcSDDgN0x8lGhCP4U
+ qIN+ZDIaWf9rIrLvMAgAYgb8amdMu2YIc4dUcr6rCD32p4NcfnhEz1V6L1KYGqtvsRDEaagujiT
+ F
+X-Google-Smtp-Source: AGHT+IGhsOKsIS1GvNXuR11cQ5me5Wa//kYHulf5G9vyYj0Mrl4SVINEGWIG/X0H+7eru3KNE/F76Q==
+X-Received: by 2002:adf:f291:0:b0:33d:264d:6dfc with SMTP id
+ k17-20020adff291000000b0033d264d6dfcmr6200408wro.63.1708977421876; 
+ Mon, 26 Feb 2024 11:57:01 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ c3-20020adfe703000000b0033d6fe3f6absm9165384wrm.62.2024.02.26.11.57.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Feb 2024 11:58:01 -0800 (PST)
-From: Hao Xiang <hao.xiang@bytedance.com>
-To: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
- peterx@redhat.com, farosas@suse.de, eblake@redhat.com, armbru@redhat.com,
- thuth@redhat.com, lvivier@redhat.com, jdenemar@redhat.com,
- marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com,
- qemu-devel@nongnu.org
-Cc: Hao Xiang <hao.xiang@bytedance.com>
-Subject: [PATCH v3 7/7] Update maintainer contact for migration multifd zero
- page checking acceleration.
-Date: Mon, 26 Feb 2024 19:56:54 +0000
-Message-Id: <20240226195654.934709-8-hao.xiang@bytedance.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20240226195654.934709-1-hao.xiang@bytedance.com>
-References: <20240226195654.934709-1-hao.xiang@bytedance.com>
+ Mon, 26 Feb 2024 11:57:01 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id E0D9C5F7B1;
+ Mon, 26 Feb 2024 19:57:00 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,  Warner Losh <imp@bsdimp.com>,
+ Kyle Evans <kevans@freebsd.org>
+Subject: Re: 'make vm-build-openbsd' tries to download nonexistent 7.2
+ installer ISO
+In-Reply-To: <CAFEAcA-3gSBhEv3GY9XeC-5nxjk9ymc7BnhUYF+Cu73tNE3uyA@mail.gmail.com>
+ (Peter Maydell's message of "Mon, 26 Feb 2024 13:37:48 +0000")
+References: <CAFEAcA-3gSBhEv3GY9XeC-5nxjk9ymc7BnhUYF+Cu73tNE3uyA@mail.gmail.com>
+User-Agent: mu4e 1.12.0; emacs 29.1
+Date: Mon, 26 Feb 2024 19:57:00 +0000
+Message-ID: <87h6hvdmnn.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a31;
- envelope-from=hao.xiang@bytedance.com; helo=mail-vk1-xa31.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,30 +98,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add myself to maintain multifd zero page checking acceleration function.
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
----
- MAINTAINERS | 5 +++++
- 1 file changed, 5 insertions(+)
+> 'make vm-build-openbsd' has stopped working -- I suspect that this
+> line from the logs is probably relevant:
+>
+> http://cdn.openbsd.org/pub/OpenBSD/7.2/packages/amd64/: no such dir
+>
+> though we don't eventually fail until much later, in 'make check' with
+>         gmake --output-sync -j8 check V=3D1;
+>
+> Pseudo-terminal will not be allocated because stdin is not a terminal.
+> Warning: Permanently added '[127.0.0.1]:33847' (ED25519) to the list
+> of known hosts.
+>
+> ERROR: Python not found. Use --python=3D/path/to/python
+>
+>
+> tests/vm/openbsd currently has:
+>     link =3D "https://cdn.openbsd.org/pub/OpenBSD/7.2/amd64/install72.iso"
+> but the webserver doesn't have 7.2 any more.
+>
+> Could somebody look at what we need to do to update this to 7.4
+> (most recent release), please?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 992799171f..4a4f8f24e0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3413,6 +3413,11 @@ F: tests/migration/
- F: util/userfaultfd.c
- X: migration/rdma*
- 
-+Migration multifd zero page checking acceleration
-+M: Hao Xiang <hao.xiang@bytedance.com>
-+S: Maintained
-+F: migration/multifd-zero-page.c
-+
- RDMA Migration
- R: Li Zhijian <lizhijian@fujitsu.com>
- R: Peter Xu <peterx@redhat.com>
--- 
-2.30.2
+Sadly the installer has changed some strings so we need to update the
+expect sequence.
 
+>
+> I filed
+> https://gitlab.com/qemu-project/qemu/-/issues/2192
+> to track this.
+>
+> thanks
+> -- PMM
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
