@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AB2986672E
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 01:09:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D26986673A
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 01:11:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reOUr-0000TM-E5; Sun, 25 Feb 2024 19:05:31 -0500
+	id 1reOUx-0001KK-4w; Sun, 25 Feb 2024 19:05:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1reOT9-0006ug-6g; Sun, 25 Feb 2024 19:03:44 -0500
-Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
+ id 1reOTA-0006uj-PK; Sun, 25 Feb 2024 19:03:47 -0500
+Received: from mail-yw1-x1136.google.com ([2607:f8b0:4864:20::1136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1reOT7-0000YS-Bl; Sun, 25 Feb 2024 19:03:42 -0500
-Received: by mail-yw1-x112f.google.com with SMTP id
- 00721157ae682-608fb59fe4aso3114287b3.0; 
- Sun, 25 Feb 2024 16:03:40 -0800 (PST)
+ id 1reOT8-0000ZJ-US; Sun, 25 Feb 2024 19:03:44 -0500
+Received: by mail-yw1-x1136.google.com with SMTP id
+ 00721157ae682-60853ad17f9so18235667b3.0; 
+ Sun, 25 Feb 2024 16:03:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708905820; x=1709510620; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708905821; x=1709510621; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=m0t+xmx/PNLJX3De7wXTVpzxGfzPKHqSNh1RXOyeiwA=;
- b=luKEJ+MjwQmFCHlZuU5Z/Nzg/SCvXC35fi3bynSP/ZgxHVVpYPi9LSvvq376KFzrFy
- WIvRvhJdzc0Oq/v/hNCHzSP3prvzzJ7MShc97ClrBpMuW4K2W3Ac8pB41KoZ9CCkp27E
- aKoDPyb4VAucBF8pgFIp+7hMbX7uShutxmaSeKupbdSaCB2v+ZtV0f/7BU54ur8dhz+b
- h9kFWW3X+o1VlliKmTW3y9e5vNErGuXCszzIWRh/gN6bFpd2jDkYDK1CBfKaLl2MhVKi
- iYF8GHF5N/I4vZ4OGrHsJcLyxQJf4tJuTja3YHuXs34WtAgaWWH7cyw9xE4yGW0n2dwJ
- AtKQ==
+ bh=xY4fZ6J1E5d6nZV14RhkO1nw2p+k/NowBgJrZNhXAdQ=;
+ b=V68ljs9Wv/9ZmeCFnsO2vYpwFHAO1scxM1aOIr7S2+I6eKV3U5kZJGi6hIdh77hiGJ
+ 3fcKpk8DK0lT/YZKrDT09AhQD8N9nbkrONSZbNhxuwB4lhxbUuJxFtnDS6wgN2VjPuSL
+ 74XOe3faa2UXU8mh0nsMM2GmhCqnqPqaRNyAK/s/U5hYqVqolC04EseFA4lj+66mENA/
+ 22sttigvZ0jsqYm+lIwuk2jOHLkxxbsbp07Tk/T21MkwBUSYOXwsG/Z+zqZjJLXD/KNz
+ byH1++EWqJPT3xz3c0fv/cIIBmg9945ul1GxL+Z/XRfLZTQfc2YVUARhPqqXWYABkE0F
+ qY4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708905820; x=1709510620;
+ d=1e100.net; s=20230601; t=1708905821; x=1709510621;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=m0t+xmx/PNLJX3De7wXTVpzxGfzPKHqSNh1RXOyeiwA=;
- b=Zyx0eXbVfzNJ6IxFcqMZy3udQ5B7sTbeLKJ6u2KuMQ3yoJbq6Qcb9aozZc9gtt+m3E
- 8lii+jly6VOP3O5ycPi0uBpmAd6PLLOZV55pTDtYORQfgpZZUz1Eu50VKSVlaWaQv+AG
- utyTvU33gfk4HhHC5Fri1x/IrKTvwVQkcrTxAxXY4GfVSr3/rHQIWhuAQ7mmlVYfnsZU
- WAdXYWpRXTYIwfBcL2636tMHYrfTsxZsCKsUp4D7BR25vfErHAzSfZGuNZ0ozcSKaE5f
- UYOT9Djzc9hkIlcfPHmyboqxjN/Febuny8/uHWoXUMTqiJkIfeT8ebNlh19q118txNl3
- TrFw==
-X-Gm-Message-State: AOJu0Yyy2ADaTpeMatrAh+S/oQ+rZJ1tdiHVhJh4YeoG6obgsYUSofVl
- XHUG2qpl1spxcg6C2mO4DcAbfs9m51xW4+QRtV3+vRoVBO14URx9lhB3R5N0+6bZLQ==
-X-Google-Smtp-Source: AGHT+IE9vTAx6KiqS/rF12DlK3VXUHC+mrQV9GTM2IvSyDC50MbqpBBdKOK/N81PfUQ8wTFexnOJVw==
-X-Received: by 2002:a81:af67:0:b0:608:ba29:9a46 with SMTP id
- x39-20020a81af67000000b00608ba299a46mr4371965ywj.12.1708905819882; 
- Sun, 25 Feb 2024 16:03:39 -0800 (PST)
+ bh=xY4fZ6J1E5d6nZV14RhkO1nw2p+k/NowBgJrZNhXAdQ=;
+ b=Qc/VcQph4VVFgAO1ubdIbYtRih3C+m5RqOiWb8im25WGbGHtA0Tmz8vzBnAI/sVRIz
+ 8ZjNG8s10rmROLxmAOWHz7vjrO9A9PDkgxmpZuMITOQO3gEivzJ+pe2oG5kcZl9mRddI
+ JGcBpoCYnkUlzsj3baBaABnCghRIgve7weRuXUGyRYf0ZkhHuM1Wwtab9tD1GqhuyFn0
+ MvR8mGVmFA81ABmVYtBBLg7TUYQwofbqPXc69YPGy0HdHNZcDQSV4iUwJyhUlGLUPHDG
+ rjO9nYtsVQSL+oNg6rkMgjiaC0AzjrMk3zRWheXcZfhWxe892s/h2iV9hUwAXTVH+T3A
+ ux4Q==
+X-Gm-Message-State: AOJu0Yw5FDEKNA1UD7krk1My7Gf1Sa6oaN9Bz5ln6+xYjVAa/dpfkluq
+ 1HFjx+OmYXJ+M24BlVquFBu9tZn1yxTWU9opKiwJA+TeQpF2sh1RWnXPcag/52GXoA==
+X-Google-Smtp-Source: AGHT+IEjLJX9Id7JUSYMAHfdQEYQYJXse1Xpe8FkgHzLHsEN1r2Z2yty5a9IADVwaIonSaZB8I1maA==
+X-Received: by 2002:a81:49cc:0:b0:608:f271:ca2d with SMTP id
+ w195-20020a8149cc000000b00608f271ca2dmr809313ywa.37.1708905821120; 
+ Sun, 25 Feb 2024 16:03:41 -0800 (PST)
 Received: from localhost.localdomain ([201.203.117.224])
  by smtp.gmail.com with ESMTPSA id
- t18-20020a818312000000b00607bfa1913csm938171ywf.114.2024.02.25.16.03.38
+ t18-20020a818312000000b00607bfa1913csm938171ywf.114.2024.02.25.16.03.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 25 Feb 2024 16:03:39 -0800 (PST)
+ Sun, 25 Feb 2024 16:03:40 -0800 (PST)
 From: Sergey Kambalin <serg.oker@gmail.com>
 X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org,
 	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH v6 31/41] Add mailbox test stub
-Date: Sun, 25 Feb 2024 18:02:49 -0600
-Message-Id: <20240226000259.2752893-32-sergey.kambalin@auriga.com>
+Subject: [PATCH v6 32/41] Add mailbox test constants
+Date: Sun, 25 Feb 2024 18:02:50 -0600
+Message-Id: <20240226000259.2752893-33-sergey.kambalin@auriga.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240226000259.2752893-1-sergey.kambalin@auriga.com>
 References: <20240226000259.2752893-1-sergey.kambalin@auriga.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
- envelope-from=serg.oker@gmail.com; helo=mail-yw1-x112f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1136;
+ envelope-from=serg.oker@gmail.com; helo=mail-yw1-x1136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,134 +93,121 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 ---
- tests/qtest/bcm2838-mailbox.c | 60 +++++++++++++++++++++++++++++++++++
- tests/qtest/bcm2838-mailbox.h | 37 +++++++++++++++++++++
- tests/qtest/meson.build       |  1 +
- 3 files changed, 98 insertions(+)
- create mode 100644 tests/qtest/bcm2838-mailbox.c
- create mode 100644 tests/qtest/bcm2838-mailbox.h
+ tests/qtest/bcm2838-mailbox.c |  1 +
+ tests/qtest/bcm2838-mailbox.h | 88 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 89 insertions(+)
 
 diff --git a/tests/qtest/bcm2838-mailbox.c b/tests/qtest/bcm2838-mailbox.c
-new file mode 100644
-index 0000000000..0928a3dff8
---- /dev/null
+index 0928a3dff8..1efd3c628a 100644
+--- a/tests/qtest/bcm2838-mailbox.c
 +++ b/tests/qtest/bcm2838-mailbox.c
-@@ -0,0 +1,60 @@
-+/*
-+ * Helper functions to work with BCM2838 mailbox via qtest interface.
-+ *
-+ * Copyright (c) 2023 Auriga LLC
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/registerfields.h"
-+#include "libqtest-single.h"
-+#include "bcm2838-mailbox.h"
-+
-+REG32(MBOX_EXCHNG_REG,          0)
-+FIELD(MBOX_EXCHNG_REG, CHANNEL, 0, 4)
-+FIELD(MBOX_EXCHNG_REG, DATA,    4, 28)
-+
-+static uint32_t qtest_mbox0_read_reg32(QTestState *s, uint32_t offset)
-+{
-+    return qtest_readl(s, MBOX0_BASE + offset);
-+}
-+
-+static void qtest_mbox1_write_reg32(QTestState *s, uint32_t offset, uint32_t value)
-+{
-+    return qtest_writel(s, MBOX1_BASE + offset, value);
-+}
-+
-+static void qtest_mbox1_write(QTestState *s, uint8_t channel, uint32_t data)
-+{
-+    uint32_t mbox_reg = 0;
-+
-+    mbox_reg = FIELD_DP32(mbox_reg, MBOX_EXCHNG_REG, CHANNEL, channel);
-+    mbox_reg = FIELD_DP32(mbox_reg, MBOX_EXCHNG_REG, DATA, data);
-+    qtest_mbox1_write_reg32(s, MBOX_REG_WRITE, mbox_reg);
-+}
-+
-+int qtest_mbox0_has_data(QTestState *s) {
-+    return !(qtest_mbox0_read_reg32(s, MBOX_REG_STATUS) & MBOX_READ_EMPTY);
-+}
-+
-+void qtest_mbox0_read_message(QTestState *s,
-+                              uint8_t channel,
-+                              void *msgbuf,
-+                              size_t msgbuf_size)
-+{
-+    uint32_t mbox_reg;
-+    uint32_t msgaddr;
-+
-+    g_assert(qtest_mbox0_has_data(s));
-+    mbox_reg = qtest_mbox0_read_reg32(s, MBOX_REG_READ);
-+    g_assert_cmphex(FIELD_EX32(mbox_reg, MBOX_EXCHNG_REG, CHANNEL), ==, channel);
-+    msgaddr = FIELD_EX32(mbox_reg, MBOX_EXCHNG_REG, DATA) << 4;
-+    qtest_memread(s, msgaddr, msgbuf, msgbuf_size);
-+}
-+
-+void qtest_mbox1_write_message(QTestState *s, uint8_t channel, uint32_t msg_addr)
-+{
-+    qtest_mbox1_write(s, channel, msg_addr >> 4);
-+}
-diff --git a/tests/qtest/bcm2838-mailbox.h b/tests/qtest/bcm2838-mailbox.h
-new file mode 100644
-index 0000000000..e9e1f53bc9
---- /dev/null
-+++ b/tests/qtest/bcm2838-mailbox.h
-@@ -0,0 +1,37 @@
-+/*
-+ * Declarations for BCM2838 mailbox test.
-+ *
-+ * Copyright (c) 2023 Auriga LLC
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+typedef struct {
-+    uint32_t size;
-+    uint32_t req_resp_code;
-+} MboxBufHeader;
-+
-+#define DECLARE_TAG_TYPE(TypeName, RequestValueType, ResponseValueType) \
-+typedef struct {                                                        \
-+    uint32_t id;                                                        \
-+    uint32_t value_buffer_size;                                         \
-+    union {                                                             \
-+        struct {                                                        \
-+            uint32_t zero;                                              \
-+            RequestValueType value;                                     \
-+        } request;                                                      \
-+        struct {                                                        \
-+            uint32_t size_stat;                                         \
-+            ResponseValueType value;                                    \
-+        } response;                                                     \
-+    };                                                                  \
-+} TypeName
-+
-+
-+int mbox0_has_data(void);
-+void mbox0_read_message(uint8_t channel, void *msgbuf, size_t msgbuf_size);
-+void mbox1_write_message(uint8_t channel, uint32_t msg_addr);
-+int qtest_mbox0_has_data(QTestState *s);
-+void qtest_mbox0_read_message(QTestState *s, uint8_t channel, void *msgbuf, size_t msgbuf_size);
-+void qtest_mbox1_write_message(QTestState *s, uint8_t channel, uint32_t msg_addr);
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 6ea77893f5..e49ce4f092 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -334,6 +334,7 @@ qtests = {
-   'virtio-net-failover': files('migration-helpers.c'),
-   'vmgenid-test': files('boot-sector.c', 'acpi-utils.c'),
-   'netdev-socket': files('netdev-socket.c', '../unit/socket-helpers.c'),
-+  'bcm2838-mbox-property-test' : files('bcm2838-mailbox.c'),
- }
+@@ -11,6 +11,7 @@
+ #include "hw/registerfields.h"
+ #include "libqtest-single.h"
+ #include "bcm2838-mailbox.h"
++#include "hw/arm/raspberrypi-fw-defs.h"
  
- if vnc.found()
+ REG32(MBOX_EXCHNG_REG,          0)
+ FIELD(MBOX_EXCHNG_REG, CHANNEL, 0, 4)
+diff --git a/tests/qtest/bcm2838-mailbox.h b/tests/qtest/bcm2838-mailbox.h
+index e9e1f53bc9..9222b38bad 100644
+--- a/tests/qtest/bcm2838-mailbox.h
++++ b/tests/qtest/bcm2838-mailbox.h
+@@ -7,6 +7,94 @@
+  * See the COPYING file in the top-level directory.
+  */
+ 
++#define MBOX0_BASE 0xFE00B880
++#define MBOX1_BASE 0xFE00B8A0
++
++#define MBOX_REG_READ   0x00
++#define MBOX_REG_WRITE  0x00
++#define MBOX_REG_PEEK   0x10
++#define MBOX_REG_SENDER 0x14
++#define MBOX_REG_STATUS 0x18
++#define MBOX_REG_CONFIG 0x1C
++
++#define MBOX_READ_EMPTY 0x40000000
++
++#define MBOX_CHANNEL_ID_PROPERTY 8
++
++#define MBOX_PROCESS_REQUEST      0x00000000
++#define MBOX_SUCCESS              0x80000000
++#define MBOX_ERROR_PARSING_BUFFER 0x80000001
++
++#define BOARD_REVISION    0xB03115
++#define FIRMWARE_REVISION 0x548E1
++#define FIRMWARE_VARIANT  0x77777777 /* TODO: Find the real value */
++
++#define ARM_MEMORY_BASE 0x00000000
++#define ARM_MEMORY_SIZE 0x3c000000
++#define VC_MEMORY_BASE  0x3c000000
++#define VC_MEMORY_SIZE  0x04000000
++#define VC_FB_BASE      0x3c100000
++#define VC_FB_SIZE      0x00096000
++
++#define CLOCK_ID_ROOT      0x00000000
++#define CLOCK_ID_EMMC      0x00000001
++#define CLOCK_ID_UART      0x00000002
++#define CLOCK_ID_ARM       0x00000003
++#define CLOCK_ID_CORE      0x00000004
++#define CLOCK_ID_UNDEFINED 0x12345678
++
++#define CLOCK_RATE_EMMC 50000000
++#define CLOCK_RATE_UART 3000000
++#define CLOCK_RATE_CORE 350000000
++#define CLOCK_RATE_ANY  700000000
++
++#define DEVICE_ID_SD_CARD   0x00000000
++#define DEVICE_ID_UART0     0x00000001
++#define DEVICE_ID_UART1     0x00000002
++#define DEVICE_ID_USB HCD   0x00000003
++#define DEVICE_ID_I2C0      0x00000004
++#define DEVICE_ID_I2C1      0x00000005
++#define DEVICE_ID_I2C2      0x00000006
++#define DEVICE_ID_SPI       0x00000007
++#define DEVICE_ID_CCP2TX    0x00000008
++#define DEVICE_ID_UNKNOWN_0 0x00000009
++#define DEVICE_ID_UNKNOWN_1 0x0000000a
++
++#define TEMPERATURE_ID_SOC 0x00000000
++
++#define TEMPERATURE_SOC     25000
++#define TEMPERATURE_SOC_MAX 99000
++
++#define ALIGN_4K 4096
++
++#define PIXEL_ORDER_BGR 0
++#define PIXEL_ORDER_RGB 1
++
++#define ALPHA_MODE_ENABLED  0
++#define ALPHA_MODE_REVERSED 1
++#define ALPHA_MODE_IGNORED  2
++
++#define GPIO_MASK 0x003c
++
++#define GPIO_0 0x00000080
++
++#define GPIO_DIRECTION_IN  0
++#define GPIO_DIRECTION_OUT 1
++
++#define GPIO_TERMINATION_DISABLED 0
++#define GPIO_TERMINATION_ENABLED  1
++
++#define GPIO_TERMINATION_PULLUP_DISABLED 0
++#define GPIO_TERMINATION_PULLUP_ENABLED  1
++
++#define GPIO_POLARITY_LOW  0
++#define GPIO_POLARITY_HIGH 1
++
++#define GPIO_STATE_DOWN 0
++
++/* Used to test stubs that don't perform actual work */
++#define DUMMY_VALUE 0x12345678
++
+ typedef struct {
+     uint32_t size;
+     uint32_t req_resp_code;
 -- 
 2.34.1
 
