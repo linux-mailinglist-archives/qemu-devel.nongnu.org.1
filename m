@@ -2,137 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFCAC866A6F
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 08:06:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20DA5866A8B
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 08:16:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reV3r-0003V9-Oa; Mon, 26 Feb 2024 02:06:03 -0500
+	id 1reVDR-0002m5-87; Mon, 26 Feb 2024 02:15:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1reV3p-0003Ux-DV
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 02:06:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1reVDN-0002lF-RS
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 02:15:53 -0500
+Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1reV3l-00044Z-Js
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 02:05:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708931155;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=i28h3DkFG2rpHkYI/3FojfWTizNwrNmaL8uhBd0KnHo=;
- b=BsVPhZAlUW+uT8rRHnXE6U4HfQQhM8wGuet2AtWJsepxe2XuxUgLDFQm6x9rjiADmKy6fi
- o14ya9MBWXBWLqK7q2Ed0hoavsdFzBJxIfqi1gH684Z48whozxfNuyK4N+2YHjl2iFK+F6
- rjcBs328DTgdh2afMaHTuI5Q/Sn8xsg=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-192-fTnBP-zZMym9ADG56DaHQA-1; Mon, 26 Feb 2024 02:05:53 -0500
-X-MC-Unique: fTnBP-zZMym9ADG56DaHQA-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-5113b77ff80so2379994e87.2
- for <qemu-devel@nongnu.org>; Sun, 25 Feb 2024 23:05:53 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708931152; x=1709535952;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=i28h3DkFG2rpHkYI/3FojfWTizNwrNmaL8uhBd0KnHo=;
- b=VYsmRT1o56b7uEYSDbQ/D2XunQev1UjNMT2R83g2Q62G4L/r1hV1OCiL6meI03xUIN
- 2MFpn1z0+CU6Y53/jGzfN3fXmZU5eGEi+mUDC3GpVUuAAIukGX4awg0QABVnV0bPVLIJ
- BHbleazLoldF1IeV86j972CPyRyFQ4KB7AdXNVAmcQ6vkrmrzbP5YlS4U+3fGttBsgo+
- q0WU5iR9miYUlXNo8Y9ukAL7aCerpv9V60t0NhTcky7YxUSiXCzBYFWg2KU/A0d2yRz8
- GlbQJcxOgeyOXX8gu1/hAW7NUPB3g/1Y//UFKgn7U3lIGEBYR3l3B5lOM0KnThTmPtv4
- /oLw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWPTBH2rA4/lDE8idgJNDfWELfbcX8YxU6R9QmVGJJifzQAKdNa45oJKA5NcMmN/mXByIyQsp3hY0LpV1phqOGUieiYY3A=
-X-Gm-Message-State: AOJu0Yw3yo/WZoq2KtTwvZ/4hqCoEirW6lxXAH+HaStlgf6F9T1UkYbe
- U7zcLhnCtFBSbn+c7d3LRzGefjpXbUoZolq5hL8zgUMhwuADEh1IsNb2tQZhhPJPDX/3DHeknrN
- vM57KTfJ1yAmQOyKynkctcJd5BUHvzHLfYXXTvv0yKoh9tRGkCm1y
-X-Received: by 2002:a19:f803:0:b0:512:9af6:58c8 with SMTP id
- a3-20020a19f803000000b005129af658c8mr2938155lff.11.1708931152047; 
- Sun, 25 Feb 2024 23:05:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEyEiLD39Kmnp7H0hx7ltNPlJIsXoNDBsuu81NtKme7/rC3fQW9cQ/SdZrtuVMeVun+sSmKZg==
-X-Received: by 2002:a19:f803:0:b0:512:9af6:58c8 with SMTP id
- a3-20020a19f803000000b005129af658c8mr2938151lff.11.1708931151744; 
- Sun, 25 Feb 2024 23:05:51 -0800 (PST)
-Received: from [192.168.0.9] (ip-109-43-176-215.web.vodafone.de.
- [109.43.176.215]) by smtp.gmail.com with ESMTPSA id
- x1-20020a05600c2a4100b0041292306f2csm10858780wme.16.2024.02.25.23.05.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 25 Feb 2024 23:05:51 -0800 (PST)
-Message-ID: <c39245a7-9f97-4975-b9ab-f98e18c7a92e@redhat.com>
-Date: Mon, 26 Feb 2024 08:05:50 +0100
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1reVDL-0006x9-9b
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 02:15:53 -0500
+Received: from juju-98d295-prod-launchpad-16.localdomain (scripts.lp.internal
+ [10.131.215.246])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id 10FCF3FECD
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 07:15:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
+ s=20210803; t=1708931735;
+ bh=eR3T/Y2S7UVwhVQr4klY6hF0KOo5xvmb6gaFaXWneTQ=;
+ h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
+ Message-Id:Subject;
+ b=GzWeIW73DPr2AOWWLHZITmUAYEsEwuPf8nn4Ht/983qEx3TEObmf4Cz5HnG+pDhRG
+ nCsvChvnl2CnmZlhBZguVLtupyH9OnP927sjCxDJA7q/AJd5fCaxg2BuVCTRwQ6WIk
+ SbVntxMyHVsxe4hnHLKmFtRWV0r0EUzrzdmxvPGWuT1Ym9dTY/gTtQMIkMldu5tjsI
+ t0LlLNRlaZLsXLTS7gnvVPzPj14IEQxZ8O8pfjb1Ng9/y2JpHfQmeFy6UQ+dLIkvY3
+ +WylLVHoe6dvGrO5JhJLG2ni20/wxGwctz6QLXcaaF2tjtEEnjhJwV8VY7zR3GRM3k
+ J5dNioctQ1xqQ==
+Received: from [10.131.215.246] (localhost [127.0.0.1])
+ by juju-98d295-prod-launchpad-16.localdomain (Postfix) with ESMTP id
+ 1213F7EBB5
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 07:15:26 +0000 (UTC)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/10] mips/loongson3_virt: do not require CONFIG_USB
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: philmd@linaro.org, balaton@eik.bme.hu
-References: <20240223124406.234509-1-pbonzini@redhat.com>
- <20240223124406.234509-5-pbonzini@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240223124406.234509-5-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.097,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 26 Feb 2024 07:07:15 -0000
+From: Frank Heimes <2055003@bugs.launchpad.net>
+To: qemu-devel@nongnu.org
+X-Launchpad-Notification-Type: bug
+X-Launchpad-Bug: product=ubuntu-power-systems; status=New; importance=High;
+ assignee=ubuntu-power-triage; 
+X-Launchpad-Bug: distribution=ubuntu; sourcepackage=qemu; component=main;
+ status=New; importance=High; assignee=None; 
+X-Launchpad-Bug-Tags: architecture-ppc64le bugnameltc-205716 severity-high
+ targetmilestone-inin---
+X-Launchpad-Bug-Information-Type: Public
+X-Launchpad-Bug-Private: no
+X-Launchpad-Bug-Security-Vulnerability: no
+X-Launchpad-Bug-Commenters: bugproxy
+X-Launchpad-Bug-Reporter: bugproxy (bugproxy)
+X-Launchpad-Bug-Modifier: Frank Heimes (fheimes)
+References: <170892838434.1980782.6845327796296448659.malonedeb@juju-98d295-prod-launchpad-2>
+Message-Id: <170893123576.2032717.4916109193103177062.launchpad@juju-98d295-prod-launchpad-2>
+Subject: [Bug 2055003] Re: Qemu cmdline core dumped with more(8193 or more)
+ cpus
+X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
+X-Launchpad-Message-For: qemu-devel-ml
+Precedence: bulk
+X-Generated-By: Launchpad (canonical.com);
+ Revision="9643586c585856148a18782148972ae9c1179d06";
+ Instance="launchpad-scripts"
+X-Launchpad-Hash: b4af5b44f255940bee8553a3eca2f3da00be2b66
+Received-SPF: pass client-ip=185.125.188.251;
+ envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -141,37 +90,117 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Bug 2055003 <2055003@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/02/2024 13.44, Paolo Bonzini wrote:
-> Once the Kconfig for hw/mips is cleaned up, it will be possible to build a
-> binary that does not include any USB host controller and therefore that
-> does not include the code guarded by CONFIG_USB.  While the simpler
-> creation functions such as usb_create_simple can be inlined, this is not
-> true of usb_bus_find().  Remove it, replacing it with a search of the
-> single USB bus created by loongson3_virt_devices_init().
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   hw/mips/loongson3_virt.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-> index caedde2df00..b2a8b22b4ea 100644
-> --- a/hw/mips/loongson3_virt.c
-> +++ b/hw/mips/loongson3_virt.c
-> @@ -447,8 +447,9 @@ static inline void loongson3_virt_devices_init(MachineState *machine,
->   
->       if (defaults_enabled() && object_class_by_name("pci-ohci")) {
->           pci_create_simple(pci_bus, -1, "pci-ohci");
-> -        usb_create_simple(usb_bus_find(-1), "usb-kbd");
-> -        usb_create_simple(usb_bus_find(-1), "usb-tablet");
-> +        Object *usb_bus = object_resolve_type_unambiguous(TYPE_USB_BUS, &error_abort);
+** Also affects: qemu
+   Importance: Undecided
+       Status: New
 
-Please swap the "Object *usb_bus" and the "pci_create_simple" lines, so that 
-the declaration is at the beginning of the block.
+** No longer affects: qemu
 
-  Thomas
+** Also affects: ubuntu-power-systems
+   Importance: Undecided
+       Status: New
+
+** Changed in: ubuntu-power-systems
+     Assignee: (unassigned) =3D> Ubuntu on IBM Power Systems Bug Triage (ub=
+untu-power-triage)
+
+** Changed in: qemu (Ubuntu)
+     Assignee: Ubuntu on IBM Power Systems Bug Triage (ubuntu-power-triage)=
+ =3D> (unassigned)
+
+** Changed in: ubuntu-power-systems
+   Importance: Undecided =3D> High
+
+** Changed in: qemu (Ubuntu)
+   Importance: Undecided =3D> High
+
+--=20
+You received this bug notification because you are a member of qemu-
+devel-ml, which is subscribed to QEMU.
+https://bugs.launchpad.net/bugs/2055003
+
+Title:
+  Qemu cmdline core dumped with more(8193 or more) cpus
+
+Status in The Ubuntu-power-systems project:
+  New
+Status in qemu package in Ubuntu:
+  New
+
+Bug description:
+  ---Debugger---
+  A debugger is not configured
+  =20
+  ---Steps to Reproduce---
+  =20
+  ---Problem Description---
+   Qemu cmdline core dumped with more(8193 or more) cpus
+  =20
+  ---Debugger---
+  A debugger is not configured
+  =20
+  ---Steps to Reproduce---
+   Qemu cmdline core dumped when more number of CPUs were given.
+
+ =20
+  [root@ltcmihawk39 ~]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=3D9000
+  **
+  ERROR:../tcg/region.c:782:tcg_region_init: assertion failed: (region_size=
+ >=3D 2 * page_size)
+  Bail out! ERROR:../tcg/region.c:782:tcg_region_init: assertion failed: (r=
+egion_size >=3D 2 * page_size)
+  Aborted (core dumped)
+
+  Expected Result:
+  Warning message like "Number of cpus requested exceeds the cpus supported"
+
+  Actual Result:
+  core dumped
+
+  Steps to Reproduce:
+  --------------------
+
+  1. Clone the upstream qemu from https://gitlab.com/qemu-project/qemu.git
+  2. Compile qemu with below steps.
+      cd qemu/
+      git submodule init
+      git submodule update --recursive
+      ./configure --target-list=3Dppc64-softmmu --prefix=3D/usr
+      make
+      make install
+  3. set maxcpus=3D8193 or more
+
+ =20
+  [root@ltcmihawk39 ~]# qemu-system-ppc64 --version
+  QEMU emulator version 8.0.94 (v8.1.0-rc4)
+  Copyright (c) 2003-2023 Fabrice Bellard and the QEMU Project developers
+
+  NOTE: This behavior is observed only when qemu is built without disabling=
+ the tcg.
+  =20
+  Contact Information =3D sthoufee@in.ibm.com=20
+  =20
+  Machine Type =3D x=20
+  =20
+  ---uname output---
+  x
+
+  Action needed
+
+  Our IBM Dev want to include this patch in latest Canonical distro.
+
+  Need the distro to review and integrate fixes provided by IBM
+
+  https://github.com/qemu/qemu/commit/c4f91d7b7be76c47015521ab0109c6e998a36=
+9b0
+
+  Need to include this commit in latest Canonical distro.
+
+To manage notifications about this bug go to:
+https://bugs.launchpad.net/ubuntu-power-systems/+bug/2055003/+subscriptions
 
 
