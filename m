@@ -2,73 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02A3A8676D8
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 14:41:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95BEA867759
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 14:57:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rebED-0008RI-L7; Mon, 26 Feb 2024 08:41:09 -0500
+	id 1rebT8-0006MC-1v; Mon, 26 Feb 2024 08:56:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rebEA-0008Qh-NV
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 08:41:07 -0500
-Received: from mgamail.intel.com ([198.175.65.20])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rebSs-0006KL-KJ
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 08:56:20 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rebE8-0005L8-IX
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 08:41:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708954865; x=1740490865;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=xOERUjUBA55FpSzL1epAsjFSjEkhtvuHM6DIMBxjZK8=;
- b=I63zWZUAca/iDQSYc3TI0E7MHLUlF3qQy4G8dpxYuFPsQ7UkxGXtseVN
- IxXRp9GXFa82mLP5LUu1EC/D3V+QM0+FaAKikddDBX9Dom4c58BFVtN2W
- wcuwnK+ItIHfCo0WMakDCah0jkpjVhAoxF5cD8ukJj1e6MWVBE38r/61a
- KbTWMEPpDD7az5aNqwfuU74rbgSjTNs7QUT06uX0IdfboBYcQ5Nityeil
- /WXrCcOOCJurP1zcKA0R19zismG7bnu/Gb06byFb3ZNCBX+spwspROmJF
- H19YFW8fGKavC7Ai+vdSFiPnEUjkAaHvTJp5U/2/B+OOAbVZPORE5q69i g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="3111289"
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="3111289"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 05:41:00 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; d="scan'208";a="44154501"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa001.jf.intel.com with ESMTP; 26 Feb 2024 05:40:57 -0800
-Date: Mon, 26 Feb 2024 21:54:39 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>
-Subject: Re: [PATCH 01/10] hw/i386: Store pointers to IDE buses in
- PCMachineState
-Message-ID: <ZdyYH1IwzaE+A4Cq@intel.com>
-References: <20240220160622.114437-1-peter.maydell@linaro.org>
- <20240220160622.114437-2-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rebSq-000812-5y
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 08:56:18 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 1D24F4E601F;
+ Mon, 26 Feb 2024 14:56:14 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id qfQ3i88-hDkl; Mon, 26 Feb 2024 14:56:12 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 18D924E601E; Mon, 26 Feb 2024 14:56:12 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 165547456B4;
+ Mon, 26 Feb 2024 14:56:12 +0100 (CET)
+Date: Mon, 26 Feb 2024 14:56:12 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org, 
+ Bernhard Beschow <shentey@gmail.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Igor Mammedov <imammedo@redhat.com>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+ Laurent Vivier <lvivier@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
+ Markus Armbruster <armbru@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH 06/14] hw/pci-bridge: Extract QOM ICH definitions to
+ 'ich_dmi_pci.h'
+In-Reply-To: <de867567-f486-4b3a-93cc-9b109e9d549a@linaro.org>
+Message-ID: <8ea9bad7-d986-5231-9709-4d34f95b278e@eik.bme.hu>
+References: <20240219163855.87326-1-philmd@linaro.org>
+ <20240219163855.87326-7-philmd@linaro.org>
+ <0841e333-3d7d-0440-a8bf-8a7fd2f0011f@eik.bme.hu>
+ <19500c79-8e4a-2160-3622-dbf145655046@eik.bme.hu>
+ <cee6951f-234e-4806-b6a1-147c39455f07@linaro.org>
+ <055d34b8-64c6-fcc4-9bf9-b8491a50ce5f@eik.bme.hu>
+ <5726ea2c-425b-40a3-80a2-9fa3503a7f4c@redhat.com>
+ <de867567-f486-4b3a-93cc-9b109e9d549a@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240220160622.114437-2-peter.maydell@linaro.org>
-Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.014,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-1152411081-1708955772=:37179"
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,183 +82,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 20, 2024 at 04:06:13PM +0000, Peter Maydell wrote:
-> Date: Tue, 20 Feb 2024 16:06:13 +0000
-> From: Peter Maydell <peter.maydell@linaro.org>
-> Subject: [PATCH 01/10] hw/i386: Store pointers to IDE buses in
->  PCMachineState
-> X-Mailer: git-send-email 2.34.1
-> 
-> Add the two IDE bus BusState pointers to the set we keep in PCMachineState.
-> This allows us to avoid passing them to pc_cmos_init(), and also will
-> allow a refactoring of how we call pc_cmos_init_late().
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->  include/hw/i386/pc.h |  4 +++-
->  hw/i386/pc.c         |  5 ++---
->  hw/i386/pc_piix.c    | 16 +++++++---------
->  hw/i386/pc_q35.c     |  9 ++++-----
->  4 files changed, 16 insertions(+), 18 deletions(-)
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+--3866299591-1152411081-1708955772=:37179
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-> 
-> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-> index ec0e5efcb28..8f8ac894b10 100644
-> --- a/include/hw/i386/pc.h
-> +++ b/include/hw/i386/pc.h
-> @@ -17,6 +17,8 @@
->  
->  #define HPET_INTCAP "hpet-intcap"
->  
-> +#define MAX_IDE_BUS 2
-> +
->  /**
->   * PCMachineState:
->   * @acpi_dev: link to ACPI PM device that performs ACPI hotplug handling
-> @@ -37,6 +39,7 @@ typedef struct PCMachineState {
->      PFlashCFI01 *flash[2];
->      ISADevice *pcspk;
->      DeviceState *iommu;
-> +    BusState *idebus[MAX_IDE_BUS];
->  
->      /* Configuration options: */
->      uint64_t max_ram_below_4g;
-> @@ -182,7 +185,6 @@ void pc_basic_device_init(struct PCMachineState *pcms,
->                            bool create_fdctrl,
->                            uint32_t hpet_irqs);
->  void pc_cmos_init(PCMachineState *pcms,
-> -                  BusState *ide0, BusState *ide1,
->                    ISADevice *s);
->  void pc_nic_init(PCMachineClass *pcmc, ISABus *isa_bus, PCIBus *pci_bus);
->  
-> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> index 196827531a5..8b0f54e284c 100644
-> --- a/hw/i386/pc.c
-> +++ b/hw/i386/pc.c
-> @@ -574,7 +574,6 @@ static void pc_cmos_init_late(void *opaque)
->  }
->  
->  void pc_cmos_init(PCMachineState *pcms,
-> -                  BusState *idebus0, BusState *idebus1,
->                    ISADevice *rtc)
->  {
->      int val;
-> @@ -634,8 +633,8 @@ void pc_cmos_init(PCMachineState *pcms,
->  
->      /* hard drives and FDC */
->      arg.rtc_state = s;
-> -    arg.idebus[0] = idebus0;
-> -    arg.idebus[1] = idebus1;
-> +    arg.idebus[0] = pcms->idebus[0];
-> +    arg.idebus[1] = pcms->idebus[1];
->      qemu_register_reset(pc_cmos_init_late, &arg);
->  }
->  
-> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-> index 999b7b806ca..8df88a6ccd1 100644
-> --- a/hw/i386/pc_piix.c
-> +++ b/hw/i386/pc_piix.c
-> @@ -68,7 +68,6 @@
->  #include "kvm/kvm-cpu.h"
->  #include "target/i386/cpu.h"
->  
-> -#define MAX_IDE_BUS 2
->  #define XEN_IOAPIC_NUM_PIRQS 128ULL
->  
->  #ifdef CONFIG_IDE_ISA
-> @@ -114,7 +113,6 @@ static void pc_init1(MachineState *machine,
->      Object *piix4_pm = NULL;
->      qemu_irq smi_irq;
->      GSIState *gsi_state;
-> -    BusState *idebus[MAX_IDE_BUS];
->      ISADevice *rtc_state;
->      MemoryRegion *ram_memory;
->      MemoryRegion *pci_memory = NULL;
-> @@ -299,8 +297,8 @@ static void pc_init1(MachineState *machine,
->          piix4_pm = object_resolve_path_component(OBJECT(pci_dev), "pm");
->          dev = DEVICE(object_resolve_path_component(OBJECT(pci_dev), "ide"));
->          pci_ide_create_devs(PCI_DEVICE(dev));
-> -        idebus[0] = qdev_get_child_bus(dev, "ide.0");
-> -        idebus[1] = qdev_get_child_bus(dev, "ide.1");
-> +        pcms->idebus[0] = qdev_get_child_bus(dev, "ide.0");
-> +        pcms->idebus[1] = qdev_get_child_bus(dev, "ide.1");
->      } else {
->          isa_bus = isa_bus_new(NULL, system_memory, system_io,
->                                &error_abort);
-> @@ -312,8 +310,8 @@ static void pc_init1(MachineState *machine,
->  
->          i8257_dma_init(OBJECT(machine), isa_bus, 0);
->          pcms->hpet_enabled = false;
-> -        idebus[0] = NULL;
-> -        idebus[1] = NULL;
-> +        pcms->idebus[0] = NULL;
-> +        pcms->idebus[1] = NULL;
->      }
->  
->      if (x86ms->pic == ON_OFF_AUTO_ON || x86ms->pic == ON_OFF_AUTO_AUTO) {
-> @@ -342,7 +340,7 @@ static void pc_init1(MachineState *machine,
->      pc_nic_init(pcmc, isa_bus, pci_bus);
->  
->      if (pcmc->pci_enabled) {
-> -        pc_cmos_init(pcms, idebus[0], idebus[1], rtc_state);
-> +        pc_cmos_init(pcms, rtc_state);
->      }
->  #ifdef CONFIG_IDE_ISA
->      else {
-> @@ -361,9 +359,9 @@ static void pc_init1(MachineState *machine,
->               * second one.
->               */
->              busname[4] = '0' + i;
-> -            idebus[i] = qdev_get_child_bus(DEVICE(dev), busname);
-> +            pcms->idebus[i] = qdev_get_child_bus(DEVICE(dev), busname);
->          }
-> -        pc_cmos_init(pcms, idebus[0], idebus[1], rtc_state);
-> +        pc_cmos_init(pcms, rtc_state);
->      }
->  #endif
->  
-> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-> index d346fa3b1d6..71402c36eb2 100644
-> --- a/hw/i386/pc_q35.c
-> +++ b/hw/i386/pc_q35.c
-> @@ -126,7 +126,6 @@ static void pc_q35_init(MachineState *machine)
->      PCIBus *host_bus;
->      PCIDevice *lpc;
->      DeviceState *lpc_dev;
-> -    BusState *idebus[MAX_SATA_PORTS];
->      ISADevice *rtc_state;
->      MemoryRegion *system_memory = get_system_memory();
->      MemoryRegion *system_io = get_system_io();
-> @@ -300,13 +299,13 @@ static void pc_q35_init(MachineState *machine)
->                                                           ICH9_SATA1_FUNC),
->                                                 "ich9-ahci");
->          ich9 = ICH9_AHCI(pdev);
-> -        idebus[0] = qdev_get_child_bus(DEVICE(pdev), "ide.0");
-> -        idebus[1] = qdev_get_child_bus(DEVICE(pdev), "ide.1");
-> +        pcms->idebus[0] = qdev_get_child_bus(DEVICE(pdev), "ide.0");
-> +        pcms->idebus[1] = qdev_get_child_bus(DEVICE(pdev), "ide.1");
->          g_assert(MAX_SATA_PORTS == ich9->ahci.ports);
->          ide_drive_get(hd, ich9->ahci.ports);
->          ahci_ide_create_devs(&ich9->ahci, hd);
->      } else {
-> -        idebus[0] = idebus[1] = NULL;
-> +        pcms->idebus[0] = pcms->idebus[1] = NULL;
->      }
->  
->      if (machine_usb(machine)) {
-> @@ -327,7 +326,7 @@ static void pc_q35_init(MachineState *machine)
->          smbus_eeprom_init(pcms->smbus, 8, NULL, 0);
->      }
->  
-> -    pc_cmos_init(pcms, idebus[0], idebus[1], rtc_state);
-> +    pc_cmos_init(pcms, rtc_state);
->  
->      /* the rest devices to which pci devfn is automatically assigned */
->      pc_vga_init(isa_bus, host_bus);
-> -- 
-> 2.34.1
-> 
-> 
+On Mon, 26 Feb 2024, Philippe Mathieu-Daudé wrote:
+> On 20/2/24 13:55, Thomas Huth wrote:
+>> On 20/02/2024 13.20, BALATON Zoltan wrote:
+>>> On Tue, 20 Feb 2024, Philippe Mathieu-Daudé wrote:
+>>>> On 19/2/24 19:24, BALATON Zoltan wrote:
+>>>>> On Mon, 19 Feb 2024, BALATON Zoltan wrote:
+>>>>>> On Mon, 19 Feb 2024, Philippe Mathieu-Daudé wrote:
+>>>>>>> Expose TYPE_ICH_DMI_PCI_BRIDGE to the new
+>>>>>>> "hw/pci-bridge/ich_dmi_pci.h" header.
+>>>>>>> 
+>>>>>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>>>>>> ---
+>>>>>>> MAINTAINERS                         |  1 +
+>>>>>>> include/hw/pci-bridge/ich_dmi_pci.h | 20 ++++++++++++++++++++
+>>>>>>> include/hw/southbridge/ich9.h       |  2 --
+>>>>>>> hw/pci-bridge/i82801b11.c           | 11 ++++-------
+>>>>>>> 4 files changed, 25 insertions(+), 9 deletions(-)
+>>>>>>> create mode 100644 include/hw/pci-bridge/ich_dmi_pci.h
+>>>>>>> 
+>>>>>>> diff --git a/MAINTAINERS b/MAINTAINERS
+>>>>>>> index 1b210c5cc1..50507c3dd6 100644
+>>>>>>> --- a/MAINTAINERS
+>>>>>>> +++ b/MAINTAINERS
+>>>>>>> @@ -2609,6 +2609,7 @@ F: hw/acpi/ich9*.c
+>>>>>>> F: hw/i2c/smbus_ich9.c
+>>>>>>> F: hw/isa/lpc_ich9.c
+>>>>>>> F: include/hw/acpi/ich9*.h
+>>>>>>> +F: include/hw/pci-bridge/ich_dmi_pci.h
+>>>>>>> F: include/hw/southbridge/ich9.h
+>>>>>>> 
+>>>>>>> PIIX4 South Bridge (i82371AB)
+>>>>>>> diff --git a/include/hw/pci-bridge/ich_dmi_pci.h 
+>>>>>>> b/include/hw/pci-bridge/ich_dmi_pci.h
+>>>>>>> new file mode 100644
+>>>>>>> index 0000000000..7623b32b8e
+>>>>>>> --- /dev/null
+>>>>>>> +++ b/include/hw/pci-bridge/ich_dmi_pci.h
+>>>>>>> @@ -0,0 +1,20 @@
+>>>>>>> +/*
+>>>>>>> + * QEMU ICH4 i82801b11 dmi-to-pci Bridge Emulation
+>>>>>>> + *
+>>>>>>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>>>>>>> + */
+>>>>>>> +
+>>>>>>> +#ifndef HW_PCI_BRIDGE_ICH_D2P_H
+>>>>>>> +#define HW_PCI_BRIDGE_ICH_D2P_H
+>>>>>>> +
+>>>>>>> +#include "qom/object.h"
+>>>>>>> +#include "hw/pci/pci_bridge.h"
+>>>>>>> +
+>>>>>>> +#define TYPE_ICH_DMI_PCI_BRIDGE "i82801b11-bridge"
+>>>>>>> +OBJECT_DECLARE_SIMPLE_TYPE(I82801b11Bridge, ICH_DMI_PCI_BRIDGE)
+>>>>>>> +
+>>>>>>> +struct I82801b11Bridge {
+>>>>>>> +    PCIBridge parent_obj;
+>>>>>>> +};
+>>>>>> 
+>>>>>> If this class has no fields of its own why does it need its own state 
+>>>>>> struct defined? You could just set .instance_size = sizeof(PCIBridge) 
+>>>>>> in the TypeInfo i82801b11_bridge_info below and delete this struct 
+>>>>>> completely as it's not even used anywhere. One less needless QOM 
+>>>>>> complication :-) For an example see the empty via-mc97 device in 
+>>>>>> hw/audio/via-ac97.c.
+>>>>>> 
+>>>>>> Then you can put the OBJECT_DECLARE_SIMPLE_TYPE in 
+>>>>>> hw/pci-bridge/i82801b11.c where this object is defined and the #define 
+>>>>>> TYPE_ICH_DMI_PCI_BRIDGE in
+>>>>> 
+>>>>> You don't even need OBJECT_DECLARE_SIMPLE_TYPE if there's no state 
+>>>>> struct. But on second look what is this object at all? It's never 
+>>>>> instantiated anywhere. Is it used somewhere?
+>>>> 
+>>>> Here my view is we should always define QOM type names in headers
+>>>> and use them, in particular in the TypeInfo registration. To unify
+>>>> style and copy/pasting, better use the QOM DECLARE_TYPE macros.
+>>>> I envision that might help moving toward DSL and have HW modelling
+>>>> checks done externally, before starting QEMU. But then this is my
+>>>> view and I dunno about when we'll get that DSL in so I'm OK to
+>>>> revisit this patch.
+>>> 
+>>> The question here is more if we need this object at all because it wasn't 
+>>> enstantiated before, and after your series it could be instantiated by a 
+>>> property that's never set. So unless I misunderstood somthing this whole 
+>>> thing could just be removed as dead code and let it be re-added later when 
+>>> it's actually implemented following whatever conventions we'll have then. 
+>>> No need to keep around empty placeholders that aren't used. Or does it 
+>>> serve any purpose?
+>
+> This isn't a virtual hardware, and is well specified, I'm trying to
+> plug all the parts we have so the full chipset can be used to create
+> a dynamic machine.
+
+This isn't prevented by moving this object implementation from its 
+separate file to the file where the southbridge that's the sole user of 
+this device it implemented. The rationale is that there's no need to make 
+it a full object with all the headers and defines when it's not used 
+anywhere else than that southbridge and its "implementation" consists of 
+only the TypeInfo and a realize method. These could just be defined in the 
+southbridge as a local object and do away with all the other boilerplate 
+which would remove some unneeded cruft. This won't affect your modelling 
+of the southbridge as you can still instantiate it there but don't need to 
+define this empty bridge device as external object when it's not needed 
+outside of the south bridge. Just like the via-mc97 device. I did not put 
+that in a separate file and add a separate header for it because it just 
+seems to be overkill for an empty device that does nothing.
+
+Regards,
+BALATON Zoltan
+--3866299591-1152411081-1708955772=:37179--
 
