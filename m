@@ -2,69 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B9ED867B02
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 17:01:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B92E867B32
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 17:09:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1redOx-0003ut-2v; Mon, 26 Feb 2024 11:00:23 -0500
+	id 1redVC-00069M-0N; Mon, 26 Feb 2024 11:06:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1redOm-0003t2-Uo
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:00:14 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1redOj-00054c-65
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:00:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708963208;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=h+6hOsBDiBkGoIsg/oseWOqw7PDwa4DcOIWjiDxzTks=;
- b=BwwHeqGQg+m7F02NtWY1hU5yOUrdZ4CMFVfqFUJQGvVHPRgnmWVqj/7BbVgy1os/bU+8GH
- PtkReATEcAEwXkJLhbEsuD2WEQdktKMQCv2RffItuMPlDcjNLCG7hVAJJ0PW8ZdlwJ11fP
- TEIXy9mSk3k5WJHGT8KlczjyhcHSBuI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-691-YBiL8wJxP3yAsKFl3MQSZQ-1; Mon, 26 Feb 2024 11:00:04 -0500
-X-MC-Unique: YBiL8wJxP3yAsKFl3MQSZQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 89DF583FC6F;
- Mon, 26 Feb 2024 16:00:04 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.192.249])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2D1941CBD5;
- Mon, 26 Feb 2024 16:00:04 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 27CAD18007B7; Mon, 26 Feb 2024 17:00:03 +0100 (CET)
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
-	Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 1/2] update edk2 submodule to edk2-stable202402
-Date: Mon, 26 Feb 2024 16:59:53 +0100
-Message-ID: <20240226160003.903191-2-kraxel@redhat.com>
-In-Reply-To: <20240226160003.903191-1-kraxel@redhat.com>
-References: <20240226160003.903191-1-kraxel@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1redUh-0005yk-Pd
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:06:19 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1redUc-0005s3-5C
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:06:19 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-563d32ee33aso4284140a12.2
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 08:06:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708963569; x=1709568369; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=94ItvZTU8UjZJXpr7paETTd3/ZnKh3sFlCRaL5V+peM=;
+ b=dnGYXSaWHYyuVjRL+wNn8lAfPiuLFWK6vBRKhqG1R8MIwilG5BuW91L6DVYWH1Fh53
+ EnswcAe2Ei5UitacpIGMYZyL/+T5lik09JH99wCTCrBdkQJqUvsIUfulQaQiObbeRcm8
+ reOPCTxQk5kl3Ed9Z6AEhBTMi460oqwLupaeVOAlVcZpFfrQa2JVX2WhAhXVq1neoK9o
+ aETe67AJ28AID61ukeUUDvCicmbh2mqI4IqJ6srrz66BcfyQavtMQZ4R8v9wan+s1D9H
+ 4L8Q+paG8NcqyD2pbozjowiQdx+RLFDxGFfm5XPmSqDFIwrQ2+JHmJRBZ1NQQetisXMl
+ rB+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708963569; x=1709568369;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=94ItvZTU8UjZJXpr7paETTd3/ZnKh3sFlCRaL5V+peM=;
+ b=W7lzPaq1PUZCUpYXOYicHF/ksUSGvhExEM+ChuSrIpQFGuAikroZvV2AU6+T7+0mIi
+ D2CDv/UDH2EnhtRCyD2QBzfwuJCExV+mRXCULca8pAGeWLjhi8KGkmmleSc2g1qgPtct
+ h87iVEqDhXaLt+Wzr4eTyDylL3elFDwRAbgs7OFo6mJZCdJIMbgbFyxNgvqCfu2V1HbV
+ bCMkeOYOhsNCqKDdPBV+3J0fDiy7gr4h+ojm5fpqqKJrosYGlaf5VE09BABMXZXNAKlz
+ fPSC03Nca/S/NVgJrdGFUufkUAXgASAIy7PorwQxy3eKwktebvKi132c+JgRwW3+tphj
+ K+eQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVjFHWsCgF4Sb0K9vd51uEU0w1VVsBE7H30HX+Jtt/VzZUkQSil+NTr4Iao07oQq3eOc8/CF9PAVEWvDRt29TyYSlxAjXQ=
+X-Gm-Message-State: AOJu0YyI1tjcwxur6ZiRmQJuwE9Gpp1XcAADUKZFXs+QTRtPqyWRubUg
+ vWjhAu2gL2eDgOhVLL0BwHIpRDY/E8MSkjqA173pA6SSfZdTdgebpD440EdozrA=
+X-Google-Smtp-Source: AGHT+IE2XIW2htb9puM1DnKluxB11PO7mJ9eojqeMxCAC5+767YmeA7M20n8EcNL2l+5TeyjagtVjA==
+X-Received: by 2002:aa7:d31a:0:b0:565:dd87:9811 with SMTP id
+ p26-20020aa7d31a000000b00565dd879811mr2617596edq.5.1708963568753; 
+ Mon, 26 Feb 2024 08:06:08 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.223.153])
+ by smtp.gmail.com with ESMTPSA id
+ bf9-20020a0564021a4900b0056626973bc1sm104394edb.38.2024.02.26.08.06.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 Feb 2024 08:06:08 -0800 (PST)
+Message-ID: <df5f7f10-41ba-4c2e-8d50-9d35203d940a@linaro.org>
+Date: Mon, 26 Feb 2024 17:06:06 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 11/41] Temporarily disable unimplemented rpi4b devices
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Sergey Kambalin <serg.oker@gmail.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, Sergey Kambalin <sergey.kambalin@auriga.com>
+References: <20240226000259.2752893-1-sergey.kambalin@auriga.com>
+ <20240226000259.2752893-12-sergey.kambalin@auriga.com>
+ <2ab7b523-816b-409b-a58a-f09e3f71ff8e@linaro.org>
+ <CAFEAcA-WwWQnAQTmoCixaW5aeRWrdx__YoSHp_VyGEbk-rOkpg@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA-WwWQnAQTmoCixaW5aeRWrdx__YoSHp_VyGEbk-rOkpg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.014,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,19 +97,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
----
- roms/edk2 | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 26/2/24 14:39, Peter Maydell wrote:
+> On Mon, 26 Feb 2024 at 13:35, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>
+>> On 26/2/24 01:02, Sergey Kambalin wrote:
+>>> +static void raspi4_modify_dtb(const struct arm_boot_info *info, void *fdt)
+>>> +{
+>>> +    uint64_t ram_size;
+>>> +
+>>> +    /* Temporarily disable following devices until they are implemented */
+>>> +    const char *nodes_to_remove[] = {
+>>> +        "brcm,bcm2711-pcie",
+>>> +        "brcm,bcm2711-rng200",
+>>> +        "brcm,bcm2711-thermal",
+>>> +        "brcm,bcm2711-genet-v5",
+>>> +    };
+>>> +
+>>> +    for (int i = 0; i < ARRAY_SIZE(nodes_to_remove); i++) {
+>>> +        const char *dev_str = nodes_to_remove[i];
+>>> +
+>>> +        int offset = fdt_node_offset_by_compatible(fdt, -1, dev_str);
+>>> +        if (offset >= 0) {
+>>> +            if (!fdt_nop_node(fdt, offset)) {
+>>
+>> Peter, I remember a discussion where you wre not keen on altering DTB
+>> for non-Virt machines.
+>>
+>> Since these devices are all implemented at the end of the series, why
+>> not add the devices then the raspi4 board at the end, so this patch is
+>> not even required?
+> 
+> I'm not super-keen on it, but as you say it goes away once all
+> the devices are implemented, so I'm not too worried.
+> 
+> Doing it this way around would let us take the first 11 patches
+> in the series into git now (they've all been reviewed), which
+> gives us (I think) a functional raspi4 with some missing devices,
+> which seems useful in the interim until the rest of the series
+> gets reviewed and committed.
 
-diff --git a/roms/edk2 b/roms/edk2
-index b8a3eec88cc7..edc6681206c1 160000
---- a/roms/edk2
-+++ b/roms/edk2
-@@ -1 +1 @@
--Subproject commit b8a3eec88cc74bbfe7fb389d026cc7d1d8a989c8
-+Subproject commit edc6681206c1a8791981a2f911d2fb8b3d2f5768
--- 
-2.43.2
+Fine by me! Sergey, don't we also need patch #39 (Add missed BCM2835
+properties) to have a happy Linux boot?
 
+Patch #17 "Implement BCM2838 thermal sensor" could also go in but it
+doesn't apply cleanly on top of 1-12); maybe Sergey can send a series
+of "patches already reviewed" on top so they get in for v9, postponing
+pcie/network for after release.
+
+Regards,
+
+Phil.
 
