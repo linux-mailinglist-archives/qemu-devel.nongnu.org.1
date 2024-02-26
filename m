@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3EAC867D65
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 18:06:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C825E867D98
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 18:10:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reeN0-0001gc-L9; Mon, 26 Feb 2024 12:02:26 -0500
+	id 1reeP8-0007Pn-Sg; Mon, 26 Feb 2024 12:04:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1reeMi-0001La-JE
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 12:02:22 -0500
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ id 1reeNm-0004dQ-5b
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 12:03:14 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1reeMh-0000i8-6F
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 12:02:08 -0500
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-512ed314881so3183309e87.2
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 09:02:06 -0800 (PST)
+ id 1reeNj-0000uZ-HI
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 12:03:13 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-563c0f13cabso4272506a12.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 09:03:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708966925; x=1709571725; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708966990; x=1709571790; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=mDQlHq0G8B8G4OTR+Cvh2hLL3vo9Xrq+fM4d7Yiqtqk=;
- b=jCt1hHFnR7r/KnHKVbwS8g80b8/3yq7Z935YHkQqbN9RtH5lOjDUAcgscqPXf4bhNz
- NbglNudJbBbOqGj7Z/FsTzs2QG35XkeToeINqzIV2fZQPIH0XSwUHhTcJ/oJodMaNFTE
- ggMFnSyKdqJryQ59inHnKURQY4dyAA6qA/EWaiBB8YCWYde1OqnFgiUeGDQuCJzpYmLz
- O+W6IRhSfugXteCaznxWa2fdeZUoYuPG9ke65TLR53ZrUYiPlN9kZEj97FOeVmQQuiyJ
- yHMz4E9T7upv3FCCPJnCpRL/svaZvRT5YlJVgkgKQZXtNwN7dLNHAnvPr2mBdUtI8/9W
- xifg==
+ bh=LTGWpjkS+rBg/3w0lgwfOKkQiyMzwwqkBos1vPgYBh8=;
+ b=jasVThGSYcJVBbIqc6zQU9+WVPgYipgxmC7/PnaM+XHTg8tYTeoJk0wqaRoAlw+HLm
+ RtFisN/RMpLLUX7SrI5JXJjfgnWUKtbs+6W/VR8H0sfe/GnH54+/oXa6B+9wrJnGeM26
+ Dm2TQ0U8HeRGOx/AQfI8ep2+NgHv08H1r9H6ySCM15iL5uFn3a50dw0yJyJNffIMYFNJ
+ yzaifgJHJ1xtL8S7uTiWfmGlL1PNN6tEB19t36ur90PZP2ityg58bOiOa5hC3bHn9FP6
+ WAJsr9c+YlcHIyB1eTqVSBlGuLvhcnZmEY8Z0Jy/7UtRPk3FQLhmPQ35+XYxSZJ0hWrt
+ /ieg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708966925; x=1709571725;
+ d=1e100.net; s=20230601; t=1708966990; x=1709571790;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=mDQlHq0G8B8G4OTR+Cvh2hLL3vo9Xrq+fM4d7Yiqtqk=;
- b=MudXkY2gNIc4+rAKRuQaCP4nKJOqre7iZRO5NdcIm3mVn9uTpVAgvIxVY1ORa4MBcr
- Qv8AIJBuqyseBNxHzJhfoiAbF40QiDsbipvzVRWdYeihL8hk36VcUr5htcMs51+tfaM+
- wwCqO1S9PWkbPlQOpgqMaXoxIzrbpW13RCTBSuB1jPNmYxwAyBwpfNoCVLkYf2OPtV7J
- Wp2QOaDiIyFg2Ixl0PAnV4Sme3DyeUT0rbHdG65tLconKr0lwtBOdEzGoqttPsY9NyHN
- 8+acDRzQ1AC2Z44vtTpzi5+s61sYKzbia5yc6ehR6XJOdjeBW5B41T9JgZf0QyBN7GxY
- JVYQ==
+ bh=LTGWpjkS+rBg/3w0lgwfOKkQiyMzwwqkBos1vPgYBh8=;
+ b=O4LUIISLSsRmM2kp8U0UdKDBKsaBHKL+I3E92rjlb6Fx14wB2YZ56RmDRY58pwgR44
+ Vwr8qv/fowllCIxailX5w9C0eLzPu1snJ1IcaGZAGMISgI0ClA4ebz5c9u8Z8zL10n7I
+ +92/P9M6alg1trqVhWkmEoh0A5Gqoum23TzhFv7n9Y7a1oN++ysao3p1F5yELUqkNxjp
+ 7DY5Yc5h1NUYlZ7lBR634OtBYY1Ki1FoIpGMkvTtA/0C56uzu3dFKp2+U4RYSq4WzEL9
+ uKZeYyZ0d0Nxz5FIuefn/dykmun4pzHlw86teeoGeKb4sO/oXlXeUX9imU60xJwuk8XQ
+ 71dA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVr9VXbQmWBeeQ8HEEBdBUmcqYcNgcBVCc4JyfHvuL+t6J/Gn8hv2l+EkA70BmSsuFHzspqhtws7cumfH/HmRZ0Zxev2v4=
-X-Gm-Message-State: AOJu0YxqGaPdWZQE4cQa/9Dp1ZjK/KuTVQxfSP3tm3BzJsvuU3Ni0jlz
- m2CDymh6QYV/1WDoxhaLZRdtLrlSwQ44XAB2cIEHZACFXDZEjokCiLjX/2Xjl3t215dkx0B1Yz5
- 1suLYRmcoIScw+C14lbXxbHKKnsAZ+3a2Kd+hVg==
-X-Google-Smtp-Source: AGHT+IH1knRZvYl5gVnOXEz4DUsh4YV83puaE0PF1c7spwBz+0vcpJe7q5gx/XBSWHFNuI8LdSdS0w5T5GlrRk7NcZo=
-X-Received: by 2002:a05:6512:3ca1:b0:513:b6:df58 with SMTP id
- h33-20020a0565123ca100b0051300b6df58mr1390605lfv.38.1708966925256; Mon, 26
- Feb 2024 09:02:05 -0800 (PST)
+ AJvYcCXzUqopwI8ouD6ESAbRRRU15IQ50YF/bv3rD/jJ2a+dspyXC6pO1fOsqFLu4Sn2hOae7KNZ1dRWUYksbfjNatV/c66zyPo=
+X-Gm-Message-State: AOJu0YwPXAr3MdITbwuazEwpvVt0EwVd3QmEZt8r8UoHQQoHsaUlgpxK
+ ZNGksXLoOgNrWHHy11jhThir/Acc5Dw/WFlBCHk9tFxM7/4WuIrMEz1xU4ZGyjx44DJ/bdqlrV9
+ 0gmwXb54JF0wp7j5sFo7zAcRf3jOdLsN++2d7SQ==
+X-Google-Smtp-Source: AGHT+IF2j7hCmOTsKAT4+yJBZsVfALeTT78WM7LPKV8vpkTqmdjZzq7sDYU2rWIXrTO3N7gMdruL+PZy7RMioNabk8c=
+X-Received: by 2002:aa7:dd06:0:b0:565:7ce5:abc6 with SMTP id
+ i6-20020aa7dd06000000b005657ce5abc6mr4141199edv.40.1708966989946; Mon, 26 Feb
+ 2024 09:03:09 -0800 (PST)
 MIME-Version: 1.0
 References: <20240224-cocoa-v12-0-e89f70bdda71@daynix.com>
- <20240224-cocoa-v12-5-e89f70bdda71@daynix.com>
-In-Reply-To: <20240224-cocoa-v12-5-e89f70bdda71@daynix.com>
+ <20240224-cocoa-v12-10-e89f70bdda71@daynix.com>
+In-Reply-To: <20240224-cocoa-v12-10-e89f70bdda71@daynix.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 26 Feb 2024 17:01:54 +0000
-Message-ID: <CAFEAcA_Q+PpyEDNARShyuFHSTByfaaGbQUGWHQYFwh9zENeX6w@mail.gmail.com>
-Subject: Re: [PATCH v12 05/10] ui/cocoa: Fix pause label coordinates
+Date: Mon, 26 Feb 2024 17:02:59 +0000
+Message-ID: <CAFEAcA_YTAoEiUDazdAMV1ikgXzwoYaBg5bNQJDbVWUFT7vwLw@mail.gmail.com>
+Subject: Re: [PATCH v12 10/10] ui/cocoa: Remove stretch_video flag
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
  Gerd Hoffmann <kraxel@redhat.com>,
@@ -68,8 +68,8 @@ Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>,
  Marek Glogowski <smarkusg@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>, 
  Rene Engel <ReneEngel80@emailn.de>, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,13 +92,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 24 Feb 2024 at 12:43, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+On Sat, 24 Feb 2024 at 12:44, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
 >
-> A subview is positioned in the superview so the superview's frame
-> should be used instead of one of the window to determine the
-> coordinates.
+> Evaluate [normalWindow styleMask] & NSWindowStyleMaskResizable instead.
 >
 > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> --
+
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
