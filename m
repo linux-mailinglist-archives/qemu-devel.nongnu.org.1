@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C41866BBE
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:08:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E32D9866BC5
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:09:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reW0u-0004jx-QI; Mon, 26 Feb 2024 03:07:04 -0500
+	id 1reW2u-00081n-6J; Mon, 26 Feb 2024 03:09:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reW0t-0004io-G5
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:07:03 -0500
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reW0q-0001e9-Bt
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:07:03 -0500
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2d228a132acso35826211fa.0
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 00:06:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708934818; x=1709539618; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cNMtYfnXorOc38D7J1SGsfvj3HH829VNJ1q+mi/Zf5o=;
- b=zxJVzfBEvmeoiFyzksIXXkqZybYc4zfiBk2veMJuCC5uCWmFATJXsHOQfpDFyapxfA
- 3sH7M1IvlUYj3QvhDBxvN9vw4m56xOn8K9KetbFSlXEoEhR7e79A2ndGSdC5F5mo0jyy
- m4fRoY3RodY4BP/7vEs7z4UVobR4xldTBCJEGhCOiG1N6qDzXxq1xt4tgY5dyqqF54v/
- ZQAynzL78kEI0ZhBiJNQJzzq3HaefJANFJWfMtDd2yQeex/71kaxitF2IzsXZXQAWWTE
- 1u7tdabiJ3krDYx5NcTixiW88Z7lNKNZ/Xj5F7Ig1twBf9XJFRR7zM+WJD3nzY5ErvO7
- 3SAA==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1reW2r-00081H-Hg
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:09:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1reW2p-0002Da-CB
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:09:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1708934942;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=4ZegQToPDmkWLS3PLXDH01RRUmEKyHvAo3iyuHAT6kY=;
+ b=PhKOd1QK6UPUWmD98/BTKsvs+ZNROQgcwIMewq2lkY8Fd/Q5gDh6q5hjV1Hk5p6a0YFUs7
+ 8xpsXhpdcuN1tkD2pVw9QvmUJgoi+/OHNRRufip6lYX73WYuJ/8qAUwo7uj6A3+DLvrBTE
+ nWYLGIy6rvUIK2mciidmj978te0+rE4=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-549-VdIBnXbzOx2P_K9UCmH2LA-1; Mon, 26 Feb 2024 03:08:59 -0500
+X-MC-Unique: VdIBnXbzOx2P_K9UCmH2LA-1
+Received: by mail-pg1-f200.google.com with SMTP id
+ 41be03b00d2f7-5cf8663f2d6so714485a12.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 00:08:59 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708934818; x=1709539618;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cNMtYfnXorOc38D7J1SGsfvj3HH829VNJ1q+mi/Zf5o=;
- b=KvenQiOzjq59OjBmlf7TcbFhQvweMT9H15LTZuPFxrmDHK9tNL8gptWGm/7IAKFtQ6
- 0/6JvnV9lBFoTqfwsiqst5PmaLMCSrWI/75oVQtYyaXJKS9n2kmftgIcIEBA8O05C2mU
- klaERIIykXMJ83ohMRUVjaBHvjBxmm+ZXvSDifzA3XYDbUsEP6OxwD6cF74ZOn847idr
- E4BjTZKnsDmWtMFiK4tKKpT/KBgH0QfrieyKcVhjtANk2BhUPoTUS9kUZ67Z3JIYXrG2
- gTT784QscRgVkMigjsSH0SE3EkhHWwQ2SBeCZR4BCgloDvakJKsH2CkZGYx8FLDYSej1
- /WyQ==
-X-Gm-Message-State: AOJu0YxAeOnpu7cfL+Root+0ag0k7r+6yGcTcJ5NfzNYD9UC5aOoKowv
- 7FD3wDR89Aq8XVhEQYPk3fkhhLnpYNOQYsLNMNJxYzHies1AGnx9KaO3T+WGkUeJvEr4tQ2hUq/
- /
-X-Google-Smtp-Source: AGHT+IGJzF5Bb7Z/I7b77MacaJ26Mz0S7aWVL0xLcXW1BOfk3vOF6CdM8OfUG5kRWrioJ1UiCVotKQ==
-X-Received: by 2002:a05:6512:acc:b0:512:f892:7f0c with SMTP id
- n12-20020a0565120acc00b00512f8927f0cmr1980949lfu.38.1708934818267; 
- Mon, 26 Feb 2024 00:06:58 -0800 (PST)
-Received: from m1x-phil.lan ([176.176.164.69])
- by smtp.gmail.com with ESMTPSA id
- d20-20020ac25454000000b0051300b6a1casm85182lfn.84.2024.02.26.00.06.56
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 26 Feb 2024 00:06:57 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- John Snow <jsnow@redhat.com>, Leif Lindholm <quic_llindhol@quicinc.com>,
- qemu-block@nongnu.org, Radoslaw Biernacki <rad@semihalf.com>,
- BALATON Zoltan <balaton@eik.bme.hu>, qemu-ppc@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 3/3] hw/ide: Include 'ide_internal.h' from current path
-Date: Mon, 26 Feb 2024 09:06:31 +0100
-Message-ID: <20240226080632.9596-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240226080632.9596-1-philmd@linaro.org>
-References: <20240226080632.9596-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1708934938; x=1709539738;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=4ZegQToPDmkWLS3PLXDH01RRUmEKyHvAo3iyuHAT6kY=;
+ b=oxJ7Ra9LgE2l8lbTLTMfAt9ncVH59qzjq/D6hNrl2zFMjxLue3/bF0c6/dKXrvHZpO
+ csGAwOb96D8CpVaEVgtOsYUJUFpABiWxtMsX4Eb3OU73KP+9hnJoEaS8IGIOsa4HcuhF
+ qtV4WHCAfeLc+kTLUtgVJM0O2dFv166OUVB9iiqsq0ebN8TQLEPWe38Lqjbhwv4FpLsA
+ bSb4qxDfvlHpvg3vXb606lJF0weSLBfC2YD0gFopKwkaF8WRpCGpHbL6C3oe8XkNhpsP
+ 8SUrF/fSH66AtfjdJ5NtkCjjEdsnlJlFtdIoVftzCSMtC4L12X8gHO4sRGEFplieAhuz
+ O3Nw==
+X-Gm-Message-State: AOJu0YwFJuwj0Dsr6jaec72vAFxgUYNBhCWB9JemrY8q6mbUkvNR7UX+
+ wi0LZ0JyKwX+bBFVfH8LMkYUQPXjVJLewXvwgh3RrM2RPdyP7C+zHDbVCbdRVn3FjHnithAXrrs
+ r63KGPCa57wjhAXs3IfV+Vr+HHxggKNuR5+a9Nx7LNlqSaOeNX0kT
+X-Received: by 2002:a05:6a21:a5a4:b0:1a0:eac3:a1af with SMTP id
+ gd36-20020a056a21a5a400b001a0eac3a1afmr8044212pzc.4.1708934938508; 
+ Mon, 26 Feb 2024 00:08:58 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFCoOPCpN24v0ROFA95ZpBz3tIjtDgPqv2Ghshymu97k2EHf2lTsZHb0IWosRA91lq5mYkuiQ==
+X-Received: by 2002:a05:6a21:a5a4:b0:1a0:eac3:a1af with SMTP id
+ gd36-20020a056a21a5a400b001a0eac3a1afmr8044200pzc.4.1708934938071; 
+ Mon, 26 Feb 2024 00:08:58 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ li13-20020a170903294d00b001dba98889a3sm3399244plb.71.2024.02.26.00.08.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 26 Feb 2024 00:08:57 -0800 (PST)
+Date: Mon, 26 Feb 2024 16:08:51 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
+ Claudio Fontana <cfontana@suse.de>
+Subject: Re: [PATCH v4 23/34] migration/multifd: Support outgoing fixed-ram
+ stream format
+Message-ID: <ZdxHE70QYbs5MHM4@x1n>
+References: <20240220224138.24759-1-farosas@suse.de>
+ <20240220224138.24759-24-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x234.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240220224138.24759-24-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.097,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,277 +97,325 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename "internal.h" as "ide_internal.h", and include
-it via its relative local path, instead of absolute
-to the project root path.
+On Tue, Feb 20, 2024 at 07:41:27PM -0300, Fabiano Rosas wrote:
+> The new fixed-ram stream format uses a file transport and puts ram
+> pages in the migration file at their respective offsets and can be
+> done in parallel by using the pwritev system call which takes iovecs
+> and an offset.
+> 
+> Add support to enabling the new format along with multifd to make use
+> of the threading and page handling already in place.
+> 
+> This requires multifd to stop sending headers and leaving the stream
+> format to the fixed-ram code. When it comes time to write the data, we
+> need to call a version of qio_channel_write that can take an offset.
+> 
+> Usage on HMP is:
+> 
+> (qemu) stop
+> (qemu) migrate_set_capability multifd on
+> (qemu) migrate_set_capability fixed-ram on
+> (qemu) migrate_set_parameter max-bandwidth 0
+> (qemu) migrate_set_parameter multifd-channels 8
+> (qemu) migrate file:migfile
+> 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/ide/ahci_internal.h                | 2 +-
- hw/ide/{internal.h => ide-internal.h} | 0
- hw/ide/ahci.c                         | 2 +-
- hw/ide/atapi.c                        | 2 +-
- hw/ide/cmd646.c                       | 2 +-
- hw/ide/core.c                         | 2 +-
- hw/ide/ide-bus.c                      | 2 +-
- hw/ide/ide-dev.c                      | 2 +-
- hw/ide/ioport.c                       | 2 +-
- hw/ide/isa.c                          | 2 +-
- hw/ide/macio.c                        | 2 +-
- hw/ide/microdrive.c                   | 2 +-
- hw/ide/mmio.c                         | 2 +-
- hw/ide/pci.c                          | 2 +-
- hw/ide/piix.c                         | 2 +-
- hw/ide/sii3112.c                      | 2 +-
- hw/ide/via.c                          | 2 +-
- 17 files changed, 16 insertions(+), 16 deletions(-)
- rename hw/ide/{internal.h => ide-internal.h} (100%)
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-diff --git a/hw/ide/ahci_internal.h b/hw/ide/ahci_internal.h
-index 4e13329bb2..7e63ea2310 100644
---- a/hw/ide/ahci_internal.h
-+++ b/hw/ide/ahci_internal.h
-@@ -25,8 +25,8 @@
- #define HW_IDE_AHCI_INTERNAL_H
- 
- #include "hw/ide/ahci.h"
--#include "hw/ide/internal.h"
- #include "hw/pci/pci_device.h"
-+#include "ide-internal.h"
- 
- #define AHCI_MEM_BAR_SIZE         0x1000
- #define AHCI_MAX_PORTS            32
-diff --git a/hw/ide/internal.h b/hw/ide/ide-internal.h
-similarity index 100%
-rename from hw/ide/internal.h
-rename to hw/ide/ide-internal.h
-diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index 54c9685495..b8123bc73d 100644
---- a/hw/ide/ahci.c
-+++ b/hw/ide/ahci.c
-@@ -34,11 +34,11 @@
- #include "qemu/module.h"
- #include "sysemu/block-backend.h"
- #include "sysemu/dma.h"
--#include "hw/ide/internal.h"
- #include "hw/ide/pci.h"
- #include "hw/ide/ahci-pci.h"
- #include "hw/ide/ahci-sysbus.h"
- #include "ahci_internal.h"
-+#include "ide-internal.h"
- 
- #include "trace.h"
- 
-diff --git a/hw/ide/atapi.c b/hw/ide/atapi.c
-index dcc39df9a4..73ec373184 100644
---- a/hw/ide/atapi.c
-+++ b/hw/ide/atapi.c
-@@ -24,10 +24,10 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "hw/ide/internal.h"
- #include "hw/scsi/scsi.h"
- #include "sysemu/block-backend.h"
- #include "scsi/constants.h"
-+#include "ide-internal.h"
- #include "trace.h"
- 
- #define ATAPI_SECTOR_BITS (2 + BDRV_SECTOR_BITS)
-diff --git a/hw/ide/cmd646.c b/hw/ide/cmd646.c
-index 23d213ff01..8cebd1b63d 100644
---- a/hw/ide/cmd646.c
-+++ b/hw/ide/cmd646.c
-@@ -33,7 +33,7 @@
- #include "sysemu/reset.h"
- 
- #include "hw/ide/pci.h"
--#include "hw/ide/internal.h"
-+#include "ide-internal.h"
- #include "trace.h"
- 
- /* CMD646 specific */
-diff --git a/hw/ide/core.c b/hw/ide/core.c
-index 9c4a812902..130c4d8865 100644
---- a/hw/ide/core.c
-+++ b/hw/ide/core.c
-@@ -41,7 +41,7 @@
- #include "qemu/cutils.h"
- #include "sysemu/replay.h"
- #include "sysemu/runstate.h"
--#include "hw/ide/internal.h"
-+#include "ide-internal.h"
- #include "trace.h"
- 
- /* These values were based on a Seagate ST3500418AS but have been modified
-diff --git a/hw/ide/ide-bus.c b/hw/ide/ide-bus.c
-index 57fe67b29c..37d003dd9a 100644
---- a/hw/ide/ide-bus.c
-+++ b/hw/ide/ide-bus.c
-@@ -21,10 +21,10 @@
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "qemu/module.h"
--#include "hw/ide/internal.h"
- #include "sysemu/block-backend.h"
- #include "sysemu/blockdev.h"
- #include "sysemu/runstate.h"
-+#include "ide-internal.h"
- 
- static char *idebus_get_fw_dev_path(DeviceState *dev);
- static void idebus_unrealize(BusState *qdev);
-diff --git a/hw/ide/ide-dev.c b/hw/ide/ide-dev.c
-index c8e2033469..799bd4b6ec 100644
---- a/hw/ide/ide-dev.c
-+++ b/hw/ide/ide-dev.c
-@@ -23,11 +23,11 @@
- #include "qemu/error-report.h"
- #include "qemu/module.h"
- #include "hw/ide/ide-dev.h"
--#include "hw/ide/internal.h"
- #include "sysemu/block-backend.h"
- #include "sysemu/blockdev.h"
- #include "sysemu/sysemu.h"
- #include "qapi/visitor.h"
-+#include "ide-internal.h"
- 
- static Property ide_props[] = {
-     DEFINE_PROP_UINT32("unit", IDEDevice, unit, -1),
-diff --git a/hw/ide/ioport.c b/hw/ide/ioport.c
-index 0b283ac783..a2f457f0bd 100644
---- a/hw/ide/ioport.c
-+++ b/hw/ide/ioport.c
-@@ -25,7 +25,7 @@
- 
- #include "qemu/osdep.h"
- #include "hw/isa/isa.h"
--#include "hw/ide/internal.h"
-+#include "ide-internal.h"
- #include "trace.h"
- 
- int ide_init_ioport(IDEBus *bus, ISADevice *dev, int iobase, int iobase2)
-diff --git a/hw/ide/isa.c b/hw/ide/isa.c
-index cc865c83dc..934c45887c 100644
---- a/hw/ide/isa.c
-+++ b/hw/ide/isa.c
-@@ -32,8 +32,8 @@
- #include "sysemu/dma.h"
- 
- #include "hw/ide/isa.h"
--#include "hw/ide/internal.h"
- #include "qom/object.h"
-+#include "ide-internal.h"
- 
- /***********************************************************/
- /* ISA IDE definitions */
-diff --git a/hw/ide/macio.c b/hw/ide/macio.c
-index 0d2c6ba910..aca90d04f0 100644
---- a/hw/ide/macio.c
-+++ b/hw/ide/macio.c
-@@ -33,7 +33,7 @@
- #include "sysemu/block-backend.h"
- #include "sysemu/dma.h"
- 
--#include "hw/ide/internal.h"
-+#include "ide-internal.h"
- 
- /* debug MACIO */
- // #define DEBUG_MACIO
-diff --git a/hw/ide/microdrive.c b/hw/ide/microdrive.c
-index a7f415f0fc..3bb152b5d3 100644
---- a/hw/ide/microdrive.c
-+++ b/hw/ide/microdrive.c
-@@ -31,8 +31,8 @@
- #include "sysemu/dma.h"
- #include "hw/irq.h"
- 
--#include "hw/ide/internal.h"
- #include "qom/object.h"
-+#include "ide-internal.h"
- 
- #define TYPE_MICRODRIVE "microdrive"
- OBJECT_DECLARE_SIMPLE_TYPE(MicroDriveState, MICRODRIVE)
-diff --git a/hw/ide/mmio.c b/hw/ide/mmio.c
-index e8f41c0610..8736281305 100644
---- a/hw/ide/mmio.c
-+++ b/hw/ide/mmio.c
-@@ -30,8 +30,8 @@
- #include "sysemu/dma.h"
- 
- #include "hw/ide/mmio.h"
--#include "hw/ide/internal.h"
- #include "hw/qdev-properties.h"
-+#include "ide-internal.h"
- 
- /***********************************************************/
- /* MMIO based ide port
-diff --git a/hw/ide/pci.c b/hw/ide/pci.c
-index 73efeec7f4..4675d079a1 100644
---- a/hw/ide/pci.c
-+++ b/hw/ide/pci.c
-@@ -30,8 +30,8 @@
- #include "sysemu/dma.h"
- #include "qemu/error-report.h"
- #include "qemu/module.h"
--#include "hw/ide/internal.h"
- #include "hw/ide/pci.h"
-+#include "ide-internal.h"
- #include "trace.h"
- 
- #define BMDMA_PAGE_SIZE 4096
-diff --git a/hw/ide/piix.c b/hw/ide/piix.c
-index 1773a068c3..80efc633d3 100644
---- a/hw/ide/piix.c
-+++ b/hw/ide/piix.c
-@@ -30,9 +30,9 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "hw/pci/pci.h"
--#include "hw/ide/internal.h"
- #include "hw/ide/piix.h"
- #include "hw/ide/pci.h"
-+#include "ide-internal.h"
- #include "trace.h"
- 
- static uint64_t bmdma_read(void *opaque, hwaddr addr, unsigned size)
-diff --git a/hw/ide/sii3112.c b/hw/ide/sii3112.c
-index 321b9e46a1..af17384ff2 100644
---- a/hw/ide/sii3112.c
-+++ b/hw/ide/sii3112.c
-@@ -13,11 +13,11 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "hw/ide/internal.h"
- #include "hw/ide/pci.h"
- #include "qemu/module.h"
- #include "trace.h"
- #include "qom/object.h"
-+#include "ide-internal.h"
- 
- #define TYPE_SII3112_PCI "sii3112"
- OBJECT_DECLARE_SIMPLE_TYPE(SiI3112PCIState, SII3112_PCI)
-diff --git a/hw/ide/via.c b/hw/ide/via.c
-index cf151e70ec..a32f56b0e7 100644
---- a/hw/ide/via.c
-+++ b/hw/ide/via.c
-@@ -25,7 +25,6 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "hw/ide/internal.h"
- #include "hw/pci/pci.h"
- #include "migration/vmstate.h"
- #include "qemu/module.h"
-@@ -34,6 +33,7 @@
- #include "hw/isa/vt82c686.h"
- #include "hw/ide/pci.h"
- #include "hw/irq.h"
-+#include "ide-internal.h"
- #include "trace.h"
- 
- static uint64_t bmdma_read(void *opaque, hwaddr addr,
+Some nitpicks below.
+
+> ---
+>  include/qemu/bitops.h | 13 ++++++++++++
+>  migration/file.c      | 47 +++++++++++++++++++++++++++++++++++++++++++
+>  migration/file.h      |  2 ++
+>  migration/migration.c | 12 ++++++-----
+>  migration/multifd.c   | 24 ++++++++++++++++++++--
+>  migration/options.c   | 14 +++++++------
+>  migration/ram.c       | 17 +++++++++++++---
+>  migration/ram.h       |  1 +
+>  8 files changed, 114 insertions(+), 16 deletions(-)
+> 
+> diff --git a/include/qemu/bitops.h b/include/qemu/bitops.h
+> index cb3526d1f4..2c0a2fe751 100644
+> --- a/include/qemu/bitops.h
+> +++ b/include/qemu/bitops.h
+> @@ -67,6 +67,19 @@ static inline void clear_bit(long nr, unsigned long *addr)
+>      *p &= ~mask;
+>  }
+>  
+> +/**
+> + * clear_bit_atomic - Clears a bit in memory atomically
+> + * @nr: Bit to clear
+> + * @addr: Address to start counting from
+> + */
+> +static inline void clear_bit_atomic(long nr, unsigned long *addr)
+> +{
+> +    unsigned long mask = BIT_MASK(nr);
+> +    unsigned long *p = addr + BIT_WORD(nr);
+> +
+> +    return qatomic_and(p, ~mask);
+> +}
+> +
+>  /**
+>   * change_bit - Toggle a bit in memory
+>   * @nr: Bit to change
+> diff --git a/migration/file.c b/migration/file.c
+> index a186dc592a..94e8e08363 100644
+> --- a/migration/file.c
+> +++ b/migration/file.c
+> @@ -148,3 +148,50 @@ void file_start_incoming_migration(FileMigrationArgs *file_args, Error **errp)
+>          error_setg(errp, "Error creating migration incoming channel");
+>      }
+>  }
+> +
+> +int file_write_ramblock_iov(QIOChannel *ioc, const struct iovec *iov,
+> +                            int niov, RAMBlock *block, Error **errp)
+> +{
+> +    ssize_t ret = -1;
+> +    int i, slice_idx, slice_num;
+> +    uintptr_t base, next, offset;
+> +    size_t len;
+> +
+> +    slice_idx = 0;
+> +    slice_num = 1;
+> +
+> +    /*
+> +     * If the iov array doesn't have contiguous elements, we need to
+> +     * split it in slices because we only have one file offset for the
+> +     * whole iov. Do this here so callers don't need to break the iov
+> +     * array themselves.
+> +     */
+> +    for (i = 0; i < niov; i++, slice_num++) {
+> +        base = (uintptr_t) iov[i].iov_base;
+> +
+> +        if (i != niov - 1) {
+> +            len = iov[i].iov_len;
+> +            next = (uintptr_t) iov[i + 1].iov_base;
+> +
+> +            if (base + len == next) {
+> +                continue;
+> +            }
+> +        }
+> +
+> +        /*
+> +         * Use the offset of the first element of the segment that
+> +         * we're sending.
+> +         */
+> +        offset = (uintptr_t) iov[slice_idx].iov_base - (uintptr_t) block->host;
+
+Wanna do a sanity check over offset v.s. block->used_length?
+
+> +        ret = qio_channel_pwritev(ioc, &iov[slice_idx], slice_num,
+> +                                  block->pages_offset + offset, errp);
+> +        if (ret < 0) {
+> +            break;
+> +        }
+> +
+> +        slice_idx += slice_num;
+> +        slice_num = 0;
+> +    }
+> +
+> +    return (ret < 0) ? -1 : 0;
+
+IMHO we don't need to hide the negative ret, hence:
+
+  return (ret < 0) ? ret : 0;
+
+> +}
+> diff --git a/migration/file.h b/migration/file.h
+> index 90794b494b..390dcc6821 100644
+> --- a/migration/file.h
+> +++ b/migration/file.h
+> @@ -20,4 +20,6 @@ int file_parse_offset(char *filespec, uint64_t *offsetp, Error **errp);
+>  
+>  bool file_send_channel_create(gpointer opaque, Error **errp);
+>  int file_send_channel_destroy(QIOChannel *ioc);
+> +int file_write_ramblock_iov(QIOChannel *ioc, const struct iovec *iov,
+> +                            int niov, RAMBlock *block, Error **errp);
+>  #endif
+> diff --git a/migration/migration.c b/migration/migration.c
+> index e2218b9de7..32b291a282 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -134,12 +134,14 @@ static bool transport_supports_multi_channels(MigrationAddress *addr)
+>      if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
+>          SocketAddress *saddr = &addr->u.socket;
+>  
+> -        return saddr->type == SOCKET_ADDRESS_TYPE_INET ||
+> -               saddr->type == SOCKET_ADDRESS_TYPE_UNIX ||
+> -               saddr->type == SOCKET_ADDRESS_TYPE_VSOCK;
+> +        return (saddr->type == SOCKET_ADDRESS_TYPE_INET ||
+> +                saddr->type == SOCKET_ADDRESS_TYPE_UNIX ||
+> +                saddr->type == SOCKET_ADDRESS_TYPE_VSOCK);
+> +    } else if (addr->transport == MIGRATION_ADDRESS_TYPE_FILE) {
+> +        return migrate_fixed_ram();
+> +    } else {
+> +        return false;
+>      }
+> -
+> -    return false;
+>  }
+>  
+>  static bool migration_needs_seekable_channel(void)
+> diff --git a/migration/multifd.c b/migration/multifd.c
+> index cb5f4fb3e0..b251c58ec2 100644
+> --- a/migration/multifd.c
+> +++ b/migration/multifd.c
+> @@ -105,6 +105,17 @@ static bool multifd_use_packets(void)
+>      return !migrate_fixed_ram();
+>  }
+>  
+> +static void multifd_set_file_bitmap(MultiFDSendParams *p)
+> +{
+> +    MultiFDPages_t *pages = p->pages;
+> +
+> +    assert(pages->block);
+> +
+> +    for (int i = 0; i < p->pages->num; i++) {
+> +        ramblock_set_file_bmap_atomic(pages->block, pages->offset[i]);
+> +    }
+> +}
+> +
+>  /* Multifd without compression */
+>  
+>  /**
+> @@ -181,6 +192,8 @@ static int nocomp_send_prepare(MultiFDSendParams *p, Error **errp)
+>                  return -1;
+>              }
+>          }
+> +    } else {
+> +        multifd_set_file_bitmap(p);
+
+PS: if you liked my other proposal, you can move this to the entry when
+handing migrate_fixed_ram().
+
+>      }
+>  
+>      return 0;
+> @@ -860,8 +873,15 @@ static void *multifd_send_thread(void *opaque)
+>                  break;
+>              }
+>  
+> -            ret = qio_channel_writev_full_all(p->c, p->iov, p->iovs_num, NULL,
+> -                                              0, p->write_flags, &local_err);
+> +            if (migrate_fixed_ram()) {
+> +                ret = file_write_ramblock_iov(p->c, p->iov, p->iovs_num,
+> +                                              p->pages->block, &local_err);
+> +            } else {
+> +                ret = qio_channel_writev_full_all(p->c, p->iov, p->iovs_num,
+> +                                                  NULL, 0, p->write_flags,
+> +                                                  &local_err);
+> +            }
+> +
+>              if (ret != 0) {
+>                  break;
+>              }
+> diff --git a/migration/options.c b/migration/options.c
+> index 4909e5c72a..bfcd2d7132 100644
+> --- a/migration/options.c
+> +++ b/migration/options.c
+> @@ -654,12 +654,6 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+>      }
+>  
+>      if (new_caps[MIGRATION_CAPABILITY_FIXED_RAM]) {
+> -        if (new_caps[MIGRATION_CAPABILITY_MULTIFD]) {
+> -            error_setg(errp,
+> -                       "Fixed-ram migration is incompatible with multifd");
+> -            return false;
+> -        }
+> -
+>          if (new_caps[MIGRATION_CAPABILITY_XBZRLE]) {
+>              error_setg(errp,
+>                         "Fixed-ram migration is incompatible with xbzrle");
+> @@ -1252,6 +1246,14 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
+>      }
+>  #endif
+>  
+> +    if (migrate_fixed_ram() &&
+> +        ((params->has_multifd_compression && params->multifd_compression) ||
+> +         (params->tls_creds && *params->tls_creds))) {
+
+migrate_tls()?
+
+> +        error_setg(errp,
+> +                   "Fixed-ram only available for non-compressed non-TLS multifd migration");
+> +        return false;
+> +    }
+
+IIUC this could miss the case where one can set tls creds _before_ enable
+fixed-ram cap?
+
+We can also check both places but I always think it awkward to duplicates.
+
+For cross-(cap+param) checks maybe we can use migrate_prepare()?
+
+> +
+>      if (params->has_x_vcpu_dirty_limit_period &&
+>          (params->x_vcpu_dirty_limit_period < 1 ||
+>           params->x_vcpu_dirty_limit_period > 1000)) {
+> diff --git a/migration/ram.c b/migration/ram.c
+> index c7050f6f68..ad540ae9ce 100644
+> --- a/migration/ram.c
+> +++ b/migration/ram.c
+> @@ -1149,7 +1149,7 @@ static int save_zero_page(RAMState *rs, PageSearchStatus *pss,
+>  
+>      if (migrate_fixed_ram()) {
+>          /* zero pages are not transferred with fixed-ram */
+> -        clear_bit(offset >> TARGET_PAGE_BITS, pss->block->file_bmap);
+> +        clear_bit_atomic(offset >> TARGET_PAGE_BITS, pss->block->file_bmap);
+>          return 1;
+>      }
+>  
+> @@ -2445,8 +2445,6 @@ static void ram_save_cleanup(void *opaque)
+>          block->clear_bmap = NULL;
+>          g_free(block->bmap);
+>          block->bmap = NULL;
+> -        g_free(block->file_bmap);
+> -        block->file_bmap = NULL;
+>      }
+>  
+>      xbzrle_cleanup();
+> @@ -3135,9 +3133,22 @@ static void ram_save_file_bmap(QEMUFile *f)
+>          qemu_put_buffer_at(f, (uint8_t *)block->file_bmap, bitmap_size,
+>                             block->bitmap_offset);
+>          ram_transferred_add(bitmap_size);
+> +
+> +        /*
+> +         * Free the bitmap here to catch any synchronization issues
+> +         * with multifd channels. No channels should be sending pages
+> +         * after we've written the bitmap to file.
+> +         */
+> +        g_free(block->file_bmap);
+> +        block->file_bmap = NULL;
+>      }
+>  }
+>  
+> +void ramblock_set_file_bmap_atomic(RAMBlock *block, ram_addr_t offset)
+> +{
+> +    set_bit_atomic(offset >> TARGET_PAGE_BITS, block->file_bmap);
+> +}
+> +
+>  /**
+>   * ram_save_iterate: iterative stage for migration
+>   *
+> diff --git a/migration/ram.h b/migration/ram.h
+> index 9b937a446b..b9ac0da587 100644
+> --- a/migration/ram.h
+> +++ b/migration/ram.h
+> @@ -75,6 +75,7 @@ bool ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *rb, Error **errp);
+>  bool ramblock_page_is_discarded(RAMBlock *rb, ram_addr_t start);
+>  void postcopy_preempt_shutdown_file(MigrationState *s);
+>  void *postcopy_preempt_thread(void *opaque);
+> +void ramblock_set_file_bmap_atomic(RAMBlock *block, ram_addr_t offset);
+>  
+>  /* ram cache */
+>  int colo_init_ram_cache(void);
+> -- 
+> 2.35.3
+> 
+
 -- 
-2.41.0
+Peter Xu
 
 
