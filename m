@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D50F1866C43
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:30:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C268D866C40
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 09:30:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reWNP-0002FU-F4; Mon, 26 Feb 2024 03:30:19 -0500
+	id 1reWN7-0001y0-O8; Mon, 26 Feb 2024 03:30:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1reWNN-0002DW-TK
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:30:17 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1reWNL-0005cn-LM
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:30:17 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1dc96f64c10so5914275ad.1
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 00:30:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708936211; x=1709541011; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lW7pjRlc1yD9ansqi/cSuRLP+dzdf12+uV6GzvgYzGA=;
- b=bNjBL6bjtRGI6KoVTP59AZjFb79MZaqBOs6UxyrbtIeXu0dCM34BvJw8rga5mg0ySV
- GpvP3Fv7hi0czsQAqpfGmOApGjv174co97mUIrnMjeYu1MdMI5m9V4Jf+GWJ8g3FEJFK
- gBpEb/5EuPPw20iB4njNVBQ+Hc5BSpyc1GZ6rEDaUO7YIoS9BCKn2Y6zgAzfL0dJ3Tym
- GPsE8nKKsWjgNOgQMtEyzOutrJEszdMdrHGFbR4ZkHWhFKWpZF+ZyWOr9KKx/Zp8Mevd
- KxWHyH9V8pmKvydFQc/kRtTndY/NgD6+9GWhIGftBD/3KW0ZdjAUe07eofOfiufcjrC2
- p17g==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1reWMw-0001w9-1c
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:29:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1reWMu-0005PQ-Mh
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 03:29:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1708936187;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=newgzwZxlRjUCtpataUEBcNKFRr7hyhCuxKG5bXa9nA=;
+ b=aaMuKkwmOabEyEsnj1M0Cb4Y9Ft3wjpuqX+NA2XmAbFlGOfIe0tzQg4/L9xbWGvXbbTJ4Z
+ qrMv6dpb9VYPEfCd7A2elF8Vup6/8oKVnCw2ZYaQUePl/X/CQpeQ1tMhF4tXEkopfLYfkG
+ V9qgmjf9GeFkNJfMW2p8sSvLXTjUH+g=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-265-5xtB7M0iNv-XSgLWWIq94Q-1; Mon, 26 Feb 2024 03:29:45 -0500
+X-MC-Unique: 5xtB7M0iNv-XSgLWWIq94Q-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-565146088eeso1510722a12.2
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 00:29:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708936211; x=1709541011;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=lW7pjRlc1yD9ansqi/cSuRLP+dzdf12+uV6GzvgYzGA=;
- b=p4uNcgPaJDMfZ9jl4ECdIOqZTl7bhhsLeuD+NRdFF+fC1hJY1cAQlXfTYb6ZGZAqXo
- zs69VUHIYByJwCrVQJSdkzQY6C1sXV104oIC7jdNrQPcaURb1hXnICJ3gc9hQTl6CP20
- Ycfet92hzdrP3ITAHKWXzxptXUmVfVEm7j9Xo7lodFZNEFZmacSXSKXegkg9siasRxNm
- 8+9G+tiVSFzjl+sjUpN2AbiKdD0ZQvUniZZI7I5tmIDmOYt3yLqvsP+b5Jc7KvPlo2aF
- ZCvpEWiFvVcgl4ThCFxfn+8tI6tR8+yY8bc00fav+dEfvXtqAcllKzrEKucqyLbpe0l6
- LXLg==
-X-Gm-Message-State: AOJu0YwyKZIcyu+9v5R06c5GCC7B0Gg2FfyLu/X4UI3Izn3PqV8VTMHY
- p2OwE/85fmyXIvdxTZyx+y/QYZkkUI5AmiK+n32ggMX2xzTtSxxD0TEucE7/
-X-Google-Smtp-Source: AGHT+IEmcCLnAeqkTIGdNkIiiST8Wn0WIHETHhgeFt2uMN5I7GdZ8/PLUoq8lJxmAZ3TInkFaV5nuA==
-X-Received: by 2002:a17:902:6503:b0:1dc:499b:8e80 with SMTP id
- b3-20020a170902650300b001dc499b8e80mr4633094plk.54.1708936211326; 
- Mon, 26 Feb 2024 00:30:11 -0800 (PST)
-Received: from wheely.local0.net ([1.146.74.212])
+ d=1e100.net; s=20230601; t=1708936183; x=1709540983;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=newgzwZxlRjUCtpataUEBcNKFRr7hyhCuxKG5bXa9nA=;
+ b=U2GiExHE0cpyWTut2bUl7qIYMwLA7jurG6fGH4O4KDmNCpSFW2yBctNGxLWGbmoDz/
+ +xJAqWchPmeTGFOLw5uLgzz/9QHJgfFmcX98BPBcPxXI3pYf9PeEqy2pj6ZvF47F62iI
+ L+uRk7sYHF2BHYBQdP1nwFKStZQRNPIhSGGcaNCLpzCHL7rO09UHOowtzy8GEpHWQUUd
+ wIg7DEL4W5UwWF5E2sXwKz5r4fokrK80G7pbGCYcOAA9rT4CxVoO655hvkWLqsf1Wk8P
+ +lKC6Fm8TxE/gxmeySOUSQIf4QNfaSXIhzAmn3NlQUHh1XgVMs98L59YOMtL9ZeYLGlz
+ q2GA==
+X-Gm-Message-State: AOJu0YwhjPuf3IG1qupq8DBJj2OE1EjIXx6DgmcH7Hz0K9pjlqqke19T
+ 8l1tqhEqlh0BiYMezJ7CXlZOqzv7dGYfx7b0CtqthlxG+otCNownYtzjvVkjXGTPOH3Kkzn9H5C
+ SZabtj/OmEuzmKloiNPDdZNGoQOJCSAsbVVLMOJQwCwaV9VATSfLc1JqBXJ6HoHMV7Z4jZIn6lj
+ 9G6iqiVvFQABMx38qw/ZjCZScsNbbrxqtNwI+B
+X-Received: by 2002:aa7:c318:0:b0:565:eb8:ed47 with SMTP id
+ l24-20020aa7c318000000b005650eb8ed47mr3746496edq.35.1708936183628; 
+ Mon, 26 Feb 2024 00:29:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHdOoYdUrA4tKK90tkl9QcOr9E7kLwDqAP7Vyq+T3/lw86S8jO5jU7j7IwDpQcSMCUEpJib2A==
+X-Received: by 2002:aa7:c318:0:b0:565:eb8:ed47 with SMTP id
+ l24-20020aa7c318000000b005650eb8ed47mr3746482edq.35.1708936183247; 
+ Mon, 26 Feb 2024 00:29:43 -0800 (PST)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- w16-20020a1709026f1000b001d9641003cfsm3511260plk.142.2024.02.26.00.30.05
+ v16-20020a056402185000b0056518035195sm2088939edy.69.2024.02.26.00.29.42
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Feb 2024 00:30:11 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
+ Mon, 26 Feb 2024 00:29:42 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
- Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH v3 2/9] scripts/replay-dump.py: rejig decoders in event number
- order
-Date: Mon, 26 Feb 2024 18:29:38 +1000
-Message-ID: <20240226082945.1452499-3-npiggin@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240226082945.1452499-1-npiggin@gmail.com>
-References: <20240226082945.1452499-1-npiggin@gmail.com>
+Subject: [PATCH 0/2] ide, vl: turn -win2k-hack into a property on IDE devices
+Date: Mon, 26 Feb 2024 09:29:39 +0100
+Message-ID: <20240226082941.90364-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.097,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,103 +96,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sort decoder functions to be ascending in order of event number,
-same as the decoder tables.
+As per $SUBJECT, one less global and one more syntactic sugar property.
+Like -no-fd-bootchk, this could be deprecated but it can be done
+separately---and would slightly worsen documentation, so I'm leaving
+it aside for now.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- scripts/replay-dump.py | 56 +++++++++++++++++++++---------------------
- 1 file changed, 28 insertions(+), 28 deletions(-)
+Paolo
 
-diff --git a/scripts/replay-dump.py b/scripts/replay-dump.py
-index 419ee3257b..b82659cfb6 100755
---- a/scripts/replay-dump.py
-+++ b/scripts/replay-dump.py
-@@ -139,6 +139,19 @@ def swallow_bytes(eid, name, dumpfile, nr):
-     """Swallow nr bytes of data without looking at it"""
-     dumpfile.seek(nr, os.SEEK_CUR)
- 
-+total_insns = 0
-+
-+def decode_instruction(eid, name, dumpfile):
-+    global total_insns
-+    ins_diff = read_dword(dumpfile)
-+    total_insns += ins_diff
-+    print_event(eid, name, "+ %d -> %d" % (ins_diff, total_insns))
-+    return True
-+
-+def decode_interrupt(eid, name, dumpfile):
-+    print_event(eid, name)
-+    return True
-+
- def decode_exception(eid, name, dumpfile):
-     print_event(eid, name)
-     return True
-@@ -198,15 +211,6 @@ def decode_async_net(eid, name, dumpfile):
-     print_event(eid, name, "net:%x flags:%x bytes:%d" % (net_id, flags, size))
-     return True
- 
--total_insns = 0
--
--def decode_instruction(eid, name, dumpfile):
--    global total_insns
--    ins_diff = read_dword(dumpfile)
--    total_insns += ins_diff
--    print_event(eid, name, "+ %d -> %d" % (ins_diff, total_insns))
--    return True
--
- def decode_shutdown(eid, name, dumpfile):
-     print_event(eid, name)
-     return True
-@@ -222,6 +226,21 @@ def decode_audio_out(eid, name, dumpfile):
-     print_event(eid, name, "%d" % (audio_data))
-     return True
- 
-+def decode_random(eid, name, dumpfile):
-+    ret = read_dword(dumpfile)
-+    size = read_dword(dumpfile)
-+    swallow_bytes(eid, name, dumpfile, size)
-+    if (ret):
-+        print_event(eid, name, "%d bytes (getrandom failed)" % (size))
-+    else:
-+        print_event(eid, name, "%d bytes" % (size))
-+    return True
-+
-+def decode_clock(eid, name, dumpfile):
-+    clock_data = read_qword(dumpfile)
-+    print_event(eid, name, "0x%x" % (clock_data))
-+    return True
-+
- def __decode_checkpoint(eid, name, dumpfile, old):
-     """Decode a checkpoint.
- 
-@@ -252,25 +271,6 @@ def decode_checkpoint_init(eid, name, dumpfile):
-     print_event(eid, name)
-     return True
- 
--def decode_interrupt(eid, name, dumpfile):
--    print_event(eid, name)
--    return True
--
--def decode_clock(eid, name, dumpfile):
--    clock_data = read_qword(dumpfile)
--    print_event(eid, name, "0x%x" % (clock_data))
--    return True
--
--def decode_random(eid, name, dumpfile):
--    ret = read_dword(dumpfile)
--    size = read_dword(dumpfile)
--    swallow_bytes(eid, name, dumpfile, size)
--    if (ret):
--        print_event(eid, name, "%d bytes (getrandom failed)" % (size))
--    else:
--        print_event(eid, name, "%d bytes" % (size))
--    return True
--
- def decode_end(eid, name, dumpfile):
-     print_event(eid, name)
-     return False
+Paolo Bonzini (2):
+  ide: collapse parameters to ide_init_drive
+  ide, vl: turn -win2k-hack into a property on IDE devices
+
+ include/hw/ide/internal.h |  8 +++-----
+ include/sysemu/sysemu.h   |  1 -
+ hw/ide/core.c             | 43 ++++++++++++++++++---------------------
+ hw/ide/qdev.c             |  6 ++----
+ system/globals.c          |  1 -
+ system/vl.c               |  2 +-
+ qemu-options.hx           |  3 ++-
+ 7 files changed, 28 insertions(+), 36 deletions(-)
+
 -- 
-2.42.0
+2.43.2
 
 
