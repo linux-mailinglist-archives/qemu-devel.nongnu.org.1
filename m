@@ -2,68 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22BB386721A
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 11:53:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D733E86720C
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 11:52:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reYZC-0002il-9Y; Mon, 26 Feb 2024 05:50:38 -0500
+	id 1reYZE-0002kp-GL; Mon, 26 Feb 2024 05:50:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1reYYm-0002cE-Gl
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 05:50:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1reYZ3-0002hN-Re; Mon, 26 Feb 2024 05:50:30 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1reYYc-0003kP-Oz
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 05:50:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708944601;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=OekHLpN6vzZJTV5G+d2k3Xx25V6a7wHSDzsezDC1Z9E=;
- b=GeTeVYIGgPUP5qDe12uw1tzylhiCRBYOiknVAwmrlQpesntYkIyHlggb1imh5Ka+QDZzMu
- Lcwd0hnGwxt9AQpANbKPkz6S6TgyVw54VNcL1PMiI+mTqR+b7A6DCWSoyTxvz8cy1MUIvS
- QqQjCW54c6AjX00N1I6kD8R1/PJxNhA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-619-wONSnZ6dOJWov4ZLwqkg_A-1; Mon, 26 Feb 2024 05:49:58 -0500
-X-MC-Unique: wONSnZ6dOJWov4ZLwqkg_A-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 33B6D85A588;
- Mon, 26 Feb 2024 10:49:58 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.4])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E60C524D;
- Mon, 26 Feb 2024 10:49:57 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id B833E21E5A0E; Mon, 26 Feb 2024 11:49:54 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 17/17] qapi: Divorce QAPIDoc from QAPIParseError
-Date: Mon, 26 Feb 2024 11:49:54 +0100
-Message-ID: <20240226104954.3781985-18-armbru@redhat.com>
-In-Reply-To: <20240226104954.3781985-1-armbru@redhat.com>
-References: <20240226104954.3781985-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1reYZ1-00043K-OE; Mon, 26 Feb 2024 05:50:29 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 179C14E6026;
+ Mon, 26 Feb 2024 11:50:25 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id dA7fQlQtrwC1; Mon, 26 Feb 2024 11:50:23 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 20DCE4E601E; Mon, 26 Feb 2024 11:50:23 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 1F1187456B4;
+ Mon, 26 Feb 2024 11:50:23 +0100 (CET)
+Date: Mon, 26 Feb 2024 11:50:23 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org, 
+ qemu-ppc@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>, 
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, 
+ Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org, 
+ Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org, 
+ John Snow <jsnow@redhat.com>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: Re: [PATCH v2 3/3] hw/ide: Include 'ide_internal.h' from current path
+In-Reply-To: <fd0fba89-cd93-4113-9f3d-2ee20f2217d9@linaro.org>
+Message-ID: <90219760-aad5-82b2-41aa-be563f52fdf9@eik.bme.hu>
+References: <20240225171637.4709-1-philmd@linaro.org>
+ <20240225171637.4709-4-philmd@linaro.org>
+ <feffd329-59e0-0291-0dd6-76a625da190b@eik.bme.hu>
+ <878r37lll6.fsf@pond.sub.org>
+ <fd0fba89-cd93-4113-9f3d-2ee20f2217d9@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.097,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+Content-Type: multipart/mixed;
+ BOUNDARY="3866299591-1653774431-1708944568=:1986"
+Content-ID: <de8c98d8-24d0-883e-2208-6c280c149494@eik.bme.hu>
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,231 +72,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QAPIDoc stores a reference to QAPIParser just to pass it to
-QAPIParseError.  The resulting error position depends on the state of
-the parser.  It happens to be the current comment line.  Servicable,
-but action at a distance.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-The commit before previous moved most uses of QAPIParseError from
-QAPIDoc to QAPIParser.  There are just three left.  Convert them to
-QAPISemError.  This involves passing info to a few methods.  Then drop
-the reference to QAPIParser.
+--3866299591-1653774431-1708944568=:1986
+Content-Type: text/plain; CHARSET=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 8BIT
+Content-ID: <a7ba5298-f308-b152-2717-bb9a6be7f849@eik.bme.hu>
 
-The three errors lose the column number.  Not really interesting here:
-it's the comment line's indentation.
+On Mon, 26 Feb 2024, Philippe Mathieu-DaudÈ wrote:
+> On 26/2/24 08:40, Markus Armbruster wrote:
+>> BALATON Zoltan <balaton@eik.bme.hu> writes:
+>> 
+>>> On Sun, 25 Feb 2024, Philippe Mathieu-DaudÈ wrote:
+>>>> Rename "internal.h" as "ide_internal.h", and include
+>>> 
+>>> Is there a convention about using underscore or dash in file names? The 
+>>> headers Thomas added are using - as well as ahci-allwinner.c, only 
+>>> ahci_internal.h has _ (but there are others elsewhere such as 
+>>> pci_device.h). Maybe we should be consistent at least within IDE and this 
+>>> series is now a good opportunity for renaming these headers to match. But 
+>>> it's just a small nit, thanks for picking this up.
+>> 
+>> This is one of the many unnecessary inconsistencies we're inflicting on
+>> ourselves.
+>> 
+>> We have more than 3600 file names containing '-', and more almost 2700
+>> containing '_'.  Bizarrely, 68 of them contain both.
+>> 
+>> I strongly prefer '_' myself.
+>> 
+>> Zoltan is making a local consistency argument for '-'.
+>> 
+>> Let's use '-' here.
+>
+> Fine, patch updated.
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240216145841.2099240-17-armbru@redhat.com>
-Reviewed-by: Daniel P. Berrang√© <berrange@redhat.com>
----
- scripts/qapi/parser.py                      | 66 +++++++++------------
- tests/qapi-schema/doc-duplicated-arg.err    |  2 +-
- tests/qapi-schema/doc-duplicated-return.err |  2 +-
- tests/qapi-schema/doc-duplicated-since.err  |  2 +-
- tests/qapi-schema/doc-empty-arg.err         |  2 +-
- 5 files changed, 32 insertions(+), 42 deletions(-)
+And then please also rename ahci_internal.h to use '-' to be really 
+consistent.
 
-diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-index 3d8c62b412..11707418fb 100644
---- a/scripts/qapi/parser.py
-+++ b/scripts/qapi/parser.py
-@@ -494,7 +494,7 @@ def get_doc(self) -> 'QAPIDoc':
-             symbol = line[1:-1]
-             if not symbol:
-                 raise QAPIParseError(self, "name required after '@'")
--            doc = QAPIDoc(self, info, symbol)
-+            doc = QAPIDoc(info, symbol)
-             self.accept(False)
-             line = self.get_doc_line()
-             no_more_args = False
-@@ -518,7 +518,7 @@ def get_doc(self) -> 'QAPIDoc':
-                         line = self.get_doc_line()
-                     while (line is not None
-                            and (match := self._match_at_name_colon(line))):
--                        doc.new_feature(match.group(1))
-+                        doc.new_feature(self.info, match.group(1))
-                         text = line[match.end():]
-                         if text:
-                             doc.append_line(text)
-@@ -536,7 +536,7 @@ def get_doc(self) -> 'QAPIDoc':
-                             % match.group(1))
-                     while (line is not None
-                            and (match := self._match_at_name_colon(line))):
--                        doc.new_argument(match.group(1))
-+                        doc.new_argument(self.info, match.group(1))
-                         text = line[match.end():]
-                         if text:
-                             doc.append_line(text)
-@@ -546,7 +546,7 @@ def get_doc(self) -> 'QAPIDoc':
-                         r'(Returns|Since|Notes?|Examples?|TODO): *',
-                         line):
-                     # tagged section
--                    doc.new_tagged_section(match.group(1))
-+                    doc.new_tagged_section(self.info, match.group(1))
-                     text = line[match.end():]
-                     if text:
-                         doc.append_line(text)
-@@ -558,13 +558,13 @@ def get_doc(self) -> 'QAPIDoc':
-                         "unexpected '=' markup in definition documentation")
-                 else:
-                     # tag-less paragraph
--                    doc.ensure_untagged_section()
-+                    doc.ensure_untagged_section(self.info)
-                     doc.append_line(line)
-                     line = self.get_doc_paragraph(doc)
-         else:
-             # Free-form documentation
--            doc = QAPIDoc(self, info)
--            doc.ensure_untagged_section()
-+            doc = QAPIDoc(info)
-+            doc.ensure_untagged_section(self.info)
-             first = True
-             while line is not None:
-                 if match := self._match_at_name_colon(line):
-@@ -607,12 +607,10 @@ class QAPIDoc:
-     """
- 
-     class Section:
--        def __init__(self, parser: QAPISchemaParser,
-+        def __init__(self, info: QAPISourceInfo,
-                      tag: Optional[str] = None):
-             # section source info, i.e. where it begins
--            self.info = parser.info
--            # parser, for error messages about indentation
--            self._parser = parser
-+            self.info = info
-             # section tag, if any ('Returns', '@name', ...)
-             self.tag = tag
-             # section text without tag
-@@ -622,27 +620,20 @@ def append_line(self, line: str) -> None:
-             self.text += line + '\n'
- 
-     class ArgSection(Section):
--        def __init__(self, parser: QAPISchemaParser,
--                     tag: str):
--            super().__init__(parser, tag)
-+        def __init__(self, info: QAPISourceInfo, tag: str):
-+            super().__init__(info, tag)
-             self.member: Optional['QAPISchemaMember'] = None
- 
-         def connect(self, member: 'QAPISchemaMember') -> None:
-             self.member = member
- 
--    def __init__(self, parser: QAPISchemaParser, info: QAPISourceInfo,
--                 symbol: Optional[str] = None):
--        # self._parser is used to report errors with QAPIParseError.  The
--        # resulting error position depends on the state of the parser.
--        # It happens to be the beginning of the comment.  More or less
--        # servicable, but action at a distance.
--        self._parser = parser
-+    def __init__(self, info: QAPISourceInfo, symbol: Optional[str] = None):
-         # info points to the doc comment block's first line
-         self.info = info
-         # definition doc's symbol, None for free-form doc
-         self.symbol: Optional[str] = symbol
-         # the sections in textual order
--        self.all_sections: List[QAPIDoc.Section] = [QAPIDoc.Section(parser)]
-+        self.all_sections: List[QAPIDoc.Section] = [QAPIDoc.Section(info)]
-         # the body section
-         self.body: Optional[QAPIDoc.Section] = self.all_sections[0]
-         # dicts mapping parameter/feature names to their description
-@@ -658,44 +649,43 @@ def end(self) -> None:
-                 raise QAPISemError(
-                     section.info, "text required after '%s:'" % section.tag)
- 
--    def ensure_untagged_section(self) -> None:
-+    def ensure_untagged_section(self, info: QAPISourceInfo) -> None:
-         if self.all_sections and not self.all_sections[-1].tag:
-             # extend current section
-             self.all_sections[-1].text += '\n'
-             return
-         # start new section
--        section = self.Section(self._parser)
-+        section = self.Section(info)
-         self.sections.append(section)
-         self.all_sections.append(section)
- 
--    def new_tagged_section(self, tag: str) -> None:
-+    def new_tagged_section(self, info: QAPISourceInfo, tag: str) -> None:
-         if tag in ('Returns', 'Since'):
-             for section in self.all_sections:
-                 if isinstance(section, self.ArgSection):
-                     continue
-                 if section.tag == tag:
--                    raise QAPIParseError(
--                        self._parser, "duplicated '%s' section" % tag)
--        section = self.Section(self._parser, tag)
-+                    raise QAPISemError(
-+                        info, "duplicated '%s' section" % tag)
-+        section = self.Section(info, tag)
-         self.sections.append(section)
-         self.all_sections.append(section)
- 
--    def _new_description(self, name: str,
-+    def _new_description(self, info: QAPISourceInfo, name: str,
-                          desc: Dict[str, ArgSection]) -> None:
-         if not name:
--            raise QAPIParseError(self._parser, "invalid parameter name")
-+            raise QAPISemError(info, "invalid parameter name")
-         if name in desc:
--            raise QAPIParseError(self._parser,
--                                 "'%s' parameter name duplicated" % name)
--        section = self.ArgSection(self._parser, '@' + name)
-+            raise QAPISemError(info, "'%s' parameter name duplicated" % name)
-+        section = self.ArgSection(info, '@' + name)
-         self.all_sections.append(section)
-         desc[name] = section
- 
--    def new_argument(self, name: str) -> None:
--        self._new_description(name, self.args)
-+    def new_argument(self, info: QAPISourceInfo, name: str) -> None:
-+        self._new_description(info, name, self.args)
- 
--    def new_feature(self, name: str) -> None:
--        self._new_description(name, self.features)
-+    def new_feature(self, info: QAPISourceInfo, name: str) -> None:
-+        self._new_description(info, name, self.features)
- 
-     def append_line(self, line: str) -> None:
-         self.all_sections[-1].append_line(line)
-@@ -707,7 +697,7 @@ def connect_member(self, member: 'QAPISchemaMember') -> None:
-                                    "%s '%s' lacks documentation"
-                                    % (member.role, member.name))
-             self.args[member.name] = QAPIDoc.ArgSection(
--                self._parser, '@' + member.name)
-+                self.info, '@' + member.name)
-         self.args[member.name].connect(member)
- 
-     def connect_feature(self, feature: 'QAPISchemaFeature') -> None:
-diff --git a/tests/qapi-schema/doc-duplicated-arg.err b/tests/qapi-schema/doc-duplicated-arg.err
-index 0d0d777a1f..d876312734 100644
---- a/tests/qapi-schema/doc-duplicated-arg.err
-+++ b/tests/qapi-schema/doc-duplicated-arg.err
-@@ -1 +1 @@
--doc-duplicated-arg.json:6:1: 'a' parameter name duplicated
-+doc-duplicated-arg.json:6: 'a' parameter name duplicated
-diff --git a/tests/qapi-schema/doc-duplicated-return.err b/tests/qapi-schema/doc-duplicated-return.err
-index f19a2b8ec4..503b916b25 100644
---- a/tests/qapi-schema/doc-duplicated-return.err
-+++ b/tests/qapi-schema/doc-duplicated-return.err
-@@ -1 +1 @@
--doc-duplicated-return.json:8:1: duplicated 'Returns' section
-+doc-duplicated-return.json:8: duplicated 'Returns' section
-diff --git a/tests/qapi-schema/doc-duplicated-since.err b/tests/qapi-schema/doc-duplicated-since.err
-index 565b753b6a..a9b60c0c3d 100644
---- a/tests/qapi-schema/doc-duplicated-since.err
-+++ b/tests/qapi-schema/doc-duplicated-since.err
-@@ -1 +1 @@
--doc-duplicated-since.json:8:1: duplicated 'Since' section
-+doc-duplicated-since.json:8: duplicated 'Since' section
-diff --git a/tests/qapi-schema/doc-empty-arg.err b/tests/qapi-schema/doc-empty-arg.err
-index 2d0f35f310..83f4fc66d5 100644
---- a/tests/qapi-schema/doc-empty-arg.err
-+++ b/tests/qapi-schema/doc-empty-arg.err
-@@ -1 +1 @@
--doc-empty-arg.json:5:1: invalid parameter name
-+doc-empty-arg.json:5: invalid parameter name
--- 
-2.43.0
-
+Regards,
+BALATON Zoltan
+--3866299591-1653774431-1708944568=:1986--
 
