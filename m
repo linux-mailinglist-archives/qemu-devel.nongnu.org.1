@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6939B867D66
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 18:06:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE8A7867DDA
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 18:16:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reePJ-0007wY-V0; Mon, 26 Feb 2024 12:04:49 -0500
+	id 1reeZb-0001gc-F8; Mon, 26 Feb 2024 12:15:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1reePI-0007uL-D6
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 12:04:48 -0500
+ id 1reeZD-0001Vz-1y
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 12:15:03 -0500
 Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1reePG-00013k-S8
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 12:04:48 -0500
+ id 1reeZB-00038Q-Gh
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 12:15:02 -0500
 Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-56454c695e6so5840443a12.0
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 09:04:46 -0800 (PST)
+ 4fb4d7f45d1cf-565b434f90aso2345582a12.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 09:15:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708967085; x=1709571885; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708967699; x=1709572499; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=vSG+pKk5FeeBqSPRfdmh3uvO1oWBBpW37v8fT8JZ9Co=;
- b=j/7Pti106orHWAnh70l1sZLfNPsvqo+B3JXwc830ua6Qxq6IR2zdiSVF/3F1BD3lSp
- ZKeWY8KQ4rSwiQXl/DCdCdsVoLx38d4F2ui34xCtodbfrE1Wc943m+ZkQjmXChqgFKro
- 12r0FyQ/B9FEYKbWhrMsWxKmYH9lytjze99E4V9WIzfuA7HruayZU5kkPSN3JzXuSzh/
- uCNSm/y8wgoUozvzSwmUos7NRonM+nfkHuYSmXSp2JzmIRqPu7gcp6SYeZjZ1j4YNpCN
- 9nnuEowNdMe8R35U8eOFR0amSde3kHNgaYbmf9zeKAYmeXlHjvQ0/RB12HDTRUbEEKYQ
- kHMQ==
+ bh=Dp+jQbsrI400DLhHhmhFBG8YGQmp3xWwD1ad2M6YXP0=;
+ b=KyANG8soiIdvCq5j8wRJL/JFxXmS9keorhETvEGsHRNluZdsd+48zmsByLRlHZMCfB
+ sT+O7+Jh7jlDlmqcpP/OMb6k+y5NFh6p7hqdZ8rVCYQyjom0M2dd2NuI3czOPw3g0g3n
+ yS9inWwxikogPMol/mcZcYzNJT5x5RNxN476VHrK1XmA2u2ORAdTnsLVKRFKMZpdRv/q
+ 8s7+Sxn+nxoTivHZwxskgq9y6Smv2atgV5cteiE3FPCKVC1S/5IyYYOWsgbDLScu+Wq4
+ f+ZnbhqkH4gh8GZne44dRyrLwUOLGB6GRVxKHUbFMlcPxWZoVuJCcz6wIeYFqZyDBM7H
+ JFjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708967085; x=1709571885;
+ d=1e100.net; s=20230601; t=1708967699; x=1709572499;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=vSG+pKk5FeeBqSPRfdmh3uvO1oWBBpW37v8fT8JZ9Co=;
- b=qEYhWZDk6CI8Ho2UuOQ9edNdNkOADTSWdVrt+Gq6dGpJuvMCVnphtAS2g5+9JPVSxU
- wfYucTbXTich5tyje/AaDntXs7m2InXYcgR1pSx+8kYr+SOERr1YKbTHuoKONGom5fBa
- AxgCe2UGDPzGp0+JjG0Tsr0GbbDma23DS8gnZWnGTfWcZ0ON7DANfyuYNAELMdBn/nwh
- 57xdMGmVujnJH8CXpQ8KEqKZFCzUbQaiIFchXc1Vqfut+aYdvRn2H89LvKy84ETZhQ8r
- bKGFACwphVBZOYweUANK1j9bjHhlSBglRs6I35HCpo1fEDSx1Xc9U0b+wjepEEUXCHEM
- wenw==
+ bh=Dp+jQbsrI400DLhHhmhFBG8YGQmp3xWwD1ad2M6YXP0=;
+ b=P2L9MCOzBii6aU/CL4BLcVyIC4KSwn7ms4zN2h84s3tH/f3zsd9DfPnHwV77o+qWbk
+ 1CKKuCm+CYDIClvBZoz7Fw00YuPGi1xekEuJKnzWqN91lj0tzI9xjDA7CZ0kPDLCy9XF
+ Faf1hqS9/GL/gBnFE/xhjnqWXW/5QNaodprQU7VzlOakPNb/H15y7nFb+fo9RARiqGpj
+ 7A8uUaUGEq46PJttD6i8HyVU6QvIRXx8V5bDDFbOPJ8kGlcQztv5oAXkbRG4khFNQUvX
+ vr+t7z+odFB1ck6gvbjTvfZbTop8oZm+t4+vuFsLYeAgN3RtkPwhhj5e+FLFjZGTSdEX
+ 1Cxg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWdAPKmoWT6wRlkMShFLBszFNIaNqug51h5uYPQ0EeOZyjos0KU8mgSHA3N8zJ3vFNxE1b4dXgdvtq/4MamCup1jC3k0MQ=
-X-Gm-Message-State: AOJu0Yy7YFXBaVNRA0hcfygLmpD0whfQVouf/J0bqmvNqlrWddSpO2TN
- l8X9WLqpGVkVRS0GTDYRjIA3BNZsIx6AsN+kI+jFXcsscGp2cxhGmeupklJmQ5nrdjBhm7+L1ji
- hNtZDZnZMnMIAAAz/bw7kUDnWxDiuR1qVq6PRWw==
-X-Google-Smtp-Source: AGHT+IEFqalz5fw1/BZ3C/MBD32OXcxTMBZlQlLLJc4wipg89e5/oa+4GLHIuCdohcj8ODIYwxJfIIX0JmaQ5dXjT2I=
-X-Received: by 2002:a05:6402:194e:b0:561:f2b1:a68 with SMTP id
- f14-20020a056402194e00b00561f2b10a68mr6449539edz.20.1708967085039; Mon, 26
- Feb 2024 09:04:45 -0800 (PST)
+ AJvYcCUEfwQ0lehTtN6VbDxadrKbX/3L6GgrN0fzmYI3g7PNe3hGXH1kQvqrwjb3XGlHcqjZZanMKNnNPP6RkTsuu84ZmnjJwxE=
+X-Gm-Message-State: AOJu0Yz4UOnLcDFESyeywfDO0lBjsBcfEpa4/odRHSPNOA6XLXo57JrL
+ uP2eUFdbD+eTPYujJie5KKNAyQ27GnHsU0fu0+tSCr2wOG5ZtBqgDtCnn/49kfRfO1y1dRhpGIf
+ m2tSubj7mPSJP+y58jSmsKQoX5OML3kmk/VQLVzn1ek8Fj0nU
+X-Google-Smtp-Source: AGHT+IEA7QsfnpLsInc144eNziEPGWFrUfl4KLiQRlUiNN1vIDIiKe/c04gGffcrbZHF9F87pywbNMTpMv6jUvvNJ4I=
+X-Received: by 2002:a50:ed9a:0:b0:566:131b:5b5f with SMTP id
+ h26-20020a50ed9a000000b00566131b5b5fmr1356902edr.26.1708967699696; Mon, 26
+ Feb 2024 09:14:59 -0800 (PST)
 MIME-Version: 1.0
 References: <20240224-cocoa-v12-0-e89f70bdda71@daynix.com>
- <20240224-cocoa-v12-7-e89f70bdda71@daynix.com>
-In-Reply-To: <20240224-cocoa-v12-7-e89f70bdda71@daynix.com>
+ <20240224-cocoa-v12-6-e89f70bdda71@daynix.com>
+In-Reply-To: <20240224-cocoa-v12-6-e89f70bdda71@daynix.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 26 Feb 2024 17:04:33 +0000
-Message-ID: <CAFEAcA8c+EOUae4PZGLsjCzieM6jcZJa_zo-iU0H3zEWJUWZPw@mail.gmail.com>
-Subject: Re: [PATCH v12 07/10] ui/cocoa: Remove normalWindow
+Date: Mon, 26 Feb 2024 17:14:49 +0000
+Message-ID: <CAFEAcA8YSfLgGOGb3d=reYOPYE7jLpDmU2MtEO_G_idJzE15Kw@mail.gmail.com>
+Subject: Re: [PATCH v12 06/10] ui/cocoa: Let the platform toggle fullscreen
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
  Gerd Hoffmann <kraxel@redhat.com>,
@@ -94,14 +94,14 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Sat, 24 Feb 2024 at 12:44, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
 >
-> QemuCocoaView used to have fullScreenWindow but now it's gone, so we
-> do no longer have to call the window specifically "normalWindow".
-> Instead, refer to it with [-QemuCocoaView window].
+> It allows making the window full screen by clicking full screen button
+> provided by the platform (the left-top green button) and save some code.
 >
 > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 > ---
->  ui/cocoa.m | 33 +++++++++++++++++----------------
->  1 file changed, 17 insertions(+), 16 deletions(-)
+>  ui/cocoa.m | 408 +++++++++++++++++++++++++++----------------------------------
+>  1 file changed, 181 insertions(+), 227 deletions(-)
+>
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
