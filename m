@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9542866DA3
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F59A866DA2
 	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 10:07:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reWwE-000781-W5; Mon, 26 Feb 2024 04:06:19 -0500
+	id 1reWwK-0007Ai-1u; Mon, 26 Feb 2024 04:06:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reWwA-00077G-Em
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 04:06:14 -0500
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reWwH-0007AG-Bm
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 04:06:21 -0500
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reWw8-0003Vh-9K
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 04:06:13 -0500
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-a3f5808b0dfso379056266b.1
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 01:06:11 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reWwF-0003Xj-8Y
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 04:06:20 -0500
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-a3f4464c48dso307148866b.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 01:06:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708938370; x=1709543170; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708938376; x=1709543176; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Fx8gADBe2ucDCcShPCUpi1E8G9A7PtB4VTqy5UmiqEI=;
- b=I4/e4LbAG79Xcfu2u6/gz/iU8cJhz1Nk9XHaj0RA/fpAlKgD/jDtruMU9vpRf6YE7s
- i7oPlZ5My8eNyE/t92rNy9N9hW8ySF7V9xHzEwMAJymiGNNjT5ocQOoa2rsc6XeNK0W7
- y1kOKgyuKVCSaujepcuTDyUTISq22Av4AvyFbB0LfHWjXZ6f5UaRHARObP97Hmaw50X5
- +oKNLiHNDg5N502dqvHRFBlD5zGr83/G7SoUBkXaFtV+UW5BMAtyufGRS9IBVQeXo329
- sl1kv9ClD+oTlabUYQ9icfu5yJ+WGanTesCBpIHW6kg5RNrBpVrZug8dTOMfVVDlKzYS
- uKXg==
+ bh=7oVTgSJUCJ05vrSeKkBPqU1gIvTy5EgxgQEBwc+GsnM=;
+ b=BNwhKoFnTEdW+A4DVb5HmHw5P7SVuU3u3anlujgv69wEqvueoRKAbn4eywnVLXs9z/
+ W7rwnsE8K6SDY5BHr+i5MjK6UWbc1BbKbl/1Vp9pAtQPauiCa0Jrge2vsHEtGkP6LJtN
+ u7qZPgkAtF28rlIHFExxM9jbOkxaJzRmYJUpHYSiTgxVqQS0HGqLbP8JkajKPt6JHsYG
+ 6vhJtgFqdh5ZpHLa7LUOLSb5UeVhphZFH7MC6p8p/xOYB51LxZmJuU9528s215nIzaGf
+ XFsB32aIY0KS9noYgHPP1aHrHe8b9uhmThRVPeOfwO/o8fvvnMtQe3s75gKVPZqojA6b
+ +gfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708938370; x=1709543170;
+ d=1e100.net; s=20230601; t=1708938376; x=1709543176;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Fx8gADBe2ucDCcShPCUpi1E8G9A7PtB4VTqy5UmiqEI=;
- b=K1tlz/0FYad9ytUIAp20fYm9WUUVBgtDTDk5gtLg6Q0zW7Cwwjh0/HZVo8IvSqXSVp
- lpPxyQVp4GHnOviRWSEKGpYFSSnIGtXxjp+oQ7p5jt1xyybIDXzO09m/gQSEgtbFQSaS
- BwkcEZRdC7NXI0leImcIgo3q6o1qk34pDAMAiRmMUG9Hn704PejnEg02RVPWyl9CSUqr
- hJZvhgR6JYkXpEKhWgfv7ddaQkjUssZFhUTZs1MgW3jGIZzbkjmhPCAzc5mqjgtbEy1l
- y3waQ98HA1X18wBJnEaSo2wQiTDTEvqhajUv4g0xML4ktNA5EHq0S5Nn3Cm0G/hBhe1Z
- d7Cg==
-X-Gm-Message-State: AOJu0YwUcVUAJCakTuAdOWXIbjlYGgRHtsGCvldnXR6XVg4zt3nqFLfh
- SX9oj4np+cdwdgKNpKeKr2WbqlICxG7ttjBbrXv7t5GtJ3VC0BZ7Wmr/whqdpgMCTFzlDRfSCx/
- 8
-X-Google-Smtp-Source: AGHT+IHMqAFO7+xpmXQNFVbCJI7o8aZMcL3AjqcHr5QsBkJCmO/l+tGITIN70TboFSoLxBE7HaCtTg==
-X-Received: by 2002:a17:906:a00b:b0:a43:3879:35e0 with SMTP id
- p11-20020a170906a00b00b00a43387935e0mr1808930ejy.11.1708938370099; 
- Mon, 26 Feb 2024 01:06:10 -0800 (PST)
+ bh=7oVTgSJUCJ05vrSeKkBPqU1gIvTy5EgxgQEBwc+GsnM=;
+ b=coA3JSPT/fUnY4cflTl/d66Jmm4QdjiAxO9e8D7e08kG95x3IC6bJlV07Jnu2w/DhA
+ FuhFyR+ZCK7mcBJeeCRjUgw60ai1D1BTtMMObKV+G9dkL+w2QmWD1D1112gFP0xVDRp3
+ bqjqog0dLEV9ocLRSyvm7VVYfZKxVqWMmpZZ9WpzWaLGSKkIrOe0cs3wRTllgamQv6F1
+ S7kE5aVYf53jOWcuq3JI0gIa0kP/sz1DBczBJUafWq7JfZWVnC1/ytsTx/OcU2Cw4Hjw
+ aGfcNutVUbL+RCN2jj2qRR4+xMLgjC0WOI0zABTxXA7yinZvtpjPadQTm5PGBOk8deIW
+ gX7w==
+X-Gm-Message-State: AOJu0YzgNfUEFW00YvG8Gdk5SctnGlMyHa47bTrNWMvDf3wiv5cyr7Z8
+ YOIVOtlcRBx3860NSH3cY+bSH0Wdr2MdZET8GQ3v+0+R9kMh9o4EpDLd8N1Dw2zi9zqpDcW1xn5
+ w
+X-Google-Smtp-Source: AGHT+IGO3jGtHMSN/HP//kxXs5Lz0HjhOYPU4EmaJEde0/u/s+C/8DK2WVwGlFc4MI7h+PchkSdiYQ==
+X-Received: by 2002:a17:906:13db:b0:a42:f40e:3ac0 with SMTP id
+ g27-20020a17090613db00b00a42f40e3ac0mr3740303ejc.6.1708938376553; 
+ Mon, 26 Feb 2024 01:06:16 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.164.69])
  by smtp.gmail.com with ESMTPSA id
- tl18-20020a170907c31200b00a437d3e975esm159660ejc.210.2024.02.26.01.06.08
+ d25-20020a170906305900b00a3eb1b1896bsm2196669ejd.58.2024.02.26.01.06.14
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 26 Feb 2024 01:06:09 -0800 (PST)
+ Mon, 26 Feb 2024 01:06:16 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Zhao Liu <zhao1.liu@intel.com>
@@ -64,17 +64,17 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Ani Sinha <anisinha@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 1/2] hw/acpi/ich9: Include missing headers
-Date: Mon, 26 Feb 2024 10:05:59 +0100
-Message-ID: <20240226090600.31952-2-philmd@linaro.org>
+Subject: [PATCH v2 2/2] hw/i386/q35: Include missing 'hw/acpi/acpi.h' header
+Date: Mon, 26 Feb 2024 10:06:00 +0100
+Message-ID: <20240226090600.31952-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240226090600.31952-1-philmd@linaro.org>
 References: <20240226090600.31952-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,53 +97,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ICH9LPCPMRegs structure has MemoryRegion and
-Notifier fields, so requires the "qemu/notify.h"
-and "exec/memory.h" headers.
+"hw/acpi/acpi.h" is implicitly included. Include it
+explicitly to avoid the following error when refactoring
+headers:
 
-However nothing from "hw/acpi/acpi_dev_interface.h"
-is required, so reduce its inclusion to hw/acpi/ich9.c
-source file where it is used.
+hw/i386/pc_q35.c:209:43: error: use of undeclared identifier 'ACPI_PM_PROP_ACPI_PCIHP_BRIDGE'
+                              ACPI_PM_PROP_ACPI_PCIHP_BRIDGE,
+                              ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/acpi/ich9.h | 3 ++-
- hw/acpi/ich9.c         | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ hw/i386/pc_q35.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/hw/acpi/ich9.h b/include/hw/acpi/ich9.h
-index 2faf7f0cae..215de3c91f 100644
---- a/include/hw/acpi/ich9.h
-+++ b/include/hw/acpi/ich9.h
-@@ -21,12 +21,13 @@
- #ifndef HW_ACPI_ICH9_H
- #define HW_ACPI_ICH9_H
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index e0b3f55a02..45a4102e75 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -30,6 +30,7 @@
  
-+#include "qemu/notify.h"
-+#include "exec/memory.h"
- #include "hw/acpi/acpi.h"
- #include "hw/acpi/cpu_hotplug.h"
- #include "hw/acpi/cpu.h"
- #include "hw/acpi/pcihp.h"
- #include "hw/acpi/memory_hotplug.h"
--#include "hw/acpi/acpi_dev_interface.h"
- #include "hw/acpi/ich9_tco.h"
- 
- #define ACPI_PCIHP_ADDR_ICH9 0x0cc0
-diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
-index 573d032e8e..6205de6046 100644
---- a/hw/acpi/ich9.c
-+++ b/hw/acpi/ich9.c
-@@ -34,8 +34,8 @@
- #include "sysemu/reset.h"
- #include "sysemu/runstate.h"
- #include "hw/acpi/acpi.h"
-+#include "hw/acpi/acpi_dev_interface.h"
- #include "hw/acpi/ich9_tco.h"
--
- #include "hw/southbridge/ich9.h"
- #include "hw/mem/pc-dimm.h"
- #include "hw/mem/nvdimm.h"
+ #include "qemu/osdep.h"
+ #include "qemu/units.h"
++#include "hw/acpi/acpi.h"
+ #include "hw/char/parallel-isa.h"
+ #include "hw/loader.h"
+ #include "hw/i2c/smbus_eeprom.h"
 -- 
 2.41.0
 
