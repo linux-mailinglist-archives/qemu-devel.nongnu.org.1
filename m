@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410F2867C80
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 17:50:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A371867C84
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 17:50:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reeAS-0005wM-Iq; Mon, 26 Feb 2024 11:49:28 -0500
+	id 1reeAT-0005x1-M6; Mon, 26 Feb 2024 11:49:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reeAP-0005w5-M5
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:49:25 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reeAR-0005wN-JX
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:49:27 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reeAI-0006C9-SO
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:49:25 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-33d38c9ca5bso1756817f8f.2
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 08:49:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1reeAO-0006Dp-Sl
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 11:49:26 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-33d36736d4eso2066152f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 08:49:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708966156; x=1709570956; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=9RSIg5MfPMyLdHeCWQZgIMl/x6MtwhIPf52e94miu3U=;
- b=qmjhs4pMZjhyaN+ZKc4gpbrGRC4LE1XBdZDiZbPyZaGLD/783CoclyrfbNVtFVLZa7
- XouZbuvHlO9CLBdG+wvwtDP6eQve78ca5m0p5isX9/rdFDlpZrWFwQDWHVQ4ygPqW4Il
- tuT5fIxvfJAMAzY473pEeAH9iy+I+o3Wn8Yk91lVhjf8tM6gejYWfyeMykJ106f1tYhu
- vyJcSQwZcvOiEPeby2hMWhV3GMauKDoIKtoWu/4PUXf/3cUN72bvEv3us0bunsXLpICO
- W+X4QGfkLuz8onQa6DRPGZLpkBq49KbjeVr86tJNbfBnQtLHA7tvuy+8HAZ64c11oVDz
- HmwA==
+ d=linaro.org; s=google; t=1708966163; x=1709570963; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mSB3DjDUt1VhXKQ8ZY2Xf8EIy3NhP1lIXSTZpypndH8=;
+ b=SBa4VDo4zhD/+XOWE18BHzX4zNMessHPaigsKq4GVKh6Q/dOCJaVOhlM2FuBRa7B3w
+ re3SAJvr0zSC2Z7ohpPBHll0VDhlnu+58gNWpFxLBj7M5W3fSb8LIK0w+jpZT8WJs1e8
+ UJZRAxaQtGmO9hwLi+fl9avAXdkriEsr2HIRcWlid4SgwowK1ZLb6UN0C6qV904+tFSH
+ zUrACsugDebTPHIk4i1d/FBaDrcjkH51L0oNVJRD0Lw7HSxE4HAH3ZT1JTp6Kjc4X/9+
+ wbCJc02pmKK4ObwGb2aCXGzLs842a8wwUrUstELnbylHiajSBA63SDwWbbjM2dZvEZdl
+ vJRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708966156; x=1709570956;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9RSIg5MfPMyLdHeCWQZgIMl/x6MtwhIPf52e94miu3U=;
- b=OjRPrl+CYlKU8x2dAB45FURzql9qpRYsSLn1TYDY/H6o5abEZZY223jYImwoj1Fu02
- jiLcJSsvLSI+wDuhUJY6JC8X5vA+46quWv824T7f8OajA7UCmBOQb+swOsBmrIz1MCBc
- VMLpEeo0eUuODzvaz2tmi6zAe2W/rh8hxvSXXv39in37W7fIYruxjgceHTlifwqQmAFp
- LIPKXjYdN24MeFP7Tw85zXqQXD5J5+OvlzwXu162sygeSlTGG3oolcm7YeWNYfi4K5Nd
- JwDWBf00tyhj8JZjaJrohUkftKLaBXlOmFtQUcv/sVd29DiEYKb6GxiD+1UoISrfNt3m
- XmIg==
-X-Gm-Message-State: AOJu0YzeM/MavgB6Gh/ZYALyPW+PZON7ihvfZUSFs5uD3odeMGbYXGgu
- LiqC8RnNhZm8fcjUBuNpJvFKfPRMLqKaQtm5KMoThlDdGQt/MO9Q2J6AqncmdOVOG5SJEagcasY
- o
-X-Google-Smtp-Source: AGHT+IGQPxGspqwWDNWnLNKTgCtZhcT2Ctl+CLeH1jYm6cClbKckED5VPav9F4necSdLl5soIIxwVw==
-X-Received: by 2002:a5d:4a06:0:b0:33d:3ff4:60b8 with SMTP id
- m6-20020a5d4a06000000b0033d3ff460b8mr6330135wrq.18.1708966156580; 
- Mon, 26 Feb 2024 08:49:16 -0800 (PST)
+ d=1e100.net; s=20230601; t=1708966163; x=1709570963;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=mSB3DjDUt1VhXKQ8ZY2Xf8EIy3NhP1lIXSTZpypndH8=;
+ b=FmRpt/e1d6VawrCnmPmF+PLW1x3RfLB4G5XXQMEpstRVqs55QjcPnwYydJ0BAsRX1h
+ 6YKY1DtJNocQlyBFb9Wev1/YOSQJvSKr1UCpAKYRrAWIjhaNA3o+kR6UxcSBO2VH/jug
+ RV70yD9PM8Z8MlsJmcszTdPp+5IT/rHxuHZycf2vaqd0FKLklaN6raF5xDXUSuzNSaXt
+ 3HDWqbmngdQU6f+TNEEt7yrwIz9JYkSsctt/zpr269d51Cdy1IAy7Xk8My6HSprtMnhA
+ yMb02AlicoV5FqTHhisUupEukCWWNVx8VhFWvNltSUIpbbsvwi/4757VNTJY6GNtqbLg
+ /ZlQ==
+X-Gm-Message-State: AOJu0Yx3j269rc6cOKiCYn2IzX+VCj+DUeU6R5XtV9W+6qCv/PtJ+TjD
+ jEEafQLwd07rr0kvK/njfbdBOfvpGLEoHDqxs1Fq4wzI6FZFfMIEOcIKAm/Fw+Uon4PHDwzqZoI
+ T
+X-Google-Smtp-Source: AGHT+IF059EUPAbCL7SWAkMPG8gvMdciEhLUauFFOGEG0lnzdfLarfDOY9vlKU1SjU6UIOnamaswsQ==
+X-Received: by 2002:a5d:64c6:0:b0:33d:db2f:b0fd with SMTP id
+ f6-20020a5d64c6000000b0033ddb2fb0fdmr2206800wri.52.1708966163240; 
+ Mon, 26 Feb 2024 08:49:23 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.223.153])
  by smtp.gmail.com with ESMTPSA id
- m17-20020adff391000000b0033da1c4c29csm8766052wro.91.2024.02.26.08.49.14
+ h4-20020a5d4304000000b0033d6c928a95sm8771903wrq.63.2024.02.26.08.49.20
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 26 Feb 2024 08:49:16 -0800 (PST)
+ Mon, 26 Feb 2024 08:49:22 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
@@ -70,22 +71,24 @@ Cc: Thomas Huth <thuth@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Laszlo Ersek <lersek@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 0/5] hw/i386/q35: Decouple virtual SMI# lines and wire
- them to ICH9 chipset
-Date: Mon, 26 Feb 2024 17:49:07 +0100
-Message-ID: <20240226164913.94077-1-philmd@linaro.org>
+Subject: [PATCH 1/5] target/i386/cpu: Expose SMI# IRQ line via QDev
+Date: Mon, 26 Feb 2024 17:49:08 +0100
+Message-ID: <20240226164913.94077-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240226164913.94077-1-philmd@linaro.org>
+References: <20240226164913.94077-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,43 +104,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+In order to remove calls to cpu_interrupt() from hw/ code,
+expose the SMI# interrupt via QDev as named GPIO.
 
-This is an experimental series to reduce calls to the
-cpu_interrupt() API from generic HW/. I'm trying to use
-the ICH9 chipset from a non-x86 machine. Without this
-experiment, we can not because cpu_interrupt() is target
-specific. Here the interrupt is decoupled using the QDev
-GPIO API. Even if the SMI# line is left unconnected, the
-device is still usable by a guest.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/i386/cpu-internal.h |  1 +
+ target/i386/cpu-sysemu.c   | 11 +++++++++++
+ target/i386/cpu.c          |  2 ++
+ 3 files changed, 14 insertions(+)
 
-Based-on: <20240226111416.39217-1-philmd@linaro.org>
-
-Philippe Mathieu-Daudé (5):
-  target/i386/cpu: Expose SMI# IRQ line via QDev
-  hw/i386/piix: Set CPU SMI# interrupt using QDev GPIO API
-  hw/ahci/ich9_tco: Set CPU SMI# interrupt using QDev GPIO API
-  hw/i386/q35: Wire virtual SMI# lines to ICH9 chipset
-  hw/isa: Build ich9_lpc.c once
-
- include/hw/acpi/ich9.h        |  1 +
- include/hw/acpi/ich9_tco.h    |  4 ++--
- include/hw/i386/pc.h          |  2 --
- include/hw/isa/ich9_lpc.h     | 12 ++++++++++++
- include/hw/southbridge/ich9.h |  1 +
- target/i386/cpu-internal.h    |  1 +
- hw/acpi/ich9.c                |  3 ++-
- hw/acpi/ich9_tco.c            | 13 ++++++++++---
- hw/i386/pc.c                  |  9 ---------
- hw/i386/pc_piix.c             |  4 ++--
- hw/i386/pc_q35.c              | 26 ++++++++++++++++++++++++++
- hw/isa/ich9_lpc.c             | 15 ++++-----------
- hw/southbridge/ich9.c         |  1 +
- target/i386/cpu-sysemu.c      | 11 +++++++++++
- target/i386/cpu.c             |  2 ++
- hw/isa/meson.build            |  3 +--
- 16 files changed, 76 insertions(+), 32 deletions(-)
-
+diff --git a/target/i386/cpu-internal.h b/target/i386/cpu-internal.h
+index 9baac5c0b4..9d76bb77cf 100644
+--- a/target/i386/cpu-internal.h
++++ b/target/i386/cpu-internal.h
+@@ -62,6 +62,7 @@ GuestPanicInformation *x86_cpu_get_crash_info(CPUState *cs);
+ void x86_cpu_get_crash_info_qom(Object *obj, Visitor *v,
+                                 const char *name, void *opaque, Error **errp);
+ 
++void x86_cpu_smi_irq(void *opaque, int irq, int level);
+ void x86_cpu_apic_create(X86CPU *cpu, Error **errp);
+ void x86_cpu_apic_realize(X86CPU *cpu, Error **errp);
+ void x86_cpu_machine_reset_cb(void *opaque);
+diff --git a/target/i386/cpu-sysemu.c b/target/i386/cpu-sysemu.c
+index 7422096737..7684a7f01e 100644
+--- a/target/i386/cpu-sysemu.c
++++ b/target/i386/cpu-sysemu.c
+@@ -370,3 +370,14 @@ void x86_cpu_get_crash_info_qom(Object *obj, Visitor *v,
+     qapi_free_GuestPanicInformation(panic_info);
+ }
+ 
++void x86_cpu_smi_irq(void *opaque, int irq, int level)
++{
++    DeviceState *dev = opaque;
++    CPUState *cs = CPU(dev);
++
++    if (level) {
++        cpu_interrupt(cs, CPU_INTERRUPT_SMI);
++    } else {
++        cpu_reset_interrupt(cs, CPU_INTERRUPT_SMI);
++    }
++}
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 7f90823676..6b4462d533 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -7463,6 +7463,8 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+     }
+ 
+ #ifndef CONFIG_USER_ONLY
++    qdev_init_gpio_in_named(dev, x86_cpu_smi_irq, "SMI", 1);
++
+     x86_cpu_apic_realize(cpu, &local_err);
+     if (local_err != NULL) {
+         goto out;
 -- 
 2.41.0
 
