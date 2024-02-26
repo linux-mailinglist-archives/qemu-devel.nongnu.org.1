@@ -2,100 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D142867DA2
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 18:11:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA665867D84
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Feb 2024 18:08:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reeNO-0003qF-AN; Mon, 26 Feb 2024 12:02:50 -0500
+	id 1reeMB-0006il-FB; Mon, 26 Feb 2024 12:01:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1reeNJ-0003hN-UP
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 12:02:45 -0500
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1reeLj-000652-G3
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 12:01:10 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1reeNI-0000mF-8l
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 12:02:45 -0500
-Received: by mail-lj1-x22e.google.com with SMTP id
- 38308e7fff4ca-2d220e39907so54400921fa.1
- for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 09:02:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1reeLg-0000Si-3Z
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 12:01:05 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-5648d92919dso4349192a12.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Feb 2024 09:01:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708966962; x=1709571762; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=t+Lu1aUTzILJv+8PeOqcfRU9ypZOJg6L0bg1/V/uBfw=;
- b=doABZ6ewQ7esAxNthv3kgVmKdmnhmbZvZjyyAGbXlsG4tV13qppCd5N52JlBzxyXB4
- h5jOqcrFwuOi4s7Moj/ZmBDeBE/lWcqj4kt3y1B+17ZOh/Dn6BsdKw8TGZdMpwGyrw7Q
- HU6/1tblj8yNRTaCVEGjc/Xyp6miMddUq+4hrv3VlOx3TyHxCiwwQZx3XhSqvNKT9zFu
- mLo3EoxDpYxcs8B5pKT1OyjAUNR9re0u7F5dQ8Z5rdvN0eXOb/XyoAedTIe4cy0jR1JZ
- D0m41kepm9qkKeqDRfoxjt3eY0qu5A1R9dk8ZVGuMJhaXadx7Kp1YIj63i7t3vj+CDMk
- 6M/Q==
+ d=linaro.org; s=google; t=1708966862; x=1709571662; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=GXvsRrUPveDb3zsGpf6ad4dx8sWIyepWGFL6PdKE7tk=;
+ b=t6feIVfhNsF12uXacI02SdfY7afpnkF7dY9aEDBBVOS4HHZ5SaUPyPpv4Ym90ySll8
+ 8rP29ei9oLsGdYCv+p2xH1EqP/eajrK40yppul4XtsKYO5pibD2QX2wJMnwALXDOeGMF
+ uDsWlXc1LGUkpEB9DA2cXVGGrv7DxDR+eQZkT/mNVYNiypjHZaPTXRY6Q2NoCCYYMDJt
+ OBj7kopHqN7tqiBoVRZnM0lj2kzHHDr4ysFnRzpolj/Ycsl44U7sr/3YIX+t5k27Ew00
+ haf0+h9QX2HX3M+He5+/hmN/g3JyPNi4f1Vo1DTs19JOm2SK2zr/YUUrGTqo8aBp0slf
+ VjvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708966962; x=1709571762;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=t+Lu1aUTzILJv+8PeOqcfRU9ypZOJg6L0bg1/V/uBfw=;
- b=E7sx2/xHI9EzA43r6ivGoUenSSqRtF29+20QhVdXesSCBXIoJIJjdfQaenw3n6KCQ3
- uHYaqhjQzXZmXsVxnwv6Ig0Fe/7sMo/2Ww+v9l7oCKOycjWjl2Oj1ukX3ZyxU0EHdWh/
- rGTxhqv0ZzxcSECoM2MfADyhbRaUtyJHpUJntzUrGyQIQXUZQvjwct+2SZyx0YM8sX0O
- 7Ya4JQozXRchIu/wXNMykw6legUJ31qQGX/bMcS5zu3GJwpEPC1hZn1ol/VkgHffSKii
- v4Y9U/l5jDFz0Uvc7+z6gq9o8hAVnL1VLcfQrO82NIKJ606VpW+uFCjaQrjwtbd0MlbW
- 0EIg==
-X-Gm-Message-State: AOJu0Yz2lJwO6ldl0tJJpqvO0wALfcTU0KpGQDGvOYreYHBNe7KkWCVe
- VDcKL7OtAGkjeCiFNoKF+HsjtCL8sF7AGgi5ux+UNMawIV/g2ADB2oa3PP0VXRk=
-X-Google-Smtp-Source: AGHT+IEvy/Dv9/G1HtfCIPS1qljPMysCpVRZPiDVG/kbIEDAJVSr7euuk5/zXWEhyyCStLcWcKYjoA==
-X-Received: by 2002:a2e:be8e:0:b0:2d2:864c:8220 with SMTP id
- a14-20020a2ebe8e000000b002d2864c8220mr3908224ljr.5.1708966962301; 
- Mon, 26 Feb 2024 09:02:42 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- bh21-20020a05600c3d1500b00412a5903673sm3262250wmb.26.2024.02.26.09.02.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Feb 2024 09:02:41 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 24EBC5F932;
- Mon, 26 Feb 2024 16:56:49 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-riscv@nongnu.org, Michael Rolnik <mrolnik@gmail.com>,
- Song Gao <gaosong@loongson.cn>, Alexandre Iooss <erdnaxe@crans.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- David Hildenbrand <david@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- John Snow <jsnow@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, qemu-arm@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- qemu-ppc@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- qemu-s390x@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Thomas Huth <thuth@redhat.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Yanan Wang <wangyanan55@huawei.com>, Brian Cain <bcain@quicinc.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Weiwei Li <liwei1518@gmail.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Bin Meng <bin.meng@windriver.com>, Laurent Vivier <laurent@vivier.eu>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v3 25/27] docs/devel: lift example and plugin API sections up
-Date: Mon, 26 Feb 2024 16:56:44 +0000
-Message-Id: <20240226165646.425600-26-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240226165646.425600-1-alex.bennee@linaro.org>
-References: <20240226165646.425600-1-alex.bennee@linaro.org>
+ d=1e100.net; s=20230601; t=1708966862; x=1709571662;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=GXvsRrUPveDb3zsGpf6ad4dx8sWIyepWGFL6PdKE7tk=;
+ b=aMPzN1bW8tZifvMRIPmnMaUYSTyM81hs2SKCEAzz+6b3leNdpBHx9bpdCcv1LAT9yF
+ WY/pBYOYx9Gwkm7EaGmXjOfAsImkbVK/d+8TvCK+7Jc/cXJbSc6SzaQHjhbSsouHohER
+ dDto//eYa4wOX5g0HRd1wx+QJwC0O2kTLI3DwUoEHl35yaEpN/TH9vK/gz0N6v+loCdt
+ 3dOl8G/BbupMtvBHBFq/xNJslfAMjtqAegcWgtEHVZef8E9yNdovdzDOLaqhsWer94wL
+ JP+Rlmu+cZ4Dn9qWUeW0B73o5NPc2FwySth3lAbgMU7B1X1sEP1ksrmiqP3kEQoW4ONd
+ giWQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUiLktKv+zcXkoQKbDdxJAedLv7KRr8TOGucEUXbyfUzUSjWLDOg+9jxyOyYnW8mzpGtPWqMfo2+xj7GYiyxIwFxCpuDa8=
+X-Gm-Message-State: AOJu0Yx4Mux4usfwHiDjhasmEUZp678iskzFf+BLTYefOiybxN6IFK89
+ YdzZOfxBI3EUMVwiIZW4d17Pz+uihlwaFcVsTJ1bMGCoYxkalkP6+HfvC3lYsNbmtz35q4hbs60
+ l0tna0PeeITEhz0FieSCfSxsS2D6Q/UPnHOi98A==
+X-Google-Smtp-Source: AGHT+IHiH4e8G5+541SE2zxBB01H2/72ap9GmCYHQIa9Dp50fK8f065kTToW7jJiPR7CIyMyj9gwx4dRWzYGf4majEA=
+X-Received: by 2002:aa7:c695:0:b0:566:ef9:a499 with SMTP id
+ n21-20020aa7c695000000b005660ef9a499mr1362944edq.1.1708966862601; Mon, 26 Feb
+ 2024 09:01:02 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22e.google.com
+References: <20240224-cocoa-v12-0-e89f70bdda71@daynix.com>
+ <20240224-cocoa-v12-3-e89f70bdda71@daynix.com>
+In-Reply-To: <20240224-cocoa-v12-3-e89f70bdda71@daynix.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 26 Feb 2024 17:00:51 +0000
+Message-ID: <CAFEAcA_h0cYY45Dwz2aOc6bBc5QErd-Uj42swNXf_MZRwncMsA@mail.gmail.com>
+Subject: Re: [PATCH v12 03/10] ui/cocoa: Release specific mouse buttons
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Marek Glogowski <smarkusg@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>, 
+ Rene Engel <ReneEngel80@emailn.de>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -118,42 +92,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This makes them a bit more visible in the TCG emulation menu rather
-than hiding them away bellow the ToC limit.
+On Sat, 24 Feb 2024 at 12:43, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>
+> ui/cocoa used to release all mouse buttons when it sees
+> NSEventTypeLeftMouseUp, NSEventTypeRightMouseUp, or
+> NSEventTypeOtherMouseUp, but it can instead release specific one
+> according to the delivered event.
+>
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>  ui/cocoa.m | 36 +++++++++++++++---------------------
+>  1 file changed, 15 insertions(+), 21 deletions(-)
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-Message-Id: <20240103173349.398526-43-alex.bennee@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- docs/devel/tcg-plugins.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/docs/devel/tcg-plugins.rst b/docs/devel/tcg-plugins.rst
-index fa7421279f5..535a74684c5 100644
---- a/docs/devel/tcg-plugins.rst
-+++ b/docs/devel/tcg-plugins.rst
-@@ -143,7 +143,7 @@ requested. The plugin isn't completely uninstalled until the safe work
- has executed while all vCPUs are quiescent.
- 
- Example Plugins
-----------------
-+===============
- 
- There are a number of plugins included with QEMU and you are
- encouraged to contribute your own plugins plugins upstream. There is a
-@@ -591,8 +591,8 @@ The plugin has a number of arguments, all of them are optional:
-   configuration arguments implies ``l2=on``.
-   (default: N = 2097152 (2MB), B = 64, A = 16)
- 
--API
-----
-+Plugin API
-+==========
- 
- The following API is generated from the inline documentation in
- ``include/qemu/qemu-plugin.h``. Please ensure any updates to the API
--- 
-2.39.2
-
+thanks
+-- PMM
 
