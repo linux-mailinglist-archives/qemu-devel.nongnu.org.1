@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2010A8692F8
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:40:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69560869329
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:42:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rexao-0000rn-Ie; Tue, 27 Feb 2024 08:33:58 -0500
+	id 1rexas-0000vG-5w; Tue, 27 Feb 2024 08:34:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaU-0000mJ-O7
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:39 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1rexaO-0000kh-Nz
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:33 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaK-0002t6-T0
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:36 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-412a14299a4so21619595e9.1
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:27 -0800 (PST)
+ id 1rexaM-0002tM-A5
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:32 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-33de64c91abso799118f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709040806; x=1709645606; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709040807; x=1709645607; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=3VIFnDGKGpENbZj1Zia/ChGLWB8xWLzUdNndb0QJxO4=;
- b=IFGCbVLk00rMQQuJ1Zs404pbIJPnhSqUHuM2ri6FN0jejX8UyYYAvnBe/21nfPtz28
- I3+AElqqJXM7MjnM8IQwBAoBuCa/XexK2fCdtEcKWVE4e9mAMZANtTO8J+i0OGnOszRW
- myzDyH6tDic0icNGEi+bH9vsIeY16ArOxGiWbkwHLoQnSKujYD3rjqiJhsKDjiYU6nsv
- wKGybBvjFlPpYxOUiMqPEcBILnM2Gpystzx0rfhjlwTQvXbgVUzFPWF9YtKTRzKMRiW5
- giKJYn775zWsLVNjalNPGCgaMa3M0fNINdkM/zJaV+9kkHPfspQiWXwfn6Yf1luvfhUb
- 4smA==
+ :reply-to; bh=nhQiuyLJpAq1vLwFSWusjZL3a6cFkvxC3fYX6R+2IFw=;
+ b=jUWCzlVJfa1h6uqgdvpaCbJEU375/pEZthQ7bBCeuencVsqrvquVMxKt3KZ9gLtQdx
+ zzg0xTavRe0Q9QoqLaCN4logge1a9PGiifoXRpJcaYJ4EBJ8/lazf1fME3rZ1uo0NPc3
+ m5MtZHUkJeQKLykze7eMFvSJr2oOUbTQ2Mm+F9NxY//azCZvDYarvmkRZWJYxMaSBNti
+ Wa8GAKF9GfY4gqrjRFA+r2PmgUM3R3zv27hbLcJee8UvHfZeGQOVwej1ndki/O0W8jVt
+ hM8RrDuIVD3cQCOhwIMVg0rh2w8Jwlp4/P/Gf4SkXUzFS8uy77YJkA4cJp+bYHKL4tQ6
+ ShxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709040806; x=1709645606;
+ d=1e100.net; s=20230601; t=1709040807; x=1709645607;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3VIFnDGKGpENbZj1Zia/ChGLWB8xWLzUdNndb0QJxO4=;
- b=h2IiZxC5MsXddv/PFlB3yE4JuXBBmQWZ2g54c9DY3gql5bd+yNXQXamvIeP+0icas0
- zWO6a0tGOKyKYbQGu09cBEmzY3FkippzGRSo3Ro2HUOgu6IebHj0kcalbzYI/qd0Sidw
- 8mp3ennH1/2fLl5NfAdVTftu/G0VQDkGP0NR5rGfFsR9k8YZSWNviclmQwbGKdpEUD7a
- ydQNkFu5NHQHT25COaMLyFNtG8hhT2sUJZVPYsmpmGz2wiF3EYuzI6CbN0v+joLEJs84
- toQaISotqClwVWt0zNOcxxXm9Rsj5/uj33N9LDJ4IAtPankx5Y9qETei2I5DdXmwmeEU
- 84OQ==
-X-Gm-Message-State: AOJu0Yy6DODepD/J4NagwitJ+CApz1e1x3BRPFpHCIaFO4HCcE5oQHag
- EIz6CkJ2mLknkNfJD0QdBmO3XFR3rv+SW1v99TEBTfkxWkHx3qB7qA4k4TbJ19xv9QNk44jr/mS
- j
-X-Google-Smtp-Source: AGHT+IESZmbE8UJNeBFro4j02+/TdT8AMxLO7mwlUxLBilfLwib8AlguGjrex/1CokoUNhK5ueFvFw==
-X-Received: by 2002:a05:6000:229:b0:33d:2f2f:b135 with SMTP id
- l9-20020a056000022900b0033d2f2fb135mr5913823wrz.46.1709040806651; 
- Tue, 27 Feb 2024 05:33:26 -0800 (PST)
+ bh=nhQiuyLJpAq1vLwFSWusjZL3a6cFkvxC3fYX6R+2IFw=;
+ b=JteZViazJuGTstZmv6kFmv6BhlqaPBeOfApZCiGwppIegdO6pKata4y8Z+FMYBURIg
+ DDEHbPix/vrIkDdJT6Fo7BLN7iVDQHRNg8eWlOssk/WPCju3l91Zjb/iIp8bYvthEzEO
+ 9pHWDzY6SoaYZTcWGp0VkKSIHyWOSWiFkO+XbMKApn17eHNjuJ8BzPVfjpludUkYhqGO
+ cpVM9Gyphcea0mIraHOootM+9Y1faTulBd3LEnXc8lXPa1P3EaikIDX/VGbeO8PA5zhX
+ cmXFycAVuR+AClXaP3cfgvhz4pXQIyjR59zkbZZfJDh9Qsg2m3eDlKM9p/PZRU+gtcGk
+ UPgQ==
+X-Gm-Message-State: AOJu0YxnoSZlPyRrdWqkk8qxFKWtjj7veWI7zwN9Q2NWjm/6Kq1aGLKa
+ uyy8QYIi6F5iHjSY6L0JMJQ7fNTCx/WV/Iqorm/rNJIHfzD0itx9e568NEiFj37qG6VL0FEHZp5
+ o
+X-Google-Smtp-Source: AGHT+IFCl9EAKebFYqx3itQha4PODqh/HXX3Uu4cFkqQ3i07c3v8xDYLo6pxqBIN6/bxuJhDK3cViQ==
+X-Received: by 2002:adf:f891:0:b0:33d:82c5:3b76 with SMTP id
+ u17-20020adff891000000b0033d82c53b76mr7233100wrp.14.1709040807097; 
+ Tue, 27 Feb 2024 05:33:27 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  i13-20020adfe48d000000b0033ae7d768b2sm11319552wrm.117.2024.02.27.05.33.26
@@ -59,17 +59,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 27 Feb 2024 05:33:26 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 20/45] docs/devel/reset: Update to discuss system reset
-Date: Tue, 27 Feb 2024 13:32:49 +0000
-Message-Id: <20240227133314.1721857-21-peter.maydell@linaro.org>
+Subject: [PULL 21/45] hw/arm/bcm2836: Split out common part of BCM283X classes
+Date: Tue, 27 Feb 2024 13:32:50 +0000
+Message-Id: <20240227133314.1721857-22-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240227133314.1721857-1-peter.maydell@linaro.org>
 References: <20240227133314.1721857-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,81 +91,307 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that system reset uses a three-phase-reset, update the reset
-documentation to include a section describing how this works.
-Include documentation of the current major beartrap in reset, which
-is that only devices on the qbus tree will get automatically reset.
+From: Sergey Kambalin <serg.oker@gmail.com>
 
+Pre setup for BCM2838 introduction
+
+Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-id: 20240226000259.2752893-2-sergey.kambalin@auriga.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-id: 20240220160622.114437-11-peter.maydell@linaro.org
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- docs/devel/reset.rst | 44 ++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 42 insertions(+), 2 deletions(-)
+ include/hw/arm/bcm2836.h |  26 +++++++++-
+ hw/arm/bcm2836.c         | 103 ++++++++++++++++++++++-----------------
+ hw/arm/raspi.c           |   2 +-
+ 3 files changed, 84 insertions(+), 47 deletions(-)
 
-diff --git a/docs/devel/reset.rst b/docs/devel/reset.rst
-index d4e79718bac..2ea85e7779b 100644
---- a/docs/devel/reset.rst
-+++ b/docs/devel/reset.rst
-@@ -11,8 +11,8 @@ whole group can be reset consistently. Each individual member object does not
- have to care about others; in particular, problems of order (which object is
- reset first) are addressed.
+diff --git a/include/hw/arm/bcm2836.h b/include/hw/arm/bcm2836.h
+index 6f90cabfa3a..5a6717ca91e 100644
+--- a/include/hw/arm/bcm2836.h
++++ b/include/hw/arm/bcm2836.h
+@@ -17,8 +17,10 @@
+ #include "target/arm/cpu.h"
+ #include "qom/object.h"
  
--As of now DeviceClass and BusClass implement this interface.
--
-+The main object types which implement this interface are DeviceClass
-+and BusClass.
++#define TYPE_BCM283X_BASE "bcm283x-base"
++OBJECT_DECLARE_TYPE(BCM283XBaseState, BCM283XBaseClass, BCM283X_BASE)
+ #define TYPE_BCM283X "bcm283x"
+-OBJECT_DECLARE_TYPE(BCM283XState, BCM283XClass, BCM283X)
++OBJECT_DECLARE_SIMPLE_TYPE(BCM283XState, BCM283X)
  
- Triggering reset
- ----------------
-@@ -288,3 +288,43 @@ There is currently 2 cases where this function is used:
- 2. *hot bus change*; it means an existing live device is added, moved or
-    removed in the bus hierarchy. At the moment, it occurs only in the raspi
-    machines for changing the sdbus used by sd card.
+ #define BCM283X_NCPUS 4
+ 
+@@ -30,7 +32,7 @@ OBJECT_DECLARE_TYPE(BCM283XState, BCM283XClass, BCM283X)
+ #define TYPE_BCM2836 "bcm2836"
+ #define TYPE_BCM2837 "bcm2837"
+ 
+-struct BCM283XState {
++struct BCM283XBaseState {
+     /*< private >*/
+     DeviceState parent_obj;
+     /*< public >*/
+@@ -41,7 +43,27 @@ struct BCM283XState {
+         ARMCPU core;
+     } cpu[BCM283X_NCPUS];
+     BCM2836ControlState control;
++};
 +
-+Reset of the complete system
-+----------------------------
++struct BCM283XBaseClass {
++    /*< private >*/
++    DeviceClass parent_class;
++    /*< public >*/
++    const char *name;
++    const char *cpu_type;
++    unsigned core_count;
++    hwaddr peri_base; /* Peripheral base address seen by the CPU */
++    hwaddr ctrl_base; /* Interrupt controller and mailboxes etc. */
++    int clusterid;
++};
 +
-+Reset of the complete system is a little complicated. The typical
-+flow is:
++struct BCM283XState {
++    /*< private >*/
++    BCM283XBaseState parent_obj;
++    /*< public >*/
+     BCM2835PeripheralState peripherals;
+ };
+ 
++bool bcm283x_common_realize(DeviceState *dev, Error **errp);
 +
-+1. Code which wishes to reset the entire system does so by calling
-+   ``qemu_system_reset_request()``. This schedules a reset, but the
-+   reset will happen asynchronously after the function returns.
-+   That makes this safe to call from, for example, device models.
+ #endif /* BCM2836_H */
+diff --git a/hw/arm/bcm2836.c b/hw/arm/bcm2836.c
+index e3ba18a8ec1..e9768f2ab96 100644
+--- a/hw/arm/bcm2836.c
++++ b/hw/arm/bcm2836.c
+@@ -31,12 +31,12 @@ struct BCM283XClass {
+ };
+ 
+ static Property bcm2836_enabled_cores_property =
+-    DEFINE_PROP_UINT32("enabled-cpus", BCM283XState, enabled_cpus, 0);
++    DEFINE_PROP_UINT32("enabled-cpus", BCM283XBaseState, enabled_cpus, 0);
+ 
+-static void bcm2836_init(Object *obj)
++static void bcm283x_base_init(Object *obj)
+ {
+-    BCM283XState *s = BCM283X(obj);
+-    BCM283XClass *bc = BCM283X_GET_CLASS(obj);
++    BCM283XBaseState *s = BCM283X_BASE(obj);
++    BCM283XBaseClass *bc = BCM283X_BASE_GET_CLASS(obj);
+     int n;
+ 
+     for (n = 0; n < bc->core_count; n++) {
+@@ -52,6 +52,11 @@ static void bcm2836_init(Object *obj)
+         object_initialize_child(obj, "control", &s->control,
+                                 TYPE_BCM2836_CONTROL);
+     }
++}
 +
-+2. The function which is called to make the reset happen is
-+   ``qemu_system_reset()``. Generally only core system code should
-+   call this directly.
-+
-+3. ``qemu_system_reset()`` calls the ``MachineClass::reset`` method of
-+   the current machine, if it has one. That method must call
-+   ``qemu_devices_reset()``. If the machine has no reset method,
-+   ``qemu_system_reset()`` calls ``qemu_devices_reset()`` directly.
-+
-+4. ``qemu_devices_reset()`` performs a reset of the system, using
-+   the three-phase mechanism listed above. It resets all objects
-+   that were registered with it using ``qemu_register_resettable()``.
-+   It also calls all the functions registered with it using
-+   ``qemu_register_reset()``. Those functions are called during the
-+   "hold" phase of this reset.
-+
-+5. The most important object that this reset resets is the
-+   'sysbus' bus. The sysbus bus is the root of the qbus tree. This
-+   means that all devices on the sysbus are reset, and all their
-+   child buses, and all the devices on those child buses.
-+
-+6. Devices which are not on the qbus tree are *not* automatically
-+   reset! (The most obvious example of this is CPU objects, but
-+   anything that directly inherits from ``TYPE_OBJECT`` or ``TYPE_DEVICE``
-+   rather than from ``TYPE_SYS_BUS_DEVICE`` or some other plugs-into-a-bus
-+   type will be in this category.) You need to therefore arrange for these
-+   to be reset in some other way (e.g. using ``qemu_register_resettable()``
-+   or ``qemu_register_reset()``).
++static void bcm283x_init(Object *obj)
++{
++    BCM283XState *s = BCM283X(obj);
+ 
+     object_initialize_child(obj, "peripherals", &s->peripherals,
+                             TYPE_BCM2835_PERIPHERALS);
+@@ -63,10 +68,11 @@ static void bcm2836_init(Object *obj)
+                               "vcram-size");
+ }
+ 
+-static bool bcm283x_common_realize(DeviceState *dev, Error **errp)
++bool bcm283x_common_realize(DeviceState *dev, Error **errp)
+ {
+     BCM283XState *s = BCM283X(dev);
+-    BCM283XClass *bc = BCM283X_GET_CLASS(dev);
++    BCM283XBaseState *s_base = BCM283X_BASE(dev);
++    BCM283XBaseClass *bc = BCM283X_BASE_GET_CLASS(dev);
+     Object *obj;
+ 
+     /* common peripherals from bcm2835 */
+@@ -79,90 +85,93 @@ static bool bcm283x_common_realize(DeviceState *dev, Error **errp)
+         return false;
+     }
+ 
+-    object_property_add_alias(OBJECT(s), "sd-bus", OBJECT(&s->peripherals),
+-                              "sd-bus");
++    object_property_add_alias(OBJECT(s_base), "sd-bus",
++                              OBJECT(&s->peripherals), "sd-bus");
+ 
+-    sysbus_mmio_map_overlap(SYS_BUS_DEVICE(&s->peripherals), 0,
+-                            bc->peri_base, 1);
++    sysbus_mmio_map_overlap(SYS_BUS_DEVICE(&s->peripherals),
++                            0, bc->peri_base, 1);
+     return true;
+ }
+ 
+ static void bcm2835_realize(DeviceState *dev, Error **errp)
+ {
+     BCM283XState *s = BCM283X(dev);
++    BCM283XBaseState *s_base = BCM283X_BASE(dev);
+ 
+     if (!bcm283x_common_realize(dev, errp)) {
+         return;
+     }
+ 
+-    if (!qdev_realize(DEVICE(&s->cpu[0].core), NULL, errp)) {
++    if (!qdev_realize(DEVICE(&s_base->cpu[0].core), NULL, errp)) {
+         return;
+     }
+ 
+     /* Connect irq/fiq outputs from the interrupt controller. */
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->peripherals), 0,
+-            qdev_get_gpio_in(DEVICE(&s->cpu[0].core), ARM_CPU_IRQ));
++            qdev_get_gpio_in(DEVICE(&s_base->cpu[0].core), ARM_CPU_IRQ));
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->peripherals), 1,
+-            qdev_get_gpio_in(DEVICE(&s->cpu[0].core), ARM_CPU_FIQ));
++            qdev_get_gpio_in(DEVICE(&s_base->cpu[0].core), ARM_CPU_FIQ));
+ }
+ 
+ static void bcm2836_realize(DeviceState *dev, Error **errp)
+ {
+-    BCM283XState *s = BCM283X(dev);
+-    BCM283XClass *bc = BCM283X_GET_CLASS(dev);
+     int n;
++    BCM283XState *s = BCM283X(dev);
++    BCM283XBaseState *s_base = BCM283X_BASE(dev);
++    BCM283XBaseClass *bc = BCM283X_BASE_GET_CLASS(dev);
+ 
+     if (!bcm283x_common_realize(dev, errp)) {
+         return;
+     }
+ 
+     /* bcm2836 interrupt controller (and mailboxes, etc.) */
+-    if (!sysbus_realize(SYS_BUS_DEVICE(&s->control), errp)) {
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s_base->control), errp)) {
+         return;
+     }
+ 
+-    sysbus_mmio_map(SYS_BUS_DEVICE(&s->control), 0, bc->ctrl_base);
++    sysbus_mmio_map(SYS_BUS_DEVICE(&s_base->control), 0, bc->ctrl_base);
+ 
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->peripherals), 0,
+-        qdev_get_gpio_in_named(DEVICE(&s->control), "gpu-irq", 0));
++        qdev_get_gpio_in_named(DEVICE(&s_base->control), "gpu-irq", 0));
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->peripherals), 1,
+-        qdev_get_gpio_in_named(DEVICE(&s->control), "gpu-fiq", 0));
++        qdev_get_gpio_in_named(DEVICE(&s_base->control), "gpu-fiq", 0));
+ 
+     for (n = 0; n < BCM283X_NCPUS; n++) {
+-        object_property_set_int(OBJECT(&s->cpu[n].core), "mp-affinity",
++        object_property_set_int(OBJECT(&s_base->cpu[n].core), "mp-affinity",
+                                 (bc->clusterid << 8) | n, &error_abort);
+ 
+         /* set periphbase/CBAR value for CPU-local registers */
+-        object_property_set_int(OBJECT(&s->cpu[n].core), "reset-cbar",
++        object_property_set_int(OBJECT(&s_base->cpu[n].core), "reset-cbar",
+                                 bc->peri_base, &error_abort);
+ 
+         /* start powered off if not enabled */
+-        object_property_set_bool(OBJECT(&s->cpu[n].core), "start-powered-off",
+-                                 n >= s->enabled_cpus, &error_abort);
++        object_property_set_bool(OBJECT(&s_base->cpu[n].core),
++                                 "start-powered-off",
++                                 n >= s_base->enabled_cpus, &error_abort);
+ 
+-        if (!qdev_realize(DEVICE(&s->cpu[n].core), NULL, errp)) {
++        if (!qdev_realize(DEVICE(&s_base->cpu[n].core), NULL, errp)) {
+             return;
+         }
+ 
+         /* Connect irq/fiq outputs from the interrupt controller. */
+-        qdev_connect_gpio_out_named(DEVICE(&s->control), "irq", n,
+-                qdev_get_gpio_in(DEVICE(&s->cpu[n].core), ARM_CPU_IRQ));
+-        qdev_connect_gpio_out_named(DEVICE(&s->control), "fiq", n,
+-                qdev_get_gpio_in(DEVICE(&s->cpu[n].core), ARM_CPU_FIQ));
++        qdev_connect_gpio_out_named(DEVICE(&s_base->control), "irq", n,
++            qdev_get_gpio_in(DEVICE(&s_base->cpu[n].core), ARM_CPU_IRQ));
++        qdev_connect_gpio_out_named(DEVICE(&s_base->control), "fiq", n,
++            qdev_get_gpio_in(DEVICE(&s_base->cpu[n].core), ARM_CPU_FIQ));
+ 
+         /* Connect timers from the CPU to the interrupt controller */
+-        qdev_connect_gpio_out(DEVICE(&s->cpu[n].core), GTIMER_PHYS,
+-                qdev_get_gpio_in_named(DEVICE(&s->control), "cntpnsirq", n));
+-        qdev_connect_gpio_out(DEVICE(&s->cpu[n].core), GTIMER_VIRT,
+-                qdev_get_gpio_in_named(DEVICE(&s->control), "cntvirq", n));
+-        qdev_connect_gpio_out(DEVICE(&s->cpu[n].core), GTIMER_HYP,
+-                qdev_get_gpio_in_named(DEVICE(&s->control), "cnthpirq", n));
+-        qdev_connect_gpio_out(DEVICE(&s->cpu[n].core), GTIMER_SEC,
+-                qdev_get_gpio_in_named(DEVICE(&s->control), "cntpsirq", n));
++        qdev_connect_gpio_out(DEVICE(&s_base->cpu[n].core), GTIMER_PHYS,
++            qdev_get_gpio_in_named(DEVICE(&s_base->control), "cntpnsirq", n));
++        qdev_connect_gpio_out(DEVICE(&s_base->cpu[n].core), GTIMER_VIRT,
++            qdev_get_gpio_in_named(DEVICE(&s_base->control), "cntvirq", n));
++        qdev_connect_gpio_out(DEVICE(&s_base->cpu[n].core), GTIMER_HYP,
++            qdev_get_gpio_in_named(DEVICE(&s_base->control), "cnthpirq", n));
++        qdev_connect_gpio_out(DEVICE(&s_base->cpu[n].core), GTIMER_SEC,
++            qdev_get_gpio_in_named(DEVICE(&s_base->control), "cntpsirq", n));
+     }
+ }
+ 
+-static void bcm283x_class_init(ObjectClass *oc, void *data)
++static void bcm283x_base_class_init(ObjectClass *oc, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
+ 
+@@ -173,7 +182,7 @@ static void bcm283x_class_init(ObjectClass *oc, void *data)
+ static void bcm2835_class_init(ObjectClass *oc, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
+-    BCM283XClass *bc = BCM283X_CLASS(oc);
++    BCM283XBaseClass *bc = BCM283X_BASE_CLASS(oc);
+ 
+     bc->cpu_type = ARM_CPU_TYPE_NAME("arm1176");
+     bc->core_count = 1;
+@@ -184,7 +193,7 @@ static void bcm2835_class_init(ObjectClass *oc, void *data)
+ static void bcm2836_class_init(ObjectClass *oc, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
+-    BCM283XClass *bc = BCM283X_CLASS(oc);
++    BCM283XBaseClass *bc = BCM283X_BASE_CLASS(oc);
+ 
+     bc->cpu_type = ARM_CPU_TYPE_NAME("cortex-a7");
+     bc->core_count = BCM283X_NCPUS;
+@@ -198,7 +207,7 @@ static void bcm2836_class_init(ObjectClass *oc, void *data)
+ static void bcm2837_class_init(ObjectClass *oc, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
+-    BCM283XClass *bc = BCM283X_CLASS(oc);
++    BCM283XBaseClass *bc = BCM283X_BASE_CLASS(oc);
+ 
+     bc->cpu_type = ARM_CPU_TYPE_NAME("cortex-a53");
+     bc->core_count = BCM283X_NCPUS;
+@@ -226,11 +235,17 @@ static const TypeInfo bcm283x_types[] = {
+ #endif
+     }, {
+         .name           = TYPE_BCM283X,
+-        .parent         = TYPE_DEVICE,
++        .parent         = TYPE_BCM283X_BASE,
+         .instance_size  = sizeof(BCM283XState),
+-        .instance_init  = bcm2836_init,
+-        .class_size     = sizeof(BCM283XClass),
+-        .class_init     = bcm283x_class_init,
++        .instance_init  = bcm283x_init,
++        .abstract       = true,
++    }, {
++        .name           = TYPE_BCM283X_BASE,
++        .parent         = TYPE_DEVICE,
++        .instance_size  = sizeof(BCM283XBaseState),
++        .instance_init  = bcm283x_base_init,
++        .class_size     = sizeof(BCM283XBaseClass),
++        .class_init     = bcm283x_base_class_init,
+         .abstract       = true,
+     }
+ };
+diff --git a/hw/arm/raspi.c b/hw/arm/raspi.c
+index cc4c4ec9bfc..af866ebce29 100644
+--- a/hw/arm/raspi.c
++++ b/hw/arm/raspi.c
+@@ -252,7 +252,7 @@ static void setup_boot(MachineState *machine, RaspiProcessorId processor_id,
+         s->binfo.firmware_loaded = true;
+     }
+ 
+-    arm_load_kernel(&s->soc.cpu[0].core, machine, &s->binfo);
++    arm_load_kernel(&s->soc.parent_obj.cpu[0].core, machine, &s->binfo);
+ }
+ 
+ static void raspi_machine_init(MachineState *machine)
 -- 
 2.34.1
 
