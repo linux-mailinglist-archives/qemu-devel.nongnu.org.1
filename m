@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE2F4868AF0
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 09:42:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 087DC868B3A
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 09:50:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ret2Q-0001q5-8r; Tue, 27 Feb 2024 03:42:10 -0500
+	id 1ret2Z-00038v-Nu; Tue, 27 Feb 2024 03:42:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret2N-0001X2-3R
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:42:07 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret2V-0002aM-2r
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:42:15 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret2L-0008Ip-7H
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:42:06 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5663273e390so533477a12.3
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 00:42:04 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret2R-0008KK-SX
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:42:14 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-564fc495d83so4580865a12.0
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 00:42:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709023323; x=1709628123; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709023330; x=1709628130; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iX8uZlTT6wTjiMtTqjR3dj/PxPssyXNBBI6GxQRZqxI=;
- b=UiJ4RsntLYaqtxmRuL7CPxLIHVqs9MuduWTme3Dqnjxt55rTIUd153GI33+mNA1Z7T
- jzrMFh6WIE2erQYfs94AfzvMCOMHa0+W0my6wqL/ErT93VcIfqRo4PNott8wlhq1m8Sy
- kmvlPs0M7ehyiBFdkqytDQxR40L8S0uriTToEvEYfNZ4jxS8fvvB2JoLGAu7sbwaaIlJ
- b67PRfoCRcrTQcLPi5JTABMAssLXcIZG1L8Fgpjnurvpvr6iQKm+loxfNiOl7LynHxbW
- xhPefnJJdo77w9rsDFR20XgcEbfCSckhqdl4x19OQnmQBL3jdsZw+z+goR2J6+TTJVJA
- 8MCQ==
+ bh=9zD/OKW2eI569vD83pviooB+9Gzp5s2IN5noJR3qtG4=;
+ b=AgV0M77zCe75IXST6dLnYlJLJt8+WKT8/UA4JivMuWP0NFz1T+j1Bh27hWmLHZx5M0
+ 6ohlK84p7VLz8hLg7DlUCuRGbn8mysBOIM4tPIabeu2Syml1aIcUyKvenQZCtiHt8cOM
+ Nt8mDefoQI6tGA5lPGlKReiiJWz3WBKuTyjioySLUu6cF1PWUcIeOp1eFtzpocGyvPkD
+ IRWrMXvh5thl3dqAyO/rF3T/a9bP0ZhOvUUQ24pTTpDJm66qDLGiMtf/xmvqbBoh3inJ
+ h0WU/ikGpiymU7ELoF+plxIE2WFNq3ZeFRfak9qyl0rUt+pr1yQcn4R24ewA69xU3C8m
+ Rtrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709023323; x=1709628123;
+ d=1e100.net; s=20230601; t=1709023330; x=1709628130;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iX8uZlTT6wTjiMtTqjR3dj/PxPssyXNBBI6GxQRZqxI=;
- b=Sf7OdukTKJ3cXNKr67JjjDyVpgx1EOp/Ls7tW/sUAxWVXTLf0GTQdjHNgAHUbBdvVR
- n6JdD8Ot6tACtwvc+q79r+bXas86HtGvJQU528uNkCHqiHOar3Oslo7KcOSDdq8DZl+e
- v2sGq7kHbMkWAAVmQkO9rJiN02nh8SA9OyhFIhkRGALYGS8WuLv4zD5aLLKllJYLX2fw
- 7LG80CwhChlOKd7HEbvhsfGdTj+Nzfq/fyWXvU1DiZtthiqMvVAFkzI6122MhHrn3o7o
- MYpNTu8JM9OTT4X5g4Qh8hb1AsPWi8RQbRLSRrlI/63vEXn/Y96GZApC8eoVgFjSuJ1H
- zsxQ==
-X-Gm-Message-State: AOJu0YyqFNqGLXUQJawmqnJg6g9IOrzwfCYif/oKdISW60HO8ZLoSX0y
- WGuke5T6ZCDUSoZSC2WW4xtWubDwsf3RqVNN0oq3Q4DUpHW/5Blk9alDDuPTNEsTM35wGfIT8KU
- q
-X-Google-Smtp-Source: AGHT+IGisEqRQFzyQeAsM9alRoTB8oJYoLKxVH4SFxHu/nRrwo3YOttRiyP1dOLTQXa+bS/yS0uAoQ==
-X-Received: by 2002:a05:6402:795:b0:566:4459:920b with SMTP id
- d21-20020a056402079500b005664459920bmr311301edy.41.1709023323449; 
- Tue, 27 Feb 2024 00:42:03 -0800 (PST)
+ bh=9zD/OKW2eI569vD83pviooB+9Gzp5s2IN5noJR3qtG4=;
+ b=PdKPjK7478eFD8qU5cpUCnWYgeKE8njTBVMyTis+e1dHHqaoMMg1XTsfXxQHcWtlHt
+ xlZsWY1FA7+FmUjjhsUy31hgDu8fRNdeYA58CAVOcPy/k4LDv2//+P+937OV/viZMWcH
+ ud1MpuepP3Ylg+wxkMffQ/M8WSIQe3oFonl3l2WHK3P8Q2x5F6wG/XbngPGTIBGtDLYJ
+ M8uF5cP9B33Z9SmrphfCgvBZvwnBqmfDWVTlwVodFpEegpnVcgG2kW9OBZNlU61IFB1a
+ czgOWDvOhtOGucZ95WtRTQUEkeMeOhGs6NipSbcqC2xn/AAdX/ja7hAe5e2SM5jqll2Y
+ +iIg==
+X-Gm-Message-State: AOJu0Yz9afXVYaSK5p4mtNJEdAx0lJ+zu4EkLMmYqT08Y19ltqhAnhd8
+ 6tUgto+OC7cEjY0S2fdncvNg4KUr64HzQoidpF2PtZI3CiVQF8QW0GVJjFf3UL2athNl/O24yNF
+ I
+X-Google-Smtp-Source: AGHT+IE02bMtvZpWaB9ce3nfzypPQuqHvxqyi/6ii5I60rSE3K89IJ/uqNDmgkBPVMwaHCPTB+Lgjg==
+X-Received: by 2002:a05:6402:6da:b0:566:aa2:8433 with SMTP id
+ n26-20020a05640206da00b005660aa28433mr2734239edy.36.1709023329828; 
+ Tue, 27 Feb 2024 00:42:09 -0800 (PST)
 Received: from m1x-phil.lan (mic92-h03-176-184-33-214.dsl.sta.abo.bbox.fr.
  [176.184.33.214]) by smtp.gmail.com with ESMTPSA id
- i2-20020a0564020f0200b005651ae4ac91sm542918eda.41.2024.02.27.00.42.01
+ q7-20020a056402040700b00566220e204csm543399edv.15.2024.02.27.00.42.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 27 Feb 2024 00:42:03 -0800 (PST)
+ Tue, 27 Feb 2024 00:42:09 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-block@nongnu.org, qemu-arm@nongnu.org,
- Bernhard Beschow <shentey@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, Sergio Lopez <slp@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 21/30] hw/i386/x86: Let ioapic_init_gsi() take parent as pointer
-Date: Tue, 27 Feb 2024 09:39:37 +0100
-Message-ID: <20240227083948.5427-22-philmd@linaro.org>
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 22/30] hw/i386/sgx: Use QDev API
+Date: Tue, 27 Feb 2024 09:39:38 +0100
+Message-ID: <20240227083948.5427-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240227083948.5427-1-philmd@linaro.org>
 References: <20240227083948.5427-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,124 +97,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+Prefer the QDev API over the low level QOM one.
+No logical change intended.
 
-Rather than taking a QOM name which has to be resolved, let's pass the parent
-directly as pointer. This simplifies the code.
-
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-ID: <20240224135851.100361-2-shentey@gmail.com>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20240215142035.73331-4-philmd@linaro.org>
 ---
- include/hw/i386/x86.h | 2 +-
- hw/i386/microvm.c     | 2 +-
- hw/i386/pc_piix.c     | 7 +++----
- hw/i386/pc_q35.c      | 2 +-
- hw/i386/x86.c         | 7 +++----
- 5 files changed, 9 insertions(+), 11 deletions(-)
+ hw/i386/sgx.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
-index 8e306db7bb..4dc30dcb4d 100644
---- a/include/hw/i386/x86.h
-+++ b/include/hw/i386/x86.h
-@@ -139,7 +139,7 @@ typedef struct GSIState {
+diff --git a/hw/i386/sgx.c b/hw/i386/sgx.c
+index 70305547d4..de76397bcf 100644
+--- a/hw/i386/sgx.c
++++ b/hw/i386/sgx.c
+@@ -286,7 +286,6 @@ void pc_machine_init_sgx_epc(PCMachineState *pcms)
+     SGXEPCState *sgx_epc = &pcms->sgx_epc;
+     X86MachineState *x86ms = X86_MACHINE(pcms);
+     SgxEPCList *list = NULL;
+-    Object *obj;
  
- qemu_irq x86_allocate_cpu_irq(void);
- void gsi_handler(void *opaque, int n, int level);
--void ioapic_init_gsi(GSIState *gsi_state, const char *parent_name);
-+void ioapic_init_gsi(GSIState *gsi_state, Object *parent);
- DeviceState *ioapic_init_secondary(GSIState *gsi_state);
+     memset(sgx_epc, 0, sizeof(SGXEPCState));
+     if (!x86ms->sgx_epc_list) {
+@@ -300,16 +299,15 @@ void pc_machine_init_sgx_epc(PCMachineState *pcms)
+                                 &sgx_epc->mr);
  
- /* pc_sysfw.c */
-diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
-index ca55aecc3b..61a772dfe6 100644
---- a/hw/i386/microvm.c
-+++ b/hw/i386/microvm.c
-@@ -175,7 +175,7 @@ static void microvm_devices_init(MicrovmMachineState *mms)
-                           &error_abort);
-     isa_bus_register_input_irqs(isa_bus, x86ms->gsi);
+     for (list = x86ms->sgx_epc_list; list; list = list->next) {
+-        obj = object_new("sgx-epc");
++        DeviceState *dev = qdev_new(TYPE_SGX_EPC);
  
--    ioapic_init_gsi(gsi_state, "machine");
-+    ioapic_init_gsi(gsi_state, OBJECT(mms));
-     if (ioapics > 1) {
-         x86ms->ioapic2 = ioapic_init_secondary(gsi_state);
-     }
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index ec7c07b362..7724396ead 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -107,6 +107,7 @@ static void pc_init1(MachineState *machine,
-     X86MachineState *x86ms = X86_MACHINE(machine);
-     MemoryRegion *system_memory = get_system_memory();
-     MemoryRegion *system_io = get_system_io();
-+    Object *phb = NULL;
-     PCIBus *pci_bus = NULL;
-     ISABus *isa_bus;
-     Object *piix4_pm = NULL;
-@@ -189,8 +190,6 @@ static void pc_init1(MachineState *machine,
+         /* set the memdev link with memory backend */
+-        object_property_parse(obj, SGX_EPC_MEMDEV_PROP, list->value->memdev,
+-                              &error_fatal);
++        object_property_parse(OBJECT(dev), SGX_EPC_MEMDEV_PROP,
++                              list->value->memdev, &error_fatal);
+         /* set the numa node property for sgx epc object */
+-        object_property_set_uint(obj, SGX_EPC_NUMA_NODE_PROP, list->value->node,
+-                             &error_fatal);
+-        object_property_set_bool(obj, "realized", true, &error_fatal);
+-        object_unref(obj);
++        object_property_set_uint(OBJECT(dev), SGX_EPC_NUMA_NODE_PROP,
++                                 list->value->node, &error_fatal);
++        qdev_realize_and_unref(dev, NULL, &error_fatal);
      }
  
-     if (pcmc->pci_enabled) {
--        Object *phb;
--
-         pci_memory = g_new(MemoryRegion, 1);
-         memory_region_init(pci_memory, NULL, "pci", UINT64_MAX);
-         rom_memory = pci_memory;
-@@ -303,8 +302,8 @@ static void pc_init1(MachineState *machine,
-         pc_i8259_create(isa_bus, gsi_state->i8259_irq);
-     }
- 
--    if (pcmc->pci_enabled) {
--        ioapic_init_gsi(gsi_state, "i440fx");
-+    if (phb) {
-+        ioapic_init_gsi(gsi_state, phb);
-     }
- 
-     if (tcg_enabled()) {
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 53fb3db26d..c89ff63579 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -263,7 +263,7 @@ static void pc_q35_init(MachineState *machine)
-         pc_i8259_create(isa_bus, gsi_state->i8259_irq);
-     }
- 
--    ioapic_init_gsi(gsi_state, "q35");
-+    ioapic_init_gsi(gsi_state, OBJECT(phb));
- 
-     if (tcg_enabled()) {
-         x86_register_ferr_irq(x86ms->gsi[13]);
-diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-index 684dce90e9..807e09bcdb 100644
---- a/hw/i386/x86.c
-+++ b/hw/i386/x86.c
-@@ -640,20 +640,19 @@ void gsi_handler(void *opaque, int n, int level)
-     }
- }
- 
--void ioapic_init_gsi(GSIState *gsi_state, const char *parent_name)
-+void ioapic_init_gsi(GSIState *gsi_state, Object *parent)
- {
-     DeviceState *dev;
-     SysBusDevice *d;
-     unsigned int i;
- 
--    assert(parent_name);
-+    assert(parent);
-     if (kvm_ioapic_in_kernel()) {
-         dev = qdev_new(TYPE_KVM_IOAPIC);
-     } else {
-         dev = qdev_new(TYPE_IOAPIC);
-     }
--    object_property_add_child(object_resolve_path(parent_name, NULL),
--                              "ioapic", OBJECT(dev));
-+    object_property_add_child(parent, "ioapic", OBJECT(dev));
-     d = SYS_BUS_DEVICE(dev);
-     sysbus_realize_and_unref(d, &error_fatal);
-     sysbus_mmio_map(d, 0, IO_APIC_DEFAULT_ADDRESS);
+     if ((sgx_epc->base + sgx_epc->size) < sgx_epc->base) {
 -- 
 2.41.0
 
