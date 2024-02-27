@@ -2,66 +2,177 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 334C386872D
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 03:32:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFBBE868759
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 03:43:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1renF3-0002ys-Ig; Mon, 26 Feb 2024 21:30:49 -0500
+	id 1renPe-0008Fx-5A; Mon, 26 Feb 2024 21:41:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1renF1-0002yJ-MK
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 21:30:47 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1renEz-0002QQ-Fh
- for qemu-devel@nongnu.org; Mon, 26 Feb 2024 21:30:47 -0500
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8DxWPBRSd1lEtARAA--.45223S3;
- Tue, 27 Feb 2024 10:30:41 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Cxbs1HSd1lRvhGAA--.54308S7; 
- Tue, 27 Feb 2024 10:30:39 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: [PATCH v2 5/5] tests: Add migration test for loongarch64
-Date: Tue, 27 Feb 2024 10:30:31 +0800
-Message-Id: <20240227023031.3299067-6-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240227023031.3299067-1-maobibo@loongson.cn>
-References: <20240227023031.3299067-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1renPb-0008FW-VI
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 21:41:43 -0500
+Received: from mgamail.intel.com ([192.198.163.9])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1renPY-0004TP-8P
+ for qemu-devel@nongnu.org; Mon, 26 Feb 2024 21:41:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1709001700; x=1740537700;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=8W2Djgju/ie5Tty4cQ1JjZchVi3gOIlYyfX6gp4fCJE=;
+ b=AXffJZXN23+IvvcPzEgGlqYVpiXDlCJkcfGxhwpwsiu2KcaEwc5OMa3s
+ SPGiWKNp9Op0BNiix+3nm6/EC6ihGgB0CCt/mcIDp70E4LGQaT4i/XEQM
+ STtWKyioptyNG0Bw6KLvAMXxAU3XqmOYihAOTAQU8Uqie3FewZR6Rgk7i
+ zJcD16DTaVXgwU7gI2NV+C2HjxV+Qvn593ZHA67P54YMoGEwgd40ozRWM
+ Y2VOmLmPvf+StlRLASZhOsxfLl9IC3oI0f8NAcCXaWIALwvAmXD6vbPqS
+ RdLHeLclQFur2HibWMiNZ56HlGj9/YI3EcxDWqijtO+OLQEqqa8VmPe87 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="14037683"
+X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; d="scan'208";a="14037683"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2024 18:41:37 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; d="scan'208";a="11474249"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by fmviesa003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 26 Feb 2024 18:41:37 -0800
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Mon, 26 Feb 2024 18:41:36 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Mon, 26 Feb 2024 18:41:36 -0800
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Mon, 26 Feb 2024 18:41:36 -0800
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.169)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 26 Feb 2024 18:41:36 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fajc5Cy2eSt7aqhxlYOywxwQTK46xMSRT0D2zyl9igDlnH+Itv8cZZuPNtnFHEaz7HKwtgsOAqYVvuZhsuTTIUjfI8OESyK5ZxlZPSDfbc5qOTVLW4DZuTY7my+B1koUJVbQ7yvjGrucflV+Hee6gaeeilkaQiQSyNPsxODqlazRAKU4RF47dpZoGUxNBCUzUFnW8bMEeSl5CA1qrjQ16C419SgGX1I1OI/tE0Pi/DPwZ/gMe14j678JnSkRXJA3NH1XbOz0asPgHO8io6ypfiQznGUZA30miU0+HSc45vwwMUX+6Zn8QaKUQcYAXf9Fd72Bxz+E4kvwnC0VkY+WBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8W2Djgju/ie5Tty4cQ1JjZchVi3gOIlYyfX6gp4fCJE=;
+ b=UhgXLSoPMPFWko6DhoohLbLqyiXA6iWTtPSdfwMHMNkxHO9sp0SjoVBrDVwzrmcX/uEUtLqMCRYMWWzFl2qRxXUadOuY+JstYKJoyZ9tdRfghs63dO7b/NImt+Et18Ok4bmWY8I6GMfU8Yt4lggYlcYjX7834svpwCs1YyXgBzyvVvlDfu57uknIruEYzZY97EqBOLbByJcKJZx9nAe3RXjzDeWXk7EPu72r3/adB+SFyWeLI+/+PRP9QIufmYfMP2hpPaK/N1ZKzGtHDdomfFqn7KZY8rseN1QvQ0JHvVoS3CuFvjN/LJOGZfllzTbCpCachsksFQmJtITUYlFlXA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
+ by PH0PR11MB4984.namprd11.prod.outlook.com (2603:10b6:510:34::20)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.25; Tue, 27 Feb
+ 2024 02:41:33 +0000
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::c0f3:15d4:d7f6:a72a]) by SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::c0f3:15d4:d7f6:a72a%4]) with mapi id 15.20.7339.009; Tue, 27 Feb 2024
+ 02:41:33 +0000
+From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
+To: Joao Martins <joao.m.martins@oracle.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "clg@redhat.com" <clg@redhat.com>, "eric.auger@redhat.com"
+ <eric.auger@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>, "mst@redhat.com"
+ <mst@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
+ <nicolinc@nvidia.com>, "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L"
+ <yi.l.liu@intel.com>, "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P"
+ <chao.p.peng@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, "Richard
+ Henderson" <richard.henderson@linaro.org>, Eduardo Habkost
+ <eduardo@habkost.net>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: RE: [PATCH rfcv2 18/18] intel_iommu: Block migration if cap is updated
+Thread-Topic: [PATCH rfcv2 18/18] intel_iommu: Block migration if cap is
+ updated
+Thread-Index: AQHaVOC9sC8O2ye14U6f5euIaQuiIrEILJaAgBV15iA=
+Date: Tue, 27 Feb 2024 02:41:33 +0000
+Message-ID: <SJ0PR11MB6744BF58C9C21D5778A2D15792592@SJ0PR11MB6744.namprd11.prod.outlook.com>
+References: <20240201072818.327930-1-zhenzhong.duan@intel.com>
+ <20240201072818.327930-19-zhenzhong.duan@intel.com>
+ <72642921-98d4-4c4f-8117-868d2ae29eb0@oracle.com>
+In-Reply-To: <72642921-98d4-4c4f-8117-868d2ae29eb0@oracle.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|PH0PR11MB4984:EE_
+x-ms-office365-filtering-correlation-id: 3fc0f57c-8dc3-4eac-8d6e-08dc373d9c65
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: qOpnYwIxZftbDcpYx4vF3rGx3uItGfLUKt9hh48qh8PyrrSBwrYO+vcYCESAdZfHbH1mtVjqlY99EXJfiCUmXd7mVTLDHJijMMMd6BKQPDDiMV3ilugKbaNhttbJLuoqZREQvp/dftiG5b2SF21O02VFNV5w489sTz+5WCyAXRYoOBRE4lFBic3jbKxtRXI3vNFfkUipbRmXWM4IIXJO/tBvlfI8YYfVIe0TgvqnpsFqiYZ/u728nvVOGyomJ/LlhrRuFoTv7BiTWFwlW4R4DdZnuWU5Br60bglAGodSUyaExskBSn9F1Nng60yChHniX4INnjYzPIGylTPv/CfvtdSiCg8Ua2Lqz78+YePn6bWMT034dgjuhrZ7RwmFXRbwnwjSKkpNHdYh5Z2US8a5o1UnLYWhjsqobyEKGcXcacTVASWHTeNwMXQQak3BupOQbBMVe4j9oiGXTbkq2tT4sDa2vKtDQZh/JSQlisSqIMsJLTqyZM+/hVXkBD18z35F5rHENsNARvebsrjhwkpJHi+tdKPBlFOui6sewQVAhhZx1JbFMnAnTDbMs09JdH2RHg8APDjGk9XX0A6p7EK3be+MIgZYRQ+EqKD5MndJxaDadcESc8EgMCh1Gn8a7GUpzYVKv3tazWrwhk/IBmPnJ9zcIWnmsbJx9gDKcdxVxQEEY/K0AB5LF960NywScDDDk0VafPrzy5VtXVP1KaRl6A==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(38070700009); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WlhCYUJqRjl0YStjeG5manBUeVlEK3RtcWd4M3lWcHRIbGhDbW9FeGJrOCty?=
+ =?utf-8?B?MzZiVGFCbmtWMzNVbUhzL0M3OCtIMTYralc3N2Z5dFY5NEY2ZTFPQTRXZG9s?=
+ =?utf-8?B?dnpTZVRhZFpEZHAzQkJ5OUdZZzUyaEtqRTNuYm9SRncva1ZqOGJwcERYcFFF?=
+ =?utf-8?B?d1BrcndBaWJraklPaUtqMFRwazQrRGpibE5VUGZxVGFwd1RtdklxSXlMT1M5?=
+ =?utf-8?B?c0N0Wk9QUU9DS1JzRWZINHpwZkNYM0RIYk9CMkpDYk5kYmR6SzhrQ1NjanZZ?=
+ =?utf-8?B?enlEb3pCNFphUm9FRG1WTC9ic2t0MEpOZ1ZaRXVrSHYrRndHakhMZFJGZWxk?=
+ =?utf-8?B?cUFZSzJlNENXUXJjZnFBOUF6Q0h6V05ac1ZKajQvR1VXTXk3allpMG93MGFn?=
+ =?utf-8?B?cW9MbmxYNFJYcFJGOG1USTlBYVdENWR5Vk1kdEZrYXptQll3Rjk4ajJkZVNo?=
+ =?utf-8?B?TXdmK3IyeXptVE5xYTFZUXd0N2c5OXVpRG8rMnR1L01HY0N3RFFGeFVLK0xD?=
+ =?utf-8?B?NHk5NUFHek9EaUp3cHV5cm1KY3A0ODBpMkpyRXdFVGM3N3d3MTliZDM5dDZj?=
+ =?utf-8?B?amRGNzlmRnd0NUc5c1JSTlNSc0hYS3Bla2czNlZjUG9GQ3d1Ny9maWcvdmlK?=
+ =?utf-8?B?ZFFTY3NSYjhnVTZST2crMXd3c29zMnBqd2FZU3ptRG9nYWxXa0s3Q3Y3ZFFw?=
+ =?utf-8?B?Y21hM2hOY3YyeWpESmZ4WG1mUHVJZytwbkpPQjZrVkVtYyt4bWdlbXZLeGVm?=
+ =?utf-8?B?V2hGc1NxMDRJbE04cjZyWDVyTi90WSs5YjZlSVdCWmYzOUgvRmdNMTZhV1Bk?=
+ =?utf-8?B?b2p2djZmdjNOV0dsemNPWVA3QUtKQXpMZzI1NFV2RDFqNVppUmtxTkJlRUxR?=
+ =?utf-8?B?ZXFYbXFsbU51SjFrL2Q4K05nR3QrQWRpUkVWaFo4WktwSzRVRVAzYjlldFYv?=
+ =?utf-8?B?QmhVT3RxSCszVWZFeXZxNWdRWU5TbTlVdWozSkg0SUw2eDNKalJWUUhPdkR1?=
+ =?utf-8?B?Z0ZKbExDbGV2MlY0Mk1GQmx1MWVoMjVSR3RtdXRMNWxudUJqSjNqUkNxaUxh?=
+ =?utf-8?B?SjNkV3d0clpJN2J4bHVKZE5LRXFtUTBwNHZzNVdISVVZUkFWTXE2S3VWRm5t?=
+ =?utf-8?B?OE9BcEI0ZEpMQk5RaUxwajZDUHJWbVpVdmVWckVoREdtRWtHTDgwcW1DcWhw?=
+ =?utf-8?B?djNiZVpuMHdBSHhUQmMvRjBQaGkySVZwRy9ZTEYzclFqSjB4bXNlNVR3N1ZF?=
+ =?utf-8?B?c0szejJNK3dQcERhZy9GRVhtNytKY3FYbzFUZGF4eER6c2Vrd3RUb0VrV0Zx?=
+ =?utf-8?B?bVhmVXJlK1dCOGhiaXBhZDQvSG9LbGVOMXBud1BwUFh5SE5LMDQzbmNQcmQ1?=
+ =?utf-8?B?NzErbjNDcGZTcURETTQ1MGtWaG9Bd25FSlB4U0lYNWVlMFJLVkt0UFFaVEI2?=
+ =?utf-8?B?cmVhRHlYVitBZ0gyekxxOHN4VjlpUWNIWHQrUWFpYjBFMXA0c1o5V2lFNlhE?=
+ =?utf-8?B?MUJjVEJqS3BxWXVzVWZoTEs2b0JxU2JhUm1oRHdBdnBpaDAybURUSXA3L3Z1?=
+ =?utf-8?B?UHRtWDBNMXNkaGtweWtMSmFVeXp3MS95OWQ4UXF5b25nTjdwaDQwU2xwQUFw?=
+ =?utf-8?B?K1M2bzV0K2xsa3BSb3I4TVZZVHFCOXo5NXdlcmRta3lzK0pWcjdYeTdkU2Rq?=
+ =?utf-8?B?T1pocGNjOGU5TmRQQ3pWMm53ckhkdWVWUDJ5bHhkeDJaOS9DSEhvUXVZMXMr?=
+ =?utf-8?B?M3Fsakp4UFNadEJ0elZtSitwTXJkUVFYZ2pXU1pBMmg5TmZUWFphWHY1eXo4?=
+ =?utf-8?B?dzZJZUZ1UHE4UzZVcjhjMXpBNnRWSTlvNTJrVkoreGRteG9EcWlhaWNyY1Bk?=
+ =?utf-8?B?V1RUcTloejVDL0phRXp2bkFRNlZLQ2doZ09PUzhxSHpwcHRnTjF0cktNYjVq?=
+ =?utf-8?B?TzBVaVlXSlM4Z1NaaUhyK3pDeThEVTU5MTJQendHTEM1dzl1VmNiTWxkSG45?=
+ =?utf-8?B?dFBJOHVYdkJPa2FxUHFBQ2tmQjB4NC9WRnBJRzZnbFR3NkprWDdBRTVVYlF6?=
+ =?utf-8?B?SWxrRVVmVnlTcHYzdk42eGhGU0dvdkNBYjhwYXFKd3RsMmE0QlNWblg5Um9i?=
+ =?utf-8?Q?ttgVuaOM2VSQtmmFaFVYjMNbC?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Cxbs1HSd1lRvhGAA--.54308S7
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3Ar1DKw4kGFy8ZryUur1ruFX_yoWxKr1xpw
- 1rCw1Ikan7GF17t3WfWryj9r1fZw1xGr1aga97Jr40yrZYyFy8Aw1Ygry2qFn3X3yjgF4F
- vwn5tr17K3WDArcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUkFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
- Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE
- 14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCF04k20xvY0x
- 0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
- 7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcV
- C0I7IYx2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF
- 04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7
- CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jOdb8UUUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3fc0f57c-8dc3-4eac-8d6e-08dc373d9c65
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Feb 2024 02:41:33.5757 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: qOleV3leZH3/R9/83XnjnN6/LAAKeZBKQ2+U93DBB0nHYn1eom/vu03UYOKQ0jFLiIYONs8+kAjWcoQvZiCW3I7VottIrbzorUJYfEvRi78=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4984
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.198.163.9;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.014,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,208 +188,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds migration test support for loongarch64. The test code
-comes from aarch64 mostly, only that it booted as bios in qemu since
-kernel requires elf format and bios uses binary format.
-
-In addition to providing the binary, this patch also includes the source
-code and the build script in tests/migration/loongarch64. So users can
-change the source and/or re-compile the binary as they wish.
-
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Acked-by: Thomas Huth <thuth@redhat.com>
-Acked-by: Peter Xu <peterx@redhat.com>
----
- tests/migration/Makefile                 |  2 +-
- tests/migration/loongarch64/Makefile     | 18 +++++++++
- tests/migration/loongarch64/a-b-kernel.S | 49 ++++++++++++++++++++++++
- tests/migration/loongarch64/a-b-kernel.h | 16 ++++++++
- tests/migration/migration-test.h         |  3 ++
- tests/qtest/meson.build                  |  4 ++
- tests/qtest/migration-test.c             | 10 +++++
- 7 files changed, 101 insertions(+), 1 deletion(-)
- create mode 100644 tests/migration/loongarch64/Makefile
- create mode 100644 tests/migration/loongarch64/a-b-kernel.S
- create mode 100644 tests/migration/loongarch64/a-b-kernel.h
-
-diff --git a/tests/migration/Makefile b/tests/migration/Makefile
-index 13e99b1692..cfebfe23f8 100644
---- a/tests/migration/Makefile
-+++ b/tests/migration/Makefile
-@@ -5,7 +5,7 @@
- # See the COPYING file in the top-level directory.
- #
- 
--TARGET_LIST = i386 aarch64 s390x
-+TARGET_LIST = i386 aarch64 s390x loongarch64
- 
- SRC_PATH = ../..
- 
-diff --git a/tests/migration/loongarch64/Makefile b/tests/migration/loongarch64/Makefile
-new file mode 100644
-index 0000000000..5d8719205f
---- /dev/null
-+++ b/tests/migration/loongarch64/Makefile
-@@ -0,0 +1,18 @@
-+# To specify cross compiler prefix, use CROSS_PREFIX=
-+#   $ make CROSS_PREFIX=loongarch64-linux-gnu-
-+
-+.PHONY: all clean
-+all: a-b-kernel.h
-+
-+a-b-kernel.h: loongarch64.kernel
-+	echo "$$__note" > $@
-+	xxd -i $< | sed -e 's/.*int.*//' >> $@
-+
-+loongarch64.kernel: loongarch64.elf
-+	$(CROSS_PREFIX)objcopy -j .text -O binary $< $@
-+
-+loongarch64.elf: a-b-kernel.S
-+	$(CROSS_PREFIX)gcc -o $@ -nostdlib -Wl,--build-id=none $<
-+
-+clean:
-+	$(RM) *.kernel *.elf
-diff --git a/tests/migration/loongarch64/a-b-kernel.S b/tests/migration/loongarch64/a-b-kernel.S
-new file mode 100644
-index 0000000000..cd543345fe
---- /dev/null
-+++ b/tests/migration/loongarch64/a-b-kernel.S
-@@ -0,0 +1,49 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Copyright (c) 2024 Loongson Technology Corporation Limited
-+ */
-+#include "../migration-test.h"
-+
-+#define LOONGARCH_CSR_CRMD          0
-+#define LOONGARCH_VIRT_UART         0x1FE001E0
-+.section .text
-+
-+    .globl  _start
-+_start:
-+    /* output char 'A' to UART16550 */
-+    li.d    $t0, LOONGARCH_VIRT_UART
-+    li.w    $t1, 'A'
-+    st.b    $t1, $t0, 0
-+
-+    /* traverse test memory region */
-+    li.d    $t0, LOONGARCH_TEST_MEM_START
-+    li.d    $t1, LOONGARCH_TEST_MEM_END
-+    li.d    $t2, TEST_MEM_PAGE_SIZE
-+    li.d    $t4, LOONGARCH_VIRT_UART
-+    li.w    $t5, 'B'
-+
-+clean:
-+    st.b    $zero, $t0, 0
-+    add.d   $t0,   $t0, $t2
-+    bne     $t0,   $t1, clean
-+    /* keeps a counter so we can limit the output speed */
-+    addi.d  $t6,   $zero, 0
-+
-+mainloop:
-+    li.d    $t0, LOONGARCH_TEST_MEM_START
-+
-+innerloop:
-+    ld.bu   $t3, $t0, 0
-+    addi.w  $t3, $t3, 1
-+    ext.w.b $t3, $t3
-+    st.b    $t3, $t0, 0
-+    add.d   $t0, $t0, $t2
-+    bne     $t0, $t1, innerloop
-+
-+    addi.d  $t6, $t6, 1
-+    andi    $t6, $t6, 31
-+    bnez    $t6, mainloop
-+
-+    st.b    $t5, $t4, 0
-+    b       mainloop
-+    nop
-diff --git a/tests/migration/loongarch64/a-b-kernel.h b/tests/migration/loongarch64/a-b-kernel.h
-new file mode 100644
-index 0000000000..b3fe466754
---- /dev/null
-+++ b/tests/migration/loongarch64/a-b-kernel.h
-@@ -0,0 +1,16 @@
-+/* This file is automatically generated from the assembly file in
-+* tests/migration/loongarch64. Edit that file and then run "make all"
-+* inside tests/migration to update, and then remember to send both
-+* the header and the assembler differences in your patch submission.
-+*/
-+unsigned char loongarch64_kernel[] = {
-+  0x0c, 0xc0, 0x3f, 0x14, 0x8c, 0x81, 0x87, 0x03, 0x0d, 0x04, 0x81, 0x03,
-+  0x8d, 0x01, 0x00, 0x29, 0x0c, 0x00, 0x04, 0x14, 0x0d, 0x80, 0x0c, 0x14,
-+  0x2e, 0x00, 0x00, 0x14, 0x10, 0xc0, 0x3f, 0x14, 0x10, 0x82, 0x87, 0x03,
-+  0x11, 0x08, 0x81, 0x03, 0x80, 0x01, 0x00, 0x29, 0x8c, 0xb9, 0x10, 0x00,
-+  0x8d, 0xf9, 0xff, 0x5f, 0x12, 0x00, 0xc0, 0x02, 0x0c, 0x00, 0x04, 0x14,
-+  0x8f, 0x01, 0x00, 0x2a, 0xef, 0x05, 0x80, 0x02, 0xef, 0x5d, 0x00, 0x00,
-+  0x8f, 0x01, 0x00, 0x29, 0x8c, 0xb9, 0x10, 0x00, 0x8d, 0xed, 0xff, 0x5f,
-+  0x52, 0x06, 0xc0, 0x02, 0x52, 0x7e, 0x40, 0x03, 0x5f, 0xde, 0xff, 0x47,
-+  0x11, 0x02, 0x00, 0x29, 0xff, 0xd7, 0xff, 0x53, 0x00, 0x00, 0x40, 0x03
-+};
-diff --git a/tests/migration/migration-test.h b/tests/migration/migration-test.h
-index 68512c0b1b..f402e48349 100644
---- a/tests/migration/migration-test.h
-+++ b/tests/migration/migration-test.h
-@@ -32,4 +32,7 @@
-  */
- #define ARM_TEST_MAX_KERNEL_SIZE (512 * 1024)
- 
-+/* LoongArch64 */
-+#define LOONGARCH_TEST_MEM_START (32 * 1024 * 1024)
-+#define LOONGARCH_TEST_MEM_END   (100 * 1024 * 1024)
- #endif /* MIGRATION_TEST_H */
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 6ea77893f5..88b9d7550a 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -250,6 +250,10 @@ qtests_s390x = \
- qtests_riscv32 = \
-   (config_all_devices.has_key('CONFIG_SIFIVE_E_AON') ? ['sifive-e-aon-watchdog-test'] : [])
- 
-+qtests_loongarch64 = \
-+  qtests_filter + \
-+  ['migration-test']
-+
- qos_test_ss = ss.source_set()
- qos_test_ss.add(
-   'ac97-test.c',
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 8a5bb1752e..8a25edfa77 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -132,6 +132,7 @@ static char *bootpath;
- #include "tests/migration/i386/a-b-bootblock.h"
- #include "tests/migration/aarch64/a-b-kernel.h"
- #include "tests/migration/s390x/a-b-bios.h"
-+#include "tests/migration/loongarch64/a-b-kernel.h"
- 
- static void bootfile_create(char *dir, bool suspend_me)
- {
-@@ -158,6 +159,9 @@ static void bootfile_create(char *dir, bool suspend_me)
-         content = aarch64_kernel;
-         len = sizeof(aarch64_kernel);
-         g_assert(sizeof(aarch64_kernel) <= ARM_TEST_MAX_KERNEL_SIZE);
-+    } else if (strcmp(arch, "loongarch64") == 0) {
-+        content = loongarch64_kernel;
-+        len = sizeof(loongarch64_kernel);
-     } else {
-         g_assert_not_reached();
-     }
-@@ -823,6 +827,12 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-         arch_opts = g_strdup_printf("-cpu max -kernel %s", bootpath);
-         start_address = ARM_TEST_MEM_START;
-         end_address = ARM_TEST_MEM_END;
-+    } else if (strcmp(arch, "loongarch64") == 0) {
-+        memory_size = "256M";
-+        machine_alias = "virt";
-+        arch_opts = g_strdup_printf("-cpu max -bios %s", bootpath);
-+        start_address = LOONGARCH_TEST_MEM_START;
-+        end_address = LOONGARCH_TEST_MEM_END;
-     } else {
-         g_assert_not_reached();
-     }
--- 
-2.39.3
-
+DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEpvYW8gTWFydGlucyA8am9h
+by5tLm1hcnRpbnNAb3JhY2xlLmNvbT4NCj5TdWJqZWN0OiBSZTogW1BBVENIIHJmY3YyIDE4LzE4
+XSBpbnRlbF9pb21tdTogQmxvY2sgbWlncmF0aW9uIGlmIGNhcCBpcw0KPnVwZGF0ZWQNCj4NCj5P
+biAwMS8wMi8yMDI0IDA3OjI4LCBaaGVuemhvbmcgRHVhbiB3cm90ZToNCj4+IFdoZW4gdGhlcmUg
+aXMgVkZJTyBkZXZpY2UgYW5kIHZJT01NVSBjYXAvZWNhcCBpcyB1cGRhdGVkIGJhc2VkIG9uDQo+
+aG9zdA0KPj4gSU9NTVUgY2FwL2VjYXAsIG1pZ3JhdGlvbiBzaG91bGQgYmUgYmxvY2tlZC4NCj4+
+DQo+PiBTaWduZWQtb2ZmLWJ5OiBaaGVuemhvbmcgRHVhbiA8emhlbnpob25nLmR1YW5AaW50ZWwu
+Y29tPg0KPg0KPklzIHRoaXMgcmVhbGx5IG5lZWRlZCBjb25zaWRlcmluZyBtaWdyYXRpb24gd2l0
+aCB2SU9NTVUgaXMgYWxyZWFkeSBibG9ja2VkDQo+YW55d2F5cz8NCg0KVkZJTyBkZXZpY2UgY2Fu
+IGJlIGhvdCB1bnBsdWdnZWQsIHRoZW4gYmxvY2tlciBkdWUgdG8gdklPTU1VIGlzIHJlbW92ZWQs
+DQpidXQgd2Ugc3RpbGwgbmVlZCBhIGJsb2NrZXIgZm9yIGNhcC9lY2FwIHVwZGF0ZS4NCg0KVGhh
+bmtzDQpaaGVuemhvbmcNCg0KPg0KPj4gLS0tDQo+PiAgaHcvaTM4Ni9pbnRlbF9pb21tdS5jIHwg
+MTYgKysrKysrKysrKysrKystLQ0KPj4gIDEgZmlsZSBjaGFuZ2VkLCAxNCBpbnNlcnRpb25zKCsp
+LCAyIGRlbGV0aW9ucygtKQ0KPj4NCj4+IGRpZmYgLS1naXQgYS9ody9pMzg2L2ludGVsX2lvbW11
+LmMgYi9ody9pMzg2L2ludGVsX2lvbW11LmMNCj4+IGluZGV4IDcyY2M4YjJjNzEuLjdmOWZmNjUz
+YjIgMTAwNjQ0DQo+PiAtLS0gYS9ody9pMzg2L2ludGVsX2lvbW11LmMNCj4+ICsrKyBiL2h3L2kz
+ODYvaW50ZWxfaW9tbXUuYw0KPj4gQEAgLTM5LDYgKzM5LDcgQEANCj4+ICAjaW5jbHVkZSAiaHcv
+aTM4Ni9hcGljX2ludGVybmFsLmgiDQo+PiAgI2luY2x1ZGUgImt2bS9rdm1faTM4Ni5oIg0KPj4g
+ICNpbmNsdWRlICJtaWdyYXRpb24vdm1zdGF0ZS5oIg0KPj4gKyNpbmNsdWRlICJtaWdyYXRpb24v
+YmxvY2tlci5oIg0KPj4gICNpbmNsdWRlICJ0cmFjZS5oIg0KPj4NCj4+ICAjZGVmaW5lIFNfQVdf
+QklUUyAoVlREX01HQVdfRlJPTV9DQVAocy0+Y2FwKSArIDEpDQo+PiBAQCAtMzgyOSw2ICszODMw
+LDggQEAgc3RhdGljIGludA0KPnZ0ZF9jaGVja19sZWdhY3lfaGRldihJbnRlbElPTU1VU3RhdGUg
+KnMsDQo+PiAgICAgIHJldHVybiAwOw0KPj4gIH0NCj4+DQo+PiArc3RhdGljIEVycm9yICp2dGRf
+bWlnX2Jsb2NrZXI7DQo+PiArDQo+PiAgc3RhdGljIGludCB2dGRfY2hlY2tfaW9tbXVmZF9oZGV2
+KEludGVsSU9NTVVTdGF0ZSAqcywNCj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgSU9NTVVGRERldmljZSAqaWRldiwNCj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgRXJyb3IgKiplcnJwKQ0KPj4gQEAgLTM4NjAsOCArMzg2MywxNyBAQCBzdGF0aWMgaW50
+DQo+dnRkX2NoZWNrX2lvbW11ZmRfaGRldihJbnRlbElPTU1VU3RhdGUgKnMsDQo+PiAgICAgICAg
+ICB0bXBfY2FwIHw9IFZURF9DQVBfTUdBVyhob3N0X21nYXcgKyAxKTsNCj4+ICAgICAgfQ0KPj4N
+Cj4+IC0gICAgcy0+Y2FwID0gdG1wX2NhcDsNCj4+IC0gICAgcmV0dXJuIDA7DQo+PiArICAgIGlm
+IChzLT5jYXAgIT0gdG1wX2NhcCkgew0KPj4gKyAgICAgICAgaWYgKHZ0ZF9taWdfYmxvY2tlciA9
+PSBOVUxMKSB7DQo+PiArICAgICAgICAgICAgZXJyb3Jfc2V0ZygmdnRkX21pZ19ibG9ja2VyLA0K
+Pj4gKyAgICAgICAgICAgICAgICAgICAgICAgImNhcC9lY2FwIHVwZGF0ZSBmcm9tIGhvc3QgSU9N
+TVUgYmxvY2sgbWlncmF0aW9uIik7DQo+PiArICAgICAgICAgICAgcmV0ID0gbWlncmF0ZV9hZGRf
+YmxvY2tlcigmdnRkX21pZ19ibG9ja2VyLCBlcnJwKTsNCj4+ICsgICAgICAgIH0NCj4+ICsgICAg
+ICAgIGlmICghcmV0KSB7DQo+PiArICAgICAgICAgICAgcy0+Y2FwID0gdG1wX2NhcDsNCj4+ICsg
+ICAgICAgIH0NCj4+ICsgICAgfQ0KPj4gKyAgICByZXR1cm4gcmV0Ow0KPj4gIH0NCj4+DQo+PiAg
+c3RhdGljIGludCB2dGRfY2hlY2tfaGRldihJbnRlbElPTU1VU3RhdGUgKnMsIFZUREhvc3RJT01N
+VURldmljZQ0KPip2dGRfaGRldiwNCg0K
 
