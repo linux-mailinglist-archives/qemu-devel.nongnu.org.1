@@ -2,83 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17677868B27
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 09:46:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE2F4868AF0
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 09:42:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ret2Y-0002z7-VF; Tue, 27 Feb 2024 03:42:19 -0500
+	id 1ret2Q-0001q5-8r; Tue, 27 Feb 2024 03:42:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret2V-0002br-7q
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:42:15 -0500
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret2N-0001X2-3R
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:42:07 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret2E-0008HF-O3
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:42:14 -0500
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5640fef9fa6so5196965a12.0
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 00:41:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret2L-0008Ip-7H
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:42:06 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-5663273e390so533477a12.3
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 00:42:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709023317; x=1709628117; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709023323; x=1709628123; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2Yy5kHw7b+fXUkeiiZUfupvxhJnRIRkwmG0B4GAOIY0=;
- b=GonaCAdQfNf93rro4lzApaXfoma/f/Yw5A4oyNEFDtWcKpAYkgK1ZINyAygZOSLhAZ
- plj/dBbovFwz6yN1BDVm8Hh7FmWkXSnOVa1g4De5RvDF4Ocbr1y/EQRUfb5sy6qchCoS
- isQTtEVGygvvkgH983UOdTCFuUdVK9F02tJYJWBlYCdxv3xIfsgIx3oNqJoozeCRKSWF
- K6We8GpnFciPV4N7tvgCxoOmkQ8lvSF7AwHQZvFIos8EPWbfdCK2fqfZfLUNwb++/fPa
- 2buf+JyDtK9LgLciI6WRWO389/16lYDGGntEnGQUFrfU/s90vrdd1UpMXExTPAoW4m5E
- ck3Q==
+ bh=iX8uZlTT6wTjiMtTqjR3dj/PxPssyXNBBI6GxQRZqxI=;
+ b=UiJ4RsntLYaqtxmRuL7CPxLIHVqs9MuduWTme3Dqnjxt55rTIUd153GI33+mNA1Z7T
+ jzrMFh6WIE2erQYfs94AfzvMCOMHa0+W0my6wqL/ErT93VcIfqRo4PNott8wlhq1m8Sy
+ kmvlPs0M7ehyiBFdkqytDQxR40L8S0uriTToEvEYfNZ4jxS8fvvB2JoLGAu7sbwaaIlJ
+ b67PRfoCRcrTQcLPi5JTABMAssLXcIZG1L8Fgpjnurvpvr6iQKm+loxfNiOl7LynHxbW
+ xhPefnJJdo77w9rsDFR20XgcEbfCSckhqdl4x19OQnmQBL3jdsZw+z+goR2J6+TTJVJA
+ 8MCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709023317; x=1709628117;
+ d=1e100.net; s=20230601; t=1709023323; x=1709628123;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2Yy5kHw7b+fXUkeiiZUfupvxhJnRIRkwmG0B4GAOIY0=;
- b=HjeuYAYo0BkirMLgrplC/MPSTRi3WPtNWZcLFus1DhwNVcrUXEC1Bq2sinDbSHkPv8
- U/kjYqY8iG187RV+ANn4SD7LmH/oOTZCH+nNDFOu44NNDKLi8tXv4qfWSIRiHYUnNH6U
- MlUXPPPMxFC1pwuUJ5B7GWITr933RL+54HD8tFB55Ki7Jixh6FLUaPm5I4Ig/aGzMfLn
- 0GSJQLkJHCU9CQn/juj5Y7KsKlEMGCTGYd5gxuvLtSlixNi1NY+kalgLDHmwnCFBz4u0
- MUpepTUU5pgayrc1BqaNtzXSsQH3ILO+CW9UyJIDZn5sspvC0I6LOvGpN+fqjHYirxFP
- jFzg==
-X-Gm-Message-State: AOJu0YwjninTE4/hEU1cY0d5i2qjFLBOYBW3ZX+8zTUPslh674ZpRzJZ
- jBJMnv4mlByeKnsoFeO8YI7N0P42tiE2D9StgsQ8q8Y1JxOYqLv+UDtryC+4e8a4G2DyK+6TCi/
- 6
-X-Google-Smtp-Source: AGHT+IHHc8tKw27KX8go56zhStviVqM7V4J8HDd3+0hvKaXP5YUBIaBeMMaEzZLMBiaFlruDU2OX4w==
-X-Received: by 2002:a05:6402:b14:b0:565:63d6:40d7 with SMTP id
- bm20-20020a0564020b1400b0056563d640d7mr7121911edb.5.1709023316976; 
- Tue, 27 Feb 2024 00:41:56 -0800 (PST)
+ bh=iX8uZlTT6wTjiMtTqjR3dj/PxPssyXNBBI6GxQRZqxI=;
+ b=Sf7OdukTKJ3cXNKr67JjjDyVpgx1EOp/Ls7tW/sUAxWVXTLf0GTQdjHNgAHUbBdvVR
+ n6JdD8Ot6tACtwvc+q79r+bXas86HtGvJQU528uNkCHqiHOar3Oslo7KcOSDdq8DZl+e
+ v2sGq7kHbMkWAAVmQkO9rJiN02nh8SA9OyhFIhkRGALYGS8WuLv4zD5aLLKllJYLX2fw
+ 7LG80CwhChlOKd7HEbvhsfGdTj+Nzfq/fyWXvU1DiZtthiqMvVAFkzI6122MhHrn3o7o
+ MYpNTu8JM9OTT4X5g4Qh8hb1AsPWi8RQbRLSRrlI/63vEXn/Y96GZApC8eoVgFjSuJ1H
+ zsxQ==
+X-Gm-Message-State: AOJu0YyqFNqGLXUQJawmqnJg6g9IOrzwfCYif/oKdISW60HO8ZLoSX0y
+ WGuke5T6ZCDUSoZSC2WW4xtWubDwsf3RqVNN0oq3Q4DUpHW/5Blk9alDDuPTNEsTM35wGfIT8KU
+ q
+X-Google-Smtp-Source: AGHT+IGisEqRQFzyQeAsM9alRoTB8oJYoLKxVH4SFxHu/nRrwo3YOttRiyP1dOLTQXa+bS/yS0uAoQ==
+X-Received: by 2002:a05:6402:795:b0:566:4459:920b with SMTP id
+ d21-20020a056402079500b005664459920bmr311301edy.41.1709023323449; 
+ Tue, 27 Feb 2024 00:42:03 -0800 (PST)
 Received: from m1x-phil.lan (mic92-h03-176-184-33-214.dsl.sta.abo.bbox.fr.
  [176.184.33.214]) by smtp.gmail.com with ESMTPSA id
- u11-20020aa7db8b000000b005653f390f77sm541381edt.10.2024.02.27.00.41.55
+ i2-20020a0564020f0200b005651ae4ac91sm542918eda.41.2024.02.27.00.42.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 27 Feb 2024 00:41:56 -0800 (PST)
+ Tue, 27 Feb 2024 00:42:03 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-block@nongnu.org, qemu-arm@nongnu.org,
- Klaus Jensen <k.jensen@samsung.com>, Kevin Wolf <kwolf@redhat.com>,
- Minwoo Im <minwoo.im@samsung.com>,
+ Bernhard Beschow <shentey@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>
-Subject: [PULL 20/30] hw/nvme: fix invalid endian conversion
-Date: Tue, 27 Feb 2024 09:39:36 +0100
-Message-ID: <20240227083948.5427-21-philmd@linaro.org>
+ Zhao Liu <zhao1.liu@intel.com>, Sergio Lopez <slp@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 21/30] hw/i386/x86: Let ioapic_init_gsi() take parent as pointer
+Date: Tue, 27 Feb 2024 09:39:37 +0100
+Message-ID: <20240227083948.5427-22-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240227083948.5427-1-philmd@linaro.org>
 References: <20240227083948.5427-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,36 +99,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Klaus Jensen <k.jensen@samsung.com>
+From: Bernhard Beschow <shentey@gmail.com>
 
-numcntl is one byte and so is max_vfs. Using cpu_to_le16 on big endian
-hosts results in numcntl being set to 0.
+Rather than taking a QOM name which has to be resolved, let's pass the parent
+directly as pointer. This simplifies the code.
 
-Fix by dropping the endian conversion.
-
-Fixes: 99f48ae7ae ("hw/nvme: Add support for Secondary Controller List")
-Reported-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
-Reviewed-by: Minwoo Im <minwoo.im@samsung.com>
-Message-ID: <20240222-fix-sriov-numcntl-v1-1-d60bea5e72d0@samsung.com>
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Message-ID: <20240224135851.100361-2-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/nvme/ctrl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/hw/i386/x86.h | 2 +-
+ hw/i386/microvm.c     | 2 +-
+ hw/i386/pc_piix.c     | 7 +++----
+ hw/i386/pc_q35.c      | 2 +-
+ hw/i386/x86.c         | 7 +++----
+ 5 files changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index f026245d1e..76fe039704 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -7924,7 +7924,7 @@ static void nvme_init_state(NvmeCtrl *n)
-     n->aer_reqs = g_new0(NvmeRequest *, n->params.aerl + 1);
-     QTAILQ_INIT(&n->aer_queue);
+diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
+index 8e306db7bb..4dc30dcb4d 100644
+--- a/include/hw/i386/x86.h
++++ b/include/hw/i386/x86.h
+@@ -139,7 +139,7 @@ typedef struct GSIState {
  
--    list->numcntl = cpu_to_le16(max_vfs);
-+    list->numcntl = max_vfs;
-     for (i = 0; i < max_vfs; i++) {
-         sctrl = &list->sec[i];
-         sctrl->pcid = cpu_to_le16(n->cntlid);
+ qemu_irq x86_allocate_cpu_irq(void);
+ void gsi_handler(void *opaque, int n, int level);
+-void ioapic_init_gsi(GSIState *gsi_state, const char *parent_name);
++void ioapic_init_gsi(GSIState *gsi_state, Object *parent);
+ DeviceState *ioapic_init_secondary(GSIState *gsi_state);
+ 
+ /* pc_sysfw.c */
+diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
+index ca55aecc3b..61a772dfe6 100644
+--- a/hw/i386/microvm.c
++++ b/hw/i386/microvm.c
+@@ -175,7 +175,7 @@ static void microvm_devices_init(MicrovmMachineState *mms)
+                           &error_abort);
+     isa_bus_register_input_irqs(isa_bus, x86ms->gsi);
+ 
+-    ioapic_init_gsi(gsi_state, "machine");
++    ioapic_init_gsi(gsi_state, OBJECT(mms));
+     if (ioapics > 1) {
+         x86ms->ioapic2 = ioapic_init_secondary(gsi_state);
+     }
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index ec7c07b362..7724396ead 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -107,6 +107,7 @@ static void pc_init1(MachineState *machine,
+     X86MachineState *x86ms = X86_MACHINE(machine);
+     MemoryRegion *system_memory = get_system_memory();
+     MemoryRegion *system_io = get_system_io();
++    Object *phb = NULL;
+     PCIBus *pci_bus = NULL;
+     ISABus *isa_bus;
+     Object *piix4_pm = NULL;
+@@ -189,8 +190,6 @@ static void pc_init1(MachineState *machine,
+     }
+ 
+     if (pcmc->pci_enabled) {
+-        Object *phb;
+-
+         pci_memory = g_new(MemoryRegion, 1);
+         memory_region_init(pci_memory, NULL, "pci", UINT64_MAX);
+         rom_memory = pci_memory;
+@@ -303,8 +302,8 @@ static void pc_init1(MachineState *machine,
+         pc_i8259_create(isa_bus, gsi_state->i8259_irq);
+     }
+ 
+-    if (pcmc->pci_enabled) {
+-        ioapic_init_gsi(gsi_state, "i440fx");
++    if (phb) {
++        ioapic_init_gsi(gsi_state, phb);
+     }
+ 
+     if (tcg_enabled()) {
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 53fb3db26d..c89ff63579 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -263,7 +263,7 @@ static void pc_q35_init(MachineState *machine)
+         pc_i8259_create(isa_bus, gsi_state->i8259_irq);
+     }
+ 
+-    ioapic_init_gsi(gsi_state, "q35");
++    ioapic_init_gsi(gsi_state, OBJECT(phb));
+ 
+     if (tcg_enabled()) {
+         x86_register_ferr_irq(x86ms->gsi[13]);
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+index 684dce90e9..807e09bcdb 100644
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -640,20 +640,19 @@ void gsi_handler(void *opaque, int n, int level)
+     }
+ }
+ 
+-void ioapic_init_gsi(GSIState *gsi_state, const char *parent_name)
++void ioapic_init_gsi(GSIState *gsi_state, Object *parent)
+ {
+     DeviceState *dev;
+     SysBusDevice *d;
+     unsigned int i;
+ 
+-    assert(parent_name);
++    assert(parent);
+     if (kvm_ioapic_in_kernel()) {
+         dev = qdev_new(TYPE_KVM_IOAPIC);
+     } else {
+         dev = qdev_new(TYPE_IOAPIC);
+     }
+-    object_property_add_child(object_resolve_path(parent_name, NULL),
+-                              "ioapic", OBJECT(dev));
++    object_property_add_child(parent, "ioapic", OBJECT(dev));
+     d = SYS_BUS_DEVICE(dev);
+     sysbus_realize_and_unref(d, &error_fatal);
+     sysbus_mmio_map(d, 0, IO_APIC_DEFAULT_ADDRESS);
 -- 
 2.41.0
 
