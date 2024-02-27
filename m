@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B770E86A102
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 21:46:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7924786A10B
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 21:47:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rf4KW-0005Zx-Pl; Tue, 27 Feb 2024 15:45:36 -0500
+	id 1rf4Kh-0005qw-6j; Tue, 27 Feb 2024 15:45:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=GitP=KE=redhat.com=clg@ozlabs.org>)
- id 1rf1ol-00049O-Nd
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:04:39 -0500
+ id 1rf1oq-0004OC-Pv
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:04:44 -0500
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=GitP=KE=redhat.com=clg@ozlabs.org>)
- id 1rf1oi-0001XD-Op
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:04:39 -0500
+ id 1rf1ol-0001XR-Uu
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:04:44 -0500
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TklkB5Jcbz4wyx;
- Wed, 28 Feb 2024 05:04:34 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TklkF6TBwz4x0m;
+ Wed, 28 Feb 2024 05:04:37 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tklk812QSz4wyj;
- Wed, 28 Feb 2024 05:04:31 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TklkC2Gl7z4wyy;
+ Wed, 28 Feb 2024 05:04:35 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -37,10 +37,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Avihai Horon <avihaih@nvidia.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v2 10/21] migration: Modify ram_init_bitmaps() to report dirty
- tracking errors
-Date: Tue, 27 Feb 2024 19:03:34 +0100
-Message-ID: <20240227180345.548960-11-clg@redhat.com>
+Subject: [PATCH v2 11/21] migration: Fix migration termination
+Date: Tue, 27 Feb 2024 19:03:35 +0100
+Message-ID: <20240227180345.548960-12-clg@redhat.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240227180345.548960-1-clg@redhat.com>
 References: <20240227180345.548960-1-clg@redhat.com>
@@ -71,85 +70,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The .save_setup() handler has now an Error** argument that we can use
-to propagate errors reported by the .log_global_start() handler. Do
-that for the RAM. The caller qemu_savevm_state_setup() will store the
-error under the migration stream for later detection in the migration
-sequence.
+Handle migration termination when in SETUP state. This can happen if
+qemu_savevm_state_setup() fails.
 
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- migration/ram.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ migration/migration.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/migration/ram.c b/migration/ram.c
-index 9fb1875aad73b2fa009199bdfa8960339df7287d..23f4df4779309bbbe164c56c1436b60d65749860 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -2802,9 +2802,8 @@ static void migration_bitmap_clear_discarded_pages(RAMState *rs)
-     }
- }
- 
--static void ram_init_bitmaps(RAMState *rs)
-+static bool ram_init_bitmaps(RAMState *rs, Error **errp)
- {
--    Error *local_err = NULL;
-     bool ret = true;
- 
-     qemu_mutex_lock_ramlist();
-@@ -2813,10 +2812,8 @@ static void ram_init_bitmaps(RAMState *rs)
-         ram_list_init_bitmaps();
-         /* We don't use dirty log with background snapshots */
-         if (!migrate_background_snapshot()) {
--            ret = memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION,
--                                                &local_err);
-+            ret = memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION, errp);
-             if (!ret) {
--                error_report_err(local_err);
-                 goto out_unlock;
+diff --git a/migration/migration.c b/migration/migration.c
+index c1a62b696f62c0d5aca0505e58bc4dc0ff561fde..63294417ff9cae868ad8a167094a795fc30e4da0 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -3161,6 +3161,8 @@ static void migration_iteration_finish(MigrationState *s)
              }
-             migration_bitmap_sync_precopy(rs, false);
-@@ -2826,7 +2823,7 @@ out_unlock:
-     qemu_mutex_unlock_ramlist();
- 
-     if (!ret) {
--        return;
-+        return false;
-     }
- 
-     /*
-@@ -2834,9 +2831,10 @@ out_unlock:
-      * containing all 1s to exclude any discarded pages from migration.
-      */
-     migration_bitmap_clear_discarded_pages(rs);
-+    return true;
- }
- 
--static int ram_init_all(RAMState **rsp)
-+static int ram_init_all(RAMState **rsp, Error **errp)
- {
-     if (ram_state_init(rsp)) {
-         return -1;
-@@ -2847,7 +2845,9 @@ static int ram_init_all(RAMState **rsp)
-         return -1;
-     }
- 
--    ram_init_bitmaps(*rsp);
-+    if (!ram_init_bitmaps(*rsp, errp)) {
-+        return -1;
-+    }
- 
-     return 0;
- }
-@@ -2961,7 +2961,7 @@ static int ram_save_setup(QEMUFile *f, void *opaque, Error **errp)
- 
-     /* migration has already setup the bitmap, reuse it. */
-     if (!migration_in_colo_state()) {
--        if (ram_init_all(rsp) != 0) {
-+        if (ram_init_all(rsp, errp) != 0) {
-             compress_threads_save_cleanup();
-             return -1;
          }
+         break;
++    case MIGRATION_STATUS_SETUP:
++        break;
+ 
+     default:
+         /* Should not reach here, but if so, forgive the VM. */
+@@ -3192,6 +3194,8 @@ static void bg_migration_iteration_finish(MigrationState *s)
+     case MIGRATION_STATUS_CANCELLED:
+     case MIGRATION_STATUS_CANCELLING:
+         break;
++    case MIGRATION_STATUS_SETUP:
++        break;
+ 
+     default:
+         /* Should not reach here, but if so, forgive the VM. */
 -- 
 2.43.2
 
