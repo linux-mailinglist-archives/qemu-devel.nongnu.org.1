@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11B7A868D65
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 11:22:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA0C868D67
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 11:22:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reuZw-0000kN-Cy; Tue, 27 Feb 2024 05:20:52 -0500
+	id 1reubB-0006fg-Eh; Tue, 27 Feb 2024 05:22:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1reuZu-0000e8-C2
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 05:20:50 -0500
-Received: from mgamail.intel.com ([192.198.163.13])
+ id 1reub7-0006Y8-C9; Tue, 27 Feb 2024 05:22:05 -0500
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1reuZs-0003lx-Pe
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 05:20:50 -0500
+ id 1reub5-00045c-MN; Tue, 27 Feb 2024 05:22:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709029248; x=1740565248;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=51yZIIBumqpl0Pci1JIC2Mbj/bgzNe6l2iPevAtFhp0=;
- b=OH0YAGM90BJ++AXtv5LRt/9QhF2veTO8H6JTF+qTfHLYfzGKuIoF/8jx
- RD2y1/iP0Q/fiiY59A9v1GxGvixF7LV8KeAmmCTxakmHRub5TLokpqh4B
- N3EftqSh8spSECzhg2MotQ8UuvT0TMWfWS8Ss7yjkllJBY9TrEhK6ueOz
- sWirOq666kg2BaWuHxCnrJ3pQncGBLcf/DyqvhhpT4OWjc3Adh0hDFEiE
- zTHSMTnq6Nk132utp6dewg2Jft61s9QM4k7bq/cQjbqIClZQQ6zjLz5Sa
- qnQBArsTFkx0dXX+52BrKP0TVG98t4B/eA4xOs9sH3gRjP/ELG4a0eTHJ Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="6310502"
-X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; 
-   d="scan'208";a="6310502"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2024 02:20:37 -0800
+ t=1709029324; x=1740565324;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=F6+NTEf+OvKxItgO+SSdOalGV2SCEFkd9K7C26e6mKo=;
+ b=YsO4KLvww1yJO0pshM34ImiOaZPQIofemnG0FrT+iqMwbzxg2HoVnsSn
+ rc73hWPzHrqOtG7nXRUocV5IEAqk37VyWHv8mwDlhgEnJrgzlTnp9yNAR
+ bWX4cuC6jxcc5JXjOgrLrJ4+xibICvk/0zHvGbxRQhf663DdK/xhL3sCO
+ X3o4wbG32ex2vLG/b6QfxxJFDwcTyRgwZG3O1yNK7fE7h8iYoRRY+Nb/5
+ qRYNcDkwVz1Vk+2EKM81hO3/o1//nIuasoFTNeQkYS0/dQQ4BVRYJ+c50
+ RZoVqXB/kLxoRMlot8dGh56pBWuFSSR4tiBPDfnqgH8LHUFDtLolPrE5J Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="14071188"
+X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; d="scan'208";a="14071188"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2024 02:21:59 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; 
-   d="scan'208";a="6955300"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa010.fm.intel.com with ESMTP; 27 Feb 2024 02:20:32 -0800
+X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; d="scan'208";a="11587755"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa003.fm.intel.com with ESMTP; 27 Feb 2024 02:21:53 -0800
+Date: Tue, 27 Feb 2024 18:35:36 +0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Eduardo Habkost <eduardo@habkost.net>,
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
  Yanan Wang <wangyanan55@huawei.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Alex =?utf-8?B?QmVubu+/vWU=?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
  Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>, Babu Moger <babu.moger@amd.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>,
  Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v9 21/21] i386/cpu: Use CPUCacheInfo.share_level to encode
- CPUID[0x8000001D].EAX[bits 25:14]
-Date: Tue, 27 Feb 2024 18:32:31 +0800
-Message-Id: <20240227103231.1556302-22-zhao1.liu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240227103231.1556302-1-zhao1.liu@linux.intel.com>
-References: <20240227103231.1556302-1-zhao1.liu@linux.intel.com>
+Subject: Re: [RFC 4/8] hw/core: Add cache topology options in -smp
+Message-ID: <Zd26+BpXQID95lqm@intel.com>
+References: <20240220092504.726064-1-zhao1.liu@linux.intel.com>
+ <20240220092504.726064-5-zhao1.liu@linux.intel.com>
+ <20240226153947.00006fd6@Huawei.com> <Zd2pWVH4/eo3HM8j@intel.com>
+ <Zd2ndJghXbmMHzBn@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=192.198.163.13;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zd2ndJghXbmMHzBn@redhat.com>
+Received-SPF: none client-ip=192.198.163.9;
  envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
@@ -89,65 +91,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+> > > > +        if (smp_cache_string_to_topology(ms, config->l1d_cache,
+> > > > +            &ms->smp_cache.l1d, errp)) {
+> > > 
+> > > Indent is to wrong opening bracket.
+> > > Same for other cases.
+> > 
+> > Could you please educate me about the correct style here?
+> > I'm unsure if it should be indented by 4 spaces.
+> 
+> It needs to look like this:
+> 
+>         if (smp_cache_string_to_topology(ms, config->l1d_cache,
+>                                          &ms->smp_cache.l1d, errp)) {
+> 
+> so func parameters are aligned to the function calls' opening bracket,
+> not the 'if' statement's opening bracket.
+>
 
-CPUID[0x8000001D].EAX[bits 25:14] NumSharingCache: number of logical
-processors sharing cache.
+Thanks for your explaination!
 
-The number of logical processors sharing this cache is
-NumSharingCache + 1.
-
-After cache models have topology information, we can use
-CPUCacheInfo.share_level to decide which topology level to be encoded
-into CPUID[0x8000001D].EAX[bits 25:14].
-
-Cc: Babu Moger <babu.moger@amd.com>
-Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
-Changes since v7:
- * Renamed max_processor_ids_for_cache() to max_thread_ids_for_cache().
- * Dropped Michael/Babu's ACKed/Tested tags since the code change.
- * Re-added Yongwei's Tested tag For his re-testing.
-
-Changes since v3:
- * Explained what "CPUID[0x8000001D].EAX[bits 25:14]" means in the
-   commit message. (Babu)
-
-Changes since v1:
- * Used cache->share_level as the parameter in
-   max_processor_ids_for_cache().
----
- target/i386/cpu.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
-
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 07cd729c3524..bc21c2d537b3 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -481,20 +481,12 @@ static void encode_cache_cpuid8000001d(CPUCacheInfo *cache,
-                                        uint32_t *eax, uint32_t *ebx,
-                                        uint32_t *ecx, uint32_t *edx)
- {
--    uint32_t num_sharing_cache;
-     assert(cache->size == cache->line_size * cache->associativity *
-                           cache->partitions * cache->sets);
- 
-     *eax = CACHE_TYPE(cache->type) | CACHE_LEVEL(cache->level) |
-                (cache->self_init ? CACHE_SELF_INIT_LEVEL : 0);
--
--    /* L3 is shared among multiple cores */
--    if (cache->level == 3) {
--        num_sharing_cache = 1 << apicid_die_offset(topo_info);
--    } else {
--        num_sharing_cache = 1 << apicid_core_offset(topo_info);
--    }
--    *eax |= (num_sharing_cache - 1) << 14;
-+    *eax |= max_thread_ids_for_cache(topo_info, cache->share_level) << 14;
- 
-     assert(cache->line_size > 0);
-     assert(cache->partitions > 0);
--- 
-2.34.1
+Regards,
+Zhao
 
 
