@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A259869354
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:44:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C68E986930B
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:41:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rexaw-00014z-TA; Tue, 27 Feb 2024 08:34:06 -0500
+	id 1rexap-0000te-88; Tue, 27 Feb 2024 08:34:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaT-0000mN-Ro
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:37 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1rexaX-0000oV-Dx
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:41 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaO-0002uP-EA
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:37 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-33da51fd636so2564887f8f.3
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:31 -0800 (PST)
+ id 1rexaQ-0002uS-Ne
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:41 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-33de6da5565so805065f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709040810; x=1709645610; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709040811; x=1709645611; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=KGqC5ypYFTpj73/g0BzMEjHLRiV0ye31/N/3xIe2N+0=;
- b=LeSqz6ouiBiA311Y9iJpd/ReqGP43NnoVb91ASMogJbiDkVk2vr0mATBQeX4UmHqwp
- sIbqgr7uhPDx/hkmZECMX8l3rIYWfDfEedTkeVu8Zc1fPLlC43JkI3lHFMN8akQYhVcO
- 6zC0SqYppU4p++YejOwyaBY2YoB3BBAyYDBYZL+VS1oIAhhAeJQTsUCZ+NDUs9iJNDRr
- AB/Dim+nRycNPvPRnaUTO9Iko9yvFqwpryG7VlApr71d2/+qntIwWV90c2NcA80sUjJO
- EEQt8BjbjK7EmMxwibCO0gRWIF74G24wdXZTTBk8PpIxIzJeELFL0Dym3YEu/K+M3bih
- MT+w==
+ :reply-to; bh=bnsDuxpc/9b0o5hbfDhwh9os93CNP+sIRCB+KuakBY0=;
+ b=btp6LAY+vXYimAmMXIpd4wSnwV0bClwiGWlO1OXj9saGm6MHGS+5GOHEQZgZb/v6ub
+ uoctr1IRzMs0JRTH4j0TDKcBxc6FzgZE8Ix84eqM8PUyi42dVZl6sB7CVr0upfP+J9nm
+ lpV+XBsr3g4gej51SsU3iJ/w/9jx7qNRKvvmAHx2NuD5AZv0eKzE/wDUdu3gt2xE/+qj
+ q1eVVmGMn4hrEYotANX8eQNtRxHbJHSOt3aKcYqqo4FY9OR8zYRA3SG2oQ1l4MzWtFVg
+ J1rtd/PKSNrtP+BSKdMfglTZOCu910rgpbqBqWHAH2brd2p6NJ+Rsk+yYW1+6KTsqb5v
+ 1+QQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709040810; x=1709645610;
+ d=1e100.net; s=20230601; t=1709040811; x=1709645611;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KGqC5ypYFTpj73/g0BzMEjHLRiV0ye31/N/3xIe2N+0=;
- b=e7sOwJq18TluJK6Mg/cPRSGcK/pDnEt864fCE27UtqNGIqd0kD+XEhuCz+Sxu1T57g
- a3sqfJsJp004K3IJaRcBA1zB+Vu6i6NRoeCZ44aN/C8YC6n+9mwbLSs5x7f098tvb+5N
- em/qjXA29bjLGxpPJAWvkCHNzGiXCRWaRPakxT+7eikT28HvnGOmEH2EVaXlJFMm14nM
- ATz+Sk0q3TpPoPN6Ot4NrQBRnK1sfe4Elvcl3ReIWDOYMQoTJAaNX50HnOK8260HAIcr
- 5fMvQQZCqG3+Gfm61DEpO0n3X7czk4XCSQNYSTU7Myn4cTlFu9TsvBVfW5hY9yrX0phh
- HMsg==
-X-Gm-Message-State: AOJu0YwS13KyWKVUaEYVChRJ+5fSZXuMjnK6PkHsoqv32YOW60WLwFY6
- yFBDc/1St65OTYnoTBb8eGd28LLUDkP8R9j7m7RcuEpxnQ2dzrpBV/b8L2Ob0i2YHF62ydXrtPr
- P
-X-Google-Smtp-Source: AGHT+IE/X7p2WtyDa4HObjPqLYosDJte+s2dZlP+7o4uTmHHcAq1aj5wyjnaANvPS2CRdZTIfGUt/A==
-X-Received: by 2002:a5d:42c1:0:b0:33d:11e1:47d9 with SMTP id
- t1-20020a5d42c1000000b0033d11e147d9mr6202495wrr.68.1709040810526; 
+ bh=bnsDuxpc/9b0o5hbfDhwh9os93CNP+sIRCB+KuakBY0=;
+ b=M8HVYBlT8NnlqmpIPluZy4MrlMXFWoPg6haxH1xCAagSY8QpVeiDl9WmXvUcWxvXRZ
+ C88+0cG/lH2g5Cg37MQbl4GJVfuFybQ5rSXbT3VhvMt5nTBqC+ljlb/JTEMXeSmDcUfO
+ V85Y+p3GWluB2YfbNROZAJ6OnqrSmhlmDwhYLrn0MtdIYpD1BQfZHoKti0kiot2UAQSq
+ Tia/2pu6BP0j45N84BMHOJc+QGlEdw9mofWN344ROz3eMmhiNj/5cjcZRXF23ztf3PVw
+ dA8eRJa4HdBoBARKtcWzXH9LxB+XoV1+RZ9TovQxosJ+MZeh14lrGu01VwqtI21u9EMa
+ coFw==
+X-Gm-Message-State: AOJu0Yz0VjaJFER7YiNvVnAZfQ/UVWkC2553gnq5mWWmAa1WID+kE3HZ
+ HZBD9DwZRbbhnLmQIGog95dLfZUuwVIuzS+o15YHJF1bvtTj3Xor0l9UyMpnFIDzg8G2BrpB6Ob
+ w
+X-Google-Smtp-Source: AGHT+IEDVbB8k9gAxaOIW3Ud3pafAiuPanYb4E24dnNO1GoKnWmXLnRlD4+PhPcX8J2bfQCtKTc0Kw==
+X-Received: by 2002:adf:f684:0:b0:33d:6bd3:9e24 with SMTP id
+ v4-20020adff684000000b0033d6bd39e24mr7247269wrp.1.1709040810966; 
  Tue, 27 Feb 2024 05:33:30 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,16 +59,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 27 Feb 2024 05:33:30 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 28/45] hw/gpio: Connect SD controller to BCM2838 GPIO
-Date: Tue, 27 Feb 2024 13:32:57 +0000
-Message-Id: <20240227133314.1721857-29-peter.maydell@linaro.org>
+Subject: [PULL 29/45] hw/arm: Add GPIO and SD to BCM2838 periph
+Date: Tue, 27 Feb 2024 13:32:58 +0000
+Message-Id: <20240227133314.1721857-30-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240227133314.1721857-1-peter.maydell@linaro.org>
 References: <20240227133314.1721857-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,134 +95,223 @@ From: Sergey Kambalin <serg.oker@gmail.com>
 
 Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240226000259.2752893-9-sergey.kambalin@auriga.com
+Message-id: 20240226000259.2752893-10-sergey.kambalin@auriga.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/gpio/bcm2838_gpio.h |  5 ++++
- hw/gpio/bcm2838_gpio.c         | 52 +++++++++++++++++++++++++++++++++-
- 2 files changed, 56 insertions(+), 1 deletion(-)
+ include/hw/arm/bcm2838_peripherals.h |   8 ++
+ hw/arm/bcm2838_peripherals.c         | 143 +++++++++++++++++++++++++++
+ 2 files changed, 151 insertions(+)
 
-diff --git a/include/hw/gpio/bcm2838_gpio.h b/include/hw/gpio/bcm2838_gpio.h
-index 06d48e0c191..f2a57a697f2 100644
---- a/include/hw/gpio/bcm2838_gpio.h
-+++ b/include/hw/gpio/bcm2838_gpio.h
-@@ -14,6 +14,7 @@
- #ifndef BCM2838_GPIO_H
- #define BCM2838_GPIO_H
+diff --git a/include/hw/arm/bcm2838_peripherals.h b/include/hw/arm/bcm2838_peripherals.h
+index d07831753ab..86b0d96944e 100644
+--- a/include/hw/arm/bcm2838_peripherals.h
++++ b/include/hw/arm/bcm2838_peripherals.h
+@@ -10,6 +10,8 @@
+ #define BCM2838_PERIPHERALS_H
  
-+#include "hw/sd/sd.h"
- #include "hw/sysbus.h"
- #include "qom/object.h"
+ #include "hw/arm/bcm2835_peripherals.h"
++#include "hw/sd/sdhci.h"
++#include "hw/gpio/bcm2838_gpio.h"
  
-@@ -29,6 +30,10 @@ struct BCM2838GpioState {
+ /* SPI */
+ #define GIC_SPI_INTERRUPT_MBOX         33
+@@ -45,6 +47,9 @@
+ #define GPU_INTERRUPT_DMA14     28
+ #define GPU_INTERRUPT_DMA15     31
  
-     MemoryRegion iomem;
- 
-+    /* SDBus selector */
-+    SDBus sdbus;
-+    SDBus *sdbus_sdhci;
-+    SDBus *sdbus_sdhost;
- 
-     uint8_t fsel[BCM2838_GPIO_NUM];
-     uint32_t lev0, lev1;
-diff --git a/hw/gpio/bcm2838_gpio.c b/hw/gpio/bcm2838_gpio.c
-index 69d15dbb497..2ddf62f6959 100644
---- a/hw/gpio/bcm2838_gpio.c
-+++ b/hw/gpio/bcm2838_gpio.c
-@@ -17,6 +17,7 @@
- #include "qapi/error.h"
- #include "hw/sysbus.h"
- #include "migration/vmstate.h"
-+#include "hw/sd/sd.h"
- #include "hw/gpio/bcm2838_gpio.h"
- #include "hw/irq.h"
- 
-@@ -63,6 +64,16 @@
- 
- #define BYTES_IN_WORD        4
- 
-+/* bcm,function property */
-+#define BCM2838_FSEL_GPIO_IN    0
-+#define BCM2838_FSEL_GPIO_OUT   1
-+#define BCM2838_FSEL_ALT5       2
-+#define BCM2838_FSEL_ALT4       3
-+#define BCM2838_FSEL_ALT0       4
-+#define BCM2838_FSEL_ALT1       5
-+#define BCM2838_FSEL_ALT2       6
-+#define BCM2838_FSEL_ALT3       7
++#define BCM2838_MPHI_OFFSET     0xb200
++#define BCM2838_MPHI_SIZE       0x200
 +
- static uint32_t gpfsel_get(BCM2838GpioState *s, uint8_t reg)
+ #define TYPE_BCM2838_PERIPHERALS "bcm2838-peripherals"
+ OBJECT_DECLARE_TYPE(BCM2838PeripheralState, BCM2838PeripheralClass,
+                     BCM2838_PERIPHERALS)
+@@ -58,6 +63,9 @@ struct BCM2838PeripheralState {
+     MemoryRegion peri_low_mr_alias;
+     MemoryRegion mphi_mr_alias;
+ 
++    SDHCIState emmc2;
++    BCM2838GpioState gpio;
++
+     OrIRQState mmc_irq_orgate;
+     OrIRQState dma_7_8_irq_orgate;
+     OrIRQState dma_9_10_irq_orgate;
+diff --git a/hw/arm/bcm2838_peripherals.c b/hw/arm/bcm2838_peripherals.c
+index 06110c724f8..55ae56733f4 100644
+--- a/hw/arm/bcm2838_peripherals.c
++++ b/hw/arm/bcm2838_peripherals.c
+@@ -15,22 +15,56 @@
+ /* Lower peripheral base address on the VC (GPU) system bus */
+ #define BCM2838_VC_PERI_LOW_BASE 0x7c000000
+ 
++/* Capabilities for SD controller: no DMA, high-speed, default clocks etc. */
++#define BCM2835_SDHC_CAPAREG 0x52134b4
++
+ static void bcm2838_peripherals_init(Object *obj)
  {
-     int i;
-@@ -86,6 +97,31 @@ static void gpfsel_set(BCM2838GpioState *s, uint8_t reg, uint32_t value)
-             s->fsel[index] = fsel;
-         }
-     }
+     BCM2838PeripheralState *s = BCM2838_PERIPHERALS(obj);
+     BCM2838PeripheralClass *bc = BCM2838_PERIPHERALS_GET_CLASS(obj);
++    BCMSocPeripheralBaseState *s_base = BCM_SOC_PERIPHERALS_BASE(obj);
+ 
+     /* Lower memory region for peripheral devices (exported to the Soc) */
+     memory_region_init(&s->peri_low_mr, obj, "bcm2838-peripherals",
+                        bc->peri_low_size);
+     sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->peri_low_mr);
+ 
++    /* Extended Mass Media Controller 2 */
++    object_initialize_child(obj, "emmc2", &s->emmc2, TYPE_SYSBUS_SDHCI);
 +
-+    /* SD controller selection (48-53) */
-+    if (s->sd_fsel != BCM2838_FSEL_GPIO_IN
-+        && (s->fsel[48] == BCM2838_FSEL_GPIO_IN)
-+        && (s->fsel[49] == BCM2838_FSEL_GPIO_IN)
-+        && (s->fsel[50] == BCM2838_FSEL_GPIO_IN)
-+        && (s->fsel[51] == BCM2838_FSEL_GPIO_IN)
-+        && (s->fsel[52] == BCM2838_FSEL_GPIO_IN)
-+        && (s->fsel[53] == BCM2838_FSEL_GPIO_IN)
-+       ) {
-+        /* SDHCI controller selected */
-+        sdbus_reparent_card(s->sdbus_sdhost, s->sdbus_sdhci);
-+        s->sd_fsel = BCM2838_FSEL_GPIO_IN;
-+    } else if (s->sd_fsel != BCM2838_FSEL_ALT0
-+               && (s->fsel[48] == BCM2838_FSEL_ALT0) /* SD_CLK_R */
-+               && (s->fsel[49] == BCM2838_FSEL_ALT0) /* SD_CMD_R */
-+               && (s->fsel[50] == BCM2838_FSEL_ALT0) /* SD_DATA0_R */
-+               && (s->fsel[51] == BCM2838_FSEL_ALT0) /* SD_DATA1_R */
-+               && (s->fsel[52] == BCM2838_FSEL_ALT0) /* SD_DATA2_R */
-+               && (s->fsel[53] == BCM2838_FSEL_ALT0) /* SD_DATA3_R */
-+              ) {
-+        /* SDHost controller selected */
-+        sdbus_reparent_card(s->sdbus_sdhci, s->sdbus_sdhost);
-+        s->sd_fsel = BCM2838_FSEL_ALT0;
++    /* GPIO */
++    object_initialize_child(obj, "gpio", &s->gpio, TYPE_BCM2838_GPIO);
++
++    object_property_add_const_link(OBJECT(&s->gpio), "sdbus-sdhci",
++                                   OBJECT(&s_base->sdhci.sdbus));
++    object_property_add_const_link(OBJECT(&s->gpio), "sdbus-sdhost",
++                                   OBJECT(&s_base->sdhost.sdbus));
++
++    object_initialize_child(obj, "mmc_irq_orgate", &s->mmc_irq_orgate,
++                            TYPE_OR_IRQ);
++    object_property_set_int(OBJECT(&s->mmc_irq_orgate), "num-lines", 2,
++                            &error_abort);
++
++    object_initialize_child(obj, "dma_7_8_irq_orgate", &s->dma_7_8_irq_orgate,
++                            TYPE_OR_IRQ);
++    object_property_set_int(OBJECT(&s->dma_7_8_irq_orgate), "num-lines", 2,
++                            &error_abort);
++
++    object_initialize_child(obj, "dma_9_10_irq_orgate", &s->dma_9_10_irq_orgate,
++                            TYPE_OR_IRQ);
++    object_property_set_int(OBJECT(&s->dma_9_10_irq_orgate), "num-lines", 2,
++                            &error_abort);
+ }
+ 
+ static void bcm2838_peripherals_realize(DeviceState *dev, Error **errp)
+ {
++    DeviceState *mmc_irq_orgate;
++    DeviceState *dma_7_8_irq_orgate;
++    DeviceState *dma_9_10_irq_orgate;
++    MemoryRegion *mphi_mr;
+     BCM2838PeripheralState *s = BCM2838_PERIPHERALS(dev);
+     BCMSocPeripheralBaseState *s_base = BCM_SOC_PERIPHERALS_BASE(dev);
++    int n;
+ 
+     bcm_soc_peripherals_common_realize(dev, errp);
+ 
+@@ -42,6 +76,115 @@ static void bcm2838_peripherals_realize(DeviceState *dev, Error **errp)
+                                         BCM2838_VC_PERI_LOW_BASE,
+                                         &s->peri_low_mr_alias, 1);
+ 
++    /* Extended Mass Media Controller 2 */
++    object_property_set_uint(OBJECT(&s->emmc2), "sd-spec-version", 3,
++                             &error_abort);
++    object_property_set_uint(OBJECT(&s->emmc2), "capareg",
++                             BCM2835_SDHC_CAPAREG, &error_abort);
++    object_property_set_bool(OBJECT(&s->emmc2), "pending-insert-quirk", true,
++                             &error_abort);
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->emmc2), errp)) {
++        return;
 +    }
++
++    memory_region_add_subregion(&s_base->peri_mr, EMMC2_OFFSET,
++                                sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->emmc2),
++                                0));
++
++    /* According to DTS, EMMC and EMMC2 share one irq */
++    if (!qdev_realize(DEVICE(&s->mmc_irq_orgate), NULL, errp)) {
++        return;
++    }
++
++    mmc_irq_orgate = DEVICE(&s->mmc_irq_orgate);
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s->emmc2), 0,
++                       qdev_get_gpio_in(mmc_irq_orgate, 0));
++
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s_base->sdhci), 0,
++                       qdev_get_gpio_in(mmc_irq_orgate, 1));
++
++   /* Connect EMMC and EMMC2 to the interrupt controller */
++    qdev_connect_gpio_out(mmc_irq_orgate, 0,
++                          qdev_get_gpio_in_named(DEVICE(&s_base->ic),
++                                                 BCM2835_IC_GPU_IRQ,
++                                                 INTERRUPT_ARASANSDIO));
++
++    /* Connect DMA 0-6 to the interrupt controller */
++    for (n = 0; n < 7; n++) {
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s_base->dma), n,
++                           qdev_get_gpio_in_named(DEVICE(&s_base->ic),
++                                                  BCM2835_IC_GPU_IRQ,
++                                                  GPU_INTERRUPT_DMA0 + n));
++    }
++
++   /* According to DTS, DMA 7 and 8 share one irq */
++    if (!qdev_realize(DEVICE(&s->dma_7_8_irq_orgate), NULL, errp)) {
++        return;
++    }
++    dma_7_8_irq_orgate = DEVICE(&s->dma_7_8_irq_orgate);
++
++    /* Connect DMA 7-8 to the interrupt controller */
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s_base->dma), 7,
++                       qdev_get_gpio_in(dma_7_8_irq_orgate, 0));
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s_base->dma), 8,
++                       qdev_get_gpio_in(dma_7_8_irq_orgate, 1));
++
++    qdev_connect_gpio_out(dma_7_8_irq_orgate, 0,
++                          qdev_get_gpio_in_named(DEVICE(&s_base->ic),
++                                                 BCM2835_IC_GPU_IRQ,
++                                                 GPU_INTERRUPT_DMA7_8));
++
++     /* According to DTS, DMA 9 and 10 share one irq */
++    if (!qdev_realize(DEVICE(&s->dma_9_10_irq_orgate), NULL, errp)) {
++        return;
++    }
++    dma_9_10_irq_orgate = DEVICE(&s->dma_9_10_irq_orgate);
++
++   /* Connect DMA 9-10 to the interrupt controller */
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s_base->dma), 9,
++                       qdev_get_gpio_in(dma_9_10_irq_orgate, 0));
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s_base->dma), 10,
++                       qdev_get_gpio_in(dma_9_10_irq_orgate, 1));
++
++    qdev_connect_gpio_out(dma_9_10_irq_orgate, 0,
++                          qdev_get_gpio_in_named(DEVICE(&s_base->ic),
++                                                 BCM2835_IC_GPU_IRQ,
++                                                 GPU_INTERRUPT_DMA9_10));
++
++    /* Connect DMA 11-14 to the interrupt controller */
++    for (n = 11; n < 15; n++) {
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s_base->dma), n,
++                           qdev_get_gpio_in_named(DEVICE(&s_base->ic),
++                                                  BCM2835_IC_GPU_IRQ,
++                                                  GPU_INTERRUPT_DMA11 + n
++                                                  - 11));
++    }
++
++    /*
++     * Connect DMA 15 to the interrupt controller, it is physically removed
++     * from other DMA channels and exclusively used by the GPU
++     */
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s_base->dma), 15,
++                        qdev_get_gpio_in_named(DEVICE(&s_base->ic),
++                                               BCM2835_IC_GPU_IRQ,
++                                               GPU_INTERRUPT_DMA15));
++
++    /* Map MPHI to BCM2838 memory map */
++    mphi_mr = sysbus_mmio_get_region(SYS_BUS_DEVICE(&s_base->mphi), 0);
++    memory_region_init_alias(&s->mphi_mr_alias, OBJECT(s), "mphi", mphi_mr, 0,
++                             BCM2838_MPHI_SIZE);
++    memory_region_add_subregion(&s_base->peri_mr, BCM2838_MPHI_OFFSET,
++                                &s->mphi_mr_alias);
++
++    /* GPIO */
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->gpio), errp)) {
++        return;
++    }
++    memory_region_add_subregion(
++        &s_base->peri_mr, GPIO_OFFSET,
++        sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->gpio), 0));
++
++    object_property_add_alias(OBJECT(s), "sd-bus", OBJECT(&s->gpio), "sd-bus");
  }
  
- static int gpfsel_is_out(BCM2838GpioState *s, int index)
-@@ -266,6 +302,11 @@ static void bcm2838_gpio_reset(DeviceState *dev)
- 
-     memset(s->fsel, 0, sizeof(s->fsel));
- 
-+    s->sd_fsel = 0;
-+
-+    /* SDHCI is selected by default */
-+    sdbus_reparent_card(&s->sdbus, s->sdbus_sdhci);
-+
-     s->lev0 = 0;
-     s->lev1 = 0;
- 
-@@ -304,6 +345,8 @@ static void bcm2838_gpio_init(Object *obj)
-     DeviceState *dev = DEVICE(obj);
-     SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
- 
-+    qbus_init(&s->sdbus, sizeof(s->sdbus), TYPE_SD_BUS, DEVICE(s), "sd-bus");
-+
-     memory_region_init_io(&s->iomem, obj, &bcm2838_gpio_ops, s,
-                           "bcm2838_gpio", BCM2838_GPIO_REGS_SIZE);
-     sysbus_init_mmio(sbd, &s->iomem);
-@@ -312,7 +355,14 @@ static void bcm2838_gpio_init(Object *obj)
- 
- static void bcm2838_gpio_realize(DeviceState *dev, Error **errp)
- {
--    /* Temporary stub. Do nothing */
-+    BCM2838GpioState *s = BCM2838_GPIO(dev);
-+    Object *obj;
-+
-+    obj = object_property_get_link(OBJECT(dev), "sdbus-sdhci", &error_abort);
-+    s->sdbus_sdhci = SD_BUS(obj);
-+
-+    obj = object_property_get_link(OBJECT(dev), "sdbus-sdhost", &error_abort);
-+    s->sdbus_sdhost = SD_BUS(obj);
- }
- 
- static void bcm2838_gpio_class_init(ObjectClass *klass, void *data)
+ static void bcm2838_peripherals_class_init(ObjectClass *oc, void *data)
 -- 
 2.34.1
 
