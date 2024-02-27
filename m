@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A61286929D
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:37:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 800A38692D7
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:39:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rexaf-0000oU-7b; Tue, 27 Feb 2024 08:33:50 -0500
+	id 1rexaf-0000oj-7n; Tue, 27 Feb 2024 08:33:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaI-0000jU-Ny
+ id 1rexaI-0000jV-Ps
  for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:27 -0500
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaG-0002rk-U9
+ id 1rexaG-0002ro-TA
  for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:26 -0500
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2d27fef509eso38015811fa.3
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-33de4d3483eso1073926f8f.3
  for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1709040803; x=1709645603; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=no1yxF9QVzDWCiPK1PcrjBYtl68uz4bzwyJtwJFIo0s=;
- b=qAkMtt9YeVMkY7NqDuwUEFs1X/walUnQBlsN5wXcN/owHivp1GrrMQlRLjLGxmYb5E
- Z3kvBbReG336hskZ7QTsnpaHaPbzDlwGjnnLoZZe/LqQqwVHMROAdRPpnbGtmVxMjm6z
- 8VMN6milsiExrbaW6rYzYb5aZk7fyBUfZ6pEaTcRbLSgDC0Anh4ZNuf7WTxmHwdc4Abw
- En4m0+IsaUC/1zgjIzQJiaB5RkX7pBBwkhslWtcH5lGCGhqS+JkI4t0pP42/Xt1KWikr
- fPl0gyfF+VZ34hOWNb+ZGXlar6oHYUbEmeFg9l2enIOppFWBANKIuoYDkEazMfaaIgwF
- Hb8w==
+ :reply-to; bh=mH020CujZ7OZ2w++F6q5td/qRwav+t8/vo2MNxQRXSs=;
+ b=amTantS4Is5UCyNHvJ/lpdbwSns0SxVhi7Kl8Cy+SCawVVhkZHahZuXVllCk88/VOO
+ S2z9K9BlI7GQYotBAFOn4yLohvdXOv5fWhHxBeosZ+tlwv4EdfFBGxh+2H3bEW0t7ZK+
+ 88CY6HwpH7k3hH04698ta/mIOZKrAovuXAvmFVvuAoV/TK0bIk5GopyxkCXUrx+U4ly6
+ +q53LfPzGj3kzwgypNPqJELcqWzs3z1HjeuQgrLwti0og78tc2vvccmiUUA2GVtw/fFP
+ uNohvFnn9sV/NwQt7PyaBMxq2+L0mi5yPlQ6NHxQlG0SL2u7I815jRAAtytCyrKDhHJa
+ HxFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1709040803; x=1709645603;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=no1yxF9QVzDWCiPK1PcrjBYtl68uz4bzwyJtwJFIo0s=;
- b=eyXn9sg/qfBU/hirxre4sgBA//2hCKDM30DlrZUOZw/8cv0zknFi+NP+cQ/Gq4FzOQ
- rkr327EqcCfT5cmd7yUI6uczk/grlLEDCZfbOlKzEooM4/NcAa38KQD82gHmt0XkUXAb
- Fguv/qOlY4gKibC4CDcknR/hSJBseLrAqUuodL9rGvPYOFdMRmB7vkBS4kw97UQccaVi
- +OTIeJapzxNIwtb5/Tk/R3DJfARKPnqD1w5K5pTAc2g5b1erDrlQcHv1FqvKy6wUKRZm
- Ae0+6ovpclgIAaQJQDJs4CMvjkcRY129RaHRbBb5ERnPO6s2Eb3vaLgsh/kT0+dtkGlI
- QTjA==
-X-Gm-Message-State: AOJu0Yy0sygK8FvGdIIg0/kA1LvLD85BT0KjsMATR4Jf3r8MJxvonlGy
- maS9TlMbY1ynylEqzPNcXOR7AfIDAkqsKVZ5y1P7DBEEcqxYAMnEK16at9wdAZ14AYn3CWu1xSo
- r
-X-Google-Smtp-Source: AGHT+IEMLdZLHX3Gofzv/34gtfKVItRlyrJhiHK6ayiJBz8+l8htyfPyuAcJ0DvCid0fkbpxA4Bu7g==
-X-Received: by 2002:a05:651c:556:b0:2d2:a443:9c64 with SMTP id
- q22-20020a05651c055600b002d2a4439c64mr851055ljp.45.1709040801748; 
- Tue, 27 Feb 2024 05:33:21 -0800 (PST)
+ bh=mH020CujZ7OZ2w++F6q5td/qRwav+t8/vo2MNxQRXSs=;
+ b=uOxUEN3i/aX6SYcd887iTCfoXp9Xn3Sr3UwNkg5lSfj4a3Z+qz+3YR0MURmctYZrK9
+ 07QyYRA1K2/tBzjZv7ljXgxfbSbLYH7sjb9AiR6GoEA7gEoW1G0XRLDIHm6HxZdU9gFD
+ pjb0rFY97c/agMiQE2RVYXHEi6+jWq/Kw9ivXhg9CDBxLin8qzMIBHTAgT++ghL+IQ2Z
+ d8QjgbzkIQiPSwzpiUlxCdiO3YI134hCj10eItk+/utXEcxJWsKqPnzHpCL9Qw2ZLg37
+ iQNF/HYib5uq8Ipqf6wQnXiwdawEQh3QvfRQql+/G2fbLwk4cfTawGtEGA6aPhZ53vlb
+ oscQ==
+X-Gm-Message-State: AOJu0YyJcRmUm7DSzuJR8QJQPXE1ERkGbW2LwsHvlQ9YQzZhGgmSuXnB
+ +xSeG/7bU+bA6eLNhBNMNFTViK1TTnawGjlXQ4xLKbata5YNsFwurL0slPMzM1sCiUGiWAi3TJ8
+ y
+X-Google-Smtp-Source: AGHT+IHUta7D1AQ5/jywP+lReW54FluQz4RUhzo7vqCLtm35CNT0sKY/VjMLTQ6UlkzGIEApW+oc+g==
+X-Received: by 2002:a5d:6a0f:0:b0:33d:64dd:4b2e with SMTP id
+ m15-20020a5d6a0f000000b0033d64dd4b2emr7717795wru.7.1709040803461; 
+ Tue, 27 Feb 2024 05:33:23 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- i13-20020adfe48d000000b0033ae7d768b2sm11319552wrm.117.2024.02.27.05.33.21
+ i13-20020adfe48d000000b0033ae7d768b2sm11319552wrm.117.2024.02.27.05.33.22
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Feb 2024 05:33:21 -0800 (PST)
+ Tue, 27 Feb 2024 05:33:23 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 12/45] arm/ptw: Handle atomic updates of page tables entries in
- MMIO during PTW.
-Date: Tue, 27 Feb 2024 13:32:41 +0000
-Message-Id: <20240227133314.1721857-13-peter.maydell@linaro.org>
+Subject: [PULL 13/45] system/bootdevice: Don't unregister reset handler in
+ restore_boot_order()
+Date: Tue, 27 Feb 2024 13:32:42 +0000
+Message-Id: <20240227133314.1721857-14-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240227133314.1721857-1-peter.maydell@linaro.org>
 References: <20240227133314.1721857-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x234.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,100 +93,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Currently the qemu_register_reset() API permits the reset handler functions
+registered with it to remove themselves from within the callback function.
+This is fine with our current implementation, but is a bit odd, because
+generally reset is supposed to be idempotent, and doesn't fit well in a
+three-phase-reset world where a resettable object will get multiple
+callbacks as the system is reset.
 
-I'm far from confident this handling here is correct. Hence
-RFC.  In particular not sure on what locks I should hold for this
-to be even moderately safe.
+We now have only one user of qemu_register_reset() which makes use of
+the ability to unregister itself within the callback:
+restore_boot_order().  We want to change our implementation of
+qemu_register_reset() to something where it would be awkward to
+maintain the "can self-unregister" feature.  Rather than making that
+reimplementation complicated, change restore_boot_order() so that it
+doesn't unregister itself but instead returns doing nothing for any
+calls after it has done the "restore the boot order" work.
 
-The function already appears to be inconsistent in what it returns
-as the CONFIG_ATOMIC64 block returns the endian converted 'eventual'
-value of the cmpxchg whereas the TCG_OVERSIZED_GUEST case returns
-the previous value.
-
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-id: 20240219161229.11776-1-Jonathan.Cameron@huawei.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20240220160622.114437-4-peter.maydell@linaro.org
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/arm/ptw.c | 64 ++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 62 insertions(+), 2 deletions(-)
+ system/bootdevice.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 5eb3577bcd5..ba1a27ca2b5 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -711,8 +711,68 @@ static uint64_t arm_casq_ptw(CPUARMState *env, uint64_t old_val,
-     void *host = ptw->out_host;
+diff --git a/system/bootdevice.c b/system/bootdevice.c
+index 2106f1026ff..2579b26dc8b 100644
+--- a/system/bootdevice.c
++++ b/system/bootdevice.c
+@@ -101,20 +101,23 @@ void validate_bootdevices(const char *devices, Error **errp)
+ void restore_boot_order(void *opaque)
+ {
+     char *normal_boot_order = opaque;
+-    static int first = 1;
++    static int bootcount;
  
-     if (unlikely(!host)) {
--        fi->type = ARMFault_UnsuppAtomicUpdate;
--        return 0;
-+        /* Page table in MMIO Memory Region */
-+        CPUState *cs = env_cpu(env);
-+        MemTxAttrs attrs = {
-+            .space = ptw->out_space,
-+            .secure = arm_space_is_secure(ptw->out_space),
-+        };
-+        AddressSpace *as = arm_addressspace(cs, attrs);
-+        MemTxResult result = MEMTX_OK;
-+        bool need_lock = !bql_locked();
-+
-+        if (need_lock) {
-+            bql_lock();
+-    /* Restore boot order and remove ourselves after the first boot */
+-    if (first) {
+-        first = 0;
++    switch (bootcount++) {
++    case 0:
++        /* First boot: use the one-time config */
++        return;
++    case 1:
++        /* Second boot: restore normal boot order */
++        if (boot_set_handler) {
++            qemu_boot_set(normal_boot_order, &error_abort);
 +        }
-+        if (ptw->out_be) {
-+            cur_val = address_space_ldq_be(as, ptw->out_phys, attrs, &result);
-+            if (unlikely(result != MEMTX_OK)) {
-+                fi->type = ARMFault_SyncExternalOnWalk;
-+                fi->ea = arm_extabort_type(result);
-+                if (need_lock) {
-+                    bql_unlock();
-+                }
-+                return old_val;
-+            }
-+            if (cur_val == old_val) {
-+                address_space_stq_be(as, ptw->out_phys, new_val, attrs, &result);
-+                if (unlikely(result != MEMTX_OK)) {
-+                    fi->type = ARMFault_SyncExternalOnWalk;
-+                    fi->ea = arm_extabort_type(result);
-+                    if (need_lock) {
-+                        bql_unlock();
-+                    }
-+                    return old_val;
-+                }
-+                cur_val = new_val;
-+            }
-+        } else {
-+            cur_val = address_space_ldq_le(as, ptw->out_phys, attrs, &result);
-+            if (unlikely(result != MEMTX_OK)) {
-+                fi->type = ARMFault_SyncExternalOnWalk;
-+                fi->ea = arm_extabort_type(result);
-+                if (need_lock) {
-+                    bql_unlock();
-+                }
-+                return old_val;
-+            }
-+            if (cur_val == old_val) {
-+                address_space_stq_le(as, ptw->out_phys, new_val, attrs, &result);
-+                if (unlikely(result != MEMTX_OK)) {
-+                    fi->type = ARMFault_SyncExternalOnWalk;
-+                    fi->ea = arm_extabort_type(result);
-+                    if (need_lock) {
-+                        bql_unlock();
-+                    }
-+                    return old_val;
-+                }
-+                cur_val = new_val;
-+            }
-+        }
-+        if (need_lock) {
-+            bql_unlock();
-+        }
-+        return cur_val;
++        g_free(normal_boot_order);
++        return;
++    default:
++        /* Subsequent boots: keep using normal boot order */
+         return;
      }
+-
+-    if (boot_set_handler) {
+-        qemu_boot_set(normal_boot_order, &error_abort);
+-    }
+-
+-    qemu_unregister_reset(restore_boot_order, normal_boot_order);
+-    g_free(normal_boot_order);
+ }
  
-     /*
+ void check_boot_index(int32_t bootindex, Error **errp)
 -- 
 2.34.1
 
