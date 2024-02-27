@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94CE986930A
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:41:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76FF986932C
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:42:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rexb6-0001AY-3T; Tue, 27 Feb 2024 08:34:16 -0500
+	id 1rexax-00015D-N6; Tue, 27 Feb 2024 08:34:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexam-0000tq-9L
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:56 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1rexab-0000pn-Gx
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:47 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaV-0002x7-UE
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:55 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-33d0a7f2424so2873527f8f.0
+ id 1rexaW-0002xU-19
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:45 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-33de6da5565so805178f8f.2
  for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1709040818; x=1709645618; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=BfQK9OJD3aICemNdn3VvNxx2yZ6JTCZD2HCR6qHP728=;
- b=MzIEJVcS/KGUOjGy4VfxiuJhFjFVWk1fG3DJ0bHoko+8SJqMg58oo/ERAq8CJ06mNC
- S/n/bdkWHxPD/JebHNqWE21gjH17ZYbWWR+nAQKaXPsE2aeljdTkSZD5Qzxk4PDtFVkW
- TtGYhB9VAgu5RhA71lFRADWVZHiODCGmgh8MiG8m9GgpMC6V6ZOaQL/hws+T8NSrJoOS
- v5ckjWD/KXHJ6ZZfWMNIcizXhhVIO/aZVvmeYd7hAv2zZ71ItKtWFg59Ut8qxzKQGQKN
- 9OSprnBoWG0B3GanP7xAgIjsk2lQoDrnkMG9aW+5FyuI7SyTD0kPHAg3W7rVJ4t6itR9
- 9Rwg==
+ :reply-to; bh=8Orf4noRBf1WSFwEsX9mdSuLU4p1Ut9DO1XoPiOsZMY=;
+ b=rI92CFmO3lBrpU3uaKGE0jOGvQCvYQeoIuqkN3AGvaX7weaUoAiy9BrRoRI4qReFAq
+ 3+SjpySL2cfY3gqG54wenF1CCmXxZ5qwstAtT+bUExBmk7b2tDxPRIA1V4OoP7+Wr/3a
+ NJGx36nBaeM7TU776+M9woSdvdMD9+Ec6HoJ5WdE8AT6DLbnzEo+ZZARsK8CxkiITrtB
+ P/F7hNZzBvZmW0LaVjce3at7WY8c0kKKP3Tr6TrHgREIqRojH6ixAd1+OOrybifjq9mb
+ XfxYDRmk7LGka3QfQT9Ps2d5lmsy5dEY2QV19CSeYsT4ImaqOGru78++WScjVE6h4pt8
+ /IwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1709040818; x=1709645618;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BfQK9OJD3aICemNdn3VvNxx2yZ6JTCZD2HCR6qHP728=;
- b=JjR+37FOdJx/9qjjYHXE3gRuu829sFg/Zxsj24bMElwM/vKhmHWMKY8zhDEmtCApvO
- kpDXY3StPvX33f/AiM+fNTYbZhAwhP3pPB0uXiUokRu3EemH3mzrhkaBUe4DHVLLDC9E
- CEH86Lgyi98RBaHOppryEKXDWCfQHnMBU8cfurRj0D4v2Lbjk6JiFAY5L9bJyPA2Jfd+
- F2yvNq1nfC1n8eLWA2auRQESNE66BAVA/H7Qqj3pxf3tljduuFFSHBgAHg1jZF0iokLi
- ReMq4SN/H4thKg6HU2f9Xy2qpo8AQOxJPWk/OTbRsPgOPbIEz4DwLFU8zSSnSTR1S7lK
- JfYw==
-X-Gm-Message-State: AOJu0YwKSrNuf1eLeZ4URtfKyQX93BLpJX/bOIVR4XhK/qQiJsTKuNbY
- ZyQwwFg+25vVbxfAbjXAc+WQp793nZ+0eOx5JlhpxWlKAyHO9Tk0PudwIxjlGsoq7NBFgZN+gLt
- c
-X-Google-Smtp-Source: AGHT+IHTe3ijaazVGaIu42uvrdNjmzWvX3w3ZtsIcpFbWP3L3lkZ+AAl+B94ioCr7LTrLS4oYLdkcQ==
-X-Received: by 2002:adf:e8ce:0:b0:33d:269e:132a with SMTP id
- k14-20020adfe8ce000000b0033d269e132amr7010166wrn.15.1709040818296; 
+ bh=8Orf4noRBf1WSFwEsX9mdSuLU4p1Ut9DO1XoPiOsZMY=;
+ b=ek1Wa2sK16nfw2AL7Drr5g1Lsa6ELANMYQB66Gc1wGxLC4eOoT6D3xkr+M/map5y/R
+ YxQNUz/YiQQGW1no7Hn1ltHrKrvHhMu9gdqpo86wfdBuKsibPiTZwm5TYf1DqGXZDiHy
+ oErVE+xqvN2cqVjrypVN+R455Tgsz/QwurJDRlpsI3XmsGfHXQUaeM6av4FY+0zDZH/Z
+ 7o2uGGvVIOCdKo9t+1tNnjNhniXuQMbTl846ChW58Ntuv3tScjD83PcSraEsVD8/5eRY
+ gS91OYLeAjVELBeQA5O9zM6Xy3pO3CuvuR8v6ruGyHNLzLldJHe/V1ZcN+Xj6buVzavW
+ KjnQ==
+X-Gm-Message-State: AOJu0YzS7wICs5BAuHn7VyMMz17803ERB5hEV+BZemBZo6aN+g7IIjfs
+ ltpTYfzvp8607XGgKepFkFH0ES+Poz2hOlUR/ijJPnTWKMnu4zoK63vk9Bzgc+OJATF8ktDPAsb
+ n
+X-Google-Smtp-Source: AGHT+IFlfY+bv44Bq5pucm2sOY1uo0nXTWC5OO6osSo1TAgyB8ojyZW37NPQxH0niBNtBqZjNLU7QA==
+X-Received: by 2002:adf:fc01:0:b0:33d:a185:17ed with SMTP id
+ i1-20020adffc01000000b0033da18517edmr6166815wrr.56.1709040818730; 
  Tue, 27 Feb 2024 05:33:38 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- i13-20020adfe48d000000b0033ae7d768b2sm11319552wrm.117.2024.02.27.05.33.37
+ i13-20020adfe48d000000b0033ae7d768b2sm11319552wrm.117.2024.02.27.05.33.38
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 27 Feb 2024 05:33:38 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 43/45] hw/misc/bcm2835_property: Add missed BCM2835 properties
-Date: Tue, 27 Feb 2024 13:33:12 +0000
-Message-Id: <20240227133314.1721857-44-peter.maydell@linaro.org>
+Subject: [PULL 44/45] tests/qtest/bcm2828-mailbox: Append added properties to
+ mailbox test
+Date: Tue, 27 Feb 2024 13:33:13 +0000
+Message-Id: <20240227133314.1721857-45-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240227133314.1721857-1-peter.maydell@linaro.org>
 References: <20240227133314.1721857-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,97 +94,72 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sergey Kambalin <serg.oker@gmail.com>
 
-Our model of the bcm2835 mailbox is missing a few properties
-that we need for the raspi4 kernel:
- * RPI_FWREQ_GET_CLOCKS
- * RPI_FWREQ_GET_THROTTLED
- * RPI_FWREQ_VCHIQ_INIT
-
-Add minimal implementations of them.
-
 Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
-Message-id: 20240226000259.2752893-40-sergey.kambalin@auriga.com
+Message-id: 20240226000259.2752893-41-sergey.kambalin@auriga.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-[PMM: improved commit message]
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/raspberrypi-fw-defs.h | 11 +++++++++++
- hw/misc/bcm2835_property.c           | 21 +++++++++++++++++++++
- 2 files changed, 32 insertions(+)
+ tests/qtest/bcm2838-mbox-property-test.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/include/hw/arm/raspberrypi-fw-defs.h b/include/hw/arm/raspberrypi-fw-defs.h
-index 579cf0d5546..8b404e05336 100644
---- a/include/hw/arm/raspberrypi-fw-defs.h
-+++ b/include/hw/arm/raspberrypi-fw-defs.h
-@@ -159,4 +159,15 @@ enum rpi_firmware_clk_id {
-     RPI_FIRMWARE_NUM_CLK_ID,
- };
+diff --git a/tests/qtest/bcm2838-mbox-property-test.c b/tests/qtest/bcm2838-mbox-property-test.c
+index 0a71b756dcf..ca368afed34 100644
+--- a/tests/qtest/bcm2838-mbox-property-test.c
++++ b/tests/qtest/bcm2838-mbox-property-test.c
+@@ -270,6 +270,12 @@ DECLARE_TEST_CASE_SETUP(GET_MIN_CLOCK_RATE, ANY) {
+     tag->request.value.clock_id = CLOCK_ID_UNDEFINED;
+ }
  
-+struct rpi_firmware_property_tag_header {
-+    uint32_t tag;
-+    uint32_t buf_size;
-+    uint32_t req_resp_size;
-+};
++/*----------------------------------------------------------------------------*/
++DECLARE_TEST_CASE(GET_CLOCKS) {
++    g_assert_cmphex(tag->response.value.root_clock, ==, CLOCK_ID_ROOT);
++    g_assert_cmphex(tag->response.value.arm_clock, ==, CLOCK_ID_ARM);
++}
 +
-+typedef struct rpi_firmware_prop_request {
-+    struct rpi_firmware_property_tag_header hdr;
-+    uint8_t payload[0];
-+} rpi_firmware_prop_request_t;
-+
- #endif /* INCLUDE_HW_MISC_RASPBERRYPI_FW_DEFS_H_ */
-diff --git a/hw/misc/bcm2835_property.c b/hw/misc/bcm2835_property.c
-index 5c48f8d7438..bdd9a6bbcec 100644
---- a/hw/misc/bcm2835_property.c
-+++ b/hw/misc/bcm2835_property.c
-@@ -19,6 +19,8 @@
- #include "trace.h"
- #include "hw/arm/raspi_platform.h"
+ /*----------------------------------------------------------------------------*/
+ DECLARE_TEST_CASE(GET_TEMPERATURE) {
+     g_assert_cmphex(tag->response.value.temperature_id, ==, TEMPERATURE_ID_SOC);
+@@ -536,6 +542,11 @@ DECLARE_TEST_CASE(GET_COMMAND_LINE) {
+     /* No special checks are needed for this test case */
+ }
  
-+#define VCHI_BUSADDR_SIZE       sizeof(uint32_t)
++/*----------------------------------------------------------------------------*/
++DECLARE_TEST_CASE(GET_THROTTLED) {
++    g_assert_cmpint(tag->response.value.throttled, ==, 0);
++}
 +
- /* https://github.com/raspberrypi/firmware/wiki/Mailbox-property-interface */
+ /*----------------------------------------------------------------------------*/
+ DECLARE_TEST_CASE(FRAMEBUFFER_GET_NUM_DISPLAYS) {
+     g_assert_cmpint(tag->response.value.num_displays, ==, 1);
+@@ -549,6 +560,11 @@ DECLARE_TEST_CASE_SETUP(FRAMEBUFFER_SET_PITCH) {
+     tag->request.value.pitch = DUMMY_VALUE;
+ }
  
- static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
-@@ -138,6 +140,13 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
-             resplen = 8;
-             break;
++/*----------------------------------------------------------------------------*/
++DECLARE_TEST_CASE(VCHIQ_INIT) {
++    g_assert_cmpint(tag->response.value.zero, ==, 0);
++}
++
+ /*----------------------------------------------------------------------------*/
+ int main(int argc, char **argv)
+ {
+@@ -572,6 +588,7 @@ int main(int argc, char **argv)
+     QTEST_ADD_TEST_CASE(GET_CLOCK_RATE, ANY);
+     QTEST_ADD_TEST_CASE(GET_MAX_CLOCK_RATE, ANY);
+     QTEST_ADD_TEST_CASE(GET_MIN_CLOCK_RATE, ANY);
++    QTEST_ADD_TEST_CASE(GET_CLOCKS);
+     QTEST_ADD_TEST_CASE(GET_TEMPERATURE);
+     QTEST_ADD_TEST_CASE(GET_MAX_TEMPERATURE);
+     QTEST_ADD_TEST_CASE(FRAMEBUFFER_ALLOCATE);
+@@ -607,6 +624,8 @@ int main(int argc, char **argv)
+     QTEST_ADD_TEST_CASE(GET_COMMAND_LINE);
+     QTEST_ADD_TEST_CASE(FRAMEBUFFER_GET_NUM_DISPLAYS);
+     QTEST_ADD_TEST_CASE(FRAMEBUFFER_SET_PITCH);
++    QTEST_ADD_TEST_CASE(GET_THROTTLED);
++    QTEST_ADD_TEST_CASE(VCHIQ_INIT);
  
-+        case RPI_FWREQ_GET_CLOCKS:
-+            /* TODO: add more clock IDs if needed */
-+            stl_le_phys(&s->dma_as, value + 12, 0);
-+            stl_le_phys(&s->dma_as, value + 16, RPI_FIRMWARE_ARM_CLK_ID);
-+            resplen = 8;
-+            break;
-+
-         case RPI_FWREQ_SET_CLOCK_RATE:
-         case RPI_FWREQ_SET_MAX_CLOCK_RATE:
-         case RPI_FWREQ_SET_MIN_CLOCK_RATE:
-@@ -276,6 +285,7 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
-             stl_le_phys(&s->dma_as, value + 12, 0);
-             resplen = 4;
-             break;
-+
-         case RPI_FWREQ_FRAMEBUFFER_GET_NUM_DISPLAYS:
-             stl_le_phys(&s->dma_as, value + 12, 1);
-             resplen = 4;
-@@ -301,6 +311,17 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
-                                     resplen);
-             break;
- 
-+        case RPI_FWREQ_GET_THROTTLED:
-+            stl_le_phys(&s->dma_as, value + 12, 0);
-+            resplen = 4;
-+            break;
-+
-+        case RPI_FWREQ_VCHIQ_INIT:
-+            stl_le_phys(&s->dma_as,
-+                        value + offsetof(rpi_firmware_prop_request_t, payload),
-+                        0);
-+            resplen = VCHI_BUSADDR_SIZE;
-+            break;
-         default:
-             qemu_log_mask(LOG_UNIMP,
-                           "bcm2835_property: unhandled tag 0x%08x\n", tag);
+     return g_test_run();
+ }
 -- 
 2.34.1
 
