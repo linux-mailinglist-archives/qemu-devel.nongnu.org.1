@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F56869F75
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 19:49:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26423869F80
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 19:51:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rf2VS-0006WC-1n; Tue, 27 Feb 2024 13:48:46 -0500
+	id 1rf2VT-0006WZ-KV; Tue, 27 Feb 2024 13:48:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rf2VQ-0006VZ-4p
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:48:44 -0500
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1rf2VR-0006Vy-83
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:48:45 -0500
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rf2VO-0001T1-Dm
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:48:43 -0500
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6e4ca46ab04so2862653b3a.3
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 10:48:42 -0800 (PST)
+ id 1rf2VP-0001TM-LJ
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:48:44 -0500
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6da202aa138so3146822b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 10:48:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709059721; x=1709664521; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709059722; x=1709664522; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PXNbhyM3M1ZvaxsPU8XRtEyhAyhYazBaocnAfgHjiNM=;
- b=tZKCD9EcLCeJpd6jK0rsk/Llmj4h6oZbe6kdgW7K+BDGg1KAGtyznYuZKjs9LMVTtT
- UOFi/z/ceoQfLg1S4U+JlnV18R6WHmhflANj1sRjUNQXsHmhvWX648AKT45ty9KrupLJ
- hG+O9SiHsWUxpbZes47/CTPr2rv34kjB5YSFMguxEQZGkLf8bl5AAZm0Lh47Pfp9w8xh
- g2/h53CBS6pP+fEG7Hf7DLGNGH0KlDyhWSHRv1hXuXvRfVueOHe8yaEdSGRFecMPB5Dz
- CjWkcUGcbRIo5UmH5rs8byL4YlrPTwMfcqs7b8sY3jFWCeKa0EMo/gQdOcPKX+CW8p4G
- 3NPA==
+ bh=keqqLzVNAo4uH25B4sgF/a/mk1kxuvixDsagaZwoXEA=;
+ b=OxK0o86DootcJA/PGAIEqljBMZ2pcp5uozj74eTAIIF7l8CDGiujiSMd7d0rKtfGGW
+ 8hLBmHrFV8r+wqEcV8LamQm/8isQ3IjYM/lzhfYZ05oEoenj6IQvCufH+HcFRKgjYY0F
+ K6l9rPw9kjj3nDVj9NcfHIYzRq6wLezNaXVO33NG5jxgA6A2NcirkOsYJEAsoy3BfQSv
+ hF7OJ2/EGRx4mFEFS6HRUwl3sH5iPdu14oimDHcyIYC/UVXcpmokFTAHkScktD/hVDlF
+ FXbhLdcLlNvzuuqjZfy8fstYm/KsyEGy81g22kZgoPD451NEi3N7LMA68tnZcpD4rfv+
+ 384A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709059721; x=1709664521;
+ d=1e100.net; s=20230601; t=1709059722; x=1709664522;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PXNbhyM3M1ZvaxsPU8XRtEyhAyhYazBaocnAfgHjiNM=;
- b=lzKJyFyt/BSZA7veABBLR2J+HmjQHIkuyQn6FByiZx+9hn2eWPScjptxI06ZWBLJy7
- WQvTysdOXMHKTSqDyAtRqSo9nC7lsjbcBtw4CRh8RuEht9snJamS1DXlJWgujdNHVsyN
- nZ60nlJInxV17t6fiJGX0Ca5RtM1Bo8fgayu/bAPMcOvau3rIXv3DtfOl9ynHcy/QJv6
- pm6f42SqpOAGy7g9kB1iDIZDxtTPyiJjihQj3qmuajhWvwtzcJEBEXHGuS+J/ydSjic4
- dfhdzhW23OLqvnQYBsaBQX0pDDlNK0o8a1mk3LKCHEi96oNKyKJokv9eK6zJ7J5Z6Nln
- nohg==
-X-Gm-Message-State: AOJu0YyU33+/LNfZXjrbcrVk+kTXQNQ1U8M1q7d+RJ3Os69OxwEczHCK
- 8fwvceb8ZrexgywKf1+wbWyh/QE5MfvcuJpeFKEFByYW4V9I4iACXA3ZWsjPaHthvsTvV3JQAdQ
- /
-X-Google-Smtp-Source: AGHT+IF30TBkxuhs2mX9HYQ8yuqG1edE8Jc0TsI+BIaFzV3uILEv74NbmnTG0GCbyyRnDLE49XWsNg==
-X-Received: by 2002:a05:6a00:ce:b0:6e5:2cc9:c898 with SMTP id
- e14-20020a056a0000ce00b006e52cc9c898mr7190892pfj.26.1709059720912; 
- Tue, 27 Feb 2024 10:48:40 -0800 (PST)
+ bh=keqqLzVNAo4uH25B4sgF/a/mk1kxuvixDsagaZwoXEA=;
+ b=bLBybGEm0OF3BSCZUfz5/fBIPPktopZoh0hiyTqmId5lGtYeLKCc2lFR/uezBos2Q8
+ tT3n3rO5yBNwk7S/lsp6liB2l7gtbveRH8ouH1uFAofyYL7k6CNQ5B/A+mH/ltFWILCa
+ fAaft0bbXi4aKPVcZ5QX6+LoW9clqJDCKggtIYoRmDiFLs/wTZae15LndobPd1yN3EcP
+ /Qb+fZ+LAC9DdUfIP8FV+jQuRGAG4mVCS4quLt0ZbUJaHTSr2pbHkDlHDDXTJivyVtfC
+ 857PXcCvrvMz+SlFJSXPGmzi/fYwCxP4k7x0TXDPjilWZH4tnoCabW15nAwt3aDOWyNN
+ 1aKA==
+X-Gm-Message-State: AOJu0Yx5EPQBNz8oqiI+5qpZR3Dlmuh2uvHfyP+QAv3sLSrfRTA+RXy6
+ PtBk2YjVQzIoBr05GcFQkS9i2n3nRUMWpaGb0Ursn97Pj/4Uwc2MkfauTycAaJzkl4TgLopN0cK
+ B
+X-Google-Smtp-Source: AGHT+IFg+iVNWZ+9fJ0/jQQHfCeuyonZ5yzNXN582wH8RQlWA1PEJhjT83ehpvoPFfrH/og9tZDzdw==
+X-Received: by 2002:a05:6a00:987:b0:6e5:8d9:d59a with SMTP id
+ u7-20020a056a00098700b006e508d9d59amr11052223pfg.16.1709059722234; 
+ Tue, 27 Feb 2024 10:48:42 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- h26-20020aa786da000000b006e555d40951sm533465pfo.188.2024.02.27.10.48.39
+ h26-20020aa786da000000b006e555d40951sm533465pfo.188.2024.02.27.10.48.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Feb 2024 10:48:40 -0800 (PST)
+ Tue, 27 Feb 2024 10:48:41 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org
-Subject: [PATCH 03/14] linux-user/elfload: Tidy fill_note_info and struct
- elf_note_info
-Date: Tue, 27 Feb 2024 08:48:22 -1000
-Message-Id: <20240227184833.193836-4-richard.henderson@linaro.org>
+Subject: [PATCH 04/14] linux-user/elfload: Stack allocate struct mm_struct
+Date: Tue, 27 Feb 2024 08:48:23 -1000
+Message-Id: <20240227184833.193836-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240227184833.193836-1-richard.henderson@linaro.org>
 References: <20240227184833.193836-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,135 +92,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In fill_note_info, there were unnecessary checks for
-success of g_new/g_malloc.  But these structures do not
-need to be dyamically allocated at all, and can in fact
-be statically allocated within the parent structure.
-
-This removes all error paths from fill_note_info, so
-change the return type to void.
-
-Change type of signr to match both caller (elf_core_dump)
-and callee (fill_prstatus), which both use int for signr.
+Ignoring the fact that g_malloc cannot fail, the structure
+is quite small and might as well be allocated locally.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 48 +++++++++++++++-----------------------------
- 1 file changed, 16 insertions(+), 32 deletions(-)
+ linux-user/elfload.c | 28 +++++++++-------------------
+ 1 file changed, 9 insertions(+), 19 deletions(-)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 7b3a2c20f2..cc43487a37 100644
+index cc43487a37..98b82b1a49 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -4066,10 +4066,12 @@ struct elf_thread_status {
-     int num_notes;
+@@ -4099,7 +4099,7 @@ struct mm_struct {
+     int mm_count;           /* number of mappings */
  };
  
-+#define NUMNOTES 3
-+
- struct elf_note_info {
--    struct memelfnote   *notes;
--    struct target_elf_prstatus *prstatus;  /* NT_PRSTATUS */
--    struct target_elf_prpsinfo *psinfo;    /* NT_PRPSINFO */
-+    struct memelfnote notes[NUMNOTES];
-+    struct target_elf_prstatus prstatus;  /* NT_PRSTATUS */
-+    struct target_elf_prpsinfo psinfo;    /* NT_PRPSINFO */
+-static struct mm_struct *vma_init(void);
++static void vma_init(struct mm_struct *);
+ static void vma_delete(struct mm_struct *);
+ static int vma_add_mapping(struct mm_struct *, target_ulong,
+                            target_ulong, abi_ulong);
+@@ -4174,17 +4174,10 @@ static inline void bswap_note(struct elf_note *en) { }
+  * thread that received the signal is stopped.
+  */
  
-     QTAILQ_HEAD(, elf_thread_status) thread_list;
- #if 0
-@@ -4117,7 +4119,7 @@ static void fill_auxv_note(struct memelfnote *, const TaskState *);
- static void fill_elf_note_phdr(struct elf_phdr *, int, off_t);
- static size_t note_size(const struct memelfnote *);
- static void free_note_info(struct elf_note_info *);
--static int fill_note_info(struct elf_note_info *, long, const CPUArchState *);
-+static void fill_note_info(struct elf_note_info *, int, const CPUArchState *);
- static void fill_thread_info(struct elf_note_info *, const CPUArchState *);
- 
- static int dump_write(int, const void *, size_t);
-@@ -4514,44 +4516,33 @@ static void fill_thread_info(struct elf_note_info *info, const CPUArchState *env
-     info->notes_size += note_size(&ets->notes[0]);
- }
- 
--static int fill_note_info(struct elf_note_info *info,
--                          long signr, const CPUArchState *env)
-+static void fill_note_info(struct elf_note_info *info,
-+                           int signr, const CPUArchState *env)
+-static struct mm_struct *vma_init(void)
++static void vma_init(struct mm_struct *mm)
  {
--#define NUMNOTES 3
-     CPUState *cpu = env_cpu((CPUArchState *)env);
-     TaskState *ts = (TaskState *)cpu->opaque;
--    int i;
- 
-     memset(info, 0, sizeof (*info));
-     QTAILQ_INIT(&info->thread_list);
- 
--    info->notes = g_new0(struct memelfnote, NUMNOTES);
--    if (info->notes == NULL)
--        return (-ENOMEM);
--    info->prstatus = g_malloc0(sizeof (*info->prstatus));
--    if (info->prstatus == NULL)
--        return (-ENOMEM);
--    info->psinfo = g_malloc0(sizeof (*info->psinfo));
--    if (info->prstatus == NULL)
--        return (-ENOMEM);
+-    struct mm_struct *mm;
 -
-     /*
-      * First fill in status (and registers) of current thread
-      * including process info & aux vector.
+-    if ((mm = g_malloc(sizeof (*mm))) == NULL)
+-        return (NULL);
+-
+     mm->mm_count = 0;
+     QTAILQ_INIT(&mm->mm_mmap);
+-
+-    return (mm);
+ }
+ 
+ static void vma_delete(struct mm_struct *mm)
+@@ -4195,7 +4188,6 @@ static void vma_delete(struct mm_struct *mm)
+         QTAILQ_REMOVE(&mm->mm_mmap, vma, vma_link);
+         g_free(vma);
+     }
+-    g_free(mm);
+ }
+ 
+ static int vma_add_mapping(struct mm_struct *mm, target_ulong start,
+@@ -4638,7 +4630,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+     struct elfhdr elf;
+     struct elf_phdr phdr;
+     struct rlimit dumpsize;
+-    struct mm_struct *mm = NULL;
++    struct mm_struct mm;
+     off_t offset = 0, data_offset = 0;
+     int segs = 0;
+     int fd = -1;
+@@ -4664,11 +4656,10 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+      * set up structure containing this information.  After
+      * this point vma_xxx functions can be used.
       */
--    fill_prstatus(info->prstatus, ts, signr);
--    elf_core_copy_regs(&info->prstatus->pr_reg, env);
-+    fill_prstatus(&info->prstatus, ts, signr);
-+    elf_core_copy_regs(&info->prstatus.pr_reg, env);
-     fill_note(&info->notes[0], "CORE", NT_PRSTATUS,
--              sizeof (*info->prstatus), info->prstatus);
--    fill_psinfo(info->psinfo, ts);
-+              sizeof(info->prstatus), &info->prstatus);
-+    fill_psinfo(&info->psinfo, ts);
-     fill_note(&info->notes[1], "CORE", NT_PRPSINFO,
--              sizeof (*info->psinfo), info->psinfo);
-+              sizeof(info->psinfo), &info->psinfo);
-     fill_auxv_note(&info->notes[2], ts);
-     info->numnote = 3;
- 
-     info->notes_size = 0;
--    for (i = 0; i < info->numnote; i++)
-+    for (int i = 0; i < info->numnote; i++) {
-         info->notes_size += note_size(&info->notes[i]);
-+    }
- 
-     /* read and fill status of all threads */
-     WITH_QEMU_LOCK_GUARD(&qemu_cpu_list_lock) {
-@@ -4562,8 +4553,6 @@ static int fill_note_info(struct elf_note_info *info,
-             fill_thread_info(info, cpu_env(cpu));
-         }
-     }
--
--    return (0);
- }
- 
- static void free_note_info(struct elf_note_info *info)
-@@ -4575,10 +4564,6 @@ static void free_note_info(struct elf_note_info *info)
-         QTAILQ_REMOVE(&info->thread_list, ets, ets_link);
-         g_free(ets);
-     }
--
--    g_free(info->prstatus);
--    g_free(info->psinfo);
--    g_free(info->notes);
- }
- 
- static int write_note_info(struct elf_note_info *info, int fd)
-@@ -4694,8 +4679,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
-         goto out;
- 
-     /* fill in the in-memory version of notes */
--    if (fill_note_info(&info, signr, env) < 0)
+-    if ((mm = vma_init()) == NULL)
 -        goto out;
-+    fill_note_info(&info, signr, env);
++    vma_init(&mm);
  
-     offset += sizeof (elf);                             /* elf header */
-     offset += (segs + 1) * sizeof (struct elf_phdr);    /* program headers */
+-    walk_memory_regions(mm, vma_walker);
+-    segs = vma_get_mapping_count(mm);
++    walk_memory_regions(&mm, vma_walker);
++    segs = vma_get_mapping_count(&mm);
+ 
+     /*
+      * Construct valid coredump ELF header.  We also
+@@ -4701,7 +4692,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+      * Write program headers for memory regions mapped in
+      * the target process.
+      */
+-    for (vma = vma_first(mm); vma != NULL; vma = vma_next(vma)) {
++    for (vma = vma_first(&mm); vma != NULL; vma = vma_next(vma)) {
+         (void) memset(&phdr, 0, sizeof (phdr));
+ 
+         phdr.p_type = PT_LOAD;
+@@ -4738,7 +4729,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+     /*
+      * Finally we can dump process memory into corefile as well.
+      */
+-    for (vma = vma_first(mm); vma != NULL; vma = vma_next(vma)) {
++    for (vma = vma_first(&mm); vma != NULL; vma = vma_next(vma)) {
+         abi_ulong addr;
+         abi_ulong end;
+ 
+@@ -4767,8 +4758,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+ 
+  out:
+     free_note_info(&info);
+-    if (mm != NULL)
+-        vma_delete(mm);
++    vma_delete(&mm);
+     (void) close(fd);
+ 
+     if (errno != 0)
 -- 
 2.34.1
 
