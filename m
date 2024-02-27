@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA62E868B31
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 09:48:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA45868B3C
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 09:51:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ret35-0005Pu-AC; Tue, 27 Feb 2024 03:42:51 -0500
+	id 1ret37-0005l1-MW; Tue, 27 Feb 2024 03:42:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret31-0005AM-C8
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:42:47 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret35-0005ab-Jw
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:42:51 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret2x-0008SS-EW
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:42:47 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-33da51fd636so2399277f8f.3
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 00:42:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret33-0008UF-L4
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:42:51 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-412a38e2adaso14860715e9.1
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 00:42:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709023361; x=1709628161; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709023368; x=1709628168; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AxCElssAJQElNOBysOkvX3JvR87QOEk2FLy7QknFoAM=;
- b=VQ1Mkk1Cj7SDrEYNCK4co8bU44HBS3UTI1F3lBj8WG854/q2G2+oDSOkXB5UTyLobB
- 2pVtPBq1KqmILs1cJ/0TQatYNgfdvnHOnUeBls84TJaBZljdfvtehnaSgReX+lDTdjNn
- 5XcOb7Fn8wkcKGKmNnrPTA7k1O3eLsWGzEwsHt38jp/SaFG2Hr2/rGA1bI6abH/geVlk
- 7GeREy4TTF4htOmYT0z2Lp5VPPkDKJQ6BhATsUtOnPtWF6YFg4T2iiBPmz84bQTXh6la
- QIqk015TePbaeBf+5C4K2YJtz4B09Q9MwJRKe6grSXeOU8vysTr5HRKu+ftTyUgCSovN
- SOrA==
+ bh=neUNa6vtFGWdPhcBeRIzla/viNhIcPd+5ZZ+Q+4SiBQ=;
+ b=qlxc+0l3qktB0xYiqXIShrzXLBeV7yE5lNuJvjpJMZTDEm+mpqeqAp9KFfGuucbj/c
+ 1GfXW+nDwPP9QH7p7cOkJeTxN1EecQ0ulij/eFGBPKBfl9PK8uTI7SDR7rUqMT1+HC3T
+ k+TuWCNYBlikHR4lOQ2g8nyOYtR3CWPNiZZ1uGsFURh7iIn+7SWnp7Nv5ez4Rkju5VOa
+ /0qP6tUiC/7yMKN8t8OiVL+UM+W5zy34jy4QrK32NeU47ZXrFbSnK0JCwTIgoCB0PfPi
+ 6BS4fmz/zsNFkA1AIYIrtq+N3fjdQkG4N8TaWimYZHpTp8InZmkx4HSZTtDch/Lc0SWC
+ jG6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709023361; x=1709628161;
+ d=1e100.net; s=20230601; t=1709023368; x=1709628168;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AxCElssAJQElNOBysOkvX3JvR87QOEk2FLy7QknFoAM=;
- b=W8ijPpyfb6paiJl9YpimjbLGnuqPlG3dkDSYx/V3ghJhK8nsDPpat9wa1UJDcItTxr
- 4ncH11Rm0U/8c0AntAYqHgxGxOF9YuH88pfORiohoaw43Ai+FHd8c/naiy9Y2KCPVIha
- QdX5Pqn367PqEmzIkMVtASsVCHR9bsWDrldiilVWaUPT7kQMNxlxlshET7/ISxKdYcPG
- 7omAK/K/pFu9YSZ6MUC7tEspkRjSrSLWEfCTGB17fS5Jcjppbr6NYy1uGT+06Y5vfD4C
- cRtObs5v9uyTL/YVby8KC+y3/ttwHDvdFuSP0PWFMLCjfpwlbKbP6LAXGQeZS4llqy+7
- bhIg==
-X-Gm-Message-State: AOJu0YwDWUFoMEreabCpEJZpO+0GThwArcojP3NoDyC+aHOPed5eLe0f
- kEb4dPudqZEWdGXEOPsOV3xW9+U4CplV4dy/btPBxb4i5l4Nk8S7ltO04LuaXLuU1XCk/L2mfPj
- C
-X-Google-Smtp-Source: AGHT+IHtHtoWlYY1DI0MsRQqR9n+hgloKf0qD4fCrdPD+MlI2PncENG9lttaUS2YvcQk9cf6lkihGw==
-X-Received: by 2002:adf:f10a:0:b0:33d:afc6:3ba6 with SMTP id
- r10-20020adff10a000000b0033dafc63ba6mr7099097wro.34.1709023361722; 
- Tue, 27 Feb 2024 00:42:41 -0800 (PST)
+ bh=neUNa6vtFGWdPhcBeRIzla/viNhIcPd+5ZZ+Q+4SiBQ=;
+ b=JMlhuyHVNSPUKNTKQaYssu4eHSg01FAIkHXDjjv6X6llszT288aBvIVK+pqOBrKqrF
+ 4HoOZx5oWSJwKvbB3sfb44TDTghamFm7ZvkG+6cGgzP3Fpp2BXCFnOKrSYUCzOfr34tt
+ nKupZXYg5a3zuQg6Ka935qTB4e0ZHFB6kd7je+sDMkZzVGYokpiI+5NiowLJocBAFTeG
+ duVVoUCrdewyBYkHPzt6ox4eYLw2RMOitpixVfTWKucG9P4i1bSu6AAFPirAKP/V+iER
+ ZEAIaUY2xM8S1fqZcVbEHveMVElbnpvxnjxwyIo3qh1l2FQ5Ze/Uel0AZCP9mZ+0KmLO
+ AOfA==
+X-Gm-Message-State: AOJu0Yy0XowrYerCGTPlIGJXHTHdkjsushvhxfshB0F8ZiMlPN+gSBcZ
+ NVdABMG51L8DhDoDavDmDwTOkasLS0ITi+ZNsQJRtlQZvAM5sAIdUOVOqjEeFX64Zi6mZ5USl0J
+ 2
+X-Google-Smtp-Source: AGHT+IHWKNxGAz+HFAhsktoQM7CSw6qeZ7fo8vmgNcCMJR3X6jfdp5OFBdZSJnEjWksrv4g07okMMA==
+X-Received: by 2002:a05:600c:34d2:b0:412:afa6:cf28 with SMTP id
+ d18-20020a05600c34d200b00412afa6cf28mr186075wmq.30.1709023367753; 
+ Tue, 27 Feb 2024 00:42:47 -0800 (PST)
 Received: from m1x-phil.lan (mic92-h03-176-184-33-214.dsl.sta.abo.bbox.fr.
  [176.184.33.214]) by smtp.gmail.com with ESMTPSA id
- r29-20020adfa15d000000b0033de7a30b4fsm2031402wrr.26.2024.02.27.00.42.40
+ w15-20020a05600c474f00b004129860d532sm10692174wmo.2.2024.02.27.00.42.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 27 Feb 2024 00:42:41 -0800 (PST)
+ Tue, 27 Feb 2024 00:42:47 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-block@nongnu.org, qemu-arm@nongnu.org,
- Bernhard Beschow <shentey@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 27/30] hw/i386/pc: Populate RTC attribute directly
-Date: Tue, 27 Feb 2024 09:39:43 +0100
-Message-ID: <20240227083948.5427-28-philmd@linaro.org>
+ Thomas Huth <thuth@redhat.com>, Radoslaw Biernacki <rad@semihalf.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Subject: [PULL 28/30] hw/arm/sbsa-ref: Do not open-code ahci_ide_create_devs()
+Date: Tue, 27 Feb 2024 09:39:44 +0100
+Message-ID: <20240227083948.5427-29-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240227083948.5427-1-philmd@linaro.org>
 References: <20240227083948.5427-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,135 +96,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+Use ahci_ide_create_devs() instead of open-coding it.
+Not accessing AHCIDevice internals anymore allows to
+remove "hw/ide/ahci_internal.h" (which isn't really a
+public header).
 
-Both the piix and the q35 machines introduce an rtc_state variable and defer the
-initialization of the X86MachineState::rtc attribute to pc_cmos_init(). Resolve
-this complication which makes pc_cmos_init() do what it says on the tin.
-
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-ID: <20240224135851.100361-6-shentey@gmail.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20240226080632.9596-2-philmd@linaro.org>
 ---
- hw/i386/pc.c      |  8 --------
- hw/i386/pc_piix.c | 15 +++++++--------
- hw/i386/pc_q35.c  |  7 +++----
- 3 files changed, 10 insertions(+), 20 deletions(-)
+ hw/arm/sbsa-ref.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index a80f809b83..880e95de26 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -611,14 +611,6 @@ void pc_cmos_init(PCMachineState *pcms,
-     mc146818rtc_set_cmos_data(s, 0x5c, val >> 8);
-     mc146818rtc_set_cmos_data(s, 0x5d, val >> 16);
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index 5d3a574664..4a59e2fd37 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -37,7 +37,6 @@
+ #include "hw/block/flash.h"
+ #include "hw/boards.h"
+ #include "hw/ide/internal.h"
+-#include "hw/ide/ahci_internal.h"
+ #include "hw/ide/ahci-sysbus.h"
+ #include "hw/intc/arm_gicv3_common.h"
+ #include "hw/intc/arm_gicv3_its_common.h"
+@@ -571,8 +570,6 @@ static void create_ahci(const SBSAMachineState *sms)
+     DeviceState *dev;
+     DriveInfo *hd[NUM_SATA_PORTS];
+     SysbusAHCIState *sysahci;
+-    AHCIState *ahci;
+-    int i;
  
--    object_property_add_link(OBJECT(pcms), "rtc_state",
--                             TYPE_ISA_DEVICE,
--                             (Object **)&x86ms->rtc,
--                             object_property_allow_set_link,
--                             OBJ_PROP_LINK_STRONG);
--    object_property_set_link(OBJECT(pcms), "rtc_state", OBJECT(s),
--                             &error_abort);
--
-     set_boot_dev(s, MACHINE(pcms)->boot_config.order, &error_fatal);
+     dev = qdev_new("sysbus-ahci");
+     qdev_prop_set_uint32(dev, "num-ports", NUM_SATA_PORTS);
+@@ -581,14 +578,8 @@ static void create_ahci(const SBSAMachineState *sms)
+     sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, qdev_get_gpio_in(sms->gic, irq));
  
-     val = 0;
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 49d5d48db9..ce6aad758d 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -112,7 +112,6 @@ static void pc_init1(MachineState *machine,
-     Object *piix4_pm = NULL;
-     qemu_irq smi_irq;
-     GSIState *gsi_state;
--    ISADevice *rtc_state;
-     MemoryRegion *ram_memory;
-     MemoryRegion *pci_memory = NULL;
-     MemoryRegion *rom_memory = system_memory;
-@@ -276,8 +275,8 @@ static void pc_init1(MachineState *machine,
-         }
+     sysahci = SYSBUS_AHCI(dev);
+-    ahci = &sysahci->ahci;
+     ide_drive_get(hd, ARRAY_SIZE(hd));
+-    for (i = 0; i < ahci->ports; i++) {
+-        if (hd[i] == NULL) {
+-            continue;
+-        }
+-        ide_bus_create_drive(&ahci->dev[i].port, 0, hd[i]);
+-    }
++    ahci_ide_create_devs(&sysahci->ahci, hd);
+ }
  
-         isa_bus = ISA_BUS(qdev_get_child_bus(DEVICE(pci_dev), "isa.0"));
--        rtc_state = ISA_DEVICE(object_resolve_path_component(OBJECT(pci_dev),
--                                                             "rtc"));
-+        x86ms->rtc = ISA_DEVICE(object_resolve_path_component(OBJECT(pci_dev),
-+                                                              "rtc"));
-         piix4_pm = object_resolve_path_component(OBJECT(pci_dev), "pm");
-         dev = DEVICE(object_resolve_path_component(OBJECT(pci_dev), "ide"));
-         pci_ide_create_devs(PCI_DEVICE(dev));
-@@ -288,9 +287,9 @@ static void pc_init1(MachineState *machine,
-                               &error_abort);
-         isa_bus_register_input_irqs(isa_bus, x86ms->gsi);
- 
--        rtc_state = isa_new(TYPE_MC146818_RTC);
--        qdev_prop_set_int32(DEVICE(rtc_state), "base_year", 2000);
--        isa_realize_and_unref(rtc_state, isa_bus, &error_fatal);
-+        x86ms->rtc = isa_new(TYPE_MC146818_RTC);
-+        qdev_prop_set_int32(DEVICE(x86ms->rtc), "base_year", 2000);
-+        isa_realize_and_unref(x86ms->rtc, isa_bus, &error_fatal);
- 
-         i8257_dma_init(OBJECT(machine), isa_bus, 0);
-         pcms->hpet_enabled = false;
-@@ -316,7 +315,7 @@ static void pc_init1(MachineState *machine,
-     }
- 
-     /* init basic PC hardware */
--    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, rtc_state, true,
-+    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, x86ms->rtc, true,
-                          0x4);
- 
-     pc_nic_init(pcmc, isa_bus, pcms->pcibus);
-@@ -343,7 +342,7 @@ static void pc_init1(MachineState *machine,
-     }
- #endif
- 
--    pc_cmos_init(pcms, rtc_state);
-+    pc_cmos_init(pcms, x86ms->rtc);
- 
-     if (piix4_pm) {
-         smi_irq = qemu_allocate_irq(pc_acpi_smi_interrupt, first_cpu, 0);
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 9e4b8f79c2..45a4102e75 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -125,7 +125,6 @@ static void pc_q35_init(MachineState *machine)
-     Object *phb;
-     PCIDevice *lpc;
-     DeviceState *lpc_dev;
--    ISADevice *rtc_state;
-     MemoryRegion *system_memory = get_system_memory();
-     MemoryRegion *system_io = get_system_io();
-     MemoryRegion *pci_memory = g_new(MemoryRegion, 1);
-@@ -232,7 +231,7 @@ static void pc_q35_init(MachineState *machine)
-     }
-     pci_realize_and_unref(lpc, pcms->pcibus, &error_fatal);
- 
--    rtc_state = ISA_DEVICE(object_resolve_path_component(OBJECT(lpc), "rtc"));
-+    x86ms->rtc = ISA_DEVICE(object_resolve_path_component(OBJECT(lpc), "rtc"));
- 
-     object_property_add_link(OBJECT(machine), PC_MACHINE_ACPI_DEVICE_PROP,
-                              TYPE_HOTPLUG_HANDLER,
-@@ -274,7 +273,7 @@ static void pc_q35_init(MachineState *machine)
-     }
- 
-     /* init basic PC hardware */
--    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, rtc_state, !mc->no_floppy,
-+    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, x86ms->rtc, !mc->no_floppy,
-                          0xff0104);
- 
-     if (pcms->sata_enabled) {
-@@ -312,7 +311,7 @@ static void pc_q35_init(MachineState *machine)
-         smbus_eeprom_init(pcms->smbus, 8, NULL, 0);
-     }
- 
--    pc_cmos_init(pcms, rtc_state);
-+    pc_cmos_init(pcms, x86ms->rtc);
- 
-     /* the rest devices to which pci devfn is automatically assigned */
-     pc_vga_init(isa_bus, pcms->pcibus);
+ static void create_xhci(const SBSAMachineState *sms)
 -- 
 2.41.0
 
