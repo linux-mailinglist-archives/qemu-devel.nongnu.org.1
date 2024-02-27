@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6410186992C
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 15:54:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA6486994F
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 15:56:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reyqM-0006Gn-PW; Tue, 27 Feb 2024 09:54:06 -0500
+	id 1reyrr-0001DP-9I; Tue, 27 Feb 2024 09:55:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1reyq2-00063X-Gw
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 09:53:47 -0500
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1reyrU-00013F-8l
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 09:55:17 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1reyq0-00050X-92
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 09:53:45 -0500
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1reyrN-0005Ng-Rx
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 09:55:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709045622;
+ s=mimecast20190719; t=1709045708;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=mpVDZyDJrUMXiTSCzIO1eszD+qEu7UdkAZXTqcegNCY=;
- b=SO2EPDwchSgDzgOa5fl8nvqTMTcAkICZCbYaCNr5qrBrD4wEZk/FjpV5AQncnKGiC40BKT
- 1RnWAWE+eZd8hyO9i5SrdGM2nDEpCJSaIhhyYXQWLUcKKHDeNe38YArG665ILxtkAu4JRN
- 1C3lmRhIIvMSaWJ3r1yIwT2ItRKfdhQ=
+ bh=u9tGborc83MJFY+JGFE2IZcSTWXP6kPQjnX1S6vVv1k=;
+ b=XAIfj5wHSAfA29ysZrjN0DF1trPXyyezhI5C2idQ49FzeduNbPYCDZwxgnwdD2w7eABcEe
+ bVKTJZ9HOD5a308m23MLUuPxOmPsAQJiLyvh0a43QfNotpfKYNSqiGjAJGegjIfhfxrRVL
+ 22f8uw2npJPCpvbG9hjVjSUShjpA4Sw=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-361-ezdkG5Q-PiCvYP2jblNyoA-1; Tue,
- 27 Feb 2024 09:53:38 -0500
-X-MC-Unique: ezdkG5Q-PiCvYP2jblNyoA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-qjbuhvc1Px2D4XXhcLY3nw-1; Tue,
+ 27 Feb 2024 09:55:06 -0500
+X-MC-Unique: qjbuhvc1Px2D4XXhcLY3nw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 243C03812000
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 14:53:38 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 843E0381200F
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 14:55:06 +0000 (UTC)
 Received: from redhat.com (unknown [10.2.16.98])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3F84F2166B33;
- Tue, 27 Feb 2024 14:53:37 +0000 (UTC)
-Date: Tue, 27 Feb 2024 08:53:35 -0600
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9335B1C060B1;
+ Tue, 27 Feb 2024 14:55:05 +0000 (UTC)
+Date: Tue, 27 Feb 2024 08:55:04 -0600
 From: Eric Blake <eblake@redhat.com>
 To: Markus Armbruster <armbru@redhat.com>
 Cc: qemu-devel@nongnu.org, berrange@redhat.com
-Subject: Re: [PATCH 1/2] docs/devel/writing-monitor-commands: Repair a decade
- of rot
-Message-ID: <zhvqwgl7rgg54gdjcnygx3pmlsimhyxu4j73l254kcmehkh66s@6jvrzmhgupum>
+Subject: Re: [PATCH 2/2] docs/devel/writing-monitor-commands: Minor
+ improvements
+Message-ID: <psbj2phr7s5wl4zks624ajsscrjfcepwvhlzjt7rbxseulu4kf@2nzxhwtlgv6o>
 References: <20240227115617.237875-1-armbru@redhat.com>
- <20240227115617.237875-2-armbru@redhat.com>
+ <20240227115617.237875-3-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240227115617.237875-2-armbru@redhat.com>
+In-Reply-To: <20240227115617.237875-3-armbru@redhat.com>
 User-Agent: NeoMutt/20240201
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -79,117 +79,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 27, 2024 at 12:56:16PM +0100, Markus Armbruster wrote:
-> The tutorial doesn't match reality since at least 2013.  Repairing it
-> involves fixing the following issues:
-> 
-> * Update for commit 6d327171551 (aio / timers: Remove alarm timers):
->   replace the broken examples.  Instead of having one for returning a
->   struct and another for returning a list of structs, do just one for
->   the latter.  This resolves the FIXME added in commit
->   e218052f928 (aio / timers: De-document -clock) back in 2014.
-> 
-> * Update for commit 895a2a80e0e (qapi: Use 'struct' instead of 'type'
->   in schema).
-> 
-> * Update for commit 3313b6124b5 (qapi: add qapi2texi script): add
->   required documentation to the schema snippets, and drop section
->   "Command Documentation".
-> 
-> * Update for commit a3c45b3e629 (qapi: New special feature flag
->   "unstable"): supply the required feature, deemphasize the x- prefix.
-> 
-> * Update for commit dd98234c059 (qapi: introduce x-query-roms QMP
->   command): rephrase from "add new command" to "examine existing
->   command".
-> 
-> * Update for commit 9492718b7c0 (qapi misc: Elide redundant has_FOO in
->   generated C): hello-world's message argument no longer comes with a
->   has_message, add a second argument that does.
-> 
-> * Update for moved and renamed files.
-> 
-> While there, update QMP version output to current output.
-
-Nice cleanups.
-
+On Tue, Feb 27, 2024 at 12:56:17PM +0100, Markus Armbruster wrote:
+> Avoid "JSON" when talking about the QAPI schema syntax.  Capitalize
+> QEMU.  Don't claim all HMP commands live in monitor/hmp-cmds.c (this
+> was never true).  Fix punctuation and drop inappropriate "the" here
+> and there.
 > 
 > Signed-off-by: Markus Armbruster <armbru@redhat.com>
 > ---
->  docs/devel/writing-monitor-commands.rst | 460 ++++++++++--------------
->  1 file changed, 181 insertions(+), 279 deletions(-)
-
->  
-> -The "type" keyword defines a new QAPI type. Its "data" member contains the
-> -type's members. In this example our members are the "clock-name" and the
-> -"next-deadline" one, which is optional.
-> +The "struct" keyword defines a new QAPI type. Its "data" member
-> +contains the type's members. In this example our members are
-> +"filename" and "bootindex".  The latter is optional.
-
-Is there any rhyme or reason behind one vs. two spaces after sentences here?
-
->  
->  The HMP command
->  ~~~~~~~~~~~~~~~
->  
-> -Here's the HMP counterpart of the query-alarm-clock command::
-> +Here's the HMP counterpart of the query-option-roms command::
->  
-> - void hmp_info_alarm_clock(Monitor *mon)
-> + void hmp_info_option_roms(Monitor *mon, const QDict *qdict)
->   {
-> -     QemuAlarmClock *clock;
->       Error *err = NULL;
-> +     OptionRomInfoList *info_list, *tail;
-> +     OptionRomInfo *info;
->  
-> -     clock = qmp_query_alarm_clock(&err);
-> +     info_list = qmp_query_option_roms(&err);
->       if (hmp_handle_error(mon, err)) {
-> -         return;
-> +	 return;
-
-Was the change to TAB intentional?
-
->       }
->  
-> -     monitor_printf(mon, "Alarm clock method in use: '%s'\n", clock->clock_name);
-> -     if (clock->has_next_deadline) {
-> -         monitor_printf(mon, "Next alarm will fire in %" PRId64 " nanoseconds\n",
-> -                        clock->next_deadline);
-> +     for (tail = info_list; tail; tail = tail->next) {
-> +	 info = tail->value;
-> +	 monitor_printf(mon, "%s", info->filename);
-> +	 if (info->has_bootindex) {
-> +	     monitor_printf(mon, " %" PRId64, info->bootindex);
-> +	 }
-> +	 monitor_printf(mon, "\n");
->       }
-
-More TABs.
-
->  Writing a debugging aid returning unstructured text
->  ---------------------------------------------------
-...
-> -The ``HumanReadableText`` struct is intended to be used for all
-> -commands, under the ``x-`` name prefix that are returning unstructured
-> -text targeted at humans. It should never be used for commands outside
-> -the ``x-`` name prefix, as those should be using structured QAPI types.
-> +The ``HumanReadableText`` struct is defined in qapi/common.json as a
-> +struct with a string member. It is intended to be used for all
-> +commands that are returning unstructured text targeted at
-> +humans. These should all have feature 'unstable'.  Note that the
-> +feature's documentation states why the command is unstable.  WE
-
-We
-
-> +commonly use a ``x-`` command name prefix to make lack of stability
-> +obvious to human users.
->  
-
-Cleanups are trivial enough that I'm fine with you making them before
-including:
+>  docs/devel/writing-monitor-commands.rst | 32 ++++++++++++-------------
+>  1 file changed, 15 insertions(+), 17 deletions(-)
+> 
 
 Reviewed-by: Eric Blake <eblake@redhat.com>
 
