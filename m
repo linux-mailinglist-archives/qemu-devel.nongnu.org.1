@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59B16869E21
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 18:44:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7696D869E30
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 18:45:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rf1VF-0002GT-1c; Tue, 27 Feb 2024 12:44:29 -0500
+	id 1rf1Vr-0005R1-Ol; Tue, 27 Feb 2024 12:45:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rf1VA-00029w-K6
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 12:44:24 -0500
+ id 1rf1Vq-0005Q0-2N
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 12:45:06 -0500
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rf1V1-0005Qq-PC
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 12:44:24 -0500
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ id 1rf1Vo-0005fd-Bp
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 12:45:05 -0500
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41RFXsbi022482; Tue, 27 Feb 2024 17:43:58 GMT
+ 41RFYlJF009938; Tue, 27 Feb 2024 17:44:57 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=zKk6pFB++GL3mqIavSgxkb8BjTilnw4woqB6VwYv4bM=;
- b=Xz07anWEiOhzV75WOCleO1WT+gwUr0TAEHeWVjrFuClZnWWWKwW/aDJqHjVUdUoON+dn
- oEYfaREr7ryHVlDfZU1gJl266W/AJK5Dul3kCBMSnbKnoawXBmIhliuhURF5cfmTaI2+
- xruu3+b+wR/DrnySuVxU/ZXSb0OS9uo/kWaLkswm0EDLl9pOVJ2n0AkI+oRYBAvg1jG5
- qiUG61e8MujkSLr2SemeMR9gtOqGczkX+oz5ZWn3PKx6IkrOpxrIQPBdfYHtZhU9E404
- r3lyZIqg+S/i7qOR1gM4R4kljdtkQ+vS1N0GruvkJBXoFGoTcRnafl7rBXToIYDskVJ5 aA== 
+ bh=8oG64oy8rob4doeu1Jctk8IZLA0fas24YY+2pZ6MU/Q=;
+ b=nIZFNoUNq6/J1K+r2mhsabBvQ2Fn5DF3t12C7CRNHMivzQNgES566xqr4rBB2tBRfFiH
+ jxfjl9djdcqTtOFvDgQLmCAGid3PbXjpHAJ874go/zoaMdhmc2prAk9V+6T2WGi2dxo4
+ I9M1ku/28N4n3J0L/oSFzPl4DxD9tKmuHwDrreHw5u7dAIR8B1+wRa5GVWZrvzpRlnvK
+ gyXi46cl9oF9xMXrn+jhHoSXx5mVS4Bhv6IdDCXOeGF1p7rUKZbui9IXFUi5UxZqyzZ3
+ 9yO8433ZLLqnXjhIay79mXNX/33mkdISHQ1dnUxX6+W4Io70YPB1tIm8YnkSQQeUYfWu fQ== 
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wf784g3fy-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wf82u7smx-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 27 Feb 2024 17:43:57 +0000
+ Tue, 27 Feb 2024 17:44:55 +0000
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 41RHSwGH025547; Tue, 27 Feb 2024 17:43:47 GMT
+ with ESMTP id 41RHY3sD025619; Tue, 27 Feb 2024 17:43:48 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3wf6we2vcp-1
+ 3wf6we2vdn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 27 Feb 2024 17:43:47 +0000
+ Tue, 27 Feb 2024 17:43:48 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41RHfGVW000491;
- Tue, 27 Feb 2024 17:43:46 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41RHfGVY000491;
+ Tue, 27 Feb 2024 17:43:48 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3wf6we2v1c-9; Tue, 27 Feb 2024 17:43:46 +0000
+ ESMTP id 3wf6we2v1c-10; Tue, 27 Feb 2024 17:43:48 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -63,9 +63,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Song Gao <gaosong@loongson.cn>,
  Alistair Francis <alistair.francis@wdc.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V1 08/10] migration: migration_file_set_error
-Date: Tue, 27 Feb 2024 09:43:25 -0800
-Message-Id: <1709055807-315099-9-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V1 09/10] migration: privatize colo interfaces
+Date: Tue, 27 Feb 2024 09:43:26 -0800
+Message-Id: <1709055807-315099-10-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1709055807-315099-1-git-send-email-steven.sistare@oracle.com>
 References: <1709055807-315099-1-git-send-email-steven.sistare@oracle.com>
@@ -77,8 +77,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
  adultscore=0 mlxlogscore=999 malwarescore=0 spamscore=0 bulkscore=0
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2402270137
-X-Proofpoint-GUID: c-N2XOy6BqryTLrkBe1Kg1Gk209yZIOD
-X-Proofpoint-ORIG-GUID: c-N2XOy6BqryTLrkBe1Kg1Gk209yZIOD
+X-Proofpoint-GUID: fRbd9qaVR3igFnwdmfEM2B0ygzQR5Yot
+X-Proofpoint-ORIG-GUID: fRbd9qaVR3igFnwdmfEM2B0ygzQR5Yot
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -104,121 +104,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define and export migration_file_set_error to eliminate a dependency
-on MigrationState.
+Remove private migration interfaces from net/colo-compare.c and push them
+to migration/colo.c.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- hw/vfio/common.c         |  9 +--------
- hw/vfio/migration.c      | 11 +++--------
- include/migration/misc.h |  2 ++
- migration/migration.c    | 11 +++++++++++
- 4 files changed, 17 insertions(+), 16 deletions(-)
+ migration/colo.c   | 17 +++++++++++------
+ net/colo-compare.c |  3 +--
+ stubs/colo.c       |  1 -
+ 3 files changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index de01068..b44204e 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -39,7 +39,6 @@
- #include "sysemu/runstate.h"
- #include "trace.h"
- #include "qapi/error.h"
--#include "migration/migration.h"
- #include "migration/misc.h"
- #include "migration/blocker.h"
- #include "migration/qemu-file.h"
-@@ -150,14 +149,8 @@ bool vfio_viommu_preset(VFIODevice *vbasedev)
+diff --git a/migration/colo.c b/migration/colo.c
+index 315e31f..84632a6 100644
+--- a/migration/colo.c
++++ b/migration/colo.c
+@@ -63,9 +63,9 @@ static bool colo_runstate_is_stopped(void)
+     return runstate_check(RUN_STATE_COLO) || !runstate_is_running();
+ }
  
- static void vfio_set_migration_error(int err)
+-static void colo_checkpoint_notify(void *opaque)
++static void colo_checkpoint_notify(void)
  {
--    MigrationState *ms = migrate_get_current();
--
-     if (migration_is_setup_or_active()) {
--        WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
--            if (ms->to_dst_file) {
--                qemu_file_set_error(ms->to_dst_file, err);
--            }
--        }
-+        migration_file_set_error(err);
-     }
+-    MigrationState *s = opaque;
++    MigrationState *s = migrate_get_current();
+     int64_t next_notify_time;
+ 
+     qemu_event_set(&s->colo_checkpoint_event);
+@@ -74,10 +74,15 @@ static void colo_checkpoint_notify(void *opaque)
+     timer_mod(s->colo_delay_timer, next_notify_time);
  }
  
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 5d4a23c..c5cb61d 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -17,13 +17,12 @@
- 
- #include "sysemu/runstate.h"
- #include "hw/vfio/vfio-common.h"
--#include "migration/migration.h"
-+#include "migration/misc.h"
- #include "migration/savevm.h"
- #include "migration/vmstate.h"
- #include "migration/qemu-file.h"
- #include "migration/register.h"
- #include "migration/blocker.h"
--#include "migration/misc.h"
- #include "qapi/error.h"
- #include "exec/ramlist.h"
- #include "exec/ram_addr.h"
-@@ -712,9 +711,7 @@ static void vfio_vmstate_change_prepare(void *opaque, bool running,
-          * Migration should be aborted in this case, but vm_state_notify()
-          * currently does not support reporting failures.
-          */
--        if (migrate_get_current()->to_dst_file) {
--            qemu_file_set_error(migrate_get_current()->to_dst_file, ret);
--        }
-+        migration_file_set_error(ret);
-     }
- 
-     trace_vfio_vmstate_change_prepare(vbasedev->name, running,
-@@ -744,9 +741,7 @@ static void vfio_vmstate_change(void *opaque, bool running, RunState state)
-          * Migration should be aborted in this case, but vm_state_notify()
-          * currently does not support reporting failures.
-          */
--        if (migrate_get_current()->to_dst_file) {
--            qemu_file_set_error(migrate_get_current()->to_dst_file, ret);
--        }
-+        migration_file_set_error(ret);
-     }
- 
-     trace_vfio_vmstate_change(vbasedev->name, running, RunState_str(state),
-diff --git a/include/migration/misc.h b/include/migration/misc.h
-index 28cfaed..e521cd5 100644
---- a/include/migration/misc.h
-+++ b/include/migration/misc.h
-@@ -109,6 +109,8 @@ bool migration_in_setup(MigrationState *);
- bool migration_has_finished(MigrationState *);
- bool migration_has_failed(MigrationState *);
- bool migration_is_running(void);
-+void migration_file_set_error(int err);
-+
- /* ...and after the device transmission */
- /* True if incoming migration entered POSTCOPY_INCOMING_DISCARD */
- bool migration_in_incoming_postcopy(void);
-diff --git a/migration/migration.c b/migration/migration.c
-index 6b386af..4f65a98 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -2996,6 +2996,17 @@ static MigThrError postcopy_pause(MigrationState *s)
-     }
- }
- 
-+void migration_file_set_error(int err)
++static void colo_checkpoint_notify_timer(void *opaque)
 +{
-+    MigrationState *s = current_migration;
-+
-+    WITH_QEMU_LOCK_GUARD(&s->qemu_file_lock) {
-+        if (s->to_dst_file) {
-+            qemu_file_set_error(s->to_dst_file, err);
-+        }
-+    }
++    colo_checkpoint_notify();
 +}
 +
- static MigThrError migration_detect_error(MigrationState *s)
+ void colo_checkpoint_delay_set(void)
  {
-     int ret;
+     if (migration_in_colo_state()) {
+-        colo_checkpoint_notify(migrate_get_current());
++        colo_checkpoint_notify();
+     }
+ }
+ 
+@@ -162,7 +167,7 @@ static void primary_vm_do_failover(void)
+      * kick COLO thread which might wait at
+      * qemu_sem_wait(&s->colo_checkpoint_sem).
+      */
+-    colo_checkpoint_notify(s);
++    colo_checkpoint_notify();
+ 
+     /*
+      * Wake up COLO thread which may blocked in recv() or send(),
+@@ -518,7 +523,7 @@ out:
+ 
+ static void colo_compare_notify_checkpoint(Notifier *notifier, void *data)
+ {
+-    colo_checkpoint_notify(data);
++    colo_checkpoint_notify();
+ }
+ 
+ static void colo_process_checkpoint(MigrationState *s)
+@@ -642,7 +647,7 @@ void migrate_start_colo_process(MigrationState *s)
+     bql_unlock();
+     qemu_event_init(&s->colo_checkpoint_event, false);
+     s->colo_delay_timer =  timer_new_ms(QEMU_CLOCK_HOST,
+-                                colo_checkpoint_notify, s);
++                                colo_checkpoint_notify_timer, NULL);
+ 
+     qemu_sem_init(&s->colo_exit_sem, 0);
+     colo_process_checkpoint(s);
+diff --git a/net/colo-compare.c b/net/colo-compare.c
+index f2dfc0e..c4ad0ab 100644
+--- a/net/colo-compare.c
++++ b/net/colo-compare.c
+@@ -28,7 +28,6 @@
+ #include "sysemu/iothread.h"
+ #include "net/colo-compare.h"
+ #include "migration/colo.h"
+-#include "migration/migration.h"
+ #include "util.h"
+ 
+ #include "block/aio-wait.h"
+@@ -189,7 +188,7 @@ static void colo_compare_inconsistency_notify(CompareState *s)
+         notify_remote_frame(s);
+     } else {
+         notifier_list_notify(&colo_compare_notifiers,
+-                             migrate_get_current());
++                             NULL);
+     }
+ }
+ 
+diff --git a/stubs/colo.c b/stubs/colo.c
+index 08c9f98..f8c069b 100644
+--- a/stubs/colo.c
++++ b/stubs/colo.c
+@@ -2,7 +2,6 @@
+ #include "qemu/notify.h"
+ #include "net/colo-compare.h"
+ #include "migration/colo.h"
+-#include "migration/migration.h"
+ #include "qemu/error-report.h"
+ #include "qapi/qapi-commands-migration.h"
+ 
 -- 
 1.8.3.1
 
