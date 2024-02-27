@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76FF986932C
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:42:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E02A8692D4
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:39:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rexax-00015D-N6; Tue, 27 Feb 2024 08:34:07 -0500
+	id 1rexb6-0001AS-2q; Tue, 27 Feb 2024 08:34:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexab-0000pn-Gx
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:47 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1rexae-0000r0-IB
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:49 -0500
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaW-0002xU-19
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:45 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-33de6da5565so805178f8f.2
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:39 -0800 (PST)
+ id 1rexaW-0002xt-Sv
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:48 -0500
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2d288bac3caso27993981fa.2
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709040818; x=1709645618; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709040819; x=1709645619; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=8Orf4noRBf1WSFwEsX9mdSuLU4p1Ut9DO1XoPiOsZMY=;
- b=rI92CFmO3lBrpU3uaKGE0jOGvQCvYQeoIuqkN3AGvaX7weaUoAiy9BrRoRI4qReFAq
- 3+SjpySL2cfY3gqG54wenF1CCmXxZ5qwstAtT+bUExBmk7b2tDxPRIA1V4OoP7+Wr/3a
- NJGx36nBaeM7TU776+M9woSdvdMD9+Ec6HoJ5WdE8AT6DLbnzEo+ZZARsK8CxkiITrtB
- P/F7hNZzBvZmW0LaVjce3at7WY8c0kKKP3Tr6TrHgREIqRojH6ixAd1+OOrybifjq9mb
- XfxYDRmk7LGka3QfQT9Ps2d5lmsy5dEY2QV19CSeYsT4ImaqOGru78++WScjVE6h4pt8
- /IwQ==
+ :reply-to; bh=P4hkNztqDNRnaj+KFHGOI40tyfjypqPbuVEH2aEu/ZE=;
+ b=aDH/Cv7YDomn/mjERrsncVZ0o53RbnyAog096DYWI1ROzohllKa9W0sjV65d5YC4rt
+ Tg2I7lReUR9HyVokNemRqYzwunrGkr5ILFvsqmmDhDzCQHtAx5h3NWDVB6NKECZnJvfg
+ ahji41lc6JdlW2nMAyar1cu8wHxQTmJUwG2RobdseVIREd4IvK43CXrx7eKdMsXtt6sa
+ oa1ThrBKy8idr3bhXpK/cVv4NB52MdPtVonaFhXCMrq9ztCq6J6ENEPxcU0mspQXfwQr
+ uerylaHEeO4XxUgEKFi8p9aIN40xB5wEZb/bVF9YGXUozbQ5ALZhqnIF2eSIRl749bAI
+ m4ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709040818; x=1709645618;
+ d=1e100.net; s=20230601; t=1709040819; x=1709645619;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8Orf4noRBf1WSFwEsX9mdSuLU4p1Ut9DO1XoPiOsZMY=;
- b=ek1Wa2sK16nfw2AL7Drr5g1Lsa6ELANMYQB66Gc1wGxLC4eOoT6D3xkr+M/map5y/R
- YxQNUz/YiQQGW1no7Hn1ltHrKrvHhMu9gdqpo86wfdBuKsibPiTZwm5TYf1DqGXZDiHy
- oErVE+xqvN2cqVjrypVN+R455Tgsz/QwurJDRlpsI3XmsGfHXQUaeM6av4FY+0zDZH/Z
- 7o2uGGvVIOCdKo9t+1tNnjNhniXuQMbTl846ChW58Ntuv3tScjD83PcSraEsVD8/5eRY
- gS91OYLeAjVELBeQA5O9zM6Xy3pO3CuvuR8v6ruGyHNLzLldJHe/V1ZcN+Xj6buVzavW
- KjnQ==
-X-Gm-Message-State: AOJu0YzS7wICs5BAuHn7VyMMz17803ERB5hEV+BZemBZo6aN+g7IIjfs
- ltpTYfzvp8607XGgKepFkFH0ES+Poz2hOlUR/ijJPnTWKMnu4zoK63vk9Bzgc+OJATF8ktDPAsb
- n
-X-Google-Smtp-Source: AGHT+IFlfY+bv44Bq5pucm2sOY1uo0nXTWC5OO6osSo1TAgyB8ojyZW37NPQxH0niBNtBqZjNLU7QA==
-X-Received: by 2002:adf:fc01:0:b0:33d:a185:17ed with SMTP id
- i1-20020adffc01000000b0033da18517edmr6166815wrr.56.1709040818730; 
- Tue, 27 Feb 2024 05:33:38 -0800 (PST)
+ bh=P4hkNztqDNRnaj+KFHGOI40tyfjypqPbuVEH2aEu/ZE=;
+ b=tXv9nV9IVg+3Xb6cwixwR0Qb1JHYDMEjZu2CoikEAO2JLUJyPt8crfnF7BAg3g4uSY
+ GKggRUgibyyY4E5u3o92u2MJwkp+DLvyfV3ni15cwpxJEvQSQf9tE+mIrAZCHHBuJ7jM
+ boI5LLwTFtJyEb97mwfr4hS6eurTekhiFzpeXzUJ8xVsvgQYzEWUmYOHoJKtawtQZO03
+ us5yDYscHrY9qCvSqU0E8C2EqbhGfOJPhfPVi8wsPHjZ0X5NSTIlv+a54l2dfifuLptt
+ QOH6Ai8cQq/INjMiHI1CbhtuoykXhjeU7+rgDcyX/5O4Zsh3Lwdh6hGyv0njCuhy3Q7O
+ A0PA==
+X-Gm-Message-State: AOJu0YxWBh9uBYrsA99ZcFe60OCMSD4f1dQ1fgvYJmwNjqfCNAQutK8O
+ t+DytNbNMy1DuJz/Gh8whmcRhCrbAtJXF+K29CGtTjCw5lMIlOIHHNH1rDl8pWslq0hMqt6wB+E
+ W
+X-Google-Smtp-Source: AGHT+IH2aeuzCh7MERJeH2RyIdLtxblTvgOkXiUL3pWlEUS2YCjaqKiqpyDzQmzeJ2TuuZs8iA26kQ==
+X-Received: by 2002:a2e:be89:0:b0:2d2:5430:605a with SMTP id
+ a9-20020a2ebe89000000b002d25430605amr7860482ljr.7.1709040819205; 
+ Tue, 27 Feb 2024 05:33:39 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  i13-20020adfe48d000000b0033ae7d768b2sm11319552wrm.117.2024.02.27.05.33.38
@@ -59,17 +59,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 27 Feb 2024 05:33:38 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 44/45] tests/qtest/bcm2828-mailbox: Append added properties to
- mailbox test
-Date: Tue, 27 Feb 2024 13:33:13 +0000
-Message-Id: <20240227133314.1721857-45-peter.maydell@linaro.org>
+Subject: [PULL 45/45] docs/system/arm: Add RPi4B to raspi.rst
+Date: Tue, 27 Feb 2024 13:33:14 +0000
+Message-Id: <20240227133314.1721857-46-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240227133314.1721857-1-peter.maydell@linaro.org>
 References: <20240227133314.1721857-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::233;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x233.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,71 +94,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Sergey Kambalin <serg.oker@gmail.com>
 
 Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
-Message-id: 20240226000259.2752893-41-sergey.kambalin@auriga.com
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-id: 20240226000259.2752893-42-sergey.kambalin@auriga.com
+[PMM: list PCIE and GENET as 'missing' for now, until we land
+ the patches which add those devices]
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/qtest/bcm2838-mbox-property-test.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ docs/system/arm/raspi.rst | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/tests/qtest/bcm2838-mbox-property-test.c b/tests/qtest/bcm2838-mbox-property-test.c
-index 0a71b756dcf..ca368afed34 100644
---- a/tests/qtest/bcm2838-mbox-property-test.c
-+++ b/tests/qtest/bcm2838-mbox-property-test.c
-@@ -270,6 +270,12 @@ DECLARE_TEST_CASE_SETUP(GET_MIN_CLOCK_RATE, ANY) {
-     tag->request.value.clock_id = CLOCK_ID_UNDEFINED;
- }
+diff --git a/docs/system/arm/raspi.rst b/docs/system/arm/raspi.rst
+index d0a6f08b2b9..bb417c34241 100644
+--- a/docs/system/arm/raspi.rst
++++ b/docs/system/arm/raspi.rst
+@@ -1,5 +1,5 @@
+-Raspberry Pi boards (``raspi0``, ``raspi1ap``, ``raspi2b``, ``raspi3ap``, ``raspi3b``)
+-======================================================================================
++Raspberry Pi boards (``raspi0``, ``raspi1ap``, ``raspi2b``, ``raspi3ap``, ``raspi3b``, ``raspi4b``)
++===================================================================================================
  
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(GET_CLOCKS) {
-+    g_assert_cmphex(tag->response.value.root_clock, ==, CLOCK_ID_ROOT);
-+    g_assert_cmphex(tag->response.value.arm_clock, ==, CLOCK_ID_ARM);
-+}
-+
- /*----------------------------------------------------------------------------*/
- DECLARE_TEST_CASE(GET_TEMPERATURE) {
-     g_assert_cmphex(tag->response.value.temperature_id, ==, TEMPERATURE_ID_SOC);
-@@ -536,6 +542,11 @@ DECLARE_TEST_CASE(GET_COMMAND_LINE) {
-     /* No special checks are needed for this test case */
- }
  
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(GET_THROTTLED) {
-+    g_assert_cmpint(tag->response.value.throttled, ==, 0);
-+}
-+
- /*----------------------------------------------------------------------------*/
- DECLARE_TEST_CASE(FRAMEBUFFER_GET_NUM_DISPLAYS) {
-     g_assert_cmpint(tag->response.value.num_displays, ==, 1);
-@@ -549,6 +560,11 @@ DECLARE_TEST_CASE_SETUP(FRAMEBUFFER_SET_PITCH) {
-     tag->request.value.pitch = DUMMY_VALUE;
- }
+ QEMU provides models of the following Raspberry Pi boards:
+@@ -12,12 +12,13 @@ QEMU provides models of the following Raspberry Pi boards:
+   Cortex-A53 (4 cores), 512 MiB of RAM
+ ``raspi3b``
+   Cortex-A53 (4 cores), 1 GiB of RAM
+-
++``raspi4b``
++  Cortex-A72 (4 cores), 2 GiB of RAM
  
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(VCHIQ_INIT) {
-+    g_assert_cmpint(tag->response.value.zero, ==, 0);
-+}
-+
- /*----------------------------------------------------------------------------*/
- int main(int argc, char **argv)
- {
-@@ -572,6 +588,7 @@ int main(int argc, char **argv)
-     QTEST_ADD_TEST_CASE(GET_CLOCK_RATE, ANY);
-     QTEST_ADD_TEST_CASE(GET_MAX_CLOCK_RATE, ANY);
-     QTEST_ADD_TEST_CASE(GET_MIN_CLOCK_RATE, ANY);
-+    QTEST_ADD_TEST_CASE(GET_CLOCKS);
-     QTEST_ADD_TEST_CASE(GET_TEMPERATURE);
-     QTEST_ADD_TEST_CASE(GET_MAX_TEMPERATURE);
-     QTEST_ADD_TEST_CASE(FRAMEBUFFER_ALLOCATE);
-@@ -607,6 +624,8 @@ int main(int argc, char **argv)
-     QTEST_ADD_TEST_CASE(GET_COMMAND_LINE);
-     QTEST_ADD_TEST_CASE(FRAMEBUFFER_GET_NUM_DISPLAYS);
-     QTEST_ADD_TEST_CASE(FRAMEBUFFER_SET_PITCH);
-+    QTEST_ADD_TEST_CASE(GET_THROTTLED);
-+    QTEST_ADD_TEST_CASE(VCHIQ_INIT);
+ Implemented devices
+ -------------------
  
-     return g_test_run();
- }
+- * ARM1176JZF-S, Cortex-A7 or Cortex-A53 CPU
++ * ARM1176JZF-S, Cortex-A7, Cortex-A53 or Cortex-A72 CPU
+  * Interrupt controller
+  * DMA controller
+  * Clock and reset controller (CPRMAN)
+@@ -35,9 +36,10 @@ Implemented devices
+  * VideoCore firmware (property)
+  * Peripheral SPI controller (SPI)
+ 
+-
+ Missing devices
+ ---------------
+ 
+  * Analog to Digital Converter (ADC)
+  * Pulse Width Modulation (PWM)
++ * PCIE Root Port (raspi4b)
++ * GENET Ethernet Controller (raspi4b)
 -- 
 2.34.1
 
