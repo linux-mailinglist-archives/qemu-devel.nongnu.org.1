@@ -2,109 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C11869919
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 15:53:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AFEF869908
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 15:51:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reyit-0000iI-Uf; Tue, 27 Feb 2024 09:46:24 -0500
+	id 1reylj-0007mN-G6; Tue, 27 Feb 2024 09:49:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1reyhO-0006fr-06
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 09:44:51 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1reygU-00028v-Jl
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 09:44:48 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-41298159608so22069835e9.0
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 06:43:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709045033; x=1709649833; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=c62pHsDpP+3tvJg69QO5ZTVqtvkEN32UvVvL0uQMeec=;
- b=gux/cNeg+v7mVG2tl8fdvCfEUd+40DjhSjPe55bcJZR1PmnnNBkXG8m86VIEaHlA99
- 8LHz93oMUPlUXeGH0fZUroex7HZQLG9Wci0Wqu1o2fAgnaCbtCcGwR0frNCfJTwvFrBr
- SCNTlQnaqKLm5FpqQ83LZoW8qrz9taomLAFTazKs9gsXiPyd/RNiOZgmh7uthdhnyPQZ
- 8arceJrYNjccNMeqcZSiAPHk96ulz6GpJNCAxhnWhaEMp6HQjXk45I7wuAATuPqeXkuu
- 0Rph/kuBHJi9ilAjzKVw5WrHBH7nkLmT1Dej5qN18NwxV3qBe2xvq4jX4V7zY8iVu1at
- 8gjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709045033; x=1709649833;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=c62pHsDpP+3tvJg69QO5ZTVqtvkEN32UvVvL0uQMeec=;
- b=rnUewGScze4kKArY8e4MEMfDndAnB/bFl2xld3JmJ1KdZUIpfr6yJ/5Gh2cNO4t44Z
- JcDg9sHrp0uyW4O/VTMfq0iQhM5WYIMwXr7CfM+QCFXei3OlXtaUovE/WRIqSP/nTP48
- tYeZEFLjoG8Gr6XYriRZJxPKPZlUb/RCKF+qSmp58+DMYxyUoRBwhvCVY9Gt+Dh6aSr6
- W+dtVmONGo7fiXS8imh8QpAm9GeNk79uJ+zIO3R49znjTyus0g0ho4bYd5W0l4O9ND8u
- 0Mv1Ejyf/ZsVByg9Ad8n5wqJVSohV+h6gnpvcAbRlqvWxumz993RLlQ1OcOQG3xx9KIC
- Fr7w==
-X-Gm-Message-State: AOJu0YwzI6Siyw/e9EzhpSDgh63HqIe4x+QXfjXGcaGsJvROdbKOhWem
- ht9OyjAXpCFOvevNlBRvDgNSiD5+BZExLQwCCs45kde1b0Llzg/+5bZUdHCc16M=
-X-Google-Smtp-Source: AGHT+IHhQzcJcS6r5wz7jaaCY5J2GMmsAy5/oYXqiRSw/8YTNKf+gmGm1vmh654hwDpiAMXWd3BOow==
-X-Received: by 2002:a05:600c:4f01:b0:412:afed:5cdd with SMTP id
- l1-20020a05600c4f0100b00412afed5cddmr1067554wmq.11.1709045033287; 
- Tue, 27 Feb 2024 06:43:53 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- w10-20020adff9ca000000b0033d1b760125sm11684409wrr.92.2024.02.27.06.43.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Feb 2024 06:43:49 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 3B4925F930;
- Tue, 27 Feb 2024 14:43:38 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <calebs@linux.vnet.ibm.com>)
+ id 1reyle-0007SX-LU; Tue, 27 Feb 2024 09:49:14 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <calebs@linux.vnet.ibm.com>)
+ id 1reylc-0003rF-56; Tue, 27 Feb 2024 09:49:14 -0500
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41REhH0M000974; Tue, 27 Feb 2024 14:49:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=2/QSb0OdJNwMPRn7P7cahTL5KAjIljSb5JFVHYcYULM=;
+ b=m6UpFZL7RVnkt81njpYVy8C6cz25M2ARYxtJPxSCtKJHs+zhvLGmbetv6ZLwOG7CimJo
+ mc+6cb+oA4solMeK0cMNf1Eh2wuWLQjXx8Ui50fSg/8qTcgfm4sai9uFFWEPs8quZTeU
+ 97OBgqm2L33yH9Jkw4RLoCQ5mpWGW3GwYuEIOqiMGiod4G+jslkCaaIfONdGhsqm826w
+ UXI7ceznmHRbFwc5uU9Y9kgi6Lka4k1Og18+uATc+OcJCsRBXp6L7pVyPBNIpvZfCW8A
+ c04IqLqd0vJSv/RyKSbj1WCUI99X5FOzaOi8lKjpLPjmY5Zt77D1TGkDJ42yvS/ivD3j zQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3whh7y1a8u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Feb 2024 14:49:01 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41RElpkF021355;
+ Tue, 27 Feb 2024 14:49:01 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3whh7y1a8f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Feb 2024 14:49:01 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41RDtObq024154; Tue, 27 Feb 2024 14:49:00 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wfw0k7wtn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Feb 2024 14:49:00 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 41REmwiP18809480
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 27 Feb 2024 14:49:00 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 75B8858066;
+ Tue, 27 Feb 2024 14:48:58 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2AD2D58052;
+ Tue, 27 Feb 2024 14:48:58 +0000 (GMT)
+Received: from gfwr540.rchland.ibm.com (unknown [9.10.239.160])
+ by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 27 Feb 2024 14:48:58 +0000 (GMT)
+From: Caleb Schlossin <calebs@linux.vnet.ibm.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- qemu-arm@nongnu.org, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Michael Rolnik <mrolnik@gmail.com>, Yanan Wang <wangyanan55@huawei.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Song Gao <gaosong@loongson.cn>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Laurent Vivier <laurent@vivier.eu>, Warner Losh <imp@bsdimp.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>, Ilya Leoshkevich <iii@linux.ibm.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- qemu-s390x@nongnu.org, Kyle Evans <kevans@freebsd.org>,
- Brad Smith <brad@comstyle.com>, Nicholas Piggin <npiggin@gmail.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- John Snow <jsnow@redhat.com>, Alistair Francis <alistair.francis@wdc.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Brian Cain <bcain@quicinc.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-riscv@nongnu.org, Bin Meng <bin.meng@windriver.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PATCH v4 29/29] docs/devel: plugins can trigger a tb flush
-Date: Tue, 27 Feb 2024 14:43:35 +0000
-Message-Id: <20240227144335.1196131-30-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240227144335.1196131-1-alex.bennee@linaro.org>
-References: <20240227144335.1196131-1-alex.bennee@linaro.org>
+Cc: qemu-ppc@nongnu.org, clg@kaod.org, npiggin@gmail.com,
+ fbarrat@linux.ibm.com, calebs@linux.vnet.ibm.com
+Subject: [PATCH 2/2] ppc/pnv: Fix pervasive topology calculation for P10
+Date: Tue, 27 Feb 2024 08:48:44 -0600
+Message-Id: <20240227144844.23606-1-calebs@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.8
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ytxbxp4nw854qVrdJzJBv2AqKZFeb_bS
+X-Proofpoint-ORIG-GUID: pGb7aqNeVmH9Aw5HPe96hB_mLXEz4OKQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-27_01,2024-02-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxscore=0
+ clxscore=1011 lowpriorityscore=0 malwarescore=0 mlxlogscore=999
+ priorityscore=1501 bulkscore=0 spamscore=0 suspectscore=0 impostorscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402270113
+Received-SPF: none client-ip=148.163.158.5;
+ envelope-from=calebs@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,31 +108,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Pervasive topology(PIR) calculation for core, thread ID was
+wrong for big cores (SMT8). Fixing for P10.
 
-When scoreboards need to be reallocated.
-
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240213094009.150349-8-pierrick.bouvier@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Based on: <20240123195005.8965-1-calebs@linux.vnet.ibm.com>
+Signed-off-by: Caleb Schlossin <calebs@linux.vnet.ibm.com>
 ---
- docs/devel/multi-thread-tcg.rst | 1 +
- 1 file changed, 1 insertion(+)
+ hw/ppc/pnv.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/docs/devel/multi-thread-tcg.rst b/docs/devel/multi-thread-tcg.rst
-index 7302c3bf534..1420789fff3 100644
---- a/docs/devel/multi-thread-tcg.rst
-+++ b/docs/devel/multi-thread-tcg.rst
-@@ -109,6 +109,7 @@ including:
-   - debugging operations (breakpoint insertion/removal)
-   - some CPU helper functions
-   - linux-user spawning its first thread
-+  - operations related to TCG Plugins
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index 2f53883916..aa5aba60b4 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -1068,12 +1068,23 @@ static uint32_t pnv_chip_pir_p9(PnvChip *chip, uint32_t core_id,
+     }
+ }
  
- This is done with the async_safe_run_on_cpu() mechanism to ensure all
- vCPUs are quiescent when changes are being made to shared global
++/*
++ *    0:48  Reserved - Read as zeroes
++ *   49:52  Node ID
++ *   53:55  Chip ID
++ *   56     Reserved - Read as zero
++ *   57:59  Quad ID
++ *   60     Core Chiplet Pair ID
++ *   61:63  Thread/Core Chiplet ID t0-t2
++ *
++ * We only care about the lower bits. uint32_t is fine for the moment.
++ */
+ static uint32_t pnv_chip_pir_p10(PnvChip *chip, uint32_t core_id,
+                                  uint32_t thread_id)
+ {
+     if (chip->nr_threads == 8) {
+-        return (chip->chip_id << 8) | ((thread_id & 1) << 2) | (core_id << 3) |
+-               (thread_id >> 1);
++        return (chip->chip_id << 8) | ((core_id / 4) << 4) |
++               ((core_id % 2) << 3) | thread_id;
+     } else {
+         return (chip->chip_id << 8) | (core_id << 2) | thread_id;
+     }
 -- 
-2.39.2
+2.31.8
 
 
