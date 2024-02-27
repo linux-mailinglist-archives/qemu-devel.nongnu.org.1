@@ -2,78 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D9E3869A75
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 16:34:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D633F869A7B
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 16:34:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rezRu-00044X-RM; Tue, 27 Feb 2024 10:32:54 -0500
+	id 1rezSl-0004OA-Aw; Tue, 27 Feb 2024 10:33:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rezRt-00043s-1T
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 10:32:53 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rezRq-0005CY-Hd
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 10:32:52 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-56657bcd555so231589a12.3
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 07:32:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709047969; x=1709652769; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=2N2ryzAbZSNxl9SrwXCGoeVoeV2TQywNprJQRi5gziI=;
- b=G9c6kDG5u+pGkWo0RYSPzXoteHPChwXiB1nI/oi9VPNf+HcawUlKO0JkJIY1zLH04J
- ZJNxgly3wFiF6XKXVOZeezocFUgAtO9TyZdMIppgXbO1WRy8wGXx+pr6a3EPgAsGmk0q
- 7/EHbDjrTSdDLaoVn9hQOCRQ06ccK5KudnRct5MOxERY6INcp5bKvz1gFBvYiusp6E0+
- 6R+cgbmpDAgCsSO/VcA4aXveKSNyBHekwgx0e3ltYA4LPRfC11x6m9wzQLBJZ0IMNf3j
- inqagUc0l9gfG7DSX1RFGgjAzkHz31/wTO1unadW4qCzfceG1ZTKJbtn+3dUmOCibqES
- 1aMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709047969; x=1709652769;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2N2ryzAbZSNxl9SrwXCGoeVoeV2TQywNprJQRi5gziI=;
- b=IiYheR83PhXqUmsPBCS3hg8+cV//UU7nSyezxMqbeFKODB4cWQrYl4u+rLQHf0k4GN
- vL8yh4xqw6RPpb9/+dPrWeKP8I6Kcc78IfHP0vG4X+UBHjmgloN3ejXgQrhHQQLTXVyv
- qeEFyqFv6oBqlkT9LTcAD59Jv0QLQjl1MuZYvCh8icgnIPRl6K5Vx7PNzBb9gzBCFowO
- zZzc4yx7DoPGrALqVIqWuL5iOX4Tzd0bT2/E+zt7/uIvx98hA6DsUQUR3gkqothl8hg1
- 8znryHY2nxAv6Ag0RzQgMYRgLso9Cnzyw/ua99+Gk4q8AodvwcgPORVEZgQ9nuRpU1RF
- Xkig==
-X-Gm-Message-State: AOJu0YxDg6iqXUl76ELK4tWI1nPlaewE6t4kj7Y9l/kNwQK+bhO7ZzQB
- PCs2lJtWNpV60xNoUJW7m0jCqS68Z5LKdXRu2mZT8nO5WfR5AMvaaa/IEvmOkvNfJ31WCz8+Guq
- TTYd9Nq2rJJ/Kse1HnafCuyfse4sNPX0nS/LHCQ==
-X-Google-Smtp-Source: AGHT+IHLPOkQMh2Tx16LNLq/vxtBHB08/r8hjD3DzNCiW831OmDDXrUhXcov+V4bD87s3Hxo0qqY9X/xhHixRLajihU=
-X-Received: by 2002:aa7:d912:0:b0:564:a62e:dad with SMTP id
- a18-20020aa7d912000000b00564a62e0dadmr7192968edr.34.1709047968487; Tue, 27
- Feb 2024 07:32:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rezSX-0004Hy-7A
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 10:33:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rezSR-0005HD-JI
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 10:33:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709048005;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=xop/Ba5+TQcVzS6naoCuT4sW8PBrETBtuaYDcMfpves=;
+ b=XsTJfhYP5EDGYGPLn66CzuEoCfLqKUIfFZ7TRzkWxeQvHk1nDT87rODd7MU7k7K3UR9r8u
+ 6YKX8RdTzSLs2lypnQ9hfCKNIBavV0moauYIoH5FuHLgJ0aDUCyix/mjvIydtBawmU1s14
+ OtV3l/EGFYgI3s9b0RkjjWkBUzJo8CM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-207-BJCAy9w6MO-fTrSOHoZsKQ-1; Tue, 27 Feb 2024 10:33:23 -0500
+X-MC-Unique: BJCAy9w6MO-fTrSOHoZsKQ-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2EEC68828C3;
+ Tue, 27 Feb 2024 15:33:23 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.4])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0A5EC492BD7;
+ Tue, 27 Feb 2024 15:33:23 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id F14E621E66F4; Tue, 27 Feb 2024 16:33:21 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: steven.sistare@oracle.com, philmd@linaro.org, dave@treblig.org,
+ jasowang@redhat.com, michael.roth@amd.com, peterx@redhat.com,
+ farosas@suse.de
+Subject: [PATCH v7 0/3] string list functions
+Date: Tue, 27 Feb 2024 16:33:18 +0100
+Message-ID: <20240227153321.467343-1-armbru@redhat.com>
 MIME-Version: 1.0
-References: <cover.1709045654.git.balaton@eik.bme.hu>
- <a06f6259d7a37aa88145fb13e4bce153ff763f86.1709045654.git.balaton@eik.bme.hu>
-In-Reply-To: <a06f6259d7a37aa88145fb13e4bce153ff763f86.1709045654.git.balaton@eik.bme.hu>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 27 Feb 2024 15:32:37 +0000
-Message-ID: <CAFEAcA_6R2wLaLOoOBQ0-Z_QydAEgxANmNPdKaAF=iiroFEhmA@mail.gmail.com>
-Subject: Re: [PATCH v7 02/10] target/ppc: Readability improvements in
- exception handlers
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,38 +78,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 27 Feb 2024 at 15:10, BALATON Zoltan <balaton@eik.bme.hu> wrote:
->
-> Improve readability by shortening some long comments, removing
-> comments that state the obvious and dropping some empty lines so they
-> don't distract when reading the code.
->
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> Acked-by: Nicholas Piggin <npiggin@gmail.com>
+This is Steve's work (v1 to v5), tweaked by Philippe (v6), and now by
+me.
 
+v7:
+* Old PATCH 1 dropped
+  The proposed str_split() is a composition of g_strsplit() and a
+  conversion from char ** to strList *.  I'm willing to accept a
+  conversion function str_list_from_strv() next to
+  strv_from_str_list().  I doubt having a function for the composition
+  is worth the trouble.
+* Old PATCH 4 dropped
+  The tests mostly test g_strsplit().  I'm willing to accept focused
+  tests for strv_from_str_list() and str_list_from_strv().
+* PATCH 1-3: Commit messages tweaked
+* PATCH 2: strv_from_strList() renamed strv_from_str_list(), and moved
+  to qapi/qapi-type-helpers.c.  Function comment tweaked.  Local
+  variable @argv renamed to @strv.
+* PATCH 3: Adjust for the rename.
 
-> -    /*
-> -     * new interrupt handler msr preserves existing ME unless
-> -     * explicitly overridden.
-> -     */
-> +    /* new interrupt handler msr preserves ME unless explicitly overriden */
+Steve Sistare (3):
+  qapi: New QAPI_LIST_LENGTH()
+  qapi: New strv_from_str_list()
+  migration: simplify exec migration functions
 
-Minor typo introduced here: should be "overridden".
+ include/qapi/type-helpers.h |  8 ++++++
+ include/qapi/util.h         | 13 +++++++++
+ migration/exec.c            | 57 ++++++-------------------------------
+ qapi/qapi-type-helpers.c    | 14 +++++++++
+ 4 files changed, 43 insertions(+), 49 deletions(-)
 
->      new_msr = env->msr & (((target_ulong)1 << MSR_ME));
+-- 
+2.43.0
 
-> @@ -575,16 +558,10 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
->      /* new srr1 value excluding must-be-zero bits */
->      msr = env->msr & ~0x783f0000ULL;
->
-> -    /*
-> -     * new interrupt handler msr preserves existing ME unless
-> -     * explicitly overridden
-> -     */
-> +    /* new interrupt handler msr preserves ME unless explicitly overriden */
-
-Ditto, and similarly for other instances later in the patch.
-
-thanks
--- PMM
 
