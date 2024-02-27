@@ -2,85 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D85869B67
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 16:58:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21413869B8F
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 17:05:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rezqI-0001ff-7e; Tue, 27 Feb 2024 10:58:06 -0500
+	id 1rezx8-0005Vj-9W; Tue, 27 Feb 2024 11:05:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rezqF-0001f8-Ed
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 10:58:03 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rezx3-0005Se-Ae
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 11:05:05 -0500
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rezqE-0001pE-3F
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 10:58:03 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-33d28468666so3900479f8f.0
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 07:58:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rezx0-0002sv-FV
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 11:05:05 -0500
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2d1094b5568so51020741fa.1
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 08:05:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709049480; x=1709654280; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iyG4WRApCpMm0PthLANK4Iv3IU7KnLmZ0cnKrqmdA/o=;
- b=vP5/OFs2lcEBj7fYJHIIO9NHijjjnq8lKS9SA3dfAKHvE23HYfiOZDZmmfW5zsq3S2
- 5lOoz41LV4fp//r6dypwHO3IIThpZcM9linNBrt1IQzeXb8PSwZQThlxyfel3wwB/z1K
- 3pM3LZCbkQBE5ySO6TR7ri5ifRwX+sq5+VmOwBuGdQp7urr6t+QvAKYPlrpNe75fBEAo
- v4G7vcQgFLsvTUR+F/MI3bq8Al+Z3qYjhEr9ocN67yMlQsnjelQsmzyxI5fXzwJmAO83
- Qo+qEetkBva+5YeK7brgz29V5OIAgEEV+BUGfCnULEx6J4nyVC258KRwn/2O6aaJHVDG
- K0lw==
+ d=linaro.org; s=google; t=1709049900; x=1709654700; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=adtmBOcP+29W7dZmFXERayPMGxwMBowqt+9qJZbAajA=;
+ b=dA+sN5kRpww7Yd3e3aR4bNTgME2eHhLLgPVpVDRaOr1mFMXBxXTKK3lOX+Q5Ad4zKm
+ VH5tATatTJuhJrR4VG+R/sVBEhtLhGzhje9crk+LwSBmdnC2Loj5LV+uN26qluVH4sFa
+ HQvK4ji5WGN7g4iOxXPeNJw8ewZzW/ttWlcT7AuZcr3ImtPplalkYPcb7rgBkCj6GHND
+ HL1Pe74+f6K2fnMcTpePHmgwbd1m7ip0ZimRct+Z2YwFXQYepMF7Kswx/kXqDc7McLx/
+ 4eFCcKlKruNGR6lHvfnmPAl11PcN+DCNg1b7wGaK8lTDUGr3UGZXK6c5FrwFWq9j1c8M
+ rM1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709049480; x=1709654280;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=iyG4WRApCpMm0PthLANK4Iv3IU7KnLmZ0cnKrqmdA/o=;
- b=hru5l04tPWJ08KKmDjlq7tViUI3Sgr1a2U7rax/jTj9t5c0wF8SCxjyQ8RNxuaH03S
- r5EtKai56NgdwmFmGpoLhnjIOO9giIwTM4kcbjoXHbvaSH79ldJXEDTVI4ZVF5QGtjPk
- CyUjRn33HSgmIxntb3isDvrdhZjtcniQo4++PV89xiP1exdGk1MP7QzN8CCRrt3vZAuT
- vPdw6WdmJkgICm7qALSBzNXDtbyVIezvEx+V3K5Bzd2OJ52STe9agsxuS3sSxihNg17r
- DMJGMScPS+QmxCAy4JRvrJDUqwvTkXffrjzf+33FjHEJ7OY3OH/340xUwZBXgPehjOi8
- uOAw==
-X-Gm-Message-State: AOJu0Yx/Szt73waKkjevfeEz3RC/Tw4pxP1+UAO8qe2THsTG/lMmAT31
- ZHUjqY79X38nDIemHvpX/WnRd3Z2b27Q4vkzqf4FiyfNvpkqLT/yYQMHbVni6PQ=
-X-Google-Smtp-Source: AGHT+IEiU+5kJlAhT8AwqJHxwCFxraXE4AY8JbA2ZihKZUEg3jSzP5kNrleS5OpJj0iYA1mJkBkbgg==
-X-Received: by 2002:a05:6000:88b:b0:33d:f1d8:7a1c with SMTP id
- cs11-20020a056000088b00b0033df1d87a1cmr1345459wrb.67.1709049480360; 
- Tue, 27 Feb 2024 07:58:00 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- bx10-20020a5d5b0a000000b0033b2799815csm11990290wrb.86.2024.02.27.07.58.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Feb 2024 07:58:00 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C3E8C5F781;
- Tue, 27 Feb 2024 15:57:59 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Cc: qemu-devel@nongnu.org,  Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Richard
- Henderson
- <richard.henderson@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>,
- John Snow <jsnow@redhat.com>,  Cleber Rosa <crosa@redhat.com>,  Wainer
- dos Santos Moschetta <wainersm@redhat.com>,  Beraldo Leal
- <bleal@redhat.com>
-Subject: Re: [PATCH v3 2/9] scripts/replay-dump.py: rejig decoders in event
- number order
-In-Reply-To: <20240226082945.1452499-3-npiggin@gmail.com> (Nicholas Piggin's
- message of "Mon, 26 Feb 2024 18:29:38 +1000")
-References: <20240226082945.1452499-1-npiggin@gmail.com>
- <20240226082945.1452499-3-npiggin@gmail.com>
-User-Agent: mu4e 1.12.0; emacs 29.1
-Date: Tue, 27 Feb 2024 15:57:59 +0000
-Message-ID: <87r0gxdhmg.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1709049900; x=1709654700;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=adtmBOcP+29W7dZmFXERayPMGxwMBowqt+9qJZbAajA=;
+ b=iYJT+/2+xG++3sTzINyvkXbRJ8/RIGtxWkN/RH6oY8oe3R95lJ9awd8a36trO/aATO
+ xFzFJAzs93CHLnAN22ocE2hAjKjs1aIkBjueNFviPRZ+kvkKKG0meP88eLNJ2doIBkhM
+ e1ZLHNK+Z2/652iXq3JwD3cRRVeE+iHvN4kz3c/bIuPN9yHv/YgBt/8RK1NZkYY+wc5v
+ j0U6oov87MEjLZJlTEinhHMO04PTEPETgt3tdjO3d8KYU63uRPZbxpZhkBdW12dGcZoE
+ sGCeAvVjwjgBR/urkzSf47icTprHgA5mb+SryDZ+ygTGXxhiPeu+CFhMv6ucGDWUKnAt
+ F6yQ==
+X-Gm-Message-State: AOJu0Ywy3+Gt11/UD6DOeJcRPhDO3Oi7xUs6QnISmbULoq8X3z8Pgba/
+ K3PR+aay6q8Ja7cPGtRY3Io+XSmW70CZaT6otsQZ+YhzOWQwgYayAygnjwBbrQFiiLGxFHPpWKK
+ IzVB3SfX2mU2jncnDJJEOq+8tRJknn+1NB7FEbw==
+X-Google-Smtp-Source: AGHT+IEyCcu8kmW4ZainAQ2YEsCQq7zTIpuanFDV0x5xkiU5yYQ/plaD751j+2ZjkMbVQB2JYNGEU7O6xpTP5YTB6U0=
+X-Received: by 2002:a05:6512:acc:b0:512:f892:7f0c with SMTP id
+ n12-20020a0565120acc00b00512f8927f0cmr5042714lfu.38.1709049900098; Tue, 27
+ Feb 2024 08:05:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
+References: <CAEEPdR4v8G6CHDCCO-fLcWs-iBqoyKTGQzio_C0P-1ur0vgX0w@mail.gmail.com>
+In-Reply-To: <CAEEPdR4v8G6CHDCCO-fLcWs-iBqoyKTGQzio_C0P-1ur0vgX0w@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 27 Feb 2024 16:04:48 +0000
+Message-ID: <CAFEAcA_h8OCgRhUefGbH9MR=JxUhW_Py6BhbWBa5DYzNA0kLxg@mail.gmail.com>
+Subject: Re: Does cortex-m55 in qemu have PMU?
+To: Archith P <archith100@gmail.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x229.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,14 +85,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Nicholas Piggin <npiggin@gmail.com> writes:
+On Tue, 27 Feb 2024 at 15:55, Archith P <archith100@gmail.com> wrote:
+> I am trying to run code on mps3-an547 (QEMU Emulator)
+> and want to check if it has PMU (Performance Monitoring Unit)
+> Enabled.
 
-> Sort decoder functions to be ascending in order of event number,
-> same as the decoder tables.
+No, we don't emulate the PMU on M-profile CPUs.
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> [I am getting PMU value from  ARM_PMU_Get_CCNTR() always zero]
+>
+> I tried using the QMP command query-cpu-model-expansion
+> Is this a proper way to find out?
+> {
+>     "execute": "query-cpu-model-expansion",
+>     "arguments": {
+>         "type": "full",
+>         "model": {
+>             "name": "cortex-m55"
+>         }
+>     }
+> }
+> Gives:
+> {"return": {"model": {"name": "cortex-m55"}}}
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+No, because we don't track individual processor features this way.
+
+> Is there other way to find? Need Help.
+
+In your guest, if you read the PMU_TYPE register that will tell
+you whether the PMU is implemented (and more specifically, if
+the CC bit is set then the cycle counter is implemented). For
+QEMU it will read as zero.
+
+-- PMM
 
