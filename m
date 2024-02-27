@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDD1286935D
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:44:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8A918692D6
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:39:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rexb1-000187-0M; Tue, 27 Feb 2024 08:34:11 -0500
+	id 1rexaT-0000ke-NL; Tue, 27 Feb 2024 08:33:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaF-0000hT-AC
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:23 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1rexaG-0000hy-Ih
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:24 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaD-0002qP-M9
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:23 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-412a14299a4so21618515e9.1
+ id 1rexaE-0002qi-5U
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:24 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-412a3371133so16586115e9.2
  for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709040800; x=1709645600; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709040801; x=1709645601; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=joGUYxBf+AHBPVlumJel18CoFaqnsq9/5R/fva28MLs=;
- b=SvGM7GFFl5uFII2d0L7WcjouzXmjkmx/amw6Q7S65ISrhqO216Qr8oqRa8TqyactUo
- O68R3U1vd7SFvXzqf6A1Vp139GafNnLzqLTPVwIT70foRkR3KOb5AXBmGgDwthOa/AvV
- ajnV17CVAmOXl6n47iMX4pormd8UgIDdMd0VTo6dgXAjs+kFbUQslHC20Vu52ZXVdFlV
- arfBgV4j39jKaDac0chsIdKf6mrJkCtxchnNF4YfYU/A6hsFVipO4YzGPNGw6FAP++rq
- MlOk4JZUYyKd1fCKg0OseErmpjTMhZ38wcQ8u3TxQytuCSCfh9/U+EJXl6O5wCL1MF3u
- lslQ==
+ :reply-to; bh=ghfytIikIlf01WoNBDAZGxwpGh2RY6aESDQERQrWq0o=;
+ b=rogXWil7udjuPMqLArXZ6eV7E3LOT4ReBQkOBRkQPTL8nkyHFMWdz9D258mrnWIize
+ HuShu26yDKwaID/xo94EfJfIIPH+CrjNdtb+w/CPMZJsQE/5cR/QvxVBL439Wzwba3pK
+ d585QmB2tvHssT6c1t+LosWCbshFKVzESyxGf83hPGZznqHWPxFppSWW0pNCkvXyOv/J
+ BMdf15B/ONJfX2vVjR008F/2ppod3AzYr7s8AMIM/u6E81eOiMEfFjRVopegWI9zE2LK
+ 3cZSg/bqItKpMuAIGAE6zkFn6uR6suw+8ze5I6rkSp+Xo1DDl4b/K/pCwwMmaOXY8qDz
+ iHtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709040800; x=1709645600;
+ d=1e100.net; s=20230601; t=1709040801; x=1709645601;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=joGUYxBf+AHBPVlumJel18CoFaqnsq9/5R/fva28MLs=;
- b=vIMJQKLqUPV7yVNlqHpGQfZmil0IrQKMGzfu+kbE5yqZ/xPvSqhYUZgFpXgAg9rlLT
- ULflz+ilr//QtSbzzjbq0ok+kMXJGRDMwEx+fiEv9RBYZh+d57Ct9SlYQYNIzyJbYr4r
- zp6xayCA1c6AlqbqeZV/jGcwE6pb/+km0QK59lJ9ZjlQSwyH34MhCodG8x4O9lGGQBof
- lLveC5MsC+BSbXA0xRYVnhyvX2gM0V+VGxGV4RHU/Ey5ktBLay6KgWdAvyaImwe+jBkL
- LmxWB2CgLQPL977mFu2jmr2+y4md5O7ksUOe7LcazEkYC6SR/zE6mnNlIJE3dDg4ooZA
- qP8w==
-X-Gm-Message-State: AOJu0YzxUi2/BvHFwMv1nfIgl93tnFoXrZAmk4BhvvEaFOnhUNkRMjVu
- BcQxVbZDZ0FAmAtbRNJGpJMyhxDodXp2c7bdAEnSyQ3mRn9KP8mvymfH5U8h9+MU2FBW77UM2mT
- o
-X-Google-Smtp-Source: AGHT+IGrLS9SleRZ8pTHHTVmPIagucwFZ3mXF2RDMvHO2XOm8toZiB99uTqPEO5fvLyzZ4AQhc9r6w==
-X-Received: by 2002:a5d:64e9:0:b0:33d:db7a:f8c1 with SMTP id
- g9-20020a5d64e9000000b0033ddb7af8c1mr4125271wri.48.1709040800397; 
+ bh=ghfytIikIlf01WoNBDAZGxwpGh2RY6aESDQERQrWq0o=;
+ b=E0LtNkF83Bo5hHhflXwCHgdcwcKdhHxhDbzQsl9mIl7gOd4LaUS5hBOR6X7LYc0WZ5
+ 0xnV1M6f4tnA11nVBxDbTlMech/AxuKiEr//1Bmd2VxxgAvlqg3TBOW6yoexPf9tOyoC
+ mtIeh+cWZXFyU4N0gXHU0BwiIsJPZPY+fhF2Nh0YtYl7H8+937kl03DcQupr8+BLzGIE
+ GO36cMzMUD9vjkH1IXCYkgfifmempScG/d84DVOVxL8RTLlLZm8teMA43q5vibOyFZ6W
+ G8SNFIFxM2PXCzlxApA/FNQZ/oTWK2hFCLd1rD6soTBJdo6x7Kr+9HKSMo7PPc10IiZf
+ RH0g==
+X-Gm-Message-State: AOJu0YxxCRoHhMitkenrXkBPo10M84W39/cWCSG3/vXttSSMnRl4neCs
+ pV8Ft7+bHnzU6F/fF8Sj1uwLSk3y+3j4bkTe/xWgHMutOm+c29+WHRoyNtFXtnrOOWNKfGHX4p4
+ x
+X-Google-Smtp-Source: AGHT+IEKtW7xRYLv9EOxT8yF7WlM0x4r9j959WQWK1Ze2mjZ5nSX1vGVcMqUvskUHLzpA0rFS4j00A==
+X-Received: by 2002:a05:600c:548e:b0:412:a109:5005 with SMTP id
+ iv14-20020a05600c548e00b00412a1095005mr5589092wmb.0.1709040800835; 
  Tue, 27 Feb 2024 05:33:20 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,18 +59,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 27 Feb 2024 05:33:20 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/45] pl031: Update last RTCLR value on write in case it's
- read back
-Date: Tue, 27 Feb 2024 13:32:38 +0000
-Message-Id: <20240227133314.1721857-10-peter.maydell@linaro.org>
+Subject: [PULL 10/45] block: m25p80: Add support of mt35xu02gbba
+Date: Tue, 27 Feb 2024 13:32:39 +0000
+Message-Id: <20240227133314.1721857-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240227133314.1721857-1-peter.maydell@linaro.org>
 References: <20240227133314.1721857-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,35 +91,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jessica Clarke <jrtc27@jrtc27.com>
+From: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
 
-The PL031 allows you to read RTCLR, which is meant to give you the last
-value written. PL031State has an lr field which is used when reading
-from RTCLR, and is present in the VM migration state, but we never
-actually update it, so it always reads as its initial 0 value.
+Add Micro 2Gb OSPI flash part with sfdp data.
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Jessica Clarke <jrtc27@jrtc27.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-id: 20240222000341.1562443-1-jrtc27@jrtc27.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
+Message-id: 20240220091721.82954-2-sai.pavan.boddu@amd.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/rtc/pl031.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/block/m25p80_sfdp.h |  1 +
+ hw/block/m25p80.c      |  3 +++
+ hw/block/m25p80_sfdp.c | 36 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 40 insertions(+)
 
-diff --git a/hw/rtc/pl031.c b/hw/rtc/pl031.c
-index 837b0bdf9bd..563bb4b446e 100644
---- a/hw/rtc/pl031.c
-+++ b/hw/rtc/pl031.c
-@@ -141,6 +141,7 @@ static void pl031_write(void * opaque, hwaddr offset,
-         g_autofree const char *qom_path = object_get_canonical_path(opaque);
-         struct tm tm;
+diff --git a/hw/block/m25p80_sfdp.h b/hw/block/m25p80_sfdp.h
+index 011a880f66a..1733b569508 100644
+--- a/hw/block/m25p80_sfdp.h
++++ b/hw/block/m25p80_sfdp.h
+@@ -16,6 +16,7 @@
+ #define M25P80_SFDP_MAX_SIZE  (1 << 24)
  
-+        s->lr = value;
-         s->tick_offset += value - pl031_get_count(s);
+ uint8_t m25p80_sfdp_n25q256a(uint32_t addr);
++uint8_t m25p80_sfdp_mt35xu02g(uint32_t addr);
  
-         qemu_get_timedate(&tm, s->tick_offset);
+ uint8_t m25p80_sfdp_mx25l25635e(uint32_t addr);
+ uint8_t m25p80_sfdp_mx25l25635f(uint32_t addr);
+diff --git a/hw/block/m25p80.c b/hw/block/m25p80.c
+index 0a12030a3a1..08a00a6d9b8 100644
+--- a/hw/block/m25p80.c
++++ b/hw/block/m25p80.c
+@@ -267,6 +267,9 @@ static const FlashPartInfo known_devices[] = {
+     { INFO("mt25ql512ab", 0x20ba20, 0x1044, 64 << 10, 1024, ER_4K | ER_32K) },
+     { INFO_STACKED("mt35xu01g", 0x2c5b1b, 0x104100, 128 << 10, 1024,
+                    ER_4K | ER_32K, 2) },
++    { INFO_STACKED("mt35xu02gbba", 0x2c5b1c, 0x104100, 128 << 10, 2048,
++                   ER_4K | ER_32K, 4),
++                   .sfdp_read = m25p80_sfdp_mt35xu02g },
+     { INFO_STACKED("n25q00",    0x20ba21, 0x1000, 64 << 10, 2048, ER_4K, 4) },
+     { INFO_STACKED("n25q00a",   0x20bb21, 0x1000, 64 << 10, 2048, ER_4K, 4) },
+     { INFO_STACKED("mt25ql01g", 0x20ba21, 0x1040, 64 << 10, 2048, ER_4K, 2) },
+diff --git a/hw/block/m25p80_sfdp.c b/hw/block/m25p80_sfdp.c
+index b33811a4f5e..6ee2cfaf119 100644
+--- a/hw/block/m25p80_sfdp.c
++++ b/hw/block/m25p80_sfdp.c
+@@ -57,6 +57,42 @@ static const uint8_t sfdp_n25q256a[] = {
+ };
+ define_sfdp_read(n25q256a);
+ 
++static const uint8_t sfdp_mt35xu02g[] = {
++    0x53, 0x46, 0x44, 0x50, 0x06, 0x01, 0x01, 0xff,
++    0x00, 0x06, 0x01, 0x10, 0x30, 0x00, 0x00, 0xff,
++    0x84, 0x00, 0x01, 0x02, 0x80, 0x00, 0x00, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xe5, 0x20, 0x8a, 0xff, 0xff, 0xff, 0xff, 0x7f,
++    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++    0xee, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00,
++    0xff, 0xff, 0x00, 0x00, 0x0c, 0x20, 0x11, 0xd8,
++    0x0f, 0x52, 0x00, 0x00, 0x24, 0x5a, 0x99, 0x00,
++    0x8b, 0x8e, 0x03, 0xe1, 0xac, 0x01, 0x27, 0x38,
++    0x7a, 0x75, 0x7a, 0x75, 0xfb, 0xbd, 0xd5, 0x5c,
++    0x00, 0x00, 0x70, 0xff, 0x81, 0xb0, 0x38, 0x36,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0x43, 0x0e, 0xff, 0xff, 0x21, 0xdc, 0x5c, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++};
++
++define_sfdp_read(mt35xu02g);
+ 
+ /*
+  * Matronix
 -- 
 2.34.1
 
