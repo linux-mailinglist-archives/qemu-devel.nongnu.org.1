@@ -2,98 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83AF086A0F0
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 21:39:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF9086A1A0
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 22:26:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rf4C4-0001Pi-QN; Tue, 27 Feb 2024 15:36:52 -0500
+	id 1rf4xG-0006ar-D9; Tue, 27 Feb 2024 16:25:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <calebs@linux.vnet.ibm.com>)
- id 1rf4C1-0001PI-H9; Tue, 27 Feb 2024 15:36:49 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <dgibson@gandalf.ozlabs.org>)
+ id 1rf4xA-0006aP-Ow; Tue, 27 Feb 2024 16:25:32 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <calebs@linux.vnet.ibm.com>)
- id 1rf4Bx-0004Th-Tv; Tue, 27 Feb 2024 15:36:49 -0500
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41RKLkcd001526; Tue, 27 Feb 2024 20:36:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=Sxm77aWNRA7E3QrhmV1OU+oCXYIv1tgJBVqChMHhFEo=;
- b=iOgf1YFYicPKT7wwg5WTR8M8vUy/1Iw+4A5GvbIoiBdfO0NKNNvZEBw+CYmdTb2o30Wr
- 5wP7EK1tutRXG7Vh6DLlkwHu5CyLgri/pGmk3jzssNljD2orHn++v1UUzjjeDJiyCcSs
- 4f0zy9hGRfEzidr7f6e5SmNNDRhRS5fD9DRddsDdtl4TYmPbnjuRpQAgZ0CRnBtOHTea
- vkRlgrBJpPOsyNyw10XKYNCcNJ3VaZ0JXpSYN7geLn497YoswFKE5LMSclB0yI4sCZ4x
- BAWGqIrjYRLK8Pl6dmreMTJH9AwBsVm0z9Hw2kjd0De0GYiUq2LDvg+qsJwD6CKIofqB /w== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3whmny3g7k-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Feb 2024 20:36:36 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41RKLpk0002213;
- Tue, 27 Feb 2024 20:36:35 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3whmny3g7e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Feb 2024 20:36:35 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41RJeB9m024122; Tue, 27 Feb 2024 20:36:35 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wfw0k9skb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Feb 2024 20:36:35 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
- [10.39.53.231])
- by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 41RKaWX153150062
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 27 Feb 2024 20:36:34 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3961258063;
- Tue, 27 Feb 2024 20:36:32 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A624F58052;
- Tue, 27 Feb 2024 20:36:31 +0000 (GMT)
-Received: from gfwr540.rchland.ibm.com (unknown [9.10.239.160])
- by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 27 Feb 2024 20:36:31 +0000 (GMT)
-From: Caleb Schlossin <calebs@linux.vnet.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, clg@kaod.org, npiggin@gmail.com,
- fbarrat@linux.ibm.com, danielhb413@gmail.com, calebs@linux.vnet.ibm.com
-Subject: [PATCH v2] ppc/pnv: Improve pervasive topology calculation for
- big-core
-Date: Tue, 27 Feb 2024 14:36:23 -0600
-Message-Id: <20240227203623.31714-1-calebs@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.8
+ (Exim 4.90_1) (envelope-from <dgibson@gandalf.ozlabs.org>)
+ id 1rf4x4-0007kS-27; Tue, 27 Feb 2024 16:25:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gibson.dropbear.id.au; s=202312; t=1709069116;
+ bh=JHjFaWBRAsJwtsx++RN4MujX8IaD5mSINGLiPX/1hnc=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=UDimkuNIiCwChGLEiANjkgd743NGFF/yGx+v7yTQ0dLsa9PG94hxUwHjtGZkjAgHZ
+ 9niSpOzA9Oarhk1I85AeqCQXlmc69bKNDw1aAHsiCHawwnbt+sUM6z3vN8GGvz7Iz+
+ 7wtzYfvv1yYziRJdTtXBQuajlWVXPbQRIva6sVe4tva4jIMUjW2QMuJCISEhaDvgkO
+ yvug7uvy2JQRufqhK/Fp/V0ePAt19AE0L86nioTkXVoJmbzcPZeZbnbQhJH60BVsLt
+ 0VUPkZgzy1bISjktiUGAlEZLCdmsxQJfxhcJ49npKuqCsiZZ3ZkRsBLr958FfQ6X90
+ FjMyh6jpei3BA==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+ id 4Tkr9m2mlyz4wcD; Wed, 28 Feb 2024 08:25:16 +1100 (AEDT)
+Date: Wed, 28 Feb 2024 07:52:52 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>
+Cc: Shivaprasad G Bhat <sbhat@linux.ibm.com>, danielhb413@gmail.com,
+ qemu-ppc@nongnu.org, harshpb@linux.ibm.com, clg@kaod.org,
+ groug@kaod.org, pbonzini@redhat.com, kvm@vger.kernel.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v8 2/2] ppc: spapr: Enable 2nd DAWR on Power10 pSeries
+ machine
+Message-ID: <Zd5LpH-pPOT-MHiu@zatzit>
+References: <170679876639.188422.11634974895844092362.stgit@ltc-boston1.aus.stglabs.ibm.com>
+ <170679878985.188422.6745903342602285494.stgit@ltc-boston1.aus.stglabs.ibm.com>
+ <CZFUVDPGK7OU.1CBJ2TIMJ719P@wheely>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: oOTbeHe_Onwi51-AKxxZJmZsaLaDpA_E
-X-Proofpoint-GUID: mWbRX9vXzkSEsbGMXvzoYwrjRg-azTud
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-27_07,2024-02-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0
- spamscore=0 mlxlogscore=999 phishscore=0 lowpriorityscore=0
- impostorscore=0 mlxscore=0 malwarescore=0 suspectscore=0
- priorityscore=1501 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311290000 definitions=main-2402270160
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=calebs@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="JEGw3Rvi+yG/ufYO"
+Content-Disposition: inline
+In-Reply-To: <CZFUVDPGK7OU.1CBJ2TIMJ719P@wheely>
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=dgibson@gandalf.ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,290 +70,217 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Big (SMT8) cores have a complicated function to map the core, thread ID
-to pervasive topology (PIR). Fix this for power8, power9, and power10.
 
-Signed-off-by: Caleb Schlossin <calebs@linux.vnet.ibm.com>
----
+--JEGw3Rvi+yG/ufYO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Version 2 fixes the PIR calculation for core, thread ID
-for power10 big cores (SMT8).
+On Tue, Feb 27, 2024 at 10:21:23PM +1000, Nicholas Piggin wrote:
+> On Fri Feb 2, 2024 at 12:46 AM AEST, Shivaprasad G Bhat wrote:
+> > As per the PAPR, bit 0 of byte 64 in pa-features property
+> > indicates availability of 2nd DAWR registers. i.e. If this bit is set, =
+2nd
+> > DAWR is present, otherwise not. Use KVM_CAP_PPC_DAWR1 capability to find
+> > whether kvm supports 2nd DAWR or not. If it's supported, allow user to =
+set
+> > the pa-feature bit in guest DT using cap-dawr1 machine capability.
+> >
+> > Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+> > Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+> > ---
+> >  hw/ppc/spapr.c         |    7 ++++++-
+> >  hw/ppc/spapr_caps.c    |   36 ++++++++++++++++++++++++++++++++++++
+> >  hw/ppc/spapr_hcall.c   |   25 ++++++++++++++++---------
+> >  include/hw/ppc/spapr.h |    6 +++++-
+> >  target/ppc/kvm.c       |   12 ++++++++++++
+> >  target/ppc/kvm_ppc.h   |   12 ++++++++++++
+> >  6 files changed, 87 insertions(+), 11 deletions(-)
+> >
+> > diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> > index e8dabc8614..91a97d72e7 100644
+> > --- a/hw/ppc/spapr.c
+> > +++ b/hw/ppc/spapr.c
+> > @@ -262,7 +262,7 @@ static void spapr_dt_pa_features(SpaprMachineState =
+*spapr,
+> >          0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 48 - 53 */
+> >          /* 54: DecFP, 56: DecI, 58: SHA */
+> >          0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 54 - 59 */
+> > -        /* 60: NM atomic, 62: RNG */
+> > +        /* 60: NM atomic, 62: RNG, 64: DAWR1 (ISA 3.1) */
+> >          0x80, 0x00, 0x80, 0x00, 0x00, 0x00, /* 60 - 65 */
+> >      };
+> >      uint8_t *pa_features =3D NULL;
+> > @@ -303,6 +303,9 @@ static void spapr_dt_pa_features(SpaprMachineState =
+*spapr,
+> >           * in pa-features. So hide it from them. */
+> >          pa_features[40 + 2] &=3D ~0x80; /* Radix MMU */
+> >      }
+> > +    if (spapr_get_cap(spapr, SPAPR_CAP_DAWR1)) {
+> > +        pa_features[66] |=3D 0x80;
+> > +    }
+> > =20
+> >      _FDT((fdt_setprop(fdt, offset, "ibm,pa-features", pa_features, pa_=
+size)));
+> >  }
+> > @@ -2138,6 +2141,7 @@ static const VMStateDescription vmstate_spapr =3D=
+ {
+> >          &vmstate_spapr_cap_fwnmi,
+> >          &vmstate_spapr_fwnmi,
+> >          &vmstate_spapr_cap_rpt_invalidate,
+> > +        &vmstate_spapr_cap_dawr1,
+> >          NULL
+> >      }
+> >  };
+> > @@ -4717,6 +4721,7 @@ static void spapr_machine_class_init(ObjectClass =
+*oc, void *data)
+> >      smc->default_caps.caps[SPAPR_CAP_CCF_ASSIST] =3D SPAPR_CAP_ON;
+> >      smc->default_caps.caps[SPAPR_CAP_FWNMI] =3D SPAPR_CAP_ON;
+> >      smc->default_caps.caps[SPAPR_CAP_RPT_INVALIDATE] =3D SPAPR_CAP_OFF;
+> > +    smc->default_caps.caps[SPAPR_CAP_DAWR1] =3D SPAPR_CAP_OFF;
+> > =20
+> >      /*
+> >       * This cap specifies whether the AIL 3 mode for
+> > diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
+> > index e889244e52..677f17cea6 100644
+> > --- a/hw/ppc/spapr_caps.c
+> > +++ b/hw/ppc/spapr_caps.c
+> > @@ -655,6 +655,32 @@ static void cap_ail_mode_3_apply(SpaprMachineState=
+ *spapr,
+> >      }
+> >  }
+> > =20
+> > +static void cap_dawr1_apply(SpaprMachineState *spapr, uint8_t val,
+> > +                               Error **errp)
+> > +{
+> > +    ERRP_GUARD();
+> > +
+> > +    if (!val) {
+> > +        return; /* Disable by default */
+> > +    }
+> > +
+> > +    if (!ppc_type_check_compat(MACHINE(spapr)->cpu_type,
+> > +                               CPU_POWERPC_LOGICAL_3_10, 0,
+> > +                               spapr->max_compat_pvr)) {
+> > +        warn_report("DAWR1 supported only on POWER10 and later CPUs");
+> > +    }
+>=20
+> Should this be an error?
 
- include/hw/ppc/pnv_chip.h |  2 +-
- include/hw/ppc/pnv_core.h |  1 +
- hw/ppc/pnv.c              | 71 ++++++++++++++++++++++++++++-----------
- hw/ppc/pnv_core.c         |  8 ++---
- target/ppc/misc_helper.c  |  3 --
- 5 files changed, 57 insertions(+), 28 deletions(-)
+Yes, it should.  If you can't supply the cap requested, you *must*
+fail to start.  Near enough is not good enough when it comes to the
+guest visible properties of the virtual machine, or you'll end up with
+no end of migration headaches.
 
-diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-index af4cd7a8b8..8589f3291e 100644
---- a/include/hw/ppc/pnv_chip.h
-+++ b/include/hw/ppc/pnv_chip.h
-@@ -147,7 +147,7 @@ struct PnvChipClass {
- 
-     DeviceRealize parent_realize;
- 
--    uint32_t (*core_pir)(PnvChip *chip, uint32_t core_id);
-+    uint32_t (*chip_pir)(PnvChip *chip, uint32_t core_id, uint32_t thread_id);
-     void (*intc_create)(PnvChip *chip, PowerPCCPU *cpu, Error **errp);
-     void (*intc_reset)(PnvChip *chip, PowerPCCPU *cpu);
-     void (*intc_destroy)(PnvChip *chip, PowerPCCPU *cpu);
-diff --git a/include/hw/ppc/pnv_core.h b/include/hw/ppc/pnv_core.h
-index 4db21229a6..c6d62fd145 100644
---- a/include/hw/ppc/pnv_core.h
-+++ b/include/hw/ppc/pnv_core.h
-@@ -36,6 +36,7 @@ struct PnvCore {
-     /*< public >*/
-     PowerPCCPU **threads;
-     uint32_t pir;
-+    uint32_t hwid;
-     uint64_t hrmor;
-     PnvChip *chip;
- 
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 0b47b92baa..aa5aba60b4 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -141,8 +141,10 @@ static void pnv_dt_core(PnvChip *chip, PnvCore *pc, void *fdt)
-     int smt_threads = CPU_CORE(pc)->nr_threads;
-     CPUPPCState *env = &cpu->env;
-     PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cs);
-+    PnvChipClass *pnv_cc = PNV_CHIP_GET_CLASS(chip);
-     g_autofree uint32_t *servers_prop = g_new(uint32_t, smt_threads);
-     int i;
-+    uint32_t pir;
-     uint32_t segs[] = {cpu_to_be32(28), cpu_to_be32(40),
-                        0xffffffff, 0xffffffff};
-     uint32_t tbfreq = PNV_TIMEBASE_FREQ;
-@@ -158,15 +160,17 @@ static void pnv_dt_core(PnvChip *chip, PnvCore *pc, void *fdt)
-     char *nodename;
-     int cpus_offset = get_cpus_node(fdt);
- 
--    nodename = g_strdup_printf("%s@%x", dc->fw_name, pc->pir);
-+    pir = pnv_cc->chip_pir(chip, pc->hwid, 0);
-+
-+    nodename = g_strdup_printf("%s@%x", dc->fw_name, pir);
-     offset = fdt_add_subnode(fdt, cpus_offset, nodename);
-     _FDT(offset);
-     g_free(nodename);
- 
-     _FDT((fdt_setprop_cell(fdt, offset, "ibm,chip-id", chip->chip_id)));
- 
--    _FDT((fdt_setprop_cell(fdt, offset, "reg", pc->pir)));
--    _FDT((fdt_setprop_cell(fdt, offset, "ibm,pir", pc->pir)));
-+    _FDT((fdt_setprop_cell(fdt, offset, "reg", pir)));
-+    _FDT((fdt_setprop_cell(fdt, offset, "ibm,pir", pir)));
-     _FDT((fdt_setprop_string(fdt, offset, "device_type", "cpu")));
- 
-     _FDT((fdt_setprop_cell(fdt, offset, "cpu-version", env->spr[SPR_PVR])));
-@@ -241,15 +245,17 @@ static void pnv_dt_core(PnvChip *chip, PnvCore *pc, void *fdt)
- 
-     /* Build interrupt servers properties */
-     for (i = 0; i < smt_threads; i++) {
--        servers_prop[i] = cpu_to_be32(pc->pir + i);
-+        servers_prop[i] = cpu_to_be32(pnv_cc->chip_pir(chip, pc->hwid, i));
-     }
-     _FDT((fdt_setprop(fdt, offset, "ibm,ppc-interrupt-server#s",
-                        servers_prop, sizeof(*servers_prop) * smt_threads)));
- }
- 
--static void pnv_dt_icp(PnvChip *chip, void *fdt, uint32_t pir,
-+static void pnv_dt_icp(PnvChip *chip, void *fdt, uint32_t hwid,
-                        uint32_t nr_threads)
- {
-+    PnvChipClass *pcc = PNV_CHIP_GET_CLASS(chip);
-+    uint32_t pir = pcc->chip_pir(chip, hwid, 0);
-     uint64_t addr = PNV_ICP_BASE(chip) | (pir << 12);
-     char *name;
-     const char compat[] = "IBM,power8-icp\0IBM,ppc-xicp";
-@@ -263,6 +269,7 @@ static void pnv_dt_icp(PnvChip *chip, void *fdt, uint32_t pir,
-     rsize = sizeof(uint64_t) * 2 * nr_threads;
-     reg = g_malloc(rsize);
-     for (i = 0; i < nr_threads; i++) {
-+        /* We know P8 PIR is linear with thread id */
-         reg[i * 2] = cpu_to_be64(addr | ((pir + i) * 0x1000));
-         reg[i * 2 + 1] = cpu_to_be64(0x1000);
-     }
-@@ -315,7 +322,7 @@ static void pnv_chip_power8_dt_populate(PnvChip *chip, void *fdt)
-         pnv_dt_core(chip, pnv_core, fdt);
- 
-         /* Interrupt Control Presenters (ICP). One per core. */
--        pnv_dt_icp(chip, fdt, pnv_core->pir, CPU_CORE(pnv_core)->nr_threads);
-+        pnv_dt_icp(chip, fdt, pnv_core->hwid, CPU_CORE(pnv_core)->nr_threads);
-     }
- 
-     if (chip->ram_size) {
-@@ -995,9 +1002,10 @@ static void pnv_init(MachineState *machine)
-  *   25:28  Core number
-  *   29:31  Thread ID
-  */
--static uint32_t pnv_chip_core_pir_p8(PnvChip *chip, uint32_t core_id)
-+static uint32_t pnv_chip_pir_p8(PnvChip *chip, uint32_t core_id,
-+                                uint32_t thread_id)
- {
--    return (chip->chip_id << 7) | (core_id << 3);
-+    return (chip->chip_id << 7) | (core_id << 3) | thread_id;
- }
- 
- static void pnv_chip_power8_intc_create(PnvChip *chip, PowerPCCPU *cpu,
-@@ -1049,14 +1057,37 @@ static void pnv_chip_power8_intc_print_info(PnvChip *chip, PowerPCCPU *cpu,
-  *
-  * We only care about the lower bits. uint32_t is fine for the moment.
-  */
--static uint32_t pnv_chip_core_pir_p9(PnvChip *chip, uint32_t core_id)
-+static uint32_t pnv_chip_pir_p9(PnvChip *chip, uint32_t core_id,
-+                                uint32_t thread_id)
- {
--    return (chip->chip_id << 8) | (core_id << 2);
-+    if (chip->nr_threads == 8) {
-+        return (chip->chip_id << 8) | ((thread_id & 1) << 2) | (core_id << 3) |
-+               (thread_id >> 1);
-+    } else {
-+        return (chip->chip_id << 8) | (core_id << 2) | thread_id;
-+    }
- }
- 
--static uint32_t pnv_chip_core_pir_p10(PnvChip *chip, uint32_t core_id)
-+/*
-+ *    0:48  Reserved - Read as zeroes
-+ *   49:52  Node ID
-+ *   53:55  Chip ID
-+ *   56     Reserved - Read as zero
-+ *   57:59  Quad ID
-+ *   60     Core Chiplet Pair ID
-+ *   61:63  Thread/Core Chiplet ID t0-t2
-+ *
-+ * We only care about the lower bits. uint32_t is fine for the moment.
-+ */
-+static uint32_t pnv_chip_pir_p10(PnvChip *chip, uint32_t core_id,
-+                                 uint32_t thread_id)
- {
--    return (chip->chip_id << 8) | (core_id << 2);
-+    if (chip->nr_threads == 8) {
-+        return (chip->chip_id << 8) | ((core_id / 4) << 4) |
-+               ((core_id % 2) << 3) | thread_id;
-+    } else {
-+        return (chip->chip_id << 8) | (core_id << 2) | thread_id;
-+    }
- }
- 
- static void pnv_chip_power9_intc_create(PnvChip *chip, PowerPCCPU *cpu,
-@@ -1235,7 +1266,7 @@ static void pnv_chip_icp_realize(Pnv8Chip *chip8, Error **errp)
-         int core_hwid = CPU_CORE(pnv_core)->core_id;
- 
-         for (j = 0; j < CPU_CORE(pnv_core)->nr_threads; j++) {
--            uint32_t pir = pcc->core_pir(chip, core_hwid) + j;
-+            uint32_t pir = pcc->chip_pir(chip, core_hwid, j);
-             PnvICPState *icp = PNV_ICP(xics_icp_get(chip8->xics, pir));
- 
-             memory_region_add_subregion(&chip8->icp_mmio, pir << 12,
-@@ -1348,7 +1379,7 @@ static void pnv_chip_power8e_class_init(ObjectClass *klass, void *data)
-     k->chip_cfam_id = 0x221ef04980000000ull;  /* P8 Murano DD2.1 */
-     k->cores_mask = POWER8E_CORE_MASK;
-     k->num_phbs = 3;
--    k->core_pir = pnv_chip_core_pir_p8;
-+    k->chip_pir = pnv_chip_pir_p8;
-     k->intc_create = pnv_chip_power8_intc_create;
-     k->intc_reset = pnv_chip_power8_intc_reset;
-     k->intc_destroy = pnv_chip_power8_intc_destroy;
-@@ -1372,7 +1403,7 @@ static void pnv_chip_power8_class_init(ObjectClass *klass, void *data)
-     k->chip_cfam_id = 0x220ea04980000000ull; /* P8 Venice DD2.0 */
-     k->cores_mask = POWER8_CORE_MASK;
-     k->num_phbs = 3;
--    k->core_pir = pnv_chip_core_pir_p8;
-+    k->chip_pir = pnv_chip_pir_p8;
-     k->intc_create = pnv_chip_power8_intc_create;
-     k->intc_reset = pnv_chip_power8_intc_reset;
-     k->intc_destroy = pnv_chip_power8_intc_destroy;
-@@ -1396,7 +1427,7 @@ static void pnv_chip_power8nvl_class_init(ObjectClass *klass, void *data)
-     k->chip_cfam_id = 0x120d304980000000ull;  /* P8 Naples DD1.0 */
-     k->cores_mask = POWER8_CORE_MASK;
-     k->num_phbs = 4;
--    k->core_pir = pnv_chip_core_pir_p8;
-+    k->chip_pir = pnv_chip_pir_p8;
-     k->intc_create = pnv_chip_power8_intc_create;
-     k->intc_reset = pnv_chip_power8_intc_reset;
-     k->intc_destroy = pnv_chip_power8_intc_destroy;
-@@ -1669,7 +1700,7 @@ static void pnv_chip_power9_class_init(ObjectClass *klass, void *data)
- 
-     k->chip_cfam_id = 0x220d104900008000ull; /* P9 Nimbus DD2.0 */
-     k->cores_mask = POWER9_CORE_MASK;
--    k->core_pir = pnv_chip_core_pir_p9;
-+    k->chip_pir = pnv_chip_pir_p9;
-     k->intc_create = pnv_chip_power9_intc_create;
-     k->intc_reset = pnv_chip_power9_intc_reset;
-     k->intc_destroy = pnv_chip_power9_intc_destroy;
-@@ -1981,7 +2012,7 @@ static void pnv_chip_power10_class_init(ObjectClass *klass, void *data)
- 
-     k->chip_cfam_id = 0x120da04900008000ull; /* P10 DD1.0 (with NX) */
-     k->cores_mask = POWER10_CORE_MASK;
--    k->core_pir = pnv_chip_core_pir_p10;
-+    k->chip_pir = pnv_chip_pir_p10;
-     k->intc_create = pnv_chip_power10_intc_create;
-     k->intc_reset = pnv_chip_power10_intc_reset;
-     k->intc_destroy = pnv_chip_power10_intc_destroy;
-@@ -2071,8 +2102,8 @@ static void pnv_chip_core_realize(PnvChip *chip, Error **errp)
-                                 chip->nr_threads, &error_fatal);
-         object_property_set_int(OBJECT(pnv_core), CPU_CORE_PROP_CORE_ID,
-                                 core_hwid, &error_fatal);
--        object_property_set_int(OBJECT(pnv_core), "pir",
--                                pcc->core_pir(chip, core_hwid), &error_fatal);
-+        object_property_set_int(OBJECT(pnv_core), "hwid", core_hwid,
-+                                &error_fatal);
-         object_property_set_int(OBJECT(pnv_core), "hrmor", pnv->fw_load_addr,
-                                 &error_fatal);
-         object_property_set_link(OBJECT(pnv_core), "chip", OBJECT(chip),
-diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-index 8c7afe037f..f40ab721d6 100644
---- a/hw/ppc/pnv_core.c
-+++ b/hw/ppc/pnv_core.c
-@@ -226,7 +226,7 @@ static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp,
-                                  int thread_index)
- {
-     CPUPPCState *env = &cpu->env;
--    int core_pir;
-+    int core_hwid;
-     ppc_spr_t *pir = &env->spr_cb[SPR_PIR];
-     ppc_spr_t *tir = &env->spr_cb[SPR_TIR];
-     Error *local_err = NULL;
-@@ -242,10 +242,10 @@ static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp,
-         return;
-     }
- 
--    core_pir = object_property_get_uint(OBJECT(pc), "pir", &error_abort);
-+    core_hwid = object_property_get_uint(OBJECT(pc), "hwid", &error_abort);
- 
-     tir->default_value = thread_index;
--    pir->default_value = core_pir + thread_index;
-+    pir->default_value = pcc->chip_pir(pc->chip, core_hwid, thread_index);
- 
-     /* Set time-base frequency to 512 MHz */
-     cpu_ppc_tb_init(env, PNV_TIMEBASE_FREQ);
-@@ -342,7 +342,7 @@ static void pnv_core_unrealize(DeviceState *dev)
- }
- 
- static Property pnv_core_properties[] = {
--    DEFINE_PROP_UINT32("pir", PnvCore, pir, 0),
-+    DEFINE_PROP_UINT32("hwid", PnvCore, hwid, 0),
-     DEFINE_PROP_UINT64("hrmor", PnvCore, hrmor, 0),
-     DEFINE_PROP_LINK("chip", PnvCore, chip, TYPE_PNV_CHIP, PnvChip *),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
-index a9d41d2802..58e808dc96 100644
---- a/target/ppc/misc_helper.c
-+++ b/target/ppc/misc_helper.c
-@@ -49,9 +49,6 @@ void helper_spr_core_write_generic(CPUPPCState *env, uint32_t sprn,
-     CPUState *cs = env_cpu(env);
-     CPUState *ccs;
-     uint32_t nr_threads = cs->nr_threads;
--    uint32_t core_id = env->spr[SPR_PIR] & ~(nr_threads - 1);
--
--    assert(core_id == env->spr[SPR_PIR] - env->spr[SPR_TIR]);
- 
-     if (nr_threads == 1) {
-         env->spr[sprn] = val;
--- 
-2.31.8
+> Should the dawr1 cap be enabled by default for POWER10 machines?
+>=20
+> > +
+> > +    if (kvm_enabled()) {
+> > +        if (!kvmppc_has_cap_dawr1()) {
+> > +            error_setg(errp, "DAWR1 not supported by KVM.");
+> > +            error_append_hint(errp, "Try appending -machine cap-dawr1=
+=3Doff");
+> > +        } else if (kvmppc_set_cap_dawr1(val) < 0) {
+> > +            error_setg(errp, "Error enabling cap-dawr1 with KVM.");
+> > +            error_append_hint(errp, "Try appending -machine cap-dawr1=
+=3Doff");
+> > +        }
+> > +    }
+> > +}
+> > +
+> >  SpaprCapabilityInfo capability_table[SPAPR_CAP_NUM] =3D {
+> >      [SPAPR_CAP_HTM] =3D {
+> >          .name =3D "htm",
+> > @@ -781,6 +807,15 @@ SpaprCapabilityInfo capability_table[SPAPR_CAP_NUM=
+] =3D {
+> >          .type =3D "bool",
+> >          .apply =3D cap_ail_mode_3_apply,
+> >      },
+> > +    [SPAPR_CAP_DAWR1] =3D {
+> > +        .name =3D "dawr1",
+> > +        .description =3D "Allow 2nd Data Address Watchpoint Register (=
+DAWR1)",
+> > +        .index =3D SPAPR_CAP_DAWR1,
+> > +        .get =3D spapr_cap_get_bool,
+> > +        .set =3D spapr_cap_set_bool,
+> > +        .type =3D "bool",
+> > +        .apply =3D cap_dawr1_apply,
+> > +    },
+> >  };
+> > =20
+> >  static SpaprCapabilities default_caps_with_cpu(SpaprMachineState *spap=
+r,
+> > @@ -923,6 +958,7 @@ SPAPR_CAP_MIG_STATE(large_decr, SPAPR_CAP_LARGE_DEC=
+REMENTER);
+> >  SPAPR_CAP_MIG_STATE(ccf_assist, SPAPR_CAP_CCF_ASSIST);
+> >  SPAPR_CAP_MIG_STATE(fwnmi, SPAPR_CAP_FWNMI);
+> >  SPAPR_CAP_MIG_STATE(rpt_invalidate, SPAPR_CAP_RPT_INVALIDATE);
+> > +SPAPR_CAP_MIG_STATE(dawr1, SPAPR_CAP_DAWR1);
+> > =20
+> >  void spapr_caps_init(SpaprMachineState *spapr)
+> >  {
+> > diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
+> > index fcefd1d1c7..34c1c77c95 100644
+> > --- a/hw/ppc/spapr_hcall.c
+> > +++ b/hw/ppc/spapr_hcall.c
+> > @@ -814,11 +814,12 @@ static target_ulong h_set_mode_resource_set_ciabr=
+(PowerPCCPU *cpu,
+> >      return H_SUCCESS;
+> >  }
+> > =20
+> > -static target_ulong h_set_mode_resource_set_dawr0(PowerPCCPU *cpu,
+> > -                                                  SpaprMachineState *s=
+papr,
+> > -                                                  target_ulong mflags,
+> > -                                                  target_ulong value1,
+> > -                                                  target_ulong value2)
+> > +static target_ulong h_set_mode_resource_set_dawr(PowerPCCPU *cpu,
+> > +                                                     SpaprMachineState=
+ *spapr,
+> > +                                                     target_ulong mfla=
+gs,
+> > +                                                     target_ulong reso=
+urce,
+> > +                                                     target_ulong valu=
+e1,
+> > +                                                     target_ulong valu=
+e2)
+>=20
+> Did the text alignment go wrong here?
+>=20
+> Aside from those things,
+>=20
+> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+>=20
+> Thanks,
+> Nick
+>=20
 
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--JEGw3Rvi+yG/ufYO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmXeS4AACgkQzQJF27ox
+2GfVzw//ak6l51KpjSiy/6K910UHxccgJrLCXCdqPYHTnPIOv+47AOUKH37F9Vma
+/JZW1JdEukAp39BTbMaQ1jYFBGp2DmmxJnLUHnK4B6uC3FIyvjrLgBUJo8QX82Gl
+90hLl8fpFhopK0Ui+wJSRwW0z0CyeRTzd+IhuLe+maz33pMQrc3tKBJWEecYq8pe
+5qImdihO3Lv4O75Gy96d26QsjYKinzri9j2cQSutGaX0RGpAMkcQB58DZ5yESH0B
+zwyNvLxk0F1ZKnAdHydbjxO8Dyqx4b33LIsV7flimD9eLFylmI2+igafz5kiM/as
+Dn9R4ckFd0KGRPLZSpod3ApUc/U3Qwhg/wns5FfoQMeQ3qmLbbzCWTwPeW3CjyF4
+UKOKo6yDHeQM7UKlOLqe253+oLExq5bIKtIEsTyrJy8H68qXJzdkjOq+Rkag41Cx
+Nl6XXamyuddmw4n6G5ntzE4496LkfbhoDFQX1cb5XA3pJyzRc+ekFNnaReYc9kAn
+gGRUTx1S/smZVEYfsyR88TGKNw7npRxMwSnYtYLP7sP4tOPGEQHUrzOfJhLHkouH
+jTCR0C+VtJqiYbOIv2VDnO0ZZeiJ+M1bPYwsfG/huyj2hJD2LdsdSzVobdEYSyMo
+xy+CjjyJWCdvOjd2x9i+/WCSuNYw/1SxpzG6ApB21WOT0CRMXIk=
+=Gekm
+-----END PGP SIGNATURE-----
+
+--JEGw3Rvi+yG/ufYO--
 
