@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FB69869263
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:34:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7498C869260
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:34:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rexaF-0000hJ-Km; Tue, 27 Feb 2024 08:33:23 -0500
+	id 1rexaI-0000is-5n; Tue, 27 Feb 2024 08:33:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaD-0000g9-Dq
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:21 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1rexaF-0000hK-3d
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:23 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaB-0002pl-2y
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:21 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3392b045e0aso3543412f8f.2
+ id 1rexaD-0002pn-9h
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:22 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-33d26da3e15so2419407f8f.1
  for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709040797; x=1709645597; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709040798; x=1709645598; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=rLfVBib6moPM6Xgbon/d2611Q9D6RHvJCoxeaZ9C+Eo=;
- b=AzT5G/VU/PtEfYVqA2PQNx17QTMUI233vkd6AvAODvP5lqoX6bPeGYElPz77blJInN
- cwf51Xt/3vIeUfJxDKO705r6NfW8G3RipwpSGFoMK/FDBs2eWFBk2kkuuT7x2ze7Aqui
- yshzEwmmWIJTtfOnYSVzkXE6f+d6yovE/TuVobZrptZWisPANojA6L/NLHaof5Wmz55c
- ypu9mITIDFLS3qscRBlQk0D7d8+9Do/HzcFoALd8vegQ5NVc7+3zKjwzTToIy+ExQJ+k
- OyRFcAac/Yq75xM1nmth/cpMEhf+2Km+epbaW+sc8fI/zYlvHudNU5ZiLQusx0wV58mn
- TwWQ==
+ :reply-to; bh=jgYHzr2hRg8T/6O9OXdsZJKVALA3Fedt0qDTwO0O3lA=;
+ b=uy6Q5icnOkbqTLJmvql6tWpz7izYpDU/XYINQG3kneaQvSt7CtpLZekUeetr7Y0DpN
+ +t0rlj9rKGug71RAdWJIS+SJtJ8/m9A9s+RfOMzmQCFQcpCe6keyN88nuBdioHU1TpqG
+ OvVuOwg8sLHFoWlvktOKN1act9ZfAsArzevdaiye1BVF3Vj9oIjZlUQ7WntGtQBiENOp
+ X/mNUPLM65a5xd/10qZDlcJztPSq6qW3PCI3FPlak32aWCi0Sy/nSlUdUWB3LtMXgalj
+ AEvP/i9ClS/bh/TcBjqw3vVBdPQym+m5M/0f0vDBUa42aehbCC/OZf+qmffRNmVbFvmN
+ y4aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709040797; x=1709645597;
+ d=1e100.net; s=20230601; t=1709040798; x=1709645598;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rLfVBib6moPM6Xgbon/d2611Q9D6RHvJCoxeaZ9C+Eo=;
- b=o3kF+Tz28BibIvHRug358I8jmnxriPc0MKfdmea32909LFYDHuFAd9L0EvCWFa4ug7
- /ozQEqXy7o+ed46b1GeX/BOtQ3oo3d2J3XZJNKa1J4dbdK+PNfLsZ6RTBaSbBGMPUr0o
- n9+7uFhRJs33RiEXhrMEGKE/6igJ4v6vlbl1BBqJ9nzTr9/DG9SgLu9g4pq8BhKrN7dv
- aUJ0J/L0L/dNzi2wsX5lQ9nk9vPN7Pkd5MQlqD2raZY5Qm27dvjX1ZhrmWyx/k7605kl
- FFnH4ffzYMufLBqQU3rFWxAfH1TwNkDo07ZIyZXD3EmtvMJ/VsU2s8DJjRAPclmuttyo
- kU/A==
-X-Gm-Message-State: AOJu0YxQKW1n2R8TkoKupAIc9PWDhH61+5E000JvUIdyqE6o1umM7OM6
- eQoOiatGOGcM3PgP7la6wPJcZo3DVIm4wLnHLUy4xr6rQkiDhF1I+i7GNbeKEmDBoN6X3bVRDNa
- O
-X-Google-Smtp-Source: AGHT+IFAGLqArF5n5oj1D6pl9twQ791m7fR7bMP4bv73XBtSN5UUbsapVF23zYb7B3IpGNeBEIlVqQ==
-X-Received: by 2002:a5d:6d85:0:b0:33d:da6e:b7db with SMTP id
- l5-20020a5d6d85000000b0033dda6eb7dbmr4149387wrs.62.1709040797355; 
+ bh=jgYHzr2hRg8T/6O9OXdsZJKVALA3Fedt0qDTwO0O3lA=;
+ b=TFunh/D4TDDaMkkDJy5bMWUUM1WN8mABgCeIenzHZ7LVdoDnW7IrhBezy3mxJJJYVh
+ tEBedbAUTcEnG2102n6tOfjF7tcgDdD3ROz2JGjPizwMNiGG+3LF6mqEWPEZ5zxjAQxr
+ SootpYNWb+Lrsy6I8OugjiHtwJznQp+8Oy4kFU2HuzndbmwbGg+M2/No/NU7Oy8dLmFe
+ NTtuy47UFdPRWVoUwQkOp0qwbACJ0SAdAFdb1TlDOhLHvK++PyiYavwe9g4v7QCiQ8Gb
+ hAk0krRYZmPOZTndBprr6+0+6g25IawOus1sXLfa6DXCMI/BB1Y/4F0L6KU8nbgn+uTE
+ iKZw==
+X-Gm-Message-State: AOJu0YwhKL+PahUcVGy/KE86GnB8mBfuUW7GV4oOKoGhsLezhqOjHP/a
+ XfBafM/ME/59h6SFhlbm6GJb+shiDoIYvv47tofzd3XR7lRZVR51U9ngJnlfJJC7n7iCcbCfXHs
+ w
+X-Google-Smtp-Source: AGHT+IGjcv5rIm2JELlytJkgefyLP3xsj0zp2V60/v+j/FKcFFNSelMYHtNlbXIp7jJPPf2vnQzVOA==
+X-Received: by 2002:a5d:5f51:0:b0:33d:9d51:9942 with SMTP id
+ cm17-20020a5d5f51000000b0033d9d519942mr10019763wrb.17.1709040797790; 
  Tue, 27 Feb 2024 05:33:17 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- i13-20020adfe48d000000b0033ae7d768b2sm11319552wrm.117.2024.02.27.05.33.16
+ i13-20020adfe48d000000b0033ae7d768b2sm11319552wrm.117.2024.02.27.05.33.17
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 27 Feb 2024 05:33:17 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/45] target/arm: Advertise Cortex-A53 erratum #843419 fix via
- REVIDR
-Date: Tue, 27 Feb 2024 13:32:31 +0000
-Message-Id: <20240227133314.1721857-3-peter.maydell@linaro.org>
+Subject: [PULL 03/45] MAINTAINERS: Cover hw/ide/ahci-allwinner.c with
+ AllWinner A10 machine
+Date: Tue, 27 Feb 2024 13:32:32 +0000
+Message-Id: <20240227133314.1721857-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240227133314.1721857-1-peter.maydell@linaro.org>
 References: <20240227133314.1721857-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,37 +93,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The Cortex-A53 r0p4 revision that QEMU emulates is affected by a CatA
-erratum #843419 (i.e., the most severe), which requires workarounds in
-the toolchain as well as the OS.
+This code -- which was moved many times around -- was added in
+commit 377e214539 ("ahci: Add allwinner AHCI") and belong to the
+AllWinner machines. See also commit dca625768a ("arm: allwinner-a10:
+Add SATA").
 
-Since the emulation is obviously not affected in the same way, we can
-indicate this via REVIDR bit #8, which on r0p4 has the meaning that no
-workarounds for erratum #843419 are needed.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240215160202.2803452-1-ardb+git@google.com
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240215160713.80409-1-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index 8e30a7993ea..0f7a44a28f5 100644
---- a/target/arm/cpu64.c
-+++ b/target/arm/cpu64.c
-@@ -663,7 +663,7 @@ static void aarch64_a53_initfn(Object *obj)
-     set_feature(&cpu->env, ARM_FEATURE_PMU);
-     cpu->kvm_target = QEMU_KVM_ARM_TARGET_CORTEX_A53;
-     cpu->midr = 0x410fd034;
--    cpu->revidr = 0x00000000;
-+    cpu->revidr = 0x00000100;
-     cpu->reset_fpsid = 0x41034070;
-     cpu->isar.mvfr0 = 0x10110222;
-     cpu->isar.mvfr1 = 0x12111111;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 992799171f4..ca97b627188 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -642,6 +642,7 @@ R: Strahinja Jankovic <strahinja.p.jankovic@gmail.com>
+ L: qemu-arm@nongnu.org
+ S: Odd Fixes
+ F: hw/*/allwinner*
++F: hw/ide/ahci-allwinner.c
+ F: include/hw/*/allwinner*
+ F: hw/arm/cubieboard.c
+ F: docs/system/arm/cubieboard.rst
 -- 
 2.34.1
 
