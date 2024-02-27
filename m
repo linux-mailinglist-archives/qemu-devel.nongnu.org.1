@@ -2,62 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACC388698DC
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 15:46:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42A948698F4
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 15:48:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reyjE-0000tX-Qv; Tue, 27 Feb 2024 09:46:48 -0500
+	id 1reyhd-0007Fm-WA; Tue, 27 Feb 2024 09:45:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1reyhI-0006VA-4n
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 09:44:45 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1reyhE-0006NX-Cc
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 09:44:41 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1reygR-00025U-1p
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 09:44:42 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-33d6f26ff33so3072638f8f.0
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 06:43:50 -0800 (PST)
+ id 1reygQ-000259-BR
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 09:44:40 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-412ae087378so4852125e9.3
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 06:43:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1709045029; x=1709649829; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=m5QrhORKQXYv0pzCl6ansjRiTWdObzMQswF5xvhKoks=;
- b=cEVmMrpdSp678cheGt2sFWb0hancWpb8+oK46+Vh26v2cNoEbo8njheJRzvWNlr+gp
- EkLgXq93hkowjTrqZBaVgR5O7KSwofpb7nSYiJ7hOJz38FkP7ajyn9yoH+LYo3BIq05+
- olmgD9wJKUSM9qelyurVgmoveOeFieUWZ2pp4cHGfUXvEm4wxXM9vpV0VP5Uy8LKXvW+
- IFHDLhCwhbq4p6SXm0FDlc443FombNABQbhG1+D9EGtUqPM0jEj1WZNBSYemXuGjyDJ+
- RXBzjv4LQuRSEMYLh05Duf2vsNrulzJpSsykZ9XKTG8Rk69uxa1FF8nHlsZrPyzh4KqB
- 9w6A==
+ bh=BKaOfkzsaddgrw5PBxNyKChRzqPSwV94abl+cum6jxg=;
+ b=ZiHlygWyS5GaXej0u5EzmeMGl5q1yTzo8GMkU9lTP9LWvpC4pHZQXOyzJCczwTNuz8
+ efb97XDZKf3qyhwFVYMFOgKqpqbzKz7tJlJyTr2h4vTyk1UMCVnLxaqWDTfAXfGmef9p
+ OZER5UbZoDo/ASF7oHZ7eGP5ltPGv2ZVeOD3pUlhLABEId6PzMbN8U6U7dgyJl0i/aBA
+ av79vXZ5zlHaXHCF7dnfImJSVVlfwt4GOf6E8bpBWqHVH4LkfW7N3a2I01zv1OUs3xa+
+ 4TO+Xsb/cMK+wqPROPcU9MT0iEZ7Gr6oSn5e0zfCBIZu8RaHUd9SsoY8ljHfE0kc1mRH
+ RnKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1709045029; x=1709649829;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=m5QrhORKQXYv0pzCl6ansjRiTWdObzMQswF5xvhKoks=;
- b=KCZNikvrqn9QycrkDehG+4rS3W2MQqs9qzTqxN3xRjz77RjQ7knzqe3dsxdN5qQQEX
- Qec6x1KOJUqhWPBpJQsrrNTPEmWrzCADXmIjuH/EY6bYxzw3N+SF2bBNUloZZmnzwEVb
- FrkC5FMLOflylEdB4g7D+/UY7x4+wDWJWPNUTGm+Gj5PXRtGh50XsNpiLUEYmihibYtb
- Yj/3Go6uzEtKsxsc4nGk0h11JllPNN14kpQuzfSgGqoUUdGAsN1gPWOXEna+695soP/S
- FW2F20bLKGdQ4w8fu+Z7YjztUhglguiG0tg4R3gL2jYH3JKNpLJlTslllCqIDH98Bfdw
- OEWw==
-X-Gm-Message-State: AOJu0YzqVGyPScPmtbACuTSlgBi31Vj236keUgWr0nj7hnZIgznp0Yz9
- +cLqeoQqGnZ5CU4Z5nxrCFRpxFOUWsvgFXenYTUDLUf0tlACDocP8Tqk4UItcOf/4CwMkYIPGYx
- A
-X-Google-Smtp-Source: AGHT+IHY35rpROmG9o2nsZAfwHQ9rTgZhSYzc+HDgUb+eDnFJds19Li3g4Hmq4xoPZQKbY/kb2l5yQ==
-X-Received: by 2002:a05:6000:24a:b0:33d:9eef:4f25 with SMTP id
- m10-20020a056000024a00b0033d9eef4f25mr6899885wrz.51.1709045029442; 
- Tue, 27 Feb 2024 06:43:49 -0800 (PST)
+ bh=BKaOfkzsaddgrw5PBxNyKChRzqPSwV94abl+cum6jxg=;
+ b=A3tqCUIN7SvZQKb42yQWIN+uEKNd2VSixkm6GH6R2UwSQXCo9UwQ8shCDVdjipqwqO
+ bn54DkAWYbRCsIL2AU3jg1u6TWvzqzwbAc1OdiXJOBtEgVtOYdnVrC/3gF+ekeQ+3Xks
+ JZ8BB++ejDBd+hVJy9q1jn9LhwGq5aKGSlGunJ4MNl00bg0HQox1pOSgSXkrlE6CoMb9
+ 89YP04TN0+NT0SHLUbDFAlwIWXWx0bq3GNme1k6bjeN7aUe+pfGSbyr5tsiyMrMN6Zp5
+ g54NIiN4+atO8BpNyVV6o/4vsAoAMvqATo0KwUy4isUOlLB7nhhMfs7UN6J5/yj5axVI
+ gydw==
+X-Gm-Message-State: AOJu0YzooNzuMuiPOZShH+rtKxWCGz+oOlz/aMm3p9tbDUtODAu/6e4S
+ pGtKcceblIXZ8lWpbSeExEJ0RojonCpBrD6hyxtuuvtFD6YzIHszkkH7q1wVmE8=
+X-Google-Smtp-Source: AGHT+IHF24oXmg4oTsfs3p6t0gGQ6iFGEvLFvPVBPGb7lUUqT+XjoWzoGTRMsotpqWoc4ncPH8OuOw==
+X-Received: by 2002:a05:600c:1394:b0:410:c25d:37e9 with SMTP id
+ u20-20020a05600c139400b00410c25d37e9mr7463181wmf.16.1709045028932; 
+ Tue, 27 Feb 2024 06:43:48 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- u3-20020adfed43000000b0033d9ee09b7asm11413268wro.107.2024.02.27.06.43.40
+ y23-20020a1c4b17000000b0041253d0acd6sm15208159wma.47.2024.02.27.06.43.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 27 Feb 2024 06:43:47 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id CB3A55F8F9;
+ by draig.lan (Postfix) with ESMTP id E2E445F90D;
  Tue, 27 Feb 2024 14:43:36 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -89,17 +88,18 @@ Cc: qemu-ppc@nongnu.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
  Palmer Dabbelt <palmer@dabbelt.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v4 13/29] hw/core/cpu: Remove gdb_get_dynamic_xml member
-Date: Tue, 27 Feb 2024 14:43:19 +0000
-Message-Id: <20240227144335.1196131-14-alex.bennee@linaro.org>
+Subject: [PATCH v4 14/29] gdbstub: Add members to identify registers to
+ GDBFeature
+Date: Tue, 27 Feb 2024 14:43:20 +0000
+Message-Id: <20240227144335.1196131-15-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240227144335.1196131-1-alex.bennee@linaro.org>
 References: <20240227144335.1196131-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -124,183 +124,138 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-This function is no longer used.
+These members will be used to help plugins to identify registers.
+The added members in instances of GDBFeature dynamically generated by
+CPUs will be filled in later changes.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240103173349.398526-35-alex.bennee@linaro.org>
-Message-Id: <20231213-gdb-v17-9-777047380591@daynix.com>
+Message-Id: <20240103173349.398526-36-alex.bennee@linaro.org>
+Message-Id: <20231213-gdb-v17-10-777047380591@daynix.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- include/hw/core/cpu.h |  4 ----
- target/arm/cpu.h      |  6 ------
- target/ppc/cpu.h      |  1 -
- target/arm/cpu.c      |  1 -
- target/arm/gdbstub.c  | 18 ------------------
- target/ppc/cpu_init.c |  3 ---
- target/ppc/gdbstub.c  | 10 ----------
- target/riscv/cpu.c    | 14 --------------
- 8 files changed, 57 deletions(-)
+ include/exec/gdbstub.h  |  3 +++
+ gdbstub/gdbstub.c       | 12 +++++++++---
+ target/riscv/gdbstub.c  |  4 +---
+ scripts/feature_to_c.py | 14 +++++++++++++-
+ 4 files changed, 26 insertions(+), 7 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 1bbf21b2201..4b659799b00 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -133,9 +133,6 @@ struct SysemuCPUOps;
-  *           before the insn which triggers a watchpoint rather than after it.
-  * @gdb_arch_name: Optional callback that returns the architecture name known
-  * to GDB. The caller must free the returned string with g_free.
-- * @gdb_get_dynamic_xml: Callback to return dynamically generated XML for the
-- *   gdb stub. Returns a pointer to the XML contents for the specified XML file
-- *   or NULL if the CPU doesn't have a dynamically generated content for it.
-  * @disas_set_info: Setup architecture specific components of disassembly info
-  * @adjust_watchpoint_address: Perform a target-specific adjustment to an
-  * address before attempting to match it against watchpoints.
-@@ -167,7 +164,6 @@ struct CPUClass {
+diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
+index 82a8afa237f..da9ddfe54c5 100644
+--- a/include/exec/gdbstub.h
++++ b/include/exec/gdbstub.h
+@@ -13,12 +13,15 @@
+ typedef struct GDBFeature {
+     const char *xmlname;
+     const char *xml;
++    const char *name;
++    const char * const *regs;
+     int num_regs;
+ } GDBFeature;
  
-     const char *gdb_core_xml_file;
-     const gchar * (*gdb_arch_name)(CPUState *cpu);
--    const char * (*gdb_get_dynamic_xml)(CPUState *cpu, const char *xmlname);
+ typedef struct GDBFeatureBuilder {
+     GDBFeature *feature;
+     GPtrArray *xml;
++    GPtrArray *regs;
+     int base_reg;
+ } GDBFeatureBuilder;
  
-     void (*disas_set_info)(CPUState *cpu, disassemble_info *info);
- 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 508a9c1e0d6..a5b3d8f7da7 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1159,12 +1159,6 @@ hwaddr arm_cpu_get_phys_page_attrs_debug(CPUState *cpu, vaddr addr,
- int arm_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
- int arm_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
- 
--/* Returns the dynamically generated XML for the gdb stub.
-- * Returns a pointer to the XML contents for the specified XML file or NULL
-- * if the XML name doesn't match the predefined one.
-- */
--const char *arm_gdb_get_dynamic_xml(CPUState *cpu, const char *xmlname);
--
- int arm_cpu_write_elf64_note(WriteCoreDumpFunction f, CPUState *cs,
-                              int cpuid, DumpState *s);
- int arm_cpu_write_elf32_note(WriteCoreDumpFunction f, CPUState *cs,
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index c66989a5e60..0133da4e079 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -1545,7 +1545,6 @@ int ppc_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
- int ppc_cpu_gdb_write_register_apple(CPUState *cpu, uint8_t *buf, int reg);
- #ifndef CONFIG_USER_ONLY
- hwaddr ppc_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
--const char *ppc_gdb_get_dynamic_xml(CPUState *cs, const char *xml_name);
- #endif
- int ppc64_cpu_write_elf64_note(WriteCoreDumpFunction f, CPUState *cs,
-                                int cpuid, DumpState *s);
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 84887084d95..b2ea5d65132 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2516,7 +2516,6 @@ static void arm_cpu_class_init(ObjectClass *oc, void *data)
-     cc->sysemu_ops = &arm_sysemu_ops;
- #endif
-     cc->gdb_arch_name = arm_gdb_arch_name;
--    cc->gdb_get_dynamic_xml = arm_gdb_get_dynamic_xml;
-     cc->gdb_stop_before_watchpoint = true;
-     cc->disas_set_info = arm_disas_set_info;
- 
-diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
-index 059d84f98e5..a3bb73cfa7c 100644
---- a/target/arm/gdbstub.c
-+++ b/target/arm/gdbstub.c
-@@ -474,24 +474,6 @@ static GDBFeature *arm_gen_dynamic_m_secextreg_feature(CPUState *cs,
- #endif
- #endif /* CONFIG_TCG */
- 
--const char *arm_gdb_get_dynamic_xml(CPUState *cs, const char *xmlname)
--{
--    ARMCPU *cpu = ARM_CPU(cs);
--
--    if (strcmp(xmlname, "system-registers.xml") == 0) {
--        return cpu->dyn_sysreg_feature.desc.xml;
--    } else if (strcmp(xmlname, "sve-registers.xml") == 0) {
--        return cpu->dyn_svereg_feature.desc.xml;
--    } else if (strcmp(xmlname, "arm-m-system.xml") == 0) {
--        return cpu->dyn_m_systemreg_feature.desc.xml;
--#ifndef CONFIG_USER_ONLY
--    } else if (strcmp(xmlname, "arm-m-secext.xml") == 0) {
--        return cpu->dyn_m_secextreg_feature.desc.xml;
--#endif
--    }
--    return NULL;
--}
--
- void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
- {
-     CPUState *cs = CPU(cpu);
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 5f0ecf443d8..1d3d1db7c31 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -7385,9 +7385,6 @@ static void ppc_cpu_class_init(ObjectClass *oc, void *data)
- #endif
- 
-     cc->gdb_num_core_regs = 71;
--#ifndef CONFIG_USER_ONLY
--    cc->gdb_get_dynamic_xml = ppc_gdb_get_dynamic_xml;
--#endif
- #ifdef USE_APPLE_GDB
-     cc->gdb_read_register = ppc_cpu_gdb_read_register_apple;
-     cc->gdb_write_register = ppc_cpu_gdb_write_register_apple;
-diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
-index 43f61130c5f..122ea9d0c00 100644
---- a/target/ppc/gdbstub.c
-+++ b/target/ppc/gdbstub.c
-@@ -342,16 +342,6 @@ static void gdb_gen_spr_feature(CPUState *cs)
- 
-     gdb_feature_builder_end(&builder);
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index f766ee277a0..a55b5e6581a 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -419,9 +419,10 @@ void gdb_feature_builder_init(GDBFeatureBuilder *builder, GDBFeature *feature,
+     builder->feature = feature;
+     builder->xml = g_ptr_array_new();
+     g_ptr_array_add(builder->xml, header);
++    builder->regs = g_ptr_array_new();
+     builder->base_reg = base_reg;
+     feature->xmlname = xmlname;
+-    feature->num_regs = 0;
++    feature->name = name;
  }
--
--const char *ppc_gdb_get_dynamic_xml(CPUState *cs, const char *xml_name)
--{
--    PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cs);
--
--    if (strcmp(xml_name, "power-spr.xml") == 0) {
--        return pcc->gdb_spr.xml;
--    }
--    return NULL;
--}
- #endif
  
- #if !defined(CONFIG_USER_ONLY)
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index dd8a0e94897..5ff0192c527 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -2300,19 +2300,6 @@ static const gchar *riscv_gdb_arch_name(CPUState *cs)
+ void gdb_feature_builder_append_tag(const GDBFeatureBuilder *builder,
+@@ -440,10 +441,12 @@ void gdb_feature_builder_append_reg(const GDBFeatureBuilder *builder,
+                                     const char *type,
+                                     const char *group)
+ {
+-    if (builder->feature->num_regs < regnum) {
+-        builder->feature->num_regs = regnum;
++    if (builder->regs->len <= regnum) {
++        g_ptr_array_set_size(builder->regs, regnum + 1);
      }
+ 
++    builder->regs->pdata[regnum] = (gpointer *)name;
++
+     if (group) {
+         gdb_feature_builder_append_tag(
+             builder,
+@@ -469,6 +472,9 @@ void gdb_feature_builder_end(const GDBFeatureBuilder *builder)
+     }
+ 
+     g_ptr_array_free(builder->xml, TRUE);
++
++    builder->feature->num_regs = builder->regs->len;
++    builder->feature->regs = (void *)g_ptr_array_free(builder->regs, FALSE);
  }
  
--static const char *riscv_gdb_get_dynamic_xml(CPUState *cs, const char *xmlname)
--{
--    RISCVCPU *cpu = RISCV_CPU(cs);
--
--    if (strcmp(xmlname, "riscv-csr.xml") == 0) {
--        return cpu->dyn_csr_feature.xml;
--    } else if (strcmp(xmlname, "riscv-vector.xml") == 0) {
--        return cpu->dyn_vreg_feature.xml;
--    }
--
--    return NULL;
--}
--
- #ifndef CONFIG_USER_ONLY
- static int64_t riscv_get_arch_id(CPUState *cs)
- {
-@@ -2359,7 +2346,6 @@ static void riscv_cpu_common_class_init(ObjectClass *c, void *data)
-     cc->get_arch_id = riscv_get_arch_id;
- #endif
-     cc->gdb_arch_name = riscv_gdb_arch_name;
--    cc->gdb_get_dynamic_xml = riscv_gdb_get_dynamic_xml;
+ const GDBFeature *gdb_find_static_feature(const char *xmlname)
+diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
+index 546e8692d17..be7a02cd903 100644
+--- a/target/riscv/gdbstub.c
++++ b/target/riscv/gdbstub.c
+@@ -266,11 +266,9 @@ static GDBFeature *riscv_gen_dynamic_csr_feature(CPUState *cs, int base_reg)
+         }
+         predicate = csr_ops[i].predicate;
+         if (predicate && (predicate(env, i) == RISCV_EXCP_NONE)) {
+-            g_autofree char *dynamic_name = NULL;
+             name = csr_ops[i].name;
+             if (!name) {
+-                dynamic_name = g_strdup_printf("csr%03x", i);
+-                name = dynamic_name;
++                name = g_strdup_printf("csr%03x", i);
+             }
  
-     device_class_set_props(dc, riscv_cpu_properties);
- }
+             gdb_feature_builder_append_reg(&builder, name, bitsize, i,
+diff --git a/scripts/feature_to_c.py b/scripts/feature_to_c.py
+index e04d6b2df7f..807af0e685c 100644
+--- a/scripts/feature_to_c.py
++++ b/scripts/feature_to_c.py
+@@ -50,7 +50,9 @@ def writeliteral(indent, bytes):
+         sys.stderr.write(f'unexpected start tag: {element.tag}\n')
+         exit(1)
+ 
++    feature_name = element.attrib['name']
+     regnum = 0
++    regnames = []
+     regnums = []
+     tags = ['feature']
+     for event, element in events:
+@@ -67,6 +69,7 @@ def writeliteral(indent, bytes):
+                 if 'regnum' in element.attrib:
+                     regnum = int(element.attrib['regnum'])
+ 
++                regnames.append(element.attrib['name'])
+                 regnums.append(regnum)
+                 regnum += 1
+ 
+@@ -85,6 +88,15 @@ def writeliteral(indent, bytes):
+     writeliteral(8, bytes(os.path.basename(input), 'utf-8'))
+     sys.stdout.write(',\n')
+     writeliteral(8, read)
+-    sys.stdout.write(f',\n        {num_regs},\n    }},\n')
++    sys.stdout.write(',\n')
++    writeliteral(8, bytes(feature_name, 'utf-8'))
++    sys.stdout.write(',\n        (const char * const []) {\n')
++
++    for index, regname in enumerate(regnames):
++        sys.stdout.write(f'            [{regnums[index] - base_reg}] =\n')
++        writeliteral(16, bytes(regname, 'utf-8'))
++        sys.stdout.write(',\n')
++
++    sys.stdout.write(f'        }},\n        {num_regs},\n    }},\n')
+ 
+ sys.stdout.write('    { NULL }\n};\n')
 -- 
 2.39.2
 
