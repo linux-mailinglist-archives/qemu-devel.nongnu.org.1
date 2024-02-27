@@ -2,51 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A875869BD8
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 17:17:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD36C869B8E
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 17:05:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rf07S-0001Rk-GU; Tue, 27 Feb 2024 11:15:50 -0500
+	id 1rezwC-0004yt-9x; Tue, 27 Feb 2024 11:04:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=hhKj=KE=kaod.org=clg@ozlabs.org>)
- id 1rf07K-0001LU-R1; Tue, 27 Feb 2024 11:15:46 -0500
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rezw5-0004xN-VL; Tue, 27 Feb 2024 11:04:06 -0500
+Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=hhKj=KE=kaod.org=clg@ozlabs.org>)
- id 1rf07H-0005QN-RV; Tue, 27 Feb 2024 11:15:41 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TkjJH0C7hz4wyf;
- Wed, 28 Feb 2024 03:15:27 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4TkjJF0nSyz4wyh;
- Wed, 28 Feb 2024 03:15:24 +1100 (AEDT)
-Message-ID: <c084d751-fc21-4e9f-ab28-fc5889b8d9af@kaod.org>
-Date: Tue, 27 Feb 2024 17:15:20 +0100
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rezw2-0002nH-1v; Tue, 27 Feb 2024 11:04:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1709049842; x=1740585842;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=a4uC/JTyOpAvVrmW4y1AlyaBbiESaUUtpRpbAEFnTQE=;
+ b=mFfgtmMM874wTXweIcoq28/xjPwPpeDs8m2H5V6NltzwgIpVZyZL95jB
+ 6ZDyCqSiga95kt6dxqoczPB022DmhVQBmW/UCoQWtiuZHRYGKTPB0HGyc
+ 8Z4KqpEL8YfSoTpJKzOPaZPrmR9Vc4KZLJX0C/366fxv/rwUC4jSSAYb8
+ U7dG0oQE5DK3aTDUGuWGzCZzZz5w6tbNDLDTlaCnRp3Teqbet34LQ9qFZ
+ tBAeVZEJBUxtPXSCWUOd2c7bU6YyyjCI+BfWViA/xDjxRGA22QGzSjpiZ
+ AjnGKz465HWXIA5gDFNWSSkESqV4ysIRHK+JHokAKmPr19MdCitT1PZ/2 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3561334"
+X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
+   d="scan'208";a="3561334"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2024 08:03:50 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
+   d="scan'208";a="7049055"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa010.jf.intel.com with ESMTP; 27 Feb 2024 08:03:44 -0800
+Date: Wed, 28 Feb 2024 00:17:26 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Alex =?utf-8?B?QmVubu+/vWU=?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>,
+ Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [RFC 8/8] qemu-options: Add the cache topology description of -smp
+Message-ID: <Zd4LFoegPx6EDfNy@intel.com>
+References: <20240220092504.726064-1-zhao1.liu@linux.intel.com>
+ <20240220092504.726064-9-zhao1.liu@linux.intel.com>
+ <20240226154734.00000d6e@Huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] ppc/pnv: Fix pervasive topology calculation for P10
-Content-Language: en-US, fr
-To: Caleb Schlossin <calebs@linux.vnet.ibm.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, npiggin@gmail.com, fbarrat@linux.ibm.com
-References: <20240227144844.23606-1-calebs@linux.vnet.ibm.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240227144844.23606-1-calebs@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=hhKj=KE=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240226154734.00000d6e@Huawei.com>
+Received-SPF: none client-ip=192.198.163.15;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,63 +92,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Caleb,
+Hi Jonathan,
 
-On 2/27/24 15:48, Caleb Schlossin wrote:
-> Pervasive topology(PIR) calculation for core, thread ID was
-> wrong for big cores (SMT8). Fixing for P10.
+On Mon, Feb 26, 2024 at 03:47:34PM +0000, Jonathan Cameron wrote:
+> Date: Mon, 26 Feb 2024 15:47:34 +0000
+> From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+> Subject: Re: [RFC 8/8] qemu-options: Add the cache topology description of
+>  -smp
+> X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 > 
-> Based on: <20240123195005.8965-1-calebs@linux.vnet.ibm.com>
-> Signed-off-by: Caleb Schlossin <calebs@linux.vnet.ibm.com>
-
-Since the initial patch [1] is not merged yet, you can simply send a v2
-with the update. There is still some time before soft freeze [2].
-
-The Subject of this patch [PATCH 2/2] seems to refer to a series. Is
-there a patch 1/2 ?
-
-Thanks,
-
-C.
-
-
-
-[1] https://lore.kernel.org/all/20240123195005.8965-1-calebs@linux.vnet.ibm.com/
-[2] https://wiki.qemu.org/Planning/9.0
-
-> ---
->   hw/ppc/pnv.c | 15 +++++++++++++--
->   1 file changed, 13 insertions(+), 2 deletions(-)
+> On Tue, 20 Feb 2024 17:25:04 +0800
+> Zhao Liu <zhao1.liu@linux.intel.com> wrote:
 > 
-> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> index 2f53883916..aa5aba60b4 100644
-> --- a/hw/ppc/pnv.c
-> +++ b/hw/ppc/pnv.c
-> @@ -1068,12 +1068,23 @@ static uint32_t pnv_chip_pir_p9(PnvChip *chip, uint32_t core_id,
->       }
->   }
->   
-> +/*
-> + *    0:48  Reserved - Read as zeroes
-> + *   49:52  Node ID
-> + *   53:55  Chip ID
-> + *   56     Reserved - Read as zero
-> + *   57:59  Quad ID
-> + *   60     Core Chiplet Pair ID
-> + *   61:63  Thread/Core Chiplet ID t0-t2
-> + *
-> + * We only care about the lower bits. uint32_t is fine for the moment.
-> + */
->   static uint32_t pnv_chip_pir_p10(PnvChip *chip, uint32_t core_id,
->                                    uint32_t thread_id)
->   {
->       if (chip->nr_threads == 8) {
-> -        return (chip->chip_id << 8) | ((thread_id & 1) << 2) | (core_id << 3) |
-> -               (thread_id >> 1);
-> +        return (chip->chip_id << 8) | ((core_id / 4) << 4) |
-> +               ((core_id % 2) << 3) | thread_id;
->       } else {
->           return (chip->chip_id << 8) | (core_id << 2) | thread_id;
->       }
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> > 
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> 
+> Hi,
+> 
+> A trivial comment, but also a possibly more significant one about
+> whether the defaults are correctly verified.
+> 
+> Jonathan
+> > ---
+> >  qemu-options.hx | 54 ++++++++++++++++++++++++++++++++++++++++++-------
+> >  1 file changed, 47 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/qemu-options.hx b/qemu-options.hx
+> > index 70eaf3256685..85c78c99a3b0 100644
+> > --- a/qemu-options.hx
+> > +++ b/qemu-options.hx
+> > @@ -281,7 +281,9 @@ ERST
+> >  
+> >  DEF("smp", HAS_ARG, QEMU_OPTION_smp,
+> >      "-smp [[cpus=]n][,maxcpus=maxcpus][,drawers=drawers][,books=books][,sockets=sockets]\n"
+> > -    "               [,dies=dies][,clusters=clusters][,cores=cores][,threads=threads]\n"
+> > +    "               [,dies=dies][,clusters=clusters][,modules=modules][,cores=cores]\n"
+> > +    "               [,threads=threads][,l1d-cache=level][,l1i-cache=level][,l2-cache=level]\n"
+> burns more characters but I'd go with
+> l1d->cache=topo_level
+> 
+> As level for a cache has a totally different meaning!
 
+Yes, good catch! Thanks.
+
+> 
+> > +    "               [,l3-cache=level]\n"
+> >      "                set the number of initial CPUs to 'n' [default=1]\n"
+> >      "                maxcpus= maximum number of total CPUs, including\n"
+> >      "                offline CPUs for hotplug, etc\n"
+> > @@ -290,9 +292,14 @@ DEF("smp", HAS_ARG, QEMU_OPTION_smp,
+> >      "                sockets= number of sockets in one book\n"
+> >      "                dies= number of dies in one socket\n"
+> >      "                clusters= number of clusters in one die\n"
+> > -    "                cores= number of cores in one cluster\n"
+> > +    "                modules= number of modules in one cluster\n"
+> > +    "                cores= number of cores in one module\n"
+> >      "                threads= number of threads in one core\n"
+> > -    "Note: Different machines may have different subsets of the CPU topology\n"
+> > +    "                l1d-cache= topology level of L1 D-cache\n"
+> > +    "                l1i-cache= topology level of L1 I-cache\n"
+> > +    "                l2-cache= topology level of L2 cache\n"
+> > +    "                l3-cache= topology level of L3 cache\n"
+> > +    "Note: Different machines may have different subsets of the CPU and cache topology\n"
+> 
+> >  
+> >          -smp 32,sockets=2,dies=2,modules=2,cores=2,threads=2,maxcpus=32
+> >  
+> > +    The following sub-option defines a CPU topology hierarchy (2 sockets
+> > +    totally on the machine, 2 dies per socket, 2 modules per die, 2 cores per
+> > +    module, 2 threads per core) with 3-level cache topology hierarchy (L1
+> > +    D-cache per core, L1 I-cache per core, L2 cache per core and L3 cache per
+> > +    die) for PC machines which support sockets/dies/modules/cores/threads.
+> > +    Some members of the CPU topology option can be omitted but their values
+> > +    will be automatically computed. Some members of the cache topology
+> > +    option can also be omitted and target CPU will use the default topology.:
+> 
+> Given the default could be inconsistent I wonder if we should 'push' levels
+> up.  So if L2 not defined it is set either to default of equal to max of
+> l1i and l1d level. L3 either default or same level as l2.
+
+HMM, IIUC, I think there may be the case:
+
+User sets L2 cache as per core and omits L3 cache. In this case, if L3
+is per core (as L2) by default, how could we identify if that per core
+L3 is the default or from user? We need to identify this becase x86's L3
+is shared at die by default and L2 is shared at core level for current
+CPU models.
+
+To resolve this issue, we can add the status field in SMPCompatProps,
+e.g., has_l3_cache, just like current SMPCompatProps.has_clusters, to
+explicitly indicate that the L3 cache topo is set by user.
+
+Then other caches also need the similar fields...It doesn't look as
+simple as the current default invalid topology level.
+ 
+> Won't always correspond to a sensible system so maybe just rejecting
+> cases where default isn't possible is the best plan.  However I don't
+> see that verification as the checks on higher levels are gated on them
+> being specified.
+> 
+> > +
+> > +    ::
+> > +
+> > +        -smp 32,sockets=2,dies=2,modules=2,cores=2,threads=2,maxcpus=32,\
+> > +             l1d-cache=core,l1i-cache=core,l2-cache=core,l3-cache=die
+> > +
+> >      The following sub-option defines a CPU topology hierarchy (2 sockets
+> >      totally on the machine, 2 clusters per socket, 2 cores per cluster,
+> >      2 threads per core) for ARM virt machines which support sockets/clusters
+> 
 
