@@ -2,143 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61275868ADC
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 09:37:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44404868AF1
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 09:42:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1resy0-0004bJ-L7; Tue, 27 Feb 2024 03:37:38 -0500
+	id 1ret0N-0005qi-4j; Tue, 27 Feb 2024 03:40:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ankita@nvidia.com>)
- id 1resxu-0004a5-NY; Tue, 27 Feb 2024 03:37:31 -0500
-Received: from mail-mw2nam12on20601.outbound.protection.outlook.com
- ([2a01:111:f403:200a::601]
- helo=NAM12-MW2-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ankita@nvidia.com>)
- id 1resxr-0006vV-KP; Tue, 27 Feb 2024 03:37:30 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CLMD+idzaL+fOlkZ9xGCvF40zNJtaW7ba91E6k8HvWFptrwmKMny2LYJvGCy3EUdHE+u4PbjxnPwquERe2qHdvIpLEKxbAk1hEE1KUXS7lfEU2CVJjucOZ+UibB6yRtAeZKsGlnmsuUEuWq8WTLlSfO/+Ac7B4TuLHYj7C5wzYBXLkChJHTqLVsOlmzNf86Kq7OcgDC9pNF4HTZSUdj7tPX4APaSdADtYIlt1IiBaZmTvkqyKOf3fj845tI07RgeSlxNnXGjzDdoFGXLYLHdKxH/UK2m6dt0rTOeKgEr6wb6Ls7kBO24+QjKkUuEIzn+KFeM7IGg7rXlHe9rMXFQEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XVy1l7pi/+qm0y9OkUzhIhTGiPS3UldBqIIzrzlK6S0=;
- b=knl7Bh1uroILJxZX2t+6dmYF5JirZc1OH6zI7XKlG9qS87WGtguMoxJBJSlWoi3ptAFKyZVYgKBbsunVd59uny9/IsVphglLwB4R32rxJwSOZ4Gtr1TCKgHWopCqlcYxiMdtQ4jugl9SdiAqKxnsx/xp9NpCPxyY72xJP/Br+82RIasDWrrQRtWkYD6/8haYqwH59U2QXBo7Jo2/ErfowOHJLwh0Exv3gi9z52ppg4fA8qqX7GshQ7g7JDx3/9rgsYOn6suida3hUQArI0gYbAkCjnUsfgXwzQMSvHMy3uILE9ujG6KXRqyt76hFtZW7txzc9HPI3rARRHyRNT9UCw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XVy1l7pi/+qm0y9OkUzhIhTGiPS3UldBqIIzrzlK6S0=;
- b=d4hHweTasQW6jxqiinMVjxfUsMhdPyhcaW9iWpqjV1Mh3WPSTA34g/F41wB/Yqp0OXq0GdbKbRkkp0RQykmpepiCrgLR+1bjeG3/prAEpFDPuWgCnXe+tOdXOTrPvkXWEZR8xkFkxI5QOSrGdh/Wil1sBL0YR4VtsFSypm2ngElNpW5RN7Kqcgw4SIFmpX60FD2Pw9Zo48pV6sL8HFmQiu4h/5kE7e82xh7nZed9BT2t+bIAANLRHnvS1UFZGwHPmTimTEH4P1wEgk3AM38bHFrVgyo98O1j04e1IZf9shEFXrulQNK5tGZo+Nr97eiCMQ/9Xo3nP5YlO26BTD/O5A==
-Received: from SA1PR12MB7199.namprd12.prod.outlook.com (2603:10b6:806:2bc::21)
- by DS7PR12MB6071.namprd12.prod.outlook.com (2603:10b6:8:9d::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.36; Tue, 27 Feb
- 2024 08:37:16 +0000
-Received: from SA1PR12MB7199.namprd12.prod.outlook.com
- ([fe80::284c:211f:16dc:f7b2]) by SA1PR12MB7199.namprd12.prod.outlook.com
- ([fe80::284c:211f:16dc:f7b2%5]) with mapi id 15.20.7316.032; Tue, 27 Feb 2024
- 08:37:15 +0000
-From: Ankit Agrawal <ankita@nvidia.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-CC: Jason Gunthorpe <jgg@nvidia.com>, "alex.williamson@redhat.com"
- <alex.williamson@redhat.com>, "clg@redhat.com" <clg@redhat.com>,
- "shannon.zhaosl@gmail.com" <shannon.zhaosl@gmail.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "ani@anisinha.ca"
- <ani@anisinha.ca>, "berrange@redhat.com" <berrange@redhat.com>,
- "eduardo@habkost.net" <eduardo@habkost.net>, "imammedo@redhat.com"
- <imammedo@redhat.com>, "mst@redhat.com" <mst@redhat.com>, "eblake@redhat.com"
- <eblake@redhat.com>, "armbru@redhat.com" <armbru@redhat.com>,
- "david@redhat.com" <david@redhat.com>, "gshan@redhat.com" <gshan@redhat.com>, 
- Zhi Wang <zhiw@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, Aniket Agashe
- <aniketa@nvidia.com>, Neo Jia <cjia@nvidia.com>, Kirti Wankhede
- <kwankhede@nvidia.com>, "Tarun Gupta (SW-GPU)" <targupta@nvidia.com>, Vikram
- Sethi <vsethi@nvidia.com>, Andy Currid <acurrid@nvidia.com>, Dheeraj Nigam
- <dnigam@nvidia.com>, Uday Dhoke <udhoke@nvidia.com>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v7 2/2] hw/acpi: Implement the SRAT GI affinity structure
-Thread-Topic: [PATCH v7 2/2] hw/acpi: Implement the SRAT GI affinity structure
-Thread-Index: AQHaZlXRPSA0zxYvqU+8THPBcca33bEc2OaAgAEKOgg=
-Date: Tue, 27 Feb 2024 08:37:15 +0000
-Message-ID: <SA1PR12MB71992ECFBF9FA3EE3C350EA8B0592@SA1PR12MB7199.namprd12.prod.outlook.com>
-References: <20240223124223.800078-1-ankita@nvidia.com>
- <20240223124223.800078-3-ankita@nvidia.com>
- <20240226164229.00001536@Huawei.com>
-In-Reply-To: <20240226164229.00001536@Huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR12MB7199:EE_|DS7PR12MB6071:EE_
-x-ms-office365-filtering-correlation-id: 53ccadfd-ea0b-46ac-e2db-08dc376f4d0a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: gcoGYQoV0U8ODHsfAtapxcfIS1DdhS8ricPJeIFiEHCT/LH7BPYmzHS5nAbLoZi9Cyk21RmcqSIEg6yrabfwL1OvnnbM7SYtq92TZXpLaCaSZ2osDwBgQSvXthKpdpmERB6kP/Y+UXMxmgk4tJGwqiv+HLpdJEGImwqRXbIG+sm1cbSyhGY56GpiKxnlfMcEDd7zgLKEs4bJPCuGCulYSfgkiOcPVhztX8tORJq/u4sbSkNHHEiw96uM+KtTJokA9SOrZZBXF5002INne+4ii+O5bEmUK7/dAybyVyCTSO3QJG8w9Sj3nqSehpnZNuSy9yJJX6MJ3CaHuMth8kNModbQswKz1yGgbUNv7LG0w0Rt4H68/crRS0nn5MKnffQgr52eaLrUURWU/zxDogvJyvwveOgiz7sRo2Ua3ThEHpbAR4WjNG3fvS8ewyUcCQpLY2vTZFonX/JbUJnD3YY7I/m+kRF/qFlKbz+al7f9XVWxDEdjRAPEGVaCDuOFmpiP8rXr83Gj7nYjzct4IEz5qOWpKpwiejhmyk4FGiemoqWgkhf9nkWilgSAtiS8HUBOq4VB5U1Gbvcx0uakAEOKhyTYFGPHzA43APoHKCIrs7FfM9Kb8kv7vgzIkabL517vEJ0he05DrMXCYvfXZTcIGbwX0c0gp+IcJjqwVHcQKDsFRqD7Pv9zzVlV3EBC+KmAgkUkc+zhARiHFXGT5EHD9A==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SA1PR12MB7199.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(38070700009); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?Windows-1252?Q?Ugk09pmQGkuy0thp/3zzYOBBaTFgF+cqRzsTHu1EPoipJ5xmuejuo/g5?=
- =?Windows-1252?Q?OeBw/f+XLbepFUJf2VbC8NMNcVIk8r+HOmQwxcr3fVEyX+idSLXVBCza?=
- =?Windows-1252?Q?ahM2Hg1eajy3RKkofkedy+Jx8yu0IgLb0cy/YqIolWqqCgAgbAC/I8jZ?=
- =?Windows-1252?Q?FrQvPFMhZ2mVgOCUebkCUHO/SBmzesrX53daA+3iPaKJ7uY6qRKqzV9o?=
- =?Windows-1252?Q?7y1OpA/9LXGNyWs7/2akzha7EGHfUN1B3qp848agUuYlv2nVER9S7kAn?=
- =?Windows-1252?Q?Zy40lx2/n8PiqjRyle5j9Slnllctu0ZSYBdtWPHJYyckoORxcdOSyh/Q?=
- =?Windows-1252?Q?lmDbi4yWuAt40CK5EtCg/hZZH5AfONKY1/qR25lIiWkoa5ZJXfB8Pap0?=
- =?Windows-1252?Q?cOFe+4gLO5fTrk3xw+dN229kDQ+sEwMIDE+k+w5bUP7/092NR8VSIv/T?=
- =?Windows-1252?Q?biL7iOG5FSmkDjhS3nI6S/OLFxnruI79eXoVbL9XLjxHbOhLQxjElYep?=
- =?Windows-1252?Q?3IDjIBdTha3qrvQfrKNZvVkN0DoxU/1GHrTCXGHkYUcK73uS/hFAmYuI?=
- =?Windows-1252?Q?c0qbJ095PuVcl97d82cuoavrnUaw36DweuGrPY4Tny7n1MuNWnX7o0uj?=
- =?Windows-1252?Q?7uC8e3FQvxlq4pGYQ/LsL4HlTL07/bzysoOhCdZkRwNONk+FbGgbNVwU?=
- =?Windows-1252?Q?+m00F8F4Ov4U+UcjSXTTiW7rbVBmf5bWU8AC1sXult3EotUte8TrgkWI?=
- =?Windows-1252?Q?BndFkvA7Q8DxmvuSiH/59VFEYc7fe+A9dNaE4MqLAZkymEYf7FlVl576?=
- =?Windows-1252?Q?nJ9u4xaFghOjB721Qf8U1rTr3Fo1m24ufKS2fLAC45VODXxqFm45dSfc?=
- =?Windows-1252?Q?/V+7D0XVkUL0JT7iHQqnfCzp/bdYwTRoqf83DoQ9IpzqeEUSXSJhswj8?=
- =?Windows-1252?Q?0WeN0PXzlC70yFFHmjb/PyWDyBY4ZnLLdxYhfQXlxDaK8GMIupobQXSy?=
- =?Windows-1252?Q?Jv8UHOJUgxtR0fd2VdhKav6sVoXue3dfach4qBfIpiAuYtC8lItUeM9U?=
- =?Windows-1252?Q?GTgsFN9CVfJQAQEjEBpvODmDF2ioND5aP/PKrDEU8LtDFn+K52v1q08I?=
- =?Windows-1252?Q?Qlob7qvD/bnXh+pf3izf1m5ltWYlaxbn1pWK8AVK+Y8dHnlKMsFQOgkI?=
- =?Windows-1252?Q?tWwnP4JbzBlbzupV1KPpNdjEKoqzCz6xyrQEflYapSsMy1xiSJp3sAaN?=
- =?Windows-1252?Q?FiRT3/xOP3PaMObzNG16ACoERGWU8qysTFyZy6OUaVml6FIR+EThhV2T?=
- =?Windows-1252?Q?pi1Nl+GxgoT2I/5DHytGB2DTBsbX5OwbrwVRkPBL9IdmRYEGGK8EVpn0?=
- =?Windows-1252?Q?PnX05mYmhyC4zJhTZNbjSeZWGZ5+RIF6BzSaNUJibk5EBADEo4fKlJEa?=
- =?Windows-1252?Q?my6aeqVzyiMNOZ/yEKDZbalTl6i9q0BfGIgsKccqFE+OamWIypelKNM4?=
- =?Windows-1252?Q?EmEwbbQRgrL72GiOlqZTJdLNPEhBIw+pd9yrjJdy246Dljoqex7nNRx/?=
- =?Windows-1252?Q?4f37f/43d2BxevDSw1aC9KB8F7XId9+5S0iIVkakNxUroqOYZPMYaZxW?=
- =?Windows-1252?Q?AU7RNIr5kTgowAisHu2dUpOfiGLIjAbfD9pb1/1oQenKPtnpa6gzwuhL?=
- =?Windows-1252?Q?s8dJOb6sLlE=3D?=
-Content-Type: text/plain; charset="Windows-1252"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret0K-0005oP-Sy
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:40:00 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret0D-0007LU-Nu
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:40:00 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-33de6da5565so605341f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 00:39:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1709023191; x=1709627991; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=RIUtS/ewFcGB+h3mxnRfiJHTgwm3qMy24C28w5Y5/Lc=;
+ b=E9i2xi6hFQg9j4qV0JdGh2w69WDKZ6HgP5DfrtUYH6GH/a/celTpTSW9TKgF+AwJxt
+ YP83FctcnmfKCoBQOHtSq+uLkR2fgxbGmY3XWA0K+mBuJa2TNIJkkZ73R9+OZWtTKchP
+ P2QMdA8LT8Pzts2HGDfzc2iyNFfSArcdf81C6eoF6ksY7kZaxe2UJd34+PCV5Y3SgRch
+ nQqmdWGS76h8nfinI66AXHBiJBNVgnMd9Xn+BveuNNRWLz9B04VMjOChB4tTSjg9loTP
+ IlugONEKjqJliSxDZeU1mXhsUXVJpuNu9c/O7dDI9ZGDNH4Q2OqqBNDzRCHOjECkj0kA
+ 7RnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709023191; x=1709627991;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=RIUtS/ewFcGB+h3mxnRfiJHTgwm3qMy24C28w5Y5/Lc=;
+ b=RyK9nmPu1ONIclz42z0sEPabUMSi2UPoacfZOaMcHaAv5+Z4uIqDFtnr4hYR1aaCBg
+ a+OT4NA0N3AeitBfmK/4b8QC41I9NRrLDSWVRA8OKjyh26YN/hmucY1b3n50R7GBv0Xo
+ agzXnXiWrsxzo/3zTMxXUWpoFjumNA/iF/nZaJGMFQ2gizdE12k24G02GPbK/YVfZj+8
+ fhF1StUR6YxRWNfit5yqktbwymvap5w+ZScW77gA1+8yEQxcYBn9IbMRSNlolC+Nq+2r
+ sZVF+CekVN3USlagkrW93cHI1UnC1am3Ua95ddeOPy9/NKkPUmJH1/NsvXUsCFvCzNdi
+ 6/ZA==
+X-Gm-Message-State: AOJu0YwCrXntMTB3GKI6TAfA5pR4f37KAK4et+ikYYuYq/nxEpIl40gI
+ 4fse2oRLvj4thr8K/ASjYRNEcT/msWRg2XWU5vFJOP1DOSFQPxORfQZFmSlErcLzc5mHFHRXYve
+ V
+X-Google-Smtp-Source: AGHT+IHYg+2eQ0fh3tW2DCFOCbn3xe00rmXtcoUDRm5UZPXDKtG0k01q68t0SwygCgJbuHl6XFCXiA==
+X-Received: by 2002:adf:fc01:0:b0:33d:a185:17ed with SMTP id
+ i1-20020adffc01000000b0033da18517edmr5656091wrr.56.1709023190930; 
+ Tue, 27 Feb 2024 00:39:50 -0800 (PST)
+Received: from m1x-phil.lan (mic92-h03-176-184-33-214.dsl.sta.abo.bbox.fr.
+ [176.184.33.214]) by smtp.gmail.com with ESMTPSA id
+ a10-20020a5d4d4a000000b0033d13530134sm10515937wru.106.2024.02.27.00.39.49
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 27 Feb 2024 00:39:50 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, qemu-block@nongnu.org, qemu-arm@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 00/30] Misc HW patches for 2024-02-27
+Date: Tue, 27 Feb 2024 09:39:16 +0100
+Message-ID: <20240227083948.5427-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB7199.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 53ccadfd-ea0b-46ac-e2db-08dc376f4d0a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Feb 2024 08:37:15.2745 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 39I5dch+Gvi5cM3NOl87FeFsPGY9WV8mxa1iDnJ8bPdZqcOK1QL/vYfTuG2mGZ2Ra1FltCV8nvccg2EPPj820Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6071
-Received-SPF: softfail client-ip=2a01:111:f403:200a::601;
- envelope-from=ankita@nvidia.com;
- helo=NAM12-MW2-obe.outbound.protection.outlook.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.014,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -154,196 +89,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thanks Jonathan for reviewing the change.=0A=
-=0A=
-Comments inline.=0A=
-=0A=
->> The structure needs a PCI device handle [2] that consists of the device =
-BDF.=0A=
->> The vfio-pci device corresponding to the acpi-generic-initiator object i=
-s=0A=
->> located to determine the BDF.=0A=
->>=0A=
->> [1] ACPI Spec 6.3, Section 5.2.16.6=0A=
->> [2] ACPI Spec 6.3, Table 5.80=0A=
->>=0A=
->> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>=0A=
->Hi Ankit,=0A=
->=0A=
-> As the code stands the use of a list seems overkill.=0A=
-=0A=
-Yeah, I will try out your suggestion.=0A=
-=0A=
-> Otherwise looks good to me.=A0 I need Generic Ports support for CXL=0A=
-> stuff so will copy your approach for that as it's ended up nice=0A=
-> and simple.=0A=
-> =0A=
-> Jonathan=0A=
-=0A=
-Nice, would be good to have uniform implementations.=0A=
-=0A=
->> +/*=0A=
->> + * Identify Generic Initiator objects and link them into the list which=
- is=0A=
->> + * returned to the caller.=0A=
->> + *=0A=
->> + * Note: it is the caller's responsibility to free the list to avoid=0A=
->> + * memory leak.=0A=
->> + */=0A=
->> +static GSList *acpi_generic_initiator_get_list(void)=0A=
->> +{=0A=
->> +=A0=A0=A0 GSList *list =3D NULL;=0A=
->> +=0A=
->> +=A0=A0=A0 object_child_foreach(object_get_root(),=0A=
->> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0 acpi_generic_initiator_list, &list);=0A=
->=0A=
-> I think you can use object_child_foreach_recursive() and skip the manual=
-=0A=
-> calling above?=0A=
-=0A=
-Great suggestion, will give that a try.=0A=
-=0A=
->> + * ACPI 6.3:=0A=
->> + * Table 5-78 Generic Initiator Affinity Structure=0A=
->> + */=0A=
->> +static void=0A=
->> +build_srat_generic_pci_initiator_affinity(GArray *table_data, int node,=
-=0A=
->> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 PCIDeviceHandle *han=
-dle)=0A=
->> +{=0A=
->> +=A0=A0=A0 uint8_t index;=0A=
->> +=0A=
->> +=A0=A0=A0 build_append_int_noprefix(table_data, 5, 1);=A0 /* Type */=0A=
->> +=A0=A0=A0 build_append_int_noprefix(table_data, 32, 1); /* Length */=0A=
->> +=A0=A0=A0 build_append_int_noprefix(table_data, 0, 1);=A0 /* Reserved *=
-/=0A=
->> +=A0=A0=A0 build_append_int_noprefix(table_data, 1, 1);=A0 /* Device Han=
-dle Type: PCI */=0A=
->> +=A0=A0=A0 build_append_int_noprefix(table_data, node, 4);=A0 /* Proximi=
-ty Domain */=0A=
->> +=0A=
->> +=A0=A0=A0 /* Device Handle - PCI */=0A=
->> +=A0=A0=A0 build_append_int_noprefix(table_data, handle->segment, 2);=0A=
->> +=A0=A0=A0 build_append_int_noprefix(table_data, handle->bdf, 2);=0A=
->> +=A0=A0=A0 for (index =3D 0; index < 12; index++) {=0A=
->> +=A0=A0=A0=A0=A0=A0=A0 build_append_int_noprefix(table_data, 0, 1);=0A=
->> +=A0=A0=A0 }=0A=
->> +=0A=
->> +=A0=A0=A0 build_append_int_noprefix(table_data, GEN_AFFINITY_ENABLED, 4=
-); /* Flags */=0A=
->> +=A0=A0=A0 build_append_int_noprefix(table_data, 0, 4);=A0=A0=A0=A0 /* R=
-eserved */=0A=
->> +}=0A=
->> +=0A=
->> +void build_srat_generic_pci_initiator(GArray *table_data)=0A=
->> +{=0A=
->> +=A0=A0=A0 GSList *gi_list, *list =3D acpi_generic_initiator_get_list();=
-=0A=
->=0A=
->=0A=
-> Did you consider just have the functional called in the scan do this?=0A=
-> Not sure you need anything as a parameter beyond the GArray *table_data=
-=0A=
->=0A=
-> Something like...=0A=
->=0A=
-> static int acpi_generic_initiator_list(Object *obj, void *opaque)=0A=
-> {=0A=
->=A0=A0=A0 uint8_t index;=0A=
->=A0=A0=A0 AcpiGenericInitiator *gi;=0A=
->=A0=A0=A0 GArray *table_data =3D opaque;=0A=
->=A0=A0=A0 PCIDeviceHandle dev_handle;=0A=
->=A0=A0=A0 PCIDevice *pci_dev;=0A=
->=A0=A0=A0 Object *o;=0A=
->=0A=
->=A0=A0=A0 if (!object_dynamic_cast(obj, TYPE_ACPI_GENERIC_INITIATOR)) {=0A=
->=A0=A0=A0=A0=A0=A0=A0 return 0;=0A=
->=A0=A0=A0 }=0A=
->=0A=
->=A0=A0=A0 gi =3D ACPI_GENERIC_INITIATOR(obj);=0A=
->=A0=A0=A0 o =3D object_resolve_path_type(gi->pci_dev, TYPE_PCI_DEVICE, NUL=
-L);=0A=
->=A0=A0=A0 if (!o) {=0A=
->=A0=A0=A0=A0=A0=A0=A0 error_setg(&error_abort, "GI: Specified device must =
-be a PCI device.\n")=0A=
->=A0=A0=A0=A0=A0=A0=A0 return 1;=0A=
->=A0=A0=A0 }=0A=
->=A0=A0=A0 pci_dev =3D PCI_DEVICE(o);=0A=
->=0A=
->=A0=A0=A0 dev_handle.segment =3D 0;=0A=
->=A0=A0=A0 dev_handle.bdf =3D PCI_BUILD_BDF(pci_bus_num(pci_get_bus(pci_dev=
-)),=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 pci_dev-=
->devfn);=0A=
->=A0=A0=A0 build_srat_generic_pci_initiator_affinity(table_data,=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 gi->node, &=
-dev_handle);=0A=
-> }=0A=
->=0A=
-> + a call to.=0A=
->=A0=A0=A0 object_child_foreach_recursive(object_get_root(),=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 acpi_generic_srat, table_data);=0A=
->=0A=
-=0A=
-Thanks. That does seem better.=0A=
-=0A=
->> +=A0=A0=A0=A0=A0=A0=A0 pci_dev =3D PCI_DEVICE(o);=0A=
->> +=0A=
->> +=A0=A0=A0=A0=A0=A0=A0 dev_handle.segment =3D 0;=0A=
->> +=A0=A0=A0=A0=A0=A0=A0 dev_handle.bdf =3D PCI_BUILD_BDF(pci_bus_num(pci_=
-get_bus(pci_dev)),=0A=
->> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0 pci_dev->devfn);=0A=
->> +=A0=A0=A0=A0=A0=A0=A0 build_srat_generic_pci_initiator_affinity(table_d=
-ata,=0A=
->> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0 gi->node, &dev_handle);=0A=
-> Should we check for consistency of gi->node and=0A=
-> -numa node,id=3DX entries?=0A=
->=0A=
-> Maybe just check less than numa_state->num_nodes as that's the variable=
-=0A=
-> used to walk the other structures when building srat.=0A=
-=0A=
-Ack, will add a check to compare against numa_state->num_nodes.=0A=
-=0A=
->> +/*=0A=
->> + * ACPI 6.3:=0A=
->> + * Table 5-81 Flags =96 Generic Initiator Affinity Structure=0A=
->> + */=0A=
->> +typedef enum {=0A=
->> +=A0=A0=A0 GEN_AFFINITY_ENABLED =3D (1 << 0), /*=0A=
->> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 * If clear, the OSPM ignores the=
- contents=0A=
->> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 * of the Generic Initiator/Port =
-Affinity=0A=
->> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 * Structure. This allows system =
-firmware=0A=
->> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 * to populate the SRAT with a st=
-atic=0A=
->> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 * number of structures, but only=
- enable=0A=
->> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 * them as necessary.=0A=
->> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 */=0A=
-> I'd put the comment above the definition to avoid wrapping so much!=0A=
-=0A=
-Yeah, it does look kind of silly. Will fix it.=0A=
-=0A=
->> +} GenericAffinityFlags;=0A=
->> +=
+The following changes since commit 03d496a992d98650315af41be7c0ca6de2a28da1:
+
+  Merge tag 'pull-qapi-2024-02-26' of https://repo.or.cz/qemu/armbru into staging (2024-02-26 11:22:32 +0000)
+
+are available in the Git repository at:
+
+  https://github.com/philmd/qemu.git tags/hw-misc-20240227
+
+for you to fetch changes up to 0316482e876988f7526ebe62d579ad069f485957:
+
+  hw/ide: Include 'ide-internal.h' from current path (2024-02-27 09:37:30 +0100)
+
+----------------------------------------------------------------
+Misc HW patch queue
+
+hw: Remove sysbus_address_space() (Phil)
+hw/nubus: Add nubus-virtio-mmio device (Mark)
+hw/usb: Remove usb_bus_find() (Paolo)
+hw/usb: Extract sysbus-ohci from ohci (Paolo)
+hw/nvme: Fix invalid endian conversion
+hw/i386: More PC machine housekeeping (Bernhard, Phil)
+hw/ide: Restrict "ide-internal.h" (Zoltan, Phil)
+qom: Expose object_resolve_type_unambiguous() (Paolo)
+
+----------------------------------------------------------------
+
+BALATON Zoltan (1):
+  hw/ide: Remove last two uses of ide/internal.h outside of hw/ide/
+
+Bernhard Beschow (5):
+  hw/i386/x86: Let ioapic_init_gsi() take parent as pointer
+  hw/i386/pc: Rename "bus" attribute to "pcibus"
+  hw/i386/pc_{piix, q35}: Eliminate local pci_bus/pci_host variables
+  hw/i386/pc: Remove unneeded class attribute "kvmclock_enabled"
+  hw/i386/pc: Populate RTC attribute directly
+
+Klaus Jensen (1):
+  hw/nvme: fix invalid endian conversion
+
+Mark Cave-Ayland (3):
+  hw/nubus-device: round Declaration ROM memory region address to
+    qemu_target_page_size()
+  hw/nubus: increase maximum Declaration ROM size from 128k to 1Mb
+  hw/nubus: add nubus-virtio-mmio device
+
+Paolo Bonzini (10):
+  hw/acpi: move object_resolve_type_unambiguous to core QOM
+  hw/ppc/sam460ex: do not use usb_bus_find()
+  hw/sh4/r2d: do not use usb_bus_find()
+  hw/mips/loongson3_virt: do not require CONFIG_USB
+  hw/hppa: do not require CONFIG_USB
+  hw/ppc/mac_newworld: do not require CONFIG_USB
+  hw/ppc/pseries: do not require CONFIG_USB
+  hw/usb: remove usb_bus_find
+  hw/usb: extract sysbus-ohci to a separate file
+  hw/usb: remove duplicate file in system_ss
+
+Philippe Mathieu-Daudé (10):
+  hw/arm: Inline sysbus_create_simple(PL110 / PL111)
+  hw/display/pl110: Pass frame buffer memory region as link property
+  hw/arm/exynos4210: Inline sysbus_create_varargs(EXYNOS4210_FIMD)
+  hw/display/exynos4210_fimd: Pass frame buffer memory region as link
+  hw/i386/kvmvapic: Inline sysbus_address_space()
+  hw/sysbus: Remove now unused sysbus_address_space()
+  hw/i386/sgx: Use QDev API
+  hw/i386/q35: Include missing 'hw/acpi/acpi.h' header
+  hw/arm/sbsa-ref: Do not open-code ahci_ide_create_devs()
+  hw/ide: Include 'ide-internal.h' from current path
+
+ hw/ide/ahci_internal.h                        |   2 +-
+ .../ide/internal.h => hw/ide/ide-internal.h   |   0
+ include/hw/i386/pc.h                          |   3 +-
+ include/hw/i386/x86.h                         |   2 +-
+ include/hw/misc/macio/macio.h                 |   2 +-
+ include/hw/nubus/nubus-virtio-mmio.h          |  36 +++++++
+ include/hw/nubus/nubus.h                      |   2 +-
+ include/hw/sysbus.h                           |   1 -
+ include/hw/usb.h                              |   1 -
+ include/qom/object.h                          |  13 +++
+ hw/arm/exynos4210.c                           |  14 ++-
+ hw/arm/integratorcp.c                         |   7 +-
+ hw/arm/realview.c                             |   7 +-
+ hw/arm/sbsa-ref.c                             |  13 +--
+ hw/arm/versatilepb.c                          |   8 +-
+ hw/arm/vexpress.c                             |  15 ++-
+ hw/core/sysbus.c                              |   5 -
+ hw/display/exynos4210_fimd.c                  |  19 +++-
+ hw/display/pl110.c                            |  20 +++-
+ hw/hppa/machine.c                             |  10 +-
+ hw/i386/acpi-build.c                          |  22 ++--
+ hw/i386/amd_iommu.c                           |   2 +-
+ hw/i386/intel_iommu.c                         |   2 +-
+ hw/i386/kvm/xen_evtchn.c                      |   2 +-
+ hw/i386/kvmvapic.c                            |  11 +-
+ hw/i386/microvm.c                             |   2 +-
+ hw/i386/pc.c                                  |  17 +--
+ hw/i386/pc_piix.c                             |  42 ++++----
+ hw/i386/pc_q35.c                              |  26 +++--
+ hw/i386/sgx.c                                 |  14 ++-
+ hw/i386/x86-iommu.c                           |   2 +-
+ hw/i386/x86.c                                 |   7 +-
+ hw/ide/ahci.c                                 |   2 +-
+ hw/ide/atapi.c                                |   2 +-
+ hw/ide/cmd646.c                               |   2 +-
+ hw/ide/core.c                                 |   2 +-
+ hw/ide/ide-bus.c                              |   2 +-
+ hw/ide/ide-dev.c                              |   2 +-
+ hw/ide/ioport.c                               |   2 +-
+ hw/ide/isa.c                                  |   2 +-
+ hw/ide/macio.c                                |   2 +-
+ hw/ide/microdrive.c                           |   2 +-
+ hw/ide/mmio.c                                 |   2 +-
+ hw/ide/pci.c                                  |   2 +-
+ hw/ide/piix.c                                 |   2 +-
+ hw/ide/sii3112.c                              |   2 +-
+ hw/ide/via.c                                  |   2 +-
+ hw/mips/loongson3_virt.c                      |   8 +-
+ hw/nubus/nubus-device.c                       |  18 +++-
+ hw/nubus/nubus-virtio-mmio.c                  | 102 ++++++++++++++++++
+ hw/nvme/ctrl.c                                |   2 +-
+ hw/ppc/mac_newworld.c                         |   4 +-
+ hw/ppc/sam460ex.c                             |   7 +-
+ hw/ppc/spapr.c                                |   4 +-
+ hw/sh4/r2d.c                                  |   5 +-
+ hw/usb/bus.c                                  |  15 +--
+ hw/usb/hcd-ohci-sysbus.c                      |  88 +++++++++++++++
+ hw/usb/hcd-ohci.c                             |  58 ----------
+ qom/object.c                                  |  16 +++
+ hw/arm/Kconfig                                |  12 ++-
+ hw/display/Kconfig                            |   1 +
+ hw/hppa/Kconfig                               |   2 +-
+ hw/nubus/meson.build                          |   1 +
+ hw/ppc/Kconfig                                |   5 +-
+ hw/sh4/Kconfig                                |   1 -
+ hw/usb/Kconfig                                |   4 +
+ hw/usb/meson.build                            |   3 +-
+ 67 files changed, 473 insertions(+), 242 deletions(-)
+ rename include/hw/ide/internal.h => hw/ide/ide-internal.h (100%)
+ create mode 100644 include/hw/nubus/nubus-virtio-mmio.h
+ create mode 100644 hw/nubus/nubus-virtio-mmio.c
+ create mode 100644 hw/usb/hcd-ohci-sysbus.c
+
+-- 
+2.41.0
+
 
