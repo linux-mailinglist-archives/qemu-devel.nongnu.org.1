@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC3786935E
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:44:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A75E8692DC
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:39:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rexay-00015N-Fr; Tue, 27 Feb 2024 08:34:08 -0500
+	id 1rexaW-0000mQ-9n; Tue, 27 Feb 2024 08:33:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaG-0000hv-CN
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:24 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ id 1rexaD-0000gL-W5
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:22 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaE-0002py-5F
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:24 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-33d18931a94so3296056f8f.1
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:21 -0800 (PST)
+ id 1rexaC-0002q2-E9
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:21 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4129e8bc6c8so23956285e9.2
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709040798; x=1709645598; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709040799; x=1709645599; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=PUYripAJz/Vt0PNsUQO402Dv2ocPrItdLSWvRd1GdNE=;
- b=cwGCi443ily7XVIVWp59KAq7nRcAzmQM+FccY0XWArin7gBExrRdBFPpILhY/w2wbe
- VV09vcppShog/HGQ+EXVaemyYprhK2zHvCMwqsTNtP3cOwyj+G3iyGynvyHQZwmCfMxN
- kssTdPKDF0qoUh0aOpIdUk/TEOEF3PJOpcM9+qR56qUouZJWWxQI3Lp9bD5uQr1IbN21
- r1sN1Amxa84gb8tQD8a5w5fNVj9dKuayL5PIegi5HHbJAbc/ahGh8JRunekrSZe3GN6Y
- WALq/AM/Ch98/xbnFWI6+or6S59B19kXoayuY0jYosYmPe3sWk19SCLG9wcPF//oOtWf
- BCGA==
+ :reply-to; bh=9IFvga9TEIpbS3l7g132YG09cqdoQ9m/RM6KmiHkvO0=;
+ b=OFVaL6APoHlGUG5oqHrhrlKGAWH4UuKAVs7Y58nRs5jEV4rIFYCjpvb1n6Ry1zF6F8
+ l306yvAAP6aQI8EGBkiZsAiUlRMFKJg+o7jwMyr2eZ3QbL+NiZSJ0pEfHrlH3E5lP3pA
+ 4n/h9ytTGUPdwp43ntB4qYi9lywEiExEjSwE9nAUKUSFx036ST1xo6TdJQ6bR7MG4PNx
+ fgp0MZdCyOvxJnqLSUDm3FY0HvmZWuYOklOPSo2mc/Mn2cvsCNrpAoXYhWLe5lLGJySm
+ +57UCrwciySfynlqJnbA5gI+dj/98Bim4cFpqJ/WzHn9JN2mhdEapL4aFaLg6Yp11TDn
+ FcuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709040798; x=1709645598;
+ d=1e100.net; s=20230601; t=1709040799; x=1709645599;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PUYripAJz/Vt0PNsUQO402Dv2ocPrItdLSWvRd1GdNE=;
- b=oKMDklf1nkfjEmNVit25xkTQ+mm2ZVNdgIvrOENjiEiwkQHNxeNjcS4RFCQv4ROxqG
- Xot8CS1YH/DxIsWqd88FMz1PVc66HwqC0SOScQ8GYCzoBPmJPJ5BXDAvJy1A0GAbIiCr
- 8hij5gb1NiYNHj3RqH71Bv/o+Ofqcu+QZGfl5pSMlWNNJuvd61JWO0+oyTEp6WxrmGys
- F3XcC4Zg9cBtZnZ43Qvnqb5nkgfmbvqcY6S2wW9ihR3iCJVpcY1/WGyyOB4sCFAR/pM5
- eSYTSiLrordvF+HLtR/yyT3LEZrO4RO3C97IO5V7D2IJf5Um4qaLN0VIO5oorlyZTe1v
- urZg==
-X-Gm-Message-State: AOJu0YzdmByJFkz8qimY5urp5vzv3RI5smeNGCMpzcnPivSl9aBtwj1B
- /Vn1kLxLdEgjoCx6x3vGHqFglQ1R+AWBsIDNER/lvC0CmDDb2y3CacorQ8n77CeWpMF9Q8BwpxA
- +
-X-Google-Smtp-Source: AGHT+IGiLarSO8Y/078pyBtR0RN6XolgGC6XG3knE6cvg7d+ERF4GSru8dB30biKo8MdWVbjc1XJ4g==
-X-Received: by 2002:adf:efc5:0:b0:33d:746b:f377 with SMTP id
- i5-20020adfefc5000000b0033d746bf377mr6914174wrp.45.1709040798714; 
- Tue, 27 Feb 2024 05:33:18 -0800 (PST)
+ bh=9IFvga9TEIpbS3l7g132YG09cqdoQ9m/RM6KmiHkvO0=;
+ b=ryH02KfHF1uPx0kyV+jrPYnXgBMmduZnCgwrW/kyS2EKhln4ku6FywfSy+AQW9nXwP
+ ygNT6MLSpUT08DOqDkvzmjNUs8gQsmLtj58UoSh7R5jycPizqYMHi1T4iiZOmae/+maf
+ 2FPIiFipVltwAn5JKpzJ//1hVU7gs03u6FwC6T8qZynRDQdkSX0QCKTS3sNSywCVq8od
+ IaqRn1BtakyE65vKrmTL58M0ijEIaNdTPCi7ieLi/6S1rGjdWKb2Fw5JJBNPIzyU7HIX
+ yX4KzWSziYTN5j0qFUOGiQvdpNtDNOVhV27O8NKKSh3MonNfBhtbLloNfD6tAjdLTUSb
+ GW8A==
+X-Gm-Message-State: AOJu0Yw0NUOVVl4IhYDwK/hRNaqIeiNrK5KHphptfo99EQqOPI/ijyqA
+ Cp4XwRRDBf3kG+/Jbygmc7MmFn3YlxyAsv1LAr/y6AnOE4wYFkrYvdHXo9igYjQTgFILrodObG/
+ D
+X-Google-Smtp-Source: AGHT+IHdYFYuaNfL8D2Gz3WisRs/wgXDEAlM7KwJXZj+scmrh7Ks/ZjaXohiaVyJm0p5VkLi7AQQfw==
+X-Received: by 2002:a5d:6d85:0:b0:33d:e174:2232 with SMTP id
+ l5-20020a5d6d85000000b0033de1742232mr4022367wrs.6.1709040799121; 
+ Tue, 27 Feb 2024 05:33:19 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  i13-20020adfe48d000000b0033ae7d768b2sm11319552wrm.117.2024.02.27.05.33.18
@@ -59,17 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 27 Feb 2024 05:33:18 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/45] misc: pxa2xx_timer: replace qemu_system_reset_request()
- call with watchdog_perform_action()
-Date: Tue, 27 Feb 2024 13:32:34 +0000
-Message-Id: <20240227133314.1721857-6-peter.maydell@linaro.org>
+Subject: [PULL 06/45] xlnx-versal-ospi: disable reentrancy detection for
+ iomem_dac
+Date: Tue, 27 Feb 2024 13:32:35 +0000
+Message-Id: <20240227133314.1721857-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240227133314.1721857-1-peter.maydell@linaro.org>
 References: <20240227133314.1721857-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,43 +92,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Abhiram Tilak <atp.exp@gmail.com>
+From: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
 
-A few watchdog devices use qemu_system_reset_request(). This is not ideal since
-behaviour of watchdog-expiry can't be changed by QMP using `watchdog_action`.
-As stated in BiteSizedTasks wiki page, instead of using qemu_system_reset_request()
-to reset when a watchdog timer expires, let watchdog_perform_action() decide
-what to do.
+The OSPI DMA reads flash data through the OSPI linear address space (the
+iomem_dac region), because of this the reentrancy guard introduced in
+commit a2e1753b ("memory: prevent dma-reentracy issues") is disabled for
+the memory region.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2124
-Signed-off-by: Abhiram Tilak <atp.exp@gmail.com>
-Message-id: 20240216192612.30838-5-atp.exp@gmail.com
+Signed-off-by: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+Message-id: 20240219105637.65052-1-sai.pavan.boddu@amd.com
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/timer/pxa2xx_timer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/ssi/xlnx-versal-ospi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/hw/timer/pxa2xx_timer.c b/hw/timer/pxa2xx_timer.c
-index 6a7d5551f43..6479ab1a8b3 100644
---- a/hw/timer/pxa2xx_timer.c
-+++ b/hw/timer/pxa2xx_timer.c
-@@ -18,6 +18,7 @@
- #include "qemu/log.h"
- #include "qemu/module.h"
- #include "qom/object.h"
-+#include "sysemu/watchdog.h"
+diff --git a/hw/ssi/xlnx-versal-ospi.c b/hw/ssi/xlnx-versal-ospi.c
+index c7b95b1f377..c479138ec1c 100644
+--- a/hw/ssi/xlnx-versal-ospi.c
++++ b/hw/ssi/xlnx-versal-ospi.c
+@@ -1772,6 +1772,12 @@ static void xlnx_versal_ospi_init(Object *obj)
+     memory_region_init_io(&s->iomem_dac, obj, &ospi_dac_ops, s,
+                           TYPE_XILINX_VERSAL_OSPI "-dac", 0x20000000);
+     sysbus_init_mmio(sbd, &s->iomem_dac);
++    /*
++     * The OSPI DMA reads flash data through the OSPI linear address space (the
++     * iomem_dac region), because of this the reentrancy guard needs to be
++     * disabled.
++     */
++    s->iomem_dac.disable_reentrancy_guard = true;
  
- #define OSMR0	0x00
- #define OSMR1	0x04
-@@ -417,7 +418,7 @@ static void pxa2xx_timer_tick(void *opaque)
-     if (t->num == 3)
-         if (i->reset3 & 1) {
-             i->reset3 = 0;
--            qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
-+            watchdog_perform_action();
-         }
- }
+     sysbus_init_irq(sbd, &s->irq);
  
 -- 
 2.34.1
