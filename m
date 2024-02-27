@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F67586A10D
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 21:47:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F261886A11A
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 21:48:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rf4Kt-0005tz-RG; Tue, 27 Feb 2024 15:45:59 -0500
+	id 1rf4Kv-00061H-E4; Tue, 27 Feb 2024 15:46:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=GitP=KE=redhat.com=clg@ozlabs.org>)
- id 1rf1oX-0003P6-RR
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:04:28 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ id 1rf1ob-0003Sy-5C
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:04:29 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=GitP=KE=redhat.com=clg@ozlabs.org>)
- id 1rf1oV-0001WB-4S
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:04:25 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Tkljw40k5z4wyq;
- Wed, 28 Feb 2024 05:04:20 +1100 (AEDT)
+ id 1rf1oY-0001Vm-J2
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:04:28 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Tklk16cF7z4wyr;
+ Wed, 28 Feb 2024 05:04:25 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tkljs6vMDz4wyj;
- Wed, 28 Feb 2024 05:04:17 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tkljx11Djz4wyj;
+ Wed, 28 Feb 2024 05:04:20 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Alex Williamson <alex.williamson@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v2 07/21] migration: Add Error** argument to .load_setup()
- handler
-Date: Tue, 27 Feb 2024 19:03:31 +0100
-Message-ID: <20240227180345.548960-8-clg@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>
+Subject: [PATCH v2 08/21] memory: Add Error** argument to .log_global*()
+ handlers
+Date: Tue, 27 Feb 2024 19:03:32 +0100
+Message-ID: <20240227180345.548960-9-clg@redhat.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240227180345.548960-1-clg@redhat.com>
 References: <20240227180345.548960-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=GitP=KE=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 27 Feb 2024 15:45:28 -0500
+X-Mailman-Approved-At: Tue, 27 Feb 2024 15:45:32 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,100 +74,384 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This will be useful to report errors at a higher level, mostly in VFIO
-today.
+Modify all log_global*() handlers to take an Error** parameter and
+return a bool. A new MEMORY_LISTENER_CALL_LOG_GLOBAL macro looping on
+the listeners is introduced to handle a possible error, which will
+would interrupt the loop if necessary.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+To be noted a change in memory_global_dirty_log_start() behavior as it
+will return as soon as an error is detected.
+
+Cc: Stefano Stabellini <sstabellini@kernel.org>
+Cc: Anthony Perard <anthony.perard@citrix.com>
+Cc: Paul Durrant <paul@xen.org>
+Cc: Michael S. Tsirkin <mst@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/migration/register.h |  3 ++-
- hw/vfio/migration.c          |  2 +-
- migration/ram.c              |  3 ++-
- migration/savevm.c           | 10 ++++++----
- 4 files changed, 11 insertions(+), 7 deletions(-)
+ include/exec/memory.h | 15 ++++++--
+ hw/i386/xen/xen-hvm.c |  6 ++--
+ hw/vfio/common.c      |  8 +++--
+ hw/virtio/vhost.c     |  6 ++--
+ system/memory.c       | 83 +++++++++++++++++++++++++++++++++++++------
+ system/physmem.c      |  5 +--
+ 6 files changed, 101 insertions(+), 22 deletions(-)
 
-diff --git a/include/migration/register.h b/include/migration/register.h
-index 96eae9dba2970552c379c732393e3ab6ef578a58..2cfc167f717de8e08c1ca8accdc3011c03eb1554 100644
---- a/include/migration/register.h
-+++ b/include/migration/register.h
-@@ -231,10 +231,11 @@ typedef struct SaveVMHandlers {
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index 8626a355b310ed7b1a1db7978ba4b394032c2f15..4bc146c5ebdd377cd14a4e462f32cc945db5a0a8 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -998,8 +998,11 @@ struct MemoryListener {
+      * active at that time.
       *
-      * @f: QEMUFile where to receive the data
-      * @opaque: data pointer passed to register_savevm_live()
+      * @listener: The #MemoryListener.
 +     * @errp: pointer to Error*, to store an error if it happens.
-      *
-      * Returns zero to indicate success and negative for error
++     *
++     * Return: true on success, else false setting @errp with error.
       */
--    int (*load_setup)(QEMUFile *f, void *opaque);
-+    int (*load_setup)(QEMUFile *f, void *opaque, Error **errp);
+-    void (*log_global_start)(MemoryListener *listener);
++    bool (*log_global_start)(MemoryListener *listener, Error **errp);
  
      /**
-      * @load_cleanup
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 8bcb4bc73cd5ba5338e3ffa4d907d0e6bfbb9485..2dfbe671f6f45aa530c7341177bb532d8292cecd 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -580,7 +580,7 @@ static void vfio_save_state(QEMUFile *f, void *opaque)
-     }
+      * @log_global_stop:
+@@ -1009,8 +1012,11 @@ struct MemoryListener {
+      * the address space.
+      *
+      * @listener: The #MemoryListener.
++     * @errp: pointer to Error*, to store an error if it happens.
++     *
++     * Return: true on success, else false setting @errp with error.
+      */
+-    void (*log_global_stop)(MemoryListener *listener);
++    bool (*log_global_stop)(MemoryListener *listener, Error **errp);
+ 
+     /**
+      * @log_global_after_sync:
+@@ -1019,8 +1025,11 @@ struct MemoryListener {
+      * for any #MemoryRegionSection.
+      *
+      * @listener: The #MemoryListener.
++     * @errp: pointer to Error*, to store an error if it happens.
++     *
++     * Return: true on success, else false setting @errp with error.
+      */
+-    void (*log_global_after_sync)(MemoryListener *listener);
++    bool (*log_global_after_sync)(MemoryListener *listener, Error **errp);
+ 
+     /**
+      * @eventfd_add:
+diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
+index f42621e6742552035122ea58092c91c3458338ff..925a207b494b4eed52d5f360b554f18ac8a9806d 100644
+--- a/hw/i386/xen/xen-hvm.c
++++ b/hw/i386/xen/xen-hvm.c
+@@ -446,16 +446,18 @@ static void xen_log_sync(MemoryListener *listener, MemoryRegionSection *section)
+                           int128_get64(section->size));
  }
  
--static int vfio_load_setup(QEMUFile *f, void *opaque)
-+static int vfio_load_setup(QEMUFile *f, void *opaque, Error **errp)
+-static void xen_log_global_start(MemoryListener *listener)
++static bool xen_log_global_start(MemoryListener *listener, Error **errp)
  {
-     VFIODevice *vbasedev = opaque;
- 
-diff --git a/migration/ram.c b/migration/ram.c
-index 745482899e18c86b73261b683c1bec04039a76d2..d648134133fc22cd91c7b2064198a90287ee733d 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -3498,8 +3498,9 @@ void colo_release_ram_cache(void)
-  *
-  * @f: QEMUFile where to receive the data
-  * @opaque: RAMState pointer
-+ * @errp: pointer to Error*, to store an error if it happens.
-  */
--static int ram_load_setup(QEMUFile *f, void *opaque)
-+static int ram_load_setup(QEMUFile *f, void *opaque, Error **errp)
- {
-     xbzrle_load_setup();
-     ramblock_recv_map_init();
-diff --git a/migration/savevm.c b/migration/savevm.c
-index b5b3b51bad94dc4c04ae22cd687ba111299339aa..a4ef41d3ff5b471a1cd4166c2dc5813e44ea3a5a 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -2741,7 +2741,7 @@ static void qemu_loadvm_state_switchover_ack_needed(MigrationIncomingState *mis)
-     trace_loadvm_state_switchover_ack_needed(mis->switchover_ack_pending_num);
+     if (xen_enabled()) {
+         xen_in_migration = true;
+     }
++    return true;
  }
  
--static int qemu_loadvm_state_setup(QEMUFile *f)
-+static int qemu_loadvm_state_setup(QEMUFile *f, Error **errp)
+-static void xen_log_global_stop(MemoryListener *listener)
++static bool xen_log_global_stop(MemoryListener *listener, Error **errp)
  {
-     SaveStateEntry *se;
-     int ret;
-@@ -2757,10 +2757,11 @@ static int qemu_loadvm_state_setup(QEMUFile *f)
-             }
-         }
+     xen_in_migration = false;
++    return true;
+ }
  
--        ret = se->ops->load_setup(f, se->opaque);
-+        ret = se->ops->load_setup(f, se->opaque, errp);
-         if (ret < 0) {
-+            error_prepend(errp, "Load state of device %s failed: ",
-+                          se->idstr);
-             qemu_file_set_error(f, ret);
--            error_report("Load state of device %s failed", se->idstr);
-             return ret;
-         }
-     }
-@@ -2941,7 +2942,8 @@ int qemu_loadvm_state(QEMUFile *f)
-         return ret;
-     }
+ static const MemoryListener xen_memory_listener = {
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index 059bfdc07a85e2eb908df828c1f42104d683e911..8bba95ba6a2010b78cae54c6905857686bbb6309 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -1075,7 +1075,8 @@ out:
+     return ret;
+ }
  
--    if (qemu_loadvm_state_setup(f) != 0) {
-+    if (qemu_loadvm_state_setup(f, &local_err) != 0) {
+-static void vfio_listener_log_global_start(MemoryListener *listener)
++static bool vfio_listener_log_global_start(MemoryListener *listener,
++                                           Error **errp)
+ {
+     VFIOContainerBase *bcontainer = container_of(listener, VFIOContainerBase,
+                                                  listener);
+@@ -1092,9 +1093,11 @@ static void vfio_listener_log_global_start(MemoryListener *listener)
+                      ret, strerror(-ret));
+         vfio_set_migration_error(ret);
+     }
++    return !!ret;
+ }
+ 
+-static void vfio_listener_log_global_stop(MemoryListener *listener)
++static bool vfio_listener_log_global_stop(MemoryListener *listener,
++                                          Error **errp)
+ {
+     VFIOContainerBase *bcontainer = container_of(listener, VFIOContainerBase,
+                                                  listener);
+@@ -1111,6 +1114,7 @@ static void vfio_listener_log_global_stop(MemoryListener *listener)
+                      ret, strerror(-ret));
+         vfio_set_migration_error(ret);
+     }
++    return !!ret;
+ }
+ 
+ static int vfio_device_dma_logging_report(VFIODevice *vbasedev, hwaddr iova,
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 2c9ac794680ea9b65eba6cc22e70cf141e90aa73..7a555f941934991a72a2817e5505fe0ce6d6fc64 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -1044,7 +1044,7 @@ check_dev_state:
+     return r;
+ }
+ 
+-static void vhost_log_global_start(MemoryListener *listener)
++static bool vhost_log_global_start(MemoryListener *listener, Error **errp)
+ {
+     int r;
+ 
+@@ -1052,9 +1052,10 @@ static void vhost_log_global_start(MemoryListener *listener)
+     if (r < 0) {
+         abort();
+     }
++    return true;
+ }
+ 
+-static void vhost_log_global_stop(MemoryListener *listener)
++static bool vhost_log_global_stop(MemoryListener *listener, Error **errp)
+ {
+     int r;
+ 
+@@ -1062,6 +1063,7 @@ static void vhost_log_global_stop(MemoryListener *listener)
+     if (r < 0) {
+         abort();
+     }
++    return true;
+ }
+ 
+ static void vhost_log_start(MemoryListener *listener,
+diff --git a/system/memory.c b/system/memory.c
+index a229a79988fce2aa3cb77e3a130db4c694e8cd49..af06157ead5b1272548e87f79ab9fb3036055328 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -127,6 +127,35 @@ enum ListenerDirection { Forward, Reverse };
+         }                                                               \
+     } while (0)
+ 
++#define MEMORY_LISTENER_CALL_LOG_GLOBAL(_callback, _direction, _errp,   \
++                                        _args...)                       \
++    do {                                                                \
++        MemoryListener *_listener;                                      \
++                                                                        \
++        switch (_direction) {                                           \
++        case Forward:                                                   \
++            QTAILQ_FOREACH(_listener, &memory_listeners, link) {        \
++                if (_listener->_callback) {                             \
++                    if (!_listener->_callback(_listener, _errp, ##_args)) { \
++                        break;                                          \
++                    }                                                   \
++                }                                                       \
++            }                                                           \
++            break;                                                      \
++        case Reverse:                                                   \
++            QTAILQ_FOREACH_REVERSE(_listener, &memory_listeners, link) { \
++                if (_listener->_callback) {                             \
++                    if (!_listener->_callback(_listener, _errp, ##_args)) { \
++                        break;                                          \
++                    }                                                   \
++                }                                                       \
++            }                                                           \
++            break;                                                      \
++        default:                                                        \
++            abort();                                                    \
++        };                                                              \
++    } while (0)
++
+ #define MEMORY_LISTENER_CALL(_as, _callback, _direction, _section, _args...) \
+     do {                                                                \
+         MemoryListener *_listener;                                      \
+@@ -2903,7 +2932,13 @@ void memory_global_dirty_log_sync(bool last_stage)
+ 
+ void memory_global_after_dirty_log_sync(void)
+ {
+-    MEMORY_LISTENER_CALL_GLOBAL(log_global_after_sync, Forward);
++    Error *local_err = NULL;
++
++    MEMORY_LISTENER_CALL_LOG_GLOBAL(log_global_after_sync, Forward,
++                                    &local_err);
++    if (local_err) {
 +        error_report_err(local_err);
-         return -EINVAL;
++    }
+ }
+ 
+ /*
+@@ -2912,18 +2947,22 @@ void memory_global_after_dirty_log_sync(void)
+  */
+ static unsigned int postponed_stop_flags;
+ static VMChangeStateEntry *vmstate_change;
+-static void memory_global_dirty_log_stop_postponed_run(void);
++static bool memory_global_dirty_log_stop_postponed_run(Error **errp);
+ 
+ void memory_global_dirty_log_start(unsigned int flags)
+ {
+     unsigned int old_flags;
++    Error *local_err = NULL;
+ 
+     assert(flags && !(flags & (~GLOBAL_DIRTY_MASK)));
+ 
+     if (vmstate_change) {
+         /* If there is postponed stop(), operate on it first */
+         postponed_stop_flags &= ~flags;
+-        memory_global_dirty_log_stop_postponed_run();
++        if (!memory_global_dirty_log_stop_postponed_run(&local_err)) {
++            error_report_err(local_err);
++            return;
++        }
      }
  
+     flags &= ~global_dirty_tracking;
+@@ -2936,15 +2975,22 @@ void memory_global_dirty_log_start(unsigned int flags)
+     trace_global_dirty_changed(global_dirty_tracking);
+ 
+     if (!old_flags) {
+-        MEMORY_LISTENER_CALL_GLOBAL(log_global_start, Forward);
++        MEMORY_LISTENER_CALL_LOG_GLOBAL(log_global_start, Forward,
++                                        &local_err);
++        if (local_err) {
++            error_report_err(local_err);
++            return;
++        }
+         memory_region_transaction_begin();
+         memory_region_update_pending = true;
+         memory_region_transaction_commit();
+     }
+ }
+ 
+-static void memory_global_dirty_log_do_stop(unsigned int flags)
++static bool memory_global_dirty_log_do_stop(unsigned int flags, Error **errp)
+ {
++    ERRP_GUARD();
++
+     assert(flags && !(flags & (~GLOBAL_DIRTY_MASK)));
+     assert((global_dirty_tracking & flags) == flags);
+     global_dirty_tracking &= ~flags;
+@@ -2955,39 +3001,49 @@ static void memory_global_dirty_log_do_stop(unsigned int flags)
+         memory_region_transaction_begin();
+         memory_region_update_pending = true;
+         memory_region_transaction_commit();
+-        MEMORY_LISTENER_CALL_GLOBAL(log_global_stop, Reverse);
++        MEMORY_LISTENER_CALL_LOG_GLOBAL(log_global_stop, Reverse, errp);
+     }
++    return !*errp;
+ }
+ 
+ /*
+  * Execute the postponed dirty log stop operations if there is, then reset
+  * everything (including the flags and the vmstate change hook).
+  */
+-static void memory_global_dirty_log_stop_postponed_run(void)
++static bool memory_global_dirty_log_stop_postponed_run(Error **errp)
+ {
++    bool ret = true;
++
+     /* This must be called with the vmstate handler registered */
+     assert(vmstate_change);
+ 
+     /* Note: postponed_stop_flags can be cleared in log start routine */
+     if (postponed_stop_flags) {
+-        memory_global_dirty_log_do_stop(postponed_stop_flags);
++        ret = memory_global_dirty_log_do_stop(postponed_stop_flags, errp);
+         postponed_stop_flags = 0;
+     }
+ 
+     qemu_del_vm_change_state_handler(vmstate_change);
+     vmstate_change = NULL;
++    return ret;
+ }
+ 
+ static void memory_vm_change_state_handler(void *opaque, bool running,
+                                            RunState state)
+ {
++    Error *local_err = NULL;
++
+     if (running) {
+-        memory_global_dirty_log_stop_postponed_run();
++        if (!memory_global_dirty_log_stop_postponed_run(&local_err)) {
++            error_report_err(local_err);
++        }
+     }
+ }
+ 
+ void memory_global_dirty_log_stop(unsigned int flags)
+ {
++    Error *local_err = NULL;
++
+     if (!runstate_is_running()) {
+         /* Postpone the dirty log stop, e.g., to when VM starts again */
+         if (vmstate_change) {
+@@ -3001,7 +3057,9 @@ void memory_global_dirty_log_stop(unsigned int flags)
+         return;
+     }
+ 
+-    memory_global_dirty_log_do_stop(flags);
++    if (!memory_global_dirty_log_do_stop(flags, &local_err)) {
++        error_report_err(local_err);
++    }
+ }
+ 
+ static void listener_add_address_space(MemoryListener *listener,
+@@ -3009,13 +3067,16 @@ static void listener_add_address_space(MemoryListener *listener,
+ {
+     FlatView *view;
+     FlatRange *fr;
++    Error *local_err = NULL;
+ 
+     if (listener->begin) {
+         listener->begin(listener);
+     }
+     if (global_dirty_tracking) {
+         if (listener->log_global_start) {
+-            listener->log_global_start(listener);
++            if (!listener->log_global_start(listener, &local_err)) {
++                error_report_err(local_err);
++            }
+         }
+     }
+ 
+diff --git a/system/physmem.c b/system/physmem.c
+index e3ebc19eefd8050a1dee16e3d1449f0c144f751f..9adbf9aea847cd80bdac6dca466fb476844ac048 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -148,7 +148,7 @@ typedef struct subpage_t {
+ 
+ static void io_mem_init(void);
+ static void memory_map_init(void);
+-static void tcg_log_global_after_sync(MemoryListener *listener);
++static bool tcg_log_global_after_sync(MemoryListener *listener, Error **errp);
+ static void tcg_commit(MemoryListener *listener);
+ 
+ /**
+@@ -2475,7 +2475,7 @@ static void do_nothing(CPUState *cpu, run_on_cpu_data d)
+ {
+ }
+ 
+-static void tcg_log_global_after_sync(MemoryListener *listener)
++static bool tcg_log_global_after_sync(MemoryListener *listener, Error **errp)
+ {
+     CPUAddressSpace *cpuas;
+ 
+@@ -2507,6 +2507,7 @@ static void tcg_log_global_after_sync(MemoryListener *listener)
+         cpuas = container_of(listener, CPUAddressSpace, tcg_as_listener);
+         run_on_cpu(cpuas->cpu, do_nothing, RUN_ON_CPU_NULL);
+     }
++    return true;
+ }
+ 
+ static void tcg_commit_cpu(CPUState *cpu, run_on_cpu_data data)
 -- 
 2.43.2
 
