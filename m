@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA14868F4B
+	by mail.lfdr.de (Postfix) with ESMTPS id BD6E1868F4E
 	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 12:40:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1revoH-0000B7-Gi; Tue, 27 Feb 2024 06:39:45 -0500
+	id 1revoF-00008W-75; Tue, 27 Feb 2024 06:39:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1revoC-00008b-V8
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 06:39:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1revoA-00006R-0L
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 06:39:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1revo0-0005Uf-Nh
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 06:39:40 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1revo0-0005UC-2l
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 06:39:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709033967;
+ s=mimecast20190719; t=1709033966;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BS5qxS6Y7vFDvl65GsGPtJ391Xu6yhC+wlpLeqZvGwI=;
- b=gKCsKqLUtLkfITbUqVijNyXYStYIWC2HLEYGm/5TPk4BS7Nhwoq1SwIqTFJeH7wYKnWtdt
- yLEKx2eF55CGgJk9SfZk/olggDd9Ir84JN/Cd1uFV0HwKzNJ30kwhSP0U90LoZxiU3sZEa
- 3vsP82ge8u45UKSvySyNVBdH8hwduMc=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-612-AvOQ1olJPxCgarJB0U79uw-1; Tue,
- 27 Feb 2024 06:39:23 -0500
-X-MC-Unique: AvOQ1olJPxCgarJB0U79uw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ bh=hLW16ULpgIlSW/cqpVfRJAq3Ma72L+DbkYr6s0ZmzHc=;
+ b=IDMAr/703ga+0o/dV8vBWXkfZ7/S1sip65EKBaDoOTKdIY38/smrXZRINsZiCJBbb8qWhJ
+ Dl0RbiSQ+QZR5UGVAJuAwjnqsDkVo0oxdGcME3Zo/M9utlBJ6Z74de/6Cd9QQE+htGbVn5
+ 4Clb0lmLBW7TTBzXZfb0a1hGr7ZrrbM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-683-16SPenSXPP24ZLNY3CaJ9g-1; Tue, 27 Feb 2024 06:39:24 -0500
+X-MC-Unique: 16SPenSXPP24ZLNY3CaJ9g-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 882DF3C02762;
- Tue, 27 Feb 2024 11:39:23 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8F92F88B768;
+ Tue, 27 Feb 2024 11:39:24 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.193.4])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 658A7492BCF;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 6D8932166B5E;
  Tue, 27 Feb 2024 11:39:23 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 43CEF21E5A40; Tue, 27 Feb 2024 12:39:21 +0100 (CET)
+ id 46F2B21E5A41; Tue, 27 Feb 2024 12:39:21 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: michael.roth@amd.com, jsnow@redhat.com, eblake@redhat.com,
  kkostiuk@redhat.com
-Subject: [PATCH 09/13] qga/qapi-schema: Delete useless "Returns" sections
-Date: Tue, 27 Feb 2024 12:39:17 +0100
-Message-ID: <20240227113921.236097-10-armbru@redhat.com>
+Subject: [PATCH 10/13] qga/qapi-schema: Clean up "Returns" sections
+Date: Tue, 27 Feb 2024 12:39:18 +0100
+Message-ID: <20240227113921.236097-11-armbru@redhat.com>
 In-Reply-To: <20240227113921.236097-1-armbru@redhat.com>
 References: <20240227113921.236097-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.014,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,69 +80,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Drop "on success" where it is redundant with "Returns:".
+
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qga/qapi-schema.json | 12 ------------
- 1 file changed, 12 deletions(-)
+ qga/qapi-schema.json | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-index c5f2ac8f59..636c2c5697 100644
+index 636c2c5697..326d324901 100644
 --- a/qga/qapi-schema.json
 +++ b/qga/qapi-schema.json
-@@ -153,8 +153,6 @@
- # @time: time of nanoseconds, relative to the Epoch of 1970-01-01 in
- #     UTC.
+@@ -228,7 +228,7 @@
  #
--# Returns: Nothing on success.
--#
- # Since: 1.5
- ##
- { 'command': 'guest-set-time',
-@@ -245,8 +243,6 @@
+ # @mode: open mode, as per fopen(), "r" is the default.
  #
- # @handle: filehandle returned by guest-file-open
+-# Returns: Guest file handle on success.
++# Returns: Guest file handle
  #
--# Returns: Nothing on success.
--#
  # Since: 0.15.0
  ##
- { 'command': 'guest-file-close',
-@@ -399,8 +395,6 @@
+@@ -277,7 +277,7 @@
+ # @count: maximum number of bytes to read (default is 4KB, maximum is
+ #     48MB)
  #
- # @handle: filehandle returned by guest-file-open
+-# Returns: @GuestFileRead on success.
++# Returns: @GuestFileRead
  #
--# Returns: Nothing on success.
--#
  # Since: 0.15.0
  ##
- { 'command': 'guest-file-flush',
-@@ -1077,8 +1071,6 @@
- # transmission, even if already crypt()d, to ensure it is 8-bit safe
- # when passed as JSON.
+@@ -312,7 +312,7 @@
+ # @count: bytes to write (actual bytes, after base64-decode), default
+ #     is all content in buf-b64 buffer after base64 decoding
  #
--# Returns: Nothing on success.
--#
- # Since: 2.3
+-# Returns: @GuestFileWrite on success.
++# Returns: @GuestFileWrite
+ #
+ # Since: 0.15.0
  ##
- { 'command': 'guest-set-user-password',
-@@ -1602,8 +1594,6 @@
+@@ -379,7 +379,7 @@
  #
- # @reset: ignore the existing content, set it with the given keys only
+ # @whence: Symbolic or numeric code for interpreting offset
  #
--# Returns: Nothing on success.
--#
- # Since: 5.2
+-# Returns: @GuestFileSeek on success.
++# Returns: @GuestFileSeek
+ #
+ # Since: 0.15.0
  ##
- { 'command': 'guest-ssh-add-authorized-keys',
-@@ -1622,8 +1612,6 @@
- # @keys: the public keys to remove (in OpenSSH/sshd(8) authorized_keys
- #     format)
+@@ -723,7 +723,7 @@
  #
--# Returns: Nothing on success.
--#
- # Since: 5.2
+ # Get list of guest IP addresses, MAC addresses and netmasks.
+ #
+-# Returns: List of GuestNetworkInterface on success.
++# Returns: List of GuestNetworkInterface
+ #
+ # Since: 1.1
  ##
- { 'command': 'guest-ssh-remove-authorized-keys',
+@@ -1247,7 +1247,7 @@
+ #
+ # @pid: pid returned from guest-exec
+ #
+-# Returns: GuestExecStatus on success.
++# Returns: GuestExecStatus
+ #
+ # Since: 2.5
+ ##
+@@ -1315,7 +1315,7 @@
+ # @capture-output: bool flag to enable capture of stdout/stderr of
+ #     running process.  defaults to false.
+ #
+-# Returns: PID on success.
++# Returns: PID
+ #
+ # Since: 2.5
+ ##
+@@ -1344,7 +1344,7 @@
+ # or even present in DNS or some other name service at all.  It need
+ # not even be unique on your local network or site, but usually it is.
+ #
+-# Returns: the host name of the machine on success
++# Returns: the host name of the machine
+ #
+ # Since: 2.10
+ ##
 -- 
 2.43.0
 
