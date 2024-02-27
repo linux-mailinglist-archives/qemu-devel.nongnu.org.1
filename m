@@ -2,76 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03713869B1F
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 16:50:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34C1E869B4F
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 16:55:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rezhV-0006in-AV; Tue, 27 Feb 2024 10:49:01 -0500
+	id 1rezna-0008Ni-R5; Tue, 27 Feb 2024 10:55:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1rezhP-0006Gu-Nh
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 10:48:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1rezhO-000064-2C
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 10:48:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709048933;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=LdqoNsfOgM1ctpAktfMXnvxfqY5U6p7jYtgcELBrb3Y=;
- b=hu3lJOOC+UAE1LS9rCKpzMhIveNBRvQIL/zBxRjYIwTBerlexlwHJsyrbYLeQMpXvG7jdh
- 4n93YUdebU+tOrH1xHMNVUWkR+IkPYedlPjd2PJYuji82sZoyiyqv+K8XFfnAPZMiBzElf
- iDXY0HqY/MWftmAdn1CfQtPfJ0+wPfs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-397-C8X0XaQzPRaLYfnDkEoVTQ-1; Tue, 27 Feb 2024 10:48:49 -0500
-X-MC-Unique: C8X0XaQzPRaLYfnDkEoVTQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EF63D84ACA4;
- Tue, 27 Feb 2024 15:48:47 +0000 (UTC)
-Received: from dell-r430-03.lab.eng.brq2.redhat.com
- (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6B3042166B33;
- Tue, 27 Feb 2024 15:48:45 +0000 (UTC)
-From: Igor Mammedov <imammedo@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, pbonzini@redhat.com, mst@redhat.com,
- gaosong@loongson.cn, alistair.francis@wdc.com, palmer@dabbelt.com,
- bin.meng@windriver.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, imammedo@redhat.com, anisinha@redhat.com,
- philmd@linaro.org, wangyanan55@huawei.com, eblake@redhat.com,
- armbru@redhat.com, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
- f.ebner@proxmox.com
-Subject: [PATCH 19/19] tests: acpi: update expected SSDT.dimmpxm blob
-Date: Tue, 27 Feb 2024 16:47:49 +0100
-Message-Id: <20240227154749.1818189-20-imammedo@redhat.com>
-In-Reply-To: <20240227154749.1818189-1-imammedo@redhat.com>
-References: <20240227154749.1818189-1-imammedo@redhat.com>
+ (Exim 4.90_1) (envelope-from <archith100@gmail.com>)
+ id 1reziF-0008BP-Qb
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 10:49:48 -0500
+Received: from mail-yb1-xb2a.google.com ([2607:f8b0:4864:20::b2a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <archith100@gmail.com>)
+ id 1reziE-0000E5-Bn
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 10:49:47 -0500
+Received: by mail-yb1-xb2a.google.com with SMTP id
+ 3f1490d57ef6-dc6dcd9124bso4592419276.1
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 07:49:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1709048982; x=1709653782; darn=nongnu.org;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=Uel+QpfU1N7a0AM+5o+CQentMuYq1pti17qA0OJEviI=;
+ b=KVJzvsCNt/qBh3S+MNuxleVab5/e/s72KgNMlEwIRueydexhs3wKGKmbDSHdSrn+b0
+ /XnBnZYs1P0Iyv3/AhgRPQOjGhAJhlSipUMMtc5ptEx/k4SIZeVznIuC+abYfhgD0K8k
+ +YxVvO8X1KKbVeg22dUJU5gKGbgSgGgpaGwC4uKTGbbvOwG/70DqaBV+eLDQqWqTR7m3
+ WSIt4giDd/8+benqfxbq9ZDF5IPGVI+EoA/7+0dGPcif3fdslocDwankKcMAJoy6Y9pr
+ Vn6t1eo6LCrERDMzi6dTu8A3gKzOlADHFNQVmcHLaRPirMtBDiawJ5G52CTiShXQfBwc
+ 7V3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709048982; x=1709653782;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Uel+QpfU1N7a0AM+5o+CQentMuYq1pti17qA0OJEviI=;
+ b=mvDmKJCF03Sm3Evw27aiTefcelDKMMu1Nc58J0oD3jCl3ImgqSenNYJClOGrcENjaJ
+ lTGH+BZd4cXuzAqifsRVHClRpq5tF4g+MZh9DqaAjCw24N+cPMRh4uF/uLtZ4S+l5mMN
+ t00PeSLsGt3CNvLfb4pMlpkt0481KMz8Q8/+NrUYFZVKeLQ7zCO/ElEkOTcOlZY11r6W
+ D1fGMPXDzz+kWXxWiL9DOWWMal/N+MzL9D7UGgacMU2IeJP/Qx+vWMiv92HglztHO1wx
+ HEFLCW8Am7k/etHVFlHbjsA0qtj467w0jSey88ivmnvZByfKa/05erRjm0qJ9jTn3Y5O
+ HfbA==
+X-Gm-Message-State: AOJu0Yw1kd/B3bH82cGljHdPF/H3rNEgXAV70+3dKgs/8emm2zMuDT04
+ rWjgrfhVTQ/XWxNfG09u/TGSd5AZ3aXtT87Eh7KqQejxMp/mZSAyEmDAeXshmO7H3eCX2U+Mrlw
+ uKH6dCyDgIEDcA+QaDHkXZtvGCQW6sjVRl0Ttig==
+X-Google-Smtp-Source: AGHT+IEsh/mcnV+bHpps7nT6DFOrb+gLZLpKf6uSCDxj7Tfi8EMmSsqy+j8p0aQF7nAVO+QRhFVv3y9NpO562FPn5ZM=
+X-Received: by 2002:a25:ab68:0:b0:dc2:470b:887e with SMTP id
+ u95-20020a25ab68000000b00dc2470b887emr2485904ybi.21.1709048981841; Tue, 27
+ Feb 2024 07:49:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+From: Archith P <archith100@gmail.com>
+Date: Tue, 27 Feb 2024 21:18:55 +0530
+Message-ID: <CAEEPdR4v8G6CHDCCO-fLcWs-iBqoyKTGQzio_C0P-1ur0vgX0w@mail.gmail.com>
+Subject: Does cortex-m55 in qemu have PMU?
+To: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000776a8406125ef948"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2a;
+ envelope-from=archith100@gmail.com; helo=mail-yb1-xb2a.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 27 Feb 2024 10:55:15 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,38 +83,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-address shift is caused by switch to 32-bit SMBIOS entry point
-which has slightly different size from 64-bit one and happens
-to trigger a bit different memory layout.
+--000000000000776a8406125ef948
+Content-Type: text/plain; charset="UTF-8"
 
-Expected diff:
+Hi,
+I am trying to run code on mps3-an547 (QEMU Emulator) and want to check if
+it has PMU (Performance Monitoring Unit) Enabled.
 
--    Name (MEMA, 0x07FFE000)
-+    Name (MEMA, 0x07FFF000)
+[I am getting PMU value from  ARM_PMU_Get_CCNTR() always zero]
 
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
----
- tests/qtest/bios-tables-test-allowed-diff.h |   1 -
- tests/data/acpi/q35/SSDT.dimmpxm            | Bin 1815 -> 1815 bytes
- 2 files changed, 1 deletion(-)
+I tried using the QMP command query-cpu-model-expansion
+Is this a proper way to find out?
+{
+    "execute": "query-cpu-model-expansion",
+    "arguments": {
+        "type": "full",
+        "model": {
+            "name": "cortex-m55"
+        }
+    }
+}
+Gives:
+{"return": {"model": {"name": "cortex-m55"}}}
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index 81148a604f..dfb8523c8b 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1,2 +1 @@
- /* List of comma-separated changed AML files to ignore */
--"tests/data/acpi/q35/SSDT.dimmpxm",
-diff --git a/tests/data/acpi/q35/SSDT.dimmpxm b/tests/data/acpi/q35/SSDT.dimmpxm
-index 70f133412f5e0aa128ab210245a8de7304eeb843..9ea4e0d0ceaa8a5cbd706afb6d49de853fafe654 100644
-GIT binary patch
-delta 23
-ecmbQvH=U0wIM^jboSlJzam_|9E_UV*|JeaVTLvQl
+Is there other way to find? Need Help.
 
-delta 23
-ecmbQvH=U0wIM^jboSlJzanD9BE_UVz|JeaVy9Ofw
+Thanks and regards,
+Archith
 
--- 
-2.39.3
+--000000000000776a8406125ef948
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"ltr"><div>Hi,</div><div>I am trying to run code on=C2=A0mps3-an=
+547 (QEMU Emulator) and want to check if it has PMU (Performance Monitoring=
+ Unit) Enabled.=C2=A0</div><div><br></div><div>[I am getting PMU value from=
+=C2=A0=C2=A0<span style=3D"background-color:rgb(245,245,245);font-family:Co=
+nsolas,&quot;Courier New&quot;,monospace;font-size:14px;white-space:pre;col=
+or:rgb(170,55,49);font-weight:bold">ARM_PMU_Get_CCNTR</span><span style=3D"=
+background-color:rgb(245,245,245);font-family:Consolas,&quot;Courier New&qu=
+ot;,monospace;font-size:14px;white-space:pre;color:rgb(119,119,119)">()</sp=
+an>=C2=A0always zero]=C2=A0</div><div><br></div><div>I tried using the QMP =
+command=C2=A0<span class=3D"gmail-n" style=3D"color:rgb(0,0,0);font-family:=
+SFMono-Regular,Menlo,Monaco,Consolas,&quot;Liberation Mono&quot;,&quot;Cour=
+ier New&quot;,Courier,monospace;font-size:12px;box-sizing:border-box">query=
+</span><span class=3D"gmail-o" style=3D"font-family:SFMono-Regular,Menlo,Mo=
+naco,Consolas,&quot;Liberation Mono&quot;,&quot;Courier New&quot;,Courier,m=
+onospace;font-size:12px;box-sizing:border-box;color:rgb(102,102,102)">-</sp=
+an><span class=3D"gmail-n" style=3D"color:rgb(0,0,0);font-family:SFMono-Reg=
+ular,Menlo,Monaco,Consolas,&quot;Liberation Mono&quot;,&quot;Courier New&qu=
+ot;,Courier,monospace;font-size:12px;box-sizing:border-box">cpu</span><span=
+ class=3D"gmail-o" style=3D"font-family:SFMono-Regular,Menlo,Monaco,Consola=
+s,&quot;Liberation Mono&quot;,&quot;Courier New&quot;,Courier,monospace;fon=
+t-size:12px;box-sizing:border-box;color:rgb(102,102,102)">-</span><span cla=
+ss=3D"gmail-n" style=3D"color:rgb(0,0,0);font-family:SFMono-Regular,Menlo,M=
+onaco,Consolas,&quot;Liberation Mono&quot;,&quot;Courier New&quot;,Courier,=
+monospace;font-size:12px;box-sizing:border-box">model</span><span class=3D"=
+gmail-o" style=3D"font-family:SFMono-Regular,Menlo,Monaco,Consolas,&quot;Li=
+beration Mono&quot;,&quot;Courier New&quot;,Courier,monospace;font-size:12p=
+x;box-sizing:border-box;color:rgb(102,102,102)">-</span><span class=3D"gmai=
+l-n" style=3D"color:rgb(0,0,0);font-family:SFMono-Regular,Menlo,Monaco,Cons=
+olas,&quot;Liberation Mono&quot;,&quot;Courier New&quot;,Courier,monospace;=
+font-size:12px;box-sizing:border-box">expansion</span></div><div>Is this a =
+proper way to find out?</div>{<br>=C2=A0 =C2=A0 &quot;execute&quot;: &quot;=
+query-cpu-model-expansion&quot;,<br>=C2=A0 =C2=A0 &quot;arguments&quot;: {<=
+br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;type&quot;: &quot;full&quot;,<br>=C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 &quot;model&quot;: {<br>=C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 &quot;name&quot;: &quot;cortex-m55&quot;<br>=C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 }<br>=C2=A0 =C2=A0 }<br>}<br><div>Gives:</div><div>{&quot;re=
+turn&quot;: {&quot;model&quot;: {&quot;name&quot;: &quot;cortex-m55&quot;}}=
+}<br></div><div><br></div><div>Is there other way to find? Need Help.</div>=
+<div><br></div><div>Thanks and regards,</div><div>Archith</div><div><br></d=
+iv></div>
+
+--000000000000776a8406125ef948--
 
