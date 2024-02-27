@@ -2,91 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70313869B31
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 16:52:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BFAD869B34
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 16:52:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rezj2-0001Lz-SP; Tue, 27 Feb 2024 10:50:36 -0500
+	id 1rezjO-0002uK-2w; Tue, 27 Feb 2024 10:50:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rezif-0000zN-5q
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 10:50:18 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1reziY-0000Su-LP
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 10:50:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709049006;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FvPkfBHFogsgEa8p6qZWZOjZZnGbxSy2ZKaH7rgPsG0=;
- b=eZo8WAKqJeV8rZEruxQMfjDdkwwE43MGP2nv5XdSFfvFNvolFgBihDIqDgfT4M94I5vm8K
- a4A5AJvQ9TWCL7Z4NLR7xx1JRAz78fEJIz4Kws/CENn5sabqwbFO+1dpXPwtkxmwhWMvY5
- 6KE5LlNzJfYfGEBk2IoD185mgyIneoU=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-650-ZMzZpRvgMViCfuyyPX1Sfw-1; Tue, 27 Feb 2024 10:50:04 -0500
-X-MC-Unique: ZMzZpRvgMViCfuyyPX1Sfw-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-56586a6bb33so1047773a12.1
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 07:50:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1rezjA-0002Yn-Tg
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 10:50:48 -0500
+Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1rezj7-0000d5-Lv
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 10:50:44 -0500
+Received: by mail-ot1-x335.google.com with SMTP id
+ 46e09a7af769-6e4953d801bso1443981a34.2
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 07:50:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1709049040; x=1709653840; darn=nongnu.org;
+ h=content-language:thread-index:content-transfer-encoding
+ :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=yIHA0BNWG2vEwc/Osfcn5tjtHAa4zi9RFMWsDcOlcDM=;
+ b=cIodAIbDVqQWQOkNacuKI9cDy77KpOULW90LdmFQnTOZY/L6jZoeeUiG8ip90KMMd7
+ ahmsgzIcPSTKRXpRp3QKMKm6gLs/A68copWmEp8dks7lpKCbVAkna/sK/CsUrB5sOidE
+ DOM6wJdkicnurqPtEaMS5thlNYzkfZVG4grz7OMrhHaSHkGMZVsAUvquKDAt+RGvhrUv
+ BEKquJZLo/vIq909dI+CpbLVrBGPQX07XikfDPNlXbzURjdpYQxgimFo9Vqa6ofwbSnK
+ jnq2PICr9WM1QmwCeU/T9rodRaZAKiwpchc+XLBBbWoko+aF358pfXmdbhuN1E2s8OXw
+ oO6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709049003; x=1709653803;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FvPkfBHFogsgEa8p6qZWZOjZZnGbxSy2ZKaH7rgPsG0=;
- b=P9HSt0MaD193JvAmiQ8VTj9CegMR5Cq2oLjn8AWbxQw1SRvMHn+mtthhag62N523vE
- 5qcFZI8vUx7jWpYxRtcqv6B73b/+NjJ0I1yP8/gRYQZX8Sw0Koj47/NAKeHWm5u/XPlA
- 4Yefg9x4wd+kWIO29hwMeb5mUU+Z3Ekre2jUIKSRvXXAyD393+lk5pMzf5Xaq+qVWxRF
- PC4HivcVnB0/6DZ7bZjcGHz/LVTlVixA11IKe6svsidKa3pIkpP5SqE3i5GgDzMOwkp4
- /47GXGrME1TGyqEKNWdp8icBTm7GU/NvIgVHUhR0huCveSzzZP4W4vNHg8d6amGGHBjO
- 07Ng==
-X-Gm-Message-State: AOJu0YxriXFTMCk8sCyuRaPwqhvBjGb15pDKdEjx/WOXJCNXM1D8v6tF
- xXRg9r7+ltiDcEmqpoajqX/s0RIroWfgFqnvoxOIEzNeyX+e5rhtqQJzT8iPLcTaCzAAlmNrgzl
- Zf+w52KsACAhoUAmDBGlAWtzxUqjkBOPgBhbAHj7WC0lGHAM7SIjs
-X-Received: by 2002:aa7:c696:0:b0:566:ef8:93f6 with SMTP id
- n22-20020aa7c696000000b005660ef893f6mr3311049edq.0.1709049002890; 
- Tue, 27 Feb 2024 07:50:02 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHHXhtMfXQ9kVoN2CKnZBlWsn7C/s1ugqo5Ytd6csWZxOIGD4KybnEadhnRCmvP6HgCBFFB6Q==
-X-Received: by 2002:aa7:c696:0:b0:566:ef8:93f6 with SMTP id
- n22-20020aa7c696000000b005660ef893f6mr3311031edq.0.1709049002586; 
- Tue, 27 Feb 2024 07:50:02 -0800 (PST)
-Received: from redhat.com ([2.52.10.44]) by smtp.gmail.com with ESMTPSA id
- z95-20020a509e68000000b00565671fd23asm915333ede.22.2024.02.27.07.49.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Feb 2024 07:50:01 -0800 (PST)
-Date: Tue, 27 Feb 2024 10:49:57 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, pbonzini@redhat.com,
- gaosong@loongson.cn, alistair.francis@wdc.com, palmer@dabbelt.com,
- bin.meng@windriver.com, liwei1518@gmail.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- anisinha@redhat.com, philmd@linaro.org, wangyanan55@huawei.com,
- eblake@redhat.com, armbru@redhat.com, qemu-arm@nongnu.org,
- qemu-riscv@nongnu.org, f.ebner@proxmox.com
-Subject: Re: [PATCH 00/19] Workaround Windows failing to find 64bit SMBIOS
- entry point with SeaBIOS
-Message-ID: <20240227104944-mutt-send-email-mst@kernel.org>
-References: <20240227154749.1818189-1-imammedo@redhat.com>
+ d=1e100.net; s=20230601; t=1709049040; x=1709653840;
+ h=content-language:thread-index:content-transfer-encoding
+ :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=yIHA0BNWG2vEwc/Osfcn5tjtHAa4zi9RFMWsDcOlcDM=;
+ b=Ja5FHHWwHbF6sbYzEWqnZ5I8tzGtanJ1E7Aud6b2JCar3BrjUdw67u1rN7PPpFlRQW
+ ZzuMWjAwEqc0XH63nyz5Ti50x70RHXd6Ab7RzMj1u8kVBY+8MiFdaJPbg1IINEd9EY+3
+ ZU/NXZAZiW1LP/Q0R5v7cZQfkGiJUbkV8Zhr90L16s68mrPLMFWsppjQynguW0RuRrF+
+ Zd3dql2lE8wPgR+SRsC4yMxPevjzJE1NJIh1VETnv4+hFnVwHuRaq7Sv6n2NZ9O1zKr5
+ 1Bs72kGAlSZwa+vp2hfYyNUo5WC+QaOfys65CEjPk04CZTVoVcV0aa3BQK1VwJAAFmrQ
+ rIQg==
+X-Gm-Message-State: AOJu0YysSOkLyrgO7lMrucNmblMOoDtwzPhRnNKZA5YOoMRC6BroUQSO
+ FUcHHWo+IDrFrKyAhN0pOrv17gbnXUEvlr2llPJWtNaysK7GoT/Z
+X-Google-Smtp-Source: AGHT+IHd5aE00L/Ph58bAaepbEXrcINAeoMRzv+lRbOAfLakr8U2x5C3gaXStQbq/Nl8SOKJ5bOP2Q==
+X-Received: by 2002:a05:6830:148d:b0:6e4:9602:a2d7 with SMTP id
+ s13-20020a056830148d00b006e49602a2d7mr8579156otq.5.1709049040344; 
+ Tue, 27 Feb 2024 07:50:40 -0800 (PST)
+Received: from DESKTOPUU50BPD
+ (2603-8080-1f00-9c00-e80a-30fc-e8ad-af19.res6.spectrum.com.
+ [2603:8080:1f00:9c00:e80a:30fc:e8ad:af19])
+ by smtp.gmail.com with ESMTPSA id
+ h8-20020a9d61c8000000b006e4899f4f56sm1542304otk.76.2024.02.27.07.50.38
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 27 Feb 2024 07:50:38 -0800 (PST)
+From: <ltaylorsimpson@gmail.com>
+To: "'Matheus Tavares Bernardino'" <quic_mathbern@quicinc.com>
+Cc: <qemu-devel@nongnu.org>, <bcain@quicinc.com>, <sidneym@quicinc.com>,
+ <quic_mliebel@quicinc.com>, <richard.henderson@linaro.org>,
+ <philmd@linaro.org>, <ale@rev.ng>, <anjo@rev.ng>
+References: <20240226201722.391879-5-ltaylorsimpson@gmail.com>
+ <20240227142112.56005-1-quic_mathbern@quicinc.com>
+In-Reply-To: <20240227142112.56005-1-quic_mathbern@quicinc.com>
+Subject: RE: [PATCH 4/9] Hexagon (target/hexagon) Mark has_pred_dest in trans
+ functions
+Date: Tue, 27 Feb 2024 09:50:36 -0600
+Message-ID: <022301da6994$b5d2d360$21787a20$@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240227154749.1818189-1-imammedo@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQFxMsYHZp6pBZrywqY0XSMT3CTKNAF5BitzseT5jJA=
+Content-Language: en-us
+Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-ot1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,98 +101,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 27, 2024 at 04:47:30PM +0100, Igor Mammedov wrote:
-> Windows (10) bootloader when running on top of SeaBIOS, fails to find            
-> SMBIOSv3 entry point. Tracing it shows that it looks for v2 anchor markers       
-> only and not v3. Tricking it into believing that entry point is found            
-> lets Windows successfully locate and parse SMBIOSv3 tables. Whether it           
-> will be fixed on Windows side is not clear so here goes a workaround.            
->                                                                                  
-> Idea is to try build v2 tables if QEMU configuration permits,                    
-> and fallback to v3 tables otherwise. That will mask Windows issue                
-> form majority of users.                                                          
-> However if VM configuration can't be described (typically large VMs)             
-> by v2 tables, QEMU will use SMBIOSv3 and Windows will hit the issue              
-> again. In this case complain to Microsoft and/or use UEFI instead of             
-> SeaBIOS (requires reinstall).                                                    
 
-Sounds like the best we can do.
 
-> Default compat setting of smbios-entry-point-type after series                   
-> for pc/q35 machines:                                                             
->   * 9.0-newer: 'auto'                                                            
->   * 8.1-8.2: '64'                                                                
->   * 8.0-older: '32'                                                              
->                                                                                  
-> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2008                        
-> CC: peter.maydell@linaro.org                                                     
-> CC: pbonzini@redhat.com                                                          
-> CC: mst@redhat.com                                                               
-> CC: gaosong@loongson.cn                                                          
-> CC: alistair.francis@wdc.com                                                     
-> CC: palmer@dabbelt.com                                                           
-> CC: bin.meng@windriver.com                                                       
-> CC: liwei1518@gmail.com                                                          
-> CC: dbarboza@ventanamicro.com                                                    
-> CC: zhiwei_liu@linux.alibaba.com                                                 
-> CC: imammedo@redhat.com                                                          
-> CC: anisinha@redhat.com                                                          
-> CC: philmd@linaro.org                                                            
-> CC: wangyanan55@huawei.com                                                       
-> CC: eblake@redhat.com                                                            
-> CC: armbru@redhat.com                                                            
-> CC: qemu-arm@nongnu.org                                                          
-> CC: qemu-riscv@nongnu.org                                                        
-> CC: f.ebner@proxmox.com                                                          
->                           
-> Igor Mammedov (19):
->   tests: smbios: make it possible to write SMBIOS only test
->   tests: smbios: add test for -smbios type=11 option
->   tests: smbios: add test for legacy mode CLI options
->   smbios: cleanup smbios_get_tables() from legacy handling
->   smbios: get rid of smbios_smp_sockets global
->   smbios: get rid of smbios_legacy global
->   smbios: avoid mangling user provided tables
->   smbios: don't check type4 structures in legacy mode
->   smbios: build legacy mode code only for 'pc' machine
->   smbios: handle errors consistently
->   smbios: clear smbios_tables pointer after freeing
->   get rid of global smbios_ep_type
->   smbios: extend smbios-entry-point-type with 'auto' value
->   smbios: in case of entry point is 'auto' try to build v2 tables 1st
->   smbios: error out when building type 4 table is not possible
->   smbios: clear smbios_type4_count before building tables
->   tests: acpi/smbios: whitelist expected blobs
->   pc/q35: set SMBIOS entry point type to 'auto' by default
->   tests: acpi: update expected SSDT.dimmpxm blob
+> -----Original Message-----
+> From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+> Sent: Tuesday, February 27, 2024 8:21 AM
+> To: Taylor Simpson <ltaylorsimpson@gmail.com>
+> Cc: qemu-devel@nongnu.org; bcain@quicinc.com;
+> quic_mathbern@quicinc.com; sidneym@quicinc.com;
+> quic_mliebel@quicinc.com; richard.henderson@linaro.org;
+> philmd@linaro.org; ale@rev.ng; anjo@rev.ng
+> Subject: Re: [PATCH 4/9] Hexagon (target/hexagon) Mark has_pred_dest in
+> trans functions
 > 
->  hw/i386/fw_cfg.h                     |   3 +-
->  include/hw/firmware/smbios.h         |  29 +-
->  hw/arm/virt.c                        |   6 +-
->  hw/i386/Kconfig                      |   1 +
->  hw/i386/fw_cfg.c                     |  14 +-
->  hw/i386/pc.c                         |   4 +-
->  hw/i386/pc_piix.c                    |   4 +
->  hw/i386/pc_q35.c                     |   3 +
->  hw/loongarch/virt.c                  |   7 +-
->  hw/riscv/virt.c                      |   6 +-
->  hw/smbios/Kconfig                    |   2 +
->  hw/smbios/meson.build                |   4 +
->  hw/smbios/smbios.c                   | 481 +++++++++++----------------
->  hw/smbios/smbios_legacy.c            | 185 +++++++++++
->  hw/smbios/smbios_legacy_stub.c       |  16 +
->  qapi/machine.json                    |   5 +-
->  tests/data/acpi/q35/SSDT.dimmpxm     | Bin 1815 -> 1815 bytes
->  tests/data/smbios/type11_blob        | Bin 0 -> 11 bytes
->  tests/data/smbios/type11_blob.legacy | Bin 0 -> 10 bytes
->  tests/qtest/bios-tables-test.c       |  81 ++++-
->  20 files changed, 535 insertions(+), 316 deletions(-)
->  create mode 100644 hw/smbios/smbios_legacy.c
->  create mode 100644 hw/smbios/smbios_legacy_stub.c
->  create mode 100644 tests/data/smbios/type11_blob
->  create mode 100644 tests/data/smbios/type11_blob.legacy
+> On Mon, 26 Feb 2024 13:17:17 -0700 Taylor Simpson
+> <ltaylorsimpson@gmail.com> wrote:
+> >
+> > diff --git a/target/hexagon/gen_trans_funcs.py
+> > b/target/hexagon/gen_trans_funcs.py
+> > index 07292e0170..f1972fd2dd 100755
+> > --- a/target/hexagon/gen_trans_funcs.py
+> > +++ b/target/hexagon/gen_trans_funcs.py
+> > @@ -86,6 +86,7 @@ def gen_trans_funcs(f):
+> >
+> >          new_read_idx = -1
+> >          dest_idx = -1
+> > +        has_pred_dest = "false"
+> >          for regno, regstruct in enumerate(regs):
+> >              reg_type, reg_id, _, _ = regstruct
+> >              reg = hex_common.get_register(tag, reg_type, reg_id) @@
+> > -96,6 +97,8 @@ def gen_trans_funcs(f):
+> >                  new_read_idx = regno
+> >              if reg.is_written() and dest_idx == -1:
+> >                  dest_idx = regno
+> > +            if reg_type == "P" and not reg.is_read():
+> > +                has_pred_dest = "true"
 > 
-> -- 
-> 2.39.3
+> I got a bit confused here. Why do we use "not reg.is_read()"? I though
+this
+> would be "reg.is_written()".
+
+The original C code is
+            if ((strstr(opcode_wregs[opcode], "Pd4") ||
+                 strstr(opcode_wregs[opcode], "Pe4")) &&
+Checking for reg.is_written() would also match Px4, which is read-write.
+
+Would it be more clear if we checked for reg.is_written() and non
+reg.is_read()?
+
+Thanks,
+Taylor
+
 
 
