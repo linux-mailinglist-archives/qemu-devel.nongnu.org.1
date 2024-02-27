@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98455869341
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:43:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94CE986930A
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:41:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rexb6-0001BF-3M; Tue, 27 Feb 2024 08:34:16 -0500
+	id 1rexb6-0001AY-3T; Tue, 27 Feb 2024 08:34:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexal-0000td-1i
+ id 1rexam-0000tq-9L
  for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:56 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaV-0002wp-6a
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:53 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-33dc3fe739aso1659126f8f.0
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:38 -0800 (PST)
+ id 1rexaV-0002x7-UE
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:55 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-33d0a7f2424so2873527f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1709040818; x=1709645618; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=URdpfz0CO1A4wAw58jRhSAJIVlq3ECKNAIVic8uADcU=;
- b=yqGTCIyFFruH+iqUDCfbWYcHMORnHYlCEm9M03A3ibRkopKul51bb9wHOOf+WXtUwY
- Q4fiLcRPw+XJPlHiKhqfqXoAo05D4FeUElMVrMH9ydyiVrxIL9Tw6JZT3UfgNmn2jfgk
- 5CSuaTcCs8MIEz8Mu7mdYEFp+o0lOs+4jckwEm7HNjsH8ZgpPm6vKrPNaMIIq9ThDUDg
- 2mKdzP8V6GIOMaWZ8WZwR1kjT5yGu2kJv51K5M4Tmol63XXzS4hl6Gds6dR5S8MLDJwC
- 9WunZtPpWzstWY8WxZXH6sG5RrarhaJnvJ+ce/8iuz/RwgwnRcSNwtMZuz7wpIH0PViP
- Ns2Q==
+ :reply-to; bh=BfQK9OJD3aICemNdn3VvNxx2yZ6JTCZD2HCR6qHP728=;
+ b=MzIEJVcS/KGUOjGy4VfxiuJhFjFVWk1fG3DJ0bHoko+8SJqMg58oo/ERAq8CJ06mNC
+ S/n/bdkWHxPD/JebHNqWE21gjH17ZYbWWR+nAQKaXPsE2aeljdTkSZD5Qzxk4PDtFVkW
+ TtGYhB9VAgu5RhA71lFRADWVZHiODCGmgh8MiG8m9GgpMC6V6ZOaQL/hws+T8NSrJoOS
+ v5ckjWD/KXHJ6ZZfWMNIcizXhhVIO/aZVvmeYd7hAv2zZ71ItKtWFg59Ut8qxzKQGQKN
+ 9OSprnBoWG0B3GanP7xAgIjsk2lQoDrnkMG9aW+5FyuI7SyTD0kPHAg3W7rVJ4t6itR9
+ 9Rwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1709040818; x=1709645618;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=URdpfz0CO1A4wAw58jRhSAJIVlq3ECKNAIVic8uADcU=;
- b=QcWJ3y09t+vFnnoWfFVyb+y10FkhAYpsF0X9i7KdfZtSjAm4tlfJ8kXEmqeP3bEgbd
- JVmyZYb9rOfT3yilbeVS1qLPx7e6twxg5kSxUA3at15mR1AdoAcBaWYerNtB++WtmxC8
- c5Y1DS1P3uH6nxDX5A3YCCc0WX4ycg5tqK6oRqvzVujqyB2najnIyBjZW3FXYUbeV+km
- WyYZY/bVNS/vBHE4xrJcJ0Cjb0Sz0H8zajHMLZvg+C+PevyQqeK5G6HvPdTFyoUDZ/3X
- EmI57tT2EIn11Atk8s1jL2ejr3grvxawspeXoWklyaiFRL7FBWHG5joQHJP6toUOrLZO
- M7iQ==
-X-Gm-Message-State: AOJu0YwlH+ZvoU8r3n2EJh3B0aqwlNJ7TmmLLC7DiqHNTkCDUuUm78yz
- MabqcGlloUKgQFVFn7Gm+IsJLdnkAtUnAO10WcZu8GAbKkJmfz7XiRmcbkRhjEDBP49CGl9rNf4
+ bh=BfQK9OJD3aICemNdn3VvNxx2yZ6JTCZD2HCR6qHP728=;
+ b=JjR+37FOdJx/9qjjYHXE3gRuu829sFg/Zxsj24bMElwM/vKhmHWMKY8zhDEmtCApvO
+ kpDXY3StPvX33f/AiM+fNTYbZhAwhP3pPB0uXiUokRu3EemH3mzrhkaBUe4DHVLLDC9E
+ CEH86Lgyi98RBaHOppryEKXDWCfQHnMBU8cfurRj0D4v2Lbjk6JiFAY5L9bJyPA2Jfd+
+ F2yvNq1nfC1n8eLWA2auRQESNE66BAVA/H7Qqj3pxf3tljduuFFSHBgAHg1jZF0iokLi
+ ReMq4SN/H4thKg6HU2f9Xy2qpo8AQOxJPWk/OTbRsPgOPbIEz4DwLFU8zSSnSTR1S7lK
+ JfYw==
+X-Gm-Message-State: AOJu0YwKSrNuf1eLeZ4URtfKyQX93BLpJX/bOIVR4XhK/qQiJsTKuNbY
+ ZyQwwFg+25vVbxfAbjXAc+WQp793nZ+0eOx5JlhpxWlKAyHO9Tk0PudwIxjlGsoq7NBFgZN+gLt
  c
-X-Google-Smtp-Source: AGHT+IGjWVu9QQmd2Mrg99drVv7zGvTCjInG76pkr7tR3TdPbDGeklH5xcgYyOmwh0Zl6t4znrw6og==
-X-Received: by 2002:a5d:4b8f:0:b0:33d:d7be:5852 with SMTP id
- b15-20020a5d4b8f000000b0033dd7be5852mr5179217wrt.2.1709040817829; 
- Tue, 27 Feb 2024 05:33:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHTe3ijaazVGaIu42uvrdNjmzWvX3w3ZtsIcpFbWP3L3lkZ+AAl+B94ioCr7LTrLS4oYLdkcQ==
+X-Received: by 2002:adf:e8ce:0:b0:33d:269e:132a with SMTP id
+ k14-20020adfe8ce000000b0033d269e132amr7010166wrn.15.1709040818296; 
+ Tue, 27 Feb 2024 05:33:38 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  i13-20020adfe48d000000b0033ae7d768b2sm11319552wrm.117.2024.02.27.05.33.37
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Feb 2024 05:33:37 -0800 (PST)
+ Tue, 27 Feb 2024 05:33:38 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 42/45] tests/qtest/bcm2828-mailbox: Add mailbox property tests.
- Part 3
-Date: Tue, 27 Feb 2024 13:33:11 +0000
-Message-Id: <20240227133314.1721857-43-peter.maydell@linaro.org>
+Subject: [PULL 43/45] hw/misc/bcm2835_property: Add missed BCM2835 properties
+Date: Tue, 27 Feb 2024 13:33:12 +0000
+Message-Id: <20240227133314.1721857-44-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240227133314.1721857-1-peter.maydell@linaro.org>
 References: <20240227133314.1721857-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: 0
-X-Spam_score: -0.1
-X-Spam_bar: /
-X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- PDS_OTHER_BAD_TLD=1.999, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,243 +93,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sergey Kambalin <serg.oker@gmail.com>
 
+Our model of the bcm2835 mailbox is missing a few properties
+that we need for the raspi4 kernel:
+ * RPI_FWREQ_GET_CLOCKS
+ * RPI_FWREQ_GET_THROTTLED
+ * RPI_FWREQ_VCHIQ_INIT
+
+Add minimal implementations of them.
+
 Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
-Message-id: 20240226000259.2752893-39-sergey.kambalin@auriga.com
+Message-id: 20240226000259.2752893-40-sergey.kambalin@auriga.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+[PMM: improved commit message]
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/qtest/bcm2838-mbox-property-test.c | 211 +++++++++++++++++++++++
- 1 file changed, 211 insertions(+)
+ include/hw/arm/raspberrypi-fw-defs.h | 11 +++++++++++
+ hw/misc/bcm2835_property.c           | 21 +++++++++++++++++++++
+ 2 files changed, 32 insertions(+)
 
-diff --git a/tests/qtest/bcm2838-mbox-property-test.c b/tests/qtest/bcm2838-mbox-property-test.c
-index 63f1f577f17..0a71b756dcf 100644
---- a/tests/qtest/bcm2838-mbox-property-test.c
-+++ b/tests/qtest/bcm2838-mbox-property-test.c
-@@ -362,6 +362,193 @@ DECLARE_TEST_CASE_SETUP(FRAMEBUFFER_SET_VIRTUAL_WIDTH_HEIGHT) {
-     tag->request.value.height = 600;
- }
+diff --git a/include/hw/arm/raspberrypi-fw-defs.h b/include/hw/arm/raspberrypi-fw-defs.h
+index 579cf0d5546..8b404e05336 100644
+--- a/include/hw/arm/raspberrypi-fw-defs.h
++++ b/include/hw/arm/raspberrypi-fw-defs.h
+@@ -159,4 +159,15 @@ enum rpi_firmware_clk_id {
+     RPI_FIRMWARE_NUM_CLK_ID,
+ };
  
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_TEST_DEPTH) {
-+    g_assert_cmpint(tag->response.value.bpp, ==, DUMMY_VALUE);
-+}
-+DECLARE_TEST_CASE_SETUP(FRAMEBUFFER_TEST_DEPTH) {
-+    tag->request.value.bpp = DUMMY_VALUE;
-+}
++struct rpi_firmware_property_tag_header {
++    uint32_t tag;
++    uint32_t buf_size;
++    uint32_t req_resp_size;
++};
 +
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_GET_DEPTH) {
-+    g_assert_cmpint(tag->response.value.bpp, ==, 16);
-+}
++typedef struct rpi_firmware_prop_request {
++    struct rpi_firmware_property_tag_header hdr;
++    uint8_t payload[0];
++} rpi_firmware_prop_request_t;
 +
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_SET_DEPTH) {
-+    g_assert_cmpint(tag->response.value.bpp, ==, 24);
-+}
-+DECLARE_TEST_CASE_SETUP(FRAMEBUFFER_SET_DEPTH) {
-+    tag->request.value.bpp = 24;
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_TEST_PIXEL_ORDER) {
-+    g_assert_cmphex(tag->response.value.pixel_order, ==, DUMMY_VALUE);
-+}
-+DECLARE_TEST_CASE_SETUP(FRAMEBUFFER_TEST_PIXEL_ORDER) {
-+    tag->request.value.pixel_order = DUMMY_VALUE;
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_GET_PIXEL_ORDER) {
-+    g_assert_cmphex(tag->response.value.pixel_order, ==, PIXEL_ORDER_RGB);
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_SET_PIXEL_ORDER, BGR) {
-+    g_assert_cmphex(tag->response.value.pixel_order, ==, PIXEL_ORDER_BGR);
-+}
-+DECLARE_TEST_CASE_SETUP(FRAMEBUFFER_SET_PIXEL_ORDER, BGR) {
-+    tag->request.value.pixel_order = PIXEL_ORDER_BGR;
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_SET_PIXEL_ORDER, RGB) {
-+    g_assert_cmphex(tag->response.value.pixel_order, ==, PIXEL_ORDER_BGR);
-+}
-+DECLARE_TEST_CASE_SETUP(FRAMEBUFFER_SET_PIXEL_ORDER, RGB) {
-+    tag->request.value.pixel_order = PIXEL_ORDER_BGR;
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_TEST_ALPHA_MODE) {
-+    g_assert_cmphex(tag->response.value.alpha_mode, ==, DUMMY_VALUE);
-+}
-+DECLARE_TEST_CASE_SETUP(FRAMEBUFFER_TEST_ALPHA_MODE) {
-+    tag->request.value.alpha_mode = DUMMY_VALUE;
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_GET_ALPHA_MODE) {
-+    g_assert_cmphex(tag->response.value.alpha_mode, ==, ALPHA_MODE_IGNORED);
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_SET_ALPHA_MODE, ENABLED) {
-+    g_assert_cmphex(tag->response.value.alpha_mode, ==, ALPHA_MODE_ENABLED);
-+}
-+DECLARE_TEST_CASE_SETUP(FRAMEBUFFER_SET_ALPHA_MODE, ENABLED) {
-+    tag->request.value.alpha_mode = ALPHA_MODE_ENABLED;
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_SET_ALPHA_MODE, REVERSED) {
-+    g_assert_cmphex(tag->response.value.alpha_mode, ==, ALPHA_MODE_REVERSED);
-+}
-+DECLARE_TEST_CASE_SETUP(FRAMEBUFFER_SET_ALPHA_MODE, REVERSED) {
-+    tag->request.value.alpha_mode = ALPHA_MODE_REVERSED;
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_SET_ALPHA_MODE, IGNORED) {
-+    g_assert_cmphex(tag->response.value.alpha_mode, ==, ALPHA_MODE_IGNORED);
-+}
-+DECLARE_TEST_CASE_SETUP(FRAMEBUFFER_SET_ALPHA_MODE, IGNORED) {
-+    tag->request.value.alpha_mode = ALPHA_MODE_IGNORED;
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_GET_PITCH) {
-+    g_assert_cmpint(tag->response.value.pitch, ==, 1280);
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_TEST_VIRTUAL_OFFSET) {
-+    g_assert_cmpint(tag->response.value.x, ==, DUMMY_VALUE);
-+    g_assert_cmpint(tag->response.value.y, ==, DUMMY_VALUE);
-+}
-+DECLARE_TEST_CASE_SETUP(FRAMEBUFFER_TEST_VIRTUAL_OFFSET) {
-+    tag->request.value.x = DUMMY_VALUE;
-+    tag->request.value.y = DUMMY_VALUE;
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_GET_VIRTUAL_OFFSET) {
-+    g_assert_cmpint(tag->response.value.x, ==, 0);
-+    g_assert_cmpint(tag->response.value.y, ==, 0);
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_SET_VIRTUAL_OFFSET, _0_) {
-+    g_assert_cmpint(tag->response.value.x, ==, 0);
-+    g_assert_cmpint(tag->response.value.y, ==, 0);
-+}
-+DECLARE_TEST_CASE_SETUP(FRAMEBUFFER_SET_VIRTUAL_OFFSET, _0_) {
-+    tag->request.value.x = 0;
-+    tag->request.value.y = 0;
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_SET_VIRTUAL_OFFSET, _42_) {
-+    g_assert_cmpint(tag->response.value.x, ==, 42);
-+    g_assert_cmpint(tag->response.value.y, ==, 42);
-+}
-+DECLARE_TEST_CASE_SETUP(FRAMEBUFFER_SET_VIRTUAL_OFFSET, _42_) {
-+    tag->request.value.x = 42;
-+    tag->request.value.y = 42;
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_GET_OVERSCAN) {
-+    g_assert_cmpint(tag->response.value.top, ==, 0);
-+    g_assert_cmpint(tag->response.value.bottom, ==, 0);
-+    g_assert_cmpint(tag->response.value.left, ==, 0);
-+    g_assert_cmpint(tag->response.value.right, ==, 0);
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_TEST_OVERSCAN) {
-+    g_assert_cmpint(tag->response.value.top, ==, 0);
-+    g_assert_cmpint(tag->response.value.bottom, ==, 0);
-+    g_assert_cmpint(tag->response.value.left, ==, 0);
-+    g_assert_cmpint(tag->response.value.right, ==, 0);
-+}
-+DECLARE_TEST_CASE_SETUP(FRAMEBUFFER_TEST_OVERSCAN) {
-+    tag->request.value.top = DUMMY_VALUE;
-+    tag->request.value.bottom = DUMMY_VALUE;
-+    tag->request.value.left = DUMMY_VALUE;
-+    tag->request.value.right = DUMMY_VALUE;
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_SET_OVERSCAN) {
-+    g_assert_cmpint(tag->response.value.top, ==, 0);
-+    g_assert_cmpint(tag->response.value.bottom, ==, 0);
-+    g_assert_cmpint(tag->response.value.left, ==, 0);
-+    g_assert_cmpint(tag->response.value.right, ==, 0);
-+}
-+DECLARE_TEST_CASE_SETUP(FRAMEBUFFER_SET_OVERSCAN) {
-+    tag->request.value.top = DUMMY_VALUE;
-+    tag->request.value.bottom = DUMMY_VALUE;
-+    tag->request.value.left = DUMMY_VALUE;
-+    tag->request.value.right = DUMMY_VALUE;
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(GET_DMA_CHANNELS) {
-+    g_assert_cmphex(tag->response.value.mask, ==, GPIO_MASK);
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(GET_COMMAND_LINE) {
-+    /* No special checks are needed for this test case */
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_GET_NUM_DISPLAYS) {
-+    g_assert_cmpint(tag->response.value.num_displays, ==, 1);
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(FRAMEBUFFER_SET_PITCH) {
-+    /* No special checks are needed for this test case */
-+}
-+DECLARE_TEST_CASE_SETUP(FRAMEBUFFER_SET_PITCH) {
-+    tag->request.value.pitch = DUMMY_VALUE;
-+}
-+
- /*----------------------------------------------------------------------------*/
- int main(int argc, char **argv)
- {
-@@ -396,6 +583,30 @@ int main(int argc, char **argv)
-     QTEST_ADD_TEST_CASE(FRAMEBUFFER_TEST_VIRTUAL_WIDTH_HEIGHT);
-     QTEST_ADD_TEST_CASE(FRAMEBUFFER_GET_VIRTUAL_WIDTH_HEIGHT, INITIAL);
-     QTEST_ADD_TEST_CASE(FRAMEBUFFER_SET_VIRTUAL_WIDTH_HEIGHT);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_TEST_DEPTH);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_GET_DEPTH);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_SET_DEPTH);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_TEST_PIXEL_ORDER);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_GET_PIXEL_ORDER);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_SET_PIXEL_ORDER, BGR);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_SET_PIXEL_ORDER, RGB);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_TEST_ALPHA_MODE);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_GET_ALPHA_MODE);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_SET_ALPHA_MODE, ENABLED);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_SET_ALPHA_MODE, REVERSED);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_SET_ALPHA_MODE, IGNORED);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_GET_PITCH);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_TEST_VIRTUAL_OFFSET);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_GET_VIRTUAL_OFFSET);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_SET_VIRTUAL_OFFSET, _0_);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_SET_VIRTUAL_OFFSET, _42_);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_GET_OVERSCAN);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_TEST_OVERSCAN);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_SET_OVERSCAN);
-+    QTEST_ADD_TEST_CASE(GET_DMA_CHANNELS);
-+    QTEST_ADD_TEST_CASE(GET_COMMAND_LINE);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_GET_NUM_DISPLAYS);
-+    QTEST_ADD_TEST_CASE(FRAMEBUFFER_SET_PITCH);
+ #endif /* INCLUDE_HW_MISC_RASPBERRYPI_FW_DEFS_H_ */
+diff --git a/hw/misc/bcm2835_property.c b/hw/misc/bcm2835_property.c
+index 5c48f8d7438..bdd9a6bbcec 100644
+--- a/hw/misc/bcm2835_property.c
++++ b/hw/misc/bcm2835_property.c
+@@ -19,6 +19,8 @@
+ #include "trace.h"
+ #include "hw/arm/raspi_platform.h"
  
-     return g_test_run();
- }
++#define VCHI_BUSADDR_SIZE       sizeof(uint32_t)
++
+ /* https://github.com/raspberrypi/firmware/wiki/Mailbox-property-interface */
+ 
+ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
+@@ -138,6 +140,13 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
+             resplen = 8;
+             break;
+ 
++        case RPI_FWREQ_GET_CLOCKS:
++            /* TODO: add more clock IDs if needed */
++            stl_le_phys(&s->dma_as, value + 12, 0);
++            stl_le_phys(&s->dma_as, value + 16, RPI_FIRMWARE_ARM_CLK_ID);
++            resplen = 8;
++            break;
++
+         case RPI_FWREQ_SET_CLOCK_RATE:
+         case RPI_FWREQ_SET_MAX_CLOCK_RATE:
+         case RPI_FWREQ_SET_MIN_CLOCK_RATE:
+@@ -276,6 +285,7 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
+             stl_le_phys(&s->dma_as, value + 12, 0);
+             resplen = 4;
+             break;
++
+         case RPI_FWREQ_FRAMEBUFFER_GET_NUM_DISPLAYS:
+             stl_le_phys(&s->dma_as, value + 12, 1);
+             resplen = 4;
+@@ -301,6 +311,17 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
+                                     resplen);
+             break;
+ 
++        case RPI_FWREQ_GET_THROTTLED:
++            stl_le_phys(&s->dma_as, value + 12, 0);
++            resplen = 4;
++            break;
++
++        case RPI_FWREQ_VCHIQ_INIT:
++            stl_le_phys(&s->dma_as,
++                        value + offsetof(rpi_firmware_prop_request_t, payload),
++                        0);
++            resplen = VCHI_BUSADDR_SIZE;
++            break;
+         default:
+             qemu_log_mask(LOG_UNIMP,
+                           "bcm2835_property: unhandled tag 0x%08x\n", tag);
 -- 
 2.34.1
 
