@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5581B868AFA
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 09:42:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EC1F868B3B
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 09:51:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ret25-0007Wt-AC; Tue, 27 Feb 2024 03:41:49 -0500
+	id 1ret27-0007u4-3f; Tue, 27 Feb 2024 03:41:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret1X-0007Pq-OD
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:41:18 -0500
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret1c-0007U2-R0
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:41:21 -0500
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret1P-0007xX-HV
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:41:12 -0500
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a3e72ec566aso505139666b.2
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 00:41:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret1X-0007yj-HG
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:41:19 -0500
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2d21cdbc85bso62627591fa.2
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 00:41:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709023264; x=1709628064; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709023271; x=1709628071; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rHGNJ1XUlxhgdMpKga7hKHkmc9UPr7ny3TDpRoUFz4k=;
- b=ScGUZdQ+xhNJsXb9uZijJaVK7ZxRWmkvdWfUa5hpz5lg8ELpZqoI9pSpqp+tX2qkko
- 0zUx8vv7IxOkCCLgmb6qYCcYvi5ge+roO+vZL9+oqspwXJ4doWXmLT59tdvts9v8OdrT
- mwXj1ymQxs1UQ/Clqfohsfz/9fDIdwVN4Sd48JFe7r/938fE6wwgQMur21XAmsHRj1EN
- escNXI0nlBDnM5G2TX0r5Uhd/8KdI9uuakmey+TGtLQ8uCHKevBeMB/Q/sPiXLRhfruv
- I4EHrUSXkfcHheJiLoxH7KhqlLvOgtAwJyLw5dPbLayt2k6NkO60neVZZK24IlP3WhaP
- lYrw==
+ bh=ZLHfM0e3DYucUBGQJ+x+1h4RF1QPnXlDRfnIizT5lrk=;
+ b=y+f9hwJzX+n2Lg28oMAbyj+MKGZD5ToNb95fsT6Loz5OZod9gfoKn7tQWf/WQAgw//
+ CO6LvhBtTuv23iZI1MJPEUYczT66Ym7bGTncFr+G/TBcJUst2yzQJt3qVA+9xd/T2GRH
+ vOUDGfar+85ADxnLmDTA95ITbQaPc8B56equQLrDXtE2N1oI0Q1aQFkVH9Fy5pyvgBdX
+ tvA8kHK15D4PY1VxUMpbbNPKAdg5GI92mC/Nr1XKsKvoy/eeEMeEn9bFMxVQvUAISF7Z
+ wuYo/oIBU82XbtGNldbhaWQlghnaKcjBqQYq40zteHVM+rKBKxnp4+f2ixYT0iS/WY59
+ S7zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709023264; x=1709628064;
+ d=1e100.net; s=20230601; t=1709023271; x=1709628071;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rHGNJ1XUlxhgdMpKga7hKHkmc9UPr7ny3TDpRoUFz4k=;
- b=ScL5gXsUnWM/k1VJrgQ4D7YZXs/FGo7qMwRZpuWxwZ+WK0lUdVjCCvOFSCN+cWUKxj
- BPaDz3Ujgnz0B7YqIHYD09Clq797jElWsr9xMmmMtWWkAEVofS33XDqyIctjqHrRwxV/
- S73kpsWRgD+X+QCZOhlDf0UFhGe1ha7WL+esSDMIyK1R7yfkKPUHjTKV9YR6ltwXLNht
- pBD5TbJkTKGKbJeXrWB7DflNgz5WzymgQePtTo1i1vNLt3RBTLQbnepOSD7+zq0QnYVS
- fLW2ZM3YSfHBYrRFZ37PuGpJm3WjAdiL8AcMduSGwNTyWyQKQbRV6tH4Z/7Nuhz29fwC
- s4zQ==
-X-Gm-Message-State: AOJu0Yw+Y2phVNl2jZCdAvP3CjeWm7etH1APKwT91XHPy0CembzT70Gq
- 6TDcvcHpJMZN9WSjU4EXavc7pr2E0fk8VWEK/VEEZdvK/sHfyoqNEWNXvWkW0WwPtmacewcnsrD
- 7
-X-Google-Smtp-Source: AGHT+IG6YZ+TarG1eefUcbisnXuu9W8bdUaNMxsC3j10s6+mgL1Rx0WQC/S8yHTKAB81PRbS/Je+NA==
-X-Received: by 2002:a17:906:7f89:b0:a43:5840:b8ac with SMTP id
- f9-20020a1709067f8900b00a435840b8acmr2968766ejr.42.1709023264502; 
- Tue, 27 Feb 2024 00:41:04 -0800 (PST)
+ bh=ZLHfM0e3DYucUBGQJ+x+1h4RF1QPnXlDRfnIizT5lrk=;
+ b=RfMthKOsdjQMgcWj7QZwgg0NEGPDuc0uYCRW0KuEw0Qd3A/pxJcd1E+2e5B/YZ9042
+ TNkBLb3i1+z24XDWn6owxT7aitwAMuYOk4Qr1PPj2qpXOVGhRxOUsgZcWryfjuSATTtL
+ g8f9jCRtIel2lhW2jaZZgCXKSwGh5nEvLlbsLWXUBxIcfLS9YGs3Ee9EsXi+1bsHdBqD
+ Rz3OSy7q6Tj+fahRO0I9j7EHT+wWGR+qqXW5fMc/cmMr7xodE557cn4YcR9QzPwMDlcD
+ doBilUskT0QQREblmjCfYg3F+TYYYsqxef5XMXu6hHTEpSMV3CcqIp9RW4Qxj5gYqWVc
+ NXmg==
+X-Gm-Message-State: AOJu0Yy2OxPUcq65gcfXl17pv3TeUTBsRJp18nAn3fGL5uIFgoJFfgo3
+ IIs2D5QF5zqfKnlVvzbmwPvj5rUNdfwAmTVVf2sWNTA3hg5dhEl/ScrW8BM7G4RpOD10kU31caY
+ h
+X-Google-Smtp-Source: AGHT+IGtyeEMCP0NS/yqy4ixkdyjU3NN1AxwsEFgT2vXa2DCiu4YYjC9N2Bp854rnk/rPTx01EVi8g==
+X-Received: by 2002:a2e:9547:0:b0:2d0:f258:df02 with SMTP id
+ t7-20020a2e9547000000b002d0f258df02mr4874682ljh.51.1709023271120; 
+ Tue, 27 Feb 2024 00:41:11 -0800 (PST)
 Received: from m1x-phil.lan (mic92-h03-176-184-33-214.dsl.sta.abo.bbox.fr.
  [176.184.33.214]) by smtp.gmail.com with ESMTPSA id
- lt16-20020a170906fa9000b00a3d99415705sm538091ejb.73.2024.02.27.00.41.02
+ s23-20020a2e81d7000000b002d29faf0466sm106051ljg.104.2024.02.27.00.41.09
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 27 Feb 2024 00:41:04 -0800 (PST)
+ Tue, 27 Feb 2024 00:41:10 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-block@nongnu.org, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>
-Subject: [PULL 12/30] hw/sh4/r2d: do not use usb_bus_find()
-Date: Tue, 27 Feb 2024 09:39:28 +0100
-Message-ID: <20240227083948.5427-13-philmd@linaro.org>
+ Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PULL 13/30] hw/mips/loongson3_virt: do not require CONFIG_USB
+Date: Tue, 27 Feb 2024 09:39:29 +0100
+Message-ID: <20240227083948.5427-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240227083948.5427-1-philmd@linaro.org>
 References: <20240227083948.5427-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x235.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,42 +96,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-usb_bus_find() is always used with argument -1; it can be replaced with
-a search of the single USB bus on the machine.
+Once the Kconfig for hw/mips is cleaned up, it will be possible to build a
+binary that does not include any USB host controller and therefore that
+does not include the code guarded by CONFIG_USB.  While the simpler
+creation functions such as usb_create_simple can be inlined, this is not
+true of usb_bus_find().  Remove it, replacing it with a search of the
+single USB bus created by loongson3_virt_devices_init().
 
-Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240223124406.234509-4-pbonzini@redhat.com>
+Message-ID: <20240223124406.234509-5-pbonzini@redhat.com>
 [PMD: Fixed style]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sh4/r2d.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ hw/mips/loongson3_virt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/hw/sh4/r2d.c b/hw/sh4/r2d.c
-index c73e8f49b8..e5ac6751bd 100644
---- a/hw/sh4/r2d.c
-+++ b/hw/sh4/r2d.c
-@@ -244,6 +244,7 @@ static void r2d_init(MachineState *machine)
-     SysBusDevice *busdev;
-     MemoryRegion *address_space_mem = get_system_memory();
-     PCIBus *pci_bus;
-+    USBBus *usb_bus;
+diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
+index caedde2df0..b10a611a98 100644
+--- a/hw/mips/loongson3_virt.c
++++ b/hw/mips/loongson3_virt.c
+@@ -446,9 +446,13 @@ static inline void loongson3_virt_devices_init(MachineState *machine,
+     pci_vga_init(pci_bus);
  
-     cpu = SUPERH_CPU(cpu_create(machine->cpu_type));
-     env = &cpu->env;
-@@ -312,7 +313,9 @@ static void r2d_init(MachineState *machine)
+     if (defaults_enabled() && object_class_by_name("pci-ohci")) {
++        USBBus *usb_bus;
++
+         pci_create_simple(pci_bus, -1, "pci-ohci");
+-        usb_create_simple(usb_bus_find(-1), "usb-kbd");
+-        usb_create_simple(usb_bus_find(-1), "usb-tablet");
++        usb_bus = USB_BUS(object_resolve_type_unambiguous(TYPE_USB_BUS,
++                                                          &error_abort));
++        usb_create_simple(usb_bus, "usb-kbd");
++        usb_create_simple(usb_bus, "usb-tablet");
+     }
+ 
      pci_init_nic_devices(pci_bus, mc->default_nic);
- 
-     /* USB keyboard */
--    usb_create_simple(usb_bus_find(-1), "usb-kbd");
-+    usb_bus = USB_BUS(object_resolve_type_unambiguous(TYPE_USB_BUS,
-+                                                      &error_abort));
-+    usb_create_simple(usb_bus, "usb-kbd");
- 
-     /* Todo: register on board registers */
-     memset(&boot_params, 0, sizeof(boot_params));
 -- 
 2.41.0
 
