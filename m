@@ -2,103 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95609869E2A
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 18:45:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33FC0869ED6
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 19:17:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rf1Vh-0004nX-VT; Tue, 27 Feb 2024 12:44:57 -0500
+	id 1rf1za-0000VO-2o; Tue, 27 Feb 2024 13:15:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <calebs@linux.vnet.ibm.com>)
- id 1rf1Vf-0004fp-SD; Tue, 27 Feb 2024 12:44:55 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <calebs@linux.vnet.ibm.com>)
- id 1rf1Vd-0005X0-EU; Tue, 27 Feb 2024 12:44:55 -0500
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41RGmaKU029806; Tue, 27 Feb 2024 17:44:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=GsiTSmHxSva/JpY+YXdU0a8q4ADVHBrCpAMFeva6+0M=;
- b=F55w6fymm+wkYfnOCufA6oW7vEv/WlXOSUj1qKJFNjQk79O5iCWMwOIpdBrlTK/XZMsz
- G0yHcf1TnOFbGNXvj0JYbRCwsvRleDU1i2r+3q/Vv5Pz9+51OYnQv21GKAiKllQagO1C
- 89hdYMN+JnHZvbgS4NU4ww4/Y/aL0zTv9AyOCwaEqlRrQ7/8iQShwgHKji57hiKThNi0
- +Kz/eSsARL3NSJjN4IsGp8yuSxa/YVNCTPJNXSzFC0bokjkK70Y52Uz6/oaRrqr95Rli
- vFcQfOxDiaKRnPbI/+k9zLfuSNPGyS+kzYKXKa2S3xxy8jgDKtkpQorQmmTItc9a7ErO RA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3whkjysh6g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Feb 2024 17:44:49 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41RHJBXP014023;
- Tue, 27 Feb 2024 17:44:49 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3whkjysh5v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Feb 2024 17:44:49 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41RHOppv024144; Tue, 27 Feb 2024 17:44:48 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wfw0k8w4q-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Feb 2024 17:44:48 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 41RHikoj28115626
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 27 Feb 2024 17:44:48 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1A0025805F;
- Tue, 27 Feb 2024 17:44:46 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A3C9058059;
- Tue, 27 Feb 2024 17:44:45 +0000 (GMT)
-Received: from [9.10.254.104] (unknown [9.10.254.104])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 27 Feb 2024 17:44:45 +0000 (GMT)
-Message-ID: <19e8d914-9ef9-4f5b-a105-78e88a432d27@linux.vnet.ibm.com>
-Date: Tue, 27 Feb 2024 11:44:45 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] ppc/pnv: Fix pervasive topology calculation for P10
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, npiggin@gmail.com, fbarrat@linux.ibm.com
-References: <20240227144844.23606-1-calebs@linux.vnet.ibm.com>
- <c084d751-fc21-4e9f-ab28-fc5889b8d9af@kaod.org>
-Content-Language: en-US
-From: Caleb Schlossin <calebs@linux.vnet.ibm.com>
-In-Reply-To: <c084d751-fc21-4e9f-ab28-fc5889b8d9af@kaod.org>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: K0u-4N3QMC84efsRdNy-LIKiTO5gSWCh
-X-Proofpoint-GUID: AySfgg42kTNykawvIo4PnS0p1uib0tcL
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rf1zC-0000P2-JU
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:15:39 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rf1z6-0003g7-RI
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:15:26 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-412ae087378so6814125e9.3
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 10:15:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1709057717; x=1709662517; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=zLZrhJhE63vlPUo7z57RU3MPKrdHlrl35iPxJrFSFQ0=;
+ b=lxRzF3p3W5ufq1GCkSP5z0ZASBe3Wzajxi8SAr7iywcN1Tw2j79NHSbHVVn7lr6U3L
+ KnnoWZZO79C5xi0A84v+a5n0+PfjsBSlz6FIEstlXgQPsDCykFlYSorA28jTRtRc7ruE
+ e4ohrqfynqpAIPG1cytdvf+qIoaAnGGADKV1yP1JloC1dU/EJ4mPB2i2KbmJtIPNTLlw
+ J+bwv5WPecRLRri7lkgVOvRhMw/6GSzF59Ity9JF8vsFvn0odXQECbZH+gvzDbSM8aXK
+ UBDu/LWJJLIswHVre6d+r8fB4sSrurr3rYnaxUd70QGVwLjMEs0eBMSDZ2ahqVBXIouA
+ 7qJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709057717; x=1709662517;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=zLZrhJhE63vlPUo7z57RU3MPKrdHlrl35iPxJrFSFQ0=;
+ b=UkDbeoz3O6YuGh8sIdXvof2qOAA8attxc4nijfYzW4JkHEaK7TRxmTJ5M88peo+Mwb
+ ckq7mLwQUOhH35eqlzch6EzT3ik8JlLmZiT6Re1WSeKBGQ/clicDfTQe0YuJQqSgSnxK
+ MxxOSoqtTJVm5wzdFMrRLEhBw6Txm7zSSstAjh5uT8cplc0Ggka2z8x6zsoC9UBgo2QG
+ Gzj4k5XfRtInwSAVOvK9kmgsoN21pQJQeRAFL+HeBYaQHbwPNVSNGBg3uRxINj0kz33b
+ DO0+xmVhch2XFT+Iqamu+b+AqP6J2O0qFWhT3xzOSmbpNnNOE9+pWkzft09PpGJcxxC7
+ Le2w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUx7UTylm6e5S3WSf0qu6qqAMR5e5q7TSqKqKekkC9mf6GEox2GyqoSfMKXJp9oR+z3gT1g8sU2UbIo67qmBaajjOzw1ng=
+X-Gm-Message-State: AOJu0Yzec/W4hKzIQdjy9BlV5BpvpgrzpKChpwMgrki0+oHpuwf7G2BJ
+ H4ECXaYbJf26uzdI9ioWQ+1Yz9gA539Guvg+kJUKXNDKA32W994CNWqkjFttDf0=
+X-Google-Smtp-Source: AGHT+IHfBPjFEXxsJ4aZsnKHdvPJ6oZZB0uBI7+eEAFwpqzkoE81P6RtjAKu7tAWwv5SeeC3lXWibw==
+X-Received: by 2002:a05:6000:1e8b:b0:33d:dffb:7144 with SMTP id
+ dd11-20020a0560001e8b00b0033ddffb7144mr3585586wrb.60.1709057717379; 
+ Tue, 27 Feb 2024 10:15:17 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.160.23])
+ by smtp.gmail.com with ESMTPSA id
+ r2-20020adff702000000b0033b60bad2fcsm11880927wrp.113.2024.02.27.10.15.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 27 Feb 2024 10:15:16 -0800 (PST)
+Message-ID: <48e5e0b8-9b0a-4c9f-9f3e-c30e2fddc502@linaro.org>
+Date: Tue, 27 Feb 2024 19:15:14 +0100
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-27_03,2024-02-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- priorityscore=1501 bulkscore=0 mlxlogscore=999 adultscore=0 mlxscore=0
- impostorscore=0 clxscore=1015 spamscore=0 lowpriorityscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2402270136
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=calebs@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: TCG change broke MorphOS boot on sam460ex
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
+References: <fe59ceb1-e8cd-f488-d6f0-6372923a8a33@eik.bme.hu>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <fe59ceb1-e8cd-f488-d6f0-6372923a8a33@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,70 +93,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cedric,
+Hi Zoltan,
 
-I'll resend both patches, so this new patch shows up properly as [PATCH 2/2].
+On 27/2/24 17:47, BALATON Zoltan wrote:
+> Hello,
+> 
+> Commit 18a536f1f8 (accel/tcg: Always require can_do_io) broke booting 
+> MorphOS on sam460ex (this was before 8.2.0 and I thought I've verified 
+> it before that release but apparently missed it back then). It can be 
+> reproduced with https://www.morphos-team.net/morphos-3.18.iso and 
+> following command:
+> 
+> qemu-system-ppc -M sam460ex -serial stdio -d unimp,guest_errors \
+>    -drive if=none,id=cd,format=raw,file=morphos-3.18.iso \
+>    -device ide-cd,drive=cd,bus=ide.1
+> 
+> before:
+> Invalid read at addr 0xC08001216, size 1, region '(null)', reason: rejected
+> Invalid read at addr 0x216, size 1, region '(null)', reason: rejected
+> Invalid read at addr 0x4FDF6BFB0, size 4, region '(null)', reason: rejected
+> Invalid write at addr 0xE10000014, size 4, region '(null)', reason: 
+> rejected
+> Invalid write at addr 0xE10000214, size 4, region '(null)', reason: 
+> rejected
+> Invalid write at addr 0xE30000014, size 4, region '(null)', reason: 
+> rejected
+> Invalid write at addr 0xE30000214, size 4, region '(null)', reason: 
+> rejected
+> 8.440| sam460_i2c_write: Error while writing, sts 34
+> 8.463|
+> 8.463|
+> 8.463| ABox 1.30 (2.7.2018)...
+> 
+> after:
+> Invalid read at addr 0xC08001216, size 1, region '(null)', reason: rejected
+> Invalid read at addr 0x216, size 1, region '(null)', reason: rejected
+> Invalid read at addr 0x4F0C01374, size 4, region '(null)', reason: rejected
+> invalid/unsupported opcode: 00 - 00 - 00 - 00 (00000000) 00c01374
+> Invalid read at addr 0x4F0000700, size 4, region '(null)', reason: rejected
+> invalid/unsupported opcode: 00 - 00 - 00 - 00 (00000000) 00000700
+> 
+> Not sure what it's trying to do here, maybe decompressing some code and 
+> then trying to execute it? Any idea what could be the problem or what to 
+> check further?
 
-Thanks,
-Caleb
-
-On 2/27/24 10:15 AM, Cédric Le Goater wrote:
-> Hello Caleb,
-> 
-> On 2/27/24 15:48, Caleb Schlossin wrote:
->> Pervasive topology(PIR) calculation for core, thread ID was
->> wrong for big cores (SMT8). Fixing for P10.
->>
->> Based on: <20240123195005.8965-1-calebs@linux.vnet.ibm.com>
->> Signed-off-by: Caleb Schlossin <calebs@linux.vnet.ibm.com>
-> 
-> Since the initial patch [1] is not merged yet, you can simply send a v2
-> with the update. There is still some time before soft freeze [2].
-> 
-> The Subject of this patch [PATCH 2/2] seems to refer to a series. Is
-> there a patch 1/2 ?
-> 
-> Thanks,
-> 
-> C.
-> 
-> 
-> 
-> [1] https://lore.kernel.org/all/20240123195005.8965-1-calebs@linux.vnet.ibm.com/
-> [2] https://wiki.qemu.org/Planning/9.0
-> 
->> ---
->>   hw/ppc/pnv.c | 15 +++++++++++++--
->>   1 file changed, 13 insertions(+), 2 deletions(-)
->>
->> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
->> index 2f53883916..aa5aba60b4 100644
->> --- a/hw/ppc/pnv.c
->> +++ b/hw/ppc/pnv.c
->> @@ -1068,12 +1068,23 @@ static uint32_t pnv_chip_pir_p9(PnvChip *chip, uint32_t core_id,
->>       }
->>   }
->>   +/*
->> + *    0:48  Reserved - Read as zeroes
->> + *   49:52  Node ID
->> + *   53:55  Chip ID
->> + *   56     Reserved - Read as zero
->> + *   57:59  Quad ID
->> + *   60     Core Chiplet Pair ID
->> + *   61:63  Thread/Core Chiplet ID t0-t2
->> + *
->> + * We only care about the lower bits. uint32_t is fine for the moment.
->> + */
->>   static uint32_t pnv_chip_pir_p10(PnvChip *chip, uint32_t core_id,
->>                                    uint32_t thread_id)
->>   {
->>       if (chip->nr_threads == 8) {
->> -        return (chip->chip_id << 8) | ((thread_id & 1) << 2) | (core_id << 3) |
->> -               (thread_id >> 1);
->> +        return (chip->chip_id << 8) | ((core_id / 4) << 4) |
->> +               ((core_id % 2) << 3) | thread_id;
->>       } else {
->>           return (chip->chip_id << 8) | (core_id << 2) | thread_id;
->>       }
-> 
+Are you testing with commit cf9b5790db ("accel/tcg: Remove CF_LAST_IO")
+included?
 
