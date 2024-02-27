@@ -2,109 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B672869941
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 15:56:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1133E869918
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 15:53:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reyo6-0007MB-Cl; Tue, 27 Feb 2024 09:51:46 -0500
+	id 1reyow-0001Zq-7U; Tue, 27 Feb 2024 09:52:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <roy.hopkins@suse.com>)
- id 1reynS-0006eM-P8
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 09:51:06 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <roy.hopkins@suse.com>)
- id 1reynQ-0004Vx-Py
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 09:51:06 -0500
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:98])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 43CAB1FD29;
- Tue, 27 Feb 2024 14:51:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1709045463; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=N9EVl26B/tUgWdn3M351HxYAKf1jJ+2b2+WlOoglkfo=;
- b=QqivYHSVS4qMmzi96DAmbmCCoATIsPCAKgmHbmaKdeGwW5mRIHGYkteYqJU18kXo6O69/p
- w9IU2cnxyPbmHqZnbupXLlEKukfIiTaqQikQ1b3i77lbwrZwTxWyGfpuvH90vsYMUB7TkR
- 2MvBL5dycCFt53Of1Fg22Ls+vuDQk2I=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1709045463; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=N9EVl26B/tUgWdn3M351HxYAKf1jJ+2b2+WlOoglkfo=;
- b=QqivYHSVS4qMmzi96DAmbmCCoATIsPCAKgmHbmaKdeGwW5mRIHGYkteYqJU18kXo6O69/p
- w9IU2cnxyPbmHqZnbupXLlEKukfIiTaqQikQ1b3i77lbwrZwTxWyGfpuvH90vsYMUB7TkR
- 2MvBL5dycCFt53Of1Fg22Ls+vuDQk2I=
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 746E813ABC;
- Tue, 27 Feb 2024 14:51:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap2.dmz-prg2.suse.org with ESMTPSA id 4AcmGtb23WXMAQAAn2gu4w
- (envelope-from <roy.hopkins@suse.com>); Tue, 27 Feb 2024 14:51:02 +0000
-From: Roy Hopkins <roy.hopkins@suse.com>
-To: qemu-devel@nongnu.org
-Cc: Roy Hopkins <roy.hopkins@suse.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sergio Lopez <slp@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Alistair Francis <alistair@alistair23.me>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Tom Lendacky <thomas.lendacky@amd.com>,
- Michael Roth <michael.roth@amd.com>,
- =?UTF-8?q?J=C3=B6rg=20Roedel?= <jroedel@suse.com>
-Subject: [PATCH 9/9] docs/system: Add documentation on support for IGVM
-Date: Tue, 27 Feb 2024 14:50:15 +0000
-Message-ID: <2f98be192cf6ffd36b984266570ea2eed4dfe364.1709044754.git.roy.hopkins@suse.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1709044754.git.roy.hopkins@suse.com>
-References: <cover.1709044754.git.roy.hopkins@suse.com>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1reyoi-0001RD-24
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 09:52:24 -0500
+Received: from mgamail.intel.com ([192.198.163.14])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1reyof-0004it-KG
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 09:52:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1709045542; x=1740581542;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=1rvpg/DOCX8xcMRmnNM0vPbj4EnqPAf7a5IKP2FI66c=;
+ b=QRToe8NBZgkiOnpY6PKE6oFbcOlJqpuqU1ZHgxYGnc10u7Q0PVdCk6ea
+ 14WDt+0iiCXYSKfKV4K8CkP2WIYrJbI2h7Qu0O2c4SmUEP9LvQWbkG0Z8
+ 5CnKBqLJL3RMiXJHN2nq3uwIADdeZOKeOZ+t8COd/SC1EXsfhajjYUV+0
+ Ik+yyrnqgMflLtgKNn9G7cOiV+UyVs+M7QSzoUqbUy6mlC5/QFaApAiL4
+ PL5rLYVpC4KrrPEHPxmc+V/IDL9hVYs8jEsru7dDHW4qGgnlGLFOnheGC
+ 2aUv7zmWkmnKYxq3pxuNBbLaALkatgiE/M2IuT7UvuljiUVvfgEt+UzI1 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3547398"
+X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
+   d="scan'208";a="3547398"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2024 06:52:09 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; d="scan'208";a="44576278"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.125.243.127])
+ ([10.125.243.127])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2024 06:52:03 -0800
+Message-ID: <7ef9d3c0-2bab-4edc-a5dc-156d17a467ed@intel.com>
+Date: Tue, 27 Feb 2024 22:51:59 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.com header.s=susede1 header.b=QqivYHSV
-X-Spamd-Result: default: False [-0.31 / 50.00]; RCVD_VIA_SMTP_AUTH(0.00)[];
- TO_DN_SOME(0.00)[]; R_MISSING_CHARSET(2.50)[];
- BROKEN_CONTENT_TYPE(1.50)[];
- R_RATELIMIT(0.00)[to_ip_from(RL1cdfboiju7js16zrknyuzw5d)];
- RCVD_COUNT_THREE(0.00)[3]; DKIM_TRACE(0.00)[suse.com:+];
- MX_GOOD(-0.01)[]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; BAYES_HAM(-3.00)[100.00%];
- ARC_NA(0.00)[]; R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
- FROM_HAS_DN(0.00)[]; FREEMAIL_ENVRCPT(0.00)[gmail.com];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; TAGGED_RCPT(0.00)[];
- MIME_GOOD(-0.10)[text/plain];
- DWL_DNSWL_HI(-3.50)[suse.com:dkim];
- DKIM_SIGNED(0.00)[suse.com:s=susede1];
- RCPT_COUNT_TWELVE(0.00)[16]; MID_CONTAINS_FROM(1.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:email];
- FUZZY_BLOCKED(0.00)[rspamd.com];
- FREEMAIL_CC(0.00)[suse.com,redhat.com,gmail.com,habkost.net,alistair23.me,amd.com];
- RCVD_TLS_ALL(0.00)[]; SUSPICIOUS_RECIPS(1.50)[]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Score: -0.31
-X-Rspamd-Queue-Id: 43CAB1FD29
-X-Spamd-Bar: /
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=roy.hopkins@suse.com; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 53/66] i386/tdx: Wire TDX_REPORT_FATAL_ERROR with
+ GuestPanic facility
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand
+ <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2EBerrang=C3=A9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Michael Roth <michael.roth@amd.com>, Sean Christopherson
+ <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>,
+ Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
+ <isaku.yamahata@gmail.com>, Chenyi Qiang <chenyi.qiang@intel.com>
+References: <20240125032328.2522472-1-xiaoyao.li@intel.com>
+ <20240125032328.2522472-54-xiaoyao.li@intel.com>
+ <87v86kehts.fsf@pond.sub.org>
+ <1d7f7c1b-cfaa-4de6-80a0-8d1104440f54@intel.com>
+ <87le76dt1g.fsf@pond.sub.org>
+ <09c5fd9b-be96-45b6-b48e-772d5b5aad16@intel.com>
+ <87wmqqawa2.fsf@pond.sub.org>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <87wmqqawa2.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.14; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.599, HK_RANDOM_FROM=0.999, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,93 +99,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-IGVM support has been implemented for Confidential Guests that support
-AMD SEV and AMD SEV-ES. Add some documentation that gives some
-background on the IGVM format and how to use it to configure a
-confidential guest.
+On 2/27/2024 9:09 PM, Markus Armbruster wrote:
+[...]
+>>>>>> @@ -566,6 +569,27 @@
+>>>>>>               'psw-addr': 'uint64',
+>>>>>>               'reason': 'S390CrashReason'}}
+>>>>>>     
+>>>>>> +##
+>>>>>> +# @GuestPanicInformationTdx:
+>>>>>> +#
+>>>>>> +# TDX Guest panic information specific to TDX GCHI
+>>>>>> +# TDG.VP.VMCALL<ReportFatalError>.
+>>>>>> +#
+>>>>>> +# @error-code: TD-specific error code
+>>>>>
+>>>>> Where could a user find information on these error codes?
+>>>>
+>>>> TDX GHCI (Guset-host-communication-Interface)spec. It defines all the
+>>>> TDVMCALL leaves.
+>>>>
+>>>> 0: panic;
+>>>> 0x1 - 0xffffffff: reserved.
+>>>
+>>> Would it make sense to add a reference?
+>>
+>> https://cdrdv2.intel.com/v1/dl/getContent/726792
+> 
+> URLs have this annoying tendency to rot.
+> 
+> What about
+> 
+> # @error-code: Error code as defined in "Guest-Hypervisor Communication
+> #     Interface (GHCI) Specification for Intel TDX 1.5"
 
-Signed-off-by: Roy Hopkins <roy.hopkins@suse.com>
----
- docs/system/igvm.rst  | 58 +++++++++++++++++++++++++++++++++++++++++++
- docs/system/index.rst |  1 +
- 2 files changed, 59 insertions(+)
- create mode 100644 docs/system/igvm.rst
+I think it gets mentioned at the beginning of @GuestPanicInformationTdx
 
-diff --git a/docs/system/igvm.rst b/docs/system/igvm.rst
-new file mode 100644
-index 0000000000..bb0c43f0ee
---- /dev/null
-+++ b/docs/system/igvm.rst
-@@ -0,0 +1,58 @@
-+Independent Guest Virtual Machine (IGVM) support
-+================================================
-+
-+IGVM files are designed to encaspulate all the information required to launch a
-+virtual machine on any given virtualization stack in a deterministic way. This
-+allows the cryptographic measurement of initial guest state for Confidential
-+Guests to be calculated when the IGVM file is built, allowing a relying party to
-+verify the initial state of a guest via a remote attestation.
-+
-+QEMU supports IGVM files through the Confidential Guest Support object. An igvm
-+filename can optionally be passed to the object which will subsequently be
-+parsed and used to configure the guest state prior to launching the guest.
-+
-+Further Information on IGVM
-+---------------------------
-+
-+Information about the IGVM format, including links to the format specification
-+and documentation for the Rust and C libraries can be found at the project
-+repository:
-+
-+https://github.com/microsoft/igvm
-+
-+
-+Supported Confidential Guests
-+-----------------------------
-+
-+Currently, IGVM files can be provided for Confidential Guests on host systems
-+that support AMD SEV and SEV-ES.
-+
-+IGVM files contain a set of directives. Not every directive is supported by
-+every Confidential Guest type. For example, setting the initial CPU state is not
-+supported on AMD SEV due to the platform not supporting encrypted save state
-+regions. However, this is supported on SEV-ES.
-+
-+When an IGVM file contains directives that are not supported for the active
-+platform, an error is displayed and the guest launch is aborted.
-+
-+Firmware Images with IGVM
-+-------------------------
-+
-+When an IGVM filename is specified for a Confidential Guest Support object it
-+overrides the default handling of system firmware: the firmware image, such as
-+an OVMF binary should be contained as a payload of the IGVM file and not
-+provided as a flash drive. The default QEMU firmware is not automatically mapped
-+into guest memory.
-+
-+Running a Confidential Guest configured using IGVM
-+--------------------------------------------------
-+
-+To run a confidential guest configured with IGVM you need to add the
-+``igvm-file`` parameter to the "confidential guest support" object:
-+
-+Example (for AMD SEV)::
-+
-+    qemu-system-x86_64 \
-+        <other parameters> \
-+        -machine ...,confidential-guest-support=sev0 \
-+        -object sev-guest,id=sev0,cbitpos=47,reduced-phys-bits=1,igvm-file=/path/to/guest.igvm
-diff --git a/docs/system/index.rst b/docs/system/index.rst
-index c21065e519..6235dfab87 100644
---- a/docs/system/index.rst
-+++ b/docs/system/index.rst
-@@ -38,4 +38,5 @@ or Hypervisor.Framework.
-    security
-    multi-process
-    confidential-guest-support
-+   igvm
-    vm-templating
--- 
-2.43.0
+   TDX Guest panic information specific to TDX GHCI
+   TDG.VP.VMCALL<ReportFatalError>.
+
+Do we still to mention it in every single member?
+
+>>>>>> +#
+>>>>>> +# @gpa: guest-physical address of a page that contains additional
+>>>>>> +#     error data, in forms of zero-terminated string.
+>>>>>
+>>>>> "in the form of a zero-terminated string"
+>>>>
+>>>> fixed.
+>>>>
+>>>>>> +#
+>>>>>> +# @message: Human-readable error message provided by the guest. Not
+>>>>>> +#     to be trusted.
+>>>>>
+>>>>> How is this message related to the one pointed to by @gpa?
+>>>>
+>>>> In general, @message contains a brief message of the error. While @gpa
+>>>> (when valid) contains a verbose message.
+>>>>
+>>>> The reason why we need both is because sometime when TD guest hits a
+>>>> fatal error, its memory may get corrupted so we cannot pass information
+>>>> via @gpa. Information in @message is passed through GPRs.
+>>>
+>>> Well, we do pass information via @gpa, always.  I guess it page's
+>>> contents can be corrupted.
+>>
+>> No. It's not always. the bit 63 of the error code is "GPA valid" bit.
+>> @gpa is valid only when bit 63 of error code is 1.
+>>
+>> And current Linux TD guest implementation doesn't use @gpa at all.
+>> https://github.com/torvalds/linux/blob/45ec2f5f6ed3ec3a79ba1329ad585497cdcbe663/arch/x86/coco/tdx/tdx.c#L131
+> 
+> Aha!
+> 
+> Why would we want to include @gpa when the "GPA valid" bit is off?
+> 
+> If we do want it, then
+> 
+> # @gpa: guest-physical address of a page that contains more verbose
+> #     error information, as zero-terminated string.  Valid when the
+> #     "GPA valid" bit is set in @error-code.
+> 
+> If we don't, then make @gpa optional, present when valid, and document
+> it like this:
+> 
+> # @gpa: guest-physical address of a page that contains more verbose
+> #     error information, as zero-terminated string.  Present when the
+> #     "GPA valid" bit is set in @error-code.
+
+I will go this direction.
+
+thanks!
+
+>>> Perhaps something like
+>>>
+>>>       # @message: Human-readable error message provided by the guest.  Not
+>>>       #     to be trusted.
+>>>       #
+>>>       # @gpa: guest-physical address of a page that contains more verbose
+>>>       #     error information, as zero-terminated string.  Note that guest
+>>>       #     memory corruption can corrupt the page's contents.
+>>>
+>>>>>> +#
+>>>>>> +# Since: 9.0
+>>>>>> +##
+>>>>>> +{'struct': 'GuestPanicInformationTdx',
+>>>>>> + 'data': {'error-code': 'uint64',
+>>>>>> +          'gpa': 'uint64',
+>>>>>> +          'message': 'str'}}
+>>>
+>>> Note that my proposed doc string has the members in a different order.
+>>> Recommend to use the same order here.
+>>>
+>>>>>> +
+>>>>>>     ##
+>>>>>>     # @MEMORY_FAILURE:
+>>>>>>     #
+>>>>>
+>>>>> [...]
+>>>>>
+>>>
+> 
+> 
 
 
