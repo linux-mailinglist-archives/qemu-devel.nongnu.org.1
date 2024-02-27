@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20AE869365
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:44:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD19786929E
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:37:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rexb3-0001A2-Vj; Tue, 27 Feb 2024 08:34:14 -0500
+	id 1rexb0-000160-7v; Tue, 27 Feb 2024 08:34:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaW-0000ng-5v
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:40 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1rexaY-0000pB-A7
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:47 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaP-0002un-Rj
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:39 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-33d6f26ff33so3022307f8f.0
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:33 -0800 (PST)
+ id 1rexaS-0002uv-3U
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:41 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-412a390347dso17645935e9.3
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1709040812; x=1709645612; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=uwmzSpK9oNER9eZ+AlpbFKclBhof2k/XtIYq2ahmcKc=;
- b=aUhqAZiSxzuxJ2lxUAGqEv2vBe0dCQzMSrs4UMjQ5DHlf/TYjkGR39z/Kg3zGbPUxY
- kpTKtoGM6qESB8nbm/HqnW5zNWbiO14lCNHDhuMdj0UyC8OYhgYB3vwdKXjh8TwfXwqW
- zzWKSeQVfOYIoBhIbvzBKrCnY6uiAI9T7uyNDzRw62S0Jex/0DjiyVwiqqqrxOISHNut
- UP1n81mqAOVmNkInbCrQJs/EA00g9IvngF/WoCbThdlC16uc/XPSzANiZdV+Is//QYD2
- vWrRe6z7QO3/w5+Ek1tzAyHh02MvkTCpdYs3XrtfNfZ5WvxLmCcMvI7cekLYfCHmExmR
- 48uA==
+ :reply-to; bh=Hiu0b1foynOipsz23GrR3xzwd+X8RGGDCKc8WBE7RBE=;
+ b=Shs4pVEUvEGCFVZkYyIxTxQRqyFZrV0MhpVko8svk1oBiYgRaasm0SW41LBEajPUGH
+ ppN1zRGksl7rBWjdiamLcmHhp86T0khtDfni/QfL/cq0RIuCrNGFv6F/aYFaqoCDMx3l
+ 2Zgb0kg26b45Ne2POybaUzFVpCUhIdzcvBpkIIs4CYsBTciD0sdC7/QCnLswuMFXmztI
+ KGzztvQ52+Gl0oNtKiPkBcjA/aZ0b5Hf2QKICwi95yVlg89VMBYc1169kfpTUj0rZtR5
+ vlrdhEX223F46aRIIAb0qONcjAlg8V9QoGTjOHxvNq27QeM0WX6MHoqlHplxWzBTsCQE
+ sAKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1709040812; x=1709645612;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uwmzSpK9oNER9eZ+AlpbFKclBhof2k/XtIYq2ahmcKc=;
- b=v/EmazjdlDMQ5PCFGgN9wmgO0OCHBocyVQYnlybpAT1Nc+8iyCRKSvJkmg3ND96WQ6
- a4wsUfxsu0lrAR+486GbJF5Lahk2t6hkSuILudPvtG+LpUZ2BbzU03gX0fOXI9rk3SMj
- CEL6cKqvL2Lnuh56nkkqekNhn1wqJBiJlTl7ff+z1966HiZHy54qI5nRAz7aORCMrYJM
- t85mLyitBZoZvJiH+u7ZdQE+ge4Z7CthOWn65QYnEDXjbPlUq5Fra2SD9eHCBYgOM5Kp
- 0y/RscFu0HdVceH/A1SbwkShL3CM36FuPIqzpkkgeTsV2ieqtFEE9oO9TVfztKmByTDX
- fXKg==
-X-Gm-Message-State: AOJu0YxH0iKk1b6GAPw2z/fGoZjk8jlkMAEjfgfD7tVgsW+AGXwlwIvV
- yR29y8YKdI56MXdgvUVktX8pDMDqKBmDIyZKKRJZB798dH/CaTWdVlhVc4Q1KO0uLHfJu1ORKBc
- 8
-X-Google-Smtp-Source: AGHT+IGnThLkHMNbvd4rChdwA0Nj5v6kJE7b/A7I+quyDRI0zwL6w+nqdDsmJtriwgwVQoq7rlYwMQ==
-X-Received: by 2002:a5d:526a:0:b0:33d:f3c4:6002 with SMTP id
- l10-20020a5d526a000000b0033df3c46002mr941875wrc.1.1709040812214; 
+ bh=Hiu0b1foynOipsz23GrR3xzwd+X8RGGDCKc8WBE7RBE=;
+ b=bOkC6AiG70O6rhO6JXkZK4Qh11ocOoeD7c7LSoP1HyxspM7uH9RTc+y+taV6hXIgT2
+ CwdSXrRrzUQK/orL6+ankKu6M8FliWU4bynVj7ejxFBqJxP/HMDfv5wBRglUiSkJRPwh
+ GIbY8ZGCI+tQGx/xOEBMV42JthQFSGylOJtUnzjs1gnTFST4NyQBmk/F31WrYVd7POQN
+ vvXzg51pvwn5i1dQf3yk4RZxOfneJT9zl78Njs9byOztXAQcza6Ja15Xn3Sd4oakV+fI
+ 2cC/kN9CR4QPRLo/HEx+zYu64MtDZHzNF802e0eim5zu+ub78uCjwwerAMPU121y5+WO
+ dXyA==
+X-Gm-Message-State: AOJu0YyglIAme/rFcfepcFwj7xSA9e20FKT9998TwYlaR3Fum0pxUS7v
+ vHgaKnijjXoiN71l7v2aJO4tfe/dKGezCI+vQTPjYTWV31MRyAe/5kZkepCN0O/0abaEDrvPJw3
+ r
+X-Google-Smtp-Source: AGHT+IH8GsIy5MEQfiHw7iLQasCluWlSsuUYbFDvUjkAnw5b1Ub/gDaTjQRAqgGjM1EPM2+FQgCURg==
+X-Received: by 2002:a05:6000:543:b0:33d:1cc1:bb08 with SMTP id
+ b3-20020a056000054300b0033d1cc1bb08mr7063269wrf.22.1709040812609; 
  Tue, 27 Feb 2024 05:33:32 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- i13-20020adfe48d000000b0033ae7d768b2sm11319552wrm.117.2024.02.27.05.33.31
+ i13-20020adfe48d000000b0033ae7d768b2sm11319552wrm.117.2024.02.27.05.33.32
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 27 Feb 2024 05:33:32 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 32/45] hw/arm: Add memory region for BCM2837 RPiVid ASB
-Date: Tue, 27 Feb 2024 13:33:01 +0000
-Message-Id: <20240227133314.1721857-33-peter.maydell@linaro.org>
+Subject: [PULL 33/45] hw/arm/bcm2838_peripherals: Add clock_isp stub
+Date: Tue, 27 Feb 2024 13:33:02 +0000
+Message-Id: <20240227133314.1721857-34-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240227133314.1721857-1-peter.maydell@linaro.org>
 References: <20240227133314.1721857-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,54 +96,49 @@ From: Sergey Kambalin <serg.oker@gmail.com>
 
 Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240226000259.2752893-13-sergey.kambalin@auriga.com
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/bcm2838_peripherals.h | 2 ++
- include/hw/arm/raspi_platform.h      | 2 +-
- hw/arm/bcm2838_peripherals.c         | 3 +++
- 3 files changed, 6 insertions(+), 1 deletion(-)
+ include/hw/arm/bcm2838_peripherals.h | 1 +
+ hw/arm/bcm2838_peripherals.c         | 6 ++++++
+ 2 files changed, 7 insertions(+)
 
 diff --git a/include/hw/arm/bcm2838_peripherals.h b/include/hw/arm/bcm2838_peripherals.h
-index 86b0d96944e..af085934c92 100644
+index af085934c92..7ee1bd066fa 100644
 --- a/include/hw/arm/bcm2838_peripherals.h
 +++ b/include/hw/arm/bcm2838_peripherals.h
-@@ -69,6 +69,8 @@ struct BCM2838PeripheralState {
-     OrIRQState mmc_irq_orgate;
-     OrIRQState dma_7_8_irq_orgate;
+@@ -71,6 +71,7 @@ struct BCM2838PeripheralState {
      OrIRQState dma_9_10_irq_orgate;
-+
-+    UnimplementedDeviceState asb;
+ 
+     UnimplementedDeviceState asb;
++    UnimplementedDeviceState clkisp;
  };
  
  struct BCM2838PeripheralClass {
-diff --git a/include/hw/arm/raspi_platform.h b/include/hw/arm/raspi_platform.h
-index 0db146e5920..7bc4807fa51 100644
---- a/include/hw/arm/raspi_platform.h
-+++ b/include/hw/arm/raspi_platform.h
-@@ -73,7 +73,7 @@ uint64_t board_ram_size(uint32_t board_rev);
- #define MPHI_OFFSET             0x6000   /* Message-based Parallel Host Intf. */
- #define DMA_OFFSET              0x7000   /* DMA controller, channels 0-14 */
- #define ARBA_OFFSET             0x9000
--#define BRDG_OFFSET             0xa000
-+#define BRDG_OFFSET             0xa000   /* RPiVid ASB for BCM2838 (BCM2711) */
- #define ARM_OFFSET              0xB000   /* ARM control block */
- #define ARMCTRL_OFFSET          (ARM_OFFSET + 0x000)
- #define ARMCTRL_IC_OFFSET       (ARM_OFFSET + 0x200) /* Interrupt controller */
 diff --git a/hw/arm/bcm2838_peripherals.c b/hw/arm/bcm2838_peripherals.c
-index 55ae56733f4..ca2f37b2606 100644
+index ca2f37b2606..e28bef4a37d 100644
 --- a/hw/arm/bcm2838_peripherals.c
 +++ b/hw/arm/bcm2838_peripherals.c
-@@ -185,6 +185,9 @@ static void bcm2838_peripherals_realize(DeviceState *dev, Error **errp)
-         sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->gpio), 0));
+@@ -12,6 +12,9 @@
+ #include "hw/arm/raspi_platform.h"
+ #include "hw/arm/bcm2838_peripherals.h"
  
-     object_property_add_alias(OBJECT(s), "sd-bus", OBJECT(&s->gpio), "sd-bus");
++#define CLOCK_ISP_OFFSET        0xc11000
++#define CLOCK_ISP_SIZE          0x100
 +
-+    /* BCM2838 RPiVid ASB must be mapped to prevent kernel crash */
-+    create_unimp(s_base, &s->asb, "bcm2838-asb", BRDG_OFFSET, 0x24);
- }
+ /* Lower peripheral base address on the VC (GPU) system bus */
+ #define BCM2838_VC_PERI_LOW_BASE 0x7c000000
  
- static void bcm2838_peripherals_class_init(ObjectClass *oc, void *data)
+@@ -176,6 +179,9 @@ static void bcm2838_peripherals_realize(DeviceState *dev, Error **errp)
+     memory_region_add_subregion(&s_base->peri_mr, BCM2838_MPHI_OFFSET,
+                                 &s->mphi_mr_alias);
+ 
++    create_unimp(s_base, &s->clkisp, "bcm2835-clkisp", CLOCK_ISP_OFFSET,
++                 CLOCK_ISP_SIZE);
++
+     /* GPIO */
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->gpio), errp)) {
+         return;
 -- 
 2.34.1
 
