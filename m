@@ -2,87 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20B186A157
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 22:08:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DECA786A1FE
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 22:56:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rf4f8-0000HZ-4O; Tue, 27 Feb 2024 16:06:54 -0500
+	id 1rf5PC-0000EU-G9; Tue, 27 Feb 2024 16:54:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rf4f5-0000H3-Sc
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 16:06:51 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rf4f4-0002fo-A0
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 16:06:51 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-412aec2505dso7051485e9.2
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 13:06:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709068008; x=1709672808; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Q9ClAUN8lfwCX3rP+trtdOSmG6qfgj6tt48eU39JBeI=;
- b=Uuxd5Zo5RpVLbUIwHhnn+6ACMXz3Jttmo6R/LT0p+93u3wzFM8X6sB4fb6UuppUhQd
- DIRoQXZS8MizPJGXQ2RrBEztnH+cEe5W7GgYRIOUijUVYnZTmJxQs3bA6OrbmLZIME8p
- g4ApQ3KF5/NQEO9G4FaOgBteprewnIti0MxkVQ/ICZqJnqdGOFv+ry1hQzSoSdsBJA+T
- TIPjntRNGWPefqKj0iMmUKq6fM0zk54ADq5C565Bj12+WdVgJV8nfaBIDfaNnFoXzoA2
- opMFlQYGuAHjtAJcUZnOJyZ/0GLdH+OQWH06tDkSPO/0Y9bGYch0Ttv2HPoi3z4lXlcn
- qFNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709068008; x=1709672808;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=Q9ClAUN8lfwCX3rP+trtdOSmG6qfgj6tt48eU39JBeI=;
- b=P+sgSG36v5L/J3+BYQjdZtiknmol0mtLMh6O6RBx7XzRMfRNcneyY5RXDLzTYQaxte
- huUQteMU7ThJmZV0OznvWbr9XelCE7rSo9o8hkRzV4NTo1BfCZt9ArQ+6gia6OYLTCjO
- FgBUmnJF+Q/jw8OxaLdbHjfsdFqeBQeQ2r8W+lozQzIxI0ZT07G5kMSYsoZe+UATUtur
- rX7QsIJxiGPsRmvj6iEpeV2e8R6FnIX1KIldM7c306hiSuouN874OaiOjMAnFuT1xGki
- lCAKZgP1VlEsgMjZG449yVKi8GtA1tWVW4r30em6JQiJMNW+ZuHGB7GfyHK8gxbDLdvv
- +dYw==
-X-Gm-Message-State: AOJu0YxbgZYvGEIJsfa7NGsVfSYu6008Im6Em1esx8UsiDJlw2eqtiwd
- +XMGEE6aSpmBv9a7y1gV9pOGeZ1XjTTswoTZ0oHYzCNk+zywyyCpN0Ev27PZkP7CRIJIEHhTfyz
- k
-X-Google-Smtp-Source: AGHT+IGxTNbMe46YrPN0pWXXHRfnwg/C21vVGNz47KR8VfPmTtRe8FE4r8BMh3g6PtYYZS4JUuUJXw==
-X-Received: by 2002:a5d:694b:0:b0:33d:1591:c936 with SMTP id
- r11-20020a5d694b000000b0033d1591c936mr6596700wrw.33.1709068007995; 
- Tue, 27 Feb 2024 13:06:47 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- b3-20020a5d4b83000000b0033df1f1dabcsm2598719wrt.90.2024.02.27.13.06.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Feb 2024 13:06:47 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 579285F754;
- Tue, 27 Feb 2024 21:06:47 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 08/14] linux-user/elfload: Lock cpu list and mmap during
- elf_core_dump
-In-Reply-To: <20240227184833.193836-9-richard.henderson@linaro.org> (Richard
- Henderson's message of "Tue, 27 Feb 2024 08:48:27 -1000")
-References: <20240227184833.193836-1-richard.henderson@linaro.org>
- <20240227184833.193836-9-richard.henderson@linaro.org>
-User-Agent: mu4e 1.12.0; emacs 29.1
-Date: Tue, 27 Feb 2024 21:06:47 +0000
-Message-ID: <87msrlborc.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rf5P9-0000Dm-GP
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 16:54:27 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rf5P6-00075x-Ut
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 16:54:27 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 7EC064E6012;
+ Tue, 27 Feb 2024 22:54:21 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id ms3SCURVnVbr; Tue, 27 Feb 2024 22:54:19 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 82E2E4E6005; Tue, 27 Feb 2024 22:54:19 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 817397456FE;
+ Tue, 27 Feb 2024 22:54:19 +0100 (CET)
+Date: Tue, 27 Feb 2024 22:54:19 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Bernhard Beschow <shentey@gmail.com>
+cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Aurelien Jarno <aurelien@aurel32.net>, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ =?ISO-8859-15?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>
+Subject: Re: [PATCH 3/5] hw/isa: Embed TYPE_PORT92 in south bridges used in
+ PC machines
+In-Reply-To: <F3980E89-7FE5-443A-9287-DB0350B159D9@gmail.com>
+Message-ID: <f25bdf58-2fc0-9f04-ef6c-c8d1cff02405@eik.bme.hu>
+References: <20240218131701.91132-1-shentey@gmail.com>
+ <20240218131701.91132-4-shentey@gmail.com>
+ <6a2333d7-9dea-4a0e-9d91-0889e6205128@ilande.co.uk>
+ <F3980E89-7FE5-443A-9287-DB0350B159D9@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,16 +74,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Richard Henderson <richard.henderson@linaro.org> writes:
-
-> Do not allow changes to the set of cpus and memory regions
-> while we are dumping core.
+On Tue, 27 Feb 2024, Bernhard Beschow wrote:
+> Am 21. Februar 2024 11:53:21 UTC schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
+>> On 18/02/2024 13:16, Bernhard Beschow wrote:
+>>> Port 92 is an integral part of the PIIX and ICH south bridges, so instantiate it
+>>> there. The isapc machine now needs to instantiate it explicitly, analoguous to
+>>> the RTC.
+>>>
+>>> Note that due to migration compatibility, port92 is optional in the south
+>>> bridges. It is always instantiated the isapc machine for simplicity.
+>>>
+>>> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+>>> ---
+>>>   include/hw/i386/pc.h          |  2 +-
+>>>   include/hw/southbridge/ich9.h |  4 ++++
+>>>   include/hw/southbridge/piix.h |  3 +++
+>>>   hw/i386/pc.c                  | 18 ++++++++++++------
+>>>   hw/i386/pc_piix.c             |  9 +++++++--
+>>>   hw/i386/pc_q35.c              |  8 +++++---
+>>>   hw/isa/lpc_ich9.c             |  9 +++++++++
+>>>   hw/isa/piix.c                 |  9 +++++++++
+>>>   hw/isa/Kconfig                |  2 ++
+>>>   9 files changed, 52 insertions(+), 12 deletions(-)
+>>
+>> I had a look at this (and did a bit of revision around 8042 and A20), 
+>> and I am starting to wonder if the PORT92 device isn't something that 
+>> belongs to the southbridge, but more specifically to the superio chip?
 >
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> If there is agreement to model real hardware in QEMU, then I think that
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+I think there's no such agreement and QEMU is more lax about it both for 
+historical reasons and to simplify machine models. Indeed, QEMU sometimes 
+models non-existing machines (e.g. the mac99 or virt boards) that don't 
+correspond to real hardware but allow guest OSes to boot. Even when 
+modelllng real hardware it's ofren modelled just enough for guests to work 
+and unused details are omitted for simplicity. It is recommended to follow 
+what real hardware does when modelling real hardware but not always 
+required. Although it might help both with verifying a device model and to 
+compose machines with these models to try to follow the real hardware.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+> port 92 belongs into any device model where the hardware has one. All 
+> our PC-like southbridges (PIIX, ICH, VIA) have port 92. Many FDC37xxxx 
+> including the FDC37M81x as used in the Malta board have one, too -- 
+> where it must first be enabled.
+
+So port92 is not a real hardware but a QEMU abstraction or model of some 
+functionality found in some machines. Real chips probably implement this 
+in different ways so we could either model this in these chips 
+independently the same way as real hardware does or use the abstracted 
+model anywhere in our machine model. Since this does not exist in real 
+hardware as this abstract model it also does not belong anywhere so we are 
+free to put it where it's most convenient or simple to do.
+
+>> A couple of thoughts as to why I came to this conclusion: firstly the 
+>> superio chip is generally considered to be a single integrated 
+>> implementation of legacy IO devices, so this feels like a natural home 
+>> for the PORT92 device.
+>
+>> Secondly the value of the "has-port92" property is controlled by 
+>> pcms->i8042_enabled, and this value is already passed into functions 
+>> such as pc_superio_init() for example.
+>
+> Rhight. There, it also controls the presence of port 92. If we move port 
+> 92 into the southbridges, we have to respect this command line switch 
+> there to preserve backward compatibility.
+>
+> I wonder what `-M i8042` is supposed to do. If it is for modeling a 
+> stripped-down x86 system, why not use the microvm instead? How is it 
+> possible to omit an essential piece of hardware needed to boot x86 
+> systems? Don't we need at least either one (i8042 or port 92)?
+
+Try git log -p 4ccd5fe22fe (found it via git blame and see what added that 
+property).
+
+>> I think this would also help reduce the changes required for the 
+>> individual machines, however the devil is always in the details 
+>> particularly when migration is involved.
+>
+> As stated above, this series is more about modeling real hardware, in 
+> the hope that this will lend itself for configuration-driven machine 
+> creation. It is also about identifying obstacles towards this goal. Does 
+> it make sense to deprecate some machine-specific options such as i8042?
+
+Only if you want to break downsteam users of those options but maybe they 
+won't be happy about that.
+
+Regards,
+BALATON Zoltan
 
