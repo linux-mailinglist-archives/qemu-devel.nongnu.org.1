@@ -2,80 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCA0C868D67
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 11:22:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B4CC868DDB
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 11:40:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reubB-0006fg-Eh; Tue, 27 Feb 2024 05:22:09 -0500
+	id 1reurt-00014K-DU; Tue, 27 Feb 2024 05:39:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1reub7-0006Y8-C9; Tue, 27 Feb 2024 05:22:05 -0500
-Received: from mgamail.intel.com ([192.198.163.9])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1reub5-00045c-MN; Tue, 27 Feb 2024 05:22:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709029324; x=1740565324;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=F6+NTEf+OvKxItgO+SSdOalGV2SCEFkd9K7C26e6mKo=;
- b=YsO4KLvww1yJO0pshM34ImiOaZPQIofemnG0FrT+iqMwbzxg2HoVnsSn
- rc73hWPzHrqOtG7nXRUocV5IEAqk37VyWHv8mwDlhgEnJrgzlTnp9yNAR
- bWX4cuC6jxcc5JXjOgrLrJ4+xibICvk/0zHvGbxRQhf663DdK/xhL3sCO
- X3o4wbG32ex2vLG/b6QfxxJFDwcTyRgwZG3O1yNK7fE7h8iYoRRY+Nb/5
- qRYNcDkwVz1Vk+2EKM81hO3/o1//nIuasoFTNeQkYS0/dQQ4BVRYJ+c50
- RZoVqXB/kLxoRMlot8dGh56pBWuFSSR4tiBPDfnqgH8LHUFDtLolPrE5J Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="14071188"
-X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; d="scan'208";a="14071188"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2024 02:21:59 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; d="scan'208";a="11587755"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 27 Feb 2024 02:21:53 -0800
-Date: Tue, 27 Feb 2024 18:35:36 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Alex =?utf-8?B?QmVubu+/vWU=?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>,
- Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [RFC 4/8] hw/core: Add cache topology options in -smp
-Message-ID: <Zd26+BpXQID95lqm@intel.com>
-References: <20240220092504.726064-1-zhao1.liu@linux.intel.com>
- <20240220092504.726064-5-zhao1.liu@linux.intel.com>
- <20240226153947.00006fd6@Huawei.com> <Zd2pWVH4/eo3HM8j@intel.com>
- <Zd2ndJghXbmMHzBn@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zd2ndJghXbmMHzBn@redhat.com>
-Received-SPF: none client-ip=192.198.163.9;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1reurn-00013I-4n; Tue, 27 Feb 2024 05:39:19 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1reurl-00088U-MC; Tue, 27 Feb 2024 05:39:18 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1dca160163dso18322215ad.3; 
+ Tue, 27 Feb 2024 02:39:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1709030356; x=1709635156; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=WifOITY4yoOvSHFaeC9BU+JT/W0uRx7p58Mw6VK+b5E=;
+ b=GKgXcDhtcPXIONtKBz4TS5sGGUWWWBvoFHqmZYLJUgV8EuFSMs2+M5Pbxuv1GUrnxQ
+ wtRd5zL/9FFE3l4XxDrjVnrqtAL0iX2ZR3gn6cOoyJWNsSqazGaO0Dr5kmX2B9ncKkai
+ RDhdiKsMw0RRn919q95KQXEO3F69ocowJabofmwz56WPffK0QI3csZwcUQ23C9l+wQ5R
+ g+WMkd/8WI+kfSc75X5d4XMB6A36yzI0PRz5CgdPfnqNKIKWPS18y/6nKYH2JwuIdl5r
+ DgcXobA37XPZ94EJMJlKMj5YF9PwY/9yie4A+A6/oWiw9g/3ksMlg37MTxdQeIjt/qBE
+ lNJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709030356; x=1709635156;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=WifOITY4yoOvSHFaeC9BU+JT/W0uRx7p58Mw6VK+b5E=;
+ b=BF+j5uGRsdfJUzp/gRZMH91LHu2dM3EdQAXJ0wkdTqf4t+B1XPBVTIUMVNO3K5R5dP
+ mMe7mPotvIzEnR3J7m4WWJ+QHDWbzBU+hcHPCLo9BcOIWYvVa9E8PxQcSSVCbHWeJmEb
+ NMO+dfq3rQqu+IW43cdsyOukcGBfXmU9PJlVVyAgGn7+QitUrluB4mUzr9X2E8Z3E+8e
+ 0HRW2zb/VyD4AnTgoZpc3WB7BCFV9INrjIKuzAzy7XJIqfYHBs6PprARgZAuw+Osm/pZ
+ QCJzlJcI2RxZS/I8zB0ZSxHrESfePTXy+Nt6+EeidDmgnlygUjn9jjBsRIdxzR765kt8
+ be1g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUREmbA+hwYo+DOqnaM26L5N+x1eTQm3aAHBBQwPcLlqzebfMzcDMMjt1kw7gXfNS9c9jHwXlTtZ/JLa6ODNAn+ujNTczlmOOmbRpadE52krsP8Cwv4AuEWaLc=
+X-Gm-Message-State: AOJu0YznwJ0CoG/zlHJPFkZoXP8T+pT+jKfMoJvEThwxyScYCmsaJxkd
+ 1OmtjPxkEuhozvlgqC1/1xAwzWhCXg7gYL2NgEevmpVlz6Xhtqrr
+X-Google-Smtp-Source: AGHT+IF8ZopsnYCDEanYzpl3ZPC+qPhYe268INOJEGtGfeQ56v2qzD+kSqauYibtpIGiGblTrZYMXA==
+X-Received: by 2002:a17:903:489:b0:1db:cbff:df15 with SMTP id
+ jj9-20020a170903048900b001dbcbffdf15mr9222594plb.9.1709030355938; 
+ Tue, 27 Feb 2024 02:39:15 -0800 (PST)
+Received: from localhost ([1.146.52.18]) by smtp.gmail.com with ESMTPSA id
+ bb5-20020a170902bc8500b001dcc09487e8sm577722plb.50.2024.02.27.02.39.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 27 Feb 2024 02:39:15 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 27 Feb 2024 20:39:08 +1000
+Message-Id: <CZFSP3JYT0C5.140WKB17N0IQG@wheely>
+Cc: <clegoate@redhat.com>, <mikey@neuling.org>,
+ <amachhiw@linux.vnet.ibm.com>, <vaibhav@linux.ibm.com>,
+ <sbhat@linux.ibm.com>, <danielhb413@gmail.com>, <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v4 05/15] spapr: nested: Document Nested PAPR API
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <qemu-ppc@nongnu.org>
+X-Mailer: aerc 0.15.2
+References: <20240220083609.748325-1-harshpb@linux.ibm.com>
+ <20240220083609.748325-6-harshpb@linux.ibm.com>
+ <CZFR7EN29EWC.EK4AP0CCTQJI@wheely>
+ <8b71d5a6-7ed1-428f-8b08-dddf4fd09870@linux.ibm.com>
+In-Reply-To: <8b71d5a6-7ed1-428f-8b08-dddf4fd09870@linux.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.014,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,27 +96,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > > > +        if (smp_cache_string_to_topology(ms, config->l1d_cache,
-> > > > +            &ms->smp_cache.l1d, errp)) {
-> > > 
-> > > Indent is to wrong opening bracket.
-> > > Same for other cases.
-> > 
-> > Could you please educate me about the correct style here?
-> > I'm unsure if it should be indented by 4 spaces.
-> 
-> It needs to look like this:
-> 
->         if (smp_cache_string_to_topology(ms, config->l1d_cache,
->                                          &ms->smp_cache.l1d, errp)) {
-> 
-> so func parameters are aligned to the function calls' opening bracket,
-> not the 'if' statement's opening bracket.
+On Tue Feb 27, 2024 at 7:31 PM AEST, Harsh Prateek Bora wrote:
 >
+>
+> On 2/27/24 14:59, Nicholas Piggin wrote:
+> > On Tue Feb 20, 2024 at 6:35 PM AEST, Harsh Prateek Bora wrote:
+> >> Adding initial documentation about Nested PAPR API to describe the set
+> >> of APIs and its usage. Also talks about the Guest State Buffer element=
+s
+> >> and it's format which is used between L0/L1 to communicate L2 state.
+> >>
+> >> Signed-off-by: Michael Neuling <mikey@neuling.org>
+> >> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+> >=20
+> > v2 is upstream in Linux now, I suppose you could reference that too?
+> >=20
+> Yes, upstream Linux commit is mentioned in the doc at the end.
 
-Thanks for your explaination!
+The API doc commit is mentioned as a reference. I would expect something
+following the comments under the Existing Nested-HV API heading for the
+New PAPR API.
 
-Regards,
-Zhao
+Oh, is it lifted directly from linux.git docs? Sigh, in that case never
+mind, it's better to stick with them. Although could be just a link or
+reference.
 
+Thanks,
+Nick
 
