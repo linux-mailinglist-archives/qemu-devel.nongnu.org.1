@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27E66869E13
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 18:43:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBB83869E2D
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 18:45:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rf1TH-0000pg-Bj; Tue, 27 Feb 2024 12:42:27 -0500
+	id 1rf1UX-0001dq-9L; Tue, 27 Feb 2024 12:43:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rf1TE-0000pP-LG
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 12:42:24 -0500
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ id 1rf1UU-0001dB-Uo
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 12:43:42 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rf1TC-000571-QZ
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 12:42:24 -0500
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ id 1rf1UT-0005KW-Cm
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 12:43:42 -0500
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41RFYiA6004643; Tue, 27 Feb 2024 17:42:14 GMT
+ 41RFXsAp022521; Tue, 27 Feb 2024 17:43:34 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id; s=corp-2023-11-20;
  bh=rZ+ZCxdXz8XN6kA/7QeHs0FPcKCfgLqaWCH7ARgDvaw=;
- b=CnkL834DcsD89+Ii9CKXJqSLEYzYLlz0E8nvkzu6iIuzcVwIxMX6bc5bf0rvDTdLHxnb
- o87OrgEKxKl8kRGbzuWv1ws6/c2JgyzrxYdY3y2kqxdyBqYrqDxL8ZwSpPyvGyMbg/w1
- fMvXGJBkGRNLGlb1jXd/3aRCDQC10EAf+sXi9UB+PG9S5qaE9EnyCRztYvjZGzpNzHhI
- kMoZw5qWXVonNRMC3Nf042B0ATaSito6e3D9CkgMZ/A9KCpi/ICLcDyLDYgZyfe4i7HQ
- E6v+9bGr7GEYO1pvkBpOhCAIRx7blYhOrSXDVhOFBwKvgLKpf0MX+czatDx3Zww7bSrS yg== 
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wf8bb7tjs-1
+ b=QmXj4/5aYv4CAsoBFRQAxNlS8SUML/q+lyBajxWYxtFoX8Nt4tQPEEt+Q+uaNj2yAWEQ
+ sdVGGCXP+CA0IwvDle5wSZiiXzPStxg9CzvlSVI94EL6OloFUBsA2WQ0SzLRsCi9Hcmn
+ WCeQcXqLOBTULxYOyWvfJuEt7Wb3GO+aUVnbBYv+6aVD9QlInW90prpLpmHHPlrM8N8a
+ BuDJHWXj2DhmYDc0DIiZhLPNnUf0okX9CY21Ph5MpvjpYEb+7XKSefdGUi70NuMuKtuT
+ 4JvqV6pV1kSLxeUTY31xlnCy9e5XCXvpEfvDnrECUmKIXFygH40ntGE34C4ydx4MyawB bg== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wf784g3en-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 27 Feb 2024 17:42:14 +0000
+ Tue, 27 Feb 2024 17:43:33 +0000
 Received: from pps.filterd
- (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 41RHHfgd022376; Tue, 27 Feb 2024 17:42:13 GMT
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 41RGW37v025680; Tue, 27 Feb 2024 17:43:33 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3wf6w7t7d6-1
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3wf6we2v3c-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 27 Feb 2024 17:42:13 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41RHg2Rc026535;
- Tue, 27 Feb 2024 17:42:12 GMT
+ Tue, 27 Feb 2024 17:43:32 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41RHfGVG000491;
+ Tue, 27 Feb 2024 17:43:32 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 3wf6w7t7bj-1; Tue, 27 Feb 2024 17:42:12 +0000
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
+ ESMTP id 3wf6we2v1c-1; Tue, 27 Feb 2024 17:43:32 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -64,28 +64,29 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Steve Sistare <steven.sistare@oracle.com>
 Subject: [PATCH V1 00/10] privatize migration.h
-Date: Tue, 27 Feb 2024 09:42:11 -0800
-Message-Id: <1709055731-315052-1-git-send-email-steven.sistare@oracle.com>
+Date: Tue, 27 Feb 2024 09:43:17 -0800
+Message-Id: <1709055807-315099-1-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-02-27_05,2024-02-27_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- phishscore=0 spamscore=0
- mlxlogscore=970 adultscore=0 mlxscore=0 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2402270136
-X-Proofpoint-GUID: FuZZBIXTXRXsuXNTE8zx6h0lmF9hsJXk
-X-Proofpoint-ORIG-GUID: FuZZBIXTXRXsuXNTE8zx6h0lmF9hsJXk
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ phishscore=0
+ adultscore=0 mlxlogscore=970 malwarescore=0 spamscore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402270137
+X-Proofpoint-GUID: x27Pg-nQcZl3ccPiWCwBtNajDY1aSVQT
+X-Proofpoint-ORIG-GUID: x27Pg-nQcZl3ccPiWCwBtNajDY1aSVQT
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
