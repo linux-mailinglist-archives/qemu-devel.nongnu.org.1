@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 416FE869387
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:46:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E1CA869261
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:34:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rexau-00013G-VF; Tue, 27 Feb 2024 08:34:05 -0500
+	id 1rexaK-0000jS-1R; Tue, 27 Feb 2024 08:33:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaF-0000hM-5N
+ id 1rexaF-0000hS-9B
  for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:23 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaD-0002q5-5b
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:22 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4129e8bc6c8so23956395e9.2
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:20 -0800 (PST)
+ id 1rexaD-0002qH-IX
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:23 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-41241f64c6bso33249095e9.0
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709040799; x=1709645599; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709040800; x=1709645600; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=HUk8DGkkhSQV5DGWlGNjwA127IMsouq73vscyBxur68=;
- b=GfVPf8nZYAU2zYCoYZOCblCweK7y+fVEhCFDXgomSYrt3w5yyxBDpb2hoh0QM9MOlj
- kw+5uYY+pJ9+hlXMfRLP1ttNZ2G9SDSvYfUYx1AtfpkHP0vL1W1ztpV1Rt1njTtd/RUX
- rtA4swz0JLgESCE0SWV/1yZQyypTSJaMJy1j+1B6eKJw+iHa5eWLqHIWjdl+QGi99sGh
- em8nIQ+qMPJ/ygJ8ozp8ySVO/AC4L93o68hpWMm7rPAXLwXF8l8cUkR/rNk6zNQYNT2a
- Bevuna6LN48+wAIe1gEaFhyFJ3IWZSjgk4hQLRTfXfyacrTHmZ20EYTyi3zrvgHvrLF8
- Ma4A==
+ :reply-to; bh=oFeKXeW31Su0U94AYEZ3ImMqkHFM46i1mg2K/MGn0p4=;
+ b=IKo9Xfbqd6xBBFW2ES10/te3r9MPNLAbDh64E/nD/EynTB9XPfFf4ot4hIFV9AQ7Pi
+ z44GH8oIF5A2/A0Thjl2Zh+eULztx5uSocmwO2UqQ/nfw7X9w2RwzuYuLWm0EcjksCf6
+ lGxxGf2Raz3EjE4QIkeaOS1x488N8A/zCKRQCQcImnOizMhnhCAI3zHU4jQDN7yYx95u
+ W7Fl922jPHtH4nkmsWoOYqkkeWwJUz4aNZ9LRCYb5jV03FwDr2YrEpMmtl4mb65qlKIv
+ ota1QrDVzf1brLxDO4hyhNb/3LHAvBqp+1i/y/mzdsEyhmRKKO9cPgGKYFunMWEvt9ZB
+ /c8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709040799; x=1709645599;
+ d=1e100.net; s=20230601; t=1709040800; x=1709645600;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HUk8DGkkhSQV5DGWlGNjwA127IMsouq73vscyBxur68=;
- b=OjTQAucsGoY2uaoZHQZdGxa68ng5kCewMm6TsxBFBtzbzw1ZDZJdWphWhXKIVlONUd
- gfW8remvgxMhv6eTuDLhtiP5o0uoYs3jYiilelChv2KqUa+FYLFKU7QsGIGDn7sTL8G4
- a1epjO4MkBLGqWJOB98KheFiJtxrg84goKXpGtNyfM9dWvREzCCk+5l9RKrhrebBVu+J
- UU2U7/SkvJhnLo3uQ7qsaZt/VBcP5+xe6JCJ3A/EpTUZaclpe+dCsudlZbCm/cxdSntk
- 9TwW8ctqAGvg0HnoShmRgIO12ISVveefxJS82Re2aisusk0EPT6It1/eUAqmK/p6F6zc
- pvZw==
-X-Gm-Message-State: AOJu0Ywvz0bkbg4mDAzu4K92SESWtjQc6TJEPMAPjbQUzIhE6MtPlgSg
- RWxHft/7PCrG6jia1FfGnkfTw7LcEUC293B7vKpLWP/aogmWT+j8AZzbgq4wi6pTvXy0sX4eTAI
- S
-X-Google-Smtp-Source: AGHT+IEPBPR9eCnHznDz/hZiJyVjWPjsEX7q2OyyAR5bmgrImZmkVYYxgvF73FkwffXyJVMESpRV9A==
-X-Received: by 2002:adf:f486:0:b0:33d:3089:a840 with SMTP id
- l6-20020adff486000000b0033d3089a840mr7042643wro.49.1709040799527; 
+ bh=oFeKXeW31Su0U94AYEZ3ImMqkHFM46i1mg2K/MGn0p4=;
+ b=jAHOJQU/qy0bUAS0g9LFTn8Ac4UrBUCnFF873GLtw7IA6iLwL9lKUrDnoGgKh4TjeA
+ 9DLUWjhDszca0Bdh7vgA61Iojq7re+AuRfSM8Da+/X97pfzB3ns4DAZ1YPgWVo9rMfYB
+ ukup7RPnD9YzVebOWcX6PH4oOC28F6BcErLijikpFr9IpALxHMPtALN9QAKHyPB8EZlM
+ CyJ+FMiIkU9v4n72JUtrn3YFPOlKK6jf0SViSSRv9CuYj4HZCzrFZcLon/9LBOSJx2al
+ AIx5D7c6pY5y8igE5vTB105/m50cAcQtLSJZKCogZ7ALDXLDXKkJl7EV+LoNzAnT9x4M
+ Es1g==
+X-Gm-Message-State: AOJu0YxvSr7N93i9ldw3Wvy4x4L5XWc/ALbdoTk/3XFEXI8Q0N/efy6z
+ 5QwJUkBJrVSk3XzfrdoAHjx3tSZ0otJc82LhJ5PttLVglLbxbIcCjAqGp+Ducd3sCePt9mouPOv
+ 6
+X-Google-Smtp-Source: AGHT+IHwp1FYswkHO/xPjoKizp+HsZ74Qic/xrfzWIcUhovQsO2riALGCDiVZ4AYdnfP8ZR5kjEXOg==
+X-Received: by 2002:adf:f3c4:0:b0:33d:5a6f:a856 with SMTP id
+ g4-20020adff3c4000000b0033d5a6fa856mr7517558wrp.30.1709040799974; 
  Tue, 27 Feb 2024 05:33:19 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,18 +59,18 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 27 Feb 2024 05:33:19 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/45] hw/arm: Use TYPE_OR_IRQ when connecting STM32L4x5 EXTI
- fan-in IRQs
-Date: Tue, 27 Feb 2024 13:32:36 +0000
-Message-Id: <20240227133314.1721857-8-peter.maydell@linaro.org>
+Subject: [PULL 08/45] tests/qtest: Check that EXTI fan-in irqs are correctly
+ connected
+Date: Tue, 27 Feb 2024 13:32:37 +0000
+Message-Id: <20240227133314.1721857-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240227133314.1721857-1-peter.maydell@linaro.org>
 References: <20240227133314.1721857-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,176 +95,79 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Inès Varhol <ines.varhol@telecom-paris.fr>
 
-Fixes: 52671f69f7a4 ("[PATCH v8 0/3] Add device STM32L4x5 EXTI")
+This commit adds a QTest that verifies each input line of a specific
+EXTI OR gate can influence the output line.
+
 Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
-Message-id: 20240220184145.106107-2-ines.varhol@telecom-paris.fr
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240220184145.106107-3-ines.varhol@telecom-paris.fr
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/stm32l4x5_soc.h |  4 ++
- hw/arm/stm32l4x5_soc.c         | 80 +++++++++++++++++++++++++++++-----
- 2 files changed, 74 insertions(+), 10 deletions(-)
+ tests/qtest/stm32l4x5_exti-test.c | 37 +++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
-diff --git a/include/hw/arm/stm32l4x5_soc.h b/include/hw/arm/stm32l4x5_soc.h
-index baf70410b5f..4f314b7a933 100644
---- a/include/hw/arm/stm32l4x5_soc.h
-+++ b/include/hw/arm/stm32l4x5_soc.h
-@@ -26,6 +26,7 @@
+diff --git a/tests/qtest/stm32l4x5_exti-test.c b/tests/qtest/stm32l4x5_exti-test.c
+index c3900777139..81830be8aea 100644
+--- a/tests/qtest/stm32l4x5_exti-test.c
++++ b/tests/qtest/stm32l4x5_exti-test.c
+@@ -31,6 +31,7 @@
  
- #include "exec/memory.h"
- #include "hw/arm/armv7m.h"
-+#include "hw/or-irq.h"
- #include "hw/misc/stm32l4x5_syscfg.h"
- #include "hw/misc/stm32l4x5_exti.h"
- #include "qom/object.h"
-@@ -36,12 +37,15 @@
- #define TYPE_STM32L4X5XG_SOC "stm32l4x5xg-soc"
- OBJECT_DECLARE_TYPE(Stm32l4x5SocState, Stm32l4x5SocClass, STM32L4X5_SOC)
+ #define EXTI0_IRQ 6
+ #define EXTI1_IRQ 7
++#define EXTI5_9_IRQ 23
+ #define EXTI35_IRQ 1
  
-+#define NUM_EXTI_OR_GATES 4
+ static void enable_nvic_irq(unsigned int n)
+@@ -499,6 +500,40 @@ static void test_interrupt(void)
+     g_assert_false(check_nvic_pending(EXTI1_IRQ));
+ }
+ 
++static void test_orred_interrupts(void)
++{
++    /*
++     * For lines EXTI5..9 (fanned-in to NVIC irq 23),
++     * test that raising the line pends interrupt
++     * 23 in NVIC.
++     */
++    enable_nvic_irq(EXTI5_9_IRQ);
++    /* Check that there are no interrupts already pending in PR */
++    g_assert_cmpuint(exti_readl(EXTI_PR1), ==, 0x00000000);
++    /* Check that this specific interrupt isn't pending in NVIC */
++    g_assert_false(check_nvic_pending(EXTI5_9_IRQ));
 +
- struct Stm32l4x5SocState {
-     SysBusDevice parent_obj;
- 
-     ARMv7MState armv7m;
- 
-     Stm32l4x5ExtiState exti;
-+    OrIRQState exti_or_gates[NUM_EXTI_OR_GATES];
-     Stm32l4x5SyscfgState syscfg;
- 
-     MemoryRegion sram1;
-diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
-index f470ff74ec7..d1786e0da1c 100644
---- a/hw/arm/stm32l4x5_soc.c
-+++ b/hw/arm/stm32l4x5_soc.c
-@@ -26,6 +26,7 @@
- #include "qapi/error.h"
- #include "exec/address-spaces.h"
- #include "sysemu/sysemu.h"
-+#include "hw/or-irq.h"
- #include "hw/arm/stm32l4x5_soc.h"
- #include "hw/qdev-clock.h"
- #include "hw/misc/unimp.h"
-@@ -42,21 +43,24 @@
- #define NUM_EXTI_IRQ 40
- /* Match exti line connections with their CPU IRQ number */
- /* See Vector Table (Reference Manual p.396) */
-+/*
-+ * Some IRQs are connected to the same CPU IRQ (denoted by -1)
-+ * and require an intermediary OR gate to function correctly.
-+ */
- static const int exti_irq[NUM_EXTI_IRQ] = {
-     6,                      /* GPIO[0]                 */
-     7,                      /* GPIO[1]                 */
-     8,                      /* GPIO[2]                 */
-     9,                      /* GPIO[3]                 */
-     10,                     /* GPIO[4]                 */
--    23, 23, 23, 23, 23,     /* GPIO[5..9]              */
--    40, 40, 40, 40, 40, 40, /* GPIO[10..15]            */
--    1,                      /* PVD                     */
-+    -1, -1, -1, -1, -1,     /* GPIO[5..9] OR gate 23   */
-+    -1, -1, -1, -1, -1, -1, /* GPIO[10..15] OR gate 40 */
-+    -1,                     /* PVD OR gate 1           */
-     67,                     /* OTG_FS_WKUP, Direct     */
-     41,                     /* RTC_ALARM               */
-     2,                      /* RTC_TAMP_STAMP2/CSS_LSE */
-     3,                      /* RTC wakeup timer        */
--    63,                     /* COMP1                   */
--    63,                     /* COMP2                   */
-+    -1, -1,                 /* COMP[1..2] OR gate 63   */
-     31,                     /* I2C1 wakeup, Direct     */
-     33,                     /* I2C2 wakeup, Direct     */
-     72,                     /* I2C3 wakeup, Direct     */
-@@ -69,18 +73,39 @@ static const int exti_irq[NUM_EXTI_IRQ] = {
-     65,                     /* LPTIM1, Direct          */
-     66,                     /* LPTIM2, Direct          */
-     76,                     /* SWPMI1 wakeup, Direct   */
--    1,                      /* PVM1 wakeup             */
--    1,                      /* PVM2 wakeup             */
--    1,                      /* PVM3 wakeup             */
--    1,                      /* PVM4 wakeup             */
-+    -1, -1, -1, -1,         /* PVM[1..4] OR gate 1     */
-     78                      /* LCD wakeup, Direct      */
- };
- 
-+static const int exti_or_gates_out[NUM_EXTI_OR_GATES] = {
-+    23, 40, 63, 1,
-+};
++    /* Enable interrupt lines EXTI[5..9] */
++    exti_writel(EXTI_IMR1, (0x1F << 5));
 +
-+static const int exti_or_gates_num_lines_in[NUM_EXTI_OR_GATES] = {
-+    5, 6, 2, 5,
-+};
++    /* Configure interrupt on rising edge */
++    exti_writel(EXTI_RTSR1, (0x1F << 5));
 +
-+/* 3 OR gates with consecutive inputs */
-+#define NUM_EXTI_SIMPLE_OR_GATES 3
-+static const int exti_or_gates_first_line_in[NUM_EXTI_SIMPLE_OR_GATES] = {
-+    5, 10, 21,
-+};
++    /* Raise GPIO line i, check that the interrupt is pending */
++    for (unsigned i = 5; i < 10; i++) {
++        exti_set_irq(i, 1);
++        g_assert_cmpuint(exti_readl(EXTI_PR1), ==, 1 << i);
++        g_assert_true(check_nvic_pending(EXTI5_9_IRQ));
 +
-+/* 1 OR gate with non-consecutive inputs */
-+#define EXTI_OR_GATE1_NUM_LINES_IN 5
-+static const int exti_or_gate1_lines_in[EXTI_OR_GATE1_NUM_LINES_IN] = {
-+    16, 35, 36, 37, 38,
-+};
++        exti_writel(EXTI_PR1, 1 << i);
++        g_assert_cmpuint(exti_readl(EXTI_PR1), ==, 0x00000000);
++        g_assert_true(check_nvic_pending(EXTI5_9_IRQ));
 +
- static void stm32l4x5_soc_initfn(Object *obj)
++        unpend_nvic_irq(EXTI5_9_IRQ);
++        g_assert_false(check_nvic_pending(EXTI5_9_IRQ));
++    }
++}
++
+ int main(int argc, char **argv)
  {
-     Stm32l4x5SocState *s = STM32L4X5_SOC(obj);
+     int ret;
+@@ -515,6 +550,8 @@ int main(int argc, char **argv)
+     qtest_add_func("stm32l4x5/exti/masked_interrupt", test_masked_interrupt);
+     qtest_add_func("stm32l4x5/exti/interrupt", test_interrupt);
+     qtest_add_func("stm32l4x5/exti/test_edge_selector", test_edge_selector);
++    qtest_add_func("stm32l4x5/exti/test_orred_interrupts",
++                   test_orred_interrupts);
  
-     object_initialize_child(obj, "exti", &s->exti, TYPE_STM32L4X5_EXTI);
-+    for (unsigned i = 0; i < NUM_EXTI_OR_GATES; i++) {
-+        object_initialize_child(obj, "exti_or_gates[*]", &s->exti_or_gates[i],
-+                                TYPE_OR_IRQ);
-+    }
-     object_initialize_child(obj, "syscfg", &s->syscfg, TYPE_STM32L4X5_SYSCFG);
- 
-     s->sysclk = qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
-@@ -175,8 +200,43 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc, Error **errp)
-         return;
-     }
-     sysbus_mmio_map(busdev, 0, EXTI_ADDR);
-+
-+    /* IRQs with fan-in that require an OR gate */
-+    for (unsigned i = 0; i < NUM_EXTI_OR_GATES; i++) {
-+        if (!object_property_set_int(OBJECT(&s->exti_or_gates[i]), "num-lines",
-+                                     exti_or_gates_num_lines_in[i], errp)) {
-+            return;
-+        }
-+        if (!qdev_realize(DEVICE(&s->exti_or_gates[i]), NULL, errp)) {
-+            return;
-+        }
-+
-+        qdev_connect_gpio_out(DEVICE(&s->exti_or_gates[i]), 0,
-+            qdev_get_gpio_in(armv7m, exti_or_gates_out[i]));
-+
-+        if (i < NUM_EXTI_SIMPLE_OR_GATES) {
-+            /* consecutive inputs for OR gates 23, 40, 63 */
-+            for (unsigned j = 0; j < exti_or_gates_num_lines_in[i]; j++) {
-+                sysbus_connect_irq(SYS_BUS_DEVICE(&s->exti),
-+                    exti_or_gates_first_line_in[i] + j,
-+                    qdev_get_gpio_in(DEVICE(&s->exti_or_gates[i]), j));
-+            }
-+        } else {
-+            /* non-consecutive inputs for OR gate 1 */
-+            for (unsigned j = 0; j < EXTI_OR_GATE1_NUM_LINES_IN; j++) {
-+                sysbus_connect_irq(SYS_BUS_DEVICE(&s->exti),
-+                    exti_or_gate1_lines_in[j],
-+                    qdev_get_gpio_in(DEVICE(&s->exti_or_gates[i]), j));
-+            }
-+        }
-+    }
-+
-+    /* IRQs that don't require fan-in */
-     for (unsigned i = 0; i < NUM_EXTI_IRQ; i++) {
--        sysbus_connect_irq(busdev, i, qdev_get_gpio_in(armv7m, exti_irq[i]));
-+        if (exti_irq[i] != -1) {
-+            sysbus_connect_irq(busdev, i,
-+                               qdev_get_gpio_in(armv7m, exti_irq[i]));
-+        }
-     }
- 
-     for (unsigned i = 0; i < 16; i++) {
+     qtest_start("-machine b-l475e-iot01a");
+     ret = g_test_run();
 -- 
 2.34.1
 
