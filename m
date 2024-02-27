@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F2E8699F2
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 16:10:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCB908699ED
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 16:10:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rez45-0003FK-OH; Tue, 27 Feb 2024 10:08:17 -0500
+	id 1rez46-0003GV-HY; Tue, 27 Feb 2024 10:08:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rez42-0003En-Mj; Tue, 27 Feb 2024 10:08:14 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1rez44-0003Fa-PJ; Tue, 27 Feb 2024 10:08:16 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rez3v-0007v5-He; Tue, 27 Feb 2024 10:08:14 -0500
+ id 1rez3w-0007wh-My; Tue, 27 Feb 2024 10:08:16 -0500
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 99B884E60DB;
- Tue, 27 Feb 2024 16:08:05 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id AAA254E60E0;
+ Tue, 27 Feb 2024 16:08:06 +0100 (CET)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id HehlKJsIgbOe; Tue, 27 Feb 2024 16:08:03 +0100 (CET)
+ with ESMTP id ts4jO1nFzg6x; Tue, 27 Feb 2024 16:08:04 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id AEA7B4E6005; Tue, 27 Feb 2024 16:08:03 +0100 (CET)
-Message-Id: <ee0c65b99d2286dcacb7dbd9a833600fbd5573c9.1709045654.git.balaton@eik.bme.hu>
+ id B86354E60D2; Tue, 27 Feb 2024 16:08:04 +0100 (CET)
+Message-Id: <c382376352a67eda8e899e152ee88f677138a95f.1709045654.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1709045654.git.balaton@eik.bme.hu>
 References: <cover.1709045654.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v7 03/10] target/ppc: Add gen_exception_err_nip() function
+Subject: [PATCH v7 04/10] target/ppc: Fix gen_sc to use correct nip
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -37,9 +37,9 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org
-Date: Tue, 27 Feb 2024 16:08:03 +0100 (CET)
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Date: Tue, 27 Feb 2024 16:08:04 +0100 (CET)
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -60,80 +60,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add gen_exception_err_nip() that does the same as gen_exception_err()
-but takes the nip as a parameter to allow specifying it instead of
-using the current instruction address then change gen_exception_err()
-to use it.
+Most exceptions are raised with nip pointing to the faulting
+instruction but the sc instruction generating a syscall exception
+leaves nip pointing to next instruction. Fix gen_sc to not use
+gen_exception_err() which sets nip back but correctly set nip to
+pc_next so we don't have to patch this in the exception handlers.
 
-The gen_exception() and gen_exception_nip() functions are similar so
-remove code duplication from those too while at it.
-
-Suggested-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/translate.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ target/ppc/excp_helper.c | 43 ++--------------------------------------
+ target/ppc/translate.c   |  6 ++----
+ 2 files changed, 4 insertions(+), 45 deletions(-)
 
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index fba6e03d18..f1e62d9878 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -116,7 +116,7 @@ static void dump_syscall(CPUPPCState *env)
+                   ppc_dump_gpr(env, 0), ppc_dump_gpr(env, 3),
+                   ppc_dump_gpr(env, 4), ppc_dump_gpr(env, 5),
+                   ppc_dump_gpr(env, 6), ppc_dump_gpr(env, 7),
+-                  ppc_dump_gpr(env, 8), env->nip);
++                  ppc_dump_gpr(env, 8), env->nip - 4);
+ }
+ 
+ static void dump_hcall(CPUPPCState *env)
+@@ -131,7 +131,7 @@ static void dump_hcall(CPUPPCState *env)
+                   ppc_dump_gpr(env, 7), ppc_dump_gpr(env, 8),
+                   ppc_dump_gpr(env, 9), ppc_dump_gpr(env, 10),
+                   ppc_dump_gpr(env, 11), ppc_dump_gpr(env, 12),
+-                  env->nip);
++                  env->nip - 4);
+ }
+ 
+ #ifdef CONFIG_TCG
+@@ -516,12 +516,6 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
+         break;
+     case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+         dump_syscall(env);
+-
+-        /*
+-         * We need to correct the NIP which in this case is supposed
+-         * to point to the next instruction
+-         */
+-        env->nip += 4;
+         break;
+     case POWERPC_EXCP_FIT:       /* Fixed-interval timer interrupt           */
+         trace_ppc_excp_print("FIT");
+@@ -632,12 +626,6 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
+         break;
+     case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+         dump_syscall(env);
+-
+-        /*
+-         * We need to correct the NIP which in this case is supposed
+-         * to point to the next instruction
+-         */
+-        env->nip += 4;
+         break;
+     case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
+     case POWERPC_EXCP_DECR:      /* Decrementer exception                    */
+@@ -780,13 +768,6 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
+         } else {
+             dump_syscall(env);
+         }
+-
+-        /*
+-         * We need to correct the NIP which in this case is supposed
+-         * to point to the next instruction
+-         */
+-        env->nip += 4;
+-
+         /*
+          * The Virtual Open Firmware (VOF) relies on the 'sc 1'
+          * instruction to communicate with QEMU. The pegasos2 machine
+@@ -932,13 +913,6 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
+         } else {
+             dump_syscall(env);
+         }
+-
+-        /*
+-         * We need to correct the NIP which in this case is supposed
+-         * to point to the next instruction
+-         */
+-        env->nip += 4;
+-
+         /*
+          * The Virtual Open Firmware (VOF) relies on the 'sc 1'
+          * instruction to communicate with QEMU. The pegasos2 machine
+@@ -1098,12 +1072,6 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
+         break;
+     case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+         dump_syscall(env);
+-
+-        /*
+-         * We need to correct the NIP which in this case is supposed
+-         * to point to the next instruction
+-         */
+-        env->nip += 4;
+         break;
+     case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
+     case POWERPC_EXCP_APU:       /* Auxiliary processor unavailable          */
+@@ -1427,13 +1395,6 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+         } else {
+             dump_syscall(env);
+         }
+-
+-        /*
+-         * We need to correct the NIP which in this case is supposed
+-         * to point to the next instruction
+-         */
+-        env->nip += 4;
+-
+         /* "PAPR mode" built-in hypercall emulation */
+         if (lev == 1 && books_vhyp_handles_hcall(cpu)) {
+             PPCVirtualHypervisorClass *vhc =
 diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 28fc7791af..d87aae0cc4 100644
+index d87aae0cc4..a3ac8c3d0e 100644
 --- a/target/ppc/translate.c
 +++ b/target/ppc/translate.c
-@@ -296,33 +296,26 @@ static inline void gen_update_nip(DisasContext *ctx, target_ulong nip)
-     tcg_gen_movi_tl(cpu_nip, nip);
- }
- 
--static void gen_exception_err(DisasContext *ctx, uint32_t excp, uint32_t error)
-+static void gen_exception_err_nip(DisasContext *ctx, uint32_t excp,
-+                                  uint32_t error, target_ulong nip)
+@@ -4575,15 +4575,13 @@ static void gen_hrfid(DisasContext *ctx)
+ #endif
+ static void gen_sc(DisasContext *ctx)
  {
-     TCGv_i32 t0, t1;
- 
--    /*
--     * These are all synchronous exceptions, we set the PC back to the
--     * faulting instruction
--     */
--    gen_update_nip(ctx, ctx->cia);
-+    gen_update_nip(ctx, nip);
-     t0 = tcg_constant_i32(excp);
-     t1 = tcg_constant_i32(error);
-     gen_helper_raise_exception_err(tcg_env, t0, t1);
-     ctx->base.is_jmp = DISAS_NORETURN;
- }
- 
--static void gen_exception(DisasContext *ctx, uint32_t excp)
-+static inline void gen_exception_err(DisasContext *ctx, uint32_t excp,
-+                                     uint32_t error)
- {
--    TCGv_i32 t0;
+-    uint32_t lev;
 -
      /*
-      * These are all synchronous exceptions, we set the PC back to the
-      * faulting instruction
+      * LEV is a 7-bit field, but the top 6 bits are treated as a reserved
+      * field (i.e., ignored). ISA v3.1 changes that to 5 bits, but that is
+      * for Ultravisor which TCG does not support, so just ignore the top 6.
       */
--    gen_update_nip(ctx, ctx->cia);
--    t0 = tcg_constant_i32(excp);
--    gen_helper_raise_exception(tcg_env, t0);
--    ctx->base.is_jmp = DISAS_NORETURN;
-+    gen_exception_err_nip(ctx, excp, error, ctx->cia);
+-    lev = (ctx->opcode >> 5) & 0x1;
+-    gen_exception_err(ctx, POWERPC_SYSCALL, lev);
++    uint32_t lev = (ctx->opcode >> 5) & 0x1;
++    gen_exception_err_nip(ctx, POWERPC_SYSCALL, lev, ctx->base.pc_next);
  }
  
- static void gen_exception_nip(DisasContext *ctx, uint32_t excp,
-@@ -336,6 +329,15 @@ static void gen_exception_nip(DisasContext *ctx, uint32_t excp,
-     ctx->base.is_jmp = DISAS_NORETURN;
- }
- 
-+static inline void gen_exception(DisasContext *ctx, uint32_t excp)
-+{
-+    /*
-+     * These are all synchronous exceptions, we set the PC back to the
-+     * faulting instruction
-+     */
-+    gen_exception_nip(ctx, excp, ctx->cia);
-+}
-+
- #if !defined(CONFIG_USER_ONLY)
- static void gen_ppc_maybe_interrupt(DisasContext *ctx)
- {
+ #if defined(TARGET_PPC64)
 -- 
 2.30.9
 
