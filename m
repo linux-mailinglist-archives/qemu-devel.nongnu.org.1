@@ -2,81 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC79F868AED
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 09:42:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68DE1868B2D
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 09:47:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ret1J-00076g-TZ; Tue, 27 Feb 2024 03:41:02 -0500
+	id 1ret1M-0007HX-9y; Tue, 27 Feb 2024 03:41:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret1F-0006ue-CR
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:40:58 -0500
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret1K-0007FD-KQ
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:41:02 -0500
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret1C-0007uD-DK
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:40:56 -0500
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2d2505352e6so56117771fa.3
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 00:40:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret1I-0007vr-19
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:41:02 -0500
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a3e7f7b3d95so447511466b.3
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 00:40:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709023252; x=1709628052; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709023258; x=1709628058; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=E6yWLTnbIVuSgabgdZE6+CbUi7y4Wg3nnktwesa/iZ0=;
- b=U65eYhk/PeJFL3WAaAxf++ol8F/5rQmNlsZZoFL1XHn4A7pow6IfjSM2JwwiQDiBb6
- HaumDhAr1eDA+SadYXdEnMRb5U+WPyWh9XAy/h+UcmrOcSfYRA3s6MOiowtUI4DIbQx/
- ufKT0t7MhlWmoqiUon+nRPODYVCNhQc2Q826me1wY4jNdZcM90zRrlYRN/1Vx+lQGFbX
- FaYV4ccVxEpqbjaQFjUIy0W81clbHa9m69/012jK7P9/b2FozHkqP7OdLXa8hIUiap94
- G+DaExg+TqTz4LthBm78JZjGUF56iEUqrVGtunZ/v5hxtH2WTeiZHPnQrGMQ3ShdW9rJ
- bWHg==
+ bh=GZ6f3MtsvPODeQCNs+mWuntTgICcd/owb4II9I6fwgI=;
+ b=a8fqtYMqZils9PEkchOrB5mu/ZWfMsy4xsh2wj3HSERIyYi12J+jt2rle2RrNoEhIy
+ eDG0/TxObkCvlaaB9h4VgyTOHvgPGe3Ml+s91PyKNfOh05bfOrWbBp/DExiTIhfbqUYH
+ WKz8OQ63Ie6OXJiCTp58IuRCb6J4hoxQl1YOeUyxPr0vXZRAkt0p0Eo31MyqTMqy79Ej
+ 9wf6IIet7J0T8Bewt3DTHFXDi1/2Txtxr79BueKBY9D+b6o0oBr3M0prBC9UwD9vNQVs
+ ueI/LJWZA4sORB0U4x/XIP44f0180iRDA1JUUHackNDnLj55/ALdr+vUTPa0a909CEzl
+ fQLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709023252; x=1709628052;
+ d=1e100.net; s=20230601; t=1709023258; x=1709628058;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=E6yWLTnbIVuSgabgdZE6+CbUi7y4Wg3nnktwesa/iZ0=;
- b=RZPCuDNYVVPg4xyL2V/VyBzyfzq+YQHhvVu1O+dqXnIvYjzRATGVBwL/pprW1IjtGn
- dloxceXjU2N1p0AZF1GPDleWBVR1hQ0VsYp1So5bZ3xf2WHeQUbZ282R5poagZZ40F0o
- iD5uQ4v6TMdtCO288jx7U8uJzYQS3PYrXogdKxLuENuAsY8FYURzWIPbeFDiymd/7j/u
- LVcsIXQwlqX8DT6vCtbjvyfEuqCKYUr3gU+dPuxCP2TLt64SPFGyQE7e9M4vaNqpYl5y
- yHPvMJGPbLDqnLR5hkSnogRl19hiY5UrGwCCxBc9HXoe+P7o3MioFGHmnru5uO2Y3NvF
- viYg==
-X-Gm-Message-State: AOJu0YxeR5DjD4Pcj9egsECidTROtyeU2dmjhWD0lbNXaTJKL/rQF2M+
- qfxbyAdsxrJKaqyWcvJ1In3+ZhbalslrYYtlCq6WvY4anS0ULdpRU35/IbwpG93kW+Vlscl1Tyg
- S
-X-Google-Smtp-Source: AGHT+IERriWrOmUZd6CiDb7F6TpFnr9Nj6guJjU0ve4EhUBPrD+c8ZRWTz+Z6wvVFxhPZtpPJvKLYg==
-X-Received: by 2002:a05:651c:786:b0:2d2:a38c:d706 with SMTP id
- g6-20020a05651c078600b002d2a38cd706mr300847lje.17.1709023251896; 
- Tue, 27 Feb 2024 00:40:51 -0800 (PST)
+ bh=GZ6f3MtsvPODeQCNs+mWuntTgICcd/owb4II9I6fwgI=;
+ b=AHFRwpAoVptSaa4rkCvdPYPm4BPnKYSoiJtFFeBfF36A+he/O6nJ5u3jFCtsoFKasb
+ g2yXNCuS651hSLg9u6/QQRKH5oYDAl0gos8diaxBW3x13oUEXEBMcEZuhszweuhQse8r
+ PQ8qbmk+aUkqzHwn83/Inj3imiU5TN/Taakl8MrBhuX0rdajswpP2pLOg+NVXrGObGkH
+ QRo/3aFQg365W33ZhkVXX/rBD5v+a9sMakF2trDrvRNf7+KEIIk+nUAIcEN3ktCjIdOF
+ 3MfgfYKjoFV8W5DLLL14TGs6vvYBv+9cTE6tDmc9bqOATBSoM5EE6TmLfOiQ6ebxiwKk
+ 6XFg==
+X-Gm-Message-State: AOJu0YyAdBabvCzXjNZlGuXeIYQoqgI5xEsHqHtFDOKo8IyzJDffX2eB
+ pH304qkKXkYlp5u7Ux7mz71lr6Sy/6Z2lFRZu36mYe6ZtcAEymTYuSsTa7mWq11H1pjkURUZXDH
+ d
+X-Google-Smtp-Source: AGHT+IFFM8SM3fW0I3GKRBmlwgZ3Qzdxdyjlv9vG3FxOdWLCg9KqaWDo1yE3op+x5xE1oXXCw8yYGw==
+X-Received: by 2002:a17:906:54b:b0:a43:77c6:e3f3 with SMTP id
+ k11-20020a170906054b00b00a4377c6e3f3mr2397043eja.17.1709023258286; 
+ Tue, 27 Feb 2024 00:40:58 -0800 (PST)
 Received: from m1x-phil.lan (mic92-h03-176-184-33-214.dsl.sta.abo.bbox.fr.
  [176.184.33.214]) by smtp.gmail.com with ESMTPSA id
- t6-20020a2e7806000000b002d2607e6d29sm1152340ljc.70.2024.02.27.00.40.49
+ st14-20020a170907c08e00b00a3f5c39bf2asm545546ejc.0.2024.02.27.00.40.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 27 Feb 2024 00:40:51 -0800 (PST)
+ Tue, 27 Feb 2024 00:40:57 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-block@nongnu.org, qemu-arm@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 10/30] hw/acpi: move object_resolve_type_unambiguous to core QOM
-Date: Tue, 27 Feb 2024 09:39:26 +0100
-Message-ID: <20240227083948.5427-11-philmd@linaro.org>
+ Thomas Huth <thuth@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PULL 11/30] hw/ppc/sam460ex: do not use usb_bus_find()
+Date: Tue, 27 Feb 2024 09:39:27 +0100
+Message-ID: <20240227083948.5427-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240227083948.5427-1-philmd@linaro.org>
 References: <20240227083948.5427-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,113 +96,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-object_resolve_type_unambiguous provides a useful functionality, that
-is currently emulated for example by usb_bus_find().  Move it to core
-code and add error reporting for increased generality.
+usb_bus_find() is always used with argument -1; it can be replaced with
+a search of the single USB bus on the machine.
 
+Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240223124406.234509-2-pbonzini@redhat.com>
+Message-ID: <20240223124406.234509-3-pbonzini@redhat.com>
 [PMD: Fixed style]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/qom/object.h | 13 +++++++++++++
- hw/i386/acpi-build.c | 20 +++++---------------
- qom/object.c         | 16 ++++++++++++++++
- 3 files changed, 34 insertions(+), 15 deletions(-)
+ hw/ppc/sam460ex.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/include/qom/object.h b/include/qom/object.h
-index afccd24ca7..e9ed9550f0 100644
---- a/include/qom/object.h
-+++ b/include/qom/object.h
-@@ -1550,6 +1550,19 @@ Object *object_resolve_path(const char *path, bool *ambiguous);
- Object *object_resolve_path_type(const char *path, const char *typename,
-                                  bool *ambiguous);
+diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
+index a28498f39c..7e34b6c5e0 100644
+--- a/hw/ppc/sam460ex.c
++++ b/hw/ppc/sam460ex.c
+@@ -274,6 +274,7 @@ static void sam460ex_init(MachineState *machine)
+     DeviceState *uic[4];
+     int i;
+     PCIBus *pci_bus;
++    USBBus *usb_bus;
+     PowerPCCPU *cpu;
+     CPUPPCState *env;
+     I2CBus *i2c;
+@@ -421,8 +422,10 @@ static void sam460ex_init(MachineState *machine)
+     sysbus_realize_and_unref(sbdev, &error_fatal);
+     sysbus_mmio_map(sbdev, 0, 0x4bffd0000);
+     sysbus_connect_irq(sbdev, 0, qdev_get_gpio_in(uic[2], 30));
+-    usb_create_simple(usb_bus_find(-1), "usb-kbd");
+-    usb_create_simple(usb_bus_find(-1), "usb-mouse");
++    usb_bus = USB_BUS(object_resolve_type_unambiguous(TYPE_USB_BUS,
++                                                      &error_abort));
++    usb_create_simple(usb_bus, "usb-kbd");
++    usb_create_simple(usb_bus, "usb-mouse");
  
-+/**
-+ * object_resolve_type_unambiguous:
-+ * @typename: the type to look for
-+ * @errp: pointer to error object
-+ *
-+ * Return the only object in the QOM tree of type @typename.
-+ * If no match or more than one match is found, an error is
-+ * returned.
-+ *
-+ * Returns: The matched object or NULL on path lookup failure.
-+ */
-+Object *object_resolve_type_unambiguous(const char *typename, Error **errp);
-+
- /**
-  * object_resolve_path_at:
-  * @parent: the object in which to resolve the path
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index d3ce96dd9f..896ff87519 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -192,21 +192,10 @@ static void init_common_fadt_data(MachineState *ms, Object *o,
-     *data = fadt;
- }
- 
--static Object *object_resolve_type_unambiguous(const char *typename)
--{
--    bool ambig;
--    Object *o = object_resolve_path_type("", typename, &ambig);
--
--    if (ambig || !o) {
--        return NULL;
--    }
--    return o;
--}
--
- static void acpi_get_pm_info(MachineState *machine, AcpiPmInfo *pm)
- {
--    Object *piix = object_resolve_type_unambiguous(TYPE_PIIX4_PM);
--    Object *lpc = object_resolve_type_unambiguous(TYPE_ICH9_LPC_DEVICE);
-+    Object *piix = object_resolve_type_unambiguous(TYPE_PIIX4_PM, NULL);
-+    Object *lpc = object_resolve_type_unambiguous(TYPE_ICH9_LPC_DEVICE, NULL);
-     Object *obj = piix ? piix : lpc;
-     QObject *o;
-     pm->cpu_hp_io_base = 0;
-@@ -1428,8 +1417,9 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
-            AcpiPmInfo *pm, AcpiMiscInfo *misc,
-            Range *pci_hole, Range *pci_hole64, MachineState *machine)
- {
--    Object *i440fx = object_resolve_type_unambiguous(TYPE_I440FX_PCI_HOST_BRIDGE);
--    Object *q35 = object_resolve_type_unambiguous(TYPE_Q35_HOST_DEVICE);
-+    Object *i440fx = object_resolve_type_unambiguous(TYPE_I440FX_PCI_HOST_BRIDGE,
-+                                                     NULL);
-+    Object *q35 = object_resolve_type_unambiguous(TYPE_Q35_HOST_DEVICE, NULL);
-     CrsRangeEntry *entry;
-     Aml *dsdt, *sb_scope, *scope, *dev, *method, *field, *pkg, *crs;
-     CrsRangeSet crs_range_set;
-diff --git a/qom/object.c b/qom/object.c
-index 2c4c64d2b6..d4a001cf41 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -2229,6 +2229,22 @@ Object *object_resolve_path_at(Object *parent, const char *path)
-     return object_resolve_abs_path(parent, parts, TYPE_OBJECT);
- }
- 
-+Object *object_resolve_type_unambiguous(const char *typename, Error **errp)
-+{
-+    bool ambig;
-+    Object *o = object_resolve_path_type("", typename, &ambig);
-+
-+    if (ambig) {
-+        error_setg(errp, "More than one object of type %s", typename);
-+        return NULL;
-+    }
-+    if (!o) {
-+        error_setg(errp, "No object found of type %s", typename);
-+        return NULL;
-+    }
-+    return o;
-+}
-+
- typedef struct StringProperty
- {
-     char *(*get)(Object *, Error **);
+     /* PCIe buses */
+     dev = qdev_new(TYPE_PPC460EX_PCIE_HOST);
 -- 
 2.41.0
 
