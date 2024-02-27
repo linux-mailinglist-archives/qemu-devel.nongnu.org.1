@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA1286A10C
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 21:47:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DD6386A10A
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 21:47:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rf4KY-0005ed-0g; Tue, 27 Feb 2024 15:45:38 -0500
+	id 1rf4Kv-000623-P9; Tue, 27 Feb 2024 15:46:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=GitP=KE=redhat.com=clg@ozlabs.org>)
- id 1rf1p0-0004wk-PI
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:04:54 -0500
+ id 1rf1p6-00059Z-25
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:05:00 -0500
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=GitP=KE=redhat.com=clg@ozlabs.org>)
- id 1rf1oy-0001ZS-Ip
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:04:54 -0500
+ id 1rf1p1-0001Zi-RZ
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:04:59 -0500
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TklkV45Zzz4x0t;
- Wed, 28 Feb 2024 05:04:50 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TklkY5QS3z4x1H;
+ Wed, 28 Feb 2024 05:04:53 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4TklkR71bfz4wyy;
- Wed, 28 Feb 2024 05:04:47 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TklkW1DVjz4wyy;
+ Wed, 28 Feb 2024 05:04:50 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -36,9 +36,10 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Avihai Horon <avihaih@nvidia.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v2 15/21] vfio: Use new Error** argument in vfio_save_setup()
-Date: Tue, 27 Feb 2024 19:03:39 +0100
-Message-ID: <20240227180345.548960-16-clg@redhat.com>
+Subject: [PATCH v2 16/21] vfio: Add Error** argument to .vfio_save_config()
+ handler
+Date: Tue, 27 Feb 2024 19:03:40 +0100
+Message-ID: <20240227180345.548960-17-clg@redhat.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240227180345.548960-1-clg@redhat.com>
 References: <20240227180345.548960-1-clg@redhat.com>
@@ -69,227 +70,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add an Error** argument to vfio_migration_set_state() and adjust
-callers, including vfio_save_setup(). The error will be propagated up
-to qemu_savevm_state_setup() where the save_setup() handler is
-executed.
+Use vmstate_save_state_with_err() to improve error reporting in the
+callers and store a reported error under the migration stream. Add
+documentation while at it.
 
-Modify vfio_vmstate_change_prepare() and vfio_vmstate_change() to
-store a reported error under the migration stream if a migration is in
-progress.
-
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/migration.c | 64 ++++++++++++++++++++++++++++++---------------
- 1 file changed, 43 insertions(+), 21 deletions(-)
+ include/hw/vfio/vfio-common.h | 25 ++++++++++++++++++++++++-
+ hw/vfio/migration.c           | 18 ++++++++++++------
+ hw/vfio/pci.c                 |  5 +++--
+ 3 files changed, 39 insertions(+), 9 deletions(-)
 
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index 9b7ef7d02b5a0ad5266bcc4d06cd6874178978e4..6d9dee626afc491645d2c2398f3e3210961f67e9 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -133,7 +133,30 @@ struct VFIODeviceOps {
+     int (*vfio_hot_reset_multi)(VFIODevice *vdev);
+     void (*vfio_eoi)(VFIODevice *vdev);
+     Object *(*vfio_get_object)(VFIODevice *vdev);
+-    void (*vfio_save_config)(VFIODevice *vdev, QEMUFile *f);
++
++    /**
++     * @vfio_save_config
++     *
++     * Save device config state
++     *
++     * @vdev: #VFIODevice for which to save the config
++     * @f: #QEMUFile where to send the data
++     * @errp: pointer to Error*, to store an error if it happens.
++     *
++     * Returns zero to indicate success and negative for error
++     */
++    int (*vfio_save_config)(VFIODevice *vdev, QEMUFile *f, Error **errp);
++
++    /**
++     * @vfio_load_config
++     *
++     * Load device config state
++     *
++     * @vdev: #VFIODevice for which to load the config
++     * @f: #QEMUFile where to get the data
++     *
++     * Returns zero to indicate success and negative for error
++     */
+     int (*vfio_load_config)(VFIODevice *vdev, QEMUFile *f);
+ };
+ 
 diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 2dfbe671f6f45aa530c7341177bb532d8292cecd..8bdc68c66516710c52443135284262580825e0b8 100644
+index 8bdc68c66516710c52443135284262580825e0b8..228e8854594f3714b7c6f4fcfc5468d6b56337cb 100644
 --- a/hw/vfio/migration.c
 +++ b/hw/vfio/migration.c
-@@ -84,7 +84,8 @@ static const char *mig_state_to_str(enum vfio_device_mig_state state)
- 
- static int vfio_migration_set_state(VFIODevice *vbasedev,
-                                     enum vfio_device_mig_state new_state,
--                                    enum vfio_device_mig_state recover_state)
-+                                    enum vfio_device_mig_state recover_state,
-+                                    Error **errp)
- {
-     VFIOMigration *migration = vbasedev->migration;
-     uint64_t buf[DIV_ROUND_UP(sizeof(struct vfio_device_feature) +
-@@ -104,15 +105,15 @@ static int vfio_migration_set_state(VFIODevice *vbasedev,
-         ret = -errno;
- 
-         if (recover_state == VFIO_DEVICE_STATE_ERROR) {
--            error_report("%s: Failed setting device state to %s, err: %s. "
--                         "Recover state is ERROR. Resetting device",
--                         vbasedev->name, mig_state_to_str(new_state),
--                         strerror(errno));
-+            error_setg(errp, "%s: Failed setting device state to %s, err: %s. "
-+                       "Recover state is ERROR. Resetting device",
-+                       vbasedev->name, mig_state_to_str(new_state),
-+                       strerror(errno));
- 
-             goto reset_device;
-         }
- 
--        error_report(
-+        error_setg(errp,
-             "%s: Failed setting device state to %s, err: %s. Setting device in recover state %s",
-                      vbasedev->name, mig_state_to_str(new_state),
-                      strerror(errno), mig_state_to_str(recover_state));
-@@ -120,7 +121,7 @@ static int vfio_migration_set_state(VFIODevice *vbasedev,
-         mig_state->device_state = recover_state;
-         if (ioctl(vbasedev->fd, VFIO_DEVICE_FEATURE, feature)) {
-             ret = -errno;
--            error_report(
-+            error_setg(errp,
-                 "%s: Failed setting device in recover state, err: %s. Resetting device",
-                          vbasedev->name, strerror(errno));
- 
-@@ -139,7 +140,7 @@ static int vfio_migration_set_state(VFIODevice *vbasedev,
-              * This can happen if the device is asynchronously reset and
-              * terminates a data transfer.
-              */
--            error_report("%s: data_fd out of sync", vbasedev->name);
-+            error_setg(errp, "%s: data_fd out of sync", vbasedev->name);
-             close(mig_state->data_fd);
- 
-             return -EBADF;
-@@ -170,10 +171,11 @@ reset_device:
-  */
- static int
- vfio_migration_set_state_or_reset(VFIODevice *vbasedev,
--                                  enum vfio_device_mig_state new_state)
-+                                  enum vfio_device_mig_state new_state,
-+                                  Error **errp)
- {
-     return vfio_migration_set_state(vbasedev, new_state,
--                                    VFIO_DEVICE_STATE_ERROR);
-+                                    VFIO_DEVICE_STATE_ERROR, errp);
+@@ -190,14 +190,19 @@ static int vfio_load_buffer(QEMUFile *f, VFIODevice *vbasedev,
+     return ret;
  }
  
- static int vfio_load_buffer(QEMUFile *f, VFIODevice *vbasedev,
-@@ -391,8 +393,8 @@ static int vfio_save_setup(QEMUFile *f, void *opaque, Error **errp)
-                                       stop_copy_size);
-     migration->data_buffer = g_try_malloc0(migration->data_buffer_size);
-     if (!migration->data_buffer) {
--        error_report("%s: Failed to allocate migration data buffer",
+-static int vfio_save_device_config_state(QEMUFile *f, void *opaque)
++static int vfio_save_device_config_state(QEMUFile *f, void *opaque,
++                                         Error **errp)
+ {
+     VFIODevice *vbasedev = opaque;
++    int ret;
+ 
+     qemu_put_be64(f, VFIO_MIG_FLAG_DEV_CONFIG_STATE);
+ 
+     if (vbasedev->ops && vbasedev->ops->vfio_save_config) {
+-        vbasedev->ops->vfio_save_config(vbasedev, f);
++        ret = vbasedev->ops->vfio_save_config(vbasedev, f, errp);
++        if (ret) {
++            return ret;
++        }
+     }
+ 
+     qemu_put_be64(f, VFIO_MIG_FLAG_END_OF_STATE);
+@@ -581,13 +586,14 @@ static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
+ static void vfio_save_state(QEMUFile *f, void *opaque)
+ {
+     VFIODevice *vbasedev = opaque;
++    Error *local_err = NULL;
+     int ret;
+ 
+-    ret = vfio_save_device_config_state(f, opaque);
++    ret = vfio_save_device_config_state(f, opaque, &local_err);
+     if (ret) {
+-        error_report("%s: Failed to save device config space",
 -                     vbasedev->name);
-+        error_setg(errp, "%s: Failed to allocate migration data buffer",
-+                   vbasedev->name);
-         return -ENOMEM;
-     }
- 
-@@ -402,7 +404,7 @@ static int vfio_save_setup(QEMUFile *f, void *opaque, Error **errp)
-         switch (migration->device_state) {
-         case VFIO_DEVICE_STATE_RUNNING:
-             ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_PRE_COPY,
--                                           VFIO_DEVICE_STATE_RUNNING);
-+                                           VFIO_DEVICE_STATE_RUNNING, errp);
-             if (ret) {
-                 return ret;
-             }
-@@ -429,13 +431,20 @@ static void vfio_save_cleanup(void *opaque)
- {
-     VFIODevice *vbasedev = opaque;
-     VFIOMigration *migration = vbasedev->migration;
-+    Error *local_err = NULL;
-+    int ret;
- 
-     /*
-      * Changing device state from STOP_COPY to STOP can take time. Do it here,
-      * after migration has completed, so it won't increase downtime.
-      */
-     if (migration->device_state == VFIO_DEVICE_STATE_STOP_COPY) {
--        vfio_migration_set_state_or_reset(vbasedev, VFIO_DEVICE_STATE_STOP);
-+        ret = vfio_migration_set_state_or_reset(vbasedev,
-+                                                VFIO_DEVICE_STATE_STOP,
-+                                                &local_err);
-+        if (ret) {
-+            error_report_err(local_err);
-+        }
-     }
- 
-     g_free(migration->data_buffer);
-@@ -541,11 +550,13 @@ static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
-     VFIODevice *vbasedev = opaque;
-     ssize_t data_size;
-     int ret;
-+    Error *local_err = NULL;
- 
-     /* We reach here with device state STOP or STOP_COPY only */
-     ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_STOP_COPY,
--                                   VFIO_DEVICE_STATE_STOP);
-+                                   VFIO_DEVICE_STATE_STOP, &local_err);
-     if (ret) {
-+        error_report_err(local_err);
-         return ret;
-     }
- 
-@@ -585,7 +596,7 @@ static int vfio_load_setup(QEMUFile *f, void *opaque, Error **errp)
-     VFIODevice *vbasedev = opaque;
- 
-     return vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_RESUMING,
--                                   vbasedev->migration->device_state);
-+                                    vbasedev->migration->device_state, errp);
- }
- 
- static int vfio_load_cleanup(void *opaque)
-@@ -701,20 +712,22 @@ static void vfio_vmstate_change_prepare(void *opaque, bool running,
-     VFIODevice *vbasedev = opaque;
-     VFIOMigration *migration = vbasedev->migration;
-     enum vfio_device_mig_state new_state;
-+    Error *local_err = NULL;
-     int ret;
- 
-     new_state = migration->device_state == VFIO_DEVICE_STATE_PRE_COPY ?
-                     VFIO_DEVICE_STATE_PRE_COPY_P2P :
-                     VFIO_DEVICE_STATE_RUNNING_P2P;
- 
--    ret = vfio_migration_set_state_or_reset(vbasedev, new_state);
-+    ret = vfio_migration_set_state_or_reset(vbasedev, new_state, &local_err);
-     if (ret) {
-         /*
-          * Migration should be aborted in this case, but vm_state_notify()
-          * currently does not support reporting failures.
-          */
-         if (migrate_get_current()->to_dst_file) {
--            qemu_file_set_error(migrate_get_current()->to_dst_file, ret);
-+            qemu_file_set_error_obj(migrate_get_current()->to_dst_file, ret,
-+                                    local_err);
-         }
-     }
- 
-@@ -727,6 +740,7 @@ static void vfio_vmstate_change(void *opaque, bool running, RunState state)
- {
-     VFIODevice *vbasedev = opaque;
-     enum vfio_device_mig_state new_state;
-+    Error *local_err = NULL;
-     int ret;
- 
-     if (running) {
-@@ -739,14 +753,15 @@ static void vfio_vmstate_change(void *opaque, bool running, RunState state)
-                 VFIO_DEVICE_STATE_STOP;
-     }
- 
--    ret = vfio_migration_set_state_or_reset(vbasedev, new_state);
-+    ret = vfio_migration_set_state_or_reset(vbasedev, new_state, &local_err);
-     if (ret) {
-         /*
-          * Migration should be aborted in this case, but vm_state_notify()
-          * currently does not support reporting failures.
-          */
-         if (migrate_get_current()->to_dst_file) {
--            qemu_file_set_error(migrate_get_current()->to_dst_file, ret);
-+            qemu_file_set_error_obj(migrate_get_current()->to_dst_file, ret,
-+                                    local_err);
-         }
-     }
- 
-@@ -760,6 +775,8 @@ static void vfio_migration_state_notifier(Notifier *notifier, void *data)
-     VFIOMigration *migration = container_of(notifier, VFIOMigration,
-                                             migration_state);
-     VFIODevice *vbasedev = migration->vbasedev;
-+    Error *local_err = NULL;
-+    int ret;
- 
-     trace_vfio_migration_state_notifier(vbasedev->name,
-                                         MigrationStatus_str(s->state));
-@@ -768,7 +785,12 @@ static void vfio_migration_state_notifier(Notifier *notifier, void *data)
-     case MIGRATION_STATUS_CANCELLING:
-     case MIGRATION_STATUS_CANCELLED:
-     case MIGRATION_STATUS_FAILED:
--        vfio_migration_set_state_or_reset(vbasedev, VFIO_DEVICE_STATE_RUNNING);
-+        ret = vfio_migration_set_state_or_reset(vbasedev,
-+                                                VFIO_DEVICE_STATE_RUNNING,
-+                                                &local_err);
-+        if (ret) {
-+            error_report_err(local_err);
-+        }
+-        qemu_file_set_error(f, ret);
++        error_prepend(&local_err, "%s: Failed to save device config space",
++                      vbasedev->name);
++        qemu_file_set_error_obj(f, ret, local_err);
      }
  }
  
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 4fa387f0430d62ca2ba1b5ae5b7037f8f06b33f9..99d86e1d40ef25133fc76ad6e58294b07bd20843 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -2585,11 +2585,12 @@ const VMStateDescription vmstate_vfio_pci_config = {
+     }
+ };
+ 
+-static void vfio_pci_save_config(VFIODevice *vbasedev, QEMUFile *f)
++static int vfio_pci_save_config(VFIODevice *vbasedev, QEMUFile *f, Error **errp)
+ {
+     VFIOPCIDevice *vdev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
+ 
+-    vmstate_save_state(f, &vmstate_vfio_pci_config, vdev, NULL);
++    return vmstate_save_state_with_err(f, &vmstate_vfio_pci_config, vdev, NULL,
++                                       errp);
+ }
+ 
+ static int vfio_pci_load_config(VFIODevice *vbasedev, QEMUFile *f)
 -- 
 2.43.2
 
