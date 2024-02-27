@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2B1868B33
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 09:49:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62794868B47
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 09:52:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ret6A-0003ky-Bc; Tue, 27 Feb 2024 03:46:02 -0500
+	id 1retBz-0007e2-Ak; Tue, 27 Feb 2024 03:52:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret5V-0003dM-MM
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:45:21 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1retBx-0007ay-IE; Tue, 27 Feb 2024 03:52:01 -0500
+Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ret5M-00019i-6I
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 03:45:21 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-33d38c9ca5bso2113282f8f.2
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 00:45:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1retBw-0003D7-3x; Tue, 27 Feb 2024 03:52:01 -0500
+Received: by mail-oi1-x235.google.com with SMTP id
+ 5614622812f47-3c1adc90830so245758b6e.0; 
+ Tue, 27 Feb 2024 00:51:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709023509; x=1709628309; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Zi9hv8WXmOlU9cQPuWAqhoQd705Xi0sNArKoJ6BuDYw=;
- b=eEsUEdu1zJYzUdKTpoADieUgoQMdOY5tvTUbyEedq3EQSEAl+CHhdRCYhJVR7gBIIS
- s/mSg2cKaUUYiOW4ZppY4kRGd6R+MeO4isXS60VR2AUN8P7J7NPZi4KmoJ25brcfOThc
- Zi9kCnhuuRWJOcb/HrxNlfNiefQ2Qqr4qS766jqAiXWHHXBe4Cwghw9hdISEPexYgv/K
- M1ep4rZfYY6NxdYZsTG0OfrNe9p1kPvsXO0xuGwKz/uVnsWW0r4RstVzS6K+MvLQ6kZF
- r5nqAj8fk6db1PThZevo2eTB3jwqcsH1tAwFBuefH9lutuIb5iEsdV0R3wc02azGlski
- eGBw==
+ d=gmail.com; s=20230601; t=1709023918; x=1709628718; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yGRsftJK0dyXYop60Oiy6rGFnlmoAzqDrZJLQVERQIk=;
+ b=OYrjyg4xrnZo4oWnVJDRx+t9Oemyh8QyDqQqcIb+DRpKy9RczfV+vnUbq8zenyEwiI
+ /IYsQCgogXAbI1LpAXsHsBNCkWTwdHuMEK+H7ylD6DCTdRAxMZcud1ZiyTGzmVB5TbOX
+ nNW8mz+P/07HIjN5Hu0IPhegfZUFUz5qtNcPO8wg0urkHcPeJFZDX6bhPXGahGjvolMH
+ nL4lFe6HQLHIL64awxQgTa2pmYvIGwlgWFmvRCI/cBBJK30xuPXJZhDCkrOJEPsWrZWs
+ QRiuCLnC0qT5p/JIvdDbkS16Ys/phMiPlsh08sevRaZ5+JU4mZUCr9507RfkL+kaY8Ob
+ +KUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709023509; x=1709628309;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Zi9hv8WXmOlU9cQPuWAqhoQd705Xi0sNArKoJ6BuDYw=;
- b=CPnhpEtMeRXEBH9dIoWl+O1BsNBfwamePWhm7f+Jr38agqAHNoqj6Y67CXvp6fhkSk
- GlJBbKevb1yHrspxrhOiuENeXeT86QQllPoA7PvIPMWGnwfScS1YVd6atKAzokTOmFZF
- j+kdNrPo+TTkZ/D2faqHeonhCFOaE4HoK8ujEcjiHxtsUdFZdEyAXr7DQwhvx/D8XJmy
- jJMI+kLWyQ+D6LwapkCULSnpSFtn61fg2RifSzYfxP291Xer0yvNddEDsxWmiwUNWGl+
- F0pCmjUNMjEfHX6RGCVftUhGwfXndCTUz76CDHqFObabSuRmmsNJztGC+GPRnAsZNbck
- 6irQ==
-X-Gm-Message-State: AOJu0YyPDn7ZkDCRXmtyAKr2uLZbTo4ZaG5ZFaIf795s/QX4fkXY7fSo
- a9WMet+ghLzOK98tsEL8i0jgjUDt7e4M6PqRtAMhrHJlf4XGLVfdvIyR1IlbfJs=
-X-Google-Smtp-Source: AGHT+IG/+PufmAeoQqG4qUr45wMH7dL++K7Ned6G222vNgJX8DY07D1eIHVvNl6/MMmLbvnNPntZIg==
-X-Received: by 2002:a5d:4610:0:b0:33d:855b:78f9 with SMTP id
- t16-20020a5d4610000000b0033d855b78f9mr6250432wrq.41.1709023509451; 
- Tue, 27 Feb 2024 00:45:09 -0800 (PST)
-Received: from [192.168.69.100] (mic92-h03-176-184-33-214.dsl.sta.abo.bbox.fr.
- [176.184.33.214]) by smtp.gmail.com with ESMTPSA id
- a2-20020a5d5702000000b0033ce5b3390esm10646267wrv.38.2024.02.27.00.45.07
+ d=1e100.net; s=20230601; t=1709023918; x=1709628718;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=yGRsftJK0dyXYop60Oiy6rGFnlmoAzqDrZJLQVERQIk=;
+ b=mtZC200rJRlOBNSbp3vNE3T8wXmPk0A4NpdMPH5wFczpk6dFGka+GzC6y/CLwumJA+
+ 6hDUSN6rrYYXZYABGfdS30rFfRnEBvm77xb+boP7TCF798fTt7w3hrjT0xwc/PhsenHZ
+ C8H52JQauMZTOFM3rUNapnf9M6/0l1YGORTDgs6cRnj+9j6FfmvrE2Ujt2t2IRyo02z6
+ s650+FaRG+X5IDG1HYShaxvk96iOLGdrF4mVLigfQGE43NZQ0NkCh6YIkfl3n4qYBwU1
+ 81aYJhB/L7vHnGAuU8rbPt6YiJGzlAKFJCapeTye7S+VEie5S5QWECuS27votxYhAg4j
+ ++LQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV8Z+h3ksTk9Avv4GvF+VDvJVex23Co9peQkOSP0o1h7citQXVOj3mY9sBGlPCl4bH4hGG+IRwjgHLYNE6SVwhShrMJSm9yVSLfdyiGMqJTU1+jrMHSsdzXrz4=
+X-Gm-Message-State: AOJu0Yy6JNlnAhKFfE6eDzUlbAqjmVQLtY2X+Q+105v8moYnmzeoSXSQ
+ VsmxggY9odeC2ZV4kYGQf9dBZE5UTlSAM9tmMHLCrVv39W5Xz6PO
+X-Google-Smtp-Source: AGHT+IGihhXSamQk4+xOteUT6qPuy4bW5Ht+6/Nwl8nM+yvxRkXSqZIt52arVuJMqPanawd3f0dGZw==
+X-Received: by 2002:aca:2b0b:0:b0:3c1:7d97:c4ba with SMTP id
+ i11-20020aca2b0b000000b003c17d97c4bamr1325487oik.48.1709023918153; 
+ Tue, 27 Feb 2024 00:51:58 -0800 (PST)
+Received: from localhost ([1.146.52.18]) by smtp.gmail.com with ESMTPSA id
+ t1-20020a632241000000b005c662e103a1sm5217958pgm.41.2024.02.27.00.51.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 Feb 2024 00:45:09 -0800 (PST)
-Message-ID: <0312eaa8-ed9b-4c4a-a846-42b4ed307d52@linaro.org>
-Date: Tue, 27 Feb 2024 09:45:06 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/41] Split out common part of BCM283X classes
-Content-Language: en-US
-To: Sergey Kambalin <serg.oker@gmail.com>, qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, Sergey Kambalin <sergey.kambalin@auriga.com>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20240226000259.2752893-1-sergey.kambalin@auriga.com>
- <20240226000259.2752893-2-sergey.kambalin@auriga.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240226000259.2752893-2-sergey.kambalin@auriga.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+ Tue, 27 Feb 2024 00:51:57 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 27 Feb 2024 18:51:48 +1000
+Message-Id: <CZFQEX5BIYZ0.13FK4Y38CPV48@wheely>
+Cc: <clegoate@redhat.com>, <mikey@neuling.org>,
+ <amachhiw@linux.vnet.ibm.com>, <vaibhav@linux.ibm.com>,
+ <sbhat@linux.ibm.com>, <danielhb413@gmail.com>, <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v4 01/15] spapr: nested: register nested-hv api hcalls
+ only for cap-nested-hv
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <qemu-ppc@nongnu.org>
+X-Mailer: aerc 0.15.2
+References: <20240220083609.748325-1-harshpb@linux.ibm.com>
+ <20240220083609.748325-2-harshpb@linux.ibm.com>
+In-Reply-To: <20240220083609.748325-2-harshpb@linux.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
+ envelope-from=npiggin@gmail.com; helo=mail-oi1-x235.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,81 +95,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/2/24 01:02, Sergey Kambalin wrote:
-> Pre setup for BCM2838 introduction
-> 
-> Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
-> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+On Tue Feb 20, 2024 at 6:35 PM AEST, Harsh Prateek Bora wrote:
+> Since cap-nested-hv is an optional capability, it makes sense to register
+> api specfic hcalls only when respective capability is enabled. This
+> requires to introduce a new API to unregister hypercalls to maintain
+> sanity across guest reboot since caps are re-applied across reboots and
+> re-registeration of hypercalls would hit assert otherwise.
+>
+> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   hw/arm/bcm2836.c         | 103 ++++++++++++++++++++++-----------------
->   hw/arm/raspi.c           |   2 +-
->   include/hw/arm/bcm2836.h |  26 +++++++++-
->   3 files changed, 84 insertions(+), 47 deletions(-)
+>  include/hw/ppc/spapr.h        |  3 +++
+>  include/hw/ppc/spapr_nested.h |  1 -
+>  hw/ppc/spapr_caps.c           |  2 ++
+>  hw/ppc/spapr_hcall.c          | 24 ++++++++++++++++++++++--
+>  hw/ppc/spapr_nested.c         | 17 +++++++++++++++--
+>  5 files changed, 42 insertions(+), 5 deletions(-)
+>
+> diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
+> index e91791a1a9..b7ad2a0360 100644
+> --- a/include/hw/ppc/spapr.h
+> +++ b/include/hw/ppc/spapr.h
+> @@ -631,6 +631,7 @@ typedef target_ulong (*spapr_hcall_fn)(PowerPCCPU *cp=
+u, SpaprMachineState *sm,
+>                                         target_ulong *args);
+> =20
+>  void spapr_register_hypercall(target_ulong opcode, spapr_hcall_fn fn);
+> +void spapr_unregister_hypercall(target_ulong opcode);
+>  target_ulong spapr_hypercall(PowerPCCPU *cpu, target_ulong opcode,
+>                               target_ulong *args);
+> =20
+> @@ -1025,5 +1026,7 @@ void spapr_vof_client_dt_finalize(SpaprMachineState=
+ *spapr, void *fdt);
+> =20
+>  /* H_WATCHDOG */
+>  void spapr_watchdog_init(SpaprMachineState *spapr);
+> +void spapr_register_nested_hv(void);
+> +void spapr_unregister_nested_hv(void);
+> =20
+>  #endif /* HW_SPAPR_H */
+> diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.=
+h
+> index d312a5d61d..09d95182b2 100644
+> --- a/include/hw/ppc/spapr_nested.h
+> +++ b/include/hw/ppc/spapr_nested.h
+> @@ -95,7 +95,6 @@ struct nested_ppc_state {
+>      int64_t tb_offset;
+>  };
+> =20
+> -void spapr_register_nested(void);
+>  void spapr_exit_nested(PowerPCCPU *cpu, int excp);
+> =20
+>  #endif /* HW_SPAPR_NESTED_H */
+> diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
+> index e889244e52..f0c2f4de78 100644
+> --- a/hw/ppc/spapr_caps.c
+> +++ b/hw/ppc/spapr_caps.c
+> @@ -487,6 +487,8 @@ static void cap_nested_kvm_hv_apply(SpaprMachineState=
+ *spapr,
+>              error_append_hint(errp, "Try appending -machine cap-nested-h=
+v=3Doff "
+>                                      "or use threads=3D1 with -smp\n");
+>          }
+> +        spapr_unregister_nested_hv(); /* reset across reboots */
+> +        spapr_register_nested_hv();
 
+This looks a bit odd. And actually it also ends up registering them in
+the SMT error case (which seems harmelss but a bit inconsistent).
 
-> diff --git a/include/hw/arm/bcm2836.h b/include/hw/arm/bcm2836.h
-> index 6f90cabfa3..5a6717ca91 100644
-> --- a/include/hw/arm/bcm2836.h
-> +++ b/include/hw/arm/bcm2836.h
-> @@ -17,8 +17,10 @@
->   #include "target/arm/cpu.h"
->   #include "qom/object.h"
->   
-> +#define TYPE_BCM283X_BASE "bcm283x-base"
+I wonder whether you could make a spapr_nested_reset() function called
+by spapr_machine_reset that would take care of
+unregistering and reregistering nested hypercalls based on the caps that
+were set.
 
-Note for eventual future cleanup, we usually name this "common".
-
-> +OBJECT_DECLARE_TYPE(BCM283XBaseState, BCM283XBaseClass, BCM283X_BASE)
->   #define TYPE_BCM283X "bcm283x"
-> -OBJECT_DECLARE_TYPE(BCM283XState, BCM283XClass, BCM283X)
-> +OBJECT_DECLARE_SIMPLE_TYPE(BCM283XState, BCM283X)
->   
->   #define BCM283X_NCPUS 4
->   
-> @@ -30,7 +32,7 @@ OBJECT_DECLARE_TYPE(BCM283XState, BCM283XClass, BCM283X)
->   #define TYPE_BCM2836 "bcm2836"
->   #define TYPE_BCM2837 "bcm2837"
->   
-> -struct BCM283XState {
-> +struct BCM283XBaseState {
->       /*< private >*/
->       DeviceState parent_obj;
->       /*< public >*/
-> @@ -41,7 +43,27 @@ struct BCM283XState {
->           ARMCPU core;
->       } cpu[BCM283X_NCPUS];
->       BCM2836ControlState control;
-> +};
-> +
-> +struct BCM283XBaseClass {
-> +    /*< private >*/
-> +    DeviceClass parent_class;
-> +    /*< public >*/
-
-Also we don't use these private/public comment anymore.
-
-> +    const char *name;
-> +    const char *cpu_type;
-> +    unsigned core_count;
-> +    hwaddr peri_base; /* Peripheral base address seen by the CPU */
-> +    hwaddr ctrl_base; /* Interrupt controller and mailboxes etc. */
-> +    int clusterid;
-> +};
-> +
-> +struct BCM283XState {
-> +    /*< private >*/
-> +    BCM283XBaseState parent_obj;
-> +    /*< public >*/
-
-Ditto.
-
->       BCM2835PeripheralState peripherals;
->   };
->   
-> +bool bcm283x_common_realize(DeviceState *dev, Error **errp);
-
-Amusingly you name the realize handler 'common'.
-
->   #endif /* BCM2836_H */
-
+Thanks,
+Nick
 
