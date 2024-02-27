@@ -2,45 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7349F8688C5
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 06:50:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24E688688D3
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 07:06:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1reqL3-0007l2-PX; Tue, 27 Feb 2024 00:49:13 -0500
+	id 1reqaG-0003ag-Pz; Tue, 27 Feb 2024 01:04:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1reqL1-0007ko-UN
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 00:49:12 -0500
-Received: from mgamail.intel.com ([198.175.65.10])
+ id 1reqaE-0003aU-J9
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 01:04:54 -0500
+Received: from mgamail.intel.com ([192.198.163.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1reqKz-0006Ne-Q4
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 00:49:11 -0500
+ id 1reqaC-0000h4-Mo
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 01:04:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709012950; x=1740548950;
+ t=1709013893; x=1740549893;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=0kh4n/mkpK1mEtMVLcyDsY255vwDm8cWoPqf+70c4Rk=;
- b=iOnTEjqskwjfm6/Au/1FVwUHStvd6D85Hb+0St7PkUJmuRLaPWeCkYIa
- 7WFcxBfawbbGGR4QI0kqFBMBIM46JnIKvNkYV7deyd2SySQtTrWsRBhdM
- FO9BbCzQeZrYNBG4o0nXln4hpkHte1DdEl4Pdl7/33vahGms8s7tNfieS
- YGcEQm29dZLlqn01FXDXs9nXOpmsB0XTlN/msNubpQBWWr24UywoDS/i0
- NfemxuFgvEVfgbDXgLQ+TWQxGu9I9L2pTkv/kyk0+feDkLXmr5MtHg3fF
- oICqv0aB6ZMIoX/+2sI7qS9+aBaR82E3loDnAAHKX/IvhnjjAKsHQZ+XF w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="20782631"
-X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; d="scan'208";a="20782631"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 21:49:07 -0800
+ bh=GiU8CH9Y37TUgvA6fhmv5WWsU1kQwAZzw6OCPKGzisQ=;
+ b=IJ+Jwa5TbAVzuhW/QF5VPujSknQdqD7eDrxgcc5qedpbZ40UJcaqVP6/
+ qIdQ6C3Bw8NjAE112wIXGRHb5gP+xC1z3RCEN8EZcaElt+l1ztFsM0vs1
+ 51wAjuc2eRPqbpeZUrq7nMRpklVoy/EDrcKEHbJJBUIz1j709T8mvbsyD
+ WMKYLGJ3CHfv+aSuoqWpIUWpC11NzRYuVpX+KQKa04lHC6k6L5ams+3fU
+ n0IptV703Dthh4yhEhukHiCV9MdNbytK7sWdirP4+XTa4DWpjgohPZIWG
+ 0WAnehA+RMGLAX4aJTtwWFU42BOLXgRqfwe4lQgCx1WSXz2GTLL/sqrbK w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="7124976"
+X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; 
+   d="scan'208";a="7124976"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2024 22:04:50 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; d="scan'208";a="30091513"
+X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; 
+   d="scan'208";a="7133449"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by fmviesa002.fm.intel.com with ESMTP; 26 Feb 2024 21:49:03 -0800
-Date: Tue, 27 Feb 2024 14:02:46 +0800
+ by fmviesa006.fm.intel.com with ESMTP; 26 Feb 2024 22:04:47 -0800
+Date: Tue, 27 Feb 2024 14:18:29 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
@@ -50,16 +52,16 @@ Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
  Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  "Gonglei (Arei)" <arei.gonglei@huawei.com>
-Subject: Re: [PATCH 07/10] hw/core/reset: Add qemu_{register,
- unregister}_resettable()
-Message-ID: <Zd17Biy6ZpZhHTBL@intel.com>
+Subject: Re: [PATCH 08/10] hw/core/reset: Implement qemu_register_reset via
+ qemu_register_resettable
+Message-ID: <Zd1+tZPGl3q7peFH@intel.com>
 References: <20240220160622.114437-1-peter.maydell@linaro.org>
- <20240220160622.114437-8-peter.maydell@linaro.org>
+ <20240220160622.114437-9-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240220160622.114437-8-peter.maydell@linaro.org>
-Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20240220160622.114437-9-peter.maydell@linaro.org>
+Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,30 +85,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 20, 2024 at 04:06:19PM +0000, Peter Maydell wrote:
-> Date: Tue, 20 Feb 2024 16:06:19 +0000
+On Tue, Feb 20, 2024 at 04:06:20PM +0000, Peter Maydell wrote:
+> Date: Tue, 20 Feb 2024 16:06:20 +0000
 > From: Peter Maydell <peter.maydell@linaro.org>
-> Subject: [PATCH 07/10] hw/core/reset: Add qemu_{register,
->  unregister}_resettable()
+> Subject: [PATCH 08/10] hw/core/reset: Implement qemu_register_reset via
+>  qemu_register_resettable
 > X-Mailer: git-send-email 2.34.1
 > 
-> Implement new functions qemu_register_resettable() and
-> qemu_unregister_resettable().  These are intended to be
-> three-phase-reset aware equivalents of the old qemu_register_reset()
-> and qemu_unregister_reset().  Instead of passing in a function
-> pointer and opaque, you register any QOM object that implements the
-> Resettable interface.
+> Reimplement qemu_register_reset() via qemu_register_resettable().
 > 
-> The implementation is simple: we have a single global instance of a
-> ResettableContainer, which we reset in qemu_devices_reset(), and
-> the Resettable objects passed to qemu_register_resettable() are
-> added to it.
+> We define a new LegacyReset object which implements Resettable and
+> defines its reset hold phase method to call a QEMUResetHandler
+> function.  When qemu_register_reset() is called, we create a new
+> LegacyReset object and add it to the simulation_reset
+> ResettableContainer.  When qemu_unregister_reset() is called, we find
+> the LegacyReset object in the container and remove it.
+> 
+> This implementation of qemu_unregister_reset() means we'll end up
+> scanning the ResetContainer's list of child objects twice, once
+> to find the LegacyReset object, and once in g_ptr_array_remove().
+> In theory we could avoid this by having the ResettableContainer
+> interface include a resettable_container_remove_with_equal_func()
+> that took a callback method so that we could use
+> g_ptr_array_find_with_equal_func() and g_ptr_array_remove_index().
+> But we don't expect qemu_unregister_reset() to be called frequently
+> or in hot paths, and we expect the simulation_reset container to
+> usually not have many children.
 > 
 > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->  include/sysemu/reset.h | 37 ++++++++++++++++++++++++++++++++++---
->  hw/core/reset.c        | 31 +++++++++++++++++++++++++++++--
->  2 files changed, 63 insertions(+), 5 deletions(-)
+> The way that a legacy reset function needs to check the ShutdownCause
+> and this doesn't line up with the ResetType is a bit awkward; this
+> is an area we should come back and clean up, but I didn't want to
+> tackle that in this patchset.
+> ---
+>  include/sysemu/reset.h |   7 ++-
+>  hw/core/reset.c        | 137 +++++++++++++++++++++++++++++++----------
+>  2 files changed, 110 insertions(+), 34 deletions(-)
+>
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com> 
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
 
