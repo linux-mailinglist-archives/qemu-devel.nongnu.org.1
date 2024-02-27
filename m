@@ -2,80 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E02A8692D4
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:39:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 996ED86937A
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:45:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rexb6-0001AS-2q; Tue, 27 Feb 2024 08:34:16 -0500
+	id 1rexfv-00005D-Hs; Tue, 27 Feb 2024 08:39:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexae-0000r0-IB
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:49 -0500
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaW-0002xt-Sv
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:48 -0500
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2d288bac3caso27993981fa.2
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709040819; x=1709645619; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=P4hkNztqDNRnaj+KFHGOI40tyfjypqPbuVEH2aEu/ZE=;
- b=aDH/Cv7YDomn/mjERrsncVZ0o53RbnyAog096DYWI1ROzohllKa9W0sjV65d5YC4rt
- Tg2I7lReUR9HyVokNemRqYzwunrGkr5ILFvsqmmDhDzCQHtAx5h3NWDVB6NKECZnJvfg
- ahji41lc6JdlW2nMAyar1cu8wHxQTmJUwG2RobdseVIREd4IvK43CXrx7eKdMsXtt6sa
- oa1ThrBKy8idr3bhXpK/cVv4NB52MdPtVonaFhXCMrq9ztCq6J6ENEPxcU0mspQXfwQr
- uerylaHEeO4XxUgEKFi8p9aIN40xB5wEZb/bVF9YGXUozbQ5ALZhqnIF2eSIRl749bAI
- m4ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709040819; x=1709645619;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=P4hkNztqDNRnaj+KFHGOI40tyfjypqPbuVEH2aEu/ZE=;
- b=tXv9nV9IVg+3Xb6cwixwR0Qb1JHYDMEjZu2CoikEAO2JLUJyPt8crfnF7BAg3g4uSY
- GKggRUgibyyY4E5u3o92u2MJwkp+DLvyfV3ni15cwpxJEvQSQf9tE+mIrAZCHHBuJ7jM
- boI5LLwTFtJyEb97mwfr4hS6eurTekhiFzpeXzUJ8xVsvgQYzEWUmYOHoJKtawtQZO03
- us5yDYscHrY9qCvSqU0E8C2EqbhGfOJPhfPVi8wsPHjZ0X5NSTIlv+a54l2dfifuLptt
- QOH6Ai8cQq/INjMiHI1CbhtuoykXhjeU7+rgDcyX/5O4Zsh3Lwdh6hGyv0njCuhy3Q7O
- A0PA==
-X-Gm-Message-State: AOJu0YxWBh9uBYrsA99ZcFe60OCMSD4f1dQ1fgvYJmwNjqfCNAQutK8O
- t+DytNbNMy1DuJz/Gh8whmcRhCrbAtJXF+K29CGtTjCw5lMIlOIHHNH1rDl8pWslq0hMqt6wB+E
- W
-X-Google-Smtp-Source: AGHT+IH2aeuzCh7MERJeH2RyIdLtxblTvgOkXiUL3pWlEUS2YCjaqKiqpyDzQmzeJ2TuuZs8iA26kQ==
-X-Received: by 2002:a2e:be89:0:b0:2d2:5430:605a with SMTP id
- a9-20020a2ebe89000000b002d25430605amr7860482ljr.7.1709040819205; 
- Tue, 27 Feb 2024 05:33:39 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- i13-20020adfe48d000000b0033ae7d768b2sm11319552wrm.117.2024.02.27.05.33.38
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Feb 2024 05:33:38 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 45/45] docs/system/arm: Add RPi4B to raspi.rst
-Date: Tue, 27 Feb 2024 13:33:14 +0000
-Message-Id: <20240227133314.1721857-46-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240227133314.1721857-1-peter.maydell@linaro.org>
-References: <20240227133314.1721857-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rexfB-00083t-W5
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:38:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rexer-0003xX-Jm
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:38:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709041086;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Stlh46bS8c60iEbaa1HnPL6kZbWXaEm5usQN+VWyHA0=;
+ b=N8xPcaMXKcxz64KuF6+E+dhZXA5iYXWMYmhep4eAeuLw9hrARZiWVHxIL80Az14W/A5JgP
+ F12UjizQcmDVygPq0Bl1/uFmoUY62B65pnLT7lrp/YYFg+45u+pV80aGAe/2XVM6vNjcit
+ 9x+6fYjWhMqvkPWrL1ILTYA3fRnmLS8=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-576-otwMGU4COw6qKnA9qgaiTg-1; Tue,
+ 27 Feb 2024 08:38:04 -0500
+X-MC-Unique: otwMGU4COw6qKnA9qgaiTg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 28C3F3814E89;
+ Tue, 27 Feb 2024 13:38:04 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.4])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 05A6C2166B33;
+ Tue, 27 Feb 2024 13:38:02 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 7D88121E66F4; Tue, 27 Feb 2024 14:38:01 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org,  qemu-block@nongnu.org,  John Snow
+ <jsnow@redhat.com>,  Thomas Huth <thuth@redhat.com>,  philmd@linaro.org
+Subject: Re: [PATCH] hw/ide/ahci: Rename ahci_internal.h to ahci-internal.h
+In-Reply-To: <20240227131310.C24EB4E6005@zero.eik.bme.hu> (BALATON Zoltan's
+ message of "Tue, 27 Feb 2024 14:13:10 +0100 (CET)")
+References: <20240227131310.C24EB4E6005@zero.eik.bme.hu>
+Date: Tue, 27 Feb 2024 14:38:01 +0100
+Message-ID: <87frxeauyu.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::233;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x233.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,59 +79,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sergey Kambalin <serg.oker@gmail.com>
+BALATON Zoltan <balaton@eik.bme.hu> writes:
 
-Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240226000259.2752893-42-sergey.kambalin@auriga.com
-[PMM: list PCIE and GENET as 'missing' for now, until we land
- the patches which add those devices]
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- docs/system/arm/raspi.rst | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+> Other headers now use dash instead of underscore. Rename
+> ahci_internal.h accordingly for consistency.
+>
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 
-diff --git a/docs/system/arm/raspi.rst b/docs/system/arm/raspi.rst
-index d0a6f08b2b9..bb417c34241 100644
---- a/docs/system/arm/raspi.rst
-+++ b/docs/system/arm/raspi.rst
-@@ -1,5 +1,5 @@
--Raspberry Pi boards (``raspi0``, ``raspi1ap``, ``raspi2b``, ``raspi3ap``, ``raspi3b``)
--======================================================================================
-+Raspberry Pi boards (``raspi0``, ``raspi1ap``, ``raspi2b``, ``raspi3ap``, ``raspi3b``, ``raspi4b``)
-+===================================================================================================
- 
- 
- QEMU provides models of the following Raspberry Pi boards:
-@@ -12,12 +12,13 @@ QEMU provides models of the following Raspberry Pi boards:
-   Cortex-A53 (4 cores), 512 MiB of RAM
- ``raspi3b``
-   Cortex-A53 (4 cores), 1 GiB of RAM
--
-+``raspi4b``
-+  Cortex-A72 (4 cores), 2 GiB of RAM
- 
- Implemented devices
- -------------------
- 
-- * ARM1176JZF-S, Cortex-A7 or Cortex-A53 CPU
-+ * ARM1176JZF-S, Cortex-A7, Cortex-A53 or Cortex-A72 CPU
-  * Interrupt controller
-  * DMA controller
-  * Clock and reset controller (CPRMAN)
-@@ -35,9 +36,10 @@ Implemented devices
-  * VideoCore firmware (property)
-  * Peripheral SPI controller (SPI)
- 
--
- Missing devices
- ---------------
- 
-  * Analog to Digital Converter (ADC)
-  * Pulse Width Modulation (PWM)
-+ * PCIE Root Port (raspi4b)
-+ * GENET Ethernet Controller (raspi4b)
--- 
-2.34.1
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 
 
