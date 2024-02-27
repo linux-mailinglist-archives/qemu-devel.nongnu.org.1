@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18E23869F7B
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 19:50:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2D8A869F7C
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 19:50:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rf2Vf-0006ac-U0; Tue, 27 Feb 2024 13:48:59 -0500
+	id 1rf2Vg-0006ao-CO; Tue, 27 Feb 2024 13:49:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rf2Vd-0006Zm-6g
+ id 1rf2Vd-0006aD-D7
  for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:48:57 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rf2VZ-0001Ve-Oh
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:48:55 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6e53f76898fso1210354b3a.0
- for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 10:48:52 -0800 (PST)
+ id 1rf2Vb-0001Vn-LS
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:48:57 -0500
+Received: by mail-ot1-x334.google.com with SMTP id
+ 46e09a7af769-6e125818649so1982519a34.1
+ for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 10:48:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709059731; x=1709664531; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709059733; x=1709664533; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tzO2W+WajMGPZKg0sOd9kLpT7E3B/88XAmc0t2vBAHU=;
- b=nJ6ZO8FMeMfEoNkbIMVQkx6Gh39+vyaQ4VJBox+JMPRy83EE/xU23mgzqX3eGpeX9u
- Y4m3MbK1NgPSZIdtqpaBJrhxELAMHRxcVScau7vgbj2BJeeGmrH//P280Lr7MbFDvKKR
- 3G3kIxP61Ps0oPiA1Cgk1OOTdm40AQXlOCR/gQDQMAUh47D0lSdLiF4xvh/3QnO2oQbn
- 56E6W+1NCDj9bJeCW2nTOwyuNpuECh9BHXAXfo1e+3Lh9uO3r76waCRAXKQAeUAl73OC
- T1dRDZkMy5cFEciqC+gwxIpOCJCLT2B8GBiubU1g9LI1s5skTpKWZ0vqqi0ZIIai8DU1
- B39w==
+ bh=HEYpUbYOjLF3aHdvtZVlKWz9YeEEY+0zYSzPOHYy/W8=;
+ b=pi2j9o6gBo6MEgj+eyxSTpPgS+q05HwNC4LeS8wRzuLC5k/H+/cgZi0rIbCTxih//j
+ nQyadiGio4UqWp4/swxAknKLr+slvGuBm19KTmg3tQ3g9oUlChqRUnm1d1ooZXA2UF+J
+ HuMgE22ctaV37rergmKORHigd5v+EJ1+IInhwrUA9kf44Qbez1TbD8QdtWuX32raIaYq
+ TdVx/WMItIqUZgG+ArMDllWCHu46eWmvwL0Pkbj01FD6ZYizQfAuZpzFAbGu84QYAAgh
+ oxiCeQ+UucDcKpj6bmww4W2jBSB/dUb0X1MB5DPeL8v1PEECsvy3DU977MGib1bUpoRP
+ xTIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709059731; x=1709664531;
+ d=1e100.net; s=20230601; t=1709059733; x=1709664533;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tzO2W+WajMGPZKg0sOd9kLpT7E3B/88XAmc0t2vBAHU=;
- b=CHCz7wPPpXOjMowAOXs2rCNnmwAP2luC4UxOiDVwcDk52sXSJSZ/7+iLerBIDdVEVv
- rfCJldFJHl2P2C2cdJvJpuc0UsJkVmlO4iMpRPWkrG62WhG/WF5pbeD8+a5EBwrqD+XO
- zDifb5a7+2Qms8jZ4mhHGDTTUlJZ6J2eKmeifDiAw9vTlBGMmY5BFaiXJ2TcDf9H4gZU
- eTIjqfamFifBzDrUFZcgRsuMnjPdfR7MP2dTpevuEgJ/Q6X+8oLvoq2bdfLryjwP55Kw
- B7fRaD/6+5wh5RC7wLqeVGCWbNsgKGMLtkEFicKPG9NoOiENvzfT+SuodyRZ1Oox3/wA
- IfhA==
-X-Gm-Message-State: AOJu0Ywr2zsqZliRQujKLG7xSVfYrnIrHZzE6PQWqsZMZc2pvbwA1Jhh
- SJuZqVmUztPlGD1wdMm10xJKxlPAevnoY7cXZkvMNwfVzZWG+0Q1uU6gVAb2u+pDEZJIP2xBLKT
- L
-X-Google-Smtp-Source: AGHT+IFwktXTj333cP6pxP7EV0Ih3RdsH+v8ojIC9qWKCo/Dzqwwl6wVBIG30ZVmYfjBTF1qHxfvdw==
-X-Received: by 2002:aa7:88d4:0:b0:6e5:456b:bff9 with SMTP id
- k20-20020aa788d4000000b006e5456bbff9mr4604881pff.12.1709059731642; 
- Tue, 27 Feb 2024 10:48:51 -0800 (PST)
+ bh=HEYpUbYOjLF3aHdvtZVlKWz9YeEEY+0zYSzPOHYy/W8=;
+ b=h4zU6Vnk7NEqePkpp900xEGbkeoh8bwDF3nuI2qL47TNqEacb8432klxas4E8pK5F0
+ 2Qm7I9UP+qTtxIQGkDkst3MMXgw8vqcHcapBnQ32DskfnqYk3jKotcREyrfzl57dx3qC
+ 0oIElwagE9mbvsxsfxD6Pi8oNikTH5NcrZrWIJmRxdxS4CVjXtB5eg4dfqRbvEyr4a/a
+ 0Q8LxxwNgHcP5PWUQYwGzj1DyWvyNCjC1Ii/iNDg3l4z6/0UHpiOBEjeII2ydI5jXrYm
+ UOcYGdW/TaMFgmrsmwGw1K+szBSODl2ne5IrgCWpadz7+/0b+RkuLPyGS6xpThPWg0DO
+ mZZg==
+X-Gm-Message-State: AOJu0YzdqDTI7WWuMVU/GyVl/NM9Rlh/wAZYi0lQXTAvE7R51fKzCNnA
+ fX6roM1R68b0yO0l82JDlcpHYc/c1R6qVj7p3nxmYqvWxT9lNjtf0E6yhKuTi4ckgWnDE587CL9
+ 1
+X-Google-Smtp-Source: AGHT+IEYIIrjmkyuNlJNxPK0XPCoXOM8odFDCkQtFVb3/tRbCR13FnFR1o0hZZXbScIjPusZF2fa/g==
+X-Received: by 2002:a9d:6d8f:0:b0:6e2:e5a3:1732 with SMTP id
+ x15-20020a9d6d8f000000b006e2e5a31732mr11607472otp.37.1709059732888; 
+ Tue, 27 Feb 2024 10:48:52 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- h26-20020aa786da000000b006e555d40951sm533465pfo.188.2024.02.27.10.48.50
+ h26-20020aa786da000000b006e555d40951sm533465pfo.188.2024.02.27.10.48.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Feb 2024 10:48:51 -0800 (PST)
+ Tue, 27 Feb 2024 10:48:52 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org
-Subject: [PATCH 11/14] linux-user/elfload: Write process memory to core file
- in larger chunks
-Date: Tue, 27 Feb 2024 08:48:30 -1000
-Message-Id: <20240227184833.193836-12-richard.henderson@linaro.org>
+Subject: [PATCH 12/14] linux-user/elfload: Simplify vma_dump_size
+Date: Tue, 27 Feb 2024 08:48:31 -1000
+Message-Id: <20240227184833.193836-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240227184833.193836-1-richard.henderson@linaro.org>
 References: <20240227184833.193836-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,56 +92,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We do not need to copy pages from guest memory before writing
-them out.  Because vmas are contiguous in host memory, we can
-write them in one go.
+Use the flags that we've already saved in order to test
+accessibility.  Use g2h_untagged and compare guest memory
+directly instead of copy_from_user.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 27 ++++-----------------------
- 1 file changed, 4 insertions(+), 23 deletions(-)
+ linux-user/elfload.c | 34 ++++++++++------------------------
+ 1 file changed, 10 insertions(+), 24 deletions(-)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index b8d07d8054..491e754f72 100644
+index 491e754f72..47b5ce3005 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -4551,32 +4551,13 @@ static int elf_core_dump(int signr, const CPUArchState *env)
-     }
+@@ -4166,37 +4166,23 @@ static int vma_get_mapping_count(const struct mm_struct *mm)
+  */
+ static abi_ulong vma_dump_size(const struct vm_area_struct *vma)
+ {
+-    /* if we cannot even read the first page, skip it */
+-    if (!access_ok_untagged(VERIFY_READ, vma->vma_start, TARGET_PAGE_SIZE))
+-        return (0);
++    /* The area must be readable. */
++    if (!(vma->vma_flags & PROT_READ)) {
++        return 0;
++    }
  
      /*
--     * Finally we can dump process memory into corefile as well.
-+     * Finally write process memory into the corefile as well.
+      * Usually we don't dump executable pages as they contain
+      * non-writable code that debugger can read directly from
+-     * target library etc.  However, thread stacks are marked
+-     * also executable so we read in first page of given region
+-     * and check whether it contains elf header.  If there is
+-     * no elf header, we dump it.
++     * target library etc. If there is no elf header, we dump it.
       */
-     for (vma = vma_first(&mm); vma != NULL; vma = vma_next(vma)) {
--        abi_ulong addr;
--        abi_ulong end;
-+        size_t size = vma_dump_size(vma);
- 
--        end = vma->vma_start + vma_dump_size(vma);
+-    if (vma->vma_flags & PROT_EXEC) {
+-        char page[TARGET_PAGE_SIZE];
 -
--        for (addr = vma->vma_start; addr < end;
--             addr += TARGET_PAGE_SIZE) {
--            char page[TARGET_PAGE_SIZE];
--            int error;
--
+-        if (copy_from_user(page, vma->vma_start, sizeof (page))) {
+-            return 0;
+-        }
+-        if ((page[EI_MAG0] == ELFMAG0) &&
+-            (page[EI_MAG1] == ELFMAG1) &&
+-            (page[EI_MAG2] == ELFMAG2) &&
+-            (page[EI_MAG3] == ELFMAG3)) {
 -            /*
--             *  Read in page from target process memory and
--             *  write it to coredump file.
+-             * Mappings are possibly from ELF binary.  Don't dump
+-             * them.
 -             */
--            error = copy_from_user(page, addr, sizeof (page));
--            if (error != 0) {
--                (void) fprintf(stderr, "unable to dump " TARGET_ABI_FMT_lx "\n",
--                               addr);
--                errno = -error;
--                goto out;
--            }
--            if (dump_write(fd, page, TARGET_PAGE_SIZE) < 0)
--                goto out;
-+        if (size && dump_write(fd, g2h_untagged(vma->vma_start), size) < 0) {
-+            goto out;
-         }
+-            return (0);
+-        }
++    if (!(vma->vma_flags & PROT_WRITE) &&
++        (vma->vma_flags & PROT_EXEC) &&
++        memcmp(g2h_untagged(vma->vma_start), ELFMAG, SELFMAG) == 0) {
++        return 0;
      }
-     errno = 0;
+ 
+-    return (vma->vma_end - vma->vma_start);
++    return vma->vma_end - vma->vma_start;
+ }
+ 
+ static int vma_walker(void *priv, target_ulong start, target_ulong end,
 -- 
 2.34.1
 
