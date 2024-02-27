@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E1CA869261
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:34:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD1286935D
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 14:44:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rexaK-0000jS-1R; Tue, 27 Feb 2024 08:33:28 -0500
+	id 1rexb1-000187-0M; Tue, 27 Feb 2024 08:34:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaF-0000hS-9B
+ id 1rexaF-0000hT-AC
  for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:23 -0500
 Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rexaD-0002qH-IX
+ id 1rexaD-0002qP-M9
  for qemu-devel@nongnu.org; Tue, 27 Feb 2024 08:33:23 -0500
 Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-41241f64c6bso33249095e9.0
+ 5b1f17b1804b1-412a14299a4so21618515e9.1
  for <qemu-devel@nongnu.org>; Tue, 27 Feb 2024 05:33:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1709040800; x=1709645600; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=oFeKXeW31Su0U94AYEZ3ImMqkHFM46i1mg2K/MGn0p4=;
- b=IKo9Xfbqd6xBBFW2ES10/te3r9MPNLAbDh64E/nD/EynTB9XPfFf4ot4hIFV9AQ7Pi
- z44GH8oIF5A2/A0Thjl2Zh+eULztx5uSocmwO2UqQ/nfw7X9w2RwzuYuLWm0EcjksCf6
- lGxxGf2Raz3EjE4QIkeaOS1x488N8A/zCKRQCQcImnOizMhnhCAI3zHU4jQDN7yYx95u
- W7Fl922jPHtH4nkmsWoOYqkkeWwJUz4aNZ9LRCYb5jV03FwDr2YrEpMmtl4mb65qlKIv
- ota1QrDVzf1brLxDO4hyhNb/3LHAvBqp+1i/y/mzdsEyhmRKKO9cPgGKYFunMWEvt9ZB
- /c8A==
+ :reply-to; bh=joGUYxBf+AHBPVlumJel18CoFaqnsq9/5R/fva28MLs=;
+ b=SvGM7GFFl5uFII2d0L7WcjouzXmjkmx/amw6Q7S65ISrhqO216Qr8oqRa8TqyactUo
+ O68R3U1vd7SFvXzqf6A1Vp139GafNnLzqLTPVwIT70foRkR3KOb5AXBmGgDwthOa/AvV
+ ajnV17CVAmOXl6n47iMX4pormd8UgIDdMd0VTo6dgXAjs+kFbUQslHC20Vu52ZXVdFlV
+ arfBgV4j39jKaDac0chsIdKf6mrJkCtxchnNF4YfYU/A6hsFVipO4YzGPNGw6FAP++rq
+ MlOk4JZUYyKd1fCKg0OseErmpjTMhZ38wcQ8u3TxQytuCSCfh9/U+EJXl6O5wCL1MF3u
+ lslQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1709040800; x=1709645600;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oFeKXeW31Su0U94AYEZ3ImMqkHFM46i1mg2K/MGn0p4=;
- b=jAHOJQU/qy0bUAS0g9LFTn8Ac4UrBUCnFF873GLtw7IA6iLwL9lKUrDnoGgKh4TjeA
- 9DLUWjhDszca0Bdh7vgA61Iojq7re+AuRfSM8Da+/X97pfzB3ns4DAZ1YPgWVo9rMfYB
- ukup7RPnD9YzVebOWcX6PH4oOC28F6BcErLijikpFr9IpALxHMPtALN9QAKHyPB8EZlM
- CyJ+FMiIkU9v4n72JUtrn3YFPOlKK6jf0SViSSRv9CuYj4HZCzrFZcLon/9LBOSJx2al
- AIx5D7c6pY5y8igE5vTB105/m50cAcQtLSJZKCogZ7ALDXLDXKkJl7EV+LoNzAnT9x4M
- Es1g==
-X-Gm-Message-State: AOJu0YxvSr7N93i9ldw3Wvy4x4L5XWc/ALbdoTk/3XFEXI8Q0N/efy6z
- 5QwJUkBJrVSk3XzfrdoAHjx3tSZ0otJc82LhJ5PttLVglLbxbIcCjAqGp+Ducd3sCePt9mouPOv
- 6
-X-Google-Smtp-Source: AGHT+IHwp1FYswkHO/xPjoKizp+HsZ74Qic/xrfzWIcUhovQsO2riALGCDiVZ4AYdnfP8ZR5kjEXOg==
-X-Received: by 2002:adf:f3c4:0:b0:33d:5a6f:a856 with SMTP id
- g4-20020adff3c4000000b0033d5a6fa856mr7517558wrp.30.1709040799974; 
- Tue, 27 Feb 2024 05:33:19 -0800 (PST)
+ bh=joGUYxBf+AHBPVlumJel18CoFaqnsq9/5R/fva28MLs=;
+ b=vIMJQKLqUPV7yVNlqHpGQfZmil0IrQKMGzfu+kbE5yqZ/xPvSqhYUZgFpXgAg9rlLT
+ ULflz+ilr//QtSbzzjbq0ok+kMXJGRDMwEx+fiEv9RBYZh+d57Ct9SlYQYNIzyJbYr4r
+ zp6xayCA1c6AlqbqeZV/jGcwE6pb/+km0QK59lJ9ZjlQSwyH34MhCodG8x4O9lGGQBof
+ lLveC5MsC+BSbXA0xRYVnhyvX2gM0V+VGxGV4RHU/Ey5ktBLay6KgWdAvyaImwe+jBkL
+ LmxWB2CgLQPL977mFu2jmr2+y4md5O7ksUOe7LcazEkYC6SR/zE6mnNlIJE3dDg4ooZA
+ qP8w==
+X-Gm-Message-State: AOJu0YzxUi2/BvHFwMv1nfIgl93tnFoXrZAmk4BhvvEaFOnhUNkRMjVu
+ BcQxVbZDZ0FAmAtbRNJGpJMyhxDodXp2c7bdAEnSyQ3mRn9KP8mvymfH5U8h9+MU2FBW77UM2mT
+ o
+X-Google-Smtp-Source: AGHT+IGrLS9SleRZ8pTHHTVmPIagucwFZ3mXF2RDMvHO2XOm8toZiB99uTqPEO5fvLyzZ4AQhc9r6w==
+X-Received: by 2002:a5d:64e9:0:b0:33d:db7a:f8c1 with SMTP id
+ g9-20020a5d64e9000000b0033ddb7af8c1mr4125271wri.48.1709040800397; 
+ Tue, 27 Feb 2024 05:33:20 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- i13-20020adfe48d000000b0033ae7d768b2sm11319552wrm.117.2024.02.27.05.33.19
+ i13-20020adfe48d000000b0033ae7d768b2sm11319552wrm.117.2024.02.27.05.33.20
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Feb 2024 05:33:19 -0800 (PST)
+ Tue, 27 Feb 2024 05:33:20 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/45] tests/qtest: Check that EXTI fan-in irqs are correctly
- connected
-Date: Tue, 27 Feb 2024 13:32:37 +0000
-Message-Id: <20240227133314.1721857-9-peter.maydell@linaro.org>
+Subject: [PULL 09/45] pl031: Update last RTCLR value on write in case it's
+ read back
+Date: Tue, 27 Feb 2024 13:32:38 +0000
+Message-Id: <20240227133314.1721857-10-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240227133314.1721857-1-peter.maydell@linaro.org>
 References: <20240227133314.1721857-1-peter.maydell@linaro.org>
@@ -93,81 +93,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Inès Varhol <ines.varhol@telecom-paris.fr>
+From: Jessica Clarke <jrtc27@jrtc27.com>
 
-This commit adds a QTest that verifies each input line of a specific
-EXTI OR gate can influence the output line.
+The PL031 allows you to read RTCLR, which is meant to give you the last
+value written. PL031State has an lr field which is used when reading
+from RTCLR, and is present in the VM migration state, but we never
+actually update it, so it always reads as its initial 0 value.
 
-Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Jessica Clarke <jrtc27@jrtc27.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-id: 20240222000341.1562443-1-jrtc27@jrtc27.com
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240220184145.106107-3-ines.varhol@telecom-paris.fr
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/qtest/stm32l4x5_exti-test.c | 37 +++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ hw/rtc/pl031.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/qtest/stm32l4x5_exti-test.c b/tests/qtest/stm32l4x5_exti-test.c
-index c3900777139..81830be8aea 100644
---- a/tests/qtest/stm32l4x5_exti-test.c
-+++ b/tests/qtest/stm32l4x5_exti-test.c
-@@ -31,6 +31,7 @@
+diff --git a/hw/rtc/pl031.c b/hw/rtc/pl031.c
+index 837b0bdf9bd..563bb4b446e 100644
+--- a/hw/rtc/pl031.c
++++ b/hw/rtc/pl031.c
+@@ -141,6 +141,7 @@ static void pl031_write(void * opaque, hwaddr offset,
+         g_autofree const char *qom_path = object_get_canonical_path(opaque);
+         struct tm tm;
  
- #define EXTI0_IRQ 6
- #define EXTI1_IRQ 7
-+#define EXTI5_9_IRQ 23
- #define EXTI35_IRQ 1
++        s->lr = value;
+         s->tick_offset += value - pl031_get_count(s);
  
- static void enable_nvic_irq(unsigned int n)
-@@ -499,6 +500,40 @@ static void test_interrupt(void)
-     g_assert_false(check_nvic_pending(EXTI1_IRQ));
- }
- 
-+static void test_orred_interrupts(void)
-+{
-+    /*
-+     * For lines EXTI5..9 (fanned-in to NVIC irq 23),
-+     * test that raising the line pends interrupt
-+     * 23 in NVIC.
-+     */
-+    enable_nvic_irq(EXTI5_9_IRQ);
-+    /* Check that there are no interrupts already pending in PR */
-+    g_assert_cmpuint(exti_readl(EXTI_PR1), ==, 0x00000000);
-+    /* Check that this specific interrupt isn't pending in NVIC */
-+    g_assert_false(check_nvic_pending(EXTI5_9_IRQ));
-+
-+    /* Enable interrupt lines EXTI[5..9] */
-+    exti_writel(EXTI_IMR1, (0x1F << 5));
-+
-+    /* Configure interrupt on rising edge */
-+    exti_writel(EXTI_RTSR1, (0x1F << 5));
-+
-+    /* Raise GPIO line i, check that the interrupt is pending */
-+    for (unsigned i = 5; i < 10; i++) {
-+        exti_set_irq(i, 1);
-+        g_assert_cmpuint(exti_readl(EXTI_PR1), ==, 1 << i);
-+        g_assert_true(check_nvic_pending(EXTI5_9_IRQ));
-+
-+        exti_writel(EXTI_PR1, 1 << i);
-+        g_assert_cmpuint(exti_readl(EXTI_PR1), ==, 0x00000000);
-+        g_assert_true(check_nvic_pending(EXTI5_9_IRQ));
-+
-+        unpend_nvic_irq(EXTI5_9_IRQ);
-+        g_assert_false(check_nvic_pending(EXTI5_9_IRQ));
-+    }
-+}
-+
- int main(int argc, char **argv)
- {
-     int ret;
-@@ -515,6 +550,8 @@ int main(int argc, char **argv)
-     qtest_add_func("stm32l4x5/exti/masked_interrupt", test_masked_interrupt);
-     qtest_add_func("stm32l4x5/exti/interrupt", test_interrupt);
-     qtest_add_func("stm32l4x5/exti/test_edge_selector", test_edge_selector);
-+    qtest_add_func("stm32l4x5/exti/test_orred_interrupts",
-+                   test_orred_interrupts);
- 
-     qtest_start("-machine b-l475e-iot01a");
-     ret = g_test_run();
+         qemu_get_timedate(&tm, s->tick_offset);
 -- 
 2.34.1
 
