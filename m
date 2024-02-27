@@ -2,67 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07AEC86A0FF
+	by mail.lfdr.de (Postfix) with ESMTPS id B770E86A102
 	for <lists+qemu-devel@lfdr.de>; Tue, 27 Feb 2024 21:46:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rf4Ky-00064x-M6; Tue, 27 Feb 2024 15:46:04 -0500
+	id 1rf4KW-0005Zx-Pl; Tue, 27 Feb 2024 15:45:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=GitP=KE=redhat.com=clg@ozlabs.org>)
- id 1rf1oi-0003uo-3I
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:04:36 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ id 1rf1ol-00049O-Nd
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:04:39 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=GitP=KE=redhat.com=clg@ozlabs.org>)
- id 1rf1of-0001X1-IJ
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:04:35 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Tklk746g7z4wyt;
- Wed, 28 Feb 2024 05:04:31 +1100 (AEDT)
+ id 1rf1oi-0001XD-Op
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 13:04:39 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TklkB5Jcbz4wyx;
+ Wed, 28 Feb 2024 05:04:34 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tklk23Xq1z4wyj;
- Wed, 28 Feb 2024 05:04:26 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tklk812QSz4wyj;
+ Wed, 28 Feb 2024 05:04:31 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Alex Williamson <alex.williamson@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Hyman Huang <yong.huang@smartx.com>
-Subject: [PATCH v2 09/21] memory: Add Error** argument to the global_dirty_log
- routines
-Date: Tue, 27 Feb 2024 19:03:33 +0100
-Message-ID: <20240227180345.548960-10-clg@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v2 10/21] migration: Modify ram_init_bitmaps() to report dirty
+ tracking errors
+Date: Tue, 27 Feb 2024 19:03:34 +0100
+Message-ID: <20240227180345.548960-11-clg@redhat.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240227180345.548960-1-clg@redhat.com>
 References: <20240227180345.548960-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=GitP=KE=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 27 Feb 2024 15:45:29 -0500
+X-Mailman-Approved-At: Tue, 27 Feb 2024 15:45:32 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,306 +71,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that the log_global*() handlers take an Error** parameter and
-return a bool, do the same for memory_global_dirty_log_start() and
-memory_global_dirty_log_stop(). The error is reported in the callers
-for now and it will be propagated in the call stack in the next
-changes.
+The .save_setup() handler has now an Error** argument that we can use
+to propagate errors reported by the .log_global_start() handler. Do
+that for the RAM. The caller qemu_savevm_state_setup() will store the
+error under the migration stream for later detection in the migration
+sequence.
 
-To be noted a functional change in ram_init_bitmaps(), if the dirty
-pages logger fails to start, there is no need to synchronize the dirty
-pages bitmaps. colo_incoming_start_dirty_log() could be modified in a
-similar way.
-
-Cc: Stefano Stabellini <sstabellini@kernel.org>
-Cc: Anthony Perard <anthony.perard@citrix.com>
-Cc: Paul Durrant <paul@xen.org>
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Hyman Huang <yong.huang@smartx.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/exec/memory.h | 10 ++++++++--
- hw/i386/xen/xen-hvm.c |  4 ++--
- migration/dirtyrate.c | 21 +++++++++++++++++----
- migration/ram.c       | 34 ++++++++++++++++++++++++++++++----
- system/memory.c       | 30 ++++++++++++------------------
- 5 files changed, 69 insertions(+), 30 deletions(-)
+ migration/ram.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 4bc146c5ebdd377cd14a4e462f32cc945db5a0a8..8b019465ab13ce85c03075c80865a0865ea1feed 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -2576,15 +2576,21 @@ void memory_listener_unregister(MemoryListener *listener);
-  * memory_global_dirty_log_start: begin dirty logging for all regions
-  *
-  * @flags: purpose of starting dirty log, migration or dirty rate
-+ * @errp: pointer to Error*, to store an error if it happens.
-+ *
-+ * Return: true on success, else false setting @errp with error.
-  */
--void memory_global_dirty_log_start(unsigned int flags);
-+bool memory_global_dirty_log_start(unsigned int flags, Error **errp);
- 
- /**
-  * memory_global_dirty_log_stop: end dirty logging for all regions
-  *
-  * @flags: purpose of stopping dirty log, migration or dirty rate
-+ * @errp: pointer to Error*, to store an error if it happens.
-+ *
-+ * Return: true on success, else false setting @errp with error.
-  */
--void memory_global_dirty_log_stop(unsigned int flags);
-+bool memory_global_dirty_log_stop(unsigned int flags, Error **errp);
- 
- void mtree_info(bool flatview, bool dispatch_tree, bool owner, bool disabled);
- 
-diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
-index 925a207b494b4eed52d5f360b554f18ac8a9806d..286269b47572d90e57df5ff44835bb5f8e16c7ad 100644
---- a/hw/i386/xen/xen-hvm.c
-+++ b/hw/i386/xen/xen-hvm.c
-@@ -655,9 +655,9 @@ void xen_hvm_modified_memory(ram_addr_t start, ram_addr_t length)
- void qmp_xen_set_global_dirty_log(bool enable, Error **errp)
- {
-     if (enable) {
--        memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION);
-+        memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION, errp);
-     } else {
--        memory_global_dirty_log_stop(GLOBAL_DIRTY_MIGRATION);
-+        memory_global_dirty_log_stop(GLOBAL_DIRTY_MIGRATION, errp);
-     }
- }
- 
-diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
-index 1d2e85746fb7b10eb7f149976970f9a92125af8a..34f6d803ff5f4e6ccf2e06aaaed65a336c4be469 100644
---- a/migration/dirtyrate.c
-+++ b/migration/dirtyrate.c
-@@ -90,11 +90,17 @@ static int64_t do_calculate_dirtyrate(DirtyPageRecord dirty_pages,
- 
- void global_dirty_log_change(unsigned int flag, bool start)
- {
-+    Error *local_err = NULL;
-+    bool ret;
-+
-     bql_lock();
-     if (start) {
--        memory_global_dirty_log_start(flag);
-+        ret = memory_global_dirty_log_start(flag, &local_err);
-     } else {
--        memory_global_dirty_log_stop(flag);
-+        ret = memory_global_dirty_log_stop(flag, &local_err);
-+    }
-+    if (!ret) {
-+        error_report_err(local_err);
-     }
-     bql_unlock();
- }
-@@ -106,10 +112,14 @@ void global_dirty_log_change(unsigned int flag, bool start)
-  */
- static void global_dirty_log_sync(unsigned int flag, bool one_shot)
- {
-+    Error *local_err = NULL;
-+
-     bql_lock();
-     memory_global_dirty_log_sync(false);
-     if (one_shot) {
--        memory_global_dirty_log_stop(flag);
-+        if (!memory_global_dirty_log_stop(flag, &local_err)) {
-+            error_report_err(local_err);
-+        }
-     }
-     bql_unlock();
- }
-@@ -608,9 +618,12 @@ static void calculate_dirtyrate_dirty_bitmap(struct DirtyRateConfig config)
- {
-     int64_t start_time;
-     DirtyPageRecord dirty_pages;
-+    Error *local_err = NULL;
- 
-     bql_lock();
--    memory_global_dirty_log_start(GLOBAL_DIRTY_DIRTY_RATE);
-+    if (!memory_global_dirty_log_start(GLOBAL_DIRTY_DIRTY_RATE, &local_err)) {
-+        error_report_err(local_err);
-+    }
- 
-     /*
-      * 1'round of log sync may return all 1 bits with
 diff --git a/migration/ram.c b/migration/ram.c
-index d648134133fc22cd91c7b2064198a90287ee733d..9fb1875aad73b2fa009199bdfa8960339df7287d 100644
+index 9fb1875aad73b2fa009199bdfa8960339df7287d..23f4df4779309bbbe164c56c1436b60d65749860 100644
 --- a/migration/ram.c
 +++ b/migration/ram.c
-@@ -2391,6 +2391,7 @@ static void ram_save_cleanup(void *opaque)
- {
-     RAMState **rsp = opaque;
-     RAMBlock *block;
-+    Error *local_err = NULL;
- 
-     /* We don't use dirty log with background snapshots */
-     if (!migrate_background_snapshot()) {
-@@ -2403,7 +2404,10 @@ static void ram_save_cleanup(void *opaque)
-              * memory_global_dirty_log_stop will assert that
-              * memory_global_dirty_log_start/stop used in pairs
-              */
--            memory_global_dirty_log_stop(GLOBAL_DIRTY_MIGRATION);
-+            if (!memory_global_dirty_log_stop(GLOBAL_DIRTY_MIGRATION,
-+                                              &local_err)) {
-+                error_report_err(local_err);
-+            }
-         }
+@@ -2802,9 +2802,8 @@ static void migration_bitmap_clear_discarded_pages(RAMState *rs)
      }
+ }
  
-@@ -2800,18 +2804,31 @@ static void migration_bitmap_clear_discarded_pages(RAMState *rs)
- 
- static void ram_init_bitmaps(RAMState *rs)
+-static void ram_init_bitmaps(RAMState *rs)
++static bool ram_init_bitmaps(RAMState *rs, Error **errp)
  {
-+    Error *local_err = NULL;
-+    bool ret = true;
-+
-     qemu_mutex_lock_ramlist();
+-    Error *local_err = NULL;
+     bool ret = true;
  
-     WITH_RCU_READ_LOCK_GUARD() {
+     qemu_mutex_lock_ramlist();
+@@ -2813,10 +2812,8 @@ static void ram_init_bitmaps(RAMState *rs)
          ram_list_init_bitmaps();
          /* We don't use dirty log with background snapshots */
          if (!migrate_background_snapshot()) {
--            memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION);
-+            ret = memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION,
-+                                                &local_err);
-+            if (!ret) {
-+                error_report_err(local_err);
-+                goto out_unlock;
-+            }
+-            ret = memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION,
+-                                                &local_err);
++            ret = memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION, errp);
+             if (!ret) {
+-                error_report_err(local_err);
+                 goto out_unlock;
+             }
              migration_bitmap_sync_precopy(rs, false);
-         }
-     }
-+out_unlock:
+@@ -2826,7 +2823,7 @@ out_unlock:
      qemu_mutex_unlock_ramlist();
  
-+    if (!ret) {
-+        return;
-+    }
-+
-     /*
-      * After an eventual first bitmap sync, fixup the initial bitmap
-      * containing all 1s to exclude any discarded pages from migration.
-@@ -3451,6 +3468,8 @@ int colo_init_ram_cache(void)
- void colo_incoming_start_dirty_log(void)
- {
-     RAMBlock *block = NULL;
-+    Error *local_err = NULL;
-+
-     /* For memory_global_dirty_log_start below. */
-     bql_lock();
-     qemu_mutex_lock_ramlist();
-@@ -3462,7 +3481,10 @@ void colo_incoming_start_dirty_log(void)
-             /* Discard this dirty bitmap record */
-             bitmap_zero(block->bmap, block->max_length >> TARGET_PAGE_BITS);
-         }
--        memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION);
-+        if (!memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION,
-+                                           &local_err)) {
-+            error_report_err(local_err);
-+        }
-     }
-     ram_state->migration_dirty_pages = 0;
-     qemu_mutex_unlock_ramlist();
-@@ -3473,8 +3495,12 @@ void colo_incoming_start_dirty_log(void)
- void colo_release_ram_cache(void)
- {
-     RAMBlock *block;
-+    Error *local_err = NULL;
-+
-+    if (!memory_global_dirty_log_stop(GLOBAL_DIRTY_MIGRATION, &local_err)) {
-+        error_report_err(local_err);
-+    }
- 
--    memory_global_dirty_log_stop(GLOBAL_DIRTY_MIGRATION);
-     RAMBLOCK_FOREACH_NOT_IGNORED(block) {
-         g_free(block->bmap);
-         block->bmap = NULL;
-diff --git a/system/memory.c b/system/memory.c
-index af06157ead5b1272548e87f79ab9fb3036055328..48aed0f8ece1c731849636c442b8ab8e5d7ff6a5 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -2949,25 +2949,24 @@ static unsigned int postponed_stop_flags;
- static VMChangeStateEntry *vmstate_change;
- static bool memory_global_dirty_log_stop_postponed_run(Error **errp);
- 
--void memory_global_dirty_log_start(unsigned int flags)
-+bool memory_global_dirty_log_start(unsigned int flags, Error **errp)
- {
-+    ERRP_GUARD();
-     unsigned int old_flags;
--    Error *local_err = NULL;
- 
-     assert(flags && !(flags & (~GLOBAL_DIRTY_MASK)));
- 
-     if (vmstate_change) {
-         /* If there is postponed stop(), operate on it first */
-         postponed_stop_flags &= ~flags;
--        if (!memory_global_dirty_log_stop_postponed_run(&local_err)) {
--            error_report_err(local_err);
--            return;
-+        if (!memory_global_dirty_log_stop_postponed_run(errp)) {
-+            return false;
-         }
-     }
- 
-     flags &= ~global_dirty_tracking;
-     if (!flags) {
+     if (!ret) {
 -        return;
-+        return true;
++        return false;
      }
  
-     old_flags = global_dirty_tracking;
-@@ -2975,16 +2974,15 @@ void memory_global_dirty_log_start(unsigned int flags)
-     trace_global_dirty_changed(global_dirty_tracking);
- 
-     if (!old_flags) {
--        MEMORY_LISTENER_CALL_LOG_GLOBAL(log_global_start, Forward,
--                                        &local_err);
--        if (local_err) {
--            error_report_err(local_err);
--            return;
-+        MEMORY_LISTENER_CALL_LOG_GLOBAL(log_global_start, Forward, errp);
-+        if (*errp) {
-+            return false;
-         }
-         memory_region_transaction_begin();
-         memory_region_update_pending = true;
-         memory_region_transaction_commit();
-     }
+     /*
+@@ -2834,9 +2831,10 @@ out_unlock:
+      * containing all 1s to exclude any discarded pages from migration.
+      */
+     migration_bitmap_clear_discarded_pages(rs);
 +    return true;
  }
  
- static bool memory_global_dirty_log_do_stop(unsigned int flags, Error **errp)
-@@ -3040,10 +3038,8 @@ static void memory_vm_change_state_handler(void *opaque, bool running,
-     }
- }
- 
--void memory_global_dirty_log_stop(unsigned int flags)
-+bool memory_global_dirty_log_stop(unsigned int flags, Error **errp)
+-static int ram_init_all(RAMState **rsp)
++static int ram_init_all(RAMState **rsp, Error **errp)
  {
--    Error *local_err = NULL;
--
-     if (!runstate_is_running()) {
-         /* Postpone the dirty log stop, e.g., to when VM starts again */
-         if (vmstate_change) {
-@@ -3054,12 +3050,10 @@ void memory_global_dirty_log_stop(unsigned int flags)
-             vmstate_change = qemu_add_vm_change_state_handler(
-                 memory_vm_change_state_handler, NULL);
-         }
--        return;
-+        return true;
+     if (ram_state_init(rsp)) {
+         return -1;
+@@ -2847,7 +2845,9 @@ static int ram_init_all(RAMState **rsp)
+         return -1;
      }
  
--    if (!memory_global_dirty_log_do_stop(flags, &local_err)) {
--        error_report_err(local_err);
--    }
-+    return memory_global_dirty_log_do_stop(flags, errp);
- }
+-    ram_init_bitmaps(*rsp);
++    if (!ram_init_bitmaps(*rsp, errp)) {
++        return -1;
++    }
  
- static void listener_add_address_space(MemoryListener *listener,
+     return 0;
+ }
+@@ -2961,7 +2961,7 @@ static int ram_save_setup(QEMUFile *f, void *opaque, Error **errp)
+ 
+     /* migration has already setup the bitmap, reuse it. */
+     if (!migration_in_colo_state()) {
+-        if (ram_init_all(rsp) != 0) {
++        if (ram_init_all(rsp, errp) != 0) {
+             compress_threads_save_cleanup();
+             return -1;
+         }
 -- 
 2.43.2
 
