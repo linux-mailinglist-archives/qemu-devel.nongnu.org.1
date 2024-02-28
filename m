@@ -2,115 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD6686B302
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 16:23:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A81EC86B31F
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 16:26:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfLlT-0006lg-8r; Wed, 28 Feb 2024 10:22:35 -0500
+	id 1rfLns-00009B-QT; Wed, 28 Feb 2024 10:25:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfLlM-0006kk-4y
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 10:22:31 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rfLno-0008Er-ES
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 10:25:00 -0500
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfLlI-0005db-Qp
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 10:22:27 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 8E9ED1F796;
- Wed, 28 Feb 2024 15:22:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709133743; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MRUen7n9cmpzvKeZTt66SEdmCNIg800k4S1bHlTmpVw=;
- b=JjoqSy7cvHV4YNVdz0G+9Anu2zdpTp9/lCXY4C+dASlb/Br0YlH93R7mo1xdFcNLctJLRC
- qEn/7L1+KrTekTHWVxDuHwQ/iOBj40Bs+cxjcS6469I8xYI+cezWQSDTInwqCNVeI/UJKr
- /AhMWnpCeexxfyGvoemCZbFR4mtUcJw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709133743;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MRUen7n9cmpzvKeZTt66SEdmCNIg800k4S1bHlTmpVw=;
- b=pYC/HV1VD8zOFhvkj5S9yAS1qfJCWbjv3X0B20bsLXtCelXkNyQPh4jP85Ppe5aIgNCiWW
- nWNsSvQZWTN1pkAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709133743; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MRUen7n9cmpzvKeZTt66SEdmCNIg800k4S1bHlTmpVw=;
- b=JjoqSy7cvHV4YNVdz0G+9Anu2zdpTp9/lCXY4C+dASlb/Br0YlH93R7mo1xdFcNLctJLRC
- qEn/7L1+KrTekTHWVxDuHwQ/iOBj40Bs+cxjcS6469I8xYI+cezWQSDTInwqCNVeI/UJKr
- /AhMWnpCeexxfyGvoemCZbFR4mtUcJw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709133743;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MRUen7n9cmpzvKeZTt66SEdmCNIg800k4S1bHlTmpVw=;
- b=pYC/HV1VD8zOFhvkj5S9yAS1qfJCWbjv3X0B20bsLXtCelXkNyQPh4jP85Ppe5aIgNCiWW
- nWNsSvQZWTN1pkAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 48B3213A5D;
- Wed, 28 Feb 2024 15:22:21 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id uLlIBK1P32UPAwAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 28 Feb 2024 15:22:21 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
- Claudio Fontana <cfontana@suse.de>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v5 23/23] tests/qtest/migration: Add a multifd + mapped-ram
- migration test
-Date: Wed, 28 Feb 2024 12:21:27 -0300
-Message-Id: <20240228152127.18769-24-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20240228152127.18769-1-farosas@suse.de>
-References: <20240228152127.18769-1-farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rfLnk-0006Fd-BA
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 10:25:00 -0500
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2d228a132acso76524341fa.0
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 07:24:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1709133894; x=1709738694; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Jp+7AFRf/5bdQKKYqATGX4V0b2scFyEtgy5iAi36glE=;
+ b=rFslL10UoPA7hdZkhIaEY5r70JrZ0QHOEr+yGPGwK5N74ngIvDkdNq6PesHgFNLcZV
+ FJlrTsULdsN23EvlHaeFGpzOJB1n6JtI1HbH53vLLYtG7ZZX/F0gvMWigOQkci9lZxBF
+ K/ZXtrDLo6L10yiAPWJ4R1iH8w7N5+RuDcKGTyzCWjL7ep+y9wmDK8WY6F89Q4O0kTKB
+ f9iTJfZpcTcUfK1vkjRts/xjyjcQNugvmyXQBZh0Rdv/CuzTwHKVEy+Lg3Zl/qXUCp9N
+ z3Ea7er59cLK75BQ/VmFfhi3coiMf3ahCEFd4T7j82kRE18ZhzhIkUIofpN3nNYPktTX
+ lx2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709133894; x=1709738694;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Jp+7AFRf/5bdQKKYqATGX4V0b2scFyEtgy5iAi36glE=;
+ b=Gy3i79VzSm29qgsjS6/Z5NyKnt7dDhCImDNV8gkjwQzl1/Q38248wRD89b5lCbiKmT
+ mnJCcplfcBQ0Mzj1NoOfifFj0IktvbaUmtpnhlN1ihJe2BALXg/EWGmEoKE+Hm7+SDBH
+ 6HChGpk5eFBfK4Ohea8wdJy9+2pmdROCJ+3qnjo18om+6MAPeFbWKR+5S+M/Cmk2Hq3b
+ gAaQzi6QFY2dCvfK2R1TgBQkzIH/DuFlq0ENN1v8/JRc3/hngyjOyl9tY0K5huVDDGI3
+ YGz0D8LnS2o1ZISEhqxflGSDN6wr+VvPALbRTPr/krFavC4moOTnFm1hvk+KuJ2D22i4
+ B3sw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUHfoHZWSUzxf9rWN2i1hZxjGz7YV9uqFiXFTgdJxfkLLzPZw+ues+L0AR2uD57V5Alm2U3N+Pb74jhiodUsCzsu0UYxPE=
+X-Gm-Message-State: AOJu0YycOFeFfNN2iVutKhkeo0IvwxlswolBAd77/PDDUBtbMUiHqS2X
+ 211PKWJ9JGnxePySCQRNWPBlp3EVr5vsnnCgOqdRhDoh6g3lcbfUvuChXvFIL83xt7szrIBQJjZ
+ klpc=
+X-Google-Smtp-Source: AGHT+IGxlAJjnC29Qqi/PJZRbDZGihp0vIaZK8TgT6oXKDxbgDfFxcf7FQ7CMh/do9csxvYbCMRZKA==
+X-Received: by 2002:a2e:9982:0:b0:2d2:a3ae:b339 with SMTP id
+ w2-20020a2e9982000000b002d2a3aeb339mr3061015lji.48.1709133894200; 
+ Wed, 28 Feb 2024 07:24:54 -0800 (PST)
+Received: from [192.168.61.175] (122.red-88-29-183.dynamicip.rima-tde.net.
+ [88.29.183.122]) by smtp.gmail.com with ESMTPSA id
+ o30-20020a05600c511e00b0041294d015fbsm2487516wms.40.2024.02.28.07.24.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 28 Feb 2024 07:24:52 -0800 (PST)
+Message-ID: <3ac7d304-6bf4-49fa-b19e-74925409e736@linaro.org>
+Date: Wed, 28 Feb 2024 16:24:47 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: /
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JjoqSy7c;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="pYC/HV1V"
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [0.49 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- R_MISSING_CHARSET(2.50)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- MIME_GOOD(-0.10)[text/plain]; BROKEN_CONTENT_TYPE(1.50)[];
- NEURAL_HAM_LONG(-1.00)[-1.000]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
- RCPT_COUNT_SEVEN(0.00)[8]; MID_CONTAINS_FROM(1.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- RCVD_TLS_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%]
-X-Spam-Score: 0.49
-X-Rspamd-Queue-Id: 8E9ED1F796
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: Update Sriram Yagnaraman mail address
+Content-Language: en-US
+To: Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, qemu-devel@nongnu.org
+References: <20240228080625.2412372-1-sriram.yagnaraman@ericsson.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240228080625.2412372-1-sriram.yagnaraman@ericsson.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x229.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -127,106 +93,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- tests/qtest/migration-test.c | 68 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
+Hi Sriram,
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 64a26009e9..a71504b262 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -2248,6 +2248,46 @@ static void test_precopy_file_mapped_ram(void)
-     test_file_common(&args, true);
- }
- 
-+static void *migrate_multifd_mapped_ram_start(QTestState *from, QTestState *to)
-+{
-+    migrate_mapped_ram_start(from, to);
-+
-+    migrate_set_parameter_int(from, "multifd-channels", 4);
-+    migrate_set_parameter_int(to, "multifd-channels", 4);
-+
-+    migrate_set_capability(from, "multifd", true);
-+    migrate_set_capability(to, "multifd", true);
-+
-+    return NULL;
-+}
-+
-+static void test_multifd_file_mapped_ram_live(void)
-+{
-+    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
-+                                           FILE_TEST_FILENAME);
-+    MigrateCommon args = {
-+        .connect_uri = uri,
-+        .listen_uri = "defer",
-+        .start_hook = migrate_multifd_mapped_ram_start,
-+    };
-+
-+    test_file_common(&args, false);
-+}
-+
-+static void test_multifd_file_mapped_ram(void)
-+{
-+    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
-+                                           FILE_TEST_FILENAME);
-+    MigrateCommon args = {
-+        .connect_uri = uri,
-+        .listen_uri = "defer",
-+        .start_hook = migrate_multifd_mapped_ram_start,
-+    };
-+
-+    test_file_common(&args, true);
-+}
-+
-+
- static void test_precopy_tcp_plain(void)
- {
-     MigrateCommon args = {
-@@ -2524,6 +2564,25 @@ static void test_migrate_precopy_fd_file_mapped_ram(void)
-     };
-     test_file_common(&args, true);
- }
-+
-+static void *migrate_multifd_fd_mapped_ram_start(QTestState *from,
-+                                                QTestState *to)
-+{
-+    migrate_multifd_mapped_ram_start(from, to);
-+    return migrate_precopy_fd_file_start(from, to);
-+}
-+
-+static void test_multifd_fd_mapped_ram(void)
-+{
-+    MigrateCommon args = {
-+        .connect_uri = "fd:fd-mig",
-+        .listen_uri = "defer",
-+        .start_hook = migrate_multifd_fd_mapped_ram_start,
-+        .finish_hook = test_migrate_fd_finish_hook
-+    };
-+
-+    test_file_common(&args, true);
-+}
- #endif /* _WIN32 */
- 
- static void do_test_validate_uuid(MigrateStart *args, bool should_fail)
-@@ -3566,6 +3625,15 @@ int main(int argc, char **argv)
-     migration_test_add("/migration/precopy/file/mapped-ram/live",
-                        test_precopy_file_mapped_ram_live);
- 
-+    migration_test_add("/migration/multifd/file/mapped-ram",
-+                       test_multifd_file_mapped_ram);
-+    migration_test_add("/migration/multifd/file/mapped-ram/live",
-+                       test_multifd_file_mapped_ram_live);
-+#ifndef _WIN32
-+    migration_test_add("/migration/multifd/fd/mapped-ram",
-+                       test_multifd_fd_mapped_ram);
-+#endif
-+
- #ifdef CONFIG_GNUTLS
-     migration_test_add("/migration/precopy/unix/tls/psk",
-                        test_precopy_unix_tls_psk);
--- 
-2.35.3
+On 28/2/24 09:06, Sriram Yagnaraman wrote:
+> Due to company policies, I have changed my mail address. Updating
+> MAINTAINERS and .mailmap to show my latest mail address.
+> 
+> Signed-off-by: Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>
+> ---
+>   .mailmap    | 1 +
+>   MAINTAINERS | 2 +-
+>   2 files changed, 2 insertions(+), 1 deletion(-)
+
+
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 65dfdc9677..0a3294f698 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2474,7 +2474,7 @@ F: tests/qtest/libqos/e1000e.*
+>   
+>   igb
+>   M: Akihiko Odaki <akihiko.odaki@daynix.com>
+> -R: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
+
+Could you confirm this from your <sriram.yagnaraman@est.tech>
+address?
+
+> +R: Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>
+>   S: Maintained
+>   F: docs/system/devices/igb.rst
+>   F: hw/net/igb*
 
 
