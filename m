@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D79B386BB71
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 00:00:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9598486BB52
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 23:58:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfSqP-000665-Q2; Wed, 28 Feb 2024 17:56:09 -0500
+	id 1rfSqN-0005zx-9h; Wed, 28 Feb 2024 17:56:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rfSq8-0005qT-Ls; Wed, 28 Feb 2024 17:55:54 -0500
+ id 1rfSqC-0005s5-Dm; Wed, 28 Feb 2024 17:55:57 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rfSq6-0000n0-4D; Wed, 28 Feb 2024 17:55:52 -0500
+ id 1rfSq8-0000nm-4C; Wed, 28 Feb 2024 17:55:55 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5432B51813;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6291B51814;
  Thu, 29 Feb 2024 01:55:33 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B818E8BB46;
+ by tsrv.corpit.ru (Postfix) with SMTP id C7E128BB47;
  Thu, 29 Feb 2024 01:54:56 +0300 (MSK)
-Received: (nullmailer pid 274155 invoked by uid 1000);
+Received: (nullmailer pid 274159 invoked by uid 1000);
  Wed, 28 Feb 2024 22:54:55 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.2 74/78] target/i386: remove unnecessary/wrong
- application of the A20 mask
-Date: Thu, 29 Feb 2024 01:54:50 +0300
-Message-Id: <20240228225455.274062-14-mjt@tls.msk.ru>
+Subject: [Stable-8.2.2 75/78] target/i386: leave the A20 bit set in the final
+ NPT walk
+Date: Thu, 29 Feb 2024 01:54:51 +0300
+Message-Id: <20240228225455.274062-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.2-20240229000326@cover.tls.msk.ru>
 References: <qemu-stable-8.2.2-20240229000326@cover.tls.msk.ru>
@@ -62,107 +62,56 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-If ptw_translate() does a MMU_PHYS_IDX access, the A20 mask is already
-applied in get_physical_address(), which is called via probe_access_full()
-and x86_cpu_tlb_fill().
+The A20 mask is only applied to the final memory access.  Nested
+page tables are always walked with the raw guest-physical address.
 
-If ptw_translate() on the other hand does a MMU_NESTED_IDX access,
-the A20 mask must not be applied to the address that is looked up in
-the nested page tables; it must be applied only to the addresses that
-hold the NPT entries (which is achieved via MMU_PHYS_IDX, per the
-previous paragraph).
-
-Therefore, we can remove A20 masking from the computation of the page
-table entry's address, and let get_physical_address() or mmu_translate()
-apply it when they know they are returning a host-physical address.
+Unlike the previous patch, in this one the masking must be kept, but
+it was done too early.
 
 Cc: qemu-stable@nongnu.org
 Fixes: 4a1e9d4d11c ("target/i386: Use atomic operations for pte updates", 2022-10-18)
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit a28fe7dc1939333c81b895cdced81c69eb7c5ad0)
+(cherry picked from commit b5a9de3259f4c791bde2faff086dd5737625e41e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
-index 38c313abc9..89df61eec6 100644
+index 89df61eec6..e16d3a69d1 100644
 --- a/target/i386/tcg/sysemu/excp_helper.c
 +++ b/target/i386/tcg/sysemu/excp_helper.c
-@@ -164,8 +164,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-                 /*
-                  * Page table level 5
-                  */
--                pte_addr = ((in->cr3 & ~0xfff) +
--                            (((addr >> 48) & 0x1ff) << 3)) & a20_mask;
-+                pte_addr = (in->cr3 & ~0xfff) + (((addr >> 48) & 0x1ff) << 3);
-                 if (!ptw_translate(&pte_trans, pte_addr)) {
-                     return false;
-                 }
-@@ -189,8 +188,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-             /*
-              * Page table level 4
-              */
--            pte_addr = ((pte & PG_ADDRESS_MASK) +
--                        (((addr >> 39) & 0x1ff) << 3)) & a20_mask;
-+            pte_addr = (pte & PG_ADDRESS_MASK) + (((addr >> 39) & 0x1ff) << 3);
-             if (!ptw_translate(&pte_trans, pte_addr)) {
-                 return false;
-             }
-@@ -210,8 +208,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-             /*
-              * Page table level 3
-              */
--            pte_addr = ((pte & PG_ADDRESS_MASK) +
--                        (((addr >> 30) & 0x1ff) << 3)) & a20_mask;
-+            pte_addr = (pte & PG_ADDRESS_MASK) + (((addr >> 30) & 0x1ff) << 3);
-             if (!ptw_translate(&pte_trans, pte_addr)) {
-                 return false;
-             }
-@@ -238,7 +235,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-             /*
-              * Page table level 3
-              */
--            pte_addr = ((in->cr3 & 0xffffffe0ULL) + ((addr >> 27) & 0x18)) & a20_mask;
-+            pte_addr = (in->cr3 & 0xffffffe0ULL) + ((addr >> 27) & 0x18);
-             if (!ptw_translate(&pte_trans, pte_addr)) {
-                 return false;
-             }
-@@ -260,8 +257,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-         /*
-          * Page table level 2
-          */
--        pte_addr = ((pte & PG_ADDRESS_MASK) +
--                    (((addr >> 21) & 0x1ff) << 3)) & a20_mask;
-+        pte_addr = (pte & PG_ADDRESS_MASK) + (((addr >> 21) & 0x1ff) << 3);
-         if (!ptw_translate(&pte_trans, pte_addr)) {
-             return false;
+@@ -134,7 +134,6 @@ static inline bool ptw_setl(const PTETranslate *in, uint32_t old, uint32_t set)
+ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
+                           TranslateResult *out, TranslateFault *err)
+ {
+-    const int32_t a20_mask = x86_get_a20_mask(env);
+     const target_ulong addr = in->addr;
+     const int pg_mode = in->pg_mode;
+     const bool is_user = (in->mmu_idx == MMU_USER_IDX);
+@@ -417,10 +416,13 @@ do_check_protect_pse36:
          }
-@@ -287,8 +283,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-         /*
-          * Page table level 1
-          */
--        pte_addr = ((pte & PG_ADDRESS_MASK) +
--                    (((addr >> 12) & 0x1ff) << 3)) & a20_mask;
-+        pte_addr = (pte & PG_ADDRESS_MASK) + (((addr >> 12) & 0x1ff) << 3);
-         if (!ptw_translate(&pte_trans, pte_addr)) {
-             return false;
+     }
+ 
+-    /* align to page_size */
+-    paddr = (pte & a20_mask & PG_ADDRESS_MASK & ~(page_size - 1))
+-          | (addr & (page_size - 1));
++    /* merge offset within page */
++    paddr = (pte & PG_ADDRESS_MASK & ~(page_size - 1)) | (addr & (page_size - 1));
+ 
++    /*
++     * Note that NPT is walked (for both paging structures and final guest
++     * addresses) using the address with the A20 bit set.
++     */
+     if (in->ptw_idx == MMU_NESTED_IDX) {
+         CPUTLBEntryFull *full;
+         int flags, nested_page_size;
+@@ -459,7 +461,7 @@ do_check_protect_pse36:
          }
-@@ -306,7 +301,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-         /*
-          * Page table level 2
-          */
--        pte_addr = ((in->cr3 & 0xfffff000ULL) + ((addr >> 20) & 0xffc)) & a20_mask;
-+        pte_addr = (in->cr3 & 0xfffff000ULL) + ((addr >> 20) & 0xffc);
-         if (!ptw_translate(&pte_trans, pte_addr)) {
-             return false;
-         }
-@@ -335,7 +330,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-         /*
-          * Page table level 1
-          */
--        pte_addr = ((pte & ~0xfffu) + ((addr >> 10) & 0xffc)) & a20_mask;
-+        pte_addr = (pte & ~0xfffu) + ((addr >> 10) & 0xffc);
-         if (!ptw_translate(&pte_trans, pte_addr)) {
-             return false;
-         }
+     }
+ 
+-    out->paddr = paddr;
++    out->paddr = paddr & x86_get_a20_mask(env);
+     out->prot = prot;
+     out->page_size = page_size;
+     return true;
 -- 
 2.39.2
 
