@@ -2,90 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB0F86A987
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 09:08:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED8486A985
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 09:08:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfEyJ-0001VY-MF; Wed, 28 Feb 2024 03:07:23 -0500
+	id 1rfEyK-0001W0-Mf; Wed, 28 Feb 2024 03:07:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rfEyH-0001V0-SJ
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 03:07:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rfEyJ-0001Vk-MK
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 03:07:23 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rfEy8-0000Ug-1X
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 03:07:21 -0500
+ id 1rfEyA-0000W1-Jc
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 03:07:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709107630;
+ s=mimecast20190719; t=1709107633;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=s1yTfF9AGvoZg3IPbtvgG6CiruJp7O4UqyUWNdatiPc=;
- b=PTQgNSVXfEnUhffUNxTpO2EPWk6XQic4Bt2W+f9jf5cTgzkc2Go8C2z/5j4FebdaicxEoc
- C8KywFBn1gFx1Hu+ENlzbRmq+Jd1HqRY7rDdFxly2H8PNpbdI1RGjG6YZNX4BTdRVvZ/MI
- cCkGG2e/TZWi8+016hTW6tnXcndgS9A=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=oaaGnvOvuEg+amyykEvtj5XWm41K6EEY0fV7AH7s47U=;
+ b=YoiR+JpG1S8suB6FmGh+STBI0dKCecZHB6PMCvYpR9bX711nVHnSn8hNxoJ+bi9d+HSOI1
+ vCwmKCbsCh0gGOAFO6vuAglxK2300pW5n/sAcuScNMYtZB/M1l14eSwnK19BQ+/+cG5c7x
+ g+Zb8LgdtKN92TnKya5YZ8gPKfw+ZO8=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-378-aD5WQxfwMl64t6Ifk6vqww-1; Wed, 28 Feb 2024 03:07:09 -0500
-X-MC-Unique: aD5WQxfwMl64t6Ifk6vqww-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-56588555f0bso2381467a12.0
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 00:07:09 -0800 (PST)
+ us-mta-73-yzQfujq3PdSkvfP4B65j-w-1; Wed, 28 Feb 2024 03:07:12 -0500
+X-MC-Unique: yzQfujq3PdSkvfP4B65j-w-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a3e94bbb22dso367048866b.1
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 00:07:11 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709107627; x=1709712427;
+ d=1e100.net; s=20230601; t=1709107630; x=1709712430;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=s1yTfF9AGvoZg3IPbtvgG6CiruJp7O4UqyUWNdatiPc=;
- b=RxgcxTfe8VtYDEVBcOk9W15FYctybXLs1Uh0LrQSNFPk7b0yoqSYigO6D3GTXIPW5l
- jvlF0TFDu4cAcHj35fULYvE2OMzLSuE7G0PWiWNbdyj7PQ0cKOpPPy3fMj9o8y6gzs3C
- Q4zjAzY+W7oSU3ol97KVywuYDX/+dMNTWAIlumTQpJIuE1ljJY9kntLEMaQQDwv4PIK2
- UB1o59mMH6kUieuSnI9qtEtwlGiiu52Q7NDH+LPGPY0k7gy0PGlNMOK9mBN2eKcqGjDG
- bW8KFR/jOL0/nEhDJIEZTonTxanl521PLLkAqpYvCizPx1YnKZ92UQRNe/zES7713RYz
- zluw==
-X-Gm-Message-State: AOJu0YxeNYXO8cnekLEcKMRws3sX3bRNi9+oKOCxMUwB5izXMSq8r54W
- 2hrtWc48VJh+EJJEc+0WIfkmMegy4Bu3RhcVdl+6qG9CsMVOaOlruHNPQnVmday1hzwR2o4F5kE
- nQ3xwdKwsqDNi6w7M+gB8rVw+hoq5If3gO8LTug036iqeSWTqJ1iIu+E68P7SJpI9rV30YQK+8O
- 0tn+VgQG/KfeOCSMeR7kRWLxhTLrYllmCsMQMz
-X-Received: by 2002:aa7:d512:0:b0:566:3f3e:3a23 with SMTP id
- y18-20020aa7d512000000b005663f3e3a23mr2669150edq.1.1709107627738; 
- Wed, 28 Feb 2024 00:07:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEU8vtr1k3uZioNqXPSfBOX5lv+ZTqbemj61B0odAq3Ro9tEzJOwU8X4frSry+4MkFO4l4MJg==
-X-Received: by 2002:aa7:d512:0:b0:566:3f3e:3a23 with SMTP id
- y18-20020aa7d512000000b005663f3e3a23mr2669133edq.1.1709107627360; 
- Wed, 28 Feb 2024 00:07:07 -0800 (PST)
+ bh=oaaGnvOvuEg+amyykEvtj5XWm41K6EEY0fV7AH7s47U=;
+ b=MHrINMftzJAsD9p2s57DKkyFVXDnJEKIRvYXrSelA9yMsMs9Sp2Gq5eOwW28eaJrzp
+ nwM+nzarfFBC4HKJ/i9phoQrUrHnC/R+GXOrsQ8Q0R15Alyuw7pDoTJT0kPAkXgFCaee
+ xB4mheFkM5f6L07XRPR87tb4tGbVi8bkDk5pxB8GIvZa2PjVLWV1kV2cOkFajeI4CEb+
+ Yx90AW1bV6Ns060f1+YTyCRPepWD6KqvO/C6O0XP3AkzazKNrWaMc2PfaZDstYG2EjSE
+ IiDTibuuwX/8AMhBADWwsKmiNjw72xsR9KUJxwg1Im5BmqQbEi92fukQ8JsQWdMKDYkU
+ K2dQ==
+X-Gm-Message-State: AOJu0Ywnak1GTam0Y9Yf1MNVl/nHZp9zvHYrFYVeRAjHhtOTTMCESZwk
+ 8RgRUyrDWE817oWjmuM0C9Ccn0yUl672bDPRzWQoLVMdOTuEezFpTx0zEiYM2Bh+O3pUAR64DF6
+ Loqpf+AOqBX08DzBk9VScCTeUJShT0NZJvXbpJazGfcyYOasVh+r2RRf1uwFIrNzJCCXrqMAVCk
+ mmXJu8tL4xY5x2JeNb6pPJo06sVq7I0kzKFafX
+X-Received: by 2002:a17:906:69b:b0:a42:f3a6:9f7f with SMTP id
+ u27-20020a170906069b00b00a42f3a69f7fmr7114876ejb.13.1709107630209; 
+ Wed, 28 Feb 2024 00:07:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFSWHdk1bKJAGaPUAIqnmIiQGzY6CZeVMpweNzhyKOnG/9IKuQCDv1QWCENqS6lIHrjJi+C9g==
+X-Received: by 2002:a17:906:69b:b0:a42:f3a6:9f7f with SMTP id
+ u27-20020a170906069b00b00a42f3a69f7fmr7114851ejb.13.1709107629729; 
+ Wed, 28 Feb 2024 00:07:09 -0800 (PST)
 Received: from [192.168.10.118] ([93.56.170.180])
  by smtp.gmail.com with ESMTPSA id
- ec31-20020a0564020d5f00b0056650cd0156sm860084edb.66.2024.02.28.00.07.04
+ a5-20020a170906468500b00a3fb4d11809sm1581168ejr.204.2024.02.28.00.07.08
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Feb 2024 00:07:05 -0800 (PST)
+ Wed, 28 Feb 2024 00:07:08 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-Subject: [PULL 03/10] target/i386: check validity of VMCB addresses
-Date: Wed, 28 Feb 2024 09:06:39 +0100
-Message-ID: <20240228080646.261365-4-pbonzini@redhat.com>
+Subject: [PULL 04/10] target/i386: introduce function to query MMU indices
+Date: Wed, 28 Feb 2024 09:06:40 +0100
+Message-ID: <20240228080646.261365-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240228080646.261365-1-pbonzini@redhat.com>
 References: <20240228080646.261365-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,105 +100,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MSR_VM_HSAVE_PA bits 0-11 are reserved, as are the bits above the
-maximum physical address width of the processor.  Setting them to
-1 causes a #GP (see "15.30.4 VM_HSAVE_PA MSR" in the AMD manual).
+Remove knowledge of specific MMU indexes (other than MMU_NESTED_IDX and
+MMU_PHYS_IDX) from mmu_translate().  This will make it possible to split
+32-bit and 64-bit MMU indexes.
 
-The same is true of VMCB addresses passed to VMRUN/VMLOAD/VMSAVE,
-even though the manual is not clear on that.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 4a1e9d4d11c ("target/i386: Use atomic operations for pte updates", 2022-10-18)
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/sysemu/misc_helper.c |  3 +++
- target/i386/tcg/sysemu/svm_helper.c  | 27 +++++++++++++++++++++------
- 2 files changed, 24 insertions(+), 6 deletions(-)
+ target/i386/cpu.h                    | 10 ++++++++++
+ target/i386/tcg/sysemu/excp_helper.c |  4 ++--
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/target/i386/tcg/sysemu/misc_helper.c b/target/i386/tcg/sysemu/misc_helper.c
-index 7de0a6e866d..edb7c3d8940 100644
---- a/target/i386/tcg/sysemu/misc_helper.c
-+++ b/target/i386/tcg/sysemu/misc_helper.c
-@@ -212,6 +212,9 @@ void helper_wrmsr(CPUX86State *env)
-         tlb_flush(cs);
-         break;
-     case MSR_VM_HSAVE_PA:
-+        if (val & (0xfff | ((~0ULL) << env_archcpu(env)->phys_bits))) {
-+            goto error;
-+        }
-         env->vm_hsave = val;
-         break;
- #ifdef TARGET_X86_64
-diff --git a/target/i386/tcg/sysemu/svm_helper.c b/target/i386/tcg/sysemu/svm_helper.c
-index 32ff0dbb13c..5d6de2294fa 100644
---- a/target/i386/tcg/sysemu/svm_helper.c
-+++ b/target/i386/tcg/sysemu/svm_helper.c
-@@ -164,14 +164,19 @@ void helper_vmrun(CPUX86State *env, int aflag, int next_eip_addend)
-     uint64_t new_cr3;
-     uint64_t new_cr4;
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index dfe43b82042..8c271ca62e5 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2305,6 +2305,16 @@ uint64_t cpu_get_tsc(CPUX86State *env);
+ #define MMU_NESTED_IDX  3
+ #define MMU_PHYS_IDX    4
  
--    cpu_svm_check_intercept_param(env, SVM_EXIT_VMRUN, 0, GETPC());
--
-     if (aflag == 2) {
-         addr = env->regs[R_EAX];
-     } else {
-         addr = (uint32_t)env->regs[R_EAX];
++static inline bool is_mmu_index_smap(int mmu_index)
++{
++    return mmu_index == MMU_KSMAP_IDX;
++}
++
++static inline bool is_mmu_index_user(int mmu_index)
++{
++    return mmu_index == MMU_USER_IDX;
++}
++
+ static inline int cpu_mmu_index_kernel(CPUX86State *env)
+ {
+     return !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP_IDX :
+diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
+index 11126c860d4..a0d5ce39300 100644
+--- a/target/i386/tcg/sysemu/excp_helper.c
++++ b/target/i386/tcg/sysemu/excp_helper.c
+@@ -137,7 +137,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
+     const int32_t a20_mask = x86_get_a20_mask(env);
+     const target_ulong addr = in->addr;
+     const int pg_mode = in->pg_mode;
+-    const bool is_user = (in->mmu_idx == MMU_USER_IDX);
++    const bool is_user = is_mmu_index_user(in->mmu_idx);
+     const MMUAccessType access_type = in->access_type;
+     uint64_t ptep, pte, rsvd_mask;
+     PTETranslate pte_trans = {
+@@ -363,7 +363,7 @@ do_check_protect_pse36:
      }
  
-+    /* Exceptions are checked before the intercept.  */
-+    if (addr & (0xfff | ((~0ULL) << env_archcpu(env)->phys_bits))) {
-+        raise_exception_err_ra(env, EXCP0D_GPF, 0, GETPC());
-+    }
-+
-+    cpu_svm_check_intercept_param(env, SVM_EXIT_VMRUN, 0, GETPC());
-+
-     qemu_log_mask(CPU_LOG_TB_IN_ASM, "vmrun! " TARGET_FMT_lx "\n", addr);
- 
-     env->vm_vmcb = addr;
-@@ -463,14 +468,19 @@ void helper_vmload(CPUX86State *env, int aflag)
-     int mmu_idx = MMU_PHYS_IDX;
-     target_ulong addr;
- 
--    cpu_svm_check_intercept_param(env, SVM_EXIT_VMLOAD, 0, GETPC());
--
-     if (aflag == 2) {
-         addr = env->regs[R_EAX];
-     } else {
-         addr = (uint32_t)env->regs[R_EAX];
-     }
- 
-+    /* Exceptions are checked before the intercept.  */
-+    if (addr & (0xfff | ((~0ULL) << env_archcpu(env)->phys_bits))) {
-+        raise_exception_err_ra(env, EXCP0D_GPF, 0, GETPC());
-+    }
-+
-+    cpu_svm_check_intercept_param(env, SVM_EXIT_VMLOAD, 0, GETPC());
-+
-     if (virtual_vm_load_save_enabled(env, SVM_EXIT_VMLOAD, GETPC())) {
-         mmu_idx = MMU_NESTED_IDX;
-     }
-@@ -519,14 +529,19 @@ void helper_vmsave(CPUX86State *env, int aflag)
-     int mmu_idx = MMU_PHYS_IDX;
-     target_ulong addr;
- 
--    cpu_svm_check_intercept_param(env, SVM_EXIT_VMSAVE, 0, GETPC());
--
-     if (aflag == 2) {
-         addr = env->regs[R_EAX];
-     } else {
-         addr = (uint32_t)env->regs[R_EAX];
-     }
- 
-+    /* Exceptions are checked before the intercept.  */
-+    if (addr & (0xfff | ((~0ULL) << env_archcpu(env)->phys_bits))) {
-+        raise_exception_err_ra(env, EXCP0D_GPF, 0, GETPC());
-+    }
-+
-+    cpu_svm_check_intercept_param(env, SVM_EXIT_VMSAVE, 0, GETPC());
-+
-     if (virtual_vm_load_save_enabled(env, SVM_EXIT_VMSAVE, GETPC())) {
-         mmu_idx = MMU_NESTED_IDX;
-     }
+     int prot = 0;
+-    if (in->mmu_idx != MMU_KSMAP_IDX || !(ptep & PG_USER_MASK)) {
++    if (!is_mmu_index_smap(in->mmu_idx) || !(ptep & PG_USER_MASK)) {
+         prot |= PAGE_READ;
+         if ((ptep & PG_RW_MASK) || !(is_user || (pg_mode & PG_MODE_WP))) {
+             prot |= PAGE_WRITE;
 -- 
 2.43.2
 
