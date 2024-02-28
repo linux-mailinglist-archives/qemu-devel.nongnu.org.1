@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7182886B301
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 16:23:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDC0986B31A
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 16:25:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfLlE-0006iD-1K; Wed, 28 Feb 2024 10:22:20 -0500
+	id 1rfLlH-0006is-II; Wed, 28 Feb 2024 10:22:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfLlC-0006i3-QO
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 10:22:18 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfLlF-0006ib-12
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 10:22:21 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfLl8-0005Fk-9Z
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 10:22:18 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfLlA-0005IE-PZ
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 10:22:20 -0500
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 6D373225C1;
- Wed, 28 Feb 2024 15:22:12 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 7F49A1F796;
+ Wed, 28 Feb 2024 15:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709133732; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1709133734; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2nUGf02D1p2XObNbPWqsWskkh6K1Vf6qKp3jGt1OL/Q=;
- b=FxUaN648ZQMJS+fo3BB4/c2G05I1cc4fgeBAN2w7AgO8Gvojv5Pkve4djhm8wKqO9BhV6j
- uX8UgVpvZoeztVYwrUgOa1YJOy4pLjs47yyaPcRL+lrTqlMeuKH+kdfFFpZLtf2RZdAJoE
- +5iaVFH5RbTfagx7s7wRWlDlyVkZJfc=
+ bh=1X3EezqjeCVRYuQM0D38G10EkSktz2EOdCPnYICKyCo=;
+ b=PK6j34o+jiv4v4wrhZtl9Pw6QDqooTrLgHS0oCkcIUCVFI1RqlHCCUX1SlgRGD+uT0K2nf
+ shv8I0/8+DSbZCk8ZqE5KNVgNoJ9TQ0E8QmRCFtt8Zr3xnmFR/t+xtB6Zl2fDAVx0yaxVV
+ +4ujV4ak6LKpQMlL34ULvtux05owQ70=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709133732;
+ s=susede2_ed25519; t=1709133734;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2nUGf02D1p2XObNbPWqsWskkh6K1Vf6qKp3jGt1OL/Q=;
- b=Px/++CtsweP8HT6jQshdv2gV6AbSky0PgaIuzt08WM6qGYHb/z6dkYSgxSSVGiLNQ6oovp
- ifGAoQCXTckSAjCg==
+ bh=1X3EezqjeCVRYuQM0D38G10EkSktz2EOdCPnYICKyCo=;
+ b=ehp5O1T/YcoEoGUJQJYYHdtBfW6J4B6WdnJCjrpmf4DBYziPPPpjtKng+7RBCXzMZALrLk
+ h27M95gpdP819+AQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709133732; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1709133734; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2nUGf02D1p2XObNbPWqsWskkh6K1Vf6qKp3jGt1OL/Q=;
- b=FxUaN648ZQMJS+fo3BB4/c2G05I1cc4fgeBAN2w7AgO8Gvojv5Pkve4djhm8wKqO9BhV6j
- uX8UgVpvZoeztVYwrUgOa1YJOy4pLjs47yyaPcRL+lrTqlMeuKH+kdfFFpZLtf2RZdAJoE
- +5iaVFH5RbTfagx7s7wRWlDlyVkZJfc=
+ bh=1X3EezqjeCVRYuQM0D38G10EkSktz2EOdCPnYICKyCo=;
+ b=PK6j34o+jiv4v4wrhZtl9Pw6QDqooTrLgHS0oCkcIUCVFI1RqlHCCUX1SlgRGD+uT0K2nf
+ shv8I0/8+DSbZCk8ZqE5KNVgNoJ9TQ0E8QmRCFtt8Zr3xnmFR/t+xtB6Zl2fDAVx0yaxVV
+ +4ujV4ak6LKpQMlL34ULvtux05owQ70=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709133732;
+ s=susede2_ed25519; t=1709133734;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2nUGf02D1p2XObNbPWqsWskkh6K1Vf6qKp3jGt1OL/Q=;
- b=Px/++CtsweP8HT6jQshdv2gV6AbSky0PgaIuzt08WM6qGYHb/z6dkYSgxSSVGiLNQ6oovp
- ifGAoQCXTckSAjCg==
+ bh=1X3EezqjeCVRYuQM0D38G10EkSktz2EOdCPnYICKyCo=;
+ b=ehp5O1T/YcoEoGUJQJYYHdtBfW6J4B6WdnJCjrpmf4DBYziPPPpjtKng+7RBCXzMZALrLk
+ h27M95gpdP819+AQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D0DC013A5D;
- Wed, 28 Feb 2024 15:22:10 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DDD4613A5D;
+ Wed, 28 Feb 2024 15:22:12 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id GA6WJaJP32UPAwAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 28 Feb 2024 15:22:10 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id oJrYKKRP32UPAwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 28 Feb 2024 15:22:12 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
  Claudio Fontana <cfontana@suse.de>
-Subject: [PATCH v5 18/23] migration/multifd: Add incoming QIOChannelFile
- support
-Date: Wed, 28 Feb 2024 12:21:22 -0300
-Message-Id: <20240228152127.18769-19-farosas@suse.de>
+Subject: [PATCH v5 19/23] migration/multifd: Prepare multifd sync for
+ mapped-ram migration
+Date: Wed, 28 Feb 2024 12:21:23 -0300
+Message-Id: <20240228152127.18769-20-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240228152127.18769-1-farosas@suse.de>
 References: <20240228152127.18769-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Bar: /
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FxUaN648;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="Px/++Cts"
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=PK6j34o+;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="ehp5O1T/"
 X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
 X-Spamd-Result: default: False [0.49 / 50.00]; ARC_NA(0.00)[];
  RCVD_VIA_SMTP_AUTH(0.00)[];
@@ -102,9 +102,9 @@ X-Spamd-Result: default: False [0.49 / 50.00]; ARC_NA(0.00)[];
  MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
  RCVD_TLS_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%]
 X-Spam-Score: 0.49
-X-Rspamd-Queue-Id: 6D373225C1
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+X-Rspamd-Queue-Id: 7F49A1F796
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -127,115 +127,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On the receiving side we don't need to differentiate between main
-channel and threads, so whichever channel is defined first gets to be
-the main one. And since there are no packets, use the atomic channel
-count to index into the params array.
+The mapped-ram migration can be performed live or non-live, but it is
+always asynchronous, i.e. the source machine and the destination
+machine are not migrating at the same time. We only need some pieces
+of the multifd sync operations.
+
+multifd_send_sync_main()
+------------------------
+  Issued by the ram migration code on the migration thread, causes the
+  multifd send channels to synchronize with the migration thread and
+  makes the sending side emit a packet with the MULTIFD_FLUSH flag.
+
+  With mapped-ram we want to maintain the sync on the sending side
+  because that provides ordering between the rounds of dirty pages when
+  migrating live.
+
+MULTIFD_FLUSH
+-------------
+  On the receiving side, the presence of the MULTIFD_FLUSH flag on a
+  packet causes the receiving channels to start synchronizing with the
+  main thread.
+
+  We're not using packets with mapped-ram, so there's no MULTIFD_FLUSH
+  flag and therefore no channel sync on the receiving side.
+
+multifd_recv_sync_main()
+------------------------
+  Issued by the migration thread when the ram migration flag
+  RAM_SAVE_FLAG_MULTIFD_FLUSH is received, causes the migration thread
+  on the receiving side to start synchronizing with the recv
+  channels. Due to compatibility, this is also issued when
+  RAM_SAVE_FLAG_EOS is received.
+
+  For mapped-ram we only need to synchronize the channels at the end of
+  migration to avoid doing cleanup before the channels have finished
+  their IO.
+
+Make sure the multifd syncs are only issued at the appropriate times.
+
+Note that due to pre-existing backward compatibility issues, we have
+the multifd_flush_after_each_section property that can cause a sync to
+happen at EOS. Since the EOS flag is needed on the stream, allow
+mapped-ram to just ignore it.
+
+Also emit an error if any other unexpected flags are found on the
+stream.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
-- used dup()
+- skipped all FLUSH flags
+- added invalid flags
+- skipped EOS
 ---
- migration/file.c      | 35 +++++++++++++++++++++++++++--------
- migration/migration.c |  3 ++-
- migration/multifd.c   |  3 +--
- 3 files changed, 30 insertions(+), 11 deletions(-)
+ migration/ram.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/migration/file.c b/migration/file.c
-index 83328a7a1b..5e1348fec0 100644
---- a/migration/file.c
-+++ b/migration/file.c
-@@ -8,6 +8,7 @@
- #include "qemu/osdep.h"
- #include "exec/ramblock.h"
- #include "qemu/cutils.h"
-+#include "qemu/error-report.h"
- #include "qapi/error.h"
- #include "channel.h"
- #include "file.h"
-@@ -15,6 +16,7 @@
- #include "multifd.h"
- #include "io/channel-file.h"
- #include "io/channel-util.h"
-+#include "options.h"
- #include "trace.h"
- 
- #define OFFSET_OPTION ",offset="
-@@ -112,7 +114,8 @@ void file_start_incoming_migration(FileMigrationArgs *file_args, Error **errp)
-     g_autofree char *filename = g_strdup(file_args->filename);
-     QIOChannelFile *fioc = NULL;
-     uint64_t offset = file_args->offset;
--    QIOChannel *ioc;
-+    int channels = 1;
-+    int i = 0;
- 
-     trace_migration_file_incoming(filename);
- 
-@@ -121,13 +124,29 @@ void file_start_incoming_migration(FileMigrationArgs *file_args, Error **errp)
-         return;
-     }
- 
--    ioc = QIO_CHANNEL(fioc);
--    if (offset && qio_channel_io_seek(ioc, offset, SEEK_SET, errp) < 0) {
-+    if (offset &&
-+        qio_channel_io_seek(QIO_CHANNEL(fioc), offset, SEEK_SET, errp) < 0) {
-         return;
-     }
--    qio_channel_set_name(QIO_CHANNEL(ioc), "migration-file-incoming");
--    qio_channel_add_watch_full(ioc, G_IO_IN,
--                               file_accept_incoming_migration,
--                               NULL, NULL,
--                               g_main_context_get_thread_default());
+diff --git a/migration/ram.c b/migration/ram.c
+index 18620784c6..250dcd110c 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -1368,8 +1368,11 @@ static int find_dirty_block(RAMState *rs, PageSearchStatus *pss)
+                 if (ret < 0) {
+                     return ret;
+                 }
+-                qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
+-                qemu_fflush(f);
 +
-+    if (migrate_multifd()) {
-+        channels += migrate_multifd_channels();
++                if (!migrate_mapped_ram()) {
++                    qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
++                    qemu_fflush(f);
++                }
+             }
+             /*
+              * If memory migration starts over, we will meet a dirtied page
+@@ -3111,7 +3114,8 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+         return ret;
+     }
+ 
+-    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()) {
++    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()
++        && !migrate_mapped_ram()) {
+         qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
+     }
+ 
+@@ -3334,7 +3338,8 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
+         }
+     }
+ 
+-    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()) {
++    if (migrate_multifd() && !migrate_multifd_flush_after_each_section() &&
++        !migrate_mapped_ram()) {
+         qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
+     }
+     qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
+@@ -4137,6 +4142,12 @@ static int ram_load_precopy(QEMUFile *f)
+         invalid_flags |= RAM_SAVE_FLAG_COMPRESS_PAGE;
+     }
+ 
++    if (migrate_mapped_ram()) {
++        invalid_flags |= (RAM_SAVE_FLAG_EOS | RAM_SAVE_FLAG_HOOK |
++                          RAM_SAVE_FLAG_MULTIFD_FLUSH | RAM_SAVE_FLAG_PAGE |
++                          RAM_SAVE_FLAG_XBZRLE | RAM_SAVE_FLAG_ZERO);
 +    }
 +
-+    do {
-+        QIOChannel *ioc = QIO_CHANNEL(fioc);
-+
-+        qio_channel_set_name(ioc, "migration-file-incoming");
-+        qio_channel_add_watch_full(ioc, G_IO_IN,
-+                                   file_accept_incoming_migration,
-+                                   NULL, NULL,
-+                                   g_main_context_get_thread_default());
-+
-+        fioc = qio_channel_file_new_fd(dup(fioc->fd));
-+
-+        if (!fioc || fioc->fd == -1) {
-+            error_setg(errp, "Error creating migration incoming channel");
-+            break;
-+        }
-+    } while (++i < channels);
- }
-diff --git a/migration/migration.c b/migration/migration.c
-index c1cc003b99..ff3872468f 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -909,7 +909,8 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
-     uint32_t channel_magic = 0;
-     int ret = 0;
+     while (!ret && !(flags & RAM_SAVE_FLAG_EOS)) {
+         ram_addr_t addr;
+         void *host = NULL, *host_bak = NULL;
+@@ -4158,6 +4169,13 @@ static int ram_load_precopy(QEMUFile *f)
+         addr &= TARGET_PAGE_MASK;
  
--    if (migrate_multifd() && !migrate_postcopy_ram() &&
-+    if (migrate_multifd() && !migrate_mapped_ram() &&
-+        !migrate_postcopy_ram() &&
-         qio_channel_has_feature(ioc, QIO_CHANNEL_FEATURE_READ_MSG_PEEK)) {
-         /*
-          * With multiple channels, it is possible that we receive channels
-diff --git a/migration/multifd.c b/migration/multifd.c
-index f155223303..7c3994b3ba 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -1545,8 +1545,7 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
-         }
-         trace_multifd_recv_new_channel(id);
-     } else {
--        /* next patch gives this a meaningful value */
--        id = 0;
-+        id = qatomic_read(&multifd_recv_state->count);
-     }
- 
-     p = &multifd_recv_state->params[id];
+         if (flags & invalid_flags) {
++            if (invalid_flags & RAM_SAVE_FLAG_EOS) {
++                /* EOS is always present, just ignore it */
++                continue;
++            }
++
++            error_report("Unexpected RAM flags: %d", flags & invalid_flags);
++
+             if (flags & invalid_flags & RAM_SAVE_FLAG_COMPRESS_PAGE) {
+                 error_report("Received an unexpected compressed page");
+             }
 -- 
 2.35.3
 
