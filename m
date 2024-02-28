@@ -2,72 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C84786ADF6
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 12:47:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C01D386AD66
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 12:35:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfIOV-00068v-Jv; Wed, 28 Feb 2024 06:46:39 -0500
+	id 1rfIC6-0000Yw-Kn; Wed, 28 Feb 2024 06:33:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1rfIO6-0005sv-DD; Wed, 28 Feb 2024 06:46:19 -0500
-Received: from zproxy2.enst.fr ([137.194.2.221])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1rfIO1-0002AM-8K; Wed, 28 Feb 2024 06:46:14 -0500
-Received: from localhost (localhost [IPv6:::1])
- by zproxy2.enst.fr (Postfix) with ESMTP id 9CD1380648;
- Wed, 28 Feb 2024 12:46:04 +0100 (CET)
-Received: from zproxy2.enst.fr ([IPv6:::1])
- by localhost (zproxy2.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
- id ZT4YcjCa5vHQ; Wed, 28 Feb 2024 12:46:04 +0100 (CET)
-Received: from localhost (localhost [IPv6:::1])
- by zproxy2.enst.fr (Postfix) with ESMTP id EBE4C806C9;
- Wed, 28 Feb 2024 12:46:03 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy2.enst.fr EBE4C806C9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
- s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1709120763;
- bh=wUjU5ICK8Sk1nbjQeDu+2SP06XX77Cz79lHH17Weh+U=;
- h=From:To:Date:Message-ID:MIME-Version;
- b=QJBbKk0uNBeXYGR7CxwWE6Ay7b6uZzTTZq1sPckKdN9KqkXSeG8nbv2FnCTdxM/TR
- qbF33F+T2P7k4j9G8dOAAx/HaJMMPi17IkyODOzZOkW+IIquciuraOLfXbCfc57V5o
- Cx7cKnNYDmI4/L5hw279Dpn6tI63mR1su7dIvd7Q=
-X-Virus-Scanned: amavis at enst.fr
-Received: from zproxy2.enst.fr ([IPv6:::1])
- by localhost (zproxy2.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
- id SfdPLoy0qzBh; Wed, 28 Feb 2024 12:46:03 +0100 (CET)
-Received: from localhost.localdomain (74.0.125.80.rev.sfr.net [80.125.0.74])
- by zproxy2.enst.fr (Postfix) with ESMTPSA id 8CB9380660;
- Wed, 28 Feb 2024 12:46:03 +0100 (CET)
-From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-arm@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
- Alistair Francis <alistair@alistair23.me>,
- Samuel Tardieu <sam@rfc1149.net>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v2 5/5] tests/qtest : Add testcase for DM163
-Date: Wed, 28 Feb 2024 12:32:03 +0100
-Message-ID: <20240228114555.192175-6-ines.varhol@telecom-paris.fr>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240228114555.192175-1-ines.varhol@telecom-paris.fr>
-References: <20240228114555.192175-1-ines.varhol@telecom-paris.fr>
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rfIBn-0000XZ-Iq
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:33:33 -0500
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rfIBl-0005tr-LA
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:33:31 -0500
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-2998950e951so3700587a91.2
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 03:33:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709120008; x=1709724808;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=QpILs8s5+YntAP1wSKY9eidG0i2Lfm/RB/gLZWHwxUE=;
+ b=o2G4nohBaEMM6IOZ9njNb8JeyVb0XRlO1D219bQLLEwjolDwg0zcuvlRen5fjlZ1Hi
+ LRs+jfQNjDVGRP8MG3N6mW0w8+KJeiVsrs/9ah11DBi9WrePvxU39FXy1+KtwXP3G3Ho
+ e5JQsa+ZFOBMsfyWwtbESwtHk5ROiyDI+dKAdLaOD/zVXYguf5IAZoo8g+ZcR4SqzWYJ
+ ljjE/sfkUpOEYs9Ahjq0kb55R+iaZECFUO87zOLLfCjiVHOh6hcFxEQQaktTneg70LG8
+ 1MB47dr0LVH9F+U2JY5B4+3swGPofE33YoMunSMBbx4NszXufRIBqnJmpOpNrOZeBfLJ
+ 0DNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709120008; x=1709724808;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QpILs8s5+YntAP1wSKY9eidG0i2Lfm/RB/gLZWHwxUE=;
+ b=saM/W2JWzwHruDmb3IQKPYw7SUzw1YD+Z5QSPPVNRo4nnJc+blBWJN7sLnkGVmEN7L
+ /iTMxfhRs/5dMMK1aZ1LoX3U/LOZc9RfqNM+DS8D+mU8K3FwIFe5HKaJo1BxJLdhegB/
+ 4YG810Xkhmr4ePWiPVuuw7noGv4RghsCK8w2vVFyvw+JYQMn/nH0HMb1+W4hgftSQCqG
+ 1qT5HMw+7dBgnGMqOnWG7fFW+CWAobF7lsPA4atmlOICHCJppcDv8VDCAZGCViEF/WHm
+ +1Bpw7Lnw8vc2pmPzfWNNS/Fsy9boD1nYl/gUiaLespyRHwsAsle+vPV3I9Co7/VmniV
+ XfAw==
+X-Gm-Message-State: AOJu0Yzjo2iYuUBid6PLaCYDZTdc0ssrVIcPY2vPYwxJFUbMryp681T4
+ rB6JYJiw/Rk1GFJjjiWdHs9U/ItRj7yw5WT0g95E2xmt7niUBf6VuRaXpeuT8TA=
+X-Google-Smtp-Source: AGHT+IE2/J7fSGXM+w8fVyFeDJTdceQNrrkPgcVskz9/rS/fa/vXTwlqrkL0nstNvcoAVaATKqWhgg==
+X-Received: by 2002:a17:90a:d34d:b0:29a:b13a:2455 with SMTP id
+ i13-20020a17090ad34d00b0029ab13a2455mr6997356pjx.30.1709120007933; 
+ Wed, 28 Feb 2024 03:33:27 -0800 (PST)
+Received: from localhost ([157.82.203.206])
+ by smtp.gmail.com with UTF8SMTPSA id
+ t16-20020a17090a0d1000b0029942a73eaesm1472534pja.9.2024.02.28.03.33.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 28 Feb 2024 03:33:27 -0800 (PST)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v8 00/15] hw/pci: SR-IOV related fixes and improvements
+Date: Wed, 28 Feb 2024 20:33:11 +0900
+Message-Id: <20240228-reuse-v8-0-282660281e60@daynix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=137.194.2.221;
- envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy2.enst.fr
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAPcZ32UC/2XPQW7DIBAF0KtErOsKBrChq94jygLGQ8OidgStl
+ Sjy3YvTOqJi+Ue8L/6dZUqRMns73FmiJeY4TyWYlwPDs5s+qItjyQw4KC7Adom+M3XBOQLwQli
+ pWHl7SRTi9dFzPJV8jvlrTrdH7SK2628DcPnXsIiOd9qTQY3US2neR3eb4vUV50+2VSxQMcF3B
+ oWB8g6c5tBbaJisGexMFma4GHxvLNIQGqZqpnamNmbdyK10fAiqYbpmZme6MFIBBQrrtbMN6ys
+ Gz239to0UODCeY2i3DTV7fnLYmEWhPHqrgf6xdV1/AL3zgDzlAQAA
+To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Alex Williamson <alex.williamson@redhat.com>, 
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>, 
+ Klaus Jensen <its@irrelevant.dk>, Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-stable@nongnu.org
+X-Mailer: b4 0.12.3
+Received-SPF: none client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,255 +105,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-`test_dm163_bank()`
-Checks that the pin "sout" of the DM163 led driver outputs the values
-received on pin "sin" with the expected latency (depending on the bank).
+I submitted a RFC series[1] to add support for SR-IOV emulation to
+virtio-net-pci. During the development of the series, I fixed some
+trivial bugs and made improvements that I think are independently
+useful. This series extracts those fixes and improvements from the RFC
+series.
 
-`test_dm163_gpio_connection()`
-Check that changes to relevant STM32L4x5 GPIO pins are propagated to the
-DM163 device.
+[1]: https://patchew.org/QEMU/20231210-sriov-v2-0-b959e8a6dfaf@daynix.com/
 
-Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- tests/qtest/dm163-test.c | 192 +++++++++++++++++++++++++++++++++++++++
- tests/qtest/meson.build  |   5 +
- 2 files changed, 197 insertions(+)
- create mode 100644 tests/qtest/dm163-test.c
+Changes in v8:
+- Clarified that "hw/pci: Replace -1 with UINT32_MAX for romsize" is
+  not a bug fix. (Markus Armbruster)
+- Squashed patch "vfio: Avoid inspecting option QDict for rombar" into
+  "hw/pci: Determine if rombar is explicitly enabled".
+  (Markus Armbruster)
+- Noted the minor semantics change for patch "hw/pci: Determine if
+  rombar is explicitly enabled". (Markus Armbruster)
+- Link to v7: https://lore.kernel.org/r/20240224-reuse-v7-0-29c14bcb952e@daynix.com
 
-diff --git a/tests/qtest/dm163-test.c b/tests/qtest/dm163-test.c
-new file mode 100644
-index 0000000000..6f88ceef44
---- /dev/null
-+++ b/tests/qtest/dm163-test.c
-@@ -0,0 +1,192 @@
-+/*
-+ * QTest testcase for DM163
-+ *
-+ * Copyright (C) 2024 Samuel Tardieu <sam@rfc1149.net>
-+ * Copyright (C) 2024 Arnaud Minier <arnaud.minier@telecom-paris.fr>
-+ * Copyright (C) 2024 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "libqtest.h"
-+
-+#define SIN 8
-+#define DCK 9
-+#define RST_B 10
-+#define LAT_B 11
-+#define SELBK 12
-+#define EN_B 13
-+
-+#define DEVICE_NAME "/machine/dm163"
-+#define GPIO_OUT(name, value) qtest_set_irq_in(qts, DEVICE_NAME, NULL, n=
-ame,   \
-+                                               value)
-+#define GPIO_PULSE(name)                                                =
-       \
-+  do {                                                                  =
-       \
-+    GPIO_OUT(name, 1);                                                  =
-       \
-+    GPIO_OUT(name, 0);                                                  =
-       \
-+  } while (0)
-+
-+
-+static void rise_gpio_pin_dck(QTestState *qts)
-+{
-+    /* Configure output mode for pin PB1 */
-+    qtest_writel(qts, 0x48000400, 0xFFFFFEB7);
-+    /* Write 1 in ODR for PB1 */
-+    qtest_writel(qts, 0x48000414, 0x00000002);
-+}
-+
-+static void lower_gpio_pin_dck(QTestState *qts)
-+{
-+    /* Configure output mode for pin PB1 */
-+    qtest_writel(qts, 0x48000400, 0xFFFFFEB7);
-+    /* Write 0 in ODR for PB1 */
-+    qtest_writel(qts, 0x48000414, 0x00000000);
-+}
-+
-+static void rise_gpio_pin_selbk(QTestState *qts)
-+{
-+    /* Configure output mode for pin PC5 */
-+    qtest_writel(qts, 0x48000800, 0xFFFFF7FF);
-+    /* Write 1 in ODR for PC5 */
-+    qtest_writel(qts, 0x48000814, 0x00000020);
-+}
-+
-+static void lower_gpio_pin_selbk(QTestState *qts)
-+{
-+    /* Configure output mode for pin PC5 */
-+    qtest_writel(qts, 0x48000800, 0xFFFFF7FF);
-+    /* Write 0 in ODR for PC5 */
-+    qtest_writel(qts, 0x48000814, 0x00000000);
-+}
-+
-+static void rise_gpio_pin_lat_b(QTestState *qts)
-+{
-+    /* Configure output mode for pin PC4 */
-+    qtest_writel(qts, 0x48000800, 0xFFFFFDFF);
-+    /* Write 1 in ODR for PC4 */
-+    qtest_writel(qts, 0x48000814, 0x00000010);
-+}
-+
-+static void lower_gpio_pin_lat_b(QTestState *qts)
-+{
-+    /* Configure output mode for pin PC4 */
-+    qtest_writel(qts, 0x48000800, 0xFFFFFDFF);
-+    /* Write 0 in ODR for PC4 */
-+    qtest_writel(qts, 0x48000814, 0x00000000);
-+}
-+
-+static void rise_gpio_pin_rst_b(QTestState *qts)
-+{
-+    /* Configure output mode for pin PC3 */
-+    qtest_writel(qts, 0x48000800, 0xFFFFFF7F);
-+    /* Write 1 in ODR for PC3 */
-+    qtest_writel(qts, 0x48000814, 0x00000008);
-+}
-+
-+static void lower_gpio_pin_rst_b(QTestState *qts)
-+{
-+    /* Configure output mode for pin PC3 */
-+    qtest_writel(qts, 0x48000800, 0xFFFFFF7F);
-+    /* Write 0 in ODR for PC3 */
-+    qtest_writel(qts, 0x48000814, 0x00000000);
-+}
-+
-+static void rise_gpio_pin_sin(QTestState *qts)
-+{
-+    /* Configure output mode for pin PA4 */
-+    qtest_writel(qts, 0x48000000, 0xFFFFFDFF);
-+    /* Write 1 in ODR for PA4 */
-+    qtest_writel(qts, 0x48000014, 0x00000010);
-+}
-+
-+static void lower_gpio_pin_sin(QTestState *qts)
-+{
-+    /* Configure output mode for pin PA4 */
-+    qtest_writel(qts, 0x48000000, 0xFFFFFDFF);
-+    /* Write 0 in ODR for PA4 */
-+    qtest_writel(qts, 0x48000014, 0x00000000);
-+}
-+
-+static void test_dm163_bank(const void *opaque)
-+{
-+    const long bank =3D (uintptr_t) opaque;
-+    const int width =3D bank ? 192 : 144;
-+
-+    QTestState *qts =3D qtest_initf("-M b-l475e-iot01a");
-+    qtest_irq_intercept_out_named(qts, DEVICE_NAME, "sout");
-+    GPIO_OUT(RST_B, 1);
-+    GPIO_OUT(EN_B, 0);
-+    GPIO_OUT(DCK, 0);
-+    GPIO_OUT(SELBK, bank);
-+    GPIO_OUT(LAT_B, 1);
-+
-+    /* Fill bank with zeroes */
-+    GPIO_OUT(SIN, 0);
-+    for (int i =3D 0; i < width; i++) {
-+        GPIO_PULSE(DCK);
-+    }
-+    /* Fill bank with ones, check that we get the previous zeroes */
-+    GPIO_OUT(SIN, 1);
-+    for (int i =3D 0; i < width; i++) {
-+        GPIO_PULSE(DCK);
-+        g_assert(!qtest_get_irq(qts, 0));
-+    }
-+
-+    /* Pulse one more bit in the bank, check that we get a one */
-+    GPIO_PULSE(DCK);
-+    g_assert(qtest_get_irq(qts, 0));
-+
-+    qtest_quit(qts);
-+}
-+
-+static void test_dm163_gpio_connection(void)
-+{
-+    QTestState *qts =3D qtest_init("-M b-l475e-iot01a");
-+    qtest_irq_intercept_in(qts, DEVICE_NAME);
-+
-+    g_assert_false(qtest_get_irq(qts, SIN));
-+    g_assert_false(qtest_get_irq(qts, DCK));
-+    g_assert_false(qtest_get_irq(qts, RST_B));
-+    g_assert_false(qtest_get_irq(qts, LAT_B));
-+    g_assert_false(qtest_get_irq(qts, SELBK));
-+
-+    rise_gpio_pin_dck(qts);
-+    g_assert_true(qtest_get_irq(qts, DCK));
-+    lower_gpio_pin_dck(qts);
-+    g_assert_false(qtest_get_irq(qts, DCK));
-+
-+    rise_gpio_pin_lat_b(qts);
-+    g_assert_true(qtest_get_irq(qts, LAT_B));
-+    lower_gpio_pin_lat_b(qts);
-+    g_assert_false(qtest_get_irq(qts, LAT_B));
-+
-+    rise_gpio_pin_selbk(qts);
-+    g_assert_true(qtest_get_irq(qts, SELBK));
-+    lower_gpio_pin_selbk(qts);
-+    g_assert_false(qtest_get_irq(qts, SELBK));
-+
-+    rise_gpio_pin_rst_b(qts);
-+    g_assert_true(qtest_get_irq(qts, RST_B));
-+    lower_gpio_pin_rst_b(qts);
-+    g_assert_false(qtest_get_irq(qts, RST_B));
-+
-+    rise_gpio_pin_sin(qts);
-+    g_assert_true(qtest_get_irq(qts, SIN));
-+    lower_gpio_pin_sin(qts);
-+    g_assert_false(qtest_get_irq(qts, SIN));
-+
-+    g_assert_false(qtest_get_irq(qts, DCK));
-+    g_assert_false(qtest_get_irq(qts, LAT_B));
-+    g_assert_false(qtest_get_irq(qts, SELBK));
-+    g_assert_false(qtest_get_irq(qts, RST_B));
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+    qtest_add_data_func("/dm163/bank0", (void *)0, test_dm163_bank);
-+    qtest_add_data_func("/dm163/bank1", (void *)1, test_dm163_bank);
-+    qtest_add_func("/dm163/gpio_connection", test_dm163_gpio_connection)=
-;
-+    return g_test_run();
-+}
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 2db5b0329e..0cc7406aed 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -205,6 +205,9 @@ qtests_stm32l4x5 =3D \
-    'stm32l4x5_rcc-test',
-    'stm32l4x5_gpio-test']
-=20
-+qtests_dm163 =3D \
-+  ['dm163-test']
-+
- qtests_arm =3D \
-   (config_all_devices.has_key('CONFIG_MPS2') ? ['sse-timer-test'] : []) =
-+ \
-   (config_all_devices.has_key('CONFIG_CMSDK_APB_DUALTIMER') ? ['cmsdk-ap=
-b-dualtimer-test'] : []) + \
-@@ -219,6 +222,8 @@ qtests_arm =3D \
-   (config_all_devices.has_key('CONFIG_VEXPRESS') ? ['test-arm-mptimer'] =
-: []) + \
-   (config_all_devices.has_key('CONFIG_MICROBIT') ? ['microbit-test'] : [=
-]) + \
-   (config_all_devices.has_key('CONFIG_STM32L4X5_SOC') ? qtests_stm32l4x5=
- : []) + \
-+  (config_all_devices.has_key('CONFIG_STM32L4X5_SOC') and
-+   config_all_devices.has_key('CONFIG_DM163')? qtests_dm163 : []) + \
-   ['arm-cpu-features',
-    'boot-serial-test']
-=20
---=20
-2.43.2
+Changes in v7:
+- Replaced -1 with UINT32_MAX when expressing uint32_t.
+  (Markus Armbruster)
+- Added patch "hw/pci: Replace -1 with UINT32_MAX for romsize".
+- Link to v6: https://lore.kernel.org/r/20240220-reuse-v6-0-2e42a28b0cf2@daynix.com
+
+Changes in v6:
+- Fixed migration.
+- Added patch "pcie_sriov: Do not manually unrealize".
+- Restored patch "pcie_sriov: Release VFs failed to realize" that was
+  missed in v5.
+- Link to v5: https://lore.kernel.org/r/20240218-reuse-v5-0-e4fc1c19b5a9@daynix.com
+
+Changes in v5:
+- Added patch "hw/pci: Always call pcie_sriov_pf_reset()".
+- Added patch "pcie_sriov: Reset SR-IOV extended capability".
+- Removed a reference to PCI_SRIOV_CTRL_VFE in hw/nvme.
+  (Michael S. Tsirkin)
+- Noted the impact on the guest of patch "pcie_sriov: Do not reset
+  NumVFs after unregistering VFs". (Michael S. Tsirkin)
+- Changed to use pcie_sriov_num_vfs().
+- Restored pci_set_power() and changed it to call pci_set_enabled() only
+  for PFs with an expalanation. (Michael S. Tsirkin)
+- Reordered patches.
+- Link to v4: https://lore.kernel.org/r/20240214-reuse-v4-0-89ad093a07f4@daynix.com
+
+Changes in v4:
+- Reverted the change to pci_rom_bar_explicitly_enabled().
+  (Michael S. Tsirkin)
+- Added patch "pcie_sriov: Do not reset NumVFs after unregistering VFs".
+- Added patch "hw/nvme: Refer to dev->exp.sriov_pf.num_vfs".
+- Link to v3: https://lore.kernel.org/r/20240212-reuse-v3-0-8017b689ce7f@daynix.com
+
+Changes in v3:
+- Extracted patch "hw/pci: Use -1 as a default value for rombar" from
+  patch "hw/pci: Determine if rombar is explicitly enabled"
+  (Philippe Mathieu-Daudé)
+- Added an audit result of PCIDevice::rom_bar to the message of patch
+  "hw/pci: Use -1 as a default value for rombar"
+  (Philippe Mathieu-Daudé)
+- Link to v2: https://lore.kernel.org/r/20240210-reuse-v2-0-24ba2a502692@daynix.com
+
+Changes in v2:
+- Reset after enabling a function so that NVMe VF state gets updated.
+- Link to v1: https://lore.kernel.org/r/20240203-reuse-v1-0-5be8c5ce6338@daynix.com
+
+---
+Akihiko Odaki (15):
+      hw/nvme: Use pcie_sriov_num_vfs()
+      pcie_sriov: Validate NumVFs
+      pcie_sriov: Reset SR-IOV extended capability
+      pcie_sriov: Do not reset NumVFs after disabling VFs
+      hw/pci: Always call pcie_sriov_pf_reset()
+      hw/pci: Rename has_power to enabled
+      pcie_sriov: Do not manually unrealize
+      pcie_sriov: Reuse SR-IOV VF device instances
+      pcie_sriov: Release VFs failed to realize
+      pcie_sriov: Remove num_vfs from PCIESriovPF
+      pcie_sriov: Register VFs after migration
+      hw/pci: Replace -1 with UINT32_MAX for romsize
+      hw/pci: Use UINT32_MAX as a default value for rombar
+      hw/pci: Determine if rombar is explicitly enabled
+      hw/qdev: Remove opts member
+
+ docs/pcie_sriov.txt         |   8 ++-
+ include/hw/pci/pci.h        |   2 +-
+ include/hw/pci/pci_device.h |  22 +++++-
+ include/hw/pci/pcie_sriov.h |  13 ++--
+ include/hw/qdev-core.h      |   4 --
+ hw/core/qdev.c              |   1 -
+ hw/net/igb.c                |  15 ++--
+ hw/nvme/ctrl.c              |  54 +++++++-------
+ hw/pci/pci.c                |  32 +++++----
+ hw/pci/pci_host.c           |   4 +-
+ hw/pci/pcie_sriov.c         | 170 ++++++++++++++++++++++++--------------------
+ hw/vfio/pci.c               |   3 +-
+ hw/xen/xen_pt_load_rom.c    |   2 +-
+ system/qdev-monitor.c       |  12 ++--
+ hw/pci/trace-events         |   2 +-
+ 15 files changed, 194 insertions(+), 150 deletions(-)
+---
+base-commit: 5005aed8a7e728d028efb40e243ecfc2b4f3df3a
+change-id: 20240129-reuse-faae22b11934
+
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
