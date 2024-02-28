@@ -2,57 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE59E86B4DB
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 17:27:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58FA586B4E6
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 17:28:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfMkR-0005dP-B0; Wed, 28 Feb 2024 11:25:35 -0500
+	id 1rfMkT-0005mY-2q; Wed, 28 Feb 2024 11:25:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfMjw-0005Ag-Iq; Wed, 28 Feb 2024 11:25:07 -0500
+ id 1rfMjo-00052N-Ou; Wed, 28 Feb 2024 11:24:59 -0500
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfMjp-0000uO-3v; Wed, 28 Feb 2024 11:25:03 -0500
+ id 1rfMjl-0000tl-AM; Wed, 28 Feb 2024 11:24:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709137497; x=1740673497;
+ t=1709137493; x=1740673493;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=F1IuRZawaJ2NHOUI3QO3od9jdb42E1bkkqWXt4qynek=;
- b=Yr2MHjt31e0PPo/mPj1/oZfIRMud2o18iJr2maeTNRLZ9LDQCgyStmO4
- n5XznHl/FiOOC+RLLOdm0BofRPZE+W7ago1eu0pf++61c92KIUH20qBCn
- 6K/sA4rYq50WC6R1wNa2jV6NpM7iy6Ea1e3oJLHjUbWQPN2QK4eqfWJTL
- 6vEgFE1Tx3AlCzQixj45WPn1sjhQRQGsx8N5aafqj4p6lrresnfK+ny7o
- nAfvhMgGQgyFsw48yITE88b4wzDdP2ARmhbkya8sR6H7et9nXKczQgy80
- Tybitb1grGoiwFdYjKIByuh66LHkAxQiRdr6Rncd1n6nw/dsm7AaS7184 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="28982649"
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="28982649"
+ bh=yMTWaY/sS/jyModr1jZtevzt+KtVPqAcOTyAOHQmGhc=;
+ b=MsDeTrYOk1f0O8EbDbJG0toC4GHUlZks3ydNCVt40NKsdTRDUdBRqSeq
+ 82gUNV91L0WjHBbaakwgOsW5d7CV8A5Wp+0TTvcWSOltfQlaABBhRUtXs
+ E76gIcxheMACrxzVyrkSXRMzwflJKKrAdRcpOe/Bap7oC2p8ePZO00OaV
+ 7s7coDEbIn3H918MhFE82ORSJ3X0CrY1bau+52doXZCfgMeQS3kKwOuon
+ Nd2STrOSioFDH9bvt32A4J4UQIB5YXLHWjRklEXVCskDwYvJzSGnMHrv/
+ GKTJtRl0kRVTQ9181TGsrwGGTura+FzMfMJjL6c1m6PS3YjpoIkJeYkLD w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="28982663"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="28982663"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 08:24:32 -0800
+ 28 Feb 2024 08:24:35 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="12145073"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="12145086"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 28 Feb 2024 08:24:30 -0800
+ by orviesa004.jf.intel.com with ESMTP; 28 Feb 2024 08:24:32 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Paul Burton <paulburton@kernel.org>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-Subject: [PATCH 15/16] hw/core/loader-fit: Fix missing ERRP_GUARD() for
- error_prepend()
-Date: Thu, 29 Feb 2024 00:37:22 +0800
-Message-Id: <20240228163723.1775791-16-zhao1.liu@linux.intel.com>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH 16/16] hw/core/qdev-properties-system: Fix missing
+ ERRP_GUARD() for error_prepend()
+Date: Thu, 29 Feb 2024 00:37:23 +0800
+Message-Id: <20240228163723.1775791-17-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240228163723.1775791-1-zhao1.liu@linux.intel.com>
 References: <20240228163723.1775791-1-zhao1.liu@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=192.198.163.7;
  envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
@@ -99,47 +101,37 @@ ERRP_GUARD() could avoid the case when @errp is the pointer of
 error_fatal, the user can't see this additional information, because
 exit() happens in error_setg earlier than information is added [1].
 
-In hw/core/loader-fit.c, there're 2 functions passing @errp to
-error_prepend() without ERRP_GUARD():
- - fit_load_kernel()
- - fit_load_fdt()
+The set_chr() passes @errp to error_prepend() without ERRP_GUARD().
 
-Their @errp parameters are both the pointers of the local @err virable
-in load_fit().
+As a PropertyInfo.set method, the @errp passed to set_chr() is so widely
+sourced that it is necessary to protect it with ERRP_GUARD().
 
-Though they don't cause the issue like [1] said, to follow the
-requirement of @errp, add missing ERRP_GUARD() at their beginning.
+To avoid the issue like [1] said, add missing ERRP_GUARD() at the
+beginning of this function.
 
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
 
-Cc: Paul Burton <paulburton@kernel.org>
-Cc: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Daniel P. Berrangé" <berrange@redhat.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/core/loader-fit.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/core/qdev-properties-system.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/core/loader-fit.c b/hw/core/loader-fit.c
-index b7c7b3ba94d4..9f20007dbb51 100644
---- a/hw/core/loader-fit.c
-+++ b/hw/core/loader-fit.c
-@@ -120,6 +120,7 @@ static int fit_load_kernel(const struct fit_loader *ldr, const void *itb,
-                            int cfg, void *opaque, hwaddr *pend,
-                            Error **errp)
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index 1a396521d51f..545c3ceff7c9 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -242,6 +242,7 @@ static void get_chr(Object *obj, Visitor *v, const char *name, void *opaque,
+ static void set_chr(Object *obj, Visitor *v, const char *name, void *opaque,
+                     Error **errp)
  {
 +    ERRP_GUARD();
-     const char *name;
-     const void *data;
-     const void *load_data;
-@@ -178,6 +179,7 @@ static int fit_load_fdt(const struct fit_loader *ldr, const void *itb,
-                         int cfg, void *opaque, const void *match_data,
-                         hwaddr kernel_end, Error **errp)
- {
-+    ERRP_GUARD();
-     Error *err = NULL;
-     const char *name;
-     const void *data;
+     Property *prop = opaque;
+     CharBackend *be = object_field_prop_ptr(obj, prop);
+     Chardev *s;
 -- 
 2.34.1
 
