@@ -2,85 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DC9F86AD3F
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 12:32:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FBAE86ADF7
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 12:47:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfIAJ-00089w-Mz; Wed, 28 Feb 2024 06:31:59 -0500
+	id 1rfIOV-00067e-9r; Wed, 28 Feb 2024 06:46:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rfIAH-00089P-VD
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:31:58 -0500
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rfI9u-0001v1-8o
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:31:55 -0500
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-5131a9b3d5bso700160e87.0
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 03:31:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709119885; x=1709724685; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=nwrrCNP7m7XWANN8T5JR4dCc1oxKkbG1oGFrIaZYcco=;
- b=AL9cWXPvrbe9UPOYLLXFudUvo5Le7jDkEzGLfY6ZQDv32i8hW0+JG15XQOLzQXkv94
- J/umduB/DCZ7X8gG6+w4zfx1QpcBTZqoTCm7cOTq9psD4fdAMZzQNveuD0MGOyZcIJRt
- b1YiaC2qLYSuPuqkYaoJJ6KjZ4925PMoBnXukLW7DRBg8k7PJhuDWvGjwm2vGtiWdtXO
- xx0jmoVQsGeJLcU4sBaQjtekWV+egvhdNry/sNBTxVGLQlWkCgFdGIXdZDGVYn0F8GdC
- rMBy/DJ2jb8R1og8vXPsjIcRLEnGIAdIjCIL32O/Nkvcdi5GnfcqtOHtRgcfmUoRSdGa
- 2bFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709119885; x=1709724685;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nwrrCNP7m7XWANN8T5JR4dCc1oxKkbG1oGFrIaZYcco=;
- b=bHeMvaR1WHHSVlri3A0dbDWC6RlKTsMuxvLEgFAcvbWKmv5lbrsoUFPVgFyYlQvpLM
- oLfebCtcT1MuIoPIWBQbTGBQDR/HQxIuEwVWw/hEyLWgkiZx80bfBzrvFuPKOzZsE2mg
- H+tTcxcMbhg0DD6rY1qKvmeAKdpAA04dt/6zs8MrCEu/GJySssjyA4El3QmQTlRpPPHH
- CHS/PmfoLL0FHWZ4hBt3AJQUbw8V4nNvsXhngZXKFGXYWmUqD9bWEZn6U5I6veHpxLc0
- /BYw7+Ucz8S1ERKvm7HpAuofQlgNBPjyM/oVhpdDY+pXMwTxJeRwsLcnLhkz6EuzLgQK
- h01w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUiWG5IQ8bqSuFRva3pY/9kiIhXIwGjBteXyv6GZbSOQFpmtbgwsBDHFvWpCZPuNQaWttw2R8lsFF4hMae/FsV5X3umbJ0=
-X-Gm-Message-State: AOJu0YxUacXG4MOiIpEqc6bEtNtu62FnZjHWe6bEmvCyOHMKCI2RfFsM
- 5K4l1vVWwgjWgaPEv7p43ylYauMFVX2M3XCsTFYezYlmIvaDt2MoITKrylOtzyo=
-X-Google-Smtp-Source: AGHT+IE2wbIs5c5LK5eB315tlCGdqProPWYhyhhw2RwOsfb5DdInipwnqTX0oEP9hHhHs4oo9NdZ4A==
-X-Received: by 2002:a05:6512:1589:b0:512:e061:e35d with SMTP id
- bp9-20020a056512158900b00512e061e35dmr10231876lfb.53.1709119885289; 
- Wed, 28 Feb 2024 03:31:25 -0800 (PST)
-Received: from [192.168.169.175] ([92.88.171.236])
- by smtp.gmail.com with ESMTPSA id
- ck19-20020a5d5e93000000b0033db9383e70sm14477490wrb.81.2024.02.28.03.31.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 28 Feb 2024 03:31:24 -0800 (PST)
-Message-ID: <ef28a548-6aa6-4948-8f14-f1adc451653a@linaro.org>
-Date: Wed, 28 Feb 2024 12:31:12 +0100
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rfIO6-0005sq-6j; Wed, 28 Feb 2024 06:46:19 -0500
+Received: from zproxy2.enst.fr ([2001:660:330f:2::dd])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rfIO1-0002AA-8U; Wed, 28 Feb 2024 06:46:13 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy2.enst.fr (Postfix) with ESMTP id 44002806D4;
+ Wed, 28 Feb 2024 12:46:03 +0100 (CET)
+Received: from zproxy2.enst.fr ([IPv6:::1])
+ by localhost (zproxy2.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id a_KiOHOQbytv; Wed, 28 Feb 2024 12:46:02 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy2.enst.fr (Postfix) with ESMTP id 0969A8063C;
+ Wed, 28 Feb 2024 12:46:02 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy2.enst.fr 0969A8063C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1709120762;
+ bh=dPnBu8+dKbPC6ql4/GI3FJ5qa0bDJpIOeWW/cyFLSp4=;
+ h=From:To:Date:Message-ID:MIME-Version;
+ b=3xs24gV/C18TFIZOStwFI7Fbtfx+Ejh+Qoq12EgxlIj2pIAuB1i6S/SG9A3oBrXf3
+ p8x/pFgJIJD0vCj9nUiJeEpnoDZVFoqcLQR3gJZmvJnwsUZv4ZpTEP4iEa1f42X/mW
+ yPQ8COlai9H9OeOcC8BL8sMtj53rprohrBW2aJ7U=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy2.enst.fr ([IPv6:::1])
+ by localhost (zproxy2.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id YdGviqkdIoCS; Wed, 28 Feb 2024 12:46:01 +0100 (CET)
+Received: from localhost.localdomain (74.0.125.80.rev.sfr.net [80.125.0.74])
+ by zproxy2.enst.fr (Postfix) with ESMTPSA id 234E1805D9;
+ Wed, 28 Feb 2024 12:46:01 +0100 (CET)
+From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-arm@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
+ Alistair Francis <alistair@alistair23.me>,
+ Samuel Tardieu <sam@rfc1149.net>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH v2 0/5] Add device DM163 (led driver,
+ matrix colors shield & display)
+Date: Wed, 28 Feb 2024 12:31:58 +0100
+Message-ID: <20240228114555.192175-1-ines.varhol@telecom-paris.fr>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] tests/vm: update openbsd image to 7.4
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>,
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Brad Smith <brad@comstyle.com>
-References: <20240226224843.487256-1-alex.bennee@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240226224843.487256-1-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12d.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2001:660:330f:2::dd;
+ envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy2.enst.fr
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,17 +82,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/2/24 23:48, Alex Bennée wrote:
-> The old links are dead so even if we have the ISO cached we can't
-> finish the install. Update to the current stable and tweak the install
-> strings.
-> 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2192
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   tests/vm/openbsd | 9 +++++----
->   1 file changed, 5 insertions(+), 4 deletions(-)
+This device implements the IM120417002 colors shield v1.1 for Arduino
+(which relies on the DM163 8x3-channel led driving logic) and features
+a simple display of an 8x8 RGB matrix. This color shield can be plugged
+on the Arduino board (or the B-L475E-IOT01A board) to drive an 8x8
+RGB led matrix. This RGB led matrix takes advantage of retinal persistanc=
+e
+to seemingly display different colors in each row.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+
+I'm stuck on some issues with this implementation :
+
+1. Tests
+
+TLDR: how can I provide a test or an example?
+
+I've tested the display by running custom executables and
+comparing to the result on the real board, but I don't
+know how to test it using a QTest.
+
+`qtest_init_internal` sets `-display none`
+so there's no way to test the display visually.
+
+There's no `visit_type_*` for arrays so accessing the DM163
+buffer to check its content is complicated. I could technically
+access all the elements in the array (returning a different element
+each time in the getter for example), but that seems sketchy.
+
+2. Frame Rate
+
+It'd be convenient to set the QEMU console's refresh rate
+in order to ensure that the delay before turning off rows
+(4 frames currently) isn't too short. However
+`dpy_ui_info_supported(s->console)` returns false.
+
+
+
+Changes from v1 :
+- moving the DM163 from the SoC to the B-L475E-IOT01A machine
+(changing config files and tests accordingly)
+- restricting DM163 test to ARM & DM163 availability
+- using `object_class_by_name()` to check for DM163 presence at run-time
+- exporting SYSCFG inputs to the SoC (and adapting tests accordingly)
+
+Thank you for your review Philippe :)
+
+Based-on: 220240224105417.195674-1-ines.varhol@telecom-paris.fr
+([PATCH v6 0/3] Add device STM32L4x5 GPIO)
+
+Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+
+In=C3=A8s Varhol (5):
+  hw/display : Add device DM163
+  hw/arm : Pass STM32L4x5 SYSCFG gpios to STM32L4x5 SoC
+  hw/arm : Create Bl475eMachineState
+  hw/arm : Connect DM163 to B-L475E-IOT01A
+  tests/qtest : Add testcase for DM163
+
+ docs/system/arm/b-l475e-iot01a.rst  |   3 +-
+ include/hw/display/dm163.h          |  57 +++++
+ hw/arm/b-l475e-iot01a.c             | 103 ++++++++--
+ hw/arm/stm32l4x5_soc.c              |   6 +-
+ hw/display/dm163.c                  | 308 ++++++++++++++++++++++++++++
+ tests/qtest/dm163-test.c            | 192 +++++++++++++++++
+ tests/qtest/stm32l4x5_gpio-test.c   |  12 +-
+ tests/qtest/stm32l4x5_syscfg-test.c |  16 +-
+ hw/arm/Kconfig                      |   1 +
+ hw/display/Kconfig                  |   3 +
+ hw/display/meson.build              |   1 +
+ hw/display/trace-events             |  13 ++
+ tests/qtest/meson.build             |   5 +
+ 13 files changed, 690 insertions(+), 30 deletions(-)
+ create mode 100644 include/hw/display/dm163.h
+ create mode 100644 hw/display/dm163.c
+ create mode 100644 tests/qtest/dm163-test.c
+
+--=20
+2.43.2
 
 
