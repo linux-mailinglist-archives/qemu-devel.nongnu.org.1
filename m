@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7884E86B90F
+	by mail.lfdr.de (Postfix) with ESMTPS id 224E486B90D
 	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 21:26:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfQUf-0007zu-1m; Wed, 28 Feb 2024 15:25:33 -0500
+	id 1rfQUb-0007zJ-OE; Wed, 28 Feb 2024 15:25:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rfQUb-0007zK-E7
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 15:25:29 -0500
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ id 1rfQUZ-0007yq-Qy
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 15:25:27 -0500
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rfQUW-0007Lz-9f
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 15:25:29 -0500
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-29ab78237d2so67946a91.1
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 12:25:23 -0800 (PST)
+ id 1rfQUX-0007M9-VB
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 15:25:27 -0500
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-299b92948a6so74154a91.3
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 12:25:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709151923; x=1709756723; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709151924; x=1709756724; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FeF7fzEyCne6DT9i0AjI3AaZvbjspKahuYDo6eT9HQw=;
- b=djshCp09lGMTHPRQQcwLiau1Qa3WG+Ao+Hk5wINjaQRphv8GGz6sSLssGtH8Ibeetz
- JCQvpno+ODI25AmCRgyQNcvxyCIKNtB/tqHl9RtR98e32lMTHbru00cBbyIQoBpdixcz
- XdzdexUOFwGRI86rfJ8sX9eT4Lg/yXDSRiLB4vfQh/596BhLBeNml1WPgw0Bxm76dUYY
- sU2TWP7jfvFbXjjsAE6fyWARsr6h6w48n6KkkaRwKW7j9iq0Kt1NtQAEBYW2jj+Q+KGz
- IEeRnlz9/XQ8r/9ECc5fM9C8NhEK6sLB0BidoWKuUzOezDSXXYXQp0dg9Mu2txkYGNR4
- znJQ==
+ bh=uYpmvWcDo9XJ8PEub2Zz6TVzblWCi4U6QK1BUlbCzJU=;
+ b=ZuiSzcsiVV3QK5uuxZKUMgcV8OG6xgt/60HjQFzFp6hccCjzyV8xBW51LIaB12d1vX
+ fiP8bu7BbADetVeD7mzEKXA9EZqUCu7JjXBeCVlNVMgIbEGE0Bxk+mQhy8eefBz6Sccl
+ E3ic4+BYcp+BaAgplHV4zBjC3aBpae0GjSFyD9/yDAg0jWyrrhqjUlcjtEe07t7IdOWh
+ X15k1qe7YgImLGZLTanlpvlEdW47S7dXmsS0QFk8HleIv9MzN1AK8IN9utzGyfsbmDD+
+ opsC/W3a8cR6Vf+/Z/8PviNaOh77hQznlbpgno/1E9WzXj/L5b805Dw9+3LOfkvgwhNu
+ kxqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709151923; x=1709756723;
+ d=1e100.net; s=20230601; t=1709151924; x=1709756724;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FeF7fzEyCne6DT9i0AjI3AaZvbjspKahuYDo6eT9HQw=;
- b=IY/xJnOftuJHpMAWiUHgcE27JeC+h5vmkPGHPyFHk6W80ngtpe3U3J1LGkOYyueTVW
- 30AqCp7we6XrLaN328dpjrY+ur1yha8MK9mP6D2h2LhtN/HlROBwb868BNZbnH7ytUKP
- RnwAWArhZfpCfofzHTcJbpE1C83TdnyDqHrpRD5+dCiahthUZktQI7CazutgYncld6g7
- TYekPPH/InC8GOHrUokWzntzwgn3rRnOAnc2KScVkPISi7wI/Yfq2Ndwpt9q2Bf8KH7O
- qCRli3GxO8AtVN29mgdNHVMWZnpLRBdbcrR23pV3y/j4UiBg5zVgFH2P0Hj+aNKAZ+Yd
- LtEA==
-X-Gm-Message-State: AOJu0YzlwYXgI8yvwu0aWc8en0bubEBBPkuqOxHNsosXLDHZuVc59aB7
- 8lksixizHkWIQWoLAQ9BB4Cv2+e3R1cM43PLrDPqSvrJlE2o28MAXEQdRO3osixOHFf2/RQfuOJ
- z
-X-Google-Smtp-Source: AGHT+IE5XRJrqoVYo7frj9BME26umkgmV05D9tvxvaRCOJcPoPZVG8hS/uHc7cW7L8R37iOnq87MQQ==
-X-Received: by 2002:a17:90b:3791:b0:29a:a436:4dda with SMTP id
- mz17-20020a17090b379100b0029aa4364ddamr332457pjb.0.1709151922839; 
- Wed, 28 Feb 2024 12:25:22 -0800 (PST)
+ bh=uYpmvWcDo9XJ8PEub2Zz6TVzblWCi4U6QK1BUlbCzJU=;
+ b=LJ/1kIjiiwnImNAwBFcn1Sm5+nKgZc6b3jhmwDZiaxfM7z6cc/UKN5q1qEojKvYgYy
+ bjKv9IHhP+rATr2xoueOlIuIuI+nYDr/7yC7M58xaeOQSh7gDY26NIOx9NY4piwQQhUt
+ Z8bsIXMN6CEOsJd8dcvtcwBXiGVHDPchMxD3jcWV4KtIwYBlLima7BUq5noGSUcmh7G9
+ z4bDsJe13amGQpvrWS6NUhNpqaw3uCK1gYEAdvPqCWFhb22MZcoVdbAUwOm3BG/ZEXhV
+ 7KETXjBOTksnms/W5Am4BPvFn+tP5qwO+gyG9R21j7jCH8L2PcGjDRW5xM/626XOWKTg
+ g/aA==
+X-Gm-Message-State: AOJu0Yz/0ZadDiFYp334BqeoIfL1Con2lPkVk6cf5MKegFWcW1mKQ2pW
+ o/NyomlCDGUKmlz4vno//aYNoVQ1f2IifOyXmOwsnDYaimeZtoeWPVUIKcn9+6dRCAmphqfNNVo
+ E
+X-Google-Smtp-Source: AGHT+IG2gks6tKbJ90ttA2XGR+baKFdv/JDAyktePlU80AHYmmIZdyEEfNK+0Rr9rJvHp8QcrP+H7A==
+X-Received: by 2002:a17:90b:1c07:b0:299:4f5a:62d5 with SMTP id
+ oc7-20020a17090b1c0700b002994f5a62d5mr291809pjb.18.1709151924493; 
+ Wed, 28 Feb 2024 12:25:24 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- oh5-20020a17090b3a4500b0029ab712f648sm2118499pjb.38.2024.02.28.12.25.21
+ oh5-20020a17090b3a4500b0029ab712f648sm2118499pjb.38.2024.02.28.12.25.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Feb 2024 12:25:22 -0800 (PST)
+ Wed, 28 Feb 2024 12:25:24 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu, richard.purdie@linuxfoundation.org, mjt@tls.msk.ru,
- iii@linux.ibm.com
-Subject: [PATCH v2 1/5] linux-user/x86_64: Handle the vsyscall page in
- open_self_maps_{2, 4}
-Date: Wed, 28 Feb 2024 10:25:14 -1000
-Message-Id: <20240228202518.33180-2-richard.henderson@linaro.org>
+ iii@linux.ibm.com, Song Gao <gaosong@loongson.cn>
+Subject: [PATCH v2 2/5] linux-user/loongarch64: Remove TARGET_FORCE_SHMLBA
+Date: Wed, 28 Feb 2024 10:25:15 -1000
+Message-Id: <20240228202518.33180-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240228202518.33180-1-richard.henderson@linaro.org>
 References: <20240228202518.33180-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1029.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,50 +93,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is the only case in which we expect to have no host memory backing
-for a guest memory page, because in general linux user processes cannot
-map any pages in the top half of the 64-bit address space.
+The kernel abi was changed with
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2170
+    commit d23b77953f5a4fbf94c05157b186aac2a247ae32
+    Author: Huacai Chen <chenhuacai@kernel.org>
+    Date:   Wed Jan 17 12:43:08 2024 +0800
+
+        LoongArch: Change SHMLBA from SZ_64K to PAGE_SIZE
+
+during the v6.8 cycle.
+
+Reviewed-by: Song Gao <gaosong@loongson.cn>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ linux-user/loongarch64/target_syscall.h | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index e384e14248..bc8c06522f 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -7994,6 +7994,10 @@ static void open_self_maps_4(const struct open_self_maps_data *d,
-         path = "[heap]";
-     } else if (start == info->vdso) {
-         path = "[vdso]";
-+#ifdef TARGET_X86_64
-+    } else if (start == TARGET_VSYSCALL_PAGE) {
-+        path = "[vsyscall]";
-+#endif
-     }
+diff --git a/linux-user/loongarch64/target_syscall.h b/linux-user/loongarch64/target_syscall.h
+index 8b5de52124..39f229bb9c 100644
+--- a/linux-user/loongarch64/target_syscall.h
++++ b/linux-user/loongarch64/target_syscall.h
+@@ -38,11 +38,4 @@ struct target_pt_regs {
+ #define TARGET_MCL_FUTURE  2
+ #define TARGET_MCL_ONFAULT 4
  
-     /* Except null device (MAP_ANON), adjust offset for this fragment. */
-@@ -8082,6 +8086,18 @@ static int open_self_maps_2(void *opaque, target_ulong guest_start,
-     uintptr_t host_start = (uintptr_t)g2h_untagged(guest_start);
-     uintptr_t host_last = (uintptr_t)g2h_untagged(guest_end - 1);
- 
-+#ifdef TARGET_X86_64
-+    /*
-+     * Because of the extremely high position of the page within the guest
-+     * virtual address space, this is not backed by host memory at all.
-+     * Therefore the loop below would fail.  This is the only instance
-+     * of not having host backing memory.
-+     */
-+    if (guest_start == TARGET_VSYSCALL_PAGE) {
-+        return open_self_maps_3(opaque, guest_start, guest_end, flags);
-+    }
-+#endif
-+
-     while (1) {
-         IntervalTreeNode *n =
-             interval_tree_iter_first(d->host_maps, host_start, host_start);
+-#define TARGET_FORCE_SHMLBA
+-
+-static inline abi_ulong target_shmlba(CPULoongArchState *env)
+-{
+-    return 64 * KiB;
+-}
+-
+ #endif
 -- 
 2.34.1
 
