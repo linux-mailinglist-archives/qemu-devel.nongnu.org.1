@@ -2,144 +2,145 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E56686B8E8
+	by mail.lfdr.de (Postfix) with ESMTPS id 2205A86B8E7
 	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 21:17:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfQKW-0008HT-Af; Wed, 28 Feb 2024 15:15:08 -0500
+	id 1rfQKX-0008Ja-Mu; Wed, 28 Feb 2024 15:15:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
- id 1rfQKJ-0008FJ-Rz
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 15:14:51 -0500
-Received: from bactrian.maple.relay.mailchannels.net ([23.83.214.9])
+ id 1rfQKR-0008IM-4k
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 15:15:00 -0500
+Received: from catfish.pear.relay.mailchannels.net ([23.83.216.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
- id 1rfQKG-00042c-9R
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 15:14:51 -0500
+ id 1rfQKP-00043l-Bc
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 15:14:58 -0500
 X-Sender-Id: _forwarded-from|134.3.94.10
 Received: from relay.mailchannels.net (localhost [127.0.0.1])
- by relay.mailchannels.net (Postfix) with ESMTP id C7C6AC1612
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 20:14:45 +0000 (UTC)
-Received: from outbound5a.eu.mailhop.org (unknown [127.0.0.6])
+ by relay.mailchannels.net (Postfix) with ESMTP id 71F41102332
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 20:14:54 +0000 (UTC)
+Received: from outbound1g.eu.mailhop.org (unknown [127.0.0.6])
  (Authenticated sender: duocircle)
- by relay.mailchannels.net (Postfix) with ESMTPA id F2E73C299D
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 20:14:44 +0000 (UTC)
-ARC-Seal: i=2; s=arc-2022; d=mailchannels.net; t=1709151285; a=rsa-sha256;
+ by relay.mailchannels.net (Postfix) with ESMTPA id 2A11C103929
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 20:14:53 +0000 (UTC)
+ARC-Seal: i=2; s=arc-2022; d=mailchannels.net; t=1709151293; a=rsa-sha256;
  cv=pass;
- b=To36q/XZw2dc0c93Vd8KnXs9D9Zfxv1+qsH7LMuAukZqkucAn2QvYOgzUtfJ2jWpe0jr8g
- jPsux+9MehRFXNwp7TdoWdUs/xkKr55REU5zLnzyqpuzVXeafSVm4SzKYP5qQ/Hw/DXK2e
- Smk6AINAhCGAy17J/bNxPKdHYxFXfe0n+n+mnRTBTQF98HKC9DcZIaZ9lAsDNSw7h6dyZy
- BYC2ylDWm3hCQkV7ASFMclVFYFMlcgP+1gAOxHgkcdsAs/X2nOViJQj4CgBX8pIbd/3YRD
- lRJijz42ziMVI9Zg60lLNToMsYJJxnhxqT0FrXRr8AKye/76OcyqRrpOsrzXuA==
+ b=4GY9VhxMnnkZeQvh38rMtcJUdd9iQaYFh88xx2iKKlljKd7XHIxNBMKX8FCNO2gTeRNDGM
+ teueqmSkAqJ5igNpfPrAH+BAenvJP+UO+eucb6O/c5VqEZuSz81aKwxe5YX0jbMf57OmDw
+ /3bvrCWEOinpZDGRtMbUo3F+FWyKZ5I2N5dYc1J8oBwOGPt5A1rHGdBN5pKHCa6FUAMkuX
+ 7u8HUBrQUdNzz3oby3OmT2GA+XVdA6Ijp9I3F7fizMJbumLHQu5z/AzFBvHVp5x0s7dcrF
+ vuaDS7OUV+sGwhNWtmiu4UHDdGvErNWBJrklY222wtsyt28h7p1+Mes791sd7g==
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net; s=arc-2022; t=1709151285;
+ d=mailchannels.net; s=arc-2022; t=1709151293;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:dkim-signature;
- bh=tGqoTKg7uGmsAnU6stPR+zkpAgXqaQsmACDLXuTnCYs=;
- b=ltxJI3DRE2I53Kmh6hnZ9ILyxM4aHg5301mbgaYy9BY6sURzln+mhaolQkLTw/lbaMMUci
- XhHJKukFDiz6NSFPh8MkwScgwSxInFlsWcwPs6srVlIkKqARUkY7uLwmtBleRh58gQq/ZO
- UjmQAqnkKAMjqRBwQ8dCxq5QYX32Am/WIKbvRg+7VqcINWVGKDflB1+27zWXimMf8owshs
- uPdTed9RcQs1r2mqS8q36ng4cTh1EwT/KpusmsxOVt6B90rROQwWYCtZAIvjlhrs2dnPS1
- nnfG9cwdPVdfiCHI549bY2NliY/RJ/r3AFqPv4OxZXjaEYCp3kYyWDpxO/Teiw==
-ARC-Authentication-Results: i=2; rspamd-55b4bfd7cb-tc9hf;
+ bh=3CP0t1jAVlJaaOZZCK2N/4bcEOd7i4ad9ifS1boh0DQ=;
+ b=TKUVNnR6CspJ4WARZCa7+/SUKTxsrrjlaH/Zv3OoVPsN7M9QQlpQ/zTtSsv6i+bUwI97dj
+ VhTK8jjygJrJGhURvCAqs/wGwrfMq7SY22zkvd+CwY7/q2IDuIiHbrT7m+p+0OJVvUCb/b
+ VrVB/+pSoojG++HMo/s2ExGrKAP9wBuHj6x7w9FK8xPAXte8DOuzi9YuPAxNDuGEQLAnmF
+ wV7eyTck3YmFthG8uu3m8Bk5dpJmign+HsUwmZ3pF0wmxYS8/KUb4iNo0lL+8LIdoaGSQh
+ h+6f7wB15G/kaYx53dsgwP6lLzEEIEhmcByi61x2io3TGIdkQyqAHoRPtgKOXQ==
+ARC-Authentication-Results: i=2; rspamd-55b4bfd7cb-9jm27;
  arc=pass ("outbound.mailhop.org:s=arc-outbound20181012:i=1");
  auth=pass smtp.auth=duocircle smtp.mailfrom=svens@stackframe.org
 X-Sender-Id: _forwarded-from|134.3.94.10
 X-MC-Relay: Forwarding
 X-MailChannels-SenderId: _forwarded-from|134.3.94.10
 X-MailChannels-Auth-Id: duocircle
-X-Whispering-Abortive: 788949d90a4fbb1f_1709151285489_3456905678
-X-MC-Loop-Signature: 1709151285488:2571048425
-X-MC-Ingress-Time: 1709151285488
-Received: from outbound5a.eu.mailhop.org (outbound5a.eu.mailhop.org
- [3.124.88.253]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
- by 100.124.220.170 (trex/6.9.2); Wed, 28 Feb 2024 20:14:45 +0000
+X-Trade-Daffy: 72f2d43534c47cef_1709151293664_3455485355
+X-MC-Loop-Signature: 1709151293663:2340965779
+X-MC-Ingress-Time: 1709151293663
+Received: from outbound1g.eu.mailhop.org (outbound1g.eu.mailhop.org
+ [52.28.6.212]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+ by 100.124.220.170 (trex/6.9.2); Wed, 28 Feb 2024 20:14:53 +0000
 ARC-Seal: i=1; a=rsa-sha256; t=1709151260; cv=none;
  d=outbound.mailhop.org; s=arc-outbound20181012;
- b=nLRUXW6Vn9WJ1qgK3olnVZzOAjB5bayJNGsOm6JToPrGBCukbSZlLahnffOn5JNingf04eixw/GRH
- goUEwycFPGpBTlXmhVwwE7ApfojlVmVFstsggf2dNFfecJlDMYjkJJxluZdntry9ho7PByjGbg0IWm
- nCIxYQNUFFu40AVb7O7LbByE9CcFtRogv038CnfmybdqUJ03zSLDmx5VBYigvuEpOMD9dcT5n6efsF
- CglOOGBTZgVNycpmlSeFTXZ74H3p7UUmY1wVzP178vJqf/bg3dRLIQCa3zFZQp5RI5k7wY8n3ceIrU
- x55vz/z0tYGlSa37gpuxOWQo1ZNqRWQ==
+ b=vdSGX5ST1qyJ3eMYQ0ulK+lu9QrpW8Y1cozowTlcQbr6PukyLyA7Gwrte0Holy4E4ZV8LbG3skp6T
+ qKZCNk3wj9LmO6cKkbkAi7J6QMDMtnlMSy824rCA0w4r3EzH+yC00Jvu6QIzlzNF4H6+fF2MRXFFY9
+ CNjFbCJFIm/th3KB6Gw+xxl0X8s13VcjBVU5V2+H5AP9/s21IXAWbOH5ZoCv9hNC8fkpD/7u/A222p
+ yNqyj7GNQ/9x33vZA6lUqSZc+BJNiS99Q+B3a6V0ZCzpkXIpkc374glFXp5b/GhuRUk1IchGGDrOVZ
+ DQ8hMCQ6vep9BpVE2KDTGR6fdlIglkw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
  d=outbound.mailhop.org; s=arc-outbound20181012;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:dkim-signature:dkim-signature:dkim-signature:from;
- bh=tGqoTKg7uGmsAnU6stPR+zkpAgXqaQsmACDLXuTnCYs=;
- b=bJu4I/Ov9ea+PgvmowCfUm9H6q20i9ahyQyTOJwfW8DLcgihMMQLl9u72ni9jX/v2pFQK8b7HWlXg
- jVVNy56b2PVRaoF03aJ1cf6si8ymwXB5yQZ84fE8MxkRcXM40bDE9mb8fTLwfLwj8lgfAqSK/BrcKR
- XX8CNqo8Qizfh/pv59vBVL0bN0KyRhedHVxzcV+oEk7qXzsd5uWXNpbIkkteRZgnxz8rerqEwnkmZL
- Q2zfWRejGC6eLGYNMw21lrvqMp3q9xiG+bxci15chay2JvBbB136Vq8QgcT+LPxzzP87pD2J7wtWF8
- XohxwxY3iZ3n4+MrISliZlOolrKWfBQ==
+ bh=3CP0t1jAVlJaaOZZCK2N/4bcEOd7i4ad9ifS1boh0DQ=;
+ b=Fta0ziPK0wTeQwmzIVvFhjsNQWuYUKLiOw7k46WtXdDsLM4xtKO7D/T0DA1xWcNJqCVx86aZ3ZDjB
+ XGVVANB5twqjFdzN+bPCSHdnTKtDKeu1ygHDNOaYkN/7M+E9f6HU8t47rf1mpJX0zrK+YknTupeoHa
+ 6S8zZAaZzi174q4q8KQm+QlwBcOelhlMnUw1X9LXig8fcgnfS4yw/ARhDFOCB+5cvD1z6xblkiMhM9
+ IBzpOOrKFw/6CA+8KMf7mB4gUMKDzf+SYVfbNEOVZqT8xHxl3RN1LMmm+X2uWJe17X0u2PNYv6OEbZ
+ uwjPY2xB/O9/WozLo4C98W+58GRReqg==
 ARC-Authentication-Results: i=1; outbound3.eu.mailhop.org;
  spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=130.180.31.158;
  dkim=pass header.d=stackframe.org header.s=dkim1 header.a=rsa-sha256
- header.b=R0sht6P9; 
+ header.b=agzFYBJh; 
  dmarc=none header.from=stackframe.org;
  arc=none header.oldest-pass=0;
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=stackframe.org; s=duo-1634547266507-560c42ae;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=tGqoTKg7uGmsAnU6stPR+zkpAgXqaQsmACDLXuTnCYs=;
- b=sfG17wNNY+JywPu1A9E2HNcROfijEZBF8Ub5qSUE5az9BU7gCO1VUvZI0gQIavLHMbP+QWpt4M1mb
- 1yzkaybIFl/yGwuV1w0A3SSyfsIVwfeQupeAu0VkCaPw8zvyiwx9oYfC1oNegWvsUWRTw9AQWpAWR9
- hWhuxZ8NR6cFEYes=
+ bh=3CP0t1jAVlJaaOZZCK2N/4bcEOd7i4ad9ifS1boh0DQ=;
+ b=oOM5D8A+AuMJIpBeolL+ZpQLU30FFkf6y4VInYSt2hdbNNB6pg+MyGftjXqkYAhMkmLkviRsPi+sO
+ BG43k6ljLkFo+3BEjN8zAgTHgQrR5kxSO2RURQPUbYi97o+qN4HjMyCce17+eHvMOXyRIQK3UrG4NV
+ ETToNpSCITZetLaQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=outbound.mailhop.org; s=dkim-high;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=tGqoTKg7uGmsAnU6stPR+zkpAgXqaQsmACDLXuTnCYs=;
- b=YC7sBcHN6nd28B+dLDJveYT0liSlN8SEZQ8dyjTQDJUhyUuR8E0Jo1iUHW9a54pnLuCSEN5oqq0iw
- zlAuKEEHvnNAebIHy5F8B4k9W+F0dSRXnDwTwz6Zjxpc6nDCt07kdV9QyBtamsMnedPsLurBArhipt
- C9d1XmzI6SuLCNoTRvukjI2fE4ql6fx+VRRJztY+3oGzlo4gHtjNsmkIc9LhzmHhQr9VKySs7wbxCY
- LnyKarLFGRrLZdi1WpOkNPLNKEl4Ruxph6Aod0oYSIG1SSU5yTs7eWfyHtGFPcfA2Csh8wPVmT/4jD
- 5fnX2QmNEuXwEKydXjfdnktUN8mMySg==
+ bh=3CP0t1jAVlJaaOZZCK2N/4bcEOd7i4ad9ifS1boh0DQ=;
+ b=NpYaSbyPsJhSGaljMwBz9TSzrbUyxE/8Oxqj8lLdXfjh49PburElxbW3Emweke7B4cV15yYYKcM6N
+ WI+M7xdWOk6fxHMrQlV9iQq+bdZkqBMWtjxh4LmF2xFbY/ly+TsiVYNLUu6SttKHrNsdwZtbXQIXLc
+ AXhO2/WOkBtViMhmD+pBTOfVuAN0Hv+nYtgiSEdx66TUdzXtg0T1wXbaRa3YRLTHzHUWQd9qqnt4TI
+ K5e8eXQKaSzpL6sqwkVlF4IhcQG7Rj822wACdC1BicH2J36DMSJJZFxozMaxEiu77hnIgsdQvpp6rE
+ K5Bv+k0XK57njuBeFPCS57NKDJUYMVQ==
 X-Originating-IP: 130.180.31.158
 X-MHO-RoutePath: dG9ta2lzdG5lcm51
-X-MHO-User: f31b9285-d675-11ee-af94-eda7e384987e
+X-MHO-User: f375ea31-d675-11ee-af94-eda7e384987e
 X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
 X-Mail-Handler: DuoCircle Outbound SMTP
 Received: from mail.duncanthrax.net (mail.duncanthrax.net [130.180.31.158])
  by outbound3.eu.mailhop.org (Halon) with ESMTPSA
- id f31b9285-d675-11ee-af94-eda7e384987e;
- Wed, 28 Feb 2024 20:14:17 +0000 (UTC)
+ id f375ea31-d675-11ee-af94-eda7e384987e;
+ Wed, 28 Feb 2024 20:14:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=stackframe.org; s=dkim1; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=tGqoTKg7uGmsAnU6stPR+zkpAgXqaQsmACDLXuTnCYs=; b=R0sht6P95XIhPUBzd7A/cqubHE
- q1iBCmKLQUvAQfR0fPgcKB/JKiPo/W2fo3dXE7+oypCkpesAj0X21lWVIYI3RHt7y42b1gOUqbEi+
- Opp8bNFxKDX+/7pP4deVC2q5vhs6Q6s35JwSYaWGPquSD6jx7joPsIzQ+0pPOP/fe0xU6aejyvDKn
- SXX7K157N+Ta8RZf+iLG2mZSUUmF9svCzQnnPshHOTxOc3906A/cX1yZhkX82Lqeaz3SubVLgwITl
- ZDuBoxAzEnJ7lv0VylJUragIW74Cslf+inIskNrQp/WX2DNuoUaaG8oLm7LaMTv9iEEZWsoW+ND00
- mcuYXz2g==;
+ bh=3CP0t1jAVlJaaOZZCK2N/4bcEOd7i4ad9ifS1boh0DQ=; b=agzFYBJh749KwH22QYkQATt3m8
+ qB1mf0htxSnryFxfR4r1+vYWj5855JiaGJ7dmoKrdqXmC6TGxOrCpDr3XYeu3H00Na/oHD0EDF3MM
+ t75FxtX2AyyFAmryiOb8CqY8c5BmlAQP0UsDyT0ec9csJLoytLNOTiKwmjYU5BErKxH+g0vUHxBhI
+ amEwLm70JayzwJCeAEWQHgus55CSzysNnMlhJzRrKcOfFwWW23QWSbxOO1RJjggW3tZ/MLfNW+hO0
+ Eaw+CrweNtojAXqm7o6xQeulX/do3reoBnOTseCFFNnnHbbaatQZwwckPTrTAZ2noGx3BosStiSks
+ vWv0RgeA==;
 Received: from ip-134-003-094-010.um41.pools.vodafone-ip.de ([134.3.94.10]
  helo=t14.stackframe.org)
  by mail.duncanthrax.net with esmtpa (Exim 4.96)
- (envelope-from <svens@stackframe.org>) id 1rfQK9-000Dka-01;
+ (envelope-from <svens@stackframe.org>) id 1rfQK9-000Dka-1M;
  Wed, 28 Feb 2024 21:14:41 +0100
 From: Sven Schnelle <svens@stackframe.org>
 To: Richard Henderson <richard.henderson@linaro.org>,
  Helge Deller <deller@gmx.de>
 Cc: qemu-devel@nongnu.org,
 	Sven Schnelle <svens@stackframe.org>
-Subject: [PATCH 2/3] target/hppa: add 64 bit support to gdbstub
-Date: Wed, 28 Feb 2024 21:14:32 +0100
-Message-ID: <20240228201434.1515893-3-svens@stackframe.org>
+Subject: [PATCH 3/3] target/hppa: mask CR_SAR register writes to 5/6 bit in
+ gdbstub
+Date: Wed, 28 Feb 2024 21:14:33 +0100
+Message-ID: <20240228201434.1515893-4-svens@stackframe.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240228201434.1515893-1-svens@stackframe.org>
 References: <20240228201434.1515893-1-svens@stackframe.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=23.83.214.9; envelope-from=svens@stackframe.org;
- helo=bactrian.maple.relay.mailchannels.net
+Received-SPF: pass client-ip=23.83.216.32; envelope-from=svens@stackframe.org;
+ helo=catfish.pear.relay.mailchannels.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -165,104 +166,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Sven Schnelle <svens@stackframe.org>
 ---
- target/hppa/gdbstub.c | 48 +++++++++++++++++++++++++++++--------------
- 1 file changed, 33 insertions(+), 15 deletions(-)
+ target/hppa/gdbstub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/target/hppa/gdbstub.c b/target/hppa/gdbstub.c
-index 48a514384f..a5b2c80c07 100644
+index a5b2c80c07..049b2d6381 100644
 --- a/target/hppa/gdbstub.c
 +++ b/target/hppa/gdbstub.c
-@@ -21,11 +21,25 @@
- #include "cpu.h"
- #include "gdbstub/helpers.h"
- 
-+static int hppa_num_regs(CPUHPPAState *env)
-+{
-+    return hppa_is_pa20(env) ? 96 : 128;
-+}
-+
-+static int hppa_reg_size(CPUHPPAState *env)
-+{
-+    return hppa_is_pa20(env) ? 8 : 4;
-+}
-+
- int hppa_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- {
-     HPPACPU *cpu = HPPA_CPU(cs);
-     CPUHPPAState *env = &cpu->env;
--    target_ureg val;
-+    target_ulong val;
-+
-+    if (n >= hppa_num_regs(env)) {
-+        return 0;
-+    }
- 
-     switch (n) {
-     case 0:
-@@ -128,18 +142,18 @@ int hppa_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
-         val = env->cr[30];
+@@ -184,7 +184,7 @@ int hppa_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+         env->gr[n] = val;
          break;
-     case 64 ... 127:
--        val = extract64(env->fr[(n - 64) / 2], (n & 1 ? 0 : 32), 32);
--        break;
--    default:
--        if (n < 128) {
--            val = 0;
-+        if (hppa_is_pa20(env)) {
-+            val = env->fr[n - 64];
-         } else {
--            return 0;
-+            val = extract64(env->fr[(n - 64) / 2], (n & 1 ? 0 : 32), 32);
-         }
+     case 32:
+-        env->cr[CR_SAR] = val;
++        env->cr[CR_SAR] = val & (hppa_is_pa20(env) ? 63 : 31);
          break;
-+    default:
-+        val = 0;
-+        break;
-     }
- 
--    if (TARGET_REGISTER_BITS == 64) {
-+    if (hppa_is_pa20(env)) {
-         return gdb_get_reg64(mem_buf, val);
-     } else {
-         return gdb_get_reg32(mem_buf, val);
-@@ -150,9 +164,13 @@ int hppa_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
- {
-     HPPACPU *cpu = HPPA_CPU(cs);
-     CPUHPPAState *env = &cpu->env;
--    target_ureg val;
-+    target_ulong val;
-+
-+    if (n >= hppa_num_regs(env)) {
-+        return 0;
-+    }
- 
--    if (TARGET_REGISTER_BITS == 64) {
-+    if (hppa_is_pa20(env)) {
-         val = ldq_p(mem_buf);
-     } else {
-         val = ldl_p(mem_buf);
-@@ -267,16 +285,16 @@ int hppa_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
-         cpu_hppa_loaded_fr0(env);
-         break;
-     case 65 ... 127:
--        {
-+        if (hppa_is_pa20(env)) {
-+            env->fr[n - 64] = val;
-+        } else {
-             uint64_t *fr = &env->fr[(n - 64) / 2];
-             *fr = deposit64(*fr, (n & 1 ? 0 : 32), 32, val);
-         }
-         break;
-     default:
--        if (n >= 128) {
--            return 0;
--        }
-         break;
-     }
--    return sizeof(target_ureg);
-+
-+    return hppa_reg_size(env);
- }
+     case 33:
+         env->iaoq_f = val;
 -- 
 2.43.2
 
