@@ -2,82 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07F9886A98C
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 09:09:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E77B86A9D3
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 09:27:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfEya-0001lI-8U; Wed, 28 Feb 2024 03:07:40 -0500
+	id 1rfFFk-0004TU-4m; Wed, 28 Feb 2024 03:25:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rfEyY-0001jr-83
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 03:07:38 -0500
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1rfFFf-0004Sj-O4
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 03:25:20 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rfEyT-0000af-PV
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 03:07:37 -0500
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1rfFFb-0000hH-A1
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 03:25:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709107652;
+ s=mimecast20190719; t=1709108712;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kiQu0qcepvLNgNVO8+FT105hczx+1saht4JobhIZWJ8=;
- b=fpHLjKFQTNZgnZxdx2rBsldC476qzHWysu+MAl1DJpLaBVpO3GjYc0Nmy16VJ45a8tGYGN
- Y3EJHV8D2CPATGuT6iCQbt+h01HKp31pNROjIMAIPbxkCbKrfQ6vHMBEewLoeye+V14SHV
- bcmCknxb7vfWdgdP+WMlsfveNAasTbI=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=PMcbSI2eFj/4+uTsm6U1a8a5nzik8IKxCw0yyyd+piM=;
+ b=VCimnATmE6TtTGBfdEh6brXvMULOc7dGSW9p3ldcv4jUfYtMtoJGq8Fcjwzod7kPuJ0gdm
+ 3C+bN1+HRIqug1qY3pZG3v/7L2AuoX6woGk4HKZgn++pENlsQE7sWQpCw6dctMEcLsXBpa
+ ZYhFU/R5vl6zYbOamuWCVSHJBf6d9+A=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-IHiRcwyLO6uLrqyLtbNwAQ-1; Wed, 28 Feb 2024 03:07:29 -0500
-X-MC-Unique: IHiRcwyLO6uLrqyLtbNwAQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a3e68c15996so240054866b.3
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 00:07:29 -0800 (PST)
+ us-mta-639-ZgpLAAfvP9ugK83WA7j7zQ-1; Wed, 28 Feb 2024 03:25:10 -0500
+X-MC-Unique: ZgpLAAfvP9ugK83WA7j7zQ-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-412a805f783so11937915e9.3
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 00:25:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709107647; x=1709712447;
+ d=1e100.net; s=20230601; t=1709108709; x=1709713509;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kiQu0qcepvLNgNVO8+FT105hczx+1saht4JobhIZWJ8=;
- b=DpJfe1nELfl4fHshmDVb2hza6ONc3yXrleMOfEXr+2iin2v8GhBzDi6+ODto88TWdE
- Zx9O6rbVoCZdzNITlv0ZkRXjf3MeXParmUcfhG6pEf3uXdUGhm2xl5ocOR5J7GqrY8DV
- U0kVO2BDC6qgmiskcNBUYKTejXCXLIye+nxXYxb2yEngXG8Jv2ji3WiuO72sCmM3bbuI
- IQum0KO/Viilg6kApXB89o4R4YSZlpP6mWj2XhTHFu7GNVezTuqphqHG0ykageYv8GHF
- JxUXysmoZENHkxP5KdVpEAuJYdSFBtU6qg8XbxgnKu5kN0Sxqf5hXgE51zK+r5v3tbFO
- ofJw==
-X-Gm-Message-State: AOJu0YzFS3dQ+shLLtg3bbAHdzZt3Sq54IKLARrHmePjO32UbkjBpeoh
- /Rf0YraJ9huhBMZGN/Z9wCYXc4+h4INSJCpBibZ9REqr5/VpAM0beunKm2YHNEv52r84dwXeGti
- CEN2s6YWpG5zl3qI3WAdIOiDBfOo+54H2eV57AVyIPf/DvKMwkyMrO8Ix18a6uFfL87ircoNyLL
- KaNPCcjrCRZNsb8ue/20tqc9/jB9aEwwyYOUPa
-X-Received: by 2002:a17:906:f882:b0:a43:d063:91cd with SMTP id
- lg2-20020a170906f88200b00a43d06391cdmr1550683ejb.13.1709107646838; 
- Wed, 28 Feb 2024 00:07:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE3qxGJfHwmTkrlF8u8fFbwLd3qvHSn2U9eNt4Tw8vnohb8xpbW/HKm6Jx40hhWqCzvNntGWA==
-X-Received: by 2002:a17:906:f882:b0:a43:d063:91cd with SMTP id
- lg2-20020a170906f88200b00a43d06391cdmr1550674ejb.13.1709107646570; 
- Wed, 28 Feb 2024 00:07:26 -0800 (PST)
-Received: from [192.168.10.118] ([93.56.170.180])
- by smtp.gmail.com with ESMTPSA id
- r8-20020a170906c28800b00a3d2d81daafsm1587934ejz.172.2024.02.28.00.07.25
+ bh=PMcbSI2eFj/4+uTsm6U1a8a5nzik8IKxCw0yyyd+piM=;
+ b=NWsTlmgJ9C/Bx7zSEj+pEuqNeeUWESVk8Z9BznSSmeGYjfvmRCdt+pWkaAYp6QtJa0
+ ij12YXIkYB/o9+ZcLabGyhRW8lm5JTUsggjCKEWFWn31CRpsMIflgO/3rInwAEUA86Mt
+ u7HzW/dAxzVmCHaMxCHwC2LGu3BccxCMDGDw11OsX9NybboV+h+xEWMcI8MmADPaH/3f
+ wxp1YEgfv5BJgJUXp/1ueKzoidunInO9+k8RoHURQSNlsVm0K/z5WyN480/QgckeLJ9i
+ frICz1YWynGBYXxohiE49XtcGzBosWiw89DGzR1LoYyiOsKLe5TlQernAKMGc9dStKSm
+ oohA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV+tq4kyC+us9TrTQqcJmZWuyGcFH7U9iFZ6WN3aop97TeBp9MVJy2b+XZZOBr9M/w8MHfU2a76+73eRKHu4x2D1BYi9rQ=
+X-Gm-Message-State: AOJu0YxZ/a6kgeqr/frplq/WWHtrEcraivPl+T7Fz3j7H2QgHaARwICn
+ UXitwki5vM1o88MHrERAz/kxCPEzMAAS64ai8EuwuXyoW1HGzW/xk28pexUCHp0E4rp9F22UQnZ
+ O6/khlsaVy8qNmMQjTPFMSh6s2eg2RfCBTJ9SlRa4p+Lu3Va3By9V
+X-Received: by 2002:a05:600c:4708:b0:412:a333:1d36 with SMTP id
+ v8-20020a05600c470800b00412a3331d36mr6456830wmo.32.1709108709717; 
+ Wed, 28 Feb 2024 00:25:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFLwtUUSIXR5qnN96pRO9wawfFh06U6FrdcOA93/OWlgejy9W7v2yLug+/dkDH1YGO6vsE9rQ==
+X-Received: by 2002:a05:600c:4708:b0:412:a333:1d36 with SMTP id
+ v8-20020a05600c470800b00412a3331d36mr6456809wmo.32.1709108709360; 
+ Wed, 28 Feb 2024 00:25:09 -0800 (PST)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ jw21-20020a05600c575500b004126afe04f6sm1313531wmb.32.2024.02.28.00.25.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Feb 2024 00:07:25 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 10/10] ide, vl: turn -win2k-hack into a property on IDE devices
-Date: Wed, 28 Feb 2024 09:06:46 +0100
-Message-ID: <20240228080646.261365-11-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240228080646.261365-1-pbonzini@redhat.com>
-References: <20240228080646.261365-1-pbonzini@redhat.com>
+ Wed, 28 Feb 2024 00:25:08 -0800 (PST)
+Date: Wed, 28 Feb 2024 09:25:07 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, Richard
+ Henderson <richard.henderson@linaro.org>, Eduardo Habkost
+ <eduardo@habkost.net>, "Daniel P . =?UTF-8?B?QmVycmFuZ8Op?="
+ <berrange@redhat.com>, Julia Suvorova <jusual@redhat.com>,
+ kraxel@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH v4] pc: q35: Bump max_cpus to 4096 vcpus
+Message-ID: <20240228092507.7250bac8@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20240221140227.3886-1-anisinha@redhat.com>
+References: <20240221140227.3886-1-anisinha@redhat.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -101,123 +106,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- include/hw/ide/ide-dev.h | 2 ++
- include/sysemu/sysemu.h  | 1 -
- hw/ide/core.c            | 3 ++-
- hw/ide/ide-dev.c         | 1 +
- system/globals.c         | 1 -
- system/vl.c              | 2 +-
- qemu-options.hx          | 3 ++-
- 7 files changed, 8 insertions(+), 5 deletions(-)
+On Wed, 21 Feb 2024 19:32:27 +0530
+Ani Sinha <anisinha@redhat.com> wrote:
 
-diff --git a/include/hw/ide/ide-dev.h b/include/hw/ide/ide-dev.h
-index 708cc0fda34..9a0d71db4e1 100644
---- a/include/hw/ide/ide-dev.h
-+++ b/include/hw/ide/ide-dev.h
-@@ -65,6 +65,7 @@ struct IDEState {
-     int drive_serial;
-     char drive_serial_str[21];
-     char drive_model_str[41];
-+    bool win2k_install_hack;
-     uint64_t wwn;
-     /* ide regs */
-     uint8_t feature;
-@@ -163,6 +164,7 @@ struct IDEDevice {
-      * 0xffff        - reserved
-      */
-     uint16_t rotation_rate;
-+    bool win2k_install_hack;
- };
- 
- typedef struct IDEDrive {
-diff --git a/include/sysemu/sysemu.h b/include/sysemu/sysemu.h
-index 73a37949c24..eb1dc1e4eda 100644
---- a/include/sysemu/sysemu.h
-+++ b/include/sysemu/sysemu.h
-@@ -41,7 +41,6 @@ extern int graphic_height;
- extern int graphic_depth;
- extern int display_opengl;
- extern const char *keyboard_layout;
--extern int win2k_install_hack;
- extern int graphic_rotate;
- extern int old_param;
- extern uint8_t *boot_splash_filedata;
-diff --git a/hw/ide/core.c b/hw/ide/core.c
-index 3c42d72ac25..3f8c0ede2a1 100644
---- a/hw/ide/core.c
-+++ b/hw/ide/core.c
-@@ -1059,7 +1059,7 @@ static void ide_sector_write_cb(void *opaque, int ret)
-                            ide_sector_write);
-     }
- 
--    if (win2k_install_hack && ((++s->irq_count % 16) == 0)) {
-+    if (s->win2k_install_hack && ((++s->irq_count % 16) == 0)) {
-         /* It seems there is a bug in the Windows 2000 installer HDD
-            IDE driver which fills the disk with empty logs when the
-            IDE write IRQ comes too early. This hack tries to correct
-@@ -2597,6 +2597,7 @@ int ide_init_drive(IDEState *s, IDEDevice *dev, IDEDriveKind kind, Error **errp)
-     s->drive_kind = kind;
- 
-     blk_get_geometry(s->blk, &nb_sectors);
-+    s->win2k_install_hack = dev->win2k_install_hack;
-     s->cylinders = dev->conf.cyls;
-     s->heads = s->drive_heads = dev->conf.heads;
-     s->sectors = s->drive_sectors = dev->conf.secs;
-diff --git a/hw/ide/ide-dev.c b/hw/ide/ide-dev.c
-index 900f80faf19..99f2f1226cf 100644
---- a/hw/ide/ide-dev.c
-+++ b/hw/ide/ide-dev.c
-@@ -31,6 +31,7 @@
- 
- static Property ide_props[] = {
-     DEFINE_PROP_UINT32("unit", IDEDevice, unit, -1),
-+    DEFINE_PROP_BOOL("win2k-install-hack", IDEDevice, win2k_install_hack, false),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/system/globals.c b/system/globals.c
-index 5d0046ba105..e3535842010 100644
---- a/system/globals.c
-+++ b/system/globals.c
-@@ -40,7 +40,6 @@ int autostart = 1;
- int vga_interface_type = VGA_NONE;
- bool vga_interface_created;
- Chardev *parallel_hds[MAX_PARALLEL_PORTS];
--int win2k_install_hack;
- int graphic_rotate;
- QEMUOptionRom option_rom[MAX_OPTION_ROMS];
- int nb_option_roms;
-diff --git a/system/vl.c b/system/vl.c
-index 98bf0c386b4..e480afd7a00 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -3265,7 +3265,7 @@ void qemu_init(int argc, char **argv)
-                 pid_file = optarg;
-                 break;
-             case QEMU_OPTION_win2k_hack:
--                win2k_install_hack = 1;
-+                object_register_sugar_prop("ide-device", "win2k-install-hack", "true", true);
-                 break;
-             case QEMU_OPTION_acpitable:
-                 opts = qemu_opts_parse_noisily(qemu_find_opts("acpi"),
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 1136642c21d..9a47385c157 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -2641,7 +2641,8 @@ SRST
- ``-win2k-hack``
-     Use it when installing Windows 2000 to avoid a disk full bug. After
-     Windows 2000 is installed, you no longer need this option (this
--    option slows down the IDE transfers).
-+    option slows down the IDE transfers).  Synonym of ``-global
-+    ide-device.win2k-install-hack=on``.
- ERST
- 
- DEF("no-fd-bootchk", 0, QEMU_OPTION_no_fd_bootchk,
--- 
-2.43.2
+> Since commit f10a570b093e6 ("KVM: x86: Add CONFIG_KVM_MAX_NR_VCPUS to all=
+ow up to 4096 vCPUs")
+> Linux kernel can support upto a maximum number of 4096 vCPUS when MAXSMP =
+is
+> enabled in the kernel. At present, QEMU has been tested to correctly boot=
+ a
+> linux guest with 4096 vcpus with edk2 pending various upstream EDK2 fixes
+> which will probably be in the 2024-05 release to be released in the coming
+> months. With current seabios firmware, it boots fine with 4096 vcpus alre=
+ady.
+> So bump up the value max_cpus to 4096 for q35 machines versions 9 and new=
+er.
+> Q35 machines versions 8.2 and older continue to support 1024 maximum vcpus
+> as before for compatibility reasons.
+>=20
+> If KVM is not able to support the specified number of vcpus, QEMU would
+> return the following error messages:
+>=20
+> $ ./qemu-system-x86_64 -cpu host -accel kvm -machine q35 -smp 1728
+> qemu-system-x86_64: -accel kvm: warning: Number of SMP cpus requested (17=
+28) exceeds the recommended cpus supported by KVM (12)
+> qemu-system-x86_64: -accel kvm: warning: Number of hotpluggable cpus requ=
+ested (1728) exceeds the recommended cpus supported by KVM (12)
+> Number of SMP cpus requested (1728) exceeds the maximum cpus supported by=
+ KVM (1024)
+>=20
+> Cc: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> Cc: Igor Mammedov <imammedo@redhat.com>
+> Cc: Michael S. Tsirkin <mst@redhat.com>
+> Cc: Julia Suvorova <jusual@redhat.com>
+> Cc: kraxel@redhat.com
+> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+
+=46rom ACPI point of view, it can support upto 4096 logical cpus
+(for more we would need to reconsider how to generate CPU descriptions
+as well as hotplug).
+
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+
+> ---
+>  hw/i386/pc_q35.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> Changelog:
+> v4: tweaked commit message as per suggestion from danpb explicitly
+> stating that 4096 vcpus work with edk2 fixes that are going to be
+> available in the coming edk2 release.
+> v3: bump up to 4096 vcpus. It has now been tested to work with edk2.
+> See RH Jira: https://issues.redhat.com/browse/RHEL-22202
+> v2: bump up the vcpu number to 1856. Add failure messages from ekd2 in
+> the commit description.
+>=20
+>=20
+> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+> index d346fa3b1d..ae60e6b919 100644
+> --- a/hw/i386/pc_q35.c
+> +++ b/hw/i386/pc_q35.c
+> @@ -366,7 +366,7 @@ static void pc_q35_machine_options(MachineClass *m)
+>      m->default_nic =3D "e1000e";
+>      m->default_kernel_irqchip_split =3D false;
+>      m->no_floppy =3D 1;
+> -    m->max_cpus =3D 1024;
+> +    m->max_cpus =3D 4096;
+>      m->no_parallel =3D !module_object_class_by_name(TYPE_ISA_PARALLEL);
+>      machine_class_allow_dynamic_sysbus_dev(m, TYPE_AMD_IOMMU_DEVICE);
+>      machine_class_allow_dynamic_sysbus_dev(m, TYPE_INTEL_IOMMU_DEVICE);
+> @@ -387,6 +387,7 @@ static void pc_q35_8_2_machine_options(MachineClass *=
+m)
+>  {
+>      pc_q35_9_0_machine_options(m);
+>      m->alias =3D NULL;
+> +    m->max_cpus =3D 1024;
+>      compat_props_add(m->compat_props, hw_compat_8_2, hw_compat_8_2_len);
+>      compat_props_add(m->compat_props, pc_compat_8_2, pc_compat_8_2_len);
+>  }
 
 
