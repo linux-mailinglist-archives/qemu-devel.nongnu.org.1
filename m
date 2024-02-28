@@ -2,107 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2020C86B2FF
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 16:23:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB94C86B30B
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 16:24:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfLkj-0006Wy-66; Wed, 28 Feb 2024 10:21:49 -0500
+	id 1rfLkk-0006Xa-IT; Wed, 28 Feb 2024 10:21:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfLkh-0006Wk-Pv
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 10:21:47 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfLkj-0006X5-Ed
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 10:21:49 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfLkc-0004t6-Jg
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 10:21:47 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfLke-0004vp-QF
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 10:21:49 -0500
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 398CD225B3;
- Wed, 28 Feb 2024 15:21:41 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 4AC661F79A;
+ Wed, 28 Feb 2024 15:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709133701; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1709133703; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZC9GGKiLiOlOghxD2kAzp04A9s2EovQY2cXlVK4HRas=;
- b=deK4rNea71zMKxziEXFJLZLQBiy77wQkqX1Fpg+FKzmFZp9K6/is9Cwpd6o6clO+HOfB+k
- mBgij/yIJV24VgpO5vCSwR3O1UmeY7fmZWACm7+HsjvE6Y6gxNa+muJqqvCh6P9NkCY0Q/
- X7p1w1XSUTOf0U2dJz6rjIaHdkhG110=
+ bh=Yei0QUkdknw0DkZwKKRyp+HpBHZX5C0CfiFOhKXCH40=;
+ b=rJDJQesUMca6NWzHoml4wMxJ/eklkUKBzUVHZHVzvqprkxm/UGbRFiEgb4Q36asScgGNoP
+ tTbmqJ5wfZ23nl7wzv/QmbFpNSmldH72xBSGkko1GGwSWS1peEAUd+BzoknVcYScKFsZD6
+ 3DqliJ215+4orb8ZKMOUkCsNdeNkpYs=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709133701;
+ s=susede2_ed25519; t=1709133703;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZC9GGKiLiOlOghxD2kAzp04A9s2EovQY2cXlVK4HRas=;
- b=4JoRM0s+iyPRbG3GOtDKE9VCw+kicIVCOVOV+HH/wxJACCMvwtTZ9Vy/r+UsJUjhFR6ShE
- g6Rsd7qo7jF22WCg==
+ bh=Yei0QUkdknw0DkZwKKRyp+HpBHZX5C0CfiFOhKXCH40=;
+ b=YDYxikAbMgTkryqW6JO38laq1lXeHdQ3jFOB1rwi00OjrKMAJjpcFhbgVp1ZIaVrejt3fN
+ PYHP1sHu14L76+BQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709133701; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1709133703; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZC9GGKiLiOlOghxD2kAzp04A9s2EovQY2cXlVK4HRas=;
- b=deK4rNea71zMKxziEXFJLZLQBiy77wQkqX1Fpg+FKzmFZp9K6/is9Cwpd6o6clO+HOfB+k
- mBgij/yIJV24VgpO5vCSwR3O1UmeY7fmZWACm7+HsjvE6Y6gxNa+muJqqvCh6P9NkCY0Q/
- X7p1w1XSUTOf0U2dJz6rjIaHdkhG110=
+ bh=Yei0QUkdknw0DkZwKKRyp+HpBHZX5C0CfiFOhKXCH40=;
+ b=rJDJQesUMca6NWzHoml4wMxJ/eklkUKBzUVHZHVzvqprkxm/UGbRFiEgb4Q36asScgGNoP
+ tTbmqJ5wfZ23nl7wzv/QmbFpNSmldH72xBSGkko1GGwSWS1peEAUd+BzoknVcYScKFsZD6
+ 3DqliJ215+4orb8ZKMOUkCsNdeNkpYs=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709133701;
+ s=susede2_ed25519; t=1709133703;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZC9GGKiLiOlOghxD2kAzp04A9s2EovQY2cXlVK4HRas=;
- b=4JoRM0s+iyPRbG3GOtDKE9VCw+kicIVCOVOV+HH/wxJACCMvwtTZ9Vy/r+UsJUjhFR6ShE
- g6Rsd7qo7jF22WCg==
+ bh=Yei0QUkdknw0DkZwKKRyp+HpBHZX5C0CfiFOhKXCH40=;
+ b=YDYxikAbMgTkryqW6JO38laq1lXeHdQ3jFOB1rwi00OjrKMAJjpcFhbgVp1ZIaVrejt3fN
+ PYHP1sHu14L76+BQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 625C213A5D;
- Wed, 28 Feb 2024 15:21:39 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AC94513A5D;
+ Wed, 28 Feb 2024 15:21:41 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id oIiVCoNP32UPAwAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 28 Feb 2024 15:21:39 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id kNp9HIVP32UPAwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 28 Feb 2024 15:21:41 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
- Claudio Fontana <cfontana@suse.de>, Nikolay Borisov <nborisov@suse.com>
-Subject: [PATCH v5 04/23] io: implement io_pwritev/preadv for QIOChannelFile
-Date: Wed, 28 Feb 2024 12:21:08 -0300
-Message-Id: <20240228152127.18769-5-farosas@suse.de>
+ Claudio Fontana <cfontana@suse.de>
+Subject: [PATCH v5 05/23] io: fsync before closing a file channel
+Date: Wed, 28 Feb 2024 12:21:09 -0300
+Message-Id: <20240228152127.18769-6-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240228152127.18769-1-farosas@suse.de>
 References: <20240228152127.18769-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=deK4rNea;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4JoRM0s+
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-3.33 / 50.00]; ARC_NA(0.00)[];
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rJDJQesU;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YDYxikAb
+X-Spamd-Result: default: False [-1.52 / 50.00]; ARC_NA(0.00)[];
  RCVD_VIA_SMTP_AUTH(0.00)[];
  R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_FIVE(0.00)[6];
- RCVD_COUNT_THREE(0.00)[3];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
+ RCPT_COUNT_FIVE(0.00)[5]; RCVD_COUNT_THREE(0.00)[3];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
  MID_CONTAINS_FROM(1.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.de:dkim,suse.de:email];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- RCVD_TLS_ALL(0.00)[]; BAYES_HAM(-2.82)[99.21%]
-X-Spam-Score: -3.33
-X-Rspamd-Queue-Id: 398CD225B3
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ BAYES_HAM(-2.21)[96.23%]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 4AC661F79A
+X-Spam-Score: -1.52
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -125,96 +124,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nikolay Borisov <nborisov@suse.com>
+Make sure the data is flushed to disk before closing file
+channels. This is to ensure data is on disk and not lost in the event
+of a host crash.
 
-The upcoming 'mapped-ram' feature will require qemu to write data to
-(and restore from) specific offsets of the migration file.
+This is currently being implemented to affect the migration code when
+migrating to a file, but all QIOChannelFile users should benefit from
+the change.
 
-Add a minimal implementation of pwritev/preadv and expose them via the
-io_pwritev and io_preadv interfaces.
-
-Signed-off-by: Nikolay Borisov <nborisov@suse.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Acked-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- io/channel-file.c | 56 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+ io/channel-file.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/io/channel-file.c b/io/channel-file.c
-index f91bf6db1c..a6ad7770c6 100644
+index a6ad7770c6..d4706fa592 100644
 --- a/io/channel-file.c
 +++ b/io/channel-file.c
-@@ -146,6 +146,58 @@ static ssize_t qio_channel_file_writev(QIOChannel *ioc,
-     return ret;
- }
+@@ -242,6 +242,11 @@ static int qio_channel_file_close(QIOChannel *ioc,
+ {
+     QIOChannelFile *fioc = QIO_CHANNEL_FILE(ioc);
  
-+#ifdef CONFIG_PREADV
-+static ssize_t qio_channel_file_preadv(QIOChannel *ioc,
-+                                       const struct iovec *iov,
-+                                       size_t niov,
-+                                       off_t offset,
-+                                       Error **errp)
-+{
-+    QIOChannelFile *fioc = QIO_CHANNEL_FILE(ioc);
-+    ssize_t ret;
-+
-+ retry:
-+    ret = preadv(fioc->fd, iov, niov, offset);
-+    if (ret < 0) {
-+        if (errno == EAGAIN) {
-+            return QIO_CHANNEL_ERR_BLOCK;
-+        }
-+        if (errno == EINTR) {
-+            goto retry;
-+        }
-+
-+        error_setg_errno(errp, errno, "Unable to read from file");
++    if (qemu_fdatasync(fioc->fd) < 0) {
++        error_setg_errno(errp, errno,
++                         "Unable to synchronize file data with storage device");
 +        return -1;
 +    }
-+
-+    return ret;
-+}
-+
-+static ssize_t qio_channel_file_pwritev(QIOChannel *ioc,
-+                                        const struct iovec *iov,
-+                                        size_t niov,
-+                                        off_t offset,
-+                                        Error **errp)
-+{
-+    QIOChannelFile *fioc = QIO_CHANNEL_FILE(ioc);
-+    ssize_t ret;
-+
-+ retry:
-+    ret = pwritev(fioc->fd, iov, niov, offset);
-+    if (ret <= 0) {
-+        if (errno == EAGAIN) {
-+            return QIO_CHANNEL_ERR_BLOCK;
-+        }
-+        if (errno == EINTR) {
-+            goto retry;
-+        }
-+        error_setg_errno(errp, errno, "Unable to write to file");
-+        return -1;
-+    }
-+    return ret;
-+}
-+#endif /* CONFIG_PREADV */
-+
- static int qio_channel_file_set_blocking(QIOChannel *ioc,
-                                          bool enabled,
-                                          Error **errp)
-@@ -231,6 +283,10 @@ static void qio_channel_file_class_init(ObjectClass *klass,
-     ioc_klass->io_writev = qio_channel_file_writev;
-     ioc_klass->io_readv = qio_channel_file_readv;
-     ioc_klass->io_set_blocking = qio_channel_file_set_blocking;
-+#ifdef CONFIG_PREADV
-+    ioc_klass->io_pwritev = qio_channel_file_pwritev;
-+    ioc_klass->io_preadv = qio_channel_file_preadv;
-+#endif
-     ioc_klass->io_seek = qio_channel_file_seek;
-     ioc_klass->io_close = qio_channel_file_close;
-     ioc_klass->io_create_watch = qio_channel_file_create_watch;
+     if (qemu_close(fioc->fd) < 0) {
+         error_setg_errno(errp, errno,
+                          "Unable to close file");
 -- 
 2.35.3
 
