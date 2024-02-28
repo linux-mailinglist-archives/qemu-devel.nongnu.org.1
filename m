@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B15F286B4C5
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 17:25:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B6A86B4D9
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 17:27:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfMjK-0004Hl-6s; Wed, 28 Feb 2024 11:24:26 -0500
+	id 1rfMjM-0004PC-Vx; Wed, 28 Feb 2024 11:24:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfMjH-00048C-MN; Wed, 28 Feb 2024 11:24:23 -0500
+ id 1rfMjK-0004Lu-Ip; Wed, 28 Feb 2024 11:24:26 -0500
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfMjG-0000pW-3n; Wed, 28 Feb 2024 11:24:23 -0500
+ id 1rfMjI-0000pW-P6; Wed, 28 Feb 2024 11:24:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709137462; x=1740673462;
+ t=1709137465; x=1740673465;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=jgSKdh1K5au4hr9TGsT75o/2HJxQJ0BlN2wKDuJibyk=;
- b=WYlMfss23Jt0+0mn9oH0PUZYnzXwyA6P5Bv9HRQAlKK785+hx1HWcXvo
- VRqmpxrYBqIzh6ALbPp+0EJ878dIjMCSDYwFGi8l98USZs1shieCgRZU7
- SMxKiNmJ4EkdXSNwbTf9FnDVa5ep5hFognHPHG1ZjETNl7R1TvTweXZ9M
- Z9QZwDNB/mJyuJEQYM0CV0iBErfDlzZDdDzUwB5JTX2LqRSRInVLJQ0Et
- JYK/g6tlhezl1fD24NQM/lRceAjHqQbL85Xwu/W7CabpTr0jhvKzEoysX
- XhUWxl8/Lvcjgef/v4Cm2zFHKjtf2gvJVQbscb7bUjQOxe6dyJFqItwkZ g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="28982542"
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="28982542"
+ bh=f4WdEAP88HmKKD0w3J+So2kEwEw+Dq4DuWbImglfdPQ=;
+ b=Wcp1pmAWeS4d7W36MO4DVARygOfAtOHVLwaHCI0q8Vd1Av9W3E5jkFW5
+ lTpKFgolRW65UHZ+kNxHQ8rohY4Prc9qK+lv856aQcNc2mNAZrefXKAOr
+ RxfAWV9hkAiZ5KQZRWwXEBIdW1elXKcdUaaCRdfgRGh1wwRvPWI6INDin
+ lsmj/ak4F/5PUydJqXvRRQaKuEA0evJ42XRr7C1UZiP9GD4wdKyAm+fgz
+ tP+OQQ0mN8HTMv4pep3ilXN54V4F63HaLR91DTeEzVD9EJyIlZuaq1LTL
+ +1Z83ySvvsVs4Rrg48uz5vuSJG8GoY4ZI0XbCkAn/S8qLUkfGC/V7EwS0 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="28982553"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="28982553"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 08:24:14 -0800
+ 28 Feb 2024 08:24:17 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="12144983"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="12144995"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 28 Feb 2024 08:24:12 -0800
+ by orviesa004.jf.intel.com with ESMTP; 28 Feb 2024 08:24:15 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH 09/16] block/qed: Fix missing ERRP_GUARD() for error_prepend()
-Date: Thu, 29 Feb 2024 00:37:16 +0800
-Message-Id: <20240228163723.1775791-10-zhao1.liu@linux.intel.com>
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
+Subject: [PATCH 10/16] block/snapshot: Fix missing ERRP_GUARD() for
+ error_prepend()
+Date: Thu, 29 Feb 2024 00:37:17 +0800
+Message-Id: <20240228163723.1775791-11-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240228163723.1775791-1-zhao1.liu@linux.intel.com>
 References: <20240228163723.1775791-1-zhao1.liu@linux.intel.com>
@@ -98,37 +98,47 @@ ERRP_GUARD() could avoid the case when @errp is the pointer of
 error_fatal, the user can't see this additional information, because
 exit() happens in error_setg earlier than information is added [1].
 
-The bdrv_qed_co_invalidate_cache() passes @errp to error_prepend()
-without ERRP_GUARD().
+In block/snapshot.c, there're 2 functions passing @errp to
+error_prepend() without ERRP_GUARD():
+ - bdrv_all_delete_snapshot()
+ - bdrv_all_goto_snapshot()
 
-Though it is a BlockDriver.bdrv_co_invalidate_cache() method, and
-currently its @errp parameter only points to callers' local_err, to
-follow the requirement of @errp, add missing ERRP_GUARD() at the
-beginning of this function.
+As the APIs exposed in include/block/snapshot.h, they could be called
+by other modules.
+
+To avoid potential issues as [1] said, add missing ERRP_GUARD() at the
+beginning of these 2 functions.
 
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
 
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
 Cc: Kevin Wolf <kwolf@redhat.com>
 Cc: Hanna Reitz <hreitz@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- block/qed.c | 1 +
- 1 file changed, 1 insertion(+)
+ block/snapshot.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/block/qed.c b/block/qed.c
-index bc2f0a61c0a9..fa5bc1108552 100644
---- a/block/qed.c
-+++ b/block/qed.c
-@@ -1579,6 +1579,7 @@ bdrv_qed_co_change_backing_file(BlockDriverState *bs, const char *backing_file,
- static void coroutine_fn GRAPH_RDLOCK
- bdrv_qed_co_invalidate_cache(BlockDriverState *bs, Error **errp)
+diff --git a/block/snapshot.c b/block/snapshot.c
+index 8694fc0a3eba..8242b4abac41 100644
+--- a/block/snapshot.c
++++ b/block/snapshot.c
+@@ -566,6 +566,7 @@ int bdrv_all_delete_snapshot(const char *name,
+                              bool has_devices, strList *devices,
+                              Error **errp)
  {
 +    ERRP_GUARD();
-     BDRVQEDState *s = bs->opaque;
-     int ret;
+     g_autoptr(GList) bdrvs = NULL;
+     GList *iterbdrvs;
  
+@@ -605,6 +606,7 @@ int bdrv_all_goto_snapshot(const char *name,
+                            bool has_devices, strList *devices,
+                            Error **errp)
+ {
++    ERRP_GUARD();
+     g_autoptr(GList) bdrvs = NULL;
+     GList *iterbdrvs;
+     int ret;
 -- 
 2.34.1
 
