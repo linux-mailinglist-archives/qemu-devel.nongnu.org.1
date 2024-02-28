@@ -2,68 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58FA586B4E6
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 17:28:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBD9886B4F5
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 17:30:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfMkT-0005mY-2q; Wed, 28 Feb 2024 11:25:37 -0500
+	id 1rfMpC-0000p5-83; Wed, 28 Feb 2024 11:30:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfMjo-00052N-Ou; Wed, 28 Feb 2024 11:24:59 -0500
-Received: from mgamail.intel.com ([192.198.163.7])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rfMp7-0000o4-Hj
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 11:30:25 -0500
+Received: from mgamail.intel.com ([192.198.163.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfMjl-0000tl-AM; Wed, 28 Feb 2024 11:24:55 -0500
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rfMp5-0002Gq-MP
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 11:30:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709137493; x=1740673493;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=yMTWaY/sS/jyModr1jZtevzt+KtVPqAcOTyAOHQmGhc=;
- b=MsDeTrYOk1f0O8EbDbJG0toC4GHUlZks3ydNCVt40NKsdTRDUdBRqSeq
- 82gUNV91L0WjHBbaakwgOsW5d7CV8A5Wp+0TTvcWSOltfQlaABBhRUtXs
- E76gIcxheMACrxzVyrkSXRMzwflJKKrAdRcpOe/Bap7oC2p8ePZO00OaV
- 7s7coDEbIn3H918MhFE82ORSJ3X0CrY1bau+52doXZCfgMeQS3kKwOuon
- Nd2STrOSioFDH9bvt32A4J4UQIB5YXLHWjRklEXVCskDwYvJzSGnMHrv/
- GKTJtRl0kRVTQ9181TGsrwGGTura+FzMfMJjL6c1m6PS3YjpoIkJeYkLD w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="28982663"
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="28982663"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 08:24:35 -0800
+ t=1709137823; x=1740673823;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=XWF3+dBBS9EOok61+0ZKnd1zVf0L8+4O443jR/wQhMk=;
+ b=NGYJskWLN6KELQthFTeDkKaV/QhvY9qQKIppwcEdPpuGPesUW7hMGdcx
+ rvKccOpUBmhrAOvs6ZIAYNWHNNfh6wQsniVY5xYDD+iZ1+sM1UbhsKkJ3
+ Xe/l22l1+h6ADnzqQr+CL6IcMsQcJNa70oDKwzUn42r7NRvotjOv1hH4X
+ 99vACqY6xsnQCfzBcTP0po9LJx/1Ts5b4opAxqp8+CssGMLcmG8yPO0xI
+ 7bFakb887I/GhZb3LnfsCFInBd6XyNyqv4qQ26Qh7oqPBmjzi+UyTD3H5
+ /f8ZqchkE4Mi5UnIz53SDRC5jzSXwUn0r+aTIrQJoiK4gov7NVgh6WOO3 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3712517"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
+   d="scan'208";a="3712517"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Feb 2024 08:30:20 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="12145086"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 28 Feb 2024 08:24:32 -0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Michael Tokarev <mjt@tls.msk.ru>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH 16/16] hw/core/qdev-properties-system: Fix missing
- ERRP_GUARD() for error_prepend()
-Date: Thu, 29 Feb 2024 00:37:23 +0800
-Message-Id: <20240228163723.1775791-17-zhao1.liu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240228163723.1775791-1-zhao1.liu@linux.intel.com>
-References: <20240228163723.1775791-1-zhao1.liu@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="38328629"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa002.jf.intel.com with ESMTP; 28 Feb 2024 08:30:16 -0800
+Date: Thu, 29 Feb 2024 00:43:59 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ Anton Johansson <anjo@rev.ng>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>, Bernhard Beschow <shentey@gmail.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Laszlo Ersek <lersek@redhat.com>
+Subject: Re: [RFC PATCH 4/5] hw/i386/q35: Wire virtual SMI# lines to ICH9
+ chipset
+Message-ID: <Zd9iz9aIwM3cOqwt@intel.com>
+References: <20240226164913.94077-1-philmd@linaro.org>
+ <20240226164913.94077-5-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=192.198.163.7;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240226164913.94077-5-philmd@linaro.org>
+Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.102,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.102,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,59 +90,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+Hi Philippe,
 
-As the comment in qapi/error, passing @errp to error_prepend() requires
-ERRP_GUARD():
+> +/*
+> + * Real ICH9 contains a single SMI output line and doesn't broadcast CPUs.
+> + * Virtualized ICH9 allows broadcasting upon negatiation with guest, see
+> + * commit 5ce45c7a2b.
+> + */
+> +enum {
+> +    ICH9_VIRT_SMI_BROADCAST,
+> +    ICH9_VIRT_SMI_CURRENT,
+> +#define ICH9_VIRT_SMI_COUNT 2
+> +};
+> +
 
-* = Why, when and how to use ERRP_GUARD() =
-*
-* Without ERRP_GUARD(), use of the @errp parameter is restricted:
-...
-* - It should not be passed to error_prepend(), error_vprepend() or
-*   error_append_hint(), because that doesn't work with &error_fatal.
-* ERRP_GUARD() lifts these restrictions.
-*
-* To use ERRP_GUARD(), add it right at the beginning of the function.
-* @errp can then be used without worrying about the argument being
-* NULL or &error_fatal.
+Just quick look here. Shouldn't ICH9_VIRT_SMI_COUNT be defined outside of
+enum {}?
 
-ERRP_GUARD() could avoid the case when @errp is the pointer of
-error_fatal, the user can't see this additional information, because
-exit() happens in error_setg earlier than information is added [1].
-
-The set_chr() passes @errp to error_prepend() without ERRP_GUARD().
-
-As a PropertyInfo.set method, the @errp passed to set_chr() is so widely
-sourced that it is necessary to protect it with ERRP_GUARD().
-
-To avoid the issue like [1] said, add missing ERRP_GUARD() at the
-beginning of this function.
-
-[1]: Issue description in the commit message of commit ae7c80a7bd73
-     ("error: New macro ERRP_GUARD()").
-
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Daniel P. Berrangé" <berrange@redhat.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- hw/core/qdev-properties-system.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-index 1a396521d51f..545c3ceff7c9 100644
---- a/hw/core/qdev-properties-system.c
-+++ b/hw/core/qdev-properties-system.c
-@@ -242,6 +242,7 @@ static void get_chr(Object *obj, Visitor *v, const char *name, void *opaque,
- static void set_chr(Object *obj, Visitor *v, const char *name, void *opaque,
-                     Error **errp)
- {
-+    ERRP_GUARD();
-     Property *prop = opaque;
-     CharBackend *be = object_field_prop_ptr(obj, prop);
-     Chardev *s;
--- 
-2.34.1
+-Zhao
 
 
