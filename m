@@ -2,39 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C3D786BBC2
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 00:01:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB4C286BB21
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 23:56:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfSpn-0005We-Na; Wed, 28 Feb 2024 17:55:32 -0500
+	id 1rfSpp-0005Y9-Cc; Wed, 28 Feb 2024 17:55:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rfSpb-0005TS-Q8; Wed, 28 Feb 2024 17:55:20 -0500
+ id 1rfSpc-0005Tr-W5; Wed, 28 Feb 2024 17:55:22 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rfSpY-0000Yj-Le; Wed, 28 Feb 2024 17:55:18 -0500
+ id 1rfSpb-0000ZK-Bf; Wed, 28 Feb 2024 17:55:20 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D2F735180D;
+ by isrv.corpit.ru (Postfix) with ESMTP id E57035180E;
  Thu, 29 Feb 2024 01:55:32 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 444228BB40;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5250A8BB41;
  Thu, 29 Feb 2024 01:54:56 +0300 (MSK)
-Received: (nullmailer pid 274137 invoked by uid 1000);
+Received: (nullmailer pid 274140 invoked by uid 1000);
  Wed, 28 Feb 2024 22:54:55 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+Cc: qemu-stable@nongnu.org, Klaus Jensen <k.jensen@samsung.com>,
+ Kevin Wolf <kwolf@redhat.com>, Minwoo Im <minwoo.im@samsung.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.2 68/78] update edk2 binaries to edk2-stable202402
-Date: Thu, 29 Feb 2024 01:54:44 +0300
-Message-Id: <20240228225455.274062-8-mjt@tls.msk.ru>
+Subject: [Stable-8.2.2 69/78] hw/nvme: fix invalid endian conversion
+Date: Thu, 29 Feb 2024 01:54:45 +0300
+Message-Id: <20240228225455.274062-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.2-20240229000326@cover.tls.msk.ru>
 References: <qemu-stable-8.2.2-20240229000326@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,39 +62,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gerd Hoffmann <kraxel@redhat.com>
+From: Klaus Jensen <k.jensen@samsung.com>
 
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-(cherry picked from commit 658178c3d4e95b3f4106e25ec5a209356e339032)
+numcntl is one byte and so is max_vfs. Using cpu_to_le16 on big endian
+hosts results in numcntl being set to 0.
+
+Fix by dropping the endian conversion.
+
+Fixes: 99f48ae7ae ("hw/nvme: Add support for Secondary Controller List")
+Reported-by: Kevin Wolf <kwolf@redhat.com>
+Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+Reviewed-by: Minwoo Im <minwoo.im@samsung.com>
+Message-ID: <20240222-fix-sriov-numcntl-v1-1-d60bea5e72d0@samsung.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit d2b5bb860e6c17442ad95cc275feb07c1665be5c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/pc-bios/edk2-aarch64-code.fd.bz2 b/pc-bios/edk2-aarch64-code.fd.bz2
-index fdcf89022a..5d0a57173d 100644
-Binary files a/pc-bios/edk2-aarch64-code.fd.bz2 and b/pc-bios/edk2-aarch64-code.fd.bz2 differ
-diff --git a/pc-bios/edk2-arm-code.fd.bz2 b/pc-bios/edk2-arm-code.fd.bz2
-index 9d829f4f08..af49559f34 100644
-Binary files a/pc-bios/edk2-arm-code.fd.bz2 and b/pc-bios/edk2-arm-code.fd.bz2 differ
-diff --git a/pc-bios/edk2-i386-code.fd.bz2 b/pc-bios/edk2-i386-code.fd.bz2
-index 1a9d392574..ecd0c6b1ae 100644
-Binary files a/pc-bios/edk2-i386-code.fd.bz2 and b/pc-bios/edk2-i386-code.fd.bz2 differ
-diff --git a/pc-bios/edk2-i386-secure-code.fd.bz2 b/pc-bios/edk2-i386-secure-code.fd.bz2
-index fab0a77b30..983e1778c4 100644
-Binary files a/pc-bios/edk2-i386-secure-code.fd.bz2 and b/pc-bios/edk2-i386-secure-code.fd.bz2 differ
-diff --git a/pc-bios/edk2-riscv-code.fd.bz2 b/pc-bios/edk2-riscv-code.fd.bz2
-index 6394fbfff3..b6cd3c6f74 100644
-Binary files a/pc-bios/edk2-riscv-code.fd.bz2 and b/pc-bios/edk2-riscv-code.fd.bz2 differ
-diff --git a/pc-bios/edk2-riscv-vars.fd.bz2 b/pc-bios/edk2-riscv-vars.fd.bz2
-index 40da6591ad..36435a1046 100644
-Binary files a/pc-bios/edk2-riscv-vars.fd.bz2 and b/pc-bios/edk2-riscv-vars.fd.bz2 differ
-diff --git a/pc-bios/edk2-x86_64-code.fd.bz2 b/pc-bios/edk2-x86_64-code.fd.bz2
-index 0d325bd483..8707f695ef 100644
-Binary files a/pc-bios/edk2-x86_64-code.fd.bz2 and b/pc-bios/edk2-x86_64-code.fd.bz2 differ
-diff --git a/pc-bios/edk2-x86_64-microvm.fd.bz2 b/pc-bios/edk2-x86_64-microvm.fd.bz2
-index 829429082b..334da49917 100644
-Binary files a/pc-bios/edk2-x86_64-microvm.fd.bz2 and b/pc-bios/edk2-x86_64-microvm.fd.bz2 differ
-diff --git a/pc-bios/edk2-x86_64-secure-code.fd.bz2 b/pc-bios/edk2-x86_64-secure-code.fd.bz2
-index c6b039819c..abeb60bcf3 100644
-Binary files a/pc-bios/edk2-x86_64-secure-code.fd.bz2 and b/pc-bios/edk2-x86_64-secure-code.fd.bz2 differ
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index f026245d1e..76fe039704 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -7924,7 +7924,7 @@ static void nvme_init_state(NvmeCtrl *n)
+     n->aer_reqs = g_new0(NvmeRequest *, n->params.aerl + 1);
+     QTAILQ_INIT(&n->aer_queue);
+ 
+-    list->numcntl = cpu_to_le16(max_vfs);
++    list->numcntl = max_vfs;
+     for (i = 0; i < max_vfs; i++) {
+         sctrl = &list->sec[i];
+         sctrl->pcid = cpu_to_le16(n->cntlid);
 -- 
 2.39.2
 
