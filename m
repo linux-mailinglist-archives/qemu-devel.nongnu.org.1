@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB9B886A775
+	by mail.lfdr.de (Postfix) with ESMTPS id D3C2B86A773
 	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 05:02:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfB8V-0005WS-0R; Tue, 27 Feb 2024 23:01:39 -0500
+	id 1rfB8b-0005Xc-GL; Tue, 27 Feb 2024 23:01:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rfB8R-0005W0-KC
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 23:01:37 -0500
+ id 1rfB8W-0005Wu-IH
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 23:01:41 -0500
 Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rfB8M-0000kD-OL
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 23:01:35 -0500
+ id 1rfB8R-0000uR-LS
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 23:01:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709092891; x=1740628891;
+ t=1709092896; x=1740628896;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=N3xsv2GtRVX6aSgVHRkuCisTKekGHMSdCU/SFK0nNzk=;
- b=HOhbg2tZk8JeUZVNJjQIvz+bCngn9TD87FvcKSuMx34ufz165OxQVz5e
- UO5vNl6eRcC25nNjin3lSfNwShtqrzxHeBMsH8dELd0FfxfK5Sg7qcT63
- JIDP0y6DR/lM6FYPrWpAZ/IJiOV71QCcMid2S70WFHYWOumnGG/ENCqqF
- vpPrzXdmEXnFmfSWWTSXWi3Ado3aFLOgzB94nvtJBOC9oYJqT2pBZncGN
- as2oA5kv3nc0GGGft9h2BwjWbRhO+ClNPw2xq6RG5gKNvaVGYBhW2EoT6
- U9y+OG4o78eAgDVZ95gxIUoaSoXRSWKpWP/ZvdnM3o8gHqxOSJCbW+LlO A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3342451"
+ bh=InINaFpruLMkFpCTED2dU+8i3KHEDP/YmQBNqrbqvAo=;
+ b=LfS3/Agd5V9j3E2yha7wL9MzV+wLNfcsn6m1kQm1e2BIGHlPRR2w8Ap9
+ Fh2vZpwhm8JhNTVnm7cRyNc/dCwUZEdv0Md3df3+kTO7TdRhmLNvnBElp
+ piLMjmUqkUzVgJWo+dj9Qm+MK7aQoTAKLiu19A6kw8GErJ+selmzQ3xsS
+ 34SQ/MTsmCc8psSUlsO+d6dFftg/+wuA6IB9Wua8hbUHcH4s/Ayp/Ueun
+ Lquat+6hUNoemZrdc3DygJizsoXY6hDoP+qjNcK762XdTl9T2vJ7KfjAS
+ l+Rjb0iDbCv50IFMXlQsdXH1cIILAHYv4WhMp61cAc2+sEU7sy4Tun5Uz A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3342455"
 X-IronPort-AV: E=Sophos;i="6.06,189,1705392000"; 
-   d="scan'208";a="3342451"
+   d="scan'208";a="3342455"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  27 Feb 2024 20:01:29 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,189,1705392000"; d="scan'208";a="11917189"
+X-IronPort-AV: E=Sophos;i="6.06,189,1705392000"; d="scan'208";a="11917202"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2024 20:01:14 -0800
+ 27 Feb 2024 20:01:21 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -48,9 +48,9 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v1 03/11] vfio: Introduce IOMMULegacyDevice
-Date: Wed, 28 Feb 2024 11:58:52 +0800
-Message-Id: <20240228035900.1085727-4-zhenzhong.duan@intel.com>
+Subject: [PATCH v1 04/11] vfio: Add HostIOMMUDevice handle into VFIODevice
+Date: Wed, 28 Feb 2024 11:58:53 +0800
+Message-Id: <20240228035900.1085727-5-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240228035900.1085727-1-zhenzhong.duan@intel.com>
 References: <20240228035900.1085727-1-zhenzhong.duan@intel.com>
@@ -63,8 +63,8 @@ X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,46 +80,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Similar as IOMMUFDDevice, IOMMULegacyDevice represents a device in
-legacy mode and can be used as a communication interface between
-devices (i.e., VFIO, VDPA) and vIOMMU.
+This handle points to either IOMMULegacyDevice or IOMMUFDDevice variant,
+neither both.
 
-Currently it includes nothing legacy specific, but could be extended
-with any wanted info of legacy mode when necessary.
-
-IOMMULegacyDevice is willingly not a QOM object because we don't want
-it to be visible from the user interface.
-
-Suggested-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/hw/vfio/vfio-common.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/hw/vfio/vfio-common.h | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 9b7ef7d02b..8bfb9cbe94 100644
+index 8bfb9cbe94..b6676c9f79 100644
 --- a/include/hw/vfio/vfio-common.h
 +++ b/include/hw/vfio/vfio-common.h
-@@ -31,6 +31,7 @@
- #endif
- #include "sysemu/sysemu.h"
- #include "hw/vfio/vfio-container-base.h"
-+#include "sysemu/host_iommu_device.h"
- 
- #define VFIO_MSG_PREFIX "vfio %s: "
- 
-@@ -97,6 +98,11 @@ typedef struct VFIOIOMMUFDContainer {
-     uint32_t ioas_id;
- } VFIOIOMMUFDContainer;
- 
-+/* Abstraction of host IOMMU legacy device */
-+typedef struct IOMMULegacyDevice {
-+    HostIOMMUDevice base;
-+} IOMMULegacyDevice;
-+
- typedef struct VFIODeviceOps VFIODeviceOps;
- 
- typedef struct VFIODevice {
+@@ -130,6 +130,7 @@ typedef struct VFIODevice {
+     OnOffAuto pre_copy_dirty_page_tracking;
+     bool dirty_pages_supported;
+     bool dirty_tracking;
++    HostIOMMUDevice *base_hdev;
+     int devid;
+     IOMMUFDBackend *iommufd;
+ } VFIODevice;
 -- 
 2.34.1
 
