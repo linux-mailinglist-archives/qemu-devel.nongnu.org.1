@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 663E486A77A
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 05:03:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FEBA86A779
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 05:03:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfB8d-0005YS-8R; Tue, 27 Feb 2024 23:01:47 -0500
+	id 1rfB8f-0005Z2-VM; Tue, 27 Feb 2024 23:01:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rfB8c-0005YB-4F
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 23:01:46 -0500
+ id 1rfB8d-0005Yb-RF
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 23:01:47 -0500
 Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rfB8W-0000uR-Rb
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 23:01:45 -0500
+ id 1rfB8c-0000uR-En
+ for qemu-devel@nongnu.org; Tue, 27 Feb 2024 23:01:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709092901; x=1740628901;
+ t=1709092907; x=1740628907;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Gw0hrQHuPDQ6mwD5brO8Q/qloWIq/kzw0hTCfTFA7Sk=;
- b=ell1CEno9laGypKzhEqnzStITvr1gxaB9ZNfRwLTQMvQp5YTj9YMvKrc
- OyG7nuOuyagjsheitckU3DUCBRevZ+oi+NLPuDiHcr+Hs/s5KwVH8TTvc
- hCvVu9oz16uhYLbvUGqXzWufSgE3F3Eu5I2UQAgRmDhX2rpH7DdOSaFbs
- Pq1ODAlNtGT7lfHwEQA7QqcWlr1x09hJaO1m6uOvsU4ZxpVj+9qr6RNoR
- 2bRsw/Q3A0gP0p9M8vYI8SHlgLUqnzpNMx4vdS/SbJQ/8CBic8J4p9Kcl
- zWfswn+KGDw6k464DsdhOpCJZ2p90+IkMkRzYoyqJ2JA3Z2bl/yd+DjD/ g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3342473"
+ bh=q7ZLZEg0dJgeXq8Fhcp4By04/sUyu5XmxNwoPYw8P94=;
+ b=BdvHVTWjQHeWG0GVX1mD7lrQDbY8FOuw41Zk4CnuVlINE7yeOYrUkg8D
+ dXTq0+bYBVNfO+3u9O6bjIRbACvl7DdtKJc51jXbI78ihlMi6lMc2fGZL
+ vQvObzuOliLrkOh0um+9el2WsriZNKfc+A/4mH41HTjpW7DKYWaWE22nY
+ FNQ/zC2BlwsNjrtPl+ICbwF/EHc/usM/RTIjrJVoJzMzaf8SDVEVmNmnb
+ OFL3/MwmLuSHjUVK4K7uHCCyRmc2MclHrOFgPqnw4zSVtnO5h6MZWzAKU
+ SFDamWtpy/QL3gqd5GTMc9qr/ev0vbAiO8uYEuR9aqu1ad6n1WasmNQcm w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3342478"
 X-IronPort-AV: E=Sophos;i="6.06,189,1705392000"; 
-   d="scan'208";a="3342473"
+   d="scan'208";a="3342478"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2024 20:01:38 -0800
+ 27 Feb 2024 20:01:42 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,189,1705392000"; d="scan'208";a="11917267"
+X-IronPort-AV: E=Sophos;i="6.06,189,1705392000"; d="scan'208";a="11917296"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2024 20:01:33 -0800
+ 27 Feb 2024 20:01:38 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -48,10 +48,10 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v1 07/11] vfio/iommufd: Implement host_iommu_device_create
- callback in iommufd mode
-Date: Wed, 28 Feb 2024 11:58:56 +0800
-Message-Id: <20240228035900.1085727-8-zhenzhong.duan@intel.com>
+Subject: [PATCH v1 08/11] vfio/pci: Allocate and initialize HostIOMMUDevice
+ after attachment
+Date: Wed, 28 Feb 2024 11:58:57 +0800
+Message-Id: <20240228035900.1085727-9-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240228035900.1085727-1-zhenzhong.duan@intel.com>
 References: <20240228035900.1085727-1-zhenzhong.duan@intel.com>
@@ -64,8 +64,8 @@ X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,42 +81,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This callback will be used to initialize base and public elements
-in IOMMUFDDevice.
-
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/iommufd.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ hw/vfio/pci.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 9bfddc1360..1c2f5da0d0 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -619,6 +619,15 @@ out_single:
-     return ret;
- }
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 4fa387f043..6cc7de5d10 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -3006,6 +3006,9 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+         goto error;
+     }
  
-+static void vfio_cdev_host_iommu_device_create(VFIODevice *vbasedev)
-+{
-+    IOMMUFDDevice *idev = g_malloc0(sizeof(IOMMUFDDevice));
++    /* Allocate and initialize HostIOMMUDevice after attachment succeed */
++    host_iommu_device_create(vbasedev);
 +
-+    vbasedev->base_hdev = &idev->base;
-+
-+    iommufd_device_init(idev, vbasedev->iommufd, vbasedev->devid);
-+}
-+
- static void vfio_iommu_iommufd_class_init(ObjectClass *klass, void *data)
- {
-     VFIOIOMMUClass *vioc = VFIO_IOMMU_CLASS(klass);
-@@ -628,6 +637,7 @@ static void vfio_iommu_iommufd_class_init(ObjectClass *klass, void *data)
-     vioc->attach_device = iommufd_cdev_attach;
-     vioc->detach_device = iommufd_cdev_detach;
-     vioc->pci_hot_reset = iommufd_cdev_pci_hot_reset;
-+    vioc->host_iommu_device_create = vfio_cdev_host_iommu_device_create;
- };
+     vfio_populate_device(vdev, &err);
+     if (err) {
+         error_propagate(errp, err);
+@@ -3244,6 +3247,7 @@ static void vfio_instance_finalize(Object *obj)
  
- static const TypeInfo types[] = {
+     vfio_display_finalize(vdev);
+     vfio_bars_finalize(vdev);
++    g_free(vdev->vbasedev.base_hdev);
+     g_free(vdev->emulated_config_bits);
+     g_free(vdev->rom);
+     /*
 -- 
 2.34.1
 
