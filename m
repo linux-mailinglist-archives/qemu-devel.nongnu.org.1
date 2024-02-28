@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D562B86A98E
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 09:09:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A720986A98B
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 09:09:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfEyO-0001al-RB; Wed, 28 Feb 2024 03:07:28 -0500
+	id 1rfEyT-0001fu-JN; Wed, 28 Feb 2024 03:07:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rfEyL-0001Ww-Hw
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 03:07:25 -0500
+ id 1rfEyQ-0001f1-Sa
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 03:07:30 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rfEyI-0000XY-Pf
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 03:07:25 -0500
+ id 1rfEyM-0000YQ-G8
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 03:07:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709107642;
+ s=mimecast20190719; t=1709107645;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vKjZSqacAB8iZPfTH6FwKVpy3pBbPqdXPJfiOVIqgCQ=;
- b=PqCXt/kIOlb3X70YQvID9eaFrV4L9o2s61gnLJRHWkS2nnt1EdXZ3Lu7gdRxG57SjEO8Te
- F2ZmKQFoQvL2uk8emh1prLR7bJhFJwgyBVsI0+gmmrbnT5sTAgAFn2Z+RCsfADlUO6mKpk
- x/qeJmu9RoT37nZi7x8yaVscQScWUDs=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6FOwAaHjkgtd1Obqs7Hvk+sV/XW9OPoHUZIDnhZ07Wo=;
+ b=TwbwWzK0XO7Cq3Y5gbmi83SG/x6HBBdO8koMmI/A98L/JmmStsrebae1cuHLBz51Ajnf6Q
+ 7EM/WBrAvh+dieg5reOBSckLwIm6u/ZfiibIVO7ShURdI/4jQqTLDikMt/PLkhs+esOkR7
+ p7po8w75lt3B0UON3BudYGZySR17Olc=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595-lQNm9PrsMhmg_VZDa48ynA-1; Wed, 28 Feb 2024 03:07:20 -0500
-X-MC-Unique: lQNm9PrsMhmg_VZDa48ynA-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a43381a778aso220394366b.1
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 00:07:20 -0800 (PST)
+ us-mta-651-AphdRWmYM5ed1pCkcJHyyQ-1; Wed, 28 Feb 2024 03:07:22 -0500
+X-MC-Unique: AphdRWmYM5ed1pCkcJHyyQ-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-56421fd7029so2821514a12.3
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 00:07:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709107638; x=1709712438;
+ d=1e100.net; s=20230601; t=1709107641; x=1709712441;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vKjZSqacAB8iZPfTH6FwKVpy3pBbPqdXPJfiOVIqgCQ=;
- b=wvLSPn0f6nrg6qK6MoPsQigvUKo14yxKMQiUuZmc/RbqOUpcGl+VHMEzr5Yq5t7utK
- 0TPEWRfun9249zdeeAWyiWykZPUbM+IUsv4LCk/7qmegpQ2BVHLRbbIXfmV7Yitc1XUg
- N9chn1SMmKhxhrG00N4fU32v4DR0j1ShMEQ/gt+ZG4yOXT391XCBwEBq7RYz06nKuvPw
- rKJj75m/8gSlWWmNST1NjmWbi7QaZMy2FgfzEq5fl6HGlmDxQX/s6og5zalu8V0Qx+YN
- 69iqolKyLTKyZZJUjoSH4S7cB6fCJV7yfx2Ah6B0z1/f2Fadn2owh1vavLg53Him3ahG
- 0U6Q==
-X-Gm-Message-State: AOJu0YxqcKYfU1d6XGo1vwtlNmnVEsdRSwd16GCy/eHcSDagVu+ooLHh
- TXyMpaUXaA7Xk4ZNrxNecAEhpRWI2n/d+bAjuG2ylJL+XGN3+HexnG9bVWeNNuO8Ra6SZr9gCEa
- sh3+sZ4EMs9v4QFDnOMlSWXsCjgL+6k/K1c8gEDT0AB/Jq33ViwwzLmOI5Jby4PUV+cJc/PUC8c
- Bz/1s9XHykrgBgfzrCMGTcaeenmiywymLCt7Ui
-X-Received: by 2002:a17:906:34cb:b0:a40:2999:5404 with SMTP id
- h11-20020a17090634cb00b00a4029995404mr8079342ejb.3.1709107638799; 
- Wed, 28 Feb 2024 00:07:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE+S1OTiMphVSICCeIQoGoLFQE7Tny4p7dR4wGy/rDpbOBajLEH2WSBA7xIbriRLzGQYxAGrg==
-X-Received: by 2002:a17:906:34cb:b0:a40:2999:5404 with SMTP id
- h11-20020a17090634cb00b00a4029995404mr8079332ejb.3.1709107638490; 
- Wed, 28 Feb 2024 00:07:18 -0800 (PST)
+ bh=6FOwAaHjkgtd1Obqs7Hvk+sV/XW9OPoHUZIDnhZ07Wo=;
+ b=LHXf+d1ewjMGRwuwg24nqOj3xVX3RvzNPckWDU+avdVM3hh9hXRlCmIGNnk6J5QC+L
+ bugeaFz2Z0sxconBYZy8lxb/nS1mojpoGG0xcxehxSdIXC1srEF2YfYI/fLhuwG5TYkM
+ fHMNWIOUUZvWRpntDAdMYL1veqlyLIzQcmlfGqywEOmrxRRYJYAw/P+Wi7pSgVdaZFsy
+ xqiMhtKPN/zYT4EBcc8fnPIQpIuoacl7ll/zG9t/y38Wucy3uBFlyu2rkhIDYKSMKTsM
+ CAB+gzr25teJDSfRKbQs4Y6WAVOe76Z7NLmJdAVVGcTkp+IXMHcNn+nKxGVby6Z8Tqg9
+ tRMA==
+X-Gm-Message-State: AOJu0YyLP/N8ZpJzDdcIxTdVsxk3b8OAdcgBaEQMc6VKHvzs7ubfVeXS
+ SSbwQe0+RI/iXkaWZh2qDNUvu+JcV7jKhoxlsj7z8VQOW/TXaoWvN093SXwzoJfSij7xWgfB3F2
+ Tm36JxF19Kj/ztyCYvv+gnZpL9iU5tcRawyVAHh6wTCm+wDTD+hPZ30FEQbwTV3hv9TurMhsWzi
+ oFaJKLQh94wkZcB3ABr++dHZLAXq/0tql4u07f
+X-Received: by 2002:aa7:c657:0:b0:565:9b18:8af5 with SMTP id
+ z23-20020aa7c657000000b005659b188af5mr8474053edr.39.1709107641106; 
+ Wed, 28 Feb 2024 00:07:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHYJ4jor1+MprrPcUB0AIt6MuocBS55h3tWFcoctHRgbt9LKrirvM3TAPunIaDvQZ6S+EfYlg==
+X-Received: by 2002:aa7:c657:0:b0:565:9b18:8af5 with SMTP id
+ z23-20020aa7c657000000b005659b188af5mr8474035edr.39.1709107640775; 
+ Wed, 28 Feb 2024 00:07:20 -0800 (PST)
 Received: from [192.168.10.118] ([93.56.170.180])
  by smtp.gmail.com with ESMTPSA id
- hk12-20020a170906c9cc00b00a3e59410a75sm1583572ejb.170.2024.02.28.00.07.15
+ p13-20020a056402500d00b005648b000e91sm1535758eda.92.2024.02.28.00.07.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Feb 2024 00:07:15 -0800 (PST)
+ Wed, 28 Feb 2024 00:07:19 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org
-Subject: [PULL 07/10] target/i386: remove unnecessary/wrong application of the
- A20 mask
-Date: Wed, 28 Feb 2024 09:06:43 +0100
-Message-ID: <20240228080646.261365-8-pbonzini@redhat.com>
+Subject: [PULL 08/10] target/i386: leave the A20 bit set in the final NPT walk
+Date: Wed, 28 Feb 2024 09:06:44 +0100
+Message-ID: <20240228080646.261365-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240228080646.261365-1-pbonzini@redhat.com>
 References: <20240228080646.261365-1-pbonzini@redhat.com>
@@ -85,7 +84,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,108 +101,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If ptw_translate() does a MMU_PHYS_IDX access, the A20 mask is already
-applied in get_physical_address(), which is called via probe_access_full()
-and x86_cpu_tlb_fill().
+The A20 mask is only applied to the final memory access.  Nested
+page tables are always walked with the raw guest-physical address.
 
-If ptw_translate() on the other hand does a MMU_NESTED_IDX access,
-the A20 mask must not be applied to the address that is looked up in
-the nested page tables; it must be applied only to the addresses that
-hold the NPT entries (which is achieved via MMU_PHYS_IDX, per the
-previous paragraph).
-
-Therefore, we can remove A20 masking from the computation of the page
-table entry's address, and let get_physical_address() or mmu_translate()
-apply it when they know they are returning a host-physical address.
+Unlike the previous patch, in this one the masking must be kept, but
+it was done too early.
 
 Cc: qemu-stable@nongnu.org
 Fixes: 4a1e9d4d11c ("target/i386: Use atomic operations for pte updates", 2022-10-18)
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/sysemu/excp_helper.c | 21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+ target/i386/tcg/sysemu/excp_helper.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
-index 8bcdd2906d5..2ddc08b4bb6 100644
+index 2ddc08b4bb6..8f7011d9663 100644
 --- a/target/i386/tcg/sysemu/excp_helper.c
 +++ b/target/i386/tcg/sysemu/excp_helper.c
-@@ -164,8 +164,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-                 /*
-                  * Page table level 5
-                  */
--                pte_addr = ((in->cr3 & ~0xfff) +
--                            (((addr >> 48) & 0x1ff) << 3)) & a20_mask;
-+                pte_addr = (in->cr3 & ~0xfff) + (((addr >> 48) & 0x1ff) << 3);
-                 if (!ptw_translate(&pte_trans, pte_addr)) {
-                     return false;
-                 }
-@@ -189,8 +188,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-             /*
-              * Page table level 4
-              */
--            pte_addr = ((pte & PG_ADDRESS_MASK) +
--                        (((addr >> 39) & 0x1ff) << 3)) & a20_mask;
-+            pte_addr = (pte & PG_ADDRESS_MASK) + (((addr >> 39) & 0x1ff) << 3);
-             if (!ptw_translate(&pte_trans, pte_addr)) {
-                 return false;
-             }
-@@ -210,8 +208,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-             /*
-              * Page table level 3
-              */
--            pte_addr = ((pte & PG_ADDRESS_MASK) +
--                        (((addr >> 30) & 0x1ff) << 3)) & a20_mask;
-+            pte_addr = (pte & PG_ADDRESS_MASK) + (((addr >> 30) & 0x1ff) << 3);
-             if (!ptw_translate(&pte_trans, pte_addr)) {
-                 return false;
-             }
-@@ -238,7 +235,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-             /*
-              * Page table level 3
-              */
--            pte_addr = ((in->cr3 & 0xffffffe0ULL) + ((addr >> 27) & 0x18)) & a20_mask;
-+            pte_addr = (in->cr3 & 0xffffffe0ULL) + ((addr >> 27) & 0x18);
-             if (!ptw_translate(&pte_trans, pte_addr)) {
-                 return false;
-             }
-@@ -260,8 +257,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-         /*
-          * Page table level 2
-          */
--        pte_addr = ((pte & PG_ADDRESS_MASK) +
--                    (((addr >> 21) & 0x1ff) << 3)) & a20_mask;
-+        pte_addr = (pte & PG_ADDRESS_MASK) + (((addr >> 21) & 0x1ff) << 3);
-         if (!ptw_translate(&pte_trans, pte_addr)) {
-             return false;
+@@ -134,7 +134,6 @@ static inline bool ptw_setl(const PTETranslate *in, uint32_t old, uint32_t set)
+ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
+                           TranslateResult *out, TranslateFault *err)
+ {
+-    const int32_t a20_mask = x86_get_a20_mask(env);
+     const target_ulong addr = in->addr;
+     const int pg_mode = in->pg_mode;
+     const bool is_user = is_mmu_index_user(in->mmu_idx);
+@@ -417,10 +416,13 @@ do_check_protect_pse36:
          }
-@@ -287,8 +283,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-         /*
-          * Page table level 1
-          */
--        pte_addr = ((pte & PG_ADDRESS_MASK) +
--                    (((addr >> 12) & 0x1ff) << 3)) & a20_mask;
-+        pte_addr = (pte & PG_ADDRESS_MASK) + (((addr >> 12) & 0x1ff) << 3);
-         if (!ptw_translate(&pte_trans, pte_addr)) {
-             return false;
+     }
+ 
+-    /* align to page_size */
+-    paddr = (pte & a20_mask & PG_ADDRESS_MASK & ~(page_size - 1))
+-          | (addr & (page_size - 1));
++    /* merge offset within page */
++    paddr = (pte & PG_ADDRESS_MASK & ~(page_size - 1)) | (addr & (page_size - 1));
+ 
++    /*
++     * Note that NPT is walked (for both paging structures and final guest
++     * addresses) using the address with the A20 bit set.
++     */
+     if (in->ptw_idx == MMU_NESTED_IDX) {
+         CPUTLBEntryFull *full;
+         int flags, nested_page_size;
+@@ -459,7 +461,7 @@ do_check_protect_pse36:
          }
-@@ -306,7 +301,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-         /*
-          * Page table level 2
-          */
--        pte_addr = ((in->cr3 & 0xfffff000ULL) + ((addr >> 20) & 0xffc)) & a20_mask;
-+        pte_addr = (in->cr3 & 0xfffff000ULL) + ((addr >> 20) & 0xffc);
-         if (!ptw_translate(&pte_trans, pte_addr)) {
-             return false;
-         }
-@@ -335,7 +330,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-         /*
-          * Page table level 1
-          */
--        pte_addr = ((pte & ~0xfffu) + ((addr >> 10) & 0xffc)) & a20_mask;
-+        pte_addr = (pte & ~0xfffu) + ((addr >> 10) & 0xffc);
-         if (!ptw_translate(&pte_trans, pte_addr)) {
-             return false;
-         }
+     }
+ 
+-    out->paddr = paddr;
++    out->paddr = paddr & x86_get_a20_mask(env);
+     out->prot = prot;
+     out->page_size = page_size;
+     return true;
 -- 
 2.43.2
 
