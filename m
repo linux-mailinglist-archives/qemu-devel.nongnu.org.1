@@ -2,43 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 540FE86AB44
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 10:33:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC1F86AB41
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 10:33:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfGHe-0001G4-25; Wed, 28 Feb 2024 04:31:26 -0500
+	id 1rfGHc-0001Fv-Im; Wed, 28 Feb 2024 04:31:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rfGHO-00012a-2N; Wed, 28 Feb 2024 04:31:11 -0500
+ id 1rfGHM-00011W-2g; Wed, 28 Feb 2024 04:31:09 -0500
 Received: from szxga04-in.huawei.com ([45.249.212.190])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rfGHK-0001WK-6w; Wed, 28 Feb 2024 04:31:09 -0500
+ id 1rfGHK-0001Wd-7e; Wed, 28 Feb 2024 04:31:07 -0500
 Received: from mail.maildlp.com (unknown [172.19.88.214])
- by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Tl8DV1Lpjz2Bdwy;
- Wed, 28 Feb 2024 17:28:42 +0800 (CST)
+ by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Tl8DW0gV3z2BdxC;
+ Wed, 28 Feb 2024 17:28:43 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id 264291A016C;
- Wed, 28 Feb 2024 17:30:57 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 0FC3B1A016C;
+ Wed, 28 Feb 2024 17:30:58 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 28 Feb
- 2024 17:30:56 +0800
+ 2024 17:30:57 +0800
 To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [RFC PATCH v4 08/22] target/arm: Handle IS/FS in ISR_EL1 for NMI
-Date: Wed, 28 Feb 2024 09:29:32 +0000
-Message-ID: <20240228092946.1768728-9-ruanjinjie@huawei.com>
+Subject: [RFC PATCH v4 09/22] target/arm: Handle PSTATE.ALLINT on taking an
+ exception
+Date: Wed, 28 Feb 2024 09:29:33 +0000
+Message-ID: <20240228092946.1768728-10-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240228092946.1768728-1-ruanjinjie@huawei.com>
 References: <20240228092946.1768728-1-ruanjinjie@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.67.174.55]
 X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
  kwepemi500008.china.huawei.com (7.221.188.139)
@@ -67,68 +68,38 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add IS and FS bit in ISR_EL1 and handle the read. With CPU_INTERRUPT_NMI or
-CPU_INTERRUPT_VNMI, both CPSR_I and ISR_IS must be set. With
-CPU_INTERRUPT_VFIQ and HCRX_EL2.VFNMI set, both CPSR_F and ISR_FS must be set.
+Set or clear PSTATE.ALLINT on taking an exception to ELx according to the
+SCTLR_ELx.SPINTMASK bit.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
-v4；
-- Also handle VNMI.
 v3:
-- CPU_INTERRUPT_NMI do not set FIQ, so remove it.
-- With CPU_INTERRUPT_NMI, both CPSR_I and ISR_IS must be set.
+- Add Reviewed-by.
 ---
- target/arm/cpu.h    |  2 ++
- target/arm/helper.c | 13 +++++++++++++
- 2 files changed, 15 insertions(+)
+ target/arm/helper.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 8be978698d..22f0763e66 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1475,6 +1475,8 @@ FIELD(CPTR_EL3, TCPAC, 31, 1)
- #define CPSR_N (1U << 31)
- #define CPSR_NZCV (CPSR_N | CPSR_Z | CPSR_C | CPSR_V)
- #define CPSR_AIF (CPSR_A | CPSR_I | CPSR_F)
-+#define ISR_FS (1U << 9)
-+#define ISR_IS (1U << 10)
- 
- #define CPSR_IT (CPSR_IT_0_1 | CPSR_IT_2_7)
- #define CACHED_CPSR_BITS (CPSR_T | CPSR_AIF | CPSR_GE | CPSR_IT | CPSR_Q \
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 7cdc90e9e3..ac44498537 100644
+index ac44498537..b796dbdf21 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -2018,15 +2018,28 @@ static uint64_t isr_read(CPUARMState *env, const ARMCPRegInfo *ri)
-         if (cs->interrupt_request & CPU_INTERRUPT_VIRQ) {
-             ret |= CPSR_I;
+@@ -11539,6 +11539,15 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
          }
-+        if (cs->interrupt_request & CPU_INTERRUPT_VNMI) {
-+            ret |= ISR_IS;
-+            ret |= CPSR_I;
-+        }
-     } else {
-         if (cs->interrupt_request & CPU_INTERRUPT_HARD) {
-             ret |= CPSR_I;
-         }
-+
-+        if (cs->interrupt_request & CPU_INTERRUPT_NMI) {
-+            ret |= ISR_IS;
-+            ret |= CPSR_I;
-+        }
      }
  
-     if (hcr_el2 & HCR_FMO) {
-         if (cs->interrupt_request & CPU_INTERRUPT_VFIQ) {
-             ret |= CPSR_F;
++    if (cpu_isar_feature(aa64_nmi, cpu) &&
++        (env->cp15.sctlr_el[new_el] & SCTLR_NMI)) {
++        if (!(env->cp15.sctlr_el[new_el] & SCTLR_SPINTMASK)) {
++            new_mode |= PSTATE_ALLINT;
++        } else {
++            new_mode &= ~PSTATE_ALLINT;
++        }
++    }
 +
-+            if (env->cp15.hcrx_el2 & HCRX_VFNMI) {
-+                ret |= ISR_FS;
-+            }
-         }
-     } else {
-         if (cs->interrupt_request & CPU_INTERRUPT_FIQ) {
+     pstate_write(env, PSTATE_DAIF | new_mode);
+     env->aarch64 = true;
+     aarch64_restore_sp(env, new_el);
 -- 
 2.34.1
 
