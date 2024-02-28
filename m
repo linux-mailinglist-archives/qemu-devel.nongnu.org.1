@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4881386B4BE
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 17:24:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7BB86B4CA
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 17:25:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfMj6-00042W-74; Wed, 28 Feb 2024 11:24:12 -0500
+	id 1rfMjJ-0004CT-F4; Wed, 28 Feb 2024 11:24:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfMj4-00041f-6C; Wed, 28 Feb 2024 11:24:10 -0500
+ id 1rfMjH-00046G-AQ; Wed, 28 Feb 2024 11:24:23 -0500
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfMiz-0000pW-Gk; Wed, 28 Feb 2024 11:24:09 -0500
+ id 1rfMj2-0000pm-Oq; Wed, 28 Feb 2024 11:24:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709137445; x=1740673445;
+ t=1709137449; x=1740673449;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=c8vV9pNHPUOnOnJVX+pG0YsfcZFGOOeEdh7NHsDFh5U=;
- b=KOz8XP6zrw+WH9WYDN71nNiRkr5yDidpCEoSd6yQCeQpg/uNNPWUajXl
- liyXR18meGvcXOaA4USR3kZ4jaLKE7PNYR6QPTPKlKNU49VeVhDO3UKEf
- OGQd/koQ62WJCo5NIMWWsJj7J+mehyzU6P9b7ucfvuSQSqIMEfOstbcP5
- 5BWyMzUR5cXKtnBSkEKpR0hkdRAKfzPSWAUhMaQtSgWT/9KYD8hVQxf1h
- xxv1jzBMNgi01fXThkib2stgyGwPzf4q9dAhjS+apZJ5UraIstpzwUN4T
- EBg95JVf+KQspNKICu7l8GYZUHtjKu+xc9v9BKoqYj+3EysSdLn9M1Jrj A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="28982459"
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="28982459"
+ bh=nxRQf/+tArZDzcPHPsrl+p0ECgQSKCEQqDH1Za5Mhjg=;
+ b=K+25loYKHaed5kwLQKiE3hXX0RQEjDPb/ajDzxS3bNmPr7uzFrsNiTU7
+ aPgAukCE9+wNTkgj5R3hHuQp5m7fVTFeatk6sb/u8ovEx9FxBpNfGJnVz
+ M516RIMm02GnqMhTSP0rdu28ss3I1xX8iZ3rCdviLLShF1l0c5K+0XTiz
+ NArwfcFrImDhMONihh5eVMi33WwECEy8uw0TwU2ClznQbIOQZ3D8Ayy5e
+ ojWv8/cQAEGIz8Vrx9wADW/wdyV8Hece1IS7WeOF+V/QOjsV3yat7Vtwl
+ NQL089jcOmw1lrJ0bHzzZE7Ey2py7g8LoMX0ttcphcpk+ckon4fa5uoTM Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="28982478"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="28982478"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 08:24:02 -0800
+ 28 Feb 2024 08:24:06 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="12144914"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="12144933"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 28 Feb 2024 08:24:00 -0800
+ by orviesa004.jf.intel.com with ESMTP; 28 Feb 2024 08:24:03 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Eric Blake <eblake@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
  Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH 05/16] block/nbd: Fix missing ERRP_GUARD() for error_prepend()
-Date: Thu, 29 Feb 2024 00:37:12 +0800
-Message-Id: <20240228163723.1775791-6-zhao1.liu@linux.intel.com>
+Subject: [PATCH 06/16] block/nvme: Fix missing ERRP_GUARD() for error_prepend()
+Date: Thu, 29 Feb 2024 00:37:13 +0800
+Message-Id: <20240228163723.1775791-7-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240228163723.1775791-1-zhao1.liu@linux.intel.com>
 References: <20240228163723.1775791-1-zhao1.liu@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=192.198.163.7;
  envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
@@ -60,9 +60,8 @@ X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.102,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,35 +98,61 @@ ERRP_GUARD() could avoid the case when @errp is the pointer of
 error_fatal, the user can't see this additional information, because
 exit() happens in error_setg earlier than information is added [1].
 
-The nbd_co_do_receive_one_chunk() passes @errp to error_prepend()
-without ERRP_GUARD(), and though its @errp parameter points to its
-caller's local_err, to follow the requirement of @errp, add missing
-ERRP_GUARD() at the beginning of this function.
+In nvme.c, there're 3 functions passing @errp to error_prepend()
+without ERRP_GUARD():
+- nvme_init_queue()
+- nvme_create_queue_pair()
+- nvme_identify()
+
+All these 3 functions take their @errp parameters from the
+nvme_file_open(), which is a BlockDriver.bdrv_nvme() method and its
+@errp points to its caller's local_err.
+
+Though these 3 cases haven't trigger the issue like [1] said, to
+follow the requirement of @errp, add missing ERRP_GUARD() at their
+beginning.
 
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
 
-Cc: Eric Blake <eblake@redhat.com>
-Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Fam Zheng <fam@euphon.net>
+Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
 Cc: Kevin Wolf <kwolf@redhat.com>
 Cc: Hanna Reitz <hreitz@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- block/nbd.c | 1 +
- 1 file changed, 1 insertion(+)
+ block/nvme.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/block/nbd.c b/block/nbd.c
-index b9d4f935e017..ef05f7cdfd65 100644
---- a/block/nbd.c
-+++ b/block/nbd.c
-@@ -852,6 +852,7 @@ static coroutine_fn int nbd_co_do_receive_one_chunk(
-         BDRVNBDState *s, uint64_t cookie, bool only_structured,
-         int *request_ret, QEMUIOVector *qiov, void **payload, Error **errp)
+diff --git a/block/nvme.c b/block/nvme.c
+index 0a0a0a6b36cd..3a3c6da73d29 100644
+--- a/block/nvme.c
++++ b/block/nvme.c
+@@ -168,6 +168,7 @@ static QemuOptsList runtime_opts = {
+ static bool nvme_init_queue(BDRVNVMeState *s, NVMeQueue *q,
+                             unsigned nentries, size_t entry_bytes, Error **errp)
  {
 +    ERRP_GUARD();
-     int ret;
-     int i = COOKIE_TO_INDEX(cookie);
-     void *local_payload = NULL;
+     size_t bytes;
+     int r;
+ 
+@@ -221,6 +222,7 @@ static NVMeQueuePair *nvme_create_queue_pair(BDRVNVMeState *s,
+                                              unsigned idx, size_t size,
+                                              Error **errp)
+ {
++    ERRP_GUARD();
+     int i, r;
+     NVMeQueuePair *q;
+     uint64_t prp_list_iova;
+@@ -535,6 +537,7 @@ static int nvme_admin_cmd_sync(BlockDriverState *bs, NvmeCmd *cmd)
+ /* Returns true on success, false on failure. */
+ static bool nvme_identify(BlockDriverState *bs, int namespace, Error **errp)
+ {
++    ERRP_GUARD();
+     BDRVNVMeState *s = bs->opaque;
+     bool ret = false;
+     QEMU_AUTO_VFREE union {
 -- 
 2.34.1
 
