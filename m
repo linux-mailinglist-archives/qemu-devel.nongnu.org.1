@@ -2,74 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5400E86AEFF
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 13:22:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CFD786AF0C
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 13:24:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfIw5-0003EP-Vy; Wed, 28 Feb 2024 07:21:22 -0500
+	id 1rfIyD-0005Uk-Q0; Wed, 28 Feb 2024 07:23:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rfIw3-0003CM-72
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 07:21:20 -0500
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1rfIyB-0005To-JO
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 07:23:31 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rfIw1-0003Ht-HK
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 07:21:18 -0500
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1rfIyA-0004y7-A1
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 07:23:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709122876;
+ s=mimecast20190719; t=1709123009;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Eiqxwv9OHlEZjddgbK8H+3zz1PiTsktvR2pES473PUo=;
- b=fSOwlNiYOnMIil5QcXzU67LdYbbD9XzPWSM7zg7Apsry6AIvxsmbeQ+shWnftcL34zmP2/
- 8R9GA8ZI1RuDdYihb49oGDPBx1vlLjjzm+ORBFIx4L0N3yVSJ/83tJkxSlsMxF1nyOi4bL
- dsqHO64LsFsdywZKfN0kJ7IdcOQ5Iek=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=smECvae9X7jd3ZBDwEGX59p3kzegbqRLc2g4I7BovlU=;
+ b=My1/ARcWNjlBLhzuNrdr2T2VZPPTGm5o+skMwiIh2LFk3J+Xs2t+32YOUFchy6dSG/9x0F
+ v1LoPJXNZdMHG8vdwDT0OAiNZVNVR/RSVyaDCmF9Fn9An1/nJoM7SkA3mqUqtZK7OjuD8k
+ Jue7gjPxnQLaA/FlRJ+8Dio/+/X0Sck=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-443--HuZtuAVO2CzUQcZ8fjQ1w-1; Wed, 28 Feb 2024 07:21:14 -0500
-X-MC-Unique: -HuZtuAVO2CzUQcZ8fjQ1w-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-33d1d766f83so2170396f8f.3
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 04:21:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709122873; x=1709727673;
- h=content-transfer-encoding:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Eiqxwv9OHlEZjddgbK8H+3zz1PiTsktvR2pES473PUo=;
- b=kJkA+kX1MxuC2MFvwpfA5cmf8gAXC2crtDqhkv/x1hO8LIYAYht4ug3nYkscgYEg6K
- QZNMlyxmly2hDSAKAtisduKuMb1DDKHWlK6MxDxJHWCBDULBwOBhdX2NuHY471LfgJMd
- ucpmDMRJ6mfsaVsSU/wxbEu4YxinbMKUDUjw9J0HoVqBpanuGPqHdRRvrKrfJTT6JGtL
- CiQagmk6m8nvMB13BHlPYLQniwu8SUrZbeu7VLIGOqC8GgUtJt5PgXk9viV5OQTNfFv4
- kXnQVuOWXP9E1lqLr/l44iYSSSmkvQCguMvuyJXixQLQanWFSLELCSTbLN4WGyxXQBKc
- Msaw==
-X-Gm-Message-State: AOJu0YwxqWVwcrLkrsxdZUSsKSKN0Pwkhb5Tw1QTqopsNGI40eJw9QUf
- t5XebQdCa1FcbCvVLQBgKXb7cUTTwQF0BucPRRVnjXsBH2A23tPywfsWHYbOZYYPl9D96TjRZuf
- p60pRBFDlH9GlUPNZzNSl0Bv20VJPntPOvo/TB67B6v7qVrkzdNSpHHO/EiDZPO2JhygUNDGv2f
- Z7iIdjcmj61VGvZbN/ZCD8avKw8TKo75e5O78=
-X-Received: by 2002:adf:efc5:0:b0:33d:746b:f377 with SMTP id
- i5-20020adfefc5000000b0033d746bf377mr8796489wrp.45.1709122873172; 
- Wed, 28 Feb 2024 04:21:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHB0Z6Px0e3dwReWVYF/id4vvYXwcU7kNdJtAu1vzQX5nig6/0guAgPjwhAnHrN8YfEA5HiyGtmi82ewCyw7xo=
-X-Received: by 2002:adf:efc5:0:b0:33d:746b:f377 with SMTP id
- i5-20020adfefc5000000b0033d746bf377mr8796474wrp.45.1709122872811; Wed, 28 Feb
- 2024 04:21:12 -0800 (PST)
-MIME-Version: 1.0
-References: <20240228110626.287178-1-pbonzini@redhat.com>
-In-Reply-To: <20240228110626.287178-1-pbonzini@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 28 Feb 2024 13:21:01 +0100
-Message-ID: <CABgObfZXaMp2N9A8j6n-QayhOeV3sinyk3RKPxU7Mch17kpF3g@mail.gmail.com>
-Subject: Re: [PATCH] tcg/optimize: lower some ANDs to two shifts
+ us-mta-435-a0DSakEEPDe3QSPs_e5u8A-1; Wed, 28 Feb 2024 07:23:27 -0500
+X-MC-Unique: a0DSakEEPDe3QSPs_e5u8A-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 92EB2885623
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 12:23:27 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.45])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id BDCE6492BC8;
+ Wed, 28 Feb 2024 12:23:25 +0000 (UTC)
+From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Cc: Gerd Hoffmann <kraxel@redhat.com>, sebott@redhat.com,
+ "Michael S. Tsirkin" <mst@redhat.com>, peterx@redhat.com,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH v2 0/2] virtio-gpu: fix blob scanout post-load
+Date: Wed, 28 Feb 2024 16:23:21 +0400
+Message-ID: <20240228122323.962826-1-marcandre.lureau@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -93,113 +79,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sorry, that was sent incorrectly.
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Paolo
+Hi,
 
-On Wed, Feb 28, 2024 at 12:06=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com=
-> wrote:
->
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  tcg/optimize.c | 60 +++++++++++++++++++++++++++++++++++++++++++-------
->  1 file changed, 52 insertions(+), 8 deletions(-)
->
-> diff --git a/tcg/optimize.c b/tcg/optimize.c
-> index 3995bc047db..8ea1f287788 100644
-> --- a/tcg/optimize.c
-> +++ b/tcg/optimize.c
-> @@ -1281,6 +1281,43 @@ static bool fold_add2(OptContext *ctx, TCGOp *op)
->      return fold_addsub2(ctx, op, true);
->  }
->
-> +static bool fold_and_to_shifts(OptContext *ctx, uint64_t c, TCGOp *op)
-> +{
-> +    TCGOpcode shl_opc =3D tcg->type =3D=3D TCG_TYPE_I32 ? INDEX_op_shl_i=
-32 : INDEX_op_shl_i64;
-> +    TCGOpcode shr_opc =3D tcg->type =3D=3D TCG_TYPE_I32 ? INDEX_op_shr_i=
-32 : INDEX_op_shr_i64;
-> +
-> +    TCGOpcode first, second;
-> +    int count;
-> +    TCGOp *op2;
-> +
-> +    unsigned_c =3D tcg->type =3D=3D TCG_TYPE_I32 ? (uint32_t) c : c;
-> +    if (is_power_of_2(-c) &&
-> +         !tcg_op_imm_match(op->opc, c)) {
-> +        /* AND with 11...11000, shift right then left.  */
-> +        count =3D ctz64(c);
-> +        first =3D shr_opc;
-> +    } else if (is_power_of_2(c + 1) &&
-> +               !tcg_op_imm_match(INDEX_op_and_i64, c)) {
-> +        /* AND with 00...00111, shift left then right.  */
-> +        int bits =3D tcg->type =3D=3D TCG_TYPE_I32 ? 32 : 64;
-> +        count =3D bits - cto64(c);
-> +        first =3D shl_opc;
-> +    } else {
-> +        return false;
-> +    }
-> +
-> +
-> +    op->opc =3D first;
-> +    op->args[2] =3D arg_new_constant(ctx, count);
-> +
-> +    second =3D shl_opc ^ shr_opc ^ first;
-> +    op2 =3D tcg_op_insert_after(ctx->tcg, op, second, 3);
-> +    op2->args[0] =3D op->args[0];
-> +    op2->args[1] =3D op->args[0];
-> +    op2->args[2] =3D arg_new_constant(ctx, count);
-> +    return true;
-> +}
-> +
->  static bool fold_and(OptContext *ctx, TCGOp *op)
->  {
->      uint64_t z1, z2;
-> @@ -1294,6 +1331,18 @@ static bool fold_and(OptContext *ctx, TCGOp *op)
->
->      z1 =3D arg_info(op->args[1])->z_mask;
->      z2 =3D arg_info(op->args[2])->z_mask;
-> +
-> +    /*
-> +     * Known-zeros does not imply known-ones.  Therefore unless
-> +     * arg2 is constant, we can't infer affected bits from it.
-> +     */
-> +    if (arg_is_const(op->args[2])) {
-> +        if (fold_and_to_shifts(ctx, z2, op)) {
-> +            return true;
-> +        }
-> +        ctx->a_mask =3D z1 & ~z2;
-> +    }
-> +
->      ctx->z_mask =3D z1 & z2;
->
->      /*
-> @@ -1303,14 +1352,6 @@ static bool fold_and(OptContext *ctx, TCGOp *op)
->      ctx->s_mask =3D arg_info(op->args[1])->s_mask
->                  & arg_info(op->args[2])->s_mask;
->
-> -    /*
-> -     * Known-zeros does not imply known-ones.  Therefore unless
-> -     * arg2 is constant, we can't infer affected bits from it.
-> -     */
-> -    if (arg_is_const(op->args[2])) {
-> -        ctx->a_mask =3D z1 & ~z2;
-> -    }
-> -
->      return fold_masks(ctx, op);
->  }
->
-> @@ -1333,6 +1374,9 @@ static bool fold_andc(OptContext *ctx, TCGOp *op)
->       */
->      if (arg_is_const(op->args[2])) {
->          uint64_t z2 =3D ~arg_info(op->args[2])->z_mask;
-> +        if (fold_and_to_shifts(ctx, z2, op)) {
-> +            return true;
-> +        }
->          ctx->a_mask =3D z1 & ~z2;
->          z1 &=3D z2;
->      }
-> --
-> 2.43.2
+The current post-loading code for scanout has a FIXME: it doesn't take the
+resource region/rect into account. But there is more, when adding blob migration
+support in commit f66767f75c9, I didn't realize that blob resources could be
+used for scanouts. This situationn leads to a crash during post-load, as they
+don't have an associated res->image.
+
+virtio_gpu_do_set_scanout() handle all cases, but requires the associated
+virtio_gpu_framebuffer, which is currently not saved during migration.
+
+Add a v2 of "virtio-gpu-one-scanout" with the framebuffer fields, so we can
+restore blob scanouts, as well as fixing the existing FIXME.
+
+v2:
+- modify first patch to get rid of another needless check (Sebastian Ott)
+
+Marc-André Lureau (2):
+  virtio-gpu: remove needless condition
+  virtio-gpu: fix scanout migration post-load
+
+ include/hw/virtio/virtio-gpu.h |  1 +
+ hw/display/virtio-gpu.c        | 58 ++++++++++++++++++++++++----------
+ 2 files changed, 42 insertions(+), 17 deletions(-)
+
+-- 
+2.43.2
 
 
