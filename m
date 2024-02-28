@@ -2,55 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 365C586AB36
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 10:32:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C8A86AB70
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 10:37:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfGHf-0001J0-Mv; Wed, 28 Feb 2024 04:31:27 -0500
+	id 1rfGMb-00006j-8a; Wed, 28 Feb 2024 04:36:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rfGHS-00015V-Nn; Wed, 28 Feb 2024 04:31:17 -0500
-Received: from szxga02-in.huawei.com ([45.249.212.188])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1rfGMQ-0008Tz-LV
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 04:36:23 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rfGHQ-0001t0-Pr; Wed, 28 Feb 2024 04:31:14 -0500
-Received: from mail.maildlp.com (unknown [172.19.163.252])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Tl8Dv6gdCzXhP7;
- Wed, 28 Feb 2024 17:29:03 +0800 (CST)
-Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id C719E18005C;
- Wed, 28 Feb 2024 17:31:08 +0800 (CST)
-Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
- (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 28 Feb
- 2024 17:31:08 +0800
-To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
- <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
- <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
-CC: <ruanjinjie@huawei.com>
-Subject: [RFC PATCH v4 22/22] hw/arm/virt: Add FEAT_GICv3_NMI feature support
- in virt GIC
-Date: Wed, 28 Feb 2024 09:29:46 +0000
-Message-ID: <20240228092946.1768728-23-ruanjinjie@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240228092946.1768728-1-ruanjinjie@huawei.com>
-References: <20240228092946.1768728-1-ruanjinjie@huawei.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.174.55]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemi500008.china.huawei.com (7.221.188.139)
-Received-SPF: pass client-ip=45.249.212.188;
- envelope-from=ruanjinjie@huawei.com; helo=szxga02-in.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1rfGMN-0004q0-Lc
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 04:36:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709112975;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=T8enEV+WSugbqmW3FMvj90KbZBFNM6QlAzJCtG9D5bY=;
+ b=N7oBWe9pOaxWBlWHkkYt3ATGbgNluSPQOEpuI4q3cvps8PrkPN/twHB58nvnsRrETTYFg/
+ VNPVDIwfCsxGyV/bAhl40GPBWXO7mKvu6F9LBSw5QbeYpzwAcaGu6UTcEuxoqqKVEbDgYA
+ BKONdfph7liBJoFfd1llLiGyPvwZV3Q=
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
+ [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-607-xYiwdsOJPt-skkNtjdL2Kw-1; Wed, 28 Feb 2024 04:36:13 -0500
+X-MC-Unique: xYiwdsOJPt-skkNtjdL2Kw-1
+Received: by mail-oo1-f71.google.com with SMTP id
+ 006d021491bc7-5a02a6e2886so5208806eaf.0
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 01:36:13 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709112973; x=1709717773;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=T8enEV+WSugbqmW3FMvj90KbZBFNM6QlAzJCtG9D5bY=;
+ b=aSEm7Fqd0H54ODvu61j93t7FLZKZBkTXgWuicTuTGIyYbD2pSeZACGgxGe2mgyppI6
+ EunYkWeEGOGeuuOTb8IMUlqrmJYJU2+1vEbP/bytlcJXDoFZnPnE0Pam2Rkd5Eky3+/y
+ A59X3WJkd9wCJcrlqGJNBgKrNqaUbSc0o3ClO1oZ88cPZ+AivmGAUAEJH2op3b6LwVFm
+ 1X58OGd3T3lSaPvSxXciUzXxOaeUqRSzjtl+JTWnBHowMs1Om+KlIqJbN/3s1qGYNZ1/
+ t05F7Fb1/BckFVg0oC9HIIjxOovHSx09dRCR7VLcQQb8nSrWsb7RmmV6aJNtCMkrpv7X
+ +anA==
+X-Gm-Message-State: AOJu0Ywy9TUvRggz2NaDhkSM2FGJ8Xol3hzNGJCN59GOwDJ6vo0XKNLS
+ /kRJduFiN7YHKWHpN1lQ6JcjXizQDLxZ0wUYeHRJYhN8qnemKxz8//nCcgdSvWKga0HVT5HRr3B
+ xjueBeHuNHnRdqDQkYMgug6sC4nMikz9QKmabxLfSz0gCg47FYt02
+X-Received: by 2002:a05:6358:3a09:b0:17b:c0ca:3da9 with SMTP id
+ g9-20020a0563583a0900b0017bc0ca3da9mr5081072rwe.20.1709112973004; 
+ Wed, 28 Feb 2024 01:36:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEHr99nO++MDWiBh+0Aj92/YAUpDORNDhr4bga20RUDorNcZZ1W+lhuKoWNxZK9oJSIE7N01w==
+X-Received: by 2002:a05:6358:3a09:b0:17b:c0ca:3da9 with SMTP id
+ g9-20020a0563583a0900b0017bc0ca3da9mr5081045rwe.20.1709112972606; 
+ Wed, 28 Feb 2024 01:36:12 -0800 (PST)
+Received: from smtpclient.apple ([203.163.242.235])
+ by smtp.gmail.com with ESMTPSA id
+ bv193-20020a632eca000000b005dc4da2121fsm7017776pgb.6.2024.02.28.01.36.06
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 28 Feb 2024 01:36:12 -0800 (PST)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
+Subject: Re: [PATCH 01/19] tests: smbios: make it possible to write SMBIOS
+ only test
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <20240227154749.1818189-2-imammedo@redhat.com>
+Date: Wed, 28 Feb 2024 15:05:53 +0530
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Song Gao <gaosong@loongson.cn>,
+ Alistair Francis <alistair.francis@wdc.com>, palmer@dabbelt.com,
+ bin.meng@windriver.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com,
+ =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, qemu-arm@nongnu.org,
+ qemu-riscv@nongnu.org, f.ebner@proxmox.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <18615A72-969A-449C-A8D9-79119CB8AD04@redhat.com>
+References: <20240227154749.1818189-1-imammedo@redhat.com>
+ <20240227154749.1818189-2-imammedo@redhat.com>
+To: Igor Mammedov <imammedo@redhat.com>
+X-Mailer: Apple Mail (2.3774.400.31)
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,67 +109,115 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jinjie Ruan <ruanjinjie@huawei.com>
-From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A PE that implements FEAT_NMI and FEAT_GICv3 also implements
-FEAT_GICv3_NMI. A PE that does not implement FEAT_NMI, does not implement
-FEAT_GICv3_NMI
 
-So included support FEAT_GICv3_NMI feature as part of virt platform
-GIC initialization if FEAT_NMI and FEAT_GICv3 supported.
 
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
-v4:
-- Add Reviewed-by.
-v3:
-- Adjust to be the last after add FEAT_NMI to max.
-- Check whether support FEAT_NMI and FEAT_GICv3 for FEAT_GICv3_NMI.
----
- hw/arm/virt.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+> On 27-Feb-2024, at 21:17, Igor Mammedov <imammedo@redhat.com> wrote:
+>=20
+> Cureently it not possible to run SMBIOS test without ACPI one,
+> which gets into the way when testing ACPI-less configs.
+>=20
+> Extract SMBIOS testing into separate routines that could also
+> be run without ACPI dependency and use that for testing SMBIOS.
+>=20
+> As the 1st user add "acpi/piix4/smbios-options" test case.
+>=20
+> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 2d4a187fd5..c12307ccd9 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -712,6 +712,19 @@ static void create_v2m(VirtMachineState *vms)
-     vms->msi_controller = VIRT_MSI_CTRL_GICV2M;
- }
- 
-+/*
-+ * A PE that implements FEAT_NMI and FEAT_GICv3 also implements
-+ * FEAT_GICv3_NMI. A PE that does not implement FEAT_NMI, does not implement
-+ * FEAT_GICv3_NMI.
-+ */
-+static bool gicv3_nmi_present(VirtMachineState *vms)
-+{
-+    ARMCPU *cpu = ARM_CPU(qemu_get_cpu(0));
-+
-+    return cpu_isar_feature(aa64_nmi, cpu) &&
-+           (vms->gic_version != VIRT_GIC_VERSION_2);
-+}
-+
- static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
- {
-     MachineState *ms = MACHINE(vms);
-@@ -785,6 +798,11 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
-                               vms->virt);
-         }
-     }
-+
-+    if (gicv3_nmi_present(vms)) {
-+        qdev_prop_set_bit(vms->gic, "has-nmi", true);
-+    }
-+
-     gicbusdev = SYS_BUS_DEVICE(vms->gic);
-     sysbus_realize_and_unref(gicbusdev, &error_fatal);
-     sysbus_mmio_map(gicbusdev, 0, vms->memmap[VIRT_GIC_DIST].base);
--- 
-2.34.1
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
+
+> ---
+> tests/qtest/bios-tables-test.c | 47 +++++++++++++++++++++++++++-------
+> 1 file changed, 38 insertions(+), 9 deletions(-)
+>=20
+> diff --git a/tests/qtest/bios-tables-test.c =
+b/tests/qtest/bios-tables-test.c
+> index 21811a1ab5..b2992bafa8 100644
+> --- a/tests/qtest/bios-tables-test.c
+> +++ b/tests/qtest/bios-tables-test.c
+> @@ -858,16 +858,8 @@ static void test_vm_prepare(const char *params, =
+test_data *data)
+>     g_free(args);
+> }
+>=20
+> -static void process_acpi_tables_noexit(test_data *data)
+> +static void process_smbios_tables_noexit(test_data *data)
+> {
+> -    test_acpi_load_tables(data);
+> -
+> -    if (getenv(ACPI_REBUILD_EXPECTED_AML)) {
+> -        dump_aml_files(data, true);
+> -    } else {
+> -        test_acpi_asl(data);
+> -    }
+> -
+>     /*
+>      * TODO: make SMBIOS tests work with UEFI firmware,
+>      * Bug on uefi-test-tools to provide entry point:
+> @@ -879,6 +871,27 @@ static void process_acpi_tables_noexit(test_data =
+*data)
+>     }
+> }
+>=20
+> +static void test_smbios(const char *params, test_data *data)
+> +{
+> +    test_vm_prepare(params, data);
+> +    boot_sector_test(data->qts);
+> +    process_smbios_tables_noexit(data);
+> +    qtest_quit(data->qts);
+> +}
+> +
+> +static void process_acpi_tables_noexit(test_data *data)
+> +{
+> +    test_acpi_load_tables(data);
+> +
+> +    if (getenv(ACPI_REBUILD_EXPECTED_AML)) {
+> +        dump_aml_files(data, true);
+> +    } else {
+> +        test_acpi_asl(data);
+> +    }
+> +
+> +    process_smbios_tables_noexit(data);
+> +}
+> +
+> static void process_acpi_tables(test_data *data)
+> {
+>     process_acpi_tables_noexit(data);
+> @@ -2064,6 +2077,20 @@ static void test_acpi_q35_pvpanic_isa(void)
+>     free_test_data(&data);
+> }
+>=20
+> +static void test_acpi_pc_smbios_options(void)
+> +{
+> +    uint8_t req_type11[] =3D { 11 };
+> +    test_data data =3D {
+> +        .machine =3D MACHINE_PC,
+> +        .variant =3D ".pc_smbios_options",
+> +        .required_struct_types =3D req_type11,
+> +        .required_struct_types_len =3D ARRAY_SIZE(req_type11),
+> +    };
+> +
+> +    test_smbios("-smbios type=3D11,value=3DTEST", &data);
+> +    free_test_data(&data);
+> +}
+> +
+> static void test_oem_fields(test_data *data)
+> {
+>     int i;
+> @@ -2215,6 +2242,8 @@ int main(int argc, char *argv[])
+> #ifdef CONFIG_POSIX
+>             qtest_add_func("acpi/piix4/acpierst", =
+test_acpi_piix4_acpi_erst);
+> #endif
+> +            qtest_add_func("acpi/piix4/smbios-options",
+> +                           test_acpi_pc_smbios_options);
+>         }
+>         if (qtest_has_machine(MACHINE_Q35)) {
+>             qtest_add_func("acpi/q35", test_acpi_q35_tcg);
+> --=20
+> 2.39.3
+>=20
 
 
