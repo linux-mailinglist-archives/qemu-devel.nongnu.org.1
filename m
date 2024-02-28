@@ -2,55 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 305CA86B4DF
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 17:27:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D01886B4E3
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 17:28:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfMjD-00044m-VE; Wed, 28 Feb 2024 11:24:19 -0500
+	id 1rfMjH-000468-H4; Wed, 28 Feb 2024 11:24:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfMjC-00044Z-Ll; Wed, 28 Feb 2024 11:24:18 -0500
+ id 1rfMjD-00044p-V3; Wed, 28 Feb 2024 11:24:19 -0500
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfMj6-0000pW-Cv; Wed, 28 Feb 2024 11:24:18 -0500
+ id 1rfMj7-0000qD-O8; Wed, 28 Feb 2024 11:24:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709137452; x=1740673452;
+ t=1709137454; x=1740673454;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=jGURPkqjrDwg1BsnAyssk07DImLUmwhVmeLL3zPzs68=;
- b=lq+fAlTeSrEE07SN3XLPKQc/hC/D82jiZ2PHJIYXBe9/FCsDKqXUA469
- 1dkeBR3UBjgWZmCDzuXA1ssXIPSrjqh0h/rwIQ6Y8AAgEWkCBSS2Mc/pk
- GhnsXOwV/o1723mk9RVnjTW7oZuY/RrxT2hh86SBE5DR8oH39tFhcZnJq
- CFTbYyX82mDwc0k2F2+Mdt09uyFKKz31kEIGAkHd+RaY4rpcgtIBW9Gs/
- rIOwT1vzF9A/r17BKPQldfMMS6jhh8yWrlONxNfRMDTUiDEj4TcY3iXf5
- KUVCP1/NZyCjaVHT9bY4GInOrEfgo43Xn3V6ofdH1PGP3AJNG17wuIHcc g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="28982503"
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="28982503"
+ bh=iXzFvZO4SYHHRPae3tgl32srVdfSkIO4ExeRw3/c9WQ=;
+ b=ScMpkj13eCn23ALEUAhnCzj/0zFaf2KgX6qKROVejgMzi1qvVlQ67Tfg
+ 2nOEdCWVOV3XX4BKTWfhVzPClywaH+N7KoEzwnYkpAB69ZPHgPrn7V5Vi
+ Hd4Wrh66/v+Q0L8b5GrVzl1dEP6aWIk/73iRzwOkE+WupPd7TxxJ8/Kmt
+ D5xT//Dgz5ZKt0FCRj5Bk2c3pHM5g0LwmYjHb5rLqctPmOJJD4f1EeFPY
+ JITZWckJp7VFasx20+F97LFgCkHZHd3SEY9zDfHDGfqaFrky8odZOEuVw
+ WDEPVupxGIcPB9aRjL7gd9Uhth3+9NzlS5Nke1LZWg/wwd/RhnGCdyA8R g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="28982518"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="28982518"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 08:24:09 -0800
+ 28 Feb 2024 08:24:12 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="12144951"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="12144967"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 28 Feb 2024 08:24:06 -0800
+ by orviesa004.jf.intel.com with ESMTP; 28 Feb 2024 08:24:09 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Eric Blake <eblake@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH 07/16] block/qcow2-bitmap: Fix missing ERRP_GUARD() for
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
+Subject: [PATCH 08/16] block/qcow2: Fix missing ERRP_GUARD() for
  error_prepend()
-Date: Thu, 29 Feb 2024 00:37:14 +0800
-Message-Id: <20240228163723.1775791-8-zhao1.liu@linux.intel.com>
+Date: Thu, 29 Feb 2024 00:37:15 +0800
+Message-Id: <20240228163723.1775791-9-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240228163723.1775791-1-zhao1.liu@linux.intel.com>
 References: <20240228163723.1775791-1-zhao1.liu@linux.intel.com>
@@ -101,42 +98,47 @@ ERRP_GUARD() could avoid the case when @errp is the pointer of
 error_fatal, the user can't see this additional information, because
 exit() happens in error_setg earlier than information is added [1].
 
-The qcow2_co_can_store_new_dirty_bitmap() passes @errp to
-error_prepend(). As a BlockDriver.bdrv_co_can_store_new_dirty_bitmap
-method, it's called by bdrv_co_can_store_new_dirty_bitmap().
+In block/qcow2.c, there're 2 functions passing @errp to error_prepend()
+without ERRP_GUARD():
+ - qcow2_co_create()
+ - qcow2_co_truncate()
 
-Its caller is not being called anywhere, but as the API in
-include/block/block-io.h, we can't ensure what kind of @errp future
-users will pass in.
+Their @errp parameters are so widely sourced that it is necessary to
+protect their @errp with ERRP_GUARD().
 
-To avoid potential issues as [1] said, add missing ERRP_GUARD() at the
-beginning of qcow2_co_can_store_new_dirty_bitmap().
+Therefore, to avoid the issue like [1] said, add missing ERRP_GUARD() at
+their beginning.
 
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
 
-Cc: Eric Blake <eblake@redhat.com>
-Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: John Snow <jsnow@redhat.com>
 Cc: Kevin Wolf <kwolf@redhat.com>
 Cc: Hanna Reitz <hreitz@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- block/qcow2-bitmap.c | 1 +
- 1 file changed, 1 insertion(+)
+ block/qcow2.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/block/qcow2-bitmap.c b/block/qcow2-bitmap.c
-index 0e567ed588d7..874ea5694851 100644
---- a/block/qcow2-bitmap.c
-+++ b/block/qcow2-bitmap.c
-@@ -1710,6 +1710,7 @@ bool coroutine_fn qcow2_co_can_store_new_dirty_bitmap(BlockDriverState *bs,
-                                                       uint32_t granularity,
-                                                       Error **errp)
+diff --git a/block/qcow2.c b/block/qcow2.c
+index 204f5854cff2..956128b40948 100644
+--- a/block/qcow2.c
++++ b/block/qcow2.c
+@@ -3483,6 +3483,7 @@ static uint64_t qcow2_opt_get_refcount_bits_del(QemuOpts *opts, int version,
+ static int coroutine_fn GRAPH_UNLOCKED
+ qcow2_co_create(BlockdevCreateOptions *create_options, Error **errp)
+ {
++    ERRP_GUARD();
+     BlockdevCreateOptionsQcow2 *qcow2_opts;
+     QDict *options;
+ 
+@@ -4283,6 +4284,7 @@ static int coroutine_fn GRAPH_RDLOCK
+ qcow2_co_truncate(BlockDriverState *bs, int64_t offset, bool exact,
+                   PreallocMode prealloc, BdrvRequestFlags flags, Error **errp)
  {
 +    ERRP_GUARD();
      BDRVQcow2State *s = bs->opaque;
-     BdrvDirtyBitmap *bitmap;
-     uint64_t bitmap_directory_size = 0;
+     uint64_t old_length;
+     int64_t new_l1_size;
 -- 
 2.34.1
 
