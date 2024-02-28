@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7049C86AB99
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 10:47:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0B0286AB9C
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 10:48:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfGWi-0005Gm-Cl; Wed, 28 Feb 2024 04:47:00 -0500
+	id 1rfGWm-0005Re-GF; Wed, 28 Feb 2024 04:47:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rfGWg-0005GU-Au
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 04:46:58 -0500
+ id 1rfGWj-0005LO-NY
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 04:47:01 -0500
 Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rfGWc-0002AQ-K6
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 04:46:57 -0500
+ id 1rfGWh-0002AQ-3N
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 04:47:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709113615; x=1740649615;
+ t=1709113619; x=1740649619;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=648gzLYMico2GjbX5DwPYwkXtPATDWt90fsopq2YixU=;
- b=Pb7CrixIE258buytrgu1ewEzKCcSgIfRC4MDQSCWgNHvT0Iavu0n8zAN
- 9EzTBu0vNqG3oi2oAjcYPYrOVyHFLvFcOLFiEg5djgOCDHYd6sQ19k7em
- 3WWqVQkp20b2K7yxN/gzVPPCew52q6X/Vv1mQK6tR/sHFygNPOy8tDY6C
- c75t0nGKSF5Fs2UpYMiZ0ZbYDVU2rv3mBkjhe+xzad2JCSAfUSkYdAkRx
- uKBPJD8kNNBKpQf8mSFjv0jNkCVE36Wo81PgmmxEr7CnKla2fKdNtSs3J
- UJVyIBAG7zheS+VZscj0b6GsDcp0PEIzLfhFlVRuSjUElleHvZWjYgUIq Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="25969984"
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="25969984"
+ bh=zzQtmneALoan6h7kPxfiyycxQTue6ulWrRA2sEohjFA=;
+ b=YTzrWl5oWGxzLrAcBfI95tDrkq6sRfFGkn3minAORhsU0TKcT5OQ1g1D
+ 9ly9mltOaS8M1OfOQHRdYQPcHyNFO//YvuaEuBvECaqkKIoc6yUFdtB8w
+ plhCFdSIAoz3PWHFzpIgiUQ5WLflL1i5JSwsM/eavhCeCQsA/7yCAyBUQ
+ X07U/1J+r1MwsYvzIWqZxBajENEIvRExlti5ztTab86XUUDHagsNbLbHh
+ l9dPbuCr4AVZrx1o7Z4y2rXTvO3wqHToZ5BwBjcIpLxxCtjt8FP4IVfm9
+ fjZWZYjH9mER9vbioJxyktVB1c5gbZDcAxi2MZJ5iP17ub60FXytSLr8q A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="25969996"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="25969996"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 01:46:53 -0800
+ 28 Feb 2024 01:46:58 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
-   d="scan'208";a="7809976"
+   d="scan'208";a="7810012"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 01:46:48 -0800
+ 28 Feb 2024 01:46:53 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  peterx@redhat.com, jasowang@redhat.com, mst@redhat.com, jgg@nvidia.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
+ Yi Sun <yi.y.sun@linux.intel.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v1 2/6] intel_iommu: Extract out vtd_cap_init to initialize
- cap/ecap
-Date: Wed, 28 Feb 2024 17:44:28 +0800
-Message-Id: <20240228094432.1092748-3-zhenzhong.duan@intel.com>
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH v1 3/6] intel_iommu: Add a framework to check and sync host
+ IOMMU cap/ecap
+Date: Wed, 28 Feb 2024 17:44:29 +0800
+Message-Id: <20240228094432.1092748-4-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240228094432.1092748-1-zhenzhong.duan@intel.com>
 References: <20240228094432.1092748-1-zhenzhong.duan@intel.com>
@@ -85,137 +86,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a prerequisite for host cap/ecap sync.
+From: Yi Liu <yi.l.liu@intel.com>
 
-No functional change intended.
+Add a framework to check and synchronize host IOMMU cap/ecap with
+vIOMMU cap/ecap.
 
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+The sequence will be:
+
+vtd_cap_init() initializes iommu->cap/ecap.
+vtd_check_hdev() update iommu->cap/ecap based on host cap/ecap.
+iommu->cap_frozen set when machine create done, iommu->cap/ecap become readonly.
+
+Implementation details for different backends will be in following patches.
+
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/i386/intel_iommu.c | 93 ++++++++++++++++++++++++-------------------
- 1 file changed, 51 insertions(+), 42 deletions(-)
+ include/hw/i386/intel_iommu.h |  1 +
+ hw/i386/intel_iommu.c         | 50 ++++++++++++++++++++++++++++++++++-
+ 2 files changed, 50 insertions(+), 1 deletion(-)
 
+diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
+index bbc7b96add..c71a133820 100644
+--- a/include/hw/i386/intel_iommu.h
++++ b/include/hw/i386/intel_iommu.h
+@@ -283,6 +283,7 @@ struct IntelIOMMUState {
+ 
+     uint64_t cap;                   /* The value of capability reg */
+     uint64_t ecap;                  /* The value of extended capability reg */
++    bool cap_frozen;                /* cap/ecap become read-only after frozen */
+ 
+     uint32_t context_cache_gen;     /* Should be in [1,MAX] */
+     GHashTable *iotlb;              /* IOTLB */
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 9b62441439..ffa1ad6429 100644
+index ffa1ad6429..a9f9dfd6a7 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -4003,30 +4003,10 @@ static void vtd_iommu_replay(IOMMUMemoryRegion *iommu_mr, IOMMUNotifier *n)
-     return;
+@@ -35,6 +35,8 @@
+ #include "sysemu/kvm.h"
+ #include "sysemu/dma.h"
+ #include "sysemu/sysemu.h"
++#include "hw/vfio/vfio-common.h"
++#include "sysemu/iommufd.h"
+ #include "hw/i386/apic_internal.h"
+ #include "kvm/kvm_i386.h"
+ #include "migration/vmstate.h"
+@@ -3819,6 +3821,38 @@ VTDAddressSpace *vtd_find_add_as(IntelIOMMUState *s, PCIBus *bus,
+     return vtd_dev_as;
  }
  
--/* Do the initialization. It will also be called when reset, so pay
-- * attention when adding new initialization stuff.
-- */
--static void vtd_init(IntelIOMMUState *s)
-+static void vtd_cap_init(IntelIOMMUState *s)
- {
-     X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
- 
--    memset(s->csr, 0, DMAR_REG_SIZE);
--    memset(s->wmask, 0, DMAR_REG_SIZE);
--    memset(s->w1cmask, 0, DMAR_REG_SIZE);
--    memset(s->womask, 0, DMAR_REG_SIZE);
--
--    s->root = 0;
--    s->root_scalable = false;
--    s->dmar_enabled = false;
--    s->intr_enabled = false;
--    s->iq_head = 0;
--    s->iq_tail = 0;
--    s->iq = 0;
--    s->iq_size = 0;
--    s->qi_enabled = false;
--    s->iq_last_desc_type = VTD_INV_DESC_NONE;
--    s->iq_dw = false;
--    s->next_frcd_reg = 0;
-     s->cap = VTD_CAP_FRO | VTD_CAP_NFR | VTD_CAP_ND |
-              VTD_CAP_MAMV | VTD_CAP_PSI | VTD_CAP_SLLPS |
-              VTD_CAP_MGAW(s->aw_bits);
-@@ -4043,27 +4023,6 @@ static void vtd_init(IntelIOMMUState *s)
-     }
-     s->ecap = VTD_ECAP_QI | VTD_ECAP_IRO;
- 
--    /*
--     * Rsvd field masks for spte
--     */
--    vtd_spte_rsvd[0] = ~0ULL;
--    vtd_spte_rsvd[1] = VTD_SPTE_PAGE_L1_RSVD_MASK(s->aw_bits,
--                                                  x86_iommu->dt_supported);
--    vtd_spte_rsvd[2] = VTD_SPTE_PAGE_L2_RSVD_MASK(s->aw_bits);
--    vtd_spte_rsvd[3] = VTD_SPTE_PAGE_L3_RSVD_MASK(s->aw_bits);
--    vtd_spte_rsvd[4] = VTD_SPTE_PAGE_L4_RSVD_MASK(s->aw_bits);
--
--    vtd_spte_rsvd_large[2] = VTD_SPTE_LPAGE_L2_RSVD_MASK(s->aw_bits,
--                                                         x86_iommu->dt_supported);
--    vtd_spte_rsvd_large[3] = VTD_SPTE_LPAGE_L3_RSVD_MASK(s->aw_bits,
--                                                         x86_iommu->dt_supported);
--
--    if (s->scalable_mode || s->snoop_control) {
--        vtd_spte_rsvd[1] &= ~VTD_SPTE_SNP;
--        vtd_spte_rsvd_large[2] &= ~VTD_SPTE_SNP;
--        vtd_spte_rsvd_large[3] &= ~VTD_SPTE_SNP;
--    }
--
-     if (x86_iommu_ir_supported(x86_iommu)) {
-         s->ecap |= VTD_ECAP_IR | VTD_ECAP_MHMV;
-         if (s->intr_eim == ON_OFF_AUTO_ON) {
-@@ -4096,6 +4055,56 @@ static void vtd_init(IntelIOMMUState *s)
-     if (s->pasid) {
-         s->ecap |= VTD_ECAP_PASID;
-     }
++static int vtd_check_legacy_hdev(IntelIOMMUState *s,
++                                 IOMMULegacyDevice *ldev,
++                                 Error **errp)
++{
++    return 0;
 +}
 +
-+/*
-+ * Do the initialization. It will also be called when reset, so pay
-+ * attention when adding new initialization stuff.
-+ */
-+static void vtd_init(IntelIOMMUState *s)
++static int vtd_check_iommufd_hdev(IntelIOMMUState *s,
++                                  IOMMUFDDevice *idev,
++                                  Error **errp)
 +{
-+    X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
++    return 0;
++}
 +
-+    memset(s->csr, 0, DMAR_REG_SIZE);
-+    memset(s->wmask, 0, DMAR_REG_SIZE);
-+    memset(s->w1cmask, 0, DMAR_REG_SIZE);
-+    memset(s->womask, 0, DMAR_REG_SIZE);
++static int vtd_check_hdev(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hdev,
++                          Error **errp)
++{
++    HostIOMMUDevice *base_dev = vtd_hdev->dev;
++    IOMMUFDDevice *idev;
 +
-+    s->root = 0;
-+    s->root_scalable = false;
-+    s->dmar_enabled = false;
-+    s->intr_enabled = false;
-+    s->iq_head = 0;
-+    s->iq_tail = 0;
-+    s->iq = 0;
-+    s->iq_size = 0;
-+    s->qi_enabled = false;
-+    s->iq_last_desc_type = VTD_INV_DESC_NONE;
-+    s->iq_dw = false;
-+    s->next_frcd_reg = 0;
++    if (base_dev->type == HID_LEGACY) {
++        IOMMULegacyDevice *ldev = container_of(base_dev,
++                                               IOMMULegacyDevice, base);
 +
-+    vtd_cap_init(s);
++        return vtd_check_legacy_hdev(s, ldev, errp);
++    }
 +
-+    /*
-+     * Rsvd field masks for spte
-+     */
-+    vtd_spte_rsvd[0] = ~0ULL;
-+    vtd_spte_rsvd[1] = VTD_SPTE_PAGE_L1_RSVD_MASK(s->aw_bits,
-+                                                  x86_iommu->dt_supported);
-+    vtd_spte_rsvd[2] = VTD_SPTE_PAGE_L2_RSVD_MASK(s->aw_bits);
-+    vtd_spte_rsvd[3] = VTD_SPTE_PAGE_L3_RSVD_MASK(s->aw_bits);
-+    vtd_spte_rsvd[4] = VTD_SPTE_PAGE_L4_RSVD_MASK(s->aw_bits);
++    idev = container_of(base_dev, IOMMUFDDevice, base);
 +
-+    vtd_spte_rsvd_large[2] = VTD_SPTE_LPAGE_L2_RSVD_MASK(s->aw_bits,
-+                                                    x86_iommu->dt_supported);
-+    vtd_spte_rsvd_large[3] = VTD_SPTE_LPAGE_L3_RSVD_MASK(s->aw_bits,
-+                                                    x86_iommu->dt_supported);
++    return vtd_check_iommufd_hdev(s, idev, errp);
++}
 +
-+    if (s->scalable_mode || s->snoop_control) {
-+        vtd_spte_rsvd[1] &= ~VTD_SPTE_SNP;
-+        vtd_spte_rsvd_large[2] &= ~VTD_SPTE_SNP;
-+        vtd_spte_rsvd_large[3] &= ~VTD_SPTE_SNP;
+ static int vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
+                                     HostIOMMUDevice *base_dev, Error **errp)
+ {
+@@ -3829,6 +3863,7 @@ static int vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
+         .devfn = devfn,
+     };
+     struct vtd_as_key *new_key;
++    int ret;
+ 
+     assert(base_dev);
+ 
+@@ -3848,6 +3883,13 @@ static int vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
+     vtd_hdev->iommu_state = s;
+     vtd_hdev->dev = base_dev;
+ 
++    ret = vtd_check_hdev(s, vtd_hdev, errp);
++    if (ret) {
++        g_free(vtd_hdev);
++        vtd_iommu_unlock(s);
++        return ret;
++    }
++
+     new_key = g_malloc(sizeof(*new_key));
+     new_key->bus = bus;
+     new_key->devfn = devfn;
+@@ -4083,7 +4125,9 @@ static void vtd_init(IntelIOMMUState *s)
+     s->iq_dw = false;
+     s->next_frcd_reg = 0;
+ 
+-    vtd_cap_init(s);
++    if (!s->cap_frozen) {
++        vtd_cap_init(s);
 +    }
  
-     vtd_reset_caches(s);
+     /*
+      * Rsvd field masks for spte
+@@ -4254,6 +4298,10 @@ static int vtd_machine_done_notify_one(Object *child, void *unused)
  
+ static void vtd_machine_done_hook(Notifier *notifier, void *unused)
+ {
++    IntelIOMMUState *iommu = INTEL_IOMMU_DEVICE(x86_iommu_get_default());
++
++    iommu->cap_frozen = true;
++
+     object_child_foreach_recursive(object_get_root(),
+                                    vtd_machine_done_notify_one, NULL);
+ }
 -- 
 2.34.1
 
