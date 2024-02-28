@@ -2,71 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E05F486A777
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 05:02:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B0AD86A7C5
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 06:10:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfB9B-0007VV-9f; Tue, 27 Feb 2024 23:02:21 -0500
+	id 1rfCBD-000359-1S; Wed, 28 Feb 2024 00:08:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rfB99-0007Gs-CQ
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 23:02:19 -0500
-Received: from mgamail.intel.com ([192.198.163.19])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rfB95-000117-Lc
- for qemu-devel@nongnu.org; Tue, 27 Feb 2024 23:02:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709092936; x=1740628936;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=tgFCwv/7Yk27/h7/Nc9J58CONVxBSdPJewlTX/Yvjno=;
- b=VNRsSnZJnEEzgqF7iSobDmL4Adz6OTMh5yeKXV5qgD2VpAmepb06LRyH
- Q+HJtUmeBLjGvZfnHmG8xQy6q3O5Slqj2sn62G2LnCg/n9bo9m1puBGsg
- WvYdd3F1eZuAzdHoY31lNvml+R81K7ArUNxkz6c92lCREHJB/tEM607Ja
- Ua72hJSnbocniuwec/OCzN+tXCwwW5vHFps2ckv0Z9R19TMUAivBEnqOm
- gStRntY2ulKjfqwwkXEy3eQ4m8iWiDpGUo2PuBo8wUBaPaxbWtizZBQuP
- AwljU4WEK2wowMrebsahmhPIMg+VAobvyr+Cx5jU35K0NEMr8pTXU3Von Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3342531"
-X-IronPort-AV: E=Sophos;i="6.06,189,1705392000"; 
-   d="scan'208";a="3342531"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2024 20:01:56 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,189,1705392000"; d="scan'208";a="11917386"
-Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2024 20:01:51 -0800
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- peterx@redhat.com, jasowang@redhat.com, mst@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com, kevin.tian@intel.com,
- yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Yi Sun <yi.y.sun@linux.intel.com>
-Subject: [PATCH v1 11/11] backends/iommufd: Introduce helper function
- iommufd_device_get_info()
-Date: Wed, 28 Feb 2024 11:59:00 +0800
-Message-Id: <20240228035900.1085727-12-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240228035900.1085727-1-zhenzhong.duan@intel.com>
-References: <20240228035900.1085727-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
+ id 1rfCB9-00034R-0e
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 00:08:28 -0500
+Received: from mail.ispras.ru ([83.149.199.84])
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
+ id 1rfCB4-00053m-IR
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 00:08:26 -0500
+Received: from [10.12.10.172] (unknown [78.37.10.254])
+ by mail.ispras.ru (Postfix) with ESMTPSA id 3101C4076747;
+ Wed, 28 Feb 2024 05:07:55 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 3101C4076747
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+ s=default; t=1709096875;
+ bh=sTCmqZZkEpLe0jud6IibJdv7Jwg6njB69o0+VLvJoiU=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=Hzf9sl/54yCHOF24AS7Bh/nZU8ki7dGWgmIBwXHlJJHkpxANzw4AhFjY2udwh8Pfp
+ mcmTn4cEflqnnf5R2BsSfsY13HN9J7A1wpB1PdKGQizdsD28f0syDMY332Pixf0eqL
+ TmSrQ+yFb/ZpApHtIlTLmsm65vvD8wdJkks+OtxM=
+Message-ID: <b212b1a1-eca9-40ae-992b-ff24f41844e3@ispras.ru>
+Date: Wed, 28 Feb 2024 08:07:55 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.19;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] replay: simple auto-snapshot mode for record
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org
+References: <20230814163135.187882-1-npiggin@gmail.com>
+ <20230814163135.187882-5-npiggin@gmail.com>
+ <95adc4ea-225c-bcd5-cec2-9edf1c2cf496@ispras.ru>
+ <CZEU6LST3QJK.25NCID08671V5@wheely>
+From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
+In-Reply-To: <CZEU6LST3QJK.25NCID08671V5@wheely>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=83.149.199.84;
+ envelope-from=pavel.dovgalyuk@ispras.ru; helo=mail.ispras.ru
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,76 +71,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a helper function iommufd_device_get_info() to get
-host IOMMU related information through iommufd uAPI.
+On 26.02.2024 10:36, Nicholas Piggin wrote:
+> On Fri Aug 18, 2023 at 2:36 PM AEST, Pavel Dovgalyuk wrote:
+>> On 14.08.2023 19:31, Nicholas Piggin wrote:
+>>> record makes an initial snapshot when the machine is created, to enable
+>>> reverse-debugging. Often the issue being debugged appears near the end of
+>>> the trace, so it is important for performance to keep snapshots close to
+>>> the end.
+>>>
+>>> This implements a periodic snapshot mode that keeps a rolling set of
+>>> recent snapshots.
+>>>
+>>> Arguably this should be done by the debugger or a program that talks to
+>>> QMP, but for setting up simple scenarios and tests, it is convenient to
+>>> have this feature.
+> 
+> I'm looking at resurrecting this to help add a bit of testing...
+> 
+> [snip]
+> 
+>>> +static void replay_snapshot_timer_cb(void *opaque)
+>>> +{
+>>> +    Error *err = NULL;
+>>> +    char *name;
+>>> +
+>>> +    if (!replay_can_snapshot()) {
+>>> +        /* Try again soon */
+>>> +        timer_mod(replay_snapshot_timer,
+>>> +                  qemu_clock_get_ms(QEMU_CLOCK_REALTIME) +
+>>> +                  replay_snapshot_periodic_delay / 10);
+>>> +        return;
+>>> +    }
+>>> +
+>>> +    name = g_strdup_printf("%s-%d", replay_snapshot, replay_snapshot_count);
+>>> +    if (!save_snapshot(name,
+>>> +                       true, NULL, false, NULL, &err)) {
+>>> +        error_report_err(err);
+>>> +        error_report("Could not create periodic snapshot "
+>>> +                     "for icount record, disabling");
+>>> +        g_free(name);
+>>> +        return;
+>>> +    }
+>>> +    g_free(name);
+>>> +    replay_snapshot_count++;
+>>> +
+>>> +    if (replay_snapshot_periodic_nr_keep >= 1 &&
+>>> +        replay_snapshot_count > replay_snapshot_periodic_nr_keep) {
+>>> +        int del_nr;
+>>> +
+>>> +        del_nr = replay_snapshot_count - replay_snapshot_periodic_nr_keep - 1;
+>>> +        name = g_strdup_printf("%s-%d", replay_snapshot, del_nr);
+>>> +        if (!delete_snapshot(name, false, NULL, &err)) {
+>>> +            error_report_err(err);
+>>> +            error_report("Could not delete periodic snapshot "
+>>> +                         "for icount record");
+>>> +        }
+>>> +        g_free(name);
+>>> +    }
+>>> +
+>>> +    timer_mod(replay_snapshot_timer,
+>>> +              qemu_clock_get_ms(QEMU_CLOCK_REALTIME) +
+>>> +              replay_snapshot_periodic_delay);
+>>
+>> I'm not sure that realtime is not the best choice for such of a timer.
+>> Virtual machine may be stopped or slowed down for some reason.
+> 
+> My thinking was that, say if you snapshot every 10 seconds of real time
+> executed, then you should have an upper limit on the order of 10 seconds
+> to perform a reverse-debug operation (so long as you don't exceed your
+> nr_keep limit).
 
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- include/sysemu/iommufd.h |  4 ++++
- backends/iommufd.c       | 23 ++++++++++++++++++++++-
- 2 files changed, 26 insertions(+), 1 deletion(-)
+But in some cases savevm itself could take more than 10 seconds.
+We'll have infinite saving in this case. That's why I propose using 
+virtual clock with the QEMU_TIMER_ATTR_EXTERNAL attribute.
 
-diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
-index d509ff88ef..518b97bfed 100644
---- a/include/sysemu/iommufd.h
-+++ b/include/sysemu/iommufd.h
-@@ -4,6 +4,7 @@
- #include "qom/object.h"
- #include "exec/hwaddr.h"
- #include "exec/cpu-common.h"
-+#include <linux/iommufd.h>
- #include "sysemu/host_iommu_device.h"
- 
- #define TYPE_IOMMUFD_BACKEND "iommufd"
-@@ -48,4 +49,7 @@ typedef struct IOMMUFDDevice {
- 
- void iommufd_device_init(IOMMUFDDevice *idev,
-                          IOMMUFDBackend *iommufd, int devid);
-+int iommufd_device_get_info(IOMMUFDDevice *idev,
-+                            enum iommu_hw_info_type *type,
-+                            uint32_t len, void *data, Error **errp);
- #endif
-diff --git a/backends/iommufd.c b/backends/iommufd.c
-index 6d280e4aea..69f3f75ea5 100644
---- a/backends/iommufd.c
-+++ b/backends/iommufd.c
-@@ -20,7 +20,6 @@
- #include "monitor/monitor.h"
- #include "trace.h"
- #include <sys/ioctl.h>
--#include <linux/iommufd.h>
- 
- static void iommufd_backend_init(Object *obj)
- {
-@@ -240,3 +239,25 @@ void iommufd_device_init(IOMMUFDDevice *idev,
-     idev->iommufd = iommufd;
-     idev->devid = devid;
- }
-+
-+int iommufd_device_get_info(IOMMUFDDevice *idev,
-+                            enum iommu_hw_info_type *type,
-+                            uint32_t len, void *data, Error **errp)
-+{
-+    struct iommu_hw_info info = {
-+        .size = sizeof(info),
-+        .dev_id = idev->devid,
-+        .data_len = len,
-+        .data_uptr = (uintptr_t)data,
-+    };
-+    int ret;
-+
-+    ret = ioctl(idev->iommufd->fd, IOMMU_GET_HW_INFO, &info);
-+    if (ret) {
-+        error_setg_errno(errp, errno, "Failed to get hardware info");
-+    } else {
-+        *type = info.out_data_type;
-+    }
-+
-+    return ret;
-+}
--- 
-2.34.1
+> 
+> Is it worth worrying about complexity of slowdowns and vm pausing?
+> Maybe it could stop snapshotting on a host pause.
+> 
+>>> +}
+>>> +
+>>>    void replay_vmstate_init(void)
+>>>    {
+>>>        Error *err = NULL;
+>>> @@ -81,6 +128,16 @@ void replay_vmstate_init(void)
+>>>                    error_report("Could not create snapshot for icount record");
+>>>                    exit(1);
+>>>                }
+>>> +
+>>> +            if (replay_snapshot_mode == REPLAY_SNAPSHOT_MODE_PERIODIC) {
+>>> +                replay_snapshot_timer = timer_new_ms(QEMU_CLOCK_REALTIME,
+>>> +                                                     replay_snapshot_timer_cb,
+>>> +                                                     NULL);
+>>> +                timer_mod(replay_snapshot_timer,
+>>> +                          qemu_clock_get_ms(QEMU_CLOCK_REALTIME) +
+>>> +                          replay_snapshot_periodic_delay);
+>>> +            }
+>>> +
+>>
+>> Please also delete placeholder comment for the snapshotting timer
+>> in replay_enable function.
+> 
+> Wil do.
+> 
+>>>            } else if (replay_mode == REPLAY_MODE_PLAY) {
+>>>                if (!load_snapshot(replay_snapshot, NULL, false, NULL, &err)) {
+>>>                    error_report_err(err);
+>>> diff --git a/replay/replay.c b/replay/replay.c
+>>> index e64f71209a..fa5930700d 100644
+>>> --- a/replay/replay.c
+>>> +++ b/replay/replay.c
+>>> @@ -29,6 +29,10 @@
+>>>    ReplayMode replay_mode = REPLAY_MODE_NONE;
+>>>    char *replay_snapshot;
+>>>    
+>>> +ReplaySnapshotMode replay_snapshot_mode;
+>>> +uint64_t replay_snapshot_periodic_delay;
+>>> +int replay_snapshot_periodic_nr_keep;
+>>> +
+>>>    /* Name of replay file  */
+>>>    static char *replay_filename;
+>>>    ReplayState replay_state;
+>>> @@ -313,6 +317,27 @@ void replay_configure(QemuOpts *opts)
+>>>        }
+>>>    
+>>>        replay_snapshot = g_strdup(qemu_opt_get(opts, "rrsnapshot"));
+>>> +    if (replay_snapshot && mode == REPLAY_MODE_RECORD) {
+>>
+>> Can such a snapshotting may be useful in replay mode?
+> 
+> Does snapshotting do anything in replay mode? 
+
+Yes, you can create as many snapshots as you want if 'snapshot=on'
+option of the disk image was not used.
+
+> I assume if we did
+> snapshotting based on the machine timer then we'd have to support
+> it here so the timer events get replayed properly, at least. But
+> I was trying to get by with minimum complexity :)
+
+Use QEMU_TIMER_ATTR_EXTERNAL attribute for the timer and then its
+events will not affect the replay.
+
+> 
+> Thanks,
+> Nick
 
 
