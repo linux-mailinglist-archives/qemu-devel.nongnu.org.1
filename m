@@ -2,84 +2,135 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F25B86AEE9
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 13:15:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEA3586AEEA
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 13:15:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfIo3-0006cx-AN; Wed, 28 Feb 2024 07:13:06 -0500
+	id 1rfIou-00010x-Pl; Wed, 28 Feb 2024 07:13:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1rfIlk-0004wZ-7v
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 07:10:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
+ id 1rfImr-0006QZ-Pj; Wed, 28 Feb 2024 07:11:55 -0500
+Received: from mail-he1eur01on0704.outbound.protection.outlook.com
+ ([2a01:111:f400:fe1e::704]
+ helo=EUR01-HE1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1rfIli-0005tx-51
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 07:10:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709122236;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mrE6NOi6ri+E6IZDLBU5wT9YSqv7l5WQSw67sMbsP8I=;
- b=Ur1lBu5yWFqmDGwNxlEfCD58I0TK1FHSyGEY1JtvQZbQXvN+RrovCpSf4utNg0pc0U/M4Q
- VRU5WSUAghHWbtAEc9TDrsourcmn1BMbAhIE7DbFFPPTkOhs3nz5ngjo1rXVeNMoG3smTa
- iVR+pdoOE6gXvEAl4fJ8MikBuuRd8Ys=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-542-tli3d0oVOP-2HvIzcKj-1g-1; Wed, 28 Feb 2024 07:10:35 -0500
-X-MC-Unique: tli3d0oVOP-2HvIzcKj-1g-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2d2cab09c27so4978351fa.1
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 04:10:34 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709122233; x=1709727033;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mrE6NOi6ri+E6IZDLBU5wT9YSqv7l5WQSw67sMbsP8I=;
- b=FVJNwHnhMNPvRhVTPaXSFbfNMS0U5wRjfxT1zmw4XaadvFIVrBPbwyNkp9m8sRBH+/
- cifz4cMvH6c4NJFVJu6Lgx01IktfoDGBZh8/wNw4XmUt7h8DCBBxRbW337jil5jDRKMW
- 4EzCHFTA02IDRMUCkoQVhGR5w36t8BQbCzEzbliD1LqNDEP/qdh2JV3ymcNU1ySgOgdo
- OuF67SATBmwcclZ6v0viYBMH2U4qX3jyHjYzdoDCX/XvCtK+L8zvHznOAf5E8MLlBQYu
- yMS/g6T/6pjjFqZFmEittHrcYNLmQp/IUbKPBt++C+b5QgBYi1J78Sp0E4kz1c+G4WIY
- OV9A==
-X-Gm-Message-State: AOJu0Yw710T5vCCsq5tHJ6K5CYaeFolnxmWZaAD/Ufu/ZUCYK3ExyjG6
- SgkCJNXcN0fT7vn4Y2KZ1lICzrwBV/94KogPrkuVLcKeT5V++G9PmEhhAHkbH8mGbxyCYPhERV4
- a8OxC+/4A/Xcix0fDjyuMwqVLarSc82SoD4lR1CgtmPci05Mxb8STCfWDButGoZomGzHwBqklxD
- o+txl4g1L8fAPLH8/NFTySEMfn3YB79Dd9LuU=
-X-Received: by 2002:a05:6512:114c:b0:512:e506:1c66 with SMTP id
- m12-20020a056512114c00b00512e5061c66mr10198949lfg.26.1709122233199; 
- Wed, 28 Feb 2024 04:10:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFsD8OBbnPtknIBpDvtL/xFyMJbViB26xXZ+8wDLUhs9VmgggfLixj78ugPXGRVoikVpDmw9sWYF57ZS3UCzq0=
-X-Received: by 2002:a05:6512:114c:b0:512:e506:1c66 with SMTP id
- m12-20020a056512114c00b00512e5061c66mr10198929lfg.26.1709122232815; Wed, 28
- Feb 2024 04:10:32 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
+ id 1rfImm-00067N-KS; Wed, 28 Feb 2024 07:11:49 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZGPhFrJ7rBUhYSgT2ao2Ohh4uQ+VUTDGCgG5GYy2BTnP159vdNWpUepvooGplHq/qwObMCnEfs+AiOvR3xyrVaWaUeLEkvcsIkJebCG3bJO6lajjWuUsLp5AKPNCoJXIpFX3oHzBNQaandVX6BlTsy5fYxwKqnmH7oEfIv+d7u84xm/H27DkEcwoFZeuCu82qxoaLj4VOP2qJ5R25ylNHuosL3csbLE9NwEw2ByUEH0p0fUK431ZBXiGPCimYAsQwqF6KR6LVPbwmQOEZrnpfESgfP3jOOivihQipToEhGkNo/65pcQ4vp3GiJN/EViBY0IX5QRsNZgkBtwTBgILbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4hcTRR7xBGt4JpmXpwVpzxGcb0LlD7t0GWt76kMVppg=;
+ b=RcWP18ib+JFfv/Wrt6QtLNSelm3WvVTGp9Hy4oZh+wzXIeUPUOZZjXbK1DqcY1nn5F2ebpXKk1U1YZg+T2XdPmfHtrESPmy3CGBONfobLm/nKSXV0iZqD9tHsqH/5LLLdmv2hKtdH2WvT8AzPiOMIpNcNRvA8QMm/+v8SUOmiBd49MWEOol9TMtbn5R+Z3fsa7gC2n5RcQbnJJ4iKcM/Lh3zpAhGXTkRWJdc+oLacW9+IU30JUUBcts/zFolu1FZ9sxTaNSnmCxu99TxbY6DSk+HK6CipoeRw4O/P1rfyimtdUcngydnf46HAH8P+7XCVCwtF8nZgSb5AILwXw1wDg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4hcTRR7xBGt4JpmXpwVpzxGcb0LlD7t0GWt76kMVppg=;
+ b=yqItqsyRR6NPzHgFkEuJJzfwtxIBwc7iLWvg92G2HyMrqmQIiD22iwd+bb8C4kacqBXtANxGvZXc3g/C/I3QHaI4jo2P6+b+TO06PayTYksSdW5wHkeCmi0Fsai2PdDovfYVXH4UY6Fj9M9Lo+NNFI6dHh8MhbEIXUSXz2gXyFwuELhPeMLvm26ur0YgeE0mBDSEgFLeg3t4YruinMZXziIdgs0r1yh4eysoGDikbZPMS/M8Pb7QRVg5RPi4emqcrjXn93HOZ08BXoSNpJ6aVIJqyktRyPBbLveEjAZB9W/1PIxcvXg68F/B3Ub9Y/BSZvkYKFoLUDyTISD40R5/PA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from PAXPR08MB6956.eurprd08.prod.outlook.com (2603:10a6:102:1db::9)
+ by DU0PR08MB9417.eurprd08.prod.outlook.com (2603:10a6:10:420::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.34; Wed, 28 Feb
+ 2024 12:11:38 +0000
+Received: from PAXPR08MB6956.eurprd08.prod.outlook.com
+ ([fe80::c9d1:40a6:1a4d:d5dd]) by PAXPR08MB6956.eurprd08.prod.outlook.com
+ ([fe80::c9d1:40a6:1a4d:d5dd%7]) with mapi id 15.20.7316.037; Wed, 28 Feb 2024
+ 12:11:38 +0000
+Message-ID: <c244e29f-6b87-4010-ab6e-ac1498247eed@virtuozzo.com>
+Date: Wed, 28 Feb 2024 13:11:36 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 12/21] parallels: Let image extensions work in RW mode
+Content-Language: en-US
+To: Alexander Ivanov <alexander.ivanov@virtuozzo.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, stefanha@redhat.com, vsementsov@yandex-team.ru,
+ kwolf@redhat.com, hreitz@redhat.com
+References: <20231228101232.372142-1-alexander.ivanov@virtuozzo.com>
+ <20231228101232.372142-13-alexander.ivanov@virtuozzo.com>
+ <a9791fbd-e07a-4757-bb54-b4283bd7f4ad@virtuozzo.com>
+ <99fd7075-fd25-4ccd-806d-6d2c0f3e33f0@virtuozzo.com>
+ <42466483-7583-497d-89f5-cbd447f5647e@virtuozzo.com>
+From: "Denis V. Lunev" <den@virtuozzo.com>
+In-Reply-To: <42466483-7583-497d-89f5-cbd447f5647e@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: VI1PR09CA0127.eurprd09.prod.outlook.com
+ (2603:10a6:803:12c::11) To PAXPR08MB6956.eurprd08.prod.outlook.com
+ (2603:10a6:102:1db::9)
 MIME-Version: 1.0
-References: <20240224015123.1575580-1-satyeshwar.singh@intel.com>
-In-Reply-To: <20240224015123.1575580-1-satyeshwar.singh@intel.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Wed, 28 Feb 2024 16:10:21 +0400
-Message-ID: <CAMxuvaysAxuchZAc-R+fAXfjtCOnKZhPDZbWHSEzgA-s5f5EkA@mail.gmail.com>
-Subject: Re: [PATCH] virtio-gpu: Fix HW cursor visibility
-To: Satyeshwar Singh <satyeshwar.singh@intel.com>
-Cc: qemu-devel@nongnu.org, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
- Dongwon Kim <dongwon.kim@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR08MB6956:EE_|DU0PR08MB9417:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7c18d3bc-290a-425b-4ef0-08dc38566a7b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: L30HBhEd7rreyKUJm6PpISsQOSZ1U+AcPUK/Y1mkl+rQ2kT6YeC9+xIo+d9V4Ye/OEa8NGy8Cqww61Mmh6ubpqaQgAs2WMT2LASYJAv5+AoPwxVg+eba4cqkcCx6Qj+ZXwFw0whqmHNIfdeFYXzbKZcqCq0CZQuBqPHR8fZD/l/5QBpw1WJBoMSjz0MYTwxiFG52K5zv5xPqqcaMLqWTikANALaZt1ogHhcenp8ERKePWXqqz/GsRQtFxvxTlvJL1c5DfbQhYcbM0s3mr8EeCbqND/M91eMTKIF2nT7lm78DdCcIFbkkxD+1KUnQmnW5sArluaRVPnvIJzoRGHNy6pwVMW+pcVnA48JaRoG2KKimWLIyQ9m84G7as9p25tltxrTtiH4IGsQIPEUPytL3nzgdvpR3a73qB1UMzGOEDxdSbqjWsNBIyPDeyrA+oOaxs4kjjGPZpIMsVy9BjMObyqDQkhbky7tON75FAfzN/EtEwol2ecYlzJW6yXzpPQPUXVUt/scNjU49nE22EHCG00AA6p8Cdyjq+QBHaecwjQ16WLQUrauDVTh8WI/2AFi3LALlWAI/H61AcUb8gVJjhzQEfwmYV4/KSpA1V9a0ASeEWpeEikYeGfobXZbE9z0yhBTLZ6xQsf6VIXCON3L+VFrBsXzKX2M7qcKjelagY08=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PAXPR08MB6956.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(230273577357003); DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OFBWd3UvbVhNUFV5aDltSCszczZ4VURyQmRiTG13enp3dU42SldkY1hBNmRl?=
+ =?utf-8?B?K0FqblBvK0JqaXdWblIyWEU1M3Fka29xWnpGTEVxNUNMbG5BbEdGSWFBQUFF?=
+ =?utf-8?B?T04yemVpeEtvaTg0UU9XSUZpS3hVS25RN3FIU0VwNVJCTzlOYnRsaXlObk1F?=
+ =?utf-8?B?Rm5YYndGQTJRamMzTzBrOTZpaGJacUhFMFY0MjJ0b2swWEx1Y1RBeno5RjJz?=
+ =?utf-8?B?bW1EdzZtdDE5RjR1R01sd1BkWG5aSXVVdHhHNlEwK3BmTUNKMnpFNlQ1UzhW?=
+ =?utf-8?B?OXVnV0xkVUpFZ1NYNGUyZDRndkllLzVaTHdvREhkckZKN2pSNUhkTUE3OUxt?=
+ =?utf-8?B?M21LZGsyZGE2d0h0a0lvb0laWmJFNHh3NStWK3phandQWWg0NllEcHU1TXFF?=
+ =?utf-8?B?bTNoY1FRc3dUZ3hrWWxSb1VCem1CT1FmdktwYzNMZWRTQ1luUHAxMGVLK0Vp?=
+ =?utf-8?B?MCtPMjkyb2ltTEUrRmxMOVdDaDRHRjk2SDlCTXU2bW8zNENOVDROZkV0SEdQ?=
+ =?utf-8?B?cHpiMXVLeWhXWkZCTGpwNkxGaUZPQldDVmpJM1NLY2Y1ampCZjhCT1FRdXB3?=
+ =?utf-8?B?ekZNV1hhbkRITkVHTWlUQ29iWDZ5SVdRRzN2QTI2NGpiaTRMTkFvaXZpcXN1?=
+ =?utf-8?B?T0tRZkZPbFZTTmREMXJ2WFNybWVkeFV4TzFXRTdEc0pMRlZWRGdOVUt1VHQ4?=
+ =?utf-8?B?T05oMFpnVGx5MkdjSVpFNVM3TkpmeEU1d0tvSGdQZUlnVXh6WnR4eEJ5Z1dC?=
+ =?utf-8?B?WWswaGhXaTkvZDVBS2orSGU0Wms0aGlBVVNUWVFjY1pscUF4L2EwVlNzb3dS?=
+ =?utf-8?B?YkgydmJiZGRCd08ydE5NeVY3SnowSStTck5Sd3dOSUptZ2RDUml1aERVeWZT?=
+ =?utf-8?B?NVhlK3djdUxqN2pCYjlZWUJFS3grMjB1MllVd2Q1WjBuSEl1emsxaDlRNEVi?=
+ =?utf-8?B?M3dvRFFpdE9QREtjcEU4a0d6WWEvQ3E5UGdxVm1NaTVVbW0rOGJzVmp1UkUr?=
+ =?utf-8?B?SU9yQjZGTzBHOUpTaktxY0o2bHozbkxzczFIQWJuT0Y3Q3FFbGdPdEVXaFRv?=
+ =?utf-8?B?MlI0VEJCdzFYSERKN0dDZGdDMXFBMFhuUllJeFFtaElFb1B5cXFpYVRyZGty?=
+ =?utf-8?B?QnFiamZQcVpsOFUxZnlTbmRWWWJVVnRZNnpudFJKdjdOM0lWTUIwdHVUek1Z?=
+ =?utf-8?B?Si9FbVRXSUxFTHVuL3RiUkorZnhpay9UdE5RcGpHL2tHQktqUjV6cys2OWlt?=
+ =?utf-8?B?NGVpakV4V25FSGN0UWN5Y3o2TlNWTzc2Q1I4Y3dTYW5lbGRyYUFsblo5RTVF?=
+ =?utf-8?B?emNCcHA0bU92WjM3aFNoZ0lxbVdNQ2JTYVJLRFlMc3RDQUZKYUFNZTJFd0My?=
+ =?utf-8?B?NjM3cmJLbEJPMDlUQmNRbEVVRE5ZYnRSOHRNay82amNhcTZpTjVwelE0a01P?=
+ =?utf-8?B?Vmk3TkY5MnMrTEJuL3o2WGpOelhXVmEwYVluQjc3bXNub3RIdkhHSkhpakFS?=
+ =?utf-8?B?YmZMRWxYTXp3MmRWNVFwVFhMNGRud3k1YWpaRjBmNC9FZURZdzQ1OHp1Vmpa?=
+ =?utf-8?B?MTY4dXJ1RS9oVTdEMWVFRmtoQjgxRjMrVC9OeVA5b2ZFSVg2Q2VnQWFTQWNV?=
+ =?utf-8?B?U3Z3N1hwWEJRYjR1dEZqMnhjRUFYaTJybjZQc081a016Mm16ZzZXQ3FKc3lo?=
+ =?utf-8?B?YXpSV1kzZFc0bUxSODIzQ05FcEZ4aUh4d29WUTRoYVpZMjhzcEpDSU5QYURs?=
+ =?utf-8?B?eVN2eENaMFhWUWdTZ0JYSXN5bXcyVm84REx1MjRJZERqcnp4WXRIejBIVnZX?=
+ =?utf-8?B?eVNRRXg2clUxMHdkN2lEZjhUTWxmbnFyL1pkZS9SZS80VkpLVVBad29XcFBJ?=
+ =?utf-8?B?N3FSak40L3V1YWtQL1htR2lDMEpGWS9mVk8wR1Z6YVQ4eGp5ajczd3RJSm4w?=
+ =?utf-8?B?RXRoblVjZWRMZzREWUN0REJqUjBac1dUMmxSRU5PVnBpUlRYdDZHR0JSTHQy?=
+ =?utf-8?B?L0tVek5vZ1YrVGNzUU9OaHpPOFFMT05YSlVDamttYXJDdys5NENLQ3pLTzBp?=
+ =?utf-8?B?L21GZWZpVEp0ZWUrTHdSMkxFb0tGV21WS25ta1hDOWQxcG1hbm01U0d0b0dC?=
+ =?utf-8?Q?uHVXbG3R+80BBY6htWvxg6YAv?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c18d3bc-290a-425b-4ef0-08dc38566a7b
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR08MB6956.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2024 12:11:38.5871 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3zPXkG/txnMgYnnpV8BsXvOeGMdL7smEqfP2fgnKcPfkCkjOr2wQaQNn0I86YR9xfU1H9fYEmj9v98I6g1mI2g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB9417
+Received-SPF: pass client-ip=2a01:111:f400:fe1e::704;
+ envelope-from=den@virtuozzo.com;
+ helo=EUR01-HE1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.102,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,128 +147,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
-
-On Sat, Feb 24, 2024 at 4:49=E2=80=AFAM Satyeshwar Singh
-<satyeshwar.singh@intel.com> wrote:
+On 2/28/24 11:25, Alexander Ivanov wrote:
 >
-> When show-cursor is on, most of the time Windows VM draws the cursor by
-> itself and hands it over to Qemu as a separate resource. However,
-> sometimes, Windows OS gives control of the cursor to applications like
-> Notepad. In such cases a software cursor which is part of the overall
-> framebuffer is drawn by the application. Windows intimates the indirect
-> display driver (IDD) about this change through a flag and IDD is in turn
-> responsible for communicating with the hypervisor (Qemu) to hide the HW
-> cursor. This show/hide cursor can happen any time dynamically.
 >
-> Unfortunately, it seems like Qemu doesn't expect this change to happen
-> dynamically. The code in virtio-gpu.c was written such that
-> update_cursor would first call dpy_cursor_define if the cursor shape has
-> changed and this is not a simple move operation (which indeed is the
-> case when moving to a SW cursor) and then call dpy_mouse_set.
-> dpy_cursor_define calls toolkits like GTK but in addition to creating
-> the cursor content, it also calls gdk_window_set_cursor thereby setting
-> the cursor. It is therefore, the right function to either show or hide
-> the cursor but there was no code present to hide the cursor. Changing
-> the cursor visibility in dpy_mouse_set has two issues. First,
-> dpy_cursor_define already decided to display the cursor so showing the
-> cursor in the previous call only to hide it in dpy_mouse_set doesn't
-> sound right. Second, dpy_mouse_set skips the rest of the code if we
-> are in absolute mode so adding this code there wouldn't work in that
-> mode.
+> On 1/18/24 14:31, Denis V. Lunev wrote:
+>> On 1/16/24 15:45, Denis V. Lunev wrote:
+>>> On 12/28/23 11:12, Alexander Ivanov wrote:
+>>>> Now we support extensions saving and can let to work with them in
+>>>> read-write mode.
+>>>>
+>>>> Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+>>>> ---
+>>>>   block/parallels-ext.c |  4 ----
+>>>>   block/parallels.c     | 17 ++++-------------
+>>>>   2 files changed, 4 insertions(+), 17 deletions(-)
+>>>>
+>>>> diff --git a/block/parallels-ext.c b/block/parallels-ext.c
+>>>> index c83d1ea393..195b01b109 100644
+>>>> --- a/block/parallels-ext.c
+>>>> +++ b/block/parallels-ext.c
+>>>> @@ -175,10 +175,6 @@ parallels_load_bitmap(BlockDriverState *bs, 
+>>>> uint8_t *data, size_t data_size,
+>>>>           return NULL;
+>>>>       }
+>>>>   -    /* We support format extension only for RO parallels images. */
+>>>> -    assert(!(bs->open_flags & BDRV_O_RDWR));
+>>>> -    bdrv_dirty_bitmap_set_readonly(bitmap, true);
+>>>> -
+>>>>       return bitmap;
+>>>>   }
+>>>>   diff --git a/block/parallels.c b/block/parallels.c
+>>>> index a49922c6a7..d5d87984cf 100644
+>>>> --- a/block/parallels.c
+>>>> +++ b/block/parallels.c
+>>>> @@ -1374,19 +1374,10 @@ static int parallels_open(BlockDriverState 
+>>>> *bs, QDict *options, int flags,
+>>>>       }
+>>>>         if (ph.ext_off) {
+>>>> -        if (flags & BDRV_O_RDWR) {
+>>>> -            /*
+>>>> -             * It's unsafe to open image RW if there is an 
+>>>> extension (as we
+>>>> -             * don't support it). But parallels driver in QEMU 
+>>>> historically
+>>>> -             * ignores the extension, so print warning and don't 
+>>>> care.
+>>>> -             */
+>>>> -            warn_report("Format Extension ignored in RW mode");
+>>>> -        } else {
+>>>> -            ret = parallels_read_format_extension(
+>>>> -                    bs, le64_to_cpu(ph.ext_off) << 
+>>>> BDRV_SECTOR_BITS, errp);
+>>>> -            if (ret < 0) {
+>>>> -                goto fail;
+>>>> -            }
+>>>> +        ret = parallels_read_format_extension(
+>>>> +                bs, le64_to_cpu(ph.ext_off) << BDRV_SECTOR_BITS, 
+>>>> errp);
+>>>> +        if (ret < 0) {
+>>>> +            goto fail;
+>>>>           }
+>>>>       }
+>>> Reviewed-by: Denis V. Lunev <den@openvz.org>
+>> This patch also deserves a note, what will happen with
+>> format extensions clusters. According to the current
+>> policy, we have only transient extensions, i.e.
+>> CBT. Cluster allocation mechanism will reuse these
+>> clusters as they are not marked as used.
+>> Thus we should either set format extension offset
+>> in the header to 0 or perform any other correct
+>> measures to properly handle this.
+> Yes, all the clusters used by extensions are marked as unused
+> on loading. In further work they can be reallocated for other
+> purposes.
+> Agree that we need to set ext_off to zero.
+>>
+>> It should also be noted, that on any QEMU crash
+>> appropriate format extensions are to be properly
+>> treated. We could not make them RW until this would
+>> not be addressed as we could easily mess up with
+>> trashed metadata.
+> If QEMU crashes after extensions loading there will be
+> zero in the ext_off field and an inappropriate dirty bitmap
+> will be ignored.
 >
-> Qemu makes the decision of whether to show or hide the cursor by
-> observing the cursor->resource_id flag in virtio-gpu.c as is evident
-> from the lines
->         dpy_mouse_set(s->con, cursor->pos.x, cursor->pos.y,
->                   cursor->resource_id ? 1 : 0);
-> The last parameter is considered the "visible" parameter in gdk code.
-> Therefore, in this patch we continue with the same model. Instead of
-> changing the function prototype and changing a dozen plus files, we are
-> adding the visible field in QEMUCursor data structure and passing
-> it from virtio-gpu to the GTK code where we check if the cursor is
+That should be considered as a minimal kludge.
+Normally we should mark format extension cluster
+as used and nullify references from the bitmaps
+there.
 
-You will need to review all usages of QEMUCursor and set visible =3D
-true by default.
+Anyway, even if the ext_off is not zero and
+bitmaps are present, bitmaps loading over
+unclean image should not be performed. They should
+be considered outdated.
 
-Whether it's better or not than modifying a dozen files with a new
-"visible" argument, I can't say.
-
-Also we should have consistent behaviour across all display backends,
-not just GTK.
-
-> visible or not. If not, we simply call gdk_window_set_cursor with NULL
-
-You should use GtkDisplayState.null_cursor, there is an option to
-still show the cursor, even when the guest makes it invisible.
-(show-cursor=3Don)
-
-Which guest software do you test with?
-
-Both gtk and firefox with cursor none test will actually set a
-"transparent" cursor, which we don't detect. Maybe we should also have
-some check for this case to implement that "show-cursor" behaviour in
-that case too.
-
-> parameter, thereby hiding the cursor. Once Windows VM switches back to
-> the HW cursor, then IDD would again provide a new resource_id to Qemu
-> and we can start displaying it once more.
->
-> Signed-off-by: Satyeshwar Singh <satyeshwar.singh@intel.com>
-> Cc: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-> Cc: Dongwon Kim <dongwon.kim@intel.com>
-> ---
->  hw/display/virtio-gpu.c | 1 +
->  include/ui/console.h    | 1 +
->  ui/gtk.c                | 5 +++++
->  3 files changed, 7 insertions(+)
->
-> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-> index 1c1ee230b3..1ae9be605b 100644
-> --- a/hw/display/virtio-gpu.c
-> +++ b/hw/display/virtio-gpu.c
-> @@ -98,6 +98,7 @@ static void update_cursor(VirtIOGPU *g, struct virtio_g=
-pu_update_cursor *cursor)
->
->          s->current_cursor->hot_x =3D cursor->hot_x;
->          s->current_cursor->hot_y =3D cursor->hot_y;
-> +        s->current_cursor->visible =3D cursor->resource_id ? 1 : 0;
->
->          if (cursor->resource_id > 0) {
->              vgc->update_cursor_data(g, s, cursor->resource_id);
-> diff --git a/include/ui/console.h b/include/ui/console.h
-> index a4a49ffc64..47c39ed405 100644
-> --- a/include/ui/console.h
-> +++ b/include/ui/console.h
-> @@ -161,6 +161,7 @@ typedef struct QEMUCursor {
->      uint16_t            width, height;
->      int                 hot_x, hot_y;
->      int                 refcount;
-> +    int                 visible;
->      uint32_t            data[];
->  } QEMUCursor;
->
-> diff --git a/ui/gtk.c b/ui/gtk.c
-> index 810d7fc796..12a76de570 100644
-> --- a/ui/gtk.c
-> +++ b/ui/gtk.c
-> @@ -478,6 +478,11 @@ static void gd_cursor_define(DisplayChangeListener *=
-dcl,
->          return;
->      }
->
-> +    if(!c->visible) {
-> +        gdk_window_set_cursor(gtk_widget_get_window(vc->gfx.drawing_area=
-), NULL);
-> +        return;
-> +    }
-> +
->      pixbuf =3D gdk_pixbuf_new_from_data((guchar *)(c->data),
->                                        GDK_COLORSPACE_RGB, true, 8,
->                                        c->width, c->height, c->width * 4,
-> --
-> 2.33.1
->
-
+Den
 
