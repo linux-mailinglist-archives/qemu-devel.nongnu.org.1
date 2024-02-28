@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9964886AE76
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 12:59:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0333186AE7C
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 12:59:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfIYi-0005hS-EU; Wed, 28 Feb 2024 06:57:12 -0500
+	id 1rfIYl-0005ns-Ig; Wed, 28 Feb 2024 06:57:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rfIYf-0005es-Ip
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:57:09 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1rfIYi-0005la-Qa
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:57:12 -0500
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rfIYb-0005hg-MQ
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:57:09 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-412b434effaso3737105e9.2
+ id 1rfIYc-0005hf-AL
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:57:12 -0500
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-33dd2f0a0c4so2337621f8f.0
  for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 03:57:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1709121423; x=1709726223; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BHV/xSviQ+mksdG51pmI4mQIX2turcSeLOZCoK5M7sg=;
- b=l9S9IMzDxy9+OL3L2W3b1aoEzV9VAVdh95fQotjqCEpPN5jwA1e7cMgJ+X7AkVq6c0
- IU3hQNS4HyHpssItGBRPsmh2M+lHVDHYRFKKPJi8KumDq15YzqIuwxdgaoc6VKBsOOlh
- 4edpedVAZMdKHT5vMQVKlP70B1CrxvmkXTRVIycKdKS0hlKKnmTrqXXccU3AwjoyMWba
- 08JqXhfgyK4OkhyXuprb4NUhmS7xUqMcCkQJnaHcN9cyTkFtPjiqxqMEHwIzmpTuZ1QL
- 0hR1mEeR0h4ixhi2Zo9OKPYoP3DUGD/CfscTtseS+uH9GR2g/Nox4Q0msx1Dw0wcuVp3
- H/Ow==
+ bh=Ey89Hl01uX5rJaJ7gx3TbpJ+bjSISZiGwEb8QHXuSjE=;
+ b=KhBFcJnsRzWa9jYEiZv+G5/UCNmvGJKrqa/bWBIRZPHOOavnshpBVafjJ6AuU4tzMf
+ 6Q6B2LmJfYPyFfjSKbtRZUyRzH/sOIl+uqgVr2bk/njvrkI5XBS3zWCU0I16uQ7+1lhz
+ BU09XBvCPKxOczi+EH+eEogavDHeMlhHMeDWjk3qUmO02hemzNNjJ8G3Xb9Sv8UFSkoU
+ TQ0vmPkYgLnfe6AzCm2Yr9gdGXn5O/cYsfakcNLFpheadQ6om3tE3FLNjUao/2+0TYo3
+ DDYIPFQJdc0AFqPe8xBuAQpBDMeeL5Azv0wpKjE4JIduU7Jv04virA6z4LrTqWi1HkwZ
+ r23w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1709121423; x=1709726223;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BHV/xSviQ+mksdG51pmI4mQIX2turcSeLOZCoK5M7sg=;
- b=QwsWXRZW5yt1GkMa5WMWYBxOdpvTzA+O376/ERU10O30bL+dhNV8ewKjvDKXkAk1Oq
- 2enEPC0AU62JisG8RE6lwQrqArv4WeJF9A9fh/cZvJdhr86zFustwwtFsMrId29ncIKM
- HSG6p7rfXThsDQXsYojT/NFlMEl/IhyirbaDJsqncTcg3a653uW5rqtUq4ELVup121zN
- yy7qLW8RMliq7Lmdr3u9v2oMcRjrcYcJgbeff1MDW6V2KfDfOHH60NYGo7q8lHLTlT+Z
- YAqUPWy4K0ZHSTKGJdnsWZTm70zPnBKBTdoPre414XAP9nl7IZKJEIkiQpLHNT3MRaIS
- Fh5Q==
-X-Gm-Message-State: AOJu0YwkVrhiAgVCD2gH5L4J/8uQtXSfojnAQGKCyBTjdTMXIr5aTcOe
- +7GlS4N7kV9ayqHQ/pPqfBMFTsOxk5O0/OqpIwJle8L4h+3TDw27MVq8CejXius=
-X-Google-Smtp-Source: AGHT+IH3KWBdhpampjnJ11TdGZH3IuZIrJPtwksjMveiXG0eEX0zFV7ifrNUq/WTdlz6c8n5bXgKTA==
-X-Received: by 2002:a5d:4fd2:0:b0:33c:dd02:f652 with SMTP id
- h18-20020a5d4fd2000000b0033cdd02f652mr9238497wrw.10.1709121423348; 
+ bh=Ey89Hl01uX5rJaJ7gx3TbpJ+bjSISZiGwEb8QHXuSjE=;
+ b=QF8lErB7b+c5g6DoGzdb0e8rAud87WZC+esyjvq4tCFAsKdBDX7pPFDlei4raRgKIj
+ TplBPMtVUWm/tU2sx+GnnuVylBs/yZFM8/HCYzRPZ/Wr4LAG6+iNASkP60XDErYvO0qb
+ BkW5qUbqsbTeegqLv0SMyF+11wwNKZmj6tsuy+jQR0yOuYIfZwlRMfQz7RNPvbhu6lvl
+ tmG4lJygvkAKanVJkzZxi6Z+2jGUNwJ8OScbsK5SQiRYyRBCYufzv4IbcnmfnY1XNovd
+ Z8ePwtFM2OuxX1C5VG3eIzwf09dlwKv73sRyFx6YhdP/ofhz2aGv+dNqmBr8skpXG62w
+ /yrQ==
+X-Gm-Message-State: AOJu0YyhDIz2YAnnb43KG4mnA0Xtt52r4OwVdcmRvpt7IhGmDnrPjhZR
+ phVKMXiHL9bnwp7QWnQCfYT9J5N1AyjKD9F+H8CCvFOaD6ca5r+9KkgZtcEgYMg=
+X-Google-Smtp-Source: AGHT+IEQaQCsTgg/o96ggrfHcGkvvEfs3QNm5CGPqVXHY3VJFkIgXBiqvklueJ8bszDvo6kECsD+ZA==
+X-Received: by 2002:adf:f60f:0:b0:33d:77e:43ab with SMTP id
+ t15-20020adff60f000000b0033d077e43abmr8397438wrp.34.1709121423170; 
  Wed, 28 Feb 2024 03:57:03 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- f14-20020adff98e000000b0033cf60e268fsm14397650wrr.116.2024.02.28.03.57.02
+ g7-20020adfe407000000b0033d2ae84fafsm14265079wrm.52.2024.02.28.03.57.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 28 Feb 2024 03:57:02 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 1A0B25F8F7;
+ by draig.lan (Postfix) with ESMTP id 2EF035F8F9;
  Wed, 28 Feb 2024 11:57:02 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 02/29] tests/tcg: bump TCG test timeout to 120s
-Date: Wed, 28 Feb 2024 11:56:34 +0000
-Message-Id: <20240228115701.1416107-3-alex.bennee@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+Subject: [PULL 03/29] tests/vm: avoid re-building the VM images all the time
+Date: Wed, 28 Feb 2024 11:56:35 +0000
+Message-Id: <20240228115701.1416107-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240228115701.1416107-1-alex.bennee@linaro.org>
 References: <20240228115701.1416107-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,33 +98,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is less than ideal but easier than making sure we get all the
-iterations of the memory test. Update the comment accordingly.
+The main problem is that "check-venv" is a .PHONY target will always
+evaluate and trigger a full re-build of the VM images. While its
+tempting to drop it from the dependencies that does introduce a
+breakage on freshly configured builds.
 
+Fortunately we do have the otherwise redundant --force flag for the
+script which up until now was always on. If we make the usage of
+--force conditional on dependencies other than check-venv triggering
+the update we can avoid the costly rebuild and still run cleanly on a
+fresh checkout.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2118
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240227144335.1196131-3-alex.bennee@linaro.org>
+Message-Id: <20240227144335.1196131-4-alex.bennee@linaro.org>
 
-diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
-index 8cf65f68dd8..a4c25908fb7 100644
---- a/tests/tcg/Makefile.target
-+++ b/tests/tcg/Makefile.target
-@@ -93,12 +93,9 @@ QEMU_OPTS=
+diff --git a/tests/vm/Makefile.include b/tests/vm/Makefile.include
+index bf12e0fa3c5..ac56824a87d 100644
+--- a/tests/vm/Makefile.include
++++ b/tests/vm/Makefile.include
+@@ -102,7 +102,7 @@ $(IMAGES_DIR)/%.img:	$(SRC_PATH)/tests/vm/% \
+ 		$(if $(LOG_CONSOLE),--log-console) \
+ 		--source-path $(SRC_PATH) \
+ 		--image "$@" \
+-		--force \
++		$(if $(filter-out check-venv, $?), --force) \
+ 		--build-image $@, \
+ 		"  VM-IMAGE $*")
  
- 
- # If TCG debugging, or TCI is enabled things are a lot slower
--# ??? Makefile no longer has any indication that TCI is enabled,
--# but for the record:
--#   15s    original default
--#   60s    with --enable-debug
--#   90s    with --enable-tcg-interpreter
--TIMEOUT=90
-+# so we have to set our timeout for that. The current worst case
-+# offender is the system memory test running under TCI.
-+TIMEOUT=120
- 
- ifeq ($(filter %-softmmu, $(TARGET)),)
- # The order we include is important. We include multiarch first and
+diff --git a/tests/vm/basevm.py b/tests/vm/basevm.py
+index c0d62c08031..f8fd751eb14 100644
+--- a/tests/vm/basevm.py
++++ b/tests/vm/basevm.py
+@@ -646,9 +646,9 @@ def main(vmcls, config=None):
+         vm = vmcls(args, config=config)
+         if args.build_image:
+             if os.path.exists(args.image) and not args.force:
+-                sys.stderr.writelines(["Image file exists: %s\n" % args.image,
++                sys.stderr.writelines(["Image file exists, skipping build: %s\n" % args.image,
+                                       "Use --force option to overwrite\n"])
+-                return 1
++                return 0
+             return vm.build_image(args.image)
+         if args.build_qemu:
+             vm.add_source_dir(args.build_qemu)
 -- 
 2.39.2
 
