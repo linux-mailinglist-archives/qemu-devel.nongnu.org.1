@@ -2,91 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED3D86AD7B
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 12:36:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6971C86ADD2
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 12:44:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfID1-00022N-Vr; Wed, 28 Feb 2024 06:34:48 -0500
+	id 1rfIL6-0003m4-Ir; Wed, 28 Feb 2024 06:43:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rfICz-00020D-RR
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:34:45 -0500
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rfICy-0007LC-7z
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:34:45 -0500
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-5e42b4bbfa4so3862375a12.1
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 03:34:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709120082; x=1709724882;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=FEXfVsaC8WiwQLHzBhL9P9YmKLGvJ5rGOGPmQWC7dng=;
- b=j998qUCsPx+oitD0HEn8CCWBacETt2AnJ/6Y5e73bxocx5DYGz2N+cas/zoATmF2ds
- IoKCbl8yZpO1Y3j2m9aYA/pqcStbfbWhUPgjaQXWO+xL38tv22p+nyR2r3HBxGzvwJDw
- zfT2XfJwesgK5S1GPzMXc9jKfJnF48uzDG3q5pcxtehSR4C3At/p/VGL1JDA7tx8SZtD
- jPkhov1W3VvFiiX2jG1ImXRLpFgyDPEgv+6w3c96nrFYpNXA5QuJ9EpeRdKovM3SVgj6
- RpFeaGMzB+L2NfvXVfuecC2ko9J5jRqxovI1LcVpa0D8rMs460dDjTg4lZR1CEg/nfoo
- wZvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709120082; x=1709724882;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=FEXfVsaC8WiwQLHzBhL9P9YmKLGvJ5rGOGPmQWC7dng=;
- b=LQwOO+CvOhGC3VaxXGhgRHJulBkKEK5i1C73rgyR1WYNQWJyfA/QsnUpNNGMm647Zu
- VlnlwG6YNSLFs8Z1hDXzKwqoS/8PumzAw4wHi/LKseS3SSR3a5/Yn0Z6xZxb/lMAVxew
- ITRUB0biXCXa90Pl3aJ2791ioKSkrEpwmXrvLN4JHxfp5mBAHmyXu5jOFRsVx+Q+jcZ1
- qnS4IDMmng1qr066IiNTuKEq0MMo68lnICzq5D78KIs33PzP55EzGk0Rb1bAa7zVURPh
- RYpdkAI4B0bZcBxjKeeF7E6jD5fs9gkYmuED14IBlWl/zrgUuGz6gH0Zn8HNxnH9ZIiT
- Ljtg==
-X-Gm-Message-State: AOJu0Yy7Xi8+k5ba/bxBWgEY3moc2q5iwvJnxVXbDei77qtFB2A7v7uQ
- J56RmDq1PVR5x6UoowJ2CXEpXW3nFNNWxAaCWNzPRHzpBBi6Cxthou8w8NFxG/0=
-X-Google-Smtp-Source: AGHT+IFFd17WvflZaq66nmdvXhJak2r01wCePE4lRX4MR4ZFwBxkTQzNFqyfuq2L79jN7Ut3HwhauA==
-X-Received: by 2002:a17:90a:2e88:b0:29a:b6d7:be22 with SMTP id
- r8-20020a17090a2e8800b0029ab6d7be22mr7253532pjd.17.1709120081958; 
- Wed, 28 Feb 2024 03:34:41 -0800 (PST)
-Received: from localhost ([157.82.203.206])
- by smtp.gmail.com with UTF8SMTPSA id
- m14-20020a17090ade0e00b0029a4efc0231sm1373952pjv.56.2024.02.28.03.34.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 28 Feb 2024 03:34:41 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 28 Feb 2024 20:33:26 +0900
-Subject: [PATCH v8 15/15] hw/qdev: Remove opts member
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240228-reuse-v8-15-282660281e60@daynix.com>
-References: <20240228-reuse-v8-0-282660281e60@daynix.com>
-In-Reply-To: <20240228-reuse-v8-0-282660281e60@daynix.com>
-To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Alex Williamson <alex.williamson@redhat.com>, 
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rfIL1-0003la-6t
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:43:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rfIKw-0001fO-3A
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:43:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709120574;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=MX7jZiabH9O68zX/KhxV/3jd6WaQK81ARwU6q/P/Dxk=;
+ b=JK4q2TejDopWArZGIrEvOmDxMcvWjhdL+jAj/yIxp/qKdgb0bUTsqipXGNn2sCeAjv7eht
+ klgIpiiedrtCptjNSlHBdE6htp2w8WuoZuEPiz43Ut3V1G4n9W1FiwmwJJfCbEVYTob5ns
+ W3e9gsaRr06s23Mz1crB7jLlAdcrKRI=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-13-8BNHeZBzNBam6iuDLnUIpw-1; Wed,
+ 28 Feb 2024 06:42:49 -0500
+X-MC-Unique: 8BNHeZBzNBam6iuDLnUIpw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 875821C05146;
+ Wed, 28 Feb 2024 11:42:49 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.192.249])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BC41B111D640;
+ Wed, 28 Feb 2024 11:42:48 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 891381801480; Wed, 28 Feb 2024 12:42:46 +0100 (CET)
+Date: Wed, 28 Feb 2024 12:42:46 +0100
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>, 
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>, 
- Klaus Jensen <its@irrelevant.dk>, Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
- Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::52d;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, 
+ Julia Suvorova <jusual@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v4] pc: q35: Bump max_cpus to 4096 vcpus
+Message-ID: <y2jzxr5fy5p7s5ky6nu5c4gk5reeofc2xo5lnnpt345iq2brtp@5qrthy4nlbi5>
+References: <20240221140227.3886-1-anisinha@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240221140227.3886-1-anisinha@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.102,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,78 +85,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is no longer used.
+On Wed, Feb 21, 2024 at 07:32:27PM +0530, Ani Sinha wrote:
+> Since commit f10a570b093e6 ("KVM: x86: Add CONFIG_KVM_MAX_NR_VCPUS to allow up to 4096 vCPUs")
+> Linux kernel can support upto a maximum number of 4096 vCPUS when MAXSMP is
+> enabled in the kernel. At present, QEMU has been tested to correctly boot a
+> linux guest with 4096 vcpus with edk2 pending various upstream EDK2 fixes
+> which will probably be in the 2024-05 release to be released in the coming
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
----
- include/hw/qdev-core.h |  4 ----
- hw/core/qdev.c         |  1 -
- system/qdev-monitor.c  | 12 +++++++-----
- 3 files changed, 7 insertions(+), 10 deletions(-)
+Merged meanwhile, so 2024-05 release is a sure thing and latest edk2
+master branch is good too.
 
-diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index 9228e96c87e9..5954404dcbfe 100644
---- a/include/hw/qdev-core.h
-+++ b/include/hw/qdev-core.h
-@@ -237,10 +237,6 @@ struct DeviceState {
-      * @pending_deleted_expires_ms: optional timeout for deletion events
-      */
-     int64_t pending_deleted_expires_ms;
--    /**
--     * @opts: QDict of options for the device
--     */
--    QDict *opts;
-     /**
-      * @hotplugged: was device added after PHASE_MACHINE_READY?
-      */
-diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index c68d0f7c512f..7349c9a86be8 100644
---- a/hw/core/qdev.c
-+++ b/hw/core/qdev.c
-@@ -706,7 +706,6 @@ static void device_finalize(Object *obj)
-         dev->canonical_path = NULL;
-     }
- 
--    qobject_unref(dev->opts);
-     g_free(dev->id);
- }
- 
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index a13db763e5dd..71c00f62ee38 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -625,6 +625,7 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
-     char *id;
-     DeviceState *dev = NULL;
-     BusState *bus = NULL;
-+    QDict *properties;
- 
-     driver = qdict_get_try_str(opts, "driver");
-     if (!driver) {
-@@ -705,13 +706,14 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
-     }
- 
-     /* set properties */
--    dev->opts = qdict_clone_shallow(opts);
--    qdict_del(dev->opts, "driver");
--    qdict_del(dev->opts, "bus");
--    qdict_del(dev->opts, "id");
-+    properties = qdict_clone_shallow(opts);
-+    qdict_del(properties, "driver");
-+    qdict_del(properties, "bus");
-+    qdict_del(properties, "id");
- 
--    object_set_properties_from_keyval(&dev->parent_obj, dev->opts, from_json,
-+    object_set_properties_from_keyval(&dev->parent_obj, properties, from_json,
-                                       errp);
-+    qobject_unref(properties);
-     if (*errp) {
-         goto err_del_dev;
-     }
+You might refine the commit message saying so.
+With or without that:
+Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
 
--- 
-2.43.2
+take care,
+  Gerd
 
 
