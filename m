@@ -2,101 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C72086AE1A
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 12:50:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF32886AE26
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 12:52:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfIRI-0006Bh-W1; Wed, 28 Feb 2024 06:49:33 -0500
+	id 1rfITP-0002Jr-Mb; Wed, 28 Feb 2024 06:51:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1rfIRF-0005z6-OC
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:49:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rfITE-0002H0-5o
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:51:32 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1rfIR0-00043G-MM
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:49:29 -0500
+ id 1rfITC-0004do-DH
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:51:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709120954;
+ s=mimecast20190719; t=1709121089;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fLM8N8KufGIAXLoDANm2UQXu1s3D3+QLrZtKYGXzVoE=;
- b=L2SuMPT3hUFWfsW7ZNxQyChGYGn+C1HTWcXC/Hkn+dRMiFgTx/31rqM2OocoPaFoYwGvMI
- S9jsO+eSU8Qm+RR3T/S1X1Htm4rg2aIu/zjz0lRXOzCU3ah3brfJYzcNsUW1d5yl7X7/Rs
- rRwKkH+q6Y3FndexKiAsiG4HHjLjQVk=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=W4e+t0o6V0jdtfmIXye7cHCq9n4R1J5CLWq3Jm4x+Vc=;
+ b=GHL9glofMZcI/amL3uuTJ8FBip4Y8JBvkKH55hjbdgufUcKAdAyN8Y7obvUHC6crqIHQB9
+ 7EuGtMrukCKZzr5z7TsLROweP3J6E8zhSQ82zi3hmL3zHEwlZz4o5pcaFFkhdriS4atpt3
+ JLBHYg3JGs/l06tH5qUUFopY1xKnPQI=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-664-ATKOrPTgMVq0db0zGoDf_g-1; Wed, 28 Feb 2024 06:49:12 -0500
-X-MC-Unique: ATKOrPTgMVq0db0zGoDf_g-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-69033ba441fso6424406d6.3
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 03:49:12 -0800 (PST)
+ us-mta-27-iXieX4h_OoGZ9rJG2Luhvg-1; Wed, 28 Feb 2024 06:51:28 -0500
+X-MC-Unique: iXieX4h_OoGZ9rJG2Luhvg-1
+Received: by mail-yw1-f198.google.com with SMTP id
+ 00721157ae682-60804b369c7so58085587b3.2
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 03:51:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709120952; x=1709725752;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1709121088; x=1709725888;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fLM8N8KufGIAXLoDANm2UQXu1s3D3+QLrZtKYGXzVoE=;
- b=xAn6Jv8ZrS+RxIp1I5vWA+jEiJrwv5MuCquxwHiyn+dOu9rjfWyPbubxau4sOKin+O
- x/a9knjAJk/MOSFKPyGSGO9ACGMshj/y8+1FnA+LZdT5CT+dpprrJtX+i+qfmyWrzBxv
- yFIAd84xSjI6xSOpRpINKcSrUMzgM6H3rCe8X4o5RXHWtOzdm80JfvwpNlEy3yJlogaG
- 0H4Mq/OEiRot1Dv8er/Yjupq9M9UVEOWw3CfUFSGLln5fBVjvNvstX3FymKm/xGEZoXk
- V3IgCWAzxsPN6KdJKuLQfeAq9RF6je/FVvDzPWALpX7AUTngeTg3+8ZNAf0E4KGK0X+e
- HwBQ==
-X-Gm-Message-State: AOJu0YxfBOH2aeK/8BOhSFpqdO0MiD9eFqYzWrfFUo7bYxck8r5kYiLM
- OU5DsTXpXb1CkLfsw2MU9jFNSlRHyrIhfcwtBBeUdw1EBkiCJXeuW8Jfy6X4bObyUolvUSXwpNp
- GO4FdcxXilqIqe2Xz//7mSLKKAzI8dXSRzKKbonpx9si2S4/s23HdUCyCgPIQmTu8ZamSsPsYB2
- cUdY5LwAeXOOig230qvyP5IRYVsfIqUL+DGIUx
-X-Received: by 2002:a05:6214:3019:b0:690:b3f:8a1 with SMTP id
- ke25-20020a056214301900b006900b3f08a1mr5770451qvb.53.1709120951936; 
- Wed, 28 Feb 2024 03:49:11 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFH1Xe9yloE9WF1xN62J37kqng1CId0u7Gqr9fCNzmg+QWyugEloWRMBvLpAyAPZ4B95+bZ0Q==
-X-Received: by 2002:a05:6214:3019:b0:690:b3f:8a1 with SMTP id
- ke25-20020a056214301900b006900b3f08a1mr5770418qvb.53.1709120951591; 
- Wed, 28 Feb 2024 03:49:11 -0800 (PST)
-Received: from step1.redhat.com (host-82-57-51-64.retail.telecomitalia.it.
- [82.57.51.64]) by smtp.gmail.com with ESMTPSA id
- qj24-20020a056214321800b0068f9fd1d688sm5121717qvb.21.2024.02.28.03.49.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Feb 2024 03:49:10 -0800 (PST)
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-block@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
- Coiby Xu <Coiby.Xu@gmail.com>, slp@redhat.com,
- Eduardo Habkost <eduardo@habkost.net>, Hanna Reitz <hreitz@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Raphael Norwitz <raphael@enfabrica.net>, Kevin Wolf <kwolf@redhat.com>,
- David Hildenbrand <david@redhat.com>, stefanha@redhat.com,
- gmaglione@redhat.com, Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH 9/9] hostmem-file: support POSIX shm_open()
-Date: Wed, 28 Feb 2024 12:47:59 +0100
-Message-ID: <20240228114759.44758-10-sgarzare@redhat.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240228114759.44758-1-sgarzare@redhat.com>
-References: <20240228114759.44758-1-sgarzare@redhat.com>
+ bh=W4e+t0o6V0jdtfmIXye7cHCq9n4R1J5CLWq3Jm4x+Vc=;
+ b=gJ6mVaED5EFMAFw8S12jk+IRnXMTeakgFpX42e9MV57KiWCsGSGIV20vnKYamODJvL
+ YezO+87qCIcCTiFsT59HCwwus0USV4TBVTtfICEw4p3XbPUU9wEUIs3135khCfiLnKqq
+ fd33V64vhoAR2JUItT/qP8lZ6ayBiTIkvsVIChLCxIzliqsJAYhXzIv0XnPL86bebyU7
+ lNSLJq1S7l3cwb8zkT/+AybBgxcfYYry1w5ncS8uHUxy8T4/H5h0xM8ECeFvUWiz27XW
+ 8FnC9SvJJlt9y5CcrO8eSAOstxh6d6eQ+TqqoRSn++/4P68rJ600HRjSghXxbCU2wByy
+ fiug==
+X-Gm-Message-State: AOJu0YyJoJIJ9XqUUvYde88s2tJeOj6YDBVWm6OZSXetPO451hNaH7Vn
+ bwVTtY947EszxurH1+MW+8gurrYXGjIg5uA/o18pHo5vfx4NCmSrTc5qOPow9gO1tImyxEUDTWb
+ bZG7KxDlblIHfAV7I1MhyItyva7Wl60GATiEsR4KTrK9rp8p0vIglOkgupzM/vr/OtYnKlpEQJj
+ //OxD2Ljnd2qScaaDX+hb1ZImK2PhEVhviHytYSg==
+X-Received: by 2002:a81:dc06:0:b0:609:2333:9579 with SMTP id
+ h6-20020a81dc06000000b0060923339579mr5021751ywj.4.1709121087892; 
+ Wed, 28 Feb 2024 03:51:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGKpZOoZIJTvHgNLuNKy6ghL7VelPtksGeWf7xtMZmfev9TMDwp2ZlY5jKN3E1gqWFWVmwUNqIkQ68cn+/+xiU=
+X-Received: by 2002:a81:dc06:0:b0:609:2333:9579 with SMTP id
+ h6-20020a81dc06000000b0060923339579mr5021720ywj.4.1709121087572; Wed, 28 Feb
+ 2024 03:51:27 -0800 (PST)
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
+References: <20240228114759.44758-1-sgarzare@redhat.com>
+In-Reply-To: <20240228114759.44758-1-sgarzare@redhat.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Wed, 28 Feb 2024 12:51:16 +0100
+Message-ID: <CAGxU2F79465w97vY8G51MEe5e+-wRHNB2AyuPYG_tVEOhuOOnQ@mail.gmail.com>
+Subject: Re: [PATCH 0/9] vhost-user: support any POSIX system (tested on macOS
+ and FreeBSD)
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-block@nongnu.org, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Coiby Xu <Coiby.Xu@gmail.com>, 
+ slp@redhat.com, Eduardo Habkost <eduardo@habkost.net>,
+ Hanna Reitz <hreitz@redhat.com>, 
+ Igor Mammedov <imammedo@redhat.com>, Raphael Norwitz <raphael@enfabrica.net>, 
+ Kevin Wolf <kwolf@redhat.com>, David Hildenbrand <david@redhat.com>,
+ stefanha@redhat.com, gmaglione@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.102,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,208 +107,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a new `shm` bool option for `-object memory-backend-file`.
+I just noticed that I forgot to add RFC tag and fix Author to match
+SOB in some patches, sorry!
 
-When this option is set to true, the POSIX shm_open(3) is used instead
-of open(2).
-
-So a file will not be created in the filesystem, but a "POSIX shared
-memory object" will be instantiated. In Linux this turns into a file
-in /dev/shm, but in other OSes this may not happen (for example in
-macOS or FreeBSD nothing is shown in any filesystem).
-
-This new feature is useful when we need to share guest memory with
-another process (e.g. vhost-user backend), but we don't have
-memfd_create() or any special filesystems (e.g. /dev/shm) available
-as in macOS.
-
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
----
-I am not sure this is the best way to support shm_open() in QEMU.
-
-Other solutions I had in mind were:
-
-- create a new memory-backend-shm
-
-- extend memory-backend-memfd to use shm_open() on systems where memfd is
-not available (problem: shm_open wants a name to assign to the object, but
-we can do a workaround by using a random name and do the unlink right away)
-
-Any preference/suggestion?
-
-Thanks,
 Stefano
----
- qapi/qom.json           |  4 +++
- backends/hostmem-file.c | 57 ++++++++++++++++++++++++++++++++++++++++-
- backends/meson.build    |  2 +-
- qemu-options.hx         | 10 +++++++-
- 4 files changed, 70 insertions(+), 3 deletions(-)
 
-diff --git a/qapi/qom.json b/qapi/qom.json
-index 2a6e49365a..bfb01b909f 100644
---- a/qapi/qom.json
-+++ b/qapi/qom.json
-@@ -682,6 +682,9 @@
- #       writable RAM instead of ROM, and want to set this property to 'off'.
- #       (default: auto, since 8.2)
- #
-+# @shm: if true, shm_open(3) is used to create/open POSIX shared memory
-+#       object; if false, an open(2) is used. (default: false) (since 9.0)
-+#
- # Since: 2.1
- ##
- { 'struct': 'MemoryBackendFileProperties',
-@@ -692,6 +695,7 @@
-             'mem-path': 'str',
-             '*pmem': { 'type': 'bool', 'if': 'CONFIG_LIBPMEM' },
-             '*readonly': 'bool',
-+            '*shm': 'bool',
-             '*rom': 'OnOffAuto' } }
- 
- ##
-diff --git a/backends/hostmem-file.c b/backends/hostmem-file.c
-index ac3e433cbd..9d60375c1f 100644
---- a/backends/hostmem-file.c
-+++ b/backends/hostmem-file.c
-@@ -34,6 +34,7 @@ struct HostMemoryBackendFile {
-     bool is_pmem;
-     bool readonly;
-     OnOffAuto rom;
-+    bool shm;
- };
- 
- static bool
-@@ -86,7 +87,37 @@ file_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
-     ram_flags |= fb->rom == ON_OFF_AUTO_ON ? RAM_READONLY : 0;
-     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
-     ram_flags |= fb->is_pmem ? RAM_PMEM : 0;
-+    /* TODO: check if this should be enabled if shm is enabled */
-     ram_flags |= RAM_NAMED_FILE;
-+
-+    if (fb->shm) {
-+        mode_t mode = S_IRUSR | S_IWUSR;
-+        int fd, oflag = 0;
-+
-+        oflag |= fb->readonly ? O_RDONLY : O_RDWR;
-+        oflag |= O_CREAT;
-+
-+        fd = shm_open(fb->mem_path, oflag, mode);
-+        if (fd < 0) {
-+            error_setg_errno(errp, errno,
-+                             "failed to create POSIX shared memory");
-+            return false;
-+        }
-+
-+        if (ftruncate(fd, backend->size) == -1) {
-+            error_setg_errno(errp, errno,
-+                             "failed to resize POSIX shared memory to %" PRIu64,
-+                             backend->size);
-+            shm_unlink(fb->mem_path);
-+            return false;
-+        }
-+
-+        return memory_region_init_ram_from_fd(&backend->mr, OBJECT(backend),
-+                                              name, backend->size, ram_flags,
-+                                              fd, fb->offset, errp);
-+
-+    }
-+
-     return memory_region_init_ram_from_file(&backend->mr, OBJECT(backend), name,
-                                             backend->size, fb->align, ram_flags,
-                                             fb->mem_path, fb->offset, errp);
-@@ -254,17 +285,36 @@ static void file_memory_backend_set_rom(Object *obj, Visitor *v,
-     visit_type_OnOffAuto(v, name, &fb->rom, errp);
- }
- 
-+static bool file_memory_backend_get_shm(Object *obj, Error **errp)
-+{
-+    return MEMORY_BACKEND_FILE(obj)->shm;
-+}
-+
-+static void file_memory_backend_set_shm(Object *obj, bool value,
-+                                             Error **errp)
-+{
-+    MEMORY_BACKEND_FILE(obj)->shm = value;
-+}
-+
- static void file_backend_unparent(Object *obj)
- {
-     HostMemoryBackend *backend = MEMORY_BACKEND(obj);
-     HostMemoryBackendFile *fb = MEMORY_BACKEND_FILE(obj);
- 
--    if (host_memory_backend_mr_inited(backend) && fb->discard_data) {
-+    if (!host_memory_backend_mr_inited(backend)) {
-+        return;
-+    }
-+
-+    if (fb->discard_data) {
-         void *ptr = memory_region_get_ram_ptr(&backend->mr);
-         uint64_t sz = memory_region_size(&backend->mr);
- 
-         qemu_madvise(ptr, sz, QEMU_MADV_REMOVE);
-     }
-+
-+    if (fb->shm) {
-+        shm_unlink(fb->mem_path);
-+    }
- }
- 
- static void
-@@ -300,6 +350,11 @@ file_backend_class_init(ObjectClass *oc, void *data)
-         file_memory_backend_get_rom, file_memory_backend_set_rom, NULL, NULL);
-     object_class_property_set_description(oc, "rom",
-         "Whether to create Read Only Memory (ROM)");
-+    object_class_property_add_bool(oc, "shm",
-+        file_memory_backend_get_shm,
-+        file_memory_backend_set_shm);
-+    object_class_property_set_description(oc, "shm",
-+        "Use shm_open(3) to create/open POSIX shared memory objects");
- }
- 
- static void file_backend_instance_finalize(Object *o)
-diff --git a/backends/meson.build b/backends/meson.build
-index 8b2b111497..64520c0a7e 100644
---- a/backends/meson.build
-+++ b/backends/meson.build
-@@ -12,7 +12,7 @@ system_ss.add([files(
- 
- if host_os != 'windows'
-   system_ss.add(files('rng-random.c'))
--  system_ss.add(files('hostmem-file.c'))
-+  system_ss.add([files('hostmem-file.c'), rt])
- endif
- if host_os == 'linux'
-   system_ss.add(files('hostmem-memfd.c'))
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 9be1e5817c..da96ee506d 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -5079,7 +5079,7 @@ SRST
-     they are specified. Note that the 'id' property must be set. These
-     objects are placed in the '/objects' path.
- 
--    ``-object memory-backend-file,id=id,size=size,mem-path=dir,share=on|off,discard-data=on|off,merge=on|off,dump=on|off,prealloc=on|off,host-nodes=host-nodes,policy=default|preferred|bind|interleave,align=align,offset=offset,readonly=on|off,rom=on|off|auto``
-+    ``-object memory-backend-file,id=id,size=size,mem-path=dir,share=on|off,discard-data=on|off,merge=on|off,dump=on|off,prealloc=on|off,host-nodes=host-nodes,policy=default|preferred|bind|interleave,align=align,offset=offset,readonly=on|off,rom=on|off|auto,shm=on|off``
-         Creates a memory file backend object, which can be used to back
-         the guest RAM with huge pages.
- 
-@@ -5183,6 +5183,14 @@ SRST
-         (``share=off``). For this use case, we need writable RAM instead
-         of ROM, and want to also set ``rom=off``.
- 
-+        The ``shm`` option specifies whether to create/open a POSIX shared
-+        memory object identified by ``mem-path``.
-+        If set to ``on``, use shm_open(3); if set to ``off`` (default),
-+        use open(2); For portable use, a shared memory object should be
-+        identified by a name of the form ``/somename``; consisting of an
-+        initial slash, followed by one or more characters, none of which
-+        are slashes.
-+
-     ``-object memory-backend-ram,id=id,merge=on|off,dump=on|off,share=on|off,prealloc=on|off,size=size,host-nodes=host-nodes,policy=default|preferred|bind|interleave``
-         Creates a memory backend object, which can be used to back the
-         guest RAM. Memory backend objects offer more control than the
--- 
-2.43.2
+On Wed, Feb 28, 2024 at 12:48=E2=80=AFPM Stefano Garzarella <sgarzare@redha=
+t.com> wrote:
+>
+> The vhost-user protocol is not really Linux-specific, so let's try suppor=
+t
+> QEMU's frontends and backends (including libvhost-user) in any POSIX syst=
+em
+> with this series. The main use case is to be able to use virtio devices t=
+hat
+> we don't have built-in in QEMU (e.g. virtiofsd, vhost-user-vsock, etc.) e=
+ven
+> in non-Linux systems.
+>
+> The first 5 patches are more like fixes discovered at runtime on macOS or
+> FreeBSD that could go even independently of this series.
+>
+> Patches 6, 7, and 8 enable building of frontends and backends (including
+> libvhost-user) with associated code changes to succeed in compilation.
+>
+> The latest patch (9) adds support for the POSIX shm_open() API to create
+> shared memory which is identified by an fd that can be shared with vhost-=
+user
+> backends. This is useful on those systems (like macOS) where we don't hav=
+e
+> memfd_create() or special filesystems like "/dev/shm".
+>
+> I put the whole series in RFC because I have some questions especially in
+> patch 6 and 9, but in general any comment/suggestion/test are really welc=
+ome.
+>
+> Maybe the first 5 patches can go separately, but I only discovered those
+> problems after testing patches 6 - 9, so I have included them in this ser=
+ies
+> for now. Please let me know if you prefer that I send them separately.
+>
+> For now I tested this series using vhost-user-blk and QSD on
+> macOS Sonoma 14.3.1 (aarch64), FreeBSD 14 (x86_64), and Fedora 39 (x86_64=
+)
+> in this way:
+>
+> - Start vhost-user-blk or QSD (same commands for all systems)
+>
+>   vhost-user-blk -s /tmp/vhost.socket \
+>     -b Fedora-Cloud-Base-39-1.5.x86_64.raw
+>
+>   qemu-storage-daemon \
+>     --blockdev file,filename=3DFedora-Cloud-Base-39-1.5.x86_64.qcow2,node=
+-name=3Dfile \
+>     --blockdev qcow2,file=3Dfile,node-name=3Dqcow2 \
+>     --export vhost-user-blk,addr.type=3Dunix,addr.path=3D/tmp/vhost.socke=
+t,id=3Dvub,num-queues=3D1,node-name=3Dqcow2,writable=3Don
+>
+> - macOS (aarch64): start QEMU (using hvf accelerator)
+>
+>   qemu-system-aarch64 -smp 2 -cpu host -M virt,accel=3Dhvf,memory-backend=
+=3Dmem \
+>     -drive file=3D./build/pc-bios/edk2-aarch64-code.fd,if=3Dpflash,format=
+=3Draw,readonly=3Don \
+>     -device virtio-net-device,netdev=3Dnet0 -netdev user,id=3Dnet0 \
+>     -device ramfb -device usb-ehci -device usb-kbd \
+>     -object memory-backend-file,mem-path=3D"/mem0",shm=3Don,share=3Don,id=
+=3Dmem,size=3D512M \
+>     -device vhost-user-blk-pci,num-queues=3D1,disable-legacy=3Don,chardev=
+=3Dchar0 \
+>     -chardev socket,id=3Dchar0,path=3D/tmp/vhost.socket
+>
+> - FreeBSD (x86_64): start QEMU (no accelerators available)
+>
+>   qemu-system-x86_64 -smp 2 -M q35,memory-backend=3Dmem \
+>     -object memory-backend-file,mem-path=3D"/mem0",shm=3Don,share=3Don,id=
+=3Dmem,size=3D"512M" \
+>     -device vhost-user-blk-pci,num-queues=3D1,chardev=3Dchar0 \
+>     -chardev socket,id=3Dchar0,path=3D/tmp/vhost.socket
+>
+> - Fedora (x86_64): start QEMU (using kvm accelerator)
+>
+>   qemu-system-x86_64 -smp 2 -M q35,accel=3Dkvm,memory-backend=3Dmem \
+>     -object memory-backend-file,mem-path=3D"/mem0",shm=3Don,share=3Don,id=
+=3Dmem,size=3D"512M" \
+>     -device vhost-user-blk-pci,num-queues=3D1,chardev=3Dchar0 \
+>     -chardev socket,id=3Dchar0,path=3D/tmp/vhost.socket
+>
+> Thanks,
+> Stefano
+>
+> Stefano Garzarella (9):
+>   libvhost-user: set msg.msg_control to NULL when it is empty
+>   libvhost-user: fail vu_message_write() if sendmsg() is failing
+>   libvhost-user: mask F_INFLIGHT_SHMFD if memfd is not supported
+>   vhost-user-server: don't abort if we can't set fd non-blocking
+>   contrib/vhost-user-blk: fix bind() using the right size of the address
+>   vhost-user: enable frontends on any POSIX system
+>   libvhost-user: enable it on any POSIX system
+>   contrib/vhost-user-blk: enabled it on any POSIX system
+>   hostmem-file: support POSIX shm_open()
+>
+>  meson.build                               |  5 +-
+>  qapi/qom.json                             |  4 ++
+>  subprojects/libvhost-user/libvhost-user.h |  2 +-
+>  backends/hostmem-file.c                   | 57 ++++++++++++++++-
+>  contrib/vhost-user-blk/vhost-user-blk.c   | 23 +++++--
+>  hw/net/vhost_net.c                        |  8 ++-
+>  subprojects/libvhost-user/libvhost-user.c | 76 ++++++++++++++++++++++-
+>  util/vhost-user-server.c                  |  6 +-
+>  backends/meson.build                      |  2 +-
+>  hw/block/Kconfig                          |  2 +-
+>  qemu-options.hx                           | 10 ++-
+>  util/meson.build                          |  4 +-
+>  12 files changed, 179 insertions(+), 20 deletions(-)
+>
+> --
+> 2.43.2
+>
 
 
