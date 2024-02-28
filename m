@@ -2,93 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1618386B916
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 21:31:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A550B86B91C
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 21:37:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfQZT-0003dD-3L; Wed, 28 Feb 2024 15:30:31 -0500
+	id 1rfQeR-00051v-JC; Wed, 28 Feb 2024 15:35:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rfQZK-0003cR-DG
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 15:30:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rfQeM-00050p-Qc; Wed, 28 Feb 2024 15:35:35 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rfQZI-0000TF-M5
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 15:30:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709152217;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=1QW82QujdXbG3JxzkU/eLku3CZ1MEf03sIG23EM9vWI=;
- b=GSa4DsAhT6F8tlQwGWkUxqwglvQXVQea7V9YA1a8SRTzvEs1qY2TblLfvIRiu0zNlF5Pje
- DeeS1rF7G5vIYQpM2Av8SYg8cZvJUKk4hnA6WaTIMMff/F7r4mKlUvpwUEHhQvHF/2nPKR
- zym0+Q5yZ5Ra0mF3OVyE7Ru+I9H5I3k=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-549-gNXS264kNx-fdR-4fxQ6bA-1; Wed, 28 Feb 2024 15:30:16 -0500
-X-MC-Unique: gNXS264kNx-fdR-4fxQ6bA-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-50e91f9d422so67408e87.2
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 12:30:15 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709152214; x=1709757014;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1QW82QujdXbG3JxzkU/eLku3CZ1MEf03sIG23EM9vWI=;
- b=fPlQURkjGaHcg+koGmOsRib0EJJsuga0Xpo0GO61XoJGIzhSTDfA+vg3vWW7chqsYU
- jhbweDLaUqyXCqgUOtZzqWHVuDaFWSwdE2fD4Z5/SGK7ZE7sJx/vN7RIFH9tE1nYlzJC
- bnf1B9kZFGX73P6ETu0/ByiKjrPF54Oa8/IHK8sMeDDef1NeZGNUlqVNg9yMHlNo4Fbl
- JF5yD8iR9lEDPUsbOFCPtgEkbDyKm9dzP/jPX7JvUYXq6qtcxzCwotZWu5UgvAvOOXM5
- 2gVvfRsXKlWV0P6avBuvkHs6ljEB4E7xHdTqekcLK6nspIqz+v+p417rarnCb39zfaoD
- T9Ag==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVpF41IirtR2RcT2nSA/kmJEuxAUiRFYg01ajvqytGn0VKhobJtMXf1RaTJFo3XyNiKJshRlXDUEBTkfkIaUdV6fAgSRVg=
-X-Gm-Message-State: AOJu0YwFMaVv7I0KnWxL4aW/tiPXpdYjEFg8OvbFuRfB6PRbT9eOPPSg
- ev6f2sy2EiuRVjT3kbWGwDxhBnsxlkiVTCEELw9g30pcWakUIwxLSlfwshwFo5ax/YNgOu0dOOy
- fkTVUmSfxoRrR4ihWkMeKi7NoMoxAc8WX7m1ZtLfdLQ0eRCyhYGco
-X-Received: by 2002:ac2:52b2:0:b0:512:e58c:7bf1 with SMTP id
- r18-20020ac252b2000000b00512e58c7bf1mr48345lfm.40.1709152214582; 
- Wed, 28 Feb 2024 12:30:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFTnZ99e3qAETe6P3a1/HERVWYZxhR1xioIFDpadmN359iXseUttYyekkHW1nGkc3OgtoU0Aw==
-X-Received: by 2002:ac2:52b2:0:b0:512:e58c:7bf1 with SMTP id
- r18-20020ac252b2000000b00512e58c7bf1mr48337lfm.40.1709152214224; 
- Wed, 28 Feb 2024 12:30:14 -0800 (PST)
-Received: from redhat.com ([2a02:14f:178:d6b0:a21c:61c4:2098:5db])
- by smtp.gmail.com with ESMTPSA id
- c2-20020a5d4142000000b0033cf453f2bbsm15415833wrq.35.2024.02.28.12.30.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Feb 2024 12:30:13 -0800 (PST)
-Date: Wed, 28 Feb 2024 15:30:09 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Zhao Liu <zhao1.liu@linux.intel.com>
-Cc: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Michael Tokarev <mjt@tls.msk.ru>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, qemu-trivial@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH 13/16] block/virtio-blk: Fix missing ERRP_GUARD() for
- error_prepend()
-Message-ID: <20240228152955-mutt-send-email-mst@kernel.org>
-References: <20240228163723.1775791-1-zhao1.liu@linux.intel.com>
- <20240228163723.1775791-14-zhao1.liu@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rfQeD-0001GR-CG; Wed, 28 Feb 2024 15:35:34 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 0D3A45176B;
+ Wed, 28 Feb 2024 23:35:58 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 9A0F78BA73;
+ Wed, 28 Feb 2024 23:35:21 +0300 (MSK)
+Received: (nullmailer pid 267606 invoked by uid 1000);
+ Wed, 28 Feb 2024 20:35:21 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.10 v1 00/47] Patch Round-up for stable 7.2.10,
+ freeze on 2024-03-02
+Date: Wed, 28 Feb 2024 23:35:01 +0300
+Message-Id: <qemu-stable-7.2.10-20240228233111@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240228163723.1775791-14-zhao1.liu@linux.intel.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.102,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,65 +58,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Feb 29, 2024 at 12:37:20AM +0800, Zhao Liu wrote:
-> From: Zhao Liu <zhao1.liu@intel.com>
-> 
-> As the comment in qapi/error, passing @errp to error_prepend() requires
-> ERRP_GUARD():
-> 
-> * = Why, when and how to use ERRP_GUARD() =
-> *
-> * Without ERRP_GUARD(), use of the @errp parameter is restricted:
-> ...
-> * - It should not be passed to error_prepend(), error_vprepend() or
-> *   error_append_hint(), because that doesn't work with &error_fatal.
-> * ERRP_GUARD() lifts these restrictions.
-> *
-> * To use ERRP_GUARD(), add it right at the beginning of the function.
-> * @errp can then be used without worrying about the argument being
-> * NULL or &error_fatal.
-> 
-> ERRP_GUARD() could avoid the case when @errp is the pointer of
-> error_fatal, the user can't see this additional information, because
-> exit() happens in error_setg earlier than information is added [1].
-> 
-> The virtio_blk_vq_aio_context_init() passes @errp to error_prepend().
-> 
-> Though its @errp points its caller's local @err variable, to follow the
-> requirement of @errp, add missing ERRP_GUARD() at the beginning of
-> virtio_blk_vq_aio_context_init().
-> 
-> [1]: Issue description in the commit message of commit ae7c80a7bd73
->      ("error: New macro ERRP_GUARD()").
-> 
-> Cc: "Michael S. Tsirkin" <mst@redhat.com>
-> Cc: Stefan Hajnoczi <stefanha@redhat.com>
-> Cc: Kevin Wolf <kwolf@redhat.com>
-> Cc: Hanna Reitz <hreitz@redhat.com>
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+The following patches are queued for QEMU stable v7.2.10:
 
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Patch freeze is 2024-03-02, and the release is planned for 2024-03-04:
 
-merge with other things please.
+  https://wiki.qemu.org/Planning/7.2
 
-> ---
->  hw/block/virtio-blk.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-> index 738cb2ac367d..92de315f17f7 100644
-> --- a/hw/block/virtio-blk.c
-> +++ b/hw/block/virtio-blk.c
-> @@ -1682,6 +1682,7 @@ static bool apply_iothread_vq_mapping(
->  /* Context: BQL held */
->  static bool virtio_blk_vq_aio_context_init(VirtIOBlock *s, Error **errp)
->  {
-> +    ERRP_GUARD();
->      VirtIODevice *vdev = VIRTIO_DEVICE(s);
->      VirtIOBlkConf *conf = &s->conf;
->      BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
-> -- 
-> 2.34.1
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
+
+Thanks!
+
+/mjt
+
+--------------------------------------
+01* 27eb8499edb2 Fabiano Rosas:
+   migration: Fix use-after-free of migration state object
+02* db101376af52 Yihuan Pan:
+   qemu-docs: Update options for graphical frontends
+03* 615eaeab3d31 Richard W.M. Jones:
+   block/blkio: Make s->mem_region_alignment be 64 bits
+04* f670be1aad33 Jan Klötzke:
+   target/arm: fix exception syndrome for AArch32 bkpt insn
+05* d2019a9d0c34 Peter Maydell:
+   system/vl.c: Fix handling of '-serial none -serial something'
+06* 747bfaf3a9d2 Peter Maydell:
+   qemu-options.hx: Improve -serial option documentation
+07* 8a7315202033 Guenter Roeck:
+   pci-host: designware: Limit value range of iATU viewport register
+08* cd8a35b913c2 Akihiko Odaki:
+   hw/smbios: Fix OEM strings table option validation
+09* 196578c9d051 Akihiko Odaki:
+   hw/smbios: Fix port connector option validation
+10* aa05bd9ef407 Andrey Ignatov:
+   vhost-user.rst: Fix vring address description
+11* c62926f730d0 Ira Weiny:
+   cxl/cdat: Handle cdat table build errors
+12* 64fdad5e6758 Ira Weiny:
+   cxl/cdat: Fix header sum value in CDAT checksum
+13* 729d45a6af06 Li Zhijian:
+   hw/cxl: Pass CXLComponentState to cache_mem_ops
+14* 9a457383ce9d Zhenzhong Duan:
+   virtio_iommu: Clear IOMMUPciBus pointer cache when system reset
+15* 8a6b3f4dc95a Zhenzhong Duan:
+   smmu: Clear SMMUPciBus pointer cache when system reset
+16* 14ec4ff3e429 Jonathan Cameron:
+   tests/acpi: Allow update of DSDT.cxl
+17* d9ae5802f656 Jonathan Cameron:
+   hw/i386: Fix _STA return value for ACPI0017
+18* b24a981b9f1c Jonathan Cameron:
+   tests/acpi: Update DSDT.cxl to reflect change _STA return value.
+19* 681dfc0d5529 Richard Henderson:
+   linux-user/aarch64: Choose SYNC as the preferred MTE mode
+20* 64c6e7444dff Richard Henderson:
+   target/arm: Fix nregs computation in do_{ld,st}_zpa
+21* 855f94eca80c Richard Henderson:
+   target/arm: Fix SVE/SME gross MTE suppression checks
+22* ac1d88e9e7ca Peter Maydell:
+   target/arm: Don't get MDCR_EL2 in pmu_counter_enabled() before checking 
+   ARM_FEATURE_PMU
+23* cc29c12ec629 Kevin Wolf:
+   iotests: Make 144 deterministic again
+24* 81f5cad3858f Xiaoyao Li:
+   i386/cpu: Clear FEAT_XSAVE_XSS_LO/HI leafs when CPUID_EXT_XSAVE is not 
+   available
+25* a11a365159b9 Xiaoyao Li:
+   i386/cpu: Mask with XCR0/XSS mask for FEAT_XSAVE_XCR0_HI and 
+   FEAT_XSAVE_XSS_HI leafs
+26* 10f92799af8b Xiaoyao Li:
+   i386/cpuid: Decrease cpuid_i when skipping CPUID leaf 1F
+27* 0729857c7075 Xiaoyao Li:
+   i386/cpuid: Move leaf 7 to correct group
+28* 99d0dcd7f102 Ziqiao Kong:
+   target/i386: Generate an illegal opcode exception on cmp instructions 
+   with lock prefix
+29* 4cba8388968b Daniel P. Berrangé:
+   ui: reject extended clipboard message if not activated
+30* 405484b29f65 Fiona Ebner:
+   ui/clipboard: mark type as not available when there is no data
+31* 9c416582611b Fiona Ebner:
+   ui/clipboard: add asserts for update and request
+32* 95b08fee8f68 Tianlan Zhou:
+   ui/console: Fix console resize with placeholder surface
+33 1222070e7728 Marc-André Lureau:
+   meson: ensure dbus-display generated code is built before other units
+34* d67611907590 Akihiko Odaki:
+   audio: Depend on dbus_display1_dep
+35 4a20ac400ff0 Tianlan Zhou:
+   docs/system: Update description for input grab key
+36 185311130f54 Tianlan Zhou:
+   system/vl: Update description for input grab key
+37 5cd3ae4903e3 Peter Maydell:
+   .gitlab-ci.d/windows.yml: Drop msys2-32bit job
+38 2cc0e449d173 Nicholas Piggin:
+   target/ppc: Fix lxv/stxv MSR facility check
+39 d2b5bb860e6c Klaus Jensen:
+   hw/nvme: fix invalid endian conversion
+40 4d28d57c9f2e Jessica Clarke:
+   pl031: Update last RTCLR value on write in case it's read back
+41 68fb78d7d572 Paolo Bonzini:
+   target/i386: mask high bits of CR3 in 32-bit mode
+42 d09c79010ffd Paolo Bonzini:
+   target/i386: check validity of VMCB addresses
+43 b1661801c184 Paolo Bonzini:
+   target/i386: Fix physical address truncation
+44 a28fe7dc1939 Paolo Bonzini:
+   target/i386: remove unnecessary/wrong application of the A20 mask
+45 b5a9de3259f4 Paolo Bonzini:
+   target/i386: leave the A20 bit set in the final NPT walk
+46 8467ac75b3b7 Alex Bennée:
+   tests/vm: update openbsd image to 7.4
+47 151b7dba391f Alex Bennée:
+   tests/vm: avoid re-building the VM images all the time
+
+(commit(s) marked with * were in previous series and are not resent)
 
