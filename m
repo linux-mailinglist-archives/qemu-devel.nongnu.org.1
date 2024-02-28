@@ -2,78 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B1A86ACA0
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 12:08:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22DCE86ACBC
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 12:13:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfHm2-0002F3-9V; Wed, 28 Feb 2024 06:06:54 -0500
+	id 1rfHqt-0004aN-Hl; Wed, 28 Feb 2024 06:11:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rfHlx-0002EN-ON
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:06:49 -0500
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1rfHqp-0004Z6-Ec
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:11:51 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rfHlw-00006e-BE
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:06:49 -0500
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1rfHqi-0003dk-OC
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:11:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709118407;
+ s=mimecast20190719; t=1709118702;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=Adv1FeZ7IQtv7tUa449DMgYXIFGMSB/pjlycFke2cbM=;
- b=iTVjOUh7eKOCJ+F9qYqRQfyLuiaITmtdEhFz0nx1I3I/RGxjwXv1UYpet0QPvd789YC8HB
- z3S4JlNs3krPP92sNVPfW5SzCKA5YfthV0tmBWpBSOqi4RHpBdBWXFO2aHPNILeCfaUfxs
- iKxpkePZudWpfP1Sunpn/GwNEXK6f6Y=
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
- [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2lOLvQEZPB1lbfugTDm65SThgR95YqYFdALlm5pPhSg=;
+ b=gOMoPKg+oowsI6qBlFupMOoNLYDqgGk3ldKiNKN7Jh2upnK+MsUIZsrrHBwHgbJdsmtLkp
+ GWv4vPfSE5pTk6+1WfTvsW5+tk4xCyXpm2XFD4PISkZ7xYggQlI2WOa/W1OXfW0tmYZZQb
+ hhD+BEzW1Uqo2bsJMFNvvrULhOGvxoI=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-613--CFiGRCIOEqv5FP8tiNkSg-1; Wed, 28 Feb 2024 06:06:45 -0500
-X-MC-Unique: -CFiGRCIOEqv5FP8tiNkSg-1
-Received: by mail-il1-f198.google.com with SMTP id
- e9e14a558f8ab-36516d55c5fso48323285ab.2
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 03:06:45 -0800 (PST)
+ us-mta-639-T90FOFgJOEKRdqE4gbj_yQ-1; Wed, 28 Feb 2024 06:11:41 -0500
+X-MC-Unique: T90FOFgJOEKRdqE4gbj_yQ-1
+Received: by mail-pf1-f200.google.com with SMTP id
+ d2e1a72fcca58-6da57e2d2b9so5349126b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 03:11:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709118404; x=1709723204;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Adv1FeZ7IQtv7tUa449DMgYXIFGMSB/pjlycFke2cbM=;
- b=U0iRdzM6LsCuT5Z80Mvl230xe34VBIHk2udwDkZDWIFuQPVRYvLveEy5HH6Toeh1h7
- L0SoTBg4/b9VCbTKi9kJTqCRRbrjVSdhMXtuB8mjhGhkyb2E4RSs+ojVoKpv009Hwpxu
- NEHok5425ERu/m22hI/sPX8k93R0Jiqq3sphttGdbYx3oXrUsp2/4tydOycLrqB5mWaj
- uVnO6HF8/tUF2/qOBulFDrXyifZGNGx+M1wjO3fw9qUjWZmzyW2gKPImf8H8uPllu5YO
- ht8szklktCf9uYd8umZumJV850MXhs5mi0NAs2LMt9jA3zEOjoKd8hkVReM/8Xa5qM5d
- AO7A==
-X-Gm-Message-State: AOJu0YwmjOhZy7F73MLjiQPuug563bv+DUEpoE7UWOxyYhQqqL0rqyUR
- u/sLn+RVEo4wqluC1yPPsclAJwtfivBJMHes/HaAnx4iiVRDJ9cwHtid/vryr1kUIkiZCPyVJLH
- hTPJXiiHFlwYx4YYFz+OFNo6sEkRIW19TW/E5/O2uPHLd+nX4895A1R3mchMdCySP5M32BIo9TF
- DbRJOh+i27E19tUs2J2MkpTTB9/OZSwU/ZYr8u
-X-Received: by 2002:a92:cf4d:0:b0:365:13c0:1bc3 with SMTP id
- c13-20020a92cf4d000000b0036513c01bc3mr12809656ilr.20.1709118404389; 
- Wed, 28 Feb 2024 03:06:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEuHXd2Kjd9FJHmXrSn7ukxh+8gNE0HPi0ZvMN2ky7Lsa6gZBQrKen4/h88cj01+ezMsNlm8A==
-X-Received: by 2002:a92:cf4d:0:b0:365:13c0:1bc3 with SMTP id
- c13-20020a92cf4d000000b0036513c01bc3mr12809633ilr.20.1709118404046; 
- Wed, 28 Feb 2024 03:06:44 -0800 (PST)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
+ d=1e100.net; s=20230601; t=1709118700; x=1709723500;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=2lOLvQEZPB1lbfugTDm65SThgR95YqYFdALlm5pPhSg=;
+ b=A6UpvRkOeqlWSkV7MzlKZG2S7HqJSkSbFxSRod9t1DIWn7ZD5C+a5YkN3gaNjWesTg
+ 6nVa6XSHApchVJev8Pzm44t1cH5K47d204tMV96hLIjlNFsazqS7Ff7MGDsr3uBOSyID
+ 0l/X0pDq1X3VRT5eqnYyig9PRDjfr/JcrxyK3D2BnTeJk9w07FvnKAaJHQwA8NTnzPMT
+ Xp5FUvheZBsCJMPyQx0mBTPSnPIgkNebiGAz3INFUHzXdWR8TKWlyQoUXEv8Eh89VzzN
+ u/699fI3JkkHXhmejbYWPqNKtCPSSIOLu6cPmWxGrWHDJlQ5NPLO1YO7nYnIo6lM4ICX
+ XQ7w==
+X-Gm-Message-State: AOJu0YwITXkk6f9efEbJgUhjVfYnRB/Y6s27noOkPYrJvx8MmJtkJtuj
+ jRREs1Jq8scCKwZQSxbhJ1m3zNFW4CpBI96YSj0xSleArS9scvH0aONWAJtrk154dNExSLeJNyq
+ /vPqDvSSytGt2f9HIvWz+A66+CI18H88h/v/CtJqwAgrCkkIp1+xC
+X-Received: by 2002:a05:6a21:3189:b0:19e:9da6:c73b with SMTP id
+ za9-20020a056a21318900b0019e9da6c73bmr5592112pzb.8.1709118700276; 
+ Wed, 28 Feb 2024 03:11:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFa3DeAlNGReFF/gK8vnRupXIRArcxc9Iv+ZMGtHnGA/xQZVw8Zm/aUw6O/FEB6KZDwAZPzaQ==
+X-Received: by 2002:a05:6a21:3189:b0:19e:9da6:c73b with SMTP id
+ za9-20020a056a21318900b0019e9da6c73bmr5592083pzb.8.1709118699932; 
+ Wed, 28 Feb 2024 03:11:39 -0800 (PST)
+Received: from smtpclient.apple ([115.96.143.215])
  by smtp.gmail.com with ESMTPSA id
- eq21-20020a0566384e3500b00474874acfe1sm1482377jab.172.2024.02.28.03.06.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Feb 2024 03:06:43 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <pbonzini@redhat.com>
-Subject: [PATCH] tcg/optimize: fix uninitialized variable
-Date: Wed, 28 Feb 2024 12:06:41 +0100
-Message-ID: <20240228110641.287205-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.43.2
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ s7-20020a170902a50700b001dcc2951c02sm1824254plq.286.2024.02.28.03.11.34
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 28 Feb 2024 03:11:39 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
+Subject: Re: [PATCH 03/19] tests: smbios: add test for legacy mode CLI options
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <20240227154749.1818189-4-imammedo@redhat.com>
+Date: Wed, 28 Feb 2024 16:41:22 +0530
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Song Gao <gaosong@loongson.cn>,
+ Alistair Francis <alistair.francis@wdc.com>, palmer@dabbelt.com,
+ bin.meng@windriver.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com,
+ =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, qemu-arm@nongnu.org,
+ qemu-riscv@nongnu.org, f.ebner@proxmox.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <4AD7C30D-F989-4228-91FD-672D79592302@redhat.com>
+References: <20240227154749.1818189-1-imammedo@redhat.com>
+ <20240227154749.1818189-4-imammedo@redhat.com>
+To: Igor Mammedov <imammedo@redhat.com>
+X-Mailer: Apple Mail (2.3774.400.31)
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -97,34 +111,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The variables uext_opc and sext_opc are used without initialization if
-TCG_TARGET_extract_i{32,64}_valid returns false.  The result, depending
-on the compiler, might be the generation of extract and sextract opcodes
-with invalid offset and count, or just random data in the TCG opcode
-stream.
 
-Fixes: ceb9ee06b71 ("tcg/optimize: Handle TCG_COND_TST{EQ,NE}", 2024-02-03)
-Cc: Richard Henderson <pbonzini@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- tcg/optimize.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tcg/optimize.c b/tcg/optimize.c
-index 79e701652bf..752cc5c56b6 100644
---- a/tcg/optimize.c
-+++ b/tcg/optimize.c
-@@ -2102,7 +2102,8 @@ static bool fold_remainder(OptContext *ctx, TCGOp *op)
- 
- static void fold_setcond_tst_pow2(OptContext *ctx, TCGOp *op, bool neg)
- {
--    TCGOpcode and_opc, sub_opc, xor_opc, neg_opc, shr_opc, uext_opc, sext_opc;
-+    TCGOpcode and_opc, sub_opc, xor_opc, neg_opc, shr_opc;
-+    TCGOpcode uext_opc = 0, sext_opc = 0;
-     TCGCond cond = op->args[3];
-     TCGArg ret, src1, src2;
-     TCGOp *op2;
--- 
-2.43.2
+> On 27-Feb-2024, at 21:17, Igor Mammedov <imammedo@redhat.com> wrote:
+>=20
+> Unfortunately having 2.0 machine type deprecated is not enough
+> to get rid of legacy SMBIOS handling since 'isapc' also uses
+> that and it's staying around.
+>=20
+> Hence add test for CLI options handling to be sure that it
+> ain't broken during SMBIOS code refactoring.
+>=20
+> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+> ---
+> tests/data/smbios/type11_blob.legacy | Bin 0 -> 10 bytes
+> tests/qtest/bios-tables-test.c       |  17 +++++++++++++++++
+> 2 files changed, 17 insertions(+)
+> create mode 100644 tests/data/smbios/type11_blob.legacy
+>=20
+> diff --git a/tests/data/smbios/type11_blob.legacy =
+b/tests/data/smbios/type11_blob.legacy
+> new file mode 100644
+> index =
+0000000000000000000000000000000000000000..aef463aab903405958b0a85f85c59806=
+71c08bee
+> GIT binary patch
+> literal 10
+> Rcmd;PW!S(N;u;*n000Tp0s;U4
+>=20
+> literal 0
+> HcmV?d00001
+>=20
+> diff --git a/tests/qtest/bios-tables-test.c =
+b/tests/qtest/bios-tables-test.c
+> index a116f88e1d..d1ff4db7a2 100644
+> --- a/tests/qtest/bios-tables-test.c
+> +++ b/tests/qtest/bios-tables-test.c
+> @@ -2106,6 +2106,21 @@ static void test_acpi_pc_smbios_blob(void)
+>     free_test_data(&data);
+> }
+>=20
+> +static void test_acpi_isapc_smbios_legacy(void)
+> +{
+> +    uint8_t req_type11[] =3D { 1, 11 };
+
+Ok so looking at the code, it won=E2=80=99t let you specify smbios type =
+other than 1 =E2=80=A6
+
+See the following in smbios_set_defaults()
+
+  if (smbios_legacy) {
+        g_free(smbios_tables);
+	/* in legacy mode, also complain if fields were given for types =
+>1 */
+        if (find_next_bit(have_fields_bitmap,
+	                  SMBIOS_MAX_TYPE+1, 2) < SMBIOS_MAX_TYPE+1) {
+            error_report("can't process fields for smbios "
+                         "types > 1 on machine versions < 2.1!");
+            exit(1);
+        }
+    } else {
+
+BUT you lets you load a blob of type 11? Is that a bug in QEMU? Should =
+we also add a similar check for have_binfile_bitmap?=20
+
+> +    test_data data =3D {
+> +        .machine =3D "isapc",
+> +        .variant =3D ".pc_smbios_legacy",
+> +        .required_struct_types =3D req_type11,
+> +        .required_struct_types_len =3D ARRAY_SIZE(req_type11),
+> +    };
+> +
+> +    test_smbios("-smbios file=3Dtests/data/smbios/type11_blob.legacy =
+"
+> +                "-smbios type=3D1,family=3DTEST", &data);
+> +    free_test_data(&data);
+> +}
+> +
+> static void test_oem_fields(test_data *data)
+> {
+>     int i;
+> @@ -2261,6 +2276,8 @@ int main(int argc, char *argv[])
+>                            test_acpi_pc_smbios_options);
+>             qtest_add_func("acpi/piix4/smbios-blob",
+>                            test_acpi_pc_smbios_blob);
+> +            qtest_add_func("acpi/piix4/smbios-legacy",
+> +                           test_acpi_isapc_smbios_legacy);
+>         }
+>         if (qtest_has_machine(MACHINE_Q35)) {
+>             qtest_add_func("acpi/q35", test_acpi_q35_tcg);
+> --=20
+> 2.39.3
+>=20
 
 
