@@ -2,83 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1464686ABBF
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 10:57:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D3086AC09
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 11:19:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfGgj-0008Cj-Nv; Wed, 28 Feb 2024 04:57:21 -0500
+	id 1rfH0V-0007Vq-RK; Wed, 28 Feb 2024 05:17:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rfGgh-00088u-Fp
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 04:57:19 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rfH0T-0007V9-Mc
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 05:17:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rfGgg-0003ga-5o
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 04:57:19 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rfH0R-0006Fh-RK
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 05:17:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709114236;
+ s=mimecast20190719; t=1709115461;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CcbeAJp80KVmz3aYAB63nVgtI5ts2lCKBLqbf4p9u/M=;
- b=inaaQXXex2y3iOibz7P/DMgCP8Sg27exWTpJsBSLWTZg2E9kwaMZCFC54dbtbDtXU8J5Z6
- qZdke1nKrxWUFgGdc8fh8QXsZbE1zJGtNaqZoh50VhfdzMlUy7F/v2UKSRumPP6JjWTGTV
- zWHv7hvhkMB0y2ABoGPwgKEKRWGj/4A=
+ bh=Fxx9rR9eTk4k+1H//AhPt87RTcaJY8x+hxXW84rRwtk=;
+ b=g8Qh3+7lNdst/YSQAUACphf/pwcu38A9jc3D8emNPYYiALBrZ4qX71Vz0ul4yBhqe0K+JD
+ c+N9+1t/ywESNXc9GdUrLry605DM9/UVo2M46GNwE0gTcyEvHY1p5J1X1SC7vmCqv4+JYe
+ MNNI2jv/qdUEBORjqrTQIs5Afdmm0Xo=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-260-1AGoZHF4OdiTeK4bp1B_lg-1; Wed,
- 28 Feb 2024 04:57:13 -0500
-X-MC-Unique: 1AGoZHF4OdiTeK4bp1B_lg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-15-8bNIFrTlOqWtQ8zsDqqBwg-1; Wed,
+ 28 Feb 2024 05:17:40 -0500
+X-MC-Unique: 8bNIFrTlOqWtQ8zsDqqBwg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9459B1C0983E;
- Wed, 28 Feb 2024 09:57:12 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.4])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6CBC2401CB7B;
- Wed, 28 Feb 2024 09:57:12 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1476921E66F9; Wed, 28 Feb 2024 10:57:11 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Zhao Liu <zhao1.liu@linux.intel.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,  Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,  "Michael S . Tsirkin"
- <mst@redhat.com>,  Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,  Eric Blake <eblake@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,  Daniel P . =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9?=
- <berrange@redhat.com>,  Xiaoyao Li <xiaoyao.li@intel.com>,
- qemu-devel@nongnu.org,  kvm@vger.kernel.org,  Zhenyu Wang
- <zhenyu.z.wang@intel.com>,  Zhuocheng Ding <zhuocheng.ding@intel.com>,
- Babu Moger <babu.moger@amd.com>,  Yongwei Ma <yongwei.ma@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v9 03/21] hw/core: Introduce module-id as the topology
- subindex
-In-Reply-To: <20240227103231.1556302-4-zhao1.liu@linux.intel.com> (Zhao Liu's
- message of "Tue, 27 Feb 2024 18:32:13 +0800")
-References: <20240227103231.1556302-1-zhao1.liu@linux.intel.com>
- <20240227103231.1556302-4-zhao1.liu@linux.intel.com>
-Date: Wed, 28 Feb 2024 10:57:11 +0100
-Message-ID: <87le74zzbc.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DC29A1C05AF4;
+ Wed, 28 Feb 2024 10:17:39 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.192.233])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C0EBC8173;
+ Wed, 28 Feb 2024 10:17:38 +0000 (UTC)
+Date: Wed, 28 Feb 2024 11:17:37 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Yong Huang <yong.huang@smartx.com>, qemu-devel@nongnu.org,
+ Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH] qapi: Craft the BlockdevCreateOptionsLUKS comment
+Message-ID: <Zd8IQShNrGeXEnLz@redhat.com>
+References: <91c52e03e46ff0a96559b4e7d66ded582b2ec4e1.1708486450.git.yong.huang@smartx.com>
+ <874je22u83.fsf@pond.sub.org>
+ <CAK9dgmZkLZiT_W0UjB+=EN9_vAK5Qy5XKRMBhHBQ98sRBbiAQw@mail.gmail.com>
+ <875xyiz0ho.fsf@pond.sub.org>
+ <CAK9dgmZOEqd=EgBjsiZZoK3R+VQRMqSdUrK_WwKHfP7LiWzQMQ@mail.gmail.com>
+ <87v8693x7c.fsf@pond.sub.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87v8693x7c.fsf@pond.sub.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,18 +84,187 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Zhao Liu <zhao1.liu@linux.intel.com> writes:
+Am 28.02.2024 um 07:43 hat Markus Armbruster geschrieben:
+> Yong Huang <yong.huang@smartx.com> writes:
+> 
+> > On Wed, Feb 21, 2024 at 4:26 PM Markus Armbruster <armbru@redhat.com> wrote:
+> >
+> >> Yong Huang <yong.huang@smartx.com> writes:
+> >>
+> >> > On Wed, Feb 21, 2024 at 2:43 PM Markus Armbruster <armbru@redhat.com>
+> >> wrote:
+> >> >
+> >> >> Hyman Huang <yong.huang@smartx.com> writes:
+> >> >>
+> >> >> > Add comment in detail for commit 433957bb7f (qapi:
+> >> >> > Make parameter 'file' optional for
+> >> >> > BlockdevCreateOptionsLUKS).
+> >> >> >
+> >> >> > Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+> >> >> > ---
+> >> >> >  qapi/block-core.json | 20 +++++++++++++++++++-
+> >> >> >  1 file changed, 19 insertions(+), 1 deletion(-)
+> >> >> >
+> >> >> > diff --git a/qapi/block-core.json b/qapi/block-core.json
+> >> >> > index ab5a93a966..42b0840d43 100644
+> >> >> > --- a/qapi/block-core.json
+> >> >> > +++ b/qapi/block-core.json
+> >> >> > @@ -4973,7 +4973,25 @@
+> >> >> >  ##
+> >> >> >  # @BlockdevCreateOptionsLUKS:
+> >> >> >  #
+> >> >> > -# Driver specific image creation options for LUKS.
+> >> >> > +# Driver specific image creation options for LUKS. Note that
+> >> >> > +# @file is required if @preallocation is specified and equals
+> >> >> > +# PREALLOC_MODE_ON. The following three scenarios determine how
+> >> >> > +# creation logic behaves when @preallocation is either equal to
+> >> >> > +# PREALLOC_MODE_OFF or is not given:
+> >> >> > +#
+> >> >> > +#  1) When @file is given only, format the block device referenced
+> >> >> > +#     by @file as the LUKS specification and trunk it to the @size.
+> >> >>
+> >> >> Do you mean "truncate it to @size"?
+> >> >>
+> >> > Yes, :( sorry for the spelling mistake.
+> >>
+> >> Writing good documentation in a second language is *hard*.  All we can
+> >> reasonably expect from contributors to try their best.  And then we
+> >> improve the text together in review.  Just like we do for code :)
+> >>
+> >> >> > +#     In this case, the @size should reflect amount of space made
+> >> >> > +#     available to the guest, so the trunk size must take account
+> >> >> > +#     of that which will be used by the crypto header.
+> >> >> > +#
+> >> >> > +#  2) When @header is given only, just format the block device
+> >> >> > +#     referenced by @header as the LUKS specification.
+> >> >> > +#
+> >> >> > +#  3) When both @file and @header are given, block device
+> >> >> > +#     referenced by @file should be trunked to @size, and block
+> >> >> > +#     device referenced by @header should be formatted as the LUKS
+> >> >> > +#     specification.
+> >> >> >  #
+> >> >> >  # @file: Node to create the image format on, mandatory except when
+> >> >> >  #        'preallocation' is not requested
+> >> >>
+> >> >> Let's see whether I understand.
+> >> >>
+> >> >> blockdev-create with "driver": "luks" can work in three different ways:
+> >> >>
+> >> >> 1. Create an image with a LUKS header
+> >> >>
+> >> >> 2. Create just a detached LUKS header
+> >> >>
+> >> >> 3. Create an image and a detached LUKS header
+> >> >>
+> >> >> Correct?
+> >> >>
+> >> >
+> >> > Yes
+> >> >
+> >> >
+> >> >> @file and @header are BlockdevRef, which means they refer to existing
+> >> >> images with arbitrary driver.  Could be "file", "qcow2", or anything.
+> >> >>
+> >> >> Correct?
+> >> >>
+> >> > Yes
+> >> >
+> >> >
+> >> >>
+> >> >> To get 1., specify @file, but not @header.
+> >> >>
+> >> >> To get 2., specify @header, but not @file.
+> >> >>
+> >> >> To get 3., specify both.
+> >> >>
+> >> >> Specifying neither is an error.
+> >> >>
+> >> >> Correct?
+> >> >>
+> >> >
+> >> > Yes
+> >> >
+> >> >
+> >> >> In any case, @size is the logical size of the image (how much data it
+> >> >> can hold).
+> >> >>
+> >> >
+> >> > Yes
+> >> >
+> >> >
+> >> >>
+> >> >> With 1., the actual image size is a bit larger due to the LUKS header.
+> >> >> The @file image is resized to that size: if it's shorter, it's grown, if
+> >> >> it's longer, it's truncated.
+> >> >>
+> >> >
+> >> > Yes
+> >> >
+> >> >
+> >> >> With 2., @size is merely recorded in the detached LUKS header.
+> >> >>
+> >> >
+> >> > In LUKS1 specification, payload data size is not contained in the header,
+> >> > so in this case, @size is not recorded in the detached LUKS header.
+> >> > The creation logic just does the LUKS header formatting only.
+> >>
+> >> Is @size unused then?
+> >>
+> >
+> > IIUC, yes. Creation logic will ignore the @size. See the following code
+> > in function block_crypto_co_create_luks:
+> >
+> >     if (luks_opts->header) {
+> >         /* LUKS volume with detached header */
+> >         hdr_bs = bdrv_co_open_blockdev_ref(luks_opts->header, errp);
+> >         if (hdr_bs == NULL) {
+> >             return -EIO;
+> >         }
+> >
+> >         cflags |= QCRYPTO_BLOCK_CREATE_DETACHED;
+> >
+> >         /* Format the LUKS header node, here just ignore the size
+> >           * and passed zero to block_crypto_co_create_generic */
+> >         ret = block_crypto_co_create_generic(hdr_bs, 0, &create_opts,
+> >                                              PREALLOC_MODE_OFF, cflags, errp);
+> >         if (ret < 0) {
+> >             goto fail;
+> >         }
+> >
+> >         /* Format the LUKS payload node */
+> >         if (luks_opts->file) {
+> >             ret = block_crypto_co_format_luks_payload(luks_opts, errp);
+> >             if (ret < 0) {
+> >                 goto fail;
+> >             }
+> >         }
+> 
+> @size is a required argument, but silently ignored when @header is
+> present and @file is absent (2. Create just a detached LUKS header).
+> Feels awkward.
+> 
+> Should @size be optional, absent when and only when @header is present
+> and @file is absent?
+> 
+> Kevin or Hanna, got an opinion?
 
-> From: Zhao Liu <zhao1.liu@intel.com>
->
-> Add module-id in CpuInstanceProperties, to locate the CPU with module
-> level.
->
-> Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+What is the use case for creating a header without a corresponding
+image?
 
-QAPI schema
-Acked-by: Markus Armbruster <armbru@redhat.com>
+Until now, @size has been mandatory for creating images with every
+driver. Maybe we should even have put it into BlockdevCreateOptions's
+base, because without a size, you're not really creating an image.
+
+So before making it optional here and breaking the consistency that we
+have so far, I'd like to understand what reason we have to use
+blockdev-create for something that is not creating a full image, but
+only a part of it.
+
+(Of course, I also don't exactly _like_ marking things optional when
+they are not really optional, but their presence depends on some other
+field. But I'm afraid the QAPI schema language isn't expressive enough
+to avoid it if we do have this requirement.)
+
+Kevin
 
 
