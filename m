@@ -2,84 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30C4C86AED6
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 13:10:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D6286AE75
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 12:59:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfIeY-0004yB-7K; Wed, 28 Feb 2024 07:03:14 -0500
+	id 1rfIZw-0007pA-N9; Wed, 28 Feb 2024 06:58:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rfIeO-0004bg-1b
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 07:03:04 -0500
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rfIeL-000350-6F
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 07:03:03 -0500
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2d094bc2244so65625811fa.1
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 04:03:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709121779; x=1709726579; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MPogCxF/I1D7c/GvuPtEU4hQQ0c9+qX3NiL8uhsKxPs=;
- b=dD0GeyNPC9o+TRq+VI11rSW+JokwT/ODdvtNK4UB5XCi+ODxGm4WOp+jHMMtcX7Qgx
- JjcY+H/1Jub6tmeeQdZrgvAXi6sxc80dwkTMfB/IbzBvukre2Mqvu1li5lELSVkqHbOD
- /qjtqQ0/BYGn+ljGXUUu5rO6oeVJ6sNSRGH1kQnKy05hoSNLFwUSSbSvpkTxY1xp0I1R
- n1rka+N4Vr9KJUfMWUwAWZFZ8wyRtiEpmbsB3sueesKD93IIQsjPzpbDqlJi3fx5T+oG
- LiGhwDNQveJHj4gsbn5G0BWPP5MejP5/X67XBK/t1tDW0j9oxIoVKN8NbmRedik4OVYJ
- Bw/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709121779; x=1709726579;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=MPogCxF/I1D7c/GvuPtEU4hQQ0c9+qX3NiL8uhsKxPs=;
- b=TksLgPFAvU+TWnD04PakgK2CUCGfDkOY1My4mug+jFYQldK9NhBbKz8IRsgL2e7ZS0
- U98pM/qTQowEeHCD6ffN1kL9mclvVlASatFCJ1/gNM4aZfmLeGaJZMesg9XK3ouGPaCW
- ABUQ/EtMzKdz1GeQfnLTLgO9YFLQXMQDoXFutJZ2TNUvhBu/gKF3CXn5NFJqX1kb/8nW
- YBPBU6n42stTqYX4F+nwg594unJZJPttDF5dK+tNKh5092rHXzZCaRKOMI3oxtuf4BoQ
- 64Q7/nw5uODXQqXPlCTPHSzzc6i0MEgQ27oh9KKJEVxIP1ADTrBxVJuwL46gRAAYn3zJ
- wxbQ==
-X-Gm-Message-State: AOJu0YyboMdo4A1rYRzgz78yYt/5OY8mjbEGG1EkMBkmHBEbYUwwszOd
- /VqM+Av3VcbH6ZybOup9uW8vA0iecJhwo5geU/evyfzlTjjas0MqAarsxxhk0DM=
-X-Google-Smtp-Source: AGHT+IGNZzDF2+hraEkK9pCPUTkNS4ST/Y1wSwc0D8mcJoLzxIILrvHsz4+J+Uh7dCZCHbqM7mVoKw==
-X-Received: by 2002:a2e:834c:0:b0:2d2:463b:e991 with SMTP id
- l12-20020a2e834c000000b002d2463be991mr7666566ljh.29.1709121778934; 
- Wed, 28 Feb 2024 04:02:58 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- s11-20020a05600c45cb00b0040fdf5e6d40sm1945992wmo.20.2024.02.28.04.02.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Feb 2024 04:02:56 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 9FD875F930;
- Wed, 28 Feb 2024 11:57:04 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 29/29] docs/devel: plugins can trigger a tb flush
-Date: Wed, 28 Feb 2024 11:57:01 +0000
-Message-Id: <20240228115701.1416107-30-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240228115701.1416107-1-alex.bennee@linaro.org>
-References: <20240228115701.1416107-1-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rfIZu-0007oZ-IS
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:58:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rfIZt-00073w-0j
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:58:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709121503;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=VRdAQ551NkGobukhi+9r4yjHrWN/nSBAekiV+icfRhU=;
+ b=RzuTK4LhnrLG8QCgi0DZ5Bdiq5TMtyDpSCzsjl+TVhF/p0m3Dn1dgi54tsXFZkoGv+5RVp
+ sFtwgMgz8lrNVWH/o5egN4Ea59yiIXnt4pczrIpQRlSEGdhf4nbJqdkyV6SXlT8ZgNpcDA
+ GP5Mn/FjLfbKLSo5QQoxh20JTXMPPbU=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-588-Se3dibaUMeK1WN2Gbx53RA-1; Wed,
+ 28 Feb 2024 06:58:22 -0500
+X-MC-Unique: Se3dibaUMeK1WN2Gbx53RA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 36A561C0513F;
+ Wed, 28 Feb 2024 11:58:22 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.192.233])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 40E18C0348D;
+ Wed, 28 Feb 2024 11:58:21 +0000 (UTC)
+Date: Wed, 28 Feb 2024 12:58:20 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>,
+ Yong Huang <yong.huang@smartx.com>, qemu-devel@nongnu.org,
+ Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH] qapi: Craft the BlockdevCreateOptionsLUKS comment
+Message-ID: <Zd8f3CGhoDDsZnGU@redhat.com>
+References: <91c52e03e46ff0a96559b4e7d66ded582b2ec4e1.1708486450.git.yong.huang@smartx.com>
+ <874je22u83.fsf@pond.sub.org>
+ <CAK9dgmZkLZiT_W0UjB+=EN9_vAK5Qy5XKRMBhHBQ98sRBbiAQw@mail.gmail.com>
+ <875xyiz0ho.fsf@pond.sub.org>
+ <CAK9dgmZOEqd=EgBjsiZZoK3R+VQRMqSdUrK_WwKHfP7LiWzQMQ@mail.gmail.com>
+ <87v8693x7c.fsf@pond.sub.org> <Zd8IQShNrGeXEnLz@redhat.com>
+ <Zd8ZOHJxhgrmbIWc@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x231.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <Zd8ZOHJxhgrmbIWc@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.102,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,29 +87,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Am 28.02.2024 um 12:30 hat Daniel P. BerrangÈ geschrieben:
+> On Wed, Feb 28, 2024 at 11:17:37AM +0100, Kevin Wolf wrote:
+> > Until now, @size has been mandatory for creating images with every
+> > driver. Maybe we should even have put it into BlockdevCreateOptions's
+> > base, because without a size, you're not really creating an image.
+> 
+> NB, @size isn't mandatory for creating images. It isn't required
+> when creating qcow2 files with backing stores, as the size is
+> acquired from the backing file instead.
+> 
+> $ qemu-img create demo.raw 1g
+> Formatting 'demo.raw', fmt=raw size=1073741824
+> $ qemu-img create -o backing_file=demo.raw -o backing_fmt=raw -f qcow2 demo.qcow2
+> Formatting 'demo.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib size=1073741824 backing_file=demo.raw backing_fmt=raw lazy_refcounts=off refcount_bits=16
 
-When scoreboards need to be reallocated.
+Yes, 'qemu-img create' is different, it adds some convenience magic like
+this. But for 'blockdev-create', it's mandatory for every driver. I
+double checked the QAPI schema.
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240213094009.150349-8-pierrick.bouvier@linaro.org>
-Signed-off-by: Alex Benn√©e <alex.bennee@linaro.org>
-Message-Id: <20240227144335.1196131-30-alex.bennee@linaro.org>
-
-diff --git a/docs/devel/multi-thread-tcg.rst b/docs/devel/multi-thread-tcg.rst
-index 7302c3bf534..1420789fff3 100644
---- a/docs/devel/multi-thread-tcg.rst
-+++ b/docs/devel/multi-thread-tcg.rst
-@@ -109,6 +109,7 @@ including:
-   - debugging operations (breakpoint insertion/removal)
-   - some CPU helper functions
-   - linux-user spawning its first thread
-+  - operations related to TCG Plugins
- 
- This is done with the async_safe_run_on_cpu() mechanism to ensure all
- vCPUs are quiescent when changes are being made to shared global
--- 
-2.39.2
+Kevin
 
 
