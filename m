@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B4AD86AF0D
+	by mail.lfdr.de (Postfix) with ESMTPS id 1841986AF0B
 	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 13:24:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfIyI-0005WR-Oc; Wed, 28 Feb 2024 07:23:38 -0500
+	id 1rfIyO-0005XR-JS; Wed, 28 Feb 2024 07:23:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1rfIyG-0005V7-Au
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 07:23:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rfIyM-0005X1-G4
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 07:23:42 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1rfIyE-000501-Tg
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 07:23:36 -0500
+ id 1rfIyK-00050n-M5
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 07:23:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709123014;
+ s=mimecast20190719; t=1709123019;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DZuAtynw20cVE61RVDw4QkorA1jGmXPNjdDY9k07Hsw=;
- b=Vu0boor/JlmjagKEv8cGjjY/Xgddh9osQx6ZmkkxDR+m6wf7l7rwsNEMo6E8Qj2UnDq91O
- qQoqbE2W4EAOgTz2F0vkb13PfRvDffdLbKXblShNARLbwskyNWoC6eWf2kG5kpOBaHop+r
- k3doAPB1Qx2rLA5hdjn7Rpes8SnZPDw=
+ bh=+sBRzvzSbCgm0ublMDE+ChC477Y3BzXWR1Cb3LCmqKM=;
+ b=gcYkzaSskPKth7FXI2eAyGtm2oM6jMgN2NHYTUr+klIq1gyHsncVhQZWQ9sPwklbiBK+We
+ HENZiZ499zCENm084vtuqqG4H0GqWiG1X2j8wU+e/pQVbTEnlRBAM+MmETUkNr5uTd8zFo
+ F9NJ4uVTpWOWqo5tzO2mP5+K/r5/BEE=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-113-36M5gTiBMuuokubaumMsLg-1; Wed,
- 28 Feb 2024 07:23:32 -0500
-X-MC-Unique: 36M5gTiBMuuokubaumMsLg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-318-EwEvlbjsN-avqIwI4mqjgA-1; Wed,
+ 28 Feb 2024 07:23:38 -0500
+X-MC-Unique: EwEvlbjsN-avqIwI4mqjgA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 52B0D282D3C5
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 12:23:32 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F3E9F282D3C6
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 12:23:37 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.45])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7B15B2166B5D;
- Wed, 28 Feb 2024 12:23:30 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7F8A72026D0A;
+ Wed, 28 Feb 2024 12:23:35 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, sebott@redhat.com,
  "Michael S. Tsirkin" <mst@redhat.com>, peterx@redhat.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v2 1/2] virtio-gpu: remove needless condition
-Date: Wed, 28 Feb 2024 16:23:22 +0400
-Message-ID: <20240228122323.962826-2-marcandre.lureau@redhat.com>
+Subject: [PATCH v2 2/2] virtio-gpu: fix scanout migration post-load
+Date: Wed, 28 Feb 2024 16:23:23 +0400
+Message-ID: <20240228122323.962826-3-marcandre.lureau@redhat.com>
 In-Reply-To: <20240228122323.962826-1-marcandre.lureau@redhat.com>
 References: <20240228122323.962826-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -65,8 +65,9 @@ X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.102,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,38 +85,172 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-qemu_create_displaysurface_pixman() never returns NULL.
+The current post-loading code for scanout has a FIXME: it doesn't take
+the resource region/rect into account. But there is more, when adding
+blob migration support in commit f66767f75c9, I didn't realize that blob
+resources could be used for scanouts. This situationn leads to a crash
+during post-load, as they don't have an associated res->image.
+
+virtio_gpu_do_set_scanout() handle all cases, but requires the
+associated virtio_gpu_framebuffer, which is currently not saved during
+migration.
+
+Add a v2 of "virtio-gpu-one-scanout" with the framebuffer fields, so we
+can restore blob scanouts, as well as fixing the existing FIXME.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Sebastian Ott <sebott@redhat.com>
 ---
- hw/display/virtio-gpu.c | 7 -------
- 1 file changed, 7 deletions(-)
+ include/hw/virtio/virtio-gpu.h |  1 +
+ hw/display/virtio-gpu.c        | 51 +++++++++++++++++++++++++++-------
+ 2 files changed, 42 insertions(+), 10 deletions(-)
 
+diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
+index b28e7ef0d2..ed44cdad6b 100644
+--- a/include/hw/virtio/virtio-gpu.h
++++ b/include/hw/virtio/virtio-gpu.h
+@@ -81,6 +81,7 @@ struct virtio_gpu_scanout {
+     uint32_t resource_id;
+     struct virtio_gpu_update_cursor cursor;
+     QEMUCursor *current_cursor;
++    struct virtio_gpu_framebuffer fb;
+ };
+ 
+ struct virtio_gpu_requested_state {
 diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index 1c1ee230b3..ccbe31d759 100644
+index ccbe31d759..78d5a4f164 100644
 --- a/hw/display/virtio-gpu.c
 +++ b/hw/display/virtio-gpu.c
-@@ -684,10 +684,6 @@ static void virtio_gpu_do_set_scanout(VirtIOGPU *g,
+@@ -600,6 +600,7 @@ static void virtio_unref_resource(pixman_image_t *image, void *data)
+ static void virtio_gpu_update_scanout(VirtIOGPU *g,
+                                       uint32_t scanout_id,
+                                       struct virtio_gpu_simple_resource *res,
++                                      struct virtio_gpu_framebuffer *fb,
+                                       struct virtio_gpu_rect *r)
+ {
+     struct virtio_gpu_simple_resource *ores;
+@@ -617,9 +618,10 @@ static void virtio_gpu_update_scanout(VirtIOGPU *g,
+     scanout->y = r->y;
+     scanout->width = r->width;
+     scanout->height = r->height;
++    scanout->fb = *fb;
+ }
  
-         /* realloc the surface ptr */
-         scanout->ds = qemu_create_displaysurface_pixman(rect);
--        if (!scanout->ds) {
--            *error = VIRTIO_GPU_RESP_ERR_UNSPEC;
+-static void virtio_gpu_do_set_scanout(VirtIOGPU *g,
++static bool virtio_gpu_do_set_scanout(VirtIOGPU *g,
+                                       uint32_t scanout_id,
+                                       struct virtio_gpu_framebuffer *fb,
+                                       struct virtio_gpu_simple_resource *res,
+@@ -645,7 +647,7 @@ static void virtio_gpu_do_set_scanout(VirtIOGPU *g,
+                       r->x, r->y, r->width, r->height,
+                       fb->width, fb->height);
+         *error = VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER;
+-        return;
++        return false;
+     }
+ 
+     g->parent_obj.enable = 1;
+@@ -653,11 +655,12 @@ static void virtio_gpu_do_set_scanout(VirtIOGPU *g,
+     if (res->blob) {
+         if (console_has_gl(scanout->con)) {
+             if (!virtio_gpu_update_dmabuf(g, scanout_id, res, fb, r)) {
+-                virtio_gpu_update_scanout(g, scanout_id, res, r);
++                virtio_gpu_update_scanout(g, scanout_id, res, fb, r);
+             } else {
+                 *error = VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY;
++                return false;
+             }
 -            return;
--        }
- #ifdef WIN32
-         qemu_displaysurface_win32_set_handle(scanout->ds, res->handle, fb->offset);
- #endif
-@@ -1423,9 +1419,6 @@ static int virtio_gpu_post_load(void *opaque, int version_id)
++            return true;
+         }
+ 
+         data = res->blob;
+@@ -693,7 +696,8 @@ static void virtio_gpu_do_set_scanout(VirtIOGPU *g,
+                                 scanout->ds);
+     }
+ 
+-    virtio_gpu_update_scanout(g, scanout_id, res, r);
++    virtio_gpu_update_scanout(g, scanout_id, res, fb, r);
++    return true;
+ }
+ 
+ static void virtio_gpu_set_scanout(VirtIOGPU *g,
+@@ -1164,7 +1168,8 @@ static void virtio_gpu_cursor_bh(void *opaque)
+ 
+ static const VMStateDescription vmstate_virtio_gpu_scanout = {
+     .name = "virtio-gpu-one-scanout",
+-    .version_id = 1,
++    .version_id = 2,
++    .minimum_version_id = 1,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(resource_id, struct virtio_gpu_scanout),
+         VMSTATE_UINT32(width, struct virtio_gpu_scanout),
+@@ -1176,6 +1181,12 @@ static const VMStateDescription vmstate_virtio_gpu_scanout = {
+         VMSTATE_UINT32(cursor.hot_y, struct virtio_gpu_scanout),
+         VMSTATE_UINT32(cursor.pos.x, struct virtio_gpu_scanout),
+         VMSTATE_UINT32(cursor.pos.y, struct virtio_gpu_scanout),
++        VMSTATE_UINT32_V(fb.format, struct virtio_gpu_scanout, 2),
++        VMSTATE_UINT32_V(fb.bytes_pp, struct virtio_gpu_scanout, 2),
++        VMSTATE_UINT32_V(fb.width, struct virtio_gpu_scanout, 2),
++        VMSTATE_UINT32_V(fb.height, struct virtio_gpu_scanout, 2),
++        VMSTATE_UINT32_V(fb.stride, struct virtio_gpu_scanout, 2),
++        VMSTATE_UINT32_V(fb.offset, struct virtio_gpu_scanout, 2),
+         VMSTATE_END_OF_LIST()
+     },
+ };
+@@ -1347,6 +1358,7 @@ static int virtio_gpu_blob_save(QEMUFile *f, void *opaque, size_t size,
+         if (!res->blob_size) {
+             continue;
+         }
++        assert(!res->image);
+         qemu_put_be32(f, res->resource_id);
+         qemu_put_be32(f, res->blob_size);
+         qemu_put_be32(f, res->iov_cnt);
+@@ -1409,21 +1421,40 @@ static int virtio_gpu_post_load(void *opaque, int version_id)
+     int i;
+ 
+     for (i = 0; i < g->parent_obj.conf.max_outputs; i++) {
+-        /* FIXME: should take scanout.r.{x,y} into account */
+         scanout = &g->parent_obj.scanout[i];
+         if (!scanout->resource_id) {
+             continue;
+         }
++
+         res = virtio_gpu_find_resource(g, scanout->resource_id);
+         if (!res) {
              return -EINVAL;
          }
-         scanout->ds = qemu_create_displaysurface_pixman(res->image);
--        if (!scanout->ds) {
--            return -EINVAL;
--        }
+-        scanout->ds = qemu_create_displaysurface_pixman(res->image);
++
++        if (scanout->fb.format != 0) {
++            uint32_t error = 0;
++            struct virtio_gpu_rect r = {
++                .x = scanout->x,
++                .y = scanout->y,
++                .width = scanout->width,
++                .height = scanout->height
++            };
++
++            if (!virtio_gpu_do_set_scanout(g, i, &scanout->fb, res, &r, &error)) {
++                return -EINVAL;
++            }
++        } else {
++            /* legacy v1 migration support */
++            if (!res->image) {
++                return -EINVAL;
++            }
++            scanout->ds = qemu_create_displaysurface_pixman(res->image);
  #ifdef WIN32
-         qemu_displaysurface_win32_set_handle(scanout->ds, res->handle, 0);
+-        qemu_displaysurface_win32_set_handle(scanout->ds, res->handle, 0);
++            qemu_displaysurface_win32_set_handle(scanout->ds, res->handle, 0);
  #endif
++            dpy_gfx_replace_surface(scanout->con, scanout->ds);
++        }
+ 
+-        dpy_gfx_replace_surface(scanout->con, scanout->ds);
+         dpy_gfx_update_full(scanout->con);
+         if (scanout->cursor.resource_id) {
+             update_cursor(g, &scanout->cursor);
 -- 
 2.43.2
 
