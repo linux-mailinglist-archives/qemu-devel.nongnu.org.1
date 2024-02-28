@@ -2,61 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624D386B17A
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 15:17:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0EE686B192
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 15:21:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfKij-0003qF-A5; Wed, 28 Feb 2024 09:15:41 -0500
+	id 1rfKmK-0001ND-IB; Wed, 28 Feb 2024 09:19:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rfKiZ-0003pA-US; Wed, 28 Feb 2024 09:15:32 -0500
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1rfKmI-0001MP-G9
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 09:19:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rfKiV-0002H6-Hl; Wed, 28 Feb 2024 09:15:31 -0500
-Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c18:486:0:640:cf34:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 50BE560BA0;
- Wed, 28 Feb 2024 17:15:22 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:a522::1:14])
- by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 4FaAWa1Of0U0-A651XzHW; Wed, 28 Feb 2024 17:15:21 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1709129721;
- bh=liPz+eyj6yyjB8pLBgydYqfPcqmYRyAOSKFDJlxHpYk=;
- h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=GQl/a8nV2SQnXLnq+w1fwFstujzX2SDjOGUH9C98B2USCVjqUzcJlC6yX61+GkSrL
- 6dJcNj05yrBtfnbkOvkw8HTHrMP+1J4TpfMKqIsUqTk4UPiI1Ge/tT3A0+A6AO8R6V
- mEm8YGRrIzCc2lMz1aOz2RbihmzO6z+pNQcSjXVo=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, armbru@redhat.com, eblake@redhat.com,
- xiechanglong.d@gmail.com, wencongyang2@huawei.com, hreitz@redhat.com,
- kwolf@redhat.com, vsementsov@yandex-team.ru, jsnow@redhat.com,
- f.ebner@proxmox.com, den@virtuozzo.com, alexander.ivanov@virtuozzo.com
-Subject: [PATCH v3 5/5] iotests: add backup-discard-source
-Date: Wed, 28 Feb 2024 17:15:01 +0300
-Message-Id: <20240228141501.455989-6-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240228141501.455989-1-vsementsov@yandex-team.ru>
-References: <20240228141501.455989-1-vsementsov@yandex-team.ru>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.72;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1rfKm5-0002rs-LM
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 09:19:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709129947;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=T9gsHcaIXWgebE1TFLUlGT0eDuaJ1smlcNOq4J3sI5w=;
+ b=Pz5zKwZPo5EHse2nbPQ9j4wbm6+xZaDdx7m1trHb3LP2minga51LK2Vy0TkpVflx+0crGz
+ yU6JRF5TeZ3J+jG4ktz7z7XQHqmRw8l8o09wvI+pTz5Xabn9v5Jq/YR3kKxq6Lfv6aHmOy
+ 1W+R/IhOTpdXJX9daXAR+jRHTN37qoo=
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com
+ [209.85.166.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-128-B1Pk6NNcPw6obibdKgUGQA-1; Wed, 28 Feb 2024 09:19:05 -0500
+X-MC-Unique: B1Pk6NNcPw6obibdKgUGQA-1
+Received: by mail-io1-f70.google.com with SMTP id
+ ca18e2360f4ac-7c7ee7fa1caso131084739f.0
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 06:19:05 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709129945; x=1709734745;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=T9gsHcaIXWgebE1TFLUlGT0eDuaJ1smlcNOq4J3sI5w=;
+ b=vZ8bp5kQHvwlFkosQKNXURowEPJFAqZkVx8ChnUQyXt11vRly1P4ZpECq5VQqFqTaf
+ n4C+fXMKT1wYQcsTbU6OUV5V7a3XlYyiitFs/1/juWrUlr7KEmOC218petMrQsUGWeRR
+ 6guvfqsXgT6R2pZn7UrS6fmur+vusIgQiB3U1l2s6fWYJuwnBgFaUI9d39EyEfxn1ayi
+ bi56Ajmohk8f5fM80XTZzRVelu3U3uWkTWLqrEW/6gT6AhdFdM9RDNU2Qb3P9vjUfvFY
+ TamDO8tiAeUpBJkFoMwKi+QYa4PlDCF3pO+lLcy34r30YSMKks9JrPULT7+/kay36gwb
+ 0AcA==
+X-Gm-Message-State: AOJu0Yx2rw78ptYaZ5QQg5tdj/KQWR1eztUnBB+iuxmDO0YAcw/mclO/
+ RHWzlmsdkTZUeMLTjlY7xIBKxngEcwWiTX1uqeb6GzaEp1fxXb6RyVdxw6Ahd5QDNyUitolDjlW
+ L9+igGn/PUOS+d0f7pA0f+Es51mAVEf8qwYQdctXUazTbJ20NhaGH
+X-Received: by 2002:a92:d64d:0:b0:363:c4b9:d931 with SMTP id
+ x13-20020a92d64d000000b00363c4b9d931mr12990313ilp.20.1709129945123; 
+ Wed, 28 Feb 2024 06:19:05 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFRTfUno1/9G5BXSAr8hQfPguffcPGArfDBiIYVkj2Lw+6vYb2wduwuOQakdtaINs+W5X/K8w==
+X-Received: by 2002:a92:d64d:0:b0:363:c4b9:d931 with SMTP id
+ x13-20020a92d64d000000b00363c4b9d931mr12990285ilp.20.1709129944853; 
+ Wed, 28 Feb 2024 06:19:04 -0800 (PST)
+Received: from smtpclient.apple ([115.96.143.215])
+ by smtp.gmail.com with ESMTPSA id
+ z20-20020aa785d4000000b006e45dce37basm7844002pfn.220.2024.02.28.06.18.59
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 28 Feb 2024 06:19:04 -0800 (PST)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
+Subject: Re: [PATCH 03/19] tests: smbios: add test for legacy mode CLI options
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <20240227154749.1818189-4-imammedo@redhat.com>
+Date: Wed, 28 Feb 2024 19:48:47 +0530
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Song Gao <gaosong@loongson.cn>,
+ Alistair Francis <alistair.francis@wdc.com>, palmer@dabbelt.com,
+ bin.meng@windriver.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com,
+ =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, qemu-arm@nongnu.org,
+ qemu-riscv@nongnu.org, f.ebner@proxmox.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <A54DF112-5A08-43E2-A30E-BA32FE330320@redhat.com>
+References: <20240227154749.1818189-1-imammedo@redhat.com>
+ <20240227154749.1818189-4-imammedo@redhat.com>
+To: Igor Mammedov <imammedo@redhat.com>
+X-Mailer: Apple Mail (2.3774.400.31)
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.102,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,185 +111,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add test for a new backup option: discard-source.
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- .../qemu-iotests/tests/backup-discard-source  | 151 ++++++++++++++++++
- .../tests/backup-discard-source.out           |   5 +
- 2 files changed, 156 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/backup-discard-source
- create mode 100644 tests/qemu-iotests/tests/backup-discard-source.out
 
-diff --git a/tests/qemu-iotests/tests/backup-discard-source b/tests/qemu-iotests/tests/backup-discard-source
-new file mode 100755
-index 0000000000..8a88b0f6c4
---- /dev/null
-+++ b/tests/qemu-iotests/tests/backup-discard-source
-@@ -0,0 +1,151 @@
-+#!/usr/bin/env python3
-+#
-+# Test removing persistent bitmap from backing
-+#
-+# Copyright (c) 2022 Virtuozzo International GmbH.
-+#
-+# This program is free software; you can redistribute it and/or modify
-+# it under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 2 of the License, or
-+# (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+#
-+
-+import os
-+
-+import iotests
-+from iotests import qemu_img_create, qemu_img_map, qemu_io
-+
-+
-+temp_img = os.path.join(iotests.test_dir, 'temp')
-+source_img = os.path.join(iotests.test_dir, 'source')
-+target_img = os.path.join(iotests.test_dir, 'target')
-+size = '1M'
-+
-+
-+def get_actual_size(vm, node_name):
-+    nodes = vm.cmd('query-named-block-nodes', flat=True)
-+    node = next(n for n in nodes if n['node-name'] == node_name)
-+    return node['image']['actual-size']
-+
-+
-+class TestBackup(iotests.QMPTestCase):
-+    def setUp(self):
-+        qemu_img_create('-f', iotests.imgfmt, source_img, size)
-+        qemu_img_create('-f', iotests.imgfmt, temp_img, size)
-+        qemu_img_create('-f', iotests.imgfmt, target_img, size)
-+        qemu_io('-c', 'write 0 1M', source_img)
-+
-+        self.vm = iotests.VM()
-+        self.vm.launch()
-+
-+        self.vm.cmd('blockdev-add', {
-+            'node-name': 'cbw',
-+            'driver': 'copy-before-write',
-+            'file': {
-+                'driver': iotests.imgfmt,
-+                'file': {
-+                    'driver': 'file',
-+                    'filename': source_img,
-+                }
-+            },
-+            'target': {
-+                'driver': iotests.imgfmt,
-+                'discard': 'unmap',
-+                'node-name': 'temp',
-+                'file': {
-+                    'driver': 'file',
-+                    'filename': temp_img
-+                }
-+            }
-+        })
-+
-+        self.vm.cmd('blockdev-add', {
-+            'node-name': 'access',
-+            'discard': 'unmap',
-+            'driver': 'snapshot-access',
-+            'file': 'cbw'
-+        })
-+
-+        self.vm.cmd('blockdev-add', {
-+            'driver': iotests.imgfmt,
-+            'node-name': 'target',
-+            'file': {
-+                'driver': 'file',
-+                'filename': target_img
-+            }
-+        })
-+
-+        self.assertLess(get_actual_size(self.vm, 'temp'), 512 * 1024)
-+
-+    def tearDown(self):
-+        # That should fail, because region is discarded
-+        self.vm.hmp_qemu_io('access', 'read 0 1M')
-+
-+        self.vm.shutdown()
-+
-+        self.assertTrue('read failed: Permission denied' in self.vm.get_log())
-+
-+        # Final check that temp image is empty
-+        mapping = qemu_img_map(temp_img)
-+        self.assertEqual(len(mapping), 1)
-+        self.assertEqual(mapping[0]['start'], 0)
-+        self.assertEqual(mapping[0]['length'], 1024 * 1024)
-+        self.assertEqual(mapping[0]['data'], False)
-+
-+        os.remove(temp_img)
-+        os.remove(source_img)
-+        os.remove(target_img)
-+
-+    def do_backup(self):
-+        self.vm.cmd('blockdev-backup', device='access',
-+                    sync='full', target='target',
-+                    job_id='backup0',
-+                    discard_source=True)
-+
-+        self.vm.event_wait(name='BLOCK_JOB_COMPLETED')
-+
-+    def test_discard_written(self):
-+        """
-+        1. Guest writes
-+        2. copy-before-write operation, data is stored to temp
-+        3. start backup(discard_source=True), check that data is
-+           removed from temp
-+        """
-+        # Trigger copy-before-write operation
-+        result = self.vm.hmp_qemu_io('cbw', 'write 0 1M')
-+        self.assert_qmp(result, 'return', '')
-+
-+        # Check that data is written to temporary image
-+        self.assertGreater(get_actual_size(self.vm, 'temp'), 1024 * 1024)
-+
-+        self.do_backup()
-+
-+    def test_discard_cbw(self):
-+        """
-+        1. do backup(discard_source=True), which should inform
-+           copy-before-write that data is not needed anymore
-+        2. Guest writes
-+        3. Check that copy-before-write operation is not done
-+        """
-+        self.do_backup()
-+
-+        # Try trigger copy-before-write operation
-+        result = self.vm.hmp_qemu_io('cbw', 'write 0 1M')
-+        self.assert_qmp(result, 'return', '')
-+
-+        # Check that data is not written to temporary image, as region
-+        # is discarded from copy-before-write process
-+        self.assertLess(get_actual_size(self.vm, 'temp'), 512 * 1024)
-+
-+
-+if __name__ == '__main__':
-+    iotests.main(supported_fmts=['qcow2'],
-+                 supported_protocols=['file'])
-diff --git a/tests/qemu-iotests/tests/backup-discard-source.out b/tests/qemu-iotests/tests/backup-discard-source.out
-new file mode 100644
-index 0000000000..fbc63e62f8
---- /dev/null
-+++ b/tests/qemu-iotests/tests/backup-discard-source.out
-@@ -0,0 +1,5 @@
-+..
-+----------------------------------------------------------------------
-+Ran 2 tests
-+
-+OK
--- 
-2.34.1
+> On 27-Feb-2024, at 21:17, Igor Mammedov <imammedo@redhat.com> wrote:
+>=20
+> Unfortunately having 2.0 machine type deprecated is not enough
+> to get rid of legacy SMBIOS handling since 'isapc' also uses
+> that and it's staying around.
+>=20
+> Hence add test for CLI options handling to be sure that it
+> ain't broken during SMBIOS code refactoring.
+>=20
+> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
+
+> ---
+> tests/data/smbios/type11_blob.legacy | Bin 0 -> 10 bytes
+> tests/qtest/bios-tables-test.c       |  17 +++++++++++++++++
+> 2 files changed, 17 insertions(+)
+> create mode 100644 tests/data/smbios/type11_blob.legacy
+>=20
+> diff --git a/tests/data/smbios/type11_blob.legacy =
+b/tests/data/smbios/type11_blob.legacy
+> new file mode 100644
+> index =
+0000000000000000000000000000000000000000..aef463aab903405958b0a85f85c59806=
+71c08bee
+> GIT binary patch
+> literal 10
+> Rcmd;PW!S(N;u;*n000Tp0s;U4
+>=20
+> literal 0
+> HcmV?d00001
+>=20
+> diff --git a/tests/qtest/bios-tables-test.c =
+b/tests/qtest/bios-tables-test.c
+> index a116f88e1d..d1ff4db7a2 100644
+> --- a/tests/qtest/bios-tables-test.c
+> +++ b/tests/qtest/bios-tables-test.c
+> @@ -2106,6 +2106,21 @@ static void test_acpi_pc_smbios_blob(void)
+>     free_test_data(&data);
+> }
+>=20
+> +static void test_acpi_isapc_smbios_legacy(void)
+> +{
+> +    uint8_t req_type11[] =3D { 1, 11 };
+> +    test_data data =3D {
+> +        .machine =3D "isapc",
+> +        .variant =3D ".pc_smbios_legacy",
+> +        .required_struct_types =3D req_type11,
+> +        .required_struct_types_len =3D ARRAY_SIZE(req_type11),
+> +    };
+> +
+> +    test_smbios("-smbios file=3Dtests/data/smbios/type11_blob.legacy =
+"
+> +                "-smbios type=3D1,family=3DTEST", &data);
+> +    free_test_data(&data);
+> +}
+> +
+> static void test_oem_fields(test_data *data)
+> {
+>     int i;
+> @@ -2261,6 +2276,8 @@ int main(int argc, char *argv[])
+>                            test_acpi_pc_smbios_options);
+>             qtest_add_func("acpi/piix4/smbios-blob",
+>                            test_acpi_pc_smbios_blob);
+> +            qtest_add_func("acpi/piix4/smbios-legacy",
+> +                           test_acpi_isapc_smbios_legacy);
+>         }
+>         if (qtest_has_machine(MACHINE_Q35)) {
+>             qtest_add_func("acpi/q35", test_acpi_q35_tcg);
+> --=20
+> 2.39.3
+>=20
 
 
