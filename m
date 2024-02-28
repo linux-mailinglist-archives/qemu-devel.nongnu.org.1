@@ -2,96 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF32886AE26
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 12:52:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A2F086AE7E
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 12:59:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfITP-0002Jr-Mb; Wed, 28 Feb 2024 06:51:43 -0500
+	id 1rfIYl-0005nY-CG; Wed, 28 Feb 2024 06:57:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1rfITE-0002H0-5o
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:51:32 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1rfITC-0004do-DH
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:51:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709121089;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=W4e+t0o6V0jdtfmIXye7cHCq9n4R1J5CLWq3Jm4x+Vc=;
- b=GHL9glofMZcI/amL3uuTJ8FBip4Y8JBvkKH55hjbdgufUcKAdAyN8Y7obvUHC6crqIHQB9
- 7EuGtMrukCKZzr5z7TsLROweP3J6E8zhSQ82zi3hmL3zHEwlZz4o5pcaFFkhdriS4atpt3
- JLBHYg3JGs/l06tH5qUUFopY1xKnPQI=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-27-iXieX4h_OoGZ9rJG2Luhvg-1; Wed, 28 Feb 2024 06:51:28 -0500
-X-MC-Unique: iXieX4h_OoGZ9rJG2Luhvg-1
-Received: by mail-yw1-f198.google.com with SMTP id
- 00721157ae682-60804b369c7so58085587b3.2
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 03:51:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rfIYi-0005kw-8G
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:57:12 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rfIYb-0005hb-Oa
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:57:11 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-33d90dfe73cso450601f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 03:57:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1709121423; x=1709726223; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=efuqfbv9c2ySr88w/wsdQ/uMosUS+4dqBnAf3tbxrrQ=;
+ b=rfLedKGQHlgHHxZ8Jzj7hIj8ov5q2Etgc+JLkeIiUYzbkcOPPLxfYUyTo1/nSKH4RF
+ +ziu+7w3GSf/5oELywlOhftCieM+/YVJEm3Oe6r6W/Cv9bvR+YU34sKAxnTCL0Vb4Fjo
+ kJ6lQF/Fn6lYiyBnVTON6/7UxY+ilhwe1hYihn5J+dCEvqUxaSy7CIjMH9Dk9klBh6AY
+ AHW/cWXUw7ogoPIQvGnDKMjbmjH2aMHXgGnVSDejD6H9EZ8cBXhV+8+8Q6XKtIXliptQ
+ i9lyzNcyUwTDAM4ahcTGKGO6Q5IBJ4Y+6e03AgGjPZ0FnNy432PFm2hMLz8dk5mpeGf/
+ kUZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709121088; x=1709725888;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=W4e+t0o6V0jdtfmIXye7cHCq9n4R1J5CLWq3Jm4x+Vc=;
- b=gJ6mVaED5EFMAFw8S12jk+IRnXMTeakgFpX42e9MV57KiWCsGSGIV20vnKYamODJvL
- YezO+87qCIcCTiFsT59HCwwus0USV4TBVTtfICEw4p3XbPUU9wEUIs3135khCfiLnKqq
- fd33V64vhoAR2JUItT/qP8lZ6ayBiTIkvsVIChLCxIzliqsJAYhXzIv0XnPL86bebyU7
- lNSLJq1S7l3cwb8zkT/+AybBgxcfYYry1w5ncS8uHUxy8T4/H5h0xM8ECeFvUWiz27XW
- 8FnC9SvJJlt9y5CcrO8eSAOstxh6d6eQ+TqqoRSn++/4P68rJ600HRjSghXxbCU2wByy
- fiug==
-X-Gm-Message-State: AOJu0YyJoJIJ9XqUUvYde88s2tJeOj6YDBVWm6OZSXetPO451hNaH7Vn
- bwVTtY947EszxurH1+MW+8gurrYXGjIg5uA/o18pHo5vfx4NCmSrTc5qOPow9gO1tImyxEUDTWb
- bZG7KxDlblIHfAV7I1MhyItyva7Wl60GATiEsR4KTrK9rp8p0vIglOkgupzM/vr/OtYnKlpEQJj
- //OxD2Ljnd2qScaaDX+hb1ZImK2PhEVhviHytYSg==
-X-Received: by 2002:a81:dc06:0:b0:609:2333:9579 with SMTP id
- h6-20020a81dc06000000b0060923339579mr5021751ywj.4.1709121087892; 
- Wed, 28 Feb 2024 03:51:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGKpZOoZIJTvHgNLuNKy6ghL7VelPtksGeWf7xtMZmfev9TMDwp2ZlY5jKN3E1gqWFWVmwUNqIkQ68cn+/+xiU=
-X-Received: by 2002:a81:dc06:0:b0:609:2333:9579 with SMTP id
- h6-20020a81dc06000000b0060923339579mr5021720ywj.4.1709121087572; Wed, 28 Feb
- 2024 03:51:27 -0800 (PST)
-MIME-Version: 1.0
-References: <20240228114759.44758-1-sgarzare@redhat.com>
-In-Reply-To: <20240228114759.44758-1-sgarzare@redhat.com>
-From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Wed, 28 Feb 2024 12:51:16 +0100
-Message-ID: <CAGxU2F79465w97vY8G51MEe5e+-wRHNB2AyuPYG_tVEOhuOOnQ@mail.gmail.com>
-Subject: Re: [PATCH 0/9] vhost-user: support any POSIX system (tested on macOS
- and FreeBSD)
+ d=1e100.net; s=20230601; t=1709121423; x=1709726223;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=efuqfbv9c2ySr88w/wsdQ/uMosUS+4dqBnAf3tbxrrQ=;
+ b=j7gZ4N78XFNgoxwxaSz6NZ0Pccir0fGis9O9B6Gu9BJwXtCpHbwjiyiuGR9xHBfFJ+
+ oBHk4Ed+DseTl0c9M8mSJZ2J0ycrYMPNtPU+NTzj2Ft0r+cLFNE4/kM2kzxCfCYcS4DS
+ 9nDOvZcwuzJkLStUEC6gR/VYWvmn/sQkxkOgEZer4kmwvmPMvacFJkqXGxIFP4RGd7/e
+ j3g0GKkl7bXUzNpgwbKFpRGplxMM46Yy7i5Sieiw7Faox/DNBK/j0ISeagghdd5pwpyk
+ n21uSGfTHAFCsqNF+0FLoZr7GNJt/lEKbXILbanADmXW0TlTMkb2FznKUABaj5wXT0TX
+ Yggw==
+X-Gm-Message-State: AOJu0YxWWOYnbCsYXMjX4fYDHs8PEV11bNDZ7IpxDIAxE6TR3F49sMW3
+ 39BXiGw2F1L5b7bBwXn9fs4vQ1ptheJJ2B65xp3gLfzbod/+oQs0XONITYzSCfGz1NTuflYi96D
+ +
+X-Google-Smtp-Source: AGHT+IFMNiPo0SU2DUGwtQ0THWYDvCGoLD4U8lmP3TSIrAKoI3zZhUs8hkXwewsPn79sryRljz5RmQ==
+X-Received: by 2002:a05:6000:1374:b0:33d:c0c3:fe0a with SMTP id
+ q20-20020a056000137400b0033dc0c3fe0amr2827369wrz.0.1709121422947; 
+ Wed, 28 Feb 2024 03:57:02 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ bs17-20020a056000071100b0033df8854f0dsm2536504wrb.26.2024.02.28.03.57.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 28 Feb 2024 03:57:02 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id D7C285F7DF;
+ Wed, 28 Feb 2024 11:57:01 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-block@nongnu.org, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
- Coiby Xu <Coiby.Xu@gmail.com>, 
- slp@redhat.com, Eduardo Habkost <eduardo@habkost.net>,
- Hanna Reitz <hreitz@redhat.com>, 
- Igor Mammedov <imammedo@redhat.com>, Raphael Norwitz <raphael@enfabrica.net>, 
- Kevin Wolf <kwolf@redhat.com>, David Hildenbrand <david@redhat.com>,
- stefanha@redhat.com, gmaglione@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 00/29] testing, gdbstub and plugin updates
+Date: Wed, 28 Feb 2024 11:56:32 +0000
+Message-Id: <20240228115701.1416107-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.102,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,123 +92,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I just noticed that I forgot to add RFC tag and fix Author to match
-SOB in some patches, sorry!
+The following changes since commit 158a054c4d1a40179f5e83cd7e1cfe65de457b92:
 
-Stefano
+  Merge tag 'pull-target-arm-20240227-1' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2024-02-27 15:34:41 +0000)
 
-On Wed, Feb 28, 2024 at 12:48=E2=80=AFPM Stefano Garzarella <sgarzare@redha=
-t.com> wrote:
->
-> The vhost-user protocol is not really Linux-specific, so let's try suppor=
-t
-> QEMU's frontends and backends (including libvhost-user) in any POSIX syst=
-em
-> with this series. The main use case is to be able to use virtio devices t=
-hat
-> we don't have built-in in QEMU (e.g. virtiofsd, vhost-user-vsock, etc.) e=
-ven
-> in non-Linux systems.
->
-> The first 5 patches are more like fixes discovered at runtime on macOS or
-> FreeBSD that could go even independently of this series.
->
-> Patches 6, 7, and 8 enable building of frontends and backends (including
-> libvhost-user) with associated code changes to succeed in compilation.
->
-> The latest patch (9) adds support for the POSIX shm_open() API to create
-> shared memory which is identified by an fd that can be shared with vhost-=
-user
-> backends. This is useful on those systems (like macOS) where we don't hav=
-e
-> memfd_create() or special filesystems like "/dev/shm".
->
-> I put the whole series in RFC because I have some questions especially in
-> patch 6 and 9, but in general any comment/suggestion/test are really welc=
-ome.
->
-> Maybe the first 5 patches can go separately, but I only discovered those
-> problems after testing patches 6 - 9, so I have included them in this ser=
-ies
-> for now. Please let me know if you prefer that I send them separately.
->
-> For now I tested this series using vhost-user-blk and QSD on
-> macOS Sonoma 14.3.1 (aarch64), FreeBSD 14 (x86_64), and Fedora 39 (x86_64=
-)
-> in this way:
->
-> - Start vhost-user-blk or QSD (same commands for all systems)
->
->   vhost-user-blk -s /tmp/vhost.socket \
->     -b Fedora-Cloud-Base-39-1.5.x86_64.raw
->
->   qemu-storage-daemon \
->     --blockdev file,filename=3DFedora-Cloud-Base-39-1.5.x86_64.qcow2,node=
--name=3Dfile \
->     --blockdev qcow2,file=3Dfile,node-name=3Dqcow2 \
->     --export vhost-user-blk,addr.type=3Dunix,addr.path=3D/tmp/vhost.socke=
-t,id=3Dvub,num-queues=3D1,node-name=3Dqcow2,writable=3Don
->
-> - macOS (aarch64): start QEMU (using hvf accelerator)
->
->   qemu-system-aarch64 -smp 2 -cpu host -M virt,accel=3Dhvf,memory-backend=
-=3Dmem \
->     -drive file=3D./build/pc-bios/edk2-aarch64-code.fd,if=3Dpflash,format=
-=3Draw,readonly=3Don \
->     -device virtio-net-device,netdev=3Dnet0 -netdev user,id=3Dnet0 \
->     -device ramfb -device usb-ehci -device usb-kbd \
->     -object memory-backend-file,mem-path=3D"/mem0",shm=3Don,share=3Don,id=
-=3Dmem,size=3D512M \
->     -device vhost-user-blk-pci,num-queues=3D1,disable-legacy=3Don,chardev=
-=3Dchar0 \
->     -chardev socket,id=3Dchar0,path=3D/tmp/vhost.socket
->
-> - FreeBSD (x86_64): start QEMU (no accelerators available)
->
->   qemu-system-x86_64 -smp 2 -M q35,memory-backend=3Dmem \
->     -object memory-backend-file,mem-path=3D"/mem0",shm=3Don,share=3Don,id=
-=3Dmem,size=3D"512M" \
->     -device vhost-user-blk-pci,num-queues=3D1,chardev=3Dchar0 \
->     -chardev socket,id=3Dchar0,path=3D/tmp/vhost.socket
->
-> - Fedora (x86_64): start QEMU (using kvm accelerator)
->
->   qemu-system-x86_64 -smp 2 -M q35,accel=3Dkvm,memory-backend=3Dmem \
->     -object memory-backend-file,mem-path=3D"/mem0",shm=3Don,share=3Don,id=
-=3Dmem,size=3D"512M" \
->     -device vhost-user-blk-pci,num-queues=3D1,chardev=3Dchar0 \
->     -chardev socket,id=3Dchar0,path=3D/tmp/vhost.socket
->
-> Thanks,
-> Stefano
->
-> Stefano Garzarella (9):
->   libvhost-user: set msg.msg_control to NULL when it is empty
->   libvhost-user: fail vu_message_write() if sendmsg() is failing
->   libvhost-user: mask F_INFLIGHT_SHMFD if memfd is not supported
->   vhost-user-server: don't abort if we can't set fd non-blocking
->   contrib/vhost-user-blk: fix bind() using the right size of the address
->   vhost-user: enable frontends on any POSIX system
->   libvhost-user: enable it on any POSIX system
->   contrib/vhost-user-blk: enabled it on any POSIX system
->   hostmem-file: support POSIX shm_open()
->
->  meson.build                               |  5 +-
->  qapi/qom.json                             |  4 ++
->  subprojects/libvhost-user/libvhost-user.h |  2 +-
->  backends/hostmem-file.c                   | 57 ++++++++++++++++-
->  contrib/vhost-user-blk/vhost-user-blk.c   | 23 +++++--
->  hw/net/vhost_net.c                        |  8 ++-
->  subprojects/libvhost-user/libvhost-user.c | 76 ++++++++++++++++++++++-
->  util/vhost-user-server.c                  |  6 +-
->  backends/meson.build                      |  2 +-
->  hw/block/Kconfig                          |  2 +-
->  qemu-options.hx                           | 10 ++-
->  util/meson.build                          |  4 +-
->  12 files changed, 179 insertions(+), 20 deletions(-)
->
-> --
-> 2.43.2
->
+are available in the Git repository at:
+
+  https://gitlab.com/stsquad/qemu.git tags/pull-maintainer-updates-280224-1
+
+for you to fetch changes up to 02ca5ec15089c8717d435d8a842360f15afa7d20:
+
+  docs/devel: plugins can trigger a tb flush (2024-02-28 09:11:42 +0000)
+
+----------------------------------------------------------------
+Testing, gdbstub and plugin updates:
+
+  - fix some test/tcg license headers to GPLv2+
+  - bump up check-tcg timeout to 120s
+  - avoid re-building VM images too often
+  - update OpenBSD to 7.4
+  - use GDBFeature to build gdbstub XML
+  - unify plugin vcpu count under qemu_plugin_num_vcpus
+  - avoid spurious idle/resume callbacks on new vCPUs
+  - ensure nios2-linux-user processes async work
+  - call vcpu_init plugin callback through async work
+  - define plugin helpers when registers being read
+  - add plugin API for reading register values
+  - add support for register tracking to execlog
+  - update plugin docs with assumptions
+  - mention plugins can trigger tb_flush in mttcg design doc
+
+----------------------------------------------------------------
+Akihiko Odaki (11):
+      target/arm: Use GDBFeature for dynamic XML
+      target/ppc: Use GDBFeature for dynamic XML
+      target/riscv: Use GDBFeature for dynamic XML
+      gdbstub: Use GDBFeature for gdb_register_coprocessor
+      gdbstub: Use GDBFeature for GDBRegisterState
+      gdbstub: Change gdb_get_reg_cb and gdb_set_reg_cb
+      gdbstub: Simplify XML lookup
+      gdbstub: Infer number of core registers from XML
+      hw/core/cpu: Remove gdb_get_dynamic_xml member
+      gdbstub: Add members to identify registers to GDBFeature
+      plugins: Use different helpers when reading registers
+
+Alex Bennée (13):
+      tests/tcg: update licenses to GPLv2 as intended
+      tests/tcg: bump TCG test timeout to 120s
+      tests/vm: avoid re-building the VM images all the time
+      tests/vm: update openbsd image to 7.4
+      linux-user: ensure nios2 processes queued work
+      gdbstub: expose api to find registers
+      plugins: create CPUPluginState and migrate plugin_mask
+      plugins: add an API to read registers
+      tests/tcg: expand insn test case to exercise register API
+      contrib/plugins: fix imatch
+      contrib/plugins: extend execlog to track register changes
+      docs/devel: lift example and plugin API sections up
+      docs/devel: document some plugin assumptions
+
+Pierrick Bouvier (5):
+      plugins: remove previous n_vcpus functions from API
+      plugins: add qemu_plugin_num_vcpus function
+      plugins: fix order of init/idle/resume callback
+      cpu: call plugin init hook asynchronously
+      docs/devel: plugins can trigger a tb flush
+
+ docs/devel/multi-thread-tcg.rst                   |   1 +
+ docs/devel/tcg-plugins.rst                        |  72 ++++-
+ accel/tcg/plugin-helpers.h                        |   3 +-
+ include/exec/gdbstub.h                            |  43 ++-
+ include/hw/core/cpu.h                             |  18 +-
+ include/qemu/plugin.h                             |  14 +
+ include/qemu/qemu-plugin.h                        |  61 ++++-
+ include/qemu/typedefs.h                           |   1 +
+ plugins/plugin.h                                  |   6 +-
+ target/arm/cpu.h                                  |  27 +-
+ target/arm/internals.h                            |  14 +-
+ target/hexagon/internal.h                         |   4 +-
+ target/microblaze/cpu.h                           |   4 +-
+ target/ppc/cpu-qom.h                              |   1 +
+ target/ppc/cpu.h                                  |   5 +-
+ target/riscv/cpu.h                                |   5 +-
+ target/s390x/cpu.h                                |   2 -
+ tests/tcg/aarch64/semicall.h                      |   4 +-
+ tests/tcg/arm/semicall.h                          |   4 +-
+ tests/tcg/multiarch/float_helpers.h               |   4 +-
+ tests/tcg/riscv64/semicall.h                      |   4 +-
+ accel/tcg/plugin-gen.c                            |  46 +++-
+ contrib/plugins/cache.c                           |   2 +-
+ contrib/plugins/execlog.c                         | 318 ++++++++++++++++++----
+ gdbstub/gdbstub.c                                 | 169 +++++++-----
+ hw/core/cpu-common.c                              |  19 +-
+ linux-user/nios2/cpu_loop.c                       |   1 +
+ plugins/api.c                                     |  96 +++++--
+ plugins/core.c                                    |  28 +-
+ target/arm/cpu.c                                  |   2 -
+ target/arm/cpu64.c                                |   1 -
+ target/arm/gdbstub.c                              | 230 ++++++++--------
+ target/arm/gdbstub64.c                            | 122 +++++----
+ target/avr/cpu.c                                  |   1 -
+ target/hexagon/cpu.c                              |   4 +-
+ target/hexagon/gdbstub.c                          |  10 +-
+ target/i386/cpu.c                                 |   2 -
+ target/loongarch/cpu.c                            |   2 -
+ target/loongarch/gdbstub.c                        |  13 +-
+ target/m68k/cpu.c                                 |   1 -
+ target/m68k/helper.c                              |  26 +-
+ target/microblaze/cpu.c                           |   6 +-
+ target/microblaze/gdbstub.c                       |  14 +-
+ target/ppc/cpu_init.c                             |   7 -
+ target/ppc/gdbstub.c                              | 114 ++++----
+ target/riscv/cpu.c                                |  15 -
+ target/riscv/gdbstub.c                            | 145 +++++-----
+ target/rx/cpu.c                                   |   1 -
+ target/s390x/cpu.c                                |   1 -
+ target/s390x/gdbstub.c                            | 105 ++++---
+ tests/plugin/insn.c                               |  21 ++
+ tests/tcg/multiarch/arm-compat-semi/semiconsole.c |   4 +-
+ tests/tcg/multiarch/arm-compat-semi/semihosting.c |   4 +-
+ tests/tcg/multiarch/float_convd.c                 |   4 +-
+ tests/tcg/multiarch/float_convs.c                 |   4 +-
+ tests/tcg/multiarch/float_madds.c                 |   4 +-
+ tests/tcg/multiarch/libs/float_helpers.c          |   4 +-
+ plugins/qemu-plugins.symbols                      |   5 +-
+ scripts/feature_to_c.py                           |  14 +-
+ tests/tcg/Makefile.target                         |   9 +-
+ tests/tcg/i386/system/boot.S                      |   6 +-
+ tests/tcg/x86_64/system/boot.S                    |   6 +-
+ tests/vm/Makefile.include                         |   2 +-
+ tests/vm/basevm.py                                |   4 +-
+ tests/vm/openbsd                                  |   9 +-
+ 65 files changed, 1237 insertions(+), 661 deletions(-)
+
+-- 
+2.39.2
 
 
