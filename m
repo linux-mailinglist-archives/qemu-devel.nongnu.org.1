@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A74886AB98
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 10:47:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C29D86AB95
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 10:47:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfGX3-0006FK-6N; Wed, 28 Feb 2024 04:47:21 -0500
+	id 1rfGVm-0004GM-FT; Wed, 28 Feb 2024 04:46:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rfGWz-0006Bb-FE
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 04:47:17 -0500
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rfGVc-0004Et-Bz
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 04:45:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rfGWx-0002AQ-Vm
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 04:47:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709113636; x=1740649636;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=klAYBbP2OdBAI+vH8MMNk4trXTEnoMk+ZzXZROcs7UA=;
- b=bO+BNLg42d2OH60aUhRpPBhsySLitqKoJrTQnlcFLtf2mSD/UDuZr1BU
- ni7lZAR9fvcT7bHBkqYITfgJwcQMWCTQi/3ElzfVO94mJBhmdVwfN8V91
- C8L1Gua84f5XpCNKXTWiYncSmFtr0eW9n6CJL6xemlf4vWOHXKr9YWYUR
- YjFzB/5cl9S9H40HRcMtZFvyfAmt2PjaNRSXvwdWP7GGNrGw+QL1PGFoH
- jndvCSVMBl/OE4eadDR0iputaXtQjGrJfEWV/aEP9Exfu7ZUay/xFiDOq
- //5f8Jj5YGVsys3gqsj+YMZ4c8sL3ebNVeWKMfELDQoV3OPdK2P8ggw2f w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="25970028"
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="25970028"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 01:47:15 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
-   d="scan'208";a="7810109"
-Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 01:47:11 -0800
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- peterx@redhat.com, jasowang@redhat.com, mst@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com, kevin.tian@intel.com,
- yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v1 6/6] intel_iommu: Block migration if cap is updated
-Date: Wed, 28 Feb 2024 17:44:32 +0800
-Message-Id: <20240228094432.1092748-7-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240228094432.1092748-1-zhenzhong.duan@intel.com>
-References: <20240228094432.1092748-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rfGVa-00024W-Qx
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 04:45:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709113549;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=oGOHC0P+A2PQu2DUnVcBmlATmXBt24+SP/x9QeF8Gok=;
+ b=BzORVUqstH7VWjLuM3pF4cCF5aUu/uTCyNPLU+XOcDuVu4ZkO6AXfhQmsmcGI/v2CCrgqk
+ OA8n7ZtkqpYl5r6rZzAh4gylPRfZFj+97gSnOgE2UE42NV8lgFBuvpYV0nbhk888282Cyi
+ z71KltQyKuSAs7EnKgYb6tez8kjj72A=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-661-FzMkgffnMC6IPYt0cii8-g-1; Wed, 28 Feb 2024 04:45:46 -0500
+X-MC-Unique: FzMkgffnMC6IPYt0cii8-g-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9063183DDF8;
+ Wed, 28 Feb 2024 09:45:45 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.4])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 6AB01C01644;
+ Wed, 28 Feb 2024 09:45:45 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 5DDE321E6767; Wed, 28 Feb 2024 10:45:44 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Hao Xiang <hao.xiang@bytedance.com>
+Cc: pbonzini@redhat.com,  berrange@redhat.com,  eduardo@habkost.net,
+ peterx@redhat.com,  farosas@suse.de,  eblake@redhat.com,
+ armbru@redhat.com,  thuth@redhat.com,  lvivier@redhat.com,
+ jdenemar@redhat.com,  marcel.apfelbaum@gmail.com,  philmd@linaro.org,
+ wangyanan55@huawei.com,  qemu-devel@nongnu.org
+Subject: Re: [PATCH v3 2/7] migration/multifd: Implement zero page
+ transmission on the multifd thread.
+In-Reply-To: <20240226195654.934709-3-hao.xiang@bytedance.com> (Hao Xiang's
+ message of "Mon, 26 Feb 2024 19:56:49 +0000")
+References: <20240226195654.934709-1-hao.xiang@bytedance.com>
+ <20240226195654.934709-3-hao.xiang@bytedance.com>
+Date: Wed, 28 Feb 2024 10:45:44 +0100
+Message-ID: <87il282a7r.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.9;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,56 +85,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When there is VFIO device and vIOMMU cap/ecap is updated based on host
-IOMMU cap/ecap, migration should be blocked.
+Hao Xiang <hao.xiang@bytedance.com> writes:
 
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- hw/i386/intel_iommu.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+> 1. Add zero_pages field in MultiFDPacket_t.
+> 2. Implements the zero page detection and handling on the multifd
+> threads for non-compression, zlib and zstd compression backends.
+> 3. Added a new value 'multifd' in ZeroPageDetection enumeration.
+> 4. Handle migration QEMU9.0 -> QEMU8.2 compatibility.
+> 5. Adds zero page counters and updates multifd send/receive tracing
+> format to track the newly added counters.
+>
+> Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index e474284e43..9ca47dbf9a 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -40,6 +40,7 @@
- #include "hw/i386/apic_internal.h"
- #include "kvm/kvm_i386.h"
- #include "migration/vmstate.h"
-+#include "migration/blocker.h"
- #include "trace.h"
- 
- #define S_AW_BITS (VTD_MGAW_FROM_CAP(s->cap) + 1)
-@@ -3830,6 +3831,8 @@ static int vtd_check_legacy_hdev(IntelIOMMUState *s,
-     return 0;
- }
- 
-+static Error *vtd_mig_blocker;
-+
- static int vtd_check_iommufd_hdev(IntelIOMMUState *s,
-                                   IOMMUFDDevice *idev,
-                                   Error **errp)
-@@ -3861,8 +3864,17 @@ static int vtd_check_iommufd_hdev(IntelIOMMUState *s,
-         tmp_cap |= VTD_CAP_MGAW(host_mgaw + 1);
-     }
- 
--    s->cap = tmp_cap;
--    return 0;
-+    if (s->cap != tmp_cap) {
-+        if (vtd_mig_blocker == NULL) {
-+            error_setg(&vtd_mig_blocker,
-+                       "cap/ecap update from host IOMMU block migration");
-+            ret = migrate_add_blocker(&vtd_mig_blocker, errp);
-+        }
-+        if (!ret) {
-+            s->cap = tmp_cap;
-+        }
-+    }
-+    return ret;
- }
- 
- static int vtd_check_hdev(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hdev,
--- 
-2.34.1
+[...]
+
+> diff --git a/qapi/migration.json b/qapi/migration.json
+> index 1e66272f8f..5a1bb8ad62 100644
+> --- a/qapi/migration.json
+> +++ b/qapi/migration.json
+> @@ -660,10 +660,13 @@
+>  #
+>  # @legacy: Perform zero page checking from main migration thread.
+>  #
+> +# @multifd: Perform zero page checking from multifd sender thread.
+> +#
+
+Make that "in thread" instead of "from thread".  Both occurences,
+i.e. here for @multifd, and in PATCH 1 for @legacy.
+
+>  # Since: 9.0
+> +#
+>  ##
+>  { 'enum': 'ZeroPageDetection',
+> -  'data': [ 'none', 'legacy' ] }
+> +  'data': [ 'none', 'legacy', 'multifd' ] }
+>  
+>  ##
+>  # @BitmapMigrationBitmapAliasTransform:
 
 
