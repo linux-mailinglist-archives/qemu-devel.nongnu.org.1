@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CF4686B4C9
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 17:25:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A19A86B4DC
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 17:27:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfMjN-0004Q4-J3; Wed, 28 Feb 2024 11:24:29 -0500
+	id 1rfMjb-0004i2-4I; Wed, 28 Feb 2024 11:24:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfMjL-0004OJ-KW; Wed, 28 Feb 2024 11:24:27 -0500
+ id 1rfMjM-0004Q0-V7; Wed, 28 Feb 2024 11:24:28 -0500
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfMjK-0000sx-1T; Wed, 28 Feb 2024 11:24:27 -0500
+ id 1rfMjL-0000pW-By; Wed, 28 Feb 2024 11:24:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709137466; x=1740673466;
+ t=1709137467; x=1740673467;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=se7iaBg2YM4bDU1t5iF+ZzwdJjnzwm4fgLQ2Wyzhwuw=;
- b=fLlY9V60XoY97Z0P/0LFl5zrFdms/IFU7sIsHh9Dztd/59Xgp99N4sfZ
- rU6xtecXRoH5AyUm9TR31lgel3ySDuiMp5qjYobr/2sgnaXydIuAYaZGQ
- 3CnQ2EPnRRxH1/P4ro+YMWpdGDpqg3MmvsfKKMGycNm2WdiM7+DIyaG6z
- JgAblhc59fImAIZ2I4pKvSP3LrwqqGbYDietLhEUiablyFuT2usikrSTz
- Qfi/VPylQJB9UvmLDPF8sOlXzT0j4EZ3hndj7nnIpex8XdS6ExjuXF2fn
- CWT0M4UiU3aC1QMVE0QxpI3iKFmy+r21te8kmhvkSDZAoKtTQURQXL6/F g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="28982562"
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="28982562"
+ bh=bf/R70ToG/GS2DWSCokskMMh3cdw5G5KJa0QQxj8uYs=;
+ b=lqe0VGgOATGWOMfnPEZ5EWgYbaaJrr6Nu5+9uNM+prZie+kRW4FwK8LN
+ fyai2tNng58VL7WLaXKK4dOFU0sWWqsx/GP4E0Sqna/nY6vkIh6ePKyuS
+ 8n4Yg2jj4SYlIiIPdq2AKgsQfAIWfk33XJK2C0K3SVoG8dRHfASx6f0Kt
+ 0/yaRc6phAdHz+3r0ULkr3HR38QAuATj1e0nYWKPY+RF526zChqI1+2x2
+ zxuAfnVgGICPM/nPI5sUeAebXHpL5mkX0s4zW4qyux8fYjWKbvaoKuByc
+ lQiPihpgVjlzdC6e4ldglgLIQt3BIWpOKmvpnT+4mfygnjFMfYonMovWx A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="28982596"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="28982596"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 08:24:21 -0800
+ 28 Feb 2024 08:24:23 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="12145008"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="12145026"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 28 Feb 2024 08:24:17 -0800
+ by orviesa004.jf.intel.com with ESMTP; 28 Feb 2024 08:24:20 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Stefan Weil <sw@weilnetz.de>, Kevin Wolf <kwolf@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Kevin Wolf <kwolf@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH 11/16] block/vdi: Fix missing ERRP_GUARD() for error_prepend()
-Date: Thu, 29 Feb 2024 00:37:18 +0800
-Message-Id: <20240228163723.1775791-12-zhao1.liu@linux.intel.com>
+Subject: [PATCH 12/16] block/vmdk: Fix missing ERRP_GUARD() for error_prepend()
+Date: Thu, 29 Feb 2024 00:37:19 +0800
+Message-Id: <20240228163723.1775791-13-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240228163723.1775791-1-zhao1.liu@linux.intel.com>
 References: <20240228163723.1775791-1-zhao1.liu@linux.intel.com>
@@ -98,36 +98,37 @@ ERRP_GUARD() could avoid the case when @errp is the pointer of
 error_fatal, the user can't see this additional information, because
 exit() happens in error_setg earlier than information is added [1].
 
-The vdi_co_do_create() passes @errp to error_prepend() without
-ERRP_GUARD(), and its @errp parameter is so widely sourced that it is
-necessary to protect it with ERRP_GUARD().
+The vmdk_parse_extents() passes @errp to error_prepend(), and its @errp
+is from vmdk_open().
 
-To avoid the potential issues as [1] said, add missing ERRP_GUARD() at
-the beginning of this function.
+Though, vmdk_open(), as a BlockDriver.bdrv_open(), gets the @errp
+parameter which is pointer of its caller's local_err, to follow the
+requirement of @errp, add missing ERRP_GUARD() at the beginning of this
+function.
 
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
 
-Cc: Stefan Weil <sw@weilnetz.de>
+Cc: Fam Zheng <fam@euphon.net>
 Cc: Kevin Wolf <kwolf@redhat.com>
 Cc: Hanna Reitz <hreitz@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- block/vdi.c | 1 +
+ block/vmdk.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/block/vdi.c b/block/vdi.c
-index 3b57becb9fe0..6363da08cee9 100644
---- a/block/vdi.c
-+++ b/block/vdi.c
-@@ -738,6 +738,7 @@ static int coroutine_fn GRAPH_UNLOCKED
- vdi_co_do_create(BlockdevCreateOptions *create_options, size_t block_size,
-                  Error **errp)
+diff --git a/block/vmdk.c b/block/vmdk.c
+index bf78e1238351..3b82979fdf42 100644
+--- a/block/vmdk.c
++++ b/block/vmdk.c
+@@ -1147,6 +1147,7 @@ static int GRAPH_RDLOCK
+ vmdk_parse_extents(const char *desc, BlockDriverState *bs, QDict *options,
+                    Error **errp)
  {
 +    ERRP_GUARD();
-     BlockdevCreateOptionsVdi *vdi_opts;
-     int ret = 0;
-     uint64_t bytes = 0;
+     int ret;
+     int matches;
+     char access[11];
 -- 
 2.34.1
 
