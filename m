@@ -2,84 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5768186B78A
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 19:46:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 458AD86B7BA
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 19:53:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfOw6-00063k-N4; Wed, 28 Feb 2024 13:45:46 -0500
+	id 1rfP23-0000lo-BX; Wed, 28 Feb 2024 13:51:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rfOw4-00063O-IZ
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 13:45:44 -0500
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1rfP21-0000kn-9t
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 13:51:53 -0500
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rfOw2-0004OK-Lw
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 13:45:44 -0500
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-563b7b3e3ecso211740a12.0
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 10:45:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1rfP1y-0006ts-Ob
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 13:51:53 -0500
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6e4f5e84abeso2585304b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 10:51:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1709145940; x=1709750740; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=adOEWGsF8RJgcosuwQS6sn1a1qfk1y0pZpoY4ISf0MQ=;
- b=P/dZ2tgij85qAu+HPmvte4+JTYshk4pXHUwbF76A/aXhs8s0bCPE2ed3oejjIbmHWH
- tyDhPfpZHNGPc3EnGP1qaRvLo/Vah0/GMVZ+ovIFj0ikx9pNFqMe9nw9hdd1v6ZzBCyG
- wKj504OQ+5ubjzLnhLn8dxvd6c4+ZtUphE6PBD9RSNQmNoZKJ9irawo47vTamsGEBhjq
- QpSvps6XqcAO2FwOOaDMmeBZG9xmQrPNlLj7kdcPQau2TJ5A8P+swmks4GCUXNHJIkkh
- FjEvSJghVwZCUl3LhAjxFH8R8fknqjiZAt6v5mTq0x08gdY5lV9EkWfmreIojo58GPbd
- I1AA==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1709146309; x=1709751109;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=wWd0V1EtOEhJfLeyDpChVNppiwn+uZf8rQF0n8RmV5E=;
+ b=Miumsc7BV5dfX4sRTM1vPB/+mEFuz2Prc3qSrZwtUHA+DavmfSSkhHIfKNB3eJWgpc
+ GELnf7qKVGor1Q7f0W6HMqJCcm0gvmwHxutVNCPEqbgcH8OLdK0XVFZTtGtSZHSCvncu
+ 0fCqsO9R7x4278nBrM7v8YReegeg9QRuOMnhPdubIcGI8SG1OHl8mtev4wTTPSM2dNYK
+ HdCpH9WFSatjV6exe/f1GuB7tLIYZmC5dEqPgwhEtEvsnsiBRUfZCIVLaiBrZALhuwVv
+ tCwmm+Y2wu9U+rZURRTVFl8k220Qz+4qp+Q//HXI8+vrpHO/vvlppLamX6FzZHZ89hXJ
+ Gstw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709145940; x=1709750740;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=adOEWGsF8RJgcosuwQS6sn1a1qfk1y0pZpoY4ISf0MQ=;
- b=RGlpjw5Z6SNGFhNDTWYG/mTtYMGH2LS0pwl/qAfq3w3tmIoiry2oz89+ZXa3QMEJEq
- UIB+mqElFloeuHPelaDhY9OAFP4x/58+BWVq5fdneUuMMiQMZIbNInbEEwROeeywM0eO
- e3Q4svPhDDso3BPbX8l4d1Bzn0pU8EatAQIrCnypckGrqBWtI2cJ9b/DF3XJnkOuuQBN
- MR8iHKolo7XcVEfF5rNBjrUez8x4O/7M3LYScQe2Yr94NICDkeq9IYZ9I/XuIRpOD6Lw
- dA+nBPTHXu9LKdIB6XioxLKKzmhh3/Ha70jRkG4+Im+K1O+AJfEXEdCLj5jqEbZyDWai
- aJRg==
+ d=1e100.net; s=20230601; t=1709146309; x=1709751109;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wWd0V1EtOEhJfLeyDpChVNppiwn+uZf8rQF0n8RmV5E=;
+ b=Gt1Hfvx41NtFcWFoHG3ZzP3cDQS6Xxra+/8cLzfKseFmoMdHRVFxfn+zRHCO2TIBZo
+ 37auZUqw0Q3uli+5IudzwaMnrY4u9TFZoFIzIoz2EFQ2+lIaNrpnw4/K6W5MtyF6Tv0W
+ BLXgT6n9aIYoVnBinG/qRo91dKj8sMJ9n4CAn5oKvXJ3u+qYk/3pb9bA5iMhuGP9KaVn
+ GQw7ek9gC6XiPhDMrCCs5zRqnLGNuCw6I//f6KzMrmEhWemyPLaJReYeJd35r3+ZqLDw
+ ASSKYNTyZmDUfquDr2HTGFr+w1QhdjNwAsb4Hmm12tD7lC7nvpD/Xqj+ZLgTJkfZvKPF
+ NKyA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXwT2i2BP/xWMXpo1pd1ACfWY0CgUapusWUAHDrFbT3KAr6JTWytFHBYzUHtJ7moN3uu8TT5iV+apk8BtGOUT+YLDVfOSE=
-X-Gm-Message-State: AOJu0YwmGyulciXkJ3j1E6KGqj4KC4eeL6hiVGUoZ5uuh1SzQw5W9Vu+
- 3GdM4GFs/Z9FMKQG1ZN4SgduaNbpemeQe1+axJQ01ISeVju+B7WnnAfDwZknypOqsC/qcKXlRq2
- qpq/Ej4BnxNtvDzZ7uv3zcZOtPbmDHCvh9aBBNA==
-X-Google-Smtp-Source: AGHT+IH3YXwpQVsI4nhcMO7GlJHZgL4fa2viPOR49LVLqqrO4dn7wuvoj3RPCLg7+8rselR9AtFoaqJXJm8zRO457DU=
-X-Received: by 2002:a05:6402:14c6:b0:565:50f8:bad5 with SMTP id
- f6-20020a05640214c600b0056550f8bad5mr189234edx.30.1709145940269; Wed, 28 Feb
- 2024 10:45:40 -0800 (PST)
+ AJvYcCUeGTfVJcR46Qpk4WMftDbviQs4dIa51AFLWigHZXDeZtY2s7QCw4CDkfvJWkcB++2eVJUyWQpB5FOuQ/vEd5ybWlmVNZg=
+X-Gm-Message-State: AOJu0Yz7TTWi6HUkxwgxttdiNyhGTB+Dlhxtmt7f1jJMN0aisJlw8Dq6
+ LFjiQQ0lQrkVLBHGbFbqWv+tTdedmnXiZ5hux8ITMaE9HJqcKmrNtHC1ZDKPb1rg+FKK7kBXrEA
+ 5
+X-Google-Smtp-Source: AGHT+IFqoUutv1bXbDm4uJjWMlfsLwY7Tow/SsZ3UbfyzmqLO7xZ1e8VV8xDfBUthAwlAMre59XizQ==
+X-Received: by 2002:a05:6a00:997:b0:6e5:32ee:216b with SMTP id
+ u23-20020a056a00099700b006e532ee216bmr1782pfg.27.1709146307977; 
+ Wed, 28 Feb 2024 10:51:47 -0800 (PST)
+Received: from atishp.ba.rivosinc.com ([64.71.180.162])
+ by smtp.gmail.com with ESMTPSA id
+ o20-20020a635d54000000b005dbed0ffb10sm49562pgm.83.2024.02.28.10.51.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 28 Feb 2024 10:51:47 -0800 (PST)
+From: Atish Patra <atishp@rivosinc.com>
+To: 
+Cc: Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org, Weiwei Li <liwei1518@gmail.com>,
+ kaiwenxue1@gmail.com
+Subject: [PATCH v5 0/5] Add ISA extension smcntrpmf support 
+Date: Wed, 28 Feb 2024 10:51:11 -0800
+Message-Id: <20240228185116.1321730-1-atishp@rivosinc.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240226195654.934709-1-hao.xiang@bytedance.com>
- <20240226195654.934709-3-hao.xiang@bytedance.com>
- <871q8w29zx.fsf@pond.sub.org>
-In-Reply-To: <871q8w29zx.fsf@pond.sub.org>
-From: Hao Xiang <hao.xiang@bytedance.com>
-Date: Wed, 28 Feb 2024 10:45:29 -0800
-Message-ID: <CAAYibXgdaH_=JxswvKaz9qaXRFuRncmkrrSpkqSMbFu=3ypfLQ@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v3 2/7] migration/multifd: Implement zero
- page transmission on the multifd thread.
-To: Markus Armbruster <armbru@redhat.com>
-Cc: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net, 
- peterx@redhat.com, farosas@suse.de, eblake@redhat.com, thuth@redhat.com, 
- lvivier@redhat.com, jdenemar@redhat.com, marcel.apfelbaum@gmail.com, 
- philmd@linaro.org, wangyanan55@huawei.com, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=hao.xiang@bytedance.com; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=atishp@rivosinc.com; helo=mail-pf1-x430.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,50 +98,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Feb 28, 2024 at 1:50=E2=80=AFAM Markus Armbruster <armbru@redhat.co=
-m> wrote:
->
-> Hao Xiang <hao.xiang@bytedance.com> writes:
->
-> > 1. Add zero_pages field in MultiFDPacket_t.
-> > 2. Implements the zero page detection and handling on the multifd
-> > threads for non-compression, zlib and zstd compression backends.
-> > 3. Added a new value 'multifd' in ZeroPageDetection enumeration.
-> > 4. Handle migration QEMU9.0 -> QEMU8.2 compatibility.
-> > 5. Adds zero page counters and updates multifd send/receive tracing
-> > format to track the newly added counters.
-> >
-> > Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
->
-> [...]
->
-> > diff --git a/qapi/migration.json b/qapi/migration.json
-> > index 1e66272f8f..5a1bb8ad62 100644
-> > --- a/qapi/migration.json
-> > +++ b/qapi/migration.json
-> > @@ -660,10 +660,13 @@
-> >  #
-> >  # @legacy: Perform zero page checking from main migration thread.
-> >  #
-> > +# @multifd: Perform zero page checking from multifd sender thread.
-> > +#
-> >  # Since: 9.0
-> > +#
-> >  ##
-> >  { 'enum': 'ZeroPageDetection',
-> > -  'data': [ 'none', 'legacy' ] }
-> > +  'data': [ 'none', 'legacy', 'multifd' ] }
-> >
-> >  ##
-> >  # @BitmapMigrationBitmapAliasTransform:
->
-> What happens when you set "zero-page-detection": "multifd" *without*
-> enabling multifd migration?
+This patch series adds the support for RISC-V ISA extension smcntrpmf (cycle and
+privilege mode filtering) [1]. It is based on Kevin's earlier work but improves
+it by actually implement privilege mode filtering by tracking the privilege
+mode switches. This enables the privilege mode filtering for mhpmcounters as
+well. However, Smcntrpmf/Sscofpmf must be enabled to leverage this. This series
+also modified to report the raw instruction count instead of virtual cpu time
+based on the instruction count when icount is enabled. The former seems to be
+the preferred approach for instruction count for other architectures as well.
 
-Very good question! Right now the behavior is that if "multifd
-migration" is not enabled, it goes through the legacy code path and
-the "multifd zero page" option is ignored. The legacy path has its own
-zero page checking and will run the same way as before. This is for
-backward compatibility.
->
+Please let me know if anybody thinks that's incorrect.
+
+The series is also available at
+
+Changes from v4->v5:
+1. Rebased on top of master(158a054c4d1a).
+2. Fixed a bug for VS<->HS transition.
+
+Changes from v3->v4:
+1. Fixed the ordering of the ISA extension names in isa_edata_arr.
+2. Added RB tags.
+
+Changes from v2->v3:
+1. Fixed the rebasing error in PATCH2.
+2. Added RB tags.
+3. Addressed other review comments. 
+
+Changes from v1->v2:
+1. Implemented actual mode filtering for both icount and host ticks mode.
+1. Addressed comments in v1.
+2. Added Kevin's personal email address.
+
+[1] https://github.com/riscv/riscv-smcntrpmf
+[2] https://github.com/atishp04/qemu/tree/smcntrpmf_v5
+
+Atish Patra (2):
+target/riscv: Fix the predicate functions for mhpmeventhX CSRs
+target/riscv: Implement privilege mode filtering for cycle/instret
+
+Kaiwen Xue (3):
+target/riscv: Add cycle & instret privilege mode filtering properties
+target/riscv: Add cycle & instret privilege mode filtering definitions
+target/riscv: Add cycle & instret privilege mode filtering support
+
+target/riscv/cpu.c        |   2 +
+target/riscv/cpu.h        |  17 +++
+target/riscv/cpu_bits.h   |  34 ++++++
+target/riscv/cpu_cfg.h    |   1 +
+target/riscv/cpu_helper.c |  17 ++-
+target/riscv/csr.c        | 251 ++++++++++++++++++++++++++++++--------
+target/riscv/pmu.c        |  64 ++++++++++
+target/riscv/pmu.h        |   2 +
+8 files changed, 335 insertions(+), 53 deletions(-)
+
+--
+2.34.1
+
 
