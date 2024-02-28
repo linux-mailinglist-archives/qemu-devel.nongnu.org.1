@@ -2,138 +2,138 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22CF786B8C7
+	by mail.lfdr.de (Postfix) with ESMTPS id 109D986B8C5
 	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 21:04:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfQ8q-0003h6-Jo; Wed, 28 Feb 2024 15:03:00 -0500
+	id 1rfQ8t-0003iu-BO; Wed, 28 Feb 2024 15:03:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
- id 1rfQ8l-0003gX-DS
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 15:02:56 -0500
+ id 1rfQ8p-0003hH-PC
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 15:02:59 -0500
 Received: from catfish.pear.relay.mailchannels.net ([23.83.216.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
- id 1rfQ8j-0008GI-BT
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 15:02:55 -0500
+ id 1rfQ8j-0008HP-Cl
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 15:02:57 -0500
 X-Sender-Id: _forwarded-from|134.3.94.10
 Received: from relay.mailchannels.net (localhost [127.0.0.1])
- by relay.mailchannels.net (Postfix) with ESMTP id 638BFC18EF
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 20:02:48 +0000 (UTC)
-Received: from outbound5e.eu.mailhop.org (unknown [127.0.0.6])
+ by relay.mailchannels.net (Postfix) with ESMTP id E2195361FE3
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 20:02:51 +0000 (UTC)
+Received: from outbound1g.eu.mailhop.org (unknown [127.0.0.6])
  (Authenticated sender: duocircle)
- by relay.mailchannels.net (Postfix) with ESMTPA id B6F72C19BB
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 20:02:47 +0000 (UTC)
-ARC-Seal: i=2; s=arc-2022; d=mailchannels.net; t=1709150568; a=rsa-sha256;
+ by relay.mailchannels.net (Postfix) with ESMTPA id 30E3E361296
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 20:02:51 +0000 (UTC)
+ARC-Seal: i=2; s=arc-2022; d=mailchannels.net; t=1709150571; a=rsa-sha256;
  cv=pass;
- b=QZsbbADYdaayPmW80/Agz3mDk1Fuu03ICCfsRdn+FeCOAaNjaUVdcVaXHZZ63RNuuS90R+
- L7DhYUwVxUcUgQiRdozkyHZejLsN5nooUf7RkGlXJCR/bOjvqOFXHrH1ZRUVS+dddUHVt/
- u/crOCkNKMwM3fWbuedG5aE5mGmAPDcW+jP8oQGQLWDS2nFOOeHfLfg8t7IYA0Y8J3Yp5T
- 3Uj7bxJjQcRUzCdYl89rEBgqexND0SjsiFB6rZiX011Vnei48wdX3jPWCObDJnQCJllLCu
- 1+EG0jbMbPYE2bkYggIEuGbh08qXJKnaLRjKqhCzuZ0Bon71mjZj4+sAZIp7wA==
+ b=gtj77va2s/LeL2kgChk6PHmtnCNKsRRGfXmb/SmiAlCHP/ftUtZq/IkpOR8vHmNJiYZgCH
+ BkZESO7XKUXKUXbcCi/3u/fU7HUB3WTn4wGUxW5DzsGcdZZD5blH++g3eV3jRVxBDJluwu
+ qxDpEy2XlVxp7LGFNm4T9WXYfsiM5K0HhuIPQcIw0Ya2YCW6h7hw6624/HgrYQznfFxDm8
+ ReQj4RYKCSEkJQ+Cqe9S61kGyYnGxqj1OYTwrMb2ihkGERoQal99Fcyb0WQAOOlpm+7ES+
+ C/tN7eeq9Co0VKLpFq09uyLzjZXGiw+WC02Kjqv36BuWzQXkQx8v3u1LjAQz3A==
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net; s=arc-2022; t=1709150568;
+ d=mailchannels.net; s=arc-2022; t=1709150571;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:dkim-signature;
- bh=zzOEiQj7obGsHCQd9xyo6jp7AhLHL7sbZGnf3tSSs7Q=;
- b=1wOh+PBlOTUqPQgSwsC/E7vsn0qWRvBaUi9MaJ2i7bLUS+Dfdx9F26ycuPMCRv1HcXCmWg
- 0LpH5lqLUrxQwJ6p/xhVhm6R8dkby3+rqhUA4CBEFfIILHTCIk/4CW856ke2yLPJA4gMOv
- 4NbQW53rw8UU8AnZHXSq3OqmKWaf99PNicNZ8Uz/t7VtEWbj+OOHEu/bP/qhMd8YtyXoED
- fuWShME5Azjni6koYOJHXW8OpoI1JTARWxKCNMcSXp4+pD1KQ2mblvQAOh3Qq7tbv33Sad
- eKjxlrxyFhmIEfpRDlJZOqy9+S9nkrfR3QflydxafMOpgDHe8DptAfb0mjT6cg==
-ARC-Authentication-Results: i=2; rspamd-55b4bfd7cb-9jm27;
+ bh=+4BO8V8Ci+BOZk6T4aIijzbqHUwsqEFz95/F59VNM+M=;
+ b=ebSqZerwWuwBAw5R7qxXRpsIKWqiTXdEuj0+al7dU48k4Px2D+Sm+gDiuuLJMJ85iyDNkU
+ bfWrMDDfjBVDskHU3/3WnL9nw0sJtmYl3M0R+FNr/puzi1dL6jng7ZmyMYrAgy9wH6cMNZ
+ pm0ouPlNR5eeyKwBjYDvHHPi4/xHJxtR68yfME/A6cjyj7RcuGivNomWElvwVhrC6ORVHu
+ FjIyWm1/VJZDOc8cvVri4p36LOSYuXty53Khx7sU3qutignVqpUszEFZRnj8SoVzZX2K+4
+ 4juMu+TUNu/kRQU87hnMsp7dzVeyQFt8JB9hLTXHKBwDQ9gOKw99kE1tnuUNlQ==
+ARC-Authentication-Results: i=2; rspamd-55b4bfd7cb-jlpd4;
  arc=pass ("outbound.mailhop.org:s=arc-outbound20181012:i=1");
  auth=pass smtp.auth=duocircle smtp.mailfrom=svens@stackframe.org
 X-Sender-Id: _forwarded-from|134.3.94.10
 X-MC-Relay: Forwarding
 X-MailChannels-SenderId: _forwarded-from|134.3.94.10
 X-MailChannels-Auth-Id: duocircle
-X-Well-Made-Chemical: 780d60c13ad88cb4_1709150568257_3132101393
-X-MC-Loop-Signature: 1709150568257:1413038961
-X-MC-Ingress-Time: 1709150568257
-Received: from outbound5e.eu.mailhop.org (outbound5e.eu.mailhop.org
- [52.28.168.19]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
- by 100.116.14.15 (trex/6.9.2); Wed, 28 Feb 2024 20:02:48 +0000
-ARC-Seal: i=1; a=rsa-sha256; t=1709150478; cv=none;
+X-Wiry-Robust: 4fde0a5d3612acad_1709150571750_1144819986
+X-MC-Loop-Signature: 1709150571750:102229620
+X-MC-Ingress-Time: 1709150571750
+Received: from outbound1g.eu.mailhop.org (outbound1g.eu.mailhop.org
+ [52.28.6.212]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+ by 100.112.142.242 (trex/6.9.2); Wed, 28 Feb 2024 20:02:51 +0000
+ARC-Seal: i=1; a=rsa-sha256; t=1709150543; cv=none;
  d=outbound.mailhop.org; s=arc-outbound20181012;
- b=QWGJQlSDZzX8Jd+QX2B1l17NfY5JumE52Nro9ZVH20n4s6NjYqIxwNheWVh4oCZb43DqOC7a8kPx0
- IEpXZfJSiZfEc/NoI/qK1MZ6oiW0HtTWGsjArSD+boq9iwFavxwAR8+AyIscRrzRHx+3QGenX3oUqK
- 3M9G9h9IF+jA/Na+DLwujIOSzGF0OOCnRZ5l4sSH6/TFQqA2jb/FdK4ERa6MPWRWXMUyPcc8+O8Onj
- dydb/W8VOskVcGjz85N+usbsmGUk0pufwlRh4MvW3PoT3pBdMcvvm9+qaIUWLa2C5ZTIwBbonExcfe
- UqNUsYAr1wfZy/KcN19s5dXb2xdfKJA==
+ b=VOnMD/S2PTFtD4pVmrjdLq0PUtmPsHt5R31DTZnn/vdLWiv0fHINIz0IyjKoMeNhVGdEzvbYONrzs
+ /ca/luRM/0uemqbICJCJ2ny7gg3YFZMDWNJmUwE8ogCn4ks1UUIB+OMLgxVJqzBkTbuAIK0ze2dtSj
+ PaeqEpJPuKMsbkH88swrPp6iyNFJo72FKE7OVK8+kMj5hhzAbRGR3cA9DAeAlBey+dDyG8rHXeBmjF
+ WgmFGzsRlzxXGSwArblF8n7oc3/Z2AMVzvMii9d6Wqs9GSfNZzLuRIcRJRl/j6U8oJ8zHb/7VcqlRz
+ IfwDpVMBNkRjgEj3k0zedqSoqt6UfSQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
  d=outbound.mailhop.org; s=arc-outbound20181012;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:dkim-signature:dkim-signature:dkim-signature:from;
- bh=zzOEiQj7obGsHCQd9xyo6jp7AhLHL7sbZGnf3tSSs7Q=;
- b=WnbMJtbq7YlBqEGCKiEk6sBFl50FVLpjiDqPuDrOcrb5pIGTyD2Mo9Cum2BzB+qOBTNzJmZS05ecy
- vg+mqnwYDPbdcvzOZAOslt7C4DEW/Biq8t9ckzLD9z4IP1h0NBoroyK6F3axj92tMJTQixDUXDW8fD
- ySzqJBE3H2hqCLiu1o7arf/T3DclVYW+nR1tAo/QIQnY8F1ES3kWy59z5ljOCPCZrHvAnn2nM7Mp4F
- wYyC8TeNIwTTRIHmoxAxa2IaCbb0+wuCX59+w2W0WaCBtKCIgPhTfHkRp+DzaYQYwM5Sf9PGZk6MpQ
- wz2NU+wjJj8W4xA/lKY6ULL3k+QBCXA==
-ARC-Authentication-Results: i=1; outbound2.eu.mailhop.org;
+ bh=+4BO8V8Ci+BOZk6T4aIijzbqHUwsqEFz95/F59VNM+M=;
+ b=igzGFhVCbyWnWFMT5A5Sxj+35jdwsuG1INFXFVW70I59sp0nKlAd6ArG0n8eXBjbCeB4alBm/HOCL
+ iAhP5AMN6N8gPIdakpbHqZ6ZxtJx+sVim5rbV176LZ8/cbfFPqGJ869RKR0wroq5ML2Lytc2tX5QPf
+ UxxUupcLy4dg1LZdB+V9trfp/Yci4+En76s5gYd08mQGL3fzIknJsz2/XznLw4HaVYBpFPdxTP9l1O
+ FMSZ9sLgQzDE4GSx7k0+FJAj+JbvUIxIETl2Kq0wi8prmm/Zl9lHTnKwPfhrN4gfX11Act1Tg/2XNP
+ eswSPS+yrYOuSIXzoLxdDYytCdwQexg==
+ARC-Authentication-Results: i=1; outbound3.eu.mailhop.org;
  spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=130.180.31.158;
  dkim=pass header.d=stackframe.org header.s=dkim1 header.a=rsa-sha256
- header.b=lIVmE7Gi; 
+ header.b=OsovQkKB; 
  dmarc=none header.from=stackframe.org;
  arc=none header.oldest-pass=0;
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=stackframe.org; s=duo-1634547266507-560c42ae;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=zzOEiQj7obGsHCQd9xyo6jp7AhLHL7sbZGnf3tSSs7Q=;
- b=oRIcTI0VIpbuVSk2Sck+juTzqLIjrtkWeNFtYSVUHSqaYjk3iowA/HpBu/TC0qUkP8nvManrl8e0f
- neURGoD+a5jB7xQ+h3iA7KzSa7Yf7Rov56Ni16E+ErUXGABQxn985zawYyv3SqEy1jGtGbezgB4QK2
- QpcNlND2LD+qWMVM=
+ bh=+4BO8V8Ci+BOZk6T4aIijzbqHUwsqEFz95/F59VNM+M=;
+ b=fUdAUvWzE1J/jQ3uDDWP1qkcuWiXZSkGIFyq2kJ3+4p8/AUmUaX4ZsqjFSiygmCzD87UES3SPK4sf
+ VZDvVIv1h29aIIKGqw8FZ6UMkjLYS8oHf17T1fwn3TB/BlAePRDxeUXprttFQiIB0rRHzBS/sAsrjf
+ XE5gMyQw2U4/YNE4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=outbound.mailhop.org; s=dkim-high;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=zzOEiQj7obGsHCQd9xyo6jp7AhLHL7sbZGnf3tSSs7Q=;
- b=OVg/GO0W2BUcoN5bYe1o6OZckth2DXK5GTNU5US0w7ODvFGXawhygqbq+b/ObE1isuCp2sELTc6cg
- tTp45PfR+9eZQvwTxMCgtc8vLsh7cWvhhr5+260rf/it0ItGa8XQiBWsSjr0ay5jKeVAtFwP1jD2+Q
- 8eHfgjQKx8EEI55lZvBDikv35Sp/NYQ+I61qGsJAHdvNode+SKRl1Pf6cJC3nB7GfW5eGkE+eTSUkV
- egdDMUGPEh2jgikZxi9FZuNJLxJsUHBOsZAjIOTDg2/Bl+JUnLFRxs3B1Cd6TNg327BZEQ8BWR76A3
- HXTpgDosE+mDF8XXt8reDAFnuSSoO5w==
+ bh=+4BO8V8Ci+BOZk6T4aIijzbqHUwsqEFz95/F59VNM+M=;
+ b=mU2c5JXEGreQ/txAkiX5tJSROQ0irJ0UCrW5TuDCHJ4EtJDibkPrz7onBgpzo+ohNzvjKv/6C5fns
+ 7G+Owlex3Y8UL9SsOy3WjRp/c3h4x1RfOWYau84IrXd7tSr0bZ0ZAIesORbBKkByimNe3w06l2JJn2
+ 8RYc25Muinsc8RxB15aPQiaA1AKqV+oaOtEPCcryJawGC90L9WPlrXzL3LF9spob3uD7fWsRvy6kxn
+ oaPqSYu0caQobe4OZNOEO4Qw7DWRH/PDJSpzd24xFh5Gc3pzWyTsTj9DsWjcvALxWz164gv0l6sbnq
+ GphkfxC6ajsRBwo4knd6ed5RAERs5SA==
 X-Originating-IP: 130.180.31.158
 X-MHO-RoutePath: dG9ta2lzdG5lcm51
-X-MHO-User: 200962ad-d674-11ee-b650-9b9d9be6ef2c
+X-MHO-User: 46992af1-d674-11ee-af93-eda7e384987e
 X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
 X-Mail-Handler: DuoCircle Outbound SMTP
 Received: from mail.duncanthrax.net (mail.duncanthrax.net [130.180.31.158])
- by outbound2.eu.mailhop.org (Halon) with ESMTPSA
- id 200962ad-d674-11ee-b650-9b9d9be6ef2c;
- Wed, 28 Feb 2024 20:01:14 +0000 (UTC)
+ by outbound3.eu.mailhop.org (Halon) with ESMTPSA
+ id 46992af1-d674-11ee-af93-eda7e384987e;
+ Wed, 28 Feb 2024 20:02:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=stackframe.org; s=dkim1; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=zzOEiQj7obGsHCQd9xyo6jp7AhLHL7sbZGnf3tSSs7Q=; b=lIVmE7GibGzSbJHTkupMBYN0JO
- cnggrtTCCyS3kwPU4hRthQniLIj6mPey2UF06S/jcQfmFd5ePon/Wqibs8Bh9LhBdNcVl+8nQOd3m
- A9P/V3gyFQb1WQbpTUyFFnstZQ403unECxKAZi9iGgnuAWRSmXSNf0irH5DUc38s46C2EW2BTjRfk
- WPpP+KXWL0QQqgcfUQqJOssvqv/b29IxnxuEzjrS3zW0ic10RZUGFwhMl10VtwkGFTkkOshryaFXW
- R5z1Knz3B2EARgck+hDyQ97f8Ls/OXl4WEJOdLsgycqrWpY97URmXv9VuM73ZVD8sWXcVXu7PVhuH
- kB+z0twQ==;
+ bh=+4BO8V8Ci+BOZk6T4aIijzbqHUwsqEFz95/F59VNM+M=; b=OsovQkKBl7dGeDrGVtO5mswLHe
+ 6p9ALMnQdxUy9RwYiFDQ9/SlieJLcP4aHjaedg9oqZdyINWC/taUpTq1zGlS0W+RyKu5kxZ8KTN/S
+ j/NKFX5FFwGTKYQFvshAQdldl4hPpocu7VfkYl9wsqVqTQTQG4dtAE3lxHQ11A4RbW6Lj/ZH6LPe0
+ wyPk2qVf0BqV4TSnHjCGCWyAOCxeE4pcQXZp4/ma3numjj3qmMKiirAcaI9wkSnmdGkk2W9EbeLyZ
+ 9dWRsqlXeVFb8xEDFkk5OnmBdQxdnblNv8T/qE4cDKExlfDg1G3UeDA4rNOzKbbFA0ocl8kL/2l9b
+ wJLhA8TQ==;
 Received: from ip-134-003-094-010.um41.pools.vodafone-ip.de ([134.3.94.10]
  helo=t14.stackframe.org)
  by mail.duncanthrax.net with esmtpa (Exim 4.96)
- (envelope-from <svens@stackframe.org>) id 1rfQ8X-000DfK-0t;
- Wed, 28 Feb 2024 21:02:41 +0100
+ (envelope-from <svens@stackframe.org>) id 1rfQ8Y-000DfK-05;
+ Wed, 28 Feb 2024 21:02:42 +0100
 From: Sven Schnelle <svens@stackframe.org>
 To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Cc: qemu-devel@nongnu.org, deller@gmx.de, Sven Schnelle <svens@stackframe.org>
-Subject: [PATCH 1/4] plugins/execlog: add struct execlog_ctx
-Date: Wed, 28 Feb 2024 21:02:08 +0100
-Message-ID: <20240228200211.1512816-2-svens@stackframe.org>
+Subject: [PATCH 2/4] plugins/execlog: pass matches array to parse_vaddr_match
+Date: Wed, 28 Feb 2024 21:02:09 +0100
+Message-ID: <20240228200211.1512816-3-svens@stackframe.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240228200211.1512816-1-svens@stackframe.org>
 References: <20240228200211.1512816-1-svens@stackframe.org>
@@ -164,91 +164,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a context structure for future enhancements. No functional
-change intended.
+Pass the matches array to parse_vaddr_match(), so future address
+matches can reuse that function.
 
 Signed-off-by: Sven Schnelle <svens@stackframe.org>
 ---
- contrib/plugins/execlog.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ contrib/plugins/execlog.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
-index 82dc2f584e..90da1911b2 100644
+index 90da1911b2..b4b5ba113c 100644
 --- a/contrib/plugins/execlog.c
 +++ b/contrib/plugins/execlog.c
-@@ -24,6 +24,10 @@ static GRWLock expand_array_lock;
- static GPtrArray *imatches;
- static GArray *amatches;
- 
-+struct execlog_ctx {
-+    GString *s;
-+};
-+
- /*
-  * Expand last_exec array.
-  *
-@@ -34,8 +38,9 @@ static void expand_last_exec(int cpu_index)
- {
-     g_rw_lock_writer_lock(&expand_array_lock);
-     while (cpu_index >= last_exec->len) {
--        GString *s = g_string_new(NULL);
--        g_ptr_array_add(last_exec, s);
-+        struct execlog_ctx *ctx = g_new(struct execlog_ctx, 1);
-+        ctx->s = g_string_new(NULL);
-+        g_ptr_array_add(last_exec, ctx);
-     }
-     g_rw_lock_writer_unlock(&expand_array_lock);
+@@ -206,14 +206,14 @@ static void parse_insn_match(char *match)
+     g_ptr_array_add(imatches, match);
  }
-@@ -46,14 +51,13 @@ static void expand_last_exec(int cpu_index)
- static void vcpu_mem(unsigned int cpu_index, qemu_plugin_meminfo_t info,
-                      uint64_t vaddr, void *udata)
- {
--    GString *s;
--
-     /* Find vCPU in array */
-     g_rw_lock_reader_lock(&expand_array_lock);
-     g_assert(cpu_index < last_exec->len);
--    s = g_ptr_array_index(last_exec, cpu_index);
-+    struct execlog_ctx *ctx = g_ptr_array_index(last_exec, cpu_index);
-     g_rw_lock_reader_unlock(&expand_array_lock);
  
-+    GString *s = ctx->s;
-     /* Indicate type of memory access */
-     if (qemu_plugin_mem_is_store(info)) {
-         g_string_append(s, ", store");
-@@ -77,8 +81,6 @@ static void vcpu_mem(unsigned int cpu_index, qemu_plugin_meminfo_t info,
-  */
- static void vcpu_insn_exec(unsigned int cpu_index, void *udata)
+-static void parse_vaddr_match(char *match)
++static void parse_vaddr_match(GArray **matches, char *match)
  {
--    GString *s;
--
-     /* Find or create vCPU in array */
-     g_rw_lock_reader_lock(&expand_array_lock);
-     if (cpu_index >= last_exec->len) {
-@@ -86,8 +88,9 @@ static void vcpu_insn_exec(unsigned int cpu_index, void *udata)
-         expand_last_exec(cpu_index);
-         g_rw_lock_reader_lock(&expand_array_lock);
+     uint64_t v = g_ascii_strtoull(match, NULL, 16);
+ 
+-    if (!amatches) {
+-        amatches = g_array_new(false, true, sizeof(uint64_t));
++    if (!matches) {
++        *matches = g_array_new(false, true, sizeof(uint64_t));
      }
--    s = g_ptr_array_index(last_exec, cpu_index);
-+    struct execlog_ctx *ctx = g_ptr_array_index(last_exec, cpu_index);
-     g_rw_lock_reader_unlock(&expand_array_lock);
-+    GString *s = ctx->s;
+-    g_array_append_val(amatches, v);
++    g_array_append_val(*matches, v);
+ }
  
-     /* Print previous instruction in cache */
-     if (s->len) {
-@@ -183,9 +186,10 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
- static void plugin_exit(qemu_plugin_id_t id, void *p)
- {
-     guint i;
--    GString *s;
-+
-     for (i = 0; i < last_exec->len; i++) {
--        s = g_ptr_array_index(last_exec, i);
-+        struct execlog_ctx *ctx = g_ptr_array_index(last_exec, i);
-+        GString *s = ctx->s;
-         if (s->str) {
-             qemu_plugin_outs(s->str);
-             qemu_plugin_outs("\n");
+ /**
+@@ -239,7 +239,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+         if (g_strcmp0(tokens[0], "ifilter") == 0) {
+             parse_insn_match(tokens[1]);
+         } else if (g_strcmp0(tokens[0], "afilter") == 0) {
+-            parse_vaddr_match(tokens[1]);
++            parse_vaddr_match(&amatches, tokens[1]);
+         } else {
+             fprintf(stderr, "option parsing failed: %s\n", opt);
+             return -1;
 -- 
 2.43.2
 
