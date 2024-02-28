@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4DA86AB3C
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 10:32:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6AED86AB58
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 10:34:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfGHZ-00019x-3W; Wed, 28 Feb 2024 04:31:21 -0500
+	id 1rfGHp-0001P2-1Q; Wed, 28 Feb 2024 04:31:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rfGHL-00011S-Kp; Wed, 28 Feb 2024 04:31:09 -0500
-Received: from szxga02-in.huawei.com ([45.249.212.188])
+ id 1rfGHO-00012e-AA; Wed, 28 Feb 2024 04:31:11 -0500
+Received: from szxga01-in.huawei.com ([45.249.212.187])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rfGHJ-0001ds-Sv; Wed, 28 Feb 2024 04:31:07 -0500
-Received: from mail.maildlp.com (unknown [172.19.163.252])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Tl8GQ1t9NzLqlW;
- Wed, 28 Feb 2024 17:30:22 +0800 (CST)
+ id 1rfGHK-0001ey-7R; Wed, 28 Feb 2024 04:31:08 -0500
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+ by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Tl8Dh33FrzvW7q;
+ Wed, 28 Feb 2024 17:28:52 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id 7240C18005C;
- Wed, 28 Feb 2024 17:31:01 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 4E3F51404F8;
+ Wed, 28 Feb 2024 17:31:02 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 28 Feb
- 2024 17:31:00 +0800
+ 2024 17:31:01 +0800
 To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [RFC PATCH v4 13/22] hw/intc/arm_gicv3: Add irq superpriority
- information
-Date: Wed, 28 Feb 2024 09:29:37 +0000
-Message-ID: <20240228092946.1768728-14-ruanjinjie@huawei.com>
+Subject: [RFC PATCH v4 14/22] hw/intc/arm_gicv3_redist: Implement GICR_INMIR0
+Date: Wed, 28 Feb 2024 09:29:38 +0000
+Message-ID: <20240228092946.1768728-15-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240228092946.1768728-1-ruanjinjie@huawei.com>
 References: <20240228092946.1768728-1-ruanjinjie@huawei.com>
@@ -43,8 +42,8 @@ Content-Type: text/plain
 X-Originating-IP: [10.67.174.55]
 X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
  kwepemi500008.china.huawei.com (7.221.188.139)
-Received-SPF: pass client-ip=45.249.212.188;
- envelope-from=ruanjinjie@huawei.com; helo=szxga02-in.huawei.com
+Received-SPF: pass client-ip=45.249.212.187;
+ envelope-from=ruanjinjie@huawei.com; helo=szxga01-in.huawei.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
@@ -68,55 +67,73 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A SPI, PPI or SGI interrupt can have a superpriority property. So
-maintain superpriority information in PendingIrq and GICR/GICD.
+Add GICR_INMIR0 register and support access GICR_INMIR0.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
 ---
-v3:
-- Place this ahead of implement GICR_INMIR.
-- Add Acked-by.
+v4:
+- Make the GICR_INMIR0 implementation more clearer.
 ---
- include/hw/intc/arm_gicv3_common.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/intc/arm_gicv3_redist.c | 19 +++++++++++++++++++
+ hw/intc/gicv3_internal.h   |  1 +
+ 2 files changed, 20 insertions(+)
 
-diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
-index 7324c7d983..df4380141d 100644
---- a/include/hw/intc/arm_gicv3_common.h
-+++ b/include/hw/intc/arm_gicv3_common.h
-@@ -146,6 +146,7 @@ typedef struct {
-     int irq;
-     uint8_t prio;
-     int grp;
-+    bool superprio;
- } PendingIrq;
+diff --git a/hw/intc/arm_gicv3_redist.c b/hw/intc/arm_gicv3_redist.c
+index 8153525849..7a16a058b1 100644
+--- a/hw/intc/arm_gicv3_redist.c
++++ b/hw/intc/arm_gicv3_redist.c
+@@ -35,6 +35,15 @@ static int gicr_ns_access(GICv3CPUState *cs, int irq)
+     return extract32(cs->gicr_nsacr, irq * 2, 2);
+ }
  
- struct GICv3CPUState {
-@@ -172,6 +173,7 @@ struct GICv3CPUState {
-     uint32_t gicr_ienabler0;
-     uint32_t gicr_ipendr0;
-     uint32_t gicr_iactiver0;
-+    uint32_t gicr_isuperprio;
-     uint32_t edge_trigger; /* ICFGR0 and ICFGR1 even bits */
-     uint32_t gicr_igrpmodr0;
-     uint32_t gicr_nsacr;
-@@ -274,6 +276,7 @@ struct GICv3State {
-     GIC_DECLARE_BITMAP(active);       /* GICD_ISACTIVER */
-     GIC_DECLARE_BITMAP(level);        /* Current level */
-     GIC_DECLARE_BITMAP(edge_trigger); /* GICD_ICFGR even bits */
-+    GIC_DECLARE_BITMAP(superprio);    /* GICD_INMIR */
-     uint8_t gicd_ipriority[GICV3_MAXIRQ];
-     uint64_t gicd_irouter[GICV3_MAXIRQ];
-     /* Cached information: pointer to the cpu i/f for the CPUs specified
-@@ -313,6 +316,7 @@ GICV3_BITMAP_ACCESSORS(pending)
- GICV3_BITMAP_ACCESSORS(active)
- GICV3_BITMAP_ACCESSORS(level)
- GICV3_BITMAP_ACCESSORS(edge_trigger)
-+GICV3_BITMAP_ACCESSORS(superprio)
++static void gicr_write_bitmap_reg(GICv3CPUState *cs, MemTxAttrs attrs,
++                                  uint32_t *reg, uint32_t val)
++{
++    /* Helper routine to implement writing to a "set" register */
++    val &= mask_group(cs, attrs);
++    *reg = val;
++    gicv3_redist_update(cs);
++}
++
+ static void gicr_write_set_bitmap_reg(GICv3CPUState *cs, MemTxAttrs attrs,
+                                       uint32_t *reg, uint32_t val)
+ {
+@@ -406,6 +415,10 @@ static MemTxResult gicr_readl(GICv3CPUState *cs, hwaddr offset,
+         *data = value;
+         return MEMTX_OK;
+     }
++    case GICR_INMIR0:
++        *data = cs->gic->nmi_support ?
++                gicr_read_bitmap_reg(cs, attrs, cs->gicr_isuperprio) : 0;
++        return MEMTX_OK;
+     case GICR_ICFGR0:
+     case GICR_ICFGR1:
+     {
+@@ -555,6 +568,12 @@ static MemTxResult gicr_writel(GICv3CPUState *cs, hwaddr offset,
+         gicv3_redist_update(cs);
+         return MEMTX_OK;
+     }
++    case GICR_INMIR0:
++        if (cs->gic->nmi_support) {
++            gicr_write_bitmap_reg(cs, attrs, &cs->gicr_isuperprio, value);
++        }
++        return MEMTX_OK;
++
+     case GICR_ICFGR0:
+         /* Register is all RAZ/WI or RAO/WI bits */
+         return MEMTX_OK;
+diff --git a/hw/intc/gicv3_internal.h b/hw/intc/gicv3_internal.h
+index 29d5cdc1b6..f35b7d2f03 100644
+--- a/hw/intc/gicv3_internal.h
++++ b/hw/intc/gicv3_internal.h
+@@ -109,6 +109,7 @@
+ #define GICR_ICFGR1           (GICR_SGI_OFFSET + 0x0C04)
+ #define GICR_IGRPMODR0        (GICR_SGI_OFFSET + 0x0D00)
+ #define GICR_NSACR            (GICR_SGI_OFFSET + 0x0E00)
++#define GICR_INMIR0           (GICR_SGI_OFFSET + 0x0F80)
  
- #define TYPE_ARM_GICV3_COMMON "arm-gicv3-common"
- typedef struct ARMGICv3CommonClass ARMGICv3CommonClass;
+ /* VLPI redistributor registers, offsets from VLPI_base */
+ #define GICR_VPROPBASER       (GICR_VLPI_OFFSET + 0x70)
 -- 
 2.34.1
 
