@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BED686A7F9
+	by mail.lfdr.de (Postfix) with ESMTPS id 375AA86A7FA
 	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 06:22:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfCK2-0002iW-15; Wed, 28 Feb 2024 00:17:38 -0500
+	id 1rfCK2-0002pW-VN; Wed, 28 Feb 2024 00:17:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rfCJN-0001Os-2U
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rfCJR-0001SS-7O
  for qemu-devel@nongnu.org; Wed, 28 Feb 2024 00:17:03 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rfCJF-0007W5-Rh
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 00:16:55 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rfCJP-0007c3-87
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 00:17:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709097409;
+ s=mimecast20190719; t=1709097418;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SP3OexboYkgrsNQ0WmIkQllrjA/g1P+GKoEKbQpmMiw=;
- b=iBslPpQX+ZR2Oi2n0nt16ZgQ/mT+b0VpmXrLTd+8tjT+KK53ZAzvgQvlwC/Y/4ehicHCWj
- dv0YcSxZZ7kQ67o8Bd0PVqtVAy1zs9S95ZqajhhOk8mYx10MBCUulNbYpX0fET73mjDxMg
- QBHnt8gTqV8mciVwjPvTDZ7d5/k+2N8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-613-X9QrUcU-MAmsnq4tb49NFA-1; Wed, 28 Feb 2024 00:16:45 -0500
-X-MC-Unique: X9QrUcU-MAmsnq4tb49NFA-1
+ bh=yruyBw49zJ5tVwVlBKVbE1Lx8R7iKPKHx4phAx9r0jE=;
+ b=EQqEMIZWdxwogw8PWjjGwV/fYPxVxZKiF6Jjz8nNQqil6ohsWojDSKEg/rJRuyfH30YjHG
+ 3emTo63m/LfqamJh0YTwHVW3ZhOUtvl5iaAwbQfUz5nCC9amxzEQR40H8OyWlCehtVjA+N
+ k7EOjyxhF/JH5UaxRUqJzP1m0M0RrlI=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-561-L20Dph42MiuM3VHlBC4gcw-1; Wed,
+ 28 Feb 2024 00:16:55 -0500
+X-MC-Unique: L20Dph42MiuM3VHlBC4gcw-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 393CB185A784;
- Wed, 28 Feb 2024 05:16:45 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A606B38212D8;
+ Wed, 28 Feb 2024 05:16:54 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.12])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1D1BD1C060AF;
- Wed, 28 Feb 2024 05:16:35 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E81C81C060B1;
+ Wed, 28 Feb 2024 05:16:45 +0000 (UTC)
 From: peterx@redhat.com
 To: Peter Maydell <peter.maydell@linaro.org>,
 	qemu-devel@nongnu.org
@@ -54,9 +54,9 @@ Cc: David Hildenbrand <david@redhat.com>, Eric Blake <eblake@redhat.com>,
  Jason Wang <jasowang@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>, Peter Xu <peterx@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PULL 21/25] migration: update cpr-reboot description
-Date: Wed, 28 Feb 2024 13:13:11 +0800
-Message-ID: <20240228051315.400759-22-peterx@redhat.com>
+Subject: [PULL 22/25] migration: options incompatible with cpr
+Date: Wed, 28 Feb 2024 13:13:12 +0800
+Message-ID: <20240228051315.400759-23-peterx@redhat.com>
 In-Reply-To: <20240228051315.400759-1-peterx@redhat.com>
 References: <20240228051315.400759-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -88,62 +88,59 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-Clarify qapi for cpr-reboot migration mode, and add vfio support.
+Fail the migration request if options are set that are incompatible
+with cpr.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Link: https://lore.kernel.org/r/1708622920-68779-14-git-send-email-steven.sistare@oracle.com
+Link: https://lore.kernel.org/r/1708622920-68779-15-git-send-email-steven.sistare@oracle.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- qapi/migration.json | 35 ++++++++++++++++++++++-------------
- 1 file changed, 22 insertions(+), 13 deletions(-)
+ qapi/migration.json   |  2 ++
+ migration/migration.c | 17 +++++++++++++++++
+ 2 files changed, 19 insertions(+)
 
 diff --git a/qapi/migration.json b/qapi/migration.json
-index 7303e57e8e..bee5e71fe3 100644
+index bee5e71fe3..0b33a71ab4 100644
 --- a/qapi/migration.json
 +++ b/qapi/migration.json
-@@ -636,19 +636,28 @@
+@@ -657,6 +657,8 @@
+ #     shared backend must be be non-volatile across reboot, such as by backing
+ #     it with a dax device.
  #
- # @normal: the original form of migration. (since 8.2)
- #
--# @cpr-reboot: The migrate command saves state to a file, allowing one to
--#              quit qemu, reboot to an updated kernel, and restart an updated
--#              version of qemu.  The caller must specify a migration URI
--#              that writes to and reads from a file.  Unlike normal mode,
--#              the use of certain local storage options does not block the
--#              migration, but the caller must not modify guest block devices
--#              between the quit and restart.  To avoid saving guest RAM to the
--#              file, the memory backend must be shared, and the @x-ignore-shared
--#              migration capability must be set.  Guest RAM must be non-volatile
--#              across reboot, such as by backing it with a dax device, but this
--#              is not enforced.  The restarted qemu arguments must match those
--#              used to initially start qemu, plus the -incoming option.
--#              (since 8.2)
-+# @cpr-reboot: The migrate command stops the VM and saves state to the URI.
-+#     After quitting qemu, the user resumes by running qemu -incoming.
++#     cpr-reboot may not be used with postcopy, colo, or background-snapshot.
 +#
-+#     This mode allows the user to quit qemu, and restart an updated version
-+#     of qemu.  The user may even update and reboot the OS before restarting,
-+#     as long as the URI persists across a reboot.
-+#
-+#     Unlike normal mode, the use of certain local storage options does not
-+#     block the migration, but the user must not modify guest block devices
-+#     between the quit and restart.
-+#
-+#     This mode supports vfio devices provided the user first puts the guest
-+#     in the suspended runstate, such as by issuing guest-suspend-ram to the
-+#     qemu guest agent.
-+#
-+#     Best performance is achieved when the memory backend is shared and the
-+#     @x-ignore-shared migration capability is set, but this is not required.
-+#     Further, if the user reboots before restarting such a configuration, the
-+#     shared backend must be be non-volatile across reboot, such as by backing
-+#     it with a dax device.
-+#
-+#     (since 8.2)
+ #     (since 8.2)
  ##
  { 'enum': 'MigMode',
-   'data': [ 'normal', 'cpr-reboot' ] }
+diff --git a/migration/migration.c b/migration/migration.c
+index 90a90947fb..7652fd4d14 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -1953,6 +1953,23 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
+         return false;
+     }
+ 
++    if (migrate_mode_is_cpr(s)) {
++        const char *conflict = NULL;
++
++        if (migrate_postcopy()) {
++            conflict = "postcopy";
++        } else if (migrate_background_snapshot()) {
++            conflict = "background snapshot";
++        } else if (migrate_colo()) {
++            conflict = "COLO";
++        }
++
++        if (conflict) {
++            error_setg(errp, "Cannot use %s with CPR", conflict);
++            return false;
++        }
++    }
++
+     if (blk || blk_inc) {
+         if (migrate_colo()) {
+             error_setg(errp, "No disk migration is required in COLO mode");
 -- 
 2.43.0
 
