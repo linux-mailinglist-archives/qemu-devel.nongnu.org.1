@@ -2,100 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3B4386B2FE
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 16:23:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C170186B315
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 16:25:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfLkb-0006UW-QM; Wed, 28 Feb 2024 10:21:41 -0500
+	id 1rfLkd-0006Vf-C5; Wed, 28 Feb 2024 10:21:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfLkZ-0006Ts-GQ
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 10:21:39 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfLkb-0006UY-Dh
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 10:21:41 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfLkW-0004iz-Jb
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 10:21:39 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfLkY-0004lj-FV
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 10:21:41 -0500
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 527C5225C1;
- Wed, 28 Feb 2024 15:21:34 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 999A81F79A;
+ Wed, 28 Feb 2024 15:21:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709133694; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ t=1709133696; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oWKpk5kFTB0ffXq3RmhN1pMtAuvGuWn1icA+c5Gyk5s=;
- b=dWJMLAdYlPHYfIHOyd+t52IV386+vEZWi+7OuH/yikaVuW2f65ntPI4JTih93nUzwytY4p
- MEj9xJmD8dR1mWqAn3IC5UDrRF27+RR3pglFZrYQrkEeXVCNwQVXYqjslWJcjYlQrZtcoB
- SjHIf2viOkBfwC2ovingCgs2eZG0V6g=
+ bh=qW5yUdTr0mwoltf/iGxZA8snBm043jlfeIZ97rn2OKk=;
+ b=XMir68strhnWS653nBSv4SNJSOGpQeW2kcoYpWS2k/lwkHJmX/CcttvhcPHOHuUp5pOmC/
+ ksYOU9oyBwvTkjDRXIbxx6V3FJphW4t7qknw47cC3CzWDIQQSu5g3VTlXvMApU+5lnfIjw
+ daUrNDzh7iw9sN0cTmngCoB4hX1evKY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709133694;
+ s=susede2_ed25519; t=1709133696;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oWKpk5kFTB0ffXq3RmhN1pMtAuvGuWn1icA+c5Gyk5s=;
- b=TOHyE0Od0wW6mzwLM9BGPIg9aA/5ZXoVPNoPwd7G5Ryh3BnZdtuoA9KqDjzCqPc2hZRASy
- nH/zS33zmquBGVBg==
+ bh=qW5yUdTr0mwoltf/iGxZA8snBm043jlfeIZ97rn2OKk=;
+ b=+4cDKyijmfX0lLIm+5CniBZexGfiSi/bwg4iQERJ1ILKA+/0Onagghb+KPaf9nShHA8Q7t
+ lmD50JRHBZB3TTAg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709133694; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ t=1709133696; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oWKpk5kFTB0ffXq3RmhN1pMtAuvGuWn1icA+c5Gyk5s=;
- b=dWJMLAdYlPHYfIHOyd+t52IV386+vEZWi+7OuH/yikaVuW2f65ntPI4JTih93nUzwytY4p
- MEj9xJmD8dR1mWqAn3IC5UDrRF27+RR3pglFZrYQrkEeXVCNwQVXYqjslWJcjYlQrZtcoB
- SjHIf2viOkBfwC2ovingCgs2eZG0V6g=
+ bh=qW5yUdTr0mwoltf/iGxZA8snBm043jlfeIZ97rn2OKk=;
+ b=XMir68strhnWS653nBSv4SNJSOGpQeW2kcoYpWS2k/lwkHJmX/CcttvhcPHOHuUp5pOmC/
+ ksYOU9oyBwvTkjDRXIbxx6V3FJphW4t7qknw47cC3CzWDIQQSu5g3VTlXvMApU+5lnfIjw
+ daUrNDzh7iw9sN0cTmngCoB4hX1evKY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709133694;
+ s=susede2_ed25519; t=1709133696;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oWKpk5kFTB0ffXq3RmhN1pMtAuvGuWn1icA+c5Gyk5s=;
- b=TOHyE0Od0wW6mzwLM9BGPIg9aA/5ZXoVPNoPwd7G5Ryh3BnZdtuoA9KqDjzCqPc2hZRASy
- nH/zS33zmquBGVBg==
+ bh=qW5yUdTr0mwoltf/iGxZA8snBm043jlfeIZ97rn2OKk=;
+ b=+4cDKyijmfX0lLIm+5CniBZexGfiSi/bwg4iQERJ1ILKA+/0Onagghb+KPaf9nShHA8Q7t
+ lmD50JRHBZB3TTAg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B1CC113A5D;
- Wed, 28 Feb 2024 15:21:32 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C3C6E13A5D;
+ Wed, 28 Feb 2024 15:21:34 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id kJIAHnxP32UPAwAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 28 Feb 2024 15:21:32 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id MNyFIn5P32UPAwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 28 Feb 2024 15:21:34 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
- Claudio Fontana <cfontana@suse.de>
-Subject: [PATCH v5 01/23] migration/multifd: Cleanup multifd_recv_sync_main
-Date: Wed, 28 Feb 2024 12:21:05 -0300
-Message-Id: <20240228152127.18769-2-farosas@suse.de>
+ Claudio Fontana <cfontana@suse.de>, Nikolay Borisov <nborisov@suse.com>
+Subject: [PATCH v5 02/23] io: add and implement QIO_CHANNEL_FEATURE_SEEKABLE
+ for channel file
+Date: Wed, 28 Feb 2024 12:21:06 -0300
+Message-Id: <20240228152127.18769-3-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240228152127.18769-1-farosas@suse.de>
 References: <20240228152127.18769-1-farosas@suse.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out1.suse.de;
+Authentication-Results: smtp-out2.suse.de;
 	none
-X-Spam-Score: 0.70
-X-Spamd-Result: default: False [0.70 / 50.00]; ARC_NA(0.00)[];
+X-Spam-Score: -2.77
+X-Spamd-Result: default: False [-2.77 / 50.00]; ARC_NA(0.00)[];
  RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; R_MISSING_CHARSET(2.50)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
- BROKEN_CONTENT_TYPE(1.50)[]; RCPT_COUNT_FIVE(0.00)[5];
- NEURAL_HAM_LONG(-1.00)[-1.000]; RCVD_COUNT_THREE(0.00)[3];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ RCPT_COUNT_FIVE(0.00)[6]; RCVD_COUNT_THREE(0.00)[3];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  NEURAL_HAM_SHORT(-0.20)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.com:email];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
  MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- BAYES_HAM(-3.00)[100.00%]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+ BAYES_HAM(-2.47)[97.61%]
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -118,67 +119,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some minor cleanups and documentation for multifd_recv_sync_main.
+From: Nikolay Borisov <nborisov@suse.com>
 
-Use thread_count as done in other parts of the code. Remove p->id from
-the multifd_recv_state sync, since that is global and not tied to a
-channel. Add documentation for the sync steps.
+Add a generic QIOChannel feature SEEKABLE which would be used by the
+qemu_file* apis. For the time being this will be only implemented for
+file channels.
 
+Signed-off-by: Nikolay Borisov <nborisov@suse.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/multifd.c    | 17 +++++++++++++----
- migration/trace-events |  2 +-
- 2 files changed, 14 insertions(+), 5 deletions(-)
+ include/io/channel.h | 1 +
+ io/channel-file.c    | 8 ++++++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 6c07f19af1..c7389bf833 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -1182,18 +1182,27 @@ void multifd_recv_cleanup(void)
+diff --git a/include/io/channel.h b/include/io/channel.h
+index 5f9dbaab65..fcb19fd672 100644
+--- a/include/io/channel.h
++++ b/include/io/channel.h
+@@ -44,6 +44,7 @@ enum QIOChannelFeature {
+     QIO_CHANNEL_FEATURE_LISTEN,
+     QIO_CHANNEL_FEATURE_WRITE_ZERO_COPY,
+     QIO_CHANNEL_FEATURE_READ_MSG_PEEK,
++    QIO_CHANNEL_FEATURE_SEEKABLE,
+ };
  
- void multifd_recv_sync_main(void)
- {
-+    int thread_count = migrate_multifd_channels();
-     int i;
  
-     if (!migrate_multifd()) {
-         return;
-     }
--    for (i = 0; i < migrate_multifd_channels(); i++) {
--        MultiFDRecvParams *p = &multifd_recv_state->params[i];
+diff --git a/io/channel-file.c b/io/channel-file.c
+index 4a12c61886..f91bf6db1c 100644
+--- a/io/channel-file.c
++++ b/io/channel-file.c
+@@ -36,6 +36,10 @@ qio_channel_file_new_fd(int fd)
  
--        trace_multifd_recv_sync_main_wait(p->id);
-+    /*
-+     * Initiate the synchronization by waiting for all channels.
-+     * For socket-based migration this means each channel has received
-+     * the SYNC packet on the stream.
-+     */
-+    for (i = 0; i < thread_count; i++) {
-+        trace_multifd_recv_sync_main_wait(i);
-         qemu_sem_wait(&multifd_recv_state->sem_sync);
-     }
--    for (i = 0; i < migrate_multifd_channels(); i++) {
+     ioc->fd = fd;
+ 
++    if (lseek(fd, 0, SEEK_CUR) != (off_t)-1) {
++        qio_channel_set_feature(QIO_CHANNEL(ioc), QIO_CHANNEL_FEATURE_SEEKABLE);
++    }
 +
-+    /*
-+     * Sync done. Release the channels for the next iteration.
-+     */
-+    for (i = 0; i < thread_count; i++) {
-         MultiFDRecvParams *p = &multifd_recv_state->params[i];
+     trace_qio_channel_file_new_fd(ioc, fd);
  
-         WITH_QEMU_LOCK_GUARD(&p->mutex) {
-diff --git a/migration/trace-events b/migration/trace-events
-index 298ad2b0dd..bf1a069632 100644
---- a/migration/trace-events
-+++ b/migration/trace-events
-@@ -132,7 +132,7 @@ multifd_recv(uint8_t id, uint64_t packet_num, uint32_t used, uint32_t flags, uin
- multifd_recv_new_channel(uint8_t id) "channel %u"
- multifd_recv_sync_main(long packet_num) "packet num %ld"
- multifd_recv_sync_main_signal(uint8_t id) "channel %u"
--multifd_recv_sync_main_wait(uint8_t id) "channel %u"
-+multifd_recv_sync_main_wait(uint8_t id) "iter %u"
- multifd_recv_terminate_threads(bool error) "error %d"
- multifd_recv_thread_end(uint8_t id, uint64_t packets, uint64_t pages) "channel %u packets %" PRIu64 " pages %" PRIu64
- multifd_recv_thread_start(uint8_t id) "%u"
+     return ioc;
+@@ -60,6 +64,10 @@ qio_channel_file_new_path(const char *path,
+         return NULL;
+     }
+ 
++    if (lseek(ioc->fd, 0, SEEK_CUR) != (off_t)-1) {
++        qio_channel_set_feature(QIO_CHANNEL(ioc), QIO_CHANNEL_FEATURE_SEEKABLE);
++    }
++
+     trace_qio_channel_file_new_path(ioc, path, flags, mode, ioc->fd);
+ 
+     return ioc;
 -- 
 2.35.3
 
