@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 972A086AD77
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 12:35:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81DA386AD83
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 12:36:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfICR-0000oU-G3; Wed, 28 Feb 2024 06:34:11 -0500
+	id 1rfICN-0000my-To; Wed, 28 Feb 2024 06:34:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rfICP-0000nb-HX
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:34:09 -0500
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ id 1rfICM-0000mH-4e
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:34:06 -0500
+Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rfICF-0007BH-VM
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:34:09 -0500
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-299e4b352cdso3952118a91.0
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 03:33:59 -0800 (PST)
+ id 1rfICK-0007DA-M5
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:34:05 -0500
+Received: by mail-pg1-x52b.google.com with SMTP id
+ 41be03b00d2f7-5cedfc32250so4948949a12.0
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 03:34:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709120038; x=1709724838;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709120043; x=1709724843;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=lyOTxnkcJD9Fch8p801dtN80LFjIP1Z0j9VlXnqzBNg=;
- b=Debzxpr0N3N4uMg4HqNkA9oF8htGmSIhSHyMBqENQQlU4Ypma+/Wgdwo++jFbF6kje
- MHd9AOyV0xbE2+WGq3lYiE3FkolFelxK3m2nUfXR1J5EjvgsTDpXYkJlg6Y9l/RhYdBg
- bwggo9/H+GB82jmaooO7USOHxhQNN7yctu9Mau2v7mxMvJXIK8C+dLVjDTAdUDEWWLen
- tlkkfe8WGAglX4SQ/cZs95hOtU5HbaHP9+k6CX4j/AeqnK37dZFS6guPTzpQjQXnNm1x
- HQwOXPm9VEHcBUzWo9OX5umdEXMkgPXC9FUrCTaErNbXD8RrhDuFw2kALPHALJJyYwLc
- 1CTw==
+ :reply-to; bh=Hp/9hxQDBtPEY0OINim6FUiDAX4NmkB4mD/jfDe7uLw=;
+ b=tselFCSb7c9lCXfg8ryWxvCSozoqShwu9nESNdD42yWqS18B3Jan26R2uvqJ77oJJS
+ fkcVFZCefE27jnC/0s3ksAK1G0rHaMZaNtDFX3il0q5561VUesTqhWmAcAnqzIquzPJT
+ KCHoIm/aNyqX74yHi+6dpW8JCK8LOAowZnAsIydpZKtArQGMHMQyYR9mFZCXZAa68tBr
+ oFYiP96Zc7ily49qvJFKYQxfQRU5m1xMCyVPhACZ27T5wpKhkaNvyIpQGU5L+IaNkq5F
+ xXIkG+CyoAkqshiZ85ovBiQTxjnS7luEtevoDVojalcKwRQERkyeEp0wUH3N9gzltbfd
+ dEQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709120038; x=1709724838;
+ d=1e100.net; s=20230601; t=1709120043; x=1709724843;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lyOTxnkcJD9Fch8p801dtN80LFjIP1Z0j9VlXnqzBNg=;
- b=raZRKoClCAlYzF0KvtKAWB7pN4GYAiZokLRlA/xYtnLWxiYBVDTxJZvm90YjeZv/lj
- Fyn7jAGLIgu+0yYMO2fJ3JX4oPv1bK2HExWqwdrWC4ZTUILKLgimEdn45CBLYKSrntpj
- ywaY4WvnEF2YFX8XSLAa/D3Z1jiY1L41Y2gt8v9JeeJr3ZEozhAfNipf5vnzRmJOyS3/
- T6FMl5/2posYJVmaVk6aoAlyLFnL+wyoRGEGAXeWkYbI/tjBjBV0HJ3VPDTdEkfJhx+n
- ypOo2gP+nNWwa3RgoihjdxJdyjryBjsOog0wPPBatrv+DeYmQQsjINlayqmRrXMkVsna
- V/Ig==
-X-Gm-Message-State: AOJu0YzJD++XDIBQt7KmFbdcL2Np+KMd+R8tm8yHllR9dPspfnLKc/2N
- 4Gzok5OEw/2j7QjZrM1lTYfo88Wjf0R4eth6NxnL6AHJZG4BKz2qC+kfrYO7YeE=
-X-Google-Smtp-Source: AGHT+IGoTzptUe/SFVSpTJ/FAwBpzKlGji+IbETZ1h+3nF9X2hr8jIRT5bdDthNJ4TU1DjqcArZZqg==
-X-Received: by 2002:a17:90a:7564:b0:29a:82c1:5ab0 with SMTP id
- q91-20020a17090a756400b0029a82c15ab0mr9487833pjk.44.1709120038574; 
- Wed, 28 Feb 2024 03:33:58 -0800 (PST)
+ bh=Hp/9hxQDBtPEY0OINim6FUiDAX4NmkB4mD/jfDe7uLw=;
+ b=Cf7zbYAk8jFrD29BUUqgiAKS/sE/FhRicD9kq6+wnjorUXkSnhH7VdoXN7TLX749zn
+ iMEypZ0UGWmnmPe9V/WgnSj4hS5+GvjVDQyLZI0HpMB4OfGUhYb/qNbyY4Nql1k/8ybG
+ 0iB0g4GzR2ct/m5qYhm64ET0QlRCMdcvK7M9Rvn2zO/QD05XqvzMkOUC/HJOwSSzJtVd
+ kOoE1aQ1RTWA4NEerHzUSuWEnJBmLRSRTKCr2HlrLaSY3N3NbL2swvdLUJj839RrNXUm
+ EqZ+3eyDogFkl7nUwnNeckMYO1JDRqeJO7rksuqZLKANVJ0hCyONc9or8L0aM/vTBMDp
+ 3dHg==
+X-Gm-Message-State: AOJu0YxHoFYXUnuXgs3E/NARyfTH54atYW68jf1OjI/ckPP23sT5pPtj
+ VVpVY2wqcpc43GhlIsZ8FlnVTEvd6xj3VlYUB6B3tFCZfltBlDtl2sx9Tb+c8NI=
+X-Google-Smtp-Source: AGHT+IHlaoZemaOyDcT+bGEhmIXzIEUc6wR35siPff0S9uv4XJ3Ky0SdskY74qS5ErqKh7CUEyGXNA==
+X-Received: by 2002:a05:6a21:920b:b0:1a0:adbc:7a96 with SMTP id
+ tl11-20020a056a21920b00b001a0adbc7a96mr5093298pzb.36.1709120043259; 
+ Wed, 28 Feb 2024 03:34:03 -0800 (PST)
 Received: from localhost ([157.82.203.206])
  by smtp.gmail.com with UTF8SMTPSA id
- p16-20020a17090b011000b00299e946b9cdsm1395862pjz.20.2024.02.28.03.33.55
+ s7-20020a170902a50700b001dcc2951c02sm1862556plq.286.2024.02.28.03.34.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 28 Feb 2024 03:33:58 -0800 (PST)
+ Wed, 28 Feb 2024 03:34:03 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 28 Feb 2024 20:33:17 +0900
-Subject: [PATCH v8 06/15] hw/pci: Rename has_power to enabled
+Date: Wed, 28 Feb 2024 20:33:18 +0900
+Subject: [PATCH v8 07/15] pcie_sriov: Do not manually unrealize
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240228-reuse-v8-6-282660281e60@daynix.com>
+Message-Id: <20240228-reuse-v8-7-282660281e60@daynix.com>
 References: <20240228-reuse-v8-0-282660281e60@daynix.com>
 In-Reply-To: <20240228-reuse-v8-0-282660281e60@daynix.com>
 To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
@@ -79,14 +79,14 @@ To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::1036;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1036.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::52b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,115 +102,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The renamed state will not only represent powering state of PFs, but
-also represent SR-IOV VF enablement in the future.
+A device gets automatically unrealized when being unparented.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- include/hw/pci/pci.h        |  7 ++++++-
- include/hw/pci/pci_device.h |  2 +-
- hw/pci/pci.c                | 14 +++++++-------
- hw/pci/pci_host.c           |  4 ++--
- 4 files changed, 16 insertions(+), 11 deletions(-)
+ hw/pci/pcie_sriov.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index eaa3fc99d884..6c92b2f70008 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -642,6 +642,11 @@ static inline void pci_irq_pulse(PCIDevice *pci_dev)
- }
+diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
+index e9b23221d713..8b1fd2a89ad7 100644
+--- a/hw/pci/pcie_sriov.c
++++ b/hw/pci/pcie_sriov.c
+@@ -17,7 +17,6 @@
+ #include "hw/qdev-properties.h"
+ #include "qemu/error-report.h"
+ #include "qemu/range.h"
+-#include "qapi/error.h"
+ #include "trace.h"
  
- MSIMessage pci_get_msi_message(PCIDevice *dev, int vector);
--void pci_set_power(PCIDevice *pci_dev, bool state);
-+void pci_set_enabled(PCIDevice *pci_dev, bool state);
-+
-+static inline void pci_set_power(PCIDevice *pci_dev, bool state)
-+{
-+    pci_set_enabled(pci_dev, state);
-+}
- 
- #endif
-diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
-index d3dd0f64b273..d57f9ce83884 100644
---- a/include/hw/pci/pci_device.h
-+++ b/include/hw/pci/pci_device.h
-@@ -56,7 +56,7 @@ typedef struct PCIReqIDCache PCIReqIDCache;
- struct PCIDevice {
-     DeviceState qdev;
-     bool partially_hotplugged;
--    bool has_power;
-+    bool enabled;
- 
-     /* PCI config space */
-     uint8_t *config;
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index e7a39cb203ae..8bde13f7cd1e 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -1525,7 +1525,7 @@ static void pci_update_mappings(PCIDevice *d)
-             continue;
- 
-         new_addr = pci_bar_address(d, i, r->type, r->size);
--        if (!d->has_power) {
-+        if (!d->enabled) {
-             new_addr = PCI_BAR_UNMAPPED;
-         }
- 
-@@ -1613,7 +1613,7 @@ void pci_default_write_config(PCIDevice *d, uint32_t addr, uint32_t val_in, int
-         pci_update_irq_disabled(d, was_irq_disabled);
-         memory_region_set_enabled(&d->bus_master_enable_region,
-                                   (pci_get_word(d->config + PCI_COMMAND)
--                                   & PCI_COMMAND_MASTER) && d->has_power);
-+                                   & PCI_COMMAND_MASTER) && d->enabled);
+ static PCIDevice *register_vf(PCIDevice *pf, int devfn,
+@@ -204,11 +203,7 @@ static void unregister_vfs(PCIDevice *dev)
+     trace_sriov_unregister_vfs(dev->name, PCI_SLOT(dev->devfn),
+                                PCI_FUNC(dev->devfn), num_vfs);
+     for (i = 0; i < num_vfs; i++) {
+-        Error *err = NULL;
+         PCIDevice *vf = dev->exp.sriov_pf.vf[i];
+-        if (!object_property_set_bool(OBJECT(vf), "realized", false, &err)) {
+-            error_reportf_err(err, "Failed to unplug: ");
+-        }
+         object_unparent(OBJECT(vf));
+         object_unref(OBJECT(vf));
      }
- 
-     msi_write_config(d, addr, val_in, l);
-@@ -2811,18 +2811,18 @@ MSIMessage pci_get_msi_message(PCIDevice *dev, int vector)
-     return msg;
- }
- 
--void pci_set_power(PCIDevice *d, bool state)
-+void pci_set_enabled(PCIDevice *d, bool state)
- {
--    if (d->has_power == state) {
-+    if (d->enabled == state) {
-         return;
-     }
- 
--    d->has_power = state;
-+    d->enabled = state;
-     pci_update_mappings(d);
-     memory_region_set_enabled(&d->bus_master_enable_region,
-                               (pci_get_word(d->config + PCI_COMMAND)
--                               & PCI_COMMAND_MASTER) && d->has_power);
--    if (!d->has_power) {
-+                               & PCI_COMMAND_MASTER) && d->enabled);
-+    if (!d->enabled) {
-         pci_device_reset(d);
-     }
- }
-diff --git a/hw/pci/pci_host.c b/hw/pci/pci_host.c
-index dfe6fe618401..0d82727cc9dd 100644
---- a/hw/pci/pci_host.c
-+++ b/hw/pci/pci_host.c
-@@ -86,7 +86,7 @@ void pci_host_config_write_common(PCIDevice *pci_dev, uint32_t addr,
-      * allowing direct removal of unexposed functions.
-      */
-     if ((pci_dev->qdev.hotplugged && !pci_get_function_0(pci_dev)) ||
--        !pci_dev->has_power || is_pci_dev_ejected(pci_dev)) {
-+        !pci_dev->enabled || is_pci_dev_ejected(pci_dev)) {
-         return;
-     }
- 
-@@ -111,7 +111,7 @@ uint32_t pci_host_config_read_common(PCIDevice *pci_dev, uint32_t addr,
-      * allowing direct removal of unexposed functions.
-      */
-     if ((pci_dev->qdev.hotplugged && !pci_get_function_0(pci_dev)) ||
--        !pci_dev->has_power || is_pci_dev_ejected(pci_dev)) {
-+        !pci_dev->enabled || is_pci_dev_ejected(pci_dev)) {
-         return ~0x0;
-     }
- 
 
 -- 
 2.43.2
