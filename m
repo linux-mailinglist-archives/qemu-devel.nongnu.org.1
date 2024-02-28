@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C2A86AD8B
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 12:37:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 285FB86AD64
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 12:35:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfICq-0001Zj-TE; Wed, 28 Feb 2024 06:34:36 -0500
+	id 1rfICs-0001bU-Jm; Wed, 28 Feb 2024 06:34:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rfICn-0001Xg-0v
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:34:33 -0500
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1rfICp-0001ZM-1r
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:34:35 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rfICl-0007Gx-7N
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:34:32 -0500
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-6d9f94b9186so4737700b3a.0
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 03:34:29 -0800 (PST)
+ id 1rfICn-0007J9-H6
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 06:34:34 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1dc13fb0133so40056635ad.3
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 03:34:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709120067; x=1709724867;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709120072; x=1709724872;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=YPSiR6IwHlPrV1jxSt9NcR1fgHWl/R9keZ4bHjE5Nwo=;
- b=Nd5s4j1WTpEsffUDxXZkwwg8nGpxPL6LLdxNwSUHtofJwEjn812evSH+CimBSZn8Zz
- AzZ2VXlTeA5H4SY0sf8G+nDOsn5PJodj0pWiBZZhgowfnIwAKN+fX2iuP55AseEG1WJa
- 8+sSGZhLqY01Ng0Np6mteGGb1iroUg56Hokczt07u7VExSqNpGpbE5ePRRIkq5PCGJWk
- AaX9mimsfQ+RH4jzvi99/u+ec5rx0NtdCie3Lpwxo2+Lxsp+Wr8nWGnSqcLnye+Zbzwy
- 4PE5Wst2u1RCeoGr9RQ1Q8mDaYUhQ3IQzv1ckIqvc2qgPz6Wou/1+49SL9+oVsjmhXMc
- IJww==
+ :reply-to; bh=qNr8IpM/BgnyhwNeoHVIpQAv1RPcCThHB7TyMR3DGSw=;
+ b=A3kZ2QibxYblQXm9M0N4hJrEpJ+5o2iXvz8GymQnAHtCjNH8AGhdB6h1/vQEpFiAM8
+ 5s4Gw02mSXaEmhrXGG52Qn8otKFL21JraUwrf89Ua0V6QtLrBYCJxCO95EFqFfIdR9Jl
+ DHvMJepYpH0PttEGW1J9fAl0mkYOi7WGhmp3xjqkaVSlUESx00HSLTVeO4D2INkbvPHQ
+ Ds0f74AOnXI0bUj1WtusoXayPvSzqUA74riZkcV5TXr2hLsT7pAEHpWVJxQAtsPXuWSq
+ Y9zUurnWD8sa+weitYVY9xnWqZ5P4qfAUE2WfmRvFK09jtvuht3kLKLX/mKCw+OpuzP2
+ mNGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709120067; x=1709724867;
+ d=1e100.net; s=20230601; t=1709120072; x=1709724872;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YPSiR6IwHlPrV1jxSt9NcR1fgHWl/R9keZ4bHjE5Nwo=;
- b=uZrkLoUjwoKxeKV2rsPO8jb5z1x3Hrj0wa6WGsG1GcoDnCEwLqcdcpTtI3YBHTiq5v
- ziHl2bobRnh5SzJkJGuID0vK9ae33kWycAKFPndX6aehCdyjVG/HZANHwN82B829u2U9
- RjW+qenbtf16DuJTglc6fw9uLdC+uNEJMP3ujyEQI13me+NnTik0k/0O6ZdEvgs68/b4
- eFOX5ApyH5PV4/uKmQLY0jqxqWO6reFYutvoUoRu0l0vcCk9NnC5neqCSehqDpTqwZlP
- O5/MOQyHcpvGQEMsWN7JPppNt/S1ZHdwiF/Ob/pKyHitgkn2jcyJf2/zrIxgor9tt1wG
- Ew5Q==
-X-Gm-Message-State: AOJu0YwX0h5pCTSuaDLT1oIEti1jHbR+jhNbrgoyYtpZsLgikMVbhEGW
- Zkc+qnr7mw24aC/rvU2jcjIOkyYjk4z3iSmrym03bmWM7vPQXRnQGclKmfnNpUM=
-X-Google-Smtp-Source: AGHT+IGkKI+Y235zLvt/oRSPJKcfgRKk4cd7NSzr36e6vIhB15SK4lWgj/53BKggjB1qeoq8qPJuHw==
-X-Received: by 2002:a05:6a20:b209:b0:1a0:e647:5d58 with SMTP id
- eh9-20020a056a20b20900b001a0e6475d58mr4426049pzb.23.1709120067473; 
- Wed, 28 Feb 2024 03:34:27 -0800 (PST)
+ bh=qNr8IpM/BgnyhwNeoHVIpQAv1RPcCThHB7TyMR3DGSw=;
+ b=iMH9+mSX9Js65PGVUTcBqzsnf90BIGK4DnkcKEg3wvKDh3s0JEDBD/HHzjlSLxiNDS
+ p0nqRNIXmFXspz90PevjJi3dSDW3jGcH8/SP6mn2Wa15Zn1rHDvpu+GA814G4J+i0byj
+ +JwZLuHHQZjOo/cN9g4gEgLHdG8VM9zQjigiZn0ZVVHu3qHQ7ijMsEc/TsMwXCJ2BeI1
+ RkYbNnwr7Lkx+4tFMuJ0dtaxCe5O49PmIHclNEu2JB3Z2TmgXT8mSVmBXv088VLuy2k6
+ z70sRQ4nT4gc5rUdgsSSbRugZJiscJ0F9fcaYMri/Pj3dFFPL7RJ/gkeIZly983vzWuv
+ O1NA==
+X-Gm-Message-State: AOJu0YyBHcgLjUnRbZYhuHldUK0Re5IymlYRVXSlspxXPse235UnAlMp
+ UC5wbzUCUgHikJChozl1S0PGpLAilh7RcSIbxB4SCoc6LedUFNmafuwosIiy6Fs=
+X-Google-Smtp-Source: AGHT+IHaAr/9NqHn6dDudsu1a1zHBCsel/s503fgNIlr42wrMSR+AMGskRjwZnf8+gSw3AryNnytOA==
+X-Received: by 2002:a17:902:700a:b0:1db:cfa0:4045 with SMTP id
+ y10-20020a170902700a00b001dbcfa04045mr11172426plk.60.1709120072031; 
+ Wed, 28 Feb 2024 03:34:32 -0800 (PST)
 Received: from localhost ([157.82.203.206])
  by smtp.gmail.com with UTF8SMTPSA id
- v14-20020a1709028d8e00b001db81640315sm3078458plo.91.2024.02.28.03.34.24
+ kb16-20020a170903339000b001d94e6a7685sm3118049plb.234.2024.02.28.03.34.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 28 Feb 2024 03:34:27 -0800 (PST)
+ Wed, 28 Feb 2024 03:34:31 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 28 Feb 2024 20:33:23 +0900
-Subject: [PATCH v8 12/15] hw/pci: Replace -1 with UINT32_MAX for romsize
+Date: Wed, 28 Feb 2024 20:33:24 +0900
+Subject: [PATCH v8 13/15] hw/pci: Use UINT32_MAX as a default value for rombar
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240228-reuse-v8-12-282660281e60@daynix.com>
+Message-Id: <20240228-reuse-v8-13-282660281e60@daynix.com>
 References: <20240228-reuse-v8-0-282660281e60@daynix.com>
 In-Reply-To: <20240228-reuse-v8-0-282660281e60@daynix.com>
 To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
@@ -79,8 +79,8 @@ To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::430;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x430.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -102,84 +102,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-romsize is an uint32_t variable. Specifying -1 as an uint32_t value is
-obscure way to denote UINT32_MAX.
+Currently there is no way to distinguish the case that rombar is
+explicitly specified as 1 and the case that rombar is not specified.
 
-Worse, if int is wider than 32-bit, it will change the behavior of a
-construct like the following:
-romsize = -1;
-if (romsize != -1) {
-    ...
-}
+Set rombar UINT32_MAX by default to distinguish these cases just as it
+is done for addr and romsize. It was confirmed that changing the default
+value to UINT32_MAX will not change the behavior by looking at
+occurences of rom_bar.
 
-When -1 is assigned to romsize, -1 will be implicitly casted into
-uint32_t, resulting in UINT32_MAX. On contrary, when evaluating
-romsize != -1, romsize will be casted into int, and it will be a
-comparison of UINT32_MAX and -1, and result in false.
+$ git grep -w rom_bar
+hw/display/qxl.c:328:    QXLRom *rom = memory_region_get_ram_ptr(&d->rom_bar);
+hw/display/qxl.c:431:    qxl_set_dirty(&qxl->rom_bar, 0, qxl->rom_size);
+hw/display/qxl.c:1048:    QXLRom *rom = memory_region_get_ram_ptr(&qxl->rom_bar);
+hw/display/qxl.c:2131:    memory_region_init_rom(&qxl->rom_bar, OBJECT(qxl), "qxl.vrom",
+hw/display/qxl.c:2154: PCI_BASE_ADDRESS_SPACE_MEMORY, &qxl->rom_bar);
+hw/display/qxl.h:101:    MemoryRegion       rom_bar;
+hw/pci/pci.c:74:    DEFINE_PROP_UINT32("rombar",  PCIDevice, rom_bar, 1),
+hw/pci/pci.c:2329:    if (!pdev->rom_bar) {
+hw/vfio/pci.c:1019:    if (vdev->pdev.romfile || !vdev->pdev.rom_bar) {
+hw/xen/xen_pt_load_rom.c:29:    if (dev->romfile || !dev->rom_bar) {
+include/hw/pci/pci_device.h:150:    uint32_t rom_bar;
 
-Replace -1 with UINT32_MAX for statements involving the variable to
-clarify the intent and prevent potential breakage.
+rom_bar refers to a different variable in qxl. It is only tested if
+the value is 0 or not in the other places.
+
+If a user explicitly set UINT32_MAX, we still cannot distinguish that
+from the implicit default. However, it is unlikely to be a problem as
+nobody would type literal UINT32_MAX (0xffffffff or 4294967295) by
+chance.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
 ---
- hw/pci/pci.c             | 8 ++++----
- hw/xen/xen_pt_load_rom.c | 2 +-
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ hw/pci/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 54b375da2d26..84df07a2789b 100644
+index 84df07a2789b..cb5ac46e9f27 100644
 --- a/hw/pci/pci.c
 +++ b/hw/pci/pci.c
-@@ -70,7 +70,7 @@ static bool pcie_has_upstream_port(PCIDevice *dev);
- static Property pci_props[] = {
+@@ -71,7 +71,7 @@ static Property pci_props[] = {
      DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
      DEFINE_PROP_STRING("romfile", PCIDevice, romfile),
--    DEFINE_PROP_UINT32("romsize", PCIDevice, romsize, -1),
-+    DEFINE_PROP_UINT32("romsize", PCIDevice, romsize, UINT32_MAX),
-     DEFINE_PROP_UINT32("rombar",  PCIDevice, rom_bar, 1),
+     DEFINE_PROP_UINT32("romsize", PCIDevice, romsize, UINT32_MAX),
+-    DEFINE_PROP_UINT32("rombar",  PCIDevice, rom_bar, 1),
++    DEFINE_PROP_UINT32("rombar",  PCIDevice, rom_bar, UINT32_MAX),
      DEFINE_PROP_BIT("multifunction", PCIDevice, cap_present,
                      QEMU_PCI_CAP_MULTIFUNCTION_BITNR, false),
-@@ -2073,7 +2073,7 @@ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
-                                  g_cmp_uint32, NULL);
-     }
- 
--    if (pci_dev->romsize != -1 && !is_power_of_2(pci_dev->romsize)) {
-+    if (pci_dev->romsize != UINT32_MAX && !is_power_of_2(pci_dev->romsize)) {
-         error_setg(errp, "ROM size %u is not a power of two", pci_dev->romsize);
-         return;
-     }
-@@ -2359,7 +2359,7 @@ static void pci_add_option_rom(PCIDevice *pdev, bool is_default_rom,
-         return;
-     }
- 
--    if (load_file || pdev->romsize == -1) {
-+    if (load_file || pdev->romsize == UINT32_MAX) {
-         path = qemu_find_file(QEMU_FILE_TYPE_BIOS, pdev->romfile);
-         if (path == NULL) {
-             path = g_strdup(pdev->romfile);
-@@ -2378,7 +2378,7 @@ static void pci_add_option_rom(PCIDevice *pdev, bool is_default_rom,
-                        pdev->romfile);
-             return;
-         }
--        if (pdev->romsize != -1) {
-+        if (pdev->romsize != UINT_MAX) {
-             if (size > pdev->romsize) {
-                 error_setg(errp, "romfile \"%s\" (%u bytes) "
-                            "is too large for ROM size %u",
-diff --git a/hw/xen/xen_pt_load_rom.c b/hw/xen/xen_pt_load_rom.c
-index 03422a8a7148..6bc64acd3352 100644
---- a/hw/xen/xen_pt_load_rom.c
-+++ b/hw/xen/xen_pt_load_rom.c
-@@ -53,7 +53,7 @@ void *pci_assign_dev_load_option_rom(PCIDevice *dev,
-     }
-     fseek(fp, 0, SEEK_SET);
- 
--    if (dev->romsize != -1) {
-+    if (dev->romsize != UINT_MAX) {
-         if (st.st_size > dev->romsize) {
-             error_report("ROM BAR \"%s\" (%ld bytes) is too large for ROM size %u",
-                          rom_file, (long) st.st_size, dev->romsize);
+     DEFINE_PROP_BIT("x-pcie-lnksta-dllla", PCIDevice, cap_present,
 
 -- 
 2.43.2
