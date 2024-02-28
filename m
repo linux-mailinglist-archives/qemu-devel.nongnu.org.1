@@ -2,119 +2,148 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBB8286B894
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 20:49:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0A586B8CC
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 21:04:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfPvg-0008OR-QS; Wed, 28 Feb 2024 14:49:24 -0500
+	id 1rfQ8s-0003iP-AO; Wed, 28 Feb 2024 15:03:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfPve-0008O9-Dw
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 14:49:22 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfPvI-0002lK-OP
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 14:49:22 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 5AA631F792;
- Wed, 28 Feb 2024 19:48:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709149735; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=S3e1igQ70N1S0eW0dKH6zj/TIuA6Da18Sj4nW+TZ7iE=;
- b=fnV8cV3P0PIMd8jVLoq6ga01somFdbRJEB3nxOOSnI0SbHjr3vDIn7vDn3nvWowOkPFwlL
- MF8zp8zSGF7wv/gjCNGK76+3fxi8KpyXTVAv6tKU8wUpP+s/IBhsGDfDKf9urPWs9FRPsG
- E0ovuUrFToXCEtQbHcmmg2Jb6cBPLLA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709149735;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=S3e1igQ70N1S0eW0dKH6zj/TIuA6Da18Sj4nW+TZ7iE=;
- b=VdWJZtWOHMYyPlpuVxDPRLsMvyKM+l3tvqy+jRxTcr5aoQUEowEMIqrfuoc4Y0aZR5f/8z
- WJrcFklQe5P9LyDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709149735; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=S3e1igQ70N1S0eW0dKH6zj/TIuA6Da18Sj4nW+TZ7iE=;
- b=fnV8cV3P0PIMd8jVLoq6ga01somFdbRJEB3nxOOSnI0SbHjr3vDIn7vDn3nvWowOkPFwlL
- MF8zp8zSGF7wv/gjCNGK76+3fxi8KpyXTVAv6tKU8wUpP+s/IBhsGDfDKf9urPWs9FRPsG
- E0ovuUrFToXCEtQbHcmmg2Jb6cBPLLA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709149735;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=S3e1igQ70N1S0eW0dKH6zj/TIuA6Da18Sj4nW+TZ7iE=;
- b=VdWJZtWOHMYyPlpuVxDPRLsMvyKM+l3tvqy+jRxTcr5aoQUEowEMIqrfuoc4Y0aZR5f/8z
- WJrcFklQe5P9LyDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CC90713A5D;
- Wed, 28 Feb 2024 19:48:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id u0BcJCaO32VKPQAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 28 Feb 2024 19:48:54 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Hao Xiang <hao.xiang@bytedance.com>, pbonzini@redhat.com,
- berrange@redhat.com, eduardo@habkost.net, peterx@redhat.com,
- eblake@redhat.com, armbru@redhat.com, thuth@redhat.com,
- lvivier@redhat.com, jdenemar@redhat.com, marcel.apfelbaum@gmail.com,
- philmd@linaro.org, wangyanan55@huawei.com, qemu-devel@nongnu.org
-Cc: Hao Xiang <hao.xiang@bytedance.com>
-Subject: Re: [PATCH v3 3/7] migration/multifd: Implement
- ram_save_target_page_multifd to handle multifd version of
- MigrationOps::ram_save_target_page.
-In-Reply-To: <20240226195654.934709-4-hao.xiang@bytedance.com>
-References: <20240226195654.934709-1-hao.xiang@bytedance.com>
- <20240226195654.934709-4-hao.xiang@bytedance.com>
-Date: Wed, 28 Feb 2024 16:48:52 -0300
-Message-ID: <875xy8qsij.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
+ id 1rfQ8p-0003hK-Qv
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 15:02:59 -0500
+Received: from ivory.cherry.relay.mailchannels.net ([23.83.223.94])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
+ id 1rfQ8j-0008GJ-El
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 15:02:58 -0500
+X-Sender-Id: _forwarded-from|134.3.94.10
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+ by relay.mailchannels.net (Postfix) with ESMTP id 8A9752C2978
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 20:02:48 +0000 (UTC)
+Received: from outbound5b.eu.mailhop.org (unknown [127.0.0.6])
+ (Authenticated sender: duocircle)
+ by relay.mailchannels.net (Postfix) with ESMTPA id 4303E2C2608
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 20:02:47 +0000 (UTC)
+ARC-Seal: i=2; s=arc-2022; d=mailchannels.net; t=1709150567; a=rsa-sha256;
+ cv=pass;
+ b=uJgM+J3Qlqprsj0UuNQ7jqu+H5aRJtvflFIXjgacM9Jaqb4bbqJIRJH8bEtQb2omQCpWXA
+ scS/MRvXp0HpHisqg0+MJgdnSHf2CT9sH9Brv09d2Yn2tlmzlIJm+yPoUW6fZZdqLBDf7T
+ Y92K8cHQvdrPplRXJOF1/xehIFU1atFbTlpq4TTOE0OXOnwLNc1FhkSXcLpQMVtkpD8gEr
+ OxCC5HaQleUdLvrZ8LRiO7V+Wc3SqiLtM/RBlrBikMXLKnLtxNwMLMdYGZLRXHcdYl0iqh
+ 2Y9WYqud4X/1XFnoTq0lYJQl490xn9ZJq2gYSBi+Vkq9QJBUrths7IMmf3JZcA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net; s=arc-2022; t=1709150567;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:dkim-signature;
+ bh=mkE+WKXeb8kvSrucAcxM1ZdzXdhVyVDaYewAj62Dd1g=;
+ b=BgwCEmo+yig1fseyC3rYkl1U8F9cKywVucXWeZ3kTB2eNSzNFRe2B3UQD/QIlav/gSadGf
+ bL20hm/Upg9wQ2pgZ0dXWFhvldKDsqytWsTuQN0JXBAhGi0Z91XKsN9TF8rO2LS0mrQxoa
+ 6hTozSjMOgrS0WNPnBawk/JIL14vzyKnCvvK5IWSIeGgTOgyfwbI+zMg89ShVLX8eE1Z42
+ JbLXkvwm3qb+KPhyPZ/dKDa+SlRpJwEDm5mvoOIKLb8eeDntuofZmA/OYty8w1ax2vNlq2
+ ORYnx7HO0/oIAe1QH4emAZDbmVd/GQtmwntuVoGqGFJcjRScWZgnou5Rgjku0A==
+ARC-Authentication-Results: i=2; rspamd-55b4bfd7cb-zdc5v;
+ arc=pass ("outbound.mailhop.org:s=arc-outbound20181012:i=1");
+ auth=pass smtp.auth=duocircle smtp.mailfrom=svens@stackframe.org
+X-Sender-Id: _forwarded-from|134.3.94.10
+X-MC-Relay: Forwarding
+X-MailChannels-SenderId: _forwarded-from|134.3.94.10
+X-MailChannels-Auth-Id: duocircle
+X-Sponge-Whimsical: 7a3b7a825a63ac69_1709150567770_2355675814
+X-MC-Loop-Signature: 1709150567770:356915727
+X-MC-Ingress-Time: 1709150567770
+Received: from outbound5b.eu.mailhop.org (outbound5b.eu.mailhop.org
+ [3.125.66.160]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+ by 100.112.142.242 (trex/6.9.2); Wed, 28 Feb 2024 20:02:47 +0000
+ARC-Seal: i=1; a=rsa-sha256; t=1709150542; cv=none;
+ d=outbound.mailhop.org; s=arc-outbound20181012;
+ b=TSPpWbpjRP5akXkDkVMfPHuKML65EQtwswZUwniAfcJo/6H+FpSyK51pPNJnFSZ/cn++LKf1tiCvs
+ cCrgPbLdkTuAEAZ+xjmKH6d0eNVnxG3OaIV3CNfZHh1NZGodq5jPOelu8OfnDzRleVvhgqIdiN4HNV
+ 8FPTcbSIhUowYyugcR44WNorTdV6a9Oj/U1bmcC3mIeHYfwn4nEZhdpbs4lEgZmQ+bXydXX0D6Fv9S
+ 4I3JAp+0QHVvgnflOMV9LYiOpC5OcxPb9pUJGpE70q7Cp3vcO/7TjOe3olkV4Kxvex6RFR4AtqQRRJ
+ ShkYbXba0tV0C/8T6tB3tIWE6xOiv6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=outbound.mailhop.org; s=arc-outbound20181012;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+ dkim-signature:dkim-signature:dkim-signature:from;
+ bh=mkE+WKXeb8kvSrucAcxM1ZdzXdhVyVDaYewAj62Dd1g=;
+ b=fepwXBp81w2+S5VvKyALTKiPOrXVsoK/FnMQ3kRshFGY1Uss6qcBLrtNh77MAyJLjJnwMBqq7j5Pb
+ QZuI22Qy/b9/nrGb1z6fJf5QDJvhbhwhntnsnBw2ydU5FlXrXg/qphfK4Sb5KhDs77lbeNzaI1YcjY
+ 4594g+k1nGin4LOXfeg1e4zMTCdARGkIwDFdSsA+fZr5lqVlf1DTdSdhG1HB/I0pqlkxJ3I5Y7eCFV
+ p1TwyiWbeipqxVScbFW5Lgmv6+qKUAbh07xDVzuahXpTuk++TJTUqzkEt6pVL/3eVz1QKHL35l9Ns7
+ wI3httW61ZkIFMYWzCnNncJl28WQ0nQ==
+ARC-Authentication-Results: i=1; outbound3.eu.mailhop.org;
+ spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=130.180.31.158;
+ dkim=pass header.d=stackframe.org header.s=dkim1 header.a=rsa-sha256
+ header.b=h8z+gJPB; 
+ dmarc=none header.from=stackframe.org;
+ arc=none header.oldest-pass=0;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=stackframe.org; s=duo-1634547266507-560c42ae;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+ from; bh=mkE+WKXeb8kvSrucAcxM1ZdzXdhVyVDaYewAj62Dd1g=;
+ b=V6bKtZ9mNbv7qU5+PoFkvDoCbM+uZK+B6bzX6zS1BMoe7CCHYb6vFxgh1rFgj0L1XLAgW+F/e0wZ8
+ WfYlX2Xnc3KDt2PC/B7xwtE3gdPxBg4YbIcURyF6B+rO5oVYABumBA+P25b79j2ynL8TlFLOmTPvnx
+ W+atPy0KYADExso8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=outbound.mailhop.org; s=dkim-high;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+ from; bh=mkE+WKXeb8kvSrucAcxM1ZdzXdhVyVDaYewAj62Dd1g=;
+ b=BF97cjfebExwBOvkQan3fURCHqZpNHBkIyPNY6HaZpiL8Tdef+yVBA2tiHsVDFuH/fqmhXISzYFQ/
+ Rd0kMMnfLaf72bLkbYUjdHDh7gPYY95Fcz8tLqC5qGTge1SEgIwGFV3cySBJQZH4Z1Hj6fLqkMbptS
+ qG6SxWdi1MkP/arP+7X2DDUiEH5FzCPkbXwoqmXKpglIkcbYjXsrHlQ3rDJXtteE8IBowtzbQfWyK9
+ Wy0muIru/uz38eEQTNeazbI/ln9Xc9UFDrsyGFr1CxbJGk+QQxnPDKLwKFU9JH8KUa9IUAAKQwuEIA
+ KWGK2TTShWxSou/KXqafkjbkI8HigTg==
+X-Originating-IP: 130.180.31.158
+X-MHO-RoutePath: dG9ta2lzdG5lcm51
+X-MHO-User: 45e64da0-d674-11ee-af93-eda7e384987e
+X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
+X-Mail-Handler: DuoCircle Outbound SMTP
+Received: from mail.duncanthrax.net (mail.duncanthrax.net [130.180.31.158])
+ by outbound3.eu.mailhop.org (Halon) with ESMTPSA
+ id 45e64da0-d674-11ee-af93-eda7e384987e;
+ Wed, 28 Feb 2024 20:02:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=stackframe.org; s=dkim1; h=Content-Transfer-Encoding:MIME-Version:
+ Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=mkE+WKXeb8kvSrucAcxM1ZdzXdhVyVDaYewAj62Dd1g=; b=h8z+gJPB/qwaNTReFASdh2P8jX
+ 3pXyGyc+X6zkxKPp9kktzNwgYnKg99j8GDDSlaVjwnAz36vIQTdovR0qSKgJbBMLimHTfvZYKicVC
+ In6nKznOldXvBL0LMAyfQQbnKEeGzbGPyxc8HkCK6VNbRymgVV7USUbfS1lGQeTrC1ku3UDR6jYfD
+ CblLinedYAlfRZJDg747WpoIQkEDRd1qYgb3jhNuwvA3yU5mJ9MZG3npfzrwn+rA+kMP+dRCULIq+
+ Y2juRbnXVOrWl5Cb9uk2emIovjlknwt9w6fFJ6bulKPn+L1d4mJ6SR01ksWaJOrh+uT+qEYxVQLU7
+ Kc1lrT5A==;
+Received: from ip-134-003-094-010.um41.pools.vodafone-ip.de ([134.3.94.10]
+ helo=t14.stackframe.org)
+ by mail.duncanthrax.net with esmtpa (Exim 4.96)
+ (envelope-from <svens@stackframe.org>) id 1rfQ8W-000DfK-2A;
+ Wed, 28 Feb 2024 21:02:40 +0100
+From: Sven Schnelle <svens@stackframe.org>
+To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org, deller@gmx.de, Sven Schnelle <svens@stackframe.org>
+Subject: [PATCH 0/4] plugins/execlog: add data address match and address range
+ support
+Date: Wed, 28 Feb 2024 21:02:07 +0100
+Message-ID: <20240228200211.1512816-1-svens@stackframe.org>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fnV8cV3P;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=VdWJZtWO
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-6.27 / 50.00]; RCVD_VIA_SMTP_AUTH(0.00)[];
- TO_DN_SOME(0.00)[];
- R_RATELIMIT(0.00)[to_ip_from(RL9pwd6yriz4g6gm1w7u8hak7u)];
- RCVD_COUNT_THREE(0.00)[3]; DKIM_TRACE(0.00)[suse.de:+];
- MX_GOOD(-0.01)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- FREEMAIL_TO(0.00)[bytedance.com,redhat.com,habkost.net,gmail.com,linaro.org,huawei.com,nongnu.org];
- FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
- MID_RHS_MATCH_FROM(0.00)[]; BAYES_HAM(-2.76)[98.94%];
- ARC_NA(0.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_HAS_DN(0.00)[]; FREEMAIL_ENVRCPT(0.00)[gmail.com];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; TAGGED_RCPT(0.00)[];
- MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-1.00)[-1.000];
- DWL_DNSWL_HI(-3.50)[suse.de:dkim];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_TWELVE(0.00)[15];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,bytedance.com:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_TLS_ALL(0.00)[];
- SUSPICIOUS_RECIPS(1.50)[]
-X-Spam-Score: -6.27
-X-Rspamd-Queue-Id: 5AA631F792
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=23.83.223.94; envelope-from=svens@stackframe.org;
+ helo=ivory.cherry.relay.mailchannels.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -130,14 +159,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hao Xiang <hao.xiang@bytedance.com> writes:
+Hi List,
 
-> 1. Add a dedicated handler for MigrationOps::ram_save_target_page in
-> multifd live migration.
-> 2. Refactor ram_save_target_page_legacy so that the legacy and multifd
-> handlers don't have internal functions calling into each other.
->
-> Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
+this patchset adds a new -dfilter option and address range matching. With this
+execlog can match only a certain range of address for both instruction and
+data adresses.
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Example usage:
+
+qemu-system-xxx <other options> -d plugin -plugin libexeclog.so,afilter=0x1000-0x2000,dfilter=0x388
+
+This would only log instruction in the address range 0x1000 to 0x2000
+and accessing data at address 0x388.
+
+Sven Schnelle (4):
+  plugins/execlog: add struct execlog_ctx
+  plugins/execlog: pass matches array to parse_vaddr_match
+  plugins/execlog: add data address match
+  plugins/execlog: add address range matching
+
+ contrib/plugins/execlog.c | 102 ++++++++++++++++++++++++++++++--------
+ 1 file changed, 82 insertions(+), 20 deletions(-)
+
+-- 
+2.43.2
+
 
