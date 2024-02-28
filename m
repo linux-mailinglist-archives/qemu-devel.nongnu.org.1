@@ -2,64 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A949F86B4E7
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 17:28:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A6C86B4F4
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Feb 2024 17:30:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfMkQ-0005Zq-88; Wed, 28 Feb 2024 11:25:34 -0500
+	id 1rfMox-0000ih-A3; Wed, 28 Feb 2024 11:30:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rfMjd-0004p9-NP; Wed, 28 Feb 2024 11:24:47 -0500
-Received: from forwardcorp1c.mail.yandex.net
- ([2a02:6b8:c03:500:1:45:d181:df01])
+ id 1rfMor-0000ho-TW; Wed, 28 Feb 2024 11:30:10 -0500
+Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rfMjb-0000ui-Ch; Wed, 28 Feb 2024 11:24:45 -0500
-Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:621c:0:640:f00b:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 52C8960DB7;
- Wed, 28 Feb 2024 19:24:36 +0300 (MSK)
+ id 1rfMop-0002C1-F0; Wed, 28 Feb 2024 11:30:09 -0500
+Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
+ [IPv6:2a02:6b8:c14:750a:0:640:e46:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 29DB660A3E;
+ Wed, 28 Feb 2024 19:30:03 +0300 (MSK)
 Received: from [IPV6:2a02:6b8:b081:a519::1:3a] (unknown
  [2a02:6b8:b081:a519::1:3a])
- by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id ZOcqeV1IkuQ0-LPgPPo8A; Wed, 28 Feb 2024 19:24:35 +0300
+ by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 0UcMgs2IhSw0-fwBlKGqM; Wed, 28 Feb 2024 19:30:02 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1709137475;
- bh=Dts6lp1y93tKuAOeU+UyWR4MbDFpSCKIHvmD1zm9fB8=;
+ s=default; t=1709137802;
+ bh=nVruYL75zVY2TbFoancKixAS45BHB5tvTgxsfuoWl2k=;
  h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=iYA84NI+VI9dS4HLoWOtxon3cByIJF/MAz4D3fTT3MR/6ovr39sN2uCNn0LR1xqO7
- 7TrHqTTdBh/aUwbmgMQH0rSsOwlbBI4BKkS90gO8U+sOoxnFLTyffsB1amZNr2+oXE
- 9nPIoxJjFWAYj39qy8DREK70vRzEaF81YlpIW5/E=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
+ b=QnMfOKy8T9bOo9SrMrAjozq5VLdP+mFWIGnKw1vKUKKG9CSpGmidUqCNv7EbOciYL
+ 8ZqEKn96FGHpH81iD+VgdpSejq4nqdIVfNV6vG0JTTYe3q7RWeDWI3feA7/nNYUU6s
+ sglajcR0HYiviKSw8va9q+zwO05Rk5oInbHDjdV0=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
-Message-ID: <217803cb-fced-4dce-87f3-9892b2f97dce@yandex-team.ru>
-Date: Wed, 28 Feb 2024 19:24:35 +0300
+Message-ID: <217e42c9-a316-4b98-9050-fd5967e825f3@yandex-team.ru>
+Date: Wed, 28 Feb 2024 19:30:00 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 0/4] mirror: implement incremental and bitmap modes
+Subject: Re: [PATCH 04/16] block/cbw: Fix missing ERRP_GUARD() for
+ error_prepend()
 Content-Language: en-US
-To: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, armbru@redhat.com, eblake@redhat.com,
- hreitz@redhat.com, kwolf@redhat.com, jsnow@redhat.com,
- f.gruenbichler@proxmox.com, t.lamprecht@proxmox.com,
- mahaocong@didichuxing.com
-References: <20240216105513.309901-1-f.ebner@proxmox.com>
+To: Zhao Liu <zhao1.liu@linux.intel.com>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Michael Tokarev <mjt@tls.msk.ru>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
+ John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>
+References: <20240228163723.1775791-1-zhao1.liu@linux.intel.com>
+ <20240228163723.1775791-5-zhao1.liu@linux.intel.com>
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20240216105513.309901-1-f.ebner@proxmox.com>
+In-Reply-To: <20240228163723.1775791-5-zhao1.liu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
+Received-SPF: pass client-ip=178.154.239.200;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,44 +79,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16.02.24 13:55, Fiona Ebner wrote:
-> Previous discussion from when this was sent upstream [0] (it's been a
-> while). I rebased the patches and re-ordered and squashed like
-> suggested back then [1].
+On 28.02.24 19:37, Zhao Liu wrote:
+> From: Zhao Liu<zhao1.liu@intel.com>
 > 
-> This implements two new mirror modes:
+> As the comment in qapi/error, passing @errp to error_prepend() requires
+> ERRP_GUARD():
 > 
-> - bitmap mirror mode with always/on-success/never bitmap sync mode
-> - incremental mirror mode as sugar for bitmap + on-success
+> * = Why, when and how to use ERRP_GUARD() =
+> *
+> * Without ERRP_GUARD(), use of the @errp parameter is restricted:
+> ...
+> * - It should not be passed to error_prepend(), error_vprepend() or
+> *   error_append_hint(), because that doesn't work with &error_fatal.
+> * ERRP_GUARD() lifts these restrictions.
+> *
+> * To use ERRP_GUARD(), add it right at the beginning of the function.
+> * @errp can then be used without worrying about the argument being
+> * NULL or &error_fatal.
 > 
-> Use cases:
-> * Possibility to resume a failed mirror later.
-> * Possibility to only mirror deltas to a previously mirrored volume.
-> * Possibility to (efficiently) mirror an drive that was previously
->    mirrored via some external mechanism (e.g. ZFS replication).
+> ERRP_GUARD() could avoid the case when @errp is the pointer of
+> error_fatal, the user can't see this additional information, because
+> exit() happens in error_setg earlier than information is added [1].
 > 
-> We are using the last one in production without any issues since about
-> 4 years now. In particular, like mentioned in [2]:
+> The cbw_open() passes @errp to error_prepend() without ERRP_GUARD().
 > 
->> - create bitmap(s)
->> - (incrementally) replicate storage volume(s) out of band (using ZFS)
->> - incrementally drive mirror as part of a live migration of VM
->> - drop bitmap(s)
+> Though it is the BlockDriver.bdrv_open() method, and currently its
+> @errp parameter only points to callers' local_err, to follow the
+> requirement of @errp, add missing ERRP_GUARD() at the beginning of this
+> function.
+> 
+> [1]: Issue description in the commit message of commit ae7c80a7bd73
+>       ("error: New macro ERRP_GUARD()").
+> 
+> Cc: John Snow<jsnow@redhat.com>
+> Cc: Vladimir Sementsov-Ogievskiy<vsementsov@yandex-team.ru>
+> Cc: Kevin Wolf<kwolf@redhat.com>
+> Cc: Hanna Reitz<hreitz@redhat.com>
+> Signed-off-by: Zhao Liu<zhao1.liu@intel.com>
 
-Actually which mode you use, "never", "always" or "conditional"? Or in downstream you have different approach?
+Your actual email is at linux.intel.com, is it all OK?
 
-Why am I asking:
+I'd prefer not to abbreviate copy-before-write in subject, but anyway:
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-These modes (for backup) were developed prior to block-dirty-bitmap-merge command, which allowed to copy bitmaps as you want. With that API, we actually don't need all these modes, instead it's enough to pass a bitmap, which would be _actually_ used by mirror.
-
-So, if you need "never" mode, you just copy your bitmap by block-dirty-bitmap-add + block-dirty-bitmap-merge, and pass a copy to mirror job.
-
-Or, you pass your bitmap to mirror-job, and have a "always" mode.
-
-And I don't see, why we need a "conditional" mode, which actually just drops away the progress we actually made. (OK, we failed, but why to drop the progress of successfully copied clusters?)
-
-
-Using user-given bitmap in the mirror job has also an additional advantage of live progress: up to visualization of disk copying by visualization of the dirty bitmap contents.
+Thanks for fixing!
 
 -- 
 Best regards,
