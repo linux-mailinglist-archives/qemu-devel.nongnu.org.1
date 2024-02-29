@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 449AD86C07F
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:03:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7531386C07D
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:03:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfZUU-0000yo-9i; Thu, 29 Feb 2024 01:01:58 -0500
+	id 1rfZUU-00016I-UY; Thu, 29 Feb 2024 01:01:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rfZTe-0000Uj-Cc; Thu, 29 Feb 2024 01:01:07 -0500
+ id 1rfZTj-0000Xi-DE; Thu, 29 Feb 2024 01:01:11 -0500
 Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rfZTc-0001ND-Gu; Thu, 29 Feb 2024 01:01:06 -0500
+ id 1rfZTh-0001Od-SQ; Thu, 29 Feb 2024 01:01:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709186465; x=1740722465;
+ t=1709186470; x=1740722470;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ar/GJarYdHaRnmIyz45gr4WN5aV4F4yYV53G20pyAZg=;
- b=oBTv11ZYCwy9kU2clBfdtN8RmgcoLfKJpHCOHnJoAsobEt7mxPAcHlJ+
- 3cujJ1J5A9c2psI8ixbY7LineNvQfxGl/KrE7CdJb2h2UtmBPGrY7xt18
- UjeW7DlNiKREJbk/EAdMtXUJEVpR5pt4HD/zRVYQ5YxCAUDDnlFGYehte
- RwZNvmadEPG9IelX6CVEly7OfFn3P369CJcOFkqa9alcsFhdaD0iPIfos
- UKbok4qVl89Ku/o4wD8pp+fzc8UKqbW78oBVrL17W4jHla7YaChFpOL+f
- fXhZSFpO1sOUovbK/ywUxBYnFp+Z8cw8+KnVryff9om/QucE4RMTc6+d6 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="14274179"
-X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; d="scan'208";a="14274179"
+ bh=PdtkwSuslEbm0BAB7uu91wKG2iEtF4n8LcLzLpoKvUo=;
+ b=jBXeMqCRq8ddWzMzh63BROUD6XNXzgEs1CAAYFkS3nvd2CcXbqOMl1CA
+ WQEiuqyEhUSdXsgZIJziUWdpx6ZBD6eD/CKEc4wKAN4V7Y4KHmngHebGi
+ z2TnqaPKaJNJ+ViDgglPr/z9XdZxO3d29WRc0ipuRstMfyx0VJTwWzsYy
+ iAxThLA6HM6qFYKwXBysixjHrWLFrCo6QqSAAXn+IMGqRWsR2yvyIxBRQ
+ 24y5hiV3zsmLbbl5gc6SR/iwczYpgxHn8vScuKxw96Uevb6Cf5kLGz7Bt
+ yqZA1ULNwCcLVBVZE8P6BpNi57vR/Dj0Xh2dzmNhm+d/ePmd2XNtk+o34 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="14274189"
+X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; d="scan'208";a="14274189"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 22:01:02 -0800
+ 28 Feb 2024 22:01:07 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="8266135"
+   d="scan'208";a="8266173"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa008.jf.intel.com with ESMTP; 28 Feb 2024 22:00:57 -0800
+ by orviesa008.jf.intel.com with ESMTP; 28 Feb 2024 22:01:02 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Nicholas Piggin <npiggin@gmail.com>,
@@ -54,9 +54,9 @@ To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>
 Cc: xiaoyao.li@intel.com, qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
  qemu-s390x@nongnu.org
-Subject: [PATCH 3/4] ppc/pef: switch to use confidential_guest_kvm_init/reset()
-Date: Thu, 29 Feb 2024 01:00:37 -0500
-Message-Id: <20240229060038.606591-4-xiaoyao.li@intel.com>
+Subject: [PATCH 4/4] s390: Switch to use confidential_guest_kvm_init()
+Date: Thu, 29 Feb 2024 01:00:38 -0500
+Message-Id: <20240229060038.606591-5-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240229060038.606591-1-xiaoyao.li@intel.com>
 References: <20240229060038.606591-1-xiaoyao.li@intel.com>
@@ -86,129 +86,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the unified interface to call confidential guest related kvm_init()
-and kvm_reset(), to avoid exposing pef specific functions.
-
-remove perf.h since it is now blank..
+Use unified confidential_guest_kvm_init(), to avoid exposing specific
+functions.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
 Changes from rfc v1:
- - check machine->cgs not NULL before callling
-   confidential_guest_kvm_init/reset();
+ - check machine->cgs not NULL before calling confidential_guest_kvm_init();
 ---
- hw/ppc/pef.c         |  9 ++++++---
- hw/ppc/spapr.c       | 10 +++++++---
- include/hw/ppc/pef.h | 17 -----------------
- 3 files changed, 13 insertions(+), 23 deletions(-)
- delete mode 100644 include/hw/ppc/pef.h
+ hw/s390x/s390-virtio-ccw.c |  5 ++++-
+ target/s390x/kvm/pv.c      |  8 ++++++++
+ target/s390x/kvm/pv.h      | 14 --------------
+ 3 files changed, 12 insertions(+), 15 deletions(-)
 
-diff --git a/hw/ppc/pef.c b/hw/ppc/pef.c
-index d28ed3ba7333..47553348b1e7 100644
---- a/hw/ppc/pef.c
-+++ b/hw/ppc/pef.c
-@@ -15,7 +15,6 @@
- #include "sysemu/kvm.h"
- #include "migration/blocker.h"
- #include "exec/confidential-guest-support.h"
--#include "hw/ppc/pef.h"
- 
- #define TYPE_PEF_GUEST "pef-guest"
- OBJECT_DECLARE_SIMPLE_TYPE(PefGuest, PEF_GUEST)
-@@ -93,7 +92,7 @@ static int kvmppc_svm_off(Error **errp)
- #endif
- }
- 
--int pef_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-+static int pef_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
- {
-     if (!object_dynamic_cast(OBJECT(cgs), TYPE_PEF_GUEST)) {
-         return 0;
-@@ -107,7 +106,7 @@ int pef_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-     return kvmppc_svm_init(cgs, errp);
- }
- 
--int pef_kvm_reset(ConfidentialGuestSupport *cgs, Error **errp)
-+static int pef_kvm_reset(ConfidentialGuestSupport *cgs, Error **errp)
- {
-     if (!object_dynamic_cast(OBJECT(cgs), TYPE_PEF_GUEST)) {
-         return 0;
-@@ -131,6 +130,10 @@ OBJECT_DEFINE_TYPE_WITH_INTERFACES(PefGuest,
- 
- static void pef_guest_class_init(ObjectClass *oc, void *data)
- {
-+    ConfidentialGuestSupportClass *klass = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
-+
-+    klass->kvm_init = pef_kvm_init;
-+    klass->kvm_reset = pef_kvm_reset;
- }
- 
- static void pef_guest_init(Object *obj)
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 55263f0815ed..544b5f5c1690 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -74,6 +74,7 @@
- #include "hw/virtio/vhost-scsi-common.h"
- 
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index 62804cc2281d..9b7564bbd4d2 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -14,6 +14,7 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
  #include "exec/ram_addr.h"
 +#include "exec/confidential-guest-support.h"
- #include "hw/usb.h"
- #include "qemu/config-file.h"
- #include "qemu/error-report.h"
-@@ -86,7 +87,6 @@
- #include "hw/ppc/spapr_tpm_proxy.h"
- #include "hw/ppc/spapr_nvdimm.h"
- #include "hw/ppc/spapr_numa.h"
--#include "hw/ppc/pef.h"
+ #include "hw/s390x/s390-virtio-hcall.h"
+ #include "hw/s390x/sclp.h"
+ #include "hw/s390x/s390_flic.h"
+@@ -260,7 +261,9 @@ static void ccw_init(MachineState *machine)
+     s390_init_cpus(machine);
  
- #include "monitor/monitor.h"
- 
-@@ -1687,7 +1687,9 @@ static void spapr_machine_reset(MachineState *machine, ShutdownCause reason)
-         qemu_guest_getrandom_nofail(spapr->fdt_rng_seed, 32);
-     }
- 
--    pef_kvm_reset(machine->cgs, &error_fatal);
-+    if (machine->cgs) {
-+        confidential_guest_kvm_reset(machine->cgs, &error_fatal);
-+    }
-     spapr_caps_apply(spapr);
- 
-     first_ppc_cpu = POWERPC_CPU(first_cpu);
-@@ -2811,7 +2813,9 @@ static void spapr_machine_init(MachineState *machine)
-     /*
-      * if Secure VM (PEF) support is configured, then initialize it
-      */
--    pef_kvm_init(machine->cgs, &error_fatal);
+     /* Need CPU model to be determined before we can set up PV */
+-    s390_pv_init(machine->cgs, &error_fatal);
 +    if (machine->cgs) {
 +        confidential_guest_kvm_init(machine->cgs, &error_fatal);
 +    }
  
-     msi_nonbroken = true;
+     s390_flic_init();
  
-diff --git a/include/hw/ppc/pef.h b/include/hw/ppc/pef.h
-deleted file mode 100644
-index 707dbe524c42..000000000000
---- a/include/hw/ppc/pef.h
-+++ /dev/null
-@@ -1,17 +0,0 @@
--/*
-- * PEF (Protected Execution Facility) for POWER support
-- *
-- * Copyright Red Hat.
-- *
-- * This work is licensed under the terms of the GNU GPL, version 2 or later.
-- * See the COPYING file in the top-level directory.
-- *
-- */
+diff --git a/target/s390x/kvm/pv.c b/target/s390x/kvm/pv.c
+index 7ca7faec73e9..c04d53753bfa 100644
+--- a/target/s390x/kvm/pv.c
++++ b/target/s390x/kvm/pv.c
+@@ -340,6 +340,11 @@ int s390_pv_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+         return 0;
+     }
+ 
++    if (!kvm_enabled()) {
++        error_setg(errp, "Protected Virtualization requires KVM");
++        return -1;
++    }
++
+     if (!s390_has_feat(S390_FEAT_UNPACK)) {
+         error_setg(errp,
+                    "CPU model does not support Protected Virtualization");
+@@ -364,6 +369,9 @@ OBJECT_DEFINE_TYPE_WITH_INTERFACES(S390PVGuest,
+ 
+ static void s390_pv_guest_class_init(ObjectClass *oc, void *data)
+ {
++    ConfidentialGuestSupportClass *klass = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
++
++    klass->kvm_init = s390_pv_kvm_init;
+ }
+ 
+ static void s390_pv_guest_init(Object *obj)
+diff --git a/target/s390x/kvm/pv.h b/target/s390x/kvm/pv.h
+index 5877d28ff10a..4b408174391a 100644
+--- a/target/s390x/kvm/pv.h
++++ b/target/s390x/kvm/pv.h
+@@ -80,18 +80,4 @@ static inline int kvm_s390_dump_mem_state(uint64_t addr, size_t len,
+ static inline int kvm_s390_dump_completion_data(void *buff) { return 0; }
+ #endif /* CONFIG_KVM */
+ 
+-int s390_pv_kvm_init(ConfidentialGuestSupport *cgs, Error **errp);
+-static inline int s390_pv_init(ConfidentialGuestSupport *cgs, Error **errp)
+-{
+-    if (!cgs) {
+-        return 0;
+-    }
+-    if (kvm_enabled()) {
+-        return s390_pv_kvm_init(cgs, errp);
+-    }
 -
--#ifndef HW_PPC_PEF_H
--#define HW_PPC_PEF_H
+-    error_setg(errp, "Protected Virtualization requires KVM");
+-    return -1;
+-}
 -
--int pef_kvm_init(ConfidentialGuestSupport *cgs, Error **errp);
--int pef_kvm_reset(ConfidentialGuestSupport *cgs, Error **errp);
--
--#endif /* HW_PPC_PEF_H */
+ #endif /* HW_S390_PV_H */
 -- 
 2.34.1
 
