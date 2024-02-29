@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F74386C9E4
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 14:13:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D768F86C9F3
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 14:14:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfgCn-0005hh-F6; Thu, 29 Feb 2024 08:12:11 -0500
+	id 1rfgDD-0006EF-Ee; Thu, 29 Feb 2024 08:12:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rfgCa-0005Zw-JU; Thu, 29 Feb 2024 08:11:56 -0500
+ id 1rfgCb-0005aV-2h; Thu, 29 Feb 2024 08:11:57 -0500
 Received: from szxga04-in.huawei.com ([45.249.212.190])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rfgCX-0002ek-Iy; Thu, 29 Feb 2024 08:11:56 -0500
-Received: from mail.maildlp.com (unknown [172.19.88.234])
- by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Tls4v0vRzz2BdkD;
+ id 1rfgCZ-0002eq-BI; Thu, 29 Feb 2024 08:11:56 -0500
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+ by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Tls4v6wXjz2BdtL;
  Thu, 29 Feb 2024 21:09:35 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id 1977C140390;
+ by mail.maildlp.com (Postfix) with ESMTPS id E80911402CE;
  Thu, 29 Feb 2024 21:11:51 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 29 Feb
- 2024 21:11:50 +0800
+ 2024 21:11:51 +0800
 To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [RFC PATCH v5 12/22] target/arm: Handle NMI in
- arm_cpu_do_interrupt_aarch64()
-Date: Thu, 29 Feb 2024 13:10:29 +0000
-Message-ID: <20240229131039.1868904-13-ruanjinjie@huawei.com>
+Subject: [RFC PATCH v5 13/22] hw/intc/arm_gicv3: Add irq superpriority
+ information
+Date: Thu, 29 Feb 2024 13:10:30 +0000
+Message-ID: <20240229131039.1868904-14-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240229131039.1868904-1-ruanjinjie@huawei.com>
 References: <20240229131039.1868904-1-ruanjinjie@huawei.com>
@@ -68,48 +68,55 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to Arm GIC section 4.6.3 Interrupt superpriority, the interrupt
-with superpriority is always IRQ, never FIQ, so the NMI exception trap entry
-behave like IRQ. However, VNMI can be IRQ or FIQ, FIQ can only come from
-hcrx_el2.HCRX_VFNMI bit, IRQ can be raised from the GIC or come from the
-hcrx_el2.HCRX_VINMI bit.
+A SPI, PPI or SGI interrupt can have a superpriority property. So
+maintain superpriority information in PendingIrq and GICR/GICD.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
 ---
-v4:
-- Also handle VNMI in arm_cpu_do_interrupt_aarch64().
 v3:
-- Remove the FIQ NMI handle.
+- Place this ahead of implement GICR_INMIR.
+- Add Acked-by.
 ---
- target/arm/helper.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ include/hw/intc/arm_gicv3_common.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index b796dbdf21..bd34b3506a 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -11459,12 +11459,21 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
-         break;
-     case EXCP_IRQ:
-     case EXCP_VIRQ:
-+    case EXCP_NMI:
-         addr += 0x80;
-         break;
-     case EXCP_FIQ:
-     case EXCP_VFIQ:
-         addr += 0x100;
-         break;
-+    case EXCP_VNMI:
-+        if (env->irq_line_state & CPU_INTERRUPT_VNMI ||
-+            env->cp15.hcrx_el2 & HCRX_VINMI) {
-+            addr += 0x80;
-+        } else if (env->cp15.hcrx_el2 & HCRX_VFNMI) {
-+            addr += 0x100;
-+        }
-+        break;
-     case EXCP_VSERR:
-         addr += 0x180;
-         /* Construct the SError syndrome from IDS and ISS fields. */
+diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
+index 7324c7d983..df4380141d 100644
+--- a/include/hw/intc/arm_gicv3_common.h
++++ b/include/hw/intc/arm_gicv3_common.h
+@@ -146,6 +146,7 @@ typedef struct {
+     int irq;
+     uint8_t prio;
+     int grp;
++    bool superprio;
+ } PendingIrq;
+ 
+ struct GICv3CPUState {
+@@ -172,6 +173,7 @@ struct GICv3CPUState {
+     uint32_t gicr_ienabler0;
+     uint32_t gicr_ipendr0;
+     uint32_t gicr_iactiver0;
++    uint32_t gicr_isuperprio;
+     uint32_t edge_trigger; /* ICFGR0 and ICFGR1 even bits */
+     uint32_t gicr_igrpmodr0;
+     uint32_t gicr_nsacr;
+@@ -274,6 +276,7 @@ struct GICv3State {
+     GIC_DECLARE_BITMAP(active);       /* GICD_ISACTIVER */
+     GIC_DECLARE_BITMAP(level);        /* Current level */
+     GIC_DECLARE_BITMAP(edge_trigger); /* GICD_ICFGR even bits */
++    GIC_DECLARE_BITMAP(superprio);    /* GICD_INMIR */
+     uint8_t gicd_ipriority[GICV3_MAXIRQ];
+     uint64_t gicd_irouter[GICV3_MAXIRQ];
+     /* Cached information: pointer to the cpu i/f for the CPUs specified
+@@ -313,6 +316,7 @@ GICV3_BITMAP_ACCESSORS(pending)
+ GICV3_BITMAP_ACCESSORS(active)
+ GICV3_BITMAP_ACCESSORS(level)
+ GICV3_BITMAP_ACCESSORS(edge_trigger)
++GICV3_BITMAP_ACCESSORS(superprio)
+ 
+ #define TYPE_ARM_GICV3_COMMON "arm-gicv3-common"
+ typedef struct ARMGICv3CommonClass ARMGICv3CommonClass;
 -- 
 2.34.1
 
