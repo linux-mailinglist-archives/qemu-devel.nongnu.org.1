@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9CBE86CB80
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 15:27:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 643ED86CB76
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 15:27:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfhMs-0007Fp-S4; Thu, 29 Feb 2024 09:26:38 -0500
+	id 1rfhMw-0007dB-9Q; Thu, 29 Feb 2024 09:26:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfhMl-000798-QH; Thu, 29 Feb 2024 09:26:33 -0500
+ id 1rfhMn-0007Cc-VK; Thu, 29 Feb 2024 09:26:34 -0500
 Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfhMk-0005cJ-7x; Thu, 29 Feb 2024 09:26:31 -0500
+ id 1rfhMl-0005c2-8g; Thu, 29 Feb 2024 09:26:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709216790; x=1740752790;
+ t=1709216791; x=1740752791;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=wARfCODNefZRcg7ugBVxhGmYWq5sTblq3roBF65heH0=;
- b=ZENqIgkJQxHP08lDcmxfN28cK44925pj5n/lAcB6MaZ0Rcb59KkECaB1
- dfRRL48vmw/3EliiWibGdM/xbKtuCUbZuPW33cxZnSdkHU+ROoOQOPqnC
- qpJAZPDEgiuozDTFJpyawIojve6bTBJ3In2i7lj1pcp+7VP/6k7WNKdLA
- toQW/HN5DP5OCs/S7jsAPuO9Ct79MsxWx1OhYHGjiPM/lb81RHO/rzof6
- L1rIXsAFjfDGXXtF4CAWTT7CemKo66kT4D3k8QZojUgKerj5+gKRk/IyI
- XPE/rsfKRLhMZZu+lfehXh0mNFB8Qf92IuYdT5wi2GKGr+57fZ6179KDB Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="14322863"
-X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; d="scan'208";a="14322863"
+ bh=1uR8nwqYf2xyCLjXffYB8T2F9oXrqWJ3oP/O8Q6/HKo=;
+ b=gMlMKNaXg4BLiZoh70WoMxC/M5uPve3plIjsEXCHECmWzereL0uFHAt5
+ jHZ4DuxpZyJK2EGAbp2I3gC70SKACjZ9qEy94cBsbz5Yp5EN23syGp72+
+ qYVmwAR8q/EVvXAIjtE0gvwT5ZAr+5e1w9uyjGT5+1nIYjokfmbcnU20f
+ LSpQjdAmV4Qf7lJYP78RiPo+hOHkIpL0zrdMIIOu5qEjQ/0g9TRpeSbOA
+ q00dmChj/PmvzfpEz+XZr4BPHi8NaXtdOZtSRrpcfi35YC31hCyAfozW1
+ /CjqDBhFhxQ7thePciKHuC+wzm45v0y7+CkxGdsskk/tcYtslGi2j6woY Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="14322890"
+X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; d="scan'208";a="14322890"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Feb 2024 06:26:12 -0800
+ 29 Feb 2024 06:26:14 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="7793903"
+   d="scan'208";a="7793917"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa010.fm.intel.com with ESMTP; 29 Feb 2024 06:26:10 -0800
+ by fmviesa010.fm.intel.com with ESMTP; 29 Feb 2024 06:26:12 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Jason Wang <jasowang@redhat.com>
-Subject: [PATCH 15/17] net/vhost-vdpa: Fix missing ERRP_GUARD() for
+ Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
+Subject: [PATCH 16/17] target/i386/sev: Fix missing ERRP_GUARD() for
  error_prepend()
-Date: Thu, 29 Feb 2024 22:39:12 +0800
-Message-Id: <20240229143914.1977550-16-zhao1.liu@linux.intel.com>
+Date: Thu, 29 Feb 2024 22:39:13 +0800
+Message-Id: <20240229143914.1977550-17-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240229143914.1977550-1-zhao1.liu@linux.intel.com>
 References: <20240229143914.1977550-1-zhao1.liu@linux.intel.com>
@@ -98,38 +98,35 @@ ERRP_GUARD() could avoid the case when @errp is the pointer of
 error_fatal, the user can't see this additional information, because
 exit() happens in error_setg earlier than information is added [1].
 
-The net_init_vhost_vdpa() passes @errp to error_prepend(), and as a
-member of net_client_init_fun[], it's called in net_client_init1() and
-gets @errp from this caller.
+The sev_inject_launch_secret() passes @errp to error_prepend(), and as
+an APIs defined in target/i386/sev.h, it is necessary to protect its
+@errp with ERRP_GUARD().
 
-But because netdev_init_modern() passes &error_fatal to
-net_client_init1(), then @errp parameter of net_init_vhost_vdpa() would
-point to @error_fatal. This causes the error message in error_prepend()
-to be lost because of the above issue.
-
-To fix this, add missing ERRP_GUARD() at the beginning of this function.
+To avoid the issue like [1] said, add missing ERRP_GUARD() at the
+beginning of this function.
 
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
 
-Cc: Jason Wang <jasowang@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Marcelo Tosatti <mtosatti@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- net/vhost-vdpa.c | 1 +
+ target/i386/sev.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 3726ee5d6763..6c1fa396aae1 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -1751,6 +1751,7 @@ static int vhost_vdpa_get_max_queue_pairs(int fd, uint64_t features,
- int net_init_vhost_vdpa(const Netdev *netdev, const char *name,
-                         NetClientState *peer, Error **errp)
+diff --git a/target/i386/sev.c b/target/i386/sev.c
+index 173de91afe7d..72930ff0dcc5 100644
+--- a/target/i386/sev.c
++++ b/target/i386/sev.c
+@@ -1044,6 +1044,7 @@ sev_encrypt_flash(uint8_t *ptr, uint64_t len, Error **errp)
+ int sev_inject_launch_secret(const char *packet_hdr, const char *secret,
+                              uint64_t gpa, Error **errp)
  {
 +    ERRP_GUARD();
-     const NetdevVhostVDPAOptions *opts;
-     uint64_t features;
-     int vdpa_device_fd;
+     struct kvm_sev_launch_secret input;
+     g_autofree guchar *data = NULL, *hdr = NULL;
+     int error, ret = 1;
 -- 
 2.34.1
 
