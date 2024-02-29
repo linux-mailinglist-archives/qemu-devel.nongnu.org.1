@@ -2,85 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 874F686C42F
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 09:51:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 945DF86C45E
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 09:58:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfc8d-0003L6-5Q; Thu, 29 Feb 2024 03:51:35 -0500
+	id 1rfcEV-0005BY-EN; Thu, 29 Feb 2024 03:57:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rfc8b-0003Kw-4z
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 03:51:33 -0500
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1rfcET-0005AC-JU
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 03:57:37 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rfc8Z-0000V0-Bu
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 03:51:32 -0500
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1rfcEQ-0001bL-IU
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 03:57:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709196690;
+ s=mimecast20190719; t=1709197053;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zyg6CutsuLQmtFSTU/FvNmgrRpHcjvx7pf+fPUH+dPY=;
- b=URgn+RvKvDtjnHYTDSVUlv+jJu6qLH6m2dsYUyO769k33onJMCnyvyXZGtsQOK0Wogqzv+
- cXgA/psIMo6czkmfGT6SssaIYpF9cgq9jQoDvfVFAJX/bRGSw4wfVMlnQg45DqVeFCWpeZ
- XCqnRs3S40bbdzEQHEfiPaA6f5T/4nI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=2Ux73laRPaYp+oQJzJp5gWWt0dU89eqh8wwqXBLMX9Q=;
+ b=JocasIuE6UYa0fcro5xgFAhRzL5QUioFBoVvEyGVDSsxJ6Nk5iqIHS550ICS2ykRifpZPo
+ qHEZqkMTeOMvPXVOfsukcY2/knSD30RIA2HpyucXE/j6y35VRl1XSWfUJAjO1pbmDaa6NO
+ mNM8tdryh+KSfh+nQSMhus31bCwjM2s=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-221-HPgFOnXVM_WFkxdbxaey9g-1; Thu, 29 Feb 2024 03:51:24 -0500
-X-MC-Unique: HPgFOnXVM_WFkxdbxaey9g-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D1B1A863066;
- Thu, 29 Feb 2024 08:51:23 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.4])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 75B8D1C060AF;
- Thu, 29 Feb 2024 08:51:23 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4B20C21E6740; Thu, 29 Feb 2024 09:51:22 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,  David Hildenbrand
- <david@redhat.com>,  Igor Mammedov <imammedo@redhat.com>,  Eduardo Habkost
- <eduardo@habkost.net>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Yanan Wang
- <wangyanan55@huawei.com>,  "Michael S. Tsirkin" <mst@redhat.com>,  Richard
- Henderson <richard.henderson@linaro.org>,  Ani Sinha
- <anisinha@redhat.com>,  Peter Xu <peterx@redhat.com>,  Cornelia Huck
- <cohuck@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Eric
- Blake <eblake@redhat.com>,  Marcelo Tosatti <mtosatti@redhat.com>,
- kvm@vger.kernel.org,  qemu-devel@nongnu.org,  Michael Roth
- <michael.roth@amd.com>,  Claudio Fontana <cfontana@suse.de>,  Gerd
- Hoffmann <kraxel@redhat.com>,  Isaku Yamahata <isaku.yamahata@gmail.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: Re: [PATCH v5 52/65] i386/tdx: Wire TDX_REPORT_FATAL_ERROR with
- GuestPanic facility
-In-Reply-To: <20240229063726.610065-53-xiaoyao.li@intel.com> (Xiaoyao Li's
- message of "Thu, 29 Feb 2024 01:37:13 -0500")
-References: <20240229063726.610065-1-xiaoyao.li@intel.com>
- <20240229063726.610065-53-xiaoyao.li@intel.com>
-Date: Thu, 29 Feb 2024 09:51:22 +0100
-Message-ID: <874jdr1wmt.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ us-mta-355-Wn50zW60PNuQMXJ43jeAlQ-1; Thu, 29 Feb 2024 03:57:31 -0500
+X-MC-Unique: Wn50zW60PNuQMXJ43jeAlQ-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-690316dcdb3so6319486d6.0
+ for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 00:57:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709197051; x=1709801851;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2Ux73laRPaYp+oQJzJp5gWWt0dU89eqh8wwqXBLMX9Q=;
+ b=kXiwOsRFNqKGvqWB6/D8xgYSgsIgReUvOMkcOutSAspqx0RbWUQ3+JyxOCP5EnbLsN
+ TdsKYVdCYzj8fY0YwFD+UH087tk1C/9eJEa3p73S0+1zizmqxIodEOGYFeYENVRT6YEW
+ HtkQc0VX7P49ml5hzoMtk3N/M2YD+Kwxy0QJ+1D8y/SRP9MFpe9Sa5eoczycEnv6qRDN
+ QvEMpCU/YsdzrhpExRFL4hsVs8y5l9KjDPi1qv+Dq02XkMH+PeqoUNRckj1GsmiSVzx0
+ /LWSFDM54lkTBmlSAF68Be3ucWBRSIvN+ARwCHZGA2vZDATrnKjhGy4jNIuU3+vIyeDv
+ tPhQ==
+X-Gm-Message-State: AOJu0YxuxJzwe6TSkfioGaBYKFCTXTE0kh3JFHMj4/DJIszpL2jgySPX
+ DPUYZ8wwGnWHVgzWX8PtiKuR8IwlOE1S2mob3t6x6XEv1PdhDfhUD9MaPL4KXP0C4LeB4o4RtSB
+ wIFXbIE45cozTzsCedLuW83CgV2tavSze0HvLlmZE49u+9o4POeKjZbcw7blI
+X-Received: by 2002:a0c:dd02:0:b0:68f:2d61:e72c with SMTP id
+ u2-20020a0cdd02000000b0068f2d61e72cmr1619913qvk.28.1709197051057; 
+ Thu, 29 Feb 2024 00:57:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGkljVkxjRLRWjSZq0dvg+KycLuKwcUt4upjl+qggUMsPKqhpM3RWa7ltz0gLpkVAbdYgtPhw==
+X-Received: by 2002:a0c:dd02:0:b0:68f:2d61:e72c with SMTP id
+ u2-20020a0cdd02000000b0068f2d61e72cmr1619900qvk.28.1709197050750; 
+ Thu, 29 Feb 2024 00:57:30 -0800 (PST)
+Received: from sgarzare-redhat (host-82-57-51-64.retail.telecomitalia.it.
+ [82.57.51.64]) by smtp.gmail.com with ESMTPSA id
+ t5-20020a0cde05000000b0068fc55bcf6asm508655qvk.119.2024.02.29.00.57.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 29 Feb 2024 00:57:30 -0800 (PST)
+Date: Thu, 29 Feb 2024 09:57:22 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ qemu-block@nongnu.org,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Jason Wang <jasowang@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Coiby Xu <Coiby.Xu@gmail.com>, 
+ slp@redhat.com, Eduardo Habkost <eduardo@habkost.net>, 
+ Hanna Reitz <hreitz@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ Raphael Norwitz <raphael@enfabrica.net>, Kevin Wolf <kwolf@redhat.com>, 
+ David Hildenbrand <david@redhat.com>, stefanha@redhat.com, gmaglione@redhat.com
+Subject: Re: [PATCH 9/9] hostmem-file: support POSIX shm_open()
+Message-ID: <hxd362pwyrtanyw6xtjxiegru7z57btnaynaqxm5lysgzsm4u4@af36bjkqvc7z>
+References: <20240228114759.44758-1-sgarzare@redhat.com>
+ <20240228114759.44758-10-sgarzare@redhat.com>
+ <874jdswyzy.fsf@pond.sub.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <874jdswyzy.fsf@pond.sub.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.102,
+X-Spam_score_int: -6
+X-Spam_score: -0.7
+X-Spam_bar: /
+X-Spam_report: (-0.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.102,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_SORBS_WEB=1.5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,114 +111,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Xiaoyao Li <xiaoyao.li@intel.com> writes:
-
-> Integrate TDX's TDX_REPORT_FATAL_ERROR into QEMU GuestPanic facility
+On Wed, Feb 28, 2024 at 01:32:17PM +0100, Markus Armbruster wrote:
+>Stefano Garzarella <sgarzare@redhat.com> writes:
 >
-> Originated-from: Isaku Yamahata <isaku.yamahata@intel.com>
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> ---
-> Changes in v5:
-> - mention additional error information in gpa when it presents;
-> - refine the documentation; (Markus)
+>> Add a new `shm` bool option for `-object memory-backend-file`.
+>>
+>> When this option is set to true, the POSIX shm_open(3) is used instead
+>> of open(2).
+>>
+>> So a file will not be created in the filesystem, but a "POSIX shared
+>> memory object" will be instantiated. In Linux this turns into a file
+>> in /dev/shm, but in other OSes this may not happen (for example in
+>> macOS or FreeBSD nothing is shown in any filesystem).
+>>
+>> This new feature is useful when we need to share guest memory with
+>> another process (e.g. vhost-user backend), but we don't have
+>> memfd_create() or any special filesystems (e.g. /dev/shm) available
+>> as in macOS.
+>>
+>> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+>> ---
+>> I am not sure this is the best way to support shm_open() in QEMU.
+>>
+>> Other solutions I had in mind were:
+>>
+>> - create a new memory-backend-shm
 >
-> Changes in v4:
-> - refine the documentation; (Markus)
+>How would that look like?  Would it involve duplicating code?
+
+I was looking at it just now, and apart from some boilerplate code to 
+create the object, the rest in the end is pretty specific and a lot of 
+things in memory-backend-file wouldn't be supported by 
+memory-backend-shm anyway, so I'll give it a try for v2 by adding it.
+
 >
-> Changes in v3:
-> - Add docmentation of new type and struct; (Daniel)
-> - refine the error message handling; (Daniel)
-> ---
->  qapi/run-state.json   | 31 +++++++++++++++++++++--
->  system/runstate.c     | 58 +++++++++++++++++++++++++++++++++++++++++++
->  target/i386/kvm/tdx.c | 24 +++++++++++++++++-
->  3 files changed, 110 insertions(+), 3 deletions(-)
+>> - extend memory-backend-memfd to use shm_open() on systems where memfd is
+>> not available (problem: shm_open wants a name to assign to the object, but
+>> we can do a workaround by using a random name and do the unlink right away)
 >
-> diff --git a/qapi/run-state.json b/qapi/run-state.json
-> index dd0770b379e5..b71dd1884eb6 100644
-> --- a/qapi/run-state.json
-> +++ b/qapi/run-state.json
-> @@ -483,10 +483,12 @@
->  #
->  # @s390: s390 guest panic information type (Since: 2.12)
->  #
-> +# @tdx: tdx guest panic information type (Since: 9.0)
-> +#
->  # Since: 2.9
->  ##
->  { 'enum': 'GuestPanicInformationType',
-> -  'data': [ 'hyper-v', 's390' ] }
-> +  'data': [ 'hyper-v', 's390', 'tdx' ] }
->=20=20
->  ##
->  # @GuestPanicInformation:
-> @@ -501,7 +503,8 @@
->   'base': {'type': 'GuestPanicInformationType'},
->   'discriminator': 'type',
->   'data': {'hyper-v': 'GuestPanicInformationHyperV',
-> -          's390': 'GuestPanicInformationS390'}}
-> +          's390': 'GuestPanicInformationS390',
-> +          'tdx' : 'GuestPanicInformationTdx'}}
->=20=20
->  ##
->  # @GuestPanicInformationHyperV:
-> @@ -564,6 +567,30 @@
->            'psw-addr': 'uint64',
->            'reason': 'S390CrashReason'}}
->=20=20
-> +##
-> +# @GuestPanicInformationTdx:
-> +#
-> +# TDX Guest panic information specific to TDX, as specified in the
-> +# "Guest-Hypervisor Communication Interface (GHCI) Specification",
-> +# section TDG.VP.VMCALL<ReportFatalError>.
-> +#
-> +# @error-code: TD-specific error code
-> +#
-> +# @message: Human-readable error message provided by the guest. Not
-> +#     to be trusted.
-> +#
-> +# @gpa: guest-physical address of a page that contains more verbose
-> +#     error information, as zero-terminated string.  Present when the
-> +#     "GPA valid" bit (bit 63) is set in @error-code.
+>Hmm.  Too much magic?  I don't know...
 
-Uh, peeking at GHCI Spec section 3.4 TDG.VP.VMCALL<ReportFatalError>, I
-see operand R12 consists of
+Yeah, I agree.
 
-    bits    name                        description
-    31:0    TD-specific error code      TD-specific error code
-                                        Panic =E2=80=93 0x0.
-                                        Values =E2=80=93 0x1 to 0xFFFFFFFF
-                                        reserved.
-    62:32   TD-specific extended        TD-specific extended error code.
-            error code                  TD software defined.
-    63      GPA Valid                   Set if the TD specified additional
-                                        information in the GPA parameter
-                                        (R13).
+>
+>> Any preference/suggestion?
+>
+>[...]
+>
+>> diff --git a/qapi/qom.json b/qapi/qom.json
+>> index 2a6e49365a..bfb01b909f 100644
+>> --- a/qapi/qom.json
+>> +++ b/qapi/qom.json
+>> @@ -682,6 +682,9 @@
+>   # @mem-path: the path to either a shared memory or huge page
+>   #     filesystem mount
+>
+>Does this need adjustment?
 
-Is @error-code all of R12, or just bits 31:0?
+Good point. For now I think I will drop this patch and add 
+memory-backend-shm in v2, but if I go back I will fix it!
 
-If it's all of R12, description of @error-code as "TD-specific error
-code" is misleading.
+>
+>[...]
+>
+>>  #       writable RAM instead of ROM, and want to set this property to 'off'.
+>>  #       (default: auto, since 8.2)
+>>  #
+>> +# @shm: if true, shm_open(3) is used to create/open POSIX shared memory
+>> +#       object; if false, an open(2) is used. (default: false) (since 9.0)
+>> +#
+>
+>Please format like this for consistency:
 
-If it's just bits 31:0, then 'Present when the "GPA valid" bit (bit 63)
-is set in @error-code' is wrong.  Could go with 'Only present when the
-guest provides this information'.
+Sure.
 
-> +#
-> +#
+>
+># @shm: if true, shm_open(3) is used to create/open POSIX shared memory
+>#     object; if false, an open(2) is used (default: false) (since 9.0)
 
-Drop one of these two lines, please.
+I just noticed that I followed the property just above (@rom). Should we 
+fix that one?
 
-> +# Since: 9.0
-> +##
-> +{'struct': 'GuestPanicInformationTdx',
-> + 'data': {'error-code': 'uint64',
-> +          'message': 'str',
-> +          '*gpa': 'uint64'}}
-> +
->  ##
->  # @MEMORY_FAILURE:
->  #
+Thanks,
+Stefano
 
 
