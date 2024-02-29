@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0A9E86CB86
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 15:27:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8213286CB84
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 15:27:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfhMM-0006Ns-1v; Thu, 29 Feb 2024 09:26:06 -0500
+	id 1rfhMN-0006SR-2D; Thu, 29 Feb 2024 09:26:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfhMA-00064e-5p; Thu, 29 Feb 2024 09:25:54 -0500
+ id 1rfhMC-00069f-Q9; Thu, 29 Feb 2024 09:25:57 -0500
 Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfhM7-0005O2-H0; Thu, 29 Feb 2024 09:25:53 -0500
+ id 1rfhMB-0005Zy-4C; Thu, 29 Feb 2024 09:25:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709216751; x=1740752751;
+ t=1709216755; x=1740752755;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=tm2TfL8tCatkLG6f9ax0h2DVCNI++sDtZFIjXdGxA2U=;
- b=hDBnCndeof+cuNUvpJWLttT0db/Bls1FNs1AzXz2rbabSa1DTIFvJXS0
- t4RoAphuki0rZmb3IeW6Hg7fI1OWJXq7ATHcaZiiolyn0/bsAluMzftUC
- maDzAzXOHzhgPCpW1mjSaba8OguZdSKrbH8MRje+w/zWQV7k7IALNQccI
- hvTEiT9WekbF9+J64fvKay3V5dg3E320UJtaJ5Wkf7mg33oAOxylv6RuD
- AhOJXBlmomeA8hcDHp2bVxYFzZl/dSbjTyP6nCeBqZcTwzb4Hc60v2CD1
- JEIy8338fR891qVS6Kl4hOUh0XY0FeaXG7PPCuv4vGf3GFXZM4PHapxxP Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="14322767"
-X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; d="scan'208";a="14322767"
+ bh=tQ5IiIRAKEqm+pxP3vIA++0AE538b0btx11JF7Z59QU=;
+ b=JHUHqXTtXKqYiyJQ3XsgzQjT0n/MNu1hRTIkBBq81eLN6Nfm/4xEDV00
+ qW60kgUGAZuzSuibuDFzqwVpkYPe6H0oBLiPFdkFKzFwLFMvqPZlTbPxC
+ I+nccMV22oyTtBaQsY6KTBPIdIRChKyRCU5yCQd18pjLHn+HBVwL/GlBK
+ rLnfG6oqCg7SS9TXg9M1TJLW/Kjmf1JLqJLuHHgAyLX4NBXtIcsNUdW+b
+ QNcba6xFkfX72jCtTEhHsU4EVEy2co3WMrZPmyEautbz6lTh8LnaAzFl8
+ OZSpRIMblarNJZ1hN52VSPYQSa8OE2jpbYIoSqcK3RtAmKdDJvrbT8n7a w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="14322777"
+X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; d="scan'208";a="14322777"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Feb 2024 06:25:50 -0800
+ 29 Feb 2024 06:25:53 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="7793832"
+   d="scan'208";a="7793838"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa010.fm.intel.com with ESMTP; 29 Feb 2024 06:25:48 -0800
+ by fmviesa010.fm.intel.com with ESMTP; 29 Feb 2024 06:25:50 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Michael Tokarev <mjt@tls.msk.ru>,
@@ -46,10 +46,10 @@ To: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
 Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH 06/17] hw/vfio/container: Fix missing ERRP_GUARD() for
+Subject: [PATCH 07/17] hw/vfio/helpers: Fix missing ERRP_GUARD() for
  error_prepend()
-Date: Thu, 29 Feb 2024 22:39:03 +0800
-Message-Id: <20240229143914.1977550-7-zhao1.liu@linux.intel.com>
+Date: Thu, 29 Feb 2024 22:39:04 +0800
+Message-Id: <20240229143914.1977550-8-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240229143914.1977550-1-zhao1.liu@linux.intel.com>
 References: <20240229143914.1977550-1-zhao1.liu@linux.intel.com>
@@ -100,12 +100,17 @@ ERRP_GUARD() could avoid the case when @errp is the pointer of
 error_fatal, the user can't see this additional information, because
 exit() happens in error_setg earlier than information is added [1].
 
-The vfio_get_group() passes @errp to error_prepend(). Its @errp is
-from vfio_attach_device(), which @errp parameter is so widely sourced
-that it is necessary to protect it with ERRP_GUARD().
+In hw/vfio/helpers.c, there're 3 functions passing @errp to
+error_prepend() without ERRP_GUARD():
+ - vfio_set_irq_signaling()
+ - vfio_device_get_name()
+ - vfio_device_set_fd()
 
-To avoid the issue like [1] said, add missing ERRP_GUARD() at the
-beginning of this function.
+As the widely used helpers, their @errp parameters are so widely sourced
+that it is necessary to protect them with ERRP_GUARD().
+
+To avoid the issue like [1] said, add missing ERRP_GUARD() at their
+beginning.
 
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
@@ -114,21 +119,37 @@ Cc: Alex Williamson <alex.williamson@redhat.com>
 Cc: "Cédric Le Goater" <clg@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/vfio/container.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/vfio/helpers.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index bd25b9fbad2e..f66bb01f5b18 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -719,6 +719,7 @@ static void vfio_disconnect_container(VFIOGroup *group)
- 
- static VFIOGroup *vfio_get_group(int groupid, AddressSpace *as, Error **errp)
+diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
+index 678987080228..47b4096c05ee 100644
+--- a/hw/vfio/helpers.c
++++ b/hw/vfio/helpers.c
+@@ -110,6 +110,7 @@ static const char *index_to_str(VFIODevice *vbasedev, int index)
+ int vfio_set_irq_signaling(VFIODevice *vbasedev, int index, int subindex,
+                            int action, int fd, Error **errp)
  {
 +    ERRP_GUARD();
-     VFIOGroup *group;
-     char path[32];
-     struct vfio_group_status status = { .argsz = sizeof(status) };
+     struct vfio_irq_set *irq_set;
+     int argsz, ret = 0;
+     const char *name;
+@@ -613,6 +614,7 @@ bool vfio_has_region_cap(VFIODevice *vbasedev, int region, uint16_t cap_type)
+ 
+ int vfio_device_get_name(VFIODevice *vbasedev, Error **errp)
+ {
++    ERRP_GUARD();
+     struct stat st;
+ 
+     if (vbasedev->fd < 0) {
+@@ -644,6 +646,7 @@ int vfio_device_get_name(VFIODevice *vbasedev, Error **errp)
+ 
+ void vfio_device_set_fd(VFIODevice *vbasedev, const char *str, Error **errp)
+ {
++    ERRP_GUARD();
+     int fd = monitor_fd_param(monitor_cur(), str, errp);
+ 
+     if (fd < 0) {
 -- 
 2.34.1
 
