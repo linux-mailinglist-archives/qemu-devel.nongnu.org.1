@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E689686C137
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:46:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E87DC86C15A
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:52:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfa9g-0003wv-EN; Thu, 29 Feb 2024 01:44:32 -0500
+	id 1rfa9j-0004Hn-6Y; Thu, 29 Feb 2024 01:44:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rfa9W-0003i9-QA
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:44:22 -0500
+ id 1rfa9d-0003w8-Th
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:44:30 -0500
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rfa9V-0005ON-10
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:44:22 -0500
+ id 1rfa9c-0005ON-3J
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:44:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709189061; x=1740725061;
+ t=1709189068; x=1740725068;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=LHQPUt9kNMbszwvd34sfpT4+wYNaQjOCt0b7dVNRHqs=;
- b=fvNtcmItbFwUnfx2jH8NjK9nNPXZ2d9hp/P8YkYDGx/ba16XC59luSi4
- 5fMceNlpMg3+WLiYk7+8a/DPGKaaVzSQiQrwuXgSmFlf0YtjNH5c77FnN
- +C4FSYtIVFQHHBKUpLO2Ne5+DqbQbwwmP5+gH7uRfsMQK52Bps2tn5UpW
- FZMcbs88AqbfvPp+4b7MqSGxS5zrVlbUaDOA+xhn4zigYGq+3clipi3so
- o6nQ/cHAW55sMdA4Uv25eWEVw+WJwkUEn3I9Kc4TXElfymw6MbjF/RJFJ
- +KJ/IbDmVZq7Ini4uXt4jzuC+SQo/ircQgY0mdBSLWPKnfLSpZty3FH1d Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3803314"
+ bh=w43m/q1K3tjH9BzdhhpNxp1BomsI63/42OLw0r7ykq0=;
+ b=RpHJ+9L3+2hTMsnQ1QssvDAWZKlzRI6UiVX5z/fiXp08goMMfqIFeLsC
+ +qL71pJbqFHOS0+2FaAdJQ78Mrcxs0iza0/Eus00OraY1LCpFDENMks0g
+ xE0P9qlX87pw3eojFo3gFpSR2pukIAQzby/yN6JiNqg1C1xLIoSpxmysY
+ WlIVjKVn9cL2AZ9hsgAyRA9sgld83az9kUpwQ5rAv/18jixG50fd3mV2X
+ /Xp54HBFQT3wLTgdXZKrmpvEAaIJvjkeT1ItraA2bIXrzkWNP3YQNKzhj
+ dsyoBX5ouoKEunEVyLme+5Fz/ai6CRMOLPZr4QQKwzd/NTV5+ysEBCRFW Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3803328"
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="3803314"
+   d="scan'208";a="3803328"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 22:44:19 -0800
+ 28 Feb 2024 22:44:25 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="8076531"
+   d="scan'208";a="8076549"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa007.jf.intel.com with ESMTP; 28 Feb 2024 22:44:13 -0800
+ by orviesa007.jf.intel.com with ESMTP; 28 Feb 2024 22:44:20 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -58,10 +58,9 @@ Cc: kvm@vger.kernel.org, qemu-devel@nongnu.org,
  Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>, xiaoyao.li@intel.com
-Subject: [PATCH v5 62/65] i386/tdx: Only configure MSR_IA32_UCODE_REV in
- kvm_init_msrs() for TDs
-Date: Thu, 29 Feb 2024 01:37:23 -0500
-Message-Id: <20240229063726.610065-63-xiaoyao.li@intel.com>
+Subject: [PATCH v5 63/65] i386/tdx: Skip kvm_put_apicbase() for TDs
+Date: Thu, 29 Feb 2024 01:37:24 -0500
+Message-Id: <20240229063726.610065-64-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240229063726.610065-1-xiaoyao.li@intel.com>
 References: <20240229063726.610065-1-xiaoyao.li@intel.com>
@@ -92,78 +91,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For TDs, only MSR_IA32_UCODE_REV in kvm_init_msrs() can be configured
-by VMM, while the features enumerated/controlled by other MSRs except
-MSR_IA32_UCODE_REV in kvm_init_msrs() are not under control of VMM.
-
-Only configure MSR_IA32_UCODE_REV for TDs.
+KVM doesn't allow wirting to MSR_IA32_APICBASE for TDs.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- target/i386/kvm/kvm.c | 44 ++++++++++++++++++++++---------------------
- 1 file changed, 23 insertions(+), 21 deletions(-)
+ target/i386/kvm/kvm.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 83276e23b19f..d23f94b77257 100644
+index d23f94b77257..31aed1c9aae0 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -3270,32 +3270,34 @@ static void kvm_init_msrs(X86CPU *cpu)
-     CPUX86State *env = &cpu->env;
+@@ -3052,6 +3052,11 @@ void kvm_put_apicbase(X86CPU *cpu, uint64_t value)
+ {
+     int ret;
  
-     kvm_msr_buf_reset(cpu);
--    if (has_msr_arch_capabs) {
--        kvm_msr_entry_add(cpu, MSR_IA32_ARCH_CAPABILITIES,
--                          env->features[FEAT_ARCH_CAPABILITIES]);
--    }
--
--    if (has_msr_core_capabs) {
--        kvm_msr_entry_add(cpu, MSR_IA32_CORE_CAPABILITY,
--                          env->features[FEAT_CORE_CAPABILITY]);
--    }
--
--    if (has_msr_perf_capabs && cpu->enable_pmu) {
--        kvm_msr_entry_add_perf(cpu, env->features);
++    /* TODO: Allow accessing guest state for debug TDs. */
++    if (is_tdx_vm()) {
++        return;
++    }
 +
-+    if (!is_tdx_vm()) {
-+        if (has_msr_arch_capabs) {
-+            kvm_msr_entry_add(cpu, MSR_IA32_ARCH_CAPABILITIES,
-+                                env->features[FEAT_ARCH_CAPABILITIES]);
-+        }
-+
-+        if (has_msr_core_capabs) {
-+            kvm_msr_entry_add(cpu, MSR_IA32_CORE_CAPABILITY,
-+                                env->features[FEAT_CORE_CAPABILITY]);
-+        }
-+
-+        if (has_msr_perf_capabs && cpu->enable_pmu) {
-+            kvm_msr_entry_add_perf(cpu, env->features);
-+        }
-+
-+        /*
-+         * Older kernels do not include VMX MSRs in KVM_GET_MSR_INDEX_LIST, but
-+         * all kernels with MSR features should have them.
-+         */
-+        if (kvm_feature_msrs && cpu_has_vmx(env)) {
-+            kvm_msr_entry_add_vmx(cpu, env->features);
-+        }
-     }
- 
-     if (has_msr_ucode_rev) {
-         kvm_msr_entry_add(cpu, MSR_IA32_UCODE_REV, cpu->ucode_rev);
-     }
--
--    /*
--     * Older kernels do not include VMX MSRs in KVM_GET_MSR_INDEX_LIST, but
--     * all kernels with MSR features should have them.
--     */
--    if (kvm_feature_msrs && cpu_has_vmx(env)) {
--        kvm_msr_entry_add_vmx(cpu, env->features);
--    }
--
-     assert(kvm_buf_set_msrs(cpu) == 0);
+     ret = kvm_put_one_msr(cpu, MSR_IA32_APICBASE, value);
+     assert(ret == 1);
  }
- 
 -- 
 2.34.1
 
