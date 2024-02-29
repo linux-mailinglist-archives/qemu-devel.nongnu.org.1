@@ -2,78 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 084C886C6A2
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 11:16:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 862DE86C6C4
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 11:23:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfdS5-0002Ov-Ku; Thu, 29 Feb 2024 05:15:45 -0500
+	id 1rfdYj-0005ot-CR; Thu, 29 Feb 2024 05:22:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rfdS2-0002Ng-En
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 05:15:42 -0500
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rfdRy-0001XT-8z
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 05:15:42 -0500
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-5dca1efad59so534656a12.2
- for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 02:13:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1709201614; x=1709806414;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=b4GYInZJDerjLh6UOqr8cUrr2tEmGpSkmlQoaOJogW0=;
- b=Po1IzU5rE/g8qpVA2Qov/stnw3ZyIOQ9nZxbrho7l8RR0XIM76z8XHjxorYrUAOpFx
- 0f+k19BEQ77JGBo5j0W4t2ZTDU+Ko6RdjAj1KmNCydQqUxYs4AoLrbtX5VE04cugv3lu
- 7bKE6eZEL3ODc+3FDfIYbp4VXgmMY0TsR6FrUnWzCN5/sU2ceN6aoVh5rZ+M+X/5cMNk
- FCE81x0vob5Sz7KPPy6ZSRrAaD/NBoiYt2S6DIJ+yHENQNyz+UHIdIoY/+x7M9Ghsm18
- VyoWZFpvcARD6rmsBzyMF+Hs5yhEem29S/e3Vi4vgbhdCX4GiriuWlGADohDAngtA8vm
- q2Dg==
+ (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
+ id 1rfdYf-0005oC-Rg
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 05:22:34 -0500
+Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
+ id 1rfdYd-0003k0-PW
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 05:22:33 -0500
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 578AA3FB6A
+ for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 10:22:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+ s=20210705; t=1709202149;
+ bh=PhIMvhhzJASnfeJcdzJ8io52I22S0z+H+aiKV0PIVe0=;
+ h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+ In-Reply-To:Content-Type;
+ b=NXCFimimTMxkjpPxApcsvzV2w48T7gZ4FodFTnxDQko8GfP4QR9JfuKcOIcthxp2K
+ awo2nRANM8kQDovqD5Vm++0l4GBYtZgsdHbdT7+CCw+L9ypboJPMptrcOK1+E/aRK2
+ 1jXbLhA4aYRqdH37SO30WY3kHusfBlPtGZwCtLZwxGF6LnFnD4i5+pFPZUZ1CRjNtF
+ Ohu5owoqzweNScnRB4I74GXkkb/V/JYMlDjA/3a/yM+DWtv2vK4/+NRiKuaOfgeuue
+ pXIOXr3I1OQhcwnytwSJPMSF/DjzbCWrBnwCQ9SG7Ccf3sKumaD94Tzjx0NptM/w12
+ KrGdjIufwJfdw==
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a357c92f241so57078566b.0
+ for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 02:22:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709201614; x=1709806414;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=b4GYInZJDerjLh6UOqr8cUrr2tEmGpSkmlQoaOJogW0=;
- b=BZazbfjB5XcZ86T/gjbfQM+8FdI0ZkSIVulaDOUMdgI5j19oeTavm8yLt5U2163FnI
- tZKNDum6a84Vx/zdI3d5oLjp+gDpkpxZot+fUY607Mv7YZLrUPw5S7KSs59C1E/vACJs
- wRpbMIB4U0anoSfoOysUKuR3FahpBETwTpXjyKDJErB7m+TSbGpI+NWlvVDbvsa9azX0
- r3CNbcBbq5xnX7mfvnhINuFeao2EtavFY+HeLP4dFiQJWmhZ6J3km8LXrVD6YwAc3bf6
- fiia2fAiDPq/78FBgCdGY1U6yrjgneUSkBVlS4vRhXyfBqr/UytC29aKNtRDjtXWTBQG
- cxSw==
-X-Gm-Message-State: AOJu0YyEOD7Q4P7Z4pQLf3jF9zTM59aU1RDXBoRga+J+iWaujIWXvchu
- 4F66RTS050j4xv27lMd8QR3VIPee75n5z39NXrnmFbvqsGaB6NlUiliNdVeVQWzYCDWikgWecD5
- MRdmarXPvCuNmgzimVp9sfprFb5XGsen2S3YCXg==
-X-Google-Smtp-Source: AGHT+IFZngvKuRVYzYPt5tVGBs+OTq/a+D5FDuIGlfocTepdLL2hcgY+rTlsLTuWZrXSKLiEmqSZHxuCyt+GRwieykI=
-X-Received: by 2002:a17:90a:9a93:b0:29a:ec42:91fd with SMTP id
- e19-20020a17090a9a9300b0029aec4291fdmr1692808pjp.46.1709201612412; Thu, 29
- Feb 2024 02:13:32 -0800 (PST)
+ d=1e100.net; s=20230601; t=1709202147; x=1709806947;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=PhIMvhhzJASnfeJcdzJ8io52I22S0z+H+aiKV0PIVe0=;
+ b=uSkvObNjVeI3ZLknjBhKlw8+BAk7NKxRPsrCgBcZheozvs5XsKVQuq0BQ/ku1xLb+b
+ F3l9Dmin6FSDFoxOOKqi2xRqxrwwPCu12bosXMsiIaITlv4saaZ0P5u3a11TEn2J+gE0
+ IYyAWxeKbu4bURfcn71T7r5VuoMuuMH2pCC63Q86TymVQqyus1xcVIYzwURhmENBG26F
+ k0QC95S1dop6vqgNKYyWniVwZ9eq2MJz9thiYny3sCGSWxxqvVJZZQslZkMlD7sKx8/N
+ Q6LJX6LLuJJ2+vIGU5kzWFM54fyIDNm3t8sDz9edoVLN//uholrFuFV2gYAOtHI3DFGh
+ 6VrA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVtsxA/e/SJKoHLXtZyFkeAaswTi8ZjQqeNrPUllci35MzgIYK5rUBHs2yiE+0crzUObVZ3aZJgHfSPqat/LPpiChwZEyA=
+X-Gm-Message-State: AOJu0Yxo8wkDg+rneYDiua5p7VsmOOLM1mz7whLO4utFUESgxj3OjICx
+ K714uxYi9fbp0bL2JZkWOceeC/YFxlayjHT1bkHWnaJIlG2Sl1OLpMk/WCs+mglA3ODy+Cw/oA9
+ jFaJ7hXValV2ckSSE2Btb6ij2bF8cPGX0HAsf8beQplz+9G8EDSniysny9mX2HEUqRUh7
+X-Received: by 2002:a17:906:f914:b0:a43:e77d:1670 with SMTP id
+ lc20-20020a170906f91400b00a43e77d1670mr1173534ejb.39.1709202147454; 
+ Thu, 29 Feb 2024 02:22:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHzLp2XZ0owTQ1y/z671XUf6H4gRw2OB/Z0D7HjaQ3B2DbKgq8GjD5dSNyAe4cmS5yEndolVg==
+X-Received: by 2002:a17:906:f914:b0:a43:e77d:1670 with SMTP id
+ lc20-20020a170906f91400b00a43e77d1670mr1173509ejb.39.1709202146956; 
+ Thu, 29 Feb 2024 02:22:26 -0800 (PST)
+Received: from ?IPV6:2a00:20:10:8f6:23ea:cac0:4a99:bcbf?
+ ([2a00:20:10:8f6:23ea:cac0:4a99:bcbf])
+ by smtp.gmail.com with ESMTPSA id
+ k3-20020a17090646c300b00a3fbca02e17sm535560ejs.75.2024.02.29.02.22.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 29 Feb 2024 02:22:26 -0800 (PST)
+Message-ID: <2a07005c-6465-47da-ae89-dd6151e8ed74@canonical.com>
+Date: Thu, 29 Feb 2024 11:22:24 +0100
 MIME-Version: 1.0
-References: <cover.1708527979.git.yong.huang@smartx.com>
- <ZeBIdNQYkq4tnF7h@redhat.com>
-In-Reply-To: <ZeBIdNQYkq4tnF7h@redhat.com>
-From: Yong Huang <yong.huang@smartx.com>
-Date: Thu, 29 Feb 2024 18:13:16 +0800
-Message-ID: <CAK9dgmZdPZSHVCrJP9G6At0FzEsXjwHegQixLL=J4QQoMxbCjQ@mail.gmail.com>
-Subject: Re: [PATCH RFC 0/3] Support GM/T 0018-2012 cryptographic standard
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: multipart/alternative; boundary="000000000000f53102061282822d"
-Received-SPF: none client-ip=2607:f8b0:4864:20::535;
- envelope-from=yong.huang@smartx.com; helo=mail-pg1-x535.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH, v2] physmem: avoid bounce buffer too small
+To: Peter Xu <peterx@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Mattias Nissler <mnissler@rivosinc.com>
+References: <20240228125939.56925-1-heinrich.schuchardt@canonical.com>
+ <fb6ef90d-4a3e-4bdd-8516-8b15c1f2329f@linaro.org>
+ <b9937680-8c0b-46f6-86ef-55139562e2c4@canonical.com>
+ <CAFEAcA_Bshua2BQTfOb3D1aF27ayELEt9TcQM8hkQdKaih3xHw@mail.gmail.com>
+ <9c64be5c-25b8-421d-966a-bdac03dfe37c@canonical.com> <Zd_Z2f-5_l3rXNbp@x1n>
+Content-Language: en-US
+From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+In-Reply-To: <Zd_Z2f-5_l3rXNbp@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=185.125.188.123;
+ envelope-from=heinrich.schuchardt@canonical.com;
+ helo=smtp-relay-internal-1.canonical.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.102,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,222 +115,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000f53102061282822d
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 29.02.24 02:11, Peter Xu wrote:
+> On Wed, Feb 28, 2024 at 08:07:47PM +0100, Heinrich Schuchardt wrote:
+>> On 28.02.24 19:39, Peter Maydell wrote:
+>>> On Wed, 28 Feb 2024 at 18:28, Heinrich Schuchardt
+>>> <heinrich.schuchardt@canonical.com> wrote:
+>>>>
+>>>> On 28.02.24 16:06, Philippe Mathieu-Daudé wrote:
+>>>>> Hi Heinrich,
+>>>>>
+>>>>> On 28/2/24 13:59, Heinrich Schuchardt wrote:
+>>>>>> virtqueue_map_desc() is called with values of sz exceeding that may
+>>>>>> exceed
+>>>>>> TARGET_PAGE_SIZE. sz = 0x2800 has been observed.
+> 
+> Pure (and can also be stupid) question: why virtqueue_map_desc() would map
+> to !direct mem?  Shouldn't those buffers normally allocated from guest RAM?
+> 
+>>>>>>
+>>>>>> We only support a single bounce buffer. We have to avoid
+>>>>>> virtqueue_map_desc() calling address_space_map() multiple times.
+>>>>>> Otherwise
+>>>>>> we see an error
+>>>>>>
+>>>>>>        qemu: virtio: bogus descriptor or out of resources
+>>>>>>
+>>>>>> Increase the minimum size of the bounce buffer to 0x10000 which matches
+>>>>>> the largest value of TARGET_PAGE_SIZE for all architectures.
+>>>>>>
+>>>>>> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+>>>>>> ---
+>>>>>> v2:
+>>>>>>       remove unrelated change
+>>>>>> ---
+>>>>>>     system/physmem.c | 8 ++++++--
+>>>>>>     1 file changed, 6 insertions(+), 2 deletions(-)
+>>>>>>
+>>>>>> diff --git a/system/physmem.c b/system/physmem.c
+>>>>>> index e3ebc19eef..3c82da1c86 100644
+>>>>>> --- a/system/physmem.c
+>>>>>> +++ b/system/physmem.c
+>>>>>> @@ -3151,8 +3151,12 @@ void *address_space_map(AddressSpace *as,
+>>>>>>                 *plen = 0;
+>>>>>>                 return NULL;
+>>>>>>             }
+>>>>>> -        /* Avoid unbounded allocations */
+>>>>>> -        l = MIN(l, TARGET_PAGE_SIZE);
+>>>>>> +        /*
+>>>>>> +         * There is only one bounce buffer. The largest occuring
+>>>>>> value of
+>>>>>> +         * parameter sz of virtqueue_map_desc() must fit into the bounce
+>>>>>> +         * buffer.
+>>>>>> +         */
+>>>>>> +        l = MIN(l, 0x10000);
+>>>>>
+>>>>> Please define this magic value. Maybe ANY_TARGET_PAGE_SIZE or
+>>>>> TARGETS_BIGGEST_PAGE_SIZE?
+>>>>>
+>>>>> Then along:
+>>>>>      QEMU_BUILD_BUG_ON(TARGET_PAGE_SIZE <= TARGETS_BIGGEST_PAGE_SIZE);
+>>>>
+>>>> Thank you Philippe for reviewing.
+>>>>
+>>>> TARGETS_BIGGEST_PAGE_SIZE does not fit as the value is not driven by the
+>>>> page size.
+>>>> How about MIN_BOUNCE_BUFFER_SIZE?
+>>>> Is include/exec/memory.h the right include for the constant?
+>>>>
+>>>> I don't think that TARGET_PAGE_SIZE has any relevance for setting the
+>>>> bounce buffer size. I only mentioned it to say that we are not
+>>>> decreasing the value on any existing architecture.
+>>>>
+>>>> I don't know why TARGET_PAGE_SIZE ever got into this piece of code.
+>>>> e3127ae0cdcd ("exec: reorganize address_space_map") does not provide a
+>>>> reason for this choice. Maybe Paolo remembers.
+>>>
+>>> The limitation to a page dates back to commit 6d16c2f88f2a in 2009,
+>>> which was the first implementation of this function. I don't think
+>>> there's a particular reason for that value beyond that it was
+>>> probably a convenient value that was assumed to be likely "big enough".
+>>>
+>>> I think the idea with this bounce-buffer has always been that this
+>>> isn't really a code path we expected to end up in very often --
+>>> it's supposed to be for when devices are doing DMA, which they
+>>> will typically be doing to memory (backed by host RAM), not
+>>> devices (backed by MMIO and needing a bounce buffer). So the
+>>> whole mechanism is a bit "last fallback to stop things breaking
+>>> entirely".
+>>>
+>>> The address_space_map() API says that it's allowed to return
+>>> a subset of the range you ask for, so if the virtio code doesn't
+>>> cope with the minimum being set to TARGET_PAGE_SIZE then either
+>>> we need to fix that virtio code or we need to change the API
+>>> of this function. (But I think you will also get a reduced
+>>> range if you try to use it across a boundary between normal
+>>> host-memory-backed RAM and a device MemoryRegion.)
+>>
+>> If we allow a bounce buffer only to be used once (via the in_use flag), why
+>> do we allow only a single bounce buffer?
+>>
+>> Could address_space_map() allocate a new bounce buffer on every call and
+>> address_space_unmap() deallocate it?
+>>
+>> Isn't the design with a single bounce buffer bound to fail with a
+>> multi-threaded client as collision can be expected?
+> 
+> See:
+> 
+> https://lore.kernel.org/r/20240212080617.2559498-1-mnissler@rivosinc.com
+> 
+> For some reason that series didn't land, but it seems to be helpful in this
+> case too if e.g. there can be multiple of such devices.
+> 
+> Thanks,
+> 
 
-On Thu, Feb 29, 2024 at 5:04=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
-edhat.com>
-wrote:
+Hello Peter Xu,
 
-> On Sat, Feb 24, 2024 at 10:34:55PM +0800, Hyman Huang wrote:
-> > This patchset introduce GM/T 0018-2012 as a crypto backend driver,
-> > which is applied for block encryption. Currently, we support SM4
-> > cipher algorithm only.
-> >
-> > GM/T 0018-2012 is a cryptographic standard issued by the State
-> > Cryptography Administration of China. Visit https://hbba.sacinfo.org.cn
-> > search GM/T 0018-2012 for brief introduction.
-> >
-> > The objective of the standard is to develop a uniform application
-> > interface standard for the service-based cryptography device under
-> > the public key cryptographic infrastructure application framework,
-> > and to call the cryptography device through this interface to
-> > provide basic cryptographic services for the uppler layer. For
-> > more information about contents of the standard, download the
-> > specificaiton from:
-> > "https://github.com/guanzhi/GM-Standards/blob/master/GMT=E5=AF=86=E7=A0=
-=81=E8=A1=8C=E6=A0=87/
-> > GMT 00018-2012 =E5=AF=86=E7=A0=81=E8=AE=BE=E5=A4=87=E5=BA=94=E7=94=A8=
-=E6=8E=A5=E5=8F=A3=E8=A7=84=E8=8C=83.pdf"
-> >
-> > There are two benefits to doing this, at least.
-> >  * Performance - using a cryptography device for block encryption
-> >                  offers an opportunity to enhance the input/output
-> >                  performance once the hardware is certified
-> >  * Secrecy - hardware manufacturers may fortify cryptography
-> >              equipment with security features, so increasing the
-> >              secrecy of block encryption.
-> >
-> > The precise way that vendors implement the standard APIs for data
-> > encryption using the cryptographic device is uncoupled from the
-> > GM/T 0018-2012 specification. Thus, if developers enable this
-> > functionality with the following conditions met, we could accomplish
-> > the general implementation:
-> >
-> > 1. rename the header file provided by vendor to gmt-0018-2012.h
-> >    and copy it to the /usr/include directory.
-> > 2. rename the dynamic library provided by vendor to
-> >    gmt_0018_2012.so and copy it to the /usr/lib64 or any directory
-> >    that linker could find before compiling QEMU.
-> > 3. enable crypto_gmt option when compiling QEMU and make the feature
-> >    availiable.
-> >
-> > By offering a development package for GM/T 0018-2012, the above
-> > provisions could be standardized; unfortunately, the hardware
-> > manufacturer has not completed this task. So developers who don't
-> > work with the vendor to obtain the cryptography device and related
-> > library may not be able to test this functionality because the
-> > standard implementation depends on the cryptography device supplied
-> > by the hardware vendor. We are hesitant to contribute to this series
-> > as a result.
->
-> Hmm, yes, that is a pretty unpleasant approach.
->
-> IMHO there really needs to be a reference implementation that is
-> pure software. eg a gmt_0018_2012.so + header files that simply
->
+thanks for pointing to your series. What I like about it is that it 
+removes the limit of a single bounce buffer per AddressSpace.
 
-Ok, this is a preferred choice but more work should be done for
-the pure software implementation, we may try it in space time.
+Unfortunately it does not solve my problem. You limit the sum of all of 
+the allocations for a single AddressSpcace to 
+DEFAULT_MAX_BOUNCE_BUFFER_SIZE = 4096 which is too small for my use case.
 
-Thanks for the comments,
+Why do we need a limit?
+Why is it so tiny?
 
-Yong
-
-
-> uses an existing crypto library. That way applications can build
-> and test their support for this, without having to have access
-> to a specific piece of hardware. Hardware vendors should only
-> have to provide their library impl, not the headers.
-
-
-> With regards,
-> Daniel
-> --
-> |: https://berrange.com      -o-
-> https://www.flickr.com/photos/dberrange :|
-> |: https://libvirt.org         -o-
-> https://fstop138.berrange.com :|
-> |: https://entangle-photo.org    -o-
-> https://www.instagram.com/dberrange :|
->
->
-
---=20
 Best regards
 
---000000000000f53102061282822d
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Heinrich
 
-<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
-t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><br><div cla=
-ss=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Feb 29, 20=
-24 at 5:04=E2=80=AFPM Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrang=
-e@redhat.com">berrange@redhat.com</a>&gt; wrote:<br></div><blockquote class=
-=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;bo=
-rder-left-style:solid;border-left-color:rgb(204,204,204);padding-left:1ex">=
-On Sat, Feb 24, 2024 at 10:34:55PM +0800, Hyman Huang wrote:<br>
-&gt; This patchset introduce GM/T 0018-2012 as a crypto backend driver,<br>
-&gt; which is applied for block encryption. Currently, we support SM4<br>
-&gt; cipher algorithm only.<br>
-&gt; <br>
-&gt; GM/T 0018-2012 is a cryptographic standard issued by the State<br>
-&gt; Cryptography Administration of China. Visit <a href=3D"https://hbba.sa=
-cinfo.org.cn" rel=3D"noreferrer" target=3D"_blank">https://hbba.sacinfo.org=
-.cn</a><br>
-&gt; search GM/T 0018-2012 for brief introduction.<br>
-&gt; <br>
-&gt; The objective of the standard is to develop a uniform application<br>
-&gt; interface standard for the service-based cryptography device under<br>
-&gt; the public key cryptographic infrastructure application framework,<br>
-&gt; and to call the cryptography device through this interface to<br>
-&gt; provide basic cryptographic services for the uppler layer. For<br>
-&gt; more information about contents of the standard, download the<br>
-&gt; specificaiton from:<br>
-&gt; &quot;<a href=3D"https://github.com/guanzhi/GM-Standards/blob/master/G=
-MT" rel=3D"noreferrer" target=3D"_blank">https://github.com/guanzhi/GM-Stan=
-dards/blob/master/GMT</a>=E5=AF=86=E7=A0=81=E8=A1=8C=E6=A0=87/<br>
-&gt; GMT 00018-2012 =E5=AF=86=E7=A0=81=E8=AE=BE=E5=A4=87=E5=BA=94=E7=94=A8=
-=E6=8E=A5=E5=8F=A3=E8=A7=84=E8=8C=83.pdf&quot;<br>
-&gt; <br>
-&gt; There are two benefits to doing this, at least.<br>
-&gt;=C2=A0 * Performance - using a cryptography device for block encryption=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 offers a=
-n opportunity to enhance the input/output<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 performa=
-nce once the hardware is certified<br>
-&gt;=C2=A0 * Secrecy - hardware manufacturers may fortify cryptography<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 equipment with securit=
-y features, so increasing the<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 secrecy of block encry=
-ption.<br>
-&gt; <br>
-&gt; The precise way that vendors implement the standard APIs for data<br>
-&gt; encryption using the cryptographic device is uncoupled from the<br>
-&gt; GM/T 0018-2012 specification. Thus, if developers enable this<br>
-&gt; functionality with the following conditions met, we could accomplish<b=
-r>
-&gt; the general implementation:<br>
-&gt; <br>
-&gt; 1. rename the header file provided by vendor to gmt-0018-2012.h<br>
-&gt;=C2=A0 =C2=A0 and copy it to the /usr/include directory.<br>
-&gt; 2. rename the dynamic library provided by vendor to<br>
-&gt;=C2=A0 =C2=A0 gmt_0018_2012.so and copy it to the /usr/lib64 or any dir=
-ectory<br>
-&gt;=C2=A0 =C2=A0 that linker could find before compiling QEMU.<br>
-&gt; 3. enable crypto_gmt option when compiling QEMU and make the feature<b=
-r>
-&gt;=C2=A0 =C2=A0 availiable.<br>
-&gt; <br>
-&gt; By offering a development package for GM/T 0018-2012, the above<br>
-&gt; provisions could be standardized; unfortunately, the hardware<br>
-&gt; manufacturer has not completed this task. So developers who don&#39;t<=
-br>
-&gt; work with the vendor to obtain the cryptography device and related<br>
-&gt; library may not be able to test this functionality because the<br>
-&gt; standard implementation depends on the cryptography device supplied<br=
->
-&gt; by the hardware vendor. We are hesitant to contribute to this series<b=
-r>
-&gt; as a result.<br>
-<br>
-Hmm, yes, that is a pretty unpleasant approach.<br>
-<br>
-IMHO there really needs to be a reference implementation that is<br>
-pure software. eg a gmt_0018_2012.so + header files that simply<br></blockq=
-uote><div><br></div><div><div class=3D"gmail_default" style=3D"font-family:=
-&quot;comic sans ms&quot;,sans-serif">Ok, this is a preferred choice but mo=
-re work should be done for</div><div class=3D"gmail_default" style=3D"font-=
-family:&quot;comic sans ms&quot;,sans-serif">the pure software implementati=
-on, we may try it in space time.</div><br></div><div><div class=3D"gmail_de=
-fault" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">Thanks fo=
-r the comments,=C2=A0</div><div class=3D"gmail_default" style=3D"font-famil=
-y:&quot;comic sans ms&quot;,sans-serif"><br></div><div class=3D"gmail_defau=
-lt" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">Yong</div></=
-div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px =
-0px 0px 0.8ex;border-left-width:1px;border-left-style:solid;border-left-col=
-or:rgb(204,204,204);padding-left:1ex">
-uses an existing crypto library. That way applications can build<br>
-and test their support for this, without having to have access<br>
-to a specific piece of hardware. Hardware vendors should only<br>
-have to provide their library impl, not the headers.</blockquote><blockquot=
-e class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width=
-:1px;border-left-style:solid;border-left-color:rgb(204,204,204);padding-lef=
-t:1ex">
-<br>
-With regards,<br>
-Daniel<br>
--- <br>
-|: <a href=3D"https://berrange.com" rel=3D"noreferrer" target=3D"_blank">ht=
-tps://berrange.com</a>=C2=A0 =C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a href=3D"http=
-s://www.flickr.com/photos/dberrange" rel=3D"noreferrer" target=3D"_blank">h=
-ttps://www.flickr.com/photos/dberrange</a> :|<br>
-|: <a href=3D"https://libvirt.org" rel=3D"noreferrer" target=3D"_blank">htt=
-ps://libvirt.org</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0-o-=C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 <a href=3D"https://fstop138.berrange.com" rel=3D"n=
-oreferrer" target=3D"_blank">https://fstop138.berrange.com</a> :|<br>
-|: <a href=3D"https://entangle-photo.org" rel=3D"noreferrer" target=3D"_bla=
-nk">https://entangle-photo.org</a>=C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a href=3D=
-"https://www.instagram.com/dberrange" rel=3D"noreferrer" target=3D"_blank">=
-https://www.instagram.com/dberrange</a> :|<br>
-<br>
-</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
-gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
-iv dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best regards</font>=
-</div></div></div>
 
---000000000000f53102061282822d--
+
 
