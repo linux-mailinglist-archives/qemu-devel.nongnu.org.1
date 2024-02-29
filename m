@@ -2,102 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AB7D86CA12
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 14:19:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB2286CA14
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 14:20:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfgJn-0006dI-Oq; Thu, 29 Feb 2024 08:19:23 -0500
+	id 1rfgKL-0008Ct-Ny; Thu, 29 Feb 2024 08:19:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfgJl-0006ca-Ad
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 08:19:21 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rfgKJ-0008Bo-RW
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 08:19:55 -0500
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfgJi-0003nt-TL
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 08:19:21 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 0A68122868;
- Thu, 29 Feb 2024 13:19:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709212757; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=yNNAnUc9QV5fumPC0hfBb9cb3IkOcIBHsZlH6T7uArs=;
- b=Go/qdKrjKC3ytg152Nfe10wMAcJgIYxqvMH6cbj760LIOU0nD/Ix9oV3ql6DRVGKGa1o9H
- a1r1jnnhiH3q9pnjCxU6ZQuqo3YDs/80HBhks4KH/Q2lgkbi6AYNUPyaMggfyCMyaE2/4e
- JHOgmNLGjclUbyBuVMDNs8Djfo1l5BY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709212757;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=yNNAnUc9QV5fumPC0hfBb9cb3IkOcIBHsZlH6T7uArs=;
- b=qYlKWLjU0GfcdVg9/Mv/iMIpSJdHdrbNpBbyq9hx94V/Kce0ANWPK1aFef1SiQA/Snt8tF
- M5n6kSPoq9QkbEAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709212755; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=yNNAnUc9QV5fumPC0hfBb9cb3IkOcIBHsZlH6T7uArs=;
- b=cHmQPd2wHnaYQOBtkXDfbg9BJcJe0D7NRz7b76a9QvtNsVZypbiZhof9oo2PC6GfhY4xwO
- bnLTbw11f5oojfmgk5XC0sq61jdIihImjUfXIhsgFk1W7cegKEt/OlBaSEmbTdf+PH8FFW
- +NtH0cgS09MelWVTsHwjKQRppUKSZms=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709212755;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=yNNAnUc9QV5fumPC0hfBb9cb3IkOcIBHsZlH6T7uArs=;
- b=gPt/KXOOJ5UhlOkgAsOXXPmYY4R4dxgkZO6+4CWpzL54bGo4XeG4nExwfBgTQNUWdDukX5
- aozfEthfWGiyudBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8669D13A4B;
- Thu, 29 Feb 2024 13:19:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id KzsjE1KE4GUtEAAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 29 Feb 2024 13:19:14 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com, Claudio
- Fontana <cfontana@suse.de>
-Subject: Re: [PATCH v5 19/23] migration/multifd: Prepare multifd sync for
- mapped-ram migration
-In-Reply-To: <Zd_28lPa5Uq9Kaw2@x1n>
-References: <20240228152127.18769-1-farosas@suse.de>
- <20240228152127.18769-20-farosas@suse.de> <Zd_28lPa5Uq9Kaw2@x1n>
-Date: Thu, 29 Feb 2024 10:19:12 -0300
-Message-ID: <87plwfz9v3.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rfgK4-0003pG-FE
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 08:19:55 -0500
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-51326436876so647928e87.1
+ for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 05:19:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1709212778; x=1709817578; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=iflQDWhiv1xsdwyJ2pi12LrMSTkj11MoqFlUX9IDEPg=;
+ b=T9WYKIPvskfOOYKNVUSLQhO6slju2BOwTL/wcgcwSheVgapG/HFSndwqgxlF80f2lv
+ BvbYwaGdE1KemVDgzGYszc7I4hm1E3shkgcxHSzEhbHawb4c6V6qd2IaWaNKtmhxiGdV
+ 2ywy+ZGGOKbuqysl8lxEdFkF3ku3fuXMAyMLdu+e1CzSrpnZidQXmfMzvezppPAC/Hb3
+ qsWHZq1d6ZAZvwYzmwvVDPi4oh6DI7Q1TlSOyW6GHVaIOd4xm7cYzYS3MiWAQueZvA6W
+ N19JmWLMwY1y67Oj4eWO4vZtsKQqW1hwmyqg/lsPxp6t+jbgUJQjr5tauZPK5627rcFn
+ u6aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709212778; x=1709817578;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=iflQDWhiv1xsdwyJ2pi12LrMSTkj11MoqFlUX9IDEPg=;
+ b=cobglRdEhd31jemQ0Akjcy9noSBtFQ982j88is6jM+1qplw1WLXhE2KWK4WepwOEZb
+ es5tBedwTz7Nbe9iQJH90nO6a5nmu9eCT2nhVGXbXKbo73UQ2iXkPZZgZ1beXG8CVFDQ
+ 9MPMG66GMi/PcxriABHpdKXXKjSfmFkmSzHbwLFBKTu6FjfcweyVVgivKMYDWByLr9ZO
+ vpi/F0Gl7qQSXymzr4bR/32WQccuP0N6r/jl2ir3HX5dReZXzNWL7UnAIjZzMlwBB205
+ I0xv13tLJiP3XQLwKkFi3BWp89dbT28OQvB+h/+O3/Z/Dsm44Ax5KK3uX9FXWVYxNdkm
+ xGzA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUCB/7T00p/y8qj2u+ySuuYC/jU2xXxmw0vD0fc80OpL4PpyvqvzbXCY49Zt0p3enbEvVzFykM3O/b4tWpqWFT0Ty3P1R0=
+X-Gm-Message-State: AOJu0Yy14l6od2eVzCDkPjUUnVpYiANsojxYWTk4NGq/20U6WNrkZcnT
+ LWrF2duKvS8kP4ULh5xcIIoNojiHl/UjZsBSkwk/cXSg6c5Bk5naPNIOzFMcqM0lhSOa0/ZKxPU
+ PQdqE/iiKQOLsCDAM1o+rkfEpVoy6MHyU83qZnw==
+X-Google-Smtp-Source: AGHT+IG9Q8cPMjr8Ytv7Le6sWjwjKsi/vAQe9a9G6ufk3al9CIhdVEe9fi31vaqjGCFWNY4OxGHVxACHIIILcLW8kwE=
+X-Received: by 2002:a05:6512:21c7:b0:513:2c59:c6d5 with SMTP id
+ d7-20020a05651221c700b005132c59c6d5mr69368lft.5.1709212778444; Thu, 29 Feb
+ 2024 05:19:38 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spamd-Result: default: False [-3.10 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
- RCPT_COUNT_FIVE(0.00)[5]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Score: -3.10
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20240228125939.56925-1-heinrich.schuchardt@canonical.com>
+ <fb6ef90d-4a3e-4bdd-8516-8b15c1f2329f@linaro.org>
+ <b9937680-8c0b-46f6-86ef-55139562e2c4@canonical.com>
+ <CAFEAcA_Bshua2BQTfOb3D1aF27ayELEt9TcQM8hkQdKaih3xHw@mail.gmail.com>
+ <9c64be5c-25b8-421d-966a-bdac03dfe37c@canonical.com>
+ <CAFEAcA92s+3Q3ud=zOjsyvuqZ=BjwXt3OY0n5mO_iDXovQpoRQ@mail.gmail.com>
+ <20240229105900.0000490e@Huawei.com>
+ <CAFEAcA_O2QPwCPE0HS9g0saEA3XbuVS_UGtRpe_o4tLRrc6Ksg@mail.gmail.com>
+ <bf3e44c8-a6ad-48b6-8825-ba8ce0dd19f8@canonical.com>
+ <CAFEAcA85nwJ-qfzFVYBY0kiD7mEtr5UHRD_X_s=Vv7eaoHD_bA@mail.gmail.com>
+ <CAGNS4TbE8dyUv0OkwwY=g2=qea_mxj07=0W4macVRXsBMicgCA@mail.gmail.com>
+In-Reply-To: <CAGNS4TbE8dyUv0OkwwY=g2=qea_mxj07=0W4macVRXsBMicgCA@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 29 Feb 2024 13:19:27 +0000
+Message-ID: <CAFEAcA9BJamzk4xpmJx-CGqXd+T5g0WvySU8T8r1cAA0zC7tEQ@mail.gmail.com>
+Subject: Re: [PATCH, v2] physmem: avoid bounce buffer too small
+To: Mattias Nissler <mnissler@rivosinc.com>
+Cc: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
+ David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,189 +103,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On Thu, 29 Feb 2024 at 12:52, Mattias Nissler <mnissler@rivosinc.com> wrote=
+:
+>
+> On Thu, Feb 29, 2024 at 1:35=E2=80=AFPM Peter Maydell <peter.maydell@lina=
+ro.org> wrote:
+> >
+> > On Thu, 29 Feb 2024 at 11:17, Heinrich Schuchardt
+> > <heinrich.schuchardt@canonical.com> wrote:
+> > > > But yes, I'm not surprised that CXL runs into this. Heinrich,
+> > > > are you doing CXL testing, or is this some other workload?
+> > >
+> > > I am running the UEFI Self-Certification Tests (SCT) on EDK 2 using:
+> > >
+> > > qemu-system-riscv64 \
+> > >        -M virt,acpi=3Doff -accel tcg -m 4096 \
+> > >        -serial mon:stdio \
+> > >        -device virtio-gpu-pci \
+> > >        -device qemu-xhci \
+> > >        -device usb-kbd \
+> > >        -drive
+> > > if=3Dpflash,format=3Draw,unit=3D0,file=3DRISCV_VIRT_CODE.fd,readonly=
+=3Don \
+> > >        -drive if=3Dpflash,format=3Draw,unit=3D1,file=3DRISCV_VIRT_VAR=
+S.fd \
+> > >        -drive file=3Dsct.img,format=3Draw,if=3Dvirtio \
+> > >        -device virtio-net-device,netdev=3Dnet0 \
+> > >        -netdev user,id=3Dnet0
+> > >
+> > > This does not invoke any CXL related stuff.
+> >
+> > Hmm, that doesn't seem like it ought to be running into this.
+> > What underlying memory region is the guest trying to do
+> > the virtio queue access to?
+>
+> FWIW, I have seen multiple bounce buffer usage with the generic net TX
+> path as well as the XHCI controller, so it might be either of these.
+> Bounce buffering should only take place when the memory region can't
+> be accessed directly though - I don't see why that's the case for the
+> given command line.
 
-> On Wed, Feb 28, 2024 at 12:21:23PM -0300, Fabiano Rosas wrote:
->> The mapped-ram migration can be performed live or non-live, but it is
->> always asynchronous, i.e. the source machine and the destination
->> machine are not migrating at the same time. We only need some pieces
->> of the multifd sync operations.
->> 
->> multifd_send_sync_main()
->> ------------------------
->>   Issued by the ram migration code on the migration thread, causes the
->>   multifd send channels to synchronize with the migration thread and
->>   makes the sending side emit a packet with the MULTIFD_FLUSH flag.
->> 
->>   With mapped-ram we want to maintain the sync on the sending side
->>   because that provides ordering between the rounds of dirty pages when
->>   migrating live.
->
-> IIUC as I used to comment, we should probably only need that sync after
-> each full iteration, which is find_dirty_block().
->
-> I think keeping the setup/complete sync is fine, and that can be discussed
-> separately.  However IMHO we should still avoid the sync in
-> ram_save_iterate() always, or on new qemu + old machine types (where
-> flush_after_each_section=true) fixed-ram could suffer perf issues, IIUC.
->
-> So I assume at a minimum below would still be preferred?
->
-> @@ -3257,7 +3257,8 @@ static int ram_save_iterate(QEMUFile *f, void *opaque)
->  out:
->      if (ret >= 0
->          && migration_is_setup_or_active(migrate_get_current()->state)) {
-> -        if (migrate_multifd() && migrate_multifd_flush_after_each_section()) {
-> +        if (migrate_multifd() && migrate_multifd_flush_after_each_section() &&
-> +            !migrate_mapped_ram()) {
->              ret = multifd_send_sync_main();
->              if (ret < 0) {
->                  return ret;
->
+Yeah, exactly -- the only thing I can see there where a reasonable
+guest program ought to be trying to do DMA to/from non-host-RAM
+would be if (a) it's reading data from directly out of the pflash image
+and (b) the flash device has got itself into programming mode
+somehow. But that doesn't happen for the other architectures that
+have pflash for boot firmware as far as I know. The bounce buffering
+stuff does need to be fixed but it's also worth looking at why we're
+hitting the code path at all here, because even if it works the
+performance is terrible (doubly so if you try to execute code out of
+that MR).
 
-I think I forgot this. I'll amend it.
-
->> 
->> MULTIFD_FLUSH
->> -------------
->>   On the receiving side, the presence of the MULTIFD_FLUSH flag on a
->>   packet causes the receiving channels to start synchronizing with the
->>   main thread.
->> 
->>   We're not using packets with mapped-ram, so there's no MULTIFD_FLUSH
->>   flag and therefore no channel sync on the receiving side.
->> 
->> multifd_recv_sync_main()
->> ------------------------
->>   Issued by the migration thread when the ram migration flag
->>   RAM_SAVE_FLAG_MULTIFD_FLUSH is received, causes the migration thread
->>   on the receiving side to start synchronizing with the recv
->>   channels. Due to compatibility, this is also issued when
->>   RAM_SAVE_FLAG_EOS is received.
->> 
->>   For mapped-ram we only need to synchronize the channels at the end of
->>   migration to avoid doing cleanup before the channels have finished
->>   their IO.
->
-> Did you forget to add the sync at parse_ramblocks() for mapped-ram?
->
-
-Ugh, I messed it up. I'll fix it.
-
->> 
->> Make sure the multifd syncs are only issued at the appropriate times.
->> 
->> Note that due to pre-existing backward compatibility issues, we have
->> the multifd_flush_after_each_section property that can cause a sync to
->> happen at EOS. Since the EOS flag is needed on the stream, allow
->> mapped-ram to just ignore it.
->
-> Skipping EOS makes sense, but I suggest do that without invalid_flags.  See
-> below.
->
->> 
->> Also emit an error if any other unexpected flags are found on the
->> stream.
->> 
->> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> ---
->> - skipped all FLUSH flags
->> - added invalid flags
->> - skipped EOS
->> ---
->>  migration/ram.c | 26 ++++++++++++++++++++++----
->>  1 file changed, 22 insertions(+), 4 deletions(-)
->> 
->> diff --git a/migration/ram.c b/migration/ram.c
->> index 18620784c6..250dcd110c 100644
->> --- a/migration/ram.c
->> +++ b/migration/ram.c
->> @@ -1368,8 +1368,11 @@ static int find_dirty_block(RAMState *rs, PageSearchStatus *pss)
->>                  if (ret < 0) {
->>                      return ret;
->>                  }
->> -                qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
->> -                qemu_fflush(f);
->> +
->> +                if (!migrate_mapped_ram()) {
->> +                    qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
->> +                    qemu_fflush(f);
->> +                }
->>              }
->>              /*
->>               * If memory migration starts over, we will meet a dirtied page
->> @@ -3111,7 +3114,8 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
->>          return ret;
->>      }
->>  
->> -    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()) {
->> +    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()
->> +        && !migrate_mapped_ram()) {
->>          qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
->>      }
->>  
->> @@ -3334,7 +3338,8 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
->>          }
->>      }
->>  
->> -    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()) {
->> +    if (migrate_multifd() && !migrate_multifd_flush_after_each_section() &&
->> +        !migrate_mapped_ram()) {
->>          qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
->>      }
->>      qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
->> @@ -4137,6 +4142,12 @@ static int ram_load_precopy(QEMUFile *f)
->>          invalid_flags |= RAM_SAVE_FLAG_COMPRESS_PAGE;
->>      }
->>  
->> +    if (migrate_mapped_ram()) {
->> +        invalid_flags |= (RAM_SAVE_FLAG_EOS | RAM_SAVE_FLAG_HOOK |
->> +                          RAM_SAVE_FLAG_MULTIFD_FLUSH | RAM_SAVE_FLAG_PAGE |
->> +                          RAM_SAVE_FLAG_XBZRLE | RAM_SAVE_FLAG_ZERO);
->
-> IMHO EOS cannot be accounted as "invalid" here because it always exists.
-> Rather than this trick (then explicitly ignore it below... which is even
-> hackier, IMHO), we can avoid setting EOS in invalid_flags, but explicitly
-> ignore EOS in below code to bypass it for mapped-ram:
->
-> @@ -4301,7 +4302,12 @@ static int ram_load_precopy(QEMUFile *f)
->          case RAM_SAVE_FLAG_EOS:
->              /* normal exit */
->              if (migrate_multifd() &&
-> -                migrate_multifd_flush_after_each_section()) {
-> +                migrate_multifd_flush_after_each_section() &&
-> +                /*
-> +                 * Mapped-ram migration flushes once and for all after
-> +                 * parsing ramblocks.  Always ignore EOS for it.
-> +                 */
-> +                !migrate_mapped_ram()) {
->                  multifd_recv_sync_main();
->              }
->              break;
-
-I thought we were already spraying too many migrate_mapped_ram() checks
-all over the code. But wat you said makes sense, I'll change it.
-
->> +    }
->> +
->>      while (!ret && !(flags & RAM_SAVE_FLAG_EOS)) {
->>          ram_addr_t addr;
->>          void *host = NULL, *host_bak = NULL;
->> @@ -4158,6 +4169,13 @@ static int ram_load_precopy(QEMUFile *f)
->>          addr &= TARGET_PAGE_MASK;
->>  
->>          if (flags & invalid_flags) {
->> +            if (invalid_flags & RAM_SAVE_FLAG_EOS) {
->> +                /* EOS is always present, just ignore it */
->> +                continue;
->> +            }
->> +
->> +            error_report("Unexpected RAM flags: %d", flags & invalid_flags);
->> +
->>              if (flags & invalid_flags & RAM_SAVE_FLAG_COMPRESS_PAGE) {
->>                  error_report("Received an unexpected compressed page");
->>              }
->> -- 
->> 2.35.3
->> 
+-- PMM
 
