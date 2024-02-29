@@ -2,70 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86FD386C6C5
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 11:23:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ABF786C6EA
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 11:29:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfdZ1-0005tL-1G; Thu, 29 Feb 2024 05:22:55 -0500
+	id 1rfdej-00081W-ET; Thu, 29 Feb 2024 05:28:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rfdYy-0005t3-Pc; Thu, 29 Feb 2024 05:22:52 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rfdeh-00080m-D8
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 05:28:47 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rfdYw-0003kS-92; Thu, 29 Feb 2024 05:22:52 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TlnH11gCjz6K65v;
- Thu, 29 Feb 2024 18:18:05 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id EC0DC140A35;
- Thu, 29 Feb 2024 18:22:32 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 29 Feb
- 2024 10:22:31 +0000
-Date: Thu, 29 Feb 2024 10:22:30 +0000
-To: Ankit Agrawal <ankita@nvidia.com>
-CC: Markus Armbruster <armbru@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>,
- "alex.williamson@redhat.com" <alex.williamson@redhat.com>, "clg@redhat.com"
- <clg@redhat.com>, "shannon.zhaosl@gmail.com" <shannon.zhaosl@gmail.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "ani@anisinha.ca"
- <ani@anisinha.ca>, "berrange@redhat.com" <berrange@redhat.com>,
- "eduardo@habkost.net" <eduardo@habkost.net>, "imammedo@redhat.com"
- <imammedo@redhat.com>, "mst@redhat.com" <mst@redhat.com>, "eblake@redhat.com"
- <eblake@redhat.com>, "david@redhat.com" <david@redhat.com>,
- "gshan@redhat.com" <gshan@redhat.com>, Zhi Wang <zhiw@nvidia.com>, Matt Ochs
- <mochs@nvidia.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, Aniket
- Agashe <aniketa@nvidia.com>, Neo Jia <cjia@nvidia.com>, Kirti Wankhede
- <kwankhede@nvidia.com>, "Tarun Gupta (SW-GPU)" <targupta@nvidia.com>, Vikram
- Sethi <vsethi@nvidia.com>, "Andy Currid" <acurrid@nvidia.com>, Dheeraj Nigam
- <dnigam@nvidia.com>, Uday Dhoke <udhoke@nvidia.com>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v7 1/2] qom: new object to associate device to numa node
-Message-ID: <20240229102230.00004277@Huawei.com>
-In-Reply-To: <SA1PR12MB7199F868F1C300B1E795CD39B0582@SA1PR12MB7199.namprd12.prod.outlook.com>
-References: <20240223124223.800078-1-ankita@nvidia.com>
- <20240223124223.800078-2-ankita@nvidia.com>
- <8734td3uty.fsf@pond.sub.org> <20240228135504.00005d12@Huawei.com>
- <87bk80vaft.fsf@pond.sub.org>
- <SA1PR12MB7199F868F1C300B1E795CD39B0582@SA1PR12MB7199.namprd12.prod.outlook.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rfdee-00060S-SB
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 05:28:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709202523;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=HtqRuQDmPfgmre07UmI+p3vIpcwBb+PrvgxlEr5p1sk=;
+ b=i3nSqyJQMEWw2tQ+xIkYRSsTcCpieCEhFG5vi6Q0I3GvBGV4Ea4sj21dsVRUdG1gfnG4GE
+ cdCP+Ov0qv48C4IoqJgWR5gbCtW6toC+cio3v9ALPNgT/mKW3+hg7Znon2F39yS72OaC38
+ J1rVLbBpOc6smQHffWAv4PjSMQHUG78=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-107-1-0laT3dMpS655ZqShuehg-1; Thu, 29 Feb 2024 05:28:38 -0500
+X-MC-Unique: 1-0laT3dMpS655ZqShuehg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7316B891F22;
+ Thu, 29 Feb 2024 10:28:38 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.4])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4659F492BC8;
+ Thu, 29 Feb 2024 10:28:38 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 425D421E66D0; Thu, 29 Feb 2024 11:28:37 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-block@nongnu.org,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Thomas
+ Huth <thuth@redhat.com>,  "Michael S. Tsirkin" <mst@redhat.com>,  Jason
+ Wang <jasowang@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,  Eric
+ Blake <eblake@redhat.com>,  Coiby Xu <Coiby.Xu@gmail.com>,  slp@redhat.com,
+ Eduardo Habkost <eduardo@habkost.net>,  Hanna Reitz <hreitz@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,  Raphael Norwitz
+ <raphael@enfabrica.net>,  Kevin Wolf <kwolf@redhat.com>,  David
+ Hildenbrand <david@redhat.com>,  stefanha@redhat.com, gmaglione@redhat.com
+Subject: Re: [PATCH 9/9] hostmem-file: support POSIX shm_open()
+In-Reply-To: <hxd362pwyrtanyw6xtjxiegru7z57btnaynaqxm5lysgzsm4u4@af36bjkqvc7z>
+ (Stefano Garzarella's message of "Thu, 29 Feb 2024 09:57:22 +0100")
+References: <20240228114759.44758-1-sgarzare@redhat.com>
+ <20240228114759.44758-10-sgarzare@redhat.com>
+ <874jdswyzy.fsf@pond.sub.org>
+ <hxd362pwyrtanyw6xtjxiegru7z57btnaynaqxm5lysgzsm4u4@af36bjkqvc7z>
+Date: Thu, 29 Feb 2024 11:28:37 +0100
+Message-ID: <878r33zhre.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.102,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,49 +90,33 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 28 Feb 2024 16:50:30 +0000
-Ankit Agrawal <ankita@nvidia.com> wrote:
+Stefano Garzarella <sgarzare@redhat.com> writes:
 
-> >>> Jonathan, you pointed out interface design issues in your review of v2.>  
-> >> Are you fully satisfied with the interface in v3?
-> >>
-> >> Yes. I'm fine with the interface in this version (though it's v7, so I'm lost
-> >> on v2 vs v3!)  
-> >
-> > Looks like I can't count to 7!
-> >
-> > With NUMA capitalized in the doc comment, QAPI schema
-> > Acked-by: Markus Armbruster <armbru@redhat.com>
-> >
-> > Thanks!  
-> 
-> Thanks! Will fix that in the next version.
+> On Wed, Feb 28, 2024 at 01:32:17PM +0100, Markus Armbruster wrote:
+>>Stefano Garzarella <sgarzare@redhat.com> writes:
 
-The following is really me arguing with myself, so can probably be
-ignored, but maybe it will spark an idea from someone else!
+[...]
 
-One trivial tweak that might make our life easier if anyone adds
-support in the future for the other device handle type might be to go
-with simply dev rather than pci-dev.
+>>> +# @shm: if true, shm_open(3) is used to create/open POSIX shared memory
+>>> +#       object; if false, an open(2) is used. (default: false) (since 9.0)
+>>> +#
+>>
+>>Please format like this for consistency:
+>
+> Sure.
+>
+>>
+>># @shm: if true, shm_open(3) is used to create/open POSIX shared memory
+>>#     object; if false, an open(2) is used (default: false) (since 9.0)
+>
+> I just noticed that I followed the property just above (@rom). Should we fix that one?
 
-There is a sticky corner though if a device is a PCI device
-and in ACPI DSDT so maybe we are better off adding acpi-dev
-to take either pci-dev or acpi-dev?
+Yes, please.
 
-Annoyingly for generic ports, (I'm reusing this infrastructure here)
-the kernel code currently only deals with the ACPI form (for CXL host
-bridges).  Given I point that at the bus of a PXB_CXL it is both
-a PCI device, and the only handle we have for getting to the
-Root Bridge ACPI handle.
+See commit a937b6aa739 (qapi: Reformat doc comments to conform to
+current conventions).
 
-So I think I've argued myself around to thinking we need to extend
-the interface with another optional parameter if we ever do support
-the ACPI handle for generic initiators :(
-
-Jonathan
 
