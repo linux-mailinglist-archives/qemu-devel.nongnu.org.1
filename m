@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17E7786D644
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 22:38:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7888F86D65C
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 22:49:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfo5u-0005AZ-SQ; Thu, 29 Feb 2024 16:37:34 -0500
+	id 1rfoH6-0004wr-3l; Thu, 29 Feb 2024 16:49:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rfo5s-0005AJ-LJ
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 16:37:32 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1rfoH0-0004ou-7e
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 16:49:02 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rfo5r-0005nv-4K
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 16:37:32 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1dc09556599so13241385ad.1
- for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 13:37:30 -0800 (PST)
+ id 1rfoGx-000878-N6
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 16:49:01 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1dcb3e6ff3fso1128165ad.2
+ for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 13:48:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709242649; x=1709847449; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=linaro.org; s=google; t=1709243336; x=1709848136; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ZWJTFI90UfE25LdpQG6TSbOwe27NKeoirmtHq4Y1/UA=;
- b=OOpWfmK/ZE+jUxk6dN0l/TSD40FCvVvsce81/+IXZ7epFha+CNTFak94mxiMjIMPWv
- a2BJDVbB3AWovi/rN5Zp3w/ZTFxabRGO8ZevTfNCuhUdacmgYWRF7IrufRWHH6iUBodh
- b56pVFPPel/6QAHq727j1MQcIaPtiXwRI/a3ntvb/WSoTTSFJWefg4NdAALbNXJ2F9wQ
- CVMbfNq3DsYR5N8PZYPqxg/ddEk7GndgEPpBnc4l5cRFZeLZl/IAqcho5DLq2MW9+Cz4
- RC9qUTca9NZex6dgvBk64a133ImeIebma5LERuqsDa+hpoh96BDroEwB8PlBhhvxb5yH
- SBnQ==
+ bh=8tSn7AD4QqNOPfV7LQwbbjlM8/w6lUBs1x43TwaFCZI=;
+ b=f8c5Qr3j19wCW4uqBMdsa8sSwPg8u/M+erFzgMNbZjmBN0pZuUcgdjdolOA95B2CkI
+ pZwZk68lkBpVAQG+LbnGyLlSxyEKGXLhvBywTkjDBumkzHqvnDL0VMQEGF0OfkBTfgaI
+ 7dQ14301INaT/YtAg8+nETn07i+VSOxFUyuERYTm6D+HBVe/9RPcg54osKebWr+w4bDO
+ vQthjfEcNCJ/bP9WGYA9rJA1Y7fzFJdp3b4GH9meo/k8lOcKfnxJwwLk/xIuH2V8ilEQ
+ ZdJC30hC+j1I7ntn5r99g2E7yZZv2zd9w572ETBeUWZbsRqopNo6Ypa2C1pf5qtZ1S9X
+ MAtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709242649; x=1709847449;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=1e100.net; s=20230601; t=1709243336; x=1709848136;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZWJTFI90UfE25LdpQG6TSbOwe27NKeoirmtHq4Y1/UA=;
- b=jn2V6dz2Cy0mWuGvs/RT/BpASrpwS9Bt/3cljX2+34L5OsPrPiFzas0RdSvz4q0ZHT
- +6UCnXIrcm3E/5re4SptoxaNyk8DHUFqXVahoBtT3FpPlbwRMa6kn/GcfG0uW84cPVFS
- cJ7ywKs1PBX3Koq60xfCaloMLEOCqU6CwBz6+Uy3aER2kbYOYtDHitt2VE+dMaiZNBDf
- is77uCnyINzXgFGrVnLqWEFBp7P7e6GJ/s6L7tj5zoFuJT/0E12qcx9K5Vh/Pjs6zrNF
- kyA3rMEQCR3z1i6estt54f+JqW0R+Hw1HRo/BvZDIXcVOz34PxmNpPSoqKOKVtKp9yM7
- wArg==
-X-Gm-Message-State: AOJu0YwpY3+DjyHOqd6i3zsR5AodpdlqcF5u6qVzBOKji3QU+mRploPW
- SlhByaqLU+TV2F+8uJsHsCl43fn/oNUb5hq9Vgw0LiXH+jkKYRh4VuBPwiyjJLeH6Urzy6u/5S2
- S
-X-Google-Smtp-Source: AGHT+IF6ejUJSL6c0h6gcHoV0aKMbJ4gvuXTTjguNnVD6HWOT2ziI+ATbN4C4+S+3CnCQVmnmq20qA==
-X-Received: by 2002:a17:902:dac6:b0:1db:fa84:9be3 with SMTP id
- q6-20020a170902dac600b001dbfa849be3mr4355598plx.8.1709242649002; 
- Thu, 29 Feb 2024 13:37:29 -0800 (PST)
+ bh=8tSn7AD4QqNOPfV7LQwbbjlM8/w6lUBs1x43TwaFCZI=;
+ b=hC1tiVw4FZmTaa/AjvXTmB2vnpKwMSFA9InWn0Sfwh+omfYUJSZp6f8RbKNE3II6Sf
+ inS0Q7dcg782wo+e5QB+cBfmWCwCSqGmNP6vwowggysMdp9wSLweP8N3bQKKHa+9dS75
+ 4UbiN6z85G3R57aEybKXyHhUV07Yp30dk/T+d7uq8KpToC1HMkME54QaZ1yY09uofjS0
+ LIFHESxZV3GMuk7fCYZChRQhM1SKWfKuntqWbyZ9ubSxVaNkIRxHV31AsyClLo1e3MOA
+ eFdfk06BhqA4vfb4Nkwu6cUTSerHHfp54ixeWrmYGHNRjBH2FiAImh6RfROOoXz60jWm
+ dI6w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVwR/B0efbIeNz7q8uuE1MOXSXon8MrRDCRQjh0bu6ajdY/x5Z6zCEztHzT4PbTPm+2r4m6V1dFkXrfD37kQDJAthyX+3E=
+X-Gm-Message-State: AOJu0YwwD2tU0JtJVjgynKA7J7H9xyNEMAsJVj7+LQJHm41442YbZ6a5
+ K701ahPiv7X2jjeOSSaMouNtxy3jdgq7xPZkur2hTLlFbaldFRCLwiXpZFZb+WQ=
+X-Google-Smtp-Source: AGHT+IGlum+AN1mUmO+ybdS+XZKlAubIbVgyWndfXGfNLZ+x7/4X1LEqWivnivxBz+BhEJ5kUlj9wg==
+X-Received: by 2002:a17:902:bc43:b0:1dc:2d4d:45a1 with SMTP id
+ t3-20020a170902bc4300b001dc2d4d45a1mr3348668plz.19.1709243335773; 
+ Thu, 29 Feb 2024 13:48:55 -0800 (PST)
 Received: from [192.168.6.128] (098-147-055-211.res.spectrum.com.
  [98.147.55.211]) by smtp.gmail.com with ESMTPSA id
- u2-20020a17090341c200b001dcb560d7f0sm1986310ple.11.2024.02.29.13.37.27
+ x9-20020a170902a38900b001dce24ac4dbsm892488pla.136.2024.02.29.13.48.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 Feb 2024 13:37:28 -0800 (PST)
-Message-ID: <98cfbdca-96d4-4d7a-838e-f71684d4cbae@linaro.org>
-Date: Thu, 29 Feb 2024 11:37:25 -1000
+ Thu, 29 Feb 2024 13:48:55 -0800 (PST)
+Message-ID: <7d5fee5b-870b-470f-a6bb-119d1a65be0f@linaro.org>
+Date: Thu, 29 Feb 2024 11:48:52 -1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tcg/optimize: fix uninitialized variable
+Subject: Re: [RFC PATCH v5 04/22] target/arm: Implement ALLINT MSR (immediate)
 Content-Language: en-US
+To: Jinjie Ruan <ruanjinjie@huawei.com>, peter.maydell@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org
+References: <20240229131039.1868904-1-ruanjinjie@huawei.com>
+ <20240229131039.1868904-5-ruanjinjie@huawei.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org
-References: <20240228110641.287205-1-pbonzini@redhat.com>
- <1f179ee4-cab6-49c8-a625-2ac9dbe4e3d2@linaro.org>
- <CABgObfaZPp_wAE4u70+_ShmtFpEf69RjyRyqZEQ8TjDkue_Q-g@mail.gmail.com>
- <86e5043a-ec20-4e8c-84bc-e63ecb982bff@linaro.org>
-In-Reply-To: <86e5043a-ec20-4e8c-84bc-e63ecb982bff@linaro.org>
+In-Reply-To: <20240229131039.1868904-5-ruanjinjie@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,25 +97,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/28/24 09:29, Richard Henderson wrote:
-> On 2/28/24 02:20, Paolo Bonzini wrote:
->> On Wed, Feb 28, 2024 at 12:19 PM Philippe Mathieu-Daudé
->> <philmd@linaro.org> wrote:
->>>
->>> On 28/2/24 12:06, Paolo Bonzini wrote:
->>>> The variables uext_opc and sext_opc are used without initialization if
->>>> TCG_TARGET_extract_i{32,64}_valid returns false.  The result, depending
->>>> on the compiler, might be the generation of extract and sextract opcodes
->>>
->>> Shouldn't compilers bark?
->>
->> I expected that too...
-> 
-> Weird.  Anyhoo,
-> 
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+On 2/29/24 03:10, Jinjie Ruan via wrote:
+> +static bool trans_MSR_i_ALLINT(DisasContext *s, arg_i *a)
+> +{
+> +    if (!dc_isar_feature(aa64_nmi, s) || s->current_el == 0) {
+> +        return false;
+> +    }
+> +
+> +    if (a->imm == 0) {
+> +        clear_pstate_bits(PSTATE_ALLINT);
+> +    } else if (s->current_el > 1) {
+> +        set_pstate_bits(PSTATE_ALLINT);
+> +    } else {
+> +        gen_helper_msr_set_allint_el1(tcg_env);
+> +    }
+> +
+> +    s->base.is_jmp = DISAS_TOO_MANY;
+> +    return true;
+> +}
 
-Queued, thanks.
+I just noticed one final item: for imm == 0, we need
+
+     /* Exit the cpu loop to re-evaluate pending IRQs. */
+     s->base.is_jmp = DISAS_UPDATE_EXIT;
+
+like trans_MSR_i_DAIFCLEAR.
+
 
 r~
 
