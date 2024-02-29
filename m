@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E87DC86C15A
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:52:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC31086C151
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:49:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfa9j-0004Hn-6Y; Thu, 29 Feb 2024 01:44:35 -0500
+	id 1rfa9l-0004iT-Ll; Thu, 29 Feb 2024 01:44:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rfa9d-0003w8-Th
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:44:30 -0500
+ id 1rfa9i-0004Wi-Nb
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:44:34 -0500
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rfa9c-0005ON-3J
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:44:29 -0500
+ id 1rfa9g-0005ON-UB
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:44:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709189068; x=1740725068;
+ t=1709189073; x=1740725073;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=w43m/q1K3tjH9BzdhhpNxp1BomsI63/42OLw0r7ykq0=;
- b=RpHJ+9L3+2hTMsnQ1QssvDAWZKlzRI6UiVX5z/fiXp08goMMfqIFeLsC
- +qL71pJbqFHOS0+2FaAdJQ78Mrcxs0iza0/Eus00OraY1LCpFDENMks0g
- xE0P9qlX87pw3eojFo3gFpSR2pukIAQzby/yN6JiNqg1C1xLIoSpxmysY
- WlIVjKVn9cL2AZ9hsgAyRA9sgld83az9kUpwQ5rAv/18jixG50fd3mV2X
- /Xp54HBFQT3wLTgdXZKrmpvEAaIJvjkeT1ItraA2bIXrzkWNP3YQNKzhj
- dsyoBX5ouoKEunEVyLme+5Fz/ai6CRMOLPZr4QQKwzd/NTV5+ysEBCRFW Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3803328"
+ bh=VTp5F6mIs7twJi0yuRSzLDSYAKLqNn6eJlbE1TyLtH8=;
+ b=ZWHuUoHqrGmXmn3ilZxBxEBvz0dAUwDzkOZqelodsjDg/80fmnYGiYgF
+ GbptApDSD2YChW/+z35HtxVKY24F3p4hoKKLW5ieFA/wHKYHmQGz1QR1H
+ o2lwuajaCOSLq1M2316U9sfyoi0xjmqbZ3xKwfTlZHAvfreLaU4pntIXN
+ FgScsKA/oIi6+BrK3cb9lZ2aAVcanzUiStlV2aQekJLfIqpPHrGI3cuQL
+ B5a4g3scaEoky/+nDDHeT8Hd95LH4YnYZwLgNNAVnqPzkg8ZjpuNudSWo
+ Mdw676lsDcWrxg6q/cpl6gaaadnyGAyBRL50ktZmAcWLmE+y7V0FWkv/l Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3803335"
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="3803328"
+   d="scan'208";a="3803335"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 22:44:25 -0800
+ 28 Feb 2024 22:44:32 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="8076549"
+   d="scan'208";a="8076575"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa007.jf.intel.com with ESMTP; 28 Feb 2024 22:44:20 -0800
+ by orviesa007.jf.intel.com with ESMTP; 28 Feb 2024 22:44:26 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -58,9 +58,9 @@ Cc: kvm@vger.kernel.org, qemu-devel@nongnu.org,
  Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>, xiaoyao.li@intel.com
-Subject: [PATCH v5 63/65] i386/tdx: Skip kvm_put_apicbase() for TDs
-Date: Thu, 29 Feb 2024 01:37:24 -0500
-Message-Id: <20240229063726.610065-64-xiaoyao.li@intel.com>
+Subject: [PATCH v5 64/65] i386/tdx: Don't get/put guest state for TDX VMs
+Date: Thu, 29 Feb 2024 01:37:25 -0500
+Message-Id: <20240229063726.610065-65-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240229063726.610065-1-xiaoyao.li@intel.com>
 References: <20240229063726.610065-1-xiaoyao.li@intel.com>
@@ -91,30 +91,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-KVM doesn't allow wirting to MSR_IA32_APICBASE for TDs.
+From: Sean Christopherson <sean.j.christopherson@intel.com>
 
+Don't get/put state of TDX VMs since accessing/mutating guest state of
+production TDs is not supported.
+
+Note, it will be allowed for a debug TD. Corresponding support will be
+introduced when debug TD support is implemented in the future.
+
+Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- target/i386/kvm/kvm.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ target/i386/kvm/kvm.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index d23f94b77257..31aed1c9aae0 100644
+index 31aed1c9aae0..39113718ea14 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -3052,6 +3052,11 @@ void kvm_put_apicbase(X86CPU *cpu, uint64_t value)
- {
-     int ret;
+@@ -4620,6 +4620,11 @@ int kvm_arch_put_registers(CPUState *cpu, int level)
+ 
+     assert(cpu_is_stopped(cpu) || qemu_cpu_is_self(cpu));
  
 +    /* TODO: Allow accessing guest state for debug TDs. */
 +    if (is_tdx_vm()) {
-+        return;
++        return 0;
 +    }
 +
-     ret = kvm_put_one_msr(cpu, MSR_IA32_APICBASE, value);
-     assert(ret == 1);
- }
+     /*
+      * Put MSR_IA32_FEATURE_CONTROL first, this ensures the VM gets out of VMX
+      * root operation upon vCPU reset. kvm_put_msr_feature_control() should also
+@@ -4720,6 +4725,12 @@ int kvm_arch_get_registers(CPUState *cs)
+     if (ret < 0) {
+         goto out;
+     }
++
++    /* TODO: Allow accessing guest state for debug TDs. */
++    if (is_tdx_vm()) {
++        return 0;
++    }
++
+     ret = kvm_getput_regs(cpu, 0);
+     if (ret < 0) {
+         goto out;
 -- 
 2.34.1
 
