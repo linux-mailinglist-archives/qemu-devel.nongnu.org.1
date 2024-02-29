@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B6F86C17B
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:57:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9DD86C17A
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:57:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfa7I-00078h-FH; Thu, 29 Feb 2024 01:42:04 -0500
+	id 1rfa7I-0007E9-KX; Thu, 29 Feb 2024 01:42:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rfa77-0006fy-Gg
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:41:53 -0500
+ id 1rfa7E-00070v-9R
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:42:00 -0500
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rfa75-0004qw-IB
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:41:53 -0500
+ id 1rfa7C-0004qw-3x
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:41:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709188911; x=1740724911;
+ t=1709188918; x=1740724918;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=w+3FVIgu6+6PP0tbc6InvSJYIh6/cEjrfhsEEHWGAEQ=;
- b=dWMnZGtpQ04YJVACU9DwUn14yFiEuFde53oes70dSxp6QoJ8lHjc/w4M
- vt4vkrwIg6TIeykMEraLLiq7o1mz+fnRxUGI7+5K52OhjZH5syx1JDsD3
- VJHiAFQClgZ2AtYcLIdUkCmemArASJn+0rFi4NBguYF6J+fTn2krgSbGf
- MrwTQ3UqGlmwp1MJGx13nEp4deutoynr2AHU5Tuv0Hl3z8Js7+rlmwHlU
- naP5f5t4UoEPpVgle6vDnRA/OW6GJHKN2GawRPKPswlvQ8g+DYW+wHBAP
- 88AGfMa6S2mGtffsXZL/bj02yeobtUA+j/8ZZllcsj03CFXDP8rFztQTC A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3802948"
+ bh=B3E1j7nvOawtQ7oIhpLArUrNfzgHFHOAjtEVU0aC1Q8=;
+ b=oBlkTfDJMiLA6PlDOP8aNt4C+cYjBLPRNKCMme9xUhEUIZek4g78ZuJM
+ NQCKELdOqEwOhM5OElUmPvZZVKmnNxlC9kCPTcJ2hT7kCkbHO/oQSBOYI
+ 0ErCYnTtP2gBx0TmPrsnwkCpM/+r7foDqfucGi4QW6BZy/wbrP6sQuRR4
+ eyQLNuDi/aqj8Htq5Sm8NlPEtSFv1KZHefdHXur+EXqZpWYuEyYJjqB6l
+ 9+UHQOwyhwFB53wYnkfjxBv+RS1ijn8NjFrb5dG+gTbPWms4R+LKv05UT
+ 651nmDQY5fCtlAUKWa/yIWl87KkQ23UsrTX08tPDfnDTlzECCpoIJB41j Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3802962"
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="3802948"
+   d="scan'208";a="3802962"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 22:41:50 -0800
+ 28 Feb 2024 22:41:57 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="8075755"
+   d="scan'208";a="8075763"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa007.jf.intel.com with ESMTP; 28 Feb 2024 22:41:45 -0800
+ by orviesa007.jf.intel.com with ESMTP; 28 Feb 2024 22:41:51 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -58,9 +58,9 @@ Cc: kvm@vger.kernel.org, qemu-devel@nongnu.org,
  Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>, xiaoyao.li@intel.com
-Subject: [PATCH v5 39/65] i386/tdx: Skip BIOS shadowing setup
-Date: Thu, 29 Feb 2024 01:37:00 -0500
-Message-Id: <20240229063726.610065-40-xiaoyao.li@intel.com>
+Subject: [PATCH v5 40/65] i386/tdx: Don't initialize pc.rom for TDX VMs
+Date: Thu, 29 Feb 2024 01:37:01 -0500
+Message-Id: <20240229063726.610065-41-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240229063726.610065-1-xiaoyao.li@intel.com>
 References: <20240229063726.610065-1-xiaoyao.li@intel.com>
@@ -91,57 +91,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TDX doesn't support map different GPAs to same private memory. Thus,
-aliasing top 128KB of BIOS as isa-bios is not supported.
-
-On the other hand, TDX guest cannot go to real mode, it can work fine
-without isa-bios.
+For TDX, the address below 1MB are entirely general RAM. No need to
+initialize pc.rom memory region for TDs.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
-Changes in v1:
- - update commit message and comment to clarify
+This is more as a workaround of the issue that for q35 machine type, the
+real memslot update (which requires memslot deletion )for pc.rom happens
+after tdx_init_memory_region. It leads to the private memory ADD'ed
+before get lost. I haven't work out a good solution to resolve the
+order issue. So just skip the pc.rom setup to avoid memslot deletion.
 ---
- hw/i386/x86.c | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ hw/i386/pc.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-index 5a0cadc88c4f..61c45dfc14dd 100644
---- a/hw/i386/x86.c
-+++ b/hw/i386/x86.c
-@@ -1190,17 +1190,20 @@ void x86_bios_rom_init(MachineState *ms, const char *default_firmware,
-     }
-     g_free(filename);
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index f5ff970acfa0..3f8dd218eb08 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -43,6 +43,7 @@
+ #include "sysemu/xen.h"
+ #include "sysemu/reset.h"
+ #include "kvm/kvm_i386.h"
++#include "kvm/tdx.h"
+ #include "hw/xen/xen.h"
+ #include "qapi/qmp/qlist.h"
+ #include "qemu/error-report.h"
+@@ -1028,16 +1029,18 @@ void pc_memory_init(PCMachineState *pcms,
+     /* Initialize PC system firmware */
+     pc_system_firmware_init(pcms, rom_memory);
  
--    /* map the last 128KB of the BIOS in ISA space */
--    isa_bios_size = MIN(bios_size, 128 * KiB);
--    isa_bios = g_malloc(sizeof(*isa_bios));
--    memory_region_init_alias(isa_bios, NULL, "isa-bios", bios,
--                             bios_size - isa_bios_size, isa_bios_size);
--    memory_region_add_subregion_overlap(rom_memory,
--                                        0x100000 - isa_bios_size,
--                                        isa_bios,
--                                        1);
--    if (!isapc_ram_fw) {
--        memory_region_set_readonly(isa_bios, true);
-+    /* For TDX, alias different GPAs to same private memory is not supported */
+-    option_rom_mr = g_malloc(sizeof(*option_rom_mr));
+-    memory_region_init_ram(option_rom_mr, NULL, "pc.rom", PC_ROM_SIZE,
+-                           &error_fatal);
+-    if (pcmc->pci_enabled) {
+-        memory_region_set_readonly(option_rom_mr, true);
 +    if (!is_tdx_vm()) {
-+        /* map the last 128KB of the BIOS in ISA space */
-+        isa_bios_size = MIN(bios_size, 128 * KiB);
-+        isa_bios = g_malloc(sizeof(*isa_bios));
-+        memory_region_init_alias(isa_bios, NULL, "isa-bios", bios,
-+                                bios_size - isa_bios_size, isa_bios_size);
-+        memory_region_add_subregion_overlap(rom_memory,
-+                                            0x100000 - isa_bios_size,
-+                                            isa_bios,
-+                                            1);
-+        if (!isapc_ram_fw) {
-+            memory_region_set_readonly(isa_bios, true);
++        option_rom_mr = g_malloc(sizeof(*option_rom_mr));
++        memory_region_init_ram(option_rom_mr, NULL, "pc.rom", PC_ROM_SIZE,
++                            &error_fatal);
++        if (pcmc->pci_enabled) {
++            memory_region_set_readonly(option_rom_mr, true);
 +        }
++        memory_region_add_subregion_overlap(rom_memory,
++                                            PC_ROM_MIN_VGA,
++                                            option_rom_mr,
++                                            1);
      }
+-    memory_region_add_subregion_overlap(rom_memory,
+-                                        PC_ROM_MIN_VGA,
+-                                        option_rom_mr,
+-                                        1);
  
-     /* map all the bios at the top of memory */
+     fw_cfg = fw_cfg_arch_create(machine,
+                                 x86ms->boot_cpus, x86ms->apic_id_limit);
 -- 
 2.34.1
 
