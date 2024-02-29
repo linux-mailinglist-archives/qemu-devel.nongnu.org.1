@@ -2,53 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D8D86C194
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 08:04:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F5686C16C
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:54:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfaRx-0002n7-KE; Thu, 29 Feb 2024 02:03:25 -0500
+	id 1rfaH8-0002MR-7r; Thu, 29 Feb 2024 01:52:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1rfaRh-0002Xu-BV; Thu, 29 Feb 2024 02:03:09 -0500
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX02.aspeed.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_CBC_SHA1:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1rfaRS-0003DK-9e; Thu, 29 Feb 2024 02:03:09 -0500
-Received: from TWMBX02.aspeed.com (192.168.0.24) by TWMBX02.aspeed.com
- (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 29 Feb
- 2024 15:02:37 +0800
-Received: from twmbx02.aspeed.com (192.168.10.10) by TWMBX02.aspeed.com
- (192.168.0.24) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 29 Feb 2024 15:02:37 +0800
-To: <qemu-devel@nongnu.org>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?=
- <clg@kaod.org>, Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery
- <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, "Alistair
- Francis" <alistair@alistair23.me>, "open list:ASPEED BMCs"
- <qemu-arm@nongnu.org>
-CC: <troy_lee@aspeedtech.com>, <jamin_lin@aspeedtech.com>,
- <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v1 6/8] aspeed/intc: Add AST2700 support
-Date: Thu, 29 Feb 2024 15:02:31 +0800
-Message-ID: <20240229070233.463502-7-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240229070233.463502-1-jamin_lin@aspeedtech.com>
-References: <20240229070233.463502-1-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rfaG7-00021C-5O; Thu, 29 Feb 2024 01:51:19 -0500
+Received: from mgamail.intel.com ([198.175.65.16])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rfaG4-0006st-B5; Thu, 29 Feb 2024 01:51:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1709189468; x=1740725468;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=GS2K/1elXcA90zDdKMXQSx9HqJcMQIF3eoynkMWLosE=;
+ b=Teh29f6mSrRGK1M1EhG9Yu/b+qRBZkCLwDp3QulrnYTIOWs6Ir8Co3qn
+ h3VOJ3vx8Rwqw8QB7xLymaoI3/E4BCibgKeFfboa65e75MB4O3WZELb1u
+ 6BLJYFgYHn2cLtUxW9ZNRXdjBHSD8rNN1WKmYCMhqfpOqPcOj0orVZo+U
+ 33g0/tt3Ic+HMKmNKNhz0RXKhG7dSQ9tGLnAwWIch6UL3rfDm8Jvm05j6
+ M5Unt+b6beFQGH8PhmyODbRXqhmpHDp7CeiIKUPkqNlsA5QrcowHxrDxf
+ MODxMV9HZ4iB+GvIWH54ji1s6xGGPLs0tJqsPaZtETEQDisTB4SzBPExS w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3755274"
+X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
+   d="scan'208";a="3755274"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Feb 2024 22:51:04 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
+   d="scan'208";a="7638819"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa009.fm.intel.com with ESMTP; 28 Feb 2024 22:50:58 -0800
+Date: Thu, 29 Feb 2024 15:04:42 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: JeeHeng Sia <jeeheng.sia@starfivetech.com>
+Cc: Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Alex =?utf-8?B?QmVubu+/vWU=?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>,
+ Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [RFC 4/8] hw/core: Add cache topology options in -smp
+Message-ID: <ZeAsijVdx6DO+1pP@intel.com>
+References: <20240220092504.726064-1-zhao1.liu@linux.intel.com>
+ <20240220092504.726064-5-zhao1.liu@linux.intel.com>
+ <BJSPR01MB05618A7D409C2DE3E408345C9C58A@BJSPR01MB0561.CHNPR01.prod.partner.outlook.cn>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: Fail (TWMBX02.aspeed.com: domain of jamin_lin@aspeedtech.com
- does not designate 192.168.10.10 as permitted sender)
- receiver=TWMBX02.aspeed.com; client-ip=192.168.10.10;
- helo=twmbx02.aspeed.com;
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX02.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_FAIL=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BJSPR01MB05618A7D409C2DE3E408345C9C58A@BJSPR01MB0561.CHNPR01.prod.partner.outlook.cn>
+Received-SPF: none client-ip=198.175.65.16;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.102,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,232 +92,97 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-AST2700 interrupt controller(INTC) provides hardware interrupt interfaces
-to interrupt of processors PSP, SSP and TSP. In INTC, each interrupt of
-INT 128 to INT136 combines 32 interrupts.
+Hi JeeHeng,
 
-Introduce a new aspeed_intc class with instance_init and realize handlers.
+> > diff --git a/hw/core/machine.c b/hw/core/machine.c
+> > index 426f71770a84..cb5173927b0d 100644
+> > --- a/hw/core/machine.c
+> > +++ b/hw/core/machine.c
+> > @@ -886,6 +886,10 @@ static void machine_get_smp(Object *obj, Visitor *v, const char *name,
+> >          .has_cores = true, .cores = ms->smp.cores,
+> >          .has_threads = true, .threads = ms->smp.threads,
+> >          .has_maxcpus = true, .maxcpus = ms->smp.max_cpus,
+> > +        .l1d_cache = g_strdup(cpu_topo_to_string(ms->smp_cache.l1d)),
+> > +        .l1i_cache = g_strdup(cpu_topo_to_string(ms->smp_cache.l1i)),
+> > +        .l2_cache = g_strdup(cpu_topo_to_string(ms->smp_cache.l2)),
+> > +        .l3_cache = g_strdup(cpu_topo_to_string(ms->smp_cache.l3)),
+>
+> Let's standardize the code by adding the 'has_' prefix.
 
-QEMU supports ARM Generic Interrupt Controller, version 3(GICv3)
-but not support Shared Peripheral Interrupt (SPI), yet.
-This patch added work around to set GICINT132[18] which was BMC UART interrupt
-if it received GICINT132, so users are able to type any key from keyboard to
-trigger GICINT132 interrupt until AST2700 boot into login prompt.
-It is a temporary solution.
+SMPConfiguration is automatically generated in the compilation, and its
+prototype is defined in qapi/machine.json like the following code:
 
-Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
----
- hw/intc/aspeed_intc.c        | 135 +++++++++++++++++++++++++++++++++++
- hw/intc/meson.build          |   1 +
- include/hw/intc/aspeed_vic.h |  29 ++++++++
- 3 files changed, 165 insertions(+)
- create mode 100644 hw/intc/aspeed_intc.c
 
-diff --git a/hw/intc/aspeed_intc.c b/hw/intc/aspeed_intc.c
-new file mode 100644
-index 0000000000..851d43363b
---- /dev/null
-+++ b/hw/intc/aspeed_intc.c
-@@ -0,0 +1,135 @@
-+/*
-+ * ASPEED INTC Controller
-+ *
-+ * Copyright (C) 2024 ASPEED Technology Inc.
-+ *
-+ * This code is licensed under the GPL version 2 or later.  See
-+ * the COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/intc/aspeed_vic.h"
-+#include "hw/irq.h"
-+#include "migration/vmstate.h"
-+#include "qemu/bitops.h"
-+#include "qemu/log.h"
-+#include "qemu/module.h"
-+#include "hw/intc/arm_gicv3.h"
-+#include "trace.h"
-+
-+#define ASPEED_INTC_NR_IRQS 128
-+#define ASPEED_INTC_SIZE 0x4000
-+#define TO_REG(N) (N >> 2)
-+
-+uint64_t regs[ASPEED_INTC_SIZE];
-+
-+static void aspeed_intc_set_irq(void *opaque, int irq, int level)
-+{
-+}
-+
-+static uint64_t aspeed_intc_read(void *opaque, hwaddr offset, unsigned size)
-+{
-+    AspeedINTCState *s = ASPEED_INTC(opaque);
-+    GICv3State *gic = ARM_GICV3(s->gic);
-+
-+    uint64_t value = 0;
-+    switch (TO_REG(offset)) {
-+    case TO_REG(0x1404):
-+        /* BMC UART interript is GICINT132[18] */
-+        if (gic && gicv3_gicd_level_test(gic, 164)) {
-+            value = BIT(18);
-+        }
-+        break;
-+    default:
-+        value = regs[TO_REG(offset)];
-+        break;
-+    }
-+
-+    return value;
-+}
-+
-+static void aspeed_intc_write(void *opaque, hwaddr offset, uint64_t data,
-+                                        unsigned size)
-+{
-+    AspeedINTCState *s = ASPEED_INTC(opaque);
-+    GICv3State *gic = ARM_GICV3(s->gic);
-+
-+    switch (TO_REG(offset)) {
-+    case TO_REG(0x1400):
-+        regs[TO_REG(offset)] = data;
-+        if (regs[TO_REG(offset)]) {
-+            gicv3_gicd_enabled_set(gic, 164);
-+        } else {
-+            gicv3_gicd_enabled_clear(gic, 164);
-+        }
-+        break;
-+    case TO_REG(0x1404):
-+        regs[TO_REG(offset)] &= ~(data);
-+        gicv3_gicd_level_clear(gic, 164);
-+        break;
-+    default:
-+        regs[TO_REG(offset)] = data;
-+        break;
-+    }
-+}
-+
-+static const MemoryRegionOps aspeed_intc_ops = {
-+    .read = aspeed_intc_read,
-+    .write = aspeed_intc_write,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+    .valid.min_access_size = 4,
-+    .valid.max_access_size = 4,
-+    .valid.unaligned = false,
-+};
-+
-+static void aspeed_intc_realize(DeviceState *dev, Error **errp)
-+{
-+    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
-+    AspeedINTCState *s = ASPEED_INTC(dev);
-+
-+    memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_intc_ops, s,
-+                          TYPE_ASPEED_INTC, ASPEED_INTC_SIZE);
-+
-+    sysbus_init_mmio(sbd, &s->iomem);
-+
-+    qdev_init_gpio_in(dev, aspeed_intc_set_irq, ASPEED_INTC_NR_IRQS);
-+    sysbus_init_irq(sbd, &s->irq);
-+    sysbus_init_irq(sbd, &s->fiq);
-+}
-+
-+static void aspeed_intc_reset(DeviceState *dev)
-+{
-+    AspeedINTCState *s = ASPEED_INTC(dev);
-+
-+    s->level = 0;
-+    s->raw = 0;
-+    s->select = 0;
-+    s->enable = 0;
-+    s->trigger = 0;
-+    s->sense = 0x1F07FFF8FFFFULL;
-+    s->dual_edge = 0xF800070000ULL;
-+    s->event = 0x5F07FFF8FFFFULL;
-+}
-+
-+static void aspeed_intc_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    dc->realize = aspeed_intc_realize;
-+    dc->reset = aspeed_intc_reset;
-+    dc->desc = "ASPEED Interrupt Controller for AST27x0";
-+    dc->vmsd = NULL;
-+}
-+
-+static const TypeInfo aspeed_intc_info = {
-+    .name = TYPE_ASPEED_INTC,
-+    .parent = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(AspeedINTCState),
-+    .class_init = aspeed_intc_class_init,
-+};
-+
-+static void aspeed_intc_register_types(void)
-+{
-+    type_register_static(&aspeed_intc_info);
-+}
-+
-+type_init(aspeed_intc_register_types);
-diff --git a/hw/intc/meson.build b/hw/intc/meson.build
-index ed355941d1..f5c574f584 100644
---- a/hw/intc/meson.build
-+++ b/hw/intc/meson.build
-@@ -14,6 +14,7 @@ system_ss.add(when: 'CONFIG_ARM_GICV3_TCG', if_true: files(
- ))
- system_ss.add(when: 'CONFIG_ALLWINNER_A10_PIC', if_true: files('allwinner-a10-pic.c'))
- system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files('aspeed_vic.c'))
-+system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files('aspeed_intc.c'))
- system_ss.add(when: 'CONFIG_ETRAXFS', if_true: files('etraxfs_pic.c'))
- system_ss.add(when: 'CONFIG_EXYNOS4', if_true: files('exynos4210_gic.c', 'exynos4210_combiner.c'))
- system_ss.add(when: 'CONFIG_GOLDFISH_PIC', if_true: files('goldfish_pic.c'))
-diff --git a/include/hw/intc/aspeed_vic.h b/include/hw/intc/aspeed_vic.h
-index 68d6ab997a..673a11d7fd 100644
---- a/include/hw/intc/aspeed_vic.h
-+++ b/include/hw/intc/aspeed_vic.h
-@@ -17,6 +17,7 @@
- #include "qom/object.h"
- 
- #define TYPE_ASPEED_VIC "aspeed.vic"
-+#define TYPE_ASPEED_INTC "aspeed.intc"
- OBJECT_DECLARE_SIMPLE_TYPE(AspeedVICState, ASPEED_VIC)
- 
- #define ASPEED_VIC_NR_IRQS 51
-@@ -46,4 +47,32 @@ struct AspeedVICState {
-     uint64_t event;
- };
- 
-+OBJECT_DECLARE_SIMPLE_TYPE(AspeedINTCState, ASPEED_INTC)
-+
-+struct AspeedINTCState {
-+    /*< private >*/
-+    SysBusDevice parent_obj;
-+    DeviceState *gic;
-+
-+    /*< public >*/
-+    MemoryRegion iomem;
-+    qemu_irq irq;
-+    qemu_irq fiq;
-+
-+    uint64_t level;
-+    uint64_t raw;
-+    uint64_t select;
-+    uint64_t enable;
-+    uint64_t trigger;
-+
-+    /* 0=edge, 1=level */
-+    uint64_t sense;
-+
-+    /* 0=single-edge, 1=dual-edge */
-+    uint64_t dual_edge;
-+
-+    /* 0=low-sensitive/falling-edge, 1=high-sensitive/rising-edge */
-+    uint64_t event;
-+};
-+
- #endif /* ASPEED_VIC_H */
--- 
-2.25.1
+> > diff --git a/qapi/machine.json b/qapi/machine.json
+> > index d0e7f1f615f3..0a923ac38803 100644
+> > --- a/qapi/machine.json
+> > +++ b/qapi/machine.json
+> > @@ -1650,6 +1650,14 @@
+> >  #
+> >  # @threads: number of threads per core
+> >  #
+> > +# @l1d-cache: topology hierarchy of L1 data cache (since 9.0)
+> > +#
+> > +# @l1i-cache: topology hierarchy of L1 instruction cache (since 9.0)
+> > +#
+> > +# @l2-cache: topology hierarchy of L2 unified cache (since 9.0)
+> > +#
+> > +# @l3-cache: topology hierarchy of L3 unified cache (since 9.0)
+> > +#
+> >  # Since: 6.1
+> >  ##
+> >  { 'struct': 'SMPConfiguration', 'data': {
+> > @@ -1662,7 +1670,11 @@
+> >       '*modules': 'int',
+> >       '*cores': 'int',
+> >       '*threads': 'int',
+> > -     '*maxcpus': 'int' } }
+> > +     '*maxcpus': 'int',
+> > +     '*l1d-cache': 'str',
+> > +     '*l1i-cache': 'str',
+> > +     '*l2-cache': 'str',
+> > +     '*l3-cache': 'str' } }
+> >
+
+The gnerated complete structure is (will in build/qapi/qapi-types-machine.h):
+
+struct SMPConfiguration {
+    bool has_cpus;
+    int64_t cpus;
+    bool has_drawers;
+    int64_t drawers;
+    bool has_books;
+    int64_t books;
+    bool has_sockets;
+    int64_t sockets;
+    bool has_dies;
+    int64_t dies;
+    bool has_clusters;
+    int64_t clusters;
+    bool has_modules;
+    int64_t modules;
+    bool has_cores;
+    int64_t cores;
+    bool has_threads;
+    int64_t threads;
+    bool has_maxcpus;
+    int64_t maxcpus;
+    char *l1d_cache;
+    char *l1i_cache;
+    char *l2_cache;
+    char *l3_cache;
+};
+
+The int member defined in qapi/machine.json will get their corresponding
+status fields as has_* to indicate if user sets those int fields.
+
+For str type, the status field is not needed since NULL is enough to
+indicate no user sets that.
+
+Thanks,
+Zhao
 
 
