@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1120286C180
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:58:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B6F86C17B
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:57:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfa7D-0006sE-F3; Thu, 29 Feb 2024 01:41:59 -0500
+	id 1rfa7I-00078h-FH; Thu, 29 Feb 2024 01:42:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rfa72-0006Sx-W5
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:41:49 -0500
+ id 1rfa77-0006fy-Gg
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:41:53 -0500
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rfa70-0004qw-HG
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:41:48 -0500
+ id 1rfa75-0004qw-IB
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:41:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709188906; x=1740724906;
+ t=1709188911; x=1740724911;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=XmGe3EbGetH0Efx4Wyrv6IWMlc+Y1c51VEBTpdtPh2M=;
- b=Tkd83hXZRTFZHq25RmQSKvHPB23xx5VU35CgXOCNihsxgYEZ6jm2YBH+
- /52B7RnQg6vWcEjqQ3gzQ5F4KfVXou1IILGAWxjZN+oSP5F84gwz7yTol
- mi7ayxZxU4gIe17KHAeOWjY7XPX+tNlBmvp3XwJbQvhKGyCRhTg3GRfEW
- GiDoRBwBfmEp4YvFoPKvS7bPnlOiq9e5xlRjj84NOIfNbW585e9Enukmp
- JgTkG0NJTKtYUyxU4hoKRGmXQDnYR+ODHEak1AwjS7POD9k4o3Rql6txV
- lSFcHcfeRVQR024QC7NtCE1vinr61R/7PsvMEx4CFa4yh/OAIW3O80QDx Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3802937"
+ bh=w+3FVIgu6+6PP0tbc6InvSJYIh6/cEjrfhsEEHWGAEQ=;
+ b=dWMnZGtpQ04YJVACU9DwUn14yFiEuFde53oes70dSxp6QoJ8lHjc/w4M
+ vt4vkrwIg6TIeykMEraLLiq7o1mz+fnRxUGI7+5K52OhjZH5syx1JDsD3
+ VJHiAFQClgZ2AtYcLIdUkCmemArASJn+0rFi4NBguYF6J+fTn2krgSbGf
+ MrwTQ3UqGlmwp1MJGx13nEp4deutoynr2AHU5Tuv0Hl3z8Js7+rlmwHlU
+ naP5f5t4UoEPpVgle6vDnRA/OW6GJHKN2GawRPKPswlvQ8g+DYW+wHBAP
+ 88AGfMa6S2mGtffsXZL/bj02yeobtUA+j/8ZZllcsj03CFXDP8rFztQTC A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3802948"
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="3802937"
+   d="scan'208";a="3802948"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 22:41:44 -0800
+ 28 Feb 2024 22:41:50 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="8075728"
+   d="scan'208";a="8075755"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa007.jf.intel.com with ESMTP; 28 Feb 2024 22:41:38 -0800
+ by orviesa007.jf.intel.com with ESMTP; 28 Feb 2024 22:41:45 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -58,9 +58,9 @@ Cc: kvm@vger.kernel.org, qemu-devel@nongnu.org,
  Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>, xiaoyao.li@intel.com
-Subject: [PATCH v5 38/65] i386/tdx: Parse TDVF metadata for TDX VM
-Date: Thu, 29 Feb 2024 01:36:59 -0500
-Message-Id: <20240229063726.610065-39-xiaoyao.li@intel.com>
+Subject: [PATCH v5 39/65] i386/tdx: Skip BIOS shadowing setup
+Date: Thu, 29 Feb 2024 01:37:00 -0500
+Message-Id: <20240229063726.610065-40-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240229063726.610065-1-xiaoyao.li@intel.com>
 References: <20240229063726.610065-1-xiaoyao.li@intel.com>
@@ -91,97 +91,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-After TDVF is loaded to bios MemoryRegion, it needs parse TDVF metadata.
+TDX doesn't support map different GPAs to same private memory. Thus,
+aliasing top 128KB of BIOS as isa-bios is not supported.
+
+On the other hand, TDX guest cannot go to real mode, it can work fine
+without isa-bios.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- hw/i386/pc_sysfw.c         | 7 +++++++
- target/i386/kvm/tdx-stub.c | 5 +++++
- target/i386/kvm/tdx.c      | 5 +++++
- target/i386/kvm/tdx.h      | 3 +++
- 4 files changed, 20 insertions(+)
+Changes in v1:
+ - update commit message and comment to clarify
+---
+ hw/i386/x86.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
-index b02e28557948..945978ee59f9 100644
---- a/hw/i386/pc_sysfw.c
-+++ b/hw/i386/pc_sysfw.c
-@@ -37,6 +37,7 @@
- #include "hw/block/flash.h"
- #include "sysemu/kvm.h"
- #include "sev.h"
-+#include "kvm/tdx.h"
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+index 5a0cadc88c4f..61c45dfc14dd 100644
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -1190,17 +1190,20 @@ void x86_bios_rom_init(MachineState *ms, const char *default_firmware,
+     }
+     g_free(filename);
  
- #define FLASH_SECTOR_SIZE 4096
- 
-@@ -254,5 +255,11 @@ void x86_firmware_configure(void *ptr, int size)
-         }
- 
-         sev_encrypt_flash(ptr, size, &error_fatal);
-+    } else if (is_tdx_vm()) {
-+        ret = tdx_parse_tdvf(ptr, size);
-+        if (ret) {
-+            error_report("failed to parse TDVF for TDX VM");
-+            exit(1);
+-    /* map the last 128KB of the BIOS in ISA space */
+-    isa_bios_size = MIN(bios_size, 128 * KiB);
+-    isa_bios = g_malloc(sizeof(*isa_bios));
+-    memory_region_init_alias(isa_bios, NULL, "isa-bios", bios,
+-                             bios_size - isa_bios_size, isa_bios_size);
+-    memory_region_add_subregion_overlap(rom_memory,
+-                                        0x100000 - isa_bios_size,
+-                                        isa_bios,
+-                                        1);
+-    if (!isapc_ram_fw) {
+-        memory_region_set_readonly(isa_bios, true);
++    /* For TDX, alias different GPAs to same private memory is not supported */
++    if (!is_tdx_vm()) {
++        /* map the last 128KB of the BIOS in ISA space */
++        isa_bios_size = MIN(bios_size, 128 * KiB);
++        isa_bios = g_malloc(sizeof(*isa_bios));
++        memory_region_init_alias(isa_bios, NULL, "isa-bios", bios,
++                                bios_size - isa_bios_size, isa_bios_size);
++        memory_region_add_subregion_overlap(rom_memory,
++                                            0x100000 - isa_bios_size,
++                                            isa_bios,
++                                            1);
++        if (!isapc_ram_fw) {
++            memory_region_set_readonly(isa_bios, true);
 +        }
      }
- }
-diff --git a/target/i386/kvm/tdx-stub.c b/target/i386/kvm/tdx-stub.c
-index b614b46d3f4a..a064d583d393 100644
---- a/target/i386/kvm/tdx-stub.c
-+++ b/target/i386/kvm/tdx-stub.c
-@@ -6,3 +6,8 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
- {
-     return -EINVAL;
- }
-+
-+int tdx_parse_tdvf(void *flash_ptr, int size)
-+{
-+    return -EINVAL;
-+}
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 7c8e14e3cc58..2bb6e9e9c392 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -631,6 +631,11 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
-     return 0;
- }
  
-+int tdx_parse_tdvf(void *flash_ptr, int size)
-+{
-+    return tdvf_parse_metadata(&tdx_guest->tdvf, flash_ptr, size);
-+}
-+
- static bool tdx_guest_get_sept_ve_disable(Object *obj, Error **errp)
- {
-     TdxGuest *tdx = TDX_GUEST(obj);
-diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
-index c021223001a5..30ea3737276a 100644
---- a/target/i386/kvm/tdx.h
-+++ b/target/i386/kvm/tdx.h
-@@ -6,6 +6,7 @@
- #endif
- 
- #include "exec/confidential-guest-support.h"
-+#include "hw/i386/tdvf.h"
- 
- #define TYPE_TDX_GUEST "tdx-guest"
- #define TDX_GUEST(obj)  OBJECT_CHECK(TdxGuest, (obj), TYPE_TDX_GUEST)
-@@ -26,6 +27,7 @@ typedef struct TdxGuest {
-     char *mrownerconfig;    /* base64 encoded sha348 digest */
- 
-     MemoryRegion *tdvf_mr;
-+    TdxFirmware tdvf;
- } TdxGuest;
- 
- #ifdef CONFIG_TDX
-@@ -38,5 +40,6 @@ void tdx_get_supported_cpuid(uint32_t function, uint32_t index, int reg,
-                              uint32_t *ret);
- int tdx_pre_create_vcpu(CPUState *cpu, Error **errp);
- void tdx_set_tdvf_region(MemoryRegion *tdvf_mr);
-+int tdx_parse_tdvf(void *flash_ptr, int size);
- 
- #endif /* QEMU_I386_TDX_H */
+     /* map all the bios at the top of memory */
 -- 
 2.34.1
 
