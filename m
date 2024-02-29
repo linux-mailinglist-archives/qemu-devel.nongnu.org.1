@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F24686C14D
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:49:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56C0586C16B
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:54:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfa6s-0005i3-Mr; Thu, 29 Feb 2024 01:41:38 -0500
+	id 1rfa6x-00067T-0D; Thu, 29 Feb 2024 01:41:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rfa6I-0005A9-2I
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:41:02 -0500
+ id 1rfa6N-0005Oi-FG
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:41:07 -0500
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rfa6F-0004qw-Jf
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:41:01 -0500
+ id 1rfa6L-0004qw-Kx
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:41:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709188859; x=1740724859;
+ t=1709188865; x=1740724865;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=4aJPxH3BOuQYHOutHNBkGhjumbgTx+i4iEi2sksONr4=;
- b=RezH2wKF5heoDQ+aPno6XSCz48OkfQnVTQosig/9RbUvnjWv7KLsmAmq
- mn4yiycK3KwYGxZaa0flozUvP7D2blHWxjo8V8GUOu2xOxTwh8jWoq0oz
- L8TaZ1aSf/8jIvs2zaS49eyyqkiiI+CW6WJT91r/+MqwopxDzFkh6cWzH
- wF/v4Y1WZXjrYZaALquu1h22Q9hg3NyMUUxRniyhwibuU2BlIk8Z6pfi5
- EhMd8jrTitDWaWHdGatvTCpp2Yk6jBwehuWf+oKX4FYb2R/FRChS7kMEo
- Ywq1OtUas9E7tBe7wl5MYmEziaDSiBm/8YM7qBfnVwyBwEj3xl919bKMR w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3802824"
+ bh=cmbU3tDF03XHOgSHO4OovN27gl27DdI5rmRqf4cj0uY=;
+ b=HGHAVjyjUwRKb6os6KbJykpPAr1uHbvZgnjoxm6JrvHcPeSEVaoOWkYT
+ BQiUxaGZZDgzxX4IAiEFVKtRO0ZBnj40NVpvjsmyWTrFHu437a6Sh59GB
+ Zw6D7w3Wusjc31sHV5y1jrjqKMBvq19aC3Dtl/EhL8ZeXIDzA7OScQjeK
+ UcmXtUwF1kHFfe7R/4y0+2lleNA3CaqkWJ3l16BjaH7XpoVBJqow4Htss
+ u0doqsZsxSQPR70vxD9ATX+/nSTueCy5rR/+No8pDByn7zg7P4ntR2vO2
+ QlTySOibeG+T14+2vAehmycKg7M8hI6yqTcssx3T+Lgkp07XHs7MIn+Ge g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3802844"
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="3802824"
+   d="scan'208";a="3802844"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 22:40:58 -0800
+ 28 Feb 2024 22:41:04 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="8075569"
+   d="scan'208";a="8075600"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa007.jf.intel.com with ESMTP; 28 Feb 2024 22:40:52 -0800
+ by orviesa007.jf.intel.com with ESMTP; 28 Feb 2024 22:40:58 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -58,9 +58,10 @@ Cc: kvm@vger.kernel.org, qemu-devel@nongnu.org,
  Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>, xiaoyao.li@intel.com
-Subject: [PATCH v5 31/65] i386/tdx: Implement user specified tsc frequency
-Date: Thu, 29 Feb 2024 01:36:52 -0500
-Message-Id: <20240229063726.610065-32-xiaoyao.li@intel.com>
+Subject: [PATCH v5 32/65] i386/tdx: Set kvm_readonly_mem_enabled to false for
+ TDX VM
+Date: Thu, 29 Feb 2024 01:36:53 -0500
+Message-Id: <20240229063726.610065-33-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240229063726.610065-1-xiaoyao.li@intel.com>
 References: <20240229063726.610065-1-xiaoyao.li@intel.com>
@@ -91,89 +92,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reuse "-cpu,tsc-frequency=" to get user wanted tsc frequency and call VM
-scope VM_SET_TSC_KHZ to set the tsc frequency of TD before KVM_TDX_INIT_VM.
+TDX only supports readonly for shared memory but not for private memory.
 
-Besides, sanity check the tsc frequency to be in the legal range and
-legal granularity (required by TDX module).
+In the view of QEMU, it has no idea whether a memslot is used as shared
+memory of private. Thus just mark kvm_readonly_mem_enabled to false to
+TDX VM for simplicity.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
-Changes in v3:
-- use @errp to report error info; (Daniel)
+ target/i386/kvm/tdx.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-Changes in v1:
-- Use VM scope VM_SET_TSC_KHZ to set the TSC frequency of TD since KVM
-  side drop the @tsc_khz field in struct kvm_tdx_init_vm
----
- target/i386/kvm/kvm.c |  9 +++++++++
- target/i386/kvm/tdx.c | 25 +++++++++++++++++++++++++
- 2 files changed, 34 insertions(+)
-
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 1664ac49005e..4f998b2d6d37 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -793,6 +793,15 @@ static int kvm_arch_set_tsc_khz(CPUState *cs)
-     int r, cur_freq;
-     bool set_ioctl = false;
- 
-+    /*
-+     * TSC of TD vcpu is immutable, it cannot be set/changed via vcpu scope
-+     * VM_SET_TSC_KHZ, but only be initialized via VM scope VM_SET_TSC_KHZ
-+     * before ioctl KVM_TDX_INIT_VM in tdx_pre_create_vcpu()
-+     */
-+    if (is_tdx_vm()) {
-+        return 0;
-+    }
-+
-     if (!env->tsc_khz) {
-         return 0;
-     }
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 4ce2f1d082ce..42dbb5ce5c15 100644
+index 42dbb5ce5c15..13f069171db7 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -33,6 +33,9 @@
-                                      (1U << KVM_FEATURE_PV_SCHED_YIELD) | \
-                                      (1U << KVM_FEATURE_MSI_EXT_DEST_ID))
+@@ -480,6 +480,15 @@ static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
  
-+#define TDX_MIN_TSC_FREQUENCY_KHZ   (100 * 1000)
-+#define TDX_MAX_TSC_FREQUENCY_KHZ   (10 * 1000 * 1000)
-+
- #define TDX_TD_ATTRIBUTES_DEBUG             BIT_ULL(0)
- #define TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE   BIT_ULL(28)
- #define TDX_TD_ATTRIBUTES_PKS               BIT_ULL(30)
-@@ -568,6 +571,28 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
-         return r;
-     }
+     update_tdx_cpuid_lookup_by_tdx_caps();
  
-+    if (env->tsc_khz && (env->tsc_khz < TDX_MIN_TSC_FREQUENCY_KHZ ||
-+                         env->tsc_khz > TDX_MAX_TSC_FREQUENCY_KHZ)) {
-+        error_setg(errp, "Invalid TSC %ld KHz, must specify cpu_frequency between [%d, %d] kHz",
-+                   env->tsc_khz, TDX_MIN_TSC_FREQUENCY_KHZ,
-+                   TDX_MAX_TSC_FREQUENCY_KHZ);
-+       return -EINVAL;
-+    }
++    /*
++     * Set kvm_readonly_mem_allowed to false, because TDX only supports readonly
++     * memory for shared memory but not for private memory. Besides, whether a
++     * memslot is private or shared is not determined by QEMU.
++     *
++     * Thus, just mark readonly memory not supported for simplicity.
++     */
++    kvm_readonly_mem_allowed = false;
 +
-+    if (env->tsc_khz % (25 * 1000)) {
-+        error_setg(errp, "Invalid TSC %ld KHz, it must be multiple of 25MHz",
-+                   env->tsc_khz);
-+        return -EINVAL;
-+    }
-+
-+    /* it's safe even env->tsc_khz is 0. KVM uses host's tsc_khz in this case */
-+    r = kvm_vm_ioctl(kvm_state, KVM_SET_TSC_KHZ, env->tsc_khz);
-+    if (r < 0) {
-+        error_setg_errno(errp, -r, "Unable to set TSC frequency to %" PRId64 " kHz",
-+                         env->tsc_khz);
-+        return r;
-+    }
-+
-     r = setup_td_guest_attributes(x86cpu, errp);
-     if (r) {
-         return r;
+     tdx_guest = tdx;
+     return 0;
+ }
 -- 
 2.34.1
 
