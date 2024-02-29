@@ -2,84 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43DD986CA13
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 14:20:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02B1E86CA25
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 14:21:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfgKF-00080a-35; Thu, 29 Feb 2024 08:19:51 -0500
+	id 1rfgM4-0003YB-W5; Thu, 29 Feb 2024 08:21:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rfgKA-0007n5-E5
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 08:19:46 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rfgM2-0003XV-D2
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 08:21:42 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rfgK8-0003sf-Rk
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 08:19:46 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rfgM0-0005b0-MT
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 08:21:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709212783;
+ s=mimecast20190719; t=1709212899;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ssIXCiserhh12U3YQRkgkmm7nsk0ru8FAkooW4NhTbY=;
- b=CnyaOgLqsTAdvahUaKK2gtzDFKki3Wdpa3xwir6PfkbzfM7GjLyZ83Gaf20ZzdZh0nWnPH
- 5XK/eM2WkYv2bOG/v8vbEBUUZjyuKaKk0CtXcweUjhU6H+UTsWuBVkrq2/Vsz152I8xKv3
- 3BfM58wKZ4cooKLZy2ruTgshsBqZ3+g=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=gedKdLjhxVvE3xMS/sfaGT2d4T1f6XjrrzUE4XtN2nU=;
+ b=eKDA18H5OGgvGNVGbatq8ddDV6TdMVeAcxAGbOpKykLkRjadiMuDT7sbDLfW1WuW15TuOJ
+ Zf1BvSDUURAdBJJBH7Z5zwr59KOVzS3nFIW/T2rxtqwnbWHd02XR/L7+uU4fopPlDf4ljC
+ 4foy9xtH3v6i3LPDczofaKlYat14DDY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-269-_qgQN6I8P7qGkGr5V_332Q-1; Thu, 29 Feb 2024 08:19:42 -0500
-X-MC-Unique: _qgQN6I8P7qGkGr5V_332Q-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-68facaf1c37so9224746d6.2
- for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 05:19:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709212782; x=1709817582;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ssIXCiserhh12U3YQRkgkmm7nsk0ru8FAkooW4NhTbY=;
- b=hibGHs1SQ+j7eLlv2uygimHXa9haZFP8dzrvE0a8KhAcoW8rTP/HacLLa7R9fCg0Oj
- vuezNbae1Xz6+CyTyxuobjULVU6L4omP0xkZ9Ns6Q+zAn5zRggzszDrGt8PgPtR7qGAO
- FLnWIcWdZ2RZjKrdn1rrYgGggIihIeQkbhhmSX6fEBTM7a9wXjTeBVY4C9HYWOS2+UZT
- rLU7upNlidFSmknorLmaQWQvOQcj85MblhP+crRDPB0Qq573Gtksv1yZNH7f5j7jr9Bg
- hMULSAq/z/uPd3Jf9ZDaMy5al+mTU0h9sBIJD1oO5GWRqC7dxtb0lAo3D63Nud3ZWk0Z
- FsZw==
-X-Gm-Message-State: AOJu0YwbHePDvFugif/xilwh6hZew72vGiyWTItzyf8h9fpHUgihwsGL
- 966BHmO1VN1aXcZuAcntt8gYoJg7gXV4A80rbpImJeUQczrWDEUhwJxO8kQQWRK9xoKrNFHfAQi
- lc1hlTSX5A5mRw4MzpEC8Vv0bPW42Lwrrrh4TOxhSZL4JlgvVve+H
-X-Received: by 2002:a0c:cd8d:0:b0:68f:da2d:c1db with SMTP id
- v13-20020a0ccd8d000000b0068fda2dc1dbmr2341155qvm.34.1709212781729; 
- Thu, 29 Feb 2024 05:19:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH6Ys9LmA59qWSnCw8Rfys3eerVaRPGbh8RaRswmPw4QwHRye2UPDemV91IF5p7H+2B4dxHLQ==
-X-Received: by 2002:a0c:cd8d:0:b0:68f:da2d:c1db with SMTP id
- v13-20020a0ccd8d000000b0068fda2dc1dbmr2341134qvm.34.1709212781373; 
- Thu, 29 Feb 2024 05:19:41 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- op8-20020a056214458800b0068fc5887c9fsm721330qvb.97.2024.02.29.05.19.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 Feb 2024 05:19:41 -0800 (PST)
-Message-ID: <c463493e-10a5-463a-afe8-af8ee4165a5b@redhat.com>
-Date: Thu, 29 Feb 2024 14:19:38 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/21] migration: Add documentation for SaveVMHandlers
-Content-Language: en-US, fr
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
+ us-mta-349-MGKYKFexMMi3yf9M3RGZXA-1; Thu, 29 Feb 2024 08:21:32 -0500
+X-MC-Unique: MGKYKFexMMi3yf9M3RGZXA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B4DFB800074;
+ Thu, 29 Feb 2024 13:21:31 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.4])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 70F652015B7C;
+ Thu, 29 Feb 2024 13:21:31 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 4264221E6740; Thu, 29 Feb 2024 14:21:30 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,  =?utf-8?Q?C?=
+ =?utf-8?Q?=C3=A9dric?= Le
+ Goater <clg@redhat.com>,  qemu-devel@nongnu.org,  Peter Xu
+ <peterx@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Alex Williamson
+ <alex.williamson@redhat.com>,  Avihai Horon <avihaih@nvidia.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Nicholas
+ Piggin
+ <npiggin@gmail.com>,  Harsh Prateek Bora <harshpb@linux.ibm.com>,  Halil
+ Pasic <pasic@linux.ibm.com>,  Eric Blake <eblake@redhat.com>,  John Snow
+ <jsnow@redhat.com>,  Stefan Hajnoczi <stefanha@redhat.com>
+Subject: Re: [PATCH v2 06/21] migration: Add Error** argument to
+ .save_setup() handler
+In-Reply-To: <bea4ca16-a2ea-4a06-bb8d-27b485d63cc1@redhat.com> (Thomas Huth's
+ message of "Thu, 29 Feb 2024 11:35:44 +0100")
 References: <20240227180345.548960-1-clg@redhat.com>
- <20240227180345.548960-4-clg@redhat.com> <ZeADuRyAj0OBprh0@x1n>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <ZeADuRyAj0OBprh0@x1n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ <20240227180345.548960-7-clg@redhat.com> <87zfvj3hnd.fsf@pond.sub.org>
+ <86d70a2e-7250-440b-bcd6-7877fe3b3dba@yandex-team.ru>
+ <bea4ca16-a2ea-4a06-bb8d-27b485d63cc1@redhat.com>
+Date: Thu, 29 Feb 2024 14:21:30 +0100
+Message-ID: <875xy7xv6t.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -103,22 +94,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/29/24 05:10, Peter Xu wrote:
-> On Tue, Feb 27, 2024 at 07:03:27PM +0100, Cédric Le Goater wrote:
->> The SaveVMHandlers structure is still in use for complex subsystems
->> and devices. Document the handlers since we are going to modify a few
->> later.
+Thomas Huth <thuth@redhat.com> writes:
+
+> On 29/02/2024 08.20, Vladimir Sementsov-Ogievskiy wrote:
+>> On 29.02.24 09:32, Markus Armbruster wrote:
+
+[...]
+
+>>> Anti-pattern: fail without setting an error.=C2=A0 There might be more
+>>> elsewhere in the series.
+>>>
+>>> qapi/error.h's big comment:
+>>>
+>>> =C2=A0 * - On success, the function should not touch *errp.=C2=A0 On fa=
+ilure, it
+>>> =C2=A0 *=C2=A0=C2=A0 should set a new error, e.g. with error_setg(errp,=
+ ...), or
+>>> =C2=A0 *=C2=A0=C2=A0 propagate an existing one, e.g. with error_propaga=
+te(errp, ...).
+>>> =C2=A0 *
+>>> =C2=A0 * - Whenever practical, also return a value that indicates succe=
+ss /
+>>> =C2=A0 *=C2=A0=C2=A0 failure.=C2=A0 This can make the error checking mo=
+re concise, and can
+>>> =C2=A0 *=C2=A0=C2=A0 avoid useless error object creation and destructio=
+n.=C2=A0 Note that
+>>> =C2=A0 *=C2=A0=C2=A0 we still have many functions returning void.=C2=A0=
+ We recommend
+>>> =C2=A0 *=C2=A0=C2=A0 =E2=80=A2 bool-valued functions return true on suc=
+cess / false on failure,
+>>> =C2=A0 *=C2=A0=C2=A0 =E2=80=A2 pointer-valued functions return non-null=
+ / null pointer, and
+>>> =C2=A0 *=C2=A0=C2=A0 =E2=80=A2 integer-valued functions return non-nega=
+tive / negative.
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qemu_put_be64(f, STATTR_FLAG=
+_EOS);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 0;
+>>> =C2=A0=C2=A0=C2=A0 }
+>>>
+>>> When adding Error **errp to a function, you must also add code to set an
+>>> error on failure to every failure path.=C2=A0 Adding it in a later patc=
+h in
+>>> the same series can be okay,
 >>
->> Signed-off-by: Cédric Le Goater <clg@redhat.com>
-> 
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> 
-> Still a few nitpick comments below.
+>> Personally, I'd prefer not doing so. Creating wrong commits and fixing t=
+hem in same series - better to merge all fixes into bad commit:)
+>
+> I agree - that might create issues with bisecting later. Please fix it in=
+ this patch here already!
 
-I have applied your suggestions for the next spin.
+Depends on the wrongness, really.
 
-Thanks,
+We don't want broken intermediate states, no argument.
 
-C.
+But intermediate states that are merely unclean can be acceptable.
+
+For instance, my commit a30ecde6e79 (net: Permit incremental conversion
+of init functions to Error) added such Error ** parameters to a somewhat
+tangled nest of functions, along with FIXME comments where errors
+weren't set.  The next few commits fixed most, but not all of them.
+Later commits fixed some more.  The one in tap-win32.c is still there
+today.
+
+This was acceptable, because it improved things from "bad error
+reporting" to "okay error reporting in most cases, unclean and bad error
+reporting in a few cases marked FIXME", with "a few" over time going
+down to the one I can't test, and nobody else seems to care about.
 
 
