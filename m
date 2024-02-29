@@ -2,53 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B61186C2FA
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 09:02:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 539D686C44B
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 09:55:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfbM5-00024b-8W; Thu, 29 Feb 2024 03:01:25 -0500
+	id 1rfcC5-0004GK-Kz; Thu, 29 Feb 2024 03:55:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1rfbLX-0001kj-Dy; Thu, 29 Feb 2024 03:00:51 -0500
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX02.aspeed.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_CBC_SHA1:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1rfbLU-00033a-Q7; Thu, 29 Feb 2024 03:00:51 -0500
-Received: from TWMBX02.aspeed.com (192.168.0.25) by TWMBX02.aspeed.com
- (192.168.0.25) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 29 Feb
- 2024 16:00:19 +0800
-Received: from localhost.localdomain (192.168.10.10) by TWMBX02.aspeed.com
- (192.168.0.24) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 29 Feb 2024 16:00:19 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, Alistair Francis <alistair@alistair23.me>,
- "open list:ASPEED BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC
- here" <qemu-devel@nongnu.org>
-CC: <troy_lee@aspeedtech.com>, <jamin_lin@aspeedtech.com>,
- <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v1 8/8] aspeed: Add an AST2700 eval board
-Date: Thu, 29 Feb 2024 16:00:14 +0800
-Message-ID: <20240229080014.1235018-9-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240229080014.1235018-1-jamin_lin@aspeedtech.com>
-References: <20240229080014.1235018-1-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rfcC4-0004Fu-1h
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 03:55:08 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rfcBy-0000ul-ES
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 03:55:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709196901;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ resent-to:resent-from:resent-message-id:in-reply-to:in-reply-to:
+ references:references; bh=YjLQuBE8VjLTG15gnUduGLzgQ7fKqrsO+ViK7/wp2qU=;
+ b=cU2Y+vn2Tu27TlC37wxUt8pxMQid2BYKmqW4oeaL44phg/NkbslFfd0amVpmQ6KmkpLPbJ
+ wpiqe7J0b9IgfO4vecL0uW1d/tP68VHETxyv9K2bi6totpcdowqycKwOW5/Nje1rEUJ2wm
+ VdP+CR4FDSV14FsgmEeTRo5lOgTpklA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-596-BH8tX2uONB-YXM_sbWV4-Q-1; Thu, 29 Feb 2024 03:54:57 -0500
+X-MC-Unique: BH8tX2uONB-YXM_sbWV4-Q-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6D63287B2A0;
+ Thu, 29 Feb 2024 08:54:56 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.4])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 48497492BC6;
+ Thu, 29 Feb 2024 08:54:56 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 4F4D321E6740; Thu, 29 Feb 2024 09:54:55 +0100 (CET)
+Resent-To: michael.roth@amd.com, isaku.yamahata@gmail.com,
+ marcel.apfelbaum@gmail.com, eduardo@habkost.net, wangyanan55@huawei.com,
+ chenyi.qiang@intel.com, xiaoyao.li@intel.com, philmd@linaro.org,
+ richard.henderson@linaro.org, qemu-devel@nongnu.org, cfontana@suse.de,
+ kvm@vger.kernel.org
+Resent-From: Markus Armbruster <armbru@redhat.com>
+Resent-Date: Thu, 29 Feb 2024 09:54:55 +0100
+Resent-Message-ID: <87plwfzm3k.fsf@pond.sub.org>
+From: Markus Armbruster <armbru@redhat.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,  David Hildenbrand
+ <david@redhat.com>,  Igor Mammedov <imammedo@redhat.com>,  Eduardo Habkost
+ <eduardo@habkost.net>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Yanan Wang
+ <wangyanan55@huawei.com>,  "Michael S. Tsirkin" <mst@redhat.com>,  Richard
+ Henderson <richard.henderson@linaro.org>,  Ani Sinha
+ <anisinha@redhat.com>,  Peter Xu <peterx@redhat.com>,  Cornelia Huck
+ <cohuck@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Eric
+ Blake <eblake@redhat.com>,  Marcelo Tosatti <mtosatti@redhat.com>,
+ kvm@vger.kernel.org,  qemu-devel@nongnu.org,  Michael Roth
+ <michael.roth@amd.com>,  Claudio Fontana <cfontana@suse.de>,  Gerd
+ Hoffmann <kraxel@redhat.com>,  Isaku Yamahata <isaku.yamahata@gmail.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>
+Subject: Re: [PATCH v5 12/65] i386: Introduce tdx-guest object
+In-Reply-To: <20240229063726.610065-13-xiaoyao.li@intel.com> (Xiaoyao Li's
+ message of "Thu, 29 Feb 2024 01:36:33 -0500")
+References: <20240229063726.610065-1-xiaoyao.li@intel.com>
+ <20240229063726.610065-13-xiaoyao.li@intel.com>
+Date: Thu, 29 Feb 2024 09:19:55 +0100
+Message-ID: <87msrj1y38.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Received-SPF: Fail (TWMBX02.aspeed.com: domain of jamin_lin@aspeedtech.com
- does not designate 192.168.10.10 as permitted sender)
- receiver=TWMBX02.aspeed.com; client-ip=192.168.10.10;
- helo=localhost.localdomain;
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX02.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_FAIL=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Lines: 18
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.102,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,86 +100,26 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-AST2700 CPU is ARM Cortex-A35 which is 64 bits.
-Add TARGET_AARCH64 to build this machine.
+Xiaoyao Li <xiaoyao.li@intel.com> writes:
 
-According to the design of ast2700, it has a bootmcu(riscv-32) which
-is used for executing SPL.
-Then, CPUs(cortex-a35) execute u-boot, kernel and rofs.
+> Introduce tdx-guest object which inherits CONFIDENTIAL_GUEST_SUPPORT,
+> and will be used to create TDX VMs (TDs) by
+>
+>   qemu -machine ...,confidential-guest-support=tdx0	\
+>        -object tdx-guest,id=tdx0
+>
+> So far, it has no QAPI member/properety decleared and only one internal
+> member 'attributes' with fixed value 0 that not configurable.
+>
+> QAPI properties will be added later.
+>
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+> Acked-by: Markus Armbruster <armbru@redhat.com>
 
-Currently, qemu not support emulate two CPU architectures
-at the same machine. Therefore, qemu will only support
-to emulate CPU(cortex-a35) side for ast2700
-
-Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
----
- hw/arm/aspeed.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
-
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 8854581ca8..4544026d14 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -178,6 +178,12 @@ struct AspeedMachineState {
- #define AST2600_EVB_HW_STRAP1 0x000000C0
- #define AST2600_EVB_HW_STRAP2 0x00000003
- 
-+#ifdef TARGET_AARCH64
-+/* AST2700 evb hardware value */
-+#define AST2700_EVB_HW_STRAP1 0x000000C0
-+#define AST2700_EVB_HW_STRAP2 0x00000003
-+#endif
-+
- /* Tacoma hardware value */
- #define TACOMA_BMC_HW_STRAP1  0x00000000
- #define TACOMA_BMC_HW_STRAP2  0x00000040
-@@ -1588,6 +1594,26 @@ static void aspeed_minibmc_machine_ast1030_evb_class_init(ObjectClass *oc,
-     aspeed_machine_class_init_cpus_defaults(mc);
- }
- 
-+#ifdef TARGET_AARCH64
-+static void aspeed_machine_ast2700_evb_class_init(ObjectClass *oc, void *data)
-+{
-+    MachineClass *mc = MACHINE_CLASS(oc);
-+    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
-+
-+    mc->desc = "Aspeed AST2700 EVB (Cortex-A35)";
-+    amc->soc_name  = "ast2700-a0";
-+    amc->hw_strap1 = AST2700_EVB_HW_STRAP1;
-+    amc->hw_strap2 = AST2700_EVB_HW_STRAP2;
-+    amc->fmc_model = "w25q01jvq";
-+    amc->spi_model = "w25q512jv";
-+    amc->num_cs    = 2;
-+    amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON | ASPEED_MAC2_ON;
-+    amc->uart_default = ASPEED_DEV_UART12;
-+    mc->default_ram_size = 1 * GiB;
-+    aspeed_machine_class_init_cpus_defaults(mc);
-+}
-+#endif
-+
- static void aspeed_machine_qcom_dc_scm_v1_class_init(ObjectClass *oc,
-                                                      void *data)
- {
-@@ -1711,6 +1737,12 @@ static const TypeInfo aspeed_machine_types[] = {
-         .name           = MACHINE_TYPE_NAME("ast1030-evb"),
-         .parent         = TYPE_ASPEED_MACHINE,
-         .class_init     = aspeed_minibmc_machine_ast1030_evb_class_init,
-+#ifdef TARGET_AARCH64
-+    }, {
-+        .name          = MACHINE_TYPE_NAME("ast2700-evb"),
-+        .parent        = TYPE_ASPEED_MACHINE,
-+        .class_init    = aspeed_machine_ast2700_evb_class_init,
-+#endif
-     }, {
-         .name          = TYPE_ASPEED_MACHINE,
-         .parent        = TYPE_MACHINE,
--- 
-2.25.1
+I'm happy with the commit message now.  Thanks!
 
 
