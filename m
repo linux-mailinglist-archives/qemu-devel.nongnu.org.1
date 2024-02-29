@@ -2,59 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2D0386CB96
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 15:29:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1938D86CB7B
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 15:27:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfhMP-0006W8-SQ; Thu, 29 Feb 2024 09:26:09 -0500
+	id 1rfhMr-00079w-7w; Thu, 29 Feb 2024 09:26:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfhMM-0006TO-QC; Thu, 29 Feb 2024 09:26:06 -0500
+ id 1rfhMj-00074I-KJ; Thu, 29 Feb 2024 09:26:29 -0500
 Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfhML-0005c2-1R; Thu, 29 Feb 2024 09:26:06 -0500
+ id 1rfhMh-0005cJ-UT; Thu, 29 Feb 2024 09:26:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709216765; x=1740752765;
+ t=1709216788; x=1740752788;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=kNODUsMzllw9MObKDaUkVo9ZpXJ/rC/x12S70m6gtbA=;
- b=BqTTSnQw5HX86aSX+pHqghaK2hQM8B6Dm6oMLqOLPwtVwOI8r0bxB/Oo
- VGSyB9nmaA0mEZW6Zv9bJbIiK4+8Gs6EO6/r1vIQSpw/YGi2bGCgk5RDp
- ftuzw0x5UmbnjA/d8qk/NaXbUG6lzScLU4gyHkVY79oyt6idkQTQNn8sw
- AwLVk+NfFZ3ofFKZCCNrd4TsXMHKqiWDbsKknoprpXQgzMVpyLlypfXyL
- pXbWyGyff2P9Nv8J+8T7Fm7MANijVwErSvLyHYyNCqirAom/ZZ7q5d2Y7
- DZlBnIvIb5I3eeQvNbnKaCRx7aY3prd69XkQ96PWnP+J/ODmsEw6+2p7a Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="14322821"
-X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; d="scan'208";a="14322821"
+ bh=IGkhbFpn/c+13m0fNpAXvTFF2XOHAXW1Bu+Nbsc9m2M=;
+ b=m5pYWLhquiamzvuBrHCUVqN5e/wPEwPtzXSCHxLaZhieQBjVl06KIYsO
+ CffrXrnqOMAnsbzh2BK9NC8ksAmxQrkh6PAaD5rJ4qCtQZriOGT1Iqz1U
+ iSc5guqX4PZSN5v2j1DAIc8TnT6FqSs/eYSH5KRvKUqepkLGZMcsp0gKj
+ GEOWSyxNW4oX1HQRT9w89uEut0SV37igrLuZ92FIGfyA1ICWUeN7dTnSg
+ mmsnTJvSkN3jmIsu9jRuszet9AtC4YfksPSnvk9sMYnoQTPJgVkyxM5F8
+ JuaMnabjmXPieAImxD+cQmgV8XbYYZE6wRt/sVfPVlQpkqGEnv4aRkvd+ g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="14322828"
+X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; d="scan'208";a="14322828"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Feb 2024 06:26:02 -0800
+ 29 Feb 2024 06:26:05 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="7793865"
+   d="scan'208";a="7793872"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa010.fm.intel.com with ESMTP; 29 Feb 2024 06:26:00 -0800
+ by fmviesa010.fm.intel.com with ESMTP; 29 Feb 2024 06:26:03 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH 11/17] hw/vfio/platform: Fix missing ERRP_GUARD() for
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH 12/17] hw/virtio/vhost-vsock: Fix missing ERRP_GUARD() for
  error_prepend()
-Date: Thu, 29 Feb 2024 22:39:08 +0800
-Message-Id: <20240229143914.1977550-12-zhao1.liu@linux.intel.com>
+Date: Thu, 29 Feb 2024 22:39:09 +0800
+Message-Id: <20240229143914.1977550-13-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240229143914.1977550-1-zhao1.liu@linux.intel.com>
 References: <20240229143914.1977550-1-zhao1.liu@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=192.198.163.11;
  envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
@@ -100,9 +98,10 @@ ERRP_GUARD() could avoid the case when @errp is the pointer of
 error_fatal, the user can't see this additional information, because
 exit() happens in error_setg earlier than information is added [1].
 
-The vfio_platform_realize() passes @errp to error_prepend(), and as a
-DeviceClass.realize method, its @errp is so widely sourced that it is
-necessary to protect it with ERRP_GUARD().
+The vhost_vsock_device_realize() passes @errp to error_prepend(), and as
+a VirtioDeviceClass.realize method, its @errp is from
+DeviceClass.realize so that there is no guarantee that the @errp won't
+point to @error_fatal.
 
 To avoid the issue like [1] said, add missing ERRP_GUARD() at the
 beginning of this function.
@@ -110,25 +109,24 @@ beginning of this function.
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
 
-Cc: Alex Williamson <alex.williamson@redhat.com>
-Cc: "Cédric Le Goater" <clg@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/vfio/platform.c | 1 +
+ hw/virtio/vhost-vsock.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
-index a8d9b7da633e..dcd2365fb353 100644
---- a/hw/vfio/platform.c
-+++ b/hw/vfio/platform.c
-@@ -576,6 +576,7 @@ static int vfio_base_device_init(VFIODevice *vbasedev, Error **errp)
-  */
- static void vfio_platform_realize(DeviceState *dev, Error **errp)
+diff --git a/hw/virtio/vhost-vsock.c b/hw/virtio/vhost-vsock.c
+index d5ca0b5a1055..3d4a5a97f484 100644
+--- a/hw/virtio/vhost-vsock.c
++++ b/hw/virtio/vhost-vsock.c
+@@ -121,6 +121,7 @@ static const VMStateDescription vmstate_virtio_vhost_vsock = {
+ 
+ static void vhost_vsock_device_realize(DeviceState *dev, Error **errp)
  {
 +    ERRP_GUARD();
-     VFIOPlatformDevice *vdev = VFIO_PLATFORM_DEVICE(dev);
-     SysBusDevice *sbdev = SYS_BUS_DEVICE(dev);
-     VFIODevice *vbasedev = &vdev->vbasedev;
+     VHostVSockCommon *vvc = VHOST_VSOCK_COMMON(dev);
+     VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+     VHostVSock *vsock = VHOST_VSOCK(dev);
 -- 
 2.34.1
 
