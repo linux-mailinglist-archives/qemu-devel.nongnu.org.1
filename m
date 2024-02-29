@@ -2,88 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15CA486CD21
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 16:35:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED64686CD53
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 16:45:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfiQd-00029X-Ca; Thu, 29 Feb 2024 10:34:35 -0500
+	id 1rfiam-0006tu-0v; Thu, 29 Feb 2024 10:45:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rfiQM-0001us-FU
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 10:34:18 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rfiQ1-0006o5-Df
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 10:33:59 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-412a14299a4so8100925e9.1
- for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 07:33:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709220836; x=1709825636; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=RaYHN89FLqaB2XgfxZpmq7YKqG6dfOIjv3vq0ydw7O0=;
- b=s0HEFjY+T3CCGh6ZJGeY1ZboiC2TFcMjaYcwd/CadMEZuZkU3Td8GuNEMRSvw+RdF4
- MODtHl5kdf91RpIVatCVqVlm1q7QL6QzzP+i4LL3ujkcnFyTaibpO9CNZ4tf8Q8+cqgZ
- T3ODQZseZeLg4jGoup8WUFwKD9m5jDXdzOQOWCWlnVnltxQCEMR36CLsEHRk1Va0ZVM0
- SVbfq99uXqmYT1IDZnKTrICLlt7++iIgGsu/aMPKQS5H6IuwxV+wT7VW3i4wHufMAQKm
- EHUuTcWah+vsOc+eS/81q7vzy4pIaMAxX5T8zJUlit+FEBBnIJLTpGX39Ob8/Fl+Ctus
- qvMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709220836; x=1709825636;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=RaYHN89FLqaB2XgfxZpmq7YKqG6dfOIjv3vq0ydw7O0=;
- b=PUGIb0Ni2B652zlnwgVe2CSDGQ8aYw+2DUV+YRYnsFrnXQoPTIuhCrhD2tSki0Uoa6
- nBTVNO05l1L20W9bg7gzVpJmLPnHtHr1NyCu8XfLL08W8OjbjuA017vA4M+Nhkdzd8w2
- jmM5aWt/d80Z9lB6xlJjBkTywVAGwCCHXy1f2BC+f+ua6DHUaBRdOQp5MllWvNeHwGnC
- UrY7AqE8vPKPi1UE1q//aUTRyM1UhyVGW55zZ3AYgBXRlEHpFyc7YaSrsHSbURAtliGN
- XyexBaisbzu/RIhwupYGqz2R9lcja/giAE34W32Pa1oRbq9v0wJ/+jctXz7lYTx3uGiY
- wrCw==
-X-Gm-Message-State: AOJu0Yxr+RiXP+c8e84BCQF9xbS0qCybptEsQDHBe6ADGy48LkIrGKJe
- iYuyWnHCeXS7bCqlQ3elVttLt5vgIB7a9iy/a+XfQ9Pow1KCu8qJaNZH3REVAi/fgrtVNWc9+wM
- w
-X-Google-Smtp-Source: AGHT+IH30/kcl1vGFcNlhTWz4PsgyvtKVPcK9w1iMbJ/iLzsWhy7YMqkNxqRjgAgUbUdKr1hUZwW+w==
-X-Received: by 2002:a05:600c:4fd3:b0:412:c1e5:a353 with SMTP id
- o19-20020a05600c4fd300b00412c1e5a353mr850977wmq.12.1709220835836; 
- Thu, 29 Feb 2024 07:33:55 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- jp16-20020a05600c559000b00412a482cd90sm2351424wmb.25.2024.02.29.07.33.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 29 Feb 2024 07:33:55 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 296E25F78A;
- Thu, 29 Feb 2024 15:33:55 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Nicolas Eder <nicolas.eder@lauterbach.com>
-Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, "Christian Boenig" <christian.boenig@lauterbach.com>
-Subject: Re: [PATCH v5 02/18] gdbstub: hex conversion functions moved to
- cutils.h
-In-Reply-To: <20231220162555.19545-3-nicolas.eder@lauterbach.com> (Nicolas
- Eder's message of "Wed, 20 Dec 2023 17:25:39 +0100")
-References: <20231220162555.19545-1-nicolas.eder@lauterbach.com>
- <20231220162555.19545-3-nicolas.eder@lauterbach.com>
-User-Agent: mu4e 1.12.0; emacs 29.1
-Date: Thu, 29 Feb 2024 15:33:55 +0000
-Message-ID: <878r338eu4.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1rfiaj-0006tD-Iq
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 10:45:01 -0500
+Received: from vps-vb.mhejs.net ([37.28.154.113])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1rfiah-00028Z-TG
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 10:45:01 -0500
+Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
+ (envelope-from <mail@maciej.szmigiero.name>)
+ id 1rfiaU-0005pd-4A; Thu, 29 Feb 2024 16:44:46 +0100
+Message-ID: <9e9472b0-e518-4ae0-9a69-ebfcd193a1ff@maciej.szmigiero.name>
+Date: Thu, 29 Feb 2024 16:44:40 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] vmbus: Print a warning when enabled without the
+ recommended set of features
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>, kvm@vger.kernel.org,
+ qemu-devel@nongnu.org
+References: <e2d961d56d795fe42ea54f1272c7157e40aeae1e.1706198618.git.maciej.szmigiero@oracle.com>
+Content-Language: en-US, pl-PL
+In-Reply-To: <e2d961d56d795fe42ea54f1272c7157e40aeae1e.1706198618.git.maciej.szmigiero@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=37.28.154.113;
+ envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,11 +59,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Nicolas Eder <nicolas.eder@lauterbach.com> writes:
+On 25.01.2024 17:19, Maciej S. Szmigiero wrote:
+> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+> 
+> Some Windows versions crash at boot or fail to enable the VMBus device if
+> they don't see the expected set of Hyper-V features (enlightenments).
+> 
+> Since this provides poor user experience let's warn user if the VMBus
+> device is enabled without the recommended set of Hyper-V features.
+> 
+> The recommended set is the minimum set of Hyper-V features required to make
+> the VMBus device work properly in Windows Server versions 2016, 2019 and
+> 2022.
+> 
+> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+@Paolo, @Marcelo: can I get some kind of Ack or comments for the KVM part?
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Thanks,
+Maciej
+
 
