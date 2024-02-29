@@ -2,64 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA7A186D78D
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 00:11:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D42686D78E
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 00:11:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfpYM-0000Yl-AL; Thu, 29 Feb 2024 18:11:02 -0500
+	id 1rfpYN-0000bS-4r; Thu, 29 Feb 2024 18:11:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1rfpY1-0000VJ-Jr
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 18:10:45 -0500
+ id 1rfpY8-0000WQ-7T
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 18:10:49 -0500
 Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1rfpXl-0007xp-Kz
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 18:10:41 -0500
+ id 1rfpY5-00086J-82
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 18:10:47 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id E1992CE1B22;
- Thu, 29 Feb 2024 23:10:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DF7C433F1;
- Thu, 29 Feb 2024 23:10:17 +0000 (UTC)
+ by sin.source.kernel.org (Postfix) with ESMTP id A2BD0CE23BC;
+ Thu, 29 Feb 2024 23:10:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC7D2C433C7;
+ Thu, 29 Feb 2024 23:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1709248219;
- bh=PGsZG3sU7hajT14NZwdUpq2C3rYv9teT56gyoIJ0P3s=;
+ s=k20201202; t=1709248241;
+ bh=oEoZAeisqotVjQPUL65EOifVNk5hxGWTeNvAdCGLWTM=;
  h=Date:From:To:cc:Subject:In-Reply-To:References:From;
- b=p77jp8uduPUDTaJp2v38mcsWqHlje8fZHiub+sCfdF3kN15dy28vdCrk7uNsSiNlq
- CRZ1MIEVxT/gFrWsOAYLcp6AYcs5E4yz1bF0VxkeTZi4dPDH0IoF7xyZf45t0i6aMd
- tTAi/zdHOvs8OIRA5ArQtCAc54e0ECWijdri+rDbx6AtNJyxkvt/8ujvDMB3kUiwKX
- YuZFsk4CnTISF4nqmlUAnuoL/NmwdefePanMk63kkdJXecO4f803pLWVMyomF2Ktnq
- zOIvrChtbc3EPV6Rjy97ivHEtpUche0/Zfu1AbxWAAiZwwM2+S9xtSrYKSqJGIbChV
- ELyK/8bVMRD4g==
-Date: Thu, 29 Feb 2024 15:10:16 -0800 (PST)
+ b=m94epvHYZP8E3+3h4kqGg3IhC7/u1asLXXLtf34IVAMKXUnbrSIARvy1jkNMKUNdw
+ amkPTRK5b67sjGwTEEDHMqeP4bx4cBWgdnpO4lQfzy3/fFiMJldvnU2kPq6uVDFVeR
+ ZBiVjUa5LRXQyUHDS7deVRrAhKh2VM1QeTjkhQE/Zk4npdUZlODm8TCt72/X7g1MlM
+ oSoe3hAlUt7VsXn4nQhbmKJrmqSENbjDcpfVq5DLNV6xZhTJdfmGzjuMvw5J89wb91
+ wCEeS0j+c11UkxaoF665MoM0IWbT0Ww4iRXMUHYAJE0AD9JzUrMyz1x8dOdctKl3be
+ DSzvncnDcUqKw==
+Date: Thu, 29 Feb 2024 15:10:39 -0800 (PST)
 From: Stefano Stabellini <sstabellini@kernel.org>
 X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
 To: Vikram Garhwal <vikram.garhwal@amd.com>
 cc: qemu-devel@nongnu.org, sstabellini@kernel.org, jgross@suse.com, 
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>, 
  Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
  David Hildenbrand <david@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
-Subject: Re: [QEMU][PATCH v3 6/7] xen: add map and unmap callbacks for grant
- region
-In-Reply-To: <20240227223501.28475-7-vikram.garhwal@amd.com>
-Message-ID: <alpine.DEB.2.22.394.2402291510080.853156@ubuntu-linux-20-04-desktop>
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [QEMU][PATCH v3 5/7] memory: add MemoryRegion map and unmap
+ callbacks
+In-Reply-To: <20240227223501.28475-6-vikram.garhwal@amd.com>
+Message-ID: <alpine.DEB.2.22.394.2402291510270.853156@ubuntu-linux-20-04-desktop>
 References: <20240227223501.28475-1-vikram.garhwal@amd.com>
- <20240227223501.28475-7-vikram.garhwal@amd.com>
+ <20240227223501.28475-6-vikram.garhwal@amd.com>
 User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
  envelope-from=sstabellini@kernel.org; helo=sin.source.kernel.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.096,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,8 +77,12 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Tue, 27 Feb 2024, Vikram Garhwal wrote:
 > From: Juergen Gross <jgross@suse.com>
 > 
-> Add the callbacks for mapping/unmapping guest memory via grants to the
-> special grant memory region.
+> In order to support mapping and unmapping guest memory dynamically to
+> and from qemu during address_space_[un]map() operations add the map()
+> and unmap() callbacks to MemoryRegionOps.
+> 
+> Those will be used e.g. for Xen grant mappings when performing guest
+> I/Os.
 > 
 > Signed-off-by: Juergen Gross <jgross@suse.com>
 > Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
@@ -88,254 +91,143 @@ Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
 
 
 > ---
->  hw/xen/xen-mapcache.c | 176 +++++++++++++++++++++++++++++++++++++++++-
->  system/physmem.c      |  11 ++-
->  2 files changed, 182 insertions(+), 5 deletions(-)
+>  include/exec/memory.h | 21 ++++++++++++++++++
+>  system/physmem.c      | 50 +++++++++++++++++++++++++++++++++----------
+>  2 files changed, 60 insertions(+), 11 deletions(-)
 > 
-> diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
-> index 179b7e95b2..2e4c9b4947 100644
-> --- a/hw/xen/xen-mapcache.c
-> +++ b/hw/xen/xen-mapcache.c
-> @@ -9,6 +9,8 @@
->   */
+> diff --git a/include/exec/memory.h b/include/exec/memory.h
+> index 8626a355b3..9f7dfe59c7 100644
+> --- a/include/exec/memory.h
+> +++ b/include/exec/memory.h
+> @@ -282,6 +282,27 @@ struct MemoryRegionOps {
+>                                      unsigned size,
+>                                      MemTxAttrs attrs);
 >  
->  #include "qemu/osdep.h"
-> +#include "qemu/queue.h"
-> +#include "qemu/thread.h"
->  #include "qemu/units.h"
->  #include "qemu/error-report.h"
->  
-> @@ -23,6 +25,8 @@
->  #include "sysemu/xen-mapcache.h"
->  #include "trace.h"
->  
-> +#include <xenevtchn.h>
-> +#include <xengnttab.h>
->  
->  #if HOST_LONG_BITS == 32
->  #  define MCACHE_BUCKET_SHIFT 16
-> @@ -377,7 +381,7 @@ uint8_t *xen_map_cache(hwaddr phys_addr, hwaddr size,
->      return p;
->  }
->  
-> -ram_addr_t xen_ram_addr_from_mapcache(void *ptr)
-> +static ram_addr_t xen_ram_addr_from_mapcache_try(void *ptr)
->  {
->      MapCacheEntry *entry = NULL;
->      MapCacheRev *reventry;
-> @@ -588,10 +592,179 @@ uint8_t *xen_replace_cache_entry(hwaddr old_phys_addr,
->      return p;
->  }
->  
-> +struct XENMappedGrantRegion {
-> +    void *addr;
-> +    unsigned int pages;
-> +    unsigned int refs;
-> +    unsigned int prot;
-> +    uint32_t idx;
-> +    QLIST_ENTRY(XENMappedGrantRegion) list;
-> +};
+> +    /*
+> +     * Dynamically create mapping. @addr is the guest address to map; @plen
+> +     * is the pointer to the usable length of the buffer.
+> +     * @mr contents can be changed in case a new memory region is created for
+> +     * the mapping.
+> +     * Returns the buffer address for accessing the data.
+> +     */
+> +    void *(*map)(MemoryRegion **mr,
+> +                 hwaddr addr,
+> +                 hwaddr *plen,
+> +                 bool is_write,
+> +                 MemTxAttrs attrs);
 > +
-> +static xengnttab_handle *xen_region_gnttabdev;
-> +static QLIST_HEAD(GrantRegionList, XENMappedGrantRegion) xen_grant_mappings =
-> +    QLIST_HEAD_INITIALIZER(xen_grant_mappings);
-> +static QemuMutex xen_map_mutex;
+> +    /* Unmap an area obtained via map() before. */
+> +    void (*unmap)(MemoryRegion *mr,
+> +                  void *buffer,
+> +                  ram_addr_t addr,
+> +                  hwaddr len,
+> +                  bool is_write,
+> +                  hwaddr access_len);
 > +
-> +static void *xen_map_grant_dyn(MemoryRegion **mr, hwaddr addr, hwaddr *plen,
-> +                               bool is_write, MemTxAttrs attrs)
-> +{
-> +    unsigned int page_off = addr & (XC_PAGE_SIZE - 1);
-> +    unsigned int i;
-> +    unsigned int total_grants = 0;
-> +    unsigned int nrefs = (page_off + *plen + XC_PAGE_SIZE - 1) >> XC_PAGE_SHIFT;
-> +    uint32_t ref = (addr - XEN_GRANT_ADDR_OFF) >> XC_PAGE_SHIFT;
-> +    uint32_t *refs = NULL;
-> +    unsigned int prot = PROT_READ;
-> +    struct XENMappedGrantRegion *mgr = NULL;
-> +
-> +    if (is_write) {
-> +        prot |= PROT_WRITE;
-> +    }
-> +
-> +    qemu_mutex_lock(&xen_map_mutex);
-> +
-> +    QLIST_FOREACH(mgr, &xen_grant_mappings, list) {
-> +        if (mgr->idx == ref &&
-> +            mgr->pages == nrefs &&
-> +            (mgr->prot & prot) == prot) {
-> +            break;
-> +        }
-> +
-> +        total_grants += mgr->pages;
-> +    }
-> +
-> +    if (!mgr) {
-> +        if (nrefs + total_grants >= XEN_MAX_VIRTIO_GRANTS) {
-> +            qemu_mutex_unlock(&xen_map_mutex);
-> +            return NULL;
-> +        }
-> +
-> +        mgr = g_new(struct XENMappedGrantRegion, 1);
-> +
-> +        if (nrefs == 1) {
-> +            refs = &ref;
-> +        } else {
-> +            refs = g_new(uint32_t, nrefs);
-> +            for (i = 0; i < nrefs; i++) {
-> +                refs[i] = ref + i;
-> +            }
-> +        }
-> +        mgr->addr = xengnttab_map_domain_grant_refs(xen_region_gnttabdev, nrefs,
-> +                                                    xen_domid, refs, prot);
-> +        if (mgr->addr) {
-> +            mgr->pages = nrefs;
-> +            mgr->refs = 1;
-> +            mgr->prot = prot;
-> +            mgr->idx = ref;
-> +
-> +            QLIST_INSERT_HEAD(&xen_grant_mappings, mgr, list);
-> +        } else {
-> +            g_free(mgr);
-> +            mgr = NULL;
-> +        }
-> +    } else {
-> +        mgr->refs++;
-> +    }
-> +
-> +    qemu_mutex_unlock(&xen_map_mutex);
-> +
-> +    if (nrefs > 1) {
-> +        g_free(refs);
-> +    }
-> +
-> +    return mgr ? mgr->addr + page_off : NULL;
-> +}
-> +
-> +static void xen_unmap_grant_dyn(MemoryRegion *mr, void *buffer, ram_addr_t addr,
-> +                                hwaddr len, bool is_write, hwaddr access_len)
-> +{
-> +    unsigned int page_off = (unsigned long)buffer & (XC_PAGE_SIZE - 1);
-> +    unsigned int nrefs = (page_off + len + XC_PAGE_SIZE - 1) >> XC_PAGE_SHIFT;
-> +    unsigned int prot = PROT_READ;
-> +    struct XENMappedGrantRegion *mgr = NULL;
-> +
-> +    if (is_write) {
-> +        prot |= PROT_WRITE;
-> +    }
-> +
-> +    qemu_mutex_lock(&xen_map_mutex);
-> +
-> +    QLIST_FOREACH(mgr, &xen_grant_mappings, list) {
-> +        if (mgr->addr == buffer - page_off &&
-> +            mgr->pages == nrefs &&
-> +            (mgr->prot & prot) == prot) {
-> +            break;
-> +        }
-> +    }
-> +    if (mgr) {
-> +        mgr->refs--;
-> +        if (!mgr->refs) {
-> +            xengnttab_unmap(xen_region_gnttabdev, mgr->addr, nrefs);
-> +
-> +            QLIST_REMOVE(mgr, list);
-> +            g_free(mgr);
-> +        }
-> +    } else {
-> +        error_report("xen_unmap_grant_dyn() trying to unmap unknown buffer");
-> +    }
-> +
-> +    qemu_mutex_unlock(&xen_map_mutex);
-> +}
-> +
-> +static ram_addr_t xen_ram_addr_from_grant_cache(void *ptr)
-> +{
-> +    unsigned int page_off = (unsigned long)ptr & (XC_PAGE_SIZE - 1);
-> +    struct XENMappedGrantRegion *mgr = NULL;
-> +    ram_addr_t raddr = RAM_ADDR_INVALID;
-> +
-> +    qemu_mutex_lock(&xen_map_mutex);
-> +
-> +    QLIST_FOREACH(mgr, &xen_grant_mappings, list) {
-> +        if (mgr->addr == ptr - page_off) {
-> +            break;
-> +        }
-> +    }
-> +
-> +    if (mgr) {
-> +        raddr = (mgr->idx << XC_PAGE_SHIFT) + page_off + XEN_GRANT_ADDR_OFF;
-> +    }
-> +
-> +    qemu_mutex_unlock(&xen_map_mutex);
-> +
-> +    return raddr;
-> +}
-> +
-> +ram_addr_t xen_ram_addr_from_mapcache(void *ptr)
-> +{
-> +    ram_addr_t raddr;
-> +
-> +    raddr = xen_ram_addr_from_mapcache_try(ptr);
-> +    if (raddr == RAM_ADDR_INVALID) {
-> +        raddr = xen_ram_addr_from_grant_cache(ptr);
-> +    }
-> +
-> +    return raddr;
-> +}
-> +
-> +static const struct MemoryRegionOps xen_grant_mr_ops = {
-> +    .map = xen_map_grant_dyn,
-> +    .unmap = xen_unmap_grant_dyn,
-> +    .endianness = DEVICE_LITTLE_ENDIAN,
-> +};
-> +
->  MemoryRegion *xen_init_grant_ram(void)
->  {
->      RAMBlock *block;
->  
-> +    qemu_mutex_init(&xen_map_mutex);
-> +
-> +    xen_region_gnttabdev = xengnttab_open(NULL, 0);
-> +    if (xen_region_gnttabdev == NULL) {
-> +        fprintf(stderr, "can't open gnttab device\n");
-> +        return NULL;
-> +    }
-> +
->      memory_region_init(&ram_grants, NULL, "xen.grants",
->                         XEN_MAX_VIRTIO_GRANTS * XC_PAGE_SIZE);
->      block = g_malloc0(sizeof(*block));
-> @@ -606,6 +779,7 @@ MemoryRegion *xen_init_grant_ram(void)
->      ram_grants.ram_block = block;
->      ram_grants.ram = true;
->      ram_grants.terminates = true;
-> +    ram_grants.ops = &xen_grant_mr_ops;
->      ram_block_add_list(block);
->      memory_region_add_subregion(get_system_memory(), XEN_GRANT_ADDR_OFF,
->                                  &ram_grants);
+>      enum device_endian endianness;
+>      /* Guest-visible constraints: */
+>      struct {
 > diff --git a/system/physmem.c b/system/physmem.c
-> index d989e9fc1f..e6fc075d8f 100644
+> index 949dcb20ba..d989e9fc1f 100644
 > --- a/system/physmem.c
 > +++ b/system/physmem.c
-> @@ -2232,13 +2232,16 @@ RAMBlock *qemu_ram_block_from_host(void *ptr, bool round_offset,
+> @@ -3141,6 +3141,7 @@ void *address_space_map(AddressSpace *as,
+>      hwaddr len = *plen;
+>      hwaddr l, xlat;
+>      MemoryRegion *mr;
+> +    void *ptr = NULL;
+>      FlatView *fv;
 >  
->      if (xen_enabled()) {
->          ram_addr_t ram_addr;
-> +
->          RCU_READ_LOCK_GUARD();
->          ram_addr = xen_ram_addr_from_mapcache(ptr);
-> -        block = qemu_get_ram_block(ram_addr);
-> -        if (block) {
-> -            *offset = ram_addr - block->offset;
-> +        if (ram_addr != RAM_ADDR_INVALID) {
-> +            block = qemu_get_ram_block(ram_addr);
-> +            if (block) {
-> +                *offset = ram_addr - block->offset;
-> +            }
-> +            return block;
->          }
-> -        return block;
+>      if (len == 0) {
+> @@ -3174,12 +3175,20 @@ void *address_space_map(AddressSpace *as,
+>          return bounce.buffer;
 >      }
 >  
->      RCU_READ_LOCK_GUARD();
+> -
+>      memory_region_ref(mr);
+> +
+> +    if (mr->ops && mr->ops->map) {
+> +        ptr = mr->ops->map(&mr, addr, plen, is_write, attrs);
+> +    }
+> +
+>      *plen = flatview_extend_translation(fv, addr, len, mr, xlat,
+>                                          l, is_write, attrs);
+>      fuzz_dma_read_cb(addr, *plen, mr);
+> -    return qemu_ram_ptr_length(mr->ram_block, xlat, plen, true);
+> +    if (ptr == NULL) {
+> +        ptr = qemu_ram_ptr_length(mr->ram_block, xlat, plen, true);
+> +    }
+> +
+> +    return ptr;
+>  }
+>  
+>  /* Unmaps a memory region previously mapped by address_space_map().
+> @@ -3195,11 +3204,16 @@ void address_space_unmap(AddressSpace *as, void *buffer, hwaddr len,
+>  
+>          mr = memory_region_from_host(buffer, &addr1);
+>          assert(mr != NULL);
+> -        if (is_write) {
+> -            invalidate_and_set_dirty(mr, addr1, access_len);
+> -        }
+> -        if (xen_enabled()) {
+> -            xen_invalidate_map_cache_entry(buffer);
+> +
+> +        if (mr->ops && mr->ops->unmap) {
+> +            mr->ops->unmap(mr, buffer, addr1, len, is_write, access_len);
+> +        } else {
+> +            if (is_write) {
+> +                invalidate_and_set_dirty(mr, addr1, access_len);
+> +            }
+> +            if (xen_enabled()) {
+> +                xen_invalidate_map_cache_entry(buffer);
+> +            }
+>          }
+>          memory_region_unref(mr);
+>          return;
+> @@ -3272,10 +3286,18 @@ int64_t address_space_cache_init(MemoryRegionCache *cache,
+>           * doing this if we found actual RAM, which behaves the same
+>           * regardless of attributes; so UNSPECIFIED is fine.
+>           */
+> +        if (mr->ops && mr->ops->map) {
+> +            cache->ptr = mr->ops->map(&mr, addr, &l, is_write,
+> +                                      MEMTXATTRS_UNSPECIFIED);
+> +        }
+> +
+>          l = flatview_extend_translation(cache->fv, addr, len, mr,
+>                                          cache->xlat, l, is_write,
+>                                          MEMTXATTRS_UNSPECIFIED);
+> -        cache->ptr = qemu_ram_ptr_length(mr->ram_block, cache->xlat, &l, true);
+> +        if (!cache->ptr) {
+> +            cache->ptr = qemu_ram_ptr_length(mr->ram_block, cache->xlat, &l,
+> +                                             true);
+> +        }
+>      } else {
+>          cache->ptr = NULL;
+>      }
+> @@ -3297,14 +3319,20 @@ void address_space_cache_invalidate(MemoryRegionCache *cache,
+>  
+>  void address_space_cache_destroy(MemoryRegionCache *cache)
+>  {
+> -    if (!cache->mrs.mr) {
+> +    MemoryRegion *mr = cache->mrs.mr;
+> +
+> +    if (!mr) {
+>          return;
+>      }
+>  
+> -    if (xen_enabled()) {
+> +    if (mr->ops && mr->ops->unmap) {
+> +            mr->ops->unmap(mr, cache->ptr, cache->xlat, cache->len,
+> +                           cache->is_write, cache->len);
+> +    } else if (xen_enabled()) {
+>          xen_invalidate_map_cache_entry(cache->ptr);
+>      }
+> -    memory_region_unref(cache->mrs.mr);
+> +
+> +    memory_region_unref(mr);
+>      flatview_unref(cache->fv);
+>      cache->mrs.mr = NULL;
+>      cache->fv = NULL;
 > -- 
 > 2.17.1
 > 
