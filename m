@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F08C86C9F6
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 14:15:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F74386C9E4
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 14:13:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfgCc-0005bc-D0; Thu, 29 Feb 2024 08:11:58 -0500
+	id 1rfgCn-0005hh-F6; Thu, 29 Feb 2024 08:12:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rfgCZ-0005YH-Cz; Thu, 29 Feb 2024 08:11:55 -0500
+ id 1rfgCa-0005Zw-JU; Thu, 29 Feb 2024 08:11:56 -0500
 Received: from szxga04-in.huawei.com ([45.249.212.190])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rfgCW-0002ec-Qn; Thu, 29 Feb 2024 08:11:55 -0500
-Received: from mail.maildlp.com (unknown [172.19.163.44])
- by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Tls5k6MBWz1xpWB;
- Thu, 29 Feb 2024 21:10:18 +0800 (CST)
+ id 1rfgCX-0002ek-Iy; Thu, 29 Feb 2024 08:11:56 -0500
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+ by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Tls4v0vRzz2BdkD;
+ Thu, 29 Feb 2024 21:09:35 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id 398C01402CE;
- Thu, 29 Feb 2024 21:11:50 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 1977C140390;
+ Thu, 29 Feb 2024 21:11:51 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 29 Feb
- 2024 21:11:49 +0800
+ 2024 21:11:50 +0800
 To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [RFC PATCH v5 11/22] hw/intc/arm_gicv3: Add external IRQ lines for NMI
-Date: Thu, 29 Feb 2024 13:10:28 +0000
-Message-ID: <20240229131039.1868904-12-ruanjinjie@huawei.com>
+Subject: [RFC PATCH v5 12/22] target/arm: Handle NMI in
+ arm_cpu_do_interrupt_aarch64()
+Date: Thu, 29 Feb 2024 13:10:29 +0000
+Message-ID: <20240229131039.1868904-13-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240229131039.1868904-1-ruanjinjie@huawei.com>
 References: <20240229131039.1868904-1-ruanjinjie@huawei.com>
@@ -67,65 +68,48 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Augment the GICv3's QOM device interface by adding one
-new set of sysbus IRQ line, to signal NMI to each CPU.
+According to Arm GIC section 4.6.3 Interrupt superpriority, the interrupt
+with superpriority is always IRQ, never FIQ, so the NMI exception trap entry
+behave like IRQ. However, VNMI can be IRQ or FIQ, FIQ can only come from
+hcrx_el2.HCRX_VFNMI bit, IRQ can be raised from the GIC or come from the
+hcrx_el2.HCRX_VINMI bit.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
 v4:
-- Add Reviewed-by.
+- Also handle VNMI in arm_cpu_do_interrupt_aarch64().
 v3:
-- Add support for VNMI.
+- Remove the FIQ NMI handle.
 ---
- hw/intc/arm_gicv3_common.c         | 6 ++++++
- include/hw/intc/arm_gic_common.h   | 2 ++
- include/hw/intc/arm_gicv3_common.h | 2 ++
- 3 files changed, 10 insertions(+)
+ target/arm/helper.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/hw/intc/arm_gicv3_common.c b/hw/intc/arm_gicv3_common.c
-index cb55c72681..c52f060026 100644
---- a/hw/intc/arm_gicv3_common.c
-+++ b/hw/intc/arm_gicv3_common.c
-@@ -299,6 +299,12 @@ void gicv3_init_irqs_and_mmio(GICv3State *s, qemu_irq_handler handler,
-     for (i = 0; i < s->num_cpu; i++) {
-         sysbus_init_irq(sbd, &s->cpu[i].parent_vfiq);
-     }
-+    for (i = 0; i < s->num_cpu; i++) {
-+        sysbus_init_irq(sbd, &s->cpu[i].parent_nmi);
-+    }
-+    for (i = 0; i < s->num_cpu; i++) {
-+        sysbus_init_irq(sbd, &s->cpu[i].parent_vnmi);
-+    }
- 
-     memory_region_init_io(&s->iomem_dist, OBJECT(s), ops, s,
-                           "gicv3_dist", 0x10000);
-diff --git a/include/hw/intc/arm_gic_common.h b/include/hw/intc/arm_gic_common.h
-index 7080375008..97fea4102d 100644
---- a/include/hw/intc/arm_gic_common.h
-+++ b/include/hw/intc/arm_gic_common.h
-@@ -71,6 +71,8 @@ struct GICState {
-     qemu_irq parent_fiq[GIC_NCPU];
-     qemu_irq parent_virq[GIC_NCPU];
-     qemu_irq parent_vfiq[GIC_NCPU];
-+    qemu_irq parent_nmi[GIC_NCPU];
-+    qemu_irq parent_vnmi[GIC_NCPU];
-     qemu_irq maintenance_irq[GIC_NCPU];
- 
-     /* GICD_CTLR; for a GIC with the security extensions the NS banked version
-diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
-index 4e2fb518e7..7324c7d983 100644
---- a/include/hw/intc/arm_gicv3_common.h
-+++ b/include/hw/intc/arm_gicv3_common.h
-@@ -155,6 +155,8 @@ struct GICv3CPUState {
-     qemu_irq parent_fiq;
-     qemu_irq parent_virq;
-     qemu_irq parent_vfiq;
-+    qemu_irq parent_nmi;
-+    qemu_irq parent_vnmi;
- 
-     /* Redistributor */
-     uint32_t level;                  /* Current IRQ level */
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index b796dbdf21..bd34b3506a 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -11459,12 +11459,21 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
+         break;
+     case EXCP_IRQ:
+     case EXCP_VIRQ:
++    case EXCP_NMI:
+         addr += 0x80;
+         break;
+     case EXCP_FIQ:
+     case EXCP_VFIQ:
+         addr += 0x100;
+         break;
++    case EXCP_VNMI:
++        if (env->irq_line_state & CPU_INTERRUPT_VNMI ||
++            env->cp15.hcrx_el2 & HCRX_VINMI) {
++            addr += 0x80;
++        } else if (env->cp15.hcrx_el2 & HCRX_VFNMI) {
++            addr += 0x100;
++        }
++        break;
+     case EXCP_VSERR:
+         addr += 0x180;
+         /* Construct the SError syndrome from IDS and ISS fields. */
 -- 
 2.34.1
 
