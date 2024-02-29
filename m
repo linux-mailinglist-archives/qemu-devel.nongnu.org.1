@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC1786C1A1
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 08:09:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 017CE86C1A6
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 08:12:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfaXJ-0000pQ-QP; Thu, 29 Feb 2024 02:08:57 -0500
+	id 1rfaac-0003BF-QG; Thu, 29 Feb 2024 02:12:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rfaXH-0000pH-CD
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 02:08:55 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rfaaS-00037T-PC
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 02:12:13 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rfaXF-0004BE-Bz
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 02:08:54 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-33de64c91abso258501f8f.1
- for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 23:08:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rfaaR-0004lR-Ap
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 02:12:12 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-33d568fbf62so302877f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 23:12:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709190531; x=1709795331; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ZbpVwYEHLFrgKTYsVIBJ1TbcbTxsf2vZ7EqotBOpHPY=;
- b=vFMPYZIJYbfoWMs6bA7LyM6QVsXV+AvpumKVKZ7BErOxUGpthwY3T+O5zptU5Ig3Ck
- CxjfM0L7/MR/fQxKurkOHVXWhcTEnbnHzBwv8PkYMeGH7Rx/isblooutFnJmrbj+0gn/
- 7ISORJzM2mC04b8UhZcrPbDvsx/zGSEsejUXntgCdLn40XDDaAXVdvgDkipr/pkiDMuw
- Pb/flIHsIxFKoQG4up4ksEvQY+Rtb8p7kPPeSV7NFqMgrWOxyQLlzs8NeBn5kRhvWRiV
- 56qffadRVU+HHQq6xLs1csWYnGBTnloUTXxhm5jXsKvLHmu/dQamdxPmqnziMhRQrEGM
- lyjw==
+ d=linaro.org; s=google; t=1709190730; x=1709795530; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=31fyNln3HVxURNE8vA4kzbKfqBNWlIGkBNsLE9GcSPQ=;
+ b=ts9XVZxKdwvMx2oD3EbeRMpOH2aK9I+UQ/jFCCrd0DSsWMjGI+S0k7zfmnvK1XfV75
+ uhRouTustNFH3seFUr3S+Xr3UOnb5z1pjrGImP1chzdfP3gU91ybgOceoS0/QCFdOlNp
+ nV/lUppabliCg3H8Jt0BT2E4NQyWQO8KvSm6EmM/GRr9EgxvE9GAHFTawwqb/rd3ZIge
+ Cp66bGngEXZ0SmPSBhEi8G8kSup8vyvAbF+rJzcUG3fIHgju65ECdcCelDqiCfXooPgI
+ iC0r5xyi6rqzDxh0zy8lMOBs8n6z9+ZGoPj5tHjIpPWVSRXtqdCajUL0HPfI+wEaBhzo
+ G1gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709190531; x=1709795331;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=ZbpVwYEHLFrgKTYsVIBJ1TbcbTxsf2vZ7EqotBOpHPY=;
- b=tSI7/OM39+YW9+3Y21t6E1b4cnnMD58dq+v3r/w8IeJBafVIG+IQlFypF92tiVlNXM
- qeFHhN3G8b2F+yic0JKNkX2wU7PWyuIHpZ/rx5lD0SD73zAheWUap9r0sVti/kj8s8If
- FYjfBlpo+LFGCsaUL7fzoykcOfjTJ8Y77llu1TMBaoi9lEBPzGfHoyMAnLB/39mQvfCE
- 3nvOqblEqytA4t5Lxsbgwmx5+YGbW+RZUYD3KAVSqdOBoW7S2Qf0MZf5QNPUESge5QUm
- GytZtYpWYiWwzS+FHliDH935QwF7iSvLoOF8ExVS1ohQ1yqwMnOZ/Ptt2kcqsYa9AV0P
- bqdA==
+ d=1e100.net; s=20230601; t=1709190730; x=1709795530;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=31fyNln3HVxURNE8vA4kzbKfqBNWlIGkBNsLE9GcSPQ=;
+ b=p6TPEXQx95ksRKuNw5bZ0APfC3b2SP7z4pytu3LrCJBzcwIreBQ83rUR67YColkuiH
+ ZALAIzYvA0yPXkoMYy/begSrcgUaYnS/62iZJizx+QtaVEejhvJD3LBVvx/k6RoSVGkE
+ 5qgRgK2IU1qr5MmRa5ZzjFRMDWVLX+f8VzZ1fbu97PIgcEOULFR+3FuB/NckUIYEG2If
+ WJ7qW/s8IDtGIxTSPxxNRAlrjJJ39029nly+gjDKvq9sSRZha+rANfI60/QAgf0jRc8s
+ fCUquNId+MsvbeTrN2FdChIRn/aawAQO8pePd+iiw3+ICscqzqyB6ckJ8XdAgxbVpJw3
+ vwzA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXp5wE8lII52xPlRifHNWMrRQ5T5qTkKKWx3DMK5A6vsESkf4QUY+tYrXu6/dznqpjGNmcpwu3NjzTurhNvDjSwoCzYo58=
-X-Gm-Message-State: AOJu0Yx6dCNa+6aHb9HrrUyVailXUX+a62GdvaPV9cs+dPtL50a26r5c
- CkFaopyVPlhWO2llSRPOKUsYoj6llxzzKwoNhKul1zpiN6Bl26zsJ72dLdh9u4o=
-X-Google-Smtp-Source: AGHT+IHM/XaO+NrwArkuHE+qd3CPp92XSUwuxSlu691wZGZIrKJrK47EHW0p5l8IVgCN9ZUV8KDu4g==
-X-Received: by 2002:adf:ce92:0:b0:33e:d26:3780 with SMTP id
- r18-20020adfce92000000b0033e0d263780mr700495wrn.17.1709190530627; 
- Wed, 28 Feb 2024 23:08:50 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- q16-20020a5d6590000000b0033d56aa4f45sm874630wru.112.2024.02.28.23.08.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Feb 2024 23:08:50 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id D12815F7A0;
- Thu, 29 Feb 2024 07:08:49 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: Luc Michel <luc.michel@amd.com>,  qemu-devel@nongnu.org,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Richard Henderson
- <richard.henderson@linaro.org>,  Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>,  Yanan Wang <wangyanan55@huawei.com>,  Paolo
- Bonzini <pbonzini@redhat.com>,  Mahmoud Mandour <ma.mandourr@gmail.com>,
- Alexandre Iooss <erdnaxe@crans.org>,  Eduardo Habkost <eduardo@habkost.net>
+ AJvYcCWyLWVNc5T4MM8sIHgr24L8+3+9VI/YXI/B5WGP+L9wbEljHT29DnxlHTrIXlx9BX21+o4Ql4P+T/DUN6Zvldx4UzupDKI=
+X-Gm-Message-State: AOJu0YyW9bmBi3HRt69fHKheM3gWd+R1G3nn8HY7b3VNXGSm/+KQ3R9J
+ LXh8374WYiKbTTjH+CVG6HEmqdibn1ZQwnQ+Md/MvH62mbBUgwy//2if2/5zVWg=
+X-Google-Smtp-Source: AGHT+IHi422/sXt5SOoRD7Kxo6LQQ4MRhYGhvvZm1Hpea0KP4UjqMYPQpA41e832d18/WCJAROG01A==
+X-Received: by 2002:adf:a311:0:b0:33e:82f:7efa with SMTP id
+ c17-20020adfa311000000b0033e082f7efamr703891wrb.41.1709190729694; 
+ Wed, 28 Feb 2024 23:12:09 -0800 (PST)
+Received: from [192.168.1.24] ([102.35.208.160])
+ by smtp.gmail.com with ESMTPSA id
+ j12-20020adfea4c000000b0033e11bd9febsm399471wrn.90.2024.02.28.23.12.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 28 Feb 2024 23:12:09 -0800 (PST)
+Message-ID: <03ce19fb-0b82-4819-aaa4-a2241517090e@linaro.org>
+Date: Thu, 29 Feb 2024 11:12:03 +0400
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v5 06/12] tests/plugin/mem: migrate to new per_vcpu API
-In-Reply-To: <f0133db0-63e1-4634-a18f-fe181754e17c@linaro.org> (Pierrick
- Bouvier's message of "Thu, 29 Feb 2024 09:19:58 +0400")
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: Luc Michel <luc.michel@amd.com>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Alexandre Iooss
+ <erdnaxe@crans.org>, Eduardo Habkost <eduardo@habkost.net>
 References: <20240226091446.479436-1-pierrick.bouvier@linaro.org>
  <20240226091446.479436-7-pierrick.bouvier@linaro.org>
  <Zd2sxjxegajy7ZbF@luc-work-vm> <875xy8b5sg.fsf@draig.linaro.org>
  <f0133db0-63e1-4634-a18f-fe181754e17c@linaro.org>
-User-Agent: mu4e 1.12.0; emacs 29.1
-Date: Thu, 29 Feb 2024 07:08:49 +0000
-Message-ID: <87zfvjagse.fsf@draig.linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
+ <87zfvjagse.fsf@draig.linaro.org>
+Content-Language: en-US
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <87zfvjagse.fsf@draig.linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,24 +105,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
-
-> On 2/29/24 2:08 AM, Alex Benn=C3=A9e wrote:
->> Luc Michel <luc.michel@amd.com> writes:
->>=20
->>> Hi Pierrick,
->>>
-<snip>
->>=20
->
-> My bad. Other plugins enable only inline when both are supplied, so I
-> missed this here.
-> I added an explicit error when user enable callback and inline at the
-> same time on this plugin.
-
-We could default to inline unless we need the more features of callbacks?
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+T24gMi8yOS8yNCAxMTowOCBBTSwgQWxleCBCZW5uw6llIHdyb3RlOg0KPiBQaWVycmljayBC
+b3V2aWVyIDxwaWVycmljay5ib3V2aWVyQGxpbmFyby5vcmc+IHdyaXRlczoNCj4gDQo+PiBP
+biAyLzI5LzI0IDI6MDggQU0sIEFsZXggQmVubsOpZSB3cm90ZToNCj4+PiBMdWMgTWljaGVs
+IDxsdWMubWljaGVsQGFtZC5jb20+IHdyaXRlczoNCj4+Pg0KPj4+PiBIaSBQaWVycmljaywN
+Cj4+Pj4NCj4gPHNuaXA+DQo+Pj4NCj4+DQo+PiBNeSBiYWQuIE90aGVyIHBsdWdpbnMgZW5h
+YmxlIG9ubHkgaW5saW5lIHdoZW4gYm90aCBhcmUgc3VwcGxpZWQsIHNvIEkNCj4+IG1pc3Nl
+ZCB0aGlzIGhlcmUuDQo+PiBJIGFkZGVkIGFuIGV4cGxpY2l0IGVycm9yIHdoZW4gdXNlciBl
+bmFibGUgY2FsbGJhY2sgYW5kIGlubGluZSBhdCB0aGUNCj4+IHNhbWUgdGltZSBvbiB0aGlz
+IHBsdWdpbi4NCj4gDQo+IFdlIGNvdWxkIGRlZmF1bHQgdG8gaW5saW5lIHVubGVzcyB3ZSBu
+ZWVkIHRoZSBtb3JlIGZlYXR1cmVzIG9mIGNhbGxiYWNrcz8NCj4gDQoNClRoaXMgcmVtYXJr
+IGFwcGxpZXMgZm9yIGFsbCBwbHVnaW5zIGluIGdlbmVyYWwuIE5vdyB3ZSBoYXZlIHNhZmUg
+YW5kIA0KY29ycmVjdCBpbmxpbmUgb3BlcmF0aW9ucywgY2FsbGJhY2tzIGFyZSBub3QgbmVl
+ZGVkIGluIHNvbWUgY2FzZS4NCg0KV291bGQgdGhhdCBiZSBhY2NlcHRhYmxlIGZvciB5b3Ug
+dGhhdCB3ZSBkZWxheSB0aGlzICJjbGVhbnVwIiB0byANCmV4aXN0aW5nIHBsdWdpbnMgYWZ0
+ZXIgc29mdCBmcmVlemU/IFNvIHdlIGNhbiBmb2N1cyBvbiBtZXJnaW5nIGN1cnJlbnQgDQpB
+UEkgY2hhbmdlcyBuZWVkZWQuDQo=
 
