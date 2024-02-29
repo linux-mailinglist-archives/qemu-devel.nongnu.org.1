@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2352386C157
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:52:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D0886C149
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:48:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfa8i-0001ZG-41; Thu, 29 Feb 2024 01:43:32 -0500
+	id 1rfa8m-0001m3-78; Thu, 29 Feb 2024 01:43:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rfa8d-0001Qt-LN
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:43:27 -0500
+ id 1rfa8i-0001ca-6M
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:43:32 -0500
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rfa8a-0005GA-Nt
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:43:27 -0500
+ id 1rfa8g-0005GA-5D
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:43:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709189004; x=1740725004;
+ t=1709189010; x=1740725010;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ojsjJjwwvXFn32DtEbF5sMQKOA0I6qo1coDuhp7qGAs=;
- b=cMomJ/Fm+zQxhCT9+IVd/gaJKM73XpgtXBXIJbaghnyNz01rPKVpCSYF
- 7j8sg2gebkd49q1dh+kKWN6i7annJUmmkxG8PE+vdzmwE4BlaoDMX7bJG
- oU3uCYotTLZXIG/pVtu41pySKKh9LX7sESlQtP3XCar5Zt3mY4aCXvKN9
- Y8fM6qdh1YJNtX6iHvHsVlrxwJlRc0UPXIRK87EL/y+8h6dqTMALitziF
- w1EdolkOxOn8Ga7Ey+oJ0q8xjefliUOTZvYI79eNhcq4sp8U6iV5xvC4T
- wApqprCY+BtRz1sK8yfGbc9RnWnNrx6HSpYuCLpN0k4TXLhmdbDPiTJHD w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3803150"
+ bh=bpiEWdbIOSB0Vk3WG0GrZLWQS9tv1g7VIXpQTZ0EQmE=;
+ b=FhFiCG2ZwyL5B6xRivkIxTFwllIwN+mxZs+ggbwWUjq7Nh11oUImAWPc
+ e4cZYimfoEuAWToJ9E7JHVhCuAkQmUVIETfm+XP8b4lhujBs0dhN2BY7a
+ fj/O3Xsknqctpcw9yba1wdqdObZmsVUpz1TwXdVQd9UPi6KSyUvgoPNVA
+ rbepuQHVbnbzMmyQ5FSQfpTmVYIDSw4fc3M3sRu/RIbH66ZlHHRvDml1C
+ kCOAVwq23h/ZW0hI8ikjBQrRYVmnjEceyuDzorvgiYe1PUD886/uHHyJ0
+ 8TXXlqxlfcNg5TZPvStsVDqOnmkm8SZfFANFVnhpUshv408W/lUNZbdCE Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3803155"
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="3803150"
+   d="scan'208";a="3803155"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 22:43:23 -0800
+ 28 Feb 2024 22:43:29 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="8076187"
+   d="scan'208";a="8076227"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa007.jf.intel.com with ESMTP; 28 Feb 2024 22:43:17 -0800
+ by orviesa007.jf.intel.com with ESMTP; 28 Feb 2024 22:43:23 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -58,10 +58,9 @@ Cc: kvm@vger.kernel.org, qemu-devel@nongnu.org,
  Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>, xiaoyao.li@intel.com
-Subject: [PATCH v5 53/65] pci-host/q35: Move PAM initialization above SMRAM
- initialization
-Date: Thu, 29 Feb 2024 01:37:14 -0500
-Message-Id: <20240229063726.610065-54-xiaoyao.li@intel.com>
+Subject: [PATCH v5 54/65] q35: Introduce smm_ranges property for q35-pci-host
+Date: Thu, 29 Feb 2024 01:37:15 -0500
+Message-Id: <20240229063726.610065-55-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240229063726.610065-1-xiaoyao.li@intel.com>
 References: <20240229063726.610065-1-xiaoyao.li@intel.com>
@@ -92,54 +91,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+From: Isaku Yamahata <isaku.yamahata@linux.intel.com>
 
-In mch_realize(), process PAM initialization before SMRAM initialization so
-that later patch can skill all the SMRAM related with a single check.
+Add a q35 property to check whether or not SMM ranges, e.g. SMRAM, TSEG,
+etc... exist for the target platform.  TDX doesn't support SMM and doesn't
+play nice with QEMU modifying related guest memory ranges.
 
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Signed-off-by: Isaku Yamahata <isaku.yamahata@linux.intel.com>
+Co-developed-by: Sean Christopherson <sean.j.christopherson@intel.com>
+Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- hw/pci-host/q35.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ hw/i386/pc_q35.c          |  2 ++
+ hw/pci-host/q35.c         | 42 +++++++++++++++++++++++++++------------
+ include/hw/i386/pc.h      |  1 +
+ include/hw/pci-host/q35.h |  1 +
+ 4 files changed, 33 insertions(+), 13 deletions(-)
 
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 45a4102e75f5..dc3f68676ea0 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -212,6 +212,8 @@ static void pc_q35_init(MachineState *machine)
+                             x86ms->above_4g_mem_size, NULL);
+     object_property_set_bool(phb, PCI_HOST_BYPASS_IOMMU,
+                              pcms->default_bus_bypass_iommu, NULL);
++    object_property_set_bool(phb, PCI_HOST_PROP_SMM_RANGES,
++                             x86_machine_is_smm_enabled(x86ms), NULL);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(phb), &error_fatal);
+ 
+     /* pci */
 diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
-index 0d7d4e3f0860..98d4a7c253a6 100644
+index 98d4a7c253a6..0b6cbaed7ed5 100644
 --- a/hw/pci-host/q35.c
 +++ b/hw/pci-host/q35.c
-@@ -568,6 +568,16 @@ static void mch_realize(PCIDevice *d, Error **errp)
-     /* setup pci memory mapping */
-     pc_pci_as_mapping_init(mch->system_memory, mch->pci_address_space);
+@@ -179,6 +179,8 @@ static Property q35_host_props[] = {
+                      mch.below_4g_mem_size, 0),
+     DEFINE_PROP_SIZE(PCI_HOST_ABOVE_4G_MEM_SIZE, Q35PCIHost,
+                      mch.above_4g_mem_size, 0),
++    DEFINE_PROP_BOOL(PCI_HOST_PROP_SMM_RANGES, Q35PCIHost,
++                     mch.has_smm_ranges, true),
+     DEFINE_PROP_BOOL("x-pci-hole64-fix", Q35PCIHost, pci_hole64_fix, true),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+@@ -214,6 +216,7 @@ static void q35_host_initfn(Object *obj)
+     /* mch's object_initialize resets the default value, set it again */
+     qdev_prop_set_uint64(DEVICE(s), PCI_HOST_PROP_PCI_HOLE64_SIZE,
+                          Q35_PCI_HOST_HOLE64_SIZE_DEFAULT);
++
+     object_property_add(obj, PCI_HOST_PROP_PCI_HOLE_START, "uint32",
+                         q35_host_get_pci_hole_start,
+                         NULL, NULL, NULL);
+@@ -476,6 +479,10 @@ static void mch_write_config(PCIDevice *d,
+         mch_update_pciexbar(mch);
+     }
  
-+    /* PAM */
-+    init_pam(&mch->pam_regions[0], OBJECT(mch), mch->ram_memory,
-+             mch->system_memory, mch->pci_address_space,
-+             PAM_BIOS_BASE, PAM_BIOS_SIZE);
-+    for (i = 0; i < ARRAY_SIZE(mch->pam_regions) - 1; ++i) {
-+        init_pam(&mch->pam_regions[i + 1], OBJECT(mch), mch->ram_memory,
-+                 mch->system_memory, mch->pci_address_space,
-+                 PAM_EXPAN_BASE + i * PAM_EXPAN_SIZE, PAM_EXPAN_SIZE);
++    if (!mch->has_smm_ranges) {
++        return;
++    }
++
+     if (ranges_overlap(address, len, MCH_HOST_BRIDGE_SMRAM,
+                        MCH_HOST_BRIDGE_SMRAM_SIZE)) {
+         mch_update_smram(mch);
+@@ -494,10 +501,13 @@ static void mch_write_config(PCIDevice *d,
+ static void mch_update(MCHPCIState *mch)
+ {
+     mch_update_pciexbar(mch);
++
+     mch_update_pam(mch);
+-    mch_update_smram(mch);
+-    mch_update_ext_tseg_mbytes(mch);
+-    mch_update_smbase_smram(mch);
++    if (mch->has_smm_ranges) {
++        mch_update_smram(mch);
++        mch_update_ext_tseg_mbytes(mch);
++        mch_update_smbase_smram(mch);
++    }
+ 
+     /*
+      * pci hole goes from end-of-low-ram to io-apic.
+@@ -538,19 +548,21 @@ static void mch_reset(DeviceState *qdev)
+     pci_set_quad(d->config + MCH_HOST_BRIDGE_PCIEXBAR,
+                  MCH_HOST_BRIDGE_PCIEXBAR_DEFAULT);
+ 
+-    d->config[MCH_HOST_BRIDGE_SMRAM] = MCH_HOST_BRIDGE_SMRAM_DEFAULT;
+-    d->config[MCH_HOST_BRIDGE_ESMRAMC] = MCH_HOST_BRIDGE_ESMRAMC_DEFAULT;
+-    d->wmask[MCH_HOST_BRIDGE_SMRAM] = MCH_HOST_BRIDGE_SMRAM_WMASK;
+-    d->wmask[MCH_HOST_BRIDGE_ESMRAMC] = MCH_HOST_BRIDGE_ESMRAMC_WMASK;
++    if (mch->has_smm_ranges) {
++        d->config[MCH_HOST_BRIDGE_SMRAM] = MCH_HOST_BRIDGE_SMRAM_DEFAULT;
++        d->config[MCH_HOST_BRIDGE_ESMRAMC] = MCH_HOST_BRIDGE_ESMRAMC_DEFAULT;
++        d->wmask[MCH_HOST_BRIDGE_SMRAM] = MCH_HOST_BRIDGE_SMRAM_WMASK;
++        d->wmask[MCH_HOST_BRIDGE_ESMRAMC] = MCH_HOST_BRIDGE_ESMRAMC_WMASK;
+ 
+-    if (mch->ext_tseg_mbytes > 0) {
+-        pci_set_word(d->config + MCH_HOST_BRIDGE_EXT_TSEG_MBYTES,
+-                     MCH_HOST_BRIDGE_EXT_TSEG_MBYTES_QUERY);
++        if (mch->ext_tseg_mbytes > 0) {
++            pci_set_word(d->config + MCH_HOST_BRIDGE_EXT_TSEG_MBYTES,
++                        MCH_HOST_BRIDGE_EXT_TSEG_MBYTES_QUERY);
++        }
++
++        d->config[MCH_HOST_BRIDGE_F_SMBASE] = 0;
++        d->wmask[MCH_HOST_BRIDGE_F_SMBASE] = 0xff;
+     }
+ 
+-    d->config[MCH_HOST_BRIDGE_F_SMBASE] = 0;
+-    d->wmask[MCH_HOST_BRIDGE_F_SMBASE] = 0xff;
+-
+     mch_update(mch);
+ }
+ 
+@@ -578,6 +590,10 @@ static void mch_realize(PCIDevice *d, Error **errp)
+                  PAM_EXPAN_BASE + i * PAM_EXPAN_SIZE, PAM_EXPAN_SIZE);
+     }
+ 
++    if (!mch->has_smm_ranges) {
++        return;
 +    }
 +
      /* if *disabled* show SMRAM to all CPUs */
      memory_region_init_alias(&mch->smram_region, OBJECT(mch), "smram-region",
                               mch->pci_address_space, MCH_HOST_BRIDGE_SMRAM_C_BASE,
-@@ -634,15 +644,6 @@ static void mch_realize(PCIDevice *d, Error **errp)
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 5065590281a1..91be8e3b35b5 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -161,6 +161,7 @@ void pc_acpi_smi_interrupt(void *opaque, int irq, int level);
+ #define PCI_HOST_PROP_PCI_HOLE64_SIZE  "pci-hole64-size"
+ #define PCI_HOST_BELOW_4G_MEM_SIZE     "below-4g-mem-size"
+ #define PCI_HOST_ABOVE_4G_MEM_SIZE     "above-4g-mem-size"
++#define PCI_HOST_PROP_SMM_RANGES       "smm-ranges"
  
-     object_property_add_const_link(qdev_get_machine(), "smram",
-                                    OBJECT(&mch->smram));
--
--    init_pam(&mch->pam_regions[0], OBJECT(mch), mch->ram_memory,
--             mch->system_memory, mch->pci_address_space,
--             PAM_BIOS_BASE, PAM_BIOS_SIZE);
--    for (i = 0; i < ARRAY_SIZE(mch->pam_regions) - 1; ++i) {
--        init_pam(&mch->pam_regions[i + 1], OBJECT(mch), mch->ram_memory,
--                 mch->system_memory, mch->pci_address_space,
--                 PAM_EXPAN_BASE + i * PAM_EXPAN_SIZE, PAM_EXPAN_SIZE);
--    }
- }
  
- uint64_t mch_mcfg_base(void)
+ void pc_pci_as_mapping_init(MemoryRegion *system_memory,
+diff --git a/include/hw/pci-host/q35.h b/include/hw/pci-host/q35.h
+index bafcbe675214..22fadfa3ed76 100644
+--- a/include/hw/pci-host/q35.h
++++ b/include/hw/pci-host/q35.h
+@@ -50,6 +50,7 @@ struct MCHPCIState {
+     MemoryRegion tseg_blackhole, tseg_window;
+     MemoryRegion smbase_blackhole, smbase_window;
+     bool has_smram_at_smbase;
++    bool has_smm_ranges;
+     Range pci_hole;
+     uint64_t below_4g_mem_size;
+     uint64_t above_4g_mem_size;
 -- 
 2.34.1
 
