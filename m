@@ -2,75 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D3B86C145
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:48:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3980086C155
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:52:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfa8X-0001FG-P6; Thu, 29 Feb 2024 01:43:22 -0500
+	id 1rfaDw-0007hc-I3; Thu, 29 Feb 2024 01:48:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=07894d25c8=schalla@marvell.com>)
- id 1rfa8S-0001A6-GW
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:43:18 -0500
-Received: from mx0a-0016f401.pphosted.com ([67.231.148.174]
- helo=mx0b-0016f401.pphosted.com)
+ (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1rfaDo-0007Lp-4K
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:48:48 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=07894d25c8=schalla@marvell.com>)
- id 1rfa8M-0005EN-TD
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:43:13 -0500
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
- by mx0a-0016f401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
- 41T3XCTp007320; Wed, 28 Feb 2024 22:43:07 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
- from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding:content-type; s=pfpt0220; bh=PL4BZBAv
- fepvPZhmK4e446uBxb2FjgOY+0cqmhrJBaU=; b=fVLuSJaQMjVbgnHCl3zzbUTS
- 4Jbmt94PtcOJe5vzHiHG1RWM7vi5mB4De+8SWc9I+gxIm8fAIl4zi2tpgcZOX0Uh
- 6rGtK4+cRH1f5XYBUeDC4NG0Sq9DmcTDcsqSed9kEBzb5ihSNZ2io0HXfPL+TNPx
- cIIszZ8NF6WYnzWrJejG3QcOe8345njBgM0gACKRY/p9XRB+j7tV+5tb+/OMpII6
- awyMGBVn7cJCgLW3lh/lDE55OkUeQ8FauqNKTVHqxeQs764iDDD+IWIZARm1Xoi4
- /z00FqU1FdhSsjs6OiywrVw33M3PiKPA0SYMixE0hJPeFNI18zp6TnPAIKTuDA==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
- by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 3wj8e8u96j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 28 Feb 2024 22:43:07 -0800 (PST)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.12; Wed, 28 Feb 2024 22:43:06 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Wed, 28 Feb 2024 22:43:06 -0800
-Received: from localhost.localdomain (unknown [10.28.36.175])
- by maili.marvell.com (Postfix) with ESMTP id 286483F70E3;
- Wed, 28 Feb 2024 22:43:03 -0800 (PST)
-From: Srujana Challa <schalla@marvell.com>
-To: <qemu-devel@nongnu.org>
-CC: <mst@redhat.com>, <jasowang@redhat.com>, <vattunuru@marvell.com>,
- <jerinj@marvell.com>, <schalla@marvell.com>
-Subject: [PATCH v4] virtio-pci: correctly set virtio pci queue mem multiplier
-Date: Thu, 29 Feb 2024 12:13:02 +0530
-Message-ID: <20240229064302.2183241-1-schalla@marvell.com>
-X-Mailer: git-send-email 2.25.1
+ (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1rfaDl-0006SH-Lv
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:48:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709189324;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=drGryLmlDnbb1TOonzHcX8forMbHQaGbfm74WcsgeKA=;
+ b=GuH+u115u5OyHpfEV0jdSh9f3ohN/p7XQGxCzBbgK+jZGYjBKbKqGixQE3jbXxgYDKC5w1
+ VSbr5GFeKFNyC90ehW/X7NQJrWvKzQMgVGs2VHPI8IMozZp8uF7DGWYKxVcUYFOXLGlszx
+ t9ADIO2nT5YyuSyCwdoBqwXXLq27IL4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-55-Jj5DgvGYNvKIkZsOpmOiYg-1; Thu,
+ 29 Feb 2024 01:48:41 -0500
+X-MC-Unique: Jj5DgvGYNvKIkZsOpmOiYg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6DDFF3C1494B;
+ Thu, 29 Feb 2024 06:48:41 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.72.116.119])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 01ABE1121312;
+ Thu, 29 Feb 2024 06:48:38 +0000 (UTC)
+From: Dehan Meng <demeng@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: demeng@redhat.com,
+	kkostiuk@redhat.com,
+	michael.roth@amd.com
+Subject: [PATCH v3 0/1] Optimize Code
+Date: Thu, 29 Feb 2024 14:48:35 +0800
+Message-Id: <20240229064836.21867-1-demeng@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: XKG85YmtCxPxGjoI4RDzZy2ai_BCeGzE
-X-Proofpoint-ORIG-GUID: XKG85YmtCxPxGjoI4RDzZy2ai_BCeGzE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-28_08,2024-02-27_01,2023-05-22_02
-Received-SPF: pass client-ip=67.231.148.174;
- envelope-from=prvs=07894d25c8=schalla@marvell.com;
- helo=mx0b-0016f401.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=demeng@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.102,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,95 +75,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, virtio_pci_queue_mem_mult function always returns 4K
-when VIRTIO_PCI_FLAG_PAGE_PER_VQ is set. But this won't
-work for vhost vdpa when host has page size other than 4K.
-This patch introduces a new property(page-per-vdpa-vq) for vdpa
-use case to fix the same.
+v2 -> v3
+- Remove this declaration and make the function 'hexToIPAddress' as static.
+- Define 'IFNAMSIZ' from kernel instead of a hardcode
+- Remove 'GUEST_NETWORK_ROUTE_TYPE_LINUX'
+- Set flags 'has_xxx' for checking if a field exists or has a value set
 
-Signed-off-by: Srujana Challa <schalla@marvell.com>
----
-v3->v4:
-- Return failure if both page_per_vq and host_page_per_vq are set.
+v1 -> v2
+- Replace snprintf() to g_strdup_printf() to avoid memory problems.
+- Remove the parameter 'char ipAddress[16]' in function 'char *hexToIPAddress()'.
+- Add a piece of logic to skip traversing the first line of the file
 
-v2->v3:
-- Modified property name, page-per-vdpa-vq to host-page-per-vq.
+Dehan Meng (1):
+  qga/linux: Add new api 'guest-network-get-route'
 
-v1->v2:
-- Introduced a new property to get virtqueue mem multiplier for
-  vdpa use case.
+ qga/commands-posix.c | 81 ++++++++++++++++++++++++++++++++++++++++++++
+ qga/commands-win32.c |  6 ++++
+ qga/qapi-schema.json | 80 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 167 insertions(+)
 
- hw/virtio/virtio-pci.c         | 18 ++++++++++++++++--
- include/hw/virtio/virtio-pci.h |  5 +++++
- 2 files changed, 21 insertions(+), 2 deletions(-)
-
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index 1a7039fb0c..4e31169c6f 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -320,8 +320,12 @@ static bool virtio_pci_ioeventfd_enabled(DeviceState *d)
- 
- static inline int virtio_pci_queue_mem_mult(struct VirtIOPCIProxy *proxy)
- {
--    return (proxy->flags & VIRTIO_PCI_FLAG_PAGE_PER_VQ) ?
--        QEMU_VIRTIO_PCI_QUEUE_MEM_MULT : 4;
-+    if (proxy->flags & VIRTIO_PCI_FLAG_PAGE_PER_VQ)
-+        return QEMU_VIRTIO_PCI_QUEUE_MEM_MULT;
-+    else if (proxy->flags & VIRTIO_PCI_FLAG_HOST_PAGE_PER_VQ)
-+        return qemu_real_host_page_size();
-+    else
-+        return 4;
- }
- 
- static int virtio_pci_ioeventfd_assign(DeviceState *d, EventNotifier *notifier,
-@@ -2108,6 +2112,14 @@ static void virtio_pci_realize(PCIDevice *pci_dev, Error **errp)
-         proxy->flags &= ~VIRTIO_PCI_FLAG_USE_IOEVENTFD;
-     }
- 
-+    if ((proxy->flags & VIRTIO_PCI_FLAG_PAGE_PER_VQ) &&
-+        (proxy->flags & VIRTIO_PCI_FLAG_HOST_PAGE_PER_VQ)) {
-+        error_setg(errp, "device cannot work with both page-per-vq and"
-+                   " host-page-per-vq at the same time");
-+        error_append_hint(errp, "Set either page-per-vq or host-page-per-vq\n");
-+        return;
-+    }
-+
-     /*
-      * virtio pci bar layout used by default.
-      * subclasses can re-arrange things if needed.
-@@ -2301,6 +2313,8 @@ static Property virtio_pci_properties[] = {
-                     VIRTIO_PCI_FLAG_INIT_FLR_BIT, true),
-     DEFINE_PROP_BIT("aer", VirtIOPCIProxy, flags,
-                     VIRTIO_PCI_FLAG_AER_BIT, false),
-+    DEFINE_PROP_BIT("host-page-per-vq", VirtIOPCIProxy, flags,
-+                    VIRTIO_PCI_FLAG_HOST_PAGE_PER_VQ_BIT, false),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
-index 59d88018c1..81b6de4291 100644
---- a/include/hw/virtio/virtio-pci.h
-+++ b/include/hw/virtio/virtio-pci.h
-@@ -43,6 +43,7 @@ enum {
-     VIRTIO_PCI_FLAG_INIT_FLR_BIT,
-     VIRTIO_PCI_FLAG_AER_BIT,
-     VIRTIO_PCI_FLAG_ATS_PAGE_ALIGNED_BIT,
-+    VIRTIO_PCI_FLAG_HOST_PAGE_PER_VQ_BIT,
- };
- 
- /* Need to activate work-arounds for buggy guests at vmstate load. */
-@@ -89,6 +90,10 @@ enum {
- #define VIRTIO_PCI_FLAG_ATS_PAGE_ALIGNED \
-   (1 << VIRTIO_PCI_FLAG_ATS_PAGE_ALIGNED_BIT)
- 
-+/* page per vdpa vq flag to be used for vhost vdpa backends */
-+#define VIRTIO_PCI_FLAG_HOST_PAGE_PER_VQ \
-+    (1 << VIRTIO_PCI_FLAG_HOST_PAGE_PER_VQ_BIT)
-+
- typedef struct {
-     MSIMessage msg;
-     int virq;
 -- 
-2.25.1
+2.40.1
 
 
