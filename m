@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB00B86C138
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:46:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA1CC86C14B
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:48:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfa72-0006E4-RF; Thu, 29 Feb 2024 01:41:49 -0500
+	id 1rfa79-0006X5-1Q; Thu, 29 Feb 2024 01:41:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rfa6a-0005iM-IT
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:41:25 -0500
+ id 1rfa6h-0005uD-R3
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:41:31 -0500
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rfa6Y-0004qw-UP
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:41:20 -0500
+ id 1rfa6f-0004qw-Q5
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:41:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709188879; x=1740724879;
+ t=1709188885; x=1740724885;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=uZvEeQRwcg5hfdsq1aVm4Uu/EiX+YrSVEsATsRjn5FQ=;
- b=IenfqoqhxX/r54ZIvtc+RDSs1pJDBQQMhx79Dtvh9BYzvmuBLovVSCTT
- S0ECHFLLUJtdtYQPdnigIN/axf+3Abp5bTpyOpPNvkuVheKGrlt+zEQ9Q
- HGroX6/6p6sSgp+IDmO6iTH3m4mNjjbPthpwkSM2jsHp0hkK/6zVUPiEC
- tJh/8jQzeY0QzkwNEP1kcWj22ef9aexgsfWKFwOzxD3KJbQyfulc7ADNF
- hFASiMHB9T1YAWELL5ppiQWr35ReLtRr4ynj9SPDm+HjWzS75OqLiZYlz
- Y3SgszCM6wukfTfImonDJ4Y1gDImC5F5nKlS1/R2MQ4PoR1yuRPbouvbh w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3802876"
+ bh=e+2C9uKtbhbExisrx4zbEuOZzq0QWHDfGmG/4u6UwRk=;
+ b=gXBg7fJmIkP7Jk5CH/2oZ9ewCQXYsHQe96XAAmx75ix1gMHRxtZIXmyR
+ K7OPCE6sq8TyPD+JAMmE84pFJ7+yYl4QYlcF/og3lhPZAktav33UeJ3zj
+ 4r24B9voaSy9HL5ZuwavgPJYkYKDQo4o/muHiXoHjJta0Vx/oKZziN570
+ W9yXwnlxMOm3XQiMP/HV4BkQ+07LX4XDmNALsbGBpNtVZO8u/rwX2xpGT
+ HGAY5708caNuh+m5UnXkZ6CgCaSP6comeru1WU5uTI9gJj7LkFMjsD+bA
+ ZR1+RrsD3W4elZRwmoGrHoGFuvRt6xnfyU5Jpzy0egHoO8JgeOJvUFAUn Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3802885"
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="3802876"
+   d="scan'208";a="3802885"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 22:41:17 -0800
+ 28 Feb 2024 22:41:24 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="8075640"
+   d="scan'208";a="8075656"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa007.jf.intel.com with ESMTP; 28 Feb 2024 22:41:11 -0800
+ by orviesa007.jf.intel.com with ESMTP; 28 Feb 2024 22:41:18 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -58,10 +58,10 @@ Cc: kvm@vger.kernel.org, qemu-devel@nongnu.org,
  Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>, xiaoyao.li@intel.com
-Subject: [PATCH v5 34/65] kvm/tdx: Ignore memory conversion to shared of
- unassigned region
-Date: Thu, 29 Feb 2024 01:36:55 -0500
-Message-Id: <20240229063726.610065-35-xiaoyao.li@intel.com>
+Subject: [PATCH v5 35/65] memory: Introduce
+ memory_region_init_ram_guest_memfd()
+Date: Thu, 29 Feb 2024 01:36:56 -0500
+Message-Id: <20240229063726.610065-36-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240229063726.610065-1-xiaoyao.li@intel.com>
 References: <20240229063726.610065-1-xiaoyao.li@intel.com>
@@ -92,49 +92,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+Introduce memory_region_init_ram_guest_memfd() to allocate private
+guset memfd on the MemoryRegion initialization. It's for the use case of
+TDVF, which must be private on TDX case.
 
-TDX requires vMMIO region to be shared.  For KVM, MMIO region is the region
-which kvm memslot isn't assigned to (except in-kernel emulation).
-qemu has the memory region for vMMIO at each device level.
-
-While OVMF issues MapGPA(to-shared) conservatively on 32bit PCI MMIO
-region, qemu doesn't find corresponding vMMIO region because it's before
-PCI device allocation and memory_region_find() finds the device region, not
-PCI bus region.  It's safe to ignore MapGPA(to-shared) because when guest
-accesses those region they use GPA with shared bit set for vMMIO.  Ignore
-memory conversion request of non-assigned region to shared and return
-success.  Otherwise OVMF is confused and panics there.
-
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- accel/kvm/kvm-all.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+Changes in v5:
+- drop memory_region_set_default_private() because this function is
+  dropped in this v5 series;
+---
+ include/exec/memory.h |  6 ++++++
+ system/memory.c       | 25 +++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index d533e2611ad8..9dc17a1b5f43 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -2953,6 +2953,18 @@ static int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
-     section = memory_region_find(get_system_memory(), start, size);
-     mr = section.mr;
-     if (!mr) {
-+        /*
-+         * Ignore converting non-assigned region to shared.
-+         *
-+         * TDX requires vMMIO region to be shared to inject #VE to guest.
-+         * OVMF issues conservatively MapGPA(shared) on 32bit PCI MMIO region,
-+         * and vIO-APIC 0xFEC00000 4K page.
-+         * OVMF assigns 32bit PCI MMIO region to
-+         * [top of low memory: typically 2GB=0xC000000,  0xFC00000)
-+         */
-+        if (!to_private) {
-+            return 0;
-+        }
-         return -1;
-     }
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index 679a8476852e..1e351f6fc875 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -1603,6 +1603,12 @@ bool memory_region_init_ram(MemoryRegion *mr,
+                             uint64_t size,
+                             Error **errp);
  
++bool memory_region_init_ram_guest_memfd(MemoryRegion *mr,
++                                        Object *owner,
++                                        const char *name,
++                                        uint64_t size,
++                                        Error **errp);
++
+ /**
+  * memory_region_init_rom: Initialize a ROM memory region.
+  *
+diff --git a/system/memory.c b/system/memory.c
+index c756950c0c0f..85a22408e9a4 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -3606,6 +3606,31 @@ bool memory_region_init_ram(MemoryRegion *mr,
+     return true;
+ }
+ 
++bool memory_region_init_ram_guest_memfd(MemoryRegion *mr,
++                                        Object *owner,
++                                        const char *name,
++                                        uint64_t size,
++                                        Error **errp)
++{
++    DeviceState *owner_dev;
++
++    if (!memory_region_init_ram_flags_nomigrate(mr, owner, name, size,
++                                                RAM_GUEST_MEMFD, errp)) {
++        return false;
++    }
++
++    /* This will assert if owner is neither NULL nor a DeviceState.
++     * We only want the owner here for the purposes of defining a
++     * unique name for migration. TODO: Ideally we should implement
++     * a naming scheme for Objects which are not DeviceStates, in
++     * which case we can relax this restriction.
++     */
++    owner_dev = DEVICE(owner);
++    vmstate_register_ram(mr, owner_dev);
++
++    return true;
++}
++
+ bool memory_region_init_rom(MemoryRegion *mr,
+                             Object *owner,
+                             const char *name,
 -- 
 2.34.1
 
