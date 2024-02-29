@@ -2,53 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F01C686BF89
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 04:41:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9680586BF8B
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 04:41:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfXGx-00088D-55; Wed, 28 Feb 2024 22:39:51 -0500
+	id 1rfXGx-00088b-DG; Wed, 28 Feb 2024 22:39:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rfXGu-00087u-Ow
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 22:39:48 -0500
+ id 1rfXGv-000883-Nt
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 22:39:49 -0500
 Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rfXGr-0001yM-Lk
- for qemu-devel@nongnu.org; Wed, 28 Feb 2024 22:39:48 -0500
+ id 1rfXGt-0001yY-Op
+ for qemu-devel@nongnu.org; Wed, 28 Feb 2024 22:39:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709177986; x=1740713986;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=MR9Hfywb5oVKthMwsL85SqTlZD7zmVScv05gZwmLqXQ=;
- b=kgZWqNMz/Mo6zecTTSE+stLRwbnHik6VwIhfywRxtqDNXYC2tozYLS6p
- Bvy9ur6dD9TJm1GiXs3Fe655YcBMoBN35KATdoCtTXbnJnuqK3gwhVxLT
- CJSCNCYhKO7E6IGZG5gFc6EENctJKnbJ5YMd3oy9vj6jPdkk7PERy6nuj
- RPF7K1EBiGbf+AQ41aB6rsaxKuz1B/cAmmxgfkrg4YsWoYZTgAVwulovy
- vO05BRf/GNtcw84ohZpk1rVO/EneiDFo67fvxatmilmtUzZTMjHfDYjUF
- RmY268f4TIo6tW4wEPGJfC+GRkY/uXdvzuLCoRWi8vSnbcuWSutKhlEl7 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="21082845"
-X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; d="scan'208";a="21082845"
+ t=1709177988; x=1740713988;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=eGjd+pRgiwGO1fh5AeBj2UC6ZWHBBBc2TbAegiluf1Y=;
+ b=crGGCE82R5UTCNxv30x4ehwZn5pSvGOZh2oL/9jZFBmjDr9nEh2dd/YE
+ h/uK458rzYkWpQNAGTtaeyl8Quqcaph+HnV6lAGk1+l1dP+6js3WoN+0/
+ 8MP3/lHyXaFUdrk8laOdP2VasGFBfdDhUWh1OKwZbiIp9HHanJVTXJL1Z
+ 6aR5o5tRv0Qi4+i5vkzWJp5bOBtNGOKrwwhFr8cz8pthgn5pk5u1ZLiZg
+ 03tfDgFvUuEwFBiLRsvCk2jTry5jAOS6yTH/XW1eC9EYNjVesp2rEuFsz
+ f3Al5K1s+BGqUfrgySN77Mg2DtWFJI4uaT2rJbVYEQxfZU8BvFH9YR55v g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="21082849"
+X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; d="scan'208";a="21082849"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 19:39:42 -0800
+ 28 Feb 2024 19:39:44 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="7592526"
+   d="scan'208";a="7592529"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 19:39:40 -0800
+ 28 Feb 2024 19:39:42 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH 0/2] Optimize user_creatable_add_type error path
-Date: Thu, 29 Feb 2024 11:37:37 +0800
-Message-Id: <20240229033739.1123076-1-zhenzhong.duan@intel.com>
+Subject: [PATCH 1/2] qom/object_interfaces: Remove unnecessary local_err check
+Date: Thu, 29 Feb 2024 11:37:38 +0800
+Message-Id: <20240229033739.1123076-2-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240229033739.1123076-1-zhenzhong.duan@intel.com>
+References: <20240229033739.1123076-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.10;
@@ -75,21 +77,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+In the error return path, local_err is always set, no need to check it.
 
-This is a simple optimization to user_creatable_add_type error path.
-Removed local_err and its check in err path, use *errp instead.
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+---
+ qom/object_interfaces.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-Thanks
-Zhenzhong
-
-Zhenzhong Duan (2):
-  qom/object_interfaces: Remove unnecessary local error check
-  qom/object_interfaces: Remove local_err in user_creatable_add_type
-
- qom/object_interfaces.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
-
+diff --git a/qom/object_interfaces.c b/qom/object_interfaces.c
+index e0833c8bfe..255a7bf659 100644
+--- a/qom/object_interfaces.c
++++ b/qom/object_interfaces.c
+@@ -128,13 +128,11 @@ Object *user_creatable_add_type(const char *type, const char *id,
+         }
+         goto out;
+     }
+-out:
+-    if (local_err) {
+-        error_propagate(errp, local_err);
+-        object_unref(obj);
+-        return NULL;
+-    }
+     return obj;
++out:
++    error_propagate(errp, local_err);
++    object_unref(obj);
++    return NULL;
+ }
+ 
+ void user_creatable_add_qapi(ObjectOptions *options, Error **errp)
 -- 
 2.34.1
 
