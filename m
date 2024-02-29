@@ -2,110 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C23B86CB95
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 15:29:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FB1186CB9C
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 15:30:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfhOP-0005zz-Tr; Thu, 29 Feb 2024 09:28:19 -0500
+	id 1rfhPo-0002Nj-TI; Thu, 29 Feb 2024 09:29:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfhO4-0005Vo-4Q
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 09:27:52 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfhO2-0005v4-0u
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 09:27:51 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id AA46F225D3;
- Thu, 29 Feb 2024 14:27:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709216867; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1rfhPi-0001zO-Rk
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 09:29:36 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1rfhPd-00068s-TK
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 09:29:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709216968;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5IYpXJXZ6JkwiLUARsOdXPZwYwAWQvdJiqE7KW+sd/g=;
- b=ROWO6p4vxDJUQCNgVJJUFTmmvscrpeKzEHsqMFO+J9XK2N1GnAYGLg/uqVdTAFOKVVFGEe
- xqdFucASm8P7FmJbl7jNJ/ooFA4OKLJji054s6AkgvJj0eVWRJvR+EbzRlueHxMeTr1j+e
- oHcbCLyxnHg0agK/nV5NRCw0ptdhqDE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709216867;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=5IYpXJXZ6JkwiLUARsOdXPZwYwAWQvdJiqE7KW+sd/g=;
- b=NnLZzkMzm84PpZm7+WOkOkzUcjifuS8eGl7iR6WHZXk0W87jMnaBbTUsYn7zm5IRi8yR/O
- huUsl7vG68vao1Bw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709216867; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=5IYpXJXZ6JkwiLUARsOdXPZwYwAWQvdJiqE7KW+sd/g=;
- b=ROWO6p4vxDJUQCNgVJJUFTmmvscrpeKzEHsqMFO+J9XK2N1GnAYGLg/uqVdTAFOKVVFGEe
- xqdFucASm8P7FmJbl7jNJ/ooFA4OKLJji054s6AkgvJj0eVWRJvR+EbzRlueHxMeTr1j+e
- oHcbCLyxnHg0agK/nV5NRCw0ptdhqDE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709216867;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=5IYpXJXZ6JkwiLUARsOdXPZwYwAWQvdJiqE7KW+sd/g=;
- b=NnLZzkMzm84PpZm7+WOkOkzUcjifuS8eGl7iR6WHZXk0W87jMnaBbTUsYn7zm5IRi8yR/O
- huUsl7vG68vao1Bw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2E0A913A4B;
- Thu, 29 Feb 2024 14:27:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id Aqr2OGKU4GVkIAAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 29 Feb 2024 14:27:46 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com, Claudio
- Fontana <cfontana@suse.de>
-Subject: Re: [PATCH v5 17/23] migration/multifd: Add outgoing QIOChannelFile
- support
-In-Reply-To: <Zd_67kAJ3OcDFNjC@x1n>
-References: <20240228152127.18769-1-farosas@suse.de>
- <20240228152127.18769-18-farosas@suse.de> <Zd_vhfonAX5gIcJl@x1n>
- <Zd_67kAJ3OcDFNjC@x1n>
-Date: Thu, 29 Feb 2024 11:27:44 -0300
-Message-ID: <87msrjz6ov.fsf@suse.de>
+ bh=StbiZXwla8vIuHHbeT4VZbIjdaKRKNSm18LQtWP/rZQ=;
+ b=K8eqRpa7JQ6Phq9D9odBnPhbAUAilzL5XUD+Ree4tS0MkCV62GTlZOwOW/rjhZBc0T1lND
+ WgHkMiWvX1rrjoA+VOuMNzQropwINsvCHvgExsch8ayr90FdMN102LGoo8W4M+uzPjbBBy
+ tf+3YMANppyfub2sr89Uu0QFZtLh6m0=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-460-1c8xQ0cHNIaEQ0odqm8nPQ-1; Thu, 29 Feb 2024 09:29:27 -0500
+X-MC-Unique: 1c8xQ0cHNIaEQ0odqm8nPQ-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-33d256ca4c8so549145f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 06:29:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709216966; x=1709821766;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=StbiZXwla8vIuHHbeT4VZbIjdaKRKNSm18LQtWP/rZQ=;
+ b=EgKEN8ie35xyTkz8gC2uurhWvwxxPj7Mox2iscati9QR43mu5LZgbFpPz9kRxXf0WH
+ O0G1Voy1CZLxLTR+U4HavOutpJ2Bf2KwMkkGsmYSaLkZwN0/cvEzFEBTjIsuRFvyjK0L
+ cSJN1aV8DsiDZE8K7jB0H/cEr9/1Ezr+KjPoBs4f0sGURa7UxLSh2kbbEN5j5xv+idBN
+ pACF5BZAASGap/5WrKWpcvy+hMK84lzj07tMv7K5PudeqyqgfCxro9cBGKfd8WMDKUXF
+ J/4gelHOsJM7/JGRqUuamxzCaQ2+d8F3lDHKfkrjjVzQyCOxMa4tJod6wlXOETS5fzB4
+ q9Wg==
+X-Gm-Message-State: AOJu0Yxo31KdzvCSBptcLYktZvFVJ+xVnmV7Cyp8rHxmxCplC2m1nk8I
+ mouD0o85La3KJNxomtWCJ8xhLdxxI+k+viLgT9bRxVSw2wQnmwxFkYlPEJqOKR+eYZsp9ilU6Hs
+ vyToK8/FuFLoJyHKRWU7kXbBIi34biKZQca0u0JwZudh3IJxMlSiO
+X-Received: by 2002:a05:600c:1c0d:b0:412:ace9:9d85 with SMTP id
+ j13-20020a05600c1c0d00b00412ace99d85mr2219370wms.3.1709216965746; 
+ Thu, 29 Feb 2024 06:29:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFF8tCz7L/WxQDM3B1qriCeSoM8c7kJ324p+93qr8j2fs1rmLR43Yjf7/+lBceVIN2D/TTzLg==
+X-Received: by 2002:a05:600c:1c0d:b0:412:ace9:9d85 with SMTP id
+ j13-20020a05600c1c0d00b00412ace99d85mr2219349wms.3.1709216965338; 
+ Thu, 29 Feb 2024 06:29:25 -0800 (PST)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ bw1-20020a0560001f8100b0033db0c866f7sm1954508wrb.11.2024.02.29.06.29.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 29 Feb 2024 06:29:24 -0800 (PST)
+Date: Thu, 29 Feb 2024 15:29:23 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>, "Michael
+ S. Tsirkin" <mst@redhat.com>, Song Gao <gaosong@loongson.cn>, Alistair
+ Francis <alistair.francis@wdc.com>, palmer@dabbelt.com,
+ bin.meng@windriver.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?=
+ <philmd@linaro.org>, Yanan Wang <wangyanan55@huawei.com>, Eric Blake
+ <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ qemu-arm@nongnu.org, qemu-riscv@nongnu.org, f.ebner@proxmox.com
+Subject: Re: [PATCH 06/19] smbios: get rid of smbios_legacy global
+Message-ID: <20240229152923.46919312@imammedo.users.ipa.redhat.com>
+In-Reply-To: <0129FA3E-A566-481A-85A6-439E72C5594B@redhat.com>
+References: <20240227154749.1818189-1-imammedo@redhat.com>
+ <20240227154749.1818189-7-imammedo@redhat.com>
+ <0129FA3E-A566-481A-85A6-439E72C5594B@redhat.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ROWO6p4v;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=NnLZzkMz
-X-Spamd-Result: default: False [-4.31 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- BAYES_HAM(-3.00)[100.00%]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_FIVE(0.00)[5];
- DWL_DNSWL_LOW(-1.00)[suse.de:dkim]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: AA46F225D3
-X-Spam-Score: -4.31
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.096,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,237 +110,197 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On Thu, 29 Feb 2024 16:23:21 +0530
+Ani Sinha <anisinha@redhat.com> wrote:
 
-> On Thu, Feb 29, 2024 at 10:44:21AM +0800, Peter Xu wrote:
->> On Wed, Feb 28, 2024 at 12:21:21PM -0300, Fabiano Rosas wrote:
->> > Allow multifd to open file-backed channels. This will be used when
->> > enabling the mapped-ram migration stream format which expects a
->> > seekable transport.
->> > 
->> > The QIOChannel read and write methods will use the preadv/pwritev
->> > versions which don't update the file offset at each call so we can
->> > reuse the fd without re-opening for every channel.
->> > 
->> > Contrary to the socket migration, the file migration doesn't need an
->> > asynchronous channel creation process, so expose
->> > multifd_channel_connect() and call it directly.
->> > 
->> > Note that this is just setup code and multifd cannot yet make use of
->> > the file channels.
->> > 
->> > Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> > ---
->> > - moved flags change to another patch
->> > - removed channels_created assert
->> > ---
->> >  migration/file.c    | 41 +++++++++++++++++++++++++++++++++++++++--
->> >  migration/file.h    |  4 ++++
->> >  migration/multifd.c | 18 +++++++++++++++---
->> >  migration/multifd.h |  1 +
->> >  4 files changed, 59 insertions(+), 5 deletions(-)
->> > 
->> > diff --git a/migration/file.c b/migration/file.c
->> > index 22d052a71f..83328a7a1b 100644
->> > --- a/migration/file.c
->> > +++ b/migration/file.c
->> > @@ -12,12 +12,17 @@
->> >  #include "channel.h"
->> >  #include "file.h"
->> >  #include "migration.h"
->> > +#include "multifd.h"
->> >  #include "io/channel-file.h"
->> >  #include "io/channel-util.h"
->> >  #include "trace.h"
->> >  
->> >  #define OFFSET_OPTION ",offset="
->> >  
->> > +static struct FileOutgoingArgs {
->> > +    char *fname;
->> > +} outgoing_args;
->> > +
->> >  /* Remove the offset option from @filespec and return it in @offsetp. */
->> >  
->> >  int file_parse_offset(char *filespec, uint64_t *offsetp, Error **errp)
->> > @@ -37,6 +42,36 @@ int file_parse_offset(char *filespec, uint64_t *offsetp, Error **errp)
->> >      return 0;
->> >  }
->> >  
->> > +void file_cleanup_outgoing_migration(void)
->> > +{
->> > +    g_free(outgoing_args.fname);
->> > +    outgoing_args.fname = NULL;
->> > +}
->> > +
->> > +bool file_send_channel_create(gpointer opaque, Error **errp)
->> > +{
->> > +    QIOChannelFile *ioc;
->> > +    int flags = O_WRONLY;
->> > +    bool ret = true;
->> > +
->> > +    ioc = qio_channel_file_new_path(outgoing_args.fname, flags, 0, errp);
->> > +    if (!ioc) {
->> > +        ret = false;
->> > +        goto out;
->> > +    }
->> > +
->> > +    multifd_channel_connect(opaque, QIO_CHANNEL(ioc));
->> > +
->> > +out:
->> > +    /*
->> > +     * File channel creation is synchronous. However posting this
->> > +     * semaphore here is simpler than adding a special case.
->> > +     */
->> > +    multifd_send_channel_created();
->> > +
->> > +    return ret;
->> > +}
->> > +
->> >  void file_start_outgoing_migration(MigrationState *s,
->> >                                     FileMigrationArgs *file_args, Error **errp)
->> >  {
->> > @@ -47,12 +82,14 @@ void file_start_outgoing_migration(MigrationState *s,
->> >  
->> >      trace_migration_file_outgoing(filename);
->> >  
->> > -    fioc = qio_channel_file_new_path(filename, O_CREAT | O_WRONLY | O_TRUNC,
->> > -                                     0600, errp);
->> > +    fioc = qio_channel_file_new_path(filename, O_CREAT | O_TRUNC | O_WRONLY,
->> > +                                     0660, errp);
->> 
->> It seems this is still leftover?
->> 
->> >      if (!fioc) {
->> >          return;
->> >      }
->> >  
->> > +    outgoing_args.fname = g_strdup(filename);
->> > +
->> >      ioc = QIO_CHANNEL(fioc);
->> >      if (offset && qio_channel_io_seek(ioc, offset, SEEK_SET, errp) < 0) {
->> >          return;
->> > diff --git a/migration/file.h b/migration/file.h
->> > index 37d6a08bfc..4577f9efdd 100644
->> > --- a/migration/file.h
->> > +++ b/migration/file.h
->> > @@ -9,10 +9,14 @@
->> >  #define QEMU_MIGRATION_FILE_H
->> >  
->> >  #include "qapi/qapi-types-migration.h"
->> > +#include "io/task.h"
->> > +#include "channel.h"
->> >  
->> >  void file_start_incoming_migration(FileMigrationArgs *file_args, Error **errp);
->> >  
->> >  void file_start_outgoing_migration(MigrationState *s,
->> >                                     FileMigrationArgs *file_args, Error **errp);
->> >  int file_parse_offset(char *filespec, uint64_t *offsetp, Error **errp);
->> > +void file_cleanup_outgoing_migration(void);
->> > +bool file_send_channel_create(gpointer opaque, Error **errp);
->> >  #endif
->> > diff --git a/migration/multifd.c b/migration/multifd.c
->> > index 3574fd3953..f155223303 100644
->> > --- a/migration/multifd.c
->> > +++ b/migration/multifd.c
->> > @@ -17,6 +17,7 @@
->> >  #include "exec/ramblock.h"
->> >  #include "qemu/error-report.h"
->> >  #include "qapi/error.h"
->> > +#include "file.h"
->> >  #include "ram.h"
->> >  #include "migration.h"
->> >  #include "migration-stats.h"
->> > @@ -28,6 +29,7 @@
->> >  #include "threadinfo.h"
->> >  #include "options.h"
->> >  #include "qemu/yank.h"
->> > +#include "io/channel-file.h"
->> >  #include "io/channel-socket.h"
->> >  #include "yank_functions.h"
->> >  
->> > @@ -694,6 +696,7 @@ static bool multifd_send_cleanup_channel(MultiFDSendParams *p, Error **errp)
->> >  {
->> >      if (p->c) {
->> >          migration_ioc_unregister_yank(p->c);
->> > +        qio_channel_close(p->c, NULL);
->> 
->> s/NULL/&error_abort/?
->
-> Or we can drop this line?  IIUC iochannel finalize() will always close it,
-> or it could be a separate bug.
->
+> > On 27-Feb-2024, at 21:17, Igor Mammedov <imammedo@redhat.com> wrote:
+> > 
+> > clean up smbios_set_defaults() which is reused by legacy
+> > and non legacy machines from being aware of 'legacy' notion
+> > and need to turn it off. And push legacy handling up to
+> > PC machine code where it's relevant.
+> > 
+> > Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+> > ---
+> > PS: I've moved/kept legacy smbios_entries to smbios_get_tables()
+> > but it at least is not visible to API users. To get rid of it
+> > as well, it would be necessary to change how '-smbios' CLI
+> > option is processed. Which is done later in the series.
+> > ---
+> > include/hw/firmware/smbios.h |  2 +-
+> > hw/arm/virt.c                |  2 +-
+> > hw/i386/fw_cfg.c             |  7 ++++---
+> > hw/loongarch/virt.c          |  2 +-
+> > hw/riscv/virt.c              |  2 +-
+> > hw/smbios/smbios.c           | 35 +++++++++++++++--------------------
+> > 6 files changed, 23 insertions(+), 27 deletions(-)
+> > 
+> > diff --git a/include/hw/firmware/smbios.h b/include/hw/firmware/smbios.h
+> > index a187fbbd3d..0818184834 100644
+> > --- a/include/hw/firmware/smbios.h
+> > +++ b/include/hw/firmware/smbios.h
+> > @@ -293,7 +293,7 @@ struct smbios_type_127 {
+> > void smbios_entry_add(QemuOpts *opts, Error **errp);
+> > void smbios_set_cpuid(uint32_t version, uint32_t features);
+> > void smbios_set_defaults(const char *manufacturer, const char *product,
+> > -                         const char *version, bool legacy_mode,
+> > +                         const char *version,
+> >                          bool uuid_encoded, SmbiosEntryPointType ep_type);
+> > void smbios_set_default_processor_family(uint16_t processor_family);
+> > uint8_t *smbios_get_table_legacy(uint32_t expected_t4_count, size_t *length);
+> > diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> > index 0af1943697..8588681f27 100644
+> > --- a/hw/arm/virt.c
+> > +++ b/hw/arm/virt.c
+> > @@ -1633,7 +1633,7 @@ static void virt_build_smbios(VirtMachineState *vms)
+> >     }
+> > 
+> >     smbios_set_defaults("QEMU", product,
+> > -                        vmc->smbios_old_sys_ver ? "1.0" : mc->name, false,
+> > +                        vmc->smbios_old_sys_ver ? "1.0" : mc->name,
+> >                         true, SMBIOS_ENTRY_POINT_TYPE_64);
+> > 
+> >     /* build the array of physical mem area from base_memmap */
+> > diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
+> > index fcb4fb0769..c1e9c0fd9c 100644
+> > --- a/hw/i386/fw_cfg.c
+> > +++ b/hw/i386/fw_cfg.c
+> > @@ -63,15 +63,16 @@ void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg)
+> >     if (pcmc->smbios_defaults) {
+> >         /* These values are guest ABI, do not change */
+> >         smbios_set_defaults("QEMU", mc->desc, mc->name,
+> > -                            pcmc->smbios_legacy_mode, pcmc->smbios_uuid_encoded,
+> > +                            pcmc->smbios_uuid_encoded,
+> >                             pcms->smbios_entry_point_type);
+> >     }
+> > 
+> >     /* tell smbios about cpuid version and features */
+> >     smbios_set_cpuid(cpu->env.cpuid_version, cpu->env.features[FEAT_1_EDX]);
+> > 
+> > -    smbios_tables = smbios_get_table_legacy(ms->smp.cpus, &smbios_tables_len);
+> > -    if (smbios_tables) {
+> > +    if (pcmc->smbios_legacy_mode) {
+> > +        smbios_tables = smbios_get_table_legacy(ms->smp.cpus,
+> > +                                                &smbios_tables_len);
+> >         fw_cfg_add_bytes(fw_cfg, FW_CFG_SMBIOS_ENTRIES,
+> >                          smbios_tables, smbios_tables_len);
+> >         return;
+> > diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+> > index 0ad7d8c887..73fb3522ba 100644
+> > --- a/hw/loongarch/virt.c
+> > +++ b/hw/loongarch/virt.c
+> > @@ -320,7 +320,7 @@ static void virt_build_smbios(LoongArchMachineState *lams)
+> >         return;
+> >     }
+> > 
+> > -    smbios_set_defaults("QEMU", product, mc->name, false,
+> > +    smbios_set_defaults("QEMU", product, mc->name,
+> >                         true, SMBIOS_ENTRY_POINT_TYPE_64);
+> > 
+> >     smbios_get_tables(ms, NULL, 0, &smbios_tables, &smbios_tables_len,
+> > diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+> > index fd35c74781..e2c9529df2 100644
+> > --- a/hw/riscv/virt.c
+> > +++ b/hw/riscv/virt.c
+> > @@ -1235,7 +1235,7 @@ static void virt_build_smbios(RISCVVirtState *s)
+> >         product = "KVM Virtual Machine";
+> >     }
+> > 
+> > -    smbios_set_defaults("QEMU", product, mc->name, false,
+> > +    smbios_set_defaults("QEMU", product, mc->name,
+> >                         true, SMBIOS_ENTRY_POINT_TYPE_64);
+> > 
+> >     if (riscv_is_32bit(&s->soc[0])) {
+> > diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
+> > index 15339d8dbe..c46fc93357 100644
+> > --- a/hw/smbios/smbios.c
+> > +++ b/hw/smbios/smbios.c
+> > @@ -54,7 +54,6 @@ struct smbios_table {
+> > 
+> > static uint8_t *smbios_entries;
+> > static size_t smbios_entries_len;
+> > -static bool smbios_legacy = true;
+> > static bool smbios_uuid_encoded = true;
+> > /* end: legacy structures & constants for <= 2.0 machines */
+> > 
+> > @@ -570,9 +569,16 @@ static void smbios_build_type_1_fields(void)
+> > 
+> > uint8_t *smbios_get_table_legacy(uint32_t expected_t4_count, size_t *length)
+> > {
+> > -    if (!smbios_legacy) {
+> > -        *length = 0;
+> > -        return NULL;
+> > +    /* drop unwanted version of command-line file blob(s) */
+> > +    g_free(smbios_tables);
+> > +    smbios_tables = NULL;
+> > +
+> > +    /* also complain if fields were given for types > 1 */
+> > +    if (find_next_bit(have_fields_bitmap,
+> > +                      SMBIOS_MAX_TYPE + 1, 2) < SMBIOS_MAX_TYPE + 1) {
+> > +        error_report("can't process fields for smbios "
+> > +                     "types > 1 on machine versions < 2.1!");
+> > +        exit(1);
+> >     }
+> > 
+> >     if (!smbios_immutable) {
+> > @@ -1006,28 +1012,13 @@ void smbios_set_default_processor_family(uint16_t processor_family)
+> > }
+> > 
+> > void smbios_set_defaults(const char *manufacturer, const char *product,
+> > -                         const char *version, bool legacy_mode,
+> > +                         const char *version,
+> >                          bool uuid_encoded, SmbiosEntryPointType ep_type)
+> > {
+> >     smbios_have_defaults = true;
+> > -    smbios_legacy = legacy_mode;
+> >     smbios_uuid_encoded = uuid_encoded;
+> >     smbios_ep_type = ep_type;
+> > 
+> > -    /* drop unwanted version of command-line file blob(s) */
+> > -    if (smbios_legacy) {
+> > -        g_free(smbios_tables);
+> > -        /* in legacy mode, also complain if fields were given for types > 1 */
+> > -        if (find_next_bit(have_fields_bitmap,
+> > -                          SMBIOS_MAX_TYPE+1, 2) < SMBIOS_MAX_TYPE+1) {
+> > -            error_report("can't process fields for smbios "
+> > -                         "types > 1 on machine versions < 2.1!");
+> > -            exit(1);
+> > -        }
+> > -    } else {
+> > -        g_free(smbios_entries);
+> > -    }
+> > -
+> >     SMBIOS_SET_DEFAULT(type1.manufacturer, manufacturer);
+> >     SMBIOS_SET_DEFAULT(type1.product, product);
+> >     SMBIOS_SET_DEFAULT(type1.version, version);
+> > @@ -1103,6 +1094,10 @@ void smbios_get_tables(MachineState *ms,
+> > {
+> >     unsigned i, dimm_cnt, offset;
+> > 
+> > +    /* drop unwanted (legacy) version of command-line file blob(s) */
+> > +    g_free(smbios_entries);
+> > +    smbios_entries = NULL;
+> > +  
+> 
+> Can you please explain why you do this unconditionally without checking for legacy mode? Seems wrong?
 
-We need it so the fsync happens. The finalize() will be a noop because
-the qio_channel_file_close() will clear the fd. Not the cleanest, but it
-works.
+with this patch legacy tables build is moved to fw_cfg_build_smbios(),
+however at this point QEMU still has option processing that fills
+both new and legacy smbios_entries blobs. 
 
->> 
->> >          object_unref(OBJECT(p->c));
->> >          p->c = NULL;
->> >      }
->> > @@ -715,6 +718,7 @@ static bool multifd_send_cleanup_channel(MultiFDSendParams *p, Error **errp)
->> >  
->> >  static void multifd_send_cleanup_state(void)
->> >  {
->> > +    file_cleanup_outgoing_migration();
->> >      socket_cleanup_outgoing_migration();
->> >      qemu_sem_destroy(&multifd_send_state->channels_created);
->> >      qemu_sem_destroy(&multifd_send_state->channels_ready);
->> > @@ -977,7 +981,7 @@ static bool multifd_tls_channel_connect(MultiFDSendParams *p,
->> >      return true;
->> >  }
->> >  
->> > -static void multifd_channel_connect(MultiFDSendParams *p, QIOChannel *ioc)
->> > +void multifd_channel_connect(MultiFDSendParams *p, QIOChannel *ioc)
->> >  {
->> >      qio_channel_set_delay(ioc, false);
->> >  
->> > @@ -1045,9 +1049,14 @@ out:
->> >      error_free(local_err);
->> >  }
->> >  
->> > -static void multifd_new_send_channel_create(gpointer opaque)
->> > +static bool multifd_new_send_channel_create(gpointer opaque, Error **errp)
->> >  {
->> > +    if (!multifd_use_packets()) {
->> > +        return file_send_channel_create(opaque, errp);
->> > +    }
->> > +
->> >      socket_send_channel_create(multifd_new_send_channel_async, opaque);
->> > +    return true;
->> >  }
->> >  
->> >  bool multifd_send_setup(void)
->> > @@ -1096,7 +1105,10 @@ bool multifd_send_setup(void)
->> >          p->page_size = qemu_target_page_size();
->> >          p->page_count = page_count;
->> >          p->write_flags = 0;
->> > -        multifd_new_send_channel_create(p);
->> > +
->> > +        if (!multifd_new_send_channel_create(p, &local_err)) {
->> > +            return -1;
->> 
->> "-1" is unfortunately a "true"!..
->> 
->> > +        }
->> >      }
->> >  
->> >      /*
->> > diff --git a/migration/multifd.h b/migration/multifd.h
->> > index 1d8bbaf96b..db8887f088 100644
->> > --- a/migration/multifd.h
->> > +++ b/migration/multifd.h
->> > @@ -227,5 +227,6 @@ static inline void multifd_send_prepare_header(MultiFDSendParams *p)
->> >      p->iovs_num++;
->> >  }
->> >  
->> > +void multifd_channel_connect(MultiFDSendParams *p, QIOChannel *ioc);
->> >  
->> >  #endif
->> > -- 
->> > 2.35.3
->> > 
->> 
->> -- 
->> Peter Xu
+this hunk cleanups not needed blob smbios_entries when building
+modern tables, and smbios_get_table_legacy() has a corresponding
+smbios_tables cleanup since modern is not needed there.
+
+[7/19] removes this in favor of a single blob.
+
+> 
+> >     if (!smbios_immutable) {
+> >         smbios_build_type_0_table();
+> >         smbios_build_type_1_table();
+> > -- 
+> > 2.39.3
+> >   
+> 
+
 
