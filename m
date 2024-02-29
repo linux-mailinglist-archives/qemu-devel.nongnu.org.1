@@ -2,107 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A7F786CD0F
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 16:33:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A0AC86CD1D
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 16:35:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfiOH-0006nY-Dx; Thu, 29 Feb 2024 10:32:09 -0500
+	id 1rfiQK-0001cs-Sw; Thu, 29 Feb 2024 10:34:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfiNU-0005uh-0g
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 10:31:27 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rfiPD-0001C0-Rh
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 10:33:13 -0500
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rfiNO-000632-Ud
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 10:31:17 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id AF99D2200C;
- Thu, 29 Feb 2024 15:31:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709220673; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MRUen7n9cmpzvKeZTt66SEdmCNIg800k4S1bHlTmpVw=;
- b=OIGcADj3oSipyG7+6l4iatrogkVuwusvc7aVIG+lEwnjcL1Y+Hce0dbUVZFUUsu8fe6bEr
- T5CMAEdOi1RfaE9mYfuEnrBa3UbHSD2vRHPnYPCh+72lNGUsqIZgBRfMUMvCXpAhUbg5yu
- y0jRsU9k7laCvuBuhNh8UIAyIgsMvCE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709220673;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MRUen7n9cmpzvKeZTt66SEdmCNIg800k4S1bHlTmpVw=;
- b=41DeOHFs+SCgFydquNoDngu1ItCtkpbN8vgH/PLUqTQburmDhkml4rWLRgZ+5/dxxvhvxa
- JdxCI38q/boQdZCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709220673; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MRUen7n9cmpzvKeZTt66SEdmCNIg800k4S1bHlTmpVw=;
- b=OIGcADj3oSipyG7+6l4iatrogkVuwusvc7aVIG+lEwnjcL1Y+Hce0dbUVZFUUsu8fe6bEr
- T5CMAEdOi1RfaE9mYfuEnrBa3UbHSD2vRHPnYPCh+72lNGUsqIZgBRfMUMvCXpAhUbg5yu
- y0jRsU9k7laCvuBuhNh8UIAyIgsMvCE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709220673;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MRUen7n9cmpzvKeZTt66SEdmCNIg800k4S1bHlTmpVw=;
- b=41DeOHFs+SCgFydquNoDngu1ItCtkpbN8vgH/PLUqTQburmDhkml4rWLRgZ+5/dxxvhvxa
- JdxCI38q/boQdZCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6730113503;
- Thu, 29 Feb 2024 15:31:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id mHXDCz+j4GU/MAAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 29 Feb 2024 15:31:11 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
- Claudio Fontana <cfontana@suse.de>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v6 23/23] tests/qtest/migration: Add a multifd + mapped-ram
- migration test
-Date: Thu, 29 Feb 2024 12:30:17 -0300
-Message-Id: <20240229153017.2221-24-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20240229153017.2221-1-farosas@suse.de>
-References: <20240229153017.2221-1-farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rfiP9-0006fb-US
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 10:33:06 -0500
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-512b700c8ebso1131903e87.0
+ for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 07:33:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1709220781; x=1709825581; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ekHpLpZjmvcgCA4auEMMYD11PMa17T0/pncCrTum3Os=;
+ b=E1eAjSYNMKwJ8fk2M3yzGfQTDSJSN/n80DTd9UKRQHKEwIY/XE0crItMaE/UnkBT7L
+ kP9fEjcoJQAyvLTLjISDMZKkhibD6vOL45LWM9dF1C67x724dzpbGyIsBfVgzvP5ncsj
+ mEtCYkvNVXexyohWO/Lp2VLVS7wts3EB67Zez72MObntSTPIDOeghDeRVyxCiskxdAd2
+ pOue3af9xhytpb4x8PPB7haNJlE5dFmTIFXLsw4vc2XHygPBv4FAMvL4wRjDOLVQWZy6
+ dvhWahDm3QUB+uyLkftAM7fyoeQPoWO56U17XLLwfUog2skCpxsGJ1s2gu6u4EFjvxRF
+ YjRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709220781; x=1709825581;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=ekHpLpZjmvcgCA4auEMMYD11PMa17T0/pncCrTum3Os=;
+ b=SiVc3bvnzvc95ixB7DNLiFYVztzOWlf0sEBUI2fNKMcHrQ+C+vc1ad2exQP8MrhU/f
+ zmedYpebzrUIRs2lUOCxqEvIPZt/8R5s5OPhdLHsvv9yMIcRbQWM2iPPpSWw0fPPkNZL
+ 3euHOq9VJTBagNe54DqJbxmkImBGeRvOaUuUH+p6NvgGwGvOGxo8Tr3PF1b1ziGoIMG9
+ f/Gw0wQnQDvTcc1X1beMY4261alUe/8hAQPYJW00oz4Pnxk8Fhtoheazd6ki5xnZV0hR
+ 8xNr0ZYPKIOrY7L10ERqclYWKOoeYMYVeyAjcLBxBg3Aly8/WgmTgWJn6fo+tUWGQjPS
+ DrHA==
+X-Gm-Message-State: AOJu0YxKx11z5YKENPCRVOCwXQBkDQZbPAl4yJ6w2A3XBENMCOQzCUhT
+ ZuveipsoDU+y/LFyLN1pETNOP4MwkYtzKqF7FimtSRLOPNF4ADV8lDfz2UeS/c8=
+X-Google-Smtp-Source: AGHT+IG46HNo8S6Ao8reA7QgBgePrHnGjQU22roLw/a0DlEEYAd7nlGBPLjXO93Qh0HunSsCufD2NA==
+X-Received: by 2002:a05:6512:1255:b0:513:2c6c:4cc8 with SMTP id
+ fb21-20020a056512125500b005132c6c4cc8mr351848lfb.63.1709220781015; 
+ Thu, 29 Feb 2024 07:33:01 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ t14-20020a1c770e000000b00411e1574f7fsm5439966wmi.44.2024.02.29.07.33.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 29 Feb 2024 07:33:00 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 506CC5F78A;
+ Thu, 29 Feb 2024 15:33:00 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Nicolas Eder <nicolas.eder@lauterbach.com>
+Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, "Christian Boenig" <christian.boenig@lauterbach.com>
+Subject: Re: [PATCH v5 01/18] gdbstub, mcdstub: file and build structure
+ adapted to accomodate for the mcdstub
+In-Reply-To: <20231220162555.19545-2-nicolas.eder@lauterbach.com> (Nicolas
+ Eder's message of "Wed, 20 Dec 2023 17:25:38 +0100")
+References: <20231220162555.19545-1-nicolas.eder@lauterbach.com>
+ <20231220162555.19545-2-nicolas.eder@lauterbach.com>
+User-Agent: mu4e 1.12.0; emacs 29.1
+Date: Thu, 29 Feb 2024 15:33:00 +0000
+Message-ID: <87edcv8evn.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spamd-Result: default: False [1.90 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; R_MISSING_CHARSET(2.50)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
- BROKEN_CONTENT_TYPE(1.50)[]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_SEVEN(0.00)[8]; MID_CONTAINS_FROM(1.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- BAYES_HAM(-3.00)[100.00%]
-X-Spam-Score: 1.90
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x132.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,106 +98,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- tests/qtest/migration-test.c | 68 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
+Nicolas Eder <nicolas.eder@lauterbach.com> writes:
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 64a26009e9..a71504b262 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -2248,6 +2248,46 @@ static void test_precopy_file_mapped_ram(void)
-     test_file_common(&args, true);
- }
- 
-+static void *migrate_multifd_mapped_ram_start(QTestState *from, QTestState *to)
-+{
-+    migrate_mapped_ram_start(from, to);
-+
-+    migrate_set_parameter_int(from, "multifd-channels", 4);
-+    migrate_set_parameter_int(to, "multifd-channels", 4);
-+
-+    migrate_set_capability(from, "multifd", true);
-+    migrate_set_capability(to, "multifd", true);
-+
-+    return NULL;
-+}
-+
-+static void test_multifd_file_mapped_ram_live(void)
-+{
-+    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
-+                                           FILE_TEST_FILENAME);
-+    MigrateCommon args = {
-+        .connect_uri = uri,
-+        .listen_uri = "defer",
-+        .start_hook = migrate_multifd_mapped_ram_start,
-+    };
-+
-+    test_file_common(&args, false);
-+}
-+
-+static void test_multifd_file_mapped_ram(void)
-+{
-+    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
-+                                           FILE_TEST_FILENAME);
-+    MigrateCommon args = {
-+        .connect_uri = uri,
-+        .listen_uri = "defer",
-+        .start_hook = migrate_multifd_mapped_ram_start,
-+    };
-+
-+    test_file_common(&args, true);
-+}
-+
-+
- static void test_precopy_tcp_plain(void)
- {
-     MigrateCommon args = {
-@@ -2524,6 +2564,25 @@ static void test_migrate_precopy_fd_file_mapped_ram(void)
-     };
-     test_file_common(&args, true);
- }
-+
-+static void *migrate_multifd_fd_mapped_ram_start(QTestState *from,
-+                                                QTestState *to)
-+{
-+    migrate_multifd_mapped_ram_start(from, to);
-+    return migrate_precopy_fd_file_start(from, to);
-+}
-+
-+static void test_multifd_fd_mapped_ram(void)
-+{
-+    MigrateCommon args = {
-+        .connect_uri = "fd:fd-mig",
-+        .listen_uri = "defer",
-+        .start_hook = migrate_multifd_fd_mapped_ram_start,
-+        .finish_hook = test_migrate_fd_finish_hook
-+    };
-+
-+    test_file_common(&args, true);
-+}
- #endif /* _WIN32 */
- 
- static void do_test_validate_uuid(MigrateStart *args, bool should_fail)
-@@ -3566,6 +3625,15 @@ int main(int argc, char **argv)
-     migration_test_add("/migration/precopy/file/mapped-ram/live",
-                        test_precopy_file_mapped_ram_live);
- 
-+    migration_test_add("/migration/multifd/file/mapped-ram",
-+                       test_multifd_file_mapped_ram);
-+    migration_test_add("/migration/multifd/file/mapped-ram/live",
-+                       test_multifd_file_mapped_ram_live);
-+#ifndef _WIN32
-+    migration_test_add("/migration/multifd/fd/mapped-ram",
-+                       test_multifd_fd_mapped_ram);
-+#endif
-+
- #ifdef CONFIG_GNUTLS
-     migration_test_add("/migration/precopy/unix/tls/psk",
-                        test_precopy_unix_tls_psk);
--- 
-2.35.3
+> mcdstub files created including the shared header between the mcd shared =
+library and the mcdstub.
+> MAINTAINERS file updated
 
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
