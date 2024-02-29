@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56C0586C16B
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:54:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8D1286C174
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:55:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfa6x-00067T-0D; Thu, 29 Feb 2024 01:41:43 -0500
+	id 1rfa6u-000665-Mu; Thu, 29 Feb 2024 01:41:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rfa6N-0005Oi-FG
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:41:07 -0500
+ id 1rfa6T-0005Z3-LI
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:41:15 -0500
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rfa6L-0004qw-Kx
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:41:07 -0500
+ id 1rfa6R-0004qw-ON
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:41:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709188865; x=1740724865;
+ t=1709188871; x=1740724871;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=cmbU3tDF03XHOgSHO4OovN27gl27DdI5rmRqf4cj0uY=;
- b=HGHAVjyjUwRKb6os6KbJykpPAr1uHbvZgnjoxm6JrvHcPeSEVaoOWkYT
- BQiUxaGZZDgzxX4IAiEFVKtRO0ZBnj40NVpvjsmyWTrFHu437a6Sh59GB
- Zw6D7w3Wusjc31sHV5y1jrjqKMBvq19aC3Dtl/EhL8ZeXIDzA7OScQjeK
- UcmXtUwF1kHFfe7R/4y0+2lleNA3CaqkWJ3l16BjaH7XpoVBJqow4Htss
- u0doqsZsxSQPR70vxD9ATX+/nSTueCy5rR/+No8pDByn7zg7P4ntR2vO2
- QlTySOibeG+T14+2vAehmycKg7M8hI6yqTcssx3T+Lgkp07XHs7MIn+Ge g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3802844"
+ bh=TV0zJoSEEfrrhfHkCFBrQ5M3B95rGljdOpW38yTtSf8=;
+ b=oJqhRWkcYGLrTytVWT9Lp8faDpLCEb8rY0HylIJqkCMRgUwkpjTVcXlh
+ s41QoCJN09GZMT8FQABViYi1wo4prsZzSFkgPhZBsT7qUSSD2IAREXkAS
+ 1kLsMzY+Sq/PXjULmW+jkC0VCDBTCMHAzPf3fSFm2KJ9TqwV9N2Ts2C12
+ Mc7vQJOAljjO0cY6rbfAikOIe9I53c/6MfaOFD5Y26ZNxWRxHunWqnH1W
+ rmOwVv4Sx4gWhTR0wwCP3hzFiLyz0ygfa+0L7M1Uiy9CDKFXUYtrpqdBA
+ eGT2JaVWrPFv6UYpVy+tTi4BKjrEyRyPQjLkgsJ/E4P9PUixlYm9VKjDj w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3802855"
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="3802844"
+   d="scan'208";a="3802855"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 22:41:04 -0800
+ 28 Feb 2024 22:41:10 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="8075600"
+   d="scan'208";a="8075614"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa007.jf.intel.com with ESMTP; 28 Feb 2024 22:40:58 -0800
+ by orviesa007.jf.intel.com with ESMTP; 28 Feb 2024 22:41:05 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -58,10 +58,10 @@ Cc: kvm@vger.kernel.org, qemu-devel@nongnu.org,
  Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>, xiaoyao.li@intel.com
-Subject: [PATCH v5 32/65] i386/tdx: Set kvm_readonly_mem_enabled to false for
- TDX VM
-Date: Thu, 29 Feb 2024 01:36:53 -0500
-Message-Id: <20240229063726.610065-33-xiaoyao.li@intel.com>
+Subject: [PATCH v5 33/65] kvm/tdx: Don't complain when converting vMMIO region
+ to shared
+Date: Thu, 29 Feb 2024 01:36:54 -0500
+Message-Id: <20240229063726.610065-34-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240229063726.610065-1-xiaoyao.li@intel.com>
 References: <20240229063726.610065-1-xiaoyao.li@intel.com>
@@ -92,38 +92,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TDX only supports readonly for shared memory but not for private memory.
+From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-In the view of QEMU, it has no idea whether a memslot is used as shared
-memory of private. Thus just mark kvm_readonly_mem_enabled to false to
-TDX VM for simplicity.
+Because vMMIO region needs to be shared region, guest TD may explicitly
+convert such region from private to shared.  Don't complain such
+conversion.
 
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- target/i386/kvm/tdx.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ accel/kvm/kvm-all.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 42dbb5ce5c15..13f069171db7 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -480,6 +480,15 @@ static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index c9df41efa484..d533e2611ad8 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -2985,9 +2985,22 @@ static int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
+             ret = ram_block_discard_guest_memfd_range(rb, offset, size);
+         }
+     } else {
+-        error_report("Convert non guest_memfd backed memory region "
+-                    "(0x%"HWADDR_PRIx" ,+ 0x%"HWADDR_PRIx") to %s",
+-                    start, size, to_private ? "private" : "shared");
++        /*
++         * Because vMMIO region must be shared, guest TD may convert vMMIO
++         * region to shared explicitly.  Don't complain such case.  See
++         * memory_region_type() for checking if the region is MMIO region.
++         */
++        if (!to_private &&
++            !memory_region_is_ram(mr) &&
++            !memory_region_is_ram_device(mr) &&
++            !memory_region_is_rom(mr) &&
++            !memory_region_is_romd(mr)) {
++		    ret = 0;
++        } else {
++            error_report("Convert non guest_memfd backed memory region "
++                        "(0x%"HWADDR_PRIx" ,+ 0x%"HWADDR_PRIx") to %s",
++                        start, size, to_private ? "private" : "shared");
++        }
+     }
  
-     update_tdx_cpuid_lookup_by_tdx_caps();
- 
-+    /*
-+     * Set kvm_readonly_mem_allowed to false, because TDX only supports readonly
-+     * memory for shared memory but not for private memory. Besides, whether a
-+     * memslot is private or shared is not determined by QEMU.
-+     *
-+     * Thus, just mark readonly memory not supported for simplicity.
-+     */
-+    kvm_readonly_mem_allowed = false;
-+
-     tdx_guest = tdx;
-     return 0;
- }
+     memory_region_unref(section.mr);
 -- 
 2.34.1
 
