@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A0AC86CD1D
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 16:35:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15CA486CD21
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 16:35:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfiQK-0001cs-Sw; Thu, 29 Feb 2024 10:34:18 -0500
+	id 1rfiQd-00029X-Ca; Thu, 29 Feb 2024 10:34:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rfiPD-0001C0-Rh
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 10:33:13 -0500
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ id 1rfiQM-0001us-FU
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 10:34:18 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rfiP9-0006fb-US
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 10:33:06 -0500
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-512b700c8ebso1131903e87.0
- for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 07:33:03 -0800 (PST)
+ id 1rfiQ1-0006o5-Df
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 10:33:59 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-412a14299a4so8100925e9.1
+ for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 07:33:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709220781; x=1709825581; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709220836; x=1709825636; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ekHpLpZjmvcgCA4auEMMYD11PMa17T0/pncCrTum3Os=;
- b=E1eAjSYNMKwJ8fk2M3yzGfQTDSJSN/n80DTd9UKRQHKEwIY/XE0crItMaE/UnkBT7L
- kP9fEjcoJQAyvLTLjISDMZKkhibD6vOL45LWM9dF1C67x724dzpbGyIsBfVgzvP5ncsj
- mEtCYkvNVXexyohWO/Lp2VLVS7wts3EB67Zez72MObntSTPIDOeghDeRVyxCiskxdAd2
- pOue3af9xhytpb4x8PPB7haNJlE5dFmTIFXLsw4vc2XHygPBv4FAMvL4wRjDOLVQWZy6
- dvhWahDm3QUB+uyLkftAM7fyoeQPoWO56U17XLLwfUog2skCpxsGJ1s2gu6u4EFjvxRF
- YjRA==
+ bh=RaYHN89FLqaB2XgfxZpmq7YKqG6dfOIjv3vq0ydw7O0=;
+ b=s0HEFjY+T3CCGh6ZJGeY1ZboiC2TFcMjaYcwd/CadMEZuZkU3Td8GuNEMRSvw+RdF4
+ MODtHl5kdf91RpIVatCVqVlm1q7QL6QzzP+i4LL3ujkcnFyTaibpO9CNZ4tf8Q8+cqgZ
+ T3ODQZseZeLg4jGoup8WUFwKD9m5jDXdzOQOWCWlnVnltxQCEMR36CLsEHRk1Va0ZVM0
+ SVbfq99uXqmYT1IDZnKTrICLlt7++iIgGsu/aMPKQS5H6IuwxV+wT7VW3i4wHufMAQKm
+ EHUuTcWah+vsOc+eS/81q7vzy4pIaMAxX5T8zJUlit+FEBBnIJLTpGX39Ob8/Fl+Ctus
+ qvMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709220781; x=1709825581;
+ d=1e100.net; s=20230601; t=1709220836; x=1709825636;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=ekHpLpZjmvcgCA4auEMMYD11PMa17T0/pncCrTum3Os=;
- b=SiVc3bvnzvc95ixB7DNLiFYVztzOWlf0sEBUI2fNKMcHrQ+C+vc1ad2exQP8MrhU/f
- zmedYpebzrUIRs2lUOCxqEvIPZt/8R5s5OPhdLHsvv9yMIcRbQWM2iPPpSWw0fPPkNZL
- 3euHOq9VJTBagNe54DqJbxmkImBGeRvOaUuUH+p6NvgGwGvOGxo8Tr3PF1b1ziGoIMG9
- f/Gw0wQnQDvTcc1X1beMY4261alUe/8hAQPYJW00oz4Pnxk8Fhtoheazd6ki5xnZV0hR
- 8xNr0ZYPKIOrY7L10ERqclYWKOoeYMYVeyAjcLBxBg3Aly8/WgmTgWJn6fo+tUWGQjPS
- DrHA==
-X-Gm-Message-State: AOJu0YxKx11z5YKENPCRVOCwXQBkDQZbPAl4yJ6w2A3XBENMCOQzCUhT
- ZuveipsoDU+y/LFyLN1pETNOP4MwkYtzKqF7FimtSRLOPNF4ADV8lDfz2UeS/c8=
-X-Google-Smtp-Source: AGHT+IG46HNo8S6Ao8reA7QgBgePrHnGjQU22roLw/a0DlEEYAd7nlGBPLjXO93Qh0HunSsCufD2NA==
-X-Received: by 2002:a05:6512:1255:b0:513:2c6c:4cc8 with SMTP id
- fb21-20020a056512125500b005132c6c4cc8mr351848lfb.63.1709220781015; 
- Thu, 29 Feb 2024 07:33:01 -0800 (PST)
+ bh=RaYHN89FLqaB2XgfxZpmq7YKqG6dfOIjv3vq0ydw7O0=;
+ b=PUGIb0Ni2B652zlnwgVe2CSDGQ8aYw+2DUV+YRYnsFrnXQoPTIuhCrhD2tSki0Uoa6
+ nBTVNO05l1L20W9bg7gzVpJmLPnHtHr1NyCu8XfLL08W8OjbjuA017vA4M+Nhkdzd8w2
+ jmM5aWt/d80Z9lB6xlJjBkTywVAGwCCHXy1f2BC+f+ua6DHUaBRdOQp5MllWvNeHwGnC
+ UrY7AqE8vPKPi1UE1q//aUTRyM1UhyVGW55zZ3AYgBXRlEHpFyc7YaSrsHSbURAtliGN
+ XyexBaisbzu/RIhwupYGqz2R9lcja/giAE34W32Pa1oRbq9v0wJ/+jctXz7lYTx3uGiY
+ wrCw==
+X-Gm-Message-State: AOJu0Yxr+RiXP+c8e84BCQF9xbS0qCybptEsQDHBe6ADGy48LkIrGKJe
+ iYuyWnHCeXS7bCqlQ3elVttLt5vgIB7a9iy/a+XfQ9Pow1KCu8qJaNZH3REVAi/fgrtVNWc9+wM
+ w
+X-Google-Smtp-Source: AGHT+IH30/kcl1vGFcNlhTWz4PsgyvtKVPcK9w1iMbJ/iLzsWhy7YMqkNxqRjgAgUbUdKr1hUZwW+w==
+X-Received: by 2002:a05:600c:4fd3:b0:412:c1e5:a353 with SMTP id
+ o19-20020a05600c4fd300b00412c1e5a353mr850977wmq.12.1709220835836; 
+ Thu, 29 Feb 2024 07:33:55 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- t14-20020a1c770e000000b00411e1574f7fsm5439966wmi.44.2024.02.29.07.33.00
+ jp16-20020a05600c559000b00412a482cd90sm2351424wmb.25.2024.02.29.07.33.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 29 Feb 2024 07:33:00 -0800 (PST)
+ Thu, 29 Feb 2024 07:33:55 -0800 (PST)
 Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 506CC5F78A;
- Thu, 29 Feb 2024 15:33:00 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 296E25F78A;
+ Thu, 29 Feb 2024 15:33:55 +0000 (GMT)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Nicolas Eder <nicolas.eder@lauterbach.com>
 Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
  <philmd@linaro.org>, "Christian Boenig" <christian.boenig@lauterbach.com>
-Subject: Re: [PATCH v5 01/18] gdbstub, mcdstub: file and build structure
- adapted to accomodate for the mcdstub
-In-Reply-To: <20231220162555.19545-2-nicolas.eder@lauterbach.com> (Nicolas
- Eder's message of "Wed, 20 Dec 2023 17:25:38 +0100")
+Subject: Re: [PATCH v5 02/18] gdbstub: hex conversion functions moved to
+ cutils.h
+In-Reply-To: <20231220162555.19545-3-nicolas.eder@lauterbach.com> (Nicolas
+ Eder's message of "Wed, 20 Dec 2023 17:25:39 +0100")
 References: <20231220162555.19545-1-nicolas.eder@lauterbach.com>
- <20231220162555.19545-2-nicolas.eder@lauterbach.com>
+ <20231220162555.19545-3-nicolas.eder@lauterbach.com>
 User-Agent: mu4e 1.12.0; emacs 29.1
-Date: Thu, 29 Feb 2024 15:33:00 +0000
-Message-ID: <87edcv8evn.fsf@draig.linaro.org>
+Date: Thu, 29 Feb 2024 15:33:55 +0000
+Message-ID: <878r338eu4.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x132.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,10 +100,6 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Nicolas Eder <nicolas.eder@lauterbach.com> writes:
-
-> mcdstub files created including the shared header between the mcd shared =
-library and the mcdstub.
-> MAINTAINERS file updated
 
 Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
