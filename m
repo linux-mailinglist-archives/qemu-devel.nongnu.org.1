@@ -2,91 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F5FF86CBAD
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 15:35:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB0186CB7D
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 15:27:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfhVF-0005qA-UJ; Thu, 29 Feb 2024 09:35:17 -0500
+	id 1rfhMA-0005w6-GF; Thu, 29 Feb 2024 09:25:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rfhVD-0005nc-Ps
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 09:35:15 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rfhVC-0008Ij-9y
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 09:35:15 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4129ed6f514so7078685e9.1
- for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 06:35:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709217313; x=1709822113; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1Rl7oKUWzEf0mraJT3KrgwcszxjdCft6AKKs5tCD/r8=;
- b=v6UZxKRTy0a078KXW38VB9/++P6klYlOmaARl2MPx6n4B1skQmW6nnNfX3cKQQ3KzV
- wdTPXh1ivs42Wue+DCMG3A6orzofXI/TvmFJ5PPIbToPA2jUVLrln7z6VBHXTSjqGjzM
- sFrbwkaxc9Jnx9Wnoh7quToC1HSM4VscwwzZLHJDfXKrCuRnk2VTT6hsdBAAwSjOSfYe
- JXQzFKU421vH2auZCPFSr0JSYEM18cRxZc1WC+oRGTUj/27r53Cko4QAROZu+oSnYskP
- cI3AWbffLzAVS1Ji04Lnsyqtm0ZLJW8PeMy04vXrxxpyyy2WibeGPGMGJZ9E1N9Wr14A
- FP0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709217313; x=1709822113;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=1Rl7oKUWzEf0mraJT3KrgwcszxjdCft6AKKs5tCD/r8=;
- b=gioMjjQUe9z3qMUhAMSVDUfJphYJ/ZE5MbwofFr2Md72egbLlbGUlv7Y7p8YHHEvxt
- 1utEwarAxV85WiGhjlMJW/q8RZ5TvOiT2HDzB5NwbWQ9AZTgzn34Khqa7YMSqw8+9Sk8
- 9W8M85dxni3LGupwCqGA/O0u1QQ2V/8+u8nm0oJ+Rv/ka5YQwyi6VX1flVzq8xVX8a1Y
- IJmQFu526/wpaldiqkNAIlYl+RnBuu5DV60zVR07fpbUQMQubjbVl71lDzAzC/fFffMq
- RsEbb/zLO+CEvVDTWHGzDssLtuuowG+dvIukrg5GAWvRC3Pa1cbMnrLd3VThIegZCEtU
- ypJA==
-X-Gm-Message-State: AOJu0YxfpXA9/SoJOlFwIuKvuBb4wdd4NQ32p37ezPjXDKA98+va5fPN
- TKVSZAR9LzShd7ULEjucloXisztZFePw3SmUlwOLAxibo4yGpzmGYqjE57u+yg0=
-X-Google-Smtp-Source: AGHT+IHBtxwjElPmncwL5v3BymKSeVYGHkMX7ZiKaRmzcqf+dANsi96dXwHGYV5Cv1Y8g2tQdXRpZw==
-X-Received: by 2002:a05:600c:3b29:b0:412:bd17:9d62 with SMTP id
- m41-20020a05600c3b2900b00412bd179d62mr1495433wms.25.1709217312684; 
- Thu, 29 Feb 2024 06:35:12 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- s15-20020a7bc38f000000b004128f1ace2asm5314031wmj.19.2024.02.29.06.35.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 29 Feb 2024 06:35:12 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id BECC35F7B0;
- Thu, 29 Feb 2024 14:35:11 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,  Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>,  Yanan Wang <wangyanan55@huawei.com>,  Paolo
- Bonzini <pbonzini@redhat.com>,  Mahmoud Mandour <ma.mandourr@gmail.com>,
- Alexandre Iooss <erdnaxe@crans.org>,  Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH v5 10/12] contrib/plugins/howvec: migrate to new
- per_vcpu API
-In-Reply-To: <20240226091446.479436-11-pierrick.bouvier@linaro.org> (Pierrick
- Bouvier's message of "Mon, 26 Feb 2024 13:14:42 +0400")
-References: <20240226091446.479436-1-pierrick.bouvier@linaro.org>
- <20240226091446.479436-11-pierrick.bouvier@linaro.org>
-User-Agent: mu4e 1.12.0; emacs 29.1
-Date: Thu, 29 Feb 2024 14:35:11 +0000
-Message-ID: <87cysf9w4g.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rfhLy-0005vL-DD; Thu, 29 Feb 2024 09:25:42 -0500
+Received: from mgamail.intel.com ([192.198.163.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rfhLu-0005O2-Lr; Thu, 29 Feb 2024 09:25:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1709216738; x=1740752738;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=JNtIquFiPMnufpyiygWEAVgWfj54T6TYUXXsPdcksMU=;
+ b=A2JBN6Ua0ytaS7n30Bfz6EiOptx6Ju86BIUCdtrom/+D+rNgJ+AuWFsR
+ BhtR+5z5AutPykfQZia0wuzzImPcqs/AQrGnAAi7AI2v27gGUSxRgBRYO
+ CVuGgoh7KGBlNwxKn1Cbdylkib5UotngVdzxMm3L6KbIub2XZPPuNsZt/
+ 2qqzGLBXfb7hv47HvZiVHgycB+TsJEeQRybrsTq9zQ03C9h4FSYMv5FR3
+ hHC3J5jX6FCxXRksccxbqwUFvHKbLTOENQGAytprSNXheAm2vOdF4Q9rM
+ Iq8jGHus2/+hIPKCmps+Ppe/AscELLJxsC6Gb1cmEzv/wrIL6ajSCWjow Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="14322716"
+X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; d="scan'208";a="14322716"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Feb 2024 06:25:34 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
+   d="scan'208";a="7793778"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by fmviesa010.fm.intel.com with ESMTP; 29 Feb 2024 06:25:31 -0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Michael Tokarev <mjt@tls.msk.ru>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH 00/17 Part 2] Cleanup up to fix missing ERRP_GUARD() for
+ error_prepend()
+Date: Thu, 29 Feb 2024 22:38:57 +0800
+Message-Id: <20240229143914.1977550-1-zhao1.liu@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=192.198.163.11;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.096,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SORTED_RECIPS=2.499,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,14 +76,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
+From: Zhao Liu <zhao1.liu@intel.com>
 
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Hi list,
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+This series is the second part to add missing ERRP_GUARD() for
+error_prepend(), which is based on my first part:
+<20240228163723.1775791-1-zhao1.liu@linux.intel.com> [1]
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+The @errp's second restriction (in qapi/error) said:
+
+* Without ERRP_GUARD(), use of the @errp parameter is restricted:
+...
+* - It should not be passed to error_prepend() or
+*   error_append_hint(), because that doesn't work with &error_fatal.
+* ERRP_GUARD() lifts these restrictions.
+
+With this series and the part 1 [1], all error_prepend() will follow the
+above usage rules.
+
+I think it's particularly noteworthy that two cases of error_prepend()
+with &error_fatal are recognized in this series (patch 14 & patch 15). 
+
+In fact, error_append_hint() also need ERRP_GUARD(), but very
+unfortunately, I realized that in most usage scenarios in QEMU, it
+doesn't work with ERRP_GUARD() ;-( ... Maybe need to clean it up in the
+future and add ERRP_GUARD() to error_append_hint() as well.
+
+The cleanup looks very trivial and welcome your feedback!
+
+[1]: https://lore.kernel.org/qemu-devel/20240228163723.1775791-1-zhao1.liu@linux.intel.com/
+
+Thanks and Best Regards,
+Zhao
+---
+Zhao Liu (17):
+  hw/misc/ivshmem: Fix missing ERRP_GUARD() for error_prepend()
+  hw/net/xen_nic: Fix missing ERRP_GUARD() for error_prepend()
+  hw/remote/remote-obj: hw/misc/ivshmem: Fix missing ERRP_GUARD() for
+    error_prepend()
+  hw/scsi/vhost-scsi: Fix missing ERRP_GUARD() for error_prepend()
+  hw/vfio/ap: Fix missing ERRP_GUARD() for error_prepend()
+  hw/vfio/container: Fix missing ERRP_GUARD() for error_prepend()
+  hw/vfio/helpers: Fix missing ERRP_GUARD() for error_prepend()
+  hw/vfio/iommufd: Fix missing ERRP_GUARD() for error_prepend()
+  hw/vfio/pci-quirks: Fix missing ERRP_GUARD() for error_prepend()
+  hw/vfio/pci: Fix missing ERRP_GUARD() for error_prepend()
+  hw/vfio/platform: Fix missing ERRP_GUARD() for error_prepend()
+  hw/virtio/vhost-vsock: Fix missing ERRP_GUARD() for error_prepend()
+  hw/virtio/vhost: Fix missing ERRP_GUARD() for error_prepend()
+  migration/option: Fix missing ERRP_GUARD() for error_prepend()
+  net/vhost-vdpa: Fix missing ERRP_GUARD() for error_prepend()
+  target/i386/sev: Fix missing ERRP_GUARD() for error_prepend()
+  target/s390x/cpu_models: Fix missing ERRP_GUARD() for error_prepend()
+
+ hw/misc/ivshmem.c         | 1 +
+ hw/net/xen_nic.c          | 1 +
+ hw/remote/remote-obj.c    | 1 +
+ hw/scsi/vhost-scsi.c      | 1 +
+ hw/vfio/ap.c              | 1 +
+ hw/vfio/container.c       | 1 +
+ hw/vfio/helpers.c         | 3 +++
+ hw/vfio/iommufd.c         | 1 +
+ hw/vfio/pci-quirks.c      | 2 ++
+ hw/vfio/pci.c             | 2 ++
+ hw/vfio/platform.c        | 1 +
+ hw/virtio/vhost-vsock.c   | 1 +
+ hw/virtio/vhost.c         | 2 ++
+ migration/options.c       | 2 ++
+ net/vhost-vdpa.c          | 1 +
+ target/i386/sev.c         | 1 +
+ target/s390x/cpu_models.c | 2 ++
+ 17 files changed, 24 insertions(+)
+
+-- 
+2.34.1
+
 
