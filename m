@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 285C886D0AB
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 18:31:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C28B86D0C5
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 18:35:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfkEZ-0004fx-Gx; Thu, 29 Feb 2024 12:30:15 -0500
+	id 1rfkIL-0007Gw-4K; Thu, 29 Feb 2024 12:34:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rfkEX-0004ff-Fo
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 12:30:13 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rfkIB-0007CF-O6
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 12:34:01 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rfkEV-00072v-PZ
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 12:30:13 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rfkI9-0008EO-Jv
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 12:33:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709227811;
+ s=mimecast20190719; t=1709228035;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=QTsFp7z3spYVGARpJC1E6N7E54MbaZtXtwE/TvWPDMc=;
- b=QNa1slZJXUhmcnkmZG7bu/AazsG8wC0gdJO5DkAaim75Kx5s6HBoyrkokUeIGHNcleZrc4
- c/8P3hsn0fZQHrKQ9xRhMR4kT0pOT9hF/0+Kfx55P2x7c8Q3xoztM2yWBdE4SCnDIICetD
- 7fxeTy1w9NYNvuC1k/0xSzvbMkfdFDU=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=0uN+CP1PGbkCDAaVxYDbmoceNp8BYuwYTnTf0KhGM4Y=;
+ b=LlXQOYDijFbdtjD8skz4NFSp25yLME+NIJD9WaNfX2pj3o2+qUgPOi3H0rd728pYyLki9x
+ ImYwY3E14FenTiV3l/c72FJdSQMktb9PO6esfvn/YZXSj2UnWsaZEvk3o9RTCCzn+asZHj
+ BR1qZsd2AL9sXk7u/59pV2nSnL/NJJY=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-399-3uWY7R99Pa6H13cf5U1maw-1; Thu, 29 Feb 2024 12:30:05 -0500
-X-MC-Unique: 3uWY7R99Pa6H13cf5U1maw-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-68f740ea9a8so19253156d6.0
- for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 09:30:05 -0800 (PST)
+ us-mta-653-kgwKp4bqP72EEtGs2YYtgw-1; Thu, 29 Feb 2024 12:33:54 -0500
+X-MC-Unique: kgwKp4bqP72EEtGs2YYtgw-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a4415f97672so81553566b.3
+ for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 09:33:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709227805; x=1709832605;
+ d=1e100.net; s=20230601; t=1709228032; x=1709832832;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QTsFp7z3spYVGARpJC1E6N7E54MbaZtXtwE/TvWPDMc=;
- b=nmRg5378Z3EsYZxyZCw1V04IE/r5T2Rmhaa6uZ+ZHSa83CVhebAQ0F4kbKeh+vzjDZ
- 5vaxLbjKwVrirUFY0jsN28Chb1b+2+hMMkVD/h8HW1Uy+20vGqep/KbMZLlfuXYRQfqu
- BFomUrKR008fXX5l8JejMtwjzRgFs9VNlpOtnrVbvgFG8RII9zQZDAZz7bcGt2rAcHl0
- vDpMtzetLcp7FcBooRo/q5ebLQ6IidLS14ImtoPDOgJS4UoLHUxst1oJQ4XJW/48foZg
- pMZxg9/PC2t34iNGsNkpcLANYYNVZsymRCOVHGlpWRJ98OYKpamRpIRhMhXl52WLnSkD
- 70qw==
+ bh=0uN+CP1PGbkCDAaVxYDbmoceNp8BYuwYTnTf0KhGM4Y=;
+ b=m/MeW+kgo8lC3Et/72jfePKYAVPwU+yZHLNd3FrhNiAMTcQJrVTgp9SDqX3M+kxvbR
+ umLaKV0W3OAmSy16vnJHzWtvG8F8HTuTUzZ8WmaFC/iTWXxudm5DileZll4RK6UJRESf
+ X80U5AfLeoD2Uc2XPXPL9gey8HWykkcsrJ0prCpmGL30P38CGJG7h1n+Pt6wBcIn4kb4
+ UssPp88KA4gcezm9u3hXwfVprAihnSxqaIzuHrtXrM1wEISEws1D3DHiYVr9lYSjKl8q
+ BVwTQEWTZzYnsjXyrPl6MtLht9NSXZKZnpqW+e6AcaNnuWo0vK3wH4G2V/vXsl1H0dvx
+ 4gwQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXf+LBSsm3cN0dzDNCRqR+jqOiLmiAXDtRkRfiPWzorsjd3sIP7rOvLYbCdrIl/0eEC5/v7VB7MfiBuxWo86clRJZqbDpA=
-X-Gm-Message-State: AOJu0YxKMIOmX+DXFKUIoVLU2mwPk3z0j9pLX+1PvltzJCCHDcwwZHda
- OcyNRdiMruEyULs3a7oUyvchv0envN0Dc8o68wCLplDeNlBhC0UhAEwjRskqxs8/dMijwo34gfd
- qUM8ppErjDxm+otD3i7glHl6+8rxH6H62x6JbXzfdRveI/rRybUuZ
-X-Received: by 2002:ad4:5aef:0:b0:68f:dde4:fb12 with SMTP id
- c15-20020ad45aef000000b0068fdde4fb12mr3956442qvh.9.1709227805305; 
- Thu, 29 Feb 2024 09:30:05 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHiM5UcZST/E62ztUoPCEES5ygsBTm0QzQH+omXdh8Dg1T6szAi0s64+OyOGgXmzLbvb0eMzQ==
-X-Received: by 2002:ad4:5aef:0:b0:68f:dde4:fb12 with SMTP id
- c15-20020ad45aef000000b0068fdde4fb12mr3956404qvh.9.1709227805026; 
- Thu, 29 Feb 2024 09:30:05 -0800 (PST)
+ AJvYcCXHDzGTtD4jakb8FNTtnkmKJnWqCzIGJrAk/Zczw901ySy2VGOa6pDP8/QyoBiX2dQvaSTA2yfe0BnxI0V6+jN3y1Zk9T8=
+X-Gm-Message-State: AOJu0YwiIDcRkrNNF5qYoplbHBGfDS+xQ8DwK4KJLZbLMuDcMt4GxXIS
+ NV7IDAU6osrU1aL8Jla89GX4l4vRszvo0H2VhSPf92woL6btLDC8mZ12/XNt9CDSUKEAwUbGhUE
+ twu+xZsUrvrfkZdL9M5OrrPERXuUsvCET3o2ye7/TocCDfvWvMlHf
+X-Received: by 2002:a17:906:f281:b0:a43:a12b:1951 with SMTP id
+ gu1-20020a170906f28100b00a43a12b1951mr2098171ejb.2.1709228032188; 
+ Thu, 29 Feb 2024 09:33:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG+N4+zddUNViUllk77dlKio0g1VukGv9n3aiqJT4c+DiymBEKrMRiUApzwopxXg+MOohY7jw==
+X-Received: by 2002:a17:906:f281:b0:a43:a12b:1951 with SMTP id
+ gu1-20020a170906f28100b00a43a12b1951mr2098158ejb.2.1709228031886; 
+ Thu, 29 Feb 2024 09:33:51 -0800 (PST)
 Received: from [192.168.0.9] (ip-109-43-178-133.web.vodafone.de.
  [109.43.178.133]) by smtp.gmail.com with ESMTPSA id
- nh7-20020a056214390700b0069048f91dfbsm779103qvb.78.2024.02.29.09.30.02
+ f13-20020a1709062c4d00b00a43215bff13sm884576ejh.117.2024.02.29.09.33.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 Feb 2024 09:30:04 -0800 (PST)
-Message-ID: <7dadf54c-5a6f-4fe4-8dd3-1137e43c1756@redhat.com>
-Date: Thu, 29 Feb 2024 18:30:02 +0100
+ Thu, 29 Feb 2024 09:33:51 -0800 (PST)
+Message-ID: <79c5a59b-e68c-4027-9fe1-121ed10ca4ca@redhat.com>
+Date: Thu, 29 Feb 2024 18:33:50 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/17] hw/vfio/ap: Fix missing ERRP_GUARD() for
+Subject: Re: [PATCH 15/17] net/vhost-vdpa: Fix missing ERRP_GUARD() for
  error_prepend()
 Content-Language: en-US
 To: Zhao Liu <zhao1.liu@linux.intel.com>,
@@ -75,12 +75,9 @@ To: Zhao Liu <zhao1.liu@linux.intel.com>,
  Michael Tokarev <mjt@tls.msk.ru>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
  <philmd@linaro.org>, qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Tony Krowiak <akrowiak@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
- Jason Herne <jjherne@linux.ibm.com>
+ Jason Wang <jasowang@redhat.com>
 References: <20240229143914.1977550-1-zhao1.liu@linux.intel.com>
- <20240229143914.1977550-6-zhao1.liu@linux.intel.com>
+ <20240229143914.1977550-16-zhao1.liu@linux.intel.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -124,9 +121,9 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240229143914.1977550-6-zhao1.liu@linux.intel.com>
+In-Reply-To: <20240229143914.1977550-16-zhao1.liu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -135,8 +132,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.096,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -174,43 +170,39 @@ On 29/02/2024 15.39, Zhao Liu wrote:
 > error_fatal, the user can't see this additional information, because
 > exit() happens in error_setg earlier than information is added [1].
 > 
-> The vfio_ap_realize() passes @errp to error_prepend(), and as a
-> DeviceClass.realize method, its @errp is so widely sourced that it is
-> necessary to protect it with ERRP_GUARD().
+> The net_init_vhost_vdpa() passes @errp to error_prepend(), and as a
+> member of net_client_init_fun[], it's called in net_client_init1() and
+> gets @errp from this caller.
 > 
-> To avoid the issue like [1] said, add missing ERRP_GUARD() at the
-> beginning of this function.
+> But because netdev_init_modern() passes &error_fatal to
+> net_client_init1(), then @errp parameter of net_init_vhost_vdpa() would
+> point to @error_fatal. This causes the error message in error_prepend()
+> to be lost because of the above issue.
+> 
+> To fix this, add missing ERRP_GUARD() at the beginning of this function.
 > 
 > [1]: Issue description in the commit message of commit ae7c80a7bd73
 >       ("error: New macro ERRP_GUARD()").
 > 
-> Cc: Alex Williamson <alex.williamson@redhat.com>
-> Cc: "Cédric Le Goater" <clg@redhat.com>
-> Cc: Thomas Huth <thuth@redhat.com>
-> Cc: Tony Krowiak <akrowiak@linux.ibm.com>
-> Cc: Halil Pasic <pasic@linux.ibm.com>
-> Cc: Jason Herne <jjherne@linux.ibm.com>
+> Cc: Jason Wang <jasowang@redhat.com>
 > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 > ---
->   hw/vfio/ap.c | 1 +
+>   net/vhost-vdpa.c | 1 +
 >   1 file changed, 1 insertion(+)
 > 
-> diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
-> index e157aa1ff79c..7c4caa593863 100644
-> --- a/hw/vfio/ap.c
-> +++ b/hw/vfio/ap.c
-> @@ -155,6 +155,7 @@ static void vfio_ap_unregister_irq_notifier(VFIOAPDevice *vapdev,
->   
->   static void vfio_ap_realize(DeviceState *dev, Error **errp)
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 3726ee5d6763..6c1fa396aae1 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -1751,6 +1751,7 @@ static int vhost_vdpa_get_max_queue_pairs(int fd, uint64_t features,
+>   int net_init_vhost_vdpa(const Netdev *netdev, const char *name,
+>                           NetClientState *peer, Error **errp)
 >   {
 > +    ERRP_GUARD();
->       int ret;
->       Error *err = NULL;
+>       const NetdevVhostVDPAOptions *opts;
+>       uint64_t features;
+>       int vdpa_device_fd;
 
-Now this function looks like we need both, ERRP_GUARD and the local "err" 
-variable? ... patch looks ok to me, but maybe Markus has an idea how this 
-could be done in a nicer way?
-
-  Thomas
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
