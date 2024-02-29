@@ -2,69 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFCF286C07C
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:02:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3704986C080
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 07:03:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfZUW-0001D4-7m; Thu, 29 Feb 2024 01:02:00 -0500
+	id 1rfZWE-0005lO-Hr; Thu, 29 Feb 2024 01:03:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rfZTw-0000is-BZ
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:01:31 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rfZWC-0005ko-8B
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:03:44 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rfZTu-0001YE-Lv
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:01:24 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rfZWA-00022e-SQ
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 01:03:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709186476;
+ s=mimecast20190719; t=1709186622;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RONNTHZf92nQV0h2lJYMSRMs5sjrOZwNtaxC/Fr2M58=;
- b=KgQmDAR7Qnpuh1oosTwCbAdBbF/vv5YdRXDKtT95gSbeVrt96d+sEqfwMIz/HN+g+fvAgP
- mR8ENy4yfD40uxVnxHtCTuYAHG6uLs0qBXfvQY8KLMhJAoeV4raTn+6NktozObu/3qb6QM
- 5/x7KnoyV3AkuMgmC9xvRezyCY3+f18=
+ bh=4D8bp2vzURvuXAdjzksLYDbNRM1+UuVZN/MlS3c4wOA=;
+ b=WTi9GTass/9LdYkh7320qW64/vP9jGXrP8f+OmlHOoChLQUp/R4udHFJvNjLDLyhRW8TB5
+ cujy45wAs1mruyj8JlqelY3I+X9Axd+xK+ihFos5ErGADrPAafK4URELbwRANWkH7p9Jf1
+ ZqqKPiAjzPWoGThU7qzfj/+W0OZj26U=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-184-QaTAkLG9OuaXjrrqq59S7g-1; Thu,
- 29 Feb 2024 01:01:14 -0500
-X-MC-Unique: QaTAkLG9OuaXjrrqq59S7g-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-612-O2HM-xQuOgyDO5xJ9P4Mjw-1; Thu,
+ 29 Feb 2024 01:03:38 -0500
+X-MC-Unique: O2HM-xQuOgyDO5xJ9P4Mjw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 592CC3813F30;
- Thu, 29 Feb 2024 06:01:14 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4F27A3C0EACA;
+ Thu, 29 Feb 2024 06:03:38 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.193.4])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 077FB1121312;
- Thu, 29 Feb 2024 06:01:13 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 2924E2166B33;
+ Thu, 29 Feb 2024 06:03:38 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8729D21E66D0; Thu, 29 Feb 2024 07:01:12 +0100 (CET)
+ id E982621E66D0; Thu, 29 Feb 2024 07:03:36 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
-To: Hao Xiang <hao.xiang@bytedance.com>
-Cc: pbonzini@redhat.com,  berrange@redhat.com,  eduardo@habkost.net,
- peterx@redhat.com,  farosas@suse.de,  eblake@redhat.com,
- thuth@redhat.com,  lvivier@redhat.com,  jdenemar@redhat.com,
- marcel.apfelbaum@gmail.com,  philmd@linaro.org,  wangyanan55@huawei.com,
- qemu-devel@nongnu.org
-Subject: Re: [External] Re: [PATCH v3 6/7] migration/multifd: Add zero pages
- and zero bytes counter to migration status interface.
-In-Reply-To: <CAAYibXicsMkZ+QaFtjgSbjk_eL3waOp1fiJQ7M9b5SRXCRa+ig@mail.gmail.com>
- (Hao Xiang's message of "Wed, 28 Feb 2024 10:36:19 -0800")
-References: <20240226195654.934709-1-hao.xiang@bytedance.com>
- <20240226195654.934709-7-hao.xiang@bytedance.com>
- <87wmqozzjn.fsf@pond.sub.org>
- <CAAYibXicsMkZ+QaFtjgSbjk_eL3waOp1fiJQ7M9b5SRXCRa+ig@mail.gmail.com>
-Date: Thu, 29 Feb 2024 07:01:12 +0100
-Message-ID: <875xy7u7vb.fsf@pond.sub.org>
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Fabiano Rosas
+ <farosas@suse.de>,  Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH V2] migration: export fewer options
+In-Reply-To: <592e18f7-0274-4d33-b0e1-543ad39e9d35@oracle.com> (Steven
+ Sistare's message of "Wed, 28 Feb 2024 11:55:28 -0500")
+References: <1708985769-280850-1-git-send-email-steven.sistare@oracle.com>
+ <592e18f7-0274-4d33-b0e1-543ad39e9d35@oracle.com>
+Date: Thu, 29 Feb 2024 07:03:36 +0100
+Message-ID: <87y1b3st6v.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -90,83 +82,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hao Xiang <hao.xiang@bytedance.com> writes:
+Steven Sistare <steven.sistare@oracle.com> writes:
 
-> On Wed, Feb 28, 2024 at 1:52=E2=80=AFAM Markus Armbruster <armbru@redhat.=
-com> wrote:
->>
->> Hao Xiang <hao.xiang@bytedance.com> writes:
->>
->> > This change extends the MigrationStatus interface to track zero pages
->> > and zero bytes counter.
->> >
->> > Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
->>
->> [...]
->>
->> > diff --git a/qapi/migration.json b/qapi/migration.json
->> > index a0a85a0312..171734c07e 100644
->> > --- a/qapi/migration.json
->> > +++ b/qapi/migration.json
->> > @@ -63,6 +63,10 @@
->> >  #     between 0 and @dirty-sync-count * @multifd-channels.  (since
->> >  #     7.1)
->> >  #
->> > +# @zero-pages: number of zero pages (since 9.0)
->> > +#
->> > +# @zero-bytes: number of zero bytes sent (since 9.0)
->> > +#
->>
->> Awfully terse.  How are these two related?
+> Just a reminder, after our further discussion in the V1 thread, 
+> this patch is still what I propose, no updates needed.
 >
-> Sorry I forgot to address the same feedback from the last version.
+> Markus, I think Peter is looking for your blessing on the new
+> file name: include/migration/client-options.h.
 
-Happens :)
-
-> zero-pages are the number of pages being detected as all "zero" and
-> hence the payload isn't sent over the network. zero-bytes is basically
-> zero-pages * page_size. It's the number of bytes migrated (but not
-> actually sent through the network) because they are all "zero". These
-> two are related to the existing interface below. normal and
-> normal-bytes are the same representation of pages who are not all
-> "zero" and are actually sent through the network.
->
-> # @normal: number of normal pages (since 1.2)
-> #
-> # @normal-bytes: number of normal bytes sent (since 1.2)
-
-We also have
-
-  # @duplicate: number of duplicate (zero) pages (since 1.2)
-  #
-  # @skipped: number of skipped zero pages. Always zero, only provided for
-  #     compatibility (since 1.5)
-
-Page skipping was introduced in 1.5, and withdrawn in 1.5.3 and 1.6.
-@skipped was formally deprecated in 8.1.  It'll soon be gone, no need to
-worry about it now.
-
-That leaves three values related to pages sent: @normal (and
-@normal-bytes), @duplicate (but no @duplicate-bytes), and @zero-pages
-(and @zero-bytes).
-
-I unwittingly created a naming inconsistency between @normal,
-@duplicate, and @zero-pages when I asked you to rename @zero to
-@zero-pages.
-
-The meaning of the three values is not obvious, and the doc comments
-don't explain them.  Can you, or anybody familiar with migration,
-explain them to me?
-
-MigrationStats return some values as bytes, some as pages, and some as
-both.  I hate that.  Can we standardize on bytes?
-
->>
->> >  # Features:
->> >  #
->> >  # @deprecated: Member @skipped is always zero since 1.5.3
->>
->> [...]
->>
+Not my preference, but no objection.
 
 
