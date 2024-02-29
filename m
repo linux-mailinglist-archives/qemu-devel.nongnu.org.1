@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB67786CB94
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 15:28:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B93286CB89
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 15:27:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfhMM-0006RQ-Mf; Thu, 29 Feb 2024 09:26:06 -0500
+	id 1rfhMP-0006VX-4x; Thu, 29 Feb 2024 09:26:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfhMI-0006HO-EP; Thu, 29 Feb 2024 09:26:02 -0500
+ id 1rfhMK-0006Mf-8x; Thu, 29 Feb 2024 09:26:04 -0500
 Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfhMG-0005c2-PM; Thu, 29 Feb 2024 09:26:02 -0500
+ id 1rfhMI-0005cJ-EU; Thu, 29 Feb 2024 09:26:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709216760; x=1740752760;
+ t=1709216762; x=1740752762;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=tLTUDrHSuXuCOuB1SbDv4DvjgsV//tK+czNZPOeaW6Q=;
- b=nw+JRuXMFb0Vau1TeCDvCSdFNfwlNrMd4v9JRV+psxKFptAOM/QF5cPV
- 9xwqmsb5h0C2IMW81GEqNJW+yydXPaLtQMbe6t+zTvFQ/I6cxlqumsn69
- iIjnzRzUKrmjpljeQnaz9K+S+vjUX+lHmk47POFmeFMNsoalpXqVxpBlU
- PmFmwSnMvyTRfkR+LwC90vn7ceMGZc1WGD0Imu4WDaut9lI7NTGSsKXpj
- qVQCzPDiPZD6CLAb9D7+GBIYcg3tb1Y+4xLKdCM4MCrTHQmKf3IbZrdm6
- IPTQbONLd2zeUe5/HpK+DtSbL1L/8XJHhe1EQzXZ3I0Hk1mSbfJbkwSRJ Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="14322801"
-X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; d="scan'208";a="14322801"
+ bh=pJjZcfjXFxXzVVYX42mhVb27x/DybavYmLqX4bmOvkk=;
+ b=EzJB8fqXnmFnTfGpl2+E7NPGDakZCDAMsURfbIJWTABCvOrw90YnKOLC
+ YB0aM0A2ghKtfwAOHDjCe016IE4Y+HPhq6bQFBs8K4ZL2djp/ANRIY9nV
+ i5OoZrhzh0ZJPceTw1bkiiZdfgqmVebxrL2C84XwmTEK4BK01F32d/4rx
+ CQM18X/FCGpZO0BlV2kWfJmPth6FYuKgFOeixa1oW0JN8C0jailYPQrZ+
+ xi3wqHacrwdEdZivdGnuIxGeVV+3LpIQKKL5bdyteE6oMDmpN92oWtM3y
+ 6Xd62q/hsj60SicfIrJJuFVj4FMfwYNYWK8sb/cmCMl7BCT8Dw+LDtA3X A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="14322815"
+X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; d="scan'208";a="14322815"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Feb 2024 06:25:58 -0800
+ 29 Feb 2024 06:26:00 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="7793848"
+   d="scan'208";a="7793855"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa010.fm.intel.com with ESMTP; 29 Feb 2024 06:25:55 -0800
+ by fmviesa010.fm.intel.com with ESMTP; 29 Feb 2024 06:25:58 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Michael Tokarev <mjt@tls.msk.ru>,
@@ -46,10 +46,10 @@ To: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
 Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH 09/17] hw/vfio/pci-quirks: Fix missing ERRP_GUARD() for
+Subject: [PATCH 10/17] hw/vfio/pci: Fix missing ERRP_GUARD() for
  error_prepend()
-Date: Thu, 29 Feb 2024 22:39:06 +0800
-Message-Id: <20240229143914.1977550-10-zhao1.liu@linux.intel.com>
+Date: Thu, 29 Feb 2024 22:39:07 +0800
+Message-Id: <20240229143914.1977550-11-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240229143914.1977550-1-zhao1.liu@linux.intel.com>
 References: <20240229143914.1977550-1-zhao1.liu@linux.intel.com>
@@ -100,16 +100,18 @@ ERRP_GUARD() could avoid the case when @errp is the pointer of
 error_fatal, the user can't see this additional information, because
 exit() happens in error_setg earlier than information is added [1].
 
-In hw/vfio/pci-quirks.c, there're 2 functions passing @errp to
-error_prepend() without ERRP_GUARD():
-- vfio_add_nv_gpudirect_cap()
-- vfio_add_vmd_shadow_cap()
+In hw/vfio/pci.c, there're 2 functions passing @errp to error_prepend()
+without ERRP_GUARD():
+- vfio_add_std_cap()
+- vfio_realize()
 
-Their @errp parameters are so widely sourced that it is necessary to
-protect them with ERRP_GUARD().
+The @errp of vfio_add_std_cap() is also from vfio_realize(). And
+vfio_realize(), as a PCIDeviceClass.realize method, its @errp is from
+DeviceClass.realize so that there is no guarantee that the @errp won't
+point to @error_fatal.
 
-To avoid the issue like [1] said, add missing ERRP_GUARD() at the
-beginning of this function.
+To avoid the issue like [1] said, add missing ERRP_GUARD() at their
+beginning.
 
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
@@ -118,29 +120,29 @@ Cc: Alex Williamson <alex.williamson@redhat.com>
 Cc: "Cédric Le Goater" <clg@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/vfio/pci-quirks.c | 2 ++
+ hw/vfio/pci.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
-index 84b1a7b9485c..496fd1ee86bd 100644
---- a/hw/vfio/pci-quirks.c
-+++ b/hw/vfio/pci-quirks.c
-@@ -1538,6 +1538,7 @@ static bool is_valid_std_cap_offset(uint8_t pos)
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 4fa387f0430d..e70efde11913 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -2136,6 +2136,7 @@ static void vfio_check_af_flr(VFIOPCIDevice *vdev, uint8_t pos)
  
- static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
+ static int vfio_add_std_cap(VFIOPCIDevice *vdev, uint8_t pos, Error **errp)
  {
 +    ERRP_GUARD();
      PCIDevice *pdev = &vdev->pdev;
-     int ret, pos;
-     bool c8_conflict = false, d4_conflict = false;
-@@ -1630,6 +1631,7 @@ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
- #define VMD_SHADOW_CAP_LEN 24
- static int vfio_add_vmd_shadow_cap(VFIOPCIDevice *vdev, Error **errp)
+     uint8_t cap_id, next, size;
+     int ret;
+@@ -2942,6 +2943,7 @@ static void vfio_unregister_req_notifier(VFIOPCIDevice *vdev)
+ 
+ static void vfio_realize(PCIDevice *pdev, Error **errp)
  {
 +    ERRP_GUARD();
-     uint8_t membar_phys[16];
-     int ret, pos = 0xE8;
- 
+     VFIOPCIDevice *vdev = VFIO_PCI(pdev);
+     VFIODevice *vbasedev = &vdev->vbasedev;
+     char *tmp, *subsys;
 -- 
 2.34.1
 
