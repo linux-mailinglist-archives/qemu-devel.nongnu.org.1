@@ -2,85 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C748286C19E
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 08:07:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EC6E86C1E3
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 08:21:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfaUy-0006lx-OB; Thu, 29 Feb 2024 02:06:32 -0500
+	id 1rfain-0000pQ-1o; Thu, 29 Feb 2024 02:20:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfaUb-0006cl-H7; Thu, 29 Feb 2024 02:06:11 -0500
-Received: from mgamail.intel.com ([198.175.65.18])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rfaih-0000p1-R4
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 02:20:44 -0500
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rfaUX-0003h6-3s; Thu, 29 Feb 2024 02:06:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709190365; x=1740726365;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=i9uq6y/awOo4nqggMPn0JAiBk7ClRoK07Pbq42o5yNE=;
- b=BdziewIXQavscsipJggKv7w/EVB/kL4RlvGrGe+hvaBB+PZnAQEn+UoB
- GvBRB8bKtnkkF8MH4D0hVb64bUiE0ltJJZiGOjym2+5Hwl1/uXxhTB3RI
- jotzbTnzKQNu0U43FyGlmmj8B9LLGizXaCS5tqYnY3C0yKXqnZN2Vh0pB
- JwkERuynzPPgtTM8D05mIqkvg7O/3zrFvrwni18moKVGeQzh0U3c2zILb
- +BlpkzMhJbxGskUQgh7cjOuL8cCtkw148Dk5ykNtSJPAldZGyyhOw3RZ9
- H3t9rm8OZe4uh1zQJ3kTVYM9zdYzX9CW8pcTdGIT7CRM9XGuV+l7VT5TR Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3764831"
-X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="3764831"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 23:06:02 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="8082618"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa007.jf.intel.com with ESMTP; 28 Feb 2024 23:05:56 -0800
-Date: Thu, 29 Feb 2024 15:19:40 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: JeeHeng Sia <jeeheng.sia@starfivetech.com>
-Cc: Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Alex =?utf-8?B?QmVubu+/vWU=?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>,
- Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [RFC 6/8] i386/cpu: Update cache topology with machine's
- configuration
-Message-ID: <ZeAwDIDdJff6SiiB@intel.com>
-References: <20240220092504.726064-1-zhao1.liu@linux.intel.com>
- <20240220092504.726064-7-zhao1.liu@linux.intel.com>
- <BJSPR01MB0561F3D87C67D4BCCA9E9C8D9C58A@BJSPR01MB0561.CHNPR01.prod.partner.outlook.cn>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rfaic-00079h-VC
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 02:20:43 -0500
+Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:4da0:0:640:817e:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 3457260B52;
+ Thu, 29 Feb 2024 10:20:32 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:a531::1:29] (unknown
+ [2a02:6b8:b081:a531::1:29])
+ by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id UKURvx2IbKo0-6DhiD1VU; Thu, 29 Feb 2024 10:20:31 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1709191231;
+ bh=oWZI024h7GNYUt7b7MURwv9PeTvP4wdNEZGbXnXnLTU=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=NVFjSpP6ELCjCfNQWFhPf6wb3NjDv3WF0g9mRKSBwI8GWLxchLU1UNxq4j5OO6Hfk
+ aznKQD3apZlawy0xIe0MyWynlvgCNX2QPm2xGYYEvnY1+DD8foTv/zFZN9bE1PTzc0
+ PMOvfIlqo6/98QWRwpiNeHADyZquXdVt62AxkGC8=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <86d70a2e-7250-440b-bcd6-7877fe3b3dba@yandex-team.ru>
+Date: Thu, 29 Feb 2024 10:20:30 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BJSPR01MB0561F3D87C67D4BCCA9E9C8D9C58A@BJSPR01MB0561.CHNPR01.prod.partner.outlook.cn>
-Received-SPF: none client-ip=198.175.65.18;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 06/21] migration: Add Error** argument to .save_setup()
+ handler
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Alex Williamson
+ <alex.williamson@redhat.com>, Avihai Horon <avihaih@nvidia.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, Halil Pasic
+ <pasic@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Eric Blake <eblake@redhat.com>, John Snow <jsnow@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+References: <20240227180345.548960-1-clg@redhat.com>
+ <20240227180345.548960-7-clg@redhat.com> <87zfvj3hnd.fsf@pond.sub.org>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <87zfvj3hnd.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.102,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,53 +86,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi JeeHeng,
-
-> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > index d7cb0f1e49b4..4b5c551fe7f0 100644
-> > --- a/target/i386/cpu.c
-> > +++ b/target/i386/cpu.c
-> > @@ -7582,6 +7582,27 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-> > 
-> >  #ifndef CONFIG_USER_ONLY
-> >      MachineState *ms = MACHINE(qdev_get_machine());
-> > +
-> > +    if (ms->smp_cache.l1d != CPU_TOPO_LEVEL_INVALID) {
-> > +        env->cache_info_cpuid4.l1d_cache->share_level = ms->smp_cache.l1d;
-> > +        env->cache_info_amd.l1d_cache->share_level = ms->smp_cache.l1d;
-> > +    }
-> > +
-> > +    if (ms->smp_cache.l1i != CPU_TOPO_LEVEL_INVALID) {
-> > +        env->cache_info_cpuid4.l1i_cache->share_level = ms->smp_cache.l1i;
-> > +        env->cache_info_amd.l1i_cache->share_level = ms->smp_cache.l1i;
-> > +    }
-> > +
-> > +    if (ms->smp_cache.l2 != CPU_TOPO_LEVEL_INVALID) {
-> > +        env->cache_info_cpuid4.l2_cache->share_level = ms->smp_cache.l2;
-> > +        env->cache_info_amd.l2_cache->share_level = ms->smp_cache.l2;
-> > +    }
-> > +
-> > +    if (ms->smp_cache.l3 != CPU_TOPO_LEVEL_INVALID) {
-> > +        env->cache_info_cpuid4.l3_cache->share_level = ms->smp_cache.l3;
-> > +        env->cache_info_amd.l3_cache->share_level = ms->smp_cache.l3;
-> > +    }
-> > +
->
-> I think this block of code can be further optimized. Maybe we can create
-> a function called updateCacheShareLevel() that takes a cache pointer and
-> a share level as arguments. This function encapsulates the common
-> pattern of updating cache share levels for different caches. You can define
-> it like this:
-> void updateCacheShareLevel(XxxCacheInfo *cache, int shareLevel) {
->     if (shareLevel != CPU_TOPO_LEVEL_INVALID) {
->         cache->share_level = shareLevel;
+On 29.02.24 09:32, Markus Armbruster wrote:
+> Cédric Le Goater <clg@redhat.com> writes:
+> 
+>> The purpose is to record a potential error in the migration stream if
+>> qemu_savevm_state_setup() fails. Most of the current .save_setup()
+>> handlers can be modified to use the Error argument instead of managing
+>> their own and calling locally error_report(). The following patches
+>> will introduce such changes for VFIO first.
+>>
+>> Cc: Nicholas Piggin <npiggin@gmail.com>
+>> Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>> Cc: Halil Pasic <pasic@linux.ibm.com>
+>> Cc: Thomas Huth <thuth@redhat.com>
+>> Cc: Eric Blake <eblake@redhat.com>
+>> Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>> Cc: John Snow <jsnow@redhat.com>
+>> Cc: Stefan Hajnoczi <stefanha@redhat.com>
+>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Reviewed-by: Peter Xu <peterx@redhat.com>
+>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>> ---
+> 
+> [...]
+> 
+>> diff --git a/hw/s390x/s390-stattrib.c b/hw/s390x/s390-stattrib.c
+>> index c483b62a9b5f71772639fc180bdad15ecb6711cb..c934df424a555d83d2198f5ddfc0cbe0ea98e9ec 100644
+>> --- a/hw/s390x/s390-stattrib.c
+>> +++ b/hw/s390x/s390-stattrib.c
+>> @@ -166,7 +166,7 @@ static int cmma_load(QEMUFile *f, void *opaque, int version_id)
+>>       return ret;
+>>   }
+>>   
+>> -static int cmma_save_setup(QEMUFile *f, void *opaque)
+>> +static int cmma_save_setup(QEMUFile *f, void *opaque, Error **errp)
+>>   {
+>>       S390StAttribState *sas = S390_STATTRIB(opaque);
+>>       S390StAttribClass *sac = S390_STATTRIB_GET_CLASS(sas);
+>         int res;
+>         /*
+>          * Signal that we want to start a migration, thus needing PGSTE dirty
+>          * tracking.
+>          */
+>         res = sac->set_migrationmode(sas, 1);
+>         if (res) {
+>             return res;
+> 
+> I believe this is a failure return.
+> 
+> Anti-pattern: fail without setting an error.  There might be more
+> elsewhere in the series.
+> 
+> qapi/error.h's big comment:
+> 
+>   * - On success, the function should not touch *errp.  On failure, it
+>   *   should set a new error, e.g. with error_setg(errp, ...), or
+>   *   propagate an existing one, e.g. with error_propagate(errp, ...).
+>   *
+>   * - Whenever practical, also return a value that indicates success /
+>   *   failure.  This can make the error checking more concise, and can
+>   *   avoid useless error object creation and destruction.  Note that
+>   *   we still have many functions returning void.  We recommend
+>   *   • bool-valued functions return true on success / false on failure,
+>   *   • pointer-valued functions return non-null / null pointer, and
+>   *   • integer-valued functions return non-negative / negative.
+> 
+>         }
+>         qemu_put_be64(f, STATTR_FLAG_EOS);
+>         return 0;
 >     }
-> }
->
+> 
+> When adding Error **errp to a function, you must also add code to set an
+> error on failure to every failure path.  Adding it in a later patch in
+> the same series can be okay,
 
-Good idea! Will try this way.
+Personally, I'd prefer not doing so. Creating wrong commits and fixing them in same series - better to merge all fixes into bad commit:)
 
-Thanks,
-Zhao
+> but I'd add a TODO comment to the function
+> then, and mention it in the commit message.
+> 
+> Questions?
+> 
+> [...]
+> 
+
+-- 
+Best regards,
+Vladimir
 
 
