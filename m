@@ -2,106 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8526B86C062
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 06:47:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1666786C06E
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Feb 2024 06:55:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfZFs-0008Pg-Uk; Thu, 29 Feb 2024 00:46:52 -0500
+	id 1rfZN9-0004gt-17; Thu, 29 Feb 2024 00:54:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1rfZFi-0008PA-PU; Thu, 29 Feb 2024 00:46:44 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1rfZFg-00056d-Ib; Thu, 29 Feb 2024 00:46:42 -0500
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41T5LaDS031196; Thu, 29 Feb 2024 05:46:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=CsIVn6ZWBePjktsu8WtGrd5aQ6kf6zmCfDQ1j2HEueo=;
- b=VL7TJgHKrIAds91jL+lbKbVMf7heWWv9chiQTaZI4an3gopoJwYRILdiW0wljFhxKCWA
- l/P4/fcX8GbZGCOxSR5oeU0mVLKsjIkFj4IXT8ol2OhLYzVBUiVZR4lKD6MnFzwxLuxX
- gxvVrM/Zs5kMpNuacdeOCSuPGlDhzGPG2Qb9TiXJTnuR0idBz4Eqh8hXMfwrWd1oYJ47
- qXNcuNAb2+vcoPv3u0gz9KR9wo3OJ2iQ6wOdxLk70VnNomXcG6x1fnu7zFsabk7oomN6
- 6SI+kB/E2/bqM4tDErrK0IYaHcJLlLhOTbdbr18AavkS9rHCFtROgMbMsYQcBGz4bf4y RA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wjk05ssfc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Feb 2024 05:46:34 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41T5LtZ0032442;
- Thu, 29 Feb 2024 05:46:34 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wjk05ssey-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Feb 2024 05:46:33 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41T4PDHt012324; Thu, 29 Feb 2024 05:46:33 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wfwg2jt4y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Feb 2024 05:46:33 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 41T5kUsG61407598
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 29 Feb 2024 05:46:32 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3ABF15805D;
- Thu, 29 Feb 2024 05:46:30 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 83E6958057;
- Thu, 29 Feb 2024 05:46:27 +0000 (GMT)
-Received: from [9.109.243.35] (unknown [9.109.243.35])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 29 Feb 2024 05:46:27 +0000 (GMT)
-Message-ID: <377b4501-9e5b-44af-9219-c5e7e8a2c70e@linux.ibm.com>
-Date: Thu, 29 Feb 2024 11:16:26 +0530
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rfZN1-0004gi-3Q
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 00:54:15 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rfZMz-00076G-LM
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 00:54:14 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-412b68d1a42so3926535e9.0
+ for <qemu-devel@nongnu.org>; Wed, 28 Feb 2024 21:54:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1709186051; x=1709790851; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=T2HBVz0S4NJ5PHHJFwkPmozZ7jbnrWNnxao4/XSu/No=;
+ b=AK1TpYyy4RmCaZCIp8AvDV5DOE6RESj80/bF9731v9KsMJG3bT9LKo3Cu9TcDQNMN7
+ f9rEyxLRu1dLv4vuQZ0jAKXEcDI85gdFF+5zJAF85wNvEUZtCwo/MARIVUoVnW74UGgo
+ xY9fSMTiPIqkarq4vECtm0w9/Wpfcxk4j0WNS/2PUVux410RzR4BW8g3Hs5Z/f+Qpr/X
+ Lg8W6j5XN9YdNaXC7x8q3bE854+0mAC6FcHcfwYIqMtbFG3zf0jEzgkppRbNBLsucaSo
+ 81KM55sQzAvU3qscLINCiRu1V4qgdRHStQVtW177GaIlpPKoUjU9tPWL32Ygnq0NRF8p
+ 2o0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709186051; x=1709790851;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=T2HBVz0S4NJ5PHHJFwkPmozZ7jbnrWNnxao4/XSu/No=;
+ b=X9J1+jzeg8cr1lmDBjfP+mN1yauypoZ2MA6WW+1i2gGMpjAZctDG/9mNrXBpawrt6K
+ ZEgsoe2CR2OcxhMOo79eD4PfjwqWkstqiefkZ8Dp1B3lI1CjQJxyt7nXz12LbnV84zRF
+ PkUemvoWnSbDjvFOH6lX+jp5U+cB2n+NuQ5kyAV7f8QR0CDmJvWADsr1AKiZjV11IS3I
+ UeSYEfIX+BZ7+BZIUseCLdicLmmgE3wX+L9MApkifKnGZnJZTNgtu8y3op4Rdp4NDPL3
+ 059+XYFKFm2RhesZtt0A3ykYJRX4tvsyhenIaoKS9FPVLIFnoLtMURL5qvstyklVGOZp
+ 0OwQ==
+X-Gm-Message-State: AOJu0YxEcTu2+1tzBC1Nip0Ae/h6gaQsk2I7+64WFK0TGXrmhKdSsB/B
+ JwHviiFNFRAeu4MO6BevjlbFhblQKXSc7QOMn+lGXAptCDE+oUkqVchtEis6xMFfe6Q19/wdBIR
+ 29TY=
+X-Google-Smtp-Source: AGHT+IFfzI1/oy7c8z6g1/ELF+e7L12CNsWnNMu5jd4WSETgOKnvbyWYa0XBkaOsde3fQehhYb/anQ==
+X-Received: by 2002:adf:fb52:0:b0:33d:5a6f:a856 with SMTP id
+ c18-20020adffb52000000b0033d5a6fa856mr569911wrs.30.1709186051045; 
+ Wed, 28 Feb 2024 21:54:11 -0800 (PST)
+Received: from linaro.. ([102.35.208.160]) by smtp.gmail.com with ESMTPSA id
+ ck12-20020a5d5e8c000000b0033d2541b3e1sm721589wrb.72.2024.02.28.21.54.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 28 Feb 2024 21:54:10 -0800 (PST)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH 0/5] TCG plugins new inline operations
+Date: Thu, 29 Feb 2024 09:53:54 +0400
+Message-ID: <20240229055359.972151-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.43.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 05/15] spapr: nested: Document Nested PAPR API
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: clegoate@redhat.com, mikey@neuling.org, amachhiw@linux.vnet.ibm.com,
- vaibhav@linux.ibm.com, sbhat@linux.ibm.com, danielhb413@gmail.com,
- qemu-devel@nongnu.org
-References: <20240220083609.748325-1-harshpb@linux.ibm.com>
- <20240220083609.748325-6-harshpb@linux.ibm.com>
- <CZFR7EN29EWC.EK4AP0CCTQJI@wheely>
- <8b71d5a6-7ed1-428f-8b08-dddf4fd09870@linux.ibm.com>
- <CZFSP3JYT0C5.140WKB17N0IQG@wheely>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <CZFSP3JYT0C5.140WKB17N0IQG@wheely>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: zE-HKGJkbhXVlcoAuff7VC-0QtH98VBv
-X-Proofpoint-ORIG-GUID: R1MtReOrwMnruyhPA8vcBOC2PsYwZP6f
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-28_08,2024-02-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=687
- priorityscore=1501 impostorscore=0 mlxscore=0 suspectscore=0 spamscore=0
- bulkscore=0 adultscore=0 clxscore=1015 phishscore=0 lowpriorityscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402290043
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,45 +93,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This series implement two new operations for plugins:
+- Store inline allows to write a specific value to a scoreboard.
+- Conditional callback executes a callback only when a given condition is true.
+  The condition is evaluated inline.
 
+It's possible to mix various inline operations (add, store) with conditional
+callbacks, allowing efficient "trap" based counters.
 
-On 2/27/24 16:09, Nicholas Piggin wrote:
-> On Tue Feb 27, 2024 at 7:31 PM AEST, Harsh Prateek Bora wrote:
->>
->>
->> On 2/27/24 14:59, Nicholas Piggin wrote:
->>> On Tue Feb 20, 2024 at 6:35 PM AEST, Harsh Prateek Bora wrote:
->>>> Adding initial documentation about Nested PAPR API to describe the set
->>>> of APIs and its usage. Also talks about the Guest State Buffer elements
->>>> and it's format which is used between L0/L1 to communicate L2 state.
->>>>
->>>> Signed-off-by: Michael Neuling <mikey@neuling.org>
->>>> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
->>>
->>> v2 is upstream in Linux now, I suppose you could reference that too?
->>>
->> Yes, upstream Linux commit is mentioned in the doc at the end.
-> 
-> The API doc commit is mentioned as a reference. I would expect something
-> following the comments under the Existing Nested-HV API heading for the
-> New PAPR API.
-> 
-> Oh, is it lifted directly from linux.git docs? Sigh, in that case never
-> mind, it's better to stick with them. Although could be just a link or
-> reference.
-> 
+It builds on top of new scoreboard API, introduced in the previous series.
 
-Well, initially the documentation was floated across with both
-kernel/qemu patches, and now we have the kernel side merged. Although, I
-think it would be more appropriate to keep it in Qemu which actually
-implements the L0 functionality and the related APIs, however, for now,
-let's keep a single source of documentation and we can provide a link
-after the brief intro about the two APIs.
+Based-on: 20240229052506.933222-1-pierrick.bouvier@linaro.org
 
-regards,
-Harsh
+Pierrick Bouvier (5):
+  plugins: prepare introduction of new inline ops
+  plugins: add new inline op STORE_U64
+  tests/plugin/inline: add test for STORE_U64 inline op
+  plugins: conditional callbacks
+  tests/plugin/inline: add test for condition callback
 
-> Thanks,
-> Nick
-> 
+ include/qemu/plugin.h        |  10 +-
+ include/qemu/qemu-plugin.h   |  80 +++++++-
+ plugins/plugin.h             |   9 +
+ accel/tcg/plugin-gen.c       | 359 +++++++++++++++++++++++++++++++----
+ plugins/api.c                |  76 +++++++-
+ plugins/core.c               |  28 ++-
+ tests/plugin/inline.c        | 128 ++++++++++++-
+ plugins/qemu-plugins.symbols |   2 +
+ 8 files changed, 633 insertions(+), 59 deletions(-)
+
+-- 
+2.43.0
+
 
