@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1058D86D979
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 03:18:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FFBF86D9C2
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 03:30:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfsRx-0005D4-Ka; Thu, 29 Feb 2024 21:16:37 -0500
+	id 1rfseQ-0003xB-Ul; Thu, 29 Feb 2024 21:29:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rfsRu-0005Bp-T7
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 21:16:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rfsRt-0003Ds-4c
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 21:16:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709259391;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=t5N80RBWPqVV+IIPJyw+czTFh0k8pWe0GFBhA+4VJGk=;
- b=Yeabvj5qZLgL8mYGih5wOA7KzB1b8Ing6OqRus/TUlUynsoV92LndfeGS/W79DoWET7DtW
- tQesRMgMGiOsGnI9HrrxhLhPsHSyq13rMqyFqrEiOnJP749e7xoaOOYwdYNbafnBOHQWBw
- pOsZeqwxw6vNz54sqQc7ZVX+UHmAyDI=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-110-2Xxqu84jMRG6t652mQkSvA-1; Thu, 29 Feb 2024 21:16:30 -0500
-X-MC-Unique: 2Xxqu84jMRG6t652mQkSvA-1
-Received: by mail-pg1-f198.google.com with SMTP id
- 41be03b00d2f7-5dc97ac2facso558681a12.0
- for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 18:16:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
+ id 1rfseO-0003ws-0O
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 21:29:28 -0500
+Received: from mail-qv1-xf2f.google.com ([2607:f8b0:4864:20::f2f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
+ id 1rfseL-0005Oq-RI
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 21:29:27 -0500
+Received: by mail-qv1-xf2f.google.com with SMTP id
+ 6a1803df08f44-68f571be9ddso12292676d6.0
+ for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 18:29:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1709260162; x=1709864962; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=gMg1xISzMVEC9+nQFn/Ae6nNNVOV1dw9gITKfHRGtRE=;
+ b=S95M/cTzoMVWcVmqy7Gdprf+l3BGSz1jZ5w7YT8glzUWhcEMeXg0aiFZX8nWyIeGxk
+ bF0/e585X33wuXRz7NyA0nSrBhaM0l1i7cXsiFWypJ+SSacc8F7dD3q6nbyaWIIHcwPX
+ 1pnP0rR5bAflyEgWrsf6ED+IR0OfSGDmaH9a18O8/aJji9P4dH6j8vPxOMbZTBgIxML7
+ PcqaUMhEoI+uOcUAVOep3citwKHvAZ7yfbgTOOv1qOJDzs72Rag90QuRXIBYWRixF2vd
+ c+w2Q3bCEFd+IHW9ur3p8zZCsifKOAmmxH0+KrkPkmkm4RXwBXov6K9hn9dzfIdNB+DX
+ t+xA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709259389; x=1709864189;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=t5N80RBWPqVV+IIPJyw+czTFh0k8pWe0GFBhA+4VJGk=;
- b=gFN2p2xhvXQHfxp3KPKQnpbCBL2m2yeeugmg3wa7uGPe3ynZHA0GBxHNleyFtGVsqz
- xB/BtWfBXCrBgg7gwHDz4NtuW/5iyif4Qlv1d4GpZQEXViHmtD68IxjDep9VnZVoSop3
- ymGxLeW63NaSbjsm3mvA6idSsiNf5XqmXtKGpvoy1RiQLx0+ryVeUm2YuuI4K427Bnpz
- SKjIu4GY7Y18/zw79zaDPelYU198EXptKnsu4jJupSP8bC8Q4eHMcF69q19guMyDtugB
- Qq9POvTJtrI1L7J8PjjSzCJ1foaAfUh1UfUkJez8bBSrUiEcMBzcyxwks4mY7YPgKfFz
- qQlQ==
-X-Gm-Message-State: AOJu0YwP3JLWmslYa/OAQCXf8t76gTW2EdVq6+ctq0X0ignQITLVr6Iy
- KYUKn0+Jk5yrjtRWjNOphm3MiP4J3EHn3R+KHDn4pWdj7+fLw2F4iHNpeNEuwSypMindiNslR99
- E0vy7zeDkWaiHdepTptz1biel3/l4gPtZvh8Pdj3mA+tzowl81mNI
-X-Received: by 2002:a05:6a20:65c:b0:1a1:15e1:da14 with SMTP id
- 28-20020a056a20065c00b001a115e1da14mr217562pzm.0.1709259389188; 
- Thu, 29 Feb 2024 18:16:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGaGosygh4jKIboYg5mJteQdV6UbuL7MVYI9rzqvfzKL8Nd/hG63wlsWlhfA68g5ch15FgBUg==
-X-Received: by 2002:a05:6a20:65c:b0:1a1:15e1:da14 with SMTP id
- 28-20020a056a20065c00b001a115e1da14mr217554pzm.0.1709259388888; 
- Thu, 29 Feb 2024 18:16:28 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- u8-20020a170902e5c800b001dca6d1d572sm2201775plf.63.2024.02.29.18.16.27
+ d=1e100.net; s=20230601; t=1709260162; x=1709864962;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=gMg1xISzMVEC9+nQFn/Ae6nNNVOV1dw9gITKfHRGtRE=;
+ b=WBLAojdG3iVXKmo7ndwZ8sDRzpHd5cKpKObaC2pMJ7WNKy4uE9AH/DsXUHRmBWM6+L
+ 0XI7K5IiL1YFF7/fTuBL3BTdrIWFcesUxvkvyJjuKhktotZMoESYHtOtfPl8xM9KgAj6
+ XrIxZAfp5W+yxuZpAr4uiTl7zdAsThXELe6pfXh55ssTvWfCHz9ZComtq2+QR9RUs5ba
+ VhcEosY92MJ4BkWvT1bSaaMR3YEGhG35z/MVHqigj2I4woxNrBJpxTiMBgY9rfAoKXzP
+ KItFsiTx2QAJjq1gLqtRvsGK7mcPB0cHgRXE/NPZk/JFmn1ZwOs+gGdV43Cq4cX8y1+d
+ uvWw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVobAUKeuxvm/fP12+Ek0+YMqey6x5y8y3ksWxrY5QK3HkE4sKyCGjXG0Ip+jwnulgvCSEGv58sg+huVeQGsmylNcE24Fs=
+X-Gm-Message-State: AOJu0Yy50QIQCrsQHi+d25aqRNT8vb60GIHFS5NyUKGUXlbrlUEWXdqf
+ yCNzfF3dSVcAKFrYa1Q6aWbUEnBMUg0S0g3thCcxiodpI+HO0YIeB5fqPh8OYDE=
+X-Google-Smtp-Source: AGHT+IFyUgtEWvxf6wivitp6qX5KB0cAQ8WlmcJ8xjq2a5zNNNqQpASsed0jENlnw5hOfLwo6eZCHA==
+X-Received: by 2002:a0c:a701:0:b0:690:1e55:f6be with SMTP id
+ u1-20020a0ca701000000b006901e55f6bemr478163qva.19.1709260162565; 
+ Thu, 29 Feb 2024 18:29:22 -0800 (PST)
+Received: from n231-230-216.byted.org ([130.44.212.120])
+ by smtp.gmail.com with ESMTPSA id
+ qo13-20020a056214590d00b0068d11cf887bsm1384107qvb.55.2024.02.29.18.29.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 29 Feb 2024 18:16:28 -0800 (PST)
-Date: Fri, 1 Mar 2024 10:16:21 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH V2] migration: massage cpr-reboot documentation
-Message-ID: <ZeE6dXIy521fqzuz@x1n>
-References: <1709218462-3640-1-git-send-email-steven.sistare@oracle.com>
+ Thu, 29 Feb 2024 18:29:22 -0800 (PST)
+From: Hao Xiang <hao.xiang@bytedance.com>
+To: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
+ peterx@redhat.com, farosas@suse.de, eblake@redhat.com, armbru@redhat.com,
+ thuth@redhat.com, lvivier@redhat.com, jdenemar@redhat.com,
+ marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com,
+ qemu-devel@nongnu.org
+Cc: Hao Xiang <hao.xiang@bytedance.com>
+Subject: [PATCH v4 0/7] Introduce multifd zero page checking.
+Date: Fri,  1 Mar 2024 02:28:22 +0000
+Message-Id: <20240301022829.3390548-1-hao.xiang@bytedance.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1709218462-3640-1-git-send-email-steven.sistare@oracle.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f2f;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-qv1-xf2f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.096,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,17 +94,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Feb 29, 2024 at 06:54:22AM -0800, Steve Sistare wrote:
-> Re-wrap the cpr-reboot documentation to 70 columns, use '@' for
-> cpr-reboot references, capitalize COLO and VFIO, and tweak the
-> wording.
-> 
-> Suggested-by: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+v4 update:
+* Fix documentation for interface ZeroPageDetection.
+* Fix implementation in multifd_send_zero_page_check.
+* Rebase on top of c0c6a0e3528b88aaad0b9d333e295707a195587b.
 
-queued.
+v3 update:
+* Change "zero" to "zero-pages" and use type size for "zero-bytes".
+* Fixed ZeroPageDetection interface description.
+* Move zero page unit tests to its own path.
+* Removed some asserts.
+* Added backward compatibility support for migration 9.0 -> 8.2.
+* Removed fields "zero" and "normal" page address arrays from v2. Now
+multifd_zero_page_check_send sorts normal/zero pages in the "offset" array.
+
+v2 update:
+* Implement zero-page-detection switch with enumeration "legacy",
+"none" and "multifd".
+* Move normal/zero pages from MultiFDSendParams to MultiFDPages_t.
+* Add zeros and zero_bytes accounting.
+
+This patchset is based on Juan Quintela's old series here
+https://lore.kernel.org/all/20220802063907.18882-1-quintela@redhat.com/
+
+In the multifd live migration model, there is a single migration main
+thread scanning the page map, queuing the pages to multiple multifd
+sender threads. The migration main thread runs zero page checking on
+every page before queuing the page to the sender threads. Zero page
+checking is a CPU intensive task and hence having a single thread doing
+all that doesn't scale well. This change introduces a new function
+to run the zero page checking on the multifd sender threads. This
+patchset also lays the ground work for future changes to offload zero
+page checking task to accelerator hardwares.
+
+Use two Intel 4th generation Xeon servers for testing.
+
+Architecture:        x86_64
+CPU(s):              192
+Thread(s) per core:  2
+Core(s) per socket:  48
+Socket(s):           2
+NUMA node(s):        2
+Vendor ID:           GenuineIntel
+CPU family:          6
+Model:               143
+Model name:          Intel(R) Xeon(R) Platinum 8457C
+Stepping:            8
+CPU MHz:             2538.624
+CPU max MHz:         3800.0000
+CPU min MHz:         800.0000
+
+Perform multifd live migration with below setup:
+1. VM has 100GB memory. All pages in the VM are zero pages.
+2. Use tcp socket for live migration.
+3. Use 4 multifd channels and zero page checking on migration main thread.
+4. Use 1/2/4 multifd channels and zero page checking on multifd sender
+threads.
+5. Record migration total time from sender QEMU console's "info migrate"
+command.
+
++------------------------------------+
+|zero-page-checking | total-time(ms) |
++------------------------------------+
+|main-thread        | 9629           |
++------------------------------------+
+|multifd-1-threads  | 6182           |
++------------------------------------+
+|multifd-2-threads  | 4643           |
++------------------------------------+
+|multifd-4-threads  | 4143           |
++------------------------------------+
+
+Apply this patchset on top of commit
+c0c6a0e3528b88aaad0b9d333e295707a195587b
+
+Hao Xiang (7):
+  migration/multifd: Add new migration option zero-page-detection.
+  migration/multifd: Implement zero page transmission on the multifd
+    thread.
+  migration/multifd: Implement ram_save_target_page_multifd to handle
+    multifd version of MigrationOps::ram_save_target_page.
+  migration/multifd: Enable multifd zero page checking by default.
+  migration/multifd: Add new migration test cases for legacy zero page
+    checking.
+  migration/multifd: Add zero pages and zero bytes counter to migration
+    status interface.
+  Update maintainer contact for migration multifd zero page checking
+    acceleration.
+
+ MAINTAINERS                         |  5 ++
+ hw/core/machine.c                   |  4 +-
+ hw/core/qdev-properties-system.c    | 10 ++++
+ include/hw/qdev-properties-system.h |  4 ++
+ migration/meson.build               |  1 +
+ migration/migration-hmp-cmds.c      | 13 ++++
+ migration/migration.c               |  2 +
+ migration/multifd-zero-page.c       | 92 +++++++++++++++++++++++++++++
+ migration/multifd-zlib.c            | 21 +++++--
+ migration/multifd-zstd.c            | 20 +++++--
+ migration/multifd.c                 | 83 ++++++++++++++++++++++----
+ migration/multifd.h                 | 24 +++++++-
+ migration/options.c                 | 21 +++++++
+ migration/options.h                 |  1 +
+ migration/ram.c                     | 40 +++++++++----
+ migration/trace-events              |  8 +--
+ qapi/migration.json                 | 53 +++++++++++++++--
+ tests/migration/guestperf/engine.py |  2 +
+ tests/qtest/migration-test.c        | 52 ++++++++++++++++
+ 19 files changed, 412 insertions(+), 44 deletions(-)
+ create mode 100644 migration/multifd-zero-page.c
 
 -- 
-Peter Xu
+2.30.2
 
 
