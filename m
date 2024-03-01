@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1DD286EE7F
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 05:13:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE5686EE87
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 05:14:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgGjG-0005KI-B0; Fri, 01 Mar 2024 23:12:06 -0500
+	id 1rgGjG-0005KR-W8; Fri, 01 Mar 2024 23:12:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgC1W-0003rn-E0
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:43 -0500
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ id 1rgC1a-0003uI-BO
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:45 -0500
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgC1U-0005hH-UV
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:38 -0500
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-299dba8fd24so2014952a91.2
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:10:36 -0800 (PST)
+ id 1rgC1Y-0005kF-Ub
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:42 -0500
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-6da202aa138so1999747b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:10:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709334635; x=1709939435; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709334640; x=1709939440; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iM2DWBTbIODm0qN2yhX9D3hAXXDtYwow0kqtsMcFoQE=;
- b=q2VDXy6EXcCz4B0fluG1oG09P/pGUBrBh3mVizp/k16h5/BayaqN/BkCu9yONkG9f8
- qqkAyepHULzVJE6OD4F7bPY6FqyDAv+VQxBdyQw9UhFNQ4akFOpOpVPJT/9XUazDq/pu
- LgstV1MYqnX/id5/bogeOZh+rCzg322vZQAL5Hml3x8EWJe98sxazm4tbt34uMV8a4Ds
- LbOpgg1Z0LnluMI9B0qynu7rHpfwMsW3YAbZnWkFzMHkbbLhFM/8NWRevKkP2Pv4yL7Z
- WQ9O8rwHU++kUqJ/EV/AAskf2P7uJGALjcA0VTGXSnHeObgQ8tlRO6wfYD/sAEbtWgYB
- 5/+A==
+ bh=KYeT1V/wjgovpdrb0SONHx5NJHYkyLqzQDA/KKTsreA=;
+ b=bfqqnoQXRtRu9rKmqZdnmlMhk0tdTgJzXJIUT59zAG1arQWm6Hpj1QAIg6CIpJBW1a
+ 0yZRluUF2/griNTzM85SXrU5j4IbQIRJ0GIEPDC4tCQAsHdzEVuDHmQbABCqFcQvU+kX
+ fMVL4SaFktGze/Dcv9nJoPSLzs1kteE9rlKFqmuvY1Rpc+Qo634bzt37woi8/72X4tZt
+ w2l0lNoVI+usYtiWIdNRm9THgSTMmuWuF4CRC8EuY9eZdTg05jE600AvyopV5i8nzFvq
+ wer8nx6+suO0fOPtG+/q8PCEU6uQxEgrvuOqs2Y8QQpmvvKqTWzKrVCbeWK7OmW+bkg3
+ 5HxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709334635; x=1709939435;
+ d=1e100.net; s=20230601; t=1709334640; x=1709939440;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iM2DWBTbIODm0qN2yhX9D3hAXXDtYwow0kqtsMcFoQE=;
- b=tXA5tsIV2I3jHwxD9Rw57sPnfY4vSNqXgzP+PWq5DpsmqYZcJ6kViyCSxEETycJvRT
- 1SU9nAOUchM78FfkJ3hr3zn7vSH7LNAC2HTgEy+yGlfd1fIWGqhavbIqONVSkTTeeWw7
- 1d5yy1Q2NgWyw+YohLbcjOL1qZIwAMSCNojQrjPgGtdx9zSJRX4ZI9qJajNsoOlJg3+7
- D98XvrdvEL8d5qbsoPivajVhZYpyMYa6/tYuCEuGJHvzmYJrfC7pOst6j2vdiSBv+56c
- TEobqx3xXOYgqlvnlo/2jQ4RnRuy/3tcOkXfREbtmN+a2QCX+Zm+LgWypVWcMy7o9cx8
- neBg==
-X-Gm-Message-State: AOJu0YzN1f0P38PtO8pnKy/znEMRH+uLeKzVg8ujCU2l1ZJ5LiaDSbyj
- VpOOxAj/Csu/83KS2JkqTy8dQd2/Rb9oQi4jRGB1lQY/mrvhaX+KsS4yXLsGtB5/kmJWbscBVVQ
- j
-X-Google-Smtp-Source: AGHT+IGzobOfqcAfHrq8iEteXzqbDe4u12aBCAcJ9kunxr8DWCdhGTefmlobibC/PvA2PoGOhNQO2A==
-X-Received: by 2002:a17:90b:4e83:b0:29b:2628:6a18 with SMTP id
- sr3-20020a17090b4e8300b0029b26286a18mr2680942pjb.15.1709334634998; 
- Fri, 01 Mar 2024 15:10:34 -0800 (PST)
+ bh=KYeT1V/wjgovpdrb0SONHx5NJHYkyLqzQDA/KKTsreA=;
+ b=Co/4c+kigvCJYmHFz8RabJXgzvPuHdwLqrAf6xbKP14TDkSCjmN+F5SgcmLWy2gpoc
+ Mkw+ffA4CSnYaYQb0AiiBeKVSVGECX+mRQ/jzX+9pGyL2VnChY4fiYc2fHusVGTG8D0F
+ OicgOS1If6J5+L0xhiCKatnl50gZxbkQtxxJByW0A+45B5F0QhUluGLTs+YKGHViOgNs
+ 412DIwv7qzm4AHQKcEvFnyyMc0l4GX+16WyABcwECptqXhAuO+HENg43AzxTxkMcqAxr
+ wLBB9dPCXi6fhqSGFNCOUc5VwwZEs1qE8tAxHjxnIhyC82mdSMXX6vwO2Nxn85+WON7x
+ 9otw==
+X-Gm-Message-State: AOJu0YwnS/IZWrEa5eAxuA1fwevHCntG/TsM/5Wj2hIkQ8eftrs/Rw33
+ fuw2RMFsS4fydA2/hsuEDDITXnX386m1nhUHmYskY8U2kva042L3WBZWpUQlt1ZBbELv1d6Ntq1
+ /
+X-Google-Smtp-Source: AGHT+IGJh5ix0cyG+rqbDvsBx9duUZtS+JkxYUCrQUqduERa6SbOksHb3uU7JwefIXbCUs2yugHEpg==
+X-Received: by 2002:a05:6a00:27a0:b0:6e5:5f6a:4966 with SMTP id
+ bd32-20020a056a0027a000b006e55f6a4966mr3790759pfb.6.1709334639677; 
+ Fri, 01 Mar 2024 15:10:39 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- c2-20020a634e02000000b005e438fe702dsm3449407pgb.65.2024.03.01.15.10.33
+ c2-20020a634e02000000b005e438fe702dsm3449407pgb.65.2024.03.01.15.10.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 15:10:34 -0800 (PST)
+ Fri, 01 Mar 2024 15:10:39 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Helge Deller <deller@gmx.de>
-Subject: [PATCH 49/60] linux-user: Allow TARGET_PAGE_BITS_VARY
-Date: Fri,  1 Mar 2024 13:06:08 -1000
-Message-Id: <20240301230619.661008-50-richard.henderson@linaro.org>
+ Ilya Leoshkevich <iii@linux.ibm.com>, Helge Deller <deller@gmx.de>
+Subject: [PATCH 52/60] target/ppc: Enable TARGET_PAGE_BITS_VARY for user-only
+Date: Fri,  1 Mar 2024 13:06:11 -1000
+Message-Id: <20240301230619.661008-53-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301230619.661008-1-richard.henderson@linaro.org>
 References: <20240301230619.661008-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,71 +94,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If set, match the host and guest page sizes.
+Since ppc binaries are generally built for multiple
+page sizes, it is trivial to allow the page size to vary.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
 Acked-by: Helge Deller <deller@gmx.de>
-Message-Id: <20240102015808.132373-30-richard.henderson@linaro.org>
+Message-Id: <20240102015808.132373-33-richard.henderson@linaro.org>
 ---
- linux-user/main.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ target/ppc/cpu-param.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/linux-user/main.c b/linux-user/main.c
-index bad03f06d3..12bb839982 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -55,6 +55,7 @@
- #include "loader.h"
- #include "user-mmap.h"
- #include "tcg/perf.h"
-+#include "exec/page-vary.h"
- 
- #ifdef CONFIG_SEMIHOSTING
- #include "semihosting/semihost.h"
-@@ -680,6 +681,7 @@ int main(int argc, char **argv, char **envp)
-     int i;
-     int ret;
-     int execfd;
-+    int host_page_size;
-     unsigned long max_reserved_va;
-     bool preserve_argv0;
- 
-@@ -791,6 +793,16 @@ int main(int argc, char **argv, char **envp)
-                                  opt_one_insn_per_tb, &error_abort);
-         ac->init_machine(NULL);
-     }
+diff --git a/target/ppc/cpu-param.h b/target/ppc/cpu-param.h
+index 0a0416e0a8..b7ad52de03 100644
+--- a/target/ppc/cpu-param.h
++++ b/target/ppc/cpu-param.h
+@@ -31,6 +31,13 @@
+ # define TARGET_PHYS_ADDR_SPACE_BITS 36
+ # define TARGET_VIRT_ADDR_SPACE_BITS 32
+ #endif
+-#define TARGET_PAGE_BITS 12
 +
-+    /*
-+     * Finalize page size before creating CPUs.
-+     * This will do nothing if !TARGET_PAGE_BITS_VARY.
-+     * The most efficient setting is to match the host.
-+     */
-+    host_page_size = qemu_real_host_page_size();
-+    set_preferred_target_page_bits(ctz32(host_page_size));
-+    finalize_target_page_bits();
-+
-     cpu = cpu_create(cpu_type);
-     env = cpu_env(cpu);
-     cpu_reset(cpu);
-@@ -804,8 +816,6 @@ int main(int argc, char **argv, char **envp)
-      */
-     max_reserved_va = MAX_RESERVED_VA(cpu);
-     if (reserved_va != 0) {
--        int host_page_size = qemu_real_host_page_size();
--
-         if ((reserved_va + 1) % host_page_size) {
-             char *s = size_to_str(host_page_size);
-             fprintf(stderr, "Reserved virtual address not aligned mod %s\n", s);
-@@ -904,7 +914,7 @@ int main(int argc, char **argv, char **envp)
-      * If we're in a chroot with no /proc, fall back to 1 page.
-      */
-     if (mmap_min_addr == 0) {
--        mmap_min_addr = qemu_real_host_page_size();
-+        mmap_min_addr = host_page_size;
-         qemu_log_mask(CPU_LOG_PAGE,
-                       "host mmap_min_addr=0x%lx (fallback)\n",
-                       mmap_min_addr);
++#ifdef CONFIG_USER_ONLY
++/* Allow user-only to vary page size from 4k */
++# define TARGET_PAGE_BITS_VARY
++# define TARGET_PAGE_BITS_MIN 12
++#else
++# define TARGET_PAGE_BITS 12
++#endif
+ 
+ #endif
 -- 
 2.34.1
 
