@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE7CA86ECE1
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:19:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65FF386ECD3
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:16:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgBxl-0004t5-6a; Fri, 01 Mar 2024 18:06:45 -0500
+	id 1rgBxj-0004rO-1g; Fri, 01 Mar 2024 18:06:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgBxX-0004qU-Mt
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:31 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1rgBxY-0004qh-19
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:32 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgBxW-0004Co-4N
+ id 1rgBxW-0004Cx-IR
  for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:31 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1dc3b4b9b62so23771625ad.1
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:06:29 -0800 (PST)
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1dc1e7c0e29so10569485ad.1
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:06:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709334388; x=1709939188; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709334389; x=1709939189; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=keqqLzVNAo4uH25B4sgF/a/mk1kxuvixDsagaZwoXEA=;
- b=PB9EjzNw4+NNo/r7ILU/XW4K8BIXsGue2sjOwBuYukLQAdy0Ib67UueXkqSiXx8aB+
- VLOC6soi0HY9DJGoHwzXkVr044D82ymw57jeXGD61FYTqzpl0C3T2zyTTOW+aWoyNOob
- Bl8HJ8jz9bTrz5rv1CJ/FfB4P+2sPqXmtIIGPvT6C1B7WUu+y1RW4tFQmfTyt0rrwyXJ
- /lMaWCJmvhMpqgjjzJ3cFOVx+wh3Kz4KZCQzordgYufAhEdI2a62Hm4YrUVEOM07pmM4
- 69cG31S462xYENZ4CVwtgxd7/1LxvxGz6tl9Q1YEQgAMnRn6iIZwsTEKhOh1z0jGF46N
- qhgw==
+ :reply-to; bh=0IQWSjcLXc40VTcQlmdhU2o876C5B7NqB15Y8LB3+3A=;
+ b=nOf4jPsqFqYBsTdgCrg4Y6c4SGVpaJ5NSqdzpNIQCugZ/oVp2OgE29WoJqQBgq7fsE
+ qtrW4rSK7QLa19bPUEQTL6L2kMXBLEsR1tvgPyLn66JdfL3ShPBvRixMU7XVnZEpKUFO
+ xJRYGTicvGdydqQNp/CAjUHrmdJE9fcEdkt2YEK8IeomIXzUr2HL3LzY0m0fQk+A9Doz
+ 6dSiIk5CPRqysCJPgbH2IbtIWN70qDToD2pOSkzOSmakltmGZErA+NGdPpWYx5Oja9wB
+ eN5CBlkkp4YBhsNdXmNxOYu/A++4xY6+2P7fs3J5nEi03efAulx8dFlRqPm8qEXPThtJ
+ KYVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709334388; x=1709939188;
+ d=1e100.net; s=20230601; t=1709334389; x=1709939189;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=keqqLzVNAo4uH25B4sgF/a/mk1kxuvixDsagaZwoXEA=;
- b=BBTVgrwjERFMD0WzpQp17D+q46zWc4St2LlXNRZXkHf4D8s6heckFZ1hGCgJygtDgP
- m4oM9acC8+FlO0RLfNdaBMV3IWC8gVDO1SHQjC1L/aqhyzIkuJles/Bdlu7Xb/OcChnm
- hFvf/kz2cD7RobvFMI66VHV/utCJycDVHSFF0Ta0EJooFlGfo+a5ewHUjFewAHkLQvr4
- mkMMdORyK6SNMnu00XIwE0L8bcZgzIbcXupFC0ZWY6+GOh7TlCFJgX6JsWK8U14RCZsd
- upqNYnRwpxEsmwMWyTWEmeUct6wXMaO+WvWPFV4dsKqrqeEibrfjYQDdZ4BcqsivJYr0
- w4VA==
-X-Gm-Message-State: AOJu0YzK+6igmV5yJK7uCFQaPSzadskPRi5x+5qITOxThSBMKJ7Uxyec
- UoURVNNCB9VAfBJaBtBeV/6y+8pdCxOQhcrLb1X7M461ALFODEWB0HAd7a2gaLHYWA8fqLj5Lrh
- 3
-X-Google-Smtp-Source: AGHT+IGSqzanFoyo3BGVUsOeqWu1YHLIOlVtTGEdsd+m0TdUJ+wOn5LN80SQbgUAO5mVZjIH3zM5gQ==
-X-Received: by 2002:a17:903:190:b0:1db:b8dc:a016 with SMTP id
- z16-20020a170903019000b001dbb8dca016mr4261042plg.7.1709334387715; 
- Fri, 01 Mar 2024 15:06:27 -0800 (PST)
+ bh=0IQWSjcLXc40VTcQlmdhU2o876C5B7NqB15Y8LB3+3A=;
+ b=pgFQ2VvvIY+U8BGWMxpT4aeBZbk95eikuEGHYpj+LGm5niGEdyK6P2w9IGFjNTH3S1
+ EAHfWU4L8+AyLqUz38oO60+YdV3dMOedXmomIk4JLnmHKJE6ayp6o7vVVJvPAnL62ApY
+ 3nQoGH8PXb+cE5E8SLDScuRYw8bdWHz1xv92O+xXk5uk948hRHINJWq83RjdVcBZCZyF
+ vz1DrrL0+67rkw8+hdL8xbRHnjKy4GCOpB8mindDWHAgiAVG0IsZuHLeZwVH7BVTcld+
+ 5Pt2VPp52bE53a2fUIRSSAiQKCtHt/GMuadq0dYiHngnOi/nWJ31uWqOtHFLTWkGTFe/
+ GjoA==
+X-Gm-Message-State: AOJu0YwzIdOtDsNE9wEACqfzeStOIM7d2ZSBl74RuBhNCS8td8HFT2sD
+ DBYmEvmsP4aJ6wgByGpoFEmIWzeyHyFhnY+cTqrUUW5SRYAOTxRVA4qhZ6YO1Zdn7+p9J7R316P
+ O
+X-Google-Smtp-Source: AGHT+IEEw3XfmaIBx87z4X+Xs1ZMq78KUA65W6HSk+0eSyi0Qv6/hf/iLd6jkT/CITzPkW33XMt6Ew==
+X-Received: by 2002:a17:903:187:b0:1dc:adb2:628c with SMTP id
+ z7-20020a170903018700b001dcadb2628cmr4097679plg.34.1709334388934; 
+ Fri, 01 Mar 2024 15:06:28 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- lc11-20020a170902fa8b00b001dc668e145asm3988580plb.200.2024.03.01.15.06.26
+ lc11-20020a170902fa8b00b001dc668e145asm3988580plb.200.2024.03.01.15.06.27
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 15:06:27 -0800 (PST)
+ Fri, 01 Mar 2024 15:06:28 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 04/60] linux-user/elfload: Stack allocate struct mm_struct
-Date: Fri,  1 Mar 2024 13:05:23 -1000
-Message-Id: <20240301230619.661008-5-richard.henderson@linaro.org>
+Subject: [PATCH 05/60] linux-user/elfload: Latch errno before cleanup in
+ elf_core_dump
+Date: Fri,  1 Mar 2024 13:05:24 -1000
+Message-Id: <20240301230619.661008-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301230619.661008-1-richard.henderson@linaro.org>
 References: <20240301230619.661008-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,106 +92,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ignoring the fact that g_malloc cannot fail, the structure
-is quite small and might as well be allocated locally.
+On the off-chance that one of the cleanup functions changes
+errno, latch the errno that we want to return beforehand.
+
+Flush errno to 0 upon success, rather than at the beginning.
+No need to avoid negation of 0.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 28 +++++++++-------------------
- 1 file changed, 9 insertions(+), 19 deletions(-)
+ linux-user/elfload.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index cc43487a37..98b82b1a49 100644
+index 98b82b1a49..39d9ef9acc 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -4099,7 +4099,7 @@ struct mm_struct {
-     int mm_count;           /* number of mappings */
- };
- 
--static struct mm_struct *vma_init(void);
-+static void vma_init(struct mm_struct *);
- static void vma_delete(struct mm_struct *);
- static int vma_add_mapping(struct mm_struct *, target_ulong,
-                            target_ulong, abi_ulong);
-@@ -4174,17 +4174,10 @@ static inline void bswap_note(struct elf_note *en) { }
-  * thread that received the signal is stopped.
-  */
- 
--static struct mm_struct *vma_init(void)
-+static void vma_init(struct mm_struct *mm)
- {
--    struct mm_struct *mm;
--
--    if ((mm = g_malloc(sizeof (*mm))) == NULL)
--        return (NULL);
--
-     mm->mm_count = 0;
-     QTAILQ_INIT(&mm->mm_mmap);
--
--    return (mm);
- }
- 
- static void vma_delete(struct mm_struct *mm)
-@@ -4195,7 +4188,6 @@ static void vma_delete(struct mm_struct *mm)
-         QTAILQ_REMOVE(&mm->mm_mmap, vma, vma_link);
-         g_free(vma);
-     }
--    g_free(mm);
- }
- 
- static int vma_add_mapping(struct mm_struct *mm, target_ulong start,
-@@ -4638,7 +4630,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
-     struct elfhdr elf;
-     struct elf_phdr phdr;
-     struct rlimit dumpsize;
--    struct mm_struct *mm = NULL;
-+    struct mm_struct mm;
+@@ -4634,8 +4634,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
      off_t offset = 0, data_offset = 0;
      int segs = 0;
      int fd = -1;
-@@ -4664,11 +4656,10 @@ static int elf_core_dump(int signr, const CPUArchState *env)
-      * set up structure containing this information.  After
-      * this point vma_xxx functions can be used.
-      */
--    if ((mm = vma_init()) == NULL)
--        goto out;
-+    vma_init(&mm);
+-
+-    errno = 0;
++    int ret;
  
--    walk_memory_regions(mm, vma_walker);
--    segs = vma_get_mapping_count(mm);
-+    walk_memory_regions(&mm, vma_walker);
-+    segs = vma_get_mapping_count(&mm);
- 
-     /*
-      * Construct valid coredump ELF header.  We also
-@@ -4701,7 +4692,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
-      * Write program headers for memory regions mapped in
-      * the target process.
-      */
--    for (vma = vma_first(mm); vma != NULL; vma = vma_next(vma)) {
-+    for (vma = vma_first(&mm); vma != NULL; vma = vma_next(vma)) {
-         (void) memset(&phdr, 0, sizeof (phdr));
- 
-         phdr.p_type = PT_LOAD;
-@@ -4738,7 +4729,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
-     /*
-      * Finally we can dump process memory into corefile as well.
-      */
--    for (vma = vma_first(mm); vma != NULL; vma = vma_next(vma)) {
-+    for (vma = vma_first(&mm); vma != NULL; vma = vma_next(vma)) {
-         abi_ulong addr;
-         abi_ulong end;
- 
-@@ -4767,8 +4758,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+     if (prctl(PR_GET_DUMPABLE) == 0) {
+         return 0;
+@@ -4755,15 +4754,14 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+                 goto out;
+         }
+     }
++    errno = 0;
  
   out:
++    ret = -errno;
      free_note_info(&info);
--    if (mm != NULL)
--        vma_delete(mm);
-+    vma_delete(&mm);
-     (void) close(fd);
+     vma_delete(&mm);
+-    (void) close(fd);
+-
+-    if (errno != 0)
+-        return (-errno);
+-    return (0);
++    close(fd);
++    return ret;
+ }
+ #endif /* USE_ELF_CORE_DUMP */
  
-     if (errno != 0)
 -- 
 2.34.1
 
