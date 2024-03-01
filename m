@@ -2,84 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C011786E4C4
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 16:55:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFD8F86E491
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 16:42:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rg5Ds-00023u-6n; Fri, 01 Mar 2024 10:54:56 -0500
+	id 1rg50f-0003It-Ny; Fri, 01 Mar 2024 10:41:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rg5Dq-00023e-A8
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 10:54:54 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rg5Do-0006ab-QO
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 10:54:54 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-412c23551e2so10002395e9.1
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 07:54:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709308491; x=1709913291; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mS35f51VgRb22qx+xNAjjizltE0lviPsot6aYY6iK3c=;
- b=Gu75KfLV24C4BNUsVR0GobVm02sdXGjsGLlWsLm30Du63AHA7qX6igJg99I07k9LjW
- WjUEIfvfhEpqTZhbnfYPNqBfS+MrBdcmvjEyvbIIvBYz5Jl1r7hAOV1933SDuIrjPjTz
- zUtWGNJtxBSMPm6TBEUVVGkNx09AOkSGCDgz+rq3RYdcRpRRy8eyodRi2JjIFA/LWGrg
- PYydZaW5zr7JGYaQ9Qb43GEBlbI0WZ3xjIRSXrKgsUM5cuu21JFv3g7aebSqC8SLbbP+
- iqGbZfvWZ6bPkWAb2/oxJMyqX5T0tKg9wBR3k7/KEjU50BRRbWKJ7THMtc9vF2/P4QVk
- cmbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709308491; x=1709913291;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mS35f51VgRb22qx+xNAjjizltE0lviPsot6aYY6iK3c=;
- b=dA6a2tOlAnnO8oG0reZoVpeToY2517fqmKG+bbjKeUDZM6iEC30RbcA2iutdtPkt9f
- ef8DN782NVHFDZN1WD9XivffE8ZVRXI75s8v4iRXMqaSsKtQ4i/XQz8y1eur99kvxNVM
- Or93W7WJL8z6ZRl+vBEkeyBa9b6O1C1+dRlv1aB/7SkcCwAWd5MvSy1NkWL+ANyKvPT8
- wlAjp3MQVJCSujjRCMNiGZv0jxYhRVHS5+24SPGHhBFgz/hPHMRQAAXALxxqTVliUZEQ
- bDK1SsHnXRRFXKgOr1t4bBxvXy8K9OrLmCx5pmP3J5vghVDJAwVRmgqtAsBwcekU9vlG
- mS1Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW0W7eW3yGpjlKmDcnri/wnoU64UMzhNyBpNj967/AAZG9hmE9Zb93LYvPLWU3eGX+XIIrwzEjCNvFOSPV3azDOBU9i8gM=
-X-Gm-Message-State: AOJu0YzcvvOF8Q/ixxxl2RyDSpZZx8zpgUDWDjHn0YDEGXmoIL/efqvG
- jrM+hMfqAB3cPHIPkaARtil/OaFsmEQdOVo+u7wMO3NcPazNpC5aAEJRQooXcMg/fupdxRjQNaW
- n3E4=
-X-Google-Smtp-Source: AGHT+IF3gGjFp0hWdfEN8lNYBVWeyLOEYHdqfMvhzrhd6bEAk7rHofR9Kv/J+Lpy4aGjG3ytD6uhmg==
-X-Received: by 2002:a05:600c:5129:b0:412:b0de:38c4 with SMTP id
- o41-20020a05600c512900b00412b0de38c4mr3121664wms.8.1709308491158; 
- Fri, 01 Mar 2024 07:54:51 -0800 (PST)
-Received: from [192.168.193.175] (232.red-88-28-18.dynamicip.rima-tde.net.
- [88.28.18.232]) by smtp.gmail.com with ESMTPSA id
- 26-20020a05600c021a00b004128c73beffsm8797363wmi.34.2024.03.01.07.54.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 01 Mar 2024 07:54:50 -0800 (PST)
-Message-ID: <86203a7c-97fc-4f3c-98cf-35268b9291ce@linaro.org>
-Date: Fri, 1 Mar 2024 16:54:47 +0100
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rg50c-0003If-0Q
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 10:41:14 -0500
+Received: from mgamail.intel.com ([192.198.163.19])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rg50Z-0004Cu-TW
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 10:41:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1709307672; x=1740843672;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=UCgBJnXG/UO0SnvFRzOsMeOMKa+CebSwf5Cpb4EnGYc=;
+ b=a3lrihgG3KHpmprjALkaRlSB31JIlljwFU5H3f/EIJS4eN9k1nVSQEf2
+ 1FNUh8ter5TVXdr6Mg7rqZtX5Zyrc3EVze7ZFgN8turTdI8qYPbzoT9zU
+ /fCJN81lJjRVtSEJbYeIcQFgG3zNrZ7FajwqZe5ufnviu9+W2q+aWRlUB
+ JJEHehQbIyUdhFrttd2Xc5z0EOIVCBMqEAXLkNwu30GZt2hr9SSCIRDHF
+ IAUpZvsRPZ5xJ1MCVkiBpULzG7WiQKQGGFDq+QtkWAQmsjiRhbD12e6dO
+ GfiQMMb8t9yN4dTW31vpAV8yV5qcyW4KPSPrLvhR8bZLRFY/0E1VHmPMP g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11000"; a="3705949"
+X-IronPort-AV: E=Sophos;i="6.06,196,1705392000"; 
+   d="scan'208";a="3705949"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Mar 2024 07:41:10 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,196,1705392000"; 
+   d="scan'208";a="8657143"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa006.jf.intel.com with ESMTP; 01 Mar 2024 07:41:08 -0800
+Date: Fri, 1 Mar 2024 23:54:51 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PULL 26/29] contrib/plugins: extend execlog to track register
+ changes
+Message-ID: <ZeH6S02g5n/2TzaN@intel.com>
+References: <20240228115701.1416107-1-alex.bennee@linaro.org>
+ <20240228115701.1416107-27-alex.bennee@linaro.org>
+ <ZeGBl5eJoJ0PLrW3@intel.com> <87msri5k1b.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 1/1] hw: add some convenient trace-events for pcie and
- shpc hotplug
-Content-Language: en-US
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>, mst@redhat.com
-Cc: marcel.apfelbaum@gmail.com, qemu-devel@nongnu.org, yc-core@yandex-team.ru
-References: <20240301154146.761531-1-vsementsov@yandex-team.ru>
- <20240301154146.761531-2-vsementsov@yandex-team.ru>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240301154146.761531-2-vsementsov@yandex-team.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=gb2312
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <87msri5k1b.fsf@draig.linaro.org>
+Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.096,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,16 +86,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/3/24 16:41, Vladimir Sementsov-Ogievskiy wrote:
-> Add trace-events that may help to debug problems with hotplugging.
+On Fri, Mar 01, 2024 at 10:22:08AM +0000, Alex Benn®¶e wrote:
+> Date: Fri, 01 Mar 2024 10:22:08 +0000
+> From: Alex Benn®¶e <alex.bennee@linaro.org>
+> Subject: Re: [PULL 26/29] contrib/plugins: extend execlog to track register
+>  changes
 > 
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> ---
->   hw/pci/pcie.c       | 56 +++++++++++++++++++++++++++++++++++++++++++++
->   hw/pci/shpc.c       | 46 +++++++++++++++++++++++++++++++++++++
->   hw/pci/trace-events |  6 +++++
->   3 files changed, 108 insertions(+)
+> Zhao Liu <zhao1.liu@intel.com> writes:
+> 
+> > Hi Alex,
+> >
+> > I hit the following warnings (with "./configure --enable-werror"):
+> >
+> > /qemu/contrib/plugins/execlog.c: In function °Æregisters_init°Ø:
+> > /qemu/contrib/plugins/execlog.c:330:17: warning: °Æg_pattern_match_string°Ø is deprecated: Use 'g_pattern_spec_match_string' instead [-Wdeprecated-declarations]
+> >   330 |                 if (g_pattern_match_string(pat, rd->name) ||
+> >       |                 ^~
+> > In file included from /usr/include/glib-2.0/glib.h:65,
+> >                  from /qemu/contrib/plugins/execlog.c:9:
+> > /usr/include/glib-2.0/glib/gpattern.h:55:15: note: declared here
+> >    55 | gboolean      g_pattern_match_string   (GPatternSpec *pspec,
+> >       |               ^~~~~~~~~~~~~~~~~~~~~~
+> > /qemu/contrib/plugins/execlog.c:331:21: warning: °Æg_pattern_match_string°Ø is deprecated: Use 'g_pattern_spec_match_string' instead [-Wdeprecated-declarations]
+> >   331 |                     g_pattern_match_string(pat, rd_lower)) {
+> >       |                     ^~~~~~~~~~~~~~~~~~~~~~
+> > In file included from /usr/include/glib-2.0/glib.h:65,
+> >                  from /qemu/contrib/plugins/execlog.c:9:
+> > /usr/include/glib-2.0/glib/gpattern.h:55:15: note: declared here
+> >    55 | gboolean      g_pattern_match_string   (GPatternSpec *pspec,
+> >       |               ^~~~~~~~~~~~~~~~~~~~~~
+> > /qemu/contrib/plugins/execlog.c:339:63: warning: passing argument 2 of °Æg_ptr_array_add°Ø discards °Æconst°Ø qualifier from pointer target type [-Wdiscarded-qualifiers]
+> >   339 |                             g_ptr_array_add(all_reg_names,
+> > reg->name);
+> 
+> Hmm I missed that. Not sure what the neatest solution is in this case -
+> g_ptr_array_new() doesn't have a destroy func so we shouldn't ever
+> attempt to free it. We can manually re-add the const qualifier at the
+> other end for completeness and I guess comment and cast?
 
-Reviewed-by: Philippe Mathieu-Daud√© <philmd@linaro.org>
+I find other palces use 2 ways:
+  * Use g_strdup() to create a copy (e.g., net/net.c,
+    add_nic_model_help()). But I'm not sure if this is OK since you said
+    we shouldn't attempt to free it. May I ask if the free issue you
+    mentioned will affect the use of g_strdup() here?
+  * Another way is the forced conversion to gpointer (also e.g., in
+    net/net.c, qemu_get_nic_models()).
+
+Which way do you like? ;-)
+
+> 
+> 
+> >       |                                                            ~~~^~~~~~
+> > In file included from /usr/include/glib-2.0/glib.h:31,
+> >                  from /qemu/contrib/plugins/execlog.c:9:
+> > /usr/include/glib-2.0/glib/garray.h:192:62: note: expected °Ægpointer°Ø {aka °Ævoid *°Ø} but argument is of type °Æconst char *°Ø
+> >   192 |                                            gpointer          data);
+> >       |                                            ~~~~~~~~~~~~~~~~~~^~~~
+> >
+> > In addition, I checked my glic version:
+> >
+> > $ldd --version
+> > ldd (Ubuntu GLIBC 2.35-0ubuntu3.5) 2.35
+> >
+> > I think it's v2.35. Are these three warning reports valid?
+> 
+> It's the glib (not glibc) version that matters here.
+> g_pattern_match_string was deprecated in 2.70 when the suggested
+> alternative was added. However our baseline for glib is still:
+> 
+>   # When bumping glib minimum version, please check also whether to increase
+>   # the _WIN32_WINNT setting in osdep.h according to the value from glib
+>   glib_req_ver = '>=2.56.0'
+>   glib_pc = dependency('glib-2.0', version: glib_req_ver, required: true,
+>                       method: 'pkg-config')
+> 
+> The usual solution for this is to throw in a compat wrapper in
+> glib-compat.h:
+> 
+> --8<---------------cut here---------------start------------->8---
+> modified   include/glib-compat.h
+> @@ -105,6 +105,24 @@ static inline gpointer g_memdup2_qemu(gconstpointer mem, gsize byte_size)
+>  }
+>  #define g_memdup2(m, s) g_memdup2_qemu(m, s)
+>  
+> +/*
+> + * g_pattern_match_string has been deprecated in Glib since 2.70 and
+> + * will complain about it if you try to use it. Fortunately the
+> + * signature of both functions is the same making it easy to work
+> + * around.
+> + */
+> +static inline
+> +gboolean g_pattern_spec_match_string_qemu(GPatternSpec *pspec,
+> +                                          const gchar *string)
+> +{
+> +#if GLIB_CHECK_VERSION(2, 70, 0)
+> +    return g_pattern_spec_match_string(pspec, string);
+> +#else
+> +    return g_pattern_match_string(pspec, string);
+> +#endif
+> +};
+> +#define g_pattern_spec_match_string(p, s) g_pattern_spec_match_string_qemu(p, s)
+> +
+>  #if defined(G_OS_UNIX)
+>  /*
+>   * Note: The fallback implementation is not MT-safe, and it returns a copy of
+> modified   contrib/plugins/execlog.c
+> @@ -334,8 +334,8 @@ static void registers_init(int vcpu_index)
+>              for (int p = 0; p < rmatches->len; p++) {
+>                  g_autoptr(GPatternSpec) pat = g_pattern_spec_new(rmatches->pdata[p]);
+>                  g_autofree gchar *rd_lower = g_utf8_strdown(rd->name, -1);
+> -                if (g_pattern_match_string(pat, rd->name) ||
+> -                    g_pattern_match_string(pat, rd_lower)) {
+> +                if (g_pattern_spec_match_string(pat, rd->name) ||
+> +                    g_pattern_spec_match_string(pat, rd_lower)) {
+>                      Register *reg = init_vcpu_register(vcpu_index, rd);
+>                      g_ptr_array_add(registers, reg);
+> --8<---------------cut here---------------end--------------->8---
+> 
+> but I hesitated to add it for this case as plugins shouldn't assume they
+> have access to QEMU's internals. Maybe the glib-compat.h header could be
+> treated as a special case.
+
+Thanks! This works on my side!
+
+I support to fix the compatibility as the above, after all it's always
+confusing when we allow users to use newer glib and see warnings at
+compile time!
+
+> >
+> > I also noticed in target/arm/helper.c, there's another
+> > g_pattern_match_string() but I haven't met the warning.
+> 
+> Hmm that's weird. I suspect glib suppresses the warnings with:
+> 
+>   /* Ask for warnings for anything that was marked deprecated in
+>    * the defined version, or before. It is a candidate for rewrite.
+>    */
+>   #define GLIB_VERSION_MIN_REQUIRED GLIB_VERSION_2_56
+>
+
+I'm not too familiar with the QEMU build framework, but based on this, a
+natural question is, can this rule be applied to plugins code as well?
+If so, this would also avoid warning.
+
+Thanks,
+Zhao
 
 
