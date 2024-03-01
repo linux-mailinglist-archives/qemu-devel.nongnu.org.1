@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B343786ECB5
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:09:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAF7886ECCE
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:15:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgByt-0006ZF-L1; Fri, 01 Mar 2024 18:08:00 -0500
+	id 1rgC2c-0005Ia-Du; Fri, 01 Mar 2024 18:11:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgByW-0006Jg-Rt
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:07:32 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1rgC1M-0003eU-SH
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:31 -0500
+Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgByK-0004RP-Cy
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:07:32 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1dc29f1956cso23797255ad.0
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:07:19 -0800 (PST)
+ id 1rgC1H-0005c5-8H
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:28 -0500
+Received: by mail-oi1-x235.google.com with SMTP id
+ 5614622812f47-3bb9b28acb4so1913228b6e.2
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:10:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709334439; x=1709939239; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709334622; x=1709939422; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5K1zjw+5Oj4rrjx8HADPxYdAwsCVv3T9uofL+YVvOaU=;
- b=CK234zOUflO5hGuofTmOE4SXh0GZ0yenbjYm3JgX2WgnmINR5gqIDVeLytPXr1wf2P
- lwyBw9lwRoHAsdA1mwAJCk9WTktTt4fWvA1CP6Ew3zluZePdQHGE6Ik7wH277nJQrVZW
- v5Bl1UVLHwnZRbhvSRQgv5UjH3QQ8cemmpmFfLz2xILdGBO/CU+rspc4BRbn3esc48QS
- 3VI6Ta6aq93jVcM2na3QK2SmpyPZJ9kn6A68NqnVxKuAi4hicuPkHL8plqjnDHRIfNIK
- RYZJEpmlNDTICmRRRunhhGLMi4z4ZOADpWdwqXKcAKfxISXxipeZGjIL38O6n/9RaSbP
- gANw==
+ bh=qMAzWUeeNJh47c4bkyOP/O/3UzvTHZWrc2G+MJg3FB0=;
+ b=R29xo8072fvODYHj6CO3zejN6mxhmTEJ0HQshz1Lf8k/VLxRtv5g45pI8ai+KVX7Rn
+ +NRgpwSq9CUhLSpgYQCpZjvgumr+D/snm9+1UOEGGEd4S42ijuqsHCOdsKRIRAZwGG3E
+ GnvuRkT+8D5O3OmfsfyxYkywCh+uGpJfm4gxYdkYgbhLReRseBHfaaaZFd5BjSQ0Uo4Q
+ Chcfr7Hu9KPvSyoxr9ej4CcC5OmT2q4Cyf1AeE8sE+tcaHgA4eonHUMzrfHndiVqM37p
+ AksAe78DIn1v0D5W5KEx3PwCdD505sdDHFmtpeopby3wFK6z4eld4pdWulur69iH6QhI
+ 8yYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709334439; x=1709939239;
+ d=1e100.net; s=20230601; t=1709334622; x=1709939422;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5K1zjw+5Oj4rrjx8HADPxYdAwsCVv3T9uofL+YVvOaU=;
- b=R6P6PKUfrl3f/1ec0oEqe87TmCD0AWHY7nRIstgRz1sZGpyBdII9al/B8xl5cI27sT
- +Y5PRZkdiNW3l7Kl2hHzeNYgnrLe6tzy5x3qB5ObsToL5dFvs/j4BmoUkEZQBgLv5/0T
- MxgDhym6NpM866nxHEmt+Qm0XIzLuou4SCOdLBiYoK+EHmXvTNWeIw+yX4cXk4F143Ao
- rtaxBSTLqvtMFf3PhzG3DNI4OukmFUgXZHhxKiw5pF6TeDDiXssiSAr3OIM18IHwGiGR
- 5y0BBZK6zAl/YGEEdU2gA5Vy8AqSkqDAQehDKzAT93rQseC8BVGty4EQ9FPbCWoe6KxF
- dH9g==
-X-Gm-Message-State: AOJu0YwX5e4si6FclzvWss/G4kZWQ5XzF6h21dn2t+cCMr/6/LHpBdcc
- snNiG1a3gHQ8MthrzcMzo3xpNWEVkJ+mYk9TQao0jNPDIlqWVb6OxRtDzDS18g05ds11TDkbt2c
- i
-X-Google-Smtp-Source: AGHT+IFWBNccjFCfvts0qzD5+tdA7EbR8AAlrOq1rqTj1pP43Bv23Z7Loj8hUs53OISSObD+kF2ASg==
-X-Received: by 2002:a17:902:d4c8:b0:1db:edb8:35d8 with SMTP id
- o8-20020a170902d4c800b001dbedb835d8mr3636482plg.34.1709334438803; 
- Fri, 01 Mar 2024 15:07:18 -0800 (PST)
+ bh=qMAzWUeeNJh47c4bkyOP/O/3UzvTHZWrc2G+MJg3FB0=;
+ b=uuq9ucBd0ssyoUOGYErc7H+vGdl2R8t0QqAO9hB0KCV0UGHQPo+s1TLNdJM2rYPY0L
+ ibVDpxaDLMI4Awhc/aFlXAW+mrFk17qy1Hagt/CF/srdnSzHx5RF5ztiND+hHVV1HH5B
+ DgQpW0e263So9qtAlf0Pw2ZF2iBtB5x1LvqUOPiRiah0C1zvRYhVSiSNNVe75X9a3U6S
+ entMt2bYPndE1hdaxYCHhRFg91wz0rAH48Rlu0arV8htDSUO8Z+f3RsvMf6oZOwjupg8
+ Ss5VYd1JzJ/lcvkeCjUFDDb/OmBA4dH+HFb4C2m6tDu0vkazEMGZYOwSXd2S7IQBVzcB
+ l8RQ==
+X-Gm-Message-State: AOJu0YwA4pEM0/2w7cxvdME/ojmeIhy7HyhGNYKql9Ezk5/kjSVcyIp5
+ X/iXky02imUCuo4rO3bcdjtRscd4A41swjiouBD5KqHbBFTChvVV7fpBMNwkHK8GNZOXc3DvI8E
+ o
+X-Google-Smtp-Source: AGHT+IH0VAyCH8v5SKh9FbISVc7ayTx9AbwyJZ7K87ludJFWUPFfxWKTvl7kVIlvlR2gLInLNTMcpg==
+X-Received: by 2002:a05:6808:3c8d:b0:3c1:8066:7531 with SMTP id
+ gs13-20020a0568083c8d00b003c180667531mr4725912oib.26.1709334621827; 
+ Fri, 01 Mar 2024 15:10:21 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- lc11-20020a170902fa8b00b001dc668e145asm3988580plb.200.2024.03.01.15.07.17
+ c2-20020a634e02000000b005e438fe702dsm3449407pgb.65.2024.03.01.15.10.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 15:07:18 -0800 (PST)
+ Fri, 01 Mar 2024 15:10:21 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 39/60] linux-user: Split out do_munmap
-Date: Fri,  1 Mar 2024 13:05:58 -1000
-Message-Id: <20240301230619.661008-40-richard.henderson@linaro.org>
+Subject: [PATCH 40/60] linux-user: Use do_munmap for target_mmap failure
+Date: Fri,  1 Mar 2024 13:05:59 -1000
+Message-Id: <20240301230619.661008-41-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301230619.661008-1-richard.henderson@linaro.org>
 References: <20240301230619.661008-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x235.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,53 +93,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+For the cases for which the host mmap succeeds, but does
+not yield the desired address, use do_munmap to restore
+the reserved_va memory reservation.
+
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/mmap.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ linux-user/mmap.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 1bbfeb25b1..8ebcca4444 100644
+index 8ebcca4444..cbcd31e941 100644
 --- a/linux-user/mmap.c
 +++ b/linux-user/mmap.c
-@@ -267,6 +267,21 @@ int target_mprotect(abi_ulong start, abi_ulong len, int target_prot)
-     return ret;
- }
- 
-+/*
-+ * Perform munmap on behalf of the target, with host parameters.
-+ * If reserved_va, we must replace the memory reservation.
-+ */
-+static int do_munmap(void *addr, size_t len)
-+{
-+    if (reserved_va) {
-+        void *ptr = mmap(addr, len, PROT_NONE,
-+                         MAP_FIXED | MAP_ANONYMOUS
-+                         | MAP_PRIVATE | MAP_NORESERVE, -1, 0);
-+        return ptr == addr ? 0 : -1;
-+    }
-+    return munmap(addr, len);
-+}
-+
- /* map an incomplete host page */
- static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
-                       int prot, int flags, int fd, off_t offset)
-@@ -854,13 +869,7 @@ static int mmap_reserve_or_unmap(abi_ulong start, abi_ulong len)
-     real_len = real_last - real_start + 1;
-     host_start = g2h_untagged(real_start);
- 
--    if (reserved_va) {
--        void *ptr = mmap(host_start, real_len, PROT_NONE,
--                         MAP_FIXED | MAP_ANONYMOUS
--                         | MAP_PRIVATE | MAP_NORESERVE, -1, 0);
--        return ptr == host_start ? 0 : -1;
--    }
--    return munmap(host_start, real_len);
-+    return do_munmap(host_start, real_len);
- }
- 
- int target_munmap(abi_ulong start, abi_ulong len)
+@@ -326,7 +326,7 @@ static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
+                        flags | MAP_ANONYMOUS, -1, 0);
+         if (p != host_start) {
+             if (p != MAP_FAILED) {
+-                munmap(p, host_page_size);
++                do_munmap(p, host_page_size);
+                 errno = EEXIST;
+             }
+             return false;
+@@ -622,7 +622,7 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
+             p = mmap(g2h_untagged(start), len, host_prot,
+                      flags | MAP_FIXED, fd, host_offset);
+             if (p == MAP_FAILED) {
+-                munmap(g2h_untagged(start), host_len);
++                do_munmap(g2h_untagged(start), host_len);
+                 return -1;
+             }
+             host_start += offset - host_offset;
+@@ -735,7 +735,7 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
+                      flags, fd, offset1);
+             if (p != want_p) {
+                 if (p != MAP_FAILED) {
+-                    munmap(p, len1);
++                    do_munmap(p, len1);
+                     errno = EEXIST;
+                 }
+                 return -1;
 -- 
 2.34.1
 
