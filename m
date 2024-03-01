@@ -2,86 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05BF686D9C5
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 03:31:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F7886DA53
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 04:44:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfsee-000439-Q4; Thu, 29 Feb 2024 21:29:44 -0500
+	id 1rftnW-0003xk-6n; Thu, 29 Feb 2024 22:42:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rfsec-00042Z-JB
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 21:29:42 -0500
-Received: from mail-qv1-xf29.google.com ([2607:f8b0:4864:20::f29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rfseb-0005Rr-5e
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 21:29:42 -0500
-Received: by mail-qv1-xf29.google.com with SMTP id
- 6a1803df08f44-68f51c5f9baso8402866d6.3
- for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 18:29:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1709260180; x=1709864980; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yw8iSnc3LXROkWLue6u8GAvL3L94OebgZkCfuGQmnSk=;
- b=DBy2vArY8UWVValpDPzz5bceCW6sMEE35XFTinIZRzSu2Y+91XelzMmelAbBCA1sBn
- aIVagQRF1DPO1yvvsgKIjxuOTeylyPZh8hZrZUALNQVncVTxBb2D5u/mY7wSuwgbxWvW
- 0ZgUHxS4m034A+Nb+5xXUKRYmf5C0kHeciCtcR89XDbecGgL9o1cOda5MpURhZLAuFpe
- dG6Bo+O02EuaTen92fpY8yTVVRAZ7SEAiylnuobp08lZTsgRRSIkNJaONpHla4oE1kIv
- 8SXOJQD0IhE95B/ntk3c74/SxFqal2XAFtdY1lngHmoXHLan3hiI5J48pG9Ag8IsYdro
- zTqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709260180; x=1709864980;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yw8iSnc3LXROkWLue6u8GAvL3L94OebgZkCfuGQmnSk=;
- b=h2QgGwhSut1f9+rNw/jX7Tc48wMRDypWjYW99coVbRnThNLsFyb6TZzolQYEDaT9ci
- XBN/zS7IAYjYMzJwVoItSJBiA8+kzWItaVjv9Ec6z0TxsuZeSnH/7m5LCqdkKOgly1+/
- uymwjLHboBjxWshwZ822i1yeNKg3CnC3yQ+WiLvIN6x3KWazPMo1r/tcs9CKYPFf9Jzx
- PUJ9tIIsFk0yaNBucKsCWDFPSHptBjAzeF2BEyU4JB0fNYyHCTRV/YUTaxRdWPoZNV0b
- M3+d6+xI122ZMJk7uIQmlLTIni0cAsFklL91ReJ2wlwFzjXxhHikik68NKCtG+7F5Zaz
- 2N4g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUsMW6ytYF20ST05pzMKr4QmruPDnVQ6uF2PM3zKePGgJVnBuEsY5wskyuvxJfJMpe301FisyIMOLBwu90eX/e5hRxDEN8=
-X-Gm-Message-State: AOJu0YzKYfT2FRb0GAKns5PnKt98jJ9cxrjcVpNtEKBdO6r4N7S71Rp2
- U0kUh+36lRbKUptMTol6sAEmzc1ycHx2mMIlm8UJQFOX6lN4Ig0dqEp34oCiwEw=
-X-Google-Smtp-Source: AGHT+IEA4Isy3CFGW10rXyr/7totJiQ81C8HldgJQ77k15ev9qC3TRz1lBLy6l6CvGWQF+VUPemdrA==
-X-Received: by 2002:a05:6214:180d:b0:690:4e5e:4351 with SMTP id
- o13-20020a056214180d00b006904e5e4351mr418876qvw.41.1709260180123; 
- Thu, 29 Feb 2024 18:29:40 -0800 (PST)
-Received: from n231-230-216.byted.org ([130.44.212.120])
- by smtp.gmail.com with ESMTPSA id
- qo13-20020a056214590d00b0068d11cf887bsm1384107qvb.55.2024.02.29.18.29.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 29 Feb 2024 18:29:39 -0800 (PST)
-From: Hao Xiang <hao.xiang@bytedance.com>
-To: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
- peterx@redhat.com, farosas@suse.de, eblake@redhat.com, armbru@redhat.com,
- thuth@redhat.com, lvivier@redhat.com, jdenemar@redhat.com,
- marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com,
- qemu-devel@nongnu.org
-Cc: Hao Xiang <hao.xiang@bytedance.com>
-Subject: [PATCH v4 7/7] Update maintainer contact for migration multifd zero
- page checking acceleration.
-Date: Fri,  1 Mar 2024 02:28:29 +0000
-Message-Id: <20240301022829.3390548-8-hao.xiang@bytedance.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20240301022829.3390548-1-hao.xiang@bytedance.com>
-References: <20240301022829.3390548-1-hao.xiang@bytedance.com>
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1rftnT-0003x5-FV; Thu, 29 Feb 2024 22:42:55 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1rftnQ-0002bY-R4; Thu, 29 Feb 2024 22:42:55 -0500
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+ by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TmDPk4sLZz2Bdgx;
+ Fri,  1 Mar 2024 11:40:26 +0800 (CST)
+Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
+ by mail.maildlp.com (Postfix) with ESMTPS id 2DE191A0172;
+ Fri,  1 Mar 2024 11:42:43 +0800 (CST)
+Received: from [10.67.109.254] (10.67.109.254) by
+ kwepemi500008.china.huawei.com (7.221.188.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 1 Mar 2024 11:42:42 +0800
+Message-ID: <10add4f2-68c5-14df-59d7-f6e27457c8b5@huawei.com>
+Date: Fri, 1 Mar 2024 11:42:41 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [RFC PATCH v5 12/22] target/arm: Handle NMI in
+ arm_cpu_do_interrupt_aarch64()
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>,
+ <peter.maydell@linaro.org>, <eduardo@habkost.net>,
+ <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
+ <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
+References: <20240229131039.1868904-1-ruanjinjie@huawei.com>
+ <20240229131039.1868904-13-ruanjinjie@huawei.com>
+ <e7fd1fba-ee1d-4b78-b743-128fa8217ed8@linaro.org>
+In-Reply-To: <e7fd1fba-ee1d-4b78-b743-128fa8217ed8@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f29;
- envelope-from=hao.xiang@bytedance.com; helo=mail-qv1-xf29.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Originating-IP: [10.67.109.254]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemi500008.china.huawei.com (7.221.188.139)
+Received-SPF: pass client-ip=45.249.212.190;
+ envelope-from=ruanjinjie@huawei.com; helo=szxga04-in.huawei.com
+X-Spam_score_int: -83
+X-Spam_score: -8.4
+X-Spam_bar: --------
+X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-4.176,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,33 +68,70 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jinjie Ruan <ruanjinjie@huawei.com>
+From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add myself to maintain multifd zero page checking acceleration function.
 
-Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
----
- MAINTAINERS | 5 +++++
- 1 file changed, 5 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 65dfdc9677..b547918e4d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3414,6 +3414,11 @@ F: tests/migration/
- F: util/userfaultfd.c
- X: migration/rdma*
- 
-+Migration multifd zero page checking acceleration
-+M: Hao Xiang <hao.xiang@bytedance.com>
-+S: Maintained
-+F: migration/multifd-zero-page.c
-+
- RDMA Migration
- R: Li Zhijian <lizhijian@fujitsu.com>
- R: Peter Xu <peterx@redhat.com>
--- 
-2.30.2
+On 2024/3/1 7:09, Richard Henderson wrote:
+> On 2/29/24 03:10, Jinjie Ruan via wrote:
+>> According to Arm GIC section 4.6.3 Interrupt superpriority, the interrupt
+>> with superpriority is always IRQ, never FIQ, so the NMI exception trap
+>> entry
+>> behave like IRQ. However, VNMI can be IRQ or FIQ, FIQ can only come from
+>> hcrx_el2.HCRX_VFNMI bit, IRQ can be raised from the GIC or come from the
+>> hcrx_el2.HCRX_VINMI bit.
+>>
+>> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+>> ---
+>> v4:
+>> - Also handle VNMI in arm_cpu_do_interrupt_aarch64().
+>> v3:
+>> - Remove the FIQ NMI handle.
+>> ---
+>>   target/arm/helper.c | 9 +++++++++
+>>   1 file changed, 9 insertions(+)
+>>
+>> diff --git a/target/arm/helper.c b/target/arm/helper.c
+>> index b796dbdf21..bd34b3506a 100644
+>> --- a/target/arm/helper.c
+>> +++ b/target/arm/helper.c
+>> @@ -11459,12 +11459,21 @@ static void
+>> arm_cpu_do_interrupt_aarch64(CPUState *cs)
+>>           break;
+>>       case EXCP_IRQ:
+>>       case EXCP_VIRQ:
+>> +    case EXCP_NMI:
+>>           addr += 0x80;
+>>           break;
+>>       case EXCP_FIQ:
+>>       case EXCP_VFIQ:
+>>           addr += 0x100;
+>>           break;
+>> +    case EXCP_VNMI:
+>> +        if (env->irq_line_state & CPU_INTERRUPT_VNMI ||
+>> +            env->cp15.hcrx_el2 & HCRX_VINMI) {
+>> +            addr += 0x80;
+>> +        } else if (env->cp15.hcrx_el2 & HCRX_VFNMI) {
+>> +            addr += 0x100;
+>> +        }
+>> +        break;
+> 
+> By not combining VFNMI with CPU_INTERRUPT_VNMI, you don't need this
+> complication.
+> Just
+> 
+>      case EXCP_IRQ:
+>      case EXCP_VIRQ:
+> +    case EXCP_NMI:
 
+Not understand it. both VIRQ and VFIQ will set CPU_INTERRUPT_VNMI and
+cause EXCP_VNMI if they have Superpriority, the distinction jump here is
+necessary.
+
+> 
+> 
+> r~
 
