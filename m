@@ -2,91 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 365DE86E6E1
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 18:11:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 796FD86E6EB
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 18:12:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rg6P5-0005Ju-Sk; Fri, 01 Mar 2024 12:10:35 -0500
+	id 1rg6Qh-0007AS-3Q; Fri, 01 Mar 2024 12:12:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rg6P2-0005JJ-LP
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:10:32 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rg6P1-00038P-5s
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:10:32 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-412ce4f62d9so1735085e9.1
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 09:10:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709313029; x=1709917829; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0UsexgoUjmTm8RmShfv7UgmGWfFkoww8/n1B6LT69b4=;
- b=E8unwZVszMKXQlNorgq5YLwUUXpVRBdhJ3ydclHlRPytbv7XhmNRl10UWRLhHY+u4s
- mE8prZjNSS2J2H+SnxNwgjd9iYISbaRrLcHKIYr4IYM69PEF76YIOPSKPo9tufbLgY01
- zVQxsD61f3QxkBNqgTDxh2ffah1084irPdAfo6UQbNXIbO+hTrbfXEaLYndzDxLfHnQH
- n+mhPxnOk+z6UJdIPbuVl9FM+sM5xRFvSnua76uxC0XwoyIMJTsi83D1ETbN2tAS53H+
- p14n+CeO3teXbVWMiDHeXhyKdGzLPccCNQXzHa35/SuJG8Hd5Kkz2hHTNo7YSEHc77KO
- 3BBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709313029; x=1709917829;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=0UsexgoUjmTm8RmShfv7UgmGWfFkoww8/n1B6LT69b4=;
- b=D9IWfMNqSqECHsu0War3lXYqRoluPBmyMikS3aJawRBUBqAGCp2l1IwE+335VmyRC5
- 1w036l69mIUBIr9ikf0FCFb/Fakr8WbphuleSDJ96Vk2uvIGO0M/LWqTNQtGCJoEBkeM
- Ag5j4sfib2d/l+zfBuIVf8OASOP2F9DwX7B958r4tcJfimUnOsbnVf4zThul/G62bK0J
- CzPxwxN8UtGojIWU/L3wns/BscFir5iLtOvX62B6lmK1wbhPcL9MMjliuuKlZCVyuP1O
- SQ8Veglu8uBcOxq/3bKMxXiRcNqDeO7I1wMSqa0+csrwWNTViCpjRYxKXp3TJBOSMv8K
- 4Z1w==
-X-Gm-Message-State: AOJu0Yz6bnmFj+xYhHvq2WmnoG2QQtwihP1dAoaHmizlWtwSbO1Muhil
- 7wZqoL7MoqCu4T9bfA+QZ4MfiOyR9+QHP+Wn6psxhjFUYIHQECFt3vPuzHz+s28=
-X-Google-Smtp-Source: AGHT+IGMbVuPwnQ861L11RuiYo9pdV+nQMy4AKTsrJyzOAfP/AlLk78sAtYyFS25mJmCl16LzXvrzA==
-X-Received: by 2002:a05:600c:19d4:b0:412:c536:16e5 with SMTP id
- u20-20020a05600c19d400b00412c53616e5mr2106253wmq.0.1709313029456; 
- Fri, 01 Mar 2024 09:10:29 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- iv20-20020a05600c549400b00412a2831806sm9315115wmb.5.2024.03.01.09.10.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 09:10:29 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id CC78B5F7B4;
- Fri,  1 Mar 2024 17:10:28 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Vikram Garhwal <vikram.garhwal@amd.com>
-Cc: <qemu-devel@nongnu.org>,  <sstabellini@kernel.org>,  <jgross@suse.com>,
- Peter Maydell <peter.maydell@linaro.org>,  "open list:ARM TCG CPUs"
- <qemu-arm@nongnu.org>
-Subject: Re: [QEMU][PATCH v3 7/7] hw: arm: Add grant mapping.
-In-Reply-To: <20240227223501.28475-8-vikram.garhwal@amd.com> (Vikram Garhwal's
- message of "Tue, 27 Feb 2024 14:35:01 -0800")
-References: <20240227223501.28475-1-vikram.garhwal@amd.com>
- <20240227223501.28475-8-vikram.garhwal@amd.com>
-User-Agent: mu4e 1.12.0; emacs 29.1
-Date: Fri, 01 Mar 2024 17:10:28 +0000
-Message-ID: <87il25514r.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rg6QY-000767-8D; Fri, 01 Mar 2024 12:12:07 -0500
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rg6QT-0003L1-97; Fri, 01 Mar 2024 12:12:04 -0500
+Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:621c:0:640:f00b:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 2333060EB1;
+ Fri,  1 Mar 2024 20:11:55 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:a531::1:29])
+ by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id jBfRBH2IW0U0-y5TXMWbc; Fri, 01 Mar 2024 20:11:54 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1709313114;
+ bh=eKu8cMClFmBmywhX7+QlAwEER7vTqPYmfdu+qDl0sJs=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=G7qQjcmgGHaELYc+u1HnOM+xsVStkTJzQ/FkNYbd9fAPW4+YGRR00ci/nCXgfjjhZ
+ AWuuz25LZxwft+RButq56b8cg/AYB4linbvxSZMXEDzCrXQmFDlXgo6/LSgQdbBxjS
+ qfcuoI+VOlt15MIvAhrYhp7jWLbgg1G40ppghsww=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: qemu-block@nongnu.org,
+	raphael@enfabrica.net,
+	mst@redhat.com
+Cc: kwolf@redhat.com, hreitz@redhat.com, pbonzini@redhat.com,
+ berrange@redhat.com, eduardo@habkost.net, dave@treblig.org,
+ armbru@redhat.com, eblake@redhat.com, qemu-devel@nongnu.org,
+ vsementsov@yandex-team.ru, yc-core@yandex-team.ru
+Subject: [PATCH v2 0/6] vhost-user-blk: live resize additional APIs
+Date: Fri,  1 Mar 2024 20:11:37 +0300
+Message-Id: <20240301171143.809835-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -98,37 +73,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Vikram Garhwal <vikram.garhwal@amd.com> writes:
+v2:
+- now based on master
+- drop x- prefixes, still keep new APIs "unstable"
 
-> Enable grant ram mapping support for Xenpvh machine on ARM.
->
-> Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
-> Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-> ---
->  hw/arm/xen_arm.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-> index 32776d94df..b5993ef2a6 100644
-> --- a/hw/arm/xen_arm.c
-> +++ b/hw/arm/xen_arm.c
-> @@ -125,6 +125,9 @@ static void xen_init_ram(MachineState *machine)
->                                   GUEST_RAM1_BASE, ram_size[1]);
->          memory_region_add_subregion(sysmem, GUEST_RAM1_BASE, &ram_hi);
->      }
-> +
-> +    DPRINTF("init grant ram mapping for XEN\n");
+Also:
 
-I don't think we need the DPRINTF here (there others where recently
-converted to trace-points although I suspect a memory_region tracepoint
-would be a better place to capture this).
+01: add a-b by Raphael
+    add note about removed comment "valid for resize only"
+02-03: new patches, following review of old "02", which is now 04
+04: use GenericError
+    wording
+    keep short name device-sync-config still
+06: rename event to VIRTIO_CONFIG_READ
 
-> +    ram_grants =3D *xen_init_grant_ram();
->  }
->=20=20
->  void arch_handle_ioreq(XenIOState *state, ioreq_t *req)
+===
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+In vhost-user protocol we have VHOST_USER_BACKEND_CONFIG_CHANGE_MSG,
+which backend may send to notify Qemu, that we should re-read the
+config, and notify the guest.
+
+Still that's not always convenient: backend may not support this
+message. Also, having QMP command to force config sync is more reliable
+than waiting for notification from external program. It also may be
+helpful for debug/restore: if we have changed disk size, but guest
+doesn't see that, it's good to have a separate QMP command to trigger
+resync of the config.
+
+So, the series proposes two experimental APIs:
+
+1. device-sync-config command, to trigger config synchronization
+
+2. CONFIG_READ event, which notify management tool that guest read the
+updated config. Of course, that can't guarantee that the guest correctly
+handled the updated config, but it's still better than nothing: for sure
+guest will not show new disk size until it read the updated config. So,
+management tool may wait for this event to report success to the user.
+
+Vladimir Sementsov-Ogievskiy (6):
+  vhost-user-blk: simplify and fix vhost_user_blk_handle_config_change
+  qdev-monitor: fix error message in find_device_state()
+  qdev-monitor: add option to report GenericError from find_device_state
+  qapi: introduce device-sync-config
+  qapi: device-sync-config: check runstate
+  qapi: introduce CONFIG_READ event
+
+ hw/block/vhost-user-blk.c | 32 +++++++++++-------
+ hw/virtio/virtio-pci.c    | 18 ++++++++++
+ include/hw/qdev-core.h    |  3 ++
+ include/monitor/qdev.h    |  2 ++
+ include/sysemu/runstate.h |  1 +
+ monitor/monitor.c         |  1 +
+ qapi/qdev.json            | 43 ++++++++++++++++++++++++
+ stubs/qdev.c              |  6 ++++
+ system/qdev-monitor.c     | 71 ++++++++++++++++++++++++++++++++++++---
+ system/runstate.c         |  5 +++
+ 10 files changed, 165 insertions(+), 17 deletions(-)
+
+-- 
+2.34.1
+
 
