@@ -2,151 +2,152 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E81E686E7A8
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 18:48:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A3E686E7A5
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 18:48:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rg6y0-0005Nz-Im; Fri, 01 Mar 2024 12:46:40 -0500
+	id 1rg6y3-0005Pm-Kv; Fri, 01 Mar 2024 12:46:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
- id 1rg6xy-0005LM-37
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:46:38 -0500
-Received: from bongo.birch.relay.mailchannels.net ([23.83.209.21])
+ id 1rg6y0-0005OD-02
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:46:40 -0500
+Received: from catfish.pear.relay.mailchannels.net ([23.83.216.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
- id 1rg6xw-0000Y5-6A
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:46:37 -0500
+ id 1rg6xw-0000YS-KQ
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:46:38 -0500
 X-Sender-Id: _forwarded-from|134.3.94.10
 Received: from relay.mailchannels.net (localhost [127.0.0.1])
- by relay.mailchannels.net (Postfix) with ESMTP id 41753C396B
- for <qemu-devel@nongnu.org>; Fri,  1 Mar 2024 17:46:34 +0000 (UTC)
-Received: from outbound1g.eu.mailhop.org (unknown [127.0.0.6])
+ by relay.mailchannels.net (Postfix) with ESMTP id 54F382C1FD4
+ for <qemu-devel@nongnu.org>; Fri,  1 Mar 2024 17:46:35 +0000 (UTC)
+Received: from outbound5h.eu.mailhop.org (unknown [127.0.0.6])
  (Authenticated sender: duocircle)
- by relay.mailchannels.net (Postfix) with ESMTPA id 69A95C27E3
- for <qemu-devel@nongnu.org>; Fri,  1 Mar 2024 17:46:33 +0000 (UTC)
-ARC-Seal: i=2; s=arc-2022; d=mailchannels.net; t=1709315193; a=rsa-sha256;
+ by relay.mailchannels.net (Postfix) with ESMTPA id A8E4B2C20FB
+ for <qemu-devel@nongnu.org>; Fri,  1 Mar 2024 17:46:34 +0000 (UTC)
+ARC-Seal: i=2; s=arc-2022; d=mailchannels.net; t=1709315194; a=rsa-sha256;
  cv=pass;
- b=3m5wCWfqr3v1yw6g5rS96qKUsxzygKqKPoZGdzVwaq7lFUmR4szngAmszx9z84pMZ5nHI9
- mJPKfzUtG+L5UnmC5gzEvTQGBB3bO7iA+GmXaD+sHG8GhyxrWyrClCKNvgG4mmdqah1YIT
- 3ZGiNnj6hNVYsQPz4CmCZxcDPpvkHS+kwFkfs0GS4jGTWmQMcX7LDRipPkMPDULsNQ5r4a
- qn6CoibejZU59cojmBx2ssho/NJOUHDJvgk+iPXgl7wh8e3+1MUAHdZahO3nVert3ln3ML
- XG6y6w0dQEGN8MQX8e7JRzHoPOdSdqEu4Im8gdcfK80EwKM12CzObscyNU0DcA==
+ b=laAKSyBWs37E0T5KDqUOzf5I+Vp+tItvmiPydN5DjBAvvkRZUeWLT74R9tiQ+H3Ge9hAcC
+ X2aqgszH5wSUJyslziusbg/6EU1UkLudcKrgLUW8V0Cwwnh8Z/wDpCLYrB5ba0NVKu2rKd
+ pxUXFdiouTp3nJmaIjGqJhQ6ABXOd+SNhb7FeHYi4thQ7QlIP8pqqVlE3ieJGlWKc2CGXr
+ yszsat/AFNUxxkbkQFOJUHOiPGYnxq5VsnUSn6v0NtzO+3siy431ku/JJ59VkmJSjbJSIk
+ Q8cBoP3OgUbgtQ+02dM/93E66fTU4VH28RzR7WcvV1Ajs1fepM1KKHBqHKAjLw==
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net; s=arc-2022; t=1709315193;
+ d=mailchannels.net; s=arc-2022; t=1709315194;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:dkim-signature;
- bh=bopqUPl5QO0pq8Rv2GfWUFdNI4IyEMDQCmogGXg31WU=;
- b=WbIwnU0YDnYic0dnaO4I1IwqleXfsI5MwZ8pHT6Lo89jzGY5CtO9Nfwo0psfmbFP9RvdIn
- mQiYTJKYiekFpByLA2HrTdtnpvHFL/Hbx6UxSHxDxpf7F9GPNj/RHtEufR6E6x8EmQoMjr
- pc8ziFcK87jIU5KiisLjFbmu1ldf5GIvz7YC1/zU+kNIINDksJQ/VfsIP7Es4MtI5K4Bos
- 1BEVCOTCCpBNUxwMJ0tF3DPh62AapX13wU5f/l0UggYdAXSn5OaeDi/dwQ3m0+XvHWiL/e
- gmwteOBjYvGpTbpxrizZMOVGN/4adSqYoAEMSH3laRAQfSc2sm3vlmxCFE2Ung==
-ARC-Authentication-Results: i=2; rspamd-55b4bfd7cb-rwchp;
+ bh=6qa/ABrIzNFeQmtdkh5F2jlICj/NXHjn33dee2Z9H48=;
+ b=CnIDGllk0PUqwkKjh6VfcBja4wfToSbsVj/uKG+U0EuzHoJJBAlPV3J8vwDhZ7kQFbl5YT
+ kop4Wen/xuMHJIddmcfQKK8uvcxkWhFd74ZLF7GLcXz3gUp9QEVndN+nX/0rvC+p4j1zef
+ 1BEzgM9zPzPqhecJ/RDszowtS4Ha0dOrQf1jSqvjjCPjcaTIsPXyskvSxlcLCZxApXm9hg
+ 3zBHxm8Tvui+bkl1994L5bz/fTESGzio90wawLZA3D4FH5tSzVvMNc36OdVZbGVYCtsIPR
+ 7EpPhPH6cD9+rT0ZvpSK1YpoBYUtftJXL4Q3TDhFLmlff+lj5arP5EFKw0zbvw==
+ARC-Authentication-Results: i=2; rspamd-55b4bfd7cb-d4z79;
  arc=pass ("outbound.mailhop.org:s=arc-outbound20181012:i=1");
  auth=pass smtp.auth=duocircle smtp.mailfrom=svens@stackframe.org
 X-Sender-Id: _forwarded-from|134.3.94.10
 X-MC-Relay: Forwarding
 X-MailChannels-SenderId: _forwarded-from|134.3.94.10
 X-MailChannels-Auth-Id: duocircle
-X-Drop-Turn: 656a20a44026efb9_1709315193928_2351392444
-X-MC-Loop-Signature: 1709315193928:3520662604
-X-MC-Ingress-Time: 1709315193928
-Received: from outbound1g.eu.mailhop.org (outbound1g.eu.mailhop.org
- [52.28.6.212]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
- by 100.123.27.58 (trex/6.9.2); Fri, 01 Mar 2024 17:46:33 +0000
-ARC-Seal: i=1; a=rsa-sha256; t=1709315162; cv=none;
+X-Whistle-Name: 4629c484205e85bb_1709315195182_1839156030
+X-MC-Loop-Signature: 1709315195182:1736634380
+X-MC-Ingress-Time: 1709315195181
+Received: from outbound5h.eu.mailhop.org (outbound5h.eu.mailhop.org
+ [18.156.94.234]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+ by 100.111.52.242 (trex/6.9.2); Fri, 01 Mar 2024 17:46:35 +0000
+ARC-Seal: i=1; a=rsa-sha256; t=1709315098; cv=none;
  d=outbound.mailhop.org; s=arc-outbound20181012;
- b=AyalXKN2aHmRdLp29xeAuRg8IliB+63Oj3quuJwMIwT+nXKg/Aw+ltqtYLY1lID0zmkm5B70yEqrs
- oy7ZB5xHJCRbE6/G+ph30/vsgZTG76e+tqhCRtfVYfqWwD4vtqnuFiCFSwQrA77/UwN0rWkCd1o7Us
- J/ZG2JenP5ZD0ZC2otWTlBa9Vusw24i8HqVNXuKXofnDrjeOnI/u+rteVsHQ4xB1GyyZ4zEeCis5TR
- tfIVS4+l7ZHOqBU5vmofMdowHdBdyXRZ4lUXpVI9YyvtYYkYRM/R/eA+dBtm9KdWCQKXnqK8tbqo2f
- 8BcQNT/cbX4XbQPgyqqduc1vPRFHAiA==
+ b=Qh1gDycCYdELK21o356rmV5Tm9Bai0YtO3euqgO1QO5sZofl8z55ls9iO1QqkWmCn9DdIByqRFk7s
+ WKWyDauNd6YIIwgGTw7WXLkiE/TGwsVL9E3ZHh1jSkgccRW0svirtNycf5XXZRlh5y81Zyp0hvvM6z
+ BLETqXxGBxnHES8wUj5Dp5QPJjG8OG7aTghmrMy0+1p/PxFPbz3Gt4oDItHpYMWJ5Wlke+ccZex9Iz
+ WdwaUY/dM9bxagP7OGbUHKAp3+PhK5HK4za2eTeYAmzGMW4oNKO3lcEThb8Mmt/TXEbznSi/4OUM8m
+ /sGEdkQZZN3SrKnMnReR7dAjBKhwqmg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
  d=outbound.mailhop.org; s=arc-outbound20181012;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:dkim-signature:dkim-signature:dkim-signature:from;
- bh=bopqUPl5QO0pq8Rv2GfWUFdNI4IyEMDQCmogGXg31WU=;
- b=IavVtoqX7WyRExbN8h5pLdiBaT8Ar6kvGIcntS4Wfwhz3YznFs1gbhMjp6VnhaI+bOyPn6YjTgB2C
- arC+qbhPnmkM/Hk+3RUBuaroBu2LA5Bf0HGKtUwBwuvFNyTVnbC5HcvCH/4lOPhmwMV+PTG/AyVfgR
- 79xngMPPqaqkMwHTq4rm/whKsjZ3OrAVq0KFNYnaX6QNd3xyXI1o56fxXPuIxHArVI64okoTa+36TS
- yN3mtSf7fKFA+o9+/coTDmWa/gVjl3hj2a9bfqGBauPZ3rTQrdaGehrL/Xi/aAjiCzTDq62LumckIj
- wpe05DZ72lF4HKQWi72AoaRyOYn5MSg==
-ARC-Authentication-Results: i=1; outbound3.eu.mailhop.org;
+ bh=6qa/ABrIzNFeQmtdkh5F2jlICj/NXHjn33dee2Z9H48=;
+ b=o5G1FOVyKpL49SO9LgH+/yNW8oHT2LVk+gz37XaEov9hU4F0vwBBF/JY6VNPvFwO3AhHJLRTFebT7
+ 992bxsf+fsdXWyMRf0TC+DUY4lxZWNwViZINyNPLo7UN5RMUeDIDO7OSUr8HfT5MSBlX4KllZPjla+
+ YVtKG1f9GS6a9cT5A9BCwZCzy6Sav//dbaUJCnBywZucQ9MxnRv4SNzOtlKJAN9HLri3bRh5yobU3O
+ Wa8BVw3S23Z1PuGjnDMNNK2OeQqIF3O9+nY8MeII6hr038DskXVEFJjmdvYWhW4ClbXgASLFbjsYAx
+ P4rId7XIRp6Cj0wgeNmZpYuaSjUJADw==
+ARC-Authentication-Results: i=1; outbound2.eu.mailhop.org;
  spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=130.180.31.158;
  dkim=pass header.d=stackframe.org header.s=dkim1 header.a=rsa-sha256
- header.b=TUhFu2Hs; 
+ header.b=as0lzJGo; 
  dmarc=none header.from=stackframe.org;
  arc=none header.oldest-pass=0;
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=stackframe.org; s=duo-1634547266507-560c42ae;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=bopqUPl5QO0pq8Rv2GfWUFdNI4IyEMDQCmogGXg31WU=;
- b=gxHfPJ8r7sXRfU2SxrpJC/znatZ6IuvdbPDejdPax6t99JIEetJQCtz+/XYcyV+ZrQoc/4DXkCrNZ
- BGu7LFh2NIRsrAfyJUaDrWYX+BBnEYIgfgRXz+ffbeLMY+jTRhS/Iy8cD2OsZg08HGaFTTU0la7kzX
- hBgf/VZfG9Ppx2as=
+ bh=6qa/ABrIzNFeQmtdkh5F2jlICj/NXHjn33dee2Z9H48=;
+ b=XJCL6aPMDKv3x1fkHAIUnGGr9p0ziS8asFZnF81juXXxvZn7+v9fi7VrpAzDsgEDHvoDBRhEAxo0+
+ 5CYEU2qAiMxs5xwQRNMi0aYbrjePyy4Oif8DJHwna4X7PlDSJ2M7bpMv5Ls4aVR502o6rlEUZH051o
+ T7/X/tBivpEECVHg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=outbound.mailhop.org; s=dkim-high;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=bopqUPl5QO0pq8Rv2GfWUFdNI4IyEMDQCmogGXg31WU=;
- b=aLsjPpmTOrFMxGm3wCMtrgT5FzTEOPg2bgJaUbuVWYWGG0M2ptkwpTcl/sRujbcSTwY8C9JkmfaCU
- ngfYtWmnMQJXmHJFnSvbcfcaubJr09fL14QaKE4ztqhVt57E0dHhogkazgdvhyFV2vacYL+GknqAKJ
- 77SNQg0XIG7m6boPNK0VqWVbI/2DJIj0HskRI3c5ndkudCnEcvN4vwSw5PRCCzq5sVTtqjBN8p47Q1
- BoWiTeQT5jyBsDpSoI+uMtwPISPvSec9fev17Diomvf4UUGdUx8BH8Au1Mf9k2CobexOaz42rnYeqp
- nJDxM9PZCAv7BcF5zCNyC9kugcvJm/Q==
+ bh=6qa/ABrIzNFeQmtdkh5F2jlICj/NXHjn33dee2Z9H48=;
+ b=LquhqCVmLNmh1PcNZVRjeeId+t4oJpFcJnFjtRlFim7hsCJym21wn0CXP0yVCbvG+AcUNDMrRUtHW
+ J9BI8jByct83oi96hIK0ub0+PRG+VlOY84o4tnKvX0Y+qD4AWUxVV0d2Fsuq+rtfW84Wi2MdynJ9cB
+ 5V7RMpy19681hqGbiSl/PEcC1yiUwgsiFaNRtwKvUb7QGd6b8PL7pzZKyfCOMwmE87RPparTxgM/fz
+ 8M6Q7USINx2YsenkL488HjbI+2wd9za3CLPjANxC61YaUjAvzXERofCff5BnhZX8/bhBB+FIDdKu83
+ GGZoA7NfOWP5ZxpnY9ONUvjo3Jw/3wQ==
 X-Originating-IP: 130.180.31.158
 X-MHO-RoutePath: dG9ta2lzdG5lcm51
-X-MHO-User: 8f443cf7-d7f3-11ee-afda-eda7e384987e
+X-MHO-User: 68dd22f3-d7f3-11ee-b66d-9b9d9be6ef2c
 X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
 X-Mail-Handler: DuoCircle Outbound SMTP
 Received: from mail.duncanthrax.net (mail.duncanthrax.net [130.180.31.158])
- by outbound3.eu.mailhop.org (Halon) with ESMTPSA
- id 8f443cf7-d7f3-11ee-afda-eda7e384987e;
- Fri, 01 Mar 2024 17:45:57 +0000 (UTC)
+ by outbound2.eu.mailhop.org (Halon) with ESMTPSA
+ id 68dd22f3-d7f3-11ee-b66d-9b9d9be6ef2c;
+ Fri, 01 Mar 2024 17:44:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=stackframe.org; s=dkim1; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=bopqUPl5QO0pq8Rv2GfWUFdNI4IyEMDQCmogGXg31WU=; b=TUhFu2HsvMkAGL0R8IpobMXIxG
- jQ1gorrtLcVmLfl+FA+bdIKsZI9dCDXCbIe2wDSSWQoHUBBpDzHuIGU2dt6i32sbR1WH7h2umlv8d
- 3fjiTSMv6Zj/V1iBmrZyG+GZCoFCIntozDPVnHvWh6vCW/B7ImcEx+cKTWMW38cPMBfQBKIzTDNHQ
- eAmyajkFLBLFUWKdno/mxRE1YNrfA5wf3IGsBRXfmZyz34L4hbyxut2lySv3v8RC14z1i6KGhJHus
- 7vwiUpgN2FeBoZokpJ1pzoI2QECOcEgJJKU/sXCnTmJ6GFyy38DzZIMTzTsVHYrZBBx98PWUeOeNe
- rI3PizGQ==;
+ bh=6qa/ABrIzNFeQmtdkh5F2jlICj/NXHjn33dee2Z9H48=; b=as0lzJGoPkMQXbZGj0fXfwxvJI
+ bi1r6gg4MtrTvxNcMVOz3CtO3kPClxE5l4md3zfJEipJ+jNf6nOkjPnfG3/COK4m4Uah0w5Qaw8/z
+ 55uAWqgIu/IRoiKC82ucSla0ysaDAlbrDAdrS7UeEkW2PUJ+FbVJIZXWJJ5Xl9j8fwQhTTCCR9eit
+ bLGAxM0iEgmCRqnbJ76HJVyjHrTeEE5D53qEuWQ1fbzUE1ORM+5eD3mF4Q/GEyQxXnpT4k9ix66/D
+ hnIvCpx6hqLZQFqP0gQ/voP3ZI33Ps3KoG/iIt5EfZXyct14cj/B93/0FNO6aRlSwBXMIpp955oIs
+ pI5ZfZZQ==;
 Received: from ip-134-003-094-010.um41.pools.vodafone-ip.de ([134.3.94.10]
  helo=t14.stackframe.org)
  by mail.duncanthrax.net with esmtpa (Exim 4.96)
- (envelope-from <svens@stackframe.org>) id 1rg6xh-000bs2-2i;
- Fri, 01 Mar 2024 18:46:21 +0100
+ (envelope-from <svens@stackframe.org>) id 1rg6xi-000bs2-32;
+ Fri, 01 Mar 2024 18:46:23 +0100
 From: Sven Schnelle <svens@stackframe.org>
 To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Cc: qemu-devel@nongnu.org, deller@gmx.de, Sven Schnelle <svens@stackframe.org>
-Subject: [PATCH v3 03/12] util/range: move range_list_from_string() to range.c
-Date: Fri,  1 Mar 2024 18:46:00 +0100
-Message-ID: <20240301174609.1964379-4-svens@stackframe.org>
+Subject: [PATCH v3 04/12] util/range: add range_list_free()
+Date: Fri,  1 Mar 2024 18:46:01 +0100
+Message-ID: <20240301174609.1964379-5-svens@stackframe.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240301174609.1964379-1-svens@stackframe.org>
 References: <20240301174609.1964379-1-svens@stackframe.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=23.83.209.21; envelope-from=svens@stackframe.org;
- helo=bongo.birch.relay.mailchannels.net
+Received-SPF: pass client-ip=23.83.216.32; envelope-from=svens@stackframe.org;
+ helo=catfish.pear.relay.mailchannels.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -163,204 +164,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Introduce range_list_free(), which takes a GList of ranges
+and frees the list and each range.
+
 Signed-off-by: Sven Schnelle <svens@stackframe.org>
 ---
- include/qemu/range.h |  7 ++++
- util/log.c           | 74 ------------------------------------------
- util/range.c         | 76 ++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 83 insertions(+), 74 deletions(-)
+ include/qemu/range.h | 5 +++++
+ util/range.c         | 5 +++++
+ 2 files changed, 10 insertions(+)
 
 diff --git a/include/qemu/range.h b/include/qemu/range.h
-index 205e1da76d..530b0c7db1 100644
+index 530b0c7db1..4ff9799d89 100644
 --- a/include/qemu/range.h
 +++ b/include/qemu/range.h
-@@ -233,4 +233,11 @@ void range_inverse_array(GList *in_ranges,
-                          GList **out_ranges,
-                          uint64_t low, uint64_t high);
+@@ -240,4 +240,9 @@ void range_inverse_array(GList *in_ranges,
+ void range_list_from_string(GList **out_ranges, const char *filter_spec,
+                             Error **errp);
  
 +/*
-+ * Parse a comma separated list of address ranges into a @GArray
-+ * of @Range entries. On error @errp is set.
++ * Free a list of ranges.
 + */
-+void range_list_from_string(GList **out_ranges, const char *filter_spec,
-+                            Error **errp);
++void range_list_free(GList *ranges);
 +
  #endif
-diff --git a/util/log.c b/util/log.c
-index f183ea4e4d..90897ef0f9 100644
---- a/util/log.c
-+++ b/util/log.c
-@@ -382,80 +382,6 @@ bool qemu_log_in_addr_range(uint64_t addr)
-     return false;
- }
- 
--static void range_list_from_string(GList **out_ranges, const char *filter_spec,
--                                   Error **errp)
--{
--    gchar **ranges = g_strsplit(filter_spec, ",", 0);
--    struct Range *range = NULL;
--    int i;
--
--    if (*out_ranges) {
--        g_list_free_full(*out_ranges, g_free);
--        *out_ranges = NULL;
--    }
--
--    for (i = 0; ranges[i]; i++) {
--        const char *r = ranges[i];
--        const char *range_op, *r2, *e;
--        uint64_t r1val, r2val, lob, upb;
--        range = g_new0(struct Range, 1);
--
--        range_op = strstr(r, "-");
--        r2 = range_op ? range_op + 1 : NULL;
--        if (!range_op) {
--            range_op = strstr(r, "+");
--            r2 = range_op ? range_op + 1 : NULL;
--        }
--        if (!range_op) {
--            range_op = strstr(r, "..");
--            r2 = range_op ? range_op + 2 : NULL;
--        }
--        if (!range_op) {
--            error_setg(errp, "Bad range specifier");
--            goto out;
--        }
--
--        if (qemu_strtou64(r, &e, 0, &r1val)
--            || e != range_op) {
--            error_setg(errp, "Invalid number to the left of %.*s",
--                       (int)(r2 - range_op), range_op);
--            goto out;
--        }
--        if (qemu_strtou64(r2, NULL, 0, &r2val)) {
--            error_setg(errp, "Invalid number to the right of %.*s",
--                       (int)(r2 - range_op), range_op);
--            goto out;
--        }
--
--        switch (*range_op) {
--        case '+':
--            lob = r1val;
--            upb = r1val + r2val - 1;
--            break;
--        case '-':
--            upb = r1val;
--            lob = r1val - (r2val - 1);
--            break;
--        case '.':
--            lob = r1val;
--            upb = r2val;
--            break;
--        default:
--            g_assert_not_reached();
--        }
--        if (lob > upb) {
--            error_setg(errp, "Invalid range");
--            goto out;
--        }
--        range_set_bounds(range, lob, upb);
--       *out_ranges = g_list_append(*out_ranges, range);
--        range = NULL;
--    }
--out:
--    g_free(range);
--    g_strfreev(ranges);
--}
--
- void qemu_set_dfilter_ranges(const char *filter_spec, Error **errp)
- {
-     range_list_from_string(&debug_regions, filter_spec, errp);
 diff --git a/util/range.c b/util/range.c
-index f3f40098d5..bd2d0961bd 100644
+index bd2d0961bd..7234ab7a53 100644
 --- a/util/range.c
 +++ b/util/range.c
-@@ -19,6 +19,8 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/range.h"
-+#include "qemu/cutils.h"
-+#include "qapi/error.h"
- 
- int range_compare(Range *a, Range *b)
- {
-@@ -121,3 +123,77 @@ void range_inverse_array(GList *in, GList **rev,
- exit:
-     *rev = out;
+@@ -197,3 +197,8 @@ out:
+     g_free(range);
+     g_strfreev(ranges);
  }
 +
-+void range_list_from_string(GList **out_ranges, const char *filter_spec,
-+                            Error **errp)
++void range_list_free(GList *ranges)
 +{
-+    gchar **ranges = g_strsplit(filter_spec, ",", 0);
-+    struct Range *range = NULL;
-+    int i;
-+
-+    if (*out_ranges) {
-+        g_list_free_full(*out_ranges, g_free);
-+        *out_ranges = NULL;
-+    }
-+
-+    for (i = 0; ranges[i]; i++) {
-+        const char *r = ranges[i];
-+        const char *range_op, *r2, *e;
-+        uint64_t r1val, r2val, lob, upb;
-+        range = g_new0(struct Range, 1);
-+
-+        range_op = strstr(r, "-");
-+        r2 = range_op ? range_op + 1 : NULL;
-+        if (!range_op) {
-+            range_op = strstr(r, "+");
-+            r2 = range_op ? range_op + 1 : NULL;
-+        }
-+        if (!range_op) {
-+            range_op = strstr(r, "..");
-+            r2 = range_op ? range_op + 2 : NULL;
-+        }
-+        if (!range_op) {
-+            error_setg(errp, "Bad range specifier");
-+            goto out;
-+        }
-+
-+        if (qemu_strtou64(r, &e, 0, &r1val)
-+            || e != range_op) {
-+            error_setg(errp, "Invalid number to the left of %.*s",
-+                       (int)(r2 - range_op), range_op);
-+            goto out;
-+        }
-+        if (qemu_strtou64(r2, NULL, 0, &r2val)) {
-+            error_setg(errp, "Invalid number to the right of %.*s",
-+                       (int)(r2 - range_op), range_op);
-+            goto out;
-+        }
-+
-+        switch (*range_op) {
-+        case '+':
-+            lob = r1val;
-+            upb = r1val + r2val - 1;
-+            break;
-+        case '-':
-+            upb = r1val;
-+            lob = r1val - (r2val - 1);
-+            break;
-+        case '.':
-+            lob = r1val;
-+            upb = r2val;
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-+        if (lob > upb) {
-+            error_setg(errp, "Invalid range");
-+            goto out;
-+        }
-+        range_set_bounds(range, lob, upb);
-+        *out_ranges = g_list_append(*out_ranges, range);
-+        range = NULL;
-+    }
-+out:
-+    g_free(range);
-+    g_strfreev(ranges);
++    g_list_free_full(ranges, g_free);
 +}
 -- 
 2.43.2
