@@ -2,152 +2,152 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0B7486E7B1
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 18:48:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B7286E7A7
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 18:48:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rg6xy-0005KQ-Iv; Fri, 01 Mar 2024 12:46:38 -0500
+	id 1rg6y0-0005Ng-2P; Fri, 01 Mar 2024 12:46:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
- id 1rg6xw-0005IV-6U
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:46:36 -0500
-Received: from jackal.cherry.relay.mailchannels.net ([23.83.223.95])
+ id 1rg6xx-0005LB-Sg
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:46:37 -0500
+Received: from kudu.cherry.relay.mailchannels.net ([23.83.223.97])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
- id 1rg6xt-0000Xp-Mv
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:46:35 -0500
+ id 1rg6xw-0000YM-1A
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:46:37 -0500
 X-Sender-Id: _forwarded-from|134.3.94.10
 Received: from relay.mailchannels.net (localhost [127.0.0.1])
- by relay.mailchannels.net (Postfix) with ESMTP id 3ECBD2C14BC
- for <qemu-devel@nongnu.org>; Fri,  1 Mar 2024 17:46:32 +0000 (UTC)
+ by relay.mailchannels.net (Postfix) with ESMTP id AE8FF4C27CA
+ for <qemu-devel@nongnu.org>; Fri,  1 Mar 2024 17:46:34 +0000 (UTC)
 Received: from outbound3.eu.mailhop.org (unknown [127.0.0.6])
  (Authenticated sender: duocircle)
- by relay.mailchannels.net (Postfix) with ESMTPA id 886D72C0DAD
- for <qemu-devel@nongnu.org>; Fri,  1 Mar 2024 17:46:31 +0000 (UTC)
-ARC-Seal: i=2; s=arc-2022; d=mailchannels.net; t=1709315191; a=rsa-sha256;
+ by relay.mailchannels.net (Postfix) with ESMTPA id D18834C23BC
+ for <qemu-devel@nongnu.org>; Fri,  1 Mar 2024 17:46:33 +0000 (UTC)
+ARC-Seal: i=2; s=arc-2022; d=mailchannels.net; t=1709315194; a=rsa-sha256;
  cv=pass;
- b=4lidzezoFL8tyQOlRsmqBX8/3Tj5pXXAehoqU9q1d+4rwhJdLTh6TrGOZoXeUbm3QJoulp
- Q/Wj65r8KZU0FboJA+eo8cB1irJcQZC/uLPa3yzdx/ExlOed9RhXLvP19XHtLlzXQrrK1O
- tl65C4DgoBWg75SLqQklHrtszyNviKEa7XFWDjgqfG9k93BuT5a1TgbJ+o3KljBPogXjN4
- AEssV+3I66Z7T1e+hhm7TUJIhUcy7TLLxKQvHrn1ZQ9sn9my08sDKwkWpsWy71jtcwFgae
- r9JZJCuLgk3JF+ug8FwURss77fIn49bcE9CmiWmdpKChsSyjkEKzQy5dLJbT8g==
+ b=gD38D4j5V6gJCxe8cYB7p2EGUZLaa8dkdKh1SIymGM+vbReIy86lD6AXuraFk+6HFR/SSh
+ bNrYBciTRu+bbeWA8YYmkOag48plgOxpxiYbBkua2YC+L/b7R3uc0I9wTAsyAftzT3eXG8
+ vF65S8FDRmpj9KnB4TsHzEIG5YLa0iAygwjoOCaLqzCN65wRXUbZnaMv6+++wfqgUPr5lW
+ ZoiThGCES3+G2eZJSjMi/W4veVu9RpT52ZzWL9C32sgptfu+VazPDTsosHUzK02YuZrU3F
+ Jznz91pdX4Q9p/HLV5Ja/6DDd1raFzDMTX9kNDc1th86uDvU1rW01XXe6yj5xg==
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net; s=arc-2022; t=1709315191;
+ d=mailchannels.net; s=arc-2022; t=1709315194;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:dkim-signature;
- bh=RKHlFYQEvFhYMO/SO8aNWCGjXelzy2FG8sU89hTJDvs=;
- b=GXESp/3rIUaqI3+VljMYjfIhYIRrc1UV0U6IjVvCUW4cRdVd78M7BMtexm+L7V6NKzFK9Q
- v/YZxvpusAXYs7pczjt4r8GvbjWuizdajpTl/R32/Eu28eXf+YvGOttuXUZ+tSLTQIQPIv
- /m+5sKNdXGsO0cfSd5soKXTBKPm9OnyS8mpGxaHis/lsGhnmWDgALmwS4xcLxw3lqG1u4V
- 6Rm+r40b8s6ZU5dM2NWHPGmufavsR1rrdkcB7oW2Ssjqe8R+AH5N8HDeTpb3ZZjuAbIyts
- u+uVw1VmAs34RhgulVVLOfG2uw/fdOujqmx0ANMd3Q/AdsmqMDIbhVQAVlfURw==
-ARC-Authentication-Results: i=2; rspamd-55b4bfd7cb-2hzk2;
+ bh=EDGjLGC6+iggpwOGgPEUhv6ALw0cm2bykCS2uoNYmHU=;
+ b=+QTlKeOis9RR8vuxXqTD7RKY2Xo0i4SFLoKvOKlsXtyRNSMV7acpuiQAQKdYZ8eMMO1Kz/
+ bTsdfufiwHa3hzF5jwq/Ur3ex95gJaRZ6OhetPrOzQK5qqo4JRkzVvV6/0puWqS7SWQQhx
+ cV4bE9rZUS5vJ5TDpPdyzbMJc4CSRm3bCHEZXuybww/RoFCBFi4Thu6+fTI5OkYb+8WtTq
+ img/KvzWspwxLZlq6Fs2olqTUrN/RKz1T1RtTERglDTjYkuTJOiZ6hc9wDL62YY99ZsaWX
+ 7GcnIaTGezLNKT1sfgqyzSQlFDQu87RfDpjCtfAuA1K+7hLg45x+L6uncd5B+A==
+ARC-Authentication-Results: i=2; rspamd-55b4bfd7cb-jmwb2;
  arc=pass ("outbound.mailhop.org:s=arc-outbound20181012:i=1");
  auth=pass smtp.auth=duocircle smtp.mailfrom=svens@stackframe.org
 X-Sender-Id: _forwarded-from|134.3.94.10
 X-MC-Relay: Forwarding
 X-MailChannels-SenderId: _forwarded-from|134.3.94.10
 X-MailChannels-Auth-Id: duocircle
-X-Macabre-Robust: 0d0f432d4f071f35_1709315192059_589722710
-X-MC-Loop-Signature: 1709315192059:3960506157
-X-MC-Ingress-Time: 1709315192058
+X-Left-Imminent: 508425fb36bac44e_1709315194353_855391027
+X-MC-Loop-Signature: 1709315194351:1609689411
+X-MC-Ingress-Time: 1709315194350
 Received: from outbound3.eu.mailhop.org (outbound3.eu.mailhop.org
  [52.29.21.168]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
- by 100.112.142.242 (trex/6.9.2); Fri, 01 Mar 2024 17:46:32 +0000
-ARC-Seal: i=1; a=rsa-sha256; t=1709315165; cv=none;
+ by 100.114.53.127 (trex/6.9.2); Fri, 01 Mar 2024 17:46:34 +0000
+ARC-Seal: i=1; a=rsa-sha256; t=1709315167; cv=none;
  d=outbound.mailhop.org; s=arc-outbound20181012;
- b=TXeUXZfq7NbPXOXlyfwKO0WmHXuIYhvzMH679f8amDDOMh5z17pDhy2YE5C38FoVMVgaEdLkuqPXJ
- GnvgP57atbglzHaxJUIkdSlbjFsWvFD17mPwax9sCfm+QZ8IfKMKCgB06vYcWPMXw3sqDSFamNhw3i
- C95x7HoSr+O3k79ME++3Mt0FisnwVRj622ioP8ZwQ0rpMQJ+yTerGg5KB5vfUqwKOC8s5EbsADJpND
- gFrIYuGfnyCpVphlh+SSsUfnilxE7Hu/2Tgq3r1pgW0KeoZAPA1eDhJQ+BtRqAEDu+2yYG1adb6wo7
- iJYH33FPmmk7v+1JIhTZ/6q8Df70P2Q==
+ b=HfpUlDhMTJ3jVEYdTW6wcjDJBBAe5iCbwwF80RAhM2IwkNmWe1bMRmVSNiwAIecNnBaZaGLNf5cvp
+ iYt7Hi+zg/7kIGnKk88PAIDy4wkfU4BPfQmnmGoATO9oV8QZDxL8LVBt/oE2UzUL51/TcxmRdtbUM+
+ 6ddL+MWvOOfgtYGN07bgEi7+UqtgumRKPe9m3WuqguYRqLim0e+4PEVFmHla1o/f8wFIO31XSYa7HL
+ foO6uAnf54UCL5zMSrLF3DppFVk0p3lyft36BilVHmLRJ+GZWKnI21ngk/91INi8Txq9xjGn3yRq3q
+ O/CX+dUWFqT5BVD9D4SAvOUggY1bb7w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
  d=outbound.mailhop.org; s=arc-outbound20181012;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:dkim-signature:dkim-signature:dkim-signature:from;
- bh=RKHlFYQEvFhYMO/SO8aNWCGjXelzy2FG8sU89hTJDvs=;
- b=lCtYwg1uBAGmT1Q4QoedWyonTf4R9894oQK/M2CR9buXk8aAVp4YH9yG0EwfazRfNONMSleGIUnIP
- EVMWcLeiA/B/fCp3zGKSC1D2A5rGQed7A35AB//WbWRa9fwbD6J5BcDGXTAHDjTWxnFmW65U2IatJr
- AZlhuCdfoM4j7D9q5WLXd3ef3iv6rLGW+4Sw0e5l6jhSoQcF3oI0k4xUFz4b5nanq5+mCp1fMGoT32
- B/inGCvdKT2bn2j09MHSAeyPgJQyyVCLLzE6XrK/0fqkHyYDj7/jl0iCWjQMsbJ4xZMee7t1P86Gtc
- ODEPRGfMOnWzd8RYXsUsyrR77Gq/9/g==
+ bh=EDGjLGC6+iggpwOGgPEUhv6ALw0cm2bykCS2uoNYmHU=;
+ b=v3Z8KAxS6cyvF/UgX97Wqz6le8ud7yppyvBaBBhOh8sD2T/jjTmIl5Yvs+g5P7YwituhIAXEAzl0t
+ ejbAhvcZlby6cYlZcLmCRbI4e8xgVjq2249cltHkf2JiLBl2y8SF9B9c1sWAYandloVQ4Yimnh84gv
+ s97KHbRkjLudBEMnCua3HiaMLxyYBM59g7Qm45dKYCaygYT/2892NZkPU7/I1Fm7PqW8fPEe8IPDHF
+ IG9Gtl+YsU8qmkrOlMsO5zW5wR4HyKX6nQzpRqq6b24Tc2DyEceIt9MRteOAqOjJ03g247f3UUSPY0
+ VVYboHWZsVfhPXvqKNokZFVY8DAALfw==
 ARC-Authentication-Results: i=1; outbound3.eu.mailhop.org;
  spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=130.180.31.158;
  dkim=pass header.d=stackframe.org header.s=dkim1 header.a=rsa-sha256
- header.b=b196JUsG; 
+ header.b=eC6ZbTx5; 
  dmarc=none header.from=stackframe.org;
  arc=none header.oldest-pass=0;
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=stackframe.org; s=duo-1634547266507-560c42ae;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=RKHlFYQEvFhYMO/SO8aNWCGjXelzy2FG8sU89hTJDvs=;
- b=OgFa9V+l9KnOpQN0DvVob7DiMnCoXRLlUjxr/z9KksGYt9s/2pWIG90KDyHN4Q8wL4p9QtRY0fYXv
- A/erXH10ktzrq04reJgyjVY8WjhQX47misxn5zMbi8tdFQ/QVBlk2dH0D/UnfYP2ngPD/8/N6WOSdD
- G+HZaFpaTmG59zeo=
+ bh=EDGjLGC6+iggpwOGgPEUhv6ALw0cm2bykCS2uoNYmHU=;
+ b=nj/hjMpNGo8BkFHMiv7Vm4V6u9E+Neqkm9D8X3+/oR0oj+KgK85+E3Erm7O6PnfRMcYI3NOgg+lfG
+ jUNxLVYwyF6TBfUZvnkw1X6ad1e5ivgxDAMm1pbzmB3qkDR5ZbKGRP6NaVdN/FUhWcUJGsPEwPW1/F
+ DpHhUlNRCh/kkX9Q=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=outbound.mailhop.org; s=dkim-high;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=RKHlFYQEvFhYMO/SO8aNWCGjXelzy2FG8sU89hTJDvs=;
- b=dzDbJNEX9AdUDfVDwSzXQbqrXMniv6cQKJeAdgPJzAR5HpEl/nZtX4eMpGLMeGcakttG1iT/e7WoC
- XUxT1EScyrDeukIH3jWGtPcOnkkOhUbN32VBFMYFLBK/FVpp/lFDyg7dQIOEr3Jjf/buXC0HTYIvYS
- tCJGUA01ysRqzqLJp4PLRMfpV0R0JgCbCq6fQzkBMGsJV1f0rjyMUZyZMrRK6UarHXgO19T6NUiDcq
- yC4ULHGMVLsO/0ZVMHwQnqBjctehFN6drc9iKxyUj+0vP1M959nKJpv+TZZkwr60yjdyd17eOgr4Vg
- 0rPFxTLnTOk5++X2JoZm5sxCSzWvGuQ==
+ bh=EDGjLGC6+iggpwOGgPEUhv6ALw0cm2bykCS2uoNYmHU=;
+ b=UX5k5V7JU+IS1NqwBfv4JhlJcERPlqIIbZeMRApKdmbnqkAwieRZsX108mszuWk4ltdC7I/wtJ9Iq
+ ld22cEc7sRbKbUpWKxF/bXIRnwCEk9H5DC/KFezo2FE0q0krOSXjbCWZ7cj6hG3lOKm2905R7U/USZ
+ 0hLNu9EOrsD6MKgAG1rPHOYLzgI4ugEqd+yltaim+McKCaHP5RlWDH5oMMsdormWlNh2SrIRgZ86Iu
+ LEVmst76ODN/8nhWYulO6nutrYcYM58fY1zkSHO6tHZKg/PWWj1pLx8aXD3USkSTNTDtcSX2CrhlXd
+ ZHIdLu1RVKG03NUr+moURddwp5S6fPA==
 X-Originating-IP: 130.180.31.158
 X-MHO-RoutePath: dG9ta2lzdG5lcm51
-X-MHO-User: 9112721e-d7f3-11ee-afda-eda7e384987e
+X-MHO-User: 91a9270a-d7f3-11ee-afda-eda7e384987e
 X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
 X-Mail-Handler: DuoCircle Outbound SMTP
 Received: from mail.duncanthrax.net (mail.duncanthrax.net [130.180.31.158])
  by outbound3.eu.mailhop.org (Halon) with ESMTPSA
- id 9112721e-d7f3-11ee-afda-eda7e384987e;
- Fri, 01 Mar 2024 17:46:00 +0000 (UTC)
+ id 91a9270a-d7f3-11ee-afda-eda7e384987e;
+ Fri, 01 Mar 2024 17:46:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=stackframe.org; s=dkim1; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=RKHlFYQEvFhYMO/SO8aNWCGjXelzy2FG8sU89hTJDvs=; b=b196JUsGtXak3wJy9rX5JLFc1/
- EpgTLuvrP6aNlKZCJGrOKzE4C3LN5p7uT1QnH3GvH9R2Vm18Fv7B/0NAKtSV8tC8PTNNIuDgdFCZc
- 7X5w84dOMKnxzBoG5Kxop/TkQ3wWG4MV4yTA78+onzY7aN04vTC9TzKaR9BXSqwMLvVPHDFiOwQOB
- KILRJfnoN2D3rIhA5M+FRVwbt/MfetN6se1YngV5vM253/mh7clXTW4C/ux5pTZqXvcis1aixIi8t
- soroB+CATnPp+XiuKih7WhlLx0t8/fkEFnxFBIBS+qz3eNZW/lRX0+Pwz6VbagtMXdkCLSefMg+Uc
- lPLvLzIA==;
+ bh=EDGjLGC6+iggpwOGgPEUhv6ALw0cm2bykCS2uoNYmHU=; b=eC6ZbTx5wPLgqg7EsnpLkqxazW
+ PX+hz7hxgCWCqyzNE3OYNjJzuKCUC63a3duf/qb1fvLxOWvod8VRhhs+FP91L081CQki2j6II/COb
+ n/53dMzHDcI3seK1F0V/Jy4vZ6cGXU35CtOpQbxOtuuZHG8dczzX4RQGcLDN3+5+bhelXtTZFDNqo
+ ucHxdKbupx/OESMD37MWQUIwFCDU6r/N1/GtqQwjrfyAtyX0GVkGir6IlOlLBXsfOr7Lcl2liDFFK
+ SEZtixnxWGU/5jedUXQ/cjEzAmPtoAkTmweyTmHN2Z4Cj2PJzSup9bygrLWi0V/8k3CunoK3lXgSM
+ XKrnPw7g==;
 Received: from ip-134-003-094-010.um41.pools.vodafone-ip.de ([134.3.94.10]
  helo=t14.stackframe.org)
  by mail.duncanthrax.net with esmtpa (Exim 4.96)
- (envelope-from <svens@stackframe.org>) id 1rg6xk-000bs2-2p;
- Fri, 01 Mar 2024 18:46:24 +0100
+ (envelope-from <svens@stackframe.org>) id 1rg6xl-000bs2-2d;
+ Fri, 01 Mar 2024 18:46:25 +0100
 From: Sven Schnelle <svens@stackframe.org>
 To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Cc: qemu-devel@nongnu.org, deller@gmx.de, Sven Schnelle <svens@stackframe.org>
-Subject: [PATCH v3 06/12] util/range: split up range_list_from_string()
-Date: Fri,  1 Mar 2024 18:46:03 +0100
-Message-ID: <20240301174609.1964379-7-svens@stackframe.org>
+Subject: [PATCH v3 07/12] util/range: make range_list_from_string() accept a
+ single number
+Date: Fri,  1 Mar 2024 18:46:04 +0100
+Message-ID: <20240301174609.1964379-8-svens@stackframe.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240301174609.1964379-1-svens@stackframe.org>
 References: <20240301174609.1964379-1-svens@stackframe.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=23.83.223.95; envelope-from=svens@stackframe.org;
- helo=jackal.cherry.relay.mailchannels.net
+Received-SPF: pass client-ip=23.83.223.97; envelope-from=svens@stackframe.org;
+ helo=kudu.cherry.relay.mailchannels.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -164,155 +164,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Makes the code a bit easier to read and maintain.
+To use range_list_from_string() as a replacement in the execlog
+plugin, make it accept single numbers instead of a range. This
+might also be useful for the already present debug_ranges filtering.
 
 Signed-off-by: Sven Schnelle <svens@stackframe.org>
 ---
- util/range.c | 119 ++++++++++++++++++++++++++++++---------------------
- 1 file changed, 70 insertions(+), 49 deletions(-)
+ util/range.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/util/range.c b/util/range.c
-index db535de9a7..8c463995e7 100644
+index 8c463995e7..7784c21b12 100644
 --- a/util/range.c
 +++ b/util/range.c
-@@ -124,6 +124,74 @@ exit:
-     *rev = out;
- }
+@@ -154,6 +154,11 @@ static int parse_single_range(const char *r, Error **errp,
  
-+static const char *split_single_range(const char *r, const char **r2)
-+{
-+    char *range_op;
-+
-+    range_op = strstr(r, "-");
-+    if (range_op) {
-+        *r2 = range_op + 1;
-+        return range_op;
-+    }
-+    range_op = strstr(r, "+");
-+    if (range_op) {
-+        *r2 = range_op + 1;
-+        return range_op;
-+    }
-+    range_op = strstr(r, "..");
-+    if (range_op) {
-+        *r2 = range_op + 2;
-+        return range_op;
-+    }
-+    return NULL;
-+}
-+
-+static int parse_single_range(const char *r, Error **errp,
-+                              uint64_t *lob, uint64_t *upb)
-+{
-+    const char *range_op, *r2, *e;
-+    uint64_t r1val, r2val;
-+
-+    range_op = split_single_range(r, &r2);
-+    if (!range_op) {
-+        error_setg(errp, "Bad range specifier");
-+        return 1;
-+    }
-+    if (qemu_strtou64(r, &e, 0, &r1val)
-+        || e != range_op) {
-+        error_setg(errp, "Invalid number to the left of %.*s",
-+                   (int)(r2 - range_op), range_op);
-+        return 1;
-+    }
-+    if (qemu_strtou64(r2, NULL, 0, &r2val)) {
-+        error_setg(errp, "Invalid number to the right of %.*s",
-+                   (int)(r2 - range_op), range_op);
-+        return 1;
-+    }
-+
-+    switch (*range_op) {
-+    case '+':
-+        *lob = r1val;
-+        *upb = r1val + r2val - 1;
-+        break;
-+    case '-':
-+        *upb = r1val;
-+        *lob = r1val - (r2val - 1);
-+        break;
-+    case '.':
-+        *lob = r1val;
-+        *upb = r2val;
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+    if (*lob > *upb) {
-+        error_setg(errp, "Invalid range");
-+        return 1;
-+    }
-+    return 0;
-+}
-+
- void range_list_from_string(GList **out_ranges, const char *filter_spec,
-                             Error **errp)
- {
-@@ -136,60 +204,13 @@ void range_list_from_string(GList **out_ranges, const char *filter_spec,
+     range_op = split_single_range(r, &r2);
+     if (!range_op) {
++        if (!qemu_strtou64(r, &e, 0, &r1val) && *e == '\0') {
++            *lob = r1val;
++            *upb = r1val;
++            return 0;
++        }
+         error_setg(errp, "Bad range specifier");
+         return 1;
      }
- 
-     for (i = 0; ranges[i]; i++) {
--        const char *r = ranges[i];
--        const char *range_op, *r2, *e;
--        uint64_t r1val, r2val, lob, upb;
--
--        range_op = strstr(r, "-");
--        r2 = range_op ? range_op + 1 : NULL;
--        if (!range_op) {
--            range_op = strstr(r, "+");
--            r2 = range_op ? range_op + 1 : NULL;
--        }
--        if (!range_op) {
--            range_op = strstr(r, "..");
--            r2 = range_op ? range_op + 2 : NULL;
--        }
--        if (!range_op) {
--            error_setg(errp, "Bad range specifier");
--            goto out;
--        }
--
--        if (qemu_strtou64(r, &e, 0, &r1val)
--            || e != range_op) {
--            error_setg(errp, "Invalid number to the left of %.*s",
--                       (int)(r2 - range_op), range_op);
--            goto out;
--        }
--        if (qemu_strtou64(r2, NULL, 0, &r2val)) {
--            error_setg(errp, "Invalid number to the right of %.*s",
--                       (int)(r2 - range_op), range_op);
--            goto out;
--        }
-+        uint64_t lob, upb;
- 
--        switch (*range_op) {
--        case '+':
--            lob = r1val;
--            upb = r1val + r2val - 1;
-+        if (parse_single_range(ranges[i], errp, &lob, &upb)) {
-             break;
--        case '-':
--            upb = r1val;
--            lob = r1val - (r2val - 1);
--            break;
--        case '.':
--            lob = r1val;
--            upb = r2val;
--            break;
--        default:
--            g_assert_not_reached();
--        }
--        if (lob > upb) {
--            error_setg(errp, "Invalid range");
--            goto out;
-         }
-         *out_ranges = append_new_range(*out_ranges, lob, upb);
-     }
--out:
-     g_strfreev(ranges);
- }
- 
 -- 
 2.43.2
 
