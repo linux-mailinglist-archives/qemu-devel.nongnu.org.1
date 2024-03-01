@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72FBE86E6F2
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 18:13:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B6E86E6F1
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 18:13:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rg6Qk-0007Ez-1a; Fri, 01 Mar 2024 12:12:18 -0500
+	id 1rg6Qh-0007AC-46; Fri, 01 Mar 2024 12:12:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rg6QX-000763-Do; Fri, 01 Mar 2024 12:12:05 -0500
+ id 1rg6QX-000765-VS; Fri, 01 Mar 2024 12:12:07 -0500
 Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rg6QS-0003L5-SB; Fri, 01 Mar 2024 12:12:04 -0500
+ id 1rg6QS-0003LF-KE; Fri, 01 Mar 2024 12:12:04 -0500
 Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
  [IPv6:2a02:6b8:c12:621c:0:640:f00b:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 856C360DA2;
- Fri,  1 Mar 2024 20:11:57 +0300 (MSK)
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 9074C60DA8;
+ Fri,  1 Mar 2024 20:11:58 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:a531::1:29])
  by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id jBfRBH2IW0U0-zbdJbDMF; Fri, 01 Mar 2024 20:11:56 +0300
+ ESMTPSA id jBfRBH2IW0U0-G9HZWP5W; Fri, 01 Mar 2024 20:11:57 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1709313116;
- bh=egQPYvI59AIQtjq+33lwK4c/8xZbRvkLJYWT4cPGNio=;
+ s=default; t=1709313117;
+ bh=pB6t/+jZASQ3ARswgKJ/gB6M/aZ+fsBI/3SbBB0gME8=;
  h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=nGi59LxX7uJHVA0pbNVaeOC/TgoAlLXZBvmeBrjj5w/qvXIhR+IJaHnybTwa7gihJ
- EzrkVTUvoc1Eao/WqpCm22rd+rz9/yI7QojcKWV1Rk/0MjS5WSHRxpTavDMs5G5bKA
- d9LGgI3RqVwRL/R2h66mpcyhIY4ZyesKXQx5vGsE=
+ b=Hm4eYFY2TJSRfahoakQm1iWizoiq4l4JCtWxCQ/HCMN0ALKiUH824l0O8qwh9rA7q
+ juPjBuIggeJ1AqOEnvVWPPKQPWxAywhQ0ft6kTcF/TXP/IQhUEIkeCZUp7dgj03n93
+ Kk2vTpgAQWI44CYb7aQKPz/14iLal/PB9CIbpLO8=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -43,9 +43,10 @@ Cc: kwolf@redhat.com, hreitz@redhat.com, pbonzini@redhat.com,
  berrange@redhat.com, eduardo@habkost.net, dave@treblig.org,
  armbru@redhat.com, eblake@redhat.com, qemu-devel@nongnu.org,
  vsementsov@yandex-team.ru, yc-core@yandex-team.ru
-Subject: [PATCH v2 2/6] qdev-monitor: fix error message in find_device_state()
-Date: Fri,  1 Mar 2024 20:11:39 +0300
-Message-Id: <20240301171143.809835-3-vsementsov@yandex-team.ru>
+Subject: [PATCH v2 3/6] qdev-monitor: add option to report GenericError from
+ find_device_state
+Date: Fri,  1 Mar 2024 20:11:40 +0300
+Message-Id: <20240301171143.809835-4-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301171143.809835-1-vsementsov@yandex-team.ru>
 References: <20240301171143.809835-1-vsementsov@yandex-team.ru>
@@ -74,28 +75,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This "hotpluggable" here is misleading. Actually we check is object a
-device or not. Let's drop the word.
-
-SUggested-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- system/qdev-monitor.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ system/qdev-monitor.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
 diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index a13db763e5..9febb743f1 100644
+index 9febb743f1..cf7481e416 100644
 --- a/system/qdev-monitor.c
 +++ b/system/qdev-monitor.c
-@@ -890,7 +890,7 @@ static DeviceState *find_device_state(const char *id, Error **errp)
+@@ -877,13 +877,20 @@ void qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp)
+     object_unref(OBJECT(dev));
+ }
  
-     dev = (DeviceState *)object_dynamic_cast(obj, TYPE_DEVICE);
-     if (!dev) {
--        error_setg(errp, "%s is not a hotpluggable device", id);
-+        error_setg(errp, "%s is not a device", id);
+-static DeviceState *find_device_state(const char *id, Error **errp)
++/*
++ * Note that creating new APIs using error classes other than GenericError is
++ * not recommended. Set use_generic_error=true for new interfaces.
++ */
++static DeviceState *find_device_state(const char *id, bool use_generic_error,
++                                      Error **errp)
+ {
+     Object *obj = object_resolve_path_at(qdev_get_peripheral(), id);
+     DeviceState *dev;
+ 
+     if (!obj) {
+-        error_set(errp, ERROR_CLASS_DEVICE_NOT_FOUND,
++        error_set(errp,
++                  (use_generic_error ?
++                   ERROR_CLASS_GENERIC_ERROR : ERROR_CLASS_DEVICE_NOT_FOUND),
+                   "Device '%s' not found", id);
          return NULL;
      }
+@@ -947,7 +954,7 @@ void qdev_unplug(DeviceState *dev, Error **errp)
  
+ void qmp_device_del(const char *id, Error **errp)
+ {
+-    DeviceState *dev = find_device_state(id, errp);
++    DeviceState *dev = find_device_state(id, false, errp);
+     if (dev != NULL) {
+         if (dev->pending_deleted_event &&
+             (dev->pending_deleted_expires_ms == 0 ||
+@@ -1067,7 +1074,7 @@ BlockBackend *blk_by_qdev_id(const char *id, Error **errp)
+ 
+     GLOBAL_STATE_CODE();
+ 
+-    dev = find_device_state(id, errp);
++    dev = find_device_state(id, false, errp);
+     if (dev == NULL) {
+         return NULL;
+     }
 -- 
 2.34.1
 
