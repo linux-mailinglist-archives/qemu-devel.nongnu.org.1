@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73CF586ECBD
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:11:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D8E486ECE6
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:19:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgC2L-0004Gb-RO; Fri, 01 Mar 2024 18:11:31 -0500
+	id 1rgC2b-0005BU-H0; Fri, 01 Mar 2024 18:11:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgC1R-0003kN-0J
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:35 -0500
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1rgC1U-0003rJ-39
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:43 -0500
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgC1O-0005gI-LY
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:32 -0500
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6e4560664b5so2238581b3a.1
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:10:29 -0800 (PST)
+ id 1rgC1R-0005gb-Dm
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:35 -0500
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6e5e4b1d1f1so206791b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:10:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709334629; x=1709939429; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709334632; x=1709939432; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=e2NESTxnz6150SuLytNvY5Gmn2U5RKg4GfRtueQZH4I=;
- b=zvbezarZ2naOe+xWDLmcprnW0NF10+bLiTDva0y7/3hnWQdqGHRSbtcBbOWLUJJWJe
- OVYor7mvwc92cGcWa9YJ643pcajYQBrkvzStgB7TezWbc6S4P3CSIluf2j9AA+ylHUSC
- Hyko3Ga/eCAuSGxkqD0MHyAqJK6wkU69AhTq5lGIu1cDbrycaIbPlqA7YTX11g985Gi2
- B6sZaAVcZh0fqCcfIzNFhX31lzxGc5IgQNcG8NggSac8ZtqkqgETzCkvOUEp2UkB+C4l
- HS0jEXbmAKzSDXjttdT3M1+S8hqkioSdrGYGlgC5oHUxqHdyt2rpXM63OwsVTOzVLelv
- 0ACw==
+ bh=vaUyQsnvahk8PvCDA8gukGjHfbLFzwV+mi5B0BNbUsQ=;
+ b=pYE8/6ZNEihwLPHTBDrDs8dAqsHYmYUS59UB1CcMkgjoaFwV1Hsp7uVlsebhiKVK98
+ H91s0QfB5SylMhSzrjCE/yOsiVX6Ml6OTRoxBVRoTrtm2u1atEOzjnfDM9hkjI9LHm8M
+ /qUkwCTDe5EpjrzgD7kHoQNxqIhlpMxYh4Rd5oQRRzzr8kSk7rxB/urPeWwXkeB7zSBL
+ 8zc0mFLkaJ34BRDW4Sh6NL9lVwqtIhLXFQZSRQ6//nNjKSjdtoYEwF0Cqwi5qxkZArHh
+ tTF2+UfG4+9pNB5+uflEEZjTNUuDEm5tW8tOovPSNBmPmqSquC1UHZkyy2NrMrmkJjgC
+ PJSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709334629; x=1709939429;
+ d=1e100.net; s=20230601; t=1709334632; x=1709939432;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=e2NESTxnz6150SuLytNvY5Gmn2U5RKg4GfRtueQZH4I=;
- b=rev3FRgQNve7/ecc7vmqtfoDnPCtBAQzKkX68Lqv2x0T1YIaXfTXgcg15iXkBYM29g
- DTMIDoIqHEFFB342P0qh/NU1wM+QhyEzq0+15lhlQ7EkDe+VCaBHRk5PNXm4nn/pzzMx
- bIEbgWb97GM++RqvwMvUnsOqo0/hCWUgFsbcIlw+9FaEBY37Ewdbd0Xz0LsAetqQfk+g
- YOlwzwn+fEZ/gpp8ll0GOuHNbgjDtflERFb3audYl67L5T+qNKoJpQ1L9EQjqGkZ2Y09
- aaMzkqSu/a52LBDO2B7rZLliEcZC39S1zVK3UVzZZDPCcV+cAzG/QpTLWdv0frnfg+nI
- QVtQ==
-X-Gm-Message-State: AOJu0Yw6TQMwTZ+0aBUuQ7deXPGtzBOQnJGFg4RhEbIhPxl8DcOuPtun
- q2WzSQgoZnpSwBbP3hTgJd56IGaNtDSzWyhZJtexHvwZuyRA1ZhjxaG0+b5426sQgHJoyK6mhG1
- X
-X-Google-Smtp-Source: AGHT+IHY/0d+h3bIcosmTBOnD95JmCAtaLe3WAale33AqA0CfsL53G3Xs4n4IZcXfr8Z7b6+HdBkog==
-X-Received: by 2002:a05:6a00:2352:b0:6e5:adb9:b955 with SMTP id
- j18-20020a056a00235200b006e5adb9b955mr3834774pfj.23.1709334628978; 
- Fri, 01 Mar 2024 15:10:28 -0800 (PST)
+ bh=vaUyQsnvahk8PvCDA8gukGjHfbLFzwV+mi5B0BNbUsQ=;
+ b=Rx6YyDpT8U/oLhQScTZ2/9EzBr5C92oXk6DMlT8+xr3X0h5lYpzwhRZp0sBBhSpth+
+ it+voT0N03dg8E+DHMJSzZTihNJkD0Qg5q8Lj3FoEZCR90VB/lqYwnBoqIGBT4rIR6Ez
+ T61XgX29zglx8WL8SpVYF+1Tftd2dV+X4SntXS+OqbTD+ODhOLR5cPSm5dsn/4DeWUuM
+ WkoCWEHNAo/EELeH5mhINBbfzhRhkPOaFB+yYkX+DBz2GLpisVLMB2Uh07RX978ep+MN
+ MDTforgbPi26RAx9g2nA2TpDOFYbiOMn7bCuLJKLjFzC/iBDZAQZJdvQjphOij6w8NQQ
+ 1wag==
+X-Gm-Message-State: AOJu0YxL0iWrBbW1TGYppPSN/BqZgHG7iWupsaGMzzlT2zhb39Oq9xzQ
+ iMFz6C/EhRCL38H/ACh42uiL6gwxa8Ej5LxZQXXvUCLgFrgGJguq5XeTuuriVCvjz0/MAYO/Y8B
+ m
+X-Google-Smtp-Source: AGHT+IHzytfeo1KzHwzjvk2R45CX0MIdneT35YaK1VTzknlzVAdlRi0hco/rbpmkBkNQ6mwXEPvT8g==
+X-Received: by 2002:a05:6a20:3d22:b0:19e:ba42:4ed9 with SMTP id
+ y34-20020a056a203d2200b0019eba424ed9mr4598452pzi.1.1709334632155; 
+ Fri, 01 Mar 2024 15:10:32 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- c2-20020a634e02000000b005e438fe702dsm3449407pgb.65.2024.03.01.15.10.27
+ c2-20020a634e02000000b005e438fe702dsm3449407pgb.65.2024.03.01.15.10.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 15:10:28 -0800 (PST)
+ Fri, 01 Mar 2024 15:10:31 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: Warner Losh <imp@bsdimp.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Helge Deller <deller@gmx.de>
-Subject: [PATCH 45/60] tests/tcg: Extend file in linux-madvise.c
-Date: Fri,  1 Mar 2024 13:06:04 -1000
-Message-Id: <20240301230619.661008-46-richard.henderson@linaro.org>
+Subject: [PATCH 47/60] cpu: Remove page_size_init
+Date: Fri,  1 Mar 2024 13:06:06 -1000
+Message-Id: <20240301230619.661008-48-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301230619.661008-1-richard.henderson@linaro.org>
 References: <20240301230619.661008-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,34 +95,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When guest page size > host page size, this test can fail
-due to the SIGBUS protection hack.  Avoid this by making
-sure that the file size is at least one guest page.
+Move qemu_host_page_{size,mask} and HOST_PAGE_ALIGN into bsd-user.
+It should be removed from bsd-user as well, but defer that cleanup.
 
-Visible with alpha guest on x86_64 host.
-
+Reviewed-by: Warner Losh <imp@bsdimp.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Tested-by: Ilya Leoshkevich <iii@linux.ibm.com>
 Acked-by: Helge Deller <deller@gmx.de>
-Message-Id: <20240102015808.132373-26-richard.henderson@linaro.org>
+Message-Id: <20240102015808.132373-28-richard.henderson@linaro.org>
 ---
- tests/tcg/multiarch/linux/linux-madvise.c | 2 ++
- 1 file changed, 2 insertions(+)
+ bsd-user/qemu.h           |  7 +++++++
+ include/exec/cpu-common.h |  7 -------
+ include/hw/core/cpu.h     |  2 --
+ accel/tcg/translate-all.c |  1 -
+ bsd-user/main.c           | 12 ++++++++++++
+ cpu-target.c              | 16 ----------------
+ system/vl.c               |  1 -
+ 7 files changed, 19 insertions(+), 27 deletions(-)
 
-diff --git a/tests/tcg/multiarch/linux/linux-madvise.c b/tests/tcg/multiarch/linux/linux-madvise.c
-index 29d0997e68..539fb3b772 100644
---- a/tests/tcg/multiarch/linux/linux-madvise.c
-+++ b/tests/tcg/multiarch/linux/linux-madvise.c
-@@ -42,6 +42,8 @@ static void test_file(void)
-     assert(ret == 0);
-     written = write(fd, &c, sizeof(c));
-     assert(written == sizeof(c));
-+    ret = ftruncate(fd, pagesize);
-+    assert(ret == 0);
-     page = mmap(NULL, pagesize, PROT_READ, MAP_PRIVATE, fd, 0);
-     assert(page != MAP_FAILED);
+diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
+index dc842fffa7..c05c512767 100644
+--- a/bsd-user/qemu.h
++++ b/bsd-user/qemu.h
+@@ -39,6 +39,13 @@ extern char **environ;
+ #include "qemu/clang-tsa.h"
  
+ #include "qemu-os.h"
++/*
++ * TODO: Remove these and rely only on qemu_real_host_page_size().
++ */
++extern uintptr_t qemu_host_page_size;
++extern intptr_t qemu_host_page_mask;
++#define HOST_PAGE_ALIGN(addr) ROUND_UP((addr), qemu_host_page_size)
++
+ /*
+  * This struct is used to hold certain information about the image.  Basically,
+  * it replicates in user space what would be certain task_struct fields in the
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index 9ead1be100..6346df17ce 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -20,13 +20,6 @@
+ void cpu_exec_init_all(void);
+ void cpu_exec_step_atomic(CPUState *cpu);
+ 
+-/* Using intptr_t ensures that qemu_*_page_mask is sign-extended even
+- * when intptr_t is 32-bit and we are aligning a long long.
+- */
+-extern uintptr_t qemu_host_page_size;
+-extern intptr_t qemu_host_page_mask;
+-
+-#define HOST_PAGE_ALIGN(addr) ROUND_UP((addr), qemu_host_page_size)
+ #define REAL_HOST_PAGE_ALIGN(addr) ROUND_UP((addr), qemu_real_host_page_size())
+ 
+ /* The CPU list lock nests outside page_(un)lock or mmap_(un)lock */
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index af1a29526d..d0e345419f 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -1179,8 +1179,6 @@ bool target_words_bigendian(void);
+ 
+ const char *target_name(void);
+ 
+-void page_size_init(void);
+-
+ #ifdef NEED_CPU_H
+ 
+ #ifndef CONFIG_USER_ONLY
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index 1c695efe02..c1f57e894a 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -256,7 +256,6 @@ bool cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc, uint64_t *data)
+ 
+ void page_init(void)
+ {
+-    page_size_init();
+     page_table_config_init();
+ }
+ 
+diff --git a/bsd-user/main.c b/bsd-user/main.c
+index 6ab3efd6c0..512d4ab69f 100644
+--- a/bsd-user/main.c
++++ b/bsd-user/main.c
+@@ -49,6 +49,13 @@
+ #include "host-os.h"
+ #include "target_arch_cpu.h"
+ 
++
++/*
++ * TODO: Remove these and rely only on qemu_real_host_page_size().
++ */
++uintptr_t qemu_host_page_size;
++intptr_t qemu_host_page_mask;
++
+ static bool opt_one_insn_per_tb;
+ uintptr_t guest_base;
+ bool have_guest_base;
+@@ -307,6 +314,9 @@ int main(int argc, char **argv)
+         (void) envlist_setenv(envlist, *wrk);
+     }
+ 
++    qemu_host_page_size = getpagesize();
++    qemu_host_page_size = MAX(qemu_host_page_size, TARGET_PAGE_SIZE);
++
+     cpu_model = NULL;
+ 
+     qemu_add_opts(&qemu_trace_opts);
+@@ -404,6 +414,8 @@ int main(int argc, char **argv)
+         }
+     }
+ 
++    qemu_host_page_mask = -qemu_host_page_size;
++
+     /* init debug */
+     {
+         int mask = 0;
+diff --git a/cpu-target.c b/cpu-target.c
+index 86444cc2c6..4c0621bf33 100644
+--- a/cpu-target.c
++++ b/cpu-target.c
+@@ -45,9 +45,6 @@
+ #include "trace/trace-root.h"
+ #include "qemu/accel.h"
+ 
+-uintptr_t qemu_host_page_size;
+-intptr_t qemu_host_page_mask;
+-
+ #ifndef CONFIG_USER_ONLY
+ static int cpu_common_post_load(void *opaque, int version_id)
+ {
+@@ -474,16 +471,3 @@ const char *target_name(void)
+ {
+     return TARGET_NAME;
+ }
+-
+-void page_size_init(void)
+-{
+-    /* NOTE: we can always suppose that qemu_host_page_size >=
+-       TARGET_PAGE_SIZE */
+-    if (qemu_host_page_size == 0) {
+-        qemu_host_page_size = qemu_real_host_page_size();
+-    }
+-    if (qemu_host_page_size < TARGET_PAGE_SIZE) {
+-        qemu_host_page_size = TARGET_PAGE_SIZE;
+-    }
+-    qemu_host_page_mask = -(intptr_t)qemu_host_page_size;
+-}
+diff --git a/system/vl.c b/system/vl.c
+index e480afd7a0..48aae6e053 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -2118,7 +2118,6 @@ static void qemu_create_machine(QDict *qdict)
+     }
+ 
+     cpu_exec_init_all();
+-    page_size_init();
+ 
+     if (machine_class->hw_version) {
+         qemu_set_hw_version(machine_class->hw_version);
 -- 
 2.34.1
 
