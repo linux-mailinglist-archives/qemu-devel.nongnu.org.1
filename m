@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61D3986ECDD
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:17:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E4786ECD7
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:16:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgByI-0005ca-2Z; Fri, 01 Mar 2024 18:07:18 -0500
+	id 1rgByR-0005k9-LP; Fri, 01 Mar 2024 18:07:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgBxo-0004v6-6h
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:48 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1rgBxp-0004vN-Bu
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:51 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgBxm-0004Fe-74
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:47 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1dbae7b8ff2so10146535ad.3
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:06:45 -0800 (PST)
+ id 1rgBxn-0004G4-HR
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:48 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1dc0d11d1b7so24577165ad.2
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:06:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709334405; x=1709939205; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709334406; x=1709939206; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GXv7UEq6yLB4cFzFbGG2vFz3ZhmdoWnqKW8J54cTadc=;
- b=ATPboLxDfsaTLNgvFXnLgCdE452zxfkw14RBbC8zb8rVbkYGYR+1UnkR7AeIrcLVm0
- i7Ff7/Ae8bD0mCGaNCN8jWtdkWgPZpXdRsGd6/j1Px12dv3GkIvpmL2JZwY1tvdtwWES
- qFo6/7aCzrCIkAonWI3zvyO3rsGd02G19LBUrkGpOyzni0SqYgDlkrlseB7h8l51Qaj8
- l8EA87o/U8lo+Vecw3ymJSQ40Ft/mlV/AQPPSAactowc4eLKN7gBTMg4ZMyMT55PgB7i
- anIg13ULUl8zwZh7wAUOgJfFFwpB4HwxeKR3bVO5G3D3EHu6NB2yvD9qRYAS86f6SeI7
- +oyg==
+ bh=G2VXMZpzicQ4Dm28fmEM7ZpGthYgfI6UDANYII3bJPA=;
+ b=WC6R8Cy1R42yVSuTO2NwOSCU4z2YOpjV4Ec8i8ymmWDq4Dbh5jljrSJlGYyuTqu90a
+ ng5tSnU9hPLGXMyyP4Fbh+hn8Vf8W+tS997UQ23/sgS/6cr7JVFWay7r6uQJorUjNDid
+ 3o7PlAMSYI9GD6i7Ov9Lh9CsytulkNEoNkHDJ/RJpQyHIeUP81TKiCwqQKrn1I2idd1n
+ UUT6Cs496oa8wn0/55segL9Mj+akD9DDptJseOYpe0d6o2cUlo5nIQPMiZ+BTMmKBnGC
+ 1NtLcCrOKNjc7leD79cbrbSJuTPedAOiyzXG8bGMZGdOF2GfoX7sEX9n6Ckz2BhN8c48
+ 3Q/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709334405; x=1709939205;
+ d=1e100.net; s=20230601; t=1709334406; x=1709939206;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GXv7UEq6yLB4cFzFbGG2vFz3ZhmdoWnqKW8J54cTadc=;
- b=kffqTdkYOBN8IpIAPtyqOjZMaqeAs3IEfQGTOFLsciQhILbw3xxjubQz2j0vJkmdCj
- 01aqIRn1TJZizOubyVOxzi1ULpsMRYFvMykah9ySVI4vBAK/xMuFMiYo8a6k1cqj8I3J
- TLMpnUyXRDpXo/irR10G3ZaFH5sCOzUxMBshT4hVEaFU/LgLtBz5SiOskxnWCOSeSt3+
- An0Iq5Pd12ZWQ8lHHs8RqxbWDrdIIIeFjVrQpnyVaO5dOzViDljL8zDa++wiHKjK1Lij
- 9IosIdY7c0Z50/ZAWHxrxrmER3Itgn/oeWCaF7u7ILxnzgsHD189jCE6JLxa0Gh1t29b
- VIrQ==
-X-Gm-Message-State: AOJu0YzIZReSn6SkuTsV8TpmY1g2635ifvUFYfQU7giUUwsQXBYbeR7T
- EOMMkAXtlKAjB7CmBp27KYRkYY+05hX0fneCpb0iBtxcTC4vjKiwpFCdCbCzIEpxplBblaSVI3R
- T
-X-Google-Smtp-Source: AGHT+IFXQSXnU3Ao9/HAmOezRnL4JaVjs4rkit5pIuu3lrDaLx0719o2octFlr6I81PAFsoZNmwnbg==
-X-Received: by 2002:a17:902:9f90:b0:1dc:c28c:fb92 with SMTP id
- g16-20020a1709029f9000b001dcc28cfb92mr2782861plq.33.1709334404665; 
- Fri, 01 Mar 2024 15:06:44 -0800 (PST)
+ bh=G2VXMZpzicQ4Dm28fmEM7ZpGthYgfI6UDANYII3bJPA=;
+ b=qKO9FIKqQ4hyxxJiKrUaJdCGIJckRIihzbYe9Whny87Ul28JR1JEHsZ0W7w7UoD4Ld
+ NaDRmbS4wjlWPulMleT8OK4T/sICSESMP7/OPVxIDNkYYBv5zXjTqjhbaV4miWp1HD66
+ zuT2h8KxwH1NnYc/dQmvajN7RSXOBlArxx76EKdspvnN35LoV9AuaYQ1pU0xQyqmPE0L
+ zYVnim0qXhWZ45H9LKW/tj4Q4agGXBISybrDcFPfZrdwDOR/N8qaOoOFa88xxJBEZHsC
+ BlbioILkq/NnUiBGTJWiAvWuCk7eF4rg5GdKNnpO5czG1ZtBY0Ng6BrUiZndZh0BFOU1
+ VoOg==
+X-Gm-Message-State: AOJu0YzjzhiMR2gZqag4gjF9Riiyy1AtrKGTPYfDvheHLer/e1RA9NcL
+ +zvS5iC7S0vSf/k+VvslIe6198+hX9KBZXsQ2GX9QEnvLugZZwIvZVR3Xr3R3j6hrdaZJKB2O+9
+ +
+X-Google-Smtp-Source: AGHT+IHhX/hTS8JqfJgFZnNbpy4DodUMopAeISIYRTej3Phw3GQ6esTUSjBTHZJzRKoM075InFTK0w==
+X-Received: by 2002:a17:902:7790:b0:1d9:a4bb:29f2 with SMTP id
+ o16-20020a170902779000b001d9a4bb29f2mr2518601pll.46.1709334406292; 
+ Fri, 01 Mar 2024 15:06:46 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- lc11-20020a170902fa8b00b001dc668e145asm3988580plb.200.2024.03.01.15.06.43
+ lc11-20020a170902fa8b00b001dc668e145asm3988580plb.200.2024.03.01.15.06.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 15:06:44 -0800 (PST)
+ Fri, 01 Mar 2024 15:06:45 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 17/60] tcg: Avoid double lock if page tables happen to be in
- mmio memory.
-Date: Fri,  1 Mar 2024 13:05:36 -1000
-Message-Id: <20240301230619.661008-18-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Helge Deller <deller@gmx.de>
+Subject: [PATCH 18/60] accel/tcg: Remove qemu_host_page_size from
+ page_protect/page_unprotect
+Date: Fri,  1 Mar 2024 13:05:37 -1000
+Message-Id: <20240301230619.661008-19-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301230619.661008-1-richard.henderson@linaro.org>
 References: <20240301230619.661008-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01, WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,147 +95,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Use qemu_real_host_page_size instead.  Except for the final mprotect
+within page_protect, we already handled host < target page size.
 
-On i386, after fixing the page walking code to work with pages in
-MMIO memory (specifically CXL emulated interleaved memory),
-a crash was seen in an interrupt handling path.
-
-Useful part of backtrace
-
-7  0x0000555555ab1929 in bql_lock_impl (file=0x555556049122 "../../accel/tcg/cputlb.c", line=2033) at ../../system/cpus.c:524
-8  bql_lock_impl (file=file@entry=0x555556049122 "../../accel/tcg/cputlb.c", line=line@entry=2033) at ../../system/cpus.c:520
-9  0x0000555555c9f7d6 in do_ld_mmio_beN (cpu=0x5555578e0cb0, full=0x7ffe88012950, ret_be=ret_be@entry=0, addr=19595792376, size=size@entry=8, mmu_idx=4, type=MMU_DATA_LOAD, ra=0) at ../../accel/tcg/cputlb.c:2033
-10 0x0000555555ca0fbd in do_ld_8 (cpu=cpu@entry=0x5555578e0cb0, p=p@entry=0x7ffff4efd1d0, mmu_idx=<optimized out>, type=type@entry=MMU_DATA_LOAD, memop=<optimized out>, ra=ra@entry=0) at ../../accel/tcg/cputlb.c:2356
-11 0x0000555555ca341f in do_ld8_mmu (cpu=cpu@entry=0x5555578e0cb0, addr=addr@entry=19595792376, oi=oi@entry=52, ra=0, ra@entry=52, access_type=access_type@entry=MMU_DATA_LOAD) at ../../accel/tcg/cputlb.c:2439
-12 0x0000555555ca5f59 in cpu_ldq_mmu (ra=52, oi=52, addr=19595792376, env=0x5555578e3470) at ../../accel/tcg/ldst_common.c.inc:169
-13 cpu_ldq_le_mmuidx_ra (env=0x5555578e3470, addr=19595792376, mmu_idx=<optimized out>, ra=ra@entry=0) at ../../accel/tcg/ldst_common.c.inc:301
-14 0x0000555555b4b5fc in ptw_ldq (ra=0, in=0x7ffff4efd320) at ../../target/i386/tcg/sysemu/excp_helper.c:98
-15 ptw_ldq (ra=0, in=0x7ffff4efd320) at ../../target/i386/tcg/sysemu/excp_helper.c:93
-16 mmu_translate (env=env@entry=0x5555578e3470, in=0x7ffff4efd3e0, out=0x7ffff4efd3b0, err=err@entry=0x7ffff4efd3c0, ra=ra@entry=0) at ../../target/i386/tcg/sysemu/excp_helper.c:174
-17 0x0000555555b4c4b3 in get_physical_address (ra=0, err=0x7ffff4efd3c0, out=0x7ffff4efd3b0, mmu_idx=0, access_type=MMU_DATA_LOAD, addr=18446741874686299840, env=0x5555578e3470) at ../../target/i386/tcg/sysemu/excp_helper.c:580
-18 x86_cpu_tlb_fill (cs=0x5555578e0cb0, addr=18446741874686299840, size=<optimized out>, access_type=MMU_DATA_LOAD, mmu_idx=0, probe=<optimized out>, retaddr=0) at ../../target/i386/tcg/sysemu/excp_helper.c:606
-19 0x0000555555ca0ee9 in tlb_fill (retaddr=0, mmu_idx=0, access_type=MMU_DATA_LOAD, size=<optimized out>, addr=18446741874686299840, cpu=0x7ffff4efd540) at ../../accel/tcg/cputlb.c:1315
-20 mmu_lookup1 (cpu=cpu@entry=0x5555578e0cb0, data=data@entry=0x7ffff4efd540, mmu_idx=0, access_type=access_type@entry=MMU_DATA_LOAD, ra=ra@entry=0) at ../../accel/tcg/cputlb.c:1713
-21 0x0000555555ca2c61 in mmu_lookup (cpu=cpu@entry=0x5555578e0cb0, addr=addr@entry=18446741874686299840, oi=oi@entry=32, ra=ra@entry=0, type=type@entry=MMU_DATA_LOAD, l=l@entry=0x7ffff4efd540) at ../../accel/tcg/cputlb.c:1803
-22 0x0000555555ca3165 in do_ld4_mmu (cpu=cpu@entry=0x5555578e0cb0, addr=addr@entry=18446741874686299840, oi=oi@entry=32, ra=ra@entry=0, access_type=access_type@entry=MMU_DATA_LOAD) at ../../accel/tcg/cputlb.c:2416
-23 0x0000555555ca5ef9 in cpu_ldl_mmu (ra=0, oi=32, addr=18446741874686299840, env=0x5555578e3470) at ../../accel/tcg/ldst_common.c.inc:158
-24 cpu_ldl_le_mmuidx_ra (env=env@entry=0x5555578e3470, addr=addr@entry=18446741874686299840, mmu_idx=<optimized out>, ra=ra@entry=0) at ../../accel/tcg/ldst_common.c.inc:294
-25 0x0000555555bb6cdd in do_interrupt64 (is_hw=1, next_eip=18446744072399775809, error_code=0, is_int=0, intno=236, env=0x5555578e3470) at ../../target/i386/tcg/seg_helper.c:889
-26 do_interrupt_all (cpu=cpu@entry=0x5555578e0cb0, intno=236, is_int=is_int@entry=0, error_code=error_code@entry=0, next_eip=next_eip@entry=0, is_hw=is_hw@entry=1) at ../../target/i386/tcg/seg_helper.c:1130
-27 0x0000555555bb87da in do_interrupt_x86_hardirq (env=env@entry=0x5555578e3470, intno=<optimized out>, is_hw=is_hw@entry=1) at ../../target/i386/tcg/seg_helper.c:1162
-28 0x0000555555b5039c in x86_cpu_exec_interrupt (cs=0x5555578e0cb0, interrupt_request=<optimized out>) at ../../target/i386/tcg/sysemu/seg_helper.c:197
-29 0x0000555555c94480 in cpu_handle_interrupt (last_tb=<synthetic pointer>, cpu=0x5555578e0cb0) at ../../accel/tcg/cpu-exec.c:844
-
-Peter identified this as being due to the BQL already being
-held when the page table walker encounters MMIO memory and attempts
-to take the lock again.  There are other examples of similar paths
-TCG, so this follows the approach taken in those of simply checking
-if the lock is already held and if it is, don't take it again.
-
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20240219173153.12114-4-Jonathan.Cameron@huawei.com>
-[rth: Use BQL_LOCK_GUARD]
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Acked-by: Helge Deller <deller@gmx.de>
+Message-Id: <20240102015808.132373-2-richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c | 34 ++++++++++------------------------
- 1 file changed, 10 insertions(+), 24 deletions(-)
+ accel/tcg/user-exec.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 047cd2cc0a..6243bcb179 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -2022,7 +2022,6 @@ static uint64_t do_ld_mmio_beN(CPUState *cpu, CPUTLBEntryFull *full,
-     MemoryRegion *mr;
-     hwaddr mr_offset;
-     MemTxAttrs attrs;
--    uint64_t ret;
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index 68b252cb8e..69b7429e31 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -651,16 +651,17 @@ void page_protect(tb_page_addr_t address)
+ {
+     PageFlagsNode *p;
+     target_ulong start, last;
++    int host_page_size = qemu_real_host_page_size();
+     int prot;
  
-     tcg_debug_assert(size > 0 && size <= 8);
+     assert_memory_lock();
  
-@@ -2030,12 +2029,9 @@ static uint64_t do_ld_mmio_beN(CPUState *cpu, CPUTLBEntryFull *full,
-     section = io_prepare(&mr_offset, cpu, full->xlat_section, attrs, addr, ra);
-     mr = section->mr;
+-    if (qemu_host_page_size <= TARGET_PAGE_SIZE) {
++    if (host_page_size <= TARGET_PAGE_SIZE) {
+         start = address & TARGET_PAGE_MASK;
+         last = start + TARGET_PAGE_SIZE - 1;
+     } else {
+-        start = address & qemu_host_page_mask;
+-        last = start + qemu_host_page_size - 1;
++        start = address & -host_page_size;
++        last = start + host_page_size - 1;
+     }
  
--    bql_lock();
--    ret = int_ld_mmio_beN(cpu, full, ret_be, addr, size, mmu_idx,
--                          type, ra, mr, mr_offset);
--    bql_unlock();
--
--    return ret;
-+    BQL_LOCK_GUARD();
-+    return int_ld_mmio_beN(cpu, full, ret_be, addr, size, mmu_idx,
-+                           type, ra, mr, mr_offset);
+     p = pageflags_find(start, last);
+@@ -671,7 +672,7 @@ void page_protect(tb_page_addr_t address)
+ 
+     if (unlikely(p->itree.last < last)) {
+         /* More than one protection region covers the one host page. */
+-        assert(TARGET_PAGE_SIZE < qemu_host_page_size);
++        assert(TARGET_PAGE_SIZE < host_page_size);
+         while ((p = pageflags_next(p, start, last)) != NULL) {
+             prot |= p->flags;
+         }
+@@ -679,7 +680,7 @@ void page_protect(tb_page_addr_t address)
+ 
+     if (prot & PAGE_WRITE) {
+         pageflags_set_clear(start, last, 0, PAGE_WRITE);
+-        mprotect(g2h_untagged(start), qemu_host_page_size,
++        mprotect(g2h_untagged(start), last - start + 1,
+                  prot & (PAGE_READ | PAGE_EXEC) ? PROT_READ : PROT_NONE);
+     }
  }
+@@ -725,18 +726,19 @@ int page_unprotect(target_ulong address, uintptr_t pc)
+         }
+ #endif
+     } else {
++        int host_page_size = qemu_real_host_page_size();
+         target_ulong start, len, i;
+         int prot;
  
- static Int128 do_ld16_mmio_beN(CPUState *cpu, CPUTLBEntryFull *full,
-@@ -2054,13 +2050,11 @@ static Int128 do_ld16_mmio_beN(CPUState *cpu, CPUTLBEntryFull *full,
-     section = io_prepare(&mr_offset, cpu, full->xlat_section, attrs, addr, ra);
-     mr = section->mr;
+-        if (qemu_host_page_size <= TARGET_PAGE_SIZE) {
++        if (host_page_size <= TARGET_PAGE_SIZE) {
+             start = address & TARGET_PAGE_MASK;
+             len = TARGET_PAGE_SIZE;
+             prot = p->flags | PAGE_WRITE;
+             pageflags_set_clear(start, start + len - 1, PAGE_WRITE, 0);
+             current_tb_invalidated = tb_invalidate_phys_page_unwind(start, pc);
+         } else {
+-            start = address & qemu_host_page_mask;
+-            len = qemu_host_page_size;
++            start = address & -host_page_size;
++            len = host_page_size;
+             prot = 0;
  
--    bql_lock();
-+    BQL_LOCK_GUARD();
-     a = int_ld_mmio_beN(cpu, full, ret_be, addr, size - 8, mmu_idx,
-                         MMU_DATA_LOAD, ra, mr, mr_offset);
-     b = int_ld_mmio_beN(cpu, full, ret_be, addr + size - 8, 8, mmu_idx,
-                         MMU_DATA_LOAD, ra, mr, mr_offset + size - 8);
--    bql_unlock();
--
-     return int128_make128(b, a);
- }
- 
-@@ -2569,7 +2563,6 @@ static uint64_t do_st_mmio_leN(CPUState *cpu, CPUTLBEntryFull *full,
-     hwaddr mr_offset;
-     MemoryRegion *mr;
-     MemTxAttrs attrs;
--    uint64_t ret;
- 
-     tcg_debug_assert(size > 0 && size <= 8);
- 
-@@ -2577,12 +2570,9 @@ static uint64_t do_st_mmio_leN(CPUState *cpu, CPUTLBEntryFull *full,
-     section = io_prepare(&mr_offset, cpu, full->xlat_section, attrs, addr, ra);
-     mr = section->mr;
- 
--    bql_lock();
--    ret = int_st_mmio_leN(cpu, full, val_le, addr, size, mmu_idx,
--                          ra, mr, mr_offset);
--    bql_unlock();
--
--    return ret;
-+    BQL_LOCK_GUARD();
-+    return int_st_mmio_leN(cpu, full, val_le, addr, size, mmu_idx,
-+                           ra, mr, mr_offset);
- }
- 
- static uint64_t do_st16_mmio_leN(CPUState *cpu, CPUTLBEntryFull *full,
-@@ -2593,7 +2583,6 @@ static uint64_t do_st16_mmio_leN(CPUState *cpu, CPUTLBEntryFull *full,
-     MemoryRegion *mr;
-     hwaddr mr_offset;
-     MemTxAttrs attrs;
--    uint64_t ret;
- 
-     tcg_debug_assert(size > 8 && size <= 16);
- 
-@@ -2601,14 +2590,11 @@ static uint64_t do_st16_mmio_leN(CPUState *cpu, CPUTLBEntryFull *full,
-     section = io_prepare(&mr_offset, cpu, full->xlat_section, attrs, addr, ra);
-     mr = section->mr;
- 
--    bql_lock();
-+    BQL_LOCK_GUARD();
-     int_st_mmio_leN(cpu, full, int128_getlo(val_le), addr, 8,
-                     mmu_idx, ra, mr, mr_offset);
--    ret = int_st_mmio_leN(cpu, full, int128_gethi(val_le), addr + 8,
--                          size - 8, mmu_idx, ra, mr, mr_offset + 8);
--    bql_unlock();
--
--    return ret;
-+    return int_st_mmio_leN(cpu, full, int128_gethi(val_le), addr + 8,
-+                           size - 8, mmu_idx, ra, mr, mr_offset + 8);
- }
- 
- /*
+             for (i = 0; i < len; i += TARGET_PAGE_SIZE) {
 -- 
 2.34.1
 
