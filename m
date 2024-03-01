@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47C6286EA75
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 21:42:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8065E86EA79
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 21:42:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rg9h3-0001ws-EU; Fri, 01 Mar 2024 15:41:21 -0500
+	id 1rg9h5-0001yA-Gd; Fri, 01 Mar 2024 15:41:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rg9h1-0001qX-EQ
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 15:41:19 -0500
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ id 1rg9h3-0001xP-U1
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 15:41:21 -0500
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rg9gz-0006yd-TH
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 15:41:19 -0500
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-5dcc4076c13so2132115a12.0
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 12:41:17 -0800 (PST)
+ id 1rg9h2-0006zL-CD
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 15:41:21 -0500
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-5d3907ff128so2378804a12.3
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 12:41:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709325676; x=1709930476; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709325678; x=1709930478; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uSxGM8jSCUAKauTODiPxOuZGF0sA3+vBxABkPlr2Gc8=;
- b=D1BRQr5+QOiLN5I/UNqsClGgT9yMul/wBvtZjIzhW2PVKAYZ/qQYsah8/BaCgxbIKE
- uAmPIXurda3IPYXJZBJqbWmO4a6vjuci3bC2bSn2xoshmqJfpwfuw+QncMajf6cI+fyh
- 44um+pZleU8t1MfcYklp9uageSBIv38CMOP4YHPyXuc7t9ByaP6sWJdkCbT1AKMQfolN
- B7YKvr7rqbwv2h2p9fP12Fe0md29lwih806dg7RZmwCaEI5IkSdvzWyqWadZisP84hP1
- rzst2e9Ov7ibL6mqWWvVNFoidd+DoH2zkbAwljGiXw0Zo+Tb5h5h8XLOTLL/5Gtga5/0
- eXEg==
+ bh=GuRyEJUy3EeC0acSqgIfQ+cNnDkZek7t4EbMZ1kuVCY=;
+ b=RwKdvFaqq+YtR1qtErSzsheNZ+g7f+aCRXaIinkm2fFzev/elFg03wwOIitDH9Hbh4
+ mGGAffPIFtlgqoOXRTaA13amAK/qsVPk+3cZU+8OzbtoDd1oXsomnvXln+rBSvbsp+Ut
+ l89hObcazN9Ak7VeDuEvRk5RGaAyp+7tvUWKZxLUpfO4Kyr9abtcSIgtqQlAGjxr2d01
+ hCMXBh5l4Iazio3P2R0HiwAZfIm7p1ECn4J0fC5CwBCSlnLXmtMkD3ku3m767yoYu11C
+ 7EGAw9lstkEc2lku8Hovq+Z/h8DldO+KuvwWO0CcNWh1i3V0QkOgVEYAcTHidA4z+fS7
+ 5uBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709325676; x=1709930476;
+ d=1e100.net; s=20230601; t=1709325678; x=1709930478;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uSxGM8jSCUAKauTODiPxOuZGF0sA3+vBxABkPlr2Gc8=;
- b=Q3MVwH8D8DroOFkrlz05oywV2Pvpsaq4v3Z69Xp+Hm+3OpvJRZQRqgK/GYZS4m6pmZ
- zOTqJADfMJeijUq2hXzftDeZLtvc5Y+DOgtEXTayRUGMAZJpcLU/z3DVVqIEre38Raqy
- 0LKbpHNJiT1yqD3Tx4y7N60KtKOxEdO7Aho73VgCh71KRsNTBcDD1nct5JSCyVPeAE2E
- 4VZ2QT1Fc7t/9iF+erQaz7djQ68/vUOTyoEjpYbcucjTwVEvYyP8P0cnBMt4SPblMyed
- MpquvrEEpWZul/AR9gBHY8esmELmhpt09s166WnkjnhUMfAPXJKvuqbU/F/F8CpTJtI3
- 6b5Q==
-X-Gm-Message-State: AOJu0Ywjbhj4Z2U+QxSzWlnJlbuOJq2EBsJwTQ/9KuNvUcOGVQNNTiKq
- 9y7AYeuQA862r9lEPNijulJ4qzkX3Eu0hiWOa0Rp6qJIYGbtzm09bESDr+CskF+eDxyeliThP8N
- M
-X-Google-Smtp-Source: AGHT+IEzdqGd8SqXPjUZ5yakxxH+7zIKAHvLTYU8dF8CKF+yEotgHayXy2xv9Jh1JCkZ/T+077zJmA==
-X-Received: by 2002:a17:90a:b96:b0:29a:f150:aeed with SMTP id
- 22-20020a17090a0b9600b0029af150aeedmr4650938pjr.19.1709325676472; 
- Fri, 01 Mar 2024 12:41:16 -0800 (PST)
+ bh=GuRyEJUy3EeC0acSqgIfQ+cNnDkZek7t4EbMZ1kuVCY=;
+ b=uT8IPC5jxD3r02h5Fuo5bkRI1bv9t4nwXMF75NCBT9H/06PWNYpELgmWh3xfUyUkX0
+ 1u3M2XYNcWko0OkVKKC3KIHWpTw3PT2pbpH+lQ+1X+JUA1lhE8bk1KDkM4HvXFdgRhmX
+ uiDswsM30e5oUrNB3gOvEPOq3BtE7tpA+FO4e7SdRYdSEL3d0oTMf7j+SLlrtGZyb/0O
+ I1889vp3TzvLl485hSqMGg6Oar+hr9tDRAiFmS6rR8df1+mJehsk2nU5lUYc1OPJqz6z
+ 7I601A0cbsqTh+Gi318M0+JRUBZEBBpirKNjc1MVmFGxdyoRzl8Y1WLfGbpeautIiK4e
+ x5rw==
+X-Gm-Message-State: AOJu0Yykf9odiDONtjHgO9stjG+FWSlO9iE5jmBJNcUtU60Dt9oMyb49
+ MG20w6B9FX0raXedp/q3k61+TqG9WHAc0fg35910WegevNZEsh3p7ttCNszZDd6QL40gwrd40fq
+ G
+X-Google-Smtp-Source: AGHT+IGoTSE9Rs891AoE7C9IOasHEX9Qog6m84fx/4WzyuXfkuZNBKIXyorFy90YrREK38RAcHKMrQ==
+X-Received: by 2002:a17:90a:990b:b0:29a:cb1d:7a37 with SMTP id
+ b11-20020a17090a990b00b0029acb1d7a37mr2624088pjp.32.1709325678004; 
+ Fri, 01 Mar 2024 12:41:18 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- l3-20020a17090ac58300b0029b2e00359esm681947pjt.36.2024.03.01.12.41.15
+ l3-20020a17090ac58300b0029b2e00359esm681947pjt.36.2024.03.01.12.41.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 12:41:16 -0800 (PST)
+ Fri, 01 Mar 2024 12:41:17 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 2/6] exec/memattrs: Remove target_tlb_bit*
-Date: Fri,  1 Mar 2024 10:41:06 -1000
-Message-Id: <20240301204110.656742-3-richard.henderson@linaro.org>
+Subject: [PATCH v3 3/6] accel/tcg: Add tlb_fill_flags to CPUTLBEntryFull
+Date: Fri,  1 Mar 2024 10:41:07 -1000
+Message-Id: <20240301204110.656742-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301204110.656742-1-richard.henderson@linaro.org>
 References: <20240301204110.656742-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,37 +94,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These fields are no longer used since 937f224559.
-Target specific extensions to the page tables should be done
-with TARGET_PAGE_ENTRY_EXTRA.
+Allow the target to set tlb flags to apply to all of the
+comparators.  Remove MemTxAttrs.byte_swap, as the bit is
+not relevant to memory transactions, only the page mapping.
+Adjust target/sparc to set TLB_BSWAP directly.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/memattrs.h | 10 ----------
- 1 file changed, 10 deletions(-)
+ include/exec/memattrs.h   | 2 --
+ include/hw/core/cpu.h     | 3 +++
+ accel/tcg/cputlb.c        | 5 +----
+ target/sparc/mmu_helper.c | 2 +-
+ 4 files changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/include/exec/memattrs.h b/include/exec/memattrs.h
-index d04170aa27..afa885f983 100644
+index afa885f983..14cdd8d582 100644
 --- a/include/exec/memattrs.h
 +++ b/include/exec/memattrs.h
-@@ -54,16 +54,6 @@ typedef struct MemTxAttrs {
+@@ -52,8 +52,6 @@ typedef struct MemTxAttrs {
+     unsigned int memory:1;
+     /* Requester ID (for MSI for example) */
      unsigned int requester_id:16;
-     /* Invert endianness for this page */
-     unsigned int byte_swap:1;
--    /*
--     * The following are target-specific page-table bits.  These are not
--     * related to actual memory transactions at all.  However, this structure
--     * is part of the tlb_fill interface, cached in the cputlb structure,
--     * and has unused bits.  These fields will be read by target-specific
--     * helpers using env->iotlb[mmu_idx][tlb_index()].attrs.target_tlb_bitN.
--     */
--    unsigned int target_tlb_bit0 : 1;
--    unsigned int target_tlb_bit1 : 1;
--    unsigned int target_tlb_bit2 : 1;
+-    /* Invert endianness for this page */
+-    unsigned int byte_swap:1;
  } MemTxAttrs;
  
  /* Bus masters which don't specify any attributes will get this,
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index af1a29526d..4c2fddc85b 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -230,6 +230,9 @@ typedef struct CPUTLBEntryFull {
+     /* @lg_page_size contains the log2 of the page size. */
+     uint8_t lg_page_size;
+ 
++    /* Additional tlb flags requested by tlb_fill. */
++    uint8_t tlb_fill_flags;
++
+     /*
+      * Additional tlb flags for use by the slow path. If non-zero,
+      * the corresponding CPUTLBEntry comparator must have TLB_FORCE_SLOW.
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index 047cd2cc0a..72d6a09616 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -1145,14 +1145,11 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+               " prot=%x idx=%d\n",
+               addr, full->phys_addr, prot, mmu_idx);
+ 
+-    read_flags = 0;
++    read_flags = full->tlb_fill_flags;
+     if (full->lg_page_size < TARGET_PAGE_BITS) {
+         /* Repeat the MMU check and TLB fill on every access.  */
+         read_flags |= TLB_INVALID_MASK;
+     }
+-    if (full->attrs.byte_swap) {
+-        read_flags |= TLB_BSWAP;
+-    }
+ 
+     is_ram = memory_region_is_ram(section->mr);
+     is_romd = memory_region_is_romd(section->mr);
+diff --git a/target/sparc/mmu_helper.c b/target/sparc/mmu_helper.c
+index 5170a668bb..e7b1997d54 100644
+--- a/target/sparc/mmu_helper.c
++++ b/target/sparc/mmu_helper.c
+@@ -580,7 +580,7 @@ static int get_physical_address_data(CPUSPARCState *env, CPUTLBEntryFull *full,
+             int do_fault = 0;
+ 
+             if (TTE_IS_IE(env->dtlb[i].tte)) {
+-                full->attrs.byte_swap = true;
++                full->tlb_fill_flags |= TLB_BSWAP;
+             }
+ 
+             /* access ok? */
 -- 
 2.34.1
 
