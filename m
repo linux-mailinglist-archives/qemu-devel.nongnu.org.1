@@ -2,69 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8F3986EA80
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 21:43:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C6286EA75
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 21:42:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rg9h2-0001wO-Qq; Fri, 01 Mar 2024 15:41:20 -0500
+	id 1rg9h3-0001ws-EU; Fri, 01 Mar 2024 15:41:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rg9h1-0001o9-0I
+ id 1rg9h1-0001qX-EQ
  for qemu-devel@nongnu.org; Fri, 01 Mar 2024 15:41:19 -0500
 Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rg9gz-0006wm-AN
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 15:41:18 -0500
+ id 1rg9gz-0006yd-TH
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 15:41:19 -0500
 Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-5c66b093b86so2958512a12.0
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 12:41:16 -0800 (PST)
+ 41be03b00d2f7-5dcc4076c13so2132115a12.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 12:41:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709325675; x=1709930475; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709325676; x=1709930476; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KxuLBWXx0IJuL3Uf7q7zzjCB6UIN8ow8n3bSMH4FIK0=;
- b=vCQcxbCzb9IUDfgIJaUVxpiBWHdP6oUPwNrBihAGMHXywUU49zTpG38F5+Cq7CFkZl
- 7J9Hy0l25G12FWSGODe5+wSr4LFr5nhQLxsn4/7F79PUclMKjuZG/GexJpH/Cs5l2nLD
- 6NhVG+fhu69sgMDjnlPgWR+cj3ixqcEd1Vzxrezxgt8hJQ/PoCXGc2Z5GL+4whEiGLgU
- 6Lqv/YqFWa7Zbc/9WKnDQKqxOpfM2QwgHzduiO7BaDX56odgncFVhiHBf3tHKqzmMJaq
- 5ha0pcOJdk00vChV1b4M/6kLQgteyMWOuRGkB/vJZEWma3+dulB33BGRPadLWhH69U0Q
- px9A==
+ bh=uSxGM8jSCUAKauTODiPxOuZGF0sA3+vBxABkPlr2Gc8=;
+ b=D1BRQr5+QOiLN5I/UNqsClGgT9yMul/wBvtZjIzhW2PVKAYZ/qQYsah8/BaCgxbIKE
+ uAmPIXurda3IPYXJZBJqbWmO4a6vjuci3bC2bSn2xoshmqJfpwfuw+QncMajf6cI+fyh
+ 44um+pZleU8t1MfcYklp9uageSBIv38CMOP4YHPyXuc7t9ByaP6sWJdkCbT1AKMQfolN
+ B7YKvr7rqbwv2h2p9fP12Fe0md29lwih806dg7RZmwCaEI5IkSdvzWyqWadZisP84hP1
+ rzst2e9Ov7ibL6mqWWvVNFoidd+DoH2zkbAwljGiXw0Zo+Tb5h5h8XLOTLL/5Gtga5/0
+ eXEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709325675; x=1709930475;
+ d=1e100.net; s=20230601; t=1709325676; x=1709930476;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KxuLBWXx0IJuL3Uf7q7zzjCB6UIN8ow8n3bSMH4FIK0=;
- b=OQWlXFBwMu1Iq14cfGYkcdMvQS5fx6jzAWZlT5IP06wfB48vSKuse3Br/3iO6aNbhe
- 0YvP2/UvuQXRr/jTFsV2c8EhzEt2GNIX7DHaMQGBN1Q5xv9IDd9gOGYgtuPM9rbIvBLp
- wTGT6Ms7H5XFIXV4Xqbqg5XyOacFg4WZ1/U6cT2tm4tagZ77DpM3NyNhUTkfIMl/vWAA
- AbYLLbpWkHe0f9gZm1wwZDAvpiI6baKcYfrrRgUtDAWKBo5QiLj49+9HFK/alCQvwic+
- sIXv1s2aAZZXF/XjE99om+MPFD5YiC5z1W3kyr1IDo0Iv8+D+5lc6iD7Ilo3ifK0RVIO
- bH6g==
-X-Gm-Message-State: AOJu0YwkcFe+s3bS9chbnN6wXMbpHNt0seHofGI3SAjf6CMw/vy4YYqC
- obGgbGwRqgECid9v/Pdcz+nRXHgHDcwa2abUha244prUDvPzAD7EghTSz8SpF+Ert583WYYOfJ0
- D
-X-Google-Smtp-Source: AGHT+IFjt518UjS1xlN8kWJTPyVg1gJMEfCWQH9UJamHZNlPA51TVw/NJwu0rkC6J16YKofIOXNnag==
-X-Received: by 2002:a17:90a:4087:b0:29b:9e1:2fb0 with SMTP id
- l7-20020a17090a408700b0029b09e12fb0mr3841181pjg.0.1709325675031; 
- Fri, 01 Mar 2024 12:41:15 -0800 (PST)
+ bh=uSxGM8jSCUAKauTODiPxOuZGF0sA3+vBxABkPlr2Gc8=;
+ b=Q3MVwH8D8DroOFkrlz05oywV2Pvpsaq4v3Z69Xp+Hm+3OpvJRZQRqgK/GYZS4m6pmZ
+ zOTqJADfMJeijUq2hXzftDeZLtvc5Y+DOgtEXTayRUGMAZJpcLU/z3DVVqIEre38Raqy
+ 0LKbpHNJiT1yqD3Tx4y7N60KtKOxEdO7Aho73VgCh71KRsNTBcDD1nct5JSCyVPeAE2E
+ 4VZ2QT1Fc7t/9iF+erQaz7djQ68/vUOTyoEjpYbcucjTwVEvYyP8P0cnBMt4SPblMyed
+ MpquvrEEpWZul/AR9gBHY8esmELmhpt09s166WnkjnhUMfAPXJKvuqbU/F/F8CpTJtI3
+ 6b5Q==
+X-Gm-Message-State: AOJu0Ywjbhj4Z2U+QxSzWlnJlbuOJq2EBsJwTQ/9KuNvUcOGVQNNTiKq
+ 9y7AYeuQA862r9lEPNijulJ4qzkX3Eu0hiWOa0Rp6qJIYGbtzm09bESDr+CskF+eDxyeliThP8N
+ M
+X-Google-Smtp-Source: AGHT+IEzdqGd8SqXPjUZ5yakxxH+7zIKAHvLTYU8dF8CKF+yEotgHayXy2xv9Jh1JCkZ/T+077zJmA==
+X-Received: by 2002:a17:90a:b96:b0:29a:f150:aeed with SMTP id
+ 22-20020a17090a0b9600b0029af150aeedmr4650938pjr.19.1709325676472; 
+ Fri, 01 Mar 2024 12:41:16 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- l3-20020a17090ac58300b0029b2e00359esm681947pjt.36.2024.03.01.12.41.13
+ l3-20020a17090ac58300b0029b2e00359esm681947pjt.36.2024.03.01.12.41.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 12:41:14 -0800 (PST)
+ Fri, 01 Mar 2024 12:41:16 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v3 1/6] target/arm: Support 32-byte alignment in pow2_align
-Date: Fri,  1 Mar 2024 10:41:05 -1000
-Message-Id: <20240301204110.656742-2-richard.henderson@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 2/6] exec/memattrs: Remove target_tlb_bit*
+Date: Fri,  1 Mar 2024 10:41:06 -1000
+Message-Id: <20240301204110.656742-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301204110.656742-1-richard.henderson@linaro.org>
 References: <20240301204110.656742-1-richard.henderson@linaro.org>
@@ -95,35 +94,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we have removed TARGET_PAGE_BITS_MIN-6 from
-TLB_FLAGS_MASK, we can test for 32-byte alignment.
+These fields are no longer used since 937f224559.
+Target specific extensions to the page tables should be done
+with TARGET_PAGE_ENTRY_EXTRA.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ include/exec/memattrs.h | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index f947c62c6b..c8a2470675 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -900,13 +900,7 @@ static inline void store_reg_from_load(DisasContext *s, int reg, TCGv_i32 var)
- MemOp pow2_align(unsigned i)
- {
-     static const MemOp mop_align[] = {
--        0, MO_ALIGN_2, MO_ALIGN_4, MO_ALIGN_8, MO_ALIGN_16,
--        /*
--         * FIXME: TARGET_PAGE_BITS_MIN affects TLB_FLAGS_MASK such
--         * that 256-bit alignment (MO_ALIGN_32) cannot be supported:
--         * see get_alignment_bits(). Enforce only 128-bit alignment for now.
--         */
--        MO_ALIGN_16
-+        0, MO_ALIGN_2, MO_ALIGN_4, MO_ALIGN_8, MO_ALIGN_16, MO_ALIGN_32
-     };
-     g_assert(i < ARRAY_SIZE(mop_align));
-     return mop_align[i];
+diff --git a/include/exec/memattrs.h b/include/exec/memattrs.h
+index d04170aa27..afa885f983 100644
+--- a/include/exec/memattrs.h
++++ b/include/exec/memattrs.h
+@@ -54,16 +54,6 @@ typedef struct MemTxAttrs {
+     unsigned int requester_id:16;
+     /* Invert endianness for this page */
+     unsigned int byte_swap:1;
+-    /*
+-     * The following are target-specific page-table bits.  These are not
+-     * related to actual memory transactions at all.  However, this structure
+-     * is part of the tlb_fill interface, cached in the cputlb structure,
+-     * and has unused bits.  These fields will be read by target-specific
+-     * helpers using env->iotlb[mmu_idx][tlb_index()].attrs.target_tlb_bitN.
+-     */
+-    unsigned int target_tlb_bit0 : 1;
+-    unsigned int target_tlb_bit1 : 1;
+-    unsigned int target_tlb_bit2 : 1;
+ } MemTxAttrs;
+ 
+ /* Bus masters which don't specify any attributes will get this,
 -- 
 2.34.1
 
