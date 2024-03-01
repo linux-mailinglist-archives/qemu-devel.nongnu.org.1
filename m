@@ -2,98 +2,145 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4220F86DD01
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 09:25:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CEC786DD25
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 09:32:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfyBl-0002he-CP; Fri, 01 Mar 2024 03:24:17 -0500
+	id 1rfyIQ-0000gq-73; Fri, 01 Mar 2024 03:31:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <horenchuang@bytedance.com>)
- id 1rfyBe-0002gJ-Lq
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 03:24:11 -0500
-Received: from mail-qv1-xf33.google.com ([2607:f8b0:4864:20::f33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <horenchuang@bytedance.com>)
- id 1rfyBb-0001Hg-PO
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 03:24:09 -0500
-Received: by mail-qv1-xf33.google.com with SMTP id
- 6a1803df08f44-690105304b4so8935026d6.3
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 00:24:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1709281443; x=1709886243; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=/6TShqh1i4+cFFfpKPT0xQIuYg06VEOVkdOiTtXAx9c=;
- b=cwP+W75qd5ZRnunTQXnC96XJlnJLGZfXjwceR2LgtUCHdfBGjVS+rmA6sBqh48VxBm
- qhPH31vgjQmO+4XXLiQi3TyfojZwFdP3sMYW1msxCrp0lr3Wk/LaClF2/J5OAr24ozaU
- JavcUcJCWo3b0zh/hbJ2jvfN94lH9VpJDT3TvaWFOwpxICo9z5tcSP0kmYpAd1O8kPuo
- SzeRyl1M+lIvIn4vlkL58N8ne//E85nvEh+oSZPis3N8zX28eZvWycZSmashPtyMRRKp
- ErrvXjnDtmm0M8xto44OYVmsmizF4RDoSOGS250hbs7B9pfmiHC0EW/droQ//KSsw7MJ
- SOZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709281443; x=1709886243;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/6TShqh1i4+cFFfpKPT0xQIuYg06VEOVkdOiTtXAx9c=;
- b=q1FeXSMCWrBpBzGTMRJYoCETFL5ligCgDZgl/4I0vn7IL0JF8/BTyWSuD88hWWJCU+
- hb93ZnVKBBUEzonHi0w0MAbRy/8vfpl/naUQ108XaYq7sL5Yo+j5wzgljZnsrWQobtcj
- cctoQjTATwNr9dsjJXumM2uuq4sgN5WBEpPqGSR6VqpBEai8rbNN+wpbbUd6LsLkRuVC
- EHsT3o8FjgWdPwc8xaxg49rbA5aPiB5t/6HMX2sF+zz+gE7dMM31w0RxigSGGWCSkc9K
- 5yXe7jtVjnfDHrdujcnjga/IDaVClO/r5EBxz6KyfZKIW05PqQYGWk+VlzBEOxhpRKuk
- 9uJA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWNGf/Ar05oKbu60v7qWqctLe6OoqgtjhZb2mg2y77G9ARkgpNHm0ZKpT5EsEgv6GjN50erIaUKW2WWiB9yU0W9T2GTu+M=
-X-Gm-Message-State: AOJu0YzVuipg/t9/Kz8YoQLqVMx2lNRZXgRbBYva3WtlX3h380ZtDHNa
- TX7P/P5gBOvsc5bA5vK7ZrN78EwFfSttMjCpv9IiqzkhS6xTLKhbd6X3uxyG7kg=
-X-Google-Smtp-Source: AGHT+IFOE//de5gW8/t5EN6iDGtxoPupJsqmHB+gIs7CE75HdwkbfH6RIWi1eK5iB+kKO7THZmG8hQ==
-X-Received: by 2002:a05:6214:42:b0:68f:280f:14cc with SMTP id
- c2-20020a056214004200b0068f280f14ccmr982605qvr.35.1709281443055; 
- Fri, 01 Mar 2024 00:24:03 -0800 (PST)
-Received: from n231-228-171.byted.org ([130.44.215.123])
- by smtp.gmail.com with ESMTPSA id
- y19-20020a0cd993000000b0068fc392f526sm1631907qvj.127.2024.03.01.00.24.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 00:24:02 -0800 (PST)
-From: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
-To: "Hao Xiang" <hao.xiang@bytedance.com>,
- "Gregory Price" <gourry.memverge@gmail.com>, aneesh.kumar@linux.ibm.com,
- mhocko@suse.com, tj@kernel.org, john@jagalactic.com,
- "Eishan Mirakhur" <emirakhur@micron.com>,
- "Vinicius Tavares Petrucci" <vtavarespetr@micron.com>,
- "Ravis OpenSrc" <Ravis.OpenSrc@micron.com>,
- "Alistair Popple" <apopple@nvidia.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Dave Jiang <dave.jiang@intel.com>, Dan Williams <dan.j.williams@intel.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Huang Ying <ying.huang@intel.com>,
- "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Cc: "Ho-Ren (Jack) Chuang" <horenc@vt.edu>,
- "Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>, linux-cxl@vger.kernel.org,
- qemu-devel@nongnu.org
-Subject: [PATCH v1 1/1] memory tier: acpi/hmat: create CPUless memory tiers
- after obtaining HMAT info
-Date: Fri,  1 Mar 2024 08:22:45 +0000
-Message-Id: <20240301082248.3456086-2-horenchuang@bytedance.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20240301082248.3456086-1-horenchuang@bytedance.com>
-References: <20240301082248.3456086-1-horenchuang@bytedance.com>
+ (Exim 4.90_1) (envelope-from <ankita@nvidia.com>)
+ id 1rfyIM-0000ej-Am; Fri, 01 Mar 2024 03:31:06 -0500
+Received: from mail-mw2nam12on20601.outbound.protection.outlook.com
+ ([2a01:111:f403:200a::601]
+ helo=NAM12-MW2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ankita@nvidia.com>)
+ id 1rfyII-0002Sx-RY; Fri, 01 Mar 2024 03:31:05 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RnMUFo0MXPkyZS8yRNhwLULWc1wwfEMXrpfbzu/S7qJkpejuYTI7EPhvBgIgAOZ549db9Qh9WmpQN5griqM5QOozCvY717Vn1EZrDr7LJJC0XqAKKa9PERQkVc6b4sOqerHMnP4Mjkn0+ofN3qemL2nvTGfjbkse5zwHLUJOg+XMwlaFH5CAKST51uxn4czaCAgb7OWxtX/GqaOTl2g9xCzbZV/Elwj89Lw4WHyykQI41/ADZMMCiO18GFI2cEKhmXffqngn9geAbfEW5RsfTsFCAuboVF+wYC/6joWmTYynNc8WnEixtmqtR2T8wQ812J0p9WFDy/SXd6hBWFP1aQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Iq34Xv40KB2/2ci6ZmXXXRbWTdrCQ946er9rvvmAwVE=;
+ b=ArP7KrKXnMnLZSek94K7AenZkVsU4zoTnn+bJtQso9hzRi+r6be+yb48koicklcPl57HXC/eFRu0904YB+whJ3blJZhkRj/XCcl5a2gpaUBylXRPDVUtVKahalXjYUx7omfGYei/oG7TxhsVuDT7IC9N8FBlE3vcSBT4D8dUGJYO2wu9VjBw9OtUR4HbBR38zqyBL7jHUc5cf2E1cWFym0VM8OrZi/QtGomQ3WZXzxSOCP+lfn0OENzdnN1JpXypP5PiWM1MwDl7I8SZ/MwNzgu75N8pqZP9UY8QtVyulSpuRU2r3qfjvVEZazNRQRHEyDaK0OV+k1N+Xn0SQhnJpA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Iq34Xv40KB2/2ci6ZmXXXRbWTdrCQ946er9rvvmAwVE=;
+ b=LC+IHabc+hucoUUj+hXhIMgluGd60nYxNa1y8x1UNCih0ueXSOP+DAqskkqlS5tH/BDTKE8x62q4OFywhCTEDUIgA1qQdRgrxK1Cmoth8OADNV0Ouuyuc7bhUv3bJMBRY2vggumEkDYD5Xxtn2P/vu5FO8IirWLWRnOU/UwWIrS+rHIk0UCZh6JJz5fBa+eqfiu8VvWhwl8MgcSfDsD6sIv58XOKol32zZYydDlEg0SV2AIOfX0D5We5vW6QqtoKxeLm5bAndDDFbiKrpbMdXTv6TTScfBFm2z/FJeszve/lY9AMUokvWoiBUqKLpEbbqE4YIoA5t3HWS04qag6M6A==
+Received: from SA1PR12MB7199.namprd12.prod.outlook.com (2603:10b6:806:2bc::21)
+ by CH3PR12MB7546.namprd12.prod.outlook.com (2603:10b6:610:149::18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.32; Fri, 1 Mar
+ 2024 08:30:56 +0000
+Received: from SA1PR12MB7199.namprd12.prod.outlook.com
+ ([fe80::284c:211f:16dc:f7b2]) by SA1PR12MB7199.namprd12.prod.outlook.com
+ ([fe80::284c:211f:16dc:f7b2%5]) with mapi id 15.20.7316.032; Fri, 1 Mar 2024
+ 08:30:55 +0000
+From: Ankit Agrawal <ankita@nvidia.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Jonathan Cameron via
+ <qemu-devel@nongnu.org>
+CC: Jason Gunthorpe <jgg@nvidia.com>, "alex.williamson@redhat.com"
+ <alex.williamson@redhat.com>, "clg@redhat.com" <clg@redhat.com>,
+ "shannon.zhaosl@gmail.com" <shannon.zhaosl@gmail.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "ani@anisinha.ca"
+ <ani@anisinha.ca>, "berrange@redhat.com" <berrange@redhat.com>,
+ "eduardo@habkost.net" <eduardo@habkost.net>, "imammedo@redhat.com"
+ <imammedo@redhat.com>, "mst@redhat.com" <mst@redhat.com>, "eblake@redhat.com"
+ <eblake@redhat.com>, "armbru@redhat.com" <armbru@redhat.com>,
+ "david@redhat.com" <david@redhat.com>, "gshan@redhat.com" <gshan@redhat.com>, 
+ Zhi Wang <zhiw@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, Aniket Agashe
+ <aniketa@nvidia.com>, Neo Jia <cjia@nvidia.com>, Kirti Wankhede
+ <kwankhede@nvidia.com>, "Tarun Gupta (SW-GPU)" <targupta@nvidia.com>, Vikram
+ Sethi <vsethi@nvidia.com>, Andy Currid <acurrid@nvidia.com>, Dheeraj Nigam
+ <dnigam@nvidia.com>, Uday Dhoke <udhoke@nvidia.com>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>
+Subject: Re: [PATCH v7 2/2] hw/acpi: Implement the SRAT GI affinity structure
+Thread-Topic: [PATCH v7 2/2] hw/acpi: Implement the SRAT GI affinity structure
+Thread-Index: AQHaZlXRPSA0zxYvqU+8THPBcca33bEc2OaAgAEKOgiAAJAlgIAABwOAgAMJgwCAAROj7g==
+Date: Fri, 1 Mar 2024 08:30:55 +0000
+Message-ID: <SA1PR12MB71994177D7677F77CB55D687B05E2@SA1PR12MB7199.namprd12.prod.outlook.com>
+References: <20240223124223.800078-1-ankita@nvidia.com>
+ <20240223124223.800078-3-ankita@nvidia.com>
+ <20240226164229.00001536@Huawei.com>
+ <SA1PR12MB71992ECFBF9FA3EE3C350EA8B0592@SA1PR12MB7199.namprd12.prod.outlook.com>
+ <20240227171115.00004c7b@Huawei.com>	<20240227173621.00003694@Huawei.com>
+ <20240229155910.00005186@huawei.com>
+In-Reply-To: <20240229155910.00005186@huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA1PR12MB7199:EE_|CH3PR12MB7546:EE_
+x-ms-office365-filtering-correlation-id: 827f6f5b-ae86-4dd7-0273-08dc39c9ea1e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: R6CLJgrB2Xl3W8kvwDJ7kTYFqkB+6k145UZW9aVMFLk58r9Qug8Yifkjnur7+CEmE/qUTR+4+x86rp2K8DEaib/SBbU7eEvz3RUu3nIZwb6dmyEexlrBr8E3IfvV1ErXKIL7oGOLa+555T0X68N+VJ84oyBG/GP0BSeyKrqjtQlQzBD0tSulSrqPaszGICO0sJSPhcgzPtGx++X6YX6GlVV1bLvHdHS4br0YBXmqHSsumqGVr/yExY2uuZ/OyNK9e0PSnyKCr6EyBQJMrJB5XKb91pgE762BtDHNokbblv95/NNFvXblA4zlBgew9WQct3BbHG1h5qODuNU6JjSDIgg/SG0S1sNIUAqTPxUtF3Byg48Vg13dmQFLgfeSPycrfkHeoC1Wp5GRaKrKTtQ9d5BCv+MoPH480SlmUnGGcac+HA7fQBwRoGvPzaMAGbMsfHGdhVhaVqGYGFRZesbppHliAa2aBFL36i1pF8rHChZkTubE+NNG72TJ38TpdlQ/0IYRijx5VnrK0Ox50MSLkrEAwKsEF69jdUXVcmw52ZWQ/pcaASX33CV1n5YsKIswWPmjAaq9Hqj8AmXn2dwX9+vOx3MofKZ/2Edmg59i1XxzeR/6WU7vtNbAFatYeooCXdoa8LK/GzGFzVkFb86XSm0ndIy6XzNUbbQpGDolKNli2IQt5+Zz2aWZLqrMLRKqaoHn+ddGw9kqRnY6oeZmHxe9tID9stj+m3LbNNgyy24=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SA1PR12MB7199.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(38070700009); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?aowC/JOZMcKDnuVHQqZ/g4J0L7sXQCKtqq3Rv9CtDrgY/AQH/rkFPtOvSG?=
+ =?iso-8859-1?Q?RbEoCpFuIoBn/mt1R9GlMx1b0BXCYIviSobOESXhT909c76aDnbdroefA6?=
+ =?iso-8859-1?Q?bqbKPPntrdbzu0k18++lCzplu3zm7aqxLpmCy1hPu/F5lsyDvFimkNCu/q?=
+ =?iso-8859-1?Q?IcrfTkfAU6eQf0BS0To5c1TyYgB9Ntzruik0eyoi71ykQABZZfX0LJwEVf?=
+ =?iso-8859-1?Q?ySyDQewEHZ/vgTMm5Z3aT7925p9lL3haF9zcP+8pX0Cp9nXC7i5RdytDXh?=
+ =?iso-8859-1?Q?XSdJE6eXsLUrYKAQD0jRBKE9zFlIOYVLwWhKmMAnBeZEBq2eqY/joeDKsl?=
+ =?iso-8859-1?Q?ey/oyo5eg4yC0681dpLBwkWFpJT8SteUlzPL/0xvuNYLDGtfezeV19D900?=
+ =?iso-8859-1?Q?C9aaJEy+IC13UkFRuI/nwKnKTazn/ERCm1vntSb3M/GZgRjywUlQC4IbMp?=
+ =?iso-8859-1?Q?ha6gWJ4YDStAxXl2sAA62Ha7sx1m+3enJx1Vk5U9oD3cLeiL5gBHJAJsFn?=
+ =?iso-8859-1?Q?W9fTWWW54J3dKbmikPmk+T2CVw0VFXQA8vDw04ZmUcX/2E3Ar7a1MCsUAO?=
+ =?iso-8859-1?Q?z1GjoNOHutwuNwfgEnnQj68maKnMRxtw84iVXS/dZe79SvJrDDAKCdZChl?=
+ =?iso-8859-1?Q?LRAEQ6kgSrXH4hSoRCtCsLUWrgxtrAsuCqgP2gNDgk5mfTTIXmQb2j6L0d?=
+ =?iso-8859-1?Q?dUE/qq9EGg9L93ASoCPjhT0mGhQQZfR/FdG72vHzxmjoF7ugCdMLZlHkG3?=
+ =?iso-8859-1?Q?0ZqcRKgRbtRmRBZVPM/Wz2r5S8d9sxb/gyqa1W0xI46ax148IUy1D8pn/U?=
+ =?iso-8859-1?Q?JZcVEkDiTHD/EqtCzF6Mq00y3HNAB2Y7i41VqVX04hGgQuB5EIOWQAtBTS?=
+ =?iso-8859-1?Q?WA0mYoJL+FZ08ey82U6+jFFJQwKKqLt2zpibWGU4cEoJzkUCo39Ce+BCVM?=
+ =?iso-8859-1?Q?uKNopPwxbSsfYcCapbafyuN6C4yypOQmVgvhbKEK9me0gDh8sdC3AM26Xt?=
+ =?iso-8859-1?Q?SjB+o6QEoEoCSXLkVYIeH0S7GrIA6mwI9CyzcRJ43LyaorRxJjNGwiW83R?=
+ =?iso-8859-1?Q?AhYF43lyP8TuIZJFOA1k3K+krfqg6qY79IdmxcovGdIUbnkNpgBeuQsz6m?=
+ =?iso-8859-1?Q?8kV/2OMPq72RGOdb31SMGfVIx8lncpPbohuliJXb9CNsLydRK6IwDMferB?=
+ =?iso-8859-1?Q?jXrK/n2jw76ZNjflu451Pm6h2MvEH2s3hF6L9kbfo3r2sK8J+OyDqKuKZW?=
+ =?iso-8859-1?Q?aHkH88ht0O/MQOmMaE/26euLrpUTDo1wZLoiy7bFjDZOrfAnvhCUQ+f4Ip?=
+ =?iso-8859-1?Q?JXSa0boeVKHBKJ5Bkburhw0H5svODk0jWtvU4r1YSX2I4mZF93Y5JjNuPu?=
+ =?iso-8859-1?Q?hO9M0u2KyaMcOVWjyKba3YtxtYQUECY6xiXlSmOSYL4EOc4Nmvl6m+O+Ch?=
+ =?iso-8859-1?Q?CjvK11qz49J8/aovRviPjGFKQnCuuw3EMvz8jZv4zJfKnv/02HNDjEPa0y?=
+ =?iso-8859-1?Q?bDVAo8rBEh3jR0ALDc/RJERzLdjgvPCFsdqVVpCSa3Np67F3ckIHLwTJfK?=
+ =?iso-8859-1?Q?j2H4MYdOLHmA7p3sabTBXxtXwpHeEzPy6U+cZhCtdkKrb5bMcEeAvwHDh9?=
+ =?iso-8859-1?Q?bYR7pUy5+qkyE=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f33;
- envelope-from=horenchuang@bytedance.com; helo=mail-qv1-xf33.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB7199.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 827f6f5b-ae86-4dd7-0273-08dc39c9ea1e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Mar 2024 08:30:55.8690 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: i5epae83bCxtNeV40JndfIc0GXuLO4k7jVUBeISFBA5KLtzpyqw1LXMV04FqkDJjKqaMFJ/Q91EST2gJX36LLQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7546
+Received-SPF: softfail client-ip=2a01:111:f403:200a::601;
+ envelope-from=ankita@nvidia.com;
+ helo=NAM12-MW2-obe.outbound.protection.outlook.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.096,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -110,227 +157,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* Introduce `mt_init_with_hmat()`
-We defer memory tier initialization for those CPUless NUMA nodes
-until acquiring HMAT info. `mt_init_with_hmat()` is introduced to
-post-create CPUless memory tiers after obtaining HMAT info.
-It iterates through each CPUless memory node, creating memory tiers if
-necessary. Finally, it calculates demotion tables again at the end.
-
-* Introduce `hmat_find_alloc_memory_type()`
-Find or allocate a memory type in the `hmat_memory_types` list.
-
-* Make `set_node_memory_tier()` more generic
-This function can also be used for setting other memory types for a node.
-To do so, a new argument is added to specify a memory type.
-
-* Handle cases where there is no HMAT when creating memory tiers
-If no HMAT is specified, it falls back to using `default_dram_type`.
-
-* Change adist calculation code to use another new lock, mt_perf_lock.
-Iterating through CPUlist nodes requires holding the `memory_tier_lock`.
-However, `mt_calc_adistance()` will end up trying to acquire the same lock,
-leading to a potential deadlock. Therefore, we propose introducing a
-standalone `mt_perf_lock` to protect `default_dram_perf`. This approach not
-only avoids deadlock but also prevents holding a large lock simultaneously.
-
-Signed-off-by: Ho-Ren (Jack) Chuang <horenchuang@bytedance.com>
-Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
----
- drivers/acpi/numa/hmat.c     |  3 ++
- include/linux/memory-tiers.h |  6 +++
- mm/memory-tiers.c            | 76 ++++++++++++++++++++++++++++++++----
- 3 files changed, 77 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-index d6b85f0f6082..9f57338b3cb5 100644
---- a/drivers/acpi/numa/hmat.c
-+++ b/drivers/acpi/numa/hmat.c
-@@ -1038,6 +1038,9 @@ static __init int hmat_init(void)
- 	if (!hmat_set_default_dram_perf())
- 		register_mt_adistance_algorithm(&hmat_adist_nb);
- 
-+	/* Post-create CPUless memory tiers after getting HMAT info */
-+	mt_init_with_hmat();
-+
- 	return 0;
- out_put:
- 	hmat_free_structures();
-diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
-index 69e781900082..2f845e90c033 100644
---- a/include/linux/memory-tiers.h
-+++ b/include/linux/memory-tiers.h
-@@ -48,6 +48,7 @@ int mt_calc_adistance(int node, int *adist);
- int mt_set_default_dram_perf(int nid, struct access_coordinate *perf,
- 			     const char *source);
- int mt_perf_to_adistance(struct access_coordinate *perf, int *adist);
-+void mt_init_with_hmat(void);
- #ifdef CONFIG_MIGRATION
- int next_demotion_node(int node);
- void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
-@@ -136,5 +137,10 @@ static inline int mt_perf_to_adistance(struct access_coordinate *perf, int *adis
- {
- 	return -EIO;
- }
-+
-+static inline void mt_init_with_hmat(void)
-+{
-+
-+}
- #endif	/* CONFIG_NUMA */
- #endif  /* _LINUX_MEMORY_TIERS_H */
-diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
-index 0537664620e5..7a0a579b3deb 100644
---- a/mm/memory-tiers.c
-+++ b/mm/memory-tiers.c
-@@ -35,7 +35,9 @@ struct node_memory_type_map {
- };
- 
- static DEFINE_MUTEX(memory_tier_lock);
-+static DEFINE_MUTEX(mt_perf_lock);
- static LIST_HEAD(memory_tiers);
-+static LIST_HEAD(hmat_memory_types);
- static struct node_memory_type_map node_memory_types[MAX_NUMNODES];
- struct memory_dev_type *default_dram_type;
- 
-@@ -502,7 +504,7 @@ static inline void __init_node_memory_type(int node, struct memory_dev_type *mem
- 	}
- }
- 
--static struct memory_tier *set_node_memory_tier(int node)
-+static struct memory_tier *set_node_memory_tier(int node, struct memory_dev_type *new_memtype)
- {
- 	struct memory_tier *memtier;
- 	struct memory_dev_type *memtype;
-@@ -514,7 +516,7 @@ static struct memory_tier *set_node_memory_tier(int node)
- 	if (!node_state(node, N_MEMORY))
- 		return ERR_PTR(-EINVAL);
- 
--	__init_node_memory_type(node, default_dram_type);
-+	__init_node_memory_type(node, new_memtype);
- 
- 	memtype = node_memory_types[node].memtype;
- 	node_set(node, memtype->nodes);
-@@ -623,6 +625,56 @@ void clear_node_memory_type(int node, struct memory_dev_type *memtype)
- }
- EXPORT_SYMBOL_GPL(clear_node_memory_type);
- 
-+static struct memory_dev_type *hmat_find_alloc_memory_type(int adist)
-+{
-+	bool found = false;
-+	struct memory_dev_type *mtype;
-+
-+	list_for_each_entry(mtype, &hmat_memory_types, list) {
-+		if (mtype->adistance == adist) {
-+			found = true;
-+			break;
-+		}
-+	}
-+	if (!found) {
-+		mtype = alloc_memory_type(adist);
-+		if (!IS_ERR(mtype))
-+			list_add(&mtype->list, &hmat_memory_types);
-+	}
-+	return mtype;
-+}
-+
-+static void mt_create_with_hmat(int node)
-+{
-+	struct memory_dev_type *mtype = NULL;
-+	int adist = MEMTIER_ADISTANCE_DRAM;
-+
-+	mt_calc_adistance(node, &adist);
-+	if (adist != MEMTIER_ADISTANCE_DRAM) {
-+		mtype = hmat_find_alloc_memory_type(adist);
-+		if (IS_ERR(mtype))
-+			pr_err("%s() failed to allocate a tier\n", __func__);
-+	} else {
-+		mtype = default_dram_type;
-+	}
-+
-+	set_node_memory_tier(node, mtype);
-+}
-+
-+void mt_init_with_hmat(void)
-+{
-+	int nid;
-+
-+	mutex_lock(&memory_tier_lock);
-+	for_each_node_state(nid, N_MEMORY)
-+		if (!node_state(nid, N_CPU))
-+			mt_create_with_hmat(nid);
-+
-+	establish_demotion_targets();
-+	mutex_unlock(&memory_tier_lock);
-+}
-+EXPORT_SYMBOL_GPL(mt_init_with_hmat);
-+
- static void dump_hmem_attrs(struct access_coordinate *coord, const char *prefix)
- {
- 	pr_info(
-@@ -636,7 +688,7 @@ int mt_set_default_dram_perf(int nid, struct access_coordinate *perf,
- {
- 	int rc = 0;
- 
--	mutex_lock(&memory_tier_lock);
-+	mutex_lock(&mt_perf_lock);
- 	if (default_dram_perf_error) {
- 		rc = -EIO;
- 		goto out;
-@@ -684,7 +736,7 @@ int mt_set_default_dram_perf(int nid, struct access_coordinate *perf,
- 	}
- 
- out:
--	mutex_unlock(&memory_tier_lock);
-+	mutex_unlock(&mt_perf_lock);
- 	return rc;
- }
- 
-@@ -700,7 +752,7 @@ int mt_perf_to_adistance(struct access_coordinate *perf, int *adist)
- 	    perf->read_bandwidth + perf->write_bandwidth == 0)
- 		return -EINVAL;
- 
--	mutex_lock(&memory_tier_lock);
-+	mutex_lock(&mt_perf_lock);
- 	/*
- 	 * The abstract distance of a memory node is in direct proportion to
- 	 * its memory latency (read + write) and inversely proportional to its
-@@ -713,7 +765,7 @@ int mt_perf_to_adistance(struct access_coordinate *perf, int *adist)
- 		(default_dram_perf.read_latency + default_dram_perf.write_latency) *
- 		(default_dram_perf.read_bandwidth + default_dram_perf.write_bandwidth) /
- 		(perf->read_bandwidth + perf->write_bandwidth);
--	mutex_unlock(&memory_tier_lock);
-+	mutex_unlock(&mt_perf_lock);
- 
- 	return 0;
- }
-@@ -797,7 +849,7 @@ static int __meminit memtier_hotplug_callback(struct notifier_block *self,
- 		break;
- 	case MEM_ONLINE:
- 		mutex_lock(&memory_tier_lock);
--		memtier = set_node_memory_tier(arg->status_change_nid);
-+		memtier = set_node_memory_tier(arg->status_change_nid, default_dram_type);
- 		if (!IS_ERR(memtier))
- 			establish_demotion_targets();
- 		mutex_unlock(&memory_tier_lock);
-@@ -836,7 +888,15 @@ static int __init memory_tier_init(void)
- 	 * types assigned.
- 	 */
- 	for_each_node_state(node, N_MEMORY) {
--		memtier = set_node_memory_tier(node);
-+		if (!node_state(node, N_CPU))
-+			/*
-+			 * Defer memory tier initialization on CPUless numa nodes.
-+			 * These will be initialized when HMAT information is
-+			 * available.
-+			 */
-+			continue;
-+
-+		memtier = set_node_memory_tier(node, default_dram_type);
- 		if (IS_ERR(memtier))
- 			/*
- 			 * Continue with memtiers we are able to setup
--- 
-Hao Xiang and Ho-Ren (Jack) Chuang
-
+>>=0A=
+>> One more thing.=A0 Right now we can't use Generic Initiators as=0A=
+>> HMAT initiators.=A0 That also wants fixing given that's their=0A=
+>> normal usecase rather than what you are using them for so it=0A=
+>> should 'work'.=0A=
+>=0A=
+> Something along the lines of this will do the job.=0A=
+=0A=
+Thanks! Will incorporate the patch in the next posting.=0A=
+=0A=
+>=0A=
+> diff --git a/include/sysemu/numa.h b/include/sysemu/numa.h=0A=
+> index 4173ef2afa..825cfe86bc 100644=0A=
+> --- a/include/sysemu/numa.h=0A=
+> +++ b/include/sysemu/numa.h=0A=
+> @@ -41,6 +41,7 @@ struct NodeInfo {=0A=
+>=A0=A0=A0=A0 struct HostMemoryBackend *node_memdev;=0A=
+>=A0=A0=A0=A0 bool present;=0A=
+>=A0=A0=A0=A0 bool has_cpu;=0A=
+>+=A0=A0=A0 bool has_gi;=0A=
+>=A0=A0=A0=A0 uint8_t lb_info_provided;=0A=
+>=A0=A0=A0=A0 uint16_t initiator;=0A=
+>=A0=A0=A0=A0 uint8_t distance[MAX_NODES];=0A=
+> diff --git a/hw/acpi/acpi-generic-initiator.c b/hw/acpi/acpi-generic-init=
+iator.c=0A=
+> index 9179590a42..8a67300320 100644=0A=
+> --- a/hw/acpi/acpi-generic-initiator.c=0A=
+> +++ b/hw/acpi/acpi-generic-initiator.c=0A=
+> @@ -6,6 +6,7 @@=0A=
+>=A0#include "qemu/osdep.h"=0A=
+>=A0#include "hw/acpi/acpi-generic-initiator.h"=0A=
+>=A0#include "hw/pci/pci_device.h"=0A=
+> +#include "hw/boards.h"=0A=
+>=A0#include "qapi/error.h"=0A=
+>=A0#include "qapi/qapi-builtin-visit.h"=0A=
+>=A0#include "qapi/visitor.h"=0A=
+> @@ -58,6 +59,7 @@ static void acpi_generic_node_set_node(Object *obj, Vis=
+itor *v,=0A=
+>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 const char *name, void *opaqu=
+e,=0A=
+>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 Error **errp)=0A=
+>=A0{=0A=
+> +=A0=A0=A0 MachineState *ms =3D MACHINE(qdev_get_machine());=0A=
+>=A0=A0=A0=A0 AcpiGenericNode *gn =3D ACPI_GENERIC_NODE(obj);=0A=
+>=A0=A0=A0=A0 uint32_t value;=0A=
+>=0A=
+> @@ -72,6 +74,10 @@ static void acpi_generic_node_set_node(Object *obj, Vi=
+sitor *v,=0A=
+>=A0=A0=A0=A0 }=0A=
+>=0A=
+>=A0=A0=A0=A0 gn->node =3D value;=0A=
+> +=0A=
+> +=A0=A0=A0 if (object_dynamic_cast(obj, TYPE_ACPI_GENERIC_INITIATOR)) {=
+=0A=
+> +=A0=A0=A0=A0=A0=A0=A0 ms->numa_state->nodes[gn->node].has_gi =3D true;=
+=0A=
+> +=A0=A0=A0 }=0A=
+>=A0}=0A=
+>=0A=
+>=A0static void acpi_generic_node_class_init(ObjectClass *oc, void *data)=
+=0A=
+> diff --git a/hw/acpi/hmat.c b/hw/acpi/hmat.c=0A=
+> index b933ae3c06..9b1662b6b8 100644=0A=
+> --- a/hw/acpi/hmat.c=0A=
+> +++ b/hw/acpi/hmat.c=0A=
+> @@ -225,7 +225,7 @@ static void hmat_build_table_structs(GArray *table_da=
+ta, NumaState *numa_state)=0A=
+>=A0=A0=A0=A0 }=0A=
+>=0A=
+>=A0=A0=A0=A0 for (i =3D 0; i < numa_state->num_nodes; i++) {=0A=
+> -=A0=A0=A0=A0=A0=A0=A0 if (numa_state->nodes[i].has_cpu) {=0A=
+> +=A0=A0=A0=A0=A0=A0=A0 if (numa_state->nodes[i].has_cpu || numa_state->no=
+des[i].has_gi) {=0A=
+>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 initiator_list[num_initiator++] =3D i=
+;=0A=
+>=A0=A0=A0=A0=A0=A0=A0=A0 }=0A=
+>=A0=A0=A0=A0 }=0A=
+> diff --git a/hw/core/numa.c b/hw/core/numa.c=0A=
+> index f08956ddb0..58a32f1564 100644=0A=
+> --- a/hw/core/numa.c=0A=
+> +++ b/hw/core/numa.c=0A=
+> @@ -229,7 +229,8 @@ void parse_numa_hmat_lb(NumaState *numa_state, NumaHm=
+atLBOptions *node,=0A=
+>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 node->target, nu=
+ma_state->num_nodes);=0A=
+>=A0=A0=A0=A0=A0=A0=A0=A0 return;=0A=
+>=A0=A0=A0=A0 }=0A=
+> -=A0=A0=A0 if (!numa_info[node->initiator].has_cpu) {=0A=
+> +=A0=A0=A0 if (!numa_info[node->initiator].has_cpu &&=0A=
+> +=A0=A0=A0=A0=A0=A0=A0 !numa_info[node->initiator].has_gi) {=0A=
+>=A0=A0=A0=A0=A0=A0=A0=A0 error_setg(errp, "Invalid initiator=3D%d, it isn'=
+t an "=0A=
+>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 "initiator proxi=
+mity domain", node->initiator);=0A=
+>=A0=A0=A0=A0=A0=A0=A0=A0 return;=0A=
+>=0A=
+> Jonathan=0A=
+>=0A=
+> >=0A=
+> >=0A=
+> >=0A=
+>=0A=
 
