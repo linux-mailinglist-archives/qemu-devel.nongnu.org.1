@@ -2,73 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C624386ECD0
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:15:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94F4186ECD6
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:16:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgBy0-0004wR-83; Fri, 01 Mar 2024 18:07:00 -0500
+	id 1rgBy0-00050G-UP; Fri, 01 Mar 2024 18:07:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgBxk-0004tQ-Bl
+ id 1rgBxl-0004u0-Di
  for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:45 -0500
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgBxh-0004Et-M5
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:43 -0500
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6e5eaf5bb3eso42129b3a.3
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:06:41 -0800 (PST)
+ id 1rgBxj-0004F5-0Q
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:44 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1dc75972f25so24446135ad.1
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:06:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709334400; x=1709939200; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709334402; x=1709939202; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=2XrEdDvQ88jaxWmSDzzj/y67fD3f8yoeJckZhxITx78=;
- b=QTT4bmeE7P/lrVIF0X06t1YN6uyGHWaVG2wQfeTXzhpbapEFKuZVmMxBSMNvpYeXH4
- 8tspBwkln3Mrw5p3New126xroPB2t70UjJa/2Ar054egJy5tH4jMMLnyWxneePPVCcQR
- 4fWHDTIPno9QHuiEDfn1F7vGX5+lRETtuUgey3hXQaOJtRQOLCEMKnt3JE6uNhYwvAyu
- WYuivQNtelccOQj3OA0Q5nG1uWGn7VkfznDXj08SCk+M4bTklJAMApQiwNsD7l/m8AEd
- aU0Vdcj83T3TP1t1qFKwnzzm2B/+oV0WJqd8+x2/kuLlPGdEc9cg4e8cxzlSzqxs/Wko
- 0yIQ==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=6bGhiDlU0H1FunNKKdUnN7eps2A5T8/N/TZO0RrbQvI=;
+ b=NY+IJdWxkIpZk00NtGYSj7nMW/jeCcb9k/FtIhh0zp3+DicMWEW5wgXSRBUovkHM7e
+ UtubRaEELxdHSx+y1pSpDNJoP9EVA1GJsG+WVE1SvlCkAmIDT+VhaNF6EiIUtjjSBcw8
+ 7dOsXWkK4U13DXwBjSojNOfx01oyuIoci8rGBw/MpzM4y4nxz6KTrMtgralv8qccvkGD
+ 3bKRhmPdSa7CzGNEc5gsmkBc6vvcftJKy3QfsTouLCODsGyZ51oJtYWtf9Rjq5H4SFcC
+ O42SRxUkqCXzdFNkOk+ZcR8kP9FVsXGz1wvRQU++PS/NtYWwYuW7n32f6Rz+ltqugTzR
+ xNPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709334400; x=1709939200;
+ d=1e100.net; s=20230601; t=1709334402; x=1709939202;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2XrEdDvQ88jaxWmSDzzj/y67fD3f8yoeJckZhxITx78=;
- b=HAYfkdjP6ZhrpqJ9Np9ccw32GDOruRuPZeDNNqO1jXtNUzlDjGrb3EEBd7ncTLYgEJ
- QXWS2iE6Uy9BskZCrvhvYg3j/7OItQ8PdiCwrtUG/a8YOfQU8hqQkwbhFhxV8l9a0Dzu
- EJc0hUoAVcvmsAACTQuBsWMEGr4zxkT2L5Y7JS8ooTvp3bUJlRO0UHn1PzcDzdkqycnP
- 6dKFMQoJVHORzgsu50dtc9qdi7Azr4RdTxHBTDcIvCP4r2YA77qYEN/48UwnNgnx+y56
- QrOoeT0eF+OYtnYNOyAxXyLuebCo7jiAkT5zL5Q1pgQoqP4Gs9pVZWJHIHzVlbW/3idG
- mIAw==
-X-Gm-Message-State: AOJu0Yz6qw1ZQDwg4ddkJzAjVzf49ZIjGp0Vgr02/7ffRZxPrPLGBPO3
- w/4B3PBuVodj8RL0h+oCoJot+a7/ch1KHhN/U8pBRLu1TbTOxjRa+w9OOy7rf+TUqlAvHpCGxV2
- P
-X-Google-Smtp-Source: AGHT+IFQjmSfM9DNGg0kATjfmrodWq0GA+gKeflI8W3HYfCrP8obLmCLCrZCc1Q1Jj9ICGMQ+mZSig==
-X-Received: by 2002:a17:902:d3c4:b0:1dc:5d9d:6eb3 with SMTP id
- w4-20020a170902d3c400b001dc5d9d6eb3mr2833150plb.21.1709334400245; 
- Fri, 01 Mar 2024 15:06:40 -0800 (PST)
+ bh=6bGhiDlU0H1FunNKKdUnN7eps2A5T8/N/TZO0RrbQvI=;
+ b=Tvz9fDSmTeWDBwsYPt4EsV18JxxUJgV9S8SeUZuFLCaFtx65ZPLBT5V6wgDnA5LihF
+ tcGSF86hZLcwY22pStbfeip4ZCfDh+rKfA0dn/v81Mqh0YxlIv36xSo/3Nv6BDLOy0YB
+ kLo+hzex+B9/mCkULgqlXPhSYsJqwK5JNwq7ANAu470V02iW309O4Umm1TZq6yPRH+sY
+ 0xJSJL67iVOAlw0RLyg6aKonf0TBMK20e/i4mwbAajYC8V7uM7PQ7oJuxo2bvSL9C3JK
+ dXxYIg2Gh2wLsDfvYU84O4N9vcHc90Nw87o9ib1B+n9CY/s75Vw5WHnlZYHlo+VahpA7
+ 7gLQ==
+X-Gm-Message-State: AOJu0YwMRDkX5QaRGbi9yr9BDayyiT+bXwY+vt2IS7UAYilZ3a7l0AX2
+ 5ILMcIwnD7DOa5UgEFid1l7kT88rTpDXogi7al8sRuCNtITmH6zJmHWvinCQL5X31BOverYHgbr
+ 2
+X-Google-Smtp-Source: AGHT+IEsJ4xGUhkPQb5tE2jBfgD870mZNI5oa/1XNAhjYKDZePTzfm77z2n6xE/FkDQVeBA7OgYC7Q==
+X-Received: by 2002:a17:902:a508:b0:1dc:5ae8:174c with SMTP id
+ s8-20020a170902a50800b001dc5ae8174cmr2517460plq.17.1709334401791; 
+ Fri, 01 Mar 2024 15:06:41 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- lc11-20020a170902fa8b00b001dc668e145asm3988580plb.200.2024.03.01.15.06.39
- for <qemu-devel@nongnu.org>
+ lc11-20020a170902fa8b00b001dc668e145asm3988580plb.200.2024.03.01.15.06.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 15:06:39 -0800 (PST)
+ Fri, 01 Mar 2024 15:06:41 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 14/60] linux-user/elfload: Unprotect regions before core dump
-Date: Fri,  1 Mar 2024 13:05:33 -1000
-Message-Id: <20240301230619.661008-15-richard.henderson@linaro.org>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 15/60] tcg/aarch64: Apple does not align __int128_t in even
+ registers
+Date: Fri,  1 Mar 2024 13:05:34 -1000
+Message-Id: <20240301230619.661008-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301230619.661008-1-richard.henderson@linaro.org>
 References: <20240301230619.661008-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,62 +95,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-By unprotecting regions, we re-instate writability and
-unify regions that have been split, which may reduce
-the total number of regions.
+From https://developer.apple.com/documentation/xcode/writing-arm64-code-for-apple-platforms
 
+  When passing an argument with 16-byte alignment in integer registers,
+  Apple platforms allow the argument to start in an odd-numbered xN
+  register. The standard ABI requires it to begin in an even-numbered
+  xN register.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 5427a9a7604 ("tcg: Add TCG_TARGET_CALL_{RET,ARG}_I128")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2169
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <9fc0c2c7-dd57-459e-aecb-528edb74b4a7@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- linux-user/elfload.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ tcg/aarch64/tcg-target.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index ae0abc4931..38bfc9ac67 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -3963,6 +3963,8 @@ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
- }
+diff --git a/tcg/aarch64/tcg-target.h b/tcg/aarch64/tcg-target.h
+index ef5ebe91bd..85d5746e47 100644
+--- a/tcg/aarch64/tcg-target.h
++++ b/tcg/aarch64/tcg-target.h
+@@ -55,7 +55,11 @@ typedef enum {
+ #define TCG_TARGET_CALL_STACK_OFFSET    0
+ #define TCG_TARGET_CALL_ARG_I32         TCG_CALL_ARG_NORMAL
+ #define TCG_TARGET_CALL_ARG_I64         TCG_CALL_ARG_NORMAL
+-#define TCG_TARGET_CALL_ARG_I128        TCG_CALL_ARG_EVEN
++#ifdef CONFIG_DARWIN
++# define TCG_TARGET_CALL_ARG_I128       TCG_CALL_ARG_NORMAL
++#else
++# define TCG_TARGET_CALL_ARG_I128       TCG_CALL_ARG_EVEN
++#endif
+ #define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_NORMAL
  
- #ifdef USE_ELF_CORE_DUMP
-+#include "exec/translate-all.h"
-+
- /*
-  * Definitions to generate Intel SVR4-like core files.
-  * These mostly have the same names as the SVR4 types with "target_elf_"
-@@ -4280,6 +4282,23 @@ static int dump_write(int fd, const void *ptr, size_t size)
-     return (0);
- }
- 
-+static int wmr_page_unprotect_regions(void *opaque, target_ulong start,
-+                                      target_ulong end, unsigned long flags)
-+{
-+    if ((flags & (PAGE_WRITE | PAGE_WRITE_ORG)) == PAGE_WRITE_ORG) {
-+        size_t step = MAX(TARGET_PAGE_SIZE, qemu_host_page_size);
-+
-+        while (1) {
-+            page_unprotect(start, 0);
-+            if (end - start <= step) {
-+                break;
-+            }
-+            start += step;
-+        }
-+    }
-+    return 0;
-+}
-+
- typedef struct {
-     unsigned count;
-     size_t size;
-@@ -4401,6 +4420,9 @@ static int elf_core_dump(int signr, const CPUArchState *env)
-     cpu_list_lock();
-     mmap_lock();
- 
-+    /* By unprotecting, we merge vmas that might be split. */
-+    walk_memory_regions(NULL, wmr_page_unprotect_regions);
-+
-     /*
-      * Walk through target process memory mappings and
-      * set up structure containing this information.
+ #define have_lse    (cpuinfo & CPUINFO_LSE)
 -- 
 2.34.1
 
