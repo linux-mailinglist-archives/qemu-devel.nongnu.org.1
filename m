@@ -2,84 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D878286E238
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 14:35:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EFD686E2AB
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 14:46:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rg31t-00071R-96; Fri, 01 Mar 2024 08:34:25 -0500
+	id 1rg3B7-0001Wb-5M; Fri, 01 Mar 2024 08:43:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rg31r-00070k-8m
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 08:34:23 -0500
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rg31p-00033r-Is
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 08:34:23 -0500
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2d26227d508so23282531fa.2
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 05:34:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709300059; x=1709904859; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=NcOOQEf4RQ21EnD8rQbI8K9F9TSGs2RrcAlO5RlDB2U=;
- b=gnq0vQd9m6gzK6k2iFRRCmJkAeK69N3Scy1akwxt8MRe9sJbsF8FIKvm4q3xDfPRTB
- Ep+iFkuwSWP7tPLOH08GsS8vqJ2qEdWIAE4OveOFxvaPvOIpk3q+0qKN8B+sUYqmTLhi
- TpD0Z6IkhxyuQPyn77bofoEMhWA746S6Ww10sLki2Dpk6SUs1tMS1T50HAlj5ZvI2zD4
- 1LMyO0ywIQUoURur6iADR2RXAocMmQLJbYRS2acYyYtea11IEvDVLBi3UbU14r6ho6hN
- mUMu2t7QiI0zKVcHARH4kOjneG6OB44uRdZdDU7fj5J4M0W+PwEaqUtbsyPEivFxzWc0
- HtSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709300059; x=1709904859;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NcOOQEf4RQ21EnD8rQbI8K9F9TSGs2RrcAlO5RlDB2U=;
- b=CDJYXCHV0JK83CrZfoU2PJBi5zU+6aGOf4cAymaWzdbqEgcRQNN0knwHDK0sa59zed
- QR3zZs8KirRB3VyygaWH+cKMlSDUrkB3rFX3ovuVTYEx7Kutjy7+rHWbZwn10lzeEFOt
- xL2aWsff8l4GNUZNpwZdg4yWpVYG4/fuqhzXpjXD5jN0S5JqdpYxKXneeTmx2QGPTlaM
- lZI3I857G83gBysjWS9uxYxs+PGwoaDYWrMEqSv2uhiP1jtNJ3cOIM6mDahSlP8MyQqz
- Apg9shma5buNrXvRcH1bBHLH/4FyRYlBXF424Y1G8+sKEbdASK2V56Nf5qOb/TFLCwYm
- DGyg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXlOqDEe64sE1rmAUO25lwVqa1b6C8EriPqkM9XKnKFeEZOh5ytXC3aDWMA9hxp03B7XyrkErqJRtxDUHiQjTnxuAm5o5I=
-X-Gm-Message-State: AOJu0Ywpunl9ukBDpuCu55ykhnPX4H+TX9Nb3ZkUOJEa3eEs922R2/R6
- 6BnuwbbV1SEsLEYwYzn5TDKF3G+5lQ7lKf9jW2UoRyhrm+/DEkRXuNMIEA62Ts8=
-X-Google-Smtp-Source: AGHT+IGWht+0XYri57mzGdC0b8C7gJTRkBWDE/ZlzOWIKXFL0rnCdy4sA2CaXAwCwMst7p9yOUdRfg==
-X-Received: by 2002:ac2:5f06:0:b0:512:9af5:d083 with SMTP id
- 6-20020ac25f06000000b005129af5d083mr1146976lfq.60.1709300059432; 
- Fri, 01 Mar 2024 05:34:19 -0800 (PST)
-Received: from [192.168.128.175] (232.red-88-28-18.dynamicip.rima-tde.net.
- [88.28.18.232]) by smtp.gmail.com with ESMTPSA id
- 25-20020ac25f19000000b005130fb1509bsm623595lfq.262.2024.03.01.05.34.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 01 Mar 2024 05:34:19 -0800 (PST)
-Message-ID: <0f4ac1e9-dbe2-4b33-bb83-d549c065a865@linaro.org>
-Date: Fri, 1 Mar 2024 14:34:15 +0100
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1rg3B3-0001Tt-N6; Fri, 01 Mar 2024 08:43:53 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1rg3B0-0004qT-0k; Fri, 01 Mar 2024 08:43:53 -0500
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 4219CBI0032561; Fri, 1 Mar 2024 13:43:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding;
+ s=corp-2023-11-20; bh=LNmtBqROn5fgR9N5ZpFtAKKlvQeAp9zgapdmdwbrdTw=;
+ b=GK8i9+HDfe9RTOLwWrLsCdhdzO567wObfE123aj41FLdjpoGArYcL9/sd3z1V4MyP4lu
+ U6jrYsGfKoLELu2fJI7QaV1LxWBYAFKZrExxiGs3buPNyYMbvLv4PO46IpJcDyb1on3W
+ 9PW6iQSYEsYqsGCIaMsND93wjWnlQEJ6Gl2ZmNBz/zXKENfLrbdpMTobNv40aM0cWfUh
+ f3rSt894ZrdaM97YLub1DpJGJkq+xjhUx6yiBAKTHu9g/ofEwBzcPsz2zREBVdt/HwKq
+ lnBwTywhYF60QEZxcDMm+Yz5NKjt8gUw13eKhPJpChbf3Sw3nZr0iK8MOoJ65FJ5pFMe 5Q== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wf8bbgmug-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 01 Mar 2024 13:43:35 +0000
+Received: from pps.filterd
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 421DE5VD009390; Fri, 1 Mar 2024 13:43:33 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3wjrqmtrak-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 01 Mar 2024 13:43:33 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 421DhWAI026578;
+ Fri, 1 Mar 2024 13:43:32 GMT
+Received: from jonah-ol8.us.oracle.com (dhcp-10-65-160-211.vpn.oracle.com
+ [10.65.160.211])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
+ 3wjrqmtr9m-1; Fri, 01 Mar 2024 13:43:32 +0000
+From: Jonah Palmer <jonah.palmer@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com, jasowang@redhat.com, eperezma@redhat.com,
+ si-wei.liu@oracle.com, boris.ostrovsky@oracle.com,
+ jonah.palmer@oracle.com, raphael@enfabrica.net, kwolf@redhat.com,
+ hreitz@redhat.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+ farman@linux.ibm.com, thuth@redhat.com, richard.henderson@linaro.org,
+ david@redhat.com, iii@linux.ibm.com, cohuck@redhat.com,
+ pbonzini@redhat.com, fam@euphon.net, stefanha@redhat.com,
+ qemu-block@nongnu.org, qemu-s390x@nongnu.org, virtio-fs@lists.linux.dev
+Subject: [RFC 0/8] virtio,vhost: Add VIRTIO_F_NOTIFICATION_DATA support
+Date: Fri,  1 Mar 2024 08:43:22 -0500
+Message-Id: <20240301134330.4191007-1-jonah.palmer@oracle.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/5] linux-user: Add strace for shmat
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: laurent@vivier.eu, richard.purdie@linuxfoundation.org, mjt@tls.msk.ru,
- iii@linux.ibm.com
-References: <20240228202518.33180-1-richard.henderson@linaro.org>
- <20240228202518.33180-4-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240228202518.33180-4-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x230.google.com
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-01_13,2024-03-01_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ bulkscore=0 suspectscore=0
+ spamscore=0 phishscore=0 malwarescore=0 mlxscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2403010114
+X-Proofpoint-GUID: ZBIBoBJr7EwKm9Zr6UuxaR0bLGpQvq7K
+X-Proofpoint-ORIG-GUID: ZBIBoBJr7EwKm9Zr6UuxaR0bLGpQvq7K
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,13 +100,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/2/24 21:25, Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   linux-user/strace.c    | 23 +++++++++++++++++++++++
->   linux-user/strace.list |  2 +-
->   2 files changed, 24 insertions(+), 1 deletion(-)
+The goal of these patches are to add support to a variety of virtio and
+vhost devices for the VIRTIO_F_NOTIFICATION_DATA transport feature. This
+feature indicates that a driver will pass extra data (instead of just a
+virtqueue's index) when notifying the corresponding device.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+The data passed in by the driver when this feature is enabled varies in
+format depending on if the device is using a split or packed virtqueue
+layout:
+
+ Split VQ
+  - Upper 16 bits: last_avail_idx
+  - Lower 16 bits: virtqueue index
+
+ Packed VQ
+  - Upper 16 bits: 1-bit wrap counter & 15-bit last_avail_idx
+  - Lower 16 bits: virtqueue index
+
+Also, due to the limitations of ioeventfd not being able to carry the
+extra provided by the driver, ioeventfd is left disabled for any devices
+using this feature.
+
+A significant aspect of this effort has been to maintain compatibility
+across different backends. As such, the feature is offered by backend
+devices only when supported, with fallback mechanisms where backend
+support is absent.
+
+Jonah Palmer (8):
+  virtio/virtio-pci: Handle extra notification data
+  virtio-pci: Lock ioeventfd state with VIRTIO_F_NOTIFICATION_DATA
+  virtio-mmio: Handle extra notification data
+  virtio-mmio: Lock ioeventfd state with VIRTIO_F_NOTIFICATION_DATA
+  virtio-ccw: Handle extra notification data
+  virtio-ccw: Lock ioeventfd state with VIRTIO_F_NOTIFICATION_DATA
+  vhost/vhost-user: Add VIRTIO_F_NOTIFICATION_DATA to vhost feature bits
+  virtio: Add VIRTIO_F_NOTIFICATION_DATA property definition
+
+ hw/block/vhost-user-blk.c    |  1 +
+ hw/net/vhost_net.c           |  2 ++
+ hw/s390x/s390-virtio-ccw.c   | 18 ++++++++++++++----
+ hw/s390x/virtio-ccw.c        |  6 ++++--
+ hw/scsi/vhost-scsi.c         |  1 +
+ hw/scsi/vhost-user-scsi.c    |  1 +
+ hw/virtio/vhost-user-fs.c    |  2 +-
+ hw/virtio/vhost-user-vsock.c |  1 +
+ hw/virtio/virtio-mmio.c      | 18 ++++++++++++++----
+ hw/virtio/virtio-pci.c       | 19 ++++++++++++++-----
+ hw/virtio/virtio.c           | 13 +++++++++++++
+ include/hw/virtio/virtio.h   |  5 ++++-
+ net/vhost-vdpa.c             |  1 +
+ 13 files changed, 71 insertions(+), 17 deletions(-)
+
+-- 
+2.39.3
 
 
