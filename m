@@ -2,81 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1827A86EA7A
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 21:42:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB2586EAA0
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 21:48:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rg9hA-00021b-82; Fri, 01 Mar 2024 15:41:28 -0500
+	id 1rg9nJ-000833-GI; Fri, 01 Mar 2024 15:47:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rg9h8-0001zi-8j
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 15:41:26 -0500
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rg9h5-000705-KQ
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 15:41:25 -0500
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-29abd02d0d9so1926710a91.0
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 12:41:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709325682; x=1709930482; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TxofW6bNC8fGOO2v/wfoJQ/7dw6hp4z2OqJzWySAJjk=;
- b=CdcT8qGonIpTT6BsZgxe2USZBV5JQwyWBy/Ptj7UCpLUuz/SsLNBnDf8ZDKjcgah2N
- MibYlncFyi/4v9y6FDm/o+zkjvFEgdnDsYjECbRYx5/jk/xbwPjjMa7UScGDI4p+DPUm
- nXLTHxKhurxsZsvtV/qfb5AdSL7P4OyprG4MrriIIqy/5LjjGcnASJSZsKRbwQXOSuCv
- lytpVxjrfxkIkNDkvxRFgdEr+XQPN0G89c/1tWI9hPjVzmrpQAHGZKUnrIdH1uYQA0dB
- n01sHmiJd+4WtWs9hIMt9J+mFGozTkidWVdfNVsyArNqI8uMDbyn9siVQG5BYAAlg75O
- xH+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709325682; x=1709930482;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TxofW6bNC8fGOO2v/wfoJQ/7dw6hp4z2OqJzWySAJjk=;
- b=p3Zt4SA0kn4dELfE5yTJBEWn6GXFgF86Aqw/i2wNyPXJCSiDNZAQhJdc/gkOoPO94s
- 7X6nH4hOw8wJ2lNzG0U5vVuuXEFIk7iDDymDvb+y1JX8wJjckKRrNcW6zGpCyBiVYlL1
- m77ySEu72YBXTPZsSN47mNJ1lEMjFGOQCpS2anCApSU2mVhPgFK40+00D20R4YfFHWFx
- 9g/QhdxTOPo18L/lVI7GFcgt+CoBvpMvFEzlGWqLFMwO+WB1Jva4ERMuwy0K4Iv6FnK6
- HX4eM6nHYsm/sfyB6P5PF3GFZggHtCKz60KfOK72qSh8/CBu9wK3U0jaCVz1VSOkFSKM
- A6oQ==
-X-Gm-Message-State: AOJu0YwBvVJQuJGfD3vrKP4eKLDldXK6zraHzSlJUiJAqUtUCsHk1LJh
- p2Vu6Jc02Agu2ABusxuGXEsmaOkf+Yk6A2u06SlSiBWcF9zMk+v2Baf1bKiz1CZh4OEt9H+rHUp
- 5
-X-Google-Smtp-Source: AGHT+IFNvNmwyWmQmn+FpdkfmWoQvf4px2mQhOqUVg6KSRMQrrWNCtTL4ucKsYbxyYfeAP/902q0Rw==
-X-Received: by 2002:a17:90a:d718:b0:29b:1699:f5dc with SMTP id
- y24-20020a17090ad71800b0029b1699f5dcmr2822868pju.9.1709325682044; 
- Fri, 01 Mar 2024 12:41:22 -0800 (PST)
-Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
- by smtp.gmail.com with ESMTPSA id
- l3-20020a17090ac58300b0029b2e00359esm681947pjt.36.2024.03.01.12.41.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 12:41:21 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH v3 6/6] target/arm: Do memory type alignment check when
- translation enabled
-Date: Fri,  1 Mar 2024 10:41:10 -1000
-Message-Id: <20240301204110.656742-7-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240301204110.656742-1-richard.henderson@linaro.org>
-References: <20240301204110.656742-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rg9mt-000822-1o; Fri, 01 Mar 2024 15:47:23 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rg9mq-0000Jh-M8; Fri, 01 Mar 2024 15:47:22 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 22CB0523A6;
+ Fri,  1 Mar 2024 23:47:56 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9DCDE8D794;
+ Fri,  1 Mar 2024 23:47:15 +0300 (MSK)
+Message-ID: <b59855db-dc66-412f-8945-ce96dc8c9214@tls.msk.ru>
+Date: Fri, 1 Mar 2024 23:47:15 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1034.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Make some structure static
+Content-Language: en-US
+To: Frediano Ziglio <freddy77@gmail.com>, qemu-devel <qemu-devel@nongnu.org>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ QEMU Trivial <qemu-trivial@nongnu.org>
+References: <CAHt6W4cH+=pyxNZ9F_8Yed4K_pYfO-qP6iNHQHEYLvWUk+aGUw@mail.gmail.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <CAHt6W4cH+=pyxNZ9F_8Yed4K_pYfO-qP6iNHQHEYLvWUk+aGUw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,81 +84,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If translation is enabled, and the PTE memory type is Device,
-enable checking alignment via TLB_CHECK_ALIGNMENT.  While the
-check is done later than it should be per the ARM, it's better
-than not performing the check at all.
+01.03.2024 21:56, Frediano Ziglio wrote:
+> Not used outside C module.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/ptw.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+Please add a sensible subject prefix, like "hw/vfio/pci.c: ".
 
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index ba1a27ca2b..fc2f226411 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -471,6 +471,16 @@ static bool granule_protection_check(CPUARMState *env, uint64_t paddress,
-     return false;
- }
- 
-+static bool S1_attrs_are_device(uint8_t attrs)
-+{
-+    /*
-+     * This slightly under-decodes the MAIR_ELx field:
-+     * 0b0000dd01 is Device with FEAT_XS, otherwise UNPREDICTABLE;
-+     * 0b0000dd1x is UNPREDICTABLE.
-+     */
-+    return (attrs & 0xf0) == 0;
-+}
-+
- static bool S2_attrs_are_device(uint64_t hcr, uint8_t attrs)
- {
-     /*
-@@ -1684,6 +1694,7 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-     bool aarch64 = arm_el_is_aa64(env, el);
-     uint64_t descriptor, new_descriptor;
-     ARMSecuritySpace out_space;
-+    bool device;
- 
-     /* TODO: This code does not support shareability levels. */
-     if (aarch64) {
-@@ -2106,6 +2117,12 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-     if (regime_is_stage2(mmu_idx)) {
-         result->cacheattrs.is_s2_format = true;
-         result->cacheattrs.attrs = extract32(attrs, 2, 4);
-+        /*
-+         * Security state does not really affect HCR_EL2.FWB;
-+         * we only need to filter FWB for aa32 or other FEAT.
-+         */
-+        device = S2_attrs_are_device(arm_hcr_el2_eff(env),
-+                                     result->cacheattrs.attrs);
-     } else {
-         /* Index into MAIR registers for cache attributes */
-         uint8_t attrindx = extract32(attrs, 2, 3);
-@@ -2118,6 +2135,21 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-         if (aarch64 && cpu_isar_feature(aa64_bti, cpu)) {
-             result->f.extra.arm.guarded = extract64(attrs, 50, 1); /* GP */
-         }
-+        device = S1_attrs_are_device(result->cacheattrs.attrs);
-+    }
-+
-+    /*
-+     * Enable alignment checks on Device memory.
-+     *
-+     * Per R_XCHFJ, this check is mis-ordered, in that this alignment check
-+     * should have priority 30, while the permission check should be next at
-+     * priority 31 and stage2 translation faults come after that.
-+     * Due to the way the TCG softmmu TLB operates, we will have implicitly
-+     * done the permission check and the stage2 lookup in finding the TLB
-+     * entry, so the alignment check cannot be done sooner.
-+     */
-+    if (device) {
-+        result->f.tlb_fill_flags |= TLB_CHECK_ALIGNED;
-     }
- 
-     /*
--- 
-2.34.1
+With that,
+
+Revieved-by: Michael Tokarev <mjt@tls.msk.ru>
+
+This is a good candidate for trivial-patches@ too (Cc'd).
+
+/mjt
+
+> Signed-off-by: Frediano Ziglio <frediano.ziglio@cloud.com>
+> ---
+>   hw/vfio/pci.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index 4fa387f043..a1522a011a 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -2558,7 +2558,7 @@ static bool vfio_display_migration_needed(void *opaque)
+>           (vdev->ramfb_migrate == ON_OFF_AUTO_AUTO && vdev->enable_ramfb);
+>   }
+> 
+> -const VMStateDescription vmstate_vfio_display = {
+> +static const VMStateDescription vmstate_vfio_display = {
+>       .name = "VFIOPCIDevice/VFIODisplay",
+>       .version_id = 1,
+>       .minimum_version_id = 1,
+> @@ -2570,7 +2570,7 @@ const VMStateDescription vmstate_vfio_display = {
+>       }
+>   };
+> 
+> -const VMStateDescription vmstate_vfio_pci_config = {
+> +static const VMStateDescription vmstate_vfio_pci_config = {
+>       .name = "VFIOPCIDevice",
+>       .version_id = 1,
+>       .minimum_version_id = 1,
 
 
