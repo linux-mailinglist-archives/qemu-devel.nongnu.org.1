@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B656686ECBF
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:11:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 125F386ECE0
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:18:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgBxo-0004uD-HY; Fri, 01 Mar 2024 18:06:51 -0500
+	id 1rgByA-0005SR-4I; Fri, 01 Mar 2024 18:07:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgBxd-0004ri-Sp
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:42 -0500
+ id 1rgBxb-0004rK-Dp
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:37 -0500
 Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgBxX-0004D8-QO
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:36 -0500
+ id 1rgBxZ-0004DK-VV
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:35 -0500
 Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1dca3951ad9so25117755ad.3
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:06:31 -0800 (PST)
+ d9443c01a7336-1dcd0431f00so20092965ad.3
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:06:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709334390; x=1709939190; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709334391; x=1709939191; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=HjNGmK53xTEM4PEP/wzxcWkZ/m9cBOwh2M6e53eVpiA=;
- b=JHzXef831+oBIR4Mb2YWjTCS9cbsRJ8yBA5n4PK7uWhMudwM85T4fYv1B7ln7fGJGF
- xSyH5hwomaXyhIdAVqI1uJjpACaH6oKvkhsA2dHZV9d90Jqwd6u3HiXcB3gWRANEk6cc
- yC/vBJs3Mtm6AkXHKS/hzUTph2Toj9QsSTKmgEz4dS7piYEj6eHjjzqnxTAByy1z42IT
- CFNa5K9/aYSxwlt0zxMLjqORTTqiesxrbPKEl1nZS9yqi6OJBFPrFnbkNzP6pfbwX6eX
- 1kT5zk1mbIMi65S9HCAbh54Xecvz9L6jTik1rAPw9NoiYfwzQvrb0qSn8C3FeMy+m5mD
- KuXA==
+ :reply-to; bh=zYkpQqoaMHDWxrt9KPP15xrK5H9LSGOtZoW36Ee0L04=;
+ b=xhmLORufVFrs4Wlyc1lAnnduiPw2cZI3KC6yuNbI0pneuPJ8XUa4N2AzAai+aLxvnK
+ 5icri/0GhBeIsWpJGPC0feazGh7l+CvFm609Ck2EhGx9z03Immb31sz1zuec1SuNMBVk
+ ErZn2BldOLgeSohUjSG7/GpJA4G32tGh1LDylQLcpEallPgXR/Ap8VKzqeQOsHEcNEoG
+ tWmTV5KaHllStVigB2lMcOJbI+iWHkVgn6DZc2d+99qFKaI62kj3DrPKY/nrCp6nCelg
+ XCwVQGo/UG1ewu5U0v+cBmfHf4yHKYlW5vRQs75+QQl2Ha3oRaWWIsZsCMtnL2RE6jzL
+ X2eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709334390; x=1709939190;
+ d=1e100.net; s=20230601; t=1709334391; x=1709939191;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HjNGmK53xTEM4PEP/wzxcWkZ/m9cBOwh2M6e53eVpiA=;
- b=Q5cKSBYDwzLL8GxM+mXE1uU/Qx8+Xfg8tBbVaSE36l3DYx/Wjk2hGWcJLhcKlnkSNb
- T5+4PhYVk+tf03ubPfN58xQ5Uuzk+4E7G8Oj24JAPI4Q7KpAv1i8Ba5jN29p+Vl3uwwO
- GZltU90yN3aJ9BsjSjSqH3oMCCcKDgn8x2nfkNJyf/ovAJEiHdTZ532dr/k3//ct9Acp
- uK13b75CNnvExpNyHxaZkWlwIYccmJ3flafFFnS/x4CZ81p73UUPmkI3OHv2LzU8j+o2
- eqfvJs3iwh+a4a8xXp+CtGiWYSf3xV4pNQblO7Jp9h4+sQwfvG1CLGDZRzMWNSNH4R6+
- tQgw==
-X-Gm-Message-State: AOJu0YzZTM6imEg66Eboe2p+I42CJdnFVkXy3fslVQwMQoqxNZQeIAIt
- /iRpfhysXpl86Zjo9PJGyKPA1yGkLUYrt1s2JdU+FjiFS2VyMFCsyRxC1layEcYP9tlWICqqKiP
- 8
-X-Google-Smtp-Source: AGHT+IG1CNtQJbd4yoi/hWo0YmLZI5axfhiJldST1H5g+hATg9j4kKu/68naFIKCjRCUorRtSlJ7aQ==
-X-Received: by 2002:a17:902:db02:b0:1dc:4bf6:7eb4 with SMTP id
- m2-20020a170902db0200b001dc4bf67eb4mr3923448plx.31.1709334390302; 
- Fri, 01 Mar 2024 15:06:30 -0800 (PST)
+ bh=zYkpQqoaMHDWxrt9KPP15xrK5H9LSGOtZoW36Ee0L04=;
+ b=EEM4jXTHIep5EHhb3SNsHIBRga6EZEE7hMbSBdbKyz+f35VUAq0CRTT64ildgMZRw5
+ 3koFAjiOzpLMVAwyUGDeHJYJDX8t1GdAdCf7Xwxrx3JItW3wOcyu2Z6m7sgSQGsNkfa5
+ q+ssyIgL1TtwjZye/EhRIEGY9crJdojeaFHSkVh86YJuO5xr+HYtt35OhS1fU7kDxZdL
+ h8ROvM9Y/AvG1KJoCxkN/rnIrHPmlnAxx6OgFwGHBpcAmU5wLjZ5IfMzFjiQDeZuUgv2
+ 5xnDzKz4pEPWQtL7n8/Urwhaw8e959VpbEgc+CZFRAqLXnOitoTPFH4QgyJcp5cPFl/W
+ wTag==
+X-Gm-Message-State: AOJu0Yyc8vwAMjKYM9aPJHRI7FyMz1qRi8HHZB+QV8Gge4Y2xO8LjEqn
+ +VaFkIJZC2mORYFIo9dNiPwyGpsRjq1iE+YnqllXafnQQcGScfYDRff0Rmm6DF5/1aKdyl6xMUb
+ n
+X-Google-Smtp-Source: AGHT+IHL0ymjXRyQUGELhQHc/vNMAGDuobcq6m/6d/oPI7pKcQOnFX8kGhFwHiY9MaxOFijOVazSZg==
+X-Received: by 2002:a17:902:c94f:b0:1db:5c84:9523 with SMTP id
+ i15-20020a170902c94f00b001db5c849523mr3765895pla.67.1709334391394; 
+ Fri, 01 Mar 2024 15:06:31 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- lc11-20020a170902fa8b00b001dc668e145asm3988580plb.200.2024.03.01.15.06.29
+ lc11-20020a170902fa8b00b001dc668e145asm3988580plb.200.2024.03.01.15.06.30
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 15:06:29 -0800 (PST)
+ Fri, 01 Mar 2024 15:06:31 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 06/60] linux-user/elfload: Open core file after vma_init
-Date: Fri,  1 Mar 2024 13:05:25 -1000
-Message-Id: <20240301230619.661008-7-richard.henderson@linaro.org>
+Subject: [PATCH 07/60] linux-user/elfload: Truncate core file on open
+Date: Fri,  1 Mar 2024 13:05:26 -1000
+Message-Id: <20240301230619.661008-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301230619.661008-1-richard.henderson@linaro.org>
 References: <20240301230619.661008-1-richard.henderson@linaro.org>
@@ -91,57 +91,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Swap the ordering of vma_init and open.  This will be necessary
-for further changes, and adjusts the error cleanup path.  Narrow
-the scope of corefile, as the variable can be freed immediately
-after use in open().
+While we usually create a new corefile, truncate otherwise.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ linux-user/elfload.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 39d9ef9acc..877799e9c7 100644
+index 877799e9c7..16dd08a828 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -4625,7 +4625,6 @@ static int elf_core_dump(int signr, const CPUArchState *env)
-     const CPUState *cpu = env_cpu((CPUArchState *)env);
-     const TaskState *ts = (const TaskState *)cpu->opaque;
-     struct vm_area_struct *vma = NULL;
--    g_autofree char *corefile = NULL;
-     struct elf_note_info info;
-     struct elfhdr elf;
-     struct elf_phdr phdr;
-@@ -4644,12 +4643,6 @@ static int elf_core_dump(int signr, const CPUArchState *env)
-         return 0;
+@@ -4652,7 +4652,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+ 
+     {
+         g_autofree char *corefile = core_dump_filename(ts);
+-        fd = open(corefile, O_WRONLY | O_CREAT,
++        fd = open(corefile, O_WRONLY | O_CREAT | O_TRUNC,
+                   S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
      }
- 
--    corefile = core_dump_filename(ts);
--
--    if ((fd = open(corefile, O_WRONLY | O_CREAT,
--                   S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH)) < 0)
--        return (-errno);
--
-     /*
-      * Walk through target process memory mappings and
-      * set up structure containing this information.  After
-@@ -4657,6 +4650,15 @@ static int elf_core_dump(int signr, const CPUArchState *env)
-      */
-     vma_init(&mm);
- 
-+    {
-+        g_autofree char *corefile = core_dump_filename(ts);
-+        fd = open(corefile, O_WRONLY | O_CREAT,
-+                  S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-+    }
-+    if (fd < 0) {
-+        goto out;
-+    }
-+
-     walk_memory_regions(&mm, vma_walker);
-     segs = vma_get_mapping_count(&mm);
- 
+     if (fd < 0) {
 -- 
 2.34.1
 
