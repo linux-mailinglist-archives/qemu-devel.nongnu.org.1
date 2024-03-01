@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 800DF86EE84
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 05:14:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0BF486EE7E
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 05:13:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgGjL-0005Og-OD; Fri, 01 Mar 2024 23:12:11 -0500
+	id 1rgGjI-0005MB-CB; Fri, 01 Mar 2024 23:12:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgC1h-0003xE-I7
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:54 -0500
-Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
+ id 1rgC1j-0003z4-65
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:57 -0500
+Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgC1e-0005oh-Bo
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:49 -0500
-Received: by mail-ot1-x335.google.com with SMTP id
- 46e09a7af769-6e4d1448d31so422776a34.0
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:10:44 -0800 (PST)
+ id 1rgC1g-0005uF-04
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:50 -0500
+Received: by mail-ot1-x32a.google.com with SMTP id
+ 46e09a7af769-6e48153c13aso1388239a34.3
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:10:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709334643; x=1709939443; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709334646; x=1709939446; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oX3KBb2f91IJNoXnuOHaXnVXtCOeG00rM8fZbeZEXms=;
- b=Y2kzzu143heSNZAnx63b8aw5dRDxKrc/OcgUUwdoPxIsZzYPtCJeUEInAam2leFT/7
- OJWBmXrWxCpqrmMAHv9/zM7y42ANO2QqCk4ZQcqaPGvGDCaVakniGB1GnD7cTMCwFny0
- Hfck20eFgXAfXMVL3/7Tp9RBbWcTCmz4GH1jEDsXjlagfUtBt8ButtRfO6IjPMz6Wgce
- 8gHpcCCZPRUxcvN40DtUu5sg12yHb07Hu4G8sAHDCXwb8pGBTnvcBXY+f7U6aNr7phx4
- LDi0e3j22cNKJ+ZmESOPoirHs2ZfxRsjJJmU4F7i7ephhij55y5vkmuQIUukJVP0thFP
- z6Eg==
+ bh=yTWT+RMoE1i/VU7YNW7VXZJeWBnC/6JB7arqg8VoVPY=;
+ b=wPPgO3Azw4RZNrbdtjDazpIblGSuGm+sz0IzwuS0O8fW9MoBwtkqB3w81bNDlmfZIq
+ T0LL8c6N5a2yBwanLH6OUQ9EO9ZN2ytZb3lBxO4or+6X1UxK3FIeRS6JgiAj8TZpHCzZ
+ L80gvYehonUdo3F/eqlnbsSjTSpq5t+SX8aGV7CgDIT/jUMzzkWBDVz6HaRA+j93e5B4
+ 8jANdlMGCPpt8UzEw12nRYTDoe8nMvUkArMj8QyTaElgAFIq4GT8bJ4fa6t+ZwUfVuZF
+ uNwFES1C+aVNMn+BlHAjE7SkDqyPVrMIvw+Sg97iXPlcFp6fqWjHD24wDu0qHyZiJjHi
+ EUSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709334643; x=1709939443;
+ d=1e100.net; s=20230601; t=1709334646; x=1709939446;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oX3KBb2f91IJNoXnuOHaXnVXtCOeG00rM8fZbeZEXms=;
- b=FJip0sxO86oMVF9KjHLV3hQERMQ4x5jmmwggcn3qnf2lsUtRn7sPB4EOdj8qhv6TqX
- 8BnNF7rSirCcDtSldWMY3H4A9pBbZj9iAHyXY9QwuHFDF2htXHhaHrd6J4W4lV5p0gX+
- KmaU2exSJrciybCOrboWxYTiyYC+A/qOZuNH/LRreBUDoDLOmS9ULSZ8C27CzRQaVi5+
- 9J7Cud5ulFxbh1VIUos0hbVh5NRiJfTmRICKLKHlpKXT7B9g7Rv6RfCZauLXOTLgyoKb
- o4m4JWUROv3ywWjYb12xsK7ht8jNBzsSMdXqo5IBOB4S8AkmXFzR+5Pc070NUd6k3YSE
- ecIQ==
-X-Gm-Message-State: AOJu0YzrJa1ujp3K0oAojLRZqIxlst4BwHobXVaroUIGl5OsP9rlWdZX
- XxYrkK5617b3hVye4xotRhFlAOOlN0OrEnHLXN5Lv5P3IHkN5Q4vZvxx/m2c7MFaFtLwpabtnQD
- O
-X-Google-Smtp-Source: AGHT+IGYT6rOdxYNGYmG9lq+JzEiBc+aH2WXs27wwuG9ORbe/HMz89jYWOwNu0syDc24f7WyWilc4Q==
-X-Received: by 2002:a9d:63d3:0:b0:6e2:e2d7:55fa with SMTP id
- e19-20020a9d63d3000000b006e2e2d755famr3233569otl.14.1709334642949; 
- Fri, 01 Mar 2024 15:10:42 -0800 (PST)
+ bh=yTWT+RMoE1i/VU7YNW7VXZJeWBnC/6JB7arqg8VoVPY=;
+ b=sI8yS/SzQwZfu3V6MkSA9tjNEaj7hFAHl0kTVpOP7sIAt6BaLBZkhNr303MlMSKDri
+ HXgd4VfEcJ8L7RvYgJRv6SGUaXo25lEOplJ4EDG4h4V9PiQgiiyeUNLQvgQ9SPxPCq/n
+ BUpbeOSE1nf5fAIrE999WQOxQa4d0PLrAHwJWL/NXlvnolrGra8DOoLD0XXap1XTp6ve
+ D14x7URIfqHgqADbevSltXsdx4vduDgdwTgn7FJp0j2j3tA/7LjoU1a++dE1/y/XwROU
+ LsRzBWu6QsLP/xVE2WGjFlRRV2Ophi+yBS0B5+FDtMU6uOPJshhOWO8U1Ns4o7r5vsL2
+ zVfA==
+X-Gm-Message-State: AOJu0Yw2u7Ha+diFY8vTVMWP7OdfZXQuIq3hqFyrDJDUNwWqYB/jqxM4
+ tUPemdLmJjDhdBWMou9Kd/bPVY4DCT51vgXaZ8+CLnR1HTcUly88OXPX1Z1L0iE0W8FbmHvrb9K
+ G
+X-Google-Smtp-Source: AGHT+IEC3IEufMvQbh163ikvKev1ecMXJ1/QLnLvsRa04C24bmAmYgEHkN4sYfovvFlF6DSD8TUFyw==
+X-Received: by 2002:a9d:6d85:0:b0:6e4:7e89:1205 with SMTP id
+ x5-20020a9d6d85000000b006e47e891205mr3873115otp.9.1709334646004; 
+ Fri, 01 Mar 2024 15:10:46 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- c2-20020a634e02000000b005e438fe702dsm3449407pgb.65.2024.03.01.15.10.41
+ c2-20020a634e02000000b005e438fe702dsm3449407pgb.65.2024.03.01.15.10.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 15:10:42 -0800 (PST)
+ Fri, 01 Mar 2024 15:10:45 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Alexey Sheplyakov <asheplyakov@yandex.ru>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 54/60] linux-user: Remove pgb_dynamic alignment assertion
-Date: Fri,  1 Mar 2024 13:06:13 -1000
-Message-Id: <20240301230619.661008-55-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 56/60] linux-user/x86_64: Handle the vsyscall page in
+ open_self_maps_{2, 4}
+Date: Fri,  1 Mar 2024 13:06:15 -1000
+Message-Id: <20240301230619.661008-57-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301230619.661008-1-richard.henderson@linaro.org>
 References: <20240301230619.661008-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x335.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,34 +94,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The assertion was never correct, because the alignment is a composite
-of the image alignment and SHMLBA.  Even if the image alignment didn't
-match the image address, an assertion would not be correct -- more
-appropriate would be an error message about an ill formed image.  But
-the image cannot be held to SHMLBA under any circumstances.
+This is the only case in which we expect to have no host memory backing
+for a guest memory page, because in general linux user processes cannot
+map any pages in the top half of the 64-bit address space.
 
-Fixes: ee94743034b ("linux-user: completely re-write init_guest_space")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2157
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reported-by: Alexey Sheplyakov <asheplyakov@yandex.ru>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2170
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 2 --
- 1 file changed, 2 deletions(-)
+ linux-user/syscall.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index cc2013c7b4..0c299a7c15 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -3022,8 +3022,6 @@ static void pgb_dynamic(const char *image_name, uintptr_t guest_loaddr,
-     uintptr_t brk, ret;
-     PGBAddrs ga;
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index e384e14248..bc8c06522f 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -7994,6 +7994,10 @@ static void open_self_maps_4(const struct open_self_maps_data *d,
+         path = "[heap]";
+     } else if (start == info->vdso) {
+         path = "[vdso]";
++#ifdef TARGET_X86_64
++    } else if (start == TARGET_VSYSCALL_PAGE) {
++        path = "[vsyscall]";
++#endif
+     }
  
--    assert(QEMU_IS_ALIGNED(guest_loaddr, align));
--
-     /* Try the identity map first. */
-     if (pgb_addr_set(&ga, guest_loaddr, guest_hiaddr, true)) {
-         brk = (uintptr_t)sbrk(0);
+     /* Except null device (MAP_ANON), adjust offset for this fragment. */
+@@ -8082,6 +8086,18 @@ static int open_self_maps_2(void *opaque, target_ulong guest_start,
+     uintptr_t host_start = (uintptr_t)g2h_untagged(guest_start);
+     uintptr_t host_last = (uintptr_t)g2h_untagged(guest_end - 1);
+ 
++#ifdef TARGET_X86_64
++    /*
++     * Because of the extremely high position of the page within the guest
++     * virtual address space, this is not backed by host memory at all.
++     * Therefore the loop below would fail.  This is the only instance
++     * of not having host backing memory.
++     */
++    if (guest_start == TARGET_VSYSCALL_PAGE) {
++        return open_self_maps_3(opaque, guest_start, guest_end, flags);
++    }
++#endif
++
+     while (1) {
+         IntervalTreeNode *n =
+             interval_tree_iter_first(d->host_maps, host_start, host_start);
 -- 
 2.34.1
 
