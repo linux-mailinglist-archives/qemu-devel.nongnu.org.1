@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F5AE86ECA6
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:08:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE7CA86ECE1
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:19:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgBxi-0004qx-M2; Fri, 01 Mar 2024 18:06:42 -0500
+	id 1rgBxl-0004t5-6a; Fri, 01 Mar 2024 18:06:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgBxW-0004qH-7m
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:30 -0500
+ id 1rgBxX-0004qU-Mt
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:31 -0500
 Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgBxU-0004CX-6N
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:29 -0500
+ id 1rgBxW-0004Co-4N
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:31 -0500
 Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1dc13fb0133so22382215ad.3
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:06:27 -0800 (PST)
+ d9443c01a7336-1dc3b4b9b62so23771625ad.1
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:06:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709334386; x=1709939186; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709334388; x=1709939188; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=PXNbhyM3M1ZvaxsPU8XRtEyhAyhYazBaocnAfgHjiNM=;
- b=YHLl4gCrVPOOvaM/W99Bar1O8CqMDh9crOyBtgsqT9/J4LGAOfMaF+I1ZvtsqnqFL3
- nM5HRbBMoyxK0hEZABHDtZywJhUpTsRruPOz9Kd5E5wzGrznPqADJov/B5hxT7CotfSM
- iY9pEhDUprcPhAgDXHY1p6BbquYr6ThNReZa4SPnYGNYdgtzKGDHA9VPyZm3mHBPEOZE
- K9JAAireTgHzVYTV2l7GEuIk+VJHNIDsMXsNIl07RYw82a8lItewo9/8viciDVtqcrvi
- 8MuEH2yN3dg5OUzDUVRg9iGU7ejr8npQld000RjIAYjuE4xZCdjDAR4FSBPp/lgeG1Fu
- UKRA==
+ :reply-to; bh=keqqLzVNAo4uH25B4sgF/a/mk1kxuvixDsagaZwoXEA=;
+ b=PB9EjzNw4+NNo/r7ILU/XW4K8BIXsGue2sjOwBuYukLQAdy0Ib67UueXkqSiXx8aB+
+ VLOC6soi0HY9DJGoHwzXkVr044D82ymw57jeXGD61FYTqzpl0C3T2zyTTOW+aWoyNOob
+ Bl8HJ8jz9bTrz5rv1CJ/FfB4P+2sPqXmtIIGPvT6C1B7WUu+y1RW4tFQmfTyt0rrwyXJ
+ /lMaWCJmvhMpqgjjzJ3cFOVx+wh3Kz4KZCQzordgYufAhEdI2a62Hm4YrUVEOM07pmM4
+ 69cG31S462xYENZ4CVwtgxd7/1LxvxGz6tl9Q1YEQgAMnRn6iIZwsTEKhOh1z0jGF46N
+ qhgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709334386; x=1709939186;
+ d=1e100.net; s=20230601; t=1709334388; x=1709939188;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PXNbhyM3M1ZvaxsPU8XRtEyhAyhYazBaocnAfgHjiNM=;
- b=ijGAF+WuHNnxpXISihfhfKT0h51OoHrBtB5BZuRVXTfstFtf74n/9qf6wxMhYbGPcV
- X5Tr6vngZ00+btVfIjlJ9Qjl0RTUUVoZVHgD+lL68/L9iV0zdBl+/KOQrmezu81ETwR3
- cxlF3/ua4JpTsB77ETI0x7YVoOGW/Ovbo8t1wrDJ0wOwodvVcmUliGUpWS+1t+nwW6zV
- eC6at4UzSxc/Pe1nnrEEQlE2PKtEV7JS6HAxSONBP+69KCEwsvMBG/vv0+WEMDW4p9nF
- WLjR/+C1x61c7nvuBsTVlB0PbZXkLsxOkXBvPBGYxX3VZ8OLBdFjHnl25cnbYrc3BQXC
- fJ+A==
-X-Gm-Message-State: AOJu0YwEU+c3GYzFu1zwwTCFfyNzSPJzapKb9NN6n0q2k4VTieO/sGxC
- ttkt3CnsVBHA7QifkJGwokVLmOvNo5yKiCD7w+/o/2if73Q8JTeVhCdi3xeZEcsA5Cu20g3zy1Y
- P
-X-Google-Smtp-Source: AGHT+IGL1UoEz2rY7XjUy9b3MCrSnOzvP8MopZBpaY11Yv5yu0AssVTQTvnXflAlS7O6PNwa3bBL2A==
-X-Received: by 2002:a17:902:e807:b0:1dc:696d:ec64 with SMTP id
- u7-20020a170902e80700b001dc696dec64mr3982507plg.22.1709334386531; 
- Fri, 01 Mar 2024 15:06:26 -0800 (PST)
+ bh=keqqLzVNAo4uH25B4sgF/a/mk1kxuvixDsagaZwoXEA=;
+ b=BBTVgrwjERFMD0WzpQp17D+q46zWc4St2LlXNRZXkHf4D8s6heckFZ1hGCgJygtDgP
+ m4oM9acC8+FlO0RLfNdaBMV3IWC8gVDO1SHQjC1L/aqhyzIkuJles/Bdlu7Xb/OcChnm
+ hFvf/kz2cD7RobvFMI66VHV/utCJycDVHSFF0Ta0EJooFlGfo+a5ewHUjFewAHkLQvr4
+ mkMMdORyK6SNMnu00XIwE0L8bcZgzIbcXupFC0ZWY6+GOh7TlCFJgX6JsWK8U14RCZsd
+ upqNYnRwpxEsmwMWyTWEmeUct6wXMaO+WvWPFV4dsKqrqeEibrfjYQDdZ4BcqsivJYr0
+ w4VA==
+X-Gm-Message-State: AOJu0YzK+6igmV5yJK7uCFQaPSzadskPRi5x+5qITOxThSBMKJ7Uxyec
+ UoURVNNCB9VAfBJaBtBeV/6y+8pdCxOQhcrLb1X7M461ALFODEWB0HAd7a2gaLHYWA8fqLj5Lrh
+ 3
+X-Google-Smtp-Source: AGHT+IGSqzanFoyo3BGVUsOeqWu1YHLIOlVtTGEdsd+m0TdUJ+wOn5LN80SQbgUAO5mVZjIH3zM5gQ==
+X-Received: by 2002:a17:903:190:b0:1db:b8dc:a016 with SMTP id
+ z16-20020a170903019000b001dbb8dca016mr4261042plg.7.1709334387715; 
+ Fri, 01 Mar 2024 15:06:27 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- lc11-20020a170902fa8b00b001dc668e145asm3988580plb.200.2024.03.01.15.06.25
+ lc11-20020a170902fa8b00b001dc668e145asm3988580plb.200.2024.03.01.15.06.26
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 15:06:26 -0800 (PST)
+ Fri, 01 Mar 2024 15:06:27 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 03/60] linux-user/elfload: Tidy fill_note_info and struct
- elf_note_info
-Date: Fri,  1 Mar 2024 13:05:22 -1000
-Message-Id: <20240301230619.661008-4-richard.henderson@linaro.org>
+Subject: [PATCH 04/60] linux-user/elfload: Stack allocate struct mm_struct
+Date: Fri,  1 Mar 2024 13:05:23 -1000
+Message-Id: <20240301230619.661008-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301230619.661008-1-richard.henderson@linaro.org>
 References: <20240301230619.661008-1-richard.henderson@linaro.org>
@@ -92,135 +91,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In fill_note_info, there were unnecessary checks for
-success of g_new/g_malloc.  But these structures do not
-need to be dyamically allocated at all, and can in fact
-be statically allocated within the parent structure.
-
-This removes all error paths from fill_note_info, so
-change the return type to void.
-
-Change type of signr to match both caller (elf_core_dump)
-and callee (fill_prstatus), which both use int for signr.
+Ignoring the fact that g_malloc cannot fail, the structure
+is quite small and might as well be allocated locally.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 48 +++++++++++++++-----------------------------
- 1 file changed, 16 insertions(+), 32 deletions(-)
+ linux-user/elfload.c | 28 +++++++++-------------------
+ 1 file changed, 9 insertions(+), 19 deletions(-)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 7b3a2c20f2..cc43487a37 100644
+index cc43487a37..98b82b1a49 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -4066,10 +4066,12 @@ struct elf_thread_status {
-     int num_notes;
+@@ -4099,7 +4099,7 @@ struct mm_struct {
+     int mm_count;           /* number of mappings */
  };
  
-+#define NUMNOTES 3
-+
- struct elf_note_info {
--    struct memelfnote   *notes;
--    struct target_elf_prstatus *prstatus;  /* NT_PRSTATUS */
--    struct target_elf_prpsinfo *psinfo;    /* NT_PRPSINFO */
-+    struct memelfnote notes[NUMNOTES];
-+    struct target_elf_prstatus prstatus;  /* NT_PRSTATUS */
-+    struct target_elf_prpsinfo psinfo;    /* NT_PRPSINFO */
+-static struct mm_struct *vma_init(void);
++static void vma_init(struct mm_struct *);
+ static void vma_delete(struct mm_struct *);
+ static int vma_add_mapping(struct mm_struct *, target_ulong,
+                            target_ulong, abi_ulong);
+@@ -4174,17 +4174,10 @@ static inline void bswap_note(struct elf_note *en) { }
+  * thread that received the signal is stopped.
+  */
  
-     QTAILQ_HEAD(, elf_thread_status) thread_list;
- #if 0
-@@ -4117,7 +4119,7 @@ static void fill_auxv_note(struct memelfnote *, const TaskState *);
- static void fill_elf_note_phdr(struct elf_phdr *, int, off_t);
- static size_t note_size(const struct memelfnote *);
- static void free_note_info(struct elf_note_info *);
--static int fill_note_info(struct elf_note_info *, long, const CPUArchState *);
-+static void fill_note_info(struct elf_note_info *, int, const CPUArchState *);
- static void fill_thread_info(struct elf_note_info *, const CPUArchState *);
- 
- static int dump_write(int, const void *, size_t);
-@@ -4514,44 +4516,33 @@ static void fill_thread_info(struct elf_note_info *info, const CPUArchState *env
-     info->notes_size += note_size(&ets->notes[0]);
- }
- 
--static int fill_note_info(struct elf_note_info *info,
--                          long signr, const CPUArchState *env)
-+static void fill_note_info(struct elf_note_info *info,
-+                           int signr, const CPUArchState *env)
+-static struct mm_struct *vma_init(void)
++static void vma_init(struct mm_struct *mm)
  {
--#define NUMNOTES 3
-     CPUState *cpu = env_cpu((CPUArchState *)env);
-     TaskState *ts = (TaskState *)cpu->opaque;
--    int i;
- 
-     memset(info, 0, sizeof (*info));
-     QTAILQ_INIT(&info->thread_list);
- 
--    info->notes = g_new0(struct memelfnote, NUMNOTES);
--    if (info->notes == NULL)
--        return (-ENOMEM);
--    info->prstatus = g_malloc0(sizeof (*info->prstatus));
--    if (info->prstatus == NULL)
--        return (-ENOMEM);
--    info->psinfo = g_malloc0(sizeof (*info->psinfo));
--    if (info->prstatus == NULL)
--        return (-ENOMEM);
+-    struct mm_struct *mm;
 -
-     /*
-      * First fill in status (and registers) of current thread
-      * including process info & aux vector.
+-    if ((mm = g_malloc(sizeof (*mm))) == NULL)
+-        return (NULL);
+-
+     mm->mm_count = 0;
+     QTAILQ_INIT(&mm->mm_mmap);
+-
+-    return (mm);
+ }
+ 
+ static void vma_delete(struct mm_struct *mm)
+@@ -4195,7 +4188,6 @@ static void vma_delete(struct mm_struct *mm)
+         QTAILQ_REMOVE(&mm->mm_mmap, vma, vma_link);
+         g_free(vma);
+     }
+-    g_free(mm);
+ }
+ 
+ static int vma_add_mapping(struct mm_struct *mm, target_ulong start,
+@@ -4638,7 +4630,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+     struct elfhdr elf;
+     struct elf_phdr phdr;
+     struct rlimit dumpsize;
+-    struct mm_struct *mm = NULL;
++    struct mm_struct mm;
+     off_t offset = 0, data_offset = 0;
+     int segs = 0;
+     int fd = -1;
+@@ -4664,11 +4656,10 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+      * set up structure containing this information.  After
+      * this point vma_xxx functions can be used.
       */
--    fill_prstatus(info->prstatus, ts, signr);
--    elf_core_copy_regs(&info->prstatus->pr_reg, env);
-+    fill_prstatus(&info->prstatus, ts, signr);
-+    elf_core_copy_regs(&info->prstatus.pr_reg, env);
-     fill_note(&info->notes[0], "CORE", NT_PRSTATUS,
--              sizeof (*info->prstatus), info->prstatus);
--    fill_psinfo(info->psinfo, ts);
-+              sizeof(info->prstatus), &info->prstatus);
-+    fill_psinfo(&info->psinfo, ts);
-     fill_note(&info->notes[1], "CORE", NT_PRPSINFO,
--              sizeof (*info->psinfo), info->psinfo);
-+              sizeof(info->psinfo), &info->psinfo);
-     fill_auxv_note(&info->notes[2], ts);
-     info->numnote = 3;
- 
-     info->notes_size = 0;
--    for (i = 0; i < info->numnote; i++)
-+    for (int i = 0; i < info->numnote; i++) {
-         info->notes_size += note_size(&info->notes[i]);
-+    }
- 
-     /* read and fill status of all threads */
-     WITH_QEMU_LOCK_GUARD(&qemu_cpu_list_lock) {
-@@ -4562,8 +4553,6 @@ static int fill_note_info(struct elf_note_info *info,
-             fill_thread_info(info, cpu_env(cpu));
-         }
-     }
--
--    return (0);
- }
- 
- static void free_note_info(struct elf_note_info *info)
-@@ -4575,10 +4564,6 @@ static void free_note_info(struct elf_note_info *info)
-         QTAILQ_REMOVE(&info->thread_list, ets, ets_link);
-         g_free(ets);
-     }
--
--    g_free(info->prstatus);
--    g_free(info->psinfo);
--    g_free(info->notes);
- }
- 
- static int write_note_info(struct elf_note_info *info, int fd)
-@@ -4694,8 +4679,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
-         goto out;
- 
-     /* fill in the in-memory version of notes */
--    if (fill_note_info(&info, signr, env) < 0)
+-    if ((mm = vma_init()) == NULL)
 -        goto out;
-+    fill_note_info(&info, signr, env);
++    vma_init(&mm);
  
-     offset += sizeof (elf);                             /* elf header */
-     offset += (segs + 1) * sizeof (struct elf_phdr);    /* program headers */
+-    walk_memory_regions(mm, vma_walker);
+-    segs = vma_get_mapping_count(mm);
++    walk_memory_regions(&mm, vma_walker);
++    segs = vma_get_mapping_count(&mm);
+ 
+     /*
+      * Construct valid coredump ELF header.  We also
+@@ -4701,7 +4692,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+      * Write program headers for memory regions mapped in
+      * the target process.
+      */
+-    for (vma = vma_first(mm); vma != NULL; vma = vma_next(vma)) {
++    for (vma = vma_first(&mm); vma != NULL; vma = vma_next(vma)) {
+         (void) memset(&phdr, 0, sizeof (phdr));
+ 
+         phdr.p_type = PT_LOAD;
+@@ -4738,7 +4729,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+     /*
+      * Finally we can dump process memory into corefile as well.
+      */
+-    for (vma = vma_first(mm); vma != NULL; vma = vma_next(vma)) {
++    for (vma = vma_first(&mm); vma != NULL; vma = vma_next(vma)) {
+         abi_ulong addr;
+         abi_ulong end;
+ 
+@@ -4767,8 +4758,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+ 
+  out:
+     free_note_info(&info);
+-    if (mm != NULL)
+-        vma_delete(mm);
++    vma_delete(&mm);
+     (void) close(fd);
+ 
+     if (errno != 0)
 -- 
 2.34.1
 
