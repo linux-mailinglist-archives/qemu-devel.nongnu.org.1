@@ -2,71 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D7B786DE8B
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 10:45:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 930D986DEB7
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 10:59:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfzRV-0003LV-0B; Fri, 01 Mar 2024 04:44:37 -0500
+	id 1rfzej-0004K8-CZ; Fri, 01 Mar 2024 04:58:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rfzRS-0003Kz-E1
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 04:44:34 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rfzRQ-0007HJ-58
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 04:44:34 -0500
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8Axuuh7o+Fl4T0TAA--.29011S3;
- Fri, 01 Mar 2024 17:44:27 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxXRN3o+Fl0p1LAA--.4895S3; 
- Fri, 01 Mar 2024 17:44:25 +0800 (CST)
-Subject: Re: [PATCH v5 00/17] Add boot LoongArch elf kernel with FDT
-From: gaosong <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, richard.henderson@linaro.org,
- philmd@linaro.org, maobibo@loongson.cn, zhaotianrui@loongson.cn,
- lixianglai@loongson.cn, imammedo@redhat.com, anisinha@redhat.com,
- mst@redhat.com
-References: <20240301093839.663947-1-gaosong@loongson.cn>
-Message-ID: <b97acf96-6bb7-be47-0f27-34dee5820523@loongson.cn>
-Date: Fri, 1 Mar 2024 17:44:23 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rfzeh-0004K0-Tq
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 04:58:15 -0500
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rfzeg-0001WV-86
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 04:58:15 -0500
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-512bd533be0so2358446e87.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 01:58:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1709287092; x=1709891892; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=p7Nz36NxR8qvY2H7jEW3v72OWco5samcr05svY3dMww=;
+ b=ix7ZpYR6mW+P5bZvFYi5+zS2mXmdPjuBDciDofQVY23ut41iuVJy3TJKiy1Xiz4ztv
+ EeEKukbHYORIG3vPYqMndRPLvE0Vpa8i6FOj9BTemf1Fc05RuDKGb5ZQzxW1iG7MXh9c
+ NmXNrZxyriFQQOyrPiBHwH0ogpXL4fBtzgOBVTDcUSJ+bWmwcHjE/FWnqnA/apQjBTPF
+ 4L7tRceDe7NMwkLt8syDnfVQdRBOHqpuA8Q0NsOg5vGbhWyAo494+iUsEURsMsdGlrJ2
+ +2KbB0xGjL3gG1wPqG5AxCmS4vH9SmiwD8VFvjhGGpWSUN58PViU7xmfHqA7g+3j4I7b
+ 6xDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709287092; x=1709891892;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=p7Nz36NxR8qvY2H7jEW3v72OWco5samcr05svY3dMww=;
+ b=k9v/SkjJOMeEKidyslr6XpI//RD07AkYHkicSJFTJ711hlZVQqGcEhJiNEs8RuDYF/
+ koX0Qfthxos2z0kA0keSfSeDRlQbJpSJYs04aOAH+3tQ+GeUF6L6V4NLlGAxtnCRset3
+ Od20pppu4mXTAFDmSwoNFsnuY4YSffCrJWqry6sN0od6DT73y1Bf4gQF0Ts0zSF7r9K/
+ gAm5XdynKat3alWnaKoiKPiVggj4J36m6VoId6wL5zgRH3WnhwGy3tXA91qk8aVN6KV4
+ ZXFQywuodx1SKPZoxbIAQ954VQR11jhcoVTFUtZPMlQ27kJyLMIcG0Y3CbpLJm8UTaJA
+ 3+AQ==
+X-Gm-Message-State: AOJu0YwiOYZoXFCFMRZp7HQA4agXuSw5fPXKAYgJkmTU4mKi+qZ8h1BX
+ lWm7Yi9/fz5qyqiw66Cp02V2ddAktMc4bwJS8nN21RewWRdHn/qVhYoHohOvilYimJYCgrl/VP7
+ RLmE=
+X-Google-Smtp-Source: AGHT+IEP6q5465mOvSeTkU8p+Xvt7+yYBMhPmYE2Y1B1HNVddTVUQFMyuopFWYtksFDqQWSRjygTGQ==
+X-Received: by 2002:ac2:5508:0:b0:512:bdd3:1539 with SMTP id
+ j8-20020ac25508000000b00512bdd31539mr934579lfk.37.1709287092313; 
+ Fri, 01 Mar 2024 01:58:12 -0800 (PST)
+Received: from [192.168.1.24] ([102.35.208.160])
+ by smtp.gmail.com with ESMTPSA id
+ m17-20020a056000009100b0033e17341ebesm2614549wrx.117.2024.03.01.01.58.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 01 Mar 2024 01:58:12 -0800 (PST)
+Message-ID: <349de033-c966-4b99-a852-78b93a41e555@linaro.org>
+Date: Fri, 1 Mar 2024 13:58:07 +0400
 MIME-Version: 1.0
-In-Reply-To: <20240301093839.663947-1-gaosong@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 08/12] tests/plugin/bb: migrate to new per_vcpu API
 Content-Language: en-US
-X-CM-TRANSID: AQAAf8BxXRN3o+Fl0p1LAA--.4895S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxGry8ur1UAw15AryxJr4kKrX_yoW5XrWfpF
- W7Zr13Grs5JrZ7Ar9av343Xr90yrn7Gr12v3W3Kry8CrZFvF17Z3WxAr9rZFy7t3y0gryq
- vr1Fkw1jga15J3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GF
- ylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8xu
- ctUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-4.176, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Alexandre Iooss
+ <erdnaxe@crans.org>, Eduardo Habkost <eduardo@habkost.net>
+References: <20240226091446.479436-1-pierrick.bouvier@linaro.org>
+ <20240226091446.479436-9-pierrick.bouvier@linaro.org>
+ <87o7bz9wrn.fsf@draig.linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <87o7bz9wrn.fsf@draig.linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-lf1-x134.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,92 +101,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
-
-If there are no new comments, I'll add this series to the loongarch-next 
-branch next week.
-
-Thanks.
-Song Gao
-
-ÔÚ 2024/3/1 ÏÂÎç5:38, Song Gao Ð´µÀ:
-> Hi, All
->
-> We already support boot efi kernel with bios, but not support boot elf kernel.
-> This series adds boot elf kernel with FDT.
->
-> 'LoongArch supports ACPI and FDT. The information that needs to be passed
->   to the kernel includes the memmap, the initrd, the command line, optionally
->   the ACPI/FDT tables, and so on'  see [1].
->
-> Patch 2-8 : Create efi system table, and three efi configuration table
->              boot_memmap, initd, FDT.
-> Patch 9-17 : Fixes FDT problems.
->
-> Test:
->    - Start kernel
->      See [2] start_kernel.sh
->    - Start qcow2
->      See [2] start_qcow2.sh
->
-> V5:
->    - Rebase;
->
-> V4:
->    - patch 3 change slave_boot_code[] to const, and 'static void *p ' to
->      'void *p';
->    - patch 4 fixes build error;
->    - patch 10-13, add project and commit link.
->
-> V3:
->    - Load initrd at  kernel_high + 4 * kernel_size;
->    - Load 'boot_rom' at [0 - 1M], the 'boot_rom' includes
->      slave_boot_code, cmdline_buf and systab_tables;
->    - R-b and rebase.
->
-> V2:
->    - FDT pcie node adds cells 'msi-map';
->
->
-> [1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/arch/loongarch/booting.rst?h=v6.7-rc4
->
-> [2]: https://github.com/gaosong-loongson/loongarch-binary/releases
->
-> Please review!
->
-> Thanks.
-> Song Gao
->
-> Song Gao (17):
->    hw/loongarch: Move boot fucntions to boot.c
->    hw/loongarch: Add load initrd
->    hw/loongarch: Add slave cpu boot_code
->    hw/loongarch: Add init_cmdline
->    hw/loongarch: Init efi_system_table
->    hw/loongarch: Init efi_boot_memmap table
->    hw/loongarch: Init efi_initrd table
->    hw/loongarch: Init efi_fdt table
->    hw/loongarch: Fix fdt memory node wrong 'reg'
->    hw/loongarch: fdt adds cpu interrupt controller node
->    hw/loongarch: fdt adds Extend I/O Interrupt Controller
->    hw/loongarch: fdt adds pch_pic Controller
->    hw/loongarch: fdt adds pch_msi Controller
->    hw/loongarch: fdt adds pcie irq_map node
->    hw/loongarch: fdt remove unused irqchip node
->    hw/loongarch: Add cells missing from uart node
->    hw/loongarch: Add cells missing from rtc node
->
->   include/hw/intc/loongarch_extioi.h |   1 +
->   include/hw/loongarch/boot.h        | 109 +++++++++
->   include/hw/loongarch/virt.h        |  14 ++
->   include/hw/pci-host/ls7a.h         |   2 +
->   target/loongarch/cpu.h             |   2 +
->   hw/loongarch/boot.c                | 330 ++++++++++++++++++++++++++
->   hw/loongarch/virt.c                | 364 ++++++++++++++++-------------
->   hw/loongarch/meson.build           |   1 +
->   8 files changed, 661 insertions(+), 162 deletions(-)
->   create mode 100644 include/hw/loongarch/boot.h
->   create mode 100644 hw/loongarch/boot.c
->
-
+T24gMi8yOS8yNCA2OjIxIFBNLCBBbGV4IEJlbm7DqWUgd3JvdGU6DQo+IFBpZXJyaWNrIEJv
+dXZpZXIgPHBpZXJyaWNrLmJvdXZpZXJAbGluYXJvLm9yZz4gd3JpdGVzOg0KPiANCj4+IFNp
+Z25lZC1vZmYtYnk6IFBpZXJyaWNrIEJvdXZpZXIgPHBpZXJyaWNrLmJvdXZpZXJAbGluYXJv
+Lm9yZz4NCj4gDQo+IEkgZGlkIG5vdGljZSB0aGVyZSBpcyBhIGRpc2NyZXBhbmN5IGJldHdl
+ZW4gd2hhdCBsaWJpc25zIGFuZCBsaWJiDQo+IHJlcG9ydC4gVGhlIGxpYmIgbG9va3MgbGlr
+ZSBhbiBvdmVyY291bnQgc28gSSB3b25kZXIgaWYgdGhlcmUgYXJlIHNvbWUNCj4gaW5zdHJ1
+Y3Rpb25zIHdlIGFyZSBub3QgcGlja2luZyB1cCBidXQgSSBjYW4ndCBzZWUgd2hlcmUgdGhh
+dCB3b3VsZCBiZS4NCj4gDQo+ICAgIOKenCAgLi9xZW11LWhwcGEgLXBsdWdpbiAuL3Rlc3Rz
+L3BsdWdpbi9saWJpbnNuLnNvIC1wbHVnaW4gLi90ZXN0cy9wbHVnaW4vbGliYmIuc28saW5s
+aW5lPXRydWUgLWQgcGx1Z2luICAuL3Rlc3RzL3RjZy9ocHBhLWxpbnV4LXVzZXIvc2hhNTEy
+DQo+ICAgIDEuLjEwDQo+ICAgIG9rIDEgLSBkb190ZXN0KCZ0ZXN0c1tpXSkNCj4gICAgb2sg
+MiAtIGRvX3Rlc3QoJnRlc3RzW2ldKQ0KPiAgICBvayAzIC0gZG9fdGVzdCgmdGVzdHNbaV0p
+DQo+ICAgIG9rIDQgLSBkb190ZXN0KCZ0ZXN0c1tpXSkNCj4gICAgb2sgNSAtIGRvX3Rlc3Qo
+JnRlc3RzW2ldKQ0KPiAgICBvayA2IC0gZG9fdGVzdCgmdGVzdHNbaV0pDQo+ICAgIG9rIDcg
+LSBkb190ZXN0KCZ0ZXN0c1tpXSkNCj4gICAgb2sgOCAtIGRvX3Rlc3QoJnRlc3RzW2ldKQ0K
+PiAgICBvayA5IC0gZG9fdGVzdCgmdGVzdHNbaV0pDQo+ICAgIG9rIDEwIC0gZG9fdGVzdCgm
+dGVzdHNbaV0pDQo+ICAgIENQVTA6IGJiJ3M6IDU0MjgyLCBpbnNuczogNzc1Njk3DQo+ICAg
+IFRvdGFsOiBiYidzOiA1NDI4MiwgaW5zbnM6IDc3NTY5Nw0KPiAgICBjcHUgMCBpbnNuczog
+Nzc0ODI3DQo+ICAgIHRvdGFsIGluc25zOiA3NzQ4MjcNCj4gDQo+IEFsdGhvdWdoIHdlaXJk
+bHkgbWF5YmUgb25seSBhbiBocHBhIHRoaW5nLiBSaWNoYXJkPw0KPiANCg0KRG8geW91IG9i
+c2VydmUgdGhlIGV4YWN0IHNhbWUgbnVtYmVyIGlmIHlvdSBydW4gb25seSBvbmUgb2YgdGhl
+IHBsdWdpbj8NCg0KYmIgY291bnQgbnVtYmVyIG9mIGluc3RydWN0aW9ucyBpbiBhbiBleGVj
+dXRlZCBibG9jaywgd2hpbGUgaW5zbiANCmVmZmVjdGl2ZWx5IGNvdW50IGV2ZXJ5IGluc3Ry
+dWN0aW9ucyByYW4uDQpNYXliZSB0aGVyZSBpcyBocHBhIHNwZWNpZml0eSB0aGF0IG1ha2Vz
+IHNvbWUgdGIgZXhpdCBpbiB0aGUgbWlkZGxlLCANCnRodXMgZXhlY3V0aW5nIGxlc3MgaW5z
+dHJ1Y3Rpb25zIHRoYW4gZXhwZWN0ZWQgZnJvbSBiYiBjb3VudC4NCg0KSSBkb24ndCBrbm93
+IGhvdyB0byByZXByb2R1Y2UgdGhpcyB0ZXN0LiBEaWQgeW91IHJ1biBpdCBmcm9tIGEgc3Bl
+Y2lmaWMgDQpkb2NrZXIgZW52Pw0KDQo+ICAgIOKenCAgLi9xZW11LWFhcmNoNjQgLXBsdWdp
+biAuL3Rlc3RzL3BsdWdpbi9saWJpbnNuLnNvIC1wbHVnaW4gLi90ZXN0cy9wbHVnaW4vbGli
+YmIuc28saW5saW5lPXRydWUgLWQgcGx1Z2luICAuL3Rlc3RzL3RjZy9hYXJjaDY0LWxpbnV4
+LXVzZXIvc2hhNTEyDQo+ICAgIDEuLjEwDQo+ICAgIG9rIDEgLSBkb190ZXN0KCZ0ZXN0c1tp
+XSkNCj4gICAgb2sgMiAtIGRvX3Rlc3QoJnRlc3RzW2ldKQ0KPiAgICBvayAzIC0gZG9fdGVz
+dCgmdGVzdHNbaV0pDQo+ICAgIG9rIDQgLSBkb190ZXN0KCZ0ZXN0c1tpXSkNCj4gICAgb2sg
+NSAtIGRvX3Rlc3QoJnRlc3RzW2ldKQ0KPiAgICBvayA2IC0gZG9fdGVzdCgmdGVzdHNbaV0p
+DQo+ICAgIG9rIDcgLSBkb190ZXN0KCZ0ZXN0c1tpXSkNCj4gICAgb2sgOCAtIGRvX3Rlc3Qo
+JnRlc3RzW2ldKQ0KPiAgICBvayA5IC0gZG9fdGVzdCgmdGVzdHNbaV0pDQo+ICAgIG9rIDEw
+IC0gZG9fdGVzdCgmdGVzdHNbaV0pDQo+ICAgIENQVTA6IGJiJ3M6IDQxNTEzLCBpbnNuczog
+MzAyNjcxDQo+ICAgIFRvdGFsOiBiYidzOiA0MTUxMywgaW5zbnM6IDMwMjY3MQ0KPiAgICBj
+cHUgMCBpbnNuczogMzAyNjcxDQo+ICAgIHRvdGFsIGluc25zOiAzMDI2NzENCj4gDQo+IEFu
+eXdheToNCj4gDQo+IFJldmlld2VkLWJ5OiBBbGV4IEJlbm7DqWUgPGFsZXguYmVubmVlQGxp
+bmFyby5vcmc+DQo+IA0K
 
