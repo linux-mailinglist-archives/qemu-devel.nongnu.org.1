@@ -2,76 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9286786ECCD
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:15:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9F8586ECA8
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:08:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgBxo-0004uC-HW; Fri, 01 Mar 2024 18:06:50 -0500
+	id 1rgBxw-0004v5-Qp; Fri, 01 Mar 2024 18:06:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgBxd-0004rt-UN
+ id 1rgBxf-0004ru-As
  for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:42 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgBxa-0004DV-Ry
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:37 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1dc5d0162bcso25434825ad.0
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:06:34 -0800 (PST)
+ id 1rgBxb-0004DX-DN
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:38 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1dc1e7c0e29so10569735ad.1
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:06:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709334392; x=1709939192; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709334394; x=1709939194; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jFfW1DmYHFMf19W3HAUQWeg/5lBH99MdAkdqkDNLv3I=;
- b=QaWCJ4tqxnwojuuu2XZbWDjRPNE8LZs9erbE1yxXt7g7r0TfMZzcLMQhmP9POdh016
- mFKHwA0KCx99uPZOTlE8HJ8sDxuHXj4a2tB/nSyIlzMjktTmBYwBnKu55IOIMq9266g7
- YYrNwqVEPcU5n7SRGCRx2N+3lTUCh++USkL9AHoNPpXUIvsWCiI6HCRKdvN9VA8CWfvO
- srS96wOEIqhdFlGR2OYPUcOvp5w4E5h5y46TN4JpzNYf23fIHIlEFsTPDR41Vt9GV0mD
- d3VzmFGasZ5TWwOJXa/yVorbTPhTaxwHfJGnAMlZ6SG0MMxCKyJGFG001S2YWOuHu23u
- 9Naw==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=wXgOJaiR1gNovC/J+sG7U6tnXruxoEFoxj+FOnROhG4=;
+ b=VUZKnmVb4gRnkIfqOOA3tmn2P7jczQKV0KdZk/F77Wj+QrSKvo4d5e/TrtMnHXpyVv
+ /fMJERW/1zXpqFop1Uwd4/LTSfaqmQVr/hlXfJeWJCtU8okQx7GTj9l8Ngfzf+vsRX2e
+ Ync08Dly4gQ1E89W0LPI3XyjialFHo7QP2rRE6bAW67zmWXpWgJlir/Ah+2xE12Yz6Z8
+ LGj1Da5h2xYx2O3FlKImpp/TqhrmnBrjR2o8UDi9Wyku7WgR6oTIZ7r0EurnRsh9eCIh
+ 2jGPJI6Xykicngj3VLHLmfp9KSisC/M2tWzyAWFCL5ukgtDbR3AldZhbT1ALRKDIHnVG
+ Q+7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709334392; x=1709939192;
+ d=1e100.net; s=20230601; t=1709334394; x=1709939194;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jFfW1DmYHFMf19W3HAUQWeg/5lBH99MdAkdqkDNLv3I=;
- b=WCzUx9hLNB5ohBrv1Yv47cdWaqJbGYZZ6GIOPNKJTq4Kk24dcwU42AyULrcbDGM4kr
- Kvvybk/EXe+sH9NGsIg1YZzTb6d0EoZmo7rwf5nHKxBUjGoN7EedHLp0K6dKNIgYR3Ng
- DUSEw5RZdy7gttOJJXgzgqI24GZVvXQ/BGTGD7MV58kvJoIA2Q6Xr8Wyb6mRTCXOOw9R
- 8lvAm5FkP0+ZN9atg1dFvlMMOcrQi8yzg/lGwAvsiqmivmztOXgyfocE8X+CHjSXPtSU
- /KQA7d3Cofc09HGb7wGIk1eMHRvvAWnWJefRrP70hkljHHQu41NdI7h4EJi7+YB4qBTw
- S8jQ==
-X-Gm-Message-State: AOJu0Yy2PlRsyHjsP+u3NdbzIyfKcJ50S0oqQOt5KrBWPvVz4z6jLEEH
- sGVeSrk33Ha6W9Qtxl3bdv+cjDDoyQWttcmG8L78acXoZdgAn04RMhbj6eR/BK7XY1GfkjO2wq8
- S
-X-Google-Smtp-Source: AGHT+IG0GtjAMANkWQJRGbfEz40ZPliBwNaaKDTMAo7IoH0sOookM6bsq6mkQI+mH6JqWjhdLg+dvQ==
-X-Received: by 2002:a17:903:41ca:b0:1db:d66e:cd15 with SMTP id
- u10-20020a17090341ca00b001dbd66ecd15mr4038015ple.59.1709334392669; 
- Fri, 01 Mar 2024 15:06:32 -0800 (PST)
+ bh=wXgOJaiR1gNovC/J+sG7U6tnXruxoEFoxj+FOnROhG4=;
+ b=KViexqNvB2Fyy7ukrXSgZlbv3CrkIBZmuFrIG3e1l0bwUqkVEzKcn6OdIEI4ORSus0
+ 1e020yWhV9wxnHypPgGQEAEbBma1nJORRvxxemlvhmKM58Qu60h+zCewGaLxcjjY4tSg
+ /IMwOjSuqMKmlSNIxAT9kUCuCt3Oyc0Fv0pzazhUZrEpLP368ti0IIsHbeF8hmdCC2lw
+ Z4qpAbs8VtTFWXecO6TDBBoqXr6EQ+Xjv3ygnlPHeAcPPKTdlOPvxpUpbpE48J49B2g7
+ YEKXvnrPLu6I7jeb8y4k0pwbzGP4qYRVDxX1ekYWKwmTFx3ApoRAB4rz/tbX83S5Lzkc
+ /UGA==
+X-Gm-Message-State: AOJu0YwhTlTi3ydRoxWKm8JVTw5YATNe3TpMcLPyTwoQ1UhNG7tBAGTT
+ l9rnYLDOwbGi0pE80ywc03SsT6WKQZIwJD+plu6lr0XboytWC2RDktbDCUGrmDaqnrvVKDDA5NN
+ w
+X-Google-Smtp-Source: AGHT+IF0r/H/bNsoIxp487FatF2QSINwXu5gAR2ULcUadQF69X45vs/chCu6KBG3ldusgIr/k4NBPg==
+X-Received: by 2002:a17:902:ccc2:b0:1dc:f16c:de0c with SMTP id
+ z2-20020a170902ccc200b001dcf16cde0cmr2469911ple.65.1709334393861; 
+ Fri, 01 Mar 2024 15:06:33 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- lc11-20020a170902fa8b00b001dc668e145asm3988580plb.200.2024.03.01.15.06.31
+ lc11-20020a170902fa8b00b001dc668e145asm3988580plb.200.2024.03.01.15.06.32
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 15:06:32 -0800 (PST)
+ Fri, 01 Mar 2024 15:06:33 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 08/60] linux-user/elfload: Lock cpu list and mmap during
- elf_core_dump
-Date: Fri,  1 Mar 2024 13:05:27 -1000
-Message-Id: <20240301230619.661008-9-richard.henderson@linaro.org>
+Subject: [PATCH 09/60] linux-user/elfload: Size corefile before opening
+Date: Fri,  1 Mar 2024 13:05:28 -1000
+Message-Id: <20240301230619.661008-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301230619.661008-1-richard.henderson@linaro.org>
 References: <20240301230619.661008-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,56 +91,162 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not allow changes to the set of cpus and memory regions
-while we are dumping core.
+Verify the size of the corefile vs the rlimit before
+opening and creating the core file at all.
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ linux-user/elfload.c | 83 +++++++++++++++++++++++---------------------
+ 1 file changed, 44 insertions(+), 39 deletions(-)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 16dd08a828..6f9da721d7 100644
+index 6f9da721d7..bad01bd2ef 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -4537,13 +4537,11 @@ static void fill_note_info(struct elf_note_info *info,
-     }
- 
-     /* read and fill status of all threads */
--    WITH_QEMU_LOCK_GUARD(&qemu_cpu_list_lock) {
--        CPU_FOREACH(cpu) {
--            if (cpu == thread_cpu) {
--                continue;
--            }
--            fill_thread_info(info, cpu_env(cpu));
-+    CPU_FOREACH(cpu) {
-+        if (cpu == thread_cpu) {
-+            continue;
-         }
-+        fill_thread_info(info, cpu_env(cpu));
-     }
+@@ -4270,6 +4270,16 @@ static int vma_walker(void *priv, target_ulong start, target_ulong end,
+     return (0);
  }
  
-@@ -4643,6 +4641,9 @@ static int elf_core_dump(int signr, const CPUArchState *env)
-         return 0;
-     }
- 
-+    cpu_list_lock();
-+    mmap_lock();
++static size_t size_note(const char *name, size_t datasz)
++{
++    size_t namesz = strlen(name) + 1;
 +
++    namesz = ROUND_UP(namesz, 4);
++    datasz = ROUND_UP(datasz, 4);
++
++    return sizeof(struct elf_note) + namesz + datasz;
++}
++
+ static void fill_note(struct memelfnote *note, const char *name, int type,
+                       unsigned int sz, void *data)
+ {
+@@ -4428,27 +4438,9 @@ static int dump_write(int fd, const void *ptr, size_t size)
+ {
+     const char *bufp = (const char *)ptr;
+     ssize_t bytes_written, bytes_left;
+-    struct rlimit dumpsize;
+-    off_t pos;
+ 
+     bytes_written = 0;
+-    getrlimit(RLIMIT_CORE, &dumpsize);
+-    if ((pos = lseek(fd, 0, SEEK_CUR))==-1) {
+-        if (errno == ESPIPE) { /* not a seekable stream */
+-            bytes_left = size;
+-        } else {
+-            return pos;
+-        }
+-    } else {
+-        if (dumpsize.rlim_cur <= pos) {
+-            return -1;
+-        } else if (dumpsize.rlim_cur == RLIM_INFINITY) {
+-            bytes_left = size;
+-        } else {
+-            size_t limit_left=dumpsize.rlim_cur - pos;
+-            bytes_left = limit_left >= size ? size : limit_left ;
+-        }
+-    }
++    bytes_left = size;
+ 
+     /*
+      * In normal conditions, single write(2) should do but
+@@ -4622,16 +4614,15 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+ {
+     const CPUState *cpu = env_cpu((CPUArchState *)env);
+     const TaskState *ts = (const TaskState *)cpu->opaque;
+-    struct vm_area_struct *vma = NULL;
++    struct vm_area_struct *vma;
+     struct elf_note_info info;
+     struct elfhdr elf;
+     struct elf_phdr phdr;
+     struct rlimit dumpsize;
+     struct mm_struct mm;
+-    off_t offset = 0, data_offset = 0;
+-    int segs = 0;
++    off_t offset, note_offset, data_offset;
++    int segs, cpus, ret;
+     int fd = -1;
+-    int ret;
+ 
+     if (prctl(PR_GET_DUMPABLE) == 0) {
+         return 0;
+@@ -4646,10 +4637,36 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+ 
      /*
       * Walk through target process memory mappings and
-      * set up structure containing this information.  After
-@@ -4760,6 +4761,8 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+-     * set up structure containing this information.  After
+-     * this point vma_xxx functions can be used.
++     * set up structure containing this information.
+      */
+     vma_init(&mm);
++    walk_memory_regions(&mm, vma_walker);
++    segs = vma_get_mapping_count(&mm);
++
++    cpus = 0;
++    CPU_FOREACH(cpu) {
++        cpus++;
++    }
++
++    offset = sizeof(struct elfhdr);
++    offset += (segs + 1) * sizeof(struct elf_phdr);
++    note_offset = offset;
++
++    offset += size_note("CORE", ts->info->auxv_len);
++    offset += size_note("CORE", sizeof(struct target_elf_prpsinfo));
++    offset += size_note("CORE", sizeof(struct target_elf_prstatus)) * cpus;
++    offset = ROUND_UP(offset, ELF_EXEC_PAGESIZE);
++    data_offset = offset;
++
++    for (vma = vma_first(&mm); vma != NULL; vma = vma_next(vma)) {
++        offset += vma_dump_size(vma);
++    }
++
++    /* Do not dump if the corefile size exceeds the limit. */
++    if (dumpsize.rlim_cur != RLIM_INFINITY && dumpsize.rlim_cur < offset) {
++        errno = 0;
++        goto out;
++    }
  
-  out:
-     ret = -errno;
-+    mmap_unlock();
-+    cpu_list_unlock();
-     free_note_info(&info);
-     vma_delete(&mm);
-     close(fd);
+     {
+         g_autofree char *corefile = core_dump_filename(ts);
+@@ -4660,9 +4677,6 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+         goto out;
+     }
+ 
+-    walk_memory_regions(&mm, vma_walker);
+-    segs = vma_get_mapping_count(&mm);
+-
+     /*
+      * Construct valid coredump ELF header.  We also
+      * add one more segment for notes.
+@@ -4674,26 +4688,17 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+     /* fill in the in-memory version of notes */
+     fill_note_info(&info, signr, env);
+ 
+-    offset += sizeof (elf);                             /* elf header */
+-    offset += (segs + 1) * sizeof (struct elf_phdr);    /* program headers */
+-
+     /* write out notes program header */
+-    fill_elf_note_phdr(&phdr, info.notes_size, offset);
++    fill_elf_note_phdr(&phdr, info.notes_size, note_offset);
+ 
+-    offset += info.notes_size;
+     if (dump_write(fd, &phdr, sizeof (phdr)) != 0)
+         goto out;
+ 
+-    /*
+-     * ELF specification wants data to start at page boundary so
+-     * we align it here.
+-     */
+-    data_offset = offset = roundup(offset, ELF_EXEC_PAGESIZE);
+-
+     /*
+      * Write program headers for memory regions mapped in
+      * the target process.
+      */
++    offset = data_offset;
+     for (vma = vma_first(&mm); vma != NULL; vma = vma_next(vma)) {
+         (void) memset(&phdr, 0, sizeof (phdr));
+ 
 -- 
 2.34.1
 
