@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13A8F86E881
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 19:33:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B35086E882
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 19:34:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rg7gS-0006Sw-K8; Fri, 01 Mar 2024 13:32:36 -0500
+	id 1rg7gT-0006TL-Nd; Fri, 01 Mar 2024 13:32:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rg7gM-0006Pm-2p
+ id 1rg7gM-0006Pk-0d
  for qemu-devel@nongnu.org; Fri, 01 Mar 2024 13:32:31 -0500
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rg7gH-0008L1-4t
+ id 1rg7gI-0008L9-2g
  for qemu-devel@nongnu.org; Fri, 01 Mar 2024 13:32:29 -0500
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-51323dfce59so2189137e87.3
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-33da51fd636so1086021f8f.3
  for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 10:32:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709317943; x=1709922743; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709317944; x=1709922744; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UNDEo4dAsr/AT3VVoZZKQQgUvPjllXjX2BLfBSLR17k=;
- b=aXdzVT++PLr+PjxLQx3c1QKVP1/m1hmvhh4JPTQremNfKvBZVLg0pRY0riAZhG2AUM
- 6wnFlsmlsPb8seOSO5uvlELAey+XTWWfSFrn8DwG/9Z+5hKQ4NVN35ohZbwUmjcOWoSw
- LgeOXJ1rOkGmHimRD7v7SFntFyfPKZUkhonwUJ18HT5yMU6W12q7hPXFzs4UmdJIv6Z1
- WFEALF/fiOC/OWq6YgGJzS9H04vRM4qS5/Bdtg/ML2SM0wYwa6MDP4ZTMUJccpMZNmd1
- D1B0JdjoHm0bEBaiY07hXWRDGH6WKTmuILutwM9X3IVEFADl+5LBpVFIl2Wb6LwnoxC8
- 3VYw==
+ bh=8Rb0Z7zjLpv30F7lDtK7tZWHoJA0TmXTubgs4mA4pQs=;
+ b=MDWAURfxkz8z3ktjdnS8WzraE7ZAIszwTYbmzISy8n8MOddPCu7nm5jeHXR1JZvHsW
+ 3n42knSqliKeV4F77qRWUW9orQzMcS2Eag1rDOrf3xkr+EzJNIiSij8EB1NGqG8WxHTC
+ Dx8ZG3xANL1VoKHujV+fl8ZIT9z5Fg8hQhZd8d7oSHyp9avHsIc8jDaVJTOp5WzlESs9
+ PCfJSwod2PQo5NocnA60FWhWFTbFXKQgMMzukmK4q3afIGpjH5GAB4bCzmPL4Td/esXm
+ n1sTQTexbXwJLKQdc5TTEOK8PoeDV7Trtt+lNgSl+dC+vDM9av6xbUCF7WmtiQVYRVMd
+ RRUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709317943; x=1709922743;
+ d=1e100.net; s=20230601; t=1709317944; x=1709922744;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UNDEo4dAsr/AT3VVoZZKQQgUvPjllXjX2BLfBSLR17k=;
- b=AwV6Vsr42qiA/8CMyKXdcDexs30FK9AhBOhZLc7EnAszdtjI04u9xb/gEQ/LHJS67I
- AcDQkNjAZMBLyIHEopiswrIkr47cptj56gKzAPrf5uz+OgPmwZwIYEK/CYw2Z5rU1w57
- jwwDAPO89czyRmuyv7h+RwUaAitd09Gyg2CLC71iq32XbdomkjazXoILHlp4q1v7qvX0
- Dk9A2Pp3xYOEs0hS2onuv4rUuVsU2JlgwBiiQsrZd/9sF3DkRfLdBuGJF77B8U1zxiKA
- vzNUNgANWt/Z6VR++G3Wh9lcqVTzLeKFjNnfjZHsvxKfL2d7ZLxjYGKWiCZjb0pbDHOv
- MATQ==
+ bh=8Rb0Z7zjLpv30F7lDtK7tZWHoJA0TmXTubgs4mA4pQs=;
+ b=BjkPL9dR7ppo6LGwYBweNUZlWtPj8qbZsGBbLPiWV6uEn7ompPkVXWkwCpyz7Va7zx
+ BuoDH5WENprvdfNjDsbgVPTnIEGto7UZRYDB7EjePUnLBJ53FVk0o060hzN6UiDuR3aT
+ wjk2zFjL7SPhrxUp7jE4+D6Q+4UM3OYdT8th1Gk/Mosde109IBrQjVaZNrMCCSTy51xL
+ 8KlHuDzVSUK57FroUaF4xndGyPjnjIfzBtPkYy2VNLCYVmDrjp4aqsvkQu4XaEwjYLDw
+ H+kjB8nsNnrKrN2xHWn6DRFj8F09LCBgzyhsKskpF+KdFVV4lp6P+MxkXfmSXm0Atfvg
+ 6o7Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXMDY4xdQNxsN1sdGzgd/7acTZiWLJBNLTGMS7/+l0YjR92yOKxQq3tyDxsJNwbN7Zh4T6CEpkyJBCduVKdtlPGgNgDa9A=
-X-Gm-Message-State: AOJu0YzO5J5ebCAi+8rSTSBm0yT+yRQdadWp91TpwSg7RXva5Iiotl2A
- 0Lql2u7c5SkXnyw9O/srrojqS5wW2McrAeDmyrKBiHoZuPCIS2OExudT+jjzRaI=
-X-Google-Smtp-Source: AGHT+IGhu5yb6FSHuzKNlz1MdLMO+WnScCHuxsWgSuZ7kk8Cs1B/fV7uDE8/NA0aTqzNj++E/m4tnA==
-X-Received: by 2002:a05:6512:3a85:b0:513:360d:fe7b with SMTP id
- q5-20020a0565123a8500b00513360dfe7bmr1154114lfu.51.1709317943463; 
+ AJvYcCUYA1Nu9T2tLv9cfU3euWTBunhenygtSxiCj3Jv8RiIlj1rsDZEA0RIG5WLr0LSAqYsaEc/+9nXsEKsV9212szR5heTzR8=
+X-Gm-Message-State: AOJu0YyBVLEW/iyCiW6eC79uP1o5/AWM+mtfri/CDLcLEyW3Bx0WpGU+
+ 5Ee0RI2HjBgQPSJ7vnUTjZbmmJegOsR1pJnAhohjKYDUHnM1d+xjVIKiuvWIzDE=
+X-Google-Smtp-Source: AGHT+IGfEB9m/9/1BS3zGkUXOndMR4YofG/scuEAWoSoKR9sudNP8Cx4Lem6J186k2KgwBT7SpAoGw==
+X-Received: by 2002:adf:9ccd:0:b0:33e:1f94:c493 with SMTP id
+ h13-20020adf9ccd000000b0033e1f94c493mr2214804wre.65.1709317943986; 
  Fri, 01 Mar 2024 10:32:23 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -62,16 +62,16 @@ From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: [PATCH 5/8] target/arm: Implement new FEAT_ECV trap bits
-Date: Fri,  1 Mar 2024 18:32:16 +0000
-Message-Id: <20240301183219.2424889-6-peter.maydell@linaro.org>
+Subject: [PATCH 6/8] target/arm: Define CNTPCTSS_EL0 and CNTVCTSS_EL0
+Date: Fri,  1 Mar 2024 18:32:17 +0000
+Message-Id: <20240301183219.2424889-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301183219.2424889-1-peter.maydell@linaro.org>
 References: <20240301183219.2424889-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,162 +94,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The functionality defined by ID_AA64MMFR0_EL1.ECV == 1 is:
- * four new trap bits for various counter and timer registers
- * the CNTHCTL_EL2.EVNTIS and CNTKCTL_EL1.EVNTIS bits which control
-   scaling of the event stream. This is a no-op for us, because we don't
-   implement the event stream (our WFE is a NOP): all we need to do is
-   allow CNTHCTL_EL2.ENVTIS to be read and written.
- * extensions to PMSCR_EL1.PCT, PMSCR_EL2.PCT, TRFCR_EL1.TS and
-   TRFCR_EL2.TS: these are all no-ops for us, because we don't implement
-   FEAT_SPE or FEAT_TRF.
- * new registers CNTPCTSS_EL0 and NCTVCTSS_EL0 which are
-   "self-sychronizing" views of the CNTPCT_EL0 and CNTVCT_EL0, meaning
-   that no barriers are needed around their accesses. For us these
-   are just the same as the normal views, because all our sysregs are
-   inherently self-sychronizing.
+For FEAT_ECV, new registers CNTPCTSS_EL0 and CNTVCTSS_EL0 are
+defined, which are "self-synchronized" views of the physical and
+virtual counts as seen in the CNTPCT_EL0 and CNTVCT_EL0 registers
+(meaning that no barriers are needed around accesses to them to
+ensure that reads of them do not occur speculatively and out-of-order
+with other instructions).
 
-In this commit we implement the trap handling and permit the new
-CNTHCTL_EL2 bits to be written.
+For QEMU, all our system registers are self-synchronized, so we can
+simply copy the existing implementation of CNTPCT_EL0 and CNTVCT_EL0
+to the new register encodings.
+
+This means we now implement all the functionality required for
+ID_AA64MMFR0_EL1.ECV == 0b0001.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu-features.h |  5 ++++
- target/arm/helper.c       | 51 +++++++++++++++++++++++++++++++++++----
- 2 files changed, 51 insertions(+), 5 deletions(-)
+ target/arm/helper.c | 43 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
-diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index 7567854db63..b447ec5c0e6 100644
---- a/target/arm/cpu-features.h
-+++ b/target/arm/cpu-features.h
-@@ -741,6 +741,11 @@ static inline bool isar_feature_aa64_fgt(const ARMISARegisters *id)
-     return FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, FGT) != 0;
- }
- 
-+static inline bool isar_feature_aa64_ecv_traps(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, ECV) > 0;
-+}
-+
- static inline bool isar_feature_aa64_vh(const ARMISARegisters *id)
- {
-     return FIELD_EX64(id->id_aa64mmfr1, ID_AA64MMFR1, VH) != 0;
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 8ec61c12440..6c528903a9a 100644
+index 6c528903a9a..3441b14ba39 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -2530,6 +2530,11 @@ static CPAccessResult gt_counter_access(CPUARMState *env, int timeridx,
-              : !extract32(env->cp15.cnthctl_el2, 0, 1))) {
-             return CP_ACCESS_TRAP_EL2;
-         }
-+        if (has_el2 && timeridx == GTIMER_VIRT) {
-+            if (FIELD_EX64(env->cp15.cnthctl_el2, CNTHCTL, EL1TVCT)) {
-+                return CP_ACCESS_TRAP_EL2;
-+            }
-+        }
-         break;
-     }
-     return CP_ACCESS_OK;
-@@ -2573,6 +2578,11 @@ static CPAccessResult gt_timer_access(CPUARMState *env, int timeridx,
-                 }
-             }
-         }
-+        if (has_el2 && timeridx == GTIMER_VIRT) {
-+            if (FIELD_EX64(env->cp15.cnthctl_el2, CNTHCTL, EL1TVT)) {
-+                return CP_ACCESS_TRAP_EL2;
-+            }
-+        }
-         break;
-     }
-     return CP_ACCESS_OK;
-@@ -2982,6 +2992,14 @@ static void gt_cnthctl_write(CPUARMState *env, const ARMCPRegInfo *ri,
-     if (cpu_isar_feature(aa64_rme, cpu)) {
-         valid_mask |= R_CNTHCTL_CNTVMASK_MASK | R_CNTHCTL_CNTPMASK_MASK;
+@@ -3389,6 +3389,34 @@ static const ARMCPRegInfo generic_timer_cp_reginfo[] = {
+     },
+ };
+ 
++/*
++ * FEAT_ECV adds extra views of CNTVCT_EL0 and CNTPCT_EL0 which
++ * are "self-synchronizing". For QEMU all sysregs are self-synchronizing,
++ * so our implementations here are identical to the normal registers.
++ */
++static const ARMCPRegInfo gen_timer_ecv_cp_reginfo[] = {
++    { .name = "CNTVCTSS", .cp = 15, .crm = 14, .opc1 = 9,
++      .access = PL0_R, .type = ARM_CP_64BIT | ARM_CP_NO_RAW | ARM_CP_IO,
++      .accessfn = gt_vct_access,
++      .readfn = gt_virt_cnt_read, .resetfn = arm_cp_reset_ignore,
++    },
++    { .name = "CNTVCTSS_EL0", .state = ARM_CP_STATE_AA64,
++      .opc0 = 3, .opc1 = 3, .crn = 14, .crm = 0, .opc2 = 6,
++      .access = PL0_R, .type = ARM_CP_NO_RAW | ARM_CP_IO,
++      .accessfn = gt_vct_access, .readfn = gt_virt_cnt_read,
++    },
++    { .name = "CNTPCTSS", .cp = 15, .crm = 14, .opc1 = 8,
++      .access = PL0_R, .type = ARM_CP_64BIT | ARM_CP_NO_RAW | ARM_CP_IO,
++      .accessfn = gt_pct_access,
++      .readfn = gt_cnt_read, .resetfn = arm_cp_reset_ignore,
++    },
++    { .name = "CNTPCTSS_EL0", .state = ARM_CP_STATE_AA64,
++      .opc0 = 3, .opc1 = 3, .crn = 14, .crm = 0, .opc2 = 5,
++      .access = PL0_R, .type = ARM_CP_NO_RAW | ARM_CP_IO,
++      .accessfn = gt_pct_access, .readfn = gt_cnt_read,
++    },
++};
++
+ #else
+ 
+ /*
+@@ -3422,6 +3450,18 @@ static const ARMCPRegInfo generic_timer_cp_reginfo[] = {
+     },
+ };
+ 
++/*
++ * CNTVCTSS_EL0 has the same trap conditions as CNTVCT_EL0, so it also
++ * is exposed to userspace by Linux.
++ */
++static const ARMCPRegInfo gen_timer_ecv_cp_reginfo[] = {
++    { .name = "CNTVCTSS_EL0", .state = ARM_CP_STATE_AA64,
++      .opc0 = 3, .opc1 = 3, .crn = 14, .crm = 0, .opc2 = 6,
++      .access = PL0_R, .type = ARM_CP_NO_RAW | ARM_CP_IO,
++      .readfn = gt_virt_cnt_read,
++    },
++};
++
+ #endif
+ 
+ static void par_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
+@@ -9258,6 +9298,9 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+     if (arm_feature(env, ARM_FEATURE_GENERIC_TIMER)) {
+         define_arm_cp_regs(cpu, generic_timer_cp_reginfo);
      }
 +    if (cpu_isar_feature(aa64_ecv_traps, cpu)) {
-+        valid_mask |=
-+            R_CNTHCTL_EL1TVT_MASK |
-+            R_CNTHCTL_EL1TVCT_MASK |
-+            R_CNTHCTL_EL1NVPCT_MASK |
-+            R_CNTHCTL_EL1NVVCT_MASK |
-+            R_CNTHCTL_EVNTIS_MASK;
++        define_arm_cp_regs(cpu, gen_timer_ecv_cp_reginfo);
 +    }
- 
-     /* Clear RES0 bits */
-     value &= valid_mask;
-@@ -6564,7 +6582,6 @@ static CPAccessResult e2h_access(CPUARMState *env, const ARMCPRegInfo *ri,
- {
-     if (arm_current_el(env) == 1) {
-         /* This must be a FEAT_NV access */
--        /* TODO: FEAT_ECV will need to check CNTHCTL_EL2 here */
-         return CP_ACCESS_OK;
-     }
-     if (!(arm_hcr_el2_eff(env) & HCR_E2H)) {
-@@ -6573,6 +6590,30 @@ static CPAccessResult e2h_access(CPUARMState *env, const ARMCPRegInfo *ri,
-     return CP_ACCESS_OK;
- }
- 
-+static CPAccessResult access_el1nvpct(CPUARMState *env, const ARMCPRegInfo *ri,
-+                                      bool isread)
-+{
-+    if (arm_current_el(env) == 1) {
-+        /* This must be a FEAT_NV access with NVx == 101 */
-+        if (FIELD_EX64(env->cp15.cnthctl_el2, CNTHCTL, EL1NVPCT)) {
-+            return CP_ACCESS_TRAP_EL2;
-+        }
-+    }
-+    return e2h_access(env, ri, isread);
-+}
-+
-+static CPAccessResult access_el1nvvct(CPUARMState *env, const ARMCPRegInfo *ri,
-+                                      bool isread)
-+{
-+    if (arm_current_el(env) == 1) {
-+        /* This must be a FEAT_NV access with NVx == 101 */
-+        if (FIELD_EX64(env->cp15.cnthctl_el2, CNTHCTL, EL1NVVCT)) {
-+            return CP_ACCESS_TRAP_EL2;
-+        }
-+    }
-+    return e2h_access(env, ri, isread);
-+}
-+
- /* Test if system register redirection is to occur in the current state.  */
- static bool redirect_for_e2h(CPUARMState *env)
- {
-@@ -8398,14 +8439,14 @@ static const ARMCPRegInfo vhe_reginfo[] = {
-     { .name = "CNTP_CTL_EL02", .state = ARM_CP_STATE_AA64,
-       .opc0 = 3, .opc1 = 5, .crn = 14, .crm = 2, .opc2 = 1,
-       .type = ARM_CP_IO | ARM_CP_ALIAS,
--      .access = PL2_RW, .accessfn = e2h_access,
-+      .access = PL2_RW, .accessfn = access_el1nvpct,
-       .nv2_redirect_offset = 0x180 | NV2_REDIR_NO_NV1,
-       .fieldoffset = offsetof(CPUARMState, cp15.c14_timer[GTIMER_PHYS].ctl),
-       .writefn = gt_phys_ctl_write, .raw_writefn = raw_write },
-     { .name = "CNTV_CTL_EL02", .state = ARM_CP_STATE_AA64,
-       .opc0 = 3, .opc1 = 5, .crn = 14, .crm = 3, .opc2 = 1,
-       .type = ARM_CP_IO | ARM_CP_ALIAS,
--      .access = PL2_RW, .accessfn = e2h_access,
-+      .access = PL2_RW, .accessfn = access_el1nvvct,
-       .nv2_redirect_offset = 0x170 | NV2_REDIR_NO_NV1,
-       .fieldoffset = offsetof(CPUARMState, cp15.c14_timer[GTIMER_VIRT].ctl),
-       .writefn = gt_virt_ctl_write, .raw_writefn = raw_write },
-@@ -8424,14 +8465,14 @@ static const ARMCPRegInfo vhe_reginfo[] = {
-       .type = ARM_CP_IO | ARM_CP_ALIAS,
-       .fieldoffset = offsetof(CPUARMState, cp15.c14_timer[GTIMER_PHYS].cval),
-       .nv2_redirect_offset = 0x178 | NV2_REDIR_NO_NV1,
--      .access = PL2_RW, .accessfn = e2h_access,
-+      .access = PL2_RW, .accessfn = access_el1nvpct,
-       .writefn = gt_phys_cval_write, .raw_writefn = raw_write },
-     { .name = "CNTV_CVAL_EL02", .state = ARM_CP_STATE_AA64,
-       .opc0 = 3, .opc1 = 5, .crn = 14, .crm = 3, .opc2 = 2,
-       .type = ARM_CP_IO | ARM_CP_ALIAS,
-       .nv2_redirect_offset = 0x168 | NV2_REDIR_NO_NV1,
-       .fieldoffset = offsetof(CPUARMState, cp15.c14_timer[GTIMER_VIRT].cval),
--      .access = PL2_RW, .accessfn = e2h_access,
-+      .access = PL2_RW, .accessfn = access_el1nvvct,
-       .writefn = gt_virt_cval_write, .raw_writefn = raw_write },
- #endif
- };
+     if (arm_feature(env, ARM_FEATURE_VAPA)) {
+         ARMCPRegInfo vapa_cp_reginfo[] = {
+             { .name = "PAR", .cp = 15, .crn = 7, .crm = 4, .opc1 = 0, .opc2 = 0,
 -- 
 2.34.1
 
