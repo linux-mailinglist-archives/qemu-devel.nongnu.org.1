@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82AE986ECCC
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:15:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB0A86ECBB
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:11:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgBxX-0004q0-VT; Fri, 01 Mar 2024 18:06:32 -0500
+	id 1rgBxa-0004qo-Uv; Fri, 01 Mar 2024 18:06:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgBxT-0004pP-5o
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:27 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1rgBxU-0004pm-9P
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:29 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgBxR-0004CG-IC
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:26 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1dc1ff3ba1aso22774735ad.3
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:06:25 -0800 (PST)
+ id 1rgBxS-0004CK-Se
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:28 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1dcad814986so23696845ad.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:06:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709334384; x=1709939184; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709334385; x=1709939185; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WHvhcE4xVUGsA+1z7u9QEyHKVjaKd5k7EQymbD1rMkw=;
- b=GEJwmsmZnQu65aynPosZz4upVsiwc13h9zIiSXBGoaI20iaH6GV2ACvhgPtpwZB/L5
- 3VeqC4grZxzs0FF/04knQYU2RVFTahE72WCk/al0xsFCcEBXGOOQb8HbEKbPLgbyAfAO
- gPnA+2o5xPK/uD95X70NVX54SMWVT0Vh32owOxoIOUAUdwn+/ayMnmUvLFyq20Fl5WQe
- I1rYir96NZhnphnRzOLCEmN9JsMvl74yAukn+XMtvMvfnH6kKbwYDljr0hjHz7CZ4SIw
- DPcRCbvAcymfN4hKSrIB26XItFZx0WewmElLWzDsda5/qd8/lxzXWpmhHJMiBnfaNqFd
- h6hA==
+ bh=c1WCKXawMTZMOrVqL/DhlUtKi+hfbHIEOTuyKivWJBk=;
+ b=q5IUtvV72ltONvA3wjmO4J7+0yBxTs4zRFqXZl4BD/GD3U9BYvy868l+ZkjzERNZVX
+ 3Tn14kD9Vi+5M1onqgkdTEmX0b7/7xicBlQRu7dw9BLgj4gMmpp5t2U/rnO+3z5zyKko
+ pYj4aDYnmyFG5lfyh88P/kzFVmSeqjYncCFLkNHrVac6B5MBykgOwr0071Gp3QWBYFMC
+ aG6wlGO9kSWmibvrseAOD7i30yV3QaZY0Fb6UWNDPlBkAnVkb8sBAEq7uDTxjVmAbO/S
+ IJFMSkGqJS+JNq7p/XkYmncmfddaYzwXFFXbYFVAT3zYRduNiQ/clIUrC7smyEWHa8bJ
+ oPBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709334384; x=1709939184;
+ d=1e100.net; s=20230601; t=1709334385; x=1709939185;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WHvhcE4xVUGsA+1z7u9QEyHKVjaKd5k7EQymbD1rMkw=;
- b=C7eCdMtWdrajWTvsP2OJUSV+0cWlvyQiJId/Inpeug/JnDrsLnUguWjC+LiD+53RIR
- 5Cb3Ff0ad4zSO3Pvd2IBvfso7Fr9mRyV+xD1r4iWXj5gtbHpIABVYzFmYuOeowccaFcY
- v16PfU9MOS52oMm14i+gy2+DtOB30k1yJ2Jg7tS312ui417KgxK9+Zc/y49MsBwKQ4nV
- 4/gjkz1LdiGUuIkl7A9RpKobDwaAj12fl6CxiUmW/ulbDhLdwS2XUyFHV7DYtWQ7QRK/
- g+pg+QM0Ozu0iknFo4AcP4IUeZwTj/WIUUVFOcwgpC0bDSyuDPAhGSsGOjokMxhbykIW
- tzOw==
-X-Gm-Message-State: AOJu0YzIVMm8OYHt2IdgDuqGKvTfu1mluKIMW55SBWMZV/c1UVFrHQLb
- yYD8RJ2drM+90+hfCawyEErx11Fiz8JaSrSQMmTYsZc5FddsKoxEyqRNJJ+j5rAlCrEElXENift
- N
-X-Google-Smtp-Source: AGHT+IGXuMzPNCG2ninSEW85IirDktfLrDk5mC0qKi1W/tYxbDeMtNoNu/B5P9u+F0cwLcQNL3nZTg==
-X-Received: by 2002:a17:902:d491:b0:1db:c6a0:d023 with SMTP id
- c17-20020a170902d49100b001dbc6a0d023mr3659462plg.8.1709334383888; 
- Fri, 01 Mar 2024 15:06:23 -0800 (PST)
+ bh=c1WCKXawMTZMOrVqL/DhlUtKi+hfbHIEOTuyKivWJBk=;
+ b=UQQoSRWgEw/KWyihMfH4nVvVZfZ+HpR6TQyWFubYJQJznqvfOMjJ2VWOlwxLDnbdlB
+ USiwigGG5NBtGBgZdAoeW6Gec+uwNMqfTu2BubnPl9N4vV613ij9EyVDlxuzAWT5FQXn
+ R0R8X3nrOilLDYuMveUR5QOcf7XkevUp6EF96+ixKDeW+OE9neQF8Gtg3NtK+pUENaUW
+ M2yzfUuBbZbUY4AF76LAsoCc7OwcnxJMyEF26Hf+3Gq+ppRgoGpikwMsmX/V5+aRfNgh
+ Xa5HFeZL/Od0cmbZdN90JlT14SSxjWVaUr3HX4HLOZnnzG26kf5ZlAZjpPExQUbOUoH7
+ 6ryA==
+X-Gm-Message-State: AOJu0YyZ6as8eJzixMQY1uFWww6S1kzVsjsF3a+Dk9GKcYoWpGSwNfcn
+ WfyZ22aeoFFGUxYEwE/cI8usZYFQQQsRIhjS7zqd6pDZAx7l2beWEPzSHUCBVkew9LrVwMh4/pR
+ k
+X-Google-Smtp-Source: AGHT+IGa43dslZ5wNDgRMgJScgVk/chbWoY+U0rRfdvNugLCnbt8xz5I+iNhAb+kpZzG15JPHwwEtA==
+X-Received: by 2002:a17:902:d58b:b0:1dc:b6bf:fae8 with SMTP id
+ k11-20020a170902d58b00b001dcb6bffae8mr4337694plh.59.1709334385266; 
+ Fri, 01 Mar 2024 15:06:25 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- lc11-20020a170902fa8b00b001dc668e145asm3988580plb.200.2024.03.01.15.06.22
+ lc11-20020a170902fa8b00b001dc668e145asm3988580plb.200.2024.03.01.15.06.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 15:06:23 -0800 (PST)
+ Fri, 01 Mar 2024 15:06:24 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 01/60] linux-user/elfload: Disable core dump if getrlimit fails
-Date: Fri,  1 Mar 2024 13:05:20 -1000
-Message-Id: <20240301230619.661008-2-richard.henderson@linaro.org>
+Subject: [PATCH 02/60] linux-user/elfload: Merge init_note_info and
+ fill_note_info
+Date: Fri,  1 Mar 2024 13:05:21 -1000
+Message-Id: <20240301230619.661008-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301230619.661008-1-richard.henderson@linaro.org>
 References: <20240301230619.661008-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,29 +94,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not dump core at all if getrlimit fails; this ensures
-that dumpsize is valid throughout the function, not just
-for the initial test vs rlim_cur.
-
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ linux-user/elfload.c | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index b8eef893d0..fb47fe39c9 100644
+index fb47fe39c9..7b3a2c20f2 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -4673,7 +4673,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
-         return 0;
-     }
+@@ -4514,16 +4514,6 @@ static void fill_thread_info(struct elf_note_info *info, const CPUArchState *env
+     info->notes_size += note_size(&ets->notes[0]);
+ }
  
--    if (getrlimit(RLIMIT_CORE, &dumpsize) == 0 && dumpsize.rlim_cur == 0) {
-+    if (getrlimit(RLIMIT_CORE, &dumpsize) < 0 || dumpsize.rlim_cur == 0) {
-         return 0;
-     }
+-static void init_note_info(struct elf_note_info *info)
+-{
+-    /* Initialize the elf_note_info structure so that it is at
+-     * least safe to call free_note_info() on it. Must be
+-     * called before calling fill_note_info().
+-     */
+-    memset(info, 0, sizeof (*info));
+-    QTAILQ_INIT(&info->thread_list);
+-}
+-
+ static int fill_note_info(struct elf_note_info *info,
+                           long signr, const CPUArchState *env)
+ {
+@@ -4532,6 +4522,9 @@ static int fill_note_info(struct elf_note_info *info,
+     TaskState *ts = (TaskState *)cpu->opaque;
+     int i;
  
++    memset(info, 0, sizeof (*info));
++    QTAILQ_INIT(&info->thread_list);
++
+     info->notes = g_new0(struct memelfnote, NUMNOTES);
+     if (info->notes == NULL)
+         return (-ENOMEM);
+@@ -4665,8 +4658,6 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+     int segs = 0;
+     int fd = -1;
+ 
+-    init_note_info(&info);
+-
+     errno = 0;
+ 
+     if (prctl(PR_GET_DUMPABLE) == 0) {
 -- 
 2.34.1
 
