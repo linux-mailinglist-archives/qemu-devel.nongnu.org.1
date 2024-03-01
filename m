@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64D5786ECE3
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:19:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E08A786ECE5
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:19:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgC2e-0005fq-OB; Fri, 01 Mar 2024 18:11:48 -0500
+	id 1rgC2m-0005tM-0U; Fri, 01 Mar 2024 18:12:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgC1h-0003xC-Dd
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:54 -0500
-Received: from mail-il1-x129.google.com ([2607:f8b0:4864:20::129])
+ id 1rgC1j-0003z0-5z
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:57 -0500
+Received: from mail-io1-xd31.google.com ([2607:f8b0:4864:20::d31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgC1f-0005tx-Pp
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:49 -0500
-Received: by mail-il1-x129.google.com with SMTP id
- e9e14a558f8ab-365c9d37995so8900715ab.0
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:10:45 -0800 (PST)
+ id 1rgC1g-0005zZ-G5
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:50 -0500
+Received: by mail-io1-xd31.google.com with SMTP id
+ ca18e2360f4ac-7bf7e37dc60so153737639f.3
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:10:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709334644; x=1709939444; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709334647; x=1709939447; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mnZ6WGfrFw+xqlID/o+DhOWiMwOEcHx/bjX2Yi5iHU4=;
- b=Fcp1o/8eEYU+rAHbsGUFfNVqvaSxMiVYRpVqnpudw/WTgNzqt4niI7u4bxZRaDqMab
- kKsdjabPM2PK5vWHCMeTj/3z/tkPWipIKfPEJHT2qMx3E5S3HPqlo3ciRnmgqoZj4LPB
- LSz+UB5vINbNq3/VEh2xn428nlWmWOm5Wc8xYmWXGhULsovBhjHEeUnq8j6c50BfV8if
- U5HHzkG0s/kaxz9XFlDcasdIs4jiNvLDyMGRbFyUKeo19JIBAPF5lXGVrCKbVNhU9foB
- 9GQq55k4ArmR9BTzD0qBgss+Y7VxLt2U7kcqPCCF5JXFopzr9q+nBHTkBTPY7M0VOqzp
- j2yQ==
+ bh=uYpmvWcDo9XJ8PEub2Zz6TVzblWCi4U6QK1BUlbCzJU=;
+ b=rz0l0CRPD52P1/IiZ2iwz4hGlImpScXr9Tb4XpejrLboRmqleCCLcLPRynWoL+gP4P
+ HEw6CqhqlxRivCm3xzmnZ73DzQzicuLGDrmCNLVkwXSYhw1nIBUrLiqrQQWOoZr+k+5G
+ V1jz5FUmimXUqvc7Ohnhx4woSKqzQv4mx8qr5767gMKTcGv05qkB2b+pV0jXd3f7Hu54
+ oBKQ+tIJWk6/zOs7dXP9/62zhU8PzAJTHX+I805H1FFJHJiD9TrHJdyJWFrSil4u6U3b
+ r89c3Y1Br9pfJJbbgE1jGO9kwfvcYzv49D57LNOmWCInyEdXXFqgxUvHyoySQb/ne10b
+ 0sOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709334644; x=1709939444;
+ d=1e100.net; s=20230601; t=1709334647; x=1709939447;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mnZ6WGfrFw+xqlID/o+DhOWiMwOEcHx/bjX2Yi5iHU4=;
- b=bBbkX+sepe6tajrrhCi6Vew7PUfPoZL7pO+9Dt/+hEbfoU+XzQCtOJyFduGiFdR1zd
- epe3YMdKSfhPaDld9DZr2mUYZfLVxZZAWRkzyofLiADmYIQQK3epwkkgzQBXATOwozW/
- vh3Etd+yH6RBQdgnvlR9FrhQLVY0QdnsiuDII0q1J6pNBp/Ssc1zNmE2Z+bvvnYqTnmQ
- 4eZiSzd54UFziUAjQXi7So+WoTI/hSjwSxk591knvQpZK1Igenxp2Ea9pzmJ666aW3Do
- CXgi1hkKAOB+e901wF5oxSGG2P03+allQeaugx0pYGcIY5w3/wtwUTqTQcbsUJrB1RiM
- xegg==
-X-Gm-Message-State: AOJu0Yyzlfvl3iHoqhBYj/FUxFz2l0+Y7xQMZFAxGl3Vf9aqCyXxv1Yf
- 8fxYDar70mcxxzfjvhxlSu43Xo9a5x1Q2n8iLYf+I6YxsuEJjIOqwAy5pWjKCdX1zdmensZRqnS
- D
-X-Google-Smtp-Source: AGHT+IGZOFWZ+KOoQQ0ys4Mu0J69poau1G6EUdBz3ea/KJr4jAItk2B/aMtL0xJI85+zF5MSApmIrA==
-X-Received: by 2002:a05:6e02:2196:b0:363:c576:d6d5 with SMTP id
- j22-20020a056e02219600b00363c576d6d5mr3651397ila.4.1709334644356; 
- Fri, 01 Mar 2024 15:10:44 -0800 (PST)
+ bh=uYpmvWcDo9XJ8PEub2Zz6TVzblWCi4U6QK1BUlbCzJU=;
+ b=SkmxainzSjWl5tGPtNW9yPjF3gXS5/QjWRLVGpjmGyTG5ox3c8zWk1axgUdY51Q/QK
+ G1j7n+cv6+Q80MAOIVHfN684Nah8SYwY2ZsKFLc7iOtYuKkQnRlujzF0+QGL5r2e4LJR
+ uKzmhrEnLgd/MrrDlOCeRgHXrZI8JaUuxcjznsV7uFJF9wOd2MKMBpHKcZApjPfTduL8
+ 4XDTRVAEO3SD0+o1jDzPtLI0C0W7thaJ6DLfQ7Tnjf+UXgUn0HY0htiTBcfHxjWJolF4
+ eQTePNDDdkBe5uhlQT5byFiojUiVyhRpSPh6KoDwA06rg/YQu7WbJtmiOg3necp7+Mwf
+ 9g6w==
+X-Gm-Message-State: AOJu0Yx8mbT1ONniHlmBecUDpPGK92lu4Uosb6JPAcNcUxWPmmt4J9yr
+ b1eLbPQzJHu/38pU42+DRwkM4Ku13LFYYQMrnYbLIWP+HI2tLil6auXbg38y5ernsv7d+wvxjmV
+ p
+X-Google-Smtp-Source: AGHT+IGGH/WBnFl85+77p4ZFwydJXf7fR1m/tFQO56IckGlZ5SXUZ+ydF7C4tidKFC7F7pg4eKPXjA==
+X-Received: by 2002:a6b:c988:0:b0:7c7:fd10:ddf3 with SMTP id
+ z130-20020a6bc988000000b007c7fd10ddf3mr3060461iof.18.1709334647317; 
+ Fri, 01 Mar 2024 15:10:47 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- c2-20020a634e02000000b005e438fe702dsm3449407pgb.65.2024.03.01.15.10.43
+ c2-20020a634e02000000b005e438fe702dsm3449407pgb.65.2024.03.01.15.10.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 15:10:43 -0800 (PST)
+ Fri, 01 Mar 2024 15:10:46 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 55/60] tcg/optimize: fix uninitialized variable
-Date: Fri,  1 Mar 2024 13:06:14 -1000
-Message-Id: <20240301230619.661008-56-richard.henderson@linaro.org>
+Cc: Song Gao <gaosong@loongson.cn>
+Subject: [PATCH 57/60] linux-user/loongarch64: Remove TARGET_FORCE_SHMLBA
+Date: Fri,  1 Mar 2024 13:06:16 -1000
+Message-Id: <20240301230619.661008-58-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301230619.661008-1-richard.henderson@linaro.org>
 References: <20240301230619.661008-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::129;
- envelope-from=richard.henderson@linaro.org; helo=mail-il1-x129.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d31;
+ envelope-from=richard.henderson@linaro.org; helo=mail-io1-xd31.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,39 +92,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+The kernel abi was changed with
 
-The variables uext_opc and sext_opc are used without initialization if
-TCG_TARGET_extract_i{32,64}_valid returns false.  The result, depending
-on the compiler, might be the generation of extract and sextract opcodes
-with invalid offset and count, or just random data in the TCG opcode
-stream.
+    commit d23b77953f5a4fbf94c05157b186aac2a247ae32
+    Author: Huacai Chen <chenhuacai@kernel.org>
+    Date:   Wed Jan 17 12:43:08 2024 +0800
 
-Fixes: ceb9ee06b71 ("tcg/optimize: Handle TCG_COND_TST{EQ,NE}", 2024-02-03)
-Cc: Richard Henderson <pbonzini@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240228110641.287205-1-pbonzini@redhat.com>
+        LoongArch: Change SHMLBA from SZ_64K to PAGE_SIZE
+
+during the v6.8 cycle.
+
+Reviewed-by: Song Gao <gaosong@loongson.cn>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/optimize.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ linux-user/loongarch64/target_syscall.h | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/tcg/optimize.c b/tcg/optimize.c
-index 79e701652b..752cc5c56b 100644
---- a/tcg/optimize.c
-+++ b/tcg/optimize.c
-@@ -2102,7 +2102,8 @@ static bool fold_remainder(OptContext *ctx, TCGOp *op)
+diff --git a/linux-user/loongarch64/target_syscall.h b/linux-user/loongarch64/target_syscall.h
+index 8b5de52124..39f229bb9c 100644
+--- a/linux-user/loongarch64/target_syscall.h
++++ b/linux-user/loongarch64/target_syscall.h
+@@ -38,11 +38,4 @@ struct target_pt_regs {
+ #define TARGET_MCL_FUTURE  2
+ #define TARGET_MCL_ONFAULT 4
  
- static void fold_setcond_tst_pow2(OptContext *ctx, TCGOp *op, bool neg)
- {
--    TCGOpcode and_opc, sub_opc, xor_opc, neg_opc, shr_opc, uext_opc, sext_opc;
-+    TCGOpcode and_opc, sub_opc, xor_opc, neg_opc, shr_opc;
-+    TCGOpcode uext_opc = 0, sext_opc = 0;
-     TCGCond cond = op->args[3];
-     TCGArg ret, src1, src2;
-     TCGOp *op2;
+-#define TARGET_FORCE_SHMLBA
+-
+-static inline abi_ulong target_shmlba(CPULoongArchState *env)
+-{
+-    return 64 * KiB;
+-}
+-
+ #endif
 -- 
 2.34.1
 
