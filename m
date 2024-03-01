@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE5686EE87
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 05:14:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 800DF86EE84
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 05:14:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgGjG-0005KR-W8; Fri, 01 Mar 2024 23:12:07 -0500
+	id 1rgGjL-0005Og-OD; Fri, 01 Mar 2024 23:12:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgC1a-0003uI-BO
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:45 -0500
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1rgC1h-0003xE-I7
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:54 -0500
+Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgC1Y-0005kF-Ub
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:42 -0500
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6da202aa138so1999747b3a.2
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:10:40 -0800 (PST)
+ id 1rgC1e-0005oh-Bo
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:49 -0500
+Received: by mail-ot1-x335.google.com with SMTP id
+ 46e09a7af769-6e4d1448d31so422776a34.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:10:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709334640; x=1709939440; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709334643; x=1709939443; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KYeT1V/wjgovpdrb0SONHx5NJHYkyLqzQDA/KKTsreA=;
- b=bfqqnoQXRtRu9rKmqZdnmlMhk0tdTgJzXJIUT59zAG1arQWm6Hpj1QAIg6CIpJBW1a
- 0yZRluUF2/griNTzM85SXrU5j4IbQIRJ0GIEPDC4tCQAsHdzEVuDHmQbABCqFcQvU+kX
- fMVL4SaFktGze/Dcv9nJoPSLzs1kteE9rlKFqmuvY1Rpc+Qo634bzt37woi8/72X4tZt
- w2l0lNoVI+usYtiWIdNRm9THgSTMmuWuF4CRC8EuY9eZdTg05jE600AvyopV5i8nzFvq
- wer8nx6+suO0fOPtG+/q8PCEU6uQxEgrvuOqs2Y8QQpmvvKqTWzKrVCbeWK7OmW+bkg3
- 5HxA==
+ bh=oX3KBb2f91IJNoXnuOHaXnVXtCOeG00rM8fZbeZEXms=;
+ b=Y2kzzu143heSNZAnx63b8aw5dRDxKrc/OcgUUwdoPxIsZzYPtCJeUEInAam2leFT/7
+ OJWBmXrWxCpqrmMAHv9/zM7y42ANO2QqCk4ZQcqaPGvGDCaVakniGB1GnD7cTMCwFny0
+ Hfck20eFgXAfXMVL3/7Tp9RBbWcTCmz4GH1jEDsXjlagfUtBt8ButtRfO6IjPMz6Wgce
+ 8gHpcCCZPRUxcvN40DtUu5sg12yHb07Hu4G8sAHDCXwb8pGBTnvcBXY+f7U6aNr7phx4
+ LDi0e3j22cNKJ+ZmESOPoirHs2ZfxRsjJJmU4F7i7ephhij55y5vkmuQIUukJVP0thFP
+ z6Eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709334640; x=1709939440;
+ d=1e100.net; s=20230601; t=1709334643; x=1709939443;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KYeT1V/wjgovpdrb0SONHx5NJHYkyLqzQDA/KKTsreA=;
- b=Co/4c+kigvCJYmHFz8RabJXgzvPuHdwLqrAf6xbKP14TDkSCjmN+F5SgcmLWy2gpoc
- Mkw+ffA4CSnYaYQb0AiiBeKVSVGECX+mRQ/jzX+9pGyL2VnChY4fiYc2fHusVGTG8D0F
- OicgOS1If6J5+L0xhiCKatnl50gZxbkQtxxJByW0A+45B5F0QhUluGLTs+YKGHViOgNs
- 412DIwv7qzm4AHQKcEvFnyyMc0l4GX+16WyABcwECptqXhAuO+HENg43AzxTxkMcqAxr
- wLBB9dPCXi6fhqSGFNCOUc5VwwZEs1qE8tAxHjxnIhyC82mdSMXX6vwO2Nxn85+WON7x
- 9otw==
-X-Gm-Message-State: AOJu0YwnS/IZWrEa5eAxuA1fwevHCntG/TsM/5Wj2hIkQ8eftrs/Rw33
- fuw2RMFsS4fydA2/hsuEDDITXnX386m1nhUHmYskY8U2kva042L3WBZWpUQlt1ZBbELv1d6Ntq1
- /
-X-Google-Smtp-Source: AGHT+IGJh5ix0cyG+rqbDvsBx9duUZtS+JkxYUCrQUqduERa6SbOksHb3uU7JwefIXbCUs2yugHEpg==
-X-Received: by 2002:a05:6a00:27a0:b0:6e5:5f6a:4966 with SMTP id
- bd32-20020a056a0027a000b006e55f6a4966mr3790759pfb.6.1709334639677; 
- Fri, 01 Mar 2024 15:10:39 -0800 (PST)
+ bh=oX3KBb2f91IJNoXnuOHaXnVXtCOeG00rM8fZbeZEXms=;
+ b=FJip0sxO86oMVF9KjHLV3hQERMQ4x5jmmwggcn3qnf2lsUtRn7sPB4EOdj8qhv6TqX
+ 8BnNF7rSirCcDtSldWMY3H4A9pBbZj9iAHyXY9QwuHFDF2htXHhaHrd6J4W4lV5p0gX+
+ KmaU2exSJrciybCOrboWxYTiyYC+A/qOZuNH/LRreBUDoDLOmS9ULSZ8C27CzRQaVi5+
+ 9J7Cud5ulFxbh1VIUos0hbVh5NRiJfTmRICKLKHlpKXT7B9g7Rv6RfCZauLXOTLgyoKb
+ o4m4JWUROv3ywWjYb12xsK7ht8jNBzsSMdXqo5IBOB4S8AkmXFzR+5Pc070NUd6k3YSE
+ ecIQ==
+X-Gm-Message-State: AOJu0YzrJa1ujp3K0oAojLRZqIxlst4BwHobXVaroUIGl5OsP9rlWdZX
+ XxYrkK5617b3hVye4xotRhFlAOOlN0OrEnHLXN5Lv5P3IHkN5Q4vZvxx/m2c7MFaFtLwpabtnQD
+ O
+X-Google-Smtp-Source: AGHT+IGYT6rOdxYNGYmG9lq+JzEiBc+aH2WXs27wwuG9ORbe/HMz89jYWOwNu0syDc24f7WyWilc4Q==
+X-Received: by 2002:a9d:63d3:0:b0:6e2:e2d7:55fa with SMTP id
+ e19-20020a9d63d3000000b006e2e2d755famr3233569otl.14.1709334642949; 
+ Fri, 01 Mar 2024 15:10:42 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- c2-20020a634e02000000b005e438fe702dsm3449407pgb.65.2024.03.01.15.10.38
+ c2-20020a634e02000000b005e438fe702dsm3449407pgb.65.2024.03.01.15.10.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 15:10:39 -0800 (PST)
+ Fri, 01 Mar 2024 15:10:42 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Helge Deller <deller@gmx.de>
-Subject: [PATCH 52/60] target/ppc: Enable TARGET_PAGE_BITS_VARY for user-only
-Date: Fri,  1 Mar 2024 13:06:11 -1000
-Message-Id: <20240301230619.661008-53-richard.henderson@linaro.org>
+Cc: Alexey Sheplyakov <asheplyakov@yandex.ru>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 54/60] linux-user: Remove pgb_dynamic alignment assertion
+Date: Fri,  1 Mar 2024 13:06:13 -1000
+Message-Id: <20240301230619.661008-55-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301230619.661008-1-richard.henderson@linaro.org>
 References: <20240301230619.661008-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,37 +94,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since ppc binaries are generally built for multiple
-page sizes, it is trivial to allow the page size to vary.
+The assertion was never correct, because the alignment is a composite
+of the image alignment and SHMLBA.  Even if the image alignment didn't
+match the image address, an assertion would not be correct -- more
+appropriate would be an error message about an ill formed image.  But
+the image cannot be held to SHMLBA under any circumstances.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Fixes: ee94743034b ("linux-user: completely re-write init_guest_space")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2157
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Acked-by: Helge Deller <deller@gmx.de>
-Message-Id: <20240102015808.132373-33-richard.henderson@linaro.org>
+Reported-by: Alexey Sheplyakov <asheplyakov@yandex.ru>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/ppc/cpu-param.h | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ linux-user/elfload.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/target/ppc/cpu-param.h b/target/ppc/cpu-param.h
-index 0a0416e0a8..b7ad52de03 100644
---- a/target/ppc/cpu-param.h
-+++ b/target/ppc/cpu-param.h
-@@ -31,6 +31,13 @@
- # define TARGET_PHYS_ADDR_SPACE_BITS 36
- # define TARGET_VIRT_ADDR_SPACE_BITS 32
- #endif
--#define TARGET_PAGE_BITS 12
-+
-+#ifdef CONFIG_USER_ONLY
-+/* Allow user-only to vary page size from 4k */
-+# define TARGET_PAGE_BITS_VARY
-+# define TARGET_PAGE_BITS_MIN 12
-+#else
-+# define TARGET_PAGE_BITS 12
-+#endif
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index cc2013c7b4..0c299a7c15 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -3022,8 +3022,6 @@ static void pgb_dynamic(const char *image_name, uintptr_t guest_loaddr,
+     uintptr_t brk, ret;
+     PGBAddrs ga;
  
- #endif
+-    assert(QEMU_IS_ALIGNED(guest_loaddr, align));
+-
+     /* Try the identity map first. */
+     if (pgb_addr_set(&ga, guest_loaddr, guest_hiaddr, true)) {
+         brk = (uintptr_t)sbrk(0);
 -- 
 2.34.1
 
