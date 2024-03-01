@@ -2,68 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7707086E6EF
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 18:13:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A622D86E73B
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 18:30:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rg6Qi-0007En-A7; Fri, 01 Mar 2024 12:12:16 -0500
+	id 1rg6h6-0003p5-Bz; Fri, 01 Mar 2024 12:29:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rg6QZ-000769-O8; Fri, 01 Mar 2024 12:12:07 -0500
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1rg6h3-0003nX-3O
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:29:09 -0500
+Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rg6QW-0003Lp-B9; Fri, 01 Mar 2024 12:12:06 -0500
-Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:621c:0:640:f00b:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 5076760020;
- Fri,  1 Mar 2024 20:12:02 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:a531::1:29])
- by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id jBfRBH2IW0U0-kFH6o4A2; Fri, 01 Mar 2024 20:12:01 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1709313121;
- bh=KUr7yduC4WGYLkI0ZluwEvEHGIvocSnfkVy26dA/tvY=;
- h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=D3S2uDVVg8gNOZVW3rsaWOgZ3lRvRLnJp1/cLs/RI5lcGsU85ybH7J8656RzkXJIZ
- AAvjr4fEwNRZCACoC/7u87lOg7FgJ7W+sgRQE/J7aumnH88swE9QV2YmZHhK5gB+wv
- i524T4gMkeLfswROMsS8c+5MEAfDp7uhKmDd+fNQ=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: qemu-block@nongnu.org,
-	raphael@enfabrica.net,
-	mst@redhat.com
-Cc: kwolf@redhat.com, hreitz@redhat.com, pbonzini@redhat.com,
- berrange@redhat.com, eduardo@habkost.net, dave@treblig.org,
- armbru@redhat.com, eblake@redhat.com, qemu-devel@nongnu.org,
- vsementsov@yandex-team.ru, yc-core@yandex-team.ru
-Subject: [PATCH v2 6/6] qapi: introduce CONFIG_READ event
-Date: Fri,  1 Mar 2024 20:11:43 +0300
-Message-Id: <20240301171143.809835-7-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240301171143.809835-1-vsementsov@yandex-team.ru>
-References: <20240301171143.809835-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1rg6gx-0005cz-Va
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:29:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
+ Content-Type; bh=f5fHI1WZm9P8rsavhEHcpNgTmkQ137E2qketcbg3xBs=; b=c0Qr4KqKsBCz
+ OnJVA6jbMdm9VNadpKV/jXShN4ShY3jau/U3skZPqr+jT7lGwWIFDfvk5fbrybvittHZqngXFbjvQ
+ iF0WvTAd7RY2DcrRUruBGMfWirc3BTmEig2ANwJdleGJJvyYbGWtAkQICcoZehypmBz+izup5Difp
+ rIcMOMEq7dPid31J8apcQhrobnDkyH45mtdjOdaxohIS1lVxbbKtGsuA91Bil5WC5XeyGGtq/1Hb2
+ mU8AtYoRNRwB5LQMuOCtMejWhENyo5cYLw+C4uysogOcSL+o10mFs5uQPdGFUtnko81VqxZNbizol
+ Y040cWn8YmRl7ZK9m+25YQ==;
+Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
+ by relay.virtuozzo.com with esmtp (Exim 4.96)
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1rg6fM-0022sZ-0Q;
+ Fri, 01 Mar 2024 18:28:56 +0100
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+To: qemu-devel@nongnu.org
+Cc: michael.roth@amd.com, kkostiuk@redhat.com, marcandre.lureau@redhat.com,
+ philmd@linaro.org, andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
+Subject: [PATCH v2 0/7] qga/commands-posix: replace code duplicating commands
+ with a helper
+Date: Fri,  1 Mar 2024 19:28:51 +0200
+Message-Id: <20240301172858.665135-1-andrey.drobyshev@virtuozzo.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=130.117.225.111;
+ envelope-from=andrey.drobyshev@virtuozzo.com; helo=relay.virtuozzo.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -75,149 +65,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Send a new event when guest reads virtio-pci config after
-virtio_notify_config() call.
+v1 --> v2:
+ * Replace commit for guest-get-fsinfo: instead of reporting statvfs(3)
+   values directly, keep the old ones but add an additional optional
+   field 'total-bytes-root', only reported in POSIX.  Also tweak the
+   fields description in qga/qapi-schema.json to document where the
+   values come from.
 
-That's useful to check that guest fetched modified config, for example
-after resizing disk backend.
+v1: https://lists.nongnu.org/archive/html/qemu-devel/2024-02/msg05766.html
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- hw/virtio/virtio-pci.c |  9 +++++++++
- include/monitor/qdev.h |  2 ++
- monitor/monitor.c      |  1 +
- qapi/qdev.json         | 26 ++++++++++++++++++++++++++
- stubs/qdev.c           |  6 ++++++
- system/qdev-monitor.c  |  6 ++++++
- 6 files changed, 50 insertions(+)
+Andrey Drobyshev (7):
+  qga: guest-get-fsinfo: add optional 'total-bytes-root' field
+  qga: introduce ga_run_command() helper for guest cmd execution
+  qga/commands-posix: qmp_guest_shutdown: use ga_run_command helper
+  qga/commands-posix: qmp_guest_set_time: use ga_run_command helper
+  qga/commands-posix: execute_fsfreeze_hook: use ga_run_command helper
+  qga/commands-posix: use ga_run_command helper when suspending via
+    sysfs
+  qga/commands-posix: qmp_guest_set_user_password: use ga_run_command
+    helper
 
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index 1197341a3c..fab49a2410 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -23,6 +23,7 @@
- #include "hw/boards.h"
- #include "hw/virtio/virtio.h"
- #include "migration/qemu-file-types.h"
-+#include "monitor/qdev.h"
- #include "hw/pci/pci.h"
- #include "hw/pci/pci_bus.h"
- #include "hw/qdev-properties.h"
-@@ -530,6 +531,10 @@ static uint64_t virtio_pci_config_read(void *opaque, hwaddr addr,
-     }
-     addr -= config;
- 
-+    if (vdev->generation > 0) {
-+        qdev_virtio_config_read_event(DEVICE(proxy));
-+    }
-+
-     switch (size) {
-     case 1:
-         val = virtio_config_readb(vdev, addr);
-@@ -1735,6 +1740,10 @@ static uint64_t virtio_pci_device_read(void *opaque, hwaddr addr,
-         return UINT64_MAX;
-     }
- 
-+    if (vdev->generation > 0) {
-+        qdev_virtio_config_read_event(DEVICE(proxy));
-+    }
-+
-     switch (size) {
-     case 1:
-         val = virtio_config_modern_readb(vdev, addr);
-diff --git a/include/monitor/qdev.h b/include/monitor/qdev.h
-index 1d57bf6577..fc9a834dca 100644
---- a/include/monitor/qdev.h
-+++ b/include/monitor/qdev.h
-@@ -36,4 +36,6 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
-  */
- const char *qdev_set_id(DeviceState *dev, char *id, Error **errp);
- 
-+void qdev_virtio_config_read_event(DeviceState *dev);
-+
- #endif
-diff --git a/monitor/monitor.c b/monitor/monitor.c
-index 01ede1babd..5b06146503 100644
---- a/monitor/monitor.c
-+++ b/monitor/monitor.c
-@@ -316,6 +316,7 @@ static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
-     [QAPI_EVENT_VSERPORT_CHANGE]   = { 1000 * SCALE_MS },
-     [QAPI_EVENT_MEMORY_DEVICE_SIZE_CHANGE] = { 1000 * SCALE_MS },
-     [QAPI_EVENT_HV_BALLOON_STATUS_REPORT] = { 1000 * SCALE_MS },
-+    [QAPI_EVENT_VIRTIO_CONFIG_READ] = { 300 * SCALE_MS },
- };
- 
- /*
-diff --git a/qapi/qdev.json b/qapi/qdev.json
-index 6ece164172..ffc5e3be18 100644
---- a/qapi/qdev.json
-+++ b/qapi/qdev.json
-@@ -179,3 +179,29 @@
- { 'command': 'device-sync-config',
-   'features': [ 'unstable' ],
-   'data': {'id': 'str'} }
-+
-+##
-+# @VIRTIO_CONFIG_READ:
-+#
-+# Emitted whenever guest reads virtio device config after config change.
-+#
-+# @device: device name
-+#
-+# @path: device path
-+#
-+# Features:
-+#
-+# @unstable: The event is experimental.
-+#
-+# Since: 9.0
-+#
-+# Example:
-+#
-+#     <- { "event": "VIRTIO_CONFIG_READ",
-+#          "data": { "device": "virtio-net-pci-0",
-+#                    "path": "/machine/peripheral/virtio-net-pci-0" },
-+#          "timestamp": { "seconds": 1265044230, "microseconds": 450486 } }
-+##
-+{ 'event': 'VIRTIO_CONFIG_READ',
-+  'features': [ 'unstable' ],
-+  'data': { '*device': 'str', 'path': 'str' } }
-diff --git a/stubs/qdev.c b/stubs/qdev.c
-index 6869f6f90a..ab6c4afe0b 100644
---- a/stubs/qdev.c
-+++ b/stubs/qdev.c
-@@ -26,3 +26,9 @@ void qapi_event_send_device_unplug_guest_error(const char *device,
- {
-     /* Nothing to do. */
- }
-+
-+void qapi_event_send_virtio_config_read(const char *device,
-+                                        const char *path)
-+{
-+    /* Nothing to do. */
-+}
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index b83b5d23c9..29b8242a2d 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -26,6 +26,7 @@
- #include "sysemu/runstate.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-qdev.h"
-+#include "qapi/qapi-events-qdev.h"
- #include "qapi/qmp/dispatch.h"
- #include "qapi/qmp/qdict.h"
- #include "qapi/qmp/qerror.h"
-@@ -1206,3 +1207,8 @@ bool qmp_command_available(const QmpCommand *cmd, Error **errp)
-     }
-     return true;
- }
-+
-+void qdev_virtio_config_read_event(DeviceState *dev)
-+{
-+    qapi_event_send_virtio_config_read(dev->id, dev->canonical_path);
-+}
+ qga/commands-posix.c | 389 +++++++++++++++++++------------------------
+ qga/commands-win32.c |   1 +
+ qga/qapi-schema.json |  12 +-
+ 3 files changed, 182 insertions(+), 220 deletions(-)
+
 -- 
-2.34.1
+2.39.3
 
 
