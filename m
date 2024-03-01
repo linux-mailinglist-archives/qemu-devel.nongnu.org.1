@@ -2,139 +2,138 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B7286E7A7
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 18:48:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05A8786E7A9
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 18:48:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rg6y0-0005Ng-2P; Fri, 01 Mar 2024 12:46:40 -0500
+	id 1rg6y0-0005OL-PM; Fri, 01 Mar 2024 12:46:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
- id 1rg6xx-0005LB-Sg
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:46:37 -0500
+ id 1rg6xy-0005LI-2j
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:46:38 -0500
 Received: from kudu.cherry.relay.mailchannels.net ([23.83.223.97])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
- id 1rg6xw-0000YM-1A
+ id 1rg6xw-0000YP-G5
  for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:46:37 -0500
 X-Sender-Id: _forwarded-from|134.3.94.10
 Received: from relay.mailchannels.net (localhost [127.0.0.1])
- by relay.mailchannels.net (Postfix) with ESMTP id AE8FF4C27CA
- for <qemu-devel@nongnu.org>; Fri,  1 Mar 2024 17:46:34 +0000 (UTC)
-Received: from outbound3.eu.mailhop.org (unknown [127.0.0.6])
+ by relay.mailchannels.net (Postfix) with ESMTP id 1A65D2C1084
+ for <qemu-devel@nongnu.org>; Fri,  1 Mar 2024 17:46:35 +0000 (UTC)
+Received: from outbound1f.eu.mailhop.org (unknown [127.0.0.6])
  (Authenticated sender: duocircle)
- by relay.mailchannels.net (Postfix) with ESMTPA id D18834C23BC
- for <qemu-devel@nongnu.org>; Fri,  1 Mar 2024 17:46:33 +0000 (UTC)
+ by relay.mailchannels.net (Postfix) with ESMTPA id 6D3662C1D98
+ for <qemu-devel@nongnu.org>; Fri,  1 Mar 2024 17:46:34 +0000 (UTC)
 ARC-Seal: i=2; s=arc-2022; d=mailchannels.net; t=1709315194; a=rsa-sha256;
  cv=pass;
- b=gD38D4j5V6gJCxe8cYB7p2EGUZLaa8dkdKh1SIymGM+vbReIy86lD6AXuraFk+6HFR/SSh
- bNrYBciTRu+bbeWA8YYmkOag48plgOxpxiYbBkua2YC+L/b7R3uc0I9wTAsyAftzT3eXG8
- vF65S8FDRmpj9KnB4TsHzEIG5YLa0iAygwjoOCaLqzCN65wRXUbZnaMv6+++wfqgUPr5lW
- ZoiThGCES3+G2eZJSjMi/W4veVu9RpT52ZzWL9C32sgptfu+VazPDTsosHUzK02YuZrU3F
- Jznz91pdX4Q9p/HLV5Ja/6DDd1raFzDMTX9kNDc1th86uDvU1rW01XXe6yj5xg==
+ b=NK/nXuJEYtIggWqN5LqUMXQH4/MIn6MtdVti59eC5SWDomPgUJhM5WBGn3F+INys8I5980
+ 22u8vobYaKPvd4x2EuTpRgYfsYV4gf8X/2LXvDr2SI4rFVZ/a7lA4tbMBr3ASS74y6bWFm
+ zMZlyLid1kfBzNDaoui6+bqOjsI4hUulhdlFC4f02e1vqHkaPXVYRG3MpmKA/MWLC1q03m
+ gfHWWc9z6i9in0QIdnrBN9T+U3qucpHgAchuDpjdgjIrFpErFy1/hxTV7wA7FkpDOf0FUR
+ rrbZ4oxBuFxAoqTb0AKnHzGYnJQ5bVQzEieWe+3u7vVaxxZwtFRuGKX1l7tvXQ==
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed;
  d=mailchannels.net; s=arc-2022; t=1709315194;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:dkim-signature;
- bh=EDGjLGC6+iggpwOGgPEUhv6ALw0cm2bykCS2uoNYmHU=;
- b=+QTlKeOis9RR8vuxXqTD7RKY2Xo0i4SFLoKvOKlsXtyRNSMV7acpuiQAQKdYZ8eMMO1Kz/
- bTsdfufiwHa3hzF5jwq/Ur3ex95gJaRZ6OhetPrOzQK5qqo4JRkzVvV6/0puWqS7SWQQhx
- cV4bE9rZUS5vJ5TDpPdyzbMJc4CSRm3bCHEZXuybww/RoFCBFi4Thu6+fTI5OkYb+8WtTq
- img/KvzWspwxLZlq6Fs2olqTUrN/RKz1T1RtTERglDTjYkuTJOiZ6hc9wDL62YY99ZsaWX
- 7GcnIaTGezLNKT1sfgqyzSQlFDQu87RfDpjCtfAuA1K+7hLg45x+L6uncd5B+A==
-ARC-Authentication-Results: i=2; rspamd-55b4bfd7cb-jmwb2;
+ bh=HUL4zxvHsk3QHlw5QiDCgjuSljLjXHEAHk3yu+AzSaY=;
+ b=57da1J6Z/3iGJdOmXKM0Kb0od4Po7Sp4r4jQejzs4va4axEPZIatUFeYpv+0bbIv513c+f
+ 4OYEDaWQ5kbu8wpXhKMl10tPuWOJGapgCTVIp7+RBlBTkEcjXb5h4PQ30hTcIc5yTezhKu
+ kTPJP1d/5ahRyNG4c5HcQUsK7m9yUgmAsc49KkDlVvMLIyWvvCdNSFr+LhZdizhj77FlvE
+ Fm6PwDqj+pONmN8uqdAAfwHB2ZHcxoYa1muXRxDOTm2wLVEsQDPFasl9/4o4bQ8vrId4jN
+ gyyrxNpb0vQHyQ303kf27JK+/N5EdCoScybPWq5AvySD9lsHPbBxNbmhomZI5g==
+ARC-Authentication-Results: i=2; rspamd-55b4bfd7cb-9jms7;
  arc=pass ("outbound.mailhop.org:s=arc-outbound20181012:i=1");
  auth=pass smtp.auth=duocircle smtp.mailfrom=svens@stackframe.org
 X-Sender-Id: _forwarded-from|134.3.94.10
 X-MC-Relay: Forwarding
 X-MailChannels-SenderId: _forwarded-from|134.3.94.10
 X-MailChannels-Auth-Id: duocircle
-X-Left-Imminent: 508425fb36bac44e_1709315194353_855391027
-X-MC-Loop-Signature: 1709315194351:1609689411
-X-MC-Ingress-Time: 1709315194350
-Received: from outbound3.eu.mailhop.org (outbound3.eu.mailhop.org
- [52.29.21.168]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
- by 100.114.53.127 (trex/6.9.2); Fri, 01 Mar 2024 17:46:34 +0000
-ARC-Seal: i=1; a=rsa-sha256; t=1709315167; cv=none;
+X-Scare-Shade: 14ee16277f0fbd86_1709315194947_1297384744
+X-MC-Loop-Signature: 1709315194947:3419211672
+X-MC-Ingress-Time: 1709315194946
+Received: from outbound1f.eu.mailhop.org (outbound1f.eu.mailhop.org
+ [52.28.59.28]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+ by 100.124.220.170 (trex/6.9.2); Fri, 01 Mar 2024 17:46:34 +0000
+ARC-Seal: i=1; a=rsa-sha256; t=1709315101; cv=none;
  d=outbound.mailhop.org; s=arc-outbound20181012;
- b=HfpUlDhMTJ3jVEYdTW6wcjDJBBAe5iCbwwF80RAhM2IwkNmWe1bMRmVSNiwAIecNnBaZaGLNf5cvp
- iYt7Hi+zg/7kIGnKk88PAIDy4wkfU4BPfQmnmGoATO9oV8QZDxL8LVBt/oE2UzUL51/TcxmRdtbUM+
- 6ddL+MWvOOfgtYGN07bgEi7+UqtgumRKPe9m3WuqguYRqLim0e+4PEVFmHla1o/f8wFIO31XSYa7HL
- foO6uAnf54UCL5zMSrLF3DppFVk0p3lyft36BilVHmLRJ+GZWKnI21ngk/91INi8Txq9xjGn3yRq3q
- O/CX+dUWFqT5BVD9D4SAvOUggY1bb7w==
+ b=bgS1bkK4T/pqbMlP8hghVXRmnl4OwbkbLmvc8x3qEfMKu9dcvLIwmomH7VOzOcXG2NHLpo88LNF+6
+ MpcXsodJPxttrtyRN3zLtq9ctQ8RbzdmXnr/RkmRfca+jth9ukuoC6OJA35JD5l8fKugescLDLnE7y
+ fULx2DUuiDzJ0UbnEUTZ+G3XSN6EKh18kT38yaPuccWHZ9okz5w+r/8JUdEMAfszc4VAmn7vgykHwQ
+ L3+K5HAlSH3QVnmx3bu5jrKNma/yx99JKxHZCY769UI3BYrpahv6pYo0o+6RhpYhmPaPUC8vZu0bQY
+ Ny5DNRLdt5llUWhNj8YYm7AU6CFLg7A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
  d=outbound.mailhop.org; s=arc-outbound20181012;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:dkim-signature:dkim-signature:dkim-signature:from;
- bh=EDGjLGC6+iggpwOGgPEUhv6ALw0cm2bykCS2uoNYmHU=;
- b=v3Z8KAxS6cyvF/UgX97Wqz6le8ud7yppyvBaBBhOh8sD2T/jjTmIl5Yvs+g5P7YwituhIAXEAzl0t
- ejbAhvcZlby6cYlZcLmCRbI4e8xgVjq2249cltHkf2JiLBl2y8SF9B9c1sWAYandloVQ4Yimnh84gv
- s97KHbRkjLudBEMnCua3HiaMLxyYBM59g7Qm45dKYCaygYT/2892NZkPU7/I1Fm7PqW8fPEe8IPDHF
- IG9Gtl+YsU8qmkrOlMsO5zW5wR4HyKX6nQzpRqq6b24Tc2DyEceIt9MRteOAqOjJ03g247f3UUSPY0
- VVYboHWZsVfhPXvqKNokZFVY8DAALfw==
-ARC-Authentication-Results: i=1; outbound3.eu.mailhop.org;
+ bh=HUL4zxvHsk3QHlw5QiDCgjuSljLjXHEAHk3yu+AzSaY=;
+ b=MjAQ31yATOxyZzgEMXGhkajIoSdxFTa9gQd009pUC7oeFmDk8OdkJvfXHSiDHwYXtTx63mqTPTjhr
+ tcS2+VXKPk70DiCd322FQuVY19PhGsSW3pGILdS1cotlv9Ve21y/KbRLfMBzXH89SQD6ncyHWisWyb
+ NCZBs34kFM3rdFyBfLgR1DyOODhfCXVgZRrrvdWLwi1LPGF9bssxuv/RzAocprahXW5OKiyRJrKehs
+ 1IqI+0Zv//nxbfNYb8ZsKP3nyoKRxIzgmIAY8h2VEi4W0TVq3Yd4/gHldc+K2cRucKYhybS+EXmGA0
+ qv57N1FY0OJZAFkc7BHr1g3vKglldUg==
+ARC-Authentication-Results: i=1; outbound2.eu.mailhop.org;
  spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=130.180.31.158;
  dkim=pass header.d=stackframe.org header.s=dkim1 header.a=rsa-sha256
- header.b=eC6ZbTx5; 
+ header.b=CERtcaUL; 
  dmarc=none header.from=stackframe.org;
  arc=none header.oldest-pass=0;
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=stackframe.org; s=duo-1634547266507-560c42ae;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=EDGjLGC6+iggpwOGgPEUhv6ALw0cm2bykCS2uoNYmHU=;
- b=nj/hjMpNGo8BkFHMiv7Vm4V6u9E+Neqkm9D8X3+/oR0oj+KgK85+E3Erm7O6PnfRMcYI3NOgg+lfG
- jUNxLVYwyF6TBfUZvnkw1X6ad1e5ivgxDAMm1pbzmB3qkDR5ZbKGRP6NaVdN/FUhWcUJGsPEwPW1/F
- DpHhUlNRCh/kkX9Q=
+ bh=HUL4zxvHsk3QHlw5QiDCgjuSljLjXHEAHk3yu+AzSaY=;
+ b=Vy3IXlR0M2LmEn1XQUsubOcLbZcurdaAAT0x+vxaA1BG0YtASkXaeYBvPsIs6y1U+J8mpbdGncr0B
+ Q1YsMtHa+FyjvHyD3B1Ts1cC0ecmZDDsJie2STsiz9qJzB552ntodBUzybBds7gHdBPp4NJpg2WzvB
+ 7ioxaw58Bt6qVteI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=outbound.mailhop.org; s=dkim-high;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=EDGjLGC6+iggpwOGgPEUhv6ALw0cm2bykCS2uoNYmHU=;
- b=UX5k5V7JU+IS1NqwBfv4JhlJcERPlqIIbZeMRApKdmbnqkAwieRZsX108mszuWk4ltdC7I/wtJ9Iq
- ld22cEc7sRbKbUpWKxF/bXIRnwCEk9H5DC/KFezo2FE0q0krOSXjbCWZ7cj6hG3lOKm2905R7U/USZ
- 0hLNu9EOrsD6MKgAG1rPHOYLzgI4ugEqd+yltaim+McKCaHP5RlWDH5oMMsdormWlNh2SrIRgZ86Iu
- LEVmst76ODN/8nhWYulO6nutrYcYM58fY1zkSHO6tHZKg/PWWj1pLx8aXD3USkSTNTDtcSX2CrhlXd
- ZHIdLu1RVKG03NUr+moURddwp5S6fPA==
+ bh=HUL4zxvHsk3QHlw5QiDCgjuSljLjXHEAHk3yu+AzSaY=;
+ b=mdutM8SGBmS9SUtGK/lhahpRpmm85GHV0QBtjZat9CKLQ7ugagpCUp1olRHVYE86CoNOpPBw09If4
+ 2/PZ1kygxdpClnijcRJQVfHI2Iak2ms6X6cMQ4Z+icF/OCqbeQT8QO2mNWXwmeCEH0bZe1+QQfOCRw
+ /Rai4VQQPUGKDvxTC8wp90KqsCMhDrTiZCZLMq59z8iM0IhB5rc9nJE28IOxGn4s29fMZBv03oN1XG
+ yiZRZRrr+20mjD0HCZeGMUUnCKuHl5p0qh/IR7GRtj2wXMaUsTcHNzkE2iNvUwFxcDFThM7F8jrl5U
+ FV3LxwCnPKcWUee2K7tZA1G+WSDZ6Bw==
 X-Originating-IP: 130.180.31.158
 X-MHO-RoutePath: dG9ta2lzdG5lcm51
-X-MHO-User: 91a9270a-d7f3-11ee-afda-eda7e384987e
+X-MHO-User: 6b291732-d7f3-11ee-b66d-9b9d9be6ef2c
 X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
 X-Mail-Handler: DuoCircle Outbound SMTP
 Received: from mail.duncanthrax.net (mail.duncanthrax.net [130.180.31.158])
- by outbound3.eu.mailhop.org (Halon) with ESMTPSA
- id 91a9270a-d7f3-11ee-afda-eda7e384987e;
- Fri, 01 Mar 2024 17:46:02 +0000 (UTC)
+ by outbound2.eu.mailhop.org (Halon) with ESMTPSA
+ id 6b291732-d7f3-11ee-b66d-9b9d9be6ef2c;
+ Fri, 01 Mar 2024 17:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=stackframe.org; s=dkim1; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=EDGjLGC6+iggpwOGgPEUhv6ALw0cm2bykCS2uoNYmHU=; b=eC6ZbTx5wPLgqg7EsnpLkqxazW
- PX+hz7hxgCWCqyzNE3OYNjJzuKCUC63a3duf/qb1fvLxOWvod8VRhhs+FP91L081CQki2j6II/COb
- n/53dMzHDcI3seK1F0V/Jy4vZ6cGXU35CtOpQbxOtuuZHG8dczzX4RQGcLDN3+5+bhelXtTZFDNqo
- ucHxdKbupx/OESMD37MWQUIwFCDU6r/N1/GtqQwjrfyAtyX0GVkGir6IlOlLBXsfOr7Lcl2liDFFK
- SEZtixnxWGU/5jedUXQ/cjEzAmPtoAkTmweyTmHN2Z4Cj2PJzSup9bygrLWi0V/8k3CunoK3lXgSM
- XKrnPw7g==;
+ bh=HUL4zxvHsk3QHlw5QiDCgjuSljLjXHEAHk3yu+AzSaY=; b=CERtcaULkHpLvA4bOUu0v8vAjT
+ 5SLbWtTOl4NajL7YA0UX5WA8OkDiKBN0i3Ahy32+PQUaPC4xnNnNU4+h+BGnIHqLN5TaCHpsVr1An
+ 8017a+h3AMpOqYlRhpPJgSduBvIJYl9uW9vg7K5U2OEl03GEGr6ft9WPpPNeHHjM3TvX6uf5CQslv
+ oHbKEpVlB4uawZRMubZFsmwVlurV/ab28AK4pgv5vkfOa/hytdmGRW3J1w7YFf2k1XLsRphQopw9O
+ ifJiw7y8uZT1gWz1N6lgYAez64+kv+awi7tBSNhUGuPZtdVzR9OF9C18iOmjK+TRFMfSP+gmoNU30
+ 2oOWd+4g==;
 Received: from ip-134-003-094-010.um41.pools.vodafone-ip.de ([134.3.94.10]
  helo=t14.stackframe.org)
  by mail.duncanthrax.net with esmtpa (Exim 4.96)
- (envelope-from <svens@stackframe.org>) id 1rg6xl-000bs2-2d;
- Fri, 01 Mar 2024 18:46:25 +0100
+ (envelope-from <svens@stackframe.org>) id 1rg6xm-000bs2-2n;
+ Fri, 01 Mar 2024 18:46:26 +0100
 From: Sven Schnelle <svens@stackframe.org>
 To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Cc: qemu-devel@nongnu.org, deller@gmx.de, Sven Schnelle <svens@stackframe.org>
-Subject: [PATCH v3 07/12] util/range: make range_list_from_string() accept a
- single number
-Date: Fri,  1 Mar 2024 18:46:04 +0100
-Message-ID: <20240301174609.1964379-8-svens@stackframe.org>
+Subject: [PATCH v3 08/12] qemu/range: add range_list_contains() function
+Date: Fri,  1 Mar 2024 18:46:05 +0100
+Message-ID: <20240301174609.1964379-9-svens@stackframe.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240301174609.1964379-1-svens@stackframe.org>
 References: <20240301174609.1964379-1-svens@stackframe.org>
@@ -164,31 +163,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To use range_list_from_string() as a replacement in the execlog
-plugin, make it accept single numbers instead of a range. This
-might also be useful for the already present debug_ranges filtering.
+Add a small inline function to match an address against
+a list of ranges.
 
 Signed-off-by: Sven Schnelle <svens@stackframe.org>
 ---
- util/range.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/qemu/range.h | 12 ++++++++++++
+ util/log.c           | 10 +---------
+ 2 files changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/util/range.c b/util/range.c
-index 8c463995e7..7784c21b12 100644
---- a/util/range.c
-+++ b/util/range.c
-@@ -154,6 +154,11 @@ static int parse_single_range(const char *r, Error **errp,
+diff --git a/include/qemu/range.h b/include/qemu/range.h
+index 4ff9799d89..7ef9b3d5fb 100644
+--- a/include/qemu/range.h
++++ b/include/qemu/range.h
+@@ -57,6 +57,18 @@ static inline bool range_contains(const Range *range, uint64_t val)
+     return val >= range->lob && val <= range->upb;
+ }
  
-     range_op = split_single_range(r, &r2);
-     if (!range_op) {
-+        if (!qemu_strtou64(r, &e, 0, &r1val) && *e == '\0') {
-+            *lob = r1val;
-+            *upb = r1val;
-+            return 0;
++static inline bool range_list_contains(GList *ranges, uint64_t val)
++{
++    GList *p;
++
++    for (p = g_list_first(ranges); p; p = g_list_next(p)) {
++        if (range_contains(p->data, val)) {
++            return true;
 +        }
-         error_setg(errp, "Bad range specifier");
-         return 1;
++    }
++    return false;
++}
++
+ /* Initialize @range to the empty range */
+ static inline void range_make_empty(Range *range)
+ {
+diff --git a/util/log.c b/util/log.c
+index 90897ef0f9..032110d700 100644
+--- a/util/log.c
++++ b/util/log.c
+@@ -368,18 +368,10 @@ bool qemu_set_log_filename_flags(const char *name, int flags, Error **errp)
+  */
+ bool qemu_log_in_addr_range(uint64_t addr)
+ {
+-    GList *p;
+-
+     if (!debug_regions) {
+         return true;
      }
+-
+-    for (p = g_list_first(debug_regions); p; p = g_list_next(p)) {
+-        if (range_contains(p->data, addr)) {
+-            return true;
+-        }
+-    }
+-    return false;
++    return range_list_contains(debug_regions, addr);
+ }
+ 
+ void qemu_set_dfilter_ranges(const char *filter_spec, Error **errp)
 -- 
 2.43.2
 
