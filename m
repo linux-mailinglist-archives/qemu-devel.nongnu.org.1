@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6AFA86E9F9
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 20:57:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BFC386EA0F
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 21:07:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rg8zN-0005Zt-9L; Fri, 01 Mar 2024 14:56:13 -0500
+	id 1rg98O-0007vO-3T; Fri, 01 Mar 2024 15:05:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rg8zL-0005ZS-AT
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 14:56:11 -0500
+ id 1rg987-0007uR-9k
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 15:05:15 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rg8zI-0006b7-QJ
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 14:56:11 -0500
+ id 1rg985-0008Me-4X
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 15:05:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709322967;
+ s=mimecast20190719; t=1709323511;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9ZgEUSl+vA32O0vfl5TXIfza33OQsWq0SSwjuxnNZMc=;
- b=iJnRvmpK+38+MfvjXcegvTdZqWFjx4fpXuwQuvU/TbQHk+9xseKnuSEXF7n6j3yj470G2U
- OyWcy7mxIPl0DkBNQ9TieL4TS9Vnpt0FPmXHet4aLr7Hva3RZigIPbpqgrf8TFHDA7pu9p
- Yh3edxSUav1L6fIMwFV6dlW4E+N6wTo=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=K8ROXt87b41leJzrs1qawudk/3ANLOKhm3rIOBD7Src=;
+ b=acr09A4Cyl+EnrUVyHCzYDgz+SUMBnudgZrwCPv59CzGPXHZkStGeiKi574C6fkEwPHUPf
+ qIQ/cUFwevme4j91/WJLfvm0j8R2wlMMdzg/U4QyAWhkvkmhvHMk0ESPwi7NHz5Bzq8loj
+ LF7/ZrfduaiuA03R2iU6t/iQGcG+wbs=
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
+ [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-Br-b9KGBMQeRrwKUNnzK-w-1; Fri, 01 Mar 2024 14:56:03 -0500
-X-MC-Unique: Br-b9KGBMQeRrwKUNnzK-w-1
-Received: by mail-yw1-f198.google.com with SMTP id
- 00721157ae682-608ad239f8fso40553557b3.0
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 11:56:03 -0800 (PST)
+ us-mta-601-M_0S8UrcMdCdQPmp11OloA-1; Fri, 01 Mar 2024 15:05:09 -0500
+X-MC-Unique: M_0S8UrcMdCdQPmp11OloA-1
+Received: by mail-yb1-f197.google.com with SMTP id
+ 3f1490d57ef6-dcc05887ee9so3835797276.1
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 12:05:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709322962; x=1709927762;
+ d=1e100.net; s=20230601; t=1709323509; x=1709928309;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9ZgEUSl+vA32O0vfl5TXIfza33OQsWq0SSwjuxnNZMc=;
- b=RXmUxetMnQxo6v8aiWt+hngHcF+wr0CkjAwe5JIz+o8w33h3OaaqSJsZjksX90wa21
- ndXjYhwRujhWbwlSv2rr3swzM7S4uDzy5XFiQw5JagKKAKdHhqOWT5D0TcWHKjefNcZI
- gmlKjo007gmZzcUj0mdVgbbrTsfYxeDQvNneVHYYH3mOnEEe5p0qBPFau32RTPZYnWX0
- fMq48Oj5Jys2CnL3zP5xIR8fqW+RAHpQ5KJulzNWZsBc5ip2Nvtr+qRyrFCjHkR+9El5
- PbwGG4HMMft+5JebW2Wp8h2WeJyBTirfgV4dSu7nicAPTWEEX3DQCU/YVjfQBUI1oGum
- IvdA==
-X-Gm-Message-State: AOJu0YzLgaW/PoaKMgHzuvQJnv8vz2UDKXbwfykk2moBUnYncZ33iIFo
- G862cfoqaVhDmVb9pXcnirKTW/KWrus7rdEVi2aDeJr/Gg5mq9kNd6rzTTnCUgeupHmbMJrTeVk
- bXyrsY8wIknmfhpeB2BkkFkgPjQeReUrfqWJXtnJOOYYTOHmGvWlL57mNFn8pOMe5upCgLATb8V
- UZKEUw822weWByFMWBAFW8VfF0fvQ=
-X-Received: by 2002:a05:6902:160d:b0:dcf:56c3:336e with SMTP id
- bw13-20020a056902160d00b00dcf56c3336emr2623777ybb.35.1709322962336; 
- Fri, 01 Mar 2024 11:56:02 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHR33GP+FLVobe0wk9rdfKD7F5RMkkGGg9c5hUkaINJh7qFO9yASe9sQ0+ij3PPzIDgpTfmDL6CZ81mnvt2lF8=
-X-Received: by 2002:a05:6902:160d:b0:dcf:56c3:336e with SMTP id
- bw13-20020a056902160d00b00dcf56c3336emr2623751ybb.35.1709322962009; Fri, 01
- Mar 2024 11:56:02 -0800 (PST)
+ bh=K8ROXt87b41leJzrs1qawudk/3ANLOKhm3rIOBD7Src=;
+ b=pQiqcE46vuGrx0+YGwIc/Q9k1gstblwMh5DW+5It9TDmngNQ2YvNvH7+5j446cUbM6
+ d4ZbirvAGkNJ0w1L0KrAO8JoyXKbAWC+2mLwUgVg++zNU2T5BHPIpADuGnapJo0HIBnr
+ BV5CcyQqdlZX9A2bVOA0Th9eMsfNHGujMfYACNt9NCucej52xfNk01hSUMOqs/hbFjOx
+ DGIlFE27hH3gVh14CmZ7OHLHbKfA+x1lndPf9MAFK2wJcshPAQgkvdolImJby7kuIZSQ
+ pMEQnaP4YDviXDDZuS7Eo3KmYY5kadnPj1nQEh2jiftSXllyb903NjcKzAdYZKQrbzhX
+ BzjA==
+X-Gm-Message-State: AOJu0Yw8i4O3qE4YVd015sabXU4yJEwxVWnInNmVDNNHQVsO3zz6Ra06
+ Jwo8dQbou+qIXqLxQdrk4Ef/MT0KZ3TXLTbvGyfXpoRbVnckuPwaPUuhSVvbQVZm1gJqXXleZXS
+ HvOX8MlxLwKLimA6w3fH+ZqCQbvCelcm2Qz69BebCLEfELO+Y7wnzEHVS00E9V4uDpV4RtWcv+5
+ YSHlXTOeLJSY8V90diSfWk92SJTxo=
+X-Received: by 2002:a25:d092:0:b0:dcd:a28e:e5e0 with SMTP id
+ h140-20020a25d092000000b00dcda28ee5e0mr2451346ybg.25.1709323509330; 
+ Fri, 01 Mar 2024 12:05:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE5TcnCVv6iSZnCkGwsdCpzXD9prVZ0M6KM4DYmuVzRCgZBCAOHCwn7854IQHOU8gcLVdj6jPCYMzve35ofmOU=
+X-Received: by 2002:a25:d092:0:b0:dcd:a28e:e5e0 with SMTP id
+ h140-20020a25d092000000b00dcda28ee5e0mr2451321ybg.25.1709323509061; Fri, 01
+ Mar 2024 12:05:09 -0800 (PST)
 MIME-Version: 1.0
 References: <20240301134330.4191007-1-jonah.palmer@oracle.com>
- <20240301134330.4191007-2-jonah.palmer@oracle.com>
-In-Reply-To: <20240301134330.4191007-2-jonah.palmer@oracle.com>
+ <20240301134330.4191007-8-jonah.palmer@oracle.com>
+In-Reply-To: <20240301134330.4191007-8-jonah.palmer@oracle.com>
 From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Fri, 1 Mar 2024 20:55:25 +0100
-Message-ID: <CAJaqyWd8WXtWyexk-oHxmAkgcG4pEawonqGHDhWwq1hb6+-_Og@mail.gmail.com>
-Subject: Re: [RFC 1/8] virtio/virtio-pci: Handle extra notification data
+Date: Fri, 1 Mar 2024 21:04:33 +0100
+Message-ID: <CAJaqyWfUk4m6pJGmGN9A5k7Eqb=eDjVk26udo_hanCOv9FjHEw@mail.gmail.com>
+Subject: Re: [RFC 7/8] vhost/vhost-user: Add VIRTIO_F_NOTIFICATION_DATA to
+ vhost feature bits
 To: Jonah Palmer <jonah.palmer@oracle.com>
 Cc: qemu-devel@nongnu.org, mst@redhat.com, jasowang@redhat.com, 
  si-wei.liu@oracle.com, boris.ostrovsky@oracle.com, raphael@enfabrica.net, 
@@ -105,108 +106,125 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Fri, Mar 1, 2024 at 2:44=E2=80=AFPM Jonah Palmer <jonah.palmer@oracle.co=
 m> wrote:
 >
-> Add support to virtio-pci devices for handling the extra data sent
-> from the driver to the device when the VIRTIO_F_NOTIFICATION_DATA
-> transport feature has been negotiated.
+> Add support for the VIRTIO_F_NOTIFICATION_DATA feature across a variety
+> of vhost devices.
 >
-> The extra data that's passed to the virtio-pci device when this
-> feature is enabled varies depending on the device's virtqueue
-> layout.
->
-> In a split virtqueue layout, this data includes:
->  - upper 16 bits: last_avail_idx
->  - lower 16 bits: virtqueue index
->
-> In a packed virtqueue layout, this data includes:
->  - upper 16 bits: 1-bit wrap counter & 15-bit last_avail_idx
->  - lower 16 bits: virtqueue index
+> The inclusion of VIRTIO_F_NOTIFICATION_DATA in the feature bits arrays
+> for these devices ensures that the backend is capable of offering and
+> providing support for this feature, and that it can be disabled if the
+> backend does not support it.
 >
 > Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
 > ---
->  hw/virtio/virtio-pci.c     | 13 ++++++++++---
->  hw/virtio/virtio.c         | 13 +++++++++++++
->  include/hw/virtio/virtio.h |  1 +
->  3 files changed, 24 insertions(+), 3 deletions(-)
+>  hw/block/vhost-user-blk.c    | 1 +
+>  hw/net/vhost_net.c           | 2 ++
+>  hw/scsi/vhost-scsi.c         | 1 +
+>  hw/scsi/vhost-user-scsi.c    | 1 +
+>  hw/virtio/vhost-user-fs.c    | 2 +-
+>  hw/virtio/vhost-user-vsock.c | 1 +
+>  net/vhost-vdpa.c             | 1 +
+>  7 files changed, 8 insertions(+), 1 deletion(-)
 >
-> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-> index 1a7039fb0c..c7c577b177 100644
-> --- a/hw/virtio/virtio-pci.c
-> +++ b/hw/virtio/virtio-pci.c
-> @@ -384,7 +384,7 @@ static void virtio_ioport_write(void *opaque, uint32_=
-t addr, uint32_t val)
->  {
->      VirtIOPCIProxy *proxy =3D opaque;
->      VirtIODevice *vdev =3D virtio_bus_get_device(&proxy->bus);
-> -    uint16_t vector;
-> +    uint16_t vector, vq_idx;
->      hwaddr pa;
+> diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
+> index 6a856ad51a..983c0657da 100644
+> --- a/hw/block/vhost-user-blk.c
+> +++ b/hw/block/vhost-user-blk.c
+> @@ -51,6 +51,7 @@ static const int user_feature_bits[] =3D {
+>      VIRTIO_F_RING_PACKED,
+>      VIRTIO_F_IOMMU_PLATFORM,
+>      VIRTIO_F_RING_RESET,
+> +    VIRTIO_F_NOTIFICATION_DATA,
+>      VHOST_INVALID_FEATURE_BIT
+>  };
 >
->      switch (addr) {
-> @@ -408,8 +408,15 @@ static void virtio_ioport_write(void *opaque, uint32=
-_t addr, uint32_t val)
->              vdev->queue_sel =3D val;
->          break;
->      case VIRTIO_PCI_QUEUE_NOTIFY:
-> -        if (val < VIRTIO_QUEUE_MAX) {
-> -            virtio_queue_notify(vdev, val);
-> +        if (virtio_vdev_has_feature(vdev, VIRTIO_F_NOTIFICATION_DATA)) {
-> +            vq_idx =3D val & 0xFFFF;
-> +            virtio_set_notification_data(vdev, vq_idx, val);
-> +        } else {
-> +            vq_idx =3D val;
-> +        }
-> +
-> +        if (vq_idx < VIRTIO_QUEUE_MAX) {
-> +            virtio_queue_notify(vdev, vq_idx);
->          }
->          break;
->      case VIRTIO_PCI_STATUS:
-> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-> index d229755eae..a61f69b7fd 100644
-> --- a/hw/virtio/virtio.c
-> +++ b/hw/virtio/virtio.c
-> @@ -2052,6 +2052,19 @@ int virtio_set_status(VirtIODevice *vdev, uint8_t =
-val)
->      return 0;
->  }
+> diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
+> index e8e1661646..bb1f975b39 100644
+> --- a/hw/net/vhost_net.c
+> +++ b/hw/net/vhost_net.c
+> @@ -48,6 +48,7 @@ static const int kernel_feature_bits[] =3D {
+>      VIRTIO_F_IOMMU_PLATFORM,
+>      VIRTIO_F_RING_PACKED,
+>      VIRTIO_F_RING_RESET,
+> +    VIRTIO_F_NOTIFICATION_DATA,
+>      VIRTIO_NET_F_HASH_REPORT,
+>      VHOST_INVALID_FEATURE_BIT
+>  };
+> @@ -55,6 +56,7 @@ static const int kernel_feature_bits[] =3D {
+>  /* Features supported by others. */
+>  static const int user_feature_bits[] =3D {
+>      VIRTIO_F_NOTIFY_ON_EMPTY,
+> +    VIRTIO_F_NOTIFICATION_DATA,
+>      VIRTIO_RING_F_INDIRECT_DESC,
+>      VIRTIO_RING_F_EVENT_IDX,
 >
-> +void virtio_set_notification_data(VirtIODevice *vdev, uint16_t i, uint32=
-_t data)
-> +{
-> +    VirtQueue *vq =3D &vdev->vq[i];
 
-Sorry I sent the previous mail too fast :).
+vdpa_feature_bits also needs this feature bit added.
 
-i should also be checked against VIRTIO_QUEUE_MAX and vq->vring.desc
-before continuing this function. Otherwise is an out of bound access.
+Apart from that,
 
-> +
-> +    if (virtio_vdev_has_feature(vdev, VIRTIO_F_RING_PACKED)) {
-> +        vq->last_avail_wrap_counter =3D (data >> 31) & 0x1;
-> +        vq->last_avail_idx =3D (data >> 16) & 0x7FFF;
-> +    } else {
-> +        vq->last_avail_idx =3D (data >> 16) & 0xFFFF;
-> +    }
-> +    vq->shadow_avail_idx =3D vq->last_avail_idx;
-> +}
-> +
->  static enum virtio_device_endian virtio_default_endian(void)
->  {
->      if (target_words_bigendian()) {
-> diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-> index c8f72850bc..c92d8afc42 100644
-> --- a/include/hw/virtio/virtio.h
-> +++ b/include/hw/virtio/virtio.h
-> @@ -345,6 +345,7 @@ void virtio_queue_reset(VirtIODevice *vdev, uint32_t =
-queue_index);
->  void virtio_queue_enable(VirtIODevice *vdev, uint32_t queue_index);
->  void virtio_update_irq(VirtIODevice *vdev);
->  int virtio_set_features(VirtIODevice *vdev, uint64_t val);
-> +void virtio_set_notification_data(VirtIODevice *vdev, uint16_t i, uint32=
-_t data);
+Reviewed-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+
+> diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+> index 58a00336c2..b8048f18e9 100644
+> --- a/hw/scsi/vhost-scsi.c
+> +++ b/hw/scsi/vhost-scsi.c
+> @@ -38,6 +38,7 @@ static const int kernel_feature_bits[] =3D {
+>      VIRTIO_RING_F_EVENT_IDX,
+>      VIRTIO_SCSI_F_HOTPLUG,
+>      VIRTIO_F_RING_RESET,
+> +    VIRTIO_F_NOTIFICATION_DATA,
+>      VHOST_INVALID_FEATURE_BIT
+>  };
 >
->  /* Base devices.  */
->  typedef struct VirtIOBlkConf VirtIOBlkConf;
+> diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+> index a63b1f4948..0b050805a8 100644
+> --- a/hw/scsi/vhost-user-scsi.c
+> +++ b/hw/scsi/vhost-user-scsi.c
+> @@ -36,6 +36,7 @@ static const int user_feature_bits[] =3D {
+>      VIRTIO_RING_F_EVENT_IDX,
+>      VIRTIO_SCSI_F_HOTPLUG,
+>      VIRTIO_F_RING_RESET,
+> +    VIRTIO_F_NOTIFICATION_DATA,
+>      VHOST_INVALID_FEATURE_BIT
+>  };
+>
+> diff --git a/hw/virtio/vhost-user-fs.c b/hw/virtio/vhost-user-fs.c
+> index cca2cd41be..ae48cc1c96 100644
+> --- a/hw/virtio/vhost-user-fs.c
+> +++ b/hw/virtio/vhost-user-fs.c
+> @@ -33,7 +33,7 @@ static const int user_feature_bits[] =3D {
+>      VIRTIO_F_RING_PACKED,
+>      VIRTIO_F_IOMMU_PLATFORM,
+>      VIRTIO_F_RING_RESET,
+> -
+> +    VIRTIO_F_NOTIFICATION_DATA,
+>      VHOST_INVALID_FEATURE_BIT
+>  };
+>
+> diff --git a/hw/virtio/vhost-user-vsock.c b/hw/virtio/vhost-user-vsock.c
+> index 9431b9792c..802b44a07d 100644
+> --- a/hw/virtio/vhost-user-vsock.c
+> +++ b/hw/virtio/vhost-user-vsock.c
+> @@ -21,6 +21,7 @@ static const int user_feature_bits[] =3D {
+>      VIRTIO_RING_F_INDIRECT_DESC,
+>      VIRTIO_RING_F_EVENT_IDX,
+>      VIRTIO_F_NOTIFY_ON_EMPTY,
+> +    VIRTIO_F_NOTIFICATION_DATA,
+>      VHOST_INVALID_FEATURE_BIT
+>  };
+>
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 3726ee5d67..2827d29ce7 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -62,6 +62,7 @@ const int vdpa_feature_bits[] =3D {
+>      VIRTIO_F_RING_PACKED,
+>      VIRTIO_F_RING_RESET,
+>      VIRTIO_F_VERSION_1,
+> +    VIRTIO_F_NOTIFICATION_DATA,
+>      VIRTIO_NET_F_CSUM,
+>      VIRTIO_NET_F_CTRL_GUEST_OFFLOADS,
+>      VIRTIO_NET_F_CTRL_MAC_ADDR,
 > --
 > 2.39.3
 >
