@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0BF486EE7E
+	by mail.lfdr.de (Postfix) with ESMTPS id C43AF86EE7C
 	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 05:13:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgGjI-0005MB-CB; Fri, 01 Mar 2024 23:12:08 -0500
+	id 1rgGjM-0005PU-DG; Fri, 01 Mar 2024 23:12:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgC1j-0003z4-65
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:57 -0500
-Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
+ id 1rgC1k-0003ze-Ig
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:59 -0500
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgC1g-0005uF-04
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:50 -0500
-Received: by mail-ot1-x32a.google.com with SMTP id
- 46e09a7af769-6e48153c13aso1388239a34.3
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:10:46 -0800 (PST)
+ id 1rgC1h-0005zr-T7
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:52 -0500
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6e5dddd3b95so361841b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:10:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709334646; x=1709939446; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709334648; x=1709939448; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yTWT+RMoE1i/VU7YNW7VXZJeWBnC/6JB7arqg8VoVPY=;
- b=wPPgO3Azw4RZNrbdtjDazpIblGSuGm+sz0IzwuS0O8fW9MoBwtkqB3w81bNDlmfZIq
- T0LL8c6N5a2yBwanLH6OUQ9EO9ZN2ytZb3lBxO4or+6X1UxK3FIeRS6JgiAj8TZpHCzZ
- L80gvYehonUdo3F/eqlnbsSjTSpq5t+SX8aGV7CgDIT/jUMzzkWBDVz6HaRA+j93e5B4
- 8jANdlMGCPpt8UzEw12nRYTDoe8nMvUkArMj8QyTaElgAFIq4GT8bJ4fa6t+ZwUfVuZF
- uNwFES1C+aVNMn+BlHAjE7SkDqyPVrMIvw+Sg97iXPlcFp6fqWjHD24wDu0qHyZiJjHi
- EUSA==
+ bh=7rYYyH2nCsC3OszbxYg3gYtAKvyiLKNjInne/wklRig=;
+ b=PXdVjMPZ82/pp1kdK4kP72tSGkH1KBZJb4jb2e83ZY3ltJSxAjzXfXKErrTxFGioZT
+ s58ro0dOrYANbVYwXHMnASFPOPoTpsu61k/ZV9nX+GEQQ60/A+KfRG3AhDiYZdBdFXrb
+ VK29ofkRdnvJPivFQ5zhAefGojZlTg6yLQFr+bEBNg5f4raUXoic8N2t1xzldjMc66RD
+ EWglPsDnxiA2kvbP8GD4nIIdAjbjSgJY+VNhETVnFPZMRa5ZtQYjsKCbDvcyipxI6SOA
+ S/wl3pJcwNawQMsUrLawE5ZOJ33GsK17eo3TF87R8RJhm4Pp/QCqzCZBFmcPzQ95QNpk
+ mRBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709334646; x=1709939446;
+ d=1e100.net; s=20230601; t=1709334648; x=1709939448;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yTWT+RMoE1i/VU7YNW7VXZJeWBnC/6JB7arqg8VoVPY=;
- b=sI8yS/SzQwZfu3V6MkSA9tjNEaj7hFAHl0kTVpOP7sIAt6BaLBZkhNr303MlMSKDri
- HXgd4VfEcJ8L7RvYgJRv6SGUaXo25lEOplJ4EDG4h4V9PiQgiiyeUNLQvgQ9SPxPCq/n
- BUpbeOSE1nf5fAIrE999WQOxQa4d0PLrAHwJWL/NXlvnolrGra8DOoLD0XXap1XTp6ve
- D14x7URIfqHgqADbevSltXsdx4vduDgdwTgn7FJp0j2j3tA/7LjoU1a++dE1/y/XwROU
- LsRzBWu6QsLP/xVE2WGjFlRRV2Ophi+yBS0B5+FDtMU6uOPJshhOWO8U1Ns4o7r5vsL2
- zVfA==
-X-Gm-Message-State: AOJu0Yw2u7Ha+diFY8vTVMWP7OdfZXQuIq3hqFyrDJDUNwWqYB/jqxM4
- tUPemdLmJjDhdBWMou9Kd/bPVY4DCT51vgXaZ8+CLnR1HTcUly88OXPX1Z1L0iE0W8FbmHvrb9K
- G
-X-Google-Smtp-Source: AGHT+IEC3IEufMvQbh163ikvKev1ecMXJ1/QLnLvsRa04C24bmAmYgEHkN4sYfovvFlF6DSD8TUFyw==
-X-Received: by 2002:a9d:6d85:0:b0:6e4:7e89:1205 with SMTP id
- x5-20020a9d6d85000000b006e47e891205mr3873115otp.9.1709334646004; 
- Fri, 01 Mar 2024 15:10:46 -0800 (PST)
+ bh=7rYYyH2nCsC3OszbxYg3gYtAKvyiLKNjInne/wklRig=;
+ b=NgvImdX8goKmeBJtdz553LEurVD9zXoAN7owdP4Qjj8pC14B06230r/m02IbQf5NpY
+ M6hBkTvxwqPJXkx/WOGcstaiR7kXUssS7omC/FlwAidg1555VDWw6kRZKFcBhi+R1kUn
+ tLksPBTWzaLRdMNKJhNmjue57MNTns8X/31l5YXaxo13MA9MMAh4yVyamKGD9c6SqUI5
+ OTYyH8EVgOGT11n5XfLLkiYaxgAAq0m6u+HZ7uv9g20g3WVIg2bc59TBkF1b3ze7OBVD
+ mjdYn1sTn0bZ90Q8hLtrHbxWepR4cosyoq4HmdcmElkRexPnHpIxmQdIQFojY47LkI5J
+ bTvg==
+X-Gm-Message-State: AOJu0YwUYobvkA9OUEHiTFXwBqFb/YPef9hCg8237FfFsVaRZOE4+YfM
+ l791qIFucvw+N7rNhG0SjyARYKk0LUOaw0FFUKxK6F5k/TucWvMaShvHZo/LwVlAnejA1rVtzIX
+ 4
+X-Google-Smtp-Source: AGHT+IFmHDWb6XzdhSn+rF7/y3lEA/0PHMbVJ5DJ28KqheTyzL4ul6XvczyP9yQrE/mJ739SZxDNZA==
+X-Received: by 2002:a05:6a20:9e49:b0:1a0:eb42:a708 with SMTP id
+ mt9-20020a056a209e4900b001a0eb42a708mr8354340pzb.18.1709334648603; 
+ Fri, 01 Mar 2024 15:10:48 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- c2-20020a634e02000000b005e438fe702dsm3449407pgb.65.2024.03.01.15.10.44
+ c2-20020a634e02000000b005e438fe702dsm3449407pgb.65.2024.03.01.15.10.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 15:10:45 -0800 (PST)
+ Fri, 01 Mar 2024 15:10:48 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 56/60] linux-user/x86_64: Handle the vsyscall page in
- open_self_maps_{2, 4}
-Date: Fri,  1 Mar 2024 13:06:15 -1000
-Message-Id: <20240301230619.661008-57-richard.henderson@linaro.org>
+Subject: [PATCH 58/60] linux-user: Add strace for shmat
+Date: Fri,  1 Mar 2024 13:06:17 -1000
+Message-Id: <20240301230619.661008-59-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301230619.661008-1-richard.henderson@linaro.org>
 References: <20240301230619.661008-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,51 +93,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is the only case in which we expect to have no host memory backing
-for a guest memory page, because in general linux user processes cannot
-map any pages in the top half of the 64-bit address space.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2170
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ linux-user/strace.c    | 24 ++++++++++++++++++++++++
+ linux-user/strace.list |  2 +-
+ 2 files changed, 25 insertions(+), 1 deletion(-)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index e384e14248..bc8c06522f 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -7994,6 +7994,10 @@ static void open_self_maps_4(const struct open_self_maps_data *d,
-         path = "[heap]";
-     } else if (start == info->vdso) {
-         path = "[vdso]";
-+#ifdef TARGET_X86_64
-+    } else if (start == TARGET_VSYSCALL_PAGE) {
-+        path = "[vsyscall]";
-+#endif
-     }
+diff --git a/linux-user/strace.c b/linux-user/strace.c
+index cf26e55264..8d13e55a5b 100644
+--- a/linux-user/strace.c
++++ b/linux-user/strace.c
+@@ -670,6 +670,26 @@ print_semctl(CPUArchState *cpu_env, const struct syscallname *name,
+ }
+ #endif
  
-     /* Except null device (MAP_ANON), adjust offset for this fragment. */
-@@ -8082,6 +8086,18 @@ static int open_self_maps_2(void *opaque, target_ulong guest_start,
-     uintptr_t host_start = (uintptr_t)g2h_untagged(guest_start);
-     uintptr_t host_last = (uintptr_t)g2h_untagged(guest_end - 1);
- 
-+#ifdef TARGET_X86_64
-+    /*
-+     * Because of the extremely high position of the page within the guest
-+     * virtual address space, this is not backed by host memory at all.
-+     * Therefore the loop below would fail.  This is the only instance
-+     * of not having host backing memory.
-+     */
-+    if (guest_start == TARGET_VSYSCALL_PAGE) {
-+        return open_self_maps_3(opaque, guest_start, guest_end, flags);
-+    }
-+#endif
++static void
++print_shmat(CPUArchState *cpu_env, const struct syscallname *name,
++            abi_long arg0, abi_long arg1, abi_long arg2,
++            abi_long arg3, abi_long arg4, abi_long arg5)
++{
++    static const struct flags shmat_flags[] = {
++        FLAG_GENERIC(SHM_RND),
++        FLAG_GENERIC(SHM_REMAP),
++        FLAG_GENERIC(SHM_RDONLY),
++        FLAG_GENERIC(SHM_EXEC),
++        FLAG_END
++    };
 +
-     while (1) {
-         IntervalTreeNode *n =
-             interval_tree_iter_first(d->host_maps, host_start, host_start);
++    print_syscall_prologue(name);
++    print_raw_param(TARGET_ABI_FMT_ld, arg0, 0);
++    print_pointer(arg1, 0);
++    print_flags(shmat_flags, arg2, 1);
++    print_syscall_epilogue(name);
++}
++
+ #ifdef TARGET_NR_ipc
+ static void
+ print_ipc(CPUArchState *cpu_env, const struct syscallname *name,
+@@ -683,6 +703,10 @@ print_ipc(CPUArchState *cpu_env, const struct syscallname *name,
+         print_ipc_cmd(arg3);
+         qemu_log(",0x" TARGET_ABI_FMT_lx ")", arg4);
+         break;
++    case IPCOP_shmat:
++        print_shmat(cpu_env, &(const struct syscallname){ .name = "shmat" },
++                    arg1, arg4, arg2, 0, 0, 0);
++        break;
+     default:
+         qemu_log(("%s("
+                   TARGET_ABI_FMT_ld ","
+diff --git a/linux-user/strace.list b/linux-user/strace.list
+index 6655d4f26d..dfd4237d14 100644
+--- a/linux-user/strace.list
++++ b/linux-user/strace.list
+@@ -1398,7 +1398,7 @@
+ { TARGET_NR_sgetmask, "sgetmask" , NULL, NULL, NULL },
+ #endif
+ #ifdef TARGET_NR_shmat
+-{ TARGET_NR_shmat, "shmat" , NULL, NULL, print_syscall_ret_addr },
++{ TARGET_NR_shmat, "shmat" , NULL, print_shmat, print_syscall_ret_addr },
+ #endif
+ #ifdef TARGET_NR_shmctl
+ { TARGET_NR_shmctl, "shmctl" , NULL, NULL, NULL },
 -- 
 2.34.1
 
