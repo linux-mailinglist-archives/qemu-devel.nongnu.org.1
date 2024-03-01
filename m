@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 125F386ECE0
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:18:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9286786ECCD
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:15:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgByA-0005SR-4I; Fri, 01 Mar 2024 18:07:10 -0500
+	id 1rgBxo-0004uC-HW; Fri, 01 Mar 2024 18:06:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgBxb-0004rK-Dp
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:37 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1rgBxd-0004rt-UN
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:42 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgBxZ-0004DK-VV
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:35 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1dcd0431f00so20092965ad.3
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:06:32 -0800 (PST)
+ id 1rgBxa-0004DV-Ry
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:06:37 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1dc5d0162bcso25434825ad.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:06:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709334391; x=1709939191; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709334392; x=1709939192; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=zYkpQqoaMHDWxrt9KPP15xrK5H9LSGOtZoW36Ee0L04=;
- b=xhmLORufVFrs4Wlyc1lAnnduiPw2cZI3KC6yuNbI0pneuPJ8XUa4N2AzAai+aLxvnK
- 5icri/0GhBeIsWpJGPC0feazGh7l+CvFm609Ck2EhGx9z03Immb31sz1zuec1SuNMBVk
- ErZn2BldOLgeSohUjSG7/GpJA4G32tGh1LDylQLcpEallPgXR/Ap8VKzqeQOsHEcNEoG
- tWmTV5KaHllStVigB2lMcOJbI+iWHkVgn6DZc2d+99qFKaI62kj3DrPKY/nrCp6nCelg
- XCwVQGo/UG1ewu5U0v+cBmfHf4yHKYlW5vRQs75+QQl2Ha3oRaWWIsZsCMtnL2RE6jzL
- X2eQ==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jFfW1DmYHFMf19W3HAUQWeg/5lBH99MdAkdqkDNLv3I=;
+ b=QaWCJ4tqxnwojuuu2XZbWDjRPNE8LZs9erbE1yxXt7g7r0TfMZzcLMQhmP9POdh016
+ mFKHwA0KCx99uPZOTlE8HJ8sDxuHXj4a2tB/nSyIlzMjktTmBYwBnKu55IOIMq9266g7
+ YYrNwqVEPcU5n7SRGCRx2N+3lTUCh++USkL9AHoNPpXUIvsWCiI6HCRKdvN9VA8CWfvO
+ srS96wOEIqhdFlGR2OYPUcOvp5w4E5h5y46TN4JpzNYf23fIHIlEFsTPDR41Vt9GV0mD
+ d3VzmFGasZ5TWwOJXa/yVorbTPhTaxwHfJGnAMlZ6SG0MMxCKyJGFG001S2YWOuHu23u
+ 9Naw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709334391; x=1709939191;
+ d=1e100.net; s=20230601; t=1709334392; x=1709939192;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zYkpQqoaMHDWxrt9KPP15xrK5H9LSGOtZoW36Ee0L04=;
- b=EEM4jXTHIep5EHhb3SNsHIBRga6EZEE7hMbSBdbKyz+f35VUAq0CRTT64ildgMZRw5
- 3koFAjiOzpLMVAwyUGDeHJYJDX8t1GdAdCf7Xwxrx3JItW3wOcyu2Z6m7sgSQGsNkfa5
- q+ssyIgL1TtwjZye/EhRIEGY9crJdojeaFHSkVh86YJuO5xr+HYtt35OhS1fU7kDxZdL
- h8ROvM9Y/AvG1KJoCxkN/rnIrHPmlnAxx6OgFwGHBpcAmU5wLjZ5IfMzFjiQDeZuUgv2
- 5xnDzKz4pEPWQtL7n8/Urwhaw8e959VpbEgc+CZFRAqLXnOitoTPFH4QgyJcp5cPFl/W
- wTag==
-X-Gm-Message-State: AOJu0Yyc8vwAMjKYM9aPJHRI7FyMz1qRi8HHZB+QV8Gge4Y2xO8LjEqn
- +VaFkIJZC2mORYFIo9dNiPwyGpsRjq1iE+YnqllXafnQQcGScfYDRff0Rmm6DF5/1aKdyl6xMUb
- n
-X-Google-Smtp-Source: AGHT+IHL0ymjXRyQUGELhQHc/vNMAGDuobcq6m/6d/oPI7pKcQOnFX8kGhFwHiY9MaxOFijOVazSZg==
-X-Received: by 2002:a17:902:c94f:b0:1db:5c84:9523 with SMTP id
- i15-20020a170902c94f00b001db5c849523mr3765895pla.67.1709334391394; 
- Fri, 01 Mar 2024 15:06:31 -0800 (PST)
+ bh=jFfW1DmYHFMf19W3HAUQWeg/5lBH99MdAkdqkDNLv3I=;
+ b=WCzUx9hLNB5ohBrv1Yv47cdWaqJbGYZZ6GIOPNKJTq4Kk24dcwU42AyULrcbDGM4kr
+ Kvvybk/EXe+sH9NGsIg1YZzTb6d0EoZmo7rwf5nHKxBUjGoN7EedHLp0K6dKNIgYR3Ng
+ DUSEw5RZdy7gttOJJXgzgqI24GZVvXQ/BGTGD7MV58kvJoIA2Q6Xr8Wyb6mRTCXOOw9R
+ 8lvAm5FkP0+ZN9atg1dFvlMMOcrQi8yzg/lGwAvsiqmivmztOXgyfocE8X+CHjSXPtSU
+ /KQA7d3Cofc09HGb7wGIk1eMHRvvAWnWJefRrP70hkljHHQu41NdI7h4EJi7+YB4qBTw
+ S8jQ==
+X-Gm-Message-State: AOJu0Yy2PlRsyHjsP+u3NdbzIyfKcJ50S0oqQOt5KrBWPvVz4z6jLEEH
+ sGVeSrk33Ha6W9Qtxl3bdv+cjDDoyQWttcmG8L78acXoZdgAn04RMhbj6eR/BK7XY1GfkjO2wq8
+ S
+X-Google-Smtp-Source: AGHT+IG0GtjAMANkWQJRGbfEz40ZPliBwNaaKDTMAo7IoH0sOookM6bsq6mkQI+mH6JqWjhdLg+dvQ==
+X-Received: by 2002:a17:903:41ca:b0:1db:d66e:cd15 with SMTP id
+ u10-20020a17090341ca00b001dbd66ecd15mr4038015ple.59.1709334392669; 
+ Fri, 01 Mar 2024 15:06:32 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- lc11-20020a170902fa8b00b001dc668e145asm3988580plb.200.2024.03.01.15.06.30
- for <qemu-devel@nongnu.org>
+ lc11-20020a170902fa8b00b001dc668e145asm3988580plb.200.2024.03.01.15.06.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 15:06:31 -0800 (PST)
+ Fri, 01 Mar 2024 15:06:32 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 07/60] linux-user/elfload: Truncate core file on open
-Date: Fri,  1 Mar 2024 13:05:26 -1000
-Message-Id: <20240301230619.661008-8-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH 08/60] linux-user/elfload: Lock cpu list and mmap during
+ elf_core_dump
+Date: Fri,  1 Mar 2024 13:05:27 -1000
+Message-Id: <20240301230619.661008-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301230619.661008-1-richard.henderson@linaro.org>
 References: <20240301230619.661008-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,26 +94,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While we usually create a new corefile, truncate otherwise.
+Do not allow changes to the set of cpus and memory regions
+while we are dumping core.
 
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ linux-user/elfload.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 877799e9c7..16dd08a828 100644
+index 16dd08a828..6f9da721d7 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -4652,7 +4652,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
- 
-     {
-         g_autofree char *corefile = core_dump_filename(ts);
--        fd = open(corefile, O_WRONLY | O_CREAT,
-+        fd = open(corefile, O_WRONLY | O_CREAT | O_TRUNC,
-                   S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+@@ -4537,13 +4537,11 @@ static void fill_note_info(struct elf_note_info *info,
      }
-     if (fd < 0) {
+ 
+     /* read and fill status of all threads */
+-    WITH_QEMU_LOCK_GUARD(&qemu_cpu_list_lock) {
+-        CPU_FOREACH(cpu) {
+-            if (cpu == thread_cpu) {
+-                continue;
+-            }
+-            fill_thread_info(info, cpu_env(cpu));
++    CPU_FOREACH(cpu) {
++        if (cpu == thread_cpu) {
++            continue;
+         }
++        fill_thread_info(info, cpu_env(cpu));
+     }
+ }
+ 
+@@ -4643,6 +4641,9 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+         return 0;
+     }
+ 
++    cpu_list_lock();
++    mmap_lock();
++
+     /*
+      * Walk through target process memory mappings and
+      * set up structure containing this information.  After
+@@ -4760,6 +4761,8 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+ 
+  out:
+     ret = -errno;
++    mmap_unlock();
++    cpu_list_unlock();
+     free_note_info(&info);
+     vma_delete(&mm);
+     close(fd);
 -- 
 2.34.1
 
