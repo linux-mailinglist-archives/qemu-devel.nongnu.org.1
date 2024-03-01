@@ -2,90 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F35C486EA5C
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 21:35:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C4986EA76
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 21:42:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rg9aB-0005iH-NQ; Fri, 01 Mar 2024 15:34:15 -0500
+	id 1rg9h3-0001wp-1u; Fri, 01 Mar 2024 15:41:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rg9a7-0005hi-PV
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 15:34:11 -0500
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1rg9h1-0001q6-B6
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 15:41:19 -0500
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rg9a6-00056L-5u
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 15:34:11 -0500
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-6e55b33ad14so1752404b3a.1
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 12:34:09 -0800 (PST)
+ id 1rg9gx-0006wB-8j
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 15:41:19 -0500
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-29a378040daso1799555a91.1
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 12:41:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709325248; x=1709930048; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=yuo77yp9Q0iPSquUWth3OUNwMsklDChrk49kCCDlmGY=;
- b=KrZg0J6eCE/QOF8F/xciRK1DpsN06yZLWztcnaSquk/RgCz5cy7QcGN7tWBCby43V5
- kdvTGgOxpNPvKy7JU3D1cl0tGlm2m5MantJxKmRvgNU02qqGIAAWZjbktDtwjjTz0jmn
- qr55Vlqwnvi1/SSR+5STPLAc6nbtGYnxIRke8xcrOKOs7kwa9jjo5Vjslr3qAFB2Xlws
- 9c1LeQqaXVsEspC+2SAJ194O4TvnM7eRW9mun3jgpgzqxOMhFavqxl7QtwK+WTVqkVch
- 7GB3RFLwBiJlC5k6IXHn4o85mXhmTTFxnsQ4yL3N++yymi2jNaM6mWUXa/q4+MwgvZkg
- KSmw==
+ d=linaro.org; s=google; t=1709325673; x=1709930473; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=WvuWRsPJJBj+6VcLIP8dGcQUGFQW1sLwVfjWaSzIi0U=;
+ b=G0JXi5dXg5c8UiLW7Z3HewjJ4s5s/ukIA2BEn23bqObz40Fw7gnZaj1a06D6TBKq4h
+ pqbUp9SGz3mHn9Rn0hlmMISI2G4eWRUcckjR6uMAyignN0cXBsZAOi/QxH2kmyhyJ+Qs
+ pzwpsbEZRwXtqQEXhVU2JerApH0Zz3kdqGLZ7DM4B3FGErQb6tT2WO6VdQy/X9mLfB+J
+ 14EfILBb4tRoNuzGGl0rAIVbaEsxQF5UAunIR7tdts+PB0ghc9J6c/uLpWjsm2+xypng
+ 5vjPu2P0vT6lCF8PLt/EQqZbaY38LUrTuL/4q2OF85t/fgOj3BIlnV/th5NBu438HPkn
+ I+WA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709325248; x=1709930048;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yuo77yp9Q0iPSquUWth3OUNwMsklDChrk49kCCDlmGY=;
- b=nNrK4OGSWGhOgPF56j9Twe1sw6GHJzUDtBBbFLgApM2iobUBMbpw5MrYbEbs8R3TJx
- rjNEfgjJ1sJhqRcs/CdZoxgmJ+XINyv94IFuV0aTkeX/qAwaS+dwio0UHP3zxPXJva3d
- 7s8/VFN7p0R29WW04v+Y2CuH68GNRduKPM6L/g9lTcJFx1ae8az80L1eMKgjjKrSbaat
- Jy23qok0jycsMBNs1A+RhuXv2Yr7WdHik9caFGfhtlUDx3QbimsY+yODLC4y75fb2AVb
- T37NsqJPSU5Vp8ZmklqJsSvQNXSLsEAOYpQUmYl6R0hm7sTJfxsDy2GW2EzvW7Y8uIUZ
- z5mQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUmIs/vnZPaIoZO5UOfeKuWS2SkL1Ri1FSI+xpmXs7XzMa/P4artDYIl2B3vk3K3T6aTOQ03657vDvOlcBayY8trEZs+2o=
-X-Gm-Message-State: AOJu0Ywp507MKojk0HHgXtffdOKhXDNgQp29NvzYoH+MkcKdXCnJvP4t
- GwrnsYXp9aqSOBgN0EbXMpAWPV7SqA2B2q55UK5R/K2wjGC8b8UNJX1sg1fnaKQ=
-X-Google-Smtp-Source: AGHT+IEynDfid25gutssuIdUV/69FKHbWSCQDKWwZTpoHSp05TFI4vij3wOYdOXbkON93tiSTKS8Dg==
-X-Received: by 2002:a05:6a20:7d90:b0:1a1:30a6:2b4b with SMTP id
- v16-20020a056a207d9000b001a130a62b4bmr2876917pzj.15.1709325248388; 
- Fri, 01 Mar 2024 12:34:08 -0800 (PST)
-Received: from [192.168.6.128] (098-147-055-211.res.spectrum.com.
- [98.147.55.211]) by smtp.gmail.com with ESMTPSA id
- q1-20020aa79821000000b006e4d336c420sm3348143pfl.69.2024.03.01.12.34.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 01 Mar 2024 12:34:08 -0800 (PST)
-Message-ID: <f2deec4d-b76c-4d9b-a42a-c31d432a4b53@linaro.org>
-Date: Fri, 1 Mar 2024 10:34:04 -1000
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] hw/i386/pc: Remove 'host_type' argument from
- pc_init1()
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Bernhard Beschow <shentey@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
- <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20240301185936.95175-1-philmd@linaro.org>
- <20240301185936.95175-4-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1709325673; x=1709930473;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WvuWRsPJJBj+6VcLIP8dGcQUGFQW1sLwVfjWaSzIi0U=;
+ b=xJjGgr0D2f3j7cQJTBBrlPlKTs3nVaFPdsQMeyp8roMkw4Q77e6Klz0wvLjj8XOvsM
+ VK6waJgvoKGmjpCgVRGTqu/V+Fp8SQ28XCQoZg//ZMdxLZX/yczbpATEaHrYb6Bkal4T
+ vPxRmZjHsB+sAsqO+eLF/K1EczybyhdqbPJ5Q/bhC1mnlH47fDZcBO3aSn53iA+OHWVk
+ sZ8cCNngZfg6zIkX5RgtkdxGrSnuI9bigRv9rozEl0t9MNSp1IEfs0VslxtspHWWlj+K
+ EGDaBokIxPGv+39ayd+hglUkL4102IdUbL2o8vqyRuvui8KYzagk2VPgpKrqv/z6PU++
+ Wf/Q==
+X-Gm-Message-State: AOJu0YyfiG0Vmo98BGFYGBmbiiVUyYEjn81+gbuTS6c9kkp27Kv777Fm
+ n/kkGGpaMNS7N42P7qgZRK93Fa3EMdq5Zy0HUFFhBq/1Nmyt6Jz0mXL0u49LSTT457sprtNHewp
+ i
+X-Google-Smtp-Source: AGHT+IF4DILoK9U8hPxtHPO5QMddKmyY/rUugVR2TrKrTCn+Csqp+K96ruWWzmB4zc0RChcDCqQkzw==
+X-Received: by 2002:a17:90a:bf01:b0:299:d96f:9145 with SMTP id
+ c1-20020a17090abf0100b00299d96f9145mr2994139pjs.0.1709325673618; 
+ Fri, 01 Mar 2024 12:41:13 -0800 (PST)
+Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
+ by smtp.gmail.com with ESMTPSA id
+ l3-20020a17090ac58300b0029b2e00359esm681947pjt.36.2024.03.01.12.41.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 01 Mar 2024 12:41:13 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240301185936.95175-4-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org
+Subject: [PATCH v3 0/6] target/arm: Do memory alignment check for device memory
+Date: Fri,  1 Mar 2024 10:41:04 -1000
+Message-Id: <20240301204110.656742-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,16 +90,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/1/24 08:59, Philippe Mathieu-Daudé wrote:
-> All callers use host_type=TYPE_I440FX_PCI_HOST_BRIDGE.
-> Directly use this definition within pc_init1().
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   hw/i386/pc_piix.c | 14 +++++---------
->   1 file changed, 5 insertions(+), 9 deletions(-)
+v1: https://lore.kernel.org/qemu-devel/20230223204342.1093632-1-richard.henderson@linaro.org/
+v2: https://lore.kernel.org/qemu-devel/20230621121902.1392277-1-richard.henderson@linaro.org/
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Some of the v2 patch set was merged last June, but the rest languished.
+No substantive changes from v2; only fixed rebase conflicts.
+
 
 r~
+
+
+Richard Henderson (6):
+  target/arm: Support 32-byte alignment in pow2_align
+  exec/memattrs: Remove target_tlb_bit*
+  accel/tcg: Add tlb_fill_flags to CPUTLBEntryFull
+  accel/tcg: Add TLB_CHECK_ALIGNED
+  target/arm: Do memory type alignment check when translation disabled
+  target/arm: Do memory type alignment check when translation enabled
+
+ include/exec/cpu-all.h     |  4 +++-
+ include/exec/memattrs.h    | 12 ------------
+ include/hw/core/cpu.h      |  3 +++
+ accel/tcg/cputlb.c         | 35 ++++++++++++++++++++++++++++-------
+ target/arm/ptw.c           | 32 ++++++++++++++++++++++++++++++++
+ target/arm/tcg/hflags.c    | 34 ++++++++++++++++++++++++++++++++--
+ target/arm/tcg/translate.c |  8 +-------
+ target/sparc/mmu_helper.c  |  2 +-
+ 8 files changed, 100 insertions(+), 30 deletions(-)
+
+-- 
+2.34.1
+
 
