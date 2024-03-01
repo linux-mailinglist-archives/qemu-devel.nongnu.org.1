@@ -2,91 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86C198701F3
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 14:02:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E58BC875633
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 19:39:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rh7xJ-0002pp-Dl; Mon, 04 Mar 2024 08:02:09 -0500
+	id 1riIdN-0005kW-0g; Thu, 07 Mar 2024 13:38:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rh7xD-0002HZ-Fo
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 08:02:03 -0500
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rh7xB-0000sJ-Kf
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 08:02:03 -0500
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a2f22bfb4e6so731166566b.0
- for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 05:02:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709557320; x=1710162120; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fZL1sDUa615DpN6u4uUnKzORTHjZpx0D0T2egeXx6mM=;
- b=MMlrYDHyHluzj0dg0b/aBQCkangsEPWcQGnh1JFuo1TfYpdm2fj6rTtq54AlorwrFk
- 3ytOOlvLnwKrJWyZp7UwJV/efkLi6BNdBmRuaaNnb92WX2yW/CuMkCX/IDo2pA0cAO0o
- crS4uJmxV29OVPjv+4naqw4C150Tt1XwbclPF6UKmvDghp2JYDM9LxXtqv/kP2JM52JN
- 6yKkLeX+TneeIA8O7f7O9KDIK2z5bdWW19xjKqT/PFnHTjHKpzk2oIwyzcEnbKK2fghu
- CrvJOiyLkGIHMVaEMo+5p9JGEsP3VGrSYKd/4N6oH0/ok1+plKPJy0r5K1pgAwajnjE4
- 1UoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709557320; x=1710162120;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=fZL1sDUa615DpN6u4uUnKzORTHjZpx0D0T2egeXx6mM=;
- b=dGNvVmDINY5A0XxXCUuht/PRKJQWKpa+wWbp5WuST5nMUnBaxDXIr/cWdoK04yumtS
- o5kP38xz3mJ3HIVPeUZv3XXWIEDBQordAZFBCUzRui/lLJeMCGiFqCcnOSSXtyovOf59
- fdXfCY4A5KoV5knWxx+kh2wfh/yqN5GrxDqKUInE1haR4FvIHRzlO/yG6vTB0RZ+CjM+
- s6798BkX6jG+vYrwUAHttJauYUAAPiymuJ+PByx20OBA//oJR74qjTqisMmEG8V6NuN+
- tK9AFv6i5XNFef5DAnCHUwz1+hJdglz5AQsadV1w39wUXwE9dpwP5MkyctZvbcCWbOzZ
- BW+w==
-X-Gm-Message-State: AOJu0YzpC3iz9xf6kfsLoYsfInTWPIqCFFqHRy27x0ogVLkOCJEYN/87
- T1xvK6yfWLXy0RYyvVBosXnlmdhZNaZn0GtCR615AKvPhChfNrLKXveRzywy96ZG94Jfv/esdfh
- JmBY=
-X-Google-Smtp-Source: AGHT+IGad8vCuPdvDaWGAMCdseGkTigwLuSunTmNDXGLNICFDtlXc5jv33POwVLihcnB/7+npQ9yfA==
-X-Received: by 2002:a17:907:1049:b0:a3f:4926:a91c with SMTP id
- oy9-20020a170907104900b00a3f4926a91cmr6318889ejb.35.1709557319967; 
- Mon, 04 Mar 2024 05:01:59 -0800 (PST)
-Received: from debian.. ([102.35.208.160]) by smtp.gmail.com with ESMTPSA id
- tj7-20020a170907c24700b00a413d1eda4bsm4806136ejc.87.2024.03.04.05.01.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Mar 2024 05:01:59 -0800 (PST)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Yanan Wang <wangyanan55@huawei.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v7 12/12] plugins: cleanup codepath for previous inline
- operation
-Date: Mon,  4 Mar 2024 17:00:36 +0400
-Message-Id: <20240304130036.124418-13-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240304130036.124418-1-pierrick.bouvier@linaro.org>
-References: <20240304130036.124418-1-pierrick.bouvier@linaro.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1riIdK-0005kH-OM
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 13:38:22 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1riIdI-0003Vl-HY
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 13:38:22 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id E289D4E6013;
+ Thu,  7 Mar 2024 19:38:13 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id rvDrDxA4MKQs; Thu,  7 Mar 2024 19:38:12 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 0105D4E6004; Thu,  7 Mar 2024 19:38:11 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+Date: Fri, 1 Mar 2024 19:01:10 +0100
+Subject: [PATCH v2] hmp: Add option to info qtree to omit details
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Dr. David Alan Gilbert <dave@treblig.org>, berrange@redhat.com
+Message-Id: <20240307183812.0105D4E6004@zero.eik.bme.hu>
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: 15
+X-Spam_score: 1.5
+X-Spam_bar: +
+X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,103 +60,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- plugins/plugin.h       |  5 -----
- accel/tcg/plugin-gen.c | 13 ++++---------
- plugins/core.c         | 29 ++++-------------------------
- 3 files changed, 8 insertions(+), 39 deletions(-)
+The output of info qtree monitor command is very long. Add an option
+to print a brief overview omitting all the details.
 
-diff --git a/plugins/plugin.h b/plugins/plugin.h
-index f6fa10a0f56..7c34f23cfcb 100644
---- a/plugins/plugin.h
-+++ b/plugins/plugin.h
-@@ -68,11 +68,6 @@ struct qemu_plugin_ctx {
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
+---
+v2:
+- Change the variable name to deails too
+- Add braces to if (checkpatch did not warn for this so just noticed)
+
+ hmp-commands-info.hx  |  6 +++---
+ system/qdev-monitor.c | 27 +++++++++++++++------------
+ 2 files changed, 18 insertions(+), 15 deletions(-)
+
+diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
+index da120f82a3..ad1b1306e3 100644
+--- a/hmp-commands-info.hx
++++ b/hmp-commands-info.hx
+@@ -540,9 +540,9 @@ ERST
  
- struct qemu_plugin_ctx *plugin_id_to_ctx_locked(qemu_plugin_id_t id);
+     {
+         .name       = "qtree",
+-        .args_type  = "",
+-        .params     = "",
+-        .help       = "show device tree",
++        .args_type  = "brief:-b",
++        .params     = "[-b]",
++        .help       = "show device tree (-b: brief, omit properties)",
+         .cmd        = hmp_info_qtree,
+     },
  
--void plugin_register_inline_op(GArray **arr,
--                               enum qemu_plugin_mem_rw rw,
--                               enum qemu_plugin_op op, void *ptr,
--                               uint64_t imm);
--
- void plugin_register_inline_op_on_entry(GArray **arr,
-                                         enum qemu_plugin_mem_rw rw,
-                                         enum qemu_plugin_op op,
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index 47e05ec6347..8028786c7bb 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -440,15 +440,10 @@ static TCGOp *append_inline_cb(const struct qemu_plugin_dyn_cb *cb,
-                                TCGOp *begin_op, TCGOp *op,
-                                int *unused)
- {
--    char *ptr = cb->userp;
--    size_t elem_size = 0;
--    size_t offset = 0;
--    if (!ptr) {
--        /* use inline entry */
--        ptr = cb->inline_insn.entry.score->data->data;
--        elem_size = g_array_get_element_size(cb->inline_insn.entry.score->data);
--        offset = cb->inline_insn.entry.offset;
--    }
-+    char *ptr = cb->inline_insn.entry.score->data->data;
-+    size_t elem_size = g_array_get_element_size(
-+        cb->inline_insn.entry.score->data);
-+    size_t offset = cb->inline_insn.entry.offset;
- 
-     op = copy_ld_i32(&begin_op, op);
-     op = copy_mul_i32(&begin_op, op, elem_size);
-diff --git a/plugins/core.c b/plugins/core.c
-index 7852590da88..11ca20e6267 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -316,22 +316,6 @@ static struct qemu_plugin_dyn_cb *plugin_get_dyn_cb(GArray **arr)
-     return &g_array_index(cbs, struct qemu_plugin_dyn_cb, cbs->len - 1);
+diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+index a13db763e5..ad91e74181 100644
+--- a/system/qdev-monitor.c
++++ b/system/qdev-monitor.c
+@@ -744,7 +744,6 @@ DeviceState *qdev_device_add(QemuOpts *opts, Error **errp)
  }
  
--void plugin_register_inline_op(GArray **arr,
--                               enum qemu_plugin_mem_rw rw,
--                               enum qemu_plugin_op op,
--                               void *ptr,
--                               uint64_t imm)
--{
--    struct qemu_plugin_dyn_cb *dyn_cb;
--
--    dyn_cb = plugin_get_dyn_cb(arr);
--    dyn_cb->userp = ptr;
--    dyn_cb->type = PLUGIN_CB_INLINE;
--    dyn_cb->rw = rw;
--    dyn_cb->inline_insn.op = op;
--    dyn_cb->inline_insn.imm = imm;
--}
--
- void plugin_register_inline_op_on_entry(GArray **arr,
-                                         enum qemu_plugin_mem_rw rw,
-                                         enum qemu_plugin_op op,
-@@ -494,15 +478,10 @@ void qemu_plugin_flush_cb(void)
+ #define qdev_printf(fmt, ...) monitor_printf(mon, "%*s" fmt, indent, "", ## __VA_ARGS__)
+-static void qbus_print(Monitor *mon, BusState *bus, int indent);
  
- void exec_inline_op(struct qemu_plugin_dyn_cb *cb, int cpu_index)
+ static void qdev_print_props(Monitor *mon, DeviceState *dev, Property *props,
+                              int indent)
+@@ -784,13 +783,9 @@ static void bus_print_dev(BusState *bus, Monitor *mon, DeviceState *dev, int ind
+ static void qdev_print(Monitor *mon, DeviceState *dev, int indent)
  {
--    char *ptr = cb->userp;
--    size_t elem_size = 0;
--    size_t offset = 0;
--    if (!ptr) {
--        /* use inline entry */
--        ptr = cb->inline_insn.entry.score->data->data;
--        elem_size = g_array_get_element_size(cb->inline_insn.entry.score->data);
--        offset = cb->inline_insn.entry.offset;
--    }
-+    char *ptr = cb->inline_insn.entry.score->data->data;
-+    size_t elem_size = g_array_get_element_size(
-+        cb->inline_insn.entry.score->data);
-+    size_t offset = cb->inline_insn.entry.offset;
-     uint64_t *val = (uint64_t *)(ptr + offset + cpu_index * elem_size);
+     ObjectClass *class;
+-    BusState *child;
+     NamedGPIOList *ngl;
+     NamedClockList *ncl;
  
-     switch (cb->inline_insn.op) {
+-    qdev_printf("dev: %s, id \"%s\"\n", object_get_typename(OBJECT(dev)),
+-                dev->id ? dev->id : "");
+-    indent += 2;
+     QLIST_FOREACH(ngl, &dev->gpios, node) {
+         if (ngl->num_in) {
+             qdev_printf("gpio-in \"%s\" %d\n", ngl->name ? ngl->name : "",
+@@ -814,12 +809,9 @@ static void qdev_print(Monitor *mon, DeviceState *dev, int indent)
+         class = object_class_get_parent(class);
+     } while (class != object_class_by_name(TYPE_DEVICE));
+     bus_print_dev(dev->parent_bus, mon, dev, indent);
+-    QLIST_FOREACH(child, &dev->child_bus, sibling) {
+-        qbus_print(mon, child, indent);
+-    }
+ }
+ 
+-static void qbus_print(Monitor *mon, BusState *bus, int indent)
++static void qbus_print(Monitor *mon, BusState *bus, int indent, bool details)
+ {
+     BusChild *kid;
+ 
+@@ -827,16 +819,27 @@ static void qbus_print(Monitor *mon, BusState *bus, int indent)
+     indent += 2;
+     qdev_printf("type %s\n", object_get_typename(OBJECT(bus)));
+     QTAILQ_FOREACH(kid, &bus->children, sibling) {
++        BusState *child_bus;
+         DeviceState *dev = kid->child;
+-        qdev_print(mon, dev, indent);
++        qdev_printf("dev: %s, id \"%s\"\n", object_get_typename(OBJECT(dev)),
++                    dev->id ? dev->id : "");
++        if (details) {
++            qdev_print(mon, dev, indent + 2);
++        }
++        QLIST_FOREACH(child_bus, &dev->child_bus, sibling) {
++            qbus_print(mon, child_bus, indent + 2, details);
++        }
+     }
+ }
+ #undef qdev_printf
+ 
+ void hmp_info_qtree(Monitor *mon, const QDict *qdict)
+ {
+-    if (sysbus_get_default())
+-        qbus_print(mon, sysbus_get_default(), 0);
++    bool details = !qdict_get_try_bool(qdict, "brief", false);
++
++    if (sysbus_get_default()) {
++        qbus_print(mon, sysbus_get_default(), 0, details);
++    }
+ }
+ 
+ void hmp_info_qdm(Monitor *mon, const QDict *qdict)
 -- 
-2.39.2
+2.30.9
 
 
