@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD3B86EE85
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 05:14:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA6A86EE89
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 05:14:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgGjH-0005KW-5I; Fri, 01 Mar 2024 23:12:07 -0500
+	id 1rgGjH-0005LO-RQ; Fri, 01 Mar 2024 23:12:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgC4G-0000PZ-51
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:13:28 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1rgCiz-0005S8-15
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:55:33 -0500
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgC41-0006aj-61
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:13:27 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6e4560664b5so2239765b3a.1
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:13:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1rgCiw-00031j-VN
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:55:32 -0500
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-563d56ee65cso4418677a12.2
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:55:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709334791; x=1709939591; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+UbEHBMhoq2U4plWax72+xkfgutFWy+FXSOt1ZDpIEI=;
- b=nKdf4BnxKhWErMqw3zVcC/Dx+SfxkLTUE1rqodijGLOoIM+yb7VF5k/TlS5CZ8Y0nm
- R4LBocnptZbSVXfnqCUatb0wUmr639aAfEvUC3nHG2c3n1YPPMhgys5glktVFrEFdtBt
- XTQRZCKyxzegXZETfnjbEuQqtnklUvBwLEwDeEFs11ImYrTniWM+ZEtgQpN9+SI5L3tp
- Dx2vIXKYKW4LGmr3URYb5EIFo2J2k5WqE6BKYUW4r4Y3uw/OhQsMUHSve9/gbisWTfHk
- Q8QzNf4VdCiHi6s+U08kQSYQZE1DRudSvt4iX4guHhf261oAziWP4kw5QjvSBzhp/kTL
- KNlw==
+ d=gmail.com; s=20230601; t=1709337326; x=1709942126; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=JJ5aRWjWsJYmRVmmKzPYLdKlvf9Lse8dvuFq4N39JEw=;
+ b=nfajTLfn15BDczvyg0CXIjqXgbU86uXFHsFwVxrp5vH6ENR1DgmR1xLbxGIlvIPHTo
+ 8gX7h0UWeN5cyY4so9YfnrGxtbuIldb+IH83uF3R3NLcGB8fsaDhKr4Fst8uzGxmoz8A
+ VWH/DPPdm8XD7ABT3xAec2UnbS9FVcqCnACNI/hv5f1zJTLA0iVjNN6o7N8//OeRUcRC
+ E26WQhaKpHdAQRrFnq1GOG+IqSDUyscHqfb57aJHoGlxD15oaXlBwb7Q6vNAXix+NQbK
+ +XPyquaHIceSi+trMP5UmRt1bG23U2KKqotZcvlcCiod5IMsJG+gwNmP2uKhrlI/bg9c
+ oUdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709334791; x=1709939591;
- h=content-transfer-encoding:in-reply-to:references:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+UbEHBMhoq2U4plWax72+xkfgutFWy+FXSOt1ZDpIEI=;
- b=vsg7ngGdnPZzIAYJn5N3/0X4UjcOBwkzisAuxjcJRbgj4vsFmjxrAaMg104FO1WSsR
- ScpCtkVGdbljY44mTnVju3xsMZMstMCVJRMntrusrlLcA/RYnStvueK7rXnRqIq+VaVd
- KTtTqv5OILeXzduR2q+kKzJCoyBetS+tslbuYz4rr6HDguH481Dhbncp0ccjLvnZUEcm
- ij7Z2780TB6Jkh8OddrG3FTKzEn6avSViyVaMaOVtkEZiH+99k0pLHb2FzN307uPVzET
- R/33/F2LCyaweLi5OmKoRA//XXLgLa+CEEJSCJcphrq6Z9icrIimXtST1T0jorsb0H0V
- OK0w==
-X-Gm-Message-State: AOJu0YzgIx9e3wN1ePMaWIlXQjRq2C5B+GUp+FF2ZrAaJ7pvTelv1e4X
- gQZUEkSj8G90A4iMaEJhihN1TWgFUjPdFSPZ6hlxuVfJKqtZPPT86263iitThonjaefbe4ohqSE
- g
-X-Google-Smtp-Source: AGHT+IElUDl+3hx3pTL9c0yyuBbhCla93erESnMkMcJFfqmSn7aift5bvzzwy2grRXw6vuG5zfdFLA==
-X-Received: by 2002:a05:6a20:244a:b0:1a1:2793:a386 with SMTP id
- t10-20020a056a20244a00b001a12793a386mr3945164pzc.19.1709334791155; 
- Fri, 01 Mar 2024 15:13:11 -0800 (PST)
-Received: from [192.168.6.128] (098-147-055-211.res.spectrum.com.
- [98.147.55.211]) by smtp.gmail.com with ESMTPSA id
- r7-20020aa79887000000b006e4e616e520sm3448946pfl.72.2024.03.01.15.13.10
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 01 Mar 2024 15:13:10 -0800 (PST)
-Message-ID: <6c613f56-6011-41be-830c-70208e7079dc@linaro.org>
-Date: Fri, 1 Mar 2024 13:13:07 -1000
+ d=1e100.net; s=20230601; t=1709337326; x=1709942126;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JJ5aRWjWsJYmRVmmKzPYLdKlvf9Lse8dvuFq4N39JEw=;
+ b=fuody0dnFVwCGHzqipjuxIsQPq49BFruq5rshMqOa75w+g9jYoEPxi+UYJ3BZCIQG0
+ ZsoGAWAoJSkW5GnQeFp8rj3PwlZYZJI72FJRKaCf9gL9CLCjgDBgIqkCLuW+gFox620c
+ idEEmdsRad8SO3k+AyLKA66xeNKMHzjoF9EpnjX23uXsRNFprbYLe+2gg/kCDVJJv+MM
+ w6PAcfB/GMqufg9Idk2WfyrdAHFkHFh8+xjYgyJ/3I04DvnsZw4SGuUVlYqp1vwa6wpb
+ T3RHJMbDaFYWuAxRqiG/j6LB9jNisKZ6ulu9LY2arInk0QaATRWO1kQhDkDyjTSW3b8X
+ aBHw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVZkqfPU8t6hNneRvZEwpPdTCr+R74KxI2eh4Tg6tmXo124VvzRnFMDPc0HJhtmjeDm+PsrosDNDsXEg0DDHW9+gadZAno=
+X-Gm-Message-State: AOJu0YwyUE1GsLXpidCjSttfeW/xoMfmgJA2eumtAy8RoMyJMLU9WE95
+ cc89/wT0yjiezAb1i8FL0MNUXSOzUQtRv8jNnI+SuCc2PNgKe3TPLbgc37taDjCbheKLd+Zzo77
+ YqR5SwLBEFGJHGAAS6Dgz8DPs8Vk=
+X-Google-Smtp-Source: AGHT+IHc8HXU7tUQJ0jC1hJLqvrtfoonTz9c7GksOKzM59Ycvptea8c7tUEjPdCqx7qdhPcu0v44W374dTvPvk+PwAg=
+X-Received: by 2002:a05:6402:2153:b0:566:777:af4f with SMTP id
+ bq19-20020a056402215300b005660777af4fmr2115077edb.1.1709337326263; Fri, 01
+ Mar 2024 15:55:26 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PULL 00/60] linux-user and tcg patch queue
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-References: <20240301230619.661008-1-richard.henderson@linaro.org>
-In-Reply-To: <20240301230619.661008-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+References: <20240227222227.74935-1-greg@gpanders.com>
+ <CAFEAcA-wrdUaH55ZmoCQAQ=zV=seaCo2hciXys_p4tKE08Tf3w@mail.gmail.com>
+In-Reply-To: <CAFEAcA-wrdUaH55ZmoCQAQ=zV=seaCo2hciXys_p4tKE08Tf3w@mail.gmail.com>
+From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Date: Fri, 1 Mar 2024 17:55:14 -0600
+Message-ID: <CAJy5ezo20Hh7QN6S70fu+akYjhiB_RR=teo+UPigMwzyyb6NzA@mail.gmail.com>
+Subject: Re: [PATCH] hw/misc: zynq_slcr: set SLC_RST bit in REBOOT_STATUS
+ register
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Gregory Anders <greg@gpanders.com>, qemu-devel@nongnu.org, 
+ Alistair Francis <alistair@alistair23.me>
+Content-Type: multipart/alternative; boundary="00000000000022223a0612a21cb0"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,153 +90,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Arg.  PULL.
+--00000000000022223a0612a21cb0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Mar 1, 2024 at 10:40=E2=80=AFAM Peter Maydell <peter.maydell@linaro=
+.org>
+wrote:
+
+> On Wed, 28 Feb 2024 at 01:40, Gregory Anders <greg@gpanders.com> wrote:
+> >
+> > When the CPU is reset using PSS_RST_CTRL in the SLCR, bit 19 in
+> > REBOOT_STATUS should be set.
+> >
+
+> Refer to page 1602 of the Xilinx Zynq 7000 Technical Reference Manual.
+> >
+> > Signed-off-by: Gregory Anders <greg@gpanders.com>
+> > ---
+> >  hw/misc/zynq_slcr.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/hw/misc/zynq_slcr.c b/hw/misc/zynq_slcr.c
+> > index d2ac2e77f2..a8f1792bf6 100644
+> > --- a/hw/misc/zynq_slcr.c
+> > +++ b/hw/misc/zynq_slcr.c
+> > @@ -120,6 +120,7 @@ REG32(RS_AWDT_CTRL, 0x24c)
+> >  REG32(RST_REASON, 0x250)
+> >
+> >  REG32(REBOOT_STATUS, 0x258)
+> > +    FIELD(REBOOT_STATUS, SLC_RST, 19, 1)
+> >  REG32(BOOT_MODE, 0x25c)
+> >
+> >  REG32(APU_CTRL, 0x300)
+> > @@ -562,6 +563,7 @@ static void zynq_slcr_write(void *opaque, hwaddr
+> offset,
+> >      switch (offset) {
+> >      case R_PSS_RST_CTRL:
+> >          if (FIELD_EX32(val, PSS_RST_CTRL, SOFT_RST)) {
+> > +            s->regs[R_REBOOT_STATUS] |=3D R_REBOOT_STATUS_SLC_RST_MASK=
+;
+> >              qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
+> >          }
+> >          break;
+> > --
+>
+> The manual also says that "This field is written by ROM code",
+> so as a model of the hardware should QEMU be writing it?
+>
+> I've cc'd the Zynq maintainers for their opinion.
+>
+>
+Hi,
+
+I don't have great answers unfortunately...
+
+We haven't been super consistent with these things but on the ZynqMP we
+sometimes require the user to apply ROM behaviour using -device loader on
+the command-line (not great for this case since we wouldn't want the mask
+to be set until a soft reset) or we conditionalize the ROM behaviour
+checking if we're doing direct Linux boots..
+
+Best regards,
+Edgar
 
 
-On 3/1/24 13:05, Richard Henderson wrote:
-> The following changes since commit c0c6a0e3528b88aaad0b9d333e295707a195587b:
-> 
->    Merge tag 'migration-next-pull-request' of https://gitlab.com/peterx/qemu into staging (2024-02-28 17:27:10 +0000)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20240301
-> 
-> for you to fetch changes up to 04dadd22aed00e5a2955ab078d7edd676812cf41:
-> 
->    tests/tcg: Check that shmat() does not break /proc/self/maps (2024-03-01 08:09:55 -1000)
-> 
-> ----------------------------------------------------------------
-> linux-user: Rewrite elf coredump
-> tcg/aarch64: Apple does not align __int128_t in even registers
-> accel/tcg: Fixes for page tables in mmio memory
-> linux-user: Remove qemu_host_page_{size,mask}, HOST_PAGE_ALIGN
-> migration: Remove qemu_host_page_size
-> hw/tpm: Remove qemu_host_page_size
-> softmmu: Remove qemu_host_page_{size,mask}, HOST_PAGE_ALIGN
-> linux-user: Split and reorganize target_mmap.
-> *-user: Deprecate and disable -p pagesize
-> linux-user: Allow TARGET_PAGE_BITS_VARY
-> target/alpha: Enable TARGET_PAGE_BITS_VARY for user-only
-> target/arm: Enable TARGET_PAGE_BITS_VARY for AArch64 user-only
-> target/ppc: Enable TARGET_PAGE_BITS_VARY for user-only
-> linux-user: Remove pgb_dynamic alignment assertion
-> tcg/optimize: fix uninitialized variable
-> linux-user: Rewrite shmat
-> 
-> ----------------------------------------------------------------
-> Ilya Leoshkevich (1):
->        tests/tcg: Check that shmat() does not break /proc/self/maps
-> 
-> Jonathan Cameron (1):
->        tcg: Avoid double lock if page tables happen to be in mmio memory.
-> 
-> Paolo Bonzini (1):
->        tcg/optimize: fix uninitialized variable
-> 
-> Peter Maydell (1):
->        accel/tcg: Set can_do_io at at start of lookup_tb_ptr helper
-> 
-> Richard Henderson (56):
->        linux-user/elfload: Disable core dump if getrlimit fails
->        linux-user/elfload: Merge init_note_info and fill_note_info
->        linux-user/elfload: Tidy fill_note_info and struct elf_note_info
->        linux-user/elfload: Stack allocate struct mm_struct
->        linux-user/elfload: Latch errno before cleanup in elf_core_dump
->        linux-user/elfload: Open core file after vma_init
->        linux-user/elfload: Truncate core file on open
->        linux-user/elfload: Lock cpu list and mmap during elf_core_dump
->        linux-user/elfload: Size corefile before opening
->        linux-user/elfload: Write corefile elf header in one block
->        linux-user/elfload: Write process memory to core file in larger chunks
->        linux-user/elfload: Simplify vma_dump_size
->        linux-user/elfload: Rely on walk_memory_regions for vmas
->        linux-user/elfload: Unprotect regions before core dump
->        tcg/aarch64: Apple does not align __int128_t in even registers
->        accel/tcg: Remove qemu_host_page_size from page_protect/page_unprotect
->        linux-user: Adjust SVr4 NULL page mapping
->        linux-user: Remove qemu_host_page_{size, mask} in probe_guest_base
->        linux-user: Remove qemu_host_page_size from create_elf_tables
->        linux-user/hppa: Simplify init_guest_commpage
->        linux-user/nios2: Remove qemu_host_page_size from init_guest_commpage
->        linux-user/arm: Remove qemu_host_page_size from init_guest_commpage
->        linux-user: Remove qemu_host_page_size from elf_core_dump
->        linux-user: Remove qemu_host_page_{size, mask} from mmap.c
->        linux-user: Remove REAL_HOST_PAGE_ALIGN from mmap.c
->        linux-user: Remove HOST_PAGE_ALIGN from mmap.c
->        migration: Remove qemu_host_page_size
->        hw/tpm: Remove HOST_PAGE_ALIGN from tpm_ppi_init
->        softmmu/physmem: Remove qemu_host_page_size
->        softmmu/physmem: Remove HOST_PAGE_ALIGN
->        linux-user: Remove qemu_host_page_size from main
->        linux-user: Split out target_mmap__locked
->        linux-user: Move some mmap checks outside the lock
->        linux-user: Fix sub-host-page mmap
->        linux-user: Split out mmap_end
->        linux-user: Do early mmap placement only for reserved_va
->        linux-user: Split out do_munmap
->        linux-user: Use do_munmap for target_mmap failure
->        linux-user: Split out mmap_h_eq_g
->        linux-user: Split out mmap_h_lt_g
->        linux-user: Split out mmap_h_gt_g
->        tests/tcg: Remove run-test-mmap-*
->        tests/tcg: Extend file in linux-madvise.c
->        *-user: Deprecate and disable -p pagesize
->        cpu: Remove page_size_init
->        accel/tcg: Disconnect TargetPageDataNode from page size
->        linux-user: Allow TARGET_PAGE_BITS_VARY
->        target/arm: Enable TARGET_PAGE_BITS_VARY for AArch64 user-only
->        linux-user: Bound mmap_min_addr by host page size
->        target/ppc: Enable TARGET_PAGE_BITS_VARY for user-only
->        target/alpha: Enable TARGET_PAGE_BITS_VARY for user-only
->        linux-user: Remove pgb_dynamic alignment assertion
->        linux-user/x86_64: Handle the vsyscall page in open_self_maps_{2,4}
->        linux-user/loongarch64: Remove TARGET_FORCE_SHMLBA
->        linux-user: Add strace for shmat
->        linux-user: Rewrite target_shmat
-> 
->   docs/about/deprecated.rst                    |  10 +
->   docs/user/main.rst                           |   3 -
->   bsd-user/qemu.h                              |   7 +
->   include/exec/cpu-common.h                    |   7 -
->   include/hw/core/cpu.h                        |   2 -
->   linux-user/loongarch64/target_syscall.h      |   7 -
->   target/alpha/cpu-param.h                     |  16 +-
->   target/arm/cpu-param.h                       |   6 +-
->   target/ppc/cpu-param.h                       |   9 +-
->   tcg/aarch64/tcg-target.h                     |   6 +-
->   accel/tcg/cpu-exec.c                         |   8 +
->   accel/tcg/cputlb.c                           |  34 +-
->   accel/tcg/translate-all.c                    |   1 -
->   accel/tcg/user-exec.c                        |  31 +-
->   bsd-user/main.c                              |  23 +-
->   cpu-target.c                                 |  16 -
->   hw/tpm/tpm_ppi.c                             |   6 +-
->   linux-user/elfload.c                         | 789 ++++++++--------------
->   linux-user/main.c                            |  34 +-
->   linux-user/mmap.c                            | 939 +++++++++++++++++----------
->   linux-user/strace.c                          |  24 +
->   linux-user/syscall.c                         |  16 +
->   migration/ram.c                              |  22 +-
->   system/physmem.c                             |  17 +-
->   system/vl.c                                  |   1 -
->   target/arm/cpu.c                             |  51 +-
->   tcg/optimize.c                               |   3 +-
->   tests/tcg/multiarch/linux/linux-madvise.c    |   2 +
->   tests/tcg/multiarch/linux/linux-shmat-maps.c |  55 ++
->   linux-user/strace.list                       |   2 +-
->   tests/tcg/alpha/Makefile.target              |   3 -
->   tests/tcg/arm/Makefile.target                |   3 -
->   tests/tcg/hppa/Makefile.target               |   3 -
->   tests/tcg/i386/Makefile.target               |   3 -
->   tests/tcg/m68k/Makefile.target               |   3 -
->   tests/tcg/multiarch/Makefile.target          |   9 -
->   tests/tcg/ppc/Makefile.target                |  12 -
->   tests/tcg/sh4/Makefile.target                |   3 -
->   tests/tcg/sparc64/Makefile.target            |   6 -
->   39 files changed, 1156 insertions(+), 1036 deletions(-)
->   create mode 100644 tests/tcg/multiarch/linux/linux-shmat-maps.c
->   delete mode 100644 tests/tcg/ppc/Makefile.target
->   delete mode 100644 tests/tcg/sparc64/Makefile.target
 
+
+> thanks
+> -- PMM
+>
+
+--00000000000022223a0612a21cb0
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">On Fri, Mar 1, 2024 at 10:40=E2=80=AFAM P=
+eter Maydell &lt;<a href=3D"mailto:peter.maydell@linaro.org">peter.maydell@=
+linaro.org</a>&gt; wrote:<br></div><div class=3D"gmail_quote"><blockquote c=
+lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
+d rgb(204,204,204);padding-left:1ex">On Wed, 28 Feb 2024 at 01:40, Gregory =
+Anders &lt;<a href=3D"mailto:greg@gpanders.com" target=3D"_blank">greg@gpan=
+ders.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; When the CPU is reset using PSS_RST_CTRL in the SLCR, bit 19 in<br>
+&gt; REBOOT_STATUS should be set.<br>
+&gt;=C2=A0</blockquote><blockquote class=3D"gmail_quote" style=3D"margin:0p=
+x 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">&g=
+t; Refer to page 1602 of the Xilinx Zynq 7000 Technical Reference Manual.<b=
+r>
+&gt;<br>
+&gt; Signed-off-by: Gregory Anders &lt;<a href=3D"mailto:greg@gpanders.com"=
+ target=3D"_blank">greg@gpanders.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 hw/misc/zynq_slcr.c | 2 ++<br>
+&gt;=C2=A0 1 file changed, 2 insertions(+)<br>
+&gt;<br>
+&gt; diff --git a/hw/misc/zynq_slcr.c b/hw/misc/zynq_slcr.c<br>
+&gt; index d2ac2e77f2..a8f1792bf6 100644<br>
+&gt; --- a/hw/misc/zynq_slcr.c<br>
+&gt; +++ b/hw/misc/zynq_slcr.c<br>
+&gt; @@ -120,6 +120,7 @@ REG32(RS_AWDT_CTRL, 0x24c)<br>
+&gt;=C2=A0 REG32(RST_REASON, 0x250)<br>
+&gt;<br>
+&gt;=C2=A0 REG32(REBOOT_STATUS, 0x258)<br>
+&gt; +=C2=A0 =C2=A0 FIELD(REBOOT_STATUS, SLC_RST, 19, 1)<br>
+&gt;=C2=A0 REG32(BOOT_MODE, 0x25c)<br>
+&gt;<br>
+&gt;=C2=A0 REG32(APU_CTRL, 0x300)<br>
+&gt; @@ -562,6 +563,7 @@ static void zynq_slcr_write(void *opaque, hwaddr o=
+ffset,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 switch (offset) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 case R_PSS_RST_CTRL:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (FIELD_EX32(val, PSS_RST_CTRL, SO=
+FT_RST)) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;regs[R_REBOOT_STATUS]=
+ |=3D R_REBOOT_STATUS_SLC_RST_MASK;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_system_reset_requ=
+est(SHUTDOWN_CAUSE_GUEST_RESET);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
+&gt; --<br>
+<br>
+The manual also says that &quot;This field is written by ROM code&quot;,<br=
+>
+so as a model of the hardware should QEMU be writing it?<br>
+<br>
+I&#39;ve cc&#39;d the Zynq maintainers for their opinion.<br>
+<br></blockquote><div><br></div><div><div>Hi,</div><div><br></div><div>I do=
+n&#39;t have great answers unfortunately...</div><div><br></div><div>We hav=
+en&#39;t been super consistent with these things but on the ZynqMP we somet=
+imes require the user to apply ROM behaviour using -device loader on the co=
+mmand-line (not great for this case since we wouldn&#39;t want the mask to =
+be set until a soft reset) or we conditionalize the ROM behaviour checking=
+=C2=A0if we&#39;re doing direct Linux boots..</div><div><br></div><div>Best=
+ regards,</div><div>Edgar</div><div><br></div><div><br></div><div></div></d=
+iv><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0=
+px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+thanks<br>
+-- PMM<br>
+</blockquote></div></div>
+
+--00000000000022223a0612a21cb0--
 
