@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11EA786ECB6
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:10:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 109A086ECC5
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:13:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgByc-0006La-9J; Fri, 01 Mar 2024 18:07:38 -0500
+	id 1rgByW-0006Ae-QG; Fri, 01 Mar 2024 18:07:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgByF-0005fJ-LY
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:07:16 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1rgByH-0005j0-Tc
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:07:18 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgByD-0004N1-RH
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:07:15 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1dc0e5b223eso26021765ad.1
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:07:13 -0800 (PST)
+ id 1rgByF-0004OF-AN
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:07:16 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1dc5d0162bcso25439775ad.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:07:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709334432; x=1709939232; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709334434; x=1709939234; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=48MAJNKY8itF/Uvxdy9leMjwL6Lq94BoHatvMOlA6tE=;
- b=Iuf2pmTXfNbaEDQ3d60gi7CqM53oX//yskS3tzvQm3W0qH6fIq2I4Dd8Gi5tF9lX5Z
- bh6ThCvDAGDzKRubzYvhPBid8+dwka9JDJPKvNDD5Fv677F65fvzdcpfx/W+COepGV4r
- cNjl9URJ2QJMikTScA4Phmq4B4ZnZk7PGkZSlybrZh5/yvtsPk7HdW857x8AgKnugbx6
- Cm/ahIhfkfy73qIk/JLYHl9AW5cSXS0JA4r0Sb5srI0JL30bp417236AJlZdiVeWA/5+
- 0JtV7u0a30aWdes+o6HkirZoXk93+1//EjR7dOskJ+hTxneygtY+/TVki8kC65tSYg1Q
- j9iA==
+ bh=aJy5WaQ99ApNqzP+t8EteVWeLJYZZHFF49xziucGjOo=;
+ b=lyCLax+gDlGPVfi3jiwndKhyvqSEaQNDyT6MpvMaf6R5A9EQ79GY1vWRXmz7tA9Bzv
+ itvC19UUjduovvpof7FfQX0gzJLIlwauZVJSDmR5vvlt3ya2j4d5tQL4zls4xID6gSsQ
+ d3kDeuJW8LEHNsODtnbg6XRGmkY/Q8AQPWLVnG5q5bVCtqBucNpUCsNnC8dnWQ4OrUZi
+ ynBiWUXPOjOyoqCBpS5uN+Jg0OOIt2J08FIEiucR7G+EhpiErPmAYq2pb40uUv2BVAr1
+ A6edzkZm0zJNImJnTLos9BXn7EwQxC5QbGvLhfPcR56RNq2e2zdKibJmLHT806qLoQqD
+ 6MMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709334432; x=1709939232;
+ d=1e100.net; s=20230601; t=1709334434; x=1709939234;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=48MAJNKY8itF/Uvxdy9leMjwL6Lq94BoHatvMOlA6tE=;
- b=fvFgiGO3etv6ztIJ67nReTVYsIoZO93uP/ZnzEkiA1s9zgSS22PQncTncv9GEWlE8k
- hNDgB5FY19sLwPesmw1B6BxnnJ2QU0uR5FlLO1dbGfnak7A1ZH56RJR7o3fj2s50IQj5
- hJvJF+/3NI7AbSB+Vv1PJoDvjWjh8voAIaQKG0IgJ5bt9goMhyk6192WoGeip7Eqlni6
- CJUxwhoNmdbLTFzRmtbNZRIpkg7OcicVLKPu92IoTj4yM6K3jatZBfWhGn934ok0pQsd
- 4BHICILQX9pAE3Xsi7iAAm2+gzaNE3NWw7jSc2V273fGdM69FzfgrUsFsVQhfT1Zxle3
- kQtA==
-X-Gm-Message-State: AOJu0YzXu1e1cqwJp1/IlJ0vkYA9HxVq5lBzTK1Hn66QvqVWqUG/Tdmh
- OCd/Ui2wEIJiPBODv1QtZfpW8823BLkKysCaX/yjFAH1GsLYRWn493H1X31U1xRFLJub08MbVgS
- h
-X-Google-Smtp-Source: AGHT+IGXe5RIQiKaRkK2v4FEie1dqvB6MmoWawzFTGul53D9EBsGhsE0L8xrSeuTVBagPGw+uTdWjQ==
-X-Received: by 2002:a17:902:c20c:b0:1db:f389:2deb with SMTP id
- 12-20020a170902c20c00b001dbf3892debmr2647282pll.17.1709334432587; 
- Fri, 01 Mar 2024 15:07:12 -0800 (PST)
+ bh=aJy5WaQ99ApNqzP+t8EteVWeLJYZZHFF49xziucGjOo=;
+ b=dPiAxLkXfZiF1OZZQ/FNqU1Z/gRaT16+VkAiHzg0q0hBXFPr5ISfFinFFnQT/uJ88Q
+ baa0YwkvW+v+SUREinLzuuYS2dhSFf+0GXGWpCUtCf0suM4k0SMN/a4fxhXlj5Qb+7k3
+ JwHVsEf6MuXTvmsHNkwq1XLwZnY6FXP21VLwTpvIaQ87ugTj+yM5rETVfu97oE6GeRRv
+ i8JeoQgWJD+aXEgXLAHzhNd/m9JIpBxo5Q0UpGHSVZl5Vmx/Ng5tP+vm33oiZ9M/bNHr
+ srgZrpyNVpYZygL8JS/hiQksDSmAhBPXioo1spsV4YfG5hmJAU9hJkWdbkAJT/+4FuHH
+ 0qfw==
+X-Gm-Message-State: AOJu0YwNHyR4rUdNABcSGXrKLyfEsmgP3L+DwwC7Dr0gNWgwoeVZF6RO
+ CL3GRdPfdqYnQNFdQJCeBs0ERos4Ur40iRjzkMg3U/4wi41FnxwJE6BdmU3S0C3Uo6180lEy3BG
+ i
+X-Google-Smtp-Source: AGHT+IGFOVjojGScGl9/Qj1VBUMqB6hzZDoW+bEpMtjcv2ox1glFNGXJpMrTTtOlD2UYaOMYk36QWA==
+X-Received: by 2002:a17:903:1251:b0:1dc:f157:51ba with SMTP id
+ u17-20020a170903125100b001dcf15751bamr2405471plh.35.1709334434131; 
+ Fri, 01 Mar 2024 15:07:14 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- lc11-20020a170902fa8b00b001dc668e145asm3988580plb.200.2024.03.01.15.07.11
+ lc11-20020a170902fa8b00b001dc668e145asm3988580plb.200.2024.03.01.15.07.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 15:07:12 -0800 (PST)
+ Fri, 01 Mar 2024 15:07:13 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Helge Deller <deller@gmx.de>
-Subject: [PATCH 35/60] linux-user: Move some mmap checks outside the lock
-Date: Fri,  1 Mar 2024 13:05:54 -1000
-Message-Id: <20240301230619.661008-36-richard.henderson@linaro.org>
+Subject: [PATCH 36/60] linux-user: Fix sub-host-page mmap
+Date: Fri,  1 Mar 2024 13:05:55 -1000
+Message-Id: <20240301230619.661008-37-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301230619.661008-1-richard.henderson@linaro.org>
 References: <20240301230619.661008-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,166 +93,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Basic validation of operands does not require the lock.
-Hoist them from target_mmap__locked back into target_mmap.
+We cannot skip over the_end1 to the_end, because we fail to
+record the validity of the guest page with the interval tree.
+Remove "the_end" and rename "the_end1" to "the_end".
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
 Acked-by: Helge Deller <deller@gmx.de>
-Message-Id: <20240102015808.132373-18-richard.henderson@linaro.org>
+Message-Id: <20240102015808.132373-19-richard.henderson@linaro.org>
 ---
- linux-user/mmap.c | 107 +++++++++++++++++++++++-----------------------
- 1 file changed, 53 insertions(+), 54 deletions(-)
+ linux-user/mmap.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index b4c3cc65aa..fbaea832c5 100644
+index fbaea832c5..48fcdd4a32 100644
 --- a/linux-user/mmap.c
 +++ b/linux-user/mmap.c
-@@ -491,52 +491,14 @@ abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong align)
- }
- 
- static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
--                                    int target_prot, int flags,
-+                                    int target_prot, int flags, int page_flags,
-                                     int fd, off_t offset)
- {
-     int host_page_size = qemu_real_host_page_size();
-     abi_ulong ret, last, real_start, real_last, retaddr, host_len;
-     abi_ulong passthrough_start = -1, passthrough_last = 0;
--    int page_flags;
-     off_t host_offset;
- 
--    if (!len) {
--        errno = EINVAL;
--        return -1;
--    }
--
--    page_flags = validate_prot_to_pageflags(target_prot);
--    if (!page_flags) {
--        errno = EINVAL;
--        return -1;
--    }
--
--    /* Also check for overflows... */
--    len = TARGET_PAGE_ALIGN(len);
--    if (!len) {
--        errno = ENOMEM;
--        return -1;
--    }
--
--    if (offset & ~TARGET_PAGE_MASK) {
--        errno = EINVAL;
--        return -1;
--    }
--
--    /*
--     * If we're mapping shared memory, ensure we generate code for parallel
--     * execution and flush old translations.  This will work up to the level
--     * supported by the host -- anything that requires EXCP_ATOMIC will not
--     * be atomic with respect to an external process.
--     */
--    if (flags & MAP_SHARED) {
--        CPUState *cpu = thread_cpu;
--        if (!(cpu->tcg_cflags & CF_PARALLEL)) {
--            cpu->tcg_cflags |= CF_PARALLEL;
--            tb_flush(cpu);
--        }
--    }
--
-     real_start = start & -host_page_size;
-     host_offset = offset & -host_page_size;
- 
-@@ -616,23 +578,9 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
-         passthrough_start = start;
-         passthrough_last = last;
-     } else {
--        if (start & ~TARGET_PAGE_MASK) {
--            errno = EINVAL;
--            return -1;
--        }
-         last = start + len - 1;
-         real_last = ROUND_UP(last, host_page_size) - 1;
- 
--        /*
--         * Test if requested memory area fits target address space
--         * It can fail only on 64-bit host with 32-bit target.
--         * On any other target/host host mmap() handles this error correctly.
--         */
--        if (last < start || !guest_range_valid_untagged(start, len)) {
--            errno = ENOMEM;
--            return -1;
--        }
--
-         if (flags & MAP_FIXED_NOREPLACE) {
-             /* Validate that the chosen range is empty. */
-             if (!page_check_range_empty(start, last)) {
-@@ -778,13 +726,64 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-                      int flags, int fd, off_t offset)
- {
-     abi_long ret;
-+    int page_flags;
- 
-     trace_target_mmap(start, len, target_prot, flags, fd, offset);
-+
-+    if (!len) {
-+        errno = EINVAL;
-+        return -1;
-+    }
-+
-+    page_flags = validate_prot_to_pageflags(target_prot);
-+    if (!page_flags) {
-+        errno = EINVAL;
-+        return -1;
-+    }
-+
-+    /* Also check for overflows... */
-+    len = TARGET_PAGE_ALIGN(len);
-+    if (!len || len != (size_t)len) {
-+        errno = ENOMEM;
-+        return -1;
-+    }
-+
-+    if (offset & ~TARGET_PAGE_MASK) {
-+        errno = EINVAL;
-+        return -1;
-+    }
-+    if (flags & (MAP_FIXED | MAP_FIXED_NOREPLACE)) {
-+        if (start & ~TARGET_PAGE_MASK) {
-+            errno = EINVAL;
-+            return -1;
-+        }
-+        if (!guest_range_valid_untagged(start, len)) {
-+            errno = ENOMEM;
-+            return -1;
-+        }
-+    }
-+
-     mmap_lock();
- 
--    ret = target_mmap__locked(start, len, target_prot, flags, fd, offset);
-+    ret = target_mmap__locked(start, len, target_prot, flags,
-+                              page_flags, fd, offset);
- 
-     mmap_unlock();
-+
-+    /*
-+     * If we're mapping shared memory, ensure we generate code for parallel
-+     * execution and flush old translations.  This will work up to the level
-+     * supported by the host -- anything that requires EXCP_ATOMIC will not
-+     * be atomic with respect to an external process.
-+     */
-+    if (ret != -1 && (flags & MAP_TYPE) != MAP_PRIVATE) {
-+        CPUState *cpu = thread_cpu;
-+        if (!(cpu->tcg_cflags & CF_PARALLEL)) {
-+            cpu->tcg_cflags |= CF_PARALLEL;
-+            tb_flush(cpu);
-+        }
-+    }
-+
-     return ret;
- }
- 
+@@ -643,7 +643,7 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
+                                target_prot, flags, fd, offset)) {
+                     return -1;
+                 }
+-                goto the_end1;
++                goto the_end;
+             }
+             if (!mmap_frag(real_start, start,
+                            real_start + host_page_size - 1,
+@@ -690,7 +690,7 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
+             passthrough_last = real_last;
+         }
+     }
+- the_end1:
++ the_end:
+     if (flags & MAP_ANONYMOUS) {
+         page_flags |= PAGE_ANON;
+     }
+@@ -708,7 +708,6 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
+         }
+     }
+     shm_region_rm_complete(start, last);
+- the_end:
+     trace_target_mmap_complete(start);
+     if (qemu_loglevel_mask(CPU_LOG_PAGE)) {
+         FILE *f = qemu_log_trylock();
 -- 
 2.34.1
 
