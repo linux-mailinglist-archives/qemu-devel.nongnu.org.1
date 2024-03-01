@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E08A786ECE5
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:19:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2EC786ECE8
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 00:20:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgC2m-0005tM-0U; Fri, 01 Mar 2024 18:12:00 -0500
+	id 1rgC3M-0006mH-Da; Fri, 01 Mar 2024 18:12:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgC1j-0003z0-5z
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:57 -0500
-Received: from mail-io1-xd31.google.com ([2607:f8b0:4864:20::d31])
+ id 1rgC1l-0003zg-2o
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:59 -0500
+Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgC1g-0005zZ-G5
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:50 -0500
-Received: by mail-io1-xd31.google.com with SMTP id
- ca18e2360f4ac-7bf7e37dc60so153737639f.3
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:10:48 -0800 (PST)
+ id 1rgC1j-000608-4f
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 18:10:52 -0500
+Received: by mail-ot1-x332.google.com with SMTP id
+ 46e09a7af769-6e125818649so1418531a34.1
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 15:10:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709334647; x=1709939447; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709334650; x=1709939450; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uYpmvWcDo9XJ8PEub2Zz6TVzblWCi4U6QK1BUlbCzJU=;
- b=rz0l0CRPD52P1/IiZ2iwz4hGlImpScXr9Tb4XpejrLboRmqleCCLcLPRynWoL+gP4P
- HEw6CqhqlxRivCm3xzmnZ73DzQzicuLGDrmCNLVkwXSYhw1nIBUrLiqrQQWOoZr+k+5G
- V1jz5FUmimXUqvc7Ohnhx4woSKqzQv4mx8qr5767gMKTcGv05qkB2b+pV0jXd3f7Hu54
- oBKQ+tIJWk6/zOs7dXP9/62zhU8PzAJTHX+I805H1FFJHJiD9TrHJdyJWFrSil4u6U3b
- r89c3Y1Br9pfJJbbgE1jGO9kwfvcYzv49D57LNOmWCInyEdXXFqgxUvHyoySQb/ne10b
- 0sOw==
+ bh=4BedJyRvGRjcK6ipu0C7X+tD3tsp2DJnWnzl/pxkro0=;
+ b=mi/ntgh18DhG8dhG9nnmaikT+mQMIyszrexS4Re54hlKOf6W5G0OD2m0fkThFP+Qsg
+ Q8lP+Rc7KPopkjunaKJ5uQzvZF20yc3JVPKu5uUcLxLHs9eOE+i6xtl8w3UrQV2o2B4D
+ Oyqenz+Vy45XeD8lvxHmCE82Qx7uu8QgoBcs75Uvrcv8l4vpGh12CrBfYY502GkJxgtf
+ qY3lIEmdadekh+7BVUrbpfETr1m5uhFk6rUto0oR1QchAf28AX0dXT59RgbpfXIXe467
+ qddPSUXHvoo6TtqBCfkA8BE62mHa6OgP+nX8sGPzuYWrNRJZsOmKWoxKmB0FQr4jdX6A
+ OYYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709334647; x=1709939447;
+ d=1e100.net; s=20230601; t=1709334650; x=1709939450;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uYpmvWcDo9XJ8PEub2Zz6TVzblWCi4U6QK1BUlbCzJU=;
- b=SkmxainzSjWl5tGPtNW9yPjF3gXS5/QjWRLVGpjmGyTG5ox3c8zWk1axgUdY51Q/QK
- G1j7n+cv6+Q80MAOIVHfN684Nah8SYwY2ZsKFLc7iOtYuKkQnRlujzF0+QGL5r2e4LJR
- uKzmhrEnLgd/MrrDlOCeRgHXrZI8JaUuxcjznsV7uFJF9wOd2MKMBpHKcZApjPfTduL8
- 4XDTRVAEO3SD0+o1jDzPtLI0C0W7thaJ6DLfQ7Tnjf+UXgUn0HY0htiTBcfHxjWJolF4
- eQTePNDDdkBe5uhlQT5byFiojUiVyhRpSPh6KoDwA06rg/YQu7WbJtmiOg3necp7+Mwf
- 9g6w==
-X-Gm-Message-State: AOJu0Yx8mbT1ONniHlmBecUDpPGK92lu4Uosb6JPAcNcUxWPmmt4J9yr
- b1eLbPQzJHu/38pU42+DRwkM4Ku13LFYYQMrnYbLIWP+HI2tLil6auXbg38y5ernsv7d+wvxjmV
- p
-X-Google-Smtp-Source: AGHT+IGGH/WBnFl85+77p4ZFwydJXf7fR1m/tFQO56IckGlZ5SXUZ+ydF7C4tidKFC7F7pg4eKPXjA==
-X-Received: by 2002:a6b:c988:0:b0:7c7:fd10:ddf3 with SMTP id
- z130-20020a6bc988000000b007c7fd10ddf3mr3060461iof.18.1709334647317; 
- Fri, 01 Mar 2024 15:10:47 -0800 (PST)
+ bh=4BedJyRvGRjcK6ipu0C7X+tD3tsp2DJnWnzl/pxkro0=;
+ b=movLj2CR4N1rjARYoBUkVzyzKO488umyIqDW9/qhfezbh1M91Pnn3SDwWF6OWyXU8m
+ BFU+KK6i8r9Z9f2IqdKF2YzUCBj7u0jC9HmfhXR0pLHxOsmenhrr/kbkAzFrz15qFczd
+ Y5QubOGhmWkseDyaG/vLxMnouT5qvvIzFpulCWb9Yl9IRGVAS4rk5t2mfRPjf/jw2cyp
+ 4cKbxgTpFEwtXqma9c6IkKDxOMaV2iPxFY7SJLRPfM/Zjp2gbAVCYwnMXu3ix3cBdwzY
+ 889BWukI4mAcMuZuz+RtV+aH2g8XOmIamE5M0wJO0PEW/A8WBgVKfm8j6ovhWydynv+r
+ Iz9A==
+X-Gm-Message-State: AOJu0YwXJ55tLWxfxTiDZZWOndW1K8AzMA6a91oE9/d/gdq6GVrNi+yE
+ Hm/7YTymviZ/ozh5VPAOkfOikaJDyxZfnXS9C4ARdih8/WD6wyWJphPk1ffj/LJU/5+j/0WtwX+
+ t
+X-Google-Smtp-Source: AGHT+IGtsIM0fB/Wsn7MjnEWb9eOUmx34kcK3kS/USgpPE881lOPMsQlRHMzTBkdwP9zA/MvJICe4A==
+X-Received: by 2002:a05:6830:6dc7:b0:6e4:8776:36a1 with SMTP id
+ eb7-20020a0568306dc700b006e4877636a1mr5262963otb.25.1709334650010; 
+ Fri, 01 Mar 2024 15:10:50 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- c2-20020a634e02000000b005e438fe702dsm3449407pgb.65.2024.03.01.15.10.46
+ c2-20020a634e02000000b005e438fe702dsm3449407pgb.65.2024.03.01.15.10.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 15:10:46 -0800 (PST)
+ Fri, 01 Mar 2024 15:10:49 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Song Gao <gaosong@loongson.cn>
-Subject: [PATCH 57/60] linux-user/loongarch64: Remove TARGET_FORCE_SHMLBA
-Date: Fri,  1 Mar 2024 13:06:16 -1000
-Message-Id: <20240301230619.661008-58-richard.henderson@linaro.org>
+Cc: Richard Purdie <richard.purdie@linuxfoundation.org>
+Subject: [PATCH 59/60] linux-user: Rewrite target_shmat
+Date: Fri,  1 Mar 2024 13:06:18 -1000
+Message-Id: <20240301230619.661008-60-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301230619.661008-1-richard.henderson@linaro.org>
 References: <20240301230619.661008-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d31;
- envelope-from=richard.henderson@linaro.org; helo=mail-io1-xd31.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,38 +92,235 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The kernel abi was changed with
+Handle combined host and guest alignment requirements.
+Handle host and guest page size differences.
+Handle SHM_EXEC.
 
-    commit d23b77953f5a4fbf94c05157b186aac2a247ae32
-    Author: Huacai Chen <chenhuacai@kernel.org>
-    Date:   Wed Jan 17 12:43:08 2024 +0800
-
-        LoongArch: Change SHMLBA from SZ_64K to PAGE_SIZE
-
-during the v6.8 cycle.
-
-Reviewed-by: Song Gao <gaosong@loongson.cn>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/115
+Tested-by: Richard Purdie <richard.purdie@linuxfoundation.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/loongarch64/target_syscall.h | 7 -------
- 1 file changed, 7 deletions(-)
+ linux-user/mmap.c | 172 ++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 136 insertions(+), 36 deletions(-)
 
-diff --git a/linux-user/loongarch64/target_syscall.h b/linux-user/loongarch64/target_syscall.h
-index 8b5de52124..39f229bb9c 100644
---- a/linux-user/loongarch64/target_syscall.h
-+++ b/linux-user/loongarch64/target_syscall.h
-@@ -38,11 +38,4 @@ struct target_pt_regs {
- #define TARGET_MCL_FUTURE  2
- #define TARGET_MCL_ONFAULT 4
- 
--#define TARGET_FORCE_SHMLBA
--
--static inline abi_ulong target_shmlba(CPULoongArchState *env)
--{
--    return 64 * KiB;
--}
--
+diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+index 82f4026283..4505fd7376 100644
+--- a/linux-user/mmap.c
++++ b/linux-user/mmap.c
+@@ -1236,69 +1236,161 @@ static inline abi_ulong target_shmlba(CPUArchState *cpu_env)
+ }
  #endif
+ 
++#if defined(__arm__) || defined(__mips__) || defined(__sparc__)
++#define HOST_FORCE_SHMLBA 1
++#else
++#define HOST_FORCE_SHMLBA 0
++#endif
++
+ abi_ulong target_shmat(CPUArchState *cpu_env, int shmid,
+                        abi_ulong shmaddr, int shmflg)
+ {
+     CPUState *cpu = env_cpu(cpu_env);
+-    abi_ulong raddr;
+     struct shmid_ds shm_info;
+     int ret;
+-    abi_ulong shmlba;
++    int h_pagesize;
++    int t_shmlba, h_shmlba, m_shmlba;
++    size_t t_len, h_len, m_len;
+ 
+     /* shmat pointers are always untagged */
+ 
+-    /* find out the length of the shared memory segment */
++    /*
++     * Because we can't use host shmat() unless the address is sufficiently
++     * aligned for the host, we'll need to check both.
++     * TODO: Could be fixed with softmmu.
++     */
++    t_shmlba = target_shmlba(cpu_env);
++    h_pagesize = qemu_real_host_page_size();
++    h_shmlba = (HOST_FORCE_SHMLBA ? SHMLBA : h_pagesize);
++    m_shmlba = MAX(t_shmlba, h_shmlba);
++
++    if (shmaddr) {
++        if (shmaddr & (m_shmlba - 1)) {
++            if (shmflg & SHM_RND) {
++                /*
++                 * The guest is allowing the kernel to round the address.
++                 * Assume that the guest is ok with us rounding to the
++                 * host required alignment too.  Anyway if we don't, we'll
++                 * get an error from the kernel.
++                 */
++                shmaddr &= ~(m_shmlba - 1);
++                if (shmaddr == 0 && (shmflg & SHM_REMAP)) {
++                    return -TARGET_EINVAL;
++                }
++            } else {
++                int require = TARGET_PAGE_SIZE;
++#ifdef TARGET_FORCE_SHMLBA
++                require = t_shmlba;
++#endif
++                /*
++                 * Include host required alignment, as otherwise we cannot
++                 * use host shmat at all.
++                 */
++                require = MAX(require, h_shmlba);
++                if (shmaddr & (require - 1)) {
++                    return -TARGET_EINVAL;
++                }
++            }
++        }
++    } else {
++        if (shmflg & SHM_REMAP) {
++            return -TARGET_EINVAL;
++        }
++    }
++    /* All rounding now manually concluded. */
++    shmflg &= ~SHM_RND;
++
++    /* Find out the length of the shared memory segment. */
+     ret = get_errno(shmctl(shmid, IPC_STAT, &shm_info));
+     if (is_error(ret)) {
+         /* can't get length, bail out */
+         return ret;
+     }
++    t_len = TARGET_PAGE_ALIGN(shm_info.shm_segsz);
++    h_len = ROUND_UP(shm_info.shm_segsz, h_pagesize);
++    m_len = MAX(t_len, h_len);
+ 
+-    shmlba = target_shmlba(cpu_env);
+-
+-    if (shmaddr & (shmlba - 1)) {
+-        if (shmflg & SHM_RND) {
+-            shmaddr &= ~(shmlba - 1);
+-        } else {
+-            return -TARGET_EINVAL;
+-        }
+-    }
+-    if (!guest_range_valid_untagged(shmaddr, shm_info.shm_segsz)) {
++    if (!guest_range_valid_untagged(shmaddr, m_len)) {
+         return -TARGET_EINVAL;
+     }
+ 
+     WITH_MMAP_LOCK_GUARD() {
+-        void *host_raddr;
++        bool mapped = false;
++        void *want, *test;
+         abi_ulong last;
+ 
+-        if (shmaddr) {
+-            host_raddr = shmat(shmid, (void *)g2h_untagged(shmaddr), shmflg);
+-        } else {
+-            abi_ulong mmap_start;
+-
+-            /* In order to use the host shmat, we need to honor host SHMLBA.  */
+-            mmap_start = mmap_find_vma(0, shm_info.shm_segsz,
+-                                       MAX(SHMLBA, shmlba));
+-
+-            if (mmap_start == -1) {
++        if (!shmaddr) {
++            shmaddr = mmap_find_vma(0, m_len, m_shmlba);
++            if (shmaddr == -1) {
+                 return -TARGET_ENOMEM;
+             }
+-            host_raddr = shmat(shmid, g2h_untagged(mmap_start),
+-                               shmflg | SHM_REMAP);
++            mapped = !reserved_va;
++        } else if (shmflg & SHM_REMAP) {
++            /*
++             * If host page size > target page size, the host shmat may map
++             * more memory than the guest expects.  Reject a mapping that
++             * would replace memory in the unexpected gap.
++             * TODO: Could be fixed with softmmu.
++             */
++            if (t_len < h_len &&
++                !page_check_range_empty(shmaddr + t_len,
++                                        shmaddr + h_len - 1)) {
++                return -TARGET_EINVAL;
++            }
++        } else {
++            if (!page_check_range_empty(shmaddr, shmaddr + m_len - 1)) {
++                return -TARGET_EINVAL;
++            }
+         }
+ 
+-        if (host_raddr == (void *)-1) {
+-            return get_errno(-1);
+-        }
+-        raddr = h2g(host_raddr);
+-        last = raddr + shm_info.shm_segsz - 1;
++        /* All placement is now complete. */
++        want = (void *)g2h_untagged(shmaddr);
+ 
+-        page_set_flags(raddr, last,
++        /*
++         * Map anonymous pages across the entire range, then remap with
++         * the shared memory.  This is required for a number of corner
++         * cases for which host and guest page sizes differ.
++         */
++        if (h_len != t_len) {
++            int mmap_p = PROT_READ | (shmflg & SHM_RDONLY ? 0 : PROT_WRITE);
++            int mmap_f = MAP_PRIVATE | MAP_ANONYMOUS
++                       | (reserved_va || (shmflg & SHM_REMAP)
++                          ? MAP_FIXED : MAP_FIXED_NOREPLACE);
++
++            test = mmap(want, m_len, mmap_p, mmap_f, -1, 0);
++            if (unlikely(test != want)) {
++                /* shmat returns EINVAL not EEXIST like mmap. */
++                ret = (test == MAP_FAILED && errno != EEXIST
++                       ? get_errno(-1) : -TARGET_EINVAL);
++                if (mapped) {
++                    do_munmap(want, m_len);
++                }
++                return ret;
++            }
++            mapped = true;
++        }
++
++        if (reserved_va || mapped) {
++            shmflg |= SHM_REMAP;
++        }
++        test = shmat(shmid, want, shmflg);
++        if (test == MAP_FAILED) {
++            ret = get_errno(-1);
++            if (mapped) {
++                do_munmap(want, m_len);
++            }
++            return ret;
++        }
++        assert(test == want);
++
++        last = shmaddr + m_len - 1;
++        page_set_flags(shmaddr, last,
+                        PAGE_VALID | PAGE_RESET | PAGE_READ |
+-                       (shmflg & SHM_RDONLY ? 0 : PAGE_WRITE));
++                       (shmflg & SHM_RDONLY ? 0 : PAGE_WRITE) |
++                       (shmflg & SHM_EXEC ? PAGE_EXEC : 0));
+ 
+-        shm_region_rm_complete(raddr, last);
+-        shm_region_add(raddr, last);
++        shm_region_rm_complete(shmaddr, last);
++        shm_region_add(shmaddr, last);
+     }
+ 
+     /*
+@@ -1312,7 +1404,15 @@ abi_ulong target_shmat(CPUArchState *cpu_env, int shmid,
+         tb_flush(cpu);
+     }
+ 
+-    return raddr;
++    if (qemu_loglevel_mask(CPU_LOG_PAGE)) {
++        FILE *f = qemu_log_trylock();
++        if (f) {
++            fprintf(f, "page layout changed following shmat\n");
++            page_dump(f);
++            qemu_log_unlock(f);
++        }
++    }
++    return shmaddr;
+ }
+ 
+ abi_long target_shmdt(abi_ulong shmaddr)
 -- 
 2.34.1
 
