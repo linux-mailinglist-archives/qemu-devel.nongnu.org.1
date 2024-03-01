@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2450D86D9BF
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 03:30:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E479086D9C4
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 03:30:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rfseR-0003y3-S1; Thu, 29 Feb 2024 21:29:31 -0500
+	id 1rfseU-00040Q-OV; Thu, 29 Feb 2024 21:29:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rfseQ-0003xk-5j
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 21:29:30 -0500
-Received: from mail-qv1-xf31.google.com ([2607:f8b0:4864:20::f31])
+ id 1rfseS-0003yO-OM
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 21:29:32 -0500
+Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rfseO-0005PA-K8
- for qemu-devel@nongnu.org; Thu, 29 Feb 2024 21:29:29 -0500
-Received: by mail-qv1-xf31.google.com with SMTP id
- 6a1803df08f44-68f571be9ddso12293036d6.0
- for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 18:29:28 -0800 (PST)
+ id 1rfseR-0005PY-6b
+ for qemu-devel@nongnu.org; Thu, 29 Feb 2024 21:29:32 -0500
+Received: by mail-oo1-xc2c.google.com with SMTP id
+ 006d021491bc7-59fdcf8ebbcso966597eaf.3
+ for <qemu-devel@nongnu.org>; Thu, 29 Feb 2024 18:29:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1709260167; x=1709864967; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1709260169; x=1709864969; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PxHV8roC2fjNMfvMvdxuHI9CffnQMqXm91qkh+DJCQw=;
- b=UeTX4wiNdcfn8fEk80jfmdJhGNCH2jkbWNAVQld0oEUHscr3ykVSR41go+1A6usqAE
- yXA7mPrz96t/u4AR/VEPI+OAL2rG5e6aHQWRssRd0QHDf2mzHg/fcHwJ/1gb7Oj58Qlv
- 3mL0mV9E0viy3eUlCWl0R2p5oSVSkEjRqp9o5FFth/7rFg/ugTThWjzb5Au4I9mJMn12
- y98EAFKTxHnzphGRJVOqfHoLwj/xkE/RQYnv9i7a2I/cG2b6Q2PkiqfRcxTbXxPjG5L5
- Uk2W0yyzorTWrfutPxe28UH7f/Th0AtK1MyWTBmsZqPhAUMBoqgaL7d2Raj28/piRGKP
- K5YA==
+ bh=9QASZ+kUUj+8Xo1I0M095jiimdEHlGS7QcRB7kGSAjM=;
+ b=At3xnI9CynzdhegHkjKGvWF2o2xTfim8N76glp0wRSYl0TsukYLIuMehXiICZUYODI
+ X7VRGDT/lJ+i+97H75O8wlFAxHrH6WUxf2tHHFcovyG8YDbrD5gIUMXh20ZqeGl9iD1D
+ 1IijNsLLDkrjQRRNY07F8A+LIZYXnE3A+EpBcpVqQsJnklutHnvGMkuljA+WxOBdKzYe
+ D2GW919s93KnzxWB9F32yTcAKfmW7rS6l3YpcssjEfjNtl9g5c5hHg6RYdCJ+dUpC04U
+ 6SDmcOpChxn+Xd7RTcNVts24Y5Xqc3HfXOr8PlxOPHcB2wX/ta1O7qaUjw8hI1Su7HT9
+ GcVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709260167; x=1709864967;
+ d=1e100.net; s=20230601; t=1709260169; x=1709864969;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PxHV8roC2fjNMfvMvdxuHI9CffnQMqXm91qkh+DJCQw=;
- b=ZtsR04A68xl22HXeRNfEN+q9ymOO/z1wyPvu49tOHHtyiCGxDR4W/kLOj27hgcyubv
- gWTaqD352HG3lC4wm7qaSJOr9Ur7FJLR1QUUk7pe6dtsOgOIQNp/MzEhHP8adkXYXQRk
- g5pvDP7zj3Zo2coP6WuQkOWUXswBC0KmNLAoE5O53lJAJbB8/hv7Armpz7KkyU9DJ4Kt
- wln9tEyTujTESOxEDvrP4tJQRz8j24rGzg9Z2+bdve8KHx7MZzpYnsr3Mi31YM2RjmY3
- tx7sn3gYsyH7WXZo+FvGrXfrq2oXPJVJNmb3TmUsXHYvhPFUoA5LngXpcCtTsVz6+Cga
- JmtA==
+ bh=9QASZ+kUUj+8Xo1I0M095jiimdEHlGS7QcRB7kGSAjM=;
+ b=pHs7H4m3ZaLjXDimcKJTRTTATEmc/jpRyF++0BLxsFB3AEi8wvEuEhRFN0TgnzT+VP
+ EXiM/4nRQVh9r4g+iRrPzYHFhTXGp2cQ5vuFaNaCQDOC/LcQqRL93lKZp5CAegenxwa3
+ UVe/noHTDwvEHPFhIQyj0m+lsBV9k8Qp70/bAieiBq50SQNGpCa/zPgyG+wRazLg/ds9
+ ZwO1guLIgl4VCWD4cwZNuH0oEsNx/Qd6T4XooduZSSI3ezUiHOycRL+b3l26wrqURBkx
+ DbMCURNE1KBBFozWLr0Vs8Gc3AUXV+Ck2kmUSCvYcmExIcpxnznFBydu1Al+D2/zeyST
+ dYMw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWfeS9Ck85ZcczGk+nAI3yFVDj9ft8CaxKFvTB0xOLK6KeDQbtCDsHHTy+sHZKLgeH1indkPCw10qE+UuzCKM2TgUVESg4=
-X-Gm-Message-State: AOJu0Yy09XusL8zhVUXAuEn9ZuEkOnKK0yCG2gOFiB9PMM2BRCrHzKGl
- 7hPqJ7vR3OjO25emmI1VX3jK2PUJILouWDfXGdvCz5bSSL6VBNoqNbUVDti4T3k=
-X-Google-Smtp-Source: AGHT+IEsvuwiDHIehYUztD4V9Y3AFzD+uUaCTByOxeGLhLo5VYfEnJbjvXFFqFAYYgVKvUkV2xUmtw==
-X-Received: by 2002:a0c:f50c:0:b0:690:50c5:4b72 with SMTP id
- j12-20020a0cf50c000000b0069050c54b72mr468754qvm.52.1709260167598; 
- Thu, 29 Feb 2024 18:29:27 -0800 (PST)
+ AJvYcCXuLLF5VXzzKSKisvyrj5ENKnEoaNQe83j4B0Qe2XSJaxWPfg+41+eOuYfM38xco/85ButT73WVTcFAPKqRmG1PtXEfRgs=
+X-Gm-Message-State: AOJu0YxkaoTAkl0lBWrC3vdAflAeE5IMq5iis+lvRnVgtfgJDjS3usXS
+ ljLjKj5q3dNQrM8PE+uosfSqegiOjakTvCXaZKI9ov1ypFegmrCQpZlZGahBBuY=
+X-Google-Smtp-Source: AGHT+IHCUMJESzCLFs5UxLwPYWIGP8OUZsg6oDToiPo7NJOAwQ4Jm0UUY3ZFp2VGaZ1igCC6/JhJuw==
+X-Received: by 2002:a05:6359:4117:b0:17b:ef19:ee7d with SMTP id
+ kh23-20020a056359411700b0017bef19ee7dmr354422rwc.26.1709260169160; 
+ Thu, 29 Feb 2024 18:29:29 -0800 (PST)
 Received: from n231-230-216.byted.org ([130.44.212.120])
  by smtp.gmail.com with ESMTPSA id
- qo13-20020a056214590d00b0068d11cf887bsm1384107qvb.55.2024.02.29.18.29.26
+ qo13-20020a056214590d00b0068d11cf887bsm1384107qvb.55.2024.02.29.18.29.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 29 Feb 2024 18:29:27 -0800 (PST)
+ Thu, 29 Feb 2024 18:29:28 -0800 (PST)
 From: Hao Xiang <hao.xiang@bytedance.com>
 To: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
  peterx@redhat.com, farosas@suse.de, eblake@redhat.com, armbru@redhat.com,
@@ -65,18 +65,17 @@ To: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
  marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com,
  qemu-devel@nongnu.org
 Cc: Hao Xiang <hao.xiang@bytedance.com>
-Subject: [PATCH v4 3/7] migration/multifd: Implement
- ram_save_target_page_multifd to handle multifd version of
- MigrationOps::ram_save_target_page.
-Date: Fri,  1 Mar 2024 02:28:25 +0000
-Message-Id: <20240301022829.3390548-4-hao.xiang@bytedance.com>
+Subject: [PATCH v4 4/7] migration/multifd: Enable multifd zero page checking
+ by default.
+Date: Fri,  1 Mar 2024 02:28:26 +0000
+Message-Id: <20240301022829.3390548-5-hao.xiang@bytedance.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20240301022829.3390548-1-hao.xiang@bytedance.com>
 References: <20240301022829.3390548-1-hao.xiang@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f31;
- envelope-from=hao.xiang@bytedance.com; helo=mail-qv1-xf31.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-oo1-xc2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,97 +98,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-1. Add a dedicated handler for MigrationOps::ram_save_target_page in
-multifd live migration.
-2. Refactor ram_save_target_page_legacy so that the legacy and multifd
-handlers don't have internal functions calling into each other.
+Set default "zero-page-detection" option to "multifd". Now zero page
+checking can be done in the multifd threads and this becomes the
+default configuration. We still provide backward compatibility
+where zero page checking is done from the migration main thread.
 
 Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Message-Id: <20240226195654.934709-4-hao.xiang@bytedance.com>
 ---
- migration/ram.c | 43 ++++++++++++++++++++++++++++++-------------
- 1 file changed, 30 insertions(+), 13 deletions(-)
+ migration/options.c | 2 +-
+ qapi/migration.json | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/migration/ram.c b/migration/ram.c
-index e1fa229acf..f9d6ea65cc 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -1122,10 +1122,6 @@ static int save_zero_page(RAMState *rs, PageSearchStatus *pss,
-     QEMUFile *file = pss->pss_channel;
-     int len = 0;
+diff --git a/migration/options.c b/migration/options.c
+index 3c603391b0..3c79b6ccd4 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -181,7 +181,7 @@ Property migration_properties[] = {
+                       MIG_MODE_NORMAL),
+     DEFINE_PROP_ZERO_PAGE_DETECTION("zero-page-detection", MigrationState,
+                        parameters.zero_page_detection,
+-                       ZERO_PAGE_DETECTION_LEGACY),
++                       ZERO_PAGE_DETECTION_MULTIFD),
  
--    if (migrate_zero_page_detection() == ZERO_PAGE_DETECTION_NONE) {
--        return 0;
--    }
--
-     if (!buffer_is_zero(p, TARGET_PAGE_SIZE)) {
-         return 0;
-     }
-@@ -2045,7 +2041,6 @@ static bool save_compress_page(RAMState *rs, PageSearchStatus *pss,
-  */
- static int ram_save_target_page_legacy(RAMState *rs, PageSearchStatus *pss)
- {
--    RAMBlock *block = pss->block;
-     ram_addr_t offset = ((ram_addr_t)pss->page) << TARGET_PAGE_BITS;
-     int res;
- 
-@@ -2061,17 +2056,34 @@ static int ram_save_target_page_legacy(RAMState *rs, PageSearchStatus *pss)
-         return 1;
-     }
- 
-+    return ram_save_page(rs, pss);
-+}
-+
-+/**
-+ * ram_save_target_page_multifd: send one target page to multifd workers
-+ *
-+ * Returns 1 if the page was queued, -1 otherwise.
-+ *
-+ * @rs: current RAM state
-+ * @pss: data about the page we want to send
-+ */
-+static int ram_save_target_page_multifd(RAMState *rs, PageSearchStatus *pss)
-+{
-+    RAMBlock *block = pss->block;
-+    ram_addr_t offset = ((ram_addr_t)pss->page) << TARGET_PAGE_BITS;
-+
-     /*
--     * Do not use multifd in postcopy as one whole host page should be
--     * placed.  Meanwhile postcopy requires atomic update of pages, so even
--     * if host page size == guest page size the dest guest during run may
--     * still see partially copied pages which is data corruption.
-+     * Backward compatibility support. While using multifd live
-+     * migration, we still need to handle zero page checking on the
-+     * migration main thread.
-      */
--    if (migrate_multifd() && !migration_in_postcopy()) {
--        return ram_save_multifd_page(block, offset);
-+    if (migrate_zero_page_detection() == ZERO_PAGE_DETECTION_LEGACY) {
-+        if (save_zero_page(rs, pss, offset)) {
-+            return 1;
-+        }
-     }
- 
--    return ram_save_page(rs, pss);
-+    return ram_save_multifd_page(block, offset);
- }
- 
- /* Should be called before sending a host page */
-@@ -2983,7 +2995,12 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
-     }
- 
-     migration_ops = g_malloc0(sizeof(MigrationOps));
--    migration_ops->ram_save_target_page = ram_save_target_page_legacy;
-+
-+    if (migrate_multifd()) {
-+        migration_ops->ram_save_target_page = ram_save_target_page_multifd;
-+    } else {
-+        migration_ops->ram_save_target_page = ram_save_target_page_legacy;
-+    }
- 
-     bql_unlock();
-     ret = multifd_send_sync_main();
+     /* Migration capabilities */
+     DEFINE_PROP_MIG_CAP("x-xbzrle", MIGRATION_CAPABILITY_XBZRLE),
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 846d0411d5..ca9561fbf1 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -903,7 +903,7 @@
+ #        (Since 8.2)
+ #
+ # @zero-page-detection: Whether and how to detect zero pages.
+-#     See description in @ZeroPageDetection.  Default is 'legacy'.
++#     See description in @ZeroPageDetection.  Default is 'multifd'.
+ #     (since 9.0)
+ #
+ # Features:
+@@ -1100,7 +1100,7 @@
+ #        (Since 8.2)
+ #
+ # @zero-page-detection: Whether and how to detect zero pages.
+-#     See description in @ZeroPageDetection.  Default is 'legacy'.
++#     See description in @ZeroPageDetection.  Default is 'multifd'.
+ #     (since 9.0)
+ #
+ # Features:
+@@ -1333,7 +1333,7 @@
+ #        (Since 8.2)
+ #
+ # @zero-page-detection: Whether and how to detect zero pages.
+-#     See description in @ZeroPageDetection.  Default is 'legacy'.
++#     See description in @ZeroPageDetection.  Default is 'multifd'.
+ #     (since 9.0)
+ #
+ # Features:
 -- 
 2.30.2
 
