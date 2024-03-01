@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90EB286E737
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EACA86E736
 	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 18:30:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rg6h2-0003n1-Nd; Fri, 01 Mar 2024 12:29:08 -0500
+	id 1rg6h7-0003pN-1Z; Fri, 01 Mar 2024 12:29:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1rg6h0-0003mL-Fe
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:29:06 -0500
+ id 1rg6h3-0003nb-8P
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:29:09 -0500
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1rg6gx-0005d3-Ve
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:29:06 -0500
+ id 1rg6gx-0005d2-Vb
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:29:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
- Content-Type; bh=B+XurtnpYoJZP5kVIIxzoSwbJmwbE81ygmsZxH5LmXM=; b=HgMHYh9tec3s
- unHYZogQn7vprxNDBv7Lda4bGPTU0l5JKhVGD4QIRGZeFUrtx9A9hXN/xyZyx/3VZ3Gnlh4dhUZn0
- SNAgRV/lWzU7ayz5BC5QNCr1iQ1qTIV4kywmbFhBEDH/FLN2Ss2/8Z1DdzSKfbH9eqK3C8DQpwsGl
- LxASjS4U1CH8RGBHASbsiT2uBKmhmpHcBibQhdKsds+YuwO7fs3/9FQOv13sn67ShRPIqzrps+QBC
- /C8IP4txM49zhwYGtwyqtpYZ5kqVTVt45QQNA+ZltfNgct5RL0Q+x/1+Now/9MXBRM//+3Yv6jDte
- qbkiwAQcYAYuZWpH0kC1GA==;
+ Content-Type; bh=TCjNFTmDj5adwMm8mWkF67k/DsXhNQZYrvO3a6rbjt8=; b=s9G+joeXG388
+ rOyPVvjEvjBmzFXLv3zJNu5/RNebrLi9R+PR7JJ/n1FbmHmdtL17u2ppGVn8+MxE+BfQpfQ149zY6
+ Iz802ZkYn/d6S6KwAuzKNch9SVYoGVOcz71IEW0orJVy5l4Bmpe8ryXwpgruaJ3y82O47g2fX6jKE
+ /kBLoInB+Trq3tgm1jDPBAj7ETdrAMz4wDI/LjbLfB/SVCJjn8dZP88O5Td6JGiBro5Ij0RC+dSkN
+ 9siavpHCs1iWf+zk8noMMhGOXPjMqlG3LB0mCPpfeBT7HqDJih8lSXxlLPuStdzEfwnLSdMmafFEX
+ hJAh+0JKdTiLffqmSnj4jQ==;
 Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1rg6fM-0022sZ-1U;
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1rg6fM-0022sZ-1X;
  Fri, 01 Mar 2024 18:28:57 +0100
 From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 To: qemu-devel@nongnu.org
 Cc: michael.roth@amd.com, kkostiuk@redhat.com, marcandre.lureau@redhat.com,
  philmd@linaro.org, andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH v2 6/7] qga/commands-posix: use ga_run_command helper when
- suspending via sysfs
-Date: Fri,  1 Mar 2024 19:28:57 +0200
-Message-Id: <20240301172858.665135-7-andrey.drobyshev@virtuozzo.com>
+Subject: [PATCH v2 7/7] qga/commands-posix: qmp_guest_set_user_password: use
+ ga_run_command helper
+Date: Fri,  1 Mar 2024 19:28:58 +0200
+Message-Id: <20240301172858.665135-8-andrey.drobyshev@virtuozzo.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240301172858.665135-1-andrey.drobyshev@virtuozzo.com>
 References: <20240301172858.665135-1-andrey.drobyshev@virtuozzo.com>
@@ -67,72 +67,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We replace the direct call to open() with a "sh -c 'echo ...'" call, so
-that it becomes an executable command.
+There's no need to check for the existence of the "chpasswd", "pw"
+executables, as the exec() call will do that for us.
 
 Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 ---
- qga/commands-posix.c | 36 ++++--------------------------------
- 1 file changed, 4 insertions(+), 32 deletions(-)
+ qga/commands-posix.c | 96 ++++++--------------------------------------
+ 1 file changed, 13 insertions(+), 83 deletions(-)
 
 diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index dd2a7ad2e6..f3f4a05e2d 100644
+index f3f4a05e2d..f2e9496b80 100644
 --- a/qga/commands-posix.c
 +++ b/qga/commands-posix.c
-@@ -1921,49 +1921,21 @@ static void linux_sys_state_suspend(SuspendMode mode, Error **errp)
+@@ -2144,14 +2144,8 @@ void qmp_guest_set_user_password(const char *username,
+                                  Error **errp)
+ {
      Error *local_err = NULL;
-     const char *sysfile_strs[3] = {"disk", "mem", NULL};
-     const char *sysfile_str = sysfile_strs[mode];
+-    char *passwd_path = NULL;
 -    pid_t pid;
 -    int status;
+-    int datafd[2] = { -1, -1 };
+-    char *rawpasswddata = NULL;
++    g_autofree char *rawpasswddata = NULL;
+     size_t rawpasswdlen;
+-    char *chpasswddata = NULL;
+-    size_t chpasswdlen;
  
-     if (!sysfile_str) {
-         error_setg(errp, "unknown guest suspend mode");
-         return;
+     rawpasswddata = (char *)qbase64_decode(password, -1, &rawpasswdlen, errp);
+     if (!rawpasswddata) {
+@@ -2162,95 +2156,31 @@ void qmp_guest_set_user_password(const char *username,
+ 
+     if (strchr(rawpasswddata, '\n')) {
+         error_setg(errp, "forbidden characters in raw password");
+-        goto out;
++        return;
      }
  
--    pid = fork();
--    if (!pid) {
--        /* child */
--        int fd;
+     if (strchr(username, '\n') ||
+         strchr(username, ':')) {
+         error_setg(errp, "forbidden characters in username");
+-        goto out;
++        return;
+     }
+ 
+ #ifdef __FreeBSD__
+-    chpasswddata = g_strdup(rawpasswddata);
+-    passwd_path = g_find_program_in_path("pw");
++    g_autofree char *chpasswdata = g_strdup(rawpasswddata);
++    const char *crypt_flag = (crypted) ? "-H" : "-h";
++    const char *argv[] = {"pw", "usermod", "-n", username,
++                          crypt_flag, "0", NULL};
+ #else
+-    chpasswddata = g_strdup_printf("%s:%s\n", username, rawpasswddata);
+-    passwd_path = g_find_program_in_path("chpasswd");
++    g_autofree char *chpasswddata = g_strdup_printf("%s:%s\n", username,
++                                                    rawpasswddata);
++    const char *crypt_flag = (crypted) ? "-e" : NULL;
++    const char *argv[] = {"chpasswd", crypt_flag, NULL};
+ #endif
+ 
+-    chpasswdlen = strlen(chpasswddata);
 -
+-    if (!passwd_path) {
+-        error_setg(errp, "cannot find 'passwd' program in PATH");
+-        goto out;
+-    }
+-
+-    if (!g_unix_open_pipe(datafd, FD_CLOEXEC, NULL)) {
+-        error_setg(errp, "cannot create pipe FDs");
+-        goto out;
+-    }
+-
+-    pid = fork();
+-    if (pid == 0) {
+-        close(datafd[1]);
+-        /* child */
 -        setsid();
--        reopen_fd_to_null(0);
+-        dup2(datafd[0], 0);
 -        reopen_fd_to_null(1);
 -        reopen_fd_to_null(2);
 -
--        fd = open(LINUX_SYS_STATE_FILE, O_WRONLY);
--        if (fd < 0) {
--            _exit(EXIT_FAILURE);
+-#ifdef __FreeBSD__
+-        const char *h_arg;
+-        h_arg = (crypted) ? "-H" : "-h";
+-        execl(passwd_path, "pw", "usermod", "-n", username, h_arg, "0", NULL);
+-#else
+-        if (crypted) {
+-            execl(passwd_path, "chpasswd", "-e", NULL);
+-        } else {
+-            execl(passwd_path, "chpasswd", NULL);
 -        }
--
--        if (write(fd, sysfile_str, strlen(sysfile_str)) < 0) {
--            _exit(EXIT_FAILURE);
--        }
--
--        _exit(EXIT_SUCCESS);
+-#endif
+-        _exit(EXIT_FAILURE);
 -    } else if (pid < 0) {
 -        error_setg_errno(errp, errno, "failed to create child process");
--        return;
+-        goto out;
 -    }
-+    g_autofree char *echo_cmd = g_strdup_printf(
-+        "echo %s > " LINUX_SYS_STATE_FILE, sysfile_str);
-+    const char *argv[] = {"sh", "-c", echo_cmd, NULL};
- 
+-    close(datafd[0]);
+-    datafd[0] = -1;
+-
+-    if (qemu_write_full(datafd[1], chpasswddata, chpasswdlen) != chpasswdlen) {
+-        error_setg_errno(errp, errno, "cannot write new account password");
+-        goto out;
+-    }
+-    close(datafd[1]);
+-    datafd[1] = -1;
+-
 -    ga_wait_child(pid, &status, &local_err);
-+    ga_run_command(argv, NULL, "suspend", &local_err);
++    ga_run_command(argv, chpasswddata, "set user password", &local_err);
      if (local_err) {
          error_propagate(errp, local_err);
-         return;
-     }
--
--    if (WEXITSTATUS(status)) {
--        error_setg(errp, "child process has failed to suspend");
+-        goto out;
 -    }
 -
+-    if (!WIFEXITED(status)) {
+-        error_setg(errp, "child process has terminated abnormally");
+-        goto out;
+-    }
+-
+-    if (WEXITSTATUS(status)) {
+-        error_setg(errp, "child process has failed to set user password");
+-        goto out;
+-    }
+-
+-out:
+-    g_free(chpasswddata);
+-    g_free(rawpasswddata);
+-    g_free(passwd_path);
+-    if (datafd[0] != -1) {
+-        close(datafd[0]);
+-    }
+-    if (datafd[1] != -1) {
+-        close(datafd[1]);
++        return;
+     }
  }
- 
- static void guest_suspend(SuspendMode mode, Error **errp)
+ #else /* __linux__ || __FreeBSD__ */
 -- 
 2.39.3
 
