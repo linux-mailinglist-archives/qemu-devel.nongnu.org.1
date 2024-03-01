@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F31AD86E87C
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B95D86E87B
 	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 19:33:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rg7gU-0006U2-48; Fri, 01 Mar 2024 13:32:38 -0500
+	id 1rg7gS-0006Sy-L9; Fri, 01 Mar 2024 13:32:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rg7gN-0006RU-W5
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 13:32:33 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1rg7gN-0006Qa-P3
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 13:32:31 -0500
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rg7gJ-0008LP-HU
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 13:32:31 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-412ce4f62f8so2106845e9.0
+ id 1rg7gJ-0008Lu-HC
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 13:32:30 -0500
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-51323dfce59so2189163e87.3
  for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 10:32:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709317944; x=1709922744; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709317945; x=1709922745; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hVVKscQ5vCUHxCMh3/cOUoLf8I/F9iPoQ7drxX5MzdQ=;
- b=nS0ChmGQ2DyuJQm9Mtnr8QGv2Es55jFanHbLy/j55jlXev1aqwRsMCkWao+qAEiYUn
- KOdj6QZdhTXfZ9Fgp4TjTAsXVEudSLB1nn7wu2P4egdyI4nMkwOeHVntjiJ8VWbP1pDD
- tKlEvWKsi+csxGfTTSCeeEAyUwSQivNVyFUDwvAga0w5AWUXDAPhZchDWIJwI7r9wY/D
- Mzpan9jtYLS7svAKwPeO+o/BbS515RSsRxcD82eTNPPxXWnJlES1B5Z0eDsjYLWTwzVd
- 5oS9qkjXR0pw6cF+/dpcQiXyGUtSvzojwrx6Dk5cu1A5j3W308fv1MSy1V2/U7hqhN4l
- 8MgQ==
+ bh=p+dys/cioNoZhTZtInFG+2Of2YnqX5s/i4q/n08XiVo=;
+ b=d7bfaO/DwNC7mpCcQBZFHIioi6hZ4fuHU68ZIioIddceV5UNwRCcjUNjGSivrYO5Ss
+ 9VAr33G5Vi2/379arO4gW6q1AFHpmRWAK1hAMSONhxQ2tNMHOWvQqGv5lP9zvqYW3E+0
+ q2tPJLFyl5mhvZuzyp+cM0WDJgCxqvCwUjnmu8WnnQLvHhxkesKIzGDJH/gSoI3j7IK1
+ 6pDDG/4mIxDOtv7dFqskZl6RYVTBT0o7cH6x5eZG1rfg2B4ovcKZz4KpHUG5yH5V3DMM
+ HUeyq9/oVl9WRP1WpPwt20F9oKT/R+AMir7ldFogE2esXsIYPb01nEKX4nJIj9YXByxn
+ yqBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709317944; x=1709922744;
+ d=1e100.net; s=20230601; t=1709317945; x=1709922745;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hVVKscQ5vCUHxCMh3/cOUoLf8I/F9iPoQ7drxX5MzdQ=;
- b=AqTKmpKAAH9iOGdAmlTI0MzSuVJupix5Pm/HG74/VRwYF0FOaWG0rgWt9aaczW/xkk
- k6wURrNBIKACPbzTCnsEzJ/s46nRJ4xVBMFcbJjCbgv0/qLKzXx4cpqrfS0DkByNntl3
- IOy/IJwxaIBktUU2oGQxFRGKyZ94vFcJNoTIiZWH63rSWonPg/WlzERXtZMhomR/OyGk
- eJzQSx2YyqPjA5TBMtw5UlaJLJtY+iTdQCLuHHOK8OflY/E+32wq69mIqkzC0DnNEIkG
- OUExLyCMrwPL6FFTxUG+L0uUaIjahMBcgdZERdWhNT2Vc4gKQ91x//SZ0hFwx3dsFBS4
- klkw==
+ bh=p+dys/cioNoZhTZtInFG+2Of2YnqX5s/i4q/n08XiVo=;
+ b=sGYjSpklQViSgyYPp2Zc8O2wYCNl3LsCINMOpwqhtMjmCezJhfOQbhvM13sx7qOqIN
+ 53iaHCS49nvRp8kBDHjVCg1If4oPpfWc1BgAP6ubb5coc6WWDy2GCBWp9rX0cXYPq/Y/
+ Ph35dLpYkCijQ1XG86tAJBw+Bsy0lXwo42Fdw25QxUOq/A7bkA6XaJCsVjXsA3OS4/Tt
+ LSuqmZmfaUbP+VgB6sd0zutc8jvZulT1tZHqj5p/AgW7Zf9Dh8Zmq6GMgH/uIgae2TFq
+ 2tyMXzzn3poHMktsKQaH400VgfbXFD8/TzOatR4L1x0adAsxO4AOCt14w7HRkTrzWk/d
+ 3WYQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV5mcvoUYZK7EbkRAtwo1q4mrWuQETD9MyKqVQjuj06/5eI+uJY2G19XwmoMVhfaRv545A2Ttd+3MQ2S3Qc34UK307vOOc=
-X-Gm-Message-State: AOJu0YyBFjB4Ifk0KUHQq239ghBjVNaWU3bv75gGFXz1Cw54IQnpWOp9
- cCt8dt2kAfevi2jfy2lufSgM1kZ35GoSTUr7kkeVEo0d8TFW+8Dt7Y0Xw4oHEVs=
-X-Google-Smtp-Source: AGHT+IF1Cob9zTiI5DEDo58tyNws/gB/cba8T1mphYQVnAs4hpEGzT6r2iKHDg/iRk5TF1annX4Rcg==
-X-Received: by 2002:adf:9ccb:0:b0:33c:deed:6745 with SMTP id
- h11-20020adf9ccb000000b0033cdeed6745mr2146626wre.13.1709317944481; 
+ AJvYcCUl3/TdE+YWCP01BArBfJLL5ZPoVrvlBcRchTV8gMz7Fp71RiQfccztu3FHTBlfSPqMwR7WrFVZc65iTHVqMyKK+NJStN8=
+X-Gm-Message-State: AOJu0YxHoreWiL4OeNptPW7qcFTyf3LrRY06lBlxAnSiLLnXL8bIH/yE
+ eSmcSGbgk1g4TTXtaMn/KfXK0pacK2XACtbQORpi26dTdfypPKrrJ3zD+T82X8c=
+X-Google-Smtp-Source: AGHT+IEgUHu/xZbIv13m1FIFX3u5GcnIRWoOOKgSZR7SlQUgv46qsabqOHMfvFw6p8ory+BS3X4asA==
+X-Received: by 2002:ac2:5e24:0:b0:513:2010:6d93 with SMTP id
+ o4-20020ac25e24000000b0051320106d93mr1762866lfg.56.1709317944962; 
  Fri, 01 Mar 2024 10:32:24 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -62,23 +62,23 @@ From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: [PATCH 7/8] target/arm: Implement FEAT_ECV CNTPOFF_EL2 handling
-Date: Fri,  1 Mar 2024 18:32:18 +0000
-Message-Id: <20240301183219.2424889-8-peter.maydell@linaro.org>
+Subject: [PATCH 8/8] target/arm: Enable FEAT_ECV for 'max' CPU
+Date: Fri,  1 Mar 2024 18:32:19 +0000
+Message-Id: <20240301183219.2424889-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301183219.2424889-1-peter.maydell@linaro.org>
 References: <20240301183219.2424889-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,197 +94,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When ID_AA64MMFR0_EL1.ECV is 0b0010, a new register CNTPOFF_EL2 is
-implemented.  This is similar to the existing CNTVOFF_EL2, except
-that it controls a hypervisor-adjustable offset made to the physical
-counter and timer.
-
-Implement the handling for this register, which includes control/trap
-bits in SCR_EL3 and CNTHCTL_EL2.
+Enable all FEAT_ECV features on the 'max' CPU.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu-features.h |  5 +++
- target/arm/cpu.h          |  1 +
- target/arm/helper.c       | 68 +++++++++++++++++++++++++++++++++++++--
- target/arm/trace-events   |  1 +
- 4 files changed, 73 insertions(+), 2 deletions(-)
+ docs/system/arm/emulation.rst | 1 +
+ target/arm/tcg/cpu64.c        | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index b447ec5c0e6..e5758d9fbc8 100644
---- a/target/arm/cpu-features.h
-+++ b/target/arm/cpu-features.h
-@@ -746,6 +746,11 @@ static inline bool isar_feature_aa64_ecv_traps(const ARMISARegisters *id)
-     return FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, ECV) > 0;
- }
+diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
+index f67aea2d836..2a7bbb82dc4 100644
+--- a/docs/system/arm/emulation.rst
++++ b/docs/system/arm/emulation.rst
+@@ -28,6 +28,7 @@ the following architecture extensions:
+ - FEAT_DotProd (Advanced SIMD dot product instructions)
+ - FEAT_DoubleFault (Double Fault Extension)
+ - FEAT_E0PD (Preventing EL0 access to halves of address maps)
++- FEAT_ECV (Enhanced Counter Virtualization)
+ - FEAT_EPAC (Enhanced pointer authentication)
+ - FEAT_ETS (Enhanced Translation Synchronization)
+ - FEAT_EVT (Enhanced Virtualization Traps)
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index 5fba2c0f040..9f7a9f3d2cc 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -1184,6 +1184,7 @@ void aarch64_max_tcg_initfn(Object *obj)
+     t = FIELD_DP64(t, ID_AA64MMFR0, TGRAN64_2, 2); /* 64k stage2 supported */
+     t = FIELD_DP64(t, ID_AA64MMFR0, TGRAN4_2, 2);  /*  4k stage2 supported */
+     t = FIELD_DP64(t, ID_AA64MMFR0, FGT, 1);       /* FEAT_FGT */
++    t = FIELD_DP64(t, ID_AA64MMFR0, ECV, 2);       /* FEAT_ECV */
+     cpu->isar.id_aa64mmfr0 = t;
  
-+static inline bool isar_feature_aa64_ecv(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, ECV) > 1;
-+}
-+
- static inline bool isar_feature_aa64_vh(const ARMISARegisters *id)
- {
-     return FIELD_EX64(id->id_aa64mmfr1, ID_AA64MMFR1, VH) != 0;
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 3cbfd4f9a74..262ebbf1c19 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -453,6 +453,7 @@ typedef struct CPUArchState {
-         uint64_t c14_cntkctl; /* Timer Control register */
-         uint64_t cnthctl_el2; /* Counter/Timer Hyp Control register */
-         uint64_t cntvoff_el2; /* Counter Virtual Offset register */
-+        uint64_t cntpoff_el2; /* Counter Physical Offset register */
-         ARMGenericTimer c14_timer[NUM_GTIMERS];
-         uint32_t c15_cpar; /* XScale Coprocessor Access Register */
-         uint32_t c15_ticonfig; /* TI925T configuration byte.  */
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 3441b14ba39..f590bdf0f7e 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -1923,6 +1923,9 @@ static void scr_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
-         if (cpu_isar_feature(aa64_rme, cpu)) {
-             valid_mask |= SCR_NSE | SCR_GPF;
-         }
-+        if (cpu_isar_feature(aa64_ecv, cpu)) {
-+            valid_mask |= SCR_ECVEN;
-+        }
-     } else {
-         valid_mask &= ~(SCR_RW | SCR_ST);
-         if (cpu_isar_feature(aa32_ras, cpu)) {
-@@ -2682,6 +2685,25 @@ void gt_rme_post_el_change(ARMCPU *cpu, void *ignored)
-     gt_update_irq(cpu, GTIMER_PHYS);
- }
- 
-+static uint64_t gt_phys_raw_cnt_offset(CPUARMState *env)
-+{
-+    if ((env->cp15.scr_el3 & SCR_ECVEN) &&
-+        FIELD_EX64(env->cp15.cnthctl_el2, CNTHCTL, ECV) &&
-+        arm_is_el2_enabled(env) &&
-+        (arm_hcr_el2_eff(env) & (HCR_E2H | HCR_TGE)) != (HCR_E2H | HCR_TGE)) {
-+        return env->cp15.cntpoff_el2;
-+    }
-+    return 0;
-+}
-+
-+static uint64_t gt_phys_cnt_offset(CPUARMState *env)
-+{
-+    if (arm_current_el(env) >= 2) {
-+        return 0;
-+    }
-+    return gt_phys_raw_cnt_offset(env);
-+}
-+
- static void gt_recalc_timer(ARMCPU *cpu, int timeridx)
- {
-     ARMGenericTimer *gt = &cpu->env.cp15.c14_timer[timeridx];
-@@ -2692,7 +2714,7 @@ static void gt_recalc_timer(ARMCPU *cpu, int timeridx)
-          * reset timer to when ISTATUS next has to change
-          */
-         uint64_t offset = timeridx == GTIMER_VIRT ?
--                                      cpu->env.cp15.cntvoff_el2 : 0;
-+            cpu->env.cp15.cntvoff_el2 : gt_phys_raw_cnt_offset(&cpu->env);
-         uint64_t count = gt_get_countervalue(&cpu->env);
-         /* Note that this must be unsigned 64 bit arithmetic: */
-         int istatus = count - offset >= gt->cval;
-@@ -2755,7 +2777,7 @@ static void gt_timer_reset(CPUARMState *env, const ARMCPRegInfo *ri,
- 
- static uint64_t gt_cnt_read(CPUARMState *env, const ARMCPRegInfo *ri)
- {
--    return gt_get_countervalue(env);
-+    return gt_get_countervalue(env) - gt_phys_cnt_offset(env);
- }
- 
- static uint64_t gt_virt_cnt_offset(CPUARMState *env)
-@@ -2804,6 +2826,9 @@ static uint64_t gt_tval_read(CPUARMState *env, const ARMCPRegInfo *ri,
-     case GTIMER_HYPVIRT:
-         offset = gt_virt_cnt_offset(env);
-         break;
-+    case GTIMER_PHYS:
-+        offset = gt_phys_cnt_offset(env);
-+        break;
-     }
- 
-     return (uint32_t)(env->cp15.c14_timer[timeridx].cval -
-@@ -2821,6 +2846,9 @@ static void gt_tval_write(CPUARMState *env, const ARMCPRegInfo *ri,
-     case GTIMER_HYPVIRT:
-         offset = gt_virt_cnt_offset(env);
-         break;
-+    case GTIMER_PHYS:
-+        offset = gt_phys_cnt_offset(env);
-+        break;
-     }
- 
-     trace_arm_gt_tval_write(timeridx, value);
-@@ -3000,6 +3028,9 @@ static void gt_cnthctl_write(CPUARMState *env, const ARMCPRegInfo *ri,
-             R_CNTHCTL_EL1NVVCT_MASK |
-             R_CNTHCTL_EVNTIS_MASK;
-     }
-+    if (cpu_isar_feature(aa64_ecv, cpu)) {
-+        valid_mask |= R_CNTHCTL_ECV_MASK;
-+    }
- 
-     /* Clear RES0 bits */
-     value &= valid_mask;
-@@ -3417,6 +3448,34 @@ static const ARMCPRegInfo gen_timer_ecv_cp_reginfo[] = {
-     },
- };
- 
-+static CPAccessResult gt_cntpoff_access(CPUARMState *env,
-+                                        const ARMCPRegInfo *ri,
-+                                        bool isread)
-+{
-+    if (arm_current_el(env) == 2 && !(env->cp15.scr_el3 & SCR_ECVEN)) {
-+        return CP_ACCESS_TRAP_EL3;
-+    }
-+    return CP_ACCESS_OK;
-+}
-+
-+static void gt_cntpoff_write(CPUARMState *env, const ARMCPRegInfo *ri,
-+                              uint64_t value)
-+{
-+    ARMCPU *cpu = env_archcpu(env);
-+
-+    trace_arm_gt_cntpoff_write(value);
-+    raw_write(env, ri, value);
-+    gt_recalc_timer(cpu, GTIMER_PHYS);
-+}
-+
-+static const ARMCPRegInfo gen_timer_cntpoff_reginfo = {
-+    .name = "CNTPOFF_EL2", .state = ARM_CP_STATE_AA64,
-+    .opc0 = 3, .opc1 = 4, .crn = 14, .crm = 0, .opc2 = 6,
-+    .access = PL2_RW, .type = ARM_CP_IO, .resetvalue = 0,
-+    .accessfn = gt_cntpoff_access, .writefn = gt_cntpoff_write,
-+    .nv2_redirect_offset = 0x1a8,
-+    .fieldoffset = offsetof(CPUARMState, cp15.cntpoff_el2),
-+};
- #else
- 
- /*
-@@ -9301,6 +9360,11 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-     if (cpu_isar_feature(aa64_ecv_traps, cpu)) {
-         define_arm_cp_regs(cpu, gen_timer_ecv_cp_reginfo);
-     }
-+#ifndef CONFIG_USER_ONLY
-+    if (cpu_isar_feature(aa64_ecv, cpu)) {
-+        define_one_arm_cp_reg(cpu, &gen_timer_cntpoff_reginfo);
-+    }
-+#endif
-     if (arm_feature(env, ARM_FEATURE_VAPA)) {
-         ARMCPRegInfo vapa_cp_reginfo[] = {
-             { .name = "PAR", .cp = 15, .crn = 7, .crm = 4, .opc1 = 0, .opc2 = 0,
-diff --git a/target/arm/trace-events b/target/arm/trace-events
-index 48cc0512dbe..4438dce7bec 100644
---- a/target/arm/trace-events
-+++ b/target/arm/trace-events
-@@ -8,6 +8,7 @@ arm_gt_tval_write(int timer, uint64_t value) "gt_tval_write: timer %d value 0x%"
- arm_gt_ctl_write(int timer, uint64_t value) "gt_ctl_write: timer %d value 0x%" PRIx64
- arm_gt_imask_toggle(int timer) "gt_ctl_write: timer %d IMASK toggle"
- arm_gt_cntvoff_write(uint64_t value) "gt_cntvoff_write: value 0x%" PRIx64
-+arm_gt_cntpoff_write(uint64_t value) "gt_cntpoff_write: value 0x%" PRIx64
- arm_gt_update_irq(int timer, int irqstate) "gt_update_irq: timer %d irqstate %d"
- 
- # kvm.c
+     t = cpu->isar.id_aa64mmfr1;
 -- 
 2.34.1
 
