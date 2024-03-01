@@ -2,151 +2,152 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A8786E7A9
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 18:48:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8989C86E7A2
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Mar 2024 18:47:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rg6y0-0005OL-PM; Fri, 01 Mar 2024 12:46:40 -0500
+	id 1rg6yU-0005mH-6A; Fri, 01 Mar 2024 12:47:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
- id 1rg6xy-0005LI-2j
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:46:38 -0500
-Received: from kudu.cherry.relay.mailchannels.net ([23.83.223.97])
+ id 1rg6yQ-0005i7-CK
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:47:06 -0500
+Received: from cockroach.apple.relay.mailchannels.net ([23.83.208.37])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
- id 1rg6xw-0000YP-G5
- for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:46:37 -0500
+ id 1rg6yO-0000bv-KC
+ for qemu-devel@nongnu.org; Fri, 01 Mar 2024 12:47:06 -0500
 X-Sender-Id: _forwarded-from|134.3.94.10
 Received: from relay.mailchannels.net (localhost [127.0.0.1])
- by relay.mailchannels.net (Postfix) with ESMTP id 1A65D2C1084
- for <qemu-devel@nongnu.org>; Fri,  1 Mar 2024 17:46:35 +0000 (UTC)
-Received: from outbound1f.eu.mailhop.org (unknown [127.0.0.6])
+ by relay.mailchannels.net (Postfix) with ESMTP id 43E11362B12
+ for <qemu-devel@nongnu.org>; Fri,  1 Mar 2024 17:47:03 +0000 (UTC)
+Received: from outbound5a.eu.mailhop.org (unknown [127.0.0.6])
  (Authenticated sender: duocircle)
- by relay.mailchannels.net (Postfix) with ESMTPA id 6D3662C1D98
- for <qemu-devel@nongnu.org>; Fri,  1 Mar 2024 17:46:34 +0000 (UTC)
-ARC-Seal: i=2; s=arc-2022; d=mailchannels.net; t=1709315194; a=rsa-sha256;
+ by relay.mailchannels.net (Postfix) with ESMTPA id 4144C362F91
+ for <qemu-devel@nongnu.org>; Fri,  1 Mar 2024 17:47:02 +0000 (UTC)
+ARC-Seal: i=2; s=arc-2022; d=mailchannels.net; t=1709315222; a=rsa-sha256;
  cv=pass;
- b=NK/nXuJEYtIggWqN5LqUMXQH4/MIn6MtdVti59eC5SWDomPgUJhM5WBGn3F+INys8I5980
- 22u8vobYaKPvd4x2EuTpRgYfsYV4gf8X/2LXvDr2SI4rFVZ/a7lA4tbMBr3ASS74y6bWFm
- zMZlyLid1kfBzNDaoui6+bqOjsI4hUulhdlFC4f02e1vqHkaPXVYRG3MpmKA/MWLC1q03m
- gfHWWc9z6i9in0QIdnrBN9T+U3qucpHgAchuDpjdgjIrFpErFy1/hxTV7wA7FkpDOf0FUR
- rrbZ4oxBuFxAoqTb0AKnHzGYnJQ5bVQzEieWe+3u7vVaxxZwtFRuGKX1l7tvXQ==
+ b=K3P9UPMUdNug1JEqaNcFBhffTV68AVPcHyhyvD80m8ey7pfR5lVkbJNEEQQxL04PaEbigO
+ zqiKozwYg3n3o74BM3b80g+S/RNI5eSw4Nuo0wuKYtht8m/GTVRMasE49i0TZoTYH0MTIT
+ /LZ7b6s5IEF1LSuHRuKVf8SuBcPefK5obIi2vXUbVZvB3PFuVn+TZ5t8/JOnJ+JpveP18G
+ A53keLzQP8cJD1DdPCOTr2kcGAIhl+LDmauwsZkFpdWKPFOQAMQevaXqVke/KVIn5OJhND
+ rpHuGDSVCvJzdflK4Lwu1y9eDpHlKNctWBzStEo21CGBhYwo0e/IiDtXF1KI7g==
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net; s=arc-2022; t=1709315194;
+ d=mailchannels.net; s=arc-2022; t=1709315222;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:dkim-signature;
- bh=HUL4zxvHsk3QHlw5QiDCgjuSljLjXHEAHk3yu+AzSaY=;
- b=57da1J6Z/3iGJdOmXKM0Kb0od4Po7Sp4r4jQejzs4va4axEPZIatUFeYpv+0bbIv513c+f
- 4OYEDaWQ5kbu8wpXhKMl10tPuWOJGapgCTVIp7+RBlBTkEcjXb5h4PQ30hTcIc5yTezhKu
- kTPJP1d/5ahRyNG4c5HcQUsK7m9yUgmAsc49KkDlVvMLIyWvvCdNSFr+LhZdizhj77FlvE
- Fm6PwDqj+pONmN8uqdAAfwHB2ZHcxoYa1muXRxDOTm2wLVEsQDPFasl9/4o4bQ8vrId4jN
- gyyrxNpb0vQHyQ303kf27JK+/N5EdCoScybPWq5AvySD9lsHPbBxNbmhomZI5g==
-ARC-Authentication-Results: i=2; rspamd-55b4bfd7cb-9jms7;
+ bh=UXyHuOL2Zz1wN0HSN8V7hVB8CKhogOCL5fIhUH2hyss=;
+ b=0yhFC+pFx62q/a3k1cPAAjo74dwVGranRmToU1VCKoQw67ShSvVuon0oDZG/ie3Wjha5TX
+ 7YEfVX2p9iMFgcyxamgwTTcuh6o4HKdsdJZrJ5slRMne4Xp87l6RsbtbwJV/0IG6ZEeWdH
+ z0t6cqajUvbLgK+lezweKX5+Bd+e0CatgmC5ovHMxAaKBpmwET7j9nWPheRJyJbR0qEBpx
+ pe7JCFsP+BT5bWYj6GgDsN+hzpHBGgCuilRDgiTuffYS0UerIeLkM4kVhWNr1/0R1zwFlf
+ QZ33tH4F53KVBxkJE9ANY8BFSUPUrZdmHetll48clqwExq2KAN/QkE+fqfc9zg==
+ARC-Authentication-Results: i=2; rspamd-55b4bfd7cb-rwchp;
  arc=pass ("outbound.mailhop.org:s=arc-outbound20181012:i=1");
  auth=pass smtp.auth=duocircle smtp.mailfrom=svens@stackframe.org
 X-Sender-Id: _forwarded-from|134.3.94.10
 X-MC-Relay: Forwarding
 X-MailChannels-SenderId: _forwarded-from|134.3.94.10
 X-MailChannels-Auth-Id: duocircle
-X-Scare-Shade: 14ee16277f0fbd86_1709315194947_1297384744
-X-MC-Loop-Signature: 1709315194947:3419211672
-X-MC-Ingress-Time: 1709315194946
-Received: from outbound1f.eu.mailhop.org (outbound1f.eu.mailhop.org
- [52.28.59.28]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
- by 100.124.220.170 (trex/6.9.2); Fri, 01 Mar 2024 17:46:34 +0000
-ARC-Seal: i=1; a=rsa-sha256; t=1709315101; cv=none;
+X-Arithmetic-Spill: 0b9bb44c212e5120_1709315222770_3516816653
+X-MC-Loop-Signature: 1709315222770:2772798783
+X-MC-Ingress-Time: 1709315222769
+Received: from outbound5a.eu.mailhop.org (outbound5a.eu.mailhop.org
+ [3.124.88.253]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+ by 100.101.14.227 (trex/6.9.2); Fri, 01 Mar 2024 17:47:02 +0000
+ARC-Seal: i=1; a=rsa-sha256; t=1709315168; cv=none;
  d=outbound.mailhop.org; s=arc-outbound20181012;
- b=bgS1bkK4T/pqbMlP8hghVXRmnl4OwbkbLmvc8x3qEfMKu9dcvLIwmomH7VOzOcXG2NHLpo88LNF+6
- MpcXsodJPxttrtyRN3zLtq9ctQ8RbzdmXnr/RkmRfca+jth9ukuoC6OJA35JD5l8fKugescLDLnE7y
- fULx2DUuiDzJ0UbnEUTZ+G3XSN6EKh18kT38yaPuccWHZ9okz5w+r/8JUdEMAfszc4VAmn7vgykHwQ
- L3+K5HAlSH3QVnmx3bu5jrKNma/yx99JKxHZCY769UI3BYrpahv6pYo0o+6RhpYhmPaPUC8vZu0bQY
- Ny5DNRLdt5llUWhNj8YYm7AU6CFLg7A==
+ b=eqfgD4CSOGAVLucLER65HWmmPFa1m0qWAWKBq1zs4Faoi+ApmUH7+AoOZT1zYPnBu9lr+0B3Jt/Kz
+ fO55SOs6drdHALMyAcyZdBGj+zpS+jySUO9xHgFkpVMAmgHn8hIZxFIp8aGx01ZHXAbSbykgowdYjW
+ YizcV9bMcwd6bBe+mIddWym+nzlZXJB/athAzkUZYJfkGXp8LrdRNhGMSaiF98/3EhZQwzlLfrsR8J
+ kE90n7zI/mSMS9eLRDNHFk1Y55n5jdyaD+zXc6jUOIQRnuIPJEVKoF8qIo+DIxo5LyFPYvks83UuYU
+ 9WFqF0p4Zzljk6cHRiTbJo5rH0yu3BQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
  d=outbound.mailhop.org; s=arc-outbound20181012;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:dkim-signature:dkim-signature:dkim-signature:from;
- bh=HUL4zxvHsk3QHlw5QiDCgjuSljLjXHEAHk3yu+AzSaY=;
- b=MjAQ31yATOxyZzgEMXGhkajIoSdxFTa9gQd009pUC7oeFmDk8OdkJvfXHSiDHwYXtTx63mqTPTjhr
- tcS2+VXKPk70DiCd322FQuVY19PhGsSW3pGILdS1cotlv9Ve21y/KbRLfMBzXH89SQD6ncyHWisWyb
- NCZBs34kFM3rdFyBfLgR1DyOODhfCXVgZRrrvdWLwi1LPGF9bssxuv/RzAocprahXW5OKiyRJrKehs
- 1IqI+0Zv//nxbfNYb8ZsKP3nyoKRxIzgmIAY8h2VEi4W0TVq3Yd4/gHldc+K2cRucKYhybS+EXmGA0
- qv57N1FY0OJZAFkc7BHr1g3vKglldUg==
-ARC-Authentication-Results: i=1; outbound2.eu.mailhop.org;
+ bh=UXyHuOL2Zz1wN0HSN8V7hVB8CKhogOCL5fIhUH2hyss=;
+ b=HYbcfpg5/eiCZEJ3/xmPFJ0ZJHx4vL2gY2smhpRzVD5nZOY/xV9h89Pzvc23EqOJU3DOFGiaBI/Xx
+ EkuKqGSMqF7C+Whp/qH5AqXuixDGyxJTQePB06BXJpj104lvQJqMrLtisam2gKjOUq0jRhWPdNmYCz
+ d8CgP3M6mSlLDYvLih3PysjIM9LiEj+DHxl3G18a6EKR/J0Tfr6Re5obxjhx5UeWb8bA9hrMscy2fk
+ gCZ4C+BJPJ1yY02th4stOmGTna3/fvdcKxL/4Ui8DoS27MuQf/iGP8o97/7c/uA3OHIj4tgxfKNzIZ
+ cakAbHWpntC55S3w18RST0M6Wjishpg==
+ARC-Authentication-Results: i=1; outbound3.eu.mailhop.org;
  spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=130.180.31.158;
  dkim=pass header.d=stackframe.org header.s=dkim1 header.a=rsa-sha256
- header.b=CERtcaUL; 
+ header.b=OwYfFHZR; 
  dmarc=none header.from=stackframe.org;
  arc=none header.oldest-pass=0;
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=stackframe.org; s=duo-1634547266507-560c42ae;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=HUL4zxvHsk3QHlw5QiDCgjuSljLjXHEAHk3yu+AzSaY=;
- b=Vy3IXlR0M2LmEn1XQUsubOcLbZcurdaAAT0x+vxaA1BG0YtASkXaeYBvPsIs6y1U+J8mpbdGncr0B
- Q1YsMtHa+FyjvHyD3B1Ts1cC0ecmZDDsJie2STsiz9qJzB552ntodBUzybBds7gHdBPp4NJpg2WzvB
- 7ioxaw58Bt6qVteI=
+ bh=UXyHuOL2Zz1wN0HSN8V7hVB8CKhogOCL5fIhUH2hyss=;
+ b=p2/ot/HT+bwxUDcs8b9tdNGCPHu1sMKVNHKpkMNHXkwmIGe7lcDHX1TiadtSaF8Kgd6WdK+jrDV4S
+ L1+Gc2zBX7ThKeMmWP7OdqtneVz2wk0oGthTXFNsrmvFGFCvOY+MqeYDIYZsoHYI/10IywP5hH1AYv
+ sSdMmk142jBOJ6SM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=outbound.mailhop.org; s=dkim-high;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=HUL4zxvHsk3QHlw5QiDCgjuSljLjXHEAHk3yu+AzSaY=;
- b=mdutM8SGBmS9SUtGK/lhahpRpmm85GHV0QBtjZat9CKLQ7ugagpCUp1olRHVYE86CoNOpPBw09If4
- 2/PZ1kygxdpClnijcRJQVfHI2Iak2ms6X6cMQ4Z+icF/OCqbeQT8QO2mNWXwmeCEH0bZe1+QQfOCRw
- /Rai4VQQPUGKDvxTC8wp90KqsCMhDrTiZCZLMq59z8iM0IhB5rc9nJE28IOxGn4s29fMZBv03oN1XG
- yiZRZRrr+20mjD0HCZeGMUUnCKuHl5p0qh/IR7GRtj2wXMaUsTcHNzkE2iNvUwFxcDFThM7F8jrl5U
- FV3LxwCnPKcWUee2K7tZA1G+WSDZ6Bw==
+ bh=UXyHuOL2Zz1wN0HSN8V7hVB8CKhogOCL5fIhUH2hyss=;
+ b=CvOs3nOgq0E0UkIq2safJ7sk/av3cS+2xhXkDBZl4eneBVK48OpaX7hSodZE9YfN2VeTgL0ay+s4u
+ bn3E89LYbE65iHa6QQfKNuNd9tj4AbGRzfDmK4+fnh5PLrGXbXXnPpLAPqidnNWleN+P7Lm0yk/QH0
+ Q2maki2bhXDQ7wTirpinNxSgbLyb45/GMYjq0ObzHy9ldV+A0wFCgmlM/yL/loErx6ceDxldS+XEMq
+ yiNGJ0KVWEhDH5seQdvnhgt2Rv6Kp3hyf5HRvdYUbvprxJsh/Rsc5fY79dQGJ22tGEH2RCutMrFSeW
+ eXyV7cJuqLLgFHnCdjPo0UUerxJxq1w==
 X-Originating-IP: 130.180.31.158
 X-MHO-RoutePath: dG9ta2lzdG5lcm51
-X-MHO-User: 6b291732-d7f3-11ee-b66d-9b9d9be6ef2c
+X-MHO-User: 92c79b1f-d7f3-11ee-afda-eda7e384987e
 X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
 X-Mail-Handler: DuoCircle Outbound SMTP
 Received: from mail.duncanthrax.net (mail.duncanthrax.net [130.180.31.158])
- by outbound2.eu.mailhop.org (Halon) with ESMTPSA
- id 6b291732-d7f3-11ee-b66d-9b9d9be6ef2c;
- Fri, 01 Mar 2024 17:44:57 +0000 (UTC)
+ by outbound3.eu.mailhop.org (Halon) with ESMTPSA
+ id 92c79b1f-d7f3-11ee-afda-eda7e384987e;
+ Fri, 01 Mar 2024 17:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=stackframe.org; s=dkim1; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=HUL4zxvHsk3QHlw5QiDCgjuSljLjXHEAHk3yu+AzSaY=; b=CERtcaULkHpLvA4bOUu0v8vAjT
- 5SLbWtTOl4NajL7YA0UX5WA8OkDiKBN0i3Ahy32+PQUaPC4xnNnNU4+h+BGnIHqLN5TaCHpsVr1An
- 8017a+h3AMpOqYlRhpPJgSduBvIJYl9uW9vg7K5U2OEl03GEGr6ft9WPpPNeHHjM3TvX6uf5CQslv
- oHbKEpVlB4uawZRMubZFsmwVlurV/ab28AK4pgv5vkfOa/hytdmGRW3J1w7YFf2k1XLsRphQopw9O
- ifJiw7y8uZT1gWz1N6lgYAez64+kv+awi7tBSNhUGuPZtdVzR9OF9C18iOmjK+TRFMfSP+gmoNU30
- 2oOWd+4g==;
+ bh=UXyHuOL2Zz1wN0HSN8V7hVB8CKhogOCL5fIhUH2hyss=; b=OwYfFHZRkx1Fv/MGwieuGE+kj7
+ CqcA0fIlEZSvvsG2F9uqc52bVH1UNnIXIN/RKtLpMqZKGIDUdUZUQFxBbQ6VmgzBGyGvyasUjHVl9
+ NCNai1AKy3VgcTxM7w6bKLuGwmgA3PIOnZkhia3apc9Ag+FwcWLglo23MQ4660CGTp03tuXxCrI70
+ kgF/Kw4+9rA2Intdy6jry7I2QwdLukOhxbK+kfmTfqgtT5fZdHI4UYEq34vw0hWnHTJZsf2xkMUKp
+ mhLzGQh/Vg9H6RgBE4yYPooQ+KcOz/tMJwUxsqfij0VwoKv35mUKZD5SCgZiaXUeFlde7P/b0Fo/s
+ pJ00b36Q==;
 Received: from ip-134-003-094-010.um41.pools.vodafone-ip.de ([134.3.94.10]
  helo=t14.stackframe.org)
  by mail.duncanthrax.net with esmtpa (Exim 4.96)
- (envelope-from <svens@stackframe.org>) id 1rg6xm-000bs2-2n;
- Fri, 01 Mar 2024 18:46:26 +0100
+ (envelope-from <svens@stackframe.org>) id 1rg6xn-000bs2-2D;
+ Fri, 01 Mar 2024 18:46:27 +0100
 From: Sven Schnelle <svens@stackframe.org>
 To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Cc: qemu-devel@nongnu.org, deller@gmx.de, Sven Schnelle <svens@stackframe.org>
-Subject: [PATCH v3 08/12] qemu/range: add range_list_contains() function
-Date: Fri,  1 Mar 2024 18:46:05 +0100
-Message-ID: <20240301174609.1964379-9-svens@stackframe.org>
+Subject: [PATCH v3 09/12] plugins: add API to print errors
+Date: Fri,  1 Mar 2024 18:46:06 +0100
+Message-ID: <20240301174609.1964379-10-svens@stackframe.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240301174609.1964379-1-svens@stackframe.org>
 References: <20240301174609.1964379-1-svens@stackframe.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=23.83.223.97; envelope-from=svens@stackframe.org;
- helo=kudu.cherry.relay.mailchannels.net
+Received-SPF: pass client-ip=23.83.208.37; envelope-from=svens@stackframe.org;
+ helo=cockroach.apple.relay.mailchannels.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -163,62 +164,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a small inline function to match an address against
-a list of ranges.
+add qemu_plugin_error_print() which is a wrapper around
+error_report_err(). This will be used by
+qemu_plugin_parse_filter_ranges() to report parse failures.
 
 Signed-off-by: Sven Schnelle <svens@stackframe.org>
 ---
- include/qemu/range.h | 12 ++++++++++++
- util/log.c           | 10 +---------
- 2 files changed, 13 insertions(+), 9 deletions(-)
+ include/qemu/qemu-plugin.h   | 12 ++++++++++++
+ plugins/api.c                |  7 +++++++
+ plugins/qemu-plugins.symbols |  1 +
+ 3 files changed, 20 insertions(+)
 
-diff --git a/include/qemu/range.h b/include/qemu/range.h
-index 4ff9799d89..7ef9b3d5fb 100644
---- a/include/qemu/range.h
-+++ b/include/qemu/range.h
-@@ -57,6 +57,18 @@ static inline bool range_contains(const Range *range, uint64_t val)
-     return val >= range->lob && val <= range->upb;
- }
+diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+index 45e2ebc8f8..5839feea4d 100644
+--- a/include/qemu/qemu-plugin.h
++++ b/include/qemu/qemu-plugin.h
+@@ -752,5 +752,17 @@ QEMU_PLUGIN_API
+ int qemu_plugin_read_register(struct qemu_plugin_register *handle,
+                               GByteArray *buf);
  
-+static inline bool range_list_contains(GList *ranges, uint64_t val)
-+{
-+    GList *p;
++typedef struct Error Error;
 +
-+    for (p = g_list_first(ranges); p; p = g_list_next(p)) {
-+        if (range_contains(p->data, val)) {
-+            return true;
-+        }
-+    }
-+    return false;
++/**
++ * qemu_plugin_error_print() - print and free error
++ *
++ * @err: a @Error handle
++ *
++ * This function shows and and frees the supplied error.
++ */
++
++QEMU_PLUGIN_API
++void qemu_plugin_error_print(Error *err);
+ 
+ #endif /* QEMU_QEMU_PLUGIN_H */
+diff --git a/plugins/api.c b/plugins/api.c
+index 81f43c9ce8..8fd3a8964a 100644
+--- a/plugins/api.c
++++ b/plugins/api.c
+@@ -45,6 +45,7 @@
+ #include "exec/ram_addr.h"
+ #include "disas/disas.h"
+ #include "plugin.h"
++#include "qapi/error.h"
+ #ifndef CONFIG_USER_ONLY
+ #include "qemu/plugin-memory.h"
+ #include "hw/boards.h"
+@@ -465,3 +466,9 @@ int qemu_plugin_read_register(struct qemu_plugin_register *reg, GByteArray *buf)
+ 
+     return gdb_read_register(current_cpu, buf, GPOINTER_TO_INT(reg));
+ }
++
++void qemu_plugin_error_print(Error *err)
++{
++    error_report_err(err);
 +}
 +
- /* Initialize @range to the empty range */
- static inline void range_make_empty(Range *range)
- {
-diff --git a/util/log.c b/util/log.c
-index 90897ef0f9..032110d700 100644
---- a/util/log.c
-+++ b/util/log.c
-@@ -368,18 +368,10 @@ bool qemu_set_log_filename_flags(const char *name, int flags, Error **errp)
-  */
- bool qemu_log_in_addr_range(uint64_t addr)
- {
--    GList *p;
--
-     if (!debug_regions) {
-         return true;
-     }
--
--    for (p = g_list_first(debug_regions); p; p = g_list_next(p)) {
--        if (range_contains(p->data, addr)) {
--            return true;
--        }
--    }
--    return false;
-+    return range_list_contains(debug_regions, addr);
- }
- 
- void qemu_set_dfilter_ranges(const char *filter_spec, Error **errp)
+diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
+index 27fe97239b..b142d11e58 100644
+--- a/plugins/qemu-plugins.symbols
++++ b/plugins/qemu-plugins.symbols
+@@ -2,6 +2,7 @@
+   qemu_plugin_bool_parse;
+   qemu_plugin_end_code;
+   qemu_plugin_entry_code;
++  qemu_plugin_error_print;
+   qemu_plugin_get_hwaddr;
+   qemu_plugin_get_registers;
+   qemu_plugin_hwaddr_device_name;
 -- 
 2.43.2
 
