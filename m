@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEB2B86EEC5
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 06:19:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C223486EEED
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 06:58:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgHkF-00035t-NF; Sat, 02 Mar 2024 00:17:11 -0500
+	id 1rgIMY-0002at-04; Sat, 02 Mar 2024 00:56:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgHkD-00035E-B0
- for qemu-devel@nongnu.org; Sat, 02 Mar 2024 00:17:09 -0500
-Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
+ id 1rgIMW-0002ag-4Y
+ for qemu-devel@nongnu.org; Sat, 02 Mar 2024 00:56:44 -0500
+Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgHkA-0007cn-Np
- for qemu-devel@nongnu.org; Sat, 02 Mar 2024 00:17:08 -0500
-Received: by mail-oi1-x234.google.com with SMTP id
- 5614622812f47-3bbbc6b4ed1so2009427b6e.2
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 21:17:06 -0800 (PST)
+ id 1rgIMU-0000cQ-9q
+ for qemu-devel@nongnu.org; Sat, 02 Mar 2024 00:56:43 -0500
+Received: by mail-oa1-x35.google.com with SMTP id
+ 586e51a60fabf-21fa0ec227eso1400275fac.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 21:56:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709356625; x=1709961425; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709359000; x=1709963800; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+1osKk6aSpsOCl7jxzf2LpH2LtOYNkQ4L9oeYiweWNY=;
- b=yDQigkeIecb87j6j4OHeoVawN2WC3DNdBWAA175I0J9hCsHYUZZtUuBrhnwFXk4qYg
- VF4eX1WhVsWbMuM9xTvQzqrNVqUBS32xArMlQjObKwvDPFxaB/Gdrt6+X9KUdoZAIr18
- lNlElqh82mF7kceVrUO9Adcd6adPXP10nswZvDPRmiOHvuCO2JLDBGnN4n/6fSCYu5L4
- oIrgt98zxub8LbO8rF/Yhmg6Ls2zZc8V3yx8eiwC+6VSZWaoWI5Vlb+Kykjh/ib1LKmm
- I1Jwazalr9KP2AaCfxX+Ypw79Fg2H+CluC6z3yDtcWTb921zerwrJsZCEULtbYXfgMJ6
- uEJw==
+ bh=NHzxeZahoeOHL3vAMHqU3P9pcDfqE42pzi5+X3i2bNc=;
+ b=HYF/nT8Yy4c8dJrJkJp6k0daR3MbLDFjHKJR/mduCX1sdgy5Jac2CI1RJNcuvAMfWW
+ vwuC09nlX1alIcfvdkqCxPZkgEl00/Vv+Pb37S+asUgm7GvueTi/U4Z1+dUFUrMVWNSV
+ SGFDOpIsaUbTTUyRMBsooMGxPoGKis/cekJAvlQpjZNnQ9SRBGICPg7Imvb18RD+71QA
+ K+g2y1LG8YvETS94SNG+Kt/oMu6LXCXuntlNgiu/N23alRdk2b//p0nZV1XXeRsNMpAI
+ HdrOoSTnFHfh3VR8lvwZShFANzj1xyqR7nYcZ1YLd1n9urJDgeVAGFntfi7EnCa9BPtT
+ 3Cxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709356625; x=1709961425;
+ d=1e100.net; s=20230601; t=1709359000; x=1709963800;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+1osKk6aSpsOCl7jxzf2LpH2LtOYNkQ4L9oeYiweWNY=;
- b=PYSvMnesRuM5VhpQssxEf8A/saffZtPdLAUrxhxczApO9fJCNDMkvL5di4Uhk7gHRC
- /utdc3BFc8yuSrhXpE+7RV4y7ozvMytIYjfK48qWXwuWQXo5b7WiNt00jlg1EmRg5Ujq
- ovtlK1W7w1xQM4ckH33+CRlGqk5SEvbBVk6WWM9Co/TCGj1xrdTm3vWhXL/4OND991fd
- NAJuaq1KeUKTEDeqV2SbaQwvaL3B5IMk3sfYIuavD4KJb4kUIWWU9gW5NUubM7exju4Q
- u8lUY7cWPvFX6OtuPoeALGgQqIXFc8pT7+mE8h2P0g5wobka8HfHJgrOVEPpTxYSyxdd
- 7yfg==
-X-Gm-Message-State: AOJu0YxFW9loiWMV3fOjD3Bu/MawImpuV3tW88qpbIwFsi2D4d1zERc5
- GQTjVlUsBozbY6y8IqvRpGZaqGzsfdJm4/pS2m3NIdZ7ixzjPh+Ou7X80JcaCegCtThJ9U7hL0o
- G
-X-Google-Smtp-Source: AGHT+IGPX3i8YZXYPg6JuqhGnlMPTVFPgg54JH6L9NBVTWxtjOj3OHLvAx2R52uCdovAhGLN+0IF5w==
-X-Received: by 2002:a05:6808:1983:b0:3c1:cd9d:7fb5 with SMTP id
- bj3-20020a056808198300b003c1cd9d7fb5mr4573340oib.4.1709356624789; 
- Fri, 01 Mar 2024 21:17:04 -0800 (PST)
+ bh=NHzxeZahoeOHL3vAMHqU3P9pcDfqE42pzi5+X3i2bNc=;
+ b=PchPp2j+ScdIAkXsIvoAYpf679yYmQ6tedoKt4uFq5Q85U8WEQgEXZYesxUZ3Q4L7p
+ QUP8poOzw+L+hcJMus7TiJO+TUuUpCFHpfK0bYhKehcmmA3X1bL9hNa1s4ZXukCOZ7Gy
+ fcDQH0W5YPhp43FbgkpviLuIMyMf4tup71HkL8Lqn17qtKZP3hxOHO6Xh5E/Ibmi+sl6
+ Gnia2Pc3La4eSF6QRiiHv5ghpbMGASnWJ0RjOyJdhkwwZA7McjXexNYxJ66NqfOiuVE2
+ Z1vEMhR+ulgCvIf3JtqBk8XOXhrnnuxrAl5Fkrpg2HXE/WC6mlldSZQd0os6PvzjTcXE
+ y/zQ==
+X-Gm-Message-State: AOJu0Yx4mUkTD6Jc2rdrgI5EgBX2wngU+2p6PiblYHoNjWZxvbj0NmD6
+ LoUi7T5nxvXB/4M9PK/17KvKM36pQelRFeCMsNr3Y8VrTyFsYakgVze74eGxborIneyZKcXrjet
+ 1
+X-Google-Smtp-Source: AGHT+IFa+d2fIc1mHHhGanx233cpKPpv4VzDZPa7g9e4zWQK9NRqrU8BcAzQGlfx6jciw0U2P44qSA==
+X-Received: by 2002:a05:6870:23a9:b0:220:c50e:9133 with SMTP id
+ e41-20020a05687023a900b00220c50e9133mr3390532oap.45.1709359000565; 
+ Fri, 01 Mar 2024 21:56:40 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- v8-20020a17090a458800b0029af67d4fd0sm4034901pjg.44.2024.03.01.21.17.03
+ q13-20020a62e10d000000b006e560192a7dsm3830448pfh.105.2024.03.01.21.56.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 21:17:04 -0800 (PST)
+ Fri, 01 Mar 2024 21:56:39 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk,
 	atar4qemu@gmail.com
-Subject: [PATCH 39/41] target/sparc: Implement MWAIT
-Date: Fri,  1 Mar 2024 19:15:59 -1000
-Message-Id: <20240302051601.53649-40-richard.henderson@linaro.org>
+Subject: [PATCH 40/41] target/sparc: Implement monitor asis
+Date: Fri,  1 Mar 2024 19:16:00 -1000
+Message-Id: <20240302051601.53649-41-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240302051601.53649-1-richard.henderson@linaro.org>
 References: <20240302051601.53649-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x234.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::35;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x35.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,46 +93,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Ignore the "monitor" portion and treat them the same
+as their base asis.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/translate.c  | 11 +++++++++++
- target/sparc/insns.decode |  1 +
- 2 files changed, 12 insertions(+)
+ target/sparc/asi.h         | 4 ++++
+ target/sparc/ldst_helper.c | 4 ++++
+ target/sparc/translate.c   | 8 ++++++++
+ 3 files changed, 16 insertions(+)
 
+diff --git a/target/sparc/asi.h b/target/sparc/asi.h
+index a66829674b..14ffaa3842 100644
+--- a/target/sparc/asi.h
++++ b/target/sparc/asi.h
+@@ -144,6 +144,8 @@
+  * ASIs, "(4V)" designates SUN4V specific ASIs.  "(NG4)" designates SPARC-T4
+  * and later ASIs.
+  */
++#define ASI_MON_AIUP            0x12 /* (VIS4) Primary, user, monitor   */
++#define ASI_MON_AIUS            0x13 /* (VIS4) Secondary, user, monitor */
+ #define ASI_REAL                0x14 /* Real address, cacheable          */
+ #define ASI_PHYS_USE_EC		0x14 /* PADDR, E-cacheable		*/
+ #define ASI_REAL_IO             0x15 /* Real address, non-cacheable      */
+@@ -257,6 +259,8 @@
+ #define ASI_UDBL_CONTROL_R	0x7f /* External UDB control regs rd low*/
+ #define ASI_INTR_R		0x7f /* IRQ vector dispatch read	*/
+ #define ASI_INTR_DATAN_R	0x7f /* (III) In irq vector data reg N	*/
++#define ASI_MON_P               0x84 /* (VIS4) Primary, monitor         */
++#define ASI_MON_S               0x85 /* (VIS4) Secondary, monitor       */
+ #define ASI_PIC			0xb0 /* (NG4) PIC registers		*/
+ #define ASI_PST8_P		0xc0 /* Primary, 8 8-bit, partial	*/
+ #define ASI_PST8_S		0xc1 /* Secondary, 8 8-bit, partial	*/
+diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
+index 1ecd58e8ff..82cf4ba074 100644
+--- a/target/sparc/ldst_helper.c
++++ b/target/sparc/ldst_helper.c
+@@ -1371,6 +1371,10 @@ uint64_t helper_ld_asi(CPUSPARCState *env, target_ulong addr,
+     case ASI_TWINX_PL: /* Primary, twinx, LE */
+     case ASI_TWINX_S:  /* Secondary, twinx */
+     case ASI_TWINX_SL: /* Secondary, twinx, LE */
++    case ASI_MON_P:
++    case ASI_MON_S:
++    case ASI_MON_AIUP:
++    case ASI_MON_AIUS:
+         /* These are always handled inline.  */
+         g_assert_not_reached();
+ 
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 4775e39240..5694420a93 100644
+index 5694420a93..15c9d5b59a 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -3316,6 +3316,17 @@ static void do_wrpowerdown(DisasContext *dc, TCGv src)
- 
- TRANS(WRPOWERDOWN, POWERDOWN, do_wr_special, a, supervisor(dc), do_wrpowerdown)
- 
-+static void do_wrmwait(DisasContext *dc, TCGv src)
-+{
-+    /*
-+     * TODO: This is a stub version of mwait, which merely recognizes
-+     * interrupts immediately and does not wait.
-+     */
-+    dc->base.is_jmp = DISAS_EXIT;
-+}
-+
-+TRANS(WRMWAIT, VIS4, do_wr_special, a, true, do_wrmwait)
-+
- static void do_wrpsr(DisasContext *dc, TCGv src)
- {
-     gen_helper_wrpsr(tcg_env, src);
-diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 1f9e07e526..2927116031 100644
---- a/target/sparc/insns.decode
-+++ b/target/sparc/insns.decode
-@@ -124,6 +124,7 @@ CALL    01 i:s30
-     WRTICK_CMPR     10 10111 110000 ..... . .............  @n_r_ri
-     WRSTICK         10 11000 110000 ..... . .............  @n_r_ri
-     WRSTICK_CMPR    10 11001 110000 ..... . .............  @n_r_ri
-+    WRMWAIT         10 11100 110000 ..... . .............  @n_r_ri
-   ]
-   # Before v8, rs1==0 was WRY, and the rest executed as nop.
-   [
+@@ -1622,6 +1622,7 @@ static DisasASI resolve_asi(DisasContext *dc, int asi, MemOp memop)
+         case ASI_BLK_AIUP_L_4V:
+         case ASI_BLK_AIUP:
+         case ASI_BLK_AIUPL:
++        case ASI_MON_AIUP:
+             mem_idx = MMU_USER_IDX;
+             break;
+         case ASI_AIUS:  /* As if user secondary */
+@@ -1632,6 +1633,7 @@ static DisasASI resolve_asi(DisasContext *dc, int asi, MemOp memop)
+         case ASI_BLK_AIUS_L_4V:
+         case ASI_BLK_AIUS:
+         case ASI_BLK_AIUSL:
++        case ASI_MON_AIUS:
+             mem_idx = MMU_USER_SECONDARY_IDX;
+             break;
+         case ASI_S:  /* Secondary */
+@@ -1645,6 +1647,7 @@ static DisasASI resolve_asi(DisasContext *dc, int asi, MemOp memop)
+         case ASI_FL8_SL:
+         case ASI_FL16_S:
+         case ASI_FL16_SL:
++        case ASI_MON_S:
+             if (mem_idx == MMU_USER_IDX) {
+                 mem_idx = MMU_USER_SECONDARY_IDX;
+             } else if (mem_idx == MMU_KERNEL_IDX) {
+@@ -1662,6 +1665,7 @@ static DisasASI resolve_asi(DisasContext *dc, int asi, MemOp memop)
+         case ASI_FL8_PL:
+         case ASI_FL16_P:
+         case ASI_FL16_PL:
++        case ASI_MON_P:
+             break;
+         }
+         switch (asi) {
+@@ -1679,6 +1683,10 @@ static DisasASI resolve_asi(DisasContext *dc, int asi, MemOp memop)
+         case ASI_SL:
+         case ASI_P:
+         case ASI_PL:
++        case ASI_MON_P:
++        case ASI_MON_S:
++        case ASI_MON_AIUP:
++        case ASI_MON_AIUS:
+             type = GET_ASI_DIRECT;
+             break;
+         case ASI_TWINX_REAL:
 -- 
 2.34.1
 
