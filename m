@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B8B86EEC6
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 06:19:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEB2B86EEC5
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 06:19:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgHkE-00035O-07; Sat, 02 Mar 2024 00:17:10 -0500
+	id 1rgHkF-00035t-NF; Sat, 02 Mar 2024 00:17:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgHkB-00034q-Rz
- for qemu-devel@nongnu.org; Sat, 02 Mar 2024 00:17:08 -0500
-Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
+ id 1rgHkD-00035E-B0
+ for qemu-devel@nongnu.org; Sat, 02 Mar 2024 00:17:09 -0500
+Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rgHkA-0007cY-9p
- for qemu-devel@nongnu.org; Sat, 02 Mar 2024 00:17:07 -0500
-Received: by mail-oi1-x229.google.com with SMTP id
- 5614622812f47-3bb9d54575cso1939885b6e.2
- for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 21:17:04 -0800 (PST)
+ id 1rgHkA-0007cn-Np
+ for qemu-devel@nongnu.org; Sat, 02 Mar 2024 00:17:08 -0500
+Received: by mail-oi1-x234.google.com with SMTP id
+ 5614622812f47-3bbbc6b4ed1so2009427b6e.2
+ for <qemu-devel@nongnu.org>; Fri, 01 Mar 2024 21:17:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709356623; x=1709961423; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709356625; x=1709961425; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LpCW2bFOaVG6PHAgK8CQB4NCBtKP041BEGPtL/bAsq4=;
- b=Nir37rqwzDE0IpInJfFgLpQ92bLjCQuVPr4Q1HQ0xtzbRd7fNC0b2xTefSh20J44Ts
- EIn1DdkdAcvCt9KrKZq7Z1QHJsEJxXzTxQ+SJd37MONay9BgAT5Fx+/XYxePlYarBVe5
- ED/r+gg4pLSgfcTrKfoDnkEFpKhiqnIx6EqQiKKC3ct8TWC/gzNOACbnr4Y4/FKaml8h
- h/PMZCyrM14tZtxkP/WZVw6Gs8m4zdCp0vUJtGvTFVc1h0B8J4beLnxhqhbV1UzgG3nq
- CL6u0yU+tK+MeQlozCx9n3grNsluN/Ry4fa7199UsL4yVaMEimWTBsoaK2q1cxNck5Vg
- T3yg==
+ bh=+1osKk6aSpsOCl7jxzf2LpH2LtOYNkQ4L9oeYiweWNY=;
+ b=yDQigkeIecb87j6j4OHeoVawN2WC3DNdBWAA175I0J9hCsHYUZZtUuBrhnwFXk4qYg
+ VF4eX1WhVsWbMuM9xTvQzqrNVqUBS32xArMlQjObKwvDPFxaB/Gdrt6+X9KUdoZAIr18
+ lNlElqh82mF7kceVrUO9Adcd6adPXP10nswZvDPRmiOHvuCO2JLDBGnN4n/6fSCYu5L4
+ oIrgt98zxub8LbO8rF/Yhmg6Ls2zZc8V3yx8eiwC+6VSZWaoWI5Vlb+Kykjh/ib1LKmm
+ I1Jwazalr9KP2AaCfxX+Ypw79Fg2H+CluC6z3yDtcWTb921zerwrJsZCEULtbYXfgMJ6
+ uEJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709356623; x=1709961423;
+ d=1e100.net; s=20230601; t=1709356625; x=1709961425;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LpCW2bFOaVG6PHAgK8CQB4NCBtKP041BEGPtL/bAsq4=;
- b=Ct0b+SBt58ZNilyW4DC4j2xTFs5V3yBaYGWdK+AWUgF9fabHpgvi65pRhsBtYotKD7
- j76PfHM7s/Wr+mrozpTyLtLSCtSkYPqA/indFXlglWBo+L6GJZWJcBiFc54Bl5VDHKFT
- WCoUSZFmbE1cntAFDVkLxdh6xMdVqbuygfJtMZhfAaUPSfN3xGkjdNs2MGmrWT1PUUYJ
- kHihAiuzhmL0W6zq9w9aiMlCKCtN8LEQr1UiZJTDalTe0vmWjfJni1fhgQA9sol3jOd5
- GFx92C84loK7HemspQ9UH5TJ3yE4QFo/IGYKqQhMPy2OWiJ+L3lN7LxdlRzKvREL1zfI
- chKg==
-X-Gm-Message-State: AOJu0YzfLjTInQHBBhz9kXqW3WkhwvKPlJNCjGB2Tzq04veXcPkZka0p
- vnhAWAmN/M9Vuaunp8IL22vKr4cG/wSnAg9f8plDBos1zKMvl/PPfB9GyWxj1xSB0C30+WClgbQ
- E
-X-Google-Smtp-Source: AGHT+IF9UqrqxUMIp1WT9hENcBzWzQEX77ATv4o4ncslEI/tqswMJUsRMK2kX2Q8NMzS7Hc5au+HXA==
-X-Received: by 2002:a05:6808:1188:b0:3c1:82ae:d61a with SMTP id
- j8-20020a056808118800b003c182aed61amr4135978oil.14.1709356623467; 
- Fri, 01 Mar 2024 21:17:03 -0800 (PST)
+ bh=+1osKk6aSpsOCl7jxzf2LpH2LtOYNkQ4L9oeYiweWNY=;
+ b=PYSvMnesRuM5VhpQssxEf8A/saffZtPdLAUrxhxczApO9fJCNDMkvL5di4Uhk7gHRC
+ /utdc3BFc8yuSrhXpE+7RV4y7ozvMytIYjfK48qWXwuWQXo5b7WiNt00jlg1EmRg5Ujq
+ ovtlK1W7w1xQM4ckH33+CRlGqk5SEvbBVk6WWM9Co/TCGj1xrdTm3vWhXL/4OND991fd
+ NAJuaq1KeUKTEDeqV2SbaQwvaL3B5IMk3sfYIuavD4KJb4kUIWWU9gW5NUubM7exju4Q
+ u8lUY7cWPvFX6OtuPoeALGgQqIXFc8pT7+mE8h2P0g5wobka8HfHJgrOVEPpTxYSyxdd
+ 7yfg==
+X-Gm-Message-State: AOJu0YxFW9loiWMV3fOjD3Bu/MawImpuV3tW88qpbIwFsi2D4d1zERc5
+ GQTjVlUsBozbY6y8IqvRpGZaqGzsfdJm4/pS2m3NIdZ7ixzjPh+Ou7X80JcaCegCtThJ9U7hL0o
+ G
+X-Google-Smtp-Source: AGHT+IGPX3i8YZXYPg6JuqhGnlMPTVFPgg54JH6L9NBVTWxtjOj3OHLvAx2R52uCdovAhGLN+0IF5w==
+X-Received: by 2002:a05:6808:1983:b0:3c1:cd9d:7fb5 with SMTP id
+ bj3-20020a056808198300b003c1cd9d7fb5mr4573340oib.4.1709356624789; 
+ Fri, 01 Mar 2024 21:17:04 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- v8-20020a17090a458800b0029af67d4fd0sm4034901pjg.44.2024.03.01.21.17.02
+ v8-20020a17090a458800b0029af67d4fd0sm4034901pjg.44.2024.03.01.21.17.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Mar 2024 21:17:03 -0800 (PST)
+ Fri, 01 Mar 2024 21:17:04 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk,
 	atar4qemu@gmail.com
-Subject: [PATCH 38/41] target/sparc: Implement SUBXC, SUBXCcc
-Date: Fri,  1 Mar 2024 19:15:58 -1000
-Message-Id: <20240302051601.53649-39-richard.henderson@linaro.org>
+Subject: [PATCH 39/41] target/sparc: Implement MWAIT
+Date: Fri,  1 Mar 2024 19:15:59 -1000
+Message-Id: <20240302051601.53649-40-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240302051601.53649-1-richard.henderson@linaro.org>
 References: <20240302051601.53649-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::229;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x229.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,55 +95,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/translate.c  | 14 ++++++++++++++
- target/sparc/insns.decode |  2 ++
- 2 files changed, 16 insertions(+)
+ target/sparc/translate.c  | 11 +++++++++++
+ target/sparc/insns.decode |  1 +
+ 2 files changed, 12 insertions(+)
 
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 8eda190233..4775e39240 100644
+index 4775e39240..5694420a93 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -524,6 +524,17 @@ static void gen_op_subccc(TCGv dst, TCGv src1, TCGv src2)
-     gen_op_subcc_int(dst, src1, src2, gen_carry32());
- }
+@@ -3316,6 +3316,17 @@ static void do_wrpowerdown(DisasContext *dc, TCGv src)
  
-+static void gen_op_subxc(TCGv dst, TCGv src1, TCGv src2)
+ TRANS(WRPOWERDOWN, POWERDOWN, do_wr_special, a, supervisor(dc), do_wrpowerdown)
+ 
++static void do_wrmwait(DisasContext *dc, TCGv src)
 +{
-+    tcg_gen_sub_tl(dst, src1, src2);
-+    tcg_gen_sub_tl(dst, dst, cpu_cc_C);
++    /*
++     * TODO: This is a stub version of mwait, which merely recognizes
++     * interrupts immediately and does not wait.
++     */
++    dc->base.is_jmp = DISAS_EXIT;
 +}
 +
-+static void gen_op_subxccc(TCGv dst, TCGv src1, TCGv src2)
-+{
-+    gen_op_subcc_int(dst, src1, src2, cpu_cc_C);
-+}
++TRANS(WRMWAIT, VIS4, do_wr_special, a, true, do_wrmwait)
 +
- static void gen_op_mulscc(TCGv dst, TCGv src1, TCGv src2)
+ static void do_wrpsr(DisasContext *dc, TCGv src)
  {
-     TCGv zero = tcg_constant_tl(0);
-@@ -3959,6 +3970,9 @@ TRANS(ARRAY32, VIS1, do_rrr, a, gen_op_array32)
- TRANS(ADDXC, VIS3, do_rrr, a, gen_op_addxc)
- TRANS(ADDXCcc, VIS3, do_rrr, a, gen_op_addxccc)
- 
-+TRANS(SUBXC, VIS4, do_rrr, a, gen_op_subxc)
-+TRANS(SUBXCcc, VIS4, do_rrr, a, gen_op_subxccc)
-+
- TRANS(UMULXHI, VIS3, do_rrr, a, gen_op_umulxhi)
- 
- static void gen_op_alignaddr(TCGv dst, TCGv s1, TCGv s2)
+     gen_helper_wrpsr(tcg_env, src);
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index b7b4bfe92c..1f9e07e526 100644
+index 1f9e07e526..2927116031 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -447,6 +447,8 @@ FCMPEq      10 000 cc:2 110101 .....  0 0101 0111 .....    \
-     PDISTN      10 ..... 110110 ..... 0 0011 1111 .....    @r_d_d
- 
-     FMEAN16     10 ..... 110110 ..... 0 0100 0000 .....    @d_d_d
-+    SUBXC       10 ..... 110110 ..... 0 0100 0001 .....    @r_r_r
-+    SUBXCcc     10 ..... 110110 ..... 0 0100 0011 .....    @r_r_r
-     FCHKSM16    10 ..... 110110 ..... 0 0100 0100 .....    @d_d_d
-     FALIGNDATAg 10 ..... 110110 ..... 0 0100 1000 .....    @d_d_d
-     FPMERGE     10 ..... 110110 ..... 0 0100 1011 .....    @d_r_r
+@@ -124,6 +124,7 @@ CALL    01 i:s30
+     WRTICK_CMPR     10 10111 110000 ..... . .............  @n_r_ri
+     WRSTICK         10 11000 110000 ..... . .............  @n_r_ri
+     WRSTICK_CMPR    10 11001 110000 ..... . .............  @n_r_ri
++    WRMWAIT         10 11100 110000 ..... . .............  @n_r_ri
+   ]
+   # Before v8, rs1==0 was WRY, and the rest executed as nop.
+   [
 -- 
 2.34.1
 
