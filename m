@@ -2,56 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72DF586F2B2
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 23:36:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B73D86F2B6
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 23:42:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgXxT-0006BS-76; Sat, 02 Mar 2024 17:35:55 -0500
+	id 1rgY3X-0003MI-Ji; Sat, 02 Mar 2024 17:42:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rgXxI-00069q-Qp
- for qemu-devel@nongnu.org; Sat, 02 Mar 2024 17:35:45 -0500
-Received: from sin.source.kernel.org ([145.40.73.55])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rgY3T-0003M2-UC; Sat, 02 Mar 2024 17:42:07 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rgXxE-0003hG-T8
- for qemu-devel@nongnu.org; Sat, 02 Mar 2024 17:35:44 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id B71E9CE0E9F;
- Sat,  2 Mar 2024 22:35:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6F1C433C7;
- Sat,  2 Mar 2024 22:35:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1709418934;
- bh=JQ9YUOaP/MNthjzG+feEZ13KEK55SdT8GDW+dC2U7Pg=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=NVV5tanHSuLQmt7lMSOYV8qMTGACEX2I4hCvj/q2wtuVG6kBhnTEuIa9eTmzncFYu
- a7thdCNww5N6fuxVUkGTnATGZLyH21T9diFhJJo3+uSDa9FbVIjHjdqfKjBwnRQXl3
- vg0zxKeLTo/l3Imf9t1BvRgQ4YFwjkDMymO9NiNQyy7E5R1j5auspG07Xaq++ZeOFh
- B32/F+pWDeZ6Emcmn4Hiv1913DlcbAq+jqRTROV+vvvTx3cAc82RsNoaRP83hQvVBb
- KxVJvtT9DazLHG0dspU0KlTsXggLPdpY/Su8dIlckgzmKl459XMgbozP9uEMZWIAxU
- Aq/qGSe4fsAxw==
-From: deller@kernel.org
-To: Richard Henderson <richard.henderson@linaro.org>,
-	qemu-devel@nongnu.org
-Cc: deller@gmx.de
-Subject: [PATCH 5/5] roms/hppa: Add build rules for hppa-firmware
-Date: Sat,  2 Mar 2024 23:35:24 +0100
-Message-ID: <20240302223524.24421-6-deller@kernel.org>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240302223524.24421-1-deller@kernel.org>
-References: <20240302223524.24421-1-deller@kernel.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rgY3S-0004dy-08; Sat, 02 Mar 2024 17:42:07 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 1D5DD4E6013;
+ Sat,  2 Mar 2024 23:42:02 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id VoZq0rSond8a; Sat,  2 Mar 2024 23:42:00 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 353AD4E6005; Sat,  2 Mar 2024 23:42:00 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PATCH] hw/scsi/lsi53c895a: Fix typo in comment
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=145.40.73.55; envelope-from=deller@kernel.org;
- helo=sin.source.kernel.org
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.094,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+To: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Sven Schnelle <svens@stackframe.org>
+Message-Id: <20240302224200.353AD4E6005@zero.eik.bme.hu>
+Date: Sat,  2 Mar 2024 23:42:00 +0100 (CET)
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,44 +57,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Suggested-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- roms/Makefile | 7 +++++++
- 1 file changed, 7 insertions(+)
+ hw/scsi/lsi53c895a.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/roms/Makefile b/roms/Makefile
-index 67f709ba2d..8e5d8d26a9 100644
---- a/roms/Makefile
-+++ b/roms/Makefile
-@@ -68,6 +68,7 @@ default help:
- 	@echo "  opensbi32-generic  -- update OpenSBI for 32-bit generic machine"
- 	@echo "  opensbi64-generic  -- update OpenSBI for 64-bit generic machine"
- 	@echo "  qboot              -- update qboot"
-+	@echo "  hppa-firmware      -- update 32- and 64-bit hppa firmware"
- 	@echo "  clean              -- delete the files generated by the previous" \
- 	                              "build targets"
+diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
+index d607a5f9fb..4f784be749 100644
+--- a/hw/scsi/lsi53c895a.c
++++ b/hw/scsi/lsi53c895a.c
+@@ -225,7 +225,7 @@ struct LSIState {
+     MemoryRegion io_io;
+     AddressSpace pci_io_as;
  
-@@ -177,6 +178,11 @@ npcm7xx_bootrom:
- 	$(MAKE) -C vbootrom CROSS_COMPILE=$(arm_cross_prefix)
- 	cp vbootrom/npcm7xx_bootrom.bin ../pc-bios/npcm7xx_bootrom.bin
- 
-+hppa-firmware:
-+	$(MAKE) -C seabios-hppa parisc
-+	cp seabios-hppa/out/hppa-firmware.img      ../pc-bios/
-+	cp seabios-hppa/out-64/hppa-firmware64.img ../pc-bios/
-+
- clean:
- 	rm -rf seabios/.config seabios/out seabios/builds
- 	$(MAKE) -C ipxe/src veryclean
-@@ -189,3 +195,4 @@ clean:
- 	$(MAKE) -C opensbi clean
- 	$(MAKE) -C qboot clean
- 	$(MAKE) -C vbootrom clean
-+	$(MAKE) -C seabios-hppa clean
+-    int carry; /* ??? Should this be an a visible register somewhere?  */
++    int carry; /* ??? Should this be in a visible register somewhere?  */
+     int status;
+     int msg_action;
+     int msg_len;
 -- 
-2.44.0
+2.30.9
 
 
