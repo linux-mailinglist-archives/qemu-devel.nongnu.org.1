@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BD4B86F2B1
+	by mail.lfdr.de (Postfix) with ESMTPS id 58FAF86F2B0
 	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 23:36:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgXxM-0006AF-5f; Sat, 02 Mar 2024 17:35:48 -0500
+	id 1rgXxV-0006DD-34; Sat, 02 Mar 2024 17:35:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rgXxG-00069P-Jr
- for qemu-devel@nongnu.org; Sat, 02 Mar 2024 17:35:42 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rgXxK-0006AG-Gg
+ for qemu-devel@nongnu.org; Sat, 02 Mar 2024 17:35:46 -0500
 Received: from sin.source.kernel.org ([145.40.73.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rgXxD-0003h0-VG
- for qemu-devel@nongnu.org; Sat, 02 Mar 2024 17:35:42 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rgXxE-0003h1-TC
+ for qemu-devel@nongnu.org; Sat, 02 Mar 2024 17:35:44 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id 9A90CCE0E56;
- Sat,  2 Mar 2024 22:35:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2884C433C7;
- Sat,  2 Mar 2024 22:35:28 +0000 (UTC)
+ by sin.source.kernel.org (Postfix) with ESMTP id 099C0CE0E15;
+ Sat,  2 Mar 2024 22:35:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51706C433F1;
+ Sat,  2 Mar 2024 22:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1709418929;
- bh=H1D85PsxCikcpBoGzIuPNZM3ookZM27ORgB1MqAcUdI=;
+ s=k20201202; t=1709418931;
+ bh=kjP1Pa/oNAtFAL8Kl/hLJlc6NmMlJfTBR36+ya8MznM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=st+3lG8HjmKe+ElVac6VIng5HznaQFCP9sZHXUkod+Omg7WnJASBcTR0wBEU5uaV3
- HV6kSIoQ7dBZe5I0Seznf/K67I4dJ7EPFHjyZhN5JlnPSotQq836YvGeTRPLfb2WdU
- 62jd4qPbVNezySKHjhchE2/SzSW60nA4UYhuwyUyZjL1bwo9oEsxkZovpOS1mTBnV8
- PixZIhm1kUfgN4zeyfWi7ZuKOb4YPqXKVcrf4cvttBC1myDE2uCEzuYdz5WYei08Hi
- H9a2seoumXAGueyfozyD3XyVoFyzRCOeFUgthxYn71N80A86JCFIyCh4buwjJ0mLh9
- F/6Th0jRfd9JQ==
+ b=jL27EwkuYjUc3ekYCpiHgB3zL6f4BdGtmUNaC45VpbumciW4A5cCWdEVDRkLJ1zAM
+ 1qssfmqgNNs7ERcMw23hq6no2//0j/DqSwWmc3rTVagTCXE0RaBIQBcJdMkZiojT67
+ 7ijjnS0Z8lMS2Wg5KGpC2XFz73KaJpW9yBciqfigP+EgcioNDGszcdtMhiwR/zHDC6
+ Oa7GVz1n4hoz4cIfZ8GWYMQ2cO8uPbzq8oFrAsvR2d1WpGsR0KlppKLwW9aUU3a17Q
+ 4+08SjSq9rJ97LMLpTgGJWz2caVR0DX5BHb6+aGk7OmYmrbGiyFCk21gsJYWf9+Ms3
+ 5Wqkdpwwa1Lcw==
 From: deller@kernel.org
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH 2/5] target/hppa: Restore unwind_breg before calculating ior
-Date: Sat,  2 Mar 2024 23:35:21 +0100
-Message-ID: <20240302223524.24421-3-deller@kernel.org>
+Subject: [PATCH 3/5] pc-bios/meson: Add hppa-firmware64.img blob
+Date: Sat,  2 Mar 2024 23:35:22 +0100
+Message-ID: <20240302223524.24421-4-deller@kernel.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240302223524.24421-1-deller@kernel.org>
 References: <20240302223524.24421-1-deller@kernel.org>
@@ -69,70 +69,26 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-When calculating the IOR for the exception handlers, the current
-unwind_breg value is needed on 64-bit hppa machines.
-Restore that value by calling cpu_restore_state() earlier, which in turn
-calls hppa_restore_state_to_opc() which restores the unwind_breg for the
-current instruction.
+Add the missing 64-bit hppa firmware blob so that it gets installed.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
-Fixes: 3824e0d643f3 ("target/hppa: Export function hppa_set_ior_and_isr()")
+Fixes: 7c0dfcf9395e ("target/hppa: Update SeaBIOS-hppa to version 16")
 ---
- target/hppa/cpu.c        | 3 ++-
- target/hppa/mem_helper.c | 3 ++-
- target/hppa/op_helper.c  | 3 ++-
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ pc-bios/meson.build | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index afe73d4474..3831cb6db2 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -121,9 +121,10 @@ void hppa_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
-     CPUHPPAState *env = &cpu->env;
- 
-     cs->exception_index = EXCP_UNALIGN;
-+    cpu_restore_state(cs, retaddr);
-     hppa_set_ior_and_isr(env, addr, MMU_IDX_MMU_DISABLED(mmu_idx));
- 
--    cpu_loop_exit_restore(cs, retaddr);
-+    cpu_loop_exit(cs);
- }
- #endif /* CONFIG_USER_ONLY */
- 
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index 66b8fa7d72..3fc895c1c2 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -348,9 +348,10 @@ raise_exception_with_ior(CPUHPPAState *env, int excp, uintptr_t retaddr,
-     CPUState *cs = env_cpu(env);
- 
-     cs->exception_index = excp;
-+    cpu_restore_state(cs, retaddr);
-     hppa_set_ior_and_isr(env, addr, mmu_disabled);
- 
--    cpu_loop_exit_restore(cs, retaddr);
-+    cpu_loop_exit(cs);
- }
- 
- void hppa_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
-diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
-index b1f24a5aad..480fe80844 100644
---- a/target/hppa/op_helper.c
-+++ b/target/hppa/op_helper.c
-@@ -351,11 +351,12 @@ target_ulong HELPER(probe)(CPUHPPAState *env, target_ulong addr,
-     excp = hppa_get_physical_address(env, addr, mmu_idx, 0, &phys,
-                                      &prot, NULL);
-     if (excp >= 0) {
-+        cpu_restore_state(env_cpu(env), GETPC());
-         hppa_set_ior_and_isr(env, addr, MMU_IDX_MMU_DISABLED(mmu_idx));
-         if (excp == EXCP_DTLB_MISS) {
-             excp = EXCP_NA_DTLB_MISS;
-         }
--        hppa_dynamic_excp(env, excp, GETPC());
-+        helper_excp(env, excp);
-     }
-     return (want & prot) != 0;
- #endif
+diff --git a/pc-bios/meson.build b/pc-bios/meson.build
+index e67fa433a1..0760612bea 100644
+--- a/pc-bios/meson.build
++++ b/pc-bios/meson.build
+@@ -73,6 +73,7 @@ blobs = [
+   'qemu_vga.ndrv',
+   'edk2-licenses.txt',
+   'hppa-firmware.img',
++  'hppa-firmware64.img',
+   'opensbi-riscv32-generic-fw_dynamic.bin',
+   'opensbi-riscv64-generic-fw_dynamic.bin',
+   'npcm7xx_bootrom.bin',
 -- 
 2.44.0
 
