@@ -2,44 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C74486F2AF
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 23:36:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 772DC86F2B4
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 23:37:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgXxQ-0006Ah-Mf; Sat, 02 Mar 2024 17:35:52 -0500
+	id 1rgXxR-0006BQ-G0; Sat, 02 Mar 2024 17:35:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rgXxI-00069j-FF
- for qemu-devel@nongnu.org; Sat, 02 Mar 2024 17:35:45 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rgXxG-00069O-Ig
+ for qemu-devel@nongnu.org; Sat, 02 Mar 2024 17:35:42 -0500
 Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rgXxD-0003gY-OU
- for qemu-devel@nongnu.org; Sat, 02 Mar 2024 17:35:43 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rgXxD-0003ga-VF
+ for qemu-devel@nongnu.org; Sat, 02 Mar 2024 17:35:42 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id BA9E860F3E;
+ by dfw.source.kernel.org (Postfix) with ESMTP id D511860F75;
+ Sat,  2 Mar 2024 22:35:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB9CC433C7;
  Sat,  2 Mar 2024 22:35:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD8FC433F1;
- Sat,  2 Mar 2024 22:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1709418927;
- bh=QxpUQHjYZrYwwl1ZX8fNpRt0CF3Jl0AE0E/aa+9jEfQ=;
- h=From:To:Cc:Subject:Date:From;
- b=tvhoY6y8ZbZRgjJ1j/Kz7vdG41DdBGRll6Bzl0ZRcpAj69ZXpDpzG+GxYnKXJ80gr
- kvIfBEFe9zJooM9tiV2gq5XlSgEMxEOvvPqkaJqa8Sr0hQXlEcRe/NBXotP9GnrScI
- La/9qME/RzW8t3yX0mbdc8XGV8X8pTJ0VedAkWqbM8Ty4E8U+L0qVFMX9GhusIAlV8
- L7n6FQccwTROOt2G13F/CEPSbDSi8tG3hyFFTQwwjKfV01bwp5HaOVRinMHg01w4Uh
- hS5xlHzwmWN4p+Bou8xXeQdtXv0nvu9WB6U5cE2pZ6YWN7S6SDHLVdT/vkTCyJKl0K
- 4r4Cp6BmXLVkQ==
+ s=k20201202; t=1709418928;
+ bh=t2xatLPUQitdK7QlDb4pBEBirGnlzkSL8GWMvf0Y78U=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=SYLAFdB/Y56tKxHA6z1xvfqwml49ot5iUJJtdcHs+EqFq/6eOGepGYY9ttjRionbV
+ 57GSzvn5j0aL1ShVXOLCkEAkbxeWBcoQ8YlLDFoPrcR9+OZ5nDqPYfo4+ZJgaYQ/5p
+ zGJlQ2CYoGoCVprnSUbgh/Z83EEiceRMwOnn1cfSBub5x3PbmBJjeBgKZR1aH/xdU/
+ utrLOx4+j7VngcMMO1YV5iTFOrzcpCaQ0QszkHKj4Doi0PxkRf0W2Nn9JnD9q0Ijvh
+ rNKd8Lbxj1xY72TeUn7Hxsson17HCnRWXEuz49SDHZRnbD8P+bOFYCYlhcqLF3uoJa
+ 0Dje904n5kwTQ==
 From: deller@kernel.org
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH 0/5] HPPA64 updates
-Date: Sat,  2 Mar 2024 23:35:19 +0100
-Message-ID: <20240302223524.24421-1-deller@kernel.org>
+Subject: [PATCH 1/5] target/hppa: Fix unaligned double word accesses for hppa64
+Date: Sat,  2 Mar 2024 23:35:20 +0100
+Message-ID: <20240302223524.24421-2-deller@kernel.org>
 X-Mailer: git-send-email 2.44.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20240302223524.24421-1-deller@kernel.org>
+References: <20240302223524.24421-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
@@ -66,31 +67,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+From: Guenter Roeck <linux@roeck-us.net>
 
-Some fixes for the hppa64 target.
-Add references to SeaBIOS-hppa and hppa-firmware into
-pc-bios/README file and add rom make targets.
-Patches 2-5 need review.
+Unaligned 64-bit accesses were found in Linux to clobber carry bits,
+resulting in bad results if an arithmetic operation involving a
+carry bit was executed after an unaligned 64-bit operation.
 
-Guenter Roeck (1):
-  target/hppa: Fix unaligned double word accesses for hppa64
+hppa 2.0 defines additional carry bits in PSW register bits 32..39.
+When restoring PSW after executing an unaligned instruction trap,
+those bits were not cleared and ended up to be active all the time.
+Clearing bit 32..39 in psw prior to restoring it solves the problem.
 
-Helge Deller (4):
-  target/hppa: Restore unwind_breg before calculating ior
-  pc-bios/meson: Add hppa-firmware64.img blob
-  pc-bios/README: Add information about hppa-firmware
-  roms/hppa: Add build rules for hppa-firmware
+Fixes: 931adff31478 ("target/hppa: Update cpu_hppa_get/put_psw for hppa64")
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Charlie Jenkins <charlie@rivosinc.com>
+Cc: Helge Deller <deller@gmx.de>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/hppa/helper.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
- pc-bios/README           | 6 ++++++
- pc-bios/meson.build      | 1 +
- roms/Makefile            | 7 +++++++
- target/hppa/cpu.c        | 3 ++-
- target/hppa/helper.c     | 7 ++++++-
- target/hppa/mem_helper.c | 3 ++-
- target/hppa/op_helper.c  | 3 ++-
- 7 files changed, 26 insertions(+), 4 deletions(-)
-
+diff --git a/target/hppa/helper.c b/target/hppa/helper.c
+index 859644c47a..7b798d1227 100644
+--- a/target/hppa/helper.c
++++ b/target/hppa/helper.c
+@@ -76,7 +76,12 @@ void cpu_hppa_put_psw(CPUHPPAState *env, target_ulong psw)
+     }
+     psw &= ~reserved;
+ 
+-    env->psw = psw & ~(PSW_N | PSW_V | PSW_CB);
++    if (hppa_is_pa20(env)) {
++        env->psw = psw & ~(PSW_N | PSW_V | PSW_CB | 0xff00000000ull);
++    } else {
++        env->psw = psw & ~(PSW_N | PSW_V | PSW_CB);
++    }
++
+     env->psw_n = (psw / PSW_N) & 1;
+     env->psw_v = -((psw / PSW_V) & 1);
+ 
 -- 
 2.44.0
 
