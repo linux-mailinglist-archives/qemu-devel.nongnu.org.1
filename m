@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 772DC86F2B4
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 23:37:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD4B86F2B1
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Mar 2024 23:36:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgXxR-0006BQ-G0; Sat, 02 Mar 2024 17:35:53 -0500
+	id 1rgXxM-0006AF-5f; Sat, 02 Mar 2024 17:35:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rgXxG-00069O-Ig
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rgXxG-00069P-Jr
  for qemu-devel@nongnu.org; Sat, 02 Mar 2024 17:35:42 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217])
+Received: from sin.source.kernel.org ([145.40.73.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rgXxD-0003ga-VF
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rgXxD-0003h0-VG
  for qemu-devel@nongnu.org; Sat, 02 Mar 2024 17:35:42 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id D511860F75;
+ by sin.source.kernel.org (Postfix) with ESMTP id 9A90CCE0E56;
+ Sat,  2 Mar 2024 22:35:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2884C433C7;
  Sat,  2 Mar 2024 22:35:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB9CC433C7;
- Sat,  2 Mar 2024 22:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1709418928;
- bh=t2xatLPUQitdK7QlDb4pBEBirGnlzkSL8GWMvf0Y78U=;
+ s=k20201202; t=1709418929;
+ bh=H1D85PsxCikcpBoGzIuPNZM3ookZM27ORgB1MqAcUdI=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=SYLAFdB/Y56tKxHA6z1xvfqwml49ot5iUJJtdcHs+EqFq/6eOGepGYY9ttjRionbV
- 57GSzvn5j0aL1ShVXOLCkEAkbxeWBcoQ8YlLDFoPrcR9+OZ5nDqPYfo4+ZJgaYQ/5p
- zGJlQ2CYoGoCVprnSUbgh/Z83EEiceRMwOnn1cfSBub5x3PbmBJjeBgKZR1aH/xdU/
- utrLOx4+j7VngcMMO1YV5iTFOrzcpCaQ0QszkHKj4Doi0PxkRf0W2Nn9JnD9q0Ijvh
- rNKd8Lbxj1xY72TeUn7Hxsson17HCnRWXEuz49SDHZRnbD8P+bOFYCYlhcqLF3uoJa
- 0Dje904n5kwTQ==
+ b=st+3lG8HjmKe+ElVac6VIng5HznaQFCP9sZHXUkod+Omg7WnJASBcTR0wBEU5uaV3
+ HV6kSIoQ7dBZe5I0Seznf/K67I4dJ7EPFHjyZhN5JlnPSotQq836YvGeTRPLfb2WdU
+ 62jd4qPbVNezySKHjhchE2/SzSW60nA4UYhuwyUyZjL1bwo9oEsxkZovpOS1mTBnV8
+ PixZIhm1kUfgN4zeyfWi7ZuKOb4YPqXKVcrf4cvttBC1myDE2uCEzuYdz5WYei08Hi
+ H9a2seoumXAGueyfozyD3XyVoFyzRCOeFUgthxYn71N80A86JCFIyCh4buwjJ0mLh9
+ F/6Th0jRfd9JQ==
 From: deller@kernel.org
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH 1/5] target/hppa: Fix unaligned double word accesses for hppa64
-Date: Sat,  2 Mar 2024 23:35:20 +0100
-Message-ID: <20240302223524.24421-2-deller@kernel.org>
+Subject: [PATCH 2/5] target/hppa: Restore unwind_breg before calculating ior
+Date: Sat,  2 Mar 2024 23:35:21 +0100
+Message-ID: <20240302223524.24421-3-deller@kernel.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240302223524.24421-1-deller@kernel.org>
 References: <20240302223524.24421-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -71
-X-Spam_score: -7.2
-X-Spam_bar: -------
-X-Spam_report: (-7.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.094,
+Received-SPF: pass client-ip=145.40.73.55; envelope-from=deller@kernel.org;
+ helo=sin.source.kernel.org
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.094,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -67,45 +67,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Helge Deller <deller@gmx.de>
 
-Unaligned 64-bit accesses were found in Linux to clobber carry bits,
-resulting in bad results if an arithmetic operation involving a
-carry bit was executed after an unaligned 64-bit operation.
+When calculating the IOR for the exception handlers, the current
+unwind_breg value is needed on 64-bit hppa machines.
+Restore that value by calling cpu_restore_state() earlier, which in turn
+calls hppa_restore_state_to_opc() which restores the unwind_breg for the
+current instruction.
 
-hppa 2.0 defines additional carry bits in PSW register bits 32..39.
-When restoring PSW after executing an unaligned instruction trap,
-those bits were not cleared and ended up to be active all the time.
-Clearing bit 32..39 in psw prior to restoring it solves the problem.
-
-Fixes: 931adff31478 ("target/hppa: Update cpu_hppa_get/put_psw for hppa64")
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Cc: Charlie Jenkins <charlie@rivosinc.com>
-Cc: Helge Deller <deller@gmx.de>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 3824e0d643f3 ("target/hppa: Export function hppa_set_ior_and_isr()")
 ---
- target/hppa/helper.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ target/hppa/cpu.c        | 3 ++-
+ target/hppa/mem_helper.c | 3 ++-
+ target/hppa/op_helper.c  | 3 ++-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/target/hppa/helper.c b/target/hppa/helper.c
-index 859644c47a..7b798d1227 100644
---- a/target/hppa/helper.c
-+++ b/target/hppa/helper.c
-@@ -76,7 +76,12 @@ void cpu_hppa_put_psw(CPUHPPAState *env, target_ulong psw)
+diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
+index afe73d4474..3831cb6db2 100644
+--- a/target/hppa/cpu.c
++++ b/target/hppa/cpu.c
+@@ -121,9 +121,10 @@ void hppa_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
+     CPUHPPAState *env = &cpu->env;
+ 
+     cs->exception_index = EXCP_UNALIGN;
++    cpu_restore_state(cs, retaddr);
+     hppa_set_ior_and_isr(env, addr, MMU_IDX_MMU_DISABLED(mmu_idx));
+ 
+-    cpu_loop_exit_restore(cs, retaddr);
++    cpu_loop_exit(cs);
+ }
+ #endif /* CONFIG_USER_ONLY */
+ 
+diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+index 66b8fa7d72..3fc895c1c2 100644
+--- a/target/hppa/mem_helper.c
++++ b/target/hppa/mem_helper.c
+@@ -348,9 +348,10 @@ raise_exception_with_ior(CPUHPPAState *env, int excp, uintptr_t retaddr,
+     CPUState *cs = env_cpu(env);
+ 
+     cs->exception_index = excp;
++    cpu_restore_state(cs, retaddr);
+     hppa_set_ior_and_isr(env, addr, mmu_disabled);
+ 
+-    cpu_loop_exit_restore(cs, retaddr);
++    cpu_loop_exit(cs);
+ }
+ 
+ void hppa_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
+diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
+index b1f24a5aad..480fe80844 100644
+--- a/target/hppa/op_helper.c
++++ b/target/hppa/op_helper.c
+@@ -351,11 +351,12 @@ target_ulong HELPER(probe)(CPUHPPAState *env, target_ulong addr,
+     excp = hppa_get_physical_address(env, addr, mmu_idx, 0, &phys,
+                                      &prot, NULL);
+     if (excp >= 0) {
++        cpu_restore_state(env_cpu(env), GETPC());
+         hppa_set_ior_and_isr(env, addr, MMU_IDX_MMU_DISABLED(mmu_idx));
+         if (excp == EXCP_DTLB_MISS) {
+             excp = EXCP_NA_DTLB_MISS;
+         }
+-        hppa_dynamic_excp(env, excp, GETPC());
++        helper_excp(env, excp);
      }
-     psw &= ~reserved;
- 
--    env->psw = psw & ~(PSW_N | PSW_V | PSW_CB);
-+    if (hppa_is_pa20(env)) {
-+        env->psw = psw & ~(PSW_N | PSW_V | PSW_CB | 0xff00000000ull);
-+    } else {
-+        env->psw = psw & ~(PSW_N | PSW_V | PSW_CB);
-+    }
-+
-     env->psw_n = (psw / PSW_N) & 1;
-     env->psw_v = -((psw / PSW_V) & 1);
- 
+     return (want & prot) != 0;
+ #endif
 -- 
 2.44.0
 
