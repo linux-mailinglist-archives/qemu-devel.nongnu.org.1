@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16F3286F69D
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B6CE86F69E
 	for <lists+qemu-devel@lfdr.de>; Sun,  3 Mar 2024 19:54:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgqyI-0002zN-8i; Sun, 03 Mar 2024 13:54:02 -0500
+	id 1rgqyG-0002ye-Fw; Sun, 03 Mar 2024 13:54:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rgqy7-0002xp-78
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rgqy7-0002xr-G2
  for qemu-devel@nongnu.org; Sun, 03 Mar 2024 13:53:55 -0500
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rgqy4-0003xy-Ku
- for qemu-devel@nongnu.org; Sun, 03 Mar 2024 13:53:49 -0500
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2d21cdbc85bso43782691fa.2
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rgqy5-0003y8-RE
+ for qemu-devel@nongnu.org; Sun, 03 Mar 2024 13:53:51 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-412e14dac68so2667785e9.3
  for <qemu-devel@nongnu.org>; Sun, 03 Mar 2024 10:53:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709492025; x=1710096825; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1709492026; x=1710096826; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=B8smuVSbO2fN2A9j50qsVKag41OVErk/e6VgB0UOyX4=;
- b=ZaE6lQlmDRXUmWs2yiijWw+SYR6lNkxOWarzsXDDuLXgrdL2Me3xOqLvJU+uh5MfQU
- SY3LeisXNIgN7zMK0UeiRSl6K9L908BtjuWg+updJts0eV4+I+iRAv1MCv7y/4+2uJWo
- quBuRde36+bITRNOEa53AKwNsVer87z3ErlzkHYA6QY5gZbBtUILiTlh4aro+ovsh/fc
- AwwfF1RmiSfuoqLJehRwUYGFZ+SBu4K+eFakm0YefG/oxH9rou7iOt+MOm1o3GMtKgbH
- q2C7d//5CdStAwsfWOdqkps2gComKJKbir5jEMyLayT1D5EOdRS0/zhzuyoZb6Oc/Kzv
- TVOw==
+ bh=UyJ9mxtdoxL+DYRUJvwUw3QhltHpzKE9QiB4/SHTQxQ=;
+ b=eECQsyGFzyd8rdCTMZcQIKkJYe6cLuyPZ1xvqFITBBDS5WDsu3Fsdzeu3EhQO6/wt3
+ LtQmT5SQpUsIyVv/p+7Ecp2wjSIOrI1S12sRUCmy5C3JssY6Dnq6/XmxsgjEu8Ie4E98
+ y7JjdLuGdKJILpmHep1Fwqgh/042Wom02ITI0qp1oPwq0E3/VdOSaBJMqHigE5/yU/aT
+ bz2UIo6dMTudc4q2Ob6h4I1HDZ6oLLr0gVHzxUPolbBRLSLoDTUvpJAZwyzG3Y9djf+d
+ BUyrtPZeQxGglRk03emcfRJA+bjqVDzoWgf5fQz8CcmIc2H5+5oyD4j13SSk5PECzDgY
+ nn+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709492025; x=1710096825;
+ d=1e100.net; s=20230601; t=1709492026; x=1710096826;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=B8smuVSbO2fN2A9j50qsVKag41OVErk/e6VgB0UOyX4=;
- b=dsrPuTXwp0KbNYkWjDvZc+5gUGghiDYn/1Efj15oL+daFXy+9iHka9e7+bVTBGnyaT
- xD0Ofiq2f6b1Yo0Pd3DMT5ZA8smmnA5E5YOsKMM7/8Y6sVysxgSS4L3Xdb5pPT6laS9T
- 5Ev5gXsPmB5kKPWdSO/46NFk8vHiBiKXjqFVM6e73+sxv4yW/hWmDP96AmU9xvcj5S6Q
- R9brjcGE6t24xCienYonvZ5QW9NSRcqSSeKEQGyMDaOwaslslxvv+zKTSs06G9paOs5c
- n38NDYG+3hYym+3eTYIGWzSektKXyYK/oCfwOcNdty+9zfT6rgmnZHQIv/fA7JFh1LKo
- 4tVA==
-X-Gm-Message-State: AOJu0YwLTHRNUJvsl6XaCMRzjinZ3INq2tAheQZ9xvgsImkf9soIZFk8
- rVP0aNl766wzNw46xW+ldbOk3a2ZQZYgO2SI+xEghBSAVbY1ZkmlFUjWCE3i
-X-Google-Smtp-Source: AGHT+IHActmuY6zBRxH+SNmBhoEzfZTlMjNDZ8xhM75p4rkW6eCBbhX+TNBEwwwG4Lgyaz2/e93P7w==
-X-Received: by 2002:a2e:9d85:0:b0:2d2:d449:6425 with SMTP id
- c5-20020a2e9d85000000b002d2d4496425mr5029555ljj.35.1709492024878; 
- Sun, 03 Mar 2024 10:53:44 -0800 (PST)
+ bh=UyJ9mxtdoxL+DYRUJvwUw3QhltHpzKE9QiB4/SHTQxQ=;
+ b=rCwhOZPSkNAWm+uExs4TGNtGyN9+pmNO39qRFV1qv8nuOte3lUAG7JgQ5YB/e0xc1F
+ oNlwKTbo94YIVPQYIUWdpmjls7ZwlF98GFEx6NyUGYE+b6j20GF+kswj+Gr/b63VObLi
+ 3yxSfYEwRQfLfTttPf/BNC5ANk2L6zhj+DbiEGN1r1I7JjPLeYjmW0qxHVVE/rz6eh0O
+ eRfGpWL/dU15Y+5VSh2l2/8a3fPTsun5W5earNc2Jojcfi3l2hV+fzCBLx2BUFdK7Vgz
+ MjubGIZM0slvVZly4W+uR6jaKNgMidpYKg/f73yXMcqdvIGJsJzq33s+1ukpgOZk4Cke
+ Ks+Q==
+X-Gm-Message-State: AOJu0YzzBsuuQLcahcYCz8NT4JzIR2EKsv1M3rB3kFXWPFhOT03uimMZ
+ sXj7k85GZbmPsPv8Q+8y/vdAuzvedJWT5G5nUupwU9pkFjn8TZefqvs62O63
+X-Google-Smtp-Source: AGHT+IH1S0OrL4jn7OQ4PakVvGTdXR6ROwHso0L8pFKW80UHTlRmgbI/AcEsg0eGOC8Ib2mm+rmu9w==
+X-Received: by 2002:a05:600c:4f0e:b0:412:77a4:d7c with SMTP id
+ l14-20020a05600c4f0e00b0041277a40d7cmr6003705wmq.9.1709492026504; 
+ Sun, 03 Mar 2024 10:53:46 -0800 (PST)
 Received: from archlinux.. (dynamic-092-224-118-014.92.224.pool.telefonica.de.
  [92.224.118.14]) by smtp.gmail.com with ESMTPSA id
- o17-20020a05600c4fd100b00412d68dbf75sm5259460wmq.35.2024.03.03.10.53.43
+ o17-20020a05600c4fd100b00412d68dbf75sm5259460wmq.35.2024.03.03.10.53.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Mar 2024 10:53:43 -0800 (PST)
+ Sun, 03 Mar 2024 10:53:45 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -65,16 +65,16 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v3 1/4] hw/i386/pc: Remove "rtc_state" link again
-Date: Sun,  3 Mar 2024 19:53:29 +0100
-Message-ID: <20240303185332.1408-2-shentey@gmail.com>
+Subject: [PATCH v3 2/4] hw/i386/pc: Avoid one use of the current_machine global
+Date: Sun,  3 Mar 2024 19:53:30 +0100
+Message-ID: <20240303185332.1408-3-shentey@gmail.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240303185332.1408-1-shentey@gmail.com>
 References: <20240303185332.1408-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=shentey@gmail.com; helo=mail-lj1-x232.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,37 +97,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 99e1c1137b6f "hw/i386/pc: Populate RTC attribute directly" made linking
-the "rtc_state" property unnecessary and removed it. Commit 84e945aad2d0 "vl,
-pc: turn -no-fd-bootchk into a machine property" accidently reintroduced the
-link. Remove it again since it is not needed.
+The RTC can be accessed through the X86 machine instance, so rather than passing
+the RTC it's possible to pass the machine state instead. This avoids
+pc_boot_set() from having to access the current_machine global.
 
-Fixes: 84e945aad2d0 "vl, pc: turn -no-fd-bootchk into a machine property"
-Cc: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/i386/pc.c | 8 --------
- 1 file changed, 8 deletions(-)
+ hw/i386/pc.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index f5ff970acf..63b7583af0 100644
+index 63b7583af0..06ef278b34 100644
 --- a/hw/i386/pc.c
 +++ b/hw/i386/pc.c
-@@ -613,14 +613,6 @@ void pc_cmos_init(PCMachineState *pcms,
-     mc146818rtc_set_cmos_data(s, 0x5c, val >> 8);
-     mc146818rtc_set_cmos_data(s, 0x5d, val >> 16);
+@@ -425,9 +425,10 @@ static void set_boot_dev(PCMachineState *pcms, MC146818RtcState *s,
  
--    object_property_add_link(OBJECT(pcms), "rtc_state",
--                             TYPE_ISA_DEVICE,
--                             (Object **)&x86ms->rtc,
--                             object_property_allow_set_link,
--                             OBJ_PROP_LINK_STRONG);
--    object_property_set_link(OBJECT(pcms), "rtc_state", OBJECT(s),
--                             &error_abort);
--
-     set_boot_dev(pcms, s, MACHINE(pcms)->boot_config.order, &error_fatal);
+ static void pc_boot_set(void *opaque, const char *boot_device, Error **errp)
+ {
+-    PCMachineState *pcms = PC_MACHINE(current_machine);
++    PCMachineState *pcms = opaque;
++    X86MachineState *x86ms = X86_MACHINE(pcms);
  
-     val = 0;
+-    set_boot_dev(pcms, opaque, boot_device, errp);
++    set_boot_dev(pcms, MC146818_RTC(x86ms->rtc), boot_device, errp);
+ }
+ 
+ static void pc_cmos_init_floppy(MC146818RtcState *rtc_state, ISADevice *floppy)
+@@ -1252,7 +1253,7 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+     }
+ #endif
+ 
+-    qemu_register_boot_set(pc_boot_set, rtc_state);
++    qemu_register_boot_set(pc_boot_set, pcms);
+ 
+     if (!xen_enabled() &&
+         (x86ms->pit == ON_OFF_AUTO_AUTO || x86ms->pit == ON_OFF_AUTO_ON)) {
 -- 
 2.44.0
 
