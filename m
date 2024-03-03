@@ -2,87 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 328BF86F6A0
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Mar 2024 19:55:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3D486F6A6
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Mar 2024 20:04:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgqyH-0002yx-1E; Sun, 03 Mar 2024 13:54:01 -0500
+	id 1rgr79-0006rI-5y; Sun, 03 Mar 2024 14:03:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rgqyB-0002xt-0f
- for qemu-devel@nongnu.org; Sun, 03 Mar 2024 13:53:55 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rgqy7-0003yQ-UA
- for qemu-devel@nongnu.org; Sun, 03 Mar 2024 13:53:53 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-412e2dfa58eso1419405e9.0
- for <qemu-devel@nongnu.org>; Sun, 03 Mar 2024 10:53:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709492029; x=1710096829; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XUX7oIApRf9quDNJaxBX4ag31s8+YagalHAQ+nw7IxU=;
- b=ggTdwN173rTdNhoCrb4/SDNIi/gwpFuTXUF+kPpZPSYwBioRMIShyvRvz1IVeGtobw
- pKp0cph+ejCAbcsmK9pk5C8Jrl+r7rDB8sB4Y5HPyAlA0DNK1kxNgKk5heHYNeKJ/PM1
- 5BzG+Ua9ohHXQSI4q4KI72n/1f3NKjaRozDCz29USHt7jTVEF40D6rScWx6zPaGQcr93
- h11NkbHBTjbRmG6D9Y6ly8588ajZtaH0NvLAb5OR/OZSjj9EmRnq+LZaxhzKIa4SMzj2
- AGWtx3+YW2/yMXh4FVdygmSm7K89i22agQwNoau9F3VUdIFvttDJh67HN45bj9soet+t
- 33uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709492029; x=1710096829;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=XUX7oIApRf9quDNJaxBX4ag31s8+YagalHAQ+nw7IxU=;
- b=falN2SQ/ScTv5i7IJ3pZCM1669qJT/NoHEpdLvx6DbYZi9rv4as1kMSiUOExOZIdf9
- 6MeVGrD4dlrQKDGalunm3Z0fX4Y41rSZ4f3XKBDJwu9jI+IC3bZ0RcFbTejNc8h+vmiy
- gmjiW7mbBjJpWgxD43qp+hUooLIwkHF1BdbNxD+llOWJdoJSZDtrmJ96TL8J/wHl2laH
- LvSzcR5Q/ZbKyex2w1ycmrlaejSvbkfBhc/e35AP9hUCNTlWDnKzAhBs5EA7uJmMZbhk
- B4xymdL8IFwDWFfX6rvawqE7JTxY+fEeeLIxK/nHlngnawhc6pn0mbWUHjaNOmzEL0KB
- 9hPQ==
-X-Gm-Message-State: AOJu0YwuATaVmJ+AbY+HwXkdOU+Vct6Z16tjHzXnvnLSg17ZB8myGWK6
- Uxjg5usjnzakHz/ZKkpcDauNxqSPAxAZvUBU+Rir+DWIFpW37ssLf/xyklTJ
-X-Google-Smtp-Source: AGHT+IFUSo8u73blocfm9TEjjHLhAMJGhFpEbLyicahfaMZeqb3X3wML28HjU0iOzGputokKSewqag==
-X-Received: by 2002:a05:600c:3b94:b0:412:d1ee:dfa2 with SMTP id
- n20-20020a05600c3b9400b00412d1eedfa2mr3851295wms.0.1709492029404; 
- Sun, 03 Mar 2024 10:53:49 -0800 (PST)
-Received: from archlinux.. (dynamic-092-224-118-014.92.224.pool.telefonica.de.
- [92.224.118.14]) by smtp.gmail.com with ESMTPSA id
- o17-20020a05600c4fd100b00412d68dbf75sm5259460wmq.35.2024.03.03.10.53.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Mar 2024 10:53:48 -0800 (PST)
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jason Wang <jasowang@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Sergio Lopez <slp@redhat.com>, Paul Durrant <paul@xen.org>,
- David Woodhouse <dwmw2@infradead.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v3 4/4] hw/i386/pc: Inline pc_cmos_init() into
- pc_cmos_init_late() and remove it
-Date: Sun,  3 Mar 2024 19:53:32 +0100
-Message-ID: <20240303185332.1408-5-shentey@gmail.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240303185332.1408-1-shentey@gmail.com>
-References: <20240303185332.1408-1-shentey@gmail.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rgr70-0006qz-9u
+ for qemu-devel@nongnu.org; Sun, 03 Mar 2024 14:03:02 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rgr6x-0005zi-Sp
+ for qemu-devel@nongnu.org; Sun, 03 Mar 2024 14:03:02 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 6B4644E6013;
+ Sun,  3 Mar 2024 20:02:53 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id XT7nFKZdULop; Sun,  3 Mar 2024 20:02:51 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 2D6744E6012; Sun,  3 Mar 2024 20:02:51 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 2B6DE7456B4;
+ Sun,  3 Mar 2024 20:02:51 +0100 (CET)
+Date: Sun, 3 Mar 2024 20:02:51 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Sven Schnelle <svens@stackframe.org>
+cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Fam Zheng <fam@euphon.net>
+Subject: Re: lsi53c895a assert with AmigaOS
+In-Reply-To: <f04af11b-b032-3247-1525-2aac132236d3@eik.bme.hu>
+Message-ID: <5a33bcb0-caad-ac9a-0239-2983d3d2c838@eik.bme.hu>
+References: <20a8b781-fd08-4e2c-9916-8483b1e4a6c2@eik.bme.hu>
+ <87y1azv83i.fsf@t14.stackframe.org>
+ <f04af11b-b032-3247-1525-2aac132236d3@eik.bme.hu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,87 +65,168 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that pc_cmos_init() doesn't populate the X86MachineState::rtc attribute any
-longer, its duties can be merged into pc_cmos_init_late() which is called within
-machine_done notifier. This frees pc_piix and pc_q35 from explicit CMOS
-initialization.
+On Sun, 3 Mar 2024, BALATON Zoltan wrote:
+> On Sun, 3 Mar 2024, Sven Schnelle wrote:
+>> BALATON Zoltan <balaton@eik.bme.hu> writes:
+>> 
+>>> Hello,
+>>> 
+>>> AmigaOS4 also has a driver for this card so I've tried to test it but
+>>> it trips an assert. Does anybody have an idea why and how it could be
+>>> fixed? Sven's recent patches don't seem to have an effect on this, it
+>>> still happens shortly after it tries to access the SCSI device with
+>>> those patches applied. (Unfortunately AmigaOS is not freely available
+>>> so it's a bit hard to reproduce but I can do tests if needed.) I got
+>>> the following traces:
+>>> 
+>>> lsi_reg_write Write reg SIEN0 0x40 = 0x84
+>>> lsi_reg_write Write reg SIEN1 0x41 = 0x04
+>>> lsi_reg_write Write reg DIEN 0x39 = 0xff
+>>> lsi_reg_write Write reg DSP0 0x2c = 0x00
+>>> lsi_reg_write Write reg DSP1 0x2d = 0x80
+>>> lsi_reg_write Write reg DSP2 0x2e = 0x19
+>>> lsi_reg_write Write reg DSP3 0x2f = 0x00
+>>> lsi_execute_script SCRIPTS dsp=0x198000 opcode 0x7c07fe00 arg 0x0
+>>> lsi_execute_script_io_opcode Read-Modify-Write reg 0x7 AND data8=0xfe 
+>>> sfbr=0x01
+>>> lsi_reg_read Read reg GPREG 0x7 = 0x7f
+>>> lsi_reg_write Write reg GPREG 0x7 = 0x7e
+>>> lsi_execute_script SCRIPTS dsp=0x198008 opcode 0x60000200 arg 0x0
+>>> lsi_execute_script_io_clear Clear TM
+>>> lsi_execute_script SCRIPTS dsp=0x198010 opcode 0x40000000 arg 0x198208
+>>> lsi_execute_script_io_alreadyreselected Already reselected, jumping to
+>>> alternative address
+>> here ---^
+>>> lsi_do_msgout_select Select LUN 0
+>>> lsi_execute_script SCRIPTS dsp=0x198070 opcode 0x820b0000 arg 0x1981f8
+>>> lsi_execute_script_tc_compp Compare phase CMD == CMD
+>>> lsi_execute_script_tc_jump Jump to 0x1981f8
+>>> lsi_execute_script SCRIPTS dsp=0x1981f8 opcode 0xa000006 arg 0x199000
+>>> lsi_do_command Send command len=6
+>>> qemu-system-ppc: ../hw/scsi/lsi53c895a.c:863: lsi_do_command: Assertion 
+>>> `s->current == NULL' failed.
+>>> 
+>>> Any idea what could it be and what could be done about it?
+>> 
+>> Wild guess is that this is because of the 'Already reselected' line
+>> above. lsi_reselect() sets s->current, and later when lsi_do_command()
+>> is called it gets confused because s->current is already set. But i
+>> would need the whole logfile to see why this is going wrong, or even
+>> better AmigaOS (which is not free as you already mentioned)
+>
+> Thanks for looking at this. I've uploaded the full log here: 
+> http://zero.eik.bme.hu/~balaton/qemu/aos-lsi-scsi.log.xz
+> but not sure you'd get more info from it as it seems to be working up to the 
+> error. This happens short after boot when the driver is started which seems 
+> to be going OK but when first accessing the device then it runs into the 
+> error. I don't know how this controller works so can't really tell what would 
+> be correct behaviour here.
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
----
- include/hw/i386/pc.h |  2 --
- hw/i386/pc.c         | 10 ----------
- hw/i386/pc_piix.c    |  2 --
- hw/i386/pc_q35.c     |  2 --
- 4 files changed, 16 deletions(-)
+AFAIU this log it tries to read a sector which completes on the drive side 
+but I can't see where this read finishes and maybe the guest tries to send 
+another command while it's still running? The read is here:
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 5065590281..bfdcd64514 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -178,8 +178,6 @@ void pc_basic_device_init(struct PCMachineState *pcms,
-                           ISADevice *rtc_state,
-                           bool create_fdctrl,
-                           uint32_t hpet_irqs);
--void pc_cmos_init(PCMachineState *pcms,
--                  ISADevice *s);
- void pc_nic_init(PCMachineClass *pcmc, ISABus *isa_bus, PCIBus *pci_bus);
- 
- void pc_i8259_create(ISABus *isa_bus, qemu_irq *i8259_irqs);
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 7780d8d6dd..69e134e141 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -570,14 +570,6 @@ static void pc_cmos_init_late(PCMachineState *pcms)
-     mc146818rtc_set_cmos_data(s, 0x39, val);
- 
-     pc_cmos_init_floppy(s, pc_find_fdc0());
--}
--
--void pc_cmos_init(PCMachineState *pcms,
--                  ISADevice *rtc)
--{
--    int val;
--    X86MachineState *x86ms = X86_MACHINE(pcms);
--    MC146818RtcState *s = MC146818_RTC(rtc);
- 
-     /* various important CMOS locations needed by PC/Bochs bios */
- 
-@@ -618,8 +610,6 @@ void pc_cmos_init(PCMachineState *pcms,
-     val |= 0x02; /* FPU is there */
-     val |= 0x04; /* PS/2 mouse installed */
-     mc146818rtc_set_cmos_data(s, REG_EQUIPMENT_BYTE, val);
--
--    /* hard drives and FDC are handled by pc_cmos_init_late() */
- }
- 
- static void handle_a20_line_change(void *opaque, int irq, int level)
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index ce6aad758d..637f4d38be 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -342,8 +342,6 @@ static void pc_init1(MachineState *machine,
-     }
- #endif
- 
--    pc_cmos_init(pcms, x86ms->rtc);
--
-     if (piix4_pm) {
-         smi_irq = qemu_allocate_irq(pc_acpi_smi_interrupt, first_cpu, 0);
- 
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 45a4102e75..bccd13d162 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -311,8 +311,6 @@ static void pc_q35_init(MachineState *machine)
-         smbus_eeprom_init(pcms->smbus, 8, NULL, 0);
-     }
- 
--    pc_cmos_init(pcms, x86ms->rtc);
--
-     /* the rest devices to which pci devfn is automatically assigned */
-     pc_vga_init(isa_bus, pcms->pcibus);
-     pc_nic_init(pcmc, isa_bus, pcms->pcibus);
--- 
-2.44.0
+lsi_execute_script SCRIPTS dsp=0x1981f8 opcode 0xa00000a arg 0x199000
+lsi_do_command Send command len=10
+scsi_req_parsed target 0 lun 0 tag 0 command 40 dir 1 length 2048
+scsi_req_parsed_lba target 0 lun 0 tag 0 command 40 lba 16
+scsi_req_alloc target 0 lun 0 tag 0
+scsi_disk_new_request Command: lun=0 tag=0x0 data= 0x28 0x00 0x00 0x00 0x00 0x10 0x00 0x00 0x01 0x00
+scsi_disk_dma_command_READ Read (sector 16, count 1)
+scsi_req_continue target 0 lun 0 tag 0
+scsi_disk_read_data_count Read sector_count=4
+lsi_add_msg_byte MSG IN 0x02
+lsi_add_msg_byte MSG IN 0x04
+lsi_queue_command Queueing tag=0x0
+lsi_execute_script SCRIPTS dsp=0x198200 opcode 0x870b0000 arg 0x1980c0
+lsi_execute_script_tc_compp Compare phase MSGIN == MSGIN
+lsi_execute_script_tc_jump Jump to 0x1980c0
+lsi_execute_script SCRIPTS dsp=0x1980c0 opcode 0xf000001 arg 0x199040
+lsi_do_msgin Message in len=1 2
+lsi_execute_script SCRIPTS dsp=0x1980c8 opcode 0x800c0000 arg 0x198398
+lsi_execute_script_tc_compd Compare data 0x2 & 0xff == 0x0
+lsi_execute_script_tc_cc_failed Control condition failed
+lsi_execute_script SCRIPTS dsp=0x1980d0 opcode 0x800c0004 arg 0x198398
+lsi_execute_script_tc_compd Compare data 0x2 & 0xff == 0x4
+lsi_execute_script_tc_cc_failed Control condition failed
+lsi_execute_script SCRIPTS dsp=0x1980d8 opcode 0x800c0002 arg 0x198398
+lsi_execute_script_tc_compd Compare data 0x2 & 0xff == 0x2
+lsi_execute_script_tc_jump Jump to 0x198398
+lsi_execute_script SCRIPTS dsp=0x198398 opcode 0x7c027f00 arg 0x0
+lsi_execute_script_io_opcode Read-Modify-Write reg 0x2 AND data8=0x7f sfbr=0x02
+lsi_reg_read Read reg SCNTL2 0x2 = 0x00
+lsi_reg_write Write reg SCNTL2 0x2 = 0x00
+lsi_execute_script SCRIPTS dsp=0x1983a0 opcode 0x60000048 arg 0x0
+lsi_execute_script_io_clear Clear ATN ACK
+lsi_execute_script SCRIPTS dsp=0x1983a8 opcode 0x48000000 arg 0x0
+lsi_execute_script_io_disconnect Wait Disconnect
+lsi_execute_script SCRIPTS dsp=0x1983b0 opcode 0x7a070100 arg 0x0
+lsi_execute_script_io_opcode Read-Modify-Write reg 0x7 OR data8=0x01 sfbr=0x02
+lsi_reg_read Read reg GPREG 0x7 = 0x7f
+lsi_reg_write Write reg GPREG 0x7 = 0x7f
+lsi_execute_script SCRIPTS dsp=0x1983b8 opcode 0x98080000 arg 0x10
+lsi_execute_script_tc_interrupt Interrupt 0x10
+lsi_script_dma_interrupt DMA Interrupt 0x4 prev 0x0
+lsi_update_irq Update IRQ level 1 dstat 0x04 sist 0x000x00
+lsi_execute_script_stop SCRIPTS execution stopped
+lsi_reg_read Read reg ISTAT 0x14 = 0x01
+lsi_update_irq Update IRQ level 0 dstat 0x00 sist 0x000x00
+lsi_reg_read Read reg DSTAT 0xc = 0x84
+lsi_reg_read Read reg DSPS0 0x30 = 0x10
+lsi_reg_read Read reg DSPS1 0x31 = 0x00
+lsi_reg_read Read reg DSPS2 0x32 = 0x00
+lsi_reg_read Read reg DSPS3 0x33 = 0x00
+scsi_disk_read_complete Data ready tag=0x0 len=2048
+scsi_req_data target 0 lun 0 tag 0 len 2048
+lsi_queue_req Queueing IO tag=0x0
 
+but I don't see if the guest got the results. How should this transfer end 
+and why it does not seem to have reached the guest? After this the guest 
+seems to send another command:
+
+lsi_do_command Send command len=6
+scsi_req_parsed target 0 lun 0 tag 0 command 0 dir 0 length 0
+scsi_req_parsed_lba target 0 lun 0 tag 0 command 0 lba 0
+scsi_req_alloc target 0 lun 0 tag 0
+scsi_disk_new_request Command: lun=0 tag=0x0 data= 0x00 0x00 0x00 0x00 0x00 0x00
+scsi_test_unit_ready target 0 lun 0 tag 0
+scsi_req_dequeue target 0 lun 0 tag 0
+lsi_command_complete Command complete status=0
+
+which then completes;
+
+lsi_execute_script SCRIPTS dsp=0x1983a0 opcode 0x60000048 arg 0x0
+lsi_execute_script_io_clear Clear ATN ACK
+lsi_execute_script SCRIPTS dsp=0x1983a8 opcode 0x48000000 arg 0x0
+lsi_execute_script_io_disconnect Wait Disconnect
+lsi_reselect Reselected target 0
+lsi_add_msg_byte MSG IN 0x80
+
+and when it tries to send another command it sees the reselected target:
+
+lsi_execute_script SCRIPTS dsp=0x198008 opcode 0x60000200 arg 0x0
+lsi_execute_script_io_clear Clear TM
+lsi_execute_script SCRIPTS dsp=0x198010 opcode 0x40000000 arg 0x198208
+lsi_execute_script_io_alreadyreselected Already reselected, jumping to alternative address
+
+but this does not yet cause an error, it ends here:
+
+lsi_execute_script SCRIPTS dsp=0x1983a0 opcode 0x60000048 arg 0x0
+lsi_execute_script_io_clear Clear ATN ACK
+lsi_execute_script SCRIPTS dsp=0x1983a8 opcode 0x48000000 arg 0x0
+lsi_execute_script_io_disconnect Wait Disconnect
+
+When the next command is sent it starts normally:
+
+lsi_execute_script SCRIPTS dsp=0x198008 opcode 0x60000200 arg 0x0
+lsi_execute_script_io_clear Clear TM
+lsi_execute_script SCRIPTS dsp=0x198010 opcode 0x40000000 arg 0x198208
+lsi_execute_script_io_selected Selected target 0
+
+but when trying to send the command it gets the assertion. I think the 
+first read above should somehow be finished which I don't see in this log 
+so it may still be queued at this point. Does this make sense to anybody?
+
+Regards,
+BALATON Zoltan
 
