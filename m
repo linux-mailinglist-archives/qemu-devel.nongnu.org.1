@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41C1586F42F
+	by mail.lfdr.de (Postfix) with ESMTPS id 490ED86F430
 	for <lists+qemu-devel@lfdr.de>; Sun,  3 Mar 2024 10:34:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgiDZ-0001QK-OV; Sun, 03 Mar 2024 04:33:13 -0500
+	id 1rgiDl-0001SS-5q; Sun, 03 Mar 2024 04:33:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rgiDX-0001Ol-5K; Sun, 03 Mar 2024 04:33:11 -0500
+ id 1rgiDd-0001S5-DU; Sun, 03 Mar 2024 04:33:17 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rgiDV-0006TN-49; Sun, 03 Mar 2024 04:33:10 -0500
+ id 1rgiDZ-0006Vu-Hj; Sun, 03 Mar 2024 04:33:16 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0AD4F527CD;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1AE9E527CE;
  Sun,  3 Mar 2024 12:33:48 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 842598E8C9;
+ by tsrv.corpit.ru (Postfix) with SMTP id 93DDB8E8CA;
  Sun,  3 Mar 2024 12:33:04 +0300 (MSK)
-Received: (nullmailer pid 1357007 invoked by uid 1000);
+Received: (nullmailer pid 1357010 invoked by uid 1000);
  Sun, 03 Mar 2024 09:33:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.2 79/82] hw/intc/Kconfig: Fix GIC settings when using
- "--without-default-devices"
-Date: Sun,  3 Mar 2024 12:32:57 +0300
-Message-Id: <20240303093304.1356981-1-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Benjamin David Lunt <benlunt@fysnet.net>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.2 80/82] hw/usb/bus.c: PCAP adding 0xA in Windows version
+Date: Sun,  3 Mar 2024 12:32:58 +0300
+Message-Id: <20240303093304.1356981-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.2-20240303104213@cover.tls.msk.ru>
 References: <qemu-stable-8.2.2-20240303104213@cover.tls.msk.ru>
@@ -60,56 +59,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Benjamin David Lunt <benlunt@fysnet.net>
 
-When using "--without-default-devices", the ARM_GICV3_TCG and ARM_GIC_KVM
-settings currently get disabled, though the arm virt machine is only of
-very limited use in that case. This also causes the migration-test to
-fail in such builds. Let's make sure that we always keep the GIC switches
-enabled in the --without-default-devices builds, too.
+Since Windows text files use CRLFs for all \n, the Windows version of QEMU
+inserts a CR in the PCAP stream when a LF is encountered when using USB PCAP
+files. This is due to the fact that the PCAP file is opened as TEXT instead
+of BINARY.
 
-Message-ID: <20240221110059.152665-1-thuth@redhat.com>
-Tested-by: Fabiano Rosas <farosas@suse.de>
+To show an example, when using a very common protocol to USB disks, the BBB
+protocol uses a 10-byte command packet. For example, the READ_CAPACITY(10)
+command will have a command block length of 10 (0xA). When this 10-byte
+command (part of the 31-byte CBW) is placed into the PCAP file, the Windows
+file manager inserts a 0xD before the 0xA, turning the 31-byte CBW into a
+32-byte CBW.
+
+Actual CBW:
+  0040 55 53 42 43 01 00 00 00 08 00 00 00 80 00 0a 25 USBC...........%
+  0050 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00       ...............
+
+PCAP CBW
+  0040 55 53 42 43 01 00 00 00 08 00 00 00 80 00 0d 0a USBC............
+  0050 25 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 %..............
+
+I believe simply opening the PCAP file as BINARY instead of TEXT will fix
+this issue.
+
+Resolves: https://bugs.launchpad.net/qemu/+bug/2054889
+Signed-off-by: Benjamin David Lunt <benlunt@fysnet.net>
+Message-ID: <000101da6823$ce1bbf80$6a533e80$@fysnet.net>
+[thuth: Break long line to avoid checkpatch.pl error]
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 8bd3f84d1f6fba0edebc450be6fa2c7630584df9)
+(cherry picked from commit 5e02a4fdebc442e34c5bb05e4540f85cc6e802f0)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/intc/Kconfig b/hw/intc/Kconfig
-index 97d550b06b..2b5b2d2301 100644
---- a/hw/intc/Kconfig
-+++ b/hw/intc/Kconfig
-@@ -12,10 +12,6 @@ config IOAPIC
-     bool
-     select I8259
+diff --git a/hw/usb/bus.c b/hw/usb/bus.c
+index 92d6ed5626..4d4c671913 100644
+--- a/hw/usb/bus.c
++++ b/hw/usb/bus.c
+@@ -273,13 +273,14 @@ static void usb_qdev_realize(DeviceState *qdev, Error **errp)
+     }
  
--config ARM_GIC
--    bool
--    select MSI_NONBROKEN
--
- config OPENPIC
-     bool
-     select MSI_NONBROKEN
-@@ -25,14 +21,18 @@ config APIC
-     select MSI_NONBROKEN
-     select I8259
- 
-+config ARM_GIC
-+    bool
-+    select ARM_GICV3_TCG if TCG
-+    select ARM_GIC_KVM if KVM
-+    select MSI_NONBROKEN
-+
- config ARM_GICV3_TCG
-     bool
--    default y
-     depends on ARM_GIC && TCG
- 
- config ARM_GIC_KVM
-     bool
--    default y
-     depends on ARM_GIC && KVM
- 
- config XICS
+     if (dev->pcap_filename) {
+-        int fd = qemu_open_old(dev->pcap_filename, O_CREAT | O_WRONLY | O_TRUNC, 0666);
++        int fd = qemu_open_old(dev->pcap_filename,
++                               O_CREAT | O_WRONLY | O_TRUNC | O_BINARY, 0666);
+         if (fd < 0) {
+             error_setg(errp, "open %s failed", dev->pcap_filename);
+             usb_qdev_unrealize(qdev);
+             return;
+         }
+-        dev->pcap = fdopen(fd, "w");
++        dev->pcap = fdopen(fd, "wb");
+         usb_pcap_init(dev->pcap);
+     }
+ }
 -- 
 2.39.2
 
