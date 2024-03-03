@@ -2,44 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3388886F3EC
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Mar 2024 08:41:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 147D086F3EA
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Mar 2024 08:40:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rggRw-0001ny-PX; Sun, 03 Mar 2024 02:39:57 -0500
+	id 1rggS2-0001sN-50; Sun, 03 Mar 2024 02:40:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rggRv-0001nO-3X; Sun, 03 Mar 2024 02:39:55 -0500
+ id 1rggRy-0001qo-LO; Sun, 03 Mar 2024 02:39:58 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rggRt-0001lJ-7j; Sun, 03 Mar 2024 02:39:54 -0500
+ id 1rggRt-0001lN-8a; Sun, 03 Mar 2024 02:39:58 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3632752758;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4710952759;
  Sun,  3 Mar 2024 10:40:18 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id D239D8E84D;
+ by tsrv.corpit.ru (Postfix) with SMTP id E5F918E84E;
  Sun,  3 Mar 2024 10:39:34 +0300 (MSK)
-Received: (nullmailer pid 1350610 invoked by uid 1000);
+Received: (nullmailer pid 1350613 invoked by uid 1000);
  Sun, 03 Mar 2024 07:39:34 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Eric Auger <eric.auger@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- "Richard W . M . Jones" <rjones@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.10 51/54] test-vmstate: fix bad GTree usage,
- use-after-free
-Date: Sun,  3 Mar 2024 10:39:30 +0300
-Message-Id: <20240303073934.1350568-4-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.10 52/54] tests/qtest/display-vga-test: Add proper checks
+ if a device is available
+Date: Sun,  3 Mar 2024 10:39:31 +0300
+Message-Id: <20240303073934.1350568-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.10-20240303092734@cover.tls.msk.ru>
 References: <qemu-stable-7.2.10-20240303092734@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -64,60 +61,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eric Auger <eric.auger@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
 
-According to g_tree_foreach() documentation:
-"The tree may not be modified while iterating over it (you can't
-add/remove items)."
+display-vga-test currently tries to guess the usable VGA devices
+according to the target architecture that is used for the test.
+This of course does not work if QEMU has been built with the
+"--without-default-devices" configure switch. To fix this, use the
+qtest_has_device() function for the decision instead. This way
+we can also consolidate most of the test functions into one single
+function (that takes a parameter with the device name now), except
+for the multihead test that tries to instantiate two devices and
+thus is a little bit different.
 
-compare_trees()/diff_tree() fail to respect this rule.
-Historically GLib2 used a slice allocator for the GTree APIs
-which did not immediately release the memory back to the system
-allocator. As a result QEMU's use-after-free bug was not visible.
-With GLib > 2.75.3 however, GLib2 has switched to using malloc
-and now a SIGSEGV can be observed while running test-vmstate.
-
-Get rid of the node removal within the tree traversal. Also
-check the trees have the same number of nodes before the actual
-diff.
-
-Fixes: 9a85e4b8f6 ("migration: Support gtree migration")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1518
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reported-by: Richard W.M. Jones <rjones@redhat.com>
-Tested-by: Richard W.M. Jones <rjones@redhat.com>
-Reviewed-by: Richard W.M. Jones <rjones@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Juan Quintela <quintela@redhat.com>
-Signed-off-by: Juan Quintela <quintela@redhat.com>
-(cherry picked from commit abe2c4bdb65e8dd9cb2f01c355baa394bf49a8af)
+Message-Id: <20230130104446.1286773-4-thuth@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit f2e57851b831922625f9d364d78c11a0258331a6)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/unit/test-vmstate.c b/tests/unit/test-vmstate.c
-index 541bb4f63e..aae32bbf91 100644
---- a/tests/unit/test-vmstate.c
-+++ b/tests/unit/test-vmstate.c
-@@ -1074,7 +1074,6 @@ static gboolean diff_tree(gpointer key, gpointer value, gpointer data)
-     struct match_node_data d = {tp->tree2, key, value};
+diff --git a/tests/qtest/display-vga-test.c b/tests/qtest/display-vga-test.c
+index ace3bb28e0..75b341a9c6 100644
+--- a/tests/qtest/display-vga-test.c
++++ b/tests/qtest/display-vga-test.c
+@@ -8,61 +8,46 @@
+  */
  
-     g_tree_foreach(tp->tree2, tp->match_node, &d);
--    g_tree_remove(tp->tree1, key);
-     return false;
- }
+ #include "qemu/osdep.h"
+-#include "libqtest-single.h"
+-
+-static void pci_cirrus(void)
+-{
+-    qtest_start("-vga none -device cirrus-vga");
+-    qtest_end();
+-}
+-
+-static void pci_stdvga(void)
+-{
+-    qtest_start("-vga none -device VGA");
+-    qtest_end();
+-}
+-
+-static void pci_secondary(void)
+-{
+-    qtest_start("-vga none -device secondary-vga");
+-    qtest_end();
+-}
++#include "libqtest.h"
  
-@@ -1083,9 +1082,9 @@ static void compare_trees(GTree *tree1, GTree *tree2,
+ static void pci_multihead(void)
  {
-     struct tree_cmp_data tp = {tree1, tree2, function};
+-    qtest_start("-vga none -device VGA -device secondary-vga");
+-    qtest_end();
+-}
++    QTestState *qts;
  
-+    assert(g_tree_nnodes(tree1) == g_tree_nnodes(tree2));
-     g_tree_foreach(tree1, diff_tree, &tp);
--    assert(g_tree_nnodes(tree1) == 0);
--    assert(g_tree_nnodes(tree2) == 0);
-+    g_tree_destroy(g_tree_ref(tree1));
+-static void pci_virtio_gpu(void)
+-{
+-    qtest_start("-vga none -device virtio-gpu-pci");
+-    qtest_end();
++    qts = qtest_init("-vga none -device VGA -device secondary-vga");
++    qtest_quit(qts);
  }
  
- static void diff_domain(TestGTreeDomain *d1, TestGTreeDomain *d2)
+-static void pci_virtio_vga(void)
++static void test_vga(gconstpointer data)
+ {
+-    qtest_start("-vga none -device virtio-vga");
+-    qtest_end();
++    QTestState *qts;
++
++    qts = qtest_initf("-vga none -device %s", (const char *)data);
++    qtest_quit(qts);
+ }
+ 
+ int main(int argc, char **argv)
+ {
+-    const char *arch = qtest_get_arch();
++    static const char *devices[] = {
++        "cirrus-vga",
++        "VGA",
++        "secondary-vga",
++        "virtio-gpu-pci",
++        "virtio-vga"
++    };
+ 
+     g_test_init(&argc, &argv, NULL);
+ 
+-    if (strcmp(arch, "alpha") == 0 || strcmp(arch, "i386") == 0 ||
+-        strcmp(arch, "mips") == 0 || strcmp(arch, "x86_64") == 0) {
+-        qtest_add_func("/display/pci/cirrus", pci_cirrus);
++    for (int i = 0; i < ARRAY_SIZE(devices); i++) {
++        if (qtest_has_device(devices[i])) {
++            char *testpath = g_strdup_printf("/display/pci/%s", devices[i]);
++            qtest_add_data_func(testpath, devices[i], test_vga);
++            g_free(testpath);
++        }
+     }
+-    qtest_add_func("/display/pci/stdvga", pci_stdvga);
+-    qtest_add_func("/display/pci/secondary", pci_secondary);
+-    qtest_add_func("/display/pci/multihead", pci_multihead);
+-    qtest_add_func("/display/pci/virtio-gpu", pci_virtio_gpu);
+-    if (g_str_equal(arch, "i386") || g_str_equal(arch, "x86_64") ||
+-        g_str_equal(arch, "hppa") || g_str_equal(arch, "ppc64")) {
+-        qtest_add_func("/display/pci/virtio-vga", pci_virtio_vga);
++
++    if (qtest_has_device("secondary-vga")) {
++        qtest_add_func("/display/pci/multihead", pci_multihead);
+     }
+ 
+     return g_test_run();
 -- 
 2.39.2
 
