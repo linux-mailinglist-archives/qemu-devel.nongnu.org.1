@@ -2,44 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1311186F3C7
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Mar 2024 06:48:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B7F86F3C3
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Mar 2024 06:48:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgegZ-0006My-8X; Sun, 03 Mar 2024 00:46:55 -0500
+	id 1rgegZ-0006N6-FO; Sun, 03 Mar 2024 00:46:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rgegW-0006MY-A3
- for qemu-devel@nongnu.org; Sun, 03 Mar 2024 00:46:52 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rgegX-0006Mh-AK
+ for qemu-devel@nongnu.org; Sun, 03 Mar 2024 00:46:53 -0500
 Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rgegU-0003Sq-Kd
- for qemu-devel@nongnu.org; Sun, 03 Mar 2024 00:46:52 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rgegV-0003Su-S1
+ for qemu-devel@nongnu.org; Sun, 03 Mar 2024 00:46:53 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id D4597601BC;
+ by dfw.source.kernel.org (Postfix) with ESMTP id 9C81760C2B;
+ Sun,  3 Mar 2024 05:46:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3989C433C7;
  Sun,  3 Mar 2024 05:46:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BDFC433C7;
- Sun,  3 Mar 2024 05:46:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1709444808;
- bh=mLYFY4A7BeiD5YOQKXZ5xrcH5Y1m2DlFCP6A02xNApc=;
- h=From:To:Cc:Subject:Date:From;
- b=oRHNWeKQMbJ4RVI8HpNlxDsesxTFSJwbx4EYGJR/VPD67FfsXy8Pk66l3bhxyjhNN
- GdV8+v1eBbB6M4NzoOhD6o8fL8nTRV16zlD29dtKgMl/SGBl9JWMnifO1QL2sbIiv7
- e4Cb0Zls69A32yL3mOJQqwr2EsyNayXmZoH+BIlAvt1deV18Cgc8tdmENoX/i7XDfu
- 8D/Gvkh0CTFfo8QsYxa8/D56IHwFnueompZ3up4acSNTdNkrecX0fxLD6+GP4nXFDr
- kQRaIU1Eq83qk0iJQ5FDbH1R2uMYx1qdpUtnAv/JNq0D2B3+3bkFrP0Lv6j7+NRmUD
- 3virB7JqUocMg==
+ s=k20201202; t=1709444810;
+ bh=a9DjyL7Kb/8nZ96CbZM91Omz+z9llahcCJYvcimBSS4=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=uY37Sz3ZsQHeeQ/P5lRd2RbrNvNOnx/+UrBPZ1xu+qJqn2UIniBz79293DKUKQtjo
+ tnx/EyJSJiP1nQbk307F7g/Q1CP9elDN5P6mgN2golRcrdKOzQ/LQqlNpYQXMdiiW8
+ JSfNSrQiXkN7cwY7vmPRqTKDdxz13VF1feRCQqSwkdaDcUwk9yhfhzbuAgLh2kM3Xj
+ IzKVACUOLZXY4cHUReDDOaG9HOTPWSpjvL9G5QE59uh/8pBU52ggvyqdEFwm5aT5bC
+ jkXDVF0pRHzB32UDLj1QL/PbuQpE86CQcFqPTNJTAMhisYjQN96kgVyX57R8BZLaQr
+ p+puwdPu6QC1w==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Cc: deller@gmx.de
-Subject: [PULL 0/5] Hppa latest patches
-Date: Sun,  3 Mar 2024 06:46:40 +0100
-Message-ID: <20240303054645.3004-1-deller@kernel.org>
+Cc: deller@gmx.de, Guenter Roeck <linux@roeck-us.net>,
+ Charlie Jenkins <charlie@rivosinc.com>
+Subject: [PULL 1/5] target: hppa: Fix unaligned double word accesses for hppa64
+Date: Sun,  3 Mar 2024 06:46:41 +0100
+Message-ID: <20240303054645.3004-2-deller@kernel.org>
 X-Mailer: git-send-email 2.44.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20240303054645.3004-1-deller@kernel.org>
+References: <20240303054645.3004-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2604:1380:4641:c500::1;
@@ -66,43 +68,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+From: Guenter Roeck <linux@roeck-us.net>
 
-The following changes since commit e1007b6bab5cf97705bf4f2aaec1f607787355b8:
+Unaligned 64-bit accesses were found in Linux to clobber carry bits,
+resulting in bad results if an arithmetic operation involving a
+carry bit was executed after an unaligned 64-bit operation.
 
-  Merge tag 'pull-request-2024-03-01' of https://gitlab.com/thuth/qemu into staging (2024-03-01 10:14:32 +0000)
+hppa 2.0 defines additional carry bits in PSW register bits 32..39.
+When restoring PSW after executing an unaligned instruction trap, those
+bits were not cleared and ended up to be active all the time. Since there
+are no bits other than the upper carry bits needed in the upper 32 bit of
+env->psw and since those are stored in env->psw_cb, just clear the entire
+upper 32 bit when storing psw to solve the problem unconditionally.
 
-are available in the Git repository at:
+Fixes: 931adff31478 ("target/hppa: Update cpu_hppa_get/put_psw for hppa64")
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Charlie Jenkins <charlie@rivosinc.com>
+Cc: Helge Deller <deller@gmx.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+---
+ target/hppa/helper.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-  https://github.com/hdeller/qemu-hppa.git tags/hppa-latest-pull-request
-
-for you to fetch changes up to 839a88e8bd1a1efe05844c39a59985482894f4de:
-
-  roms/hppa: Add build rules for hppa-firmware (2024-03-03 06:41:19 +0100)
-
-----------------------------------------------------------------
-HPPA64 updates
-
-----------------------------------------------------------------
-
-Guenter Roeck (1):
-  target: hppa: Fix unaligned double word accesses for hppa64
-
-Helge Deller (4):
-  target/hppa: Restore unwind_breg before calculating ior
-  pc-bios/meson: Add hppa-firmware64.img blob
-  pc-bios/README: Add information about hppa-firmware
-  roms/hppa: Add build rules for hppa-firmware
-
- pc-bios/README           | 6 ++++++
- pc-bios/meson.build      | 1 +
- roms/Makefile            | 7 +++++++
- target/hppa/cpu.c        | 3 ++-
- target/hppa/helper.c     | 3 ++-
- target/hppa/mem_helper.c | 3 ++-
- target/hppa/op_helper.c  | 3 ++-
- 7 files changed, 22 insertions(+), 4 deletions(-)
-
+diff --git a/target/hppa/helper.c b/target/hppa/helper.c
+index 859644c47a..9d217d051c 100644
+--- a/target/hppa/helper.c
++++ b/target/hppa/helper.c
+@@ -76,7 +76,8 @@ void cpu_hppa_put_psw(CPUHPPAState *env, target_ulong psw)
+     }
+     psw &= ~reserved;
+ 
+-    env->psw = psw & ~(PSW_N | PSW_V | PSW_CB);
++    env->psw = psw & (uint32_t)~(PSW_N | PSW_V | PSW_CB);
++
+     env->psw_n = (psw / PSW_N) & 1;
+     env->psw_v = -((psw / PSW_V) & 1);
+ 
 -- 
 2.44.0
 
