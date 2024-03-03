@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D65EE86F483
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Mar 2024 11:52:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D1486F484
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Mar 2024 11:52:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgjR5-0002Fj-AV; Sun, 03 Mar 2024 05:51:15 -0500
+	id 1rgjR7-0002GX-Rf; Sun, 03 Mar 2024 05:51:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rgjR3-0002Fa-VZ
- for qemu-devel@nongnu.org; Sun, 03 Mar 2024 05:51:13 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1rgjR6-0002G4-52
+ for qemu-devel@nongnu.org; Sun, 03 Mar 2024 05:51:16 -0500
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rgjR2-0001hn-Mx
- for qemu-devel@nongnu.org; Sun, 03 Mar 2024 05:51:13 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1dc0e5b223eso30963525ad.1
- for <qemu-devel@nongnu.org>; Sun, 03 Mar 2024 02:51:11 -0800 (PST)
+ id 1rgjR4-0001lO-SP
+ for qemu-devel@nongnu.org; Sun, 03 Mar 2024 05:51:15 -0500
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-5d81b08d6f2so3343542a12.0
+ for <qemu-devel@nongnu.org>; Sun, 03 Mar 2024 02:51:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709463070; x=1710067870;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709463073; x=1710067873;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Y6F4s7SD+EbTcsUd3BOMfzMk3X1lfu/l+APGABisSNs=;
- b=IhXNzqVYGgCBUfTxc8jVMkcB9mjiGA7V+DkpTC1TY/cryNR/4GkisxyR+dDQf/s/kJ
- Dk2Tzo96uBXRUIkznVh/mG1HX7IovDSkA+dOhgERoqJXBEVKeMKMuGqhdv/v214Xa7HW
- oDE/kA08d+3GKymCOdwuAqLHWm0yJpmceoqdWnT2ktcdVwh7a15MkkY/2y/QMZdkIhrZ
- T6qTy+1Pk2slzLYqMz1h69fIePdCei4F4y0URRMMI4tC73UnbLqnGYHHNZ3TYoZ9d/tL
- ZrWTYOKNsUaM5RkyDC3/+6Y/Vncr7Z4g4Ye+fUpkr/iSSTFkptwYRR7ANYfGjAGgj1+A
- kKRg==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=nyTUdQB4Cl6gt8pecVagVZSZXNdna6Waf3JQSWyiOlc=;
+ b=cPbFKGgs5hW3TR5OpxEdHzHfOEwkCxXY8BrGbhuCrSQdgX/EGnrlE0kQxg+6ieMAFi
+ Qr/OYvWYwCQ8AOTbhYAT1zn/ivUtv1azmcQjzDETRf0IQWnn3A8rrbBaQJhK+DyS7lTq
+ CtTSkDuuDoQlDhmM4fY3cYvMYauM9hn90KfZvE8zAB+t35ezIPvH+u/fxYCeiLfdRvVf
+ j/pJLCQ6uOkNEYy998UCYKqYFG0dXk5rBIcPRd71q8GoUGz9RtnI0XcHxRsN2cnFo48G
+ CcNsNeJru7q73ydjNTMEWWW2P3R511W4/LCFIN8S3QWLtDZ2d7jyeVTm4/RsA7E4dNBM
+ Zv8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709463070; x=1710067870;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Y6F4s7SD+EbTcsUd3BOMfzMk3X1lfu/l+APGABisSNs=;
- b=Uj+6NX8AjgNaGCp/vuA+h3Wvw+qyONXIdJTCZ9qv9iL0LhH/Y79S+F0ENS9i292gdW
- +6oZzLDSCLf+FIOtGmNG+MKvCcdKI1VBHmEqeXYmZkug5GT+1BJBe9IqMi2X789DBL3t
- 1WxLtzy54Pjk41qp0RKYcrtYyvjIBW8P/Z1j8bjcpaY+sdB9xXze5/n7O07nycmtDfMd
- MnRQbrZx/wRiGXHOWEuH+AsshProsAM9yV3xMKclRNtusoqU1Nx1+/LIV+n0dIDxicl2
- BS1M6KSw0+LY0MQem9btk7Q7ubVFz04GCzRhDT4tgce7ww94ygfxlIkyKCHhAsea8Xyy
- Tx4g==
-X-Gm-Message-State: AOJu0YzC3WqQFEr1JEi4FSOGYHmb2Vf1Vgc4PiqbH5MSzWOjHoXQycWV
- grwF+0zHIyawXVpMOlDQkUEpAtqEZJZ3KO3mzvwqnQ2vZs55IvAAE91TaaWm9ue6B6ZtnQ8O4rK
- 2
-X-Google-Smtp-Source: AGHT+IG7ai09kxgh/fcKOSpEdrE9CpwvQNE6JDrtGnci3ayX851N7aWUWSV/Aqv3kYMeHvhTda43Mw==
-X-Received: by 2002:a17:903:230b:b0:1dc:a00c:5442 with SMTP id
- d11-20020a170903230b00b001dca00c5442mr6701340plh.43.1709463070609; 
- Sun, 03 Mar 2024 02:51:10 -0800 (PST)
+ d=1e100.net; s=20230601; t=1709463073; x=1710067873;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nyTUdQB4Cl6gt8pecVagVZSZXNdna6Waf3JQSWyiOlc=;
+ b=HLIcNJ96X54P2b0lWyvQz6V//2YDh/BnjjSL32XByzGO+XDleDg4o2FihzKNAwQwLF
+ /gga5xlOR81HDGC38oD8tDxp8FQjikPcaDoSF1mh1nyT/8Es7WXC4LvsZ9tQ+zOw3SS0
+ Is7v6QZbuBfr7EB1j3PBbV2uBCW9K9rrRNjJPF0sW739gxsGfBl1AscMCau7cflvD7e6
+ Q55o2c+wmhA8ox1f/EyUQxFgkM3kYAwBQj9z9yuZ+IXSy2SEy+22qxFq37bGNsSuch4A
+ JPVrmR5PAUmAUJhfY20e5ZQI2xoizCnzZz6369NSo9NbkbuqgDZSt/EJ/V4Vj9MKD7u6
+ mOJQ==
+X-Gm-Message-State: AOJu0YyH+PqAz93QczURnjDQJBlx4aiMHTxyheLK5nwmf6mab2u8SDTF
+ DOpBZlheroU+NVyxS9p4C9DHNfk7fuY9uPnODJM1PjoFTloWWoYxvB9yNVLfoQSrPxOmTpu5SjK
+ k
+X-Google-Smtp-Source: AGHT+IGLbvF6FQNEyp6HcSPDrwmnb2srrduPn775HPtwW3D5RmtXDbUaT9LtEl+5muFKkrMUUtgj7Q==
+X-Received: by 2002:a17:902:dac4:b0:1dc:ca43:307 with SMTP id
+ q4-20020a170902dac400b001dcca430307mr9094105plx.60.1709463073355; 
+ Sun, 03 Mar 2024 02:51:13 -0800 (PST)
 Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
  by smtp.gmail.com with UTF8SMTPSA id
- ju17-20020a170903429100b001db499c5c12sm6439521plb.143.2024.03.03.02.51.09
+ k15-20020a170902ba8f00b001dc91b4081dsm6431936pls.271.2024.03.03.02.51.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 03 Mar 2024 02:51:10 -0800 (PST)
+ Sun, 03 Mar 2024 02:51:13 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 0/7] contrib/elf2dmp: Improve robustness
-Date: Sun, 03 Mar 2024 19:50:34 +0900
-Message-Id: <20240303-elf2dmp-v1-0-bea6649fe3e6@daynix.com>
+Date: Sun, 03 Mar 2024 19:50:35 +0900
+Subject: [PATCH 1/7] contrib/elf2dmp: Always check for PA resolution
+ failure
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAPpV5GUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDYwND3dScNKOU3AJdw0SzRFNTwzQLMzNjJaDqgqLUtMwKsEnRsbW1ADL
- EuWZZAAAA
+Message-Id: <20240303-elf2dmp-v1-1-bea6649fe3e6@daynix.com>
+References: <20240303-elf2dmp-v1-0-bea6649fe3e6@daynix.com>
+In-Reply-To: <20240303-elf2dmp-v1-0-bea6649fe3e6@daynix.com>
 To: Viktor Prutyanov <viktor.prutyanov@phystech.edu>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::62f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62f.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::530;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -93,32 +93,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-elf2dmp sometimes fails to work with partially corrupted dumps, and also
-emits warnings when sanitizers are in use. This series are collections
-of changes to improve the situation.
+Not checking PA resolution failure can result in NULL deference.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-Akihiko Odaki (7):
-      contrib/elf2dmp: Always check for PA resolution failure
-      contrib/elf2dmp: Always destroy PA space
-      contrib/elf2dmp: Ensure segment fits in file
-      contrib/elf2dmp: Use lduw_le_p() to read PDB
-      contrib/elf2dmp: Use rol64() to decode
-      contrib/elf2dmp: Continue even contexts are lacking
-      MAINTAINERS: Add Akihiko Odaki as a elf2dmp reviewer
+ contrib/elf2dmp/addrspace.c | 46 ++++++++++++++++++++++++++++-----------------
+ 1 file changed, 29 insertions(+), 17 deletions(-)
 
- MAINTAINERS                 |  1 +
- contrib/elf2dmp/addrspace.c | 51 ++++++++++++++++++++++++++++-----------------
- contrib/elf2dmp/main.c      | 25 +++++++---------------
- contrib/elf2dmp/pdb.c       |  3 ++-
- 4 files changed, 43 insertions(+), 37 deletions(-)
----
-base-commit: bfe8020c814a30479a4241aaa78b63960655962b
-change-id: 20240301-elf2dmp-1a6a551f8663
+diff --git a/contrib/elf2dmp/addrspace.c b/contrib/elf2dmp/addrspace.c
+index 6f608a517b1e..980a7aa5f8fb 100644
+--- a/contrib/elf2dmp/addrspace.c
++++ b/contrib/elf2dmp/addrspace.c
+@@ -22,7 +22,7 @@ static struct pa_block *pa_space_find_block(struct pa_space *ps, uint64_t pa)
+     return NULL;
+ }
+ 
+-static uint8_t *pa_space_resolve(struct pa_space *ps, uint64_t pa)
++static void *pa_space_resolve(struct pa_space *ps, uint64_t pa)
+ {
+     struct pa_block *block = pa_space_find_block(ps, pa);
+ 
+@@ -33,6 +33,19 @@ static uint8_t *pa_space_resolve(struct pa_space *ps, uint64_t pa)
+     return block->addr + (pa - block->paddr);
+ }
+ 
++static int pa_space_read64(struct pa_space *ps, uint64_t pa, uint64_t *value)
++{
++    uint64_t *resolved = pa_space_resolve(ps, pa);
++
++    if (!resolved) {
++        return 1;
++    }
++
++    *value = *resolved;
++
++    return 0;
++}
++
+ static void pa_block_align(struct pa_block *b)
+ {
+     uint64_t low_align = ((b->paddr - 1) | ELF2DMP_PAGE_MASK) + 1 - b->paddr;
+@@ -108,19 +121,20 @@ void va_space_create(struct va_space *vs, struct pa_space *ps, uint64_t dtb)
+     va_space_set_dtb(vs, dtb);
+ }
+ 
+-static uint64_t get_pml4e(struct va_space *vs, uint64_t va)
++static int get_pml4e(struct va_space *vs, uint64_t va, uint64_t *value)
+ {
+     uint64_t pa = (vs->dtb & 0xffffffffff000) | ((va & 0xff8000000000) >> 36);
+ 
+-    return *(uint64_t *)pa_space_resolve(vs->ps, pa);
++    return pa_space_read64(vs->ps, pa, value);
+ }
+ 
+-static uint64_t get_pdpi(struct va_space *vs, uint64_t va, uint64_t pml4e)
++static int get_pdpi(struct va_space *vs, uint64_t va, uint64_t pml4e,
++                    uint64_t *value)
+ {
+     uint64_t pdpte_paddr = (pml4e & 0xffffffffff000) |
+         ((va & 0x7FC0000000) >> 27);
+ 
+-    return *(uint64_t *)pa_space_resolve(vs->ps, pdpte_paddr);
++    return pa_space_read64(vs->ps, pdpte_paddr, value);
+ }
+ 
+ static uint64_t pde_index(uint64_t va)
+@@ -133,11 +147,12 @@ static uint64_t pdba_base(uint64_t pdpe)
+     return pdpe & 0xFFFFFFFFFF000;
+ }
+ 
+-static uint64_t get_pgd(struct va_space *vs, uint64_t va, uint64_t pdpe)
++static int get_pgd(struct va_space *vs, uint64_t va, uint64_t pdpe,
++                   uint64_t *value)
+ {
+     uint64_t pgd_entry = pdba_base(pdpe) + pde_index(va) * 8;
+ 
+-    return *(uint64_t *)pa_space_resolve(vs->ps, pgd_entry);
++    return pa_space_read64(vs->ps, pgd_entry, value);
+ }
+ 
+ static uint64_t pte_index(uint64_t va)
+@@ -150,11 +165,12 @@ static uint64_t ptba_base(uint64_t pde)
+     return pde & 0xFFFFFFFFFF000;
+ }
+ 
+-static uint64_t get_pte(struct va_space *vs, uint64_t va, uint64_t pgd)
++static int get_pte(struct va_space *vs, uint64_t va, uint64_t pgd,
++                   uint64_t *value)
+ {
+     uint64_t pgd_val = ptba_base(pgd) + pte_index(va) * 8;
+ 
+-    return *(uint64_t *)pa_space_resolve(vs->ps, pgd_val);
++    return pa_space_read64(vs->ps, pgd_val, value);
+ }
+ 
+ static uint64_t get_paddr(uint64_t va, uint64_t pte)
+@@ -186,13 +202,11 @@ static uint64_t va_space_va2pa(struct va_space *vs, uint64_t va)
+ {
+     uint64_t pml4e, pdpe, pgd, pte;
+ 
+-    pml4e = get_pml4e(vs, va);
+-    if (!is_present(pml4e)) {
++    if (get_pml4e(vs, va, &pml4e) || !is_present(pml4e)) {
+         return INVALID_PA;
+     }
+ 
+-    pdpe = get_pdpi(vs, va, pml4e);
+-    if (!is_present(pdpe)) {
++    if (get_pdpi(vs, va, pml4e, &pdpe) || !is_present(pdpe)) {
+         return INVALID_PA;
+     }
+ 
+@@ -200,8 +214,7 @@ static uint64_t va_space_va2pa(struct va_space *vs, uint64_t va)
+         return get_1GB_paddr(va, pdpe);
+     }
+ 
+-    pgd = get_pgd(vs, va, pdpe);
+-    if (!is_present(pgd)) {
++    if (get_pgd(vs, va, pdpe, &pgd) || !is_present(pgd)) {
+         return INVALID_PA;
+     }
+ 
+@@ -209,8 +222,7 @@ static uint64_t va_space_va2pa(struct va_space *vs, uint64_t va)
+         return get_2MB_paddr(va, pgd);
+     }
+ 
+-    pte = get_pte(vs, va, pgd);
+-    if (!is_present(pte)) {
++    if (get_pte(vs, va, pgd, &pte) || !is_present(pte)) {
+         return INVALID_PA;
+     }
+ 
 
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.44.0
 
 
