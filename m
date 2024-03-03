@@ -2,43 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D1F986F3ED
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Mar 2024 08:41:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC2886F3E9
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Mar 2024 08:40:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rggRs-0001jw-1Z; Sun, 03 Mar 2024 02:39:52 -0500
+	id 1rggRw-0001nz-OT; Sun, 03 Mar 2024 02:39:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rggRo-0001jE-UV; Sun, 03 Mar 2024 02:39:48 -0500
+ id 1rggRr-0001kr-TI; Sun, 03 Mar 2024 02:39:51 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rggRn-0001ja-DK; Sun, 03 Mar 2024 02:39:48 -0500
+ id 1rggRq-0001ks-8Z; Sun, 03 Mar 2024 02:39:51 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 01EC552755;
+ by isrv.corpit.ru (Postfix) with ESMTP id 11A5F52756;
  Sun,  3 Mar 2024 10:40:18 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 9F6D58E84A;
+ by tsrv.corpit.ru (Postfix) with SMTP id B1B768E84B;
  Sun,  3 Mar 2024 10:39:34 +0300 (MSK)
-Received: (nullmailer pid 1350601 invoked by uid 1000);
+Received: (nullmailer pid 1350604 invoked by uid 1000);
  Sun, 03 Mar 2024 07:39:34 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.10 48/54] gitlab: force allow use of pip in Cirrus jobs
-Date: Sun,  3 Mar 2024 10:39:27 +0300
-Message-Id: <20240303073934.1350568-1-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Benjamin David Lunt <benlunt@fysnet.net>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.10 49/54] hw/usb/bus.c: PCAP adding 0xA in Windows version
+Date: Sun,  3 Mar 2024 10:39:28 +0300
+Message-Id: <20240303073934.1350568-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.10-20240303092734@cover.tls.msk.ru>
 References: <qemu-stable-7.2.10-20240303092734@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,38 +59,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Benjamin David Lunt <benlunt@fysnet.net>
 
-Python is transitioning to a world where you're not allowed to use 'pip
-install' outside of a virutal env by default. The rationale is to stop
-use of pip clashing with distro provided python packages, which creates
-a major headache on distro upgrades.
+Since Windows text files use CRLFs for all \n, the Windows version of QEMU
+inserts a CR in the PCAP stream when a LF is encountered when using USB PCAP
+files. This is due to the fact that the PCAP file is opened as TEXT instead
+of BINARY.
 
-All our CI environments, however, are 100% disposable so the upgrade
-headaches don't exist. Thus we can undo the python defaults to allow
-pip to work.
+To show an example, when using a very common protocol to USB disks, the BBB
+protocol uses a 10-byte command packet. For example, the READ_CAPACITY(10)
+command will have a command block length of 10 (0xA). When this 10-byte
+command (part of the 31-byte CBW) is placed into the PCAP file, the Windows
+file manager inserts a 0xD before the 0xA, turning the 31-byte CBW into a
+32-byte CBW.
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Message-id: 20240222114038.2348718-1-berrange@redhat.com
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit a8bf9de2f4f398315ac5340e4b88c478d5457731)
+Actual CBW:
+  0040 55 53 42 43 01 00 00 00 08 00 00 00 80 00 0a 25 USBC...........%
+  0050 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00       ...............
+
+PCAP CBW
+  0040 55 53 42 43 01 00 00 00 08 00 00 00 80 00 0d 0a USBC............
+  0050 25 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 %..............
+
+I believe simply opening the PCAP file as BINARY instead of TEXT will fix
+this issue.
+
+Resolves: https://bugs.launchpad.net/qemu/+bug/2054889
+Signed-off-by: Benjamin David Lunt <benlunt@fysnet.net>
+Message-ID: <000101da6823$ce1bbf80$6a533e80$@fysnet.net>
+[thuth: Break long line to avoid checkpatch.pl error]
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit 5e02a4fdebc442e34c5bb05e4540f85cc6e802f0)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/.gitlab-ci.d/cirrus/build.yml b/.gitlab-ci.d/cirrus/build.yml
-index 7ef6af8d33..d8cf08dc14 100644
---- a/.gitlab-ci.d/cirrus/build.yml
-+++ b/.gitlab-ci.d/cirrus/build.yml
-@@ -19,7 +19,7 @@ build_task:
-   install_script:
-     - @UPDATE_COMMAND@
-     - @INSTALL_COMMAND@ @PKGS@
--    - if test -n "@PYPI_PKGS@" ; then @PIP3@ install @PYPI_PKGS@ ; fi
-+    - if test -n "@PYPI_PKGS@" ; then PYLIB=$(@PYTHON@ -c 'import sysconfig; print(sysconfig.get_path("stdlib"))'); rm -f $PYLIB/EXTERNALLY-MANAGED; @PIP3@ install @PYPI_PKGS@ ; fi
-   clone_script:
-     - git clone --depth 100 "$CI_REPOSITORY_URL" .
-     - git fetch origin "$CI_COMMIT_REF_NAME"
+diff --git a/hw/usb/bus.c b/hw/usb/bus.c
+index 92d6ed5626..4d4c671913 100644
+--- a/hw/usb/bus.c
++++ b/hw/usb/bus.c
+@@ -273,13 +273,14 @@ static void usb_qdev_realize(DeviceState *qdev, Error **errp)
+     }
+ 
+     if (dev->pcap_filename) {
+-        int fd = qemu_open_old(dev->pcap_filename, O_CREAT | O_WRONLY | O_TRUNC, 0666);
++        int fd = qemu_open_old(dev->pcap_filename,
++                               O_CREAT | O_WRONLY | O_TRUNC | O_BINARY, 0666);
+         if (fd < 0) {
+             error_setg(errp, "open %s failed", dev->pcap_filename);
+             usb_qdev_unrealize(qdev);
+             return;
+         }
+-        dev->pcap = fdopen(fd, "w");
++        dev->pcap = fdopen(fd, "wb");
+         usb_pcap_init(dev->pcap);
+     }
+ }
 -- 
 2.39.2
 
