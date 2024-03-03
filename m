@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2828B86F6A1
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Mar 2024 19:55:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 328BF86F6A0
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Mar 2024 19:55:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgqyH-0002z1-9e; Sun, 03 Mar 2024 13:54:01 -0500
+	id 1rgqyH-0002yx-1E; Sun, 03 Mar 2024 13:54:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rgqy7-0002xs-R1
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rgqyB-0002xt-0f
  for qemu-devel@nongnu.org; Sun, 03 Mar 2024 13:53:55 -0500
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rgqy6-0003yI-9j
- for qemu-devel@nongnu.org; Sun, 03 Mar 2024 13:53:51 -0500
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2d2509c66daso46718051fa.3
- for <qemu-devel@nongnu.org>; Sun, 03 Mar 2024 10:53:49 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rgqy7-0003yQ-UA
+ for qemu-devel@nongnu.org; Sun, 03 Mar 2024 13:53:53 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-412e2dfa58eso1419405e9.0
+ for <qemu-devel@nongnu.org>; Sun, 03 Mar 2024 10:53:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709492028; x=1710096828; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1709492029; x=1710096829; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6rvC2H6C2Wukg8u7UcsRKEckfeM9Uh0xCoR3xrUsp3g=;
- b=W9gkyfT8wkGDvNsFTLBKmX4PdJKVtgZrOvufuhqaBdlTI/UK4ivX7cRrUKfZi/mCKd
- Navj1peKsJgY5cCNXauhNLCDc1hx5p4ySQw52BUNf/cw1B9dS6LliFdXqkN/pdtxTpzx
- IwvNAd4MTnmmyVQyNThT+FofNnsMmg8pytQkp1vG3Ie9XSLtbiZxy8+Il5lxFKndPhDD
- ah/QCKHWLSmiVldcG4iJTDToT3G4S1/PCvR7sVZiU1D5OTEV9fWehicH/d8i44lgSfQS
- 1as5UD2Dzg7duf6RfZVeGv0//wUcPnlFKAE2Q/PYHc7VHhlNUI4nJMeiCSqi/221vSxW
- cmTA==
+ bh=XUX7oIApRf9quDNJaxBX4ag31s8+YagalHAQ+nw7IxU=;
+ b=ggTdwN173rTdNhoCrb4/SDNIi/gwpFuTXUF+kPpZPSYwBioRMIShyvRvz1IVeGtobw
+ pKp0cph+ejCAbcsmK9pk5C8Jrl+r7rDB8sB4Y5HPyAlA0DNK1kxNgKk5heHYNeKJ/PM1
+ 5BzG+Ua9ohHXQSI4q4KI72n/1f3NKjaRozDCz29USHt7jTVEF40D6rScWx6zPaGQcr93
+ h11NkbHBTjbRmG6D9Y6ly8588ajZtaH0NvLAb5OR/OZSjj9EmRnq+LZaxhzKIa4SMzj2
+ AGWtx3+YW2/yMXh4FVdygmSm7K89i22agQwNoau9F3VUdIFvttDJh67HN45bj9soet+t
+ 33uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709492028; x=1710096828;
+ d=1e100.net; s=20230601; t=1709492029; x=1710096829;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6rvC2H6C2Wukg8u7UcsRKEckfeM9Uh0xCoR3xrUsp3g=;
- b=uRYGnjFirw1LvxhvAavLfaOpzxeq1wpsxJ0XVrKubcDiB8JNbNyyT9n6u16d22FGYR
- vxX0I2yV0LhFLGB6rbDtlc/PX4011WW5Zae0mQGJMKhm5QHYMDxtUrvl/icFsz8uh5ey
- 7N0preZ1+88GIHxaQ9v/fQYA90+Ok4ANdJ67sF3Imr2q2OuwA2z5LpjMBSeqfZz2DaMu
- 17Jl/wR4rXZrqGQGfZf96jR69RJuQndcgnZ3JqHT6GM1EH2A1bH4Lon3x/cb3tEWsASk
- DKRTQoU2bTeuF+kUQGnlpJxtXijl14UfGLsB4ncwtVWElKsLZD8IhjGCTvsO9cEfBXl+
- rwbA==
-X-Gm-Message-State: AOJu0Yz+745coRETV7NeH//OgrxapMNpyeIJv2YwqpAAoVB50foiP48b
- t0NdD0dDr4EY7EeO0+Wza88b6jLpEzjgscO8j+LxKavCA0HXbei19LuU/niV
-X-Google-Smtp-Source: AGHT+IEW5wf8oVE197xweQI8A8GKcmywEQnJPnvje6Vg4EM1fJeddU/BtZ7aGqakCwFsCwKDv/WgRA==
-X-Received: by 2002:a2e:9d85:0:b0:2d2:b518:3ccd with SMTP id
- c5-20020a2e9d85000000b002d2b5183ccdmr5211263ljj.11.1709492027971; 
- Sun, 03 Mar 2024 10:53:47 -0800 (PST)
+ bh=XUX7oIApRf9quDNJaxBX4ag31s8+YagalHAQ+nw7IxU=;
+ b=falN2SQ/ScTv5i7IJ3pZCM1669qJT/NoHEpdLvx6DbYZi9rv4as1kMSiUOExOZIdf9
+ 6MeVGrD4dlrQKDGalunm3Z0fX4Y41rSZ4f3XKBDJwu9jI+IC3bZ0RcFbTejNc8h+vmiy
+ gmjiW7mbBjJpWgxD43qp+hUooLIwkHF1BdbNxD+llOWJdoJSZDtrmJ96TL8J/wHl2laH
+ LvSzcR5Q/ZbKyex2w1ycmrlaejSvbkfBhc/e35AP9hUCNTlWDnKzAhBs5EA7uJmMZbhk
+ B4xymdL8IFwDWFfX6rvawqE7JTxY+fEeeLIxK/nHlngnawhc6pn0mbWUHjaNOmzEL0KB
+ 9hPQ==
+X-Gm-Message-State: AOJu0YwuATaVmJ+AbY+HwXkdOU+Vct6Z16tjHzXnvnLSg17ZB8myGWK6
+ Uxjg5usjnzakHz/ZKkpcDauNxqSPAxAZvUBU+Rir+DWIFpW37ssLf/xyklTJ
+X-Google-Smtp-Source: AGHT+IFUSo8u73blocfm9TEjjHLhAMJGhFpEbLyicahfaMZeqb3X3wML28HjU0iOzGputokKSewqag==
+X-Received: by 2002:a05:600c:3b94:b0:412:d1ee:dfa2 with SMTP id
+ n20-20020a05600c3b9400b00412d1eedfa2mr3851295wms.0.1709492029404; 
+ Sun, 03 Mar 2024 10:53:49 -0800 (PST)
 Received: from archlinux.. (dynamic-092-224-118-014.92.224.pool.telefonica.de.
  [92.224.118.14]) by smtp.gmail.com with ESMTPSA id
- o17-20020a05600c4fd100b00412d68dbf75sm5259460wmq.35.2024.03.03.10.53.46
+ o17-20020a05600c4fd100b00412d68dbf75sm5259460wmq.35.2024.03.03.10.53.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Mar 2024 10:53:47 -0800 (PST)
+ Sun, 03 Mar 2024 10:53:48 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -65,17 +65,17 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v3 3/4] hw/i386/pc: Set "normal" boot device order in
- pc_basic_device_init()
-Date: Sun,  3 Mar 2024 19:53:31 +0100
-Message-ID: <20240303185332.1408-4-shentey@gmail.com>
+Subject: [PATCH v3 4/4] hw/i386/pc: Inline pc_cmos_init() into
+ pc_cmos_init_late() and remove it
+Date: Sun,  3 Mar 2024 19:53:32 +0100
+Message-ID: <20240303185332.1408-5-shentey@gmail.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240303185332.1408-1-shentey@gmail.com>
 References: <20240303185332.1408-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=shentey@gmail.com; helo=mail-lj1-x232.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,45 +98,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The boot device order may change during the lifetime of a VM. Usually, the
-"normal" order is set once during machine init(). However, if a user specifies
-`-boot once=...`, the "normal" order is overwritten by the "once" order just
-before machine_done, and a reset handler is registered which restores the
-"normal" order during the next reset.
-
-In the next patch, pc_cmos_init() will be inlined into pc_cmos_init_late() which
-runs during machine_done. This means that the "once" boot order would be
-overwritten again with the "normal" boot order -- which renders the user's
-choice ineffective. Fix this by setting the "normal" boot order in
-pc_basic_device_init() which already registers the boot_set() handler.
+Now that pc_cmos_init() doesn't populate the X86MachineState::rtc attribute any
+longer, its duties can be merged into pc_cmos_init_late() which is called within
+machine_done notifier. This frees pc_piix and pc_q35 from explicit CMOS
+initialization.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/i386/pc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/hw/i386/pc.h |  2 --
+ hw/i386/pc.c         | 10 ----------
+ hw/i386/pc_piix.c    |  2 --
+ hw/i386/pc_q35.c     |  2 --
+ 4 files changed, 16 deletions(-)
 
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 5065590281..bfdcd64514 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -178,8 +178,6 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+                           ISADevice *rtc_state,
+                           bool create_fdctrl,
+                           uint32_t hpet_irqs);
+-void pc_cmos_init(PCMachineState *pcms,
+-                  ISADevice *s);
+ void pc_nic_init(PCMachineClass *pcmc, ISABus *isa_bus, PCIBus *pci_bus);
+ 
+ void pc_i8259_create(ISABus *isa_bus, qemu_irq *i8259_irqs);
 diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 06ef278b34..7780d8d6dd 100644
+index 7780d8d6dd..69e134e141 100644
 --- a/hw/i386/pc.c
 +++ b/hw/i386/pc.c
-@@ -614,8 +614,6 @@ void pc_cmos_init(PCMachineState *pcms,
-     mc146818rtc_set_cmos_data(s, 0x5c, val >> 8);
-     mc146818rtc_set_cmos_data(s, 0x5d, val >> 16);
+@@ -570,14 +570,6 @@ static void pc_cmos_init_late(PCMachineState *pcms)
+     mc146818rtc_set_cmos_data(s, 0x39, val);
  
--    set_boot_dev(pcms, s, MACHINE(pcms)->boot_config.order, &error_fatal);
+     pc_cmos_init_floppy(s, pc_find_fdc0());
+-}
 -
-     val = 0;
+-void pc_cmos_init(PCMachineState *pcms,
+-                  ISADevice *rtc)
+-{
+-    int val;
+-    X86MachineState *x86ms = X86_MACHINE(pcms);
+-    MC146818RtcState *s = MC146818_RTC(rtc);
+ 
+     /* various important CMOS locations needed by PC/Bochs bios */
+ 
+@@ -618,8 +610,6 @@ void pc_cmos_init(PCMachineState *pcms,
      val |= 0x02; /* FPU is there */
      val |= 0x04; /* PS/2 mouse installed */
-@@ -1254,6 +1252,8 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+     mc146818rtc_set_cmos_data(s, REG_EQUIPMENT_BYTE, val);
+-
+-    /* hard drives and FDC are handled by pc_cmos_init_late() */
+ }
+ 
+ static void handle_a20_line_change(void *opaque, int irq, int level)
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index ce6aad758d..637f4d38be 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -342,8 +342,6 @@ static void pc_init1(MachineState *machine,
+     }
  #endif
  
-     qemu_register_boot_set(pc_boot_set, pcms);
-+    set_boot_dev(pcms, MC146818_RTC(rtc_state),
-+                 MACHINE(pcms)->boot_config.order, &error_fatal);
+-    pc_cmos_init(pcms, x86ms->rtc);
+-
+     if (piix4_pm) {
+         smi_irq = qemu_allocate_irq(pc_acpi_smi_interrupt, first_cpu, 0);
  
-     if (!xen_enabled() &&
-         (x86ms->pit == ON_OFF_AUTO_AUTO || x86ms->pit == ON_OFF_AUTO_ON)) {
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 45a4102e75..bccd13d162 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -311,8 +311,6 @@ static void pc_q35_init(MachineState *machine)
+         smbus_eeprom_init(pcms->smbus, 8, NULL, 0);
+     }
+ 
+-    pc_cmos_init(pcms, x86ms->rtc);
+-
+     /* the rest devices to which pci devfn is automatically assigned */
+     pc_vga_init(isa_bus, pcms->pcibus);
+     pc_nic_init(pcmc, isa_bus, pcms->pcibus);
 -- 
 2.44.0
 
