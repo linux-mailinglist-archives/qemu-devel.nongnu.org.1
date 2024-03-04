@@ -2,62 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19A4787019E
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 13:35:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 353E38701B0
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 13:38:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rh7WG-0004kb-Mm; Mon, 04 Mar 2024 07:34:13 -0500
+	id 1rh7YH-0001JN-0i; Mon, 04 Mar 2024 07:36:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=mkh8=KK=redhat.com=clg@ozlabs.org>)
- id 1rh7Td-0001rj-Vu
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:31:31 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rh7Xt-0000na-BM
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:35:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=mkh8=KK=redhat.com=clg@ozlabs.org>)
- id 1rh7TK-0005Ck-9E
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:31:28 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TpJ1z15xBz4x3k;
- Mon,  4 Mar 2024 23:30:31 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4TpJ1w1wxgz4x3j;
- Mon,  4 Mar 2024 23:30:27 +1100 (AEDT)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v3 26/26] vfio: Extend vfio_set_migration_error() with Error*
- argument
-Date: Mon,  4 Mar 2024 13:28:44 +0100
-Message-ID: <20240304122844.1888308-27-clg@redhat.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304122844.1888308-1-clg@redhat.com>
-References: <20240304122844.1888308-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rh7Xn-0007wX-MY
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:35:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709555746;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=HSRopl4SLgCCn1zAqzrfraqXgPFnGyrXd6717bMWhh0=;
+ b=KiNVc3wcmowKHJhqJF+hbN2SSjC4QoQkene/hFRm7f2/Gzf2SgH7W/+Zigfnuk4rr3L1mu
+ cJKo3u2tFZDFaHePBCcw2bZDW5NSntt/gf0o5YU1spqn3kWBBv9XeBho7GBD8KAWoDArcY
+ gSFeHrFiOEmYdYxfveUJteBS79AIysI=
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
+ [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-279-dsh_nsKoMYqUF6im8vuIDA-1; Mon, 04 Mar 2024 07:35:45 -0500
+X-MC-Unique: dsh_nsKoMYqUF6im8vuIDA-1
+Received: by mail-pg1-f197.google.com with SMTP id
+ 41be03b00d2f7-5dc97ac2facso1820329a12.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 04:35:45 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709555744; x=1710160544;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=HSRopl4SLgCCn1zAqzrfraqXgPFnGyrXd6717bMWhh0=;
+ b=vy7zNUA6XeuHD9/Tp4CsIqIfBwIIrMBjw4iA6A0AL/TZtc0wHM440EkIJTZapGEmvV
+ vvbtWTdmwNaMkAgA2Q+Clc4McHC28eM8Hr2gkeF6i2Ka2Iw/qhU5DqOIy0VPLdzq2yuZ
+ I4WSaHJ0flff2i1Q+JeK8RPX4VDfIiToAqJa2OAI+mald7M22vfk56jRiNWNVey3vBbF
+ nGayCnhUsLmGe+ADGBsWHV/IGnYDFi8CjESTl2Tgf37lqIFkKm9f4FMrmDJ+Opwk1Hv1
+ YsqG7cumQvagAj+TDo5xW+FN6Pae12jCM9NYbbx23qLthOYVfA44mh3ZooxXcUqDh7IZ
+ 7IyQ==
+X-Gm-Message-State: AOJu0YwkqsKLBiaWcEuKw+b52MMgKbcnoK1cHyxfnKPwbAjnHaG7+uuP
+ mh6z38eZog51e9vA7mj/2M1JHPWwR2tUh0rCmv9jgkcIAKmyYw055pteG3+dMfGxAUaC3pmcvrw
+ PYcH4avR0b5W7mjUqFwigo7QtvgDlv3UUCkdcD4gZQZylVhpuhyYlPNeFFsiwIw0=
+X-Received: by 2002:a05:6a20:409c:b0:1a1:4793:b6f7 with SMTP id
+ a28-20020a056a20409c00b001a14793b6f7mr5295173pzf.6.1709555743937; 
+ Mon, 04 Mar 2024 04:35:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFS6my4KNIalwMsRayi7Fpu2IkEYmrNrf/8tVrWUyl38m5kPVaVAGpB/Mt3VUBP+ojLm1ZR1A==
+X-Received: by 2002:a05:6a20:409c:b0:1a1:4793:b6f7 with SMTP id
+ a28-20020a056a20409c00b001a14793b6f7mr5295157pzf.6.1709555743392; 
+ Mon, 04 Mar 2024 04:35:43 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ x93-20020a17090a38e600b002996bfea625sm8608276pjb.21.2024.03.04.04.35.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 04 Mar 2024 04:35:43 -0800 (PST)
+Date: Mon, 4 Mar 2024 20:35:36 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
+ Claudio Fontana <cfontana@suse.de>
+Subject: Re: [PATCH v6 00/23] migration: File based migration with multifd
+ and mapped-ram
+Message-ID: <ZeXAGEVFWt4Z8QeN@x1n>
+References: <20240229153017.2221-1-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=mkh8=KK=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240229153017.2221-1-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -11
+X-Spam_score: -1.2
+X-Spam_bar: -
+X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.571,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,119 +96,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vfio_set_migration_error() sets the 'return' error on the migration
-stream if a migration is in progress. To improve error reporting, add
-a new Error* argument to also set the Error object on the migration
-stream, if a migration is progress.
+Fabiano,
 
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- hw/vfio/common.c | 36 +++++++++++++++++++-----------------
- 1 file changed, 19 insertions(+), 17 deletions(-)
+On Thu, Feb 29, 2024 at 12:29:54PM -0300, Fabiano Rosas wrote:
+> => guest: 128 GB RAM - 120 GB dirty - 1 vcpu in tight loop dirtying memory
 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 1dec3b4d49c2864a397c99754eca69c6ba443ca1..9fa6eee8035b5f23bb82833699e85c48c6bfaf60 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -148,16 +148,18 @@ bool vfio_viommu_preset(VFIODevice *vbasedev)
-     return vbasedev->bcontainer->space->as != &address_space_memory;
- }
- 
--static void vfio_set_migration_error(int err)
-+static void vfio_set_migration_error(int ret, Error *err)
- {
-     MigrationState *ms = migrate_get_current();
- 
-     if (migration_is_setup_or_active(ms->state)) {
-         WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
-             if (ms->to_dst_file) {
--                qemu_file_set_error(ms->to_dst_file, err);
-+                qemu_file_set_error_obj(ms->to_dst_file, ret, err);
-             }
-         }
-+    } else {
-+        error_report_err(err);
-     }
- }
- 
-@@ -304,9 +306,10 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
-                                 iova, iova + iotlb->addr_mask);
- 
-     if (iotlb->target_as != &address_space_memory) {
--        error_report("Wrong target AS \"%s\", only system memory is allowed",
--                     iotlb->target_as->name ? iotlb->target_as->name : "none");
--        vfio_set_migration_error(-EINVAL);
-+        error_setg(&local_err,
-+                   "Wrong target AS \"%s\", only system memory is allowed",
-+                   iotlb->target_as->name ? iotlb->target_as->name : "none");
-+        vfio_set_migration_error(-EINVAL, local_err);
-         return;
-     }
- 
-@@ -339,11 +342,12 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
-         ret = vfio_container_dma_unmap(bcontainer, iova,
-                                        iotlb->addr_mask + 1, iotlb);
-         if (ret) {
--            error_report("vfio_container_dma_unmap(%p, 0x%"HWADDR_PRIx", "
--                         "0x%"HWADDR_PRIx") = %d (%s)",
--                         bcontainer, iova,
--                         iotlb->addr_mask + 1, ret, strerror(-ret));
--            vfio_set_migration_error(ret);
-+            error_setg(&local_err,
-+                       "vfio_container_dma_unmap(%p, 0x%"HWADDR_PRIx", "
-+                       "0x%"HWADDR_PRIx") = %d (%s)",
-+                       bcontainer, iova,
-+                       iotlb->addr_mask + 1, ret, strerror(-ret));
-+            vfio_set_migration_error(ret, local_err);
-         }
-     }
- out:
-@@ -1241,14 +1245,14 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
-     trace_vfio_iommu_map_dirty_notify(iova, iova + iotlb->addr_mask);
- 
-     if (iotlb->target_as != &address_space_memory) {
--        error_report("Wrong target AS \"%s\", only system memory is allowed",
--                     iotlb->target_as->name ? iotlb->target_as->name : "none");
-+        error_setg(&local_err,
-+                   "Wrong target AS \"%s\", only system memory is allowed",
-+                   iotlb->target_as->name ? iotlb->target_as->name : "none");
-         goto out;
-     }
- 
-     rcu_read_lock();
-     if (!vfio_get_xlat_addr(iotlb, NULL, &translated_addr, NULL, &local_err)) {
--        error_report_err(local_err);
-         goto out_lock;
-     }
- 
-@@ -1259,7 +1263,6 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
-                       "vfio_iommu_map_dirty_notify(%p, 0x%"HWADDR_PRIx", "
-                       "0x%"HWADDR_PRIx") failed :", bcontainer, iova,
-                       iotlb->addr_mask + 1);
--        error_report_err(local_err);
-     }
- 
- out_lock:
-@@ -1267,7 +1270,7 @@ out_lock:
- 
- out:
-     if (ret) {
--        vfio_set_migration_error(ret);
-+        vfio_set_migration_error(ret, local_err);
-     }
- }
- 
-@@ -1387,8 +1390,7 @@ static void vfio_listener_log_sync(MemoryListener *listener,
-     if (vfio_devices_all_dirty_tracking(bcontainer)) {
-         ret = vfio_sync_dirty_bitmap(bcontainer, section, &local_err);
-         if (ret) {
--            error_report_err(local_err);
--            vfio_set_migration_error(ret);
-+            vfio_set_migration_error(ret, local_err);
-         }
-     }
- }
+I'm curious normally how much time does it take to do the final fdatasync()
+for you when you did this test.
+
+I finally got a relatively large system today and gave it a quick shot over
+128G (100G busy dirty) mapped-ram snapshot with 8 multifd channels.  The
+migration save/load does all fine, so I don't think there's anything wrong
+with the patchset, however when save completes (I'll need to stop the
+workload as my disk isn't fast enough I guess..) I'll always hit a super
+long hang of QEMU on fdatasync() on XFS during which the main thread is in
+UNINTERRUPTIBLE state.
+
+[<0>] rq_qos_wait+0xbb/0x130
+[<0>] wbt_wait+0x9c/0x100
+[<0>] __rq_qos_throttle+0x23/0x40
+[<0>] blk_mq_submit_bio+0x183/0x580
+[<0>] __submit_bio_noacct+0x7e/0x1e0
+[<0>] iomap_submit_ioend+0x4e/0x80
+[<0>] iomap_writepage_map+0x22a/0x400
+[<0>] write_cache_pages+0x17c/0x4c0
+[<0>] iomap_writepages+0x1c/0x40
+[<0>] xfs_vm_writepages+0x7a/0xb0 [xfs]
+[<0>] do_writepages+0xcf/0x1d0
+[<0>] filemap_fdatawrite_wbc+0x66/0x90
+[<0>] __filemap_fdatawrite_range+0x54/0x80
+[<0>] file_write_and_wait_range+0x48/0xb0
+[<0>] xfs_file_fsync+0x5a/0x240 [xfs]
+[<0>] __x64_sys_fdatasync+0x46/0x80
+[<0>] do_syscall_64+0x5c/0x90
+[<0>] entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+Do you also have it, or it's just my host kernel / other config that is
+different?
+
 -- 
-2.44.0
+Peter Xu
 
 
