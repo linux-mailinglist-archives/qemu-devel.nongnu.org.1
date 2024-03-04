@@ -2,74 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28253870839
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 18:26:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B94987083C
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 18:28:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhC4X-0006md-2u; Mon, 04 Mar 2024 12:25:53 -0500
+	id 1rhC62-00011K-8M; Mon, 04 Mar 2024 12:27:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhC4M-0006VQ-4G
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 12:25:45 -0500
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rhC5z-0000zu-84
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 12:27:23 -0500
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhC44-0007md-9r
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 12:25:38 -0500
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-513298d6859so4428311e87.3
- for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 09:25:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rhC5x-0008Ap-AU
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 12:27:22 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1dc3b4b9b62so40741225ad.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 09:27:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709573122; x=1710177922; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=siOpzgJ38wA53g1oE1TLt4ZXTIX/sx1qob4r3WniGEg=;
- b=lxTjRLSOzyyc9DvP1YMmqC69HqJaSdCIY2xiLGpTi2Io9/CnuezNUHCqsNhZsLsXiX
- DDlLufgz8Gv6JsH+1+yUb+7cEndgdAWXkacDfBp82S6DXL/+pq2lA7l/SR5+kmmJjScr
- I5kitPqlqtglKMvpuN+eFUZ+CKpnm8vtSOcAVt/R7duDN3jkvqIpVhBWnjU4fjIl5QBI
- 5AsoEjFeyfs9+n1nnBuuHOjuebSbfQFdkL+IchXZw/HrMraPk/TGSSpGB9IN+mt9gfiP
- iivBRy2sKMKaieTEk/lW30VqoRABiLd7tao1TRDbTJzMiGoCMR7lrTu0MCKytCK0DbAp
- muRQ==
+ d=linaro.org; s=google; t=1709573240; x=1710178040; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=wTd0DPsfURrIrCcbXM8PEnn29nN7bPwAfFryTCWeXxo=;
+ b=CXEVEodrb8qKjwMKMlKIqs7rWD60MoykPW5Us5eApxAlEXeyGviT9PLT+LijvcJjrc
+ D45HYg8SvB2dKFLezXqhfUmApEL8I50tiIIcEgMhxn0fjRNnIcp21bMin6E7tPClEyL3
+ nMG7s9xajYTfyrqayaW+fnXnnTjzylNq6G69iS1DqjO0555RHnvR2zz2HSC/JaDS3EPa
+ Hj+ewmDLRtAH4L4Uh6OnpOmGF96HS593Mt24NNk5vZSWO8sto2X6k/HpoT2ZFE91VnuQ
+ iMCmdztl2A0pPvPHjmoVTi8uaJ3iAFdO110u8eZYLaNXtJVLzePOpJKxPIA5m3gxJmzx
+ ZWog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709573122; x=1710177922;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=siOpzgJ38wA53g1oE1TLt4ZXTIX/sx1qob4r3WniGEg=;
- b=S3x3Su3fEEwsjhiu9k3eUfyXB44EDXGxPRgIAbmr/Jvvm7ag38Dy9L7oC9fKXPzeOy
- Op7m/kH3ArrmFdD5BmyiaeeieJcLGtP3sZE/SV0ts24AUdGzVTRZPH9jypZU5psNIkXN
- m1LG22O5Vd1DjBDenbCJVrB9pt+mOk3MnaR0yFRZNQs8xPx2wdzfCDR3Gtk2NXXc6dL0
- Tp1/oDG6XrHKv3At3+J8PzMsG9G4iRpI6iQ4d9418wcqsJRfqtnX9jIt+mK66uFeXPKG
- zCjdug1gxE89dByyIlVhacItukoRHV8wQ1ApMu5YX/c1jde8so2gn10xVNcLyNnt+Nz4
- Ueuw==
-X-Gm-Message-State: AOJu0YwmUfuNQf2FFhPlzAr6hXmCFmFKYGD1xEnrGwtc6sAGz2fM1otr
- /WMkQqKoQDArV4E8UJob8gEdOg9WKiIeqEAMsqQz6ktr1OBS6h1IZb2C3MCi6WMR3xIPyq7JRD4
- 36i35KxVvcVNHdEoFsI/c0RAqRnOBWAH9EdSZ0w==
-X-Google-Smtp-Source: AGHT+IEocjwZxijhjgFhzqoH+b8Z/R047/hRAzGMDS6mLl/3l88V8uosQwp+gJwKq6uVq0+uyidJq5B8puzYlkdM8S4=
-X-Received: by 2002:ac2:5b0e:0:b0:512:fabd:8075 with SMTP id
- v14-20020ac25b0e000000b00512fabd8075mr6986509lfn.48.1709573122429; Mon, 04
- Mar 2024 09:25:22 -0800 (PST)
+ d=1e100.net; s=20230601; t=1709573240; x=1710178040;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wTd0DPsfURrIrCcbXM8PEnn29nN7bPwAfFryTCWeXxo=;
+ b=Pw1mttsgcx/3aaTJTCTbkCVJ+TWOUl+b3lmZedfwnWcKJaXurZuk/ESmG6Hga9Wud3
+ fNsuH6vsYt/V2cIoGXoiU4Z9PE54ZZZ3rEUljH/wcNyX/Aqqf8ED4CsVfCjQU5qpTvOO
+ 6mMng22KG4fdnhwVJ6ta44193M1JzlCg/yij1GViFUncuckqiGAfqjVMuhqUTeyKPIwZ
+ NonfzHnuuGAJWJ7oveenGxkKmK3LYhlks3xTOKlGsvv+c8/7ckQ6eZg3Rn/9urXmv905
+ v354O49uKjoQBbeROXoNdA3fBITUidzGQS+plBK6MFrdS6k2QEveRXdiYDPAFiS7i9TW
+ Kn4Q==
+X-Gm-Message-State: AOJu0Yw7gL4Gojng2n7E1dUN9AGw7Yx16gN2dqyBuKhusfU0ZNgF69tV
+ OxkSh8SYwsliuDhhX6KMCmtpdTWze3jBLVQHj8zm3QW/fDgSCiMQFA2ZaoJqQyA=
+X-Google-Smtp-Source: AGHT+IFUGsJkDt9uTKjLZK7W8KXo1apQ4Vye2imTJARpyht8aIM2xk0ji/kgdj73/F4LgUP2ys5MeA==
+X-Received: by 2002:a17:902:da87:b0:1dc:c8b3:9376 with SMTP id
+ j7-20020a170902da8700b001dcc8b39376mr202158plx.7.1709573239680; 
+ Mon, 04 Mar 2024 09:27:19 -0800 (PST)
+Received: from [192.168.6.128] (098-147-055-211.res.spectrum.com.
+ [98.147.55.211]) by smtp.gmail.com with ESMTPSA id
+ a8-20020a170902b58800b001d9b537ad0bsm8737336pls.275.2024.03.04.09.27.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Mar 2024 09:27:19 -0800 (PST)
+Message-ID: <8f571406-4192-4be7-ac24-f23a06690cab@linaro.org>
+Date: Mon, 4 Mar 2024 07:27:16 -1000
 MIME-Version: 1.0
-References: <20240302010627.12998-1-richard.henderson@linaro.org>
- <20240302010627.12998-3-richard.henderson@linaro.org>
-In-Reply-To: <20240302010627.12998-3-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 4 Mar 2024 17:25:11 +0000
-Message-ID: <CAFEAcA-gircuBZ3Osa5ckQpBpzAHNqrRSXnPZQ6GtzJ3hQ8h4w@mail.gmail.com>
-Subject: Re: [PATCH 2/3] linux-user: Implement PR_{GET,SET}_SPECULATION_CTRL
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12a.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 6/6] target/arm: Do memory type alignment check when
+ translation enabled
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+References: <20240301204110.656742-1-richard.henderson@linaro.org>
+ <20240301204110.656742-7-richard.henderson@linaro.org>
+ <CAFEAcA-RCuHCR18q6V+xGi_igE-7-+PUrX1eOjduJeeeWFq7EA@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAFEAcA-RCuHCR18q6V+xGi_igE-7-+PUrX1eOjduJeeeWFq7EA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,19 +96,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 2 Mar 2024 at 04:14, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Both of these only pass and return integral values.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  linux-user/syscall.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
+On 3/4/24 07:10, Peter Maydell wrote:
+> On Fri, 1 Mar 2024 at 20:42, Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+>>
+>> If translation is enabled, and the PTE memory type is Device,
+>> enable checking alignment via TLB_CHECK_ALIGNMENT.  While the
+>> check is done later than it should be per the ARM, it's better
+>> than not performing the check at all.
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> 
+> 
+>> +    /*
+>> +     * Enable alignment checks on Device memory.
+>> +     *
+>> +     * Per R_XCHFJ, this check is mis-ordered, in that this alignment check
+>> +     * should have priority 30, while the permission check should be next at
+>> +     * priority 31 and stage2 translation faults come after that.
+>> +     * Due to the way the TCG softmmu TLB operates, we will have implicitly
+>> +     * done the permission check and the stage2 lookup in finding the TLB
+>> +     * entry, so the alignment check cannot be done sooner.
+>> +     */
+> 
+> Looks like in rev J.a the priority list has had some extra entries
+> added, so these are now items 35, 36 and 37 in the list.
+> Maybe we should drop the numbering and say
+> 
+>   * Per R_XCHFJ, this check is mis-ordered. The correct ordering
+>   * for alignment, permission, and stage 2 faults should be:
+>   *    - Alignment fault caused by the memory type
+>   *    - Permission fault
+>   *    - A stage 2 fault on the memory access
+>   * but due to ...
+> 
+> ?
+> 
+>> +    if (device) {
+>> +        result->f.tlb_fill_flags |= TLB_CHECK_ALIGNED;
+>>      }
+> 
+> In v7, the alignment faults on Device memory accesses are only
+> architecturally required if the CPU implements the Virtualization
+> Extensions; otherwise they are UNPREDICTABLE. But in practice
+> QEMU doesn't implement any CPU types with ARM_FEATURE_LPAE
+> but not ARM_FEATURE_V7VE, and "take an alignment fault" is
+> something that the UNPREDICTABLE case allows us to do, so
+> it doesn't seem necessary to put in a check for ARM_FEATURE_LPAE
+> here. We could mention it in the comment, though.
+> 
+> I propose to fold in this comment diff and take the patchset into
+> target-arm.next:
+> 
+> --- a/target/arm/ptw.c
+> +++ b/target/arm/ptw.c
+> @@ -2141,12 +2141,19 @@ static bool get_phys_addr_lpae(CPUARMState
+> *env, S1Translate *ptw,
+>       /*
+>        * Enable alignment checks on Device memory.
+>        *
+> -     * Per R_XCHFJ, this check is mis-ordered, in that this alignment check
+> -     * should have priority 30, while the permission check should be next at
+> -     * priority 31 and stage2 translation faults come after that.
+> -     * Due to the way the TCG softmmu TLB operates, we will have implicitly
+> -     * done the permission check and the stage2 lookup in finding the TLB
+> -     * entry, so the alignment check cannot be done sooner.
+> +     * Per R_XCHFJ, this check is mis-ordered. The correct ordering
+> +     * for alignment, permission, and stage 2 faults should be:
+> +     *    - Alignment fault caused by the memory type
+> +     *    - Permission fault
+> +     *    - A stage 2 fault on the memory access
+> +     * but due to the way the TCG softmmu TLB operates, we will have
+> +     * implicitly done the permission check and the stage2 lookup in
+> +     * finding the TLB entry, so the alignment check cannot be done sooner.
+> +     *
+> +     * In v7, for a CPU without the Virtualization Extensions this
+> +     * access is UNPREDICTABLE; we choose to make it take the alignment
+> +     * fault as is required for a v7VE CPU. (QEMU doesn't emulate any
+> +     * CPUs with ARM_FEATURE_LPAE but not ARM_FEATURE_V7VE anyway.)
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Looks good, thanks for the update.
 
-thanks
--- PMM
+
+r~
 
