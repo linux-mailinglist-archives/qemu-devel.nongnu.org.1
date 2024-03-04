@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9354870AFC
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 20:50:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DCD9870AF1
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 20:47:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhEKk-0002hb-8D; Mon, 04 Mar 2024 14:50:46 -0500
+	id 1rhEGp-0003cw-5b; Mon, 04 Mar 2024 14:46:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1rhEKW-0002UL-F1; Mon, 04 Mar 2024 14:50:36 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1rhEGl-0003M3-RX; Mon, 04 Mar 2024 14:46:39 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1rhEKU-00082p-KY; Mon, 04 Mar 2024 14:50:32 -0500
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ id 1rhEGk-0007SF-1c; Mon, 04 Mar 2024 14:46:39 -0500
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 424IxTg0002093; Mon, 4 Mar 2024 19:46:26 GMT
+ 424IxiPH014980; Mon, 4 Mar 2024 19:46:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-type : content-transfer-encoding; s=corp-2023-11-20;
- bh=v42uEPaaW1O9AWwC8cXe0QMmXpolwf08lZcTWXWJfdE=;
- b=QiWA7kZqErQSaLEOG9X9IXB7eCIgk2zYGRM7UXQn++qsS0xlcHBZm9tL7u4ner2MzVTs
- v5sWJ02ZLsMQ4QtatUF18/gYBDtKE57LXGVJy1EX7KcwSHsz3qDndf7w8s3HD5cXxaPT
- COTMK/ayn68d8vPCHNXNXMLKMZQjyAkohdljpRSzqivUEPBiry4OL9v6U9zccqz8a6z/
- fYWZ8DYeFys0v9KtAvygwE8WfrGrzALu4bOPWG5T6F9Pxc6sZRpBk0N+4QAPxG0OF/Vy
- FMSiI1zswt0QXTZBc04bcxPpdQbgtZaIg+vqyVUs0QTRT4c8/9lhoAAJC2WJypgtGDWA nw== 
+ bh=42Q56BfGoWW3SYftKo0HTu7R0vs7xDQNQCZVLJSzsio=;
+ b=DL4QeFTm6kgQQOC/rZSmI44Msg93tu7NmYUv7Xa/GHabiVvgoj1VxzbTl4HClwR+Ln69
+ xGsi32RZ12A8tIVvJEefsiNHTy2mjFSkno6UH3Smp7kcH1bse2nWXNMEjkAy2EnfZ6cq
+ 6F3G5lTd+CSFwZ8uwwPjG9Zi/QGVU5yeKtCMbzJI7+VW8ViRzPYbh5ZKk7KWDm+ZqVG9
+ wV4YjVsTkwtyz8eb9t7AnvpWWgFJFr6Q4W35vtY89q5ayBxJ13/FuSy3KmAuCr7toRNa
+ m31uBSdVp8wwHrHAuGXHPBmOXApenEtYdOxoSCtgctAoc/k3gnc4HB02ybKeUpQe8adM pQ== 
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wkv5dcnht-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wktq24jre-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 04 Mar 2024 19:46:26 +0000
+ Mon, 04 Mar 2024 19:46:28 +0000
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 424J0Gad018958; Mon, 4 Mar 2024 19:46:26 GMT
+ with ESMTP id 424ItleQ018994; Mon, 4 Mar 2024 19:46:27 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3wktj6agep-1
+ 3wktj6agg4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 04 Mar 2024 19:46:25 +0000
+ Mon, 04 Mar 2024 19:46:27 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 424JkE4C038523;
- Mon, 4 Mar 2024 19:46:25 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 424JkE4E038523;
+ Mon, 4 Mar 2024 19:46:26 GMT
 Received: from jonah-ol8.us.oracle.com (dhcp-10-39-196-188.vpn.oracle.com
  [10.39.196.188])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 3wktj6ag50-8; Mon, 04 Mar 2024 19:46:25 +0000
+ 3wktj6ag50-9; Mon, 04 Mar 2024 19:46:26 +0000
 From: Jonah Palmer <jonah.palmer@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: mst@redhat.com, jasowang@redhat.com, eperezma@redhat.com,
@@ -61,10 +61,10 @@ Cc: mst@redhat.com, jasowang@redhat.com, eperezma@redhat.com,
  david@redhat.com, iii@linux.ibm.com, cohuck@redhat.com,
  pbonzini@redhat.com, fam@euphon.net, stefanha@redhat.com,
  qemu-block@nongnu.org, qemu-s390x@nongnu.org, virtio-fs@lists.linux.dev
-Subject: [PATCH v1 7/8] vhost/vhost-user: Add VIRTIO_F_NOTIFICATION_DATA to
- vhost feature bits
-Date: Mon,  4 Mar 2024 14:46:11 -0500
-Message-Id: <20240304194612.611660-8-jonah.palmer@oracle.com>
+Subject: [PATCH v1 8/8] virtio: Add VIRTIO_F_NOTIFICATION_DATA property
+ definition
+Date: Mon,  4 Mar 2024 14:46:12 -0500
+Message-Id: <20240304194612.611660-9-jonah.palmer@oracle.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240304194612.611660-1-jonah.palmer@oracle.com>
 References: <20240304194612.611660-1-jonah.palmer@oracle.com>
@@ -79,18 +79,17 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
  adultscore=0 bulkscore=0 spamscore=0 mlxlogscore=999 malwarescore=0
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2403040152
-X-Proofpoint-GUID: GLFxPpaavAvqEDKShe5FF50gJAnNWkaE
-X-Proofpoint-ORIG-GUID: GLFxPpaavAvqEDKShe5FF50gJAnNWkaE
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Proofpoint-GUID: 4lF4B-vi0KJNbSQiv847VOHk76DaEWij
+X-Proofpoint-ORIG-GUID: 4lF4B-vi0KJNbSQiv847VOHk76DaEWij
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,119 +105,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add support for the VIRTIO_F_NOTIFICATION_DATA feature across a variety
-of vhost devices.
+Extend the virtio device property definitions to include the
+VIRTIO_F_NOTIFICATION_DATA feature.
 
-The inclusion of VIRTIO_F_NOTIFICATION_DATA in the feature bits arrays
-for these devices ensures that the backend is capable of offering and
-providing support for this feature, and that it can be disabled if the
-backend does not support it.
+The default state of this feature is disabled, allowing it to be
+explicitly enabled where it's supported.
 
 Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
 Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
 ---
- hw/block/vhost-user-blk.c    | 1 +
- hw/net/vhost_net.c           | 2 ++
- hw/scsi/vhost-scsi.c         | 1 +
- hw/scsi/vhost-user-scsi.c    | 1 +
- hw/virtio/vhost-user-fs.c    | 2 +-
- hw/virtio/vhost-user-vsock.c | 1 +
- net/vhost-vdpa.c             | 1 +
- 7 files changed, 8 insertions(+), 1 deletion(-)
+ include/hw/virtio/virtio.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-index 6a856ad51a..983c0657da 100644
---- a/hw/block/vhost-user-blk.c
-+++ b/hw/block/vhost-user-blk.c
-@@ -51,6 +51,7 @@ static const int user_feature_bits[] = {
-     VIRTIO_F_RING_PACKED,
-     VIRTIO_F_IOMMU_PLATFORM,
-     VIRTIO_F_RING_RESET,
-+    VIRTIO_F_NOTIFICATION_DATA,
-     VHOST_INVALID_FEATURE_BIT
- };
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index 53915947a7..41ef3c4aef 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -369,7 +369,9 @@ typedef struct VirtIORNGConf VirtIORNGConf;
+     DEFINE_PROP_BIT64("packed", _state, _field, \
+                       VIRTIO_F_RING_PACKED, false), \
+     DEFINE_PROP_BIT64("queue_reset", _state, _field, \
+-                      VIRTIO_F_RING_RESET, true)
++                      VIRTIO_F_RING_RESET, true), \
++    DEFINE_PROP_BIT64("notification_data", _state, _field, \
++                      VIRTIO_F_NOTIFICATION_DATA, false)
  
-diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
-index e8e1661646..bb1f975b39 100644
---- a/hw/net/vhost_net.c
-+++ b/hw/net/vhost_net.c
-@@ -48,6 +48,7 @@ static const int kernel_feature_bits[] = {
-     VIRTIO_F_IOMMU_PLATFORM,
-     VIRTIO_F_RING_PACKED,
-     VIRTIO_F_RING_RESET,
-+    VIRTIO_F_NOTIFICATION_DATA,
-     VIRTIO_NET_F_HASH_REPORT,
-     VHOST_INVALID_FEATURE_BIT
- };
-@@ -55,6 +56,7 @@ static const int kernel_feature_bits[] = {
- /* Features supported by others. */
- static const int user_feature_bits[] = {
-     VIRTIO_F_NOTIFY_ON_EMPTY,
-+    VIRTIO_F_NOTIFICATION_DATA,
-     VIRTIO_RING_F_INDIRECT_DESC,
-     VIRTIO_RING_F_EVENT_IDX,
- 
-diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-index 58a00336c2..b8048f18e9 100644
---- a/hw/scsi/vhost-scsi.c
-+++ b/hw/scsi/vhost-scsi.c
-@@ -38,6 +38,7 @@ static const int kernel_feature_bits[] = {
-     VIRTIO_RING_F_EVENT_IDX,
-     VIRTIO_SCSI_F_HOTPLUG,
-     VIRTIO_F_RING_RESET,
-+    VIRTIO_F_NOTIFICATION_DATA,
-     VHOST_INVALID_FEATURE_BIT
- };
- 
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index a63b1f4948..0b050805a8 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -36,6 +36,7 @@ static const int user_feature_bits[] = {
-     VIRTIO_RING_F_EVENT_IDX,
-     VIRTIO_SCSI_F_HOTPLUG,
-     VIRTIO_F_RING_RESET,
-+    VIRTIO_F_NOTIFICATION_DATA,
-     VHOST_INVALID_FEATURE_BIT
- };
- 
-diff --git a/hw/virtio/vhost-user-fs.c b/hw/virtio/vhost-user-fs.c
-index cca2cd41be..ae48cc1c96 100644
---- a/hw/virtio/vhost-user-fs.c
-+++ b/hw/virtio/vhost-user-fs.c
-@@ -33,7 +33,7 @@ static const int user_feature_bits[] = {
-     VIRTIO_F_RING_PACKED,
-     VIRTIO_F_IOMMU_PLATFORM,
-     VIRTIO_F_RING_RESET,
--
-+    VIRTIO_F_NOTIFICATION_DATA,
-     VHOST_INVALID_FEATURE_BIT
- };
- 
-diff --git a/hw/virtio/vhost-user-vsock.c b/hw/virtio/vhost-user-vsock.c
-index 9431b9792c..802b44a07d 100644
---- a/hw/virtio/vhost-user-vsock.c
-+++ b/hw/virtio/vhost-user-vsock.c
-@@ -21,6 +21,7 @@ static const int user_feature_bits[] = {
-     VIRTIO_RING_F_INDIRECT_DESC,
-     VIRTIO_RING_F_EVENT_IDX,
-     VIRTIO_F_NOTIFY_ON_EMPTY,
-+    VIRTIO_F_NOTIFICATION_DATA,
-     VHOST_INVALID_FEATURE_BIT
- };
- 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index e6bdb4562d..08b822e6ed 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -62,6 +62,7 @@ const int vdpa_feature_bits[] = {
-     VIRTIO_F_RING_PACKED,
-     VIRTIO_F_RING_RESET,
-     VIRTIO_F_VERSION_1,
-+    VIRTIO_F_NOTIFICATION_DATA,
-     VIRTIO_NET_F_CSUM,
-     VIRTIO_NET_F_CTRL_GUEST_OFFLOADS,
-     VIRTIO_NET_F_CTRL_MAC_ADDR,
+ hwaddr virtio_queue_get_desc_addr(VirtIODevice *vdev, int n);
+ bool virtio_queue_enabled_legacy(VirtIODevice *vdev, int n);
 -- 
 2.39.3
 
