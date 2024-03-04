@@ -2,29 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D8186FCE3
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 10:14:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAFE786FCDD
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 10:13:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rh4NH-0007NE-Ak; Mon, 04 Mar 2024 04:12:43 -0500
+	id 1rh4NK-0007PL-H8; Mon, 04 Mar 2024 04:12:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1rh4NG-0007Mv-7e; Mon, 04 Mar 2024 04:12:42 -0500
+ id 1rh4NI-0007Oi-Fg; Mon, 04 Mar 2024 04:12:44 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX02.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_CBC_SHA1:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1rh4NE-0003Bk-Iq; Mon, 04 Mar 2024 04:12:41 -0500
-Received: from TWMBX03.aspeed.com (192.168.0.62) by TWMBX02.aspeed.com
- (192.168.0.25) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 4 Mar
- 2024 17:12:27 +0800
-Received: from TWMBX02.aspeed.com (192.168.0.24) by TWMBX03.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 4 Mar
- 2024 17:13:27 +0800
+ id 1rh4NH-0003Bk-1d; Mon, 04 Mar 2024 04:12:44 -0500
+Received: from TWMBX02.aspeed.com (192.168.0.24) by TWMBX02.aspeed.com
+ (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 4 Mar
+ 2024 17:12:28 +0800
 Received: from localhost.localdomain (192.168.10.10) by TWMBX02.aspeed.com
  (192.168.0.24) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 4 Mar 2024 17:12:26 +0800
+ Transport; Mon, 4 Mar 2024 17:12:28 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Andrew Jeffery <andrew@codeconstruct.com.au>,
  Joel Stanley <joel@jms.id.au>, Alistair Francis <alistair@alistair23.me>,
@@ -32,15 +29,19 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v1 6/9] aspeed/intc: Add AST2700 support
-Date: Mon, 4 Mar 2024 17:12:18 +0800
-Message-ID: <20240304091221.1855398-7-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 9/9] aspeed/soc: fix incorrect dram size for AST2700
+Date: Mon, 4 Mar 2024 17:12:21 +0800
+Message-ID: <20240304091221.1855398-10-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240304091221.1855398-1-jamin_lin@aspeedtech.com>
 References: <20240304091221.1855398-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+Received-SPF: Fail (TWMBX02.aspeed.com: domain of jamin_lin@aspeedtech.com
+ does not designate 192.168.10.10 as permitted sender)
+ receiver=TWMBX02.aspeed.com; client-ip=192.168.10.10;
+ helo=localhost.localdomain;
 Received-SPF: pass client-ip=211.20.114.72;
  envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX02.aspeed.com
 X-Spam_score_int: -18
@@ -65,226 +66,159 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-AST2700 interrupt controller(INTC) provides hardware interrupt interfaces
-to interrupt of processors PSP, SSP and TSP. In INTC, each interrupt of
-INT 128 to INT136 combines 32 interrupts.
+AST2700 dram size calculation is not back compatible AST2600.
+According to the DDR capacity hardware behavior,
+if users write the data to address which is beyond the ram size,
+it would write the data to address 0.
+For example:
+a. sdram base address "0x4 00000000"
+b. sdram size is 1 GiB
+The available address range is from "0x4 00000000" to "0x4 40000000".
+If users write 0xdeadbeef to address "0x6 00000000",
+the value of DRAM address 0 (base address 0x4 00000000) should be 0xdeadbeef.
 
-Introduce a new aspeed_intc class with instance_init and realize handlers.
-
-QEMU supports ARM Generic Interrupt Controller, version 3(GICv3)
-but not support Shared Peripheral Interrupt (SPI), yet.
-This patch added work around to set GICINT132[18] which was BMC UART interrupt
-if it received GICINT132, so users are able to type any key from keyboard to
-trigger GICINT132 interrupt until AST2700 boot into login prompt.
-It is a temporary solution.
+Adds aspeed_soc_ast2700_dram_init to calculation the dram size and add
+memory I/O whose address range is from max_ram_size - ram_size to max_ram_size
+and its read/write handler to emulate DDR capacity hardware behavior.
 
 Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/intc/aspeed_intc.c        | 135 +++++++++++++++++++++++++++++++++++
- hw/intc/meson.build          |   1 +
- include/hw/intc/aspeed_vic.h |  29 ++++++++
- 3 files changed, 165 insertions(+)
- create mode 100644 hw/intc/aspeed_intc.c
+ hw/arm/aspeed_ast27x0.c     | 94 ++++++++++++++++++++++++++++++++++++-
+ include/hw/arm/aspeed_soc.h |  1 +
+ 2 files changed, 94 insertions(+), 1 deletion(-)
 
-diff --git a/hw/intc/aspeed_intc.c b/hw/intc/aspeed_intc.c
-new file mode 100644
-index 0000000000..851d43363b
---- /dev/null
-+++ b/hw/intc/aspeed_intc.c
-@@ -0,0 +1,135 @@
-+/*
-+ * ASPEED INTC Controller
-+ *
-+ * Copyright (C) 2024 ASPEED Technology Inc.
-+ *
-+ * This code is licensed under the GPL version 2 or later.  See
-+ * the COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/intc/aspeed_vic.h"
-+#include "hw/irq.h"
-+#include "migration/vmstate.h"
-+#include "qemu/bitops.h"
+diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+index c120994e5c..b78ae9369e 100644
+--- a/hw/arm/aspeed_ast27x0.c
++++ b/hw/arm/aspeed_ast27x0.c
+@@ -20,6 +20,7 @@
+ #include "sysemu/sysemu.h"
+ #include "hw/intc/arm_gicv3.h"
+ #include "qapi/qmp/qlist.h"
 +#include "qemu/log.h"
-+#include "qemu/module.h"
-+#include "hw/intc/arm_gicv3.h"
-+#include "trace.h"
-+
-+#define ASPEED_INTC_NR_IRQS 128
-+#define ASPEED_INTC_SIZE 0x4000
-+#define TO_REG(N) (N >> 2)
-+
-+uint64_t regs[ASPEED_INTC_SIZE];
-+
-+static void aspeed_intc_set_irq(void *opaque, int irq, int level)
+ 
+ static const hwaddr aspeed_soc_ast2700_memmap[] = {
+     [ASPEED_DEV_SPI_BOOT]  =  0x400000000,
+@@ -118,6 +119,97 @@ static qemu_irq aspeed_soc_ast2700_get_irq(AspeedSoCState *s, int dev)
+     return qdev_get_gpio_in(a->intc.gic, sc->irqmap[dev]);
+ }
+ 
++static uint64_t aspeed_ram_capacity_read(void *opaque, hwaddr addr,
++                                                    unsigned int size)
 +{
++    qemu_log_mask(LOG_GUEST_ERROR,
++                  "%s: read @%" PRIx64 " out of ram size\n",
++                   __func__, addr);
++    return 0;
 +}
 +
-+static uint64_t aspeed_intc_read(void *opaque, hwaddr offset, unsigned size)
++static void aspeed_ram_capacity_write(void *opaque, hwaddr addr, uint64_t data,
++                                                unsigned int size)
 +{
-+    AspeedINTCState *s = ASPEED_INTC(opaque);
-+    GICv3State *gic = ARM_GICV3(s->gic);
++    AspeedSoCState *s = ASPEED_SOC(opaque);
++    uint32_t test_pattern = 0xdeadbeef;
++    bool invalid_pattern = true;
++    uint32_t *ram_ptr;
++    int sz;
 +
-+    uint64_t value = 0;
-+    switch (TO_REG(offset)) {
-+    case TO_REG(0x1404):
-+        /* BMC UART interript is GICINT132[18] */
-+        if (gic && gicv3_gicd_level_test(gic, 164)) {
-+            value = BIT(18);
++    ram_ptr = memory_region_get_ram_ptr(s->dram_mr);
++
++   /*
++    * Emulate ddr capacity hardware behavior.
++    * If writes the test_pattern to address which is beyond the ram size,
++    * it would write the test_pattern to address 0.
++    */
++    for (sz = 4; sz > 0 ; sz--) {
++        test_pattern = (test_pattern << 4) + sz;
++        if (data == test_pattern) {
++            ram_ptr[0] = test_pattern;
++            invalid_pattern = false;
++            break;
 +        }
-+        break;
-+    default:
-+        value = regs[TO_REG(offset)];
-+        break;
 +    }
 +
-+    return value;
-+}
-+
-+static void aspeed_intc_write(void *opaque, hwaddr offset, uint64_t data,
-+                                        unsigned size)
-+{
-+    AspeedINTCState *s = ASPEED_INTC(opaque);
-+    GICv3State *gic = ARM_GICV3(s->gic);
-+
-+    switch (TO_REG(offset)) {
-+    case TO_REG(0x1400):
-+        regs[TO_REG(offset)] = data;
-+        if (regs[TO_REG(offset)]) {
-+            gicv3_gicd_enabled_set(gic, 164);
-+        } else {
-+            gicv3_gicd_enabled_clear(gic, 164);
-+        }
-+        break;
-+    case TO_REG(0x1404):
-+        regs[TO_REG(offset)] &= ~(data);
-+        gicv3_gicd_level_clear(gic, 164);
-+        break;
-+    default:
-+        regs[TO_REG(offset)] = data;
-+        break;
++    if (invalid_pattern) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: write invalid pattern @%" PRIx64
++                      " to addr @%" HWADDR_PRIx "]\n",
++                      __func__, data, addr);
 +    }
 +}
 +
-+static const MemoryRegionOps aspeed_intc_ops = {
-+    .read = aspeed_intc_read,
-+    .write = aspeed_intc_write,
++static const MemoryRegionOps aspeed_ram_capacity_ops = {
++    .read = aspeed_ram_capacity_read,
++    .write = aspeed_ram_capacity_write,
 +    .endianness = DEVICE_LITTLE_ENDIAN,
-+    .valid.min_access_size = 4,
-+    .valid.max_access_size = 4,
-+    .valid.unaligned = false,
++    .valid = {
++        .min_access_size = 1,
++        .max_access_size = 8,
++    },
 +};
 +
-+static void aspeed_intc_realize(DeviceState *dev, Error **errp)
++/*
++ * SDMC should be realized first to get correct RAM size and max size
++ * values
++ */
++static bool aspeed_soc_ast2700_dram_init(DeviceState *dev, Error **errp)
 +{
-+    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
-+    AspeedINTCState *s = ASPEED_INTC(dev);
++    ram_addr_t ram_size, max_ram_size;
++    Aspeed27x0SoCState *a = ASPEED27X0_SOC(dev);
++    AspeedSoCState *s = ASPEED_SOC(dev);
++    AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
 +
-+    memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_intc_ops, s,
-+                          TYPE_ASPEED_INTC, ASPEED_INTC_SIZE);
++    ram_size = object_property_get_uint(OBJECT(&s->sdmc), "ram-size",
++                                        &error_abort);
++    max_ram_size = object_property_get_uint(OBJECT(&s->sdmc), "max-ram-size",
++                                            &error_abort);
 +
-+    sysbus_init_mmio(sbd, &s->iomem);
++    memory_region_init(&s->dram_container, OBJECT(s), "ram-container",
++                       ram_size);
++    memory_region_add_subregion(&s->dram_container, 0, s->dram_mr);
 +
-+    qdev_init_gpio_in(dev, aspeed_intc_set_irq, ASPEED_INTC_NR_IRQS);
-+    sysbus_init_irq(sbd, &s->irq);
-+    sysbus_init_irq(sbd, &s->fiq);
++    /*
++     * Add a memory region beyond the RAM region to emulate
++     * ddr capacity hardware behavior.
++     */
++    if (ram_size < max_ram_size) {
++        memory_region_init_io(&a->dram_empty, OBJECT(s),
++                              &aspeed_ram_capacity_ops, s,
++                              "ram-empty", max_ram_size - ram_size);
++
++        memory_region_add_subregion(s->memory,
++                                    sc->memmap[ASPEED_DEV_SDRAM] + ram_size,
++                                    &a->dram_empty);
++    }
++
++    memory_region_add_subregion(s->memory,
++                      sc->memmap[ASPEED_DEV_SDRAM], &s->dram_container);
++    return true;
 +}
 +
-+static void aspeed_intc_reset(DeviceState *dev)
-+{
-+    AspeedINTCState *s = ASPEED_INTC(dev);
-+
-+    s->level = 0;
-+    s->raw = 0;
-+    s->select = 0;
-+    s->enable = 0;
-+    s->trigger = 0;
-+    s->sense = 0x1F07FFF8FFFFULL;
-+    s->dual_edge = 0xF800070000ULL;
-+    s->event = 0x5F07FFF8FFFFULL;
-+}
-+
-+static void aspeed_intc_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    dc->realize = aspeed_intc_realize;
-+    dc->reset = aspeed_intc_reset;
-+    dc->desc = "ASPEED Interrupt Controller for AST27x0";
-+    dc->vmsd = NULL;
-+}
-+
-+static const TypeInfo aspeed_intc_info = {
-+    .name = TYPE_ASPEED_INTC,
-+    .parent = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(AspeedINTCState),
-+    .class_init = aspeed_intc_class_init,
-+};
-+
-+static void aspeed_intc_register_types(void)
-+{
-+    type_register_static(&aspeed_intc_info);
-+}
-+
-+type_init(aspeed_intc_register_types);
-diff --git a/hw/intc/meson.build b/hw/intc/meson.build
-index ed355941d1..f5c574f584 100644
---- a/hw/intc/meson.build
-+++ b/hw/intc/meson.build
-@@ -14,6 +14,7 @@ system_ss.add(when: 'CONFIG_ARM_GICV3_TCG', if_true: files(
- ))
- system_ss.add(when: 'CONFIG_ALLWINNER_A10_PIC', if_true: files('allwinner-a10-pic.c'))
- system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files('aspeed_vic.c'))
-+system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files('aspeed_intc.c'))
- system_ss.add(when: 'CONFIG_ETRAXFS', if_true: files('etraxfs_pic.c'))
- system_ss.add(when: 'CONFIG_EXYNOS4', if_true: files('exynos4210_gic.c', 'exynos4210_combiner.c'))
- system_ss.add(when: 'CONFIG_GOLDFISH_PIC', if_true: files('goldfish_pic.c'))
-diff --git a/include/hw/intc/aspeed_vic.h b/include/hw/intc/aspeed_vic.h
-index 68d6ab997a..673a11d7fd 100644
---- a/include/hw/intc/aspeed_vic.h
-+++ b/include/hw/intc/aspeed_vic.h
-@@ -17,6 +17,7 @@
- #include "qom/object.h"
+ static void aspeed_soc_ast2700_init(Object *obj)
+ {
+     Aspeed27x0SoCState *a = ASPEED27X0_SOC(obj);
+@@ -362,7 +454,7 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+                     sc->memmap[ASPEED_DEV_SDMC]);
  
- #define TYPE_ASPEED_VIC "aspeed.vic"
-+#define TYPE_ASPEED_INTC "aspeed.intc"
- OBJECT_DECLARE_SIMPLE_TYPE(AspeedVICState, ASPEED_VIC)
+     /* RAM */
+-    if (!aspeed_soc_dram_init(s, errp)) {
++    if (!aspeed_soc_ast2700_dram_init(dev, errp)) {
+         return;
+     }
  
- #define ASPEED_VIC_NR_IRQS 51
-@@ -46,4 +47,32 @@ struct AspeedVICState {
-     uint64_t event;
+diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
+index fab5abff9e..fae49f205b 100644
+--- a/include/hw/arm/aspeed_soc.h
++++ b/include/hw/arm/aspeed_soc.h
+@@ -126,6 +126,7 @@ struct Aspeed27x0SoCState {
+ 
+     ARMCPU cpu[ASPEED_CPUS_NUM];
+     AspeedINTCState intc;
++    MemoryRegion dram_empty;
  };
  
-+OBJECT_DECLARE_SIMPLE_TYPE(AspeedINTCState, ASPEED_INTC)
-+
-+struct AspeedINTCState {
-+    /*< private >*/
-+    SysBusDevice parent_obj;
-+    DeviceState *gic;
-+
-+    /*< public >*/
-+    MemoryRegion iomem;
-+    qemu_irq irq;
-+    qemu_irq fiq;
-+
-+    uint64_t level;
-+    uint64_t raw;
-+    uint64_t select;
-+    uint64_t enable;
-+    uint64_t trigger;
-+
-+    /* 0=edge, 1=level */
-+    uint64_t sense;
-+
-+    /* 0=single-edge, 1=dual-edge */
-+    uint64_t dual_edge;
-+
-+    /* 0=low-sensitive/falling-edge, 1=high-sensitive/rising-edge */
-+    uint64_t event;
-+};
-+
- #endif /* ASPEED_VIC_H */
+ #define TYPE_ASPEED27X0_SOC "aspeed27x0-soc"
 -- 
 2.25.1
 
