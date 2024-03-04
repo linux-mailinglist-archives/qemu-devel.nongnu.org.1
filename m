@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4575C870193
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 13:34:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C45B87013E
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 13:30:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rh7Rm-0008QW-GH; Mon, 04 Mar 2024 07:29:34 -0500
+	id 1rh7SW-0000FJ-QY; Mon, 04 Mar 2024 07:30:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=mkh8=KK=redhat.com=clg@ozlabs.org>)
- id 1rh7Ri-0008PF-3g
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:29:30 -0500
+ id 1rh7Rq-00004s-TN
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:29:38 -0500
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=mkh8=KK=redhat.com=clg@ozlabs.org>)
- id 1rh7Rf-0004cA-A6
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:29:29 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TpJ0h3W1Jz4wys;
- Mon,  4 Mar 2024 23:29:24 +1100 (AEDT)
+ id 1rh7Ri-0004dS-1q
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:29:33 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TpJ0l6rY6z4wyt;
+ Mon,  4 Mar 2024 23:29:27 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4TpJ0d4J2pz4wqN;
- Mon,  4 Mar 2024 23:29:21 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TpJ0j0VPbz4wqN;
+ Mon,  4 Mar 2024 23:29:24 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -38,10 +39,10 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v3 09/26] migration: Do not call PRECOPY_NOTIFY_SETUP
- notifiers in case of error
-Date: Mon,  4 Mar 2024 13:28:27 +0100
-Message-ID: <20240304122844.1888308-10-clg@redhat.com>
+Subject: [PATCH v3 10/26] migration: Move cleanup after after error reporting
+ in qemu_savevm_state_setup()
+Date: Mon,  4 Mar 2024 13:28:28 +0100
+Message-ID: <20240304122844.1888308-11-clg@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240304122844.1888308-1-clg@redhat.com>
 References: <20240304122844.1888308-1-clg@redhat.com>
@@ -72,43 +73,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When commit bd2270608fa0 ("migration/ram.c: add a notifier chain for
-precopy") added PRECOPY_NOTIFY_SETUP notifiers at the end of
-qemu_savevm_state_setup(), it didn't take into account a possible
-error in the loop calling vmstate_save() or .save_setup() handlers.
+This will help preserving the error set by .save_setup() handlers.
 
-Check ret value before calling the notifiers.
-
-Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- migration/savevm.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ migration/savevm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/migration/savevm.c b/migration/savevm.c
-index c3642fac9dad3e314fe3fd5058889db1d2cecd47..31ce9391d49c825d4ec835e26ac0246e192783a0 100644
+index 31ce9391d49c825d4ec835e26ac0246e192783a0..e400706e61e06d2d1d03a11aed14f30a243833f2 100644
 --- a/migration/savevm.c
 +++ b/migration/savevm.c
-@@ -1314,7 +1314,7 @@ void qemu_savevm_state_setup(QEMUFile *f)
-     MigrationState *ms = migrate_get_current();
-     SaveStateEntry *se;
-     Error *local_err = NULL;
--    int ret;
-+    int ret = 0;
- 
-     json_writer_int64(ms->vmdesc, "page_size", qemu_target_page_size());
-     json_writer_start_array(ms->vmdesc, "devices");
-@@ -1350,6 +1350,10 @@ void qemu_savevm_state_setup(QEMUFile *f)
-         }
+@@ -1740,10 +1740,10 @@ static int qemu_savevm_state(QEMUFile *f, Error **errp)
+         qemu_savevm_state_complete_precopy(f, false, false);
+         ret = qemu_file_get_error(f);
      }
- 
-+    if (ret) {
-+        return;
-+    }
-+
-     if (precopy_notify(PRECOPY_NOTIFY_SETUP, &local_err)) {
-         error_report_err(local_err);
+-    qemu_savevm_state_cleanup();
+     if (ret != 0) {
+         error_setg_errno(errp, -ret, "Error while writing VM state");
      }
++    qemu_savevm_state_cleanup();
+ 
+     if (ret != 0) {
+         status = MIGRATION_STATUS_FAILED;
 -- 
 2.44.0
 
