@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60CFD86F84E
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 02:31:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15B3A86F847
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 02:30:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgx8P-0002wK-1b; Sun, 03 Mar 2024 20:28:53 -0500
+	id 1rgx8Y-0004VJ-4A; Sun, 03 Mar 2024 20:29:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx7t-0002Mv-Tf
- for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:28:24 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx7y-0002Qb-1Y
+ for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:28:29 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx7n-0002QS-Ur
- for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:28:18 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx7t-0002Qw-Lb
+ for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:28:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709515695;
+ s=mimecast20190719; t=1709515700;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0ar+ofp36XyBqOk9XaHO6Ma1s1jc9ExRp4Vy0jSeUQA=;
- b=Ss5Se2gmzxUhA811zC9aFVX9vY/OS4+ZxmCrqCzZpFqz2fmRdoA2nSaeYWexVvamBjZQSt
- S4sokvh6p1Q4tfNOx+yMaC4qEcoJv8SBJky6dtnjNxqYLGastMD2NLlD79Xjp5LRxV36ir
- 7AUSkRVw98GH3X1ZbLAHZ4cuqVe6UNw=
+ bh=DL5BNu1/lR7kXIS2bjgMtJyUQxodIRBqqeTZL0wzwjI=;
+ b=c8QHFRnvTqg38GwJz2asPXen7Wk74ypT7we/LkTb7yrSdNSWXEZaKmjgX5jLrvnT17wBRh
+ mZMbr7iXUzUNS+H25TAwsIOO6e/xUgY88/X4mr5kbWNDZHbBOJEf5Jb8xdXcDDNvIOJ+MM
+ G+XQIA5j62s7LxoiWT6oqtqGVPEJE1A=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-104-pcD6Vw-hMTCCyyHau2mTog-1; Sun, 03 Mar 2024 20:28:13 -0500
-X-MC-Unique: pcD6Vw-hMTCCyyHau2mTog-1
+ us-mta-154-zQkPDTbnNgGQJqpO3k9LVQ-1; Sun, 03 Mar 2024 20:28:17 -0500
+X-MC-Unique: zQkPDTbnNgGQJqpO3k9LVQ-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F1246185A785;
- Mon,  4 Mar 2024 01:28:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1478388D129;
+ Mon,  4 Mar 2024 01:28:17 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.2])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 780E440C6EBA;
- Mon,  4 Mar 2024 01:28:09 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C1D2340C6EBA;
+ Mon,  4 Mar 2024 01:28:13 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
 Cc: peterx@redhat.com,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Prasad Pandit <ppandit@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 21/27] migration/multifd: Add incoming QIOChannelFile support
-Date: Mon,  4 Mar 2024 09:26:28 +0800
-Message-ID: <20240304012634.95520-22-peterx@redhat.com>
+Subject: [PULL 22/27] migration/multifd: Prepare multifd sync for mapped-ram
+ migration
+Date: Mon,  4 Mar 2024 09:26:29 +0800
+Message-ID: <20240304012634.95520-23-peterx@redhat.com>
 In-Reply-To: <20240304012634.95520-1-peterx@redhat.com>
 References: <20240304012634.95520-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -82,116 +83,163 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fabiano Rosas <farosas@suse.de>
 
-On the receiving side we don't need to differentiate between main
-channel and threads, so whichever channel is defined first gets to be
-the main one. And since there are no packets, use the atomic channel
-count to index into the params array.
+The mapped-ram migration can be performed live or non-live, but it is
+always asynchronous, i.e. the source machine and the destination
+machine are not migrating at the same time. We only need some pieces
+of the multifd sync operations.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+multifd_send_sync_main()
+------------------------
+  Issued by the ram migration code on the migration thread, causes the
+  multifd send channels to synchronize with the migration thread and
+  makes the sending side emit a packet with the MULTIFD_FLUSH flag.
+
+  With mapped-ram we want to maintain the sync on the sending side
+  because that provides ordering between the rounds of dirty pages when
+  migrating live.
+
+MULTIFD_FLUSH
+-------------
+  On the receiving side, the presence of the MULTIFD_FLUSH flag on a
+  packet causes the receiving channels to start synchronizing with the
+  main thread.
+
+  We're not using packets with mapped-ram, so there's no MULTIFD_FLUSH
+  flag and therefore no channel sync on the receiving side.
+
+multifd_recv_sync_main()
+------------------------
+  Issued by the migration thread when the ram migration flag
+  RAM_SAVE_FLAG_MULTIFD_FLUSH is received, causes the migration thread
+  on the receiving side to start synchronizing with the recv
+  channels. Due to compatibility, this is also issued when
+  RAM_SAVE_FLAG_EOS is received.
+
+  For mapped-ram we only need to synchronize the channels at the end of
+  migration to avoid doing cleanup before the channels have finished
+  their IO.
+
+Make sure the multifd syncs are only issued at the appropriate times.
+
+Note that due to pre-existing backward compatibility issues, we have
+the multifd_flush_after_each_section property that can cause a sync to
+happen at EOS. Since the EOS flag is needed on the stream, allow
+mapped-ram to just ignore it.
+
+Also emit an error if any other unexpected flags are found on the
+stream.
+
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240229153017.2221-19-farosas@suse.de
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Link: https://lore.kernel.org/r/20240229153017.2221-20-farosas@suse.de
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/file.c      | 35 +++++++++++++++++++++++++++--------
- migration/migration.c |  3 ++-
- migration/multifd.c   |  3 +--
- 3 files changed, 30 insertions(+), 11 deletions(-)
+ migration/ram.c | 38 +++++++++++++++++++++++++++++++-------
+ 1 file changed, 31 insertions(+), 7 deletions(-)
 
-diff --git a/migration/file.c b/migration/file.c
-index a350dd61f0..2f8b626b27 100644
---- a/migration/file.c
-+++ b/migration/file.c
-@@ -8,6 +8,7 @@
- #include "qemu/osdep.h"
- #include "exec/ramblock.h"
- #include "qemu/cutils.h"
-+#include "qemu/error-report.h"
- #include "qapi/error.h"
- #include "channel.h"
- #include "file.h"
-@@ -15,6 +16,7 @@
- #include "multifd.h"
- #include "io/channel-file.h"
- #include "io/channel-util.h"
-+#include "options.h"
- #include "trace.h"
- 
- #define OFFSET_OPTION ",offset="
-@@ -112,7 +114,8 @@ void file_start_incoming_migration(FileMigrationArgs *file_args, Error **errp)
-     g_autofree char *filename = g_strdup(file_args->filename);
-     QIOChannelFile *fioc = NULL;
-     uint64_t offset = file_args->offset;
--    QIOChannel *ioc;
-+    int channels = 1;
-+    int i = 0;
- 
-     trace_migration_file_incoming(filename);
- 
-@@ -121,13 +124,29 @@ void file_start_incoming_migration(FileMigrationArgs *file_args, Error **errp)
-         return;
-     }
- 
--    ioc = QIO_CHANNEL(fioc);
--    if (offset && qio_channel_io_seek(ioc, offset, SEEK_SET, errp) < 0) {
-+    if (offset &&
-+        qio_channel_io_seek(QIO_CHANNEL(fioc), offset, SEEK_SET, errp) < 0) {
-         return;
-     }
--    qio_channel_set_name(QIO_CHANNEL(ioc), "migration-file-incoming");
--    qio_channel_add_watch_full(ioc, G_IO_IN,
--                               file_accept_incoming_migration,
--                               NULL, NULL,
--                               g_main_context_get_thread_default());
+diff --git a/migration/ram.c b/migration/ram.c
+index 18620784c6..329153d97d 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -1362,14 +1362,18 @@ static int find_dirty_block(RAMState *rs, PageSearchStatus *pss)
+         pss->block = QLIST_NEXT_RCU(pss->block, next);
+         if (!pss->block) {
+             if (migrate_multifd() &&
+-                !migrate_multifd_flush_after_each_section()) {
++                (!migrate_multifd_flush_after_each_section() ||
++                 migrate_mapped_ram())) {
+                 QEMUFile *f = rs->pss[RAM_CHANNEL_PRECOPY].pss_channel;
+                 int ret = multifd_send_sync_main();
+                 if (ret < 0) {
+                     return ret;
+                 }
+-                qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
+-                qemu_fflush(f);
 +
-+    if (migrate_multifd()) {
-+        channels += migrate_multifd_channels();
++                if (!migrate_mapped_ram()) {
++                    qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
++                    qemu_fflush(f);
++                }
+             }
+             /*
+              * If memory migration starts over, we will meet a dirtied page
+@@ -3111,7 +3115,8 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+         return ret;
+     }
+ 
+-    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()) {
++    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()
++        && !migrate_mapped_ram()) {
+         qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
+     }
+ 
+@@ -3242,7 +3247,8 @@ static int ram_save_iterate(QEMUFile *f, void *opaque)
+ out:
+     if (ret >= 0
+         && migration_is_setup_or_active(migrate_get_current()->state)) {
+-        if (migrate_multifd() && migrate_multifd_flush_after_each_section()) {
++        if (migrate_multifd() && migrate_multifd_flush_after_each_section() &&
++            !migrate_mapped_ram()) {
+             ret = multifd_send_sync_main();
+             if (ret < 0) {
+                 return ret;
+@@ -3334,7 +3340,8 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
+         }
+     }
+ 
+-    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()) {
++    if (migrate_multifd() && !migrate_multifd_flush_after_each_section() &&
++        !migrate_mapped_ram()) {
+         qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
+     }
+     qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
+@@ -4137,6 +4144,12 @@ static int ram_load_precopy(QEMUFile *f)
+         invalid_flags |= RAM_SAVE_FLAG_COMPRESS_PAGE;
+     }
+ 
++    if (migrate_mapped_ram()) {
++        invalid_flags |= (RAM_SAVE_FLAG_HOOK | RAM_SAVE_FLAG_MULTIFD_FLUSH |
++                          RAM_SAVE_FLAG_PAGE | RAM_SAVE_FLAG_XBZRLE |
++                          RAM_SAVE_FLAG_ZERO);
 +    }
 +
-+    do {
-+        QIOChannel *ioc = QIO_CHANNEL(fioc);
-+
-+        qio_channel_set_name(ioc, "migration-file-incoming");
-+        qio_channel_add_watch_full(ioc, G_IO_IN,
-+                                   file_accept_incoming_migration,
-+                                   NULL, NULL,
-+                                   g_main_context_get_thread_default());
-+
-+        fioc = qio_channel_file_new_fd(dup(fioc->fd));
-+
-+        if (!fioc || fioc->fd == -1) {
-+            error_setg(errp, "Error creating migration incoming channel");
-+            break;
-+        }
-+    } while (++i < channels);
- }
-diff --git a/migration/migration.c b/migration/migration.c
-index 2669600d25..faeb75a59b 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -910,7 +910,8 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
-     uint32_t channel_magic = 0;
-     int ret = 0;
+     while (!ret && !(flags & RAM_SAVE_FLAG_EOS)) {
+         ram_addr_t addr;
+         void *host = NULL, *host_bak = NULL;
+@@ -4158,6 +4171,8 @@ static int ram_load_precopy(QEMUFile *f)
+         addr &= TARGET_PAGE_MASK;
  
--    if (migrate_multifd() && !migrate_postcopy_ram() &&
-+    if (migrate_multifd() && !migrate_mapped_ram() &&
-+        !migrate_postcopy_ram() &&
-         qio_channel_has_feature(ioc, QIO_CHANNEL_FEATURE_READ_MSG_PEEK)) {
-         /*
-          * With multiple channels, it is possible that we receive channels
-diff --git a/migration/multifd.c b/migration/multifd.c
-index caef1076ca..ea08f1aa9e 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -1545,8 +1545,7 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
-         }
-         trace_multifd_recv_new_channel(id);
-     } else {
--        /* next patch gives this a meaningful value */
--        id = 0;
-+        id = qatomic_read(&multifd_recv_state->count);
-     }
+         if (flags & invalid_flags) {
++            error_report("Unexpected RAM flags: %d", flags & invalid_flags);
++
+             if (flags & invalid_flags & RAM_SAVE_FLAG_COMPRESS_PAGE) {
+                 error_report("Received an unexpected compressed page");
+             }
+@@ -4210,6 +4225,10 @@ static int ram_load_precopy(QEMUFile *f)
+         switch (flags & ~RAM_SAVE_FLAG_CONTINUE) {
+         case RAM_SAVE_FLAG_MEM_SIZE:
+             ret = parse_ramblocks(f, addr);
++
++            if (migrate_mapped_ram()) {
++                multifd_recv_sync_main();
++            }
+             break;
  
-     p = &multifd_recv_state->params[id];
+         case RAM_SAVE_FLAG_ZERO:
+@@ -4250,7 +4269,12 @@ static int ram_load_precopy(QEMUFile *f)
+         case RAM_SAVE_FLAG_EOS:
+             /* normal exit */
+             if (migrate_multifd() &&
+-                migrate_multifd_flush_after_each_section()) {
++                migrate_multifd_flush_after_each_section() &&
++                /*
++                 * Mapped-ram migration flushes once and for all after
++                 * parsing ramblocks. Always ignore EOS for it.
++                 */
++                !migrate_mapped_ram()) {
+                 multifd_recv_sync_main();
+             }
+             break;
 -- 
 2.44.0
 
