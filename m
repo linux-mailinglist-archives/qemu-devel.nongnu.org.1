@@ -2,55 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC1286F832
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 02:27:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20AA986F840
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 02:29:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgx6w-0001ET-C3; Sun, 03 Mar 2024 20:27:22 -0500
+	id 1rgx75-0001Er-Ue; Sun, 03 Mar 2024 20:27:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx6t-0001E5-4m
- for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:27:19 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx6z-0001Ee-24
+ for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:27:25 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx6r-0002Ev-It
- for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:27:18 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx6w-0002Iy-1R
+ for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:27:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709515636;
+ s=mimecast20190719; t=1709515641;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BsTsSZj0lyl+eM84vQxVcYu/bCjr0mDEg/MlpEYR7ts=;
- b=Bb6SDdtcOp0VEz8/Jwm4y6huF/xrWeYuhJEKHahnP7y0wO0nCm3VKnqRXDNUajKT5dWQjQ
- JZoBc8neOSofbpCkqWRJG5jxDFwqhRXUv4ItMfqmjLx6HA0K0o6W9zlBaJoovQy93UrWKx
- Q3TtycreEEivZbB9iMF5nIgX1xt/gFA=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-Ywm8vJiXNqKD4p9LGfX6SA-1; Sun,
- 03 Mar 2024 20:27:13 -0500
-X-MC-Unique: Ywm8vJiXNqKD4p9LGfX6SA-1
+ bh=jyrMLcYDQUIO1DuGLIv/0GBLvb6vogf3wk1vgjaSm74=;
+ b=QvGKgX7hF9YxsXsQbf3ybTEQ+RuDNVZ0REx6tAKZ4mzrdHBJBC5ZbupyfA12kDQjz8qMtm
+ tLRrJMSZwow3iPmAOYLuEMByJgmr6aNSnxYYZWSKYxEekk0+PJE6ohwzVy1io4Etet6Jjo
+ +zupNVqS6NYlAehzu9yM2MBC7cN/viQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-413-P6J44ohpP7iF2WPXOg73Kg-1; Sun, 03 Mar 2024 20:27:18 -0500
+X-MC-Unique: P6J44ohpP7iF2WPXOg73Kg-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 606631C0512A;
- Mon,  4 Mar 2024 01:27:13 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AA58E811E81;
+ Mon,  4 Mar 2024 01:27:17 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.2])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8F46640C6EBA;
- Mon,  4 Mar 2024 01:27:09 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2F9AE40C6EBA;
+ Mon,  4 Mar 2024 01:27:13 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
 Cc: peterx@redhat.com,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Prasad Pandit <ppandit@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Nikolay Borisov <nborisov@suse.com>
-Subject: [PULL 07/27] io: implement io_pwritev/preadv for QIOChannelFile
-Date: Mon,  4 Mar 2024 09:26:14 +0800
-Message-ID: <20240304012634.95520-8-peterx@redhat.com>
+ Prasad Pandit <ppandit@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Subject: [PULL 08/27] io: fsync before closing a file channel
+Date: Mon,  4 Mar 2024 09:26:15 +0800
+Message-ID: <20240304012634.95520-9-peterx@redhat.com>
 In-Reply-To: <20240304012634.95520-1-peterx@redhat.com>
 References: <20240304012634.95520-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -81,98 +80,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nikolay Borisov <nborisov@suse.com>
+From: Fabiano Rosas <farosas@suse.de>
 
-The upcoming 'mapped-ram' feature will require qemu to write data to
-(and restore from) specific offsets of the migration file.
+Make sure the data is flushed to disk before closing file
+channels. This is to ensure data is on disk and not lost in the event
+of a host crash.
 
-Add a minimal implementation of pwritev/preadv and expose them via the
-io_pwritev and io_preadv interfaces.
+This is currently being implemented to affect the migration code when
+migrating to a file, but all QIOChannelFile users should benefit from
+the change.
 
-Signed-off-by: Nikolay Borisov <nborisov@suse.com>
 Reviewed-by: "Daniel P. Berrangé" <berrange@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Acked-by: "Daniel P. Berrangé" <berrange@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240229153017.2221-5-farosas@suse.de
+Link: https://lore.kernel.org/r/20240229153017.2221-6-farosas@suse.de
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- io/channel-file.c | 56 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+ io/channel-file.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/io/channel-file.c b/io/channel-file.c
-index f91bf6db1c..a6ad7770c6 100644
+index a6ad7770c6..d4706fa592 100644
 --- a/io/channel-file.c
 +++ b/io/channel-file.c
-@@ -146,6 +146,58 @@ static ssize_t qio_channel_file_writev(QIOChannel *ioc,
-     return ret;
- }
+@@ -242,6 +242,11 @@ static int qio_channel_file_close(QIOChannel *ioc,
+ {
+     QIOChannelFile *fioc = QIO_CHANNEL_FILE(ioc);
  
-+#ifdef CONFIG_PREADV
-+static ssize_t qio_channel_file_preadv(QIOChannel *ioc,
-+                                       const struct iovec *iov,
-+                                       size_t niov,
-+                                       off_t offset,
-+                                       Error **errp)
-+{
-+    QIOChannelFile *fioc = QIO_CHANNEL_FILE(ioc);
-+    ssize_t ret;
-+
-+ retry:
-+    ret = preadv(fioc->fd, iov, niov, offset);
-+    if (ret < 0) {
-+        if (errno == EAGAIN) {
-+            return QIO_CHANNEL_ERR_BLOCK;
-+        }
-+        if (errno == EINTR) {
-+            goto retry;
-+        }
-+
-+        error_setg_errno(errp, errno, "Unable to read from file");
++    if (qemu_fdatasync(fioc->fd) < 0) {
++        error_setg_errno(errp, errno,
++                         "Unable to synchronize file data with storage device");
 +        return -1;
 +    }
-+
-+    return ret;
-+}
-+
-+static ssize_t qio_channel_file_pwritev(QIOChannel *ioc,
-+                                        const struct iovec *iov,
-+                                        size_t niov,
-+                                        off_t offset,
-+                                        Error **errp)
-+{
-+    QIOChannelFile *fioc = QIO_CHANNEL_FILE(ioc);
-+    ssize_t ret;
-+
-+ retry:
-+    ret = pwritev(fioc->fd, iov, niov, offset);
-+    if (ret <= 0) {
-+        if (errno == EAGAIN) {
-+            return QIO_CHANNEL_ERR_BLOCK;
-+        }
-+        if (errno == EINTR) {
-+            goto retry;
-+        }
-+        error_setg_errno(errp, errno, "Unable to write to file");
-+        return -1;
-+    }
-+    return ret;
-+}
-+#endif /* CONFIG_PREADV */
-+
- static int qio_channel_file_set_blocking(QIOChannel *ioc,
-                                          bool enabled,
-                                          Error **errp)
-@@ -231,6 +283,10 @@ static void qio_channel_file_class_init(ObjectClass *klass,
-     ioc_klass->io_writev = qio_channel_file_writev;
-     ioc_klass->io_readv = qio_channel_file_readv;
-     ioc_klass->io_set_blocking = qio_channel_file_set_blocking;
-+#ifdef CONFIG_PREADV
-+    ioc_klass->io_pwritev = qio_channel_file_pwritev;
-+    ioc_klass->io_preadv = qio_channel_file_preadv;
-+#endif
-     ioc_klass->io_seek = qio_channel_file_seek;
-     ioc_klass->io_close = qio_channel_file_close;
-     ioc_klass->io_create_watch = qio_channel_file_create_watch;
+     if (qemu_close(fioc->fd) < 0) {
+         error_setg_errno(errp, errno,
+                          "Unable to close file");
 -- 
 2.44.0
 
