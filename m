@@ -2,72 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6A5186FA3C
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 07:50:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0129986FA95
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 08:18:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rh28h-0004JK-S4; Mon, 04 Mar 2024 01:49:31 -0500
+	id 1rh2ZD-0002PJ-Ks; Mon, 04 Mar 2024 02:16:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rh28e-0004J4-78
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 01:49:28 -0500
-Received: from mgamail.intel.com ([192.198.163.8])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rh2ZA-0002OC-R7
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 02:16:52 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rh28c-0002r5-7X
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 01:49:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709534966; x=1741070966;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=75CHMmQhLeFZPFWEPdNVZdPFWdf6Dz7XDvl1C1fFSeA=;
- b=oBplC6QBWP4j4ooyE63Rk3qPTxyZ0pQlBGdu/z1tOSF8YNC+5eqNHYeu
- IE+fN2IxEbPXZtveT0dVQk+KweDRavd+CAoFXuTCMnDTnmZdujucLSQt0
- Vbg2rDrx9JpOSrywTz5Om6KYhOYoNLdUY6hWLJF2czriZkhXPdNO9bFjG
- utGDItaqy9UeFCnTJnaCfhEbTzihPi30VS9jsv5dDSW+kZHrkquV80UA5
- L5RyseGhONwH7bAhxKy2BSMjwRGndgCb65XW1nlMzKg8wHbNpVW2QawYJ
- t4z/0uRIXE1gg5ocpWlS2gS0PsTAE1ksQGbrWEr65qmD6eZpzTiVveSpD A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="21548653"
-X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="21548653"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2024 22:49:23 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
-   d="scan'208";a="8960710"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa009.jf.intel.com with ESMTP; 03 Mar 2024 22:49:19 -0800
-Date: Mon, 4 Mar 2024 15:03:04 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Prasad Pandit <ppandit@redhat.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, devel@lists.libvirt.org,
- qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH] hw/core/machine-smp: Remove deprecated "parameter=0" SMP
- configurations
-Message-ID: <ZeVyKMux7Ysjo/lY@intel.com>
-References: <20240304044510.2305849-1-zhao1.liu@linux.intel.com>
- <CAE8KmOxvZFjtKkHiGGREx_b0QgfDjPWZ7Ex3nqAQQbiPKa_wrQ@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rh2Z8-0006qf-E9
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 02:16:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709536607;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=F+dTBzbN6KE6fb3XcgiKEDQEdaQMcjz+HkgpkWDdjAo=;
+ b=d16KchZtG92BXe0Uc8iP2fLYlZ7m9SRph2I2YB0U4wfeEBm8Q2hdeMHwK2x7zkjHGTp75U
+ uqbscUdJm8V1bgmE3bTyZfs9xO/lvgAW6QCFbD67vVRUBK0qBI34SGh8hVpVI+TlPINZ4n
+ FHJSuJorc97d1f9wCCtMGOiW8URtFEQ=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-625-1SSeuVB2N0-8LHQ2NiIWZw-1; Mon, 04 Mar 2024 02:16:45 -0500
+X-MC-Unique: 1SSeuVB2N0-8LHQ2NiIWZw-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-29a0b097af4so313423a91.1
+ for <qemu-devel@nongnu.org>; Sun, 03 Mar 2024 23:16:44 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709536603; x=1710141403;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=F+dTBzbN6KE6fb3XcgiKEDQEdaQMcjz+HkgpkWDdjAo=;
+ b=ngJn/aHf4K7c4S6ZhCCBhbdCHxd6OE/tydw/Sz+dxWkrvTC79Wr41cOfGU2wZ9o6e9
+ XfSoQWR0tMHwgdLXVq5ADXtR5bghih4fLgQ91Ii4qESd1NuIAeP4BfIZFy6Y/bKqoP6Q
+ RuWjphYRvn9qH1fCsFQAWB6IL7NA8C6Vbkvn0U6YGk+C9AC24Z7ZbxdFCziUpGw3pbKq
+ Ndgp2wUYVQYlB54/33I9B7o5rGiNnlA4slNCQsAoHcjijmgJuC2J0H8SwTamOr5gXl87
+ VaXgS2mRD6B+xQsnTh/oomhayxxmon2Zdtro+Siei4xh6pf/5djr4Al1bYR1hFYEqABO
+ Vd5A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUBf3W3tRhli9QVrsFwQrpilBzb6l6Eln1R6+jN7KW9JjEuSRxPWDLCuVYkWOvCHl4dJXfX9WJFXjW1bjKKZgo5hO0lyto=
+X-Gm-Message-State: AOJu0YzS91+uLhvE3GpIfnpY111HtdnQvOSai2Bgi5zuD+n+iZmIdKGn
+ LhGujryuaPyvrWf/RtUQet1uRvXaQlrUk7LqumMBIpI0Nf6iTY4hZD92XdKnzKHzUaoFB3siJxG
+ mWB5ywlhf2m7covR5fxfTLhKpcyV0cQ/UzrZXQ3lYXqpa4yQiXswy
+X-Received: by 2002:a17:90b:128a:b0:298:c3b4:f6ab with SMTP id
+ fw10-20020a17090b128a00b00298c3b4f6abmr6731530pjb.2.1709536603251; 
+ Sun, 03 Mar 2024 23:16:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFDuT+OtVi7UTiErrZIFfMSJsOdr9yLvWV3ZBZXZifYksmXRtLz0C0fQ0HS8HJZAvbOKgTWLQ==
+X-Received: by 2002:a17:90b:128a:b0:298:c3b4:f6ab with SMTP id
+ fw10-20020a17090b128a00b00298c3b4f6abmr6731511pjb.2.1709536602851; 
+ Sun, 03 Mar 2024 23:16:42 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ a23-20020a17090abe1700b0029b28e6ef26sm4636647pjs.11.2024.03.03.23.16.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 03 Mar 2024 23:16:42 -0800 (PST)
+Date: Mon, 4 Mar 2024 15:16:30 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Hao Xiang <hao.xiang@bytedance.com>
+Cc: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
+ farosas@suse.de, eblake@redhat.com, armbru@redhat.com,
+ thuth@redhat.com, lvivier@redhat.com, jdenemar@redhat.com,
+ marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH v4 2/7] migration/multifd: Implement zero page
+ transmission on the multifd thread.
+Message-ID: <ZeV1TrOvERHN_LOo@x1n>
+References: <20240301022829.3390548-1-hao.xiang@bytedance.com>
+ <20240301022829.3390548-3-hao.xiang@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAE8KmOxvZFjtKkHiGGREx_b0QgfDjPWZ7Ex3nqAQQbiPKa_wrQ@mail.gmail.com>
-Received-SPF: none client-ip=192.198.163.8;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+In-Reply-To: <20240301022829.3390548-3-hao.xiang@bytedance.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.589,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.589,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,89 +102,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Prasad,
+On Fri, Mar 01, 2024 at 02:28:24AM +0000, Hao Xiang wrote:
+> -GlobalProperty hw_compat_8_2[] = {};
+> +GlobalProperty hw_compat_8_2[] = {
+> +    { "migration", "zero-page-detection", "legacy"},
+> +};
 
-On Mon, Mar 04, 2024 at 11:23:58AM +0530, Prasad Pandit wrote:
-> Date: Mon, 4 Mar 2024 11:23:58 +0530
-> From: Prasad Pandit <ppandit@redhat.com>
-> Subject: Re: [PATCH] hw/core/machine-smp: Remove deprecated "parameter=0"
->  SMP configurations
-> 
-> On Mon, 4 Mar 2024 at 10:02, Zhao Liu <zhao1.liu@linux.intel.com> wrote:
-> > diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
-> > index 25019c91ee36..96533886b14e 100644
-> > --- a/hw/core/machine-smp.c
-> > +++ b/hw/core/machine-smp.c
-> > @@ -105,8 +105,9 @@ void machine_parse_smp_config(MachineState *ms,
-> >          (config->has_cores && config->cores == 0) ||
-> >          (config->has_threads && config->threads == 0) ||
-> >          (config->has_maxcpus && config->maxcpus == 0)) {
-> > -        warn_report("Deprecated CPU topology (considered invalid): "
-> > -                    "CPU topology parameters must be greater than zero");
-> > +        error_setg(errp, "Invalid CPU topology: "
-> > +                   "CPU topology parameters must be greater than zero");
-> > +        return;
-> >      }
-> 
-> unsigned maxcpus = config->has_maxcpus ? config->maxcpus : 0;
+I hope we can make it for 9.0, then this (and many rest places) can be kept
+as-is.  Let's see..  soft-freeze is March 12th.
 
-This indicates the default maxcpus is initialized as 0 if user doesn't
-specifies it.
+One thing to mention is I just sent a pull which has mapped-ram feature
+merged.  You may need a rebase onto that, and hopefully mapped-ram can also
+use your feature too within the same patch when you repost.
 
-For this case - no user configuration - maxcpus will be re-calculated
-as:
+https://lore.kernel.org/all/20240229153017.2221-1-farosas@suse.de/
 
-    maxcpus = maxcpus > 0 ? maxcpus : drawers * books * sockets * dies *
-                                      clusters * cores * threads; (*)
+That rebase may or may not need much caution, I apologize for that:
+mapped-ram as a feature was discussed 1+ years, so it was a plan to merge
+it (actually still partly of it) into QEMU 9.0.
 
->  ...
->  if (config->has_maxcpus && config->maxcpus == 0)
+[...]
 
-This check only wants to identify the case that user sets the 0.
+> +static bool multifd_zero_page(void)
 
-> 
-> * The check (has_maxcpus && maxcpus == 0) seems to be repeating above,
-> maybe we could check if (maxcpus == 0) error_setg().
+multifd_zero_page_enabled()?
 
-If the default maxcpus is initialized as 0, then (maxcpus == 0) will
-fail if user doesn't set maxcpus.
+> +{
+> +    return migrate_zero_page_detection() == ZERO_PAGE_DETECTION_MULTIFD;
+> +}
+> +
+> +static void swap_page_offset(ram_addr_t *pages_offset, int a, int b)
+> +{
+> +    ram_addr_t temp;
+> +
+> +    if (a == b) {
+> +        return;
+> +    }
+> +
+> +    temp = pages_offset[a];
+> +    pages_offset[a] = pages_offset[b];
+> +    pages_offset[b] = temp;
+> +}
+> +
+> +/**
+> + * multifd_send_zero_page_check: Perform zero page detection on all pages.
+> + *
+> + * Sorts normal pages before zero pages in p->pages->offset and updates
+> + * p->pages->normal_num.
+> + *
+> + * @param p A pointer to the send params.
 
-However, we could initialize maxcpus as other default value, e.g., 
+Nit: the majority of doc style in QEMU (it seems to me) is:
 
-    maxcpus = config->has_maxcpus ? config->maxcpus : 1.
+  @p: pointer to @MultiFDSendParams.
 
-But it is still necessary to distinguish whether maxcpus is user-set or
-auto-initialized.
+> + */
+> +void multifd_send_zero_page_check(MultiFDSendParams *p)
 
-If it is user-set, -smp should fail is there's invalid maxcpus/invalid
-topology.
+multifd_send_zero_page_detect()?
 
-Otherwise, if it is auto-initialized, its value should be adjusted based
-on other topology components as the above calculation in (*).
+This patch used "check" on both sides, but neither of them is a pure check
+to me.  For the other side, maybe multifd_recv_zero_page_process()?  As
+that one applies the zero pages.
 
-> And same for
-> other topology parameters?
+> +{
+> +    MultiFDPages_t *pages = p->pages;
+> +    RAMBlock *rb = pages->block;
+> +    int i = 0;
+> +    int j = pages->num - 1;
+> +
+> +    /*
+> +     * QEMU older than 9.0 don't understand zero page
+> +     * on multifd channel. This switch is required to
+> +     * maintain backward compatibility.
+> +     */
 
-Other parameters also have the similar needs to distinguish if they're
-set by user. So the check needs to also cover has_* fields.
+IMHO we can drop this comment; it is not accurate as the user can disable
+it explicitly through the parameter, then it may not always about compatibility.
 
-> * Also a check to ensure cpus <= maxcpus is required I think.
->
+> +    if (multifd_zero_page()) {
 
-Yes, the valid topology needs this. This code block already covers this
-case ;-):
+Shouldn't this be "!multifd_zero_page_enabled()"?
 
-    if (maxcpus < cpus) {
-        g_autofree char *topo_msg = cpu_hierarchy_to_string(ms);
-        error_setg(errp, "Invalid CPU topology: "
-                   "maxcpus must be equal to or greater than smp: "
-                   "%s == maxcpus (%u) < smp_cpus (%u)",
-                   topo_msg, maxcpus, cpus);
-        return;
-    }
+> +        pages->normal_num = pages->num;
+> +        return;
+> +    }
+
+The rest looks all sane.
 
 Thanks,
-Zhao
 
+-- 
+Peter Xu
 
 
