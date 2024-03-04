@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3052987099F
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 19:31:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E217A8709A0
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 19:32:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhD5u-0001e1-3G; Mon, 04 Mar 2024 13:31:22 -0500
+	id 1rhD5y-0001gI-SW; Mon, 04 Mar 2024 13:31:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rhD5r-0001dL-1u; Mon, 04 Mar 2024 13:31:19 -0500
+ id 1rhD5v-0001ev-Gv; Mon, 04 Mar 2024 13:31:23 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rhD5o-00031B-7h; Mon, 04 Mar 2024 13:31:18 -0500
+ id 1rhD5s-00032e-JI; Mon, 04 Mar 2024 13:31:23 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3C16352E13;
- Mon,  4 Mar 2024 21:31:58 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 57B4B52E14;
+ Mon,  4 Mar 2024 21:32:04 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E93828FD07;
- Mon,  4 Mar 2024 21:31:11 +0300 (MSK)
-Received: (nullmailer pid 1474419 invoked by uid 1000);
- Mon, 04 Mar 2024 18:31:11 -0000
-Subject: [ANNOUNCE] QEMU 7.2.10 Stable released
+ by tsrv.corpit.ru (Postfix) with SMTP id 1ED968FD08;
+ Mon,  4 Mar 2024 21:31:18 +0300 (MSK)
+Received: (nullmailer pid 1474601 invoked by uid 1000);
+ Mon, 04 Mar 2024 18:31:17 -0000
+Subject: [ANNOUNCE] QEMU 8.2.2 Stable released
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Date: Mon, 04 Mar 2024 21:31:11 +0300
-Message-Id: <1709577071.606034.1474414.nullmailer@tls.msk.ru>
+Date: Mon, 04 Mar 2024 21:31:17 +0300
+Message-Id: <1709577077.783602.1474596.nullmailer@tls.msk.ru>
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -68
@@ -61,146 +61,202 @@ Hash: SHA256
 
 Hi everyone,
 
-The QEMU v7.2.10 stable release is now available.
+The QEMU v8.2.2 stable release is now available.
 
 You can grab the tarball from our download page here:
 
   https://www.qemu.org/download/#source
 
-  https://download.qemu.org/qemu-7.2.10.tar.xz
-  https://download.qemu.org/qemu-7.2.10.tar.xz.sig (signature)
+  https://download.qemu.org/qemu-8.2.2.tar.xz
+  https://download.qemu.org/qemu-8.2.2.tar.xz.sig (signature)
 
-v7.2.10 is now tagged in the official qemu.git repository, and the
-stable-7.2 branch has been updated accordingly:
+v8.2.2 is now tagged in the official qemu.git repository, and the
+stable-8.2 branch has been updated accordingly:
 
-  https://gitlab.com/qemu-project/qemu/-/commits/stable-7.2?ref_type=heads
+  https://gitlab.com/qemu-project/qemu/-/commits/stable-8.2?ref_type=heads
 
 Thank you everyone who has been involved and helped with the stable series!
 
 /mjt
 
-Changelog (stable-7.2-hash master-hash Author Name: Commmit-Subject):
+Changelog (stable-8.2-hash master-hash Author Name: Commmit-Subject):
 
-eee83fae9d Michael Tokarev:
- Update version for 7.2.10 release
-0ee0f9d822 2196157404 Paolo Bonzini:
- target/i386: the sgx_epc_get_section stub is reachable
-90b1b8e0d6 b6903cbe3a Peter Maydell:
- tests/unit/test-blockjob: Disable complete_in_standby test
-b0ed25ee07 f2e57851b8 Thomas Huth:
- tests/qtest/display-vga-test: Add proper checks if a device is available
-73bf928177 abe2c4bdb6 Eric Auger:
- test-vmstate: fix bad GTree usage, use-after-free
-72e2a24638 f0cb6828ae Thomas Huth:
+11aa0b1ff1 Michael Tokarev:
+ Update version for 8.2.2 release
+21214699c2 462945cd22 Thomas Huth:
+ chardev/char-socket: Fix TLS io channels sending too much data to the backend
+2a97c05796 f0cb6828ae Thomas Huth:
  tests/unit/test-util-sockets: Remove temporary file after test
-8dd9165e7c 5e02a4fdeb Benjamin David Lunt:
+e6ce551c75 5e02a4fdeb Benjamin David Lunt:
  hw/usb/bus.c: PCAP adding 0xA in Windows version
-9b89d02d8b a8bf9de2f4 Daniel P. Berrangé:
+829bb27765 8bd3f84d1f Thomas Huth:
+ hw/intc/Kconfig: Fix GIC settings when using "--without-default-devices"
+0e33e4e78e a8bf9de2f4 Daniel P. Berrangé:
  gitlab: force allow use of pip in Cirrus jobs
-4934f922ac 151b7dba39 Alex Bennée:
+6c14f93182 151b7dba39 Alex Bennée:
  tests/vm: avoid re-building the VM images all the time
-2bd4d27aa5 8467ac75b3 Alex Bennée:
+36d50b4bde 8467ac75b3 Alex Bennée:
  tests/vm: update openbsd image to 7.4
-1165d9601d b5a9de3259 Paolo Bonzini:
+decafac46b b5a9de3259 Paolo Bonzini:
  target/i386: leave the A20 bit set in the final NPT walk
-91ad0d26e1 a28fe7dc19 Paolo Bonzini:
+6801a20ebd a28fe7dc19 Paolo Bonzini:
  target/i386: remove unnecessary/wrong application of the A20 mask
-1c15f97b4f b1661801c1 Paolo Bonzini:
+a28b6b4e74 b1661801c1 Paolo Bonzini:
  target/i386: Fix physical address truncation
-5eba614159 d09c79010f Paolo Bonzini:
+5c4091fe07 d09c79010f Paolo Bonzini:
  target/i386: check validity of VMCB addresses
-6156ca0da1 68fb78d7d5 Paolo Bonzini:
+6ed8211379 68fb78d7d5 Paolo Bonzini:
  target/i386: mask high bits of CR3 in 32-bit mode
-77f7beb8cf 4d28d57c9f Jessica Clarke:
+a0fb839d0a 4d28d57c9f Jessica Clarke:
  pl031: Update last RTCLR value on write in case it's read back
-d3c3bc7a9c d2b5bb860e Klaus Jensen:
+e4e36e65c9 d2b5bb860e Klaus Jensen:
  hw/nvme: fix invalid endian conversion
-a15b7df35b 2cc0e449d1 Nicholas Piggin:
+8c86c88cd5 658178c3d4 Gerd Hoffmann:
+ update edk2 binaries to edk2-stable202402
+cc98bd4f10 9c996f3d11 Gerd Hoffmann:
+ update edk2 submodule to edk2-stable202402
+131ed62955 c8fd9667e5 Nicholas Piggin:
+ target/ppc: Fix crash on machine check caused by ifetch
+175bdedfa9 2cc0e449d1 Nicholas Piggin:
  target/ppc: Fix lxv/stxv MSR facility check
-1bdf3f4ba0 5cd3ae4903 Peter Maydell:
+01aa603fb1 5cd3ae4903 Peter Maydell:
  .gitlab-ci.d/windows.yml: Drop msys2-32bit job
-7f368bccd6 185311130f Tianlan Zhou:
+aafe8c0d12 185311130f Tianlan Zhou:
  system/vl: Update description for input grab key
-181d92d034 4a20ac400f Tianlan Zhou:
+2da2e679d6 4a20ac400f Tianlan Zhou:
  docs/system: Update description for input grab key
-b3edbda64a d676119075 Akihiko Odaki:
+56ee4a67cb 04b86ccb5d Thomas Huth:
+ hw/hppa/Kconfig: Fix building with "configure --without-default-devices"
+814f887430 186acfbaf7 Akihiko Odaki:
+ tests/qtest: Depend on dbus_display1_dep
+fb22ee75b2 7aee57df93 Akihiko Odaki:
+ meson: Explicitly specify dbus-display1.h dependency
+1766b9360c d676119075 Akihiko Odaki:
  audio: Depend on dbus_display1_dep
-c172136ea3 1222070e77 Marc-André Lureau:
- meson: ensure dbus-display generated code is built before other units
-086850aa80 95b08fee8f Tianlan Zhou:
+2e5c9d5462 95b08fee8f Tianlan Zhou:
  ui/console: Fix console resize with placeholder surface
-ee316aafa5 9c41658261 Fiona Ebner:
+7ff0d4d184 9c41658261 Fiona Ebner:
  ui/clipboard: add asserts for update and request
-d8d6e6b904 405484b29f Fiona Ebner:
+480a6adc83 405484b29f Fiona Ebner:
  ui/clipboard: mark type as not available when there is no data
-7e86bd83fd 4cba838896 Daniel P. Berrangé:
+4fd56da337 4cba838896 Daniel P. Berrangé:
  ui: reject extended clipboard message if not activated
-373c7193dc 99d0dcd7f1 Ziqiao Kong:
+0b30735d38 99d0dcd7f1 Ziqiao Kong:
  target/i386: Generate an illegal opcode exception on cmp instructions with lock prefix
-3c819d9717 0729857c70 Xiaoyao Li:
+f5dddb856c 0729857c70 Xiaoyao Li:
  i386/cpuid: Move leaf 7 to correct group
-46f701c44d 10f92799af Xiaoyao Li:
+e8d27721cb 10f92799af Xiaoyao Li:
  i386/cpuid: Decrease cpuid_i when skipping CPUID leaf 1F
-f18b018907 a11a365159 Xiaoyao Li:
+72c4ef9da0 a11a365159 Xiaoyao Li:
  i386/cpu: Mask with XCR0/XSS mask for FEAT_XSAVE_XCR0_HI and FEAT_XSAVE_XSS_HI leafs
-14109f6353 81f5cad385 Xiaoyao Li:
+0766f137f5 81f5cad385 Xiaoyao Li:
  i386/cpu: Clear FEAT_XSAVE_XSS_LO/HI leafs when CPUID_EXT_XSAVE is not available
-fc39dc294c cc29c12ec6 Kevin Wolf:
+4d9dc117ea 8e31b744fd Peter Maydell:
+ .gitlab-ci/windows.yml: Don't install libusb or spice packages on 32-bit
+d5bc76fa20 cc29c12ec6 Kevin Wolf:
  iotests: Make 144 deterministic again
-688450c4a7 ac1d88e9e7 Peter Maydell:
+f030e96d27 ac1d88e9e7 Peter Maydell:
  target/arm: Don't get MDCR_EL2 in pmu_counter_enabled() before checking ARM_FEATURE_PMU
-3b0d905812 855f94eca8 Richard Henderson:
+429c11c726 855f94eca8 Richard Henderson:
  target/arm: Fix SVE/SME gross MTE suppression checks
-a978855bfc 64c6e7444d Richard Henderson:
+2d1a29e3b2 623507ccfc Richard Henderson:
+ target/arm: Handle mte in do_ldrq, do_ldro
+da804717a5 96fcc9982b Richard Henderson:
+ target/arm: Split out make_svemte_desc
+8da74af970 b12a7671b6 Richard Henderson:
+ target/arm: Adjust and validate mtedesc sizem1
+5e6e09baa5 64c6e7444d Richard Henderson:
  target/arm: Fix nregs computation in do_{ld,st}_zpa
-bbeeed7102 681dfc0d55 Richard Henderson:
+7950913ece 681dfc0d55 Richard Henderson:
  linux-user/aarch64: Choose SYNC as the preferred MTE mode
-4971891b37 b24a981b9f Jonathan Cameron:
+803f1e70ec b24a981b9f Jonathan Cameron:
  tests/acpi: Update DSDT.cxl to reflect change _STA return value.
-3b88637c8c d9ae5802f6 Jonathan Cameron:
+02d9979ba8 d9ae5802f6 Jonathan Cameron:
  hw/i386: Fix _STA return value for ACPI0017
-b8c6b783c3 14ec4ff3e4 Jonathan Cameron:
+47df9ca585 14ec4ff3e4 Jonathan Cameron:
  tests/acpi: Allow update of DSDT.cxl
-3004edca48 8a6b3f4dc9 Zhenzhong Duan:
+d4157195bd 8a6b3f4dc9 Zhenzhong Duan:
  smmu: Clear SMMUPciBus pointer cache when system reset
-10981da022 9a457383ce Zhenzhong Duan:
+721c3ceaef 9a457383ce Zhenzhong Duan:
  virtio_iommu: Clear IOMMUPciBus pointer cache when system reset
-4bfbb4ed9a 729d45a6af Li Zhijian:
+1c38c8a24a 574b64aa67 Dmitry Osipenko:
+ virtio-gpu: Correct virgl_renderer_resource_get_info() error check
+bbe51d6ea3 729d45a6af Li Zhijian:
  hw/cxl: Pass CXLComponentState to cache_mem_ops
-b5246140de 64fdad5e67 Ira Weiny:
+bdd3159ad7 f7509f462c Hyeonggon Yoo:
+ hw/cxl/device: read from register values in mdev_reg_read()
+9d8a2a8aaf 64fdad5e67 Ira Weiny:
  cxl/cdat: Fix header sum value in CDAT checksum
-eccd94458b c62926f730 Ira Weiny:
+8997083118 c62926f730 Ira Weiny:
  cxl/cdat: Handle cdat table build errors
-2112a217dc aa05bd9ef4 Andrey Ignatov:
+17ae7ebedc aa05bd9ef4 Andrey Ignatov:
  vhost-user.rst: Fix vring address description
-0fd604b02a 196578c9d0 Akihiko Odaki:
+181e548715 e41f1825b4 Richard Henderson:
+ tcg/arm: Fix goto_tb for large translation blocks
+e5f105655c c0e688153f Richard Henderson:
+ tcg: Increase width of temp_subindex
+281fea01d6 9b60a3ed55 Sven Schnelle:
+ hw/net/tulip: add chip status register values
+9ab476c3de 196578c9d0 Akihiko Odaki:
  hw/smbios: Fix port connector option validation
-258293b564 cd8a35b913 Akihiko Odaki:
+d6e07d5916 cd8a35b913 Akihiko Odaki:
  hw/smbios: Fix OEM strings table option validation
-2884514b98 8a73152020 Guenter Roeck:
+6eeeb87331 15cc103362 Paolo Bonzini:
+ configure: run plugin TCG tests again
+cefca32a24 7485508341 Fabiano Rosas:
+ tests/docker: Add sqlite3 module to openSUSE Leap container
+eca4e19914 1a49762c07 Daniel Henrique Barboza:
+ hw/riscv/virt-acpi-build.c: fix leak in build_rhct()
+76c172ffbe 3205bebd4f Avihai Horon:
+ migration: Fix logic of channels and transport compatibility check
+c36d4d3cee bfa36802d1 Stefan Hajnoczi:
+ virtio-blk: avoid using ioeventfd state in irqfd conditional
+00e50cb429 5bdbaebcce Hanna Czenczek:
+ virtio: Re-enable notifications after drain
+feb2073c86 c42c3833e0 Hanna Czenczek:
+ virtio-scsi: Attach event vq notifier with no_poll
+84c54eaeff 7d2faf0ce2 Daniel P. Berrangé:
+ iotests: give tempdir an identifying name
+88555e3607 c645bac4e0 Daniel P. Berrangé:
+ iotests: fix leak of tmpdir in dry-run mode
+bbfcb0f7bc 8b09b7fe47 Sven Schnelle:
+ hw/scsi/lsi53c895a: add missing decrement of reentrancy counter
+3a970decfe 6400be014f Richard Henderson:
+ linux-user/aarch64: Add padding before __kernel_rt_sigreturn
+8b7750c66f 45bf0e7aa6 Richard Henderson:
+ tcg/loongarch64: Set vector registers call clobbered
+5f5e30229e 8a73152020 Guenter Roeck:
  pci-host: designware: Limit value range of iATU viewport register
-f039059e0a 747bfaf3a9 Peter Maydell:
+de6992d390 185e3fdf8d Peter Maydell:
+ target/arm: Reinstate "vfp" property on AArch32 CPUs
+2d0530abe2 747bfaf3a9 Peter Maydell:
  qemu-options.hx: Improve -serial option documentation
-597a9a2b4b d2019a9d0c Peter Maydell:
+e2a12fa4e7 d2019a9d0c Peter Maydell:
  system/vl.c: Fix handling of '-serial none -serial something'
-d9b2dc2ffa f670be1aad Jan Klötzke:
+35a60a20f0 f670be1aad Jan Klötzke:
  target/arm: fix exception syndrome for AArch32 bkpt insn
-c49842381a 615eaeab3d Richard W.M. Jones:
+b91715588a 615eaeab3d Richard W.M. Jones:
  block/blkio: Make s->mem_region_alignment be 64 bits
-ce979ef754 db101376af Yihuan Pan:
+84c9704b8e db101376af Yihuan Pan:
  qemu-docs: Update options for graphical frontends
-18c776ecf6 27eb8499ed Fabiano Rosas:
+3837e6dd1e 57fd4b4e10 Het Gala:
+ Make 'uri' optional for migrate QAPI
+b79a2ef0d4 d2b668fca5 Cédric Le Goater:
+ vfio/pci: Clear MSI-X IRQ index always
+106aa13c5b 27eb8499ed Fabiano Rosas:
  migration: Fix use-after-free of migration state object
+e589e5ade7 918f620d30 Markus Armbruster:
+ migration: Plug memory leak on HMP migrate error path
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEe3O61ovnosKJMUsicBtPaxppPlkFAmXmE28ACgkQcBtPaxpp
-PlmAzQf/VyR8Hk3rLFq3np2i6bpwoQgNkoNLpTr+zrPTVf5akn113/G8LZ3Y9695
-UqFC3Y9rfXmCBz41znASyzxE3P6ABZzlNlsRUAFArYgXj61jxHMYeigGppsHNX8E
-XHle9MwAMw8HJCDlH+ntbztFeNixVEKfPaN597DKHf9YBHbvhi4umFP96PGNvY+m
-tCfqkX13JefDzF/6UahLzqLYdv037NCH4wU6a0UeInRj6o6XHaE0iRvlQyvWK3ER
-hNUvhDeAtD1Ich+nhjs2XTRlspHsiGFaj8QcdDQHaljD+h+wiEwoTVUXVkXuIXIk
-pvLarm38D5j4nsHSUsFwokJfc+TJTw==
-=bP0M
+iQEzBAEBCAAdFiEEe3O61ovnosKJMUsicBtPaxppPlkFAmXmE3YACgkQcBtPaxpp
+PlnWdQgAi+dbrt1N+N3vEgE3R9M1Q4RLnWWVCW470icQaSyW8SgQG3U4f5d7CSdE
+yoY/N5W2x3QpQQVRQLpAgfSBgdiMZA93wXoZ+rbUABphSafKhAfzKZGkFzMmneuD
+52nanW9jL5xvui+UOJaZAeTgU/3k207xwo84Y3Ahm+2uSgItHdPOGb3odKpbmpSJ
+V2bZ3EvN4ztCpdImNOzn+27HwZYiiiU1Vubg+D8s0IvmbvAn2k6uteOIOxUBjFfm
+f/dUZ+FAdZ/VQlL9H2nKYIr4zSSx93vKeytZ+z0NGztG/an0uANkeAn269acs8aK
+DdZK3BXAr8VTCxL8bbMUQ7K4TQujxg==
+=BZfD
 -----END PGP SIGNATURE-----
 
