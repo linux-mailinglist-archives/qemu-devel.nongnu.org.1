@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8D086F836
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 02:27:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B531D86F846
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 02:29:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgx6X-0001Bk-VF; Sun, 03 Mar 2024 20:26:57 -0500
+	id 1rgx6l-0001DX-Je; Sun, 03 Mar 2024 20:27:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx6V-0001BO-Ix
- for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:26:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx6j-0001Cj-7g
+ for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:27:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx6U-0002D2-26
- for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:26:55 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx6b-0002De-Fe
+ for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:27:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709515613;
+ s=mimecast20190719; t=1709515619;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ir0qtqpandnsGtqegAJq1Iw5ZTngl6lZQdOMv82MTII=;
- b=Fp3jumq8U6o9oX16Y0q51RiFAYGW1pEFt6djgN42XxvR09lbIbRPJihTot+9QWGzzIKwuP
- X4kEDBdhVOVoJ0pjob30U4oduIIuK4BaxCTPTHlBLhdeFaaQPFB48ZwR1YSI+flyysZdAo
- 32iq/Ae3pWhdyIhWr4aVe47a0c2JY9w=
+ bh=Crwhp+L/Y2kx6IfY/lBSTl6+qMBWTiwjHq63n8HYRLQ=;
+ b=gsTCvfH7ukZenT4mZe9JlLf5O9ta9UInxFW9KsXoUgvTkabxkyfyaQ4Bpe+bysDGzEoWLW
+ 8Su2HZld2wgd3cVgbwVfTx+TgjG6S7C9qH22f1LydefJE4NTtiCuc6aN0Vue/vcyf6o0Q/
+ KQ0OHhFZAxlxq5/xbIJkHkotFmeVMsY=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-312-F3UAZCTHMhmWDbqFiklEXw-1; Sun, 03 Mar 2024 20:26:51 -0500
-X-MC-Unique: F3UAZCTHMhmWDbqFiklEXw-1
+ us-mta-159-j3UoXz61MV2TP-zy0DrwaA-1; Sun, 03 Mar 2024 20:26:56 -0500
+X-MC-Unique: j3UoXz61MV2TP-zy0DrwaA-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ECADF185A783;
- Mon,  4 Mar 2024 01:26:50 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BE2208820C8;
+ Mon,  4 Mar 2024 01:26:55 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.2])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 542BE40C6EBA;
- Mon,  4 Mar 2024 01:26:45 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A3CE240C6EBA;
+ Mon,  4 Mar 2024 01:26:51 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
@@ -49,24 +49,22 @@ Cc: peterx@redhat.com,
  Prasad Pandit <ppandit@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Bryan Zhang <bryan.zhang@BYTEDANCE.COM>,
  Bryan Zhang <bryan.zhang@bytedance.com>
-Subject: [PULL 02/27] migration: Properly apply migration compression level
- parameters
-Date: Mon,  4 Mar 2024 09:26:09 +0800
-Message-ID: <20240304012634.95520-3-peterx@redhat.com>
+Subject: [PULL 03/27] tests/migration: Set compression level in migration tests
+Date: Mon,  4 Mar 2024 09:26:10 +0800
+Message-ID: <20240304012634.95520-4-peterx@redhat.com>
 In-Reply-To: <20240304012634.95520-1-peterx@redhat.com>
 References: <20240304012634.95520-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.589,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,47 +83,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bryan Zhang <bryan.zhang@BYTEDANCE.COM>
 
-Some glue code was missing, so that using `qmp_migrate_set_parameters`
-to set `multifd-zstd-level` or `multifd-zlib-level` did not work. This
-commit adds the glue code to fix that.
+Adds calls to set compression level for `zstd` and `zlib` migration
+tests, just to make sure that the calls work.
 
 Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
-Link: https://lore.kernel.org/r/20240301035901.4006936-2-bryan.zhang@bytedance.com
+Link: https://lore.kernel.org/r/20240301035901.4006936-3-bryan.zhang@bytedance.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/options.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ tests/qtest/migration-test.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/migration/options.c b/migration/options.c
-index 3e3e0b93b4..1cd3cc7c33 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -1312,6 +1312,12 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
-     if (params->has_multifd_compression) {
-         dest->multifd_compression = params->multifd_compression;
-     }
-+    if (params->has_multifd_zlib_level) {
-+        dest->multifd_zlib_level = params->multifd_zlib_level;
-+    }
-+    if (params->has_multifd_zstd_level) {
-+        dest->multifd_zstd_level = params->multifd_zstd_level;
-+    }
-     if (params->has_xbzrle_cache_size) {
-         dest->xbzrle_cache_size = params->xbzrle_cache_size;
-     }
-@@ -1447,6 +1453,12 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
-     if (params->has_multifd_compression) {
-         s->parameters.multifd_compression = params->multifd_compression;
-     }
-+    if (params->has_multifd_zlib_level) {
-+        s->parameters.multifd_zlib_level = params->multifd_zlib_level;
-+    }
-+    if (params->has_multifd_zstd_level) {
-+        s->parameters.multifd_zstd_level = params->multifd_zstd_level;
-+    }
-     if (params->has_xbzrle_cache_size) {
-         s->parameters.xbzrle_cache_size = params->xbzrle_cache_size;
-         xbzrle_cache_resize(params->xbzrle_cache_size, errp);
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 83512bce85..8c35f3457b 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -2664,6 +2664,13 @@ static void *
+ test_migrate_precopy_tcp_multifd_zlib_start(QTestState *from,
+                                             QTestState *to)
+ {
++    /*
++     * Overloading this test to also check that set_parameter does not error.
++     * This is also done in the tests for the other compression methods.
++     */
++    migrate_set_parameter_int(from, "multifd-zlib-level", 2);
++    migrate_set_parameter_int(to, "multifd-zlib-level", 2);
++
+     return test_migrate_precopy_tcp_multifd_start_common(from, to, "zlib");
+ }
+ 
+@@ -2672,6 +2679,9 @@ static void *
+ test_migrate_precopy_tcp_multifd_zstd_start(QTestState *from,
+                                             QTestState *to)
+ {
++    migrate_set_parameter_int(from, "multifd-zstd-level", 2);
++    migrate_set_parameter_int(to, "multifd-zstd-level", 2);
++
+     return test_migrate_precopy_tcp_multifd_start_common(from, to, "zstd");
+ }
+ #endif /* CONFIG_ZSTD */
 -- 
 2.44.0
 
