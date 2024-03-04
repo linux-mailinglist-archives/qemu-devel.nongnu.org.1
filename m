@@ -2,81 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D405870135
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 13:29:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF52687013D
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 13:30:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rh7QU-0007KV-Hf; Mon, 04 Mar 2024 07:28:17 -0500
+	id 1rh7RT-00086t-Bh; Mon, 04 Mar 2024 07:29:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rh7Q1-0007D4-8P
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:27:53 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1)
+ (envelope-from <SRS0=mkh8=KK=redhat.com=clg@ozlabs.org>)
+ id 1rh7RJ-000838-Jz
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:29:06 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rh7Pu-0003uU-2n
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:27:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709555248;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=yAal6C6QcRZeDx+OKuVJB0WxPgjjJ68wA/tMc8cqGnA=;
- b=Dl4IKOEYk6F3YQrjLegeSEIcBCRfBov4xB9ZWYQDtFeAnHDWnwPPzWay/gHCW9e3jUmKCz
- HVIJkwXYRWtNXoja4n+tA4iSFvX9LPsZcgonTg1qVS3BdN1o7rWDeLNI8mpKEm1rflZppL
- 4pQKtml54UK6COkXo/nJSrnuPPqd2Rw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-368-nNqTjGWqPi6238sWig6ilQ-1; Mon, 04 Mar 2024 07:27:25 -0500
-X-MC-Unique: nNqTjGWqPi6238sWig6ilQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ (Exim 4.90_1)
+ (envelope-from <SRS0=mkh8=KK=redhat.com=clg@ozlabs.org>)
+ id 1rh7RH-0004RV-F1
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:29:05 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TpJ041c13z4wcg;
+ Mon,  4 Mar 2024 23:28:52 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C848185A589;
- Mon,  4 Mar 2024 12:27:24 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.3])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6D650492BC7;
- Mon,  4 Mar 2024 12:27:24 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4235921E6A24; Mon,  4 Mar 2024 13:27:23 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,  Fiona Ebner
- <f.ebner@proxmox.com>,  qemu-devel@nongnu.org,  qemu-block@nongnu.org,
- eblake@redhat.com,  hreitz@redhat.com,  jsnow@redhat.com,
- den@virtuozzo.com,  t.lamprecht@proxmox.com,
- alexander.ivanov@virtuozzo.com,  pkrempa@redhat.com
-Subject: Re: [PATCH v2 00/10] mirror: allow switching from background to
- active mode
-In-Reply-To: <ZeWnFhLKCamlP97y@redhat.com> (Kevin Wolf's message of "Mon, 4
- Mar 2024 11:48:54 +0100")
-References: <20231009094619.469668-1-f.ebner@proxmox.com>
- <a5c48627-0bef-46cd-9426-587b358fe32d@yandex-team.ru>
- <993bfa5d-1a91-4b32-9bd8-165b7abba4f0@proxmox.com>
- <99dd287b-816b-4f4f-b156-32f94bbb62c2@yandex-team.ru>
- <87o7gbyy8w.fsf@pond.sub.org> <ZUTffE0wfjLH2u+e@redhat.com>
- <87cywqn84g.fsf@pond.sub.org>
- <1310efb0-e211-46f5-b166-d7d529507a43@yandex-team.ru>
- <ZeWnFhLKCamlP97y@redhat.com>
-Date: Mon, 04 Mar 2024 13:27:23 +0100
-Message-ID: <87ttlmqj10.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TpJ01100bz4wcK;
+ Mon,  4 Mar 2024 23:28:48 +1100 (AEDT)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v3 00/26] migration: Improve error reporting
+Date: Mon,  4 Mar 2024 13:28:18 +0100
+Message-ID: <20240304122844.1888308-1-clg@redhat.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.571,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=mkh8=KK=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,37 +68,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Kevin Wolf <kwolf@redhat.com> writes:
+Hello,
 
-> Am 28.02.2024 um 19:07 hat Vladimir Sementsov-Ogievskiy geschrieben:
+The motivation behind these changes is to improve error reporting to
+the upper management layer (libvirt) with a more detailed error, this
+to let it decide, depending on the reported error, whether to try
+migration again later. It would be useful in cases where migration
+fails due to lack of HW resources on the host. For instance, some
+adapters can only initiate a limited number of simultaneous dirty
+tracking requests and this imposes a limit on the the number of VMs
+that can be migrated simultaneously.
 
-[...]
+We are not quite ready for such a mechanism but what we can do first is
+to cleanup the error reporting in the early save_setup sequence. This
+is what the following changes propose, by adding an Error** argument to
+various handlers and propagating it to the core migration subsystem.
+ 
+Thanks,
 
->> About the APIs, I think, of course we should deprecate block-job-* API, because we already have jobs which are not block-jobs, so we can't deprecate job-* API.
->> 
->> So I suggest a plan:
->> 
->> 1. Add job-change command simply in block-core.json, as a simple copy
->>    of block-job-change, to not care with resolving inclusion loops.
->>    (ha we could simply name our block-job-change to be job-change and
->>    place it in block-core.json, but now is too late)
->> 
->> 2. Support changing speed in a new job-chage command. (or both in
->>    block-job-change and job-change, keeping them equal)
->
-> It should be both block-job-change and job-change.
->
-> Having job-change in block-core.json rather than job.json is ugly, but
-> if Markus doesn't complain, why would I.
+C.
 
-What we have is ugly and confusing: two interfaces with insufficient
-guidance on which one to use.
+Changes in v3:
 
-Unifying the interfaces will reduce confusion immediately, and may
-reduce ugliness eventually.
+ - New changes to make sure an error is always set in case of failure.
+   This is the reason behing the 5/6 extra patches. (Markus)
+ - Documentation fixup (Peter + Avihai)
+ - Set migration state to MIGRATION_STATUS_FAILED always
+ - Fixed error handling in bg_migration_thread() (Peter)
+ - Fixed return value of vfio_listener_log_global_start/stop(). 
+   Went unnoticed because value is not tested. (Peter)
+ - Add ERRP_GUARD() when error_prepend is used 
+ - Use error_setg_errno() when possible
+    
+Changes in v2:
 
-I take it.
+- Removed v1 patches addressing the return-path thread termination as
+  they are now superseded by :  
+  https://lore.kernel.org/qemu-devel/20240226203122.22894-1-farosas@suse.de/
+- Documentation updates of handlers
+- Removed call to PRECOPY_NOTIFY_SETUP notifiers in case of errors
+- Modified routines taking an Error** argument to return a bool when
+  possible and made adjustments in callers.
+- new MEMORY_LISTENER_CALL_LOG_GLOBAL macro for .log_global*()
+  handlers
+- Handled SETUP state when migration terminates
+- Modified memory_get_xlat_addr() to take an Error** argument
+- Various refinements on error handling
 
-[...]
+Cédric Le Goater (26):
+  s390/stattrib: Add Error** argument to set_migrationmode() handler
+  vfio: Always report an error in vfio_save_setup()
+  migration: Always report an error in block_save_setup()
+  migration: Always report an error in ram_save_setup()
+  migration: Add Error** argument to vmstate_save()
+  migration: Report error when shutdown fails
+  migration: Remove SaveStateHandler and LoadStateHandler typedefs
+  migration: Add documentation for SaveVMHandlers
+  migration: Do not call PRECOPY_NOTIFY_SETUP notifiers in case of error
+  migration: Move cleanup after after error reporting in
+    qemu_savevm_state_setup()
+  migration: Add Error** argument to qemu_savevm_state_setup()
+  migration: Add Error** argument to .save_setup() handler
+  migration: Add Error** argument to .load_setup() handler
+  memory: Add Error** argument to .log_global*() handlers
+  memory: Add Error** argument to the global_dirty_log routines
+  migration: Modify ram_init_bitmaps() to report dirty tracking errors
+  vfio: Add Error** argument to .set_dirty_page_tracking() handler
+  vfio: Add Error** argument to vfio_devices_dma_logging_start()
+  vfio: Add Error** argument to vfio_devices_dma_logging_stop()
+  vfio: Use new Error** argument in vfio_save_setup()
+  vfio: Add Error** argument to .vfio_save_config() handler
+  vfio: Reverse test on vfio_get_dirty_bitmap()
+  memory: Add Error** argument to memory_get_xlat_addr()
+  vfio: Add Error** argument to .get_dirty_bitmap() handler
+  vfio: Also trace event failures in vfio_save_complete_precopy()
+  vfio: Extend vfio_set_migration_error() with Error* argument
+
+ include/exec/memory.h                 |  40 +++-
+ include/hw/s390x/storage-attributes.h |   2 +-
+ include/hw/vfio/vfio-common.h         |  29 ++-
+ include/hw/vfio/vfio-container-base.h |  35 +++-
+ include/migration/register.h          | 273 +++++++++++++++++++++++---
+ include/qemu/typedefs.h               |   2 -
+ migration/savevm.h                    |   2 +-
+ hw/i386/xen/xen-hvm.c                 |  10 +-
+ hw/ppc/spapr.c                        |   2 +-
+ hw/s390x/s390-stattrib-kvm.c          |  12 +-
+ hw/s390x/s390-stattrib.c              |  14 +-
+ hw/vfio/common.c                      | 162 +++++++++------
+ hw/vfio/container-base.c              |   9 +-
+ hw/vfio/container.c                   |  19 +-
+ hw/vfio/migration.c                   |  99 ++++++----
+ hw/vfio/pci.c                         |   5 +-
+ hw/virtio/vhost-vdpa.c                |   5 +-
+ hw/virtio/vhost.c                     |   6 +-
+ migration/block-dirty-bitmap.c        |   4 +-
+ migration/block.c                     |  15 +-
+ migration/dirtyrate.c                 |  21 +-
+ migration/migration.c                 |  27 ++-
+ migration/qemu-file.c                 |   5 +-
+ migration/ram.c                       |  58 ++++--
+ migration/savevm.c                    |  59 +++---
+ system/memory.c                       |  95 +++++++--
+ system/physmem.c                      |   5 +-
+ 27 files changed, 772 insertions(+), 243 deletions(-)
+
+-- 
+2.44.0
 
 
