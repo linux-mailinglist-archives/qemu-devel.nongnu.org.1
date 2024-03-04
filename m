@@ -2,48 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E58BC875633
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 19:39:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AF77870691
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 17:08:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riIdN-0005kW-0g; Thu, 07 Mar 2024 13:38:25 -0500
+	id 1rhApy-00041M-LF; Mon, 04 Mar 2024 11:06:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1riIdK-0005kH-OM
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 13:38:22 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1riIdI-0003Vl-HY
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 13:38:22 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id E289D4E6013;
- Thu,  7 Mar 2024 19:38:13 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id rvDrDxA4MKQs; Thu,  7 Mar 2024 19:38:12 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 0105D4E6004; Thu,  7 Mar 2024 19:38:11 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-Date: Fri, 1 Mar 2024 19:01:10 +0100
-Subject: [PATCH v2] hmp: Add option to info qtree to omit details
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rhApw-000417-8T
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 11:06:44 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rhApu-0006KC-ML
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 11:06:44 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1d93edfa76dso41704205ad.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 08:06:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1709568400; x=1710173200; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=BotBHHJxq/7wzdFpe6g9ywN1bmJFUFIIFEQ/UIBMD3M=;
+ b=NPemz8HEStkO8CEKIQxPAZk556IjhY09mCCSbx2lyqp2JQ7HXQcKNizeSUDcxu3bV7
+ ktMgdRrhxZUvZKCr6kcea4Yq0Ws1vmiE6e2w8otjQVD4Lem8gHuoIU+EcegOvO0zIlz/
+ c7uYw3yiTXTxuWZ0JPFaaNvynyl9RX+DqWWDr8Oymo1Rn3hqW4+HaSJ2tcCFnjXcSB/n
+ gcewy91YYCxW5rhP5ry0GMgJksotd/d5LcSHEjYGrMEe4EvVpX/gqQfwt0cryS+RF/u/
+ kx0kkhif2wE1AXhyU1gW3B+oLyW8en63dxDZJoEcwH8AMgg1AgSsJ2IxjtAK1hNrC3Hk
+ /IwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709568400; x=1710173200;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=BotBHHJxq/7wzdFpe6g9ywN1bmJFUFIIFEQ/UIBMD3M=;
+ b=CzUKcERfs/hyFGyveloPMF3Ms4rJCt7et9wUeD6U/zzRyldHMUn0B861jktr9dhRJO
+ 4aC9scTL9UhajiV3bG+c6fsdD1tpVlgb8VKEuQWgmudp778FTHpNc5L5eBXLHiJjVNaO
+ 7/+M1V3CHJOkjNCoSV7fuZccBdpELJjL2lDttEg+EYPy9H+6CnTRxiDIWe0CF6J9BvRT
+ iKpHGxPBc0OgBtdtOTfu6lzQ8UQhGEAQ2H82sIOf56nU1xnyLm4cfTSxR7cnG8D+ox/t
+ lLFedUTMbg+kyx/6kplGV1Iz2c5TwFkVtxo1g2A7U91S7L1rAUcPRc85D+FKkXekPp/a
+ fOUA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVw/Yiefd6cJXzeG6NzcGVwKCXkIo4GIkHJtpFYDv53vgkMimWKf2+7N59vDMC/hwuD+7BZ3e4FrKf1b+pjDsgHgySPS5c=
+X-Gm-Message-State: AOJu0Yxh9c7smKye6kI1Tps3s1iqJUOySutaNNajYdO+9bKzS7nu5tBC
+ 4pOaA3pXnLbyjfMQ8fMKjrj1M/tBozb+ad01b+3g6XNr61aTn9Na14xTNtnoqBeny2iWvHw6IOV
+ 2
+X-Google-Smtp-Source: AGHT+IE8UKvsh/QFmQjG+siugqREM1LcCzPFQqaqTNjcEf+GOFNf+Rqm8pq5l5+qvQAJOCulDnCj+g==
+X-Received: by 2002:a17:902:dac4:b0:1dc:ca43:307 with SMTP id
+ q4-20020a170902dac400b001dcca430307mr13513680plx.60.1709568400489; 
+ Mon, 04 Mar 2024 08:06:40 -0800 (PST)
+Received: from [192.168.6.128] (098-147-055-211.res.spectrum.com.
+ [98.147.55.211]) by smtp.gmail.com with ESMTPSA id
+ q12-20020a170902a3cc00b001dbad2172cbsm8895050plb.8.2024.03.04.08.06.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Mar 2024 08:06:40 -0800 (PST)
+Message-ID: <3591c2e0-7713-4fba-83b0-214c9159b49e@linaro.org>
+Date: Sun, 3 Mar 2024 20:44:00 -1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] target/hppa: Fix assemble_11a insns for wide mode
+To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
+Cc: svens@stackframe.org
+References: <20240303021925.116609-1-richard.henderson@linaro.org>
+ <20240303021925.116609-3-richard.henderson@linaro.org>
+ <d71b8c47-336d-466d-bfbb-c04f955b20e7@gmx.de>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <d71b8c47-336d-466d-bfbb-c04f955b20e7@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Dr. David Alan Gilbert <dave@treblig.org>, berrange@redhat.com
-Message-Id: <20240307183812.0105D4E6004@zero.eik.bme.hu>
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: 15
-X-Spam_score: 1.5
-X-Spam_bar: +
-X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -60,109 +98,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The output of info qtree monitor command is very long. Add an option
-to print a brief overview omitting all the details.
+On 3/2/24 20:52, Helge Deller wrote:
+> On 3/3/24 03:19, Richard Henderson wrote:
+>> Reported-by: Sven Schnelle <svens@stackframe.org>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   target/hppa/insns.decode |  7 ++++---
+>>   target/hppa/translate.c  | 23 +++++++++++++++++------
+>>   2 files changed, 21 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/target/hppa/insns.decode b/target/hppa/insns.decode
+>> index 0d9f8159ec..9c6f92444c 100644
+>> --- a/target/hppa/insns.decode
+>> +++ b/target/hppa/insns.decode
+>> @@ -24,7 +24,7 @@
+>>   %assemble_sr3   13:1 14:2
+>>   %assemble_sr3x  13:1 14:2 !function=expand_sr3x
+>>
+>> -%assemble_11a   0:s1 4:10            !function=expand_shl3
+>> +%assemble_11a   4:12 0:1             !function=expand_11a
+>>   %assemble_12    0:s1 2:1 3:10        !function=expand_shl2
+>>   %assemble_12a   0:s1 3:11            !function=expand_shl2
+>>   %assemble_16    0:16                 !function=expand_16
+>> @@ -305,8 +305,9 @@ fstd            001011 ..... ..... .. . 1 -- 100 0 . .....      
+>> @fldstdi
+>>   # Offset Mem
+>>   ####
+>>
+>> -@ldstim11       ...... b:5 t:5 sp:2 ..............      \
+>> -                &ldst disp=%assemble_11a m=%ma2_to_m x=0 scale=0 size=3
+>> +@ldstim11       ...... b:5 t:5 ................          \
+>> +                &ldst sp=%assemble_sp disp=%assemble_11a \
+>> +                m=%ma2_to_m x=0 scale=0 size=3
+>>   @ldstim14       ...... b:5 t:5 ................          \
+>>                   &ldst sp=%assemble_sp disp=%assemble_16  \
+>>                   x=0 scale=0 m=0
+>> diff --git a/target/hppa/translate.c b/target/hppa/translate.c
+>> index 585d836959..6dcc74e681 100644
+>> --- a/target/hppa/translate.c
+>> +++ b/target/hppa/translate.c
+>> @@ -121,12 +121,6 @@ static int expand_shl2(DisasContext *ctx, int val)
+>>       return val << 2;
+>>   }
+>>
+>> -/* Used for fp memory ops.  */
+>> -static int expand_shl3(DisasContext *ctx, int val)
+>> -{
+>> -    return val << 3;
+>> -}
+>> -
+>>   /* Used for assemble_21.  */
+>>   static int expand_shl11(DisasContext *ctx, int val)
+>>   {
+>> @@ -144,6 +138,23 @@ static int assemble_6(DisasContext *ctx, int val)
+>>       return (val ^ 31) + 1;
+>>   }
+>>
+>> +/* Expander for assemble_16a(s,cat(im10a,0),i). */
+> 
+> Typo above, should be assemble_11a().
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
----
-v2:
-- Change the variable name to deails too
-- Add braces to if (checkpatch did not warn for this so just noticed)
+No, that's the pseudocode in the manual.
 
- hmp-commands-info.hx  |  6 +++---
- system/qdev-monitor.c | 27 +++++++++++++++------------
- 2 files changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-index da120f82a3..ad1b1306e3 100644
---- a/hmp-commands-info.hx
-+++ b/hmp-commands-info.hx
-@@ -540,9 +540,9 @@ ERST
- 
-     {
-         .name       = "qtree",
--        .args_type  = "",
--        .params     = "",
--        .help       = "show device tree",
-+        .args_type  = "brief:-b",
-+        .params     = "[-b]",
-+        .help       = "show device tree (-b: brief, omit properties)",
-         .cmd        = hmp_info_qtree,
-     },
- 
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index a13db763e5..ad91e74181 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -744,7 +744,6 @@ DeviceState *qdev_device_add(QemuOpts *opts, Error **errp)
- }
- 
- #define qdev_printf(fmt, ...) monitor_printf(mon, "%*s" fmt, indent, "", ## __VA_ARGS__)
--static void qbus_print(Monitor *mon, BusState *bus, int indent);
- 
- static void qdev_print_props(Monitor *mon, DeviceState *dev, Property *props,
-                              int indent)
-@@ -784,13 +783,9 @@ static void bus_print_dev(BusState *bus, Monitor *mon, DeviceState *dev, int ind
- static void qdev_print(Monitor *mon, DeviceState *dev, int indent)
- {
-     ObjectClass *class;
--    BusState *child;
-     NamedGPIOList *ngl;
-     NamedClockList *ncl;
- 
--    qdev_printf("dev: %s, id \"%s\"\n", object_get_typename(OBJECT(dev)),
--                dev->id ? dev->id : "");
--    indent += 2;
-     QLIST_FOREACH(ngl, &dev->gpios, node) {
-         if (ngl->num_in) {
-             qdev_printf("gpio-in \"%s\" %d\n", ngl->name ? ngl->name : "",
-@@ -814,12 +809,9 @@ static void qdev_print(Monitor *mon, DeviceState *dev, int indent)
-         class = object_class_get_parent(class);
-     } while (class != object_class_by_name(TYPE_DEVICE));
-     bus_print_dev(dev->parent_bus, mon, dev, indent);
--    QLIST_FOREACH(child, &dev->child_bus, sibling) {
--        qbus_print(mon, child, indent);
--    }
- }
- 
--static void qbus_print(Monitor *mon, BusState *bus, int indent)
-+static void qbus_print(Monitor *mon, BusState *bus, int indent, bool details)
- {
-     BusChild *kid;
- 
-@@ -827,16 +819,27 @@ static void qbus_print(Monitor *mon, BusState *bus, int indent)
-     indent += 2;
-     qdev_printf("type %s\n", object_get_typename(OBJECT(bus)));
-     QTAILQ_FOREACH(kid, &bus->children, sibling) {
-+        BusState *child_bus;
-         DeviceState *dev = kid->child;
--        qdev_print(mon, dev, indent);
-+        qdev_printf("dev: %s, id \"%s\"\n", object_get_typename(OBJECT(dev)),
-+                    dev->id ? dev->id : "");
-+        if (details) {
-+            qdev_print(mon, dev, indent + 2);
-+        }
-+        QLIST_FOREACH(child_bus, &dev->child_bus, sibling) {
-+            qbus_print(mon, child_bus, indent + 2, details);
-+        }
-     }
- }
- #undef qdev_printf
- 
- void hmp_info_qtree(Monitor *mon, const QDict *qdict)
- {
--    if (sysbus_get_default())
--        qbus_print(mon, sysbus_get_default(), 0);
-+    bool details = !qdict_get_try_bool(qdict, "brief", false);
-+
-+    if (sysbus_get_default()) {
-+        qbus_print(mon, sysbus_get_default(), 0, details);
-+    }
- }
- 
- void hmp_info_qdm(Monitor *mon, const QDict *qdict)
--- 
-2.30.9
-
+r~
 
