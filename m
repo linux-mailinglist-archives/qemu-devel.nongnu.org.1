@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8600186F834
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 02:27:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E8D086F836
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 02:27:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgx6T-0001B6-CA; Sun, 03 Mar 2024 20:26:53 -0500
+	id 1rgx6X-0001Bk-VF; Sun, 03 Mar 2024 20:26:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx6R-0001Aq-Ff
- for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:26:51 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx6V-0001BO-Ix
+ for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:26:55 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx6P-0002Cq-V3
- for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:26:51 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx6U-0002D2-26
+ for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:26:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709515608;
+ s=mimecast20190719; t=1709515613;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=J1u9p98iL9dGUhqwCh1QSReBpXp024Fs7D/IbbmF5DU=;
- b=AlUeb2ScJpPNLu1b/rnHO3IdpYhu3M+FHCwLAwPPVk9Wm8/8cpYvFB1CCdCeoFsckYaaZ9
- octT6IXmLqRPGYucPLAWyFc3S8BjlgKkST7BW3pIJjsHY0gefIeBozs2H+AOrSqNHYRdMV
- pn1UEE6lm3IOqXU32hM6El8AZKAmtVs=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-176-bCWqCaEZP9a6jawEZylEgA-1; Sun,
- 03 Mar 2024 20:26:46 -0500
-X-MC-Unique: bCWqCaEZP9a6jawEZylEgA-1
+ bh=ir0qtqpandnsGtqegAJq1Iw5ZTngl6lZQdOMv82MTII=;
+ b=Fp3jumq8U6o9oX16Y0q51RiFAYGW1pEFt6djgN42XxvR09lbIbRPJihTot+9QWGzzIKwuP
+ X4kEDBdhVOVoJ0pjob30U4oduIIuK4BaxCTPTHlBLhdeFaaQPFB48ZwR1YSI+flyysZdAo
+ 32iq/Ae3pWhdyIhWr4aVe47a0c2JY9w=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-312-F3UAZCTHMhmWDbqFiklEXw-1; Sun, 03 Mar 2024 20:26:51 -0500
+X-MC-Unique: F3UAZCTHMhmWDbqFiklEXw-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9D7923C0BE4D;
- Mon,  4 Mar 2024 01:26:45 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ECADF185A783;
+ Mon,  4 Mar 2024 01:26:50 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.2])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 685A640C6EBA;
- Mon,  4 Mar 2024 01:26:41 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 542BE40C6EBA;
+ Mon,  4 Mar 2024 01:26:45 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
 Cc: peterx@redhat.com,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Prasad Pandit <ppandit@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Steve Sistare <steven.sistare@oracle.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 01/27] migration: massage cpr-reboot documentation
-Date: Mon,  4 Mar 2024 09:26:08 +0800
-Message-ID: <20240304012634.95520-2-peterx@redhat.com>
+ Bryan Zhang <bryan.zhang@BYTEDANCE.COM>,
+ Bryan Zhang <bryan.zhang@bytedance.com>
+Subject: [PULL 02/27] migration: Properly apply migration compression level
+ parameters
+Date: Mon,  4 Mar 2024 09:26:09 +0800
+Message-ID: <20240304012634.95520-3-peterx@redhat.com>
 In-Reply-To: <20240304012634.95520-1-peterx@redhat.com>
 References: <20240304012634.95520-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -82,79 +83,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Steve Sistare <steven.sistare@oracle.com>
+From: Bryan Zhang <bryan.zhang@BYTEDANCE.COM>
 
-Re-wrap the cpr-reboot documentation to 70 columns, use '@' for
-cpr-reboot references, capitalize COLO and VFIO, and tweak the
-wording.
+Some glue code was missing, so that using `qmp_migrate_set_parameters`
+to set `multifd-zstd-level` or `multifd-zlib-level` did not work. This
+commit adds the glue code to fix that.
 
-Suggested-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Link: https://lore.kernel.org/r/1709218462-3640-1-git-send-email-steven.sistare@oracle.com
-[peterx: s/qemu/QEMU per Markus's suggestion]
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
+Link: https://lore.kernel.org/r/20240301035901.4006936-2-bryan.zhang@bytedance.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- qapi/migration.json | 46 +++++++++++++++++++++++----------------------
- 1 file changed, 24 insertions(+), 22 deletions(-)
+ migration/options.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 0b33a71ab4..b603aa6f25 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -636,28 +636,30 @@
- #
- # @normal: the original form of migration. (since 8.2)
- #
--# @cpr-reboot: The migrate command stops the VM and saves state to the URI.
--#     After quitting qemu, the user resumes by running qemu -incoming.
--#
--#     This mode allows the user to quit qemu, and restart an updated version
--#     of qemu.  The user may even update and reboot the OS before restarting,
--#     as long as the URI persists across a reboot.
--#
--#     Unlike normal mode, the use of certain local storage options does not
--#     block the migration, but the user must not modify guest block devices
--#     between the quit and restart.
--#
--#     This mode supports vfio devices provided the user first puts the guest
--#     in the suspended runstate, such as by issuing guest-suspend-ram to the
--#     qemu guest agent.
--#
--#     Best performance is achieved when the memory backend is shared and the
--#     @x-ignore-shared migration capability is set, but this is not required.
--#     Further, if the user reboots before restarting such a configuration, the
--#     shared backend must be be non-volatile across reboot, such as by backing
--#     it with a dax device.
--#
--#     cpr-reboot may not be used with postcopy, colo, or background-snapshot.
-+# @cpr-reboot: The migrate command stops the VM and saves state to
-+#     the URI.  After quitting QEMU, the user resumes by running
-+#     QEMU -incoming.
-+#
-+#     This mode allows the user to quit QEMU, optionally update and
-+#     reboot the OS, and restart QEMU.  If the user reboots, the URI
-+#     must persist across the reboot, such as by using a file.
-+#
-+#     Unlike normal mode, the use of certain local storage options
-+#     does not block the migration, but the user must not modify the
-+#     contents of guest block devices between the quit and restart.
-+#
-+#     This mode supports VFIO devices provided the user first puts
-+#     the guest in the suspended runstate, such as by issuing
-+#     guest-suspend-ram to the QEMU guest agent.
-+#
-+#     Best performance is achieved when the memory backend is shared
-+#     and the @x-ignore-shared migration capability is set, but this
-+#     is not required.  Further, if the user reboots before restarting
-+#     such a configuration, the shared memory must persist across the
-+#     reboot, such as by backing it with a dax device.
-+#
-+#     @cpr-reboot may not be used with postcopy, background-snapshot,
-+#     or COLO.
- #
- #     (since 8.2)
- ##
+diff --git a/migration/options.c b/migration/options.c
+index 3e3e0b93b4..1cd3cc7c33 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -1312,6 +1312,12 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
+     if (params->has_multifd_compression) {
+         dest->multifd_compression = params->multifd_compression;
+     }
++    if (params->has_multifd_zlib_level) {
++        dest->multifd_zlib_level = params->multifd_zlib_level;
++    }
++    if (params->has_multifd_zstd_level) {
++        dest->multifd_zstd_level = params->multifd_zstd_level;
++    }
+     if (params->has_xbzrle_cache_size) {
+         dest->xbzrle_cache_size = params->xbzrle_cache_size;
+     }
+@@ -1447,6 +1453,12 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+     if (params->has_multifd_compression) {
+         s->parameters.multifd_compression = params->multifd_compression;
+     }
++    if (params->has_multifd_zlib_level) {
++        s->parameters.multifd_zlib_level = params->multifd_zlib_level;
++    }
++    if (params->has_multifd_zstd_level) {
++        s->parameters.multifd_zstd_level = params->multifd_zstd_level;
++    }
+     if (params->has_xbzrle_cache_size) {
+         s->parameters.xbzrle_cache_size = params->xbzrle_cache_size;
+         xbzrle_cache_resize(params->xbzrle_cache_size, errp);
 -- 
 2.44.0
 
