@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F8BA86FCDA
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 10:13:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D52F86FCD7
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 10:13:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rh4N9-0007K9-ED; Mon, 04 Mar 2024 04:12:35 -0500
+	id 1rh4NA-0007Kp-5d; Mon, 04 Mar 2024 04:12:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1rh4N5-0007Iv-Hx; Mon, 04 Mar 2024 04:12:31 -0500
+ id 1rh4N7-0007Jn-Sd; Mon, 04 Mar 2024 04:12:33 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX02.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_CBC_SHA1:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1rh4N2-0003Bk-LT; Mon, 04 Mar 2024 04:12:31 -0500
+ id 1rh4N6-0003Bk-BR; Mon, 04 Mar 2024 04:12:33 -0500
 Received: from TWMBX02.aspeed.com (192.168.0.24) by TWMBX02.aspeed.com
  (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 4 Mar
- 2024 17:12:23 +0800
+ 2024 17:12:24 +0800
 Received: from localhost.localdomain (192.168.10.10) by TWMBX02.aspeed.com
  (192.168.0.24) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 4 Mar 2024 17:12:23 +0800
+ Transport; Mon, 4 Mar 2024 17:12:24 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Andrew Jeffery <andrew@codeconstruct.com.au>,
  Joel Stanley <joel@jms.id.au>, Alistair Francis <alistair@alistair23.me>,
@@ -29,10 +29,12 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v1 0/9] Add AST2700 support
-Date: Mon, 4 Mar 2024 17:12:12 +0800
-Message-ID: <20240304091221.1855398-1-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 1/9] aspeed/wdt: Add AST2700 support
+Date: Mon, 4 Mar 2024 17:12:13 +0800
+Message-ID: <20240304091221.1855398-2-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240304091221.1855398-1-jamin_lin@aspeedtech.com>
+References: <20240304091221.1855398-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -64,84 +66,75 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Changes from v1:
-The patch series supports WDT, SDMC, SMC, SCU, SLI and INTC for AST2700 SoC.
+AST2700 wdt controller is similiar to AST2600's wdt, but
+the AST2700 has 8 watchdogs, and they each have a 0x80 of registers.
+Introduce ast2700 object class and increse the number of regs(offset) of
+ast2700 model.
 
-Test steps:
-1. Download openbmc image for AST2700 from
-   https://github.com/AspeedTech-BMC/openbmc/releases/tag/v09.00
-   https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.00/
-   ast2700-default-obmc.tar.gz
-2. untar ast2700-default-obmc.tar.gz
-   ```
-   tar -xf ast2700-default-obmc.tar.gz
-   ```
-3. Run and the contents of scripts as following
-IMGDIR=ast2700-default
-UBOOT_SIZE=$(stat --format=%s -L ${IMGDIR}/u-boot-nodtb.bin)
-UBOOT_DTB_ADDR=$((0x400000000 + ${UBOOT_SIZE}))
+Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+---
+ hw/watchdog/wdt_aspeed.c         | 24 ++++++++++++++++++++++++
+ include/hw/watchdog/wdt_aspeed.h |  3 ++-
+ 2 files changed, 26 insertions(+), 1 deletion(-)
 
-qemu-system-aarch64 -M ast2700-evb -nographic\
- -device loader,addr=0x400000000,file=${IMGDIR}/u-boot-nodtb.bin,force-raw=on\
- -device loader,addr=${UBOOT_DTB_ADDR},file=${IMGDIR}/u-boot.dtb,force-raw=on\
- -device loader,addr=0x430000000,file=${IMGDIR}/bl31.bin,force-raw=on\
- -device loader,addr=0x430080000,file=${IMGDIR}/optee/tee-raw.bin,force-raw=on\
- -device loader,addr=0x430000000,cpu-num=0\
- -device loader,addr=0x430000000,cpu-num=1\
- -device loader,addr=0x430000000,cpu-num=2\
- -device loader,addr=0x430000000,cpu-num=3\
- -smp 4\
- -drive file=${IMGDIR}/image-bmc,format=raw,if=mtd\
- -serial mon:stdio\
- -snapshot
-
-Known Issue:
-1. QEMU supports ARM Generic Interrupt Controller, version 3(GICv3)
-but not support Shared Peripheral Interrupt (SPI), yet.
-Added work around in INTC patch to set GICINT132[18]
-which was BMC UART interrupt if it received GICINT132, so users are
-able to type any key from keyboard to trigger GICINT132 interrupt
-until AST2700 boot into login prompt. It is a temporary solution.
-If users encounter boot stck and no booting log,
-please type any key from keyboard.
-
-Jamin Lin (9):
-  aspeed/wdt: Add AST2700 support
-  aspeed/sli: Add AST2700 support
-  aspeed/sdmc: Add AST2700 support
-  aspeed/smc: Add AST2700 support
-  aspeed/scu: Add AST2700 support
-  aspeed/intc: Add AST2700 support
-  aspeed/soc: Add AST2700 support
-  aspeed: Add an AST2700 eval board
-  aspeed/soc: fix incorrect dram size for AST2700
-
- hw/arm/aspeed.c                  |  32 ++
- hw/arm/aspeed_ast27x0.c          | 554 +++++++++++++++++++++++++++++++
- hw/arm/meson.build               |   1 +
- hw/intc/aspeed_intc.c            | 135 ++++++++
- hw/intc/meson.build              |   1 +
- hw/misc/aspeed_scu.c             | 306 ++++++++++++++++-
- hw/misc/aspeed_sdmc.c            | 215 ++++++++++--
- hw/misc/aspeed_sli.c             | 179 ++++++++++
- hw/misc/meson.build              |   3 +-
- hw/misc/trace-events             |  11 +
- hw/ssi/aspeed_smc.c              | 326 ++++++++++++++++--
- hw/ssi/trace-events              |   2 +-
- hw/watchdog/wdt_aspeed.c         |  24 ++
- include/hw/arm/aspeed_soc.h      |  27 +-
- include/hw/intc/aspeed_vic.h     |  29 ++
- include/hw/misc/aspeed_scu.h     |  47 ++-
- include/hw/misc/aspeed_sdmc.h    |   4 +-
- include/hw/misc/aspeed_sli.h     |  32 ++
- include/hw/ssi/aspeed_smc.h      |   1 +
- include/hw/watchdog/wdt_aspeed.h |   3 +-
- 20 files changed, 1880 insertions(+), 52 deletions(-)
- create mode 100644 hw/arm/aspeed_ast27x0.c
- create mode 100644 hw/intc/aspeed_intc.c
- create mode 100644 hw/misc/aspeed_sli.c
- create mode 100644 include/hw/misc/aspeed_sli.h
-
+diff --git a/hw/watchdog/wdt_aspeed.c b/hw/watchdog/wdt_aspeed.c
+index d70b656f8e..75685c5647 100644
+--- a/hw/watchdog/wdt_aspeed.c
++++ b/hw/watchdog/wdt_aspeed.c
+@@ -422,12 +422,36 @@ static const TypeInfo aspeed_1030_wdt_info = {
+     .class_init = aspeed_1030_wdt_class_init,
+ };
+ 
++static void aspeed_2700_wdt_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    AspeedWDTClass *awc = ASPEED_WDT_CLASS(klass);
++
++    dc->desc = "ASPEED 2700 Watchdog Controller";
++    awc->iosize = 0x80;
++    awc->ext_pulse_width_mask = 0xfffff; /* TODO */
++    awc->reset_ctrl_reg = AST2600_SCU_RESET_CONTROL1;
++    awc->reset_pulse = aspeed_2500_wdt_reset_pulse;
++    awc->wdt_reload = aspeed_wdt_reload_1mhz;
++    awc->sanitize_ctrl = aspeed_2600_sanitize_ctrl;
++    awc->default_status = 0x014FB180;
++    awc->default_reload_value = 0x014FB180;
++}
++
++static const TypeInfo aspeed_2700_wdt_info = {
++    .name = TYPE_ASPEED_2700_WDT,
++    .parent = TYPE_ASPEED_WDT,
++    .instance_size = sizeof(AspeedWDTState),
++    .class_init = aspeed_2700_wdt_class_init,
++};
++
+ static void wdt_aspeed_register_types(void)
+ {
+     type_register_static(&aspeed_wdt_info);
+     type_register_static(&aspeed_2400_wdt_info);
+     type_register_static(&aspeed_2500_wdt_info);
+     type_register_static(&aspeed_2600_wdt_info);
++    type_register_static(&aspeed_2700_wdt_info);
+     type_register_static(&aspeed_1030_wdt_info);
+ }
+ 
+diff --git a/include/hw/watchdog/wdt_aspeed.h b/include/hw/watchdog/wdt_aspeed.h
+index e90ef86651..830b0a7936 100644
+--- a/include/hw/watchdog/wdt_aspeed.h
++++ b/include/hw/watchdog/wdt_aspeed.h
+@@ -19,9 +19,10 @@ OBJECT_DECLARE_TYPE(AspeedWDTState, AspeedWDTClass, ASPEED_WDT)
+ #define TYPE_ASPEED_2400_WDT TYPE_ASPEED_WDT "-ast2400"
+ #define TYPE_ASPEED_2500_WDT TYPE_ASPEED_WDT "-ast2500"
+ #define TYPE_ASPEED_2600_WDT TYPE_ASPEED_WDT "-ast2600"
++#define TYPE_ASPEED_2700_WDT TYPE_ASPEED_WDT "-ast2700"
+ #define TYPE_ASPEED_1030_WDT TYPE_ASPEED_WDT "-ast1030"
+ 
+-#define ASPEED_WDT_REGS_MAX        (0x30 / 4)
++#define ASPEED_WDT_REGS_MAX        (0x80 / 4)
+ 
+ struct AspeedWDTState {
+     /*< private >*/
 -- 
 2.25.1
 
