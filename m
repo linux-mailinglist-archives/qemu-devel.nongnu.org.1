@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E20086FA24
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 07:35:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC43286FA25
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 07:35:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rh1t6-0005bt-0e; Mon, 04 Mar 2024 01:33:24 -0500
+	id 1rh1t8-0005fy-1W; Mon, 04 Mar 2024 01:33:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rh1sW-0005Xv-61
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 01:32:48 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rh1sV-0005XT-Fg
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 01:32:47 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rh1sR-00008D-EE
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 01:32:47 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rh1sR-000081-8w
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 01:32:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1709533961;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pOjnZidORcDEQ/A5DM1wItaLmYEEvB17BaywLPOi69Y=;
- b=H8wJ+FIAsKwx8OMlXM9SG7NTd/M6aYGrWkQBJ8vY8+lTAmF9XiiIYmNnvzI7Qv62phWgRn
- u8fISgQjoRtvnmumonQtuaQJqETFBZ7ujOWaaHCeQfg45BMffTRUzSgc5H8ZtUPwFgB1sX
- wF1yOb1R/0cyFBJIEBi6dMwQxCHnI9g=
+ bh=8/FXbU9k4Xbe6CQGPTK1P/C/8UWcPJ+aHRUxwKj2KcM=;
+ b=V/tfhmOgg+IkXDQuGRKW0lXn1ObXt8GDhy0DdqrZmH7TbwSTiAD6tA5STi36653gk06YOY
+ S7+IL6YudpvNaajudqxlH6E0Rh/0VhlIOuSYEwecBMf2Yt4pMHhzh3MTs4lUc3kzxFQG5d
+ D5Rhl7CN3OVMfC318iol53lh2+vJXcM=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-563-aP4l2THTNtis9Xo6f4YYdQ-1; Mon, 04 Mar 2024 01:32:39 -0500
-X-MC-Unique: aP4l2THTNtis9Xo6f4YYdQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-537-DgFhCSR1PqOKoTJjkUnYdg-1; Mon, 04 Mar 2024 01:32:39 -0500
+X-MC-Unique: DgFhCSR1PqOKoTJjkUnYdg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 32B5F85A589;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3307884AE41;
  Mon,  4 Mar 2024 06:32:39 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.3])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0F2521C060B1;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0F1402022AAC;
  Mon,  4 Mar 2024 06:32:39 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 844F621E68BD; Mon,  4 Mar 2024 07:32:36 +0100 (CET)
+ id 86E1B21E6828; Mon,  4 Mar 2024 07:32:36 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PULL 09/18] qga/qapi-schema: Delete useless "Returns" sections
-Date: Mon,  4 Mar 2024 07:32:27 +0100
-Message-ID: <20240304063236.213955-10-armbru@redhat.com>
+Subject: [PULL 10/18] qga/qapi-schema: Clean up "Returns" sections
+Date: Mon,  4 Mar 2024 07:32:28 +0100
+Message-ID: <20240304063236.213955-11-armbru@redhat.com>
 In-Reply-To: <20240304063236.213955-1-armbru@redhat.com>
 References: <20240304063236.213955-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
@@ -79,70 +79,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Drop "on success" where it is redundant with "Returns:".
+
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240227113921.236097-10-armbru@redhat.com>
+Message-ID: <20240227113921.236097-11-armbru@redhat.com>
 ---
- qga/qapi-schema.json | 12 ------------
- 1 file changed, 12 deletions(-)
+ qga/qapi-schema.json | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-index c5f2ac8f59..636c2c5697 100644
+index 636c2c5697..326d324901 100644
 --- a/qga/qapi-schema.json
 +++ b/qga/qapi-schema.json
-@@ -153,8 +153,6 @@
- # @time: time of nanoseconds, relative to the Epoch of 1970-01-01 in
- #     UTC.
+@@ -228,7 +228,7 @@
  #
--# Returns: Nothing on success.
--#
- # Since: 1.5
- ##
- { 'command': 'guest-set-time',
-@@ -245,8 +243,6 @@
+ # @mode: open mode, as per fopen(), "r" is the default.
  #
- # @handle: filehandle returned by guest-file-open
+-# Returns: Guest file handle on success.
++# Returns: Guest file handle
  #
--# Returns: Nothing on success.
--#
  # Since: 0.15.0
  ##
- { 'command': 'guest-file-close',
-@@ -399,8 +395,6 @@
+@@ -277,7 +277,7 @@
+ # @count: maximum number of bytes to read (default is 4KB, maximum is
+ #     48MB)
  #
- # @handle: filehandle returned by guest-file-open
+-# Returns: @GuestFileRead on success.
++# Returns: @GuestFileRead
  #
--# Returns: Nothing on success.
--#
  # Since: 0.15.0
  ##
- { 'command': 'guest-file-flush',
-@@ -1077,8 +1071,6 @@
- # transmission, even if already crypt()d, to ensure it is 8-bit safe
- # when passed as JSON.
+@@ -312,7 +312,7 @@
+ # @count: bytes to write (actual bytes, after base64-decode), default
+ #     is all content in buf-b64 buffer after base64 decoding
  #
--# Returns: Nothing on success.
--#
- # Since: 2.3
+-# Returns: @GuestFileWrite on success.
++# Returns: @GuestFileWrite
+ #
+ # Since: 0.15.0
  ##
- { 'command': 'guest-set-user-password',
-@@ -1602,8 +1594,6 @@
+@@ -379,7 +379,7 @@
  #
- # @reset: ignore the existing content, set it with the given keys only
+ # @whence: Symbolic or numeric code for interpreting offset
  #
--# Returns: Nothing on success.
--#
- # Since: 5.2
+-# Returns: @GuestFileSeek on success.
++# Returns: @GuestFileSeek
+ #
+ # Since: 0.15.0
  ##
- { 'command': 'guest-ssh-add-authorized-keys',
-@@ -1622,8 +1612,6 @@
- # @keys: the public keys to remove (in OpenSSH/sshd(8) authorized_keys
- #     format)
+@@ -723,7 +723,7 @@
  #
--# Returns: Nothing on success.
--#
- # Since: 5.2
+ # Get list of guest IP addresses, MAC addresses and netmasks.
+ #
+-# Returns: List of GuestNetworkInterface on success.
++# Returns: List of GuestNetworkInterface
+ #
+ # Since: 1.1
  ##
- { 'command': 'guest-ssh-remove-authorized-keys',
+@@ -1247,7 +1247,7 @@
+ #
+ # @pid: pid returned from guest-exec
+ #
+-# Returns: GuestExecStatus on success.
++# Returns: GuestExecStatus
+ #
+ # Since: 2.5
+ ##
+@@ -1315,7 +1315,7 @@
+ # @capture-output: bool flag to enable capture of stdout/stderr of
+ #     running process.  defaults to false.
+ #
+-# Returns: PID on success.
++# Returns: PID
+ #
+ # Since: 2.5
+ ##
+@@ -1344,7 +1344,7 @@
+ # or even present in DNS or some other name service at all.  It need
+ # not even be unique on your local network or site, but usually it is.
+ #
+-# Returns: the host name of the machine on success
++# Returns: the host name of the machine
+ #
+ # Since: 2.10
+ ##
 -- 
 2.44.0
 
