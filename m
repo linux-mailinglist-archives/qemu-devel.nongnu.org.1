@@ -2,68 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1990C86FF5C
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 11:45:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF60C86FF6D
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 11:49:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rh5o9-0006OI-0Z; Mon, 04 Mar 2024 05:44:33 -0500
+	id 1rh5sc-0001tz-H3; Mon, 04 Mar 2024 05:49:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rh5o1-0006Mx-Ux
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 05:44:26 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rh5sa-0001tR-M6
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 05:49:08 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rh5ny-00048V-Bd
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 05:44:25 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rh5sV-00050E-Uf
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 05:49:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709549061;
+ s=mimecast20190719; t=1709549343;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=rhR7+x86Od4O3g4vLC5WnQ5uQbaEtOIZwizKLMyBpUk=;
- b=Wm16vvmSSBGqbmiqoG4xve4tK/luiXQQ441CR1ziE1/wXMqRdsuOllqEuvCaUyo556Y46M
- om12yGdxXgTdb1SNdINnxfRydQiQxQEwyHLq0vkv52f3AEEfUG6qZKXlSuPwPng7rgRrix
- D1Y7i30eOTZqqm2Olscu/kRtuOpyBLk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-9AJSpp5HNpWNzQ8vGy_v-Q-1; Mon, 04 Mar 2024 05:44:18 -0500
-X-MC-Unique: 9AJSpp5HNpWNzQ8vGy_v-Q-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ bh=5r7OrzhRlKRkE5WLQ/StS72wkl+VKB3T4fPjQFBAPlo=;
+ b=eZPHvM0Xv+gN6aOc4JkUn23q/t2oqwooSoXjO4JfF7oeV8FlAaS5eccKR7uNsPY5SivEdD
+ DqZ953v3AMwWhTvymWksHDO8e7imm3/4G7URrAieuuWxpx/TLKiAVmEs0ebV8Xs+UdXzdG
+ 0rDjb+WyzTzxR5Mfulchgm0jtnxPLpE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-31-AsFrqwdRMnSMY8VHBQZQJQ-1; Mon,
+ 04 Mar 2024 05:48:58 -0500
+X-MC-Unique: AsFrqwdRMnSMY8VHBQZQJQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DB45384AE40;
- Mon,  4 Mar 2024 10:44:17 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CAF321C060B1;
- Mon,  4 Mar 2024 10:44:15 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>,
-	qemu-devel@nongnu.org
-Cc: Fan Ni <fan.ni@samsung.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-trivial@nongnu.org
-Subject: [PATCH 3/3] hw/mem/cxl_type3: Fix problem with g_steal_pointer()
-Date: Mon,  4 Mar 2024 11:44:06 +0100
-Message-ID: <20240304104406.59855-4-thuth@redhat.com>
-In-Reply-To: <20240304104406.59855-1-thuth@redhat.com>
-References: <20240304104406.59855-1-thuth@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 589762806400;
+ Mon,  4 Mar 2024 10:48:58 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.193.83])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 6ADD52026D06;
+ Mon,  4 Mar 2024 10:48:55 +0000 (UTC)
+Date: Mon, 4 Mar 2024 11:48:54 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: Markus Armbruster <armbru@redhat.com>,
+ Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org, eblake@redhat.com, hreitz@redhat.com,
+ jsnow@redhat.com, den@virtuozzo.com, t.lamprecht@proxmox.com,
+ alexander.ivanov@virtuozzo.com, pkrempa@redhat.com
+Subject: Re: [PATCH v2 00/10] mirror: allow switching from background to
+ active mode
+Message-ID: <ZeWnFhLKCamlP97y@redhat.com>
+References: <20231009094619.469668-1-f.ebner@proxmox.com>
+ <a5c48627-0bef-46cd-9426-587b358fe32d@yandex-team.ru>
+ <993bfa5d-1a91-4b32-9bd8-165b7abba4f0@proxmox.com>
+ <99dd287b-816b-4f4f-b156-32f94bbb62c2@yandex-team.ru>
+ <87o7gbyy8w.fsf@pond.sub.org> <ZUTffE0wfjLH2u+e@redhat.com>
+ <87cywqn84g.fsf@pond.sub.org>
+ <1310efb0-e211-46f5-b166-d7d529507a43@yandex-team.ru>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1310efb0-e211-46f5-b166-d7d529507a43@yandex-team.ru>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.589,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,103 +87,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When setting GLIB_VERSION_MAX_ALLOWED to GLIB_VERSION_2_58 or higher,
-glib adds type safety checks to the g_steal_pointer() macro. This
-triggers errors in the ct3_build_cdat_entries_for_mr() function which
-uses the g_steal_pointer() for type-casting from one pointer type to
-the other (which also looks quite weird since the local pointers have
-all been declared with g_autofree though they are never freed here).
-Fix it by using a proper typecast instead. For making this possible, we
-have to remove the QEMU_PACKED attribute from some structs since GCC
-otherwise complains that the source and destination pointer might
-have different alignment restrictions. Removing the QEMU_PACKED should
-be fine here since the structs are already naturally aligned. Anyway,
-add some QEMU_BUILD_BUG_ON() statements to make sure that we've got
-the right sizes (without padding in the structs).
+Am 28.02.2024 um 19:07 hat Vladimir Sementsov-Ogievskiy geschrieben:
+> On 03.11.23 18:56, Markus Armbruster wrote:
+> > Kevin Wolf<kwolf@redhat.com>  writes:
+> > 
+> > > Am 03.11.2023 um 10:36 hat Markus Armbruster geschrieben:
+> > > > Vladimir Sementsov-Ogievskiy<vsementsov@yandex-team.ru>  writes:
+> > > > 
+> > > > > On 11.10.23 13:18, Fiona Ebner wrote:
+> > > > > > Am 10.10.23 um 19:55 schrieb Vladimir Sementsov-Ogievskiy:
+> > > > > > > On 09.10.23 12:46, Fiona Ebner wrote:
+> > > > > > > > Initially, I tried to go for a more general 'job-change' command, but
+> > > > > > > > I couldn't figure out a way to avoid mutual inclusion between
+> > > > > > > > block-core.json and job.json.
+> > > > > > > > 
+> > > > > > > What is the problem with it? I still think that job-change would be better.
+> > > > > > > 
+> > > > > > If going for job-change in job.json, the dependencies would be
+> > > > > > job-change -> JobChangeOptions -> JobChangeOptionsMirror -> MirrorCopyMode
+> > > > > > query-jobs -> JobInfo -> JobInfoMirror
+> > > > > > and we can't include block-core.json in job.json, because an inclusion
+> > > > > > loop gives a build error.
+> > > > Let me try to understand this.
+> > > > 
+> > > > Command job-change needs its argument type JobChangeOptions.
+> > > > 
+> > > > JobChangeOptions is a union, and JobChangeOptionsMirror is one of its
+> > > > branches.
+> > > > 
+> > > > JobChangeOptionsMirror needs MirrorCopyMode from block-core.json.
+> > > > 
+> > > > block-core.json needs job.json for JobType and JobStatus.
+> > > > 
+> > > > > > Could be made to work by moving MirrorCopyMode (and
+> > > > > > JobChangeOptionsMirror, JobInfoMirror) to job.json or some place that
+> > > > > > can be included by both job.json and block-core.json. Moving the
+> > > > > > type-specific definitions to the general job.json didn't feel right to
+> > > > > > me. Including another file with type-specific definitions in job.json
+> > > > > > feels slightly less wrong, but still not quite right and I didn't want
+> > > > > > to create a new file just for MirrorCopyMode (and
+> > > > > > JobChangeOptionsMirror, JobInfoMirror).
+> > > > > > And going further and moving all mirror-related things to a separate
+> > > > > > file would require moving along things like NewImageMode with it or
+> > > > > > create yet another file for such general things used by multiple block-jobs.
+> > > > > > If preferred, I can try and go with some version of the above.
+> > > > > > 
+> > > > > OK, I see the problem. Seems, that all requires some good refactoring. But that's a preexisting big work, and should not hold up your series. I'm OK to proceed with block-job-change.
+> > > > Saving ourselves some internal refactoring is a poor excuse for
+> > > > undesirable external interfaces.
+> > > I'm not sure how undesirable it is. We have block-job-* commands for
+> > > pretty much every other operation, so it's only consistent to have
+> > > block-job-change, too.
+> > Is the job abstraction a failure?
+> > 
+> > We have
+> > 
+> >      block-job- command      since   job- command    since
+> >      -----------------------------------------------------
+> >      block-job-set-speed     1.1
+> >      block-job-cancel        1.1     job-cancel      3.0
+> >      block-job-pause         1.3     job-pause       3.0
+> >      block-job-resume        1.3     job-resume      3.0
+> >      block-job-complete      1.3     job-complete    3.0
+> >      block-job-dismiss       2.12    job-dismiss     3.0
+> >      block-job-finalize      2.12    job-finalize    3.0
+> >      block-job-change        8.2
+> >      query-block-jobs        1.1     query-jobs
+> > 
+> > I was under the impression that we added the (more general) job-
+> > commands to replace the (less general) block-job commands, and we're
+> > keeping the latter just for compatibility.  Am I mistaken?
+> > 
+> > Which one should be used?
+> > 
+> > Why not deprecate the one that shouldn't be used?
+> > 
+> > The addition of block-job-change without even trying to do job-change
+> > makes me wonder: have we given up on the job- interface?
+> > 
+> > I'm okay with giving up on failures.  All I want is clarity.  Right now,
+> > I feel thoroughly confused about the status block-jobs and jobs, and how
+> > they're related.
+> 
+> Hi! I didn't notice, that the series was finally merged.
+> 
+> About the APIs, I think, of course we should deprecate block-job-* API, because we already have jobs which are not block-jobs, so we can't deprecate job-* API.
+> 
+> So I suggest a plan:
+> 
+> 1. Add job-change command simply in block-core.json, as a simple copy
+>    of block-job-change, to not care with resolving inclusion loops.
+>    (ha we could simply name our block-job-change to be job-change and
+>    place it in block-core.json, but now is too late)
+> 
+> 2. Support changing speed in a new job-chage command. (or both in
+>    block-job-change and job-change, keeping them equal)
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- include/hw/cxl/cxl_cdat.h |  9 ++++++---
- hw/mem/cxl_type3.c        | 24 ++++++++++++------------
- 2 files changed, 18 insertions(+), 15 deletions(-)
+It should be both block-job-change and job-change.
 
-diff --git a/include/hw/cxl/cxl_cdat.h b/include/hw/cxl/cxl_cdat.h
-index b44cefaad6..17a09066dc 100644
---- a/include/hw/cxl/cxl_cdat.h
-+++ b/include/hw/cxl/cxl_cdat.h
-@@ -82,7 +82,8 @@ typedef struct CDATDsmas {
-     uint16_t reserved;
-     uint64_t DPA_base;
-     uint64_t DPA_length;
--} QEMU_PACKED CDATDsmas;
-+} CDATDsmas;
-+QEMU_BUILD_BUG_ON(sizeof(CDATDsmas) != 24);
- 
- /* Device Scoped Latency and Bandwidth Information Structure - CDAT Table 5 */
- typedef struct CDATDslbis {
-@@ -95,7 +96,8 @@ typedef struct CDATDslbis {
-     uint64_t entry_base_unit;
-     uint16_t entry[3];
-     uint16_t reserved2;
--} QEMU_PACKED CDATDslbis;
-+} CDATDslbis;
-+QEMU_BUILD_BUG_ON(sizeof(CDATDslbis) != 24);
- 
- /* Device Scoped Memory Side Cache Information Structure - CDAT Table 6 */
- typedef struct CDATDsmscis {
-@@ -122,7 +124,8 @@ typedef struct CDATDsemts {
-     uint16_t reserved;
-     uint64_t DPA_offset;
-     uint64_t DPA_length;
--} QEMU_PACKED CDATDsemts;
-+} CDATDsemts;
-+QEMU_BUILD_BUG_ON(sizeof(CDATDsemts) != 24);
- 
- /* Switch Scoped Latency and Bandwidth Information Structure - CDAT Table 9 */
- typedef struct CDATSslbisHeader {
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index e8801805b9..b679dfae1c 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -46,12 +46,12 @@ static void ct3_build_cdat_entries_for_mr(CDATSubHeader **cdat_table,
-                                           int dsmad_handle, MemoryRegion *mr,
-                                           bool is_pmem, uint64_t dpa_base)
- {
--    g_autofree CDATDsmas *dsmas = NULL;
--    g_autofree CDATDslbis *dslbis0 = NULL;
--    g_autofree CDATDslbis *dslbis1 = NULL;
--    g_autofree CDATDslbis *dslbis2 = NULL;
--    g_autofree CDATDslbis *dslbis3 = NULL;
--    g_autofree CDATDsemts *dsemts = NULL;
-+    CDATDsmas *dsmas;
-+    CDATDslbis *dslbis0;
-+    CDATDslbis *dslbis1;
-+    CDATDslbis *dslbis2;
-+    CDATDslbis *dslbis3;
-+    CDATDsemts *dsemts;
- 
-     dsmas = g_malloc(sizeof(*dsmas));
-     *dsmas = (CDATDsmas) {
-@@ -135,12 +135,12 @@ static void ct3_build_cdat_entries_for_mr(CDATSubHeader **cdat_table,
-     };
- 
-     /* Header always at start of structure */
--    cdat_table[CT3_CDAT_DSMAS] = g_steal_pointer(&dsmas);
--    cdat_table[CT3_CDAT_DSLBIS0] = g_steal_pointer(&dslbis0);
--    cdat_table[CT3_CDAT_DSLBIS1] = g_steal_pointer(&dslbis1);
--    cdat_table[CT3_CDAT_DSLBIS2] = g_steal_pointer(&dslbis2);
--    cdat_table[CT3_CDAT_DSLBIS3] = g_steal_pointer(&dslbis3);
--    cdat_table[CT3_CDAT_DSEMTS] = g_steal_pointer(&dsemts);
-+    cdat_table[CT3_CDAT_DSMAS] = (CDATSubHeader *)dsmas;
-+    cdat_table[CT3_CDAT_DSLBIS0] = (CDATSubHeader *)dslbis0;
-+    cdat_table[CT3_CDAT_DSLBIS1] = (CDATSubHeader *)dslbis1;
-+    cdat_table[CT3_CDAT_DSLBIS2] = (CDATSubHeader *)dslbis2;
-+    cdat_table[CT3_CDAT_DSLBIS3] = (CDATSubHeader *)dslbis3;
-+    cdat_table[CT3_CDAT_DSEMTS] = (CDATSubHeader *)dsemts;
- }
- 
- static int ct3_build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
--- 
-2.44.0
+Having job-change in block-core.json rather than job.json is ugly, but
+if Markus doesn't complain, why would I.
+
+> 3. Deprecate block-job-* APIs
+> 
+> 4. Wait 3 releases
+> 
+> 5. Drop block-job-* APIs
+
+I consider these strictly optional. We don't really have strong reasons
+to deprecate these commands (they are just thin wrappers), and I think
+libvirt still uses block-job-* in some places.
+
+We also need to check if the interfaces are really the same. For
+example, JobInfo is only a small subset of BlockJobInfo. Some things
+could be added to JobInfo, other things like BlockDeviceIoStatus don't
+really have a place there, so we would have to introduce job type
+specific data in query-jobs first.
+
+I'm sure it's all doable, but it might be more work than your list above
+would make you think.
+
+> 6. Move all job-related stuff to job.json, drop `{ 'include':
+>    'job.json' }` from block-core.json, and instead include
+>    block-core.json into job.json
+
+Of course, this cleanup assumes that steps 3.-5. are really implemented.
+If not, you would end up moving a lot more block related things to
+job.json than after them.
+
+Kevin
 
 
