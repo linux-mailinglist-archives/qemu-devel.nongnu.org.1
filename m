@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E942286FA2B
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 07:36:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C4986FA1A
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 07:34:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rh1tD-0005zu-Mm; Mon, 04 Mar 2024 01:33:31 -0500
+	id 1rh1tB-0005uN-Fl; Mon, 04 Mar 2024 01:33:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rh1sb-0005Yz-6B
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 01:32:54 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rh1sY-0005YO-Iz
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 01:32:51 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rh1sU-0000B6-6E
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 01:32:52 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rh1sR-00009x-Li
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 01:32:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709533965;
+ s=mimecast20190719; t=1709533963;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dK5qbWuvGQr8E/pGL1aCZeieC2IGKNRoYzQJak+xQpw=;
- b=gefMVFDKSJwHnQnoXrtBAeH1lVbI+8IjzsGs0kg/MLymjCIHqrwQacuvyIa+y58JJRg0cp
- cg1R5eQub89CIiwGwcEv4Ml5N3R8+9GpFxQ9jawvNHBFKcB9R1AT/LBqfdVXNBadeXfCpW
- wKk9wCKn9RI18d5vqoyotNscTKSZd4I=
+ bh=Ck0LmdFKk32Log5qrvwNFTXNJk8f7wC/oQFqmX5XaKA=;
+ b=VA45GRS3KPktAtqaqj4Mv4g4L7w9T3GiL7nTUOrRNXCNZboYidZk+o69WmxKQlkZIKTe7J
+ W74pIuWyhTdWMbvdyRSRvpka+JSrdFFJ4zxtkLdHqXNZA4ijqQq7JomlsROGxoH1Dyb30E
+ /tNuzYb1ASSpI2kUbXlbQM9Pw0C19bA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-372-o6GPx_8MP4uxZqXSmoJPCA-1; Mon, 04 Mar 2024 01:32:39 -0500
-X-MC-Unique: o6GPx_8MP4uxZqXSmoJPCA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ us-mta-194-r5JDqiXMMBWYTHcTUuzcew-1; Mon, 04 Mar 2024 01:32:39 -0500
+X-MC-Unique: r5JDqiXMMBWYTHcTUuzcew-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 32DED1064F7F;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 31B34846D56;
  Mon,  4 Mar 2024 06:32:39 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.3])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0F17720229A4;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0F38B400D6C9;
  Mon,  4 Mar 2024 06:32:39 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7C28A21E688F; Mon,  4 Mar 2024 07:32:36 +0100 (CET)
+ id 7EE2721E6891; Mon,  4 Mar 2024 07:32:36 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PULL 06/18] qapi: Clean up "Returns" sections
-Date: Mon,  4 Mar 2024 07:32:24 +0100
-Message-ID: <20240304063236.213955-7-armbru@redhat.com>
+Subject: [PULL 07/18] qapi/yank: Tweak @yank's error description for
+ consistency
+Date: Mon,  4 Mar 2024 07:32:25 +0100
+Message-ID: <20240304063236.213955-8-armbru@redhat.com>
 In-Reply-To: <20240304063236.213955-1-armbru@redhat.com>
 References: <20240304063236.213955-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
@@ -80,75 +81,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Drop list markup, since there's just one item left.
-
-Drop "on success" where it is redundant with "Returns:".
+Phrase it like "If <condition>, <error>", like we do elsewhere.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240227113921.236097-7-armbru@redhat.com>
+Message-ID: <20240227113921.236097-8-armbru@redhat.com>
 ---
- qapi/block-core.json | 4 ++--
- qapi/machine.json    | 4 ++--
- qapi/misc.json       | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ qapi/yank.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index 94b01deffc..1874f880a8 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -2457,7 +2457,7 @@
- # @unstable: This command is meant for debugging.
- #
- # Returns:
--#     - BlockDirtyBitmapSha256 on success
-+#     BlockDirtyBitmapSha256
+diff --git a/qapi/yank.json b/qapi/yank.json
+index fffb39a397..89f2f4d199 100644
+--- a/qapi/yank.json
++++ b/qapi/yank.json
+@@ -79,7 +79,7 @@
+ # @instances: the instances to be yanked
  #
  # Errors:
- #     - If @node is not a valid block device, DeviceNotFound
-@@ -6084,7 +6084,7 @@
- # @name: optional the snapshot's name to be deleted
+-#     - @DeviceNotFound error, if any of the YankInstances doesn't exist
++#     - If any of the YankInstances doesn't exist, DeviceNotFound
  #
- # Returns:
--#     - SnapshotInfo on success
-+#     SnapshotInfo
+ # Example:
  #
- # Errors:
- #     - If @device is not a valid block device, GenericError
-diff --git a/qapi/machine.json b/qapi/machine.json
-index 7d3ca33683..bb5a178909 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -1090,7 +1090,7 @@
- # Return information about the balloon device.
- #
- # Returns:
--#     - @BalloonInfo on success
-+#     @BalloonInfo
- #
- # Errors:
- #     - If the balloon driver is enabled but not functional because
-@@ -1156,7 +1156,7 @@
- # message from the guest.
- #
- # Returns:
--#     - @HvBalloonInfo on success
-+#     @HvBalloonInfo
- #
- # Errors:
- #     - If no hv-balloon device is present, guest memory status
-diff --git a/qapi/misc.json b/qapi/misc.json
-index 015388aa3e..1b0c5dad88 100644
---- a/qapi/misc.json
-+++ b/qapi/misc.json
-@@ -332,7 +332,7 @@
- # @opaque: A free-form string that can be used to describe the fd.
- #
- # Returns:
--#     - @AddfdInfo on success
-+#     @AddfdInfo
- #
- # Errors:
- #     - If file descriptor was not received, GenericError
 -- 
 2.44.0
 
