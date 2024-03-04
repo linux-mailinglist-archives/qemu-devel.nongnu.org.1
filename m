@@ -2,101 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2452486FFB9
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 12:03:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7161086FFFB
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 12:11:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rh65a-0000Uz-LR; Mon, 04 Mar 2024 06:02:35 -0500
+	id 1rh6DO-0003Nh-IE; Mon, 04 Mar 2024 06:10:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
- id 1rh65W-0000Ue-Sr
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 06:02:30 -0500
-Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122])
+ (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
+ id 1rh6DM-0003NA-2i
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 06:10:36 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
- id 1rh65U-0008Au-7o
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 06:02:30 -0500
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70])
+ (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
+ id 1rh6DH-0000xu-N9
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 06:10:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709550630;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=OQPl6C8iXwaBFfk5FyTvjJtxLksU9K5Tr8tUKkrk7jA=;
+ b=i4xyCdUNcMCQeKM9wATC7jQyY976Eon62wFdmm40SdQ1ndg6+VTgKW44dyL7zevYCDR+EU
+ ulji7ah6bjKnXLjStHUCM384ybNMLb+IQ/tfZ6GzoJtkBjYzbtlejcqBBnBLtwrHKmwbug
+ SaeEXW7Yo3cN8J0+I+/mbzj4bkaeeq0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-307-p15qyvWaOEiOBls1cRtD1Q-1; Mon,
+ 04 Mar 2024 06:09:22 -0500
+X-MC-Unique: p15qyvWaOEiOBls1cRtD1Q-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 8AFAD3F277
- for <qemu-devel@nongnu.org>; Mon,  4 Mar 2024 11:02:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20210705; t=1709550143;
- bh=uiY8NqiPOKqKZHs73FbG/rU0tKKAruIzl88i5I30NHY=;
- h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
- In-Reply-To:Content-Type;
- b=h640bZ4Pe6tPV343/uz3Z5h+7CVxUhXfA/op2nptup1RCiOgprFiM/BTG88Z4Aei1
- VL4Y1yL/gfxIbfy6rSWXTSOrZY4Unm43tQS8RdRPgNB78CHq6mann2dYBiIPFkzy66
- KbrIVPpB0VIKLqo0JAvmyTsNkxNw7UMKQmma06qPEntEH+YqzNatPwHUFC62pImHWo
- lkXU7AG6MocEbrGo3TcBqyk6cys6LGOBMxd3SM8AgxwnrsX44guu+gQMVMEcdL/3ms
- cm5z6MjiUxB8h/HZU6eMAP6g02/vJPytv/EUbbU6UXcCk8muFmWvVO932NBPPvEbQ9
- ZKn+3vBi7PxMg==
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-412d433bba5so10186275e9.0
- for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 03:02:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709550143; x=1710154943;
- h=content-transfer-encoding:in-reply-to:from:cc:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uiY8NqiPOKqKZHs73FbG/rU0tKKAruIzl88i5I30NHY=;
- b=Pu8AWnWHDABpQV1GfLEH7Q3e2urLeFta7UjORnqrHkdB68zGcb9ooTDbOyzElWgXKM
- BfRi3dAzs6W9M6ms+HJ5SaD7UK49XtUQUAqM5LpPGu7FJP0L0qiK4TGYSzl1lPlIswlH
- 1nWCa9dvPSL8KRYqvrv4eUdEIZwNKJSVz6hehWHjNK4aj2PrKb3Q6vIHSf86x36zZW0Y
- Im9kyg2IWlyMEj06OlPQdVqGTLAmibC4zMQeHFhFMxWvDABargyCLY2ex3F2wwYSJ5Ay
- iMpJQOwSS3qcIOGfgC/KMIps510b3qwUPSrmLzJhYqY3PtrBLP7l5lWea9DkoLrPUXRT
- rm9A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX9fz8mPL0VEZ3r5RAy0ngMDSd061K6htX7KmE65VOQqIIn7+7CHpGOWU7/+AVPSXSIeHgTU3mdqbXdhpESC/dvQ2thxlI=
-X-Gm-Message-State: AOJu0YzolegNeHXGCTi7M4eA6VmZLZgErKWOv5IqxF4gyB0qxKHajHPY
- cOzOPEmp/gb9dtpV4ThzIo01q3JTReHCET2DnxqlLI9cgLdlMoSpLbdmtxXmT/EsYlvvhjWso/Q
- h2g6J+UEiIqzhm0o+Fyu4TpH+azJZfzOa1Fhim1whGIDH57zpMFT2iMKg5oDaHubcQ+cI
-X-Received: by 2002:a05:600c:474a:b0:412:7489:c8c0 with SMTP id
- w10-20020a05600c474a00b004127489c8c0mr6028302wmo.34.1709550142971; 
- Mon, 04 Mar 2024 03:02:22 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGOOVXIGXuGD5Vsvm8bHYcdzuL8LADwI6ksGTIofa1mnBSIuR/wo4Iq9UjgTbSEStSHd7q+uA==
-X-Received: by 2002:a05:600c:474a:b0:412:7489:c8c0 with SMTP id
- w10-20020a05600c474a00b004127489c8c0mr6028275wmo.34.1709550142588; 
- Mon, 04 Mar 2024 03:02:22 -0800 (PST)
-Received: from [192.168.123.67] (ip-095-222-037-056.um34.pools.vodafone-ip.de.
- [95.222.37.56]) by smtp.gmail.com with ESMTPSA id
- d8-20020a05600c3ac800b00412e84e59d8sm457721wms.44.2024.03.04.03.02.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Mar 2024 03:02:22 -0800 (PST)
-Message-ID: <d1bde67a-0f02-4fa4-a736-cbd3f35ff553@canonical.com>
-Date: Mon, 4 Mar 2024 12:02:20 +0100
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9BC321C068C4;
+ Mon,  4 Mar 2024 11:09:21 +0000 (UTC)
+Received: from angien.pipo.sk (unknown [10.43.3.130])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D126E40C94A7;
+ Mon,  4 Mar 2024 11:09:19 +0000 (UTC)
+Date: Mon, 4 Mar 2024 12:09:17 +0100
+From: Peter Krempa <pkrempa@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Markus Armbruster <armbru@redhat.com>,
+ Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org, eblake@redhat.com, hreitz@redhat.com,
+ jsnow@redhat.com, den@virtuozzo.com, t.lamprecht@proxmox.com,
+ alexander.ivanov@virtuozzo.com
+Subject: Re: [PATCH v2 00/10] mirror: allow switching from background to
+ active mode
+Message-ID: <ZeWr3ZGrRUrciHH4@angien.pipo.sk>
+References: <20231009094619.469668-1-f.ebner@proxmox.com>
+ <a5c48627-0bef-46cd-9426-587b358fe32d@yandex-team.ru>
+ <993bfa5d-1a91-4b32-9bd8-165b7abba4f0@proxmox.com>
+ <99dd287b-816b-4f4f-b156-32f94bbb62c2@yandex-team.ru>
+ <87o7gbyy8w.fsf@pond.sub.org> <ZUTffE0wfjLH2u+e@redhat.com>
+ <87cywqn84g.fsf@pond.sub.org>
+ <1310efb0-e211-46f5-b166-d7d529507a43@yandex-team.ru>
+ <ZeWnFhLKCamlP97y@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RISC-V][tech-server-platform] [RFC 0/2] Add RISC-V Server
- Platform Reference Board
-Content-Language: en-US
-To: "Wu, Fei2" <fei2.wu@intel.com>
-References: <20240304102540.2789225-1-fei2.wu@intel.com>
-Cc: pbonzini@redhat.com, palmer@dabbelt.com, alistair.francis@wdc.com,
- bin.meng@windriver.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
- andrei.warkentin@intel.com, shaolin.xie@alibaba-inc.com, ved@rivosinc.com,
- sunilvl@ventanamicro.com, haibo1.xu@intel.com, evan.chai@intel.com,
- yin.wang@intel.com, tech-server-platform@lists.riscv.org,
- tech-server-soc@lists.riscv.org
-From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-In-Reply-To: <20240304102540.2789225-1-fei2.wu@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=185.125.188.122;
- envelope-from=heinrich.schuchardt@canonical.com;
- helo=smtp-relay-internal-0.canonical.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.589,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZeWnFhLKCamlP97y@redhat.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pkrempa@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.589,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,62 +93,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04.03.24 11:25, Wu, Fei2 wrote:
-> The RISC-V Server Platform specification[1] defines a standardized set
-> of hardware and software capabilities, that portable system software,
-> such as OS and hypervisors can rely on being present in a RISC-V server
-> platform. This patchset provides a RISC-V Server Platform (RVSP)
-> reference implementation on qemu which is in compliance with the spec
-> as faithful as possible.
-> 
-> The reference board can be running with tag edk2-stable202308 in
-> upstream edk2 repo[2].
-> 
-> The qemu command line used:
-> 
-> $QEMU -nographic -m 4G -smp 2 \
->      -machine rvsp-ref,pflash0=pflash0,pflash1=pflash1 \
->      -blockdev node-name=pflash0,driver=file,read-only=on,filename=RISCV_VIRT_CODE.fd \
->      -blockdev node-name=pflash1,driver=file,filename=RISCV_VIRT_VARS.fd \
->      -bios fw_dynamic.bin \
->      -drive file=$BRS_IMG,if=ide,format=raw
-> 
-> Since there is no ACPI table generated in this new machine type, a
-> corresponding EDK-II platform (WIP) is needed to provide related ACPI
-> tables.
+On Mon, Mar 04, 2024 at 11:48:54 +0100, Kevin Wolf wrote:
+> Am 28.02.2024 um 19:07 hat Vladimir Sementsov-Ogievskiy geschrieben:
+> > On 03.11.23 18:56, Markus Armbruster wrote:
+> > > Kevin Wolf<kwolf@redhat.com>  writes:
 
-The need for having a platform separate to virt for compliance testing 
-was discussed in RISE in RVI meetings. Thanks for driving this.
+[...]
 
-Will the EDK II platform also generate the SMBIOS table or shall this be 
-handled in QEMU?
+> > > Is the job abstraction a failure?
+> > > 
+> > > We have
+> > > 
+> > >      block-job- command      since   job- command    since
+> > >      -----------------------------------------------------
+> > >      block-job-set-speed     1.1
+> > >      block-job-cancel        1.1     job-cancel      3.0
+> > >      block-job-pause         1.3     job-pause       3.0
+> > >      block-job-resume        1.3     job-resume      3.0
+> > >      block-job-complete      1.3     job-complete    3.0
+> > >      block-job-dismiss       2.12    job-dismiss     3.0
+> > >      block-job-finalize      2.12    job-finalize    3.0
+> > >      block-job-change        8.2
+> > >      query-block-jobs        1.1     query-jobs
 
-Will further work in edk2-platforms be needed to provide full compliance 
-with the the server platform specification?
+[...]
 
-Best regards
+> I consider these strictly optional. We don't really have strong reasons
+> to deprecate these commands (they are just thin wrappers), and I think
+> libvirt still uses block-job-* in some places.
 
-Heinrich
+Libvirt uses 'block-job-cancel' because it has different semantics from
+'job-cancel' which libvirt documented as the behaviour of the API that
+uses it. (Semantics regarding the expectation of what is written to the
+destination node at the point when the job is cancelled).
 
-> 
-> For testing purposes only, we used a workaround to generate the ACPI
-> tables in Qemu with a dedicated downstream patch.
-> 
-> [1] https://github.com/riscv-non-isa/riscv-server-platform
-> [2] https://github.com/tianocore/edk2.git
-> 
-> Fei Wu (2):
->    hw/riscv: Add server platform reference machine
->    target/riscv: Add server platform reference cpu
-> 
->   configs/devices/riscv64-softmmu/default.mak |    1 +
->   hw/riscv/Kconfig                            |   13 +
->   hw/riscv/meson.build                        |    1 +
->   hw/riscv/server_platform_ref.c              | 1248 +++++++++++++++++++
->   target/riscv/cpu-qom.h                      |    1 +
->   target/riscv/cpu.c                          |   62 +
->   6 files changed, 1326 insertions(+)
->   create mode 100644 hw/riscv/server_platform_ref.c
-> 
+Libvirt also uses 'block-job-set-speed' and 'query-block-jobs' but those
+can be replaced easily and looking at the above table even without any
+feature checks.
+
+Thus the plan to deprecate at least 'block-job-cancel' will not work
+unless the semantics are ported into 'job-cancel'.
 
 
