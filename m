@@ -2,86 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2503F870982
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 19:27:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3052987099F
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 19:31:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhD1X-0000L2-BU; Mon, 04 Mar 2024 13:26:51 -0500
+	id 1rhD5u-0001e1-3G; Mon, 04 Mar 2024 13:31:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhD1U-0000Kg-Ef
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 13:26:48 -0500
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhD1S-0002Ip-HA
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 13:26:48 -0500
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2d21cdbc85bso58516301fa.2
- for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 10:26:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709576804; x=1710181604; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=70RXcQO9jxZlNYt5AT8nNRJeSSZkLLXOYZ2GqhwyGNA=;
- b=ievixOuh8rPrmPFkl6xTtpc/CGveY1WmSF9yeunZsvTsauMJFljY4zNpIA/dQsZ/qh
- AQW7eDteddb3lBhlxGf629xbvnNpPCum3zwxpSz7e//AFVxnzUJcrh/iSmuHRqIrMA0N
- HqRrmM/RH/c3cUHN8jWFLP7MKpUnLoPQSpuMuWjkqKMTrcNF56KCFvOFb8wxHL91XuXQ
- 9Jzw9AQUDzJsfJ0eJYObM9qfiQnBzPaz0ni7Y4/AeDv8LG6vAJTvSO4Ucdag6UCwMsZy
- AAGvtxHT8KDzpKtR45B9HZx73oalcWt7lBKHZ6IzrSyC+DzEK/dFO+6UHbta49WmgyOU
- FpuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709576804; x=1710181604;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=70RXcQO9jxZlNYt5AT8nNRJeSSZkLLXOYZ2GqhwyGNA=;
- b=nY9lz+42Cnxl+2SXjGlpLEegRK7WZQ9VcmP9d7WD8P0IPWPJwbj6b8zZ49/1ZArx7D
- y0NT5DrsvC8VCa9xodW2TSXE6P6Qntp2E207JQV0Zm3PSgfjecRQqzq/Fy4h3TOvAlEF
- ortGfGhDAWSeZ/EzMp2GLNIOJ4KWynFZup+njH4C7Q/uR63xPsbRLkyKlHhErfEGnn6E
- kZfN15l4bLlv4YWqpk5YpEiKFpi5rAb3r5JRlCXqVzcmaSXo93FcxbTkQTCKS+iNKPMB
- 0D+efFYWKp6Za/m5kwgpZtdLRVlnASLpyJPyRjG6oJM6oFdceo9B93N97XKSAGzWcfZv
- OfEQ==
-X-Gm-Message-State: AOJu0YxZeGY3RI0RqrS4KSxVKNM5oPAfOY9ga+y/gOvNl4HD42Pn0nuo
- AjCPjUTZ4WrxToMMeftrTyGGLJZcNyLzqIRrSJMi5F9gsCZ0kCqO1gcklNx3Pwc=
-X-Google-Smtp-Source: AGHT+IGIMkzo+sG9gs9AdvOZ4HGHvCSnZZE8o/GqM0HK9iGVOEUIUijXigH/KXhmBvzWc+93tEXnvA==
-X-Received: by 2002:a2e:b614:0:b0:2d3:982d:aaee with SMTP id
- r20-20020a2eb614000000b002d3982daaeemr3139261ljn.16.1709576804195; 
- Mon, 04 Mar 2024 10:26:44 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- t16-20020a05600c451000b00412e13bb942sm4819952wmo.19.2024.03.04.10.26.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Mar 2024 10:26:43 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 862F25F888;
- Mon,  4 Mar 2024 18:26:43 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-Subject: Re: [PATCH] tests/tcg/multiarch: Give the 'memory' TCG test a
- larger timeout
-In-Reply-To: <CAFEAcA9QbbOuzeo+bTRAdTCS2h6gTocbMsgj3k3DNP=H4Bh0Ag@mail.gmail.com>
- (Peter Maydell's message of "Mon, 4 Mar 2024 17:28:46 +0000")
-References: <20240227142316.1827154-1-peter.maydell@linaro.org>
- <CAFEAcA9QbbOuzeo+bTRAdTCS2h6gTocbMsgj3k3DNP=H4Bh0Ag@mail.gmail.com>
-User-Agent: mu4e 1.12.1; emacs 29.1
-Date: Mon, 04 Mar 2024 18:26:43 +0000
-Message-ID: <87v861x38c.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rhD5r-0001dL-1u; Mon, 04 Mar 2024 13:31:19 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rhD5o-00031B-7h; Mon, 04 Mar 2024 13:31:18 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 3C16352E13;
+ Mon,  4 Mar 2024 21:31:58 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id E93828FD07;
+ Mon,  4 Mar 2024 21:31:11 +0300 (MSK)
+Received: (nullmailer pid 1474419 invoked by uid 1000);
+ Mon, 04 Mar 2024 18:31:11 -0000
+Subject: [ANNOUNCE] QEMU 7.2.10 Stable released
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x232.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Date: Mon, 04 Mar 2024 21:31:11 +0300
+Message-Id: <1709577071.606034.1474414.nullmailer@tls.msk.ru>
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,59 +56,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Maydell <peter.maydell@linaro.org> writes:
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-> Ping for review?
+Hi everyone,
 
-Ahh we crossed streams because I merged:
+The QEMU v7.2.10 stable release is now available.
 
-  cdb5bfc9f34 (tests/tcg: bump TCG test timeout to 120s)
+You can grab the tarball from our download page here:
 
-Do we need even more time?
+  https://www.qemu.org/download/#source
 
->
-> thanks
-> -- PMM
->
-> On Tue, 27 Feb 2024 at 14:23, Peter Maydell <peter.maydell@linaro.org> wr=
-ote:
->>
->> The 'memory' TCG test times out intermittently on our cross-i686-tci
->> CI job. We expect this to be a slow config (it's using TCI), so it's
->> possible that when the CI runner is heavily loaded it tips past
->> the timeout.
->>
->> Double the timeout for tests.  If this doesn't resolve the
->> intermittents we can assume we're looking at some kind of
->> TCI-specific hang.
->>
->> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2079
->> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
->> ---
->> I could not figure out a way to get the timeout to apply to the
->> 'memory' test specifically (including all its variants like
->> running with plugins or the gdbserver or record-replay).
->> ---
->>  tests/tcg/Makefile.target | 3 ++-
->>  1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
->> index 8cf65f68dd8..af1a18cee1b 100644
->> --- a/tests/tcg/Makefile.target
->> +++ b/tests/tcg/Makefile.target
->> @@ -98,7 +98,8 @@ QEMU_OPTS=3D
->>  #   15s    original default
->>  #   60s    with --enable-debug
->>  #   90s    with --enable-tcg-interpreter
->> -TIMEOUT=3D90
->> +# The 'memory' test in particular is very slow under TCI.
->> +TIMEOUT=3D180
->>
->>  ifeq ($(filter %-softmmu, $(TARGET)),)
->>  # The order we include is important. We include multiarch first and
->> --
+  https://download.qemu.org/qemu-7.2.10.tar.xz
+  https://download.qemu.org/qemu-7.2.10.tar.xz.sig (signature)
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+v7.2.10 is now tagged in the official qemu.git repository, and the
+stable-7.2 branch has been updated accordingly:
+
+  https://gitlab.com/qemu-project/qemu/-/commits/stable-7.2?ref_type=heads
+
+Thank you everyone who has been involved and helped with the stable series!
+
+/mjt
+
+Changelog (stable-7.2-hash master-hash Author Name: Commmit-Subject):
+
+eee83fae9d Michael Tokarev:
+ Update version for 7.2.10 release
+0ee0f9d822 2196157404 Paolo Bonzini:
+ target/i386: the sgx_epc_get_section stub is reachable
+90b1b8e0d6 b6903cbe3a Peter Maydell:
+ tests/unit/test-blockjob: Disable complete_in_standby test
+b0ed25ee07 f2e57851b8 Thomas Huth:
+ tests/qtest/display-vga-test: Add proper checks if a device is available
+73bf928177 abe2c4bdb6 Eric Auger:
+ test-vmstate: fix bad GTree usage, use-after-free
+72e2a24638 f0cb6828ae Thomas Huth:
+ tests/unit/test-util-sockets: Remove temporary file after test
+8dd9165e7c 5e02a4fdeb Benjamin David Lunt:
+ hw/usb/bus.c: PCAP adding 0xA in Windows version
+9b89d02d8b a8bf9de2f4 Daniel P. Berrangé:
+ gitlab: force allow use of pip in Cirrus jobs
+4934f922ac 151b7dba39 Alex Bennée:
+ tests/vm: avoid re-building the VM images all the time
+2bd4d27aa5 8467ac75b3 Alex Bennée:
+ tests/vm: update openbsd image to 7.4
+1165d9601d b5a9de3259 Paolo Bonzini:
+ target/i386: leave the A20 bit set in the final NPT walk
+91ad0d26e1 a28fe7dc19 Paolo Bonzini:
+ target/i386: remove unnecessary/wrong application of the A20 mask
+1c15f97b4f b1661801c1 Paolo Bonzini:
+ target/i386: Fix physical address truncation
+5eba614159 d09c79010f Paolo Bonzini:
+ target/i386: check validity of VMCB addresses
+6156ca0da1 68fb78d7d5 Paolo Bonzini:
+ target/i386: mask high bits of CR3 in 32-bit mode
+77f7beb8cf 4d28d57c9f Jessica Clarke:
+ pl031: Update last RTCLR value on write in case it's read back
+d3c3bc7a9c d2b5bb860e Klaus Jensen:
+ hw/nvme: fix invalid endian conversion
+a15b7df35b 2cc0e449d1 Nicholas Piggin:
+ target/ppc: Fix lxv/stxv MSR facility check
+1bdf3f4ba0 5cd3ae4903 Peter Maydell:
+ .gitlab-ci.d/windows.yml: Drop msys2-32bit job
+7f368bccd6 185311130f Tianlan Zhou:
+ system/vl: Update description for input grab key
+181d92d034 4a20ac400f Tianlan Zhou:
+ docs/system: Update description for input grab key
+b3edbda64a d676119075 Akihiko Odaki:
+ audio: Depend on dbus_display1_dep
+c172136ea3 1222070e77 Marc-André Lureau:
+ meson: ensure dbus-display generated code is built before other units
+086850aa80 95b08fee8f Tianlan Zhou:
+ ui/console: Fix console resize with placeholder surface
+ee316aafa5 9c41658261 Fiona Ebner:
+ ui/clipboard: add asserts for update and request
+d8d6e6b904 405484b29f Fiona Ebner:
+ ui/clipboard: mark type as not available when there is no data
+7e86bd83fd 4cba838896 Daniel P. Berrangé:
+ ui: reject extended clipboard message if not activated
+373c7193dc 99d0dcd7f1 Ziqiao Kong:
+ target/i386: Generate an illegal opcode exception on cmp instructions with lock prefix
+3c819d9717 0729857c70 Xiaoyao Li:
+ i386/cpuid: Move leaf 7 to correct group
+46f701c44d 10f92799af Xiaoyao Li:
+ i386/cpuid: Decrease cpuid_i when skipping CPUID leaf 1F
+f18b018907 a11a365159 Xiaoyao Li:
+ i386/cpu: Mask with XCR0/XSS mask for FEAT_XSAVE_XCR0_HI and FEAT_XSAVE_XSS_HI leafs
+14109f6353 81f5cad385 Xiaoyao Li:
+ i386/cpu: Clear FEAT_XSAVE_XSS_LO/HI leafs when CPUID_EXT_XSAVE is not available
+fc39dc294c cc29c12ec6 Kevin Wolf:
+ iotests: Make 144 deterministic again
+688450c4a7 ac1d88e9e7 Peter Maydell:
+ target/arm: Don't get MDCR_EL2 in pmu_counter_enabled() before checking ARM_FEATURE_PMU
+3b0d905812 855f94eca8 Richard Henderson:
+ target/arm: Fix SVE/SME gross MTE suppression checks
+a978855bfc 64c6e7444d Richard Henderson:
+ target/arm: Fix nregs computation in do_{ld,st}_zpa
+bbeeed7102 681dfc0d55 Richard Henderson:
+ linux-user/aarch64: Choose SYNC as the preferred MTE mode
+4971891b37 b24a981b9f Jonathan Cameron:
+ tests/acpi: Update DSDT.cxl to reflect change _STA return value.
+3b88637c8c d9ae5802f6 Jonathan Cameron:
+ hw/i386: Fix _STA return value for ACPI0017
+b8c6b783c3 14ec4ff3e4 Jonathan Cameron:
+ tests/acpi: Allow update of DSDT.cxl
+3004edca48 8a6b3f4dc9 Zhenzhong Duan:
+ smmu: Clear SMMUPciBus pointer cache when system reset
+10981da022 9a457383ce Zhenzhong Duan:
+ virtio_iommu: Clear IOMMUPciBus pointer cache when system reset
+4bfbb4ed9a 729d45a6af Li Zhijian:
+ hw/cxl: Pass CXLComponentState to cache_mem_ops
+b5246140de 64fdad5e67 Ira Weiny:
+ cxl/cdat: Fix header sum value in CDAT checksum
+eccd94458b c62926f730 Ira Weiny:
+ cxl/cdat: Handle cdat table build errors
+2112a217dc aa05bd9ef4 Andrey Ignatov:
+ vhost-user.rst: Fix vring address description
+0fd604b02a 196578c9d0 Akihiko Odaki:
+ hw/smbios: Fix port connector option validation
+258293b564 cd8a35b913 Akihiko Odaki:
+ hw/smbios: Fix OEM strings table option validation
+2884514b98 8a73152020 Guenter Roeck:
+ pci-host: designware: Limit value range of iATU viewport register
+f039059e0a 747bfaf3a9 Peter Maydell:
+ qemu-options.hx: Improve -serial option documentation
+597a9a2b4b d2019a9d0c Peter Maydell:
+ system/vl.c: Fix handling of '-serial none -serial something'
+d9b2dc2ffa f670be1aad Jan Klötzke:
+ target/arm: fix exception syndrome for AArch32 bkpt insn
+c49842381a 615eaeab3d Richard W.M. Jones:
+ block/blkio: Make s->mem_region_alignment be 64 bits
+ce979ef754 db101376af Yihuan Pan:
+ qemu-docs: Update options for graphical frontends
+18c776ecf6 27eb8499ed Fabiano Rosas:
+ migration: Fix use-after-free of migration state object
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEe3O61ovnosKJMUsicBtPaxppPlkFAmXmE28ACgkQcBtPaxpp
+PlmAzQf/VyR8Hk3rLFq3np2i6bpwoQgNkoNLpTr+zrPTVf5akn113/G8LZ3Y9695
+UqFC3Y9rfXmCBz41znASyzxE3P6ABZzlNlsRUAFArYgXj61jxHMYeigGppsHNX8E
+XHle9MwAMw8HJCDlH+ntbztFeNixVEKfPaN597DKHf9YBHbvhi4umFP96PGNvY+m
+tCfqkX13JefDzF/6UahLzqLYdv037NCH4wU6a0UeInRj6o6XHaE0iRvlQyvWK3ER
+hNUvhDeAtD1Ich+nhjs2XTRlspHsiGFaj8QcdDQHaljD+h+wiEwoTVUXVkXuIXIk
+pvLarm38D5j4nsHSUsFwokJfc+TJTw==
+=bP0M
+-----END PGP SIGNATURE-----
 
