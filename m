@@ -2,70 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A1F86F83D
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 02:29:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B0486F842
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 02:29:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgx8G-0002Jd-DJ; Sun, 03 Mar 2024 20:28:46 -0500
+	id 1rgx8E-0002IJ-DC; Sun, 03 Mar 2024 20:28:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx7U-0001om-Kw
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx7X-0001sC-VN
  for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:28:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx7P-0002ON-QB
- for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:27:54 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx7U-0002Ot-3v
+ for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:27:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709515671;
+ s=mimecast20190719; t=1709515675;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=S83wTD16OpizBGfq5LLkvGAx1j3LYbEznOklSWsN13U=;
- b=QysZPT5903Yst/CtrMYF2ZlOlQM4tBp6vG89+9gAG1NyCgFKWcDH4XgZtjmDrz2siy6zaN
- 0uxzXnfe8vnYth52eS5TOPa4wcA95Cz3Xx81lzCyst1R7qN+od0D+fC6V1A5xN4a1ixxur
- jHEfEh/iCKRZPOsJ3WzAps8kQbwoycM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-QEp2vR6ZOLWjeGebh-sF0w-1; Sun,
- 03 Mar 2024 20:27:48 -0500
-X-MC-Unique: QEp2vR6ZOLWjeGebh-sF0w-1
+ bh=VK1uP/nEMdPC5iQ/u3BYD3q+AeCBZCrpjNKly+B83s8=;
+ b=eIWqhPj9mEurcAm7nKMQXJ4LsaTE55nkiSii4FXw7bmydbFnx1LYp0HxDsPuYpDW2J2O2E
+ +YMLzgDxhfDPDmKmsYfqAClu+es7jJO06v+cpEQoIYdmHM9i4fzwagLHBepR77IuvnFAQM
+ Zf3h/VrYSF+R0BdlbBbISWSLVkwAkI0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-561-YjG5-FCxOS6Zuw9_VzD8Mw-1; Sun, 03 Mar 2024 20:27:52 -0500
+X-MC-Unique: YjG5-FCxOS6Zuw9_VzD8Mw-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C2D2C1C05AB7;
- Mon,  4 Mar 2024 01:27:47 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AA69E8820C3;
+ Mon,  4 Mar 2024 01:27:51 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.2])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 49C0840C6EBA;
- Mon,  4 Mar 2024 01:27:43 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 845FE40C6EBA;
+ Mon,  4 Mar 2024 01:27:48 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
 Cc: peterx@redhat.com,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Prasad Pandit <ppandit@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 15/27] migration/multifd: Rename MultiFDSend|RecvParams::data
- to compress_data
-Date: Mon,  4 Mar 2024 09:26:22 +0800
-Message-ID: <20240304012634.95520-16-peterx@redhat.com>
+Subject: [PULL 16/27] migration/multifd: Decouple recv method from pages
+Date: Mon,  4 Mar 2024 09:26:23 +0800
+Message-ID: <20240304012634.95520-17-peterx@redhat.com>
 In-Reply-To: <20240304012634.95520-1-peterx@redhat.com>
 References: <20240304012634.95520-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.589,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,193 +81,152 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fabiano Rosas <farosas@suse.de>
 
-Use a more specific name for the compression data so we can use the
-generic for the multifd core code.
+Next patches will abstract the type of data being received by the
+channels, so do some cleanup now to remove references to pages and
+dependency on 'normal_num'.
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240229153017.2221-13-farosas@suse.de
+Link: https://lore.kernel.org/r/20240229153017.2221-14-farosas@suse.de
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
  migration/multifd.h      |  4 ++--
- migration/multifd-zlib.c | 20 ++++++++++----------
- migration/multifd-zstd.c | 20 ++++++++++----------
- 3 files changed, 22 insertions(+), 22 deletions(-)
+ migration/multifd-zlib.c |  6 +++---
+ migration/multifd-zstd.c |  6 +++---
+ migration/multifd.c      | 13 ++++++++-----
+ 4 files changed, 16 insertions(+), 13 deletions(-)
 
 diff --git a/migration/multifd.h b/migration/multifd.h
-index b3fe27ae93..adccd3532f 100644
+index adccd3532f..6a54377cc1 100644
 --- a/migration/multifd.h
 +++ b/migration/multifd.h
-@@ -127,7 +127,7 @@ typedef struct {
-     /* number of iovs used */
-     uint32_t iovs_num;
-     /* used for compression methods */
--    void *data;
-+    void *compress_data;
- }  MultiFDSendParams;
+@@ -197,8 +197,8 @@ typedef struct {
+     int (*recv_setup)(MultiFDRecvParams *p, Error **errp);
+     /* Cleanup for receiving side */
+     void (*recv_cleanup)(MultiFDRecvParams *p);
+-    /* Read all pages */
+-    int (*recv_pages)(MultiFDRecvParams *p, Error **errp);
++    /* Read all data */
++    int (*recv)(MultiFDRecvParams *p, Error **errp);
+ } MultiFDMethods;
  
- typedef struct {
-@@ -183,7 +183,7 @@ typedef struct {
-     /* num of non zero pages */
-     uint32_t normal_num;
-     /* used for de-compression methods */
--    void *data;
-+    void *compress_data;
- } MultiFDRecvParams;
- 
- typedef struct {
+ void multifd_register_ops(int method, MultiFDMethods *ops);
 diff --git a/migration/multifd-zlib.c b/migration/multifd-zlib.c
-index 012e3bdea1..2a8f5fc9a6 100644
+index 2a8f5fc9a6..6120faad65 100644
 --- a/migration/multifd-zlib.c
 +++ b/migration/multifd-zlib.c
-@@ -69,7 +69,7 @@ static int zlib_send_setup(MultiFDSendParams *p, Error **errp)
-         err_msg = "out of memory for buf";
-         goto err_free_zbuff;
-     }
--    p->data = z;
-+    p->compress_data = z;
-     return 0;
- 
- err_free_zbuff:
-@@ -92,15 +92,15 @@ err_free_z:
-  */
- static void zlib_send_cleanup(MultiFDSendParams *p, Error **errp)
- {
--    struct zlib_data *z = p->data;
-+    struct zlib_data *z = p->compress_data;
- 
-     deflateEnd(&z->zs);
-     g_free(z->zbuff);
-     z->zbuff = NULL;
-     g_free(z->buf);
-     z->buf = NULL;
--    g_free(p->data);
--    p->data = NULL;
-+    g_free(p->compress_data);
-+    p->compress_data = NULL;
+@@ -234,7 +234,7 @@ static void zlib_recv_cleanup(MultiFDRecvParams *p)
  }
  
  /**
-@@ -117,7 +117,7 @@ static void zlib_send_cleanup(MultiFDSendParams *p, Error **errp)
- static int zlib_send_prepare(MultiFDSendParams *p, Error **errp)
- {
-     MultiFDPages_t *pages = p->pages;
--    struct zlib_data *z = p->data;
-+    struct zlib_data *z = p->compress_data;
-     z_stream *zs = &z->zs;
-     uint32_t out_size = 0;
-     int ret;
-@@ -194,7 +194,7 @@ static int zlib_recv_setup(MultiFDRecvParams *p, Error **errp)
-     struct zlib_data *z = g_new0(struct zlib_data, 1);
-     z_stream *zs = &z->zs;
- 
--    p->data = z;
-+    p->compress_data = z;
-     zs->zalloc = Z_NULL;
-     zs->zfree = Z_NULL;
-     zs->opaque = Z_NULL;
-@@ -224,13 +224,13 @@ static int zlib_recv_setup(MultiFDRecvParams *p, Error **errp)
+- * zlib_recv_pages: read the data from the channel into actual pages
++ * zlib_recv: read the data from the channel into actual pages
+  *
+  * Read the compressed buffer, and uncompress it into the actual
+  * pages.
+@@ -244,7 +244,7 @@ static void zlib_recv_cleanup(MultiFDRecvParams *p)
+  * @p: Params for the channel that we are using
+  * @errp: pointer to an error
   */
- static void zlib_recv_cleanup(MultiFDRecvParams *p)
+-static int zlib_recv_pages(MultiFDRecvParams *p, Error **errp)
++static int zlib_recv(MultiFDRecvParams *p, Error **errp)
  {
--    struct zlib_data *z = p->data;
-+    struct zlib_data *z = p->compress_data;
- 
-     inflateEnd(&z->zs);
-     g_free(z->zbuff);
-     z->zbuff = NULL;
--    g_free(p->data);
--    p->data = NULL;
-+    g_free(p->compress_data);
-+    p->compress_data = NULL;
- }
- 
- /**
-@@ -246,7 +246,7 @@ static void zlib_recv_cleanup(MultiFDRecvParams *p)
-  */
- static int zlib_recv_pages(MultiFDRecvParams *p, Error **errp)
- {
--    struct zlib_data *z = p->data;
-+    struct zlib_data *z = p->compress_data;
+     struct zlib_data *z = p->compress_data;
      z_stream *zs = &z->zs;
-     uint32_t in_size = p->next_packet_size;
-     /* we measure the change of total_out */
+@@ -319,7 +319,7 @@ static MultiFDMethods multifd_zlib_ops = {
+     .send_prepare = zlib_send_prepare,
+     .recv_setup = zlib_recv_setup,
+     .recv_cleanup = zlib_recv_cleanup,
+-    .recv_pages = zlib_recv_pages
++    .recv = zlib_recv
+ };
+ 
+ static void multifd_zlib_register(void)
 diff --git a/migration/multifd-zstd.c b/migration/multifd-zstd.c
-index dc8fe43e94..593cf290ad 100644
+index 593cf290ad..cac236833d 100644
 --- a/migration/multifd-zstd.c
 +++ b/migration/multifd-zstd.c
-@@ -52,7 +52,7 @@ static int zstd_send_setup(MultiFDSendParams *p, Error **errp)
-     struct zstd_data *z = g_new0(struct zstd_data, 1);
-     int res;
- 
--    p->data = z;
-+    p->compress_data = z;
-     z->zcs = ZSTD_createCStream();
-     if (!z->zcs) {
-         g_free(z);
-@@ -90,14 +90,14 @@ static int zstd_send_setup(MultiFDSendParams *p, Error **errp)
-  */
- static void zstd_send_cleanup(MultiFDSendParams *p, Error **errp)
- {
--    struct zstd_data *z = p->data;
-+    struct zstd_data *z = p->compress_data;
- 
-     ZSTD_freeCStream(z->zcs);
-     z->zcs = NULL;
-     g_free(z->zbuff);
-     z->zbuff = NULL;
--    g_free(p->data);
--    p->data = NULL;
-+    g_free(p->compress_data);
-+    p->compress_data = NULL;
+@@ -232,7 +232,7 @@ static void zstd_recv_cleanup(MultiFDRecvParams *p)
  }
  
  /**
-@@ -114,7 +114,7 @@ static void zstd_send_cleanup(MultiFDSendParams *p, Error **errp)
- static int zstd_send_prepare(MultiFDSendParams *p, Error **errp)
- {
-     MultiFDPages_t *pages = p->pages;
--    struct zstd_data *z = p->data;
-+    struct zstd_data *z = p->compress_data;
-     int ret;
-     uint32_t i;
- 
-@@ -183,7 +183,7 @@ static int zstd_recv_setup(MultiFDRecvParams *p, Error **errp)
-     struct zstd_data *z = g_new0(struct zstd_data, 1);
-     int ret;
- 
--    p->data = z;
-+    p->compress_data = z;
-     z->zds = ZSTD_createDStream();
-     if (!z->zds) {
-         g_free(z);
-@@ -221,14 +221,14 @@ static int zstd_recv_setup(MultiFDRecvParams *p, Error **errp)
+- * zstd_recv_pages: read the data from the channel into actual pages
++ * zstd_recv: read the data from the channel into actual pages
+  *
+  * Read the compressed buffer, and uncompress it into the actual
+  * pages.
+@@ -242,7 +242,7 @@ static void zstd_recv_cleanup(MultiFDRecvParams *p)
+  * @p: Params for the channel that we are using
+  * @errp: pointer to an error
   */
- static void zstd_recv_cleanup(MultiFDRecvParams *p)
+-static int zstd_recv_pages(MultiFDRecvParams *p, Error **errp)
++static int zstd_recv(MultiFDRecvParams *p, Error **errp)
  {
--    struct zstd_data *z = p->data;
-+    struct zstd_data *z = p->compress_data;
- 
-     ZSTD_freeDStream(z->zds);
-     z->zds = NULL;
-     g_free(z->zbuff);
-     z->zbuff = NULL;
--    g_free(p->data);
--    p->data = NULL;
-+    g_free(p->compress_data);
-+    p->compress_data = NULL;
- }
- 
- /**
-@@ -248,7 +248,7 @@ static int zstd_recv_pages(MultiFDRecvParams *p, Error **errp)
+     uint32_t in_size = p->next_packet_size;
      uint32_t out_size = 0;
-     uint32_t expected_size = p->normal_num * p->page_size;
-     uint32_t flags = p->flags & MULTIFD_FLAG_COMPRESSION_MASK;
--    struct zstd_data *z = p->data;
-+    struct zstd_data *z = p->compress_data;
-     int ret;
-     int i;
+@@ -310,7 +310,7 @@ static MultiFDMethods multifd_zstd_ops = {
+     .send_prepare = zstd_send_prepare,
+     .recv_setup = zstd_recv_setup,
+     .recv_cleanup = zstd_recv_cleanup,
+-    .recv_pages = zstd_recv_pages
++    .recv = zstd_recv
+ };
  
+ static void multifd_zstd_register(void)
+diff --git a/migration/multifd.c b/migration/multifd.c
+index c7389bf833..3a8520097b 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -197,7 +197,7 @@ static void nocomp_recv_cleanup(MultiFDRecvParams *p)
+ }
+ 
+ /**
+- * nocomp_recv_pages: read the data from the channel into actual pages
++ * nocomp_recv: read the data from the channel
+  *
+  * For no compression we just need to read things into the correct place.
+  *
+@@ -206,7 +206,7 @@ static void nocomp_recv_cleanup(MultiFDRecvParams *p)
+  * @p: Params for the channel that we are using
+  * @errp: pointer to an error
+  */
+-static int nocomp_recv_pages(MultiFDRecvParams *p, Error **errp)
++static int nocomp_recv(MultiFDRecvParams *p, Error **errp)
+ {
+     uint32_t flags = p->flags & MULTIFD_FLAG_COMPRESSION_MASK;
+ 
+@@ -228,7 +228,7 @@ static MultiFDMethods multifd_nocomp_ops = {
+     .send_prepare = nocomp_send_prepare,
+     .recv_setup = nocomp_recv_setup,
+     .recv_cleanup = nocomp_recv_cleanup,
+-    .recv_pages = nocomp_recv_pages
++    .recv = nocomp_recv
+ };
+ 
+ static MultiFDMethods *multifd_ops[MULTIFD_COMPRESSION__MAX] = {
+@@ -1227,6 +1227,8 @@ static void *multifd_recv_thread(void *opaque)
+ 
+     while (true) {
+         uint32_t flags;
++        bool has_data = false;
++        p->normal_num = 0;
+ 
+         if (multifd_recv_should_exit()) {
+             break;
+@@ -1248,10 +1250,11 @@ static void *multifd_recv_thread(void *opaque)
+         flags = p->flags;
+         /* recv methods don't know how to handle the SYNC flag */
+         p->flags &= ~MULTIFD_FLAG_SYNC;
++        has_data = !!p->normal_num;
+         qemu_mutex_unlock(&p->mutex);
+ 
+-        if (p->normal_num) {
+-            ret = multifd_recv_state->ops->recv_pages(p, &local_err);
++        if (has_data) {
++            ret = multifd_recv_state->ops->recv(p, &local_err);
+             if (ret != 0) {
+                 break;
+             }
 -- 
 2.44.0
 
