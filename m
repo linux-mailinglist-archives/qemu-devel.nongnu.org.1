@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5CCA86FB85
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 09:18:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 827FD86FBBE
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 09:22:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rh3Vb-0005GF-VU; Mon, 04 Mar 2024 03:17:19 -0500
+	id 1rh3a0-0007CT-GP; Mon, 04 Mar 2024 03:21:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1rh3V7-0005DV-AG
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 03:16:50 -0500
+ id 1rh3Zo-0007BY-B1
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 03:21:36 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1rh3V4-00026h-Vr
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 03:16:45 -0500
+ id 1rh3Zm-0003OA-MU
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 03:21:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709540201;
+ s=mimecast20190719; t=1709540492;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=WoGqHANOUOGSRCApX8d5K4pwVyQaDJR8e+pWBWyDMeI=;
- b=Z1gxFPgjgWubtR0JLRvkbOgq41BZ8XX71wYyNutWx2eW/6IpEQnXEiWykCV53ZqMiaryCz
- 8EBrxvpaaAzXgx2/t14VCPty9STDTHw6ag6XPZoIZy9KWEKtdBK5q29ca74MQcWLZYsdHG
- YNemDG940SDoMiXcsc0P8IgiT1NZN6M=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=pX+UiUFNg9ssn8alfoAA0EIlF720P4RAN8LE3ETNpS4=;
+ b=dFDOD1vCJzGHpdGFYO9OQbNfha0pmkmNUM7MQCclmsIfpfkQZwUbkFb6Ysi1o2gotuDy4m
+ Fjljnizio49+fTIOq+YXmeYK1ZFOFMkCEZND6a2eBx4i6VnhovbV6TVgB2Pnv1HVMsJChV
+ J9HmIZsU08dUCdEpwgb6eCYdp3i+Nsk=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-125-Ihnzg8zvPkS0Inp9KrXJkw-1; Mon, 04 Mar 2024 03:16:39 -0500
-X-MC-Unique: Ihnzg8zvPkS0Inp9KrXJkw-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-513210b2c7aso2208370e87.1
- for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 00:16:39 -0800 (PST)
+ us-mta-121-BuqZbn_uPyy5BigH09e1tw-1; Mon, 04 Mar 2024 03:21:31 -0500
+X-MC-Unique: BuqZbn_uPyy5BigH09e1tw-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2d2a43ca538so23512091fa.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 00:21:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709540198; x=1710144998;
+ d=1e100.net; s=20230601; t=1709540490; x=1710145290;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=WoGqHANOUOGSRCApX8d5K4pwVyQaDJR8e+pWBWyDMeI=;
- b=vqMOzyngnIO+sr2dVD4oFlhcDsgqMbAGkehY0zASF7BjpdrU3DbTuO6cLhZA1B+GIl
- jf2/AftO0SrZipNyBTUlSCOReYlxh6OflwpPkg11L0t3DrD4YgUpw8S4FeOPtS5d/VbV
- 5vaQO9LvUM0X0kFnBDZ+VCRGcN6f7ZsG+ol26rOGqNMyiEXtrOH45o1iIh9pdDspDCvx
- BAwA2H8QunW4W1EpFKOJFrTpBmYYprvFDY/DbQsLLrbZmACKdspYiYhtCnLKWRBFHHRQ
- K+EyLMRsT8tDyWXsZLJoJhsbNmBUXxshm5/64ozSuleyY5eVF5XoeyDdQPChN9i2/Slt
- TyvQ==
-X-Gm-Message-State: AOJu0Yy3/bgt9B2tju1lwCP61itzkzWz6bXuujtQYL+Z4D6PKM7lBbwM
- fv87Ln0yfvtIUoHAS6pH+gpkiOXIBNFlAc3QSZiqv3bjSjrQ0gaev3Axc8dHtS6EfOc6vSKDBo7
- tkpXxeZbZLC5K8rVUwkRx6j+oiZSPnaxoo//lx3Q/6ySa+pGrtMaLpXTgq0yawf2Q8e74Jf0hOX
- 2qyn+av7GTnVrErFt14RpSM9MbsMSuWF+eBsFmcQ==
-X-Received: by 2002:ac2:51b5:0:b0:513:411e:e6d7 with SMTP id
- f21-20020ac251b5000000b00513411ee6d7mr1134652lfk.0.1709540197955; 
- Mon, 04 Mar 2024 00:16:37 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGWPQ9/4DmKd6Sv9M3vak6Ce/3xvc5I5u3g837qtNpv6OjdjsbNVjCiUFAE0hFgPLqhBdsRlS5/UIhPNWOxhuM=
-X-Received: by 2002:ac2:51b5:0:b0:513:411e:e6d7 with SMTP id
- f21-20020ac251b5000000b00513411ee6d7mr1134649lfk.0.1709540197640; Mon, 04 Mar
- 2024 00:16:37 -0800 (PST)
+ bh=pX+UiUFNg9ssn8alfoAA0EIlF720P4RAN8LE3ETNpS4=;
+ b=C0+E3I2PBVjpuil4kx1lKi1dvrrjsT9B7yjkBi7SSg5i70ovuq1xi/15tSQMIgv+69
+ o6JcSmdUCKoUWE91yB7y9c00kMlh7CmuqMqySyw94OIO0TQZfuma0qmz1BRZoafT3vVC
+ TsIaH4sHvxm30Am8NwFjunjvgmLieln+tia5AZNKQYGUd4xo+oYFGWzQ3BEPiXGJ5sxJ
+ dvcZ4TzukYwnA+fjnw+nUJlRvOBVUn0zE9uzTDCHwGoT+XRWilJHfV+h4hHbhQQdGHEu
+ CNQK1fRT/XPI84HnlEI9ErNyPpuO/T2dH8jo6hOmukbgIm20Oe/ruwd6ZWrBEnB/H6Ei
+ xogA==
+X-Gm-Message-State: AOJu0YwyzwVwFCaVhjcC9nI76LFRtvxY+q/mK6JV02cmXlbaxugg28J6
+ wcFlwf3wq/qWXpBSJT5fa1I9c3BazzT7dRFJ/lauhVakq4Po8s0AkFw1fdggv29FSZReQLYmcpW
+ tWtrtRo5MNLIM3n+9+d80R4oLTdzf+g9BAiWifPXQh9BlhIRoUDs3JMsg6kBuFtDJq6wTrk8Skg
+ Brv4NV+rEPnmY5a9D+sDuzBUfOvAg=
+X-Received: by 2002:a05:651c:198d:b0:2d2:846b:8c4e with SMTP id
+ bx13-20020a05651c198d00b002d2846b8c4emr4600572ljb.4.1709540490035; 
+ Mon, 04 Mar 2024 00:21:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEe9enyD3osQ/eeIgmznxUOMzdqiO5JQ73qfYoTStR9cIT8k7OU6p1K52lzz7wv8iUxnQm7sTS9Up388pb/tzI=
+X-Received: by 2002:a05:651c:198d:b0:2d2:846b:8c4e with SMTP id
+ bx13-20020a05651c198d00b002d2846b8c4emr4600561ljb.4.1709540489722; Mon, 04
+ Mar 2024 00:21:29 -0800 (PST)
 MIME-Version: 1.0
 References: <20240227113921.236097-1-armbru@redhat.com>
- <20240227113921.236097-13-armbru@redhat.com>
-In-Reply-To: <20240227113921.236097-13-armbru@redhat.com>
+ <20240227113921.236097-12-armbru@redhat.com>
+In-Reply-To: <20240227113921.236097-12-armbru@redhat.com>
 From: Konstantin Kostiuk <kkostiuk@redhat.com>
-Date: Mon, 4 Mar 2024 10:16:26 +0200
-Message-ID: <CAPMcbCpaR2OAxdQs+sFWLLyF7SDeT6EWK3BYt6tSWJVK6bR+rw@mail.gmail.com>
-Subject: Re: [PATCH 12/13] qga/qapi-schema: Fix guest-set-memory-blocks
- documentation
+Date: Mon, 4 Mar 2024 10:21:18 +0200
+Message-ID: <CAPMcbCqY+C+Qi5t2j6yQe9TkZ-AZNdNCzAZ0cByF-O7oR64Qvw@mail.gmail.com>
+Subject: Re: [PATCH 11/13] qga/qapi-schema: Tweak documentation of fsfreeze
+ commands
 To: Markus Armbruster <armbru@redhat.com>
 Cc: qemu-devel@nongnu.org, michael.roth@amd.com, jsnow@redhat.com, 
  eblake@redhat.com
-Content-Type: multipart/alternative; boundary="00000000000035c0c10612d15819"
+Content-Type: multipart/alternative; boundary="0000000000009e8f740612d16940"
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
@@ -96,7 +96,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000035c0c10612d15819
+--0000000000009e8f740612d16940
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -105,38 +105,64 @@ Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 On Tue, Feb 27, 2024 at 1:39=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
 m> wrote:
 
-> Documentation claims the command can "return NULL".  "NULL" doesn't
-> exist in JSON.  "null" does, but the command returns lists, and null
-> isn't.  Correct documentation to "return an empty list".
+> "Returns:" sections of guest-fsfreeze-freeze and
+> guest-fsfreeze-freeze-list describe both command behavior and success
+> response.  Move behavior out, so "Returns:" is only about success
+> response.
 >
 > Signed-off-by: Markus Armbruster <armbru@redhat.com>
 > ---
->  qga/qapi-schema.json | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  qga/qapi-schema.json | 16 +++++++++-------
+>  1 file changed, 9 insertions(+), 7 deletions(-)
 >
 > diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-> index 2ea1022092..9554b566a7 100644
+> index 326d324901..2ea1022092 100644
 > --- a/qga/qapi-schema.json
 > +++ b/qga/qapi-schema.json
-> @@ -1176,9 +1176,9 @@
->  #     @GuestMemoryBlockResponse, which is corresponding to the input
->  #     list.
+> @@ -437,15 +437,16 @@
+>  # command succeeded, you may call @guest-fsfreeze-thaw later to
+>  # unfreeze.
 >  #
-> -#     Note: it will return NULL if the @mem-blks list was empty on
-> -#     input, or there is an error, and in this case, guest state will
-> -#     not be changed.
-> +#     Note: it will return an empty list if the @mem-blks list was
-> +#     empty on input, or there is an error, and in this case, guest
-> +#     state will not be changed.
+> +# On error, all filesystems will be thawed.  If no filesystems are
+> +# frozen as a result of this call, then @guest-fsfreeze-status will
+> +# remain "thawed" and calling @guest-fsfreeze-thaw is not necessary.
+> +#
+> +# Returns: Number of file systems currently frozen.
+> +#
+>  # Note: On Windows, the command is implemented with the help of a
+>  #     Volume Shadow-copy Service DLL helper.  The frozen state is
+>  #     limited for up to 10 seconds by VSS.
 >  #
->  # Since: 2.3
+> -# Returns: Number of file systems currently frozen.  On error, all
+> -#     filesystems will be thawed.  If no filesystems are frozen as a
+> -#     result of this call, then @guest-fsfreeze-status will remain
+> -#     "thawed" and calling @guest-fsfreeze-thaw is not necessary.
+> -#
+>  # Since: 0.15.0
+>  ##
+>  { 'command': 'guest-fsfreeze-freeze',
+> @@ -457,12 +458,13 @@
+>  # Sync and freeze specified guest filesystems.  See also
+>  # @guest-fsfreeze-freeze.
+>  #
+> +# On error, all filesystems will be thawed.
+> +#
+>  # @mountpoints: an array of mountpoints of filesystems to be frozen.
+>  #     If omitted, every mounted filesystem is frozen.  Invalid mount
+>  #     points are ignored.
+>  #
+> -# Returns: Number of file systems currently frozen.  On error, all
+> -#     filesystems will be thawed.
+> +# Returns: Number of file systems currently frozen.
+>  #
+>  # Since: 2.2
 >  ##
 > --
 > 2.43.0
 >
 >
 
---00000000000035c0c10612d15819
+--0000000000009e8f740612d16940
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -146,46 +172,76 @@ v class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Feb 2=
 7, 2024 at 1:39=E2=80=AFPM Markus Armbruster &lt;<a href=3D"mailto:armbru@r=
 edhat.com">armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"g=
 mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204=
-,204,204);padding-left:1ex">Documentation claims the command can &quot;retu=
-rn NULL&quot;.=C2=A0 &quot;NULL&quot; doesn&#39;t<br>
-exist in JSON.=C2=A0 &quot;null&quot; does, but the command returns lists, =
-and null<br>
-isn&#39;t.=C2=A0 Correct documentation to &quot;return an empty list&quot;.=
-<br>
+,204,204);padding-left:1ex">&quot;Returns:&quot; sections of guest-fsfreeze=
+-freeze and<br>
+guest-fsfreeze-freeze-list describe both command behavior and success<br>
+response.=C2=A0 Move behavior out, so &quot;Returns:&quot; is only about su=
+ccess<br>
+response.<br>
 <br>
 Signed-off-by: Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.com" t=
 arget=3D"_blank">armbru@redhat.com</a>&gt;<br>
 ---<br>
-=C2=A0qga/qapi-schema.json | 6 +++---<br>
-=C2=A01 file changed, 3 insertions(+), 3 deletions(-)<br>
+=C2=A0qga/qapi-schema.json | 16 +++++++++-------<br>
+=C2=A01 file changed, 9 insertions(+), 7 deletions(-)<br>
 <br>
 diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json<br>
-index 2ea1022092..9554b566a7 100644<br>
+index 326d324901..2ea1022092 100644<br>
 --- a/qga/qapi-schema.json<br>
 +++ b/qga/qapi-schema.json<br>
-@@ -1176,9 +1176,9 @@<br>
-=C2=A0#=C2=A0 =C2=A0 =C2=A0@GuestMemoryBlockResponse, which is correspondin=
-g to the input<br>
-=C2=A0#=C2=A0 =C2=A0 =C2=A0list.<br>
+@@ -437,15 +437,16 @@<br>
+=C2=A0# command succeeded, you may call @guest-fsfreeze-thaw later to<br>
+=C2=A0# unfreeze.<br>
 =C2=A0#<br>
--#=C2=A0 =C2=A0 =C2=A0Note: it will return NULL if the @mem-blks list was e=
-mpty on<br>
--#=C2=A0 =C2=A0 =C2=A0input, or there is an error, and in this case, guest =
-state will<br>
--#=C2=A0 =C2=A0 =C2=A0not be changed.<br>
-+#=C2=A0 =C2=A0 =C2=A0Note: it will return an empty list if the @mem-blks l=
-ist was<br>
-+#=C2=A0 =C2=A0 =C2=A0empty on input, or there is an error, and in this cas=
-e, guest<br>
-+#=C2=A0 =C2=A0 =C2=A0state will not be changed.<br>
++# On error, all filesystems will be thawed.=C2=A0 If no filesystems are<br=
+>
++# frozen as a result of this call, then @guest-fsfreeze-status will<br>
++# remain &quot;thawed&quot; and calling @guest-fsfreeze-thaw is not necess=
+ary.<br>
++#<br>
++# Returns: Number of file systems currently frozen.<br>
++#<br>
+=C2=A0# Note: On Windows, the command is implemented with the help of a<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0Volume Shadow-copy Service DLL helper.=C2=A0 The=
+ frozen state is<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0limited for up to 10 seconds by VSS.<br>
 =C2=A0#<br>
-=C2=A0# Since: 2.3<br>
+-# Returns: Number of file systems currently frozen.=C2=A0 On error, all<br=
+>
+-#=C2=A0 =C2=A0 =C2=A0filesystems will be thawed.=C2=A0 If no filesystems a=
+re frozen as a<br>
+-#=C2=A0 =C2=A0 =C2=A0result of this call, then @guest-fsfreeze-status will=
+ remain<br>
+-#=C2=A0 =C2=A0 =C2=A0&quot;thawed&quot; and calling @guest-fsfreeze-thaw i=
+s not necessary.<br>
+-#<br>
+=C2=A0# Since: 0.15.0<br>
+=C2=A0##<br>
+=C2=A0{ &#39;command&#39;: &#39;guest-fsfreeze-freeze&#39;,<br>
+@@ -457,12 +458,13 @@<br>
+=C2=A0# Sync and freeze specified guest filesystems.=C2=A0 See also<br>
+=C2=A0# @guest-fsfreeze-freeze.<br>
+=C2=A0#<br>
++# On error, all filesystems will be thawed.<br>
++#<br>
+=C2=A0# @mountpoints: an array of mountpoints of filesystems to be frozen.<=
+br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0If omitted, every mounted filesystem is frozen.=
+=C2=A0 Invalid mount<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0points are ignored.<br>
+=C2=A0#<br>
+-# Returns: Number of file systems currently frozen.=C2=A0 On error, all<br=
+>
+-#=C2=A0 =C2=A0 =C2=A0filesystems will be thawed.<br>
++# Returns: Number of file systems currently frozen.<br>
+=C2=A0#<br>
+=C2=A0# Since: 2.2<br>
 =C2=A0##<br>
 -- <br>
 2.43.0<br>
 <br>
 </blockquote></div>
 
---00000000000035c0c10612d15819--
+--0000000000009e8f740612d16940--
 
 
