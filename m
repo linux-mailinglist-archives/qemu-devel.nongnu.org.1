@@ -2,90 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47BB987091E
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 19:09:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B12870C0E
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 22:04:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhCjW-0003hH-Q8; Mon, 04 Mar 2024 13:08:14 -0500
+	id 1rhFTb-0003Yb-H0; Mon, 04 Mar 2024 16:03:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhCjF-0003WZ-DK
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 13:08:02 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <arvinlin@google.com>)
+ id 1rhCxY-0007Yn-GV
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 13:22:44 -0500
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhCjB-0007U7-KI
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 13:07:56 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-33dcad9e3a2so2514449f8f.3
- for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 10:07:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <arvinlin@google.com>)
+ id 1rhCxW-0001eY-K2
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 13:22:44 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1dc9f4d1106so12865ad.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 10:22:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709575672; x=1710180472; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=kKpNF33rWE8UxbbM8s3gF28HdZDXNJG7A4/e3MVt6Jo=;
- b=YfWTqtYq6cUnRIZJtVkOrJX5/CAkt1UipHC2qEU4uad7J5mM70vzyd95BfZBynLVOy
- HttqkpQk2F3IEH2zjuVfKaiVd204N/5KEZ2BK+PitmbbR84sxDimXCDQ8CqLHeWdrRAc
- wqa9AQ3UnLN6rkrlKvlmz/fnHqcjkWu9oUq675b2KU317e3QTm65C1ke1AV7kBDzrlSz
- qcl05l6VKqLat6IUzld0AKPqvFvEI9CGt7jctxQq/gixzLgSA9EZvKC++n2Vzqj9JC1/
- QMXUKRh+kDXRc0Q0o9bkGaE2mURw1T59dDzCGI2XeHEfzNp9rurCwAvLGAn7aEJyx9XS
- 3IYg==
+ d=google.com; s=20230601; t=1709576560; x=1710181360; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=tyWDI0H73U/36gvkGcdKJjGZS8qYmDmdT3O92xjozfw=;
+ b=BwIRMDocA1pv1sOWk2HvAnFtrJjnxHGDHbFLJxjWNbC3chibjDEc2PSDF5ThVC48R5
+ uv8b5qy1ZJRR15cdGkvsxWQUHa+8tKc11BRTHHT19D8G5Q1rr7wNOg00vrC2XmYBA1+U
+ irvAutDWl7pa8qBInNZTvmlkxP+oimCJUXJjpmqd5ZrATTpCjEHZqGqIWeQEdDU4RRxg
+ 7CbIYCjQYbgvw1duJ5xiaUMS6R4OqR5y8hEzv7sM0IoQEPxdCsUqBKQ0t5eqseL2i3K5
+ LV4Zzw90Y066UO1SVonwZ6ndEuKGVGrUol7TAJIflc4x5HPhlWBZydA3N3fx0PwG0PZv
+ 7zzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709575672; x=1710180472;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=kKpNF33rWE8UxbbM8s3gF28HdZDXNJG7A4/e3MVt6Jo=;
- b=KhcEZAdskr7PQxd310glgGFrN2S2JRmuVWquLM2gXZ4WGUyMFS4X3CKKqGrvhRbt0K
- iZ1fEac1vuT27mCFOLruWPoHgZaLz7VzbKRvNnhqy8R4BA+9N3bUaqt3NrFoOpXKN2Ob
- s2pHJjGUo73nWkz1iYItof1KWnbMrSf22sETpUhJU1qHeAn8uETzo8MDbG5CohLmwP3N
- JTWQnK76Ev0qdeubBTQkp4ffo7gxySmryPYFqkC+hqUtFlfcGOjLzg9e2Xp+jdyZjLpO
- QxIKKokJiiiOuufIBKX0o7Gyk8zDFh2cnJyRxjXx6moU0KaYKwXBVPbMmusO1hj1BXG8
- Zpbw==
-X-Gm-Message-State: AOJu0YyrZouPbKfKqPJqCK0DOelzEGoAgqQVn2HkZtr6pNObw7+KsguV
- J0CgNABrS5T2krGjDTyb9RDuxwaIcDauKKSUUQePeoADn1DOBdVdZGKYO+KjVhw=
-X-Google-Smtp-Source: AGHT+IGNdhC8eMwfjDV4M4qH1U18GtMan8gp5Rb0sODlUZZrZC/wOKNKtZC2ystt+1o6trFhIpAptQ==
-X-Received: by 2002:a05:6000:88c:b0:33e:2fd:b8ca with SMTP id
- cs12-20020a056000088c00b0033e02fdb8camr6908925wrb.9.1709575671746; 
- Mon, 04 Mar 2024 10:07:51 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- j12-20020adfea4c000000b0033e11bd9febsm12338773wrn.90.2024.03.04.10.07.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Mar 2024 10:07:51 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E03DA5F796;
- Mon,  4 Mar 2024 18:07:50 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org,  Yanan Wang <wangyanan55@huawei.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Mahmoud Mandour
- <ma.mandourr@gmail.com>,  Alexandre Iooss <erdnaxe@crans.org>,  Richard
- Henderson <richard.henderson@linaro.org>,  Eduardo Habkost
- <eduardo@habkost.net>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v7 00/12] TCG Plugin inline operation enhancement
-In-Reply-To: <20240304130036.124418-1-pierrick.bouvier@linaro.org> (Pierrick
- Bouvier's message of "Mon, 4 Mar 2024 17:00:24 +0400")
-References: <20240304130036.124418-1-pierrick.bouvier@linaro.org>
-User-Agent: mu4e 1.12.1; emacs 29.1
-Date: Mon, 04 Mar 2024 18:07:50 +0000
-Message-ID: <877cihyio9.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1709576560; x=1710181360;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=tyWDI0H73U/36gvkGcdKJjGZS8qYmDmdT3O92xjozfw=;
+ b=OmCIE4i2Gy6Lvh9AhuidWaB9oDnBUCJJPWAvuvkEwlSyQcAgwWYjgFyS/MBzWyYnxe
+ Az9G+u2Z/YIsn+v1iZrujksehLRQC4RHxiZBm4B96xDZZUHAsi2KU43nWxiJ85+/8eZJ
+ DS030yqgg42Htwjlq/hrB53bIkTZ+5LNG2ypkhB73nX8RUr7ixlVwhs83N4gnD/dhF0U
+ JSIqPdwpgGj7zBGmZo7+QDlxCuIim9KLR3KeNTuhd3f/tDuyvs6JUl8NnNIE/Vjb3VGe
+ We/9K4p32H1oWFDQnimBiIasnx4hDl7gf4h7c2HSiscABDbj5VL6CPo8E2Vws0C1JAcs
+ uhuw==
+X-Gm-Message-State: AOJu0Yyb83iYGlCTHtqRJ3hIQOO85EYMY1onDmL1eWEp1BGW2qYGIJB0
+ zymtKHCpl+X0tpUA3y+eo07a6rSRKqc/qOmfaRwkOrKSlNZUK8KdRe2poyk2dLH7oR/z3psBmkh
+ vrWA4IqmKFRDmkfqsEPmHfH8mvKpWIF32L0eX
+X-Google-Smtp-Source: AGHT+IFvHo1bku8mO2dO71/6zkjI2lA7KX+lf0hW3oezQWhSZ9ZSlX8WwTXgMsdT2yHtIcOdgK00CzMi6dR6r0B38AY=
+X-Received: by 2002:a17:902:cecb:b0:1dc:8841:43f2 with SMTP id
+ d11-20020a170902cecb00b001dc884143f2mr17647plg.26.1709576560061; Mon, 04 Mar
+ 2024 10:22:40 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+From: Arvin Lin <arvinlin@google.com>
+Date: Mon, 4 Mar 2024 10:22:27 -0800
+Message-ID: <CAOJ+zFWsEYHiJObWvW4rt9OKOM_SzMPyJue-Ejui=YyETtCwcA@mail.gmail.com>
+Subject: Consulting to create fake object under tests/qtest
+To: thuth@redhat.com, lvivier@redhat.com
+Cc: qemu-devel@nongnu.org, Avi.Fishman@nuvoton.com, kfting@nuvoton.com, 
+ Patrick Venture <venture@google.com>, Hao Wu <wuhaotsh@google.com>, 
+ Titus Rwantare <titusr@google.com>
+Content-Type: multipart/alternative; boundary="00000000000094ae4c0612d9cfb7"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=arvinlin@google.com; helo=mail-pl1-x634.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 04 Mar 2024 16:03:58 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,31 +87,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
+--00000000000094ae4c0612d9cfb7
+Content-Type: text/plain; charset="UTF-8"
 
-> This series adds a new thread-safe API to declare inline operation
-> inside plugins. As well, it removes the existing non thread-safe API,
-> and migrates all existing plugins to use it.
->
-> Tested on Linux (user, system) for i386, x86_64 and aarch64.
->
-> To give some context, this a long term series of work around plugins,
-> with the goal to be able to do basic operations in a more performant and
-> accurate way. This will mean to add more inline operations and
-> conditional callbacks.
->
-> One final target of this work is to implement a plugin that implements
-> the icount=3Dauto feature, and allow QEMU to run at a given "frequency"
-> based on number of instructions executed, without QEMU needing to keep
-> track of this.
->
-> Another final target is to be able to detect control flow changes in an
-> efficient and elegant way, by combining inline operation and conditional
-> callbacks.
+Hello qtest maintainers,
 
-Queued to plugins/next, thanks.
+I work on QEMU with Patrick Venture, Hao Wu, and Titus Rwantare at Google,
+and I am developing a Nuvoton USB device controller model that uses
+usbredir parser (
+https://gitlab.freedesktop.org/spice/usbredir/-/tree/main/usbredirparser?ref_type=heads)
+to redirect USB messages over the network. I want to create a qtest to
+verify the behavior of the device over the network by starting another
+usbredir parser object to ingest the packets sent by the Nuvoton USB device
+controller model. While I could create a fake usbredir parser object and
+set up the tests all in one file, I'm wondering if I could create a new
+file (maybe fake-usbredir-guest.h) under qtest for the fake usbredir parser
+object. The separation of the fake object and the device model test would
+benefit the maintainability of the device model test code and allow any
+future remote USB device model to reuse the fake object.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Thanks,
+Arvin
+
+--00000000000094ae4c0612d9cfb7
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hello qtest maintainers,<div><br></div><div>I work on QEMU=
+ with Patrick Venture, Hao Wu, and Titus Rwantare at Google, and I am devel=
+oping a Nuvoton USB device controller model that uses usbredir parser (<a h=
+ref=3D"https://gitlab.freedesktop.org/spice/usbredir/-/tree/main/usbredirpa=
+rser?ref_type=3Dheads">https://gitlab.freedesktop.org/spice/usbredir/-/tree=
+/main/usbredirparser?ref_type=3Dheads</a>) to redirect USB messages over th=
+e network. I want to create a qtest to verify the behavior of the device ov=
+er the network by starting another usbredir parser object to ingest the pac=
+kets sent by the Nuvoton USB device controller model. While I could create =
+a fake usbredir parser object and set up the tests all in one file, I&#39;m=
+ wondering if I could create a new file (maybe fake-usbredir-guest.h) under=
+ qtest for the fake usbredir parser object. The separation of the fake obje=
+ct and the device model test would benefit the maintainability of the devic=
+e model test code and allow any future remote USB device model to reuse the=
+ fake object.</div><div><br></div><div>Thanks,</div><div>Arvin</div></div>
+
+--00000000000094ae4c0612d9cfb7--
 
