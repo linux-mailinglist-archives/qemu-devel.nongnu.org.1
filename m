@@ -2,55 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD4D86F844
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 02:29:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C93C086F84A
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 02:31:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rgx8V-0003d0-85; Sun, 03 Mar 2024 20:28:59 -0500
+	id 1rgx8a-0004gi-25; Sun, 03 Mar 2024 20:29:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx89-0002jf-Qg
- for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:28:39 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx8G-0002sG-MN
+ for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:28:46 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx88-0002SX-30
- for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:28:37 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rgx8F-0002UT-58
+ for qemu-devel@nongnu.org; Sun, 03 Mar 2024 20:28:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709515715;
+ s=mimecast20190719; t=1709515721;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VGsaTKXYi4p8i16mdNER8UjgI9dBQlyWyaXYcRxh438=;
- b=Cf/kMAuUUNn9wNt1kuVAppiy9KYzZnc65UJ3IS8TYURw6j68E0uwNiJisq51VVqFhO2Drr
- xe1soJZag1/3rhR4OwOXxZE6oGKeQEchUhXWLO5lA1RKs5VByL2f8hYCAKmEch8APo4b0Y
- 8Hw6bMpDZV6cLNGUWLjETBNL+7X1eSM=
+ bh=KQjfAx5fwudle9JMFQ3un6R3jAgdZL0axGO7bP69yRk=;
+ b=ciRgfk0zOa3qfWNIp3Gqm9jtWVmYGbwRaXZNqqtMBj7d9MyQffNqA09z0j95CNhkINGoO7
+ Y3hQ7LOiV+yiRPyDjwe+QNdJTW0MmqX4V67sjuif6UW6SswSu6Q+HC97TIcAzJMxUiuUrE
+ WTimxzpmRboAfNwbxwnKcOrdSmKUoYA=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-412-miqb2J0RPwaBjBt6fb5HgQ-1; Sun,
- 03 Mar 2024 20:28:34 -0500
-X-MC-Unique: miqb2J0RPwaBjBt6fb5HgQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-474-zJ38GSrmNoemaGbvBocP4w-1; Sun,
+ 03 Mar 2024 20:28:37 -0500
+X-MC-Unique: zJ38GSrmNoemaGbvBocP4w-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 40FD63C0DD0A;
- Mon,  4 Mar 2024 01:28:33 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 707B93C0DD05;
+ Mon,  4 Mar 2024 01:28:37 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.2])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D4A6B40C6EBA;
- Mon,  4 Mar 2024 01:28:29 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 10D7A40C6EBA;
+ Mon,  4 Mar 2024 01:28:33 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
 Cc: peterx@redhat.com,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Prasad Pandit <ppandit@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 26/27] tests/qtest/migration: Add a multifd + mapped-ram
- migration test
-Date: Mon,  4 Mar 2024 09:26:33 +0800
-Message-ID: <20240304012634.95520-27-peterx@redhat.com>
+Subject: [PULL 27/27] migration/multifd: Document two places for mapped-ram
+Date: Mon,  4 Mar 2024 09:26:34 +0800
+Message-ID: <20240304012634.95520-28-peterx@redhat.com>
 In-Reply-To: <20240304012634.95520-1-peterx@redhat.com>
 References: <20240304012634.95520-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -81,109 +80,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Peter Xu <peterx@redhat.com>
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240229153017.2221-24-farosas@suse.de
+Add two documentations for mapped-ram migration on two spots that may not
+be extremely clear.
+
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Link: https://lore.kernel.org/r/20240301091524.39900-1-peterx@redhat.com
+Cc: Prasad Pandit <ppandit@redhat.com>
+[peterx: fix two English errors per Prasad]
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- tests/qtest/migration-test.c | 68 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
+ migration/multifd.c | 12 ++++++++++++
+ migration/ram.c     |  8 +++++++-
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 4c5551f7d0..4023d808f9 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -2248,6 +2248,46 @@ static void test_precopy_file_mapped_ram(void)
-     test_file_common(&args, true);
- }
- 
-+static void *migrate_multifd_mapped_ram_start(QTestState *from, QTestState *to)
-+{
-+    migrate_mapped_ram_start(from, to);
-+
-+    migrate_set_parameter_int(from, "multifd-channels", 4);
-+    migrate_set_parameter_int(to, "multifd-channels", 4);
-+
-+    migrate_set_capability(from, "multifd", true);
-+    migrate_set_capability(to, "multifd", true);
-+
-+    return NULL;
-+}
-+
-+static void test_multifd_file_mapped_ram_live(void)
-+{
-+    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
-+                                           FILE_TEST_FILENAME);
-+    MigrateCommon args = {
-+        .connect_uri = uri,
-+        .listen_uri = "defer",
-+        .start_hook = migrate_multifd_mapped_ram_start,
-+    };
-+
-+    test_file_common(&args, false);
-+}
-+
-+static void test_multifd_file_mapped_ram(void)
-+{
-+    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
-+                                           FILE_TEST_FILENAME);
-+    MigrateCommon args = {
-+        .connect_uri = uri,
-+        .listen_uri = "defer",
-+        .start_hook = migrate_multifd_mapped_ram_start,
-+    };
-+
-+    test_file_common(&args, true);
-+}
-+
-+
- static void test_precopy_tcp_plain(void)
+diff --git a/migration/multifd.c b/migration/multifd.c
+index b4e5a9dfcc..d4a44da559 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -709,6 +709,18 @@ static bool multifd_send_cleanup_channel(MultiFDSendParams *p, Error **errp)
  {
-     MigrateCommon args = {
-@@ -2524,6 +2564,25 @@ static void test_migrate_precopy_fd_file_mapped_ram(void)
-     };
-     test_file_common(&args, true);
- }
-+
-+static void *migrate_multifd_fd_mapped_ram_start(QTestState *from,
-+                                                QTestState *to)
-+{
-+    migrate_multifd_mapped_ram_start(from, to);
-+    return migrate_precopy_fd_file_start(from, to);
-+}
-+
-+static void test_multifd_fd_mapped_ram(void)
-+{
-+    MigrateCommon args = {
-+        .connect_uri = "fd:fd-mig",
-+        .listen_uri = "defer",
-+        .start_hook = migrate_multifd_fd_mapped_ram_start,
-+        .finish_hook = test_migrate_fd_finish_hook
-+    };
-+
-+    test_file_common(&args, true);
-+}
- #endif /* _WIN32 */
- 
- static void do_test_validate_uuid(MigrateStart *args, bool should_fail)
-@@ -3576,6 +3635,15 @@ int main(int argc, char **argv)
-     migration_test_add("/migration/precopy/file/mapped-ram/live",
-                        test_precopy_file_mapped_ram_live);
- 
-+    migration_test_add("/migration/multifd/file/mapped-ram",
-+                       test_multifd_file_mapped_ram);
-+    migration_test_add("/migration/multifd/file/mapped-ram/live",
-+                       test_multifd_file_mapped_ram_live);
-+#ifndef _WIN32
-+    migration_test_add("/migration/multifd/fd/mapped-ram",
-+                       test_multifd_fd_mapped_ram);
-+#endif
-+
- #ifdef CONFIG_GNUTLS
-     migration_test_add("/migration/precopy/unix/tls/psk",
-                        test_precopy_unix_tls_psk);
+     if (p->c) {
+         migration_ioc_unregister_yank(p->c);
++        /*
++         * An explicit close() on the channel here is normally not
++         * required, but can be helpful for "file:" iochannels, where it
++         * will include fdatasync() to make sure the data is flushed to the
++         * disk backend.
++         *
++         * The object_unref() cannot guarantee that because: (1) finalize()
++         * of the iochannel is only triggered on the last reference, and
++         * it's not guaranteed that we always hold the last refcount when
++         * reaching here, and, (2) even if finalize() is invoked, it only
++         * does a close(fd) without data flush.
++         */
+         qio_channel_close(p->c, &error_abort);
+         object_unref(OBJECT(p->c));
+         p->c = NULL;
+diff --git a/migration/ram.c b/migration/ram.c
+index 1f1b5297cf..c79e3de521 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -4258,7 +4258,13 @@ static int ram_load_precopy(QEMUFile *f)
+         switch (flags & ~RAM_SAVE_FLAG_CONTINUE) {
+         case RAM_SAVE_FLAG_MEM_SIZE:
+             ret = parse_ramblocks(f, addr);
+-
++            /*
++             * For mapped-ram migration (to a file) using multifd, we sync
++             * once and for all here to make sure all tasks we queued to
++             * multifd threads are completed, so that all the ramblocks
++             * (including all the guest memory pages within) are fully
++             * loaded after this sync returns.
++             */
+             if (migrate_mapped_ram()) {
+                 multifd_recv_sync_main();
+             }
 -- 
 2.44.0
 
