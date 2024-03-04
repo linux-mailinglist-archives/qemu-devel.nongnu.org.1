@@ -2,73 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E02DF870837
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 18:25:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 701CC87083A
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 18:26:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhC3I-0005kw-Dm; Mon, 04 Mar 2024 12:24:36 -0500
+	id 1rhC4V-0006Yl-TT; Mon, 04 Mar 2024 12:25:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhC3G-0005ke-3v
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 12:24:34 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhC3D-0007RS-RB
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 12:24:33 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5672afabb86so1435122a12.3
- for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 09:24:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709573070; x=1710177870; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=wtWH2GKLVB9TTORLSeHbin5g5WMKQBuWBoDKhCB8zvI=;
- b=hDDPbgPBRx/sfSYtagELWcq46HAh+VoQ2m69UHomsrGEV8g5vbt8737NME0Pmex3xj
- 5nG1VL0NLFJN6gig1VdeIqFZXEUyfemF+xUt5PEiZJs0uD7YVJSrniiY5u74WM38NE5D
- Z2xapjGEegAQEVIfSudF86n6VNyA2MmZmUT1dPvqog0mY+oUtHIck6hPrwED4Js7xrMY
- /SwKa0XrPxL+5AKR9P+F/7tlp8/32QJSWpS1wcEM/v7aolsBnW8BQQK+msjUzruj2Rf5
- JQUg5PDQz9MsTeCrhZ2j3N56+m6AITaIpBKinKc6zk+Kolo2cF89ER6cOpHOb0UPQUf5
- Yagg==
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rhC3z-00068o-HR
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 12:25:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rhC3v-0007hy-D7
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 12:25:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709573113;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LaweyTroA2VnJXi7StgwRI1QNvEzqGs11NoMDW9yOr8=;
+ b=HUf2Nwzu6dyY+iKubjuUYYVpu+trwoMHwbwYxKXsjWEu+Du5WkM8sJN181iGITYhk3NdEd
+ GydREu24TTYLKe/8Fykqqu23swxecGzmgmeAplHQNzWOw8wf+hCos7luvkRbHk7t/lZQB4
+ Poc5YsqYmzSYW46+tN6/gXt3I1zCha8=
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
+ [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-121-Ejbq6JkNNgW_wr4jJcpNKA-1; Mon, 04 Mar 2024 12:25:12 -0500
+X-MC-Unique: Ejbq6JkNNgW_wr4jJcpNKA-1
+Received: by mail-yb1-f197.google.com with SMTP id
+ 3f1490d57ef6-dc6b5d1899eso7934412276.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 09:25:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709573070; x=1710177870;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=wtWH2GKLVB9TTORLSeHbin5g5WMKQBuWBoDKhCB8zvI=;
- b=sFY50czsg3Gx7SFAZtK3mr07mlWNnoB03sWMV+y6NpI5rc2tV3BCh+labz7NNvrD3w
- bgskC+s8OJQpFdGvvzjNhy457rQE+CAXKom0YeNliRpLKTUxwgb0pVjJ7phFL9INJYd3
- wSWTHmeXgF+ml4GwluTjRWK/ifA4fek2uA1u0zSAc6diMBH3PEduTQm+mapSuF1PsWtx
- A4mE+3lqqmsyG/g6zm4s2F0L6EdehxMyfqFkv8mQ94OuV+wyZ6Sf9QE/0bk+HhgFsErP
- W1xN0eUxu8OacddvMnU7FX29BqKBxmZUWJzSZc60eykUhwk+bYK0e954PGsALWddG8Zk
- IbVQ==
-X-Gm-Message-State: AOJu0YxxgpmaCKFXkFX+eUofyQOTJJHls6YcY6v6SzGNWEktBZ3dITZK
- Z6cLa3auYfQQJfSXqSiQGwAKJe/o+vsn7wRlE/jSMNd3Pkv7QJhkadvj1GtSA9BFFKb6CB7GK3j
- JC2bCZ0vXBP6p6nZtLp9wzEYgLMOlnj7me3JW5g==
-X-Google-Smtp-Source: AGHT+IHRWwFGNXQIBoY2J4SadmHWaENkjKoE625sDdFV006HACD6iwSRJXkvkca45tlM3424aqr+FQxk3nuSCT1HXqU=
-X-Received: by 2002:a05:6402:1d3a:b0:565:6dde:ed2e with SMTP id
- dh26-20020a0564021d3a00b005656ddeed2emr5999272edb.33.1709573070119; Mon, 04
- Mar 2024 09:24:30 -0800 (PST)
+ d=1e100.net; s=20230601; t=1709573112; x=1710177912;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=LaweyTroA2VnJXi7StgwRI1QNvEzqGs11NoMDW9yOr8=;
+ b=hXwIkfy8mNYm4TgkZvsre+jvvok1FjELaqzWmYLtsaVCN9Sg3VwgD9hUcGaBNRxfAQ
+ csenCK0vLLS/0g1jH3ynITg61PVM4LDFuGkvbab2jQVaJgV0YmXe5GxcVzAK9BcnfVrO
+ HtfEijzhEbzH4D5jPmJggO7fCzvfxK07TBTF5qDhUM72M1IXVkhk8YiSM/XFR6zp89xB
+ jTkkh60CdKphZJlc2WkrQdipizEIxdiodyuvm63ddyZp6vJRrCCtsfhD/lYVPFYO994c
+ wC591KI+HGQFBZHZUJU9GyYz/GpFu5KWQ38ShUxqEdYx4RSj3UdWVlEy3QY63OkKGmBW
+ z0dw==
+X-Gm-Message-State: AOJu0YwGWdFPvIv6QeiTIOgMOqciYQts2V+RXWTnshGwVbNFKqWEIpau
+ lg278I24CBhfb+Pblj8tIMElzYZTLit3hRNYXF2UPPZCooGvmWCp8enHEKD14NdBOPg+oqEI6sR
+ LINS1W05M8vfZoMa8ipCPT2ECFwDQqUMXXfql04pFEKcUc42Ze3nXnF/MBCruGvqvO/DKNkAHyz
+ fJN86mLBqRWKWHLvNkjzmjYMSZhzQ=
+X-Received: by 2002:a25:903:0:b0:dc2:3a05:489 with SMTP id
+ 3-20020a250903000000b00dc23a050489mr129847ybj.14.1709573111717; 
+ Mon, 04 Mar 2024 09:25:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEfociF5Qvz73m+6ENb5dn65k6dyE5og73b1/Zs8ESjiBs9FcHO39zlmih2LYsKafT9+MMb/HNyZ39dTUqy5E8=
+X-Received: by 2002:a25:903:0:b0:dc2:3a05:489 with SMTP id
+ 3-20020a250903000000b00dc23a050489mr129805ybj.14.1709573111408; 
+ Mon, 04 Mar 2024 09:25:11 -0800 (PST)
 MIME-Version: 1.0
-References: <20240302010627.12998-1-richard.henderson@linaro.org>
- <20240302010627.12998-2-richard.henderson@linaro.org>
-In-Reply-To: <20240302010627.12998-2-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 4 Mar 2024 17:24:19 +0000
-Message-ID: <CAFEAcA-_ZbgmF0qxNxXevU4yztWYdgVL74QutHtDsfp=5kojCQ@mail.gmail.com>
-Subject: Re: [PATCH 1/3] linux-user: Implement PR_{GET,SET}_CHILD_SUBREAPER
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com
+References: <20240301134330.4191007-1-jonah.palmer@oracle.com>
+ <20240301134330.4191007-2-jonah.palmer@oracle.com>
+ <CAJaqyWdokP3yqbP8wPfgttFyFWfy1O3ST4jUQmiJ+n-xkrp_Zg@mail.gmail.com>
+ <964078ad-35de-4687-86e4-e3bc059481b0@oracle.com>
+In-Reply-To: <964078ad-35de-4687-86e4-e3bc059481b0@oracle.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Mon, 4 Mar 2024 18:24:35 +0100
+Message-ID: <CAJaqyWcnfhRA=xXHxdgF-u8gxJEAt7FQFryCrwj52N+4aLPbUQ@mail.gmail.com>
+Subject: Re: [RFC 1/8] virtio/virtio-pci: Handle extra notification data
+To: Jonah Palmer <jonah.palmer@oracle.com>
+Cc: qemu-devel@nongnu.org, mst@redhat.com, jasowang@redhat.com, 
+ si-wei.liu@oracle.com, boris.ostrovsky@oracle.com, raphael@enfabrica.net, 
+ kwolf@redhat.com, hreitz@redhat.com, pasic@linux.ibm.com, 
+ borntraeger@linux.ibm.com, farman@linux.ibm.com, thuth@redhat.com, 
+ richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com, 
+ cohuck@redhat.com, pbonzini@redhat.com, fam@euphon.net, stefanha@redhat.com, 
+ qemu-block@nongnu.org, qemu-s390x@nongnu.org, virtio-fs@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.571,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,18 +103,199 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 2 Mar 2024 at 04:13, Richard Henderson
-<richard.henderson@linaro.org> wrote:
+On Mon, Mar 4, 2024 at 6:09=E2=80=AFPM Jonah Palmer <jonah.palmer@oracle.co=
+m> wrote:
 >
-> The "set" prctl passes through integral values.
-> The "get" prctl returns the value into a pointer.
 >
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1929
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
+>
+> On 3/1/24 2:31 PM, Eugenio Perez Martin wrote:
+> > On Fri, Mar 1, 2024 at 2:44=E2=80=AFPM Jonah Palmer <jonah.palmer@oracl=
+e.com> wrote:
+> >>
+> >> Add support to virtio-pci devices for handling the extra data sent
+> >> from the driver to the device when the VIRTIO_F_NOTIFICATION_DATA
+> >> transport feature has been negotiated.
+> >>
+> >> The extra data that's passed to the virtio-pci device when this
+> >> feature is enabled varies depending on the device's virtqueue
+> >> layout.
+> >>
+> >> In a split virtqueue layout, this data includes:
+> >>   - upper 16 bits: last_avail_idx
+> >>   - lower 16 bits: virtqueue index
+> >>
+> >> In a packed virtqueue layout, this data includes:
+> >>   - upper 16 bits: 1-bit wrap counter & 15-bit last_avail_idx
+> >>   - lower 16 bits: virtqueue index
+> >>
+> >> Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
+> >> ---
+> >>   hw/virtio/virtio-pci.c     | 13 ++++++++++---
+> >>   hw/virtio/virtio.c         | 13 +++++++++++++
+> >>   include/hw/virtio/virtio.h |  1 +
+> >>   3 files changed, 24 insertions(+), 3 deletions(-)
+> >>
+> >> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+> >> index 1a7039fb0c..c7c577b177 100644
+> >> --- a/hw/virtio/virtio-pci.c
+> >> +++ b/hw/virtio/virtio-pci.c
+> >> @@ -384,7 +384,7 @@ static void virtio_ioport_write(void *opaque, uint=
+32_t addr, uint32_t val)
+> >>   {
+> >>       VirtIOPCIProxy *proxy =3D opaque;
+> >>       VirtIODevice *vdev =3D virtio_bus_get_device(&proxy->bus);
+> >> -    uint16_t vector;
+> >> +    uint16_t vector, vq_idx;
+> >>       hwaddr pa;
+> >>
+> >>       switch (addr) {
+> >> @@ -408,8 +408,15 @@ static void virtio_ioport_write(void *opaque, uin=
+t32_t addr, uint32_t val)
+> >>               vdev->queue_sel =3D val;
+> >>           break;
+> >>       case VIRTIO_PCI_QUEUE_NOTIFY:
+> >> -        if (val < VIRTIO_QUEUE_MAX) {
+> >> -            virtio_queue_notify(vdev, val);
+> >> +        if (virtio_vdev_has_feature(vdev, VIRTIO_F_NOTIFICATION_DATA)=
+) {
+> >> +            vq_idx =3D val & 0xFFFF;
+> >
+> > Nitpick, but since vq_idx is already a uint16_t the & 0xFFFF is not
+> > needed.
+>
+> Ah okay. I wasn't sure if it was worthwhile to keep the '& 0xFFFF' in or
+> not for the sake of clarity and good practice. In that case I could just
+> do away with vq_idx here and use explicit casting on 'val'.
+>
+> > I think it's cleaner just to call virtio_set_notification data
+> > in the has_feature(...) condition, but I'm happy with this too.
+>
+> Do you mean something like:
+>
+> if (virtio_vdev_has_feature(vdev, VIRTIO_F_NOTIFICATION_DATA) &&
+>      virtio_set_notification_data(vdev, vq_idx, val)) {
+>      ...
+> }
+>
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Sorry I was not clear, I meant just to take out the common code of the
+conditionals:
+vq_idx =3D val;
+if (virtio_vdev_has_feature(vdev, VIRTIO_F_NOTIFICATION_DATA) {
+    virtio_set_notification_data(vdev, val);
+}
 
-thanks
--- PMM
+> Though I'm not sure what would then go in the body of this conditional,
+> especially if I did something like:
+>
+> case VIRTIO_PCI_QUEUE_NOTIFY:
+>      if ((uint16_t)val < VIRTIO_QUEUE_MAX) {
+>          if (virtio_vdev_has_feature(vdev, VIRTIO_F_NOTIFICATION_DATA) &&
+>              virtio_set_notification_data(vdev, val)) {
+>              // Not sure what to put here other than a no-op
+>          }
+>
+>          virtio_queue_notify(vdev, (uint16_t)val);
+>      }
+>      break;
+>
+> But I'm not sure if you'd prefer this explicit casting of 'val' over
+> implicit casting like:
+>
+> uint16_t vq_idx =3D val;
+>
+> >
+> >> +            virtio_set_notification_data(vdev, vq_idx, val);
+> >> +        } else {
+> >> +            vq_idx =3D val;
+> >> +        }
+> >> +
+> >> +        if (vq_idx < VIRTIO_QUEUE_MAX) {
+> >> +            virtio_queue_notify(vdev, vq_idx);
+> >>           }
+> >>           break;
+> >>       case VIRTIO_PCI_STATUS:
+> >> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+> >> index d229755eae..a61f69b7fd 100644
+> >> --- a/hw/virtio/virtio.c
+> >> +++ b/hw/virtio/virtio.c
+> >> @@ -2052,6 +2052,19 @@ int virtio_set_status(VirtIODevice *vdev, uint8=
+_t val)
+> >>       return 0;
+> >>   }
+> >>
+> >> +void virtio_set_notification_data(VirtIODevice *vdev, uint16_t i, uin=
+t32_t data)
+> >> +{
+> >> +    VirtQueue *vq =3D &vdev->vq[i];
+> >> +
+> >> +    if (virtio_vdev_has_feature(vdev, VIRTIO_F_RING_PACKED)) {
+> >> +        vq->last_avail_wrap_counter =3D (data >> 31) & 0x1;
+> >> +        vq->last_avail_idx =3D (data >> 16) & 0x7FFF;
+> >> +    } else {
+> >> +        vq->last_avail_idx =3D (data >> 16) & 0xFFFF;
+> >> +    }
+> >
+> > It should not set last_avail_idx, only shadow_avail_idx. Otherwise,
+> > QEMU can only see the descriptors placed after the notification.
+> >
+> > Or am I missing something?
+> >
+> > In that regard, I would call this function
+> > "virtqueue_set_shadow_avail_idx". But I'm very bad at naming :).
+>
+> Ah that's right. This would make Qemu skip processing descriptors that
+> might've been made available before the notification but after the
+> host's last check of last_avail_idx. In other words, ignoring available
+> descriptors that were placed before the notification but not yet
+> processed. Good catch, thank you!
+>
+> So, for the packed VQ layout, we'll still want to save the wrap counter
+> but for the shadow_avail_idx, right? E.g.
+>
+> if (virtio_vdev_has_feature(vdev, VIRTIO_F_RING_PACKED)) {
+>      vq->shadow_avail_wrap_counter =3D (data >> 31) & 0x1;
+>      vq->shadow_avail_idx =3D (data >> 16) & 0x7FFF;
+> } else {
+>      vq->shadow_avail_idx =3D (data >> 16);
+> }
+>
+
+Right, I was not clear enough again :). You probably have guessed
+already but not modifying avail_wrap_counter would make QEMu to read
+the wrong index too.
+
+Thanks!
+
+> >
+> > The rest looks good to me.
+> >
+> > Thanks!
+> >
+> >> +    vq->shadow_avail_idx =3D vq->last_avail_idx;
+> >> +}
+> >> +
+> >>   static enum virtio_device_endian virtio_default_endian(void)
+> >>   {
+> >>       if (target_words_bigendian()) {
+> >> diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+> >> index c8f72850bc..c92d8afc42 100644
+> >> --- a/include/hw/virtio/virtio.h
+> >> +++ b/include/hw/virtio/virtio.h
+> >> @@ -345,6 +345,7 @@ void virtio_queue_reset(VirtIODevice *vdev, uint32=
+_t queue_index);
+> >>   void virtio_queue_enable(VirtIODevice *vdev, uint32_t queue_index);
+> >>   void virtio_update_irq(VirtIODevice *vdev);
+> >>   int virtio_set_features(VirtIODevice *vdev, uint64_t val);
+> >> +void virtio_set_notification_data(VirtIODevice *vdev, uint16_t i, uin=
+t32_t data);
+> >>
+> >>   /* Base devices.  */
+> >>   typedef struct VirtIOBlkConf VirtIOBlkConf;
+> >> --
+> >> 2.39.3
+> >>
+> >
+>
+
 
