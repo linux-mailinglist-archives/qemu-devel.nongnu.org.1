@@ -2,91 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF8986FBBF
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 09:22:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 206EB86FBC7
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 09:23:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rh3a2-0007Ds-Jq; Mon, 04 Mar 2024 03:21:50 -0500
+	id 1rh3bg-0000KJ-EL; Mon, 04 Mar 2024 03:23:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1rh3Zu-0007CY-5f
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 03:21:44 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1rh3bd-0000J1-Sy
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 03:23:30 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1rh3Zs-0003Oh-NV
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 03:21:41 -0500
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1rh3bc-0003dH-73
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 03:23:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709540499;
+ s=mimecast20190719; t=1709540607;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=pU9+/9p95TUHAnxTiqhdc5eWW4vhBm8PRsaqbbv6kmQ=;
- b=K2/lhERLBkIrmpBPFLpccCwgn3Sh3byaJJChJs1rwbSIySD/XxnOUCwiJWwhadIWGPAP/q
- X2bfboZds38SOwPEWVH/MlOCr9l3weOjS588hn/RaQ8zERiYRJ2Xz88UrhdMveM7aKmsCt
- MfcwRStvvmFFoYvu9codpB/gTAsA5MM=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=sWSbj/48wKuJrDLBpxDgSoQ5SgacQBpTe47mkcNqAsI=;
+ b=dw9+XNa47LGde2zwjBkYDgxnbS3aesnpO383ELgSWDi8gwAjqjwSgMj3dmi4xK+T+T4L0K
+ laxrZftHP5VtEYsN4lznF9np/cj/Tqyg3qCCMuxQ9nkOuojgBgYD8p+ZMiaIVLCISpWSf8
+ C9Ql6TkW+OaaHTcfjAK60AJvcFl0r/E=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-78-oCGJQiv9NbW9KE0DZSsWIA-1; Mon, 04 Mar 2024 03:21:37 -0500
-X-MC-Unique: oCGJQiv9NbW9KE0DZSsWIA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-33e0edcf4f4so1221312f8f.2
- for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 00:21:37 -0800 (PST)
+ us-mta-643-9QpnPGffOduuyalLgBl-kQ-1; Mon, 04 Mar 2024 03:23:25 -0500
+X-MC-Unique: 9QpnPGffOduuyalLgBl-kQ-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-513297a755dso5214172e87.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 00:23:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709540496; x=1710145296;
+ d=1e100.net; s=20230601; t=1709540603; x=1710145403;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=pU9+/9p95TUHAnxTiqhdc5eWW4vhBm8PRsaqbbv6kmQ=;
- b=R6kMq/1dI2wkpe1hpnIK+COxWZxDmbjB3YU9mRHiwrAfxEqBkyuET64+iShMdI4JSn
- 70NbQTynV+QQkJj9UD0GplLFmEgYX7gm6R88NIZZF6vrZAWePt8eRqjFuxI5+Ov8u3aQ
- ymTajEB1v8xPAYAk8JeiCYt7FoMI9+nMdRWULDWLnQdg3Vx3298CIkHSSaE9SRyWR+NJ
- p0LDu+rw07xDWh7Tf+urfwzY3LrU2NvN5xiEOr0pNBROM53eze0R8fwcZbeITsohSmBi
- mCe6Wb9/Olba3OJnphaJAmAP5R9wHE/7sqsljYYVS6QZKXwD8sdDGH0bh89pZJPEQ1qt
- NjFA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXdPT9tXelw25KkUP2+e33U5gy4PLTa+58mhp59zBEaiJOhu6Ze2cIUOc3Rx6aoy0RxZx8zZ4KDcaD6+fVXqTMn1I89WPg=
-X-Gm-Message-State: AOJu0YzGN6nsChKt8Cx6A4VBg8IqcadWFtEg8ztWxtJ7FQ87zxA/Gqc9
- MXnBGt+yeZApHMXdaOT/Cxg6Q0fzbzL324EVyBGXsqOmrBJigjEHyo9/7nvGvqmHTRqaaZPRP/v
- mazbiuE50+YFkg79QRMm1vzXYbInLG/abQhXOKpjh0RYsUat+Q9yW5NKRGjcdZUEFOyYZ4iQIu6
- OLZyWX2yqBZx08duvyM4RAIOdxCZE=
-X-Received: by 2002:adf:e84b:0:b0:33e:d0c:1ed0 with SMTP id
- d11-20020adfe84b000000b0033e0d0c1ed0mr5485345wrn.57.1709540496560; 
- Mon, 04 Mar 2024 00:21:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEUu/kr/AyCZ6y4xf/PN/WfIINwopChrxIJlyfKEsjKZSi7H910t0a9+PA/olBA66TE+MrhJf+992MrKFFyJ88=
-X-Received: by 2002:adf:e84b:0:b0:33e:d0c:1ed0 with SMTP id
- d11-20020adfe84b000000b0033e0d0c1ed0mr5485334wrn.57.1709540496290; Mon, 04
- Mar 2024 00:21:36 -0800 (PST)
+ bh=sWSbj/48wKuJrDLBpxDgSoQ5SgacQBpTe47mkcNqAsI=;
+ b=il6aR/2MSTuQmh6HOeETpg6FMYqAnjcP1QfUtLTdCaGr13ffJ8AkAC2IR4XumWqi/N
+ oqZQDbHHTt7mibWvHC9bPqaysJ6SwysGFrPTAhoSSIWfb8Dfk5P7dl5LgBEtBEDcQ6nv
+ VTNebJvXHtX90MyefAkhrzimcxoONsxqJxbZ5lmt6Lv00xgiGIrl9Vt9c0Z//tTZ2aFy
+ sc/bhdNu6/F/4GO7M+/HobUhjH5XPLJayyKhDhtL7GN6ut3r7PXuDu/ZYyaeNEkZgcQP
+ mjd4E+eJafnp79PFQ+ow8jEhvlMwf3gGPw3ZFND3dJz9RHVyfGFeoY4bdQ6i1KpVfY6I
+ 7rVw==
+X-Gm-Message-State: AOJu0YyF6SEQ6esvVChY42NjTbWYh4l1uxLn1cXaVpTgQJGiLstuumUi
+ CwIrf7aaaJ3pEeCr2KH1XUHhlf3atUs73Xofr2woi/Be9GZEF1N6tWvRaXLCbckQfgGZYv1FrfN
+ a5ou8SVFTxnO3Jf/RT31BWCNe4fxdt3DSCdahuitvRsdsXqc/zXUAy20VUwwPCdb7gWNlI7Fgoa
+ ryp5glYbrBz8bur7vC+n+EXrAllOaJ2cLB80MbBA==
+X-Received: by 2002:a05:6512:1589:b0:513:45ca:5410 with SMTP id
+ bp9-20020a056512158900b0051345ca5410mr2231157lfb.68.1709540603728; 
+ Mon, 04 Mar 2024 00:23:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGy/f1cpsgYGfi7wlK8cwFaHpQFQYrpgA1r//qpUoNNsVvNwiaxzrDndU+jpPW3jNWrTkkLX0cCNbxuzP5ykH4=
+X-Received: by 2002:a05:6512:1589:b0:513:45ca:5410 with SMTP id
+ bp9-20020a056512158900b0051345ca5410mr2231143lfb.68.1709540603403; Mon, 04
+ Mar 2024 00:23:23 -0800 (PST)
 MIME-Version: 1.0
-References: <20240304044510.2305849-1-zhao1.liu@linux.intel.com>
- <CAE8KmOxvZFjtKkHiGGREx_b0QgfDjPWZ7Ex3nqAQQbiPKa_wrQ@mail.gmail.com>
- <ZeVyKMux7Ysjo/lY@intel.com>
-In-Reply-To: <ZeVyKMux7Ysjo/lY@intel.com>
-From: Prasad Pandit <ppandit@redhat.com>
-Date: Mon, 4 Mar 2024 13:51:19 +0530
-Message-ID: <CAE8KmOxJECe7oNkB1Oiuk-+_4J4drmdJTL2mBzQz+Zu+6XpxrQ@mail.gmail.com>
-Subject: Re: [PATCH] hw/core/machine-smp: Remove deprecated "parameter=0" SMP
- configurations
-To: Zhao Liu <zhao1.liu@linux.intel.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Yanan Wang <wangyanan55@huawei.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, devel@lists.libvirt.org, qemu-devel@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=ppandit@redhat.com;
+References: <20240227113921.236097-1-armbru@redhat.com>
+ <20240227113921.236097-9-armbru@redhat.com>
+In-Reply-To: <20240227113921.236097-9-armbru@redhat.com>
+From: Konstantin Kostiuk <kkostiuk@redhat.com>
+Date: Mon, 4 Mar 2024 10:23:12 +0200
+Message-ID: <CAPMcbCohWkdYhVM3tCEwQAJbBzQcGHCaPyf_dyn_3knEeY1WRQ@mail.gmail.com>
+Subject: Re: [PATCH 08/13] qga/qapi-schema: Move error documentation to new
+ "Errors" sections
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, michael.roth@amd.com, jsnow@redhat.com, 
+ eblake@redhat.com
+Content-Type: multipart/alternative; boundary="00000000000065314d0612d17073"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.589,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -104,68 +96,184 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Zhao,
+--00000000000065314d0612d17073
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 4 Mar 2024 at 12:19, Zhao Liu <zhao1.liu@linux.intel.com> wrote:
-> > unsigned maxcpus = config->has_maxcpus ? config->maxcpus : 0;
+Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+
+On Tue, Feb 27, 2024 at 1:39=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
+m> wrote:
+
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> ---
+>  qga/qapi-schema.json | 22 ++++++++++------------
+>  1 file changed, 10 insertions(+), 12 deletions(-)
 >
-> This indicates the default maxcpus is initialized as 0 if user doesn't
-> specifies it.
-
-* 'has_maxcpus' should be set only if maxcpus > 0. If maxcpus == 0,
-then setting 'has_maxcpus=1' seems convoluted.
-
-> However, we could initialize maxcpus as other default value, e.g.,
+> diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
+> index b8efe31897..c5f2ac8f59 100644
+> --- a/qga/qapi-schema.json
+> +++ b/qga/qapi-schema.json
+> @@ -561,9 +561,8 @@
+>  # could also exit (or set its status to "shutdown") due to other
+>  # reasons.
+>  #
+> -# The following errors may be returned:
+> -#
+> -# - If suspend to disk is not supported, Unsupported
+> +# Errors:
+> +#     - If suspend to disk is not supported, Unsupported
+>  #
+>  # Notes: It's strongly recommended to issue the guest-sync command
+>  #     before sending commands when the guest resumes
+> @@ -598,9 +597,8 @@
+>  # 2. Issue the query-status QMP command to confirm the VM status is
+>  #    "suspended"
+>  #
+> -# The following errors may be returned:
+> -#
+> -# - If suspend to ram is not supported, Unsupported
+> +# Errors:
+> +#     - If suspend to ram is not supported, Unsupported
+>  #
+>  # Notes: It's strongly recommended to issue the guest-sync command
+>  #     before sending commands when the guest resumes
+> @@ -634,9 +632,8 @@
+>  # 2. Issue the query-status QMP command to confirm the VM status is
+>  #    "suspended"
+>  #
+> -# The following errors may be returned:
+> -#
+> -# - If hybrid suspend is not supported, Unsupported
+> +# Errors:
+> +#     - If hybrid suspend is not supported, Unsupported
+>  #
+>  # Notes: It's strongly recommended to issue the guest-sync command
+>  #     before sending commands when the guest resumes
+> @@ -796,9 +793,6 @@
+>  #     - 0:
+>  #       if the @vcpus list was empty on input.  Guest state has not
+>  #       been changed.  Otherwise,
+> -#     - Error:
+> -#       processing the first node of @vcpus failed for the reason
+> -#       returned.  Guest state has not been changed.  Otherwise,
+>  #     - < length(@vcpus):
+>  #       more than zero initial nodes have been processed, but not the
+>  #       entire @vcpus list.  Guest state has changed accordingly.  To
+> @@ -808,6 +802,10 @@
+>  #     - length(@vcpus):
+>  #       call successful.
+>  #
+> +# Errors:
+> +#     - If the reconfiguration of the first node in @vcpus failed.
+> +#       Guest state has not been changed.
+> +#
+>  # Since: 1.5
+>  ##
+>  { 'command': 'guest-set-vcpus',
+> --
+> 2.43.0
 >
->     maxcpus = config->has_maxcpus ? config->maxcpus : 1.
-===
-hw/core/machine.c
- machine_initfn
-    /* default to mc->default_cpus */
-    ms->smp.cpus = mc->default_cpus;
-    ms->smp.max_cpus = mc->default_cpus;
-
-   static void machine_class_base_init(ObjectClass *oc, void *data)
-   {
-       MachineClass *mc = MACHINE_CLASS(oc);
-       mc->max_cpus = mc->max_cpus ?: 1;
-       mc->min_cpus = mc->min_cpus ?: 1;
-       mc->default_cpus = mc->default_cpus ?: 1;
-   }
-===
-* Looking at the above bits, it seems smp.cpus & smp.max_cpus are
-initialised to 1 via default_cpus in MachineClass object.
-
->>  if (config->has_maxcpus && config->maxcpus == 0)
-> This check only wants to identify the case that user sets the 0.
-> If the default maxcpus is initialized as 0, then (maxcpus == 0) will
-> fail if user doesn't set maxcpus.
 >
-> But it is still necessary to distinguish whether maxcpus is user-set or
-> auto-initialized.
 
-* If it is set to zero(0) either by user or by auto-initialise, it is
-still invalid, right?
+--00000000000065314d0612d17073
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> If it is user-set, -smp should fail is there's invalid maxcpus/invalid
-> topology.
+<div dir=3D"ltr">Reviewed-by: Konstantin Kostiuk &lt;<a href=3D"mailto:kkos=
+tiuk@redhat.com" target=3D"_blank">kkostiuk@redhat.com</a>&gt;</div><br><di=
+v class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Feb 2=
+7, 2024 at 1:39=E2=80=AFPM Markus Armbruster &lt;<a href=3D"mailto:armbru@r=
+edhat.com">armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"g=
+mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204=
+,204,204);padding-left:1ex">Signed-off-by: Markus Armbruster &lt;<a href=3D=
+"mailto:armbru@redhat.com" target=3D"_blank">armbru@redhat.com</a>&gt;<br>
+---<br>
+=C2=A0qga/qapi-schema.json | 22 ++++++++++------------<br>
+=C2=A01 file changed, 10 insertions(+), 12 deletions(-)<br>
+<br>
+diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json<br>
+index b8efe31897..c5f2ac8f59 100644<br>
+--- a/qga/qapi-schema.json<br>
++++ b/qga/qapi-schema.json<br>
+@@ -561,9 +561,8 @@<br>
+=C2=A0# could also exit (or set its status to &quot;shutdown&quot;) due to =
+other<br>
+=C2=A0# reasons.<br>
+=C2=A0#<br>
+-# The following errors may be returned:<br>
+-#<br>
+-# - If suspend to disk is not supported, Unsupported<br>
++# Errors:<br>
++#=C2=A0 =C2=A0 =C2=A0- If suspend to disk is not supported, Unsupported<br=
 >
-> Otherwise, if it is auto-initialized, its value should be adjusted based
-> on other topology components as the above calculation in (*).
+=C2=A0#<br>
+=C2=A0# Notes: It&#39;s strongly recommended to issue the guest-sync comman=
+d<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0before sending commands when the guest resumes<b=
+r>
+@@ -598,9 +597,8 @@<br>
+=C2=A0# 2. Issue the query-status QMP command to confirm the VM status is<b=
+r>
+=C2=A0#=C2=A0 =C2=A0 &quot;suspended&quot;<br>
+=C2=A0#<br>
+-# The following errors may be returned:<br>
+-#<br>
+-# - If suspend to ram is not supported, Unsupported<br>
++# Errors:<br>
++#=C2=A0 =C2=A0 =C2=A0- If suspend to ram is not supported, Unsupported<br>
+=C2=A0#<br>
+=C2=A0# Notes: It&#39;s strongly recommended to issue the guest-sync comman=
+d<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0before sending commands when the guest resumes<b=
+r>
+@@ -634,9 +632,8 @@<br>
+=C2=A0# 2. Issue the query-status QMP command to confirm the VM status is<b=
+r>
+=C2=A0#=C2=A0 =C2=A0 &quot;suspended&quot;<br>
+=C2=A0#<br>
+-# The following errors may be returned:<br>
+-#<br>
+-# - If hybrid suspend is not supported, Unsupported<br>
++# Errors:<br>
++#=C2=A0 =C2=A0 =C2=A0- If hybrid suspend is not supported, Unsupported<br>
+=C2=A0#<br>
+=C2=A0# Notes: It&#39;s strongly recommended to issue the guest-sync comman=
+d<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0before sending commands when the guest resumes<b=
+r>
+@@ -796,9 +793,6 @@<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0- 0:<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0 =C2=A0if the @vcpus list was empty on input.=C2=
+=A0 Guest state has not<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0 =C2=A0been changed.=C2=A0 Otherwise,<br>
+-#=C2=A0 =C2=A0 =C2=A0- Error:<br>
+-#=C2=A0 =C2=A0 =C2=A0 =C2=A0processing the first node of @vcpus failed for=
+ the reason<br>
+-#=C2=A0 =C2=A0 =C2=A0 =C2=A0returned.=C2=A0 Guest state has not been chang=
+ed.=C2=A0 Otherwise,<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0- &lt; length(@vcpus):<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0 =C2=A0more than zero initial nodes have been pr=
+ocessed, but not the<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0 =C2=A0entire @vcpus list.=C2=A0 Guest state has=
+ changed accordingly.=C2=A0 To<br>
+@@ -808,6 +802,10 @@<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0- length(@vcpus):<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0 =C2=A0call successful.<br>
+=C2=A0#<br>
++# Errors:<br>
++#=C2=A0 =C2=A0 =C2=A0- If the reconfiguration of the first node in @vcpus =
+failed.<br>
++#=C2=A0 =C2=A0 =C2=A0 =C2=A0Guest state has not been changed.<br>
++#<br>
+=C2=A0# Since: 1.5<br>
+=C2=A0##<br>
+=C2=A0{ &#39;command&#39;: &#39;guest-set-vcpus&#39;,<br>
+-- <br>
+2.43.0<br>
+<br>
+</blockquote></div>
 
-* Why have such diverging ways?
-* Could we simplify it as
-   - If cpus/maxcpus==0, it is invalid, show an error and exit.
-   - If cpus/maxcpus > 0, but incorrect for topology, then
-re-calculate the correct value based on topology parameters. If the
-re-calculated value is still incorrect or unsatisfactory, then show an
-error and exit.
-
-* Saying that user setting cpu/maxcpus=0 is invalid and
-auto-initialising it to zero(0) is valid, is not consistent.
-
-...wdyt?
----
-  - Prasad
+--00000000000065314d0612d17073--
 
 
