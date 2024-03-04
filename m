@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F375987155E
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 06:49:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB5D871560
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 06:49:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhNfC-0004Vh-Ln; Tue, 05 Mar 2024 00:48:30 -0500
+	id 1rhNfG-0004WE-2K; Tue, 05 Mar 2024 00:48:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1rhNfA-0004VC-Vi
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 00:48:29 -0500
+ id 1rhNfE-0004Vo-2v
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 00:48:32 -0500
 Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1rhNf9-0003fB-AS
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 00:48:28 -0500
+ id 1rhNfC-0003fj-Eu
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 00:48:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709617707; x=1741153707;
+ t=1709617710; x=1741153710;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=I60mSo2+idY+1i00U4px6xKXXI7NrmIgiiKujhHDfHM=;
- b=mcfTUFkLZQCYsKWEBfm6Knojo9okPOaAPIKwnQ23KwmMFUA20F45QnW/
- YGOKJf5SFwtK7NLhoLPnKRs41GZrfgZt0pEQzL+iGdSdsC2Kx9XmaM1Cx
- 43GBK0T9IxN37CqfTNT1pqZBPpScw9Fu/gSJzmZv/fFKtD/Sy9UpU+n9X
- SgmkJ7N6kCuqs3rg9e4miZCvPzZvQ7LPR8bV75h5QBUNtXPLwmsLygvfr
- PCqn9M4aieD9+3V/skU4EySK35et5HiqXDENLYeitt/XQ4k+agLjVsOVl
- 60BFlbAoX9jIZh7CEyjz0GlKe6fSURp9NzqJ6h9Vrv5uVcV1GNLRklv31 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="7096103"
+ bh=bk1MITvvGkpGttrZKZiUpB7aMVkPIKAAmbCqKzhL4qA=;
+ b=DgAxK3IWbAszbheUcyaHAlFH80LrClpKI2G46EfOUf8NhJc2kgckKC4b
+ Qi8YgaYJfJEeYxvjb7nOkyDChjG1Nm1cvehHxuctlc7oTMtCqbjfmJDmw
+ hA9zNmAcASTFwYWzxtr9SARt42u3a4BpTDqI8Z1h6/dIClLgm89Uefc2i
+ XBIjgLqYdJ9cWtgpfTokEIFsPigdKE/nPn0s2+7JnoaytDLaXiQUFMSmY
+ BwE556BhVH4ZlSCsFVUl9SnBfJeNFMNvHcuTVnwkRQhKZTLMTQVIQG91G
+ y1sbM6co1/8tR5INa+s60W46eyl/XZYvE8vcs2bdlP7hakRG3lSdE6KAl g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="7096112"
 X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
-   d="scan'208";a="7096103"
+   d="scan'208";a="7096112"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 21:48:26 -0800
+ 04 Mar 2024 21:48:29 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; d="scan'208";a="46785291"
+X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; d="scan'208";a="46785297"
 Received: from sae-gw02.sh.intel.com (HELO localhost) ([10.239.45.110])
- by orviesa001.jf.intel.com with ESMTP; 04 Mar 2024 21:48:25 -0800
+ by orviesa001.jf.intel.com with ESMTP; 04 Mar 2024 21:48:28 -0800
 From: Yuan Liu <yuan1.liu@intel.com>
 To: peterx@redhat.com,
 	farosas@suse.de
 Cc: qemu-devel@nongnu.org, hao.xiang@bytedance.com, bryan.zhang@bytedance.com,
  yuan1.liu@intel.com, nanhai.zou@intel.com
-Subject: [PATCH v4 7/8] migration/multifd: fix zlib and zstd compression
- levels not working
-Date: Mon,  4 Mar 2024 22:00:27 +0800
-Message-Id: <20240304140028.1590649-8-yuan1.liu@intel.com>
+Subject: [PATCH v4 8/8] tests/migration-test: add qpl compression test
+Date: Mon,  4 Mar 2024 22:00:28 +0800
+Message-Id: <20240304140028.1590649-9-yuan1.liu@intel.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240304140028.1590649-1-yuan1.liu@intel.com>
 References: <20240304140028.1590649-1-yuan1.liu@intel.com>
@@ -78,85 +77,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-add zlib and zstd compression levels in multifd parameter
-testing and application and add compression level tests
+add qpl to compression method test for multifd migration
+
+the migration with qpl compression needs to access IAA hardware
+resource, please run "check-qtest" with sudo or root permission,
+otherwise migration test will fail
 
 Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
 Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
-Reported-by: Xiaohui Li <xiaohli@redhat.com>
 ---
- migration/options.c          | 12 ++++++++++++
- tests/qtest/migration-test.c | 16 ++++++++++++++++
- 2 files changed, 28 insertions(+)
+ tests/qtest/migration-test.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/migration/options.c b/migration/options.c
-index 3e3e0b93b4..1cd3cc7c33 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -1312,6 +1312,12 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
-     if (params->has_multifd_compression) {
-         dest->multifd_compression = params->multifd_compression;
-     }
-+    if (params->has_multifd_zlib_level) {
-+        dest->multifd_zlib_level = params->multifd_zlib_level;
-+    }
-+    if (params->has_multifd_zstd_level) {
-+        dest->multifd_zstd_level = params->multifd_zstd_level;
-+    }
-     if (params->has_xbzrle_cache_size) {
-         dest->xbzrle_cache_size = params->xbzrle_cache_size;
-     }
-@@ -1447,6 +1453,12 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
-     if (params->has_multifd_compression) {
-         s->parameters.multifd_compression = params->multifd_compression;
-     }
-+    if (params->has_multifd_zlib_level) {
-+        s->parameters.multifd_zlib_level = params->multifd_zlib_level;
-+    }
-+    if (params->has_multifd_zstd_level) {
-+        s->parameters.multifd_zstd_level = params->multifd_zstd_level;
-+    }
-     if (params->has_xbzrle_cache_size) {
-         s->parameters.xbzrle_cache_size = params->xbzrle_cache_size;
-         xbzrle_cache_resize(params->xbzrle_cache_size, errp);
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 8a5bb1752e..23d50fe599 100644
+index 23d50fe599..96842f9515 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -2621,10 +2621,24 @@ test_migrate_precopy_tcp_multifd_start(QTestState *from,
-     return test_migrate_precopy_tcp_multifd_start_common(from, to, "none");
- }
- 
-+static void
-+test_and_set_multifd_compression_level(QTestState *who, const char *param)
-+{
-+    /* The default compression level is 1, test a level other than 1 */
-+    int level = 2;
-+
-+    migrate_set_parameter_int(who, param, level);
-+    migrate_check_parameter_int(who, param, level);
-+    /* only test compression level 1 during migration */
-+    migrate_set_parameter_int(who, param, 1);
-+}
-+
- static void *
- test_migrate_precopy_tcp_multifd_zlib_start(QTestState *from,
-                                             QTestState *to)
- {
-+    /* the compression level is used only on the source side. */
-+    test_and_set_multifd_compression_level(from, "multifd-zlib-level");
-     return test_migrate_precopy_tcp_multifd_start_common(from, to, "zlib");
- }
- 
-@@ -2633,6 +2647,8 @@ static void *
- test_migrate_precopy_tcp_multifd_zstd_start(QTestState *from,
-                                             QTestState *to)
- {
-+    /* the compression level is used only on the source side. */
-+    test_and_set_multifd_compression_level(from, "multifd-zstd-level");
-     return test_migrate_precopy_tcp_multifd_start_common(from, to, "zstd");
+@@ -2653,6 +2653,15 @@ test_migrate_precopy_tcp_multifd_zstd_start(QTestState *from,
  }
  #endif /* CONFIG_ZSTD */
+ 
++#ifdef CONFIG_QPL
++static void *
++test_migrate_precopy_tcp_multifd_qpl_start(QTestState *from,
++                                            QTestState *to)
++{
++    return test_migrate_precopy_tcp_multifd_start_common(from, to, "qpl");
++}
++#endif /* CONFIG_QPL */
++
+ static void test_multifd_tcp_none(void)
+ {
+     MigrateCommon args = {
+@@ -2688,6 +2697,17 @@ static void test_multifd_tcp_zstd(void)
+ }
+ #endif
+ 
++#ifdef CONFIG_QPL
++static void test_multifd_tcp_qpl(void)
++{
++    MigrateCommon args = {
++        .listen_uri = "defer",
++        .start_hook = test_migrate_precopy_tcp_multifd_qpl_start,
++    };
++    test_precopy_common(&args);
++}
++#endif
++
+ #ifdef CONFIG_GNUTLS
+ static void *
+ test_migrate_multifd_tcp_tls_psk_start_match(QTestState *from,
+@@ -3574,6 +3594,10 @@ int main(int argc, char **argv)
+     migration_test_add("/migration/multifd/tcp/plain/zstd",
+                        test_multifd_tcp_zstd);
+ #endif
++#ifdef CONFIG_QPL
++    migration_test_add("/migration/multifd/tcp/plain/qpl",
++                       test_multifd_tcp_qpl);
++#endif
+ #ifdef CONFIG_GNUTLS
+     migration_test_add("/migration/multifd/tcp/tls/psk/match",
+                        test_multifd_tcp_tls_psk_match);
 -- 
 2.39.3
 
