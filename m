@@ -2,92 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EA0486FF04
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 11:27:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A71C86FF07
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 11:28:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rh5WN-0006y6-9F; Mon, 04 Mar 2024 05:26:11 -0500
+	id 1rh5XM-0007OH-TD; Mon, 04 Mar 2024 05:27:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rh5WC-0006xf-F1
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 05:26:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>)
+ id 1rh5XK-0007Nq-2r; Mon, 04 Mar 2024 05:27:10 -0500
+Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rh5W6-00011B-DI
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 05:26:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709547952;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=nLBw5DI+HkOc61np9eEZ+ycggiS+V8GDHcnTnLml3HM=;
- b=gbitv/uajGQyScd/vfFFJZFy8s8mDzy4nZUw/kyiYfDIyonnM7b99a4ymEI8K8qa8zLMRQ
- 6d6RzgwB+0Ibnn9mWp7nD1DXYxgvYQxUEdid5W5f7ZWRdaK2CPwLq9lXy6ef0y/Fq0NCL1
- 9Dwg9ejR8VYYTCKB/NfiUguvajD5O7w=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-633-mhSUS1j3MHCXRrqGhFmn1w-1; Mon, 04 Mar 2024 05:25:51 -0500
-X-MC-Unique: mhSUS1j3MHCXRrqGhFmn1w-1
-Received: by mail-pj1-f72.google.com with SMTP id
- 98e67ed59e1d1-29999b97b39so1638086a91.1
- for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 02:25:51 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709547950; x=1710152750;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=nLBw5DI+HkOc61np9eEZ+ycggiS+V8GDHcnTnLml3HM=;
- b=sLY+/C7bQYbMutKiUQxBZyk+d16fiGv8VYaMQu+B5mxYFWiZvHzCV+CHn5Uuk4egUa
- uh+l6TFOWOJqFFVdf3Kti97ReTpIKBR/BxoE7P4U/s/YdvixxCdR4mhpjSf07j9/10Nf
- mQPPHy90AcJsASqbyUwkDEztHUmqQKtYgOzBdEKHK7cfo3CvLnKyWcCcCqZYwdFq8lZH
- V2jCg+gMt1X8idQly+H8aq6emzABhkTKb2pmWBQf2myHZI+3gHuJIWEt4c0T91aZhaX3
- XET0PjsAbeH6ao+TRm3jIgpoGkIrZs31F00ApdNnnRUGW1C1Xrf0TSEVyGdVT/MsQGwy
- xOBQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVxF6ZVl7jAaM1fvmzCkQbMr8K2Y+cQny+Q1P1XGL5hG51VLMWN3EqJX53MYw+SJeGF3Fp86VoZRPhteNBiw1Bn2WwCFks=
-X-Gm-Message-State: AOJu0YwlstFWznxb7q7A0YWjV/b3CB95THR5cezp8ezH3ubv3GNkpNuD
- fjMY1xWYnvI2YsrjxT6kURGdtDG9U9orvtjubsW31XBWCvdGnBKMTo1hJo6Gs/ORh0f3t7l2r+w
- G6vq/jbPSAlgohstuv6WYFdVG9QkTk74NUAWyl01RegM250T7rQ+L
-X-Received: by 2002:a17:902:a517:b0:1dc:3c:fb67 with SMTP id
- s23-20020a170902a51700b001dc003cfb67mr9227392plq.5.1709547950251; 
- Mon, 04 Mar 2024 02:25:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGMs82vokDnnqBxgAHN8/LUylqcKlptZA80vfHYxhR7rocJJai+p8R+d8hrFH0PBWzTakB2mg==
-X-Received: by 2002:a17:902:a517:b0:1dc:3c:fb67 with SMTP id
- s23-20020a170902a51700b001dc003cfb67mr9227376plq.5.1709547949923; 
- Mon, 04 Mar 2024 02:25:49 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- jv11-20020a170903058b00b001dc96c5fa13sm8124354plb.295.2024.03.04.02.25.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Mar 2024 02:25:49 -0800 (PST)
-Date: Mon, 4 Mar 2024 18:25:39 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Mattias Nissler <mnissler@rivosinc.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: stefanha@redhat.com, jag.raman@oracle.com, qemu-devel@nongnu.org,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- john.levon@nutanix.com, David Hildenbrand <david@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>
-Subject: Re: [PATCH v8 0/5] Support message-based DMA in vfio-user server
-Message-ID: <ZeWho6ZW41tg0rob@x1n>
-References: <20240304100554.1143763-1-mnissler@rivosinc.com>
+ (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>)
+ id 1rh5XI-00019m-1u; Mon, 04 Mar 2024 05:27:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1709548028; x=1741084028;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=HRm/6gAF2k5bRyV7fVse6Rcx6kS/3gMofBT6SVdS6/k=;
+ b=KtoUkmvL7sHltAczV8fgU91fLmY/riOQEGBmEz2US61Z3e3t4UUgdWXy
+ DpWg4kT5Jore7l7kwpw/kSwPXl+84H23QuilpKhkAGSTgIW975jz8EAYY
+ FdNL6Ocvx7RRad8X694pdTAMtkwySeTEfubmeFVDD0922Lv7vpswQAeRP
+ jyMI8ba0jfwr7IrzosgMFirKH2C2zN+u31Njf9nLRohk+/ajD5oGgvIFR
+ 9OhQPC/1SWdH1EEQbQ4OD0CFbWxV1YnAPZZUftDiAHEYktKnn1a78KdsO
+ 2QY5s9Wl5JVJR4jBIDoh9yzfSqsZT7swHs75RYwXgMS24W5+unSpqCbte A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="4194914"
+X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
+   d="scan'208";a="4194914"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2024 02:27:07 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="13509481"
+Received: from wufei-optiplex-7090.sh.intel.com ([10.239.158.51])
+ by fmviesa004.fm.intel.com with ESMTP; 04 Mar 2024 02:27:02 -0800
+From: Fei Wu <fei2.wu@intel.com>
+To: pbonzini@redhat.com, palmer@dabbelt.com, alistair.francis@wdc.com,
+ bin.meng@windriver.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ andrei.warkentin@intel.com, shaolin.xie@alibaba-inc.com, ved@rivosinc.com,
+ sunilvl@ventanamicro.com, haibo1.xu@intel.com, evan.chai@intel.com,
+ yin.wang@intel.com, tech-server-platform@lists.riscv.org,
+ tech-server-soc@lists.riscv.org
+Cc: Fei Wu <fei2.wu@intel.com>
+Subject: [RFC 2/2] target/riscv: Add server platform reference cpu
+Date: Mon,  4 Mar 2024 18:25:40 +0800
+Message-Id: <20240304102540.2789225-3-fei2.wu@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240304102540.2789225-1-fei2.wu@intel.com>
+References: <20240304102540.2789225-1-fei2.wu@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240304100554.1143763-1-mnissler@rivosinc.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.15; envelope-from=fei2.wu@intel.com;
+ helo=mgamail.intel.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.589,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,32 +79,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Mar 04, 2024 at 02:05:49AM -0800, Mattias Nissler wrote:
-> This series adds basic support for message-based DMA in qemu's vfio-user
-> server. This is useful for cases where the client does not provide file
-> descriptors for accessing system memory via memory mappings. My motivating use
-> case is to hook up device models as PCIe endpoints to a hardware design. This
-> works by bridging the PCIe transaction layer to vfio-user, and the endpoint
-> does not access memory directly, but sends memory requests TLPs to the hardware
-> design in order to perform DMA.
-> 
-> Note that more work is needed to make message-based DMA work well: qemu
-> currently breaks down DMA accesses into chunks of size 8 bytes at maximum, each
-> of which will be handled in a separate vfio-user DMA request message. This is
-> quite terrible for large DMA accesses, such as when nvme reads and writes
-> page-sized blocks for example. Thus, I would like to improve qemu to be able to
-> perform larger accesses, at least for indirect memory regions. I have something
-> working locally, but since this will likely result in more involved surgery and
-> discussion, I am leaving this to be addressed in a separate patch.
+The harts requirements of RISC-V server platform [1] require RVA23 ISA
+profile support, plus Sv48, Svadu, H, Sscofmpf etc. This patch provides
+a virt CPU type (rvsp-ref) as compliant as possible.
 
-No objection from my side memory-wise.  It'll be good to get some words
-from Paolo if possible.
+[1] https://github.com/riscv-non-isa/riscv-server-platform/blob/main/server_platform_requirements.adoc
 
-Copy Peter Maydell due to the other relevant discussion.
+Signed-off-by: Fei Wu <fei2.wu@intel.com>
+---
+ hw/riscv/server_platform_ref.c |  6 +++-
+ target/riscv/cpu-qom.h         |  1 +
+ target/riscv/cpu.c             | 62 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 68 insertions(+), 1 deletion(-)
 
-https://lore.kernel.org/qemu-devel/20240228125939.56925-1-heinrich.schuchardt@canonical.com/
-
+diff --git a/hw/riscv/server_platform_ref.c b/hw/riscv/server_platform_ref.c
+index ae90c4b27a..52ec607cee 100644
+--- a/hw/riscv/server_platform_ref.c
++++ b/hw/riscv/server_platform_ref.c
+@@ -1205,11 +1205,15 @@ static void rvsp_ref_machine_class_init(ObjectClass *oc, void *data)
+ {
+     char str[128];
+     MachineClass *mc = MACHINE_CLASS(oc);
++    static const char * const valid_cpu_types[] = {
++        TYPE_RISCV_CPU_RVSP_REF,
++    };
+ 
+     mc->desc = "RISC-V Server SoC Reference board";
+     mc->init = rvsp_ref_machine_init;
+     mc->max_cpus = RVSP_CPUS_MAX;
+-    mc->default_cpu_type = TYPE_RISCV_CPU_BASE;
++    mc->default_cpu_type = TYPE_RISCV_CPU_RVSP_REF;
++    mc->valid_cpu_types = valid_cpu_types;
+     mc->pci_allow_0_address = true;
+     mc->default_nic = "e1000e";
+     mc->possible_cpu_arch_ids = riscv_numa_possible_cpu_arch_ids;
+diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
+index 3670cfe6d9..adb934d19e 100644
+--- a/target/riscv/cpu-qom.h
++++ b/target/riscv/cpu-qom.h
+@@ -49,6 +49,7 @@
+ #define TYPE_RISCV_CPU_SIFIVE_U54       RISCV_CPU_TYPE_NAME("sifive-u54")
+ #define TYPE_RISCV_CPU_THEAD_C906       RISCV_CPU_TYPE_NAME("thead-c906")
+ #define TYPE_RISCV_CPU_VEYRON_V1        RISCV_CPU_TYPE_NAME("veyron-v1")
++#define TYPE_RISCV_CPU_RVSP_REF         RISCV_CPU_TYPE_NAME("rvsp-ref")
+ #define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
+ 
+ OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 5ff0192c52..bc91be702b 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -2282,6 +2282,67 @@ static void rva22s64_profile_cpu_init(Object *obj)
+ 
+     RVA22S64.enabled = true;
+ }
++
++static void rv64_rvsp_ref_cpu_init(Object *obj)
++{
++    CPURISCVState *env = &RISCV_CPU(obj)->env;
++    RISCVCPU *cpu = RISCV_CPU(obj);
++
++    riscv_cpu_set_misa_ext(env, RVG | RVC | RVS | RVU | RVH | RVV);
++
++    /* FIXME: change to 1.13 */
++    env->priv_ver = PRIV_VERSION_1_12_0;
++
++    /* RVA22U64 */
++    cpu->cfg.mmu = true;
++    cpu->cfg.ext_zifencei = true;
++    cpu->cfg.ext_zicsr = true;
++    cpu->cfg.ext_zicntr = true;
++    cpu->cfg.ext_zihpm = true;
++    cpu->cfg.ext_zihintpause = true;
++    cpu->cfg.ext_zba = true;
++    cpu->cfg.ext_zbb = true;
++    cpu->cfg.ext_zbs = true;
++    cpu->cfg.zic64b = true;
++    cpu->cfg.ext_zicbom = true;
++    cpu->cfg.ext_zicbop = true;
++    cpu->cfg.ext_zicboz = true;
++    cpu->cfg.cbom_blocksize = 64;
++    cpu->cfg.cbop_blocksize = 64;
++    cpu->cfg.cboz_blocksize = 64;
++    cpu->cfg.ext_zfhmin = true;
++    cpu->cfg.ext_zkt = true;
++
++    /* RVA23U64 */
++    cpu->cfg.ext_zvfhmin = true;
++    cpu->cfg.ext_zvbb = true;
++    cpu->cfg.ext_zvkt = true;
++    cpu->cfg.ext_zihintntl = true;
++    cpu->cfg.ext_zicond = true;
++    cpu->cfg.ext_zcb = true;
++    cpu->cfg.ext_zfa = true;
++    cpu->cfg.ext_zawrs = true;
++
++    /* RVA23S64 */
++    cpu->cfg.ext_zifencei = true;
++    cpu->cfg.svade = true;
++    cpu->cfg.ext_svpbmt = true;
++    cpu->cfg.ext_svinval = true;
++    cpu->cfg.ext_svnapot = true;
++    cpu->cfg.ext_sstc = true;
++    cpu->cfg.ext_sscofpmf = true;
++    cpu->cfg.ext_smstateen = true;
++
++    cpu->cfg.ext_smaia = true;
++    cpu->cfg.ext_ssaia = true;
++
++    /* Server Platform */
++#ifndef CONFIG_USER_ONLY
++    set_satp_mode_max_supported(cpu, VM_1_10_SV48);
++#endif
++    cpu->cfg.ext_svadu = true;
++    cpu->cfg.ext_zkr = true;
++}
+ #endif
+ 
+ static const gchar *riscv_gdb_arch_name(CPUState *cs)
+@@ -2547,6 +2608,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+     DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV64E,        MXL_RV64,  rv64e_bare_cpu_init),
+     DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22U64,  MXL_RV64,  rva22u64_profile_cpu_init),
+     DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22S64,  MXL_RV64,  rva22s64_profile_cpu_init),
++    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_RVSP_REF,   MXL_RV64,  rv64_rvsp_ref_cpu_init),
+ #endif
+ };
+ 
 -- 
-Peter Xu
+2.34.1
 
 
