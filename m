@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31008870355
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 14:53:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7EA587034E
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 14:53:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rh8jv-0006KW-AG; Mon, 04 Mar 2024 08:52:23 -0500
+	id 1rh8ju-0006K0-Gf; Mon, 04 Mar 2024 08:52:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <davydov-max@yandex-team.ru>)
- id 1rh8jr-0006Jb-5E
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 08:52:19 -0500
+ id 1rh8jp-0006JB-Oi
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 08:52:17 -0500
 Received: from forwardcorp1b.mail.yandex.net
  ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <davydov-max@yandex-team.ru>)
- id 1rh8jk-0002JP-M2
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 08:52:18 -0500
+ id 1rh8jk-0002JQ-Lo
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 08:52:17 -0500
 Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c14:750a:0:640:e46:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 616F560ADF;
- Mon,  4 Mar 2024 16:52:05 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 21C38608F8;
+ Mon,  4 Mar 2024 16:52:06 +0300 (MSK)
 Received: from davydov-max-nux.yandex-team.ru (unknown
  [2a02:6b8:b081:b709::1:23])
  by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id jpeXWn4Id0U0-YWHJJc2C; Mon, 04 Mar 2024 16:52:04 +0300
+ ESMTPSA id jpeXWn4Id0U0-SZ0SdoVs; Mon, 04 Mar 2024 16:52:05 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1709560324;
- bh=HPAloJJHbOIzCEgCk9XqLx89JkmzLxC5iwi8MRVssv4=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=C4R8/rxldBkkPF8/QDju1YhAEcCTc7ZTASyg95rcyRG9CuJJDSURcEfatAXgHcyQ0
- cdecIqUAQjLjVURFMcv8glWF9rG6hwrJcU+lcKyykmdXTVKy+HweBtax2vE7UZoKvV
- nGzUGBu8zTbfvp9PC4eB0n01dSHqX2XA4ZLlveZQ=
+ s=default; t=1709560325;
+ bh=KAQ7bIK/33QGf3xImcTyGRwGSGrbYVHgYfFl9Kfrcqg=;
+ h=Cc:Message-Id:References:Date:In-Reply-To:Subject:To:From;
+ b=s69yzKhEeoRTmZUDOAQTTx/aMDM4IikT3dtI8liye0r4o7fRG2BSS03vH+mE6nDoO
+ OnZXYHCh3dyM3sq3KgDvoebFnGw60n0qHV/YHJP9yK+gtVVdmy/XJgynJM+spurmVe
+ AdstMuTXJSqAjlvzEcDIEHzb2feVKmS60ypa/g5U=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Maksim Davydov <davydov-max@yandex-team.ru>
@@ -43,10 +43,12 @@ To: qemu-devel@nongnu.org
 Cc: davydov-max@yandex-team.ru, vsementsov@yandex-team.ru,
  peter.maydell@linaro.org, jsnow@redhat.com, philmd@linaro.org,
  armbru@redhat.com
-Subject: [PULL 0/4] machine development tool
-Date: Mon,  4 Mar 2024 16:51:41 +0300
-Message-Id: <20240304135145.154860-1-davydov-max@yandex-team.ru>
+Subject: [PULL 1/4] qom: add default value
+Date: Mon,  4 Mar 2024 16:51:42 +0300
+Message-Id: <20240304135145.154860-2-davydov-max@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240304135145.154860-1-davydov-max@yandex-team.ru>
+References: <20240304135145.154860-1-davydov-max@yandex-team.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -74,44 +76,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit e1007b6bab5cf97705bf4f2aaec1f607787355b8:
+qmp_qom_list_properties can print default values if they are available
+as qmp_device_list_properties does, because both of them use the
+ObjectPropertyInfo structure with default_value field. This can be useful
+when working with "not device" types (e.g. memory-backend).
 
-  Merge tag 'pull-request-2024-03-01' of https://gitlab.com/thuth/qemu into staging (2024-03-01 10:14:32 +0000)
+Signed-off-by: Maksim Davydov <davydov-max@yandex-team.ru>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+---
+ qom/qom-qmp-cmds.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-are available in the Git repository at:
-
-  https://gitlab.com/davydov-max/qemu.git tags/pull-compare-mt-2024-03-04
-
-for you to fetch changes up to 7693a2e8518811a907d73a85807ee71dac8fabcb:
-
-  scripts: add script to compare compatibility properties (2024-03-04 14:10:53 +0300)
-
-----------------------------------------------------------------
-Please note. This is the first pull request from me.
-My public GPG key is available here
-https://keys.openpgp.org/vks/v1/by-fingerprint/CDB5BEEF8837142579F5CDFE8E927E10F72F78D4
-
-----------------------------------------------------------------
-scripts: add a new script for machine development
-
-----------------------------------------------------------------
-
-Maksim Davydov (4):
-  qom: add default value
-  qmp: add dump machine type compatibility properties
-  python/qemu/machine: add method to retrieve QEMUMachine::binary field
-  scripts: add script to compare compatibility properties
-
- MAINTAINERS                      |   5 +
- hw/core/machine-qmp-cmds.c       |  23 +-
- python/qemu/machine/machine.py   |   5 +
- qapi/machine.json                |  69 ++++-
- qom/qom-qmp-cmds.c               |   1 +
- scripts/compare-machine-types.py | 486 +++++++++++++++++++++++++++++++
- tests/qtest/fuzz/qos_fuzz.c      |   2 +-
- 7 files changed, 586 insertions(+), 5 deletions(-)
- create mode 100755 scripts/compare-machine-types.py
-
+diff --git a/qom/qom-qmp-cmds.c b/qom/qom-qmp-cmds.c
+index 7c087299de..e91a235347 100644
+--- a/qom/qom-qmp-cmds.c
++++ b/qom/qom-qmp-cmds.c
+@@ -212,6 +212,7 @@ ObjectPropertyInfoList *qmp_qom_list_properties(const char *typename,
+         info->name = g_strdup(prop->name);
+         info->type = g_strdup(prop->type);
+         info->description = g_strdup(prop->description);
++        info->default_value = qobject_ref(prop->defval);
+ 
+         QAPI_LIST_PREPEND(prop_list, info);
+     }
 -- 
 2.34.1
 
