@@ -2,77 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B12870C0E
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 22:04:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F2BE870977
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 19:25:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhFTb-0003Yb-H0; Mon, 04 Mar 2024 16:03:59 -0500
+	id 1rhCz4-0007fG-SQ; Mon, 04 Mar 2024 13:24:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <arvinlin@google.com>)
- id 1rhCxY-0007Yn-GV
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 13:22:44 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rhCz0-0007f2-19
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 13:24:14 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <arvinlin@google.com>)
- id 1rhCxW-0001eY-K2
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 13:22:44 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1dc9f4d1106so12865ad.0
- for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 10:22:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1709576560; x=1710181360; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=tyWDI0H73U/36gvkGcdKJjGZS8qYmDmdT3O92xjozfw=;
- b=BwIRMDocA1pv1sOWk2HvAnFtrJjnxHGDHbFLJxjWNbC3chibjDEc2PSDF5ThVC48R5
- uv8b5qy1ZJRR15cdGkvsxWQUHa+8tKc11BRTHHT19D8G5Q1rr7wNOg00vrC2XmYBA1+U
- irvAutDWl7pa8qBInNZTvmlkxP+oimCJUXJjpmqd5ZrATTpCjEHZqGqIWeQEdDU4RRxg
- 7CbIYCjQYbgvw1duJ5xiaUMS6R4OqR5y8hEzv7sM0IoQEPxdCsUqBKQ0t5eqseL2i3K5
- LV4Zzw90Y066UO1SVonwZ6ndEuKGVGrUol7TAJIflc4x5HPhlWBZydA3N3fx0PwG0PZv
- 7zzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709576560; x=1710181360;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=tyWDI0H73U/36gvkGcdKJjGZS8qYmDmdT3O92xjozfw=;
- b=OmCIE4i2Gy6Lvh9AhuidWaB9oDnBUCJJPWAvuvkEwlSyQcAgwWYjgFyS/MBzWyYnxe
- Az9G+u2Z/YIsn+v1iZrujksehLRQC4RHxiZBm4B96xDZZUHAsi2KU43nWxiJ85+/8eZJ
- DS030yqgg42Htwjlq/hrB53bIkTZ+5LNG2ypkhB73nX8RUr7ixlVwhs83N4gnD/dhF0U
- JSIqPdwpgGj7zBGmZo7+QDlxCuIim9KLR3KeNTuhd3f/tDuyvs6JUl8NnNIE/Vjb3VGe
- We/9K4p32H1oWFDQnimBiIasnx4hDl7gf4h7c2HSiscABDbj5VL6CPo8E2Vws0C1JAcs
- uhuw==
-X-Gm-Message-State: AOJu0Yyb83iYGlCTHtqRJ3hIQOO85EYMY1onDmL1eWEp1BGW2qYGIJB0
- zymtKHCpl+X0tpUA3y+eo07a6rSRKqc/qOmfaRwkOrKSlNZUK8KdRe2poyk2dLH7oR/z3psBmkh
- vrWA4IqmKFRDmkfqsEPmHfH8mvKpWIF32L0eX
-X-Google-Smtp-Source: AGHT+IFvHo1bku8mO2dO71/6zkjI2lA7KX+lf0hW3oezQWhSZ9ZSlX8WwTXgMsdT2yHtIcOdgK00CzMi6dR6r0B38AY=
-X-Received: by 2002:a17:902:cecb:b0:1dc:8841:43f2 with SMTP id
- d11-20020a170902cecb00b001dc884143f2mr17647plg.26.1709576560061; Mon, 04 Mar
- 2024 10:22:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rhCyx-0001nz-V4
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 13:24:13 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 1463E33B36;
+ Mon,  4 Mar 2024 18:24:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1709576648; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Z9DNdoXUY+Z1b+b9pMeyQItD0ODnbXyzr8LZ66kmCm0=;
+ b=CaneEmyFqKzEtwNmKrPQrR1qMAy9bzMFpOEccxv8gxP9R8yH92+PU4rYSgcKuWJmY5fCgc
+ dQ7q6EM//+y6FUDNU22Pgy1dsN7n9eYPIK6HL8zQqXhxAVS6rxIj28JItezN5ERG1Bc7JB
+ C3H604agLlbbcVyXPky9OhluRYJGDBg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1709576648;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Z9DNdoXUY+Z1b+b9pMeyQItD0ODnbXyzr8LZ66kmCm0=;
+ b=khDUIhtxJHi+GARHGI3GsYyJH56hKSIl8FeoTPGIOhC4wtFG/BvG+U88jlnGl0gRjhLG0K
+ MDPYiD+hwVBEgOBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1709576648; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Z9DNdoXUY+Z1b+b9pMeyQItD0ODnbXyzr8LZ66kmCm0=;
+ b=CaneEmyFqKzEtwNmKrPQrR1qMAy9bzMFpOEccxv8gxP9R8yH92+PU4rYSgcKuWJmY5fCgc
+ dQ7q6EM//+y6FUDNU22Pgy1dsN7n9eYPIK6HL8zQqXhxAVS6rxIj28JItezN5ERG1Bc7JB
+ C3H604agLlbbcVyXPky9OhluRYJGDBg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1709576648;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Z9DNdoXUY+Z1b+b9pMeyQItD0ODnbXyzr8LZ66kmCm0=;
+ b=khDUIhtxJHi+GARHGI3GsYyJH56hKSIl8FeoTPGIOhC4wtFG/BvG+U88jlnGl0gRjhLG0K
+ MDPYiD+hwVBEgOBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8BA8F13A58;
+ Mon,  4 Mar 2024 18:24:07 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id oog9FMcR5mUQHgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 04 Mar 2024 18:24:07 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, Hao Xiang <hao.xiang@bytedance.com>
+Cc: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
+ eblake@redhat.com, armbru@redhat.com, thuth@redhat.com,
+ lvivier@redhat.com, jdenemar@redhat.com, marcel.apfelbaum@gmail.com,
+ philmd@linaro.org, wangyanan55@huawei.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH v4 2/7] migration/multifd: Implement zero page
+ transmission on the multifd thread.
+In-Reply-To: <878r2ynnky.fsf@suse.de>
+References: <20240301022829.3390548-1-hao.xiang@bytedance.com>
+ <20240301022829.3390548-3-hao.xiang@bytedance.com> <ZeV1TrOvERHN_LOo@x1n>
+ <878r2ynnky.fsf@suse.de>
+Date: Mon, 04 Mar 2024 15:24:05 -0300
+Message-ID: <87r0gp97p6.fsf@suse.de>
 MIME-Version: 1.0
-From: Arvin Lin <arvinlin@google.com>
-Date: Mon, 4 Mar 2024 10:22:27 -0800
-Message-ID: <CAOJ+zFWsEYHiJObWvW4rt9OKOM_SzMPyJue-Ejui=YyETtCwcA@mail.gmail.com>
-Subject: Consulting to create fake object under tests/qtest
-To: thuth@redhat.com, lvivier@redhat.com
-Cc: qemu-devel@nongnu.org, Avi.Fishman@nuvoton.com, kfting@nuvoton.com, 
- Patrick Venture <venture@google.com>, Hao Wu <wuhaotsh@google.com>, 
- Titus Rwantare <titusr@google.com>
-Content-Type: multipart/alternative; boundary="00000000000094ae4c0612d9cfb7"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=arvinlin@google.com; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: 0.16
+X-Spamd-Result: default: False [0.16 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; TAGGED_RCPT(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ BAYES_HAM(-0.04)[58.57%];
+ R_RATELIMIT(0.00)[to_ip_from(RLhqagydafxgxrmodn9uzmj73y)];
+ RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; RCPT_COUNT_TWELVE(0.00)[14];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,gitlab.com:url];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+];
+ FREEMAIL_CC(0.00)[redhat.com,habkost.net,gmail.com,linaro.org,huawei.com,nongnu.org];
+ RCVD_TLS_ALL(0.00)[]; SUSPICIOUS_RECIPS(1.50)[]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 04 Mar 2024 16:03:58 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,47 +122,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000094ae4c0612d9cfb7
-Content-Type: text/plain; charset="UTF-8"
+Fabiano Rosas <farosas@suse.de> writes:
 
-Hello qtest maintainers,
+> Peter Xu <peterx@redhat.com> writes:
+>
+>> On Fri, Mar 01, 2024 at 02:28:24AM +0000, Hao Xiang wrote:
+>>> -GlobalProperty hw_compat_8_2[] = {};
+>>> +GlobalProperty hw_compat_8_2[] = {
+>>> +    { "migration", "zero-page-detection", "legacy"},
+>>> +};
+>>
+>> I hope we can make it for 9.0, then this (and many rest places) can be kept
+>> as-is.  Let's see..  soft-freeze is March 12th.
+>>
+>> One thing to mention is I just sent a pull which has mapped-ram feature
+>> merged.  You may need a rebase onto that, and hopefully mapped-ram can also
+>> use your feature too within the same patch when you repost.
+>
+> The key points are:
+>
+> - The socket migration is under "use_packets", the mapped-ram is under
+> "!use_packets" always.
+>
+> - mapped-ram doesn't trasmit zero-pages, it just clears the
+> corresponding bit in block->file_bmap.
+>
+>> https://lore.kernel.org/all/20240229153017.2221-1-farosas@suse.de/
+>>
+>> That rebase may or may not need much caution, I apologize for that:
+>> mapped-ram as a feature was discussed 1+ years, so it was a plan to merge
+>> it (actually still partly of it) into QEMU 9.0.
+>
+> I started doing that rebase last week and saw issues with a sender
+> thread always getting -EPIPE at the sendmsg() on the regular socket
+> migration. Let's hope it was just me being tired.
 
-I work on QEMU with Patrick Venture, Hao Wu, and Titus Rwantare at Google,
-and I am developing a Nuvoton USB device controller model that uses
-usbredir parser (
-https://gitlab.freedesktop.org/spice/usbredir/-/tree/main/usbredirparser?ref_type=heads)
-to redirect USB messages over the network. I want to create a qtest to
-verify the behavior of the device over the network by starting another
-usbredir parser object to ingest the packets sent by the Nuvoton USB device
-controller model. While I could create a fake usbredir parser object and
-set up the tests all in one file, I'm wondering if I could create a new
-file (maybe fake-usbredir-guest.h) under qtest for the fake usbredir parser
-object. The separation of the fake object and the device model test would
-benefit the maintainability of the device model test code and allow any
-future remote USB device model to reuse the fake object.
+> I'll try to get something ready this week.
 
-Thanks,
-Arvin
+@Hao Xiang:
 
---00000000000094ae4c0612d9cfb7
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Here's a branch with the rebase. Please include the first two commits
+when you repost:
 
-<div dir=3D"ltr">Hello qtest maintainers,<div><br></div><div>I work on QEMU=
- with Patrick Venture, Hao Wu, and Titus Rwantare at Google, and I am devel=
-oping a Nuvoton USB device controller model that uses usbredir parser (<a h=
-ref=3D"https://gitlab.freedesktop.org/spice/usbredir/-/tree/main/usbredirpa=
-rser?ref_type=3Dheads">https://gitlab.freedesktop.org/spice/usbredir/-/tree=
-/main/usbredirparser?ref_type=3Dheads</a>) to redirect USB messages over th=
-e network. I want to create a qtest to verify the behavior of the device ov=
-er the network by starting another usbredir parser object to ingest the pac=
-kets sent by the Nuvoton USB device controller model. While I could create =
-a fake usbredir parser object and set up the tests all in one file, I&#39;m=
- wondering if I could create a new file (maybe fake-usbredir-guest.h) under=
- qtest for the fake usbredir parser object. The separation of the fake obje=
-ct and the device model test would benefit the maintainability of the devic=
-e model test code and allow any future remote USB device model to reuse the=
- fake object.</div><div><br></div><div>Thanks,</div><div>Arvin</div></div>
+ migration/multifd: Allow clearing of the file_bmap from multifd
+ migration/multifd: Allow zero pages in file migration
 
---00000000000094ae4c0612d9cfb7--
+There are also two small additions and some conflict resolution at the
+"Implement zero page..." commit. Make sure you don't miss them.
+
+https://gitlab.com/farosas/qemu/-/commits/migration-multifd-zero-page
+
+Let me know if you encounter any issues.
+
 
