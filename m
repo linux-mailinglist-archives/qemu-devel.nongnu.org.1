@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D2378701AF
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 13:37:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F5087019C
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 13:35:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rh7WS-0005qK-Rl; Mon, 04 Mar 2024 07:34:25 -0500
+	id 1rh7VC-0003Gg-Ud; Mon, 04 Mar 2024 07:33:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=mkh8=KK=redhat.com=clg@ozlabs.org>)
- id 1rh7TL-0001fb-8w
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:31:19 -0500
+ id 1rh7Sw-0000yx-OP
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:30:46 -0500
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=mkh8=KK=redhat.com=clg@ozlabs.org>)
- id 1rh7Sw-0004qO-B4
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:31:07 -0500
+ id 1rh7SM-0004sn-Oz
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:30:38 -0500
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TpJ1H4NmYz4x1Y;
- Mon,  4 Mar 2024 23:29:55 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TpJ1M0W2Fz4x1d;
+ Mon,  4 Mar 2024 23:29:59 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4TpJ1D5CQwz4x0q;
- Mon,  4 Mar 2024 23:29:52 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TpJ1J1Mz9z4x0q;
+ Mon,  4 Mar 2024 23:29:55 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -38,10 +38,10 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v3 16/26] migration: Modify ram_init_bitmaps() to report dirty
- tracking errors
-Date: Mon,  4 Mar 2024 13:28:34 +0100
-Message-ID: <20240304122844.1888308-17-clg@redhat.com>
+Subject: [PATCH v3 17/26] vfio: Add Error** argument to
+ .set_dirty_page_tracking() handler
+Date: Mon,  4 Mar 2024 13:28:35 +0100
+Message-ID: <20240304122844.1888308-18-clg@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240304122844.1888308-1-clg@redhat.com>
 References: <20240304122844.1888308-1-clg@redhat.com>
@@ -71,86 +71,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The .save_setup() handler has now an Error** argument that we can use
-to propagate errors reported by the .log_global_start() handler. Do
-that for the RAM. The caller qemu_savevm_state_setup() will store the
-error under the migration stream for later detection in the migration
-sequence.
+We will use the Error object to improve error reporting in the
+.log_global*() handlers of VFIO. Add documentation while at it.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- migration/ram.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/migration/ram.c b/migration/ram.c
-index 3d9c08cfae8a59031a7c1b3c70721c2a90daceba..b12a2f24335be4b2b009aabfe431f4e5a6b4d9a9 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -2801,9 +2801,8 @@ static void migration_bitmap_clear_discarded_pages(RAMState *rs)
+ Changes in v3:
+
+ - Use error_setg_errno() in vfio_legacy_set_dirty_page_tracking()
+ 
+ include/hw/vfio/vfio-container-base.h | 18 ++++++++++++++++--
+ hw/vfio/common.c                      |  4 ++--
+ hw/vfio/container-base.c              |  4 ++--
+ hw/vfio/container.c                   |  6 +++---
+ 4 files changed, 23 insertions(+), 9 deletions(-)
+
+diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+index 3582d5f97a37877b2adfc0d0b06996c82403f8b7..c76984654a596e3016a8cf833e10143eb872e102 100644
+--- a/include/hw/vfio/vfio-container-base.h
++++ b/include/hw/vfio/vfio-container-base.h
+@@ -82,7 +82,7 @@ int vfio_container_add_section_window(VFIOContainerBase *bcontainer,
+ void vfio_container_del_section_window(VFIOContainerBase *bcontainer,
+                                        MemoryRegionSection *section);
+ int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
+-                                           bool start);
++                                           bool start, Error **errp);
+ int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+                                       VFIOBitmap *vbmap,
+                                       hwaddr iova, hwaddr size);
+@@ -121,9 +121,23 @@ struct VFIOIOMMUClass {
+     int (*attach_device)(const char *name, VFIODevice *vbasedev,
+                          AddressSpace *as, Error **errp);
+     void (*detach_device)(VFIODevice *vbasedev);
++
+     /* migration feature */
++
++    /**
++     * @set_dirty_page_tracking
++     *
++     * Start or stop dirty pages tracking on VFIO container
++     *
++     * @bcontainer: #VFIOContainerBase on which to de/activate dirty
++     *              pages tracking
++     * @start: indicates whether to start or stop dirty pages tracking
++     * @errp: pointer to Error*, to store an error if it happens.
++     *
++     * Returns zero to indicate success and negative for error
++     */
+     int (*set_dirty_page_tracking)(const VFIOContainerBase *bcontainer,
+-                                   bool start);
++                                   bool start, Error **errp);
+     int (*query_dirty_bitmap)(const VFIOContainerBase *bcontainer,
+                               VFIOBitmap *vbmap,
+                               hwaddr iova, hwaddr size);
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index 71352ad6532cad02f3a2ab53bdd531d769ea55b2..9c5bc76414487513775fa8e559f97c12ed9c5fda 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -1085,7 +1085,7 @@ static bool vfio_listener_log_global_start(MemoryListener *listener,
+     if (vfio_devices_all_device_dirty_tracking(bcontainer)) {
+         ret = vfio_devices_dma_logging_start(bcontainer);
+     } else {
+-        ret = vfio_container_set_dirty_page_tracking(bcontainer, true);
++        ret = vfio_container_set_dirty_page_tracking(bcontainer, true, NULL);
      }
+ 
+     if (ret) {
+@@ -1106,7 +1106,7 @@ static bool vfio_listener_log_global_stop(MemoryListener *listener,
+     if (vfio_devices_all_device_dirty_tracking(bcontainer)) {
+         vfio_devices_dma_logging_stop(bcontainer);
+     } else {
+-        ret = vfio_container_set_dirty_page_tracking(bcontainer, false);
++        ret = vfio_container_set_dirty_page_tracking(bcontainer, false, NULL);
+     }
+ 
+     if (ret) {
+diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+index 913ae49077c4f09b7b27517c1231cfbe4befb7fb..7c0764121d24b02b6c4e66e368d7dff78a6d65aa 100644
+--- a/hw/vfio/container-base.c
++++ b/hw/vfio/container-base.c
+@@ -53,14 +53,14 @@ void vfio_container_del_section_window(VFIOContainerBase *bcontainer,
  }
  
--static void ram_init_bitmaps(RAMState *rs)
-+static bool ram_init_bitmaps(RAMState *rs, Error **errp)
+ int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
+-                                           bool start)
++                                           bool start, Error **errp)
  {
--    Error *local_err = NULL;
-     bool ret = true;
- 
-     qemu_mutex_lock_ramlist();
-@@ -2812,10 +2811,8 @@ static void ram_init_bitmaps(RAMState *rs)
-         ram_list_init_bitmaps();
-         /* We don't use dirty log with background snapshots */
-         if (!migrate_background_snapshot()) {
--            ret = memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION,
--                                                &local_err);
-+            ret = memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION, errp);
-             if (!ret) {
--                error_report_err(local_err);
-                 goto out_unlock;
-             }
-             migration_bitmap_sync_precopy(rs, false);
-@@ -2825,7 +2822,7 @@ out_unlock:
-     qemu_mutex_unlock_ramlist();
- 
-     if (!ret) {
--        return;
-+        return false;
+     if (!bcontainer->dirty_pages_supported) {
+         return 0;
      }
  
-     /*
-@@ -2833,9 +2830,10 @@ out_unlock:
-      * containing all 1s to exclude any discarded pages from migration.
-      */
-     migration_bitmap_clear_discarded_pages(rs);
-+    return true;
+     g_assert(bcontainer->ops->set_dirty_page_tracking);
+-    return bcontainer->ops->set_dirty_page_tracking(bcontainer, start);
++    return bcontainer->ops->set_dirty_page_tracking(bcontainer, start, errp);
  }
  
--static int ram_init_all(RAMState **rsp)
-+static int ram_init_all(RAMState **rsp, Error **errp)
+ int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 096d77eac3946a9c38fc2a98116b93353f71f06e..6524575aeddcea8470b5fd10caf57475088d1813 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -210,7 +210,7 @@ static int vfio_legacy_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
+ 
+ static int
+ vfio_legacy_set_dirty_page_tracking(const VFIOContainerBase *bcontainer,
+-                                    bool start)
++                                    bool start, Error **errp)
  {
-     if (ram_state_init(rsp)) {
-         return -1;
-@@ -2846,7 +2844,9 @@ static int ram_init_all(RAMState **rsp)
-         return -1;
+     const VFIOContainer *container = container_of(bcontainer, VFIOContainer,
+                                                   bcontainer);
+@@ -228,8 +228,8 @@ vfio_legacy_set_dirty_page_tracking(const VFIOContainerBase *bcontainer,
+     ret = ioctl(container->fd, VFIO_IOMMU_DIRTY_PAGES, &dirty);
+     if (ret) {
+         ret = -errno;
+-        error_report("Failed to set dirty tracking flag 0x%x errno: %d",
+-                     dirty.flags, errno);
++        error_setg_errno(errp, errno, "Failed to set dirty tracking flag 0x%x",
++                         dirty.flags);
      }
  
--    ram_init_bitmaps(*rsp);
-+    if (!ram_init_bitmaps(*rsp, errp)) {
-+        return -1;
-+    }
- 
-     return 0;
- }
-@@ -2961,8 +2961,7 @@ static int ram_save_setup(QEMUFile *f, void *opaque, Error **errp)
- 
-     /* migration has already setup the bitmap, reuse it. */
-     if (!migration_in_colo_state()) {
--        if (ram_init_all(rsp) != 0) {
--            error_setg(errp, "%s: failed to setup RAM for migration", __func__);
-+        if (ram_init_all(rsp, errp) != 0) {
-             compress_threads_save_cleanup();
-             return -1;
-         }
+     return ret;
 -- 
 2.44.0
 
