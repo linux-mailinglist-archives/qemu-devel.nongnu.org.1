@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36A84870137
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 13:29:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C295870140
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 13:30:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rh7Rg-0008L7-0E; Mon, 04 Mar 2024 07:29:28 -0500
+	id 1rh7Rc-0008Eg-DC; Mon, 04 Mar 2024 07:29:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=mkh8=KK=redhat.com=clg@ozlabs.org>)
- id 1rh7RV-0008By-TI
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:29:18 -0500
+ id 1rh7RZ-0008DV-BI
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:29:21 -0500
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=mkh8=KK=redhat.com=clg@ozlabs.org>)
- id 1rh7RU-0004XH-4Z
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:29:17 -0500
+ id 1rh7RX-0004a6-Ks
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 07:29:21 -0500
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TpJ0V0yBjz4wyj;
- Mon,  4 Mar 2024 23:29:14 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TpJ0Y49Lnz4wyp;
+ Mon,  4 Mar 2024 23:29:17 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4TpJ0R1qPvz4wqN;
- Mon,  4 Mar 2024 23:29:10 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TpJ0V52wsz4wqN;
+ Mon,  4 Mar 2024 23:29:14 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -37,9 +37,10 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v3 06/26] migration: Report error when shutdown fails
-Date: Mon,  4 Mar 2024 13:28:24 +0100
-Message-ID: <20240304122844.1888308-7-clg@redhat.com>
+Subject: [PATCH v3 07/26] migration: Remove SaveStateHandler and
+ LoadStateHandler typedefs
+Date: Mon,  4 Mar 2024 13:28:25 +0100
+Message-ID: <20240304122844.1888308-8-clg@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240304122844.1888308-1-clg@redhat.com>
 References: <20240304122844.1888308-1-clg@redhat.com>
@@ -69,38 +70,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This will help detect issues regarding I/O channels usage.
+They are only used once.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- migration/qemu-file.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/migration/register.h | 4 ++--
+ include/qemu/typedefs.h      | 2 --
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index 94231ff2955c80b3d0fab11a40510d34c334a826..b69e0c62e2fcf21d346a3687df7eebee23791fdc 100644
---- a/migration/qemu-file.c
-+++ b/migration/qemu-file.c
-@@ -62,6 +62,8 @@ struct QEMUFile {
-  */
- int qemu_file_shutdown(QEMUFile *f)
- {
-+    Error *err = NULL;
-+
+diff --git a/include/migration/register.h b/include/migration/register.h
+index 9ab1f79512c605f0c88a45b560c57486fa054441..2e6a7d766e62f64940086b7b511249c9ff21fa62 100644
+--- a/include/migration/register.h
++++ b/include/migration/register.h
+@@ -18,7 +18,7 @@
+ 
+ typedef struct SaveVMHandlers {
+     /* This runs inside the BQL.  */
+-    SaveStateHandler *save_state;
++    void (*save_state)(QEMUFile *f, void *opaque);
+ 
      /*
-      * We must set qemufile error before the real shutdown(), otherwise
-      * there can be a race window where we thought IO all went though
-@@ -90,7 +92,8 @@ int qemu_file_shutdown(QEMUFile *f)
-         return -ENOSYS;
-     }
+      * save_prepare is called early, even before migration starts, and can be
+@@ -71,7 +71,7 @@ typedef struct SaveVMHandlers {
+     /* This calculate the exact remaining data to transfer */
+     void (*state_pending_exact)(void *opaque, uint64_t *must_precopy,
+                                 uint64_t *can_postcopy);
+-    LoadStateHandler *load_state;
++    int (*load_state)(QEMUFile *f, void *opaque, int version_id);
+     int (*load_setup)(QEMUFile *f, void *opaque);
+     int (*load_cleanup)(void *opaque);
+     /* Called when postcopy migration wants to resume from failure */
+diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
+index a028dba4d0b67e87165f9f1a4e960e9e6b94477c..50c277cf0b467f782ba526041b2663207bf70945 100644
+--- a/include/qemu/typedefs.h
++++ b/include/qemu/typedefs.h
+@@ -151,8 +151,6 @@ typedef struct IRQState *qemu_irq;
+ /*
+  * Function types
+  */
+-typedef void SaveStateHandler(QEMUFile *f, void *opaque);
+-typedef int LoadStateHandler(QEMUFile *f, void *opaque, int version_id);
+ typedef void (*qemu_irq_handler)(void *opaque, int n, int level);
  
--    if (qio_channel_shutdown(f->ioc, QIO_CHANNEL_SHUTDOWN_BOTH, NULL) < 0) {
-+    if (qio_channel_shutdown(f->ioc, QIO_CHANNEL_SHUTDOWN_BOTH, &err) < 0) {
-+        error_report_err(err);
-         return -EIO;
-     }
- 
+ #endif /* QEMU_TYPEDEFS_H */
 -- 
 2.44.0
 
