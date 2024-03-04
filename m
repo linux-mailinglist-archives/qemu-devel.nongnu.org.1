@@ -2,55 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE82870327
+	by mail.lfdr.de (Postfix) with ESMTPS id D417C87032A
 	for <lists+qemu-devel@lfdr.de>; Mon,  4 Mar 2024 14:47:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rh8dk-0000d6-RX; Mon, 04 Mar 2024 08:46:00 -0500
+	id 1rh8dg-0000Zv-Lp; Mon, 04 Mar 2024 08:45:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1rh8dX-0000Zd-SS
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 08:45:48 -0500
+ id 1rh8dU-0000ZQ-Ux
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 08:45:45 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1rh8dN-0000sh-B6
- for qemu-devel@nongnu.org; Mon, 04 Mar 2024 08:45:44 -0500
+ id 1rh8dQ-0000ue-9A
+ for qemu-devel@nongnu.org; Mon, 04 Mar 2024 08:45:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709559936;
+ s=mimecast20190719; t=1709559939;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=gYYMuzTY4kRR3iY0POkbOJDFrVyQQqPPzyTGgUgjNhU=;
- b=RO8ecw+s71yD6CEs+FZpVnUkq/rIKTQYkFxvdYRiXkBo008fK2RXQ+TF994j1IA4A0Txzu
- il3toQt/WQS9GZ2DO5W2cOHc0u3nDmit5NvZMByU0Jrsnzt+ZdBcPnx6SnqxZIrrTYAmet
- huZEofCHvOQQWohX2dLrYIqy3uNNSbg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-654-R2DXGs6bMaasBBogdDhSAw-1; Mon, 04 Mar 2024 08:45:35 -0500
-X-MC-Unique: R2DXGs6bMaasBBogdDhSAw-1
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZSwkEkSW6CtLjOsJilX8J3bkrv/9gWdnkPWWOnvuipw=;
+ b=V/Ng13tpGtR5/TYY08yb/yDAptT1Si8IGHBbpPWYdtFEj+PxF5ajn8nZJw1tzE8PJK5wWv
+ HmhbiMv9Vk/NuEh8SE3FvHGfBBDCyNarQZyNzfDwveCn+/71LHMG1HXccQd2KmgMTS3QA0
+ pBI/wpB8340E3XJIJSYvJbHL1ZAy9ps=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-678-F5Le5QRLO3WHRtP-MBGbeQ-1; Mon,
+ 04 Mar 2024 08:45:36 -0500
+X-MC-Unique: F5Le5QRLO3WHRtP-MBGbeQ-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ACE6685A58B;
- Mon,  4 Mar 2024 13:45:34 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 05BD83C0F232;
+ Mon,  4 Mar 2024 13:45:36 +0000 (UTC)
 Received: from srv1.redhat.com (unknown [10.45.226.165])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 97BF924D;
- Mon,  4 Mar 2024 13:45:33 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id F193624D;
+ Mon,  4 Mar 2024 13:45:34 +0000 (UTC)
 From: Konstantin Kostiuk <kkostiuk@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Dehan Meng <demeng@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Roth <michael.roth@amd.com>, Yan Vugenfirer <yvugenfi@redhat.com>
-Subject: [PATCH v4 0/3] qga/commands-win32: Style cleanups before adding
- Windows Server 2025
-Date: Mon,  4 Mar 2024 15:45:29 +0200
-Message-ID: <20240304134532.28506-1-kkostiuk@redhat.com>
+Subject: [PATCH v4 1/3] qga/commands-win32: Declare const qualifier before type
+Date: Mon,  4 Mar 2024 15:45:30 +0200
+Message-ID: <20240304134532.28506-2-kkostiuk@redhat.com>
+In-Reply-To: <20240304134532.28506-1-kkostiuk@redhat.com>
+References: <20240304134532.28506-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -63,8 +65,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.571,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,21 +82,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Respin of Philippe's v3 to fix multidimensional array compilation error.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Supersedes: <20240222025437.58996-1-demeng@redhat.com>
-Supersedes: <20240222152835.72095-1-philmd@linaro.org>
+Most of the code base use the 'const' qualifier *before*
+the type being qualified. Use the same style to unify.
 
-Dehan Meng (1):
-  qga-win: Add support of Windows Server 2025 in get-osinfo command
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240222152835.72095-2-philmd@linaro.org>
+Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 
-Philippe Mathieu-Daudé (2):
-  qga/commands-win32: Declare const qualifier before type
-  qga/commands-win32: Do not set matrix_lookup_t/win_10_0_t arrays size
+---
+ qga/commands-win32.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
- qga/commands-win32.c | 59 ++++++++++++++++++++++----------------------
- 1 file changed, 29 insertions(+), 30 deletions(-)
+diff --git a/qga/commands-win32.c b/qga/commands-win32.c
+index a1015757d8..79b5a580c9 100644
+--- a/qga/commands-win32.c
++++ b/qga/commands-win32.c
+@@ -2120,11 +2120,11 @@ GuestUserList *qmp_guest_get_users(Error **errp)
+ typedef struct _ga_matrix_lookup_t {
+     int major;
+     int minor;
+-    char const *version;
+-    char const *version_id;
++    const char *version;
++    const char *version_id;
+ } ga_matrix_lookup_t;
 
+-static ga_matrix_lookup_t const WIN_VERSION_MATRIX[2][7] = {
++static const ga_matrix_lookup_t WIN_VERSION_MATRIX[2][7] = {
+     {
+         /* Desktop editions */
+         { 5, 0, "Microsoft Windows 2000",   "2000"},
+@@ -2148,18 +2148,18 @@ static ga_matrix_lookup_t const WIN_VERSION_MATRIX[2][7] = {
+
+ typedef struct _ga_win_10_0_t {
+     int first_build;
+-    char const *version;
+-    char const *version_id;
++    const char *version;
++    const char *version_id;
+ } ga_win_10_0_t;
+
+-static ga_win_10_0_t const WIN_10_0_SERVER_VERSION_MATRIX[4] = {
++static const ga_win_10_0_t WIN_10_0_SERVER_VERSION_MATRIX[4] = {
+     {14393, "Microsoft Windows Server 2016",    "2016"},
+     {17763, "Microsoft Windows Server 2019",    "2019"},
+     {20344, "Microsoft Windows Server 2022",    "2022"},
+     {0, 0}
+ };
+
+-static ga_win_10_0_t const WIN_10_0_CLIENT_VERSION_MATRIX[3] = {
++static const ga_win_10_0_t WIN_10_0_CLIENT_VERSION_MATRIX[3] = {
+     {10240, "Microsoft Windows 10",    "10"},
+     {22000, "Microsoft Windows 11",    "11"},
+     {0, 0}
+@@ -2185,16 +2185,16 @@ static void ga_get_win_version(RTL_OSVERSIONINFOEXW *info, Error **errp)
+     return;
+ }
+
+-static char *ga_get_win_name(OSVERSIONINFOEXW const *os_version, bool id)
++static char *ga_get_win_name(const OSVERSIONINFOEXW *os_version, bool id)
+ {
+     DWORD major = os_version->dwMajorVersion;
+     DWORD minor = os_version->dwMinorVersion;
+     DWORD build = os_version->dwBuildNumber;
+     int tbl_idx = (os_version->wProductType != VER_NT_WORKSTATION);
+-    ga_matrix_lookup_t const *table = WIN_VERSION_MATRIX[tbl_idx];
+-    ga_win_10_0_t const *win_10_0_table = tbl_idx ?
++    const ga_matrix_lookup_t *table = WIN_VERSION_MATRIX[tbl_idx];
++    const ga_win_10_0_t *win_10_0_table = tbl_idx ?
+         WIN_10_0_SERVER_VERSION_MATRIX : WIN_10_0_CLIENT_VERSION_MATRIX;
+-    ga_win_10_0_t const *win_10_0_version = NULL;
++    const ga_win_10_0_t *win_10_0_version = NULL;
+     while (table->version != NULL) {
+         if (major == 10 && minor == 0) {
+             while (win_10_0_table->version != NULL) {
 --
 2.44.0
 
