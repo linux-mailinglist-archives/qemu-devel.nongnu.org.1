@@ -2,98 +2,134 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22273871677
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 08:14:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D74278716C3
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 08:29:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhOye-0004zL-C7; Tue, 05 Mar 2024 02:12:42 -0500
+	id 1rhPDb-00033X-JE; Tue, 05 Mar 2024 02:28:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rhOyR-0004pf-PJ
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:12:28 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rhPDU-00032T-EE
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:28:00 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rhOyQ-0001qd-3x
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:12:27 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rhPDS-0004Lf-O7
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:28:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709622744;
+ s=mimecast20190719; t=1709623677;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=z3rmWrwsYIH8+AVc0Y/VnGI5K+bQgFl3RojjzJO+fFQ=;
- b=AsI6e2WNlt8dRAZhNdVmmLYtEec+LpLaQqch5lYo1jZAMrTKbF5n1iBwqrcccncmaDl1CM
- qB2gcYBriKp5t1pNNmMoXtU46OQJGlzW6d2BtJKN/Y3ZKnZgO0HXR1rr1JVkZRzhVRneFi
- Myza5AqntIB13pUVbhELlEbX7oER1q8=
-Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com
- [209.85.217.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=wSDlwUjKQ3h/+oMby1NULjzvaM/98uHLBBJBALNFrNo=;
+ b=RhQTQSEcmOrZRyk6v9kk+ikgZ2XVu3FCsWaPj/eJWE/aPeVktJodGL/9lC4p/j2Q71k5Ka
+ EoXTqKofYFfFNuzglRQ7CTuMG7IfEeci6isrj+7UrXVgTSIU4eP9Nkf4AkeH5GGmkmxtz9
+ auRKHuTf466VGp/RcQ4kMEwiixPr6qs=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-250-kh5ILQfTOmCP-QdgyQUVCw-1; Tue, 05 Mar 2024 02:12:22 -0500
-X-MC-Unique: kh5ILQfTOmCP-QdgyQUVCw-1
-Received: by mail-vs1-f72.google.com with SMTP id
- ada2fe7eead31-4727e51f64bso1033824137.1
- for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 23:12:22 -0800 (PST)
+ us-mta-294-trxOGFiZPtmSdhcSQfEKLQ-1; Tue, 05 Mar 2024 02:27:55 -0500
+X-MC-Unique: trxOGFiZPtmSdhcSQfEKLQ-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-5673cc14ca4so847222a12.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 23:27:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709622741; x=1710227541;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1709623674; x=1710228474;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=z3rmWrwsYIH8+AVc0Y/VnGI5K+bQgFl3RojjzJO+fFQ=;
- b=tt997GTuAFdapIchZ9zLCOkreW2jQT9smxj9hDz5lGKGP4jVZb0iDb2k16iP7965gd
- 7GSvsYCPpevQr33fxq+npJ635ZsplVOH5j1tgjhlRlqZE4583I6nt8fC3auO61wH8xfb
- 5w3/aeXdQzsKwD/nm8BBOL9mVHumAS/wdk13gHBbY8g7pvlRV156mh5HQiHLSk0Gkw8F
- 6CVrczHfyLWC95RrkUR1R43xKFO+8dsZ76fWojtRv3Nc9703LLM49olXseBcBuyEvvUc
- a/QMy67a5kYZGSV6RxGK5L5dpTNHZ7pMn+oU/Je4mH0u2ZOV+211RC/xcqJPpugHygwG
- twqQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU1S6thGT+4fXQY7omVYFHKvdiTqCWHUP//vkhtyaEKW4YtFtYkyAXRnBpLZgWLCJB+eG7r9PKB3wFLl9X/z4EBB0zHgfM=
-X-Gm-Message-State: AOJu0YzMos+IgYecGOnP2Md4qHf8PL9VjlFxFLVQ/Gu0xCsDy8BwRi4/
- 8okmLgykntndoLp2AKYW29EHr1ktSN53ng3ojU11IHAyDX70aBjUSoPTso0zit5cdOr3HuWPHkn
- k2MC7bSV+xijDhbHxrwtWR8BZQ5wKi2fKfQlYqcdUQJPJOmsnT3iN
-X-Received: by 2002:a05:6102:dcd:b0:472:5948:3c85 with SMTP id
- e13-20020a0561020dcd00b0047259483c85mr1230556vst.8.1709622740430; 
- Mon, 04 Mar 2024 23:12:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGEgr/V8DmpiYcJ5EcXAFQ5q49Kmjo8TaY3NZZrlgTMXeNPmar3At8+5UFuNfQ6gvXZWerzBw==
-X-Received: by 2002:a05:6102:dcd:b0:472:5948:3c85 with SMTP id
- e13-20020a0561020dcd00b0047259483c85mr1230492vst.8.1709622738712; 
- Mon, 04 Mar 2024 23:12:18 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- he29-20020a05622a601d00b0042ee1ff302esm2592910qtb.66.2024.03.04.23.12.17
+ bh=wSDlwUjKQ3h/+oMby1NULjzvaM/98uHLBBJBALNFrNo=;
+ b=dglJufrDcU5PNUWPqbyeVLdvlxZtR4sYERUePH68s0sMX9rBB0fFcjPWBW5CKD2PeS
+ r8itVP4labVk99yTK8XOKi6GXeI910bGLSehuVWUvLwRZR9K8iacQpeEwrwF/P6oO+v/
+ 9K5mlCIMo586scU7qilwP/uVRXn1nsNaJ7XSW+9I95iG4caab9qHNEZoHL52LmnxpCMN
+ hJDYpmsXx/gIUWKoxjirREyToZW+IVDWw9uNVOeXJwOcrZXbLLjYhp2JnLMz4BKDC2Bn
+ A+mFirpN3h11hoT/PVJELb6wu9q2tkkH15nMD7oui+/eEYi0ttHgmDf46YXthde6wpZU
+ Xe1g==
+X-Gm-Message-State: AOJu0YwLl0Ak0H2KKqY8WH1Ct+OgxkcBP/K8BvuhRwX7Il1ED/3IQ5uR
+ GAJJfWHo1h0QM010j9NAZwp4b+OQg61YS//Hd3OYzQhuXkqey6AEF95qjdZsnZujaM2hdJSm+3+
+ ddm37h6ot+rZgA3SOHYWlB1AlJQ3QmxrqxpueIRsvTJeeuk0pv/ji
+X-Received: by 2002:a05:6402:40c8:b0:567:15a6:848e with SMTP id
+ z8-20020a05640240c800b0056715a6848emr5808232edb.18.1709623674141; 
+ Mon, 04 Mar 2024 23:27:54 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGVh5ofpakgtUzKbVnO5m0VVOEJYNo6MfBW6fbVz4FsRfChwwtulUgsWwJfO8NE3OMIUiS0pw==
+X-Received: by 2002:a05:6402:40c8:b0:567:15a6:848e with SMTP id
+ z8-20020a05640240c800b0056715a6848emr5808218edb.18.1709623673821; 
+ Mon, 04 Mar 2024 23:27:53 -0800 (PST)
+Received: from [192.168.0.9] (ip-109-43-178-243.web.vodafone.de.
+ [109.43.178.243]) by smtp.gmail.com with ESMTPSA id
+ l17-20020aa7cad1000000b005673b5a2370sm2419214edt.44.2024.03.04.23.27.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Mar 2024 23:12:18 -0800 (PST)
-Message-ID: <bf4ff1c0-6d11-4c33-a3be-8d7d06755072@redhat.com>
-Date: Tue, 5 Mar 2024 08:12:16 +0100
+ Mon, 04 Mar 2024 23:27:53 -0800 (PST)
+Message-ID: <4f6e1748-a917-4b2b-847d-fbfe04a3e43e@redhat.com>
+Date: Tue, 5 Mar 2024 08:27:52 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/26] s390/stattrib: Add Error** argument to
- set_migrationmode() handler
-Content-Language: en-US, fr
-To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Alex Williamson
- <alex.williamson@redhat.com>, Avihai Horon <avihaih@nvidia.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>
-References: <20240304122844.1888308-1-clg@redhat.com>
- <20240304122844.1888308-2-clg@redhat.com> <87v861hgcr.fsf@suse.de>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <87v861hgcr.fsf@suse.de>
+Subject: Re: [PATCH 3/3] hw/mem/cxl_type3: Fix problem with g_steal_pointer()
+Content-Language: en-US
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: qemu-devel@nongnu.org, Fan Ni <fan.ni@samsung.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-trivial@nongnu.org
+References: <20240304104406.59855-1-thuth@redhat.com>
+ <20240304104406.59855-4-thuth@redhat.com>
+ <20240304151037.00000f6c@Huawei.com>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240304151037.00000f6c@Huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.571,
+X-Spam_score_int: 7
+X-Spam_score: 0.7
+X-Spam_bar: /
+X-Spam_report: (0.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.571,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,141 +145,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/4/24 21:49, Fabiano Rosas wrote:
-> Cédric Le Goater <clg@redhat.com> writes:
+On 04/03/2024 16.10, Jonathan Cameron wrote:
+> On Mon,  4 Mar 2024 11:44:06 +0100
+> Thomas Huth <thuth@redhat.com> wrote:
 > 
->> This will prepare ground for futur changes adding an Error** argument
->> to the save_setup() handler. We need to make sure that on failure,
->> set_migrationmode() always sets a new error. See the Rules section in
->> qapi/error.h.
->>
->> Cc: Halil Pasic <pasic@linux.ibm.com>
->> Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
->> Cc: Thomas Huth <thuth@redhat.com>
->> Signed-off-by: Cédric Le Goater <clg@redhat.com>
->> ---
->>   include/hw/s390x/storage-attributes.h |  2 +-
->>   hw/s390x/s390-stattrib-kvm.c          | 12 ++++++++++--
->>   hw/s390x/s390-stattrib.c              | 14 +++++++++-----
->>   3 files changed, 20 insertions(+), 8 deletions(-)
->>
->> diff --git a/include/hw/s390x/storage-attributes.h b/include/hw/s390x/storage-attributes.h
->> index 5239eb538c1b087797867a247abfc14551af6a4d..8921a04d514bf64a3113255ee10ed33fc598ae06 100644
->> --- a/include/hw/s390x/storage-attributes.h
->> +++ b/include/hw/s390x/storage-attributes.h
->> @@ -39,7 +39,7 @@ struct S390StAttribClass {
->>       int (*set_stattr)(S390StAttribState *sa, uint64_t start_gfn,
->>                         uint32_t count, uint8_t *values);
->>       void (*synchronize)(S390StAttribState *sa);
->> -    int (*set_migrationmode)(S390StAttribState *sa, bool value);
->> +    int (*set_migrationmode)(S390StAttribState *sa, bool value, Error **errp);
->>       int (*get_active)(S390StAttribState *sa);
->>       long long (*get_dirtycount)(S390StAttribState *sa);
->>   };
->> diff --git a/hw/s390x/s390-stattrib-kvm.c b/hw/s390x/s390-stattrib-kvm.c
->> index 24cd01382e2d74d62c2d7e980eb6aca1077d893d..357cea2c987213b867c81b0e258f7d0c293fe665 100644
->> --- a/hw/s390x/s390-stattrib-kvm.c
->> +++ b/hw/s390x/s390-stattrib-kvm.c
->> @@ -17,6 +17,7 @@
->>   #include "sysemu/kvm.h"
->>   #include "exec/ram_addr.h"
->>   #include "kvm/kvm_s390x.h"
->> +#include "qapi/error.h"
->>   
->>   Object *kvm_s390_stattrib_create(void)
->>   {
->> @@ -137,14 +138,21 @@ static void kvm_s390_stattrib_synchronize(S390StAttribState *sa)
->>       }
->>   }
->>   
->> -static int kvm_s390_stattrib_set_migrationmode(S390StAttribState *sa, bool val)
->> +static int kvm_s390_stattrib_set_migrationmode(S390StAttribState *sa, bool val,
->> +                                               Error **errp)
->>   {
->>       struct kvm_device_attr attr = {
->>           .group = KVM_S390_VM_MIGRATION,
->>           .attr = val,
->>           .addr = 0,
->>       };
->> -    return kvm_vm_ioctl(kvm_state, KVM_SET_DEVICE_ATTR, &attr);
->> +    int r;
->> +
->> +    r = kvm_vm_ioctl(kvm_state, KVM_SET_DEVICE_ATTR, &attr);
->> +    if (r) {
->> +        error_setg_errno(errp, -r, "KVM_S390_SET_CMMA_BITS failed");
+>> When setting GLIB_VERSION_MAX_ALLOWED to GLIB_VERSION_2_58 or higher,
+>> glib adds type safety checks to the g_steal_pointer() macro. This
+>> triggers errors in the ct3_build_cdat_entries_for_mr() function which
+>> uses the g_steal_pointer() for type-casting from one pointer type to
+>> the other (which also looks quite weird since the local pointers have
+>> all been declared with g_autofree though they are never freed here).
+>> Fix it by using a proper typecast instead. For making this possible, we
+>> have to remove the QEMU_PACKED attribute from some structs since GCC
+>> otherwise complains that the source and destination pointer might
+>> have different alignment restrictions. Removing the QEMU_PACKED should
+>> be fine here since the structs are already naturally aligned. Anyway,
+>> add some QEMU_BUILD_BUG_ON() statements to make sure that we've got
+>> the right sizes (without padding in the structs).
 > 
-> Did you mean KVM_SET_DEVICE_ATTR?
-
-Drat. Copy paste :)
-
-
-Thanks,
-
-C.
-
-
-
+> I missed these as well when getting rid of the false handling
+> of failure of g_new0 calls.
 > 
->> +    }
->> +    return r;
->>   }
->>   
->>   static long long kvm_s390_stattrib_get_dirtycount(S390StAttribState *sa)
->> diff --git a/hw/s390x/s390-stattrib.c b/hw/s390x/s390-stattrib.c
->> index c483b62a9b5f71772639fc180bdad15ecb6711cb..e99de190332a82363b1388bbc450013149295bc0 100644
->> --- a/hw/s390x/s390-stattrib.c
->> +++ b/hw/s390x/s390-stattrib.c
->> @@ -60,11 +60,12 @@ void hmp_migrationmode(Monitor *mon, const QDict *qdict)
->>       S390StAttribState *sas = s390_get_stattrib_device();
->>       S390StAttribClass *sac = S390_STATTRIB_GET_CLASS(sas);
->>       uint64_t what = qdict_get_int(qdict, "mode");
->> +    Error *local_err = NULL;
->>       int r;
->>   
->> -    r = sac->set_migrationmode(sas, what);
->> +    r = sac->set_migrationmode(sas, what, &local_err);
->>       if (r < 0) {
->> -        monitor_printf(mon, "Error: %s", strerror(-r));
->> +        monitor_printf(mon, "Error: %s", error_get_pretty(local_err));
->>       }
->>   }
->>   
->> @@ -170,13 +171,15 @@ static int cmma_save_setup(QEMUFile *f, void *opaque)
->>   {
->>       S390StAttribState *sas = S390_STATTRIB(opaque);
->>       S390StAttribClass *sac = S390_STATTRIB_GET_CLASS(sas);
->> +    Error *local_err = NULL;
->>       int res;
->>       /*
->>        * Signal that we want to start a migration, thus needing PGSTE dirty
->>        * tracking.
->>        */
->> -    res = sac->set_migrationmode(sas, 1);
->> +    res = sac->set_migrationmode(sas, true, &local_err);
->>       if (res) {
->> +        error_report_err(local_err);
->>           return res;
->>       }
->>       qemu_put_be64(f, STATTR_FLAG_EOS);
->> @@ -260,7 +263,7 @@ static void cmma_save_cleanup(void *opaque)
->>   {
->>       S390StAttribState *sas = S390_STATTRIB(opaque);
->>       S390StAttribClass *sac = S390_STATTRIB_GET_CLASS(sas);
->> -    sac->set_migrationmode(sas, 0);
->> +    sac->set_migrationmode(sas, false, NULL);
->>   }
->>   
->>   static bool cmma_active(void *opaque)
->> @@ -293,7 +296,8 @@ static long long qemu_s390_get_dirtycount_stub(S390StAttribState *sa)
->>   {
->>       return 0;
->>   }
->> -static int qemu_s390_set_migrationmode_stub(S390StAttribState *sa, bool value)
->> +static int qemu_s390_set_migrationmode_stub(S390StAttribState *sa, bool value,
->> +                                            Error **errp)
->>   {
->>       return 0;
->>   }
-> 
+> Another alternative would be to point to the head structures rather
+> than the containing structure - would avoid need to cast.
+> That might be neater?  Should I think also remove the alignment
+> question?
+
+I gave it a try, but it does not help against the alignment issue, I still get:
+
+../../devel/qemu/hw/mem/cxl_type3.c: In function 
+‘ct3_build_cdat_entries_for_mr’:
+../../devel/qemu/hw/mem/cxl_type3.c:138:34: error: taking address of packed 
+member of ‘struct CDATDsmas’ may result in an unaligned pointer value 
+[-Werror=address-of-packed-member]
+   138 |     cdat_table[CT3_CDAT_DSMAS] = &dsmas->header;
+       |                                  ^~~~~~~~~~~~~~
+
+ From my experience, it's better anyway to avoid __attribute__((packed)) on 
+structures unless it is really really required. At least we should avoid it 
+as good as possible as long as we still support running QEMU on Sparc hosts 
+(that don't support misaligned memory accesses), since otherwise you can end 
+up with non-working code there, see e.g.:
+
+  https://www.mail-archive.com/qemu-devel@nongnu.org/msg439899.html
+
+or:
+
+  https://gitlab.com/qemu-project/qemu/-/commit/cb89b349074310ff9eb7ebe18a
+
+Thus I'd rather prefer to keep this patch as it is right now.
+
+  Thomas
 
 
