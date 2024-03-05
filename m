@@ -2,75 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF9A487297E
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 22:33:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE21F872983
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 22:37:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhcOv-0003e4-LU; Tue, 05 Mar 2024 16:32:42 -0500
+	id 1rhcSo-0004lR-Pp; Tue, 05 Mar 2024 16:36:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yu.zhang@ionos.com>)
- id 1rhcOs-0003dl-2W
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 16:32:38 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rhcSm-0004l8-Vs
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 16:36:41 -0500
+Received: from mail-il1-x129.google.com ([2607:f8b0:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yu.zhang@ionos.com>)
- id 1rhcOp-00035S-Uy
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 16:32:37 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-a3fb8b0b7acso782143166b.2
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 13:32:33 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rhcSl-0003kd-GI
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 16:36:40 -0500
+Received: by mail-il1-x129.google.com with SMTP id
+ e9e14a558f8ab-36602d8ae4fso1258295ab.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 13:36:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ionos.com; s=google; t=1709674352; x=1710279152; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=WL8MhSoz/cEwgD4T8ycAxxawABipB4Z6srF5gkK0E3g=;
- b=NER47mW4VC9r7XiNpcMxaYL/bmB2+aLyzqlDvMapJ4gnvJnJkWJnR0IBlzve28FXze
- JrrcT7OOoAW21vtlqISJrNWWmK+GQrqW3dK05C3SAKUotdsHJZBIeJ9O0TbinsC6e6YQ
- f6NMNbVhnN/1B8Fsls9gsLocRCMusSO1sEYZYDRgfPg6y1aaMi1l4gkIjg5dpLWNwemD
- ENtPBXURh+jO2abOr8GICf/DZS4jQQ0K1MfNuUnBY60Cuh61yISRN2xoz4PF+eg1Xv7V
- OzHOia0Wuo3f8KnNYEn+6Mkeh8zzqciBmyusyd1Idf5+7m3F2RHsIYQ2Tsld3UUdwaO1
- i8Xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709674352; x=1710279152;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ d=linaro.org; s=google; t=1709674598; x=1710279398; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=WL8MhSoz/cEwgD4T8ycAxxawABipB4Z6srF5gkK0E3g=;
- b=hqF7o76AS24ifpvoMAL453QVyexg5PVk2O3r/Ra6wsvqB1c7aThcsmhZYHIivyQNxL
- SUgCoR53Esy+WGtadMQ+z9rvWY2FxxOoRXGxWaYit5D+rEdF1IycJe6nlBUoPbohfY07
- j1NrpGfBvMGT8biAq4LEQsnaSXE6aGUP58av0oTktgAPv3d2DCIZrbPoU5MehsVwmcQ/
- IhxsWblRt/7rTknq1FLgMQ5BMO+dqw4Cw64vvo9NrZ9qLzvrunr4uHovpCQeSlpO4is9
- KbByOO31rGWxvDX0HrkDMBa6ew8Z6WIVCaD06djpGYyXrMjWmhXiDtnDd9cQfJm6aHCg
- jBfA==
+ bh=uIDPaQ9p4Bh8kYkbG1aNC/r3mhO071zWcGdOe1pZtEw=;
+ b=pUmNQEzs9Hv+pEDYGY/ePNU92wiUbQVpFdz01XaTyboiyyOg/xi8wO5hMJOY9JiBLR
+ vxjEiarriaqlotCPAuVkc2v1yYJFgYJqCrl6PpV2ZfpniIYcTw1JzUEglWKRBew+85B9
+ sV40W4BwiuPnTU3zK0fcBRR82UX1ic31gNvgzsfxEoHl+xIm0bNeo65NFDURia8AHys5
+ 2nrs5NKB4ZzMakrS+gIIniikopodRcDaE2zDVoU88quMnVallkDRmp6Lom28x88P8NK2
+ we9jP+LI97GClzt7eL1pD8BOFObqG6Kn9ZZWb6Wuh3gz3RPlbz37a5+pRhAzKGSpS1Z/
+ S/BA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709674598; x=1710279398;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=uIDPaQ9p4Bh8kYkbG1aNC/r3mhO071zWcGdOe1pZtEw=;
+ b=oSdF5BVpID2gvYEHw7s2zQ5A/HAWoiksCm3Atdzbvqg8g5LcKYY+bWpreG7I5pNsk/
+ dhb1jCSgM5Kr9Oq7kitBLHV/7FSYoMHbsDOPwtllrQ1VfEEvnIgGkis9QIt/lxN5pEdD
+ vKL6gCnoX7cGwijHwCpdgbZsZ8UdI7T+BOiWTMmSCGLUhRyK5M5+qSbj0g8MPMRZH4MP
+ gwYH2K3yqJN53JoZc1Fimf5Er+RgdswHcugdWOffi/BcVrX1DJdDg/+pMtjrIY/mIV98
+ rnif4qu55A4vwPCd4L+Z16hJE/v8LDlFFfK6EBtdVGBUFj5DqvxrODnfEpC6lZPNiMdo
+ x3qQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXW7+iAjx+loeDX7bY/hIpAlDE0KYMaMcEPurc9Ab7kteWHGOroIzqaIZZzHyP8/je4obijbXz/EfE6b+BSA7i287j43v4=
-X-Gm-Message-State: AOJu0YzgLybHrODnk+RbvjOPs82BzvgtnTvsBvZIRVt32FOumETVcV6/
- xZaUr92S6LrM0EAkCQ4nEjUDSRe3I7ygywqXKUswoUkqxGsjCjpqDqg20vXNJ3rO6ze+DN8l5aG
- BhkKNS9LSMLXXhOy8fwCEImbSOothb7ssNT17Og==
-X-Google-Smtp-Source: AGHT+IH6XnyoR+Z1CmjwJh3xT5gWzMZwfjZHCh7peuY+nVwTYuvPmBI9I4gKmEw/rC2AgXGPX3ySQIoSaHxFTp9h1JU=
-X-Received: by 2002:a17:906:c7cc:b0:a44:7a34:e620 with SMTP id
- dc12-20020a170906c7cc00b00a447a34e620mr9086241ejb.4.1709674352484; Tue, 05
- Mar 2024 13:32:32 -0800 (PST)
+ AJvYcCWAgOz2FGgssfL4iqSyn3NynnVJ4NQ8OdWid0OTyHR82y12r/6frGt86rQTDYN9HtplhDmI781+zokg/CSpDG24QC/dAwE=
+X-Gm-Message-State: AOJu0Yx5g/FnOxjyf06Huo8lZ1akDThJ+n0zSl0gx45LWIMrWWWEcxXO
+ n/ycMFW0aUoktBvi8cfEjjzXWUGtEawrpNtugLJSIXX+UorHIaRphBLGFRkepxE=
+X-Google-Smtp-Source: AGHT+IGfvf0lbv7gUsA3bN+OtANzPzHleeQB7jgIvssQcmBKRvr1uQt4P2+meVY4BZatU3m+DNSupg==
+X-Received: by 2002:a92:c26f:0:b0:365:29e4:d95d with SMTP id
+ h15-20020a92c26f000000b0036529e4d95dmr14481486ild.30.1709674598153; 
+ Tue, 05 Mar 2024 13:36:38 -0800 (PST)
+Received: from [192.168.6.128] (098-147-055-211.res.spectrum.com.
+ [98.147.55.211]) by smtp.gmail.com with ESMTPSA id
+ q12-20020a63504c000000b005df58c83e89sm9684140pgl.84.2024.03.05.13.36.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 05 Mar 2024 13:36:37 -0800 (PST)
+Message-ID: <f3db8d07-71dc-4b25-b50a-94f52b5ad3b2@linaro.org>
+Date: Tue, 5 Mar 2024 11:36:34 -1000
 MIME-Version: 1.0
-From: Yu Zhang <yu.zhang@ionos.com>
-Date: Tue, 5 Mar 2024 22:32:21 +0100
-Message-ID: <CAHEcVy7HXSwn4Ow_Kog+Q+TN6f_kMeiCHevz1qGM-fbxBPp1hQ@mail.gmail.com>
-Subject: 
-To: Het Gala <het.gala@nutanix.com>, qemu-devel <qemu-devel@nongnu.org>
-Cc: Jinpu Wang <jinpu.wang@ionos.com>,
- Alexei Pastuchov <alexei.pastuchov@ionos.com>, 
- Elmar Gerdes <elmar.gerdes@ionos.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: permerror client-ip=2a00:1450:4864:20::630;
- envelope-from=yu.zhang@ionos.com; helo=mail-ej1-x630.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v6 04/23] target/arm: Implement ALLINT MSR (immediate)
+Content-Language: en-US
+To: Jinjie Ruan <ruanjinjie@huawei.com>, peter.maydell@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org
+References: <20240305070331.2151131-1-ruanjinjie@huawei.com>
+ <20240305070331.2151131-5-ruanjinjie@huawei.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240305070331.2151131-5-ruanjinjie@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::129;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,83 +97,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Het and all,
+On 3/4/24 21:03, Jinjie Ruan via wrote:
+> Add ALLINT MSR (immediate) to decodetree, in which the CRm is 0b000x. The
+> EL0 check is necessary to ALLINT, and the EL1 check is necessary when
+> imm == 1. So implement it inline for EL2/3, or EL1 with imm==0. Avoid the
+> unconditional write to pc and use raise_exception_ra to unwind.
+> 
+> Signed-off-by: Jinjie Ruan<ruanjinjie@huawei.com>
+> ---
+> v6:
+> - Fix DISAS_TOO_MANY to DISAS_UPDATE_EXIT and add the comment.
+> v5:
+> - Drop the & 1 in trans_MSR_i_ALLINT().
+> - Simplify and merge msr_i_allint() and allint_check().
+> - Rename msr_i_allint() to msr_set_allint_el1().
+> v4:
+> - Fix the ALLINT MSR (immediate) decodetree implementation.
+> - Remove arm_is_el2_enabled() check in allint_check().
+> - Update env->allint to env->pstate.
+> - Only call allint_check() when imm == 1.
+> - Simplify the allint_check() to not pass "op" and extract.
+> - Implement it inline for EL2/3, or EL1 with imm==0.
+> - Pass (a->imm & 1) * PSTATE_ALLINT (i64) to simplfy the ALLINT set/clear.
+> v3:
+> - Remove EL0 check in allint_check().
+> - Add TALLINT check for EL1 in allint_check().
+> - Remove unnecessarily arm_rebuild_hflags() in msr_i_allint helper.
+> ---
+>   target/arm/tcg/a64.decode      |  1 +
+>   target/arm/tcg/helper-a64.c    | 12 ++++++++++++
+>   target/arm/tcg/helper-a64.h    |  1 +
+>   target/arm/tcg/translate-a64.c | 19 +++++++++++++++++++
+>   4 files changed, 33 insertions(+)
 
-while I was testing qemu-8.2, I saw a lot of our migration test cases failed.
-After debugging the commits of the 8.2 branch, I saw the issue and mad a diff:
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/migration/rdma.c b/migration/rdma.c
-index 6a29e53daf..f10d56f556 100644
---- a/migration/rdma.c
-+++ b/migration/rdma.c
-@@ -3353,9 +3353,9 @@ static int qemu_rdma_accept(RDMAContext *rdma)
-         goto err_rdma_dest_wait;
-     }
-
--    isock->host = rdma->host;
-+    isock->host = g_strdup_printf("%s", rdma->host);
-     isock->port = g_strdup_printf("%d", rdma->port);
-
-which was introduced by the commit below:
-
-commit 3fa9642ff7d51f7fc3ba68e6ccd13a939d5bd609 (HEAD)
-Author: Het Gala <het.gala@nutanix.com>
-Date:   Mon Oct 23 15:20:45 2023 -0300
-
-    migration: convert rdma backend to accept MigrateAddress
-
-    RDMA based transport backend for 'migrate'/'migrate-incoming' QAPIs
-    accept new wire protocol of MigrateAddress struct.
-
-    It is achived by parsing 'uri' string and storing migration parameters
-    required for RDMA connection into well defined InetSocketAddress struct.
-    ...
-
-A debug line
-     isock->host = rdma->host;
-     isock->port = g_strdup_printf("%d", rdma->port);
-+fprintf(stdout, "QEMU: %s, host %s, port %s\n", __func__,
-isock->host, isock->port);
-
-produced this error:
-QEMU: qemu_rdma_accept, host ::, port 8089
-corrupted size vs. prev_size in fastbins
-
-on the target host, which may indicate a crash related to the memory
-allocation or a memory
-corruption of the data. With the patch, it doesn't happen any more,
-and the migration is fine.
-Could you be kind to test this and confirm the issue?
-
-Furthermore, I'm confused by the two struct:
-
-struct InetSocketAddressBase {
-    char *host;
-    char *port;
-};
-
-struct InetSocketAddress {
-    /* Members inherited from InetSocketAddressBase: */
-    char *host;
-    char *port;
-
-To my understanding, they are used to consolidate the separated data
-to a well-defined
-struct "MigrateAddress", while the struct whose member receive their
-data has a different type:
-
-typedef struct RDMAContext {
-    char *host;
-    int port;
-    ...
-}
-
-Is there any reason to keep "port" like this (char* instead of int) or
-can we improve it?
-Thank you so much for any of your comments!
-
-Best regards,
-
-Yu Zhang @ IONOS Compute Platform
-05.03.2024
+r~
 
