@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AA7387170F
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 08:38:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D14871714
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 08:39:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhPMw-0006xS-UH; Tue, 05 Mar 2024 02:37:47 -0500
+	id 1rhPMs-0006jI-KT; Tue, 05 Mar 2024 02:37:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rhPMM-0006Hy-85
+ id 1rhPMM-0006Hx-5y
  for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:37:13 -0500
-Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rhPMJ-0005sv-Jz
+ id 1rhPMJ-0005u2-Kw
  for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:37:09 -0500
-Received: by mail-oo1-xc32.google.com with SMTP id
- 006d021491bc7-5a0b1936400so2462888eaf.2
- for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 23:37:03 -0800 (PST)
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6e5c0be115aso2443866b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 23:37:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709624223; x=1710229023;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709624226; x=1710229026;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=oaZOxuMruCzpX9cG/05AqpvWpWeh3L71YtF+WLnYGuQ=;
- b=D/OO7UprfeihY7W4L1cvUSN3/EnS9V9z6TFOoh5W7w0lcb7kf9zwLvOzLLeJBUZdGA
- Xv2pjAIWWtoqKaJiwxMn3iE1st3ptUTYtGKkNRPi4aUM/UVOZ3R7x0t6RV58AO98y++w
- obKs2cukktB7iyrOC3/bmaEM7rlMPZwEpB8mUq2VoWm4iWsFHJorYlMRn6KTFim/9IVI
- 01jL/+yAffeDU8XGSr9MjqU6/yNRVj2na2wpmC2P3Q1dW4wiqBm6t5bXANtd7CWZFtuh
- 5UzGRwiqVohIJH+NcCZPgn49FnDAM0T0Mn1h3ak2Uf51Tadg1s24H0UBtCzxAStBxLeM
- inoA==
+ :reply-to; bh=EWGUi9tBAet6Aqvwl5xC+YeARn1u1TklowkngVTL1c0=;
+ b=rZEWCnoFrhc1fq1WA+tsYYzLWl4oLU92u3e17bx78ZbfFkDUMnAUTuVC9rc+7VJawL
+ w/xqYJOhUqPHAJfowHd+3oZvFCcOtHuI5xludGFfdkfMR3T/QczBM20qi3XN5MDz6N3S
+ KEd3eg8Gh8/n+aJbh+TRqzhNCTRr8847+3zuakHzxKw8WmoxkpJEQHXv6RM6tavsbmwM
+ P693AiZ52Zs3iv3YYY1HQ/HPmsWl+wVzm8L6DF33sMGteiVyHIQtGDCz5zf15ltcqZOR
+ 5Hm5dLCJHW7NGe5B3grpaYT4LeJ5ZlaqntO/TMA9dC+VnoqnSU0IN4zTMUHl0sGMUHtY
+ dqVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709624223; x=1710229023;
+ d=1e100.net; s=20230601; t=1709624226; x=1710229026;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oaZOxuMruCzpX9cG/05AqpvWpWeh3L71YtF+WLnYGuQ=;
- b=CuoXE5Rxg1YTguMTieXayZEKRnkLbOfd6nM8rHerSFpy4O640DaIkCq9U9Vx602QBc
- Dsek/DVUtLBWwXO+1wwqlbWbWjJdrhSZPb4MLBXsVpKT8jY9ogishye5yYmBesMuUKnN
- a98XPuyanBH54GFAut/t1F5xCS0Tqj5ata25g1NYZXJPfnss+7b/DG0yMlDADLO9IhEX
- ejIyCXtqGgr1QbApoRWuZUz8Q5RXq9qO9QzW5k7sdrBGYHBhYuSYEERjOo76AhkzzuEK
- cRjzO53RnAqu0udSaUSsf9xnthsvJXD4SvUUoESz0Tme6W3KgPHmfJRO6g1Cdwhr5BDD
- 8fPw==
-X-Gm-Message-State: AOJu0YzUGpYmmR8Ek2fw9XAXiX27WKnPcXvFcyxKme4JX18hpt5I9HN6
- KIErfqu5L8hVjrvYgz4syEuI+F23EKN00RZewJyD0RUzx0KYu9KGtVBJZU70dqs3nZoMO/x8skB
- d
-X-Google-Smtp-Source: AGHT+IFD5V9C+rYlvE7xfnzq62Jhok5FWGVhkrdtetfQdPkAJsCibYir0qzDD/g5wLhA4zYTdyRSCg==
-X-Received: by 2002:a05:6358:7e42:b0:17b:c797:8a08 with SMTP id
- p2-20020a0563587e4200b0017bc7978a08mr1157066rwm.20.1709624222779; 
- Mon, 04 Mar 2024 23:37:02 -0800 (PST)
+ bh=EWGUi9tBAet6Aqvwl5xC+YeARn1u1TklowkngVTL1c0=;
+ b=MVXV4DOBjVRuPYVe/EZQKRmEYsitddyheL9DcVIkReb64ElCSpewWdrw93GYl/n4O4
+ Q74JUU3nDMvXfOp8WQel80JDk9vLwez0BZFVEdyCViOul0njLSrN8W0R9d4QoSnmn1mH
+ /Lb1leI+RLrpfFCwKGLoMpv46/R8kCXyTEQ3Wu1Wd4KBADIT0CZT4mSPc3Y1b8PuYm4b
+ aP6f8uE3ixsivRNKpDU8ZFc7SrTF/NOxfhhAPZb9DWl3sR2DRFUAoSl3T7GYegHCvdo2
+ Ys3Zy3ZsjiKYzDQW9G9X1qS2D1+xCM/FDPXJx//y5cWyy1bWgNGl3wTgVEWrje0iWwTl
+ AW5Q==
+X-Gm-Message-State: AOJu0YxlmYRQ5FGr+WYVWnM0tA97QxhgT91y+vMxBY4XsceuQziIit6l
+ E+Atuho1eU3tvUA7ATRmssjUUvnWxUO2eLFNb41zTVUDO9mZFfBryccbHYwvIAPxUrEY7/zfSr+
+ Z
+X-Google-Smtp-Source: AGHT+IFhe+5xYJKgv+ZBAaqU3+ea4R9YNpa9nD7ebbLRStjcBw1fWGQfoualvzkrAFBHfe2CCXvbig==
+X-Received: by 2002:a05:6a00:2d07:b0:6e5:f773:eb80 with SMTP id
+ fa7-20020a056a002d0700b006e5f773eb80mr8723836pfb.24.1709624225669; 
+ Mon, 04 Mar 2024 23:37:05 -0800 (PST)
 Received: from localhost ([157.82.203.206])
  by smtp.gmail.com with UTF8SMTPSA id
- i125-20020a639d83000000b005dc5129ba9dsm8564842pgd.72.2024.03.04.23.37.01
+ m2-20020a62f202000000b006e4432027d1sm8556709pfh.142.2024.03.04.23.37.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Mar 2024 23:37:02 -0800 (PST)
+ Mon, 04 Mar 2024 23:37:05 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Tue, 05 Mar 2024 16:36:28 +0900
-Subject: [PATCH v2 11/13] contrib/elf2dmp: Build only for little endian
- host
+Date: Tue, 05 Mar 2024 16:36:29 +0900
+Subject: [PATCH v2 12/13] contrib/elf2dmp: Use GPtrArray
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240305-elf2dmp-v2-11-86ff2163ad32@daynix.com>
+Message-Id: <20240305-elf2dmp-v2-12-86ff2163ad32@daynix.com>
 References: <20240305-elf2dmp-v2-0-86ff2163ad32@daynix.com>
 In-Reply-To: <20240305-elf2dmp-v2-0-86ff2163ad32@daynix.com>
 To: Viktor Prutyanov <viktor.prutyanov@phystech.edu>, 
  Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::c32;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc32.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::436;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,23 +93,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-elf2dmp assumes little endian host in many places.
+This removes the need to enumarate QEMUCPUState twice and saves code.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- contrib/elf2dmp/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ contrib/elf2dmp/qemu_elf.c | 25 ++++++++-----------------
+ 1 file changed, 8 insertions(+), 17 deletions(-)
 
-diff --git a/contrib/elf2dmp/meson.build b/contrib/elf2dmp/meson.build
-index 6707d43c4fa5..046569861f7a 100644
---- a/contrib/elf2dmp/meson.build
-+++ b/contrib/elf2dmp/meson.build
-@@ -1,4 +1,4 @@
--if curl.found()
-+if curl.found() and host_machine.endian() == 'little'
-   executable('elf2dmp', files('main.c', 'addrspace.c', 'download.c', 'pdb.c', 'qemu_elf.c'), genh,
-              dependencies: [glib, curl],
-              install: true)
+diff --git a/contrib/elf2dmp/qemu_elf.c b/contrib/elf2dmp/qemu_elf.c
+index a22c057d3ec3..7d896cac5b15 100644
+--- a/contrib/elf2dmp/qemu_elf.c
++++ b/contrib/elf2dmp/qemu_elf.c
+@@ -66,7 +66,7 @@ static bool init_states(QEMU_Elf *qe)
+     Elf64_Nhdr *start = (void *)((uint8_t *)qe->map + phdr[0].p_offset);
+     Elf64_Nhdr *end = (void *)((uint8_t *)start + phdr[0].p_memsz);
+     Elf64_Nhdr *nhdr;
+-    size_t cpu_nr = 0;
++    GPtrArray *states;
+ 
+     if (phdr[0].p_type != PT_NOTE) {
+         eprintf("Failed to find PT_NOTE\n");
+@@ -74,38 +74,29 @@ static bool init_states(QEMU_Elf *qe)
+     }
+ 
+     qe->has_kernel_gs_base = 1;
++    states = g_ptr_array_new();
+ 
+     for (nhdr = start; nhdr < end; nhdr = nhdr_get_next(nhdr)) {
+         if (!strcmp(nhdr_get_name(nhdr), QEMU_NOTE_NAME)) {
+             QEMUCPUState *state = nhdr_get_desc(nhdr);
+ 
+             if (state->size < sizeof(*state)) {
+-                eprintf("CPU #%zu: QEMU CPU state size %u doesn't match\n",
+-                        cpu_nr, state->size);
++                eprintf("CPU #%u: QEMU CPU state size %u doesn't match\n",
++                        states->len, state->size);
+                 /*
+                  * We assume either every QEMU CPU state has KERNEL_GS_BASE or
+                  * no one has.
+                  */
+                 qe->has_kernel_gs_base = 0;
+             }
+-            cpu_nr++;
++            g_ptr_array_add(states, state);
+         }
+     }
+ 
+-    printf("%zu CPU states has been found\n", cpu_nr);
++    printf("%u CPU states has been found\n", states->len);
+ 
+-    qe->state = g_new(QEMUCPUState*, cpu_nr);
+-
+-    cpu_nr = 0;
+-
+-    for (nhdr = start; nhdr < end; nhdr = nhdr_get_next(nhdr)) {
+-        if (!strcmp(nhdr_get_name(nhdr), QEMU_NOTE_NAME)) {
+-            qe->state[cpu_nr] = nhdr_get_desc(nhdr);
+-            cpu_nr++;
+-        }
+-    }
+-
+-    qe->state_nr = cpu_nr;
++    qe->state_nr = states->len;
++    qe->state = (void *)g_ptr_array_free(states, FALSE);
+ 
+     return true;
+ }
 
 -- 
 2.44.0
