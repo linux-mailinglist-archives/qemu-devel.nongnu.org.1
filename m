@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CD938720E6
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 14:54:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEBC48720E7
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 14:54:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhVEw-0001pR-Bo; Tue, 05 Mar 2024 08:53:54 -0500
+	id 1rhVF9-0002mP-KE; Tue, 05 Mar 2024 08:54:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhVE6-0000yD-NA
+ id 1rhVE7-0000yX-HD
  for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:53:09 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhVDs-0005yV-Mm
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:52:56 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-412cf3c5cdeso27802655e9.2
+ id 1rhVDt-0005yY-I6
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:53:01 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-33d28468666so3791254f8f.0
  for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 05:52:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709646767; x=1710251567; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709646768; x=1710251568; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=J1DzK1oxT+Ly6WdUrENKHs1cSZQkyZRc92vsYauFXPY=;
- b=PtmHBvHsBSYd/ZWwKQsFObyipiJhX2IaPfWR3sPjUreuM12U8nl2vfnHA0mWZ3nfy0
- esEfIX/zACZOyQiyPiMi/iDJR9qkIJo2cWN73CKm5wRHgPqve/wC+pwyRS0vxYpo5jIY
- grWmzAGnHyoEgFluNRYZ40NgTUzzUwae8A4eSYe+WVDBxvuTsD8pxUMNjtNFHLioooQz
- A94m4XkblfXUGLjXVQhMYGuYePisQ0grS9Lp0C2UD9HJGoqu2sG/kWflO8I5vo1+gUj+
- w6543xVXf8m+U/FHCWQ5aIgI0ArfYuEZwewwHeb531PF3kr365Uo4rGwBmJ4UioddU0p
- MafA==
+ :reply-to; bh=FXV4byW7NW0KAiWMPyEzYmL7ozL2tTK1qICThutJLjQ=;
+ b=zcASCyfmUFjW6ottGt8EJa+TuxnPrNmeHGMBV39T0JkibWYHpsDCq/zz8p0W/KS1he
+ b51re6mcXhj/V0sKt/xNmjTcSF4rlfTaSZk6NcmuUILZ1+dBJ0Ha6v9MEWw5HO1FH2U1
+ JxwGmgkDGA1CO4zofBrU2xZNe6AK7nBcR/Jftm92Ba3PXItu81/uiew5oNE3iYnG3h8E
+ jILwiFldwApkZwlZCHtkoKayzIq1yyoCe+HgzZZpsSaF+PPlr7gyvkqNQyNe2khhfcED
+ TTNyVMzx3Oxm8GG5s5KyTFIEPD+67KOL5+W1cSolw2IXW7WNUVaCd+rlJS11nQdqc9eM
+ lM0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709646767; x=1710251567;
+ d=1e100.net; s=20230601; t=1709646768; x=1710251568;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J1DzK1oxT+Ly6WdUrENKHs1cSZQkyZRc92vsYauFXPY=;
- b=PEKzXJap6S5y6RpXqVsOuRd798P0MVj/w5LVts6ybxtKbP1QupHrPYDzvL6G/rsVqt
- 7DVthkYZMFOzIe6MoDvpXN+Fo5twd3vUfWtCONnYRaPB9ajWFssjKibVkgop8NoljKHt
- fDhmYnViij7LBJFzxlmc6WScgG5lOINwPPQcCtfJEdOtath9TeKASS6KFzwwNZz4bAh+
- Y/1n+LKwDvgtIfr0XdbG4y9HXk5nBMJnrLw1PY2W3ZZvnokXmi5FodUZ+s5yoNEIXWs9
- fIK056VqfeSSnVRagF/ClO/bI/WPCGj12jvze4xysKWej0OOb53EB/e2V5/4xVPK2OlA
- vGWA==
-X-Gm-Message-State: AOJu0YyDxrqVt7R6uVTpH48LKhpnyOoojdiT6rJ6mLfDL+ObGsZMI9gP
- Pbp77h7/R6SnBB8cOgAXjVH2ZZ40wfAaUlx4dGW22IRZv64UEhMdfRMNsAmwi94+pOjeqXlZXQl
- T
-X-Google-Smtp-Source: AGHT+IF2xiwQ8BjRCsLL/QfaZa22vUZOZGBNdw6EvjX5NTQSgcyYmjSKthFYkW2Xj/uxR3DT81hoKQ==
-X-Received: by 2002:a05:600c:511e:b0:412:b816:1584 with SMTP id
- o30-20020a05600c511e00b00412b8161584mr8555503wms.32.1709646767331; 
+ bh=FXV4byW7NW0KAiWMPyEzYmL7ozL2tTK1qICThutJLjQ=;
+ b=MhUFq/bqhkB9cbQBuHqYM/ImPg4jkKe/D4qhoa9k1j972rzNrB21LMl1/vxo/AP6Rc
+ toyGUyqlWI4U/XKuBGsybDL6Mj3DGw4L4G4tPKE/pN9zEgtK8A8Jb3wDiHc6JZrRPf2v
+ 04FZGCDYU5DAvyXKZRboSGXTjnr/Vaq0eDbPAMTSr4cxSogGCD7NDz9TFmnM3g3xTbQ6
+ qhG58SRpVA329oQw4lw0cV44rkPBqn4htU856ZEI9z7dXhT6gHTARsGfPiHpVrjoaXkM
+ 4J5WROlfS2joawGa5nNWkyOm27hQTRfMneFm3jE5yRsEvV2PCztrKtRFgCncxnVgtdX4
+ mzGA==
+X-Gm-Message-State: AOJu0YxpfK0DlXALXgfL/YtLmwMf0Td/dcaCO02wt6bE3XEdfhVOpP/c
+ ioB5pHjRJ5UHrj0vKIg+IWEfE/zPQtfDuY4LMLmRZG942poSp0eDCZEm28adSgLlz6ueNjgPScp
+ E
+X-Google-Smtp-Source: AGHT+IEm8P39LQghdUDn7PFnk1waqB1EKiy7jsZThAleW+37bydRn7e8mVahJLHu4Chdjd1RXfNZLQ==
+X-Received: by 2002:a5d:550b:0:b0:33d:47d1:38c3 with SMTP id
+ b11-20020a5d550b000000b0033d47d138c3mr9364064wrv.36.1709646767727; 
  Tue, 05 Mar 2024 05:52:47 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,18 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 05 Mar 2024 05:52:47 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 17/20] target/arm: Do memory type alignment check when
- translation disabled
-Date: Tue,  5 Mar 2024 13:52:34 +0000
-Message-Id: <20240305135237.3111642-18-peter.maydell@linaro.org>
+Subject: [PULL 18/20] target/arm: Do memory type alignment check when
+ translation enabled
+Date: Tue,  5 Mar 2024 13:52:35 +0000
+Message-Id: <20240305135237.3111642-19-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240305135237.3111642-1-peter.maydell@linaro.org>
 References: <20240305135237.3111642-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,81 +94,91 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-If translation is disabled, the default memory type is Device, which
-requires alignment checking.  This is more optimally done early via
-the MemOp given to the TCG memory operation.
+If translation is enabled, and the PTE memory type is Device,
+enable checking alignment via TLB_CHECK_ALIGNMENT.  While the
+check is done later than it should be per the ARM, it's better
+than not performing the check at all.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reported-by: Idan Horowitz <idan.horowitz@gmail.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240301204110.656742-6-richard.henderson@linaro.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1204
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20240301204110.656742-7-richard.henderson@linaro.org
+[PMM: tweaks to comment text]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/hflags.c | 34 ++++++++++++++++++++++++++++++++--
- 1 file changed, 32 insertions(+), 2 deletions(-)
+ target/arm/ptw.c | 39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/target/arm/tcg/hflags.c b/target/arm/tcg/hflags.c
-index 8e5d35d9227..5da1b0fc1d4 100644
---- a/target/arm/tcg/hflags.c
-+++ b/target/arm/tcg/hflags.c
-@@ -26,6 +26,35 @@ static inline bool fgt_svc(CPUARMState *env, int el)
-         FIELD_EX64(env->cp15.fgt_exec[FGTREG_HFGITR], HFGITR_EL2, SVC_EL1);
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index ba1a27ca2b5..31ae43f60ed 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -471,6 +471,16 @@ static bool granule_protection_check(CPUARMState *env, uint64_t paddress,
+     return false;
  }
  
-+/* Return true if memory alignment should be enforced. */
-+static bool aprofile_require_alignment(CPUARMState *env, int el, uint64_t sctlr)
++static bool S1_attrs_are_device(uint8_t attrs)
 +{
-+#ifdef CONFIG_USER_ONLY
-+    return false;
-+#else
-+    /* Check the alignment enable bit. */
-+    if (sctlr & SCTLR_A) {
-+        return true;
++    /*
++     * This slightly under-decodes the MAIR_ELx field:
++     * 0b0000dd01 is Device with FEAT_XS, otherwise UNPREDICTABLE;
++     * 0b0000dd1x is UNPREDICTABLE.
++     */
++    return (attrs & 0xf0) == 0;
++}
++
+ static bool S2_attrs_are_device(uint64_t hcr, uint8_t attrs)
+ {
+     /*
+@@ -1684,6 +1694,7 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+     bool aarch64 = arm_el_is_aa64(env, el);
+     uint64_t descriptor, new_descriptor;
+     ARMSecuritySpace out_space;
++    bool device;
+ 
+     /* TODO: This code does not support shareability levels. */
+     if (aarch64) {
+@@ -2106,6 +2117,12 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+     if (regime_is_stage2(mmu_idx)) {
+         result->cacheattrs.is_s2_format = true;
+         result->cacheattrs.attrs = extract32(attrs, 2, 4);
++        /*
++         * Security state does not really affect HCR_EL2.FWB;
++         * we only need to filter FWB for aa32 or other FEAT.
++         */
++        device = S2_attrs_are_device(arm_hcr_el2_eff(env),
++                                     result->cacheattrs.attrs);
+     } else {
+         /* Index into MAIR registers for cache attributes */
+         uint8_t attrindx = extract32(attrs, 2, 3);
+@@ -2118,6 +2135,28 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+         if (aarch64 && cpu_isar_feature(aa64_bti, cpu)) {
+             result->f.extra.arm.guarded = extract64(attrs, 50, 1); /* GP */
+         }
++        device = S1_attrs_are_device(result->cacheattrs.attrs);
 +    }
 +
 +    /*
-+     * If translation is disabled, then the default memory type is
-+     * Device(-nGnRnE) instead of Normal, which requires that alignment
-+     * be enforced.  Since this affects all ram, it is most efficient
-+     * to handle this during translation.
++     * Enable alignment checks on Device memory.
++     *
++     * Per R_XCHFJ, this check is mis-ordered. The correct ordering
++     * for alignment, permission, and stage 2 faults should be:
++     *    - Alignment fault caused by the memory type
++     *    - Permission fault
++     *    - A stage 2 fault on the memory access
++     * but due to the way the TCG softmmu TLB operates, we will have
++     * implicitly done the permission check and the stage2 lookup in
++     * finding the TLB entry, so the alignment check cannot be done sooner.
++     *
++     * In v7, for a CPU without the Virtualization Extensions this
++     * access is UNPREDICTABLE; we choose to make it take the alignment
++     * fault as is required for a v7VE CPU. (QEMU doesn't emulate any
++     * CPUs with ARM_FEATURE_LPAE but not ARM_FEATURE_V7VE anyway.)
 +     */
-+    if (sctlr & SCTLR_M) {
-+        /* Translation enabled: memory type in PTE via MAIR_ELx. */
-+        return false;
-+    }
-+    if (el < 2 && (arm_hcr_el2_eff(env) & (HCR_DC | HCR_VM))) {
-+        /* Stage 2 translation enabled: memory type in PTE. */
-+        return false;
-+    }
-+    return true;
-+#endif
-+}
-+
- static CPUARMTBFlags rebuild_hflags_common(CPUARMState *env, int fp_el,
-                                            ARMMMUIdx mmu_idx,
-                                            CPUARMTBFlags flags)
-@@ -121,8 +150,9 @@ static CPUARMTBFlags rebuild_hflags_a32(CPUARMState *env, int fp_el,
- {
-     CPUARMTBFlags flags = {};
-     int el = arm_current_el(env);
-+    uint64_t sctlr = arm_sctlr(env, el);
- 
--    if (arm_sctlr(env, el) & SCTLR_A) {
-+    if (aprofile_require_alignment(env, el, sctlr)) {
-         DP_TBFLAG_ANY(flags, ALIGN_MEM, 1);
++    if (device) {
++        result->f.tlb_fill_flags |= TLB_CHECK_ALIGNED;
      }
  
-@@ -223,7 +253,7 @@ static CPUARMTBFlags rebuild_hflags_a64(CPUARMState *env, int el, int fp_el,
- 
-     sctlr = regime_sctlr(env, stage1);
- 
--    if (sctlr & SCTLR_A) {
-+    if (aprofile_require_alignment(env, el, sctlr)) {
-         DP_TBFLAG_ANY(flags, ALIGN_MEM, 1);
-     }
- 
+     /*
 -- 
 2.34.1
 
