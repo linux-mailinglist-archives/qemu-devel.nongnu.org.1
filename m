@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B21598718BC
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 09:59:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 105118718BE
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 09:59:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhQdg-0003tJ-UN; Tue, 05 Mar 2024 03:59:08 -0500
+	id 1rhQdk-0003vB-7D; Tue, 05 Mar 2024 03:59:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rhQdd-0003rv-TH
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 03:59:05 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1rhQdg-0003tr-WA
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 03:59:09 -0500
+Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rhQda-0003eX-Th
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 03:59:05 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1dbd32cff0bso45842135ad.0
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 00:59:02 -0800 (PST)
+ id 1rhQdf-0003gm-Gb
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 03:59:08 -0500
+Received: by mail-oi1-x229.google.com with SMTP id
+ 5614622812f47-3c1ea5e54d3so1208279b6e.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 00:59:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709629141; x=1710233941;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709629146; x=1710233946;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=41HOhmfFzvzHUWDzT1tLGC+0kqqS1QTmSsIo/CJC9aw=;
- b=gTtgVVLc2iwUZWKKFnuz0bydQOTsdACWA69S2teEQ5tVNyqGR0rBK0c1cXRb5goASK
- 0nikpL8K7RZQF8ikX5Bthkq2aItDA6ZRecS0SehUycJXDc0E+fBbLCqnLjE/qGuJvaNz
- ZZDEOIzPHHyDuuyQOxMX7Nlcj9rI0EUNVQwBV9BSqnK2yMzLKv/8277VRGGPCUIivLG6
- HAoqBmEQBoZHNGn4Y6HNweaHnBLQ04x6afAMtBTNU9/0dAMSppWhGHjJwT4wFf7na35Z
- ieNtW2JnprStcfPHEBebSSSRJEhlkz8mj7wIo2urVKwqBCZqkK1hAruHk1nVfKUkJ5Sf
- UK0A==
+ :reply-to; bh=cIQOQVYqY0DEobqSlWtvEDM6sg4WeMXNv2XNh/AB3Us=;
+ b=rlc+2hnse5zsfJQ69VSNIyp8t0NgMiBUK/0gVH0JmlmlvTgHTkNHwwV1obuwbvlHmW
+ O29QVl0FQWcQBbRhGSFhRBaB1VPRfY+4ZGzBuNUkEp8OZJ8um4cJpxVpESVopOeEkgMV
+ cgFATlkie/eK3W52uQp1Fc4c88s5HYYwA/aJa21RBVH49XtW7J8nwKAAfKwVdeHLHTkB
+ 65wxjBXfUaZU1sHHV72P84pKVWr+d3463mMrLVwEEazwRkGlcsZoV3HM0BaDMmXOcgUg
+ +B/Qxm7jTczta7bJZbB9thuv+5t9tTT2Vj+jVciZ77+LospJjXeJ7XMtot9ND0IKYxqO
+ s2kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709629141; x=1710233941;
+ d=1e100.net; s=20230601; t=1709629146; x=1710233946;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=41HOhmfFzvzHUWDzT1tLGC+0kqqS1QTmSsIo/CJC9aw=;
- b=MUnvKIkrFtw8qTl7MxddLoI96LY9bbnZlv2XktVJLZuPWKRp6BglJ1/vN6z9Qv2Y4D
- TwH5RP7F0QfjxJ43GX+Hz9MfZVzsFV33BcVC52lnrVClHFHbyVcqpd7NKXx+dY8qVB8p
- S4WPr2cDb2sFUGogrAtwE7fhVGm0B6DL7Mzn3jmsVO8+zgPMSgvj57xlQScjORtn8/lE
- yVI4z67pqFpIsUvGA4kh3qk3FXY4ZgYflI6zsuITkss5kGyrXiYrlrnTb/h5ry5M6VCr
- 2fd+I+YetirNbgnICyv8mcqp7+sk4HkYXSEtE9B6CUWBa64sP9xlxq7j9oyHsr3OL8Ib
- bsSw==
-X-Gm-Message-State: AOJu0Yy0OxWD+7mq9+c/O0sB5i6pDrbByeWzXgRUGnUylx8ZfAAsPNVt
- nVQBWr9IdP5vVJRJvlY7rsx+/fIvycNpXz3MG6yVGq5hGbzWJrJ0oZAZAYoZwdk=
-X-Google-Smtp-Source: AGHT+IGR2YzRjLxs4vKHJWgiJis2qudqTHhJ8QiUBQ3YaGqJTP++Zq1W3IpdBMbJ8yHv3NEAwjgnhA==
-X-Received: by 2002:a17:902:eb8f:b0:1db:ab9c:d33d with SMTP id
- q15-20020a170902eb8f00b001dbab9cd33dmr1561733plg.9.1709629141222; 
- Tue, 05 Mar 2024 00:59:01 -0800 (PST)
+ bh=cIQOQVYqY0DEobqSlWtvEDM6sg4WeMXNv2XNh/AB3Us=;
+ b=EsC6yiowJFjlN1Oa6LNxy3qrS/G+WLi2VIeZ9I3sntBCDygobN+mPfBKD9C3E86xnK
+ 5wcvpsz4UKn4z6AIfUafrX3c5DufwClOWaPk1/AJHPaWmPDkRvn6qr/+7CrlS7u25/1p
+ P8cldVAs+MxSU56UZZtMxBGSXksO24G5+qLSyGvy2Kf+sn8dFg3Whj0zvFRSW2X7VjHb
+ yOCbrO73Mg0FkifCxctbroJbPJYKm8nnf4wHjQq6Kon558ZAth+IVctF3kdIp/mXFM1R
+ in5Cbq4aJUQPlq2OKlUdg33TUwUk1BlWzgpMfZYUtmnVK4EYp81Pd84l9q50LkliNyWN
+ tCZA==
+X-Gm-Message-State: AOJu0YxtKcywdaf0JAeCAOaXE3tuLjub3HhA82slKc1VX4i57xV0cQsG
+ 5KyLIvckuLLpAbAwmMU9q/51T5DYpEfbx4pRxOFuaCbsBcaxKUZTItD4r2KcLe4=
+X-Google-Smtp-Source: AGHT+IHaEIXxVTn9V25tFDYy8qk2ZpPmEsmn/nkR3cjZFqkRYTgQbxZsAqb9CliQHK1PYJDM9gRTwQ==
+X-Received: by 2002:a05:6808:2186:b0:3c1:e699:4cc0 with SMTP id
+ be6-20020a056808218600b003c1e6994cc0mr1595758oib.7.1709629146527; 
+ Tue, 05 Mar 2024 00:59:06 -0800 (PST)
 Received: from localhost ([157.82.203.206])
  by smtp.gmail.com with UTF8SMTPSA id
- u11-20020a170903124b00b001dc01efaec2sm9959404plh.168.2024.03.05.00.58.58
+ q12-20020a63504c000000b005df58c83e89sm8716599pgl.84.2024.03.05.00.59.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Mar 2024 00:59:00 -0800 (PST)
+ Tue, 05 Mar 2024 00:59:06 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Tue, 05 Mar 2024 17:58:48 +0900
-Subject: [PATCH RFC v3 1/6] hw/pci: Do not add ROM BAR for SR-IOV VF
+Date: Tue, 05 Mar 2024 17:58:49 +0900
+Subject: [PATCH RFC v3 2/6] pcie_sriov: Ensure PF and VF are mutually exclusive
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240305-sriov-v3-1-abdb75770372@daynix.com>
+Message-Id: <20240305-sriov-v3-2-abdb75770372@daynix.com>
 References: <20240305-sriov-v3-0-abdb75770372@daynix.com>
 In-Reply-To: <20240305-sriov-v3-0-abdb75770372@daynix.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
@@ -79,8 +79,8 @@ Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
  Yui Washizu <yui.washidu@gmail.com>, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::631;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x631.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::229;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x229.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -102,33 +102,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A SR-IOV VF cannot have a ROM BAR.
+A device cannot be a SR-IOV PF and a VF at the same time.
 
-Co-developed-by: Yui Washizu <yui.washidu@gmail.com>
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/pci/pci.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ hw/pci/pcie_sriov.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index cb5ac46e9f27..201ff64e11cc 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -2359,6 +2359,14 @@ static void pci_add_option_rom(PCIDevice *pdev, bool is_default_rom,
-         return;
-     }
+diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
+index 09a53ed30027..aac12e70f122 100644
+--- a/hw/pci/pcie_sriov.c
++++ b/hw/pci/pcie_sriov.c
+@@ -41,6 +41,11 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
+     uint8_t *cfg = dev->config + offset;
+     uint8_t *wmask;
  
-+    if (pci_is_vf(pdev)) {
-+        if (pdev->rom_bar != UINT32_MAX) {
-+            error_setg(errp, "ROM BAR cannot be enabled for SR-IOV VF");
-+        }
-+
-+        return;
++    if (pci_is_vf(dev)) {
++        error_setg(errp, "a device cannot be a SR-IOV PF and a VF at the same time");
++        return false;
 +    }
 +
-     if (load_file || pdev->romsize == UINT32_MAX) {
-         path = qemu_find_file(QEMU_FILE_TYPE_BIOS, pdev->romfile);
-         if (path == NULL) {
+     pcie_add_capability(dev, PCI_EXT_CAP_ID_SRIOV, 1,
+                         offset, PCI_EXT_CAP_SRIOV_SIZEOF);
+     dev->exp.sriov_cap = offset;
 
 -- 
 2.44.0
