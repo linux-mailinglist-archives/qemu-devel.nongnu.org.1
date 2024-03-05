@@ -2,55 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B58C87169E
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 08:18:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89DF1871698
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 08:17:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhOw3-0001h0-RA; Tue, 05 Mar 2024 02:10:00 -0500
+	id 1rhOxx-0003bF-Pj; Tue, 05 Mar 2024 02:11:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rhOri-0004TQ-4m; Tue, 05 Mar 2024 02:05:30 -0500
-Received: from szxga06-in.huawei.com ([45.249.212.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rhOrg-00008L-Fz; Tue, 05 Mar 2024 02:05:29 -0500
-Received: from mail.maildlp.com (unknown [172.19.88.234])
- by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4Tpml30DlYz1vw5r;
- Tue,  5 Mar 2024 15:04:15 +0800 (CST)
-Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id B568D14037E;
- Tue,  5 Mar 2024 15:04:54 +0800 (CST)
-Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
- (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 5 Mar
- 2024 15:04:54 +0800
-To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
- <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
- <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
-CC: <ruanjinjie@huawei.com>
-Subject: [RFC PATCH v6 23/23] hw/arm/virt: Add FEAT_GICv3_NMI feature support
- in virt GIC
-Date: Tue, 5 Mar 2024 07:03:31 +0000
-Message-ID: <20240305070331.2151131-24-ruanjinjie@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240305070331.2151131-1-ruanjinjie@huawei.com>
-References: <20240305070331.2151131-1-ruanjinjie@huawei.com>
+ (Exim 4.90_1) (envelope-from <horenchuang@bytedance.com>)
+ id 1rhOwx-0003Or-LB
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:10:58 -0500
+Received: from mail-ua1-x92c.google.com ([2607:f8b0:4864:20::92c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <horenchuang@bytedance.com>)
+ id 1rhOwv-0001c7-34
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:10:55 -0500
+Received: by mail-ua1-x92c.google.com with SMTP id
+ a1e0cc1a2514c-7db241b1e0cso1136158241.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 23:10:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1709622650; x=1710227450; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Y36f7posl7ZMNySYHsTNdos9pSPjUErfBNricXfxXss=;
+ b=B1bQ911OE0C0ddXUzOEFQkR5PQ66NLB6cLW3fkReZWYWBBkvKgTtEfGGwUfMMATi4W
+ tinG4R7fCs63jgUNd/nimD1BWRMikisHqtGEx32zQ7XSg3yZDEw5Mo0uHlP2b7Ve26EB
+ gKUbzstcdYg3uIf7TWdAE5E1ghj900s3MC7Aqp0v6IVOoFKODElelJMneY9WxuuIj1/C
+ Z8u8qjYGHkJ417bfp/VdA+25mGLVFljjofvVm8LZJnknf89H+1HqZqMyw2ArBd0J4gGu
+ IiPfczDAI0+xHIVrSJNEXrk6SsAAfdlLfDPwEg3tbv1+iipqtxDGr7VzOj1GmXoZkXRV
+ yRAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709622650; x=1710227450;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Y36f7posl7ZMNySYHsTNdos9pSPjUErfBNricXfxXss=;
+ b=ca7WRKnmjT4jAUx8kOae7UoJxQpDXyhgYl5oIHvz7bkSNEj9oWklHsWitsLIqBwAKJ
+ DrrnPMoJ8l2yNgGYO2jJnkeG5Finc+TdWpKoS7i8Zu8fkGxi0XYh0G1cxiSfYrT1UIm4
+ rDz4qazlwXcrGoVVkbx2cy0CQ2cDEAlWeYXK9i0+0x/VQW5pr84raabNR3xqWhJ4RgPa
+ xqPlr01Sv19aovfh+1bo7eLW7gLpTwwELGbhWmR40zXLcccRUiigyiYfBIAi/2ihk4iZ
+ KOsYAX3tmsvuwrxMqzaQN9ZDe7OVOf7DT+QyFYeckiwhRGnfpQJ7t4LfuHIVMKPNcea1
+ GYDw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVNMZz64sLC1ZJ+QOjVBsz0dM6ivxLA89MPrJQPZ69xWYFEOkug8OHt/o1zea97i5HNSqm9QFL4ByzukptfZJJBnLuTAYQ=
+X-Gm-Message-State: AOJu0YxhDN7ls8HbC/jHl8q9TdDNsMtefi8Ufr75Sg15vhR2jMZaqx0a
+ geZZKuCH0BPJ2UHNOj0ehtnORvEzZMKyyJ4pCYKmR1GgzKE9zNFIUwaArP3oKRnGCF8rp2A/97Y
+ xfS/MtolO4wH7lg9OaqM8eTYHFHJGFtQkWdxD8w==
+X-Google-Smtp-Source: AGHT+IE7ZWEURNC7vMd05rp6rJaZD8Db0t4zZRyqV8oa+Hv15rpZuLuTzski8EfVy0sAWkUwbXcMNnQVkDKF9+6ak1A=
+X-Received: by 2002:a05:6102:160b:b0:471:c414:83b5 with SMTP id
+ cu11-20020a056102160b00b00471c41483b5mr1203643vsb.18.1709622650347; Mon, 04
+ Mar 2024 23:10:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.174.55]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemi500008.china.huawei.com (7.221.188.139)
-Received-SPF: pass client-ip=45.249.212.32; envelope-from=ruanjinjie@huawei.com;
- helo=szxga06-in.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20240301082248.3456086-1-horenchuang@bytedance.com>
+ <87frx6btqp.fsf@yhuang6-desk2.ccr.corp.intel.com>
+ <CAKPbEqr-0yPDW7qps24vJgVCtVOGy_Jm4kcc0FKUsL3d9APDsw@mail.gmail.com>
+ <87h6hl9og3.fsf@yhuang6-desk2.ccr.corp.intel.com>
+In-Reply-To: <87h6hl9og3.fsf@yhuang6-desk2.ccr.corp.intel.com>
+From: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
+Date: Mon, 4 Mar 2024 23:10:39 -0800
+Message-ID: <CAKPbEqpVSsva3P2mEs5LThJZVO12u6nxuDA4KJOEhKNY811-hw@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v1 0/1] Improved Memory Tier Creation for
+ CPUless NUMA Nodes
+To: "Huang, Ying" <ying.huang@intel.com>
+Cc: Gregory Price <gourry.memverge@gmail.com>, aneesh.kumar@linux.ibm.com,
+ mhocko@suse.com, 
+ tj@kernel.org, john@jagalactic.com, Eishan Mirakhur <emirakhur@micron.com>, 
+ Vinicius Tavares Petrucci <vtavarespetr@micron.com>,
+ Ravis OpenSrc <Ravis.OpenSrc@micron.com>, 
+ Alistair Popple <apopple@nvidia.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Dave Jiang <dave.jiang@intel.com>, 
+ Dan Williams <dan.j.williams@intel.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ "Ho-Ren (Jack) Chuang" <horenc@vt.edu>,
+ "Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>, linux-cxl@vger.kernel.org, 
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92c;
+ envelope-from=horenchuang@bytedance.com; helo=mail-ua1-x92c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,67 +103,79 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jinjie Ruan <ruanjinjie@huawei.com>
-From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A PE that implements FEAT_NMI and FEAT_GICv3 also implements
-FEAT_GICv3_NMI. A PE that does not implement FEAT_NMI, does not implement
-FEAT_GICv3_NMI
+On Mon, Mar 4, 2024 at 10:36=E2=80=AFPM Huang, Ying <ying.huang@intel.com> =
+wrote:
+>
+> "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com> writes:
+>
+> > On Sun, Mar 3, 2024 at 6:47=E2=80=AFPM Huang, Ying <ying.huang@intel.co=
+m> wrote:
+> >>
+> >> "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com> writes:
+> >>
+> >> > The memory tiering component in the kernel is functionally useless f=
+or
+> >> > CPUless memory/non-DRAM devices like CXL1.1 type3 memory because the=
+ nodes
+> >> > are lumped together in the DRAM tier.
+> >> > https://lore.kernel.org/linux-mm/PH0PR08MB7955E9F08CCB64F23963B5C3A8=
+60A@PH0PR08MB7955.namprd08.prod.outlook.com/T/
+> >>
+> >> I think that it's unfair to call it "useless".  Yes, it doesn't work i=
+f
+> >> the CXL memory device are not enumerate via drivers/dax/kmem.c.  So,
+> >> please be specific about in which cases it doesn't work instead of too
+> >> general "useless".
+> >>
+> >
+> > Thank you and I didn't mean anything specific. I simply reused phrases
+> > we discussed
+> > earlier in the previous patchset. I will change them to the following i=
+n v2:
+> > "At boot time, current memory tiering assigns all detected memory nodes
+> > to the same DRAM tier. This results in CPUless memory/non-DRAM devices,
+> > such as CXL1.1 type3 memory, being unable to be assigned to the
+> > correct memory tier,
+> > leading to the inability to migrate pages between different types of me=
+mory."
+> >
+> > Please see if this looks more specific.
+>
+> I don't think that the description above is accurate.  In fact, there
+> are 2 ways to enumerate the memory device,
+>
+> 1. Mark it as reserved memory (E820_TYPE_SOFT_RESERVED, etc.) in E820
+>    table or something similar.
+>
+> 2. Mark it as normal memory (E820_TYPE_RAM) in E820 table or something
+>    similar
+>
+> For 1, the memory device (including CXL memory) is onlined via
+> drivers/dax/kmem.c, so will be put in proper memory tiers.  For 2, the
+> memory device is indistinguishable with normal DRAM with current
+> implementation.  And this is what this patch is working on.
+>
+> Right?
 
-So included support FEAT_GICv3_NMI feature as part of virt platform
-GIC initialization if FEAT_NMI and FEAT_GICv3 supported.
+Good point! How about this?:
+"
+When a memory device, such as CXL1.1 type3 memory, is emulated as
+normal memory (E820_TYPE_RAM), the memory device is indistinguishable
+from normal DRAM in terms of memory tiering with the current implementation=
+.
+The current memory tiering assigns all detected normal memory nodes
+to the same DRAM tier. This results in normal memory devices with
+different attributions being unable to be assigned to the correct memory ti=
+er,
+leading to the inability to migrate pages between different types of memory=
+.
+"
 
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
-v4:
-- Add Reviewed-by.
-v3:
-- Adjust to be the last after add FEAT_NMI to max.
-- Check whether support FEAT_NMI and FEAT_GICv3 for FEAT_GICv3_NMI.
----
- hw/arm/virt.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
-
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 2d4a187fd5..c12307ccd9 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -712,6 +712,19 @@ static void create_v2m(VirtMachineState *vms)
-     vms->msi_controller = VIRT_MSI_CTRL_GICV2M;
- }
- 
-+/*
-+ * A PE that implements FEAT_NMI and FEAT_GICv3 also implements
-+ * FEAT_GICv3_NMI. A PE that does not implement FEAT_NMI, does not implement
-+ * FEAT_GICv3_NMI.
-+ */
-+static bool gicv3_nmi_present(VirtMachineState *vms)
-+{
-+    ARMCPU *cpu = ARM_CPU(qemu_get_cpu(0));
-+
-+    return cpu_isar_feature(aa64_nmi, cpu) &&
-+           (vms->gic_version != VIRT_GIC_VERSION_2);
-+}
-+
- static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
- {
-     MachineState *ms = MACHINE(vms);
-@@ -785,6 +798,11 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
-                               vms->virt);
-         }
-     }
-+
-+    if (gicv3_nmi_present(vms)) {
-+        qdev_prop_set_bit(vms->gic, "has-nmi", true);
-+    }
-+
-     gicbusdev = SYS_BUS_DEVICE(vms->gic);
-     sysbus_realize_and_unref(gicbusdev, &error_fatal);
-     sysbus_mmio_map(gicbusdev, 0, vms->memmap[VIRT_GIC_DIST].base);
--- 
-2.34.1
-
+--
+Best regards,
+Ho-Ren (Jack) Chuang
+=E8=8E=8A=E8=B3=80=E4=BB=BB
 
