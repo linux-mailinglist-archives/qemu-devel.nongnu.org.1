@@ -2,86 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1722F872329
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 16:52:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EA62872336
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 16:53:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhX4x-0000uC-B1; Tue, 05 Mar 2024 10:51:43 -0500
+	id 1rhX6V-0002BX-La; Tue, 05 Mar 2024 10:53:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rhX4r-0000nk-3u
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 10:51:37 -0500
-Received: from mail-ot1-x336.google.com ([2607:f8b0:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rhX4p-0007Pf-59
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 10:51:36 -0500
-Received: by mail-ot1-x336.google.com with SMTP id
- 46e09a7af769-6e4e608a374so1094778a34.3
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 07:51:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709653893; x=1710258693; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=HUlAyjbs1PTV+vCUlXu3i4GjbGicSto1B6ION0v3BZo=;
- b=MdRvQu7A1r7hxgexbsyF2P5uw7UfJAmTWY20y3sLbtAsM5F0V0yCSOjCInFD7oxnwq
- 01dJ5d6tc9zQqy37jFegL0MKkJ3qpU6EYFLC5nArAmS+teMR7dp7mg0m0ZoNMP6eZSFO
- ZnIwv5jyVl2Y5H+eJ7O3a+6MdM0OIfo+CQfbbqfFSQccM9Atq88YcHeZw2PRuyiL3152
- rxcndPJQwydvmu4aReHmwMsky+92aK68q2tiBtJaI19FC7rAcFyOa+ZZw1oKlDaxGKB1
- R7gEB77NvpcQqQpOLYIQAwe/Eezz06MhACqUQNQQCOzAKrwMAG5bJiQvcFClf1OW3muR
- jN6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709653893; x=1710258693;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HUlAyjbs1PTV+vCUlXu3i4GjbGicSto1B6ION0v3BZo=;
- b=HTGheTaurNx/cqNRXozIdVYivRyq4epZfNmWbRbMmsHFZ+Cigg5WkDrpDRs/NuXCOB
- ccgUCcMVMGP+i5bdJAaxDYcnFZ04x04owc402xGFuhQKXYlqfzGQjMgwpxOZkSEgl06J
- LTf3BRZlfMAS5Scg3XjcQUYpsVTd9QKP6jUMd5a/AqtA0gXtkSYoxVz8xkRWxpTbS7Vo
- ikVN1lEaz1tlcOrbPgA7RFsBqk6+4Pc5Ly70V6JCKU5t/o0uebKWGwC5xSPJvbsDVaaA
- 5EK5+kYbZeMVNxnPUTJpCxEqCAyZiSsNDKLA5e8PjD0NmKP8FADo8OTJI75SKJYSKzVp
- WqsA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVlDwbKegrIqJtPW47OPPB5THBwaODDHRkJ0DPZVJ/b+cU4lc/wBQwM1bwRy/1qHpxzzasll0K3nDj8yv8iTY3sHrcDTrs=
-X-Gm-Message-State: AOJu0YxLJvl0teITJ5q03E5BQuGPAQwuymzr//AAbU28LL35FhKyYkzk
- lzYM83NNSqwOedJyeyiAT9v5r1x59nRnVWwdrqnUCSL4TxZ1j2H2HsQDbRBffes=
-X-Google-Smtp-Source: AGHT+IHRHZkQ4IvZYLFMf3SYHF8rnXKm7BoWaYEOTNxnyVR6KJSpHcENQlCk5V2QkCA2lhqEnLyrrA==
-X-Received: by 2002:a05:6830:1002:b0:6e4:f67f:9d46 with SMTP id
- a2-20020a056830100200b006e4f67f9d46mr2167797otp.31.1709653893146; 
- Tue, 05 Mar 2024 07:51:33 -0800 (PST)
-Received: from [192.168.6.128] (098-147-055-211.res.spectrum.com.
- [98.147.55.211]) by smtp.gmail.com with ESMTPSA id
- b22-20020a63cf56000000b005dc884e9f5bsm9470022pgj.38.2024.03.05.07.51.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Mar 2024 07:51:32 -0800 (PST)
-Message-ID: <cdd286d6-2986-4c2c-8785-dc311b71e4fd@linaro.org>
-Date: Tue, 5 Mar 2024 05:51:28 -1000
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rhX5o-0001n3-CU; Tue, 05 Mar 2024 10:52:37 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rhX5l-0007X6-8k; Tue, 05 Mar 2024 10:52:36 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Tq0Lw2dv5z6J67f;
+ Tue,  5 Mar 2024 23:47:36 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id 27DA9140F92;
+ Tue,  5 Mar 2024 23:52:20 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 5 Mar
+ 2024 15:52:19 +0000
+Date: Tue, 5 Mar 2024 15:52:18 +0000
+To: Thomas Huth <thuth@redhat.com>
+CC: <qemu-devel@nongnu.org>, Fan Ni <fan.ni@samsung.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ <qemu-trivial@nongnu.org>
+Subject: Re: [PATCH 3/3] hw/mem/cxl_type3: Fix problem with g_steal_pointer()
+Message-ID: <20240305155218.00000c00@Huawei.com>
+In-Reply-To: <4f6e1748-a917-4b2b-847d-fbfe04a3e43e@redhat.com>
+References: <20240304104406.59855-1-thuth@redhat.com>
+ <20240304104406.59855-4-thuth@redhat.com>
+ <20240304151037.00000f6c@Huawei.com>
+ <4f6e1748-a917-4b2b-847d-fbfe04a3e43e@redhat.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/arm: Fix 32-bit SMOPA
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-stable@nongnu.org
-References: <20240305023116.234256-1-richard.henderson@linaro.org>
- <fa8f1d52-f88d-4107-abfa-fa10ebef511c@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <fa8f1d52-f88d-4107-abfa-fa10ebef511c@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::336;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x336.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,25 +66,76 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/4/24 23:19, Philippe Mathieu-Daudé wrote:
->> +        uint32_t *za_row = &za[H4(tile_vslice_index(row))];
->> +        uint32_t n = zn[H4(row)];
->> +
->> +        for (col = 0; col < oprsz; ++col) {
->> +            uint8_t pb = pm[H1(col >> 1)] >> ((col & 1) * 4);
->> +            uint32_t *a = &za_row[col];
-> 
-> Shouldn't this be:
-> 
->                uint32_t *a = &za_row[H4(col)];
-> 
-> to work on big endian hosts?
+On Tue, 5 Mar 2024 08:27:52 +0100
+Thomas Huth <thuth@redhat.com> wrote:
 
-Oof.  Yes, the H4 adjustment belongs here, not on za_row above.
+> On 04/03/2024 16.10, Jonathan Cameron wrote:
+> > On Mon,  4 Mar 2024 11:44:06 +0100
+> > Thomas Huth <thuth@redhat.com> wrote:
+> >  =20
+> >> When setting GLIB_VERSION_MAX_ALLOWED to GLIB_VERSION_2_58 or higher,
+> >> glib adds type safety checks to the g_steal_pointer() macro. This
+> >> triggers errors in the ct3_build_cdat_entries_for_mr() function which
+> >> uses the g_steal_pointer() for type-casting from one pointer type to
+> >> the other (which also looks quite weird since the local pointers have
+> >> all been declared with g_autofree though they are never freed here).
+> >> Fix it by using a proper typecast instead. For making this possible, we
+> >> have to remove the QEMU_PACKED attribute from some structs since GCC
+> >> otherwise complains that the source and destination pointer might
+> >> have different alignment restrictions. Removing the QEMU_PACKED should
+> >> be fine here since the structs are already naturally aligned. Anyway,
+> >> add some QEMU_BUILD_BUG_ON() statements to make sure that we've got
+> >> the right sizes (without padding in the structs). =20
+> >=20
+> > I missed these as well when getting rid of the false handling
+> > of failure of g_new0 calls.
+> >=20
+> > Another alternative would be to point to the head structures rather
+> > than the containing structure - would avoid need to cast.
+> > That might be neater?  Should I think also remove the alignment
+> > question? =20
+>=20
+> I gave it a try, but it does not help against the alignment issue, I stil=
+l get:
+>=20
+> ../../devel/qemu/hw/mem/cxl_type3.c: In function=20
+> =E2=80=98ct3_build_cdat_entries_for_mr=E2=80=99:
+> ../../devel/qemu/hw/mem/cxl_type3.c:138:34: error: taking address of pack=
+ed=20
+> member of =E2=80=98struct CDATDsmas=E2=80=99 may result in an unaligned p=
+ointer value=20
+> [-Werror=3Daddress-of-packed-member]
+>    138 |     cdat_table[CT3_CDAT_DSMAS] =3D &dsmas->header;
+>        |                                  ^~~~~~~~~~~~~~
+>=20
+>  From my experience, it's better anyway to avoid __attribute__((packed)) =
+on=20
+> structures unless it is really really required. At least we should avoid =
+it=20
+> as good as possible as long as we still support running QEMU on Sparc hos=
+ts=20
+> (that don't support misaligned memory accesses), since otherwise you can =
+end=20
+> up with non-working code there, see e.g.:
+>=20
+>   https://www.mail-archive.com/qemu-devel@nongnu.org/msg439899.html
+>=20
+> or:
+>=20
+>   https://gitlab.com/qemu-project/qemu/-/commit/cb89b349074310ff9eb7ebe18a
+>=20
+> Thus I'd rather prefer to keep this patch as it is right now.
+>=20
+>   Thomas
+Fair enough.
 
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-r~
+>=20
+
 
