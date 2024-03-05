@@ -2,142 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 039888718B6
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 09:55:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7AA18718BD
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 09:59:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhQZq-0001X7-M1; Tue, 05 Mar 2024 03:55:14 -0500
+	id 1rhQdg-0003sv-2v; Tue, 05 Mar 2024 03:59:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rhQZY-0001Nu-UI
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 03:54:54 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rhQZW-0002q9-Rp
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 03:54:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709628877;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=UZ7cGQ6aNgJiDW0t9XZPqroLWjmdkKEgenu5r3YHQmc=;
- b=BuQ1wd9iiHLiZ8nce6rvBSGGztbsWt41HKhj7C7wUqCFMWtx/Gt2I/mjhhCBMYCbjma3Zf
- iqgXPgzk4yDzmeEoWKxiBc78sivJFD4LNgVpJEJ3313MLjCAszOg5mENA03tT1aEYXq7Qs
- t8JuPfKSuDjOld/G4aeU2uQbvNWaeEc=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-60-lSJQ1XkTPL2M6WaZ5yMj7w-1; Tue, 05 Mar 2024 03:54:35 -0500
-X-MC-Unique: lSJQ1XkTPL2M6WaZ5yMj7w-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-68facaf1c37so5819336d6.2
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 00:54:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rhQdY-0003p9-4w
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 03:59:01 -0500
+Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rhQdW-0003dm-3a
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 03:58:59 -0500
+Received: by mail-oi1-x233.google.com with SMTP id
+ 5614622812f47-3bd4e6a7cb0so3770037b6e.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 00:58:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709629136; x=1710233936;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ltmKqY+QtMpbNr0sEUs4FH5jNTa+S9Tk/LCR0SpaBRo=;
+ b=df2Ejy66dS43u0bcHuXfQ08s/bOOPkyy4hTYQ5K8V+eM0DZOjnHBtsWJZX0uCFsRi7
+ AyactJ5/YZeBw1rVhYfgs3s646zLSAWq4tMGrIQmxtmZrx8kzXHp6jVVAim2D/cfSnlB
+ 2w+PeMBFwrd4fKsJqUkIgi80eBXu1ihrg+RxplwkkDAr3YTSFlcCA6o1z5J7Iz6Cqo0n
+ oNxhgfHEKqspRjWLVQzzzgw7wOLnMk8CzAjuUPjNv1t9gxP2lNGbAlJLZYkdC06tt5mf
+ MPG9DFP3GI0h5X9pprwT8H5Gf2qvN727EQNcC64rn+Onn9G7RYzFYEQcES9Ssnib/NjR
+ d1dQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709628875; x=1710233675;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UZ7cGQ6aNgJiDW0t9XZPqroLWjmdkKEgenu5r3YHQmc=;
- b=WdjNHYzFn681TOKvQ9SUjf9DlEAbPcFC2JnwlLRdfeI9juiindtKYh5zHnkw6QJhPU
- waRdy1Na8/6xLcvhfrk+1qP+TjmQVOBGCZY1nHZ5J5JER9mHoekjLnws0g0h1XO5fffo
- bGPe1gyypI5AxbE1ag9rK6a2ApIuQV3W5nW0mNfa6vi+/dEYISHYm+U2dU3ukQ20FklN
- jFp+tLbgL2MzDGD96B9KCgCzV5+u/6gpLvClJUGTQfZsrJw8bwwqTKrEPQhlL9ogUK0d
- dD/wlwAk3KRSlHxoaHbCn8t8KQadkLSQAVeoCG7SWjcADnmuM3ElAx3wNlrNLW11kSjj
- V5jQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUxLl+/molkJiaoAPLFfd+XOjoq0IzmJoSTJTqbbeFaYeazFZ8H7oEXSIYmteMLvJA6cK25RgCFTThAiKVG3Hp8bgJf4Ao=
-X-Gm-Message-State: AOJu0Yw0JF/vET/+OTlGQPHBYGLm/woFtl3Q5DiYIaEZddo6QDuWd5Np
- 3gm+GQ66Gpii2gSoiRb5H5ba4Ur+qexiSaJrWr51GG/PaZwTwZkhljYqgr8PuwRrqC7gYUA2E0r
- /Rq28Wz+/26mXeNotNLGF0dH4UJkXu/pxiDdN7HPG8nOKqVXJSa+X
-X-Received: by 2002:ad4:444b:0:b0:68f:3a7b:acde with SMTP id
- l11-20020ad4444b000000b0068f3a7bacdemr1076637qvt.41.1709628875301; 
- Tue, 05 Mar 2024 00:54:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHNaL0OVeDCK2s2GmC7cc4euVAhrzQwlBVEDraGbaEYTuGzkxvs/HdbYkQolohF81DcSj3VYw==
-X-Received: by 2002:ad4:444b:0:b0:68f:3a7b:acde with SMTP id
- l11-20020ad4444b000000b0068f3a7bacdemr1076627qvt.41.1709628875064; 
- Tue, 05 Mar 2024 00:54:35 -0800 (PST)
-Received: from [192.168.0.9] (ip-109-43-178-243.web.vodafone.de.
- [109.43.178.243]) by smtp.gmail.com with ESMTPSA id
- ow15-20020a0562143f8f00b0069046d929a3sm5929823qvb.145.2024.03.05.00.54.31
+ d=1e100.net; s=20230601; t=1709629136; x=1710233936;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ltmKqY+QtMpbNr0sEUs4FH5jNTa+S9Tk/LCR0SpaBRo=;
+ b=dKTp7vLutgKt7ibMpg+a5C4lTmfjwO2MjO2mg1nArBoYjrYREO/VohCmxBeDaDSQ1X
+ N3a33t6I8ZWbeHkz5v2sCXwxdN7irYo2r0wK040IIlLWUsX6F5ZqLgprWTbmc4hCrK4c
+ rE+fmv9HXNnZA5SnN1h/GZL1+P3LVmai8IT27FleaskhYGXQVtw0N4Y3W92TrsUzxGlY
+ ku4/DQmVTg+SOOTT948FMYdeuhsfWgb7P/JBVbMxE9oJJA1JAzLIfUtU6RnM8C1OsvTC
+ H7LzLR+zPXZim10Mdu2ajEQ+M3H9R0bHSgInrSF0htxBRolwphSvr8118/d8kLp80GRm
+ KMBA==
+X-Gm-Message-State: AOJu0Ywp/O+yPbg4jlN1ZLjDL09FidrwmPCxS2byQjDiES3BHvM0tdqc
+ yqO+BNzxdxTep670fLzYuaGOspfQv/Ilo2R18ORRZf808hVVn2vaqWwOlEImKO4=
+X-Google-Smtp-Source: AGHT+IGADbWzEP9bLqUcXMb7OPc5uz2fvGuL9+ttDS93Y7UHZQW3cpBM/CeFVRqf2iOkS9MVvKLlNg==
+X-Received: by 2002:a05:6808:7cf:b0:3c1:6049:d676 with SMTP id
+ f15-20020a05680807cf00b003c16049d676mr1047687oij.36.1709629135829; 
+ Tue, 05 Mar 2024 00:58:55 -0800 (PST)
+Received: from localhost ([157.82.203.206])
+ by smtp.gmail.com with UTF8SMTPSA id
+ p19-20020a63f453000000b005dc4fc80b21sm8764456pgk.70.2024.03.05.00.58.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Mar 2024 00:54:34 -0800 (PST)
-Message-ID: <4eddc6e3-8abb-42a9-835d-804a7da8b33f@redhat.com>
-Date: Tue, 5 Mar 2024 09:54:30 +0100
+ Tue, 05 Mar 2024 00:58:55 -0800 (PST)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH RFC v3 0/6] virtio-net: add support for SR-IOV emulation
+Date: Tue, 05 Mar 2024 17:58:47 +0900
+Message-Id: <20240305-sriov-v3-0-abdb75770372@daynix.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 12/26] migration: Add Error** argument to .save_setup()
- handler
-Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Markus Armbruster <armbru@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, Halil Pasic
- <pasic@linux.ibm.com>, Eric Blake <eblake@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- John Snow <jsnow@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
-References: <20240304122844.1888308-1-clg@redhat.com>
- <20240304122844.1888308-13-clg@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
- yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
- 4CflIyFqjCpfDM4MuTmzTjXq4Uov1giGE9X6viNo1pxyEpd7PanlKNnf4PqEQp06X4IgUacW
- tSGj6Gcns1bCuHV8OPWLkf4hkRnu8hdL6i60Yxz4E6TqlrpxsfYwLXgEeswPHOA6Mn4Cso9O
- 0lewVYfFfsmokfAVMKWzOl1Sr0KGI5T9CpmRfAiSHpthhHWnECcJFwl72NTi6kUcUzG4se81
- O6n9d/kTj7pzTmBdfwuOZ0YUSqcqs0W+l1NcASSYZQaDoD3/SLk+nqVeCBB4OnYOGhgmIHNW
- 0CwMRO/GK+20alxzk//V9GmIM2ACElbfF8+Uug3pqiHkVnKqM7W9/S1NH2qmxB6zMiJUHlTH
- gnVeZX0dgH27mzstcF786uPcdEqS0KJuxh2kk5IvUSL3Qn3ZgmgdxBMyCPciD/1cb7/Ahazr
- 3ThHQXSHXkH/aDXdfLsKVuwDzHLVSkdSnZdt5HHh75/NFHxwaTlydgfHmFFwodK8y/TjyiGZ
- zg2Kje38xnz8zKn9iesFBCcONXS7txENTzX0z80WKBhK+XSFJwARAQABzR5UaG9tYXMgSHV0
- aCA8dGh1dGhAcmVkaGF0LmNvbT7CwXgEEwECACIFAlVgX6oCGwMGCwkIBwMCBhUIAgkKCwQW
- AgMBAh4BAheAAAoJEC7Z13T+cC21EbIP/ii9cvT2HHGbFRl8HqGT6+7Wkb+XLMqJBMAIGiQK
- QIP3xk1HPTsLfVG0ao4hy/oYkGNOP8+ubLnZen6Yq3zAFiMhQ44lvgigDYJo3Ve59gfe99KX
- EbtB+X95ODARkq0McR6OAsPNJ7gpEUzfkQUUJTXRDQXfG/FX303Gvk+YU0spm2tsIKPl6AmV
- 1CegDljzjycyfJbk418MQmMu2T82kjrkEofUO2a24ed3VGC0/Uz//XCR2ZTo+vBoBUQl41BD
- eFFtoCSrzo3yPFS+w5fkH9NT8ChdpSlbNS32NhYQhJtr9zjWyFRf0Zk+T/1P7ECn6gTEkp5k
- ofFIA4MFBc/fXbaDRtBmPB0N9pqTFApIUI4vuFPPO0JDrII9dLwZ6lO9EKiwuVlvr1wwzsgq
- zJTPBU3qHaUO4d/8G+gD7AL/6T4zi8Jo/GmjBsnYaTzbm94lf0CjXjsOX3seMhaE6WAZOQQG
- tZHAO1kAPWpaxne+wtgMKthyPLNwelLf+xzGvrIKvLX6QuLoWMnWldu22z2ICVnLQChlR9d6
- WW8QFEpo/FK7omuS8KvvopFcOOdlbFMM8Y/8vBgVMSsK6fsYUhruny/PahprPbYGiNIhKqz7
- UvgyZVl4pBFjTaz/SbimTk210vIlkDyy1WuS8Zsn0htv4+jQPgo9rqFE4mipJjy/iboDzsFN
- BFH7eUwBEAC2nzfUeeI8dv0C4qrfCPze6NkryUflEut9WwHhfXCLjtvCjnoGqFelH/PE9NF4
- 4VPSCdvD1SSmFVzu6T9qWdcwMSaC+e7G/z0/AhBfqTeosAF5XvKQlAb9ZPkdDr7YN0a1XDfa
- +NgA+JZB4ROyBZFFAwNHT+HCnyzy0v9Sh3BgJJwfpXHH2l3LfncvV8rgFv0bvdr70U+On2XH
- 5bApOyW1WpIG5KPJlDdzcQTyptOJ1dnEHfwnABEfzI3dNf63rlxsGouX/NFRRRNqkdClQR3K
- gCwciaXfZ7ir7fF0u1N2UuLsWA8Ei1JrNypk+MRxhbvdQC4tyZCZ8mVDk+QOK6pyK2f4rMf/
- WmqxNTtAVmNuZIwnJdjRMMSs4W4w6N/bRvpqtykSqx7VXcgqtv6eqoDZrNuhGbekQA0sAnCJ
- VPArerAZGArm63o39me/bRUQeQVSxEBmg66yshF9HkcUPGVeC4B0TPwz+HFcVhheo6hoJjLq
- knFOPLRj+0h+ZL+D0GenyqD3CyuyeTT5dGcNU9qT74bdSr20k/CklvI7S9yoQje8BeQAHtdV
- cvO8XCLrpGuw9SgOS7OP5oI26a0548M4KldAY+kqX6XVphEw3/6U1KTf7WxW5zYLTtadjISB
- X9xsRWSU+Yqs3C7oN5TIPSoj9tXMoxZkCIHWvnqGwZ7JhwARAQABwsFfBBgBAgAJBQJR+3lM
- AhsMAAoJEC7Z13T+cC21hPAQAIsBL9MdGpdEpvXs9CYrBkd6tS9mbaSWj6XBDfA1AEdQkBOn
- ZH1Qt7HJesk+qNSnLv6+jP4VwqK5AFMrKJ6IjE7jqgzGxtcZnvSjeDGPF1h2CKZQPpTw890k
- fy18AvgFHkVk2Oylyexw3aOBsXg6ukN44vIFqPoc+YSU0+0QIdYJp/XFsgWxnFIMYwDpxSHS
- 5fdDxUjsk3UBHZx+IhFjs2siVZi5wnHIqM7eK9abr2cK2weInTBwXwqVWjsXZ4tq5+jQrwDK
- cvxIcwXdUTLGxc4/Z/VRH1PZSvfQxdxMGmNTGaXVNfdFZjm4fz0mz+OUi6AHC4CZpwnsliGV
- ODqwX8Y1zic9viSTbKS01ZNp175POyWViUk9qisPZB7ypfSIVSEULrL347qY/hm9ahhqmn17
- Ng255syASv3ehvX7iwWDfzXbA0/TVaqwa1YIkec+/8miicV0zMP9siRcYQkyTqSzaTFBBmqD
- oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
- IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
- yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240304122844.1888308-13-clg@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 22
-X-Spam_score: 2.2
-X-Spam_bar: ++
-X-Spam_report: (2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.571,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMfe5mUC/12MywrCMBBFf0VmbSSZ2JcrQfAD3IqLpEnsLGwkk
+ dBS+u+GgKBuLtw7c84C0QayEQ6bBYJNFMmPucjtBvpBjXfLyOQOyFGKHCwG8ol1e45OY43atpB
+ /n8E6mornCpfzCW55HCi+fJiLO4ly+tMkwTiTqGXVcNdoUx+Nmkeadr1/FEXCL0zwD4YZ013V2
+ VbVxin3g63r+gbL22XI1wAAAA==
+To: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Alex Williamson <alex.williamson@redhat.com>, 
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, Jason Wang <jasowang@redhat.com>, 
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>, 
+ Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ 20240228-reuse-v8-0-282660281e60@daynix.com, 
+ Yui Washizu <yui.washidu@gmail.com>, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.12.3
+Received-SPF: none client-ip=2607:f8b0:4864:20::233;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x233.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -153,25 +104,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04/03/2024 13.28, Cédric Le Goater wrote:
-> The purpose is to record a potential error in the migration stream if
-> qemu_savevm_state_setup() fails. Most of the current .save_setup()
-> handlers can be modified to use the Error argument instead of managing
-> their own and calling locally error_report().
-> 
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
-> Cc: Halil Pasic <pasic@linux.ibm.com>
-> Cc: Thomas Huth <thuth@redhat.com>
-> Cc: Eric Blake <eblake@redhat.com>
-> Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> Cc: John Snow <jsnow@redhat.com>
-> Cc: Stefan Hajnoczi <stefanha@redhat.com>
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
-> ---
+Based-on: <20240228-reuse-v8-0-282660281e60@daynix.com>
+("[PATCH v8 00/15] hw/pci: SR-IOV related fixes and improvements")
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Introduction
+------------
+
+This series is based on the RFC series submitted by Yui Washizu[1].
+See also [2] for the context.
+
+This series enables SR-IOV emulation for virtio-net. It is useful
+to test SR-IOV support on the guest, or to expose several vDPA devices
+in a VM. vDPA devices can also provide L2 switching feature for
+offloading though it is out of scope to allow the guest to configure
+such a feature.
+
+The PF side code resides in virtio-pci. The VF side code resides in
+the PCI common infrastructure, but it is restricted to work only for
+virtio-net-pci because of lack of validation.
+
+User Interface
+--------------
+
+A user can configure a SR-IOV capable virtio-net device by adding
+virtio-net-pci functions to a bus. Below is a command line example:
+  -netdev user,id=n -netdev user,id=o
+  -netdev user,id=p -netdev user,id=q
+  -device pcie-root-port,id=b
+  -device virtio-net-pci,bus=b,addr=0x0.0x3,netdev=q,sriov-pf=f
+  -device virtio-net-pci,bus=b,addr=0x0.0x2,netdev=p,sriov-pf=f
+  -device virtio-net-pci,bus=b,addr=0x0.0x1,netdev=o,sriov-pf=f
+  -device virtio-net-pci,bus=b,addr=0x0.0x0,netdev=n,id=f
+
+The VFs specify the paired PF with "sriov-pf" property. The PF must be
+added after all VFs. It is user's responsibility to ensure that VFs have
+function numbers larger than one of the PF, and the function numbers
+have a consistent stride.
+
+Keeping VF instances
+--------------------
+
+A problem with SR-IOV emulation is that it needs to hotplug the VFs as
+the guest requests. Previously, this behavior was implemented by
+realizing and unrealizing VFs at runtime. However, this strategy does
+not work well for the proposed virtio-net emulation; in this proposal,
+device options passed in the command line must be maintained as VFs
+are hotplugged, but they are consumed when the machine starts and not
+available after that, which makes realizing VFs at runtime impossible.
+
+As an strategy alternative to runtime realization/unrealization, this
+series proposes to reuse the code to power down PCI Express devices.
+When a PCI Express device is powered down, it will be hidden from the
+guest but will be kept realized. This effectively implements the
+behavior we need for the SR-IOV emulation.
+
+Summary
+-------
+
+Patch 1 disables ROM BAR, which virtio-net-pci enables by default, for
+VFs.
+Patch 2 and 3 adds validations.
+Patch 4 adds user-created SR-IOV VF infrastructure.
+Patch 5 makes virtio-pci work as SR-IOV PF for user-created VFs.
+Patch 6 allows user to create SR-IOV VFs with virtio-net-pci.
+
+[1] https://patchew.org/QEMU/1689731808-3009-1-git-send-email-yui.washidu@gmail.com/
+[2] https://lore.kernel.org/all/5d46f455-f530-4e5e-9ae7-13a2297d4bc5@daynix.com/
+
+Co-developed-by: Yui Washizu <yui.washidu@gmail.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Changes in v3:
+- Rebased.
+- Link to v2: https://lore.kernel.org/r/20231210-sriov-v2-0-b959e8a6dfaf@daynix.com
+
+Changes in v2:
+- Changed to keep VF instances.
+- Link to v1: https://lore.kernel.org/r/20231202-sriov-v1-0-32b3570f7bd6@daynix.com
+
+---
+Akihiko Odaki (6):
+      hw/pci: Do not add ROM BAR for SR-IOV VF
+      pcie_sriov: Ensure PF and VF are mutually exclusive
+      pcie_sriov: Check PCI Express for SR-IOV PF
+      pcie_sriov: Allow user to create SR-IOV device
+      virtio-pci: Implement SR-IOV PF
+      virtio-net: Implement SR-IOV VF
+
+ include/hw/pci/pci_device.h |   6 +-
+ include/hw/pci/pcie_sriov.h |  19 +++
+ hw/pci/pci.c                |  70 +++++++----
+ hw/pci/pcie_sriov.c         | 299 +++++++++++++++++++++++++++++++++++---------
+ hw/virtio/virtio-net-pci.c  |   1 +
+ hw/virtio/virtio-pci.c      |   7 ++
+ 6 files changed, 319 insertions(+), 83 deletions(-)
+---
+base-commit: 2c4eb0476e461b8a4b2f745d25f987e831c7f640
+change-id: 20231202-sriov-9402fb262be8
+
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
