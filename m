@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E57F18720DD
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 14:54:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 116598720EB
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 14:55:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhVEm-0001DJ-J5; Tue, 05 Mar 2024 08:53:45 -0500
+	id 1rhVF2-0002Vw-R5; Tue, 05 Mar 2024 08:54:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhVDt-0000va-4Z
+ id 1rhVDs-0000vX-To
  for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:52:49 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhVDm-0005xD-Na
+ id 1rhVDm-0005xL-Ff
  for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:52:48 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-412ebda8772so5739195e9.3
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 05:52:41 -0800 (PST)
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-33e1207bba1so4538489f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 05:52:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709646760; x=1710251560; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709646761; x=1710251561; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=tz7e0axdRAsRzGQKByGesEJpVfUbUyDvuhdaeTdsD0U=;
- b=E+eMU5rQw/pSo0mUybSI7MEnUrJ1OREIoizoqPGXUU6HQ1czCik36e0AcmSjV/9x3/
- H61X577PV44i/WsgT8UPZs3C4lggTtwCE5qXNS0vrM+mCe+v1JtRvFgoQfWDeYTxowJF
- fxV+lBycJH1vGJFX+i2hVxPl/82b5uGl5vixa+oxCjABs5LJLWNPJ2r3TxpQWoz+M+dl
- y8Veb0NGGQfKzBg6pZ0KvVzeIidyOGTvwKQdV2CzOUFIialETcdCqTCZ+t+8AIpjqKYB
- lC5QrRDY0k0VQBwhJbXMxfdU/uomtokYzZYDJB6NsLmQXKFMLEpbvCxfisTGERmBTABW
- 99hA==
+ :reply-to; bh=uGzpyI9XVFpyvThOBaS71QfWPFb/RDXMpVkRqMA05YE=;
+ b=Yl29RtKkELLesXUUbkQE0aef3GfYs+BdON3/l/KX62P8UXBtgYPaBaGF75i0x6lF/H
+ f60lyxYOG6SItTcsqvEE58jZXD4JXEZmIXpKYD06VV0xpxUerEVMZ+UZYZe2Y5k/491o
+ geuGyh5d29Jq0ZOsb7tBejZY7OuEcv2RTjAktD5cm5BsZmqFbVSVfTQh0zHEpe0n4r2C
+ 3xZGnJpzCK2CJJS03K59S544rhmtYRBhe10dOmpViNfnNqhCO9VghCduKYWYTI7EwTBB
+ ufIXyft6lK7nPJrC0hRmYM70CnKwhmMl2EHifzwBeKjQtDqd6bx1cOVuY2i9v+E+OxPU
+ K5NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709646760; x=1710251560;
+ d=1e100.net; s=20230601; t=1709646761; x=1710251561;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tz7e0axdRAsRzGQKByGesEJpVfUbUyDvuhdaeTdsD0U=;
- b=FIux1pFvrxhJbBbqEFUQaA0ZYGUfTNBbvxYHGwLAvqz3OyJaY2C2ApPsgRQ7DcC0c/
- +dQnQQTYrNKHRw7VwH/2k65CSzM0AH/+jNQpSlTB5F8flnrdWNjeUXVEmnl482ixTl79
- 9sUgxnZslYe91fNkaG2MYfjmfORlGRqK9olLNYOqh7uYOX+uizt9GjELfcY8EkECvJot
- 3BXCLJAQJj3u10w4v+1qd3RDYpLNXd27gwet/ggVt0uesknYp0reVcfPF4KO/ef/T8cp
- fVL3Cgu5OkCx7iadBKKw56NGVsMuDwQ4RQqmeOenplLB+bZzChCQXNtAEOIc2k2/bTiG
- +7iQ==
-X-Gm-Message-State: AOJu0YxvamRkJHrNuZetW0mlNbOqT0RmfYCo4eo/GoCjjncKkPGIXmK9
- ZTB8eEd9TevTT+dZgCDuMtgld6BNHDGZAdjULnlFVPvxhzKFgAvU1wAWwVQBg33np/xFl6LS6i7
- 7
-X-Google-Smtp-Source: AGHT+IFP0lcLf6uV7kNSKmVZzdFHd4uE+otSmPKCJaNoji+QvPjUBYTzJ1By1ndT7yegsVfzmmUdLQ==
-X-Received: by 2002:adf:f6c7:0:b0:33d:dcd4:9d8f with SMTP id
- y7-20020adff6c7000000b0033ddcd49d8fmr8178037wrp.65.1709646760123; 
- Tue, 05 Mar 2024 05:52:40 -0800 (PST)
+ bh=uGzpyI9XVFpyvThOBaS71QfWPFb/RDXMpVkRqMA05YE=;
+ b=rsy/NbPp43uhc6sFzenwPKZbgzQMBPYuh+0QXqwgx2SUm3LV/c25fPKO8hY4jUj8GR
+ wdzSesUU7uDziFUdfJ9ignLoJun6CwrXhq3B3F36Th8jHbj5CVKGwBPa5/G4aJLYY0f8
+ sHDHW+DMZJO9J2y4UhX7Ro5WufKIL/+d5dBzUFjmcQVmaEAuBYH3W9msqWzykE7z0w7p
+ pvFMOtFHPHiwtXMHywNaBj84+CZx47Fyony0y0lS0/XzMIxM1HUB0Vk7VW4dYNkzE6Sy
+ T/A4FYaySvy9WVrswRqB+o4L8rtQs1tL2BNRR/g2/R0HW1hdPUkGIfnXPROEFRGx50zJ
+ 22Bg==
+X-Gm-Message-State: AOJu0YxVnCzjlxMG5/dSF1W4pfrt9DMxe/HQLDTVEv8QufZKt6iSGLpH
+ wdZIFIQP3dLtfRd6x3brxqnQHCVJGHraaSezVmDyyiFcqlZgknODq8NiuQZo6S/MWkdG9INrSER
+ g
+X-Google-Smtp-Source: AGHT+IF1tpbbhyrfDT7BQo/U8AM4lwnoAt54qWA/eR04pb5K6RWfmRdX7q891H9PSPPEcYxjp/9jHQ==
+X-Received: by 2002:adf:ec4f:0:b0:33e:3d71:445f with SMTP id
+ w15-20020adfec4f000000b0033e3d71445fmr4631228wrn.32.1709646761095; 
+ Tue, 05 Mar 2024 05:52:41 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- x3-20020a5d6503000000b0033e206a0a7asm11797532wru.26.2024.03.05.05.52.39
+ x3-20020a5d6503000000b0033e206a0a7asm11797532wru.26.2024.03.05.05.52.40
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Mar 2024 05:52:39 -0800 (PST)
+ Tue, 05 Mar 2024 05:52:40 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/20] tests/qtest: Add testcase for BCM2835 BSC
-Date: Tue,  5 Mar 2024 13:52:20 +0000
-Message-Id: <20240305135237.3111642-4-peter.maydell@linaro.org>
+Subject: [PULL 04/20] hw/char/pl011: Add support for loopback
+Date: Tue,  5 Mar 2024 13:52:21 +0000
+Message-Id: <20240305135237.3111642-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240305135237.3111642-1-peter.maydell@linaro.org>
 References: <20240305135237.3111642-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,155 +91,202 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Rayhan Faizel <rayhan.faizel@gmail.com>
+From: Tong Ho <tong.ho@amd.com>
 
-Simple testcase for validating proper operation of read and write for all
-three BSC controllers.
+This patch adds loopback for sent characters, sent BREAK,
+and modem-control signals.
 
-Signed-off-by: Rayhan Faizel <rayhan.faizel@gmail.com>
+Loopback of send and modem-control is often used for uart
+self tests in real hardware but missing from current pl011
+model, resulting in self-test failures when running in QEMU.
+
+This implementation matches what is observed in real pl011
+hardware placed in loopback mode:
+1. Input characters and BREAK events from serial backend
+   are ignored, but
+2. Both TX characters and BREAK events are still sent to
+   serial backend, in addition to be looped back to RX.
+
+Signed-off-by: Tong Ho <tong.ho@amd.com>
+Signed-off-by: Francisco Iglesias <francisco.iglesias@amd.com>
+Message-id: 20240227054855.44204-1-tong.ho@amd.com
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240224191038.2409945-4-rayhan.faizel@gmail.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/qtest/bcm2835-i2c-test.c | 115 +++++++++++++++++++++++++++++++++
- tests/qtest/meson.build        |   2 +-
- 2 files changed, 116 insertions(+), 1 deletion(-)
- create mode 100644 tests/qtest/bcm2835-i2c-test.c
+ hw/char/pl011.c | 110 +++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 108 insertions(+), 2 deletions(-)
 
-diff --git a/tests/qtest/bcm2835-i2c-test.c b/tests/qtest/bcm2835-i2c-test.c
-new file mode 100644
-index 00000000000..513ecce61dc
---- /dev/null
-+++ b/tests/qtest/bcm2835-i2c-test.c
-@@ -0,0 +1,115 @@
-+/*
-+ * QTest testcase for Broadcom Serial Controller (BSC)
-+ *
-+ * Copyright (c) 2024 Rayhan Faizel <rayhan.faizel@gmail.com>
-+ *
-+ * SPDX-License-Identifier: MIT
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
-+ */
+diff --git a/hw/char/pl011.c b/hw/char/pl011.c
+index 855cb82d08d..8753b84a842 100644
+--- a/hw/char/pl011.c
++++ b/hw/char/pl011.c
+@@ -49,10 +49,14 @@ DeviceState *pl011_create(hwaddr addr, qemu_irq irq, Chardev *chr)
+ }
+ 
+ /* Flag Register, UARTFR */
++#define PL011_FLAG_RI   0x100
+ #define PL011_FLAG_TXFE 0x80
+ #define PL011_FLAG_RXFF 0x40
+ #define PL011_FLAG_TXFF 0x20
+ #define PL011_FLAG_RXFE 0x10
++#define PL011_FLAG_DCD  0x04
++#define PL011_FLAG_DSR  0x02
++#define PL011_FLAG_CTS  0x01
+ 
+ /* Data Register, UARTDR */
+ #define DR_BE   (1 << 10)
+@@ -76,6 +80,13 @@ DeviceState *pl011_create(hwaddr addr, qemu_irq irq, Chardev *chr)
+ #define LCR_FEN     (1 << 4)
+ #define LCR_BRK     (1 << 0)
+ 
++/* Control Register, UARTCR */
++#define CR_OUT2     (1 << 13)
++#define CR_OUT1     (1 << 12)
++#define CR_RTS      (1 << 11)
++#define CR_DTR      (1 << 10)
++#define CR_LBE      (1 << 7)
 +
-+#include "qemu/osdep.h"
-+#include "libqtest-single.h"
-+
-+#include "hw/i2c/bcm2835_i2c.h"
-+#include "hw/sensor/tmp105_regs.h"
-+
-+static const uint32_t bsc_base_addrs[] = {
-+    0x3f205000,                         /* I2C0 */
-+    0x3f804000,                         /* I2C1 */
-+    0x3f805000,                         /* I2C2 */
-+};
-+
-+static void bcm2835_i2c_init_transfer(uint32_t base_addr, bool read)
+ static const unsigned char pl011_id_arm[8] =
+   { 0x11, 0x10, 0x14, 0x00, 0x0d, 0xf0, 0x05, 0xb1 };
+ static const unsigned char pl011_id_luminary[8] =
+@@ -251,6 +262,89 @@ static void pl011_trace_baudrate_change(const PL011State *s)
+                                 s->ibrd, s->fbrd);
+ }
+ 
++static bool pl011_loopback_enabled(PL011State *s)
 +{
-+    /* read flag is bit 0 so we can write it directly */
-+    int interrupt = read ? BCM2835_I2C_C_INTR : BCM2835_I2C_C_INTT;
-+
-+    writel(base_addr + BCM2835_I2C_C,
-+           BCM2835_I2C_C_I2CEN | BCM2835_I2C_C_INTD |
-+           BCM2835_I2C_C_ST | BCM2835_I2C_C_CLEAR | interrupt | read);
++    return !!(s->cr & CR_LBE);
 +}
 +
-+static void test_i2c_read_write(gconstpointer data)
++static void pl011_loopback_mdmctrl(PL011State *s)
 +{
-+    uint32_t i2cdata;
-+    intptr_t index = (intptr_t) data;
-+    uint32_t base_addr = bsc_base_addrs[index];
++    uint32_t cr, fr, il;
 +
-+    /* Write to TMP105 register */
-+    writel(base_addr + BCM2835_I2C_A, 0x50);
-+    writel(base_addr + BCM2835_I2C_DLEN, 3);
-+
-+    bcm2835_i2c_init_transfer(base_addr, 0);
-+
-+    writel(base_addr + BCM2835_I2C_FIFO, TMP105_REG_T_HIGH);
-+    writel(base_addr + BCM2835_I2C_FIFO, 0xde);
-+    writel(base_addr + BCM2835_I2C_FIFO, 0xad);
-+
-+    /* Clear flags */
-+    writel(base_addr + BCM2835_I2C_S, BCM2835_I2C_S_DONE | BCM2835_I2C_S_ERR |
-+                                      BCM2835_I2C_S_CLKT);
-+
-+    /* Read from TMP105 register */
-+    writel(base_addr + BCM2835_I2C_A, 0x50);
-+    writel(base_addr + BCM2835_I2C_DLEN, 1);
-+
-+    bcm2835_i2c_init_transfer(base_addr, 0);
-+
-+    writel(base_addr + BCM2835_I2C_FIFO, TMP105_REG_T_HIGH);
-+
-+    writel(base_addr + BCM2835_I2C_DLEN, 2);
-+    bcm2835_i2c_init_transfer(base_addr, 1);
-+
-+    i2cdata = readl(base_addr + BCM2835_I2C_FIFO);
-+    g_assert_cmpint(i2cdata, ==, 0xde);
-+
-+    i2cdata = readl(base_addr + BCM2835_I2C_FIFO);
-+    g_assert_cmpint(i2cdata, ==, 0xad);
-+
-+    /* Clear flags */
-+    writel(base_addr + BCM2835_I2C_S, BCM2835_I2C_S_DONE | BCM2835_I2C_S_ERR |
-+                                      BCM2835_I2C_S_CLKT);
-+
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    int ret;
-+    int i;
-+
-+    g_test_init(&argc, &argv, NULL);
-+
-+    for (i = 0; i < 3; i++) {
-+        g_autofree char *test_name =
-+        g_strdup_printf("/bcm2835/bcm2835-i2c%d/read_write", i);
-+        qtest_add_data_func(test_name, (void *)(intptr_t) i,
-+                            test_i2c_read_write);
++    if (!pl011_loopback_enabled(s)) {
++        return;
 +    }
 +
-+    /* Run I2C tests with TMP105 slaves on all three buses */
-+    qtest_start("-M raspi3b "
-+                "-device tmp105,address=0x50,bus=i2c-bus.0 "
-+                "-device tmp105,address=0x50,bus=i2c-bus.1 "
-+                "-device tmp105,address=0x50,bus=i2c-bus.2");
-+    ret = g_test_run();
-+    qtest_end();
++    /*
++     * Loopback software-driven modem control outputs to modem status inputs:
++     *   FR.RI  <= CR.Out2
++     *   FR.DCD <= CR.Out1
++     *   FR.CTS <= CR.RTS
++     *   FR.DSR <= CR.DTR
++     *
++     * The loopback happens immediately even if this call is triggered
++     * by setting only CR.LBE.
++     *
++     * CTS/RTS updates due to enabled hardware flow controls are not
++     * dealt with here.
++     */
++    cr = s->cr;
++    fr = s->flags & ~(PL011_FLAG_RI | PL011_FLAG_DCD |
++                      PL011_FLAG_DSR | PL011_FLAG_CTS);
++    fr |= (cr & CR_OUT2) ? PL011_FLAG_RI  : 0;
++    fr |= (cr & CR_OUT1) ? PL011_FLAG_DCD : 0;
++    fr |= (cr & CR_RTS)  ? PL011_FLAG_CTS : 0;
++    fr |= (cr & CR_DTR)  ? PL011_FLAG_DSR : 0;
 +
-+    return ret;
++    /* Change interrupts based on updated FR */
++    il = s->int_level & ~(INT_DSR | INT_DCD | INT_CTS | INT_RI);
++    il |= (fr & PL011_FLAG_DSR) ? INT_DSR : 0;
++    il |= (fr & PL011_FLAG_DCD) ? INT_DCD : 0;
++    il |= (fr & PL011_FLAG_CTS) ? INT_CTS : 0;
++    il |= (fr & PL011_FLAG_RI)  ? INT_RI  : 0;
++
++    s->flags = fr;
++    s->int_level = il;
++    pl011_update(s);
 +}
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 6ea77893f50..bdc8bba7a98 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -230,7 +230,7 @@ qtests_aarch64 = \
-     ['tpm-tis-device-test', 'tpm-tis-device-swtpm-test'] : []) +                                         \
-   (config_all_devices.has_key('CONFIG_XLNX_ZYNQMP_ARM') ? ['xlnx-can-test', 'fuzz-xlnx-dp-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_XLNX_VERSAL') ? ['xlnx-canfd-test', 'xlnx-versal-trng-test'] : []) + \
--  (config_all_devices.has_key('CONFIG_RASPI') ? ['bcm2835-dma-test'] : []) +  \
-+  (config_all_devices.has_key('CONFIG_RASPI') ? ['bcm2835-dma-test', 'bcm2835-i2c-test'] : []) +  \
-   (config_all_accel.has_key('CONFIG_TCG') and                                            \
-    config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
-   ['arm-cpu-features',
++
++static void pl011_put_fifo(void *opaque, uint32_t value);
++
++static void pl011_loopback_tx(PL011State *s, uint32_t value)
++{
++    if (!pl011_loopback_enabled(s)) {
++        return;
++    }
++
++    /*
++     * Caveat:
++     *
++     * In real hardware, TX loopback happens at the serial-bit level
++     * and then reassembled by the RX logics back into bytes and placed
++     * into the RX fifo. That is, loopback happens after TX fifo.
++     *
++     * Because the real hardware TX fifo is time-drained at the frame
++     * rate governed by the configured serial format, some loopback
++     * bytes in TX fifo may still be able to get into the RX fifo
++     * that could be full at times while being drained at software
++     * pace.
++     *
++     * In such scenario, the RX draining pace is the major factor
++     * deciding which loopback bytes get into the RX fifo, unless
++     * hardware flow-control is enabled.
++     *
++     * For simplicity, the above described is not emulated.
++     */
++    pl011_put_fifo(s, value);
++}
++
++static void pl011_loopback_break(PL011State *s, int brk_enable)
++{
++    if (brk_enable) {
++        pl011_loopback_tx(s, DR_BE);
++    }
++}
++
+ static void pl011_write(void *opaque, hwaddr offset,
+                         uint64_t value, unsigned size)
+ {
+@@ -266,6 +360,7 @@ static void pl011_write(void *opaque, hwaddr offset,
+         /* XXX this blocks entire thread. Rewrite to use
+          * qemu_chr_fe_write and background I/O callbacks */
+         qemu_chr_fe_write_all(&s->chr, &ch, 1);
++        pl011_loopback_tx(s, ch);
+         s->int_level |= INT_TX;
+         pl011_update(s);
+         break;
+@@ -295,13 +390,15 @@ static void pl011_write(void *opaque, hwaddr offset,
+             int break_enable = value & LCR_BRK;
+             qemu_chr_fe_ioctl(&s->chr, CHR_IOCTL_SERIAL_SET_BREAK,
+                               &break_enable);
++            pl011_loopback_break(s, break_enable);
+         }
+         s->lcr = value;
+         pl011_set_read_trigger(s);
+         break;
+     case 12: /* UARTCR */
+-        /* ??? Need to implement the enable and loopback bits.  */
++        /* ??? Need to implement the enable bit.  */
+         s->cr = value;
++        pl011_loopback_mdmctrl(s);
+         break;
+     case 13: /* UARTIFS */
+         s->ifl = value;
+@@ -361,12 +458,21 @@ static void pl011_put_fifo(void *opaque, uint32_t value)
+ 
+ static void pl011_receive(void *opaque, const uint8_t *buf, int size)
+ {
++    /*
++     * In loopback mode, the RX input signal is internally disconnected
++     * from the entire receiving logics; thus, all inputs are ignored,
++     * and BREAK detection on RX input signal is also not performed.
++     */
++    if (pl011_loopback_enabled(opaque)) {
++        return;
++    }
++
+     pl011_put_fifo(opaque, *buf);
+ }
+ 
+ static void pl011_event(void *opaque, QEMUChrEvent event)
+ {
+-    if (event == CHR_EVENT_BREAK) {
++    if (event == CHR_EVENT_BREAK && !pl011_loopback_enabled(opaque)) {
+         pl011_put_fifo(opaque, DR_BE);
+     }
+ }
 -- 
 2.34.1
 
