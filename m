@@ -2,72 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEC808718A9
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 09:54:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 048338718B4
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 09:55:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhQXo-0000ah-IN; Tue, 05 Mar 2024 03:53:04 -0500
+	id 1rhQZL-00012Y-Cr; Tue, 05 Mar 2024 03:54:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rhQXk-0000a4-99
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 03:53:00 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rhQYY-0000sc-NI
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 03:53:53 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rhQXi-0002k9-2r
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 03:52:59 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rhQYX-0002n5-CT
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 03:53:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709628776;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1709628828;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KWSfxjTXhIzxuR7UeBZSToGlipp3fURa+LeU3GSQlfI=;
- b=I5jNAMxCPbZ91zkQLhmZSSW6W9E1E5PnDN+XgPfRNod2BuPIUPJVg1YrZOO+yWy4cXwv5d
- blGaoykWNBdFKnluzP1WLaCPdYgkdhQ2Z5PC8DorCl6WE5aaf5+tfuRoz7jihOLWIzzCbK
- 3nbNP+M6XZKO5PYhNnM5yaCM11e9ndk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-297-iONzHfO9N4WZ_t8EywEyxA-1; Tue,
- 05 Mar 2024 03:52:54 -0500
-X-MC-Unique: iONzHfO9N4WZ_t8EywEyxA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A1F2D29ABA11;
- Tue,  5 Mar 2024 08:52:54 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.66])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 102BEC1576F;
- Tue,  5 Mar 2024 08:52:53 +0000 (UTC)
-Date: Tue, 5 Mar 2024 08:52:51 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org
-Subject: Re: [RFC PATCH 2/2] gitlab-ci: add manual job to run Coverity
-Message-ID: <ZebdY6NqEue0Rl3q@redhat.com>
-References: <20240304220631.943130-1-pbonzini@redhat.com>
- <20240304220631.943130-3-pbonzini@redhat.com>
+ bh=xipQPKlGoQGeK6BSdxFQTPJ22Qa2ae1l3xDpvFxnM2U=;
+ b=T/lYreAqhrvCuJK3tBp0A9QJa9gprHXG/XIS0jUdlfkEsg1WFqDWY6Pbn/UWGEpOiEL9Mp
+ lJ3eFq8vLCmRwGxRnAh8Ru6fdqZANr1F4WRPQnv0w+ZR/vqZrpL08afAXznYWk7SqW4xsZ
+ oVYLZYLKNobg9lWfEZVNEzBJNP37Txc=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-615-4BRW76oPP1240NOv-ppbVA-1; Tue, 05 Mar 2024 03:53:47 -0500
+X-MC-Unique: 4BRW76oPP1240NOv-ppbVA-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-42ef6a1b6b6so17061081cf.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 00:53:47 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709628827; x=1710233627;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xipQPKlGoQGeK6BSdxFQTPJ22Qa2ae1l3xDpvFxnM2U=;
+ b=iJ5zU/gjsujCzK0+ty6dlhgeQ6bnluGBy2enfmfDhDAn+BbdDMuWpm+f5S8GsnOF6W
+ IxLouW2KZj1x/ia/p+ID8E38+egRCzhMFaEA23/rbPeoTHgb3It43HQE1P+xbYA3kIAO
+ YzttjE1OZDiFc6HRu4gfMMP8ilp+K7qarIuWPFEk2zaOQXP7STnA0L6cGj5FCWeZMyS8
+ P4EmcQbfC8A53LqW6G2bhiqpm8eSGVhJWxYRLhMeSoRyC+1N9etMdoZ0RoKm0m0k2jgd
+ XY2ymtRO3JhJukRkgw18/rHTLh+c7J/t0fLGaESmCpgvEb9axEaLfYSMEly7nojyywF2
+ phcQ==
+X-Gm-Message-State: AOJu0YwWABIY0Cf6cgY6maK02MIomdoOaDveI89c1KKvCFBOF4LnaFRa
+ VjzuRq2Wb96uybnRZZwkpnmEN4Z8wpvUM0RRE8SoNZlYZqPCkPIkRongrAZ0HT9aDpKxsnSbri4
+ 3ro21irYCme6YMMgsTf0D5SD0MnkfCWS0PcH92Hp+riHLhfgGL7gV
+X-Received: by 2002:ac8:5fca:0:b0:42e:7a6e:825e with SMTP id
+ k10-20020ac85fca000000b0042e7a6e825emr1391119qta.61.1709628827074; 
+ Tue, 05 Mar 2024 00:53:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFW1EmKAziIKm5GyWDkhko8IpoJgEAfS0QFUeSzVk+jOJdbRndx3qEUVDGoGq4cRM0U7VKKqQ==
+X-Received: by 2002:ac8:5fca:0:b0:42e:7a6e:825e with SMTP id
+ k10-20020ac85fca000000b0042e7a6e825emr1391107qta.61.1709628826880; 
+ Tue, 05 Mar 2024 00:53:46 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ f13-20020ac86ecd000000b0042e2eb24b42sm5211564qtv.22.2024.03.05.00.53.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 05 Mar 2024 00:53:46 -0800 (PST)
+Message-ID: <2c2a0f4e-78d3-4780-bbdd-0fcead0c2c06@redhat.com>
+Date: Tue, 5 Mar 2024 09:53:44 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 04/26] migration: Always report an error in
+ ram_save_setup()
+Content-Language: en-US, fr
+To: Prasad Pandit <ppandit@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Alex Williamson
+ <alex.williamson@redhat.com>, Avihai Horon <avihaih@nvidia.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>
+References: <20240304122844.1888308-1-clg@redhat.com>
+ <20240304122844.1888308-5-clg@redhat.com>
+ <CAE8KmOyxw2SYiW20V9MZZMJGL7ioHSALknZ=N4EZOS53S_i3TA@mail.gmail.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <CAE8KmOyxw2SYiW20V9MZZMJGL7ioHSALknZ=N4EZOS53S_i3TA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240304220631.943130-3-pbonzini@redhat.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.571,
+X-Spam_score_int: -11
+X-Spam_score: -1.2
+X-Spam_bar: -
+X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.571,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,102 +103,25 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Mar 04, 2024 at 05:06:31PM -0500, Paolo Bonzini wrote:
-> Add a job that can be run, either manually or on a schedule, to upload
-> a build to Coverity Scan.  The job uses the run-coverity-scan script
-> in multiple phases of check, download tools and upload, in order to
-> avoid both wasting time (skip everything if you are above the upload
-> quota) and avoid filling the log with the progress of downloading
-> the tools.
+On 3/5/24 06:29, Prasad Pandit wrote:
+> On Mon, 4 Mar 2024 at 18:01, Cédric Le Goater <clg@redhat.com> wrote:
+>> This will prepare ground for futur changes adding an Error** argument
 > 
-> The job is intended to run on a scheduled pipeline run, and scheduled
-> runs will not get any other job.  It requires two variables to be in
-> GitLab CI, COVERITY_TOKEN and COVERITY_EMAIL.  Those are already set up
-> in qemu-project's configuration as protected and masked variables.
+> * futur -> future
+
+Fixed in all first 5 patches.
+
 > 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  .gitlab-ci.d/base.yml      |  4 ++++
->  .gitlab-ci.d/buildtest.yml | 36 ++++++++++++++++++++++++++++++++++++
->  2 files changed, 40 insertions(+)
+>> +    ret = qemu_fflush(f);
+>> +    if (ret) {
 > 
-> diff --git a/.gitlab-ci.d/base.yml b/.gitlab-ci.d/base.yml
-> index ef173a34e6..2dd8a9b57c 100644
-> --- a/.gitlab-ci.d/base.yml
-> +++ b/.gitlab-ci.d/base.yml
-> @@ -41,6 +41,10 @@ variables:
->      - if: '$CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_TAG'
->        when: never
->  
-> +    # Scheduled runs on mainline don't get pipelines except for the special Coverity job
-> +    - if: '$CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_PIPELINE_SOURCE == "schedule"'
-> +      when: never
-> +
->      # Cirrus jobs can't run unless the creds / target repo are set
->      - if: '$QEMU_JOB_CIRRUS && ($CIRRUS_GITHUB_REPO == null || $CIRRUS_API_TOKEN == null)'
->        when: never
-> diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-> index a1c030337b..378dee055b 100644
-> --- a/.gitlab-ci.d/buildtest.yml
-> +++ b/.gitlab-ci.d/buildtest.yml
-> @@ -729,3 +729,38 @@ pages:
->        - public
->    variables:
->      QEMU_JOB_PUBLISH: 1
-> +
-> +coverity:
-> +  image: $CI_REGISTRY_IMAGE/qemu/fedora:$QEMU_CI_CONTAINER_TAG
-> +  stage: build
-> +  allow_failure: true
-> +  timeout: 3h
-> +  needs:
-> +    - job: amd64-fedora-container
-> +      optional: true
-> +  before_script:
-> +    - dnf install -y curl wget
-> +  script:
-> +    # would be nice to cancel the job if over quota (https://gitlab.com/gitlab-org/gitlab/-/issues/256089)
-> +    - 'scripts/coverity-scan/run-coverity-scan --check-upload-only || (exitcode=$?; if test $exitcode = 1; then
-> +        exit 0;
-> +      else
-> +        exit $exitcode;
-> +      fi)'
-> +    - 'scripts/coverity-scan/run-coverity-scan --update-tools-only > update-tools.log 2>&1 || cat update-tools.log'
+> * if (ret) -> if (ret < 0)
 
-Slightly shorter as:
+yep. Thanks,
 
-  .....   2>&1 | tee update-tools.log
-
-> +    - 'scripts/coverity-scan/run-coverity-scan --no-update-tools'
-> +  rules:
-> +    - if: '$COVERITY_TOKEN == null'
-> +      when: never
-> +    - if: '$COVERITY_EMAIL == null'
-> +      when: never
-> +    # Never included on upstream pipelines, except for schedules
-> +    - if: '$CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
-> +      when: on_success
-> +    - if: '$CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM'
-> +      when: never
-> +    # Forks don't get any pipeline unless QEMU_CI=1 or QEMU_CI=2 is set
-> +    - if: '$QEMU_CI != "1" && $QEMU_CI != "2"'
-> +      when: never
-> +    # Always manual on forks even if $QEMU_CI == "2"
-> +    - when: manual
-> -- 
-
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+C.
 
 
