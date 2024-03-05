@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54DE3871F07
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 13:22:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5E79871F04
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 13:21:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhTnX-0005U3-Mc; Tue, 05 Mar 2024 07:21:31 -0500
+	id 1rhTnO-0004jg-Fn; Tue, 05 Mar 2024 07:21:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhTlL-0000pj-Nt
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 07:19:15 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1rhTlH-0000lR-VQ
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 07:19:13 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhTky-0003I9-KZ
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 07:19:13 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-412cf3c5cdeso26916925e9.2
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 04:18:51 -0800 (PST)
+ id 1rhTky-0003GU-Hx
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 07:19:11 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-412ecc1064cso4654475e9.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 04:18:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709641131; x=1710245931; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709641129; x=1710245929; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LhUxtBkvb4r+WsD7JiENu61BSWgpCAqrg2uG7NyPqfA=;
- b=clwEcMGRWYKHvtKj+70fbOgaQKK20FklUtukLfYS/LQOvNxLJNpMQorkocYwtl9y/Z
- j0pYADPC/WWQ0dwJFAHmJgH5qw2axP0Uh+rBHl0P1bX6MAfzoYZoG5MyFPSNUXP5/HrU
- qLnTQQpVGZ7jSwwc+VFWAERpbpKRpMmKZVwJ6ZxRIXrfP3wu5YZyRUNxY4UOp+NKS/B5
- 72udO5633emb+QjYUHzPzT8HVUhTiRQ0S/QZdlLlIPE39g7rXOfj7+MdnsSCgT0L1NLB
- MY3gs9WFbn2sHOcSaBovcDzpkJEdpdyiyzP8f4xyWtSqv8TrVf6VhjesnlT4xYnFwC3F
- iDPQ==
+ bh=0DbWEIw6HJ+uey+RCD8YTAnKD0TfXpa90qc4hKJ7nSE=;
+ b=KWKcKfJzKqBBucjYSsJ5A2c9BXeBXRO8B+4p4RZZofN4nnAjCSxoj+vLv82yVIgZkr
+ owOuhjRXoVsXi5clnFaCed2K1ej418maCJM7h25+ZQQgEt87c0cp6hhuUr4ocYZ+2evA
+ 15TU9OCUiztfN+3tYfw1nxVD161AZmfqlTufR+Zy/92Dw+AraMzxgMLMTuJyOjHGUxYx
+ uZ2A89U5k0RzGThrMCFE04xc5qnOzxUteqM2jq565wKee2h2zCLPjwqrk9UdybVkfjgS
+ RAmyxcdkXYGYCRWqJF8Xy5FFP1hHcTPVWZh5xHs039AjsqFmYMMCjWq9tiKxQ+p4kN26
+ jIvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709641131; x=1710245931;
+ d=1e100.net; s=20230601; t=1709641129; x=1710245929;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LhUxtBkvb4r+WsD7JiENu61BSWgpCAqrg2uG7NyPqfA=;
- b=GgvwfHxHyl4nC01IbTEtDkWh+BN00MdD284dUu9ugC30U3GE+pBJLa/ncpxWfod/rr
- aY389s3rF4iQkT411G7hex45cM4YN/Ml9dDZLlilk8R5qpM9ZAiqIV/3rVs7E+VUKCAt
- y/REMcY/h2JsRImlqLOMi1hv5+hY5je0SeLbk7t1bVAmZNxJYPj12m9BWIoUGrvaKJhL
- zNDhkWXKnAXleUawvS9ZCfZ+xl1BDMv7E2cbAsHyW9Wp+svhAYbxzHqWX+QPzG2ITJfA
- Ed4DTNHvHx0CrYwsyWuXCrhoXU7SUb8XjtZiSs3QL+qxRQKh2AQ9D7iFYL90uod6uWjS
- Ftog==
-X-Gm-Message-State: AOJu0Yzic0VEm9v5nTva3rPoK+2nyZvoTgz3Ef+pjsdcNyAq2zAUo2z8
- 5WZEgeHCCDEog0kIjpbWyphwDTzAolSqG4d5FeVmCoo0HVN3auLWernrK8O0SwA=
-X-Google-Smtp-Source: AGHT+IEdQdKDDAy5Vi6EQDojoPdqGfrlX279HocnRF1Zd6b/Qc6DrKhOLoNmh0GmqG7GjkeTZF9B6Q==
-X-Received: by 2002:a05:600c:1e05:b0:412:e90e:54b7 with SMTP id
- ay5-20020a05600c1e0500b00412e90e54b7mr2602225wmb.33.1709641130835; 
- Tue, 05 Mar 2024 04:18:50 -0800 (PST)
+ bh=0DbWEIw6HJ+uey+RCD8YTAnKD0TfXpa90qc4hKJ7nSE=;
+ b=LemkFSOjxgKf1ofmCSI9rmkqc6xZNRHxGsJZejx3JZ78m8S/mS0/hNPOQA8fnQsgm7
+ BSPlPie6EFrVVcc3gkhlIuZ8J+Dnn+AXxd0uhjbZRy5uqpQe0LaxFEzqVGujSVqz8w9h
+ Vk1noAbCUVjTUSjP9zZF6uxTHSfHol2sIolInqV0tKTj5GxPHHQtyt6pdUOgiLfCWizm
+ zjmM4IJfjKfovhj79200cTvylVkddjMnXE9KCwWXGasrNL19Fmbdd1AiuWtlHixVSz7u
+ 1i4d/h2sHJAvYY22oi9URO5BzZQO8J1UzrDuhA9Q9sFYIB5j9Px1kzjMLGHOWCwEMmRO
+ nOEg==
+X-Gm-Message-State: AOJu0Ywlocbw2Gc4U7ZV2a5bPCgoJw3c5NTAb7+kGYGvE/NXJhIUzF6k
+ O6nzYqLzFvDWO/E4eiWc4B0iTWzDedkRj+IN48EDpw4MkbxyHe/Kvm10M+nUj2E=
+X-Google-Smtp-Source: AGHT+IGfyy+dD2vdSUvdl9WkKm29wASBydjUohaSp1SjKoA9U9LJjqipZCm5xHC/sVcSl1NaJU59kw==
+X-Received: by 2002:a05:600c:5253:b0:40e:d30b:6129 with SMTP id
+ fc19-20020a05600c525300b0040ed30b6129mr9771561wmb.13.1709641129102; 
+ Tue, 05 Mar 2024 04:18:49 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- bd23-20020a05600c1f1700b00412ef097c27sm1030453wmb.16.2024.03.05.04.18.44
+ o14-20020a05600c510e00b00412aff7874esm17909157wms.48.2024.03.05.04.18.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 05 Mar 2024 04:18:47 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 607455F9E8;
+ by draig.lan (Postfix) with ESMTP id 745EA5F9EB;
  Tue,  5 Mar 2024 12:10:07 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -92,17 +92,17 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
  Warner Losh <imp@bsdimp.com>, qemu-riscv@nongnu.org,
  Ilya Leoshkevich <iii@linux.ibm.com>, Luc Michel <luc.michel@amd.com>
-Subject: [PATCH 20/29] tests/plugin/insn: migrate to new per_vcpu API
-Date: Tue,  5 Mar 2024 12:09:56 +0000
-Message-Id: <20240305121005.3528075-21-alex.bennee@linaro.org>
+Subject: [PATCH 21/29] tests/plugin/bb: migrate to new per_vcpu API
+Date: Tue,  5 Mar 2024 12:09:57 +0000
+Message-Id: <20240305121005.3528075-22-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240305121005.3528075-1-alex.bennee@linaro.org>
 References: <20240305121005.3528075-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -128,209 +128,139 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
 Reviewed-by: Luc Michel <luc.michel@amd.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20240304130036.124418-8-pierrick.bouvier@linaro.org>
+Message-Id: <20240304130036.124418-9-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/plugin/insn.c | 106 +++++++++++++++++++++-----------------------
- 1 file changed, 50 insertions(+), 56 deletions(-)
+ tests/plugin/bb.c | 63 +++++++++++++++++++----------------------------
+ 1 file changed, 26 insertions(+), 37 deletions(-)
 
-diff --git a/tests/plugin/insn.c b/tests/plugin/insn.c
-index 54da06fcf26..5e0aa03223e 100644
---- a/tests/plugin/insn.c
-+++ b/tests/plugin/insn.c
-@@ -16,25 +16,21 @@
- 
+diff --git a/tests/plugin/bb.c b/tests/plugin/bb.c
+index df50d1fd3bc..36776dee1e1 100644
+--- a/tests/plugin/bb.c
++++ b/tests/plugin/bb.c
+@@ -17,27 +17,25 @@
  QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
  
--#define MAX_CPUS 8 /* lets not go nuts */
--
--typedef struct {
--    uint64_t insn_count;
--} InstructionCount;
--
--static InstructionCount counts[MAX_CPUS];
--static uint64_t inline_insn_count;
+ typedef struct {
+-    GMutex lock;
+-    int index;
+     uint64_t bb_count;
+     uint64_t insn_count;
+ } CPUCount;
+ 
+-/* Used by the inline & linux-user counts */
+-static bool do_inline;
+-static CPUCount inline_count;
++static struct qemu_plugin_scoreboard *counts;
++static qemu_plugin_u64 bb_count;
 +static qemu_plugin_u64 insn_count;
  
- static bool do_inline;
- static bool do_size;
- static GArray *sizes;
++static bool do_inline;
+ /* Dump running CPU total on idle? */
+ static bool idle_report;
+-static GPtrArray *counts;
+-static int max_cpus;
  
-+typedef struct {
-+    uint64_t hits;
-+    uint64_t last_hit;
-+    uint64_t total_delta;
-+} MatchCount;
-+
- typedef struct {
-     char *match_string;
--    uint64_t hits[MAX_CPUS];
--    uint64_t last_hit[MAX_CPUS];
--    uint64_t total_delta[MAX_CPUS];
--    GPtrArray *history[MAX_CPUS];
-+    struct qemu_plugin_scoreboard *counts; /* MatchCount */
- } Match;
- 
- static GArray *matches;
-@@ -67,41 +63,40 @@ static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
- 
- static void vcpu_insn_exec_before(unsigned int cpu_index, void *udata)
+-static void gen_one_cpu_report(CPUCount *count, GString *report)
++static void gen_one_cpu_report(CPUCount *count, GString *report,
++                               unsigned int cpu_index)
  {
--    unsigned int i = cpu_index % MAX_CPUS;
--    InstructionCount *c = &counts[i];
--
--    c->insn_count++;
-+    qemu_plugin_u64_add(insn_count, cpu_index, 1);
+     if (count->bb_count) {
+         g_string_append_printf(report, "CPU%d: "
+                                "bb's: %" PRIu64", insns: %" PRIu64 "\n",
+-                               count->index,
++                               cpu_index,
+                                count->bb_count, count->insn_count);
+     }
+ }
+@@ -46,20 +44,23 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
+ {
+     g_autoptr(GString) report = g_string_new("");
+ 
+-    if (do_inline || !max_cpus) {
+-        g_string_printf(report, "bb's: %" PRIu64", insns: %" PRIu64 "\n",
+-                        inline_count.bb_count, inline_count.insn_count);
+-    } else {
+-        g_ptr_array_foreach(counts, (GFunc) gen_one_cpu_report, report);
++    for (int i = 0; i < qemu_plugin_num_vcpus(); ++i) {
++        CPUCount *count = qemu_plugin_scoreboard_find(counts, i);
++        gen_one_cpu_report(count, report, i);
+     }
++    g_string_append_printf(report, "Total: "
++                           "bb's: %" PRIu64", insns: %" PRIu64 "\n",
++                           qemu_plugin_u64_sum(bb_count),
++                           qemu_plugin_u64_sum(insn_count));
+     qemu_plugin_outs(report->str);
++    qemu_plugin_scoreboard_free(counts);
  }
  
- static void vcpu_insn_matched_exec_before(unsigned int cpu_index, void *udata)
+ static void vcpu_idle(qemu_plugin_id_t id, unsigned int cpu_index)
  {
--    unsigned int i = cpu_index % MAX_CPUS;
-     Instruction *insn = (Instruction *) udata;
--    Match *match = insn->match;
-+    Match *insn_match = insn->match;
-+    MatchCount *match = qemu_plugin_scoreboard_find(insn_match->counts,
-+                                                    cpu_index);
-+
-     g_autoptr(GString) ts = g_string_new("");
+-    CPUCount *count = g_ptr_array_index(counts, cpu_index);
++    CPUCount *count = qemu_plugin_scoreboard_find(counts, cpu_index);
+     g_autoptr(GString) report = g_string_new("");
+-    gen_one_cpu_report(count, report);
++    gen_one_cpu_report(count, report, cpu_index);
  
-     insn->hits++;
-     g_string_append_printf(ts, "0x%" PRIx64 ", '%s', %"PRId64 " hits",
-                            insn->vaddr, insn->disas, insn->hits);
+     if (report->len > 0) {
+         g_string_prepend(report, "Idling ");
+@@ -69,14 +70,11 @@ static void vcpu_idle(qemu_plugin_id_t id, unsigned int cpu_index)
  
--    uint64_t icount = counts[i].insn_count;
--    uint64_t delta = icount - match->last_hit[i];
-+    uint64_t icount = qemu_plugin_u64_get(insn_count, cpu_index);
-+    uint64_t delta = icount - match->last_hit;
+ static void vcpu_tb_exec(unsigned int cpu_index, void *udata)
+ {
+-    CPUCount *count = max_cpus ?
+-        g_ptr_array_index(counts, cpu_index) : &inline_count;
++    CPUCount *count = qemu_plugin_scoreboard_find(counts, cpu_index);
  
--    match->hits[i]++;
--    match->total_delta[i] += delta;
-+    match->hits++;
-+    match->total_delta += delta;
- 
-     g_string_append_printf(ts,
--                           ", %"PRId64" match hits, "
--                           "Δ+%"PRId64 " since last match,"
-+                           " , cpu %u,"
-+                           " %"PRId64" match hits,"
-+                           " Δ+%"PRId64 " since last match,"
-                            " %"PRId64 " avg insns/match\n",
--                           match->hits[i], delta,
--                           match->total_delta[i] / match->hits[i]);
-+                           cpu_index,
-+                           match->hits, delta,
-+                           match->total_delta / match->hits);
- 
--    match->last_hit[i] = icount;
-+    match->last_hit = icount;
- 
-     qemu_plugin_outs(ts->str);
--
--    g_ptr_array_add(match->history[i], insn);
+     uintptr_t n_insns = (uintptr_t)udata;
+-    g_mutex_lock(&count->lock);
+     count->insn_count += n_insns;
+     count->bb_count++;
+-    g_mutex_unlock(&count->lock);
  }
  
  static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-@@ -113,8 +108,8 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-         struct qemu_plugin_insn *insn = qemu_plugin_tb_get_insn(tb, i);
+@@ -84,11 +82,10 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+     size_t n_insns = qemu_plugin_tb_n_insns(tb);
  
-         if (do_inline) {
--            qemu_plugin_register_vcpu_insn_exec_inline(
--                insn, QEMU_PLUGIN_INLINE_ADD_U64, &inline_insn_count, 1);
-+            qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
-+                insn, QEMU_PLUGIN_INLINE_ADD_U64, insn_count, 1);
-         } else {
-             uint64_t vaddr = qemu_plugin_insn_vaddr(insn);
-             qemu_plugin_register_vcpu_insn_exec_cb(
-@@ -136,10 +131,9 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-          * information about the instruction which we also need to
-          * save if there is a hit.
-          */
--        if (matches) {
-+        if (matches->len) {
-             char *insn_disas = qemu_plugin_insn_disas(insn);
--            int j;
--            for (j = 0; j < matches->len; j++) {
-+            for (int j = 0; j < matches->len; j++) {
-                 Match *m = &g_array_index(matches, Match, j);
-                 if (g_str_has_prefix(insn_disas, m->match_string)) {
-                     Instruction *rec = g_new0(Instruction, 1);
-@@ -169,36 +163,33 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
-                                        "len %d bytes: %ld insns\n", i, *cnt);
-             }
-         }
--    } else if (do_inline) {
--        g_string_append_printf(out, "insns: %" PRIu64 "\n", inline_insn_count);
+     if (do_inline) {
+-        qemu_plugin_register_vcpu_tb_exec_inline(tb, QEMU_PLUGIN_INLINE_ADD_U64,
+-                                                 &inline_count.bb_count, 1);
+-        qemu_plugin_register_vcpu_tb_exec_inline(tb, QEMU_PLUGIN_INLINE_ADD_U64,
+-                                                 &inline_count.insn_count,
+-                                                 n_insns);
++        qemu_plugin_register_vcpu_tb_exec_inline_per_vcpu(
++            tb, QEMU_PLUGIN_INLINE_ADD_U64, bb_count, 1);
++        qemu_plugin_register_vcpu_tb_exec_inline_per_vcpu(
++            tb, QEMU_PLUGIN_INLINE_ADD_U64, insn_count, n_insns);
      } else {
--        uint64_t total_insns = 0;
--        for (i = 0; i < MAX_CPUS; i++) {
--            InstructionCount *c = &counts[i];
--            if (c->insn_count) {
--                g_string_append_printf(out, "cpu %d insns: %" PRIu64 "\n",
--                                       i, c->insn_count);
--                total_insns += c->insn_count;
--            }
-+        for (i = 0; i < qemu_plugin_num_vcpus(); i++) {
-+            g_string_append_printf(out, "cpu %d insns: %" PRIu64 "\n",
-+                                   i, qemu_plugin_u64_get(insn_count, i));
-         }
-         g_string_append_printf(out, "total insns: %" PRIu64 "\n",
--                               total_insns);
-+                               qemu_plugin_u64_sum(insn_count));
-     }
-     qemu_plugin_outs(out->str);
-+
-+    qemu_plugin_scoreboard_free(insn_count.score);
-+    for (i = 0; i < matches->len; ++i) {
-+        Match *m = &g_array_index(matches, Match, i);
-+        g_free(m->match_string);
-+        qemu_plugin_scoreboard_free(m->counts);
-+    }
-+    g_array_free(matches, TRUE);
-+    g_array_free(sizes, TRUE);
- }
- 
- 
- /* Add a match to the array of matches */
- static void parse_match(char *match)
- {
--    Match new_match = { .match_string = match };
--    int i;
--    for (i = 0; i < MAX_CPUS; i++) {
--        new_match.history[i] = g_ptr_array_new();
--    }
--    if (!matches) {
--        matches = g_array_new(false, true, sizeof(Match));
--    }
-+    Match new_match = {
-+        .match_string = g_strdup(match),
-+        .counts = qemu_plugin_scoreboard_new(sizeof(MatchCount)) };
-     g_array_append_val(matches, new_match);
- }
- 
-@@ -206,6 +197,10 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-                                            const qemu_info_t *info,
-                                            int argc, char **argv)
- {
-+    matches = g_array_new(false, true, sizeof(Match));
-+    /* null terminated so 0 is not a special case */
-+    sizes = g_array_new(true, true, sizeof(unsigned long));
-+
-     for (int i = 0; i < argc; i++) {
-         char *opt = argv[i];
-         g_auto(GStrv) tokens = g_strsplit(opt, "=", 2);
-@@ -227,9 +222,8 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+         qemu_plugin_register_vcpu_tb_exec_cb(tb, vcpu_tb_exec,
+                                              QEMU_PLUGIN_CB_NO_REGS,
+@@ -121,18 +118,10 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
          }
      }
  
--    if (do_size) {
--        sizes = g_array_new(true, true, sizeof(unsigned long));
+-    if (info->system_emulation && !do_inline) {
+-        max_cpus = info->system.max_vcpus;
+-        counts = g_ptr_array_new();
+-        for (i = 0; i < max_cpus; i++) {
+-            CPUCount *count = g_new0(CPUCount, 1);
+-            g_mutex_init(&count->lock);
+-            count->index = i;
+-            g_ptr_array_add(counts, count);
+-        }
+-    } else if (!do_inline) {
+-        g_mutex_init(&inline_count.lock);
 -    }
-+    insn_count = qemu_plugin_scoreboard_u64(
-+        qemu_plugin_scoreboard_new(sizeof(uint64_t)));
++    counts = qemu_plugin_scoreboard_new(sizeof(CPUCount));
++    bb_count = qemu_plugin_scoreboard_u64_in_struct(counts, CPUCount, bb_count);
++    insn_count = qemu_plugin_scoreboard_u64_in_struct(
++        counts, CPUCount, insn_count);
  
-     /* Register init, translation block and exit callbacks */
-     qemu_plugin_register_vcpu_init_cb(id, vcpu_init);
+     if (idle_report) {
+         qemu_plugin_register_vcpu_idle_cb(id, vcpu_idle);
 -- 
 2.39.2
 
