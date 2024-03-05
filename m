@@ -2,89 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D674872751
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 20:10:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C1C387275B
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 20:14:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhaAF-0001mM-C9; Tue, 05 Mar 2024 14:09:23 -0500
+	id 1rhaEO-0003nK-Uf; Tue, 05 Mar 2024 14:13:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rhaAD-0001lx-IL
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 14:09:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <marmarek@invisiblethingslab.com>)
+ id 1rhaEM-0003n1-9n
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 14:13:38 -0500
+Received: from wfhigh5-smtp.messagingengine.com ([64.147.123.156])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rhaAB-0002CH-T1
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 14:09:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709665759;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=tAn3BPw9Rj/HBNoW+GN/JnNR0QESXgEweD9Y1fNZnNA=;
- b=JmFY92SLXZkZ06jm0qohT/FIreN5zfaLM7HViszdBVrEOubEcQvbMWYwuVttNEuId9wO5T
- Iin6n3tso6+pkBIZa9eAafENnIlfonQeaXgw3Y6a6IGQWPXtN0qeSi1jSvySQH39A2xNnP
- b6izE08dB64WrPEOXOPLh7tfNjFdWGM=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-441-k6Oo7C5OPRCfDuOkArxl4Q-1; Tue, 05 Mar 2024 14:09:15 -0500
-X-MC-Unique: k6Oo7C5OPRCfDuOkArxl4Q-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-51337da375dso3612780e87.3
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 11:09:13 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709665750; x=1710270550;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=tAn3BPw9Rj/HBNoW+GN/JnNR0QESXgEweD9Y1fNZnNA=;
- b=tpyS8tbhsgpNaVCHgzmeoNA1fiw7QV9+QZqoyu+WsZomHytMOEiCGf+3K2ekcH99Vj
- y4s1Pm2H7G/Rc6ZLTEhsomM6QdFIpuJqyyEJkcLUa5opsH1S9IcZvE9bZyOZ56u5TN54
- /c0HE9PuFryXOJSQj6SdJ5iQQ6vDIOhhMhJV0jJPrET1KH/UmKchZLQlYmuHRHfkjm6F
- uSrKuobB9lrBTkSaPc9nRbdfeuBUDnL9Yioc3/PFev/ONF54fOJ73RMT6SP4sCRNLRVL
- oCCjqXAZwY+tUKB/oxK6AZjRwhKzlXkKOFZvOiYYrt0I1OCFSvug2SWGdThBRU8hDxg0
- OgCg==
-X-Gm-Message-State: AOJu0YxroEbCON1s6xZUE3V2pTqKX41SPDoBi5/pIgCr1OyBJqn9h1rD
- qsYHAqOmSiuxySfUWYru2zcyhyRajlOGEwayaS+gpfcLpVhrQtoYyqhPbgP8W4gaHbsXZPRxXBr
- ZWI2HgmJLL5LAGAIsdBcFiDXAScw+mwek/8Ta/Byq9sySAlih00Od55gHi1tZ0jyvfdThJkumWk
- kNGQRmDsF1g6Q/bPJeiQLsz/O5qCmaKccn6VdF
-X-Received: by 2002:a05:6512:4db:b0:513:26e7:440c with SMTP id
- w27-20020a05651204db00b0051326e7440cmr1970179lfq.61.1709665750687; 
- Tue, 05 Mar 2024 11:09:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF6I+sSTq3iLMaIAU45h5vw+RAc7+Flqqnj7ZyBAC9MPWEF1AIJQxadCh1TaELbDrt4xcR4iw==
-X-Received: by 2002:a05:6512:4db:b0:513:26e7:440c with SMTP id
- w27-20020a05651204db00b0051326e7440cmr1970162lfq.61.1709665750227; 
- Tue, 05 Mar 2024 11:09:10 -0800 (PST)
-Received: from [192.168.10.118] ([151.49.77.21])
- by smtp.gmail.com with ESMTPSA id
- kw11-20020a170907770b00b00a43f170ad9asm6270079ejc.152.2024.03.05.11.09.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Mar 2024 11:09:07 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <marmarek@invisiblethingslab.com>)
+ id 1rhaEK-0002rf-2v
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 14:13:38 -0500
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+ by mailfhigh.west.internal (Postfix) with ESMTP id 9573F18000D5;
+ Tue,  5 Mar 2024 14:13:31 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute4.internal (MEProxy); Tue, 05 Mar 2024 14:13:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ invisiblethingslab.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:from:from:in-reply-to
+ :message-id:mime-version:reply-to:subject:subject:to:to; s=fm1;
+ t=1709666011; x=1709752411; bh=VSUlkpuYOEcRplvlXrjlVafcExCQb+jf
+ CPZC81dIcIs=; b=EVK+O2lxJWxJMjL8Oz2Ln1tBkVKuV/WmtIkwnGMYtjdQR57j
+ 6RJ3sUPaktu1KQ/hDsH9MuntTEwWscWxOpyXdZAVeR1HDGm2Vlg7Hd7lph9Bunjg
+ rUGQlXZN5DauNZchbhTVNcVPEMuusvo7zB3+w/4+42WmfPwse7zXdmkC65kBoO0y
+ Yxh8fdzLB+w60FMcxA+qsaE+ShPFWsFvc06lN3mXV6hnKezs+W2nXrp6QfiOj563
+ ExhpFgwLMfjuabTXq1fSXwKsy4M94aMYqBnrnoKvnVgQJ3QLUVsVt6ChzGwBnze3
+ t0FGKN9t/kKdW1veUNNBJiyIQJcd6VTiBxxzXw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:message-id:mime-version:reply-to:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm1; t=1709666011; x=1709752411; bh=VSUlkpuYOEcRp
+ lvlXrjlVafcExCQb+jfCPZC81dIcIs=; b=qkaTI3+FUieGvdWlljrO44qas8wzF
+ irqTvhOq699K6VfLAbSR/soYcSPh1/aJOOwr8zhS6VFx9GqpV7psSo1WYfMuvqLk
+ 0gry0PSzPdRUHlWsAc8JHcZTPx3JDLe0iOJ9xDSrn+I80hgV8sRedfNZGxNs9ROY
+ a66VjjnjxaYn/1H0aT72UOVsmRgN5U3/70EYi516VZg8Ax4C8F0yVO6H4QNzRrU8
+ EZMsnWumZa1D72vAAoIl3h0Xith7VTGL1jYIqJ9C/XEzaPecFRqX4+ZPfTUNAgjT
+ MX2rXHJtuPSOF8s0yWdRwcqHC/hfCv3QSYmwaKjqAByXdC1HwJMtgU0sA==
+X-ME-Sender: <xms:2m7nZWE1lza5p4rOPJy3hgNffTitUBYBk9yK4303__vLkAY2fcodAw>
+ <xme:2m7nZXX8uLPnDITswcN8q8nxvjbhA9-xj6QaY8AqgUTxNpWGHNhgAI_gi1C0HD2NL
+ XovxQkVWaWsug>
+X-ME-Received: <xmr:2m7nZQL00OE653sb9kpyBCZPtFycLXDKbZCGWsZE8NGM98d-TyNhBpPucqxdfxaSjWvQzBVXK-2zOHPgS9iyfv6OnMdVjOk1Hkci3ws0Uz0c1rf5Q6E>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrheelgdduudekucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhephffvvefufffkofggtgfgsehtkeertdertdejnecuhfhrohhmpeforghrvghk
+ ucforghrtgiihihkohifshhkihdqifpkrhgvtghkihcuoehmrghrmhgrrhgvkhesihhnvh
+ hishhisghlvghthhhinhhgshhlrggsrdgtohhmqeenucggtffrrghtthgvrhhnpeelkefh
+ udelteelleelteetveeffeetffekteetjeehlefggeekleeghefhtdehvdenucevlhhush
+ htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmrghrmhgrrhgvkhes
+ ihhnvhhishhisghlvghthhhinhhgshhlrggsrdgtohhm
+X-ME-Proxy: <xmx:2m7nZQEd7dNhshAAvFLNNCvQ-8It477Pz5wWmFrVNwlOxAFMK5U6EQ>
+ <xmx:2m7nZcUDNBuOd5a7NfbfwM1hdk0U_lsKny4TQxo2RFulxHpYLrmlmg>
+ <xmx:2m7nZTM1CyHc4nF0cUbAjzYBmYLIpPmKJ4f8cnGJTxbhauDFM5s5kA>
+ <xmx:227nZeK0MEbDpp6aBs-zT9bA32nfgte8re4UnPZWUlCinDdkHuFWFesaclE>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 5 Mar 2024 14:13:29 -0500 (EST)
+From: =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?=
+ <marmarek@invisiblethingslab.com>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
-	berrange@redhat.com
-Subject: [PATCH 2/2] gitlab-ci: add manual job to run Coverity
-Date: Tue,  5 Mar 2024 20:09:02 +0100
-Message-ID: <20240305190902.364753-3-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240305190902.364753-1-pbonzini@redhat.com>
-References: <20240305190902.364753-1-pbonzini@redhat.com>
+Cc: Jason Andryuk <jandryuk@gmail.com>,
+ =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?=
+ <marmarek@invisiblethingslab.com>, 
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ xen-devel@lists.xenproject.org (open list:X86 Xen CPUs)
+Subject: [PATCH v2 1/2] hw/xen: detect when running inside stubdomain
+Date: Tue,  5 Mar 2024 20:12:29 +0100
+Message-ID: <20240305191312.321127-1-marmarek@invisiblethingslab.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: none client-ip=64.147.123.156;
+ envelope-from=marmarek@invisiblethingslab.com;
+ helo=wfhigh5-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.568,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,107 +107,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a job that can be run, either manually or on a schedule, to upload
-a build to Coverity Scan.  The job uses the run-coverity-scan script
-in multiple phases of check, download tools and upload, in order to
-avoid both wasting time (skip everything if you are above the upload
-quota) and avoid filling the log with the progress of downloading
-the tools.
+Introduce global xen_is_stubdomain variable when qemu is running inside
+a stubdomain instead of dom0. This will be relevant for subsequent
+patches, as few things like accessing PCI config space need to be done
+differently.
 
-The job is intended to run on a scheduled pipeline run, and scheduled
-runs will not get any other job.  It requires two variables to be in
-GitLab CI, COVERITY_TOKEN and COVERITY_EMAIL.  Those are already set up
-in qemu-project's configuration as protected and masked variables.
-
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
 ---
-RFC->v1:
-- disable opensbi job in scheduled pipelines
-- fix exit codes by using {} compound statements instead of () subshells
-- do not limit to master branch since anyway we have only one schedule
-  (i.e. make it the problem of whoever creates a second schedule's)
+Changes in v2:
+- use sigend int for domid to match xenstore_read_int() types, domid is
+  in a signed range anyway
+- fix code style
+---
+ hw/xen/xen-legacy-backend.c | 16 ++++++++++++++++
+ include/hw/xen/xen.h        |  1 +
+ system/globals.c            |  1 +
+ 3 files changed, 18 insertions(+)
 
- .gitlab-ci.d/base.yml      |  4 ++++
- .gitlab-ci.d/buildtest.yml | 38 ++++++++++++++++++++++++++++++++++++++
- .gitlab-ci.d/opensbi.yml   |  4 ++++
- 3 files changed, 46 insertions(+)
-
-diff --git a/.gitlab-ci.d/base.yml b/.gitlab-ci.d/base.yml
-index ef173a34e63..2dd8a9b57cb 100644
---- a/.gitlab-ci.d/base.yml
-+++ b/.gitlab-ci.d/base.yml
-@@ -41,6 +41,10 @@ variables:
-     - if: '$CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_TAG'
-       when: never
+diff --git a/hw/xen/xen-legacy-backend.c b/hw/xen/xen-legacy-backend.c
+index 124dd5f3d6..6bd4e6eb2f 100644
+--- a/hw/xen/xen-legacy-backend.c
++++ b/hw/xen/xen-legacy-backend.c
+@@ -603,6 +603,20 @@ static void xen_set_dynamic_sysbus(void)
+     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_XENSYSDEV);
+ }
  
-+    # Scheduled runs on mainline don't get pipelines except for the special Coverity job
-+    - if: '$CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_PIPELINE_SOURCE == "schedule"'
-+      when: never
++static bool xen_check_stubdomain(void)
++{
++    char *dm_path = g_strdup_printf("/local/domain/%d/image", xen_domid);
++    int32_t dm_domid;
++    bool is_stubdom = false;
 +
-     # Cirrus jobs can't run unless the creds / target repo are set
-     - if: '$QEMU_JOB_CIRRUS && ($CIRRUS_GITHUB_REPO == null || $CIRRUS_API_TOKEN == null)'
-       when: never
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 901265af95d..7832c7ff3a8 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -729,3 +729,40 @@ pages:
-       - public
-   variables:
-     QEMU_JOB_PUBLISH: 1
++    if (!xenstore_read_int(dm_path, "device-model-domid", &dm_domid)) {
++        is_stubdom = dm_domid != 0;
++    }
 +
-+coverity:
-+  image: $CI_REGISTRY_IMAGE/qemu/fedora:$QEMU_CI_CONTAINER_TAG
-+  stage: build
-+  allow_failure: true
-+  timeout: 3h
-+  needs:
-+    - job: amd64-fedora-container
-+      optional: true
-+  before_script:
-+    - dnf install -y curl wget
-+  script:
-+    # would be nice to cancel the job if over quota (https://gitlab.com/gitlab-org/gitlab/-/issues/256089)
-+    # for example:
-+    #   curl --request POST --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" "${CI_SERVER_URL}/api/v4/projects/${CI_PROJECT_ID}/jobs/${CI_JOB_ID}/cancel
-+    - 'scripts/coverity-scan/run-coverity-scan --check-upload-only || { exitcode=$?; if test $exitcode = 1; then
-+        exit 0;
-+      else
-+        exit $exitcode;
-+      fi; };
-+      scripts/coverity-scan/run-coverity-scan --update-tools-only > update-tools.log 2>&1 || { cat update-tools.log; exit 1; };
-+      scripts/coverity-scan/run-coverity-scan --no-update-tools'
-+  rules:
-+    - if: '$COVERITY_TOKEN == null'
-+      when: never
-+    - if: '$COVERITY_EMAIL == null'
-+      when: never
-+    # Never included on upstream pipelines, except for schedules
-+    - if: '$CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_PIPELINE_SOURCE == "schedule"'
-+      when: on_success
-+    - if: '$CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM'
-+      when: never
-+    # Forks don't get any pipeline unless QEMU_CI=1 or QEMU_CI=2 is set
-+    - if: '$QEMU_CI != "1" && $QEMU_CI != "2"'
-+      when: never
-+    # Always manual on forks even if $QEMU_CI == "2"
-+    - when: manual
-diff --git a/.gitlab-ci.d/opensbi.yml b/.gitlab-ci.d/opensbi.yml
-index fd293e6c317..42f137d624e 100644
---- a/.gitlab-ci.d/opensbi.yml
-+++ b/.gitlab-ci.d/opensbi.yml
-@@ -24,6 +24,10 @@
-     - if: '$QEMU_CI == "1" && $CI_PROJECT_NAMESPACE != "qemu-project" && $CI_COMMIT_MESSAGE =~ /opensbi/i'
-       when: manual
++    g_free(dm_path);
++    return is_stubdom;
++}
++
+ void xen_be_init(void)
+ {
+     xenstore = qemu_xen_xs_open();
+@@ -616,6 +630,8 @@ void xen_be_init(void)
+         exit(1);
+     }
  
-+    # Scheduled runs on mainline don't get pipelines except for the special Coverity job
-+    - if: '$CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_PIPELINE_SOURCE == "schedule"'
-+      when: never
++    xen_is_stubdomain = xen_check_stubdomain();
 +
-     # Run if any files affecting the build output are touched
-     - changes:
-         - .gitlab-ci.d/opensbi.yml
+     xen_sysdev = qdev_new(TYPE_XENSYSDEV);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(xen_sysdev), &error_fatal);
+     xen_sysbus = qbus_new(TYPE_XENSYSBUS, xen_sysdev, "xen-sysbus");
+diff --git a/include/hw/xen/xen.h b/include/hw/xen/xen.h
+index 37ecc91fc3..ecb89ecfc1 100644
+--- a/include/hw/xen/xen.h
++++ b/include/hw/xen/xen.h
+@@ -36,6 +36,7 @@ enum xen_mode {
+ extern uint32_t xen_domid;
+ extern enum xen_mode xen_mode;
+ extern bool xen_domid_restrict;
++extern bool xen_is_stubdomain;
+ 
+ int xen_pci_slot_get_pirq(PCIDevice *pci_dev, int irq_num);
+ int xen_set_pci_link_route(uint8_t link, uint8_t irq);
+diff --git a/system/globals.c b/system/globals.c
+index b6d4e72530..ac27d88bd4 100644
+--- a/system/globals.c
++++ b/system/globals.c
+@@ -62,6 +62,7 @@ bool qemu_uuid_set;
+ uint32_t xen_domid;
+ enum xen_mode xen_mode = XEN_DISABLED;
+ bool xen_domid_restrict;
++bool xen_is_stubdomain;
+ struct evtchn_backend_ops *xen_evtchn_ops;
+ struct gnttab_backend_ops *xen_gnttab_ops;
+ struct foreignmem_backend_ops *xen_foreignmem_ops;
 -- 
-2.43.2
+2.43.0
 
 
