@@ -2,76 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 496B1872311
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 16:46:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B13B87232A
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 16:52:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhWz5-0007Ih-Dv; Tue, 05 Mar 2024 10:45:39 -0500
+	id 1rhX4G-0000NB-Rq; Tue, 05 Mar 2024 10:51:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rhWym-0007I4-4B
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 10:45:26 -0500
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rhX4E-0000Ml-F4
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 10:50:59 -0500
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rhWyf-0006FY-4W
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 10:45:19 -0500
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-6e58d259601so3698087b3a.3
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 07:45:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rhX47-0007K9-Gt
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 10:50:57 -0500
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-51326436876so6374520e87.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 07:50:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709653511; x=1710258311; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=9Ip500dlxzfGuh2FzRWKT4kqSpk/fKaCL2rIPzbIeh8=;
- b=NWzrOp1P+x2uZ7uV2Fmknz1YohUgnw6Dvc6PnFoBR4t+Ter5QgxZQFQ70MO1ZJLYTK
- lvcvAn1m4DEkudH+dqzODPxTFUhZv5ayBTVWBMaJLtrOt6I2qMiQGKrVPt90EvhQ95en
- JI7OgoChg7Sh1NgU28Y/92593MuOgpw2NMr9k/FsDto8CEcEWWxWfUMYfE35C7VXC+f2
- XvoYUGGab8pMEgocrOIyZiTGRliQCs713hTi22nuZmVQOfhj0BjTLjn6nvrBtlu4Xpfn
- p72+dxgzT82X99zyJzWrT7M0yDkSvmBBPSI3PjGfvuCsHjCPkLrDR3IKthc79lsOrIxb
- QaXQ==
+ d=linaro.org; s=google; t=1709653849; x=1710258649; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=oIU4ccuy4HU8mf1H46sACHHovBTUOj3TeYnZ8oicqRE=;
+ b=ySyPM7/g2tcWGkfPEQGxATy0Gkc55x0EY2A9gLG2fL6tQvK02HsOWCWlQM56UzKQlC
+ jaurvm0kcgZW/+juJePTsmahMWY5GS+avfxHuscVWg6VnBERsqDTtZ7MToDivBWG3zTP
+ ugvR0PpOvmiMJ6v4gaaTajASU2lY3kFILhwXCTj9HklZnmyL/ezbVaZLQKmn63eQ2H1t
+ 9420dekIGnTHrz4aZWduUYiMpIjBYNKHjKCLUP6rQem0NDHz71mOqKljNG50p6ZE012x
+ Ra+Tyyhxggqa1i622hs4JhSCReMJ6g1UQkSdEu/ftMTSM+MhQMnOszX19kjkvM0llyUz
+ TB+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709653511; x=1710258311;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9Ip500dlxzfGuh2FzRWKT4kqSpk/fKaCL2rIPzbIeh8=;
- b=cLoIi98LGinX5XSt+EVdpQ74uTFES7v+QJEBy4DLNX0S5vMP9zsVEXbnL5HcJgfLbw
- Jb/UMW099d6c5xxGyGByjjWM6ocggpCGL6gu5tP7UuUUHbeFqN6SS8qzZiZsX92H68EV
- 5z+vLvL6i54iH9AXINVwFseQM3IgPoA74XG5PvAcikmTgntPPWBCLP0xMcQnqguk/1MR
- wDs0sLoRrBAbd+uCFOiEjASHFs/dMsm3AN5vqcftO36SV08J5jP2x4OjGvCipby9L9XY
- CX34JiEc3FHBH/Hv43+Pegk3YHjAjDeHuwfjmIyNcpYV4TOZCaE8elg9O5kV4gIRSPBx
- uV3g==
-X-Gm-Message-State: AOJu0Yyssesn+dmWQPR242zCq5X99qN9KpUrNkkKL2B9jcywBax0IfNJ
- 43WVphEjNSEJxsTH2avALIr6RqQrL0ufi+ZvTsI6FvNif8isg0rk0eup6yJek5Q=
-X-Google-Smtp-Source: AGHT+IHCwR0jV88kE1J3fJY2CVjYe85MLMCyZPy09ZQcIt2uzI9OCzC/snAjqbS3x9L9eDws5YZvAw==
-X-Received: by 2002:a05:6a00:1955:b0:6e4:eb29:357 with SMTP id
- s21-20020a056a00195500b006e4eb290357mr15582680pfk.12.1709653511382; 
- Tue, 05 Mar 2024 07:45:11 -0800 (PST)
-Received: from [192.168.6.128] (098-147-055-211.res.spectrum.com.
- [98.147.55.211]) by smtp.gmail.com with ESMTPSA id
- y19-20020a056a00191300b006e482a238b7sm9018006pfi.31.2024.03.05.07.45.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Mar 2024 07:45:11 -0800 (PST)
-Message-ID: <31e8832d-d853-412d-8f98-c4b91febd450@linaro.org>
-Date: Tue, 5 Mar 2024 05:45:07 -1000
+ d=1e100.net; s=20230601; t=1709653849; x=1710258649;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=oIU4ccuy4HU8mf1H46sACHHovBTUOj3TeYnZ8oicqRE=;
+ b=C82ctCkQo9czYfFnysV+VbOIz4mp2Wa47drIyRudIUhYB7dIl2lrc9jC+flGGboOcA
+ Ca3IAa4V0bo5hjn2JIkNb5Bn/7yg97VxuWjVdSUF6C46n8sjlBrKQe2dxUO2VH03/6hA
+ Ob9rDXt9nWagP/RXmgQVu6doDizhA6KkY+QNT1m+Ut6CCfE64VI6E1dA2QsV6sEJuCyK
+ 6XITvzrwZbSJxKgtwyoyasN2i2A7umtGZ5UXbolcQ5T7JugI4TkluN8FviOzuZ8EDPjV
+ TpZ42kEBTdReSiMZtSxgMm+CXNXmSy+FUq11lZUT/GbySKSx1HMkZYItQQYgO7rJrnsM
+ IrFQ==
+X-Gm-Message-State: AOJu0Yy2/vSOyX1iUqsm6J/gen8rq2QfQWNR6Icx0XjX3K4832L4x8z7
+ yCEWtrPEmd39InIgpTZO8o8cA5HQrCkoJISi77d0yNA7X9HenWsiU4xXrpYFN4A=
+X-Google-Smtp-Source: AGHT+IFqOK061YemKyDyJXq8WfdSjvCdmKBALdPLKpbnSzfPq8BFdw6sYj4Cb3dmtSnNBHMWKkAjig==
+X-Received: by 2002:ac2:44c2:0:b0:513:3faf:a2aa with SMTP id
+ d2-20020ac244c2000000b005133fafa2aamr1514764lfm.29.1709653848740; 
+ Tue, 05 Mar 2024 07:50:48 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ u21-20020a7bc055000000b004129a1097e7sm20807439wmc.12.2024.03.05.07.50.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 05 Mar 2024 07:50:48 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id CBF645F8B4;
+ Tue,  5 Mar 2024 15:50:47 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: Mark Burton <mburton@qti.qualcomm.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>, Bin
+ Meng <bin.meng@windriver.com>, Edgar E. Iglesias
+ <edgar.iglesias@gmail.com>, Stefano Stabellini <sstabellini@kernel.org>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Don Harbin
+ <don.harbin@linaro.org>, Alessandro Di Federico <ale@rev.ng>, Anton
+ Johansson <anjo@rev.ng>, =?utf-8?Q?Fran=C3=A7ois?= Ozog <ff@shokubai.tech>,
+ Song Gao
+ <gaosong@loongson.cn>, Michael Rolnik <mrolnik@gmail.com>, Brian Cain
+ <bcain@quicinc.com>, Christoph Muellner <christoph.muellner@vrull.eu>,
+ Philipp Tomsich <philipp.tomsich@vrull.eu>, Max Filippov
+ <jcmvbkbc@gmail.com>, Francisco Iglesias <francisco.iglesias@amd.com>
+Subject: Any interest in the QEMU community attending DVCon Europe October
+ 2024?
+User-Agent: mu4e 1.12.1; emacs 29.1
+Date: Tue, 05 Mar 2024 15:50:47 +0000
+Message-ID: <8734t4wuco.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] target/loongarch: Add TCG macro in structure
- CPUArchState
-Content-Language: en-US
-To: Bibo Mao <maobibo@loongson.cn>, Song Gao <gaosong@loongson.cn>
-Cc: qemu-devel@nongnu.org
-References: <20240305062644.1564155-1-maobibo@loongson.cn>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240305062644.1564155-1-maobibo@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,33 +103,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/4/24 20:26, Bibo Mao wrote:
-> +#ifdef CONFIG_TCG
->   static int loongarch_map_tlb_entry(CPULoongArchState *env, hwaddr *physical,
->                                      int *prot, target_ulong address,
->                                      int access_type, int index, int mmu_idx)
-> @@ -154,6 +155,14 @@ static int loongarch_map_address(CPULoongArchState *env, hwaddr *physical,
->   
->       return TLBRET_NOMATCH;
->   }
-> +#else
-> +static int loongarch_map_address(CPULoongArchState *env, hwaddr *physical,
-> +                                 int *prot, target_ulong address,
-> +                                 MMUAccessType access_type, int mmu_idx)
-> +{
-> +    return TLBRET_NOMATCH;
-> +}
-> +#endif
 
-You may find that debugging with gdbstub or the qemu monitor easier with a routine that 
-walks page tables for loongarch_cpu_get_phys_page_debug.  For kvm, the existing code is 
-insufficient anyway, because you'd need to emulate a hardware page table walk, not use 
-env->tlb[], which would not be populated.
+Hi,
 
-This can be improved later.
+Over recent years there has been a push to make QEMU more flexible for
+EDA type applications. As long time developers know there are a number
+of downstream forks of QEMU which have their own solutions for modelling
+heterogeneous systems and integrating with hardware models. The work by
+Philippe, Anton and others to build a single binary with composable
+hardware is aiming at least to solve the heterogeneous modelling problem
+in the upstream project.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+While we do discuss these "TCG" topics during KVM Forum the project may
+benefit from doing some outreach at some conferences where simulation
+and emulation are the primary focus.
 
+The Design and Verification Conference & Exhibition Europe (DVCon
+Europe) is the premier European technical conference on system,
+software, design, verification, validation and integration. This year it
+will be on the 15-16 October 2024 in Munich. See: https://dvcon-europe.org/
 
-r~
+There have been a number of papers and workshops on QEMU/KVM topics over
+the years. Unfortunately the website doesn't provide slides or videos of
+the talks but topics have included how QEMU can be used as a fast
+instruction simulator alongside things such as SystemC models or
+virtualisation can be leveraged to accelerate full system emulation.
+
+The main tracks are fairly academic where engineering and research
+papers are submitted and if accepted can then be presented at the
+conference. This is probably over the top for QEMU related stuff but
+their is a tutorial track (deadline for Abstracts 1st July) which could
+be a good target for a introduction to the features and capabilities of
+the QEMU upstream. I suspect there would be interest in the wider
+modelling community to find out more about how to use the upstream
+project directly.
+
+There is a co-located "SystemC Evolution Day" on the 17th where there
+might well be a strong overlap between SystemC users and QEMU. Mark
+Burton is involved with that and is keen for proposals talking about
+integrating SystemC models with QEMU. Please send a message to
+mburton@quicinc.com if you're interested.
+
+So is anyone interested?
+
+Should we do more within the community to network and discuss our plans
+for QEMU as a modelling solution?
+
+Any other thoughts?
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
