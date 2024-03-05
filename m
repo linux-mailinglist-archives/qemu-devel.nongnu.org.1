@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD543871EE5
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 13:18:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EEDF871EC0
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 13:15:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhTeb-00048B-8P; Tue, 05 Mar 2024 07:12:17 -0500
+	id 1rhTe8-00038u-TM; Tue, 05 Mar 2024 07:11:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhTdJ-0001uV-GG
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 07:11:03 -0500
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ id 1rhTd5-0001iV-MR
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 07:10:53 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhTch-0001SW-8i
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 07:10:48 -0500
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2d26227d508so64868261fa.2
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 04:10:17 -0800 (PST)
+ id 1rhTcf-0001RQ-EM
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 07:10:40 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-412ecc1064cso4581355e9.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 04:10:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709640616; x=1710245416; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709640614; x=1710245414; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aJzWza4vI5yWejE/TYAdmrx2G3TCvmG5gLCl8zQLNCk=;
- b=yUKXzgXmMloK5w6WEn88L/LaegaWwKuVmI6/BeQjXSxHBxt48WsvsIox6KAgfQesNW
- q8zPsU2MoTgY0+lDQMgPp+xw99ldvcMlmK6wkOSwWjf+G7H8GNUlmlMP9wo7XkJELEE4
- 7m1fi0fuEkQJVNK6SOalbfr2QRbMFXlocsDTlofaYdl+cYk2ceu9SwFeGckLyEo61RRY
- 7WqAOPVjqA9QuJXGcxk8wC3wjFxheoKDWxaW2eT65ymkjWbAQpr+HGtZl1nVnYX/FGfP
- gh+kEgKkHNNHKboYb0TOd194l+eiyNjY49HrnLoYMxsu0LZKGA7vD/4uPiHmrmIisc3X
- VpFw==
+ bh=eN1w3VZA32Wi8fJgCeFoCtnvrPmKwuzv+ibyU3+3o6o=;
+ b=BYZvPV/POC2s7JrzoSfCGWx4C2ATR+TzSETRejEefvUV9xkw2+trUwz1DT55H2+6tt
+ BebBE4fz/8Z5duJmZKK+XoVvHVBcy3DoV35pzku8nqXufhwEh3yubslIYxiUku+DVOf8
+ DxZQzZD5mos9p6PYwxxvkLtyBLwRJ4mdO1G14LPClRMc30o5NDchhQRpje4t5UuiU0rb
+ 1QKT+nt4usCqEuaEfiY8rAvdHgD+SxfuNtg9iykBP8ZI/6hxxqRVoGF9mbhuR3sAwj32
+ dt55YwrGmhtz/Gm+UFTk9Y83tuAI0ns8WnGY9wRaSrUAIj6mgH3I0iEcJQ7kdVbykr0H
+ SDUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709640616; x=1710245416;
+ d=1e100.net; s=20230601; t=1709640614; x=1710245414;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aJzWza4vI5yWejE/TYAdmrx2G3TCvmG5gLCl8zQLNCk=;
- b=mPZILIJufqDE1RBphbFrp6yD9NNEKNMXm8BDfygv10WOKXX33Pzb/H3jo9Kbq4xikc
- CuPgSAXzKu+E9gDkh1RQ2OGMRdjT2V2m+m9ovPW1J7mI1F2gwv81oim+HbYoQUpXVSB+
- nA6EBVwJTMjMyRjKHlHQMcpsqjOw25VII7hGPM8Z6fwVh1sNfyZXyUyvHXOm6lJjP8qI
- ItFGoHH2BtPhfMHaktRW5DnYFG/05bqklQVNORS4JfkXHEsJJWddRaM4Q4f8/dx+o8qm
- iPJbdvLW17FfmNI9XIRfBG1mmyJa59x6jV1SG7jcaVMv9byOxfEfyPNly8aPhRO+7CNd
- Zjhw==
-X-Gm-Message-State: AOJu0YxbNIurlq+RMhMSRQ3F4MQgKKa0HZ4R2wuIfnawR4wqMpO5XbW7
- E5Tu1oLrju1JWGFkUjiTCvtxx/o+PJx62BEvGc3wm9yDA3UspB+uCjlyLYwiLZI=
-X-Google-Smtp-Source: AGHT+IGtvfi5YTHGExZQ/HVfvB/kBsA0r2Osi15Bw5ChEcGTzPSLzircQ+DfYNa7xka4HyfK+AilSA==
-X-Received: by 2002:a05:6512:1054:b0:513:4ad9:a7ef with SMTP id
- c20-20020a056512105400b005134ad9a7efmr1316093lfb.52.1709640615995; 
- Tue, 05 Mar 2024 04:10:15 -0800 (PST)
+ bh=eN1w3VZA32Wi8fJgCeFoCtnvrPmKwuzv+ibyU3+3o6o=;
+ b=RFNu/6EJ67/n7Oz77oFIUBtG9gsvioNsHGeB+eBehgrcN05K3CVQolMSeJMghIB3i+
+ BWUScmgMigYKLyeSdzpYtfj30KnCv9xgQ4cRdiwccGsLePLHaDRWl6zBgj14NXWZ+hZI
+ RXinlFJstKjaqXrDVcbm+FZb2p0Z2cygD6BZvF5roQMiGBGIv623/i1DAcVQNI/aJs+M
+ VIZW/XmeIYTQTufCX2ZuKe5Xcg9sjHLnprY1xIEJ/k/ngEVqRyHtDuV1n/oJqG2qH7d4
+ nAZvKpEU+6T6u1TFrPWOgUjAajTc1kxqjWfQQ9NRYURpc4rk4VrYza2Qyt0UK/9+mShz
+ vyOw==
+X-Gm-Message-State: AOJu0Yz2R5Ec06bgnUgX2R8EYGsHAjLVRosjaxBT1WcgaK4UciMm/0kg
+ d4piLckg3sVfIbIXqZqYSAimL7NXbmOdPJKxuXmhovSb88I8iD3omKCaxq/ipGg=
+X-Google-Smtp-Source: AGHT+IEVuEapc/2m/rYMnypstBHkreGm3a0DZAqtHtnVmJWeGeXufNpTmF9IPZPtexy/OrRqPDeUBw==
+X-Received: by 2002:a05:600c:4fcf:b0:412:ebfe:68fe with SMTP id
+ o15-20020a05600c4fcf00b00412ebfe68femr1410832wmq.35.1709640614053; 
+ Tue, 05 Mar 2024 04:10:14 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- l22-20020a05600c4f1600b004128f41a13fsm17794983wmq.38.2024.03.05.04.10.08
+ d8-20020a05600c3ac800b00412e84e59d8sm3851590wms.44.2024.03.05.04.10.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 05 Mar 2024 04:10:12 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 755565F9CE;
+ by draig.lan (Postfix) with ESMTP id 8A5E65F9CF;
  Tue,  5 Mar 2024 12:10:06 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -92,24 +92,24 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
  Warner Losh <imp@bsdimp.com>, qemu-riscv@nongnu.org,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 10/29] gdbstub: Introduce gdb_handle_set_thread_user()
-Date: Tue,  5 Mar 2024 12:09:46 +0000
-Message-Id: <20240305121005.3528075-11-alex.bennee@linaro.org>
+Subject: [PATCH 11/29] gdbstub: Introduce gdb_handle_detach_user()
+Date: Tue,  5 Mar 2024 12:09:47 +0000
+Message-Id: <20240305121005.3528075-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240305121005.3528075-1-alex.bennee@linaro.org>
 References: <20240305121005.3528075-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -128,68 +128,56 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
 The upcoming follow-fork-mode child support needs to perform certain
-actions when GDB switches between the stopped parent and the stopped
-child. Introduce a user-specific hook for this.
+actions when GDB detaches from the stopped parent or the stopped child.
+Introduce a user-specific hook for this.
 
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20240219141628.246823-10-iii@linux.ibm.com>
+Message-Id: <20240219141628.246823-11-iii@linux.ibm.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- gdbstub/internals.h |  1 +
- gdbstub/gdbstub.c   | 11 +++++++++--
- gdbstub/user.c      |  5 +++++
- 3 files changed, 15 insertions(+), 2 deletions(-)
+ gdbstub/internals.h | 1 +
+ gdbstub/gdbstub.c   | 6 ++++++
+ gdbstub/user.c      | 5 +++++
+ 3 files changed, 12 insertions(+)
 
 diff --git a/gdbstub/internals.h b/gdbstub/internals.h
-index e6063835b1f..b4905c7181a 100644
+index b4905c7181a..b4724598384 100644
 --- a/gdbstub/internals.h
 +++ b/gdbstub/internals.h
-@@ -197,6 +197,7 @@ void gdb_handle_v_file_readlink(GArray *params, void *user_ctx); /* user */
- void gdb_handle_query_xfer_exec_file(GArray *params, void *user_ctx); /* user */
+@@ -198,6 +198,7 @@ void gdb_handle_query_xfer_exec_file(GArray *params, void *user_ctx); /* user */
  void gdb_handle_set_catch_syscalls(GArray *params, void *user_ctx); /* user */
  void gdb_handle_query_supported_user(const char *gdb_supported); /* user */
-+bool gdb_handle_set_thread_user(uint32_t pid, uint32_t tid); /* user */
+ bool gdb_handle_set_thread_user(uint32_t pid, uint32_t tid); /* user */
++bool gdb_handle_detach_user(uint32_t pid); /* user */
  
  void gdb_handle_query_attached(GArray *params, void *user_ctx); /* both */
  
 diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 7be4418dcb5..3eb93162aa8 100644
+index 3eb93162aa8..17efcae0d0e 100644
 --- a/gdbstub/gdbstub.c
 +++ b/gdbstub/gdbstub.c
-@@ -1099,6 +1099,7 @@ static void handle_cont_with_sig(GArray *params, void *user_ctx)
- 
- static void handle_set_thread(GArray *params, void *user_ctx)
- {
-+    uint32_t pid, tid;
-     CPUState *cpu;
- 
-     if (params->len != 2) {
-@@ -1116,8 +1117,14 @@ static void handle_set_thread(GArray *params, void *user_ctx)
-         return;
+@@ -1024,6 +1024,12 @@ static void handle_detach(GArray *params, void *user_ctx)
+         pid = get_param(params, 0)->val_ul;
      }
  
--    cpu = gdb_get_cpu(get_param(params, 1)->thread_id.pid,
--                      get_param(params, 1)->thread_id.tid);
-+    pid = get_param(params, 1)->thread_id.pid;
-+    tid = get_param(params, 1)->thread_id.tid;
 +#ifdef CONFIG_USER_ONLY
-+    if (gdb_handle_set_thread_user(pid, tid)) {
++    if (gdb_handle_detach_user(pid)) {
 +        return;
 +    }
 +#endif
-+    cpu = gdb_get_cpu(pid, tid);
-     if (!cpu) {
-         gdb_put_packet("E22");
-         return;
++
+     process = gdb_get_process(pid);
+     gdb_process_breakpoint_remove_all(process);
+     process->attached = false;
 diff --git a/gdbstub/user.c b/gdbstub/user.c
-index c9e8b83d720..b048754c4f8 100644
+index b048754c4f8..1a7b582a40d 100644
 --- a/gdbstub/user.c
 +++ b/gdbstub/user.c
-@@ -386,6 +386,11 @@ void gdb_handle_query_supported_user(const char *gdb_supported)
- {
+@@ -391,6 +391,11 @@ bool gdb_handle_set_thread_user(uint32_t pid, uint32_t tid)
+     return false;
  }
  
-+bool gdb_handle_set_thread_user(uint32_t pid, uint32_t tid)
++bool gdb_handle_detach_user(uint32_t pid)
 +{
 +    return false;
 +}
