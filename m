@@ -2,59 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80049871D03
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 12:09:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 926A4871D25
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 12:14:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhSf7-0003mo-UV; Tue, 05 Mar 2024 06:08:50 -0500
+	id 1rhSkA-0000hJ-RA; Tue, 05 Mar 2024 06:13:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1rhSel-0003PV-De
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 06:08:24 -0500
-Received: from smtp1.lauterbach.com ([62.154.241.196])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1rhSej-0003Gl-Go
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 06:08:22 -0500
-Received: (qmail 25980 invoked by uid 484); 5 Mar 2024 11:08:18 -0000
-X-Qmail-Scanner-Diagnostics: from nedpc1.intern.lauterbach.com by
- smtp1.lauterbach.com (envelope-from <nicolas.eder@lauterbach.com>,
- uid 484) with qmail-scanner-2.11 
- (mhr: 1.0. clamdscan: 0.99/21437. spamassassin: 3.4.0.  
- Clear:RC:1(10.2.11.92):. 
- Processed in 0.991909 secs); 05 Mar 2024 11:08:18 -0000
-Received: from nedpc1.intern.lauterbach.com (HELO [10.2.11.92])
- (Authenticated_SSL:neder@[10.2.11.92])
- (envelope-sender <nicolas.eder@lauterbach.com>)
- by smtp1.lauterbach.com (qmail-ldap-1.03) with TLS_AES_256_GCM_SHA384
- encrypted SMTP
- for <alex.bennee@linaro.org>; 5 Mar 2024 11:08:15 -0000
-Content-Type: multipart/alternative;
- boundary="------------SC0dOEIOZzVLx0h9FDs0lUsD"
-Message-ID: <10df7ccb-80d1-4567-a7a5-7a29b1c88e4e@lauterbach.com>
-Date: Tue, 5 Mar 2024 12:08:15 +0100
+ (Exim 4.90_1) (envelope-from <a.tarasenko@gmail.com>)
+ id 1rhSk6-0000gg-8w
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 06:13:55 -0500
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <a.tarasenko@gmail.com>)
+ id 1rhSk1-0004mb-4s
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 06:13:53 -0500
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6e56d594b31so345334b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 03:13:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1709637227; x=1710242027; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Cn2pL1qremAkcnc9vQi2RIfUGtYRTpr9NM926Ppq3ko=;
+ b=PeRjv0g6Rv1gJiI1OqMkhouxyUTMy+9/ado890f54fZZodXEDNlW+gMCbm5RpRfjJM
+ l+IReF8XToKtYkq6egtb6TTgPQ7bT036CsMksjsv3I2Ryo1oMXdbFl0rsEp3TF4GSOq0
+ GUu1AstxWyzrb62wvcjkNCk42/E9zPT2PcFRdYPNAjMd4ja5ef7XJIkOcUuDI66Y89Bp
+ 3KJNX3N4yZkxl6D95z7FxOZu7g/QH+23y+IsuDYY61HsdWgHpw2DTeK02EKvb65QbyRz
+ SKNUOsqy5zoDYVbmSAk3QFbXLRP7+50QxCIR7cKFlmhjboPulKfUCOzu1kVEab+uZ9HK
+ 3F6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709637227; x=1710242027;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Cn2pL1qremAkcnc9vQi2RIfUGtYRTpr9NM926Ppq3ko=;
+ b=DmLFxatbb22PDoh1AYm/fqrA5PNuSq3dJ+0Q7HRfBl5yGUpceOF2tzCEBxR5VVsjJO
+ Swge2UiZ4SeVwr1K52VppJmqbMSZdJ2qdudnIbE0cecNxh2xzYkpXTxFzjkXnJ9dTIym
+ fe3h47FZQ4+HyzVc/X6tZcUtyvREzjAeoR+sBoLeBfXxR4YN9Rq9CPH5q6u9XUIdjPYe
+ ztIz07ICpljDohVTK0K52FtOQDrS8MydZIIslavwQHdzKpdkKi1+Kqs1qxnuDzQk8TGP
+ 9WBMHs7ipLORMl9o8d3KTXb7Q2ZXOs7xJiu8JMeVUhhyGRNW9cVFq73XniJO3PtKQecD
+ NlFQ==
+X-Gm-Message-State: AOJu0Yw834FGKS4D/lcoVZYOjTx6Xf79foOeHlqLg0fDLvJu0zC+wR1Z
+ LPlOYIv5t6O+TXRYqVD6a6fcEEhCYbk0UmKJSosVi3GJfNGU8kxWwDz217pkXJ2kqCUZO3w0bcU
+ 3CALdJLKWsrXmYh5XW7wUmYhAn9o=
+X-Google-Smtp-Source: AGHT+IGjknkXmN+ZcMiCP2UV2SckCegVhArJIyGCBuNxVm6BIuZVCC0bGHfnZLHS7jT/BCP9sQBL4MDLLbMjxWkxk1o=
+X-Received: by 2002:a05:6a21:a58f:b0:1a1:4897:c811 with SMTP id
+ gd15-20020a056a21a58f00b001a14897c811mr1460215pzc.1.1709637226985; Tue, 05
+ Mar 2024 03:13:46 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 11/18] mcdstub: system and core queries added
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Christian Boenig <christian.boenig@lauterbach.com>
-References: <20231220162555.19545-1-nicolas.eder@lauterbach.com>
- <20231220162555.19545-12-nicolas.eder@lauterbach.com>
- <87plwf8fvi.fsf@draig.linaro.org>
-From: "nicolas.eder@lauterbach.com" <nicolas.eder@lauterbach.com>
-In-Reply-To: <87plwf8fvi.fsf@draig.linaro.org>
-Received-SPF: pass client-ip=62.154.241.196;
- envelope-from=nicolas.eder@lauterbach.com; helo=smtp1.lauterbach.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, HTML_MESSAGE=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20240223161300.938542-1-peter.maydell@linaro.org>
+In-Reply-To: <20240223161300.938542-1-peter.maydell@linaro.org>
+From: Artyom Tarasenko <atar4qemu@gmail.com>
+Date: Tue, 5 Mar 2024 12:13:35 +0100
+Message-ID: <CAAM0arMqt0pZZLxjEiLhw-QxL3-+FBE0AxJ8MYkfhpQBAoogFg@mail.gmail.com>
+Subject: Re: [PATCH] hw/rtc/sun4v-rtc: Relicense to GPLv2-or-later
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Markus Armbruster <armbru@redhat.com>, Eduardo Habkost <ehabkost@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=a.tarasenko@gmail.com; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,45 +92,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------SC0dOEIOZzVLx0h9FDs0lUsD
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+On Fri, Feb 23, 2024 at 5:13=E2=80=AFPM Peter Maydell <peter.maydell@linaro=
+.org> wrote:
+>
+> The sun4v RTC device model added under commit a0e893039cf2ce0 in 2016
+> was unfortunately added with a license of GPL-v3-or-later, which is
+> not compatible with other QEMU code which has a GPL-v2-only license.
+>
+> Relicense the code in the .c and the .h file to GPL-v2-or-later,
+> to make it compatible with the rest of QEMU.
+>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
+Signed-off-by: Artyom Tarasenko <atar4qemu@gmail.com>
 
-On 29/02/2024 16:11, Alex Bennée wrote:
-> Hopefully the code can be more generic now and avoid having to re-parse
-> generated xml.
-
-I adapted my code to the recent register-related changes. There is still 
-some arm-specific code, but thanks to gdb_get_register_list() and 
-gdb_read_register() I could completely omit the XML parsing.
-
---------------SC0dOEIOZzVLx0h9FDs0lUsD
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 29/02/2024 16:11, Alex Bennée wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:87plwf8fvi.fsf@draig.linaro.org">
-      <pre>Hopefully the code can be more generic now and avoid having to re-parse
-generated xml.</pre>
-    </blockquote>
-    <p>I adapted my code to the recent register-related changes. There
-      is still some arm-specific code, but thanks to
-      gdb_get_register_list() and gdb_read_register() I could completely
-      omit the XML parsing.<br>
-    </p>
-  </body>
-</html>
-
---------------SC0dOEIOZzVLx0h9FDs0lUsD--
+> ---
+> Before we can commit this to either head-of-git or any stable branch,
+> we need a Signed-off-by: from everybody who's touched this file (or,
+> for corporate contributions, from somebody from the relevant company
+> who can confirm that the company is OK with the licensing, which is
+> RedHat and Linaro in this case).
+>
+> The full list of people who've made changes to the file is:
+>  Artyom Tarasenko <atar4qemu@gmail.com>
+>  Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>  Markus Armbruster <armbru@redhat.com>
+>  Eduardo Habkost <ehabkost@redhat.com>
+>
+> (Artyom is the original author; everybody else's changes are largely
+> mechanical, refactoring, etc.  We've done some behind-the-scenes
+> coordination so I don't anticipate any problems getting the
+> signoffs.)
+> ---
+>  include/hw/rtc/sun4v-rtc.h | 2 +-
+>  hw/rtc/sun4v-rtc.c         | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/hw/rtc/sun4v-rtc.h b/include/hw/rtc/sun4v-rtc.h
+> index fc54dfcba47..26a9eb61967 100644
+> --- a/include/hw/rtc/sun4v-rtc.h
+> +++ b/include/hw/rtc/sun4v-rtc.h
+> @@ -5,7 +5,7 @@
+>   *
+>   * Copyright (c) 2016 Artyom Tarasenko
+>   *
+> - * This code is licensed under the GNU GPL v3 or (at your option) any la=
+ter
+> + * This code is licensed under the GNU GPL v2 or (at your option) any la=
+ter
+>   * version.
+>   */
+>
+> diff --git a/hw/rtc/sun4v-rtc.c b/hw/rtc/sun4v-rtc.c
+> index e037acd1b56..ffcc0aa25d9 100644
+> --- a/hw/rtc/sun4v-rtc.c
+> +++ b/hw/rtc/sun4v-rtc.c
+> @@ -5,7 +5,7 @@
+>   *
+>   * Copyright (c) 2016 Artyom Tarasenko
+>   *
+> - * This code is licensed under the GNU GPL v3 or (at your option) any la=
+ter
+> + * This code is licensed under the GNU GPL v2 or (at your option) any la=
+ter
+>   * version.
+>   */
+>
+> --
+> 2.34.1
+>
 
