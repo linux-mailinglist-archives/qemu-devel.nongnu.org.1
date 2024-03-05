@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D6748720F3
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 14:56:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 616E78720ED
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 14:55:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhVEv-0001dc-3I; Tue, 05 Mar 2024 08:53:53 -0500
+	id 1rhVEz-00021W-DD; Tue, 05 Mar 2024 08:53:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhVDw-0000wa-Lr
+ id 1rhVDx-0000x2-8U
  for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:53:06 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhVDp-0005xr-Cw
+ id 1rhVDp-0005xv-Qw
  for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:52:52 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-412eddd14b9so4116195e9.2
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 05:52:44 -0800 (PST)
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-33d509ab80eso374434f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 05:52:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1709646764; x=1710251564; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=naDQJUm1BWCDp8wycCBq304iBQf/tU4pZQ1OtaRD1ng=;
- b=AYiky35Yi+n41/UhLOa1alchbNfw0mStGPwSDv+FAmkMsyXkWDdIQTR/TuWOeTHM4Z
- iJ8B9Zni+RJZU6MGsRaoxDsY4RUW/f9yNUDEB9+bSxblCSRM+tPgTA7DwoI1p8I5HirU
- gB0AqJp2d9BlT4Kgd6/fvT+XencI+ayVnls6DLT9htjC5d+w5/tHlUDHut9bDIIM5024
- hV3xbFk/VFKH3z3tT3hIBJlstZrbUfW0BU0pEBp2l24ZBxl7F0+NuwTQApRmeSwvnSjJ
- BDoV4XcTbrfil+0Jud23IkT87CO1c8JgqTzW1wqrtUdguK5iQQjVC2UXBJ88Ngeqex2J
- SK5A==
+ :reply-to; bh=bVTp8B0By/XCvljzAaX1UWqxflzJT37GS6jVUdEA9Gw=;
+ b=G9EfxxhXb5qWrhLoWn7ZE9ovTfX6ezQG75EHUNMeRP4BahBvt3T5mipTkV37YtwTwa
+ m/I2OlUsINIo4mzSfQ8HjfbB+QywQqN21rHAhIJaR+EsvT8Nvh/HPH7OsbPOhluE0DnG
+ R2wi7pIh5JziBFrFYsl6v6fVSnwdiTWRPbCZ5W/IqDjQ78LtD4W9fQM+2q1RbVXIbxPk
+ +x7ryHtjEyKFVsKvk7c3eXM2irFZYjHeJox71tqRRcIjwerbtafd+wMxSL9hf3yU7X86
+ FIK9o1efFzl7oEg/kGHR05bwK92FZHFe2g4g5i6gFHGfXRAuYkLVh8Ndg2aCAn4dv+9d
+ sMrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1709646764; x=1710251564;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=naDQJUm1BWCDp8wycCBq304iBQf/tU4pZQ1OtaRD1ng=;
- b=p3JbcvI7atSOXADpeDQJgjUivdfmkLM8+ERHaaU6V6GOec6GB/DpJBp5h9kOywv9qq
- Ou5L/Drk5OK+yLcTiZcnYl5Z3cHjcwKJ+2VUnOwQ+E0/Do1C7Wmrqdz1CeWcjOi6XS2w
- D2drsw7xogZbwVoOsRVKS3Es8pOJEclKPhH0IYuY6t23o0ZEMekY+gHIwkrIJV3exj7l
- VqnfDV84kBgAXmuoa4GSTHq5MY4s78QbkP0OAetfAYwa7XF4BJF5DnQRw1+NzPKd8ZwO
- DTGhj3qeRs5LZo0TsORcsi1zJEexqVdf8AqAtSnY9BUREr7Qh9JwZlc0oR2Cq43V9yhR
- dhUw==
-X-Gm-Message-State: AOJu0YxUl2BGqrgpF4By/Ngpi6sefvNXJXcMB/CGx02fENfQ1NTBMt+d
- 2AOkdgoShHNb+44wR+bJkPvIQD2nv8kyJ5BIjHKLzOf42Ee5BiR5RY3Z+FILJTNxDHeRYR4hzlf
- K
-X-Google-Smtp-Source: AGHT+IEyQzZZOiwJg+/6I3K2YT9t6bJeI302y/YEaUz3b63Qz1ZcMDIDKaOnjBX73XTsAmNZ/XjPqQ==
-X-Received: by 2002:adf:f20a:0:b0:33d:2473:4716 with SMTP id
- p10-20020adff20a000000b0033d24734716mr8088802wro.57.1709646763844; 
- Tue, 05 Mar 2024 05:52:43 -0800 (PST)
+ bh=bVTp8B0By/XCvljzAaX1UWqxflzJT37GS6jVUdEA9Gw=;
+ b=LJXPj/V9JSVH21qY4ZpuYQuvfHcz+mfmr91mImjQD45H19SFqc62+JPrcDQXIwzk+n
+ Nvpc+novlAS/0380hMBuFQgR/P74WaLeiLAfg9heiITWwIcHR8Vdo4BFKFdHvh0VQ7ct
+ OLki74ZpJ9nMP+enNTpRtzXdeSmSquydXFOcVEG8LNYfs71DVLasWj7DS5OQfgZhahTR
+ GH+z/lOkfdQfIuz3HP+WX34DU3iEirp8+hKuzRj5nJUcIynBlJhThPn04lAMo5HAOb7m
+ 8gxzboETNS6bD/imHmCVTA3mWU5rxWJnVqKcQy5TrOJWFTn/m2eNlRrEowcA5Rv4t4Aq
+ 917g==
+X-Gm-Message-State: AOJu0YzqvTAN22RTp4VNGujnywgfFoFAO51+GXQMkMns9XM+4SPO2am2
+ G06st48u+4C3JBO09y6e7OamkyivhuzZ8/2vgEHPS+PYT+a6gK6yhGHiI8fZ/a+EuQEGMxp5c8X
+ f
+X-Google-Smtp-Source: AGHT+IFT0gcBOVZIIdD3Sptm6aZQ+DLOPgb1h1fx53GZFmbsvvflAd5Y9kOzYKOtRub1G09J+rhL+g==
+X-Received: by 2002:adf:9cc8:0:b0:33e:2155:6da4 with SMTP id
+ h8-20020adf9cc8000000b0033e21556da4mr8901603wre.55.1709646764279; 
+ Tue, 05 Mar 2024 05:52:44 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  x3-20020a5d6503000000b0033e206a0a7asm11797532wru.26.2024.03.05.05.52.43
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Mar 2024 05:52:43 -0800 (PST)
+ Tue, 05 Mar 2024 05:52:44 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 10/20] hw/misc/stm32l4x5_rcc: Add write protections to CR
- register
-Date: Tue,  5 Mar 2024 13:52:27 +0000
-Message-Id: <20240305135237.3111642-11-peter.maydell@linaro.org>
+Subject: [PULL 11/20] hw/arm/stm32l4x5_soc.c: Use the RCC Sysclk
+Date: Tue,  5 Mar 2024 13:52:28 +0000
+Message-Id: <20240305135237.3111642-12-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240305135237.3111642-1-peter.maydell@linaro.org>
 References: <20240305135237.3111642-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,242 +94,127 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 
-Add write protections for the fields in the CR register.
-PLL configuration write protections (among others) have not
-been handled yet. This is planned in a future patch set.
+Now that we can generate reliable clock frequencies from the RCC, remove
+the hacky definition of the sysclk in the b_l475e_iot01a initialisation
+code and use the correct RCC clock.
 
 Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
-Message-id: 20240303140643.81957-7-arnaud.minier@telecom-paris.fr
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-id: 20240303140643.81957-8-arnaud.minier@telecom-paris.fr
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/misc/stm32l4x5_rcc.c | 166 ++++++++++++++++++++++++++++------------
- 1 file changed, 115 insertions(+), 51 deletions(-)
+ include/hw/arm/stm32l4x5_soc.h |  3 ---
+ hw/arm/b-l475e-iot01a.c        | 10 +---------
+ hw/arm/stm32l4x5_soc.c         | 33 ++++-----------------------------
+ 3 files changed, 5 insertions(+), 41 deletions(-)
 
-diff --git a/hw/misc/stm32l4x5_rcc.c b/hw/misc/stm32l4x5_rcc.c
-index 2109f809e2b..bc2d63528ba 100644
---- a/hw/misc/stm32l4x5_rcc.c
-+++ b/hw/misc/stm32l4x5_rcc.c
-@@ -374,9 +374,47 @@ static void rcc_update_irq(Stm32l4x5RccState *s)
+diff --git a/include/hw/arm/stm32l4x5_soc.h b/include/hw/arm/stm32l4x5_soc.h
+index 0b4f97e240e..af67b089efc 100644
+--- a/include/hw/arm/stm32l4x5_soc.h
++++ b/include/hw/arm/stm32l4x5_soc.h
+@@ -54,9 +54,6 @@ struct Stm32l4x5SocState {
+     MemoryRegion sram2;
+     MemoryRegion flash;
+     MemoryRegion flash_alias;
+-
+-    Clock *sysclk;
+-    Clock *refclk;
+ };
+ 
+ struct Stm32l4x5SocClass {
+diff --git a/hw/arm/b-l475e-iot01a.c b/hw/arm/b-l475e-iot01a.c
+index 6ecde2db15c..d862aa43fc3 100644
+--- a/hw/arm/b-l475e-iot01a.c
++++ b/hw/arm/b-l475e-iot01a.c
+@@ -26,27 +26,19 @@
+ #include "qapi/error.h"
+ #include "hw/boards.h"
+ #include "hw/qdev-properties.h"
+-#include "hw/qdev-clock.h"
+ #include "qemu/error-report.h"
+ #include "hw/arm/stm32l4x5_soc.h"
+ #include "hw/arm/boot.h"
+ 
+-/* Main SYSCLK frequency in Hz (80MHz) */
+-#define MAIN_SYSCLK_FREQ_HZ 80000000ULL
++/* B-L475E-IOT01A implementation is derived from netduinoplus2 */
+ 
+ static void b_l475e_iot01a_init(MachineState *machine)
+ {
+     const Stm32l4x5SocClass *sc;
+     DeviceState *dev;
+-    Clock *sysclk;
+-
+-    /* This clock doesn't need migration because it is fixed-frequency */
+-    sysclk = clock_new(OBJECT(machine), "SYSCLK");
+-    clock_set_hz(sysclk, MAIN_SYSCLK_FREQ_HZ);
+ 
+     dev = qdev_new(TYPE_STM32L4X5XG_SOC);
+     object_property_add_child(OBJECT(machine), "soc", OBJECT(dev));
+-    qdev_connect_clock_in(dev, "sysclk", sysclk);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+ 
+     sc = STM32L4X5_SOC_GET_CLASS(dev);
+diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
+index cb147050091..bf9926057be 100644
+--- a/hw/arm/stm32l4x5_soc.c
++++ b/hw/arm/stm32l4x5_soc.c
+@@ -110,9 +110,6 @@ static void stm32l4x5_soc_initfn(Object *obj)
      }
+     object_initialize_child(obj, "syscfg", &s->syscfg, TYPE_STM32L4X5_SYSCFG);
+     object_initialize_child(obj, "rcc", &s->rcc, TYPE_STM32L4X5_RCC);
+-
+-    s->sysclk = qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
+-    s->refclk = qdev_init_clock_in(DEVICE(s), "refclk", NULL, NULL, 0);
  }
  
--static void rcc_update_cr_register(Stm32l4x5RccState *s)
-+static void rcc_update_msi(Stm32l4x5RccState *s, uint32_t previous_value)
-+{
-+    uint32_t val;
-+
-+    static const uint32_t msirange[] = {
-+        100000, 200000, 400000, 800000, 1000000, 2000000,
-+        4000000, 8000000, 16000000, 24000000, 32000000, 48000000
-+    };
-+    /* MSIRANGE and MSIRGSEL */
-+    val = extract32(s->cr, R_CR_MSIRGSEL_SHIFT, R_CR_MSIRGSEL_LENGTH);
-+    if (val) {
-+        /* MSIRGSEL is set, use the MSIRANGE field */
-+        val = extract32(s->cr, R_CR_MSIRANGE_SHIFT, R_CR_MSIRANGE_LENGTH);
-+    } else {
-+        /* MSIRGSEL is not set, use the MSISRANGE field */
-+        val = extract32(s->csr, R_CSR_MSISRANGE_SHIFT, R_CSR_MSISRANGE_LENGTH);
-+    }
-+
-+    if (val < ARRAY_SIZE(msirange)) {
-+        clock_update_hz(s->msi_rc, msirange[val]);
-+    } else {
-+        /*
-+         * There is a hardware write protection if the value is out of bound.
-+         * Restore the previous value.
-+         */
-+        s->cr = (s->cr & ~R_CSR_MSISRANGE_MASK) |
-+                (previous_value & R_CSR_MSISRANGE_MASK);
-+    }
-+}
-+
-+/*
-+ * TODO: Add write-protection for all registers:
-+ * DONE: CR
-+ */
-+
-+static void rcc_update_cr_register(Stm32l4x5RccState *s, uint32_t previous_value)
- {
-     int val;
-+    const RccClockMuxSource current_pll_src =
-+        CLOCK_MUX_INIT_INFO[RCC_CLOCK_MUX_PLL_INPUT].src_mapping[
-+            s->clock_muxes[RCC_CLOCK_MUX_PLL_INPUT].src];
+ static void stm32l4x5_soc_realize(DeviceState *dev_soc, Error **errp)
+@@ -124,30 +121,6 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc, Error **errp)
+     DeviceState *armv7m;
+     SysBusDevice *busdev;
  
-     /* PLLSAI2ON and update PLLSAI2RDY */
-     val = FIELD_EX32(s->cr, CR, PLLSAI2ON);
-@@ -396,77 +434,101 @@ static void rcc_update_cr_register(Stm32l4x5RccState *s)
-         s->cifr |= R_CIFR_PLLSAI1RDYF_MASK;
-     }
- 
--    /* PLLON and update PLLRDY */
-+    /*
-+     * PLLON and update PLLRDY
-+     * PLLON cannot be reset if the PLL clock is used as the system clock.
-+     */
-     val = FIELD_EX32(s->cr, CR, PLLON);
--    pll_set_enable(&s->plls[RCC_PLL_PLL], val);
--    s->cr = (s->cr & ~R_CR_PLLRDY_MASK) |
--            (val << R_CR_PLLRDY_SHIFT);
--    if (s->cier & R_CIER_PLLRDYIE_MASK) {
--        s->cifr |= R_CIFR_PLLRDYF_MASK;
-+    if (FIELD_EX32(s->cfgr, CFGR, SWS) != 0b11) {
-+        pll_set_enable(&s->plls[RCC_PLL_PLL], val);
-+        s->cr = (s->cr & ~R_CR_PLLRDY_MASK) |
-+                (val << R_CR_PLLRDY_SHIFT);
-+        if (s->cier & R_CIER_PLLRDYIE_MASK) {
-+            s->cifr |= R_CIFR_PLLRDYF_MASK;
-+        }
-+    } else {
-+        s->cr |= R_CR_PLLON_MASK;
-     }
- 
-     /* CSSON: TODO */
-     /* HSEBYP: TODO */
- 
--    /* HSEON and update HSERDY */
-+    /*
-+     * HSEON and update HSERDY.
-+     * HSEON cannot be reset if the HSE oscillator is used directly or
-+     * indirectly as the system clock.
-+     */
-     val = FIELD_EX32(s->cr, CR, HSEON);
--    s->cr = (s->cr & ~R_CR_HSERDY_MASK) |
--            (val << R_CR_HSERDY_SHIFT);
--    if (val) {
--        clock_update_hz(s->hse, s->hse_frequency);
--        if (s->cier & R_CIER_HSERDYIE_MASK) {
--            s->cifr |= R_CIFR_HSERDYF_MASK;
-+    if (FIELD_EX32(s->cfgr, CFGR, SWS) != 0b10 &&
-+        current_pll_src != RCC_CLOCK_MUX_SRC_HSE) {
-+        s->cr = (s->cr & ~R_CR_HSERDY_MASK) |
-+                (val << R_CR_HSERDY_SHIFT);
-+        if (val) {
-+            clock_update_hz(s->hse, s->hse_frequency);
-+            if (s->cier & R_CIER_HSERDYIE_MASK) {
-+                s->cifr |= R_CIFR_HSERDYF_MASK;
-+            }
-+        } else {
-+            clock_update(s->hse, 0);
-         }
-     } else {
--        clock_update(s->hse, 0);
-+        s->cr |= R_CR_HSEON_MASK;
-     }
- 
-     /* HSIAFS: TODO*/
-     /* HSIKERON: TODO*/
- 
--    /* HSION and update HSIRDY*/
--    val = FIELD_EX32(s->cr, CR, HSION);
--    s->cr = (s->cr & ~R_CR_HSIRDY_MASK) |
--            (val << R_CR_HSIRDY_SHIFT);
--    if (val) {
-+    /*
-+     * HSION and update HSIRDY
-+     * HSION is set by hardware if the HSI16 is used directly
-+     * or indirectly as system clock.
-+     */
-+    if (FIELD_EX32(s->cfgr, CFGR, SWS) == 0b01 ||
-+        current_pll_src == RCC_CLOCK_MUX_SRC_HSI) {
-+        s->cr |= (R_CR_HSION_MASK | R_CR_HSIRDY_MASK);
-         clock_update_hz(s->hsi16_rc, HSI_FRQ);
-         if (s->cier & R_CIER_HSIRDYIE_MASK) {
-             s->cifr |= R_CIFR_HSIRDYF_MASK;
-         }
-     } else {
--        clock_update(s->hsi16_rc, 0);
-+        val = FIELD_EX32(s->cr, CR, HSION);
-+        if (val) {
-+            clock_update_hz(s->hsi16_rc, HSI_FRQ);
-+            s->cr |= R_CR_HSIRDY_MASK;
-+            if (s->cier & R_CIER_HSIRDYIE_MASK) {
-+                s->cifr |= R_CIFR_HSIRDYF_MASK;
-+            }
-+        } else {
-+            clock_update(s->hsi16_rc, 0);
-+            s->cr &= ~R_CR_HSIRDY_MASK;
-+        }
-     }
- 
--    static const uint32_t msirange[] = {
--        100000, 200000, 400000, 800000, 1000000, 2000000,
--        4000000, 8000000, 16000000, 24000000, 32000000, 48000000
--    };
--    /* MSIRANGE and MSIRGSEL */
--    val = FIELD_EX32(s->cr, CR, MSIRGSEL);
--    if (val) {
--        /* MSIRGSEL is set, use the MSIRANGE field */
--        val = FIELD_EX32(s->cr, CR, MSIRANGE);
-+    /* MSIPLLEN: TODO */
-+
-+    /*
-+     * MSION and update MSIRDY
-+     * Set by hardware when used directly or indirectly as system clock.
-+     */
-+    if (FIELD_EX32(s->cfgr, CFGR, SWS) == 0b00 ||
-+        current_pll_src == RCC_CLOCK_MUX_SRC_MSI) {
-+            s->cr |= (R_CR_MSION_MASK | R_CR_MSIRDY_MASK);
-+            if (!(previous_value & R_CR_MSION_MASK) && (s->cier & R_CIER_MSIRDYIE_MASK)) {
-+                s->cifr |= R_CIFR_MSIRDYF_MASK;
-+            }
-+            rcc_update_msi(s, previous_value);
-     } else {
--        /* MSIRGSEL is not set, use the MSISRANGE field */
--        val = FIELD_EX32(s->csr, CSR, MSISRANGE);
+-    /*
+-     * We use s->refclk internally and only define it with qdev_init_clock_in()
+-     * so it is correctly parented and not leaked on an init/deinit; it is not
+-     * intended as an externally exposed clock.
+-     */
+-    if (clock_has_source(s->refclk)) {
+-        error_setg(errp, "refclk clock must not be wired up by the board code");
+-        return;
 -    }
 -
--    if (val < ARRAY_SIZE(msirange)) {
--        clock_update_hz(s->msi_rc, msirange[val]);
--    } else {
--        clock_update_hz(s->msi_rc, MSI_DEFAULT_FRQ);
--        /* TODO: there is a write protection if the value is out of bound,
--           implement that instead of setting the default */
+-    if (!clock_has_source(s->sysclk)) {
+-        error_setg(errp, "sysclk clock must be wired up by the board code");
+-        return;
 -    }
 -
--    /* MSIPLLEN */
+-    /*
+-     * TODO: ideally we should model the SoC RCC and its ability to
+-     * change the sysclk frequency and define different sysclk sources.
+-     */
 -
--    /* MSION and update MSIRDY */
--    val = FIELD_EX32(s->cr, CR, MSION);
--    s->cr = (s->cr & ~R_CR_MSIRDY_MASK) |
--            (val << R_CR_MSIRDY_SHIFT);
--    if (s->cier & R_CIER_MSIRDYIE_MASK) {
--        s->cifr |= R_CIFR_MSIRDYF_MASK;
-+        val = FIELD_EX32(s->cr, CR, MSION);
-+        if (val) {
-+            s->cr |= R_CR_MSIRDY_MASK;
-+            rcc_update_msi(s, previous_value);
-+            if (s->cier & R_CIER_MSIRDYIE_MASK) {
-+                s->cifr |= R_CIFR_MSIRDYF_MASK;
-+            }
-+        } else {
-+            s->cr &= ~R_CR_MSIRDY_MASK;
-+            clock_update(s->msi_rc, 0);
-+        }
-     }
-     rcc_update_irq(s);
- }
-@@ -991,15 +1053,17 @@ static void stm32l4x5_rcc_write(void *opaque, hwaddr addr,
-                                   uint64_t val64, unsigned int size)
- {
-     Stm32l4x5RccState *s = opaque;
-+    uint32_t previous_value = 0;
-     const uint32_t value = val64;
- 
-     trace_stm32l4x5_rcc_write(addr, value);
- 
-     switch (addr) {
-     case A_CR:
-+        previous_value = s->cr;
-         s->cr = (s->cr & CR_READ_SET_MASK) |
-                 (value & (CR_READ_SET_MASK | ~CR_READ_ONLY_MASK));
--        rcc_update_cr_register(s);
-+        rcc_update_cr_register(s, previous_value);
-         break;
-     case A_ICSCR:
-         s->icscr = value & ~ICSCR_READ_ONLY_MASK;
+-    /* The refclk always runs at frequency HCLK / 8 */
+-    clock_set_mul_div(s->refclk, 8, 1);
+-    clock_set_source(s->refclk, s->sysclk);
+-
+     if (!memory_region_init_rom(&s->flash, OBJECT(dev_soc), "flash",
+                                 sc->flash_size, errp)) {
+         return;
+@@ -177,8 +150,10 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc, Error **errp)
+     qdev_prop_set_uint32(armv7m, "num-prio-bits", 4);
+     qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m4"));
+     qdev_prop_set_bit(armv7m, "enable-bitband", true);
+-    qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
+-    qdev_connect_clock_in(armv7m, "refclk", s->refclk);
++    qdev_connect_clock_in(armv7m, "cpuclk",
++        qdev_get_clock_out(DEVICE(&(s->rcc)), "cortex-fclk-out"));
++    qdev_connect_clock_in(armv7m, "refclk",
++        qdev_get_clock_out(DEVICE(&(s->rcc)), "cortex-refclk-out"));
+     object_property_set_link(OBJECT(&s->armv7m), "memory",
+                              OBJECT(system_memory), &error_abort);
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->armv7m), errp)) {
 -- 
 2.34.1
 
