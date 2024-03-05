@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF178720E3
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 14:54:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E80EF8720DE
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 14:54:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhVEm-0001Da-KA; Tue, 05 Mar 2024 08:53:45 -0500
+	id 1rhVEv-0001dd-AW; Tue, 05 Mar 2024 08:53:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhVDw-0000wW-4U
+ id 1rhVDw-0000wb-QH
  for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:53:06 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhVDo-0005xj-H5
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:52:51 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-412eddd165eso3687465e9.1
+ id 1rhVDo-0005xn-T7
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:52:52 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-33d118a181fso3650373f8f.1
  for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 05:52:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1709646763; x=1710251563; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=gMBLxtLg8vmsf4UwKbR23mOVuBgWsMOaKSlUcHfsDKo=;
- b=wfEjN5Jsq7J97yO4VXHJcaHlF+nE2afdw7KxaR/TaS3cBksDo7ihLY9z+jbhk+oD3p
- RUK1I6nP30nZKpbzSJEILp7YnssUHibKBrPzNFpv+Z4Bj8TL4eqUkVRDIqJNYzPYG/jZ
- Cadr5buz7R2BA0qki8DeTSjNn8Bd/gKacnCDem7rRIl5iqzv2wAmkeFXJCgt45iwiSns
- W5Ffs0/Kr6IbNmyDgHDb13MaDy+LRCgfNcQlz9gx6mCc2upnMEoCo7QyDV2Yu92RU77W
- dFQsnePt8PMT+T/jr/pRUySZktrCbLKP96ocLwv/mm+6bWXaviO+NLfKug1BEHOEFP8i
- kQVA==
+ :reply-to; bh=JNI+Qpco22VWGAbmNYNkaRO2Lu4QWjoV4nttCF019Tw=;
+ b=FWDFtzvPdK8F2XMbz5X8EQPfHNA18peyhQrifWh1FNCz7yUnze41Kwu6sM9KVAEWT4
+ 5fmzObsBX/+pVPbzZRzJR8WY16Fy0prXdFhRm7n9IE4JKwr/AldFqX0qIrkgLtOusP3n
+ caHoF/rjK0pH8qg6Nv6eC09dkKDh7q5xoi8W9EUzOW515404K6Csi5zm3AOtCAd+ok8g
+ sGKiHtzBnjJip6K7FjsLvZi02cG87q5TqrW46HDwLlcRBrfhVRTjSmpOG1bWUj2TdECi
+ 76UdrvX5rc0PufxRI2HsJ6qhK4d69nCi8qoKPJ5rUcskXFxOW/4Vaom7tOUAZM/x+3Y9
+ EW4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1709646763; x=1710251563;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gMBLxtLg8vmsf4UwKbR23mOVuBgWsMOaKSlUcHfsDKo=;
- b=UJYiIPKMgPFg7edrAp5uuShuEBhTrZsU0gSsZLw5il2mKpAMoff5JEEhFozkdPzebc
- Z0AXwgjtxBn+YOCcSrfn8LKZUTiSXsHMFETAfQ7Opo6ekABCfEO4jPTgje+jfVmTwIrl
- ZVxWArYdLDOgNxFtUh0yvrFDWsm+GIyx3vGsruQKwSeHYth7TNJuGCdRakgbPgoh/p/X
- bxJx6j4eqeEdCI5pFZpMhCfVrRg6F0Wu2K6madKP4EVs38OxYteJcK698C0kGAwOmvty
- mFByrJgizYoooMUihLyFLrvpxLb9T5OjiZJcYW2fKnRRK57Oo9Y69sI3XRgmP71S07LZ
- 3aLw==
-X-Gm-Message-State: AOJu0YztXPnB1bVJRJRd08286hbdf9zos5P/DhNaDG9MDC7XJ11Pg2da
- r0pueIrFYsY4M0QE7qAnIR/mPYVlNxiJZBJsbq/KYu9P+2NF3tNsMMqNsfJXCYaSio5eor5qbvE
- W
-X-Google-Smtp-Source: AGHT+IGphrgq89+B7LP9rJ9fXgRQceF6zhJFKABo/evjdsHdhrNFibZdXg6vD8vqrG9dK2TtOJnFEg==
-X-Received: by 2002:a5d:60cb:0:b0:33d:d791:1164 with SMTP id
- x11-20020a5d60cb000000b0033dd7911164mr11186432wrt.8.1709646763020; 
+ bh=JNI+Qpco22VWGAbmNYNkaRO2Lu4QWjoV4nttCF019Tw=;
+ b=lUtu9y0STLLkHXlfp9CxLXDtwTcwUHTie0yhdjpXCXz9til1suG426ARhaizalQFge
+ mACVKL7efvkox8oObgyGHjklntCPb6ltPdzpEXGzzkZrV/JJ/1e4SunP1dS79m2m7AS6
+ BLWnM9VsmgkiHy+DfiCNEyCHubWpT7DO/SYY/VXVq8DWksd5hEW1TC5iccARf46weH4R
+ Fb9X5/S3hxjsuFwdOzicDd44hSqNmB5YX7GMqsnc6ug+4+NLh3aglyIH5jurAW87TCK4
+ kyNy3j+nTP2Hi4nY7mJzwafwbco3YhncXDeDHGW7TFUrb5A3F4qD+V0iFovbBk7+3cR3
+ OFmA==
+X-Gm-Message-State: AOJu0Yy3UpmkmVneD2thY/TbwXEtKoXIQb2X80auSyu+hkO9qqwlki8k
+ fy+lbLFYoJ4Vftsu5qndR0B5H5umakK4IIimQHbzZ3akfsSpeO3sqhTaElg6ebvQiDaeBq8MqWF
+ r
+X-Google-Smtp-Source: AGHT+IFX9fzPerwWVI1nba94s/HZaX2JI3CF1eoPMWG3ZOiCqNik3STSzl3XdanxoXZBTAJW3ioKAQ==
+X-Received: by 2002:a05:6000:3c5:b0:33e:4590:8bd8 with SMTP id
+ b5-20020a05600003c500b0033e45908bd8mr4370759wrg.60.1709646763442; 
  Tue, 05 Mar 2024 05:52:43 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- x3-20020a5d6503000000b0033e206a0a7asm11797532wru.26.2024.03.05.05.52.42
+ x3-20020a5d6503000000b0033e206a0a7asm11797532wru.26.2024.03.05.05.52.43
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Mar 2024 05:52:42 -0800 (PST)
+ Tue, 05 Mar 2024 05:52:43 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/20] hw/misc/stm32l4x5_rcc: Initialize PLLs and clock
- multiplexers
-Date: Tue,  5 Mar 2024 13:52:25 +0000
-Message-Id: <20240305135237.3111642-9-peter.maydell@linaro.org>
+Subject: [PULL 09/20] hw/misc/stm32l4x5_rcc: Handle Register Updates
+Date: Tue,  5 Mar 2024 13:52:26 +0000
+Message-Id: <20240305135237.3111642-10-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240305135237.3111642-1-peter.maydell@linaro.org>
 References: <20240305135237.3111642-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,1045 +94,672 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 
-Instantiate the whole clock tree and using the Clock multiplexers and
-the PLLs defined in the previous commits. This allows to statically
-define the clock tree and easily follow the clock signal from one end to
-another.
+Update the RCC state and propagate frequency changes when writing to the
+RCC registers. Currently, ICSCR, CIER, the reset registers and the stop
+mode registers are not implemented.
 
-Also handle three-phase reset now that we have defined a known base
-state for every object.
-(Reset handling based on hw/misc/zynq_sclr.c)
+Some fields  have not been implemented due to uncertainty about
+how to handle them (Like the clock security system or bypassing
+mecanisms).
 
 Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
-Message-id: 20240303140643.81957-5-arnaud.minier@telecom-paris.fr
+Message-id: 20240303140643.81957-6-arnaud.minier@telecom-paris.fr
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/misc/stm32l4x5_rcc_internals.h | 705 ++++++++++++++++++++++
- hw/misc/stm32l4x5_rcc.c                   | 145 ++++-
- 2 files changed, 833 insertions(+), 17 deletions(-)
+ hw/misc/stm32l4x5_rcc.c | 524 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 512 insertions(+), 12 deletions(-)
 
-diff --git a/include/hw/misc/stm32l4x5_rcc_internals.h b/include/hw/misc/stm32l4x5_rcc_internals.h
-index a9da5e3be7d..ff1c834f694 100644
---- a/include/hw/misc/stm32l4x5_rcc_internals.h
-+++ b/include/hw/misc/stm32l4x5_rcc_internals.h
-@@ -334,4 +334,709 @@ typedef enum RccClockMuxSource {
-     RCC_CLOCK_MUX_SRC_NUMBER,
- } RccClockMuxSource;
- 
-+/* PLL init info */
-+typedef struct PllInitInfo {
-+    const char *name;
-+
-+    const char *channel_name[RCC_NUM_CHANNEL_PLL_OUT];
-+    bool channel_exists[RCC_NUM_CHANNEL_PLL_OUT];
-+    uint32_t default_channel_divider[RCC_NUM_CHANNEL_PLL_OUT];
-+
-+    RccClockMuxSource src_mapping[RCC_NUM_CLOCK_MUX_SRC];
-+} PllInitInfo;
-+
-+static const PllInitInfo PLL_INIT_INFO[] = {
-+    [RCC_PLL_PLL] = {
-+        .name = "pll",
-+        .channel_name = {
-+            "pllsai3clk",
-+            "pll48m1clk",
-+            "pllclk"
-+        },
-+        .channel_exists = {
-+            true, true, true
-+        },
-+        /* From PLLCFGR register documentation */
-+        .default_channel_divider = {
-+            7, 2, 2
-+        }
-+    },
-+    [RCC_PLL_PLLSAI1] = {
-+        .name = "pllsai1",
-+        .channel_name = {
-+            "pllsai1clk",
-+            "pll48m2clk",
-+            "plladc1clk"
-+        },
-+        .channel_exists = {
-+            true, true, true
-+        },
-+        /* From PLLSAI1CFGR register documentation */
-+        .default_channel_divider = {
-+            7, 2, 2
-+        }
-+    },
-+    [RCC_PLL_PLLSAI2] = {
-+        .name = "pllsai2",
-+        .channel_name = {
-+            "pllsai2clk",
-+            NULL,
-+            "plladc2clk"
-+        },
-+        .channel_exists = {
-+            true, false, true
-+        },
-+        /* From PLLSAI2CFGR register documentation */
-+        .default_channel_divider = {
-+            7, 0, 2
-+        }
-+    }
-+};
-+
-+static inline void set_pll_init_info(RccPllState *pll,
-+                                     RccPll id)
-+{
-+    int i;
-+
-+    pll->id = id;
-+    pll->vco_multiplier = 1;
-+    for (i = 0; i < RCC_NUM_CHANNEL_PLL_OUT; i++) {
-+        pll->channel_enabled[i] = false;
-+        pll->channel_exists[i] = PLL_INIT_INFO[id].channel_exists[i];
-+        pll->channel_divider[i] = PLL_INIT_INFO[id].default_channel_divider[i];
-+    }
-+}
-+
-+/* Clock mux init info */
-+typedef struct ClockMuxInitInfo {
-+    const char *name;
-+
-+    uint32_t multiplier;
-+    uint32_t divider;
-+    bool enabled;
-+    /* If this is true, the clock will not be exposed outside of the device */
-+    bool hidden;
-+
-+    RccClockMuxSource src_mapping[RCC_NUM_CLOCK_MUX_SRC];
-+} ClockMuxInitInfo;
-+
-+#define FILL_DEFAULT_FACTOR \
-+    .multiplier = 1, \
-+    .divider =  1
-+
-+#define FILL_DEFAULT_INIT_ENABLED \
-+    FILL_DEFAULT_FACTOR, \
-+    .enabled = true
-+
-+#define FILL_DEFAULT_INIT_DISABLED \
-+    FILL_DEFAULT_FACTOR, \
-+    .enabled = false
-+
-+
-+static const ClockMuxInitInfo CLOCK_MUX_INIT_INFO[] = {
-+    [RCC_CLOCK_MUX_SYSCLK] = {
-+        .name = "sysclk",
-+        /* Same mapping as: CFGR_SW */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_MSI,
-+            RCC_CLOCK_MUX_SRC_HSI,
-+            RCC_CLOCK_MUX_SRC_HSE,
-+            RCC_CLOCK_MUX_SRC_PLL,
-+        },
-+        .hidden = true,
-+        FILL_DEFAULT_INIT_ENABLED,
-+    },
-+    [RCC_CLOCK_MUX_PLL_INPUT] = {
-+        .name = "pll-input",
-+        /* Same mapping as: PLLCFGR_PLLSRC */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_MSI,
-+            RCC_CLOCK_MUX_SRC_HSI,
-+            RCC_CLOCK_MUX_SRC_HSE,
-+        },
-+        .hidden = true,
-+        FILL_DEFAULT_INIT_ENABLED,
-+    },
-+    [RCC_CLOCK_MUX_HCLK] = {
-+        .name = "hclk",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        .hidden = true,
-+        FILL_DEFAULT_INIT_ENABLED,
-+    },
-+    [RCC_CLOCK_MUX_PCLK1] = {
-+        .name = "pclk1",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_HCLK,
-+        },
-+        .hidden = true,
-+        FILL_DEFAULT_INIT_ENABLED,
-+    },
-+    [RCC_CLOCK_MUX_PCLK2] = {
-+        .name = "pclk2",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_HCLK,
-+        },
-+        .hidden = true,
-+        FILL_DEFAULT_INIT_ENABLED,
-+    },
-+    [RCC_CLOCK_MUX_HSE_OVER_32] = {
-+        .name = "hse-divided-by-32",
-+        .multiplier = 1,
-+        .divider = 32,
-+        .enabled = true,
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_HSE,
-+        },
-+        .hidden = true,
-+    },
-+    [RCC_CLOCK_MUX_LCD_AND_RTC_COMMON] = {
-+        .name = "lcd-and-rtc-common-mux",
-+        /* Same mapping as: BDCR_RTCSEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_GND,
-+            RCC_CLOCK_MUX_SRC_LSE,
-+            RCC_CLOCK_MUX_SRC_LSI,
-+            RCC_CLOCK_MUX_SRC_HSE_OVER_32,
-+        },
-+        .hidden = true,
-+        FILL_DEFAULT_INIT_ENABLED,
-+    },
-+    /* From now on, muxes with a publicly available output */
-+    [RCC_CLOCK_MUX_CORTEX_REFCLK] = {
-+        .name = "cortex-refclk",
-+        .multiplier = 1,
-+        /* REFCLK is always HCLK/8 */
-+        .divider = 8,
-+        .enabled = true,
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_HCLK,
-+        }
-+    },
-+    [RCC_CLOCK_MUX_USART1] = {
-+        .name = "usart1",
-+        /* Same mapping as: CCIPR_USART1SEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK2,
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+            RCC_CLOCK_MUX_SRC_HSI,
-+            RCC_CLOCK_MUX_SRC_LSE,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_USART2] = {
-+        .name = "usart2",
-+        /* Same mapping as: CCIPR_USART2SEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+            RCC_CLOCK_MUX_SRC_HSI,
-+            RCC_CLOCK_MUX_SRC_LSE,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_USART3] = {
-+        .name = "usart3",
-+        /* Same mapping as: CCIPR_USART3SEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+            RCC_CLOCK_MUX_SRC_HSI,
-+            RCC_CLOCK_MUX_SRC_LSE,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_UART4] = {
-+        .name = "uart4",
-+        /* Same mapping as: CCIPR_UART4SEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+            RCC_CLOCK_MUX_SRC_HSI,
-+            RCC_CLOCK_MUX_SRC_LSE,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_UART5] = {
-+        .name = "uart5",
-+        /* Same mapping as: CCIPR_UART5SEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+            RCC_CLOCK_MUX_SRC_HSI,
-+            RCC_CLOCK_MUX_SRC_LSE,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_LPUART1] = {
-+        .name = "lpuart1",
-+        /* Same mapping as: CCIPR_LPUART1SEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+            RCC_CLOCK_MUX_SRC_HSI,
-+            RCC_CLOCK_MUX_SRC_LSE,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_I2C1] = {
-+        .name = "i2c1",
-+        /* Same mapping as: CCIPR_I2C1SEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+            RCC_CLOCK_MUX_SRC_HSI,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_I2C2] = {
-+        .name = "i2c2",
-+        /* Same mapping as: CCIPR_I2C2SEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+            RCC_CLOCK_MUX_SRC_HSI,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_I2C3] = {
-+        .name = "i2c3",
-+        /* Same mapping as: CCIPR_I2C3SEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+            RCC_CLOCK_MUX_SRC_HSI,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_LPTIM1] = {
-+        .name = "lptim1",
-+        /* Same mapping as: CCIPR_LPTIM1SEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+            RCC_CLOCK_MUX_SRC_LSI,
-+            RCC_CLOCK_MUX_SRC_HSI,
-+            RCC_CLOCK_MUX_SRC_LSE,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_LPTIM2] = {
-+        .name = "lptim2",
-+        /* Same mapping as: CCIPR_LPTIM2SEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+            RCC_CLOCK_MUX_SRC_LSI,
-+            RCC_CLOCK_MUX_SRC_HSI,
-+            RCC_CLOCK_MUX_SRC_LSE,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_SWPMI1] = {
-+        .name = "swpmi1",
-+        /* Same mapping as: CCIPR_SWPMI1SEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+            RCC_CLOCK_MUX_SRC_HSI,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_MCO] = {
-+        .name = "mco",
-+        /* Same mapping as: CFGR_MCOSEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+            RCC_CLOCK_MUX_SRC_MSI,
-+            RCC_CLOCK_MUX_SRC_HSI,
-+            RCC_CLOCK_MUX_SRC_HSE,
-+            RCC_CLOCK_MUX_SRC_PLL,
-+            RCC_CLOCK_MUX_SRC_LSI,
-+            RCC_CLOCK_MUX_SRC_LSE,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_LSCO] = {
-+        .name = "lsco",
-+        /* Same mapping as: BDCR_LSCOSEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_LSI,
-+            RCC_CLOCK_MUX_SRC_LSE,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_DFSDM1] = {
-+        .name = "dfsdm1",
-+        /* Same mapping as: CCIPR_DFSDM1SEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK2,
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_ADC] = {
-+        .name = "adc",
-+        /* Same mapping as: CCIPR_ADCSEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_GND,
-+            RCC_CLOCK_MUX_SRC_PLLADC1,
-+            RCC_CLOCK_MUX_SRC_PLLADC2,
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_CLK48] = {
-+        .name = "clk48",
-+        /* Same mapping as: CCIPR_CLK48SEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_GND,
-+            RCC_CLOCK_MUX_SRC_PLL48M2,
-+            RCC_CLOCK_MUX_SRC_PLL48M1,
-+            RCC_CLOCK_MUX_SRC_MSI,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_SAI2] = {
-+        .name = "sai2",
-+        /* Same mapping as: CCIPR_SAI2SEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PLLSAI1,
-+            RCC_CLOCK_MUX_SRC_PLLSAI2,
-+            RCC_CLOCK_MUX_SRC_PLLSAI3,
-+            RCC_CLOCK_MUX_SRC_SAI2_EXTCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_SAI1] = {
-+        .name = "sai1",
-+        /* Same mapping as: CCIPR_SAI1SEL */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PLLSAI1,
-+            RCC_CLOCK_MUX_SRC_PLLSAI2,
-+            RCC_CLOCK_MUX_SRC_PLLSAI3,
-+            RCC_CLOCK_MUX_SRC_SAI1_EXTCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    /* From now on, these muxes only have one valid source */
-+    [RCC_CLOCK_MUX_TSC] = {
-+        .name = "tsc",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_CRC] = {
-+        .name = "crc",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_FLASH] = {
-+        .name = "flash",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_DMA2] = {
-+        .name = "dma2",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_DMA1] = {
-+        .name = "dma1",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_RNG] = {
-+        .name = "rng",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_AES] = {
-+        .name = "aes",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_OTGFS] = {
-+        .name = "otgfs",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_GPIOA] = {
-+        .name = "gpioa",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_GPIOB] = {
-+        .name = "gpiob",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_GPIOC] = {
-+        .name = "gpioc",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_GPIOD] = {
-+        .name = "gpiod",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_GPIOE] = {
-+        .name = "gpioe",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_GPIOF] = {
-+        .name = "gpiof",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_GPIOG] = {
-+        .name = "gpiog",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_GPIOH] = {
-+        .name = "gpioh",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_QSPI] = {
-+        .name = "qspi",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_FMC] = {
-+        .name = "fmc",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_OPAMP] = {
-+        .name = "opamp",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_DAC1] = {
-+        .name = "dac1",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_PWR] = {
-+        .name = "pwr",
-+        /*
-+         * PWREN is in the APB1ENR1 register,
-+         * but PWR uses SYSCLK according to the clock tree.
-+         */
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_SYSCLK,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_CAN1] = {
-+        .name = "can1",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_SPI3] = {
-+        .name = "spi3",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_SPI2] = {
-+        .name = "spi2",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_WWDG] = {
-+        .name = "wwdg",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_LCD] = {
-+        .name = "lcd",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_LCD_AND_RTC_COMMON,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_TIM7] = {
-+        .name = "tim7",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_TIM6] = {
-+        .name = "tim6",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_TIM5] = {
-+        .name = "tim5",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_TIM4] = {
-+        .name = "tim4",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_TIM3] = {
-+        .name = "tim3",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_TIM2] = {
-+        .name = "tim2",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK1,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_TIM17] = {
-+        .name = "tim17",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK2,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_TIM16] = {
-+        .name = "tim16",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK2,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_TIM15] = {
-+        .name = "tim15",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK2,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_TIM8] = {
-+        .name = "tim8",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK2,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_SPI1] = {
-+        .name = "spi1",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK2,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_TIM1] = {
-+        .name = "tim1",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK2,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_SDMMC1] = {
-+        .name = "sdmmc1",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK2,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_FW] = {
-+        .name = "fw",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK2,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_SYSCFG] = {
-+        .name = "syscfg",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_PCLK2,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_RTC] = {
-+        .name = "rtc",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_LCD_AND_RTC_COMMON,
-+        },
-+        FILL_DEFAULT_INIT_DISABLED,
-+    },
-+    [RCC_CLOCK_MUX_CORTEX_FCLK] = {
-+        .name = "cortex-fclk",
-+        .src_mapping = {
-+            RCC_CLOCK_MUX_SRC_HCLK,
-+        },
-+        FILL_DEFAULT_INIT_ENABLED,
-+    },
-+};
-+
-+static inline void set_clock_mux_init_info(RccClockMuxState *mux,
-+                                           RccClockMux id)
-+{
-+    mux->id = id;
-+    mux->multiplier = CLOCK_MUX_INIT_INFO[id].multiplier;
-+    mux->divider = CLOCK_MUX_INIT_INFO[id].divider;
-+    mux->enabled = CLOCK_MUX_INIT_INFO[id].enabled;
-+    /*
-+     * Every peripheral has the first source of their source list as
-+     * as their default source.
-+     */
-+    mux->src = 0;
-+}
-+
- #endif /* HW_STM32L4X5_RCC_INTERNALS_H */
 diff --git a/hw/misc/stm32l4x5_rcc.c b/hw/misc/stm32l4x5_rcc.c
-index 9a9ea6c4702..083c0ad9ef5 100644
+index 083c0ad9ef5..2109f809e2b 100644
 --- a/hw/misc/stm32l4x5_rcc.c
 +++ b/hw/misc/stm32l4x5_rcc.c
-@@ -36,7 +36,13 @@
- #define LSE_FRQ 32768ULL
- #define LSI_FRQ 32000ULL
+@@ -28,6 +28,7 @@
+ #include "hw/qdev-clock.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/qdev-properties-system.h"
++#include "hw/registerfields.h"
+ #include "trace.h"
  
--static void clock_mux_update(RccClockMuxState *mux)
-+/*
-+ * Function to simply acknowledge and propagate changes in a clock mux
-+ * frequency.
-+ * `bypass_source` allows to bypass the period of the current source and just
-+ * consider it equal to 0. This is useful during the hold phase of reset.
-+ */
-+static void clock_mux_update(RccClockMuxState *mux, bool bypass_source)
- {
-     uint64_t src_freq;
-     Clock *current_source = mux->srcs[mux->src];
-@@ -48,7 +54,7 @@ static void clock_mux_update(RccClockMuxState *mux)
-      * the clock and the divider of the mux becomes the multiplier of the
-      * clock.
-      */
--    if (mux->enabled && mux->divider) {
-+    if (!bypass_source && mux->enabled && mux->divider) {
-         freq_multiplier = mux->divider;
-     }
- 
-@@ -73,7 +79,7 @@ static void clock_mux_src_update(void *opaque, ClockEvent event)
-     const uint32_t update_src = backref - s->backref;
-     /* Only update if the clock that was updated is the current source */
-     if (update_src == s->src) {
--        clock_mux_update(s);
-+        clock_mux_update(s, false);
-     }
- }
- 
-@@ -95,8 +101,23 @@ static void clock_mux_init(Object *obj)
-     s->out = qdev_init_clock_out(DEVICE(s), "out");
- }
- 
-+static void clock_mux_reset_enter(Object *obj, ResetType type)
-+{
-+    RccClockMuxState *s = RCC_CLOCK_MUX(obj);
-+    set_clock_mux_init_info(s, s->id);
-+}
-+
- static void clock_mux_reset_hold(Object *obj)
--{ }
-+{
-+    RccClockMuxState *s = RCC_CLOCK_MUX(obj);
-+    clock_mux_update(s, true);
-+}
-+
-+static void clock_mux_reset_exit(Object *obj)
-+{
-+    RccClockMuxState *s = RCC_CLOCK_MUX(obj);
-+    clock_mux_update(s, false);
-+}
- 
- static const VMStateDescription clock_mux_vmstate = {
-     .name = TYPE_RCC_CLOCK_MUX,
-@@ -119,7 +140,9 @@ static void clock_mux_class_init(ObjectClass *klass, void *data)
-     DeviceClass *dc = DEVICE_CLASS(klass);
-     ResettableClass *rc = RESETTABLE_CLASS(klass);
- 
-+    rc->phases.enter = clock_mux_reset_enter;
-     rc->phases.hold = clock_mux_reset_hold;
-+    rc->phases.exit = clock_mux_reset_exit;
-     dc->vmsd = &clock_mux_vmstate;
- }
- 
-@@ -136,7 +159,7 @@ static void clock_mux_set_enable(RccClockMuxState *mux, bool enabled)
-     }
- 
-     mux->enabled = enabled;
--    clock_mux_update(mux);
-+    clock_mux_update(mux, false);
- }
- 
- static void clock_mux_set_factor(RccClockMuxState *mux,
-@@ -150,7 +173,7 @@ static void clock_mux_set_factor(RccClockMuxState *mux,
- 
-     mux->multiplier = multiplier;
-     mux->divider = divider;
--    clock_mux_update(mux);
-+    clock_mux_update(mux, false);
- }
- 
- static void clock_mux_set_source(RccClockMuxState *mux, RccClockMuxSource src)
-@@ -161,10 +184,15 @@ static void clock_mux_set_source(RccClockMuxState *mux, RccClockMuxSource src)
- 
-     trace_stm32l4x5_rcc_mux_set_src(mux->id, mux->src, src);
-     mux->src = src;
--    clock_mux_update(mux);
-+    clock_mux_update(mux, false);
- }
- 
--static void pll_update(RccPllState *pll)
-+/*
-+ * Acknowledge and propagate changes in a PLL frequency.
-+ * `bypass_source` allows to bypass the period of the current source and just
-+ * consider it equal to 0. This is useful during the hold phase of reset.
-+ */
-+static void pll_update(RccPllState *pll, bool bypass_source)
- {
-     uint64_t vco_freq, old_channel_freq, channel_freq;
-     int i;
-@@ -178,7 +206,8 @@ static void pll_update(RccPllState *pll)
-         }
- 
-         old_channel_freq = clock_get_hz(pll->channels[i]);
--        if (!pll->enabled ||
-+        if (bypass_source ||
-+            !pll->enabled ||
-             !pll->channel_enabled[i] ||
-             !pll->channel_divider[i]) {
-             channel_freq = 0;
-@@ -202,7 +231,7 @@ static void pll_update(RccPllState *pll)
- static void pll_src_update(void *opaque, ClockEvent event)
- {
-     RccPllState *s = opaque;
--    pll_update(s);
-+    pll_update(s, false);
- }
- 
- static void pll_init(Object *obj)
-@@ -222,8 +251,23 @@ static void pll_init(Object *obj)
-     }
- }
- 
-+static void pll_reset_enter(Object *obj, ResetType type)
-+{
-+    RccPllState *s = RCC_PLL(obj);
-+    set_pll_init_info(s, s->id);
-+}
-+
- static void pll_reset_hold(Object *obj)
--{ }
-+{
-+    RccPllState *s = RCC_PLL(obj);
-+    pll_update(s, true);
-+}
-+
-+static void pll_reset_exit(Object *obj)
-+{
-+    RccPllState *s = RCC_PLL(obj);
-+    pll_update(s, false);
-+}
- 
- static const VMStateDescription pll_vmstate = {
-     .name = TYPE_RCC_PLL,
-@@ -248,7 +292,9 @@ static void pll_class_init(ObjectClass *klass, void *data)
-     DeviceClass *dc = DEVICE_CLASS(klass);
-     ResettableClass *rc = RESETTABLE_CLASS(klass);
- 
-+    rc->phases.enter = pll_reset_enter;
-     rc->phases.hold = pll_reset_hold;
-+    rc->phases.exit = pll_reset_exit;
-     dc->vmsd = &pll_vmstate;
- }
- 
-@@ -269,7 +315,7 @@ static void pll_set_vco_multiplier(RccPllState *pll, uint32_t vco_multiplier)
-         pll->vco_multiplier, vco_multiplier);
- 
-     pll->vco_multiplier = vco_multiplier;
--    pll_update(pll);
-+    pll_update(pll, false);
- }
- 
- static void pll_set_enable(RccPllState *pll, bool enabled)
-@@ -279,7 +325,7 @@ static void pll_set_enable(RccPllState *pll, bool enabled)
-     }
- 
-     pll->enabled = enabled;
--    pll_update(pll);
-+    pll_update(pll, false);
- }
- 
- static void pll_set_channel_enable(RccPllState *pll,
-@@ -297,7 +343,7 @@ static void pll_set_channel_enable(RccPllState *pll,
-     }
- 
-     pll->channel_enabled[channel] = enabled;
--    pll_update(pll);
-+    pll_update(pll, false);
- }
- 
- static void pll_set_channel_divider(RccPllState *pll,
-@@ -312,7 +358,7 @@ static void pll_set_channel_divider(RccPllState *pll,
-         channel, pll->channel_divider[channel], divider);
- 
-     pll->channel_divider[channel] = divider;
--    pll_update(pll);
-+    pll_update(pll, false);
- }
+ #define HSE_DEFAULT_FRQ 48000000ULL
+@@ -363,6 +364,9 @@ static void pll_set_channel_divider(RccPllState *pll,
  
  static void rcc_update_irq(Stm32l4x5RccState *s)
-@@ -625,21 +671,79 @@ static void stm32l4x5_rcc_init(Object *obj)
-     qdev_init_clocks(DEVICE(s), stm32l4x5_rcc_clocks);
- 
-     for (i = 0; i < RCC_NUM_PLL; i++) {
--        object_initialize_child(obj, "pll[*]",
-+        object_initialize_child(obj, PLL_INIT_INFO[i].name,
-                                 &s->plls[i], TYPE_RCC_PLL);
-+        set_pll_init_info(&s->plls[i], i);
+ {
++    /*
++     * TODO: Handle LSECSSF and CSSF flags when the CSS is implemented.
++     */
+     if (s->cifr & CIFR_IRQ_MASK) {
+         qemu_irq_raise(s->irq);
+     } else {
+@@ -370,6 +374,472 @@ static void rcc_update_irq(Stm32l4x5RccState *s)
      }
- 
-     for (i = 0; i < RCC_NUM_CLOCK_MUX; i++) {
-+        char *alias;
- 
--        object_initialize_child(obj, "clock[*]",
-+        object_initialize_child(obj, CLOCK_MUX_INIT_INFO[i].name,
-                                 &s->clock_muxes[i],
-                                 TYPE_RCC_CLOCK_MUX);
-+        set_clock_mux_init_info(&s->clock_muxes[i], i);
- 
-+        if (!CLOCK_MUX_INIT_INFO[i].hidden) {
-+            /* Expose muxes output as RCC outputs */
-+            alias = g_strdup_printf("%s-out", CLOCK_MUX_INIT_INFO[i].name);
-+            qdev_alias_clock(DEVICE(&s->clock_muxes[i]), "out", DEVICE(obj), alias);
-+            g_free(alias);
-+        }
-     }
- 
-     s->gnd = clock_new(obj, "gnd");
  }
  
-+static void connect_mux_sources(Stm32l4x5RccState *s,
-+                                RccClockMuxState *mux,
-+                                const RccClockMuxSource *clk_mapping)
++static void rcc_update_cr_register(Stm32l4x5RccState *s)
 +{
-+    size_t i;
++    int val;
 +
-+    Clock * const CLK_SRC_MAPPING[] = {
-+        [RCC_CLOCK_MUX_SRC_GND] = s->gnd,
-+        [RCC_CLOCK_MUX_SRC_HSI] = s->hsi16_rc,
-+        [RCC_CLOCK_MUX_SRC_HSE] = s->hse,
-+        [RCC_CLOCK_MUX_SRC_MSI] = s->msi_rc,
-+        [RCC_CLOCK_MUX_SRC_LSI] = s->lsi_rc,
-+        [RCC_CLOCK_MUX_SRC_LSE] = s->lse_crystal,
-+        [RCC_CLOCK_MUX_SRC_SAI1_EXTCLK] = s->sai1_extclk,
-+        [RCC_CLOCK_MUX_SRC_SAI2_EXTCLK] = s->sai2_extclk,
-+        [RCC_CLOCK_MUX_SRC_PLL] =
-+            s->plls[RCC_PLL_PLL].channels[RCC_PLL_CHANNEL_PLLCLK],
-+        [RCC_CLOCK_MUX_SRC_PLLSAI1] =
-+            s->plls[RCC_PLL_PLLSAI1].channels[RCC_PLLSAI1_CHANNEL_PLLSAI1CLK],
-+        [RCC_CLOCK_MUX_SRC_PLLSAI2] =
-+            s->plls[RCC_PLL_PLLSAI2].channels[RCC_PLLSAI2_CHANNEL_PLLSAI2CLK],
-+        [RCC_CLOCK_MUX_SRC_PLLSAI3] =
-+            s->plls[RCC_PLL_PLL].channels[RCC_PLL_CHANNEL_PLLSAI3CLK],
-+        [RCC_CLOCK_MUX_SRC_PLL48M1] =
-+            s->plls[RCC_PLL_PLL].channels[RCC_PLL_CHANNEL_PLL48M1CLK],
-+        [RCC_CLOCK_MUX_SRC_PLL48M2] =
-+            s->plls[RCC_PLL_PLLSAI1].channels[RCC_PLLSAI1_CHANNEL_PLL48M2CLK],
-+        [RCC_CLOCK_MUX_SRC_PLLADC1] =
-+            s->plls[RCC_PLL_PLLSAI1].channels[RCC_PLLSAI1_CHANNEL_PLLADC1CLK],
-+        [RCC_CLOCK_MUX_SRC_PLLADC2] =
-+            s->plls[RCC_PLL_PLLSAI2] .channels[RCC_PLLSAI2_CHANNEL_PLLADC2CLK],
-+        [RCC_CLOCK_MUX_SRC_SYSCLK] = s->clock_muxes[RCC_CLOCK_MUX_SYSCLK].out,
-+        [RCC_CLOCK_MUX_SRC_HCLK] = s->clock_muxes[RCC_CLOCK_MUX_HCLK].out,
-+        [RCC_CLOCK_MUX_SRC_PCLK1] = s->clock_muxes[RCC_CLOCK_MUX_PCLK1].out,
-+        [RCC_CLOCK_MUX_SRC_PCLK2] = s->clock_muxes[RCC_CLOCK_MUX_PCLK2].out,
-+        [RCC_CLOCK_MUX_SRC_HSE_OVER_32] = s->clock_muxes[RCC_CLOCK_MUX_HSE_OVER_32].out,
-+        [RCC_CLOCK_MUX_SRC_LCD_AND_RTC_COMMON] =
-+            s->clock_muxes[RCC_CLOCK_MUX_LCD_AND_RTC_COMMON].out,
++    /* PLLSAI2ON and update PLLSAI2RDY */
++    val = FIELD_EX32(s->cr, CR, PLLSAI2ON);
++    pll_set_enable(&s->plls[RCC_PLL_PLLSAI2], val);
++    s->cr = (s->cr & ~R_CR_PLLSAI2RDY_MASK) |
++            (val << R_CR_PLLSAI2RDY_SHIFT);
++    if (s->cier & R_CIER_PLLSAI2RDYIE_MASK) {
++        s->cifr |= R_CIFR_PLLSAI2RDYF_MASK;
++    }
++
++    /* PLLSAI1ON and update PLLSAI1RDY */
++    val = FIELD_EX32(s->cr, CR, PLLSAI1ON);
++    pll_set_enable(&s->plls[RCC_PLL_PLLSAI1], val);
++    s->cr = (s->cr & ~R_CR_PLLSAI1RDY_MASK) |
++            (val << R_CR_PLLSAI1RDY_SHIFT);
++    if (s->cier & R_CIER_PLLSAI1RDYIE_MASK) {
++        s->cifr |= R_CIFR_PLLSAI1RDYF_MASK;
++    }
++
++    /* PLLON and update PLLRDY */
++    val = FIELD_EX32(s->cr, CR, PLLON);
++    pll_set_enable(&s->plls[RCC_PLL_PLL], val);
++    s->cr = (s->cr & ~R_CR_PLLRDY_MASK) |
++            (val << R_CR_PLLRDY_SHIFT);
++    if (s->cier & R_CIER_PLLRDYIE_MASK) {
++        s->cifr |= R_CIFR_PLLRDYF_MASK;
++    }
++
++    /* CSSON: TODO */
++    /* HSEBYP: TODO */
++
++    /* HSEON and update HSERDY */
++    val = FIELD_EX32(s->cr, CR, HSEON);
++    s->cr = (s->cr & ~R_CR_HSERDY_MASK) |
++            (val << R_CR_HSERDY_SHIFT);
++    if (val) {
++        clock_update_hz(s->hse, s->hse_frequency);
++        if (s->cier & R_CIER_HSERDYIE_MASK) {
++            s->cifr |= R_CIFR_HSERDYF_MASK;
++        }
++    } else {
++        clock_update(s->hse, 0);
++    }
++
++    /* HSIAFS: TODO*/
++    /* HSIKERON: TODO*/
++
++    /* HSION and update HSIRDY*/
++    val = FIELD_EX32(s->cr, CR, HSION);
++    s->cr = (s->cr & ~R_CR_HSIRDY_MASK) |
++            (val << R_CR_HSIRDY_SHIFT);
++    if (val) {
++        clock_update_hz(s->hsi16_rc, HSI_FRQ);
++        if (s->cier & R_CIER_HSIRDYIE_MASK) {
++            s->cifr |= R_CIFR_HSIRDYF_MASK;
++        }
++    } else {
++        clock_update(s->hsi16_rc, 0);
++    }
++
++    static const uint32_t msirange[] = {
++        100000, 200000, 400000, 800000, 1000000, 2000000,
++        4000000, 8000000, 16000000, 24000000, 32000000, 48000000
 +    };
++    /* MSIRANGE and MSIRGSEL */
++    val = FIELD_EX32(s->cr, CR, MSIRGSEL);
++    if (val) {
++        /* MSIRGSEL is set, use the MSIRANGE field */
++        val = FIELD_EX32(s->cr, CR, MSIRANGE);
++    } else {
++        /* MSIRGSEL is not set, use the MSISRANGE field */
++        val = FIELD_EX32(s->csr, CSR, MSISRANGE);
++    }
 +
-+    assert(ARRAY_SIZE(CLK_SRC_MAPPING) == RCC_CLOCK_MUX_SRC_NUMBER);
++    if (val < ARRAY_SIZE(msirange)) {
++        clock_update_hz(s->msi_rc, msirange[val]);
++    } else {
++        clock_update_hz(s->msi_rc, MSI_DEFAULT_FRQ);
++        /* TODO: there is a write protection if the value is out of bound,
++           implement that instead of setting the default */
++    }
 +
-+    for (i = 0; i < RCC_NUM_CLOCK_MUX_SRC; i++) {
-+        RccClockMuxSource mapping = clk_mapping[i];
-+        clock_set_source(mux->srcs[i], CLK_SRC_MAPPING[mapping]);
++    /* MSIPLLEN */
++
++    /* MSION and update MSIRDY */
++    val = FIELD_EX32(s->cr, CR, MSION);
++    s->cr = (s->cr & ~R_CR_MSIRDY_MASK) |
++            (val << R_CR_MSIRDY_SHIFT);
++    if (s->cier & R_CIER_MSIRDYIE_MASK) {
++        s->cifr |= R_CIFR_MSIRDYF_MASK;
++    }
++    rcc_update_irq(s);
++}
++
++static void rcc_update_cfgr_register(Stm32l4x5RccState *s)
++{
++    uint32_t val;
++    /* MCOPRE */
++    val = FIELD_EX32(s->cfgr, CFGR, MCOPRE);
++    assert(val <= 0b100);
++    clock_mux_set_factor(&s->clock_muxes[RCC_CLOCK_MUX_MCO],
++                         1, 1 << val);
++
++    /* MCOSEL */
++    val = FIELD_EX32(s->cfgr, CFGR, MCOSEL);
++    assert(val <= 0b111);
++    if (val == 0) {
++        clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_MCO], false);
++    } else {
++        clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_MCO], true);
++        clock_mux_set_source(&s->clock_muxes[RCC_CLOCK_MUX_MCO],
++                             val - 1);
++    }
++
++    /* STOPWUCK */
++    /* TODO */
++
++    /* PPRE2 */
++    val = FIELD_EX32(s->cfgr, CFGR, PPRE2);
++    if (val < 0b100) {
++        clock_mux_set_factor(&s->clock_muxes[RCC_CLOCK_MUX_PCLK2],
++                             1, 1);
++    } else {
++        clock_mux_set_factor(&s->clock_muxes[RCC_CLOCK_MUX_PCLK2],
++                             1, 1 << (val - 0b11));
++    }
++
++    /* PPRE1 */
++    val = FIELD_EX32(s->cfgr, CFGR, PPRE1);
++    if (val < 0b100) {
++        clock_mux_set_factor(&s->clock_muxes[RCC_CLOCK_MUX_PCLK1],
++                             1, 1);
++    } else {
++        clock_mux_set_factor(&s->clock_muxes[RCC_CLOCK_MUX_PCLK1],
++                             1, 1 << (val - 0b11));
++    }
++
++    /* HPRE */
++    val = FIELD_EX32(s->cfgr, CFGR, HPRE);
++    if (val < 0b1000) {
++        clock_mux_set_factor(&s->clock_muxes[RCC_CLOCK_MUX_HCLK],
++                             1, 1);
++    } else {
++        clock_mux_set_factor(&s->clock_muxes[RCC_CLOCK_MUX_HCLK],
++                             1, 1 << (val - 0b111));
++    }
++
++    /* Update SWS */
++    val = FIELD_EX32(s->cfgr, CFGR, SW);
++    clock_mux_set_source(&s->clock_muxes[RCC_CLOCK_MUX_SYSCLK],
++                         val);
++    s->cfgr &= ~R_CFGR_SWS_MASK;
++    s->cfgr |= val << R_CFGR_SWS_SHIFT;
++}
++
++static void rcc_update_ahb1enr(Stm32l4x5RccState *s)
++{
++    #define AHB1ENR_SET_ENABLE(_peripheral_name) \
++        clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_##_peripheral_name], \
++            FIELD_EX32(s->ahb1enr, AHB1ENR, _peripheral_name##EN))
++
++    /* DMA2DEN: reserved for STM32L475xx */
++    AHB1ENR_SET_ENABLE(TSC);
++    AHB1ENR_SET_ENABLE(CRC);
++    AHB1ENR_SET_ENABLE(FLASH);
++    AHB1ENR_SET_ENABLE(DMA2);
++    AHB1ENR_SET_ENABLE(DMA1);
++
++    #undef AHB1ENR_SET_ENABLE
++}
++
++static void rcc_update_ahb2enr(Stm32l4x5RccState *s)
++{
++    #define AHB2ENR_SET_ENABLE(_peripheral_name) \
++        clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_##_peripheral_name], \
++            FIELD_EX32(s->ahb2enr, AHB2ENR, _peripheral_name##EN))
++
++    AHB2ENR_SET_ENABLE(RNG);
++    /* HASHEN: reserved for STM32L475xx */
++    AHB2ENR_SET_ENABLE(AES);
++    /* DCMIEN: reserved for STM32L475xx */
++    AHB2ENR_SET_ENABLE(ADC);
++    AHB2ENR_SET_ENABLE(OTGFS);
++    /* GPIOIEN: reserved for STM32L475xx */
++    AHB2ENR_SET_ENABLE(GPIOA);
++    AHB2ENR_SET_ENABLE(GPIOB);
++    AHB2ENR_SET_ENABLE(GPIOC);
++    AHB2ENR_SET_ENABLE(GPIOD);
++    AHB2ENR_SET_ENABLE(GPIOE);
++    AHB2ENR_SET_ENABLE(GPIOF);
++    AHB2ENR_SET_ENABLE(GPIOG);
++    AHB2ENR_SET_ENABLE(GPIOH);
++
++    #undef AHB2ENR_SET_ENABLE
++}
++
++static void rcc_update_ahb3enr(Stm32l4x5RccState *s)
++{
++    #define AHB3ENR_SET_ENABLE(_peripheral_name) \
++        clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_##_peripheral_name], \
++            FIELD_EX32(s->ahb3enr, AHB3ENR, _peripheral_name##EN))
++
++    AHB3ENR_SET_ENABLE(QSPI);
++    AHB3ENR_SET_ENABLE(FMC);
++
++    #undef AHB3ENR_SET_ENABLE
++}
++
++static void rcc_update_apb1enr(Stm32l4x5RccState *s)
++{
++    #define APB1ENR1_SET_ENABLE(_peripheral_name) \
++        clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_##_peripheral_name], \
++            FIELD_EX32(s->apb1enr1, APB1ENR1, _peripheral_name##EN))
++    #define APB1ENR2_SET_ENABLE(_peripheral_name) \
++        clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_##_peripheral_name], \
++            FIELD_EX32(s->apb1enr2, APB1ENR2, _peripheral_name##EN))
++
++    /* APB1ENR1 */
++    APB1ENR1_SET_ENABLE(LPTIM1);
++    APB1ENR1_SET_ENABLE(OPAMP);
++    APB1ENR1_SET_ENABLE(DAC1);
++    APB1ENR1_SET_ENABLE(PWR);
++    /* CAN2: reserved for STM32L4x5 */
++    APB1ENR1_SET_ENABLE(CAN1);
++    /* CRSEN: reserved for STM32L4x5 */
++    APB1ENR1_SET_ENABLE(I2C3);
++    APB1ENR1_SET_ENABLE(I2C2);
++    APB1ENR1_SET_ENABLE(I2C1);
++    APB1ENR1_SET_ENABLE(UART5);
++    APB1ENR1_SET_ENABLE(UART4);
++    APB1ENR1_SET_ENABLE(USART3);
++    APB1ENR1_SET_ENABLE(USART2);
++    APB1ENR1_SET_ENABLE(SPI3);
++    APB1ENR1_SET_ENABLE(SPI2);
++    APB1ENR1_SET_ENABLE(WWDG);
++    /* RTCAPB: reserved for STM32L4x5 */
++    APB1ENR1_SET_ENABLE(LCD);
++    APB1ENR1_SET_ENABLE(TIM7);
++    APB1ENR1_SET_ENABLE(TIM6);
++    APB1ENR1_SET_ENABLE(TIM5);
++    APB1ENR1_SET_ENABLE(TIM4);
++    APB1ENR1_SET_ENABLE(TIM3);
++    APB1ENR1_SET_ENABLE(TIM2);
++
++    /* APB1ENR2 */
++    APB1ENR2_SET_ENABLE(LPTIM2);
++    APB1ENR2_SET_ENABLE(SWPMI1);
++    /* I2C4EN: reserved for STM32L4x5 */
++    APB1ENR2_SET_ENABLE(LPUART1);
++
++    #undef APB1ENR1_SET_ENABLE
++    #undef APB1ENR2_SET_ENABLE
++}
++
++static void rcc_update_apb2enr(Stm32l4x5RccState *s)
++{
++    #define APB2ENR_SET_ENABLE(_peripheral_name) \
++        clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_##_peripheral_name], \
++            FIELD_EX32(s->apb2enr, APB2ENR, _peripheral_name##EN))
++
++    APB2ENR_SET_ENABLE(DFSDM1);
++    APB2ENR_SET_ENABLE(SAI2);
++    APB2ENR_SET_ENABLE(SAI1);
++    APB2ENR_SET_ENABLE(TIM17);
++    APB2ENR_SET_ENABLE(TIM16);
++    APB2ENR_SET_ENABLE(TIM15);
++    APB2ENR_SET_ENABLE(USART1);
++    APB2ENR_SET_ENABLE(TIM8);
++    APB2ENR_SET_ENABLE(SPI1);
++    APB2ENR_SET_ENABLE(TIM1);
++    APB2ENR_SET_ENABLE(SDMMC1);
++    APB2ENR_SET_ENABLE(FW);
++    APB2ENR_SET_ENABLE(SYSCFG);
++
++    #undef APB2ENR_SET_ENABLE
++}
++
++/*
++ * The 3 PLLs share the same register layout
++ * so we can use the same function for all of them
++ * Note: no frequency bounds checking is done here.
++ */
++static void rcc_update_pllsaixcfgr(Stm32l4x5RccState *s, RccPll pll_id)
++{
++    uint32_t reg, val;
++    switch (pll_id) {
++    case RCC_PLL_PLL:
++        reg = s->pllcfgr;
++        break;
++    case RCC_PLL_PLLSAI1:
++        reg = s->pllsai1cfgr;
++        break;
++    case RCC_PLL_PLLSAI2:
++        reg = s->pllsai2cfgr;
++        break;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: Invalid PLL ID: %u\n", __func__, pll_id);
++        return;
++    }
++
++    /* PLLPDIV */
++    val = FIELD_EX32(reg, PLLCFGR, PLLPDIV);
++    /* 1 is a reserved value */
++    if (val == 0) {
++        /* Get PLLP value */
++        val = FIELD_EX32(reg, PLLCFGR, PLLP);
++        pll_set_channel_divider(&s->plls[pll_id], RCC_PLL_COMMON_CHANNEL_P,
++            (val ? 17 : 7));
++    } else if (val > 1) {
++        pll_set_channel_divider(&s->plls[pll_id], RCC_PLL_COMMON_CHANNEL_P,
++            val);
++    }
++
++
++    /* PLLR */
++    val = FIELD_EX32(reg, PLLCFGR, PLLR);
++    pll_set_channel_divider(&s->plls[pll_id], RCC_PLL_COMMON_CHANNEL_R,
++        2 * (val + 1));
++
++    /* PLLREN */
++    val = FIELD_EX32(reg, PLLCFGR, PLLREN);
++    pll_set_channel_enable(&s->plls[pll_id], RCC_PLL_COMMON_CHANNEL_R, val);
++
++    /* PLLQ */
++    val = FIELD_EX32(reg, PLLCFGR, PLLQ);
++    pll_set_channel_divider(&s->plls[pll_id], RCC_PLL_COMMON_CHANNEL_Q,
++        2 * (val + 1));
++
++    /* PLLQEN */
++    val = FIELD_EX32(reg, PLLCFGR, PLLQEN);
++    pll_set_channel_enable(&s->plls[pll_id], RCC_PLL_COMMON_CHANNEL_Q, val);
++
++    /* PLLPEN */
++    val = FIELD_EX32(reg, PLLCFGR, PLLPEN);
++    pll_set_channel_enable(&s->plls[pll_id], RCC_PLL_COMMON_CHANNEL_P, val);
++
++    /* PLLN */
++    val = FIELD_EX32(reg, PLLCFGR, PLLN);
++    pll_set_vco_multiplier(&s->plls[pll_id], val);
++}
++
++static void rcc_update_pllcfgr(Stm32l4x5RccState *s)
++{
++    int val;
++
++    /* Use common layout */
++    rcc_update_pllsaixcfgr(s, RCC_PLL_PLL);
++
++    /* Fetch specific fields for pllcfgr */
++
++    /* PLLM */
++    val = FIELD_EX32(s->pllcfgr, PLLCFGR, PLLM);
++    clock_mux_set_factor(&s->clock_muxes[RCC_CLOCK_MUX_PLL_INPUT], 1, (val + 1));
++
++    /* PLLSRC */
++    val = FIELD_EX32(s->pllcfgr, PLLCFGR, PLLSRC);
++    if (val == 0) {
++        clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_PLL_INPUT], false);
++    } else {
++        clock_mux_set_source(&s->clock_muxes[RCC_CLOCK_MUX_PLL_INPUT], val - 1);
++        clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_PLL_INPUT], true);
 +    }
 +}
 +
++static void rcc_update_ccipr(Stm32l4x5RccState *s)
++{
++    #define CCIPR_SET_SOURCE(_peripheral_name) \
++        clock_mux_set_source(&s->clock_muxes[RCC_CLOCK_MUX_##_peripheral_name], \
++            FIELD_EX32(s->ccipr, CCIPR, _peripheral_name##SEL))
 +
- static const VMStateDescription vmstate_stm32l4x5_rcc = {
-     .name = TYPE_STM32L4X5_RCC,
-     .version_id = 1,
-@@ -712,11 +816,17 @@ static void stm32l4x5_rcc_realize(DeviceState *dev, Error **errp)
-     for (i = 0; i < RCC_NUM_CLOCK_MUX; i++) {
-         RccClockMuxState *clock_mux = &s->clock_muxes[i];
- 
-+        connect_mux_sources(s, clock_mux, CLOCK_MUX_INIT_INFO[i].src_mapping);
++    CCIPR_SET_SOURCE(DFSDM1);
++    CCIPR_SET_SOURCE(SWPMI1);
++    CCIPR_SET_SOURCE(ADC);
++    CCIPR_SET_SOURCE(CLK48);
++    CCIPR_SET_SOURCE(SAI2);
++    CCIPR_SET_SOURCE(SAI1);
++    CCIPR_SET_SOURCE(LPTIM2);
++    CCIPR_SET_SOURCE(LPTIM1);
++    CCIPR_SET_SOURCE(I2C3);
++    CCIPR_SET_SOURCE(I2C2);
++    CCIPR_SET_SOURCE(I2C1);
++    CCIPR_SET_SOURCE(LPUART1);
++    CCIPR_SET_SOURCE(UART5);
++    CCIPR_SET_SOURCE(UART4);
++    CCIPR_SET_SOURCE(USART3);
++    CCIPR_SET_SOURCE(USART2);
++    CCIPR_SET_SOURCE(USART1);
 +
-         if (!qdev_realize(DEVICE(clock_mux), NULL, errp)) {
-             return;
-         }
-     }
- 
++    #undef CCIPR_SET_SOURCE
++}
++
++static void rcc_update_bdcr(Stm32l4x5RccState *s)
++{
++    int val;
++
++    /* LSCOSEL */
++    val = FIELD_EX32(s->bdcr, BDCR, LSCOSEL);
++    clock_mux_set_source(&s->clock_muxes[RCC_CLOCK_MUX_LSCO], val);
++
++    val = FIELD_EX32(s->bdcr, BDCR, LSCOEN);
++    clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_LSCO], val);
++
++    /* BDRST */
 +    /*
-+     * Start clocks after everything is connected
-+     * to propagate the frequencies along the tree.
++     * The documentation is not clear if the RTCEN flag disables the RTC and
++     * the LCD common mux or if it only affects the RTC.
++     * As the LCDEN flag exists, we assume here that it only affects the RTC.
 +     */
-     clock_update_hz(s->msi_rc, MSI_DEFAULT_FRQ);
++    val = FIELD_EX32(s->bdcr, BDCR, RTCEN);
++    clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_RTC], val);
++    /* LCD and RTC share the same clock */
++    val = FIELD_EX32(s->bdcr, BDCR, RTCSEL);
++    clock_mux_set_source(&s->clock_muxes[RCC_CLOCK_MUX_LCD_AND_RTC_COMMON], val);
++
++    /* LSECSSON */
++    /* LSEDRV[1:0] */
++    /* LSEBYP */
++
++    /* LSEON: Update LSERDY at the same time */
++    val = FIELD_EX32(s->bdcr, BDCR, LSEON);
++    if (val) {
++        clock_update_hz(s->lse_crystal, LSE_FRQ);
++        s->bdcr |= R_BDCR_LSERDY_MASK;
++        if (s->cier & R_CIER_LSERDYIE_MASK) {
++            s->cifr |= R_CIFR_LSERDYF_MASK;
++        }
++    } else {
++        clock_update(s->lse_crystal, 0);
++        s->bdcr &= ~R_BDCR_LSERDY_MASK;
++    }
++
++    rcc_update_irq(s);
++}
++
++static void rcc_update_csr(Stm32l4x5RccState *s)
++{
++    int val;
++
++    /* Reset flags: Not implemented */
++    /* MSISRANGE: Not implemented after reset */
++
++    /* LSION: Update LSIRDY at the same time */
++    val = FIELD_EX32(s->csr, CSR, LSION);
++    if (val) {
++        clock_update_hz(s->lsi_rc, LSI_FRQ);
++        s->csr |= R_CSR_LSIRDY_MASK;
++        if (s->cier & R_CIER_LSIRDYIE_MASK) {
++            s->cifr |= R_CIFR_LSIRDYF_MASK;
++        }
++    } else {
++        /*
++         * TODO: Handle when the LSI is set independently of LSION.
++         * E.g. when the LSI is set by the RTC.
++         * See the reference manual for more details.
++         */
++        clock_update(s->lsi_rc, 0);
++        s->csr &= ~R_CSR_LSIRDY_MASK;
++    }
++
++    rcc_update_irq(s);
++}
++
+ static void stm32l4x5_rcc_reset_hold(Object *obj)
+ {
+     Stm32l4x5RccState *s = STM32L4X5_RCC(obj);
+@@ -529,24 +999,33 @@ static void stm32l4x5_rcc_write(void *opaque, hwaddr addr,
+     case A_CR:
+         s->cr = (s->cr & CR_READ_SET_MASK) |
+                 (value & (CR_READ_SET_MASK | ~CR_READ_ONLY_MASK));
++        rcc_update_cr_register(s);
+         break;
+     case A_ICSCR:
+         s->icscr = value & ~ICSCR_READ_ONLY_MASK;
++        qemu_log_mask(LOG_UNIMP,
++                "%s: Side-effects not implemented for ICSCR\n", __func__);
+         break;
+     case A_CFGR:
+         s->cfgr = value & ~CFGR_READ_ONLY_MASK;
++        rcc_update_cfgr_register(s);
+         break;
+     case A_PLLCFGR:
+         s->pllcfgr = value;
++        rcc_update_pllcfgr(s);
+         break;
+     case A_PLLSAI1CFGR:
+         s->pllsai1cfgr = value;
++        rcc_update_pllsaixcfgr(s, RCC_PLL_PLLSAI1);
+         break;
+     case A_PLLSAI2CFGR:
+         s->pllsai2cfgr = value;
++        rcc_update_pllsaixcfgr(s, RCC_PLL_PLLSAI2);
+         break;
+     case A_CIER:
+         s->cier = value;
++        qemu_log_mask(LOG_UNIMP,
++                "%s: Side-effects not implemented for CIER\n", __func__);
+         break;
+     case A_CIFR:
+         qemu_log_mask(LOG_GUEST_ERROR,
+@@ -561,67 +1040,100 @@ static void stm32l4x5_rcc_write(void *opaque, hwaddr addr,
+     /* Reset behaviors are not implemented */
+     case A_AHB1RSTR:
+         s->ahb1rstr = value;
++        qemu_log_mask(LOG_UNIMP,
++                "%s: Side-effects not implemented for AHB1RSTR\n", __func__);
+         break;
+     case A_AHB2RSTR:
+         s->ahb2rstr = value;
++        qemu_log_mask(LOG_UNIMP,
++                "%s: Side-effects not implemented for AHB2RSTR\n", __func__);
+         break;
+     case A_AHB3RSTR:
+         s->ahb3rstr = value;
++        qemu_log_mask(LOG_UNIMP,
++                "%s: Side-effects not implemented for AHB3RSTR\n", __func__);
+         break;
+     case A_APB1RSTR1:
+         s->apb1rstr1 = value;
++        qemu_log_mask(LOG_UNIMP,
++                "%s: Side-effects not implemented for APB1RSTR1\n", __func__);
+         break;
+     case A_APB1RSTR2:
+         s->apb1rstr2 = value;
++        qemu_log_mask(LOG_UNIMP,
++                "%s: Side-effects not implemented for APB1RSTR2\n", __func__);
+         break;
+     case A_APB2RSTR:
+         s->apb2rstr = value;
++        qemu_log_mask(LOG_UNIMP,
++                "%s: Side-effects not implemented for APB2RSTR\n", __func__);
+         break;
+     case A_AHB1ENR:
+         s->ahb1enr = value;
++        rcc_update_ahb1enr(s);
+         break;
+     case A_AHB2ENR:
+         s->ahb2enr = value;
++        rcc_update_ahb2enr(s);
+         break;
+     case A_AHB3ENR:
+         s->ahb3enr = value;
++        rcc_update_ahb3enr(s);
+         break;
+     case A_APB1ENR1:
+         s->apb1enr1 = value;
++        rcc_update_apb1enr(s);
+         break;
+     case A_APB1ENR2:
+         s->apb1enr2 = value;
++        rcc_update_apb1enr(s);
+         break;
+     case A_APB2ENR:
+         s->apb2enr = (s->apb2enr & APB2ENR_READ_SET_MASK) | value;
++        rcc_update_apb2enr(s);
+         break;
+     /* Behaviors for Sleep and Stop modes are not implemented */
+     case A_AHB1SMENR:
+         s->ahb1smenr = value;
++        qemu_log_mask(LOG_UNIMP,
++                "%s: Side-effects not implemented for AHB1SMENR\n", __func__);
+         break;
+     case A_AHB2SMENR:
+         s->ahb2smenr = value;
++        qemu_log_mask(LOG_UNIMP,
++                "%s: Side-effects not implemented for AHB2SMENR\n", __func__);
+         break;
+     case A_AHB3SMENR:
+         s->ahb3smenr = value;
++        qemu_log_mask(LOG_UNIMP,
++                "%s: Side-effects not implemented for AHB3SMENR\n", __func__);
+         break;
+     case A_APB1SMENR1:
+         s->apb1smenr1 = value;
++        qemu_log_mask(LOG_UNIMP,
++                "%s: Side-effects not implemented for APB1SMENR1\n", __func__);
+         break;
+     case A_APB1SMENR2:
+         s->apb1smenr2 = value;
++        qemu_log_mask(LOG_UNIMP,
++                "%s: Side-effects not implemented for APB1SMENR2\n", __func__);
+         break;
+     case A_APB2SMENR:
+         s->apb2smenr = value;
++        qemu_log_mask(LOG_UNIMP,
++                "%s: Side-effects not implemented for APB2SMENR\n", __func__);
+         break;
+     case A_CCIPR:
+         s->ccipr = value;
++        rcc_update_ccipr(s);
+         break;
+     case A_BDCR:
+         s->bdcr = value & ~BDCR_READ_ONLY_MASK;
++        rcc_update_bdcr(s);
+         break;
+     case A_CSR:
+         s->csr = value & ~CSR_READ_ONLY_MASK;
++        rcc_update_csr(s);
+         break;
+     default:
+         qemu_log_mask(LOG_GUEST_ERROR,
+@@ -831,18 +1343,6 @@ static void stm32l4x5_rcc_realize(DeviceState *dev, Error **errp)
      clock_update_hz(s->sai1_extclk, s->sai1_extclk_frequency);
      clock_update_hz(s->sai2_extclk, s->sai2_extclk_frequency);
-@@ -750,6 +860,7 @@ static void stm32l4x5_rcc_class_init(ObjectClass *klass, void *data)
-     DeviceClass *dc = DEVICE_CLASS(klass);
-     ResettableClass *rc = RESETTABLE_CLASS(klass);
+     clock_update(s->gnd, 0);
+-
+-    /*
+-     * Dummy values to make compilation pass.
+-     * Removed in later commits.
+-     */
+-    clock_mux_set_source(&s->clock_muxes[0], RCC_CLOCK_MUX_SRC_GND);
+-    clock_mux_set_enable(&s->clock_muxes[0], true);
+-    clock_mux_set_factor(&s->clock_muxes[0], 1, 1);
+-    pll_set_channel_divider(&s->plls[0], 0, 1);
+-    pll_set_enable(&s->plls[0], true);
+-    pll_set_channel_enable(&s->plls[0], 0, true);
+-    pll_set_vco_multiplier(&s->plls[0], 1);
+ }
  
-+    assert(ARRAY_SIZE(CLOCK_MUX_INIT_INFO) == RCC_NUM_CLOCK_MUX);
- 
-     rc->phases.hold = stm32l4x5_rcc_reset_hold;
-     device_class_set_props(dc, stm32l4x5_rcc_properties);
+ static Property stm32l4x5_rcc_properties[] = {
 -- 
 2.34.1
 
