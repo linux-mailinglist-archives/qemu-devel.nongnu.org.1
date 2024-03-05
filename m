@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA0BC872328
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 16:52:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1722F872329
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 16:52:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhX4Z-0000OX-RV; Tue, 05 Mar 2024 10:51:19 -0500
+	id 1rhX4x-0000uC-B1; Tue, 05 Mar 2024 10:51:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rhX4W-0000ON-TG
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 10:51:16 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rhX4r-0000nk-3u
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 10:51:37 -0500
+Received: from mail-ot1-x336.google.com ([2607:f8b0:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rhX4V-0007Mf-7h
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 10:51:16 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-33d0a7f2424so533547f8f.0
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 07:51:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rhX4p-0007Pf-59
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 10:51:36 -0500
+Received: by mail-ot1-x336.google.com with SMTP id
+ 46e09a7af769-6e4e608a374so1094778a34.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 07:51:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709653873; x=1710258673; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709653893; x=1710258693; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Dm6l6PfIksSdR29ispgG3Rt2suMFawhN66ke9hIjHHs=;
- b=exm0CRYexud/AZL8E3738U41JcdvntgiXB9K1kOi7fTUo4GwkB/Z6r/hhPYuY8ul06
- QLQvDIJ0EMnbvRouz0/T35wyHGnJmwaEC+5hbFOpO+u/hSovb3yccpkAg23pIk3LjhCv
- n+2OBUOJdc4aGyL3CdV46gEmUv534VlQX1wSAKup6sVkc2hcR8kPDD97Az9Cz4/zLgYA
- u5mC/zILokKjT5wYtC3IToANmjDHYlJaZB6qVC4nQffWt7hA6bhJCi/2XHmS0gEAUPl1
- vERI2pubdUWFdVk+5/Gb/cyv14eBlGO7DoXm+5vUI7rhb2mZlSymxh2K8/95ruvF5QyM
- du3g==
+ bh=HUlAyjbs1PTV+vCUlXu3i4GjbGicSto1B6ION0v3BZo=;
+ b=MdRvQu7A1r7hxgexbsyF2P5uw7UfJAmTWY20y3sLbtAsM5F0V0yCSOjCInFD7oxnwq
+ 01dJ5d6tc9zQqy37jFegL0MKkJ3qpU6EYFLC5nArAmS+teMR7dp7mg0m0ZoNMP6eZSFO
+ ZnIwv5jyVl2Y5H+eJ7O3a+6MdM0OIfo+CQfbbqfFSQccM9Atq88YcHeZw2PRuyiL3152
+ rxcndPJQwydvmu4aReHmwMsky+92aK68q2tiBtJaI19FC7rAcFyOa+ZZw1oKlDaxGKB1
+ R7gEB77NvpcQqQpOLYIQAwe/Eezz06MhACqUQNQQCOzAKrwMAG5bJiQvcFClf1OW3muR
+ jN6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709653873; x=1710258673;
+ d=1e100.net; s=20230601; t=1709653893; x=1710258693;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Dm6l6PfIksSdR29ispgG3Rt2suMFawhN66ke9hIjHHs=;
- b=kxeAlizfFUFrs4YDfIxMZoHHF8C5/Vlg7EM0pBLJ4tmVcbXD9RvTwovs3OHTTOFu9i
- TRP8MX9FbEpap2sF/kiSsxChf6ZDWMrPz+4Oe3bTDZLw6I29Iw1ufn4arcz/hQEN5w6z
- 7fWTmz+6sP36bs/fzVxdA6QWYXzQ84VEbqJxkRi9dYe9pzP9lSAFEmfwQ3mzAnTBdt/s
- iQEEr6uwnY0hnQNXllLAgP1EqWG3TxC661VpYz6cVJtoAX7LAsdDGEn8cWOrFAgsUiG1
- 5HbstguP2XAhI60B+/oc8GHGO1FyezKJTgMrkCOzx5nV2ceGZ8uNuI0AB/3TMoo4JID+
- oeAQ==
+ bh=HUlAyjbs1PTV+vCUlXu3i4GjbGicSto1B6ION0v3BZo=;
+ b=HTGheTaurNx/cqNRXozIdVYivRyq4epZfNmWbRbMmsHFZ+Cigg5WkDrpDRs/NuXCOB
+ ccgUCcMVMGP+i5bdJAaxDYcnFZ04x04owc402xGFuhQKXYlqfzGQjMgwpxOZkSEgl06J
+ LTf3BRZlfMAS5Scg3XjcQUYpsVTd9QKP6jUMd5a/AqtA0gXtkSYoxVz8xkRWxpTbS7Vo
+ ikVN1lEaz1tlcOrbPgA7RFsBqk6+4Pc5Ly70V6JCKU5t/o0uebKWGwC5xSPJvbsDVaaA
+ 5EK5+kYbZeMVNxnPUTJpCxEqCAyZiSsNDKLA5e8PjD0NmKP8FADo8OTJI75SKJYSKzVp
+ WqsA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU7o/M3O+PJixK12etJOFkwVL/XVYNOsv8hdn5/0vB1yu3pZxX4idvOq4/OcM83QJPbBmRt2ZGePEuKlw585e1b2nRXuQo=
-X-Gm-Message-State: AOJu0Yy4gYJv/TP+Uk8y6iVB4gLD13P21o8aac28BxsJjsuIK0T/v5Ox
- fuQRX7RNVyYWiRfv6OM51GGPvRVmSMVdqtfZKtNPXC+Qm/o8pX7mwEjC+Ah7Qdg=
-X-Google-Smtp-Source: AGHT+IFVjOvjg9Yw52kYfS3v3xCnyvI7xZguu7DbGzvchroDBK59U0SmRhMVYJSg9L36cacqawBQlA==
-X-Received: by 2002:adf:fc8e:0:b0:33d:2f2f:b135 with SMTP id
- g14-20020adffc8e000000b0033d2f2fb135mr10172856wrr.46.1709653872769; 
- Tue, 05 Mar 2024 07:51:12 -0800 (PST)
-Received: from [192.168.69.100] ([176.176.177.70])
- by smtp.gmail.com with ESMTPSA id
- j3-20020adff003000000b0033e01e397d6sm15208015wro.54.2024.03.05.07.51.10
+ AJvYcCVlDwbKegrIqJtPW47OPPB5THBwaODDHRkJ0DPZVJ/b+cU4lc/wBQwM1bwRy/1qHpxzzasll0K3nDj8yv8iTY3sHrcDTrs=
+X-Gm-Message-State: AOJu0YxLJvl0teITJ5q03E5BQuGPAQwuymzr//AAbU28LL35FhKyYkzk
+ lzYM83NNSqwOedJyeyiAT9v5r1x59nRnVWwdrqnUCSL4TxZ1j2H2HsQDbRBffes=
+X-Google-Smtp-Source: AGHT+IHRHZkQ4IvZYLFMf3SYHF8rnXKm7BoWaYEOTNxnyVR6KJSpHcENQlCk5V2QkCA2lhqEnLyrrA==
+X-Received: by 2002:a05:6830:1002:b0:6e4:f67f:9d46 with SMTP id
+ a2-20020a056830100200b006e4f67f9d46mr2167797otp.31.1709653893146; 
+ Tue, 05 Mar 2024 07:51:33 -0800 (PST)
+Received: from [192.168.6.128] (098-147-055-211.res.spectrum.com.
+ [98.147.55.211]) by smtp.gmail.com with ESMTPSA id
+ b22-20020a63cf56000000b005dc884e9f5bsm9470022pgj.38.2024.03.05.07.51.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Mar 2024 07:51:12 -0800 (PST)
-Message-ID: <ce5356ac-81e2-4eb1-845d-c444fcd48abe@linaro.org>
-Date: Tue, 5 Mar 2024 16:51:09 +0100
+ Tue, 05 Mar 2024 07:51:32 -0800 (PST)
+Message-ID: <cdd286d6-2986-4c2c-8785-dc311b71e4fd@linaro.org>
+Date: Tue, 5 Mar 2024 05:51:28 -1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] hw/i386/pc: Remove "rtc_state" link again
+Subject: Re: [PATCH] target/arm: Fix 32-bit SMOPA
 Content-Language: en-US
-To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Sergio Lopez <slp@redhat.com>, Paul Durrant <paul@xen.org>,
- David Woodhouse <dwmw2@infradead.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-References: <20240303185332.1408-1-shentey@gmail.com>
- <20240303185332.1408-2-shentey@gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240303185332.1408-2-shentey@gmail.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-stable@nongnu.org
+References: <20240305023116.234256-1-richard.henderson@linaro.org>
+ <fa8f1d52-f88d-4107-abfa-fa10ebef511c@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <fa8f1d52-f88d-4107-abfa-fa10ebef511c@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::336;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,21 +97,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/3/24 19:53, Bernhard Beschow wrote:
-> Commit 99e1c1137b6f "hw/i386/pc: Populate RTC attribute directly" made linking
-> the "rtc_state" property unnecessary and removed it. Commit 84e945aad2d0 "vl,
-> pc: turn -no-fd-bootchk into a machine property" accidently reintroduced the
-> link. Remove it again since it is not needed.
+On 3/4/24 23:19, Philippe Mathieu-Daudé wrote:
+>> +        uint32_t *za_row = &za[H4(tile_vslice_index(row))];
+>> +        uint32_t n = zn[H4(row)];
+>> +
+>> +        for (col = 0; col < oprsz; ++col) {
+>> +            uint8_t pb = pm[H1(col >> 1)] >> ((col & 1) * 4);
+>> +            uint32_t *a = &za_row[col];
+> 
+> Shouldn't this be:
+> 
+>                uint32_t *a = &za_row[H4(col)];
+> 
+> to work on big endian hosts?
 
-Argh 🤦
+Oof.  Yes, the H4 adjustment belongs here, not on za_row above.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-> Fixes: 84e945aad2d0 "vl, pc: turn -no-fd-bootchk into a machine property"
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-> ---
->   hw/i386/pc.c | 8 --------
->   1 file changed, 8 deletions(-)
-
+r~
 
