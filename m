@@ -2,67 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8904871D3C
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 12:19:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE2CF871DA5
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 12:28:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhSoI-0002HD-HH; Tue, 05 Mar 2024 06:18:14 -0500
+	id 1rhSx4-0006By-WA; Tue, 05 Mar 2024 06:27:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhSoF-0002Fu-OQ
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 06:18:11 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rhSwe-00063F-4S
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 06:26:54 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhSoD-00060s-Q4
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 06:18:11 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5672afabb86so2248517a12.3
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 03:18:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rhSwa-0000LB-9B
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 06:26:51 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-565ef8af2f5so6908861a12.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 03:26:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709637488; x=1710242288; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Mfz8ioTCTqKPJskVsegZZCVdkpTisjxgevO5cXAWPAw=;
- b=Gey4Z1K+JHvWGxdIotK38nVYCMIiaiwe8tU+dTRXAmW7QBKGQled2rYEACyPIzR6lk
- RCs5YzkskAsHRMXifiPpMJSkvyPa/Ddf6S+zJ2fdqPobx+kDTmf+rB/es+meXjyYP3vq
- 8yVnNPerHx0uLp0tjyu6S1HjgBlfbIRKXZMzc7Y086AZiFAJHvUSAJ2rPWfr8O7xyDJQ
- ruTGIeohWoyigZaotTk62OzWuQwTJyqVU0BM2iFbq2Pbk7LDyBcMk+1ssCl/nz0q9n9c
- iYyfQjxbiadsZ9ln6mKXN8zn1EREBWsTu82AnuVal+dgsfqI3f6eQOidzFTgQzuUMK7y
- u2GA==
+ d=linaro.org; s=google; t=1709638005; x=1710242805; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=FnDBqsGz8bfkBseet1BwqCO81AeEJ7WQFTGnqgQLWGw=;
+ b=HIpbvEhoC8NA81wdxlBpWgR34n9cPH5hw38Kufvu+Nnn1CY3+nwuVHPWfHA1kPFM/C
+ ZfgHZwS9y6e5JAy6yN9iCK/IYRXnkeHUgNlDUk2NaN7h/Bnk9PJPRm+UiuW3J0Gep4mH
+ KH1M41aaxO3e7TxurSqNINjYH87p1nymChczfwHehb6vQESuKEeBqZBvEhmvPAkkkfVx
+ CRERa5QAE3VD/v7yO/WU4F37tWvT3U+C9qqEcynv9dRnjjJGx5QW/EclQsZVEHX3qHbw
+ 5PYZaHHJFhF/Lz/XvAeyv4jzzC9VpgH9/zcCSiRl1zSG1sFzmez7eyTnv6fQz1J6IqOj
+ oaeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709637488; x=1710242288;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Mfz8ioTCTqKPJskVsegZZCVdkpTisjxgevO5cXAWPAw=;
- b=dKE+j49BUF1KbbtC7wMwlpGuZWffW4bGPq8/+AdGDxSN4ZZD3gdXgRaInF4i1h9eTp
- 2GHPEhBkdzP8ZLR9xSMmFFAAoRDoW82pl3reRUHNd1szeD0ClP1fdXKgqfC8czcMIP5R
- VShJMjEaFlFKxQb1g0J7h+GHcWLMSwW7W1V5Q4iJPgDOuchErE27UpLyXoMXTwkHQl+e
- YMvQtXrCJhfzQOtGOLwA04uxCflJ+st+m/qtnyLr3LlcbCESrlg1J0hxN1pxboFkvyD1
- 30uqEfxgMyUVhjy9xixK19lbXwFcYRGNJOf622VXKzRAw4ElyzJZ6Q3GcWjyvka8uu8w
- OwfQ==
-X-Gm-Message-State: AOJu0YznlJIdXECjsInCT7tDJ3w38VwaDD9h2Wg//QaUo7ca31saijAA
- IXPrtoZV+K2j6CxjBzANCkYo1Bwz4jUjNEbSA1W1lQNhLRvuJefJ+9ODDCPqrU8beB9NdiP1bGf
- l8m21MrZbb8UR3FvuEB3DV0QdmHSBKrafR82UVl+L3pJXceX9
-X-Google-Smtp-Source: AGHT+IEseiub8vogp0RHLh57MrUNN//6w5cTM5WmSY8tLxkembn3Jit74xPgY9qJp/aPxXj/OL/C8qNNz++EpR8slN0=
-X-Received: by 2002:aa7:dbc1:0:b0:565:bb8f:5f40 with SMTP id
- v1-20020aa7dbc1000000b00565bb8f5f40mr8111984edt.25.1709637488009; Tue, 05 Mar
- 2024 03:18:08 -0800 (PST)
+ d=1e100.net; s=20230601; t=1709638005; x=1710242805;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=FnDBqsGz8bfkBseet1BwqCO81AeEJ7WQFTGnqgQLWGw=;
+ b=kPEJM4aUAIrvuypzhvtFOIse1A597evApT2mNcDqPWjxZynQq5En8qrXdMfDREbvsr
+ 8QsVg4R8A/atFKTBuVFjvMAYwNItim7WundkQUNq2B+rfQqRnwoGM60fOt6YgTYHfvje
+ U/t9l9cAtxPrvPhfXEs1JHiRWBFdYdIYeqeI9lA3PnJo87MApRUDWmMTd47pVp3Ej3tp
+ /kZbIxfoRqMmmEWZQdbvhJEG/u9Jc87e9ccAF1YbdM6k6JoWHQQvN0aHPlPGn2It7dQ5
+ 2KjY25HLBNu3WI83UKfyPsR5DKYS+qpHtIYlAsX2WHu8FvUDq+uOmu2Kcu7tXgKef55P
+ Yv0A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUJCfWV2RYbGbxAGQKqLUzNCHBl98O1roaB4639hiVQMDhlmbjxkgsUXNkoj3ZS1NelynTqIytXEILO/vOCpB36BmZy2tM=
+X-Gm-Message-State: AOJu0YxJk25rJNGI2V/DhKMdF3nKH0bjaztM+22tdbpvz/XxpQlQYje0
+ PXyHm/trx9Vlxr9msp0Acwx1h67eMuPh/B7jI16gRDhTViJKOKXiuR3pWJ9hRNHTeXdGIL9FPlH
+ I
+X-Google-Smtp-Source: AGHT+IF1ZNBt/UYTfp3Lj0IDYBRLI9FA5XwQiTCIKHSZclzOqvxczJlCHQyFn+d8k5nxsAT2BUTLHw==
+X-Received: by 2002:a05:6402:202e:b0:565:9ac6:a9e5 with SMTP id
+ ay14-20020a056402202e00b005659ac6a9e5mr9126971edb.21.1709638004880; 
+ Tue, 05 Mar 2024 03:26:44 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.177.70])
+ by smtp.gmail.com with ESMTPSA id
+ ev16-20020a056402541000b0055d333a0584sm5725718edb.72.2024.03.05.03.26.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 05 Mar 2024 03:26:44 -0800 (PST)
+Message-ID: <8d819438-6671-4846-aafe-76c5e353fdf2@linaro.org>
+Date: Tue, 5 Mar 2024 12:26:41 +0100
 MIME-Version: 1.0
-References: <20240301230619.661008-1-richard.henderson@linaro.org>
-In-Reply-To: <20240301230619.661008-1-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 5 Mar 2024 11:17:56 +0000
-Message-ID: <CAFEAcA_2of8_POuWcuMWj9qL+-5DVbAhawyOBuL54xFG+JYquw@mail.gmail.com>
-Subject: Re: [PATCH 00/60] linux-user and tcg patch queue
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/rtc/sun4v-rtc: Relicense to GPLv2-or-later
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Artyom Tarasenko <atar4qemu@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>, Eduardo Habkost
+ <ehabkost@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+References: <20240223161300.938542-1-peter.maydell@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240223161300.938542-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -85,46 +98,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 1 Mar 2024 at 23:07, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> The following changes since commit c0c6a0e3528b88aaad0b9d333e295707a195587b:
->
->   Merge tag 'migration-next-pull-request' of https://gitlab.com/peterx/qemu into staging (2024-02-28 17:27:10 +0000)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20240301
->
-> for you to fetch changes up to 04dadd22aed00e5a2955ab078d7edd676812cf41:
->
->   tests/tcg: Check that shmat() does not break /proc/self/maps (2024-03-01 08:09:55 -1000)
->
-> ----------------------------------------------------------------
-> linux-user: Rewrite elf coredump
-> tcg/aarch64: Apple does not align __int128_t in even registers
-> accel/tcg: Fixes for page tables in mmio memory
-> linux-user: Remove qemu_host_page_{size,mask}, HOST_PAGE_ALIGN
-> migration: Remove qemu_host_page_size
-> hw/tpm: Remove qemu_host_page_size
-> softmmu: Remove qemu_host_page_{size,mask}, HOST_PAGE_ALIGN
-> linux-user: Split and reorganize target_mmap.
-> *-user: Deprecate and disable -p pagesize
-> linux-user: Allow TARGET_PAGE_BITS_VARY
-> target/alpha: Enable TARGET_PAGE_BITS_VARY for user-only
-> target/arm: Enable TARGET_PAGE_BITS_VARY for AArch64 user-only
-> target/ppc: Enable TARGET_PAGE_BITS_VARY for user-only
-> linux-user: Remove pgb_dynamic alignment assertion
-> tcg/optimize: fix uninitialized variable
-> linux-user: Rewrite shmat
->
+On 23/2/24 17:13, Peter Maydell wrote:
+> The sun4v RTC device model added under commit a0e893039cf2ce0 in 2016
+> was unfortunately added with a license of GPL-v3-or-later, which is
+> not compatible with other QEMU code which has a GPL-v2-only license.
+> 
+> Relicense the code in the .c and the .h file to GPL-v2-or-later,
+> to make it compatible with the rest of QEMU.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+> ---
+> Before we can commit this to either head-of-git or any stable branch,
+> we need a Signed-off-by: from everybody who's touched this file (or,
+> for corporate contributions, from somebody from the relevant company
+> who can confirm that the company is OK with the licensing, which is
+> RedHat and Linaro in this case).
+> 
+> The full list of people who've made changes to the file is:
+>   Artyom Tarasenko <atar4qemu@gmail.com>
+>   Philippe Mathieu-Daudé <philmd@linaro.org>
+>   Markus Armbruster <armbru@redhat.com>
+>   Eduardo Habkost <ehabkost@redhat.com>
+> 
+> (Artyom is the original author; everybody else's changes are largely
+> mechanical, refactoring, etc.  We've done some behind-the-scenes
+> coordination so I don't anticipate any problems getting the
+> signoffs.)
+> ---
+>   include/hw/rtc/sun4v-rtc.h | 2 +-
+>   hw/rtc/sun4v-rtc.c         | 2 +-
+>   2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/hw/rtc/sun4v-rtc.h b/include/hw/rtc/sun4v-rtc.h
+> index fc54dfcba47..26a9eb61967 100644
+> --- a/include/hw/rtc/sun4v-rtc.h
+> +++ b/include/hw/rtc/sun4v-rtc.h
+> @@ -5,7 +5,7 @@
+>    *
+>    * Copyright (c) 2016 Artyom Tarasenko
+>    *
+> - * This code is licensed under the GNU GPL v3 or (at your option) any later
+> + * This code is licensed under the GNU GPL v2 or (at your option) any later
+>    * version.
+>    */
+>   
+> diff --git a/hw/rtc/sun4v-rtc.c b/hw/rtc/sun4v-rtc.c
+> index e037acd1b56..ffcc0aa25d9 100644
+> --- a/hw/rtc/sun4v-rtc.c
+> +++ b/hw/rtc/sun4v-rtc.c
+> @@ -5,7 +5,7 @@
+>    *
+>    * Copyright (c) 2016 Artyom Tarasenko
+>    *
+> - * This code is licensed under the GNU GPL v3 or (at your option) any later
+> + * This code is licensed under the GNU GPL v2 or (at your option) any later
+>    * version.
+>    */
+>   
 
-Applied, thanks.
-
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
-for any user-visible changes.
-
--- PMM
 
