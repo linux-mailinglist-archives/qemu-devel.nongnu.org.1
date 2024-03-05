@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C35872647
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EF40872649
 	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 19:09:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhZCi-0001q4-C1; Tue, 05 Mar 2024 13:07:52 -0500
+	id 1rhZCj-0001qm-Li; Tue, 05 Mar 2024 13:07:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rhZCg-0001p4-D5
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 13:07:50 -0500
+ id 1rhZCh-0001pX-L4
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 13:07:51 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rhZCe-0008S9-E5
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 13:07:50 -0500
+ id 1rhZCe-0008S5-N6
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 13:07:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1709662067;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=ffhGhTFKTfoOEdehWkcuXBNltZdfqeZn8lAiBMxVS6Y=;
- b=PaaKuSvd5yRD+P00d3NZ7+oM8c4GlMi67irXYhG8JF4Tf0//KbPohBV9hFAA5jHyDrNg8z
- b+K0fs47fmsHDTu7G4zB2o0zjFirGkpXqz+DKcK1jY2tMjxI+tSVbvgP2WtsV3jIOr8l3F
- 3tMfF0NcMxtJSeGKutWu7vONpSUWU+U=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-683-eB6L_hBqNIGezc45DXgtAg-1; Tue, 05 Mar 2024 13:07:42 -0500
-X-MC-Unique: eB6L_hBqNIGezc45DXgtAg-1
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=CQdBQ55XBD1zKpk7OKKORm1TNObn+aTFGDtbgCuAoGo=;
+ b=DqDR7wm6pniKw7YF7v6L5hRdAaIatYKUurUzY7xTzhlR6E2+UGy0FxHjFUAjYWW6Mk9KVg
+ 4k9vAPUi+tW9o9koelev1atetw7o+cJydwIwYIrc99lbHpTVr/G94usH0PAMysnR8VmWLE
+ qQgIWpuf+63ThedexvwcVX1FUrika5c=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-215-ofT2HaHJMfW63cDZse_RHg-1; Tue,
+ 05 Mar 2024 13:07:45 -0500
+X-MC-Unique: ofT2HaHJMfW63cDZse_RHg-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D0AB686C047;
- Tue,  5 Mar 2024 18:07:40 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8D5351C01504;
+ Tue,  5 Mar 2024 18:07:44 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.39.193.114])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1C172C041F0;
- Tue,  5 Mar 2024 18:07:36 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 21295C041F1;
+ Tue,  5 Mar 2024 18:07:40 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org,
@@ -49,9 +50,11 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  yanghliu@redhat.com, zhenzhong.duan@intel.com
 Cc: alex.williamson@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
  berrange@redhat.com
-Subject: [PATCH v6 0/9] VIRTIO-IOMMU: Introduce aw-bits and granule options
-Date: Tue,  5 Mar 2024 19:06:18 +0100
-Message-ID: <20240305180734.48515-1-eric.auger@redhat.com>
+Subject: [PATCH v6 1/9] qdev: Add a granule_mode property
+Date: Tue,  5 Mar 2024 19:06:19 +0100
+Message-ID: <20240305180734.48515-2-eric.auger@redhat.com>
+In-Reply-To: <20240305180734.48515-1-eric.auger@redhat.com>
+References: <20240305180734.48515-1-eric.auger@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -80,65 +83,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a respin of
-[1] [PATCH v5 0/4] VIRTIO-IOMMU: Introduce an aw-bits option
-(https://lore.kernel.org/all/20240215084315.863897-1-eric.auger@redhat.com/)
+Introduce a new enum type property allowing to set an
+IOMMU granule. Values are 4k, 8k, 16k, 64k and host.
+This latter indicates the vIOMMU granule will match
+the host page size.
 
-which now also integrates
+A subsequent patch will add such a property to the
+virtio-iommu device.
 
-[PATCH v6 0/3] VIRTIO-IOMMU: Set default granule to host page size
-(https://lore.kernel.org/all/20240227165730.14099-1-eric.auger@redhat.com/)
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-The introduction of those 2 new options and their new default values
-fix bugs when assigning VFIO devices protected by a virtio-iommu.
+---
+v5 -> v6
+- remove #include "hw/virtio/virtio-iommu.h" (Zhenzhong)
 
-patches 1 - 4: intro of the granule property, collected reviews
-- we used to set the default granule to 4k. This causes failures
-  when hotplugging a VFIO device on a 64kB/64kB host/guest config:
-  "vfio: DMA mapping failed, unable to continue". When the device
-  is hotplugged the granule is already frozen to 4k wheras 64k is
-  needed. This series introduces a new granule option which is set
-  by default to the host page size.
+v4 -> v5
+- remove code that can be automatically generated
+  and add the new enum in qapi/virtio.json (Philippe).
+  Added Phild's SOB. low case needs to be used due to
+  the Jason generation.
 
-patches 5 - 9: intro of the aw-bits property, needs further review
-- we used to set the input address width to 64b. This causes
-  failures with some assigned devices where the guest driver
-  tries to use the full 64b input range whereas the physical IOMMU
-  supports less bits (39/48 gaw for instance on VTD). New default
-  usually match the host HW capability.
-
-For more details please see the cover letter of [1] and [2].
-
-This series can be found at:
-https://github.com/eauger/qemu/tree/granule_aw_bits_v4
-
-
-Eric Auger (9):
-  qdev: Add a granule_mode property
-  virtio-iommu: Add a granule property
-  virtio-iommu: Change the default granule to the host page size
-  qemu-options.hx: Document the virtio-iommu-pci granule option
-  virtio-iommu: Trace domain range limits as unsigned int
-  virtio-iommu: Add an option to define the input range width
-  hw/i386/q35: Set virtio-iommu aw-bits default value to 39
-  hw/arm/virt: Set virtio-iommu aw-bits default value to 48
-  qemu-options.hx: Document the virtio-iommu-pci aw-bits option
-
- qapi/virtio.json                    | 18 +++++++++++++++
- include/hw/i386/pc.h                |  3 +++
+v3 -> v4:
+- Add 8K
+---
+ qapi/virtio.json                    | 18 ++++++++++++++++++
  include/hw/qdev-properties-system.h |  3 +++
- include/hw/virtio/virtio-iommu.h    |  3 +++
- hw/arm/virt.c                       | 17 ++++++++++++++
- hw/core/machine.c                   |  6 ++++-
- hw/core/qdev-properties-system.c    | 14 ++++++++++++
- hw/i386/pc.c                        |  6 +++++
- hw/i386/pc_q35.c                    |  2 ++
- hw/virtio/virtio-iommu.c            | 35 +++++++++++++++++++++++++----
- tests/qtest/virtio-iommu-test.c     |  2 +-
- hw/virtio/trace-events              |  2 +-
- qemu-options.hx                     | 11 +++++++++
- 13 files changed, 115 insertions(+), 7 deletions(-)
+ hw/core/qdev-properties-system.c    | 14 ++++++++++++++
+ 3 files changed, 35 insertions(+)
 
+diff --git a/qapi/virtio.json b/qapi/virtio.json
+index a79013fe89..95745fdfd7 100644
+--- a/qapi/virtio.json
++++ b/qapi/virtio.json
+@@ -957,3 +957,21 @@
+ 
+ { 'struct': 'DummyVirtioForceArrays',
+   'data': { 'unused-iothread-vq-mapping': ['IOThreadVirtQueueMapping'] } }
++
++##
++# @GranuleMode:
++#
++# @4k: granule page size of 4KiB
++#
++# @8k: granule page size of 8KiB
++#
++# @16k: granule page size of 16KiB
++#
++# @64k: granule page size of 64KiB
++#
++# @host: granule matches the host page size
++#
++# Since: 9.0
++##
++{ 'enum': 'GranuleMode',
++  'data': [ '4k', '8k', '16k', '64k', 'host' ] }
+diff --git a/include/hw/qdev-properties-system.h b/include/hw/qdev-properties-system.h
+index 06c359c190..626be87dd3 100644
+--- a/include/hw/qdev-properties-system.h
++++ b/include/hw/qdev-properties-system.h
+@@ -8,6 +8,7 @@ extern const PropertyInfo qdev_prop_macaddr;
+ extern const PropertyInfo qdev_prop_reserved_region;
+ extern const PropertyInfo qdev_prop_multifd_compression;
+ extern const PropertyInfo qdev_prop_mig_mode;
++extern const PropertyInfo qdev_prop_granule_mode;
+ extern const PropertyInfo qdev_prop_losttickpolicy;
+ extern const PropertyInfo qdev_prop_blockdev_on_error;
+ extern const PropertyInfo qdev_prop_bios_chs_trans;
+@@ -47,6 +48,8 @@ extern const PropertyInfo qdev_prop_iothread_vq_mapping_list;
+ #define DEFINE_PROP_MIG_MODE(_n, _s, _f, _d) \
+     DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_mig_mode, \
+                        MigMode)
++#define DEFINE_PROP_GRANULE_MODE(_n, _s, _f, _d) \
++    DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_granule_mode, GranuleMode)
+ #define DEFINE_PROP_LOSTTICKPOLICY(_n, _s, _f, _d) \
+     DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_losttickpolicy, \
+                         LostTickPolicy)
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index 1a396521d5..b45e90edb2 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -679,6 +679,20 @@ const PropertyInfo qdev_prop_mig_mode = {
+     .set_default_value = qdev_propinfo_set_default_value_enum,
+ };
+ 
++/* --- GranuleMode --- */
++
++QEMU_BUILD_BUG_ON(sizeof(GranuleMode) != sizeof(int));
++
++const PropertyInfo qdev_prop_granule_mode = {
++    .name = "GranuleMode",
++    .description = "granule_mode values, "
++                   "4k, 8k, 16k, 64k, host",
++    .enum_table = &GranuleMode_lookup,
++    .get = qdev_propinfo_get_enum,
++    .set = qdev_propinfo_set_enum,
++    .set_default_value = qdev_propinfo_set_default_value_enum,
++};
++
+ /* --- Reserved Region --- */
+ 
+ /*
 -- 
 2.41.0
 
