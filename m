@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE91871733
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 08:45:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBACB871760
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 08:52:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhPTS-00078r-Mo; Tue, 05 Mar 2024 02:44:30 -0500
+	id 1rhPbL-0001bO-14; Tue, 05 Mar 2024 02:52:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1rhPTO-00078O-4F
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:44:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <yvugenfi@redhat.com>)
+ id 1rhPao-0001Ks-LM
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:52:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1rhPTM-0007PN-Kd
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:44:25 -0500
+ (Exim 4.90_1) (envelope-from <yvugenfi@redhat.com>)
+ id 1rhPal-0000Wl-6t
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:52:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709624663;
+ s=mimecast20190719; t=1709625121;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=URG2IugC5AhDOzExprd8f6SFF/Tg/yYfwBN8xzaSp2Y=;
- b=Knsc+QkOuqUX6Hz8SlSrp/WTI1KED3saborKvYvjiCQezDgD5KXXnxhmmmk7Lk5G5QvePs
- y5jtZCoQwyxceNbMainfodqaxaPVH5JLeF+Ge3aon3l12vCribzm8gKixhg8asVlZ8+iJw
- M2OHEP/e6VaU+lW0B/bSfz0aT1gB4jU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=69t9u0eprnTv+4dldzEw3cGU+1s8XW9ijzG2bmFfDYE=;
+ b=OZSHcaYLOeccz2i6oJlIG9KwbEvVH0EnIozHii5+vbERT4YHw4NsTvUxoyNI7E8diFVPM5
+ aVPW7stHVmskkqsC4r39eGZaBiFebWhbyH5V/XvygICGGffqcdOKW6tbus1L7iCBNM6nbm
+ jV53gHDqZm62/xnW9jNBB3EXuvoh290=
+Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com
+ [209.85.221.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-489-TWdcY1VKPqemQIYyNBUtgw-1; Tue, 05 Mar 2024 02:44:22 -0500
-X-MC-Unique: TWdcY1VKPqemQIYyNBUtgw-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-33e0edcf4f4so1783246f8f.2
- for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 23:44:21 -0800 (PST)
+ us-mta-6-Pd8kVVM4OWCX0RLMqVCJCQ-1; Tue, 05 Mar 2024 02:50:04 -0500
+X-MC-Unique: Pd8kVVM4OWCX0RLMqVCJCQ-1
+Received: by mail-vk1-f199.google.com with SMTP id
+ 71dfb90a1353d-4d353dc8d41so151083e0c.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 23:50:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709624661; x=1710229461;
+ d=1e100.net; s=20230601; t=1709625003; x=1710229803;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=URG2IugC5AhDOzExprd8f6SFF/Tg/yYfwBN8xzaSp2Y=;
- b=UorMv9qLQUCI9xZxaxu9wxj08w+dz8EWVgTQNQlDGqQubf69f3SRQOiSlGgGujMfSN
- 1dtJhWowPAZpW2a8ywvvEmVMiTA2hJme0ony5KjDAwKGmLna7vQJHu7tGVnEfSoVHYNL
- KZWkpF8NAtuJTETx3VBnmQCNV7wqPcuoQQ01bWEgapuz5UJtElgXbEoePaS6kzoSLzZ3
- WOWHnsi8LdDpcZZ5v6NR0RLtpcb51R5QE/iVc5Kpg0KYzmuVdCWauprLMhamog92858H
- oMnZGqidSm/5HNkJFPkuGik7YcbWeXGKmz6a+FUR0zuXp84duh41hHzWBZkna3v4MXSV
- H1Cw==
-X-Gm-Message-State: AOJu0YxhOS2fKFO1/hnaxE2D/hNh2JfWvJzIlMMjXPCjGHrlm1w6sdFH
- gql40lMog8kqvucRZutU6+DMsklIFIYDxOofLckDdZH6cC6j34Fx1X2199KdT6yYtvLELj0iX9O
- i+MmKThAys0Z7GitrOhjfYvQaKQr9yK7czcih0DnA5HMKrty9Jx/4JygeVjE/vqVJF0A1eGqgG8
- 9mDVRlcr5AzVx1co2qxkq0T9raKio=
-X-Received: by 2002:a5d:6ac5:0:b0:33e:4d34:f40f with SMTP id
- u5-20020a5d6ac5000000b0033e4d34f40fmr179366wrw.46.1709624660978; 
- Mon, 04 Mar 2024 23:44:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEWFEORdEsGJPb/nPnOdVSTrMcelBOPWelnZS02PHk+jxQBXGl3v9sng5QGWI6j/qNNxj/qF/MibfRUIAeCBms=
-X-Received: by 2002:a5d:6ac5:0:b0:33e:4d34:f40f with SMTP id
- u5-20020a5d6ac5000000b0033e4d34f40fmr179350wrw.46.1709624660631; Mon, 04 Mar
- 2024 23:44:20 -0800 (PST)
+ bh=69t9u0eprnTv+4dldzEw3cGU+1s8XW9ijzG2bmFfDYE=;
+ b=sA1bL65ml0l8heYKywzIgtBtVqiR+pivBv6o2R0Uv0N7P8lQHpSR6cXosrNBuajCVW
+ gx5ZMmXbtdU+MULwSECt/Mr0ZAvbGvl56kicGNSxp3h8V+ht3VsuiSKppd4+N/tPNf25
+ ncd3wnN5k3+82eCdB4GAtuI+9eYX2AqSr529DBFmikmQb+m5ffQyVk7AFMKkybCAu/NK
+ AxbrK5ami9ugnT8T4Ycj8Y30ut5z79EUO61hcD7yVH8Cu5MH5jMj/LQaFWoAzodP80fL
+ 6CQUz/2ZduI75I7uEQR7cogcczorRo1dD0jijnh6/nAEQHeRWmtjNuwZB0T876rojAOX
+ k3WA==
+X-Gm-Message-State: AOJu0Yx73hhSIveBnHsG+T2KBm7hn6ZtsElrll7BmKIOf1GPqFNIh5KF
+ yluMdKBK89u22RBjgi+ZMevx+MqRDIvzU/TapZEKPpAJ62wwH7cPl03Cx7e8xJOljpyb5xcfO5R
+ 84cnePnFtE8/MrtGB4wEAayP8oz0iQo4C+I/Vf5R2X0tp7i32wqkNrbUkCKJ3CZ7MuTw37kuIj0
+ qZqpbNP7xhliv4w4vhTUX4qnRAWhs=
+X-Received: by 2002:a05:6122:2007:b0:4ca:15b2:a09b with SMTP id
+ l7-20020a056122200700b004ca15b2a09bmr1012488vkd.13.1709625003645; 
+ Mon, 04 Mar 2024 23:50:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEFzswztjGoL1uSPcBuIU4TU6v3dbxQc9NxgONPro4apr4oSzEwjgK262aFwkQKk/kjbGx20Ylh77nYQzTOofI=
+X-Received: by 2002:a05:6122:2007:b0:4ca:15b2:a09b with SMTP id
+ l7-20020a056122200700b004ca15b2a09bmr1012471vkd.13.1709625003357; Mon, 04 Mar
+ 2024 23:50:03 -0800 (PST)
 MIME-Version: 1.0
-References: <20240304122844.1888308-1-clg@redhat.com>
- <20240304122844.1888308-6-clg@redhat.com>
-In-Reply-To: <20240304122844.1888308-6-clg@redhat.com>
-From: Prasad Pandit <ppandit@redhat.com>
-Date: Tue, 5 Mar 2024 13:14:04 +0530
-Message-ID: <CAE8KmOxN3mQAQuQK5UDe1oWBYxuSx1Ff=CVxT8_C7oLCrZ7Ctw@mail.gmail.com>
-Subject: Re: [PATCH v3 05/26] migration: Add Error** argument to vmstate_save()
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, 
- Fabiano Rosas <farosas@suse.de>, Alex Williamson <alex.williamson@redhat.com>, 
- Avihai Horon <avihaih@nvidia.com>,
+References: <20240304134532.28506-1-kkostiuk@redhat.com>
+ <20240304134532.28506-2-kkostiuk@redhat.com>
+In-Reply-To: <20240304134532.28506-2-kkostiuk@redhat.com>
+From: Yan Vugenfirer <yvugenfi@redhat.com>
+Date: Tue, 5 Mar 2024 09:49:51 +0200
+Message-ID: <CAGoVJZyurMK+U2thF9tJntgg1v0FGsFcZHXb7-S-qqNe0Ny22A@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] qga/commands-win32: Declare const qualifier before
+ type
+To: Konstantin Kostiuk <kkostiuk@redhat.com>
+Cc: qemu-devel@nongnu.org, Dehan Meng <demeng@redhat.com>, 
  =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Markus Armbruster <armbru@redhat.com>
+ Michael Roth <michael.roth@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=yvugenfi@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.571,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,111 +99,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 4 Mar 2024 at 19:38, C=C3=A9dric Le Goater <clg@redhat.com> wrote:
-> This will prepare ground for futur changes adding an Error** argument
-
-* futur -> furure
-
+On Mon, Mar 4, 2024 at 3:45=E2=80=AFPM Konstantin Kostiuk <kkostiuk@redhat.=
+com> wrote:
 >
-> -static int vmstate_save(QEMUFile *f, SaveStateEntry *se, JSONWriter *vmd=
-esc)
-> +static int vmstate_save(QEMUFile *f, SaveStateEntry *se, JSONWriter *vmd=
-esc,
-> +                        Error **errp)
+> From: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>
+> Most of the code base use the 'const' qualifier *before*
+> the type being qualified. Use the same style to unify.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Message-ID: <20240222152835.72095-2-philmd@linaro.org>
+> Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+> Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+>
+> ---
+>  qga/commands-win32.c | 22 +++++++++++-----------
+>  1 file changed, 11 insertions(+), 11 deletions(-)
+>
+> diff --git a/qga/commands-win32.c b/qga/commands-win32.c
+> index a1015757d8..79b5a580c9 100644
+> --- a/qga/commands-win32.c
+> +++ b/qga/commands-win32.c
+> @@ -2120,11 +2120,11 @@ GuestUserList *qmp_guest_get_users(Error **errp)
+>  typedef struct _ga_matrix_lookup_t {
+>      int major;
+>      int minor;
+> -    char const *version;
+> -    char const *version_id;
+> +    const char *version;
+> +    const char *version_id;
+>  } ga_matrix_lookup_t;
+>
+> -static ga_matrix_lookup_t const WIN_VERSION_MATRIX[2][7] =3D {
+> +static const ga_matrix_lookup_t WIN_VERSION_MATRIX[2][7] =3D {
+>      {
+>          /* Desktop editions */
+>          { 5, 0, "Microsoft Windows 2000",   "2000"},
+> @@ -2148,18 +2148,18 @@ static ga_matrix_lookup_t const WIN_VERSION_MATRI=
+X[2][7] =3D {
+>
+>  typedef struct _ga_win_10_0_t {
+>      int first_build;
+> -    char const *version;
+> -    char const *version_id;
+> +    const char *version;
+> +    const char *version_id;
+>  } ga_win_10_0_t;
+>
+> -static ga_win_10_0_t const WIN_10_0_SERVER_VERSION_MATRIX[4] =3D {
+> +static const ga_win_10_0_t WIN_10_0_SERVER_VERSION_MATRIX[4] =3D {
+>      {14393, "Microsoft Windows Server 2016",    "2016"},
+>      {17763, "Microsoft Windows Server 2019",    "2019"},
+>      {20344, "Microsoft Windows Server 2022",    "2022"},
+>      {0, 0}
+>  };
+>
+> -static ga_win_10_0_t const WIN_10_0_CLIENT_VERSION_MATRIX[3] =3D {
+> +static const ga_win_10_0_t WIN_10_0_CLIENT_VERSION_MATRIX[3] =3D {
+>      {10240, "Microsoft Windows 10",    "10"},
+>      {22000, "Microsoft Windows 11",    "11"},
+>      {0, 0}
+> @@ -2185,16 +2185,16 @@ static void ga_get_win_version(RTL_OSVERSIONINFOE=
+XW *info, Error **errp)
+>      return;
+>  }
+>
+> -static char *ga_get_win_name(OSVERSIONINFOEXW const *os_version, bool id=
+)
+> +static char *ga_get_win_name(const OSVERSIONINFOEXW *os_version, bool id=
+)
 >  {
->      int ret;
-> -    Error *local_err =3D NULL;
-> -    MigrationState *s =3D migrate_get_current();
->
->      if ((!se->ops || !se->ops->save_state) && !se->vmsd) {
->          return 0;
-> @@ -1034,10 +1033,9 @@ static int vmstate_save(QEMUFile *f, SaveStateEntr=
-y *se, JSONWriter *vmdesc)
->      if (!se->vmsd) {
->          vmstate_save_old_style(f, se, vmdesc);
->      } else {
-> -        ret =3D vmstate_save_state_with_err(f, se->vmsd, se->opaque, vmd=
-esc, &local_err);
-> +        ret =3D vmstate_save_state_with_err(f, se->vmsd, se->opaque, vmd=
-esc,
-> +                                          errp);
->          if (ret) {
-> -            migrate_set_error(s, local_err);
-> -            error_report_err(local_err);
->              return ret;
->          }
->      }
-> @@ -1324,8 +1322,10 @@ void qemu_savevm_state_setup(QEMUFile *f)
->      trace_savevm_state_setup();
->      QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
->          if (se->vmsd && se->vmsd->early_setup) {
-> -            ret =3D vmstate_save(f, se, ms->vmdesc);
-> +            ret =3D vmstate_save(f, se, ms->vmdesc, &local_err);
->              if (ret) {
-> +                migrate_set_error(ms, local_err);
-> +                error_report_err(local_err);
->                  qemu_file_set_error(f, ret);
->                  break;
->              }
-> @@ -1540,6 +1540,7 @@ int qemu_savevm_state_complete_precopy_non_iterable=
-(QEMUFile *f,
->      JSONWriter *vmdesc =3D ms->vmdesc;
->      int vmdesc_len;
->      SaveStateEntry *se;
-> +    Error *local_err =3D NULL;
->      int ret;
->
->      QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
-> @@ -1550,8 +1551,10 @@ int qemu_savevm_state_complete_precopy_non_iterabl=
-e(QEMUFile *f,
->
->          start_ts_each =3D qemu_clock_get_us(QEMU_CLOCK_REALTIME);
->
-> -        ret =3D vmstate_save(f, se, vmdesc);
-> +        ret =3D vmstate_save(f, se, vmdesc, &local_err);
->          if (ret) {
-> +            migrate_set_error(ms, local_err);
-> +            error_report_err(local_err);
->              qemu_file_set_error(f, ret);
->              return ret;
->          }
-> @@ -1566,7 +1569,6 @@ int qemu_savevm_state_complete_precopy_non_iterable=
-(QEMUFile *f,
->           * bdrv_activate_all() on the other end won't fail. */
->          ret =3D bdrv_inactivate_all();
->          if (ret) {
-> -            Error *local_err =3D NULL;
->              error_setg(&local_err, "%s: bdrv_inactivate_all() failed (%d=
-)",
->                         __func__, ret);
->              migrate_set_error(ms, local_err);
-> @@ -1762,6 +1764,8 @@ void qemu_savevm_live_state(QEMUFile *f)
->
->  int qemu_save_device_state(QEMUFile *f)
->  {
-> +    MigrationState *ms =3D migrate_get_current();
-> +    Error *local_err =3D NULL;
->      SaveStateEntry *se;
->
->      if (!migration_in_colo_state()) {
-> @@ -1776,8 +1780,10 @@ int qemu_save_device_state(QEMUFile *f)
->          if (se->is_ram) {
->              continue;
->          }
-> -        ret =3D vmstate_save(f, se, NULL);
-> +        ret =3D vmstate_save(f, se, NULL, &local_err);
->          if (ret) {
-> +            migrate_set_error(ms, local_err);
-> +            error_report_err(local_err);
->              return ret;
->          }
->      }
+>      DWORD major =3D os_version->dwMajorVersion;
+>      DWORD minor =3D os_version->dwMinorVersion;
+>      DWORD build =3D os_version->dwBuildNumber;
+>      int tbl_idx =3D (os_version->wProductType !=3D VER_NT_WORKSTATION);
+> -    ga_matrix_lookup_t const *table =3D WIN_VERSION_MATRIX[tbl_idx];
+> -    ga_win_10_0_t const *win_10_0_table =3D tbl_idx ?
+> +    const ga_matrix_lookup_t *table =3D WIN_VERSION_MATRIX[tbl_idx];
+> +    const ga_win_10_0_t *win_10_0_table =3D tbl_idx ?
+>          WIN_10_0_SERVER_VERSION_MATRIX : WIN_10_0_CLIENT_VERSION_MATRIX;
+> -    ga_win_10_0_t const *win_10_0_version =3D NULL;
+> +    const ga_win_10_0_t *win_10_0_version =3D NULL;
+>      while (table->version !=3D NULL) {
+>          if (major =3D=3D 10 && minor =3D=3D 0) {
+>              while (win_10_0_table->version !=3D NULL) {
 > --
+> 2.44.0
+>
 
-Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
-
-Thank you.
----
-  - Prasad
+Reviewed-by: Yan Vugenfirer <yvugenfi@redhat.com>
 
 
