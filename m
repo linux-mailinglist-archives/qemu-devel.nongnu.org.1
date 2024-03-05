@@ -2,69 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D9F8720C3
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 14:48:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BA528720B7
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 14:47:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhV7q-0006E3-CK; Tue, 05 Mar 2024 08:46:34 -0500
+	id 1rhV7Q-0005vL-Df; Tue, 05 Mar 2024 08:46:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhV6X-00058S-1O
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:45:16 -0500
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ id 1rhV6p-0005Dl-5M
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:45:35 -0500
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhV6V-0004OH-8r
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:45:12 -0500
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-563bb51c36eso7361951a12.2
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 05:45:10 -0800 (PST)
+ id 1rhV6n-0004UF-BA
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:45:30 -0500
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-564372fb762so7297977a12.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 05:45:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709646310; x=1710251110; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709646325; x=1710251125; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=nk61dm87MUb2IrBN3PbquWmu7NlfYTBZIb5XuqIsPV0=;
- b=ufvQVKnQxS5efNgsfY/4LJnRURe96AbVu9P3qH3BXoHTKegpuRsoYTaxsHddU4zuQC
- HQBK1sfR7V0ZFwIHRfWW0nwW9EVRJFzYd0uk9ViCOleCQhG8S/CUSpeLUrS4NzVcqu+a
- 7oADEmYf7GD64xgfpHnboEKclSkL2gbr0lfZj0IrG/jhHp7Fg29WxdEbwGw8zML7e6Rz
- nZMr4EMgqFMpfxhotYJ6J1Rjq9vdUs/XN5YB/zCQqfgbdWDbcEFyaqckKlYqWQP4J3gu
- 9Nzuf85J2ZrQzeMLOBp5aRjSvJnA6HvbxADD6BkIDUs4ukYCmT9lybeJAoCxrOatbLr1
- 2ffQ==
+ bh=3+e0CIOXUcduazQNLCzqDw7567dD+QGnGwspIiuVuIk=;
+ b=LxKV0OKy7x7HOmVLlvHjN2OeyogaFNkcHzFIe8meZjheSpmRxL9f++llmGEKjC6PpH
+ OSTc/1mP2ng34MTpLq4Ryvv4OV0XMjxpq1zWXGOqiKyIO0RykHWDVGJNxec3+gjAO/0I
+ 1nqrep72QnIBCEDTKIQxIdp5QHRxsLz/OvLuO+8B/eIoJ/fLvsFrPleTuTTu3trcWRyA
+ MICkSNXYB3RMWVab1pf4krOVa7OudU4C6x4mPguJBhfUVN6yMxJGGcQLXK3U1jWjWAcq
+ x5OOhluYtEP1RmqlT5X/2ye+E/mOc35OAYnJfvvbZ5aaIdFV1V0RMb01t0ooTGx4GRE1
+ 39zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709646310; x=1710251110;
+ d=1e100.net; s=20230601; t=1709646325; x=1710251125;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=nk61dm87MUb2IrBN3PbquWmu7NlfYTBZIb5XuqIsPV0=;
- b=TzzdR4hLqZpe2hoJeDH4e86+xDuvTWTK+2o1qd550i1p8Lw6m0iwbe9tUVMuI4MgJ3
- qKCq/G1SbzopeYaO2neoIXPwUgBep4QAhYkSsU8HH4eh3cf1YDVSBSLW2uErF6tc6TrN
- 1GioHrIgEyaEV5JjqWMoqWOWfRXEVuPuxVQpaYMLOYLp8B2d2RC+KcPEk+YuyDYigGYM
- /zQgt7RMzgxSt4F8VsTw9OAR3BaWU/7evJOJXEXOYMjfKj3f8X+dI6/iWZzCte6//N11
- rrxgkP8/BmTY3iWgXIcsQiG33Js0JZ/W+86IubVSUCVRecln6k12CYOSHBc+aB7e/0Aw
- gp0g==
-X-Gm-Message-State: AOJu0Yy8xe3br6cE5zoaHKNrqWkQgZf6nqQczfZXL8nN4Y58xX2lmwN6
- hu0ARf0TN+zZrcsc+JAm29Z0vduD9jXc4HnCrvOnfo2BUqnixKd0BozZWS7WZFCI71vAQZRQvaK
- IeDTTTya5iTzIFMVgJO/Y537MSAWNLvDbdkO3DQ==
-X-Google-Smtp-Source: AGHT+IEEVt7WP3tzhrZlsUMavEL1ghvQGlGrVNrEYK/MbYPFCR0tjJfyYFf9iS88NySumWZJ2+iqPAOhLSfIoT7AGso=
-X-Received: by 2002:a05:6402:1c91:b0:567:bab7:48fe with SMTP id
- cy17-20020a0564021c9100b00567bab748femr303900edb.21.1709646309858; Tue, 05
- Mar 2024 05:45:09 -0800 (PST)
+ bh=3+e0CIOXUcduazQNLCzqDw7567dD+QGnGwspIiuVuIk=;
+ b=Re+XDfYJLo30WF30BUUxAwIzCfgfmc8skpHuOxXxBLvNEFYAsqHEhmpJSvsCa0Bt9A
+ XnR8XN2LvPZGbhUQQY/+s5OPcOaDiwD5yvxZVRAusNa4ZHz/MPTDA/osZv2RbOtxX6Mw
+ 7W77b6cU+u6H1mY1XJq+HlACpCkcGLuadlMQCvL5baswv2G8sczGCgNmJUgZL0whFZwe
+ vhL1Noqdkqh8KHPxo1MpsdrLazveYfrV7F1nSfOdMxbFNi9mQd2sRJMi/Bw7pSEvROEt
+ Hfv4c8WwfsYk9u4+aL39G/JOJcLRmwohxuXRxZa2h7l1hD9i+uM9qmUqKm9+9RFp+5OX
+ 0QhA==
+X-Gm-Message-State: AOJu0YxLzUJACoMFWWor1XL5ppHBiOHrxMm0VsLlEAULAGHu+cS47b7G
+ jrBK+BPlOpjWUQZVl6kgBw0hzbP6gQBwzbOwQuq/t/4c9RF9eGTP5EE4TQB8dsevPLhjQPbsI8c
+ mab1Ni0lnheB1gTJPQlKJC9WkE2om5xx+BynvrA==
+X-Google-Smtp-Source: AGHT+IFkynWTckaNCxaZhF6h3xJFlYL1fph/G3yQbUeP0pkxr/oSKruI/A1c5+vMOpJUs00pXkxCMITLr483Ut8Voe0=
+X-Received: by 2002:a05:6402:26c5:b0:564:3392:e9db with SMTP id
+ x5-20020a05640226c500b005643392e9dbmr10542200edd.33.1709646324844; Tue, 05
+ Mar 2024 05:45:24 -0800 (PST)
 MIME-Version: 1.0
-References: <20240304012634.95520-1-peterx@redhat.com>
-In-Reply-To: <20240304012634.95520-1-peterx@redhat.com>
+References: <20240304063236.213955-1-armbru@redhat.com>
+In-Reply-To: <20240304063236.213955-1-armbru@redhat.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 5 Mar 2024 13:44:58 +0000
-Message-ID: <CAFEAcA8J0+sq4A_6Fd85B6grozGeio=AgP_Tmi5hBOj=6SyVew@mail.gmail.com>
-Subject: Re: [PULL 00/27] Migration next patches
-To: peterx@redhat.com
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Prasad Pandit <ppandit@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Date: Tue, 5 Mar 2024 13:45:14 +0000
+Message-ID: <CAFEAcA-u9E5_rmYti5NMQVZvh4qh_tW140gqPESQ9d+w_VYdjg@mail.gmail.com>
+Subject: Re: [PULL 00/18] QAPI patches patches for 2024-03-04
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,28 +85,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 4 Mar 2024 at 01:26, <peterx@redhat.com> wrote:
+On Mon, 4 Mar 2024 at 06:32, Markus Armbruster <armbru@redhat.com> wrote:
 >
-> From: Peter Xu <peterx@redhat.com>
+> The following changes since commit e1007b6bab5cf97705bf4f2aaec1f607787355b8:
 >
-> The following changes since commit c0c6a0e3528b88aaad0b9d333e295707a195587b:
->
->   Merge tag 'migration-next-pull-request' of https://gitlab.com/peterx/qemu into staging (2024-02-28 17:27:10 +0000)
+>   Merge tag 'pull-request-2024-03-01' of https://gitlab.com/thuth/qemu into staging (2024-03-01 10:14:32 +0000)
 >
 > are available in the Git repository at:
 >
->   https://gitlab.com/peterx/qemu.git tags/migration-next-pull-request
+>   https://repo.or.cz/qemu/armbru.git tags/pull-qapi-2024-03-04
 >
-> for you to fetch changes up to 1a6e217c35b6dbab10fdc1e02640b8d60b2dc663:
+> for you to fetch changes up to 018d5fb1f91c7f316b4b8501a78e7219bb9fb614:
 >
->   migration/multifd: Document two places for mapped-ram (2024-03-04 08:31:11 +0800)
+>   migration: simplify exec migration functions (2024-03-04 07:12:40 +0100)
 >
 > ----------------------------------------------------------------
-> Migartion pull request for 20240304
->
-> - Bryan's fix on multifd compression level API
-> - Fabiano's mapped-ram series (base + multifd only)
-> - Steve's amend on cpr document in qapi/
+> QAPI patches patches for 2024-03-04
 >
 > ----------------------------------------------------------------
 
