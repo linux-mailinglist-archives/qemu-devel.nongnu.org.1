@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F42148720F1
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 14:56:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F3458720DB
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 14:54:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhVEy-0001qZ-05; Tue, 05 Mar 2024 08:53:56 -0500
+	id 1rhVEs-0001V4-1W; Tue, 05 Mar 2024 08:53:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhVE0-0000xO-9L
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:53:07 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1rhVE0-0000xP-CM
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:53:06 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhVDr-0005yE-Gy
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:52:54 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-33d146737e6so4410407f8f.0
+ id 1rhVDr-0005yL-RA
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:52:56 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-33e17fc5aceso2809921f8f.0
  for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 05:52:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1709646766; x=1710251566; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=wRXrQVhloM+AHj0Ylfddl3Ax3AHnB24xciIaK6golUE=;
- b=EbVoc12S37NzYfJ5YNBFTxoGekvHII/FmDhKVsrVxE7CucYK9eaX41uoh3RAy/xDbI
- kd/FhZ2xhAjH860zIMPU5WSq1mKoTvDrIRy5rUPMQ7Ti4z9Yfx2B3Jw5gw3OBd1lZn5W
- lOnAaOJi2/dgLDDH8uK9UQIqNm2gE52+uEeqBrb0OxtIDrvRyOdHvi+Qg3rezx8JrQVO
- ha1Gr6vkJGBhpsDSg81csl5aBu1SH5KCOwI8sMPa6RhikFSYbyvKAplTSZi3dO3ZPiDs
- bTbwCDtkei78XaX5d3TJ108miVqnleGwi1Xyrkp4CcEeYvAN/pB2VJdFKDvOeBHbOFrA
- J8Fw==
+ :reply-to; bh=vYTT5LKkD29WLg/lq++0uN/w1V7H7bdZ2aB09S5WWmU=;
+ b=yyw65yUizfuHOcaRTiTiZvnPMkygeNYm7qBTCVjFnyZwgwFoFguRQLHoTx7qQFUiN/
+ ZqZrU7ss7KPD2ofYJHUhurITxsaytLIy/Nzj8qLiEHXOm+uVQRd1gCxdAbMlJoexBc7l
+ SBZoGJios7RS6vqMliJPkl1isNU0ukc4OG3xNP2Lx3PnN1Aai+9OSJi6Db47HpilDOYS
+ 4wI0oMRdvTJMRQ6JcEXUMh5IF6gseAVnNATimV5IinMmX7ug+J9vMRKgToY9U5L+ch1W
+ +xpGWUjL8d8R/YbUCbf51435mPLfafbPeTxNNHRnDTsP/FDfz/P9K1A5rfZRpvcYnJ8R
+ rg7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1709646766; x=1710251566;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wRXrQVhloM+AHj0Ylfddl3Ax3AHnB24xciIaK6golUE=;
- b=FFe4Q2NM1JQ14ZMO24dQq4eBRv7bZrZsU7H2uPxxmI/OiaB1/ldYuYOkuJ/anJmtk3
- /inmI1/pneF3HSvFBdA/ou8t5MIQtxoTpzbYvoJDh2nK5YmU9B416WQJ7HbqBnHBSiRY
- sF4pLbKC7FLwxHZEUFG2lVe3Qf4PLhFu/jeFpo45qN73n0YO6YC+q97kf98EkRNAoJ2d
- jf0QtQqkK8mreG2FAip7f6vR/2/meFV0T4Cc9XQuD3QzDY9c94tXnwjM7DAR76ttt/q4
- 98i6Ci62lQn8RjhO7aYRuNovlbblg22WledEA1plcCIx8ZOGYnE/r8SIS7qlNFcnPK+e
- z+9w==
-X-Gm-Message-State: AOJu0Yy1K5ZWsNDomT7jAVpEzcpndlqCH3SDtfxYbyOLV86FkfJ3VLof
- s4r95DmWAAMs5cQU0c5AGFQoH2DDRxZp0lv9ISB/wDUTHkMhq1DCm6svrDE53ffQ7x0cFUEPngf
- 0
-X-Google-Smtp-Source: AGHT+IGyKh10ll3bg+lQKB76wb6N3uzN8pqSyxohAwgPbLwxizHku9+3rQl1w2MaL7t8OYoHEZUzmA==
-X-Received: by 2002:a05:6000:110c:b0:33d:22f4:179b with SMTP id
- z12-20020a056000110c00b0033d22f4179bmr8537054wrw.21.1709646766009; 
+ bh=vYTT5LKkD29WLg/lq++0uN/w1V7H7bdZ2aB09S5WWmU=;
+ b=q4qJ8wgUpGgLnqRulAjbXHgKamDUjUikzpQ4E6roLLM2y2li3xdakmdrI3mhYQtDRq
+ +PJiFcOg82hpevlH0D1OZGeUq2URnhFwkPjHARr3fxuBGy8uMKo84LKb/KGvs0xnZJUh
+ g1YDF4e+cJnyyGjRx2ddrnOB90YkGWc6VYEVZyo7O8BvUfL0EY3KVcKl6WIJny9nyehO
+ iDr6yuhFpp6Opk0KYc+pjrV4bvQrPdh598dwAdG2ZiYNTi1CJvya9rUSwGccDo53GYZ5
+ fwt22lb7Mm+BmTUKgntxY/FQcYJTv3JP1KCm6RWnYNel85C8IUgyiEMxhI/QPuDFeA+E
+ ik/Q==
+X-Gm-Message-State: AOJu0Yx0SQswQi1L3w/VG5EIC9L/TTr77ktONeo34m+uCnmPATwApqRb
+ TlsuRme90ytGMg3Z1ViKAfVv2mbimKJH/C9dKhr+it43sux8mb3KdSy4l506kOVBgoBlb41Mqsr
+ u
+X-Google-Smtp-Source: AGHT+IH4JHeW54sIWhAbnjMSkVOGpZxbpjvvp7KrrvGgqWWP3pf2VIe0a/s0xwyBJsxvEQwfIGa82A==
+X-Received: by 2002:adf:c793:0:b0:33e:1651:2a04 with SMTP id
+ l19-20020adfc793000000b0033e16512a04mr2689928wrg.8.1709646766497; 
  Tue, 05 Mar 2024 05:52:46 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- x3-20020a5d6503000000b0033e206a0a7asm11797532wru.26.2024.03.05.05.52.45
+ x3-20020a5d6503000000b0033e206a0a7asm11797532wru.26.2024.03.05.05.52.46
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Mar 2024 05:52:45 -0800 (PST)
+ Tue, 05 Mar 2024 05:52:46 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 14/20] exec/memattrs: Remove target_tlb_bit*
-Date: Tue,  5 Mar 2024 13:52:31 +0000
-Message-Id: <20240305135237.3111642-15-peter.maydell@linaro.org>
+Subject: [PULL 15/20] accel/tcg: Add tlb_fill_flags to CPUTLBEntryFull
+Date: Tue,  5 Mar 2024 13:52:32 +0000
+Message-Id: <20240305135237.3111642-16-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240305135237.3111642-1-peter.maydell@linaro.org>
 References: <20240305135237.3111642-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,39 +94,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-These fields are no longer used since 937f224559.
-Target specific extensions to the page tables should be done
-with TARGET_PAGE_ENTRY_EXTRA.
+Allow the target to set tlb flags to apply to all of the
+comparators.  Remove MemTxAttrs.byte_swap, as the bit is
+not relevant to memory transactions, only the page mapping.
+Adjust target/sparc to set TLB_BSWAP directly.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240301204110.656742-3-richard.henderson@linaro.org
+Message-id: 20240301204110.656742-4-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/exec/memattrs.h | 10 ----------
- 1 file changed, 10 deletions(-)
+ include/exec/memattrs.h   | 2 --
+ include/hw/core/cpu.h     | 3 +++
+ accel/tcg/cputlb.c        | 5 +----
+ target/sparc/mmu_helper.c | 2 +-
+ 4 files changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/include/exec/memattrs.h b/include/exec/memattrs.h
-index d04170aa27a..afa885f9830 100644
+index afa885f9830..14cdd8d5824 100644
 --- a/include/exec/memattrs.h
 +++ b/include/exec/memattrs.h
-@@ -54,16 +54,6 @@ typedef struct MemTxAttrs {
+@@ -52,8 +52,6 @@ typedef struct MemTxAttrs {
+     unsigned int memory:1;
+     /* Requester ID (for MSI for example) */
      unsigned int requester_id:16;
-     /* Invert endianness for this page */
-     unsigned int byte_swap:1;
--    /*
--     * The following are target-specific page-table bits.  These are not
--     * related to actual memory transactions at all.  However, this structure
--     * is part of the tlb_fill interface, cached in the cputlb structure,
--     * and has unused bits.  These fields will be read by target-specific
--     * helpers using env->iotlb[mmu_idx][tlb_index()].attrs.target_tlb_bitN.
--     */
--    unsigned int target_tlb_bit0 : 1;
--    unsigned int target_tlb_bit1 : 1;
--    unsigned int target_tlb_bit2 : 1;
+-    /* Invert endianness for this page */
+-    unsigned int byte_swap:1;
  } MemTxAttrs;
  
  /* Bus masters which don't specify any attributes will get this,
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index d0e345419fc..ec14f74ce5d 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -230,6 +230,9 @@ typedef struct CPUTLBEntryFull {
+     /* @lg_page_size contains the log2 of the page size. */
+     uint8_t lg_page_size;
+ 
++    /* Additional tlb flags requested by tlb_fill. */
++    uint8_t tlb_fill_flags;
++
+     /*
+      * Additional tlb flags for use by the slow path. If non-zero,
+      * the corresponding CPUTLBEntry comparator must have TLB_FORCE_SLOW.
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index 6243bcb1791..ac986cb8ea5 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -1145,14 +1145,11 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+               " prot=%x idx=%d\n",
+               addr, full->phys_addr, prot, mmu_idx);
+ 
+-    read_flags = 0;
++    read_flags = full->tlb_fill_flags;
+     if (full->lg_page_size < TARGET_PAGE_BITS) {
+         /* Repeat the MMU check and TLB fill on every access.  */
+         read_flags |= TLB_INVALID_MASK;
+     }
+-    if (full->attrs.byte_swap) {
+-        read_flags |= TLB_BSWAP;
+-    }
+ 
+     is_ram = memory_region_is_ram(section->mr);
+     is_romd = memory_region_is_romd(section->mr);
+diff --git a/target/sparc/mmu_helper.c b/target/sparc/mmu_helper.c
+index 5170a668bb4..e7b1997d54e 100644
+--- a/target/sparc/mmu_helper.c
++++ b/target/sparc/mmu_helper.c
+@@ -580,7 +580,7 @@ static int get_physical_address_data(CPUSPARCState *env, CPUTLBEntryFull *full,
+             int do_fault = 0;
+ 
+             if (TTE_IS_IE(env->dtlb[i].tte)) {
+-                full->attrs.byte_swap = true;
++                full->tlb_fill_flags |= TLB_BSWAP;
+             }
+ 
+             /* access ok? */
 -- 
 2.34.1
 
