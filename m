@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D42C871EF2
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 13:20:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5525A871EEC
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 13:19:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhTm8-000216-W7; Tue, 05 Mar 2024 07:20:06 -0500
+	id 1rhTlM-0000hX-VW; Tue, 05 Mar 2024 07:19:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhTlC-0000VJ-7t
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 07:19:07 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1rhTl3-0008PV-7C
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 07:18:58 -0500
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhTkx-0003GT-28
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 07:19:04 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-412e66bc492so11906055e9.0
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 04:18:50 -0800 (PST)
+ id 1rhTkv-0003Ey-8r
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 07:18:56 -0500
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2d382a78c38so34208051fa.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 04:18:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709641129; x=1710245929; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709641127; x=1710245927; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HTlUHz/zzEA+4dY7VR66jAMvQofhd2ytbNOVYam0lP4=;
- b=seuoJ+fveKWfvkRyKiL0wojf14LWb8M/g3lbbt/immUTRNWqSbKBR6aOFak6Zj1ZmD
- i6Bs+Lg8/fjwEW+qQ+CVvDrpY8MWu3pFsU81HXcGRJZOQ0+Z4fZaLKmgzeAjWzz3gQJ/
- yuJrH3t3THpbGoe/egKXjaYClMpcDzIRyfg0xPpMAybjUduXwrbvTIy3JzHBZveRdFH3
- upha149wxeqItubtjHEE1fYS4XjSdSorPN6gewJL2C5Km2pqBgS3aqRuauFs4M1w7K2B
- GlZPEiCdmHzCOU4cTrNeVBuTEZzL/qML05BM965zI1z8G9smP9rLb/tb/v5NqJ9U0Hdd
- 7r8g==
+ bh=UcgWSPHavk3jnzeArpwVhpqUMOHkHAZLH3BaPdead8s=;
+ b=QKwwoS0ayhUEegS00UJTOCSR29nMBAaWYEnKDZgXZLp9GRvjXbeqhuKq55QxUBIOCN
+ y4DYcA6Pv2BLswRfqtb8TXNLbao1KV8yL+gtRxpQgWJ6hADfbK3kqL8IeOcskWww6pxb
+ ulds9KF/8DTVKVQrPqrRnJgIKYWQaiKQodQw3mA+nW7pY/LXjFIyGBJdc8+Lu3CFzoT9
+ PBHcs6zJX/ExkIaLj7QdgOckCqCfeRQCOlyYukyuOXncwOXQ/F4lUwK1NVpaD1ati8Wv
+ uSOniV9BVqTVgpwWBC0MOEnsFLWFC5GBfALzyaZnDmLKPn5uz5ZAD8ITp2xzTM5hjnAJ
+ ZaFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709641129; x=1710245929;
+ d=1e100.net; s=20230601; t=1709641127; x=1710245927;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HTlUHz/zzEA+4dY7VR66jAMvQofhd2ytbNOVYam0lP4=;
- b=q2VTOq36qkN6jNrXa6EzWClqiK8hyJxTMp4m/MJQjZImbwrF4MMqhIC9/mBL0+S3R+
- wHTQZR2vIOCXKd/rdDSjTjRTB3LWDFRTB+JB2FYcKQJ/9M8Kvj8rG878mxokCH8GKGpk
- lxlnabDaY9Q5qZmoJGG3VdMXtTk5glLBm0IK4kH2gvn3gsUB19eh6RuqCo+8P3zgn0yT
- kwcLW2Nu0jcUk6gFsgq77VYJP1n0fPzwQBWdn80QbYrAzCnog6oPxkjg+HxvafeiYd5s
- mkiS2bSpk7u5+nxNYubIgMES7iCjrGDVKVF1aWA8Qe1Fk1YcpP6oRIL+gajhiQi0bJXa
- 1CdA==
-X-Gm-Message-State: AOJu0YxaW0Qwrp5XGy6Xlwgfu1ticsafVk8VciHi0Pgjz79wu05vzIlJ
- 9O+auPUDexv/aBMafeOtnqIU4nb3Wmnfi5w6pagrsaDK+v9tOcRCI4kYPV/CpSA=
-X-Google-Smtp-Source: AGHT+IGPLa83unvzaHEFRsDi8vlTQkhtloNhPgsJ1xAFKV+ZZDRwNnlPHFgxZrTxfM9gf1RWrICDzQ==
-X-Received: by 2002:a05:600c:c1a:b0:412:b8ce:fa32 with SMTP id
- fm26-20020a05600c0c1a00b00412b8cefa32mr9113006wmb.11.1709641128899; 
- Tue, 05 Mar 2024 04:18:48 -0800 (PST)
+ bh=UcgWSPHavk3jnzeArpwVhpqUMOHkHAZLH3BaPdead8s=;
+ b=t+hO2/cyWbdZVzTAwwi1FzyScxJ6sBRhoVyNdk5u2Knbw1M9owEfKQwRKy9zBqRvq4
+ SJ6r0hevHL50Fw5WC5azuVUrY2HBCy8TQxEnJJnUIguuG73DZYMmyEYNkqtBOOTrPUfp
+ XQjUyXO+XWww6XfU8SVOWO9Uz8zqfeE8hppBP0sIBPFIniV8+zkeQ78Xg/saGpwd4WsQ
+ MFnb2OokD7e8SfHjCCN8LR7/s6z64/PnLYmjNlfJBqUTzQBnHOsDeUM9A/hvPX8rEJr0
+ bWSrWTxkFA7RcoHoFVXegqTJ4n6A145yfYJtelNzxkRKNArJotsb2n+34z0UzpTv7RZT
+ ul/Q==
+X-Gm-Message-State: AOJu0YwhoRFFf8OzHiPBfF/9914v+rGxa5zdTYBwclfcNGibeQEjXOio
+ xyq0T83ALejl6Ts7fbOjT/QoTELbFKdS7wXQ1TviA3/T/jRr75B775TeX4FDjPU=
+X-Google-Smtp-Source: AGHT+IH9KwVJTQeQEslJG89+vmGjqmmhWGi0+6NQxtwTOFdi4QGrRO1QXgsNsRlyY8haRvYRTzihfw==
+X-Received: by 2002:a05:6512:36c7:b0:513:3738:f831 with SMTP id
+ e7-20020a05651236c700b005133738f831mr960024lfs.32.1709641127409; 
+ Tue, 05 Mar 2024 04:18:47 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ck4-20020a5d5e84000000b0033e431950c5sm1119001wrb.97.2024.03.05.04.18.44
+ k4-20020a05600c1c8400b00412e556d4besm5271799wms.48.2024.03.05.04.18.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 05 Mar 2024 04:18:47 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C954F5F9FA;
+ by draig.lan (Postfix) with ESMTP id DE1675F9FB;
  Tue,  5 Mar 2024 12:10:07 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -92,17 +92,17 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
  Warner Losh <imp@bsdimp.com>, qemu-riscv@nongnu.org,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 25/29] plugins: cleanup codepath for previous inline operation
-Date: Tue,  5 Mar 2024 12:10:01 +0000
-Message-Id: <20240305121005.3528075-26-alex.bennee@linaro.org>
+Subject: [PATCH 26/29] disas: introduce show_opcodes
+Date: Tue,  5 Mar 2024 12:10:02 +0000
+Message-Id: <20240305121005.3528075-27-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240305121005.3528075-1-alex.bennee@linaro.org>
 References: <20240305121005.3528075-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::230;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x230.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -125,106 +125,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+For plugins we don't expect the raw opcodes in the disassembly. We
+already deal with this by hand crafting our capstone call but for
+other diassemblers we need a flag. Introduce show_opcodes which
+defaults to off.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20240304130036.124418-13-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- plugins/plugin.h       |  5 -----
- accel/tcg/plugin-gen.c | 13 ++++---------
- plugins/core.c         | 29 ++++-------------------------
- 3 files changed, 8 insertions(+), 39 deletions(-)
+ include/disas/dis-asm.h | 8 ++++++++
+ disas/disas.c           | 1 +
+ 2 files changed, 9 insertions(+)
 
-diff --git a/plugins/plugin.h b/plugins/plugin.h
-index f6fa10a0f56..7c34f23cfcb 100644
---- a/plugins/plugin.h
-+++ b/plugins/plugin.h
-@@ -68,11 +68,6 @@ struct qemu_plugin_ctx {
+diff --git a/include/disas/dis-asm.h b/include/disas/dis-asm.h
+index 2324f6b1a46..b26867b6417 100644
+--- a/include/disas/dis-asm.h
++++ b/include/disas/dis-asm.h
+@@ -396,6 +396,14 @@ typedef struct disassemble_info {
+   /* Command line options specific to the target disassembler.  */
+   char * disassembler_options;
  
- struct qemu_plugin_ctx *plugin_id_to_ctx_locked(qemu_plugin_id_t id);
++  /*
++   * When true instruct the disassembler it may preface the
++   * disassembly with the opcodes values if it wants to. This is
++   * mainly for the benefit of the plugin interface which doesn't want
++   * that.
++   */
++  bool show_opcodes;
++
+   /* Field intended to be used by targets in any way they deem suitable.  */
+   void *target_info;
  
--void plugin_register_inline_op(GArray **arr,
--                               enum qemu_plugin_mem_rw rw,
--                               enum qemu_plugin_op op, void *ptr,
--                               uint64_t imm);
--
- void plugin_register_inline_op_on_entry(GArray **arr,
-                                         enum qemu_plugin_mem_rw rw,
-                                         enum qemu_plugin_op op,
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index 47e05ec6347..8028786c7bb 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -440,15 +440,10 @@ static TCGOp *append_inline_cb(const struct qemu_plugin_dyn_cb *cb,
-                                TCGOp *begin_op, TCGOp *op,
-                                int *unused)
- {
--    char *ptr = cb->userp;
--    size_t elem_size = 0;
--    size_t offset = 0;
--    if (!ptr) {
--        /* use inline entry */
--        ptr = cb->inline_insn.entry.score->data->data;
--        elem_size = g_array_get_element_size(cb->inline_insn.entry.score->data);
--        offset = cb->inline_insn.entry.offset;
--    }
-+    char *ptr = cb->inline_insn.entry.score->data->data;
-+    size_t elem_size = g_array_get_element_size(
-+        cb->inline_insn.entry.score->data);
-+    size_t offset = cb->inline_insn.entry.offset;
+diff --git a/disas/disas.c b/disas/disas.c
+index 0d2d06c2ecc..17170d291ec 100644
+--- a/disas/disas.c
++++ b/disas/disas.c
+@@ -299,6 +299,7 @@ void disas(FILE *out, const void *code, size_t size)
+     s.info.buffer = code;
+     s.info.buffer_vma = (uintptr_t)code;
+     s.info.buffer_length = size;
++    s.info.show_opcodes = true;
  
-     op = copy_ld_i32(&begin_op, op);
-     op = copy_mul_i32(&begin_op, op, elem_size);
-diff --git a/plugins/core.c b/plugins/core.c
-index 7852590da88..11ca20e6267 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -316,22 +316,6 @@ static struct qemu_plugin_dyn_cb *plugin_get_dyn_cb(GArray **arr)
-     return &g_array_index(cbs, struct qemu_plugin_dyn_cb, cbs->len - 1);
- }
- 
--void plugin_register_inline_op(GArray **arr,
--                               enum qemu_plugin_mem_rw rw,
--                               enum qemu_plugin_op op,
--                               void *ptr,
--                               uint64_t imm)
--{
--    struct qemu_plugin_dyn_cb *dyn_cb;
--
--    dyn_cb = plugin_get_dyn_cb(arr);
--    dyn_cb->userp = ptr;
--    dyn_cb->type = PLUGIN_CB_INLINE;
--    dyn_cb->rw = rw;
--    dyn_cb->inline_insn.op = op;
--    dyn_cb->inline_insn.imm = imm;
--}
--
- void plugin_register_inline_op_on_entry(GArray **arr,
-                                         enum qemu_plugin_mem_rw rw,
-                                         enum qemu_plugin_op op,
-@@ -494,15 +478,10 @@ void qemu_plugin_flush_cb(void)
- 
- void exec_inline_op(struct qemu_plugin_dyn_cb *cb, int cpu_index)
- {
--    char *ptr = cb->userp;
--    size_t elem_size = 0;
--    size_t offset = 0;
--    if (!ptr) {
--        /* use inline entry */
--        ptr = cb->inline_insn.entry.score->data->data;
--        elem_size = g_array_get_element_size(cb->inline_insn.entry.score->data);
--        offset = cb->inline_insn.entry.offset;
--    }
-+    char *ptr = cb->inline_insn.entry.score->data->data;
-+    size_t elem_size = g_array_get_element_size(
-+        cb->inline_insn.entry.score->data);
-+    size_t offset = cb->inline_insn.entry.offset;
-     uint64_t *val = (uint64_t *)(ptr + offset + cpu_index * elem_size);
- 
-     switch (cb->inline_insn.op) {
+     if (s.info.cap_arch >= 0 && cap_disas_host(&s.info, code, size)) {
+         return;
 -- 
 2.39.2
 
