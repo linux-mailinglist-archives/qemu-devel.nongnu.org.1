@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D9F871EB0
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 13:13:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11EA6871EB4
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 13:13:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhTdh-0002dB-Bn; Tue, 05 Mar 2024 07:11:21 -0500
+	id 1rhTen-0005PB-SQ; Tue, 05 Mar 2024 07:12:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhTcq-0001bG-Ht
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 07:10:30 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1rhTdJ-0001uW-GG
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 07:11:03 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhTcc-0001P0-QA
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 07:10:28 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-412e6bdd454so12021035e9.1
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 04:10:12 -0800 (PST)
+ id 1rhTch-0001RA-6F
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 07:10:48 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-33e17342ea7so2937944f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 04:10:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709640612; x=1710245412; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709640613; x=1710245413; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BXkKB6oKUyrrNS5PAFHEEy/nZhjQotVShPfjRJSJXXY=;
- b=Cd0XR8YCyPXAwU7YhKdrMMPiB4LFjPYcIO/reS7phUVFI7RmFGi8QCr33diLWthxkP
- eDeTj6AYUBUeJB1f8P7ezCWi6VkRY1MwCeap3wybZek7jWCfbdVkK/udU8CiRFWxXDkq
- Yom+iQIxdyRLL4MQC0XXZoF4xzbQZX7CoIZffBCtK0JYS9715xO6zX3RE6WQKirvOqP+
- bVLl4U+U0V2EyJOIE9d/y2SLC8kY0x+CV9Rgz3G1rTYIuYMrc+gQi0vDOsiUyL/NlWT5
- wWlHc9z5SWfpCY+YRVghqokV77AvleMXMJS1UGvXMuXHBj+bQp4u1qDdqV9kky9tQtH9
- OOSw==
+ bh=z3nYyAloWCoquTZDPSpE+htB2DaRlvaFvDRPXpKYUIk=;
+ b=YlFCKI8D4IjhTyxkzLiRopaNtPIX37FxRBi1OzfI+a2AT1584F69fMVJ3KKOqx7QjF
+ opGcuuKMB+fqM+Zxu14VpLoaqh5q5RwaaWRb2BewYcV48M0nbJY5cSu84AzHqw7tUxSu
+ JfHaF8T/UJ4XsAINnvuGx1JOcIOhNd+LIbx1Ssp3SzcuTKsUWScOUn49pN62ERdQtL+9
+ RjkzGORywaC+fweFJP6JvoLgSzMULbFUDolRUhNQtZv0afdCtPuO9zwhPIn4fF2iWkVz
+ Mu2OGYh23Io5P9ixAGmDNOF2kB7cYeZIkJA8Kg8rxZz1gwDq9lmq1VGYzd7msGmAlw2x
+ bQEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709640612; x=1710245412;
+ d=1e100.net; s=20230601; t=1709640613; x=1710245413;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BXkKB6oKUyrrNS5PAFHEEy/nZhjQotVShPfjRJSJXXY=;
- b=qLSJ0TS2bKOOot4N6KblqN15zGXUp7ooPvXGd57vAT6uXB7TvNg3vOrKcEja/s8UaQ
- uaeEogT08I9/7PR4I8KA2mFuQMZhVOx4zg7ijNVsQbzVHfEgm0M57pQH0w4i51Os2lqY
- 2TOreiTw9MDrEebfw1IUYgOoDPMXq11qPfEXXKfg5z3m85y6LwoHD9wtBPj2z7bM3/Wn
- PJMDr0fU6dzFYBaaxMqlSh6zLvq68cUBpOjP30UijGEc/n003E/E2nyvO1JlMmKnhzcY
- 32HBnm7SlCLg09eoepJwpBB6BalClnfuZyvl3P5uhIZa13vxhaXuD2ThlBX5kI/IOCew
- T4gw==
-X-Gm-Message-State: AOJu0Yykts20vowHiLJAnnlWkRhBq1cuQx35t6T+lpwhUjnpp8oIYUYL
- rk0eaju+0R/V1ivntcvgDZDotgCTavf7fokRkLN4vX0WgkHUPThKO85mSGm/VCk=
-X-Google-Smtp-Source: AGHT+IFihsx+QOfv8tfwnYUEolqlOO1XCnU8T0HLsKzH+rxO+pVVFFd6wvVuGPOcCe38TlOUvrZ8lQ==
-X-Received: by 2002:a05:600c:5249:b0:412:e59e:da2c with SMTP id
- fc9-20020a05600c524900b00412e59eda2cmr3295051wmb.37.1709640611931; 
- Tue, 05 Mar 2024 04:10:11 -0800 (PST)
+ bh=z3nYyAloWCoquTZDPSpE+htB2DaRlvaFvDRPXpKYUIk=;
+ b=GvOoWiKGkthPFkXKrCtnJ6VAtFfPVGjB3Mb51eAAmDkn8LvdX+DLDdIba/sCke/ht4
+ hi+nJUTnrf76mzAuUw823mQK80jHVTEXtZBWenqB63nFCRHdHBG4fF5XeNGk78WWxG74
+ 4Ewb406I0M6+2H1z1mCAoVMrKoQIH4B4NGFCL0ObP5iVnrdXOZ5xnDwIGICyN0d4TNDk
+ JkgyhMVAGfBaLDBY55v8O0t+QZOpx4pz3PU+UWBCZUGnbI8BYqAPg31FtiEA4ALNCJ2T
+ RLGBFRHBCyMQe0GvRKaSNGsorT7fGMTgOnyHUmUwnh8vbydKZcNX0PV6XHqzu1HBevMT
+ +v8Q==
+X-Gm-Message-State: AOJu0YzMsgXZQlSxWLfIMO/92H1cjy8GoCcB5+le5awOX0HqxhKJP5Dd
+ Hj68lZkP30Ah44PhYLWoUnSGnaUE+pwTf0504zhWhEsNuQTYZMQ/d+fN3hoaWMU=
+X-Google-Smtp-Source: AGHT+IGxzfpc7Is8XIMk/vDb0IbU6uTaw89SmYiDYHhlZ4rm1tdamaAIUJBzXb/EBdpD9hAZjm5PWQ==
+X-Received: by 2002:a5d:55c4:0:b0:33e:854:8b24 with SMTP id
+ i4-20020a5d55c4000000b0033e08548b24mr7488915wrw.12.1709640613497; 
+ Tue, 05 Mar 2024 04:10:13 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- fa10-20020a05600c518a00b00412e17d5f83sm7151450wmb.14.2024.03.05.04.10.06
+ i10-20020a05600011ca00b0033b60bad2fcsm14828243wrx.113.2024.03.05.04.10.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Mar 2024 04:10:08 -0800 (PST)
+ Tue, 05 Mar 2024 04:10:12 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 1A3755F958;
+ by draig.lan (Postfix) with ESMTP id 314165F95B;
  Tue,  5 Mar 2024 12:10:06 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -92,17 +92,17 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
  Warner Losh <imp@bsdimp.com>, qemu-riscv@nongnu.org,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 06/29] {linux,bsd}-user: Pass pid to fork_end()
-Date: Tue,  5 Mar 2024 12:09:42 +0000
-Message-Id: <20240305121005.3528075-7-alex.bennee@linaro.org>
+Subject: [PATCH 07/29] {linux,bsd}-user: Pass pid to gdbserver_fork()
+Date: Tue,  5 Mar 2024 12:09:43 +0000
+Message-Id: <20240305121005.3528075-8-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240305121005.3528075-1-alex.bennee@linaro.org>
 References: <20240305121005.3528075-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -130,132 +130,68 @@ From: Ilya Leoshkevich <iii@linux.ibm.com>
 The upcoming follow-fork-mode child support requires knowing the child
 pid. Pass it down.
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20240219141628.246823-6-iii@linux.ibm.com>
+Message-Id: <20240219141628.246823-7-iii@linux.ibm.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- bsd-user/freebsd/os-proc.h  | 6 +++---
- bsd-user/qemu.h             | 2 +-
- linux-user/user-internals.h | 2 +-
- bsd-user/main.c             | 4 +++-
- linux-user/main.c           | 4 +++-
- linux-user/syscall.c        | 6 +++---
- 6 files changed, 14 insertions(+), 10 deletions(-)
+ include/gdbstub/user.h | 2 +-
+ bsd-user/main.c        | 2 +-
+ gdbstub/user.c         | 2 +-
+ linux-user/main.c      | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/bsd-user/freebsd/os-proc.h b/bsd-user/freebsd/os-proc.h
-index d6418780344..3003c8cb637 100644
---- a/bsd-user/freebsd/os-proc.h
-+++ b/bsd-user/freebsd/os-proc.h
-@@ -208,7 +208,7 @@ static inline abi_long do_freebsd_fork(void *cpu_env)
-      */
-     set_second_rval(cpu_env, child_flag);
- 
--    fork_end(child_flag);
-+    fork_end(ret);
- 
-     return ret;
- }
-@@ -252,7 +252,7 @@ static inline abi_long do_freebsd_rfork(void *cpu_env, abi_long flags)
-      * value: 0 for parent process, 1 for child process.
-      */
-     set_second_rval(cpu_env, child_flag);
--    fork_end(child_flag);
-+    fork_end(ret);
- 
-     return ret;
- 
-@@ -285,7 +285,7 @@ static inline abi_long do_freebsd_pdfork(void *cpu_env, abi_ulong target_fdp,
-      * value: 0 for parent process, 1 for child process.
-      */
-     set_second_rval(cpu_env, child_flag);
--    fork_end(child_flag);
-+    fork_end(ret);
- 
-     return ret;
- }
-diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
-index 4adb75d19ff..1b0a591d2d2 100644
---- a/bsd-user/qemu.h
-+++ b/bsd-user/qemu.h
-@@ -192,7 +192,7 @@ void cpu_loop(CPUArchState *env);
- char *target_strerror(int err);
- int get_osversion(void);
- void fork_start(void);
--void fork_end(int child);
-+void fork_end(pid_t pid);
- 
- #include "qemu/log.h"
- 
-diff --git a/linux-user/user-internals.h b/linux-user/user-internals.h
-index c63ef45fc78..ce11d9e21c1 100644
---- a/linux-user/user-internals.h
-+++ b/linux-user/user-internals.h
-@@ -71,7 +71,7 @@ const char *target_strerror(int err);
- int get_osversion(void);
- void init_qemu_uname_release(void);
- void fork_start(void);
--void fork_end(int child);
-+void fork_end(pid_t pid);
+diff --git a/include/gdbstub/user.h b/include/gdbstub/user.h
+index e33f8d9a9a6..3f9f45946e0 100644
+--- a/include/gdbstub/user.h
++++ b/include/gdbstub/user.h
+@@ -54,7 +54,7 @@ void gdbserver_fork_start(void);
+  * gdbserver_fork() - disable gdb stub for child processes.
+  * @cs: CPU
+  */
+-void gdbserver_fork(CPUState *cs);
++void gdbserver_fork(CPUState *cs, pid_t pid);
  
  /**
-  * probe_guest_base:
+  * gdb_syscall_entry() - inform gdb of syscall entry and yield control to it
 diff --git a/bsd-user/main.c b/bsd-user/main.c
-index 517c6b3ec2f..fca9b302043 100644
+index fca9b302043..0dbd1cf8801 100644
 --- a/bsd-user/main.c
 +++ b/bsd-user/main.c
-@@ -116,8 +116,10 @@ void fork_start(void)
-     gdbserver_fork_start();
+@@ -138,7 +138,7 @@ void fork_end(pid_t pid)
+          */
+         qemu_init_cpu_list();
+         get_task_state(thread_cpu)->ts_tid = qemu_get_thread_id();
+-        gdbserver_fork(thread_cpu);
++        gdbserver_fork(thread_cpu, pid);
+     } else {
+         mmap_fork_end(child);
+         cpu_list_unlock();
+diff --git a/gdbstub/user.c b/gdbstub/user.c
+index 536fb43b03e..c61e1a0d1f6 100644
+--- a/gdbstub/user.c
++++ b/gdbstub/user.c
+@@ -375,7 +375,7 @@ static void disable_gdbstub(CPUState *thread_cpu)
  }
  
--void fork_end(int child)
-+void fork_end(pid_t pid)
+ /* Disable gdb stub for child processes.  */
+-void gdbserver_fork(CPUState *cpu)
++void gdbserver_fork(CPUState *cpu, pid_t pid)
  {
-+    bool child = pid == 0;
-+
-     if (child) {
-         CPUState *cpu, *next_cpu;
-         /*
+     if (!gdbserver_state.init || gdbserver_user_state.fd < 0) {
+         return;
 diff --git a/linux-user/main.c b/linux-user/main.c
-index 755c566d6d2..cab95f5b0aa 100644
+index cab95f5b0aa..70314e0ab6a 100644
 --- a/linux-user/main.c
 +++ b/linux-user/main.c
-@@ -148,8 +148,10 @@ void fork_start(void)
-     gdbserver_fork_start();
- }
- 
--void fork_end(int child)
-+void fork_end(pid_t pid)
- {
-+    bool child = pid == 0;
-+
-     qemu_plugin_user_postfork(child);
-     mmap_fork_end(child);
-     if (child) {
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index c233d4eb30a..7f30defcb13 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -6669,7 +6669,7 @@ static int do_fork(CPUArchState *env, unsigned int flags, abi_ulong newsp,
-         if (ret == 0) {
-             /* Child Process.  */
-             cpu_clone_regs_child(env, newsp, flags);
--            fork_end(1);
-+            fork_end(ret);
-             /* There is a race condition here.  The parent process could
-                theoretically read the TID in the child process before the child
-                tid is set.  This would require using either ptrace
-@@ -6700,8 +6700,8 @@ static int do_fork(CPUArchState *env, unsigned int flags, abi_ulong newsp,
-                 }
- #endif
-                 put_user_u32(pid_fd, parent_tidptr);
--                }
--            fork_end(0);
-+            }
-+            fork_end(ret);
+@@ -165,7 +165,7 @@ void fork_end(pid_t pid)
          }
-         g_assert(!cpu_in_exclusive_context(cpu));
+         qemu_init_cpu_list();
+         get_task_state(thread_cpu)->ts_tid = qemu_get_thread_id();
+-        gdbserver_fork(thread_cpu);
++        gdbserver_fork(thread_cpu, pid);
+     } else {
+         cpu_list_unlock();
      }
 -- 
 2.39.2
