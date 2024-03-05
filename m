@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5833187209B
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 14:43:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E128720B8
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 14:47:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhV4H-0002HV-E3; Tue, 05 Mar 2024 08:42:54 -0500
+	id 1rhV4I-0002IE-Vh; Tue, 05 Mar 2024 08:42:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rhV47-0002Gu-BF
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:42:43 -0500
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rhV4D-0002Hc-44
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:42:49 -0500
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rhV44-0003x9-UE
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:42:42 -0500
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a449c5411e1so543230066b.1
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 05:42:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rhV4B-0003xW-KY
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:42:48 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-5672afabb86so2435137a12.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 05:42:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709646159; x=1710250959; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709646165; x=1710250965; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nBiR1NjnNqmb5fA74myd/4THTKWykiIDh39Z8PAr++Y=;
- b=FSr2RCh4x5HmShFmZC3b06ows7xsPX68WCP/qtDNfql118456xkSkAmOtD+lbCbh3s
- 0FEqhCJSXWAVJ4FvI/HbzzxNj+NgTkzEn9DxyiYpYoaknR22bGVUpp3vGRGYmr4UBJWh
- TppkWnLyt/r34hJnKxubp0tQynzf7Bk50rhBQf8Mtp7oj8yIyoDXWlHUiPna17rJI27m
- XhWbhkRFLcULJs8LcK+i9juG/yN2NMOFVngyoPt/Mion59CopuiA45Xo2ZM53U+ceflH
- VxoLnLq5oA90aEHB1WCwr1WWIQafgVXFgSoJC1k7s0KvIc378nCmryRqgWwHPkFSNiwu
- X8Lg==
+ bh=puZvfwYJmiovgLIksxQYRb4sHK5AG83t9xnfOfq3iqY=;
+ b=HSpWkdqyGFJKHINUIW7eFXs7a66cMOiEOPPy84vFPRtBbgduO99yYNxn21plDKluQc
+ vemnaMFR5hM6X6oHdgajtbBt5Cra5UULw7AoLB+lTUANdoOEE42SM92irlV65zV3Vo9s
+ /yLWANlqM4MjJGIcu8krpD+IWJoNmxCXl1m/RmNx71m0aHT+m2IKO/wsEn+dr5OVhmha
+ kzKg4RQVvRlDOX+U7DyXh7qZq0fkzSRS6C2d5ZzfZOBKD5Y6MlYAM4lQcEnnnNYk2fjR
+ i/FdzM4EAagqAk5S3La10L03LhT6DnRsrX2XFPKMVyGhc1KkdIHvdyQYUhY2SuFihb+d
+ YLRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709646159; x=1710250959;
+ d=1e100.net; s=20230601; t=1709646165; x=1710250965;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nBiR1NjnNqmb5fA74myd/4THTKWykiIDh39Z8PAr++Y=;
- b=aHlkbhxwsfVG9Md88Hqv9xXQadQMyn7YChp9+NJD42TwB2iBCI6QurF3OdY1dy/WOx
- O9yrmRFWzYg2NBvyCHxjn+oFOeGtrdqZ0cjkJxGm8Q7ioJuZuWB+d8e+cCcWA2b+AF0+
- 9Fw6q93aKBNXX04/cHi9aEiYi97Ni0N05I5YdzMc6f2QmBGQ47Fa9GJMWmfOTchicsvC
- tHOoXYOxCC6shEiMFvBtc7I0l/guxEhYX6ENvBdu/TnuvdHESfgoOZiNJ5hc/gORMQOP
- EbFQcfyfziNt75UqL8kD74vjE6VHpdlOthu25CNrF2onaLdV5PuyYvZQN15o40C/aISs
- xzMg==
-X-Gm-Message-State: AOJu0YyOyg1wvFfcy0tc6Ny6D8cymybNJ4jBMx/U7KnK4nn0kCKouZPM
- t15aXGZXvTrHHBwQLsn0rPsyZmXAIlFM3lxheu/Y942IskaBCjJzIqTMhC9eN7K5/R12lnZQ6kZ
- K
-X-Google-Smtp-Source: AGHT+IGlCzBdHb/CuP3L39CooS3sdPaa/BoyfCLBRe8pyO7DyPl6RRC6hDIlmTp4c2pez14Nn4jddw==
-X-Received: by 2002:a17:906:830e:b0:a45:446c:6beb with SMTP id
- j14-20020a170906830e00b00a45446c6bebmr4144176ejx.50.1709646158911; 
- Tue, 05 Mar 2024 05:42:38 -0800 (PST)
+ bh=puZvfwYJmiovgLIksxQYRb4sHK5AG83t9xnfOfq3iqY=;
+ b=Hovz0/llDDIh/BOWPquh8D1qKHtWjSYf0B7BA6jv1MH9i7DtVtmK6Iu3hm5i+Xl9IK
+ w9j5yJmLkQQ7VVffDK2/kQtbLbHnrT4s2wtLn/+nPPCcnlerYQrs8360BjdN3iU3acb5
+ FsdCEdAbQKcSVqPi8k8BbC3C0kLRI0rw2jV74QehfZpeFLiRTuDVNeBk3+MZK8vMrTAZ
+ wdzqew4s5BSUvksh+EbLdyqyLUbK8czlwS2o78JDyoUV0y6CleqRw/FUFvClZUPKQMXn
+ WqCK9ZlaNySSleSclwTW/lnmgKy1+OHBleDUS2pfcZH9xeAA9TyXHzR+Gg7zmeA/HPL9
+ 8pvw==
+X-Gm-Message-State: AOJu0YxS6L+5jeksRcSuEtLmM3lWJlZ2AKKrxv3x0rzdhUR3yDFg0Wd4
+ +W84/KV9T7Iionf90xdqJmGjAi0F2+opsl020lhGadvD+n3o1mfr/cBJ7J91ki5bVXoMyh+6L5N
+ o
+X-Google-Smtp-Source: AGHT+IGoQLz3vb/hw5i2C2mEhP7oyJ2WOykEYWfKelOzXGkQ9Oyr76XV3KVkqIMUEC1WspvOGAtlkw==
+X-Received: by 2002:aa7:cb0b:0:b0:564:dd13:56e9 with SMTP id
+ s11-20020aa7cb0b000000b00564dd1356e9mr8683560edt.29.1709646165626; 
+ Tue, 05 Mar 2024 05:42:45 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.177.70])
  by smtp.gmail.com with ESMTPSA id
- f27-20020a170906085b00b00a44ef54b6b6sm3648391ejd.58.2024.03.05.05.42.37
+ z42-20020a509e2d000000b005669d904871sm6107335ede.49.2024.03.05.05.42.43
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 05 Mar 2024 05:42:38 -0800 (PST)
+ Tue, 05 Mar 2024 05:42:45 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Thomas Huth <thuth@redhat.com>
@@ -66,18 +66,18 @@ Cc: Igor Mammedov <imammedo@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.1 02/18] hw/usb/hcd-xhci: Enumerate xhci_flags setting
- values
-Date: Tue,  5 Mar 2024 14:42:04 +0100
-Message-ID: <20240305134221.30924-3-philmd@linaro.org>
+Subject: [PATCH-for-9.1 03/18] hw/usb/hcd-xhci: Remove
+ XHCI_FLAG_FORCE_PCIE_ENDCAP flag
+Date: Tue,  5 Mar 2024 14:42:05 +0100
+Message-ID: <20240305134221.30924-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240305134221.30924-1-philmd@linaro.org>
 References: <20240305134221.30924-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,32 +100,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-xhci_flags are used as bits for QOM properties,
-expected to be somehow stable (external interface).
-
-Explicit their values so removing any enum doesn't
-modify the other ones.
+XHCI_FLAG_FORCE_PCIE_ENDCAP was only used by the
+pc-i440fx-2.0 machine, which got removed. Remove it
+and simplify usb_xhci_pci_realize().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/usb/hcd-xhci.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/usb/hcd-xhci.h     | 1 -
+ hw/usb/hcd-xhci-nec.c | 2 --
+ hw/usb/hcd-xhci-pci.c | 3 +--
+ 3 files changed, 1 insertion(+), 5 deletions(-)
 
 diff --git a/hw/usb/hcd-xhci.h b/hw/usb/hcd-xhci.h
-index 98f598382a..37f0d2e43b 100644
+index 37f0d2e43b..7dcab8b8db 100644
 --- a/hw/usb/hcd-xhci.h
 +++ b/hw/usb/hcd-xhci.h
-@@ -37,8 +37,8 @@ typedef struct XHCIEPContext XHCIEPContext;
+@@ -37,7 +37,6 @@ typedef struct XHCIEPContext XHCIEPContext;
  
  enum xhci_flags {
      XHCI_FLAG_SS_FIRST = 1,
--    XHCI_FLAG_FORCE_PCIE_ENDCAP,
--    XHCI_FLAG_ENABLE_STREAMS,
-+    XHCI_FLAG_FORCE_PCIE_ENDCAP = 2,
-+    XHCI_FLAG_ENABLE_STREAMS = 3,
+-    XHCI_FLAG_FORCE_PCIE_ENDCAP = 2,
+     XHCI_FLAG_ENABLE_STREAMS = 3,
  };
  
- typedef enum TRBType {
+diff --git a/hw/usb/hcd-xhci-nec.c b/hw/usb/hcd-xhci-nec.c
+index 328e5bfe7c..5d5b069cf9 100644
+--- a/hw/usb/hcd-xhci-nec.c
++++ b/hw/usb/hcd-xhci-nec.c
+@@ -43,8 +43,6 @@ static Property nec_xhci_properties[] = {
+     DEFINE_PROP_ON_OFF_AUTO("msix", XHCIPciState, msix, ON_OFF_AUTO_AUTO),
+     DEFINE_PROP_BIT("superspeed-ports-first", XHCINecState, flags,
+                     XHCI_FLAG_SS_FIRST, true),
+-    DEFINE_PROP_BIT("force-pcie-endcap", XHCINecState, flags,
+-                    XHCI_FLAG_FORCE_PCIE_ENDCAP, false),
+     DEFINE_PROP_UINT32("intrs", XHCINecState, intrs, XHCI_MAXINTRS),
+     DEFINE_PROP_UINT32("slots", XHCINecState, slots, XHCI_MAXSLOTS),
+     DEFINE_PROP_END_OF_LIST(),
+diff --git a/hw/usb/hcd-xhci-pci.c b/hw/usb/hcd-xhci-pci.c
+index 4423983308..cbad96f393 100644
+--- a/hw/usb/hcd-xhci-pci.c
++++ b/hw/usb/hcd-xhci-pci.c
+@@ -148,8 +148,7 @@ static void usb_xhci_pci_realize(struct PCIDevice *dev, Error **errp)
+                      PCI_BASE_ADDRESS_MEM_TYPE_64,
+                      &s->xhci.mem);
+ 
+-    if (pci_bus_is_express(pci_get_bus(dev)) ||
+-        xhci_get_flag(&s->xhci, XHCI_FLAG_FORCE_PCIE_ENDCAP)) {
++    if (pci_bus_is_express(pci_get_bus(dev))) {
+         ret = pcie_endpoint_cap_init(dev, 0xa0);
+         assert(ret > 0);
+     }
 -- 
 2.41.0
 
