@@ -2,74 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03D238716C9
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 08:30:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE91871733
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 08:45:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhPF9-0003qB-2q; Tue, 05 Mar 2024 02:29:43 -0500
+	id 1rhPTS-00078r-Mo; Tue, 05 Mar 2024 02:44:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rhPEn-0003lD-4P
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:29:24 -0500
-Received: from mgamail.intel.com ([198.175.65.17])
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1rhPTO-00078O-4F
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:44:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rhPEj-0004RO-34
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:29:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709623758; x=1741159758;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=hHWJ4wliT2zqlRJCUZ4iaQ7U9nvHb62eTPrAtUOqRB0=;
- b=VF5oz4R6ek4z5WFljbbLqODkCPdSz7zY7H7/V+yooEBNTouSOkKIc/2l
- nePc/wsrEypoI9sO4s99Sc7CBQCOYIzFqXAopX4dDqPcWHJbc2g0Umf46
- 1X/q4ckpCTejJQAvu5I9qA0zON409KosiMBNa+JgUE9h833baFVcxOFW7
- qjCNMDxgZ532ABly3a6VmgO8qxb4TKQqQpES/yQmwj1FjZ2uHUoB6r7u3
- FKrWimeOCthE0FnMT6faInYxVKA4aHh6VGOnDfBGcQKk3ZgfNzMshaGVB
- Xx3E+2a8c/7Sm0mYOWrYIFakgr7im+pNMhf34n4Xwrutao0kp3HpCYEhf A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="4317140"
-X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
-   d="scan'208";a="4317140"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 23:29:13 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; d="scan'208";a="40160157"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa002.jf.intel.com with ESMTP; 04 Mar 2024 23:29:10 -0800
-Date: Tue, 5 Mar 2024 15:42:55 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Prasad Pandit <ppandit@redhat.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, devel@lists.libvirt.org,
- qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH] hw/core/machine-smp: Remove deprecated "parameter=0" SMP
- configurations
-Message-ID: <ZebM/2for1NVjeuc@intel.com>
-References: <20240304044510.2305849-1-zhao1.liu@linux.intel.com>
- <CAE8KmOxvZFjtKkHiGGREx_b0QgfDjPWZ7Ex3nqAQQbiPKa_wrQ@mail.gmail.com>
- <ZeVyKMux7Ysjo/lY@intel.com>
- <CAE8KmOxJECe7oNkB1Oiuk-+_4J4drmdJTL2mBzQz+Zu+6XpxrQ@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1rhPTM-0007PN-Kd
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:44:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709624663;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=URG2IugC5AhDOzExprd8f6SFF/Tg/yYfwBN8xzaSp2Y=;
+ b=Knsc+QkOuqUX6Hz8SlSrp/WTI1KED3saborKvYvjiCQezDgD5KXXnxhmmmk7Lk5G5QvePs
+ y5jtZCoQwyxceNbMainfodqaxaPVH5JLeF+Ge3aon3l12vCribzm8gKixhg8asVlZ8+iJw
+ M2OHEP/e6VaU+lW0B/bSfz0aT1gB4jU=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-489-TWdcY1VKPqemQIYyNBUtgw-1; Tue, 05 Mar 2024 02:44:22 -0500
+X-MC-Unique: TWdcY1VKPqemQIYyNBUtgw-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-33e0edcf4f4so1783246f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Mar 2024 23:44:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709624661; x=1710229461;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=URG2IugC5AhDOzExprd8f6SFF/Tg/yYfwBN8xzaSp2Y=;
+ b=UorMv9qLQUCI9xZxaxu9wxj08w+dz8EWVgTQNQlDGqQubf69f3SRQOiSlGgGujMfSN
+ 1dtJhWowPAZpW2a8ywvvEmVMiTA2hJme0ony5KjDAwKGmLna7vQJHu7tGVnEfSoVHYNL
+ KZWkpF8NAtuJTETx3VBnmQCNV7wqPcuoQQ01bWEgapuz5UJtElgXbEoePaS6kzoSLzZ3
+ WOWHnsi8LdDpcZZ5v6NR0RLtpcb51R5QE/iVc5Kpg0KYzmuVdCWauprLMhamog92858H
+ oMnZGqidSm/5HNkJFPkuGik7YcbWeXGKmz6a+FUR0zuXp84duh41hHzWBZkna3v4MXSV
+ H1Cw==
+X-Gm-Message-State: AOJu0YxhOS2fKFO1/hnaxE2D/hNh2JfWvJzIlMMjXPCjGHrlm1w6sdFH
+ gql40lMog8kqvucRZutU6+DMsklIFIYDxOofLckDdZH6cC6j34Fx1X2199KdT6yYtvLELj0iX9O
+ i+MmKThAys0Z7GitrOhjfYvQaKQr9yK7czcih0DnA5HMKrty9Jx/4JygeVjE/vqVJF0A1eGqgG8
+ 9mDVRlcr5AzVx1co2qxkq0T9raKio=
+X-Received: by 2002:a5d:6ac5:0:b0:33e:4d34:f40f with SMTP id
+ u5-20020a5d6ac5000000b0033e4d34f40fmr179366wrw.46.1709624660978; 
+ Mon, 04 Mar 2024 23:44:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEWFEORdEsGJPb/nPnOdVSTrMcelBOPWelnZS02PHk+jxQBXGl3v9sng5QGWI6j/qNNxj/qF/MibfRUIAeCBms=
+X-Received: by 2002:a5d:6ac5:0:b0:33e:4d34:f40f with SMTP id
+ u5-20020a5d6ac5000000b0033e4d34f40fmr179350wrw.46.1709624660631; Mon, 04 Mar
+ 2024 23:44:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAE8KmOxJECe7oNkB1Oiuk-+_4J4drmdJTL2mBzQz+Zu+6XpxrQ@mail.gmail.com>
-Received-SPF: none client-ip=198.175.65.17;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+References: <20240304122844.1888308-1-clg@redhat.com>
+ <20240304122844.1888308-6-clg@redhat.com>
+In-Reply-To: <20240304122844.1888308-6-clg@redhat.com>
+From: Prasad Pandit <ppandit@redhat.com>
+Date: Tue, 5 Mar 2024 13:14:04 +0530
+Message-ID: <CAE8KmOxN3mQAQuQK5UDe1oWBYxuSx1Ff=CVxT8_C7oLCrZ7Ctw@mail.gmail.com>
+Subject: Re: [PATCH v3 05/26] migration: Add Error** argument to vmstate_save()
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, 
+ Fabiano Rosas <farosas@suse.de>, Alex Williamson <alex.williamson@redhat.com>, 
+ Avihai Horon <avihaih@nvidia.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Markus Armbruster <armbru@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.571,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.571,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,108 +99,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Prasad,
+On Mon, 4 Mar 2024 at 19:38, C=C3=A9dric Le Goater <clg@redhat.com> wrote:
+> This will prepare ground for futur changes adding an Error** argument
 
-> On Mon, 4 Mar 2024 at 12:19, Zhao Liu <zhao1.liu@linux.intel.com> wrote:
-> > > unsigned maxcpus = config->has_maxcpus ? config->maxcpus : 0;
-> >
-> > This indicates the default maxcpus is initialized as 0 if user doesn't
-> > specifies it.
-> 
-> * 'has_maxcpus' should be set only if maxcpus > 0. If maxcpus == 0,
-> then setting 'has_maxcpus=1' seems convoluted.
+* futur -> furure
 
-After simple test, if user sets maxcpus as 0, the has_maxcpus will be
-true as well...I think it's related with QAPI code generation logic.
-
-> > However, we could initialize maxcpus as other default value, e.g.,
-> >
-> >     maxcpus = config->has_maxcpus ? config->maxcpus : 1.
-> ===
-> hw/core/machine.c
->  machine_initfn
->     /* default to mc->default_cpus */
->     ms->smp.cpus = mc->default_cpus;
->     ms->smp.max_cpus = mc->default_cpus;
-> 
->    static void machine_class_base_init(ObjectClass *oc, void *data)
->    {
->        MachineClass *mc = MACHINE_CLASS(oc);
->        mc->max_cpus = mc->max_cpus ?: 1;
->        mc->min_cpus = mc->min_cpus ?: 1;
->        mc->default_cpus = mc->default_cpus ?: 1;
->    }
-> ===
-> * Looking at the above bits, it seems smp.cpus & smp.max_cpus are
-> initialised to 1 via default_cpus in MachineClass object.
-
-Yes.
-
-The maxcpus I mentioned is a local virable in
-machine_parse_smp_config(), whihc is used to do sanity-check check.
-
-In machine_parse_smp_config(), when we can confirm the topology is
-valid, then ms->smp.cpus and ms->smp.max_cpus are set with the valid
-virables (cpus and maxcpus).
-
-> >>  if (config->has_maxcpus && config->maxcpus == 0)
-> > This check only wants to identify the case that user sets the 0.
-> > If the default maxcpus is initialized as 0, then (maxcpus == 0) will
-> > fail if user doesn't set maxcpus.
-> >
-> > But it is still necessary to distinguish whether maxcpus is user-set or
-> > auto-initialized.
-> 
-> * If it is set to zero(0) either by user or by auto-initialise, it is
-> still invalid, right?
-
-The latter, "auto-initialise", means user could omit "cpus" and "maxcpus"
-parameters in -smp.
-
-Even though the local variable "cpus" and "maxcpus" are initialized as
-0, eventually ms->smp.cpus and ms->smp.max_cpus will still have the
-valid values.
-
-> > If it is user-set, -smp should fail is there's invalid maxcpus/invalid
-> > topology.
-> >
-> > Otherwise, if it is auto-initialized, its value should be adjusted based
-> > on other topology components as the above calculation in (*).
-> 
-> * Why have such diverging ways?
-> * Could we simplify it as
->    - If cpus/maxcpus==0, it is invalid, show an error and exit.
-
-Hmm, the origial behavior means if user doesn't set cpus=*/maxcpus=* in
--smp, then QEMU will auto-complete these 2 fields.
-
-If we also return error for the above case that user omits cpus and
-maxcpus parameters, then this change the QEMU's API and we need to mark
-feature that the cpus/maxcpus parameter can be omitted as deprecated and
-remove it out. Just like what I did in this patch for zeroed-parameter
-case.
-
-I feel if there's no issue then it's not necessary to change the API. Do
-you agree?
-
->    - If cpus/maxcpus > 0, but incorrect for topology, then
-> re-calculate the correct value based on topology parameters. If the
-> re-calculated value is still incorrect or unsatisfactory, then show an
-> error and exit.
-
-Yes, this case is right.
-
-> * Saying that user setting cpu/maxcpus=0 is invalid and
-> auto-initialising it to zero(0) is valid, is not consistent.
 >
+> -static int vmstate_save(QEMUFile *f, SaveStateEntry *se, JSONWriter *vmd=
+esc)
+> +static int vmstate_save(QEMUFile *f, SaveStateEntry *se, JSONWriter *vmd=
+esc,
+> +                        Error **errp)
+>  {
+>      int ret;
+> -    Error *local_err =3D NULL;
+> -    MigrationState *s =3D migrate_get_current();
+>
+>      if ((!se->ops || !se->ops->save_state) && !se->vmsd) {
+>          return 0;
+> @@ -1034,10 +1033,9 @@ static int vmstate_save(QEMUFile *f, SaveStateEntr=
+y *se, JSONWriter *vmdesc)
+>      if (!se->vmsd) {
+>          vmstate_save_old_style(f, se, vmdesc);
+>      } else {
+> -        ret =3D vmstate_save_state_with_err(f, se->vmsd, se->opaque, vmd=
+esc, &local_err);
+> +        ret =3D vmstate_save_state_with_err(f, se->vmsd, se->opaque, vmd=
+esc,
+> +                                          errp);
+>          if (ret) {
+> -            migrate_set_error(s, local_err);
+> -            error_report_err(local_err);
+>              return ret;
+>          }
+>      }
+> @@ -1324,8 +1322,10 @@ void qemu_savevm_state_setup(QEMUFile *f)
+>      trace_savevm_state_setup();
+>      QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
+>          if (se->vmsd && se->vmsd->early_setup) {
+> -            ret =3D vmstate_save(f, se, ms->vmdesc);
+> +            ret =3D vmstate_save(f, se, ms->vmdesc, &local_err);
+>              if (ret) {
+> +                migrate_set_error(ms, local_err);
+> +                error_report_err(local_err);
+>                  qemu_file_set_error(f, ret);
+>                  break;
+>              }
+> @@ -1540,6 +1540,7 @@ int qemu_savevm_state_complete_precopy_non_iterable=
+(QEMUFile *f,
+>      JSONWriter *vmdesc =3D ms->vmdesc;
+>      int vmdesc_len;
+>      SaveStateEntry *se;
+> +    Error *local_err =3D NULL;
+>      int ret;
+>
+>      QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
+> @@ -1550,8 +1551,10 @@ int qemu_savevm_state_complete_precopy_non_iterabl=
+e(QEMUFile *f,
+>
+>          start_ts_each =3D qemu_clock_get_us(QEMU_CLOCK_REALTIME);
+>
+> -        ret =3D vmstate_save(f, se, vmdesc);
+> +        ret =3D vmstate_save(f, se, vmdesc, &local_err);
+>          if (ret) {
+> +            migrate_set_error(ms, local_err);
+> +            error_report_err(local_err);
+>              qemu_file_set_error(f, ret);
+>              return ret;
+>          }
+> @@ -1566,7 +1569,6 @@ int qemu_savevm_state_complete_precopy_non_iterable=
+(QEMUFile *f,
+>           * bdrv_activate_all() on the other end won't fail. */
+>          ret =3D bdrv_inactivate_all();
+>          if (ret) {
+> -            Error *local_err =3D NULL;
+>              error_setg(&local_err, "%s: bdrv_inactivate_all() failed (%d=
+)",
+>                         __func__, ret);
+>              migrate_set_error(ms, local_err);
+> @@ -1762,6 +1764,8 @@ void qemu_savevm_live_state(QEMUFile *f)
+>
+>  int qemu_save_device_state(QEMUFile *f)
+>  {
+> +    MigrationState *ms =3D migrate_get_current();
+> +    Error *local_err =3D NULL;
+>      SaveStateEntry *se;
+>
+>      if (!migration_in_colo_state()) {
+> @@ -1776,8 +1780,10 @@ int qemu_save_device_state(QEMUFile *f)
+>          if (se->is_ram) {
+>              continue;
+>          }
+> -        ret =3D vmstate_save(f, se, NULL);
+> +        ret =3D vmstate_save(f, se, NULL, &local_err);
+>          if (ret) {
+> +            migrate_set_error(ms, local_err);
+> +            error_report_err(local_err);
+>              return ret;
+>          }
+>      }
+> --
 
-I think "auto-initialising it to zero(0)" doesn't means we re-initialize
-ms->smp.cpus and ms->smp.max_cpus as 0 (these 2 fields store actual basic
-topology information and they're defult as 1 as you said above).
+Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
 
-Does my explaination address your concern? ;-)
-
-Thanks,
-Zhao
+Thank you.
+---
+  - Prasad
 
 
