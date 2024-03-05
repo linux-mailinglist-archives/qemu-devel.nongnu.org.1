@@ -2,83 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DA0087235C
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 16:57:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A48D87238D
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 17:03:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhXAY-0005Ix-Mb; Tue, 05 Mar 2024 10:57:30 -0500
+	id 1rhXAt-0005Tv-Sv; Tue, 05 Mar 2024 10:57:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhXAR-0005Ib-U7
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 10:57:23 -0500
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhXAP-0000Ov-Os
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 10:57:23 -0500
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2d3ee1c9ea9so13056041fa.3
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 07:57:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709654240; x=1710259040; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=vOurYOO2KrUO1ZqLCskHuMsZvwtTlPIoZKO3KPvPGZc=;
- b=cP99PVxZquRgnOUtDjSkDQED4E0i6Dh/QIsgf7Xf/BSJeRyBEEglT7yoq+bCIgHeEe
- wOz9U/Qro7lU0Hbr00RlgR2ykIOLc771/d9SJosq3YqzRFmAu+nHKEIZ0+M7YUNlIeZC
- Dw7yMWi88gRdlPlYytAZl+Wfde58hVKF8V7kPlRnGXiRxaI/85J7MK2/onekWl4h03h7
- zqDVuTLOdX2f/0LjzDbeEGjQdqSSgzwyZHjnJC8e5KBRShB1Y4MzBHPVROcUn8fxQYSL
- j0QSSzunPVB8eGbJN7bZGF28rhZKoqiXRgQ0933UXzYYpkP2Hm+KgCqV2cSF57NAAYNq
- QMeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709654240; x=1710259040;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=vOurYOO2KrUO1ZqLCskHuMsZvwtTlPIoZKO3KPvPGZc=;
- b=wcu8mJYvr6SPT2wJjAximxI0HACa7wWkpIjRF9s5yjbYZuCElA+Kf17sbZ/2kIvtE3
- jffemu7q4vH4klnziG0eWjD/yVyWKTcxFV77sgt/VV5hxckCuy08VMDlg6mFHppBTL59
- 4W0XAyq4/9MXqUd90NhWa+zxRaLgYkFi2Eka4u/zmbEFGYNdFCHa9N998pOnE4hi4GN6
- d6S+oCJxntBpwzInu9bzRofh0vtd6md2zdvE2xGA34uWZWtSCszx6Rwaj6fnxFt319wB
- HzhpkM/k7ui2jvhc5IVMbGZaub4gpLbvvBPnGOZm2qpXwQMqVZD4d8FooId1H7SH4x8T
- 4bzQ==
-X-Gm-Message-State: AOJu0Yy1Cmiy/FGwsNdPSFwMxBPN/cuqtEDSOyrGBHJeXD880Ddefgp7
- qqlN/RbtIc7qfgJVWx1uqP+pJHBvrRZRB4Tfty2Y2qpTPgcAoW3x/ePVEZYe8/Mu0VFLlAaRhbA
- S0wc72ZLn+FY5hF7y9/IiL20QIW/PtrxqxIttAg==
-X-Google-Smtp-Source: AGHT+IHx4Nwf4RHg4K8kGw1QM3wmqBxTsaHJQKpJX8jjUVro83fVXEvVPH1DwazjolLCpRE3MOUZZVbMd2SOqZzLmHQ=
-X-Received: by 2002:a2e:a4a3:0:b0:2d3:1172:c07f with SMTP id
- g3-20020a2ea4a3000000b002d31172c07fmr1471321ljm.17.1709654240031; Tue, 05 Mar
- 2024 07:57:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1rhXAr-0005ST-Mi
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 10:57:49 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1rhXAq-0000UP-5T
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 10:57:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709654267;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=f4c9OhW/hQJQKbDD3J0uL/RxP31+gk21VGQFZ1SY7OM=;
+ b=IgW/u9Wg8dUnS1aOc3uzpMv/Z1qx6BGmzlbmRqVsgTg7+kEr3SUSI1N14ZkCL+9Zm80TEG
+ YM3eyZofQGFvKZ6mmhgaimU4Dt21CTLsg0w0MIXXjVAxq3jVnt713IGvwmsiLru6aBqGNF
+ DZ04TEznEpdLsAnuVz5PFIA9eLf+1PM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-25-Z7PIJC8DNBuBc12ArYkfBQ-1; Tue, 05 Mar 2024 10:57:43 -0500
+X-MC-Unique: Z7PIJC8DNBuBc12ArYkfBQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 90B1B180A38A;
+ Tue,  5 Mar 2024 15:57:42 +0000 (UTC)
+Received: from dell-r430-03.lab.eng.brq2.redhat.com
+ (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0BCB516A9C;
+ Tue,  5 Mar 2024 15:57:39 +0000 (UTC)
+From: Igor Mammedov <imammedo@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, pbonzini@redhat.com, mst@redhat.com,
+ gaosong@loongson.cn, alistair.francis@wdc.com, palmer@dabbelt.com,
+ bin.meng@windriver.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, imammedo@redhat.com, anisinha@redhat.com,
+ philmd@linaro.org, wangyanan55@huawei.com, eblake@redhat.com,
+ armbru@redhat.com, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
+ f.ebner@proxmox.com
+Subject: [PATCH v2 04/20] smbios: cleanup smbios_get_tables() from legacy
+ handling
+Date: Tue,  5 Mar 2024 16:57:08 +0100
+Message-Id: <20240305155724.2047069-5-imammedo@redhat.com>
+In-Reply-To: <20240305155724.2047069-1-imammedo@redhat.com>
+References: <20240305155724.2047069-1-imammedo@redhat.com>
 MIME-Version: 1.0
-References: <20240303185332.1408-1-shentey@gmail.com>
- <20240303185332.1408-2-shentey@gmail.com>
-In-Reply-To: <20240303185332.1408-2-shentey@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 5 Mar 2024 15:57:08 +0000
-Message-ID: <CAFEAcA9tzgAetYu8QcR+CgN1L_1ZcCS3mYHbD9oPe5py7Tw1iw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] hw/i386/pc: Remove "rtc_state" link again
-To: Bernhard Beschow <shentey@gmail.com>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Jason Wang <jasowang@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Sergio Lopez <slp@redhat.com>,
- Paul Durrant <paul@xen.org>, David Woodhouse <dwmw2@infradead.org>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.568,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,24 +87,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 3 Mar 2024 at 18:55, Bernhard Beschow <shentey@gmail.com> wrote:
->
-> Commit 99e1c1137b6f "hw/i386/pc: Populate RTC attribute directly" made linking
-> the "rtc_state" property unnecessary and removed it. Commit 84e945aad2d0 "vl,
-> pc: turn -no-fd-bootchk into a machine property" accidently reintroduced the
-> link. Remove it again since it is not needed.
->
-> Fixes: 84e945aad2d0 "vl, pc: turn -no-fd-bootchk into a machine property"
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+smbios_get_tables() bails out right away if leagacy mode is enabled
+and won't generate any SMBIOS tables. At the same time x86 specific
+fw_cfg_build_smbios() will genarate legacy tables and then proceed
+to preparing temporary mem_array for useless call to
+smbios_get_tables() and then discard it.
 
-Ah, I did wonder when I was working with this code whether that
-rtc_state link was really necessary.
+Drop legacy related check in smbios_get_tables() and return from
+fw_cfg_build_smbios() early if legacy tables where built without
+proceeding to non legacy part of the function.
 
-We could now remove the rtc argument from the pc_cmos_init()
-function, because we can guarantee that it's in x86ms->rtc,
-which the function already has access to from its pcms argument.
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
+Tested-by: Fiona Ebner <f.ebner@proxmox.com>
+---
+ hw/i386/fw_cfg.c   | 1 +
+ hw/smbios/smbios.c | 6 ------
+ 2 files changed, 1 insertion(+), 6 deletions(-)
 
-thanks
--- PMM
+diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
+index 98a478c276..a635234e68 100644
+--- a/hw/i386/fw_cfg.c
++++ b/hw/i386/fw_cfg.c
+@@ -74,6 +74,7 @@ void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg)
+     if (smbios_tables) {
+         fw_cfg_add_bytes(fw_cfg, FW_CFG_SMBIOS_ENTRIES,
+                          smbios_tables, smbios_tables_len);
++        return;
+     }
+ 
+     /* build the array of physical mem area from e820 table */
+diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
+index a3c4e52ce9..8e86c62184 100644
+--- a/hw/smbios/smbios.c
++++ b/hw/smbios/smbios.c
+@@ -1106,12 +1106,6 @@ void smbios_get_tables(MachineState *ms,
+ {
+     unsigned i, dimm_cnt, offset;
+ 
+-    if (smbios_legacy) {
+-        *tables = *anchor = NULL;
+-        *tables_len = *anchor_len = 0;
+-        return;
+-    }
+-
+     if (!smbios_immutable) {
+         smbios_build_type_0_table();
+         smbios_build_type_1_table();
+-- 
+2.39.3
+
 
