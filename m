@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C40F48720F8
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 14:58:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF178720E3
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 14:54:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhVEr-0001V2-V8; Tue, 05 Mar 2024 08:53:50 -0500
+	id 1rhVEm-0001Da-KA; Tue, 05 Mar 2024 08:53:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhVDv-0000wD-4s
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:52:56 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1rhVDw-0000wW-4U
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:53:06 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rhVDo-0005xd-6k
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:52:50 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-33e1878e357so2773883f8f.3
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 05:52:43 -0800 (PST)
+ id 1rhVDo-0005xj-H5
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 08:52:51 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-412eddd165eso3687465e9.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 05:52:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709646762; x=1710251562; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709646763; x=1710251563; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=dpO++rSHH7rGO28AplCu9nZCf5+X/352HOhoAKdjtuM=;
- b=q3HMeF3SLTKlGrMa/3LfvMl6GoJ/IrvE6pyFVlgvMih16sVroOz4R3dF+KCyU9xcBN
- vFHT02P6am0shzyQpDQpDifhLpoB54xikbUX29GfDquD3ZWM0H3EuJrZ3BuomReszrRn
- X1sQnlWfoCPKMoCu7UTCi0MsGTjrLRhK3q1ArYhhSGXqFtuV412esUq4NrRYA7ZUASA0
- OP+QLS8eay+Vc+eMtMQobpx6LdFAoWZDrSkP89iwE/SiaVgA1arFq+CklhuSLBgFf9le
- qzG2YKmN/XaRcX3177a2xMfd+g1jwFLFmcH0iuQXS4e9J2E+PUbBEd/Lr9dJQ/8bf/ZY
- 4Z/Q==
+ :reply-to; bh=gMBLxtLg8vmsf4UwKbR23mOVuBgWsMOaKSlUcHfsDKo=;
+ b=wfEjN5Jsq7J97yO4VXHJcaHlF+nE2afdw7KxaR/TaS3cBksDo7ihLY9z+jbhk+oD3p
+ RUK1I6nP30nZKpbzSJEILp7YnssUHibKBrPzNFpv+Z4Bj8TL4eqUkVRDIqJNYzPYG/jZ
+ Cadr5buz7R2BA0qki8DeTSjNn8Bd/gKacnCDem7rRIl5iqzv2wAmkeFXJCgt45iwiSns
+ W5Ffs0/Kr6IbNmyDgHDb13MaDy+LRCgfNcQlz9gx6mCc2upnMEoCo7QyDV2Yu92RU77W
+ dFQsnePt8PMT+T/jr/pRUySZktrCbLKP96ocLwv/mm+6bWXaviO+NLfKug1BEHOEFP8i
+ kQVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709646762; x=1710251562;
+ d=1e100.net; s=20230601; t=1709646763; x=1710251563;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dpO++rSHH7rGO28AplCu9nZCf5+X/352HOhoAKdjtuM=;
- b=pY67WKfKVxuf5zli5CawNq23DB5kbKA6pnVrdqbe+T6UM+e5O5eQKU49Z0kueSwpsi
- eiUqcO9CMuNdvXijgez9vyAUx4TfGwsvCls0Yr0MyPZjdfiBdcPvdojhSMa7nA8zR3LM
- HymdnYp1cGiOMAY8jCsM7T2Aja9T1PmGf5wUh/tUP/IwmIV520s/ibgHnHYo9EHrgqPv
- aHAJFCMsQWaupujeBdRbjQBxQiI1XPZq8TdwCGIh63/rL2zSuHx1IUiJz7bPZTfJjIX0
- vfOMBVTHj580e9kXei9CbpKlgJNxWqNKwAYay/fKc29Cn361L3tTspXdVXa7Jc44s77P
- Hfug==
-X-Gm-Message-State: AOJu0YyaAApiQLpmepGCTkw8MNIcpgFCx6gS5cFdX6anfc8n/5z8vyi1
- 0/q1j3W8QaYV5QPPeTW3cSrx7qITvFv/GZdu6mYs9VcTE+bmvS3LVvWP786kf9mIKFIO6HfI1Qw
- b
-X-Google-Smtp-Source: AGHT+IE0GdRVrS1xqqvUPxWignENzOo7m1hTdDz7M+BCJLYMiyB+FSAC/r33mYCUXdjdejUy/nCx9g==
-X-Received: by 2002:adf:e74a:0:b0:33d:3665:666f with SMTP id
- c10-20020adfe74a000000b0033d3665666fmr8444550wrn.44.1709646762552; 
- Tue, 05 Mar 2024 05:52:42 -0800 (PST)
+ bh=gMBLxtLg8vmsf4UwKbR23mOVuBgWsMOaKSlUcHfsDKo=;
+ b=UJYiIPKMgPFg7edrAp5uuShuEBhTrZsU0gSsZLw5il2mKpAMoff5JEEhFozkdPzebc
+ Z0AXwgjtxBn+YOCcSrfn8LKZUTiSXsHMFETAfQ7Opo6ekABCfEO4jPTgje+jfVmTwIrl
+ ZVxWArYdLDOgNxFtUh0yvrFDWsm+GIyx3vGsruQKwSeHYth7TNJuGCdRakgbPgoh/p/X
+ bxJx6j4eqeEdCI5pFZpMhCfVrRg6F0Wu2K6madKP4EVs38OxYteJcK698C0kGAwOmvty
+ mFByrJgizYoooMUihLyFLrvpxLb9T5OjiZJcYW2fKnRRK57Oo9Y69sI3XRgmP71S07LZ
+ 3aLw==
+X-Gm-Message-State: AOJu0YztXPnB1bVJRJRd08286hbdf9zos5P/DhNaDG9MDC7XJ11Pg2da
+ r0pueIrFYsY4M0QE7qAnIR/mPYVlNxiJZBJsbq/KYu9P+2NF3tNsMMqNsfJXCYaSio5eor5qbvE
+ W
+X-Google-Smtp-Source: AGHT+IGphrgq89+B7LP9rJ9fXgRQceF6zhJFKABo/evjdsHdhrNFibZdXg6vD8vqrG9dK2TtOJnFEg==
+X-Received: by 2002:a5d:60cb:0:b0:33d:d791:1164 with SMTP id
+ x11-20020a5d60cb000000b0033dd7911164mr11186432wrt.8.1709646763020; 
+ Tue, 05 Mar 2024 05:52:43 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  x3-20020a5d6503000000b0033e206a0a7asm11797532wru.26.2024.03.05.05.52.42
@@ -59,17 +59,18 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 05 Mar 2024 05:52:42 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/20] hw/misc/stm32l4x5_rcc: Add an internal PLL Clock object
-Date: Tue,  5 Mar 2024 13:52:24 +0000
-Message-Id: <20240305135237.3111642-8-peter.maydell@linaro.org>
+Subject: [PULL 08/20] hw/misc/stm32l4x5_rcc: Initialize PLLs and clock
+ multiplexers
+Date: Tue,  5 Mar 2024 13:52:25 +0000
+Message-Id: <20240305135237.3111642-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240305135237.3111642-1-peter.maydell@linaro.org>
 References: <20240305135237.3111642-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,368 +95,1045 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 
-This object represents the PLLs and their channels. The PLLs allow for a
-more fine-grained control of the clocks frequency.
+Instantiate the whole clock tree and using the Clock multiplexers and
+the PLLs defined in the previous commits. This allows to statically
+define the clock tree and easily follow the clock signal from one end to
+another.
 
-The migration handling is based on hw/misc/zynq_sclr.c.
-Three phase reset will be handled in a later commit.
+Also handle three-phase reset now that we have defined a known base
+state for every object.
+(Reset handling based on hw/misc/zynq_sclr.c)
 
 Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
-Message-id: 20240303140643.81957-4-arnaud.minier@telecom-paris.fr
+Message-id: 20240303140643.81957-5-arnaud.minier@telecom-paris.fr
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/misc/stm32l4x5_rcc.h           |  40 +++++
- include/hw/misc/stm32l4x5_rcc_internals.h |  22 +++
- hw/misc/stm32l4x5_rcc.c                   | 176 ++++++++++++++++++++++
- hw/misc/trace-events                      |   5 +
- 4 files changed, 243 insertions(+)
+ include/hw/misc/stm32l4x5_rcc_internals.h | 705 ++++++++++++++++++++++
+ hw/misc/stm32l4x5_rcc.c                   | 145 ++++-
+ 2 files changed, 833 insertions(+), 17 deletions(-)
 
-diff --git a/include/hw/misc/stm32l4x5_rcc.h b/include/hw/misc/stm32l4x5_rcc.h
-index 6719be9fbee..0fbfba5c40b 100644
---- a/include/hw/misc/stm32l4x5_rcc.h
-+++ b/include/hw/misc/stm32l4x5_rcc.h
-@@ -26,6 +26,15 @@ OBJECT_DECLARE_SIMPLE_TYPE(Stm32l4x5RccState, STM32L4X5_RCC)
- 
- /* In the Stm32l4x5 clock tree, mux have at most 7 sources */
- #define RCC_NUM_CLOCK_MUX_SRC 7
-+
-+typedef enum PllCommonChannels {
-+    RCC_PLL_COMMON_CHANNEL_P = 0,
-+    RCC_PLL_COMMON_CHANNEL_Q = 1,
-+    RCC_PLL_COMMON_CHANNEL_R = 2,
-+
-+    RCC_NUM_CHANNEL_PLL_OUT = 3
-+} PllCommonChannels;
-+
- /* NB: Prescaler are assimilated to mux with one source and one output */
- typedef enum RccClockMux {
-     /* Internal muxes that arent't exposed publicly to other peripherals */
-@@ -124,6 +133,14 @@ typedef enum RccClockMux {
-     RCC_NUM_CLOCK_MUX
- } RccClockMux;
- 
-+typedef enum RccPll {
-+    RCC_PLL_PLL,
-+    RCC_PLL_PLLSAI1,
-+    RCC_PLL_PLLSAI2,
-+
-+    RCC_NUM_PLL
-+} RccPll;
-+
- typedef struct RccClockMuxState {
-     DeviceState parent_obj;
- 
-@@ -142,6 +159,26 @@ typedef struct RccClockMuxState {
-     struct RccClockMuxState *backref[RCC_NUM_CLOCK_MUX_SRC];
- } RccClockMuxState;
- 
-+typedef struct RccPllState {
-+    DeviceState parent_obj;
-+
-+    RccPll id;
-+    Clock *in;
-+    uint32_t vco_multiplier;
-+    Clock *channels[RCC_NUM_CHANNEL_PLL_OUT];
-+    /* Global pll enabled flag */
-+    bool enabled;
-+    /* 'enabled' refers to the runtime configuration */
-+    bool channel_enabled[RCC_NUM_CHANNEL_PLL_OUT];
-+    /*
-+     * 'exists' refers to the physical configuration
-+     * It should only be set at pll initialization.
-+     * e.g. pllsai2 doesn't have a Q output.
-+     */
-+    bool channel_exists[RCC_NUM_CHANNEL_PLL_OUT];
-+    uint32_t channel_divider[RCC_NUM_CHANNEL_PLL_OUT];
-+} RccPllState;
-+
- struct Stm32l4x5RccState {
-     SysBusDevice parent_obj;
- 
-@@ -187,6 +224,9 @@ struct Stm32l4x5RccState {
-     Clock *sai1_extclk;
-     Clock *sai2_extclk;
- 
-+    /* PLLs */
-+    RccPllState plls[RCC_NUM_PLL];
-+
-     /* Muxes ~= outputs */
-     RccClockMuxState clock_muxes[RCC_NUM_CLOCK_MUX];
- 
 diff --git a/include/hw/misc/stm32l4x5_rcc_internals.h b/include/hw/misc/stm32l4x5_rcc_internals.h
-index 4aa836848b4..a9da5e3be7d 100644
+index a9da5e3be7d..ff1c834f694 100644
 --- a/include/hw/misc/stm32l4x5_rcc_internals.h
 +++ b/include/hw/misc/stm32l4x5_rcc_internals.h
-@@ -22,7 +22,10 @@
- #include "hw/misc/stm32l4x5_rcc.h"
+@@ -334,4 +334,709 @@ typedef enum RccClockMuxSource {
+     RCC_CLOCK_MUX_SRC_NUMBER,
+ } RccClockMuxSource;
  
- #define TYPE_RCC_CLOCK_MUX "stm32l4x5-rcc-clock-mux"
-+#define TYPE_RCC_PLL "stm32l4x5-rcc-pll"
++/* PLL init info */
++typedef struct PllInitInfo {
++    const char *name;
 +
- OBJECT_DECLARE_SIMPLE_TYPE(RccClockMuxState, RCC_CLOCK_MUX)
-+OBJECT_DECLARE_SIMPLE_TYPE(RccPllState, RCC_PLL)
- 
- /* Register map */
- REG32(CR, 0x00)
-@@ -285,6 +288,25 @@ REG32(CSR, 0x94)
-                             R_CSR_FWRSTF_MASK   | \
-                             R_CSR_LSIRDY_MASK)
- 
-+/* Pll Channels */
-+enum PllChannels {
-+    RCC_PLL_CHANNEL_PLLSAI3CLK = 0,
-+    RCC_PLL_CHANNEL_PLL48M1CLK = 1,
-+    RCC_PLL_CHANNEL_PLLCLK = 2,
++    const char *channel_name[RCC_NUM_CHANNEL_PLL_OUT];
++    bool channel_exists[RCC_NUM_CHANNEL_PLL_OUT];
++    uint32_t default_channel_divider[RCC_NUM_CHANNEL_PLL_OUT];
++
++    RccClockMuxSource src_mapping[RCC_NUM_CLOCK_MUX_SRC];
++} PllInitInfo;
++
++static const PllInitInfo PLL_INIT_INFO[] = {
++    [RCC_PLL_PLL] = {
++        .name = "pll",
++        .channel_name = {
++            "pllsai3clk",
++            "pll48m1clk",
++            "pllclk"
++        },
++        .channel_exists = {
++            true, true, true
++        },
++        /* From PLLCFGR register documentation */
++        .default_channel_divider = {
++            7, 2, 2
++        }
++    },
++    [RCC_PLL_PLLSAI1] = {
++        .name = "pllsai1",
++        .channel_name = {
++            "pllsai1clk",
++            "pll48m2clk",
++            "plladc1clk"
++        },
++        .channel_exists = {
++            true, true, true
++        },
++        /* From PLLSAI1CFGR register documentation */
++        .default_channel_divider = {
++            7, 2, 2
++        }
++    },
++    [RCC_PLL_PLLSAI2] = {
++        .name = "pllsai2",
++        .channel_name = {
++            "pllsai2clk",
++            NULL,
++            "plladc2clk"
++        },
++        .channel_exists = {
++            true, false, true
++        },
++        /* From PLLSAI2CFGR register documentation */
++        .default_channel_divider = {
++            7, 0, 2
++        }
++    }
 +};
 +
-+enum PllSai1Channels {
-+    RCC_PLLSAI1_CHANNEL_PLLSAI1CLK = 0,
-+    RCC_PLLSAI1_CHANNEL_PLL48M2CLK = 1,
-+    RCC_PLLSAI1_CHANNEL_PLLADC1CLK = 2,
-+};
-+
-+enum PllSai2Channels {
-+    RCC_PLLSAI2_CHANNEL_PLLSAI2CLK = 0,
-+    /* No Q channel */
-+    RCC_PLLSAI2_CHANNEL_PLLADC2CLK = 2,
-+};
-+
- typedef enum RccClockMuxSource {
-     RCC_CLOCK_MUX_SRC_GND = 0,
-     RCC_CLOCK_MUX_SRC_HSI,
-diff --git a/hw/misc/stm32l4x5_rcc.c b/hw/misc/stm32l4x5_rcc.c
-index ace4083e837..9a9ea6c4702 100644
---- a/hw/misc/stm32l4x5_rcc.c
-+++ b/hw/misc/stm32l4x5_rcc.c
-@@ -164,6 +164,157 @@ static void clock_mux_set_source(RccClockMuxState *mux, RccClockMuxSource src)
-     clock_mux_update(mux);
- }
- 
-+static void pll_update(RccPllState *pll)
++static inline void set_pll_init_info(RccPllState *pll,
++                                     RccPll id)
 +{
-+    uint64_t vco_freq, old_channel_freq, channel_freq;
 +    int i;
 +
-+    /* The common PLLM factor is handled by the PLL mux */
-+    vco_freq = muldiv64(clock_get_hz(pll->in), pll->vco_multiplier, 1);
-+
++    pll->id = id;
++    pll->vco_multiplier = 1;
 +    for (i = 0; i < RCC_NUM_CHANNEL_PLL_OUT; i++) {
-+        if (!pll->channel_exists[i]) {
-+            continue;
-+        }
-+
-+        old_channel_freq = clock_get_hz(pll->channels[i]);
-+        if (!pll->enabled ||
-+            !pll->channel_enabled[i] ||
-+            !pll->channel_divider[i]) {
-+            channel_freq = 0;
-+        } else {
-+            channel_freq = muldiv64(vco_freq,
-+                                    1,
-+                                    pll->channel_divider[i]);
-+        }
-+
-+        /* No change, early continue to avoid log spam and useless propagation */
-+        if (old_channel_freq == channel_freq) {
-+            continue;
-+        }
-+
-+        clock_update_hz(pll->channels[i], channel_freq);
-+        trace_stm32l4x5_rcc_pll_update(pll->id, i, vco_freq,
-+            old_channel_freq, channel_freq);
++        pll->channel_enabled[i] = false;
++        pll->channel_exists[i] = PLL_INIT_INFO[id].channel_exists[i];
++        pll->channel_divider[i] = PLL_INIT_INFO[id].default_channel_divider[i];
 +    }
 +}
 +
-+static void pll_src_update(void *opaque, ClockEvent event)
-+{
-+    RccPllState *s = opaque;
-+    pll_update(s);
-+}
++/* Clock mux init info */
++typedef struct ClockMuxInitInfo {
++    const char *name;
 +
-+static void pll_init(Object *obj)
-+{
-+    RccPllState *s = RCC_PLL(obj);
-+    size_t i;
++    uint32_t multiplier;
++    uint32_t divider;
++    bool enabled;
++    /* If this is true, the clock will not be exposed outside of the device */
++    bool hidden;
 +
-+    s->in = qdev_init_clock_in(DEVICE(s), "in",
-+                               pll_src_update, s, ClockUpdate);
++    RccClockMuxSource src_mapping[RCC_NUM_CLOCK_MUX_SRC];
++} ClockMuxInitInfo;
 +
-+    const char *names[] = {
-+        "out-p", "out-q", "out-r",
-+    };
++#define FILL_DEFAULT_FACTOR \
++    .multiplier = 1, \
++    .divider =  1
 +
-+    for (i = 0; i < RCC_NUM_CHANNEL_PLL_OUT; i++) {
-+        s->channels[i] = qdev_init_clock_out(DEVICE(s), names[i]);
-+    }
-+}
++#define FILL_DEFAULT_INIT_ENABLED \
++    FILL_DEFAULT_FACTOR, \
++    .enabled = true
 +
-+static void pll_reset_hold(Object *obj)
-+{ }
++#define FILL_DEFAULT_INIT_DISABLED \
++    FILL_DEFAULT_FACTOR, \
++    .enabled = false
 +
-+static const VMStateDescription pll_vmstate = {
-+    .name = TYPE_RCC_PLL,
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINT32(id, RccPllState),
-+        VMSTATE_CLOCK(in, RccPllState),
-+        VMSTATE_ARRAY_CLOCK(channels, RccPllState,
-+                            RCC_NUM_CHANNEL_PLL_OUT),
-+        VMSTATE_BOOL(enabled, RccPllState),
-+        VMSTATE_UINT32(vco_multiplier, RccPllState),
-+        VMSTATE_BOOL_ARRAY(channel_enabled, RccPllState, RCC_NUM_CHANNEL_PLL_OUT),
-+        VMSTATE_BOOL_ARRAY(channel_exists, RccPllState, RCC_NUM_CHANNEL_PLL_OUT),
-+        VMSTATE_UINT32_ARRAY(channel_divider, RccPllState, RCC_NUM_CHANNEL_PLL_OUT),
-+        VMSTATE_END_OF_LIST()
-+    }
++
++static const ClockMuxInitInfo CLOCK_MUX_INIT_INFO[] = {
++    [RCC_CLOCK_MUX_SYSCLK] = {
++        .name = "sysclk",
++        /* Same mapping as: CFGR_SW */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_MSI,
++            RCC_CLOCK_MUX_SRC_HSI,
++            RCC_CLOCK_MUX_SRC_HSE,
++            RCC_CLOCK_MUX_SRC_PLL,
++        },
++        .hidden = true,
++        FILL_DEFAULT_INIT_ENABLED,
++    },
++    [RCC_CLOCK_MUX_PLL_INPUT] = {
++        .name = "pll-input",
++        /* Same mapping as: PLLCFGR_PLLSRC */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_MSI,
++            RCC_CLOCK_MUX_SRC_HSI,
++            RCC_CLOCK_MUX_SRC_HSE,
++        },
++        .hidden = true,
++        FILL_DEFAULT_INIT_ENABLED,
++    },
++    [RCC_CLOCK_MUX_HCLK] = {
++        .name = "hclk",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        .hidden = true,
++        FILL_DEFAULT_INIT_ENABLED,
++    },
++    [RCC_CLOCK_MUX_PCLK1] = {
++        .name = "pclk1",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_HCLK,
++        },
++        .hidden = true,
++        FILL_DEFAULT_INIT_ENABLED,
++    },
++    [RCC_CLOCK_MUX_PCLK2] = {
++        .name = "pclk2",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_HCLK,
++        },
++        .hidden = true,
++        FILL_DEFAULT_INIT_ENABLED,
++    },
++    [RCC_CLOCK_MUX_HSE_OVER_32] = {
++        .name = "hse-divided-by-32",
++        .multiplier = 1,
++        .divider = 32,
++        .enabled = true,
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_HSE,
++        },
++        .hidden = true,
++    },
++    [RCC_CLOCK_MUX_LCD_AND_RTC_COMMON] = {
++        .name = "lcd-and-rtc-common-mux",
++        /* Same mapping as: BDCR_RTCSEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_GND,
++            RCC_CLOCK_MUX_SRC_LSE,
++            RCC_CLOCK_MUX_SRC_LSI,
++            RCC_CLOCK_MUX_SRC_HSE_OVER_32,
++        },
++        .hidden = true,
++        FILL_DEFAULT_INIT_ENABLED,
++    },
++    /* From now on, muxes with a publicly available output */
++    [RCC_CLOCK_MUX_CORTEX_REFCLK] = {
++        .name = "cortex-refclk",
++        .multiplier = 1,
++        /* REFCLK is always HCLK/8 */
++        .divider = 8,
++        .enabled = true,
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_HCLK,
++        }
++    },
++    [RCC_CLOCK_MUX_USART1] = {
++        .name = "usart1",
++        /* Same mapping as: CCIPR_USART1SEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK2,
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++            RCC_CLOCK_MUX_SRC_HSI,
++            RCC_CLOCK_MUX_SRC_LSE,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_USART2] = {
++        .name = "usart2",
++        /* Same mapping as: CCIPR_USART2SEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++            RCC_CLOCK_MUX_SRC_HSI,
++            RCC_CLOCK_MUX_SRC_LSE,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_USART3] = {
++        .name = "usart3",
++        /* Same mapping as: CCIPR_USART3SEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++            RCC_CLOCK_MUX_SRC_HSI,
++            RCC_CLOCK_MUX_SRC_LSE,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_UART4] = {
++        .name = "uart4",
++        /* Same mapping as: CCIPR_UART4SEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++            RCC_CLOCK_MUX_SRC_HSI,
++            RCC_CLOCK_MUX_SRC_LSE,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_UART5] = {
++        .name = "uart5",
++        /* Same mapping as: CCIPR_UART5SEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++            RCC_CLOCK_MUX_SRC_HSI,
++            RCC_CLOCK_MUX_SRC_LSE,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_LPUART1] = {
++        .name = "lpuart1",
++        /* Same mapping as: CCIPR_LPUART1SEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++            RCC_CLOCK_MUX_SRC_HSI,
++            RCC_CLOCK_MUX_SRC_LSE,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_I2C1] = {
++        .name = "i2c1",
++        /* Same mapping as: CCIPR_I2C1SEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++            RCC_CLOCK_MUX_SRC_HSI,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_I2C2] = {
++        .name = "i2c2",
++        /* Same mapping as: CCIPR_I2C2SEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++            RCC_CLOCK_MUX_SRC_HSI,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_I2C3] = {
++        .name = "i2c3",
++        /* Same mapping as: CCIPR_I2C3SEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++            RCC_CLOCK_MUX_SRC_HSI,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_LPTIM1] = {
++        .name = "lptim1",
++        /* Same mapping as: CCIPR_LPTIM1SEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++            RCC_CLOCK_MUX_SRC_LSI,
++            RCC_CLOCK_MUX_SRC_HSI,
++            RCC_CLOCK_MUX_SRC_LSE,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_LPTIM2] = {
++        .name = "lptim2",
++        /* Same mapping as: CCIPR_LPTIM2SEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++            RCC_CLOCK_MUX_SRC_LSI,
++            RCC_CLOCK_MUX_SRC_HSI,
++            RCC_CLOCK_MUX_SRC_LSE,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_SWPMI1] = {
++        .name = "swpmi1",
++        /* Same mapping as: CCIPR_SWPMI1SEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++            RCC_CLOCK_MUX_SRC_HSI,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_MCO] = {
++        .name = "mco",
++        /* Same mapping as: CFGR_MCOSEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++            RCC_CLOCK_MUX_SRC_MSI,
++            RCC_CLOCK_MUX_SRC_HSI,
++            RCC_CLOCK_MUX_SRC_HSE,
++            RCC_CLOCK_MUX_SRC_PLL,
++            RCC_CLOCK_MUX_SRC_LSI,
++            RCC_CLOCK_MUX_SRC_LSE,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_LSCO] = {
++        .name = "lsco",
++        /* Same mapping as: BDCR_LSCOSEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_LSI,
++            RCC_CLOCK_MUX_SRC_LSE,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_DFSDM1] = {
++        .name = "dfsdm1",
++        /* Same mapping as: CCIPR_DFSDM1SEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK2,
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_ADC] = {
++        .name = "adc",
++        /* Same mapping as: CCIPR_ADCSEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_GND,
++            RCC_CLOCK_MUX_SRC_PLLADC1,
++            RCC_CLOCK_MUX_SRC_PLLADC2,
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_CLK48] = {
++        .name = "clk48",
++        /* Same mapping as: CCIPR_CLK48SEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_GND,
++            RCC_CLOCK_MUX_SRC_PLL48M2,
++            RCC_CLOCK_MUX_SRC_PLL48M1,
++            RCC_CLOCK_MUX_SRC_MSI,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_SAI2] = {
++        .name = "sai2",
++        /* Same mapping as: CCIPR_SAI2SEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PLLSAI1,
++            RCC_CLOCK_MUX_SRC_PLLSAI2,
++            RCC_CLOCK_MUX_SRC_PLLSAI3,
++            RCC_CLOCK_MUX_SRC_SAI2_EXTCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_SAI1] = {
++        .name = "sai1",
++        /* Same mapping as: CCIPR_SAI1SEL */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PLLSAI1,
++            RCC_CLOCK_MUX_SRC_PLLSAI2,
++            RCC_CLOCK_MUX_SRC_PLLSAI3,
++            RCC_CLOCK_MUX_SRC_SAI1_EXTCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    /* From now on, these muxes only have one valid source */
++    [RCC_CLOCK_MUX_TSC] = {
++        .name = "tsc",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_CRC] = {
++        .name = "crc",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_FLASH] = {
++        .name = "flash",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_DMA2] = {
++        .name = "dma2",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_DMA1] = {
++        .name = "dma1",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_RNG] = {
++        .name = "rng",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_AES] = {
++        .name = "aes",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_OTGFS] = {
++        .name = "otgfs",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_GPIOA] = {
++        .name = "gpioa",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_GPIOB] = {
++        .name = "gpiob",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_GPIOC] = {
++        .name = "gpioc",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_GPIOD] = {
++        .name = "gpiod",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_GPIOE] = {
++        .name = "gpioe",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_GPIOF] = {
++        .name = "gpiof",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_GPIOG] = {
++        .name = "gpiog",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_GPIOH] = {
++        .name = "gpioh",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_QSPI] = {
++        .name = "qspi",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_FMC] = {
++        .name = "fmc",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_OPAMP] = {
++        .name = "opamp",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_DAC1] = {
++        .name = "dac1",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_PWR] = {
++        .name = "pwr",
++        /*
++         * PWREN is in the APB1ENR1 register,
++         * but PWR uses SYSCLK according to the clock tree.
++         */
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_SYSCLK,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_CAN1] = {
++        .name = "can1",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_SPI3] = {
++        .name = "spi3",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_SPI2] = {
++        .name = "spi2",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_WWDG] = {
++        .name = "wwdg",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_LCD] = {
++        .name = "lcd",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_LCD_AND_RTC_COMMON,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_TIM7] = {
++        .name = "tim7",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_TIM6] = {
++        .name = "tim6",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_TIM5] = {
++        .name = "tim5",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_TIM4] = {
++        .name = "tim4",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_TIM3] = {
++        .name = "tim3",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_TIM2] = {
++        .name = "tim2",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK1,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_TIM17] = {
++        .name = "tim17",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK2,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_TIM16] = {
++        .name = "tim16",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK2,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_TIM15] = {
++        .name = "tim15",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK2,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_TIM8] = {
++        .name = "tim8",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK2,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_SPI1] = {
++        .name = "spi1",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK2,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_TIM1] = {
++        .name = "tim1",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK2,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_SDMMC1] = {
++        .name = "sdmmc1",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK2,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_FW] = {
++        .name = "fw",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK2,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_SYSCFG] = {
++        .name = "syscfg",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_PCLK2,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_RTC] = {
++        .name = "rtc",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_LCD_AND_RTC_COMMON,
++        },
++        FILL_DEFAULT_INIT_DISABLED,
++    },
++    [RCC_CLOCK_MUX_CORTEX_FCLK] = {
++        .name = "cortex-fclk",
++        .src_mapping = {
++            RCC_CLOCK_MUX_SRC_HCLK,
++        },
++        FILL_DEFAULT_INIT_ENABLED,
++    },
 +};
 +
-+static void pll_class_init(ObjectClass *klass, void *data)
++static inline void set_clock_mux_init_info(RccClockMuxState *mux,
++                                           RccClockMux id)
 +{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    ResettableClass *rc = RESETTABLE_CLASS(klass);
-+
-+    rc->phases.hold = pll_reset_hold;
-+    dc->vmsd = &pll_vmstate;
++    mux->id = id;
++    mux->multiplier = CLOCK_MUX_INIT_INFO[id].multiplier;
++    mux->divider = CLOCK_MUX_INIT_INFO[id].divider;
++    mux->enabled = CLOCK_MUX_INIT_INFO[id].enabled;
++    /*
++     * Every peripheral has the first source of their source list as
++     * as their default source.
++     */
++    mux->src = 0;
 +}
 +
-+static void pll_set_vco_multiplier(RccPllState *pll, uint32_t vco_multiplier)
-+{
-+    if (pll->vco_multiplier == vco_multiplier) {
-+        return;
-+    }
-+
-+    if (vco_multiplier < 8 || vco_multiplier > 86) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+            "%s: VCO multiplier is out of bound (%u) for PLL %u\n",
-+            __func__, vco_multiplier, pll->id);
-+        return;
-+    }
-+
-+    trace_stm32l4x5_rcc_pll_set_vco_multiplier(pll->id,
-+        pll->vco_multiplier, vco_multiplier);
-+
-+    pll->vco_multiplier = vco_multiplier;
-+    pll_update(pll);
-+}
-+
-+static void pll_set_enable(RccPllState *pll, bool enabled)
-+{
-+    if (pll->enabled == enabled) {
-+        return;
-+    }
-+
-+    pll->enabled = enabled;
-+    pll_update(pll);
-+}
-+
-+static void pll_set_channel_enable(RccPllState *pll,
-+                                   PllCommonChannels channel,
-+                                   bool enabled)
-+{
-+    if (pll->channel_enabled[channel] == enabled) {
-+        return;
-+    }
-+
-+    if (enabled) {
-+        trace_stm32l4x5_rcc_pll_channel_enable(pll->id, channel);
-+    } else {
-+        trace_stm32l4x5_rcc_pll_channel_disable(pll->id, channel);
-+    }
-+
-+    pll->channel_enabled[channel] = enabled;
-+    pll_update(pll);
-+}
-+
-+static void pll_set_channel_divider(RccPllState *pll,
-+                                    PllCommonChannels channel,
-+                                    uint32_t divider)
-+{
-+    if (pll->channel_divider[channel] == divider) {
-+        return;
-+    }
-+
-+    trace_stm32l4x5_rcc_pll_set_channel_divider(pll->id,
-+        channel, pll->channel_divider[channel], divider);
-+
-+    pll->channel_divider[channel] = divider;
-+    pll_update(pll);
-+}
-+
- static void rcc_update_irq(Stm32l4x5RccState *s)
+ #endif /* HW_STM32L4X5_RCC_INTERNALS_H */
+diff --git a/hw/misc/stm32l4x5_rcc.c b/hw/misc/stm32l4x5_rcc.c
+index 9a9ea6c4702..083c0ad9ef5 100644
+--- a/hw/misc/stm32l4x5_rcc.c
++++ b/hw/misc/stm32l4x5_rcc.c
+@@ -36,7 +36,13 @@
+ #define LSE_FRQ 32768ULL
+ #define LSI_FRQ 32000ULL
+ 
+-static void clock_mux_update(RccClockMuxState *mux)
++/*
++ * Function to simply acknowledge and propagate changes in a clock mux
++ * frequency.
++ * `bypass_source` allows to bypass the period of the current source and just
++ * consider it equal to 0. This is useful during the hold phase of reset.
++ */
++static void clock_mux_update(RccClockMuxState *mux, bool bypass_source)
  {
-     if (s->cifr & CIFR_IRQ_MASK) {
-@@ -473,6 +624,11 @@ static void stm32l4x5_rcc_init(Object *obj)
+     uint64_t src_freq;
+     Clock *current_source = mux->srcs[mux->src];
+@@ -48,7 +54,7 @@ static void clock_mux_update(RccClockMuxState *mux)
+      * the clock and the divider of the mux becomes the multiplier of the
+      * clock.
+      */
+-    if (mux->enabled && mux->divider) {
++    if (!bypass_source && mux->enabled && mux->divider) {
+         freq_multiplier = mux->divider;
+     }
  
-     qdev_init_clocks(DEVICE(s), stm32l4x5_rcc_clocks);
+@@ -73,7 +79,7 @@ static void clock_mux_src_update(void *opaque, ClockEvent event)
+     const uint32_t update_src = backref - s->backref;
+     /* Only update if the clock that was updated is the current source */
+     if (update_src == s->src) {
+-        clock_mux_update(s);
++        clock_mux_update(s, false);
+     }
+ }
  
-+    for (i = 0; i < RCC_NUM_PLL; i++) {
-+        object_initialize_child(obj, "pll[*]",
-+                                &s->plls[i], TYPE_RCC_PLL);
-+    }
+@@ -95,8 +101,23 @@ static void clock_mux_init(Object *obj)
+     s->out = qdev_init_clock_out(DEVICE(s), "out");
+ }
+ 
++static void clock_mux_reset_enter(Object *obj, ResetType type)
++{
++    RccClockMuxState *s = RCC_CLOCK_MUX(obj);
++    set_clock_mux_init_info(s, s->id);
++}
 +
-     for (i = 0; i < RCC_NUM_CLOCK_MUX; i++) {
+ static void clock_mux_reset_hold(Object *obj)
+-{ }
++{
++    RccClockMuxState *s = RCC_CLOCK_MUX(obj);
++    clock_mux_update(s, true);
++}
++
++static void clock_mux_reset_exit(Object *obj)
++{
++    RccClockMuxState *s = RCC_CLOCK_MUX(obj);
++    clock_mux_update(s, false);
++}
  
-         object_initialize_child(obj, "clock[*]",
-@@ -543,6 +699,16 @@ static void stm32l4x5_rcc_realize(DeviceState *dev, Error **errp)
-             return;
+ static const VMStateDescription clock_mux_vmstate = {
+     .name = TYPE_RCC_CLOCK_MUX,
+@@ -119,7 +140,9 @@ static void clock_mux_class_init(ObjectClass *klass, void *data)
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     ResettableClass *rc = RESETTABLE_CLASS(klass);
+ 
++    rc->phases.enter = clock_mux_reset_enter;
+     rc->phases.hold = clock_mux_reset_hold;
++    rc->phases.exit = clock_mux_reset_exit;
+     dc->vmsd = &clock_mux_vmstate;
+ }
+ 
+@@ -136,7 +159,7 @@ static void clock_mux_set_enable(RccClockMuxState *mux, bool enabled)
+     }
+ 
+     mux->enabled = enabled;
+-    clock_mux_update(mux);
++    clock_mux_update(mux, false);
+ }
+ 
+ static void clock_mux_set_factor(RccClockMuxState *mux,
+@@ -150,7 +173,7 @@ static void clock_mux_set_factor(RccClockMuxState *mux,
+ 
+     mux->multiplier = multiplier;
+     mux->divider = divider;
+-    clock_mux_update(mux);
++    clock_mux_update(mux, false);
+ }
+ 
+ static void clock_mux_set_source(RccClockMuxState *mux, RccClockMuxSource src)
+@@ -161,10 +184,15 @@ static void clock_mux_set_source(RccClockMuxState *mux, RccClockMuxSource src)
+ 
+     trace_stm32l4x5_rcc_mux_set_src(mux->id, mux->src, src);
+     mux->src = src;
+-    clock_mux_update(mux);
++    clock_mux_update(mux, false);
+ }
+ 
+-static void pll_update(RccPllState *pll)
++/*
++ * Acknowledge and propagate changes in a PLL frequency.
++ * `bypass_source` allows to bypass the period of the current source and just
++ * consider it equal to 0. This is useful during the hold phase of reset.
++ */
++static void pll_update(RccPllState *pll, bool bypass_source)
+ {
+     uint64_t vco_freq, old_channel_freq, channel_freq;
+     int i;
+@@ -178,7 +206,8 @@ static void pll_update(RccPllState *pll)
          }
  
-+    for (i = 0; i < RCC_NUM_PLL; i++) {
-+        RccPllState *pll = &s->plls[i];
+         old_channel_freq = clock_get_hz(pll->channels[i]);
+-        if (!pll->enabled ||
++        if (bypass_source ||
++            !pll->enabled ||
+             !pll->channel_enabled[i] ||
+             !pll->channel_divider[i]) {
+             channel_freq = 0;
+@@ -202,7 +231,7 @@ static void pll_update(RccPllState *pll)
+ static void pll_src_update(void *opaque, ClockEvent event)
+ {
+     RccPllState *s = opaque;
+-    pll_update(s);
++    pll_update(s, false);
+ }
+ 
+ static void pll_init(Object *obj)
+@@ -222,8 +251,23 @@ static void pll_init(Object *obj)
+     }
+ }
+ 
++static void pll_reset_enter(Object *obj, ResetType type)
++{
++    RccPllState *s = RCC_PLL(obj);
++    set_pll_init_info(s, s->id);
++}
 +
-+        clock_set_source(pll->in, s->clock_muxes[RCC_CLOCK_MUX_PLL_INPUT].out);
+ static void pll_reset_hold(Object *obj)
+-{ }
++{
++    RccPllState *s = RCC_PLL(obj);
++    pll_update(s, true);
++}
 +
-+        if (!qdev_realize(DEVICE(pll), NULL, errp)) {
-+            return;
++static void pll_reset_exit(Object *obj)
++{
++    RccPllState *s = RCC_PLL(obj);
++    pll_update(s, false);
++}
+ 
+ static const VMStateDescription pll_vmstate = {
+     .name = TYPE_RCC_PLL,
+@@ -248,7 +292,9 @@ static void pll_class_init(ObjectClass *klass, void *data)
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     ResettableClass *rc = RESETTABLE_CLASS(klass);
+ 
++    rc->phases.enter = pll_reset_enter;
+     rc->phases.hold = pll_reset_hold;
++    rc->phases.exit = pll_reset_exit;
+     dc->vmsd = &pll_vmstate;
+ }
+ 
+@@ -269,7 +315,7 @@ static void pll_set_vco_multiplier(RccPllState *pll, uint32_t vco_multiplier)
+         pll->vco_multiplier, vco_multiplier);
+ 
+     pll->vco_multiplier = vco_multiplier;
+-    pll_update(pll);
++    pll_update(pll, false);
+ }
+ 
+ static void pll_set_enable(RccPllState *pll, bool enabled)
+@@ -279,7 +325,7 @@ static void pll_set_enable(RccPllState *pll, bool enabled)
+     }
+ 
+     pll->enabled = enabled;
+-    pll_update(pll);
++    pll_update(pll, false);
+ }
+ 
+ static void pll_set_channel_enable(RccPllState *pll,
+@@ -297,7 +343,7 @@ static void pll_set_channel_enable(RccPllState *pll,
+     }
+ 
+     pll->channel_enabled[channel] = enabled;
+-    pll_update(pll);
++    pll_update(pll, false);
+ }
+ 
+ static void pll_set_channel_divider(RccPllState *pll,
+@@ -312,7 +358,7 @@ static void pll_set_channel_divider(RccPllState *pll,
+         channel, pll->channel_divider[channel], divider);
+ 
+     pll->channel_divider[channel] = divider;
+-    pll_update(pll);
++    pll_update(pll, false);
+ }
+ 
+ static void rcc_update_irq(Stm32l4x5RccState *s)
+@@ -625,21 +671,79 @@ static void stm32l4x5_rcc_init(Object *obj)
+     qdev_init_clocks(DEVICE(s), stm32l4x5_rcc_clocks);
+ 
+     for (i = 0; i < RCC_NUM_PLL; i++) {
+-        object_initialize_child(obj, "pll[*]",
++        object_initialize_child(obj, PLL_INIT_INFO[i].name,
+                                 &s->plls[i], TYPE_RCC_PLL);
++        set_pll_init_info(&s->plls[i], i);
+     }
+ 
+     for (i = 0; i < RCC_NUM_CLOCK_MUX; i++) {
++        char *alias;
+ 
+-        object_initialize_child(obj, "clock[*]",
++        object_initialize_child(obj, CLOCK_MUX_INIT_INFO[i].name,
+                                 &s->clock_muxes[i],
+                                 TYPE_RCC_CLOCK_MUX);
++        set_clock_mux_init_info(&s->clock_muxes[i], i);
+ 
++        if (!CLOCK_MUX_INIT_INFO[i].hidden) {
++            /* Expose muxes output as RCC outputs */
++            alias = g_strdup_printf("%s-out", CLOCK_MUX_INIT_INFO[i].name);
++            qdev_alias_clock(DEVICE(&s->clock_muxes[i]), "out", DEVICE(obj), alias);
++            g_free(alias);
 +        }
-+    }
+     }
+ 
+     s->gnd = clock_new(obj, "gnd");
+ }
+ 
++static void connect_mux_sources(Stm32l4x5RccState *s,
++                                RccClockMuxState *mux,
++                                const RccClockMuxSource *clk_mapping)
++{
++    size_t i;
 +
++    Clock * const CLK_SRC_MAPPING[] = {
++        [RCC_CLOCK_MUX_SRC_GND] = s->gnd,
++        [RCC_CLOCK_MUX_SRC_HSI] = s->hsi16_rc,
++        [RCC_CLOCK_MUX_SRC_HSE] = s->hse,
++        [RCC_CLOCK_MUX_SRC_MSI] = s->msi_rc,
++        [RCC_CLOCK_MUX_SRC_LSI] = s->lsi_rc,
++        [RCC_CLOCK_MUX_SRC_LSE] = s->lse_crystal,
++        [RCC_CLOCK_MUX_SRC_SAI1_EXTCLK] = s->sai1_extclk,
++        [RCC_CLOCK_MUX_SRC_SAI2_EXTCLK] = s->sai2_extclk,
++        [RCC_CLOCK_MUX_SRC_PLL] =
++            s->plls[RCC_PLL_PLL].channels[RCC_PLL_CHANNEL_PLLCLK],
++        [RCC_CLOCK_MUX_SRC_PLLSAI1] =
++            s->plls[RCC_PLL_PLLSAI1].channels[RCC_PLLSAI1_CHANNEL_PLLSAI1CLK],
++        [RCC_CLOCK_MUX_SRC_PLLSAI2] =
++            s->plls[RCC_PLL_PLLSAI2].channels[RCC_PLLSAI2_CHANNEL_PLLSAI2CLK],
++        [RCC_CLOCK_MUX_SRC_PLLSAI3] =
++            s->plls[RCC_PLL_PLL].channels[RCC_PLL_CHANNEL_PLLSAI3CLK],
++        [RCC_CLOCK_MUX_SRC_PLL48M1] =
++            s->plls[RCC_PLL_PLL].channels[RCC_PLL_CHANNEL_PLL48M1CLK],
++        [RCC_CLOCK_MUX_SRC_PLL48M2] =
++            s->plls[RCC_PLL_PLLSAI1].channels[RCC_PLLSAI1_CHANNEL_PLL48M2CLK],
++        [RCC_CLOCK_MUX_SRC_PLLADC1] =
++            s->plls[RCC_PLL_PLLSAI1].channels[RCC_PLLSAI1_CHANNEL_PLLADC1CLK],
++        [RCC_CLOCK_MUX_SRC_PLLADC2] =
++            s->plls[RCC_PLL_PLLSAI2] .channels[RCC_PLLSAI2_CHANNEL_PLLADC2CLK],
++        [RCC_CLOCK_MUX_SRC_SYSCLK] = s->clock_muxes[RCC_CLOCK_MUX_SYSCLK].out,
++        [RCC_CLOCK_MUX_SRC_HCLK] = s->clock_muxes[RCC_CLOCK_MUX_HCLK].out,
++        [RCC_CLOCK_MUX_SRC_PCLK1] = s->clock_muxes[RCC_CLOCK_MUX_PCLK1].out,
++        [RCC_CLOCK_MUX_SRC_PCLK2] = s->clock_muxes[RCC_CLOCK_MUX_PCLK2].out,
++        [RCC_CLOCK_MUX_SRC_HSE_OVER_32] = s->clock_muxes[RCC_CLOCK_MUX_HSE_OVER_32].out,
++        [RCC_CLOCK_MUX_SRC_LCD_AND_RTC_COMMON] =
++            s->clock_muxes[RCC_CLOCK_MUX_LCD_AND_RTC_COMMON].out,
++    };
++
++    assert(ARRAY_SIZE(CLK_SRC_MAPPING) == RCC_CLOCK_MUX_SRC_NUMBER);
++
++    for (i = 0; i < RCC_NUM_CLOCK_MUX_SRC; i++) {
++        RccClockMuxSource mapping = clk_mapping[i];
++        clock_set_source(mux->srcs[i], CLK_SRC_MAPPING[mapping]);
++    }
++}
++
++
+ static const VMStateDescription vmstate_stm32l4x5_rcc = {
+     .name = TYPE_STM32L4X5_RCC,
+     .version_id = 1,
+@@ -712,11 +816,17 @@ static void stm32l4x5_rcc_realize(DeviceState *dev, Error **errp)
      for (i = 0; i < RCC_NUM_CLOCK_MUX; i++) {
          RccClockMuxState *clock_mux = &s->clock_muxes[i];
  
-@@ -563,6 +729,10 @@ static void stm32l4x5_rcc_realize(DeviceState *dev, Error **errp)
-     clock_mux_set_source(&s->clock_muxes[0], RCC_CLOCK_MUX_SRC_GND);
-     clock_mux_set_enable(&s->clock_muxes[0], true);
-     clock_mux_set_factor(&s->clock_muxes[0], 1, 1);
-+    pll_set_channel_divider(&s->plls[0], 0, 1);
-+    pll_set_enable(&s->plls[0], true);
-+    pll_set_channel_enable(&s->plls[0], 0, true);
-+    pll_set_vco_multiplier(&s->plls[0], 1);
- }
- 
- static Property stm32l4x5_rcc_properties[] = {
-@@ -600,6 +770,12 @@ static const TypeInfo stm32l4x5_rcc_types[] = {
-         .instance_size = sizeof(RccClockMuxState),
-         .instance_init = clock_mux_init,
-         .class_init = clock_mux_class_init,
-+    }, {
-+        .name = TYPE_RCC_PLL,
-+        .parent = TYPE_DEVICE,
-+        .instance_size = sizeof(RccPllState),
-+        .instance_init = pll_init,
-+        .class_init = pll_class_init,
++        connect_mux_sources(s, clock_mux, CLOCK_MUX_INIT_INFO[i].src_mapping);
++
+         if (!qdev_realize(DEVICE(clock_mux), NULL, errp)) {
+             return;
+         }
      }
- };
  
-diff --git a/hw/misc/trace-events b/hw/misc/trace-events
-index 4b97641475b..7cab1d5cb50 100644
---- a/hw/misc/trace-events
-+++ b/hw/misc/trace-events
-@@ -182,6 +182,11 @@ stm32l4x5_rcc_mux_disable(uint32_t mux_id) "RCC: Mux %d disabled"
- stm32l4x5_rcc_mux_set_factor(uint32_t mux_id, uint32_t old_multiplier, uint32_t new_multiplier, uint32_t old_divider, uint32_t new_divider) "RCC: Mux %d factor changed: multiplier (%u -> %u), divider (%u -> %u)"
- stm32l4x5_rcc_mux_set_src(uint32_t mux_id, uint32_t old_src, uint32_t new_src) "RCC: Mux %d source changed: from %u to %u"
- stm32l4x5_rcc_mux_update(uint32_t mux_id, uint32_t src, uint64_t src_freq, uint32_t multiplier, uint32_t divider) "RCC: Mux %d src %d update: src_freq %" PRIu64 " multiplier %" PRIu32 " divider %" PRIu32
-+stm32l4x5_rcc_pll_set_vco_multiplier(uint32_t pll_id, uint32_t old_multiplier, uint32_t new_multiplier) "RCC: PLL %u: vco_multiplier changed (%u -> %u)"
-+stm32l4x5_rcc_pll_channel_enable(uint32_t pll_id, uint32_t channel_id) "RCC: PLL %u, channel %u enabled"
-+stm32l4x5_rcc_pll_channel_disable(uint32_t pll_id, uint32_t channel_id) "RCC: PLL %u, channel %u disabled"
-+stm32l4x5_rcc_pll_set_channel_divider(uint32_t pll_id, uint32_t channel_id, uint32_t old_divider, uint32_t new_divider) "RCC: PLL %u, channel %u: divider changed (%u -> %u)"
-+stm32l4x5_rcc_pll_update(uint32_t pll_id, uint32_t channel_id, uint64_t vco_freq, uint64_t old_freq, uint64_t new_freq) "RCC: PLL %d channel %d update: vco_freq %" PRIu64 " old_freq %" PRIu64 " new_freq %" PRIu64
++    /*
++     * Start clocks after everything is connected
++     * to propagate the frequencies along the tree.
++     */
+     clock_update_hz(s->msi_rc, MSI_DEFAULT_FRQ);
+     clock_update_hz(s->sai1_extclk, s->sai1_extclk_frequency);
+     clock_update_hz(s->sai2_extclk, s->sai2_extclk_frequency);
+@@ -750,6 +860,7 @@ static void stm32l4x5_rcc_class_init(ObjectClass *klass, void *data)
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     ResettableClass *rc = RESETTABLE_CLASS(klass);
  
- # tz-mpc.c
- tz_mpc_reg_read(uint32_t offset, uint64_t data, unsigned size) "TZ MPC regs read: offset 0x%x data 0x%" PRIx64 " size %u"
++    assert(ARRAY_SIZE(CLOCK_MUX_INIT_INFO) == RCC_NUM_CLOCK_MUX);
+ 
+     rc->phases.hold = stm32l4x5_rcc_reset_hold;
+     device_class_set_props(dc, stm32l4x5_rcc_properties);
 -- 
 2.34.1
 
