@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B5D871CEC
+	by mail.lfdr.de (Postfix) with ESMTPS id 2541B871CEB
 	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 12:07:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhSdN-0007va-Jm; Tue, 05 Mar 2024 06:06:57 -0500
+	id 1rhSdV-0008LZ-6u; Tue, 05 Mar 2024 06:07:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rhSdB-0007kJ-AM
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 06:06:46 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rhSd2-0002lv-KG
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rhSdB-0007kI-A7
  for qemu-devel@nongnu.org; Tue, 05 Mar 2024 06:06:45 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-563c595f968so8191737a12.0
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 03:06:36 -0800 (PST)
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rhSd8-0002mq-6L
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 06:06:45 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-563d56ee65cso8319046a12.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 03:06:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709636794; x=1710241594; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709636800; x=1710241600; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YcMZ2wZGvgIXnfKqMdotL5RtUlqFDTHW5fA4eDcdqEc=;
- b=CjnwW2QLx3Djf0SsoP0rzi7iAFmrQb5TNCVC5zHA3jkvm++aXjmOfki/i10wA1bvbn
- SHJmvnEirX61CQ9q7KnyxvasTSp1RvhnqkSC+NhD406daZTcB9G2HzVmSPFbQe6fErfN
- e+JF0Kb1WArODkOrS8Pfayjb6/Qh0Q2eRDzJ1WKm2E2uZRvmRDa41PY4t8YzOblUl6ND
- 6l8xx89/BA7HToTey8RFqgmpJ2kIzOHwKoCSSUHIGxRzy/+D4vEcYA/mwOjN39II375n
- sxQDZ5Ike23TVbswhPwQ74ykFNo0uDgFtCxNXBsgri1V7FDww0e7GqxAWkBahkJloymV
- Mwfw==
+ bh=XeVy2+vY4lJTRcgog7P6iRUA3ib0rnR15yoPCfgtNoI=;
+ b=WopqH3afYcbBjCiLq71Wf/tQ/cNW5PR4plpJCSK9x0aF4/2xHLVqS3WVzEF8xs32j6
+ aaSrmqG1VBHzr8CKODbcx1oKwwXqwy78cEy3HuuD61ZTNMdmHnHtTlWTrgaXLkfEBRSq
+ l+4BQSxw8BG2iyBPJlYUbzxPb4h7Aj+rIXhHjTmEvCox9rfbLUlsOh6aNRgM1i/G6iQU
+ 0KpxHB2k1FSDd2+Z0yydto9cUokNd0p5zWFVqruE+saqak/IBieLOYl68seWaHiM/QGD
+ oNnGC15WdogtHmEQCMeyd/TbRjXCgIaI2ZtXlWCffuYtrjqRiNNiV8JlQ73xC56DDEtm
+ ndOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709636794; x=1710241594;
+ d=1e100.net; s=20230601; t=1709636800; x=1710241600;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YcMZ2wZGvgIXnfKqMdotL5RtUlqFDTHW5fA4eDcdqEc=;
- b=cvqFnvrILZ8fOwe0QuWc/CsqPu5dhV/2OG3qpjbogNQic+isYFfFh5QD7rNbsI9Bvq
- is4VOrtICIdy8s61kKUmI00nVGByd0pfjumtbDDiwDCcr8EnznH55ETSCyaKygM8+TCa
- Chtt/f4aayEPwCgjygGqS6hCcK3mtFFgrOVTC13csG7ITGsfQze2XcmjrqqHPzRsvpua
- j0msDKeodd6JjNNy3Yo/4Y9/Xxu6RScW/rsDqNX9W985NYHOdZSQ7d+Kci5u8GaYHs/q
- df22hWEfVL/0ZdPxM8vhhMW8e3SgdzSjImsuNAgLwCO5AJ3vEmDyfjlJYOtqieRtl7/j
- XfHw==
-X-Gm-Message-State: AOJu0Yw9euMNTEyGVyEpcvTxUZLn9AZ2V+tiUV8z6W8C+3IFOqU3FIxl
- JcoGPXkTFJpnjcm3dVxCU5V10SN3NIxoFs0lAITguvyVKGoDeRjmar27anDEcAF6SZP17zrpjVw
- /
-X-Google-Smtp-Source: AGHT+IExgJj8yxppa+88n0ULWmKVtXCbO9WyjJqd1fH6z0QIIYKP2FTUSoBsvuSjC6OeQqLjnGWrmg==
-X-Received: by 2002:a17:906:8301:b0:a43:dae8:d43c with SMTP id
- j1-20020a170906830100b00a43dae8d43cmr7634044ejx.32.1709636794677; 
- Tue, 05 Mar 2024 03:06:34 -0800 (PST)
+ bh=XeVy2+vY4lJTRcgog7P6iRUA3ib0rnR15yoPCfgtNoI=;
+ b=W2fOuLrsplfOvx4NtJQvCl1SeUvj4HUFRrM/sTc4mtoDw7nzuV4ZXFxp+V0OV2L6Q6
+ NirkWXjDJF0vKKyzEHFTmZkyELyEFpWlLmjlYCY17ZoT2bKAtLo0rzG/Kn8MOh1oquKT
+ n6iRIbYaWnTpSFYJGvaVPpylLugHVVcCB+tg1EKOoJOxTtljKAUnnXniy8VLBI781JAH
+ HF4S1uG8e0K4wsu6nTy9CJNtW1rYGNXpbD3oaCqaMhG9srpBf4X4Dok3PPhbpxxj6/YM
+ 3qoju8uCFM735UqWD/juPkjJHj2Nywdzto5hJADhQk2ncIblcrZj6sPJGrJ8Onx5mbEa
+ juJA==
+X-Gm-Message-State: AOJu0YztqKtp0FTLF7GKc9vzlU+d4txz5fprWXUJimPznnH5ijyKcGQv
+ sLvRM9Qkkc4yQhze5X5DhgIzYpegWXi2d/Tri5qtPJew6yp7R41oUxMp35HGS302qu/tVFlrsPV
+ C
+X-Google-Smtp-Source: AGHT+IE65o+CNs29COjLnjxOQ2jdp+Ea75ZtojotESRO6ib3nKLC0eb2uFl0+bONdGtr71gfyWSOJw==
+X-Received: by 2002:aa7:c742:0:b0:567:19df:28f with SMTP id
+ c2-20020aa7c742000000b0056719df028fmr5204895eds.18.1709636800596; 
+ Tue, 05 Mar 2024 03:06:40 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.177.70])
  by smtp.gmail.com with ESMTPSA id
- ag3-20020a1709069a8300b00a44790d06d3sm4990914ejc.71.2024.03.05.03.06.33
+ bo19-20020a0564020b3300b005653f390f77sm5653437edb.10.2024.03.05.03.06.39
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 05 Mar 2024 03:06:34 -0800 (PST)
+ Tue, 05 Mar 2024 03:06:40 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- Peter Maydell <peter.maydell@linaro.org>,
  Rene Engel <ReneEngel80@emailn.de>,
+ Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 04/12] ui/cocoa: Immediately call [-QemuCocoaView
- handleMouseEvent:buttons:]
-Date: Tue,  5 Mar 2024 12:05:59 +0100
-Message-ID: <20240305110608.21618-5-philmd@linaro.org>
+Subject: [PULL 05/12] ui/cocoa: Release specific mouse buttons
+Date: Tue,  5 Mar 2024 12:06:00 +0100
+Message-ID: <20240305110608.21618-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240305110608.21618-1-philmd@linaro.org>
 References: <20240305110608.21618-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,175 +98,105 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Instead of using mouse_event variable to tell to handle a mouse event
-later, immediately call [-QemuCocoaView handleMouseEvent:buttons:].
+ui/cocoa used to release all mouse buttons when it sees
+NSEventTypeLeftMouseUp, NSEventTypeRightMouseUp, or
+NSEventTypeOtherMouseUp, but it can instead release specific one
+according to the delivered event.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Tested-by: Rene Engel <ReneEngel80@emailn.de>
-Message-ID: <20240224-cocoa-v12-2-e89f70bdda71@daynix.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-ID: <20240224-cocoa-v12-3-e89f70bdda71@daynix.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- ui/cocoa.m | 87 +++++++++++++++++++-----------------------------------
- 1 file changed, 30 insertions(+), 57 deletions(-)
+ ui/cocoa.m | 36 +++++++++++++++---------------------
+ 1 file changed, 15 insertions(+), 21 deletions(-)
 
 diff --git a/ui/cocoa.m b/ui/cocoa.m
-index aecd60df2a..ff6486093c 100644
+index ff6486093c..e156527082 100644
 --- a/ui/cocoa.m
 +++ b/ui/cocoa.m
-@@ -807,9 +807,8 @@ - (bool) handleEventLocked:(NSEvent *)event
- {
-     /* Return true if we handled the event, false if it should be given to OSX */
-     COCOA_DEBUG("QemuCocoaView: handleEvent\n");
--    int buttons = 0;
-+    InputButton button;
-     int keycode = 0;
--    bool mouse_event = false;
-     // Location of event in virtual screen coordinates
-     NSPoint p = [self screenLocationOfEvent:event];
-     NSUInteger modifiers = [event modifierFlags];
-@@ -955,7 +954,7 @@ - (bool) handleEventLocked:(NSEvent *)event
-                     }
-                     break;
-             }
--            break;
-+            return true;
-         case NSEventTypeKeyDown:
-             keycode = cocoa_keycode_to_qemu([event keyCode]);
- 
-@@ -991,7 +990,7 @@ - (bool) handleEventLocked:(NSEvent *)event
-             } else {
-                 [self handleMonitorInput: event];
-             }
--            break;
-+            return true;
-         case NSEventTypeKeyUp:
-             keycode = cocoa_keycode_to_qemu([event keyCode]);
- 
-@@ -1004,7 +1003,7 @@ - (bool) handleEventLocked:(NSEvent *)event
-             if (qemu_console_is_graphic(NULL)) {
-                 qkbd_state_key_event(kbd, keycode, false);
-             }
--            break;
-+            return true;
-         case NSEventTypeMouseMoved:
-             if (isAbsoluteEnabled) {
-                 // Cursor re-entered into a window might generate events bound to screen coordinates
-@@ -1020,34 +1019,20 @@ - (bool) handleEventLocked:(NSEvent *)event
+@@ -103,7 +103,6 @@ static void cocoa_switch(DisplayChangeListener *dcl,
+ static DisplayChangeListener dcl = {
+     .ops = &dcl_ops,
+ };
+-static int last_buttons;
+ static int cursor_hide = 1;
+ static int left_command_key_enabled = 1;
+ static bool swap_opt_cmd;
+@@ -1019,19 +1018,19 @@ - (bool) handleEventLocked:(NSEvent *)event
                      }
                  }
              }
--            mouse_event = true;
--            break;
-+            return [self handleMouseEvent:event buttons:0];
+-            return [self handleMouseEvent:event buttons:0];
++            return [self handleMouseEvent:event];
          case NSEventTypeLeftMouseDown:
--            buttons |= MOUSE_EVENT_LBUTTON;
--            mouse_event = true;
--            break;
-+            return [self handleMouseEvent:event buttons:MOUSE_EVENT_LBUTTON];
+-            return [self handleMouseEvent:event buttons:MOUSE_EVENT_LBUTTON];
++            return [self handleMouseEvent:event button:INPUT_BUTTON_LEFT down:true];
          case NSEventTypeRightMouseDown:
--            buttons |= MOUSE_EVENT_RBUTTON;
--            mouse_event = true;
--            break;
-+            return [self handleMouseEvent:event buttons:MOUSE_EVENT_RBUTTON];
+-            return [self handleMouseEvent:event buttons:MOUSE_EVENT_RBUTTON];
++            return [self handleMouseEvent:event button:INPUT_BUTTON_RIGHT down:true];
          case NSEventTypeOtherMouseDown:
--            buttons |= MOUSE_EVENT_MBUTTON;
--            mouse_event = true;
--            break;
-+            return [self handleMouseEvent:event buttons:MOUSE_EVENT_MBUTTON];
+-            return [self handleMouseEvent:event buttons:MOUSE_EVENT_MBUTTON];
++            return [self handleMouseEvent:event button:INPUT_BUTTON_MIDDLE down:true];
          case NSEventTypeLeftMouseDragged:
--            buttons |= MOUSE_EVENT_LBUTTON;
--            mouse_event = true;
--            break;
-+            return [self handleMouseEvent:event buttons:MOUSE_EVENT_LBUTTON];
+-            return [self handleMouseEvent:event buttons:MOUSE_EVENT_LBUTTON];
++            return [self handleMouseEvent:event button:INPUT_BUTTON_LEFT down:true];
          case NSEventTypeRightMouseDragged:
--            buttons |= MOUSE_EVENT_RBUTTON;
--            mouse_event = true;
--            break;
-+            return [self handleMouseEvent:event buttons:MOUSE_EVENT_RBUTTON];
+-            return [self handleMouseEvent:event buttons:MOUSE_EVENT_RBUTTON];
++            return [self handleMouseEvent:event button:INPUT_BUTTON_RIGHT down:true];
          case NSEventTypeOtherMouseDragged:
--            buttons |= MOUSE_EVENT_MBUTTON;
--            mouse_event = true;
--            break;
-+            return [self handleMouseEvent:event buttons:MOUSE_EVENT_MBUTTON];
+-            return [self handleMouseEvent:event buttons:MOUSE_EVENT_MBUTTON];
++            return [self handleMouseEvent:event button:INPUT_BUTTON_MIDDLE down:true];
          case NSEventTypeLeftMouseUp:
--            mouse_event = true;
              if (!isMouseGrabbed && [self screenContainsPoint:p]) {
                  /*
-                  * In fullscreen mode, the window of cocoaView may not be the
-@@ -1058,53 +1043,41 @@ - (bool) handleEventLocked:(NSEvent *)event
+@@ -1043,11 +1042,11 @@ - (bool) handleEventLocked:(NSEvent *)event
                      [self grabMouse];
                  }
              }
--            break;
-+            return [self handleMouseEvent:event buttons:0];
+-            return [self handleMouseEvent:event buttons:0];
++            return [self handleMouseEvent:event button:INPUT_BUTTON_LEFT down:false];
          case NSEventTypeRightMouseUp:
--            mouse_event = true;
--            break;
-+            return [self handleMouseEvent:event buttons:0];
+-            return [self handleMouseEvent:event buttons:0];
++            return [self handleMouseEvent:event button:INPUT_BUTTON_RIGHT down:false];
          case NSEventTypeOtherMouseUp:
--            mouse_event = true;
--            break;
-+            return [self handleMouseEvent:event buttons:0];
+-            return [self handleMouseEvent:event buttons:0];
++            return [self handleMouseEvent:event button:INPUT_BUTTON_MIDDLE down:false];
          case NSEventTypeScrollWheel:
              /*
               * Send wheel events to the guest regardless of window focus.
-              * This is in-line with standard Mac OS X UI behaviour.
-              */
- 
--            /*
--             * We shouldn't have got a scroll event when deltaY and delta Y
--             * are zero, hence no harm in dropping the event
--             */
--            if ([event deltaY] != 0 || [event deltaX] != 0) {
-             /* Determine if this is a scroll up or scroll down event */
--                if ([event deltaY] != 0) {
--                  buttons = ([event deltaY] > 0) ?
-+            if ([event deltaY] != 0) {
-+                button = ([event deltaY] > 0) ?
-                     INPUT_BUTTON_WHEEL_UP : INPUT_BUTTON_WHEEL_DOWN;
--                } else if ([event deltaX] != 0) {
--                  buttons = ([event deltaX] > 0) ?
-+            } else if ([event deltaX] != 0) {
-+                button = ([event deltaX] > 0) ?
-                     INPUT_BUTTON_WHEEL_LEFT : INPUT_BUTTON_WHEEL_RIGHT;
--                }
--
--                qemu_input_queue_btn(dcl.con, buttons, true);
--                qemu_input_event_sync();
--                qemu_input_queue_btn(dcl.con, buttons, false);
--                qemu_input_event_sync();
-+            } else {
-+                /*
-+                 * We shouldn't have got a scroll event when deltaY and delta Y
-+                 * are zero, hence no harm in dropping the event
-+                 */
-+                return true;
-             }
- 
--            /*
--             * Since deltaX/deltaY also report scroll wheel events we prevent mouse
--             * movement code from executing.
--             */
--            mouse_event = false;
--            break;
-+            qemu_input_queue_btn(dcl.con, button, true);
-+            qemu_input_event_sync();
-+            qemu_input_queue_btn(dcl.con, button, false);
-+            qemu_input_event_sync();
-+
-+            return true;
-         default:
-             return false;
+@@ -1080,7 +1079,7 @@ - (bool) handleEventLocked:(NSEvent *)event
      }
--
--    if (mouse_event) {
--        return [self handleMouseEvent:event buttons:buttons];
--    }
--    return true;
  }
  
- - (bool) handleMouseEvent:(NSEvent *)event buttons:(uint32_t)buttons
+-- (bool) handleMouseEvent:(NSEvent *)event buttons:(uint32_t)buttons
++- (bool) handleMouseEvent:(NSEvent *)event button:(InputButton)button down:(bool)down
+ {
+     /* Don't send button events to the guest unless we've got a
+      * mouse grab or window focus. If we have neither then this event
+@@ -1089,17 +1088,12 @@ - (bool) handleMouseEvent:(NSEvent *)event buttons:(uint32_t)buttons
+      * call below. We definitely don't want to pass that click through
+      * to the guest.
+      */
+-    if ((isMouseGrabbed || [[self window] isKeyWindow]) &&
+-        (last_buttons != buttons)) {
+-        static uint32_t bmap[INPUT_BUTTON__MAX] = {
+-            [INPUT_BUTTON_LEFT]       = MOUSE_EVENT_LBUTTON,
+-            [INPUT_BUTTON_MIDDLE]     = MOUSE_EVENT_MBUTTON,
+-            [INPUT_BUTTON_RIGHT]      = MOUSE_EVENT_RBUTTON
+-        };
+-        qemu_input_update_buttons(dcl.con, bmap, last_buttons, buttons);
+-        last_buttons = buttons;
++    if (!isMouseGrabbed && ![[self window] isKeyWindow]) {
++        return false;
+     }
+ 
++    qemu_input_queue_btn(dcl.con, button, down);
++
+     return [self handleMouseEvent:event];
+ }
+ 
 -- 
 2.41.0
 
