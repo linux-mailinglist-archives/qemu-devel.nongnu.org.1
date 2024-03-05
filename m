@@ -2,85 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CAB1871718
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 08:39:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D238716C9
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Mar 2024 08:30:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhPOj-0003wV-MY; Tue, 05 Mar 2024 02:39:39 -0500
+	id 1rhPF9-0003qB-2q; Tue, 05 Mar 2024 02:29:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ying.huang@intel.com>)
- id 1rhPOO-0003hp-CA
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:39:18 -0500
-Received: from mgamail.intel.com ([192.198.163.16])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rhPEn-0003lD-4P
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:29:24 -0500
+Received: from mgamail.intel.com ([198.175.65.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ying.huang@intel.com>)
- id 1rhPOK-0006I6-TI
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:39:14 -0500
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rhPEj-0004RO-34
+ for qemu-devel@nongnu.org; Tue, 05 Mar 2024 02:29:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709624353; x=1741160353;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version:content-transfer-encoding;
- bh=A28suRbme1QZpr/dRcM4LmjGdNPiTUN8DUTSDscbeIQ=;
- b=ThUFjH6k0O2cgg3CQYOCffV/kggmNRGSy7pvS6PQJTzpk33BvHGdCvJx
- brkyRr6I25hKWMaWCAA66JPMPTFEQ9Ph9Gy8gzgs08tavY3KZrbg1zNdP
- 9Dt9j0u1DvS8m6scMkmb6avR6tBBNNQS/L/IEIPKLD/xEVbXSvV0hajuE
- tHAcaiEn14Kh1SeDVWPf3dngsLYa4GYMHxqfppyxULtgRkNHhBi5dbkkq
- /0V1yCZ7sIlZ9HxBC5bP+lqs5F+T9+utmYtyhUOCETGnNH+G9jH98MsPI
- xyjkBMhwd/EMIrZ9tN5R0Z6npykr2ZWkND/Vs7Gg4o7HW/fOXkoKSQMTv Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="4742120"
+ t=1709623758; x=1741159758;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=hHWJ4wliT2zqlRJCUZ4iaQ7U9nvHb62eTPrAtUOqRB0=;
+ b=VF5oz4R6ek4z5WFljbbLqODkCPdSz7zY7H7/V+yooEBNTouSOkKIc/2l
+ nePc/wsrEypoI9sO4s99Sc7CBQCOYIzFqXAopX4dDqPcWHJbc2g0Umf46
+ 1X/q4ckpCTejJQAvu5I9qA0zON409KosiMBNa+JgUE9h833baFVcxOFW7
+ qjCNMDxgZ532ABly3a6VmgO8qxb4TKQqQpES/yQmwj1FjZ2uHUoB6r7u3
+ FKrWimeOCthE0FnMT6faInYxVKA4aHh6VGOnDfBGcQKk3ZgfNzMshaGVB
+ Xx3E+2a8c/7Sm0mYOWrYIFakgr7im+pNMhf34n4Xwrutao0kp3HpCYEhf A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="4317140"
 X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
-   d="scan'208";a="4742120"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 23:39:10 -0800
+   d="scan'208";a="4317140"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2024 23:29:13 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
-   d="scan'208";a="9185248"
-Received: from yhuang6-desk2.sh.intel.com (HELO
- yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 23:39:05 -0800
-From: "Huang, Ying" <ying.huang@intel.com>
-To: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
-Cc: Gregory Price <gourry.memverge@gmail.com>,  aneesh.kumar@linux.ibm.com,
- mhocko@suse.com,  tj@kernel.org,  john@jagalactic.com,  Eishan Mirakhur
- <emirakhur@micron.com>,  Vinicius Tavares Petrucci
- <vtavarespetr@micron.com>,  Ravis OpenSrc <Ravis.OpenSrc@micron.com>,
- Alistair Popple <apopple@nvidia.com>,  "Rafael J. Wysocki"
- <rafael@kernel.org>,  Len Brown <lenb@kernel.org>,  Andrew Morton
- <akpm@linux-foundation.org>,  Dave Jiang <dave.jiang@intel.com>,  Dan
- Williams <dan.j.williams@intel.com>,  Jonathan Cameron
- <Jonathan.Cameron@huawei.com>,  linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org,  linux-mm@kvack.org,  "Ho-Ren (Jack)
- Chuang" <horenc@vt.edu>,  "Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>,
- linux-cxl@vger.kernel.org,  qemu-devel@nongnu.org
-Subject: Re: [External] Re: [PATCH v1 0/1] Improved Memory Tier Creation for
- CPUless NUMA Nodes
-In-Reply-To: <CAKPbEqpVSsva3P2mEs5LThJZVO12u6nxuDA4KJOEhKNY811-hw@mail.gmail.com>
- (Ho-Ren Chuang's message of "Mon, 4 Mar 2024 23:10:39 -0800")
-References: <20240301082248.3456086-1-horenchuang@bytedance.com>
- <87frx6btqp.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <CAKPbEqr-0yPDW7qps24vJgVCtVOGy_Jm4kcc0FKUsL3d9APDsw@mail.gmail.com>
- <87h6hl9og3.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <CAKPbEqpVSsva3P2mEs5LThJZVO12u6nxuDA4KJOEhKNY811-hw@mail.gmail.com>
-Date: Tue, 05 Mar 2024 15:37:10 +0800
-Message-ID: <87zfvd86zd.fsf@yhuang6-desk2.ccr.corp.intel.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; d="scan'208";a="40160157"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa002.jf.intel.com with ESMTP; 04 Mar 2024 23:29:10 -0800
+Date: Tue, 5 Mar 2024 15:42:55 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Prasad Pandit <ppandit@redhat.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, devel@lists.libvirt.org,
+ qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH] hw/core/machine-smp: Remove deprecated "parameter=0" SMP
+ configurations
+Message-ID: <ZebM/2for1NVjeuc@intel.com>
+References: <20240304044510.2305849-1-zhao1.liu@linux.intel.com>
+ <CAE8KmOxvZFjtKkHiGGREx_b0QgfDjPWZ7Ex3nqAQQbiPKa_wrQ@mail.gmail.com>
+ <ZeVyKMux7Ysjo/lY@intel.com>
+ <CAE8KmOxJECe7oNkB1Oiuk-+_4J4drmdJTL2mBzQz+Zu+6XpxrQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=192.198.163.16; envelope-from=ying.huang@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAE8KmOxJECe7oNkB1Oiuk-+_4J4drmdJTL2mBzQz+Zu+6XpxrQ@mail.gmail.com>
+Received-SPF: none client-ip=198.175.65.17;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.571,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.571,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,79 +85,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com> writes:
+Hi Prasad,
 
-> On Mon, Mar 4, 2024 at 10:36=E2=80=AFPM Huang, Ying <ying.huang@intel.com=
-> wrote:
->>
->> "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com> writes:
->>
->> > On Sun, Mar 3, 2024 at 6:47=E2=80=AFPM Huang, Ying <ying.huang@intel.c=
-om> wrote:
->> >>
->> >> "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com> writes:
->> >>
->> >> > The memory tiering component in the kernel is functionally useless =
-for
->> >> > CPUless memory/non-DRAM devices like CXL1.1 type3 memory because th=
-e nodes
->> >> > are lumped together in the DRAM tier.
->> >> > https://lore.kernel.org/linux-mm/PH0PR08MB7955E9F08CCB64F23963B5C3A=
-860A@PH0PR08MB7955.namprd08.prod.outlook.com/T/
->> >>
->> >> I think that it's unfair to call it "useless".  Yes, it doesn't work =
-if
->> >> the CXL memory device are not enumerate via drivers/dax/kmem.c.  So,
->> >> please be specific about in which cases it doesn't work instead of too
->> >> general "useless".
->> >>
->> >
->> > Thank you and I didn't mean anything specific. I simply reused phrases
->> > we discussed
->> > earlier in the previous patchset. I will change them to the following =
-in v2:
->> > "At boot time, current memory tiering assigns all detected memory nodes
->> > to the same DRAM tier. This results in CPUless memory/non-DRAM devices,
->> > such as CXL1.1 type3 memory, being unable to be assigned to the
->> > correct memory tier,
->> > leading to the inability to migrate pages between different types of m=
-emory."
->> >
->> > Please see if this looks more specific.
->>
->> I don't think that the description above is accurate.  In fact, there
->> are 2 ways to enumerate the memory device,
->>
->> 1. Mark it as reserved memory (E820_TYPE_SOFT_RESERVED, etc.) in E820
->>    table or something similar.
->>
->> 2. Mark it as normal memory (E820_TYPE_RAM) in E820 table or something
->>    similar
->>
->> For 1, the memory device (including CXL memory) is onlined via
->> drivers/dax/kmem.c, so will be put in proper memory tiers.  For 2, the
->> memory device is indistinguishable with normal DRAM with current
->> implementation.  And this is what this patch is working on.
->>
->> Right?
+> On Mon, 4 Mar 2024 at 12:19, Zhao Liu <zhao1.liu@linux.intel.com> wrote:
+> > > unsigned maxcpus = config->has_maxcpus ? config->maxcpus : 0;
+> >
+> > This indicates the default maxcpus is initialized as 0 if user doesn't
+> > specifies it.
+> 
+> * 'has_maxcpus' should be set only if maxcpus > 0. If maxcpus == 0,
+> then setting 'has_maxcpus=1' seems convoluted.
+
+After simple test, if user sets maxcpus as 0, the has_maxcpus will be
+true as well...I think it's related with QAPI code generation logic.
+
+> > However, we could initialize maxcpus as other default value, e.g.,
+> >
+> >     maxcpus = config->has_maxcpus ? config->maxcpus : 1.
+> ===
+> hw/core/machine.c
+>  machine_initfn
+>     /* default to mc->default_cpus */
+>     ms->smp.cpus = mc->default_cpus;
+>     ms->smp.max_cpus = mc->default_cpus;
+> 
+>    static void machine_class_base_init(ObjectClass *oc, void *data)
+>    {
+>        MachineClass *mc = MACHINE_CLASS(oc);
+>        mc->max_cpus = mc->max_cpus ?: 1;
+>        mc->min_cpus = mc->min_cpus ?: 1;
+>        mc->default_cpus = mc->default_cpus ?: 1;
+>    }
+> ===
+> * Looking at the above bits, it seems smp.cpus & smp.max_cpus are
+> initialised to 1 via default_cpus in MachineClass object.
+
+Yes.
+
+The maxcpus I mentioned is a local virable in
+machine_parse_smp_config(), whihc is used to do sanity-check check.
+
+In machine_parse_smp_config(), when we can confirm the topology is
+valid, then ms->smp.cpus and ms->smp.max_cpus are set with the valid
+virables (cpus and maxcpus).
+
+> >>  if (config->has_maxcpus && config->maxcpus == 0)
+> > This check only wants to identify the case that user sets the 0.
+> > If the default maxcpus is initialized as 0, then (maxcpus == 0) will
+> > fail if user doesn't set maxcpus.
+> >
+> > But it is still necessary to distinguish whether maxcpus is user-set or
+> > auto-initialized.
+> 
+> * If it is set to zero(0) either by user or by auto-initialise, it is
+> still invalid, right?
+
+The latter, "auto-initialise", means user could omit "cpus" and "maxcpus"
+parameters in -smp.
+
+Even though the local variable "cpus" and "maxcpus" are initialized as
+0, eventually ms->smp.cpus and ms->smp.max_cpus will still have the
+valid values.
+
+> > If it is user-set, -smp should fail is there's invalid maxcpus/invalid
+> > topology.
+> >
+> > Otherwise, if it is auto-initialized, its value should be adjusted based
+> > on other topology components as the above calculation in (*).
+> 
+> * Why have such diverging ways?
+> * Could we simplify it as
+>    - If cpus/maxcpus==0, it is invalid, show an error and exit.
+
+Hmm, the origial behavior means if user doesn't set cpus=*/maxcpus=* in
+-smp, then QEMU will auto-complete these 2 fields.
+
+If we also return error for the above case that user omits cpus and
+maxcpus parameters, then this change the QEMU's API and we need to mark
+feature that the cpus/maxcpus parameter can be omitted as deprecated and
+remove it out. Just like what I did in this patch for zeroed-parameter
+case.
+
+I feel if there's no issue then it's not necessary to change the API. Do
+you agree?
+
+>    - If cpus/maxcpus > 0, but incorrect for topology, then
+> re-calculate the correct value based on topology parameters. If the
+> re-calculated value is still incorrect or unsatisfactory, then show an
+> error and exit.
+
+Yes, this case is right.
+
+> * Saying that user setting cpu/maxcpus=0 is invalid and
+> auto-initialising it to zero(0) is valid, is not consistent.
 >
-> Good point! How about this?:
-> "
-> When a memory device, such as CXL1.1 type3 memory, is emulated as
-> normal memory (E820_TYPE_RAM), the memory device is indistinguishable
-> from normal DRAM in terms of memory tiering with the current implementati=
-on.
-> The current memory tiering assigns all detected normal memory nodes
-> to the same DRAM tier. This results in normal memory devices with
-> different attributions being unable to be assigned to the correct memory =
-tier,
-> leading to the inability to migrate pages between different types of memo=
-ry.
-> "
 
-Looks good me!  Thanks!
+I think "auto-initialising it to zero(0)" doesn't means we re-initialize
+ms->smp.cpus and ms->smp.max_cpus as 0 (these 2 fields store actual basic
+topology information and they're defult as 1 as you said above).
 
---
-Best Regards,
-Huang, Ying
+Does my explaination address your concern? ;-)
+
+Thanks,
+Zhao
+
 
