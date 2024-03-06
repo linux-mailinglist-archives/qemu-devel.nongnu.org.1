@@ -2,48 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2635E872DD2
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 05:02:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5380872DCB
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 05:01:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhiQR-0000pK-FM; Tue, 05 Mar 2024 22:58:39 -0500
+	id 1rhiQU-0000uY-NM; Tue, 05 Mar 2024 22:58:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rhiQQ-0000ow-2q; Tue, 05 Mar 2024 22:58:38 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191])
+ id 1rhiQR-0000pL-4J; Tue, 05 Mar 2024 22:58:39 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rhiQO-0006kw-Ef; Tue, 05 Mar 2024 22:58:37 -0500
-Received: from mail.maildlp.com (unknown [172.19.88.163])
- by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4TqJWd1Zwtz1h1FS;
- Wed,  6 Mar 2024 11:56:13 +0800 (CST)
+ id 1rhiQP-0006lS-EV; Tue, 05 Mar 2024 22:58:38 -0500
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+ by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4TqJYZ54dkz1vw6t;
+ Wed,  6 Mar 2024 11:57:54 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id DF1A118001B;
- Wed,  6 Mar 2024 11:58:33 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id C3EAC1A016F;
+ Wed,  6 Mar 2024 11:58:34 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 6 Mar
- 2024 11:58:33 +0800
+ 2024 11:58:34 +0800
 To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [RFC PATCH v7 08/23] target/arm: Handle IS/FS in ISR_EL1 for NMI
-Date: Wed, 6 Mar 2024 03:57:06 +0000
-Message-ID: <20240306035721.2333531-9-ruanjinjie@huawei.com>
+Subject: [RFC PATCH v7 09/23] target/arm: Handle PSTATE.ALLINT on taking an
+ exception
+Date: Wed, 6 Mar 2024 03:57:07 +0000
+Message-ID: <20240306035721.2333531-10-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240306035721.2333531-1-ruanjinjie@huawei.com>
 References: <20240306035721.2333531-1-ruanjinjie@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.67.174.55]
 X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
  kwepemi500008.china.huawei.com (7.221.188.139)
-Received-SPF: pass client-ip=45.249.212.191;
- envelope-from=ruanjinjie@huawei.com; helo=szxga05-in.huawei.com
+Received-SPF: pass client-ip=45.249.212.32; envelope-from=ruanjinjie@huawei.com;
+ helo=szxga06-in.huawei.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
@@ -67,75 +68,38 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add IS and FS bit in ISR_EL1 and handle the read. With CPU_INTERRUPT_NMI or
-CPU_INTERRUPT_VNMI, both CPSR_I and ISR_IS must be set. With
-CPU_INTERRUPT_VFIQ and HCRX_EL2.VFNMI set, both CPSR_F and ISR_FS must be set.
+Set or clear PSTATE.ALLINT on taking an exception to ELx according to the
+SCTLR_ELx.SPINTMASK bit.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
-v7:
-- env->cp15.hcrx_el2 -> arm_hcrx_el2_eff().
-- Add Reviewed-by.
-v6:
-- Verify that HCR_EL2.VF is set before checking VFNMI.
-v4；
-- Also handle VNMI.
 v3:
-- CPU_INTERRUPT_NMI do not set FIQ, so remove it.
-- With CPU_INTERRUPT_NMI, both CPSR_I and ISR_IS must be set.
+- Add Reviewed-by.
 ---
- target/arm/cpu.h    |  2 ++
- target/arm/helper.c | 14 ++++++++++++++
- 2 files changed, 16 insertions(+)
+ target/arm/helper.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index de9446c68c..97f276559f 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1467,6 +1467,8 @@ FIELD(CPTR_EL3, TCPAC, 31, 1)
- #define CPSR_N (1U << 31)
- #define CPSR_NZCV (CPSR_N | CPSR_Z | CPSR_C | CPSR_V)
- #define CPSR_AIF (CPSR_A | CPSR_I | CPSR_F)
-+#define ISR_FS (1U << 9)
-+#define ISR_IS (1U << 10)
- 
- #define CPSR_IT (CPSR_IT_0_1 | CPSR_IT_2_7)
- #define CACHED_CPSR_BITS (CPSR_T | CPSR_AIF | CPSR_GE | CPSR_IT | CPSR_Q \
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 7cdc90e9e3..15f72fa425 100644
+index 15f72fa425..39e76c76ee 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -2018,15 +2018,29 @@ static uint64_t isr_read(CPUARMState *env, const ARMCPRegInfo *ri)
-         if (cs->interrupt_request & CPU_INTERRUPT_VIRQ) {
-             ret |= CPSR_I;
+@@ -11540,6 +11540,15 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
          }
-+        if (cs->interrupt_request & CPU_INTERRUPT_VNMI) {
-+            ret |= ISR_IS;
-+            ret |= CPSR_I;
-+        }
-     } else {
-         if (cs->interrupt_request & CPU_INTERRUPT_HARD) {
-             ret |= CPSR_I;
-         }
-+
-+        if (cs->interrupt_request & CPU_INTERRUPT_NMI) {
-+            ret |= ISR_IS;
-+            ret |= CPSR_I;
-+        }
      }
  
-     if (hcr_el2 & HCR_FMO) {
-         if (cs->interrupt_request & CPU_INTERRUPT_VFIQ) {
-             ret |= CPSR_F;
++    if (cpu_isar_feature(aa64_nmi, cpu) &&
++        (env->cp15.sctlr_el[new_el] & SCTLR_NMI)) {
++        if (!(env->cp15.sctlr_el[new_el] & SCTLR_SPINTMASK)) {
++            new_mode |= PSTATE_ALLINT;
++        } else {
++            new_mode &= ~PSTATE_ALLINT;
++        }
++    }
 +
-+            if ((arm_hcr_el2_eff(env) & HCR_VF) &&
-+                (arm_hcrx_el2_eff(env) & HCRX_VFNMI)) {
-+                ret |= ISR_FS;
-+            }
-         }
-     } else {
-         if (cs->interrupt_request & CPU_INTERRUPT_FIQ) {
+     pstate_write(env, PSTATE_DAIF | new_mode);
+     env->aarch64 = true;
+     aarch64_restore_sp(env, new_el);
 -- 
 2.34.1
 
