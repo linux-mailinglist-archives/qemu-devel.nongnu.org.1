@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B2D6873D5C
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 18:20:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61B7C873D6C
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 18:22:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhuvz-0007zD-U7; Wed, 06 Mar 2024 12:20:03 -0500
+	id 1rhuw0-0007zm-6l; Wed, 06 Mar 2024 12:20:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rhuvu-0007la-WA
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 12:19:59 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1rhuvw-0007tv-Gv
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 12:20:00 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rhuvp-0000lx-2l
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 12:19:56 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1dcc7f4717fso70351145ad.0
- for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 09:19:51 -0800 (PST)
+ id 1rhuvs-0000nr-Tl
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 12:20:00 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1dbd32cff0bso571225ad.0
+ for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 09:19:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1709745590; x=1710350390; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1709745593; x=1710350393; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+g4D54pWhc9krlDTCdNm9ak9WWqZ2BdKgUJhackDh2M=;
- b=apapRWABxwCJ+9v5WlDnn5fpJa4ysEyE+oRIyI7S3murAHtP9NFvPEv9XZbZbyl5kJ
- ElmNrSIo1cGONcnLtZXuby9TiRWfVsigxtS+wE9wZbqY7v2X0tA0hKvB1ruddASR4+RW
- dbev+QXlhMKkzVUQ2KallJNNEyRYFtRJ8RkG0MT/Wuex5gpeDkvcXLFBL8rZ/Q4WOQJx
- +66MqRQe5kTWSRUl7922LR3/HMoIp6G0m95CrNemHuBWqEeJ48ywgBCChr4So7CKaDrY
- 8YEZbCIZI1iQpQnOvAn4s2jfeGBi4GDFiTrg+P34YH6y+6haHCNAVJlrZ+qUfdMfIMWW
- ZJcQ==
+ bh=zgYAUZpzDwP+uZDi7NubQDu0Q2WLdoEr+XBt0Nffm4I=;
+ b=cUV0Ld4iw7gu2jMqxMV6GAvqa0TI46fFTnIUi+71hq90gkbYFhcun57svMEhJ3DwoV
+ HqfRVcz0g8GPVfIyM3N7EHPq3VaGD0tyBoTYqG9qXwvquF8NXLmSjnnSIgQ1Aee+GVFT
+ 5JiiME8xb6xF48txqkcbNnGHjwXJd8/jXEuKIzquQahRSFxZiKihY7ElIoaKGT2DxmDp
+ FvRqBa1qrpMIy+tS7xTPTJFcMBYY/MkPJ62hDb56Ed5iNWfDHv1D7Z8UCObVO0tA6q9E
+ aZD4cd919b3AzcAb3WA8cY5CA8fGKvNMkVkr+K0OrEqmeZQ78FKNSxUCjQDI7tAU2i2U
+ vD0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709745590; x=1710350390;
+ d=1e100.net; s=20230601; t=1709745593; x=1710350393;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+g4D54pWhc9krlDTCdNm9ak9WWqZ2BdKgUJhackDh2M=;
- b=SqFrJy5BSa4qKPgevXuw+kOegkFhsr/Ry8WSUcA/7iGNJxo8AXSd0KkPcr02ehFo+f
- CIT5GG7S3oxZn5iZYkl1lQbF4SUwmTBSf61v8h+UG7qsFQIaHX4sC4A4SMbyIglZud0O
- Bi2houGB4iAo0JKtf9yDScdruhGQjweV6mbvdR4uLMChITHNk57dRJN0401e96Y5zYz6
- 6QVBht1PUKX1zue/G8itQDkCYpc5ZWuYZOc+ZKZTvVEYSeVGQPhskIY683kmRZbzpaVG
- r1KetDel1/Kz1BgzZpij50XXMidgPm7Quo8K9iatKYzZn8a/g2p18LtHh32ChExtnoE6
- yPAw==
-X-Gm-Message-State: AOJu0Yyql0DkiFSLqYOANbHk/lmDWyFIMa3lPJ7P5DWcLslh80wmbq/e
- Z5lq9m0YlwdH08LFOi++jbMjTJnX+dRUXYezXUSqEeNdTwsIv/g/3PDMhecZerf3rxJSPkA7pZh
- Z
-X-Google-Smtp-Source: AGHT+IHqaMbI2akp+6F/SxlZikDBh1YfurlbmhS8rotohxwLJhtuLvbIv5QtZhErWcFtWBw4m6v+rg==
-X-Received: by 2002:a17:902:a9c1:b0:1db:be98:e9a with SMTP id
- b1-20020a170902a9c100b001dbbe980e9amr5926312plr.26.1709745590030; 
- Wed, 06 Mar 2024 09:19:50 -0800 (PST)
+ bh=zgYAUZpzDwP+uZDi7NubQDu0Q2WLdoEr+XBt0Nffm4I=;
+ b=F3Gni+vMsfqxKfkgAvXVMfO0hcq19SHt8BwywvptzpiR2PZ348/FBR8KeFvI+FtOSe
+ K3UjjcUAFlTwHy5lcT7BPCwJQo7r3V0a7gQYu+TQhXy9//NaX8Nb6qNt9lCBXx+je+ym
+ zyQ6E6cNAcJdYeHQVJgWi5pctNL2LuPrFkzFln1kIqYr5N8+SHTEhHNBLU4KTC7A/Jo1
+ 5NvGw0JOQ+mG30DlZ0fyiMT5KFK1OL/4e8aPMtBN0JrmERCIV0brmcx2CFaJSJx6EhQR
+ 4hxN436eLnzCqI4wXeNjDrI2g/FAjoVdW0ZG0b0KmKkVtbG5l+iFq4gxQXXBh/ELQ22O
+ gTkg==
+X-Gm-Message-State: AOJu0YxTKRW6vvVYuJiaubHew3zlsot0XrFpBypF2h06lo4ID22cqVZr
+ c9osdh1WdIPZsdjMqYJaidFDRos3KKgDBHkdpbXEoXRwf5RwwBj0K686lJkKIjjb4ndFJawB4lp
+ 7
+X-Google-Smtp-Source: AGHT+IEg4ZG8tg7xtNs+mL5Aw4qcuVwvXDk+wXXmzMXIyi1q2qwiX3H5b5A038OfEaehmz277QA69w==
+X-Received: by 2002:a17:902:ecd0:b0:1dc:2d65:5fd1 with SMTP id
+ a16-20020a170902ecd000b001dc2d655fd1mr6951446plh.2.1709745593484; 
+ Wed, 06 Mar 2024 09:19:53 -0800 (PST)
 Received: from grind.dc1.ventanamicro.com ([177.94.15.159])
  by smtp.gmail.com with ESMTPSA id
- p17-20020a170902c71100b001dbb6fef41fsm12869712plp.257.2024.03.06.09.19.47
+ p17-20020a170902c71100b001dbb6fef41fsm12869712plp.257.2024.03.06.09.19.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Mar 2024 09:19:49 -0800 (PST)
+ Wed, 06 Mar 2024 09:19:53 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
@@ -64,24 +64,24 @@ Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v7 4/9] target/riscv/translate.c: remove 'cpu_vstart' global
-Date: Wed,  6 Mar 2024 14:19:27 -0300
-Message-ID: <20240306171932.549549-5-dbarboza@ventanamicro.com>
+Subject: [PATCH v7 5/9] target/riscv: remove 'cpu_vl' global
+Date: Wed,  6 Mar 2024 14:19:28 -0300
+Message-ID: <20240306171932.549549-6-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240306171932.549549-1-dbarboza@ventanamicro.com>
 References: <20240306171932.549549-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,35 +97,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The global is unused after recent changes.
+At this moment the global is used only in do_vsetvl(). Do a direct env
+load in do_vsetvl() to read 'vl' and remove the global.
 
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/riscv/translate.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ target/riscv/insn_trans/trans_rvv.c.inc | 2 +-
+ target/riscv/translate.c                | 3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
+diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
+index 0114a132b3..279740f147 100644
+--- a/target/riscv/insn_trans/trans_rvv.c.inc
++++ b/target/riscv/insn_trans/trans_rvv.c.inc
+@@ -157,7 +157,7 @@ static bool do_vsetvl(DisasContext *s, int rd, int rs1, TCGv s2)
+ 
+     if (rd == 0 && rs1 == 0) {
+         s1 = tcg_temp_new();
+-        tcg_gen_mov_tl(s1, cpu_vl);
++        tcg_gen_ld_tl(s1, tcg_env, offsetof(CPURISCVState, vl));
+     } else if (rs1 == 0) {
+         /* As the mask is at least one bit, RV_VLEN_MAX is >= VLMAX */
+         s1 = tcg_constant_tl(RV_VLEN_MAX);
 diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index ea5d52b2ef..3e12371887 100644
+index 3e12371887..002808895c 100644
 --- a/target/riscv/translate.c
 +++ b/target/riscv/translate.c
 @@ -38,7 +38,7 @@
  #undef  HELPER_H
  
  /* global register indices */
--static TCGv cpu_gpr[32], cpu_gprh[32], cpu_pc, cpu_vl, cpu_vstart;
-+static TCGv cpu_gpr[32], cpu_gprh[32], cpu_pc, cpu_vl;
+-static TCGv cpu_gpr[32], cpu_gprh[32], cpu_pc, cpu_vl;
++static TCGv cpu_gpr[32], cpu_gprh[32], cpu_pc;
  static TCGv_i64 cpu_fpr[32]; /* assume F and D extensions */
  static TCGv load_res;
  static TCGv load_val;
-@@ -1324,8 +1324,6 @@ void riscv_translate_init(void)
+@@ -1323,7 +1323,6 @@ void riscv_translate_init(void)
+     }
  
      cpu_pc = tcg_global_mem_new(tcg_env, offsetof(CPURISCVState, pc), "pc");
-     cpu_vl = tcg_global_mem_new(tcg_env, offsetof(CPURISCVState, vl), "vl");
--    cpu_vstart = tcg_global_mem_new(tcg_env, offsetof(CPURISCVState, vstart),
--                            "vstart");
+-    cpu_vl = tcg_global_mem_new(tcg_env, offsetof(CPURISCVState, vl), "vl");
      load_res = tcg_global_mem_new(tcg_env, offsetof(CPURISCVState, load_res),
                               "load_res");
      load_val = tcg_global_mem_new(tcg_env, offsetof(CPURISCVState, load_val),
