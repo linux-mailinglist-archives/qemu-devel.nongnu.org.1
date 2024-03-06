@@ -2,73 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 704A987416B
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 21:36:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26FFD874183
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 21:44:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhxyY-0004fB-Ll; Wed, 06 Mar 2024 15:34:54 -0500
+	id 1rhy64-0004M0-Oz; Wed, 06 Mar 2024 15:42:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rhxyD-0004Ru-KG
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 15:34:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rhxyB-0001rl-Am
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 15:34:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709757270;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qNjqP63Eeycrewa8Jj4wem7P+RbfIAVckxR+16X/ZBA=;
- b=F+j1icV96U2IAQ26hHyWMcMDjR0izQFcNTAcz/Lkj+zRxp9PxGZ52ZgCl2ywr56qLgzTUL
- /Zbv3QJMc3wkSY9OjvUsHEn4ynsyzT4lISFYLnz2WDPsBMqHIhEwdIyRgEz5Ku44M0TLF/
- ignUzm0tWL/NWhZAn899/bGnotB6Hj0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-126-XYM0yGA2Pz-HuEishwvWgw-1; Wed, 06 Mar 2024 15:34:29 -0500
-X-MC-Unique: XYM0yGA2Pz-HuEishwvWgw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7144B85A58C;
- Wed,  6 Mar 2024 20:34:28 +0000 (UTC)
-Received: from laptop.redhat.com (unknown [10.39.193.114])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0AEF637F6;
- Wed,  6 Mar 2024 20:34:24 +0000 (UTC)
-From: Eric Auger <eric.auger@redhat.com>
-To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org,
- imammedo@redhat.com, peter.maydell@linaro.org, clg@redhat.com,
- yanghliu@redhat.com, zhenzhong.duan@intel.com
-Cc: alex.williamson@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
- berrange@redhat.com
-Subject: [PATCH v7 9/9] qemu-options.hx: Document the virtio-iommu-pci aw-bits
- option
-Date: Wed,  6 Mar 2024 21:32:48 +0100
-Message-ID: <20240306203348.65776-10-eric.auger@redhat.com>
-In-Reply-To: <20240306203348.65776-1-eric.auger@redhat.com>
-References: <20240306203348.65776-1-eric.auger@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rhy62-0004Lc-PD
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 15:42:38 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rhy61-0004Mt-7k
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 15:42:38 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-412fc5f5099so1528265e9.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 12:42:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1709757755; x=1710362555; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=DPx0WKsr3WD8stnEbU6nk/HiuAb1e9AnM+Gm0M50IM4=;
+ b=K4jPZqftQBnscYizISbCv/2PzNvlC1kQ609Kohx8Qu9fxcLCfArls3NDw89uC1byFH
+ IH3zpfvDhGy/XokuirkLuAN+ExVTMk4bUBsvbETyTII5gGTLndkqSsp9YHz3CHTT1AFh
+ oNoypCP2js8vTHaF1IP6cMQV2TtQWekgPwkNxaHJ8sB6iv0CqGteFOP7kUQPTcSFu4Bx
+ TzLiNviBhNE81kMTNw9++X7tVWakBxic11HFf9hU6C7pdnr44z1cUUaYC80GOTzkvoOS
+ KLK8LWbsojsIrKAXXjIjtqQrQt2kz/4c5tjzIBEZXG9V6GfdV9GBwHnYIUKtwe4T2zPE
+ O/Yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709757755; x=1710362555;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DPx0WKsr3WD8stnEbU6nk/HiuAb1e9AnM+Gm0M50IM4=;
+ b=Cuyff/fpuDn5mFuyeKSOoxB6PhbJHyyBIC7R0HNsl1YCwLyRo9Lnun9qLrpYxPkYnT
+ IA4hEk+ccw93FdYKtNQ0ls9L9FpTrru1hPiJsyIYxxqDyGiFtt2hzYnfObNgKYDikrbd
+ eSSIV/SSmwvTAnz8Kdj4h0V8YdiE/V0+Tj1oD49Wgm/qTRWf5l6Jza85uE2eecFHUn0v
+ VYLUEEKnGPEydURz9zTd3zNwSSdPvSm4S7wAqqyec60Sho0ukGxxiqIt8Lyx/lpyJgT5
+ cxI2kXOfP2ikeLRrHS89IY6roszkaCUnQGsarQUWXAlhxCald5+8tI91UcCxbUGk1bM5
+ WfAg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX5/mYyZLfxwy6lkrbCanTmsalY4mkwy2F5w7MjHMP4C5F/1Hl2/OZqxLyPp2b/KJA9KD4t5Z3kqBgDcN2+z1MH0DjGf0c=
+X-Gm-Message-State: AOJu0YwRA5kPrOcY/9xTQ4onaFEb/Um3pJ2xkjmXoxSMvC7p0byzXtcg
+ 6rdqBXJtE34Nsx9oDMsdEzwLxDtPdABkU3AVh4FnWXRVBTxpHLZw1B4ZbsykWxY=
+X-Google-Smtp-Source: AGHT+IEJ9ILdKfidupcWR4qRrm9ea8ASr3oQgB5S3mF2qAxXsNXDlMNDxk5Csj1Ukm88AwBsFg1ApA==
+X-Received: by 2002:a05:600c:468a:b0:412:bcc9:32dc with SMTP id
+ p10-20020a05600c468a00b00412bcc932dcmr12859000wmo.31.1709757755325; 
+ Wed, 06 Mar 2024 12:42:35 -0800 (PST)
+Received: from [192.168.69.100] (vau06-h02-176-184-43-100.dsl.sta.abo.bbox.fr.
+ [176.184.43.100]) by smtp.gmail.com with ESMTPSA id
+ bg13-20020a05600c3c8d00b00412fe0eb806sm367392wmb.14.2024.03.06.12.42.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Mar 2024 12:42:34 -0800 (PST)
+Message-ID: <970fa729-46be-44e7-b882-34a87e328319@linaro.org>
+Date: Wed, 6 Mar 2024 21:42:32 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 7/9] trans_rvv.c.inc: remove redundant mark_vs_dirty()
+ calls
+Content-Language: en-US
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20240306171932.549549-1-dbarboza@ventanamicro.com>
+ <20240306171932.549549-8-dbarboza@ventanamicro.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240306171932.549549-8-dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.365,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,35 +97,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Document the new aw-bits option.
+On 6/3/24 18:19, Daniel Henrique Barboza wrote:
+> trans_vmv_v_i , trans_vfmv_v_f and the trans_##NAME macro from
+> GEN_VMV_WHOLE_TRANS() are calling mark_vs_dirty() in both branches of
+> their 'ifs'. conditionals.
+> 
+> Call it just once in the end like other functions are doing.
+> 
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> ---
+>   target/riscv/insn_trans/trans_rvv.c.inc | 11 +++--------
+>   1 file changed, 3 insertions(+), 8 deletions(-)
 
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-
----
-
-v4 -> v5
-- tweek the aw-bits option description according to Cédric's
-  suggestion
----
- qemu-options.hx | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 757df3eac0..87959ede08 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -1180,6 +1180,9 @@ SRST
-         This decides the default granule to be be exposed by the
-         virtio-iommu. If host, the granule matches the host page size.
- 
-+    ``aw-bits=val`` (val between 32 and 64, default depends on machine)
-+        This decides the address width of IOVA address space. It defaults
-+
- ERST
- 
- DEF("name", HAS_ARG, QEMU_OPTION_name,
--- 
-2.41.0
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
