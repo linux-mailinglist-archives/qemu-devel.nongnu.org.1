@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC23B8739A5
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 15:46:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54197873989
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 15:44:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhsSA-0007m0-HC; Wed, 06 Mar 2024 09:41:06 -0500
+	id 1rhsSH-00087E-6J; Wed, 06 Mar 2024 09:41:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhsS8-0007h7-Dx
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 09:41:04 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1rhsSA-0007nz-Gn
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 09:41:06 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhsS0-0001UP-HF
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 09:41:03 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-33e17fc5aceso563896f8f.0
- for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 06:40:54 -0800 (PST)
+ id 1rhsRz-0001UM-KG
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 09:41:06 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-412e80e13abso22407205e9.3
+ for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 06:40:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709736054; x=1710340854; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709736053; x=1710340853; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=M1lmVAwQWxhk52Kx07GGW6iRDF0OX21kw+KdP65AfDk=;
- b=RTvPlTHgtQYwu5QcxAuwdIdOcfLs+cThVHWD2ul8yxP3ZV1X1debIKcihOyh7hGqks
- VyZP5R8O6gfKp2mXQ9T03LuiLn052+zomz0RYOgHMpUmZ/np9+nSgauw3SnCExuKvAVo
- RC29PMnQ94yZblf3SAsvBByhJMNssJE6w66ExmKWq/frmXgjZ4Nc3zEOufnH4TA1ZeII
- MhSVUunDV25n4IoQvWN8Bd1yzYPlEu/QVbA76/N0hRdgbBQhO8+/tDR9df4abJcZNaiH
- d3NEN6VbqwHJza753ZhvmUueqJ8oQkWOV3u2eKLfilQxNkW7TkSNYQSsLXhZEGIOw+XH
- UxhA==
+ bh=ki0eBwvVPbG3uY1pFngWxP/DBMoTpIxCU09HcH4vuZs=;
+ b=ETOdF7dj7X0xKk+J4uk3g5J/goOVz2yj02glMb84J3rRiu9HzlRYbJvPiFQHbTx/n6
+ i0n+qZFmRRya/jblUBw/Nru0koTpDJOg7gMH4D8ttpAmHi87bJN4rl6yAzM5ixQQlWcT
+ gh/pvMcK3Iuc13cYIdWflbqNYRHx2LbFAdgdtJppUsGH1dSA6fQC6mP76099mcSD8+IZ
+ TpJIfCvDmh0BxBAW2qb+lus2beoVa/prcM7Mj5ljyL2NP2daoDJVivJyMs+1wl5Pyv30
+ n9hV3ykxdqYeLw7aghGPkl80xLTyERmIDYYwBVjmgywAIH8HirDhST2y+rE8H7h03tDY
+ NNew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709736054; x=1710340854;
+ d=1e100.net; s=20230601; t=1709736053; x=1710340853;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=M1lmVAwQWxhk52Kx07GGW6iRDF0OX21kw+KdP65AfDk=;
- b=wipSJGlqBQefF3ry+Uq2lIN29Cb2WBQg2B57y4E9yvoFIJFm83u+oUaHy6eeotY6ji
- pGMb0nYQfYkavJ+WwUS6KjJgOr97Q6hoZRIln7SgIUbso/S2qz4pqWKuvytczxG7Q4Uf
- bYN1HoMTasajWzH2ZXgRJ+Tjy4If8tA96dkpARZ9Sif/SqJ6G3K5/ZED1UQQ0uUy7i0J
- uFwEfiUN4mcNPSUKCyWKw3W6wFBD1c/Yc3PmT/E+529B8Ffx7LNh2TBe3d9BLKlloPMD
- wRJIaoMKqu1cL7zRhTSlwm9DIPOgXoCdfm2RNvbeYLAhMazZqhASva46XzI6SvFJxtuE
- fWSA==
-X-Gm-Message-State: AOJu0YxGMcK49H8j+G8A6mM2jOWuCi8oDrumjFSitFmCek2oDQdIqrxz
- CSjr8lwrvXTx3PT9lClugMm014c3SvcqewV6lMDlHulx97wEMM8UQUMNDUyTxEY=
-X-Google-Smtp-Source: AGHT+IEsw2v57NjebTTFet/5mGUXzIhAuzBbTabKj5dXO8wNgBW6a1sxWDKWEKFSQJtMeFIvmTtasA==
-X-Received: by 2002:a5d:4d82:0:b0:33d:f60c:53e2 with SMTP id
- b2-20020a5d4d82000000b0033df60c53e2mr5312132wru.11.1709736053824; 
- Wed, 06 Mar 2024 06:40:53 -0800 (PST)
+ bh=ki0eBwvVPbG3uY1pFngWxP/DBMoTpIxCU09HcH4vuZs=;
+ b=vy1tOogYGuXumRDtNArIDQbXfcwjWtLIkmJ4SK2IfzrGA5IPqrWwBIXPIxdwCPSp0n
+ /fObdh8knJ0RYXEw11lfqGeRKr2/0YlfCw47gyE1moIwRx2tqagxWRIi1p0jTIeZwQlq
+ Ru/4yzHLX7Jf5v9uaMJJMURIyJHv2KVRgQDJbJvQ844tuyy4JiAEbXVPK3SzkNU3KETF
+ +DvivfmVvg0kBbenOY9RIaQBbMTTMHQrxxqrqC9k+3u6W+9XMEaEajQxwNOULot/gtBX
+ 2dteBAlpF/COMH6P/GGLb0wPP4tu4N64BMhfTsfHDhAIaeku9Q8IlOZIvu1rWkWvBDde
+ Ug/w==
+X-Gm-Message-State: AOJu0YzbaYauTjDa9SV+U9MdjGB0DUkvtDEFeWARg7uc30s9X7FlDywZ
+ VveqIpGrmVDnK0ccmjBBBLTPnjaZ/V9nG1Uep1mlPCF2xUTf/BeKoy/PmsiboaY=
+X-Google-Smtp-Source: AGHT+IFMFiJzlGaul+b4YHRZqHk42rnrgAqQECslqJipcpMMvuk8aDmb/67oOp/Uv/+xbb3T3Lf2rQ==
+X-Received: by 2002:a05:600c:1911:b0:412:ca53:5ff6 with SMTP id
+ j17-20020a05600c191100b00412ca535ff6mr11424131wmq.10.1709736052944; 
+ Wed, 06 Mar 2024 06:40:52 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- bv28-20020a0560001f1c00b0033d70dd0e04sm18074128wrb.8.2024.03.06.06.40.45
+ bd12-20020a05600c1f0c00b00412fb99be59sm1043634wmb.0.2024.03.06.06.40.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Mar 2024 06:40:49 -0800 (PST)
+ Wed, 06 Mar 2024 06:40:45 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id CCB115F891;
+ by draig.lan (Postfix) with ESMTP id E550B5F94F;
  Wed,  6 Mar 2024 14:40:42 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 13/29] tests/tcg: Add two follow-fork-mode tests
-Date: Wed,  6 Mar 2024 14:40:25 +0000
-Message-Id: <20240306144041.3787188-14-alex.bennee@linaro.org>
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>
+Subject: [PULL 14/29] plugins: scoreboard API
+Date: Wed,  6 Mar 2024 14:40:26 +0000
+Message-Id: <20240306144041.3787188-15-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240306144041.3787188-1-alex.bennee@linaro.org>
 References: <20240306144041.3787188-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,182 +98,251 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Add follow-fork-mode child and and follow-fork-mode parent tests.
-Check for the obvious pitfalls, such as lingering breakpoints,
-catchpoints, and single-step mode.
+We introduce a cpu local storage, automatically managed (and extended)
+by QEMU itself. Plugin allocate a scoreboard, and don't have to deal
+with how many cpus are launched.
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20240219141628.246823-13-iii@linux.ibm.com>
+This API will be used by new inline functions but callbacks can benefit
+from this as well. This way, they can operate without a global lock for
+simple operations.
+
+At any point during execution, any scoreboard will be dimensioned with
+at least qemu_plugin_num_vcpus entries.
+
+New functions:
+- qemu_plugin_scoreboard_find
+- qemu_plugin_scoreboard_free
+- qemu_plugin_scoreboard_new
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-Id: <20240304130036.124418-2-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240305121005.3528075-14-alex.bennee@linaro.org>
+Message-Id: <20240305121005.3528075-15-alex.bennee@linaro.org>
 
-diff --git a/tests/tcg/multiarch/follow-fork-mode.c b/tests/tcg/multiarch/follow-fork-mode.c
-new file mode 100644
-index 00000000000..cb6b032b388
---- /dev/null
-+++ b/tests/tcg/multiarch/follow-fork-mode.c
-@@ -0,0 +1,56 @@
-+/*
-+ * Test GDB's follow-fork-mode.
-+ *
-+ * fork() a chain of processes.
-+ * Parents sends one byte to their children, and children return their
-+ * position in the chain, in order to prove that they survived GDB's fork()
-+ * handling.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <assert.h>
-+#include <stdlib.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
+diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
+index b3c94a34aa4..bf96d2c2aa3 100644
+--- a/include/qemu/plugin.h
++++ b/include/qemu/plugin.h
+@@ -112,6 +112,12 @@ struct qemu_plugin_insn {
+     bool mem_only;
+ };
+ 
++/* A scoreboard is an array of values, indexed by vcpu_index */
++struct qemu_plugin_scoreboard {
++    GArray *data;
++    QLIST_ENTRY(qemu_plugin_scoreboard) entry;
++};
 +
-+void break_after_fork(void)
+ /*
+  * qemu_plugin_insn allocate and cleanup functions. We don't expect to
+  * cleanup many of these structures. They are reused for each fresh
+diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+index 45e2ebc8f8f..31c468ddb2c 100644
+--- a/include/qemu/qemu-plugin.h
++++ b/include/qemu/qemu-plugin.h
+@@ -222,6 +222,8 @@ void qemu_plugin_register_vcpu_resume_cb(qemu_plugin_id_t id,
+ struct qemu_plugin_tb;
+ /** struct qemu_plugin_insn - Opaque handle for a translated instruction */
+ struct qemu_plugin_insn;
++/** struct qemu_plugin_scoreboard - Opaque handle for a scoreboard */
++struct qemu_plugin_scoreboard;
+ 
+ /**
+  * enum qemu_plugin_cb_flags - type of callback
+@@ -752,5 +754,34 @@ QEMU_PLUGIN_API
+ int qemu_plugin_read_register(struct qemu_plugin_register *handle,
+                               GByteArray *buf);
+ 
++/**
++ * qemu_plugin_scoreboard_new() - alloc a new scoreboard
++ *
++ * @element_size: size (in bytes) for one entry
++ *
++ * Returns a pointer to a new scoreboard. It must be freed using
++ * qemu_plugin_scoreboard_free.
++ */
++QEMU_PLUGIN_API
++struct qemu_plugin_scoreboard *qemu_plugin_scoreboard_new(size_t element_size);
++
++/**
++ * qemu_plugin_scoreboard_free() - free a scoreboard
++ * @score: scoreboard to free
++ */
++QEMU_PLUGIN_API
++void qemu_plugin_scoreboard_free(struct qemu_plugin_scoreboard *score);
++
++/**
++ * qemu_plugin_scoreboard_find() - get pointer to an entry of a scoreboard
++ * @score: scoreboard to query
++ * @vcpu_index: entry index
++ *
++ * Returns address of entry of a scoreboard matching a given vcpu_index. This
++ * address can be modified later if scoreboard is resized.
++ */
++QEMU_PLUGIN_API
++void *qemu_plugin_scoreboard_find(struct qemu_plugin_scoreboard *score,
++                                  unsigned int vcpu_index);
+ 
+ #endif /* QEMU_QEMU_PLUGIN_H */
+diff --git a/plugins/plugin.h b/plugins/plugin.h
+index 00b3509f708..043c740067d 100644
+--- a/plugins/plugin.h
++++ b/plugins/plugin.h
+@@ -31,6 +31,8 @@ struct qemu_plugin_state {
+      * but with the HT we avoid adding a field to CPUState.
+      */
+     GHashTable *cpu_ht;
++    QLIST_HEAD(, qemu_plugin_scoreboard) scoreboards;
++    size_t scoreboard_alloc_size;
+     DECLARE_BITMAP(mask, QEMU_PLUGIN_EV_MAX);
+     /*
+      * @lock protects the struct as well as ctx->uninstalling.
+@@ -101,4 +103,8 @@ void exec_inline_op(struct qemu_plugin_dyn_cb *cb);
+ 
+ int plugin_num_vcpus(void);
+ 
++struct qemu_plugin_scoreboard *plugin_scoreboard_new(size_t element_size);
++
++void plugin_scoreboard_free(struct qemu_plugin_scoreboard *score);
++
+ #endif /* PLUGIN_H */
+diff --git a/plugins/api.c b/plugins/api.c
+index e905e995bd6..76b2e652b9c 100644
+--- a/plugins/api.c
++++ b/plugins/api.c
+@@ -465,3 +465,22 @@ int qemu_plugin_read_register(struct qemu_plugin_register *reg, GByteArray *buf)
+ 
+     return gdb_read_register(current_cpu, buf, GPOINTER_TO_INT(reg));
+ }
++
++struct qemu_plugin_scoreboard *qemu_plugin_scoreboard_new(size_t element_size)
 +{
++    return plugin_scoreboard_new(element_size);
 +}
 +
-+int main(void)
++void qemu_plugin_scoreboard_free(struct qemu_plugin_scoreboard *score)
 +{
-+    int depth = 42, err, i, fd[2], status;
-+    pid_t child, pid;
-+    ssize_t n;
-+    char b;
++    plugin_scoreboard_free(score);
++}
 +
-+    for (i = 0; i < depth; i++) {
-+        err = pipe(fd);
-+        assert(err == 0);
-+        child = fork();
-+        break_after_fork();
-+        assert(child != -1);
-+        if (child == 0) {
-+            close(fd[1]);
-+
-+            n = read(fd[0], &b, 1);
-+            close(fd[0]);
-+            assert(n == 1);
-+            assert(b == (char)i);
-+        } else {
-+            close(fd[0]);
-+
-+            b = (char)i;
-+            n = write(fd[1], &b, 1);
-+            close(fd[1]);
-+            assert(n == 1);
-+
-+            pid = waitpid(child, &status, 0);
-+            assert(pid == child);
-+            assert(WIFEXITED(status));
-+            return WEXITSTATUS(status) - 1;
-+        }
++void *qemu_plugin_scoreboard_find(struct qemu_plugin_scoreboard *score,
++                                  unsigned int vcpu_index)
++{
++    g_assert(vcpu_index < qemu_plugin_num_vcpus());
++    /* we can't use g_array_index since entry size is not statically known */
++    char *base_ptr = score->data->data;
++    return base_ptr + vcpu_index * g_array_get_element_size(score->data);
++}
+diff --git a/plugins/core.c b/plugins/core.c
+index 2db4d31354b..63f4c6c6ce3 100644
+--- a/plugins/core.c
++++ b/plugins/core.c
+@@ -18,6 +18,7 @@
+ #include "qemu/lockable.h"
+ #include "qemu/option.h"
+ #include "qemu/plugin.h"
++#include "qemu/queue.h"
+ #include "qemu/rcu_queue.h"
+ #include "qemu/xxhash.h"
+ #include "qemu/rcu.h"
+@@ -215,6 +216,35 @@ CPUPluginState *qemu_plugin_create_vcpu_state(void)
+     return g_new0(CPUPluginState, 1);
+ }
+ 
++static void plugin_grow_scoreboards__locked(CPUState *cpu)
++{
++    if (cpu->cpu_index < plugin.scoreboard_alloc_size) {
++        return;
 +    }
 +
-+    return depth;
++    bool need_realloc = FALSE;
++    while (cpu->cpu_index >= plugin.scoreboard_alloc_size) {
++        plugin.scoreboard_alloc_size *= 2;
++        need_realloc = TRUE;
++    }
++
++
++    if (!need_realloc || QLIST_EMPTY(&plugin.scoreboards)) {
++        /* nothing to do, we just updated sizes for future scoreboards */
++        return;
++    }
++
++    /* cpus must be stopped, as tb might still use an existing scoreboard. */
++    start_exclusive();
++    struct qemu_plugin_scoreboard *score;
++    QLIST_FOREACH(score, &plugin.scoreboards, entry) {
++        g_array_set_size(score->data, plugin.scoreboard_alloc_size);
++    }
++    /* force all tb to be flushed, as scoreboard pointers were changed. */
++    tb_flush(cpu);
++    end_exclusive();
 +}
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index f11f3b084d7..979a0dd1bc2 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -106,6 +106,20 @@ run-gdbstub-catch-syscalls: catch-syscalls
- 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/catch-syscalls.py, \
- 	hitting a syscall catchpoint)
++
+ void qemu_plugin_vcpu_init_hook(CPUState *cpu)
+ {
+     bool success;
+@@ -225,6 +255,7 @@ void qemu_plugin_vcpu_init_hook(CPUState *cpu)
+     success = g_hash_table_insert(plugin.cpu_ht, &cpu->cpu_index,
+                                   &cpu->cpu_index);
+     g_assert(success);
++    plugin_grow_scoreboards__locked(cpu);
+     qemu_rec_mutex_unlock(&plugin.lock);
  
-+run-gdbstub-follow-fork-mode-child: follow-fork-mode
-+	$(call run-test, $@, $(GDB_SCRIPT) \
-+		--gdb $(GDB) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-+		--bin $< --test $(MULTIARCH_SRC)/gdbstub/follow-fork-mode-child.py, \
-+	following children on fork)
+     plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_INIT);
+@@ -578,6 +609,8 @@ static void __attribute__((__constructor__)) plugin_init(void)
+     qemu_rec_mutex_init(&plugin.lock);
+     plugin.id_ht = g_hash_table_new(g_int64_hash, g_int64_equal);
+     plugin.cpu_ht = g_hash_table_new(g_int_hash, g_int_equal);
++    QLIST_INIT(&plugin.scoreboards);
++    plugin.scoreboard_alloc_size = 16; /* avoid frequent reallocation */
+     QTAILQ_INIT(&plugin.ctxs);
+     qht_init(&plugin.dyn_cb_arr_ht, plugin_dyn_cb_arr_cmp, 16,
+              QHT_MODE_AUTO_RESIZE);
+@@ -588,3 +621,27 @@ int plugin_num_vcpus(void)
+ {
+     return plugin.num_vcpus;
+ }
 +
-+run-gdbstub-follow-fork-mode-parent: follow-fork-mode
-+	$(call run-test, $@, $(GDB_SCRIPT) \
-+		--gdb $(GDB) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-+		--bin $< --test $(MULTIARCH_SRC)/gdbstub/follow-fork-mode-parent.py, \
-+	following parents on fork)
++struct qemu_plugin_scoreboard *plugin_scoreboard_new(size_t element_size)
++{
++    struct qemu_plugin_scoreboard *score =
++        g_malloc0(sizeof(struct qemu_plugin_scoreboard));
++    score->data = g_array_new(FALSE, TRUE, element_size);
++    g_array_set_size(score->data, plugin.scoreboard_alloc_size);
 +
- else
- run-gdbstub-%:
- 	$(call skip-test, "gdbstub test $*", "need working gdb with $(patsubst -%,,$(TARGET_NAME)) support")
-@@ -113,7 +127,8 @@ endif
- EXTRA_RUNS += run-gdbstub-sha1 run-gdbstub-qxfer-auxv-read \
- 	      run-gdbstub-proc-mappings run-gdbstub-thread-breakpoint \
- 	      run-gdbstub-registers run-gdbstub-prot-none \
--	      run-gdbstub-catch-syscalls
-+	      run-gdbstub-catch-syscalls run-gdbstub-follow-fork-mode-child \
-+	      run-gdbstub-follow-fork-mode-parent
- 
- # ARM Compatible Semi Hosting Tests
- #
-diff --git a/tests/tcg/multiarch/gdbstub/follow-fork-mode-child.py b/tests/tcg/multiarch/gdbstub/follow-fork-mode-child.py
-new file mode 100644
-index 00000000000..72a6e440c08
---- /dev/null
-+++ b/tests/tcg/multiarch/gdbstub/follow-fork-mode-child.py
-@@ -0,0 +1,40 @@
-+"""Test GDB's follow-fork-mode child.
++    qemu_rec_mutex_lock(&plugin.lock);
++    QLIST_INSERT_HEAD(&plugin.scoreboards, score, entry);
++    qemu_rec_mutex_unlock(&plugin.lock);
 +
-+SPDX-License-Identifier: GPL-2.0-or-later
-+"""
-+from test_gdbstub import main, report
++    return score;
++}
 +
++void plugin_scoreboard_free(struct qemu_plugin_scoreboard *score)
++{
++    qemu_rec_mutex_lock(&plugin.lock);
++    QLIST_REMOVE(score, entry);
++    qemu_rec_mutex_unlock(&plugin.lock);
 +
-+def run_test():
-+    """Run through the tests one by one"""
-+    gdb.execute("set follow-fork-mode child")
-+    # Check that the parent breakpoints are unset.
-+    gdb.execute("break break_after_fork")
-+    # Check that the parent syscall catchpoints are unset.
-+    # Skip this check on the architectures that don't have them.
-+    have_fork_syscall = False
-+    for fork_syscall in ("fork", "clone", "clone2", "clone3"):
-+        try:
-+            gdb.execute("catch syscall {}".format(fork_syscall))
-+        except gdb.error:
-+            pass
-+        else:
-+            have_fork_syscall = True
-+    gdb.execute("continue")
-+    for i in range(42):
-+        if have_fork_syscall:
-+            # syscall entry.
-+            if i % 2 == 0:
-+                # Check that the parent single-stepping is turned off.
-+                gdb.execute("si")
-+            else:
-+                gdb.execute("continue")
-+            # syscall exit.
-+            gdb.execute("continue")
-+        # break_after_fork()
-+        gdb.execute("continue")
-+    exitcode = int(gdb.parse_and_eval("$_exitcode"))
-+    report(exitcode == 42, "{} == 42".format(exitcode))
-+
-+
-+main(run_test)
-diff --git a/tests/tcg/multiarch/gdbstub/follow-fork-mode-parent.py b/tests/tcg/multiarch/gdbstub/follow-fork-mode-parent.py
-new file mode 100644
-index 00000000000..5c2fe722088
---- /dev/null
-+++ b/tests/tcg/multiarch/gdbstub/follow-fork-mode-parent.py
-@@ -0,0 +1,16 @@
-+"""Test GDB's follow-fork-mode parent.
-+
-+SPDX-License-Identifier: GPL-2.0-or-later
-+"""
-+from test_gdbstub import main, report
-+
-+
-+def run_test():
-+    """Run through the tests one by one"""
-+    gdb.execute("set follow-fork-mode parent")
-+    gdb.execute("continue")
-+    exitcode = int(gdb.parse_and_eval("$_exitcode"))
-+    report(exitcode == 0, "{} == 0".format(exitcode))
-+
-+
-+main(run_test)
++    g_array_free(score->data, TRUE);
++    g_free(score);
++}
+diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
+index 27fe97239be..3f93e7d6b13 100644
+--- a/plugins/qemu-plugins.symbols
++++ b/plugins/qemu-plugins.symbols
+@@ -37,6 +37,9 @@
+   qemu_plugin_register_vcpu_tb_exec_inline;
+   qemu_plugin_register_vcpu_tb_trans_cb;
+   qemu_plugin_reset;
++  qemu_plugin_scoreboard_free;
++  qemu_plugin_scoreboard_find;
++  qemu_plugin_scoreboard_new;
+   qemu_plugin_start_code;
+   qemu_plugin_tb_get_insn;
+   qemu_plugin_tb_n_insns;
 -- 
 2.39.2
 
