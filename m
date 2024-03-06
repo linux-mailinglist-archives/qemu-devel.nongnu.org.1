@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E2C872EA7
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 07:13:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FBDB872EA3
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 07:13:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhkWF-0004uU-Jb; Wed, 06 Mar 2024 01:12:47 -0500
+	id 1rhkWV-000543-FI; Wed, 06 Mar 2024 01:13:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rhkVv-0004sl-Vm
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 01:12:30 -0500
-Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
+ id 1rhkW1-0004tH-Vt
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 01:12:34 -0500
+Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rhkVu-0006Es-0g
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 01:12:27 -0500
-Received: by mail-ot1-x32b.google.com with SMTP id
- 46e09a7af769-6e4f8f140c1so544025a34.2
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 22:12:25 -0800 (PST)
+ id 1rhkVx-0006F3-MO
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 01:12:33 -0500
+Received: by mail-ot1-x330.google.com with SMTP id
+ 46e09a7af769-6e4f7c0e723so588844a34.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 22:12:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709705544; x=1710310344;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709705548; x=1710310348;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=A243LVbp1AwfUXsMdD+blJLZP6SXZ8l0TiQS7QSUs3I=;
- b=0ey7GjYD8BO8VBFAWirzUhGeZBZ/g8MJ51yCQX24p7Fd927WCwnUSMY05nLb8WCQj1
- yfxPIervzMHyHMx/DDl48yCEqlMM5v+siiuVUQCZ/PeAvlxY7tolL0VLeXfcXZPCv0S1
- q1Uoyq4g0kJxYKPMs5bckO+jCGJkxIfL78aY1KjTd4X/E2RTNUQvCvckAwxt6PVtW4n4
- 80NwJZuf2/hcSE2ETsUsIa+25yBhE+2HoyImig8o683m1NAq7pcAIA9IXoXVbcV/IXLB
- 6HR9LQhI1xhHpVHGeX9ToQeLrG+HumfITVHpk3rmEt5vnJBiyLGMhMXa7xKsflL0w6gL
- ec0g==
+ :reply-to; bh=DA8YPsa0OXQme2Bi1zvzEkGMO6/tiDahixJX2f3DNcQ=;
+ b=avChtoVtUHkYyqVht28y3RfXU5US87NUqi9M/pQUnnZDK7YxYnLWqxXX7ojcN9aaji
+ bQkogFYO9T6e6WTkoKTAviA8RGP+FABLCweahu0T1JKWssh62+DPs8sfcIp2UYnts4wt
+ lXpqBZRVZtHKMy+qFghOGHCpu8R0kqQSAemT1SqtPyoU4PDTtrSzuZOyDyRU50ndBplX
+ 7YociyseNVNusW46qz2QnMdn0sqUxkyf9HVjVebp9dRxT6KFBIWu5qcJooPp3JCu5gN/
+ Oj/HIAmY81s3rCC4FBATTQHq/wPL/IXKP/i06jg6529Vp2He35Q4E+tK/38R3V3mi6E9
+ Tp6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709705544; x=1710310344;
+ d=1e100.net; s=20230601; t=1709705548; x=1710310348;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=A243LVbp1AwfUXsMdD+blJLZP6SXZ8l0TiQS7QSUs3I=;
- b=ROul20OUhvuqhcZ0sxMsTPZL9FNCkyqR4r9MVXXzMkIX42CBRU6K+BnnDjEXzqyNAn
- hJOha8vgblYKDpgFNjBdPMXdrnH5c6a88XZ0cxV5QmrPsP/GxDuKUdfbOq16KgJPvXTe
- yu7aU9qzcqYBlkq35j0HaHv6TCkrGGQoLezgcW9RjK8Q8pmdjKi4Y/olGvqe0qfcOVso
- cfxN8d6rBam0YXlZ//z2b9Af0WmPTe8nQJ7TtHbH/Lhl+xD7+HGBSK2pYYB5/yVEGggt
- EB+RqVJgur3XO95QryelTEcCE7KDt42ppM37+miPnh0ElWE3CIV7s//V8Joi5bI13Qwg
- hMKA==
-X-Gm-Message-State: AOJu0YztLm3rDVvngSzspTTrgM6FuFK9SNh7/lLEEILR8VmhlRyOZhvb
- P2U3anmegbalJ0GqU7IsgsW+dBMqvln49khp0C0CRhbyNEq34MhuzfNzC88llUg=
-X-Google-Smtp-Source: AGHT+IGIuNTAzeTjpTyz4eoSmNr4CNTwQROCJ7aTf8C06E27X0rBrChP7GI38YwD+YE4BxFZAKo95A==
-X-Received: by 2002:a05:6830:61b:b0:6e4:b891:c9eb with SMTP id
- w27-20020a056830061b00b006e4b891c9ebmr4685323oti.30.1709705544507; 
- Tue, 05 Mar 2024 22:12:24 -0800 (PST)
+ bh=DA8YPsa0OXQme2Bi1zvzEkGMO6/tiDahixJX2f3DNcQ=;
+ b=pgS7EX79kEyx2Pzo0y1kAOtF8yMnIWvfBZwqSv26pFSOxg/xnOPCKZTkDHmSr9qJVF
+ y0XMIRdW50dhRmFBKJmkMhOb7z2opC64+nAJjpxeMKBh7vtBNmwAF2NNBwJXHmOoGXff
+ jWj3EEOL20iV/vkvkxmMPKHZOSkEM5jY6854JEUk5B5hjIMFyiSbJPrVanbHRlPlqgWL
+ HCwXM0qOBrlF9ZsyEApzl4RIZakJaV1Tv4RyAAg3DpJbB9v/aJeKFAl90gIH6S5Huz/n
+ jsL8Z9ambOYMZ3wDsGCb94zADlx5iROHMtN/zIZSOsMZbaOS4PCFwd09WcoaRIGwQYCj
+ iXkg==
+X-Gm-Message-State: AOJu0YxfIkLWAmzC3zI+cOVbQmJCl92Mc7UC+jvdrKz7avOGK1S+5iZY
+ fj/Isq8LMgFvxjUWlq18duR9C+LXr5eRP5FqyhQ+LPjS9JOklWzt6THYAGUkPVU=
+X-Google-Smtp-Source: AGHT+IHwRHAzqX7ZbBLGAt6Y5El8jJrsihgD/oOojtW8gTurTLx6+1SWBKmuh7rhj41V5kljEd4/2A==
+X-Received: by 2002:a9d:750b:0:b0:6e4:f48b:c468 with SMTP id
+ r11-20020a9d750b000000b006e4f48bc468mr4446355otk.35.1709705547856; 
+ Tue, 05 Mar 2024 22:12:27 -0800 (PST)
 Received: from localhost ([157.82.206.27]) by smtp.gmail.com with UTF8SMTPSA id
- b22-20020a63cf56000000b005dc884e9f5bsm10328337pgj.38.2024.03.05.22.12.23
+ p8-20020a63e648000000b005d68962e1a7sm10224837pgj.24.2024.03.05.22.12.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Mar 2024 22:12:24 -0800 (PST)
+ Tue, 05 Mar 2024 22:12:27 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 06 Mar 2024 15:12:10 +0900
-Subject: [PATCH v3 04/19] contrib/elf2dmp: Change pa_space_create() signature
+Date: Wed, 06 Mar 2024 15:12:11 +0900
+Subject: [PATCH v3 05/19] contrib/elf2dmp: Fix error reporting style in
+ addrspace.c
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240306-elf2dmp-v3-4-d74e6c3da49c@daynix.com>
+Message-Id: <20240306-elf2dmp-v3-5-d74e6c3da49c@daynix.com>
 References: <20240306-elf2dmp-v3-0-d74e6c3da49c@daynix.com>
 In-Reply-To: <20240306-elf2dmp-v3-0-d74e6c3da49c@daynix.com>
 To: Viktor Prutyanov <viktor.prutyanov@phystech.edu>, 
  Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::32b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x32b.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::330;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x330.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,67 +92,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-pa_space_create() used to return an integer to propagate error, but
-it never fails so let it return void.
+include/qapi/error.h says:
+> We recommend
+> * bool-valued functions return true on success / false on failure,
+> ...
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- contrib/elf2dmp/addrspace.h | 2 +-
- contrib/elf2dmp/addrspace.c | 4 +---
- contrib/elf2dmp/main.c      | 5 +----
- 3 files changed, 3 insertions(+), 8 deletions(-)
+ contrib/elf2dmp/addrspace.h |  4 ++--
+ contrib/elf2dmp/addrspace.c |  8 ++++----
+ contrib/elf2dmp/main.c      | 47 +++++++++++++++++++++------------------------
+ 3 files changed, 28 insertions(+), 31 deletions(-)
 
 diff --git a/contrib/elf2dmp/addrspace.h b/contrib/elf2dmp/addrspace.h
-index 039c70c5b079..c868d6473873 100644
+index c868d6473873..2ad30a9da48a 100644
 --- a/contrib/elf2dmp/addrspace.h
 +++ b/contrib/elf2dmp/addrspace.h
-@@ -33,7 +33,7 @@ struct va_space {
-     struct pa_space *ps;
- };
- 
--int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf);
-+void pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf);
- void pa_space_destroy(struct pa_space *ps);
- 
+@@ -39,7 +39,7 @@ void pa_space_destroy(struct pa_space *ps);
  void va_space_create(struct va_space *vs, struct pa_space *ps, uint64_t dtb);
+ void va_space_set_dtb(struct va_space *vs, uint64_t dtb);
+ void *va_space_resolve(struct va_space *vs, uint64_t va);
+-int va_space_rw(struct va_space *vs, uint64_t addr,
+-        void *buf, size_t size, int is_write);
++bool va_space_rw(struct va_space *vs, uint64_t addr,
++                 void *buf, size_t size, int is_write);
+ 
+ #endif /* ADDRSPACE_H */
 diff --git a/contrib/elf2dmp/addrspace.c b/contrib/elf2dmp/addrspace.c
-index 6f608a517b1e..4c127c9b1ec4 100644
+index 4c127c9b1ec4..c995c723ae80 100644
 --- a/contrib/elf2dmp/addrspace.c
 +++ b/contrib/elf2dmp/addrspace.c
-@@ -57,7 +57,7 @@ static void pa_block_align(struct pa_block *b)
-     b->paddr += low_align;
+@@ -226,8 +226,8 @@ void *va_space_resolve(struct va_space *vs, uint64_t va)
+     return pa_space_resolve(vs->ps, pa);
  }
  
--int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
-+void pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
+-int va_space_rw(struct va_space *vs, uint64_t addr,
+-        void *buf, size_t size, int is_write)
++bool va_space_rw(struct va_space *vs, uint64_t addr,
++                 void *buf, size_t size, int is_write)
  {
-     Elf64_Half phdr_nr = elf_getphdrnum(qemu_elf->map);
-     Elf64_Phdr *phdr = elf64_getphdr(qemu_elf->map);
-@@ -87,8 +87,6 @@ int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
+     while (size) {
+         uint64_t page = addr & ELF2DMP_PFN_MASK;
+@@ -238,7 +238,7 @@ int va_space_rw(struct va_space *vs, uint64_t addr,
+ 
+         ptr = va_space_resolve(vs, addr);
+         if (!ptr) {
+-            return 1;
++            return false;
+         }
+ 
+         if (is_write) {
+@@ -252,5 +252,5 @@ int va_space_rw(struct va_space *vs, uint64_t addr,
+         addr += s;
      }
  
-     ps->block_nr = block_i;
--
 -    return 0;
++    return true;
  }
- 
- void pa_space_destroy(struct pa_space *ps)
 diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
-index 86e709e6da3a..8a71e2efd281 100644
+index 8a71e2efd281..09af39422f1e 100644
 --- a/contrib/elf2dmp/main.c
 +++ b/contrib/elf2dmp/main.c
-@@ -543,10 +543,7 @@ int main(int argc, char *argv[])
+@@ -79,9 +79,9 @@ static KDDEBUGGER_DATA64 *get_kdbg(uint64_t KernBase, struct pdb_reader *pdb,
+     bool decode = false;
+     uint64_t kwn, kwa, KdpDataBlockEncoded;
+ 
+-    if (va_space_rw(vs,
+-                KdDebuggerDataBlock + offsetof(KDDEBUGGER_DATA64, Header),
+-                &kdbg_hdr, sizeof(kdbg_hdr), 0)) {
++    if (!va_space_rw(vs,
++                     KdDebuggerDataBlock + offsetof(KDDEBUGGER_DATA64, Header),
++                     &kdbg_hdr, sizeof(kdbg_hdr), 0)) {
+         eprintf("Failed to extract KDBG header\n");
+         return NULL;
+     }
+@@ -97,8 +97,8 @@ static KDDEBUGGER_DATA64 *get_kdbg(uint64_t KernBase, struct pdb_reader *pdb,
+             return NULL;
+         }
+ 
+-        if (va_space_rw(vs, KiWaitNever, &kwn, sizeof(kwn), 0) ||
+-                va_space_rw(vs, KiWaitAlways, &kwa, sizeof(kwa), 0)) {
++        if (!va_space_rw(vs, KiWaitNever, &kwn, sizeof(kwn), 0) ||
++            !va_space_rw(vs, KiWaitAlways, &kwa, sizeof(kwa), 0)) {
+             return NULL;
+         }
+ 
+@@ -122,7 +122,7 @@ static KDDEBUGGER_DATA64 *get_kdbg(uint64_t KernBase, struct pdb_reader *pdb,
+ 
+     kdbg = g_malloc(kdbg_hdr.Size);
+ 
+-    if (va_space_rw(vs, KdDebuggerDataBlock, kdbg, kdbg_hdr.Size, 0)) {
++    if (!va_space_rw(vs, KdDebuggerDataBlock, kdbg, kdbg_hdr.Size, 0)) {
+         eprintf("Failed to extract entire KDBG\n");
+         g_free(kdbg);
+         return NULL;
+@@ -286,7 +286,7 @@ static int fill_header(WinDumpHeader64 *hdr, struct pa_space *ps,
          return 1;
      }
  
--    if (pa_space_create(&ps, &qemu_elf)) {
--        eprintf("Failed to initialize physical address space\n");
--        goto out_elf;
--    }
-+    pa_space_create(&ps, &qemu_elf);
+-    if (va_space_rw(vs, KdVersionBlock, &kvb, sizeof(kvb), 0)) {
++    if (!va_space_rw(vs, KdVersionBlock, &kvb, sizeof(kvb), 0)) {
+         eprintf("Failed to extract KdVersionBlock\n");
+         return 1;
+     }
+@@ -352,8 +352,8 @@ static void fill_context(KDDEBUGGER_DATA64 *kdbg,
+         WinContext64 ctx;
+         QEMUCPUState *s = qe->state[i];
  
-     state = qemu_elf.state[0];
-     printf("CPU #0 CR3 is 0x%016"PRIx64"\n", state->cr[3]);
+-        if (va_space_rw(vs, kdbg->KiProcessorBlock + sizeof(Prcb) * i,
+-                    &Prcb, sizeof(Prcb), 0)) {
++        if (!va_space_rw(vs, kdbg->KiProcessorBlock + sizeof(Prcb) * i,
++                         &Prcb, sizeof(Prcb), 0)) {
+             eprintf("Failed to read CPU #%d PRCB location\n", i);
+             continue;
+         }
+@@ -363,8 +363,8 @@ static void fill_context(KDDEBUGGER_DATA64 *kdbg,
+             continue;
+         }
+ 
+-        if (va_space_rw(vs, Prcb + kdbg->OffsetPrcbContext,
+-                    &Context, sizeof(Context), 0)) {
++        if (!va_space_rw(vs, Prcb + kdbg->OffsetPrcbContext,
++                         &Context, sizeof(Context), 0)) {
+             eprintf("Failed to read CPU #%d ContextFrame location\n", i);
+             continue;
+         }
+@@ -372,7 +372,7 @@ static void fill_context(KDDEBUGGER_DATA64 *kdbg,
+         printf("Filling context for CPU #%d...\n", i);
+         win_context_init_from_qemu_cpu_state(&ctx, s);
+ 
+-        if (va_space_rw(vs, Context, &ctx, sizeof(ctx), 1)) {
++        if (!va_space_rw(vs, Context, &ctx, sizeof(ctx), 1)) {
+             eprintf("Failed to fill CPU #%d context\n", i);
+             continue;
+         }
+@@ -396,8 +396,8 @@ static int pe_get_data_dir_entry(uint64_t base, void *start_addr, int idx,
+         return 1;
+     }
+ 
+-    if (va_space_rw(vs, base + dos_hdr->e_lfanew,
+-                &nt_hdrs, sizeof(nt_hdrs), 0)) {
++    if (!va_space_rw(vs, base + dos_hdr->e_lfanew,
++                     &nt_hdrs, sizeof(nt_hdrs), 0)) {
+         return 1;
+     }
+ 
+@@ -406,9 +406,7 @@ static int pe_get_data_dir_entry(uint64_t base, void *start_addr, int idx,
+         return 1;
+     }
+ 
+-    if (va_space_rw(vs,
+-                base + data_dir[idx].VirtualAddress,
+-                entry, size, 0)) {
++    if (!va_space_rw(vs, base + data_dir[idx].VirtualAddress, entry, size, 0)) {
+         return 1;
+     }
+ 
+@@ -470,9 +468,8 @@ static bool pe_check_pdb_name(uint64_t base, void *start_addr,
+         return false;
+     }
+ 
+-    if (va_space_rw(vs,
+-                base + debug_dir.AddressOfRawData,
+-                rsds, sizeof(*rsds), 0)) {
++    if (!va_space_rw(vs, base + debug_dir.AddressOfRawData,
++                     rsds, sizeof(*rsds), 0)) {
+         eprintf("Failed to resolve OMFSignatureRSDS\n");
+         return false;
+     }
+@@ -488,9 +485,9 @@ static bool pe_check_pdb_name(uint64_t base, void *start_addr,
+         return false;
+     }
+ 
+-    if (va_space_rw(vs, base + debug_dir.AddressOfRawData +
+-                offsetof(OMFSignatureRSDS, name), pdb_name, sizeof(PDB_NAME),
+-                0)) {
++    if (!va_space_rw(vs, base + debug_dir.AddressOfRawData +
++                     offsetof(OMFSignatureRSDS, name),
++                     pdb_name, sizeof(PDB_NAME), 0)) {
+         eprintf("Failed to resolve PDB name\n");
+         return false;
+     }
+@@ -556,8 +553,8 @@ int main(int argc, char *argv[])
+ 
+     printf("CPU #0 IDT is at 0x%016"PRIx64"\n", state->idt.base);
+ 
+-    if (va_space_rw(&vs, state->idt.base,
+-                &first_idt_desc, sizeof(first_idt_desc), 0)) {
++    if (!va_space_rw(&vs, state->idt.base,
++                     &first_idt_desc, sizeof(first_idt_desc), 0)) {
+         eprintf("Failed to get CPU #0 IDT[0]\n");
+         goto out_ps;
+     }
 
 -- 
 2.44.0
