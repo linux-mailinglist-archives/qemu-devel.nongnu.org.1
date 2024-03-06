@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9B4C874171
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 21:36:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE3D9874168
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 21:35:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhxyG-0004Qj-5r; Wed, 06 Mar 2024 15:34:36 -0500
+	id 1rhxyM-0004UJ-Hm; Wed, 06 Mar 2024 15:34:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rhxxy-0004HE-Cp
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 15:34:22 -0500
+ id 1rhxy2-0004Ke-9c
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 15:34:24 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rhxxw-0001pA-Tp
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 15:34:18 -0500
+ id 1rhxy0-0001q2-SN
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 15:34:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709757255;
+ s=mimecast20190719; t=1709757259;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cyZooDCSfcEkdv9/7vg+GOMr/LkugjJbT4YX/tuXRXs=;
- b=OwPcdCa51pFu4tjjlMsbWD7B2TM3wbHNJJNSAOixvxxeZ5gdA2YKUyOn/QESfi0IAdEByB
- NwtYKohN+wc39RlBwJi2wc9+2AzLk+0GKMNiQ24cDfnNyI3mIm5J+7GV6Lrvdw1l7rWvGq
- cKxFOsisT7sXD+KWkoYu6cWxefZu6+I=
+ bh=mtAnTSStkOKpy0/Q14u1Ipt8HVO4uL1e5P+fAKhJM+A=;
+ b=AeLiZPuoOWYXyytSBQRn+BwH470K02+rSsfRXzr7O3umFl7t1Fe/YKm2SFWaojz15yletS
+ ue7X06ImQ38IM2oWwwsJ5KE6HZfZ/fXZgyyKsju3aonD/cfMCglWIMRSBg8JIk9Ua8XgmP
+ euxGXh2l6mRIojQLnGae/S4dpopTdw0=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-57-JxZUE-8rOqOyEXfX2VcA_A-1; Wed,
- 06 Mar 2024 15:34:14 -0500
-X-MC-Unique: JxZUE-8rOqOyEXfX2VcA_A-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-175-rgH-kNiNO7yzoVsBvg7fUA-1; Wed,
+ 06 Mar 2024 15:34:17 -0500
+X-MC-Unique: rgH-kNiNO7yzoVsBvg7fUA-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 98D692804800;
- Wed,  6 Mar 2024 20:34:13 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6033A2804800;
+ Wed,  6 Mar 2024 20:34:17 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.39.193.114])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 30B2C3701;
- Wed,  6 Mar 2024 20:34:10 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DC9D336FF;
+ Wed,  6 Mar 2024 20:34:13 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org,
@@ -50,9 +50,10 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  yanghliu@redhat.com, zhenzhong.duan@intel.com
 Cc: alex.williamson@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
  berrange@redhat.com
-Subject: [PATCH v7 5/9] virtio-iommu: Trace domain range limits as unsigned int
-Date: Wed,  6 Mar 2024 21:32:44 +0100
-Message-ID: <20240306203348.65776-6-eric.auger@redhat.com>
+Subject: [PATCH v7 6/9] virtio-iommu: Add an option to define the input range
+ width
+Date: Wed,  6 Mar 2024 21:32:45 +0100
+Message-ID: <20240306203348.65776-7-eric.auger@redhat.com>
 In-Reply-To: <20240306203348.65776-1-eric.auger@redhat.com>
 References: <20240306203348.65776-1-eric.auger@redhat.com>
 MIME-Version: 1.0
@@ -83,28 +84,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use %u format to trace domain_range limits.
+aw-bits is a new option that allows to set the bit width of
+the input address range. This value will be used as a default for
+the device config input_range.end. By default it is set to 64 bits
+which is the current value.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
----
- hw/virtio/trace-events | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
-index 77905d1994..2350849fbd 100644
---- a/hw/virtio/trace-events
-+++ b/hw/virtio/trace-events
-@@ -111,7 +111,7 @@ virtio_iommu_device_reset(void) "reset!"
- virtio_iommu_system_reset(void) "system reset!"
- virtio_iommu_get_features(uint64_t features) "device supports features=0x%"PRIx64
- virtio_iommu_device_status(uint8_t status) "driver status = %d"
--virtio_iommu_get_config(uint64_t page_size_mask, uint64_t start, uint64_t end, uint32_t domain_start, uint32_t domain_end, uint32_t probe_size, uint8_t bypass) "page_size_mask=0x%"PRIx64" input range start=0x%"PRIx64" input range end=0x%"PRIx64" domain range start=%d domain range end=%d probe_size=0x%x bypass=0x%x"
-+virtio_iommu_get_config(uint64_t page_size_mask, uint64_t start, uint64_t end, uint32_t domain_start, uint32_t domain_end, uint32_t probe_size, uint8_t bypass) "page_size_mask=0x%"PRIx64" input range start=0x%"PRIx64" input range end=0x%"PRIx64" domain range start=%u domain range end=%u probe_size=0x%x bypass=0x%x"
- virtio_iommu_set_config(uint8_t bypass) "bypass=0x%x"
- virtio_iommu_attach(uint32_t domain_id, uint32_t ep_id) "domain=%d endpoint=%d"
- virtio_iommu_detach(uint32_t domain_id, uint32_t ep_id) "domain=%d endpoint=%d"
+---
+
+v1 -> v2:
+- Check the aw-bits value is within [32,64]
+---
+ include/hw/virtio/virtio-iommu.h | 1 +
+ hw/virtio/virtio-iommu.c         | 7 ++++++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/include/hw/virtio/virtio-iommu.h b/include/hw/virtio/virtio-iommu.h
+index 67ea5022af..83a52cc446 100644
+--- a/include/hw/virtio/virtio-iommu.h
++++ b/include/hw/virtio/virtio-iommu.h
+@@ -68,6 +68,7 @@ struct VirtIOIOMMU {
+     Notifier machine_done;
+     bool granule_frozen;
+     GranuleMode granule_mode;
++    uint8_t aw_bits;
+ };
+ 
+ #endif
+diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+index aab97e1527..9b2813188b 100644
+--- a/hw/virtio/virtio-iommu.c
++++ b/hw/virtio/virtio-iommu.c
+@@ -1314,7 +1314,11 @@ static void virtio_iommu_device_realize(DeviceState *dev, Error **errp)
+      * in vfio realize
+      */
+     s->config.bypass = s->boot_bypass;
+-    s->config.input_range.end = UINT64_MAX;
++    if (s->aw_bits < 32 || s->aw_bits > 64) {
++        error_setg(errp, "aw-bits must be within [32,64]");
++    }
++    s->config.input_range.end =
++        s->aw_bits == 64 ? UINT64_MAX : BIT_ULL(s->aw_bits) - 1;
+ 
+     switch (s->granule_mode) {
+     case GRANULE_MODE_4K:
+@@ -1544,6 +1548,7 @@ static Property virtio_iommu_properties[] = {
+     DEFINE_PROP_BOOL("boot-bypass", VirtIOIOMMU, boot_bypass, true),
+     DEFINE_PROP_GRANULE_MODE("granule", VirtIOIOMMU, granule_mode,
+                              GRANULE_MODE_HOST),
++    DEFINE_PROP_UINT8("aw-bits", VirtIOIOMMU, aw_bits, 64),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
 -- 
 2.41.0
 
