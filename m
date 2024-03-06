@@ -2,75 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E552872D6F
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 04:20:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81C6A872D8D
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 04:35:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhhof-0002I3-0h; Tue, 05 Mar 2024 22:19:37 -0500
+	id 1rhi33-0005NT-Lz; Tue, 05 Mar 2024 22:34:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rhhob-0002Hv-Tc
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 22:19:33 -0500
-Received: from mgamail.intel.com ([198.175.65.13])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rhhoa-0002Er-5t
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 22:19:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709695173; x=1741231173;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=j2U/Y0eTjA1IMULuB9DjlXsruOJ9T7M9iEEiOvFQHlQ=;
- b=iFZqIW35WI3UEJmQBvf/0UcB61L5kl9avr0zyXfJiU9Kr5DrC4nwRwBc
- lGuIhwk2U7caKjNv3StVVcUZ85SyJEd8Sz06Xy8679PaGnhmXg8T6kGpz
- fkju3tqnnuV9S9eNqieG3qBc/I1Ei6uGDUqUDOCbS0mhGwxPXNH4JQXLG
- 2i2E/aR23hqw3vxmmy1Baa3rdd52DnIyN2KDSf9vf+NktNZbx+mLOtAGM
- JAAhjKqZ/RglTTNGIrrO84E/YwLCrspaDtA0J0kcdM1NHtVdoB/A2YU4F
- xZvyBEZxHzGhtAl8M6LFOvAigjvp9AmsVfMlMwxVQ0xA4yHwrxWqdn4C/ w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="15433663"
-X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; d="scan'208";a="15433663"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2024 19:19:30 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; d="scan'208";a="10024565"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa007.jf.intel.com with ESMTP; 05 Mar 2024 19:19:27 -0800
-Date: Wed, 6 Mar 2024 11:33:13 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Prasad Pandit <ppandit@redhat.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, devel@lists.libvirt.org,
- qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH] hw/core/machine-smp: Remove deprecated "parameter=0" SMP
- configurations
-Message-ID: <Zefj+boRnrtkxXsE@intel.com>
-References: <20240304044510.2305849-1-zhao1.liu@linux.intel.com>
- <CAE8KmOxvZFjtKkHiGGREx_b0QgfDjPWZ7Ex3nqAQQbiPKa_wrQ@mail.gmail.com>
- <ZeVyKMux7Ysjo/lY@intel.com>
- <CAE8KmOxJECe7oNkB1Oiuk-+_4J4drmdJTL2mBzQz+Zu+6XpxrQ@mail.gmail.com>
- <ZebM/2for1NVjeuc@intel.com>
- <CAE8KmOwXrrLe9nCm=8qiyde2M2bg35-1THAhtO4Tg-TrTwRz_g@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rhi30-0005L6-VP; Tue, 05 Mar 2024 22:34:26 -0500
+Received: from mail-ua1-x92c.google.com ([2607:f8b0:4864:20::92c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rhi2z-0007Oy-09; Tue, 05 Mar 2024 22:34:26 -0500
+Received: by mail-ua1-x92c.google.com with SMTP id
+ a1e0cc1a2514c-7dadba3284cso2904827241.2; 
+ Tue, 05 Mar 2024 19:34:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1709696063; x=1710300863; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tD80fAjaEDOBxbAuD5YES+SQm1yY9CWiZVdAsdaSr2A=;
+ b=bdZVE6G0p6g/SjAIb7gKq/K8Mfg3SrZra/vpztbzk9gzS/h5VsiylyxckISb37YNTw
+ 4JwnfuzTIGNeaUNHMJ8qbekjwEuaAuuyWUNV5CdGclkaNWg1gEaqhXNdzCoLX4KzfKv8
+ Ti9z4ik1bgS4Tv7Bq2fnntpm/quJiArVmvEW4POfK9my2V8s8tqfr1LsrILLrV61qYD5
+ 6Nab404okP7qFpVbwzacDyYPDzn5fxEi7Yk05hM4FVXJVBTgkHNDc1Cpc3lPWo4NVkHB
+ YIyScezjujqJf8IXLzxeI/uXvs7T64oRKLx3trLuFreo9wbSBbsOwsyGCCefSNjt6cEZ
+ PbXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709696063; x=1710300863;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=tD80fAjaEDOBxbAuD5YES+SQm1yY9CWiZVdAsdaSr2A=;
+ b=qgRwvEvXDN+XJpX3caS2+0du3FlIpB6VCtC4Iu3Orh+Budp8Augq5CBXTwYe9bQutA
+ 2oQCzgc3+P0VzZ6/mC6OpOXnYUSUtLlQbmutZnOGASp4Kt23PCio7RUaz1Fsxx29J2lL
+ xtFkpgXdTSeVXaTdIhLxfyAw6mRUu2eFTcC/Ix3EhMKCB1FB7om7cPNfqo2ZzykdHV2j
+ fOEW50Oi2xzsELpnVRBTVuzI/SIkqh45JYtNUd4c9FN/z9xVwKMeTUEpEVM59hmNCvNc
+ 6vzL98WXU26F3ofYi3Q2VHYpQDONhX7zt5xMs7J++F4pdN3QABB36hKnkO3AydwYZFg7
+ MxwQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXSqBIf9Ue4vsUU4tmdCNbke3D6EhWFLKy/6i/as5akyZRTzHe5rjrkZmoR9zw7mgij8umdT09jVO7RwEZXPu51JRvoL6jFEuIKSctfeF3H/cxrscE6pQGqgBPuXw==
+X-Gm-Message-State: AOJu0YxqwaQOEpmPK+w+sY9+iPNTV4N2z/KVgt+VG7Zyb6EFPQZz/hgm
+ O7xknP2trOCQF5Y6X6OWGGuKrBhc5CUI90X05pwwne9wo8gnbx4BuTvdGOEHemmN3qYWfnbs2jM
+ J7xaE5j8QUAXWawc19WWZl9G7C08=
+X-Google-Smtp-Source: AGHT+IGGkr4GdWmmUxO5qub5kR8M2nFLZKeObq79bwG3tgS/nRN3Rf5DhCDHCnC7BFyACDU3MkcyPOCskTwXpzH84XE=
+X-Received: by 2002:a67:f408:0:b0:471:b9ab:7bad with SMTP id
+ p8-20020a67f408000000b00471b9ab7badmr3249456vsn.29.1709696063495; Tue, 05 Mar
+ 2024 19:34:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAE8KmOwXrrLe9nCm=8qiyde2M2bg35-1THAhtO4Tg-TrTwRz_g@mail.gmail.com>
-Received-SPF: none client-ip=198.175.65.13;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.568,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20240229133745.771154-1-hchauhan@ventanamicro.com>
+ <20240229-92706c0ccb3d6a6e8b725815@orel>
+ <CAAhSdy1SrsU4x1V5OPRzBKmfC02qHrC09QM66WK4nUqDpONGgw@mail.gmail.com>
+In-Reply-To: <CAAhSdy1SrsU4x1V5OPRzBKmfC02qHrC09QM66WK4nUqDpONGgw@mail.gmail.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 6 Mar 2024 13:33:57 +1000
+Message-ID: <CAKmqyKMNKb0cUYdPYEhLzR7mf2d9h5B1Fv74u3jRCvWhLLokjA@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] Export debug triggers as an extension
+To: Anup Patel <anup@brainfault.org>
+Cc: Andrew Jones <ajones@ventanamicro.com>,
+ Himanshu Chauhan <hchauhan@ventanamicro.com>, 
+ qemu-riscv@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92c;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,44 +92,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Prasad,
-
-> On Tue, 5 Mar 2024 at 12:59, Zhao Liu <zhao1.liu@linux.intel.com> wrote:
-> > After simple test, if user sets maxcpus as 0, the has_maxcpus will be
-> > true as well...I think it's related with QAPI code generation logic.
-> 
-> * Right.
-> 
-> [Maybe we digressed a bit in the discussion, so I snipped much of the
-> details here. Sorry about that.]
-> 
-> * "if user sets maxcpus as 0, the has_maxcpus will be true as well",
-> ie if 'has_*' fields are always set
-> 
->     unsigned maxcpus = config->has_maxcpus ? config->maxcpus : 0;
-> 
-> then checking 'config->has_maxcpus ?' above is probably not required I
-> think. It could just be
-> 
->    maxcpus = config->maxcpus
-
-Yes.
-
-> If a user does not specify config->maxcpus with -smp option, then it
-> could default to zero(0) in 'config' parameter? (same for other config
-> fields)
- 
-Yes. I could post another series for this cleanup soon.
-
-> * If such change requires API changes (I'm not sure how), then
-> probably it is outside the scope of this patch.
-> 
-> ...wdyt?
+On Fri, Mar 1, 2024 at 2:20=E2=80=AFAM Anup Patel <anup@brainfault.org> wro=
+te:
 >
+> On Thu, Feb 29, 2024 at 8:42=E2=80=AFPM Andrew Jones <ajones@ventanamicro=
+.com> wrote:
+> >
+> > On Thu, Feb 29, 2024 at 07:07:43PM +0530, Himanshu Chauhan wrote:
+> > > All the CPUs may or may not implement the debug triggers (sdtrig)
+> > > extension. The presence of it should be dynamically detectable.
+> > > This patch exports the debug triggers as an extension which
+> > > can be turned on or off by sdtrig=3D<true/false> option. It is
+> > > turned on by default.
+> > >
+> > > "sdtrig" is concatenated to ISA string when it is enabled.
+> > > Like so:
+> > >     rv64imafdch_zicbom_*_sdtrig_*_sstc_svadu
+> > >
+> > > Changes from v1:
+> > >    - Replaced the debug property with ext_sdtrig
+> > >    - Marked it experimenatal by naming it x-sdtrig
+> > >    - x-sdtrig is added to ISA string
+> > >    - Reversed the patch order
+> > >
+> > > Changes from v2:
+> > >    - Mark debug property as deprecated and replace internally with sd=
+trig extension
+> >
+> > I'm getting lost in our discussions, but I thought we needed both in ca=
+se
+> > a machine only implements debug 0.13, since sdtrig is at least 'more th=
+an'
+> > debug, even if backwards compatible (which I also wasn't sure was the
+> > case). If, OTOH, QEMU's debug implementation exactly implements sdtrig'=
+s
+> > specification, then I'm in favor of deprecating the 'debug' extension.
+>
+> The QEMU's debug implementation aligns more with Sdtrig v1.0 specificatio=
+n
+> because we have mcontrol6 which was not present in debug 0.13
 
-The above change you suggested doesn't require API changes ;-).
+I'm not sure that's exactly the case. I think QEMU implements the
+debug 0.13 specification and also the mcontrol6. That's really a bug
+that we support mcontrol6, it snuck in.
 
-Thanks,
-Zhao
+We can just support both and wrap the mcontrol6 section behind a
+sdtrig check. That seems to be the easiest option. That way we can
+support the current ratified debug spec and the experimental soon to
+be ratified sdtrig and friends spec.
 
+Alistair
+
+>
+> IMO, we should definitely depricate debug 0.13
+>
+> Regards,
+> Anup
+>
+> >
+> > Thanks,
+> > drew
+> >
+> >
+> > >    - setting/unsetting debug property shows warning and sets/unsets e=
+xt_sdtrig
+> > >    - sdtrig is added to ISA string as RISC-V debug specification is f=
+rozen
+> > >
+> > > Himanshu Chauhan (2):
+> > >   target/riscv: Mark debug property as deprecated
+> > >   target/riscv: Export sdtrig in ISA string
+> > >
+> > >  target/riscv/cpu.c        | 38 +++++++++++++++++++++++++++++++++++--=
+-
+> > >  target/riscv/cpu_cfg.h    |  2 +-
+> > >  target/riscv/cpu_helper.c |  2 +-
+> > >  target/riscv/csr.c        |  2 +-
+> > >  target/riscv/machine.c    |  2 +-
+> > >  5 files changed, 39 insertions(+), 7 deletions(-)
+> > >
+> > > --
+> > > 2.34.1
+> > >
+> > >
+> >
+>
 
