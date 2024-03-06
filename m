@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A85D872DD8
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 05:03:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11A1D872DC0
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 04:59:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhiQR-0000pH-3X; Tue, 05 Mar 2024 22:58:39 -0500
+	id 1rhiQP-0000nV-H7; Tue, 05 Mar 2024 22:58:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rhiQO-0000mq-I4; Tue, 05 Mar 2024 22:58:36 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190])
+ id 1rhiQN-0000m5-1P; Tue, 05 Mar 2024 22:58:35 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rhiQK-0006kF-Vt; Tue, 05 Mar 2024 22:58:36 -0500
-Received: from mail.maildlp.com (unknown [172.19.88.214])
- by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TqJWW5txJz2BfMs;
- Wed,  6 Mar 2024 11:56:07 +0800 (CST)
+ id 1rhiQK-0006kG-FD; Tue, 05 Mar 2024 22:58:34 -0500
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+ by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4TqJWX6RpJz1h1C4;
+ Wed,  6 Mar 2024 11:56:08 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id AF2FB1A016C;
- Wed,  6 Mar 2024 11:58:28 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 9265B1A0172;
+ Wed,  6 Mar 2024 11:58:29 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 6 Mar
- 2024 11:58:28 +0800
+ 2024 11:58:29 +0800
 To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [RFC PATCH v7 02/23] target/arm: Add PSTATE.ALLINT
-Date: Wed, 6 Mar 2024 03:57:00 +0000
-Message-ID: <20240306035721.2333531-3-ruanjinjie@huawei.com>
+Subject: [RFC PATCH v7 03/23] target/arm: Add support for FEAT_NMI,
+ Non-maskable Interrupt
+Date: Wed, 6 Mar 2024 03:57:01 +0000
+Message-ID: <20240306035721.2333531-4-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240306035721.2333531-1-ruanjinjie@huawei.com>
 References: <20240306035721.2333531-1-ruanjinjie@huawei.com>
@@ -42,8 +43,8 @@ Content-Type: text/plain
 X-Originating-IP: [10.67.174.55]
 X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
  kwepemi500008.china.huawei.com (7.221.188.139)
-Received-SPF: pass client-ip=45.249.212.190;
- envelope-from=ruanjinjie@huawei.com; helo=szxga04-in.huawei.com
+Received-SPF: pass client-ip=45.249.212.191;
+ envelope-from=ruanjinjie@huawei.com; helo=szxga05-in.huawei.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
@@ -67,42 +68,33 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When PSTATE.ALLINT is set, an IRQ or FIQ interrupt that is targeted to
-ELx, with or without superpriority is masked.
-
-As Richard suggested, place ALLINT bit in PSTATE in env->pstate.
-
-With the change to pstate_read/write, exception entry
-and return are automatically handled.
+Add support for FEAT_NMI. NMI (FEAT_NMI) is an mandatory feature in
+ARMv8.8-A and ARM v9.3-A.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
-v5:
-- Remove the ALLINT comment, as it is covered by "all other bits".
-- Add Reviewed-by.
-v4:
-- Keep PSTATE.ALLINT in env->pstate but not env->allint.
-- Update the commit message.
 v3:
-- Remove ALLINT dump in aarch64_cpu_dump_state().
-- Update the commit message.
+- Add Reviewed-by.
+- Adjust to before the MSR patches.
 ---
- target/arm/cpu.h | 1 +
- 1 file changed, 1 insertion(+)
+ target/arm/internals.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index a5b3d8f7da..9402d23a93 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1536,6 +1536,7 @@ FIELD(VTCR, SL2, 33, 1)
- #define PSTATE_D (1U << 9)
- #define PSTATE_BTYPE (3U << 10)
- #define PSTATE_SSBS (1U << 12)
-+#define PSTATE_ALLINT (1U << 13)
- #define PSTATE_IL (1U << 20)
- #define PSTATE_SS (1U << 21)
- #define PSTATE_PAN (1U << 22)
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 860bcc0c66..980af3c1c1 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1078,6 +1078,9 @@ static inline uint32_t aarch64_pstate_valid_mask(const ARMISARegisters *id)
+     if (isar_feature_aa64_mte(id)) {
+         valid |= PSTATE_TCO;
+     }
++    if (isar_feature_aa64_nmi(id)) {
++        valid |= PSTATE_ALLINT;
++    }
+ 
+     return valid;
+ }
 -- 
 2.34.1
 
