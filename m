@@ -2,63 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F96A8737F9
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 14:42:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6324887380E
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 14:45:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhrSI-0002uC-C6; Wed, 06 Mar 2024 08:37:10 -0500
+	id 1rhrZz-0007SV-7a; Wed, 06 Mar 2024 08:45:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=yBjJ=KM=redhat.com=clg@ozlabs.org>)
- id 1rhrRo-0001uh-5d
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 08:36:45 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1rhrZv-0007Rg-OH; Wed, 06 Mar 2024 08:45:03 -0500
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=yBjJ=KM=redhat.com=clg@ozlabs.org>)
- id 1rhrRl-0006Yl-Ht
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 08:36:39 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TqYPH1qsTz4x0q;
- Thu,  7 Mar 2024 00:36:35 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4TqYPD0Sdqz4wbh;
- Thu,  7 Mar 2024 00:36:31 +1100 (AEDT)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- Prasad Pandit <pjp@fedoraproject.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v4 25/25] vfio: Extend vfio_set_migration_error() with Error*
- argument
-Date: Wed,  6 Mar 2024 14:34:40 +0100
-Message-ID: <20240306133441.2351700-26-clg@redhat.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240306133441.2351700-1-clg@redhat.com>
-References: <20240306133441.2351700-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1rhrZg-00029z-CX; Wed, 06 Mar 2024 08:45:03 -0500
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 9639A485DB;
+ Wed,  6 Mar 2024 14:44:38 +0100 (CET)
+Message-ID: <7b21c91b-5d33-4d84-aa61-cd69bbb78ccd@proxmox.com>
+Date: Wed, 6 Mar 2024 14:44:37 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 0/4] mirror: implement incremental and bitmap modes
+Content-Language: en-US
+From: Fiona Ebner <f.ebner@proxmox.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, armbru@redhat.com, eblake@redhat.com,
+ hreitz@redhat.com, kwolf@redhat.com, jsnow@redhat.com,
+ f.gruenbichler@proxmox.com, t.lamprecht@proxmox.com,
+ mahaocong@didichuxing.com
+References: <20240216105513.309901-1-f.ebner@proxmox.com>
+ <cf086f76-1f47-4f45-aba5-fc021ad090da@yandex-team.ru>
+ <8a84f7f2-6765-49f6-9469-908bcfdc7437@yandex-team.ru>
+ <5ded1c2d-5aa8-440a-9f01-a3529e07abf0@proxmox.com>
+ <b737130a-2a01-4b1c-945a-b0d574345d0e@yandex-team.ru>
+ <0a3b3d62-5374-4219-a5fa-f087f93d85d8@proxmox.com>
+In-Reply-To: <0a3b3d62-5374-4219-a5fa-f087f93d85d8@proxmox.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=yBjJ=KM=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,134 +63,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vfio_set_migration_error() sets the 'return' error on the migration
-stream if a migration is in progress. To improve error reporting, add
-a new Error* argument to also set the Error object on the migration
-stream, if a migration is progress.
+Am 29.02.24 um 13:47 schrieb Fiona Ebner:
+> Am 29.02.24 um 12:48 schrieb Vladimir Sementsov-Ogievskiy:
+>> On 29.02.24 13:11, Fiona Ebner wrote:
+>>>
+>>> The iotest creates a new target image for each incremental sync which
+>>> only records the diff relative to the previous mirror and those diff
+>>> images are later rebased onto each other to get the full picture.
+>>>
+>>> Thus, it can be that a previous mirror job (not just background process
+>>> or previous write) already copied a cluster, and in particular, copied
+>>> it to a different target!
+>>
+>> Aha understand.
+>>
+>> For simplicity, let's consider case, when source "cluster size" = "job
+>> cluster size" = "bitmap granularity" = "target cluster size".
+>>
+>> Which types of clusters we should consider, when we want to handle guest
+>> write?
+>>
+>> 1. Clusters, that should be copied by background process
+>>
+>> These are dirty clusters from user-given bitmap, or if we do a full-disk
+>> mirror, all clusters, not yet copied by background process.
+>>
+>> For such clusters we simply ignore the unaligned write. We can even
+>> ignore the aligned write too: less disturbing the guest by delays.
+>>
+> 
+> Since do_sync_target_write() currently doesn't ignore aligned writes, I
+> wouldn't change it. Of course they can count towards the "done_bitmap"
+> you propose below.
+> 
+>> 2. Clusters, already copied by background process during this mirror job
+>> and not dirtied by guest since this time.
+>>
+>> For such clusters we are safe to do unaligned write, as target cluster
+>> must be allocated.
+>>
+> 
+> Right.
+> 
+>> 3. Clusters, not marked initially by dirty bitmap.
+>>
+>> What to do with them? We can't do unaligned write. I see two variants:
+>>
+>> - do additional read from source, to fill the whole cluster, which seems
+>> a bit too heavy
+>>
+> 
+> Yes, I'd rather only do that as a last resort.
+> 
+>> - just mark the cluster as dirty for background job. So we behave like
+>> in "background" mode. But why not? The maximum count of such "hacks" is
+>> limited to number of "clear" clusters at start of mirror job, which
+>> means that we don't seriously affect the convergence. Mirror is
+>> guaranteed to converge anyway. And the whole sense of "write-blocking"
+>> mode is to have a guaranteed convergence. What do you think?
+>>
+> 
+> It could lead to a lot of flips between job->actively_synced == true and
+> == false. AFAIU, currently, we only switch back from true to false when
+> an error happens. While I don't see a concrete issue with it, at least
+> it might be unexpected to users, so it better be documented.
+> 
+> I'll try going with this approach, thanks!
+> 
 
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
+These flips are actually a problem. When using live-migration with disk
+mirroring, it's good that an actively synced image stays actively
+synced. Otherwise, migration could finish at an inconvenient time and
+try to inactivate the block device while mirror still got something to
+do which would lead to an assertion failure [0].
 
- Changes in v4:
+The IO test added by this series is what uses the possibility to sync to
+"diff images" which contain only the delta. In production, we are only
+syncing to a previously mirrored target image. Non-aligned writes are
+not an issue later like with a diff image. (Even if the initial
+mirroring happened via ZFS replication outside of QEMU).
 
- - Dropped log_global_stop() and log_global_sync() changes
-   
- hw/vfio/common.c | 39 ++++++++++++++++++++-------------------
- 1 file changed, 20 insertions(+), 19 deletions(-)
+So copy-mode=write-blocking would work fine for our use case, but if I
+go with the "mark clusters for unaligned writes dirty"-approach, it
+would not work fine anymore.
 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 65a11dc088524647541db97b7b8d6f07e5044728..e26574617e5ef75c27a84dc9bb13c8f040353b6c 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -148,16 +148,18 @@ bool vfio_viommu_preset(VFIODevice *vbasedev)
-     return vbasedev->bcontainer->space->as != &address_space_memory;
- }
- 
--static void vfio_set_migration_error(int err)
-+static void vfio_set_migration_error(int ret, Error *err)
- {
-     MigrationState *ms = migrate_get_current();
- 
-     if (migration_is_setup_or_active(ms->state)) {
-         WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
-             if (ms->to_dst_file) {
--                qemu_file_set_error(ms->to_dst_file, err);
-+                qemu_file_set_error_obj(ms->to_dst_file, ret, err);
-             }
-         }
-+    } else {
-+        error_report_err(err);
-     }
- }
- 
-@@ -304,9 +306,10 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
-                                 iova, iova + iotlb->addr_mask);
- 
-     if (iotlb->target_as != &address_space_memory) {
--        error_report("Wrong target AS \"%s\", only system memory is allowed",
--                     iotlb->target_as->name ? iotlb->target_as->name : "none");
--        vfio_set_migration_error(-EINVAL);
-+        error_setg(&local_err,
-+                   "Wrong target AS \"%s\", only system memory is allowed",
-+                   iotlb->target_as->name ? iotlb->target_as->name : "none");
-+        vfio_set_migration_error(-EINVAL, local_err);
-         return;
-     }
- 
-@@ -339,11 +342,12 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
-         ret = vfio_container_dma_unmap(bcontainer, iova,
-                                        iotlb->addr_mask + 1, iotlb);
-         if (ret) {
--            error_report("vfio_container_dma_unmap(%p, 0x%"HWADDR_PRIx", "
--                         "0x%"HWADDR_PRIx") = %d (%s)",
--                         bcontainer, iova,
--                         iotlb->addr_mask + 1, ret, strerror(-ret));
--            vfio_set_migration_error(ret);
-+            error_setg(&local_err,
-+                       "vfio_container_dma_unmap(%p, 0x%"HWADDR_PRIx", "
-+                       "0x%"HWADDR_PRIx") = %d (%s)",
-+                       bcontainer, iova,
-+                       iotlb->addr_mask + 1, ret, strerror(-ret));
-+            vfio_set_migration_error(ret, local_err);
-         }
-     }
- out:
-@@ -1125,8 +1129,7 @@ static void vfio_listener_log_global_stop(MemoryListener *listener)
-     if (ret) {
-         error_prepend(&local_err,
-                       "vfio: Could not stop dirty page tracking - ");
--        error_report_err(local_err);
--        vfio_set_migration_error(ret);
-+        vfio_set_migration_error(ret, local_err);
-     }
- }
- 
-@@ -1243,14 +1246,14 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
-     trace_vfio_iommu_map_dirty_notify(iova, iova + iotlb->addr_mask);
- 
-     if (iotlb->target_as != &address_space_memory) {
--        error_report("Wrong target AS \"%s\", only system memory is allowed",
--                     iotlb->target_as->name ? iotlb->target_as->name : "none");
-+        error_setg(&local_err,
-+                   "Wrong target AS \"%s\", only system memory is allowed",
-+                   iotlb->target_as->name ? iotlb->target_as->name : "none");
-         goto out;
-     }
- 
-     rcu_read_lock();
-     if (!vfio_get_xlat_addr(iotlb, NULL, &translated_addr, NULL, &local_err)) {
--        error_report_err(local_err);
-         goto out_lock;
-     }
- 
-@@ -1261,7 +1264,6 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
-                       "vfio_iommu_map_dirty_notify(%p, 0x%"HWADDR_PRIx", "
-                       "0x%"HWADDR_PRIx") failed :", bcontainer, iova,
-                       iotlb->addr_mask + 1);
--        error_report_err(local_err);
-     }
- 
- out_lock:
-@@ -1269,7 +1271,7 @@ out_lock:
- 
- out:
-     if (ret) {
--        vfio_set_migration_error(ret);
-+        vfio_set_migration_error(ret, local_err);
-     }
- }
- 
-@@ -1389,8 +1391,7 @@ static void vfio_listener_log_sync(MemoryListener *listener,
-     if (vfio_devices_all_dirty_tracking(bcontainer)) {
-         ret = vfio_sync_dirty_bitmap(bcontainer, section, &local_err);
-         if (ret) {
--            error_report_err(local_err);
--            vfio_set_migration_error(ret);
-+            vfio_set_migration_error(ret, local_err);
-         }
-     }
- }
--- 
-2.44.0
+Should I rather just document the limitation for the combination "target
+is a diff image" and copy-mode=write-blocking?
+
+I'd still add the check for the granularity and target cluster size.
+While also only needed for diff images, it would allow using background
+mode safely for those.
+
+Best Regards,
+Fiona
+
+[0]:
+https://lore.kernel.org/qemu-devel/1db7f571-cb7f-c293-04cc-cd856e060c3f@proxmox.com/
 
 
