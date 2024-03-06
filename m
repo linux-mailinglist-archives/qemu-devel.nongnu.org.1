@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18179872B39
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 00:40:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96906872BAA
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 01:16:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rheNq-0006da-8E; Tue, 05 Mar 2024 18:39:42 -0500
+	id 1rhew4-0004AU-9g; Tue, 05 Mar 2024 19:15:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rheNn-0006cq-Kw
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 18:39:39 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rhew1-0004A1-S8; Tue, 05 Mar 2024 19:15:01 -0500
+Received: from mail-ua1-x931.google.com ([2607:f8b0:4864:20::931])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rheNm-0001WA-44
- for qemu-devel@nongnu.org; Tue, 05 Mar 2024 18:39:39 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1dc0e5b223eso53860035ad.1
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 15:39:37 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rhew0-0000Vk-5Z; Tue, 05 Mar 2024 19:15:01 -0500
+Received: by mail-ua1-x931.google.com with SMTP id
+ a1e0cc1a2514c-7dae66def19so2410081241.0; 
+ Tue, 05 Mar 2024 16:14:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709681976; x=1710286776; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=GOolTmzYeE12+ps8/v2gwrBliAlhC/9M+kqd6Bq+ehk=;
- b=OFwlLqqj5fnU4z/rv3fuC48dQAnXuMY+fM457ZHeSCyn2+0D7YI2WdQ/fxdneMuUcP
- O8BvnPA7cy5cQ7lQaUHVnr4YmF60VmBTncILE9V5RRBYlccdC1zTrTZA4/sYDevdjatT
- SMRYeUU90fx9J+jlDLvp2XEF1+qs5noSnnBaiAodSKfU7AEkdvXdcPmGcl5Tr7Xa9plZ
- UAtUEsIJptFrGJz7WoEEVHCRdyNJLEFdDJUYBD10abGo/b/IM6lUU8qR4S9c+HS1qP/Q
- 9gTtcbJaAqhQuK6dJ+7NzbGbGXf8drakd6/RO9ZFvDC3dL5DYH54XZ4mEQVC5SZonetf
- 3hrg==
+ d=gmail.com; s=20230601; t=1709684098; x=1710288898; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7DdQBYrMrB8e8MCNnDxxYQ7R+aOnmnZ6e9O3nDxZdxU=;
+ b=jqJFMDUsTy6LYDaaefyr9lEIqnoqtT1snPkorijNVLai7mzNIesRKLoiTFqQcowZy1
+ 8h4a4UWp26Czb15T36cxejUvrjoblERYRgT3D9oskJar3TZpjzh9bkBTsWbzg3kGB5Mm
+ VvHhtRm2K+Dm3gQsxoczCs/U9PNl493VkzdMEUfRvOf56ArRmU2ZXtM3AUBqEhK6ynLj
+ RhDxM6W8FOr0wq6LMfwt0BAO4MYBEG09v+gNKn+H9YOBefHQDWba+dAMxaBM9wYvFis1
+ rdLfx5CANnmWLi/KstaL28uIzTic3cV8NxHeYjfMl+MbrYX0BisdtJicxdMMmgfD99Dy
+ dAHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709681977; x=1710286777;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1709684098; x=1710288898;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GOolTmzYeE12+ps8/v2gwrBliAlhC/9M+kqd6Bq+ehk=;
- b=LKuxU47tajWa7KooGMOWEdpbAsYWYKPgbLKE0hUJggCWR9bizNiM9ik4RuycXAFPMu
- qHuLdUpbi9zxNQwvsI+iZGkMp9Rgop4jaECvssd70gbJIMhsUXgDEOOshLAmyR4yPFxT
- h7SS+uozJGPHqvzR+aORFNpzA/Sx+sAhhLBT4pXiMi1w9S+e1lUBGabzNnKNpTXtPN+A
- U1KReXuQJptSOfYP+g3BwdwyoAUr4A0lrUF5IbNvG4xJRgyJsXvoBfc3Bhl0K9/ghyDc
- jl+ButRBqteIqPOnjPVJ2jazBuGO0ofW1p8NWIx+Ruz/c4kF2wqGvn6gHUeAa5u9njXj
- PO2g==
-X-Gm-Message-State: AOJu0Yy2PvON+U0grNxEgMgOW9sTcuBYjpyVhewcxwpV2q+TV3NhZxPQ
- JiDndHNi1ww9sNkYyC8MR0AFdsKHbQB7H4EOXnK4U8ArBPYqSBw53UecRJ5jMrFxTxvvK+qRctu
- M
-X-Google-Smtp-Source: AGHT+IFHsQRY4a0tZJkZsSoaS5BfXGM8ih1sPBX0hcKfsFqj1IlsuBjacH242vfiVFf2qKv84ihfuQ==
-X-Received: by 2002:a17:903:1209:b0:1dc:4199:a31d with SMTP id
- l9-20020a170903120900b001dc4199a31dmr3817103plh.53.1709681976682; 
- Tue, 05 Mar 2024 15:39:36 -0800 (PST)
-Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
- by smtp.gmail.com with ESMTPSA id
- s12-20020a17090ad48c00b0029aac9c523fsm10047291pju.47.2024.03.05.15.39.35
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Mar 2024 15:39:36 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PATCH 2/2] linux-user/elfload: Fully initialize struct
- target_elf_prpsinfo
-Date: Tue,  5 Mar 2024 13:39:31 -1000
-Message-Id: <20240305233931.283629-3-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240305233931.283629-1-richard.henderson@linaro.org>
-References: <20240305233931.283629-1-richard.henderson@linaro.org>
+ bh=7DdQBYrMrB8e8MCNnDxxYQ7R+aOnmnZ6e9O3nDxZdxU=;
+ b=n3kredN72fe/VS0WEpySSvqL780xs9Axpape4VZMic/aNC3/Psv7bIj0NMCYF0n4i/
+ NWlzxGmcTh/HB3oyl4uvls1mv6iKoGnuEUibHNwpyUKf68QNqv3zcPGPJmXI//C8thct
+ Egc3BOFsff7NknivavBpQeZnTM23Rs0b904s0WotVvlNKXsRLUWOgcWChS18P3bLXBuk
+ 1z/DGpWzgh2aESvuRhp1rKKaamL6OvlRKH+Yu7fDPJbUpQBLzinnon537ZqbRXVcevxh
+ e0tTnU/vLt8FwJGoYydtPhPGaD3coe87aSeBPrvzZbDntDut/wrcQbyoMpkh/ltBjlK+
+ ZY0g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXCnhilFXrEraEUDNkbmUJ24FKfLT3J9sCZxBS1SfjVtxjnyhizl+zUslWqN1Oe15ZGz/9KejRO7BDZHkQK5iOYkWyl5xo=
+X-Gm-Message-State: AOJu0YxoFmbU9ylSXL7kI6Dw1WjYVV/IKeL1NMIos91/+KNwTOT5sMCn
+ T642XVjMgg4j5B9d4Mqcgwtb5uZ/WtdMWFaE71ILTHaZ9EOSYFW5b7rafRNtqHbdCqoTBqlvzX4
+ 9RDjw3/s4Zkr3w2qL2GB1NqsiymE=
+X-Google-Smtp-Source: AGHT+IFd52yFaersRW47Y4UYU4+Qk2K9EeRi4JBrEhZakESlc/m5wT65/l3F/3auQVR5m343V1tKUCY/cg1ztC/wQbY=
+X-Received: by 2002:a05:6102:190a:b0:472:6162:41c7 with SMTP id
+ jk10-20020a056102190a00b00472616241c7mr3166009vsb.9.1709684098127; Tue, 05
+ Mar 2024 16:14:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20240304191337.3101411-1-alex.bennee@linaro.org>
+ <20240304191337.3101411-5-alex.bennee@linaro.org>
+In-Reply-To: <20240304191337.3101411-5-alex.bennee@linaro.org>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 6 Mar 2024 10:14:31 +1000
+Message-ID: <CAKmqyKM17uFQKmV9vYQFVnwsg2athgs-2w5-O8y3ye+tsmupxA@mail.gmail.com>
+Subject: Re: [PATCH 4/4] target/riscv: honour no_raw_bytes when disassembling
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Alistair Francis <Alistair.Francis@wdc.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-riscv@nongnu.org, 
+ Song Gao <gaosong@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::931;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x931.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,48 +92,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes Coverity CID: 1534962
-Fixes: 243c4706625 ("linux-user/elfload: Write corefile elf header in one block")
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- linux-user/elfload.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+On Tue, Mar 5, 2024 at 5:15=E2=80=AFAM Alex Benn=C3=A9e <alex.bennee@linaro=
+.org> wrote:
+>
+> This makes the output suitable when used for plugins.
+>
+> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 8565b9520a..a9a6f55d6e 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -4204,7 +4204,14 @@ static void fill_prpsinfo_note(void *data, const TaskState *ts)
-      * may well have higher alignment requirements, fill locally and
-      * memcpy to the destination afterward.
-      */
--    struct target_elf_prpsinfo psinfo;
-+    struct target_elf_prpsinfo psinfo = {
-+        .pr_pid = getpid(),
-+        .pr_ppid = getppid(),
-+        .pr_pgrp = getpgrp(),
-+        .pr_sid = getsid(0),
-+        .pr_uid = getuid(),
-+        .pr_gid = getgid(),
-+    };
-     char *base_filename;
-     size_t len;
- 
-@@ -4217,13 +4224,6 @@ static void fill_prpsinfo_note(void *data, const TaskState *ts)
-         }
-     }
- 
--    psinfo.pr_pid = getpid();
--    psinfo.pr_ppid = getppid();
--    psinfo.pr_pgrp = getpgrp();
--    psinfo.pr_sid = getsid(0);
--    psinfo.pr_uid = getuid();
--    psinfo.pr_gid = getgid();
--
-     base_filename = g_path_get_basename(ts->bprm->filename);
-     /*
-      * Using strncpy here is fine: at max-length,
--- 
-2.34.1
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 
+Alistair
+
+> ---
+>  disas/riscv.c | 28 +++++++++++++++-------------
+>  1 file changed, 15 insertions(+), 13 deletions(-)
+>
+> diff --git a/disas/riscv.c b/disas/riscv.c
+> index 8a546d5ea53..86028efea85 100644
+> --- a/disas/riscv.c
+> +++ b/disas/riscv.c
+> @@ -5192,19 +5192,21 @@ print_insn_riscv(bfd_vma memaddr, struct disassem=
+ble_info *info, rv_isa isa)
+>          }
+>      }
+>
+> -    switch (len) {
+> -    case 2:
+> -        (*info->fprintf_func)(info->stream, INST_FMT_2, inst);
+> -        break;
+> -    case 4:
+> -        (*info->fprintf_func)(info->stream, INST_FMT_4, inst);
+> -        break;
+> -    case 6:
+> -        (*info->fprintf_func)(info->stream, INST_FMT_6, inst);
+> -        break;
+> -    default:
+> -        (*info->fprintf_func)(info->stream, INST_FMT_8, inst);
+> -        break;
+> +    if (!info->no_raw_bytes) {
+> +        switch (len) {
+> +        case 2:
+> +            (*info->fprintf_func)(info->stream, INST_FMT_2, inst);
+> +            break;
+> +        case 4:
+> +            (*info->fprintf_func)(info->stream, INST_FMT_4, inst);
+> +            break;
+> +        case 6:
+> +            (*info->fprintf_func)(info->stream, INST_FMT_6, inst);
+> +            break;
+> +        default:
+> +            (*info->fprintf_func)(info->stream, INST_FMT_8, inst);
+> +            break;
+> +        }
+>      }
+>
+>      disasm_inst(buf, sizeof(buf), isa, memaddr, inst,
+> --
+> 2.39.2
+>
+>
 
