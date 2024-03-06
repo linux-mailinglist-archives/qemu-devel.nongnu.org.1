@@ -2,91 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6613B8741A8
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 22:09:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D71F8740F7
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 21:02:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhyUw-00074U-Bg; Wed, 06 Mar 2024 16:08:22 -0500
+	id 1rhxRJ-0005TF-7y; Wed, 06 Mar 2024 15:00:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <info@maximka.de>) id 1rhxJk-0004u9-2V
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 14:52:44 -0500
-Received: from mo4-p00-ob.smtp.rzone.de ([81.169.146.217])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <info@maximka.de>) id 1rhxJi-00025g-4P
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 14:52:43 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1709754757; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=I/MmsUGHTxZMVWJ79/1iEoo1GgNQnJSAk7IAQLzQOeWqQ/6lVwEaQ0fXLAbGCokQPN
- UH70iNNhvfzgWEiyV5aVxKeKE4UU7Zy0UKIZxiqG/t3tJDUi0oCVz0kZVhOA9qLOgaOV
- eIu0akJkzWpSaAb3nL62wG85y5Ec8tD2IFdHq/tncAjdlDgfmIYPFxiwoo8XHf3I+xP6
- fcR+AySY7xZYiDK6r1CoWYPXOOjwcVXK1pb1oBCeOBMgrHE1O17A5UZeQFfBZY1ie8o0
- Ev5CDbAOGM69po139s63lTsTaJL7ENTghigukTGivZ3fbQpA3MySX1hj3YkWCrOU5q7v
- 5FwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1709754757;
- s=strato-dkim-0002; d=strato.com;
- h=Subject:Message-ID:Cc:To:From:Date:Cc:Date:From:Subject:Sender;
- bh=CgMlrG0sN6rez4LMHO61MIUdUmQSTGn8nr0uVeiuK/4=;
- b=INcWFgpGyUClIiBmB84BfB1c6kw8t88566Fc/QobTXnWT16AOxEGcglz2R5KWQuwVc
- UDY6YZD8pXjBMhXrqZnC7GI5/lrM4CP5eWYr3KlH2xtJq+NMbnLgaWyd7+J/jVCtDBAO
- 5vGULPZmyQxXAZnfkfpJZxpG+oafWCPy8zQskOJxSeSoazxEuRhBNKOwbBk2PkUryg9P
- Wh/GPhLXx7UOiS5dxvXX9fXEqGDgZBLW/S1K1wgVdi3DnQHZQ0T+/zU59NHu78O/82vP
- XnyF+l4AOXwNOoaqw3cfRy1GGAy9OT/LfuWYuarEFG4B1SyHBkY/grnT++iZi7kmmv2K
- 0eFg==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1709754757;
- s=strato-dkim-0002; d=maximka.de;
- h=Subject:Message-ID:Cc:To:From:Date:Cc:Date:From:Subject:Sender;
- bh=CgMlrG0sN6rez4LMHO61MIUdUmQSTGn8nr0uVeiuK/4=;
- b=WXGjenqluvovWK2gnhdquErsikOFhiZa6+Ita6Ojy16iLdAKTPfzv3z6xyv6ffx35V
- 9y6LzIvJpjxPNcMHYyfAdJRW3ha0o6Dt+RJr86EvfOAAtT73YLKFiqGlk8UjVijZsj5t
- nwiYtEnoUF8aJJD63j4bOcHJucN2s6t0oYqK4SwN9SI0Pg+UyDBLotjGAVn4DzErY/yK
- Qf87Szr/cISH64lQa54kKSjUkTILxwyqmMh6i8yoQo8xb1Ib9qeO2XqXfxySwlMy1wmL
- Q+ixLASbXAtiiTf5vD1NhmIponi+ombsdt12+/6UNVQApXnllOcU1i6mxuh9YXusFpOY
- G7ww==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1709754757;
- s=strato-dkim-0003; d=maximka.de;
- h=Subject:Message-ID:Cc:To:From:Date:Cc:Date:From:Subject:Sender;
- bh=CgMlrG0sN6rez4LMHO61MIUdUmQSTGn8nr0uVeiuK/4=;
- b=SCwoOCywQOqt+ZOHXf6e5WPsQRvgYTxGru7ghw3u8KKT5CA9R4winsy8c0m1iv7Nau
- WDiADOxixQxYlw46tRCQ==
-X-RZG-AUTH: ":JWICemCleucEZGNurnXz/7xIHdyVrBVseu4t8zsQBJLrlG+xkMbI/m4uBgE3i1hBaQM7bDIKr1/ge0kZWL8z684/OOeKaw=="
-Received: from ox-live-app303.back.ox.d0m.de
- by smtp-ox.front (RZmta 50.2.0 AUTH) with ESMTPSA id Y6d679026JqbiND
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1
- with 256 ECDH bits, eq. 3072 bits RSA))
- (Client did not present a certificate);
- Wed, 6 Mar 2024 20:52:37 +0100 (CET)
-Date: Wed, 6 Mar 2024 20:52:37 +0100 (CET)
-From: info@maximka.de
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "stefanha@gmail.com" <stefanha@gmail.com>
-Message-ID: <2048170974.2556839.1709754757016@webmail.strato.de>
-Subject: no target for a link in the post "How to access libvirt domains in
- KubeVirt"
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rhxRH-0005Sr-Ab
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 15:00:31 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rhxRF-00066A-Vh
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 15:00:31 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1dc0d11d1b7so1073495ad.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 12:00:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1709755228; x=1710360028; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=uE/+d8za9FOme6hIEIVOXrHDo/Jr6T++1vzl/Rw5YTs=;
+ b=a3UNQ2371erCuSTED/m74bEKu40OEwahwMeVbMoodTsueKzonESP1srAPA5zamCVJi
+ /GG+Xyugvyik0fC3hWTJPeRDALvDtp8N9Ml6SvCnTSTlIazOi3c/VPW6LFTQ422ZerQc
+ KfgWsXZxjGCTpuLNpOLlMgwCSwTYcv5Vb6es7/zfC7nYca5/5Gh68NqB6W7WS26+CRNy
+ icFsR6By88fVA6dgA+63cIzrVyTPQ58zAkNVvnjh+1Da3deFlimTVvDcO1gsVn8ttCYi
+ 41JV03mc+NEeE1f826R+5466efH+cOBXbYVimaOww5bhFqMJj6goIujBPS+YARiQ3pnx
+ DLSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709755228; x=1710360028;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=uE/+d8za9FOme6hIEIVOXrHDo/Jr6T++1vzl/Rw5YTs=;
+ b=SrzKLr44dwp/OQhfyW6WnqD4nQfmvtT6ggOF9zzvE+oIxWtQy2sPofoFDHNuL3Fo8j
+ Zbl8kbqMJF/C9kg1sp/2B2DXi0r5X4AmwAccvoqLTuUKuvPMeNJi4Jzsj8bRP1+DNoBn
+ KYL24cbeZd0t6l+9/KCUZqOMxEaV7wxarbKkveGn9jvIDwXY4r6nu4hsbc63B1m8iYkA
+ tUmgdjdWnxIFgWTKQK5ylO5nEGBv+uUn0SjuCTlRpnjOX/Lfd7lwWZemjedSbvdEL7Ry
+ 0aP5s0hhbwyVlGRExGQqjga05fCiWFY1szRiKELji6RR+KvbIppHjwZ0XM1cLqAVPnJB
+ 6pdA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX10rEYRcFb1SHcJsjAmxH208OcCn5ILJs8d5PYrik594usuI2l+tIXlj0OaSX70kQ44Mv4SUDpRVqMuKTjMbKjXsfmHb8=
+X-Gm-Message-State: AOJu0YwTnKgNeKX9ZKtwbix0KOsnWv/ZvwApAOCrxUU8Lhw9oQOKOj4b
+ NI2osoC2aeSJTRZNg/PyPk/JIBn3V4FKnY/CxPLznn/M1EDaVm3l9kKZMQuW/gY=
+X-Google-Smtp-Source: AGHT+IF/7kV2NMp4Pu35I12HiLF09XWdrflhcKgqEX6cVvv1FuNEc3D9caY+iJxdd0C3K085MZqa2w==
+X-Received: by 2002:a17:902:f682:b0:1dc:afd1:9c37 with SMTP id
+ l2-20020a170902f68200b001dcafd19c37mr6684943plg.24.1709755228142; 
+ Wed, 06 Mar 2024 12:00:28 -0800 (PST)
+Received: from [192.168.68.110] ([177.94.15.159])
+ by smtp.gmail.com with ESMTPSA id
+ p6-20020a170902b08600b001dc30f13e6asm12953234plr.137.2024.03.06.12.00.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Mar 2024 12:00:27 -0800 (PST)
+Message-ID: <3d377b25-bbab-4401-b5e7-98f6efa81ca7@ventanamicro.com>
+Date: Wed, 6 Mar 2024 17:00:21 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-Importance: Normal
-X-Mailer: Open-Xchange Mailer v7.10.6-Rev60
-X-Originating-Client: open-xchange-appsuite
-Received-SPF: none client-ip=81.169.146.217; envelope-from=info@maximka.de;
- helo=mo4-p00-ob.smtp.rzone.de
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] hw/arm/virt-acpi-build.c: Migrate SPCR creation to
+ common location
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+Cc: mst@redhat.com, imammedo@redhat.com, anisinha@redhat.com,
+ peter.maydell@linaro.org, shannon.zhaosl@gmail.com,
+ sunilvl@ventanamicro.com, palmer@dabbelt.com, alistair.francis@wdc.com,
+ bin.meng@windriver.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com
+References: <20240116010930.43433-1-jeeheng.sia@starfivetech.com>
+ <20240116010930.43433-2-jeeheng.sia@starfivetech.com>
+ <49d0d8d3-c7fd-4039-aeed-6c31ba16557a@ventanamicro.com>
+In-Reply-To: <49d0d8d3-c7fd-4039-aeed-6c31ba16557a@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 06 Mar 2024 16:08:19 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,14 +102,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello, thank you for the post.
 
-The href in the link
-<a href="https://kubevirt.io/user-guide/debug_virt_stack/">Virtualization Debugging</a>
 
-should be replaced by
-https://kubevirt.io/user-guide/debug_virt_stack/logging/
+On 3/6/24 15:57, Daniel Henrique Barboza wrote:
+> As a side note, it seems like 'bios-table-test' isn't being run for RISC-V. Not sure if this
+> is intentional or a foresight.
 
-Best,
-Alexei
+s/foresight/hindsight
+
+There's no 'make check' for what we want to say in the ML but hopefully there's
+a way to enable 'bios-table-test' for RISC-V :D
+
+
+Daniel
+
+
+
 
