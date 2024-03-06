@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C01C8737FF
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 14:42:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B21BE8737F8
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 14:42:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhrQd-0008HB-RR; Wed, 06 Mar 2024 08:35:27 -0500
+	id 1rhrQp-0008JZ-L2; Wed, 06 Mar 2024 08:35:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=yBjJ=KM=redhat.com=clg@ozlabs.org>)
- id 1rhrQb-0008Gn-Kq
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 08:35:25 -0500
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ id 1rhrQm-0008Iq-5K
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 08:35:36 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=yBjJ=KM=redhat.com=clg@ozlabs.org>)
- id 1rhrQP-0005BZ-Tu
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 08:35:25 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TqYMf6pFTz4wxY;
- Thu,  7 Mar 2024 00:35:10 +1100 (AEDT)
+ id 1rhrQV-0005Bu-SS
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 08:35:34 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TqYMk5Glvz4wxs;
+ Thu,  7 Mar 2024 00:35:14 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4TqYMZ6P9rz4wcF;
- Thu,  7 Mar 2024 00:35:06 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TqYMg3v6tz4wcF;
+ Thu,  7 Mar 2024 00:35:11 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -38,28 +38,25 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
  Prasad Pandit <pjp@fedoraproject.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v4 05/25] s390/stattrib: Add Error** argument to
- set_migrationmode() handler
-Date: Wed,  6 Mar 2024 14:34:20 +0100
-Message-ID: <20240306133441.2351700-6-clg@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v4 06/25] vfio: Always report an error in vfio_save_setup()
+Date: Wed,  6 Mar 2024 14:34:21 +0100
+Message-ID: <20240306133441.2351700-7-clg@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240306133441.2351700-1-clg@redhat.com>
 References: <20240306133441.2351700-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=yBjJ=KM=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,12 +74,9 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This will prepare ground for future changes adding an Error** argument
 to the save_setup() handler. We need to make sure that on failure,
-set_migrationmode() always sets a new error. See the Rules section in
-qapi/error.h.
+vfio_save_setup() always sets a new error.
 
-Cc: Halil Pasic <pasic@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
 
@@ -90,117 +84,62 @@ Signed-off-by: Cédric Le Goater <clg@redhat.com>
 
  - Fixed state name printed out in error returned by vfio_save_setup()
  - Fixed test on error returned by qemu_file_get_error()
-
- include/hw/s390x/storage-attributes.h |  2 +-
- hw/s390x/s390-stattrib-kvm.c          | 12 ++++++++++--
- hw/s390x/s390-stattrib.c              | 15 ++++++++++-----
- 3 files changed, 21 insertions(+), 8 deletions(-)
-
-diff --git a/include/hw/s390x/storage-attributes.h b/include/hw/s390x/storage-attributes.h
-index 5239eb538c1b087797867a247abfc14551af6a4d..8921a04d514bf64a3113255ee10ed33fc598ae06 100644
---- a/include/hw/s390x/storage-attributes.h
-+++ b/include/hw/s390x/storage-attributes.h
-@@ -39,7 +39,7 @@ struct S390StAttribClass {
-     int (*set_stattr)(S390StAttribState *sa, uint64_t start_gfn,
-                       uint32_t count, uint8_t *values);
-     void (*synchronize)(S390StAttribState *sa);
--    int (*set_migrationmode)(S390StAttribState *sa, bool value);
-+    int (*set_migrationmode)(S390StAttribState *sa, bool value, Error **errp);
-     int (*get_active)(S390StAttribState *sa);
-     long long (*get_dirtycount)(S390StAttribState *sa);
- };
-diff --git a/hw/s390x/s390-stattrib-kvm.c b/hw/s390x/s390-stattrib-kvm.c
-index 24cd01382e2d74d62c2d7e980eb6aca1077d893d..eeaa8110981c970e91a8948f027e398c34637321 100644
---- a/hw/s390x/s390-stattrib-kvm.c
-+++ b/hw/s390x/s390-stattrib-kvm.c
-@@ -17,6 +17,7 @@
- #include "sysemu/kvm.h"
- #include "exec/ram_addr.h"
- #include "kvm/kvm_s390x.h"
-+#include "qapi/error.h"
  
- Object *kvm_s390_stattrib_create(void)
- {
-@@ -137,14 +138,21 @@ static void kvm_s390_stattrib_synchronize(S390StAttribState *sa)
+ hw/vfio/migration.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+index 2050ac8897231ff89cc223f0570d5c7a65dede9e..330b3a28548e32b0b3268072895bb5e4875766a2 100644
+--- a/hw/vfio/migration.c
++++ b/hw/vfio/migration.c
+@@ -383,6 +383,7 @@ static int vfio_save_setup(QEMUFile *f, void *opaque)
+     VFIODevice *vbasedev = opaque;
+     VFIOMigration *migration = vbasedev->migration;
+     uint64_t stop_copy_size = VFIO_MIG_DEFAULT_DATA_BUFFER_SIZE;
++    int ret;
+ 
+     qemu_put_be64(f, VFIO_MIG_FLAG_DEV_SETUP_STATE);
+ 
+@@ -397,13 +398,13 @@ static int vfio_save_setup(QEMUFile *f, void *opaque)
      }
- }
  
--static int kvm_s390_stattrib_set_migrationmode(S390StAttribState *sa, bool val)
-+static int kvm_s390_stattrib_set_migrationmode(S390StAttribState *sa, bool val,
-+                                               Error **errp)
- {
-     struct kvm_device_attr attr = {
-         .group = KVM_S390_VM_MIGRATION,
-         .attr = val,
-         .addr = 0,
-     };
--    return kvm_vm_ioctl(kvm_state, KVM_SET_DEVICE_ATTR, &attr);
-+    int r;
-+
-+    r = kvm_vm_ioctl(kvm_state, KVM_SET_DEVICE_ATTR, &attr);
-+    if (r) {
-+        error_setg_errno(errp, -r, "setting KVM_S390_VM_MIGRATION failed");
+     if (vfio_precopy_supported(vbasedev)) {
+-        int ret;
+-
+         switch (migration->device_state) {
+         case VFIO_DEVICE_STATE_RUNNING:
+             ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_PRE_COPY,
+                                            VFIO_DEVICE_STATE_RUNNING);
+             if (ret) {
++                error_report("%s: Failed to set new PRE_COPY state",
++                             vbasedev->name);
+                 return ret;
+             }
+ 
+@@ -414,6 +415,8 @@ static int vfio_save_setup(QEMUFile *f, void *opaque)
+             /* vfio_save_complete_precopy() will go to STOP_COPY */
+             break;
+         default:
++            error_report("%s: Invalid device state %d", vbasedev->name,
++                         migration->device_state);
+             return -EINVAL;
+         }
+     }
+@@ -422,7 +425,13 @@ static int vfio_save_setup(QEMUFile *f, void *opaque)
+ 
+     qemu_put_be64(f, VFIO_MIG_FLAG_END_OF_STATE);
+ 
+-    return qemu_file_get_error(f);
++    ret = qemu_file_get_error(f);
++    if (ret < 0) {
++        error_report("%s: save setup failed : %s", vbasedev->name,
++                     strerror(-ret));
 +    }
-+    return r;
++
++    return ret;
  }
  
- static long long kvm_s390_stattrib_get_dirtycount(S390StAttribState *sa)
-diff --git a/hw/s390x/s390-stattrib.c b/hw/s390x/s390-stattrib.c
-index c483b62a9b5f71772639fc180bdad15ecb6711cb..b743e8a2fee84c7374460ccea6df1cf447cda44b 100644
---- a/hw/s390x/s390-stattrib.c
-+++ b/hw/s390x/s390-stattrib.c
-@@ -60,11 +60,13 @@ void hmp_migrationmode(Monitor *mon, const QDict *qdict)
-     S390StAttribState *sas = s390_get_stattrib_device();
-     S390StAttribClass *sac = S390_STATTRIB_GET_CLASS(sas);
-     uint64_t what = qdict_get_int(qdict, "mode");
-+    Error *local_err = NULL;
-     int r;
- 
--    r = sac->set_migrationmode(sas, what);
-+    r = sac->set_migrationmode(sas, what, &local_err);
-     if (r < 0) {
--        monitor_printf(mon, "Error: %s", strerror(-r));
-+        monitor_printf(mon, "Error: %s", error_get_pretty(local_err));
-+        error_free(local_err);
-     }
- }
- 
-@@ -170,13 +172,15 @@ static int cmma_save_setup(QEMUFile *f, void *opaque)
- {
-     S390StAttribState *sas = S390_STATTRIB(opaque);
-     S390StAttribClass *sac = S390_STATTRIB_GET_CLASS(sas);
-+    Error *local_err = NULL;
-     int res;
-     /*
-      * Signal that we want to start a migration, thus needing PGSTE dirty
-      * tracking.
-      */
--    res = sac->set_migrationmode(sas, 1);
-+    res = sac->set_migrationmode(sas, true, &local_err);
-     if (res) {
-+        error_report_err(local_err);
-         return res;
-     }
-     qemu_put_be64(f, STATTR_FLAG_EOS);
-@@ -260,7 +264,7 @@ static void cmma_save_cleanup(void *opaque)
- {
-     S390StAttribState *sas = S390_STATTRIB(opaque);
-     S390StAttribClass *sac = S390_STATTRIB_GET_CLASS(sas);
--    sac->set_migrationmode(sas, 0);
-+    sac->set_migrationmode(sas, false, NULL);
- }
- 
- static bool cmma_active(void *opaque)
-@@ -293,7 +297,8 @@ static long long qemu_s390_get_dirtycount_stub(S390StAttribState *sa)
- {
-     return 0;
- }
--static int qemu_s390_set_migrationmode_stub(S390StAttribState *sa, bool value)
-+static int qemu_s390_set_migrationmode_stub(S390StAttribState *sa, bool value,
-+                                            Error **errp)
- {
-     return 0;
- }
+ static void vfio_save_cleanup(void *opaque)
 -- 
 2.44.0
 
