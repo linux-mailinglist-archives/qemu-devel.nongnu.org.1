@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC88872EBC
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 07:17:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C3C872EB2
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 07:15:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhkWY-0005BI-6b; Wed, 06 Mar 2024 01:13:06 -0500
+	id 1rhkX8-0005Y4-L9; Wed, 06 Mar 2024 01:13:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rhkWN-00050A-FQ
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 01:12:58 -0500
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ id 1rhkWP-000537-DW
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 01:12:59 -0500
+Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rhkWK-0006Gx-Jp
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 01:12:54 -0500
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-517ab9a4a13so5715309a12.1
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 22:12:51 -0800 (PST)
+ id 1rhkWN-0006HH-82
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 01:12:56 -0500
+Received: by mail-oi1-x232.google.com with SMTP id
+ 5614622812f47-3c1a1e1e539so1330788b6e.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 22:12:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709705571; x=1710310371;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709705574; x=1710310374;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=DgfW3dC2BQFvXbkrpvVsfPqRuCKLeW6kZAejsXMFwME=;
- b=qKgJT6tJBenYKV/gKCcrjC65DtOu3QzamAcWWiuuvIO8yED737641YHBsMxNM/ABwQ
- rLTNkTf52zo+VIbayQJM1mBMYTo9Ga2r6YsZU8YVMSGaky+GCuOVjTbcl56zPngY3wrI
- 2woUgK/mXlNO2ix8jLQf7Tgdk6ZgzThwqDSCrpGYxwTPNgRqAnXpAKBTUMJ4QUx+fKf1
- VdRQpCIB5kq83V7eDVPeXRTPkC31PO6FnW7oy9gAUzFR9OyqWOCC4EB297M4KYYSDxP+
- SBs2CTSl1+KBPEUZ1A+DgRf0TcImwatR8Q08lb1WZPHOw2YYIWyABSE841qZmhv4DeuV
- Wa1Q==
+ :reply-to; bh=Zd2GK/LwiDy+x5sdYIECrLQP++QUZzK/GPm/IzIIz+I=;
+ b=scCFATSRbVvZ4Wd4InZJvDpdwm9y4Y8pWrwmPpkoGR9Dy0QMd8pildrUaXSPykBjhT
+ Jx39wZFd74jPL7KuG0yF6linBi3CEJxoqrMIs7+CkQJk6AKF9b5zVgD/5izFeEWG4JaE
+ YVIR99r0k9zv4kupMiQQNW8m+ErZHvAtj9Rw3ANFBvmAw3sEOXHfDbBbeC4LuHCOfPQP
+ rVyCyxWXLd4oQpT1NuryrSvZWzKCp2ItunuKW3HPm0+iuKfHEIKfb5gCmjNrUrZDed3K
+ Ecw8RtC55itYNpr8OsVFEb3rBZ4hDZid6NR/9jjEf0FDf7oVyBSwkPG4HOlGE3I+3z9o
+ YH4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709705571; x=1710310371;
+ d=1e100.net; s=20230601; t=1709705574; x=1710310374;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DgfW3dC2BQFvXbkrpvVsfPqRuCKLeW6kZAejsXMFwME=;
- b=q3I0Cs3jLM0fYgFuir6N5WXNWuZqwRq3Rj0+YlVA6G6a7suOQKk0VMNC07BBqi3o0v
- iXfiAMcTLAufpe8KjB85EyiqZNYrDUCD89N3GnK5ay4ix62+BgnVJn+3lt+jh7LDFmZv
- U8J+MH4Vk6Q1UPMdYLJG1QFU2Yyn2ZGqMLPkjcw9m7aVoosrgVWDy9huRtVF7UqYLaYc
- QGXc6VMxCPN87NFXXJQKs8i+EIvNjDeQi9FkljtBboBKrGPmb/nieotEC1q/WYinEO8b
- cVyRc43b9sTdPTbTST124FelCxodX8WIVBAjstA8YCnuPAfG286iCpYnjdJHAC1bkI9h
- Pflw==
-X-Gm-Message-State: AOJu0YxAAnQNeSjBqhtCXSSHbCJ0mnl7cGXhldWUSJJCnRAixthy1DUt
- 1NPdueCmhy+L5kqYprjS1uw5X7eDrrEQPUMP1QKsVzN7EblCoRFQlFQq6mOwdFk=
-X-Google-Smtp-Source: AGHT+IEEa7xDE0YMz/BAUAx9C4fmbda+pIxEjgTxSSJkPUNQGHgjGIj6XPoa3TKJMsk13zPEJtg8vg==
-X-Received: by 2002:a17:90a:a08d:b0:29a:cc76:2346 with SMTP id
- r13-20020a17090aa08d00b0029acc762346mr12162113pjp.24.1709705570899; 
- Tue, 05 Mar 2024 22:12:50 -0800 (PST)
+ bh=Zd2GK/LwiDy+x5sdYIECrLQP++QUZzK/GPm/IzIIz+I=;
+ b=WJrcCWvoWQjVFfekpTxUQtNOmndHx3U1RJOfEBUxuIjZywW1RoTH1XLxhKSTO55gjZ
+ L71vNmAjwu5ccve39+d6f+UrHgf1N8uSzygB2eF1yPxvL9jlszmDvJthPh+JeCmP72Uw
+ WUtkhjaKsWRjQ2K3zHrHImcFZbtCh4yuHTQ6hrWbr4TPe2zbf5i7CoRjjtQs5OjUDu6b
+ ZL5MNeTrs535VqoDeTjPjmw5foR0dduBkasbXGGTBXgoAkZMIApjpgUvXfAkmq+dNdtr
+ s/e4RoDR/y8YxkyfpV79lTFD+c9zqkOzKVl/qtbhyrVXg/+/1gOYPmBX8LK2uSB5fS7I
+ PRmw==
+X-Gm-Message-State: AOJu0Yz43Y6v+YMY7x3qq2w52Uk/dlgdBi2Tw7Vf4lQzp9pZrfM+4P5G
+ 0VJ3yNLkWQwNlJsRgQf4No7dpNQMNoHmxGrt41XiwHQmfnJ670yj1vwCJkAodbg=
+X-Google-Smtp-Source: AGHT+IHzrKNiScXKnyD/9oOuKRZMbkjY4vBBvsWyeDl429zMwXljBOoJ+YCEKQ/gbDkfAY9zAzSW6A==
+X-Received: by 2002:a54:4687:0:b0:3c1:de7c:d6eb with SMTP id
+ k7-20020a544687000000b003c1de7cd6ebmr3720948oic.49.1709705573852; 
+ Tue, 05 Mar 2024 22:12:53 -0800 (PST)
 Received: from localhost ([157.82.206.27]) by smtp.gmail.com with UTF8SMTPSA id
- m2-20020a17090a858200b002997a5eea5bsm10474861pjn.31.2024.03.05.22.12.49
+ d2-20020a63bd42000000b005dc832ed816sm8880860pgp.59.2024.03.05.22.12.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Mar 2024 22:12:50 -0800 (PST)
+ Tue, 05 Mar 2024 22:12:53 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 06 Mar 2024 15:12:18 +0900
-Subject: [PATCH v3 12/19] contrib/elf2dmp: Ensure segment fits in file
+Date: Wed, 06 Mar 2024 15:12:19 +0900
+Subject: [PATCH v3 13/19] contrib/elf2dmp: Use lduw_le_p() to read PDB
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240306-elf2dmp-v3-12-d74e6c3da49c@daynix.com>
+Message-Id: <20240306-elf2dmp-v3-13-d74e6c3da49c@daynix.com>
 References: <20240306-elf2dmp-v3-0-d74e6c3da49c@daynix.com>
 In-Reply-To: <20240306-elf2dmp-v3-0-d74e6c3da49c@daynix.com>
 To: Viktor Prutyanov <viktor.prutyanov@phystech.edu>, 
  Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::530;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x530.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::232;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x232.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,33 +91,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This makes elf2dmp more robust against corrupted inputs.
+The relevant value may be unaligned and is little-endian.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- contrib/elf2dmp/addrspace.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ contrib/elf2dmp/pdb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/contrib/elf2dmp/addrspace.c b/contrib/elf2dmp/addrspace.c
-index e01860d15b07..81295a11534a 100644
---- a/contrib/elf2dmp/addrspace.c
-+++ b/contrib/elf2dmp/addrspace.c
-@@ -88,11 +88,12 @@ void pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
-     ps->block = g_new(struct pa_block, ps->block_nr);
+diff --git a/contrib/elf2dmp/pdb.c b/contrib/elf2dmp/pdb.c
+index 1c5051425185..492aca4434c8 100644
+--- a/contrib/elf2dmp/pdb.c
++++ b/contrib/elf2dmp/pdb.c
+@@ -19,6 +19,7 @@
+  */
  
-     for (i = 0; i < phdr_nr; i++) {
--        if (phdr[i].p_type == PT_LOAD) {
-+        if (phdr[i].p_type == PT_LOAD && phdr[i].p_offset < qemu_elf->size) {
-             ps->block[block_i] = (struct pa_block) {
-                 .addr = (uint8_t *)qemu_elf->map + phdr[i].p_offset,
-                 .paddr = phdr[i].p_paddr,
--                .size = phdr[i].p_filesz,
-+                .size = MIN(phdr[i].p_filesz,
-+                            qemu_elf->size - phdr[i].p_offset),
-             };
-             pa_block_align(&ps->block[block_i]);
-             block_i = ps->block[block_i].size ? (block_i + 1) : block_i;
+ #include "qemu/osdep.h"
++#include "qemu/bswap.h"
+ 
+ #include "pdb.h"
+ #include "err.h"
+@@ -186,7 +187,7 @@ static bool pdb_init_symbols(struct pdb_reader *r)
+ 
+     r->symbols = symbols;
+ 
+-    r->segments = *(uint16_t *)((const char *)symbols + sizeof(PDB_SYMBOLS) +
++    r->segments = lduw_le_p((const char *)symbols + sizeof(PDB_SYMBOLS) +
+             symbols->module_size + symbols->offset_size +
+             symbols->hash_size + symbols->srcmodule_size +
+             symbols->pdbimport_size + symbols->unknown2_size +
 
 -- 
 2.44.0
