@@ -2,73 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4042587393F
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 15:34:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A48487323C
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 10:14:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhsKk-0001ys-3Q; Wed, 06 Mar 2024 09:33:26 -0500
+	id 1rhnKc-0000qs-89; Wed, 06 Mar 2024 04:12:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liuyb845@gmail.com>)
- id 1rhnBE-0008EC-T8; Wed, 06 Mar 2024 04:03:16 -0500
-Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <liuyb845@gmail.com>)
- id 1rhnBC-0004aq-SP; Wed, 06 Mar 2024 04:03:16 -0500
-Received: by mail-pg1-x542.google.com with SMTP id
- 41be03b00d2f7-5d3907ff128so569051a12.3; 
- Wed, 06 Mar 2024 01:03:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709715791; x=1710320591; darn=nongnu.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=2A+eXIP61nOObie+6hF7GYVPiixHlwF90K4X7zcmbs8=;
- b=E8Eef9HsppaxwHN+fcIumAjCYNeP5my8Ty3L3RJxcKVw3vkKpQvXR9vjpWc/1uAwhc
- Pzp0yH0vEwNHwodsPEJYxetfQTqnB4jH9NjZmNSrF/k1O3HKvJbS9EOiNtZTx3pf8iLQ
- VkzQGRyLDDdwHN3PvxtKpFHQeC1dC1IDWHiDpy8vy92PaIzINl97y1eowE+sg6xdQQDG
- toD+MPWgxZ+dFpfk2qYkQ4qvE5cOI6yMoY4mI+ggND1nckTmyO+KEfuMeNr630Qpp2QC
- J69TdXS7V1fcZSExvbU/ibLciNOFlVanrZgiLYmXTaZtANF3iKK4cqA8AHEuuVRcJyv+
- Op7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709715791; x=1710320591;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2A+eXIP61nOObie+6hF7GYVPiixHlwF90K4X7zcmbs8=;
- b=B+QjjH6NzlAXYqqkMCK9YXwTQhVRbCZltkoeBMBXa7k2/Byxpc30QZEdE7talLapG1
- szua+5fxgB4IR6mKjb1SbzYkVk60qlAqcOtqfTI3OnTDali2A0Z4gRzL83+QGehVz2u7
- 2iNGh8XjhM+/mX2tyNLChF+otJFx+PIqDkC4UDtTfg62avQQj2RdYYkGsMpjzWB2749P
- EK5EmGLhtcyS6wQSfhg6yzAGNDkIjiXJnEMKGmm/En9qnFPIRVppVC1HT+mzzeBty5nf
- i2DfqMMryiHUpcVcJdgGBeu6oodRpFT07buKvHElWw8YVzuldeCF+o8t9NjjVW+pZxC/
- ovDQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWyK4ttgKchIG4DGtndEGAGUeKdngJ/88AgPPyMLTbs7F94ndu7UTMOzBPXqd72I7QmUUFaJQDETkXXIjl88wgYUBEOULDlMwNt3YiMT2xcOXxlr+9JO3H2qSg=
-X-Gm-Message-State: AOJu0Yzzq0Xs1wpYHysUH5LlopdAZTuo3SMG49NTyibWf92VPPVKwUkE
- FmC+QqvJ3VJq2HICbfLuwX3VF55LrC11AdiIwF84pIEEwgei3IKei2ra31sEsS1SHj1Wm3rO6AX
- y2T8c7ACoL6LLxGNHcwZzNtOWHIp6GD602g1VnQ==
-X-Google-Smtp-Source: AGHT+IGFhEU9ifTXSLf07485ZBhqpzwW/dxZkOoVgfQxlFp942rpgd3SApAW44R78jcad4gQFGrYuxlKtBiH7GLnKMQ=
-X-Received: by 2002:a05:6a20:7343:b0:1a1:3515:7006 with SMTP id
- v3-20020a056a20734300b001a135157006mr4819695pzc.31.1709715791417; Wed, 06 Mar
- 2024 01:03:11 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rhnKZ-0000qc-Ab; Wed, 06 Mar 2024 04:12:55 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rhnKV-0007cU-A3; Wed, 06 Mar 2024 04:12:54 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TqRR40drBz67hqY;
+ Wed,  6 Mar 2024 17:07:44 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id 15F27140DF4;
+ Wed,  6 Mar 2024 17:12:43 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 6 Mar
+ 2024 09:12:42 +0000
+Date: Wed, 6 Mar 2024 09:12:41 +0000
+To: Jonathan Cameron via <qemu-devel@nongnu.org>
+CC: Jonathan Cameron <Jonathan.Cameron@Huawei.com>, <ankita@nvidia.com>,
+ <jgg@nvidia.com>, <alex.williamson@redhat.com>, <clg@redhat.com>,
+ <shannon.zhaosl@gmail.com>, <peter.maydell@linaro.org>, <ani@anisinha.ca>,
+ <berrange@redhat.com>, <eduardo@habkost.net>, <imammedo@redhat.com>,
+ <mst@redhat.com>, <eblake@redhat.com>, <armbru@redhat.com>,
+ <david@redhat.com>, <gshan@redhat.com>, <zhiw@nvidia.com>,
+ <mochs@nvidia.com>, <pbonzini@redhat.com>, <aniketa@nvidia.com>,
+ <cjia@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+ <vsethi@nvidia.com>, <acurrid@nvidia.com>, <dnigam@nvidia.com>,
+ <udhoke@nvidia.com>, <qemu-arm@nongnu.org>
+Subject: Re: [PATCH v7 2/2] hw/acpi: Implement the SRAT GI affinity structure
+Message-ID: <20240306091241.0000432b@Huawei.com>
+In-Reply-To: <20240226164229.00001536@Huawei.com>
+References: <20240223124223.800078-1-ankita@nvidia.com>
+ <20240223124223.800078-3-ankita@nvidia.com>
+ <20240226164229.00001536@Huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-From: yb liu <liuyb845@gmail.com>
-Date: Wed, 6 Mar 2024 17:02:59 +0800
-Message-ID: <CAKstcpWLhcNswkippmDyQQz2bPKSN+w9F0jZzcZRGpuNWvW55g@mail.gmail.com>
-Subject: QEMU Compatibility for Cortex-A55 AArch32 Firmware
-To: qemu-discuss@nongnu.org, qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: multipart/alternative; boundary="0000000000006a1dc10612fa3aa9"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::542;
- envelope-from=liuyb845@gmail.com; helo=mail-pg1-x542.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 06 Mar 2024 09:33:24 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,51 +72,83 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000006a1dc10612fa3aa9
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Mon, 26 Feb 2024 16:42:29 +0000
+Jonathan Cameron via <qemu-devel@nongnu.org> wrote:
 
-Dear QEMU developers
+> On Fri, 23 Feb 2024 12:42:23 +0000
+> <ankita@nvidia.com> wrote:
+> 
+> > From: Ankit Agrawal <ankita@nvidia.com>
+> > 
+> > ACPI spec provides a scheme to associate "Generic Initiators" [1]
+> > (e.g. heterogeneous processors and accelerators, GPUs, and I/O devices with
+> > integrated compute or DMA engines GPUs) with Proximity Domains. This is
+> > achieved using Generic Initiator Affinity Structure in SRAT. During bootup,
+> > Linux kernel parse the ACPI SRAT to determine the PXM ids and create a NUMA
+> > node for each unique PXM ID encountered. Qemu currently do not implement
+> > these structures while building SRAT.
+> > 
+> > Add GI structures while building VM ACPI SRAT. The association between
+> > device and node are stored using acpi-generic-initiator object. Lookup
+> > presence of all such objects and use them to build these structures.
+> > 
+> > The structure needs a PCI device handle [2] that consists of the device BDF.
+> > The vfio-pci device corresponding to the acpi-generic-initiator object is
+> > located to determine the BDF.
+> > 
+> > [1] ACPI Spec 6.3, Section 5.2.16.6
+> > [2] ACPI Spec 6.3, Table 5.80
+> > 
+> > Signed-off-by: Ankit Agrawal <ankita@nvidia.com>  
+> 
+> One thing I forgot.
+And another :)
 
-I hope this email finds you well. We are currently facing an issue related
-to QEMU and the Cortex-A55 architecture. Specifically, we have compiled a
-firmware for Cortex-A55 and would like it to run smoothly on QEMU A55 in
-AArch32 mode.
+It might be nice to also support x86 from the start (apparently people still
+care about that old architecture)
 
-Despite our numerous attempts, we continue to encounter an "undefined
-instruction" error when running the firmware in QEMU. Our question is
-whether QEMU supports this particular use case=E2=80=94specifically, whethe=
-r it can
-handle A55 running AArch32 firmware.
+https://gitlab.com/jic23/qemu/-/commit/ccfb4fe22167e035173390cf147d9c226951b9b6
+is what I'm carrying for this (see below)
 
-Any insights or guidance you can provide would be greatly appreciated.
-Thank you for your assistance.
+We could do this later as part of the generic ports series (which is also on
+that tree if you are curious).
 
-Best regards,
-Eric Lau
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 2d2bb0a325b83f5e3fb4666a462a693aea1a2220..54462d3a46c379a4159b4d71d7689a107745fa4c 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -68,6 +68,7 @@
+ #include "hw/acpi/utils.h"
+ #include "hw/acpi/pci.h"
+ #include "hw/acpi/cxl.h"
++#include "hw/acpi/acpi-generic-initiator.h"
+ 
+ #include "qom/qom-qobject.h"
+ #include "hw/i386/amd_iommu.h"
+@@ -2097,6 +2098,7 @@ build_srat(GArray *table_data, BIOSLinker *linker, MachineState *machine)
+         }
+     }
+ 
++    build_srat_generic_pci_initiator(table_data);
+     if (machine->nvdimms_state->is_enabled) {
+         nvdimm_build_srat(table_data);
+     }
 
---0000000000006a1dc10612fa3aa9
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"auto"><div dir=3D"auto"><br></div><div dir=3D"auto">Dear QEMU d=
-evelopers</div><div dir=3D"auto"><br></div><div dir=3D"auto">I hope this em=
-ail finds you well. We are currently facing an issue related to QEMU and th=
-e Cortex-A55 architecture. Specifically, we have compiled a firmware for Co=
-rtex-A55 and would like it to run smoothly on QEMU A55 in AArch32 mode.</di=
-v><div dir=3D"auto"><br></div><div dir=3D"auto">Despite our numerous attemp=
-ts, we continue to encounter an &quot;undefined instruction&quot; error whe=
-n running the firmware in QEMU. Our question is whether QEMU supports this =
-particular use case=E2=80=94specifically, whether it can handle A55 running=
- AArch32 firmware.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Any i=
-nsights or guidance you can provide would be greatly appreciated. Thank you=
- for your assistance.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Be=
-st regards,</div><div dir=3D"auto">Eric Lau</div><div dir=3D"auto"><br></di=
-v><div dir=3D"auto"><br></div><div dir=3D"auto"><br></div><div dir=3D"auto"=
-><br></div></div>
 
---0000000000006a1dc10612fa3aa9--
+
+> 
+> Please add a test.  tests/qtest/bios-tables-test.c
+> + relevant table dumps.
+> 
+> Could also hook this up for x86 with a oneline addition and improve
+> test coverage.  If not, I'll do it when I add Generic Ports as annoyingly
+> people still care about x86 for some reason.
+> 
+
 
