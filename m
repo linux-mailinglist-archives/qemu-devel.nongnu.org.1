@@ -2,92 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58930872FF7
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 08:50:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 378C1873059
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 09:12:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhm0T-0002P4-8V; Wed, 06 Mar 2024 02:48:05 -0500
+	id 1rhmNN-0005Wi-D6; Wed, 06 Mar 2024 03:11:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1rhm0R-0002OT-27
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 02:48:03 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rhmNM-0005Wa-4C
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 03:11:44 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1rhm0P-0004j7-Ed
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 02:48:02 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rhmNJ-0007tL-CT
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 03:11:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709711280;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1709712699;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=szLotHqHrLAWgY/IdU0Id4a22ZuDv3jSIc1NZf1CiDk=;
- b=dLzoY0rLh7HhxlxjrRATcDfGSYh0yILHlx0/DpYzBChcfPw0lvdtTIOmuR6rGLF60FnrM1
- 6svKYkJQKMQ61ddfkwwkdyEd79yGMN0yVJWx8IUO7plq43y9y9iGpzleY1PA/0Oey3JTKq
- Z0cdrV27QZ3gyqZaPXfOd+BF6Q39myw=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HbrxjbmwzxOLAsI68/9/0zanrrJV5hOKAirB2YP4Sog=;
+ b=MFOmAu+9K80SVI5h3CrQzseUGTc2+SsfaEG3NU1MAqaDLm0TJr9SE0bjjadotFJ70ASEx5
+ C/JnVLtHxKamRCdQ2Eo65Mkn3+HPQSeawoVZ6PV01hHczdrUJE/BQxep3CJ0jxGbuTbCS0
+ /KHUDrjkS3iK6wasxRFQHfD5AKIFubg=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-302-GyWUGp2aNWO6oEgyo_r5NQ-1; Wed, 06 Mar 2024 02:47:58 -0500
-X-MC-Unique: GyWUGp2aNWO6oEgyo_r5NQ-1
-Received: by mail-pl1-f199.google.com with SMTP id
- d9443c01a7336-1dbe3ca6bb7so4048935ad.0
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 23:47:58 -0800 (PST)
+ us-mta-604-Az59hSAoOvWM25jmRdQ6Vg-1; Wed, 06 Mar 2024 03:11:38 -0500
+X-MC-Unique: Az59hSAoOvWM25jmRdQ6Vg-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-787d3b9ad5dso751768685a.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 00:11:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709711277; x=1710316077;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=szLotHqHrLAWgY/IdU0Id4a22ZuDv3jSIc1NZf1CiDk=;
- b=Vpx/ldHjzhHOkuENS5NbAQ1Wh6s0lsl8KHN5rcnRWYOUbtyRZdDRxdrSWEhc6PCcXo
- d0gvpZ2+6jMIc7qYiySykc8nF/5T+sCCt48dkpImw0X+0UmhalSabT7ziKAFBKy147lB
- fb7Ya/IJ8xhw986d8ZDiStaatUII5pAdP6AA8d9kfcUXZ8VXN9sSTRPSTZjiZZPsCpob
- txm62kAwJf8YQ2xA9qW7Ko5pe4z1LqusGM5pbPNPq/GoUW/BDS7JPmd7+maiTjIpAo6z
- lxymLodJPD6Gl90jLEYa0ZBkr1H7Nt2zTkOu+zegsAIzKNcSvGnsjdtn5ydIyf0KAPh+
- ZzVQ==
-X-Gm-Message-State: AOJu0Yz7WgW1lCKQJtJZqWmuiCTeabj6s210g6nn17kq8C8f7xghTyaK
- c68yG2zy+1hOBmpMc9n3UMYchy5x4Od6FsV6APJdxng/U0mpjGffm1SRqTfkie5PHXutQyjeIzx
- oWRUAT9H6DC3OOhzhxmfcasee/r+0uzP4rl65CkDqcwm3p4fsUrX1
-X-Received: by 2002:a17:902:e804:b0:1dc:fccb:e05c with SMTP id
- u4-20020a170902e80400b001dcfccbe05cmr6391394plg.20.1709711277612; 
- Tue, 05 Mar 2024 23:47:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEtCYpqRjiblNXbOBNFPns/efleZA+zp+WkxR1UHwUIfC1PlZO9fUZZYCuqA5s80X1IP7nE6A==
-X-Received: by 2002:a17:902:e804:b0:1dc:fccb:e05c with SMTP id
- u4-20020a170902e80400b001dcfccbe05cmr6391378plg.20.1709711277270; 
- Tue, 05 Mar 2024 23:47:57 -0800 (PST)
-Received: from smtpclient.apple ([115.96.30.47])
+ d=1e100.net; s=20230601; t=1709712696; x=1710317496;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HbrxjbmwzxOLAsI68/9/0zanrrJV5hOKAirB2YP4Sog=;
+ b=p0Mbw7kLGK1BGmdXc26z0sJqXlSa9NBwi/qsP6Ci1cwBVHwsFTvXOQzf/nrURScJhm
+ ObIjZwUVrFl3SDs7X7WSJvi+5roMHRcwcW+wkz0NM07ODW7QYUALZ0xaXwAMHMMCUBrw
+ Jorbe5/CEYEJcL04uIXVsF96NnU+e0+rtaRL6pm/6cmeNxAwpuc5qnGp2Xda4kGwT/qG
+ e3JE4fufunjsMlRw63PiyPTAwKE43CKMjKpXxKyiwheCFQTTAvyhC1N6inc3ROlZc9ji
+ VSQtAA8QJBseoi5LTZObJ/Yjv9Yh6WmKl7Hharn4ikOkFDufy+CECcOHIkq/6+ocZatW
+ i6bw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX/cxWLHqoxNlhMQkLFvlNLFLTOAgwTE7Jkzs0l/vewGoTepRJKQzeaMpqm6KkYqqr+eIIKiPV6g6E/FIwjHCGMk1EETUQ=
+X-Gm-Message-State: AOJu0YxAMTeA4GoTIgOEuxXfuEsaNadrZpIVO8z7Vjz/D2nTtddgO2R2
+ dM37eF7pOvlKBXHSi9hrV2MibaAuTKfgiwSFa+nzyEkN5rG+zwg3z1oFf+/w+ds8ScwYRG3sEM+
+ 86T9STWZJCp9a+0s9+4IyvXddMjfTwX5bPEzpA0ctFMoE3lrhwbA+
+X-Received: by 2002:a05:620a:8309:b0:788:31c7:ceb5 with SMTP id
+ pa9-20020a05620a830900b0078831c7ceb5mr3757706qkn.30.1709712695929; 
+ Wed, 06 Mar 2024 00:11:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE7luoGci5+nspDLz/M5mc5L2Mwbv93T1f1q2bfThr7b+27WoLeSU6cYYVgH+CwSgLG0sWgsw==
+X-Received: by 2002:a05:620a:8309:b0:788:31c7:ceb5 with SMTP id
+ pa9-20020a05620a830900b0078831c7ceb5mr3757693qkn.30.1709712695622; 
+ Wed, 06 Mar 2024 00:11:35 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- 12-20020a170902e9cc00b001db9fa23407sm11867440plk.195.2024.03.05.23.47.50
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 05 Mar 2024 23:47:56 -0800 (PST)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
-Subject: Re: [PATCH v2 17/20] smbios: clear smbios_type4_count before building
- tables
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20240305155724.2047069-18-imammedo@redhat.com>
-Date: Wed, 6 Mar 2024 13:17:39 +0530
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Song Gao <gaosong@loongson.cn>,
- Alistair Francis <alistair.francis@wdc.com>, palmer@dabbelt.com,
- bin.meng@windriver.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, philmd@linaro.org, wangyanan55@huawei.com,
- eblake@redhat.com, armbru@redhat.com, qemu-arm@nongnu.org,
- qemu-riscv@nongnu.org, f.ebner@proxmox.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6A030F09-22CE-4489-9F7A-D7343966DBAC@redhat.com>
-References: <20240305155724.2047069-1-imammedo@redhat.com>
- <20240305155724.2047069-18-imammedo@redhat.com>
-To: Igor Mammedov <imammedo@redhat.com>
-X-Mailer: Apple Mail (2.3774.400.31)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+ h1-20020a05620a400100b007881fbfea7bsm3867890qko.24.2024.03.06.00.11.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Mar 2024 00:11:35 -0800 (PST)
+Message-ID: <83d37a18-ed8d-42d2-8272-6f95a637a0e9@redhat.com>
+Date: Wed, 6 Mar 2024 09:11:30 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 7/9] hw/i386/q35: Set virtio-iommu aw-bits default
+ value to 39
+Content-Language: en-US
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ "eric.auger.pro@gmail.com" <eric.auger.pro@gmail.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "mst@redhat.com"
+ <mst@redhat.com>, "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
+ "imammedo@redhat.com" <imammedo@redhat.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ "clg@redhat.com" <clg@redhat.com>, "yanghliu@redhat.com"
+ <yanghliu@redhat.com>
+Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "berrange@redhat.com" <berrange@redhat.com>
+References: <20240305180734.48515-1-eric.auger@redhat.com>
+ <20240305180734.48515-8-eric.auger@redhat.com>
+ <SJ0PR11MB67443EC0B600D02A773AD20792212@SJ0PR11MB6744.namprd11.prod.outlook.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <SJ0PR11MB67443EC0B600D02A773AD20792212@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -108,47 +117,160 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Zhenzhong,
 
+On 3/6/24 04:15, Duan, Zhenzhong wrote:
+> Hi Eric,
+>
+>> -----Original Message-----
+>> From: Eric Auger <eric.auger@redhat.com>
+>> Subject: [PATCH v6 7/9] hw/i386/q35: Set virtio-iommu aw-bits default
+>> value to 39
+>>
+>> Currently the default input range can extend to 64 bits. On x86,
+>> when the virtio-iommu protects vfio devices, the physical iommu
+>> may support only 39 bits. Let's set the default to 39, as done
+>> for the intel-iommu.
+>>
+>> We use hw_compat_8_2 to handle the compatibility for machines
+>> before 9.0 which used to have a virtio-iommu default input range
+>> of 64 bits.
+>>
+>> Of course if aw-bits is set from the command line, the default
+>> is overriden.
+>>
+>> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+>>
+>> ---
+>>
+>> v5 -> v6:
+>> - split pc/arm settings
+>>
+>> v3 -> v4:
+>> - update the qos test to relax the check on the max input IOVA
+>>
+>> v2 -> v3:
+>> - collected Zhenzhong's R-b
+>> - use &error_abort instead of NULL error handle
+>>  on object_property_get_uint() call (Cédric)
+>> - use VTD_HOST_AW_39BIT (Cédric)
+>>
+>> v1 -> v2:
+>> - set aw-bits to 48b on ARM
+>> - use hw_compat_8_2 to handle the compat for older machines
+>>  which used 64b as a default
+>> ---
+>> include/hw/i386/pc.h            | 3 +++
+>> hw/core/machine.c               | 1 +
+>> hw/i386/pc.c                    | 6 ++++++
+>> hw/i386/pc_q35.c                | 2 ++
+>> tests/qtest/virtio-iommu-test.c | 2 +-
+>> 5 files changed, 13 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+>> index 5065590281..b3229f98de 100644
+>> --- a/include/hw/i386/pc.h
+>> +++ b/include/hw/i386/pc.h
+>> @@ -198,6 +198,9 @@ void pc_system_parse_ovmf_flash(uint8_t
+>> *flash_ptr, size_t flash_size);
+>> /* sgx.c */
+>> void pc_machine_init_sgx_epc(PCMachineState *pcms);
+>>
+>> +extern GlobalProperty pc_compat_defaults[];
+>> +extern const size_t pc_compat_defaults_len;
+> If we only want to support q35 and not i440fx, better to add _q35 suffix and move into pc_q35.c and made static?
+Sure. I was initially following Igor's suggestion but it makes sense to
+restrict to q35 and turn in static I think.
+>
+>> +
+>> extern GlobalProperty pc_compat_8_2[];
+>> extern const size_t pc_compat_8_2_len;
+>>
+>> diff --git a/hw/core/machine.c b/hw/core/machine.c
+>> index 6bd09d4592..4b89172d1c 100644
+>> --- a/hw/core/machine.c
+>> +++ b/hw/core/machine.c
+>> @@ -35,6 +35,7 @@
+>>
+>> GlobalProperty hw_compat_8_2[] = {
+>>     { TYPE_VIRTIO_IOMMU_PCI, "granule", "4k" },
+>> +    { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "64" },
+>> };
+>> const size_t hw_compat_8_2_len = G_N_ELEMENTS(hw_compat_8_2);
+>>
+>> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+>> index f5ff970acf..9024483356 100644
+>> --- a/hw/i386/pc.c
+>> +++ b/hw/i386/pc.c
+>> @@ -59,6 +59,7 @@
+>> #include "hw/i386/kvm/xen_evtchn.h"
+>> #include "hw/i386/kvm/xen_gnttab.h"
+>> #include "hw/i386/kvm/xen_xenstore.h"
+>> +#include "hw/i386/intel_iommu.h"
+> This can be removed?
+yes
+>
+>> #include "hw/mem/memory-device.h"
+>> #include "e820_memory_layout.h"
+>> #include "trace.h"
+>> @@ -78,6 +79,11 @@
+>>     { "qemu64-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version "
+>> v, },\
+>>     { "athlon-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },
+>>
+>> +GlobalProperty pc_compat_defaults[] =  {
+>> +    { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "39" },
+>> +};
+>> +const size_t pc_compat_defaults_len =
+>> G_N_ELEMENTS(pc_compat_defaults);
+>> +
+>> GlobalProperty pc_compat_8_2[] = {};
+>> const size_t pc_compat_8_2_len = G_N_ELEMENTS(pc_compat_8_2);
+>>
+>> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+>> index 45a4102e75..32421a0a5f 100644
+>> --- a/hw/i386/pc_q35.c
+>> +++ b/hw/i386/pc_q35.c
+>> @@ -356,6 +356,8 @@ static void pc_q35_machine_options(MachineClass
+>> *m)
+>>     machine_class_allow_dynamic_sysbus_dev(m,
+>> TYPE_INTEL_IOMMU_DEVICE);
+>>     machine_class_allow_dynamic_sysbus_dev(m, TYPE_RAMFB_DEVICE);
+>>     machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
+>> +    compat_props_add(m->compat_props,
+>> +                     pc_compat_defaults, pc_compat_defaults_len);
+>> }
+>>
+>> static void pc_q35_9_0_machine_options(MachineClass *m)
+>> diff --git a/tests/qtest/virtio-iommu-test.c b/tests/qtest/virtio-iommu-test.c
+>> index 068e7a9e6c..0f36381acb 100644
+>> --- a/tests/qtest/virtio-iommu-test.c
+>> +++ b/tests/qtest/virtio-iommu-test.c
+>> @@ -34,7 +34,7 @@ static void pci_config(void *obj, void *data,
+>> QGuestAllocator *t_alloc)
+>>     uint8_t bypass = qvirtio_config_readb(dev, 36);
+>>
+>>     g_assert_cmpint(input_range_start, ==, 0);
+>> -    g_assert_cmphex(input_range_end, ==, UINT64_MAX);
+>> +    g_assert_cmphex(input_range_end, >=, 32);
+> UINT32_MAX?
+sure!
 
-> On 05-Mar-2024, at 21:27, Igor Mammedov <imammedo@redhat.com> wrote:
->=20
-> it will help to keep type 4 tables accounting correct in case
-> SMBIOS tables are built multiple times.
+Thank you for the review!
 
-
-I suggest you arrange this before patch 15 where you are actually =
-calling smbios_get_tables_ep() multiple times. That way there is no =
-window where things can break between patches.
-
->=20
-> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-> Tested-by: Fiona Ebner <f.ebner@proxmox.com>
-> ---
-> hw/smbios/smbios.c | 1 +
-> 1 file changed, 1 insertion(+)
->=20
-> diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-> index bf5c7a8885..b64d3bc227 100644
-> --- a/hw/smbios/smbios.c
-> +++ b/hw/smbios/smbios.c
-> @@ -981,6 +981,7 @@ static bool smbios_get_tables_ep(MachineState *ms,
->            ep_type =3D=3D SMBIOS_ENTRY_POINT_TYPE_64);
->=20
->     g_free(smbios_tables);
-> +    smbios_type4_count =3D 0;
-
-Nit: Can you put this before g_free() because gfree(smbios_tables) and =
-smbios_tables =3D memdup2() etc are related. This is kind of coming in =
-between.
-
->     smbios_tables =3D g_memdup2(usr_blobs, usr_blobs_len);
->     smbios_tables_len =3D usr_blobs_len;
->     smbios_table_max =3D usr_table_max;
-> --=20
-> 2.39.3
->=20
+Eric
+>
+> Thanks
+> Zhenzhong
+>
+>>     g_assert_cmpint(domain_range_start, ==, 0);
+>>     g_assert_cmpint(domain_range_end, ==, UINT32_MAX);
+>>     g_assert_cmpint(bypass, ==, 1);
+>> --
+>> 2.41.0
 
 
