@@ -2,50 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5363A87344B
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 11:32:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AFC787344E
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 11:33:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhoYx-00052V-NY; Wed, 06 Mar 2024 05:31:51 -0500
+	id 1rhoYu-0004w9-G2; Wed, 06 Mar 2024 05:31:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <t-8ch@linutronix.de>)
- id 1rhoYo-0004p2-N0
+ id 1rhoYn-0004oQ-Nq
  for qemu-devel@nongnu.org; Wed, 06 Mar 2024 05:31:42 -0500
 Received: from galois.linutronix.de ([193.142.43.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <t-8ch@linutronix.de>)
- id 1rhoYl-0007bw-50
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 05:31:42 -0500
+ id 1rhoYl-0007c1-4v
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 05:31:41 -0500
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1709721086;
+ s=2020; t=1709721087;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nLvei/7SjNo1C7eeQ57fgkVcOpg2dEkc12NTAQRgSoY=;
- b=dFh1pLdJhbbsbtok+cM2nAjaaPXMas4WFiz3r8ux3sl5g/GkhZsjLvZh0nzjE75mIVxTTb
- Q6VM+PDjlYeTfQBnXMs2hQK26PvQti21XSpvk0EJwgG5xj8QQS/kO3ulZLQUOHph3a34RY
- dzUeYUO2jJL1Ra4W4obtkhbvFUctXZCPzOpR9AF+b120msGeWddhsiqbJq8LIwOGIw8Gms
- J2Z6YLiKM1PFbs69qVQsLeco3f+Z4z/YxjFE5JKrT1ytQ8KvdXnCufVhikv/414r1N80HW
- d/NVVyBX0lyA20+u1Ri0EW42rL2I7RBijLuz4yh52xrOnAQq99N6DvDOscjeCQ==
+ bh=IJN5C7mPg4JpTDfs4+Z0qlukHU9wN5HwlA6H1wdCiPM=;
+ b=TdTfq+Wvof3D3EGlugd1qz+oCdwtAgbKKpgsm1sdN86NjgrfYZBxKzXUq+iUYXoBdX41Dv
+ Hb4Pr9zNzUJU5mmRq5ItoDnLMZCoRAZKjYq2egnNj0v2yh+dPR8e3j9AHze8WKgngTUd5s
+ IULIadE5V7+xSmm6gqh0iUrgG3XzKEkPzOtmiSk42Qoo1TFfRzQa3BAL26MemuMLG0f6rq
+ 9xLGx4Bx191hIqLrAM1tCE2aXPrrqWsZGgoYQ+s0ouWCI90L8PFXdBe0iVYTZVaw3WN1oH
+ 1+hPXttiU6r37u79IgUg+ebexYcPv+JoErwIgrpqyPj356PsAOnoL2vz6oLBmw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1709721086;
+ s=2020e; t=1709721087;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nLvei/7SjNo1C7eeQ57fgkVcOpg2dEkc12NTAQRgSoY=;
- b=dIg+ir79zt/FawlNOx3YfvbQxbab9Zl9Rj39h+0ESCPNNSJPdw9huNzrnwuVMe1hCdLCZ0
- zq9Z7blBAOHHGvCw==
-Date: Wed, 06 Mar 2024 11:31:23 +0100
-Subject: [PATCH 2/4] docs/interop/firmware.json: Fix doc for FirmwareFlashMode
+ bh=IJN5C7mPg4JpTDfs4+Z0qlukHU9wN5HwlA6H1wdCiPM=;
+ b=qvjiTQSFvBpV/5R33i1y6QCPYDzkAQ39TrGdzOPflGHB8hQWXo0GSEz7ksm/6BwRu6t3gZ
+ QGp9UosJbyTLOIAA==
+Date: Wed, 06 Mar 2024 11:31:24 +0100
+Subject: [PATCH 3/4] docs/interop/firmware.json: Use full include paths
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240306-qapi-firmware-json-v1-2-619f7122a249@linutronix.de>
+Message-Id: <20240306-qapi-firmware-json-v1-3-619f7122a249@linutronix.de>
 References: <20240306-qapi-firmware-json-v1-0-619f7122a249@linutronix.de>
 In-Reply-To: <20240306-qapi-firmware-json-v1-0-619f7122a249@linutronix.de>
 To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
@@ -53,11 +53,11 @@ To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Kashyap Chamarthy <kchamart@redhat.com>
 Cc: qemu-devel@nongnu.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1709721085; l=574;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1709721085; l=692;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=nd6zJx5lTfT4sj5BfIfSp3ZUom3OUMO1Z6kseUi0TQs=;
- b=n3C0Wbf/WzEzHiu5K6aojgFm28m0SYYF8NZsphtAJC6xx8RPfze4+GHRCgiSPE6jDVVVmmH6y
- TJIY29RWNaACwSNXBJLW1KOrD5xyyM5galexOIghAHCnR/vruYwutZd
+ bh=edhsrNNWkc8ZNoA2dLKp83fwmLRb+lKMvBbZImT+cGU=;
+ b=WyctScn4oRfEehHAbO+tqWCjC18VfFrO6879EA7ReQSI4cBFFDZa3n2cO/0qRGlhaPl9M2/hF
+ PytBMjxn0pkCgkvGV94qKUQvKXYT3w2DbiWhSmKtyhMiLLcMrzqRy7f
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 Received-SPF: pass client-ip=193.142.43.55; envelope-from=t-8ch@linutronix.de;
@@ -84,26 +84,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The doc title did not match the actual definition.
+The included files are part of the toplevel QAPI directory and need to
+be included from there.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
- docs/interop/firmware.json | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/interop/firmware.json | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/docs/interop/firmware.json b/docs/interop/firmware.json
-index a024f1b9bf3f..54a1fc6c1041 100644
+index 54a1fc6c1041..4ac840e2b413 100644
 --- a/docs/interop/firmware.json
 +++ b/docs/interop/firmware.json
-@@ -223,7 +223,7 @@
+@@ -14,8 +14,8 @@
+ # = Firmware
+ ##
  
+-{ 'include' : 'machine.json' }
+-{ 'include' : 'block-core.json' }
++{ 'include' : '../../qapi/machine.json' }
++{ 'include' : '../../qapi/block-core.json' }
  
  ##
--# @FirmwareFlashType:
-+# @FirmwareFlashMode:
- #
- # Describes how the firmware build handles code versus variable
- # persistence.
+ # @FirmwareOSInterface:
 
 -- 
 2.44.0
