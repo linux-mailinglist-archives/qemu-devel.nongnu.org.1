@@ -2,61 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2216873B28
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 16:51:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64B88873B82
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 17:03:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhtWT-0007Ti-6Y; Wed, 06 Mar 2024 10:49:37 -0500
+	id 1rhtiT-0001e1-PC; Wed, 06 Mar 2024 11:02:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rhtWQ-0007TL-KW
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 10:49:34 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rhtWN-0005uF-Vk
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 10:49:34 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TqcG30SqFz6K7MC;
- Wed,  6 Mar 2024 23:45:31 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 0D6C7140CB9;
- Wed,  6 Mar 2024 23:49:08 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 6 Mar
- 2024 15:48:54 +0000
-Date: Wed, 6 Mar 2024 15:48:53 +0000
-To: <nifan.cxl@gmail.com>
-CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>,
- <gregory.price@memverge.com>, <ira.weiny@intel.com>,
- <dan.j.williams@intel.com>, <a.manzanares@samsung.com>, <dave@stgolabs.net>,
- <nmtadam.samsung@gmail.com>, <jim.harris@samsung.com>,
- <Jorgen.Hansen@wdc.com>, <wj28.lee@gmail.com>, Fan Ni <fan.ni@samsung.com>
-Subject: Re: [PATCH v5 04/13] hw/mem/cxl_type3: Add support to create DC
- regions to type3 memory devices
-Message-ID: <20240306154853.00004c11@Huawei.com>
-In-Reply-To: <20240304194331.1586191-5-nifan.cxl@gmail.com>
-References: <20240304194331.1586191-1-nifan.cxl@gmail.com>
- <20240304194331.1586191-5-nifan.cxl@gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rhtiO-0001dq-0T
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 11:01:56 -0500
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rhtiL-0002bP-Oz
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 11:01:55 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id BDE414450;
+ Wed,  6 Mar 2024 16:01:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1709740907; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=aZS51YjvW5OUDBzYuz9gJ0kFIprccEPBnTm8veCxu9s=;
+ b=CL+Gdtpk/do1rdvtn5bzd09I03ta7tIdkl2GC4lRJk8VMLGmRrlOzCs6ULRH4RiJwNNmI6
+ FaOY20rf42iNqnQa4792tPNTgDkU1Zvas7ANeVh/JcrOveDhBCzVhUC6Lqu0xup/3jRLm4
+ A5iTWr6IPY66Z1Scnd35AIRnbdkL+34=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1709740907;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=aZS51YjvW5OUDBzYuz9gJ0kFIprccEPBnTm8veCxu9s=;
+ b=UZyk+I6PaQacDXL9vhQhjEXkZJGtmRoNl9m7zi/+e+eeuQqc9Zw19V73XEBwox/zUrl8I/
+ hsiq9IKn+fyhs1AA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1709740907; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=aZS51YjvW5OUDBzYuz9gJ0kFIprccEPBnTm8veCxu9s=;
+ b=CL+Gdtpk/do1rdvtn5bzd09I03ta7tIdkl2GC4lRJk8VMLGmRrlOzCs6ULRH4RiJwNNmI6
+ FaOY20rf42iNqnQa4792tPNTgDkU1Zvas7ANeVh/JcrOveDhBCzVhUC6Lqu0xup/3jRLm4
+ A5iTWr6IPY66Z1Scnd35AIRnbdkL+34=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1709740907;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=aZS51YjvW5OUDBzYuz9gJ0kFIprccEPBnTm8veCxu9s=;
+ b=UZyk+I6PaQacDXL9vhQhjEXkZJGtmRoNl9m7zi/+e+eeuQqc9Zw19V73XEBwox/zUrl8I/
+ hsiq9IKn+fyhs1AA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3B53013A65;
+ Wed,  6 Mar 2024 16:01:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 1D8gAGuT6GWBYAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 06 Mar 2024 16:01:47 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org
+Cc: marcandre.lureau@redhat.com, thuth@redhat.com, lvivier@redhat.com,
+ pbonzini@redhat.com, peterx@redhat.com
+Subject: Re: [PATCH v3 4/7] Add migrate_set_ports into migrate_qmp to change
+ migration port number
+In-Reply-To: <0238e330-cb9f-4d72-9ca8-ca7a1b51dddf@nutanix.com>
+References: <20240306104958.39857-1-het.gala@nutanix.com>
+ <20240306104958.39857-5-het.gala@nutanix.com> <87sf13s9yz.fsf@suse.de>
+ <0238e330-cb9f-4d72-9ca8-ca7a1b51dddf@nutanix.com>
+Date: Wed, 06 Mar 2024 13:01:44 -0300
+Message-ID: <878r2vs61j.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
+Content-Type: text/plain
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CL+Gdtpk;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=UZyk+I6P
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.51 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
+ RCPT_COUNT_SEVEN(0.00)[7];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]
+X-Spam-Score: -4.51
+X-Rspamd-Queue-Id: BDE414450
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,119 +121,147 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon,  4 Mar 2024 11:33:59 -0800
-nifan.cxl@gmail.com wrote:
+Het Gala <het.gala@nutanix.com> writes:
 
-> From: Fan Ni <fan.ni@samsung.com>
-> 
-> With the change, when setting up memory for type3 memory device, we can
-> create DC regions.
-> A property 'num-dc-regions' is added to ct3_props to allow users to pass the
-> number of DC regions to create. To make it easier, other region parameters
-> like region base, length, and block size are hard coded. If needed,
-> these parameters can be added easily.
-> 
-> With the change, we can create DC regions with proper kernel side
-> support like below:
-> 
-> region=$(cat /sys/bus/cxl/devices/decoder0.0/create_dc_region)
-> echo $region > /sys/bus/cxl/devices/decoder0.0/create_dc_region
-> echo 256 > /sys/bus/cxl/devices/$region/interleave_granularity
-> echo 1 > /sys/bus/cxl/devices/$region/interleave_ways
-> 
-> echo "dc0" >/sys/bus/cxl/devices/decoder2.0/mode
-> echo 0x40000000 >/sys/bus/cxl/devices/decoder2.0/dpa_size
-> 
-> echo 0x40000000 > /sys/bus/cxl/devices/$region/size
-> echo  "decoder2.0" > /sys/bus/cxl/devices/$region/target0
-> echo 1 > /sys/bus/cxl/devices/$region/commit
-> echo $region > /sys/bus/cxl/drivers/cxl_region/bind
-> 
-> Signed-off-by: Fan Ni <fan.ni@samsung.com>
-Suggested changes are trivial formatting things
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> On 06/03/24 8:06 pm, Fabiano Rosas wrote:
+>> Het Gala<het.gala@nutanix.com>  writes:
+>>
+>>> Add a migrate_set_ports() function that from each QDict, fills in
+>>> the port in case it was 0 in the test.
+>>> Handle a list of channels so we can add a negative test that
+>>> passes more than one channel.
+>>>
+>>> Signed-off-by: Het Gala<het.gala@nutanix.com>
+>>> Suggested-by: Fabiano Rosas<farosas@suse.de>
+>>> ---
+>>>   tests/qtest/migration-helpers.c | 26 ++++++++++++++++++++++++++
+>>>   1 file changed, 26 insertions(+)
+>>>
+>>> diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
+>>> index 478c1f259b..df4978bf17 100644
+>>> --- a/tests/qtest/migration-helpers.c
+>>> +++ b/tests/qtest/migration-helpers.c
+>>> @@ -17,6 +17,8 @@
+>>>   #include "qapi/qapi-visit-sockets.h"
+>>>   #include "qapi/qobject-input-visitor.h"
+>>>   #include "qapi/error.h"
+>>> +#include "qapi/qmp/qlist.h"
+>>> +
+>> Extra line here. This is unwanted because it sometimes trips git into
+>> thinking there's a conflict here when another patch changes the
+>> surrounding lines.
+> Ack, that makes sense
+>>>   
+>>>   #include "migration-helpers.h"
+>>>   
+>>> @@ -73,6 +75,29 @@ migrate_get_socket_address(QTestState *who, const char *parameter)
+>>>       return result;
+>>>   }
+>>>   
+>>> +static void migrate_set_ports(QTestState *to, QList *channelList)
+>>> +{
+>>> +    g_autofree char *addr = NULL;
+>>> +    g_autofree char *addr_port = NULL;
+>>> +    QListEntry *entry;
+>>> +
+>>> +    addr = migrate_get_socket_address(to, "socket-address");
+>>> +    addr_port = g_strsplit(addr, ":", 3)[2];
+>> Will this always do the right thing when the src/dst use different types
+>> of channels? If there is some kind of mismatch (say one side uses vsock
+>> and the other inet), it's better that this function doesn't touch the
+>> channels dict instead of putting garbage in the port field.
+>
+> Yes you are right. This will fail if there is a mismatch in type of 
+> channels.
+>
+> Better idea would be to check if 'port' key is present in both, i.e. in 
+> 'addr'
+> as well as 'addrdict' and only then change the port ?
+>
 
-> ---
->  hw/mem/cxl_type3.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 46 insertions(+)
-> 
-> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> index 244d2b5fd5..a191211009 100644
-> --- a/hw/mem/cxl_type3.c
-> +++ b/hw/mem/cxl_type3.c
-> @@ -30,6 +30,7 @@
->  #include "hw/pci/msix.h"
->  
->  #define DWORD_BYTE 4
-> +#define CXL_CAPACITY_MULTIPLIER   (256 * MiB)
->  
->  /* Default CDAT entries for a memory region */
->  enum {
-> @@ -567,6 +568,45 @@ static void ct3d_reg_write(void *opaque, hwaddr offset, uint64_t value,
->      }
->  }
->  
-> +/*
-> + * TODO: dc region configuration will be updated once host backend and address
-> + * space support is added for DCD.
-> + */
-> +static bool cxl_create_dc_regions(CXLType3Dev *ct3d, Error **errp)
-> +{
-> +    int i;
-> +    uint64_t region_base = 0;
-> +    uint64_t region_len =  2 * GiB;
-> +    uint64_t decode_len = 2 * GiB;
-> +    uint64_t blk_size = 2 * MiB;
-> +    CXLDCRegion *region;
-> +    MemoryRegion *mr;
-> +
-> +    if (ct3d->hostvmem) {
-> +        mr = host_memory_backend_get_memory(ct3d->hostvmem);
-> +        region_base += memory_region_size(mr);
-> +    }
-> +    if (ct3d->hostpmem) {
-> +        mr = host_memory_backend_get_memory(ct3d->hostpmem);
-> +        region_base += memory_region_size(mr);
-> +    }
-> +    assert(region_base % CXL_CAPACITY_MULTIPLIER == 0);
-> +
-> +    for (i = 0; i < ct3d->dc.num_regions; i++) {
-> +        region = &ct3d->dc.regions[i];
-> +        region->base = region_base;
-> +        region->decode_len = decode_len;
-> +        region->len = region_len;
-> +        region->block_size = blk_size;
-> +        /* dsmad_handle is set when creating cdat table entries */
-> +        region->flags = 0;
-> +
-> +        region_base += region->len;
+Yep, either parse the type from string or add a version of
+migrate_get_socket_address that returns a dict. Then check if type
+matches and port exists.
 
-Maybe make the loop update to do some or all of the variable updating
-(perhaps all of them is a bit too complex!)
+>> Also what happens if the dst is using unix: or fd:?
+> yes in that case - how should the migration behaviour be ? src and dst 
+> should be of the same type right
 
-    for (i = 0, region = &ct3d->dc_regions[0];
-         i < ct3d->dc.num_regions;
-         i++, region++, region_base += region_len) {
-Also, using this style of assignment will avoid lots of repetition of region.
-        *region = (CXLDCRegion) {
-            .base = region_base,
-            .decode_len = decode_len,
-            .len = region_len,
-            .block_size = blk_size,
-            /* dsmad_handle set when creating CDAT table entries */
-            .flags = 0,
-        };
-    }
+Remember this is test code. If the test was written incorrectly either
+by developer mistake or on purpose to test some condition, then it's not
+this function's reponsibility to fix that.
 
-> +    }
-> +
-> +    return true;
-> +}
+Replace the port only if the transport type allows for a port, there is
+a port in both addr and addrdict and port is 0. Anything else, leave the
+channelList untouched and let QEMU deal with the bad input.
 
+>>> +
+>>> +    QLIST_FOREACH_ENTRY(channelList, entry) {
+>>> +        QDict *channel = qobject_to(QDict, qlist_entry_obj(entry));
+>>> +        QObject *addr_obj = qdict_get(channel, "addr");
+>>> +
+>>> +        if (qobject_type(addr_obj) == QTYPE_QDICT) {
+>>> +            QDict *addrdict = qobject_to(QDict, addr_obj);
+>> You might not need these two lines if at the start you use:
+>>
+>> QDict *addr = qdict_get_dict(channel, "addr");
+>
+> If you are commenting regarding this two lines:
+>
+> +        if (qobject_type(addr_obj) == QTYPE_QDICT) {
+> +            QDict *addrdict = qobject_to(QDict, addr_obj);
+>
+> then, I am not sure, because addrdict and addr is different right? Also addrdict can also
+> be a QList, like in the case of exec migration, it can be a list instead of dict
+> ex:
+> # -> { "execute": "migrate",
+> #      "arguments": {
+> #          "channels": [ { "channel-type": "main",
+> #                          "addr": { "transport": "exec",
+> #                                    "args": [ "/bin/nc", "-p", "6000",
+> #                                              "/some/sock" ] } } ] } }
 
+"addr" is always a dict, no? Even in the example you just gave.
+
+>
+>>
+>>> +            if (qdict_haskey(addrdict, "port") &&
+>>> +            (strcmp(qdict_get_str(addrdict, "port"), "0") == 0)) {
+>>> +                qdict_put_str(addrdict, "port", addr_port);
+>>> +            }
+>>> +        }
+>>> +    }
+>>> +}
+>>> +
+>>>   bool migrate_watch_for_events(QTestState *who, const char *name,
+>>>                                 QDict *event, void *opaque)
+>>>   {
+>>> @@ -143,6 +168,7 @@ void migrate_qmp(QTestState *who, QTestState *to, const char *uri,
+>>>       if (!uri) {
+>>>           connect_uri = migrate_get_socket_address(to, "socket-address");
+>>>       }
+>>> +    migrate_set_ports(to, NULL);
+>> migrate_set_ports is not prepared to take NULL. This breaks the tests in
+>> this commit. All individual commits should work, otherwise it will break
+>> bisecting.
+> Okay, so in that case, is it better to merge this with the next patch ? 
+> because if I just
+> define the migrate_set_ports function and not use it anywhere, it gives 
+> a warning/error
+> (depending upon what compiler is used)
+
+You can return early at migrate_set_ports if channelList is NULL.
+
+Also, I just noticed: s/channelList/channel_list/
+
+>>>       qdict_put_str(args, "uri", uri ? uri : connect_uri);
+>>>   
+>>>       qtest_qmp_assert_success(who,
+>
+> Regards,
+>
+> Het Gala
 
