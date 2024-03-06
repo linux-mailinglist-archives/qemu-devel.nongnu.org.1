@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D81873B88
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 17:04:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7349873B8C
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 17:04:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhtkF-0002tf-9m; Wed, 06 Mar 2024 11:03:51 -0500
+	id 1rhtkD-0002tD-JS; Wed, 06 Mar 2024 11:03:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rhtk9-0002sm-RH
+ id 1rhtk9-0002sZ-KT
  for qemu-devel@nongnu.org; Wed, 06 Mar 2024 11:03:45 -0500
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rhtjr-0003l4-Eu
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 11:03:30 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TqcfY1ywMz6D8rL;
- Thu,  7 Mar 2024 00:03:17 +0800 (CST)
+ id 1rhtk7-0003nd-S6
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 11:03:45 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TqcZG1Xs2z6K8r7;
+ Wed,  6 Mar 2024 23:59:34 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id CFB61140CF4;
- Thu,  7 Mar 2024 00:02:57 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 3BF8A140DB0;
+ Thu,  7 Mar 2024 00:03:31 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 6 Mar
- 2024 16:02:48 +0000
-Date: Wed, 6 Mar 2024 16:02:47 +0000
+ 2024 16:03:30 +0000
+Date: Wed, 6 Mar 2024 16:03:29 +0000
 To: <nifan.cxl@gmail.com>
 CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>,
  <gregory.price@memverge.com>, <ira.weiny@intel.com>,
@@ -37,7 +37,7 @@ CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>,
  <Jorgen.Hansen@wdc.com>, <wj28.lee@gmail.com>, Fan Ni <fan.ni@samsung.com>
 Subject: Re: [PATCH v5 05/13] hw/mem/cxl-type3: Refactor
  ct3_build_cdat_entries_for_mr to take mr size insead of mr as argument
-Message-ID: <20240306160247.00002e63@Huawei.com>
+Message-ID: <20240306160329.00006fd0@Huawei.com>
 In-Reply-To: <20240304194331.1586191-6-nifan.cxl@gmail.com>
 References: <20240304194331.1586191-1-nifan.cxl@gmail.com>
  <20240304194331.1586191-6-nifan.cxl@gmail.com>
@@ -82,7 +82,5 @@ nifan.cxl@gmail.com wrote:
 > The function ct3_build_cdat_entries_for_mr only uses size of the passed
 > memory region argument, refactor the function definition to make the passed
 > arguments more specific.
-> 
-> Signed-off-by: Fan Ni <fan.ni@samsung.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Typo in title, instead
 
