@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE4E1872EB6
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 07:16:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DEE3872EAA
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 07:14:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhkXA-0005zO-K2; Wed, 06 Mar 2024 01:13:44 -0500
+	id 1rhkXS-00007O-Hr; Wed, 06 Mar 2024 01:14:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rhkWi-0005SU-7D
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 01:13:18 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rhkWf-0006M8-Mh
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 01:13:15 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1dd10a37d68so27382775ad.2
- for <qemu-devel@nongnu.org>; Tue, 05 Mar 2024 22:13:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709705592; x=1710310392;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=vWeSXxnvukh1qTIQXUJcznaqlBnX6VJYT1GjqHDMtek=;
- b=dhDpM6IRbgxb47pI5hrmD+/qnx+FF82VqZ//GokGv1HDVFhs06Ml6qCZEhnJo1M3eJ
- vqMcuIGrrqyncJzq0VZhNIz0R91HC4y3nI7pPgFuEiOWk2xPvxZzCzBXMKpzjEuuVsDg
- 8w6JKW12y5994355igUN6vTwWuTCMutB8Vi6C3ZmL6DesBh5y55yVJD8tWEF9FS+2S7P
- YWNtmth9C/QdD81R1BTaBntmC1SfL4vIMXvqmDSuaHzazSL38xUl7ZzYwbUxsiUYwCOj
- TK/7oMPeBMvS+hnawLMbcBa2JplEffaRCrYtDaHXZROiG7Xn8wJgZ+zT2dkz/h1++rTa
- /BMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709705592; x=1710310392;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vWeSXxnvukh1qTIQXUJcznaqlBnX6VJYT1GjqHDMtek=;
- b=SQLqVNnhD3KVEDs1Xj8+1TZ5/jlZ5n0pAJtCXDCTXjHzmPyIOjsh1dPA4Zuvm2dcLx
- mPfeyo4gA/zoIpffJJ+X9Glen9Dc9c0QqDhiYjA6KbFKxNxU+HrSrevVL//oMWbb3L8D
- oyUhboB41S4/tWWIpIt5aG+hi6ZERqDzyMmGeciOFvZGYebEjqdOehczVdfVY0DvPkjF
- XHpfZbSXP9GyF6Hut9hrKfd6TzqBHIVJn3Mxb44724BOgr2K7jj4o97Po7PfDX7+nbwE
- kX3q79UJJAMt62LddlsSFjEtPF57exVssrddseWZsyKyHv6wFloyWHY8Aug52fq1GHcd
- 9SZQ==
-X-Gm-Message-State: AOJu0YwJMsw0DSrKiRvrdp7tjQETDpC7DCmgOngRvPtewKvReHBC7HfA
- 9V0lDjmvcpC3Q3fTEH4tc6nVHxIm5lsH2sDWeZfvI4OpYPVx3X/LP0Ebbnv7e+Q=
-X-Google-Smtp-Source: AGHT+IEQaCP7Atw9WKvSqj7bSVsujj8hc1pUllt0aKPOEcwic7uWYrt346WbsIYi5vvH8/Un5e0AQA==
-X-Received: by 2002:a17:902:d50b:b0:1dc:d773:ac with SMTP id
- b11-20020a170902d50b00b001dcd77300acmr4613895plg.7.1709705592254; 
- Tue, 05 Mar 2024 22:13:12 -0800 (PST)
-Received: from localhost ([157.82.206.27]) by smtp.gmail.com with UTF8SMTPSA id
- l14-20020a170902f68e00b001c407fac227sm11584615plg.41.2024.03.05.22.13.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Mar 2024 22:13:11 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 06 Mar 2024 15:12:25 +0900
-Subject: [PATCH v3 19/19] contrib/elf2dmp: Ensure phdrs fit in file
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rhkXN-0008NA-Uk
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 01:13:58 -0500
+Received: from mgamail.intel.com ([192.198.163.13])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rhkXL-0006iL-JB
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 01:13:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1709705636; x=1741241636;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=pGxAaPn4Dp0DsaG9o7fOyGVw9FO6hnBu3dHfNNhiOe0=;
+ b=fp7lgQf9jkVVIHipQeuyhReOq9fK/rOvuYa4aDWHdUidi3xzzSitA2JE
+ 96iAPzseTn6OxhSc+Zmxmqi2CAGteNI5S/qYPvEU3KdI+LWgo64PPWOiI
+ IVim0be8TsXLPeaNa4v6I5vb1riCeHYOHHIX5ubJu7YMOD2BRtVuGnMMO
+ ml3itN9cckUcvFyWxQ9ul+j+ywroYPMu/xB79tkduKDi38EIpA4Eu3aFv
+ kCUujf/p90jHTiob4dIP8rzhhOKmp2vB2P6OB2xCA099aGXfum5sEXDiu
+ Q8/RJYBSOFZW+W13NleHp8zdzZ4cBArN7qboMb5BdUDcqo8WhgcubAjJU g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="7243880"
+X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; 
+   d="scan'208";a="7243880"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2024 22:13:54 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; d="scan'208";a="14304164"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa004.jf.intel.com with ESMTP; 05 Mar 2024 22:13:51 -0800
+Date: Wed, 6 Mar 2024 14:27:37 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Prasad Pandit <ppandit@redhat.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, devel@lists.libvirt.org,
+ qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH] hw/core/machine-smp: Remove deprecated "parameter=0" SMP
+ configurations
+Message-ID: <ZegM2RHPZSc1V059@intel.com>
+References: <20240304044510.2305849-1-zhao1.liu@linux.intel.com>
+ <CAE8KmOxvZFjtKkHiGGREx_b0QgfDjPWZ7Ex3nqAQQbiPKa_wrQ@mail.gmail.com>
+ <ZeVyKMux7Ysjo/lY@intel.com>
+ <CAE8KmOxJECe7oNkB1Oiuk-+_4J4drmdJTL2mBzQz+Zu+6XpxrQ@mail.gmail.com>
+ <ZebM/2for1NVjeuc@intel.com>
+ <CAE8KmOwXrrLe9nCm=8qiyde2M2bg35-1THAhtO4Tg-TrTwRz_g@mail.gmail.com>
+ <Zefj+boRnrtkxXsE@intel.com>
+ <CAE8KmOxzh7+NZiPAJPpmiKtJxi=uwDcRLVy=PT_ZohuTTWkHvw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240306-elf2dmp-v3-19-d74e6c3da49c@daynix.com>
-References: <20240306-elf2dmp-v3-0-d74e6c3da49c@daynix.com>
-In-Reply-To: <20240306-elf2dmp-v3-0-d74e6c3da49c@daynix.com>
-To: Viktor Prutyanov <viktor.prutyanov@phystech.edu>, 
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::635;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAE8KmOxzh7+NZiPAJPpmiKtJxi=uwDcRLVy=PT_ZohuTTWkHvw@mail.gmail.com>
+Received-SPF: none client-ip=192.198.163.13;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.568,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,43 +89,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Callers of elf64_getphdr() and elf_getphdrnum() assume phdrs are
-accessible.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2202
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- contrib/elf2dmp/qemu_elf.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/contrib/elf2dmp/qemu_elf.c b/contrib/elf2dmp/qemu_elf.c
-index 8d750adf904a..c9bad6e82cf3 100644
---- a/contrib/elf2dmp/qemu_elf.c
-+++ b/contrib/elf2dmp/qemu_elf.c
-@@ -132,6 +132,7 @@ static void exit_states(QEMU_Elf *qe)
- static bool check_ehdr(QEMU_Elf *qe)
- {
-     Elf64_Ehdr *ehdr = qe->map;
-+    uint64_t phendoff;
+On Wed, Mar 06, 2024 at 10:19:41AM +0530, Prasad Pandit wrote:
+> Date: Wed, 6 Mar 2024 10:19:41 +0530
+> From: Prasad Pandit <ppandit@redhat.com>
+> Subject: Re: [PATCH] hw/core/machine-smp: Remove deprecated "parameter=0"
+>  SMP configurations
+> 
+> Hello Zhao,
+> 
+> On Wed, 6 Mar 2024 at 08:49, Zhao Liu <zhao1.liu@linux.intel.com> wrote:
+> >> then checking 'config->has_maxcpus ?' above is probably not required I
+> >> think. It could just be
+> >>
+> >>    maxcpus = config->maxcpus
+> >
+> > Yes.
+> >
+> > > If a user does not specify config->maxcpus with -smp option, then it
+> > > could default to zero(0) in 'config' parameter? (same for other config
+> > > fields)
+> >
+> > Yes. I could post another series for this cleanup soon.
+> > The above change you suggested doesn't require API changes ;-).
+> 
+> * Great!  (Communication is the most difficult skill to master. :))
+> 
+> * If you plan to send a separate patch for above refactoring, then I'd
+> add Reviewed-by for this one.
  
-     if (sizeof(Elf64_Ehdr) > qe->size) {
-         eprintf("Invalid input dump file size\n");
-@@ -173,6 +174,13 @@ static bool check_ehdr(QEMU_Elf *qe)
-         return false;
-     }
- 
-+    if (umul64_overflow(ehdr->e_phnum, sizeof(Elf64_Phdr), &phendoff) ||
-+        uadd64_overflow(phendoff, ehdr->e_phoff, &phendoff) ||
-+        phendoff > qe->size) {
-+        eprintf("phdrs do not fit in file\n");
-+        return false;
-+    }
-+
-     return true;
- }
- 
+Yeah, I will send a series, which will also include this patch, to avoid
+trivial smp cleanup fragmentation.
 
--- 
-2.44.0
+> Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
+
+Thanks!
+
+-Zhao
 
 
