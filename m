@@ -2,86 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 960098739BF
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 15:49:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 466AC8739A7
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 15:46:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhsZx-0006fq-JS; Wed, 06 Mar 2024 09:49:09 -0500
+	id 1rhsTK-0003Un-SL; Wed, 06 Mar 2024 09:42:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhsZo-0006bc-Pq
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 09:49:01 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rhsTF-00039D-6S
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 09:42:13 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhsZn-0004EA-8h
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 09:49:00 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-33d6f26ff33so775623f8f.0
- for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 06:48:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709736537; x=1710341337; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=wx2eJ+KDhes0tXleUJeO3uNoYSnGN+NK8RX0V99627k=;
- b=bzN25o/3dQJz/IHglzntxjO2gU8qSzscQ0OiaZuzrh6/Xvc5ovZL65N1eTLFhR7Mc/
- 1AIhjIoPa3o2yx8MyOxqeDViNcqanUuACJon5TgWi7KhMBY+1int7w2gP2RWAMIdKjPq
- +t7ci6OCFlgDSbunAo8mAeP67yt91Lll2Dk+0h242ZpJ2fqBbA/yZAjHqkvWne7v/f60
- EnypX7q2P7lukKhDQaQ5v+vmXP+V7jGj88VVlnRpTyuHmP9XCfdOrWuy9jsuJHOZC3Pm
- U2FWBGWZ+Cp5dwhwTCsH4E+qtA42lI/8pGFl9fyx0yYE3pd5gjhaFLJNaGYCOjZD4OOm
- 9iOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709736537; x=1710341337;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=wx2eJ+KDhes0tXleUJeO3uNoYSnGN+NK8RX0V99627k=;
- b=sLIgfQYjTPZi1bhHDCPmnzc1Dqd6LLMgZFhpTE8grwrtGAP6WGQ7n01uJ021f3sLGC
- 1kXnsnPndMgJYX2N1qr8b80ExmaiEJ2vYU4CigqqeReAZc70vVn9HgeAXK0ZW6GIVgsD
- Tz8XYq1nMcCstY6FeBlrVx+RYuLl1h/tRv3aLAHfk07B6k/CCPxFutnTdE2GY2oZvsSl
- /E0dd9CeG4a2Od6ENaYdacgE94CNdqvzGlSXUgS9rwadCtJY6kvt16McLFQWqLOA4trx
- 6pNh8OlIGjxZQFtK1cOgDsh8Tanx/5ovglBwUjBfGqGxwGJ/1JF74upEP9maJIoQ67n1
- y9Ow==
-X-Gm-Message-State: AOJu0YxHAkFacspS2AD5spZ2y5P/t6wxy1tPJ70KE4gtSGlrmKseLm3Z
- M/ysg5BTqemMcl4DaNj0AqtBTr9XELgYMjZ5L/l/eEaNSAvx+n5Qdzl9WOpEqMg=
-X-Google-Smtp-Source: AGHT+IFTVngPAPsw1J8AaQ/GYWiUnrS87kLbRDO3qq/CDznmNsQ2muUiwI7c2gJZTpdy0BY54MsRqw==
-X-Received: by 2002:a5d:6145:0:b0:33e:187e:a5b1 with SMTP id
- y5-20020a5d6145000000b0033e187ea5b1mr10359305wrt.37.1709736537725; 
- Wed, 06 Mar 2024 06:48:57 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- bp16-20020a5d5a90000000b0033e0567e90bsm18436009wrb.5.2024.03.06.06.48.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Mar 2024 06:48:57 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2609A5F9FB;
- Wed,  6 Mar 2024 14:40:44 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <Alistair.Francis@wdc.com>,
- qemu-riscv@nongnu.org (open list:RISC-V TCG target)
-Subject: [PULL 29/29] target/riscv: honour show_opcodes when disassembling
-Date: Wed,  6 Mar 2024 14:40:41 +0000
-Message-Id: <20240306144041.3787188-30-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240306144041.3787188-1-alex.bennee@linaro.org>
-References: <20240306144041.3787188-1-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rhsTD-0001kS-MB
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 09:42:12 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 141E63F7F0;
+ Wed,  6 Mar 2024 14:42:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1709736130; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Xkh9yr1+p8PueX3L53cHv2AUpgHL/z+cV/m9Loe2anw=;
+ b=asgSIyLF8pfvyKO5w8Plc0QBZCSpZ8XVbifs4PNwRJdVB49x7nKnisSFyeoARUdy20bR++
+ iYzeTMl+x6R+ork8rHzAM7SYSfIu0E0dJkU+IsH10gP11g3LWmkhzviSQzzgI6bAsj3GhO
+ suk86uzJ0tdh8gCuUhJNaMckfmWTef0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1709736130;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Xkh9yr1+p8PueX3L53cHv2AUpgHL/z+cV/m9Loe2anw=;
+ b=xIjHcXm8POcWvgvDB6AlvKNOBVTlDGVJpUB/g+GD4deLbNFCbFWUpiJ/hcH3vhbQATEVKQ
+ lld2fMpABpngUUAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1709736128; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Xkh9yr1+p8PueX3L53cHv2AUpgHL/z+cV/m9Loe2anw=;
+ b=qMJ1+8ZEdNfVwan7kfEaMC0hdzgK4OiNinPBxXhHfCHHoixho4wCBhLSMMr4jjytYkQ3aY
+ iEHYCbjfSVTW4vFJiLkZKcAKyIX5axwsIPug5wdG4uvpUu7AMwkaeKDEvk1mXVCQZPq2ZO
+ 0eefSiExIy2fzpv8ilW3cFbA5znZAPw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1709736128;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Xkh9yr1+p8PueX3L53cHv2AUpgHL/z+cV/m9Loe2anw=;
+ b=2sO/rdkdyhSH5D7n75wSShbfvgnVj/totpOP4N/Jvmj8Oyr1+0qtBzWHgIm8aJRcZmp6ip
+ 821GoxEgguOWmjCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 94B1513A67;
+ Wed,  6 Mar 2024 14:42:07 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id ItdGF7+A6GVASQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 06 Mar 2024 14:42:07 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org
+Cc: marcandre.lureau@redhat.com, thuth@redhat.com, lvivier@redhat.com,
+ pbonzini@redhat.com, peterx@redhat.com, Het Gala <het.gala@nutanix.com>
+Subject: Re: [PATCH v3 5/7] Add channels parameter in migrate_qmp
+In-Reply-To: <20240306104958.39857-6-het.gala@nutanix.com>
+References: <20240306104958.39857-1-het.gala@nutanix.com>
+ <20240306104958.39857-6-het.gala@nutanix.com>
+Date: Wed, 06 Mar 2024 11:42:05 -0300
+Message-ID: <87h6hjs9qa.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spamd-Result: default: False [-3.10 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[99.99%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ RCPT_COUNT_SEVEN(0.00)[8];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[nutanix.com:email,suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+X-Spam-Score: -3.10
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,52 +113,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This makes the output suitable when used for plugins.
+Het Gala <het.gala@nutanix.com> writes:
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240305121005.3528075-30-alex.bennee@linaro.org>
+> Alter migrate_qmp() to allow use of channels parameter, but only
+> fill the uri with correct port number if there are no channels.
+> Here we don't want to allow the wrong cases of having both or
+> none (ex: migrate_qmp_fail).
+>
+> Signed-off-by: Het Gala <het.gala@nutanix.com>
+> Suggested-by: Fabiano Rosas <farosas@suse.de>
+> ---
+>  tests/qtest/migration-helpers.c | 20 +++++++++++++++-----
+>  tests/qtest/migration-helpers.h |  4 ++--
+>  tests/qtest/migration-test.c    | 28 ++++++++++++++--------------
+>  3 files changed, 31 insertions(+), 21 deletions(-)
+>
+> diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
+> index df4978bf17..0b891351a5 100644
+> --- a/tests/qtest/migration-helpers.c
+> +++ b/tests/qtest/migration-helpers.c
+> @@ -19,7 +19,6 @@
+>  #include "qapi/error.h"
+>  #include "qapi/qmp/qlist.h"
+>  
+> -
+>  #include "migration-helpers.h"
+>  
+>  /*
+> @@ -154,10 +153,12 @@ void migrate_qmp_fail(QTestState *who, const char *uri,
+>   * qobject_from_jsonf_nofail()) with "uri": @uri spliced in.
+>   */
+>  void migrate_qmp(QTestState *who, QTestState *to, const char *uri,
+> -                 const char *fmt, ...)
+> +                 const char *channels, const char *fmt, ...)
+>  {
+>      va_list ap;
+>      QDict *args;
+> +    Error *error_abort = NULL;
 
-diff --git a/disas/riscv.c b/disas/riscv.c
-index 8a546d5ea53..e236c8b5b7c 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -5192,19 +5192,21 @@ print_insn_riscv(bfd_vma memaddr, struct disassemble_info *info, rv_isa isa)
-         }
-     }
- 
--    switch (len) {
--    case 2:
--        (*info->fprintf_func)(info->stream, INST_FMT_2, inst);
--        break;
--    case 4:
--        (*info->fprintf_func)(info->stream, INST_FMT_4, inst);
--        break;
--    case 6:
--        (*info->fprintf_func)(info->stream, INST_FMT_6, inst);
--        break;
--    default:
--        (*info->fprintf_func)(info->stream, INST_FMT_8, inst);
--        break;
-+    if (info->show_opcodes) {
-+        switch (len) {
-+        case 2:
-+            (*info->fprintf_func)(info->stream, INST_FMT_2, inst);
-+            break;
-+        case 4:
-+            (*info->fprintf_func)(info->stream, INST_FMT_4, inst);
-+            break;
-+        case 6:
-+            (*info->fprintf_func)(info->stream, INST_FMT_6, inst);
-+            break;
-+        default:
-+            (*info->fprintf_func)(info->stream, INST_FMT_8, inst);
-+            break;
-+        }
-     }
- 
-     disasm_inst(buf, sizeof(buf), isa, memaddr, inst,
--- 
-2.39.2
+Remove this.
 
+> +    QObject *channels_obj = NULL;
+>      g_autofree char *connect_uri = NULL;
+>  
+>      va_start(ap, fmt);
 
