@@ -2,80 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC43E873102
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 09:44:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4042587393F
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 15:34:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhmrg-0003aU-Vl; Wed, 06 Mar 2024 03:43:05 -0500
+	id 1rhsKk-0001ys-3Q; Wed, 06 Mar 2024 09:33:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rhmre-0003W2-00
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 03:43:02 -0500
-Received: from mail-qk1-x733.google.com ([2607:f8b0:4864:20::733])
+ (Exim 4.90_1) (envelope-from <liuyb845@gmail.com>)
+ id 1rhnBE-0008EC-T8; Wed, 06 Mar 2024 04:03:16 -0500
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rhmra-000339-9E
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 03:43:01 -0500
-Received: by mail-qk1-x733.google.com with SMTP id
- af79cd13be357-787990149edso357588885a.3
- for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 00:42:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <liuyb845@gmail.com>)
+ id 1rhnBC-0004aq-SP; Wed, 06 Mar 2024 04:03:16 -0500
+Received: by mail-pg1-x542.google.com with SMTP id
+ 41be03b00d2f7-5d3907ff128so569051a12.3; 
+ Wed, 06 Mar 2024 01:03:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709714577; x=1710319377; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zWJXEnfLu7aJeG3d6E+CNystN42syJyzv2NPa5pf3fE=;
- b=eE2WasX/48aV/FPZMwLZckBZ/zDVNgrKs+JidUOVFS4/DiqPSSxpjgbcGeoLT/JyAU
- iLFbdpZMjzthv2iQy/fmYfCCMyhW+QZ1peGwgdgB8RfOzKkHwXZKiNe3hsQn0skuWC6e
- m+IP6T+/9hoBW22AB7109IoahAqEoiwkzxhZV9gRTc6cCF66XxIVEIJYr5VfliKI/qpu
- EV5ELIlJMR1FINOpFT1vBcHZPA8+4ifjLhF10cDV5FXb8LOe0x+V4vN2T7YdZTwq5Hfc
- pFl3q/HNbRuu0bUbg2MaTLGyMA71D2XQBWN+mIrCxluR4vdGwKgomhBBnxqXKxfWxLUz
- GFFQ==
+ d=gmail.com; s=20230601; t=1709715791; x=1710320591; darn=nongnu.org;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=2A+eXIP61nOObie+6hF7GYVPiixHlwF90K4X7zcmbs8=;
+ b=E8Eef9HsppaxwHN+fcIumAjCYNeP5my8Ty3L3RJxcKVw3vkKpQvXR9vjpWc/1uAwhc
+ Pzp0yH0vEwNHwodsPEJYxetfQTqnB4jH9NjZmNSrF/k1O3HKvJbS9EOiNtZTx3pf8iLQ
+ VkzQGRyLDDdwHN3PvxtKpFHQeC1dC1IDWHiDpy8vy92PaIzINl97y1eowE+sg6xdQQDG
+ toD+MPWgxZ+dFpfk2qYkQ4qvE5cOI6yMoY4mI+ggND1nckTmyO+KEfuMeNr630Qpp2QC
+ J69TdXS7V1fcZSExvbU/ibLciNOFlVanrZgiLYmXTaZtANF3iKK4cqA8AHEuuVRcJyv+
+ Op7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709714577; x=1710319377;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zWJXEnfLu7aJeG3d6E+CNystN42syJyzv2NPa5pf3fE=;
- b=hRF+HACUsTC1CFzhsvjsZa5afHlMDlUTzjcWZG3b/jIzmCDwCXRce72HIsVqLmEW2R
- RZiBP3Tf8oXD/1OnBc83hf8ClnmnG3xZrzqKdsTcpTOXX4FYkp2Jo2tiDAxI/2bsTRfw
- jqecM/Sjg1XNeV67el5fkZCWJx4US/XmaphBIyqot12iphhH5SFr0mwQSbb3K/XVAMtT
- syIFG8gOYRIUbOPEphGNp0EV08rUHCEC7DjoTisnNn3TvOjW6aT+yGxHFw1E8Xx6smjc
- m8viApw03MhgpMWdVXaflpe914RgfgFu7T2RPbPmo1s88IXGB2DsGt2uO3G6IHcLl6Kr
- TH+Q==
-X-Gm-Message-State: AOJu0YyCFz0HiJMcEvw539CpSuASorbBGispsF5/FEQbqqteoM8tODOE
- tWykxDhKTTkJL8VSlDTskWowhyZk+VX0hdE58jLG5dlI8ja130ysaKMv4w5ob0AQ9ZmKJJfdHX4
- cHuI2BguyOSLzf9iykBjlJ0oHxxE=
-X-Google-Smtp-Source: AGHT+IGHh11Am6q3u7+C8lhEP8AZmoA/HZuC5NnjRWjGeDm444Rsn5xtozavJvKMRPZqKGgtatdE7Kl/3ZK+J5vyIfM=
-X-Received: by 2002:a05:622a:1792:b0:42e:e949:7a40 with SMTP id
- s18-20020a05622a179200b0042ee9497a40mr5212197qtk.52.1709714576873; Wed, 06
- Mar 2024 00:42:56 -0800 (PST)
+ d=1e100.net; s=20230601; t=1709715791; x=1710320591;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=2A+eXIP61nOObie+6hF7GYVPiixHlwF90K4X7zcmbs8=;
+ b=B+QjjH6NzlAXYqqkMCK9YXwTQhVRbCZltkoeBMBXa7k2/Byxpc30QZEdE7talLapG1
+ szua+5fxgB4IR6mKjb1SbzYkVk60qlAqcOtqfTI3OnTDali2A0Z4gRzL83+QGehVz2u7
+ 2iNGh8XjhM+/mX2tyNLChF+otJFx+PIqDkC4UDtTfg62avQQj2RdYYkGsMpjzWB2749P
+ EK5EmGLhtcyS6wQSfhg6yzAGNDkIjiXJnEMKGmm/En9qnFPIRVppVC1HT+mzzeBty5nf
+ i2DfqMMryiHUpcVcJdgGBeu6oodRpFT07buKvHElWw8YVzuldeCF+o8t9NjjVW+pZxC/
+ ovDQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWyK4ttgKchIG4DGtndEGAGUeKdngJ/88AgPPyMLTbs7F94ndu7UTMOzBPXqd72I7QmUUFaJQDETkXXIjl88wgYUBEOULDlMwNt3YiMT2xcOXxlr+9JO3H2qSg=
+X-Gm-Message-State: AOJu0Yzzq0Xs1wpYHysUH5LlopdAZTuo3SMG49NTyibWf92VPPVKwUkE
+ FmC+QqvJ3VJq2HICbfLuwX3VF55LrC11AdiIwF84pIEEwgei3IKei2ra31sEsS1SHj1Wm3rO6AX
+ y2T8c7ACoL6LLxGNHcwZzNtOWHIp6GD602g1VnQ==
+X-Google-Smtp-Source: AGHT+IGFhEU9ifTXSLf07485ZBhqpzwW/dxZkOoVgfQxlFp942rpgd3SApAW44R78jcad4gQFGrYuxlKtBiH7GLnKMQ=
+X-Received: by 2002:a05:6a20:7343:b0:1a1:3515:7006 with SMTP id
+ v3-20020a056a20734300b001a135157006mr4819695pzc.31.1709715791417; Wed, 06 Mar
+ 2024 01:03:11 -0800 (PST)
 MIME-Version: 1.0
-References: <CAJ+F1CJjRZORH-LbA5dhY_0OZo0AHMbkJ3WkY=SA1ot9=-t0cg@mail.gmail.com>
- <20240305222252.3232608-1-dongwon.kim@intel.com>
- <20240305222252.3232608-2-dongwon.kim@intel.com>
-In-Reply-To: <20240305222252.3232608-2-dongwon.kim@intel.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Wed, 6 Mar 2024 12:42:45 +0400
-Message-ID: <CAJ+F1C+1bS5OOL31dm+4Ms5zpJetrOpQX-qoc5ihb9yjCS3ddQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] virtio-gpu: first surface update with blob scanout
- after resumed
-To: dongwon.kim@intel.com
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::733;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qk1-x733.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+From: yb liu <liuyb845@gmail.com>
+Date: Wed, 6 Mar 2024 17:02:59 +0800
+Message-ID: <CAKstcpWLhcNswkippmDyQQz2bPKSN+w9F0jZzcZRGpuNWvW55g@mail.gmail.com>
+Subject: QEMU Compatibility for Cortex-A55 AArch32 Firmware
+To: qemu-discuss@nongnu.org, qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: multipart/alternative; boundary="0000000000006a1dc10612fa3aa9"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::542;
+ envelope-from=liuyb845@gmail.com; helo=mail-pg1-x542.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 06 Mar 2024 09:33:24 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,80 +83,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Dongwon Kim
+--0000000000006a1dc10612fa3aa9
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 6, 2024 at 2:24=E2=80=AFAM <dongwon.kim@intel.com> wrote:
->
-> From: Dongwon Kim <dongwon.kim@intel.com>
->
-> The guest surface needs to be updated with a blob scanout after resumed
-> from saved vm state if blob is enabled.
->
-> Cc: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-> Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
-> ---
->  hw/display/virtio-gpu.c | 21 ++++++++++++++-------
->  1 file changed, 14 insertions(+), 7 deletions(-)
->
+Dear QEMU developers
 
+I hope this email finds you well. We are currently facing an issue related
+to QEMU and the Cortex-A55 architecture. Specifically, we have compiled a
+firmware for Cortex-A55 and would like it to run smoothly on QEMU A55 in
+AArch32 mode.
 
-The way you send patches to the ML confuses patchew, and they are not
-properly triaged or tested.
-(https://patchew.org/search?q=3Dproject%3AQEMU+from%3Adongwon.kim%40intel.c=
-om)
+Despite our numerous attempts, we continue to encounter an "undefined
+instruction" error when running the firmware in QEMU. Our question is
+whether QEMU supports this particular use case=E2=80=94specifically, whethe=
+r it can
+handle A55 running AArch32 firmware.
 
-Please send a series of your pending patches, with a new version. It's
-confusing with the various mails otherwise. And it's then easier to
-deal with regular patch series that are tracked by patchew.
+Any insights or guidance you can provide would be greatly appreciated.
+Thank you for your assistance.
 
-thanks
+Best regards,
+Eric Lau
 
-> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-> index 1c1ee230b3..01bc4f9565 100644
-> --- a/hw/display/virtio-gpu.c
-> +++ b/hw/display/virtio-gpu.c
-> @@ -1422,16 +1422,23 @@ static int virtio_gpu_post_load(void *opaque, int=
- version_id)
->          if (!res) {
->              return -EINVAL;
->          }
-> -        scanout->ds =3D qemu_create_displaysurface_pixman(res->image);
-> -        if (!scanout->ds) {
-> -            return -EINVAL;
-> -        }
-> +
-> +        if (res->blob_size) {
-> +            assert(g->dmabuf.primary[i] !=3D NULL);
-> +            g->dmabuf.primary[i]->buf.fd =3D res->dmabuf_fd;
-> +            dpy_gl_scanout_dmabuf(scanout->con, &g->dmabuf.primary[i]->b=
-uf);
-> +        } else {
-> +            scanout->ds =3D qemu_create_displaysurface_pixman(res->image=
-);
-> +            if (!scanout->ds) {
-> +                return -EINVAL;
-> +            }
->  #ifdef WIN32
-> -        qemu_displaysurface_win32_set_handle(scanout->ds, res->handle, 0=
-);
-> +            qemu_displaysurface_win32_set_handle(scanout->ds, res->handl=
-e, 0);
->  #endif
-> +            dpy_gfx_replace_surface(scanout->con, scanout->ds);
-> +            dpy_gfx_update_full(scanout->con);
-> +        }
->
-> -        dpy_gfx_replace_surface(scanout->con, scanout->ds);
-> -        dpy_gfx_update_full(scanout->con);
->          if (scanout->cursor.resource_id) {
->              update_cursor(g, &scanout->cursor);
->          }
-> --
-> 2.34.1
->
+--0000000000006a1dc10612fa3aa9
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"auto"><div dir=3D"auto"><br></div><div dir=3D"auto">Dear QEMU d=
+evelopers</div><div dir=3D"auto"><br></div><div dir=3D"auto">I hope this em=
+ail finds you well. We are currently facing an issue related to QEMU and th=
+e Cortex-A55 architecture. Specifically, we have compiled a firmware for Co=
+rtex-A55 and would like it to run smoothly on QEMU A55 in AArch32 mode.</di=
+v><div dir=3D"auto"><br></div><div dir=3D"auto">Despite our numerous attemp=
+ts, we continue to encounter an &quot;undefined instruction&quot; error whe=
+n running the firmware in QEMU. Our question is whether QEMU supports this =
+particular use case=E2=80=94specifically, whether it can handle A55 running=
+ AArch32 firmware.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Any i=
+nsights or guidance you can provide would be greatly appreciated. Thank you=
+ for your assistance.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Be=
+st regards,</div><div dir=3D"auto">Eric Lau</div><div dir=3D"auto"><br></di=
+v><div dir=3D"auto"><br></div><div dir=3D"auto"><br></div><div dir=3D"auto"=
+><br></div></div>
 
---=20
-Marc-Andr=C3=A9 Lureau
+--0000000000006a1dc10612fa3aa9--
 
