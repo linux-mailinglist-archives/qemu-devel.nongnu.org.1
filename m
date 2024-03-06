@@ -2,84 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198A98732B1
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 10:39:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72E61873329
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 10:55:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhnij-0006QW-BW; Wed, 06 Mar 2024 04:37:53 -0500
+	id 1rhnyM-0000o6-NZ; Wed, 06 Mar 2024 04:54:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rhnid-0006PH-UZ
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 04:37:49 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rhnib-0001RM-8X
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 04:37:46 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1dc13fb0133so49278895ad.3
- for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 01:37:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1709717863; x=1710322663; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fNvmPfvH9W7Kwn40uZp3Qj0TVVLusroseZdtJTf9XT8=;
- b=btDw0Ew3t1smuWbYfdJbQt4m4eebc4VzkpKTv5JnU45yFTJJCGeyzfGwwIyuBnqzXB
- Q1szbW4tLGu855tuUwzocTwaRAQ//tV36C1xEszJfNGk8lnwlBUaMNaAPf9ZeosIBEYD
- 3BX32c3NqIip83n6rO0MfqXw/xbTSh2X4NS1PMqtxuXEP2y5TKVGBqpKNq/ZpSSu1nWS
- W7WzV+57EXhECx0/w6s4cVGDqeupxKEd6lnsUXryEdsLPkpUI3bwnNmZENaebsDPcZPm
- 20ZJOgTiFOzkr5oYrpl5S89/h1CPN6Gcwmetb3yvAyhheT4RuqDJ++GgIby9RE4B2n7a
- WoQA==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rhnyI-0000nx-DP
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 04:53:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rhnyG-0000MR-IO
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 04:53:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709718835;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=NFE7Ni6nffGgZw6lA+O+jCs2zVtuQqUDAEAA0xuupno=;
+ b=J7NWILSObxWhVAIKeE8mTVZ7OudGdzxs7zjEBl+CsY3fmD4vX5jZtL3642aFJmrFavQuoa
+ FTW/97Yk4neTbb1CscfbZf0oDzfqcOl0wxcBcu0Xd8i5NIviiKA/5ri5d9SfnZSZ1UKOwa
+ 0DYtfKZEuCRgWcUXF2huUP8Vb0sMmr8=
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
+ [209.85.161.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-324-luFGJZGrNNWLk9Mv611f5g-1; Wed, 06 Mar 2024 04:53:53 -0500
+X-MC-Unique: luFGJZGrNNWLk9Mv611f5g-1
+Received: by mail-oo1-f69.google.com with SMTP id
+ 006d021491bc7-5a137cbbd18so775450eaf.0
+ for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 01:53:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709717863; x=1710322663;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1709718833; x=1710323633;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fNvmPfvH9W7Kwn40uZp3Qj0TVVLusroseZdtJTf9XT8=;
- b=BX9R4BItSWggQqrWri7jssnFOhJWUsiM/E0xFDVrLdqA/feEHsl5pWyQk6bk+3kdXo
- /Ge9/bJ92qzxy7V5BwRjduZjlwip831aRYTC/UepT/NHYluSiXgHafKp6OsEVnzVobnA
- 3jM/7dcYmdIkQL6c08z1sDwg24Tn0/FHl1C579xoS1Ldmu39zSainMUu7nFyYa94LRzu
- clygqELrCX92EhLfhmoD11QkkuVfUjE5rEXT+7MjDayGk5X7TsY3MKYTA9AS1aTAbcAh
- e5hdSCGfjzkIStM/LG1p4ctiYuA6ya+ldrkO0etUEaaA+cCSTYfIriAWvLgZvmjvui2V
- MdpA==
+ bh=NFE7Ni6nffGgZw6lA+O+jCs2zVtuQqUDAEAA0xuupno=;
+ b=BdamfKfTIWNTc8uPfl7YVOe1SdeAAMk2Gec0XhquEiaUoHNAw0nFx3NW5yT7yKxSvS
+ 23OCWevMYkBw5ap6wALinC1Rj0/0rSLQLfUDFhBT2Qn6AaX/+896LzCep6ekEdFUdnbs
+ YMxTugUmFIVRt/L02o84hnii9WsYr1pnyiHdwVpkh7RmWM+mLL5xT3dT9vTPT4ZNb7HY
+ o6LFwSOXiQEkcerFneJF8MRKb20I0nkUNrilyNCwsFs59FbfpgiP/siwj/DBF5zGAHKO
+ w1grh1yxXR442CpYO6CXCjOQRUw5LaiNK4JUHHon4ENY8XHhvKnCwO4P2vcdz24SAcmJ
+ GKNg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX/Q64sy9LnDwFeOp3GDq/6SsYymSCGLSko2O6SMhLtMzmxU4e3UGafU+2WbBNFs3e7bjFB0xUXpaR7gbc3zXXgZaO7Grk=
-X-Gm-Message-State: AOJu0Ywdmel9g2v7MmYT3kLi7WbOIxOvIVNLSWRnm/U4E00gPW/IpfZv
- 1W8LD/MYbB+rl+RPqfWyF27WoBuUe3JgLIuZTH97wlFBqdJPXYWOXPwGt/ikphU=
-X-Google-Smtp-Source: AGHT+IGt81MdIZX2EcH6UTdpm/R4YbgCQsmn15v4Pg+/oxq9Jk2yJ+29PHVTMnVZoTzuZq8E/kH3bA==
-X-Received: by 2002:a17:902:db86:b0:1dc:c8d3:52ba with SMTP id
- m6-20020a170902db8600b001dcc8d352bamr4279236pld.56.1709717862902; 
- Wed, 06 Mar 2024 01:37:42 -0800 (PST)
-Received: from [192.168.68.110] ([177.94.15.159])
- by smtp.gmail.com with ESMTPSA id
- c1-20020a170903234100b001db594c9d17sm12081686plh.254.2024.03.06.01.37.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Mar 2024 01:37:42 -0800 (PST)
-Message-ID: <339358de-fc57-42fb-80ec-9413648ea44f@ventanamicro.com>
-Date: Wed, 6 Mar 2024 06:37:39 -0300
+ AJvYcCXqt5Ucgs14sP7NqcmytlfWTrQDr0igNaDCPlIGvk4NDovUmlecNGFL4K3k5r8zQM3HaBdnKhgdZ9Rl+upLfzwXeObp00I=
+X-Gm-Message-State: AOJu0YwsEy92TE1yZSht6Wk/NTm9QdhgOe5tv2JR9+2dEabpHqERs4dR
+ SgB6Ji+tdWaZtGhm8necX+813begJDM4T/NCajdhNfdqzt3kXU4eJYH54atYD22zqzu5c+n1xIv
+ updLN/tndUlnCIA1eFbANmQak2wKuW0PJEHL8FE2iU8oLiOkwrqew
+X-Received: by 2002:a4a:b80e:0:b0:5a0:2cbe:43dd with SMTP id
+ g14-20020a4ab80e000000b005a02cbe43ddmr3038495oop.1.1709718832837; 
+ Wed, 06 Mar 2024 01:53:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE8TOxsiuqsobab3VU4TOlRFe0EjgqbsX72kvi692DufAIQo8ylINdX5eeqIr0kh/j1xBrzPQ==
+X-Received: by 2002:a4a:b80e:0:b0:5a0:2cbe:43dd with SMTP id
+ g14-20020a4ab80e000000b005a02cbe43ddmr3038486oop.1.1709718832492; 
+ Wed, 06 Mar 2024 01:53:52 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ u23-20020aa78497000000b006e5092fb3efsm10413270pfn.159.2024.03.06.01.53.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 06 Mar 2024 01:53:52 -0800 (PST)
+Date: Wed, 6 Mar 2024 17:53:43 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] migration/multifd: Don't fsync when closing QIOChannelFile
+Message-ID: <Zeg9Jx1lkZziFj_a@x1n>
+References: <20240305174332.2553-1-farosas@suse.de>
+ <ZedbLT2pFNyRoX90@redhat.com> <Zee-WYQg9c19Up-T@x1n>
+ <Zeg2hN-mo53okbjL@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] target/riscv: Fix shift count overflow
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: "demin.han" <demin.han@starfivetech.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, philmd@linaro.org
-References: <20240225174114.5298-1-demin.han@starfivetech.com>
- <a5c8ed1b-0b67-449a-83b9-accf0754c562@ventanamicro.com>
-In-Reply-To: <a5c8ed1b-0b67-449a-83b9-accf0754c562@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <Zeg2hN-mo53okbjL@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.568,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,56 +101,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Alistair,
-
-
-Please don't forget to queue this up. Thanks,
-
-
-Daniel
-
-On 2/26/24 06:31, Daniel Henrique Barboza wrote:
+On Wed, Mar 06, 2024 at 09:25:24AM +0000, Daniel P. Berrangé wrote:
+> On Wed, Mar 06, 2024 at 08:52:41AM +0800, Peter Xu wrote:
+> > On Tue, Mar 05, 2024 at 05:49:33PM +0000, Daniel P. Berrangé wrote:
+> > > I don't think you should be removing this. Calling qio_channel_close()
+> > > remains recommended best practice, even with fdatasync() removed, as
+> > > it provides a strong guarantee that the FD is released which you don't
+> > > get if you rely on the ref count being correctly decremented in all
+> > > code paths.
+> > 
+> > Hmm, I have the confusion on why ioc->fd is more special than the ioc
+> > itself when leaked.  It'll be a bug anyway if we leak any of them?  Leaking
+> > fds may also help us to find such issue easier (e.g. by seeing stale fds
+> > under /proc).  From that POV I tend to agree on the original proposal.
 > 
-> 
-> On 2/25/24 14:41, demin.han wrote:
->> The result of (8 - 3 - vlmul) is negative when vlmul >= 6,
->> and results in wrong vill.
->>
->> Signed-off-by: demin.han <demin.han@starfivetech.com>
->> ---
-> 
-> Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> 
->> Changes in v2:
->> - Add vlen var
->>
->> Changes in v3:
->> - Fix commit msg typo
->>
->>   target/riscv/vector_helper.c | 5 ++---
->>   1 file changed, 2 insertions(+), 3 deletions(-)
->>
->> diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
->> index 84cec73eb2..fe56c007d5 100644
->> --- a/target/riscv/vector_helper.c
->> +++ b/target/riscv/vector_helper.c
->> @@ -44,6 +44,7 @@ target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
->>       target_ulong reserved = s2 &
->>                               MAKE_64BIT_MASK(R_VTYPE_RESERVED_SHIFT,
->>                                               xlen - 1 - R_VTYPE_RESERVED_SHIFT);
->> +    uint16_t vlen = cpu->cfg.vlenb << 3;
->>       int8_t lmul;
->>       if (vlmul & 4) {
->> @@ -53,10 +54,8 @@ target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
->>            * VLEN * LMUL >= SEW
->>            * VLEN >> (8 - lmul) >= sew
->>            * (vlenb << 3) >> (8 - lmul) >= sew
->> -         * vlenb >> (8 - 3 - lmul) >= sew
->>            */
->> -        if (vlmul == 4 ||
->> -            cpu->cfg.vlenb >> (8 - 3 - vlmul) < sew) {
->> +        if (vlmul == 4 || (vlen >> (8 - vlmul)) < sew) {
->>               vill = true;
->>           }
->>       }
+> Closing the FD would cause any registered I/O handlers callbacks to
+> get POLLNVAL and may well trigger cleanup that will prevent the leak.
+
+It's not possible anymore that we will have such handler callbacks when
+reaching here, am I right?  AFAIU that's my understanding after commit
+9221e3c6a2 ("migration/multifd: Cleanup TLS iochannel referencing").
+
+Would it be possible if we can assert that fact (either on "there's no
+handler callback", or "we're the last reference" then it implies no
+handlers) rather than doing an explicit close() (and if we do the latter,
+we'd better explain the POLLNVAL bits)?
+
+Thanks,
+
+-- 
+Peter Xu
+
 
