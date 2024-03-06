@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 931188737CE
+	by mail.lfdr.de (Postfix) with ESMTPS id A0FAB8737CF
 	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 14:36:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhrQe-0008HL-Fc; Wed, 06 Mar 2024 08:35:28 -0500
+	id 1rhrQq-0008Jb-Nw; Wed, 06 Mar 2024 08:35:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=yBjJ=KM=redhat.com=clg@ozlabs.org>)
- id 1rhrQc-0008H4-Co
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 08:35:26 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ id 1rhrQm-0008Ir-5X
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 08:35:36 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=yBjJ=KM=redhat.com=clg@ozlabs.org>)
- id 1rhrQX-0005CL-8n
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 08:35:26 -0500
+ id 1rhrQb-0005Et-9e
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 08:35:34 -0500
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TqYMp5j2vz4wyR;
- Thu,  7 Mar 2024 00:35:18 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TqYMt45yWz4wyg;
+ Thu,  7 Mar 2024 00:35:22 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4TqYMl2GvQz4wcF;
- Thu,  7 Mar 2024 00:35:15 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TqYMq2kXZz4wcF;
+ Thu,  7 Mar 2024 00:35:19 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -39,27 +38,24 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
  Prasad Pandit <pjp@fedoraproject.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH v4 07/25] migration: Always report an error in
- block_save_setup()
-Date: Wed,  6 Mar 2024 14:34:22 +0100
-Message-ID: <20240306133441.2351700-8-clg@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v4 08/25] migration: Always report an error in ram_save_setup()
+Date: Wed,  6 Mar 2024 14:34:23 +0100
+Message-ID: <20240306133441.2351700-9-clg@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240306133441.2351700-1-clg@redhat.com>
 References: <20240306133441.2351700-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=yBjJ=KM=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,99 +73,73 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This will prepare ground for future changes adding an Error** argument
 to the save_setup() handler. We need to make sure that on failure,
-block_save_setup() always sets a new error.
+ram_save_setup() sets a new error.
 
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
 
  Changes in v4:
 
- - Added an error when bdrv_nb_sectors() returns a negative value
+ - Fixed test on error returned by qemu_fflush() 
  
- migration/block.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ migration/ram.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/migration/block.c b/migration/block.c
-index 8c6ebafacc1ffe930d1d4f19d968817b14852c69..aa65ec718c2875ad9d1c40c971035f14d8086a6e 100644
---- a/migration/block.c
-+++ b/migration/block.c
-@@ -367,7 +367,7 @@ static void unset_dirty_tracking(void)
+diff --git a/migration/ram.c b/migration/ram.c
+index 003c28e1336a5fbe7a3877512b8fc3cf62f1bab3..3ac7f52a5f8e2c0d78a8cf150b3fa6611e12ffcc 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -3057,12 +3057,14 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+     int ret, max_hg_page_size;
+ 
+     if (compress_threads_save_setup()) {
++        error_report("%s: failed to start compress threads", __func__);
+         return -1;
      }
+ 
+     /* migration has already setup the bitmap, reuse it. */
+     if (!migration_in_colo_state()) {
+         if (ram_init_all(rsp) != 0) {
++            error_report("%s: failed to setup RAM for migration", __func__);
+             compress_threads_save_cleanup();
+             return -1;
+         }
+@@ -3099,12 +3101,14 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+ 
+     ret = rdma_registration_start(f, RAM_CONTROL_SETUP);
+     if (ret < 0) {
++        error_report("%s: failed to start RDMA registration", __func__);
+         qemu_file_set_error(f, ret);
+         return ret;
+     }
+ 
+     ret = rdma_registration_stop(f, RAM_CONTROL_SETUP);
+     if (ret < 0) {
++        error_report("%s: failed to stop RDMA registration", __func__);
+         qemu_file_set_error(f, ret);
+         return ret;
+     }
+@@ -3116,6 +3120,7 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+     ret = multifd_send_sync_main();
+     bql_lock();
+     if (ret < 0) {
++        error_report("%s: multifd synchronization failed", __func__);
+         return ret;
+     }
+ 
+@@ -3125,7 +3130,11 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+     }
+ 
+     qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
+-    return qemu_fflush(f);
++    ret = qemu_fflush(f);
++    if (ret < 0) {
++        error_report("%s failed : %s", __func__, strerror(-ret));
++    }
++    return ret;
  }
  
--static int init_blk_migration(QEMUFile *f)
-+static int init_blk_migration(QEMUFile *f, Error **errp)
- {
-     BlockDriverState *bs;
-     BlkMigDevState *bmds;
-@@ -378,7 +378,6 @@ static int init_blk_migration(QEMUFile *f)
-         BlkMigDevState *bmds;
-         BlockDriverState *bs;
-     } *bmds_bs;
--    Error *local_err = NULL;
-     int ret;
- 
-     GRAPH_RDLOCK_GUARD_MAINLOOP();
-@@ -404,6 +403,10 @@ static int init_blk_migration(QEMUFile *f)
-         sectors = bdrv_nb_sectors(bs);
-         if (sectors <= 0) {
-             ret = sectors;
-+            if (ret < 0) {
-+                error_setg(errp, "Error getting length of block device %s",
-+                           bdrv_get_device_name(bs));
-+            }
-             bdrv_next_cleanup(&it);
-             goto out;
-         }
-@@ -439,9 +442,8 @@ static int init_blk_migration(QEMUFile *f)
-         bs = bmds_bs[i].bs;
- 
-         if (bmds) {
--            ret = blk_insert_bs(bmds->blk, bs, &local_err);
-+            ret = blk_insert_bs(bmds->blk, bs, errp);
-             if (ret < 0) {
--                error_report_err(local_err);
-                 goto out;
-             }
- 
-@@ -711,6 +713,7 @@ static void block_migration_cleanup(void *opaque)
- static int block_save_setup(QEMUFile *f, void *opaque)
- {
-     int ret;
-+    Error *local_err = NULL;
- 
-     trace_migration_block_save("setup", block_mig_state.submitted,
-                                block_mig_state.transferred);
-@@ -718,18 +721,27 @@ static int block_save_setup(QEMUFile *f, void *opaque)
-     warn_report("block migration is deprecated;"
-                 " use blockdev-mirror with NBD instead");
- 
--    ret = init_blk_migration(f);
-+    ret = init_blk_migration(f, &local_err);
-     if (ret < 0) {
-+        error_report_err(local_err);
-         return ret;
-     }
- 
-     /* start track dirty blocks */
-     ret = set_dirty_tracking();
-     if (ret) {
-+        error_setg_errno(&local_err, -ret,
-+                         "Failed to start block dirty tracking");
-+        error_report_err(local_err);
-         return ret;
-     }
- 
-     ret = flush_blks(f);
-+    if (ret) {
-+        error_setg_errno(&local_err, -ret, "Flushing block failed");
-+        error_report_err(local_err);
-+        return ret;
-+    }
-     blk_mig_reset_dirty_cursor();
-     qemu_put_be64(f, BLK_MIG_FLAG_EOS);
- 
+ static void ram_save_file_bmap(QEMUFile *f)
 -- 
 2.44.0
 
