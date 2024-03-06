@@ -2,74 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DEFF87397B
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 15:42:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EA4C8739AA
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 15:46:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhsSC-0007sY-TS; Wed, 06 Mar 2024 09:41:08 -0500
+	id 1rhsSG-0007of-2T; Wed, 06 Mar 2024 09:41:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhsS9-0007mK-V9
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 09:41:05 -0500
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ id 1rhsS8-0007hS-Fx
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 09:41:04 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhsRx-0001TI-9F
+ id 1rhsRx-0001TG-90
  for qemu-devel@nongnu.org; Wed, 06 Mar 2024 09:41:04 -0500
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-5134f830488so2860879e87.0
- for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 06:40:44 -0800 (PST)
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-412e6bdd454so22290275e9.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 06:40:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709736043; x=1710340843; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=IYbIZXvWJUe0g9sZHqzUXajgboo5sOG8ohcMURUMfLA=;
- b=igd1PCp114duNeIFQOQjfDGzRV4UCk86r0Ak0RY7LZxJhb+NvsqhGb0MAguSRnK+ic
- fEwET2LC5PhzsMQ4mxm+JJCBvZW5hE7f8WNpbI+eIUpZfT/pedO+Wdipa11Yl44Jl7vf
- qFQ7FyADlxJncrFgUDxmX7kuTmDnDfxXiCw1wqthBPoqz+6KI6jfO2BwlVbn+CjPtbgc
- OWcDJbVX4ICU3Bl4XUpgLXSGSnMqwEYRZuwSMstxukKaCvX+/bmu17TyAMfrZZVqMuf1
- eMr2s8wY78OspebBqi0vgkS+2WMbkjt9QAvobVLFnnNv7r5gUki+4VB2khm1nVmJ+zs0
- FkCg==
+ d=linaro.org; s=google; t=1709736042; x=1710340842; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mCuo1I1x614Ggqxx0hsNU8XUHD4jpmgy247WPP2wLWU=;
+ b=NcU48xwdRRiXMLoD2tJMMa0kY3DKVPB7ZKEFUS06+mAnd0vW/bH0mcGPuiGiGj/22J
+ 3mOfCpi8Zai5EtLUptUCFRj/L51aYJXf30Bg5cdYDSQN2hVN8CfYgi9LC8/a8ATnhEtL
+ tXdJVoq/f9u6RbUgRqtUmfQ0O7bKuykXOLgz4tgCuQdmGY2lvC2BJG7h/oBZENXHSysA
+ 7V5y60B6eg/LG+xfdEkN4W53ypgtpVY9j4ByBam5ov4635lF5fcpPKEYCwEXDKzrAhLU
+ SJ+94ENY4qCr/aSZKMd7gwful9o++WjP1H7eU9Z+ZYbke7okKWS85z2mNlLBQlafhV84
+ mcfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709736043; x=1710340843;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=IYbIZXvWJUe0g9sZHqzUXajgboo5sOG8ohcMURUMfLA=;
- b=lAu67UrUyLysx6TvP3lNuJpDRhBbIkE1NKmJGWRnijJAbWb8j0i+km7O7WEr2jt+Hv
- ZH3wsxSJQnfh+MhhoMmmVirXTgSLKj8JpAqqaOpuzxV/Bn3ANUzbDCJUa+kRjP7urWW0
- EVuH8DNnQoGhZznxlc0KFJ/iZwLs+rMs6Y+OBqXx2CF2kPkKp/VeL4KytwHpNc8O2DFo
- vNcI5xg/1rTaKvKMS4JIhdEW9Ag9u3DrdU8+tsWa05yEv+liy5Kk5LGB4uMHJ0D1EfDA
- E/o4l/+DmVEGKOIsDZOsjYTM8v9/TJkFsH2P35FGgLtYCljVINDLq4gtHObGded3AZ0j
- sGQA==
-X-Gm-Message-State: AOJu0YyGPvZa8bQAwlFsz93TodVpep3OfVsGKM4SjTmz2e7LIHhwScSc
- 5RXcqiqrs2dpEQxbI3phPtx8+5TsMfAx6INFb4Z3/iRRxT+qM+bYtxmULp8kYpo3i7QJslnTbvc
- f
-X-Google-Smtp-Source: AGHT+IEDdq0IlSpMchrNAJq3ThCj3AqU8AUa5PbtlNJyAql3kuf68RSAsp0i5Szq5AP0Gqd2GCT9Pg==
-X-Received: by 2002:a19:910f:0:b0:512:d5e4:1aa4 with SMTP id
- t15-20020a19910f000000b00512d5e41aa4mr3457324lfd.60.1709736042629; 
+ d=1e100.net; s=20230601; t=1709736042; x=1710340842;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=mCuo1I1x614Ggqxx0hsNU8XUHD4jpmgy247WPP2wLWU=;
+ b=UacfjYcnm98jYlhhhu2KMHORbcjMWdzFVP+Gl/UJ0tBFV8M9wZ45ZEULWVvPLsp2k5
+ NSDbhe5aTnr5ZusjZS7lxLYK904EJlFoKjY653WmHk36zMiSN7OGbTzAvP3Zo9hHs5aQ
+ 4cY8JcyrnvTa9nC55q/TyijtWsGGR26BNhKVfQv6Z0GiTna+UVIXVDEZMimuZT3vcXqF
+ ZKiovmXyS47uYPRDXQCEaK3fm0RUvNCX5ItvWWQPTkOT/iCc6lsaMWzWyXS8eD6qwx7/
+ LWpXeoZ3PXvj3NxKBd5OIoxzIolr/5lLRc3VhbJQj/bBpeqzsyDVsmcCNVI9IZhorNdY
+ N0LA==
+X-Gm-Message-State: AOJu0YwN1fp/YBXs2aPV82zmHF6+V1lvbkWzDB4s24fA6QMGKG6onFRK
+ T32fAvGU+hBRAIfIqtcr33/0tINyEM5/DPw5YTIQ7DneC2KK2FIepTY45BB9z6s=
+X-Google-Smtp-Source: AGHT+IFX992rEZfKIGjAhXN01fY6cGqE0XDulcv68CHJDttNHtmXYV7CasoPkStWHGBxsIJAtq+JvQ==
+X-Received: by 2002:a5d:49ca:0:b0:33e:4750:2250 with SMTP id
+ t10-20020a5d49ca000000b0033e47502250mr4489258wrs.62.1709736042452; 
  Wed, 06 Mar 2024 06:40:42 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- t14-20020a05600c198e00b00412f02bff2csm3783373wmq.37.2024.03.06.06.40.42
+ bu16-20020a056000079000b0033dc3f3d689sm17930874wrb.93.2024.03.06.06.40.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 06 Mar 2024 06:40:42 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 8EAF15F891;
+ by draig.lan (Postfix) with ESMTP id A2B4B5F8A9;
  Wed,  6 Mar 2024 14:40:41 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL for 9.0 00/29] maintainer updates (tests, gdbstub, plugins)
-Date: Wed,  6 Mar 2024 14:40:12 +0000
-Message-Id: <20240306144041.3787188-1-alex.bennee@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 01/29] tests: bump QOS_PATH_MAX_ELEMENT_SIZE again
+Date: Wed,  6 Mar 2024 14:40:13 +0000
+Message-Id: <20240306144041.3787188-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240306144041.3787188-1-alex.bennee@linaro.org>
+References: <20240306144041.3787188-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x130.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,125 +96,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit db596ae19040574e41d086e78469014191d7d7fc:
+We "fixed" a bug with LTO builds with 100c459f194 (tests/qtest: bump
+up QOS_PATH_MAX_ELEMENT_SIZE) but it seems it has triggered again.
 
-  Merge tag 'pull-target-arm-20240305' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2024-03-05 13:54:54 +0000)
+The array is sized according to the maximum anticipated length of a
+path on the graph. However, the worst case for a depth-first search is
+to push all nodes on the graph. So it's not really LTO, it depends on
+the ordering of the constructors.
 
-are available in the Git repository at:
+Lets be more assertive raising QOS_PATH_MAX_ELEMENT_SIZE to make it go
+away again.
 
-  https://gitlab.com/stsquad/qemu.git tags/pull-maintainer-updates-060324-1
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1186 (again)
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20240305121005.3528075-2-alex.bennee@linaro.org>
 
-for you to fetch changes up to db7e8b1f75662cf957f6bfad938ed112488518ed:
-
-  target/riscv: honour show_opcodes when disassembling (2024-03-06 12:35:51 +0000)
-
-----------------------------------------------------------------
-maintainer updates (tests, gdbstub, plugins):
-
-  - expand QOS_PATH_MAX_ELEMENT_SIZE to avoid LTO issues
-  - support fork-follow-mode in gdbstub
-  - new thread-safe scoreboard API for TCG plugins
-  - suppress showing opcodes in plugin disassembly
-
-----------------------------------------------------------------
-Alex Bennée (5):
-      tests: bump QOS_PATH_MAX_ELEMENT_SIZE again
-      disas: introduce show_opcodes
-      disas/hppa: honour show_opcodes
-      target/loongarch: honour show_opcodes when disassembling
-      target/riscv: honour show_opcodes when disassembling
-
-Ilya Leoshkevich (12):
-      gdbstub: Support disablement in a multi-threaded process
-      {linux,bsd}-user: Introduce get_task_state()
-      {linux,bsd}-user: Update ts_tid after fork()
-      gdbstub: Introduce gdbserver_fork_start()
-      {linux,bsd}-user: Pass pid to fork_end()
-      {linux,bsd}-user: Pass pid to gdbserver_fork()
-      gdbstub: Call gdbserver_fork() both in parent and in child
-      gdbstub: Introduce gdb_handle_query_supported_user()
-      gdbstub: Introduce gdb_handle_set_thread_user()
-      gdbstub: Introduce gdb_handle_detach_user()
-      gdbstub: Implement follow-fork-mode child
-      tests/tcg: Add two follow-fork-mode tests
-
-Pierrick Bouvier (12):
-      plugins: scoreboard API
-      plugins: define qemu_plugin_u64
-      plugins: implement inline operation relative to cpu_index
-      plugins: add inline operation per vcpu
-      tests/plugin: add test plugin for inline operations
-      tests/plugin/mem: migrate to new per_vcpu API
-      tests/plugin/insn: migrate to new per_vcpu API
-      tests/plugin/bb: migrate to new per_vcpu API
-      contrib/plugins/hotblocks: migrate to new per_vcpu API
-      contrib/plugins/howvec: migrate to new per_vcpu API
-      plugins: remove non per_vcpu inline operation from API
-      plugins: cleanup codepath for previous inline operation
-
- bsd-user/bsd-file.h                                |   2 +-
- bsd-user/freebsd/os-proc.h                         |   6 +-
- bsd-user/qemu.h                                    |   7 +-
- gdbstub/internals.h                                |   3 +
- include/disas/dis-asm.h                            |   8 +
- include/gdbstub/user.h                             |  10 +-
- include/qemu/plugin.h                              |   7 +
- include/qemu/qemu-plugin.h                         | 142 +++++++++---
- include/user/safe-syscall.h                        |   2 +-
- linux-user/m68k/target_cpu.h                       |   2 +-
- linux-user/qemu.h                                  |   5 +
- linux-user/signal-common.h                         |   2 +-
- linux-user/user-internals.h                        |   2 +-
- plugins/plugin.h                                   |  17 +-
- tests/qtest/libqos/qgraph.h                        |   2 +-
- accel/tcg/plugin-gen.c                             |  69 +++++-
- bsd-user/main.c                                    |   9 +-
- bsd-user/signal.c                                  |  20 +-
- contrib/plugins/hotblocks.c                        |  50 +++--
- contrib/plugins/howvec.c                           |  53 +++--
- disas/disas.c                                      |   1 +
- disas/hppa.c                                       |   8 +-
- disas/riscv.c                                      |  28 +--
- gdbstub/gdbstub.c                                  |  29 ++-
- gdbstub/user-target.c                              |   4 +-
- gdbstub/user.c                                     | 244 ++++++++++++++++++++-
- linux-user/aarch64/cpu_loop.c                      |   2 +-
- linux-user/arm/cpu_loop.c                          |   4 +-
- linux-user/arm/signal.c                            |   2 +-
- linux-user/cris/cpu_loop.c                         |   2 +-
- linux-user/elfload.c                               |   2 +-
- linux-user/hppa/signal.c                           |   2 +-
- linux-user/linuxload.c                             |   2 +-
- linux-user/m68k/cpu_loop.c                         |   2 +-
- linux-user/main.c                                  |   8 +-
- linux-user/mips/cpu_loop.c                         |   2 +-
- linux-user/ppc/signal.c                            |   4 +-
- linux-user/riscv/cpu_loop.c                        |   2 +-
- linux-user/signal.c                                |  30 +--
- linux-user/syscall.c                               |  32 +--
- linux-user/vm86.c                                  |  18 +-
- linux-user/xtensa/signal.c                         |   2 +-
- plugins/api.c                                      | 100 +++++++--
- plugins/core.c                                     |  79 ++++++-
- semihosting/arm-compat-semi.c                      |   8 +-
- target/loongarch/disas.c                           |  13 +-
- tests/plugin/bb.c                                  |  63 +++---
- tests/plugin/inline.c                              | 186 ++++++++++++++++
- tests/plugin/insn.c                                | 106 +++++----
- tests/plugin/mem.c                                 |  46 ++--
- tests/tcg/multiarch/follow-fork-mode.c             |  56 +++++
- plugins/qemu-plugins.symbols                       |  13 +-
- tests/plugin/meson.build                           |   2 +-
- tests/tcg/Makefile.target                          |   2 +-
- tests/tcg/multiarch/Makefile.target                |  17 +-
- .../multiarch/gdbstub/follow-fork-mode-child.py    |  40 ++++
- .../multiarch/gdbstub/follow-fork-mode-parent.py   |  16 ++
- 57 files changed, 1257 insertions(+), 338 deletions(-)
- create mode 100644 tests/plugin/inline.c
- create mode 100644 tests/tcg/multiarch/follow-fork-mode.c
- create mode 100644 tests/tcg/multiarch/gdbstub/follow-fork-mode-child.py
- create mode 100644 tests/tcg/multiarch/gdbstub/follow-fork-mode-parent.py
-
+diff --git a/tests/qtest/libqos/qgraph.h b/tests/qtest/libqos/qgraph.h
+index 287022a67c1..1b5de02e7be 100644
+--- a/tests/qtest/libqos/qgraph.h
++++ b/tests/qtest/libqos/qgraph.h
+@@ -24,7 +24,7 @@
+ #include "libqos-malloc.h"
+ 
+ /* maximum path length */
+-#define QOS_PATH_MAX_ELEMENT_SIZE 64
++#define QOS_PATH_MAX_ELEMENT_SIZE 128
+ 
+ typedef struct QOSGraphObject QOSGraphObject;
+ typedef struct QOSGraphNode QOSGraphNode;
 -- 
 2.39.2
 
