@@ -2,75 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E3DB873786
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 14:14:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5E8E8737F7
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 14:42:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhr6B-000252-5b; Wed, 06 Mar 2024 08:14:19 -0500
+	id 1rhrQM-0008Do-0E; Wed, 06 Mar 2024 08:35:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rhr69-00024u-Hk
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 08:14:17 -0500
-Received: from mgamail.intel.com ([198.175.65.17])
+ (Exim 4.90_1)
+ (envelope-from <SRS0=yBjJ=KM=redhat.com=clg@ozlabs.org>)
+ id 1rhrQI-0008D5-MZ
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 08:35:06 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rhr67-0005qT-BL
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 08:14:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709730855; x=1741266855;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=p8ErNJLqEVurtuygwgHqoaWZ6GjvF3Rx52YwT8d3QIc=;
- b=EDDaUA1pYk9IrvXgTKQ4IUw6V74nrqMYruVNafCz1ZrXCT6CbK/ppWQO
- cmK1rpb0LpLGzsEroOsKSPWYJXP6ekAPyY3mD7gJF+NaUK8DtSwP1JTbx
- 8NhaTafThswvbvEA7LFKL/PtJeXKbchl5RWag7CYZ+dWFCe4pkiXUsjZy
- mWJ67uf3wQrOWgQoGzaN07aEZdo03FGXqh+XRKxq7UZ7jRGZUADyQ4Die
- EbUeQul1c0uAYUioa+IRzf7Yd+hWjafhQcWOD0SQ2ZwdOdKbnshvBWVyR
- AWOrGZi/TR6+ZZGIV0W0niNiqtYM0yjY2CV5drzwaKIRXGFo8xDvxjedK g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="4493317"
-X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; 
-   d="scan'208";a="4493317"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Mar 2024 05:14:11 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; d="scan'208";a="10174137"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa007.jf.intel.com with ESMTP; 06 Mar 2024 05:14:07 -0800
-Date: Wed, 6 Mar 2024 21:27:54 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- kvm@vger.kernel.org, Marcelo Tosatti <mtosatti@redhat.com>,
- devel@lists.libvirt.org, David Hildenbrand <david@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH-for-9.1 02/18] hw/usb/hcd-xhci: Enumerate xhci_flags
- setting values
-Message-ID: <ZehvWi8UhQOl3v8j@intel.com>
-References: <20240305134221.30924-1-philmd@linaro.org>
- <20240305134221.30924-3-philmd@linaro.org>
+ (Exim 4.90_1)
+ (envelope-from <SRS0=yBjJ=KM=redhat.com=clg@ozlabs.org>)
+ id 1rhrQC-0004wU-RD
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 08:35:06 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TqYMH1lKHz4wc9;
+ Thu,  7 Mar 2024 00:34:51 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TqYMC3RSxz4wcF;
+ Thu,  7 Mar 2024 00:34:47 +1100 (AEDT)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ Prasad Pandit <pjp@fedoraproject.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v4 00/25] migration: Improve error reporting
+Date: Wed,  6 Mar 2024 14:34:15 +0100
+Message-ID: <20240306133441.2351700-1-clg@redhat.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240305134221.30924-3-philmd@linaro.org>
-Received-SPF: pass client-ip=198.175.65.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.365,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=yBjJ=KM=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,49 +68,173 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Philippe,
+Hello,
 
-On Tue, Mar 05, 2024 at 02:42:04PM +0100, Philippe Mathieu-Daudé wrote:
-> Date: Tue,  5 Mar 2024 14:42:04 +0100
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH-for-9.1 02/18] hw/usb/hcd-xhci: Enumerate xhci_flags
->  setting values
-> X-Mailer: git-send-email 2.41.0
-> 
-> xhci_flags are used as bits for QOM properties,
-> expected to be somehow stable (external interface).
-> 
-> Explicit their values so removing any enum doesn't
-> modify the other ones.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->  hw/usb/hcd-xhci.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/usb/hcd-xhci.h b/hw/usb/hcd-xhci.h
-> index 98f598382a..37f0d2e43b 100644
-> --- a/hw/usb/hcd-xhci.h
-> +++ b/hw/usb/hcd-xhci.h
-> @@ -37,8 +37,8 @@ typedef struct XHCIEPContext XHCIEPContext;
->  
->  enum xhci_flags {
->      XHCI_FLAG_SS_FIRST = 1,
-> -    XHCI_FLAG_FORCE_PCIE_ENDCAP,
-> -    XHCI_FLAG_ENABLE_STREAMS,
-> +    XHCI_FLAG_FORCE_PCIE_ENDCAP = 2,
-> +    XHCI_FLAG_ENABLE_STREAMS = 3,
->  };
->
+The motivation behind these changes is to improve error reporting to
+the upper management layer (libvirt) with a more detailed error, this
+to let it decide, depending on the reported error, whether to try
+migration again later. It would be useful in cases where migration
+fails due to lack of HW resources on the host. For instance, some
+adapters can only initiate a limited number of simultaneous dirty
+tracking requests and this imposes a limit on the the number of VMs
+that can be migrated simultaneously.
 
-From the commit 290fd20db6e0 ("usb xhci: change msi/msix property
-type"), the enum values were modified directly.
+We are not quite ready for such a mechanism but what we can do first is
+to cleanup the error reporting in the early save_setup sequence. This
+is what the following changes propose, by adding an Error** argument to
+various handlers and propagating it to the core migration subsystem.
 
-So it seems not necessary to bind enum type with specific value,
-right?
+
+Patchset is organized as follow :
+
+* [1-4] already queued in migration-next.
+  
+  migration: Report error when shutdown fails
+  migration: Remove SaveStateHandler and LoadStateHandler typedefs
+  migration: Add documentation for SaveVMHandlers
+  migration: Do not call PRECOPY_NOTIFY_SETUP notifiers in case of error
+  
+* [5-9] are prequisite changes in other components related to the
+  migration save_setup() handler. They make sure a failure is not
+  returned without setting an error.
+  
+  s390/stattrib: Add Error** argument to set_migrationmode() handler
+  vfio: Always report an error in vfio_save_setup()
+  migration: Always report an error in block_save_setup()
+  migration: Always report an error in ram_save_setup()
+  migration: Add Error** argument to vmstate_save()
+
+* [10-15] are the core changes in migration and memory components to
+  propagate an error reported in a save_setup() handler.
+
+  migration: Add Error** argument to qemu_savevm_state_setup()
+  migration: Add Error** argument to .save_setup() handler
+  migration: Add Error** argument to .load_setup() handler
+  memory: Add Error** argument to .log_global_start() handler
+  memory: Add Error** argument to the global_dirty_log routines
+  migration: Modify ram_init_bitmaps() to report dirty tracking errors
+
+* [16-19] contains the VFIO changes we are interested in. Can go
+  through vfio-next.
+
+  vfio: Add Error** argument to .set_dirty_page_tracking() handler
+  vfio: Add Error** argument to vfio_devices_dma_logging_start()
+  vfio: Add Error** argument to vfio_devices_dma_logging_stop()
+  vfio: Use new Error** argument in vfio_save_setup()
+
+* [20-25] are followups for better error handling in VFIO. Good to
+  have but not necessary for the issue described in the intro. Can go
+  through vfio-next.
+
+  vfio: Add Error** argument to .vfio_save_config() handler
+  vfio: Reverse test on vfio_get_dirty_bitmap()
+  memory: Add Error** argument to memory_get_xlat_addr()
+  vfio: Add Error** argument to .get_dirty_bitmap() handler
+  vfio: Also trace event failures in vfio_save_complete_precopy()
+  vfio: Extend vfio_set_migration_error() with Error* argument
 
 Thanks,
-Zhao
 
+C.
+
+Changes in v4:
+
+ - Fixed frenchism futur to future
+ - Fixed typo in set_migrationmode() handler
+ - Added error_free() in hmp_migrationmode()
+ - Fixed state name printed out in error returned by vfio_save_setup()
+ - Fixed test on error returned by qemu_file_get_error()
+ - Added an error when bdrv_nb_sectors() returns a negative value 
+ - Dropped log_global_stop() and log_global_sync() changes
+ - Dropped MEMORY_LISTENER_CALL_LOG_GLOBAL
+ - Modified memory_global_dirty_log_start() to loop on the list of
+   listeners and handle errors directly.
+ - Introduced memory_global_dirty_log_rollback() to revert operations
+   previously done
+
+Changes in v3:
+
+ - New changes to make sure an error is always set in case of failure.
+   This is the reason behing the 5/6 extra patches. (Markus)
+ - Documentation fixup (Peter + Avihai)
+ - Set migration state to MIGRATION_STATUS_FAILED always
+ - Fixed error handling in bg_migration_thread() (Peter)
+ - Fixed return value of vfio_listener_log_global_start/stop(). 
+   Went unnoticed because value is not tested. (Peter)
+ - Add ERRP_GUARD() when error_prepend is used 
+ - Use error_setg_errno() when possible
+    
+Changes in v2:
+
+- Removed v1 patches addressing the return-path thread termination as
+  they are now superseded by :  
+  https://lore.kernel.org/qemu-devel/20240226203122.22894-1-farosas@suse.de/
+- Documentation updates of handlers
+- Removed call to PRECOPY_NOTIFY_SETUP notifiers in case of errors
+- Modified routines taking an Error** argument to return a bool when
+  possible and made adjustments in callers.
+- new MEMORY_LISTENER_CALL_LOG_GLOBAL macro for .log_global*()
+  handlers
+- Handled SETUP state when migration terminates
+- Modified memory_get_xlat_addr() to take an Error** argument
+- Various refinements on error handling
+
+CÃ©dric Le Goater (25):
+  migration: Report error when shutdown fails
+  migration: Remove SaveStateHandler and LoadStateHandler typedefs
+  migration: Add documentation for SaveVMHandlers
+  migration: Do not call PRECOPY_NOTIFY_SETUP notifiers in case of error
+  s390/stattrib: Add Error** argument to set_migrationmode() handler
+  vfio: Always report an error in vfio_save_setup()
+  migration: Always report an error in block_save_setup()
+  migration: Always report an error in ram_save_setup()
+  migration: Add Error** argument to vmstate_save()
+  migration: Add Error** argument to qemu_savevm_state_setup()
+  migration: Add Error** argument to .save_setup() handler
+  migration: Add Error** argument to .load_setup() handler
+  memory: Add Error** argument to .log_global_start() handler
+  memory: Add Error** argument to the global_dirty_log routines
+  migration: Modify ram_init_bitmaps() to report dirty tracking errors
+  vfio: Add Error** argument to .set_dirty_page_tracking() handler
+  vfio: Add Error** argument to vfio_devices_dma_logging_start()
+  vfio: Add Error** argument to vfio_devices_dma_logging_stop()
+  vfio: Use new Error** argument in vfio_save_setup()
+  vfio: Add Error** argument to .vfio_save_config() handler
+  vfio: Reverse test on vfio_get_dirty_bitmap()
+  memory: Add Error** argument to memory_get_xlat_addr()
+  vfio: Add Error** argument to .get_dirty_bitmap() handler
+  vfio: Also trace event failures in vfio_save_complete_precopy()
+  vfio: Extend vfio_set_migration_error() with Error* argument
+
+ include/exec/memory.h                 |  25 ++-
+ include/hw/s390x/storage-attributes.h |   2 +-
+ include/hw/vfio/vfio-common.h         |  29 ++-
+ include/hw/vfio/vfio-container-base.h |  35 +++-
+ include/migration/register.h          | 273 +++++++++++++++++++++++---
+ include/qemu/typedefs.h               |   2 -
+ migration/savevm.h                    |   2 +-
+ hw/i386/xen/xen-hvm.c                 |   5 +-
+ hw/ppc/spapr.c                        |   2 +-
+ hw/s390x/s390-stattrib-kvm.c          |  12 +-
+ hw/s390x/s390-stattrib.c              |  15 +-
+ hw/vfio/common.c                      | 161 +++++++++------
+ hw/vfio/container-base.c              |   9 +-
+ hw/vfio/container.c                   |  19 +-
+ hw/vfio/migration.c                   |  99 ++++++----
+ hw/vfio/pci.c                         |   5 +-
+ hw/virtio/vhost-vdpa.c                |   5 +-
+ hw/virtio/vhost.c                     |   3 +-
+ migration/block-dirty-bitmap.c        |   4 +-
+ migration/block.c                     |  19 +-
+ migration/dirtyrate.c                 |  13 +-
+ migration/migration.c                 |  27 ++-
+ migration/qemu-file.c                 |   5 +-
+ migration/ram.c                       |  46 ++++-
+ migration/savevm.c                    |  59 +++---
+ system/memory.c                       |  56 +++++-
+ 26 files changed, 713 insertions(+), 219 deletions(-)
+
+-- 
+2.44.0
 
 
