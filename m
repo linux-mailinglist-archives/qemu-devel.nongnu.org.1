@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 853A187344D
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AB9B87344A
 	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 11:32:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhoYs-0004ri-9g; Wed, 06 Mar 2024 05:31:46 -0500
+	id 1rhoYw-0004y6-Hd; Wed, 06 Mar 2024 05:31:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <t-8ch@linutronix.de>)
- id 1rhoYn-0004oP-Oh
+ id 1rhoYo-0004oX-CK
  for qemu-devel@nongnu.org; Wed, 06 Mar 2024 05:31:42 -0500
 Received: from galois.linutronix.de ([2a0a:51c0:0:12e:550::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <t-8ch@linutronix.de>)
- id 1rhoYk-0007bZ-Do
+ id 1rhoYk-0007bf-Fx
  for qemu-devel@nongnu.org; Wed, 06 Mar 2024 05:31:41 -0500
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1709721085;
+ s=2020; t=1709721086;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=OtA/QiUqtSmMzFP6J0LwSLTKy/Ge/8kwtxsDyLo56h8=;
- b=Y9j1FYzVsRcf1vOy6BoFrkkIlPeRNSDzciiaS9XoD/je2XzLo/Ke/9sw5887Pj1/zGpzaK
- vMhgryOZ4qlFxIrrXYc+yhkXWS4jHQFvpXcij9hUazCik3jLbWS9inJyHxqohql3KSvJvG
- Go8MRHEKfSZ8I/eSbzy3FTQ0UfybyISKxdCIHCTT5ekPzCM83oiNAC0pSD0q0QN2a1t2p6
- sDFwA1mHoHEwnbPsDKNOJORbWFt5B94/2gkr0i6NG0/m/rwsS5wjFttWqaOUwLyW9CpNoF
- 2RefnixPiAM2r32sLaVW2XBqR+PtHlCcNxPLZ+xoNTU0zg0o9pT4rMNydDKoTg==
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=On8HB8y1tTMJab2j+fd5XKn/1OC8xVc0eTzEZSkIC8Y=;
+ b=HH0EI01LDfD0jXkDmJ9N2YysYieZcHTAmB0XskLqbmj/oGSPZMLCETI5jF607MEf92xk22
+ gHJSenMCuqv0Z4SVQp89M9X2rRG0FrwE3d3QInruVWq04MO9jW/lcxaZVwAP2/F4SDyp/j
+ W/rxpQKkEZmF3JzxBWb7ZIVrYIsLdGSLbqh3Pg7UK8evML5dOCw+v5f34Opwr5I1xsmpgh
+ AbC6iMXdIprNg1GLGf4ePT2dlhKM+W2fbNeCy45ilCu2UFFaU7si0iUkbtckHNpS2wwPe3
+ 8t5Kq+UUGrfdtVaGzwvP491+5KZo0bsL8TPkXvEdiy49p8+tRKeZxI3jYUlk6g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1709721085;
+ s=2020e; t=1709721086;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=OtA/QiUqtSmMzFP6J0LwSLTKy/Ge/8kwtxsDyLo56h8=;
- b=Ldn0zai+jBntpvgkl+SwgDAn+pC1+T5HRRoK75HIit6ZflCVQN1X3wfXhyzn7eNavFf0/o
- cWtVXvuipnxpe+CQ==
-Subject: [PATCH 0/4] docs/interop/firmware.json: scripts/qapi-gen.py
- compatibility
-Date: Wed, 06 Mar 2024 11:31:21 +0100
-Message-Id: <20240306-qapi-firmware-json-v1-0-619f7122a249@linutronix.de>
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=On8HB8y1tTMJab2j+fd5XKn/1OC8xVc0eTzEZSkIC8Y=;
+ b=1pwhfpdEfZHXamuYjt0ABjVOS3ZVIZfkIKK1vtP1x2rEyWciNoFNqhs9wO/n2Xm+syfiw4
+ YI1GstoR7V8ZCGBQ==
+Date: Wed, 06 Mar 2024 11:31:22 +0100
+Subject: [PATCH 1/4] docs/interop/firmware.json: Align examples
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAPlF6GUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDYwMz3cLEgkzdtMyi3PLEolTdrOL8PF2ztCRDI0NjS2OzlBQloMaCotS
- 0zAqwodGxtbUAdeUvVGQAAAA=
+Message-Id: <20240306-qapi-firmware-json-v1-1-619f7122a249@linutronix.de>
+References: <20240306-qapi-firmware-json-v1-0-619f7122a249@linutronix.de>
+In-Reply-To: <20240306-qapi-firmware-json-v1-0-619f7122a249@linutronix.de>
 To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
  =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
  Kashyap Chamarthy <kchamart@redhat.com>
 Cc: qemu-devel@nongnu.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1709721085; l=803;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1709721085; l=11093;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=EVtrlZq5eeXONSP6QtwodpnfAxHW7OGxNW1th3b2MOk=;
- b=xNQ0TqUe7hqktDQkojzLNZ3TAmHPSoGHZrdjZ3DEVq5Gsnz3hYKuGZxnEr0w5WRWbRToF8g+i
- xhYnQodnw8DDq4WFkJdymyieuo/3imYuH5hM9la8crSnjFJ8xH1V2R6
+ bh=GMe7kp9V6sMusbYpESY64Sjm/vPnPDkcVXvAuqt/pIQ=;
+ b=AQix6REujC8fmyYK4WHAfyFhm59vOyuNMXhTzYvnKu0CxZKlD6Rv0C9U1bzMEbqH8bK9fSZsd
+ X1ZO2GYt1BtDUae9IrdxzqM9WDkAe9ylp9FaQ98f50JxSHgokvAFJGD
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 Received-SPF: pass client-ip=2a0a:51c0:0:12e:550::1;
@@ -84,26 +84,415 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-docs/interop/firmware.json is currently not usable with qapi-gen.py due
-to various non-functional issues.
-Fix those issue to provide compatibility.
+The QAPI generator now validates the alignment and rejects this file.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
-Thomas Weißschuh (4):
-      docs/interop/firmware.json: Align examples
-      docs/interop/firmware.json: Fix doc for FirmwareFlashMode
-      docs/interop/firmware.json: Use full include paths
-      docs/interop/firmware.json: Include pragma.json
+ docs/interop/firmware.json | 384 ++++++++++++++++++++++-----------------------
+ 1 file changed, 192 insertions(+), 192 deletions(-)
 
- docs/interop/firmware.json | 392 +++++++++++++++++++++++----------------------
- 1 file changed, 197 insertions(+), 195 deletions(-)
----
-base-commit: db596ae19040574e41d086e78469014191d7d7fc
-change-id: 20240306-qapi-firmware-json-6fb1213936dd
+diff --git a/docs/interop/firmware.json b/docs/interop/firmware.json
+index cc8f86918681..a024f1b9bf3f 100644
+--- a/docs/interop/firmware.json
++++ b/docs/interop/firmware.json
+@@ -435,203 +435,203 @@
+ #
+ # Examples:
+ #
+-# {
+-#     "description": "SeaBIOS",
+-#     "interface-types": [
+-#         "bios"
+-#     ],
+-#     "mapping": {
+-#         "device": "memory",
+-#         "filename": "/usr/share/seabios/bios-256k.bin"
+-#     },
+-#     "targets": [
+-#         {
+-#             "architecture": "i386",
+-#             "machines": [
+-#                 "pc-i440fx-*",
+-#                 "pc-q35-*"
+-#             ]
++#     {
++#         "description": "SeaBIOS",
++#         "interface-types": [
++#             "bios"
++#         ],
++#         "mapping": {
++#             "device": "memory",
++#             "filename": "/usr/share/seabios/bios-256k.bin"
+ #         },
+-#         {
+-#             "architecture": "x86_64",
+-#             "machines": [
+-#                 "pc-i440fx-*",
+-#                 "pc-q35-*"
+-#             ]
+-#         }
+-#     ],
+-#     "features": [
+-#         "acpi-s3",
+-#         "acpi-s4"
+-#     ],
+-#     "tags": [
+-#         "CONFIG_BOOTSPLASH=n",
+-#         "CONFIG_ROM_SIZE=256",
+-#         "CONFIG_USE_SMM=n"
+-#     ]
+-# }
+-#
+-# {
+-#     "description": "OVMF with SB+SMM, empty varstore",
+-#     "interface-types": [
+-#         "uefi"
+-#     ],
+-#     "mapping": {
+-#         "device": "flash",
+-#         "executable": {
+-#             "filename": "/usr/share/OVMF/OVMF_CODE.secboot.fd",
+-#             "format": "raw"
++#         "targets": [
++#             {
++#                 "architecture": "i386",
++#                 "machines": [
++#                     "pc-i440fx-*",
++#                     "pc-q35-*"
++#                 ]
++#             },
++#             {
++#                 "architecture": "x86_64",
++#                 "machines": [
++#                     "pc-i440fx-*",
++#                     "pc-q35-*"
++#                 ]
++#             }
++#         ],
++#         "features": [
++#             "acpi-s3",
++#             "acpi-s4"
++#         ],
++#         "tags": [
++#             "CONFIG_BOOTSPLASH=n",
++#             "CONFIG_ROM_SIZE=256",
++#             "CONFIG_USE_SMM=n"
++#         ]
++#     }
++#
++#     {
++#         "description": "OVMF with SB+SMM, empty varstore",
++#         "interface-types": [
++#             "uefi"
++#         ],
++#         "mapping": {
++#             "device": "flash",
++#             "executable": {
++#                 "filename": "/usr/share/OVMF/OVMF_CODE.secboot.fd",
++#                 "format": "raw"
++#             },
++#             "nvram-template": {
++#                 "filename": "/usr/share/OVMF/OVMF_VARS.fd",
++#                 "format": "raw"
++#             }
+ #         },
+-#         "nvram-template": {
+-#             "filename": "/usr/share/OVMF/OVMF_VARS.fd",
+-#             "format": "raw"
+-#         }
+-#     },
+-#     "targets": [
+-#         {
+-#             "architecture": "x86_64",
+-#             "machines": [
+-#                 "pc-q35-*"
+-#             ]
+-#         }
+-#     ],
+-#     "features": [
+-#         "acpi-s3",
+-#         "amd-sev",
+-#         "requires-smm",
+-#         "secure-boot",
+-#         "verbose-dynamic"
+-#     ],
+-#     "tags": [
+-#         "-a IA32",
+-#         "-a X64",
+-#         "-p OvmfPkg/OvmfPkgIa32X64.dsc",
+-#         "-t GCC48",
+-#         "-b DEBUG",
+-#         "-D SMM_REQUIRE",
+-#         "-D SECURE_BOOT_ENABLE",
+-#         "-D FD_SIZE_4MB"
+-#     ]
+-# }
+-#
+-# {
+-#     "description": "OVMF with SB+SMM, SB enabled, MS certs enrolled",
+-#     "interface-types": [
+-#         "uefi"
+-#     ],
+-#     "mapping": {
+-#         "device": "flash",
+-#         "executable": {
+-#             "filename": "/usr/share/OVMF/OVMF_CODE.secboot.fd",
+-#             "format": "raw"
++#         "targets": [
++#             {
++#                 "architecture": "x86_64",
++#                 "machines": [
++#                     "pc-q35-*"
++#                 ]
++#             }
++#         ],
++#         "features": [
++#             "acpi-s3",
++#             "amd-sev",
++#             "requires-smm",
++#             "secure-boot",
++#             "verbose-dynamic"
++#         ],
++#         "tags": [
++#             "-a IA32",
++#             "-a X64",
++#             "-p OvmfPkg/OvmfPkgIa32X64.dsc",
++#             "-t GCC48",
++#             "-b DEBUG",
++#             "-D SMM_REQUIRE",
++#             "-D SECURE_BOOT_ENABLE",
++#             "-D FD_SIZE_4MB"
++#         ]
++#     }
++#
++#     {
++#         "description": "OVMF with SB+SMM, SB enabled, MS certs enrolled",
++#         "interface-types": [
++#             "uefi"
++#         ],
++#         "mapping": {
++#             "device": "flash",
++#             "executable": {
++#                 "filename": "/usr/share/OVMF/OVMF_CODE.secboot.fd",
++#                 "format": "raw"
++#             },
++#             "nvram-template": {
++#                 "filename": "/usr/share/OVMF/OVMF_VARS.secboot.fd",
++#                 "format": "raw"
++#             }
+ #         },
+-#         "nvram-template": {
+-#             "filename": "/usr/share/OVMF/OVMF_VARS.secboot.fd",
+-#             "format": "raw"
+-#         }
+-#     },
+-#     "targets": [
+-#         {
+-#             "architecture": "x86_64",
+-#             "machines": [
+-#                 "pc-q35-*"
+-#             ]
+-#         }
+-#     ],
+-#     "features": [
+-#         "acpi-s3",
+-#         "amd-sev",
+-#         "enrolled-keys",
+-#         "requires-smm",
+-#         "secure-boot",
+-#         "verbose-dynamic"
+-#     ],
+-#     "tags": [
+-#         "-a IA32",
+-#         "-a X64",
+-#         "-p OvmfPkg/OvmfPkgIa32X64.dsc",
+-#         "-t GCC48",
+-#         "-b DEBUG",
+-#         "-D SMM_REQUIRE",
+-#         "-D SECURE_BOOT_ENABLE",
+-#         "-D FD_SIZE_4MB"
+-#     ]
+-# }
+-#
+-# {
+-#     "description": "OVMF with SEV-ES support",
+-#     "interface-types": [
+-#         "uefi"
+-#     ],
+-#     "mapping": {
+-#         "device": "flash",
+-#         "executable": {
+-#             "filename": "/usr/share/OVMF/OVMF_CODE.fd",
+-#             "format": "raw"
++#         "targets": [
++#             {
++#                 "architecture": "x86_64",
++#                 "machines": [
++#                     "pc-q35-*"
++#                 ]
++#             }
++#         ],
++#         "features": [
++#             "acpi-s3",
++#             "amd-sev",
++#             "enrolled-keys",
++#             "requires-smm",
++#             "secure-boot",
++#             "verbose-dynamic"
++#         ],
++#         "tags": [
++#             "-a IA32",
++#             "-a X64",
++#             "-p OvmfPkg/OvmfPkgIa32X64.dsc",
++#             "-t GCC48",
++#             "-b DEBUG",
++#             "-D SMM_REQUIRE",
++#             "-D SECURE_BOOT_ENABLE",
++#             "-D FD_SIZE_4MB"
++#         ]
++#     }
++#
++#     {
++#         "description": "OVMF with SEV-ES support",
++#         "interface-types": [
++#             "uefi"
++#         ],
++#         "mapping": {
++#             "device": "flash",
++#             "executable": {
++#                 "filename": "/usr/share/OVMF/OVMF_CODE.fd",
++#                 "format": "raw"
++#             },
++#             "nvram-template": {
++#                 "filename": "/usr/share/OVMF/OVMF_VARS.fd",
++#                 "format": "raw"
++#             }
+ #         },
+-#         "nvram-template": {
+-#             "filename": "/usr/share/OVMF/OVMF_VARS.fd",
+-#             "format": "raw"
+-#         }
+-#     },
+-#     "targets": [
+-#         {
+-#             "architecture": "x86_64",
+-#             "machines": [
+-#                 "pc-q35-*"
+-#             ]
+-#         }
+-#     ],
+-#     "features": [
+-#         "acpi-s3",
+-#         "amd-sev",
+-#         "amd-sev-es",
+-#         "verbose-dynamic"
+-#     ],
+-#     "tags": [
+-#         "-a X64",
+-#         "-p OvmfPkg/OvmfPkgX64.dsc",
+-#         "-t GCC48",
+-#         "-b DEBUG",
+-#         "-D FD_SIZE_4MB"
+-#     ]
+-# }
+-#
+-# {
+-#     "description": "UEFI firmware for ARM64 virtual machines",
+-#     "interface-types": [
+-#         "uefi"
+-#     ],
+-#     "mapping": {
+-#         "device": "flash",
+-#         "executable": {
+-#             "filename": "/usr/share/AAVMF/AAVMF_CODE.fd",
+-#             "format": "raw"
++#         "targets": [
++#             {
++#                 "architecture": "x86_64",
++#                 "machines": [
++#                     "pc-q35-*"
++#                 ]
++#             }
++#         ],
++#         "features": [
++#             "acpi-s3",
++#             "amd-sev",
++#             "amd-sev-es",
++#             "verbose-dynamic"
++#         ],
++#         "tags": [
++#             "-a X64",
++#             "-p OvmfPkg/OvmfPkgX64.dsc",
++#             "-t GCC48",
++#             "-b DEBUG",
++#             "-D FD_SIZE_4MB"
++#         ]
++#     }
++#
++#     {
++#         "description": "UEFI firmware for ARM64 virtual machines",
++#         "interface-types": [
++#             "uefi"
++#         ],
++#         "mapping": {
++#             "device": "flash",
++#             "executable": {
++#                 "filename": "/usr/share/AAVMF/AAVMF_CODE.fd",
++#                 "format": "raw"
++#             },
++#             "nvram-template": {
++#                 "filename": "/usr/share/AAVMF/AAVMF_VARS.fd",
++#                 "format": "raw"
++#             }
+ #         },
+-#         "nvram-template": {
+-#             "filename": "/usr/share/AAVMF/AAVMF_VARS.fd",
+-#             "format": "raw"
+-#         }
+-#     },
+-#     "targets": [
+-#         {
+-#             "architecture": "aarch64",
+-#             "machines": [
+-#                 "virt-*"
+-#             ]
+-#         }
+-#     ],
+-#     "features": [
+-#
+-#     ],
+-#     "tags": [
+-#         "-a AARCH64",
+-#         "-p ArmVirtPkg/ArmVirtQemu.dsc",
+-#         "-t GCC48",
+-#         "-b DEBUG",
+-#         "-D DEBUG_PRINT_ERROR_LEVEL=0x80000000"
+-#     ]
+-# }
++#         "targets": [
++#             {
++#                 "architecture": "aarch64",
++#                 "machines": [
++#                     "virt-*"
++#                 ]
++#             }
++#         ],
++#         "features": [
++#
++#         ],
++#         "tags": [
++#             "-a AARCH64",
++#             "-p ArmVirtPkg/ArmVirtQemu.dsc",
++#             "-t GCC48",
++#             "-b DEBUG",
++#             "-D DEBUG_PRINT_ERROR_LEVEL=0x80000000"
++#         ]
++#     }
+ ##
+ { 'struct' : 'Firmware',
+   'data'   : { 'description'     : 'str',
 
-Best regards,
 -- 
-Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+2.44.0
 
 
