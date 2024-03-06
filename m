@@ -2,85 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EA4C8739AA
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 15:46:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B903C87396B
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 15:40:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhsSG-0007of-2T; Wed, 06 Mar 2024 09:41:12 -0500
+	id 1rhsRb-0006Wg-J5; Wed, 06 Mar 2024 09:40:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhsS8-0007hS-Fx
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 09:41:04 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhsRx-0001TG-90
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 09:41:04 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-412e6bdd454so22290275e9.1
- for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 06:40:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709736042; x=1710340842; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mCuo1I1x614Ggqxx0hsNU8XUHD4jpmgy247WPP2wLWU=;
- b=NcU48xwdRRiXMLoD2tJMMa0kY3DKVPB7ZKEFUS06+mAnd0vW/bH0mcGPuiGiGj/22J
- 3mOfCpi8Zai5EtLUptUCFRj/L51aYJXf30Bg5cdYDSQN2hVN8CfYgi9LC8/a8ATnhEtL
- tXdJVoq/f9u6RbUgRqtUmfQ0O7bKuykXOLgz4tgCuQdmGY2lvC2BJG7h/oBZENXHSysA
- 7V5y60B6eg/LG+xfdEkN4W53ypgtpVY9j4ByBam5ov4635lF5fcpPKEYCwEXDKzrAhLU
- SJ+94ENY4qCr/aSZKMd7gwful9o++WjP1H7eU9Z+ZYbke7okKWS85z2mNlLBQlafhV84
- mcfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709736042; x=1710340842;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mCuo1I1x614Ggqxx0hsNU8XUHD4jpmgy247WPP2wLWU=;
- b=UacfjYcnm98jYlhhhu2KMHORbcjMWdzFVP+Gl/UJ0tBFV8M9wZ45ZEULWVvPLsp2k5
- NSDbhe5aTnr5ZusjZS7lxLYK904EJlFoKjY653WmHk36zMiSN7OGbTzAvP3Zo9hHs5aQ
- 4cY8JcyrnvTa9nC55q/TyijtWsGGR26BNhKVfQv6Z0GiTna+UVIXVDEZMimuZT3vcXqF
- ZKiovmXyS47uYPRDXQCEaK3fm0RUvNCX5ItvWWQPTkOT/iCc6lsaMWzWyXS8eD6qwx7/
- LWpXeoZ3PXvj3NxKBd5OIoxzIolr/5lLRc3VhbJQj/bBpeqzsyDVsmcCNVI9IZhorNdY
- N0LA==
-X-Gm-Message-State: AOJu0YwN1fp/YBXs2aPV82zmHF6+V1lvbkWzDB4s24fA6QMGKG6onFRK
- T32fAvGU+hBRAIfIqtcr33/0tINyEM5/DPw5YTIQ7DneC2KK2FIepTY45BB9z6s=
-X-Google-Smtp-Source: AGHT+IFX992rEZfKIGjAhXN01fY6cGqE0XDulcv68CHJDttNHtmXYV7CasoPkStWHGBxsIJAtq+JvQ==
-X-Received: by 2002:a5d:49ca:0:b0:33e:4750:2250 with SMTP id
- t10-20020a5d49ca000000b0033e47502250mr4489258wrs.62.1709736042452; 
- Wed, 06 Mar 2024 06:40:42 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- bu16-20020a056000079000b0033dc3f3d689sm17930874wrb.93.2024.03.06.06.40.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Mar 2024 06:40:42 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A2B4B5F8A9;
- Wed,  6 Mar 2024 14:40:41 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 01/29] tests: bump QOS_PATH_MAX_ELEMENT_SIZE again
-Date: Wed,  6 Mar 2024 14:40:13 +0000
-Message-Id: <20240306144041.3787188-2-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240306144041.3787188-1-alex.bennee@linaro.org>
-References: <20240306144041.3787188-1-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rhsRP-0006WA-Ls
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 09:40:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rhsRO-0001AL-7A
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 09:40:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709736017;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=giVr0uN5B+wsUImoh4c6PHnlOzh/h4/ezMiPhUn9ahU=;
+ b=OHtBHTEY8KRvthKDdou8qadX7VT29vkwU8DvmtCSCWgCEf6yA3CMR8qgXGK92Nfl6tBWpK
+ nz+0WzIMDiKESGXpVPrBt75+wH87djRjz4iTeQdi0938Bk66PEaceRgeOHAnPWlCuJZZGD
+ O6EQOPdcY3VeQ5Cdj7A06ChEDX+DuW4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-154-PcV3m4ndM2KjdM2Zb8dxfw-1; Wed,
+ 06 Mar 2024 09:40:15 -0500
+X-MC-Unique: PcV3m4ndM2KjdM2Zb8dxfw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 800172823F6E;
+ Wed,  6 Mar 2024 14:40:15 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.3])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5E38440C6CB7;
+ Wed,  6 Mar 2024 14:40:15 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 4953E21E6A24; Wed,  6 Mar 2024 15:40:14 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Chun Feng Wu <wucf@cn.ibm.com>
+Cc: Daniel Berrange <berrange@redhat.com>,  "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+Subject: Re: Does "-object" support structured options now?
+In-Reply-To: <PH7PR15MB6503A217E33561AB9E193FA5F7212@PH7PR15MB6503.namprd15.prod.outlook.com>
+ (Chun Feng Wu's message of "Wed, 6 Mar 2024 14:33:05 +0000")
+References: <PH7PR15MB6503236A69BD173E62FC6791F7232@PH7PR15MB6503.namprd15.prod.outlook.com>
+ <ZeWA8VrzgjKjETXh@redhat.com>
+ <PH7PR15MB6503A217E33561AB9E193FA5F7212@PH7PR15MB6503.namprd15.prod.outlook.com>
+Date: Wed, 06 Mar 2024 15:40:14 +0100
+Message-ID: <871q8nxw35.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.365,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,36 +83,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We "fixed" a bug with LTO builds with 100c459f194 (tests/qtest: bump
-up QOS_PATH_MAX_ELEMENT_SIZE) but it seems it has triggered again.
+Chun Feng Wu <wucf@cn.ibm.com> writes:
 
-The array is sized according to the maximum anticipated length of a
-path on the graph. However, the worst case for a depth-first search is
-to push all nodes on the graph. So it's not really LTO, it depends on
-the ordering of the constructors.
+> Thanks Daniel for your response!
+>
+> I tried it with the following cmd
+>
+> qemu-system-x86_64 [other options...] \
+>   -object '{"qom-type":"throttle-group","id":"limits0","limits":{"iops-total":200}}'
+>
+> And I got error:
+> qemu-system-x86_64: -object {"qom-type":"throttle-group","id":"limits0","limits":{"iops-total":200}}: Parameter 'id' is missing
+>
+> Do you know why such error happens?
 
-Lets be more assertive raising QOS_PATH_MAX_ELEMENT_SIZE to make it go
-away again.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1186 (again)
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240305121005.3528075-2-alex.bennee@linaro.org>
-
-diff --git a/tests/qtest/libqos/qgraph.h b/tests/qtest/libqos/qgraph.h
-index 287022a67c1..1b5de02e7be 100644
---- a/tests/qtest/libqos/qgraph.h
-+++ b/tests/qtest/libqos/qgraph.h
-@@ -24,7 +24,7 @@
- #include "libqos-malloc.h"
- 
- /* maximum path length */
--#define QOS_PATH_MAX_ELEMENT_SIZE 64
-+#define QOS_PATH_MAX_ELEMENT_SIZE 128
- 
- typedef struct QOSGraphObject QOSGraphObject;
- typedef struct QOSGraphNode QOSGraphNode;
--- 
-2.39.2
+Can't reproduce the error.
 
 
