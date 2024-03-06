@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE3D9874168
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 21:35:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CDE287416D
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 21:36:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhxyM-0004UJ-Hm; Wed, 06 Mar 2024 15:34:44 -0500
+	id 1rhxyW-0004aO-Oo; Wed, 06 Mar 2024 15:34:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rhxy2-0004Ke-9c
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 15:34:24 -0500
+ id 1rhxy8-0004Ni-EA
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 15:34:29 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rhxy0-0001q2-SN
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 15:34:22 -0500
+ id 1rhxy5-0001qa-GH
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 15:34:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709757259;
+ s=mimecast20190719; t=1709757264;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mtAnTSStkOKpy0/Q14u1Ipt8HVO4uL1e5P+fAKhJM+A=;
- b=AeLiZPuoOWYXyytSBQRn+BwH470K02+rSsfRXzr7O3umFl7t1Fe/YKm2SFWaojz15yletS
- ue7X06ImQ38IM2oWwwsJ5KE6HZfZ/fXZgyyKsju3aonD/cfMCglWIMRSBg8JIk9Ua8XgmP
- euxGXh2l6mRIojQLnGae/S4dpopTdw0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-175-rgH-kNiNO7yzoVsBvg7fUA-1; Wed,
- 06 Mar 2024 15:34:17 -0500
-X-MC-Unique: rgH-kNiNO7yzoVsBvg7fUA-1
+ bh=czEcqsIErIQNXIn00F0Uho7fUouArtsC4cjIi74+OlU=;
+ b=SaoYVvvU4tsNxIeZYP/M3JJBwppvROHwZh6izDYMKfZ7gh2TLWX99MOhvdnAJ79E2EG1zZ
+ 2FsiZnwyDA3Rxn2I2nhisrRx5GXymLSvIJ/Mtlpb3iTqC0lMUEcqB9LKTeyqHih4tTuNnR
+ QJ1HYaCnOVQB1IsScvWjfdpmPT0RDjg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-441-aF8o0b6YPnG6APvJEwt9qw-1; Wed, 06 Mar 2024 15:34:21 -0500
+X-MC-Unique: aF8o0b6YPnG6APvJEwt9qw-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6033A2804800;
- Wed,  6 Mar 2024 20:34:17 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 115AA185A783;
+ Wed,  6 Mar 2024 20:34:21 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.39.193.114])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DC9D336FF;
- Wed,  6 Mar 2024 20:34:13 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A4B043701;
+ Wed,  6 Mar 2024 20:34:17 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org,
@@ -50,10 +50,10 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  yanghliu@redhat.com, zhenzhong.duan@intel.com
 Cc: alex.williamson@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
  berrange@redhat.com
-Subject: [PATCH v7 6/9] virtio-iommu: Add an option to define the input range
- width
-Date: Wed,  6 Mar 2024 21:32:45 +0100
-Message-ID: <20240306203348.65776-7-eric.auger@redhat.com>
+Subject: [PATCH v7 7/9] hw/i386/q35: Set virtio-iommu aw-bits default value to
+ 39
+Date: Wed,  6 Mar 2024 21:32:46 +0100
+Message-ID: <20240306203348.65776-8-eric.auger@redhat.com>
 In-Reply-To: <20240306203348.65776-1-eric.auger@redhat.com>
 References: <20240306203348.65776-1-eric.auger@redhat.com>
 MIME-Version: 1.0
@@ -84,61 +84,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-aw-bits is a new option that allows to set the bit width of
-the input address range. This value will be used as a default for
-the device config input_range.end. By default it is set to 64 bits
-which is the current value.
+Currently the default input range can extend to 64 bits. On x86,
+when the virtio-iommu protects vfio devices, the physical iommu
+may support only 39 bits. Let's set the default to 39, as done
+for the intel-iommu.
+
+We use hw_compat_8_2 to handle the compatibility for machines
+before 9.0 which used to have a virtio-iommu default input range
+of 64 bits.
+
+Of course if aw-bits is set from the command line, the default
+is overriden.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
 ---
+
+v6 -> v7:
+- use static pc_q35_compat_defaults
+- remove spurious header addition
+- s/32/UINT32_MAX in the qtest
+
+v5 -> v6:
+- split pc/arm settings
+
+v3 -> v4:
+- update the qos test to relax the check on the max input IOVA
+
+v2 -> v3:
+- collected Zhenzhong's R-b
+- use &error_abort instead of NULL error handle
+  on object_property_get_uint() call (Cédric)
+- use VTD_HOST_AW_39BIT (Cédric)
 
 v1 -> v2:
-- Check the aw-bits value is within [32,64]
+- set aw-bits to 48b on ARM
+- use hw_compat_8_2 to handle the compat for older machines
+  which used 64b as a default
 ---
- include/hw/virtio/virtio-iommu.h | 1 +
- hw/virtio/virtio-iommu.c         | 7 ++++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ hw/core/machine.c               | 1 +
+ hw/i386/pc_q35.c                | 9 +++++++++
+ tests/qtest/virtio-iommu-test.c | 2 +-
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/virtio/virtio-iommu.h b/include/hw/virtio/virtio-iommu.h
-index 67ea5022af..83a52cc446 100644
---- a/include/hw/virtio/virtio-iommu.h
-+++ b/include/hw/virtio/virtio-iommu.h
-@@ -68,6 +68,7 @@ struct VirtIOIOMMU {
-     Notifier machine_done;
-     bool granule_frozen;
-     GranuleMode granule_mode;
-+    uint8_t aw_bits;
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 6bd09d4592..4b89172d1c 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -35,6 +35,7 @@
+ 
+ GlobalProperty hw_compat_8_2[] = {
+     { TYPE_VIRTIO_IOMMU_PCI, "granule", "4k" },
++    { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "64" },
  };
+ const size_t hw_compat_8_2_len = G_N_ELEMENTS(hw_compat_8_2);
  
- #endif
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index aab97e1527..9b2813188b 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -1314,7 +1314,11 @@ static void virtio_iommu_device_realize(DeviceState *dev, Error **errp)
-      * in vfio realize
-      */
-     s->config.bypass = s->boot_bypass;
--    s->config.input_range.end = UINT64_MAX;
-+    if (s->aw_bits < 32 || s->aw_bits > 64) {
-+        error_setg(errp, "aw-bits must be within [32,64]");
-+    }
-+    s->config.input_range.end =
-+        s->aw_bits == 64 ? UINT64_MAX : BIT_ULL(s->aw_bits) - 1;
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 45a4102e75..1e7464d39a 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -45,6 +45,7 @@
+ #include "hw/i386/pc.h"
+ #include "hw/i386/amd_iommu.h"
+ #include "hw/i386/intel_iommu.h"
++#include "hw/virtio/virtio-iommu.h"
+ #include "hw/display/ramfb.h"
+ #include "hw/ide/pci.h"
+ #include "hw/ide/ahci-pci.h"
+@@ -63,6 +64,12 @@
+ /* ICH9 AHCI has 6 ports */
+ #define MAX_SATA_PORTS     6
  
-     switch (s->granule_mode) {
-     case GRANULE_MODE_4K:
-@@ -1544,6 +1548,7 @@ static Property virtio_iommu_properties[] = {
-     DEFINE_PROP_BOOL("boot-bypass", VirtIOIOMMU, boot_bypass, true),
-     DEFINE_PROP_GRANULE_MODE("granule", VirtIOIOMMU, granule_mode,
-                              GRANULE_MODE_HOST),
-+    DEFINE_PROP_UINT8("aw-bits", VirtIOIOMMU, aw_bits, 64),
-     DEFINE_PROP_END_OF_LIST(),
- };
++static GlobalProperty pc_q35_compat_defaults[] = {
++    { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "39" },
++};
++static const size_t pc_q35_compat_defaults_len =
++    G_N_ELEMENTS(pc_q35_compat_defaults);
++
+ struct ehci_companions {
+     const char *name;
+     int func;
+@@ -356,6 +363,8 @@ static void pc_q35_machine_options(MachineClass *m)
+     machine_class_allow_dynamic_sysbus_dev(m, TYPE_INTEL_IOMMU_DEVICE);
+     machine_class_allow_dynamic_sysbus_dev(m, TYPE_RAMFB_DEVICE);
+     machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
++    compat_props_add(m->compat_props,
++                     pc_q35_compat_defaults, pc_q35_compat_defaults_len);
+ }
  
+ static void pc_q35_9_0_machine_options(MachineClass *m)
+diff --git a/tests/qtest/virtio-iommu-test.c b/tests/qtest/virtio-iommu-test.c
+index 068e7a9e6c..afb225971d 100644
+--- a/tests/qtest/virtio-iommu-test.c
++++ b/tests/qtest/virtio-iommu-test.c
+@@ -34,7 +34,7 @@ static void pci_config(void *obj, void *data, QGuestAllocator *t_alloc)
+     uint8_t bypass = qvirtio_config_readb(dev, 36);
+ 
+     g_assert_cmpint(input_range_start, ==, 0);
+-    g_assert_cmphex(input_range_end, ==, UINT64_MAX);
++    g_assert_cmphex(input_range_end, >=, UINT32_MAX);
+     g_assert_cmpint(domain_range_start, ==, 0);
+     g_assert_cmpint(domain_range_end, ==, UINT32_MAX);
+     g_assert_cmpint(bypass, ==, 1);
 -- 
 2.41.0
 
