@@ -2,91 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D3A873286
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 10:28:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57BC8873742
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 14:04:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhnZZ-0004fy-Jp; Wed, 06 Mar 2024 04:28:25 -0500
+	id 1rhqvc-000183-QJ; Wed, 06 Mar 2024 08:03:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhnZT-0004fk-Ce
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 04:28:19 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhnZR-0006VS-MH
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 04:28:19 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-412e96284b9so13566295e9.3
- for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 01:28:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <eric.huang@linux.alibaba.com>)
+ id 1rhnef-000631-CO; Wed, 06 Mar 2024 04:33:41 -0500
+Received: from out30-124.freemail.mail.aliyun.com ([115.124.30.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.huang@linux.alibaba.com>)
+ id 1rhnea-0008HS-Qi; Wed, 06 Mar 2024 04:33:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709717295; x=1710322095; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PALZpD1wSov9R2F+mK8z5OozCmJTapsp7hCZ6MNQsgo=;
- b=c7to5+IK/uDPN5mLl/P1A+uW6c3lTc31q4i8X4XnRstJsdoymegpyIXsoMIQv9nDSv
- LBkm4q8Rej1/dlHda1H0JJl/U6kbcsCAQsjdsG2ksTJsEwauL60tPqT5qpICzccPsgJk
- VUHnDJGWaC/BN2xVbAILAQjXPUHqcWRmn0/59hrqWdie7l7HoxOm1DhBKvGL1vTj/F5x
- m6M0XFm2l2sUgyjLnXMw1BOlYNj7KFPqiqDVEQLjboPKmzzF3WKBvp2JzsZ+5t5KhT0s
- bmopaRX5WzdBeCh7Uskv3bzrggzoE5NJ+eGaqiHKX7HFo9PqNJEYtrhssFXcq+zymPWF
- UQaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709717295; x=1710322095;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=PALZpD1wSov9R2F+mK8z5OozCmJTapsp7hCZ6MNQsgo=;
- b=U87o7KyflKoD8yHIE06X0OCYytNhUW+LcPsZ5NiDAuTqlSmo+MoXOUyM5EDvaiQDPJ
- VOuH+UNPmY0S7/F+hHlB91N4S6y5s0xamm7KVJNeCSDn/D5td6NfEDn8z5bbVoTFOXS4
- /ezQHpZmpldfWdFr2Jm+N1Q4uhQMzvCTmgZC/93jHR27I/MF9YUC5fr8M8tyErnMnlmN
- F9PO1fyilNTlcUjL+IrbQLcc1ih0CV+fuL61ipH36nziq4sgn+JZrgoU2lG9FhN4IwL5
- 4zmMDYBA4VNsZDid3c9U4m5JArq7Heuw1IpUunwhIDSAqkQXS9CAbYyjZ02cgJRXqmLK
- xGsw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUO7/zneehqxKd5fGRmPrGGpOz1mwQnu0BnxoNZ40KqTK1HfDCsV7404DZq04Ud+bC1agUWbS4V+u7lmOS6R6dRPOCnK1c=
-X-Gm-Message-State: AOJu0YzvEFT/prunaZLgf2p81c2BE1xAPm/iuEc4oCGiXR8j8j+j3tOi
- pz+T5E+D+3r6Y8KVo/+tABF+BKmXQ8+arHGSbqrIAxba7Ec2PXnACpQ+gSmatDA=
-X-Google-Smtp-Source: AGHT+IGHTFqeMrUmdPw5CTzB4sjFzIdc0ZnFYmEcyrnmkqrtUQbEufYIKmFU/ySH3gxgdq3XTG9Xhg==
-X-Received: by 2002:a05:600c:1e11:b0:412:f668:a86 with SMTP id
- ay17-20020a05600c1e1100b00412f6680a86mr654594wmb.31.1709717295347; 
- Wed, 06 Mar 2024 01:28:15 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- w13-20020a05600c474d00b00412c1d51a0dsm18840983wmo.45.2024.03.06.01.28.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Mar 2024 01:28:15 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B4F755F873;
- Wed,  6 Mar 2024 09:28:14 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Paz Offer <poffer@nvidia.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>,  "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-Subject: Re: What is the correct way to add linker dependency to QEMU build
- system?
-In-Reply-To: <MW4PR12MB69978FF0504C5B108E409656A0212@MW4PR12MB6997.namprd12.prod.outlook.com>
- (Paz Offer's message of "Wed, 6 Mar 2024 06:05:10 +0000")
-References: <MW4PR12MB69979E8A2E0F9B62D6C2A703A05F2@MW4PR12MB6997.namprd12.prod.outlook.com>
- <CAFEAcA8S-uONJyR5nKh=HGQwKNUtT4VB+VYBh_dp3_3bjZfmfg@mail.gmail.com>
- <MW4PR12MB69978FF0504C5B108E409656A0212@MW4PR12MB6997.namprd12.prod.outlook.com>
-User-Agent: mu4e 1.12.1; emacs 29.1
-Date: Wed, 06 Mar 2024 09:28:14 +0000
-Message-ID: <87r0gnvhe9.fsf@draig.linaro.org>
+ d=linux.alibaba.com; s=default;
+ t=1709717607; h=From:To:Subject:Date:Message-ID:MIME-Version;
+ bh=XRTjDwnWYw3xObuy6D1KWY71Kr1BmmZ+OPqApDe0go0=;
+ b=pVYBPEcxJfgmChVABEXtc8/iUEckGvQbPoVcc/sHWAUkq9pmbWpDECYMojqIOC1HVpm5Q2XSAwirmpt1EyFJgC8VNrmXpjSlrPfveWbEh6s2SaxisWUZT3AAa5hv7UQ6WAKsAW+kt5vSxi14XI2qO1XhtvKY+rv23s6A1Z6UND4=
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R131e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046050;
+ MF=eric.huang@linux.alibaba.com; NM=1; PH=DS; RN=10; SR=0;
+ TI=SMTPD_---0W1xFe7I_1709717605; 
+Received: from localhost.localdomain(mailfrom:eric.huang@linux.alibaba.com
+ fp:SMTPD_---0W1xFe7I_1709717605) by smtp.aliyun-inc.com;
+ Wed, 06 Mar 2024 17:33:26 +0800
+From: Huang Tao <eric.huang@linux.alibaba.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, zhiwei_liu@linux.alibaba.com,
+ dbarboza@ventanamicro.com, liwei1518@gmail.com, bin.meng@windriver.com,
+ alistair.francis@wdc.com, palmer@dabbelt.com,
+ Huang Tao <eric.huang@linux.alibaba.com>,
+ Christoph Muellner <christoph.muellner@vrull.eu>
+Subject: [PATCH] target/riscv: Implement dynamic establishment of custom
+ decoder
+Date: Wed,  6 Mar 2024 17:33:08 +0800
+Message-ID: <20240306093308.35188-1-eric.huang@linux.alibaba.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=115.124.30.124;
+ envelope-from=eric.huang@linux.alibaba.com;
+ helo=out30-124.freemail.mail.aliyun.com
+X-Spam_score_int: -174
+X-Spam_score: -17.5
+X-Spam_bar: -----------------
+X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01, UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 06 Mar 2024 08:03:17 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,75 +69,201 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Paz Offer <poffer@nvidia.com> writes:
+In this patch, we modify the decoder to be a freely composable data
+structure instead of a hardcoded one. It can be dynamically builded up
+according to the extensions.
+This approach has several benefits:
+1. Provides support for heterogeneous cpu architectures. As we add decoder in
+   CPUArchState, each cpu can have their own decoder, and the decoders can be
+   different due to cpu's features.
+2. Improve the decoding efficiency. We run the guard_func to see if the decoder
+   can be added to the dynamic_decoder when building up the decoder. Therefore,
+   there is no need to run the guard_func when decoding each instruction. It can
+   improve the decoding efficiency
+3. For vendor or dynamic cpus, it allows them to customize their own decoder
+   functions to improve decoding efficiency, especially when vendor-defined
+   instruction sets increase. Because of dynamic building up, it can skip the other
+   decoder guard functions when decoding.
 
-> ...after some testing...
-> [Trying to add 'libdl' to be linked with QEMU]
->
-> I did try to use 'g_module_open/close/symbol', but what I noticed is that=
- 'g_module_close' did not really unload my library.
-> So if I would do:
->
-> 1 g_module_open(my-lib)
-> 2 Load symbols, use my library...
-> 3 g_module_close(my-lib)
-> 4 Make modifications to my library and reload it:
-> 5 g_module_open(my-lib)
->
-> Then the library was not really reloaded, and the old instance would
-> still be used.
+Signed-off-by: Huang Tao <eric.huang@linux.alibaba.com>
+Suggested-by: Christoph Muellner <christoph.muellner@vrull.eu>
+Co-authored-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+---
+ target/riscv/cpu.c         | 20 ++++++++++++++++++++
+ target/riscv/cpu.h         |  2 ++
+ target/riscv/cpu_decoder.h | 34 ++++++++++++++++++++++++++++++++++
+ target/riscv/translate.c   | 28 ++++++++++++----------------
+ 4 files changed, 68 insertions(+), 16 deletions(-)
+ create mode 100644 target/riscv/cpu_decoder.h
 
-Glib does do reference counting so it won't unload the module until all
-references have been dropped. Did you check the return value from the
-g_module_close()?
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 5ff0192c52..cadcd51b4f 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -38,6 +38,7 @@
+ #include "kvm/kvm_riscv.h"
+ #include "tcg/tcg-cpu.h"
+ #include "tcg/tcg.h"
++#include "cpu_decoder.h"
+ 
+ /* RISC-V CPU definitions */
+ static const char riscv_single_letter_exts[] = "IEMAFDQCBPVH";
+@@ -1102,6 +1103,23 @@ static void riscv_cpu_satp_mode_finalize(RISCVCPU *cpu, Error **errp)
+ }
+ #endif
+ 
++static void riscv_cpu_finalize_dynamic_decoder(RISCVCPU *cpu)
++{
++    CPURISCVState *env = &cpu->env;
++    decode_fn *dynamic_decoder;
++    dynamic_decoder = g_new0(decode_fn, decoder_table_size);
++    int j = 0;
++    for (size_t i = 0; i < decoder_table_size; ++i) {
++        if (decoder_table[i].guard_func &&
++            decoder_table[i].guard_func(&cpu->cfg)) {
++            dynamic_decoder[j] = decoder_table[i].decode_fn;
++            j++;
++        }
++    }
++
++    env->decoder = dynamic_decoder;
++}
++
+ void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
+ {
+     Error *local_err = NULL;
+@@ -1127,6 +1145,8 @@ void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
+             return;
+         }
+     }
++
++    riscv_cpu_finalize_dynamic_decoder(cpu);
+ }
+ 
+ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 5d291a7092..42bfed065c 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -30,6 +30,7 @@
+ #include "qemu/int128.h"
+ #include "cpu_bits.h"
+ #include "cpu_cfg.h"
++#include "cpu_decoder.h"
+ #include "qapi/qapi-types-common.h"
+ #include "cpu-qom.h"
+ 
+@@ -433,6 +434,7 @@ struct CPUArchState {
+     uint64_t kvm_timer_state;
+     uint64_t kvm_timer_frequency;
+ #endif /* CONFIG_KVM */
++    const decode_fn *decoder;
+ };
+ 
+ /*
+diff --git a/target/riscv/cpu_decoder.h b/target/riscv/cpu_decoder.h
+new file mode 100644
+index 0000000000..549414ce4c
+--- /dev/null
++++ b/target/riscv/cpu_decoder.h
+@@ -0,0 +1,34 @@
++/*
++ * QEMU RISC-V CPU Decoder
++ *
++ * Copyright (c) 2023-2024 Alibaba Group
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2 or later, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License along with
++ * this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++
++#ifndef RISCV_CPU_DECODER_H
++#define RISCV_CPU_DECODER_H
++
++struct DisasContext;
++struct RISCVCPUConfig;
++typedef struct RISCVDecoder {
++    bool (*guard_func)(const struct RISCVCPUConfig *);
++    bool (*decode_fn)(struct DisasContext *, uint32_t);
++} RISCVDecoder;
++
++typedef bool (*decode_fn)(struct DisasContext *, uint32_t);
++
++extern const size_t decoder_table_size;
++
++extern const RISCVDecoder decoder_table[];
++#endif
+diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+index 177418b2b9..23c5321bce 100644
+--- a/target/riscv/translate.c
++++ b/target/riscv/translate.c
+@@ -115,6 +115,7 @@ typedef struct DisasContext {
+     bool frm_valid;
+     /* TCG of the current insn_start */
+     TCGOp *insn_start;
++    const decode_fn *decoder;
+ } DisasContext;
+ 
+ static inline bool has_ext(DisasContext *ctx, uint32_t ext)
+@@ -1118,21 +1119,16 @@ static inline int insn_len(uint16_t first_word)
+     return (first_word & 3) == 3 ? 4 : 2;
+ }
+ 
++const RISCVDecoder decoder_table[] = {
++    { always_true_p, decode_insn32 },
++    { has_xthead_p, decode_xthead},
++    { has_XVentanaCondOps_p, decode_XVentanaCodeOps},
++};
++
++const size_t decoder_table_size = ARRAY_SIZE(decoder_table);
++
+ static void decode_opc(CPURISCVState *env, DisasContext *ctx, uint16_t opcode)
+ {
+-    /*
+-     * A table with predicate (i.e., guard) functions and decoder functions
+-     * that are tested in-order until a decoder matches onto the opcode.
+-     */
+-    static const struct {
+-        bool (*guard_func)(const RISCVCPUConfig *);
+-        bool (*decode_func)(DisasContext *, uint32_t);
+-    } decoders[] = {
+-        { always_true_p,  decode_insn32 },
+-        { has_xthead_p, decode_xthead },
+-        { has_XVentanaCondOps_p,  decode_XVentanaCodeOps },
+-    };
+-
+     ctx->virt_inst_excp = false;
+     ctx->cur_insn_len = insn_len(opcode);
+     /* Check for compressed insn */
+@@ -1153,9 +1149,8 @@ static void decode_opc(CPURISCVState *env, DisasContext *ctx, uint16_t opcode)
+                                              ctx->base.pc_next + 2));
+         ctx->opcode = opcode32;
+ 
+-        for (size_t i = 0; i < ARRAY_SIZE(decoders); ++i) {
+-            if (decoders[i].guard_func(ctx->cfg_ptr) &&
+-                decoders[i].decode_func(ctx, opcode32)) {
++        for (size_t i = 0; i < decoder_table_size; ++i) {
++            if (ctx->decoder[i](ctx, opcode32)) {
+                 return;
+             }
+         }
+@@ -1199,6 +1194,7 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+     ctx->itrigger = FIELD_EX32(tb_flags, TB_FLAGS, ITRIGGER);
+     ctx->zero = tcg_constant_tl(0);
+     ctx->virt_inst_excp = false;
++    ctx->decoder = env->decoder;
+ }
+ 
+ static void riscv_tr_tb_start(DisasContextBase *db, CPUState *cpu)
+-- 
+2.41.0
 
-
-> This did not happen when I used dlopen/dlclose.
-> Do we have a way to force 'g_module_close' to unload the library?
-
-On POSIX the underlying mechanism is dlclose() anyway. You can also
-check g_module_error() to see if there was an error unloading.
-
->
-> Thanks, Paz
->
-> -------------------------------------------------------------------------=
-------------------------------------------------
-> From: Peter Maydell <peter.maydell@linaro.org>
-> Sent: Thursday, February 29, 2024 7:34 PM
-> To: Paz Offer <poffer@nvidia.com>
-> Cc: qemu-devel@nongnu.org <qemu-devel@nongnu.org>
-> Subject: Re: What is the correct way to add linker dependency to QEMU bui=
-ld system?=20
->=20=20
-> External email: Use caution opening links or attachments
->
-> On Thu, 29 Feb 2024 at 16:10, Paz Offer <poffer@nvidia.com> wrote:
->> I want to add library 'libdl' to be linked with QEMU build for a particu=
-lar target (e.g. - qemu-system-arm).
->> Using meson I would typically do 'compiler.find_library(...)', and later=
- add the returned dependency to the binary
-> dependencies list.
->> However, in QEMU I understand that these configurations are done in the =
-'./configure' file?
->>
->> What would be the correct way to do this?
->
-> If you can do the job using the glib g_module_open()/
-> g_module_symbol() functions (which is how QEMU itself does
-> loading of plugin and module DLLs, and which on Unix hosts
-> are pretty much wrappers around dlopen/dlsym) then you
-> don't need to link against libdl at all.
->
-> If this is for something you're planning to upstream
-> then it might be worth talking at a higher level about
-> what you're aiming to do. (If it's for something downstream
-> that you don't plan to ever upstream then you can do
-> whatever's easiest for you, of course.)
->
-> -- PMM
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
