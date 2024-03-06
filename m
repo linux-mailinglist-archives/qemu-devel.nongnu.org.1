@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54197873989
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 15:44:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B56F28739A9
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 15:46:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhsSH-00087E-6J; Wed, 06 Mar 2024 09:41:13 -0500
+	id 1rhsSI-0008F9-EP; Wed, 06 Mar 2024 09:41:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhsSA-0007nz-Gn
+ id 1rhsSA-0007ny-Fv
  for qemu-devel@nongnu.org; Wed, 06 Mar 2024 09:41:06 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rhsRz-0001UM-KG
+ id 1rhsS2-0001Uz-Om
  for qemu-devel@nongnu.org; Wed, 06 Mar 2024 09:41:06 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-412e80e13abso22407205e9.3
- for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 06:40:55 -0800 (PST)
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-33e151a1434so2420205f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 06:40:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709736053; x=1710340853; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709736056; x=1710340856; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ki0eBwvVPbG3uY1pFngWxP/DBMoTpIxCU09HcH4vuZs=;
- b=ETOdF7dj7X0xKk+J4uk3g5J/goOVz2yj02glMb84J3rRiu9HzlRYbJvPiFQHbTx/n6
- i0n+qZFmRRya/jblUBw/Nru0koTpDJOg7gMH4D8ttpAmHi87bJN4rl6yAzM5ixQQlWcT
- gh/pvMcK3Iuc13cYIdWflbqNYRHx2LbFAdgdtJppUsGH1dSA6fQC6mP76099mcSD8+IZ
- TpJIfCvDmh0BxBAW2qb+lus2beoVa/prcM7Mj5ljyL2NP2daoDJVivJyMs+1wl5Pyv30
- n9hV3ykxdqYeLw7aghGPkl80xLTyERmIDYYwBVjmgywAIH8HirDhST2y+rE8H7h03tDY
- NNew==
+ bh=7HiJVoF4HTxTyfZqmxfdNDwSSt/1/19ukV8tNZkwTQ4=;
+ b=W5Jlz7bgA1ug3WWitQJ9VZ+SfAhG8TaKjq4lu5H888Bv3U2NJKuRRmRwZJA5wJpzkR
+ HvxyBB29CKEl+/o4/0rIEQ6Sc6vmrvAQAYXguuAP9mDPpVxsmIClMDjvkiJVOQOw8L8i
+ 11xhewUhTM7eUFZ3UrZSDgTa2T2WpwDe76GSA2f/RaUvdOX0tia69AV6XFhTzb4T505Z
+ ijVMeglW8xN4fb14PSmOGVGno7x37PSeJOc3O1SWBgE5d4I+xNkuRWuaRVHhCc5XTKMh
+ cS2WO+8uhZ3DGy+e7HEONBbWF8IsqzMFgIDVgsLnbhva8UfQGDNpWwr5zQscyyJXqzvo
+ 0mRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709736053; x=1710340853;
+ d=1e100.net; s=20230601; t=1709736056; x=1710340856;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ki0eBwvVPbG3uY1pFngWxP/DBMoTpIxCU09HcH4vuZs=;
- b=vy1tOogYGuXumRDtNArIDQbXfcwjWtLIkmJ4SK2IfzrGA5IPqrWwBIXPIxdwCPSp0n
- /fObdh8knJ0RYXEw11lfqGeRKr2/0YlfCw47gyE1moIwRx2tqagxWRIi1p0jTIeZwQlq
- Ru/4yzHLX7Jf5v9uaMJJMURIyJHv2KVRgQDJbJvQ844tuyy4JiAEbXVPK3SzkNU3KETF
- +DvivfmVvg0kBbenOY9RIaQBbMTTMHQrxxqrqC9k+3u6W+9XMEaEajQxwNOULot/gtBX
- 2dteBAlpF/COMH6P/GGLb0wPP4tu4N64BMhfTsfHDhAIaeku9Q8IlOZIvu1rWkWvBDde
- Ug/w==
-X-Gm-Message-State: AOJu0YzbaYauTjDa9SV+U9MdjGB0DUkvtDEFeWARg7uc30s9X7FlDywZ
- VveqIpGrmVDnK0ccmjBBBLTPnjaZ/V9nG1Uep1mlPCF2xUTf/BeKoy/PmsiboaY=
-X-Google-Smtp-Source: AGHT+IFMFiJzlGaul+b4YHRZqHk42rnrgAqQECslqJipcpMMvuk8aDmb/67oOp/Uv/+xbb3T3Lf2rQ==
-X-Received: by 2002:a05:600c:1911:b0:412:ca53:5ff6 with SMTP id
- j17-20020a05600c191100b00412ca535ff6mr11424131wmq.10.1709736052944; 
- Wed, 06 Mar 2024 06:40:52 -0800 (PST)
+ bh=7HiJVoF4HTxTyfZqmxfdNDwSSt/1/19ukV8tNZkwTQ4=;
+ b=t4dtUWuW1VMqH6cC00mUdggi8BeY0KZW/cSely9mWg9xT4kk5a/j5t8LugDu0fWpxq
+ MOghM3bDKN6+T+ZJtPFvsOeOvn20TxEkpwhc3vLZoPHUfo6MkKyTw5mDFmsTOHbciUY5
+ A4Bg84H0JwEaY/m+YuB91IZmTkWqBht1aUymjGrXwYzoaRE5GFXptEcDWrJcKiBijelL
+ TKa0yr33+JQ+umbBe7q82HpeGVqYNr9IMF4t5iULBC+cmDGkfwDJyOvU8iayjGm+WwRj
+ 0xOMkEaFr1E24WeMHWIqKgF3ELSOcf2/N+Y0MKfIQyZ9XTfer+ThRJ4njV5DaGkbGBoA
+ gsnw==
+X-Gm-Message-State: AOJu0YwDXcS8nQNa/3HYlK/I4MkTB4WD1YR2s7AGEitMsN41tZPafz2m
+ 7yzRLeLRLmFZve5ZTPWHU3+R8gYlk/nSSIGqXTphmoWp49UgR243tX1jfHOp1aQ=
+X-Google-Smtp-Source: AGHT+IFN8t2VjrZaVQbbuC8QDjI8PuGZqOBDb6MkifpIbTkUR5kuiE/rtKD3pAr3dWymg64oFmUu5Q==
+X-Received: by 2002:adf:e84b:0:b0:33e:d0c:1ed0 with SMTP id
+ d11-20020adfe84b000000b0033e0d0c1ed0mr10247148wrn.57.1709736056253; 
+ Wed, 06 Mar 2024 06:40:56 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- bd12-20020a05600c1f0c00b00412fb99be59sm1043634wmb.0.2024.03.06.06.40.45
+ i10-20020adff30a000000b0033b6e26f0f9sm17781896wro.42.2024.03.06.06.40.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Mar 2024 06:40:45 -0800 (PST)
+ Wed, 06 Mar 2024 06:40:52 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E550B5F94F;
- Wed,  6 Mar 2024 14:40:42 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 05FFA5F9DA;
+ Wed,  6 Mar 2024 14:40:43 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -65,24 +65,24 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PULL 14/29] plugins: scoreboard API
-Date: Wed,  6 Mar 2024 14:40:26 +0000
-Message-Id: <20240306144041.3787188-15-alex.bennee@linaro.org>
+Subject: [PULL 15/29] plugins: define qemu_plugin_u64
+Date: Wed,  6 Mar 2024 14:40:27 +0000
+Message-Id: <20240306144041.3787188-16-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240306144041.3787188-1-alex.bennee@linaro.org>
 References: <20240306144041.3787188-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,249 +100,156 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-We introduce a cpu local storage, automatically managed (and extended)
-by QEMU itself. Plugin allocate a scoreboard, and don't have to deal
-with how many cpus are launched.
+Additionally to the scoreboard, we define a qemu_plugin_u64, which is a
+simple struct holding a pointer to a scoreboard, and a given offset.
+This allows to have a scoreboard containing structs, without having to
+bring offset to operate on a specific field.
 
-This API will be used by new inline functions but callbacks can benefit
-from this as well. This way, they can operate without a global lock for
-simple operations.
+Since most of the plugins are simply collecting a sum of per-cpu values,
+qemu_plugin_u64 directly support this operation as well.
 
-At any point during execution, any scoreboard will be dimensioned with
-at least qemu_plugin_num_vcpus entries.
+All inline operations defined later will use a qemu_plugin_u64 as input.
 
 New functions:
-- qemu_plugin_scoreboard_find
-- qemu_plugin_scoreboard_free
-- qemu_plugin_scoreboard_new
+- qemu_plugin_u64_add
+- qemu_plugin_u64_get
+- qemu_plugin_u64_set
+- qemu_plugin_u64_sum
+New macros:
+- qemu_plugin_scoreboard_u64
+- qemu_plugin_scoreboard_u64_in_struct
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20240304130036.124418-2-pierrick.bouvier@linaro.org>
+Message-Id: <20240304130036.124418-3-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240305121005.3528075-15-alex.bennee@linaro.org>
+Message-Id: <20240305121005.3528075-16-alex.bennee@linaro.org>
 
-diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
-index b3c94a34aa4..bf96d2c2aa3 100644
---- a/include/qemu/plugin.h
-+++ b/include/qemu/plugin.h
-@@ -112,6 +112,12 @@ struct qemu_plugin_insn {
-     bool mem_only;
- };
- 
-+/* A scoreboard is an array of values, indexed by vcpu_index */
-+struct qemu_plugin_scoreboard {
-+    GArray *data;
-+    QLIST_ENTRY(qemu_plugin_scoreboard) entry;
-+};
-+
- /*
-  * qemu_plugin_insn allocate and cleanup functions. We don't expect to
-  * cleanup many of these structures. They are reused for each fresh
 diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-index 45e2ebc8f8f..31c468ddb2c 100644
+index 31c468ddb2c..ebf9a645e15 100644
 --- a/include/qemu/qemu-plugin.h
 +++ b/include/qemu/qemu-plugin.h
-@@ -222,6 +222,8 @@ void qemu_plugin_register_vcpu_resume_cb(qemu_plugin_id_t id,
- struct qemu_plugin_tb;
- /** struct qemu_plugin_insn - Opaque handle for a translated instruction */
- struct qemu_plugin_insn;
-+/** struct qemu_plugin_scoreboard - Opaque handle for a scoreboard */
-+struct qemu_plugin_scoreboard;
+@@ -225,6 +225,17 @@ struct qemu_plugin_insn;
+ /** struct qemu_plugin_scoreboard - Opaque handle for a scoreboard */
+ struct qemu_plugin_scoreboard;
  
++/**
++ * typedef qemu_plugin_u64 - uint64_t member of an entry in a scoreboard
++ *
++ * This field allows to access a specific uint64_t member in one given entry,
++ * located at a specified offset. Inline operations expect this as entry.
++ */
++typedef struct {
++    struct qemu_plugin_scoreboard *score;
++    size_t offset;
++} qemu_plugin_u64;
++
  /**
   * enum qemu_plugin_cb_flags - type of callback
-@@ -752,5 +754,34 @@ QEMU_PLUGIN_API
- int qemu_plugin_read_register(struct qemu_plugin_register *handle,
-                               GByteArray *buf);
+  *
+@@ -784,4 +795,45 @@ QEMU_PLUGIN_API
+ void *qemu_plugin_scoreboard_find(struct qemu_plugin_scoreboard *score,
+                                   unsigned int vcpu_index);
  
-+/**
-+ * qemu_plugin_scoreboard_new() - alloc a new scoreboard
-+ *
-+ * @element_size: size (in bytes) for one entry
-+ *
-+ * Returns a pointer to a new scoreboard. It must be freed using
-+ * qemu_plugin_scoreboard_free.
-+ */
-+QEMU_PLUGIN_API
-+struct qemu_plugin_scoreboard *qemu_plugin_scoreboard_new(size_t element_size);
++/* Macros to define a qemu_plugin_u64 */
++#define qemu_plugin_scoreboard_u64(score) \
++    (qemu_plugin_u64) {score, 0}
++#define qemu_plugin_scoreboard_u64_in_struct(score, type, member) \
++    (qemu_plugin_u64) {score, offsetof(type, member)}
 +
 +/**
-+ * qemu_plugin_scoreboard_free() - free a scoreboard
-+ * @score: scoreboard to free
-+ */
-+QEMU_PLUGIN_API
-+void qemu_plugin_scoreboard_free(struct qemu_plugin_scoreboard *score);
-+
-+/**
-+ * qemu_plugin_scoreboard_find() - get pointer to an entry of a scoreboard
-+ * @score: scoreboard to query
++ * qemu_plugin_u64_add() - add a value to a qemu_plugin_u64 for a given vcpu
++ * @entry: entry to query
 + * @vcpu_index: entry index
-+ *
-+ * Returns address of entry of a scoreboard matching a given vcpu_index. This
-+ * address can be modified later if scoreboard is resized.
++ * @added: value to add
 + */
 +QEMU_PLUGIN_API
-+void *qemu_plugin_scoreboard_find(struct qemu_plugin_scoreboard *score,
-+                                  unsigned int vcpu_index);
- 
++void qemu_plugin_u64_add(qemu_plugin_u64 entry, unsigned int vcpu_index,
++                         uint64_t added);
++
++/**
++ * qemu_plugin_u64_get() - get value of a qemu_plugin_u64 for a given vcpu
++ * @entry: entry to query
++ * @vcpu_index: entry index
++ */
++QEMU_PLUGIN_API
++uint64_t qemu_plugin_u64_get(qemu_plugin_u64 entry, unsigned int vcpu_index);
++
++/**
++ * qemu_plugin_u64_set() - set value of a qemu_plugin_u64 for a given vcpu
++ * @entry: entry to query
++ * @vcpu_index: entry index
++ * @val: new value
++ */
++QEMU_PLUGIN_API
++void qemu_plugin_u64_set(qemu_plugin_u64 entry, unsigned int vcpu_index,
++                         uint64_t val);
++
++/**
++ * qemu_plugin_u64_sum() - return sum of all vcpu entries in a scoreboard
++ * @entry: entry to sum
++ */
++QEMU_PLUGIN_API
++uint64_t qemu_plugin_u64_sum(qemu_plugin_u64 entry);
++
  #endif /* QEMU_QEMU_PLUGIN_H */
-diff --git a/plugins/plugin.h b/plugins/plugin.h
-index 00b3509f708..043c740067d 100644
---- a/plugins/plugin.h
-+++ b/plugins/plugin.h
-@@ -31,6 +31,8 @@ struct qemu_plugin_state {
-      * but with the HT we avoid adding a field to CPUState.
-      */
-     GHashTable *cpu_ht;
-+    QLIST_HEAD(, qemu_plugin_scoreboard) scoreboards;
-+    size_t scoreboard_alloc_size;
-     DECLARE_BITMAP(mask, QEMU_PLUGIN_EV_MAX);
-     /*
-      * @lock protects the struct as well as ctx->uninstalling.
-@@ -101,4 +103,8 @@ void exec_inline_op(struct qemu_plugin_dyn_cb *cb);
- 
- int plugin_num_vcpus(void);
- 
-+struct qemu_plugin_scoreboard *plugin_scoreboard_new(size_t element_size);
-+
-+void plugin_scoreboard_free(struct qemu_plugin_scoreboard *score);
-+
- #endif /* PLUGIN_H */
 diff --git a/plugins/api.c b/plugins/api.c
-index e905e995bd6..76b2e652b9c 100644
+index 76b2e652b9c..8910cbb2c46 100644
 --- a/plugins/api.c
 +++ b/plugins/api.c
-@@ -465,3 +465,22 @@ int qemu_plugin_read_register(struct qemu_plugin_register *reg, GByteArray *buf)
- 
-     return gdb_read_register(current_cpu, buf, GPOINTER_TO_INT(reg));
+@@ -484,3 +484,37 @@ void *qemu_plugin_scoreboard_find(struct qemu_plugin_scoreboard *score,
+     char *base_ptr = score->data->data;
+     return base_ptr + vcpu_index * g_array_get_element_size(score->data);
  }
 +
-+struct qemu_plugin_scoreboard *qemu_plugin_scoreboard_new(size_t element_size)
++static uint64_t *plugin_u64_address(qemu_plugin_u64 entry,
++                                    unsigned int vcpu_index)
 +{
-+    return plugin_scoreboard_new(element_size);
++    char *ptr = qemu_plugin_scoreboard_find(entry.score, vcpu_index);
++    return (uint64_t *)(ptr + entry.offset);
 +}
 +
-+void qemu_plugin_scoreboard_free(struct qemu_plugin_scoreboard *score)
++void qemu_plugin_u64_add(qemu_plugin_u64 entry, unsigned int vcpu_index,
++                         uint64_t added)
 +{
-+    plugin_scoreboard_free(score);
++    *plugin_u64_address(entry, vcpu_index) += added;
 +}
 +
-+void *qemu_plugin_scoreboard_find(struct qemu_plugin_scoreboard *score,
-+                                  unsigned int vcpu_index)
++uint64_t qemu_plugin_u64_get(qemu_plugin_u64 entry,
++                             unsigned int vcpu_index)
 +{
-+    g_assert(vcpu_index < qemu_plugin_num_vcpus());
-+    /* we can't use g_array_index since entry size is not statically known */
-+    char *base_ptr = score->data->data;
-+    return base_ptr + vcpu_index * g_array_get_element_size(score->data);
++    return *plugin_u64_address(entry, vcpu_index);
 +}
-diff --git a/plugins/core.c b/plugins/core.c
-index 2db4d31354b..63f4c6c6ce3 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -18,6 +18,7 @@
- #include "qemu/lockable.h"
- #include "qemu/option.h"
- #include "qemu/plugin.h"
-+#include "qemu/queue.h"
- #include "qemu/rcu_queue.h"
- #include "qemu/xxhash.h"
- #include "qemu/rcu.h"
-@@ -215,6 +216,35 @@ CPUPluginState *qemu_plugin_create_vcpu_state(void)
-     return g_new0(CPUPluginState, 1);
- }
- 
-+static void plugin_grow_scoreboards__locked(CPUState *cpu)
++
++void qemu_plugin_u64_set(qemu_plugin_u64 entry, unsigned int vcpu_index,
++                         uint64_t val)
 +{
-+    if (cpu->cpu_index < plugin.scoreboard_alloc_size) {
-+        return;
++    *plugin_u64_address(entry, vcpu_index) = val;
++}
++
++uint64_t qemu_plugin_u64_sum(qemu_plugin_u64 entry)
++{
++    uint64_t total = 0;
++    for (int i = 0, n = qemu_plugin_num_vcpus(); i < n; ++i) {
++        total += qemu_plugin_u64_get(entry, i);
 +    }
-+
-+    bool need_realloc = FALSE;
-+    while (cpu->cpu_index >= plugin.scoreboard_alloc_size) {
-+        plugin.scoreboard_alloc_size *= 2;
-+        need_realloc = TRUE;
-+    }
-+
-+
-+    if (!need_realloc || QLIST_EMPTY(&plugin.scoreboards)) {
-+        /* nothing to do, we just updated sizes for future scoreboards */
-+        return;
-+    }
-+
-+    /* cpus must be stopped, as tb might still use an existing scoreboard. */
-+    start_exclusive();
-+    struct qemu_plugin_scoreboard *score;
-+    QLIST_FOREACH(score, &plugin.scoreboards, entry) {
-+        g_array_set_size(score->data, plugin.scoreboard_alloc_size);
-+    }
-+    /* force all tb to be flushed, as scoreboard pointers were changed. */
-+    tb_flush(cpu);
-+    end_exclusive();
-+}
-+
- void qemu_plugin_vcpu_init_hook(CPUState *cpu)
- {
-     bool success;
-@@ -225,6 +255,7 @@ void qemu_plugin_vcpu_init_hook(CPUState *cpu)
-     success = g_hash_table_insert(plugin.cpu_ht, &cpu->cpu_index,
-                                   &cpu->cpu_index);
-     g_assert(success);
-+    plugin_grow_scoreboards__locked(cpu);
-     qemu_rec_mutex_unlock(&plugin.lock);
- 
-     plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_INIT);
-@@ -578,6 +609,8 @@ static void __attribute__((__constructor__)) plugin_init(void)
-     qemu_rec_mutex_init(&plugin.lock);
-     plugin.id_ht = g_hash_table_new(g_int64_hash, g_int64_equal);
-     plugin.cpu_ht = g_hash_table_new(g_int_hash, g_int_equal);
-+    QLIST_INIT(&plugin.scoreboards);
-+    plugin.scoreboard_alloc_size = 16; /* avoid frequent reallocation */
-     QTAILQ_INIT(&plugin.ctxs);
-     qht_init(&plugin.dyn_cb_arr_ht, plugin_dyn_cb_arr_cmp, 16,
-              QHT_MODE_AUTO_RESIZE);
-@@ -588,3 +621,27 @@ int plugin_num_vcpus(void)
- {
-     return plugin.num_vcpus;
- }
-+
-+struct qemu_plugin_scoreboard *plugin_scoreboard_new(size_t element_size)
-+{
-+    struct qemu_plugin_scoreboard *score =
-+        g_malloc0(sizeof(struct qemu_plugin_scoreboard));
-+    score->data = g_array_new(FALSE, TRUE, element_size);
-+    g_array_set_size(score->data, plugin.scoreboard_alloc_size);
-+
-+    qemu_rec_mutex_lock(&plugin.lock);
-+    QLIST_INSERT_HEAD(&plugin.scoreboards, score, entry);
-+    qemu_rec_mutex_unlock(&plugin.lock);
-+
-+    return score;
-+}
-+
-+void plugin_scoreboard_free(struct qemu_plugin_scoreboard *score)
-+{
-+    qemu_rec_mutex_lock(&plugin.lock);
-+    QLIST_REMOVE(score, entry);
-+    qemu_rec_mutex_unlock(&plugin.lock);
-+
-+    g_array_free(score->data, TRUE);
-+    g_free(score);
++    return total;
 +}
 diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
-index 27fe97239be..3f93e7d6b13 100644
+index 3f93e7d6b13..6204453d0fd 100644
 --- a/plugins/qemu-plugins.symbols
 +++ b/plugins/qemu-plugins.symbols
-@@ -37,6 +37,9 @@
-   qemu_plugin_register_vcpu_tb_exec_inline;
-   qemu_plugin_register_vcpu_tb_trans_cb;
-   qemu_plugin_reset;
-+  qemu_plugin_scoreboard_free;
-+  qemu_plugin_scoreboard_find;
-+  qemu_plugin_scoreboard_new;
-   qemu_plugin_start_code;
+@@ -44,6 +44,10 @@
    qemu_plugin_tb_get_insn;
    qemu_plugin_tb_n_insns;
+   qemu_plugin_tb_vaddr;
++  qemu_plugin_u64_add;
++  qemu_plugin_u64_get;
++  qemu_plugin_u64_set;
++  qemu_plugin_u64_sum;
+   qemu_plugin_uninstall;
+   qemu_plugin_vcpu_for_each;
+ };
 -- 
 2.39.2
 
