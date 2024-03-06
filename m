@@ -2,34 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0FAB8737CF
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 14:36:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B594B8737FA
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 14:42:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhrQq-0008Jb-Nw; Wed, 06 Mar 2024 08:35:40 -0500
+	id 1rhrQm-0008IT-KB; Wed, 06 Mar 2024 08:35:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=yBjJ=KM=redhat.com=clg@ozlabs.org>)
- id 1rhrQm-0008Ir-5X
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 08:35:36 -0500
+ id 1rhrQh-0008Hy-I8
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 08:35:32 -0500
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=yBjJ=KM=redhat.com=clg@ozlabs.org>)
- id 1rhrQb-0005Et-9e
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 08:35:34 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TqYMt45yWz4wyg;
- Thu,  7 Mar 2024 00:35:22 +1100 (AEDT)
+ id 1rhrQe-0005WW-U8
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 08:35:31 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TqYMy2VRjz4wyh;
+ Thu,  7 Mar 2024 00:35:26 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4TqYMq2kXZz4wcF;
- Thu,  7 Mar 2024 00:35:19 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TqYMv172vz4wcF;
+ Thu,  7 Mar 2024 00:35:22 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -39,9 +38,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Markus Armbruster <armbru@redhat.com>,
  Prasad Pandit <pjp@fedoraproject.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v4 08/25] migration: Always report an error in ram_save_setup()
-Date: Wed,  6 Mar 2024 14:34:23 +0100
-Message-ID: <20240306133441.2351700-9-clg@redhat.com>
+Subject: [PATCH v4 09/25] migration: Add Error** argument to vmstate_save()
+Date: Wed,  6 Mar 2024 14:34:24 +0100
+Message-ID: <20240306133441.2351700-10-clg@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240306133441.2351700-1-clg@redhat.com>
 References: <20240306133441.2351700-1-clg@redhat.com>
@@ -72,74 +71,106 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This will prepare ground for future changes adding an Error** argument
-to the save_setup() handler. We need to make sure that on failure,
-ram_save_setup() sets a new error.
+to qemu_savevm_state_setup().
 
+Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
+ migration/savevm.c | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
- Changes in v4:
-
- - Fixed test on error returned by qemu_fflush() 
- 
- migration/ram.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/migration/ram.c b/migration/ram.c
-index 003c28e1336a5fbe7a3877512b8fc3cf62f1bab3..3ac7f52a5f8e2c0d78a8cf150b3fa6611e12ffcc 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -3057,12 +3057,14 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
-     int ret, max_hg_page_size;
- 
-     if (compress_threads_save_setup()) {
-+        error_report("%s: failed to start compress threads", __func__);
-         return -1;
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 63066f49f3ad5504be6d44ffdf9f7b759c0a25ef..ee31ffb5e88cea723039c754c30ce2c8a0ef35f3 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -1009,11 +1009,10 @@ static void save_section_footer(QEMUFile *f, SaveStateEntry *se)
      }
- 
-     /* migration has already setup the bitmap, reuse it. */
-     if (!migration_in_colo_state()) {
-         if (ram_init_all(rsp) != 0) {
-+            error_report("%s: failed to setup RAM for migration", __func__);
-             compress_threads_save_cleanup();
-             return -1;
-         }
-@@ -3099,12 +3101,14 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
- 
-     ret = rdma_registration_start(f, RAM_CONTROL_SETUP);
-     if (ret < 0) {
-+        error_report("%s: failed to start RDMA registration", __func__);
-         qemu_file_set_error(f, ret);
-         return ret;
-     }
- 
-     ret = rdma_registration_stop(f, RAM_CONTROL_SETUP);
-     if (ret < 0) {
-+        error_report("%s: failed to stop RDMA registration", __func__);
-         qemu_file_set_error(f, ret);
-         return ret;
-     }
-@@ -3116,6 +3120,7 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
-     ret = multifd_send_sync_main();
-     bql_lock();
-     if (ret < 0) {
-+        error_report("%s: multifd synchronization failed", __func__);
-         return ret;
-     }
- 
-@@ -3125,7 +3130,11 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
-     }
- 
-     qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
--    return qemu_fflush(f);
-+    ret = qemu_fflush(f);
-+    if (ret < 0) {
-+        error_report("%s failed : %s", __func__, strerror(-ret));
-+    }
-+    return ret;
  }
  
- static void ram_save_file_bmap(QEMUFile *f)
+-static int vmstate_save(QEMUFile *f, SaveStateEntry *se, JSONWriter *vmdesc)
++static int vmstate_save(QEMUFile *f, SaveStateEntry *se, JSONWriter *vmdesc,
++                        Error **errp)
+ {
+     int ret;
+-    Error *local_err = NULL;
+-    MigrationState *s = migrate_get_current();
+ 
+     if ((!se->ops || !se->ops->save_state) && !se->vmsd) {
+         return 0;
+@@ -1035,10 +1034,9 @@ static int vmstate_save(QEMUFile *f, SaveStateEntry *se, JSONWriter *vmdesc)
+     if (!se->vmsd) {
+         vmstate_save_old_style(f, se, vmdesc);
+     } else {
+-        ret = vmstate_save_state_with_err(f, se->vmsd, se->opaque, vmdesc, &local_err);
++        ret = vmstate_save_state_with_err(f, se->vmsd, se->opaque, vmdesc,
++                                          errp);
+         if (ret) {
+-            migrate_set_error(s, local_err);
+-            error_report_err(local_err);
+             return ret;
+         }
+     }
+@@ -1325,8 +1323,10 @@ void qemu_savevm_state_setup(QEMUFile *f)
+     trace_savevm_state_setup();
+     QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
+         if (se->vmsd && se->vmsd->early_setup) {
+-            ret = vmstate_save(f, se, ms->vmdesc);
++            ret = vmstate_save(f, se, ms->vmdesc, &local_err);
+             if (ret) {
++                migrate_set_error(ms, local_err);
++                error_report_err(local_err);
+                 qemu_file_set_error(f, ret);
+                 break;
+             }
+@@ -1545,6 +1545,7 @@ int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
+     JSONWriter *vmdesc = ms->vmdesc;
+     int vmdesc_len;
+     SaveStateEntry *se;
++    Error *local_err = NULL;
+     int ret;
+ 
+     QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
+@@ -1555,8 +1556,10 @@ int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
+ 
+         start_ts_each = qemu_clock_get_us(QEMU_CLOCK_REALTIME);
+ 
+-        ret = vmstate_save(f, se, vmdesc);
++        ret = vmstate_save(f, se, vmdesc, &local_err);
+         if (ret) {
++            migrate_set_error(ms, local_err);
++            error_report_err(local_err);
+             qemu_file_set_error(f, ret);
+             return ret;
+         }
+@@ -1571,7 +1574,6 @@ int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
+          * bdrv_activate_all() on the other end won't fail. */
+         ret = bdrv_inactivate_all();
+         if (ret) {
+-            Error *local_err = NULL;
+             error_setg(&local_err, "%s: bdrv_inactivate_all() failed (%d)",
+                        __func__, ret);
+             migrate_set_error(ms, local_err);
+@@ -1767,6 +1769,8 @@ void qemu_savevm_live_state(QEMUFile *f)
+ 
+ int qemu_save_device_state(QEMUFile *f)
+ {
++    MigrationState *ms = migrate_get_current();
++    Error *local_err = NULL;
+     SaveStateEntry *se;
+ 
+     if (!migration_in_colo_state()) {
+@@ -1781,8 +1785,10 @@ int qemu_save_device_state(QEMUFile *f)
+         if (se->is_ram) {
+             continue;
+         }
+-        ret = vmstate_save(f, se, NULL);
++        ret = vmstate_save(f, se, NULL, &local_err);
+         if (ret) {
++            migrate_set_error(ms, local_err);
++            error_report_err(local_err);
+             return ret;
+         }
+     }
 -- 
 2.44.0
 
