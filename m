@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E76C5872DD5
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 05:03:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 437A4872DCF
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 05:02:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhiQc-000139-Jz; Tue, 05 Mar 2024 22:58:50 -0500
+	id 1rhiQb-00011v-Qj; Tue, 05 Mar 2024 22:58:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rhiQZ-000107-0T; Tue, 05 Mar 2024 22:58:47 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190])
+ id 1rhiQZ-00010d-BN; Tue, 05 Mar 2024 22:58:47 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rhiQW-0006o2-7Q; Tue, 05 Mar 2024 22:58:46 -0500
-Received: from mail.maildlp.com (unknown [172.19.163.44])
- by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TqJXc2Ngbz1xq7N;
- Wed,  6 Mar 2024 11:57:04 +0800 (CST)
+ id 1rhiQX-0006oH-88; Tue, 05 Mar 2024 22:58:47 -0500
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+ by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4TqJYk4CHvz1vw3d;
+ Wed,  6 Mar 2024 11:58:02 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id B34A91400E8;
- Wed,  6 Mar 2024 11:58:41 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id A68681A0172;
+ Wed,  6 Mar 2024 11:58:42 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 6 Mar
- 2024 11:58:41 +0800
+ 2024 11:58:42 +0800
 To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [RFC PATCH v7 17/23] hw/intc/arm_gicv3: Add NMI handling CPU
- interface registers
-Date: Wed, 6 Mar 2024 03:57:15 +0000
-Message-ID: <20240306035721.2333531-18-ruanjinjie@huawei.com>
+Subject: [RFC PATCH v7 18/23] hw/intc/arm_gicv3: Handle icv_nmiar1_read() for
+ icc_nmiar1_read()
+Date: Wed, 6 Mar 2024 03:57:16 +0000
+Message-ID: <20240306035721.2333531-19-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240306035721.2333531-1-ruanjinjie@huawei.com>
 References: <20240306035721.2333531-1-ruanjinjie@huawei.com>
@@ -43,8 +43,8 @@ Content-Type: text/plain
 X-Originating-IP: [10.67.174.55]
 X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
  kwepemi500008.china.huawei.com (7.221.188.139)
-Received-SPF: pass client-ip=45.249.212.190;
- envelope-from=ruanjinjie@huawei.com; helo=szxga04-in.huawei.com
+Received-SPF: pass client-ip=45.249.212.32; envelope-from=ruanjinjie@huawei.com;
+ helo=szxga06-in.huawei.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
@@ -68,176 +68,158 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the NMIAR CPU interface registers which deal with acknowledging NMI.
+Implement icv_nmiar1_read() for icc_nmiar1_read(), so add definition for
+ICH_LR_EL2.NMI and ICH_AP1R_EL2.NMI bit.
 
-When introduce NMI interrupt, there are some updates to the semantics for the
-register ICC_IAR1_EL1 and ICC_HPPIR1_EL1. For ICC_IAR1_EL1 register, it
-should return 1022 if the intid has super priority. And for ICC_NMIAR1_EL1
-register, it should return 1023 if the intid do not have super priority.
-Howerever, these are not necessary for ICC_HPPIR1_EL1 register.
+If FEAT_GICv3_NMI is supported, ich_ap_write() should consider ICH_AP1R_EL2.NMI
+bit. In icv_activate_irq() and icv_eoir_write(), the ICH_AP1R_EL2.NMI bit
+should be set or clear according to the Superpriority info.
+
+By the way, add gicv3_icv_nmiar1_read trace event.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
 v7:
 - Add Reviewed-by.
-v4:
-- Define ICC_NMIAR1_EL1 only if FEAT_GICv3_NMI is implemented.
-- Check sctrl_elx.SCTLR_NMI to return 1022 for icc_iar1_read().
-- Add gicv3_icc_nmiar1_read() trace event.
-- Do not check icc_hppi_can_preempt() for icc_nmiar1_read().
-- Add icv_nmiar1_read() and call it when EL2Enabled() and HCR_EL2.IMO == '1'
-
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+v6:
+- Implement icv_nmiar1_read().
 ---
- hw/intc/arm_gicv3_cpuif.c | 59 +++++++++++++++++++++++++++++++++++++--
- hw/intc/gicv3_internal.h  |  1 +
+ hw/intc/arm_gicv3_cpuif.c | 50 ++++++++++++++++++++++++++++++++++-----
+ hw/intc/gicv3_internal.h  |  3 +++
  hw/intc/trace-events      |  1 +
- 3 files changed, 58 insertions(+), 3 deletions(-)
+ 3 files changed, 48 insertions(+), 6 deletions(-)
 
 diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
-index e1a60d8c15..df82a413c6 100644
+index df82a413c6..9a7d089dea 100644
 --- a/hw/intc/arm_gicv3_cpuif.c
 +++ b/hw/intc/arm_gicv3_cpuif.c
-@@ -795,6 +795,13 @@ static uint64_t icv_iar_read(CPUARMState *env, const ARMCPRegInfo *ri)
-     return intid;
- }
- 
-+static uint64_t icv_nmiar1_read(CPUARMState *env, const ARMCPRegInfo *ri)
-+{
-+    /* todo */
-+    uint64_t intid = INTID_SPURIOUS;
-+    return intid;
-+}
-+
- static uint32_t icc_fullprio_mask(GICv3CPUState *cs)
- {
-     /*
-@@ -1097,7 +1104,8 @@ static uint64_t icc_hppir0_value(GICv3CPUState *cs, CPUARMState *env)
-     return cs->hppi.irq;
- }
- 
--static uint64_t icc_hppir1_value(GICv3CPUState *cs, CPUARMState *env)
-+static uint64_t icc_hppir1_value(GICv3CPUState *cs, CPUARMState *env,
-+                                 bool is_nmi, bool is_hppi)
- {
-     /* Return the highest priority pending interrupt register value
-      * for group 1.
-@@ -1108,6 +1116,19 @@ static uint64_t icc_hppir1_value(GICv3CPUState *cs, CPUARMState *env)
-         return INTID_SPURIOUS;
-     }
- 
-+    if (!is_hppi) {
-+        int el = arm_current_el(env);
-+
-+        if (is_nmi && (!cs->hppi.superprio)) {
-+            return INTID_SPURIOUS;
-+        }
-+
-+        if ((!is_nmi) && cs->hppi.superprio
-+            && env->cp15.sctlr_el[el] & SCTLR_NMI) {
-+            return INTID_NMI;
-+        }
-+    }
-+
-     /* Check whether we can return the interrupt or if we should return
-      * a special identifier, as per the CheckGroup1ForSpecialIdentifiers
-      * pseudocode. (We can simplify a little because for us ICC_SRE_EL1.RM
-@@ -1168,7 +1189,7 @@ static uint64_t icc_iar1_read(CPUARMState *env, const ARMCPRegInfo *ri)
-     if (!icc_hppi_can_preempt(cs)) {
-         intid = INTID_SPURIOUS;
-     } else {
--        intid = icc_hppir1_value(cs, env);
-+        intid = icc_hppir1_value(cs, env, false, false);
-     }
- 
-     if (!gicv3_intid_is_special(intid)) {
-@@ -1179,6 +1200,25 @@ static uint64_t icc_iar1_read(CPUARMState *env, const ARMCPRegInfo *ri)
-     return intid;
- }
- 
-+static uint64_t icc_nmiar1_read(CPUARMState *env, const ARMCPRegInfo *ri)
-+{
-+    GICv3CPUState *cs = icc_cs_from_env(env);
-+    uint64_t intid;
-+
-+    if (icv_access(env, HCR_IMO)) {
-+        return icv_nmiar1_read(env, ri);
-+    }
-+
-+    intid = icc_hppir1_value(cs, env, true, false);
-+
-+    if (!gicv3_intid_is_special(intid)) {
-+        icc_activate_irq(cs, intid);
-+    }
-+
-+    trace_gicv3_icc_nmiar1_read(gicv3_redist_affid(cs), intid);
-+    return intid;
-+}
-+
- static void icc_drop_prio(GICv3CPUState *cs, int grp)
- {
-     /* Drop the priority of the currently active interrupt in
-@@ -1555,7 +1595,7 @@ static uint64_t icc_hppir1_read(CPUARMState *env, const ARMCPRegInfo *ri)
-         return icv_hppir_read(env, ri);
-     }
- 
--    value = icc_hppir1_value(cs, env);
-+    value = icc_hppir1_value(cs, env, false, true);
-     trace_gicv3_icc_hppir1_read(gicv3_redist_affid(cs), value);
+@@ -728,7 +728,7 @@ static uint64_t icv_hppir_read(CPUARMState *env, const ARMCPRegInfo *ri)
      return value;
  }
-@@ -2482,6 +2522,15 @@ static const ARMCPRegInfo gicv3_cpuif_icc_apxr23_reginfo[] = {
-     },
- };
  
-+static const ARMCPRegInfo gicv3_cpuif_gicv3_nmi_reginfo[] = {
-+    { .name = "ICC_NMIAR1_EL1", .state = ARM_CP_STATE_BOTH,
-+      .opc0 = 3, .opc1 = 0, .crn = 12, .crm = 9, .opc2 = 5,
-+      .type = ARM_CP_IO | ARM_CP_NO_RAW,
-+      .access = PL1_R, .accessfn = gicv3_irq_access,
-+      .readfn = icc_nmiar1_read,
-+    },
-+};
-+
- static uint64_t ich_ap_read(CPUARMState *env, const ARMCPRegInfo *ri)
+-static void icv_activate_irq(GICv3CPUState *cs, int idx, int grp)
++static void icv_activate_irq(GICv3CPUState *cs, int idx, int grp, bool nmi)
  {
-     GICv3CPUState *cs = icc_cs_from_env(env);
-@@ -2838,6 +2887,10 @@ void gicv3_init_cpuif(GICv3State *s)
-          */
-         define_arm_cp_regs(cpu, gicv3_cpuif_reginfo);
+     /* Activate the interrupt in the specified list register
+      * by moving it from Pending to Active state, and update the
+@@ -742,7 +742,12 @@ static void icv_activate_irq(GICv3CPUState *cs, int idx, int grp)
  
-+        if (s->nmi_support) {
-+            define_arm_cp_regs(cpu, gicv3_cpuif_gicv3_nmi_reginfo);
-+        }
+     cs->ich_lr_el2[idx] &= ~ICH_LR_EL2_STATE_PENDING_BIT;
+     cs->ich_lr_el2[idx] |= ICH_LR_EL2_STATE_ACTIVE_BIT;
+-    cs->ich_apr[grp][regno] |= (1 << regbit);
 +
-         /*
-          * The CPU implementation specifies the number of supported
-          * bits of physical priority. For backwards compatibility
++    if (cs->gic->nmi_support) {
++        cs->ich_apr[grp][regno] |= (1 << regbit) | (nmi ? ICH_AP1R_EL2_NMI : 0);
++    } else {
++        cs->ich_apr[grp][regno] |= (1 << regbit);
++    }
+ }
+ 
+ static void icv_activate_vlpi(GICv3CPUState *cs)
+@@ -775,8 +780,8 @@ static uint64_t icv_iar_read(CPUARMState *env, const ARMCPRegInfo *ri)
+ 
+         if (thisgrp == grp && icv_hppi_can_preempt(cs, lr)) {
+             intid = ich_lr_vintid(lr);
+-            if (!gicv3_intid_is_special(intid)) {
+-                icv_activate_irq(cs, idx, grp);
++            if (!gicv3_intid_is_special(intid) && !(lr & ICH_LR_EL2_NMI)) {
++                icv_activate_irq(cs, idx, grp, false);
+             } else {
+                 /* Interrupt goes from Pending to Invalid */
+                 cs->ich_lr_el2[idx] &= ~ICH_LR_EL2_STATE_PENDING_BIT;
+@@ -797,8 +802,32 @@ static uint64_t icv_iar_read(CPUARMState *env, const ARMCPRegInfo *ri)
+ 
+ static uint64_t icv_nmiar1_read(CPUARMState *env, const ARMCPRegInfo *ri)
+ {
+-    /* todo */
++    GICv3CPUState *cs = icc_cs_from_env(env);
++    int idx = hppvi_index(cs);
+     uint64_t intid = INTID_SPURIOUS;
++
++    if (idx >= 0 && idx != HPPVI_INDEX_VLPI) {
++        uint64_t lr = cs->ich_lr_el2[idx];
++        int thisgrp = (lr & ICH_LR_EL2_GROUP) ? GICV3_G1NS : GICV3_G0;
++
++        if ((thisgrp == GICV3_G1NS) && (lr & ICH_LR_EL2_NMI)) {
++            intid = ich_lr_vintid(lr);
++            if (!gicv3_intid_is_special(intid)) {
++                icv_activate_irq(cs, idx, GICV3_G1NS, true);
++            } else {
++                /* Interrupt goes from Pending to Invalid */
++                cs->ich_lr_el2[idx] &= ~ICH_LR_EL2_STATE_PENDING_BIT;
++                /* We will now return the (bogus) ID from the list register,
++                 * as per the pseudocode.
++                 */
++            }
++        }
++    }
++
++    trace_gicv3_icv_nmiar1_read(gicv3_redist_affid(cs), intid);
++
++    gicv3_cpuif_virt_update(cs);
++
+     return intid;
+ }
+ 
+@@ -1403,6 +1432,11 @@ static int icv_drop_prio(GICv3CPUState *cs)
+             return (apr0count + i * 32) << (icv_min_vbpr(cs) + 1);
+         } else {
+             *papr1 &= *papr1 - 1;
++
++            if (cs->gic->nmi_support && (*papr1 & ICH_AP1R_EL2_NMI)) {
++                *papr1 &= ~ICH_AP1R_EL2_NMI;
++            }
++
+             return (apr1count + i * 32) << (icv_min_vbpr(cs) + 1);
+         }
+     }
+@@ -2552,7 +2586,11 @@ static void ich_ap_write(CPUARMState *env, const ARMCPRegInfo *ri,
+ 
+     trace_gicv3_ich_ap_write(ri->crm & 1, regno, gicv3_redist_affid(cs), value);
+ 
+-    cs->ich_apr[grp][regno] = value & 0xFFFFFFFFU;
++    if (cs->gic->nmi_support) {
++        cs->ich_apr[grp][regno] = value & (0xFFFFFFFFU | ICH_AP1R_EL2_NMI);
++    } else {
++        cs->ich_apr[grp][regno] = value & 0xFFFFFFFFU;
++    }
+     gicv3_cpuif_virt_irq_fiq_update(cs);
+ }
+ 
 diff --git a/hw/intc/gicv3_internal.h b/hw/intc/gicv3_internal.h
-index 8d793243f4..93e56b3726 100644
+index 93e56b3726..5e2b32861d 100644
 --- a/hw/intc/gicv3_internal.h
 +++ b/hw/intc/gicv3_internal.h
-@@ -511,6 +511,7 @@ FIELD(VTE, RDBASE, 42, RDBASE_PROCNUM_LENGTH)
- /* Special interrupt IDs */
- #define INTID_SECURE 1020
- #define INTID_NONSECURE 1021
-+#define INTID_NMI 1022
- #define INTID_SPURIOUS 1023
+@@ -242,6 +242,7 @@ FIELD(GICR_VPENDBASER, VALID, 63, 1)
+ #define ICH_LR_EL2_PRIORITY_SHIFT 48
+ #define ICH_LR_EL2_PRIORITY_LENGTH 8
+ #define ICH_LR_EL2_PRIORITY_MASK (0xffULL << ICH_LR_EL2_PRIORITY_SHIFT)
++#define ICH_LR_EL2_NMI (1ULL << 59)
+ #define ICH_LR_EL2_GROUP (1ULL << 60)
+ #define ICH_LR_EL2_HW (1ULL << 61)
+ #define ICH_LR_EL2_STATE_SHIFT 62
+@@ -273,6 +274,8 @@ FIELD(GICR_VPENDBASER, VALID, 63, 1)
+ #define ICH_VTR_EL2_PREBITS_SHIFT 26
+ #define ICH_VTR_EL2_PRIBITS_SHIFT 29
  
- /* Functions internal to the emulated GICv3 */
++#define ICH_AP1R_EL2_NMI (1ULL << 63)
++
+ /* ITS Registers */
+ 
+ FIELD(GITS_BASER, SIZE, 0, 8)
 diff --git a/hw/intc/trace-events b/hw/intc/trace-events
-index 1ef29d0256..94030550d5 100644
+index 94030550d5..47340b5bc1 100644
 --- a/hw/intc/trace-events
 +++ b/hw/intc/trace-events
-@@ -116,6 +116,7 @@ gicv3_cpuif_set_irqs(uint32_t cpuid, int fiqlevel, int irqlevel) "GICv3 CPU i/f
- gicv3_icc_generate_sgi(uint32_t cpuid, int irq, int irm, uint32_t aff, uint32_t targetlist) "GICv3 CPU i/f 0x%x generating SGI %d IRM %d target affinity 0x%xxx targetlist 0x%x"
- gicv3_icc_iar0_read(uint32_t cpu, uint64_t val) "GICv3 ICC_IAR0 read cpu 0x%x value 0x%" PRIx64
- gicv3_icc_iar1_read(uint32_t cpu, uint64_t val) "GICv3 ICC_IAR1 read cpu 0x%x value 0x%" PRIx64
-+gicv3_icc_nmiar1_read(uint32_t cpu, uint64_t val) "GICv3 ICC_NMIAR1 read cpu 0x%x value 0x%" PRIx64
- gicv3_icc_eoir_write(int grp, uint32_t cpu, uint64_t val) "GICv3 ICC_EOIR%d write cpu 0x%x value 0x%" PRIx64
- gicv3_icc_hppir0_read(uint32_t cpu, uint64_t val) "GICv3 ICC_HPPIR0 read cpu 0x%x value 0x%" PRIx64
- gicv3_icc_hppir1_read(uint32_t cpu, uint64_t val) "GICv3 ICC_HPPIR1 read cpu 0x%x value 0x%" PRIx64
+@@ -152,6 +152,7 @@ gicv3_icv_rpr_read(uint32_t cpu, uint64_t val) "GICv3 ICV_RPR read cpu 0x%x valu
+ gicv3_icv_hppir_read(int grp, uint32_t cpu, uint64_t val) "GICv3 ICV_HPPIR%d read cpu 0x%x value 0x%" PRIx64
+ gicv3_icv_dir_write(uint32_t cpu, uint64_t val) "GICv3 ICV_DIR write cpu 0x%x value 0x%" PRIx64
+ gicv3_icv_iar_read(int grp, uint32_t cpu, uint64_t val) "GICv3 ICV_IAR%d read cpu 0x%x value 0x%" PRIx64
++gicv3_icv_nmiar1_read(uint32_t cpu, uint64_t val) "GICv3 ICV_NMIAR1 read cpu 0x%x value 0x%" PRIx64
+ gicv3_icv_eoir_write(int grp, uint32_t cpu, uint64_t val) "GICv3 ICV_EOIR%d write cpu 0x%x value 0x%" PRIx64
+ gicv3_cpuif_virt_update(uint32_t cpuid, int idx, int hppvlpi, int grp, int prio) "GICv3 CPU i/f 0x%x virt HPPI update LR index %d HPPVLPI %d grp %d prio %d"
+ gicv3_cpuif_virt_set_irqs(uint32_t cpuid, int fiqlevel, int irqlevel) "GICv3 CPU i/f 0x%x virt HPPI update: setting FIQ %d IRQ %d"
 -- 
 2.34.1
 
