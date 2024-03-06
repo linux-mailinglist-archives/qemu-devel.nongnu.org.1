@@ -2,137 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2AC4873D97
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 18:40:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00D2A873D1B
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Mar 2024 18:16:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rhvEh-0002bU-Ov; Wed, 06 Mar 2024 12:39:23 -0500
+	id 1rhur9-0003Ve-PD; Wed, 06 Mar 2024 12:15:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Terry.bowman@amd.com>)
- id 1rhutP-0005R8-3R
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 12:17:23 -0500
-Received: from mail-mw2nam04on2040.outbound.protection.outlook.com
- ([40.107.101.40] helo=NAM04-MW2-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Terry.bowman@amd.com>)
- id 1rhutL-0000Dz-MI
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 12:17:22 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kUP5yi7H6PGrWCYY8Fp7MZkid50kxbutUdS0jdCjxDzjUJPSGxyMNpEAHFaoLR6cOneiR69984UmZFUrxY3PBlsUIbOSZs19PQCfah5CK7PODaj9kKcXP0QvaXKcSbuX2r2SmmLj0pI1LJXcnZqkn75AoPtOuQGHaj3sMEZbrs0UiM5RRoY62qBD7eH19F+fgl5KpHC7nXl1Uw86vm68HPCEv3ljasjI6213AmGYcqAo5mK6sfYisaAwEMnJNA9M9bu71Z0AGoT37G7VEfmJOTDgb8VS+Dcchv/gT1UDfyhXlPD2liRqUBaEIQS5eYtQ0ljBiyX+kuHfS7R04CmtwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lI5sVjIHD3bwerHPl/WiSquxWTzcdPKCjXvabQzGeHI=;
- b=AufB6f9Rpvja5fKl88i98B/3lLAmzB/cCBAl3QQdF91cg1VKwQ/e+AW4QDNt3maTGBDL0GZPiWSUqqMlDtDAR7+Fvxk8xDyAB9U4LZhArRJUfmylUeSA+PPJgqNkyVu5wPmXQxloukdhGrA3ais1BC55g2/58rT/BXTdmGaMRlZQ0/Xw5XMasGiytCZck94O0dOoHBIlExb1nSiODyzuWLxmiPjTNXHEXyPXAnqVAoOBqHWhCsJGFj6xO8v0oTiygPg5iUM2rfUfhOcybD9NlNu9aH3YsuBhxDMk16zzDXRKb39Oyo112EhvmZSNBOZQ2tQ5vVLnWgCKkzoZvM8COg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lI5sVjIHD3bwerHPl/WiSquxWTzcdPKCjXvabQzGeHI=;
- b=dj7iARR6ZpTfgBUd3XeKBfRtc3khVTpGAQHuQ+Fz4YzfsZfzyFv7kke6z0USAAKMbJbUDGyaKibcyh5kpERd8XriWT/cr/bSm6UecuYnVZxpkdRC7LknappPGB4XRRAfzagDHL2kaV2Lo+t/dmX67SJSHveG4Nv9gtEQBzwo+CQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DS0PR12MB6390.namprd12.prod.outlook.com (2603:10b6:8:ce::7) by
- MW6PR12MB8835.namprd12.prod.outlook.com (2603:10b6:303:240::7) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7339.38; Wed, 6 Mar 2024 17:12:12 +0000
-Received: from DS0PR12MB6390.namprd12.prod.outlook.com
- ([fe80::662f:e554:5359:bfdb]) by DS0PR12MB6390.namprd12.prod.outlook.com
- ([fe80::662f:e554:5359:bfdb%4]) with mapi id 15.20.7362.019; Wed, 6 Mar 2024
- 17:12:12 +0000
-Message-ID: <6447f2fd-8594-454f-b0ca-f12ad1947e10@amd.com>
-Date: Wed, 6 Mar 2024 11:12:11 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: Enabling internal errors for VH CXL devices: [was: Re: Questions
- about CXL RAS injection test in qemu]
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- Yuquan Wang <wangyuquan1236@phytium.com.cn>
-Cc: linux-cxl@vger.kernel.org, qemu-devel@nongnu.org,
- Robert Richter <rrichter@amd.com>, dan.williams@intel.com
-References: <20240306112707.3116081-1-wangyuquan1236@phytium.com.cn>
- <20240306132359.00001956@Huawei.com>
-Content-Language: en-US
-From: Terry Bowman <Terry.Bowman@amd.com>
-In-Reply-To: <20240306132359.00001956@Huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN6PR04CA0108.namprd04.prod.outlook.com
- (2603:10b6:805:f2::49) To DS0PR12MB6390.namprd12.prod.outlook.com
- (2603:10b6:8:ce::7)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rhur6-0003V1-3I
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 12:15:00 -0500
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rhur4-00088T-Lh
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 12:14:59 -0500
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-a4532f84144so151412566b.3
+ for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 09:14:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1709745296; x=1710350096; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=XjsyNthJQ6LEz6SX9rxTBbqUR1TTwhwhwoVKkXhpUAw=;
+ b=gsldvy/wb4MwcltD3VSvRWgGz3R486l6SZ/q0cf2CsfNjTEpKmjvCm9H529dO/iV2p
+ KDhYuZ5SHDEdWTDF68QEaR3WEiJi9Bv0UDTZvzssuOY8FzwQpvV/6Z/OlbsStiLtBnZK
+ XAvE6dLXManqCkOYrdI7VHPCzeWvUO3GWBu3Jfrq0QVxS/QTqwNlXXFLH36wFgaUTrsY
+ t/BMwY97uQFb1USxgVFxwSet3YZAYc9bgYJmPz3OWjzbvQs1o3t6hKSFO6Ew4oRiN9Wb
+ 4rvFsB4qXCtKdxf5m9b0FOHIGLnlnIlNbA+ajtgF/DFfrgb4oTQC4JZIaiO/bSXvNa9d
+ S8Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709745296; x=1710350096;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=XjsyNthJQ6LEz6SX9rxTBbqUR1TTwhwhwoVKkXhpUAw=;
+ b=Fr5G6vJPY4kvCYS5yuGJr0vqbKUrYaZ9GxET3ltQdpOmA+6jA45hoj8ampdKhi5aLo
+ d4lY9ZqQHkxeNwWE1wVCr7vXFRjKYi9BOUiyeM49eV7/EqtVFYShB5FYJhY2XOAr2fCj
+ eKXSJeYmNT6X5UxGQreJRVhb824QlYJv9C0nLgWkvY1IGhgsGhZvgmrr9pgA8GAb81rQ
+ O7ANRUaLPKFzxji8D9ePBRb1oknWPhd2We5ZIwIsLk4rfwUpPI/Fzjrd5ajkaEiy7qbe
+ ATVKc9jysXpp5q7IDoh1lopRiCj/sqw0o9mQFEnCfqj9uuiSGW0yu1lfW3vxYYtuohnP
+ nd4w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVEcdnVAm7TSeTLRmyg4l9RWJU0KpMq7W1vssC//NIwxPHZLmsdg2vyEKE7WVg0oz4/diZ0x/mLIyFZ10zNncKFzuEoWyA=
+X-Gm-Message-State: AOJu0Yweu/KjB5TRq+9LXgI3D8Qc6HFD9LUag0gycirNA37VbpKDhrF0
+ uHeuxVgUFdJ3kao2LeLq3oTAxnYM4Xpwf/WD/BpeEkaVc3bA9dSk9ynLraP7VWU=
+X-Google-Smtp-Source: AGHT+IEzDMCAv1jmeGC0ooiGaix7vjr0dWNnW+e2K3+cHwRyHziRS4ipyA3ZMUpeB9SviZ5lAMKGMA==
+X-Received: by 2002:a17:906:b154:b0:a45:da1:9375 with SMTP id
+ bt20-20020a170906b15400b00a450da19375mr7102659ejb.30.1709745295992; 
+ Wed, 06 Mar 2024 09:14:55 -0800 (PST)
+Received: from [192.168.69.100] (vau06-h02-176-184-43-100.dsl.sta.abo.bbox.fr.
+ [176.184.43.100]) by smtp.gmail.com with ESMTPSA id
+ m26-20020a17090607da00b00a441ff174a3sm7372337ejc.90.2024.03.06.09.14.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Mar 2024 09:14:55 -0800 (PST)
+Message-ID: <68c4a4ad-cc49-4917-b1d6-d0f28b611c05@linaro.org>
+Date: Wed, 6 Mar 2024 18:14:52 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6390:EE_|MW6PR12MB8835:EE_
-X-MS-Office365-Filtering-Correlation-Id: f1ae278f-ad07-46d9-920f-08dc3e00908c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: iGMMtvJs7o6orL60d9GLyEfyoUyapXon6Dg7uA1kICGN6JPbXnsLFWu4EGOYwqeeHjXIOxZ9lV7beKp1GutFSrmVAPcVK7Rq15G80O7EXzs2E6ZbkGeoNMW3FGXjimNe5drnwK1eLARD+FEGzp3UP7kR/tQ1KtweTiycwVBzf+BGp3p4W0VNe4Amm0Q6hp4WaksJH2yaJx5z++1bsvQcYINdE9nCfLU2h2e4tsBbPz/HO8yQMFmq6qI1djAjUgogg/n1pkBcchIdj/O8T6gVKkIiqA61163osLgoZUWxfwUx8xPniUWJhuusMzofmBIm7ivWSjssb6jG6docOViNiO7dpqW5WcJpJ5jtEgkjbYnRzD7bU/StvaP20HncZtU5flCfH3rZCf4TXAtzqs/WGcUdLQ1oYs0mrT0CrxWxHbEoNCvvwtD7vRW7gs8ku+piQ0oB50fXHqZw7EYBWmrDWm3RsLte3NYAILV50rfSuw+50Rc3OyoQZ16UX35rTXvhSe4QQ3MpMv7oau/Zu/hcIydpKrh8hfBamm/125MNlGici7hvDgmpjmeFLFdEOdovkUps8GQlotLGOfRoz+C9JMETOHja1u+k/kvDDX+vbVE=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS0PR12MB6390.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376005); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cWNxSjdrM3BySklRUUx6N1B1aEN1a1dnR0pYc0tKeHphRC9MZHlNTXU0TWlr?=
- =?utf-8?B?czlQMXBaOEpYdjBxdk5SRlhDcStDZDh2TmhYakxFZk5UQzErZkVoS1JFOWhL?=
- =?utf-8?B?ekM1VG9lSWpqVmlWcTQ4ZmMyZGlkN3hmTllhMS9pNk5vdmFjWGNDZ0JhZTJL?=
- =?utf-8?B?NENiNnphc3Z0SVZCWW9hTkZGbkhSOWIxTy9LU1pIU0NaSVVvL0Zod2g3dXV3?=
- =?utf-8?B?amdoeXJXaThCQ3NtL0FmUU1LZDNzZjRwZHlwTC9aNXkwMU1hRko2VUpyODhC?=
- =?utf-8?B?L0VMS3ZVMHg1bGl6MUhHdHpQdEIzelh0SkxrdzUvSHA1QU1VYTU0NktMeE43?=
- =?utf-8?B?MzBMTWR5Tm1zNXJQWWU0NDgrU09NMURsNTVETGJNWWhjQWR6dlhScFRnSmVN?=
- =?utf-8?B?K3BYTmRNaEx6WDBsUC82eE8rRTZnVXRmWlFXMk9VaWRrVkVPSHo2UXRjL2o3?=
- =?utf-8?B?TE1EamtEdnlYTHFFZXJzMzJYQUpDNU5EME00QjNEY1J3alcwSTY4Rk5Fa0FS?=
- =?utf-8?B?cWlZa0FHSE1wTHg5YWtWdDBTSXNiVjYzcTRrdjN5T3hSZEJCRWZYNEVuOGtX?=
- =?utf-8?B?Vkd3Y0UrcEwwcE0reVQzYUxESVpiRldjNXVQWmQ5WCtRKzBicU1vYTlZUWh6?=
- =?utf-8?B?RnVQQXZCMDhPZm1OeWZGU3AvVkwxb2VpVkg0QVdpNTJjR2NyNGpzRzNFTEcv?=
- =?utf-8?B?aWl6VXkyZXF1d0ZvelBCajNETXFLdDQ0eFlnN00rUGx6bGFEMlhvOElFVm53?=
- =?utf-8?B?cUQ4Q0FHZlpUTjlhak93Z0pNUmNOMGNLZGJZL2R0ekZOWXd0eFV5TGkzN0xv?=
- =?utf-8?B?QWwzUkI5b24wNUxUNmpWSHZWeSt0TTJmWGZZVFBxQUZtTXdFZXNpWUdFdnBw?=
- =?utf-8?B?c09nYjYxWTYvNzlqb1AySUY0R09ER2Y0Y2JLTEdKUlpEOGJsa0pKL2NZay9H?=
- =?utf-8?B?NEJseTd6TDdDdFNzZ2xvKzBUREZwLzNBUmpxOG8xVUhud3BJTjFPN1o2QUNE?=
- =?utf-8?B?aU1jS005K1NHWTNROTFwWTZveWRlNk93bmpmOVkyVUFpcW1RR1E4Q1duRHVR?=
- =?utf-8?B?L1U3azg4WFJuWG1RS25WOEd2MUZpWkoyT0c2OWl6eHVXakJmNlYzcVpTa3hO?=
- =?utf-8?B?SDRIUDVSbkh3MkEzZ2svQzFNNkhpbW5ncGg3dVFGWGxydTRvZE1kMXI5WE5j?=
- =?utf-8?B?UUdFZFk4b0tiUE4zb1FvSDE3b05zM1B1RmV6U2hsSXU3di9EZlBHTVYxVEdV?=
- =?utf-8?B?VjBGejg0aGxFdnVTL2NIMnNRem81N1k1K1YrZmNEcGRIejMzVE44RTdiaXpR?=
- =?utf-8?B?Nm5PR1JjLzl0ejFFbmk0VWYvSHRtQjgwOVpadktkYXZsTnNRMDB6SVlLTDEy?=
- =?utf-8?B?NUZ3cHRtL2F0VjFjRCtjQ3Zaak1MaHl6RFY3cUlRRDRoU1F0bEpROWVBeFU1?=
- =?utf-8?B?K25KL0xZLzJBaXZDemI5TEE1QU1rRWR2Rlgwemt3UG5IU2JUSWtPaUxNYUVj?=
- =?utf-8?B?UjZoNzdJcFI5MXdxOXR0YXhidStyTTExRmlYRTdEemdkanY4aER5Y3lybnUz?=
- =?utf-8?B?cmdZYU5NYk1HVjFydGIyU1BXZDk2SDVxUmw0bTNkeklVaUtSRzZRMEg2V0Fn?=
- =?utf-8?B?Y2d3RE1MSVd4UURBKy8xOHJMQ2hCa2JRTThYV1B4YlRBRjNPQlR5WHN3eU1E?=
- =?utf-8?B?N3ltSGZuY2RQakRzZ1dsK0xVSnJvZW1oNHBWM05ha1BHa04wNzcrcWNVMW5G?=
- =?utf-8?B?aDFhTlhQUkcwbkZlMElKd1FHTUppTEZvNHRHSVpmTXB0N2hFcmRteDIyeUUy?=
- =?utf-8?B?Y1luUXprRE04UlZDdm5reUxkQi9vWlNOMld2VS9MOWFRd1ZBcjB5TW9BK2ZO?=
- =?utf-8?B?eHRtZjhQY1EvL09aeEhrVHdMMC9SYXVwTXF2R05KUlQ3dDdIN01DSzdkVU5j?=
- =?utf-8?B?SVZHS0lMVndPMW9YVjBDSlpIWGpxM3dOUFNiUklma3dEUGthLzQ4SXg3Ulk3?=
- =?utf-8?B?U29VQkRMODI4RE5DM21SdnNydXNrN0ZHYlRsbzNDNFRtaTdjdUNRMFc0ajMr?=
- =?utf-8?B?cE9BUWhXUjBBdVBXendwYWIvZFgwQlIraHc1blVCYVl6MnJZVDBkVnE5ZWYw?=
- =?utf-8?Q?axOu0g3QryeG/uGrbfzTdeXOt?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f1ae278f-ad07-46d9-920f-08dc3e00908c
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6390.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2024 17:12:12.7184 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3uO4vgl/ckSINybf9UvsBY8QASt1ZyzQwUkkiKrP4DG6UQ79vcOqm4wEosFwsNCdIvmlpUFfTn6P+FsoflYNfQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8835
-Received-SPF: permerror client-ip=40.107.101.40;
- envelope-from=Terry.bowman@amd.com;
- helo=NAM04-MW2-obe.outbound.protection.outlook.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-9.0 v2 10/19] hw/xen: Rename 'ram_memory' global
+ variable as 'xen_memory'
+Content-Language: en-US
+To: David Woodhouse <dwmw2@infradead.org>, David Woodhouse
+ <dwmw@amazon.co.uk>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paul Durrant <paul@xen.org>, qemu-arm@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ xen-devel@lists.xenproject.org, qemu-block@nongnu.org,
+ Anthony Perard <anthony.perard@citrix.com>, kvm@vger.kernel.org,
+ Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+References: <20231114143816.71079-1-philmd@linaro.org>
+ <20231114143816.71079-11-philmd@linaro.org>
+ <84F1C2D8-4963-4815-8079-B44081234D41@infradead.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <84F1C2D8-4963-4815-8079-B44081234D41@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.365,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 06 Mar 2024 12:39:21 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -147,188 +106,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Yuquan an Jon,
-
-I added responses inline below.
-
-On 3/6/24 07:23, Jonathan Cameron wrote:
-> On Wed, 6 Mar 2024 19:27:07 +0800
-> Yuquan Wang <wangyuquan1236@phytium.com.cn> wrote:
+On 14/11/23 16:49, David Woodhouse wrote:
+> On 14 November 2023 09:38:06 GMT-05:00, "Philippe Mathieu-Daudé" <philmd@linaro.org> wrote:
+>> To avoid a potential global variable shadow in
+>> hw/i386/pc_piix.c::pc_init1(), rename Xen's
+>> "ram_memory" as "xen_memory".
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > 
->> Hello, Jonathan
->>
->> Recently I met some problems on CXL RAS tests. 
->>
->> I tried to use "cxl-inject-uncorrectable-errors" and "cxl-inject-correctable-error"
->> qmp to inject CXL errors, however, there was no any kernel printing information in 
->> my qemu machine. And the qmp connection was unstable that made the machine 
->> always "terminating on signal 2".
+> Well OK, but aren't you going to be coming back later to eliminate global variables which are actually per-VM?
 > 
-> The qmp connection being unstable is odd - might be related to the CXL code, but
-> I'm not sure how..
-> 
->>
->> In addition, I successfully used the hmp "pcie_aer_inject_error" in the same conditions.
->> The kernel showed relevant print information.
-> 
-> IIRC the AER paths print under all circumstances whereas CXL errors do not, they simply
-> trigger tracepoints - but you should have seen device resets.
-> 
-> However I span up a test and I think the issue is more straight forward.
-> The uncorrectable internal error and correctable internal errors are masked on the device.
-> I thought we changed the default on this in linux but maybe not :(
-> 
+> Or is that the point, because *then* the conflicting name will actually matter?
 
-Device AER UIE/CIE mask can be set and still expect to handle device AER errors. The device reports 
-AER UIE/CIE to the root port/RCEC on behalf of device AER CRC, TLP, etc errors. 
+Eh I wasn't thinking about running 2 Xen VMs in the same QEMU process,
+but this is a good test case. I was thinking of running a Xen guest VM
+and another TCG VM in the same process.
 
-In earlier changes we added logic to clear the RCEC UIE/CIE mask inorder to properly receive 
-AER UIE/CI notifications from devices and RCH dports.
+So IIUC xen_memory should be part of PCMachineState.
 
-"CXL Protocol and Link errors detected by components that are part of a CXL VH are
-escalated and reported using standard PCIe error reporting mechanisms over CXL.io as
-UIEs and/or CIEs. See PCIe Base Specification for details."[1]
-
-[1] CXL3.1 12.2.1 - Protocol and Link Layer Error Reporting
-
-> Hack is fine the relevant device with lspci -tv and then use
-> setpci -s 0d:00.0 0x208.l=0
-> to clear all the mask bits for uncorrectable errors.
 > 
-> Note I tested this on a convenient arm64 setup so always possible there is yet
-> another problem on x86.
-> 
-> Robert / Terry, I tracked down the patch where you enabled this for RCHs and there was
-> some discussion on walking out on VH as well to enable this, but seems it
-> never happened. Can you remember why?  Just kicked back for a future occasion?
-> 
-> Jonathan
-> 
-> 
+> Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 
-I tested (qemu x86) using the aer-inject tool and found it to work. Below shows the 
-endpoint CIE is masked (0xe000 @ AER+0x14) and the injected error is properly handled
-with root port logging and cxl_pci handler trace logs.
+Thanks!
 
- # lspci | grep -i cxl                                                                                                                                     
-    0d:00.0 CXL: Intel Corporation Device 0d93 (rev 01)                                                                                                       
-                                                                                                                                                              
-    # lspci -s 0d:00.0 -vvv | grep Advanced                                                                                                                   
-    Capabilities: [200 v2] Advanced Error Reporting                                                                                                           
-                                                                                                                                                              
-    # setpci -s 0d:00.0 0x208.l                                                                                                                               
-    02400000                                                                                                                                                  
-                                                                                                                                                              
-    # setpci -s 0d:00.0 0x214.l                                                                                                                               
-    0000e000                                                                                                                                                  
-                                                                                                                                                              
-    # cat aer-input.txt                                                                                                                                       
-    # Inject a correctable bad TLP error into the device with header log                                                                                      
-    # words 0 1 2 3.                                                                                                                                          
-    #                                                                                                                                                         
-    # Either specify the PCI id on the command-line option or uncomment and edit                                                                              
-    # the PCI_ID line below using the correct PCI ID.                                                                                                         
-    #                                                                                                                                                         
-    # Note that system firmware/BIOS may mask certain errors and/or not report                                                                                
-    # header log words.                                                                                                                                       
-    #                                                                                                                                                         
-    AER                                                                                                                                                       
-    #PCI_ID 0000:0C.00.0                                                                                                                                      
-    COR_STATUS BAD_TLP                                                                                                                                        
-    HEADER_LOG 0 1 2 3                                                                                                                                        
-                                                                                                                                                              
-    # ./aer-inject -s 0000:0d:00.0 aer-input.txt                                                                                                              
-    [   72.850686] pcieport 0000:0c:00.0: aer_inject: Injecting errors 00000040/00000000 into device 0000:0d:00.0                                             
-    [   72.851784] pcieport 0000:0c:00.0: AER: Corrected error received: 0000:0d:00.0                                                                         
-    [   72.852594] cxl_pci 0000:0d:00.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, (Receiver ID)                                              
-    [   72.853591] cxl_pci 0000:0d:00.0:   device [8086:0d93] error status/mask=00000040/0000e000                                             
-    # [   72.854277] cxl_pci 0000:0d:00.0:    [ 6] BadTLP      
-
-I have not tried to use cxl-inject-uncorrectable-errors or cxl-inject-correctable-error.
-
-Regards,
-Terry
-
->>
->> Question:
->> 1) Is my CXL RAS test operations standard?
->> 2) The error injected by "pcie_aer_inject_error" is "protocol & link errors" of cxl.io?
->>    The error injected by "cxl-inject-uncorrectable-errors" or "cxl-inject-correctable-error" is "protocol & link errors" of cxl.cachemem?
->>
->> Hope I can get some helps here, any help will be greatly appreciated.
->>
->>
->> My qemu command line:
->> qemu-system-x86_64 \
->> -M q35,nvdimm=on,cxl=on \
->> -m 4G \
->> -smp 4 \
->> -object memory-backend-ram,size=2G,id=mem0 \
->> -numa node,nodeid=0,cpus=0-1,memdev=mem0 \
->> -object memory-backend-ram,size=2G,id=mem1 \
->> -numa node,nodeid=1,cpus=2-3,memdev=mem1 \
->> -object memory-backend-ram,size=256M,id=cxl-mem0 \
->> -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1 \
->> -device cxl-rp,port=0,bus=cxl.1,id=root_port0,chassis=0,slot=0 \
->> -device cxl-type3,bus=root_port0,volatile-memdev=cxl-mem0,id=cxl-mem0 \
->> -M cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G,cxl-fmw.0.interleave-granularity=4k \
->> -hda ../disk/ubuntu_x86_test_new.qcow2 \
->> -nographic \
->> -qmp tcp:127.0.0.1:4444,server,nowait \
->>
->> Qemu version: 8.2.50, the lastest commit of branch cxl-2024-03-05 in "https://gitlab.com/jic23/qemu" 
->> Kernel version: 6.8.0-rc6
->>
->> My steps in the Qemu qmp:
->> 1) telnet 127.0.0.1 4444
->>
->> result:
->> Trying 127.0.0.1...
->> Connected to 127.0.0.1.
->> Escape character is '^]'.
->> {"QMP": {"version": {"qemu": {"micro": 50, "minor": 2, "major": 8}, "package": "v6.2.0-19482-gccfb4fe221"}, "capabilities": ["oob"]}}
->>
->> 2) { "execute": "qmp_capabilities" }
->>
->> result:
->> {"return": {}}
->>
->> 3) If inject correctable error:
->> { "execute": "cxl-inject-correctable-error",
->>     "arguments": {
->>         "path": "/machine/peripheral/cxl-mem0",
->>         "type": "physical"
->>     } }
->>
->> result:
->> {"return": {}}
->>
->> 3) If inject uncorrectable error:
->> { "execute": "cxl-inject-uncorrectable-errors",
->>   "arguments": {
->>     "path": "/machine/peripheral/cxl-mem0",
->>     "errors": [
->>         {
->>             "type": "cache-address-parity",
->>             "header": [ 3, 4]
->>         },
->>         {
->>             "type": "cache-data-parity",
->>             "header": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
->>         },
->>         {
->>             "type": "internal",
->>             "header": [ 1, 2, 4]
->>         }
->>         ]
->>   }}
->>
->> result:
->> {"return": {}}
->> {"timestamp": {"seconds": 1709721640, "microseconds": 275345}, "event": "SHUTDOWN", "data": {"guest": false, "reason": "host-signal"}}
->>
->> Many thanks
->> Yuquan
->>
-> 
 
