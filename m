@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90DAB87548B
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 17:51:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 676D1875509
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 18:20:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riGx8-0002Bm-Tw; Thu, 07 Mar 2024 11:50:43 -0500
+	id 1riHP5-00040V-Pk; Thu, 07 Mar 2024 12:19:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1riGwm-0001WZ-GL
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 11:50:22 -0500
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1riGwb-0002y9-Q4
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 11:50:20 -0500
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-5135486cfccso1210923e87.0
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 08:50:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709830207; x=1710435007; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1I46XS+O1jQxKPl+LOAjTnF0s4MIyjTZwxpWLE4Enkg=;
- b=qSbPzbLqQEzZAd0XmZ4Dy8iBAMzyRCTEUSbT4lK8o06fl+CyynmDrYYkyrhULp3CZ1
- WrGmExHdhpNIoCr16NTIrOIB3R1vRmGRJbnONO1gU6rsdPDc9+p2SYkoFGQey1hhrMcD
- k83Gl3H6X0H1o2wJnS/NjFCMsfzRjqubspsUGbFc6H03HwxsZhe1VPHbPRGnx6Xx7lrn
- BriiFwHderjbPwoDqOoN+1A6tZ8JcTmDPeKV0A9/ZOo0wuX6gsWVQyqiSH9vkLFXv0xF
- 8c27ddxDU8KWXrO9fl6vPyVjTqDuTX2PZ9bYIiCmZzxgVbC+wo1BQFQpp81iHn7ca7Rv
- iXNw==
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1riHP4-00040D-Cz
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 12:19:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1riHP2-00050k-OQ
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 12:19:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709831971;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=FWFfue0MrmIi6XhNAHGxvFZRuMoDvKEawI3WDj8n89E=;
+ b=Khj4rJelHZ4qV4pMphe7XpjfRE2SFh+XALSIcTngxn9VZ5jPjiiAi0cbJWUPHeV1mPwbpp
+ WjJHgUo5smjcHumpk9JW57TCIs5anDVUuRswcqgaMF6qXytc04G5WYMin6xYRw/kpUqUkt
+ j+zv6ZjgkV0/rgTRZg5I+3AKOTQrSoA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-5-tifrb2qvMQOYLKxnpi5hAg-1; Thu, 07 Mar 2024 12:19:29 -0500
+X-MC-Unique: tifrb2qvMQOYLKxnpi5hAg-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-40e435a606aso7171705e9.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 09:19:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709830207; x=1710435007;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1I46XS+O1jQxKPl+LOAjTnF0s4MIyjTZwxpWLE4Enkg=;
- b=arE8QKypsTG6ypJg6gBxbfhMIgYaDe213Br0Vv9QmrjiHZCB+rBKmPZo0qfbAKh8F8
- 5/qSmmKcstzkOWQnDVtnYBcknz1LmEiYm/jL7S5LRdPxq08PPqr8/5Dha1403HrtHAu9
- TG/zOsj2FCd5zH/Ae7Kr6PBdLDbLP67FvqlowzM5tuxDWdZuA7tdaSitcwzxPSEZsvQa
- T6pkN7YOeKfAq+/a++rLYtk9r7XOYexcNvjqYKMejEV3EI6IixLsxgm3cr3248J4lrRg
- fn1pkEZuPxp6mp3fKi4BHXcIc6vkvOqC7c6A3Vg5L5FV9u3bfeQHDb90EmNyPNY3yH7P
- MTZg==
+ d=1e100.net; s=20230601; t=1709831968; x=1710436768;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=FWFfue0MrmIi6XhNAHGxvFZRuMoDvKEawI3WDj8n89E=;
+ b=buHwX5HJrlMWrS8/j/GhDgpK7+zmjd+6/9hWnQXw8u2HKJeeptw+y9wguSsXoTzs9u
+ MM5DufMeAzMpJow+Yp0Wo1JC0VKChR/0zMHFWF6FQKdFiSdyRvSWqOhUPyEXE6O+I3VM
+ xoMN9rPkur1fD37AlvicFDQTNHA0up12Zf99eE6XQM5sLg5n/9F4liRRGvTFQ3FI+Ssy
+ e5lmqrJ0F3wxb7iqj5QqQPhKGNZ6DykeuqSdUV0BCQ+gbdNoPW7eQW0yEg6hBR8QBg3C
+ 2jcV2sdzo01bYIlfQ5aIN9bQDTy5/DQ58nHyUHKpND9CYcNT4CDyqaBulM97lOnY/tb7
+ sI8g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWr4Xc+/snTdNOMQ+28dD1yMYmdQtRjUMN+HhfRxtKJgaxMNGc9EBpSnGOAUJu22BNmAMYDlpI1rkmadT6xZiFnHm7wrgE=
-X-Gm-Message-State: AOJu0YwP+tVGyOnnneRAOXs0/OHirbviTrL5EIRya6vciQ6TM7oAuFre
- ivrDD8iZYGT8W42zvQTJZ+fifQ9hY/rmaQrcF6g3grRKN5qCxh9bzrtYIxk1bDs=
-X-Google-Smtp-Source: AGHT+IGYTTxN/obWy5zRo+X5ts6U7agdd3tXwDsLVE3mD4/cWliSdjB/4DqLWechMUwRAEur6bQsCg==
-X-Received: by 2002:ac2:4284:0:b0:513:58c7:371f with SMTP id
- m4-20020ac24284000000b0051358c7371fmr1734270lfh.65.1709830207158; 
- Thu, 07 Mar 2024 08:50:07 -0800 (PST)
-Received: from [192.168.69.100] (pir44-h02-176-184-37-132.dsl.sta.abo.bbox.fr.
- [176.184.37.132]) by smtp.gmail.com with ESMTPSA id
- v12-20020a05600c444c00b004129ed6f9cbsm3269016wmn.4.2024.03.07.08.50.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Mar 2024 08:50:06 -0800 (PST)
-Message-ID: <7561cc84-baf0-4185-90f4-43cb2246dc8a@linaro.org>
-Date: Thu, 7 Mar 2024 17:50:04 +0100
+ AJvYcCXaNZ5D3KbwsRx7KUn88OFmGYFTIM9noCtcODiTbFfkv2D+lB2oMOJ29cZyTUF+uEJ4OPwxKj9lURCOZEGwTT4hZeXou9s=
+X-Gm-Message-State: AOJu0YxQJTaJKtO6XVnJGz1K1iGnMtyPF5jseIVSKMFlyjlqOMCFirMX
+ mJ3kNysnY9VjOfR/Z4T191ORFvbVSNnNqJRB1MX8sNDP3Xf7OZNx6mgr8S0Dq0DH0iZ0gP9qBNR
+ 61ph0PO66Z2VN9grDtxUoC/z3VD/UZrnPL6FIOqThKCczD0JvgnULIAE81Y7kyZSwCstRgSB9Mi
+ LTv2aGHv4Gk2hvw2GZ2e3HiddmlRg=
+X-Received: by 2002:a05:600c:3ba5:b0:412:f979:587b with SMTP id
+ n37-20020a05600c3ba500b00412f979587bmr3388006wms.17.1709831968560; 
+ Thu, 07 Mar 2024 09:19:28 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHH4SndGG4a9Ag9uhYoR6/XgpnNeIB+wrCsvNQQTrgzg8dfWY1F/NzB3kmNSH4on5Pedt2+QFyr+40JYPvoti4=
+X-Received: by 2002:a05:600c:3ba5:b0:412:f979:587b with SMTP id
+ n37-20020a05600c3ba500b00412f979587bmr3387988wms.17.1709831968221; Thu, 07
+ Mar 2024 09:19:28 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] physmem: Reduce local variable scope in
- flatview_read/write_continue()
-Content-Language: en-US
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
-Cc: linuxarm@huawei.com
-References: <20240307153710.30907-1-Jonathan.Cameron@huawei.com>
- <20240307153710.30907-3-Jonathan.Cameron@huawei.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240307153710.30907-3-Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20240307114744.1135711-1-ppandit@redhat.com>
+ <ZenGQZE4hlOR6J4V@redhat.com>
+In-Reply-To: <ZenGQZE4hlOR6J4V@redhat.com>
+From: Prasad Pandit <ppandit@redhat.com>
+Date: Thu, 7 Mar 2024 22:49:11 +0530
+Message-ID: <CAE8KmOzQVFrK3kh6M3-TAm_=hsGB7KP+wjN8synRotd68A_O-Q@mail.gmail.com>
+Subject: Re: [PATCH] linux-aio: add IO_CMD_FDSYNC command support
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
+ Stefan Hajnoczi <stefanha@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.583,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,18 +96,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/3/24 16:37, Jonathan Cameron wrote:
-> Precursor to factoring out the inner loops for reuse.
-> 
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
-> v2: Picked up tag from Peter.
->   system/physmem.c | 40 ++++++++++++++++++++--------------------
->   1 file changed, 20 insertions(+), 20 deletions(-)
+Hi,
 
-Nice finding. Similar pattern in system/memory_ldst.c.inc.
+On Thu, 7 Mar 2024 at 19:21, Kevin Wolf <kwolf@redhat.com> wrote:
+> Kernel support for this is "relatively" new, added in 2018. Should we
+> fall back to the thread pool if we receive -EINVAL?
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+laio_co_submit
+  laio_do_submit
+    ioq_submit
+      io_submit
+
+* When an aio operation is not supported by the kernel, io_submit()
+call would return '-EINVAL', indicating that the specified (_FDSYNC)
+operation is invalid for the file descriptor. ie. an error (-EINVAL)
+needs to reach the 'laio_co_submit' routine above, to make its caller
+fall back on the thread-pool functionality as default.
+
+* Strangely the 'ioq_submit' routine above ignores the return value
+from io_submit and returns void. I think we need to change that to be
+able to fall back on the thread-pool functionality. I'll try to see if
+such a change works as expected. Please let me know if there's another
+way to fix this.
+
+Thank you.
+---
+  - Prasad
 
 
