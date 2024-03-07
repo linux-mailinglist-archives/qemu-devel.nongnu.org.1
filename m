@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C7C874C3A
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 11:21:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 512AC874C3F
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 11:22:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riAs4-0004Ro-Sh; Thu, 07 Mar 2024 05:21:04 -0500
+	id 1riAs4-0004T2-TT; Thu, 07 Mar 2024 05:21:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1riArx-0004OV-IK
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:20:59 -0500
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+ id 1riAs1-0004RL-7P
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:01 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1riArw-0006qc-2l
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:20:57 -0500
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-5ca29c131ebso630097a12.0
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 02:20:54 -0800 (PST)
+ id 1riArx-0006qr-BM
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:00 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1dc29f1956cso5291585ad.0
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 02:20:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709806853; x=1710411653;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709806856; x=1710411656;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=D5kUM6n9+j+qbS1SUPTKf/+dgcMdpwuEc/L8WCg7irw=;
- b=X5NkaWZSsSZhQo7NIesYwNStXrDDOQStBZExsIR8KarZrWWt/5SvgsrSfzc1Fow6u1
- gJpfux2/LVWIQE2cLvWyQqHl8amEHBJac6wY2B62gwkAdBBRWfe0AfioSO3tsGbTHn6D
- x9Hw7IqOyqZNPuzoKHP+HzXcgoAfPG+DntNN1AnAty9gFpEo5gAH2L/byYqq072vwnhi
- MiESO4U/NvS1zdGZqsSeRGFo2BcjBD3CD9uNUym7pevrosyBDTBG60hxietMc8ZBCN93
- MlB+0/97Wmefk0B6CNuFf3ydKo621xpp/szCvRek5pViOYPSLcZ4rz56f/UZyHGcBxaz
- rwJA==
+ :reply-to; bh=WBQ8wkR+EtpXcrRFUmJL0m8euRcerqarx8Jtcq9C72A=;
+ b=Kn6e5KWwBK7WM0OwcVmR3L7+rvbpMRuMoSsKqHhVil/yjojMUuKShKbdHmeJzGfKVr
+ yCykZZLLIER+W9YUkAOw2vQZShc2atdvPn6EIuXzxEzKbMxobbm7JZ8tGBJ6j/5CO7XA
+ VBcFrxahp9hjuv9SxlBsbm+9y9hxXmgWjlmAT5os/TDIi9bp9YzcWxlP83zKtKRhJe7j
+ qTXPYHa2597P0ZFOKOfd5LM7MS7uDF2jIEoaEltymVhWp1vJfjpaSd4IQE8WFfdfRliP
+ DEBTcj5iqCQ/iYtzkkhJij/IxF8sDfMBVDOzh8OaBOpkUgw09FR7seyluEIIa7e+3fvl
+ Lbsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709806853; x=1710411653;
+ d=1e100.net; s=20230601; t=1709806856; x=1710411656;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D5kUM6n9+j+qbS1SUPTKf/+dgcMdpwuEc/L8WCg7irw=;
- b=UtQGz8hU/UL2Ytt50AbJLKR+f+PqJDxIo/d662z3TFY3uTusYkZC0LOjgcbWyM2472
- kOPZ38zoKtFPCv9PHQBu6GnWAceG92PRQih3DN20qr4NF9yrYMhxFbaeI1QDIiRudiX1
- GmPpzTOkRqGOo0uQx2TJQI8jZomN+rtzYGAwf/8LALmihWt9XdITLiZAFZytZssMnWz6
- 53+u9QrQwgZoOehLFMxBQvHyFqem1kW1EG5GnGwU7YMDQPpgItWC2/EHzZ+No2/sMAMD
- R0LYVmD2WRIwTmMEeP1L2QUz+ejsFbi6/J1pPdltyDMGwttqZy1we8ZYNN9tH9cix9Hv
- uDBg==
-X-Gm-Message-State: AOJu0Ywju54pkHT+hrgRuvQPxxwWR7j5xCT53fQbMgAwdf79o+9g2TEZ
- D2k09jRdWjWnKlU5iMJ4WZmgsAgsq0HcCJ2U0wui0OMbH4qSaCSvcKVbIOTdp8qxX2JhHZapKUM
- 4
-X-Google-Smtp-Source: AGHT+IG/BP+CMvtNKeNBxVJNQQQPYRwZajj1WLf5260/BULR9evmpbMyeimALlMxFDqkx/MjPm384A==
-X-Received: by 2002:a05:6a20:3c9f:b0:1a1:45e4:845a with SMTP id
- b31-20020a056a203c9f00b001a145e4845amr8091556pzj.11.1709806853183; 
- Thu, 07 Mar 2024 02:20:53 -0800 (PST)
+ bh=WBQ8wkR+EtpXcrRFUmJL0m8euRcerqarx8Jtcq9C72A=;
+ b=TU8xPmmAN6dQLRUjZZRNqx2OZAUPDSUo1ZRAz+mhDgNDoPfeY1ZaDYGDoNbuqeKV7u
+ d4pfGXreYhjFlkJBz9BoOnb3pWVcIPoLZyWGt+b8VhJZqPqCqO3b3ipGqwmX8qijhUlY
+ DIBtjV2CL12vtE6ZpImCxvrA5QxSRrs+U30e++bKkDhwzmNXot4tjhf1mmmMvK0MLUC2
+ MCyhKVP8vjV89DCjNHUSW2p9umJxZGJ2gZwIwIyu6TOpd1AvoJOHLCNAbOB8qP9Y4YjP
+ qEpruJ0d0A91DjrdJrtHWzgnLBeHMUAUiJ/IC00AzZQ9cHY8pT0iRMsxDhS1x2QukGRQ
+ hxvg==
+X-Gm-Message-State: AOJu0Yx0KCxfGM7/cUude3/+QeHvrbIMFtFSzKFnqJK+Rk0rnEk/REBp
+ S3ZLaeAjgLQAzTqOWYXOJXS6yzj1PQAV4iaGhGc5umrJKu4Fh/vV9c8Cp/SUwKk=
+X-Google-Smtp-Source: AGHT+IH7LtUCCaMRojonRof2MgK29sUVz9nymfvxPhS9MuGx48/VthnsbjgDs/bjCBpHETxdo4Y5Ig==
+X-Received: by 2002:a17:902:ea04:b0:1db:92e1:2e53 with SMTP id
+ s4-20020a170902ea0400b001db92e12e53mr9633335plg.40.1709806856083; 
+ Thu, 07 Mar 2024 02:20:56 -0800 (PST)
 Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
  by smtp.gmail.com with UTF8SMTPSA id
- h15-20020a170902680f00b001dd090a7c00sm8800575plk.292.2024.03.07.02.20.51
+ f12-20020a170902e98c00b001dd5f5b1ca4sm210323plb.309.2024.03.07.02.20.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Mar 2024 02:20:52 -0800 (PST)
+ Thu, 07 Mar 2024 02:20:55 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 07 Mar 2024 19:20:44 +0900
-Subject: [PATCH v4 01/19] contrib/elf2dmp: Remove unnecessary err flags
+Date: Thu, 07 Mar 2024 19:20:45 +0900
+Subject: [PATCH v4 02/19] contrib/elf2dmp: Assume error by default
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240307-elf2dmp-v4-1-4f324ad4d99d@daynix.com>
+Message-Id: <20240307-elf2dmp-v4-2-4f324ad4d99d@daynix.com>
 References: <20240307-elf2dmp-v4-0-4f324ad4d99d@daynix.com>
 In-Reply-To: <20240307-elf2dmp-v4-0-4f324ad4d99d@daynix.com>
 To: Viktor Prutyanov <viktor.prutyanov@phystech.edu>, 
  Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::52a;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52a.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -93,103 +92,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-They are always evaluated to 1.
+A common construct in contrib/elf2dmp is to set "err" flag and goto
+in error paths. In such a construct, there is only one successful path
+while there are several error paths, so it will be more simpler to
+initialize "err" flag set, and clear it in the successful path.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- contrib/elf2dmp/pdb.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ contrib/elf2dmp/download.c |  4 +---
+ contrib/elf2dmp/main.c     | 15 +++------------
+ 2 files changed, 4 insertions(+), 15 deletions(-)
 
-diff --git a/contrib/elf2dmp/pdb.c b/contrib/elf2dmp/pdb.c
-index 40991f5f4c34..abf17c2e7c12 100644
---- a/contrib/elf2dmp/pdb.c
-+++ b/contrib/elf2dmp/pdb.c
-@@ -177,7 +177,6 @@ static int pdb_init_segments(struct pdb_reader *r)
+diff --git a/contrib/elf2dmp/download.c b/contrib/elf2dmp/download.c
+index bd7650a7a27f..902dc04ffa5c 100644
+--- a/contrib/elf2dmp/download.c
++++ b/contrib/elf2dmp/download.c
+@@ -11,7 +11,7 @@
  
- static int pdb_init_symbols(struct pdb_reader *r)
+ int download_url(const char *name, const char *url)
  {
 -    int err = 0;
-     PDB_SYMBOLS *symbols;
++    int err = 1;
+     FILE *file;
+     CURL *curl = curl_easy_init();
  
-     symbols = pdb_ds_read_file(r, 3);
-@@ -196,7 +195,6 @@ static int pdb_init_symbols(struct pdb_reader *r)
-     /* Read global symbol table */
-     r->modimage = pdb_ds_read_file(r, symbols->gsym_file);
-     if (!r->modimage) {
+@@ -21,7 +21,6 @@ int download_url(const char *name, const char *url)
+ 
+     file = fopen(name, "wb");
+     if (!file) {
 -        err = 1;
-         goto out_symbols;
+         goto out_curl;
      }
  
-@@ -205,7 +203,7 @@ static int pdb_init_symbols(struct pdb_reader *r)
- out_symbols:
-     g_free(symbols);
+@@ -33,7 +32,6 @@ int download_url(const char *name, const char *url)
+             || curl_easy_perform(curl) != CURLE_OK) {
+         unlink(name);
+         fclose(file);
+-        err = 1;
+     } else {
+         err = fclose(file);
+     }
+diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
+index cbc38a7c103a..9b278f392e39 100644
+--- a/contrib/elf2dmp/main.c
++++ b/contrib/elf2dmp/main.c
+@@ -511,7 +511,7 @@ static void pe_get_pdb_symstore_hash(OMFSignatureRSDS *rsds, char *hash)
  
--    return err;
-+    return 1;
- }
- 
- static int pdb_reader_ds_init(struct pdb_reader *r, PDB_DS_HEADER *hdr)
-@@ -228,7 +226,6 @@ static int pdb_reader_ds_init(struct pdb_reader *r, PDB_DS_HEADER *hdr)
- 
- static int pdb_reader_init(struct pdb_reader *r, void *data)
+ int main(int argc, char *argv[])
  {
 -    int err = 0;
-     const char pdb7[] = "Microsoft C/C++ MSF 7.00";
++    int err = 1;
+     QEMU_Elf qemu_elf;
+     struct pa_space ps;
+     struct va_space vs;
+@@ -542,7 +542,6 @@ int main(int argc, char *argv[])
  
-     if (memcmp(data, pdb7, sizeof(pdb7) - 1)) {
-@@ -241,17 +238,14 @@ static int pdb_reader_init(struct pdb_reader *r, void *data)
- 
-     r->ds.root = pdb_ds_read_file(r, 1);
-     if (!r->ds.root) {
+     if (pa_space_create(&ps, &qemu_elf)) {
+         eprintf("Failed to initialize physical address space\n");
 -        err = 1;
-         goto out_ds;
+         goto out_elf;
      }
  
-     if (pdb_init_symbols(r)) {
+@@ -552,7 +551,6 @@ int main(int argc, char *argv[])
+     va_space_create(&vs, &ps, state->cr[3]);
+     if (fix_dtb(&vs, &qemu_elf)) {
+         eprintf("Failed to find paging base\n");
 -        err = 1;
-         goto out_root;
+         goto out_elf;
      }
  
-     if (pdb_init_segments(r)) {
+@@ -561,7 +559,6 @@ int main(int argc, char *argv[])
+     if (va_space_rw(&vs, state->idt.base,
+                 &first_idt_desc, sizeof(first_idt_desc), 0)) {
+         eprintf("Failed to get CPU #0 IDT[0]\n");
 -        err = 1;
-         goto out_sym;
+         goto out_ps;
+     }
+     printf("CPU #0 IDT[0] -> 0x%016"PRIx64"\n", idt_desc_addr(first_idt_desc));
+@@ -586,7 +583,6 @@ int main(int argc, char *argv[])
+ 
+     if (!kernel_found) {
+         eprintf("Failed to find NT kernel image\n");
+-        err = 1;
+         goto out_ps;
      }
  
-@@ -264,7 +258,7 @@ out_root:
- out_ds:
-     pdb_reader_ds_exit(r);
+@@ -600,45 +596,40 @@ int main(int argc, char *argv[])
  
--    return err;
-+    return 1;
- }
- 
- static void pdb_reader_exit(struct pdb_reader *r)
-@@ -278,7 +272,6 @@ static void pdb_reader_exit(struct pdb_reader *r)
- int pdb_init_from_file(const char *name, struct pdb_reader *reader)
- {
-     GError *gerr = NULL;
--    int err = 0;
-     void *map;
- 
-     reader->gmf = g_mapped_file_new(name, TRUE, &gerr);
-@@ -291,7 +284,6 @@ int pdb_init_from_file(const char *name, struct pdb_reader *reader)
-     reader->file_size = g_mapped_file_get_length(reader->gmf);
-     map = g_mapped_file_get_contents(reader->gmf);
-     if (pdb_reader_init(reader, map)) {
+     if (download_url(PDB_NAME, pdb_url)) {
+         eprintf("Failed to download PDB file\n");
 -        err = 1;
-         goto out_unmap;
+         goto out_ps;
      }
  
-@@ -300,7 +292,7 @@ int pdb_init_from_file(const char *name, struct pdb_reader *reader)
- out_unmap:
-     g_mapped_file_unref(reader->gmf);
+     if (pdb_init_from_file(PDB_NAME, &pdb)) {
+         eprintf("Failed to initialize PDB reader\n");
+-        err = 1;
+         goto out_pdb_file;
+     }
  
--    return err;
-+    return 1;
- }
+     if (!SYM_RESOLVE(KernBase, &pdb, KdDebuggerDataBlock) ||
+             !SYM_RESOLVE(KernBase, &pdb, KdVersionBlock)) {
+-        err = 1;
+         goto out_pdb;
+     }
  
- void pdb_exit(struct pdb_reader *reader)
+     kdbg = get_kdbg(KernBase, &pdb, &vs, KdDebuggerDataBlock);
+     if (!kdbg) {
+-        err = 1;
+         goto out_pdb;
+     }
+ 
+     if (fill_header(&header, &ps, &vs, KdDebuggerDataBlock, kdbg,
+             KdVersionBlock, qemu_elf.state_nr)) {
+-        err = 1;
+         goto out_kdbg;
+     }
+ 
+     if (fill_context(kdbg, &vs, &qemu_elf)) {
+-        err = 1;
+         goto out_kdbg;
+     }
+ 
+     if (write_dump(&ps, &header, argv[2])) {
+         eprintf("Failed to save dump\n");
+-        err = 1;
+         goto out_kdbg;
+     }
+ 
++    err = 0;
++
+ out_kdbg:
+     g_free(kdbg);
+ out_pdb:
 
 -- 
 2.44.0
