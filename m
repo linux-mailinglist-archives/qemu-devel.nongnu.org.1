@@ -2,65 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0449874DF3
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 12:46:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBBD4874E19
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 12:49:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riCCi-0002oL-Ss; Thu, 07 Mar 2024 06:46:28 -0500
+	id 1riCFE-00058p-Jp; Thu, 07 Mar 2024 06:49:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1riCCc-0002nR-Qh
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 06:46:23 -0500
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ id 1riCFB-00057Y-Sh
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 06:49:01 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1riCCa-0007A5-PN
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 06:46:22 -0500
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-512b3b04995so575174e87.3
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 03:46:19 -0800 (PST)
+ id 1riCFA-0008Q2-B7
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 06:49:01 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-413131d40f4so1535025e9.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 03:48:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709811977; x=1710416777; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709812139; x=1710416939; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to
  :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
  :date:message-id:reply-to;
- bh=3FEKikgmbE/r5zzOA+k0Nr1gqI/iXTequF89jFi37Kw=;
- b=Z36s6xhVAc9ZmFLjTnCoRv9XWYy6Grc0ktoRpiklBS0qCZxny84w+5m+U0xuZNXBR6
- wIHLYKY5ikOvDMCzxYibHIubFH/tX9Gqf7WHhFXzR/iVbTaltF1l+2m7RUBn9aBSNVdE
- YUcBNVQLQllCSLIujUuWdbNEDMfo2eeYNjB/dvqsTe44qPMRJaZd9XvR25lppO+fV4L4
- BRvHhjeUHRd1+VuFwqDn8jnoG8ahIO6UxPI4Y0Ahp8sWUpGGcyMC5c7YBu78OUxQKNKi
- O/GIiFMHLQusKdCVLXvUc3SkSTMSu/TmIHzwiCjtia8wPRqs+Wmc/TsAY7+iN/0xLoEx
- e9wA==
+ bh=G/SbbEMUCs/VycRuaZQyQX/2EumGC/JTHxyB6vdSb1o=;
+ b=qt5v3AjDbin5KRRelugwE7u1bl9j6wai4BnQbvaDpbub1yJQX8ZceL8gg5uvtQtuDY
+ 1/DXz1UCi4A/PgL86CK7rS2ON5aMB8fPIw1+GvKS9I5UqqqgwZSVkg03Fje88/YeEyCH
+ gL9zzCBYPk02pVSNksLmZwoVgxiiJttXTzB2LQG8ewMMXLCmHl2fgF3Msj2C1x39RUCy
+ puJJv3Rr3jsD9Oxv5LpLM175mXCAyEt8mCbp5MtoKOZbpoUPJnL2bJDjk/mtsaviu123
+ NVaoSLhPeENEl9IMH+vdjazDPtZ/lYhYZGMdzo+UZyI1ZhZo65LbPmLczijMu2qLK/ie
+ 0CBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709811977; x=1710416777;
+ d=1e100.net; s=20230601; t=1709812139; x=1710416939;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to
  :references:user-agent:subject:cc:to:from:date:x-gm-message-state
  :from:to:cc:subject:date:message-id:reply-to;
- bh=3FEKikgmbE/r5zzOA+k0Nr1gqI/iXTequF89jFi37Kw=;
- b=hs+JbmUeQuIwwEDzP02va7DJnyxWNqVeM/h/86IlpukMv+QzrtCWqxlFhTP0uLn49K
- vIClFe77xPFdvbmBc7UfRF0mWUJuoXZ378BCGXuNzLVhvQsL29wYaQ1gdYOsstLzhiLp
- tLqVVcZITnWDBgKdHAVz6tTXyMmRExlm6is/vr6PDWmBRoLxSMmsdoNQHMEYinvijLew
- ddzGzuRaLgaWyp8U22APSix2asRwUtLlIAn+lB7YlYunYpDxPyGgmp/FQYUNPZ2PXDI/
- UV1Xhi3qvUGHXJm00MYrAAkZ+Mkx8epixcq+iRhDq4IS3lRGgwmkWuamspIxkAB8L66+
- 4k3g==
-X-Gm-Message-State: AOJu0Yz8TmhStO5CqjpJ3MBfTf4XtP4NeQbaUVnWGyNXRK90q1diwOnS
- H3vLdS+Xefg5yFc7Ombkt0zXQnN9aFx4nbY4WV8Le+4ZYKQAz6GtPsyMCLlnksLpkNPfkTaEeTV
- 2BQw=
-X-Google-Smtp-Source: AGHT+IFH3wkwuGOA+F/yj5AIdWusXZJacoA67XWG5i8L99raCDY6RqXWR5e9a7fc4f3xfADZKnZc2w==
-X-Received: by 2002:ac2:5223:0:b0:513:4777:f8c9 with SMTP id
- i3-20020ac25223000000b005134777f8c9mr1204156lfl.6.1709811976634; 
- Thu, 07 Mar 2024 03:46:16 -0800 (PST)
-Received: from meli.delivery (adsl-101.37.6.0.tellas.gr. [37.6.0.101])
- by smtp.gmail.com with ESMTPSA id
- j33-20020a05600c1c2100b00413101235b0sm1951412wms.2.2024.03.07.03.46.16
+ bh=G/SbbEMUCs/VycRuaZQyQX/2EumGC/JTHxyB6vdSb1o=;
+ b=FjWnG+0Q5910ihTDHa9/M5L7o6AMc1V0q/b8pTrR7sqj1ygHBtcD0GDFqWMm5W0oaW
+ ZKvu2Th8N+SYZSW9ABg86bWuIrV42ERcJtpBBHw5UIZsEPvTg29dCoB+IZ2HjIvwf9/H
+ 1Zszof65V1SVoaI1wcJdMhooxl1UKmWEjqNV6OUMYesjCnbPwSWXbX5M95s8s3ayU78A
+ Ot0aRrlx0LDjkZjyww/kJXWyNUx5Kvv2bwy0uCQ0gY8eGzb8bvaTO5P1B3lIW5BUbIDD
+ rlgVS1XeRT5aOFZD3VDUVp/JWCec6ZpdiBDkSBxmsQYEqKFGwkFAgH/eAX9+5yS0hPZz
+ OSTw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVCuWHiMBvaK7aEP2AStQczgzgaUcw62g5ePUf12Yi+Z7wHAXYPzKQRDudqPcpcYT1Q7a3Dp6runA9V2hwvCBJZX4ig5S8=
+X-Gm-Message-State: AOJu0YyR7hFnRTVkZ+UPTuFABRKcrtMjYmy4lYk1INIip8TEB4mlfZtp
+ UGST3RGogspZ0ELKUjVUGPGJDp6ZXbYoUolHTYfXBdCxeYdhxafRdjHV2sbM83Y=
+X-Google-Smtp-Source: AGHT+IGkmoMw3a1DPayc7QnWHr4dDS3sIBh8SO1Tg4XHtfrHtXIYWWCQjxeTzAsb6sqGUSlj3ULtUw==
+X-Received: by 2002:a05:600c:3c86:b0:412:8d98:78a with SMTP id
+ bg6-20020a05600c3c8600b004128d98078amr14629463wmb.13.1709812138686; 
+ Thu, 07 Mar 2024 03:48:58 -0800 (PST)
+Received: from meli.delivery (adsl-101.109.242.224.tellas.gr.
+ [109.242.224.101]) by smtp.gmail.com with ESMTPSA id
+ fa18-20020a05600c519200b004130c1dc29csm2432000wmb.22.2024.03.07.03.48.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Mar 2024 03:46:16 -0800 (PST)
-Date: Thu, 07 Mar 2024 13:43:50 +0200
+ Thu, 07 Mar 2024 03:48:58 -0800 (PST)
+Date: Thu, 07 Mar 2024 13:46:27 +0200
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: qemu-devel@nongnu.org,
- Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>
+To: qemu-arm@nongnu.org,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ qemu-devel@nongnu.org
 Cc: Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
  David Woodhouse <dwmw@amazon.co.uk>, Thomas Huth <thuth@redhat.com>,
  qemu-arm@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>,
@@ -68,27 +70,29 @@ Cc: Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
  Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>,
  xen-devel@lists.xenproject.org,
  Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: Re: [PATCH-for-9.0 1/9] hw/xen/hvm: Inline TARGET_PAGE_ALIGN() macro
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: Re: [PATCH-for-9.0 2/9] hw/xen/hvm: Propagate page_mask to a pair of
+ functions
 User-Agent: meli 0.8.5-rc.3
 References: <20231114163123.74888-1-philmd@linaro.org>
- <20231114163123.74888-2-philmd@linaro.org>
-In-Reply-To: <20231114163123.74888-2-philmd@linaro.org>
-Message-ID: <9z7d2.v9odatywozfr@linaro.org>
+ <20231114163123.74888-3-philmd@linaro.org>
+In-Reply-To: <20231114163123.74888-3-philmd@linaro.org>
+Message-ID: <9z7hk.qddjfbvts5k7@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x130.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,30 +109,89 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Tue, 14 Nov 2023 18:31, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->Use TARGET_PAGE_SIZE to calculate TARGET_PAGE_ALIGN.
+>We are going to replace TARGET_PAGE_MASK by a
+>runtime variable. In order to reduce code duplication,
+>propagate TARGET_PAGE_MASK to get_physmapping() and
+>xen_phys_offset_to_gaddr().
 >
 >Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 >---
-> hw/i386/xen/xen-hvm.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
+> hw/i386/xen/xen-hvm.c | 18 ++++++++++--------
+> 1 file changed, 10 insertions(+), 8 deletions(-)
 >
 >diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
->index f1c30d1384..8aa6a1ec3b 100644
+>index 8aa6a1ec3b..3b10425986 100644
 >--- a/hw/i386/xen/xen-hvm.c
 >+++ b/hw/i386/xen/xen-hvm.c
->@@ -678,7 +678,7 @@ void xen_arch_set_memory(XenIOState *state, MemoryRegionSection *section,
->     trace_xen_client_set_memory(start_addr, size, log_dirty);
+>@@ -174,11 +174,12 @@ static void xen_ram_init(PCMachineState *pcms,
+>     }
+> }
 > 
->     start_addr &= TARGET_PAGE_MASK;
->-    size = TARGET_PAGE_ALIGN(size);
->+    size = ROUND_UP(size, TARGET_PAGE_SIZE);
+>-static XenPhysmap *get_physmapping(hwaddr start_addr, ram_addr_t size)
+>+static XenPhysmap *get_physmapping(hwaddr start_addr, ram_addr_t size,
+>+                                   int page_mask)
+> {
+>     XenPhysmap *physmap = NULL;
 > 
->     if (add) {
->         if (!memory_region_is_rom(section->mr)) {
+>-    start_addr &= TARGET_PAGE_MASK;
+>+    start_addr &= page_mask;
+> 
+>     QLIST_FOREACH(physmap, &xen_physmap, list) {
+>         if (range_covers_byte(physmap->start_addr, physmap->size, start_addr)) {
+>@@ -188,9 +189,10 @@ static XenPhysmap *get_physmapping(hwaddr start_addr, ram_addr_t size)
+>     return NULL;
+> }
+> 
+>-static hwaddr xen_phys_offset_to_gaddr(hwaddr phys_offset, ram_addr_t size)
+>+static hwaddr xen_phys_offset_to_gaddr(hwaddr phys_offset, ram_addr_t size,
+>+                                       int page_mask)
+> {
+>-    hwaddr addr = phys_offset & TARGET_PAGE_MASK;
+>+    hwaddr addr = phys_offset & page_mask;
+>     XenPhysmap *physmap = NULL;
+> 
+>     QLIST_FOREACH(physmap, &xen_physmap, list) {
+>@@ -252,7 +254,7 @@ static int xen_add_to_physmap(XenIOState *state,
+>     hwaddr phys_offset = memory_region_get_ram_addr(mr);
+>     const char *mr_name;
+> 
+>-    if (get_physmapping(start_addr, size)) {
+>+    if (get_physmapping(start_addr, size, TARGET_PAGE_MASK)) {
+>         return 0;
+>     }
+>     if (size <= 0) {
+>@@ -325,7 +327,7 @@ static int xen_remove_from_physmap(XenIOState *state,
+>     XenPhysmap *physmap = NULL;
+>     hwaddr phys_offset = 0;
+> 
+>-    physmap = get_physmapping(start_addr, size);
+>+    physmap = get_physmapping(start_addr, size, TARGET_PAGE_MASK);
+>     if (physmap == NULL) {
+>         return -1;
+>     }
+>@@ -373,7 +375,7 @@ static void xen_sync_dirty_bitmap(XenIOState *state,
+>     int rc, i, j;
+>     const XenPhysmap *physmap = NULL;
+> 
+>-    physmap = get_physmapping(start_addr, size);
+>+    physmap = get_physmapping(start_addr, size, TARGET_PAGE_MASK);
+>     if (physmap == NULL) {
+>         /* not handled */
+>         return;
+>@@ -633,7 +635,7 @@ void xen_hvm_modified_memory(ram_addr_t start, ram_addr_t length)
+>         int rc;
+>         ram_addr_t start_pfn, nb_pages;
+> 
+>-        start = xen_phys_offset_to_gaddr(start, length);
+>+        start = xen_phys_offset_to_gaddr(start, length, TARGET_PAGE_MASK);
+> 
+>         if (length == 0) {
+>             length = TARGET_PAGE_SIZE;
 >-- 
 >2.41.0
 >
 >
+
 
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
