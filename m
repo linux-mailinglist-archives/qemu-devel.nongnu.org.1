@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2DC6874C42
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 11:22:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC262874C54
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 11:24:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riAsP-0004WY-FD; Thu, 07 Mar 2024 05:21:25 -0500
+	id 1riAsT-0004XK-HZ; Thu, 07 Mar 2024 05:21:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1riAsI-0004WJ-VV
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:19 -0500
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ id 1riAsM-0004Wn-Gq
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:23 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1riAsH-00079P-FQ
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:18 -0500
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-5d8b276979aso547711a12.2
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 02:21:17 -0800 (PST)
+ id 1riAsK-00079x-PM
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:22 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1dc49b00bdbso5849525ad.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 02:21:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709806876; x=1710411676;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709806879; x=1710411679;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=kYp/u0+4A+fT95r0+Uw8gBS/wuGX08IOGh8a1eJEdws=;
- b=3QSm+eq6HoPJ3kZc7iZEV4S75npi9IQkLig9rQTUFt+rIt1eCHNI6Iu6PQrOWL+t0s
- aUxdfmlggf7e6VWnLEAzaGxW5F+Yvc19y0ptwdH/OkDSgiAAZtREofEib8+981qX2dVU
- IXRh5Pcbatzx5VnFy9sX558THxncAdf30BukRQqSi4GtHx45tNX567Iy8jm2k+IcS4bK
- OQLgBUXCNlLAjubcAM7U8rPkEPc5IHpkroglKb0MT8oAAy2kWXQEXEtG1CkDtWJT+DtU
- ctwlWnbtKul7p5hm0EyWtyByf46lBvQWmJHcDkx6DDImf8OhBsjc3QzvAL5FJLZNxpyI
- HgWg==
+ :reply-to; bh=shZdRVaAuTUEJwuhgEsEU4+8uLO5iP81udj39ehMmZA=;
+ b=WjaefdxVHQN+v/I9WYPxKM+HMLO4ZdStUxWPZgPB0SnJSeFDPC/AsktZSdRLV3/ZER
+ i9RpxqI0oZhn3GuDDt5gebR+sGlnn0jSVKUzvIL8c7Uu72MU7WzJOxgJUlOoQUFv2+kf
+ tJEtDsp9bRf8kNjRnNaOdbupdwFJLzM7VsAmrTO1Fif71WDbhOtTHCrnnNcOK3uXvzab
+ WCTVBLky68oPwDtwKrsSne3xUMkKVuWNO+LjRvtRSo3gN98hJPEa40di6k7yZQYz/n0a
+ aMNVXiJFb63ToizOxGuSrPUyMA7En+rIgA6oKfn0eeVnXZYWlBTzRyy3elCz5ohJD2hI
+ 9/tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709806876; x=1710411676;
+ d=1e100.net; s=20230601; t=1709806879; x=1710411679;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kYp/u0+4A+fT95r0+Uw8gBS/wuGX08IOGh8a1eJEdws=;
- b=ZLo+YHCOLL4DNlGcj1ZzrzIiuHbM19GLXBTg4/aE9UNvzgH+o5q7akLixqE4EWdDjS
- uLkUZlj885u71lMVy3Voin465XJzCODoeEPRUUrBHufHzBr/W4QGtbMKaQoqBOjc3DLj
- 7dgzJKQiLSc1RdsPwqXknE7nKLYcqvXocYP8wgaoEircyBrHITfL4/1fH4VIR04kxVJy
- ri+KZ0OL5TEOs4qhuPa84UBmeKio7lYovOMvxXrEkrxHe3WLBk5v63qTtsPfRoW56H74
- QHYt79R7WktJyRk87GiFyxZ3SRmO7eHrtvsCfMHAe57Jmh08aNG3pTMaN+uch+i5aqPi
- ynzQ==
-X-Gm-Message-State: AOJu0Yzz0OXLMOLsCpfnpvsEfnpF9iZaDj+xULD4ysrTkvnk2uJTz2cz
- DocaGk21wn0xnhTy8NzGJX5xy+NcPxyNw7LMYrEDugUECx4+jF7L5An5GC0IO1T1T6HHepxT3Kt
- t
-X-Google-Smtp-Source: AGHT+IGp0m4QZkAdHAahk/AwPLAAL/IdDQCwtFPNRvYGUWBGYQe0FWOceLpi957RqAMAKNvM05AGww==
-X-Received: by 2002:a05:6a20:938f:b0:1a1:52d5:d17 with SMTP id
- x15-20020a056a20938f00b001a152d50d17mr8671578pzh.35.1709806876210; 
- Thu, 07 Mar 2024 02:21:16 -0800 (PST)
+ bh=shZdRVaAuTUEJwuhgEsEU4+8uLO5iP81udj39ehMmZA=;
+ b=IpEBJxk1CmA7xqQ1rZ0kpZ1xO1I4GkFdRZqmGYBZGpR1m/+P8MKhi1o8pba05riNqO
+ Kbi/CqpCQtE0kXhWwmAzL2my0tOlYhmOwRHDS8kJBVmr3zRYkKRQbi3iLfZyAyUFBsHD
+ Fx6yfpCaHQ73unnGGwHWJ0skNvwkrLk4EbusYPfABwcTu11bD/+mhAU3xzg/bJL1NUM8
+ 6VzyopS/mFaCB5JJV66+nuMtU2J2tHkXrEE9YTVFp3k/HmRwlfXcaNMtSWwJXyzp+Ul5
+ Ctauu9VeCoh8oi3OYtHCJ4i2r9MuBf/LE+N9H7VmLHAQ09HgVMSj6OXDbn0A+ONryXb9
+ 4isQ==
+X-Gm-Message-State: AOJu0YyeAcqqMNG2ULYb1GQ8hHOz4Q1RG2ht4462KYpu+0lDfONpwKBk
+ lQV6yygXZC/srumZapvoEXDWFlAwe2qQ9Jqz6mmP0HrGdj98RFuojwNjFc87SjqhDdezaUUzYcw
+ N
+X-Google-Smtp-Source: AGHT+IFS9E7on7QHqwRFZHe90iMnWgvKsB7MqViW/T92QQMSYdEGIhZPqDUIPtx/xxrlUegYzxNt1Q==
+X-Received: by 2002:a17:903:2289:b0:1dd:4064:9f2a with SMTP id
+ b9-20020a170903228900b001dd40649f2amr4227472plh.38.1709806879020; 
+ Thu, 07 Mar 2024 02:21:19 -0800 (PST)
 Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
  by smtp.gmail.com with UTF8SMTPSA id
- m19-20020aa78a13000000b006e509762bc2sm12250118pfa.26.2024.03.07.02.21.06
+ l4-20020a170902f68400b001dcbffec642sm14137868plg.133.2024.03.07.02.21.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Mar 2024 02:21:07 -0800 (PST)
+ Thu, 07 Mar 2024 02:21:18 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 07 Mar 2024 19:20:49 +0900
-Subject: [PATCH v4 06/19] contrib/elf2dmp: Fix error reporting style in
- download.c
+Date: Thu, 07 Mar 2024 19:20:50 +0900
+Subject: [PATCH v4 07/19] contrib/elf2dmp: Fix error reporting style in pdb.c
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240307-elf2dmp-v4-6-4f324ad4d99d@daynix.com>
+Message-Id: <20240307-elf2dmp-v4-7-4f324ad4d99d@daynix.com>
 References: <20240307-elf2dmp-v4-0-4f324ad4d99d@daynix.com>
 In-Reply-To: <20240307-elf2dmp-v4-0-4f324ad4d99d@daynix.com>
 To: Viktor Prutyanov <viktor.prutyanov@phystech.edu>, 
  Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::536;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x536.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -101,72 +100,193 @@ include/qapi/error.h says:
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- contrib/elf2dmp/download.h |  2 +-
- contrib/elf2dmp/download.c | 10 +++++-----
- contrib/elf2dmp/main.c     |  2 +-
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ contrib/elf2dmp/pdb.h  |  2 +-
+ contrib/elf2dmp/main.c |  2 +-
+ contrib/elf2dmp/pdb.c  | 50 +++++++++++++++++++++++++-------------------------
+ 3 files changed, 27 insertions(+), 27 deletions(-)
 
-diff --git a/contrib/elf2dmp/download.h b/contrib/elf2dmp/download.h
-index 5c274925f7aa..f65adb5d0894 100644
---- a/contrib/elf2dmp/download.h
-+++ b/contrib/elf2dmp/download.h
-@@ -8,6 +8,6 @@
- #ifndef DOWNLOAD_H
- #define DOWNLOAD_H
+diff --git a/contrib/elf2dmp/pdb.h b/contrib/elf2dmp/pdb.h
+index 2a50da56ac96..feddf1862f08 100644
+--- a/contrib/elf2dmp/pdb.h
++++ b/contrib/elf2dmp/pdb.h
+@@ -233,7 +233,7 @@ struct pdb_reader {
+     size_t segs_size;
+ };
  
--int download_url(const char *name, const char *url);
-+bool download_url(const char *name, const char *url);
+-int pdb_init_from_file(const char *name, struct pdb_reader *reader);
++bool pdb_init_from_file(const char *name, struct pdb_reader *reader);
+ void pdb_exit(struct pdb_reader *reader);
+ uint64_t pdb_resolve(uint64_t img_base, struct pdb_reader *r, const char *name);
+ uint64_t pdb_find_public_v3_symbol(struct pdb_reader *reader, const char *name);
+diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
+index d295fd92be2f..7a3a7225905e 100644
+--- a/contrib/elf2dmp/main.c
++++ b/contrib/elf2dmp/main.c
+@@ -596,7 +596,7 @@ int main(int argc, char *argv[])
+         goto out_ps;
+     }
  
- #endif /* DOWNLOAD_H */
-diff --git a/contrib/elf2dmp/download.c b/contrib/elf2dmp/download.c
-index 902dc04ffa5c..21306b3fd4c4 100644
---- a/contrib/elf2dmp/download.c
-+++ b/contrib/elf2dmp/download.c
-@@ -9,14 +9,14 @@
- #include <curl/curl.h>
- #include "download.h"
+-    if (pdb_init_from_file(PDB_NAME, &pdb)) {
++    if (!pdb_init_from_file(PDB_NAME, &pdb)) {
+         eprintf("Failed to initialize PDB reader\n");
+         goto out_pdb_file;
+     }
+diff --git a/contrib/elf2dmp/pdb.c b/contrib/elf2dmp/pdb.c
+index abf17c2e7c12..1c5051425185 100644
+--- a/contrib/elf2dmp/pdb.c
++++ b/contrib/elf2dmp/pdb.c
+@@ -158,30 +158,30 @@ static void *pdb_ds_read_file(struct pdb_reader* r, uint32_t file_number)
+     return pdb_ds_read(r->ds.header, block_list, file_size[file_number]);
+ }
  
--int download_url(const char *name, const char *url)
-+bool download_url(const char *name, const char *url)
+-static int pdb_init_segments(struct pdb_reader *r)
++static bool pdb_init_segments(struct pdb_reader *r)
  {
--    int err = 1;
-+    bool success = false;
-     FILE *file;
-     CURL *curl = curl_easy_init();
+     unsigned stream_idx = r->segments;
  
-     if (!curl) {
+     r->segs = pdb_ds_read_file(r, stream_idx);
+     if (!r->segs) {
 -        return 1;
 +        return false;
      }
  
-     file = fopen(name, "wb");
-@@ -33,11 +33,11 @@ int download_url(const char *name, const char *url)
-         unlink(name);
-         fclose(file);
-     } else {
--        err = fclose(file);
-+        success = !fclose(file);
+     r->segs_size = pdb_get_file_size(r, stream_idx);
+     if (!r->segs_size) {
+-        return 1;
++        return false;
      }
  
- out_curl:
-     curl_easy_cleanup(curl);
- 
--    return err;
-+    return success;
+-    return 0;
++    return true;
  }
-diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
-index 09af39422f1e..d295fd92be2f 100644
---- a/contrib/elf2dmp/main.c
-+++ b/contrib/elf2dmp/main.c
-@@ -591,7 +591,7 @@ int main(int argc, char *argv[])
-     sprintf(pdb_url, "%s%s/%s/%s", SYM_URL_BASE, PDB_NAME, pdb_hash, PDB_NAME);
-     printf("PDB URL is %s\n", pdb_url);
  
--    if (download_url(PDB_NAME, pdb_url)) {
-+    if (!download_url(PDB_NAME, pdb_url)) {
-         eprintf("Failed to download PDB file\n");
-         goto out_ps;
+-static int pdb_init_symbols(struct pdb_reader *r)
++static bool pdb_init_symbols(struct pdb_reader *r)
+ {
+     PDB_SYMBOLS *symbols;
+ 
+     symbols = pdb_ds_read_file(r, 3);
+     if (!symbols) {
+-        return 1;
++        return false;
      }
+ 
+     r->symbols = symbols;
+@@ -198,18 +198,18 @@ static int pdb_init_symbols(struct pdb_reader *r)
+         goto out_symbols;
+     }
+ 
+-    return 0;
++    return true;
+ 
+ out_symbols:
+     g_free(symbols);
+ 
+-    return 1;
++    return false;
+ }
+ 
+-static int pdb_reader_ds_init(struct pdb_reader *r, PDB_DS_HEADER *hdr)
++static bool pdb_reader_ds_init(struct pdb_reader *r, PDB_DS_HEADER *hdr)
+ {
+     if (hdr->block_size == 0) {
+-        return 1;
++        return false;
+     }
+ 
+     memset(r->file_used, 0, sizeof(r->file_used));
+@@ -218,22 +218,22 @@ static int pdb_reader_ds_init(struct pdb_reader *r, PDB_DS_HEADER *hdr)
+                 hdr->toc_page * hdr->block_size), hdr->toc_size);
+ 
+     if (!r->ds.toc) {
+-        return 1;
++        return false;
+     }
+ 
+-    return 0;
++    return true;
+ }
+ 
+-static int pdb_reader_init(struct pdb_reader *r, void *data)
++static bool pdb_reader_init(struct pdb_reader *r, void *data)
+ {
+     const char pdb7[] = "Microsoft C/C++ MSF 7.00";
+ 
+     if (memcmp(data, pdb7, sizeof(pdb7) - 1)) {
+-        return 1;
++        return false;
+     }
+ 
+-    if (pdb_reader_ds_init(r, data)) {
+-        return 1;
++    if (!pdb_reader_ds_init(r, data)) {
++        return false;
+     }
+ 
+     r->ds.root = pdb_ds_read_file(r, 1);
+@@ -241,15 +241,15 @@ static int pdb_reader_init(struct pdb_reader *r, void *data)
+         goto out_ds;
+     }
+ 
+-    if (pdb_init_symbols(r)) {
++    if (!pdb_init_symbols(r)) {
+         goto out_root;
+     }
+ 
+-    if (pdb_init_segments(r)) {
++    if (!pdb_init_segments(r)) {
+         goto out_sym;
+     }
+ 
+-    return 0;
++    return true;
+ 
+ out_sym:
+     pdb_exit_symbols(r);
+@@ -258,7 +258,7 @@ out_root:
+ out_ds:
+     pdb_reader_ds_exit(r);
+ 
+-    return 1;
++    return false;
+ }
+ 
+ static void pdb_reader_exit(struct pdb_reader *r)
+@@ -269,7 +269,7 @@ static void pdb_reader_exit(struct pdb_reader *r)
+     pdb_reader_ds_exit(r);
+ }
+ 
+-int pdb_init_from_file(const char *name, struct pdb_reader *reader)
++bool pdb_init_from_file(const char *name, struct pdb_reader *reader)
+ {
+     GError *gerr = NULL;
+     void *map;
+@@ -278,21 +278,21 @@ int pdb_init_from_file(const char *name, struct pdb_reader *reader)
+     if (gerr) {
+         eprintf("Failed to map PDB file \'%s\'\n", name);
+         g_error_free(gerr);
+-        return 1;
++        return false;
+     }
+ 
+     reader->file_size = g_mapped_file_get_length(reader->gmf);
+     map = g_mapped_file_get_contents(reader->gmf);
+-    if (pdb_reader_init(reader, map)) {
++    if (!pdb_reader_init(reader, map)) {
+         goto out_unmap;
+     }
+ 
+-    return 0;
++    return true;
+ 
+ out_unmap:
+     g_mapped_file_unref(reader->gmf);
+ 
+-    return 1;
++    return false;
+ }
+ 
+ void pdb_exit(struct pdb_reader *reader)
 
 -- 
 2.44.0
