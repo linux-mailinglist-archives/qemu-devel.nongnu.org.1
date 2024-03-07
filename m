@@ -2,71 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 295F6875A5D
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 23:38:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B125875A53
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 23:34:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riMNn-0000Ve-RJ; Thu, 07 Mar 2024 17:38:35 -0500
+	id 1riMIp-0007bd-AY; Thu, 07 Mar 2024 17:33:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <angelo@kernel-space.org>)
- id 1riMHu-0007Wj-Ef
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 17:32:30 -0500
-Received: from mail.kernel-space.org ([195.201.34.187])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <angelo@kernel-space.org>)
- id 1riMHo-0001ad-2E
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 17:32:30 -0500
-Received: from kernel-space.org (localhost [127.0.0.1])
- by kernel-space.org (OpenSMTPD) with ESMTP id 4b2621f6;
- Thu, 7 Mar 2024 22:29:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=kernel-space.org; h=from
- :to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding; s=s1; bh=WJUUy3rjmGQ96LDDLXs4int4T00
- =; b=pdOWE2qI8JYVHclphUFxbzfiztIuk+0tFTHVD7A15+KmZF9uho+3kz+d2cE
- S7ds3dTqTQn6eQYBQ02gBXKB+dRsgV5yMADY7WvsGy34msrkFFnryQbp8PtfySmi
- Mcgr27Xc9JPrGhKsehV8BRKecD0ikCbQtT76XC2WJ7MxtotA=
-DomainKey-Signature: a=rsa-sha1; c=nofws; d=kernel-space.org; h=from:to
- :cc:subject:date:message-id:mime-version
- :content-transfer-encoding; q=dns; s=s1; b=UWxFwEMTOrYCEzXqkHeht
- xSXEICIw/KVcDF36sQXOcJUj91tVYDuViUuQszspZ0MX5GMoJ4WZgHvnbxf0C/0N
- 7MUFBnaHh+x27AhISh9fg2zG0ggzd6Iq1sTvy3pLmg2IE1bQLAgRqj0vXQgAPP++
- +97WaYUYO4qTnRcYkX2rrw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel-space.org;
- s=s1; t=1709850588;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=rD5abJrS/1qaVIIVgWVqD38GjZDcefohfHLK99a/vmo=;
- b=chhS//F+dtNpqtUDkjb6WTDUABhzAzsOAuk1RkBIIruM524R8lNkjuY5L4Ic4ZWZ+MuEx+
- gHQPJ+Plxc0RvJKSWSIN4pN+TlP/2qtqXjpPynrY0CLQlgXpI0ZPZ3/BRplYvBlPdPwBDe
- yxZYxgmR93DvPFNdOB0FmURUNq/dgFU=
-Received: from localhost.localdomain
- (host-79-51-238-97.retail.telecomitalia.it [79.51.238.97])
- by kernel-space.org (OpenSMTPD) with ESMTPSA id cf0165d4
- (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO); 
- Thu, 7 Mar 2024 22:29:48 +0000 (UTC)
-From: Angelo Dureghello <angelo@kernel-space.org>
-To: huth@tuxfamily.org
-Cc: qemu-devel@nongnu.org,
-	Angelo Dureghello <angelo@kernel-space.org>
-Subject: [PATCH] hw/m68k/mcf5208: add support for reset
-Date: Thu,  7 Mar 2024 23:31:41 +0100
-Message-ID: <20240307223141.795214-1-angelo@kernel-space.org>
-X-Mailer: git-send-email 2.44.0
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1riMIm-0007b9-JS
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 17:33:24 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1riMIk-00020I-RO
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 17:33:24 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-41317cc388dso907995e9.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 14:33:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1709850801; x=1710455601; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3hyM+80BYWzVWFiaczS48nW8SEV1JCraWr4rPcjyUUE=;
+ b=e5GUKM3EPVggE2sRKMq0U9zFHTuImZL2jcvgbA6c4UQCBLYl+PeMvIzJRzQcRXacDE
+ x7SeDYNJls+7xIqRbyQFDrTTNyj+jTKPVFq6Csk/VL3d2ZqymG2dXK8qqsrQ+O/Dkff2
+ wTNWG5j+Aa4YDCzw3Yo0QhpfoG059whDTIpNrtV1DDP+ndXyD4/NfZFTFxePDMIi/uM0
+ /AqXEhbjp24bCNz9Ho43nfE+BofVsTesDhhBReQ7TWIIQVWCQcmTh6vBsdIWE0MHfK1I
+ /7qmCkJfzvATPnqBG735XFfhu5DVpzRkJbH2oFR2cUydtEd7GXgPve0k4TI9bAcsD6EP
+ Zp9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709850801; x=1710455601;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=3hyM+80BYWzVWFiaczS48nW8SEV1JCraWr4rPcjyUUE=;
+ b=jS0R0a66RUQxM12sD/9UbvVoOfntc/XxBHE7dmjrMfjQWzysHSJxSlSgdNu/+Vmb94
+ zwwdRcNMUxWpx+bL4p/CVJ+B1rXuxYodCy0PSePRr1TIM+4tJfvAlsFrV1d/t1bo2g9X
+ 6SQEq8xNpAhctXCoHxZCdUrn/3clKD0AFPs6eOHJBJWZAF80kTlDL93GA1AsgN5YBCQm
+ W+GfvQcbDAZxFUsiOTIahQxRsG89AizqYWFI1ioF/F+gUzLiMJiMKhhW6KzJoFA9Vyni
+ gDP0v5Kd7Qu8qgGZs/D7U/cpX4IZ9z0YrutALEvln4apLhKS5CwzExZfTXqa5y/5I0oP
+ Ercw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUQmlUhx09jRp4siW0q3oQGdgMje02BlBQ0fVagnyYJ43Z5x/U+t078giMdRYo5gQnY55cQnXUMsyjKWLumvmzOgMtuZGI=
+X-Gm-Message-State: AOJu0YyS1zyy3nVY5lB8GPQNA6WLLFy+JMXre0HzZzV39tKaTQe1lFG1
+ rTWcVclO8oYfmpgyMrXdp4VJag+uLg+J7kQyPIO8dRURSm9e5p6Maj2Y8vmb214=
+X-Google-Smtp-Source: AGHT+IHZLa+EXPjw7AiCozIGW49n8Ui0K1aJ9r9gj0FkvX6ssHpzLE2Pi65BuQg7jgOIwsAfE9CI7w==
+X-Received: by 2002:adf:e6cc:0:b0:33d:6fd8:90d3 with SMTP id
+ y12-20020adfe6cc000000b0033d6fd890d3mr13676125wrm.4.1709850800658; 
+ Thu, 07 Mar 2024 14:33:20 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ h18-20020a5d5052000000b0033cf4e47496sm21162621wrt.51.2024.03.07.14.33.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 07 Mar 2024 14:33:20 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id C17A05F7AD;
+ Thu,  7 Mar 2024 22:33:19 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: Gustavo Romero <gustavo.romero@linaro.org>,  qemu-devel@nongnu.org,
+ peter.maydell@linaro.org,  laurent@vivier.eu,  philmd@linaro.org
+Subject: Re: [PATCH v2 3/5] gdbstub: Save target's siginfo
+In-Reply-To: <637e4407-4519-4d87-981a-acd9b5124970@linaro.org> (Richard
+ Henderson's message of "Thu, 7 Mar 2024 11:09:54 -1000")
+References: <20240307182623.1450717-1-gustavo.romero@linaro.org>
+ <20240307182623.1450717-3-gustavo.romero@linaro.org>
+ <637e4407-4519-4d87-981a-acd9b5124970@linaro.org>
+User-Agent: mu4e 1.12.1; emacs 29.1
+Date: Thu, 07 Mar 2024 22:33:19 +0000
+Message-ID: <87y1atu0y8.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=195.201.34.187;
- envelope-from=angelo@kernel-space.org; helo=mail.kernel-space.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 07 Mar 2024 17:38:33 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,102 +100,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add reset support.
+Richard Henderson <richard.henderson@linaro.org> writes:
 
-Signed-off-by: Angelo Dureghello <angelo@kernel-space.org>
----
- hw/m68k/mcf5208.c | 51 ++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 48 insertions(+), 3 deletions(-)
+> On 3/7/24 08:26, Gustavo Romero wrote:
+>> Save target's siginfo into gdbserver_state so it can be used later, for
+>> example, in any stub that requires the target's si_signo and si_code.
+>> This change affects only linux-user mode.
+>> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+>> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   gdbstub/internals.h    |  3 +++
+>>   gdbstub/user-target.c  |  3 ++-
+>>   gdbstub/user.c         | 14 ++++++++++----
+>>   include/gdbstub/user.h |  6 +++++-
+>>   linux-user/main.c      |  2 +-
+>>   linux-user/signal.c    |  5 ++++-
+>>   6 files changed, 25 insertions(+), 8 deletions(-)
+>> diff --git a/gdbstub/internals.h b/gdbstub/internals.h
+>> index 56b7c13b75..a7cc69dab3 100644
+>> --- a/gdbstub/internals.h
+>> +++ b/gdbstub/internals.h
+>> @@ -58,6 +58,9 @@ typedef struct GDBState {
+>>       int line_csum; /* checksum at the end of the packet */
+>>       GByteArray *last_packet;
+>>       int signal;
+>> +#ifdef CONFIG_USER_ONLY
+>> +    uint8_t siginfo[MAX_SIGINFO_LENGTH];
+>> +#endif
+>
+> If we this in GDBUserState in user.c -- no need for ifdefs then.
 
-diff --git a/hw/m68k/mcf5208.c b/hw/m68k/mcf5208.c
-index 0cfb806c20..b1ab3896d0 100644
---- a/hw/m68k/mcf5208.c
-+++ b/hw/m68k/mcf5208.c
-@@ -20,6 +20,7 @@
- #include "hw/ptimer.h"
- #include "sysemu/sysemu.h"
- #include "sysemu/qtest.h"
-+#include "sysemu/runstate.h"
- #include "net/net.h"
- #include "hw/boards.h"
- #include "hw/loader.h"
-@@ -40,6 +41,8 @@
- #define PCSR_PRE_SHIFT  8
- #define PCSR_PRE_MASK   0x0f00
- 
-+#define RCR_SOFTRST     0x80
-+
- typedef struct {
-     MemoryRegion iomem;
-     qemu_irq irq;
-@@ -185,13 +188,55 @@ static const MemoryRegionOps m5208_sys_ops = {
-     .endianness = DEVICE_NATIVE_ENDIAN,
- };
- 
--static void mcf5208_sys_init(MemoryRegion *address_space, qemu_irq *pic)
-+static uint64_t m5208_rcm_read(void *opaque, hwaddr addr,
-+                               unsigned size)
-+{
-+    qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" HWADDR_PRIX "\n",
-+                  __func__, addr);
-+    return 0;
-+}
-+
-+static void m5208_rcm_write(void *opaque, hwaddr addr,
-+                            uint64_t value, unsigned size)
-+{
-+    switch (addr) {
-+    case 0x0: /* RCR */
-+        if (value & RCR_SOFTRST) {
-+            M68kCPU *cpu = opaque;
-+            CPUState *cs = CPU(cpu);
-+
-+            cpu_reset(cs);
-+            cpu->env.aregs[7] = ldl_phys(cs->as, 0);
-+            cpu->env.pc = ldl_phys(cs->as, 4);
-+            //qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
-+        }
-+        break;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" HWADDR_PRIX "\n",
-+                      __func__, addr);
-+        break;
-+    }
-+}
-+
-+static const MemoryRegionOps m5208_rcm_ops = {
-+    .read = m5208_rcm_read,
-+    .write = m5208_rcm_write,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+};
-+
-+static void mcf5208_sys_init(MemoryRegion *address_space, qemu_irq *pic,
-+                             M68kCPU *cpu)
- {
--    MemoryRegion *iomem = g_new(MemoryRegion, 1);
-+    MemoryRegion *iomem;
-     m5208_timer_state *s;
-     int i;
- 
-+    /* RCM */
-+    iomem = g_new(MemoryRegion, 1);
-+    memory_region_init_io(iomem, NULL, &m5208_rcm_ops, cpu, "m5208-rcm", 0x00000080);
-+    memory_region_add_subregion(address_space, 0xfc0a0000, iomem);
-     /* SDRAMC.  */
-+    iomem = g_new(MemoryRegion, 1);
-     memory_region_init_io(iomem, NULL, &m5208_sys_ops, NULL, "m5208-sys", 0x00004000);
-     memory_region_add_subregion(address_space, 0xfc0a8000, iomem);
-     /* Timers.  */
-@@ -265,7 +310,7 @@ static void mcf5208evb_init(MachineState *machine)
-     mcf_uart_create_mmap(0xfc064000, pic[27], serial_hd(1));
-     mcf_uart_create_mmap(0xfc068000, pic[28], serial_hd(2));
- 
--    mcf5208_sys_init(address_space_mem, pic);
-+    mcf5208_sys_init(address_space_mem, pic, cpu);
- 
-     mcf_fec_init(address_space_mem, 0xfc030000, pic + 36);
- 
--- 
-2.44.0
+Although it does break on FreeBSD's user target:
 
+  FAILED: libqemu-arm-bsd-user.fa.p/gdbstub_user-target.c.o=20
+  cc -m64 -mcx16 -Ilibqemu-arm-bsd-user.fa.p -I. -I.. -Itarget/arm -I../tar=
+get/arm -I../common-user/host/x86_64 -I../bsd-user/include -Ibsd-user/freeb=
+sd -I../bsd-user/freebsd -I../bsd-user/host/x86_64 -Ibsd-user -I../bsd-user=
+ -I../bsd-user/arm -Iqapi -Itrace -Iui -Iui/shader -I/usr/local/include/cap=
+stone -I/usr/local/include/glib-2.0 -I/usr/local/lib/glib-2.0/include -I/us=
+r/local/include -fdiagnostics-color=3Dauto -Wall -Winvalid-pch -Werror -std=
+=3Dgnu11 -O2 -g -fstack-protector-strong -Wempty-body -Wendif-labels -Wexpa=
+nsion-to-defined -Wformat-security -Wformat-y2k -Wignored-qualifiers -Winit=
+-self -Wmissing-format-attribute -Wmissing-prototypes -Wnested-externs -Wol=
+d-style-definition -Wredundant-decls -Wstrict-prototypes -Wtype-limits -Wun=
+def -Wvla -Wwrite-strings -Wno-gnu-variable-sized-type-not-at-end -Wno-init=
+ializer-overrides -Wno-missing-include-dirs -Wno-psabi -Wno-shift-negative-=
+value -Wno-string-plus-int -Wno-tautological-type-limit-compare -Wno-typede=
+f-redefinition -Wthread-safety -iquote . -iquote /tmp/cirrus-ci-build -iquo=
+te /tmp/cirrus-ci-build/include -iquote /tmp/cirrus-ci-build/host/include/x=
+86_64 -iquote /tmp/cirrus-ci-build/host/include/generic -iquote /tmp/cirrus=
+-ci-build/tcg/i386 -pthread -D_GNU_SOURCE -D_FILE_OFFSET_BITS=3D64 -D_LARGE=
+FILE_SOURCE -fno-strict-aliasing -fno-common -fwrapv -ftrivial-auto-var-ini=
+t=3Dzero -fPIE -DNEED_CPU_H '-DCONFIG_TARGET=3D"arm-bsd-user-config-target.=
+h"' '-DCONFIG_DEVICES=3D"arm-bsd-user-config-devices.h"' -MD -MQ libqemu-ar=
+m-bsd-user.fa.p/gdbstub_user-target.c.o -MF libqemu-arm-bsd-user.fa.p/gdbst=
+ub_user-target.c.o.d -o libqemu-arm-bsd-user.fa.p/gdbstub_user-target.c.o -=
+c ../gdbstub/user-target.c
+  In file included from ../gdbstub/user-target.c:18:
+  ../gdbstub/internals.h:62:21: error: use of undeclared identifier 'MAX_SI=
+GINFO_LENGTH'
+     62 |     uint8_t siginfo[MAX_SIGINFO_LENGTH];
+        |                     ^
+  1 error generated.
+  [2084/6731] Compiling C object libqemu-arm
+
+See: https://gitlab.com/stsquad/qemu/-/jobs/6345829419
+
+<snip>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
