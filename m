@@ -2,85 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3908A875A5C
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 23:38:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D02E1875B29
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 00:35:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riMNQ-0000NI-GY; Thu, 07 Mar 2024 17:38:12 -0500
+	id 1riNG3-0000s9-3o; Thu, 07 Mar 2024 18:34:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1riMNL-0000Mx-15
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 17:38:08 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1riNG1-0000s1-Dl
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 18:34:37 -0500
+Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1riMNI-0003Wo-Tc
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 17:38:06 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-33e2268ed96so197092f8f.3
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 14:38:04 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1riNFz-0004kI-UG
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 18:34:37 -0500
+Received: by mail-ot1-x32f.google.com with SMTP id
+ 46e09a7af769-6e4e9cdb604so685904a34.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 15:34:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709851082; x=1710455882; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0fRUzhx9TipIh2U5F16qB9UBZ+vO/FO6wIfMDbXLTlQ=;
- b=VKzRM29eeuyFdtkrVnGmxuq+Qx6yDekhat0xCAp21tQu2UMN4dQZvCD6SF6sDjMia1
- GWaooDJ8zb2jNiphgTH2vvn5SZfr18xOOu/CZHfZwNos/zc0dKcH3s/973zGnisVBCBW
- 1qNCWkk+FiZ1ETrAtxRCSWAirNqHs8uPcOVdqp//oQ7hUZUit55lsOk638s0i628mpN2
- 0r5umC9cllE6iMQRZHACJ/EmXLwdpPMGZXBXLAau/R+iIzSla7pEThtFBaRlmMaFKux4
- sJB2dJ+YMzjCE0gG2rp/EfdveZcFREC7RVZ+JbUC+Ijw0qCCS5xovev9Y8wNcGyMouyl
- jGkQ==
+ d=gmail.com; s=20230601; t=1709854474; x=1710459274; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=TvtzYXlBxDIQHvkk7OR+1bPqq72EzlsJeV1HC/bhQGk=;
+ b=g769FRuibgPng2yU8BXliGLov5qgtZdcpD2polXs/vN1zKbkuxR7AyB6PFoOGn9A4b
+ L+QD+dXpPY3l5iqOa+7YJ422+KGUovOSigNIPE3OoavyIdgS6CsfUcHSRu7QvSZHJwRc
+ Jcht6YnvjCmGUMr7n+RjqlcJ7AIFvr6zoM+BzZZpMe2un95d69qWeoRgfoRElgKNp4rA
+ C1OhW+gRIOWxbSXGWqe10VzAt6FLl8wr7ZmTKWhZ75ARKml1p2bWYbgHeecGk6rQHRqy
+ neavoX4QahKm6Q7qYY5Aw4q4rJE9FAtzHwv5cT0a4nvkhHs4PZGQMkjywx/3Jkv2xcyE
+ od0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709851082; x=1710455882;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=0fRUzhx9TipIh2U5F16qB9UBZ+vO/FO6wIfMDbXLTlQ=;
- b=Bc8Kap7MlVYF+02cM8b610LUvuRh2FQPMCULcyXb+jmnSIoaBxuuLewwkSI2UwyeF2
- q1okLQ3iggsBvah/EULqlAI+9vcL6F2U/e9+/SHGfQ/sHh18pJpLiIR4pNaHNCvULP5D
- EKoAzYyFFpfRBm59+qKZsWiQE7fWY1zdUcBJLVz+Ijx1Nbc3mJRG7Xqc7JOuoJBtwnOp
- KX1joBL6zajM/ZjZTHjmi4wENAzuCVy0kP4/K5kjZLaXdL95HCGY33RCh4Sm+DxBQUg/
- 71p4yqg7ce/995QWqkuAc2K5Kru/eeyh22Eo90N60NeB4igNDHLFkh1kuX9iheKGrxtf
- pqwA==
-X-Gm-Message-State: AOJu0YzXqaER+daPZyUKyQd5P7SC5zAXPBM0Qw69OU+n5cozqBp6azL4
- X2yc9ok21z1xP6Q52MMvcaN7NCSZ2wz1DZ96Cg6cBq+Bexnts5qK7NBCF238RK+qWBU6TqdhJqK
- 5
-X-Google-Smtp-Source: AGHT+IEsylRNJJYzoboGzoscHglDTKNL5VECMQV8HSkKNjKTQHJFceUTrXyr6dzH9IJ+9J6EqGIkTA==
-X-Received: by 2002:adf:f911:0:b0:33e:2099:88da with SMTP id
- b17-20020adff911000000b0033e209988damr13905850wrr.44.1709851081734; 
- Thu, 07 Mar 2024 14:38:01 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- bp16-20020a5d5a90000000b0033e0567e90bsm22080279wrb.5.2024.03.07.14.38.01
+ d=1e100.net; s=20230601; t=1709854474; x=1710459274;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=TvtzYXlBxDIQHvkk7OR+1bPqq72EzlsJeV1HC/bhQGk=;
+ b=BwY8VmVl/yWLy9JFaenR73Frf00R+me0nfvSegby95OKxWJDrEmp888J7p2YpWbxWK
+ oK2KQFhmRrSkIPNXUgQ94Qfa7ZOzJOSka3+BC/IssyrZOKXjI7SwOeW9JYWO7YJqizzL
+ nDWSLzvgLRr+3o44YCgZRb4eRde005NwAzq3lmouWjYy3PqOXlQRSaG4x3ST5vU24+7m
+ yU8JUPItSlZMO2F/prxqK3l8reTd9CgzBoa0zBJg0aXWkUg0esgv4alt/YHvX5Afi23Z
+ Fj/PwT03k81RE7WRF9FsOS2b2sATyuFGM5gyoH6VxHp9sJnEcvkC/P9ulzhsjWl1iM/Q
+ liLQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWkAGjRbviqs4etMtCIDq7Fc1eKkN0YYU4YojEHs+WZ6WrSNgqHSjLDgwwNKGcb+g4V0X95piR2zQlBAKp+/lgyXY6iceQ=
+X-Gm-Message-State: AOJu0Yy4NELWIshv1+lFhRYWxaYuUSK5oWFY7Ui1cisjQ67wJeao478B
+ IES/o5qrnF8pfksa2qQpJv3K/0tZUEvqGfv71fFfTFOKZngI6lIa
+X-Google-Smtp-Source: AGHT+IH3n+2HDtXDeYfwWqHEIFObS9DfRE9bAsUrfAaSVz9lXI49vjH9TOCljpp7WUM5ovliUJEAHg==
+X-Received: by 2002:a05:6830:1db5:b0:6e4:74e9:ece1 with SMTP id
+ z21-20020a0568301db500b006e474e9ece1mr10323287oti.23.1709854474261; 
+ Thu, 07 Mar 2024 15:34:34 -0800 (PST)
+Received: from debian ([2601:641:300:14de:a807:195f:7661:96fe])
+ by smtp.gmail.com with ESMTPSA id
+ p28-20020a631e5c000000b005d6a0b2efb3sm13021593pgm.21.2024.03.07.15.34.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Mar 2024 14:38:01 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id EA3495F873;
- Thu,  7 Mar 2024 22:38:00 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 4/5] include/exec: annotate all the MemoryRegion fields
-In-Reply-To: <ee463c40-8134-4eb7-91ef-23b5f428bb3d@linaro.org> (Richard
- Henderson's message of "Thu, 7 Mar 2024 10:41:27 -1000")
-References: <20240307181105.4081793-1-alex.bennee@linaro.org>
- <20240307181105.4081793-5-alex.bennee@linaro.org>
- <ee463c40-8134-4eb7-91ef-23b5f428bb3d@linaro.org>
-User-Agent: mu4e 1.12.1; emacs 29.1
-Date: Thu, 07 Mar 2024 22:38:00 +0000
-Message-ID: <87sf11u0qf.fsf@draig.linaro.org>
+ Thu, 07 Mar 2024 15:34:33 -0800 (PST)
+From: fan <nifan.cxl@gmail.com>
+X-Google-Original-From: fan <fan@debian>
+Date: Thu, 7 Mar 2024 15:34:18 -0800
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: fan <nifan.cxl@gmail.com>, qemu-devel@nongnu.org,
+ linux-cxl@vger.kernel.org, gregory.price@memverge.com,
+ ira.weiny@intel.com, dan.j.williams@intel.com,
+ a.manzanares@samsung.com, dave@stgolabs.net,
+ nmtadam.samsung@gmail.com, jim.harris@samsung.com,
+ Jorgen.Hansen@wdc.com, wj28.lee@gmail.com, Fan Ni <fan.ni@samsung.com>
+Subject: Re: [PATCH v5 06/13] hw/mem/cxl_type3: Add host backend and address
+ space handling for DC regions
+Message-ID: <ZepO-qfbXX7yOeIK@debian>
+References: <20240304194331.1586191-1-nifan.cxl@gmail.com>
+ <20240304194331.1586191-7-nifan.cxl@gmail.com>
+ <20240306162816.00002e0e@Huawei.com> <ZejAh2O7fDBCcG-N@debian>
+ <20240307121605.00002d7f@Huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240307121605.00002d7f@Huawei.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
+ envelope-from=nifan.cxl@gmail.com; helo=mail-ot1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,79 +102,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Richard Henderson <richard.henderson@linaro.org> writes:
+On Thu, Mar 07, 2024 at 12:16:05PM +0000, Jonathan Cameron wrote:
+> > > > @@ -868,16 +974,24 @@ static int cxl_type3_hpa_to_as_and_dpa(CXLType3Dev *ct3d,
+> > > >                                         AddressSpace **as,
+> > > >                                         uint64_t *dpa_offset)
+> > > >  {
+> > > > -    MemoryRegion *vmr = NULL, *pmr = NULL;
+> > > > +    MemoryRegion *vmr = NULL, *pmr = NULL, *dc_mr = NULL;
+> > > > +    uint64_t vmr_size = 0, pmr_size = 0, dc_size = 0;
+> > > >  
+> > > >      if (ct3d->hostvmem) {
+> > > >          vmr = host_memory_backend_get_memory(ct3d->hostvmem);
+> > > > +        vmr_size = memory_region_size(vmr);
+> > > >      }
+> > > >      if (ct3d->hostpmem) {
+> > > >          pmr = host_memory_backend_get_memory(ct3d->hostpmem);
+> > > > +        pmr_size = memory_region_size(pmr);
+> > > > +    }
+> > > > +    if (ct3d->dc.host_dc) {
+> > > > +        dc_mr = host_memory_backend_get_memory(ct3d->dc.host_dc);
+> > > > +        /* Do we want dc_size to be dc_mr->size or not?? */  
+> > > 
+> > > Maybe - definitely don't want to leave this comment here
+> > > unanswered and I think you enforce it above anyway.
+> > > 
+> > > So if we get here ct3d->dc.total_capacity == memory_region_size(ct3d->dc.host_dc);
+> > > As such we could just not stash total_capacity at all?  
+> > 
+> > I cannot identify a case where these two will be different. But
+> > total_capacity is referenced at quite some places, it may be nice to have
+> > it so we do not need to call the function to get the value every time?
+> 
+> I kind of like having it via one path so that there is no confusion
+> for the reader, but up to you on this one.  The function called is trivial
+> (other than some magic to handle very large memory regions) so
+> this is just a readability question, not a perf one.
+> 
+> Whatever, don't leave the question behind.  Find to have something
+> that says they are always the same size if you don't get rid
+> of the total_capacity representation.
+> 
+I will fix it.
 
-> On 3/7/24 08:11, Alex Benn=C3=A9e wrote:
->> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->> ---
->>   include/exec/memory.h | 47 +++++++++++++++++++++++++++++++++++++++----
->>   1 file changed, 43 insertions(+), 4 deletions(-)
->> diff --git a/include/exec/memory.h b/include/exec/memory.h
->> index 17b741bc4f5..312ed564dbe 100644
->> --- a/include/exec/memory.h
->> +++ b/include/exec/memory.h
->> @@ -778,9 +778,48 @@ bool memory_get_xlat_addr(IOMMUTLBEntry *iotlb, voi=
-d **vaddr,
->>   typedef struct CoalescedMemoryRange CoalescedMemoryRange;
->>   typedef struct MemoryRegionIoeventfd MemoryRegionIoeventfd;
->>   -/** MemoryRegion:
->> - *
->> - * A struct representing a memory region.
->> +/**
->> + * struct MemoryRegion - represents a memory region
->> + * @parent_obj: parent QOM object for the region
->> + * @romd_mode: if true ROM devices accessed directly rather than with @=
-ops
->> + * @ram: true if a RAM-type device with a @ram_block
->> + * @subpage: true if region covers a subpage
->> + * @readonly: true for RAM-type devices that are readonly
->> + * @nonvolatile: true for nonvolatile RAM-type devices (e.g. NVDIMM)
->> + * @rom_device: true for a ROM device, see also @romd_mode
->> + * @flush_coalesced_mmio: true to flush any queued coalesced MMIO
->> + * operations before access
->> + * @unmergeable: this section should not get merged with adjacent
->> + * sections
->> + * @dirty_log_mask: dirty events region cares about (see DIRTY_ flags)
->> + * @is_iommu: true if part of an IOMMU device
->> + * @ram_block: backing @RamBlock if @ram is true
->> + * @owner: base QOM object that owns this region
->> + * @dev: base Device that owns this region
->> + * @ops: access operations for MMIO or @romd_mode devices
->> + * @opaque: @dev specific data, passed with @ops
->> + * @container: parent `MemoryRegion`
->> + * @mapped_via_alias: number of times mapped via @alias, container
->> + * might be NULL
->> + * @size: size of @MemoryRegion
->> + * @addr: physical hwaddr of @MemoryRegion
->> + * @destructor: cleanup function when @MemoryRegion finalized
->> + * @align: alignment requirements for any physical backing store
->> + * @terminates: true if this @MemoryRegion is a leaf node
->> + * @ram_device: true if @ram device should use @ops to access
->> + * @enabled: true once initialised, false once finalized
->> + * @vga_logging_count: count of memory logging clients
->> + * @alias: link to aliased @MemoryRegion
->> + * @alias_offset: offset into aliased region
->> + * @priority: priority when resolving overlapping regions
->> + * @subregions: list of subregions in this region
->> + * @subregions_link: next subregion in the chain
->> + * @coalesced: list of coalesced memory ranges
->> + * @name: name of memory region
->> + * @ioeventfd_nb: count of @ioeventfds for region
->> + * @ioeventfds: ioevent notifiers for region
->> + * @rdm: if exists see #RamDiscardManager
->> + * @disable_reentrancy_guard: if true don't error if device accesses it=
-self
->>    */
->
-> Why as one big block rather than line by line?
-> The block is less likely to be properly kept up-to-date and is much
-> harder to read.
+For static capability, we have a variable static_mem_size, although we
+can calculate it from volatile and non-volatile memory region size.
+There are quite some places need to get the dynamic capacity, it is much
+more convenient to have a variable ready to use, I will keep it for
+now.
 
-The inline syntax is a little more prone to parse failures and
-annoyingly can't group multiple fields in one inline comment block. But
-I can certainly move it inline if that preferable.
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Fan
+> 
+> Jonathan
 
