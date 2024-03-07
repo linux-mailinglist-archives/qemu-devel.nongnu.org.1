@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B9A6874C4B
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 11:23:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F033E874C45
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 11:22:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riAsY-0004pj-8A; Thu, 07 Mar 2024 05:21:34 -0500
+	id 1riAsa-0004vD-AX; Thu, 07 Mar 2024 05:21:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1riAsU-0004cl-Tb
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:30 -0500
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1riAsX-0004q2-PL
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:33 -0500
+Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1riAsT-0007Aq-76
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:30 -0500
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-29b70bf6c58so472121a91.0
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 02:21:28 -0800 (PST)
+ id 1riAsW-0007BZ-9a
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:33 -0500
+Received: by mail-oi1-x233.google.com with SMTP id
+ 5614622812f47-3bbbc6b4ed1so376135b6e.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 02:21:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709806888; x=1710411688;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709806891; x=1710411691;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=QP7weYtq4QbJF4sIXleLE+UckEHf7lBxF+Hq2Ng452s=;
- b=Yp+HuO8LKTESgehzaS487PIk+t6s6qt5zK//kqkt7Ri6qvjAc5Gid9YhBl67xPwfNC
- niACSxA9mut5TqFWuGhNvZeB7XyinKR3BONb923aHrij6e43r+zuhLCYJ8bYWDdnduwC
- 9xeEYMaNJR4wesg+S2YM7/IT6t2a4aKKpKapt6uhrxC7NRHe0wjpj5/VCMKXwTsw/u0f
- wWYtFsGlAESM3Btcj7gh9B4vs9T/OJbRBFmTTj99zioeeHEYQIbFWH97WV36zF2wZaPg
- 44oVgZ+4LOJoH0Gh8xjo37ESj7xsG5I+JyysbGDP2CjZz1q0ck1n0Z51UObHFirmdsd6
- F8yg==
+ :reply-to; bh=G+hvr6O3ORvjAgJg+6YyeFVM5M5tHwrDPGaC/yhxpOs=;
+ b=edEN9G8aIFLBqHy1kI+n9Vy4Yxzd0XzU1jwxcbC7Ccn1qOZz7Lbg+tGoEdD9QOWggQ
+ Iw4QxyNv2FrdNnTtbSkQDx/BWS/9TskUtwbIj/WWGeTusxni8bXxCpv7DpqexxbH7VXN
+ BsTk7TMsbtebn+8y0oac8vLybB8FAAPuH57Zdp3YU17xqf9UccxAC7czjEGxos4Q6P8x
+ +mjaGXlI2XpZs6nlSYPa3icBjYc2hhVqs6CzacU2d4uazNhB2YVNwiaNOUkdEjNoAvQs
+ NyigP6nxUr2cu1u3Tu2lETfbS2O9x4hQ8zpXZyZFFssKdx3YsJZTn0gXYKquB+YcQnZa
+ aM0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709806888; x=1710411688;
+ d=1e100.net; s=20230601; t=1709806891; x=1710411691;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QP7weYtq4QbJF4sIXleLE+UckEHf7lBxF+Hq2Ng452s=;
- b=ekywgxSp4Ecg4ZuSnwjLQKzWeavjT1OFAXF74ob5VePUb2NTlWoNbuMhcxmaEsR2t5
- t0Nb7e0tVj9AZB1TwHj954e459V7wozFVNbUE4ZzvqToLzombs/FxGj4VzwdotFzWn8E
- K4u3Cdd4YyEMLo/J1AMbCkA7z5q9aMQFQptuRW3FMh+gMDyf7UoA4uCTnf2f+WHXFWul
- NiHXfCmTE7lg5oMl1EDbba2w0wtwN4rxEWYeZZw5k+z3YeOaZti+chkw/eZx1GKwq4VL
- Mlmcj4qq6frVx/5yKVSJ7zYvgot4TZOnFgO6djcws1rvNtHr5CfiCXlUYEL/PxK5i6sj
- Bx2w==
-X-Gm-Message-State: AOJu0Yw1t6AEypfXsYYKUB6rwy3N0ktGMasIxvWr2LBVc5ogKm49eVQ/
- YiNd4SidOPL+X07ayJ1b7Bs8Ud8mJsrZbLXFXf1v7V2wpFuK9vOmeTmDNEI3Ufk=
-X-Google-Smtp-Source: AGHT+IFbRyi2XeKtdwhnEB8vkbu9dmQMmGE7wE+OuDwZGbpK0VU6TFBybTPUFiK2THAId3fI4cqeyw==
-X-Received: by 2002:a17:90b:3ccf:b0:299:3ebf:d180 with SMTP id
- qd15-20020a17090b3ccf00b002993ebfd180mr15706246pjb.6.1709806887843; 
- Thu, 07 Mar 2024 02:21:27 -0800 (PST)
+ bh=G+hvr6O3ORvjAgJg+6YyeFVM5M5tHwrDPGaC/yhxpOs=;
+ b=KoZbsVMTDqXL8A1mDBydv9WhV34nEi9NKTU95bR1SMd7envQtyHi2fVNZs1Ei6hdLH
+ H76ltEIqxsoTm8txD/O7KbtyZ8lsZFwH3wIuX5wJqB7SjV+HxIW4ZUAouYySVyb5DrM2
+ g3rAqdRjxTBId+dhGfVoonR4ogS/4+gVhmEL/YoCv5T++5K2V1jZxBLZIDdXJ9Y9fwuF
+ KvKWDciAb06OHbV220ti5phLjajvw2JYzWsM8KbIJbRI/4X4SuDq2fha9EEryUqa0GKp
+ 0R/id0q2bMS/E0ODF7Io/BOWrW5P7LlL/lmRYWW9sshQVVCchfJ6aBdHEW6y6CfjHA04
+ 9rSQ==
+X-Gm-Message-State: AOJu0Yz9fw8UHKZe8dv6MNo6vkfnGuO1yTIEqMz3dYE1wxXGXjhdDfiI
+ mvh5mnNKVDHWvlMC6T3ihueixXp5Jnu/+6sWqDO3oqKPsuUHe7CS7/1JLmlia3R5SztWU+poBiQ
+ X
+X-Google-Smtp-Source: AGHT+IE+5K8qNDUXcyBZ8B5kfZtu1smKEb2NTTloy3SIIj84alLgPs4HIz0J7yI2piRYpT2ixl1Kkg==
+X-Received: by 2002:a05:6808:6297:b0:3c1:e999:467d with SMTP id
+ du23-20020a056808629700b003c1e999467dmr7439216oib.40.1709806890801; 
+ Thu, 07 Mar 2024 02:21:30 -0800 (PST)
 Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
  by smtp.gmail.com with UTF8SMTPSA id
- 8-20020a17090a0cc800b0029b5f69830dsm1334553pjt.22.2024.03.07.02.21.26
+ u23-20020aa78497000000b006e5092fb3efsm12237604pfn.159.2024.03.07.02.21.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Mar 2024 02:21:27 -0800 (PST)
+ Thu, 07 Mar 2024 02:21:30 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 07 Mar 2024 19:20:53 +0900
-Subject: [PATCH v4 10/19] contrib/elf2dmp: Always check for PA resolution
- failure
+Date: Thu, 07 Mar 2024 19:20:54 +0900
+Subject: [PATCH v4 11/19] contrib/elf2dmp: Always destroy PA space
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240307-elf2dmp-v4-10-4f324ad4d99d@daynix.com>
+Message-Id: <20240307-elf2dmp-v4-11-4f324ad4d99d@daynix.com>
 References: <20240307-elf2dmp-v4-0-4f324ad4d99d@daynix.com>
 In-Reply-To: <20240307-elf2dmp-v4-0-4f324ad4d99d@daynix.com>
 To: Viktor Prutyanov <viktor.prutyanov@phystech.edu>, 
  Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::1032;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1032.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::233;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x233.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -93,138 +93,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Not checking PA resolution failure can result in NULL deference.
+Destroy PA space even if paging base couldn't be found, fixing memory
+leak.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- contrib/elf2dmp/addrspace.c | 46 ++++++++++++++++++++++++++++-----------------
- 1 file changed, 29 insertions(+), 17 deletions(-)
+ contrib/elf2dmp/main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/contrib/elf2dmp/addrspace.c b/contrib/elf2dmp/addrspace.c
-index c995c723ae80..e01860d15b07 100644
---- a/contrib/elf2dmp/addrspace.c
-+++ b/contrib/elf2dmp/addrspace.c
-@@ -22,7 +22,7 @@ static struct pa_block *pa_space_find_block(struct pa_space *ps, uint64_t pa)
-     return NULL;
- }
- 
--static uint8_t *pa_space_resolve(struct pa_space *ps, uint64_t pa)
-+static void *pa_space_resolve(struct pa_space *ps, uint64_t pa)
- {
-     struct pa_block *block = pa_space_find_block(ps, pa);
- 
-@@ -33,6 +33,19 @@ static uint8_t *pa_space_resolve(struct pa_space *ps, uint64_t pa)
-     return block->addr + (pa - block->paddr);
- }
- 
-+static bool pa_space_read64(struct pa_space *ps, uint64_t pa, uint64_t *value)
-+{
-+    uint64_t *resolved = pa_space_resolve(ps, pa);
-+
-+    if (!resolved) {
-+        return false;
-+    }
-+
-+    *value = *resolved;
-+
-+    return true;
-+}
-+
- static void pa_block_align(struct pa_block *b)
- {
-     uint64_t low_align = ((b->paddr - 1) | ELF2DMP_PAGE_MASK) + 1 - b->paddr;
-@@ -106,19 +119,20 @@ void va_space_create(struct va_space *vs, struct pa_space *ps, uint64_t dtb)
-     va_space_set_dtb(vs, dtb);
- }
- 
--static uint64_t get_pml4e(struct va_space *vs, uint64_t va)
-+static bool get_pml4e(struct va_space *vs, uint64_t va, uint64_t *value)
- {
-     uint64_t pa = (vs->dtb & 0xffffffffff000) | ((va & 0xff8000000000) >> 36);
- 
--    return *(uint64_t *)pa_space_resolve(vs->ps, pa);
-+    return pa_space_read64(vs->ps, pa, value);
- }
- 
--static uint64_t get_pdpi(struct va_space *vs, uint64_t va, uint64_t pml4e)
-+static bool get_pdpi(struct va_space *vs, uint64_t va, uint64_t pml4e,
-+                    uint64_t *value)
- {
-     uint64_t pdpte_paddr = (pml4e & 0xffffffffff000) |
-         ((va & 0x7FC0000000) >> 27);
- 
--    return *(uint64_t *)pa_space_resolve(vs->ps, pdpte_paddr);
-+    return pa_space_read64(vs->ps, pdpte_paddr, value);
- }
- 
- static uint64_t pde_index(uint64_t va)
-@@ -131,11 +145,12 @@ static uint64_t pdba_base(uint64_t pdpe)
-     return pdpe & 0xFFFFFFFFFF000;
- }
- 
--static uint64_t get_pgd(struct va_space *vs, uint64_t va, uint64_t pdpe)
-+static bool get_pgd(struct va_space *vs, uint64_t va, uint64_t pdpe,
-+                   uint64_t *value)
- {
-     uint64_t pgd_entry = pdba_base(pdpe) + pde_index(va) * 8;
- 
--    return *(uint64_t *)pa_space_resolve(vs->ps, pgd_entry);
-+    return pa_space_read64(vs->ps, pgd_entry, value);
- }
- 
- static uint64_t pte_index(uint64_t va)
-@@ -148,11 +163,12 @@ static uint64_t ptba_base(uint64_t pde)
-     return pde & 0xFFFFFFFFFF000;
- }
- 
--static uint64_t get_pte(struct va_space *vs, uint64_t va, uint64_t pgd)
-+static bool get_pte(struct va_space *vs, uint64_t va, uint64_t pgd,
-+                   uint64_t *value)
- {
-     uint64_t pgd_val = ptba_base(pgd) + pte_index(va) * 8;
- 
--    return *(uint64_t *)pa_space_resolve(vs->ps, pgd_val);
-+    return pa_space_read64(vs->ps, pgd_val, value);
- }
- 
- static uint64_t get_paddr(uint64_t va, uint64_t pte)
-@@ -184,13 +200,11 @@ static uint64_t va_space_va2pa(struct va_space *vs, uint64_t va)
- {
-     uint64_t pml4e, pdpe, pgd, pte;
- 
--    pml4e = get_pml4e(vs, va);
--    if (!is_present(pml4e)) {
-+    if (!get_pml4e(vs, va, &pml4e) || !is_present(pml4e)) {
-         return INVALID_PA;
+diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
+index 9347b0cd5a2d..32dc8bac6a30 100644
+--- a/contrib/elf2dmp/main.c
++++ b/contrib/elf2dmp/main.c
+@@ -549,7 +549,7 @@ int main(int argc, char *argv[])
+     va_space_create(&vs, &ps, state->cr[3]);
+     if (!fix_dtb(&vs, &qemu_elf)) {
+         eprintf("Failed to find paging base\n");
+-        goto out_elf;
++        goto out_ps;
      }
  
--    pdpe = get_pdpi(vs, va, pml4e);
--    if (!is_present(pdpe)) {
-+    if (!get_pdpi(vs, va, pml4e, &pdpe) || !is_present(pdpe)) {
-         return INVALID_PA;
-     }
+     printf("CPU #0 IDT is at 0x%016"PRIx64"\n", state->idt.base);
+@@ -634,7 +634,6 @@ out_pdb_file:
+     unlink(PDB_NAME);
+ out_ps:
+     pa_space_destroy(&ps);
+-out_elf:
+     QEMU_Elf_exit(&qemu_elf);
  
-@@ -198,8 +212,7 @@ static uint64_t va_space_va2pa(struct va_space *vs, uint64_t va)
-         return get_1GB_paddr(va, pdpe);
-     }
- 
--    pgd = get_pgd(vs, va, pdpe);
--    if (!is_present(pgd)) {
-+    if (!get_pgd(vs, va, pdpe, &pgd) || !is_present(pgd)) {
-         return INVALID_PA;
-     }
- 
-@@ -207,8 +220,7 @@ static uint64_t va_space_va2pa(struct va_space *vs, uint64_t va)
-         return get_2MB_paddr(va, pgd);
-     }
- 
--    pte = get_pte(vs, va, pgd);
--    if (!is_present(pte)) {
-+    if (!get_pte(vs, va, pgd, &pte) || !is_present(pte)) {
-         return INVALID_PA;
-     }
- 
+     return err;
 
 -- 
 2.44.0
