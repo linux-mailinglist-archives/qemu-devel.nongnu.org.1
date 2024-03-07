@@ -2,52 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A00875485
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 17:50:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90DAB87548B
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 17:51:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riGvV-0007Kq-Sn; Thu, 07 Mar 2024 11:49:02 -0500
+	id 1riGx8-0002Bm-Tw; Thu, 07 Mar 2024 11:50:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1riGvQ-0007F5-0Z
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 11:48:56 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1riGvN-0002WS-Ob
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 11:48:55 -0500
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxbOnp7+llKwEWAA--.44387S3;
- Fri, 08 Mar 2024 00:48:41 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxnhPj7+llNmpQAA--.27604S19; 
- Fri, 08 Mar 2024 00:48:41 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
-	maobibo@loongson.cn
-Subject: [PATCH v6 17/17] hw/loongarch: Add cells missing from rtc node
-Date: Fri,  8 Mar 2024 00:48:35 +0800
-Message-Id: <20240307164835.300412-18-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20240307164835.300412-1-gaosong@loongson.cn>
-References: <20240307164835.300412-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1riGwm-0001WZ-GL
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 11:50:22 -0500
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1riGwb-0002y9-Q4
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 11:50:20 -0500
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-5135486cfccso1210923e87.0
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 08:50:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1709830207; x=1710435007; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1I46XS+O1jQxKPl+LOAjTnF0s4MIyjTZwxpWLE4Enkg=;
+ b=qSbPzbLqQEzZAd0XmZ4Dy8iBAMzyRCTEUSbT4lK8o06fl+CyynmDrYYkyrhULp3CZ1
+ WrGmExHdhpNIoCr16NTIrOIB3R1vRmGRJbnONO1gU6rsdPDc9+p2SYkoFGQey1hhrMcD
+ k83Gl3H6X0H1o2wJnS/NjFCMsfzRjqubspsUGbFc6H03HwxsZhe1VPHbPRGnx6Xx7lrn
+ BriiFwHderjbPwoDqOoN+1A6tZ8JcTmDPeKV0A9/ZOo0wuX6gsWVQyqiSH9vkLFXv0xF
+ 8c27ddxDU8KWXrO9fl6vPyVjTqDuTX2PZ9bYIiCmZzxgVbC+wo1BQFQpp81iHn7ca7Rv
+ iXNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709830207; x=1710435007;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1I46XS+O1jQxKPl+LOAjTnF0s4MIyjTZwxpWLE4Enkg=;
+ b=arE8QKypsTG6ypJg6gBxbfhMIgYaDe213Br0Vv9QmrjiHZCB+rBKmPZo0qfbAKh8F8
+ 5/qSmmKcstzkOWQnDVtnYBcknz1LmEiYm/jL7S5LRdPxq08PPqr8/5Dha1403HrtHAu9
+ TG/zOsj2FCd5zH/Ae7Kr6PBdLDbLP67FvqlowzM5tuxDWdZuA7tdaSitcwzxPSEZsvQa
+ T6pkN7YOeKfAq+/a++rLYtk9r7XOYexcNvjqYKMejEV3EI6IixLsxgm3cr3248J4lrRg
+ fn1pkEZuPxp6mp3fKi4BHXcIc6vkvOqC7c6A3Vg5L5FV9u3bfeQHDb90EmNyPNY3yH7P
+ MTZg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWr4Xc+/snTdNOMQ+28dD1yMYmdQtRjUMN+HhfRxtKJgaxMNGc9EBpSnGOAUJu22BNmAMYDlpI1rkmadT6xZiFnHm7wrgE=
+X-Gm-Message-State: AOJu0YwP+tVGyOnnneRAOXs0/OHirbviTrL5EIRya6vciQ6TM7oAuFre
+ ivrDD8iZYGT8W42zvQTJZ+fifQ9hY/rmaQrcF6g3grRKN5qCxh9bzrtYIxk1bDs=
+X-Google-Smtp-Source: AGHT+IGYTTxN/obWy5zRo+X5ts6U7agdd3tXwDsLVE3mD4/cWliSdjB/4DqLWechMUwRAEur6bQsCg==
+X-Received: by 2002:ac2:4284:0:b0:513:58c7:371f with SMTP id
+ m4-20020ac24284000000b0051358c7371fmr1734270lfh.65.1709830207158; 
+ Thu, 07 Mar 2024 08:50:07 -0800 (PST)
+Received: from [192.168.69.100] (pir44-h02-176-184-37-132.dsl.sta.abo.bbox.fr.
+ [176.184.37.132]) by smtp.gmail.com with ESMTPSA id
+ v12-20020a05600c444c00b004129ed6f9cbsm3269016wmn.4.2024.03.07.08.50.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 07 Mar 2024 08:50:06 -0800 (PST)
+Message-ID: <7561cc84-baf0-4185-90f4-43cb2246dc8a@linaro.org>
+Date: Thu, 7 Mar 2024 17:50:04 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/4] physmem: Reduce local variable scope in
+ flatview_read/write_continue()
+Content-Language: en-US
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
+Cc: linuxarm@huawei.com
+References: <20240307153710.30907-1-Jonathan.Cameron@huawei.com>
+ <20240307153710.30907-3-Jonathan.Cameron@huawei.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240307153710.30907-3-Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxnhPj7+llNmpQAA--.27604S19
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,53 +97,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-rtc node need interrupts and interrupt-parent cells.
+On 7/3/24 16:37, Jonathan Cameron wrote:
+> Precursor to factoring out the inner loops for reuse.
+> 
+> Reviewed-by: Peter Xu <peterx@redhat.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+> v2: Picked up tag from Peter.
+>   system/physmem.c | 40 ++++++++++++++++++++--------------------
+>   1 file changed, 20 insertions(+), 20 deletions(-)
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240301093839.663947-18-gaosong@loongson.cn>
----
- hw/loongarch/virt.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+Nice finding. Similar pattern in system/memory_ldst.c.inc.
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 58957a8d9a..676f1f5227 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -231,7 +231,8 @@ static void fdt_add_flash_node(LoongArchMachineState *lams)
-     g_free(nodename);
- }
- 
--static void fdt_add_rtc_node(LoongArchMachineState *lams)
-+static void fdt_add_rtc_node(LoongArchMachineState *lams,
-+                             uint32_t *pch_pic_phandle)
- {
-     char *nodename;
-     hwaddr base = VIRT_RTC_REG_BASE;
-@@ -240,8 +241,13 @@ static void fdt_add_rtc_node(LoongArchMachineState *lams)
- 
-     nodename = g_strdup_printf("/rtc@%" PRIx64, base);
-     qemu_fdt_add_subnode(ms->fdt, nodename);
--    qemu_fdt_setprop_string(ms->fdt, nodename, "compatible", "loongson,ls7a-rtc");
-+    qemu_fdt_setprop_string(ms->fdt, nodename, "compatible",
-+                            "loongson,ls7a-rtc");
-     qemu_fdt_setprop_sized_cells(ms->fdt, nodename, "reg", 2, base, 2, size);
-+    qemu_fdt_setprop_cells(ms->fdt, nodename, "interrupts",
-+                           VIRT_RTC_IRQ - VIRT_GSI_BASE , 0x4);
-+    qemu_fdt_setprop_cell(ms->fdt, nodename, "interrupt-parent",
-+                          *pch_pic_phandle);
-     g_free(nodename);
- }
- 
-@@ -647,7 +653,7 @@ static void loongarch_devices_init(DeviceState *pch_pic,
-     sysbus_create_simple("ls7a_rtc", VIRT_RTC_REG_BASE,
-                          qdev_get_gpio_in(pch_pic,
-                          VIRT_RTC_IRQ - VIRT_GSI_BASE));
--    fdt_add_rtc_node(lams);
-+    fdt_add_rtc_node(lams, pch_pic_phandle);
- 
-     /* acpi ged */
-     lams->acpi_ged = create_acpi_ged(pch_pic, lams);
--- 
-2.34.1
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
