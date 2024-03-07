@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39865875135
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 15:04:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13292874847
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 07:44:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riEKc-00084f-A2; Thu, 07 Mar 2024 09:02:46 -0500
+	id 1ri7Tb-0001D2-F1; Thu, 07 Mar 2024 01:43:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <justinien.bouron@gmail.com>)
- id 1ri7Hw-0007n1-Ub
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 01:31:32 -0500
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <justinien.bouron@gmail.com>)
- id 1ri7Hv-0007qJ-4e
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 01:31:32 -0500
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6e5760eeb7aso391028b3a.1
- for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 22:31:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709793089; x=1710397889; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=iyxR+OpRzCgMTyr69jyOIljZ6vwQoblG0/7Lpey7Y8k=;
- b=jezloXzoe+7V7xeElEKeD75Q5P/M/yh3rn9Wr1Bam/T59P+c8Vj/gtMgry8fn2xFvR
- MN1wL567ljpoVfJtpG7U2eObDh597/oJaKRepLd56Hn76szjKw96C8oRGLkDatdtIDe6
- gsnmyXmdG/XkcMSZgkzhKeOvMOQ5OpNwy+B5mRB7eoJlzXYSYwbDtBSSktosSodw6tHH
- sGU5XRgpVsTU6kyVCabJ2JIvWdlgMTwPKPSwNYXkHYHOgQe0az6lmIbGSTFlPmf5P95T
- eD5HLJIY2mAi5yNUtULIj9u88lvhWzhUvkQ7VlRzbrPMM9F4Bb9T+FdgpUE3KeJuRG6T
- cOmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709793089; x=1710397889;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=iyxR+OpRzCgMTyr69jyOIljZ6vwQoblG0/7Lpey7Y8k=;
- b=nQtfE95RnvpZ1xXi09lTpFxgmxAC0wAdanS7c1qUXUQUwXqQS5wLakjXoYVchyHW7X
- 5Emf7GcwzJmYq2nAM9sbzt3Wm9p4vJ0dm7NHtvddnxfIs2Wu0LgVEKAMvfteBRwU8rJf
- GvCae8FNkqYB9g3Zn7Whe7gRzx9OBVIT47nplSQOobRfI1BYqGX3lWxuYkk8hH9e9ebC
- R7scvO4d8+CIIeDUmCuEqpU5eQMlwvyMRnC/H3W3CGthpnNsdKA1pnE6HA/aqF8nEc5/
- 482Rgkg43BuHyRg080lMZqwRu1G3bSZRz72gFnFHcl1DKMu32OMQlaaujFy/q2vOlrD5
- oZ6w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX8wmlPftICNJUM1nn2oigbcqIEofpRhdjHiniKs6UkeWWZ1KOhnnVcuoO3SEiOJ3VY0J0TH9gqh5VYENvJH+CUbqlmaSo=
-X-Gm-Message-State: AOJu0YxUyKGlnyTAlBjf98ZAs0kN+pp/m341TdgG2If2p35/pXknLfzZ
- 4z33cJVwk07T+6I0zDLiWpyZ8QQPeCW//gA+ULGPmUYDX5A454cT
-X-Google-Smtp-Source: AGHT+IHOSHoVkxGGJ/afxQ+Ux1zuq/xc1DFYvgtHTlH84qdu6Lt9mPuue8RocXPSKaVQaIoCMMm7wg==
-X-Received: by 2002:a05:6a20:af87:b0:1a1:4487:ee25 with SMTP id
- ds7-20020a056a20af8700b001a14487ee25mr6015172pzb.49.1709793089063; 
- Wed, 06 Mar 2024 22:31:29 -0800 (PST)
-Received: from localhost.localdomain (c-24-7-119-110.hsd1.ca.comcast.net.
- [24.7.119.110]) by smtp.gmail.com with ESMTPSA id
- m7-20020aa78a07000000b006e319d8c752sm11778013pfa.150.2024.03.06.22.31.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Mar 2024 22:31:28 -0800 (PST)
-From: Justinien Bouron <justinien.bouron@gmail.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Cc: Justinien Bouron <justinien.bouron@gmail.com>,
-	qemu-devel@nongnu.org
-Subject: [PATCH] input-linux: Add option to not grab a device upon guest
- startup
-Date: Wed,  6 Mar 2024 22:28:22 -0800
-Message-ID: <20240307062823.2377318-1-justinien.bouron@gmail.com>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1ri7TU-0001Ci-4H
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 01:43:28 -0500
+Received: from mgamail.intel.com ([192.198.163.15])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1ri7TR-0003DZ-Rh
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 01:43:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1709793806; x=1741329806;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=hFIJYsPW+KvztSq64GkfUwQLRzmppAvlEm+IcbKEk7c=;
+ b=JJTRf5xPOO+Q60ZbPWxFBUFIrRE4LolKm/3Jus6oAswu5ku9P5GpOjb5
+ 2MhmiGdXnsV5Q+AtRjy70dIWEqW78n7wEXHPPqjvJyUfs/9ko0h33+EV2
+ x3p96ykZbzjnT+ktP60Se/MJK8Rl7MTSJWVx2jcYmyw4ZbjvFRWAmh2k+
+ B1txD0VO/MSL1d6zc0AyIMa52OpEAGIKValL6OuRjydyTgvxaC7/mdlQW
+ NjSqqk+3u1UXGnr5Xx/gVSmGQacU2vxk3fOEHMGIZ9ZEoYv7t+Nv5yFPo
+ 7hQg10Gxo3zE/eoLGPU+1PL3zJPdAN2H54FBoJSRsyHHm9v4MSy8Wg2kR w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11005"; a="4617237"
+X-IronPort-AV: E=Sophos;i="6.06,210,1705392000"; 
+   d="scan'208";a="4617237"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Mar 2024 22:43:19 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,210,1705392000"; 
+   d="scan'208";a="9932222"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.242.48])
+ ([10.124.242.48])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Mar 2024 22:43:13 -0800
+Message-ID: <135add74-18c2-4137-92b3-63ae457c9080@intel.com>
+Date: Thu, 7 Mar 2024 14:43:11 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=justinien.bouron@gmail.com; helo=mail-pf1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 08/65] kvm: handle KVM_EXIT_MEMORY_FAULT
+Content-Language: en-US
+To: Isaku Yamahata <isaku.yamahata@linux.intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand
+ <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, kvm@vger.kernel.org, qemu-devel@nongnu.org,
+ Michael Roth <michael.roth@amd.com>, Claudio Fontana <cfontana@suse.de>,
+ Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
+ <isaku.yamahata@gmail.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
+ isaku.yamahata@intel.com
+References: <20240229063726.610065-1-xiaoyao.li@intel.com>
+ <20240229063726.610065-9-xiaoyao.li@intel.com>
+ <20240305091049.GA368614@ls.amr.corp.intel.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20240305091049.GA368614@ls.amr.corp.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.15; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -11
+X-Spam_score: -1.2
+X-Spam_bar: -
+X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.365,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.276, HK_RANDOM_FROM=0.999, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 07 Mar 2024 09:02:44 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,113 +97,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Depending on your use-case, it might be inconvenient to have qemu grab
-the input device immediately upon starting the guest, especially if the
-guest takes a while to start in which case it may take a few seconds
-before being able to release the device via the toggle combination.
+On 3/5/2024 5:10 PM, Isaku Yamahata wrote:
+> On Thu, Feb 29, 2024 at 01:36:29AM -0500,
+> Xiaoyao Li <xiaoyao.li@intel.com> wrote:
+> 
+>> From: Chao Peng <chao.p.peng@linux.intel.com>
+>>
+>> When geeting KVM_EXIT_MEMORY_FAULT exit, it indicates userspace needs to
+>> do the memory conversion on the RAMBlock to turn the memory into desired
+>> attribute, i.e., private/shared.
+>>
+>> Currently only KVM_MEMORY_EXIT_FLAG_PRIVATE in flags is valid when
+>> KVM_EXIT_MEMORY_FAULT happens.
+>>
+>> Note, KVM_EXIT_MEMORY_FAULT makes sense only when the RAMBlock has
+>> guest_memfd memory backend.
+>>
+>> Note, KVM_EXIT_MEMORY_FAULT returns with -EFAULT, so special handling is
+>> added.
+>>
+>> When page is converted from shared to private, the original shared
+>> memory can be discarded via ram_block_discard_range(). Note, shared
+>> memory can be discarded only when it's not back'ed by hugetlb because
+>> hugetlb is supposed to be pre-allocated and no need for discarding.
+>>
+>> Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
+>> Co-developed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>>
+>> ---
+>> Changes in v4:
+>> - open-coded ram_block_discard logic;
+>> - change warn_report() to error_report(); (Daniel)
+>> ---
+>>   accel/kvm/kvm-all.c | 94 ++++++++++++++++++++++++++++++++++++++++-----
+>>   1 file changed, 84 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+>> index 70d482a2c936..87e4275932a7 100644
+>> --- a/accel/kvm/kvm-all.c
+>> +++ b/accel/kvm/kvm-all.c
+>> @@ -2903,6 +2903,68 @@ static void kvm_eat_signals(CPUState *cpu)
+>>       } while (sigismember(&chkset, SIG_IPI));
+>>   }
+>>   
+>> +static int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
+>> +{
+>> +    MemoryRegionSection section;
+>> +    ram_addr_t offset;
+>> +    MemoryRegion *mr;
+>> +    RAMBlock *rb;
+>> +    void *addr;
+>> +    int ret = -1;
+>> +
+>> +    if (!QEMU_PTR_IS_ALIGNED(start, qemu_host_page_size) ||
+>> +        !QEMU_PTR_IS_ALIGNED(size, qemu_host_page_size)) {
+>> +        return -1;
+>> +    }
+>> +
+>> +    if (!size) {
+>> +        return -1;
+>> +    }
+>> +
+>> +    section = memory_region_find(get_system_memory(), start, size);
+>> +    mr = section.mr;
+>> +    if (!mr) {
+>> +        return -1;
+>> +    }
+>> +
+>> +    if (memory_region_has_guest_memfd(mr)) {
+>> +        if (to_private) {
+>> +            ret = kvm_set_memory_attributes_private(start, size);
+>> +        } else {
+>> +            ret = kvm_set_memory_attributes_shared(start, size);
+>> +        }
+>> +
+>> +        if (ret) {
+>> +            memory_region_unref(section.mr);
+>> +            return ret;
+>> +        }
+>> +
+>> +        addr = memory_region_get_ram_ptr(mr) + section.offset_within_region;
+>> +        rb = qemu_ram_block_from_host(addr, false, &offset);
+>> +
+>> +        if (to_private) {
+>> +            if (rb->page_size != qemu_host_page_size) {
+>> +                /*
+>> +                * shared memory is back'ed by  hugetlb, which is supposed to be
+>> +                * pre-allocated and doesn't need to be discarded
+>> +                */
+>> +                return 0;
+> 
+> The reference count leaks. Add memory_region_unref() is needed.
 
-Added a new bool option to input-linux: grab-on-startup. If true, the
-device is grabbed as soon as the guest is started, otherwise it is not
-grabbed until the toggle combination is entered. To avoid breaking
-existing setups, the default value of grab-on-startup is true, ie. same
-behaviour as before this change.
+thanks for catching it. Will fix it in next version.
 
-Signed-off-by: Justinien Bouron <justinien.bouron@gmail.com>
----
- qapi/qom.json    | 13 ++++++++++++-
- ui/input-linux.c | 20 +++++++++++++++++++-
- 2 files changed, 31 insertions(+), 2 deletions(-)
-
-diff --git a/qapi/qom.json b/qapi/qom.json
-index 032c6fa037..50e66d55cc 100644
---- a/qapi/qom.json
-+++ b/qapi/qom.json
-@@ -508,13 +508,24 @@
- # @grab-toggle: the key or key combination that toggles device grab
- #     (default: ctrl-ctrl)
- #
-+# @grab-on-startup: if true, grab the device immediately upon starting the
-+#     guest. Otherwise, don't grab the device until the combination is entered.
-+#     This does not influence other devices even if grab_all is true, ie. in the
-+#     unlikely scenario where device1 has grab_all=true + grab-on-startup=true
-+#     and device2 has grab-on-startup=false, only device1 is grabbed on startup,
-+#     then, once the grab combination is entered, grabbing is toggled off for
-+#     both devices (because device1 enforces the grab_all property) until the
-+#     combination is entered again at which point both devices will be grabbed.
-+#     (default: true).
-+
- # Since: 2.6
- ##
- { 'struct': 'InputLinuxProperties',
-   'data': { 'evdev': 'str',
-             '*grab_all': 'bool',
-             '*repeat': 'bool',
--            '*grab-toggle': 'GrabToggleKeys' } }
-+            '*grab-toggle': 'GrabToggleKeys',
-+            '*grab-on-startup': 'bool'} }
- 
- ##
- # @EventLoopBaseProperties:
-diff --git a/ui/input-linux.c b/ui/input-linux.c
-index e572a2e905..cf9376ddb0 100644
---- a/ui/input-linux.c
-+++ b/ui/input-linux.c
-@@ -44,6 +44,7 @@ struct InputLinux {
-     bool        grab_request;
-     bool        grab_active;
-     bool        grab_all;
-+    bool        grab_on_startup;
-     bool        keydown[KEY_CNT];
-     int         keycount;
-     int         wheel;
-@@ -400,7 +401,7 @@ static void input_linux_complete(UserCreatable *uc, Error **errp)
-     if (il->keycount) {
-         /* delay grab until all keys are released */
-         il->grab_request = true;
--    } else {
-+    } else if (il->grab_on_startup) {
-         input_linux_toggle_grab(il);
-     }
-     QTAILQ_INSERT_TAIL(&inputs, il, next);
-@@ -491,6 +492,19 @@ static void input_linux_set_grab_toggle(Object *obj, int value,
-     il->grab_toggle = value;
- }
- 
-+static bool input_linux_get_grab_on_startup(Object *obj, Error **errp)
-+{
-+    InputLinux *il = INPUT_LINUX(obj);
-+    return il->grab_on_startup;
-+}
-+
-+static void input_linux_set_grab_on_startup(Object *obj, bool value,
-+                                            Error **errp)
-+{
-+    InputLinux *il = INPUT_LINUX(obj);
-+    il->grab_on_startup = value;
-+}
-+
- static void input_linux_instance_init(Object *obj)
- {
- }
-@@ -498,6 +512,7 @@ static void input_linux_instance_init(Object *obj)
- static void input_linux_class_init(ObjectClass *oc, void *data)
- {
-     UserCreatableClass *ucc = USER_CREATABLE_CLASS(oc);
-+    ObjectProperty *grab_on_startup_prop;
- 
-     ucc->complete = input_linux_complete;
- 
-@@ -514,6 +529,9 @@ static void input_linux_class_init(ObjectClass *oc, void *data)
-                                    &GrabToggleKeys_lookup,
-                                    input_linux_get_grab_toggle,
-                                    input_linux_set_grab_toggle);
-+    grab_on_startup_prop = object_class_property_add_bool(oc, "grab-on-startup",
-+        input_linux_get_grab_on_startup, input_linux_set_grab_on_startup);
-+    object_property_set_default_bool(grab_on_startup_prop, true);
- }
- 
- static const TypeInfo input_linux_info = {
--- 
-2.43.0
+> Otherwise looks good to me.
+> Reviewed-by: Isaku Yamahata <isaku.yamahata@intel.com>
 
 
