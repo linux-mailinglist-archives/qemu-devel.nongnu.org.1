@@ -2,74 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1859287485B
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 07:54:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91FBA874882
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 08:13:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ri7dZ-00047h-Rj; Thu, 07 Mar 2024 01:53:53 -0500
+	id 1ri7wR-0007o6-A2; Thu, 07 Mar 2024 02:13:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1ri7dS-00046w-Dq
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 01:53:47 -0500
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ri7wN-0007mJ-VY
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 02:13:20 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1ri7dQ-0006k8-Kd
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 01:53:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709794425; x=1741330425;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=QVthhHOMs5wLy3nd4dMDm3yA1o3DA2fC6Xp4IkmvQC8=;
- b=gZlczBqgPFrw4ye/VcT8K7C9cdAECvuXB2Cg0PrBOTr5QG1tBgwA4lAA
- BSQ4d21cBPq0UKTfOGhilt4DRdDFdY7ad24Fn3lpxfG2h+O9PKFJAvAXa
- 5HkYTTqVt8VSYrBG25rnOJyPqi083aHigxpLIs0GTHcgDLr6Lo2lZZ58J
- PqZzLvy5tldNcmoMJs9yC0A4pdxTucCMzNrkje1AJomwC6y+710FcOd5z
- cMVxNQIFPm6yFg0IROppGUMFa8rtOnFknd9xqOfZ77xxaDEpiEHnrDoUC
- XigDR/3E1hWhIRvVBN8+dWeQ7Fb3HKfj/2qjsrh573XLQt8XMi5kRhl3v w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11005"; a="26919856"
-X-IronPort-AV: E=Sophos;i="6.06,210,1705392000"; d="scan'208";a="26919856"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Mar 2024 22:53:31 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,210,1705392000"; d="scan'208";a="10177930"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa006.fm.intel.com with ESMTP; 06 Mar 2024 22:53:27 -0800
-Date: Thu, 7 Mar 2024 15:07:13 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Prasad Pandit <ppandit@redhat.com>, qemu-devel@nongnu.org,
- Xiaoling Song <xiaoling.song@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, devel@lists.libvirt.org
-Subject: Re: [PATCH 02/14] hw/core/machine-smp: Deprecate unsupported
- "parameter=1" SMP configurations
-Message-ID: <ZelnodvaPVAfaxUM@intel.com>
-References: <20240306095407.3058909-1-zhao1.liu@linux.intel.com>
- <20240306095407.3058909-3-zhao1.liu@linux.intel.com>
- <5aafc78f-8c2e-429c-9599-4d2e1bb184e9@redhat.com>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ri7wM-0005GW-FT
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 02:13:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709795597;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=X9vDqLPgB48Xqd0blSYNKo2TJvLpU5+BVtJ7DuF2NJk=;
+ b=F4ZULXlC43fyFVSGzvuFDx1/FprkE7FykBEyZBBDCnJ/v09vz5YhsTOsnLDOQm1OWsGtgL
+ q+zqjfB2WyIP0wlsx4JEXGeVGzYJlt0jtOuqQPleVdqpXR2U4znXQq5HilSauImiEnKlkL
+ kTXwo/m7IA3kwfg2UKPOEBsGmDqrkNI=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-142-YIpuY627OOeY06JAnLAJZQ-1; Thu, 07 Mar 2024 02:13:16 -0500
+X-MC-Unique: YIpuY627OOeY06JAnLAJZQ-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-567279be640so262763a12.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 23:13:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709795595; x=1710400395;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=X9vDqLPgB48Xqd0blSYNKo2TJvLpU5+BVtJ7DuF2NJk=;
+ b=qT6nc1Ah0D0hchXKQDML5i9CnW/tsQkW9vjL8gMlbb6g3hnNzOzeM0MZssAB9n/7qA
+ 6TxjLrwB02BoGF72Ljey61IdwwfCK2iTHHLMysWIvCPNgVKJEIAs7IomgvDn7pGhCE3v
+ Dx12kx8CTlv+4Sz95t/3/HoYzordJd6XULkVkn7aPe7xUMKarMzS1QDJAshdaj61mjB/
+ Pflhq5GjYk5PUe+mEo+/CR6Rq4WggB+eVXHWenQYMhimXjC8j9W2BJrji9dCuPkkACEV
+ n5fZ4l1RjWTrO+c/qopqQVfZCQDepOOOjvz7fc+j0KU1Vu47lLJF5FaHUvu+iv513RRp
+ LJzQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVr+E30wmbk4yvskSpqI9T774DJUrljV0mHAx0PxFQXaeqijtF7HUBg6fCQ5X67MqHMdv9VPIDHxDWPuPnYFXNYPmQDTkE=
+X-Gm-Message-State: AOJu0Yz80IQw+MqfzydMKCLY/mfwMQ3tC8pOyI4obxRqc02GP/i0T/iE
+ 551vueoc34c6sI4tHnJN+vtJPrOTV9bcCHgdqDJa1R7fkR8z5C4qUyDZOkRX37hltDlEk88GXm5
+ JRHj0jqwTTYIcW6rAAXmQMe42ajVZ9KCbWrh+ZF7xv3UzfAwo2Syn
+X-Received: by 2002:a05:6402:901:b0:565:9e16:60da with SMTP id
+ g1-20020a056402090100b005659e1660damr13088574edz.30.1709795594957; 
+ Wed, 06 Mar 2024 23:13:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHiNoNZViGdG+rv4RSDQM8lVEVLtNtRazeydgFf4sRFc1xsHkoS727267gJ4t+K6CHcFhV5+Q==
+X-Received: by 2002:a05:6402:901:b0:565:9e16:60da with SMTP id
+ g1-20020a056402090100b005659e1660damr13088559edz.30.1709795594594; 
+ Wed, 06 Mar 2024 23:13:14 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ a26-20020a50c31a000000b00567f9d21b7csm1188365edb.94.2024.03.06.23.13.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Mar 2024 23:13:13 -0800 (PST)
+Message-ID: <f6ae3a49-7c3d-4d54-9e22-2fe2d3b31e06@redhat.com>
+Date: Thu, 7 Mar 2024 08:13:12 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5aafc78f-8c2e-429c-9599-4d2e1bb184e9@redhat.com>
-Received-SPF: none client-ip=198.175.65.9;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 21/25] vfio: Reverse test on vfio_get_dirty_bitmap()
+Content-Language: en-US, fr
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, Markus Armbruster <armbru@redhat.com>,
+ Prasad Pandit <pjp@fedoraproject.org>
+References: <20240306133441.2351700-1-clg@redhat.com>
+ <20240306133441.2351700-22-clg@redhat.com>
+ <bd25d169-cd34-4670-9194-04ee0ff18ef5@linaro.org>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <bd25d169-cd34-4670-9194-04ee0ff18ef5@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.365,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.365,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,167 +108,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Mar 07, 2024 at 07:22:10AM +0100, Thomas Huth wrote:
-> Date: Thu, 7 Mar 2024 07:22:10 +0100
-> From: Thomas Huth <thuth@redhat.com>
-> Subject: Re: [PATCH 02/14] hw/core/machine-smp: Deprecate unsupported
->  "parameter=1" SMP configurations
+On 3/6/24 21:51, Philippe Mathieu-Daudé wrote:
+> On 6/3/24 14:34, Cédric Le Goater wrote:
+>> It will simplify the changes coming after.
+>>
+>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>> ---
+>>   hw/vfio/common.c | 22 +++++++++++++---------
+>>   1 file changed, 13 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+>> index 5b2e6a179cdd5f8ca5be84b7097661e96b391456..6820d2efe4923d5043da7eb8deecb6ff20e1fd16 100644
+>> --- a/hw/vfio/common.c
+>> +++ b/hw/vfio/common.c
+>> @@ -1241,16 +1241,20 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>>       }
+>>       rcu_read_lock();
+>> -    if (vfio_get_xlat_addr(iotlb, NULL, &translated_addr, NULL)) {
+>> -        ret = vfio_get_dirty_bitmap(bcontainer, iova, iotlb->addr_mask + 1,
+>> -                                    translated_addr);
+>> -        if (ret) {
+>> -            error_report("vfio_iommu_map_dirty_notify(%p, 0x%"HWADDR_PRIx", "
+>> -                         "0x%"HWADDR_PRIx") = %d (%s)",
+>> -                         bcontainer, iova, iotlb->addr_mask + 1, ret,
+>> -                         strerror(-ret));
+>> -        }
+>> +    if (!vfio_get_xlat_addr(iotlb, NULL, &translated_addr, NULL)) {
+>> +        goto out_lock;
+>>       }
+>> +
+>> +    ret = vfio_get_dirty_bitmap(bcontainer, iova, iotlb->addr_mask + 1,
+>> +                                translated_addr);
+>> +    if (ret) {
+>> +        error_report("vfio_iommu_map_dirty_notify(%p, 0x%"HWADDR_PRIx", "
+>> +                     "0x%"HWADDR_PRIx") = %d (%s)",
+>> +                     bcontainer, iova, iotlb->addr_mask + 1, ret,
+>> +                     strerror(-ret));
+>> +    }
+>> +
+>> +out_lock:
 > 
-> On 06/03/2024 10.53, Zhao Liu wrote:
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> > 
-> > Currentlt, it was allowed for users to specify the unsupported
-> 
-> s/Currentlt/Currently/
-> 
-> > topology parameter as "1". For example, x86 PC machine doesn't
-> > support drawer/book/cluster topology levels, but user could specify
-> > "-smp drawers=1,books=1,clusters=1".
-> > 
-> > This is meaningless and confusing, so that the support for this kind of
-> > configurations is marked depresated since 9.0. And report warning
-> 
-> s/depresated/deprecated/
-> 
-> > message for such case like:
-> > 
-> > qemu-system-x86_64: warning: Deprecated CPU topology (considered invalid):
-> >                      Unsupported clusters parameter mustn't be specified as 1
-> > qemu-system-x86_64: warning: Deprecated CPU topology (considered invalid):
-> >                      Unsupported books parameter mustn't be specified as 1
-> > qemu-system-x86_64: warning: Deprecated CPU topology (considered invalid):
-> >                      Unsupported drawers parameter mustn't be specified as 1
-> > 
-> > Users have to ensure that all the topology members described with -smp
-> > are supported by the target machine.
-> > 
-> > Cc: devel@lists.libvirt.org
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > ---
-> >   docs/about/deprecated.rst | 14 +++++++++
-> >   hw/core/machine-smp.c     | 63 +++++++++++++++++++++++++++++----------
-> >   2 files changed, 61 insertions(+), 16 deletions(-)
-> > 
-> > diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> > index 872974640252..2e782e83e952 100644
-> > --- a/docs/about/deprecated.rst
-> > +++ b/docs/about/deprecated.rst
-> > @@ -47,6 +47,20 @@ as short-form boolean values, and passed to plugins as ``arg_name=on``.
-> >   However, short-form booleans are deprecated and full explicit ``arg_name=on``
-> >   form is preferred.
-> > +``-smp`` (Unsopported "parameter=1" SMP configurations) (since 9.0)
-> 
-> s/Unsopported/Unsupported/
-> 
-> > +'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-> > +
-> > +Specified CPU topology parameters must be supported by the machine.
-> > +
-> > +In the SMP configuration, users should provide the CPU topology parameters that
-> > +are supported by the target machine.
-> > +
-> > +However, historically it was allowed for users to specify the unsupported
-> > +topology parameter as "1", which is meaningless. So support for this kind of
-> > +configurations (e.g. -smp drawers=1,books=1,clusters=1 for x86 PC machine) is
-> > +marked depresated since 9.0, users have to ensure that all the topology members
-> 
-> s/depresated/deprecated/
-> 
-> > +described with -smp are supported by the target machine.
-> > +
-> >   QEMU Machine Protocol (QMP) commands
-> >   ------------------------------------
-> > diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
-> > index 96533886b14e..50a5a40dbc3d 100644
-> > --- a/hw/core/machine-smp.c
-> > +++ b/hw/core/machine-smp.c
-> > @@ -112,30 +112,61 @@ void machine_parse_smp_config(MachineState *ms,
-> >       /*
-> >        * If not supported by the machine, a topology parameter must be
-> > -     * omitted or specified equal to 1.
-> > +     * omitted.
-> >        */
-> > -    if (!mc->smp_props.dies_supported && dies > 1) {
-> > -        error_setg(errp, "dies not supported by this machine's CPU topology");
-> > -        return;
-> > -    }
-> > -    if (!mc->smp_props.clusters_supported && clusters > 1) {
-> > -        error_setg(errp, "clusters not supported by this machine's CPU topology");
-> > -        return;
-> > +    if (!mc->smp_props.clusters_supported && config->has_clusters) {
-> > +        if (config->clusters > 1) {
-> > +            error_setg(errp, "clusters not supported by this "
-> > +                       "machine's CPU topology");
-> > +            return;
-> > +        } else {
-> > +            /* Here clusters only equals 1 since we've checked zero case. */
-> > +            warn_report("Deprecated CPU topology (considered invalid): "
-> > +                        "Unsupported clusters parameter mustn't be "
-> > +                        "specified as 1");
-> > +        }
-> >       }
-> > +    clusters = clusters > 0 ? clusters : 1;
-> > +    if (!mc->smp_props.dies_supported && config->has_dies) {
-> > +        if (config->dies > 1) {
-> > +            error_setg(errp, "dies not supported by this "
-> > +                       "machine's CPU topology");
-> > +            return;
-> > +        } else {
-> > +            /* Here dies only equals 1 since we've checked zero case. */
-> > +            warn_report("Deprecated CPU topology (considered invalid): "
-> > +                        "Unsupported dies parameter mustn't be "
-> > +                        "specified as 1");
-> > +        }
-> > +    }
-> >       dies = dies > 0 ? dies : 1;
-> > -    clusters = clusters > 0 ? clusters : 1;
-> > -    if (!mc->smp_props.books_supported && books > 1) {
-> > -        error_setg(errp, "books not supported by this machine's CPU topology");
-> > -        return;
-> > +    if (!mc->smp_props.books_supported && config->has_books) {
-> > +        if (config->books > 1) {
-> > +            error_setg(errp, "books not supported by this "
-> > +                       "machine's CPU topology");
-> > +            return;
-> > +        } else {
-> > +            /* Here books only equals 1 since we've checked zero case. */
-> > +            warn_report("Deprecated CPU topology (considered invalid): "
-> > +                        "Unsupported books parameter mustn't be "
-> > +                        "specified as 1");
-> > +        }
-> >       }
-> >       books = books > 0 ? books : 1;
-> > -    if (!mc->smp_props.drawers_supported && drawers > 1) {
-> > -        error_setg(errp,
-> > -                   "drawers not supported by this machine's CPU topology");
-> > -        return;
-> > +    if (!mc->smp_props.drawers_supported && config->has_drawers) {
-> > +        if (config->drawers > 1) {
-> > +            error_setg(errp, "drawers not supported by this "
-> > +                       "machine's CPU topology");
-> > +            return;
-> > +        } else {
-> > +            /* Here drawers only equals 1 since we've checked zero case. */
-> > +            warn_report("Deprecated CPU topology (considered invalid): "
-> > +                        "Unsupported drawers parameter mustn't be "
-> > +                        "specified as 1");
-> > +        }
-> >       }
-> >       drawers = drawers > 0 ? drawers : 1;
-> 
-> Apart from the typos, patch looks fine. I recommend to run "checkpath.pl"
-> with the --codespell parameter, that helps to avoid those.
->
+> Alternatively use WITH_RCU_READ_LOCK_GUARD() to avoid label.
 
-Oops...I didn't realize there were so many typos.
-
-Maybe I'm relying too much on --codespell ;-), and these typos aren't in
-the default dictionary used by --codespell so I didn't check them
-before.
-
-I'll refresh a new version (at Friday) for these typos.
+Sure. I remember your patch. I will resend with your suggestion when
+the first part of this series is addressed.
 
 Thanks,
-Zhao
+
+C.
 
 
