@@ -2,57 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33BC875361
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 16:39:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F4C187534C
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 16:38:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riFq1-0004wO-PJ; Thu, 07 Mar 2024 10:39:18 -0500
+	id 1riFp0-0002Du-1R; Thu, 07 Mar 2024 10:38:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1riFpy-0004sm-FG
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 10:39:14 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1riFpw-000259-8K
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 10:39:14 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TrD4C2VsMz6D8bw;
- Thu,  7 Mar 2024 23:39:07 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id A334C140DF4;
- Thu,  7 Mar 2024 23:39:10 +0800 (CST)
-Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
- lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 7 Mar 2024 15:39:10 +0000
-To: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, David
- Hildenbrand <david@redhat.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, <qemu-devel@nongnu.org>
-CC: <linuxarm@huawei.com>
-Subject: [PATCH v2 4/4] physmem: Fix wrong address in large
- address_space_read/write_cached_slow()
-Date: Thu, 7 Mar 2024 15:37:10 +0000
-Message-ID: <20240307153710.30907-5-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240307153710.30907-1-Jonathan.Cameron@huawei.com>
-References: <20240307153710.30907-1-Jonathan.Cameron@huawei.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1riFox-00027k-Ba
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 10:38:11 -0500
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1riFos-0001iD-4R
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 10:38:11 -0500
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2d2509c66daso15356561fa.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 07:38:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1709825884; x=1710430684; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=gw84/vaSgbCAjFlxKcLsgC6mzuzeK2gI3t/OK6tP/hM=;
+ b=RRrZQfTUOYUjb4RKm0M8W2sK1RPuBFTQn4Gu4/tN+LHFA9EYTzRj+hD08j5RI43GGA
+ T4J+FppOm0NluTFNEfgyeDz5rJ9mX/IX/gcCFaREAURuyKtM2+mppcnFnmowp0MGiftp
+ Lk6MZxq+cGF/ZZKlrqn+frcfjTs/1jMIYo6jHzIinj/c0ckaHDaY2dmw/cbMrO6gHkVT
+ SJ3RTzvsgGZZ5qPZYDyDu9yBNydf9wzyGp2MAeaQn22zXB7mYV9zffKkvI4og+qv2Kkk
+ UQ6pPw4htR688q4XlsWh/rwZ57ZUoIzqgZg5Wep7kIxuFHoCos05hWErzNvVO0wfNpED
+ Ux3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709825884; x=1710430684;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=gw84/vaSgbCAjFlxKcLsgC6mzuzeK2gI3t/OK6tP/hM=;
+ b=Li2VtyKREfCn6TEKWefJ9lDGlPOrhExAOdO0uI8rWf8vZxLp5XCyhhJ1ENdeIpcbAl
+ yX0IYqB/AewnImQTScVt2GLGtGDu/7vQrHZ1uyeemEil+t5RucaKPDgFjNADgUWgFiY4
+ pFoZnWhpJpOEnFqM8cRo4E2tjBxDnScHM9KSrOxny4BVMAexsfw4qiatG3/OKbE6r2sV
+ xbdI/Oksm1Q8N1EUmSo1/JHocFcCPP0uMAS+Rx9Qdu+2it3U7mV1OONOz6NkeKSPx9QV
+ BhpK1TfftWDwLzIEzjda10I9WSRrtFkzQDq1J7OAjwFROWJU92icAE/YIn3hp5B91lth
+ NfEg==
+X-Gm-Message-State: AOJu0Yw54hY3IHoqxTL1rRVtbzBTe2fMYeSTJzocw194zme8KBpKGw3Q
+ a6b4TfmC3sLByGeDaEpMXjzvNBjfMTeo1/87EvhnlhENJ+O3LYvJylbyP8i8+RDrCfD8WcuMtfD
+ P9Dap2PQtWT/fEPKYADo4p109UTt7WqZbhabKLQYphhtDdX8k
+X-Google-Smtp-Source: AGHT+IErOgT6LCAOHZF02FPPlmRHGu/wnXb8O160fwIYyOrZY+ZDztaJjPgO/PibFBS26hcxKJEkakJkS3Ool9BVJ1Q=
+X-Received: by 2002:a2e:b889:0:b0:2d3:228:ec0 with SMTP id
+ r9-20020a2eb889000000b002d302280ec0mr1894302ljp.32.1709825883823; 
+ Thu, 07 Mar 2024 07:38:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20240307152835.299233-1-gaosong@loongson.cn>
+In-Reply-To: <20240307152835.299233-1-gaosong@loongson.cn>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 7 Mar 2024 15:37:52 +0000
+Message-ID: <CAFEAcA81hgtmpvQopayV6AL2bi1gz3nYvfyga=jRpp9xnw3puQ@mail.gmail.com>
+Subject: Re: [PULL v2 00/17] loongarch-to-apply queue
+To: Song Gao <gaosong@loongson.cn>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::233;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x233.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,133 +82,53 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If the access is bigger than the MemoryRegion supports,
-flatview_read/write_continue() will attempt to update the Memory Region.
-but the address passed to flatview_translate() is relative to the cache, not
-to the FlatView.
+On Thu, 7 Mar 2024 at 15:28, Song Gao <gaosong@loongson.cn> wrote:
+>
+> The following changes since commit 8f6330a807f2642dc2a3cdf33347aa28a4c00a87:
+>
+>   Merge tag 'pull-maintainer-updates-060324-1' of https://gitlab.com/stsquad/qemu into staging (2024-03-06 16:56:20 +0000)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20240307
+>
+> for you to fetch changes up to 4dc2edfd6f8abfc38f0ba110502790aa5051b1b5:
+>
+>   hw/loongarch: Add cells missing from rtc node (2024-03-07 21:58:00 +0800)
+>
+> ----------------------------------------------------------------
+> pull-loongarch-20240307
+>
+> ----------------------------------------------------------------
+> Song Gao (17):
+>       hw/loongarch: Move boot fucntions to boot.c
+>       hw/loongarch: Add load initrd
+>       hw/loongarch: Add slave cpu boot_code
+>       hw/loongarch: Add init_cmdline
+>       hw/loongarch: Init efi_system_table
+>       hw/loongarch: Init efi_boot_memmap table
+>       hw/loongarch: Init efi_initrd table
+>       hw/loongarch: Init efi_fdt table
+>       hw/loongarch: Fix fdt memory node wrong 'reg'
+>       hw/loongarch: fdt adds cpu interrupt controller node
+>       hw/loongarch: fdt adds Extend I/O Interrupt Controller
+>       hw/loongarch: fdt adds pch_pic Controller
+>       hw/loongarch: fdt adds pch_msi Controller
+>       hw/loongarch: fdt adds pcie irq_map node
+>       hw/loongarch: fdt remove unused irqchip node
+>       hw/loongarch: Add cells missing from uart node
+>       hw/loongarch: Add cells missing from rtc node
 
-On arm/virt with interleaved CXL memory emulation and virtio-blk-pci this
-lead to the first part of descriptor being read from the CXL memory and the
-second part from PA 0x8 which happens to be a blank region
-of a flash chip and all ffs on this particular configuration.
-Note this test requires the out of tree ARM support for CXL, but
-the problem is more general.
+Looks like our emails crossed, but see my remarks on v1
+about test/compilation failures.
 
-Avoid this by adding new address_space_read_continue_cached()
-and address_space_write_continue_cached() which share all the logic
-with the flatview versions except for the MemoryRegion lookup which
-is unnecessary as the MemoryRegionCache only covers one MemoryRegion.
+Also I have just noticed that none of these patches have
+Reviewed-by: tags. Please make sure patches are code
+reviewed before submitting them in pull requests.
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
-v2: Review from Peter Xu
-- Drop additional lookups of the MemoryRegion via
-address_space_translate_cached() as it will always return the same
-answer.
-- Drop various parameters that are then unused.
-- rename addr1 to mr_addr.
-- Drop a fuzz_dma_read_cb(). Could put this back but it means
-  carrying the address into the inner call and the only in tree
-  fuzzer checks if it is normal RAM and if not does nothing anyway.
-  We don't hit this path for normal RAM.
----
- system/physmem.c | 63 +++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 57 insertions(+), 6 deletions(-)
-
-diff --git a/system/physmem.c b/system/physmem.c
-index 1264eab24b..701bea27dd 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -3381,6 +3381,59 @@ static inline MemoryRegion *address_space_translate_cached(
-     return section.mr;
- }
- 
-+/* Called within RCU critical section.  */
-+static MemTxResult address_space_write_continue_cached(MemTxAttrs attrs,
-+                                                       const void *ptr,
-+                                                       hwaddr len,
-+                                                       hwaddr mr_addr,
-+                                                       hwaddr l,
-+                                                       MemoryRegion *mr)
-+{
-+    MemTxResult result = MEMTX_OK;
-+    const uint8_t *buf = ptr;
-+
-+    for (;;) {
-+        result |= flatview_write_continue_step(attrs, buf, len, mr_addr, &l,
-+                                               mr);
-+
-+        len -= l;
-+        buf += l;
-+        mr_addr += l;
-+
-+        if (!len) {
-+            break;
-+        }
-+
-+        l = len;
-+    }
-+
-+    return result;
-+}
-+
-+/* Called within RCU critical section.  */
-+static MemTxResult address_space_read_continue_cached(MemTxAttrs attrs,
-+                                                      void *ptr, hwaddr len,
-+                                                      hwaddr mr_addr, hwaddr l,
-+                                                      MemoryRegion *mr)
-+{
-+    MemTxResult result = MEMTX_OK;
-+    uint8_t *buf = ptr;
-+
-+    for (;;) {
-+        result |= flatview_read_continue_step(attrs, buf, len, mr_addr, &l, mr);
-+        len -= l;
-+        buf += l;
-+        mr_addr += l;
-+
-+        if (!len) {
-+            break;
-+        }
-+        l = len;
-+    }
-+
-+    return result;
-+}
-+
- /* Called from RCU critical section. address_space_read_cached uses this
-  * out of line function when the target is an MMIO or IOMMU region.
-  */
-@@ -3394,9 +3447,8 @@ address_space_read_cached_slow(MemoryRegionCache *cache, hwaddr addr,
-     l = len;
-     mr = address_space_translate_cached(cache, addr, &mr_addr, &l, false,
-                                         MEMTXATTRS_UNSPECIFIED);
--    return flatview_read_continue(cache->fv,
--                                  addr, MEMTXATTRS_UNSPECIFIED, buf, len,
--                                  mr_addr, l, mr);
-+    return address_space_read_continue_cached(MEMTXATTRS_UNSPECIFIED,
-+                                              buf, len, mr_addr, l, mr);
- }
- 
- /* Called from RCU critical section. address_space_write_cached uses this
-@@ -3412,9 +3464,8 @@ address_space_write_cached_slow(MemoryRegionCache *cache, hwaddr addr,
-     l = len;
-     mr = address_space_translate_cached(cache, addr, &mr_addr, &l, true,
-                                         MEMTXATTRS_UNSPECIFIED);
--    return flatview_write_continue(cache->fv,
--                                   addr, MEMTXATTRS_UNSPECIFIED, buf, len,
--                                   mr_addr, l, mr);
-+    return address_space_write_continue_cached(MEMTXATTRS_UNSPECIFIED,
-+                                               buf, len, mr_addr, l, mr);
- }
- 
- #define ARG1_DECL                MemoryRegionCache *cache
--- 
-2.39.2
-
+thanks
+-- PMM
 
