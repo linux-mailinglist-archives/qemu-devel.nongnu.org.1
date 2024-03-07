@@ -2,88 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2BE0874D5B
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 12:25:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADE0D874DFE
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 12:47:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riBrT-0003uh-Ja; Thu, 07 Mar 2024 06:24:31 -0500
+	id 1riCDY-0003fj-W9; Thu, 07 Mar 2024 06:47:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1riBrQ-0003uP-VQ
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 06:24:29 -0500
-Received: from mgamail.intel.com ([198.175.65.19])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1riBrN-00084k-47
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 06:24:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709810665; x=1741346665;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=eKQJMp2KjcRGiZeV5u89MH7FjELomniIJ5L02BqxnT8=;
- b=OcUWZuT2D98e8sCPB26uF6/tp7J+HQ10O2xeb/O4nBpWu2UvMIrmHxvP
- Y0HWEIkvq74NyAgSwRrhCciNFQaIri4DOYNAqoCeMCujRCThKOaGtRoPC
- tQi0B7u0jIwGzliZKTqoAUEfkmZNIAWnms9DvR2cEC1zrGCAUc3PrEoFo
- klPfX9FrBgoL3VunJoADUe6V842zRxot8OdFGMATIBfZC51E5tXGYhT1k
- v5TPeDXYtMFqrp11kg+FeplYvaryk3LwAJwRADtGYecwWmI3N8SLbM8r6
- fUPe3yXhuBHIfjq3P2kD2pPZtmk/LztlL3+CniQMtcV19XKCWdcBX+xon Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11005"; a="4327510"
-X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; 
-   d="scan'208";a="4327510"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Mar 2024 03:24:14 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; d="scan'208";a="10527562"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.242.48])
- ([10.124.242.48])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Mar 2024 03:24:08 -0800
-Message-ID: <0f3df4b7-ffb9-4fc5-90eb-8a1d6fea5786@intel.com>
-Date: Thu, 7 Mar 2024 19:24:04 +0800
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1riCDW-0003ed-V4
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 06:47:18 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1riCDV-0007qL-4x
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 06:47:18 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id A17EC4988;
+ Thu,  7 Mar 2024 11:24:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1709810666; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=eI8zwx0I/o3RkUEC8LW+WGeZz7baexBy3D709xDCkMA=;
+ b=jQ+LDca36DK1CU68zz7HKarCWs6DIDupZhuU55z9rD3UuKzVrD/PvfgGtkj6ycEiHhEVpw
+ QDZW7OHmdw1DZACjXd5PyPKWFmg/bJFBzEAtpNzE3HRgjJUnmVy+pJt9wNAcHnbl/7cG6R
+ BXw4ZNCuUX8hcHATNJbUy/Vf7+7PQHo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1709810666;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=eI8zwx0I/o3RkUEC8LW+WGeZz7baexBy3D709xDCkMA=;
+ b=zbUTkrdzs7Sn5LTPpIKCD6QLyudZsYNZt971BiOHTtBEOxVL/rIjl4nYKVItg4oA8sT+Li
+ pZIU3AfdpDHLedDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1709810666; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=eI8zwx0I/o3RkUEC8LW+WGeZz7baexBy3D709xDCkMA=;
+ b=jQ+LDca36DK1CU68zz7HKarCWs6DIDupZhuU55z9rD3UuKzVrD/PvfgGtkj6ycEiHhEVpw
+ QDZW7OHmdw1DZACjXd5PyPKWFmg/bJFBzEAtpNzE3HRgjJUnmVy+pJt9wNAcHnbl/7cG6R
+ BXw4ZNCuUX8hcHATNJbUy/Vf7+7PQHo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1709810666;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=eI8zwx0I/o3RkUEC8LW+WGeZz7baexBy3D709xDCkMA=;
+ b=zbUTkrdzs7Sn5LTPpIKCD6QLyudZsYNZt971BiOHTtBEOxVL/rIjl4nYKVItg4oA8sT+Li
+ pZIU3AfdpDHLedDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2C03712FC5;
+ Thu,  7 Mar 2024 11:24:25 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id KhcHOemj6WXpNgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 07 Mar 2024 11:24:25 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com
+Subject: Re: [PATCH v2] migration/multifd: Don't fsync when closing
+ QIOChannelFile
+In-Reply-To: <ZekG-fTq51VRJFz1@x1n>
+References: <20240305195629.9922-1-farosas@suse.de> <ZekG-fTq51VRJFz1@x1n>
+Date: Thu, 07 Mar 2024 08:24:23 -0300
+Message-ID: <87wmqeqo7s.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 30/65] i386/tdx: Support user configurable
- mrconfigid/mrowner/mrownerconfig
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand
- <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ani Sinha <anisinha@redhat.com>, Peter Xu <peterx@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Eric Blake <eblake@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
- qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
- Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
- Isaku Yamahata <isaku.yamahata@gmail.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>
-References: <20240229063726.610065-1-xiaoyao.li@intel.com>
- <20240229063726.610065-31-xiaoyao.li@intel.com> <87edcv1x9j.fsf@pond.sub.org>
- <f9774e89-399c-42ad-8fa8-dd4050ee46da@intel.com>
- <871q8vxuzx.fsf@pond.sub.org>
- <4602df24-029e-4a40-bdec-1b0a6aa30a3c@intel.com>
- <87v85yv3j9.fsf@pond.sub.org>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <87v85yv3j9.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.19; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -11
-X-Spam_score: -1.2
-X-Spam_bar: -
-X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.365,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.276, HK_RANDOM_FROM=0.999, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spamd-Result: default: False [-3.10 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+X-Spam-Score: -3.10
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,173 +116,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/7/2024 4:39 PM, Markus Armbruster wrote:
-> Xiaoyao Li <xiaoyao.li@intel.com> writes:
-> 
->> On 2/29/2024 9:25 PM, Markus Armbruster wrote:
->>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
->>>
->>>> On 2/29/2024 4:37 PM, Markus Armbruster wrote:
->>>>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
->>>>>
->>>>>> From: Isaku Yamahata <isaku.yamahata@intel.com>
->>>>>>
->>>>>> Three sha384 hash values, mrconfigid, mrowner and mrownerconfig, of a TD
->>>>>> can be provided for TDX attestation. Detailed meaning of them can be
->>>>>> found: https://lore.kernel.org/qemu-devel/31d6dbc1-f453-4cef-ab08-4813f4e0ff92@intel.com/
->>>>>>
->>>>>> Allow user to specify those values via property mrconfigid, mrowner and
->>>>>> mrownerconfig. They are all in base64 format.
->>>>>>
->>>>>> example
->>>>>> -object tdx-guest, \
->>>>>>      mrconfigid=ASNFZ4mrze8BI0VniavN7wEjRWeJq83vASNFZ4mrze8BI0VniavN7wEjRWeJq83v,\
->>>>>>      mrowner=ASNFZ4mrze8BI0VniavN7wEjRWeJq83vASNFZ4mrze8BI0VniavN7wEjRWeJq83v,\
->>>>>>      mrownerconfig=ASNFZ4mrze8BI0VniavN7wEjRWeJq83vASNFZ4mrze8BI0VniavN7wEjRWeJq83v
->>>>>>
->>>>>> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
->>>>>> Co-developed-by: Xiaoyao Li <xiaoyao.li@intel.com>
->>>>>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->>> [...]
->>>
->>>>>> diff --git a/qapi/qom.json b/qapi/qom.json
->>>>>> index 89ed89b9b46e..cac875349a3a 100644
->>>>>> --- a/qapi/qom.json
->>>>>> +++ b/qapi/qom.json
->>>>>> @@ -905,10 +905,25 @@
->>>>>>    #     pages.  Some guest OS (e.g., Linux TD guest) may require this to
->>>>>>    #     be set, otherwise they refuse to boot.
->>>>>>    #
->>>>>> +# @mrconfigid: ID for non-owner-defined configuration of the guest TD,
->>>>>> +#     e.g., run-time or OS configuration (base64 encoded SHA384 digest).
->>>>>> +#     (A default value 0 of SHA384 is used when absent).
->>>>>
->>>>> Suggest to drop the parenthesis in the last sentence.
->>>>>
->>>>> @mrconfigid is a string, so the default value can't be 0.  Actually,
->>>>> it's not just any string, but a base64 encoded SHA384 digest, which
->>>>> means it must be exactly 96 hex digits.  So it can't be "0", either.  It
->>>>> could be
->>>>> "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000".
->>>>
->>>> I thought value 0 of SHA384 just means it.
->>>>
->>>> That's my fault and my poor english.
->>>
->>> "Fault" is too harsh :)  It's not as precise as I want our interface
->>> documentation to be.  We work together to get there.
->>>
->>>>> More on this below.
->>>>>
->>>>>> +#
->>>>>> +# @mrowner: ID for the guest TD’s owner (base64 encoded SHA384 digest).
->>>>>> +#     (A default value 0 of SHA384 is used when absent).
->>>>>> +#
->>>>>> +# @mrownerconfig: ID for owner-defined configuration of the guest TD,
->>>>>> +#     e.g., specific to the workload rather than the run-time or OS
->>>>>> +#     (base64 encoded SHA384 digest). (A default value 0 of SHA384 is
->>>>>> +#     used when absent).
->>>>>> +#
->>>>>>    # Since: 9.0
->>>>>>    ##
->>>>>>    { 'struct': 'TdxGuestProperties',
->>>>>> -  'data': { '*sept-ve-disable': 'bool' } }
->>>>>> +  'data': { '*sept-ve-disable': 'bool',
->>>>>> +            '*mrconfigid': 'str',
->>>>>> +            '*mrowner': 'str',
->>>>>> +            '*mrownerconfig': 'str' } }
->>>>>>    ##
->>>>>>    # @ThreadContextProperties:
->>>>>> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
->>>>>> index d0ad4f57b5d0..4ce2f1d082ce 100644
->>>>>> --- a/target/i386/kvm/tdx.c
->>>>>> +++ b/target/i386/kvm/tdx.c
->>>>>> @@ -13,6 +13,7 @@
->>>>>>    #include "qemu/osdep.h"
->>>>>>    #include "qemu/error-report.h"
->>>>>> +#include "qemu/base64.h"
->>>>>>    #include "qapi/error.h"
->>>>>>    #include "qom/object_interfaces.h"
->>>>>>    #include "standard-headers/asm-x86/kvm_para.h"
->>>>>> @@ -516,6 +517,7 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
->>>>>>        X86CPU *x86cpu = X86_CPU(cpu);
->>>>>>        CPUX86State *env = &x86cpu->env;
->>>>>>        g_autofree struct kvm_tdx_init_vm *init_vm = NULL;
->>>>>> +    size_t data_len;
->>>>>>        int r = 0;
->>>>>>        object_property_set_bool(OBJECT(cpu), "pmu", false, &error_abort);
->>>>>> @@ -528,6 +530,38 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
->>>>>>        init_vm = g_malloc0(sizeof(struct kvm_tdx_init_vm) +
->>>>>>                            sizeof(struct kvm_cpuid_entry2) * KVM_MAX_CPUID_ENTRIES);
->>>>>> +#define SHA384_DIGEST_SIZE  48
->>>>>> +
->>>>>> +    if (tdx_guest->mrconfigid) {
->>>>>> +        g_autofree uint8_t *data = qbase64_decode(tdx_guest->mrconfigid,
->>>>>> +                              strlen(tdx_guest->mrconfigid), &data_len, errp);
->>>>>> +        if (!data || data_len != SHA384_DIGEST_SIZE) {
->>>>>> +            error_setg(errp, "TDX: failed to decode mrconfigid");
->>>>>> +            return -1;
->>>>>> +        }
->>>>>> +        memcpy(init_vm->mrconfigid, data, data_len);
->>>>>> +    }
->>>>>
->>>>> When @mrconfigid is absent, the property remains null, and this
->>>>> conditional is not executed.  init_vm->mrconfigid[], an array of 6
->>>>> __u64, remains all zero.  How does the kernel treat that?
->>>>
->>>> A all-zero SHA384 value is still a valid value, isn't it?
->>>>
->>>> KVM treats it with no difference.
->>>
->>> Can you point me to the spot in the kernel where mrconfigid is used?
->>
->> https://github.com/intel/tdx/blob/66a10e258636fa8ec9f5ce687607bf2196a92341/arch/x86/kvm/vmx/tdx.c#L2322
->>
->> KVM just copy what QEMU provides into its own data structure @td_params. The format @of td_params is defined by TDX spec, and @td_params needs to be passed to TDX module when initialize the context of TD via SEAMCALL(TDH.MNG.INIT): https://github.com/intel/tdx/blob/66a10e258636fa8ec9f5ce687607bf2196a92341/arch/x86/kvm/vmx/tdx.c#L2450
->>
->>
->> In fact, all the three SHA384 fields, will be hashed together with some other fields (in td_params and other content of TD) to compromise the initial measurement of TD.
->>
->> TDX module doesn't care the value of td_params->mrconfigid.
-> 
-> My problem is that I don't understand when and why users would omit the
-> optional @mrFOO.
+Peter Xu <peterx@redhat.com> writes:
 
-When users don't care it and don't have an explicit value for them, they 
-can omit it. Then a default all-zero value is used.
+> On Tue, Mar 05, 2024 at 04:56:29PM -0300, Fabiano Rosas wrote:
+>> Commit bc38feddeb ("io: fsync before closing a file channel") added a
+>> fsync/fdatasync at the closing point of the QIOChannelFile to ensure
+>> integrity of the migration stream in case of QEMU crash.
+>>=20
+>> The decision to do the sync at qio_channel_close() was not the best
+>> since that function runs in the main thread and the fsync can cause
+>> QEMU to hang for several minutes, depending on the migration size and
+>> disk speed.
+>>=20
+>> To fix the hang, remove the fsync from qio_channel_file_close().
+>>=20
+>> At this moment, the migration code is the only user of the fsync and
+>> we're taking the tradeoff of not having a sync at all, leaving the
+>> responsibility to the upper layers.
+>>=20
+>> Fixes: bc38feddeb ("io: fsync before closing a file channel")
+>> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>
+> Since 9.0 is reaching and it's important we avoid such hang, I queued this
+> version.
+>
+> However to make sure we can still remember why we do this after a few
+> years, I added a rich comment and will squash into this patch:
+>
+> =3D=3D=3D=3D=3D=3D=3D
+>
+> diff --git a/migration/multifd.c b/migration/multifd.c
+> index 0a8fef046b..bf9d483f7a 100644
+> --- a/migration/multifd.c
+> +++ b/migration/multifd.c
+> @@ -714,6 +714,22 @@ static bool multifd_send_cleanup_channel(MultiFDSend=
+Params *p, Error **errp)
+>           * released because finalize() of the iochannel is only
+>           * triggered on the last reference and it's not guaranteed
+>           * that we always hold the last refcount when reaching here.
+> +         *
+> +         * Closing the fd explicitly has the benefit that if there is any
+> +         * registered I/O handler callbacks on such fd, that will get a
+> +         * POLLNVAL event and will further trigger the cleanup to finally
+> +         * release the IOC.
+> +         *
+> +         * FIXME: It should logically be guaranteed that all multifd
+> +         * channels have no I/O handler callback registered when reaching
+> +         * here, because migration thread will wait for all multifd chan=
+nel
+> +         * establishments to complete during setup.  Since
+> +         * migrate_fd_cleanup() will be scheduled in main thread too, all
+> +         * previous callbacks should guarantee to be completed when
+> +         * reaching here.  See multifd_send_state.channels_created and i=
+ts
+> +         * usage.  In the future, we could replace this with an assert
+> +         * making sure we're the last reference, or simply drop it if ab=
+ove
+> +         * is more clear to be justified.
+>           */
+>          qio_channel_close(p->c, &error_abort);
+>          object_unref(OBJECT(p->c));
+>
+> =3D=3D=3D=3D=3D=3D=3D=3D
 
-If making it mandatory field, then users have to explicit pass a 
-all-zero value when they don't care it.
-
-> I naively expected absent @mrFOO to mean something like "no attestation
-> of FOO".
-> 
-> But I see that they default to
-> "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000".
-> 
-> If this zero value is special and means "no attestation", then we
-> accidentally get no attestation when whatever is being hashed happens to
-> hash to this zero value.  Unlikely, but possible.
-> 
-> If it's not special, then when and why is the ability to omit it useful?
-> 
-At some point, the zero value is special, because it is the default 
-value if no explicit one provided by user. But for TDX point of view, it 
-is not special. The field is a must for any TD, and whatever value it 
-is, it will be hashed into MRTD (Build-time Measurement Register) for 
-later attestation.
-
-TDX architecture defines what fields are always hashed into measurement 
-and also provide other mechanism to hash optional field into 
-measurement. All this is known to users of TDX, and users can calculate 
-the final measurement by itself and compare to what gets reported by TDX 
-to see they are identical.
-
-For these three fields, they are must-to-have fields to be hashed into 
-measurement. For user's convenience, we don't want to make it mandatory 
-input because not everyone cares it and have a specific value to input.
-What people needs to know is that, when no explicit value is provided 
-for these three field, a all-zero value is used.
-
-
+Ack. Thanks Peter!
 
