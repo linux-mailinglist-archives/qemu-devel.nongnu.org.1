@@ -2,105 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE0D874DFE
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 12:47:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65400874D5F
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 12:27:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riCDY-0003fj-W9; Thu, 07 Mar 2024 06:47:21 -0500
+	id 1riBtE-0004VC-S9; Thu, 07 Mar 2024 06:26:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1riCDW-0003ed-V4
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 06:47:18 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1riCDV-0007qL-4x
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 06:47:18 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id A17EC4988;
- Thu,  7 Mar 2024 11:24:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709810666; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=eI8zwx0I/o3RkUEC8LW+WGeZz7baexBy3D709xDCkMA=;
- b=jQ+LDca36DK1CU68zz7HKarCWs6DIDupZhuU55z9rD3UuKzVrD/PvfgGtkj6ycEiHhEVpw
- QDZW7OHmdw1DZACjXd5PyPKWFmg/bJFBzEAtpNzE3HRgjJUnmVy+pJt9wNAcHnbl/7cG6R
- BXw4ZNCuUX8hcHATNJbUy/Vf7+7PQHo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709810666;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=eI8zwx0I/o3RkUEC8LW+WGeZz7baexBy3D709xDCkMA=;
- b=zbUTkrdzs7Sn5LTPpIKCD6QLyudZsYNZt971BiOHTtBEOxVL/rIjl4nYKVItg4oA8sT+Li
- pZIU3AfdpDHLedDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709810666; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=eI8zwx0I/o3RkUEC8LW+WGeZz7baexBy3D709xDCkMA=;
- b=jQ+LDca36DK1CU68zz7HKarCWs6DIDupZhuU55z9rD3UuKzVrD/PvfgGtkj6ycEiHhEVpw
- QDZW7OHmdw1DZACjXd5PyPKWFmg/bJFBzEAtpNzE3HRgjJUnmVy+pJt9wNAcHnbl/7cG6R
- BXw4ZNCuUX8hcHATNJbUy/Vf7+7PQHo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709810666;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=eI8zwx0I/o3RkUEC8LW+WGeZz7baexBy3D709xDCkMA=;
- b=zbUTkrdzs7Sn5LTPpIKCD6QLyudZsYNZt971BiOHTtBEOxVL/rIjl4nYKVItg4oA8sT+Li
- pZIU3AfdpDHLedDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2C03712FC5;
- Thu,  7 Mar 2024 11:24:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id KhcHOemj6WXpNgAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 07 Mar 2024 11:24:25 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com
-Subject: Re: [PATCH v2] migration/multifd: Don't fsync when closing
- QIOChannelFile
-In-Reply-To: <ZekG-fTq51VRJFz1@x1n>
-References: <20240305195629.9922-1-farosas@suse.de> <ZekG-fTq51VRJFz1@x1n>
-Date: Thu, 07 Mar 2024 08:24:23 -0300
-Message-ID: <87wmqeqo7s.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1riBst-0004Sg-2i
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 06:26:02 -0500
+Received: from mgamail.intel.com ([198.175.65.19])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1riBsr-0000GE-DN
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 06:25:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1709810758; x=1741346758;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=1CmSZHBal2aoFmC/opGyMVJfHE9puXGcDcFD3caXTmo=;
+ b=aXBbpbsgi+iqk5MVi36X6P4bT71U/KfHxmTseCAep3mk1rz9BX6YyuHW
+ v68yuakobkpmD29rIFUvbLL2P/JvqpOwSxMzUo0B+T54zr8/Mabuh3eaG
+ v6BcRkrhYW7jkjY4vgPcV7eQOR7eyKnxbiJxq/keYSjXpW3Cx6ZwVvhKp
+ TCUrtMJkWOlp4Dr5utumpm1mNdRVEHSG9jumC7yX498lsWjGUmv4jtfda
+ dbPSIAr3GgOkQw1f3EoSG/z2H3F1D0xymgUy1X01P/JZa1LeNqe/DIMJ/
+ p8E/zDJVvcgkWfPLhrvvJrMr0T+OhKWrUU2WF+Oi3eM/aYkU1EVTXfMY+ g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11005"; a="4327681"
+X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; 
+   d="scan'208";a="4327681"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Mar 2024 03:25:55 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; d="scan'208";a="10527765"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.242.48])
+ ([10.124.242.48])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Mar 2024 03:25:49 -0800
+Message-ID: <a0fa9dc9-221c-4ab4-81f6-b692e26d8a23@intel.com>
+Date: Thu, 7 Mar 2024 19:25:48 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spamd-Result: default: False [-3.10 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
- TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Score: -3.10
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 49/65] i386/tdx: handle TDG.VP.VMCALL<GetQuote>
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand
+ <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
+ qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
+ Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
+ Isaku Yamahata <isaku.yamahata@gmail.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>
+References: <20240229063726.610065-1-xiaoyao.li@intel.com>
+ <20240229063726.610065-50-xiaoyao.li@intel.com> <87a5nj1x4l.fsf@pond.sub.org>
+ <8a2c760d-6310-42eb-b632-5f67b12e2149@intel.com>
+ <87wmqnwga4.fsf@pond.sub.org>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <87wmqnwga4.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=198.175.65.19; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -11
+X-Spam_score: -1.2
+X-Spam_bar: -
+X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.365,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.276, HK_RANDOM_FROM=0.999, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,69 +96,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On 2/29/2024 9:28 PM, Markus Armbruster wrote:
+> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+> 
+>> On 2/29/2024 4:40 PM, Markus Armbruster wrote:
+>>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+>>>
+>>>> From: Isaku Yamahata <isaku.yamahata@intel.com>
+>>>>
+>>>> Add property "quote-generation-socket" to tdx-guest, which is a property
+>>>> of type SocketAddress to specify Quote Generation Service(QGS).
+>>>>
+>>>> On request of GetQuote, it connects to the QGS socket, read request
+>>>> data from shared guest memory, send the request data to the QGS,
+>>>> and store the response into shared guest memory, at last notify
+>>>> TD guest by interrupt.
+>>>>
+>>>> command line example:
+>>>>     qemu-system-x86_64 \
+>>>>       -object '{"qom-type":"tdx-guest","id":"tdx0","quote-generation-socket":{"type": "vsock", "cid":"1","port":"1234"}}' \
+>>>>       -machine confidential-guest-support=tdx0
+>>>>
+>>>> Note, above example uses vsock type socket because the QGS we used
+>>>> implements the vsock socket. It can be other types, like UNIX socket,
+>>>> which depends on the implementation of QGS.
+>>>>
+>>>> To avoid no response from QGS server, setup a timer for the transaction.
+>>>> If timeout, make it an error and interrupt guest. Define the threshold of
+>>>> time to 30s at present, maybe change to other value if not appropriate.
+>>>>
+>>>> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+>>>> Codeveloped-by: Chenyi Qiang <chenyi.qiang@intel.com>
+>>>> Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
+>>>> Codeveloped-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>>>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>>>
+>>> [...]
+>>>
+>>>> diff --git a/qapi/qom.json b/qapi/qom.json
+>>>> index cac875349a3a..7b26b0a0d3aa 100644
+>>>> --- a/qapi/qom.json
+>>>> +++ b/qapi/qom.json
+>>>> @@ -917,13 +917,19 @@
+>>>>   #     (base64 encoded SHA384 digest). (A default value 0 of SHA384 is
+>>>>   #     used when absent).
+>>>>   #
+>>>> +# @quote-generation-socket: socket address for Quote Generation
+>>>> +#     Service (QGS).  QGS is a daemon running on the host.  User in
+>>>> +#     TD guest cannot get TD quoting for attestation if QGS is not
+>>>> +#     provided.  So admin should always provide it.
+>>>
+>>> This makes me wonder why it's optional.  Can you describe a use case for
+>>> *not* specifying @quote-generation-socket?
+>>
+>> Maybe at last when all the TDX support lands on all the components, attestation will become a must for a TD guest to be usable.
+>>
+>> However, at least for today, booting and running a TD guest don't require attestation. So not provide it, doesn't affect anything excepting cannot get a Quote.
+> 
+> Maybe
+> 
+>    # @quote-generation-socket: Socket address for Quote Generation
+>    #     Service (QGS).  QGS is a daemon running on the host.  Without
+>    #     it, the guest will not be able to get a TD quote for
+>    #     attestation.
 
-> On Tue, Mar 05, 2024 at 04:56:29PM -0300, Fabiano Rosas wrote:
->> Commit bc38feddeb ("io: fsync before closing a file channel") added a
->> fsync/fdatasync at the closing point of the QIOChannelFile to ensure
->> integrity of the migration stream in case of QEMU crash.
->>=20
->> The decision to do the sync at qio_channel_close() was not the best
->> since that function runs in the main thread and the fsync can cause
->> QEMU to hang for several minutes, depending on the migration size and
->> disk speed.
->>=20
->> To fix the hang, remove the fsync from qio_channel_file_close().
->>=20
->> At this moment, the migration code is the only user of the fsync and
->> we're taking the tradeoff of not having a sync at all, leaving the
->> responsibility to the upper layers.
->>=20
->> Fixes: bc38feddeb ("io: fsync before closing a file channel")
->> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
->> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->
-> Since 9.0 is reaching and it's important we avoid such hang, I queued this
-> version.
->
-> However to make sure we can still remember why we do this after a few
-> years, I added a rich comment and will squash into this patch:
->
-> =3D=3D=3D=3D=3D=3D=3D
->
-> diff --git a/migration/multifd.c b/migration/multifd.c
-> index 0a8fef046b..bf9d483f7a 100644
-> --- a/migration/multifd.c
-> +++ b/migration/multifd.c
-> @@ -714,6 +714,22 @@ static bool multifd_send_cleanup_channel(MultiFDSend=
-Params *p, Error **errp)
->           * released because finalize() of the iochannel is only
->           * triggered on the last reference and it's not guaranteed
->           * that we always hold the last refcount when reaching here.
-> +         *
-> +         * Closing the fd explicitly has the benefit that if there is any
-> +         * registered I/O handler callbacks on such fd, that will get a
-> +         * POLLNVAL event and will further trigger the cleanup to finally
-> +         * release the IOC.
-> +         *
-> +         * FIXME: It should logically be guaranteed that all multifd
-> +         * channels have no I/O handler callback registered when reaching
-> +         * here, because migration thread will wait for all multifd chan=
-nel
-> +         * establishments to complete during setup.  Since
-> +         * migrate_fd_cleanup() will be scheduled in main thread too, all
-> +         * previous callbacks should guarantee to be completed when
-> +         * reaching here.  See multifd_send_state.channels_created and i=
-ts
-> +         * usage.  In the future, we could replace this with an assert
-> +         * making sure we're the last reference, or simply drop it if ab=
-ove
-> +         * is more clear to be justified.
->           */
->          qio_channel_close(p->c, &error_abort);
->          object_unref(OBJECT(p->c));
->
-> =3D=3D=3D=3D=3D=3D=3D=3D
+Thanks! will update to it.
 
-Ack. Thanks Peter!
+> [...]
+> 
+
 
