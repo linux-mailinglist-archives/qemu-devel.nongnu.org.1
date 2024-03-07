@@ -2,86 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 995DE8758F7
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 22:01:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78EE68756D1
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 20:13:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riKqv-0007xG-Cz; Thu, 07 Mar 2024 16:00:33 -0500
+	id 1riJA8-00067A-Je; Thu, 07 Mar 2024 14:12:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1riKqU-0007vQ-Ki; Thu, 07 Mar 2024 16:00:08 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1riKqS-0007aS-S2; Thu, 07 Mar 2024 16:00:06 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-56694fdec74so1442538a12.1; 
- Thu, 07 Mar 2024 13:00:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709845202; x=1710450002; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=f2hznLN7wg6hIpGibeVONc8fM+6iEbAFhiBfEOBTrMY=;
- b=GVIjfxzcDXUSXuAXgq9kdD9fwejBfKvLIJsvvQqdVysZQUXq5e+pMwFX5Rd+k3oU+j
- WquZedHJ+s/RSkI4ZPhl6Aou7MIiCS9gvAHSAXRRJnKZcx86XnXTgOJfhtJ2sC7PgMvw
- YFey1ehigbEm72gIgi5jncWDCYxRCpQ7m/WkzydEQOXIESm+vETPK4viqJtnOny+y9NU
- FsxfDnVqN0zaXRWGBOgA4QMsreER7aPW/oLFs/g2JmStqZAKACLG7r1ypTLv61HvhdMr
- TH5Y2VKEd7om2+5NWaFRnIyC8t8yi02Bnfc62J1QxnxBO9I1Et2KKRY8AC8qqtbMGf4K
- gqyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709845202; x=1710450002;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=f2hznLN7wg6hIpGibeVONc8fM+6iEbAFhiBfEOBTrMY=;
- b=uqM3ZLZFny2OdWQTR2sAdwSGBbA3IiMxZL2EGrro38KrpDyjm11ee3tkBf2Y2jAfSV
- 8QmyIcw5ly2nM1DR1kKZ4l/t/6zeS4381RTrXwDuHUoI51TffvHElsIIpoEfAAzogVxo
- UvRlaGECn6mhXi15a/PZ/6MoHgl7YwRgQ+yIpNMKNzqnpT09a3HN7dWVSjY1xs/v0VtA
- LNDBrK/DJ4WItgmeTYFBnkw/sTR4ZQn07GD+NBUW/j7miEBLmxhDX16LUJDNxg7ZXepb
- SNmDCv/VawBdLJqSuvnTk/Zh+PRjfUMkU5VO6q0RA01+bjHQiLm3baVrCjLSaGEodH41
- oR6g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVSJFca9BwkYwdv1c0d6SUWOnNMi+GJZfCDJlw55JJpDJAniwEGr/hokZbFYNVzlaAUunZtzkL+AtGwwvEquDkNUrMkgGsojNSXhtz/1PMOnU62aSUwEoKsp26N2xBj
-X-Gm-Message-State: AOJu0YwVfSBpgEChVzu+Zo3omQxjkWAekcCTT/qivXAY1FqPOuV+U0ED
- ea3sylGXHpui9HxOSFKFlJC9/d4qD9GMNsIhL1QLk0P79sLB3MOY
-X-Google-Smtp-Source: AGHT+IEYzSbJnlKPzB+KmYMTS5h8ijVBJhYgTXAxmCCJoWk5mprlJA7BLVZMMZt0sHgoawkl2Ek3Xw==
-X-Received: by 2002:a17:906:f28c:b0:a45:80a2:9748 with SMTP id
- gu12-20020a170906f28c00b00a4580a29748mr7690483ejb.34.1709845200682; 
- Thu, 07 Mar 2024 13:00:00 -0800 (PST)
-Received: from [127.0.0.1] (dynamic-078-055-016-169.78.55.pool.telefonica.de.
- [78.55.16.169]) by smtp.gmail.com with ESMTPSA id
- m19-20020a17090607d300b00a45cabd9b5asm1219298ejc.111.2024.03.07.13.00.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Mar 2024 13:00:00 -0800 (PST)
-Date: Thu, 07 Mar 2024 18:57:54 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-CC: Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Laurent Vivier <laurent@vivier.eu>, qemu-trivial@nongnu.org
-Subject: Re: [PATCH 0/4] hw/i386/pc: Trivial cleanups
-In-Reply-To: <20240301185936.95175-1-philmd@linaro.org>
-References: <20240301185936.95175-1-philmd@linaro.org>
-Message-ID: <2062822B-3D5E-4D17-A913-0036249CFB50@gmail.com>
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1riJA0-00066T-SA; Thu, 07 Mar 2024 14:12:08 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1riJ9x-0004QC-AX; Thu, 07 Mar 2024 14:12:06 -0500
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 427J7IjV002150; Thu, 7 Mar 2024 19:11:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : from : to : cc : references : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=ItXGLcMkeNS5nlIjWl8P7tBZRWXlkagoGpEE6Fdhlu0=;
+ b=M+pMcemr2M8o/wKc0uaYCIhIRrSBNUcZhPEoslxBknHjHc2TcuOuMskDkAdTEF3eyC0t
+ Dc2MFd83qPYjAe8YKPcJ7tZT1/dIYZRwx1s3Jrk5G0FLzDf1YbqObBTsg56wyZYJxPXC
+ 6xjVb3SEFoc1IpM6socoLvGSvbrNE4EY9J4Z3ZkiYtnpFymfwB3CyQ2qheB1gvoOGqof
+ 8iPLdro48f6SDLob/XS6xv4dZY4pertxKg92mR4e3mHEyXZuci83pmwtvkV8V7Qo8qad
+ NFECsrgTl6Bw94AEwv1IxT7GIG3ILkkM54YgFy5XbfIxF0f+/+zUhJ8OqEXvqkhzXJ68 Pg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wqkf2r2cv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 07 Mar 2024 19:11:54 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 427J8m5A006678;
+ Thu, 7 Mar 2024 19:11:54 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wqkf2r2cp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 07 Mar 2024 19:11:54 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 427I37OV025376; Thu, 7 Mar 2024 19:11:52 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wmetyytv7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 07 Mar 2024 19:11:52 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 427JBnYG41615714
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 7 Mar 2024 19:11:51 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1B7B45805D;
+ Thu,  7 Mar 2024 19:11:49 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4D75158043;
+ Thu,  7 Mar 2024 19:11:48 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Thu,  7 Mar 2024 19:11:48 +0000 (GMT)
+Message-ID: <3bfc8f83-f504-4039-8cc3-0c0fb6382692@linux.ibm.com>
+Date: Thu, 7 Mar 2024 14:11:47 -0500
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/5] hw/ppc: SPI controller model - registers
+ implementation
+Content-Language: en-US
+From: Stefan Berger <stefanb@linux.ibm.com>
+To: Chalapathi V <chalapathi.v@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
+ clg@kaod.org, calebs@us.ibm.com, chalapathi.v@ibm.com,
+ saif.abrar@linux.vnet.ibm.com
+References: <20240207160833.3437779-1-chalapathi.v@linux.ibm.com>
+ <20240207160833.3437779-3-chalapathi.v@linux.ibm.com>
+ <6ab8bb8e-5126-4322-bb91-6709e46c444a@linux.ibm.com>
+In-Reply-To: <6ab8bb8e-5126-4322-bb91-6709e46c444a@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: icatcpyL1xMhiEXl-UQvLtfmX7kj6K6k
+X-Proofpoint-GUID: 4o7iD2X7DURXjC4j4Ey11R-eJVo6A3mr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-07_14,2024-03-06_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=979
+ lowpriorityscore=0 suspectscore=0 bulkscore=0 spamscore=0
+ priorityscore=1501 malwarescore=0 phishscore=0 impostorscore=0
+ adultscore=0 mlxscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311290000 definitions=main-2403070134
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,22 +119,12 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-Am 1=2E M=C3=A4rz 2024 18:59:32 UTC schrieb "Philippe Mathieu-Daud=C3=A9" =
-<philmd@linaro=2Eorg>:
->Trivial cleanups, mostly around the 'isapc' machine=2E
->
->Philippe Mathieu-Daud=C3=A9 (4):
->  hw/i386/pc: Remove pc_compat_1_4=2E=2E1=2E7[] left over declarations
->  hw/i386/pc: Use generated NotifyVmexitOption_str()
->  hw/i386/pc: Remove 'host_type' argument from pc_init1()
->  hw/i386/pc: Have pc_init_isa() pass a NULL pci_type argument
+On 3/7/24 13:54, Stefan Berger wrote:
+> 
+> 
+> On 2/7/24 11:08, Chalapathi V wrote:
 
-Ping=2E Will this series make it into 9=2E0? AFAICS all patches are review=
-ed=2E
+>> +#define COUNTER_CONFIG_REG_SHIFT_COUNT_N1       PPC_BITMASK(0 , 7)
 
->
-> include/hw/i386/pc=2Eh | 12 ------------
-> hw/i386/pc_piix=2Ec    | 18 ++++++------------
-> 2 files changed, 6 insertions(+), 24 deletions(-)
->
+No space before the ',' ==> PPC_BITMASK(0, 7)
 
