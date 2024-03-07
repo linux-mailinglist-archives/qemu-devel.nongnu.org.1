@@ -2,84 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CF5887573A
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 20:31:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1238C87576A
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 20:44:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riJSi-0004T4-F8; Thu, 07 Mar 2024 14:31:28 -0500
+	id 1riJe5-0006kR-Nz; Thu, 07 Mar 2024 14:43:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1riJSe-0004Sm-98
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 14:31:24 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1riJSc-0000w9-KC
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 14:31:23 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6d9f94b9186so1283642b3a.0
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 11:31:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709839881; x=1710444681; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=prEeomYjDWfdu2yP6uDTDR0YkSUn/bR4KmwOGYSeq9E=;
- b=YELBn1e8XBbPhf0ROj13BsfP04638ZTT+53RI7y1V8NoUNGqA2K/B8LN2fTotWowTM
- r43TJbZL2UEQ5kt10x4CzL0A8OClC/pfrRDYciQRb/FSTThLtv8t0T0UaGGEni93TFWW
- DIYzQQC9pRVvqCSGGjZECCxdaT5ZfQIIo60HnJBx8vgs+OULuXygcipDix2kJSIJ5adk
- NWYZaP50hIDY8dfcaFBLR4239/vJ5D6QNPgGtqEcPebjSDmSwJTz9eSegcSDpq28m7lm
- gwubfi/KwXrIlYEwNpe1v41ayzwp0hcYYOwA6ZoX9Y6hl3FcSpk1CkCi39Xd5d9kAdUw
- jrMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709839881; x=1710444681;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=prEeomYjDWfdu2yP6uDTDR0YkSUn/bR4KmwOGYSeq9E=;
- b=Psfa9QzChw5kplTCc1PLFyuxWNhAidXS8o4/KlanxBGuBHJ8gzQ3r8FHLFgEVOg/SH
- pemQq8zAhTfeNOleDNWSIgkjdEyh3vmrgFJzL2w1g2M0k7JMeeKJ0ETXcl4ZxpnhKSqk
- WDv6APe0JJLMFJOIQulzG//RHVLHfXO8elwo8CnY4SmDdQAqK6bP7kpaH6ESi+f16BJ9
- LUu9spt33ItGBAq71FnirzEAJbxiMS0u1VypsOS3TbZ8l5yZHNBsCK9d6OZnlKBIUP36
- H9ot008j3K40pLAztZmxi5WrLAVHfQUbkgiZmoG5+vrVblH8OBYMB202mw6kB3NojgKB
- iMyg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXSREwNtOxnl75krZv3zAhKtVuB8zznc6ePhZEYtr32jHLDa1cKOomPB5N/j+HayGJ4wV5yzxn8PFpZn4ImcRJw5p3rySY=
-X-Gm-Message-State: AOJu0YxunjtP1YXUUmIrWnnN8DtNFIyfHDUK0xvPzPS4pDgx0vwz4GCt
- 3jZ/WM2/Zv3zL25gFYoJGiguVjEdtV6oNr4KqJEc2/e4g5zoC83nm7B67LFB1r8=
-X-Google-Smtp-Source: AGHT+IGDl9yvH1QzyeepbHLMqp0xeYcdA+KTKM2Yb9sHzBxbVSa12EjI12XG9vx5ebhb7lDM4ODwbg==
-X-Received: by 2002:a05:6a00:2407:b0:6e6:5343:c165 with SMTP id
- z7-20020a056a00240700b006e65343c165mr4449230pfh.16.1709839880938; 
- Thu, 07 Mar 2024 11:31:20 -0800 (PST)
-Received: from [192.168.6.128] (098-147-055-211.res.spectrum.com.
- [98.147.55.211]) by smtp.gmail.com with ESMTPSA id
- b64-20020a62cf43000000b006e5a915a9e7sm12748854pfg.10.2024.03.07.11.31.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Mar 2024 11:31:20 -0800 (PST)
-Message-ID: <43d5ea83-5fc1-47b0-a6d1-f8564c238d88@linaro.org>
-Date: Thu, 7 Mar 2024 09:31:17 -1000
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1riJe1-0006in-7W; Thu, 07 Mar 2024 14:43:09 -0500
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1riJdw-0003zS-R1; Thu, 07 Mar 2024 14:43:08 -0500
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c18:486:0:640:cf34:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 9A25160E55;
+ Thu,  7 Mar 2024 22:42:57 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:7204::1:28] (unknown
+ [2a02:6b8:b081:7204::1:28])
+ by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id ugnLPC4OkmI0-4qDOGzfq; Thu, 07 Mar 2024 22:42:57 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1709840577;
+ bh=wHusGzc31bx2/x2bm9MBY81KHkIvVwUwVKcOAzmV3iY=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=CHlVRgOSE74RwIn4cXhZYHVinG/rcGGRjwUjQOgDMFDvSSiyjRiG56AHOElFeGcch
+ WI5vBtLb8q+xXwKrDrtxJMs5UjDWPZiPkoJJJgSTj1iPcKlenhBOuB4IYi+kQQHOFk
+ q6Rp4SpC5YE/sAgUjctzXArbr3GvpDGfsRFOAYdA=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <65f517cd-3a1b-41bd-b326-e509cb208b92@yandex-team.ru>
+Date: Thu, 7 Mar 2024 22:42:56 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] tests/tcg: Add multiarch test for Xfer:siginfo:read
- stub
+Subject: Re: [PATCH v2 00/10] mirror: allow switching from background to
+ active mode
 Content-Language: en-US
-To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
- alex.bennee@linaro.org
-Cc: peter.maydell@linaro.org
-References: <20240303192610.498490-1-gustavo.romero@linaro.org>
- <20240303192610.498490-2-gustavo.romero@linaro.org>
- <e33ab9ae-e2d4-41ba-b053-e7e918572808@linaro.org>
- <d98ef081-b25d-4dbf-7b67-fe27e09ff2f0@linaro.org>
- <cd6b5e0f-5a10-4acb-94d6-51073ceb5acf@linaro.org>
- <3973e3e8-cff0-19a3-3fed-f0eebc52d624@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <3973e3e8-cff0-19a3-3fed-f0eebc52d624@linaro.org>
+To: Peter Krempa <pkrempa@redhat.com>, Kevin Wolf <kwolf@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>, Fiona Ebner <f.ebner@proxmox.com>, 
+ qemu-devel@nongnu.org, qemu-block@nongnu.org, eblake@redhat.com,
+ hreitz@redhat.com, jsnow@redhat.com, den@virtuozzo.com,
+ t.lamprecht@proxmox.com, alexander.ivanov@virtuozzo.com
+References: <20231009094619.469668-1-f.ebner@proxmox.com>
+ <a5c48627-0bef-46cd-9426-587b358fe32d@yandex-team.ru>
+ <993bfa5d-1a91-4b32-9bd8-165b7abba4f0@proxmox.com>
+ <99dd287b-816b-4f4f-b156-32f94bbb62c2@yandex-team.ru>
+ <87o7gbyy8w.fsf@pond.sub.org> <ZUTffE0wfjLH2u+e@redhat.com>
+ <87cywqn84g.fsf@pond.sub.org>
+ <1310efb0-e211-46f5-b166-d7d529507a43@yandex-team.ru>
+ <ZeWnFhLKCamlP97y@redhat.com> <ZeWr3ZGrRUrciHH4@angien.pipo.sk>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <ZeWr3ZGrRUrciHH4@angien.pipo.sk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,95 +83,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/7/24 07:50, Gustavo Romero wrote:
-> Hi Richard,
+On 04.03.24 14:09, Peter Krempa wrote:
+> On Mon, Mar 04, 2024 at 11:48:54 +0100, Kevin Wolf wrote:
+>> Am 28.02.2024 um 19:07 hat Vladimir Sementsov-Ogievskiy geschrieben:
+>>> On 03.11.23 18:56, Markus Armbruster wrote:
+>>>> Kevin Wolf<kwolf@redhat.com>  writes:
 > 
-> On 3/4/24 7:51 PM, Richard Henderson wrote:
->> On 3/4/24 10:59, Gustavo Romero wrote:
->>>> Perhaps just abort for SIGABRT instead?
->>>
->>> Although this can make a simpler test, the test can't control
->>> the si_addr value easily, which I think is interesting to be tested.
->>>
->>> Why do you prefer SIGABRT?
->>
->> I missed that you were testing si_addr -- in which case SIGSEGV is a good match.
->>
->>
->>>> A test using setitimer to raise SIGALRM would test the async path.
->>>
->>> SIGLARM doesn't generate any interesting siginfo?
->>
->> It should at minimum have si_sig = SIGALRM.
->>
->>>
->>> gromero@arm64:~$ gdb -q ./sigalrm
->>> Reading symbols from ./sigalrm...
->>> (gdb) run
->>> Starting program: /home/gromero/sigalrm
->>>
->>> Program terminated with signal SIGALRM, Alarm clock.
->>> The program no longer exists.
->>> (gdb) p $_siginfo
->>> $1 = void
->>
->> Well that's because the program died.
->> Do you need to have gdb handle the signal?
+> [...]
 > 
-> ouch, right :)
+>>>> Is the job abstraction a failure?
+>>>>
+>>>> We have
+>>>>
+>>>>       block-job- command      since   job- command    since
+>>>>       -----------------------------------------------------
+>>>>       block-job-set-speed     1.1
+>>>>       block-job-cancel        1.1     job-cancel      3.0
+>>>>       block-job-pause         1.3     job-pause       3.0
+>>>>       block-job-resume        1.3     job-resume      3.0
+>>>>       block-job-complete      1.3     job-complete    3.0
+>>>>       block-job-dismiss       2.12    job-dismiss     3.0
+>>>>       block-job-finalize      2.12    job-finalize    3.0
+>>>>       block-job-change        8.2
+>>>>       query-block-jobs        1.1     query-jobs
 > 
-> However, on a remote target, even if I catch that signal using
-> 'catch signal SIGALRM' the GDBstub only closes the connection
-> when SIGALRM is delivered. That's odd, I don't understand why.
+> [...]
 > 
-> I'm using the same binary that pretty much works on GDB locally.
+>> I consider these strictly optional. We don't really have strong reasons
+>> to deprecate these commands (they are just thin wrappers), and I think
+>> libvirt still uses block-job-* in some places.
 > 
+> Libvirt uses 'block-job-cancel' because it has different semantics from
+> 'job-cancel' which libvirt documented as the behaviour of the API that
+> uses it. (Semantics regarding the expectation of what is written to the
+> destination node at the point when the job is cancelled).
 > 
-> [Remote target]
-> 
-> gromero@arm64:~$ gdb -q
-> gromero@arm64:~/qemu_tests$ gdb -q ./sigalrm
-> Reading symbols from ./sigalrm...
-> (gdb) catch signal SIGALRM
-> Catchpoint 1 (signal SIGALRM)
-> (gdb) c
-> The program is not being run.
-> (gdb) run
-> Starting program: /home/gromero/qemu_tests/sigalrm
-> [Inferior 1 (process 12732) exited normally]
-> (gdb) quit
-> 
-> on the QEMU gdbstub side it reports "Alarm clock":
-> 
-> gromero@amd:~/git/qemu/build$ ./qemu-aarch64 -g 1234 ./sigalrm -s
-> Alarm clock
-> gromero@amd:~/git/qemu/build$
-> 
-> 
-> [Locally]
-> 
-> gromero@arm64:~/qemu_tests$ gdb -q ./sigalrm
-> Reading symbols from ./sigalrm...
-> (gdb) catch signal SIGALRM
-> Catchpoint 1 (signal SIGALRM)
-> (gdb) run -s
-> Starting program: /home/gromero/qemu_tests/sigalrm -s
-> 
-> Catchpoint 1 (signal SIGALRM), 0x000000000041a410 in ualarm ()
-> (gdb) quit
-> 
-> 
-> I'd like to add for the async path using SIGALRM but I need more
-> time to understand what's going on regarding SIGLARM. I understand
-> that's nothing wrong with the Xfer:siginfo:read stub itself, and
-> because the main goal of the test is to test the stub, if you don't
-> mind, I'd like to keep only the test with SIGSEGV for v2 and leave
-> the async test as a follow-up.
 
-Well that's certainly surprising.
-Would you please file a bug report about this?
-I think I know what the problem is, but let's track it anyway.
+That's the following semantics:
+
+   # Note that if you issue 'block-job-cancel' after 'drive-mirror' has
+   # indicated (via the event BLOCK_JOB_READY) that the source and
+   # destination are synchronized, then the event triggered by this
+   # command changes to BLOCK_JOB_COMPLETED, to indicate that the
+   # mirroring has ended and the destination now has a point-in-time copy
+   # tied to the time of the cancellation.
+
+Hmm. Looking at this, it looks for me, that should probably a 'block-job-complete" command (as leading to BLOCK_JOB_COMPLETED).
+
+Actually, what is the difference between block-job-complete and block-job-cancel(force=false) for mirror in ready state?
+
+I only see the following differencies:
+
+1. block-job-complete documents that it completes the job synchronously.. But looking at mirror code I see it just set s->should_complete = true, which will be then handled asynchronously.. So I doubt that documentation is correct.
+
+2. block-job-complete will trigger final graph changes. block-job-cancel will not.
+
+Is [2] really useful? Seems yes: in case of some failure before starting migration target, we'd like to continue executing source. So, no reason to break block-graph in source, better keep it unchanged.
+
+But I think, such behavior better be setup by mirror-job start parameter, rather then by special option for cancel (or even compelete) command, useful only for mirror.
+
+So, what about the following substitution for block-job-cancel:
+
+block-job-cancel(force=true)  -->  use job-cancel
+
+block-job-cancel(force=false) for backup, stream, commit  -->  use job-cancel
+
+block-job-cancel(force=false) for mirror in ready mode  -->
+
+   instead, use block-job-complete. If you don't need final graph modification which mirror job normally does, use graph-change=false parameter for blockdev-mirror command.
 
 
-r~
+(I can hardly remember, that we've already discussed something like this long time ago, but I don't remember the results)
+
+I also a bit unsure about active commit soft-cancelling semantics. Is it actually useful? If yes, block-commit command will need similar option.
+
+-- 
+Best regards,
+Vladimir
+
 
