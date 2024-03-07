@@ -2,90 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 537B487588E
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 21:37:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A45528758A9
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 21:40:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riKT7-0000T6-3T; Thu, 07 Mar 2024 15:35:57 -0500
+	id 1riKXJ-0001iI-5N; Thu, 07 Mar 2024 15:40:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1riKT4-0000SM-2G
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 15:35:54 -0500
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ id 1riKXF-0001ho-2P
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 15:40:13 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1riKT2-0000gk-FF
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 15:35:53 -0500
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-5d8ddbac4fbso1072686a12.0
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 12:35:51 -0800 (PST)
+ id 1riKXC-0001Wi-RM
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 15:40:12 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1dc0e5b223eso762475ad.1
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 12:40:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709843750; x=1710448550; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=linaro.org; s=google; t=1709844009; x=1710448809; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=B1xRIk5BydSMw4y65RbXpbzjW1PRxD7HM3lQohgOcU0=;
- b=qew+g29N9MSobwlzmVcYxgtZGvTX5ReR+kQ1mFvwb0LBmWM+etYf3HcrPvZfVW3VNz
- 91C2RDN8Y3f7W6U85yV66f/Mmd0tJ02rEWGUEtIC5NNlR/Ojm/bRsxPBZ2USd7knkidN
- mpuYLNsQF3QVnBmLluxYmF3vyqHu2i7L3a+UXxC+6Sd+GUuh2Io2dISMfTpjoMFmKpKD
- efnoctB4M5RR8V54uM+7mM17DlTqsmC6dqu07x5/YczAjxkFcgVYDIPo6sn+4kuHSBh5
- bKqIaJuVL0feR45wHghr7uYgZv11JX+is0vETwBr5asc70NcAgEPenG2UXWrQJSMHgMN
- EV8A==
+ bh=Jeq9gSKzeoxfVpU5+KRTxtVJY2HCer0A1/AnLyg+uMk=;
+ b=iuL1QsjI8ZAWk2cslvo5IecTJfx6W3y9MDS/d8C4RHTzy6jctOjAMmetmWN0ye8zCX
+ jeXjIX2+udQ1pzimsa61CiXGqUhN5K5CE4cti+3JO5Acpu72M0rEu9llVb2H1VI18rdz
+ PW2fpeM0Q19Vp0jAV/jGENvi48TtynlXyZIHpzbF9JYZEpfpjwE5PMEH6nzNKGUgtEtW
+ AUarlPBUWPOC8tQFlPiSK1D/fYv1W+PnBCMtSidUfHB3LHmredZKfGYlpuIwOGc7yT9y
+ glPzATDziwMf+sTF3rHSv6aZw8Us07HKv6eZ4F2KuvwBUZDRQm9OIUqb1sw6vAz5t6HF
+ wV5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709843750; x=1710448550;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=1e100.net; s=20230601; t=1709844009; x=1710448809;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=B1xRIk5BydSMw4y65RbXpbzjW1PRxD7HM3lQohgOcU0=;
- b=PHzXmPeUKR4bkmmNgujJ1Sq9KZIW6yk7+Epu1i7B4ts66FcxIlE8L34XrqF2Ad5ZkD
- KlkRLtnEFSfgLzHbcEQBniHHnISqkDGVeZIIEa4xzhNSdKYkjgLBaCfsxe/yda0VFxS6
- RIOZilyp8YqI8b79kuYyMjnv2IcvjM1Pt1iuSnAaavMz5ueTLfhP8zXL229Fb4gn1Fnb
- 2y08/XJcVYEICUNyQqorJcinLNoK/InzTtw7qqxgU2UmW/vJkemy47ta+URb5HAM62di
- MB9EWccE1/rgJmvNvnxflykzfGkCEgAS47Y4FRbWHX5YUXmB4NRDxgqpXDmb+6rIpUfT
- vyHw==
+ bh=Jeq9gSKzeoxfVpU5+KRTxtVJY2HCer0A1/AnLyg+uMk=;
+ b=lFp4BmqbHHNAGN+T9B+gTy6tCl0l1UK4DYz4W6OrFf/XSiZhftu8Y6cwWrjkIJvmM6
+ Eex+KJWwC1fOmclJcGg7diZKbae78ZjRIU51vxo0KbsO2Cy/YkkTMEcKemTR6LXY0SU2
+ DQ237jYHEAVqG8UjX552bc30kdrUVLW4WiBbyuuEhlvY0oKTXP+DaZYaf8I9pSdbL6Tv
+ iR2sg0s7qSFAmGFV1y2K055mA4XTYwBpk1R8hNHMzk8InGPCErDl8ho30nU1hqRuoWrJ
+ arxmRho5gEgz2vaAu+KIcETqWsXxMp55zvqnWFNL1V0SVLl5lI1gEwTUvVKp+GuhpIn3
+ WI9A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWqvGDzpzrSFoCRm/eeLs1pReJGROGPjVnbwPcd94HBtpQ2kjD0hfXEHN6Jo8zhemAOfDr/8vVjquL+uGuI1z1BrAS5NWE=
-X-Gm-Message-State: AOJu0Yywc+soe+vC1uWRAJfNa2BOMgi9hPWdKVMh9TMYueIjqzABXrqI
- ePu3xxi0gAmnrcNTLaaoHR4KIKYeVo5TSEd3dUBM1gqOrLcw2Z+e5jYAvyeWwp4=
-X-Google-Smtp-Source: AGHT+IHXXU/2zQeGTFdYoYccSityFE3rJlB+WHObz6mlX5chl7PF2RTJmYaFnLCamqDZsocsWX/yoQ==
-X-Received: by 2002:a17:902:6809:b0:1dd:5556:9543 with SMTP id
- h9-20020a170902680900b001dd55569543mr2350972plk.30.1709843750396; 
- Thu, 07 Mar 2024 12:35:50 -0800 (PST)
+ AJvYcCUgUpaYyE2878A/Jq8tRUaODa9f2bmG4GyfiBbrQNtbyPEb5sZPs0dLZfBT8PECbs1xG24i25ScuY1qJgbKZ4H41ttwu4o=
+X-Gm-Message-State: AOJu0YxnQ2hxELzjduHkkoCwV5hZzoRfFgebItQUP229qS4jhEt4bKTA
+ hUmsH11VYUbPAWrsmUDFBKdSGCD97ElADiwKttZJYDcigqUniR0hEhKVBLIjO1g=
+X-Google-Smtp-Source: AGHT+IEHp+jwMLyU2ShYRHY9jFXeiXS4aIz9/IcZwa/dK0uVvbMVYFO2ALXgFdl0KJv/JZrOTdVJPQ==
+X-Received: by 2002:a17:903:2348:b0:1dc:d4f9:ef21 with SMTP id
+ c8-20020a170903234800b001dcd4f9ef21mr9723348plh.52.1709844008959; 
+ Thu, 07 Mar 2024 12:40:08 -0800 (PST)
 Received: from [192.168.6.128] (098-147-055-211.res.spectrum.com.
  [98.147.55.211]) by smtp.gmail.com with ESMTPSA id
- d3-20020a170903230300b001db7d3276fbsm15006824plh.27.2024.03.07.12.35.48
+ w7-20020a170902e88700b001dba739d15bsm15109796plg.76.2024.03.07.12.40.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Mar 2024 12:35:50 -0800 (PST)
-Message-ID: <dc9f673a-3f5a-4703-b171-b8599bdec22e@linaro.org>
-Date: Thu, 7 Mar 2024 10:35:45 -1000
+ Thu, 07 Mar 2024 12:40:08 -0800 (PST)
+Message-ID: <4a559ba6-c467-4bdb-9a8e-780850413aa0@linaro.org>
+Date: Thu, 7 Mar 2024 10:40:05 -1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/riscv: Implement dynamic establishment of custom
- decoder
+Subject: Re: [PATCH 3/5] include/exec: remove warning_printed from MemoryRegion
 Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20240307181105.4081793-1-alex.bennee@linaro.org>
+ <20240307181105.4081793-4-alex.bennee@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Huang Tao <eric.huang@linux.alibaba.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, zhiwei_liu@linux.alibaba.com, liwei1518@gmail.com, 
- bin.meng@windriver.com, alistair.francis@wdc.com, palmer@dabbelt.com,
- Christoph Muellner <christoph.muellner@vrull.eu>
-References: <20240306093308.35188-1-eric.huang@linux.alibaba.com>
- <9b9c1af9-5dca-4270-8dfe-a62223c8cbbb@ventanamicro.com>
- <d86b22f7-e601-4bd0-9edc-88d84f572595@linaro.org>
-In-Reply-To: <d86b22f7-e601-4bd0-9edc-88d84f572595@linaro.org>
+In-Reply-To: <20240307181105.4081793-4-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,33 +96,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
->>> -        for (size_t i = 0; i < ARRAY_SIZE(decoders); ++i) {
->>> -            if (decoders[i].guard_func(ctx->cfg_ptr) &&
->>> -                decoders[i].decode_func(ctx, opcode32)) {
->>> +        for (size_t i = 0; i < decoder_table_size; ++i) {
->>> +            if (ctx->decoder[i](ctx, opcode32)) {
->>>                   return;
+On 3/7/24 08:11, Alex Bennée wrote:
+> Since d197063fcf9 (memory: move unassigned_mem_ops to memory.c) this
+> field is unused.
+> 
+> Signed-off-by: Alex Bennée<alex.bennee@linaro.org>
+> ---
+>   include/exec/memory.h | 1 -
+>   1 file changed, 1 deletion(-)
 
-By the way, you're adding layers of pointer chasing, so I suspect you'll find all of this 
-is a wash or worse, performance-wise.
-
-Indeed, since some of the predicates are trivial, going the other way might help: allow 
-everything to be inlined:
-
-     if (decode_insn32(...)) {
-         return;
-     }
-     if (has_xthead_p(...) && decode_xthead(...)) {
-         return;
-     }
-     ...
-
-Even if there are 10 entries here, so what?  All of the code has to be compiled into QEMU. 
-  You're not going to somehow add truly dynamic code that you've loaded from a module.
-
-You could perhaps streamline predicates such as has_xthead_p to not test 11 variables by 
-adding an artificial "ext_xthead_any" configuration entry that is the sum of all of those.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
