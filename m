@@ -2,89 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8997874C20
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 11:18:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4CEA874C3B
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 11:21:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riAp8-00038A-IG; Thu, 07 Mar 2024 05:18:02 -0500
+	id 1riAs0-0004OS-7T; Thu, 07 Mar 2024 05:21:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1riAp6-00037p-7b
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:18:00 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1riArv-0004NB-Ux
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:20:55 -0500
+Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1riAp4-0005jf-HE
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:17:59 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-41312adc3deso1623195e9.3
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 02:17:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1riArr-0006qO-G2
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:20:55 -0500
+Received: by mail-oi1-x22a.google.com with SMTP id
+ 5614622812f47-3c1ec2d05feso299638b6e.0
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 02:20:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709806677; x=1710411477; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=u7g05cVI1ulwpJI3WrzN0gXSiMeRy5J6oImnAcNGKNk=;
- b=YcNsZb9q9Y+lzmDuuWBRMYoa0JBcxhzbs4SKVdABHeJS35TYEG4orXT0k2EC5kNkPW
- a+S3TXU3WnXuLluaoDdoNMfI9TAt+8BHlfTR6WbfM/4L7Oa3hx6R+epM9DjZjEu9gD5w
- kh6iX8pPrIprpALiWAvFd9WBX5sZtFT72cQfGDC3lhYAGi3GnXuVAxbLkiVZucmU2iXW
- X8ZAD6/FTPKBublNri75ZNMWWbZzvg21GDz9zD+524oopCH+qMiBrVQuJwIAn5edhVtm
- IjFQMFN2r/hHF8J/jBQPyKv4CjcoR9y55DyBxtRBQbERJ87HOPg5A/h8rHNp/WfwTCZy
- hTrw==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709806850; x=1710411650;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=vUIoAxak06g1eA3FZ4SX1yMCOAyq07X3SYL1Av4lwIY=;
+ b=X7YhvUqs8DETveIOP544c2a4j3EIVT+eruIrDQWCk1yw7TkNlexpMi9YyIl9CAjk9d
+ EMJI4aT6CR94JeC969MT6QiVJziKOIqr3u4gI0fSoA4dYrGVqw3OkusN8gqU1z6x1+OE
+ EpxlVQ8X1mNIpe2YDsr/pf6zMEk3ojNGnrWFuv1B6RKloszy8PvwHsT4lz//DLNOiYEM
+ cY046sYCMDpV0HmmVcFDjRZWpii8YmbXkL4y1HRoeWrS6Pfb061XBBAzY2lKoDT0vrqs
+ e1O4fTUFBJRU0lFDypww0sSqmdqcqhUDcfM58k3pHbQqrNq8KFF93z3eivEu6qx/SZu4
+ bl7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709806677; x=1710411477;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=u7g05cVI1ulwpJI3WrzN0gXSiMeRy5J6oImnAcNGKNk=;
- b=n8kGE8OFxCSu02R+aXtz6fTclyd3zMuX6C9RFTBavPCgZErN/dvGgSzuyfd6GkWQL0
- MOO6Q+wCJY46cAW6v3Z8blv6PxDgDnTWwmjZm3MyCsaxzZaOVgFKP6Z3VMRap/o/qnpU
- pOFphDciEamhZs4G4/Q8Qy0xVBh2dkEO5sdRUZciRPG+DMa9V7goz53MRjsfbhQX0MyB
- RHKXdSI4DbrdLWocegbu2atjHlIwUKQN3n0gC3+FI2k0tCqH9WF/KeL8RlB5XUMOMy7y
- hbqklFIdSd/NLoqxzMHY3kwTxtJMweQOHOfqX52xfSoy2bxWAb3TXRMVuxAnYnD8Gl7f
- lA+A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUqkrXyblPCGVvF4fV5JEZFEit6ZcteMfBA1aQzKRHCS1wxgCd4iEaQjN5kFVZicI8RTAxffl24zB5YOAl8XS2HGCcM0DA=
-X-Gm-Message-State: AOJu0YwPIVYlVlNO1aJW64dapsDmk1HQFTjrA8FwqXIA2Qsis12ZlluX
- icRrTyxlTERufgM4friSQwLUPH3jxeIMM5GKTHkfJ7T3QmmJma0iATQEdRbnSNI=
-X-Google-Smtp-Source: AGHT+IEnzYVRpMxDEOnav33DVXzECxm9E2gabdFx9I01HcFPg3ozGuneq46hDv50oVZo4zfdVHBqKg==
-X-Received: by 2002:a05:600c:1d87:b0:412:e823:7db3 with SMTP id
- p7-20020a05600c1d8700b00412e8237db3mr6427566wms.16.1709806676666; 
- Thu, 07 Mar 2024 02:17:56 -0800 (PST)
-Received: from [192.168.69.100] (vau06-h02-176-184-43-100.dsl.sta.abo.bbox.fr.
- [176.184.43.100]) by smtp.gmail.com with ESMTPSA id
- f15-20020a05600c4e8f00b00412ea52b102sm2199606wmq.34.2024.03.07.02.17.54
+ d=1e100.net; s=20230601; t=1709806850; x=1710411650;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vUIoAxak06g1eA3FZ4SX1yMCOAyq07X3SYL1Av4lwIY=;
+ b=L6vIa94rLrY+Ed6cN6uxYHTFQ/w+R0W9eXKEKK1CcaFw46GqEE+8YMRfJExB5E6IuU
+ 5GQPHqnEW1kSFooomtXOtpiNgkNq6Tm6CXqyFka9wnj7To7OYE5lLhKAuROaUJyozyKn
+ bNsDNwOn5kNvP0fgYP/by4gq+EYrpdoMrPkiJtKqYAPjdlVXGgKpDGBLLZN85G6sAUvS
+ oepnvZ7AL/M0QS0fIRODT3PBL2185xBcVcp3pZ/7vJHmaKwRLVnToAxRlYEmI29Gwg8M
+ aqge1tDvWXINBgElhOcdJ+2QD3sEkd8ARJHXGd+VvJc+cCLawqPywmGf9Xe+gmQJyZdX
+ Iubw==
+X-Gm-Message-State: AOJu0YwNzfjLUUxW/3k3B4TxCBWtbeZPXnSn1Zmd7FX6NYFMpri6WI1m
+ 92U4ieaEcqx0++rxmI+r+U4rjGRV4J3qfF7gF31eKBDG4mnmx8I6nT1ouG4K/tc=
+X-Google-Smtp-Source: AGHT+IGimWN6ioy3F3yA1caxgIfXqumVFEZ+Kqhm5kqbYqf/vnP1o3JfU2UwS205OmFTuaupTdDTnw==
+X-Received: by 2002:a05:6871:7a03:b0:21e:e6d1:616c with SMTP id
+ pc3-20020a0568717a0300b0021ee6d1616cmr8507099oac.31.1709806849869; 
+ Thu, 07 Mar 2024 02:20:49 -0800 (PST)
+Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
+ by smtp.gmail.com with UTF8SMTPSA id
+ s189-20020a632cc6000000b005dc507e8d13sm12348737pgs.91.2024.03.07.02.20.48
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Mar 2024 02:17:56 -0800 (PST)
-Message-ID: <d8269102-8431-4b56-84c9-16ef107aaf1d@linaro.org>
-Date: Thu, 7 Mar 2024 11:17:53 +0100
+ Thu, 07 Mar 2024 02:20:49 -0800 (PST)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v4 00/19] contrib/elf2dmp: Improve robustness
+Date: Thu, 07 Mar 2024 19:20:43 +0900
+Message-Id: <20240307-elf2dmp-v4-0-4f324ad4d99d@daynix.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/3] hw/nvme: Add SPDM over DOE support
-Content-Language: en-US
-To: Alistair Francis <alistair23@gmail.com>, marcel.apfelbaum@gmail.com,
- Jonathan.Cameron@Huawei.com, its@irrelevant.dk, mst@redhat.com,
- hchkuo@avery-design.com.tw, wilfred.mallawa@wdc.com,
- cbrowy@avery-design.com, kbusch@kernel.org, lukas@wunner.de,
- jiewen.yao@intel.com, qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair.francis@wdc.com>, qemu-block@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Klaus Jensen <k.jensen@samsung.com>,
- Markus Armbruster <armbru@redhat.com>
-References: <20240307005859.356555-1-alistair.francis@wdc.com>
- <20240307005859.356555-4-alistair.francis@wdc.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240307005859.356555-4-alistair.francis@wdc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-B4-Tracking: v=1; b=H4sIAPuU6WUC/2XMTQ6CMBCG4auQrq2hnTKCK+9hXFQ6lSbyk2IaC
+ OHuFhIF4/KbzPNOrCfvqGfnZGKegutd28ShDgkrK908iDsTN5OpVCmkgtPTSlN3XGjUWSZsjgg
+ sfneerBvW0vUWd+X6V+vHNRzEcv004NsIgqf8ThpRFZaA8GL02LjhWLY1WyJB7mG2QRlhjtZKg
+ aANyD8Ie4gbhAjNSRGWYLQqyh84z/MbfydH8hEBAAA=
+To: Viktor Prutyanov <viktor.prutyanov@phystech.edu>, 
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.12.3
+Received-SPF: none client-ip=2607:f8b0:4864:20::22a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x22a.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,112 +94,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Alistair, Wilfred,
+elf2dmp sometimes fails to work with partially corrupted dumps, and also
+emits warnings when sanitizers are in use. This series are collections
+of changes to improve the situation.
 
-On 7/3/24 01:58, Alistair Francis wrote:
-> From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-> 
-> Setup Data Object Exchance (DOE) as an extended capability for the NVME
-> controller and connect SPDM to it (CMA) to it.
-> 
-> Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-> Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Acked-by: Klaus Jensen <k.jensen@samsung.com>
-> ---
->   docs/specs/index.rst        |   1 +
->   docs/specs/spdm.rst         | 122 ++++++++++++++++++++++++++++++++++++
->   include/hw/pci/pci_device.h |   5 ++
->   include/hw/pci/pcie_doe.h   |   3 +
->   hw/nvme/ctrl.c              |  53 ++++++++++++++++
->   5 files changed, 184 insertions(+)
->   create mode 100644 docs/specs/spdm.rst
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Changes in v4:
+- Remove unnecessary !! idiom (Peter Maydell)
+- Link to v3: https://lore.kernel.org/r/20240306-elf2dmp-v3-0-d74e6c3da49c@daynix.com
 
+Changes in v3:
+- Split patch "contrib/elf2dmp: Conform to the error reporting pattern".
+  (Peter Maydell)
+- Stated that the relevant value is little-endian in patch
+  "contrib/elf2dmp: Use lduw_le_p() to read PDB".
+- Added a message saying "Build it only for little endian hosts until
+  they are fixed." for patch "contrib/elf2dmp: Build only for little
+  endian host".
+- Added patch "contrib/elf2dmp: Ensure phdrs fit in file" to fix
+  https://gitlab.com/qemu-project/qemu/-/issues/2202 as patch
+  "contrib/elf2dmp: Clamp QEMU note to file size" was not really fixing
+  the crash.
+- Link to v2: https://lore.kernel.org/r/20240305-elf2dmp-v2-0-86ff2163ad32@daynix.com
 
-> diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
-> index d3dd0f64b2..b8379c78f1 100644
-> --- a/include/hw/pci/pci_device.h
-> +++ b/include/hw/pci/pci_device.h
-> @@ -3,6 +3,7 @@
->   
->   #include "hw/pci/pci.h"
->   #include "hw/pci/pcie.h"
-> +#include "hw/pci/pcie_doe.h"
->   
->   #define TYPE_PCI_DEVICE "pci-device"
->   typedef struct PCIDeviceClass PCIDeviceClass;
-> @@ -157,6 +158,10 @@ struct PCIDevice {
->       MSIVectorReleaseNotifier msix_vector_release_notifier;
->       MSIVectorPollNotifier msix_vector_poll_notifier;
->   
-> +    /* DOE */
-> +    DOECap doe_spdm;
-> +    uint16_t spdm_port;
-> +
->       /* ID of standby device in net_failover pair */
->       char *failover_pair_id;
->       uint32_t acpi_index;
-> diff --git a/include/hw/pci/pcie_doe.h b/include/hw/pci/pcie_doe.h
-> index 15d94661f9..eb8f4e393d 100644
-> --- a/include/hw/pci/pcie_doe.h
-> +++ b/include/hw/pci/pcie_doe.h
-> @@ -108,6 +108,9 @@ struct DOECap {
->       /* Protocols and its callback response */
->       DOEProtocol *protocols;
->       uint16_t protocol_num;
-> +
-> +    /* Used for spdm-socket */
-> +    int socket;
+Changes in v2:
+- Added patch "contrib/elf2dmp: Remove unnecessary err flags".
+- Added patch "contrib/elf2dmp: Assume error by default".
+- Added patch "contrib/elf2dmp: Conform to the error reporting pattern".
+- Added patch "contrib/elf2dmp: Build only for little endian host".
+- Added patch "contrib/elf2dmp: Use GPtrArray".
+- Added patch "contrib/elf2dmp: Clamp QEMU note to file size".
+- Changed error handling in patch "contrib/elf2dmp: Ensure segment fits
+  in file" (Peter Maydell)
+- Added a comment to fill_context() that it continues on failure.
+  (Peter Maydell)
+- Link to v1: https://lore.kernel.org/r/20240303-elf2dmp-v1-0-bea6649fe3e6@daynix.com
 
-Why not name it 'spdm_socket' like 'spdm_port' earlier?
+---
+Akihiko Odaki (19):
+      contrib/elf2dmp: Remove unnecessary err flags
+      contrib/elf2dmp: Assume error by default
+      contrib/elf2dmp: Continue even contexts are lacking
+      contrib/elf2dmp: Change pa_space_create() signature
+      contrib/elf2dmp: Fix error reporting style in addrspace.c
+      contrib/elf2dmp: Fix error reporting style in download.c
+      contrib/elf2dmp: Fix error reporting style in pdb.c
+      contrib/elf2dmp: Fix error reporting style in qemu_elf.c
+      contrib/elf2dmp: Fix error reporting style in main.c
+      contrib/elf2dmp: Always check for PA resolution failure
+      contrib/elf2dmp: Always destroy PA space
+      contrib/elf2dmp: Ensure segment fits in file
+      contrib/elf2dmp: Use lduw_le_p() to read PDB
+      contrib/elf2dmp: Use rol64() to decode
+      MAINTAINERS: Add Akihiko Odaki as a elf2dmp reviewer
+      contrib/elf2dmp: Build only for little endian host
+      contrib/elf2dmp: Use GPtrArray
+      contrib/elf2dmp: Clamp QEMU note to file size
+      contrib/elf2dmp: Ensure phdrs fit in file
 
->   };
+ MAINTAINERS                 |   1 +
+ contrib/elf2dmp/addrspace.h |   6 +-
+ contrib/elf2dmp/download.h  |   2 +-
+ contrib/elf2dmp/pdb.h       |   2 +-
+ contrib/elf2dmp/qemu_elf.h  |   2 +-
+ contrib/elf2dmp/addrspace.c |  63 ++++++++++-------
+ contrib/elf2dmp/download.c  |  12 ++--
+ contrib/elf2dmp/main.c      | 168 ++++++++++++++++++++------------------------
+ contrib/elf2dmp/pdb.c       |  61 +++++++---------
+ contrib/elf2dmp/qemu_elf.c  | 150 ++++++++++++++++++++++-----------------
+ contrib/elf2dmp/meson.build |   2 +-
+ 11 files changed, 238 insertions(+), 231 deletions(-)
+---
+base-commit: bfe8020c814a30479a4241aaa78b63960655962b
+change-id: 20240301-elf2dmp-1a6a551f8663
 
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
->   static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
->   {
->       ERRP_GUARD();
-> @@ -8126,6 +8149,24 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
->   
->       nvme_update_msixcap_ts(pci_dev, n->conf_msix_qsize);
->   
-> +    pcie_cap_deverr_init(pci_dev);
-> +
-> +    /* DOE Initialisation */
-> +    if (pci_dev->spdm_port) {
-> +        uint16_t doe_offset = n->params.sriov_max_vfs ?
-> +                                  PCI_CONFIG_SPACE_SIZE + PCI_ARI_SIZEOF
-> +                                  : PCI_CONFIG_SPACE_SIZE;
-> +
-> +        pcie_doe_init(pci_dev, &pci_dev->doe_spdm, doe_offset, doe_spdm_prot, true, 0);
-> +
-> +        pci_dev->doe_spdm.socket = spdm_socket_connect(pci_dev->spdm_port, errp);
-> +
-> +        if (pci_dev->doe_spdm.socket < 0 ) {
-> +            error_setg(errp, "Failed to connect to SPDM socket");
-
-spdm_socket_connect() already sets errp in case of failure.
-
-> +            return -ENOTSUP;
-
-This function returns a boolean, so this return value is casted
-to 'true'. IIUC true means success, so this is incorrect.
-
-> +        }
-> +    }
-> +
->       if (n->params.cmb_size_mb) {
->           nvme_init_cmb(n, pci_dev);
->       }
-> @@ -8412,6 +8453,7 @@ static Property nvme_props[] = {
->                         params.sriov_max_vi_per_vf, 0),
->       DEFINE_PROP_UINT8("sriov_max_vq_per_vf", NvmeCtrl,
->                         params.sriov_max_vq_per_vf, 0),
-> +    DEFINE_PROP_UINT16("spdm", PCIDevice, spdm_port, 0),
->       DEFINE_PROP_END_OF_LIST(),
->   };
-
-Regards,
-
-Phil.
 
