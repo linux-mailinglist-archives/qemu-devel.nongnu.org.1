@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 380028758C4
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 21:48:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 807F2875916
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 22:11:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riKeh-0005WZ-Ub; Thu, 07 Mar 2024 15:47:57 -0500
+	id 1riL0E-0001LB-5E; Thu, 07 Mar 2024 16:10:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1riKeM-0005WC-LL
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 15:47:35 -0500
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1riL0A-0001Kt-CG
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 16:10:06 -0500
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1riKeH-0003Pc-UN
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 15:47:34 -0500
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6e5c0be115aso1163008b3a.3
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 12:47:28 -0800 (PST)
+ id 1riL05-0001y5-Pw
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 16:10:05 -0500
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-5ce07cf1e5dso1140111a12.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 13:09:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709844447; x=1710449247; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709845799; x=1710450599; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=dFRU3SPnto+fhcNYTLJc3KMMkKnvJZHqpUU+08/X1rU=;
- b=c2pD1bg7877fBo5SZQrNtK0Hli5aOkJVUZCRwfC5z9P/dfIilhnxeFG9goXKYusskw
- H4JHsGBrACRG/DVofDtt66xr92Av72oBB9ctR8z9yfo2UBmjc2/RolN0fAUMUyhk+Ec+
- y2q6BymX/EjpAAaWie41kYyOx1RPYqbyEXR00VfM0ZDSTBDJpwwfGm4kk3i8yzIXGi0G
- ceGPTh8oo9YvnrJFbOPElIh5b659YpfFJT6OqXMUPEWIYwxwBOnNAAITM5i/qP8Xa7JW
- riPLrWpqRaChn3DG7PYZVqx6nqcYnuInf2sLbiknU0i/a8aJc6SJY1JHq04pNn9PTajx
- RT6w==
+ bh=Z3FfCHYft6qroDOKmbK3yyeWhDFazotU6y4xX/OA2wU=;
+ b=Smr0Dd+bDnlb+1bcmAgFGAFAI/532w5fu69aOXnArnn1S0uH+v1dXatwvEKWze0i4t
+ AWkJZqEBNSHK2+uDdzrFbSf+jouYVEZDZ95wnU8C7cVYIzY3CGoje/cXOaOdAUcRwNnW
+ AZsifoG2qJ37hKQN6rlijN4oBg+NcfxOHJlkvKCmCHYEf6Kd+Aqfu18cxVbr498blNln
+ d0vdfnm0Oz7bJJewGaMIB9RBXPQ+YfTOFuIPhUiRe1/rF8SCwHvm/ZgR9Tw7HiUaayQf
+ sWR/8J3cYJQqeuxvdmGUf1E7EBtZX+I3w3cD151pOmfD0x4Q9y7jWGAvsWUDrdtLBBgg
+ sopQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709844447; x=1710449247;
+ d=1e100.net; s=20230601; t=1709845799; x=1710450599;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dFRU3SPnto+fhcNYTLJc3KMMkKnvJZHqpUU+08/X1rU=;
- b=Ipb9WzX7ULdx1kgmjl0rZUI3xLxG4Z6pOlPZWi8DQLXmDv9Ctx8bRpT+iTKdxOJ8sm
- v1FNbKMZCQW+qDmgaUWXu6ZFlGuQaP7+nmppheBKA3bNh2V8YKNklwcPNleEwmx4bY/y
- syVTimbp5lmcoKldl2X4Ieh5TDYj2DMBU3XPMQvVOSEYcYXPUXNO+YrhJHPfUhhzREo/
- CFAsOB23658XC3SbF65ocjxRiyKPNP5C5525Or0gMuMHeEjhLHYdgz0EnJNS+zFNEmze
- iN346dk3SzulJSDy2EVsQ9yFowqB3q9AA+xPDkNeGmGYHFbFR3PIM7lKG3Pzfs/koSNS
- yGOA==
-X-Gm-Message-State: AOJu0YzA25TBqXCRZMTyCJLPptotqpB8QV6z/blUKB/pbRW5shQVolai
- P5Pxjro78hCIGfi3ORm+YRAElDQIUmtPbR6FPFRVmLAy+8idpZoNA+r5jm29RRM=
-X-Google-Smtp-Source: AGHT+IFsqt0k55mbmSdxz/DPMvbdCmJt0nzFPxvPnO+Ver94uFY9AiRvoI5Bzg3SvtdA5deA1G3KlQ==
-X-Received: by 2002:a05:6a00:310f:b0:6e5:bdfb:bcd2 with SMTP id
- bi15-20020a056a00310f00b006e5bdfbbcd2mr15025577pfb.9.1709844447651; 
- Thu, 07 Mar 2024 12:47:27 -0800 (PST)
+ bh=Z3FfCHYft6qroDOKmbK3yyeWhDFazotU6y4xX/OA2wU=;
+ b=CEju2LFqaK+7AiBvGFJTIfSS+04wyuXGNZZaI+SjN9VEopzq0HDrB5aY2CYfbca7Nw
+ KXM9eQN5oBG10Vuoqb2k6Wt7mUhfS5z2Q1CoZuEH1smPrIUQWpGy+bNcXLtE5XqT32QV
+ Balolrqp/QT8ApT7eE8c5dbHzFVDswExEE87AkarV5k8ck2zkrqbMzAQpPg2gFhpHbkp
+ S/ZfIFJEVj6WWeDDAicCdFmSNge4kIrY4mRgikdNYgCt13ihkdX+xf6aOAcs4a3WPR6Z
+ 9xLowB3sOCuw7mrwdfdWaPr7F6adGWpW+7XWpA+ZN50mhoLH01+n+IP9Yn1qIjwBWmwr
+ SsMQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUiZ3oxKs8XxrB7QQKzoUIBcw+WMRCE2sjU+XCfpLYHPbEtQWRrn/f/IFIUtFjSx8MwAhN29bqku9fWr98wK9Hb38ucmO0=
+X-Gm-Message-State: AOJu0YzgqEHlOW04oKGc47EiOFdmHnGhxw93EG2gv3fagGPSXHeIcxaF
+ Hpt2ds8BEjmghuc8wBLKnQeKy1pmpYET9qvHNZ7QuHLHBSbmlJodDIYz/JwFJH0=
+X-Google-Smtp-Source: AGHT+IHYQIl3JXqKushFTKXB/ElhdF+VKyfIMpX6xfMJ2pK+Om1/Wf8RCN/1K0mTQDK51AkYJuhZBw==
+X-Received: by 2002:a05:6a20:7f96:b0:19e:c3a1:238d with SMTP id
+ d22-20020a056a207f9600b0019ec3a1238dmr10085579pzj.52.1709845798772; 
+ Thu, 07 Mar 2024 13:09:58 -0800 (PST)
 Received: from [192.168.6.128] (098-147-055-211.res.spectrum.com.
  [98.147.55.211]) by smtp.gmail.com with ESMTPSA id
- d19-20020a630e13000000b005dcc8a3b26esm12801490pgl.16.2024.03.07.12.47.26
+ m6-20020a62f206000000b006e56a4a2518sm12852685pfh.203.2024.03.07.13.09.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Mar 2024 12:47:27 -0800 (PST)
-Message-ID: <6c75b77c-b13a-428b-85c6-eccdf2036522@linaro.org>
-Date: Thu, 7 Mar 2024 10:47:23 -1000
+ Thu, 07 Mar 2024 13:09:58 -0800 (PST)
+Message-ID: <637e4407-4519-4d87-981a-acd9b5124970@linaro.org>
+Date: Thu, 7 Mar 2024 11:09:54 -1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] linux-user: Move tswap_siginfo out of target code
+Subject: Re: [PATCH v2 3/5] gdbstub: Save target's siginfo
 Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, laurent@vivier.eu,
+To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org
+Cc: alex.bennee@linaro.org, peter.maydell@linaro.org, laurent@vivier.eu,
  philmd@linaro.org
 References: <20240307182623.1450717-1-gustavo.romero@linaro.org>
- <20240307182623.1450717-2-gustavo.romero@linaro.org>
- <874jdhvof0.fsf@draig.linaro.org>
+ <20240307182623.1450717-3-gustavo.romero@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <874jdhvof0.fsf@draig.linaro.org>
+In-Reply-To: <20240307182623.1450717-3-gustavo.romero@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,22 +97,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/7/24 09:21, Alex Bennée wrote:
->> +    /*
->> +     * Writes out siginfo values byteswapped, accordingly to the target. It also
->> +     * cleans the si_type from si_code making it correct for the target.
->> +     */
->> +    tswap_siginfo(&k->info, &k->info);
->> +
+On 3/7/24 08:26, Gustavo Romero wrote:
+> Save target's siginfo into gdbserver_state so it can be used later, for
+> example, in any stub that requires the target's si_signo and si_code.
 > 
-> I'm not sure I like this, you have the same pointer to both a const and
-> non-const arg. Do we assert we come through this once per signal and
-> don't risk double swapping the contents?
+> This change affects only linux-user mode.
 > 
+> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   gdbstub/internals.h    |  3 +++
+>   gdbstub/user-target.c  |  3 ++-
+>   gdbstub/user.c         | 14 ++++++++++----
+>   include/gdbstub/user.h |  6 +++++-
+>   linux-user/main.c      |  2 +-
+>   linux-user/signal.c    |  5 ++++-
+>   6 files changed, 25 insertions(+), 8 deletions(-)
+> 
+> diff --git a/gdbstub/internals.h b/gdbstub/internals.h
+> index 56b7c13b75..a7cc69dab3 100644
+> --- a/gdbstub/internals.h
+> +++ b/gdbstub/internals.h
+> @@ -58,6 +58,9 @@ typedef struct GDBState {
+>       int line_csum; /* checksum at the end of the packet */
+>       GByteArray *last_packet;
+>       int signal;
+> +#ifdef CONFIG_USER_ONLY
+> +    uint8_t siginfo[MAX_SIGINFO_LENGTH];
+> +#endif
 
-I suggested this as an intermediate step -- the function will work perfectly fine with 
-dest == source.  Follow-up patches should clean this up further, but I told Gustavo to not 
-get distracted from his goal with *too* much cleanup.
+If we this in GDBUserState in user.c -- no need for ifdefs then.
+
+> --- a/gdbstub/user-target.c
+> +++ b/gdbstub/user-target.c
+> @@ -10,11 +10,12 @@
+>   #include "qemu/osdep.h"
+>   #include "exec/gdbstub.h"
+>   #include "qemu.h"
+> -#include "internals.h"
+>   #ifdef CONFIG_LINUX
+>   #include "linux-user/loader.h"
+>   #include "linux-user/qemu.h"
+> +#include "gdbstub/user.h"
+>   #endif
+> +#include "internals.h"
+>   
+>   /*
+>    * Map target signal numbers to GDB protocol signal numbers and vice
+
+Why are any changes required here?
+Perhaps this is improper patch split from one of the others?
+
+> @@ -140,6 +141,11 @@ int gdb_handlesig(CPUState *cpu, int sig, const char *reason)
+>           return sig;
+>       }
+>   
+> +    if (siginfo) {
+> +        /* Save target-specific siginfo. */
+> +        memcpy(gdbserver_state.siginfo, siginfo, siginfo_len);
+> +    }
+
+A comment here about asserting the size at compile-time elsewhere would be welcome for 
+future code browsers.
+
+Need to record siginfo_len for later use -- you don't want to expose all 128 bytes if the 
+actual structure is smaller.
+
+> @@ -510,7 +516,7 @@ void gdb_breakpoint_remove_all(CPUState *cs)
+>   void gdb_syscall_handling(const char *syscall_packet)
+>   {
+>       gdb_put_packet(syscall_packet);
+> -    gdb_handlesig(gdbserver_state.c_cpu, 0, NULL);
+> +    gdb_handlesig(gdbserver_state.c_cpu, 0, NULL, NULL, 0);
+>   }
+>   
+>   static bool should_catch_syscall(int num)
+> @@ -528,7 +534,7 @@ void gdb_syscall_entry(CPUState *cs, int num)
+>   {
+>       if (should_catch_syscall(num)) {
+>           g_autofree char *reason = g_strdup_printf("syscall_entry:%x;", num);
+> -        gdb_handlesig(cs, gdb_target_sigtrap(), reason);
+> +        gdb_handlesig(cs, gdb_target_sigtrap(), reason, NULL, 0);
+>       }
+>   }
+>   
+> @@ -536,7 +542,7 @@ void gdb_syscall_return(CPUState *cs, int num)
+>   {
+>       if (should_catch_syscall(num)) {
+>           g_autofree char *reason = g_strdup_printf("syscall_return:%x;", num);
+> -        gdb_handlesig(cs, gdb_target_sigtrap(), reason);
+> +        gdb_handlesig(cs, gdb_target_sigtrap(), reason, NULL, 0);
+>       }
+
+All of this makes me wonder if we should provide a different interface for syscalls, even 
+if it uses the same code paths internally.
+
+Do we want to zero the gdbserver siginfo to indicate that the contents are no longer 
+valid?  I know it's not a real signal delivered to the process, but might we need to 
+construct a simple siginfo struct to match the sigtrap?
 
 
 r~
