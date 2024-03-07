@@ -2,77 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B892874FC4
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 14:15:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B108D874FC7
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 14:16:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riDa9-00011d-9I; Thu, 07 Mar 2024 08:14:45 -0500
+	id 1riDbP-0002g2-Hn; Thu, 07 Mar 2024 08:16:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1riDZx-000119-RG
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 08:14:33 -0500
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1riDZw-00038F-5o
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 08:14:33 -0500
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-565b434f90aso1100719a12.3
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 05:14:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709817269; x=1710422069; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=umYslEZ0CZzfXto0HMP2li6JHScMPmY5cbLxNVT/AyI=;
- b=ELV8j7GgYNFhxze48LWuj65PHpagmBViBmKDAnkoiIeLj/Zid5GVAppBl6g1hrjXLW
- TzASEj7mr0sfZiYpsLFAijIO4eT9hsxBQHDGsFJW2XFniIQMeIPal0h1WnMMV5E7mOFp
- wHHI82WM1Sq7259JUDKnWgpYbd3qPCVj7HK5ea2VYKTzt0wT7IR8jtwxj7bYxPUzmU2G
- VlMraU1iJgKArja01iB7jLXj6t8e5pEDd3DXR07Ak5DE7kg1OQZ0Ga1mNDTOB6ROxSwZ
- Q9kkL/47QNHiMMJ/rR6EizpCny/MdlrnpqhmzeVn8NHqpYvjTJ2hkprt/u0CaswmmhLD
- 4flg==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1riDbN-0002fc-6G
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 08:16:01 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1riDbL-0003XI-AB
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 08:16:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709817357;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZVrk87CG78JQ/FWBiw43JCq6YKgNfgUS+FFfsChSBWs=;
+ b=Jlp8sXsgM9efmRwMiIVzUu9Ae8nEBOpcWiEgB5yP8mTRJI/KjuNimVvFDEdelajn7iLRaR
+ vTISDKBkO13AJYLRNv2Pgq0TNmMvxQMcCGRW4VcNG4dPaN6D4WZnsVfbImSaAc7wgcHwbS
+ 9MtQ+rWsGrecR7HcGiH5Vz+z+LgS1lY=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-132-fEURXpfRN2GPesoHgQi0Yw-1; Thu, 07 Mar 2024 08:15:56 -0500
+X-MC-Unique: fEURXpfRN2GPesoHgQi0Yw-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-69082c5877dso36312626d6.1
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 05:15:56 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709817269; x=1710422069;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=umYslEZ0CZzfXto0HMP2li6JHScMPmY5cbLxNVT/AyI=;
- b=u4Qpv16nOAq25C//UKaKJev+nwKcw8fgbpzE5lIWpPp3nh5O3tQvy6JUJQMG2zAj0c
- haG5jLPZritzICM9Hg+F5o4+enq2+wL77QmxLSy/d68LNTkILGFf3jiV2i0k1FjsxbIj
- YCBv3TXtepZC1fCBYTwkPMfaCz9xSEu5/oaJ7DNiZL+Ygf5oZeuoMH9rRiwuzl6RqhfJ
- Iy1GQNA0ek3eBcXm1v6MjWActHGzcYsyrtsSlmM1R3gGQxVNjG4IrVYjXCu7CXMZlaoc
- k6Xn0qGTO5K06T7dOIWWtrPEs6GQ5GgDnmpQDNLjfWBj2VN1u7uiRIzFmAM5dpPP6wRN
- qx+A==
+ d=1e100.net; s=20230601; t=1709817355; x=1710422155;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZVrk87CG78JQ/FWBiw43JCq6YKgNfgUS+FFfsChSBWs=;
+ b=FdKQi/9LTtJGgebOHS6xU86qR42ipCfmo1cJGOZfoH28oBhfEXVHhmKTiDfMtEMxpn
+ WFXOl6MDK2XxUN3Go3At4OjAXdSOa/qOmNfg/QwvUQgPHegrIVrthkjHzif4F/2EE6bL
+ sBm5BQjw7AVtNDaFH23ES7NpXAPQGRM1aubDSaPxh7UOpUI+PQsL/QpFK8U8WMgludyz
+ WBqTBAq/qrApKFreTrpZ1g8YjQyTexSitanwCYPq+kvY+RKZrXBlZECmN5NFsPsuuU1L
+ zpaHipsElfKGnNxS3cbxXIZ3S4LFuLG8E8ZTYuDRmv36jeRhAktgl4mFB9PZ2CBj6Ly+
+ zL1w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW8Aa5fnHhk+rJLrQ9vgWofXHFPuhaXZ3ToE8R8Kq8gyrhb9Iug00wO5pQRMR57rUsV+Z5V84tOSFNuWfaNlBMBFOS+pUg=
-X-Gm-Message-State: AOJu0YxnX9qO+LSNpDrzp186wF6PLjcIbfVXZcrJowyNSqEGBTjX2Gvh
- pGISofiv28arDvQxtdRNOK9Tml+YqovrlKdwqhbGH2hkCZooKt5QW0a1k03/CuvHavW6KNOJE7R
- Y58O7bqcGkTFxg8pOQu2yNVdYOEZ5Op/ywLFcMQ==
-X-Google-Smtp-Source: AGHT+IHsWDRZfr/T1TgvYpieh0J1BA2RNf2O5YOdxiW6TvELlo4G+MKdWf+3A4CwYzvZPoT0X+duzvH9TmrqBSTT4T4=
-X-Received: by 2002:aa7:d1d1:0:b0:568:12ad:7c38 with SMTP id
- g17-20020aa7d1d1000000b0056812ad7c38mr2178461edp.21.1709817269603; Thu, 07
- Mar 2024 05:14:29 -0800 (PST)
+ AJvYcCWhC/+Z59oUVLBSxlryonqwMDHqqz1M3/7/PD/iq2Q0h8J3/sJKipwYb9XCOLfIrsyXoPLMbGFmvaRt14udv3J4NvrrfOY=
+X-Gm-Message-State: AOJu0YyBfhnwFdGu3FLvMWsvhxe2PhU/E07QEaa3m8iz4pG73wUakOiN
+ P0K8Av7QjeHCNkAwU9z+rLidfy/PzjF2kjzrBsdF/u2OU9Tl3Z0qN9tvWmF+CktNfmNELE74rwE
+ 0LD0Ts/pQR5dppYhalB7sL+ECHZYRXIsUI2OI7lxJEeY83ot4iWmz
+X-Received: by 2002:a05:622a:1651:b0:42f:1145:71f6 with SMTP id
+ y17-20020a05622a165100b0042f114571f6mr2091405qtj.13.1709817355710; 
+ Thu, 07 Mar 2024 05:15:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEinJCwsfFDXG5hx10cJT3VG9HhKZaeUUTrlGHpuxFyzj1j2r1SWkAIZH3w2OfI7g4RjdeTqw==
+X-Received: by 2002:a05:622a:1651:b0:42f:1145:71f6 with SMTP id
+ y17-20020a05622a165100b0042f114571f6mr2091373qtj.13.1709817355391; 
+ Thu, 07 Mar 2024 05:15:55 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ h24-20020ac85058000000b0042ee02f7b92sm5175681qtm.89.2024.03.07.05.15.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 07 Mar 2024 05:15:54 -0800 (PST)
+Message-ID: <671ae175-48c0-4cb9-b4e2-7c935c2d6ae0@redhat.com>
+Date: Thu, 7 Mar 2024 14:15:50 +0100
 MIME-Version: 1.0
-References: <20240307-elf2dmp-v4-0-4f324ad4d99d@daynix.com>
- <20240307-elf2dmp-v4-19-4f324ad4d99d@daynix.com>
-In-Reply-To: <20240307-elf2dmp-v4-19-4f324ad4d99d@daynix.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 7 Mar 2024 13:14:18 +0000
-Message-ID: <CAFEAcA8Nv9nz=21X_mGU0N+NSrxio6JLVVvYo0F=HiN8=Ac+Qg@mail.gmail.com>
-Subject: Re: [PATCH v4 19/19] contrib/elf2dmp: Ensure phdrs fit in file
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Viktor Prutyanov <viktor.prutyanov@phystech.edu>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 17/25] vfio: Add Error** argument to
+ vfio_devices_dma_logging_start()
+Content-Language: en-US, fr
+To: Eric Auger <eauger@redhat.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Markus Armbruster <armbru@redhat.com>,
+ Prasad Pandit <pjp@fedoraproject.org>
+References: <20240306133441.2351700-1-clg@redhat.com>
+ <20240306133441.2351700-18-clg@redhat.com>
+ <43a4b87e-cfa6-4d5d-884f-e4307d9b5fc5@redhat.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <43a4b87e-cfa6-4d5d-884f-e4307d9b5fc5@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -11
+X-Spam_score: -1.2
+X-Spam_bar: -
+X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.583,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,17 +109,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 7 Mar 2024 at 10:21, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->
-> Callers of elf64_getphdr() and elf_getphdrnum() assume phdrs are
-> accessible.
->
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2202
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
+On 3/7/24 09:15, Eric Auger wrote:
+> Hi Cédric,
+> 
+> On 3/6/24 14:34, Cédric Le Goater wrote:
+>> This allows to update the Error argument of the VFIO log_global_start()
+>> handler. Errors detected when device level logging is started will be
+>> propagated up to qemu_savevm_state_setup() when the ram save_setup()
+>> handler is executed.
+>>
+>> The vfio_set_migration_error() call becomes redundant. Remove it.
+> you may precise it becomes redundant in vfio_listener_log_global_start()
+> because it is kept in vfio_listener_log_global_stop
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Yes. This is a leftover from v3 which still had the changes for
+the .log_global_stop() handlers.
 
-thanks
--- PMM
+
+>>
+>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>> ---
+>>
+>>   Changes in v4:
+>>
+>>   - Dropped log_global_stop() and log_global_sync() changes
+>>     
+>>   Changes in v3:
+>>
+>>   - Use error_setg_errno() in vfio_devices_dma_logging_start()
+>>   - ERRP_GUARD() because of error_prepend use in
+>>     vfio_listener_log_global_start()
+>>     
+>>   hw/vfio/common.c | 25 ++++++++++++++-----------
+>>   1 file changed, 14 insertions(+), 11 deletions(-)
+>>
+>> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+>> index 5598a508399a6c0b3a20ba17311cbe83d84250c5..d6790557da2f2890398fa03dbbef18129cd2c1bb 100644
+>> --- a/hw/vfio/common.c
+>> +++ b/hw/vfio/common.c
+>> @@ -1036,7 +1036,8 @@ static void vfio_device_feature_dma_logging_start_destroy(
+>>       g_free(feature);
+>>   }
+>>   
+>> -static int vfio_devices_dma_logging_start(VFIOContainerBase *bcontainer)
+>> +static int vfio_devices_dma_logging_start(VFIOContainerBase *bcontainer,
+>> +                                          Error **errp)
+>>   {
+>>       struct vfio_device_feature *feature;
+>>       VFIODirtyRanges ranges;
+>> @@ -1058,8 +1059,8 @@ static int vfio_devices_dma_logging_start(VFIOContainerBase *bcontainer)
+>>           ret = ioctl(vbasedev->fd, VFIO_DEVICE_FEATURE, feature);
+>>           if (ret) {
+>>               ret = -errno;
+> there is another case of error if !feature. Don't we want t o set errp
+> in that case as well?
+
+arf. How did I miss that ... Will fix.
+
+> I think in general we should try to make the return value and the errp
+> consistent because the caller may try to exploit the errp in case or
+> negative returned value.
+
+yes. That's the goal.
+
+Thanks,
+
+C.
+
+
+>> -            error_report("%s: Failed to start DMA logging, err %d (%s)",
+>> -                         vbasedev->name, ret, strerror(errno));
+>> +            error_setg_errno(errp, errno, "%s: Failed to start DMA logging",
+>> +                             vbasedev->name);
+>>               goto out;
+>>           }
+>>           vbasedev->dirty_tracking = true;
+>> @@ -1078,20 +1079,19 @@ out:
+>>   static bool vfio_listener_log_global_start(MemoryListener *listener,
+>>                                              Error **errp)
+>>   {
+>> +    ERRP_GUARD(); /* error_prepend use */
+>>       VFIOContainerBase *bcontainer = container_of(listener, VFIOContainerBase,
+>>                                                    listener);
+>>       int ret;
+>>   
+>>       if (vfio_devices_all_device_dirty_tracking(bcontainer)) {
+>> -        ret = vfio_devices_dma_logging_start(bcontainer);
+>> +        ret = vfio_devices_dma_logging_start(bcontainer, errp);
+>>       } else {
+>> -        ret = vfio_container_set_dirty_page_tracking(bcontainer, true, NULL);
+>> +        ret = vfio_container_set_dirty_page_tracking(bcontainer, true, errp);
+>>       }
+>>   
+>>       if (ret) {
+>> -        error_report("vfio: Could not start dirty page tracking, err: %d (%s)",
+>> -                     ret, strerror(-ret));
+>> -        vfio_set_migration_error(ret);
+>> +        error_prepend(errp, "vfio: Could not start dirty page tracking - ");
+>>       }
+>>       return !ret;
+>>   }
+>> @@ -1100,17 +1100,20 @@ static void vfio_listener_log_global_stop(MemoryListener *listener)
+>>   {
+>>       VFIOContainerBase *bcontainer = container_of(listener, VFIOContainerBase,
+>>                                                    listener);
+>> +    Error *local_err = NULL;
+>>       int ret = 0;
+>>   
+>>       if (vfio_devices_all_device_dirty_tracking(bcontainer)) {
+>>           vfio_devices_dma_logging_stop(bcontainer);
+>>       } else {
+>> -        ret = vfio_container_set_dirty_page_tracking(bcontainer, false, NULL);
+>> +        ret = vfio_container_set_dirty_page_tracking(bcontainer, false,
+>> +                                                     &local_err);
+>>       }
+>>   
+>>       if (ret) {
+>> -        error_report("vfio: Could not stop dirty page tracking, err: %d (%s)",
+>> -                     ret, strerror(-ret));
+>> +        error_prepend(&local_err,
+>> +                      "vfio: Could not stop dirty page tracking - ");
+>> +        error_report_err(local_err);
+>>           vfio_set_migration_error(ret);
+>>       }
+>>   }
+> Eric
+> 
+
 
