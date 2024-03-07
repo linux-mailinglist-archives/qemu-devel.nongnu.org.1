@@ -2,97 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 945A3875056
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 14:39:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1977B8750E4
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 14:51:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riDxH-0001YT-OY; Thu, 07 Mar 2024 08:38:40 -0500
+	id 1riE7j-000703-39; Thu, 07 Mar 2024 08:49:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1riDvC-00019i-NF
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 08:36:31 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1riE4H-00057Y-Qc
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 08:46:08 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1riDvB-0001U0-BM
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 08:36:30 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1riE3i-000798-7Y
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 08:45:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709818588;
+ s=mimecast20190719; t=1709819094;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=08IHYlGM1NCRDHLFDLs4wFdYbMZ+ma6wnNgKkJJFpVg=;
- b=Ka49HUmJOoFEJizDsRyn2Yv6DiEloS8TFeq/CGBKNoss3LGWrDc/+UDn+vI5b8budaNwvh
- AJWbPvGgJ/4tJV8w7NwqwQutQ6Kd69ueY7SN7/euXJOdPXCeT4BVpuz3gmh9Lj5G3xT4n5
- N8s68NFnyvEXW1suRLSSR1yFDQjBtsw=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=vDM7bxy2/ttWVowQoF3MO/PN2pkTpq/lXKV4CArE2nw=;
+ b=WsMLqELnN1DKEaf+vY6pWHNgYlWw7q+BIOvUb3i19VCVZYgw3rb7PMxvfzE53pwioufzQ6
+ SUUGG/KaRTk6wysLwX44RgpS9sgWBe+KSbPrhZTladyQ6gxA+4M2UangVbyhZvxssL6lRD
+ io4uXyOa2b6nOEQUIR3YwZjm4HDtx0E=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-382-Cv-qf98ROZW581KI1SaUlA-1; Thu, 07 Mar 2024 08:36:27 -0500
-X-MC-Unique: Cv-qf98ROZW581KI1SaUlA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-412dd54cc17so5370655e9.1
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 05:36:27 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709818586; x=1710423386;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=08IHYlGM1NCRDHLFDLs4wFdYbMZ+ma6wnNgKkJJFpVg=;
- b=RGxeheRl+JT2cgvgThNisQnAi22vFFTyumSGbOWS+bKpEq27SFr2tf6ZtZmGTKr2/l
- 7NvnesnQbmhyhID+loAZEGpJiXZODQwSdTLByJUgq7vYhV2rWKuEjwYmfTPh3YPdoaio
- uwrUDIjz4/U+Cl4kntCR/hleriC6shmhnXTD+5A5DKmzATGEJSb45vsFUqFklqS3KhBy
- uvdF/oqlX0pwCVzgaCuCOuqTQFaolyFexSAR7sgabU+w11CUkdQ9vV2skfloiNzvCeLg
- X4wKM8iwOGfcS2ObtjeB94INDud3/CPJVg7pxWa/MS7/HiXA8hVk1GVbwoAjVX02Ja0J
- xYoQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXLf0aPIEwP61R/pfk3AHM4Br0/qJ5wR+V8R/cibBpVRKf8y7U4iT8VLaobj9wnuj6w5e7JCXKAXKmld6y/03JeWvnD32g=
-X-Gm-Message-State: AOJu0Yzdnzxxr91Sr6O1JsFuCD1otj6dt9IiVx1SYW43FtgiOjdreLT3
- srMJwksYhdQje1pPKrHuPi1uqyclM4nDW9t8FJYDFg/CpO5he2zy/ab7PTZpIbYUmb5aQG8Oxe0
- Kjo4DB9vhbIKYa0K4zdYCiPC+85ZsqhB6qK+Zgcu+mzapZe2PKP6X
-X-Received: by 2002:a05:600c:5488:b0:412:d493:19a3 with SMTP id
- iv8-20020a05600c548800b00412d49319a3mr11380543wmb.12.1709818586262; 
- Thu, 07 Mar 2024 05:36:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE1XpeZqYiZT5yll5aqeeX7LeKBXM7S5RULvpCM7WSEC1OjbaKn5y++3hHHTrNuHGJZcfmEZw==
-X-Received: by 2002:a05:600c:5488:b0:412:d493:19a3 with SMTP id
- iv8-20020a05600c548800b00412d49319a3mr11380535wmb.12.1709818586078; 
- Thu, 07 Mar 2024 05:36:26 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- fj5-20020a05600c0c8500b00412b56aa46bsm2727229wmb.13.2024.03.07.05.36.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Mar 2024 05:36:25 -0800 (PST)
-Message-ID: <0a4ecd0f-721b-4c58-8300-911eaa888332@redhat.com>
-Date: Thu, 7 Mar 2024 14:36:24 +0100
+ us-mta-515-GoCBt6itPGaLLTyyMwUhFA-1; Thu, 07 Mar 2024 08:44:52 -0500
+X-MC-Unique: GoCBt6itPGaLLTyyMwUhFA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4E1A28007A3;
+ Thu,  7 Mar 2024 13:44:52 +0000 (UTC)
+Received: from laptop.redhat.com (unknown [10.39.193.114])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2E56917AA5;
+ Thu,  7 Mar 2024 13:44:48 +0000 (UTC)
+From: Eric Auger <eric.auger@redhat.com>
+To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org,
+ imammedo@redhat.com, peter.maydell@linaro.org, clg@redhat.com,
+ yanghliu@redhat.com, zhenzhong.duan@intel.com
+Cc: alex.williamson@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
+ berrange@redhat.com
+Subject: [PATCH v8 0/9] VIRTIO-IOMMU: Introduce aw-bits and granule options
+Date: Thu,  7 Mar 2024 14:43:01 +0100
+Message-ID: <20240307134445.92296-1-eric.auger@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 24/25] vfio: Also trace event failures in
- vfio_save_complete_precopy()
-Content-Language: en-US, fr
-To: Eric Auger <eauger@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Markus Armbruster <armbru@redhat.com>,
- Prasad Pandit <pjp@fedoraproject.org>
-References: <20240306133441.2351700-1-clg@redhat.com>
- <20240306133441.2351700-25-clg@redhat.com>
- <c7fec11d-284c-4134-95aa-d10cf7658f6d@redhat.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <c7fec11d-284c-4134-95aa-d10cf7658f6d@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.583,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,40 +80,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/7/24 10:28, Eric Auger wrote:
-> 
-> 
-> On 3/6/24 14:34, Cédric Le Goater wrote:
->> vfio_save_complete_precopy() currently returns before doing the trace
->> event. Change that.
->>
->> Signed-off-by: Cédric Le Goater <clg@redhat.com>
->> ---
->>   hw/vfio/migration.c | 3 ---
->>   1 file changed, 3 deletions(-)
->>
->> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
->> index bd48f2ee472a5230c2c84bff829dae1e217db33f..c8aeb43b4249ec76ded2542d62792e8c469d5f97 100644
->> --- a/hw/vfio/migration.c
->> +++ b/hw/vfio/migration.c
->> @@ -580,9 +580,6 @@ static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
->>   
->>       qemu_put_be64(f, VFIO_MIG_FLAG_END_OF_STATE);
->>       ret = qemu_file_get_error(f);
->> -    if (ret) {
->> -        return ret;
->> -    }
->>   
->>       trace_vfio_save_complete_precopy(vbasedev->name, ret);
-> it is arguable if you want to trace if an error occured. If you want to
-> unconditionally trace the function entry, want don't we put the trace at
-> the beginning of the function?
+This is a respin of
+[1] [PATCH v5 0/4] VIRTIO-IOMMU: Introduce an aw-bits option
+(https://lore.kernel.org/all/20240215084315.863897-1-eric.auger@redhat.com/)
 
-But, then, the 'ret' value is not set and the trace event is less useful.
-I'd rather keep it that way.
+which now also integrates
 
-Thanks,
+[PATCH v6 0/3] VIRTIO-IOMMU: Set default granule to host page size
+(https://lore.kernel.org/all/20240227165730.14099-1-eric.auger@redhat.com/)
 
-C.
+The introduction of those 2 new options and their new default values
+fix bugs when assigning VFIO devices protected by a virtio-iommu.
+
+patches 1 - 4: intro of the granule property, collected reviews
+- we used to set the default granule to 4k. This causes failures
+  when hotplugging a VFIO device on a 64kB/64kB host/guest config:
+  "vfio: DMA mapping failed, unable to continue". When the device
+  is hotplugged the granule is already frozen to 4k wheras 64k is
+  needed. This series introduces a new granule option which is set
+  by default to the host page size.
+
+patches 5 - 9: intro of the aw-bits property, needs further review
+- we used to set the input address width to 64b. This causes
+  failures with some assigned devices where the guest driver
+  tries to use the full 64b input range whereas the physical IOMMU
+  supports less bits (39/48 gaw for instance on VTD). New default
+  usually match the host HW capability.
+
+For more details please see the cover letter of [1] and [2].
+This series can be found at:
+https://github.com/eauger/qemu/tree/granule_aw_bits_v8
+
+History:
+v7 -> v8:
+- address Phil's comments: return earlier on bad aw-bits,
+  doc improvement
+
+v6 -> v7:
+- Made property static in virt and pc_q35. Fix qtest 32 limit.
+
+
+Eric Auger (9):
+  qdev: Add a granule_mode property
+  virtio-iommu: Add a granule property
+  virtio-iommu: Change the default granule to the host page size
+  qemu-options.hx: Document the virtio-iommu-pci granule option
+  virtio-iommu: Trace domain range limits as unsigned int
+  virtio-iommu: Add an option to define the input range width
+  hw/i386/q35: Set virtio-iommu aw-bits default value to 39
+  hw/arm/virt: Set virtio-iommu aw-bits default value to 48
+  qemu-options.hx: Document the virtio-iommu-pci aw-bits option
+
+ qapi/virtio.json                    | 18 +++++++++++++++
+ include/hw/qdev-properties-system.h |  3 +++
+ include/hw/virtio/virtio-iommu.h    |  3 +++
+ hw/arm/virt.c                       | 17 ++++++++++++++
+ hw/core/machine.c                   |  6 ++++-
+ hw/core/qdev-properties-system.c    | 14 +++++++++++
+ hw/i386/pc_q35.c                    |  9 ++++++++
+ hw/virtio/virtio-iommu.c            | 36 +++++++++++++++++++++++++----
+ tests/qtest/virtio-iommu-test.c     |  2 +-
+ hw/virtio/trace-events              |  2 +-
+ qemu-options.hx                     | 11 +++++++++
+ 11 files changed, 114 insertions(+), 7 deletions(-)
+
+-- 
+2.41.0
 
 
