@@ -2,88 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A278874565
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 02:00:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3B2487456B
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 02:03:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ri26q-0000k1-Kg; Wed, 06 Mar 2024 19:59:44 -0500
+	id 1ri2Ae-0003VK-O7; Wed, 06 Mar 2024 20:03:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ri26m-0000jh-Ch; Wed, 06 Mar 2024 19:59:40 -0500
-Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
+ (Exim 4.90_1) (envelope-from <liuyb845@gmail.com>)
+ id 1ri2Ac-0003UX-19; Wed, 06 Mar 2024 20:03:38 -0500
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ri26k-00085R-94; Wed, 06 Mar 2024 19:59:40 -0500
-Received: by mail-oo1-xc32.google.com with SMTP id
- 006d021491bc7-5a17274193eso136278eaf.3; 
- Wed, 06 Mar 2024 16:59:37 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <liuyb845@gmail.com>)
+ id 1ri2AZ-0000fw-I6; Wed, 06 Mar 2024 20:03:37 -0500
+Received: by mail-pg1-x542.google.com with SMTP id
+ 41be03b00d2f7-5cf2d73a183so1060313a12.1; 
+ Wed, 06 Mar 2024 17:03:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709773177; x=1710377977; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=s9/1mdln9FYDENEIkWEufUZtqQyXG+2Q8vpPpAXGkJ0=;
- b=AHH+xiCAEzpkCndooLzxdoRMq40NydsIlDWEJH7ce6IzFLHuNpxSI/tJ6EU5XGIi0r
- HaAsNKIXIFzfi7LYgmy7Y2FogLdZVypyin5iZ7BmGnMpk+TFWsPbk7i/XUh2ZtQDadw8
- 77Z7oG4WcWskhgLmSPB4yfQuUqjhz6kTU8Lp4jSjHyJmSF+s5zMnkHGKNitbNNZcNxVf
- H9nVlUM5F3/ZidouPUn7ZJh3gYYsRGS1QvFRDiDaWQ07r+ayLWDyVuSXpqMRpW/Ac/IY
- GlTOEF6M1jw84HgsBD4fQE7T8E+dPF20s+H4ifUPwBkNXwpl/LZdyeCTW3SYSWbzUw66
- 4vxA==
+ d=gmail.com; s=20230601; t=1709773412; x=1710378212; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=3/FRIEolAf8UChjRh93kLurFdF1eCFnXs9B6ZoCzHqM=;
+ b=C4AO9nVdWCMju+RDEL9vCZui8KlvbmOYHy9OL4WhbDO0RCKAYEmZhzoeRS+aHUx5aw
+ 59X6rQEiTAE9I1pwJ8oAe6TbE6wVterwy6BT7gu+74MRe+5VzGgBeznwo5KAEOTIWraB
+ DR60A5iYOOA6faDvkMCpw+w9epi7vY9xJplr8qJvCf3GZh6APG8/l6kgKHXd1VGkt5Yk
+ s3SF7Xz+DId7XYNgd16as6Z1KM1fpa+demyhhq482M1dp4MmO4VAhl5xqCQ+rwBIesNw
+ 4Hd0+dVHPcQh60CgxZPupU+VvbyBYhA42ip3mlhIoFaBuoB6liiDJ79wfndZF6deN17W
+ SimQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709773177; x=1710377977;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=s9/1mdln9FYDENEIkWEufUZtqQyXG+2Q8vpPpAXGkJ0=;
- b=GlOdTKbzzo6m7Xmxu77/ukVOBfiZDgZxw9qKhTAPLS7Lt04QbB/SexNRdv7ZY/DDYW
- NIlonhjBudW3g3ILiycH2/+qYFOIP0ev9h+AJnkjlTNut5qKm38n2ru9e7ZaU3fobogC
- ECzwv09vp8a7Y05+ezLgGm7W6cyAQa/qHw81VG2Vs08tRewAqteJltUrrqscaAFyZbkG
- 4VTO3T4zJOg1JDUR8l4MbZJPfE7IdRoveGt2GMbHCsS5a+SB8nvhf/0OBXlk6pMAep/W
- 7Ml3Ls+kUAXe1Gj4gLXbU/D3T0yhy6BuSFR5HYVhgCcp5XCvtHbAhQJcx+yQ1fMXZXPm
- 1nEQ==
+ d=1e100.net; s=20230601; t=1709773412; x=1710378212;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3/FRIEolAf8UChjRh93kLurFdF1eCFnXs9B6ZoCzHqM=;
+ b=FDIfM5IF68/5tm38mrULy4lgGsQisC9e3ZpJ3YbSE8qmPtdyjbvL2DGXV8FR0aoHIJ
+ ZToSY3fH2Ttza5BZHNeRW2BNIgkxMeDOuakzB/DqtonCWkMy7A/dL5deqTfjEk3JdrUk
+ WaMhd+IgGIqshyXydw8qpSxf4nfC5qlEP1JzqGApkiKsB+9CKbdYGKG6NRGfDr/Me7J5
+ JMDTBSp0bOpw/6XANrjBHFp3j4GWOY1ami7HnMvscPZWwU7WhOahvdFQhtXAVlWbYvvU
+ GilVsc/DN/7w41taZy7nvrQkOq0PoMcuu7aoxomofzhBRQ/yCXc7/rGzcuN6nwtqqLI6
+ z/0A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXne3MeXWJHf4WK03wpHQ4hB099yVDPurn8IBIP/jVKhXNyi3dzH/FIxHVIxx8xrH18LUNvJ7X8dqxSSk5EefhupHcPrm7Itq+5HrZTsytOpAA/jX6fUAUUAnYwPw==
-X-Gm-Message-State: AOJu0YzKrnivtfEpn9OuSMY7INBFivtbfXFXQ1HqfH3o9El1uK82qrWc
- 4SvBkOvy/tf6OI8SLgNb41SrEb+9b/pWfeFMQMKrsRG9Bo+ZAslw
-X-Google-Smtp-Source: AGHT+IEE5FiM3wNLdQj0kPDP4dPpxZO1lhU+TTJZDfhhFbyfLiQDrvUfnmZMHMS84HPE32sa9mWB8w==
-X-Received: by 2002:a05:6358:5e08:b0:17b:f881:6649 with SMTP id
- q8-20020a0563585e0800b0017bf8816649mr5510428rwn.26.1709773176645; 
- Wed, 06 Mar 2024 16:59:36 -0800 (PST)
-Received: from toolbox.alistair23.me
- (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
- [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
- by smtp.gmail.com with ESMTPSA id
- n21-20020a63f815000000b005dbd0facb4dsm11420276pgh.61.2024.03.06.16.59.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Mar 2024 16:59:35 -0800 (PST)
-From: Alistair Francis <alistair23@gmail.com>
-X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
-To: marcel.apfelbaum@gmail.com, Jonathan.Cameron@Huawei.com, its@irrelevant.dk,
- mst@redhat.com, hchkuo@avery-design.com.tw, wilfred.mallawa@wdc.com,
- cbrowy@avery-design.com, kbusch@kernel.org, lukas@wunner.de,
- jiewen.yao@intel.com, qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair.francis@wdc.com>, qemu-block@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, alistair23@gmail.com,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Klaus Jensen <k.jensen@samsung.com>
-Subject: [PATCH v5 3/3] hw/nvme: Add SPDM over DOE support
-Date: Thu,  7 Mar 2024 10:58:59 +1000
-Message-ID: <20240307005859.356555-4-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240307005859.356555-1-alistair.francis@wdc.com>
-References: <20240307005859.356555-1-alistair.francis@wdc.com>
+ AJvYcCVcfKQPCiit7JJu/9NNScvuFvQCiTKuM34JWJG2k2wjr5QgvZEf8V3aBvlqsjFzfDnQlZ4EZsSn3iZzim55cuATHWFfZj+77Txl051PnOwaPecHiHHxE0mvJSo=
+X-Gm-Message-State: AOJu0Yzo72KJ3UzjbuiNRfdBzh0pOTpiQMkO/J6LRiM9uRjshyt0DR6S
+ KACfyIrd/t4ilSfYxRZf7gS7Rmct2XOGoxcyAaP8g2oNMPSoS0pmNUVQNEu0wKUnKcaHNKySJZs
+ r9GwWSVcqLfrmXZYQ6CpPWaOxWa8=
+X-Google-Smtp-Source: AGHT+IEZ4O8eR01dZGw/tLVwdgaKpdYxKZhVN2pz6cZk0/FvvmVKDH4ofS6Iey+19fFhVu9JLt+qvijBq2Tw6GfRjCA=
+X-Received: by 2002:a17:90a:fb4c:b0:29a:6395:a67a with SMTP id
+ iq12-20020a17090afb4c00b0029a6395a67amr28819pjb.4.1709773412187; Wed, 06 Mar
+ 2024 17:03:32 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c32;
- envelope-from=alistair23@gmail.com; helo=mail-oo1-xc32.google.com
+References: <CAKstcpWLhcNswkippmDyQQz2bPKSN+w9F0jZzcZRGpuNWvW55g@mail.gmail.com>
+ <CAFEAcA-eDU_As==Yzd5+xhAPKGzfUp2DH_Kj1owL3jvm8s+qWg@mail.gmail.com>
+In-Reply-To: <CAFEAcA-eDU_As==Yzd5+xhAPKGzfUp2DH_Kj1owL3jvm8s+qWg@mail.gmail.com>
+From: yb liu <liuyb845@gmail.com>
+Date: Thu, 7 Mar 2024 09:03:20 +0800
+Message-ID: <CAKstcpVT-swdej7ghk6Sc3Ngwb-ZSrVDUw1=4Rxq5EHOgfjPvQ@mail.gmail.com>
+Subject: Re: QEMU Compatibility for Cortex-A55 AArch32 Firmware
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-discuss@nongnu.org, qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000e14923061307a4c6"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::542;
+ envelope-from=liuyb845@gmail.com; helo=mail-pg1-x542.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,305 +87,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+--000000000000e14923061307a4c6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Setup Data Object Exchance (DOE) as an extended capability for the NVME
-controller and connect SPDM to it (CMA) to it.
+Thanks a lot for you respond me soon!
+The exact instruction is mrc, and the exception happended in early boot
+process. I have no idea to how to debug this error because it happended in
+code_gen_prologue.
+I need to comform that whether QEMU A55 fully supports aarch32 mode. If it
+need me to add addition instructions to support this function, I will
+suspend this task for now.
+I hope to get your respond as soon as possible.
+Best regards!
 
-Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Klaus Jensen <k.jensen@samsung.com>
----
- docs/specs/index.rst        |   1 +
- docs/specs/spdm.rst         | 122 ++++++++++++++++++++++++++++++++++++
- include/hw/pci/pci_device.h |   5 ++
- include/hw/pci/pcie_doe.h   |   3 +
- hw/nvme/ctrl.c              |  53 ++++++++++++++++
- 5 files changed, 184 insertions(+)
- create mode 100644 docs/specs/spdm.rst
+Peter Maydell <peter.maydell@linaro.org> =E4=BA=8E 2024=E5=B9=B43=E6=9C=886=
+=E6=97=A5=E5=91=A8=E4=B8=89 23:24=E5=86=99=E9=81=93=EF=BC=9A
 
-diff --git a/docs/specs/index.rst b/docs/specs/index.rst
-index 1484e3e760..e2d907959a 100644
---- a/docs/specs/index.rst
-+++ b/docs/specs/index.rst
-@@ -29,6 +29,7 @@ guest hardware that is specific to QEMU.
-    edu
-    ivshmem-spec
-    pvpanic
-+   spdm
-    standard-vga
-    virt-ctlr
-    vmcoreinfo
-diff --git a/docs/specs/spdm.rst b/docs/specs/spdm.rst
-new file mode 100644
-index 0000000000..4d0942c1ad
---- /dev/null
-+++ b/docs/specs/spdm.rst
-@@ -0,0 +1,122 @@
-+======================================================
-+QEMU Security Protocols and Data Models (SPDM) Support
-+======================================================
-+
-+SPDM enables authentication, attestation and key exchange to assist in
-+providing infrastructure security enablement. It's a standard published
-+by the `DMTF`_.
-+
-+QEMU supports connecting to a SPDM responder implementation. This allows an
-+external application to emulate the SPDM responder logic for an SPDM device.
-+
-+Setting up a SPDM server
-+========================
-+
-+When using QEMU with SPDM devices QEMU will connect to a server which
-+implements the SPDM functionality.
-+
-+SPDM-Utils
-+----------
-+
-+You can use `SPDM Utils`_ to emulate a responder. This is the simplest method.
-+
-+SPDM-Utils is a Linux applications to manage, test and develop devices
-+supporting DMTF Security Protocol and Data Model (SPDM). It is written in Rust
-+and utilises libspdm.
-+
-+To use SPDM-Utils you will need to do the following steps. Details are included
-+in the SPDM-Utils README.
-+
-+ 1. `Build libspdm`_
-+ 2. `Build SPDM Utils using Cargo`_
-+ 3. `Run it as a server`_
-+
-+spdm-emu
-+--------
-+
-+You can use `spdm emu`_ to model the
-+SPDM responder.
-+
-+.. code-block:: shell
-+
-+    $ cd spdm-emu
-+    $ git submodule init; git submodule update --recursive
-+    $ mkdir build; cd build
-+    $ cmake -DARCH=x64 -DTOOLCHAIN=GCC -DTARGET=Debug -DCRYPTO=openssl ..
-+    $ make -j32
-+    $ make copy_sample_key # Build certificates, required for SPDM authentication.
-+
-+It is worth noting that the certificates should be in compliance with
-+PCIe r6.1 sec 6.31.3. This means you will need to add the following to
-+openssl.cnf
-+
-+.. code-block::
-+
-+    subjectAltName = otherName:2.23.147;UTF8:Vendor=1b36:Device=0010:CC=010802:REV=02:SSVID=1af4:SSID=1100
-+    2.23.147 = ASN1:OID:2.23.147
-+
-+and then manually regenerate some certificates with:
-+
-+.. code-block:: shell
-+
-+    $ openssl req -nodes -newkey ec:param.pem -keyout end_responder.key \
-+        -out end_responder.req -sha384 -batch \
-+        -subj "/CN=DMTF libspdm ECP384 responder cert"
-+
-+    $ openssl x509 -req -in end_responder.req -out end_responder.cert \
-+        -CA inter.cert -CAkey inter.key -sha384 -days 3650 -set_serial 3 \
-+        -extensions v3_end -extfile ../openssl.cnf
-+
-+    $ openssl asn1parse -in end_responder.cert -out end_responder.cert.der
-+
-+    $ cat ca.cert.der inter.cert.der end_responder.cert.der > bundle_responder.certchain.der
-+
-+You can use SPDM-Utils instead as it will generate the correct certificates
-+automatically.
-+
-+The responder can then be launched with
-+
-+.. code-block:: shell
-+
-+    $ cd bin
-+    $ ./spdm_responder_emu --trans PCI_DOE
-+
-+Connecting an SPDM NVMe device
-+==============================
-+
-+Once a SPDM server is running we can start QEMU and connect to the server.
-+
-+For an NVMe device first let's setup a block we can use
-+
-+.. code-block:: shell
-+
-+    $ cd qemu-spdm/linux/image
-+    $ dd if=/dev/zero of=blknvme bs=1M count=2096 # 2GB NNMe Drive
-+
-+Then you can add this to your QEMU command line:
-+
-+.. code-block:: shell
-+
-+    -drive file=blknvme,if=none,id=mynvme,format=raw \
-+        -device nvme,drive=mynvme,serial=deadbeef,spdm=2323
-+
-+At which point QEMU will try to connect to the SPDM server.
-+
-+
-+.. _DMTF:
-+   https://www.dmtf.org/standards/SPDM
-+
-+.. _SPDM Utils:
-+   https://github.com/westerndigitalcorporation/spdm-utils
-+
-+.. _spdm emu:
-+   https://github.com/dmtf/spdm-emu
-+
-+.. _Build SPDM Utils:
-+   https://github.com/westerndigitalcorporation/spdm-utils#building
-+
-+.. _Generate the certificates:
-+   https://github.com/westerndigitalcorporation/spdm-utils#generate-mutable-certificates
-+
-+.. _Run it as a server:
-+   https://github.com/westerndigitalcorporation/spdm-utils#qemu-spdm-device-emulation
-diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
-index d3dd0f64b2..b8379c78f1 100644
---- a/include/hw/pci/pci_device.h
-+++ b/include/hw/pci/pci_device.h
-@@ -3,6 +3,7 @@
- 
- #include "hw/pci/pci.h"
- #include "hw/pci/pcie.h"
-+#include "hw/pci/pcie_doe.h"
- 
- #define TYPE_PCI_DEVICE "pci-device"
- typedef struct PCIDeviceClass PCIDeviceClass;
-@@ -157,6 +158,10 @@ struct PCIDevice {
-     MSIVectorReleaseNotifier msix_vector_release_notifier;
-     MSIVectorPollNotifier msix_vector_poll_notifier;
- 
-+    /* DOE */
-+    DOECap doe_spdm;
-+    uint16_t spdm_port;
-+
-     /* ID of standby device in net_failover pair */
-     char *failover_pair_id;
-     uint32_t acpi_index;
-diff --git a/include/hw/pci/pcie_doe.h b/include/hw/pci/pcie_doe.h
-index 15d94661f9..eb8f4e393d 100644
---- a/include/hw/pci/pcie_doe.h
-+++ b/include/hw/pci/pcie_doe.h
-@@ -108,6 +108,9 @@ struct DOECap {
-     /* Protocols and its callback response */
-     DOEProtocol *protocols;
-     uint16_t protocol_num;
-+
-+    /* Used for spdm-socket */
-+    int socket;
- };
- 
- void pcie_doe_init(PCIDevice *pdev, DOECap *doe_cap, uint16_t offset,
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 76fe039704..0f89988c6f 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -203,6 +203,7 @@
- #include "sysemu/hostmem.h"
- #include "hw/pci/msix.h"
- #include "hw/pci/pcie_sriov.h"
-+#include "sysemu/spdm-socket.h"
- #include "migration/vmstate.h"
- 
- #include "nvme.h"
-@@ -8070,6 +8071,28 @@ static int nvme_add_pm_capability(PCIDevice *pci_dev, uint8_t offset)
-     return 0;
- }
- 
-+static bool pcie_doe_spdm_rsp(DOECap *doe_cap)
-+{
-+    void *req = pcie_doe_get_write_mbox_ptr(doe_cap);
-+    uint32_t req_len = pcie_doe_get_obj_len(req) * 4;
-+    void *rsp = doe_cap->read_mbox;
-+    uint32_t rsp_len = SPDM_SOCKET_MAX_MESSAGE_BUFFER_SIZE;
-+    uint32_t recvd;
-+
-+    recvd = spdm_socket_rsp(doe_cap->socket,
-+                             SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE,
-+                             req, req_len, rsp, rsp_len);
-+    doe_cap->read_mbox_len += DIV_ROUND_UP(recvd, 4);
-+
-+    return recvd != 0;
-+}
-+
-+static DOEProtocol doe_spdm_prot[] = {
-+    { PCI_VENDOR_ID_PCI_SIG, PCI_SIG_DOE_CMA, pcie_doe_spdm_rsp },
-+    { PCI_VENDOR_ID_PCI_SIG, PCI_SIG_DOE_SECURED_CMA, pcie_doe_spdm_rsp },
-+    { }
-+};
-+
- static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
- {
-     ERRP_GUARD();
-@@ -8126,6 +8149,24 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
- 
-     nvme_update_msixcap_ts(pci_dev, n->conf_msix_qsize);
- 
-+    pcie_cap_deverr_init(pci_dev);
-+
-+    /* DOE Initialisation */
-+    if (pci_dev->spdm_port) {
-+        uint16_t doe_offset = n->params.sriov_max_vfs ?
-+                                  PCI_CONFIG_SPACE_SIZE + PCI_ARI_SIZEOF
-+                                  : PCI_CONFIG_SPACE_SIZE;
-+
-+        pcie_doe_init(pci_dev, &pci_dev->doe_spdm, doe_offset, doe_spdm_prot, true, 0);
-+
-+        pci_dev->doe_spdm.socket = spdm_socket_connect(pci_dev->spdm_port, errp);
-+
-+        if (pci_dev->doe_spdm.socket < 0 ) {
-+            error_setg(errp, "Failed to connect to SPDM socket");
-+            return -ENOTSUP;
-+        }
-+    }
-+
-     if (n->params.cmb_size_mb) {
-         nvme_init_cmb(n, pci_dev);
-     }
-@@ -8412,6 +8453,7 @@ static Property nvme_props[] = {
-                       params.sriov_max_vi_per_vf, 0),
-     DEFINE_PROP_UINT8("sriov_max_vq_per_vf", NvmeCtrl,
-                       params.sriov_max_vq_per_vf, 0),
-+    DEFINE_PROP_UINT16("spdm", PCIDevice, spdm_port, 0),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-@@ -8494,10 +8536,20 @@ static void nvme_pci_write_config(PCIDevice *dev, uint32_t address,
-                                   uint32_t val, int len)
- {
-     nvme_sriov_pre_write_ctrl(dev, address, val, len);
-+    pcie_doe_write_config(&dev->doe_spdm, address, val, len);
-     pci_default_write_config(dev, address, val, len);
-     pcie_cap_flr_write_config(dev, address, val, len);
- }
- 
-+static uint32_t nvme_pci_read_config(PCIDevice *dev, uint32_t address, int len)
-+{
-+    uint32_t val;
-+    if (pcie_doe_read_config(&dev->doe_spdm, address, len, &val)) {
-+        return val;
-+    }
-+    return pci_default_read_config(dev, address, len);
-+}
-+
- static const VMStateDescription nvme_vmstate = {
-     .name = "nvme",
-     .unmigratable = 1,
-@@ -8510,6 +8562,7 @@ static void nvme_class_init(ObjectClass *oc, void *data)
- 
-     pc->realize = nvme_realize;
-     pc->config_write = nvme_pci_write_config;
-+    pc->config_read = nvme_pci_read_config;
-     pc->exit = nvme_exit;
-     pc->class_id = PCI_CLASS_STORAGE_EXPRESS;
-     pc->revision = 2;
--- 
-2.44.0
+> On Wed, 6 Mar 2024 at 14:33, yb liu <liuyb845@gmail.com> wrote:
+> >
+> >
+> > Dear QEMU developers
+> >
+> > I hope this email finds you well. We are currently facing an issue
+> related to QEMU and the Cortex-A55 architecture. Specifically, we have
+> compiled a firmware for Cortex-A55 and would like it to run smoothly on
+> QEMU A55 in AArch32 mode.
+> >
+> > Despite our numerous attempts, we continue to encounter an "undefined
+> instruction" error when running the firmware in QEMU. Our question is
+> whether QEMU supports this particular use case=E2=80=94specifically, whet=
+her it can
+> handle A55 running AArch32 firmware.
+>
+> We have Cortex-A55 emulation, but you may be running into one
+> of a few problems:
+>  * we might have a bug
+>  * firmware sometimes does very low level stuff that no other guest
+>    code does, so it might run into something we didn't get round
+>    to implementing (eg it is trying to touch one of the implementation
+>    specific system registers: we tend to implement these as "does
+>    nothing" stubs, but it looks like we didn't bother for the A55,
+>    presumably because Linux didn't care)
+>  * your guest code might be doing something that works on the
+>    real A55 hardware but which is architecturally UNPREDICTABLE:
+>    QEMU doesn't try to exactly match device-specific IMPDEF
+>    and UNPREDICTABLE things
+>  * your guest code might be assuming the presence of some feature
+>    that your real A55 has but which QEMU doesn't implement
+>    (for instance we implement only the absolute minimum RAS
+>    support required by the architecture, not the full RAS
+>    that hardware implements)
+>
+> The thing you'd need to do is look at exactly what the UNDEF
+> instruction is (and what the guest code that causes it is
+> trying to do) to figure out which of these is the problem.
+> Some of these might be easy to fix; some would be harder.
+> If you're in a position to be able to modify the firmware
+> image then that would also allow you to work around missing
+> QEMU functionality if necessary.
+>
+> The more usual reason guest firmware not working in QEMU is
+> not the CPU emulation itself but lack of a model of the
+> device/SoC/etc hardware that the firmware assumes it's
+> running on.
+>
+> -- PMM
+>
 
+--000000000000e14923061307a4c6
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div dir=3D"auto">Thanks a lot for you respond me soon!</=
+div>The exact instruction is mrc, and the exception happended in early boot=
+ process. I have no idea to how to debug this error because it happended in=
+ code_gen_prologue.<div dir=3D"auto">I need to comform that whether QEMU A5=
+5 fully supports aarch32 mode. If it need me to add addition instructions t=
+o support this function, I will suspend this task for now.</div><div dir=3D=
+"auto">I hope to get your respond as soon as possible.</div><div dir=3D"aut=
+o">Best regards!</div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr"=
+ class=3D"gmail_attr">Peter Maydell &lt;<a href=3D"mailto:peter.maydell@lin=
+aro.org">peter.maydell@linaro.org</a>&gt; =E4=BA=8E 2024=E5=B9=B43=E6=9C=88=
+6=E6=97=A5=E5=91=A8=E4=B8=89 23:24=E5=86=99=E9=81=93=EF=BC=9A<br></div><blo=
+ckquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #c=
+cc solid;padding-left:1ex">On Wed, 6 Mar 2024 at 14:33, yb liu &lt;<a href=
+=3D"mailto:liuyb845@gmail.com" target=3D"_blank" rel=3D"noreferrer">liuyb84=
+5@gmail.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt;<br>
+&gt; Dear QEMU developers<br>
+&gt;<br>
+&gt; I hope this email finds you well. We are currently facing an issue rel=
+ated to QEMU and the Cortex-A55 architecture. Specifically, we have compile=
+d a firmware for Cortex-A55 and would like it to run smoothly on QEMU A55 i=
+n AArch32 mode.<br>
+&gt;<br>
+&gt; Despite our numerous attempts, we continue to encounter an &quot;undef=
+ined instruction&quot; error when running the firmware in QEMU. Our questio=
+n is whether QEMU supports this particular use case=E2=80=94specifically, w=
+hether it can handle A55 running AArch32 firmware.<br>
+<br>
+We have Cortex-A55 emulation, but you may be running into one<br>
+of a few problems:<br>
+=C2=A0* we might have a bug<br>
+=C2=A0* firmware sometimes does very low level stuff that no other guest<br=
+>
+=C2=A0 =C2=A0code does, so it might run into something we didn&#39;t get ro=
+und<br>
+=C2=A0 =C2=A0to implementing (eg it is trying to touch one of the implement=
+ation<br>
+=C2=A0 =C2=A0specific system registers: we tend to implement these as &quot=
+;does<br>
+=C2=A0 =C2=A0nothing&quot; stubs, but it looks like we didn&#39;t bother fo=
+r the A55,<br>
+=C2=A0 =C2=A0presumably because Linux didn&#39;t care)<br>
+=C2=A0* your guest code might be doing something that works on the<br>
+=C2=A0 =C2=A0real A55 hardware but which is architecturally UNPREDICTABLE:<=
+br>
+=C2=A0 =C2=A0QEMU doesn&#39;t try to exactly match device-specific IMPDEF<b=
+r>
+=C2=A0 =C2=A0and UNPREDICTABLE things<br>
+=C2=A0* your guest code might be assuming the presence of some feature<br>
+=C2=A0 =C2=A0that your real A55 has but which QEMU doesn&#39;t implement<br=
+>
+=C2=A0 =C2=A0(for instance we implement only the absolute minimum RAS<br>
+=C2=A0 =C2=A0support required by the architecture, not the full RAS<br>
+=C2=A0 =C2=A0that hardware implements)<br>
+<br>
+The thing you&#39;d need to do is look at exactly what the UNDEF<br>
+instruction is (and what the guest code that causes it is<br>
+trying to do) to figure out which of these is the problem.<br>
+Some of these might be easy to fix; some would be harder.<br>
+If you&#39;re in a position to be able to modify the firmware<br>
+image then that would also allow you to work around missing<br>
+QEMU functionality if necessary.<br>
+<br>
+The more usual reason guest firmware not working in QEMU is<br>
+not the CPU emulation itself but lack of a model of the<br>
+device/SoC/etc hardware that the firmware assumes it&#39;s<br>
+running on.<br>
+<br>
+-- PMM<br>
+</blockquote></div>
+
+--000000000000e14923061307a4c6--
 
