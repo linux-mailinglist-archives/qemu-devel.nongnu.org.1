@@ -2,81 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9476F874C48
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 11:23:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59965874C53
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 11:24:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riAtN-00068V-SP; Thu, 07 Mar 2024 05:22:26 -0500
+	id 1riAt7-0005ww-56; Thu, 07 Mar 2024 05:22:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1riAsz-0005lS-0X
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:22:02 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1riAsu-0005gy-BX
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:57 -0500
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1riAsu-0007GH-3N
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:59 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1dcad814986so5879215ad.0
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 02:21:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1riAsr-0007FP-QL
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:55 -0500
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2d269b2ff48so9020981fa.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 02:21:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709806915; x=1710411715;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=vWeSXxnvukh1qTIQXUJcznaqlBnX6VJYT1GjqHDMtek=;
- b=PbGIfVCeCfzPdQgGreLjHsucCnWtlVZBBsVqRXg/HUBiF9n4O43UsyXL7Zjn3icMgG
- PlJ5lHGg4fnhwNtzIwW9lLaiVprIpOZbohIoBiVH8eXfogXVt+KsnTXr7eKyTd7LoIuh
- 9rq+6YJZHojt2tEFerfvHuayVJFpqnYEsAtioSv+6akFN5I6Axf4x1LqB+FeylYulsxT
- M5aWWA+FZVw9O9zmP6V1R2OP4wNxphwVdriVP9jvyoyoSgTihuAbCCtIdQ2hPFkPKs2D
- u4GCP7MCjscQsnGHMTBvp5whr2RvAGdPHFOxouCLSR43aWxhJV9QbaHYGlD6DxM9M7lt
- SG2w==
+ d=linaro.org; s=google; t=1709806911; x=1710411711; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ufP5Es4sPtuAnhqjx+zsVTbp4J0z//3jgbKXkTq58Ic=;
+ b=UJWg1UNYnw/lZwotnkTv58uI+rGCBF6BfBMi4QyBQ4lRxEsgCEIUn0Ctc3/gC0KMyM
+ pEiEZf4qr9IaxwRSnrP7H+Nxoc7HoMNhTYcVulLjHbKfDCVxOVv+53xne+qtpzRC7x6B
+ +R76J+H+tHdT8vEyJLy0p0+VV6S7Q4+0WiuZtoOk/+VeR7Ouz5IY30CgmkbVHY+sdA/W
+ c2FpECp58y7aI6S6Hp470DKtodK040aj/jzaVCnGEwTCAyyu1uV0xDD3BM9Vc6fkqK/O
+ YMk+SP/uBYNtfIZh9zUsMVqT+iUNZA4+xjMVGKWCLeaQKIr3IyHvhooqCCaPocepyQbJ
+ c6pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709806915; x=1710411715;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vWeSXxnvukh1qTIQXUJcznaqlBnX6VJYT1GjqHDMtek=;
- b=i1FvLDIC+4ErBs2yn5zO9y3RZc5G9Mq5gLkpm5pdao/lfZKZxT4eLUSQJsD8JYFSWJ
- cTAhx3wo5JjCymFgqmnIKvmHIG+IWSL7FFcTtws/SVXTFmOpX078TwbNmbmBPHZrmJuA
- EAo3FZKyt46o516LFo7/1qzc2Fky3er+JWIRMSHfHCwo7AIQDs91j3V5dcbE/4owU1kS
- A/QqbVUaC6qeYiJrCXn6hsEWrBCgQ+9QJ3nWLSG+gSp8BqK6krWFTqeUI9lebEuQATQ7
- amw+N8SxfLMNgyDv5aHj64ZNGTNj7FtN3Mnw75Bol8gyNW9ez1xF9+ZQ/yjNX6b8VoSU
- ETbQ==
-X-Gm-Message-State: AOJu0YyRAetHFO2cxSL02sjGIKInMnM4KLbyEnBOoYgCEBjBF7x/prrw
- YZDm9OkB6iwLG7csWCckU7V7T64RuFq5ri4dkkUnq9f5/v8mWJeFwMHT8nW3i6M=
-X-Google-Smtp-Source: AGHT+IGcyD8Lye81gYG8MZAUVsbPTvmgN9XANVoQ+SxJafkoSETTxGYx7rySuiXeNOO/FyoNVPaU8g==
-X-Received: by 2002:a17:902:f684:b0:1dc:b6bf:fae8 with SMTP id
- l4-20020a170902f68400b001dcb6bffae8mr10002174plg.59.1709806914784; 
- Thu, 07 Mar 2024 02:21:54 -0800 (PST)
-Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
- by smtp.gmail.com with UTF8SMTPSA id
- kz12-20020a170902f9cc00b001db8f7720e2sm14228261plb.288.2024.03.07.02.21.53
+ d=1e100.net; s=20230601; t=1709806911; x=1710411711;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ufP5Es4sPtuAnhqjx+zsVTbp4J0z//3jgbKXkTq58Ic=;
+ b=uQkOE5r3gruftGHGuUR+iteg7xc08Huk19aMJkOUfx73SVMWQ2EvhTSwM4NjAbHl20
+ 4Zeiw80Z9c636CEoPcRCiYAvdS7qUnYIY+zaFW6RSCh7TBq35ziQIIj5OBTgdzyU0IQb
+ rD/SjRAEXB3S1tJsT1JUqlJs7roafyl2JaQr7ppJgf4PGYfwpSmK978Q5Q72+g5B6x52
+ HrEbZpWrDMNne9kH41TBdySCKa/zlqv6O9F68rPtgu8/xxGQkfXGZ0BmAcG10dOuWGYj
+ Rs1fvgNUPchq2YE89vywPPRVm8Amnw8zAS1s8FPxOGGfw0ljWeMUjjxqycv71VAIkaMe
+ xOIA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXs926N+0He3Gv7C9HyStRAbOjr8gOSC1Z0hQPBwOdXA3lRTXDmZtzPnhi+5pGHPA8KdduMgU1XN5rnExVrB/CYh9REAws=
+X-Gm-Message-State: AOJu0YxrtXyWJL2SLEqOUAetd+paCYfY+eel5149z5lUd8OebtXvo9Sb
+ OR5I7U1/IO5HfVE8pgsz/vUc3+ZRpJt+Kenes8mbnmKBeJqVRPjIom4kEEKKu7U=
+X-Google-Smtp-Source: AGHT+IEPCpCVezTENNKG9wKOh5d501svGttdlqMSBNhV9uobm4KJSUrIg/ChPri8uU0CUf304eZJ8Q==
+X-Received: by 2002:a2e:2e09:0:b0:2d2:45e0:f154 with SMTP id
+ u9-20020a2e2e09000000b002d245e0f154mr1112162lju.26.1709806911517; 
+ Thu, 07 Mar 2024 02:21:51 -0800 (PST)
+Received: from [192.168.69.100] (vau06-h02-176-184-43-100.dsl.sta.abo.bbox.fr.
+ [176.184.43.100]) by smtp.gmail.com with ESMTPSA id
+ az7-20020adfe187000000b0033e433cb471sm4104471wrb.79.2024.03.07.02.21.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Mar 2024 02:21:54 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 07 Mar 2024 19:21:02 +0900
-Subject: [PATCH v4 19/19] contrib/elf2dmp: Ensure phdrs fit in file
+ Thu, 07 Mar 2024 02:21:51 -0800 (PST)
+Message-ID: <d0ae5297-08ff-4f91-9ddb-0ae7acdc8748@linaro.org>
+Date: Thu, 7 Mar 2024 11:21:48 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240307-elf2dmp-v4-19-4f324ad4d99d@daynix.com>
-References: <20240307-elf2dmp-v4-0-4f324ad4d99d@daynix.com>
-In-Reply-To: <20240307-elf2dmp-v4-0-4f324ad4d99d@daynix.com>
-To: Viktor Prutyanov <viktor.prutyanov@phystech.edu>, 
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::62e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 4/9] qemu-options.hx: Document the virtio-iommu-pci
+ granule option
+Content-Language: en-US
+To: eric.auger@redhat.com, eric.auger.pro@gmail.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org,
+ imammedo@redhat.com, peter.maydell@linaro.org, clg@redhat.com,
+ yanghliu@redhat.com, zhenzhong.duan@intel.com
+Cc: alex.williamson@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
+ berrange@redhat.com
+References: <20240306203348.65776-1-eric.auger@redhat.com>
+ <20240306203348.65776-5-eric.auger@redhat.com>
+ <fcaf95d2-bb09-4c55-a333-21a93a707ad2@linaro.org>
+ <07478583-ce74-4de3-8983-010c6617e4a8@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <07478583-ce74-4de3-8983-010c6617e4a8@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::233;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x233.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,43 +101,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Callers of elf64_getphdr() and elf_getphdrnum() assume phdrs are
-accessible.
+On 7/3/24 08:32, Eric Auger wrote:
+> Hi Philippe,
+> 
+> On 3/6/24 21:44, Philippe Mathieu-Daudé wrote:
+>> On 6/3/24 21:32, Eric Auger wrote:
+>>> We are missing an entry for the virtio-iommu-pci device. Add the
+>>> information on which machine it is currently supported and document
+>>> the new granule option.
+>>>
+>>> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+>>> ---
+>>>    qemu-options.hx | 8 ++++++++
+>>>    1 file changed, 8 insertions(+)
+>>>
+>>> diff --git a/qemu-options.hx b/qemu-options.hx
+>>> index 9a47385c15..757df3eac0 100644
+>>> --- a/qemu-options.hx
+>>> +++ b/qemu-options.hx
+>>> @@ -1172,6 +1172,14 @@ SRST
+>>>        Please also refer to the wiki page for general scenarios of VT-d
+>>>        emulation in QEMU: https://wiki.qemu.org/Features/VT-d.
+>>>    +``-device virtio-iommu-pci[,option=...]``
+>>> +    This is only supported by ``-machine q35`` and ``-machine virt``.
+>>
+>> Don't we need to precise x86 and arm here?
+> Well I got inspired of intel_iommu doc. I think this is sufficiently
+> precise, no?
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2202
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- contrib/elf2dmp/qemu_elf.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Apparently not:
 
-diff --git a/contrib/elf2dmp/qemu_elf.c b/contrib/elf2dmp/qemu_elf.c
-index 8d750adf904a..c9bad6e82cf3 100644
---- a/contrib/elf2dmp/qemu_elf.c
-+++ b/contrib/elf2dmp/qemu_elf.c
-@@ -132,6 +132,7 @@ static void exit_states(QEMU_Elf *qe)
- static bool check_ehdr(QEMU_Elf *qe)
- {
-     Elf64_Ehdr *ehdr = qe->map;
-+    uint64_t phendoff;
- 
-     if (sizeof(Elf64_Ehdr) > qe->size) {
-         eprintf("Invalid input dump file size\n");
-@@ -173,6 +174,13 @@ static bool check_ehdr(QEMU_Elf *qe)
-         return false;
-     }
- 
-+    if (umul64_overflow(ehdr->e_phnum, sizeof(Elf64_Phdr), &phendoff) ||
-+        uadd64_overflow(phendoff, ehdr->e_phoff, &phendoff) ||
-+        phendoff > qe->size) {
-+        eprintf("phdrs do not fit in file\n");
-+        return false;
-+    }
-+
-     return true;
- }
- 
-
--- 
-2.44.0
-
+$ git grep -w '"virt"' hw
+hw/arm/virt.c:96:            mc->alias = "virt"; \
+hw/m68k/virt.c:314:    .name       = MACHINE_TYPE_NAME("virt"),
+hw/openrisc/virt.c:37:#define TYPE_VIRT_MACHINE MACHINE_TYPE_NAME("virt")
+hw/riscv/virt.c:1754:    .name       = MACHINE_TYPE_NAME("virt"),
+hw/xtensa/virt.c:127:DEFINE_MACHINE("virt", xtensa_virt_machine_init)
 
