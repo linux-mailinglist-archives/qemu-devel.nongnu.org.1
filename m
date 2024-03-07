@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6A2F875615
+	by mail.lfdr.de (Postfix) with ESMTPS id 945CB875613
 	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 19:28:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riISZ-0001Cr-OD; Thu, 07 Mar 2024 13:27:15 -0500
+	id 1riISa-0001Ct-6w; Thu, 07 Mar 2024 13:27:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1riISX-0001CJ-1C
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 13:27:13 -0500
+ id 1riISY-0001CV-Fz
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 13:27:14 -0500
 Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1riISU-0000bG-UZ
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 13:27:12 -0500
+ id 1riISW-0000bc-TP
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 13:27:14 -0500
 Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1dc96f64c10so9845585ad.1
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 10:27:10 -0800 (PST)
+ d9443c01a7336-1dc0e5b223eso9549055ad.1
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 10:27:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709836029; x=1710440829; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709836031; x=1710440831; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HVPjMYWRfzew5Tu6uPDgk6Hue0SFV++AwAN6XVkbF9k=;
- b=qubZzwsmTsQO043NwHUNI/MPAjC2BBL/uPqZE1o11NcTQccaaNWXBfJ+kBfVzIjqnM
- 3iExoA1/S+5SnDkAAbTrBIwr/zbFMuQc5rlwRZ91c+LIGJdMQGkLJcNwOxlbzYHRoLC4
- lwe6bppeSJqbiCs6Upq+9FqHyZ/yI9SLiveOoGuNokgjCaA5l20EPpKA/vxAWsr+X4XG
- ex+STI1t6xFmzSAcVqFfUMOx01lhOIFIwZr/MV/x0THpwXxDsI1JKpfmLieoAqUK6eb/
- CTxCjpOmK4IclAYGT1bPMNT+8G8yX2aa+3r5xTpKFJrvT6bS5ZbX19WTyavKN9HAUFj+
- m4uQ==
+ bh=tJRyVmau9ruD0qJjHtVWvNsb9E69SYPlhZ6E6+1O2KM=;
+ b=mHCD6hzpO/GtSmVTiRElm/LOVxcgmpJhz6Xn3hpDE/IRyyJ4qJFpCkzZ2LVe5O8+dq
+ 9TzNfd1etUCkGuY+//ii6hOP2lNhw3U3PtBtUoVqz5upamsSp+rhtogTp3CfsulIZaTN
+ 6Xpp1gUJBCukx/nfQnjSSLkFdEKRhWEu25/nkP24cF8CaswlJ4U+Xl92BEdIxSPxqFSS
+ BsL+3UIULmMubZ7HSvJq6VnawiSD0hbCQW0jyrQq+/beoO6EXOV2rMvo3s219BuleCfj
+ eP7IH+IQyZfIh4mMVl5f7XE6E483tfUPGo1HRlQbR3HsmCPxROj6KLnzq34VSB/rD9z6
+ gUjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709836029; x=1710440829;
+ d=1e100.net; s=20230601; t=1709836031; x=1710440831;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HVPjMYWRfzew5Tu6uPDgk6Hue0SFV++AwAN6XVkbF9k=;
- b=U8EigriV3dq6a7nM/RLx+e1tL/ZtlHTLjDDJlm/3P/h14KLrfZ9YcEwyotFFTSSyIA
- cNCCkxKpMYpIYlKeTX5dmP5Kzg9rnubzW8DVo3ws+bgvFkqQF0ChGaReSUnvz2XyAbex
- gwf7yTLHlGGV6YxtEp1m/+1XROWpt1DlKlb9wVo7rRIdPSXLCZqjwlVeYUVTTkvKXRcd
- d9vIo9uexfI9Gy04RUE5nHpZsmNq0tqm645BtC9osGP3G35E1NSznWm/s+xtu6OUToRc
- JPjcE+jm9Nov8n0EQJmwKz725qkyjfsvnZn6oV5W6EWOteqy/Le1wNeQj2s5UNxIOBPh
- K3zg==
-X-Gm-Message-State: AOJu0Yz5DmhVm+/hX4Rar69TQx8SA7IFhh5NgxFixUYTN4PypEUYtzlu
- 6NT6FDv6w8VASdTyxkNa+4+cDBro56c3HjpFbgelj1aSCy0+HT8z+6tI+DYzOyr7mSWQQE0mQPU
- yNrQ=
-X-Google-Smtp-Source: AGHT+IHujx2rukv7yHV773TBhD0IVe3papSh8rSBnJ2IezEi7goCqnyla238O+aiSZ7ErD8vtYrQ+g==
-X-Received: by 2002:a17:902:cecb:b0:1db:ab9e:8f90 with SMTP id
- d11-20020a170902cecb00b001dbab9e8f90mr10411110plg.37.1709836028647; 
- Thu, 07 Mar 2024 10:27:08 -0800 (PST)
+ bh=tJRyVmau9ruD0qJjHtVWvNsb9E69SYPlhZ6E6+1O2KM=;
+ b=KA3VE5e5V+oIquvHSFNFuaGVu+lJW6PYMivvmcXlo8Od3c68/Jp5YfEWncfoKRVZkM
+ apCn42+ncjdSO6i7Ax8cpcer7n+tL8Xraw9Q/P3j4os6C5RgRHe6yJtUXUy6SpkNey88
+ Z5hlzcC4XXapZND1gczNt5sySDX5LCpvKfVP/UsxouWLA0lXh0Oo1XSqxpztz7gOKEc7
+ xWET46Iah4nHQhjTtFw5VL15AKS8Bdqpe6SO9g3CylChn9GYScOJZqMrlBi1K+IP2k5N
+ BDgeV9rUe1U9g4oh9OQnZMhFizmanG1O7FQ0UwSVr2U7hOuAyymN0yUPlfZOtDQKyQrv
+ 7d4A==
+X-Gm-Message-State: AOJu0YykoVPtS5GX2eTShrYKa30A3V8bYOnf2yVf4V9v8+eGO6OQqQ9S
+ 0jP9tAnU7JxowL6V5kMLaIHeoSF6GgBT4Ta6E2uZslkob+9VDWhxyN3e5n3e6wiLfvu5ZW5zmvD
+ qM+s=
+X-Google-Smtp-Source: AGHT+IGnCXYvM4P+lmxIf9G0vNTgySsA2WBUPWkgkYKmwaojDlmMlGUo1xOBWPtP+36f6igCpdL5EA==
+X-Received: by 2002:a17:902:e847:b0:1dc:75ea:8562 with SMTP id
+ t7-20020a170902e84700b001dc75ea8562mr9166374plg.32.1709836031390; 
+ Thu, 07 Mar 2024 10:27:11 -0800 (PST)
 Received: from amd.. ([2804:7f0:b401:120f:3e7c:3fff:fe7a:e83b])
  by smtp.gmail.com with ESMTPSA id
- mm12-20020a1709030a0c00b001dc96d1a662sm14939068plb.197.2024.03.07.10.27.06
+ mm12-20020a1709030a0c00b001dc96d1a662sm14939068plb.197.2024.03.07.10.27.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Mar 2024 10:27:08 -0800 (PST)
+ Thu, 07 Mar 2024 10:27:10 -0800 (PST)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org,
 	richard.henderson@linaro.org
 Cc: alex.bennee@linaro.org, peter.maydell@linaro.org, laurent@vivier.eu,
  philmd@linaro.org, gustavo.romero@linaro.org
-Subject: [PATCH v2 2/5] linux-user: Move tswap_siginfo out of target code
-Date: Thu,  7 Mar 2024 18:26:20 +0000
-Message-Id: <20240307182623.1450717-2-gustavo.romero@linaro.org>
+Subject: [PATCH v2 3/5] gdbstub: Save target's siginfo
+Date: Thu,  7 Mar 2024 18:26:21 +0000
+Message-Id: <20240307182623.1450717-3-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240307182623.1450717-1-gustavo.romero@linaro.org>
 References: <20240307182623.1450717-1-gustavo.romero@linaro.org>
@@ -94,354 +94,172 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move tswap_siginfo from target code to handle_pending_signal. This will
-allow some cleanups and having the siginfo ready to be used in gdbstub.
+Save target's siginfo into gdbserver_state so it can be used later, for
+example, in any stub that requires the target's si_signo and si_code.
+
+This change affects only linux-user mode.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/aarch64/signal.c     |  2 +-
- linux-user/alpha/signal.c       |  2 +-
- linux-user/arm/signal.c         |  2 +-
- linux-user/hexagon/signal.c     |  2 +-
- linux-user/hppa/signal.c        |  2 +-
- linux-user/i386/signal.c        |  6 +++---
- linux-user/loongarch64/signal.c |  2 +-
- linux-user/m68k/signal.c        |  4 ++--
- linux-user/microblaze/signal.c  |  2 +-
- linux-user/mips/signal.c        |  4 ++--
- linux-user/nios2/signal.c       |  2 +-
- linux-user/openrisc/signal.c    |  2 +-
- linux-user/ppc/signal.c         |  4 ++--
- linux-user/riscv/signal.c       |  2 +-
- linux-user/s390x/signal.c       |  2 +-
- linux-user/sh4/signal.c         |  2 +-
- linux-user/signal-common.h      |  2 --
- linux-user/signal.c             | 10 ++++++++--
- linux-user/sparc/signal.c       |  2 +-
- linux-user/xtensa/signal.c      |  2 +-
- 20 files changed, 31 insertions(+), 27 deletions(-)
+ gdbstub/internals.h    |  3 +++
+ gdbstub/user-target.c  |  3 ++-
+ gdbstub/user.c         | 14 ++++++++++----
+ include/gdbstub/user.h |  6 +++++-
+ linux-user/main.c      |  2 +-
+ linux-user/signal.c    |  5 ++++-
+ 6 files changed, 25 insertions(+), 8 deletions(-)
 
-diff --git a/linux-user/aarch64/signal.c b/linux-user/aarch64/signal.c
-index a1e22d526d..bc7a13800d 100644
---- a/linux-user/aarch64/signal.c
-+++ b/linux-user/aarch64/signal.c
-@@ -670,7 +670,7 @@ static void target_setup_frame(int usig, struct target_sigaction *ka,
-     aarch64_set_svcr(env, 0, R_SVCR_SM_MASK | R_SVCR_ZA_MASK);
- 
-     if (info) {
--        tswap_siginfo(&frame->info, info);
-+        frame->info = *info;
-         env->xregs[1] = frame_addr + offsetof(struct target_rt_sigframe, info);
-         env->xregs[2] = frame_addr + offsetof(struct target_rt_sigframe, uc);
-     }
-diff --git a/linux-user/alpha/signal.c b/linux-user/alpha/signal.c
-index 4ec42994d4..896c2c148a 100644
---- a/linux-user/alpha/signal.c
-+++ b/linux-user/alpha/signal.c
-@@ -173,7 +173,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-         goto give_sigsegv;
-     }
- 
--    tswap_siginfo(&frame->info, info);
-+    frame->info = *info;
- 
-     __put_user(0, &frame->uc.tuc_flags);
-     __put_user(0, &frame->uc.tuc_link);
-diff --git a/linux-user/arm/signal.c b/linux-user/arm/signal.c
-index f77f692c63..420fc04cfa 100644
---- a/linux-user/arm/signal.c
-+++ b/linux-user/arm/signal.c
-@@ -357,7 +357,7 @@ void setup_rt_frame(int usig, struct target_sigaction *ka,
- 
-     info_addr = frame_addr + offsetof(struct rt_sigframe, info);
-     uc_addr = frame_addr + offsetof(struct rt_sigframe, sig.uc);
--    tswap_siginfo(&frame->info, info);
-+    frame->info = *info;
- 
-     setup_sigframe(&frame->sig.uc, set, env);
- 
-diff --git a/linux-user/hexagon/signal.c b/linux-user/hexagon/signal.c
-index 60fa7e1bce..492b51f155 100644
---- a/linux-user/hexagon/signal.c
-+++ b/linux-user/hexagon/signal.c
-@@ -162,7 +162,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-     }
- 
-     setup_ucontext(&frame->uc, env, set);
--    tswap_siginfo(&frame->info, info);
-+    frame->info = *info;
-     /*
-      * The on-stack signal trampoline is no longer executed;
-      * however, the libgcc signal frame unwinding code checks
-diff --git a/linux-user/hppa/signal.c b/linux-user/hppa/signal.c
-index d08a97dae6..8960175da3 100644
---- a/linux-user/hppa/signal.c
-+++ b/linux-user/hppa/signal.c
-@@ -127,7 +127,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-         goto give_sigsegv;
-     }
- 
--    tswap_siginfo(&frame->info, info);
-+    frame->info = *info;
-     frame->uc.tuc_flags = 0;
-     frame->uc.tuc_link = 0;
- 
-diff --git a/linux-user/i386/signal.c b/linux-user/i386/signal.c
-index bc5d45302e..cfe70fc5cf 100644
---- a/linux-user/i386/signal.c
-+++ b/linux-user/i386/signal.c
-@@ -430,7 +430,7 @@ void setup_frame(int sig, struct target_sigaction *ka,
-     setup_sigcontext(&frame->sc, &frame->fpstate, env, set->sig[0],
-             frame_addr + offsetof(struct sigframe, fpstate));
- 
--    for(i = 1; i < TARGET_NSIG_WORDS; i++) {
-+    for (i = 1; i < TARGET_NSIG_WORDS; i++) {
-         __put_user(set->sig[i], &frame->extramask[i - 1]);
-     }
- 
-@@ -490,7 +490,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-     __put_user(addr, &frame->puc);
+diff --git a/gdbstub/internals.h b/gdbstub/internals.h
+index 56b7c13b75..a7cc69dab3 100644
+--- a/gdbstub/internals.h
++++ b/gdbstub/internals.h
+@@ -58,6 +58,9 @@ typedef struct GDBState {
+     int line_csum; /* checksum at the end of the packet */
+     GByteArray *last_packet;
+     int signal;
++#ifdef CONFIG_USER_ONLY
++    uint8_t siginfo[MAX_SIGINFO_LENGTH];
++#endif
+     bool multiprocess;
+     GDBProcess *processes;
+     int process_num;
+diff --git a/gdbstub/user-target.c b/gdbstub/user-target.c
+index b7d4c37cd8..215bf33ab3 100644
+--- a/gdbstub/user-target.c
++++ b/gdbstub/user-target.c
+@@ -10,11 +10,12 @@
+ #include "qemu/osdep.h"
+ #include "exec/gdbstub.h"
+ #include "qemu.h"
+-#include "internals.h"
+ #ifdef CONFIG_LINUX
+ #include "linux-user/loader.h"
+ #include "linux-user/qemu.h"
++#include "gdbstub/user.h"
  #endif
-     if (ka->sa_flags & TARGET_SA_SIGINFO) {
--        tswap_siginfo(&frame->info, info);
-+        frame->info = *info;
-     }
++#include "internals.h"
  
-     /* Create the ucontext.  */
-@@ -504,7 +504,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-     setup_sigcontext(&frame->uc.tuc_mcontext, &frame->fpstate, env,
-             set->sig[0], frame_addr + offsetof(struct rt_sigframe, fpstate));
- 
--    for(i = 0; i < TARGET_NSIG_WORDS; i++) {
-+    for (i = 0; i < TARGET_NSIG_WORDS; i++) {
-         __put_user(set->sig[i], &frame->uc.tuc_sigmask.sig[i]);
-     }
- 
-diff --git a/linux-user/loongarch64/signal.c b/linux-user/loongarch64/signal.c
-index 39ea82c814..1a322f9697 100644
---- a/linux-user/loongarch64/signal.c
-+++ b/linux-user/loongarch64/signal.c
-@@ -376,7 +376,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-         extctx.end.haddr = (void *)frame + (extctx.end.gaddr - frame_addr);
-     }
- 
--    tswap_siginfo(&frame->rs_info, info);
-+    frame->rs_info = *info;
- 
-     __put_user(0, &frame->rs_uc.tuc_flags);
-     __put_user(0, &frame->rs_uc.tuc_link);
-diff --git a/linux-user/m68k/signal.c b/linux-user/m68k/signal.c
-index 5f35354487..77555781aa 100644
---- a/linux-user/m68k/signal.c
-+++ b/linux-user/m68k/signal.c
-@@ -295,7 +295,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-     uc_addr = frame_addr + offsetof(struct target_rt_sigframe, uc);
-     __put_user(uc_addr, &frame->puc);
- 
--    tswap_siginfo(&frame->info, info);
-+    frame->info = *info;
- 
-     /* Create the ucontext */
- 
-@@ -307,7 +307,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-     if (err)
-         goto give_sigsegv;
- 
--    for(i = 0; i < TARGET_NSIG_WORDS; i++) {
-+    for (i = 0; i < TARGET_NSIG_WORDS; i++) {
-         __put_user(set->sig[i], &frame->uc.tuc_sigmask.sig[i]);
-     }
- 
-diff --git a/linux-user/microblaze/signal.c b/linux-user/microblaze/signal.c
-index 5188d74025..f6d47d76ff 100644
---- a/linux-user/microblaze/signal.c
-+++ b/linux-user/microblaze/signal.c
-@@ -147,7 +147,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-         return;
-     }
- 
--    tswap_siginfo(&frame->info, info);
-+    frame->info = *info;
- 
-     __put_user(0, &frame->uc.tuc_flags);
-     __put_user(0, &frame->uc.tuc_link);
-diff --git a/linux-user/mips/signal.c b/linux-user/mips/signal.c
-index 58a9d7a8a3..d69a5d73dd 100644
---- a/linux-user/mips/signal.c
-+++ b/linux-user/mips/signal.c
-@@ -303,7 +303,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-         goto give_sigsegv;
-     }
- 
--    tswap_siginfo(&frame->rs_info, info);
-+    frame->rs_info = *info;
- 
-     __put_user(0, &frame->rs_uc.tuc_flags);
-     __put_user(0, &frame->rs_uc.tuc_link);
-@@ -311,7 +311,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
- 
-     setup_sigcontext(env, &frame->rs_uc.tuc_mcontext);
- 
--    for(i = 0; i < TARGET_NSIG_WORDS; i++) {
-+    for (i = 0; i < TARGET_NSIG_WORDS; i++) {
-         __put_user(set->sig[i], &frame->rs_uc.tuc_sigmask.sig[i]);
-     }
- 
-diff --git a/linux-user/nios2/signal.c b/linux-user/nios2/signal.c
-index 32b3dc99c6..64c345f409 100644
---- a/linux-user/nios2/signal.c
-+++ b/linux-user/nios2/signal.c
-@@ -157,7 +157,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-         return;
-     }
- 
--    tswap_siginfo(&frame->info, info);
-+    frame->info = *info;
- 
-     /* Create the ucontext.  */
-     __put_user(0, &frame->uc.tuc_flags);
-diff --git a/linux-user/openrisc/signal.c b/linux-user/openrisc/signal.c
-index be8b68784a..cb74a9fe5e 100644
---- a/linux-user/openrisc/signal.c
-+++ b/linux-user/openrisc/signal.c
-@@ -103,7 +103,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-     }
- 
-     if (ka->sa_flags & SA_SIGINFO) {
--        tswap_siginfo(&frame->info, info);
-+        frame->info = *info;
-     }
- 
-     __put_user(0, &frame->uc.tuc_flags);
-diff --git a/linux-user/ppc/signal.c b/linux-user/ppc/signal.c
-index 7e7302823b..0ebfc0b26b 100644
---- a/linux-user/ppc/signal.c
-+++ b/linux-user/ppc/signal.c
-@@ -493,7 +493,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-     if (!lock_user_struct(VERIFY_WRITE, rt_sf, rt_sf_addr, 1))
-         goto sigsegv;
- 
--    tswap_siginfo(&rt_sf->info, info);
-+    rt_sf->info = *info;
- 
-     __put_user(0, &rt_sf->uc.tuc_flags);
-     __put_user(0, &rt_sf->uc.tuc_link);
-@@ -502,7 +502,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-     __put_user(h2g (&rt_sf->uc.tuc_mcontext),
-                &rt_sf->uc.tuc_regs);
- #endif
--    for(i = 0; i < TARGET_NSIG_WORDS; i++) {
-+    for (i = 0; i < TARGET_NSIG_WORDS; i++) {
-         __put_user(set->sig[i], &rt_sf->uc.tuc_sigmask.sig[i]);
-     }
- 
-diff --git a/linux-user/riscv/signal.c b/linux-user/riscv/signal.c
-index 941eadce87..358fa1d82d 100644
---- a/linux-user/riscv/signal.c
-+++ b/linux-user/riscv/signal.c
-@@ -125,7 +125,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-     }
- 
-     setup_ucontext(&frame->uc, env, set);
--    tswap_siginfo(&frame->info, info);
-+    frame->info = *info;
- 
-     env->pc = ka->_sa_handler;
-     env->gpr[xSP] = frame_addr;
-diff --git a/linux-user/s390x/signal.c b/linux-user/s390x/signal.c
-index b40f738a70..df49c24708 100644
---- a/linux-user/s390x/signal.c
-+++ b/linux-user/s390x/signal.c
-@@ -267,7 +267,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-     }
- 
-     /* Create siginfo on the signal stack. */
--    tswap_siginfo(&frame->info, info);
-+    frame->info = *info;
- 
-     /* Create ucontext on the signal stack. */
-     uc_flags = 0;
-diff --git a/linux-user/sh4/signal.c b/linux-user/sh4/signal.c
-index c16c2c2d57..9ecc026fae 100644
---- a/linux-user/sh4/signal.c
-+++ b/linux-user/sh4/signal.c
-@@ -233,7 +233,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-         goto give_sigsegv;
-     }
- 
--    tswap_siginfo(&frame->info, info);
-+    frame->info = *info;
- 
-     /* Create the ucontext.  */
-     __put_user(0, &frame->uc.tuc_flags);
-diff --git a/linux-user/signal-common.h b/linux-user/signal-common.h
-index 3e2dc604c2..f02d2b6b64 100644
---- a/linux-user/signal-common.h
-+++ b/linux-user/signal-common.h
-@@ -43,8 +43,6 @@ void host_to_target_sigset_internal(target_sigset_t *d,
-                                     const sigset_t *s);
- void target_to_host_sigset_internal(sigset_t *d,
-                                     const target_sigset_t *s);
--void tswap_siginfo(target_siginfo_t *tinfo,
--                   const target_siginfo_t *info);
- void set_sigmask(const sigset_t *set);
- void force_sig(int sig);
- void force_sigsegv(int oldsig);
-diff --git a/linux-user/signal.c b/linux-user/signal.c
-index a57c45de35..7a4c8e416e 100644
---- a/linux-user/signal.c
-+++ b/linux-user/signal.c
-@@ -409,8 +409,8 @@ static inline void host_to_target_siginfo_noswap(target_siginfo_t *tinfo,
-     tinfo->si_code = deposit32(si_code, 16, 16, si_type);
+ /*
+  * Map target signal numbers to GDB protocol signal numbers and vice
+diff --git a/gdbstub/user.c b/gdbstub/user.c
+index a157e67f95..777fa78ef4 100644
+--- a/gdbstub/user.c
++++ b/gdbstub/user.c
+@@ -131,7 +131,8 @@ void gdb_qemu_exit(int code)
+     exit(code);
  }
  
--void tswap_siginfo(target_siginfo_t *tinfo,
--                   const target_siginfo_t *info)
-+static void tswap_siginfo(target_siginfo_t *tinfo,
-+                          const target_siginfo_t *info)
+-int gdb_handlesig(CPUState *cpu, int sig, const char *reason)
++int gdb_handlesig(CPUState *cpu, int sig, const char *reason, void *siginfo,
++                  int siginfo_len)
  {
-     int si_type = extract32(info->si_code, 16, 16);
-     int si_code = sextract32(info->si_code, 0, 16);
-@@ -1180,6 +1180,12 @@ static void handle_pending_signal(CPUArchState *cpu_env, int sig,
-     /* dequeue signal */
-     k->pending = 0;
+     char buf[256];
+     int n;
+@@ -140,6 +141,11 @@ int gdb_handlesig(CPUState *cpu, int sig, const char *reason)
+         return sig;
+     }
  
-+    /*
-+     * Writes out siginfo values byteswapped, accordingly to the target. It also
-+     * cleans the si_type from si_code making it correct for the target.
-+     */
-+    tswap_siginfo(&k->info, &k->info);
++    if (siginfo) {
++        /* Save target-specific siginfo. */
++        memcpy(gdbserver_state.siginfo, siginfo, siginfo_len);
++    }
 +
-     sig = gdb_handlesig(cpu, sig, NULL);
+     /* disable single step if it was enabled */
+     cpu_single_step(cpu, 0);
+     tb_flush(cpu);
+@@ -510,7 +516,7 @@ void gdb_breakpoint_remove_all(CPUState *cs)
+ void gdb_syscall_handling(const char *syscall_packet)
+ {
+     gdb_put_packet(syscall_packet);
+-    gdb_handlesig(gdbserver_state.c_cpu, 0, NULL);
++    gdb_handlesig(gdbserver_state.c_cpu, 0, NULL, NULL, 0);
+ }
+ 
+ static bool should_catch_syscall(int num)
+@@ -528,7 +534,7 @@ void gdb_syscall_entry(CPUState *cs, int num)
+ {
+     if (should_catch_syscall(num)) {
+         g_autofree char *reason = g_strdup_printf("syscall_entry:%x;", num);
+-        gdb_handlesig(cs, gdb_target_sigtrap(), reason);
++        gdb_handlesig(cs, gdb_target_sigtrap(), reason, NULL, 0);
+     }
+ }
+ 
+@@ -536,7 +542,7 @@ void gdb_syscall_return(CPUState *cs, int num)
+ {
+     if (should_catch_syscall(num)) {
+         g_autofree char *reason = g_strdup_printf("syscall_return:%x;", num);
+-        gdb_handlesig(cs, gdb_target_sigtrap(), reason);
++        gdb_handlesig(cs, gdb_target_sigtrap(), reason, NULL, 0);
+     }
+ }
+ 
+diff --git a/include/gdbstub/user.h b/include/gdbstub/user.h
+index 6647af2123..0ec9a7e596 100644
+--- a/include/gdbstub/user.h
++++ b/include/gdbstub/user.h
+@@ -9,11 +9,15 @@
+ #ifndef GDBSTUB_USER_H
+ #define GDBSTUB_USER_H
+ 
++#define MAX_SIGINFO_LENGTH 128
++
+ /**
+  * gdb_handlesig() - yield control to gdb
+  * @cpu: CPU
+  * @sig: if non-zero, the signal number which caused us to stop
+  * @reason: stop reason for stop reply packet or NULL
++ * @siginfo: target-specific siginfo struct
++ * @siginfo_len: target-specific siginfo struct length
+  *
+  * This function yields control to gdb, when a user-mode-only target
+  * needs to stop execution. If @sig is non-zero, then we will send a
+@@ -25,7 +29,7 @@
+  * or 0 if no signal should be delivered, ie the signal that caused
+  * us to stop should be ignored.
+  */
+-int gdb_handlesig(CPUState *, int, const char *);
++int gdb_handlesig(CPUState *, int, const char *, void *, int);
+ 
+ /**
+  * gdb_signalled() - inform remote gdb of sig exit
+diff --git a/linux-user/main.c b/linux-user/main.c
+index 049fd85a2a..3187be48d6 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -1014,7 +1014,7 @@ int main(int argc, char **argv, char **envp)
+                     gdbstub);
+             exit(EXIT_FAILURE);
+         }
+-        gdb_handlesig(cpu, 0, NULL);
++        gdb_handlesig(cpu, 0, NULL, NULL, 0);
+     }
+ 
+ #ifdef CONFIG_SEMIHOSTING
+diff --git a/linux-user/signal.c b/linux-user/signal.c
+index 7a4c8e416e..98d1eacffe 100644
+--- a/linux-user/signal.c
++++ b/linux-user/signal.c
+@@ -34,6 +34,9 @@
+ #include "user/safe-syscall.h"
+ #include "tcg/tcg.h"
+ 
++/* target_siginfo_t must fit in gdbstub's siginfo save area. */
++QEMU_BUILD_BUG_ON(sizeof(target_siginfo_t) > MAX_SIGINFO_LENGTH);
++
+ static struct target_sigaction sigact_table[TARGET_NSIG];
+ 
+ static void host_signal_handler(int host_signum, siginfo_t *info,
+@@ -1186,7 +1189,7 @@ static void handle_pending_signal(CPUArchState *cpu_env, int sig,
+      */
+     tswap_siginfo(&k->info, &k->info);
+ 
+-    sig = gdb_handlesig(cpu, sig, NULL);
++    sig = gdb_handlesig(cpu, sig, NULL, &k->info, sizeof(k->info));
      if (!sig) {
          sa = NULL;
-diff --git a/linux-user/sparc/signal.c b/linux-user/sparc/signal.c
-index c2dc1000e2..f164b74032 100644
---- a/linux-user/sparc/signal.c
-+++ b/linux-user/sparc/signal.c
-@@ -333,7 +333,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
- 
-     __put_user(0, &sf->rwin_save);  /* TODO: save_rwin_state */
- 
--    tswap_siginfo(&sf->info, info);
-+    sf->info = *info;
-     tswap_sigset(&sf->mask, set);
-     target_save_altstack(&sf->stack, env);
- 
-diff --git a/linux-user/xtensa/signal.c b/linux-user/xtensa/signal.c
-index 32dcfa5229..11e60c3c82 100644
---- a/linux-user/xtensa/signal.c
-+++ b/linux-user/xtensa/signal.c
-@@ -184,7 +184,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-     }
- 
-     if (ka->sa_flags & SA_SIGINFO) {
--        tswap_siginfo(&frame->info, info);
-+        frame->info = *info;
-     }
- 
-     __put_user(0, &frame->uc.tuc_flags);
+         handler = TARGET_SIG_IGN;
 -- 
 2.34.1
 
