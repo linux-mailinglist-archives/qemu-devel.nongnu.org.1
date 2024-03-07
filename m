@@ -2,89 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B4287510C
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 14:56:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD3C3875111
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 14:57:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riEDl-0007iL-4y; Thu, 07 Mar 2024 08:55:41 -0500
+	id 1riEEZ-00029X-In; Thu, 07 Mar 2024 08:56:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1riEDX-0007Vs-Vt
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 08:55:30 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1riEES-0001jr-9H
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 08:56:24 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1riEDS-0005PX-97
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 08:55:27 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1riEEP-0006n1-RT
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 08:56:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709819718;
+ s=mimecast20190719; t=1709819780;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2CPg7bsrl/BYqLPV76YSeJhIDVct9vlYCbAC3t7TImA=;
- b=X89tP1CHZ87J7oizbu3xcqN8Yo6F0N2R8qrNuDfPHBoIPzHVEudodm1ljGj6Pr3ZOX+hM8
- A3cElbNI4wEfZ9JFujjh0CNqf6La6w6z1rWxeAIlIyVUn+3UorOGtxufQRFes1M0ssn8N/
- sGbEYHfKqkw4Rc0MBVgAqa1cnelBh0k=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-435-t9Rx0YPdPl64tNQcozSL_A-1; Thu, 07 Mar 2024 08:55:16 -0500
-X-MC-Unique: t9Rx0YPdPl64tNQcozSL_A-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-33e41caf403so400137f8f.1
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 05:55:16 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709819715; x=1710424515;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2CPg7bsrl/BYqLPV76YSeJhIDVct9vlYCbAC3t7TImA=;
- b=kFJ/jfOa3ybWafWiiirgcrgjbqqxS2wMAGVyjwxLIN3zZxu/VKI7Rc1HGVPxXzQWa3
- Km29HGcVTwdjXfROvwIni+pD24l5xndGk9YjfhNs1Wm7J/axOGmbgLNapGmAD6AH5J//
- xAnB38v6a3F3GPSFvOxTO14yArZZARSC1dTFNggS7edYqasHyxTONSOckl4sp83GLa/L
- et7miZWeFORXIeccCrUR0ecoFyyDEDEwoETKyXzdZWo9IsQcakLq1O5M1zyEUzMamvJy
- aDXRGjcEiAelWa3Q8z1bazJsJF3RZ+HG60U46FDZ+nTEtZk1PUyPliOkp9M1aNi0dUST
- 98dA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVyJDOI+DqBjraJyqoFTvRp203tSbe3yOlDuuEHlWaDhBNybdpVaSii2xCub01MYHZuY88bk8qH+KpMvD+a8KnZognlpyI=
-X-Gm-Message-State: AOJu0YyI5GI/O6XlB4SZPdhV7lOO+4owS4IqaX4C1dcUav0JSPy4pRjJ
- 13rzm6c74lpzsEQKQmqARncPPeeEenxCAaDZI6FBALBWICLTSUfvywLJF11jCbkhkywR+BEQCF7
- Z/qjh48h/QppZpdYdGwpi7CsyafvJH63wHD66h2Dd+xm2eEbjCOp1
-X-Received: by 2002:a5d:550f:0:b0:33d:f883:4fae with SMTP id
- b15-20020a5d550f000000b0033df8834faemr12675129wrv.64.1709819715501; 
- Thu, 07 Mar 2024 05:55:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEFNiBJ9WQKUgu2aRVBBuMBz2EuNfCRBaHymjzs+DCfdMiNfCeA3Q4pKVeLWqcM7y3W939a7g==
-X-Received: by 2002:a5d:550f:0:b0:33d:f883:4fae with SMTP id
- b15-20020a5d550f000000b0033df8834faemr12675111wrv.64.1709819715144; 
- Thu, 07 Mar 2024 05:55:15 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- i8-20020adfb648000000b0033e0ed396bdsm20264179wre.106.2024.03.07.05.55.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Mar 2024 05:55:14 -0800 (PST)
-Message-ID: <dd7a8253-39f0-477e-88a0-2592a9134bbc@redhat.com>
-Date: Thu, 7 Mar 2024 14:55:12 +0100
+ bh=8cvkgaBtTuoC3Wc+2TSS7zKm5F0tiDeYXB0fHBJZoHc=;
+ b=dwVVHwsY1f/ZgZb97Pp15M8q0ZQN+OA+gCaynGYmy5A5wXiilJ6KXphzSvHnKcVasRz/bG
+ 0GlvxG2OfDmvP4IJg0Me+Xm33C3Bl8QcSjghkSadJ5lR/d0EQwBVQPntOzbSPFfDEcn1QM
+ iayqVoAmpGS8qRWIPU9BcXLofOvmMwE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-551-ujLVtXAtM5ufl9nioQN28g-1; Thu,
+ 07 Mar 2024 08:56:17 -0500
+X-MC-Unique: ujLVtXAtM5ufl9nioQN28g-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 95AF41E441D5;
+ Thu,  7 Mar 2024 13:56:16 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.3])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4F4C017A96;
+ Thu,  7 Mar 2024 13:56:16 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 4030821E6A24; Thu,  7 Mar 2024 14:56:15 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,  David Hildenbrand
+ <david@redhat.com>,  Igor Mammedov <imammedo@redhat.com>,  Eduardo Habkost
+ <eduardo@habkost.net>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Yanan Wang
+ <wangyanan55@huawei.com>,  "Michael S. Tsirkin" <mst@redhat.com>,  Richard
+ Henderson <richard.henderson@linaro.org>,  Ani Sinha
+ <anisinha@redhat.com>,  Peter Xu <peterx@redhat.com>,  Cornelia Huck
+ <cohuck@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Eric
+ Blake <eblake@redhat.com>,  Marcelo Tosatti <mtosatti@redhat.com>,
+ kvm@vger.kernel.org,  qemu-devel@nongnu.org,  Michael Roth
+ <michael.roth@amd.com>,  Claudio Fontana <cfontana@suse.de>,  Gerd
+ Hoffmann <kraxel@redhat.com>,  Isaku Yamahata <isaku.yamahata@gmail.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>
+Subject: Re: [PATCH v5 30/65] i386/tdx: Support user configurable
+ mrconfigid/mrowner/mrownerconfig
+In-Reply-To: <0f3df4b7-ffb9-4fc5-90eb-8a1d6fea5786@intel.com> (Xiaoyao Li's
+ message of "Thu, 7 Mar 2024 19:24:04 +0800")
+References: <20240229063726.610065-1-xiaoyao.li@intel.com>
+ <20240229063726.610065-31-xiaoyao.li@intel.com>
+ <87edcv1x9j.fsf@pond.sub.org>
+ <f9774e89-399c-42ad-8fa8-dd4050ee46da@intel.com>
+ <871q8vxuzx.fsf@pond.sub.org>
+ <4602df24-029e-4a40-bdec-1b0a6aa30a3c@intel.com>
+ <87v85yv3j9.fsf@pond.sub.org>
+ <0f3df4b7-ffb9-4fc5-90eb-8a1d6fea5786@intel.com>
+Date: Thu, 07 Mar 2024 14:56:15 +0100
+Message-ID: <87ttli87sw.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 20/25] vfio: Add Error** argument to
- .vfio_save_config() handler
-Content-Language: en-US, fr
-To: Eric Auger <eauger@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Markus Armbruster <armbru@redhat.com>,
- Prasad Pandit <pjp@fedoraproject.org>
-References: <20240306133441.2351700-1-clg@redhat.com>
- <20240306133441.2351700-21-clg@redhat.com>
- <c036626a-f1ff-46fd-ae34-a2b493f1720a@redhat.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <c036626a-f1ff-46fd-ae34-a2b493f1720a@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -108,138 +102,208 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/7/24 10:13, Eric Auger wrote:
-> 
-> 
-> On 3/6/24 14:34, Cédric Le Goater wrote:
->> Use vmstate_save_state_with_err() to improve error reporting in the
->> callers and store a reported error under the migration stream. Add
->> documentation while at it.
+Xiaoyao Li <xiaoyao.li@intel.com> writes:
+
+> On 3/7/2024 4:39 PM, Markus Armbruster wrote:
+>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+>>=20
+>>> On 2/29/2024 9:25 PM, Markus Armbruster wrote:
+>>>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+>>>>
+>>>>> On 2/29/2024 4:37 PM, Markus Armbruster wrote:
+>>>>>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+>>>>>>
+>>>>>>> From: Isaku Yamahata <isaku.yamahata@intel.com>
+>>>>>>>
+>>>>>>> Three sha384 hash values, mrconfigid, mrowner and mrownerconfig, of=
+ a TD
+>>>>>>> can be provided for TDX attestation. Detailed meaning of them can be
+>>>>>>> found: https://lore.kernel.org/qemu-devel/31d6dbc1-f453-4cef-ab08-4=
+813f4e0ff92@intel.com/
+>>>>>>>
+>>>>>>> Allow user to specify those values via property mrconfigid, mrowner=
+ and
+>>>>>>> mrownerconfig. They are all in base64 format.
+>>>>>>>
+>>>>>>> example
+>>>>>>> -object tdx-guest, \
+>>>>>>>      mrconfigid=3DASNFZ4mrze8BI0VniavN7wEjRWeJq83vASNFZ4mrze8BI0Vni=
+avN7wEjRWeJq83v,\
+>>>>>>>      mrowner=3DASNFZ4mrze8BI0VniavN7wEjRWeJq83vASNFZ4mrze8BI0VniavN=
+7wEjRWeJq83v,\
+>>>>>>>      mrownerconfig=3DASNFZ4mrze8BI0VniavN7wEjRWeJq83vASNFZ4mrze8BI0=
+VniavN7wEjRWeJq83v
+>>>>>>>
+>>>>>>> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+>>>>>>> Co-developed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>>>>>>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>>>> [...]
+>>>>
+>>>>>>> diff --git a/qapi/qom.json b/qapi/qom.json
+>>>>>>> index 89ed89b9b46e..cac875349a3a 100644
+>>>>>>> --- a/qapi/qom.json
+>>>>>>> +++ b/qapi/qom.json
+>>>>>>> @@ -905,10 +905,25 @@
+>>>>>>>    #     pages.  Some guest OS (e.g., Linux TD guest) may require t=
+his to
+>>>>>>>    #     be set, otherwise they refuse to boot.
+>>>>>>>    #
+>>>>>>> +# @mrconfigid: ID for non-owner-defined configuration of the guest=
+ TD,
+>>>>>>> +#     e.g., run-time or OS configuration (base64 encoded SHA384 di=
+gest).
+>>>>>>> +#     (A default value 0 of SHA384 is used when absent).
+>>>>>>
+>>>>>> Suggest to drop the parenthesis in the last sentence.
+>>>>>>
+>>>>>> @mrconfigid is a string, so the default value can't be 0.  Actually,
+>>>>>> it's not just any string, but a base64 encoded SHA384 digest, which
+>>>>>> means it must be exactly 96 hex digits.  So it can't be "0", either.=
+  It
+>>>>>> could be
+>>>>>> "0000000000000000000000000000000000000000000000000000000000000000000=
+00000000000000000000000000000".
+>>>>>
+>>>>> I thought value 0 of SHA384 just means it.
+>>>>>
+>>>>> That's my fault and my poor english.
+>>>>
+>>>> "Fault" is too harsh :)  It's not as precise as I want our interface
+>>>> documentation to be.  We work together to get there.
+>>>>
+>>>>>> More on this below.
+>>>>>>
+>>>>>>> +#
+>>>>>>> +# @mrowner: ID for the guest TD=E2=80=99s owner (base64 encoded SH=
+A384 digest).
+>>>>>>> +#     (A default value 0 of SHA384 is used when absent).
+>>>>>>> +#
+>>>>>>> +# @mrownerconfig: ID for owner-defined configuration of the guest =
+TD,
+>>>>>>> +#     e.g., specific to the workload rather than the run-time or OS
+>>>>>>> +#     (base64 encoded SHA384 digest). (A default value 0 of SHA384=
+ is
+>>>>>>> +#     used when absent).
+>>>>>>> +#
+>>>>>>>    # Since: 9.0
+>>>>>>>    ##
+>>>>>>>    { 'struct': 'TdxGuestProperties',
+>>>>>>> -  'data': { '*sept-ve-disable': 'bool' } }
+>>>>>>> +  'data': { '*sept-ve-disable': 'bool',
+>>>>>>> +            '*mrconfigid': 'str',
+>>>>>>> +            '*mrowner': 'str',
+>>>>>>> +            '*mrownerconfig': 'str' } }
+>>>>>>>    ##
+>>>>>>>    # @ThreadContextProperties:
+>>>>>>> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+>>>>>>> index d0ad4f57b5d0..4ce2f1d082ce 100644
+>>>>>>> --- a/target/i386/kvm/tdx.c
+>>>>>>> +++ b/target/i386/kvm/tdx.c
+>>>>>>> @@ -13,6 +13,7 @@
+>>>>>>>    #include "qemu/osdep.h"
+>>>>>>>    #include "qemu/error-report.h"
+>>>>>>> +#include "qemu/base64.h"
+>>>>>>>    #include "qapi/error.h"
+>>>>>>>    #include "qom/object_interfaces.h"
+>>>>>>>    #include "standard-headers/asm-x86/kvm_para.h"
+>>>>>>> @@ -516,6 +517,7 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **=
+errp)
+>>>>>>>        X86CPU *x86cpu =3D X86_CPU(cpu);
+>>>>>>>        CPUX86State *env =3D &x86cpu->env;
+>>>>>>>        g_autofree struct kvm_tdx_init_vm *init_vm =3D NULL;
+>>>>>>> +    size_t data_len;
+>>>>>>>        int r =3D 0;
+>>>>>>>        object_property_set_bool(OBJECT(cpu), "pmu", false, &error_a=
+bort);
+>>>>>>> @@ -528,6 +530,38 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error *=
+*errp)
+>>>>>>>        init_vm =3D g_malloc0(sizeof(struct kvm_tdx_init_vm) +
+>>>>>>>                            sizeof(struct kvm_cpuid_entry2) * KVM_MA=
+X_CPUID_ENTRIES);
+>>>>>>> +#define SHA384_DIGEST_SIZE  48
+>>>>>>> +
+>>>>>>> +    if (tdx_guest->mrconfigid) {
+>>>>>>> +        g_autofree uint8_t *data =3D qbase64_decode(tdx_guest->mrc=
+onfigid,
+>>>>>>> +                              strlen(tdx_guest->mrconfigid), &data=
+_len, errp);
+>>>>>>> +        if (!data || data_len !=3D SHA384_DIGEST_SIZE) {
+>>>>>>> +            error_setg(errp, "TDX: failed to decode mrconfigid");
+>>>>>>> +            return -1;
+>>>>>>> +        }
+>>>>>>> +        memcpy(init_vm->mrconfigid, data, data_len);
+>>>>>>> +    }
+>>>>>>
+>>>>>> When @mrconfigid is absent, the property remains null, and this
+>>>>>> conditional is not executed.  init_vm->mrconfigid[], an array of 6
+>>>>>> __u64, remains all zero.  How does the kernel treat that?
+>>>>>
+>>>>> A all-zero SHA384 value is still a valid value, isn't it?
+>>>>>
+>>>>> KVM treats it with no difference.
+>>>>
+>>>> Can you point me to the spot in the kernel where mrconfigid is used?
+>>>
+>>> https://github.com/intel/tdx/blob/66a10e258636fa8ec9f5ce687607bf2196a92=
+341/arch/x86/kvm/vmx/tdx.c#L2322
+>>>
+>>> KVM just copy what QEMU provides into its own data structure @td_params=
+. The format @of td_params is defined by TDX spec, and @td_params needs to =
+be passed to TDX module when initialize the context of TD via SEAMCALL(TDH.=
+MNG.INIT): https://github.com/intel/tdx/blob/66a10e258636fa8ec9f5ce687607bf=
+2196a92341/arch/x86/kvm/vmx/tdx.c#L2450
+>>>
+>>>
+>>> In fact, all the three SHA384 fields, will be hashed together with some=
+ other fields (in td_params and other content of TD) to compromise the init=
+ial measurement of TD.
+>>>
+>>> TDX module doesn't care the value of td_params->mrconfigid.
 >>
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Signed-off-by: Cédric Le Goater <clg@redhat.com>
->> ---
->>   include/hw/vfio/vfio-common.h | 25 ++++++++++++++++++++++++-
->>   hw/vfio/migration.c           | 18 ++++++++++++------
->>   hw/vfio/pci.c                 |  5 +++--
->>   3 files changed, 39 insertions(+), 9 deletions(-)
+>> My problem is that I don't understand when and why users would omit the
+>> optional @mrFOO.
+>
+> When users don't care it and don't have an explicit value for them, they =
+can omit it. Then a default all-zero value is used.
+>
+> If making it mandatory field, then users have to explicit pass a all-zero=
+ value when they don't care it.
+>
+>> I naively expected absent @mrFOO to mean something like "no attestation
+>> of FOO".
 >>
->> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
->> index b9da6c08ef41174610eb92726c590309a53696a3..46f88493634b5634a9c14a5caa33a463fbf2c50d 100644
->> --- a/include/hw/vfio/vfio-common.h
->> +++ b/include/hw/vfio/vfio-common.h
->> @@ -133,7 +133,30 @@ struct VFIODeviceOps {
->>       int (*vfio_hot_reset_multi)(VFIODevice *vdev);
->>       void (*vfio_eoi)(VFIODevice *vdev);
->>       Object *(*vfio_get_object)(VFIODevice *vdev);
->> -    void (*vfio_save_config)(VFIODevice *vdev, QEMUFile *f);
->> +
->> +    /**
->> +     * @vfio_save_config
->> +     *
->> +     * Save device config state
->> +     *
->> +     * @vdev: #VFIODevice for which to save the config
->> +     * @f: #QEMUFile where to send the data
->> +     * @errp: pointer to Error*, to store an error if it happens.
->> +     *
->> +     * Returns zero to indicate success and negative for error
->> +     */
->> +    int (*vfio_save_config)(VFIODevice *vdev, QEMUFile *f, Error **errp);
->> +
->> +    /**
->> +     * @vfio_load_config
->> +     *
->> +     * Load device config state
->> +     *
->> +     * @vdev: #VFIODevice for which to load the config
->> +     * @f: #QEMUFile where to get the data
->> +     *
->> +     * Returns zero to indicate success and negative for error
->> +     */
->>       int (*vfio_load_config)(VFIODevice *vdev, QEMUFile *f);
->>   };
->>   
->> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
->> index 71ade14a7942358094371a86c00718f5979113ea..bd48f2ee472a5230c2c84bff829dae1e217db33f 100644
->> --- a/hw/vfio/migration.c
->> +++ b/hw/vfio/migration.c
->> @@ -190,14 +190,19 @@ static int vfio_load_buffer(QEMUFile *f, VFIODevice *vbasedev,
->>       return ret;
->>   }
->>   
->> -static int vfio_save_device_config_state(QEMUFile *f, void *opaque)
->> +static int vfio_save_device_config_state(QEMUFile *f, void *opaque,
->> +                                         Error **errp)
->>   {
->>       VFIODevice *vbasedev = opaque;
->> +    int ret;
->>   
->>       qemu_put_be64(f, VFIO_MIG_FLAG_DEV_CONFIG_STATE);
->>   
->>       if (vbasedev->ops && vbasedev->ops->vfio_save_config) {
->> -        vbasedev->ops->vfio_save_config(vbasedev, f);
->> +        ret = vbasedev->ops->vfio_save_config(vbasedev, f, errp);
->> +        if (ret) {
-> I am not familiar enough with that case but don't you still want to set
-> the VFIO_MIG_FLAG_END_OF_STATE to "close" the state?
+>> But I see that they default to
+>> "00000000000000000000000000000000000000000000000000000000000000000000000=
+0000000000000000000000000".
+>>
+>> If this zero value is special and means "no attestation", then we
+>> accidentally get no attestation when whatever is being hashed happens to
+>> hash to this zero value.  Unlikely, but possible.
+>>
+>> If it's not special, then when and why is the ability to omit it useful?
+>
+> At some point, the zero value is special, because it is the default value=
+ if no explicit one provided by user. But for TDX point of view, it is not =
+special. The field is a must for any TD, and whatever value it is, it will =
+be hashed into MRTD (Build-time Measurement Register) for later attestation.
+>
+> TDX architecture defines what fields are always hashed into measurement a=
+nd also provide other mechanism to hash optional field into measurement. Al=
+l this is known to users of TDX, and users can calculate the final measurem=
+ent by itself and compare to what gets reported by TDX to see they are iden=
+tical.
+>
+> For these three fields, they are must-to-have fields to be hashed into me=
+asurement. For user's convenience, we don't want to make it mandatory input=
+ because not everyone cares it and have a specific value to input.
+> What people needs to know is that, when no explicit value is provided for=
+ these three field, a all-zero value is used.
 
-This is a delimiter used on the target side when loading the state.
+Alright, the doc comment is not the place to educate me about TDX.
+Perhaps we can go with
 
-When QEMU fails to capture the device state, the whole migration is marked
-as in error. There is no need to end cleanly the device state, it is bogus
-anyhow.
-
-Thanks,
-
-C.
-
-
-> 
-> Eric
->> +            return ret;
->> +        }
->>       }
->>   
->>       qemu_put_be64(f, VFIO_MIG_FLAG_END_OF_STATE);
->> @@ -587,13 +592,14 @@ static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
->>   static void vfio_save_state(QEMUFile *f, void *opaque)
->>   {
->>       VFIODevice *vbasedev = opaque;
->> +    Error *local_err = NULL;
->>       int ret;
->>   
->> -    ret = vfio_save_device_config_state(f, opaque);
->> +    ret = vfio_save_device_config_state(f, opaque, &local_err);
->>       if (ret) {
->> -        error_report("%s: Failed to save device config space",
->> -                     vbasedev->name);
->> -        qemu_file_set_error(f, ret);
->> +        error_prepend(&local_err, "%s: Failed to save device config space",
->> +                      vbasedev->name);
->> +        qemu_file_set_error_obj(f, ret, local_err);
->>       }
->>   }
->>   
->> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
->> index 4fa387f0430d62ca2ba1b5ae5b7037f8f06b33f9..99d86e1d40ef25133fc76ad6e58294b07bd20843 100644
->> --- a/hw/vfio/pci.c
->> +++ b/hw/vfio/pci.c
->> @@ -2585,11 +2585,12 @@ const VMStateDescription vmstate_vfio_pci_config = {
->>       }
->>   };
->>   
->> -static void vfio_pci_save_config(VFIODevice *vbasedev, QEMUFile *f)
->> +static int vfio_pci_save_config(VFIODevice *vbasedev, QEMUFile *f, Error **errp)
->>   {
->>       VFIOPCIDevice *vdev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
->>   
->> -    vmstate_save_state(f, &vmstate_vfio_pci_config, vdev, NULL);
->> +    return vmstate_save_state_with_err(f, &vmstate_vfio_pci_config, vdev, NULL,
->> +                                       errp);
->>   }
->>   
->>   static int vfio_pci_load_config(VFIODevice *vbasedev, QEMUFile *f)
-> 
+# @mrconfigid: ID for non-owner-defined configuration of the guest TD,
+#     e.g., run-time or OS configuration (base64 encoded SHA384 digest).
+#     Defaults to all zeroes.
 
 
