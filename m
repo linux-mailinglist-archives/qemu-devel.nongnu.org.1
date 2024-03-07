@@ -2,50 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7461875334
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 16:33:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CD22875344
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 16:38:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riFg7-0006DO-MC; Thu, 07 Mar 2024 10:29:03 -0500
+	id 1riFoB-0001a6-Ay; Thu, 07 Mar 2024 10:37:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1riFg5-0006Cg-Ix
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 10:29:01 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1riFg3-0005gW-8h
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 10:29:01 -0500
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxmfAt3ellKvgVAA--.54917S3;
- Thu, 07 Mar 2024 23:28:45 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxdMwk3ellNlBQAA--.33344S19; 
- Thu, 07 Mar 2024 23:28:45 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-Subject: [PULL v2 17/17] hw/loongarch: Add cells missing from rtc node
-Date: Thu,  7 Mar 2024 23:28:35 +0800
-Message-Id: <20240307152835.299233-18-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20240307152835.299233-1-gaosong@loongson.cn>
-References: <20240307152835.299233-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1riFo5-0001Zr-FW
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 10:37:17 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1riFo0-00016a-Qo
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 10:37:16 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TrCxL1qTfz6K8qY;
+ Thu,  7 Mar 2024 23:33:10 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id BCC0D140D26;
+ Thu,  7 Mar 2024 23:37:08 +0800 (CST)
+Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
+ lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 7 Mar 2024 15:37:08 +0000
+To: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, David
+ Hildenbrand <david@redhat.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, <qemu-devel@nongnu.org>
+CC: <linuxarm@huawei.com>
+Subject: [PATCH v2 0/4] physmem: Fix MemoryRegion for second access to cached
+ MMIO Address Space 
+Date: Thu, 7 Mar 2024 15:37:06 +0000
+Message-ID: <20240307153710.30907-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxdMwk3ellNlBQAA--.33344S19
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -59,56 +63,65 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-rtc node need interrupts and interrupt-parent cells.
+v2: (Thanks to Peter Xu for reviewing!)
+- New patch 1 to rename addr1 to mr_addr in the interests of meaningful naming.
+- Take advantage of a cached address space only allow for a single MR to simplify
+  the new code.
+- Various cleanups of indentation etc.
+- Cover letter and some patch descriptions updated to reflect changes.
+- Changes all called out in specific patches.
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240301093839.663947-18-gaosong@loongson.cn>
----
- hw/loongarch/virt.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+Issue seen testing virtio-blk-pci with CXL emulated interleave memory.
+Tests were done on arm64, but the issue isn't architecture specific.
+Note that some additional fixes are needed to TCG to be able to run far
+enough to hit this on arm64 or x86. Most of these are now upstream
+with exception of:
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 58957a8d9a..676f1f5227 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -231,7 +231,8 @@ static void fdt_add_flash_node(LoongArchMachineState *lams)
-     g_free(nodename);
- }
- 
--static void fdt_add_rtc_node(LoongArchMachineState *lams)
-+static void fdt_add_rtc_node(LoongArchMachineState *lams,
-+                             uint32_t *pch_pic_phandle)
- {
-     char *nodename;
-     hwaddr base = VIRT_RTC_REG_BASE;
-@@ -240,8 +241,13 @@ static void fdt_add_rtc_node(LoongArchMachineState *lams)
- 
-     nodename = g_strdup_printf("/rtc@%" PRIx64, base);
-     qemu_fdt_add_subnode(ms->fdt, nodename);
--    qemu_fdt_setprop_string(ms->fdt, nodename, "compatible", "loongson,ls7a-rtc");
-+    qemu_fdt_setprop_string(ms->fdt, nodename, "compatible",
-+                            "loongson,ls7a-rtc");
-     qemu_fdt_setprop_sized_cells(ms->fdt, nodename, "reg", 2, base, 2, size);
-+    qemu_fdt_setprop_cells(ms->fdt, nodename, "interrupts",
-+                           VIRT_RTC_IRQ - VIRT_GSI_BASE , 0x4);
-+    qemu_fdt_setprop_cell(ms->fdt, nodename, "interrupt-parent",
-+                          *pch_pic_phandle);
-     g_free(nodename);
- }
- 
-@@ -647,7 +653,7 @@ static void loongarch_devices_init(DeviceState *pch_pic,
-     sysbus_create_simple("ls7a_rtc", VIRT_RTC_REG_BASE,
-                          qdev_get_gpio_in(pch_pic,
-                          VIRT_RTC_IRQ - VIRT_GSI_BASE));
--    fdt_add_rtc_node(lams);
-+    fdt_add_rtc_node(lams, pch_pic_phandle);
- 
-     /* acpi ged */
-     lams->acpi_ged = create_acpi_ged(pch_pic, lams);
+target/i386: Enable page walking from MMIO memory
+https://lore.kernel.org/qemu-devel/20240219173153.12114-3-Jonathan.Cameron@huawei.com/
+
+The address_space_read_cached_slow() and address_space_write_cached_slow()
+functions query the MemoryRegion for the cached address space correctly
+using address_space_translate_cached() but then call into
+flatview_read_continue() / flatview_write_continue().
+If the access is to a MMIO MemoryRegion and is bigger than the MemoryRegion
+supports, the loop will query the MemoryRegion for the next access to use.
+That query uses flatview_translate() but the address passed is suitable
+for the cache, not the flatview. On my test setup that mean the second
+8 bytes and onwards of the virtio descriptor was read from flash memory
+at the beginning of the system address map, not the CXL emulated memory
+where the descriptor was found.  Result happened to be all fs so easy to
+spot.
+
+Changes these calls to assume that the MemoryRegion does not change
+as multiple acceses are perfomed to the MemoryRegionCache.
+The first patch renames the addr1 parameter to the hopefully more
+informative mr_addr.
+
+To avoid duplicating most of the code, the next 2 patches factor out
+the common parts of flatview_read_continue() and flatview_write_continue()
+so they can be reused.
+
+Write path has not been tested but it so similar to the read path I've
+included it here.
+
+Jonathan Cameron (4):
+  physmem: Rename addr1 to more informative mr_addr in
+    flatview_read/write() and similar
+  physmem: Reduce local variable scope in flatview_read/write_continue()
+  physmem: Factor out body of flatview_read/write_continue() loop
+  physmem: Fix wrong address in large
+    address_space_read/write_cached_slow()
+
+ system/physmem.c | 260 +++++++++++++++++++++++++++++++----------------
+ 1 file changed, 170 insertions(+), 90 deletions(-)
+
 -- 
-2.34.1
+2.39.2
 
 
