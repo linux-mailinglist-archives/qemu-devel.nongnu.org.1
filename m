@@ -2,59 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51C1D8753B8
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 16:54:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A03A48753D5
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 17:05:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riG3w-0001IQ-L9; Thu, 07 Mar 2024 10:53:40 -0500
+	id 1riGDp-0005AE-Ri; Thu, 07 Mar 2024 11:03:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1riG3u-0001I3-EE
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 10:53:38 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1riG3s-0001Gn-8a
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 10:53:38 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TrDJG4rGBz67G9M;
- Thu,  7 Mar 2024 23:49:34 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 39AEF14058E;
- Thu,  7 Mar 2024 23:53:33 +0800 (CST)
-Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
- lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 7 Mar 2024 15:53:32 +0000
-To: Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost
- <eduardo@habkost.net>, <qemu-devel@nongnu.org>,
- <richard.henderson@linaro.org>
-CC: Peter Maydell <peter.maydell@linaro.org>, Gregory Price
- <gregory.price@memverge.com>, =?UTF-8?q?Alex=20Benn=C3=A9e?=
- <alex.bennee@linaro.org>, <linuxarm@huawei.com>
-Subject: [PATCH v3 1/1] target/i386: Enable page walking from MMIO memory
-Date: Thu, 7 Mar 2024 15:53:04 +0000
-Message-ID: <20240307155304.31241-2-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240307155304.31241-1-Jonathan.Cameron@huawei.com>
-References: <20240307155304.31241-1-Jonathan.Cameron@huawei.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1riGDa-000566-0x
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 11:03:42 -0500
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1riGDP-000636-K6
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 11:03:37 -0500
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-6e63e9abf6aso869638b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 08:03:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1709827405; x=1710432205; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=XpDoYt2Qb/Km1f+I5GhoGYGwXZarW4PqGG8m8YQiDcM=;
+ b=CfO7RreE4XDloWpbUpxBKvnSVQXepvMZuJzXwhSTc27TsD4SSwJ5PelDngneUgfET8
+ wIK/kZk7kynvsWwDOKkOF/TOnm4CtjbyPV5dpNNbhfncuxNneGVZu5ZIPToXumycJRht
+ a0u55wwcgvhXKUo7M6Bblm1lnkxLNDAdhuLCPJHEZWd9yzegYEoTlja8+1lDnC46Ekpu
+ vkyL+sL79vhrpDWaNxau2ao4PyWfmp+m8uRYc0824HcMzpXQuYIXv28xdxFY/4/VpOtw
+ bUaT8Ra3O2MnSb+GcbkaYRaNUC37fIkQ4o4ZL9mkQa2oBKPtRp6HUpY86J0VjWtXz5fP
+ B1KA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709827405; x=1710432205;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XpDoYt2Qb/Km1f+I5GhoGYGwXZarW4PqGG8m8YQiDcM=;
+ b=KHhwop4RhMZMmBixsHmcra2DAIhbDPs48aS+TT37FDiOOCRZSzJk606a2/T4ZrEP9c
+ O9sqXc5Dq+3ADqU969O46bTST25R7IxdbrkqrK+IOhuvoJoE4zan/KN4LyJWTn/geNFE
+ rKQUJdIDGkBgwU4kP0L0WqW8OUqDH81b5WG4qyJMUtrI1b/orH+JS5rTSRYx51BA2M4u
+ UkuBR6mMbJlTiHfT5P+9Hd69amzQH4ydRkOJdkWl7N44noZlVvoHOyBfKYb2kJr3p60G
+ fIBDw2umditHnAV0uB4ZTWf5ybDg4Xjmi3MhLicqs90lFFwA0F3GNaFIlihX8TQBOT5F
+ lvxw==
+X-Gm-Message-State: AOJu0Yyw71snmXyiq2o5IXWgz0hG6iMHT+rqi9IzPOJCnUpL3icYTZqw
+ /Yfo2/BzhvA9lEfC4CMn9nB7x6ARj4rmUE8u8Vtxz4bA1fVs+ja3uzlszaJhIoNSzXwVGfxnK5Z
+ j
+X-Google-Smtp-Source: AGHT+IHSaCML1erTlBWTp535Xj99gR8/V4Mw6i8kmGQD/Kk3sTS0iEgIeGWWOPI29u18kD4paQphJQ==
+X-Received: by 2002:a17:902:c146:b0:1db:9a69:293d with SMTP id
+ 6-20020a170902c14600b001db9a69293dmr7412480plj.24.1709827405287; 
+ Thu, 07 Mar 2024 08:03:25 -0800 (PST)
+Received: from grind.dc1.ventanamicro.com ([177.94.15.159])
+ by smtp.gmail.com with ESMTPSA id
+ u11-20020a170903124b00b001db2b8b2da7sm14663136plh.122.2024.03.07.08.03.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 07 Mar 2024 08:03:24 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com, tjeznach@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v2 00/15] riscv: QEMU RISC-V IOMMU Support
+Date: Thu,  7 Mar 2024 13:03:03 -0300
+Message-ID: <20240307160319.675044-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,256 +89,103 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gregory Price <gregory.price@memverge.com>
+Hi,
 
-CXL emulation of interleave requires read and write hooks due to
-requirement for subpage granularity. The Linux kernel stack now enables
-using this memory as conventional memory in a separate NUMA node. If a
-process is deliberately forced to run from that node
-$ numactl --membind=1 ls
-the page table walk on i386 fails.
+This is the second version of the work Tomasz sent in July 2023 [1].
+I'll be helping Tomasz upstreaming it. 
 
-Useful part of backtrace:
+The core emulation code is left unchanged but a few tweaks were made in
+v2:
 
-    (cpu=cpu@entry=0x555556fd9000, fmt=fmt@entry=0x555555fe3378 "cpu_io_recompile: could not find TB for pc=%p")
-    at ../../cpu-target.c:359
-    (retaddr=0, addr=19595792376, attrs=..., xlat=<optimized out>, cpu=0x555556fd9000, out_offset=<synthetic pointer>)
-    at ../../accel/tcg/cputlb.c:1339
-    (cpu=0x555556fd9000, full=0x7fffee0d96e0, ret_be=ret_be@entry=0, addr=19595792376, size=size@entry=8, mmu_idx=4, type=MMU_DATA_LOAD, ra=0) at ../../accel/tcg/cputlb.c:2030
-    (cpu=cpu@entry=0x555556fd9000, p=p@entry=0x7ffff56fddc0, mmu_idx=<optimized out>, type=type@entry=MMU_DATA_LOAD, memop=<optimized out>, ra=ra@entry=0) at ../../accel/tcg/cputlb.c:2356
-    (cpu=cpu@entry=0x555556fd9000, addr=addr@entry=19595792376, oi=oi@entry=52, ra=ra@entry=0, access_type=access_type@entry=MMU_DATA_LOAD) at ../../accel/tcg/cputlb.c:2439
-    at ../../accel/tcg/ldst_common.c.inc:301
-    at ../../target/i386/tcg/sysemu/excp_helper.c:173
-    (err=0x7ffff56fdf80, out=0x7ffff56fdf70, mmu_idx=0, access_type=MMU_INST_FETCH, addr=18446744072116178925, env=0x555556fdb7c0)
-    at ../../target/i386/tcg/sysemu/excp_helper.c:578
-    (cs=0x555556fd9000, addr=18446744072116178925, size=<optimized out>, access_type=MMU_INST_FETCH, mmu_idx=0, probe=<optimized out>, retaddr=0) at ../../target/i386/tcg/sysemu/excp_helper.c:604
+- The most notable difference in this version is that the code was split
+  in smaller chunks. Patch 03 is still a 1700 lines patch, which is an
+  improvement from the 3800 lines patch from v1, but we can only go so
+  far when splitting the core components of the emulation. The reality
+  is that the IOMMU emulation is a rather complex piece of software and
+  there's not much we can do to alleviate it;
 
-Avoid this by plumbing the address all the way down from
-x86_cpu_tlb_fill() where is available as retaddr to the actual accessors
-which provide it to probe_access_full() which already handles MMIO accesses.
+- I'm not contributing the HPM support that was present in v1. It shaved
+  off 600 lines of code from the series, which is already large enough
+  as is. We'll introduce HPM in later versions or as a follow-up;
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Gregory Price <gregory.price@memverge.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
-v3: No change.
+- The riscv-iommu-header.h header was also trimmed. I shaved it of 300
+  or so from it, all of them from definitions that the emulation isn't
+  using it. The header will be eventually be imported from the Linux
+  driver (not upstream yet), so for now we can live with a trimmed
+  header for the emulation usage alone;
 
- target/i386/tcg/sysemu/excp_helper.c | 57 +++++++++++++++-------------
- 1 file changed, 30 insertions(+), 27 deletions(-)
+- I added libqos tests for the riscv-iommu-pci device. The idea of these
+  tests is to give us more confidence in the emulation code;
 
-diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
-index 8f7011d966..7a57b7dd10 100644
---- a/target/i386/tcg/sysemu/excp_helper.c
-+++ b/target/i386/tcg/sysemu/excp_helper.c
-@@ -59,14 +59,14 @@ typedef struct PTETranslate {
-     hwaddr gaddr;
- } PTETranslate;
- 
--static bool ptw_translate(PTETranslate *inout, hwaddr addr)
-+static bool ptw_translate(PTETranslate *inout, hwaddr addr, uint64_t ra)
- {
-     CPUTLBEntryFull *full;
-     int flags;
- 
-     inout->gaddr = addr;
-     flags = probe_access_full(inout->env, addr, 0, MMU_DATA_STORE,
--                              inout->ptw_idx, true, &inout->haddr, &full, 0);
-+                              inout->ptw_idx, true, &inout->haddr, &full, ra);
- 
-     if (unlikely(flags & TLB_INVALID_MASK)) {
-         TranslateFault *err = inout->err;
-@@ -82,20 +82,20 @@ static bool ptw_translate(PTETranslate *inout, hwaddr addr)
-     return true;
- }
- 
--static inline uint32_t ptw_ldl(const PTETranslate *in)
-+static inline uint32_t ptw_ldl(const PTETranslate *in, uint64_t ra)
- {
-     if (likely(in->haddr)) {
-         return ldl_p(in->haddr);
-     }
--    return cpu_ldl_mmuidx_ra(in->env, in->gaddr, in->ptw_idx, 0);
-+    return cpu_ldl_mmuidx_ra(in->env, in->gaddr, in->ptw_idx, ra);
- }
- 
--static inline uint64_t ptw_ldq(const PTETranslate *in)
-+static inline uint64_t ptw_ldq(const PTETranslate *in, uint64_t ra)
- {
-     if (likely(in->haddr)) {
-         return ldq_p(in->haddr);
-     }
--    return cpu_ldq_mmuidx_ra(in->env, in->gaddr, in->ptw_idx, 0);
-+    return cpu_ldq_mmuidx_ra(in->env, in->gaddr, in->ptw_idx, ra);
- }
- 
- /*
-@@ -132,7 +132,8 @@ static inline bool ptw_setl(const PTETranslate *in, uint32_t old, uint32_t set)
- }
- 
- static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
--                          TranslateResult *out, TranslateFault *err)
-+                          TranslateResult *out, TranslateFault *err,
-+                          uint64_t ra)
- {
-     const target_ulong addr = in->addr;
-     const int pg_mode = in->pg_mode;
-@@ -164,11 +165,11 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-                  * Page table level 5
-                  */
-                 pte_addr = (in->cr3 & ~0xfff) + (((addr >> 48) & 0x1ff) << 3);
--                if (!ptw_translate(&pte_trans, pte_addr)) {
-+                if (!ptw_translate(&pte_trans, pte_addr, ra)) {
-                     return false;
-                 }
-             restart_5:
--                pte = ptw_ldq(&pte_trans);
-+                pte = ptw_ldq(&pte_trans, ra);
-                 if (!(pte & PG_PRESENT_MASK)) {
-                     goto do_fault;
-                 }
-@@ -188,11 +189,11 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-              * Page table level 4
-              */
-             pte_addr = (pte & PG_ADDRESS_MASK) + (((addr >> 39) & 0x1ff) << 3);
--            if (!ptw_translate(&pte_trans, pte_addr)) {
-+            if (!ptw_translate(&pte_trans, pte_addr, ra)) {
-                 return false;
-             }
-         restart_4:
--            pte = ptw_ldq(&pte_trans);
-+            pte = ptw_ldq(&pte_trans, ra);
-             if (!(pte & PG_PRESENT_MASK)) {
-                 goto do_fault;
-             }
-@@ -208,11 +209,11 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-              * Page table level 3
-              */
-             pte_addr = (pte & PG_ADDRESS_MASK) + (((addr >> 30) & 0x1ff) << 3);
--            if (!ptw_translate(&pte_trans, pte_addr)) {
-+            if (!ptw_translate(&pte_trans, pte_addr, ra)) {
-                 return false;
-             }
-         restart_3_lma:
--            pte = ptw_ldq(&pte_trans);
-+            pte = ptw_ldq(&pte_trans, ra);
-             if (!(pte & PG_PRESENT_MASK)) {
-                 goto do_fault;
-             }
-@@ -235,12 +236,12 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-              * Page table level 3
-              */
-             pte_addr = (in->cr3 & 0xffffffe0ULL) + ((addr >> 27) & 0x18);
--            if (!ptw_translate(&pte_trans, pte_addr)) {
-+            if (!ptw_translate(&pte_trans, pte_addr, ra)) {
-                 return false;
-             }
-             rsvd_mask |= PG_HI_USER_MASK;
-         restart_3_nolma:
--            pte = ptw_ldq(&pte_trans);
-+            pte = ptw_ldq(&pte_trans, ra);
-             if (!(pte & PG_PRESENT_MASK)) {
-                 goto do_fault;
-             }
-@@ -257,11 +258,11 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-          * Page table level 2
-          */
-         pte_addr = (pte & PG_ADDRESS_MASK) + (((addr >> 21) & 0x1ff) << 3);
--        if (!ptw_translate(&pte_trans, pte_addr)) {
-+        if (!ptw_translate(&pte_trans, pte_addr, ra)) {
-             return false;
-         }
-     restart_2_pae:
--        pte = ptw_ldq(&pte_trans);
-+        pte = ptw_ldq(&pte_trans, ra);
-         if (!(pte & PG_PRESENT_MASK)) {
-             goto do_fault;
-         }
-@@ -283,10 +284,10 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-          * Page table level 1
-          */
-         pte_addr = (pte & PG_ADDRESS_MASK) + (((addr >> 12) & 0x1ff) << 3);
--        if (!ptw_translate(&pte_trans, pte_addr)) {
-+        if (!ptw_translate(&pte_trans, pte_addr, ra)) {
-             return false;
-         }
--        pte = ptw_ldq(&pte_trans);
-+        pte = ptw_ldq(&pte_trans, ra);
-         if (!(pte & PG_PRESENT_MASK)) {
-             goto do_fault;
-         }
-@@ -301,11 +302,11 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-          * Page table level 2
-          */
-         pte_addr = (in->cr3 & 0xfffff000ULL) + ((addr >> 20) & 0xffc);
--        if (!ptw_translate(&pte_trans, pte_addr)) {
-+        if (!ptw_translate(&pte_trans, pte_addr, ra)) {
-             return false;
-         }
-     restart_2_nopae:
--        pte = ptw_ldl(&pte_trans);
-+        pte = ptw_ldl(&pte_trans, ra);
-         if (!(pte & PG_PRESENT_MASK)) {
-             goto do_fault;
-         }
-@@ -330,10 +331,10 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-          * Page table level 1
-          */
-         pte_addr = (pte & ~0xfffu) + ((addr >> 10) & 0xffc);
--        if (!ptw_translate(&pte_trans, pte_addr)) {
-+        if (!ptw_translate(&pte_trans, pte_addr, ra)) {
-             return false;
-         }
--        pte = ptw_ldl(&pte_trans);
-+        pte = ptw_ldl(&pte_trans, ra);
-         if (!(pte & PG_PRESENT_MASK)) {
-             goto do_fault;
-         }
-@@ -526,7 +527,8 @@ static G_NORETURN void raise_stage2(CPUX86State *env, TranslateFault *err,
- 
- static bool get_physical_address(CPUX86State *env, vaddr addr,
-                                  MMUAccessType access_type, int mmu_idx,
--                                 TranslateResult *out, TranslateFault *err)
-+                                 TranslateResult *out, TranslateFault *err,
-+                                 uint64_t ra)
- {
-     TranslateParams in;
-     bool use_stage2 = env->hflags2 & HF2_NPT_MASK;
-@@ -546,7 +548,7 @@ static bool get_physical_address(CPUX86State *env, vaddr addr,
-                 env->nested_pg_mode & PG_MODE_LMA ? MMU_USER64_IDX : MMU_USER32_IDX;
-             in.ptw_idx = MMU_PHYS_IDX;
- 
--            if (!mmu_translate(env, &in, out, err)) {
-+            if (!mmu_translate(env, &in, out, err, ra)) {
-                 err->stage2 = S2_GPA;
-                 return false;
-             }
-@@ -577,7 +579,7 @@ static bool get_physical_address(CPUX86State *env, vaddr addr,
-                     return false;
-                 }
-             }
--            return mmu_translate(env, &in, out, err);
-+            return mmu_translate(env, &in, out, err, ra);
-         }
-         break;
-     }
-@@ -597,7 +599,8 @@ bool x86_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
-     TranslateResult out;
-     TranslateFault err;
- 
--    if (get_physical_address(env, addr, access_type, mmu_idx, &out, &err)) {
-+    if (get_physical_address(env, addr, access_type, mmu_idx, &out, &err,
-+                             retaddr)) {
-         /*
-          * Even if 4MB pages, we map only one 4KB page in the cache to
-          * avoid filling it too fast.
+- 'edu' device support. The support was retrieved from Tomasz EDU branch
+  [2]. This device can then be used to test PCI passthrough to exercise
+  the IOMMU.
+
+
+Patches based on alistair/riscv-to-apply.next.
+
+v1 link: https://lore.kernel.org/qemu-riscv/cover.1689819031.git.tjeznach@rivosinc.com/
+
+[1] https://lore.kernel.org/qemu-riscv/cover.1689819031.git.tjeznach@rivosinc.com/
+[2] https://github.com/tjeznach/qemu.git, branch 'riscv_iommu_edu_impl'
+
+Andrew Jones (1):
+  hw/riscv/riscv-iommu: Add another irq for mrif notifications
+
+Daniel Henrique Barboza (2):
+  test/qtest: add riscv-iommu-pci tests
+  qtest/riscv-iommu-test: add init queues test
+
+Tomasz Jeznach (12):
+  exec/memtxattr: add process identifier to the transaction attributes
+  hw/riscv: add riscv-iommu-bits.h
+  hw/riscv: add RISC-V IOMMU base emulation
+  hw/riscv: add riscv-iommu-pci device
+  hw/riscv: add riscv-iommu-sys platform device
+  hw/riscv/virt.c: support for RISC-V IOMMU PCIDevice hotplug
+  hw/riscv/riscv-iommu: add Address Translation Cache (IOATC)
+  hw/riscv/riscv-iommu: add s-stage and g-stage support
+  hw/riscv/riscv-iommu: add ATS support
+  hw/riscv/riscv-iommu: add DBG support
+  hw/misc: EDU: added PASID support
+  hw/misc: EDU: add ATS/PRI capability
+
+ hw/misc/edu.c                    |  297 ++++-
+ hw/riscv/Kconfig                 |    4 +
+ hw/riscv/meson.build             |    1 +
+ hw/riscv/riscv-iommu-bits.h      |  407 ++++++
+ hw/riscv/riscv-iommu-pci.c       |  173 +++
+ hw/riscv/riscv-iommu-sys.c       |   93 ++
+ hw/riscv/riscv-iommu.c           | 2085 ++++++++++++++++++++++++++++++
+ hw/riscv/riscv-iommu.h           |  146 +++
+ hw/riscv/trace-events            |   15 +
+ hw/riscv/trace.h                 |    2 +
+ hw/riscv/virt.c                  |   33 +-
+ include/exec/memattrs.h          |    5 +
+ include/hw/riscv/iommu.h         |   40 +
+ meson.build                      |    1 +
+ tests/qtest/libqos/meson.build   |    4 +
+ tests/qtest/libqos/riscv-iommu.c |   79 ++
+ tests/qtest/libqos/riscv-iommu.h |   96 ++
+ tests/qtest/meson.build          |    1 +
+ tests/qtest/riscv-iommu-test.c   |  234 ++++
+ 19 files changed, 3704 insertions(+), 12 deletions(-)
+ create mode 100644 hw/riscv/riscv-iommu-bits.h
+ create mode 100644 hw/riscv/riscv-iommu-pci.c
+ create mode 100644 hw/riscv/riscv-iommu-sys.c
+ create mode 100644 hw/riscv/riscv-iommu.c
+ create mode 100644 hw/riscv/riscv-iommu.h
+ create mode 100644 hw/riscv/trace-events
+ create mode 100644 hw/riscv/trace.h
+ create mode 100644 include/hw/riscv/iommu.h
+ create mode 100644 tests/qtest/libqos/riscv-iommu.c
+ create mode 100644 tests/qtest/libqos/riscv-iommu.h
+ create mode 100644 tests/qtest/riscv-iommu-test.c
+
 -- 
-2.39.2
+2.43.2
 
 
