@@ -2,86 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B492A875A29
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 23:19:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 295F6875A5D
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 23:38:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riM55-0005Tc-D9; Thu, 07 Mar 2024 17:19:15 -0500
+	id 1riMNn-0000Ve-RJ; Thu, 07 Mar 2024 17:38:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1riM53-0005TS-EW
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 17:19:13 -0500
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <angelo@kernel-space.org>)
+ id 1riMHu-0007Wj-Ef
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 17:32:30 -0500
+Received: from mail.kernel-space.org ([195.201.34.187])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1riM51-0005Pa-SA
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 17:19:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=rqRx8RizlcBxi0vUv3CPGMIuDZKZWJG4DPQZDSqDNZg=; b=Tbf1ZWN7cv+nDkppfWlCItlzVF
- qk2lGsOXNVVeLB2HzrR+LKrHw8b4Soon+k6k/NMrmNxGomYRBL5OCy51hSeEV6nL1Qb8M/HCKnXvS
- 4/T2IBUfkki1/CjfspVrSQseRs1Th/qVw89v8jonrgcsXrGY2J2c+L7cvI/ZnjP8XPNqMR5xpneAp
- qHQ1CCnX0uNAYeJVmtUaTmMb9ZKQ+wZL32yTi/haO2lt/NkJSSA3CEQ3Wj3zv/uoHXQ8ywNAEz1xf
- /LvNu48p9tCaKzJLq/L+Xo67ZdMx8BQftXnoQQI01bhzG0zmbvIatfj1V9Ejfrb6osGJzwP5NCZhr
- ThA3b3Fppw77cWudAkuUISvczFKcOztRONxJp+F9XjOivbGphA4wBnBLijlS4dTaLcqOTunp2oJpK
- 2pQtzzOM6QFrdzAlDkKL1fFkALVvqOwcSf+je9i6xEjoIcFM97bcUku0Rkia8V/2v/Am8UOWUGuzp
- 14hmbal5lv68xrfCFboGYgDcZzGKfTwokJ8UeDniWbYwTrJh1QiU2K+PuspJK9brBvBbEpqO3ea0k
- p2Cgmz5ovTmon1AtNtjL2N+lrZUHwkQQFIBrsXP56ytPW/D7AmW4I0Qv1oEXmcsRvxEHIAXxrYVkL
- dQvQs4UR2sdQbrbSo9hszRDJ03ejZzPUf4aGOr2NQ=;
-Received: from host86-159-123-79.range86-159.btcentralplus.com
- ([86.159.123.79] helo=[10.8.0.6])
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1riM49-0005VC-0G; Thu, 07 Mar 2024 22:18:21 +0000
-Message-ID: <411c8012-a507-4efe-88b7-273bf6f328b0@ilande.co.uk>
-Date: Thu, 7 Mar 2024 22:19:00 +0000
+ (Exim 4.90_1) (envelope-from <angelo@kernel-space.org>)
+ id 1riMHo-0001ad-2E
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 17:32:30 -0500
+Received: from kernel-space.org (localhost [127.0.0.1])
+ by kernel-space.org (OpenSMTPD) with ESMTP id 4b2621f6;
+ Thu, 7 Mar 2024 22:29:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=kernel-space.org; h=from
+ :to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=s1; bh=WJUUy3rjmGQ96LDDLXs4int4T00
+ =; b=pdOWE2qI8JYVHclphUFxbzfiztIuk+0tFTHVD7A15+KmZF9uho+3kz+d2cE
+ S7ds3dTqTQn6eQYBQ02gBXKB+dRsgV5yMADY7WvsGy34msrkFFnryQbp8PtfySmi
+ Mcgr27Xc9JPrGhKsehV8BRKecD0ikCbQtT76XC2WJ7MxtotA=
+DomainKey-Signature: a=rsa-sha1; c=nofws; d=kernel-space.org; h=from:to
+ :cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; q=dns; s=s1; b=UWxFwEMTOrYCEzXqkHeht
+ xSXEICIw/KVcDF36sQXOcJUj91tVYDuViUuQszspZ0MX5GMoJ4WZgHvnbxf0C/0N
+ 7MUFBnaHh+x27AhISh9fg2zG0ggzd6Iq1sTvy3pLmg2IE1bQLAgRqj0vXQgAPP++
+ +97WaYUYO4qTnRcYkX2rrw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel-space.org;
+ s=s1; t=1709850588;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=rD5abJrS/1qaVIIVgWVqD38GjZDcefohfHLK99a/vmo=;
+ b=chhS//F+dtNpqtUDkjb6WTDUABhzAzsOAuk1RkBIIruM524R8lNkjuY5L4Ic4ZWZ+MuEx+
+ gHQPJ+Plxc0RvJKSWSIN4pN+TlP/2qtqXjpPynrY0CLQlgXpI0ZPZ3/BRplYvBlPdPwBDe
+ yxZYxgmR93DvPFNdOB0FmURUNq/dgFU=
+Received: from localhost.localdomain
+ (host-79-51-238-97.retail.telecomitalia.it [79.51.238.97])
+ by kernel-space.org (OpenSMTPD) with ESMTPSA id cf0165d4
+ (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO); 
+ Thu, 7 Mar 2024 22:29:48 +0000 (UTC)
+From: Angelo Dureghello <angelo@kernel-space.org>
+To: huth@tuxfamily.org
+Cc: qemu-devel@nongnu.org,
+	Angelo Dureghello <angelo@kernel-space.org>
+Subject: [PATCH] hw/m68k/mcf5208: add support for reset
+Date: Thu,  7 Mar 2024 23:31:41 +0100
+Message-ID: <20240307223141.795214-1-angelo@kernel-space.org>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
-Cc: Daniel Palmer <daniel@0x0f.com>
-References: <20240223155742.2790252-1-laurent@vivier.eu>
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <20240223155742.2790252-1-laurent@vivier.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 86.159.123.79
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH] virt: set the CPU type in BOOTINFO
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=195.201.34.187;
+ envelope-from=angelo@kernel-space.org; helo=mail.kernel-space.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,6 +66,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 07 Mar 2024 17:38:33 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,54 +81,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/02/2024 15:57, Laurent Vivier wrote:
+Add reset support.
 
-> BI_CPUTYPE/BI_MMUTYPE/BI_FPUTYPE were statically assigned to the
-> 68040 information.
-> This patch changes the code to set in bootinfo the information
-> provided by the command line '-cpu' parameter.
-> 
-> Bug: https://gitlab.com/qemu-project/qemu/-/issues/2091
-> Reported-by: Daniel Palmer <daniel@0x0f.com>
-> Signed-off-by: Laurent Vivier <laurent@vivier.eu>
-> ---
->   hw/m68k/virt.c | 17 ++++++++++++++---
->   1 file changed, 14 insertions(+), 3 deletions(-)
-> 
-> diff --git a/hw/m68k/virt.c b/hw/m68k/virt.c
-> index e2792ef46d93..b8e5e102e6b9 100644
-> --- a/hw/m68k/virt.c
-> +++ b/hw/m68k/virt.c
-> @@ -239,9 +239,20 @@ static void virt_init(MachineState *machine)
->           param_ptr = param_blob;
->   
->           BOOTINFO1(param_ptr, BI_MACHTYPE, MACH_VIRT);
-> -        BOOTINFO1(param_ptr, BI_FPUTYPE, FPU_68040);
-> -        BOOTINFO1(param_ptr, BI_MMUTYPE, MMU_68040);
-> -        BOOTINFO1(param_ptr, BI_CPUTYPE, CPU_68040);
-> +        if (m68k_feature(&cpu->env, M68K_FEATURE_M68020)) {
-> +            BOOTINFO1(param_ptr, BI_CPUTYPE, CPU_68020);
-> +        } else if (m68k_feature(&cpu->env, M68K_FEATURE_M68030)) {
-> +            BOOTINFO1(param_ptr, BI_MMUTYPE, MMU_68030);
-> +            BOOTINFO1(param_ptr, BI_CPUTYPE, CPU_68030);
-> +        } else if (m68k_feature(&cpu->env, M68K_FEATURE_M68040)) {
-> +            BOOTINFO1(param_ptr, BI_FPUTYPE, FPU_68040);
-> +            BOOTINFO1(param_ptr, BI_MMUTYPE, MMU_68040);
-> +            BOOTINFO1(param_ptr, BI_CPUTYPE, CPU_68040);
-> +        } else if (m68k_feature(&cpu->env, M68K_FEATURE_M68060)) {
-> +            BOOTINFO1(param_ptr, BI_FPUTYPE, FPU_68060);
-> +            BOOTINFO1(param_ptr, BI_MMUTYPE, MMU_68060);
-> +            BOOTINFO1(param_ptr, BI_CPUTYPE, CPU_68060);
-> +        }
->           BOOTINFO2(param_ptr, BI_MEMCHUNK, 0, ram_size);
->   
->           BOOTINFO1(param_ptr, BI_VIRT_QEMU_VERSION,
+Signed-off-by: Angelo Dureghello <angelo@kernel-space.org>
+---
+ hw/m68k/mcf5208.c | 51 ++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 48 insertions(+), 3 deletions(-)
 
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-
-
-ATB,
-
-Mark.
+diff --git a/hw/m68k/mcf5208.c b/hw/m68k/mcf5208.c
+index 0cfb806c20..b1ab3896d0 100644
+--- a/hw/m68k/mcf5208.c
++++ b/hw/m68k/mcf5208.c
+@@ -20,6 +20,7 @@
+ #include "hw/ptimer.h"
+ #include "sysemu/sysemu.h"
+ #include "sysemu/qtest.h"
++#include "sysemu/runstate.h"
+ #include "net/net.h"
+ #include "hw/boards.h"
+ #include "hw/loader.h"
+@@ -40,6 +41,8 @@
+ #define PCSR_PRE_SHIFT  8
+ #define PCSR_PRE_MASK   0x0f00
+ 
++#define RCR_SOFTRST     0x80
++
+ typedef struct {
+     MemoryRegion iomem;
+     qemu_irq irq;
+@@ -185,13 +188,55 @@ static const MemoryRegionOps m5208_sys_ops = {
+     .endianness = DEVICE_NATIVE_ENDIAN,
+ };
+ 
+-static void mcf5208_sys_init(MemoryRegion *address_space, qemu_irq *pic)
++static uint64_t m5208_rcm_read(void *opaque, hwaddr addr,
++                               unsigned size)
++{
++    qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" HWADDR_PRIX "\n",
++                  __func__, addr);
++    return 0;
++}
++
++static void m5208_rcm_write(void *opaque, hwaddr addr,
++                            uint64_t value, unsigned size)
++{
++    switch (addr) {
++    case 0x0: /* RCR */
++        if (value & RCR_SOFTRST) {
++            M68kCPU *cpu = opaque;
++            CPUState *cs = CPU(cpu);
++
++            cpu_reset(cs);
++            cpu->env.aregs[7] = ldl_phys(cs->as, 0);
++            cpu->env.pc = ldl_phys(cs->as, 4);
++            //qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
++        }
++        break;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" HWADDR_PRIX "\n",
++                      __func__, addr);
++        break;
++    }
++}
++
++static const MemoryRegionOps m5208_rcm_ops = {
++    .read = m5208_rcm_read,
++    .write = m5208_rcm_write,
++    .endianness = DEVICE_NATIVE_ENDIAN,
++};
++
++static void mcf5208_sys_init(MemoryRegion *address_space, qemu_irq *pic,
++                             M68kCPU *cpu)
+ {
+-    MemoryRegion *iomem = g_new(MemoryRegion, 1);
++    MemoryRegion *iomem;
+     m5208_timer_state *s;
+     int i;
+ 
++    /* RCM */
++    iomem = g_new(MemoryRegion, 1);
++    memory_region_init_io(iomem, NULL, &m5208_rcm_ops, cpu, "m5208-rcm", 0x00000080);
++    memory_region_add_subregion(address_space, 0xfc0a0000, iomem);
+     /* SDRAMC.  */
++    iomem = g_new(MemoryRegion, 1);
+     memory_region_init_io(iomem, NULL, &m5208_sys_ops, NULL, "m5208-sys", 0x00004000);
+     memory_region_add_subregion(address_space, 0xfc0a8000, iomem);
+     /* Timers.  */
+@@ -265,7 +310,7 @@ static void mcf5208evb_init(MachineState *machine)
+     mcf_uart_create_mmap(0xfc064000, pic[27], serial_hd(1));
+     mcf_uart_create_mmap(0xfc068000, pic[28], serial_hd(2));
+ 
+-    mcf5208_sys_init(address_space_mem, pic);
++    mcf5208_sys_init(address_space_mem, pic, cpu);
+ 
+     mcf_fec_init(address_space_mem, 0xfc030000, pic + 36);
+ 
+-- 
+2.44.0
 
 
