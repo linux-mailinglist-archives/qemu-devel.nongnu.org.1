@@ -2,83 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E38B874D6C
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 12:31:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E0B2874F10
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 13:30:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riBxo-0005pj-48; Thu, 07 Mar 2024 06:31:04 -0500
+	id 1riCs2-0006qo-5H; Thu, 07 Mar 2024 07:29:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1riBxc-0005pL-DM
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 06:30:54 -0500
-Received: from mgamail.intel.com ([192.198.163.7])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1riBxa-0002R8-CQ
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 06:30:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709811050; x=1741347050;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=A10UBKhRS/a5V9sC5bEpT6S/qORoPkNjQunvfSxHJ6I=;
- b=Q4/p/2fnEtratJx0JjD0tBIzGaLMzSvLLfOYI8pm6gC9xVggH20o3FCI
- MjWrH+vsyq4I9tdmKrI81tvWU/oasZx2eZgXnaxQmtwfM+6RJg7ZwzUCS
- M+P4ekjV6fY18e/eQoyGB8zEJP770N99SsbNRI9QvsmvqwNMEJOu5B9Ic
- 5NJy/Ek6In9+LmFlyVGAJHKnpcWub4JMLQ4cwbyWarR9+ApyLo+G41/qw
- kBLY7Qu3b6fTjUDEgsyxaDV+xA/QEjyHWIVWxqUsPS7lh3TAfA57XgwNG
- fuqmVoqPlo9e0OuH+KjpGDquUVatgPY09TZcUc2k9CI6uS6hiMxE9cxxr g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11005"; a="29916226"
-X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; d="scan'208";a="29916226"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Mar 2024 03:30:47 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; d="scan'208";a="33237722"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.242.48])
- ([10.124.242.48])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Mar 2024 03:30:41 -0800
-Message-ID: <d5cb6e5e-0bc1-40bd-8fc1-50a03f42e9cf@intel.com>
-Date: Thu, 7 Mar 2024 19:30:37 +0800
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1riCrz-0006qI-RT
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 07:29:07 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1riCrx-0004xg-6Z
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 07:29:06 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 948DC8C9CD;
+ Thu,  7 Mar 2024 11:37:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1709811440; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=wzj702vKUPTjfwWSsEapmboyGPr78hotEG7FkT0cGmA=;
+ b=soxid7GVwyFP9V9PeR4FB/Yl28cEFkxCR3xrQ6GbuddMxGErahwGvkCasO06vqgIvX60nz
+ MbhNXx+qbVw9k04y2vSpupRngq5cVD+1fJuyhHIl9W1b20kXAZyG+pb/XYrMvkELSLgAl0
+ /3CMPmIakIYS0DbPjdafoOQgVi1EGwA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1709811440;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=wzj702vKUPTjfwWSsEapmboyGPr78hotEG7FkT0cGmA=;
+ b=tkEDDFkr6Ju4Oyk1S7GCVLIvY33Tyqc8XENqrxxSJ/Rj1AkgjL+6E8tfHrAwDU7pWM1Ivl
+ 40U7lfAoBri73LAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1709811440; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=wzj702vKUPTjfwWSsEapmboyGPr78hotEG7FkT0cGmA=;
+ b=soxid7GVwyFP9V9PeR4FB/Yl28cEFkxCR3xrQ6GbuddMxGErahwGvkCasO06vqgIvX60nz
+ MbhNXx+qbVw9k04y2vSpupRngq5cVD+1fJuyhHIl9W1b20kXAZyG+pb/XYrMvkELSLgAl0
+ /3CMPmIakIYS0DbPjdafoOQgVi1EGwA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1709811440;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=wzj702vKUPTjfwWSsEapmboyGPr78hotEG7FkT0cGmA=;
+ b=tkEDDFkr6Ju4Oyk1S7GCVLIvY33Tyqc8XENqrxxSJ/Rj1AkgjL+6E8tfHrAwDU7pWM1Ivl
+ 40U7lfAoBri73LAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2102A12FC5;
+ Thu,  7 Mar 2024 11:37:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id ez80Nu+m6WVDOgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 07 Mar 2024 11:37:19 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org
+Cc: marcandre.lureau@redhat.com, thuth@redhat.com, lvivier@redhat.com,
+ pbonzini@redhat.com, peterx@redhat.com
+Subject: Re: [PATCH v3 4/7] Add migrate_set_ports into migrate_qmp to change
+ migration port number
+In-Reply-To: <28018429-e5ab-4dec-b742-99d7daa416b2@nutanix.com>
+References: <20240306104958.39857-1-het.gala@nutanix.com>
+ <20240306104958.39857-5-het.gala@nutanix.com> <87sf13s9yz.fsf@suse.de>
+ <0238e330-cb9f-4d72-9ca8-ca7a1b51dddf@nutanix.com>
+ <878r2vs61j.fsf@suse.de>
+ <28018429-e5ab-4dec-b742-99d7daa416b2@nutanix.com>
+Date: Thu, 07 Mar 2024 08:37:17 -0300
+Message-ID: <87ttliqnma.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 52/65] i386/tdx: Wire TDX_REPORT_FATAL_ERROR with
- GuestPanic facility
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand
- <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ani Sinha <anisinha@redhat.com>, Peter Xu <peterx@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Eric Blake <eblake@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
- qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
- Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
- Isaku Yamahata <isaku.yamahata@gmail.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>
-References: <20240229063726.610065-1-xiaoyao.li@intel.com>
- <20240229063726.610065-53-xiaoyao.li@intel.com> <874jdr1wmt.fsf@pond.sub.org>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <874jdr1wmt.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.7; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -11
-X-Spam_score: -1.2
-X-Spam_bar: -
-X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.365,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.276, HK_RANDOM_FROM=0.999, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; RCPT_COUNT_SEVEN(0.00)[7];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,121 +117,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/29/2024 4:51 PM, Markus Armbruster wrote:
-> Xiaoyao Li <xiaoyao.li@intel.com> writes:
-> 
->> Integrate TDX's TDX_REPORT_FATAL_ERROR into QEMU GuestPanic facility
->>
->> Originated-from: Isaku Yamahata <isaku.yamahata@intel.com>
->> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->> ---
->> Changes in v5:
->> - mention additional error information in gpa when it presents;
->> - refine the documentation; (Markus)
->>
->> Changes in v4:
->> - refine the documentation; (Markus)
->>
->> Changes in v3:
->> - Add docmentation of new type and struct; (Daniel)
->> - refine the error message handling; (Daniel)
->> ---
->>   qapi/run-state.json   | 31 +++++++++++++++++++++--
->>   system/runstate.c     | 58 +++++++++++++++++++++++++++++++++++++++++++
->>   target/i386/kvm/tdx.c | 24 +++++++++++++++++-
->>   3 files changed, 110 insertions(+), 3 deletions(-)
->>
->> diff --git a/qapi/run-state.json b/qapi/run-state.json
->> index dd0770b379e5..b71dd1884eb6 100644
->> --- a/qapi/run-state.json
->> +++ b/qapi/run-state.json
->> @@ -483,10 +483,12 @@
->>   #
->>   # @s390: s390 guest panic information type (Since: 2.12)
->>   #
->> +# @tdx: tdx guest panic information type (Since: 9.0)
->> +#
->>   # Since: 2.9
->>   ##
->>   { 'enum': 'GuestPanicInformationType',
->> -  'data': [ 'hyper-v', 's390' ] }
->> +  'data': [ 'hyper-v', 's390', 'tdx' ] }
->>   
->>   ##
->>   # @GuestPanicInformation:
->> @@ -501,7 +503,8 @@
->>    'base': {'type': 'GuestPanicInformationType'},
->>    'discriminator': 'type',
->>    'data': {'hyper-v': 'GuestPanicInformationHyperV',
->> -          's390': 'GuestPanicInformationS390'}}
->> +          's390': 'GuestPanicInformationS390',
->> +          'tdx' : 'GuestPanicInformationTdx'}}
->>   
->>   ##
->>   # @GuestPanicInformationHyperV:
->> @@ -564,6 +567,30 @@
->>             'psw-addr': 'uint64',
->>             'reason': 'S390CrashReason'}}
->>   
->> +##
->> +# @GuestPanicInformationTdx:
->> +#
->> +# TDX Guest panic information specific to TDX, as specified in the
->> +# "Guest-Hypervisor Communication Interface (GHCI) Specification",
->> +# section TDG.VP.VMCALL<ReportFatalError>.
->> +#
->> +# @error-code: TD-specific error code
->> +#
->> +# @message: Human-readable error message provided by the guest. Not
->> +#     to be trusted.
->> +#
->> +# @gpa: guest-physical address of a page that contains more verbose
->> +#     error information, as zero-terminated string.  Present when the
->> +#     "GPA valid" bit (bit 63) is set in @error-code.
-> 
-> Uh, peeking at GHCI Spec section 3.4 TDG.VP.VMCALL<ReportFatalError>, I
-> see operand R12 consists of
-> 
->      bits    name                        description
->      31:0    TD-specific error code      TD-specific error code
->                                          Panic – 0x0.
->                                          Values – 0x1 to 0xFFFFFFFF
->                                          reserved.
->      62:32   TD-specific extended        TD-specific extended error code.
->              error code                  TD software defined.
->      63      GPA Valid                   Set if the TD specified additional
->                                          information in the GPA parameter
->                                          (R13).
-> 
-> Is @error-code all of R12, or just bits 31:0?
-> 
-> If it's all of R12, description of @error-code as "TD-specific error
-> code" is misleading.
+Het Gala <het.gala@nutanix.com> writes:
 
-We pass all of R12 to @error_code.
+> On 06/03/24 9:31 pm, Fabiano Rosas wrote:
+>> Het Gala<het.gala@nutanix.com>  writes:
+>>
+>>> On 06/03/24 8:06 pm, Fabiano Rosas wrote:
+>>>> Het Gala<het.gala@nutanix.com>   writes:
+>>>>
+>>>>> Add a migrate_set_ports() function that from each QDict, fills in
+>>>>> the port in case it was 0 in the test.
+>>>>> Handle a list of channels so we can add a negative test that
+>>>>> passes more than one channel.
+>>>>>
+>>>>> Signed-off-by: Het Gala<het.gala@nutanix.com>
+>>>>> Suggested-by: Fabiano Rosas<farosas@suse.de>
+>>>>> ---
+>>>>>    tests/qtest/migration-helpers.c | 26 ++++++++++++++++++++++++++
+>>>>>    1 file changed, 26 insertions(+)
+>>>>>
+>>>>> diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
+>>>>> index 478c1f259b..df4978bf17 100644
+>>>>> --- a/tests/qtest/migration-helpers.c
+>>>>> +++ b/tests/qtest/migration-helpers.c
+>>>>> @@ -17,6 +17,8 @@
+>>>>>    #include "qapi/qapi-visit-sockets.h"
+>>>>>    #include "qapi/qobject-input-visitor.h"
+>>>>>    #include "qapi/error.h"
+>>>>> +#include "qapi/qmp/qlist.h"
+>>>>> +
+>>>> Extra line here. This is unwanted because it sometimes trips git into
+>>>> thinking there's a conflict here when another patch changes the
+>>>> surrounding lines.
+>>> Ack, that makes sense
+>>>>>    
+>>>>>    #include "migration-helpers.h"
+>>>>>    
+>>>>> @@ -73,6 +75,29 @@ migrate_get_socket_address(QTestState *who, const char *parameter)
+>>>>>        return result;
+>>>>>    }
+>>>>>    
+>>>>> +static void migrate_set_ports(QTestState *to, QList *channelList)
+>>>>> +{
+>>>>> +    g_autofree char *addr = NULL;
+>>>>> +    g_autofree char *addr_port = NULL;
+>>>>> +    QListEntry *entry;
+>>>>> +
+>>>>> +    addr = migrate_get_socket_address(to, "socket-address");
+>>>>> +    addr_port = g_strsplit(addr, ":", 3)[2];
+>>>> Will this always do the right thing when the src/dst use different types
+>>>> of channels? If there is some kind of mismatch (say one side uses vsock
+>>>> and the other inet), it's better that this function doesn't touch the
+>>>> channels dict instead of putting garbage in the port field.
+>>> Yes you are right. This will fail if there is a mismatch in type of
+>>> channels.
+>>>
+>>> Better idea would be to check if 'port' key is present in both, i.e. in
+>>> 'addr'
+>>> as well as 'addrdict' and only then change the port ?
+>>>
+>> Yep, either parse the type from string or add a version of
+>> migrate_get_socket_address that returns a dict. Then check if type
+>> matches and port exists.
+>
+> one silly question here, why are we not having tests for exec and rdma 
+> specifically ?
 
-Here it wants to use "error_code" as generic as the whole R12. Do you 
-have any better description of it ?
+exec because we intend to deprecate it, so no one is paying too much
+attention to it.
 
-> If it's just bits 31:0, then 'Present when the "GPA valid" bit (bit 63)
-> is set in @error-code' is wrong.  Could go with 'Only present when the
-> guest provides this information'.
-> 
->> +#
->> +#
-> 
-> Drop one of these two lines, please.
-> 
->> +# Since: 9.0
->> +##
->> +{'struct': 'GuestPanicInformationTdx',
->> + 'data': {'error-code': 'uint64',
->> +          'message': 'str',
->> +          '*gpa': 'uint64'}}
->> +
->>   ##
->>   # @MEMORY_FAILURE:
->>   #
-> 
+rdma because no one wants to write them.
 
+>
+> Another suggestion required: Parsing uri to qdict is easy to implement 
+> but (little)
+> messy codewise, and the other hand migrate_get_qdict looks clean, but 
+> under the hood we would convert it to socketaddress and then call 
+> SocketAddress_to_qdict. Which one we can prefer more here ?
+
+The latter. It's easier to work with.
+
+static QDict *SocketAddress_to_qdict(SocketAddress *addr)
+{
+    QDict *dict = qdict_new();
+
+    switch (addr->type) {
+    case SOCKET_ADDRESS_TYPE_INET:
+        qdict_put_str(dict, "type", "inet");
+        qdict_put_str(dict, "host", addr->u.inet.host);
+        qdict_put_str(dict, "port", addr->u.inet.port);
+
+        break;
+    case SOCKET_ADDRESS_TYPE_UNIX:
+        qdict_put_str(dict, "type", "unix");
+        qdict_put_str(dict, "path", addr->u.q_unix.path);
+
+        break;
+    case SOCKET_ADDRESS_TYPE_FD:
+        qdict_put_str(dict, "type", "fd");
+        qdict_put_str(dict, "str", addr->u.fd.str);
+
+        break;
+    case SOCKET_ADDRESS_TYPE_VSOCK:
+        qdict_put_str(dict, "type", "vsock");
+        qdict_put_str(dict, "cid", addr->u.vsock.cid);
+        qdict_put_str(dict, "port", addr->u.vsock.port);
+
+        break;
+    default:
+        g_assert_not_reached();
+        break;
+    }
+
+    return dict;
+}
+
+>
+> Regards,
+>
+> Het Gala
 
