@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC262874C54
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 11:24:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E39A874C55
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 11:25:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riAsT-0004XK-HZ; Thu, 07 Mar 2024 05:21:29 -0500
+	id 1riAsV-0004bv-2J; Thu, 07 Mar 2024 05:21:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1riAsM-0004Wn-Gq
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:23 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1riAsQ-0004X5-Vu
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:27 -0500
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1riAsK-00079x-PM
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:22 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1dc49b00bdbso5849525ad.3
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 02:21:20 -0800 (PST)
+ id 1riAsN-0007AG-F9
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:26 -0500
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-5ce07cf1e5dso579667a12.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 02:21:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709806879; x=1710411679;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709806882; x=1710411682;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=shZdRVaAuTUEJwuhgEsEU4+8uLO5iP81udj39ehMmZA=;
- b=WjaefdxVHQN+v/I9WYPxKM+HMLO4ZdStUxWPZgPB0SnJSeFDPC/AsktZSdRLV3/ZER
- i9RpxqI0oZhn3GuDDt5gebR+sGlnn0jSVKUzvIL8c7Uu72MU7WzJOxgJUlOoQUFv2+kf
- tJEtDsp9bRf8kNjRnNaOdbupdwFJLzM7VsAmrTO1Fif71WDbhOtTHCrnnNcOK3uXvzab
- WCTVBLky68oPwDtwKrsSne3xUMkKVuWNO+LjRvtRSo3gN98hJPEa40di6k7yZQYz/n0a
- aMNVXiJFb63ToizOxGuSrPUyMA7En+rIgA6oKfn0eeVnXZYWlBTzRyy3elCz5ohJD2hI
- 9/tw==
+ :reply-to; bh=g0+eTNzDAfP/I8pMSpLdPirrAbqQUuAszFkDupkQLY8=;
+ b=KkXxzOCao1yI/9lsyirmPUzpCLGHugzeB3tsh6CnEk6DBT1YI4utnK4U5EOCDa3u+b
+ CvsO5ORDn74uSqbxT+kabhSJqZVqsdfFMusncoomBTtFGO6rcs/xSIEjWSw3u/tFQBHF
+ iX97bX4yCC6BppbkxGGQJkMGhqsfSbwqzUdhZHxS4uZWuEOddtjyqu2LwWCpFT2SXK2Q
+ 9GuK6Lj/CL1bv9bRxxH3REHLZZvCqu/qoUXdgEcXc529FSZh9OT2UuuDrM1BwYrxkqN3
+ qyPF/vBoBeMi2fTgcMXdTz9HW6joQrLeF0H1bBLenw+P7fDX8o/JLwqobjtWSLGRDMvT
+ He6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709806879; x=1710411679;
+ d=1e100.net; s=20230601; t=1709806882; x=1710411682;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=shZdRVaAuTUEJwuhgEsEU4+8uLO5iP81udj39ehMmZA=;
- b=IpEBJxk1CmA7xqQ1rZ0kpZ1xO1I4GkFdRZqmGYBZGpR1m/+P8MKhi1o8pba05riNqO
- Kbi/CqpCQtE0kXhWwmAzL2my0tOlYhmOwRHDS8kJBVmr3zRYkKRQbi3iLfZyAyUFBsHD
- Fx6yfpCaHQ73unnGGwHWJ0skNvwkrLk4EbusYPfABwcTu11bD/+mhAU3xzg/bJL1NUM8
- 6VzyopS/mFaCB5JJV66+nuMtU2J2tHkXrEE9YTVFp3k/HmRwlfXcaNMtSWwJXyzp+Ul5
- Ctauu9VeCoh8oi3OYtHCJ4i2r9MuBf/LE+N9H7VmLHAQ09HgVMSj6OXDbn0A+ONryXb9
- 4isQ==
-X-Gm-Message-State: AOJu0YyeAcqqMNG2ULYb1GQ8hHOz4Q1RG2ht4462KYpu+0lDfONpwKBk
- lQV6yygXZC/srumZapvoEXDWFlAwe2qQ9Jqz6mmP0HrGdj98RFuojwNjFc87SjqhDdezaUUzYcw
+ bh=g0+eTNzDAfP/I8pMSpLdPirrAbqQUuAszFkDupkQLY8=;
+ b=Uf61ekR15ZnSO0F96dp09vQaLkXR6HydJMV+fw/utdvdbGEYmQQiC1wLPPWdw3W59q
+ /mejnUdWQ/lUntGZD2touMenFd8wpfKGLCWd4UewcC2sSA03oNXPnQSmHHq+dRpX8+JA
+ EbwSz/1qEiUUUSErSxd0Lx3VB7F36c6Z897QKJR9Auw19yCHXQoxQvFAOk2Cdg/9lUH2
+ xELsQ+QQ61U5uOvzoJZUWruR86kbomUGFbd3pJQRusR7xucnvdybOR4b5uHYp9op8s0c
+ OjfF0mpKmBKRwrX/o/jSsbWkgdhppxmVaEAVSIN2A16/EOoEjbTR2t2Iu6EY5MudlPQl
+ pOBA==
+X-Gm-Message-State: AOJu0YzCuHU/lXlYlgcp7z8yzusmzWhQzZfNZd7U8Mfr7gCPeXf2Gsnd
+ BDiSupqxsUdKNwJgdJwruo58VvLbILdkq27yxoRF1FCVIDtmQnYt7S8Cuo7i9I6lDfo70ZH8k0h
  N
-X-Google-Smtp-Source: AGHT+IFS9E7on7QHqwRFZHe90iMnWgvKsB7MqViW/T92QQMSYdEGIhZPqDUIPtx/xxrlUegYzxNt1Q==
-X-Received: by 2002:a17:903:2289:b0:1dd:4064:9f2a with SMTP id
- b9-20020a170903228900b001dd40649f2amr4227472plh.38.1709806879020; 
- Thu, 07 Mar 2024 02:21:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE3oXDscRQyJLlAQugirK0otEyfEtPl8P9vkYqyOcdqznOTxPzT7bSLmqpYB2lzW2I7G9HleA==
+X-Received: by 2002:a05:6a20:9189:b0:1a1:7513:1f74 with SMTP id
+ v9-20020a056a20918900b001a175131f74mr823641pzd.37.1709806882276; 
+ Thu, 07 Mar 2024 02:21:22 -0800 (PST)
 Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
  by smtp.gmail.com with UTF8SMTPSA id
- l4-20020a170902f68400b001dcbffec642sm14137868plg.133.2024.03.07.02.21.17
+ 11-20020a63104b000000b005d8e30897e4sm12132972pgq.69.2024.03.07.02.21.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Mar 2024 02:21:18 -0800 (PST)
+ Thu, 07 Mar 2024 02:21:21 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 07 Mar 2024 19:20:50 +0900
-Subject: [PATCH v4 07/19] contrib/elf2dmp: Fix error reporting style in pdb.c
+Date: Thu, 07 Mar 2024 19:20:51 +0900
+Subject: [PATCH v4 08/19] contrib/elf2dmp: Fix error reporting style in
+ qemu_elf.c
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240307-elf2dmp-v4-7-4f324ad4d99d@daynix.com>
+Message-Id: <20240307-elf2dmp-v4-8-4f324ad4d99d@daynix.com>
 References: <20240307-elf2dmp-v4-0-4f324ad4d99d@daynix.com>
 In-Reply-To: <20240307-elf2dmp-v4-0-4f324ad4d99d@daynix.com>
 To: Viktor Prutyanov <viktor.prutyanov@phystech.edu>, 
  Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::62c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::531;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x531.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,193 +101,152 @@ include/qapi/error.h says:
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- contrib/elf2dmp/pdb.h  |  2 +-
- contrib/elf2dmp/main.c |  2 +-
- contrib/elf2dmp/pdb.c  | 50 +++++++++++++++++++++++++-------------------------
- 3 files changed, 27 insertions(+), 27 deletions(-)
+ contrib/elf2dmp/qemu_elf.h |  2 +-
+ contrib/elf2dmp/main.c     |  2 +-
+ contrib/elf2dmp/qemu_elf.c | 32 ++++++++++++++++----------------
+ 3 files changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/contrib/elf2dmp/pdb.h b/contrib/elf2dmp/pdb.h
-index 2a50da56ac96..feddf1862f08 100644
---- a/contrib/elf2dmp/pdb.h
-+++ b/contrib/elf2dmp/pdb.h
-@@ -233,7 +233,7 @@ struct pdb_reader {
-     size_t segs_size;
- };
+diff --git a/contrib/elf2dmp/qemu_elf.h b/contrib/elf2dmp/qemu_elf.h
+index afa75f10b2d2..adc50238b46b 100644
+--- a/contrib/elf2dmp/qemu_elf.h
++++ b/contrib/elf2dmp/qemu_elf.h
+@@ -42,7 +42,7 @@ typedef struct QEMU_Elf {
+     int has_kernel_gs_base;
+ } QEMU_Elf;
  
--int pdb_init_from_file(const char *name, struct pdb_reader *reader);
-+bool pdb_init_from_file(const char *name, struct pdb_reader *reader);
- void pdb_exit(struct pdb_reader *reader);
- uint64_t pdb_resolve(uint64_t img_base, struct pdb_reader *r, const char *name);
- uint64_t pdb_find_public_v3_symbol(struct pdb_reader *reader, const char *name);
+-int QEMU_Elf_init(QEMU_Elf *qe, const char *filename);
++bool QEMU_Elf_init(QEMU_Elf *qe, const char *filename);
+ void QEMU_Elf_exit(QEMU_Elf *qe);
+ 
+ Elf64_Phdr *elf64_getphdr(void *map);
 diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
-index d295fd92be2f..7a3a7225905e 100644
+index 7a3a7225905e..cb28971789e4 100644
 --- a/contrib/elf2dmp/main.c
 +++ b/contrib/elf2dmp/main.c
-@@ -596,7 +596,7 @@ int main(int argc, char *argv[])
-         goto out_ps;
+@@ -535,7 +535,7 @@ int main(int argc, char *argv[])
+         return 1;
      }
  
--    if (pdb_init_from_file(PDB_NAME, &pdb)) {
-+    if (!pdb_init_from_file(PDB_NAME, &pdb)) {
-         eprintf("Failed to initialize PDB reader\n");
-         goto out_pdb_file;
+-    if (QEMU_Elf_init(&qemu_elf, argv[1])) {
++    if (!QEMU_Elf_init(&qemu_elf, argv[1])) {
+         eprintf("Failed to initialize QEMU ELF dump\n");
+         return 1;
      }
-diff --git a/contrib/elf2dmp/pdb.c b/contrib/elf2dmp/pdb.c
-index abf17c2e7c12..1c5051425185 100644
---- a/contrib/elf2dmp/pdb.c
-+++ b/contrib/elf2dmp/pdb.c
-@@ -158,30 +158,30 @@ static void *pdb_ds_read_file(struct pdb_reader* r, uint32_t file_number)
-     return pdb_ds_read(r->ds.header, block_list, file_size[file_number]);
+diff --git a/contrib/elf2dmp/qemu_elf.c b/contrib/elf2dmp/qemu_elf.c
+index 055e6f8792e9..a22c057d3ec3 100644
+--- a/contrib/elf2dmp/qemu_elf.c
++++ b/contrib/elf2dmp/qemu_elf.c
+@@ -60,7 +60,7 @@ Elf64_Half elf_getphdrnum(void *map)
+     return ehdr->e_phnum;
  }
  
--static int pdb_init_segments(struct pdb_reader *r)
-+static bool pdb_init_segments(struct pdb_reader *r)
+-static int init_states(QEMU_Elf *qe)
++static bool init_states(QEMU_Elf *qe)
  {
-     unsigned stream_idx = r->segments;
+     Elf64_Phdr *phdr = elf64_getphdr(qe->map);
+     Elf64_Nhdr *start = (void *)((uint8_t *)qe->map + phdr[0].p_offset);
+@@ -70,7 +70,7 @@ static int init_states(QEMU_Elf *qe)
  
-     r->segs = pdb_ds_read_file(r, stream_idx);
-     if (!r->segs) {
+     if (phdr[0].p_type != PT_NOTE) {
+         eprintf("Failed to find PT_NOTE\n");
 -        return 1;
 +        return false;
      }
  
-     r->segs_size = pdb_get_file_size(r, stream_idx);
-     if (!r->segs_size) {
--        return 1;
-+        return false;
-     }
+     qe->has_kernel_gs_base = 1;
+@@ -107,7 +107,7 @@ static int init_states(QEMU_Elf *qe)
+ 
+     qe->state_nr = cpu_nr;
  
 -    return 0;
 +    return true;
  }
  
--static int pdb_init_symbols(struct pdb_reader *r)
-+static bool pdb_init_symbols(struct pdb_reader *r)
- {
-     PDB_SYMBOLS *symbols;
- 
-     symbols = pdb_ds_read_file(r, 3);
-     if (!symbols) {
--        return 1;
-+        return false;
-     }
- 
-     r->symbols = symbols;
-@@ -198,18 +198,18 @@ static int pdb_init_symbols(struct pdb_reader *r)
-         goto out_symbols;
-     }
- 
--    return 0;
-+    return true;
- 
- out_symbols:
-     g_free(symbols);
- 
--    return 1;
-+    return false;
+ static void exit_states(QEMU_Elf *qe)
+@@ -162,7 +162,7 @@ static bool check_ehdr(QEMU_Elf *qe)
+     return true;
  }
  
--static int pdb_reader_ds_init(struct pdb_reader *r, PDB_DS_HEADER *hdr)
-+static bool pdb_reader_ds_init(struct pdb_reader *r, PDB_DS_HEADER *hdr)
+-static int QEMU_Elf_map(QEMU_Elf *qe, const char *filename)
++static bool QEMU_Elf_map(QEMU_Elf *qe, const char *filename)
  {
-     if (hdr->block_size == 0) {
+ #ifdef CONFIG_LINUX
+     struct stat st;
+@@ -173,13 +173,13 @@ static int QEMU_Elf_map(QEMU_Elf *qe, const char *filename)
+     fd = open(filename, O_RDONLY, 0);
+     if (fd == -1) {
+         eprintf("Failed to open ELF dump file \'%s\'\n", filename);
 -        return 1;
 +        return false;
      }
  
-     memset(r->file_used, 0, sizeof(r->file_used));
-@@ -218,22 +218,22 @@ static int pdb_reader_ds_init(struct pdb_reader *r, PDB_DS_HEADER *hdr)
-                 hdr->toc_page * hdr->block_size), hdr->toc_size);
+     if (fstat(fd, &st)) {
+         eprintf("Failed to get size of ELF dump file\n");
+         close(fd);
+-        return 1;
++        return false;
+     }
+     qe->size = st.st_size;
  
-     if (!r->ds.toc) {
+@@ -188,7 +188,7 @@ static int QEMU_Elf_map(QEMU_Elf *qe, const char *filename)
+     if (qe->map == MAP_FAILED) {
+         eprintf("Failed to map ELF file\n");
+         close(fd);
 -        return 1;
 +        return false;
      }
  
--    return 0;
-+    return true;
- }
- 
--static int pdb_reader_init(struct pdb_reader *r, void *data)
-+static bool pdb_reader_init(struct pdb_reader *r, void *data)
- {
-     const char pdb7[] = "Microsoft C/C++ MSF 7.00";
- 
-     if (memcmp(data, pdb7, sizeof(pdb7) - 1)) {
--        return 1;
-+        return false;
-     }
- 
--    if (pdb_reader_ds_init(r, data)) {
--        return 1;
-+    if (!pdb_reader_ds_init(r, data)) {
-+        return false;
-     }
- 
-     r->ds.root = pdb_ds_read_file(r, 1);
-@@ -241,15 +241,15 @@ static int pdb_reader_init(struct pdb_reader *r, void *data)
-         goto out_ds;
-     }
- 
--    if (pdb_init_symbols(r)) {
-+    if (!pdb_init_symbols(r)) {
-         goto out_root;
-     }
- 
--    if (pdb_init_segments(r)) {
-+    if (!pdb_init_segments(r)) {
-         goto out_sym;
-     }
- 
--    return 0;
-+    return true;
- 
- out_sym:
-     pdb_exit_symbols(r);
-@@ -258,7 +258,7 @@ out_root:
- out_ds:
-     pdb_reader_ds_exit(r);
- 
--    return 1;
-+    return false;
- }
- 
- static void pdb_reader_exit(struct pdb_reader *r)
-@@ -269,7 +269,7 @@ static void pdb_reader_exit(struct pdb_reader *r)
-     pdb_reader_ds_exit(r);
- }
- 
--int pdb_init_from_file(const char *name, struct pdb_reader *reader)
-+bool pdb_init_from_file(const char *name, struct pdb_reader *reader)
- {
-     GError *gerr = NULL;
-     void *map;
-@@ -278,21 +278,21 @@ int pdb_init_from_file(const char *name, struct pdb_reader *reader)
+     close(fd);
+@@ -201,14 +201,14 @@ static int QEMU_Elf_map(QEMU_Elf *qe, const char *filename)
      if (gerr) {
-         eprintf("Failed to map PDB file \'%s\'\n", name);
+         eprintf("Failed to map ELF dump file \'%s\'\n", filename);
          g_error_free(gerr);
 -        return 1;
 +        return false;
      }
  
-     reader->file_size = g_mapped_file_get_length(reader->gmf);
-     map = g_mapped_file_get_contents(reader->gmf);
--    if (pdb_reader_init(reader, map)) {
-+    if (!pdb_reader_init(reader, map)) {
-         goto out_unmap;
+     qe->map = g_mapped_file_get_contents(qe->gmf);
+     qe->size = g_mapped_file_get_length(qe->gmf);
+ #endif
+ 
+-    return 0;
++    return true;
+ }
+ 
+ static void QEMU_Elf_unmap(QEMU_Elf *qe)
+@@ -220,25 +220,25 @@ static void QEMU_Elf_unmap(QEMU_Elf *qe)
+ #endif
+ }
+ 
+-int QEMU_Elf_init(QEMU_Elf *qe, const char *filename)
++bool QEMU_Elf_init(QEMU_Elf *qe, const char *filename)
+ {
+-    if (QEMU_Elf_map(qe, filename)) {
+-        return 1;
++    if (!QEMU_Elf_map(qe, filename)) {
++        return false;
+     }
+ 
+     if (!check_ehdr(qe)) {
+         eprintf("Input file has the wrong format\n");
+         QEMU_Elf_unmap(qe);
+-        return 1;
++        return false;
+     }
+ 
+-    if (init_states(qe)) {
++    if (!init_states(qe)) {
+         eprintf("Failed to extract QEMU CPU states\n");
+         QEMU_Elf_unmap(qe);
+-        return 1;
++        return false;
      }
  
 -    return 0;
 +    return true;
- 
- out_unmap:
-     g_mapped_file_unref(reader->gmf);
- 
--    return 1;
-+    return false;
  }
  
- void pdb_exit(struct pdb_reader *reader)
+ void QEMU_Elf_exit(QEMU_Elf *qe)
 
 -- 
 2.44.0
