@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3BE9874C4A
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 11:23:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C199F874C50
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 11:23:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riAtN-00068W-RS; Thu, 07 Mar 2024 05:22:25 -0500
+	id 1riAsq-0005PZ-Ab; Thu, 07 Mar 2024 05:21:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1riAsv-0005h1-H1
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:58 -0500
-Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
+ id 1riAsi-0005Ow-Na
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:44 -0500
+Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1riAsb-0007CO-Rb
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:56 -0500
-Received: by mail-oi1-x22d.google.com with SMTP id
- 5614622812f47-3c19dd9ade5so290687b6e.3
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 02:21:37 -0800 (PST)
+ id 1riAsf-0007CU-Cg
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:44 -0500
+Received: by mail-ot1-x32a.google.com with SMTP id
+ 46e09a7af769-6e4a0e80d14so554215a34.1
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 02:21:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709806897; x=1710411697;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709806899; x=1710411699;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Zd2GK/LwiDy+x5sdYIECrLQP++QUZzK/GPm/IzIIz+I=;
- b=gih6fdu5X+7Em/564vrF3AxKXg64Duvx7MJj4tK8+K5VpoJ5IX6HVa03Kng1m5asLu
- 1/yGdwUSJ3sZ5Wj6nL+ECgGk10y6sNUzL5jfSCzblQ/W49spHkOgMFF96Kro+U4UrvCe
- AsmbqJAmO6jN7kwDvXv9IuxBSGMT6fvpZopzz5MVuw0BtQvShCL2Sle4P0l3jKo5b7j7
- KHlLzIAkMG3Jud9Qb51JLPx1/3CqxIjxYgzWMSOxvZvk3haBE/ZDiv5Ik+EDQX9kjEeX
- K5Itriyt8AoTwf6tPF5eBb+rYRy2darcxJFGQ69gQ0EOGW6JbpVUA901pKjIuv6xTu/Y
- b6xg==
+ :reply-to; bh=3/84n3G740Rm4hmj3TunpldInJlo341Vetn+9WdD47E=;
+ b=eXBavnflLvZ3nKviTKvbDLXC35tYgkUqajS8Ahtw26qTj/AJ21da0I1FQ6ShSXdo6s
+ Hm+M8WsQnQSdCs+r1YtqtgQpH9og8JZVqnaPki0E+euu7Y3OKkKy6IXNLB0N1Lv7VgHn
+ uHb2LH5heyUW0ps6aEiNpFSEUy60+VUgxtozsOe+6acp4ayymJMWZfeHnyc3p2JDViaT
+ rNh7GExz+AQzasW57qvtRYEjrLqCtznWCp6zjrZf3OcqBbqKECTu0UVX+n9F2PEfgN6g
+ dqGr8mA5Q8AFbEBPNfOhYulR6+1xENIz3irEdC4j2wY0t4PsVQ6vcaRtHpzW6y0ND7Ml
+ hdcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709806897; x=1710411697;
+ d=1e100.net; s=20230601; t=1709806899; x=1710411699;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Zd2GK/LwiDy+x5sdYIECrLQP++QUZzK/GPm/IzIIz+I=;
- b=CC6d9eZRBVBILpN8FmzzIZU2ylTkdPRgIUmQv2t7K7PsVoqWScJbeV5+0te7xD0YQ+
- USSvq9XGYeDEGPKno/uvo1+tG0i63Fq1ctfB107HDecZVatPSKxIzU8KDd3YOl7q7Yg+
- 53sYxJpIBPYWdNA3ooEoeLDzx84RvuceQ2Z34vRYmWs91HqNVo4LqoV10IkHjzhyvUew
- UdU55Ax1UgxKH0K+Jy3M1+SU+zwsJrIAKahetM32FE0L19MQLh7GS5BHSAvq2UtbPR5+
- mgWX7xKQsekUdPM1F0QZ4x37hFWQ/WqpTOelt5BZouzEYcmQszRrgKZcF1UehpI+DiCL
- p9+A==
-X-Gm-Message-State: AOJu0YweGBgz8osKe3oPOCChQuQHFoGz+2234fttg6Ark0Z0ht0EaqLj
- CobvOtxnofK4kxKGDBXObOUNYmJh5NHihn2CcDQGkxRwhOXqchdEKdRfPZUPRW8=
-X-Google-Smtp-Source: AGHT+IFh5+E/eS9NGlCYAwHg8bnfDHzD7Fy96mwn11F+dikQhF/w1TkxsAwgDW7xXP9BrOeuh3nv3g==
-X-Received: by 2002:a05:6808:313:b0:3c1:f2fd:78c3 with SMTP id
- i19-20020a056808031300b003c1f2fd78c3mr7646919oie.15.1709806896863; 
- Thu, 07 Mar 2024 02:21:36 -0800 (PST)
+ bh=3/84n3G740Rm4hmj3TunpldInJlo341Vetn+9WdD47E=;
+ b=vxfSHuFbGnRKCdPJ3yklTKUlp/16+qrtdittpjl7u79UNOEuoMW9MwNJcOJIYcTj8b
+ G2YpqDemNxLyn3fBugjnVtUpcxkcNld9Avpg6VbRUcQPOFRliYyolIW7+kssMLfUbUz1
+ p55Sr9lw3mmSgasCeugNByn63s1unzGyNQl0KREzavfV5F/D/KS2NslQH0MiJJCsUW4r
+ bxE0wJVDhr2ZeV2Da8kXxpl83X4hcU3Y7sdY6I8jmCQwZ3KJRemoIk0AzYblbLewUFoj
+ 2P3HCK+LTGVdkpOGlmL/kgLb6cwMK6iruWLCCZfVMhaLeL466aTzaJbIpHZiF4V9t6uh
+ KrsA==
+X-Gm-Message-State: AOJu0Yzn5Xsa7d2J8k3ORcFlUxYrirsW+x5Q+asXyVWvCnIMZJoxG2Qz
+ pG2QaWGrGAVmSzZ6S1cklrfxjU36CHB5lX3EA5wIJKxXc6xhMyoBQYIyIY4wUuo=
+X-Google-Smtp-Source: AGHT+IFh3G/9ZepsXtxbhdUpXFx3vDivziBUBOZ/ZDpSEbsqw9dGzIm9WId/UrIg3ew0NhlmcfOz3w==
+X-Received: by 2002:a9d:75cc:0:b0:6e4:e7c5:d4c7 with SMTP id
+ c12-20020a9d75cc000000b006e4e7c5d4c7mr8127384otl.19.1709806899615; 
+ Thu, 07 Mar 2024 02:21:39 -0800 (PST)
 Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
  by smtp.gmail.com with UTF8SMTPSA id
- d19-20020a630e13000000b005dcc8a3b26esm12042345pgl.16.2024.03.07.02.21.35
+ b16-20020a630c10000000b005dbed0ffb10sm12353454pgl.83.2024.03.07.02.21.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Mar 2024 02:21:36 -0800 (PST)
+ Thu, 07 Mar 2024 02:21:39 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 07 Mar 2024 19:20:56 +0900
-Subject: [PATCH v4 13/19] contrib/elf2dmp: Use lduw_le_p() to read PDB
+Date: Thu, 07 Mar 2024 19:20:57 +0900
+Subject: [PATCH v4 14/19] contrib/elf2dmp: Use rol64() to decode
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240307-elf2dmp-v4-13-4f324ad4d99d@daynix.com>
+Message-Id: <20240307-elf2dmp-v4-14-4f324ad4d99d@daynix.com>
 References: <20240307-elf2dmp-v4-0-4f324ad4d99d@daynix.com>
 In-Reply-To: <20240307-elf2dmp-v4-0-4f324ad4d99d@daynix.com>
 To: Viktor Prutyanov <viktor.prutyanov@phystech.edu>, 
  Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::22d;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x22d.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::32a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x32a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,34 +92,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The relevant value may be unaligned and is little-endian.
+rol64() is roubust against too large shift values and fixes UBSan
+warnings.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- contrib/elf2dmp/pdb.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ contrib/elf2dmp/main.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/contrib/elf2dmp/pdb.c b/contrib/elf2dmp/pdb.c
-index 1c5051425185..492aca4434c8 100644
---- a/contrib/elf2dmp/pdb.c
-+++ b/contrib/elf2dmp/pdb.c
-@@ -19,6 +19,7 @@
+diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
+index 32dc8bac6a30..d046a72ae67f 100644
+--- a/contrib/elf2dmp/main.c
++++ b/contrib/elf2dmp/main.c
+@@ -6,6 +6,7 @@
   */
  
  #include "qemu/osdep.h"
-+#include "qemu/bswap.h"
++#include "qemu/bitops.h"
  
- #include "pdb.h"
  #include "err.h"
-@@ -186,7 +187,7 @@ static bool pdb_init_symbols(struct pdb_reader *r)
+ #include "addrspace.h"
+@@ -47,11 +48,6 @@ static const uint64_t SharedUserData = 0xfffff78000000000;
+     s ? printf(#s" = 0x%016"PRIx64"\n", s) :\
+     eprintf("Failed to resolve "#s"\n"), s)
  
-     r->symbols = symbols;
+-static uint64_t rol(uint64_t x, uint64_t y)
+-{
+-    return (x << y) | (x >> (64 - y));
+-}
+-
+ /*
+  * Decoding algorithm can be found in Volatility project
+  */
+@@ -64,7 +60,7 @@ static void kdbg_decode(uint64_t *dst, uint64_t *src, size_t size,
+         uint64_t block;
  
--    r->segments = *(uint16_t *)((const char *)symbols + sizeof(PDB_SYMBOLS) +
-+    r->segments = lduw_le_p((const char *)symbols + sizeof(PDB_SYMBOLS) +
-             symbols->module_size + symbols->offset_size +
-             symbols->hash_size + symbols->srcmodule_size +
-             symbols->pdbimport_size + symbols->unknown2_size +
+         block = src[i];
+-        block = rol(block ^ kwn, (uint8_t)kwn);
++        block = rol64(block ^ kwn, kwn);
+         block = __builtin_bswap64(block ^ kdbe) ^ kwa;
+         dst[i] = block;
+     }
 
 -- 
 2.44.0
