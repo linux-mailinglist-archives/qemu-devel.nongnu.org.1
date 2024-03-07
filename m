@@ -2,106 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E0B2874F10
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 13:30:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57EE7874DB5
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 12:41:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riCs2-0006qo-5H; Thu, 07 Mar 2024 07:29:10 -0500
+	id 1riC6F-0007sc-Kj; Thu, 07 Mar 2024 06:39:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1riCrz-0006qI-RT
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 07:29:07 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1riCrx-0004xg-6Z
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 07:29:06 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 948DC8C9CD;
- Thu,  7 Mar 2024 11:37:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709811440; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=wzj702vKUPTjfwWSsEapmboyGPr78hotEG7FkT0cGmA=;
- b=soxid7GVwyFP9V9PeR4FB/Yl28cEFkxCR3xrQ6GbuddMxGErahwGvkCasO06vqgIvX60nz
- MbhNXx+qbVw9k04y2vSpupRngq5cVD+1fJuyhHIl9W1b20kXAZyG+pb/XYrMvkELSLgAl0
- /3CMPmIakIYS0DbPjdafoOQgVi1EGwA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709811440;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=wzj702vKUPTjfwWSsEapmboyGPr78hotEG7FkT0cGmA=;
- b=tkEDDFkr6Ju4Oyk1S7GCVLIvY33Tyqc8XENqrxxSJ/Rj1AkgjL+6E8tfHrAwDU7pWM1Ivl
- 40U7lfAoBri73LAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1709811440; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=wzj702vKUPTjfwWSsEapmboyGPr78hotEG7FkT0cGmA=;
- b=soxid7GVwyFP9V9PeR4FB/Yl28cEFkxCR3xrQ6GbuddMxGErahwGvkCasO06vqgIvX60nz
- MbhNXx+qbVw9k04y2vSpupRngq5cVD+1fJuyhHIl9W1b20kXAZyG+pb/XYrMvkELSLgAl0
- /3CMPmIakIYS0DbPjdafoOQgVi1EGwA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1709811440;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=wzj702vKUPTjfwWSsEapmboyGPr78hotEG7FkT0cGmA=;
- b=tkEDDFkr6Ju4Oyk1S7GCVLIvY33Tyqc8XENqrxxSJ/Rj1AkgjL+6E8tfHrAwDU7pWM1Ivl
- 40U7lfAoBri73LAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2102A12FC5;
- Thu,  7 Mar 2024 11:37:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id ez80Nu+m6WVDOgAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 07 Mar 2024 11:37:19 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com, thuth@redhat.com, lvivier@redhat.com,
- pbonzini@redhat.com, peterx@redhat.com
-Subject: Re: [PATCH v3 4/7] Add migrate_set_ports into migrate_qmp to change
- migration port number
-In-Reply-To: <28018429-e5ab-4dec-b742-99d7daa416b2@nutanix.com>
-References: <20240306104958.39857-1-het.gala@nutanix.com>
- <20240306104958.39857-5-het.gala@nutanix.com> <87sf13s9yz.fsf@suse.de>
- <0238e330-cb9f-4d72-9ca8-ca7a1b51dddf@nutanix.com>
- <878r2vs61j.fsf@suse.de>
- <28018429-e5ab-4dec-b742-99d7daa416b2@nutanix.com>
-Date: Thu, 07 Mar 2024 08:37:17 -0300
-Message-ID: <87ttliqnma.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1riC6C-0007sK-Tv
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 06:39:45 -0500
+Received: from forwardcorp1c.mail.yandex.net
+ ([2a02:6b8:c03:500:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1riC67-0004MM-9Z
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 06:39:44 -0500
+Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:dad:0:640:1761:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 06820608EB;
+ Thu,  7 Mar 2024 14:39:33 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:7204::1:28] (unknown
+ [2a02:6b8:b081:7204::1:28])
+ by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id Vdf2fq0IhKo0-a4iBfpOe; Thu, 07 Mar 2024 14:39:32 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1709811572;
+ bh=nAG3ETzOzP+L5Ue4D/pVzlydVOx/sHlkFMD9/vKCZ/4=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=Dh/UCiS0YGSu6WyJF0LAQ+x2HvNzi6PoNMYg+fm52VNWEETiccvU4wEpxwKzv0FW5
+ rmi3xcT4JJmO0o6CQv7EY6qJ+hBJqVBD4LbuIKJTGSvHANvpvKsVjjtCWyxBKliVG3
+ /+wqoGIBAACPySvIrXwpcXO6rNRFoBvIwG4j+pqw=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <8930276b-c87b-4afd-b4e0-489dcaccc4e8@yandex-team.ru>
+Date: Thu, 7 Mar 2024 14:39:31 +0300
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; RCPT_COUNT_SEVEN(0.00)[7];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 11/25] migration: Add Error** argument to .save_setup()
+ handler
+Content-Language: en-US
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Markus Armbruster <armbru@redhat.com>,
+ Prasad Pandit <pjp@fedoraproject.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, Halil Pasic
+ <pasic@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Eric Blake <eblake@redhat.com>, John Snow <jsnow@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+References: <20240306133441.2351700-1-clg@redhat.com>
+ <20240306133441.2351700-12-clg@redhat.com>
+ <669aaa46-0ed8-46c8-9684-fc4ccc485d4d@yandex-team.ru>
+ <38414ab8-7b29-478c-9fc6-09804cc17842@redhat.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <38414ab8-7b29-478c-9fc6-09804cc17842@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,123 +86,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Het Gala <het.gala@nutanix.com> writes:
-
-> On 06/03/24 9:31 pm, Fabiano Rosas wrote:
->> Het Gala<het.gala@nutanix.com>  writes:
+On 07.03.24 13:31, Cédric Le Goater wrote:
+> On 3/7/24 10:53, Vladimir Sementsov-Ogievskiy wrote:
+>> On 06.03.24 16:34, Cédric Le Goater wrote:
+>>> The purpose is to record a potential error in the migration stream if
+>>> qemu_savevm_state_setup() fails. Most of the current .save_setup()
+>>> handlers can be modified to use the Error argument instead of managing
+>>> their own and calling locally error_report().
+>>>
+>>> Cc: Nicholas Piggin <npiggin@gmail.com>
+>>> Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>>> Cc: Halil Pasic <pasic@linux.ibm.com>
+>>> Cc: Thomas Huth <thuth@redhat.com>
+>>> Cc: Eric Blake <eblake@redhat.com>
+>>> Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>>> Cc: John Snow <jsnow@redhat.com>
+>>> Cc: Stefan Hajnoczi <stefanha@redhat.com>
+>>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> Reviewed-by: Peter Xu <peterx@redhat.com>
+>>> Reviewed-by: Thomas Huth <thuth@redhat.com>
+>>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
 >>
->>> On 06/03/24 8:06 pm, Fabiano Rosas wrote:
->>>> Het Gala<het.gala@nutanix.com>   writes:
->>>>
->>>>> Add a migrate_set_ports() function that from each QDict, fills in
->>>>> the port in case it was 0 in the test.
->>>>> Handle a list of channels so we can add a negative test that
->>>>> passes more than one channel.
->>>>>
->>>>> Signed-off-by: Het Gala<het.gala@nutanix.com>
->>>>> Suggested-by: Fabiano Rosas<farosas@suse.de>
->>>>> ---
->>>>>    tests/qtest/migration-helpers.c | 26 ++++++++++++++++++++++++++
->>>>>    1 file changed, 26 insertions(+)
->>>>>
->>>>> diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
->>>>> index 478c1f259b..df4978bf17 100644
->>>>> --- a/tests/qtest/migration-helpers.c
->>>>> +++ b/tests/qtest/migration-helpers.c
->>>>> @@ -17,6 +17,8 @@
->>>>>    #include "qapi/qapi-visit-sockets.h"
->>>>>    #include "qapi/qobject-input-visitor.h"
->>>>>    #include "qapi/error.h"
->>>>> +#include "qapi/qmp/qlist.h"
->>>>> +
->>>> Extra line here. This is unwanted because it sometimes trips git into
->>>> thinking there's a conflict here when another patch changes the
->>>> surrounding lines.
->>> Ack, that makes sense
->>>>>    
->>>>>    #include "migration-helpers.h"
->>>>>    
->>>>> @@ -73,6 +75,29 @@ migrate_get_socket_address(QTestState *who, const char *parameter)
->>>>>        return result;
->>>>>    }
->>>>>    
->>>>> +static void migrate_set_ports(QTestState *to, QList *channelList)
->>>>> +{
->>>>> +    g_autofree char *addr = NULL;
->>>>> +    g_autofree char *addr_port = NULL;
->>>>> +    QListEntry *entry;
->>>>> +
->>>>> +    addr = migrate_get_socket_address(to, "socket-address");
->>>>> +    addr_port = g_strsplit(addr, ":", 3)[2];
->>>> Will this always do the right thing when the src/dst use different types
->>>> of channels? If there is some kind of mismatch (say one side uses vsock
->>>> and the other inet), it's better that this function doesn't touch the
->>>> channels dict instead of putting garbage in the port field.
->>> Yes you are right. This will fail if there is a mismatch in type of
->>> channels.
->>>
->>> Better idea would be to check if 'port' key is present in both, i.e. in
->>> 'addr'
->>> as well as 'addrdict' and only then change the port ?
->>>
->> Yep, either parse the type from string or add a version of
->> migrate_get_socket_address that returns a dict. Then check if type
->> matches and port exists.
->
-> one silly question here, why are we not having tests for exec and rdma 
-> specifically ?
+>> Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>>
+>> Still, if you resend, please add error_prepend in the case below:
+>>
+>>> diff --git a/migration/savevm.c b/migration/savevm.c
+>>> index 63fdbb5ad7d4dbfaef1d2094350bf302cc677602..52d35b2a72c6238bfe5dcb4d81c1af8d2bf73013 100644
+>>> --- a/migration/savevm.c
+>>> +++ b/migration/savevm.c
+>>> @@ -1342,11 +1342,9 @@ int qemu_savevm_state_setup(QEMUFile *f, Error **errp)
+>>>           }
+>>>           save_section_header(f, se, QEMU_VM_SECTION_START);
+>>> -        ret = se->ops->save_setup(f, se->opaque);
+>>> +        ret = se->ops->save_setup(f, se->opaque, errp);
+>>>           save_section_footer(f, se);
+>>>           if (ret < 0) {
+>>> -            error_setg(errp, "failed to setup SaveStateEntry with id(name): "
+>>> -                       "%d(%s): %d", se->section_id, se->idstr, ret);
+>>
+>> You drop a good bit of information, let's use error_prepend to save it.
+> 
+> I kind of agree but the call stack is quite deep and the callees also use
+> error_prepend. The error becomes quite long. Here's an example of what we
+> get today :
+> 
+>    (qemu) migrate -d tcp:10.8.3.15:1234
+>    (qemu)
+>    (qemu) qemu-system-x86_64: vfio: Could not start dirty page tracking - 0000:b1:00.2: Failed to start DMA logging: Invalid argument
+> 
+> If the subsystems implementing a .save_setup() handler use a component
+> identifier, the failure should be fairly easy to identify.
+> 
+> What's the best practice for such cases ?
+> 
+> Can we use multiline errors maybe ? Less practical for grep though.
+> 
+> May be a verbose error mode would help getting more information ?
+> 
+> Anyhow, I can add a new trace event for "failed to setup SaveStateEntry ... "
+> or use error_prepend() as you suggested.
+> 
+> Let's see what the others have to say.
+> 
+> 
+>>
+>>>               qemu_file_set_error(f, ret);
+>>>               break;
+>>
+>> Not about this patch:
+>>
+>> Better do explicit "return ret" instead of this "break" (and one more break above in that loop):
+>>
+>> 1. making a jump to do just do "return ret" seems overkill. It would make sense if we had some more "cleanup" code than just a "return ret", and if so, more classic and readable thing is "goto fail;".
+>> 2. "break" make me think, that there may be more logic after it, which will probably fail, and I should be careful, as errp is already set (and second attempt to set it will crash). Again, "goto fail;" is better, as I don't expect more failures when see it.
+> 
+> Sure. If I respin, I can drop the break and simply return. 
 
-exec because we intend to deprecate it, so no one is paying too much
-attention to it.
+If so, you should also make simple return instead of one another break in same loop. And drop "if (ret < 0) { return ret }" after loop.
 
-rdma because no one wants to write them.
+> Although,
+> I would be glad to have most of this series merged in QEMU 9.0. So,
+> unless there is something major, I will keep that for followups.
+> 
 
->
-> Another suggestion required: Parsing uri to qdict is easy to implement 
-> but (little)
-> messy codewise, and the other hand migrate_get_qdict looks clean, but 
-> under the hood we would convert it to socketaddress and then call 
-> SocketAddress_to_qdict. Which one we can prefer more here ?
+Agree
 
-The latter. It's easier to work with.
+> 
+> Thanks for the review,
+> 
+> C.
+> 
+> 
+> 
+> 
+> 
+> 
 
-static QDict *SocketAddress_to_qdict(SocketAddress *addr)
-{
-    QDict *dict = qdict_new();
+-- 
+Best regards,
+Vladimir
 
-    switch (addr->type) {
-    case SOCKET_ADDRESS_TYPE_INET:
-        qdict_put_str(dict, "type", "inet");
-        qdict_put_str(dict, "host", addr->u.inet.host);
-        qdict_put_str(dict, "port", addr->u.inet.port);
-
-        break;
-    case SOCKET_ADDRESS_TYPE_UNIX:
-        qdict_put_str(dict, "type", "unix");
-        qdict_put_str(dict, "path", addr->u.q_unix.path);
-
-        break;
-    case SOCKET_ADDRESS_TYPE_FD:
-        qdict_put_str(dict, "type", "fd");
-        qdict_put_str(dict, "str", addr->u.fd.str);
-
-        break;
-    case SOCKET_ADDRESS_TYPE_VSOCK:
-        qdict_put_str(dict, "type", "vsock");
-        qdict_put_str(dict, "cid", addr->u.vsock.cid);
-        qdict_put_str(dict, "port", addr->u.vsock.port);
-
-        break;
-    default:
-        g_assert_not_reached();
-        break;
-    }
-
-    return dict;
-}
-
->
-> Regards,
->
-> Het Gala
 
