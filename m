@@ -2,98 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C1C874E9A
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 13:07:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94E0F874EAD
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 13:13:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riCWX-0005EN-S6; Thu, 07 Mar 2024 07:06:57 -0500
+	id 1riCcl-0001Yc-JN; Thu, 07 Mar 2024 07:13:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1riCWU-0005AW-8e
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 07:06:54 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1riCWR-0005fb-TX
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 07:06:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709813210;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=tqLNZtKKzJp+wo8PF9wPGvq/IGCF2nsRyWfkY6OmsuE=;
- b=aAl3Zsc6CiFUSAruMVoxhtrNqMDFTFtgh9KgOhrxumZkN0B1DFKfrlkJp/Icoe+n2ia11W
- 0jGQ/IHCIzWNAWzJYZXJt0v4alK59Jvq97SrZWBZ9Xt3B/wQNOmR+kJ30SgdGFGE7BH5Rg
- Y1wvhrY8+5LMZ0HCFszoEa6aQ0ygOJQ=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-150-20mL4WB0ObCIr24Axy0BeA-1; Thu, 07 Mar 2024 07:06:48 -0500
-X-MC-Unique: 20mL4WB0ObCIr24Axy0BeA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-33d8d208be9so478610f8f.2
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 04:06:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1riCch-0001YF-Dk
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 07:13:19 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1riCcd-0008Rp-2t
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 07:13:17 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-33e6aca1ca9so186006f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 04:13:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1709813592; x=1710418392; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=9jKcNU8mtddf0xD96048JENdNgxkV5RZUTuB2JvZ3Dk=;
+ b=AQnbdTD68ea+zEn5TKotv4T3qzUL2boqStW0b+62GFUKYr+aMUElzDtRRk3kA6st9y
+ cieyqPDLeAAsL6P436Y5ENyZK/ieelMuxhKGVKe/JvO2jv69qKb5RmcFeZFLJLyujF+Z
+ KOp1QUEZfXeBHyzpAPaMsdmMvswFsJaymH9WlWju33thMVce8DUFBRKHR10UjPnk9f6M
+ 104G2m++IK5MqqspBiIPFkSv6oGdK7t6Pyz+z8gZoD1j1KbRrIXKUCfwGtVYwlvJWx1b
+ /JuA1AOZ7H58rcOSKC5h9CeTPa3J+jk/xjVY3FyOgg7zTvhFVRxbrUYu6P0GJtyX7FGC
+ Ltjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709813206; x=1710418006;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tqLNZtKKzJp+wo8PF9wPGvq/IGCF2nsRyWfkY6OmsuE=;
- b=kFTdqjSrCIJNmYgExtEp2nix3kxTzTLC5fo3EzKEflVyGVfbERSS75WKltUDrITjy9
- WfutDMEY0dwz/s0PIzFKWRgzcj2iINDOEzqbd3yTDZ5aBobRylnRI/9SIFjeeuqTRuy2
- vN5iUEyc3QLh5/6m18H7brTYltkmEw3jVBsJr3LpxBp5TN47+fk9dfnbQKbb2LqqQL+b
- sHSRTdJW2c1xGXHc7P4NGM/gdR46zHzjOKlBvKymmNr4Ay5np7c4cYhz8AiZM9a2leeu
- 5x0BGJDBaM/JQKY62tvuGO+cU0CG+CaStqbPQq1QyglZEqRAxvAIKNW1KtMHuozLAPcK
- 2NkQ==
+ d=1e100.net; s=20230601; t=1709813592; x=1710418392;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=9jKcNU8mtddf0xD96048JENdNgxkV5RZUTuB2JvZ3Dk=;
+ b=bRUDn1UYiQ+1OGDlBPX9YrRmjZq/RoJ2JdvI8Wpyy1sasxDtQmXdavxkiYVla+a3Ot
+ /IXKnooS5k1FD/rEurHukSHydPHfUMYBR6Kxl02ARhQZRgVfL4ld+oAAvGEGIwcj47LB
+ UajTsvS4rXInpyPPHnB+sXUfZhfr2POANZfip+ddHLCULsYZta1nTTgOeGSQSoIKy22U
+ p+aMrlpB2PbHxB5hfQSk4LjIAvnaNn/gIwAoHWCM5hg44EYfIAm+WrHSbR7nzMtP7nS2
+ vTVYGyd+yluwF8LW1jAo2h/e3flQ0L88QH8MreIpktKuZcZgiSd7oDHe8pRI5ynSL/dQ
+ icAg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW5+JNHURsElpCgVi/AHvL+XYt5XZt6gv37qZZBtlbZvpn+UaFptQ+E8vwnRI3aTzMKEFG9W0ZpEkGP9m0TDxLkj9R3ibo=
-X-Gm-Message-State: AOJu0Yz+djH72pjVlX47EH6Kde8wwU0U0+PVdbRKEmk6dzFLwoQUoifh
- 3N0nehm2L5AF4LhXNFL5QN3yF0Fo25o2bX85FGKeET2pggQW9UtvsMbu7pQVavQmOEIerOR9e0g
- PIJ0sTcBLKcnu5WYQr131/u/2OwjE0DoFrhHYw9TqswQyEXElJxLB9arJKeAc
-X-Received: by 2002:a5d:5490:0:b0:33d:6ca1:3058 with SMTP id
- h16-20020a5d5490000000b0033d6ca13058mr12116097wrv.56.1709813206582; 
- Thu, 07 Mar 2024 04:06:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGKt/XfUdwaZTRVvt7UUAI6Vh7ULLapNT4+3CuArmsuc0E4FrHVpttXpMcREsew6NCjtJn87g==
-X-Received: by 2002:a5d:5490:0:b0:33d:6ca1:3058 with SMTP id
- h16-20020a5d5490000000b0033d6ca13058mr12116083wrv.56.1709813206234; 
- Thu, 07 Mar 2024 04:06:46 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ AJvYcCXwFZk9qgsIcKWlh/V/5o0HjARlULw8b4k/rr8kREEatYJR1ovdQbN8CY+46X9dYi3fWs/KRCueyatuACNok3UtpMZKx0w=
+X-Gm-Message-State: AOJu0YwpAZ2MkS+m/3V5YdkRx6ef82TMWe7U9fgp30R1r7H7i5+Qbdrh
+ CsWvV65YOeu1EUrAuIrr0M4LCxUkbCbG+qnasplg56kw9YsrLTx4joHIhuN4eCA=
+X-Google-Smtp-Source: AGHT+IEZSbHZqEkiGm8ptHFul1KfAi5rGSBCKI8+od071N4EROSygV23LA7LHPIPhTI5uqeuF0rSog==
+X-Received: by 2002:a5d:64af:0:b0:33e:5310:820f with SMTP id
+ m15-20020a5d64af000000b0033e5310820fmr5236522wrp.67.1709813592443; 
+ Thu, 07 Mar 2024 04:13:12 -0800 (PST)
+Received: from meli.delivery (adsl-101.37.6.0.tellas.gr. [37.6.0.101])
  by smtp.gmail.com with ESMTPSA id
- v13-20020adfd04d000000b0033d202abf01sm20037804wrh.28.2024.03.07.04.06.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Mar 2024 04:06:45 -0800 (PST)
-Message-ID: <7202b70e-cba0-4dcf-b0a4-485e7dc3eba6@redhat.com>
-Date: Thu, 7 Mar 2024 13:06:44 +0100
+ v7-20020a5d59c7000000b0033e475940fasm7826319wry.66.2024.03.07.04.13.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 07 Mar 2024 04:13:12 -0800 (PST)
+Date: Thu, 07 Mar 2024 14:11:03 +0200
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-arm@nongnu.org,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ David Woodhouse <dwmw@amazon.co.uk>, Thomas Huth <thuth@redhat.com>,
+ qemu-arm@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>,
+ xen-devel@lists.xenproject.org,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>
+Subject: Re: [PATCH-for-9.0 9/9] hw/xen/hvm: Inline xen_arch_set_memory()
+User-Agent: meli 0.8.5-rc.3
+References: <20231114163123.74888-1-philmd@linaro.org>
+ <20231114163123.74888-10-philmd@linaro.org>
+In-Reply-To: <20231114163123.74888-10-philmd@linaro.org>
+Message-ID: <9z8lx.2kzq0em3zqbp@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 16/25] vfio: Add Error** argument to
- .set_dirty_page_tracking() handler
-Content-Language: en-US, fr
-To: Eric Auger <eauger@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Markus Armbruster <armbru@redhat.com>,
- Prasad Pandit <pjp@fedoraproject.org>
-References: <20240306133441.2351700-1-clg@redhat.com>
- <20240306133441.2351700-17-clg@redhat.com>
- <9250446e-c48b-4465-b50c-da4fe3c1ee2f@redhat.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <9250446e-c48b-4465-b50c-da4fe3c1ee2f@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.365,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,161 +103,162 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/7/24 09:09, Eric Auger wrote:
-> Hi Cédric,
+On Tue, 14 Nov 2023 18:31, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>xen_arch_set_memory() is not arch-specific anymore. Being
+>called once, inline it in xen_set_memory().
+>
+>Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>---
+> include/hw/xen/xen-hvm-common.h |   3 -
+> hw/xen/xen-hvm-common.c         | 104 ++++++++++++++++----------------
+> 2 files changed, 51 insertions(+), 56 deletions(-)
+>
+>diff --git a/include/hw/xen/xen-hvm-common.h b/include/hw/xen/xen-hvm-common.h
+>index 536712dc83..a1b8a2783b 100644
+>--- a/include/hw/xen/xen-hvm-common.h
+>+++ b/include/hw/xen/xen-hvm-common.h
+>@@ -99,8 +99,5 @@ void cpu_ioreq_pio(ioreq_t *req);
 > 
-> On 3/6/24 14:34, Cédric Le Goater wrote:
->> We will use the Error object to improve error reporting in the
->> .log_global*() handlers of VFIO. Add documentation while at it.
->>
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Signed-off-by: Cédric Le Goater <clg@redhat.com>
->> ---
->>
->>   Changes in v3:
->>
->>   - Use error_setg_errno() in vfio_legacy_set_dirty_page_tracking()
->>   
->>   include/hw/vfio/vfio-container-base.h | 18 ++++++++++++++++--
->>   hw/vfio/common.c                      |  4 ++--
->>   hw/vfio/container-base.c              |  4 ++--
->>   hw/vfio/container.c                   |  6 +++---
->>   4 files changed, 23 insertions(+), 9 deletions(-)
->>
->> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
->> index 3582d5f97a37877b2adfc0d0b06996c82403f8b7..c76984654a596e3016a8cf833e10143eb872e102 100644
->> --- a/include/hw/vfio/vfio-container-base.h
->> +++ b/include/hw/vfio/vfio-container-base.h
->> @@ -82,7 +82,7 @@ int vfio_container_add_section_window(VFIOContainerBase *bcontainer,
->>   void vfio_container_del_section_window(VFIOContainerBase *bcontainer,
->>                                          MemoryRegionSection *section);
->>   int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
->> -                                           bool start);
->> +                                           bool start, Error **errp);
->>   int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
->>                                         VFIOBitmap *vbmap,
->>                                         hwaddr iova, hwaddr size);
->> @@ -121,9 +121,23 @@ struct VFIOIOMMUClass {
->>       int (*attach_device)(const char *name, VFIODevice *vbasedev,
->>                            AddressSpace *as, Error **errp);
->>       void (*detach_device)(VFIODevice *vbasedev);
->> +
->>       /* migration feature */
->> +
->> +    /**
->> +     * @set_dirty_page_tracking
->> +     *
->> +     * Start or stop dirty pages tracking on VFIO container
->> +     *
->> +     * @bcontainer: #VFIOContainerBase on which to de/activate dirty
->> +     *              pages tracking
-> s/pages/page?
-
-yep
-
-> for my education is the "#"VFIOContainerBase formalized somewhere?
-
-It's QEMU specific. See 4cf41794411f ("docs: tweak kernel-doc for QEMU
-coding standards").
-
-> +     * @start: indicates whether to start or stop dirty pages tracking
->> +     * @errp: pointer to Error*, to store an error if it happens.
->> +     *
->> +     * Returns zero to indicate success and negative for error
->> +     */
->>       int (*set_dirty_page_tracking)(const VFIOContainerBase *bcontainer,
->> -                                   bool start);
->> +                                   bool start, Error **errp);
->>       int (*query_dirty_bitmap)(const VFIOContainerBase *bcontainer,
->>                                 VFIOBitmap *vbmap,
->>                                 hwaddr iova, hwaddr size);
->> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
->> index 800ba0aeac84b8dcc83b042bb70c37b4bf78d3f4..5598a508399a6c0b3a20ba17311cbe83d84250c5 100644
->> --- a/hw/vfio/common.c
->> +++ b/hw/vfio/common.c
->> @@ -1085,7 +1085,7 @@ static bool vfio_listener_log_global_start(MemoryListener *listener,
->>       if (vfio_devices_all_device_dirty_tracking(bcontainer)) {
->>           ret = vfio_devices_dma_logging_start(bcontainer);
->>       } else {
->> -        ret = vfio_container_set_dirty_page_tracking(bcontainer, true);
->> +        ret = vfio_container_set_dirty_page_tracking(bcontainer, true, NULL);
-> It is not obvious why we don't pass errp here. Also there is ana
-> error_report below. Why isn't the error propagated? (not related to your
-> patch though)
-
-When I started this series, I was trying to find a way to introduce
-progressively the changes and this patch is preparing ground for
-what is coming next. It could be merged with the following if you prefer.
-
-
-Thanks,
-
-C.
-
-
-
-
->>       }
->>   
->>       if (ret) {
->> @@ -1105,7 +1105,7 @@ static void vfio_listener_log_global_stop(MemoryListener *listener)
->>       if (vfio_devices_all_device_dirty_tracking(bcontainer)) {
->>           vfio_devices_dma_logging_stop(bcontainer);
->>       } else {
->> -        ret = vfio_container_set_dirty_page_tracking(bcontainer, false);
->> +        ret = vfio_container_set_dirty_page_tracking(bcontainer, false, NULL);
->>       }
->>   
->>       if (ret) {
->> diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
->> index 913ae49077c4f09b7b27517c1231cfbe4befb7fb..7c0764121d24b02b6c4e66e368d7dff78a6d65aa 100644
->> --- a/hw/vfio/container-base.c
->> +++ b/hw/vfio/container-base.c
->> @@ -53,14 +53,14 @@ void vfio_container_del_section_window(VFIOContainerBase *bcontainer,
->>   }
->>   
->>   int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
->> -                                           bool start)
->> +                                           bool start, Error **errp)
->>   {
->>       if (!bcontainer->dirty_pages_supported) {
->>           return 0;
->>       }
->>   
->>       g_assert(bcontainer->ops->set_dirty_page_tracking);
->> -    return bcontainer->ops->set_dirty_page_tracking(bcontainer, start);
->> +    return bcontainer->ops->set_dirty_page_tracking(bcontainer, start, errp);
->>   }
->>   
->>   int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
->> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
->> index 096d77eac3946a9c38fc2a98116b93353f71f06e..6524575aeddcea8470b5fd10caf57475088d1813 100644
->> --- a/hw/vfio/container.c
->> +++ b/hw/vfio/container.c
->> @@ -210,7 +210,7 @@ static int vfio_legacy_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
->>   
->>   static int
->>   vfio_legacy_set_dirty_page_tracking(const VFIOContainerBase *bcontainer,
->> -                                    bool start)
->> +                                    bool start, Error **errp)
->>   {
->>       const VFIOContainer *container = container_of(bcontainer, VFIOContainer,
->>                                                     bcontainer);
->> @@ -228,8 +228,8 @@ vfio_legacy_set_dirty_page_tracking(const VFIOContainerBase *bcontainer,
->>       ret = ioctl(container->fd, VFIO_IOMMU_DIRTY_PAGES, &dirty);
->>       if (ret) {
->>           ret = -errno;
->> -        error_report("Failed to set dirty tracking flag 0x%x errno: %d",
->> -                     dirty.flags, errno);
->> +        error_setg_errno(errp, errno, "Failed to set dirty tracking flag 0x%x",
->> +                         dirty.flags);
->>       }
->>   
->>       return ret;
+> void xen_read_physmap(XenIOState *state);
+> void xen_arch_handle_ioreq(XenIOState *state, ioreq_t *req);
+>-void xen_arch_set_memory(XenIOState *state,
+>-                         MemoryRegionSection *section,
+>-                         bool add);
 > 
-> Thanks
+> #endif /* HW_XEN_HVM_COMMON_H */
+>diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
+>index 50ce45effc..789c6b4b7a 100644
+>--- a/hw/xen/xen-hvm-common.c
+>+++ b/hw/xen/xen-hvm-common.c
+>@@ -426,50 +426,6 @@ void qmp_xen_set_global_dirty_log(bool enable, Error **errp)
+>     }
+> }
 > 
-> Eric
+>-void xen_arch_set_memory(XenIOState *state, MemoryRegionSection *section,
+>-                         bool add)
+>-{
+>-    unsigned target_page_bits = qemu_target_page_bits();
+>-    int page_size = qemu_target_page_size();
+>-    int page_mask = -page_size;
+>-    hwaddr start_addr = section->offset_within_address_space;
+>-    ram_addr_t size = int128_get64(section->size);
+>-    bool log_dirty = memory_region_is_logging(section->mr, DIRTY_MEMORY_VGA);
+>-    hvmmem_type_t mem_type;
+>-
+>-    if (!memory_region_is_ram(section->mr)) {
+>-        return;
+>-    }
+>-
+>-    if (log_dirty != add) {
+>-        return;
+>-    }
+>-
+>-    trace_xen_client_set_memory(start_addr, size, log_dirty);
+>-
+>-    start_addr &= page_mask;
+>-    size = ROUND_UP(size, page_size);
+>-
+>-    if (add) {
+>-        if (!memory_region_is_rom(section->mr)) {
+>-            xen_add_to_physmap(state, start_addr, size,
+>-                               section->mr, section->offset_within_region);
+>-        } else {
+>-            mem_type = HVMMEM_ram_ro;
+>-            if (xen_set_mem_type(xen_domid, mem_type,
+>-                                 start_addr >> target_page_bits,
+>-                                 size >> target_page_bits)) {
+>-                DPRINTF("xen_set_mem_type error, addr: "HWADDR_FMT_plx"\n",
+>-                        start_addr);
+>-            }
+>-        }
+>-    } else {
+>-        if (xen_remove_from_physmap(state, start_addr, size) < 0) {
+>-            DPRINTF("physmapping does not exist at "HWADDR_FMT_plx"\n", start_addr);
+>-        }
+>-    }
+>-}
+>-
+> void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
+>                    Error **errp)
+> {
+>@@ -512,20 +468,62 @@ static void xen_set_memory(struct MemoryListener *listener,
+>                            bool add)
+> {
+>     XenIOState *state = container_of(listener, XenIOState, memory_listener);
+>+    unsigned target_page_bits = qemu_target_page_bits();
+>+    int page_size = qemu_target_page_size();
+>+    int page_mask = -page_size;
+>+    hwaddr start_addr;
+>+    ram_addr_t size;
+>+    bool log_dirty;
+>+    hvmmem_type_t mem_type;
+>+
 > 
+>     if (section->mr == &xen_memory) {
+>         return;
+>-    } else {
+>-        if (add) {
+>-            xen_map_memory_section(xen_domid, state->ioservid,
+>-                                   section);
+>-        } else {
+>-            xen_unmap_memory_section(xen_domid, state->ioservid,
+>-                                     section);
+>-        }
+>     }
+> 
+>-    xen_arch_set_memory(state, section, add);
+>+    if (add) {
+>+        xen_map_memory_section(xen_domid, state->ioservid,
+>+                               section);
+>+    } else {
+>+        xen_unmap_memory_section(xen_domid, state->ioservid,
+>+                                 section);
+>+    }
+>+
+>+    if (!memory_region_is_ram(section->mr)) {
+>+        return;
+>+    }
+>+
+>+    log_dirty = memory_region_is_logging(section->mr, DIRTY_MEMORY_VGA);
+>+
+>+    if (log_dirty != add) {
+>+        return;
+>+    }
+>+
+>+    start_addr = section->offset_within_address_space;
+>+    size = int128_get64(section->size);
+>+    trace_xen_client_set_memory(start_addr, size, log_dirty);
+>+
+>+    start_addr &= page_mask;
+>+    size = ROUND_UP(size, page_size);
+>+
+>+    if (add) {
+>+        if (!memory_region_is_rom(section->mr)) {
+>+            xen_add_to_physmap(state, start_addr, size,
+>+                               section->mr, section->offset_within_region);
+>+        } else {
+>+            mem_type = HVMMEM_ram_ro;
+>+            if (xen_set_mem_type(xen_domid, mem_type,
+>+                                 start_addr >> target_page_bits,
+>+                                 size >> target_page_bits)) {
+>+                DPRINTF("xen_set_mem_type error, addr: "HWADDR_FMT_plx"\n",
+>+                        start_addr);
+>+            }
+>+        }
+>+    } else {
+>+        if (xen_remove_from_physmap(state, start_addr, size) < 0) {
+>+            DPRINTF("physmapping does not exist at "HWADDR_FMT_plx"\n", start_addr);
+>+        }
+>+    }
+> }
+> 
+> void xen_region_add(MemoryListener *listener,
+>-- 
+>2.41.0
+>
+>
 
+
+Same observation as in previous patch, in Arm xen, qemu doesn't handle 
+memory, it is only responsible for devices and their memory.
 
