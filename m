@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93707874C51
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 11:24:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBD01874C40
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 11:22:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riAsq-0005Pc-E1; Thu, 07 Mar 2024 05:21:52 -0500
+	id 1riAsu-0005ZL-01; Thu, 07 Mar 2024 05:21:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1riAsk-0005PL-Rh
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:46 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1riAso-0005VJ-Ln
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:52 -0500
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1riAsi-0007E2-3j
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:45 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1dc49b00bdbso5851835ad.3
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 02:21:43 -0800 (PST)
+ id 1riAsl-0007Eo-B9
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:50 -0500
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-299b818d63aso557752a91.0
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 02:21:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709806902; x=1710411702;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709806906; x=1710411706;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ahxRZ3SD7lLMx3muKeGeJx9aSeKYvKbViQJskOgE7S0=;
- b=I68rP7CTVuDzdr6/nK3QXKNzvVmtB4U/KZXVXJulE9ZERAL+HhO2y84rrIvr6T/4fj
- 3rdSfd7Mj4pSkLcfPVB3aTRVU+ic63GS4pNHqGnr+a1gjmY9Kt2VDzTehlWdOQ+Es/wU
- aJTvIyMkIPpJtuapQag7o46qqFlz56+Putc8ODdcMEfAOPrrP/eXdNcpxYMxeJPMaFlc
- kg3AcSXGS7Wr54xPbIW5wgGiHb8jgFM7CSWhP5mK7HfCWsRGjib6JejWerAPqnySrMhA
- WyEh+Z4oTwqSIBJTV3H4NhCZ6ek4nyvKqNAP7BQtd4MxBlLnRU5VD1cwyWtqEP52afvT
- WZWw==
+ :reply-to; bh=5x59V7N2Snccc4Fu7ozWsaURAyB+hFzG8uxYs6vkbiI=;
+ b=VdMW3ByiUeegC21ya5aXAGk1Sv2cimBUk2l8IX9RsBi/k7wlielcNMFHAX+ElZ5P3e
+ Jb69qdy3zXKLU65BeIpXwQLgnoF4ogIRpt5YfYEOTaa+aP0w7jCBwKnSqOY/KJvxl/Y8
+ 4zyXfn2DiZqdkS8Rtsaa7soKvercO8+ZZBic5AO53vMMZel4uo+R+HxSoI/dQwvjVvY/
+ r/T91dgnoVYRFArj5CnuEnThDaEc4qzkj0EzY6Qj1FHG7CWx8JOB88FBBGLT0FXForB5
+ i7HivU71P3tEaGG4c+lJfhE7/UZRJ9vmYmLpAuw+ezqnIkCFOWOYNLVfxnGMgQVxbhVT
+ uxHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709806902; x=1710411702;
+ d=1e100.net; s=20230601; t=1709806906; x=1710411706;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ahxRZ3SD7lLMx3muKeGeJx9aSeKYvKbViQJskOgE7S0=;
- b=HSS31Pt9/QWoMt0W4Tv113/mNn02jDhh1ENC4v1WMLof3Jzh5EsVak8aoX5PLNEzie
- noi7cFDgH7U4/FEYaFVOIEPUnupAGyICfEFdR5O54Z/ANsDzTzRg+6GaMHfUXuQNoWWa
- inXLp3vdhuqvFaFAzIVlijmayV7yrH6FAY9qc9ZOe5uw0J2bRUpT5Hrns55cb/1bZ1KT
- MXf+yPy1c7h6cW0vOUGqPnumjqX31r/jGcGj48c900wCP+64OgvOUGl260aEEx+xuHRy
- H9o3DFNDjAFWRswlEHfuRjOS/TVHPN+ogyJ5VI/AMhDJykK4RSlgurQ7hr/KNx9dAdxk
- TTTQ==
-X-Gm-Message-State: AOJu0Yy3ETY4y3ALFxI9ViJK47G5J9jCFPvd8OoKK9dw45jqFPvmWI+N
- Mi+I8IgNTSulc/mBqhiOyEjecm+iNDTi+glezx0rUrBjgcGDTbbrbA/U5uy7oSk=
-X-Google-Smtp-Source: AGHT+IHEYROO8JPIUI0EFZv06Q0m+0BcIE5xz/NFQNC6OSq/XBAOUnCiH6OImAU/5yaQzOLvy/tQIg==
-X-Received: by 2002:a17:903:1104:b0:1dc:a40c:31c6 with SMTP id
- n4-20020a170903110400b001dca40c31c6mr8261517plh.25.1709806902441; 
- Thu, 07 Mar 2024 02:21:42 -0800 (PST)
+ bh=5x59V7N2Snccc4Fu7ozWsaURAyB+hFzG8uxYs6vkbiI=;
+ b=RPMNNQVidkvzBJg5Sj2DFpP5UKt+VLx8WZXs7bOqedSFDbs6q9MFBOU5V2GYPBuyqX
+ j7R+/tR67SNrKatIxy53iLgxPbUsrC6ivO7VIwV+up0j0s2Hr6sI45ew9rSfFc+CtGn2
+ YcsZ5w8qgznzYKn/Da1WX+QCS80qqa0jJH4hjezVCauqInG1E2cjalfuTALGaGEjF6RA
+ GYlGDlu83kQ+ZvDC24JMyZ7AuGKsAvMsYCXM1miPsGcBZkCVnh2n8zr7xbpX1y9NuEM6
+ TmCYtq+7vFG2OY+eqFSOuXSDn2pX7B8Bg9soEWcOe2y0eZ43P6s0SWaTC7+xDsyonPPU
+ Xd0Q==
+X-Gm-Message-State: AOJu0YwfTLznps3LXkL4v03t8QQr1lO+RhbNzJ+9bcxCzFkwuPilLnhe
+ oz5NMHp9cWX9pJtCka+As94bMrnqtdxdQU5gcF79JRJTZ/5iUlp67QODubuDHqE=
+X-Google-Smtp-Source: AGHT+IGM+22Aww+KQMPaqiVvSGwfBGsH2hsx8DDihAHHo9PMU1xwhHj+AFMIeS2g0gNjCq48HNpYRA==
+X-Received: by 2002:a17:90b:128b:b0:29b:931:37f1 with SMTP id
+ fw11-20020a17090b128b00b0029b093137f1mr1612067pjb.19.1709806905891; 
+ Thu, 07 Mar 2024 02:21:45 -0800 (PST)
 Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
  by smtp.gmail.com with UTF8SMTPSA id
- s13-20020a170902988d00b001db499c5c12sm746733plp.143.2024.03.07.02.21.41
+ oc11-20020a17090b1c0b00b0029aea375586sm2123245pjb.1.2024.03.07.02.21.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Mar 2024 02:21:42 -0800 (PST)
+ Thu, 07 Mar 2024 02:21:45 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 07 Mar 2024 19:20:58 +0900
-Subject: [PATCH v4 15/19] MAINTAINERS: Add Akihiko Odaki as a elf2dmp reviewer
+Date: Thu, 07 Mar 2024 19:20:59 +0900
+Subject: [PATCH v4 16/19] contrib/elf2dmp: Build only for little endian
+ host
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240307-elf2dmp-v4-15-4f324ad4d99d@daynix.com>
+Message-Id: <20240307-elf2dmp-v4-16-4f324ad4d99d@daynix.com>
 References: <20240307-elf2dmp-v4-0-4f324ad4d99d@daynix.com>
 In-Reply-To: <20240307-elf2dmp-v4-0-4f324ad4d99d@daynix.com>
 To: Viktor Prutyanov <viktor.prutyanov@phystech.edu>, 
  Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::62a;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62a.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,24 +93,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+elf2dmp assumes little endian host in many places. Build it only for
+little endian hosts until they are fixed.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 65dfdc9677e4..d25403f3709b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3583,6 +3583,7 @@ F: util/iova-tree.c
- 
- elf2dmp
- M: Viktor Prutyanov <viktor.prutyanov@phystech.edu>
-+R: Akihiko Odaki <akihiko.odaki@daynix.com>
- S: Maintained
- F: contrib/elf2dmp/
- 
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+ contrib/elf2dmp/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/contrib/elf2dmp/meson.build b/contrib/elf2dmp/meson.build
+index 6707d43c4fa5..046569861f7a 100644
+--- a/contrib/elf2dmp/meson.build
++++ b/contrib/elf2dmp/meson.build
+@@ -1,4 +1,4 @@
+-if curl.found()
++if curl.found() and host_machine.endian() == 'little'
+   executable('elf2dmp', files('main.c', 'addrspace.c', 'download.c', 'pdb.c', 'qemu_elf.c'), genh,
+              dependencies: [glib, curl],
+              install: true)
 
 -- 
 2.44.0
