@@ -2,75 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 919228746BA
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 04:24:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71E5F8746B8
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 04:24:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ri4M4-0001RN-MN; Wed, 06 Mar 2024 22:23:36 -0500
+	id 1ri4M5-0001Rl-O0; Wed, 06 Mar 2024 22:23:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1ri4M1-0001Qr-V5
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 22:23:33 -0500
-Received: from mail-il1-x136.google.com ([2607:f8b0:4864:20::136])
+ id 1ri4M3-0001R1-Ck
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 22:23:35 -0500
+Received: from mail-il1-x12b.google.com ([2607:f8b0:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1ri4M0-0005c8-Ax
- for qemu-devel@nongnu.org; Wed, 06 Mar 2024 22:23:33 -0500
-Received: by mail-il1-x136.google.com with SMTP id
- e9e14a558f8ab-36423c819a3so1809915ab.0
- for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 19:23:31 -0800 (PST)
+ id 1ri4M1-0005fP-I9
+ for qemu-devel@nongnu.org; Wed, 06 Mar 2024 22:23:35 -0500
+Received: by mail-il1-x12b.google.com with SMTP id
+ e9e14a558f8ab-365aff1fa8dso895825ab.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Mar 2024 19:23:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709781809; x=1710386609; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=pqnUCuCSdDMIgj1DvwZoKDRiPtvGWOCbYHnFk7Blm6w=;
- b=NyKgTQgjKRPv4SzU/1c98GqMKVXxMdDhSE47OG15rjOlTOvRHDw9F2toA9KDkaBeZ5
- cXVu9Ce1TEto1F1JmlKrsmRpUCP3s7PYznpsGtmdEZhdP4PZpI1hlwUqTvqJKxR4027h
- xN7zVHjrxcRn7d5DzGFX0bMqGdc6ijambN6ZecdmcxXIjQm0imId1dKh96t43rV40drH
- ZtStR5TBXCgE0N2KZ7kfeobbd8jqnwrpifjGFbw1amOoWlrZIUrY701CLTjvcw/CllBa
- xpSGXsCClaZfjeI0zsn4lmdhH3H4KmdkWfNK/B/IgYhP7LEaMwFf2Mxl4wti3bY11yUJ
- W7vw==
+ d=gmail.com; s=20230601; t=1709781811; x=1710386611; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=v3teDd8HDxktJH46jy4fSC2tTIGKstCq77/p/rg3zPo=;
+ b=UE9/Be2Cw0BGRFW4Eozngb/VeaFDGKiOjoT4Tgw4vMx+QDGESHgLS1rVL8xbdR5BQ3
+ wLRnW3d8lYh2IG75h6Z+lvjOHAvEzETXesd8ngSHReIUz4C7B/KQrIYkTlKwcZi5BlQd
+ iKHisCHnae1B96f5mZ/lJuQD7QgXMECPcVILsCsEYPx9oVkjsM96g+QlA/yiYg0S8djb
+ rQhjYek5cjrKTNCBPmmTnIjNsXKcKc9THLxmfrgxXhm0rW0qhVYiSmNaysKd3Ze/+Q6x
+ WkS3cFxHv8BxiMpZpE6XoZjyf907r899HAkZGtrHZ1eQ5niike4WgjwOIm+THWotUx84
+ J/vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709781809; x=1710386609;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=pqnUCuCSdDMIgj1DvwZoKDRiPtvGWOCbYHnFk7Blm6w=;
- b=SA2ysQ9ZMBz5zGDbwDyGQKTrpe7uZn4TLpQVMq7dXbhLKrlsLpJMwCaUc8u5JBK8GM
- 1ySogba2EhVFapIWeCbdPqLZCS6chLnk5iy4a1qyMuwnDmXHW2p8CZ0jCT8HKVDwTAp+
- 0LYJd7TBTJoYtS5UsaJlEOmpuXzMQBvtTz2l5Tc3szKhLV17fzUb9tgtVh/8cZiZ1CVn
- WxdFbDBXZpqCOOxWsRws0rxcji//EsjyP1iTpCKvoPbS5kn8/h1g+F+kZ+i68bd1B9EQ
- nMvZZ7W4LTdRBKw1eAxwQNRGf4Av/6us6NtLm64wJdWjokZFRkDL4jKdPKOx/mFb0WI+
- hB8w==
-X-Gm-Message-State: AOJu0Yydro3tOxTcQ5Tytr66XPtukO1uNBEPE0xUxjviaGno0JVHKZF9
- LUJVFPnUpR7tGRP/4YNuBcAsb9G6/26sdCb3+GIdna+gXH1gJjWotT3qp9U+5HI=
-X-Google-Smtp-Source: AGHT+IEfQUZWY1mZLM55QShSG2zd5hz8BXW149gcSIOe5+8P+pCSYTcwa5Udh95au0si92PKCEw1SA==
-X-Received: by 2002:a05:6e02:1d16:b0:365:1b67:205f with SMTP id
- i22-20020a056e021d1600b003651b67205fmr21970537ila.13.1709781809646; 
- Wed, 06 Mar 2024 19:23:29 -0800 (PST)
+ d=1e100.net; s=20230601; t=1709781811; x=1710386611;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=v3teDd8HDxktJH46jy4fSC2tTIGKstCq77/p/rg3zPo=;
+ b=wkquRnr8g0TcQnwa1YJVEPN75FGUlcZ2pG6NpP2sHMC/txA+yYuvIv4bD9SNcsyQKi
+ nJgVnqZdmnrwC7GCuZyG0OmWhMFBfzPTzcq5M2QqmdwvXXPXDRr+VATLSErMSW52WBQE
+ CmThvkcDw+uYlE1VI5CwQmpwNtsQ0gJsq5/qMgNyIS4suFrlR2g3kDavRv1t+s12a/ji
+ G/HMe55E3HtvgO3CHvvRABqITbE/cbE7w2QCkPyETcGjJAL9HKbH6ed88GA9Bn+VGSNh
+ JQ2Zxj5+YmDO3AHczpvoqQOKA3l6fGJp9hZT0D6LgnhBfVO1e/ZdBO+G7mpOjThGpCBH
+ FtZg==
+X-Gm-Message-State: AOJu0YzTU+gzI+ogbokEGJMxWQqJgmuWxpJXW5w/x0l74yu2RcRbb+fF
+ JNANGKFBUokT177hVSQNpC3DeOnSjABhqCYIfomaosnSZVd4naSquZXk6J+SVYc=
+X-Google-Smtp-Source: AGHT+IHoEbcP+7wbWfLsHOZrllvtBPoQOAcEdIyYiIoOuuSu+B6VuzYN51GfKWoC4ASfv8HWnSAvaA==
+X-Received: by 2002:a05:6e02:148d:b0:365:1dd9:ee6b with SMTP id
+ n13-20020a056e02148d00b003651dd9ee6bmr25409244ilk.25.1709781811024; 
+ Wed, 06 Mar 2024 19:23:31 -0800 (PST)
 Received: from taylor-ubuntu.hsd1.co.comcast.net
  (c-73-169-12-54.hsd1.co.comcast.net. [73.169.12.54])
  by smtp.gmail.com with ESMTPSA id
- h20-20020a02c734000000b00474e9a77424sm2233990jao.147.2024.03.06.19.23.28
+ h20-20020a02c734000000b00474e9a77424sm2233990jao.147.2024.03.06.19.23.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Mar 2024 19:23:29 -0800 (PST)
+ Wed, 06 Mar 2024 19:23:30 -0800 (PST)
 From: Taylor Simpson <ltaylorsimpson@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: bcain@quicinc.com, quic_mathbern@quicinc.com, sidneym@quicinc.com,
  quic_mliebel@quicinc.com, richard.henderson@linaro.org, philmd@linaro.org,
  ale@rev.ng, anjo@rev.ng, ltaylorsimpson@gmail.com
-Subject: [PATCH v2 0/9] Clean up .new decode and scripts
-Date: Wed,  6 Mar 2024 20:23:18 -0700
-Message-Id: <20240307032327.4799-1-ltaylorsimpson@gmail.com>
+Subject: [PATCH v2 1/9] Hexagon (target/hexagon) Add is_old/is_new to Register
+ class
+Date: Wed,  6 Mar 2024 20:23:19 -0700
+Message-Id: <20240307032327.4799-2-ltaylorsimpson@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240307032327.4799-1-ltaylorsimpson@gmail.com>
+References: <20240307032327.4799-1-ltaylorsimpson@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::136;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-il1-x136.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12b;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-il1-x12b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,63 +97,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-During .new decode, there are several places where strchr is used.
-We remove these by generating the values that are needed.
+Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/hexagon/hex_common.py | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-Once we have generated the proper values, we no longer need
-op_regs_generated.h.inc.  We remove the script that generates it as
-well as the code in meson.build
-
-We also remove the script and meson.build code that creates
-shortcode_generated.h.inc.  The data structure that includes it is
-not used.
-
-We remove hex_common.read_attribs_file.  The Python data structures built
-during this step are not used.
-
-**** Changes in v2 ****
-Address feedback from Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-Mark Philippe's Reviewed-by on patch 01
-Update example comment in gen_trans_funcs.py
-
-
-
-Taylor Simpson (9):
-  Hexagon (target/hexagon) Add is_old/is_new to Register class
-  Hexagon (target/hexagon) Mark new_read_idx in trans functions
-  Hexagon (target/hexagon) Mark dest_idx in trans functions
-  Hexagon (target/hexagon) Mark has_pred_dest in trans functions
-  Hexagon (tests/tcg/hexagon) Test HVX .new read from high half of pair
-  Hexagon (target/hexagon) Remove uses of op_regs_generated.h.inc
-  Hexagon (target/hexagon) Remove gen_op_regs.py
-  Hexagon (target/hexagon) Remove gen_shortcode.py
-  Hexagon (target/hexagon) Remove hex_common.read_attribs_file
-
- target/hexagon/insn.h                   |   5 +-
- target/hexagon/opcodes.h                |   4 -
- target/hexagon/decode.c                 |  50 ++--------
- target/hexagon/mmvec/decode_ext_mmvec.c |  30 ++----
- target/hexagon/opcodes.c                |  35 -------
- tests/tcg/hexagon/hvx_misc.c            |  16 ++-
- target/hexagon/README                   |   2 -
- target/hexagon/gen_analyze_funcs.py     |  21 +---
- target/hexagon/gen_helper_funcs.py      |  21 +---
- target/hexagon/gen_helper_protos.py     |  21 +---
- target/hexagon/gen_idef_parser_funcs.py |   5 +-
- target/hexagon/gen_op_attribs.py        |   5 +-
- target/hexagon/gen_op_regs.py           | 125 ------------------------
- target/hexagon/gen_opcodes_def.py       |   4 +-
- target/hexagon/gen_printinsn.py         |   5 +-
- target/hexagon/gen_shortcode.py         |  63 ------------
- target/hexagon/gen_tcg_func_table.py    |   5 +-
- target/hexagon/gen_tcg_funcs.py         |  21 +---
- target/hexagon/gen_trans_funcs.py       |  26 ++++-
- target/hexagon/hex_common.py            |  49 +++++++---
- target/hexagon/meson.build              |  55 ++++-------
- 21 files changed, 122 insertions(+), 446 deletions(-)
- delete mode 100755 target/hexagon/gen_op_regs.py
- delete mode 100755 target/hexagon/gen_shortcode.py
-
+diff --git a/target/hexagon/hex_common.py b/target/hexagon/hex_common.py
+index 195620c7ec..4bacef223f 100755
+--- a/target/hexagon/hex_common.py
++++ b/target/hexagon/hex_common.py
+@@ -1,7 +1,7 @@
+ #!/usr/bin/env python3
+ 
+ ##
+-##  Copyright(c) 2019-2023 Qualcomm Innovation Center, Inc. All Rights Reserved.
++##  Copyright(c) 2019-2024 Qualcomm Innovation Center, Inc. All Rights Reserved.
+ ##
+ ##  This program is free software; you can redistribute it and/or modify
+ ##  it under the terms of the GNU General Public License as published by
+@@ -397,10 +397,18 @@ def is_readwrite(self):
+ class OldSource(Source):
+     def reg_tcg(self):
+         return f"{self.regtype}{self.regid}V"
++    def is_old(self):
++        return True
++    def is_new(self):
++        return False
+ 
+ class NewSource(Source):
+     def reg_tcg(self):
+         return f"{self.regtype}{self.regid}N"
++    def is_old(self):
++        return False
++    def is_new(self):
++        return True
+ 
+ class ReadWrite:
+     def reg_tcg(self):
+@@ -413,6 +421,10 @@ def is_read(self):
+         return True
+     def is_readwrite(self):
+         return True
++    def is_old(self):
++        return True
++    def is_new(self):
++        return False
+ 
+ class GprDest(Register, Single, Dest):
+     def decl_tcg(self, f, tag, regno):
 -- 
 2.34.1
 
