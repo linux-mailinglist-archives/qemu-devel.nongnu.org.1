@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F033E874C45
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 11:22:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52ED3874C56
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Mar 2024 11:25:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riAsa-0004vD-AX; Thu, 07 Mar 2024 05:21:36 -0500
+	id 1riAss-0005Y0-BN; Thu, 07 Mar 2024 05:21:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1riAsX-0004q2-PL
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:33 -0500
-Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
+ id 1riAso-0005Sz-3x
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:50 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1riAsW-0007BZ-9a
- for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:33 -0500
-Received: by mail-oi1-x233.google.com with SMTP id
- 5614622812f47-3bbbc6b4ed1so376135b6e.2
- for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 02:21:31 -0800 (PST)
+ id 1riAsY-0007C9-RJ
+ for qemu-devel@nongnu.org; Thu, 07 Mar 2024 05:21:49 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1dc5d0162bcso6213555ad.0
+ for <qemu-devel@nongnu.org>; Thu, 07 Mar 2024 02:21:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709806891; x=1710411691;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1709806893; x=1710411693;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=G+hvr6O3ORvjAgJg+6YyeFVM5M5tHwrDPGaC/yhxpOs=;
- b=edEN9G8aIFLBqHy1kI+n9Vy4Yxzd0XzU1jwxcbC7Ccn1qOZz7Lbg+tGoEdD9QOWggQ
- Iw4QxyNv2FrdNnTtbSkQDx/BWS/9TskUtwbIj/WWGeTusxni8bXxCpv7DpqexxbH7VXN
- BsTk7TMsbtebn+8y0oac8vLybB8FAAPuH57Zdp3YU17xqf9UccxAC7czjEGxos4Q6P8x
- +mjaGXlI2XpZs6nlSYPa3icBjYc2hhVqs6CzacU2d4uazNhB2YVNwiaNOUkdEjNoAvQs
- NyigP6nxUr2cu1u3Tu2lETfbS2O9x4hQ8zpXZyZFFssKdx3YsJZTn0gXYKquB+YcQnZa
- aM0w==
+ :reply-to; bh=DgfW3dC2BQFvXbkrpvVsfPqRuCKLeW6kZAejsXMFwME=;
+ b=XChQ+CU8MZcZoAiSyOKgtkVpeutHCHB6S4HM0I0U1uQqs4nqxsnGsY1UyPb8157EuO
+ y5yei1WIHf584LShlEcmEbEEwTFa7Q65CTPljH6L1H1MgTWn6OhMnPOM+QCs3QZ6keEA
+ CSDZ3JyRCTaPhquHfcK/TEFxYvsB61dyc8Vk0gkIEzPRzonXyabBo73nqxVfcZKP8e5C
+ onrlxswus2roa+LgqCx66dvp9OHB/CVFXF1+fPyGGWVE91coVZh/IXB4FnwjHDSsjo8+
+ JeMzN5i8s9VQxr1kOWtqmoSsaYcFKBe9ViGWMeXT3azr9JKrl8s5OAYBc/xT+ruZD47z
+ KANQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709806891; x=1710411691;
+ d=1e100.net; s=20230601; t=1709806893; x=1710411693;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=G+hvr6O3ORvjAgJg+6YyeFVM5M5tHwrDPGaC/yhxpOs=;
- b=KoZbsVMTDqXL8A1mDBydv9WhV34nEi9NKTU95bR1SMd7envQtyHi2fVNZs1Ei6hdLH
- H76ltEIqxsoTm8txD/O7KbtyZ8lsZFwH3wIuX5wJqB7SjV+HxIW4ZUAouYySVyb5DrM2
- g3rAqdRjxTBId+dhGfVoonR4ogS/4+gVhmEL/YoCv5T++5K2V1jZxBLZIDdXJ9Y9fwuF
- KvKWDciAb06OHbV220ti5phLjajvw2JYzWsM8KbIJbRI/4X4SuDq2fha9EEryUqa0GKp
- 0R/id0q2bMS/E0ODF7Io/BOWrW5P7LlL/lmRYWW9sshQVVCchfJ6aBdHEW6y6CfjHA04
- 9rSQ==
-X-Gm-Message-State: AOJu0Yz9fw8UHKZe8dv6MNo6vkfnGuO1yTIEqMz3dYE1wxXGXjhdDfiI
- mvh5mnNKVDHWvlMC6T3ihueixXp5Jnu/+6sWqDO3oqKPsuUHe7CS7/1JLmlia3R5SztWU+poBiQ
- X
-X-Google-Smtp-Source: AGHT+IE+5K8qNDUXcyBZ8B5kfZtu1smKEb2NTTloy3SIIj84alLgPs4HIz0J7yI2piRYpT2ixl1Kkg==
-X-Received: by 2002:a05:6808:6297:b0:3c1:e999:467d with SMTP id
- du23-20020a056808629700b003c1e999467dmr7439216oib.40.1709806890801; 
- Thu, 07 Mar 2024 02:21:30 -0800 (PST)
+ bh=DgfW3dC2BQFvXbkrpvVsfPqRuCKLeW6kZAejsXMFwME=;
+ b=wSxWKQb2pqCFpd96WlfyoPrAW11P886gToIREjaHZ6DjFSQ4l/e00alhOqFLUe9moA
+ GsBGd2DNo0B9BufCCpACIuo3nP+91rn0q8+H3xXVvwy57OHokIgArkSZirOGlfjvOx2/
+ EpMRHjMqWe26czNFoB8d7Gs8ugcFykllHc97K73INoomhFnReOxMj4tyXL8+DCit2Tnq
+ fapFDjqiysReOTDSErlpqKLVUjcx2Kj0YdJfj7DVjANCk9POJGepA87Dk57SjRbnqdFz
+ 82XkGlVy+QBwQyWeQXoRgudHF7RTwYmSjOzkkbrVecU9RVVIwqKHosq+TZqb50liMwLR
+ 1Wdw==
+X-Gm-Message-State: AOJu0YxoSr9Gi6Tmb4lbvdyHAPLWJQ37vt0vWetj5G0oD7XZfvmcDAjJ
+ kCLkLC65MvbQnoZfPvQTnJSaYNXiqLdDAtJyxBPjw3YtHWFtsCZE51uDe0jbtNEYTDrA/2vIWo7
+ T
+X-Google-Smtp-Source: AGHT+IF68jZdEFj/hfyYQYRzibgDe2IpMF8NgclC81IrSYKhqEqysT+ohre6ZHAMbK0QQozN8FY/Vw==
+X-Received: by 2002:a17:903:11c6:b0:1dc:a605:5435 with SMTP id
+ q6-20020a17090311c600b001dca6055435mr8705251plh.31.1709806893548; 
+ Thu, 07 Mar 2024 02:21:33 -0800 (PST)
 Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
  by smtp.gmail.com with UTF8SMTPSA id
- u23-20020aa78497000000b006e5092fb3efsm12237604pfn.159.2024.03.07.02.21.29
+ f6-20020a170902ce8600b001db45bae92dsm14237079plg.74.2024.03.07.02.21.32
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Mar 2024 02:21:30 -0800 (PST)
+ Thu, 07 Mar 2024 02:21:33 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 07 Mar 2024 19:20:54 +0900
-Subject: [PATCH v4 11/19] contrib/elf2dmp: Always destroy PA space
+Date: Thu, 07 Mar 2024 19:20:55 +0900
+Subject: [PATCH v4 12/19] contrib/elf2dmp: Ensure segment fits in file
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240307-elf2dmp-v4-11-4f324ad4d99d@daynix.com>
+Message-Id: <20240307-elf2dmp-v4-12-4f324ad4d99d@daynix.com>
 References: <20240307-elf2dmp-v4-0-4f324ad4d99d@daynix.com>
 In-Reply-To: <20240307-elf2dmp-v4-0-4f324ad4d99d@daynix.com>
 To: Viktor Prutyanov <viktor.prutyanov@phystech.edu>, 
  Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::233;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x233.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,36 +93,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Destroy PA space even if paging base couldn't be found, fixing memory
-leak.
+This makes elf2dmp more robust against corrupted inputs.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- contrib/elf2dmp/main.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ contrib/elf2dmp/addrspace.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
-index 9347b0cd5a2d..32dc8bac6a30 100644
---- a/contrib/elf2dmp/main.c
-+++ b/contrib/elf2dmp/main.c
-@@ -549,7 +549,7 @@ int main(int argc, char *argv[])
-     va_space_create(&vs, &ps, state->cr[3]);
-     if (!fix_dtb(&vs, &qemu_elf)) {
-         eprintf("Failed to find paging base\n");
--        goto out_elf;
-+        goto out_ps;
-     }
+diff --git a/contrib/elf2dmp/addrspace.c b/contrib/elf2dmp/addrspace.c
+index e01860d15b07..81295a11534a 100644
+--- a/contrib/elf2dmp/addrspace.c
++++ b/contrib/elf2dmp/addrspace.c
+@@ -88,11 +88,12 @@ void pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
+     ps->block = g_new(struct pa_block, ps->block_nr);
  
-     printf("CPU #0 IDT is at 0x%016"PRIx64"\n", state->idt.base);
-@@ -634,7 +634,6 @@ out_pdb_file:
-     unlink(PDB_NAME);
- out_ps:
-     pa_space_destroy(&ps);
--out_elf:
-     QEMU_Elf_exit(&qemu_elf);
- 
-     return err;
+     for (i = 0; i < phdr_nr; i++) {
+-        if (phdr[i].p_type == PT_LOAD) {
++        if (phdr[i].p_type == PT_LOAD && phdr[i].p_offset < qemu_elf->size) {
+             ps->block[block_i] = (struct pa_block) {
+                 .addr = (uint8_t *)qemu_elf->map + phdr[i].p_offset,
+                 .paddr = phdr[i].p_paddr,
+-                .size = phdr[i].p_filesz,
++                .size = MIN(phdr[i].p_filesz,
++                            qemu_elf->size - phdr[i].p_offset),
+             };
+             pa_block_align(&ps->block[block_i]);
+             block_i = ps->block[block_i].size ? (block_i + 1) : block_i;
 
 -- 
 2.44.0
