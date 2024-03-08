@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05F8C8766D9
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 15:57:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C728766D3
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 15:57:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ribe8-0003L7-9r; Fri, 08 Mar 2024 09:56:28 -0500
+	id 1ribeP-0003LN-Pi; Fri, 08 Mar 2024 09:56:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ribe0-0003EA-0W
+ id 1ribe0-0003EB-0w
  for qemu-devel@nongnu.org; Fri, 08 Mar 2024 09:56:21 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ribdt-0005RW-VM
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 09:56:18 -0500
+ id 1ribdt-0005SC-Rt
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 09:56:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709909770;
+ s=mimecast20190719; t=1709909772;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=is4uaTsB7JqW33WeDjUhKzI7gp3GUbX8PHe/5xTz5cQ=;
- b=D1eoI+1qGf0d6wy7rzMdKqouQO2O9765Z9zGOLwUanDeUe03gdLnkvxwBP3ot9jQllMDxZ
- RMouJuG0rNRHToCGMSAR+JG5zngJdzpgv7h4fZDRjQ/heCe+J8Sfj3o0/oQjgoJb2afqgr
- j/AmzxqSIweypuUG5Wz6tNDnpbDd/Lo=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Q0rmMaJt4MALPwGW3i+DaPD4OmnBD3wO03Edu/ZWJ8Q=;
+ b=BZ06rnE/uOeB8Fg7LyrTxK0CYyYuuR822o8OArN8m+FZPDwFy85qH+vWfeOy4ibl+N4HUl
+ FyKEtnuyVF2EqOggfyr3bL6HAxuaDvrAZCnsgpKfO4woUohqudbFEK7mAQGj1DQeDUesvO
+ eJzroCoI84XBlI/iNZLPefYP65YkmNA=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-373-MGS263DXPy2aF-Xw_7lUFw-1; Fri, 08 Mar 2024 09:56:09 -0500
-X-MC-Unique: MGS263DXPy2aF-Xw_7lUFw-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-5681b29771fso1443007a12.1
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 06:56:09 -0800 (PST)
+ us-mta-125-DQR_uqMJOu64pZSwSnAPcw-1; Fri, 08 Mar 2024 09:56:11 -0500
+X-MC-Unique: DQR_uqMJOu64pZSwSnAPcw-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-567002485e2so557692a12.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 06:56:11 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709909767; x=1710514567;
+ d=1e100.net; s=20230601; t=1709909769; x=1710514569;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=is4uaTsB7JqW33WeDjUhKzI7gp3GUbX8PHe/5xTz5cQ=;
- b=f3pPL3Kk1PDEOd1GXjKShW9ARbGPfae85CxOXhhGtc2lvAzIAWP2ZrwpCF4J5dhNEh
- lYHCPg4W9ec/JEA6Q/gnMMFznh3lvr8oNPJxEoDUoCaaEJlci4vFiFY9m8KAvSU9h9n0
- 5WHjMY2PKmTTvkcLOqm0m5x9CcWR7+W98f0ISzM/w4lwPJD/QBWxOYrBWO3HSard+YIW
- PfsL8cYkWjHhS6FCEUhM/Z0EPypSed3zFUGltRBbl716BzBEnCaCxLDWNCijbZANRd3S
- KqfFY2+oJpzh/CYgsyXgsH7hw4QJPT7aL7ygzoNqcGaDhIvp2Ve4s3Ef00SuOP1gKz9m
- luDg==
-X-Gm-Message-State: AOJu0YxsTv8KirPBkXpNno6xyGDI7KG0axCVe5M2goSjT4e3RmmavUX6
- Ik46Gyuc/i1ptvzHpquXHg/qE5T7Bl7p4GNlZG3QcCXWVt8MQ9bXQ6NRGlKoh+xFh6/BdXi4cjL
- FGa8aaWbctSSavHTcz1rfet339fR7eCoU4aeNVN3R4BBcUs2lBc3EeB2/chjNodUBMrYm/UJ82+
- cvbrmQ5RG1EqxaRCABUW8y4a17CRq3V8HhBrh1
-X-Received: by 2002:a50:858b:0:b0:568:2578:f520 with SMTP id
- a11-20020a50858b000000b005682578f520mr2276013edh.35.1709909766920; 
- Fri, 08 Mar 2024 06:56:06 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFxsfg4VgWuq0PlNF60MMntpa9IZmm3+ApzWnuA/xEI7440fFKuWoIrRRy6bY7ODPaCDeZONw==
-X-Received: by 2002:a50:858b:0:b0:568:2578:f520 with SMTP id
- a11-20020a50858b000000b005682578f520mr2275998edh.35.1709909766570; 
- Fri, 08 Mar 2024 06:56:06 -0800 (PST)
+ bh=Q0rmMaJt4MALPwGW3i+DaPD4OmnBD3wO03Edu/ZWJ8Q=;
+ b=XEtsqO/UNhxtfrdfsni5nEsoEYiiQrJmsXtukPnObCk+/c57HKiFIMVDpiBez4eNim
+ xGujjkGuv4uJiz925VRAO6jsFAJvC1yrd3Lt1RcGbmPMOvmDwH9s7eA7GLghOx715BK8
+ u7rNNas/deeH8x5CDcm0M1xnV8cCy+SO9td3g0KW83wc/UfvyqAuuEwIWCp76jwZcTQi
+ KuWX/5qvonGYRK2soj6O9VVjc+huEGFkIHGD23pOCV9uvbcm1YG+JW9dVKve4Xr6fHib
+ s5pZaQQk0/yjdQu/yCBo00YEKB0ZcuB7o0LafrcM/uIMru0u8aaceklN9/au2h+83x3J
+ Wxig==
+X-Gm-Message-State: AOJu0YxtNn3VCHFclGxRA5WLAjcY44ige2osNiK2dtk+CorAEbSI8O/4
+ IqHRwgXAY7hT/NFqP4+W5vPwVtBZiicjpQizzcTuxFEK017sE9lcGOVWsxXMTJ839d5fpDC+pMh
+ UVowSSYQmqfbQyWMO7OM+VBY0xjQb9vJXQM6MMAd1F3HwZokJK34dlQSz/ey5+sZGIxuAU1MhAS
+ KomJltQowtrI2aAxTUsn95wHOhgpm5Z6Au0YSU
+X-Received: by 2002:a50:d59c:0:b0:566:ab2b:e1ce with SMTP id
+ v28-20020a50d59c000000b00566ab2be1cemr1959333edi.18.1709909769238; 
+ Fri, 08 Mar 2024 06:56:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFTgGcgP6HPVo29O9+nxTo/S8qrtvTM3+cJFwXCiesecuXHUDL//oOpM62GsV/YvhKwgtKa4g==
+X-Received: by 2002:a50:d59c:0:b0:566:ab2b:e1ce with SMTP id
+ v28-20020a50d59c000000b00566ab2be1cemr1959319edi.18.1709909768977; 
+ Fri, 08 Mar 2024 06:56:08 -0800 (PST)
 Received: from [192.168.10.118] ([151.49.77.21])
  by smtp.gmail.com with ESMTPSA id
- i23-20020a0564020f1700b00567f780d4a2sm2686623eda.78.2024.03.08.06.56.04
+ ig10-20020a056402458a00b005657eefa8e9sm9256453edb.4.2024.03.08.06.56.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Mar 2024 06:56:04 -0800 (PST)
+ Fri, 08 Mar 2024 06:56:07 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Bui Quang Minh <minhquangbui99@gmail.com>
-Subject: [PULL 05/12] hw/intc/apic: fix memory leak
-Date: Fri,  8 Mar 2024 15:55:47 +0100
-Message-ID: <20240308145554.599614-6-pbonzini@redhat.com>
+Cc: Mark Kanda <mark.kanda@oracle.com>
+Subject: [PULL 06/12] oslib-posix: fix memory leak in touch_all_pages
+Date: Fri,  8 Mar 2024 15:55:48 +0100
+Message-ID: <20240308145554.599614-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240308145554.599614-1-pbonzini@redhat.com>
 References: <20240308145554.599614-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
@@ -102,57 +100,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-deliver_bitmask is allocated on the heap in apic_deliver(), but there
-are many paths in the function that return before the corresponding
-g_free() is reached.  Fix this by switching to g_autofree and, while at
-it, also switch to g_new.  Do the same in apic_deliver_irq() as well
-for consistency.
+touch_all_pages() can return early, before creating threads.  In this case,
+however, it leaks the MemsetContext that it has allocated at the
+beginning of the function.
 
-Fixes: b5ee0468e9d ("apic: add support for x2APIC mode", 2024-02-14)
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Reported by Coverity as CID 1534922.
+
+Fixes: 04accf43df8 ("oslib-posix: initialize backend memory objects in parallel", 2024-02-06)
+Reviewed-by: Mark Kanda <mark.kanda@oracle.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/intc/apic.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ util/oslib-posix.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/hw/intc/apic.c b/hw/intc/apic.c
-index 1d887d66b86..4186c57b34c 100644
---- a/hw/intc/apic.c
-+++ b/hw/intc/apic.c
-@@ -291,14 +291,13 @@ static void apic_deliver_irq(uint32_t dest, uint8_t dest_mode,
-                              uint8_t delivery_mode, uint8_t vector_num,
-                              uint8_t trigger_mode)
- {
--    uint32_t *deliver_bitmask = g_malloc(max_apic_words * sizeof(uint32_t));
-+    g_autofree uint32_t *deliver_bitmask = g_new(uint32_t, max_apic_words);
- 
-     trace_apic_deliver_irq(dest, dest_mode, delivery_mode, vector_num,
-                            trigger_mode);
- 
-     apic_get_delivery_bitmask(deliver_bitmask, dest, dest_mode);
-     apic_bus_deliver(deliver_bitmask, delivery_mode, vector_num, trigger_mode);
--    g_free(deliver_bitmask);
- }
- 
- bool is_x2apic_mode(DeviceState *dev)
-@@ -662,7 +661,7 @@ static void apic_deliver(DeviceState *dev, uint32_t dest, uint8_t dest_mode,
-     APICCommonState *s = APIC(dev);
-     APICCommonState *apic_iter;
-     uint32_t deliver_bitmask_size = max_apic_words * sizeof(uint32_t);
--    uint32_t *deliver_bitmask = g_malloc(deliver_bitmask_size);
-+    g_autofree uint32_t *deliver_bitmask = g_new(uint32_t, max_apic_words);
-     uint32_t current_apic_id;
- 
-     if (is_x2apic_mode(dev)) {
-@@ -708,7 +707,6 @@ static void apic_deliver(DeviceState *dev, uint32_t dest, uint8_t dest_mode,
-     }
- 
-     apic_bus_deliver(deliver_bitmask, delivery_mode, vector_num, trigger_mode);
--    g_free(deliver_bitmask);
- }
- 
- static bool apic_check_pic(APICCommonState *s)
+diff --git a/util/oslib-posix.c b/util/oslib-posix.c
+index 3c379f96c26..e76441695bd 100644
+--- a/util/oslib-posix.c
++++ b/util/oslib-posix.c
+@@ -467,11 +467,13 @@ static int touch_all_pages(char *area, size_t hpagesize, size_t numpages,
+          * preallocating synchronously.
+          */
+         if (context->num_threads == 1 && !async) {
++            ret = 0;
+             if (qemu_madvise(area, hpagesize * numpages,
+                              QEMU_MADV_POPULATE_WRITE)) {
+-                return -errno;
++                ret = -errno;
+             }
+-            return 0;
++            g_free(context);
++            return ret;
+         }
+         touch_fn = do_madv_populate_write_pages;
+     } else {
 -- 
 2.43.2
 
