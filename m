@@ -2,59 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2286D876663
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 15:33:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D1E1875FCF
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 09:41:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ribGP-0000bp-Lk; Fri, 08 Mar 2024 09:31:57 -0500
+	id 1riVml-0005iP-5D; Fri, 08 Mar 2024 03:40:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yumin686@andestech.com>)
- id 1riWZq-0004hR-2M; Fri, 08 Mar 2024 04:31:50 -0500
-Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
- helo=Atcsqr.andestech.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yumin686@andestech.com>)
- id 1riWZl-0000FS-UD; Fri, 08 Mar 2024 04:31:40 -0500
-Received: from Atcsqr.andestech.com (localhost [127.0.0.2] (may be forged))
- by Atcsqr.andestech.com with ESMTP id 4288fwTC081314;
- Fri, 8 Mar 2024 16:41:58 +0800 (+08)
- (envelope-from yumin686@andestech.com)
-Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
- by Atcsqr.andestech.com with ESMTP id 4288fXsh081055;
- Fri, 8 Mar 2024 16:41:33 +0800 (+08)
- (envelope-from yumin686@andestech.com)
-Received: from lubuntu-vb.andestech.com (10.0.12.42) by ATCPCS16.andestech.com
- (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0;
- Fri, 8 Mar 2024 16:41:33 +0800
-To: <palmer@dabbelt.com>, <alistair.francis@wdc.com>, <bin.meng@windriver.com>,
- <liwei1518@gmail.com>, <dbarboza@ventanamicro.com>,
- <zhiwei_liu@linux.alibaba.com>
-CC: <qemu-riscv@nongnu.org>, <qemu-devel@nongnu.org>, Yu-Ming Chang
- <yumin686@andestech.com>
-Subject: [PATCH] target/riscv: raise an exception when CSRRS/CSRRC writes a
- read-only CSR
-Date: Fri, 8 Mar 2024 16:40:14 +0800
-Message-ID: <20240308084014.22054-1-yumin686@andestech.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1riVmZ-0005fx-LM
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 03:40:49 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1riVmW-0004h4-1i
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 03:40:47 -0500
+Received: from loongson.cn (unknown [10.20.42.173])
+ by gateway (Coremail) with SMTP id _____8DxbOkJz+plXzoWAA--.44873S3;
+ Fri, 08 Mar 2024 16:40:41 +0800 (CST)
+Received: from [10.20.42.173] (unknown [10.20.42.173])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8AxRMwJz+plPixRAA--.10176S3; 
+ Fri, 08 Mar 2024 16:40:41 +0800 (CST)
+Subject: Re: [PATCH v6 11/17] hw/loongarch: fdt adds Extend I/O Interrupt
+ Controller
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org
+References: <20240307164835.300412-1-gaosong@loongson.cn>
+ <20240307164835.300412-12-gaosong@loongson.cn>
+From: maobibo <maobibo@loongson.cn>
+Message-ID: <3929c990-0479-a57c-2587-5b1e7f503596@loongson.cn>
+Date: Fri, 8 Mar 2024 16:40:40 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <20240307164835.300412-12-gaosong@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.0.12.42]
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL: Atcsqr.andestech.com 4288fwTC081314
-Received-SPF: pass client-ip=60.248.80.70; envelope-from=yumin686@andestech.com;
- helo=Atcsqr.andestech.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-CM-TRANSID: AQAAf8AxRMwJz+plPixRAA--.10176S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxCF48AF1rZF4fArWrtw4UWrX_yoW5tr1DpF
+ W7CFZ8ur47JF1xWrZaq34UAwn3Zrn3uFy2qw129rW0kFyDX34kXr48C397AF10kw18X3Wj
+ qFsYqryUu3ZrtwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q6rW5McIj6I8E87Iv
+ 67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF
+ 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07j8
+ CztUUUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.08,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 08 Mar 2024 09:31:54 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,102 +79,94 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Yu-Ming Chang <yumin686@andestech.com>
-From:  Yu-Ming Chang via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both CSRRS and CSRRC always read the addressed CSR and cause any read side
-effects regardless of rs1 and rd fields. Note that if rs1 specifies a register
-holding a zero value other than x0, the instruction will still attempt to write
-the unmodified value back to the CSR and will cause any attendant side effects.
 
-So if CSRRS or CSRRC tries to write a read-only CSR with rs1 which specifies
-a register holding a zero value, an illegal instruction exception should be
-raised.
 
-Signed-off-by: Yu-Ming Chang <yumin686@andestech.com>
----
- target/riscv/cpu.h       |  3 +++
- target/riscv/csr.c       | 18 +++++++++++++++---
- target/riscv/op_helper.c |  2 +-
- 3 files changed, 19 insertions(+), 4 deletions(-)
-
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 5d291a7092..087ef64889 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -710,6 +710,9 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
- void riscv_cpu_update_mask(CPURISCVState *env);
- bool riscv_cpu_is_32bit(RISCVCPU *cpu);
- 
-+RISCVException riscv_csrr(CPURISCVState *env, int csrno,
-+                          target_ulong *ret_value,
-+                          target_ulong new_value, target_ulong write_mask);
- RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
-                            target_ulong *ret_value,
-                            target_ulong new_value, target_ulong write_mask);
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index d4e8ac13b9..3e49cf0df1 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -4306,7 +4306,7 @@ static RISCVException rmw_seed(CPURISCVState *env, int csrno,
- 
- static inline RISCVException riscv_csrrw_check(CPURISCVState *env,
-                                                int csrno,
--                                               bool write_mask)
-+                                               bool write)
- {
-     /* check privileges and return RISCV_EXCP_ILLEGAL_INST if check fails */
-     bool read_only = get_field(csrno, 0xC00) == 3;
-@@ -4328,7 +4328,7 @@ static inline RISCVException riscv_csrrw_check(CPURISCVState *env,
-     }
- 
-     /* read / write check */
--    if (write_mask && read_only) {
-+    if (write && read_only) {
-         return RISCV_EXCP_ILLEGAL_INST;
-     }
- 
-@@ -4415,11 +4415,23 @@ static RISCVException riscv_csrrw_do64(CPURISCVState *env, int csrno,
-     return RISCV_EXCP_NONE;
- }
- 
-+RISCVException riscv_csrr(CPURISCVState *env, int csrno,
-+                           target_ulong *ret_value,
-+                           target_ulong new_value, target_ulong write_mask)
-+{
-+    RISCVException ret = riscv_csrrw_check(env, csrno, false);
-+    if (ret != RISCV_EXCP_NONE) {
-+        return ret;
-+    }
-+
-+    return riscv_csrrw_do64(env, csrno, ret_value, new_value, write_mask);
-+}
-+
- RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
-                            target_ulong *ret_value,
-                            target_ulong new_value, target_ulong write_mask)
- {
--    RISCVException ret = riscv_csrrw_check(env, csrno, write_mask);
-+    RISCVException ret = riscv_csrrw_check(env, csrno, true);
-     if (ret != RISCV_EXCP_NONE) {
-         return ret;
-     }
-diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-index f414aaebdb..76b0f5371d 100644
---- a/target/riscv/op_helper.c
-+++ b/target/riscv/op_helper.c
-@@ -51,7 +51,7 @@ target_ulong helper_csrr(CPURISCVState *env, int csr)
-     }
- 
-     target_ulong val = 0;
--    RISCVException ret = riscv_csrrw(env, csr, &val, 0, 0);
-+    RISCVException ret = riscv_csrr(env, csr, &val, 0, 0);
- 
-     if (ret != RISCV_EXCP_NONE) {
-         riscv_raise_exception(env, ret, GETPC());
--- 
-2.34.1
+On 2024/3/8 上午12:48, Song Gao wrote:
+> fdt adds Extend I/O Interrupt Controller,
+> we use 'loongson,ls2k2000-eiointc'.
+> 
+> See:
+> https://github.com/torvalds/linux/blob/v6.7/drivers/irqchip/irq-loongson-eiointc.c
+> https://lore.kernel.org/r/764e02d924094580ac0f1d15535f4b98308705c6.1683279769.git.zhoubinbin@loongson.cn
+> 
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
+> Message-Id: <20240301093839.663947-12-gaosong@loongson.cn>
+> ---
+>   hw/loongarch/virt.c                | 30 +++++++++++++++++++++++++++++-
+>   include/hw/intc/loongarch_extioi.h |  1 +
+>   2 files changed, 30 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+> index d260f933a5..822f070c45 100644
+> --- a/hw/loongarch/virt.c
+> +++ b/hw/loongarch/virt.c
+> @@ -123,6 +123,31 @@ static void fdt_add_cpuic_node(LoongArchMachineState *lams,
+>       g_free(nodename);
+>   }
+>   
+> +static void fdt_add_eiointc_node(LoongArchMachineState *lams,
+> +                                  uint32_t *cpuintc_phandle,
+> +                                  uint32_t *eiointc_phandle)
+> +{
+> +    MachineState *ms = MACHINE(lams);
+> +    char *nodename;
+> +    hwaddr extioi_base = APIC_BASE;
+> +    hwaddr extioi_size = EXTIOI_SIZE;
+> +
+> +    *eiointc_phandle = qemu_fdt_alloc_phandle(ms->fdt);
+> +    nodename = g_strdup_printf("/eiointc@%" PRIx64, extioi_base);
+> +    qemu_fdt_add_subnode(ms->fdt, nodename);
+> +    qemu_fdt_setprop_cell(ms->fdt, nodename, "phandle", *eiointc_phandle);
+> +    qemu_fdt_setprop_string(ms->fdt, nodename, "compatible",
+> +                            "loongson,ls2k2000-eiointc");
+> +    qemu_fdt_setprop(ms->fdt, nodename, "interrupt-controller", NULL, 0);
+> +    qemu_fdt_setprop_cell(ms->fdt, nodename, "#interrupt-cells", 1);
+> +    qemu_fdt_setprop_cell(ms->fdt, nodename, "interrupt-parent",
+> +                          *cpuintc_phandle);
+> +    qemu_fdt_setprop_cell(ms->fdt, nodename, "interrupts", 3);
+> +    qemu_fdt_setprop_cells(ms->fdt, nodename, "reg", 0x0,
+> +                           extioi_base, 0x0, extioi_size);
+> +    g_free(nodename);
+> +}
+> +
+>   static void fdt_add_flash_node(LoongArchMachineState *lams)
+>   {
+>       MachineState *ms = MACHINE(lams);
+> @@ -544,7 +569,7 @@ static void loongarch_irq_init(LoongArchMachineState *lams)
+>       CPULoongArchState *env;
+>       CPUState *cpu_state;
+>       int cpu, pin, i, start, num;
+> -    uint32_t cpuintc_phandle;
+> +    uint32_t cpuintc_phandle, eiointc_phandle;
+>   
+>       /*
+>        * The connection of interrupts:
+> @@ -613,6 +638,9 @@ static void loongarch_irq_init(LoongArchMachineState *lams)
+>           }
+>       }
+>   
+> +    /* Add Extend I/O Interrupt Controller node */
+> +    fdt_add_eiointc_node(lams, &cpuintc_phandle, &eiointc_phandle);
+> +
+>       pch_pic = qdev_new(TYPE_LOONGARCH_PCH_PIC);
+>       num = VIRT_PCH_PIC_IRQ_NUM;
+>       qdev_prop_set_uint32(pch_pic, "pch_pic_irq_num", num);
+> diff --git a/include/hw/intc/loongarch_extioi.h b/include/hw/intc/loongarch_extioi.h
+> index a0a46b888c..410c6e1121 100644
+> --- a/include/hw/intc/loongarch_extioi.h
+> +++ b/include/hw/intc/loongarch_extioi.h
+> @@ -39,6 +39,7 @@
+>   #define EXTIOI_COREISR_END           (0xB20 - APIC_OFFSET)
+>   #define EXTIOI_COREMAP_START         (0xC00 - APIC_OFFSET)
+>   #define EXTIOI_COREMAP_END           (0xD00 - APIC_OFFSET)
+> +#define EXTIOI_SIZE                  0x800
+>   
+>   typedef struct ExtIOICore {
+>       uint32_t coreisr[EXTIOI_IRQS_GROUP_COUNT];
+> 
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
 
 
