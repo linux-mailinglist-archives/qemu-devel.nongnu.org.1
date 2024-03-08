@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F058762ED
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 12:17:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B94E8762D6
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 12:14:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riYA8-0007Bp-PE; Fri, 08 Mar 2024 06:13:16 -0500
+	id 1riYAB-0007GJ-Eg; Fri, 08 Mar 2024 06:13:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1riYA4-00077B-5h
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:12 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1riYA8-0007Eq-Rg
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:16 -0500
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1riYA2-0001fp-4G
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:11 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1dcc7f4717fso5839425ad.0
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 03:13:09 -0800 (PST)
+ id 1riYA5-0001gZ-Q2
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:15 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1dd6412da28so7888095ad.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 03:13:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709896388; x=1710501188; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1709896392; x=1710501192; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4rgNUI5qPK5WcXwsLVaiLvwCeS/y8bX/ZdTXMiRvkWE=;
- b=AVtnGA778R0li0pSnW5MGKc42ZDzV9EtYXftpcZDlwIsbxgJ7RAYQO7f7qP7nSSxDO
- ZOPzbrpHOCAo50NLz4HUFidtULaLMQ0zHsCxtLk5SMxzWlB85mGGztLPL1WKZvZtFDA3
- kK35HYRmqFLAStkdOw4hXJItrIgsgQ4U9815Rg69asXmw98tooXZ+4b3AE+jUw7v3oH0
- g5r7wDqHcGj6Y0If1Ypoxj2DHtGaNrC8hCrFbxG3ry55WZKr2hc93C/cCXJsXxOJ6Sop
- +/s6hvd2sUbTtVIK4+in/ZXe7qo5anDYNWVW7gfEaBFDUF1OMIW4RSJsGcxiaSq4xecZ
- 52DA==
+ bh=hhMWBg8AjhXOC/Sw2h0NKMMtiMLRHrjyoh4xDMfobYw=;
+ b=EX8qsvByA4nWKQ7ksheZNqdtxaSLs4AZ3c9mytSqLdITc7keN7svX2ZB7ZwNhjIYdw
+ AsWt/TwCnkO2ngTPN1wO5Qad2rdM/O39USHJa7ekSatl9m6A2EPTOXdMzlIOvVN+fz89
+ uyf9xc4VbJPzHiQbn557WkEs8BTwlFkSZ1X0SBSmejJyV8YPkePueZpJjOBLFbwVQth4
+ CqS2Q7HmeK02bLTYxYIMob5e+36+cBs/kk6sP8dV4tx4TEtZH+AyFuuI+3Bd6vjEWamS
+ wX4i65hgPMqsOBuDwQh4Tdv4mx1B7g9SsKwjMM3BGn91tqsvHtQw+jSMlJLNThC7Jf9s
+ zN3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709896388; x=1710501188;
+ d=1e100.net; s=20230601; t=1709896392; x=1710501192;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4rgNUI5qPK5WcXwsLVaiLvwCeS/y8bX/ZdTXMiRvkWE=;
- b=f6bq0FgTQEKzghWz2+g+5MzNjF5+m2ChpoAC/uFOdsYyePTKvWiAvHku4S8THC3jKN
- pDnr7dYro9o5pzPtaKkKOyiM4GOlIeO2+x/nAd1CL4FYLJ6olqlMCwppPUZ1nLuAtaFn
- qKPNjnfb7m+hmq0ZT1orvCrT1NTlGR15M5ZD0fVVmP5kwOVWfym5gROl8KE8mqTzmgum
- ZKgImIAjqaL93sKooSTbVzTcF/z0U6kyL5cDRK+eIbPEtA2XUmKTPTJKItQQ7W6S8Xa1
- mgWuJ2ulZeGRMJcld7I+jy6cq+PJ+DYaj3mWxee7ZtgAkOcJCWjQFIJdON4/Mdaxq1JB
- 3JpA==
-X-Gm-Message-State: AOJu0YzAX8Pm/MLR3npYKtfFYXzD8jCeheD7G/VW60Q/mieaTTczwbDc
- y47fRlW1BOSeebyoLnwIH2nxjw3SfnB/4hi8Pi7UCYD/xSPd3v5mVRNxlnGpHU7Rbg==
-X-Google-Smtp-Source: AGHT+IFgUNxYsB+Zl4dv6bt/VrL0As0Gqhlkc2SLHKDIyvRliPAqsP7J9zYY1W4QszH3p2EMbSwwQg==
-X-Received: by 2002:a17:902:cf0d:b0:1dd:6414:3c5d with SMTP id
- i13-20020a170902cf0d00b001dd64143c5dmr2881004plg.7.1709896388438; 
- Fri, 08 Mar 2024 03:13:08 -0800 (PST)
+ bh=hhMWBg8AjhXOC/Sw2h0NKMMtiMLRHrjyoh4xDMfobYw=;
+ b=wsnSxYelrFjqnRJg6Tz4Mp5vV1zh42BdhgUFRLrdSUfMT5IGKKG/mq4Amh0m0TkskK
+ lQUjNZhDHiMpJ5u17rwA21xP5IlcmBMezNx+29yvSoBoeCOJurFqpHTPGRJyarfzDx3b
+ V+gocG3EUyUjphBiKrhUodKw4OQEkxvKZhJ5oaBRMYFMIUf6CNNdmA/j7u9ZQbWbxrxF
+ 1BXaCctdTJ8rjiYc00cxNSy/6Hkh69RU17foK1RklbNbYeYyP5ApZ3vZY6ofTmojiW38
+ n5FKGHKPMHbpM9hP9VRf8IDeqNNrk9MhcoUTSIMPRe5vpIeljRMviv3zavXmpNmszxbP
+ LmiQ==
+X-Gm-Message-State: AOJu0Yzple+doej6IFmSSRKQQ+4deX0pEvu2W8s3JYKm3pBoEADoRtLh
+ jWIo1+1Wr/dReLbgO/vrbeA+LWORHZpZtETWSeMP4tzxgq3E/Klk25Y9pJ9hluAdrg==
+X-Google-Smtp-Source: AGHT+IEtaUE4PLfip5H00v3B5nc+99UyD0+h5IkGy1nX5qKNi0lJR+f2eXlNeq779WfxyFnsvqyChw==
+X-Received: by 2002:a17:902:f547:b0:1dc:fc88:c5b1 with SMTP id
+ h7-20020a170902f54700b001dcfc88c5b1mr13038858plf.7.1709896392189; 
+ Fri, 08 Mar 2024 03:13:12 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- a6-20020a170902ecc600b001dcfbbb1ca5sm12006468plh.35.2024.03.08.03.13.05
+ a6-20020a170902ecc600b001dcfbbb1ca5sm12006468plh.35.2024.03.08.03.13.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Mar 2024 03:13:07 -0800 (PST)
+ Fri, 08 Mar 2024 03:13:11 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PULL 20/34] tests/libqos: add riscv/virt machine nodes
-Date: Fri,  8 Mar 2024 21:11:38 +1000
-Message-ID: <20240308111152.2856137-21-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Palmer Dabbelt <palmer@rivosinc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ =?UTF-8?q?Christoph=20M=C3=BCllner?= <christoph.muellner@vrull.eu>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 21/34] RISC-V: Add support for Ztso
+Date: Fri,  8 Mar 2024 21:11:39 +1000
+Message-ID: <20240308111152.2856137-22-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240308111152.2856137-1-alistair.francis@wdc.com>
 References: <20240308111152.2856137-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,185 +99,184 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Palmer Dabbelt <palmer@rivosinc.com>
 
-Add a RISC-V 'virt' machine to the graph. This implementation is a
-modified copy of the existing arm machine in arm-virt-machine.c
+The Ztso extension is already ratified, this adds it as a CPU property
+and adds various fences throughout the port in order to allow TSO
+targets to function on weaker hosts.  We need no fences for AMOs as
+they're already SC, the places we need barriers are described.
+These fences are placed in the RISC-V backend rather than TCG as is
+planned for x86-on-arm64 because RISC-V allows heterogeneous (and
+likely soon dynamic) hart memory models.
 
-It contains a virtio-mmio and a generic-pcihost controller. The
-generic-pcihost controller hardcodes assumptions from the ARM 'virt'
-machine, like ecam and pio_base addresses, so we'll add an extra step to
-set its parameters after creating it.
-
-Our command line is incremented with 'aclint' parameters to allow the
-machine to run MSI tests.
-
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Acked-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240217192607.32565-7-dbarboza@ventanamicro.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
+Message-ID: <20240207122256.902627-2-christoph.muellner@vrull.eu>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- tests/qtest/libqos/riscv-virt-machine.c | 137 ++++++++++++++++++++++++
- tests/qtest/libqos/meson.build          |   1 +
- 2 files changed, 138 insertions(+)
- create mode 100644 tests/qtest/libqos/riscv-virt-machine.c
+ target/riscv/cpu_cfg.h                  |  1 +
+ target/riscv/cpu.c                      |  2 ++
+ target/riscv/translate.c                |  3 +++
+ target/riscv/insn_trans/trans_rva.c.inc | 11 ++++++++---
+ target/riscv/insn_trans/trans_rvi.c.inc | 16 ++++++++++++++--
+ target/riscv/insn_trans/trans_rvv.c.inc | 20 ++++++++++++++++++++
+ 6 files changed, 48 insertions(+), 5 deletions(-)
 
-diff --git a/tests/qtest/libqos/riscv-virt-machine.c b/tests/qtest/libqos/riscv-virt-machine.c
-new file mode 100644
-index 0000000000..c4364c9c5d
---- /dev/null
-+++ b/tests/qtest/libqos/riscv-virt-machine.c
-@@ -0,0 +1,137 @@
-+/*
-+ * libqos driver framework for risc-v
-+ *
-+ * Initial version based on arm-virt-machine.c
-+ *
-+ * Copyright (c) 2024 Ventana Micro
-+ *
-+ * This library is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU Lesser General Public
-+ * License version 2.1 as published by the Free Software Foundation.
-+ *
-+ * This library is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+ * Lesser General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU Lesser General Public
-+ * License along with this library; if not, see <http://www.gnu.org/licenses/>
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "../libqtest.h"
-+#include "qemu/module.h"
-+#include "libqos-malloc.h"
-+#include "qgraph.h"
-+#include "virtio-mmio.h"
-+#include "generic-pcihost.h"
-+#include "hw/pci/pci_regs.h"
-+
-+#define RISCV_PAGE_SIZE            4096
-+
-+/* VIRT_DRAM */
-+#define RISCV_VIRT_RAM_ADDR        0x80000000
-+#define RISCV_VIRT_RAM_SIZE        0x20000000
-+
-+/*
-+ * VIRT_VIRTIO. BASE_ADDR  points to the last
-+ * virtio_mmio device.
-+ */
-+#define VIRTIO_MMIO_BASE_ADDR      0x10008000
-+#define VIRTIO_MMIO_SIZE           0x00001000
-+
-+/* VIRT_PCIE_PIO  */
-+#define RISCV_GPEX_PIO_BASE        0x3000000
-+#define RISCV_BUS_PIO_LIMIT        0x10000
-+
-+/* VIRT_PCIE_MMIO */
-+#define RISCV_BUS_MMIO_ALLOC_PTR   0x40000000
-+#define RISCV_BUS_MMIO_LIMIT       0x80000000
-+
-+/* VIRT_PCIE_ECAM */
-+#define RISCV_ECAM_ALLOC_PTR   0x30000000
-+
-+typedef struct QVirtMachine QVirtMachine;
-+
-+struct QVirtMachine {
-+    QOSGraphObject obj;
-+    QGuestAllocator alloc;
-+    QVirtioMMIODevice virtio_mmio;
-+    QGenericPCIHost bridge;
-+};
-+
-+static void virt_destructor(QOSGraphObject *obj)
-+{
-+    QVirtMachine *machine = (QVirtMachine *) obj;
-+    alloc_destroy(&machine->alloc);
-+}
-+
-+static void *virt_get_driver(void *object, const char *interface)
-+{
-+    QVirtMachine *machine = object;
-+    if (!g_strcmp0(interface, "memory")) {
-+        return &machine->alloc;
-+    }
-+
-+    fprintf(stderr, "%s not present in riscv/virtio\n", interface);
-+    g_assert_not_reached();
-+}
-+
-+static QOSGraphObject *virt_get_device(void *obj, const char *device)
-+{
-+    QVirtMachine *machine = obj;
-+    if (!g_strcmp0(device, "generic-pcihost")) {
-+        return &machine->bridge.obj;
-+    } else if (!g_strcmp0(device, "virtio-mmio")) {
-+        return &machine->virtio_mmio.obj;
-+    }
-+
-+    fprintf(stderr, "%s not present in riscv/virt\n", device);
-+    g_assert_not_reached();
-+}
-+
-+static void riscv_config_qpci_bus(QGenericPCIBus *qpci)
-+{
-+    qpci->gpex_pio_base = RISCV_GPEX_PIO_BASE;
-+    qpci->bus.pio_limit = RISCV_BUS_PIO_LIMIT;
-+
-+    qpci->bus.mmio_alloc_ptr = RISCV_BUS_MMIO_ALLOC_PTR;
-+    qpci->bus.mmio_limit = RISCV_BUS_MMIO_LIMIT;
-+
-+    qpci->ecam_alloc_ptr = RISCV_ECAM_ALLOC_PTR;
-+}
-+
-+static void *qos_create_machine_riscv_virt(QTestState *qts)
-+{
-+    QVirtMachine *machine = g_new0(QVirtMachine, 1);
-+
-+    alloc_init(&machine->alloc, 0,
-+               RISCV_VIRT_RAM_ADDR,
-+               RISCV_VIRT_RAM_ADDR + RISCV_VIRT_RAM_SIZE,
-+               RISCV_PAGE_SIZE);
-+    qvirtio_mmio_init_device(&machine->virtio_mmio, qts, VIRTIO_MMIO_BASE_ADDR,
-+                              VIRTIO_MMIO_SIZE);
-+
-+    qos_create_generic_pcihost(&machine->bridge, qts, &machine->alloc);
-+    riscv_config_qpci_bus(&machine->bridge.pci);
-+
-+    machine->obj.get_device = virt_get_device;
-+    machine->obj.get_driver = virt_get_driver;
-+    machine->obj.destructor = virt_destructor;
-+    return machine;
-+}
-+
-+static void virt_machine_register_nodes(void)
-+{
-+    qos_node_create_machine_args("riscv32/virt", qos_create_machine_riscv_virt,
-+                                 "aclint=on,aia=aplic-imsic");
-+    qos_node_contains("riscv32/virt", "virtio-mmio", NULL);
-+    qos_node_contains("riscv32/virt", "generic-pcihost", NULL);
-+
-+    qos_node_create_machine_args("riscv64/virt", qos_create_machine_riscv_virt,
-+                                 "aclint=on,aia=aplic-imsic");
-+    qos_node_contains("riscv64/virt", "virtio-mmio", NULL);
-+    qos_node_contains("riscv64/virt", "generic-pcihost", NULL);
-+}
-+
-+libqos_init(virt_machine_register_nodes);
-diff --git a/tests/qtest/libqos/meson.build b/tests/qtest/libqos/meson.build
-index 90aae42a22..3aed6efcb8 100644
---- a/tests/qtest/libqos/meson.build
-+++ b/tests/qtest/libqos/meson.build
-@@ -60,6 +60,7 @@ libqos_srcs = files(
-         'arm-xilinx-zynq-a9-machine.c',
-         'ppc64_pseries-machine.c',
-         'x86_64_pc-machine.c',
-+        'riscv-virt-machine.c',
- )
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index be39870691..2040b90da0 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -71,6 +71,7 @@ struct RISCVCPUConfig {
+     bool ext_zihintntl;
+     bool ext_zihintpause;
+     bool ext_zihpm;
++    bool ext_ztso;
+     bool ext_smstateen;
+     bool ext_sstc;
+     bool ext_svadu;
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 71bdedc9bb..37425e0e50 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -149,6 +149,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zksed, PRIV_VERSION_1_12_0, ext_zksed),
+     ISA_EXT_DATA_ENTRY(zksh, PRIV_VERSION_1_12_0, ext_zksh),
+     ISA_EXT_DATA_ENTRY(zkt, PRIV_VERSION_1_12_0, ext_zkt),
++    ISA_EXT_DATA_ENTRY(ztso, PRIV_VERSION_1_12_0, ext_ztso),
+     ISA_EXT_DATA_ENTRY(zvbb, PRIV_VERSION_1_12_0, ext_zvbb),
+     ISA_EXT_DATA_ENTRY(zvbc, PRIV_VERSION_1_12_0, ext_zvbc),
+     ISA_EXT_DATA_ENTRY(zve32f, PRIV_VERSION_1_10_0, ext_zve32f),
+@@ -1500,6 +1501,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+     MULTI_EXT_CFG_BOOL("zksed", ext_zksed, false),
+     MULTI_EXT_CFG_BOOL("zksh", ext_zksh, false),
+     MULTI_EXT_CFG_BOOL("zkt", ext_zkt, false),
++    MULTI_EXT_CFG_BOOL("ztso", ext_ztso, false),
  
- if have_virtfs
+     MULTI_EXT_CFG_BOOL("zdinx", ext_zdinx, false),
+     MULTI_EXT_CFG_BOOL("zfinx", ext_zfinx, false),
+diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+index 177418b2b9..ea5d52b2ef 100644
+--- a/target/riscv/translate.c
++++ b/target/riscv/translate.c
+@@ -109,6 +109,8 @@ typedef struct DisasContext {
+     /* PointerMasking extension */
+     bool pm_mask_enabled;
+     bool pm_base_enabled;
++    /* Ztso */
++    bool ztso;
+     /* Use icount trigger for native debug */
+     bool itrigger;
+     /* FRM is known to contain a valid value. */
+@@ -1196,6 +1198,7 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+     ctx->cs = cs;
+     ctx->pm_mask_enabled = FIELD_EX32(tb_flags, TB_FLAGS, PM_MASK_ENABLED);
+     ctx->pm_base_enabled = FIELD_EX32(tb_flags, TB_FLAGS, PM_BASE_ENABLED);
++    ctx->ztso = cpu->cfg.ext_ztso;
+     ctx->itrigger = FIELD_EX32(tb_flags, TB_FLAGS, ITRIGGER);
+     ctx->zero = tcg_constant_tl(0);
+     ctx->virt_inst_excp = false;
+diff --git a/target/riscv/insn_trans/trans_rva.c.inc b/target/riscv/insn_trans/trans_rva.c.inc
+index 267930e5bc..4a9e4591d1 100644
+--- a/target/riscv/insn_trans/trans_rva.c.inc
++++ b/target/riscv/insn_trans/trans_rva.c.inc
+@@ -40,7 +40,11 @@ static bool gen_lr(DisasContext *ctx, arg_atomic *a, MemOp mop)
+         tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
+     }
+     tcg_gen_qemu_ld_tl(load_val, src1, ctx->mem_idx, mop);
+-    if (a->aq) {
++    /*
++     * TSO defines AMOs as acquire+release-RCsc, but does not define LR/SC as
++     * AMOs.  Instead treat them like loads.
++     */
++    if (a->aq || ctx->ztso) {
+         tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
+     }
+ 
+@@ -76,9 +80,10 @@ static bool gen_sc(DisasContext *ctx, arg_atomic *a, MemOp mop)
+     gen_set_label(l1);
+     /*
+      * Address comparison failure.  However, we still need to
+-     * provide the memory barrier implied by AQ/RL.
++     * provide the memory barrier implied by AQ/RL/TSO.
+      */
+-    tcg_gen_mb(TCG_MO_ALL + a->aq * TCG_BAR_LDAQ + a->rl * TCG_BAR_STRL);
++    TCGBar bar_strl = (ctx->ztso || a->rl) ? TCG_BAR_STRL : 0;
++    tcg_gen_mb(TCG_MO_ALL + a->aq * TCG_BAR_LDAQ + bar_strl);
+     gen_set_gpr(ctx, a->rd, tcg_constant_tl(1));
+ 
+     gen_set_label(l2);
+diff --git a/target/riscv/insn_trans/trans_rvi.c.inc b/target/riscv/insn_trans/trans_rvi.c.inc
+index faf6d65064..ad40d3e87f 100644
+--- a/target/riscv/insn_trans/trans_rvi.c.inc
++++ b/target/riscv/insn_trans/trans_rvi.c.inc
+@@ -266,12 +266,20 @@ static bool gen_load_i128(DisasContext *ctx, arg_lb *a, MemOp memop)
+ 
+ static bool gen_load(DisasContext *ctx, arg_lb *a, MemOp memop)
+ {
++    bool out;
++
+     decode_save_opc(ctx);
+     if (get_xl(ctx) == MXL_RV128) {
+-        return gen_load_i128(ctx, a, memop);
++        out = gen_load_i128(ctx, a, memop);
+     } else {
+-        return gen_load_tl(ctx, a, memop);
++        out = gen_load_tl(ctx, a, memop);
++    }
++
++    if (ctx->ztso) {
++        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
+     }
++
++    return out;
+ }
+ 
+ static bool trans_lb(DisasContext *ctx, arg_lb *a)
+@@ -328,6 +336,10 @@ static bool gen_store_tl(DisasContext *ctx, arg_sb *a, MemOp memop)
+     TCGv addr = get_address(ctx, a->rs1, a->imm);
+     TCGv data = get_gpr(ctx, a->rs2, EXT_NONE);
+ 
++    if (ctx->ztso) {
++        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
++    }
++
+     tcg_gen_qemu_st_tl(data, addr, ctx->mem_idx, memop);
+     return true;
+ }
+diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
+index 9e101ab434..742008f58b 100644
+--- a/target/riscv/insn_trans/trans_rvv.c.inc
++++ b/target/riscv/insn_trans/trans_rvv.c.inc
+@@ -636,8 +636,28 @@ static bool ldst_us_trans(uint32_t vd, uint32_t rs1, uint32_t data,
+     tcg_gen_addi_ptr(dest, tcg_env, vreg_ofs(s, vd));
+     tcg_gen_addi_ptr(mask, tcg_env, vreg_ofs(s, 0));
+ 
++    /*
++     * According to the specification
++     *
++     *   Additionally, if the Ztso extension is implemented, then vector memory
++     *   instructions in the V extension and Zve family of extensions follow
++     *   RVTSO at the instruction level.  The Ztso extension does not
++     *   strengthen the ordering of intra-instruction element accesses.
++     *
++     * as a result neither ordered nor unordered accesses from the V
++     * instructions need ordering within the loop but we do still need barriers
++     * around the loop.
++     */
++    if (is_store && s->ztso) {
++        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
++    }
++
+     fn(dest, mask, base, tcg_env, desc);
+ 
++    if (!is_store && s->ztso) {
++        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
++    }
++
+     if (!is_store) {
+         mark_vs_dirty(s);
+     }
 -- 
 2.44.0
 
