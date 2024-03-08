@@ -2,103 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05200876A00
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 18:36:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D9D8876DD0
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 00:11:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rie8E-0005Fq-0M; Fri, 08 Mar 2024 12:35:42 -0500
+	id 1rijLH-0007KQ-Nk; Fri, 08 Mar 2024 18:09:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
- id 1rie7q-0005D3-Ql
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 12:35:18 -0500
-Received: from mail-oo1-xc36.google.com ([2607:f8b0:4864:20::c36])
+ (Exim 4.90_1) (envelope-from <dmatlack@google.com>)
+ id 1rie8i-0005Ty-Dk
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 12:36:14 -0500
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
- id 1rie7o-0007go-5Y
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 12:35:18 -0500
-Received: by mail-oo1-xc36.google.com with SMTP id
- 006d021491bc7-5a142375987so853897eaf.3
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 09:35:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dmatlack@google.com>)
+ id 1rie8g-0007rH-EL
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 12:36:12 -0500
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a45ecef71deso116252466b.2
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 09:36:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=cloud.com; s=cloud; t=1709919315; x=1710524115; darn=nongnu.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=42z1c6En4OMO73HSWbt9qhFCGOY4c7z3vfsZqA96K6s=;
- b=hQwekRr6Z/WyJww+zzRgKagXY/asdvATDc4wzv7WRHHT4cHqhpwA0tzMtbOSfBwdv4
- nwdf0hHZGZF6g4MRHHqPoUvwzzXVucJ3wqQ/dIk6RqWNMteWmNHpG/Bdoz9Cbg0ifR60
- mqTmVmKZDmOJ4jrZPhJBEsLmGrt33PDroLCj8=
+ d=google.com; s=20230601; t=1709919368; x=1710524168; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BLQqEflG3oKsA3aPOWUhkr0esXHDoToF4yiF8NeiiXk=;
+ b=inUBUjCC3FlrD0L4CjFC+OYaZv8VGx8lYZWBGnthYFJ+qpkTDSGdl9xQpB4BldniIM
+ D786om8Vrr5myJo764C/LEDqOM8Upjq8QVLgDaOr+9qSrHT0IRgAiDaXOD/SXIe7wrti
+ XAyb17v6bWXZiP6hJtiEt9zM7JvM1SCROaLMbQ7vNskOurTS8/FAnE6QL5NIWayCLlLD
+ YM3+ohVVEEWC3pg6a+3393uROQ1vIRK1zcPyEsl/GN0dPD6fjsxBx92p47pHFaINmE0m
+ TLC3CUbn0fGJnQ9IWNNE+yKqA11WASkQAdYFBOU4DioiMhI75iefWFWESjwt1gfO0PoJ
+ n+lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709919315; x=1710524115;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=42z1c6En4OMO73HSWbt9qhFCGOY4c7z3vfsZqA96K6s=;
- b=cAZf918Nln8EeBr2XheoP9Y6m/BJteSnRidTA0oSEid9bYD24DcfewJghsppW/xzUT
- rsWr4vfvqgpBmsFF7yr2Qt22O5RC0FYHzLYoGQULiZkqOEiRjf/qXEx7TOrEBqKI4wWd
- tb3eAMH6awoHYBMF0t52UG4nEpWZqAt3b7mYZn9Xgav6TNcjSx9MrzTtjxWSnbGM7n7o
- oUeubjgqmosW56YfM7fsVc+aYvZJsFeXRIcm+8sp41Vq0frqA782yCm7Xf5z4BjBhqIE
- r8YhFfNCQoWqk2f6ymy0nGYFEDmbK3vHonkea/uNVeBkSMAWrWPDqTTdMdvOvTPazj69
- 6gQw==
-X-Gm-Message-State: AOJu0YzEGdrkI/qLwskTvYf9KaBDhLt4k+dN2azn7xndPyER1/b/pl0p
- +JwtA5kXVGfir82BeEBxXfa8QtBtxKp1JfDmBacTT8dTeSkDusHw5DzX0QuvYvM=
-X-Google-Smtp-Source: AGHT+IFP+iIn7ziPACo/W5ywuwt3jU9vKOJI+Md4melHw3m+IPRBayOOv3MnfyWInvHuBqQD34WXQg==
-X-Received: by 2002:a05:6820:2227:b0:5a1:34cf:400c with SMTP id
- cj39-20020a056820222700b005a134cf400cmr12525786oob.9.1709919314653; 
- Fri, 08 Mar 2024 09:35:14 -0800 (PST)
-Received: from perard.uk.xensource.com (default-46-102-197-194.interdsl.co.uk.
- [46.102.197.194]) by smtp.gmail.com with ESMTPSA id
- z5-20020a05683020c500b006e12266433csm2248064otq.27.2024.03.08.09.35.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Mar 2024 09:35:14 -0800 (PST)
-Date: Fri, 8 Mar 2024 17:35:08 +0000
-From: Anthony PERARD <anthony.perard@cloud.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- =?iso-8859-1?Q?Fr=E9d=E9ric?= Barrat <fbarrat@linux.ibm.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Viresh Kumar <viresh.kumar@linaro.org>, mzamazal@redhat.com,
- Stefano Stabellini <sstabellini@kernel.org>,
- Paul Durrant <paul@xen.org>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Peter Maydell <peter.maydell@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
- Laurent Vivier <laurent@vivier.eu>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v3 01/29] bulk: Access existing variables initialized to
- &S->F when available
-Message-ID: <a495a2c8-0259-4a44-8ac4-9cb6052074b6@perard>
-References: <20240129164514.73104-1-philmd@linaro.org>
- <20240129164514.73104-2-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1709919368; x=1710524168;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=BLQqEflG3oKsA3aPOWUhkr0esXHDoToF4yiF8NeiiXk=;
+ b=e7X7m41e0ywnA58aLCGJUvrXLTaVzoKqoygv0a4XfK+CkM6tBTHF7C83rQA6kAtLQx
+ Y+HQyHteuY5nztemd2PQeff7RdKcMJs6HMJEReJltv1WtR/8hick8yL+k+HFtr3Dubcs
+ DmIqTljL0uyOXSs1fXkxEvhOVsS+k5gL3BfKuYoVv6+8yKnBbawl88KVBfri+zHjmCGi
+ 3gZhXTfnY8qQTzev3kZ8ZYrWhwgYbdjJT45lzig3l57qCxKI8s9tqgih7jBRuLOyZONw
+ wk1Ul+gs5Zb8YJh5CdC0t9IjN73aU3WhEUfaTB90qFYebZay9uIOBHRMMYT/aQBz0Pn0
+ k+dA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW03vum+e5Hfg01hoklG5wQoWyBDVUkvRafUjrj33e52M5OUSemmlP/CFoKwtJvbw6029wNhD5e6R1o9egxXpz2TGTg+OY=
+X-Gm-Message-State: AOJu0YwR7uA16VUCp+AxokiVSi5GwQ1LLEYso0CW9kHShCV+shUp5sGx
+ agWiR4BfojR9nnnM7vjq2U6pDJEEclZsNRSRoLLIktrUr8rt7e0dqFR96HRh8UzqUw4Clfo7TEt
+ WWUOPCrgSYaBk0kSd650LiIhkuKW9wUsKMjtX
+X-Google-Smtp-Source: AGHT+IGceX9beSvLegicFsUM7bVnbHkalYe9JD/77bNVUNdVA+Xl4w4FIFSUu9uJ12/JV7uxpjfKrXnAPKcZF463m/U=
+X-Received: by 2002:a17:907:d38b:b0:a45:e3ab:152f with SMTP id
+ vh11-20020a170907d38b00b00a45e3ab152fmr3755078ejc.21.1709919368333; Fri, 08
+ Mar 2024 09:36:08 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240129164514.73104-2-philmd@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c36;
- envelope-from=anthony.perard@cloud.com; helo=mail-oo1-xc36.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+References: <cc1bb8e9bc3e1ab637700a4d3defeec95b55060a.camel@amazon.com>
+ <CA+i-1C34VT5oFQL7en1n+MdRrO7AXaAMdNVvjFPxOaTDGXu9Dw@mail.gmail.com>
+In-Reply-To: <CA+i-1C34VT5oFQL7en1n+MdRrO7AXaAMdNVvjFPxOaTDGXu9Dw@mail.gmail.com>
+From: David Matlack <dmatlack@google.com>
+Date: Fri, 8 Mar 2024 09:35:39 -0800
+Message-ID: <CALzav=fO2hpaErSRHGCJCKTrJKD7b9F5oEg7Ljhb0u1gB=VKwg@mail.gmail.com>
+Subject: Re: Unmapping KVM Guest Memory from Host Kernel
+To: Brendan Jackman <jackmanb@google.com>
+Cc: "Gowans, James" <jgowans@amazon.com>,
+ "seanjc@google.com" <seanjc@google.com>, 
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "Roy,
+ Patrick" <roypat@amazon.co.uk>, 
+ "chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "Manwaring,
+ Derek" <derekmn@amazon.com>, "rppt@kernel.org" <rppt@kernel.org>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+ "Woodhouse, David" <dwmw@amazon.co.uk>, "Kalyazin,
+ Nikita" <kalyazin@amazon.co.uk>, 
+ "lstoakes@gmail.com" <lstoakes@gmail.com>,
+ "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, 
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
+ "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+ "vbabka@suse.cz" <vbabka@suse.cz>, 
+ "mst@redhat.com" <mst@redhat.com>, "somlo@cmu.edu" <somlo@cmu.edu>, "Graf (AWS),
+ Alexander" <graf@amazon.de>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=dmatlack@google.com; helo=mail-ej1-x62f.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 08 Mar 2024 18:09:24 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,55 +109,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 29, 2024 at 05:44:43PM +0100, Philippe Mathieu-Daudé wrote:
-> When a variable is initialized to &struct->field, use it
-> in place. Rationale: while this makes the code more concise,
-> this also helps static analyzers.
-> 
-> Mechanical change using the following Coccinelle spatch script:
-> 
->  @@
->  type S, F;
->  identifier s, m, v;
->  @@
->       S *s;
->       ...
->       F *v = &s->m;
->       <+...
->  -    &s->m
->  +    v
->       ...+>
-> 
-> Inspired-by: Zhao Liu <zhao1.liu@intel.com>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
-> diff --git a/hw/xen/xen_pt.c b/hw/xen/xen_pt.c
-> index 36e6f93c37..10ddf6bc91 100644
-> --- a/hw/xen/xen_pt.c
-> +++ b/hw/xen/xen_pt.c
-> @@ -710,7 +710,7 @@ static void xen_pt_destroy(PCIDevice *d) {
->      uint8_t intx;
->      int rc;
->  
-> -    if (machine_irq && !xen_host_pci_device_closed(&s->real_device)) {
-> +    if (machine_irq && !xen_host_pci_device_closed(host_dev)) {
->          intx = xen_pt_pci_intx(s);
->          rc = xc_domain_unbind_pt_irq(xen_xc, xen_domid, machine_irq,
->                                       PT_IRQ_TYPE_PCI,
-> @@ -759,8 +759,8 @@ static void xen_pt_destroy(PCIDevice *d) {
->          memory_listener_unregister(&s->io_listener);
->          s->listener_set = false;
->      }
-> -    if (!xen_host_pci_device_closed(&s->real_device)) {
-> -        xen_host_pci_device_put(&s->real_device);
-> +    if (!xen_host_pci_device_closed(host_dev)) {
-> +        xen_host_pci_device_put(host_dev);
+On Fri, Mar 8, 2024 at 8:25=E2=80=AFAM Brendan Jackman <jackmanb@google.com=
+> wrote:
+>
+> Hi James
+>
+> On Fri, 8 Mar 2024 at 16:50, Gowans, James <jgowans@amazon.com> wrote:
+> > Our goal is to more completely address the class of issues whose leak
+> > origin is categorized as "Mapped memory" [1].
+>
+> Did you forget a link below? I'm interested in hearing about that
+> categorisation.
+>
+> > ... what=E2=80=99s the best way to solve getting guest RAM out of
+> > the direct map?
+>
+> It's perhaps a bigger hammer than you are looking for, but the
+> solution we're working on at Google is "Address Space Isolation" (ASI)
+> - the latest posting about that is [2].
+>
+> The sense in which it's a bigger hammer is that it doesn't only
+> support removing guest memory from the direct map, but rather
+> arbitrary data from arbitrary kernel mappings.
 
-For the Xen part:
-Reviewed-by: Anthony PERARD <anthony.perard@citrix.com>
+I'm not sure if ASI provides a solution to the problem James is trying
+to solve. ASI creates a separate "restricted" address spaces where, yes,
+guest memory can be not mapped. But any access to guest memory is
+ still allowed. An access will trigger a page fault, the kernel will
+switch to the "full" kernel address space (flushing hardware buffers
+along the way to prevent speculation), and then proceed. i.e. ASI
+doesn't not prevent accessing guest memory through the
+direct map, it just prevents speculation of guest memory through the
+direct map.
 
-Thanks,
+I think what James is looking for (and what we are also interested
+in), is _eliminating_ the ability to access guest memory from the
+direct map entirely. And in general, eliminate the ability to access
+guest memory in as many ways as possible.
 
--- 
-Anthony PERARD
+For that goal, I have been thinking about guest_memfd as a
+solution. Yes guest_memfd today is backed by pages of memory that are
+mapped in the direct map. But what we can do is add the ability to
+back guest_memfd by pages of memory that aren't in the direct map. I
+haven't thought it fully through yet but something like... Hide the
+majority of RAM from Linux (I believe there are kernel parameters to
+do this) and hand it off to guest_memfd to allocate from as a source
+of guest memory. Then the only way to access guest memory is to mmap()
+a guest_memfd (e.g. for PV userspace devices).
 
