@@ -2,29 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9268767AD
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:50:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14DDF8767AE
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:50:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ricTS-00039j-NL; Fri, 08 Mar 2024 10:49:30 -0500
+	id 1ricTQ-0002zJ-Tm; Fri, 08 Mar 2024 10:49:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1ricTO-0002vN-LT; Fri, 08 Mar 2024 10:49:27 -0500
+ id 1ricTL-0002iG-W0; Fri, 08 Mar 2024 10:49:24 -0500
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1ricTL-00047g-VQ; Fri, 08 Mar 2024 10:49:26 -0500
+ id 1ricTK-000481-CS; Fri, 08 Mar 2024 10:49:23 -0500
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 1222B488C8;
- Fri,  8 Mar 2024 16:49:15 +0100 (CET)
-Message-ID: <b246ef09-f945-4857-a083-9de168b8e7bd@proxmox.com>
-Date: Fri, 8 Mar 2024 16:49:14 +0100
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 4339C488C2;
+ Fri,  8 Mar 2024 16:49:20 +0100 (CET)
+Message-ID: <0a7ac6dd-3100-498f-9669-6b888ecbdb8f@proxmox.com>
+Date: Fri, 8 Mar 2024 16:49:19 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/5] block/copy-before-write: create block_copy bitmap
- in filter node
+Subject: Re: [PATCH v3 4/5] qapi: blockdev-backup: add discard-source parameter
 Content-Language: en-US
 To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  qemu-block@nongnu.org
@@ -33,9 +32,9 @@ Cc: qemu-devel@nongnu.org, armbru@redhat.com, eblake@redhat.com,
  kwolf@redhat.com, jsnow@redhat.com, den@virtuozzo.com,
  alexander.ivanov@virtuozzo.com
 References: <20240228141501.455989-1-vsementsov@yandex-team.ru>
- <20240228141501.455989-4-vsementsov@yandex-team.ru>
+ <20240228141501.455989-5-vsementsov@yandex-team.ru>
 From: Fiona Ebner <f.ebner@proxmox.com>
-In-Reply-To: <20240228141501.455989-4-vsementsov@yandex-team.ru>
+In-Reply-To: <20240228141501.455989-5-vsementsov@yandex-team.ru>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
@@ -60,19 +59,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 28.02.24 um 15:14 schrieb Vladimir Sementsov-Ogievskiy:
-> Currently block_copy creates copy_bitmap in source node. But that is in
-> bad relation with .independent_close=true of copy-before-write filter:
-> source node may be detached and removed before .bdrv_close() handler
-> called, which should call block_copy_state_free(), which in turn should
-> remove copy_bitmap.
+Am 28.02.24 um 15:15 schrieb Vladimir Sementsov-Ogievskiy:
+> Add a parameter that enables discard-after-copy. That is mostly useful
+> in "push backup with fleecing" scheme, when source is snapshot-access
+> format driver node, based on copy-before-write filter snapshot-access
+> API:
 > 
-> That's all not ideal: it would be better if internal bitmap of
-> block-copy object is not attached to any node. But that is not possible
-> now.
+> [guest]      [snapshot-access] ~~ blockdev-backup ~~> [backup target]
+>    |            |
+>    | root       | file
+>    v            v
+> [copy-before-write]
+>    |             |
+>    | file        | target
+>    v             v
+> [active disk]   [temp.img]
 > 
-> The simplest solution is just create copy_bitmap in filter node, where
-> anyway two other bitmaps are created.
+> In this case discard-after-copy does two things:
+> 
+>  - discard data in temp.img to save disk space
+>  - avoid further copy-before-write operation in discarded area
+> 
+> Note that we have to declare WRITE permission on source in
+> copy-before-write filter, for discard to work. Still we can't take it
+> unconditionally, as it will break normal backup from RO source. So, we
+> have to add a parameter and pass it thorough bdrv_open flags.
 > 
 > Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
