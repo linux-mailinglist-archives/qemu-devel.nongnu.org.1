@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1EBB8767B3
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:50:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 870D98767BC
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:51:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ricUL-0007L0-Ar; Fri, 08 Mar 2024 10:50:25 -0500
+	id 1ricUW-0008Jd-6Y; Fri, 08 Mar 2024 10:50:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ricUI-00079q-35
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:50:22 -0500
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ id 1ricUL-0007Uc-RP
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:50:25 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ricUF-0004GV-Jn
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:50:21 -0500
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-512f54fc2dbso2061716e87.1
+ id 1ricUF-0004GX-NH
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:50:25 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-33e17342ea7so617182f8f.2
  for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 07:50:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1709913018; x=1710517818; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ZyiPy5xXJ/X9HqSi2OgP9Ewz4kgyfIfLY+4hqUdEidI=;
- b=Z1op39Wz6tWsy7PND3kxeTOVG8Mms8V9S/yDVNGbNbMwCco+VwOT+RAf1x1htgKLSa
- Ayde+R1ySjnnZqaBVKs0w1OMw+aOuBW8MIrtUy2bt2hKP52CTTf1llCb1EU5QCDq+Jcs
- B/5uXVJepBUayKp+2r1fsQx80aa0Wdh8gCq0ZxjElF26Fk4znU8sWehegpiR2zVPb3oP
- A3Tuqsqs5HDhhx1uyegcAwsYfa0WgjSr58HD5AREQJ+cZpFf4vv8e4hxPMq5QUiz4nB9
- WCpA/vUItB0J/n+myDcbTfWVO81VYDYA4HkUnJANhvm+mto7soHV3JQcqYveJWItz+Ia
- Y3Wg==
+ :reply-to; bh=3cWuaoCkTQVu5qObgGDnDzWYB/sSDqmlrWjM/kbjq6Y=;
+ b=YAMICA+YMQ08x0I5ifZP4dZOVXJGvGS0cbMWyVo5NEJcgAXkhz7VWGDUDopaQht967
+ Yn6cI1rmoR8w+7dx8F7iEXnOsR0N9WXxk/UYixtsUXfARXDYYQ27L2hMxXPbvD7lOXML
+ VTxyg6HNLTp/TE6yLJXEULYdtvjQa4hTKqymoVcVq55x+AH5jKGmc33Xi/zMW/Bw/fvQ
+ LGoom9G74gyFDeuOS+qPDVNJotjPQHTeDDJSXXRBt9yiv4CjVsemMYH9jx838dP7/RXZ
+ pnzu9SqSbfHtBav6Z+8lp07K7Nk8BInUPwMlPWmPSTvM9vnjtafnwhwFLSsGswaSSXTQ
+ 3G+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1709913018; x=1710517818;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZyiPy5xXJ/X9HqSi2OgP9Ewz4kgyfIfLY+4hqUdEidI=;
- b=ZZo+3BOhO/97tNtpe34K+fXrRn3Pk5V7SJg2vH/sj8WbO2Tt7uCsQ0guzKcl7JWoLX
- MLfwID39YFc+ja4eU3m7ApTlol27n0SLgVQxGTk25vOXxmjWx8rIpddtOIOAN+6MmVqy
- xDXMWfbFhjymlKiZSMam1S5fo2cuRU+h/Ur1dkglGKWptdvvBjI5lG6JqonJoEkKKgKl
- b7X5t/0IPMxZTIvFmHRqId8/q4kshKFc3nnESJ/5F4V59IpVrtJ54XGXy0jVbiZZR/de
- Ub4eOnMYnTRiMa6Ik41wr91RleFWS1dg0nXFTk8q/gHE2+gsAWDArrYzJ0gERdz4DP5U
- EN/A==
-X-Gm-Message-State: AOJu0YzpqtSdahUgfAbMpxOhSuq22nsuFLnFubwsiSrVP4sQz3ikjhjd
- 0jbHx6ogfbQxL2yN8bckSdC9cgbtbXPhMfwVV4xthRfgLHGzqucBEjmHDtkqysnP9MNAW+byqtB
- L
-X-Google-Smtp-Source: AGHT+IF1dMWes94BUnn2CbgmcQZHL52j20gP8oMqEvF/lX4zUe1GEzPVq957t4CU/LHLpjqy/VKklw==
-X-Received: by 2002:ac2:5b44:0:b0:513:3e22:6e01 with SMTP id
- i4-20020ac25b44000000b005133e226e01mr3393952lfp.16.1709913017639; 
- Fri, 08 Mar 2024 07:50:17 -0800 (PST)
+ bh=3cWuaoCkTQVu5qObgGDnDzWYB/sSDqmlrWjM/kbjq6Y=;
+ b=e6gVKCzQKvhHVeCb2h1LO38deahQep27Dp0h/rdGCC6TewSgHjm3dw2+jzspyMSa6x
+ KLCaIt8gQ+u0e1Dx5zb+0Ge+lIr1DSfDiFDzQ+KrIOfJvChb+xmXfWD1yXe35niV7qco
+ WNhyDqHW5wf5Q3a0vuvfnH68za1DP8MEBLFBHUL2nEL98NdfaBwYsyTxsxiu9ll4CShM
+ f9msaDwrZl+2a5lBjTnZh1SvcFmp2SZb3ghUmQPtAyxn/QoqULjnrvyFLj0CLpZ1WFnN
+ uxBXq4/xhhyNQYxQeKNmeEzRdvuL7XDif4HnVl3+rAD3fxCwq+PBoS1GoiPTvvoy7kqJ
+ 8Kuw==
+X-Gm-Message-State: AOJu0Yx65+x5jLVo/EEsgSv+y1OVz6JEKuYwRfC3yaRW82kq0nZYPZ0f
+ kW1tRq7vkCEnNhuTn4mHLg8oHts1YUMiDllOcCjlYtZPutxhGYalKVI8K4abfKCBB8ESbKWnkyR
+ W
+X-Google-Smtp-Source: AGHT+IEThre7/6PEGkb+BnZZJGbX3DXc0UHAF1SshUWoxiOtXgbuiQjFKrsG5CFrQyHHoZGodqvZYQ==
+X-Received: by 2002:a5d:6e48:0:b0:33d:7e99:babc with SMTP id
+ j8-20020a5d6e48000000b0033d7e99babcmr14603150wrz.50.1709913018058; 
+ Fri, 08 Mar 2024 07:50:18 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  f2-20020adff8c2000000b0033e7a204dc7sm856080wrq.32.2024.03.08.07.50.17
@@ -59,23 +59,24 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 08 Mar 2024 07:50:17 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/14] target/arm: Timer _EL02 registers UNDEF for E2H == 0
-Date: Fri,  8 Mar 2024 15:50:03 +0000
-Message-Id: <20240308155015.3637663-3-peter.maydell@linaro.org>
+Subject: [PULL 03/14] target/arm: use FIELD macro for CNTHCTL bit definitions
+Date: Fri,  8 Mar 2024 15:50:04 +0000
+Message-Id: <20240308155015.3637663-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240308155015.3637663-1-peter.maydell@linaro.org>
 References: <20240308155015.3637663-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,29 +92,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The timer _EL02 registers should UNDEF for invalid accesses from EL2
-or EL3 when HCR_EL2.E2H == 0, not take a cp access trap.  We were
-delivering the exception to EL2 with the wrong syndrome.
+We prefer the FIELD macro over ad-hoc #defines for register bits;
+switch CNTHCTL to that style before we add any more bits.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240301183219.2424889-3-peter.maydell@linaro.org
+Message-id: 20240301183219.2424889-4-peter.maydell@linaro.org
 ---
- target/arm/helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/arm/internals.h | 27 +++++++++++++++++++++++++--
+ target/arm/helper.c    |  9 ++++-----
+ 2 files changed, 29 insertions(+), 7 deletions(-)
 
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index d8622c8e0f1..dd3da211a3f 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -224,8 +224,31 @@ FIELD(VTCR, SL2, 33, 1)
+ #define HSTR_TTEE (1 << 16)
+ #define HSTR_TJDBX (1 << 17)
+ 
+-#define CNTHCTL_CNTVMASK      (1 << 18)
+-#define CNTHCTL_CNTPMASK      (1 << 19)
++/*
++ * Depending on the value of HCR_EL2.E2H, bits 0 and 1
++ * have different bit definitions, and EL1PCTEN might be
++ * bit 0 or bit 10. We use _E2H1 and _E2H0 suffixes to
++ * disambiguate if necessary.
++ */
++FIELD(CNTHCTL, EL0PCTEN_E2H1, 0, 1)
++FIELD(CNTHCTL, EL0VCTEN_E2H1, 1, 1)
++FIELD(CNTHCTL, EL1PCTEN_E2H0, 0, 1)
++FIELD(CNTHCTL, EL1PCEN_E2H0, 1, 1)
++FIELD(CNTHCTL, EVNTEN, 2, 1)
++FIELD(CNTHCTL, EVNTDIR, 3, 1)
++FIELD(CNTHCTL, EVNTI, 4, 4)
++FIELD(CNTHCTL, EL0VTEN, 8, 1)
++FIELD(CNTHCTL, EL0PTEN, 9, 1)
++FIELD(CNTHCTL, EL1PCTEN_E2H1, 10, 1)
++FIELD(CNTHCTL, EL1PTEN, 11, 1)
++FIELD(CNTHCTL, ECV, 12, 1)
++FIELD(CNTHCTL, EL1TVT, 13, 1)
++FIELD(CNTHCTL, EL1TVCT, 14, 1)
++FIELD(CNTHCTL, EL1NVPCT, 15, 1)
++FIELD(CNTHCTL, EL1NVVCT, 16, 1)
++FIELD(CNTHCTL, EVNTIS, 17, 1)
++FIELD(CNTHCTL, CNTVMASK, 18, 1)
++FIELD(CNTHCTL, CNTPMASK, 19, 1)
+ 
+ /* We use a few fake FSR values for internal purposes in M profile.
+  * M profile cores don't have A/R format FSRs, but currently our
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 90c4fb72ce4..978df6f2823 100644
+index 978df6f2823..1c82d12a883 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -6551,7 +6551,7 @@ static CPAccessResult e2h_access(CPUARMState *env, const ARMCPRegInfo *ri,
-         return CP_ACCESS_OK;
+@@ -2652,8 +2652,8 @@ static void gt_update_irq(ARMCPU *cpu, int timeridx)
+      * It is RES0 in Secure and NonSecure state.
+      */
+     if ((ss == ARMSS_Root || ss == ARMSS_Realm) &&
+-        ((timeridx == GTIMER_VIRT && (cnthctl & CNTHCTL_CNTVMASK)) ||
+-         (timeridx == GTIMER_PHYS && (cnthctl & CNTHCTL_CNTPMASK)))) {
++        ((timeridx == GTIMER_VIRT && (cnthctl & R_CNTHCTL_CNTVMASK_MASK)) ||
++         (timeridx == GTIMER_PHYS && (cnthctl & R_CNTHCTL_CNTPMASK_MASK)))) {
+         irqstate = 0;
      }
-     if (!(arm_hcr_el2_eff(env) & HCR_E2H)) {
--        return CP_ACCESS_TRAP;
-+        return CP_ACCESS_TRAP_UNCATEGORIZED;
+ 
+@@ -2968,12 +2968,11 @@ static void gt_cnthctl_write(CPUARMState *env, const ARMCPRegInfo *ri,
+ {
+     ARMCPU *cpu = env_archcpu(env);
+     uint32_t oldval = env->cp15.cnthctl_el2;
+-
+     raw_write(env, ri, value);
+ 
+-    if ((oldval ^ value) & CNTHCTL_CNTVMASK) {
++    if ((oldval ^ value) & R_CNTHCTL_CNTVMASK_MASK) {
+         gt_update_irq(cpu, GTIMER_VIRT);
+-    } else if ((oldval ^ value) & CNTHCTL_CNTPMASK) {
++    } else if ((oldval ^ value) & R_CNTHCTL_CNTPMASK_MASK) {
+         gt_update_irq(cpu, GTIMER_PHYS);
      }
-     return CP_ACCESS_OK;
  }
 -- 
 2.34.1
