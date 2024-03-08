@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BD188762E7
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 12:16:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C46558762D1
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 12:13:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riY9T-0006bA-BS; Fri, 08 Mar 2024 06:12:35 -0500
+	id 1riY9S-0006b2-IZ; Fri, 08 Mar 2024 06:12:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1riY9O-0006ZB-SQ
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:12:30 -0500
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1riY9N-0006Z8-Gr
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:12:29 -0500
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1riY9I-0001Qh-QP
+ id 1riY9M-0001RM-10
  for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:12:29 -0500
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-5e42b4bbfa4so477603a12.1
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 03:12:24 -0800 (PST)
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1dbd32cff0bso17277795ad.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 03:12:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709896343; x=1710501143; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1709896346; x=1710501146; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5YioOzPq6dtbeSZOgq1vL0KqpugyX6Ofr7K2JZKU12I=;
- b=T4lgGraNPoiRzbotKLoWCSZdjvl1iDyOrwdKmq8ezU1PAac1N2qbV/453SlbMkJRu0
- YPgQeGriuvo/Y68tM+4XkvtZ750CbcYWsDR++5yjhvTj5QwUyoz/Sf7M7dSRMh+9n0Ci
- b5OScSHtLpbvRmI0rKS9ItqHB0L9S/tM2m1kN5vF6DG+wPLtL75kkArT8rJyBzWRih4p
- bVwNZkrXllB1QtRK3wdAt8M/e45fvPH0+R0XGSp4KBNNFsfqZry4IjImJ77DOTZBHbQM
- OloBVRSepLKU0cVhd/ojp93/go3PvU52K3VOTWgfI5mvKn2NLqlNvkaBfeBTaSDV412w
- 9sYA==
+ bh=IgvZkNEjDrjuamPt04chMxstCChtUwqVUEXDaGipd9c=;
+ b=IyJvi2ONGFV2luGPH3I3Z4jlK8PWn1CaA6h5iAsVg7rw5Eo8aTxw4hAGqMoZ5SGHCQ
+ xLpD63936bHdk8be7CwrSESolAzhj6L+PBUbhKb4KsGEy1203Tj0wkgb85xLNUMP47eq
+ 1y3eH1ODDfHS5vYO/HgpVcqOpRWHzImg6/NgHf7F6iezvtzx4lSZzr0m2/rTCrXkMXUf
+ RfrZryRjJfNo5H90qN/FP5Ydszs21cTah9ioErxsugQwHJZgqg8ixlgwfbaJ8wGYlFBZ
+ Ewar4Roy7fbyNB/yWC+NnHI448gov/uFIIy9+pcfeJuqqlkUflRkk2h2VJZ0ex+J3eBk
+ lM7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709896343; x=1710501143;
+ d=1e100.net; s=20230601; t=1709896346; x=1710501146;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5YioOzPq6dtbeSZOgq1vL0KqpugyX6Ofr7K2JZKU12I=;
- b=o4y6ukOX+es2XXmzyB14JEVJdNk/Fe6BDIQxzQ+VoUwkSMJCSiiX0PmuK9q3Afy+Tb
- RrHt143aHay+bA6Trj9HAOWCuWYlwdzmJWa4Fkdmb2ROGw4o12TzEqzQGEDYjsZ90X5u
- qjoV4joZ3zekYi8gs4m3Q964OL2EhL0MRyXKipAipGcVbza6ct1S56snm+p7sUjtFkGJ
- +QfOqwRjTmtYT2fPoRmGWwuPpBhdN0fkdBqL0l42MpdnJx2DirCCMlbydck0ZX8fjF2G
- YxUUhRXrYblBlMM4XvGK3lQAJ2JEdGWnRoyG6wJHfnubUfKu0VR0GVxm3MpomwukZx11
- iRPA==
-X-Gm-Message-State: AOJu0YxF98ZsprquxL+8DSPyIa9RILBWI+P8Vi7Ud3Vkwz3nDtmhv8+w
- yKjjl3GB0pJdZLL+qOLevqPN9z5tR3iBziq8AMR1N32hstM1EpAPun6cEiZ42qe4Zg==
-X-Google-Smtp-Source: AGHT+IGCzmAHbldIPGnKIRz/25j2l7X8eOZmOkRnqCN573FJnXvaB0ArnhcIochVFSQMoa55oHnofw==
-X-Received: by 2002:a05:6a20:6d90:b0:19e:bca3:213f with SMTP id
- gl16-20020a056a206d9000b0019ebca3213fmr8796418pzb.52.1709896343114; 
- Fri, 08 Mar 2024 03:12:23 -0800 (PST)
+ bh=IgvZkNEjDrjuamPt04chMxstCChtUwqVUEXDaGipd9c=;
+ b=G7luAsrnn/1JPeYSzI/Rd8RQSDJ+bbZbbj1rEZbwELBTwKjayBwSOzNdIOMRJFokek
+ tlvBbC99o6mXFbFO8rsH5tRuRhSR30vbuVOy3VI3SHlqjcPEWolSOPzMnVm0Wcd6ThHA
+ hdQfcaAm5N8/vmOOsn7WdP33nP8ZeiwbAqXNHuvJR7ucEpo4+ApmxMNvOU8VooV3GZ54
+ eG0eYQEKtwK81Bd3pu1EAhIBscAvXjelgmvWhRkvMbPs9Rzb30b8KP884F7FpkpuoCqN
+ axNKKHsCJkcTyfOzt6RGMnEOcZXImifX/FojqNT5rQiu4EzRLyQZ2rPO6Rjh5Mm8/0Zu
+ OA/A==
+X-Gm-Message-State: AOJu0YyMaQbXXQ/ox7DXadC41R00/Jp9Ys6Tn1gTWx7OjetXafjlkmzT
+ LBrSQk5pVfLSHcTk1yLi2Fx2rLr0XY+EkriTaFXrPlzT/gUJ00CMxe6/8ppaNSgD5w==
+X-Google-Smtp-Source: AGHT+IEi2/KJQbfnvTGNBBDhOQparWy7SC/Hno8MwxdNdTa6aZAki9GvOjWU+/0Wf/gA7W8rfZs0iw==
+X-Received: by 2002:a17:902:f682:b0:1dc:afd1:9c37 with SMTP id
+ l2-20020a170902f68200b001dcafd19c37mr12018060plg.24.1709896346074; 
+ Fri, 08 Mar 2024 03:12:26 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- a6-20020a170902ecc600b001dcfbbb1ca5sm12006468plh.35.2024.03.08.03.12.20
+ a6-20020a170902ecc600b001dcfbbb1ca5sm12006468plh.35.2024.03.08.03.12.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Mar 2024 03:12:22 -0800 (PST)
+ Fri, 08 Mar 2024 03:12:25 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com,
- =?UTF-8?q?Christoph=20M=C3=BCllner?= <christoph.muellner@vrull.eu>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 06/34] linux-user/riscv: Sync hwprobe keys with Linux
-Date: Fri,  8 Mar 2024 21:11:24 +1000
-Message-ID: <20240308111152.2856137-7-alistair.francis@wdc.com>
+Subject: [PULL 07/34] target/riscv/tcg: set 'mmu' with 'satp' in
+ cpu_set_profile()
+Date: Fri,  8 Mar 2024 21:11:25 +1000
+Message-ID: <20240308111152.2856137-8-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240308111152.2856137-1-alistair.francis@wdc.com>
 References: <20240308111152.2856137-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x533.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -83,8 +81,7 @@ X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,141 +97,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Christoph Müllner <christoph.muellner@vrull.eu>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Upstream Linux recently added many additional keys to the hwprobe API.
-This patch adds support for all of them with the exception of Ztso,
-which is currently not supported in QEMU.
+Recent changes in options handling removed the 'mmu' default the bare
+CPUs had, meaning that we must enable 'mmu' by hand when using the
+rva22s64 profile CPU.
 
-Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20240207115926.887816-3-christoph.muellner@vrull.eu>
-[ Changes by AF:
- - Fixup whitespace
-]
+Given that this profile is setting a satp mode, it already implies that
+we need a 'mmu'. Enable the 'mmu' in this case.
+
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20240215223955.969568-2-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- linux-user/syscall.c | 100 +++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 92 insertions(+), 8 deletions(-)
+ target/riscv/tcg/tcg-cpu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 81801f3dff..09239d2288 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -8808,14 +8808,42 @@ static int do_getdents64(abi_long dirfd, abi_long arg2, abi_long count)
- #define RISCV_HWPROBE_KEY_BASE_BEHAVIOR 3
- #define     RISCV_HWPROBE_BASE_BEHAVIOR_IMA (1 << 0)
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index dd5228c288..ee4c349972 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -1075,6 +1075,7 @@ static void cpu_set_profile(Object *obj, Visitor *v, const char *name,
  
--#define RISCV_HWPROBE_KEY_IMA_EXT_0     4
--#define     RISCV_HWPROBE_IMA_FD       (1 << 0)
--#define     RISCV_HWPROBE_IMA_C        (1 << 1)
--#define     RISCV_HWPROBE_IMA_V        (1 << 2)
--#define     RISCV_HWPROBE_EXT_ZBA      (1 << 3)
--#define     RISCV_HWPROBE_EXT_ZBB      (1 << 4)
--#define     RISCV_HWPROBE_EXT_ZBS      (1 << 5)
--#define     RISCV_HWPROBE_EXT_ZICBOZ   (1 << 6)
-+#define RISCV_HWPROBE_KEY_IMA_EXT_0         4
-+#define     RISCV_HWPROBE_IMA_FD            (1 << 0)
-+#define     RISCV_HWPROBE_IMA_C             (1 << 1)
-+#define     RISCV_HWPROBE_IMA_V             (1 << 2)
-+#define     RISCV_HWPROBE_EXT_ZBA           (1 << 3)
-+#define     RISCV_HWPROBE_EXT_ZBB           (1 << 4)
-+#define     RISCV_HWPROBE_EXT_ZBS           (1 << 5)
-+#define     RISCV_HWPROBE_EXT_ZICBOZ        (1 << 6)
-+#define     RISCV_HWPROBE_EXT_ZBC           (1 << 7)
-+#define     RISCV_HWPROBE_EXT_ZBKB          (1 << 8)
-+#define     RISCV_HWPROBE_EXT_ZBKC          (1 << 9)
-+#define     RISCV_HWPROBE_EXT_ZBKX          (1 << 10)
-+#define     RISCV_HWPROBE_EXT_ZKND          (1 << 11)
-+#define     RISCV_HWPROBE_EXT_ZKNE          (1 << 12)
-+#define     RISCV_HWPROBE_EXT_ZKNH          (1 << 13)
-+#define     RISCV_HWPROBE_EXT_ZKSED         (1 << 14)
-+#define     RISCV_HWPROBE_EXT_ZKSH          (1 << 15)
-+#define     RISCV_HWPROBE_EXT_ZKT           (1 << 16)
-+#define     RISCV_HWPROBE_EXT_ZVBB          (1 << 17)
-+#define     RISCV_HWPROBE_EXT_ZVBC          (1 << 18)
-+#define     RISCV_HWPROBE_EXT_ZVKB          (1 << 19)
-+#define     RISCV_HWPROBE_EXT_ZVKG          (1 << 20)
-+#define     RISCV_HWPROBE_EXT_ZVKNED        (1 << 21)
-+#define     RISCV_HWPROBE_EXT_ZVKNHA        (1 << 22)
-+#define     RISCV_HWPROBE_EXT_ZVKNHB        (1 << 23)
-+#define     RISCV_HWPROBE_EXT_ZVKSED        (1 << 24)
-+#define     RISCV_HWPROBE_EXT_ZVKSH         (1 << 25)
-+#define     RISCV_HWPROBE_EXT_ZVKT          (1 << 26)
-+#define     RISCV_HWPROBE_EXT_ZFH           (1 << 27)
-+#define     RISCV_HWPROBE_EXT_ZFHMIN        (1 << 28)
-+#define     RISCV_HWPROBE_EXT_ZIHINTNTL     (1 << 29)
-+#define     RISCV_HWPROBE_EXT_ZVFH          (1 << 30)
-+#define     RISCV_HWPROBE_EXT_ZVFHMIN       (1 << 31)
-+#define     RISCV_HWPROBE_EXT_ZFA           (1ULL << 32)
-+#define     RISCV_HWPROBE_EXT_ZACAS         (1ULL << 34)
-+#define     RISCV_HWPROBE_EXT_ZICOND        (1ULL << 35)
- 
- #define RISCV_HWPROBE_KEY_CPUPERF_0     5
- #define     RISCV_HWPROBE_MISALIGNED_UNKNOWN     (0 << 0)
-@@ -8876,6 +8904,62 @@ static void risc_hwprobe_fill_pairs(CPURISCVState *env,
-                      RISCV_HWPROBE_EXT_ZBS : 0;
-             value |= cfg->ext_zicboz ?
-                      RISCV_HWPROBE_EXT_ZICBOZ : 0;
-+            value |= cfg->ext_zbc ?
-+                     RISCV_HWPROBE_EXT_ZBC : 0;
-+            value |= cfg->ext_zbkb ?
-+                     RISCV_HWPROBE_EXT_ZBKB : 0;
-+            value |= cfg->ext_zbkc ?
-+                     RISCV_HWPROBE_EXT_ZBKC : 0;
-+            value |= cfg->ext_zbkx ?
-+                     RISCV_HWPROBE_EXT_ZBKX : 0;
-+            value |= cfg->ext_zknd ?
-+                     RISCV_HWPROBE_EXT_ZKND : 0;
-+            value |= cfg->ext_zkne ?
-+                     RISCV_HWPROBE_EXT_ZKNE : 0;
-+            value |= cfg->ext_zknh ?
-+                     RISCV_HWPROBE_EXT_ZKNH : 0;
-+            value |= cfg->ext_zksed ?
-+                     RISCV_HWPROBE_EXT_ZKSED : 0;
-+            value |= cfg->ext_zksh ?
-+                     RISCV_HWPROBE_EXT_ZKSH : 0;
-+            value |= cfg->ext_zkt ?
-+                     RISCV_HWPROBE_EXT_ZKT : 0;
-+            value |= cfg->ext_zvbb ?
-+                     RISCV_HWPROBE_EXT_ZVBB : 0;
-+            value |= cfg->ext_zvbc ?
-+                     RISCV_HWPROBE_EXT_ZVBC : 0;
-+            value |= cfg->ext_zvkb ?
-+                     RISCV_HWPROBE_EXT_ZVKB : 0;
-+            value |= cfg->ext_zvkg ?
-+                     RISCV_HWPROBE_EXT_ZVKG : 0;
-+            value |= cfg->ext_zvkned ?
-+                     RISCV_HWPROBE_EXT_ZVKNED : 0;
-+            value |= cfg->ext_zvknha ?
-+                     RISCV_HWPROBE_EXT_ZVKNHA : 0;
-+            value |= cfg->ext_zvknhb ?
-+                     RISCV_HWPROBE_EXT_ZVKNHB : 0;
-+            value |= cfg->ext_zvksed ?
-+                     RISCV_HWPROBE_EXT_ZVKSED : 0;
-+            value |= cfg->ext_zvksh ?
-+                     RISCV_HWPROBE_EXT_ZVKSH : 0;
-+            value |= cfg->ext_zvkt ?
-+                     RISCV_HWPROBE_EXT_ZVKT : 0;
-+            value |= cfg->ext_zfh ?
-+                     RISCV_HWPROBE_EXT_ZFH : 0;
-+            value |= cfg->ext_zfhmin ?
-+                     RISCV_HWPROBE_EXT_ZFHMIN : 0;
-+            value |= cfg->ext_zihintntl ?
-+                     RISCV_HWPROBE_EXT_ZIHINTNTL : 0;
-+            value |= cfg->ext_zvfh ?
-+                     RISCV_HWPROBE_EXT_ZVFH : 0;
-+            value |= cfg->ext_zvfhmin ?
-+                     RISCV_HWPROBE_EXT_ZVFHMIN : 0;
-+            value |= cfg->ext_zfa ?
-+                     RISCV_HWPROBE_EXT_ZFA : 0;
-+            value |= cfg->ext_zacas ?
-+                     RISCV_HWPROBE_EXT_ZACAS : 0;
-+            value |= cfg->ext_zicond ?
-+                     RISCV_HWPROBE_EXT_ZICOND : 0;
-             __put_user(value, &pair->value);
-             break;
-         case RISCV_HWPROBE_KEY_CPUPERF_0:
+ #ifndef CONFIG_USER_ONLY
+     if (profile->satp_mode != RISCV_PROFILE_ATTR_UNUSED) {
++        object_property_set_bool(obj, "mmu", true, NULL);
+         const char *satp_prop = satp_mode_str(profile->satp_mode,
+                                               riscv_cpu_is_32bit(cpu));
+         object_property_set_bool(obj, satp_prop, profile->enabled, NULL);
 -- 
 2.44.0
 
