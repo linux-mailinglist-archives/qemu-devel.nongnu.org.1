@@ -2,147 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1FC0876C32
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 22:02:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B72E876DD1
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 00:11:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rihKT-00045R-WE; Fri, 08 Mar 2024 16:00:34 -0500
+	id 1rijLI-0007KV-Kz; Fri, 08 Mar 2024 18:09:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1rihKS-00044p-2v
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 16:00:32 -0500
-Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
+ (Exim 4.90_1) (envelope-from <prvs=790d2038c=derekmn@amazon.com>)
+ id 1rihPE-0001TG-In
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 16:05:28 -0500
+Received: from smtp-fw-80009.amazon.com ([99.78.197.220])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1rihKQ-0001P7-9R
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 16:00:31 -0500
-Received: from pps.filterd (m0127837.ppops.net [127.0.0.1])
- by mx0a-002c1b01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
- 4287HBih005265; Fri, 8 Mar 2024 13:00:27 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- from:to:cc:subject:date:message-id:in-reply-to:references
- :content-transfer-encoding:content-type:mime-version; s=
- proofpoint20171006; bh=2QdUqQMAWOAfW9VAyIeEpknQUCxkpFdzRGAo/NsRd
- PQ=; b=pw/ddSMu0x4kNr4WzRT9TDHzZDHW0vOWgkfmSEBKrRrPWPBSeP1QFNttF
- 1FXIDJEXt1D1ZoeVAPCYCDVsZ3DgQ74u0JtKJqki0ucmJpEw/XpI6wpcpWQW1JmT
- 4ZGTbxQ2eiWhyEU6CPMLaAJsN8+umhzS3p48PPoh1f7z0Sj9kqW7o+f2G7Fv3Eps
- 6omB3fNbAad6k40snzp8gK4Oey4C1wmHxUx8QmTL29N6zj8J+Y8wWZbP99FNlFfv
- 73k0HH0kp7ES+ekyokQPAHbJN8A/559TGhBcVRKCoafco1fRrKpdzxrMIdcVudqG
- SzECiZhvyFzqfc1a1Y2GNj7JOFdvA==
-Received: from bl2pr02cu003.outbound.protection.outlook.com
- (mail-eastusazlp17012018.outbound.protection.outlook.com [40.93.11.18])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 3wm0w9e9xd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Mar 2024 13:00:27 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cRDlGX6Mtm9HdnLk+rPYKqxv2JFXFoxcf2Y46SsGhDWUTYe18SqQfOK+5c3e1hpO56w/QbCnHy4LzMKsXy3mPjkhFwjLTLIB8QEFSuirw33HPVfCyWD/VLIM7cRJU89oslztobxj3gZCZ+PPBA1t84siv5ZtJJxYaVk0zwC/oHJN682K5N279MMOFIj8GsSzAiIzD8xR5hQXFWhIv1pOlFrTyUrsThe3/IHznH9yXzzT8l2yoaJuyL/o07HiKmV/lVnDY3JzV6XDpdlU96UOLMUzgmMPKoKBh+xa5n6NKrcCvYw8q/ghkYZIMMEYqXiiiGPL3M3QvhzZjBP7D9KBOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2QdUqQMAWOAfW9VAyIeEpknQUCxkpFdzRGAo/NsRdPQ=;
- b=eZhaa5PixGYSSflpxCCxsYYg++Pq7HVGJYdaxZRh+Fo/LOEX6V0ZuJgvx8jggkcnKsm05M1+fCoJgE3twZL2VQ0ThTlyLsM5E8+FuKZF0+DG57FWphUfzXzsfNTRevp/D0TX7s62c+f8vNw7X5xzUOA9lzxdRWbQMc72YKZpvUKDu29RHjdcSVe68fWpTqDU66+uJVhCHl7gW0E8cdLR8s60z317HDmXGiUp/XOjyJcyTeIpMYDF4l7InUW5rzIVRt9lwePFeRM3QAN4WMLRI/OkZPxjecNdCWD0ZMe3QH7dUfR44wdJ9qZLI+SPp2McNU0/iSMqMp+c/BbPTUz/YQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2QdUqQMAWOAfW9VAyIeEpknQUCxkpFdzRGAo/NsRdPQ=;
- b=pG80fIyiJihMiAFZA8taMh3wdoGR4MlSqP5Dh9SIVvJ64GBU7vwMCZZysvaufDj5EP/A8ds5XECabkB0N5G+Y4zijT6RIStOgGW6FDHXUwILJiCt+ZbibYQS29oqGiIWOYI9zqoqavl8U5ohiC2QFc7ythbDvg2gsI0Kou1Skxf2ZCX6vk1jlK3xT0kQuJqoiW2WQmYnYl6+0JfXOSJcHRxVd1/91PQ75tbH3NchgjuA/wqbl6G/96iCgUS82VXvEn6mA1w4nazikusE/C4Rvu0a0RzN/0fksVANkGiSqaa7bF1DX0INpIqPTGX/kxW7uehra0JwkbDROxdEXeDMWQ==
-Received: from SJ2PR02MB9955.namprd02.prod.outlook.com (2603:10b6:a03:55f::16)
- by BY5PR02MB6786.namprd02.prod.outlook.com (2603:10b6:a03:210::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.27; Fri, 8 Mar
- 2024 21:00:24 +0000
-Received: from SJ2PR02MB9955.namprd02.prod.outlook.com
- ([fe80::225c:2edd:87e:7cf0]) by SJ2PR02MB9955.namprd02.prod.outlook.com
- ([fe80::225c:2edd:87e:7cf0%7]) with mapi id 15.20.7362.019; Fri, 8 Mar 2024
- 21:00:24 +0000
-From: Het Gala <het.gala@nutanix.com>
-To: qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com, thuth@redhat.com, lvivier@redhat.com,
- pbonzini@redhat.com, Het Gala <het.gala@nutanix.com>,
- Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v4 8/8] Add negative tests to validate migration QAPIs
-Date: Fri,  8 Mar 2024 20:59:51 +0000
-Message-Id: <20240308205951.111747-9-het.gala@nutanix.com>
-X-Mailer: git-send-email 2.22.3
-In-Reply-To: <20240308205951.111747-1-het.gala@nutanix.com>
-References: <20240308205951.111747-1-het.gala@nutanix.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PH7PR17CA0011.namprd17.prod.outlook.com
- (2603:10b6:510:324::20) To SJ2PR02MB9955.namprd02.prod.outlook.com
- (2603:10b6:a03:55f::16)
+ (Exim 4.90_1) (envelope-from <prvs=790d2038c=derekmn@amazon.com>)
+ id 1rihPC-0002I4-Eq
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 16:05:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+ t=1709931926; x=1741467926;
+ h=from:to:cc:subject:date:message-id:content-id:
+ content-transfer-encoding:mime-version;
+ bh=HRn+4j3s0uvW5ahHq0WE6UyDKv//dbnY5NHz7Jy33W8=;
+ b=GnyPYtgBWzy64NX9VDQ3F0yyrkbP2AaL7o9QdPJRlXpumwVav5ifjujG
+ prZW4W65cCzlZ/s2R9L8nvOkvgNXwPm3irkTo8XTEKowbHspaahbM3x8i
+ Ss3jBR4DEFY3nHAz2I+eRiRuur/NLn0FRH78EDsswlBb4KUhNkyQvaJNl 8=;
+X-IronPort-AV: E=Sophos;i="6.07,110,1708387200"; d="scan'208";a="71864338"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO
+ smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+ by smtp-border-fw-80009.pdx80.corp.amazon.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2024 21:05:22 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [10.0.10.100:33697]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.9.238:2525]
+ with esmtp (Farcaster)
+ id 0d5eeb03-8eea-46eb-993f-a3909d8a0217; Fri, 8 Mar 2024 21:05:21 +0000 (UTC)
+X-Farcaster-Flow-ID: 0d5eeb03-8eea-46eb-993f-a3909d8a0217
+Received: from EX19D022EUC001.ant.amazon.com (10.252.51.254) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.126) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Fri, 8 Mar 2024 21:05:21 +0000
+Received: from EX19D003UWC002.ant.amazon.com (10.13.138.169) by
+ EX19D022EUC001.ant.amazon.com (10.252.51.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Fri, 8 Mar 2024 21:05:20 +0000
+Received: from EX19D003UWC002.ant.amazon.com ([fe80::ab31:cc39:59f9:18b3]) by
+ EX19D003UWC002.ant.amazon.com ([fe80::ab31:cc39:59f9:18b3%3]) with
+ mapi id 15.02.1258.028; Fri, 8 Mar 2024 21:05:19 +0000
+From: "Manwaring, Derek" <derekmn@amazon.com>
+To: David Woodhouse <dwmw2@infradead.org>, David Matlack
+ <dmatlack@google.com>, Brendan Jackman <jackmanb@google.com>,
+ "tabba@google.com" <tabba@google.com>, "qperret@google.com"
+ <qperret@google.com>, "jason.cj.chen@intel.com" <jason.cj.chen@intel.com>
+CC: "Gowans, James" <jgowans@amazon.com>, "seanjc@google.com"
+ <seanjc@google.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+ "Roy, Patrick" <roypat@amazon.co.uk>, "chao.p.peng@linux.intel.com"
+ <chao.p.peng@linux.intel.com>, "rppt@kernel.org" <rppt@kernel.org>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, "Kalyazin, Nikita"
+ <kalyazin@amazon.co.uk>, "lstoakes@gmail.com" <lstoakes@gmail.com>,
+ "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "linux-mm@kvack.org"
+ <linux-mm@kvack.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+ "vbabka@suse.cz" <vbabka@suse.cz>, "mst@redhat.com" <mst@redhat.com>,
+ "somlo@cmu.edu" <somlo@cmu.edu>, "Graf (AWS), Alexander" <graf@amazon.de>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+ <linux-coco@lists.linux.dev>, "kvmarm@lists.linux.dev"
+ <kvmarm@lists.linux.dev>, "kvmarm@lists.cs.columbia.edu"
+ <kvmarm@lists.cs.columbia.edu>
+Subject: Re: Unmapping KVM Guest Memory from Host Kernel
+Thread-Topic: Unmapping KVM Guest Memory from Host Kernel
+Thread-Index: AQHacZxTeX10YUH0O0SiQBg1zQLaEw==
+Date: Fri, 8 Mar 2024 21:05:19 +0000
+Message-ID: <335E21FA-7F1E-4540-8A70-01A63D8C72FA@amazon.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.13.138.181]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <105008749F655A45808AA99CDA7541DE@amazon.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR02MB9955:EE_|BY5PR02MB6786:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4cc0e5a9-9034-4b8c-9c04-08dc3fb2c61f
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ttGLJR/MfxGFoJLl+BOsxMAKLc6+LTBxQlyga0JAd+P2G0c7i4Mmm5um+pvyqLuTbQD3yrTvQrpHsVbzqPR7vnXRm8FeSAoD2VuNolmto3YXE0flsr1KfU9Eek0zR4nUhmbumWgJa9YtKeWF8MskGQu80hTjn27daeHKx68+74pwGYVUDVWskOt74JCg0wl657XLV/D270ulxwWdzwbIBcwJ9al6iqu8VjwkmuicsobToEEbxT+kNm+z3EjoI+Fj4QGPm7fzTdb5D72pUnAPQvPBekthGI4oDS9V2P0jPsG0WWnm1LV1Y4weQuZiM+PZukahppOWhTTJK7spMk8CjqblrHTf3SmhMg05cVhdv/m1i9TpYQ6Ab8XaCUReqwbQuYP4Kv8tYeaI7AJucirDtfC98lyY/a79KYuYfdEmOTTuMNdeq8PsTjXKsKqKHCEX3PRqaHjDKFzf7oZFnlMP3xVpyZVJYE48wcOwrNBlS0MJFkc5dhYdKfpp41nHedAoyJoVeRMUXWEuHFu8bFdaQPPfXLs4Xr+NbUvVUg4ExP9oCroDxFyz5GB77uEpCTrj7AICRcKrGgR8M/EXaN5fyhvXbmC6nHel33PNfertUozN9Li5uMylgEhxJM9oia6VSHo9Gn8EYpxZdheLgyRFHQvDKaEjnRlTXAj8IZVUbnnigbIV7bIbiQgKP0bWpHct0NX729j5ZN00csF2p73HQDXu6hzyxVGDIxZJ2+4jPjc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ2PR02MB9955.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376005)(52116005)(1800799015)(38350700005); DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?uq7/Q90Xjszk71znRXJbOobdInlnPJ1nF58RkpuEjda3RNXN8Q6MfpzjD0sd?=
- =?us-ascii?Q?k+OdvgjK3/Zl9mfTWYVNc5TnARiTaTeudBM/rZ+7IS+hWR7/CZgEjNPHKn33?=
- =?us-ascii?Q?CygnQ5xVfGEzLAWXEsQ1zbTLrIo1M5Vsr/w2COjp77ph1ElUebIpbAJyib1m?=
- =?us-ascii?Q?Sw75GlX+pY0V9pqV1EqaIAeHv6Fhg7wX6jos+8+YLuvBo5Mr6ODgTdGH+flz?=
- =?us-ascii?Q?0SZi9Gg4oALoIMcFi64cgWJttlPgwWu6MWUF9PjApG/ezHhmDqfS2+mp141Y?=
- =?us-ascii?Q?FfinLt4a0UKFC8aP0wXtAVhwj9nfH/C9joCM4G3xy+S90/NxxBi3hYg9gYru?=
- =?us-ascii?Q?9bg/tw35csnTJ/djH+QwYFtjq7gb1yxEJL42fMdyO/g0hLO//LZ3n7JuuBRd?=
- =?us-ascii?Q?zYk9zs+t/KWSGF8behVbD280P34D2mbXE39gzufEAuAgOPA8MG2Y4I4isaLa?=
- =?us-ascii?Q?zWbmONrrSwXJxw02s7iLZkMmCqEy25W9NneRWB94U9v8kh6YQCs5lfhZwZrb?=
- =?us-ascii?Q?YPWIQ28rJzIpGefMNjOHE82knqsyvr2406vM5X3A1db4CCFiudEDwztv5jNk?=
- =?us-ascii?Q?P1pXeuDSbbcrpStStx8hvsKHq8pxQb4se8BRS6Sn1DyqjFOQJRhRHWDSzSHa?=
- =?us-ascii?Q?Mdx5iMD381gZEIzSN+7rjLVwxFImO4RhAogl1Xy7J0j0JGduq+ZAvuMZZ2Si?=
- =?us-ascii?Q?ZCjeOQCxdLLpiBC9OOsmcmzdUntmlAfEJeZqx2bBlmhuvrmRpqoaHb6RZyAZ?=
- =?us-ascii?Q?RZE+fHrSCRxifZ8/DXZU+nK1hmYa+wJ+SBMa+pqn+cTh1gvsQrYe3ptKb8wu?=
- =?us-ascii?Q?Aps5K5+Mf8mIjRvpgyf+0D/eNc10RWhiqkwY3Yo6RAV0hvvzK/Cjx+QejzU3?=
- =?us-ascii?Q?vxnETtdXo3uWHjMEIHApVMuu7uuTWCu0wtqaKNdjcoZcHYwqL/4EVsbhwa69?=
- =?us-ascii?Q?mzjWOEytdkkflYcoDp6foZBIOn8mn3ql3dfHe4YXcVEHJofO6C8cvHy8KNXC?=
- =?us-ascii?Q?7LOeXWXs+X+KI/hwCGxjnUICA0EyAYfgNTftfk81bz6DLTcSsV/YmKmHYcfd?=
- =?us-ascii?Q?yKMY/MqzRddrBY4UjBeFKDp806eW+YYn/c5OCkMa1zbZK3TlZd79dfiXlxRZ?=
- =?us-ascii?Q?W9/Ztkh0PE4rdcfdHUe/+2pSCk84+WBqHeLXme24sI+9zap8xWVCktTj0Gl/?=
- =?us-ascii?Q?wwxIMP+mQbTsAX/WXzK+0BEOnxgV+McvLB9p6YQomxuwTSVZZHVPbHW3iYxe?=
- =?us-ascii?Q?yWMkJD+bFMGbkcIzR7HLMYoqz/wGtNWpszJwMasTTIlAclojn+Nc9tTrJnC0?=
- =?us-ascii?Q?ageWLgh4r+FLRQrvLr9NFbAXtecduCx5khOMxeFLwwy8MDa0NZy0BGIdR7F9?=
- =?us-ascii?Q?t49it39NkfjOVokwdb77zvSb8vxWZbLqF+sVgztufQrtnSBTSHy44l2Kaou3?=
- =?us-ascii?Q?5g/hFfe+ByEo+wcQHr2LA0fewtjhP+JwJDXP2TQm+t3gj87oOua0po2QvxN1?=
- =?us-ascii?Q?53UqPHMsqDIDTIgvhPVOJfaqUuYSOct2gy4u6zPUkW0TnafxzB45gDNw6+I6?=
- =?us-ascii?Q?vUHPquH86cEJPHVYcs49pw49FsJKAHu8iYZwT4J/S2oDEoQLePJXvzVVQ0Ox?=
- =?us-ascii?Q?Fg=3D=3D?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4cc0e5a9-9034-4b8c-9c04-08dc3fb2c61f
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR02MB9955.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2024 21:00:24.1927 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0M0hWOp3IRjYb3zK2jrwdCsoEQhE3v2IEgolVSwMslAfLNmwpHmQbhCQmtiaNrmMUxMir8bfpv7oKZRCRbgBcw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR02MB6786
-X-Proofpoint-GUID: N4m04fChId8DVjTgC-qv5VseF_giNG16
-X-Proofpoint-ORIG-GUID: N4m04fChId8DVjTgC-qv5VseF_giNG16
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-08_08,2024-03-06_01,2023-05-22_02
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.151.68; envelope-from=het.gala@nutanix.com;
- helo=mx0a-002c1b01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.572,
+Received-SPF: pass client-ip=99.78.197.220;
+ envelope-from=prvs=790d2038c=derekmn@amazon.com; helo=smtp-fw-80009.amazon.com
+X-Spam_score_int: -124
+X-Spam_score: -12.5
+X-Spam_bar: ------------
+X-Spam_report: (-12.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.572,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 08 Mar 2024 18:09:25 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -157,90 +109,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Migration QAPI arguments - uri and channels are mutually exhaustive.
-Add negative validation tests, one with both arguments present and
-one with none present.
-
-Signed-off-by: Het Gala <het.gala@nutanix.com>
-Suggested-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
----
- tests/qtest/migration-test.c | 54 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
-
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 6ba3cfd1e4..385f696a3d 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -2612,6 +2612,56 @@ static void test_validate_uuid_dst_not_set(void)
-     do_test_validate_uuid(&args, false);
- }
- 
-+static void do_test_validate_uri_channel(MigrateCommon *args)
-+{
-+    QTestState *from, *to;
-+    g_autofree char *connect_uri = NULL;
-+
-+    if (test_migrate_start(&from, &to, args->listen_uri, &args->start)) {
-+        return;
-+    }
-+
-+    /* Wait for the first serial output from the source */
-+    wait_for_serial("src_serial");
-+
-+    /*
-+     * 'uri' and 'channels' validation is checked even before the migration
-+     * starts.
-+     */
-+    migrate_qmp_fail(from, args->connect_uri, args->connect_channels, "{}");
-+    test_migrate_end(from, to, false);
-+}
-+
-+static void test_validate_uri_channels_both_set(void)
-+{
-+    MigrateCommon args = {
-+        .start = {
-+            .hide_stderr = true,
-+        },
-+        .listen_uri = "defer",
-+        .connect_uri = "tcp:127.0.0.1:0",
-+        .connect_channels = "[ { 'channel-type': 'main',"
-+                            "    'addr': { 'transport': 'socket',"
-+                            "              'type': 'inet',"
-+                            "              'host': '127.0.0.1',"
-+                            "              'port': '0' } } ]",
-+    };
-+
-+    do_test_validate_uri_channel(&args);
-+}
-+
-+static void test_validate_uri_channels_none_set(void)
-+{
-+    MigrateCommon args = {
-+        .start = {
-+            .hide_stderr = true,
-+        },
-+        .listen_uri = "defer",
-+    };
-+
-+    do_test_validate_uri_channel(&args);
-+}
-+
- /*
-  * The way auto_converge works, we need to do too many passes to
-  * run this test.  Auto_converge logic is only run once every
-@@ -3678,6 +3728,10 @@ int main(int argc, char **argv)
-                        test_validate_uuid_src_not_set);
-     migration_test_add("/migration/validate_uuid_dst_not_set",
-                        test_validate_uuid_dst_not_set);
-+    migration_test_add("/migration/validate_uri/channels/both_set",
-+                       test_validate_uri_channels_both_set);
-+    migration_test_add("/migration/validate_uri/channels/none_set",
-+                       test_validate_uri_channels_none_set);
-     /*
-      * See explanation why this test is slow on function definition
-      */
--- 
-2.22.3
-
+T24gMjAyNC0wMy0wOCBhdCAxMDo0Ni0wNzAwLCBEYXZpZCBXb29kaG91c2Ugd3JvdGU6DQo+IE9u
+IEZyaSwgMjAyNC0wMy0wOCBhdCAwOTozNSAtMDgwMCwgRGF2aWQgTWF0bGFjayB3cm90ZToNCj4g
+PiBJIHRoaW5rIHdoYXQgSmFtZXMgaXMgbG9va2luZyBmb3IgKGFuZCB3aGF0IHdlIGFyZSBhbHNv
+IGludGVyZXN0ZWQNCj4gPiBpbiksIGlzIF9lbGltaW5hdGluZ18gdGhlIGFiaWxpdHkgdG8gYWNj
+ZXNzIGd1ZXN0IG1lbW9yeSBmcm9tIHRoZQ0KPiA+IGRpcmVjdCBtYXAgZW50aXJlbHkuIEFuZCBp
+biBnZW5lcmFsLCBlbGltaW5hdGUgdGhlIGFiaWxpdHkgdG8gYWNjZXNzDQo+ID4gZ3Vlc3QgbWVt
+b3J5IGluIGFzIG1hbnkgd2F5cyBhcyBwb3NzaWJsZS4NCj4NCj4gV2VsbCwgcEtWTSBkb2VzIHRo
+YXQuLi4NCg0KWWVzIHdlJ3ZlIGJlZW4gbG9va2luZyBhdCBwS1ZNIGFuZCBpdCBhY2NvbXBsaXNo
+ZXMgYSBsb3Qgb2Ygd2hhdCB3ZSdyZSB0cnlpbmcNCnRvIGRvLiBPdXIgaW5pdGlhbCBpbmNsaW5h
+dGlvbiBpcyB0aGF0IHdlIHdhbnQgdG8gc3RpY2sgd2l0aCBWSEUgZm9yIHRoZSBsb3dlcg0Kb3Zl
+cmhlYWQuIFdlIGFsc28gd2FudCBmbGV4aWJpbGl0eSBhY3Jvc3Mgc2VydmVyIHBhcnRzLCBzbyB3
+ZSB3b3VsZCBuZWVkIHRvDQpnZXQgcEtWTSB3b3JraW5nIG9uIEludGVsICYgQU1EIGlmIHdlIHdl
+bnQgdGhpcyByb3V0ZS4NCg0KQ2VydGFpbmx5IHRoZXJlIGFyZSBhZHZhbnRhZ2VzIG9mIHBLVk0g
+b24gdGhlIHBlcmYgc2lkZSBsaWtlIHRoZSBpbi1wbGFjZQ0KbWVtb3J5IHNoYXJpbmcgcmF0aGVy
+IHRoYW4gY29weWluZyBhcyB3ZWxsIGFzIG9uIHRoZSBzZWN1cml0eSBzaWRlIGJ5IHNpbXBseQ0K
+cmVkdWNpbmcgdGhlIFRDQi4gSSdkIGJlIGludGVyZXN0ZWQgdG8gaGVhciBvdGhlcnMnIHRob3Vn
+aHRzIG9uIHBLVk0gdnMNCm1lbWZkX3NlY3JldCBvciBnZW5lcmFsIEFTSS4NCg0KRGVyZWsNCg0K
 
