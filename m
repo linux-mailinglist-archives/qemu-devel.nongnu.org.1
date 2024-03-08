@@ -2,84 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601228764AF
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 14:04:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDE188764B5
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 14:06:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riZsj-0005O5-Fj; Fri, 08 Mar 2024 08:03:25 -0500
+	id 1riZv5-0006Dr-CB; Fri, 08 Mar 2024 08:05:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1riZsg-0005Nr-01
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 08:03:22 -0500
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1riZue-0006Be-RS
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 08:05:27 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1riZsd-0004b8-Is
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 08:03:20 -0500
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1riZuW-00053D-Rf
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 08:05:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709902999;
+ s=mimecast20190719; t=1709903113;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=R4zut43jEHf+dzRVv5hh0k0okOLYghJEDLsUk715Y30=;
- b=OMRKPXau7wyNaEX6JfeaLcDVgtEj0b1TqqS804K3DWjZilmiwqYSA0zU3scKVX8R/jkBdw
- c1Osvo3teipwmQ99HT8DDW+acv/dCW+nUMBeOz2VLBTzvyL2T0pMTUMhqKBYdvifkTb/7X
- F6Q4dH3rPxYyQC83iJ1rwrV03Qoj+24=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=VvAfo45Jv4F6T6gd+Qjfxy0W0/zo7ts+kLTV8Nly7jA=;
+ b=PhurrY7sBVUbDF08DfvBcTnHHnwbmiqHO7NFEhcbcWii6zPhMPN4k3w2DHZqhTjKCj8yi+
+ E9MvKikzeWqVx0QOAJxxonRZF/E1vaGbeM6prL5qtvDftZmnJuA3sNjMyqkrW91GUuKhdB
+ eHntAIJfjcBIytEXJYqOAkDp+OPf6mY=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-576-wzDSt8LPN622CmG8X6AW9A-1; Fri, 08 Mar 2024 08:03:15 -0500
-X-MC-Unique: wzDSt8LPN622CmG8X6AW9A-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-40e4478a3afso10753665e9.1
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 05:03:15 -0800 (PST)
+ us-mta-318-DMHnQDU-Mg-PA7872w5Yjw-1; Fri, 08 Mar 2024 08:05:12 -0500
+X-MC-Unique: DMHnQDU-Mg-PA7872w5Yjw-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a456c9d0717so112392466b.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 05:05:11 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709902994; x=1710507794;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=R4zut43jEHf+dzRVv5hh0k0okOLYghJEDLsUk715Y30=;
- b=CdQ8niEt3vSmowjMGz1mmJuFZ31zFBIV1U+KL3OtAxw7Cv8CK8NHBjEUunoWkv0sY8
- 46+R5dY/8PN06HlMqmmkq3y/LKrlNZHrrbIz+EHnIw8K9sOHM3WFdzFA531d1gc2yy5O
- G+3b8MzESOjkj+AzsTYa6MN5TZhoUcUs9bCG2DE9ko8YIyjnVTvaZOWY7AOBt7O0SOgr
- s5/K/+NR2otZf5tXvPp0WBzdW99n1Du+KonfDzwuLQ46RBU6iQ5Evw7aS7ADDMyY76Ya
- kpphXR3S6jdH4N+s+hxnZTYZ7SSldFwDeFG4rbauqCwFOO9Lgx81+0UT8IBhlaRApxgE
- 7PFw==
-X-Gm-Message-State: AOJu0YyY2L/ALQ2aS2ejvcb0CyJRQi+4Dd0C3IVKGLdc4JQwd/DMC1SB
- UJ2MOql+oWtcjWT+ccQrQIk1/Y2ovAJmxk0L8BJFOUDN50DPDjmCB5QqwaO2MPu00Igr0Lu/3vL
- Fs0T+g7h+xy52R9KozNHNqVIkumG2rbwi7+p5RBu1UedQgrGvw7Oo
-X-Received: by 2002:a05:600c:1c82:b0:412:e555:ff1e with SMTP id
- k2-20020a05600c1c8200b00412e555ff1emr214862wms.0.1709902994536; 
- Fri, 08 Mar 2024 05:03:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHatpxhK+ednbWd6WiCTvO7c28Vi64K3tgpenI8/bDjEgzus9zPzSWiYXZ9rEWY++pquWF9Bg==
-X-Received: by 2002:a05:600c:1c82:b0:412:e555:ff1e with SMTP id
- k2-20020a05600c1c8200b00412e555ff1emr214840wms.0.1709902994253; 
- Fri, 08 Mar 2024 05:03:14 -0800 (PST)
-Received: from ?IPV6:2a01:cb19:853d:fa00:c28a:3e3d:34f3:3891?
- ([2a01:cb19:853d:fa00:c28a:3e3d:34f3:3891])
+ d=1e100.net; s=20230601; t=1709903109; x=1710507909;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VvAfo45Jv4F6T6gd+Qjfxy0W0/zo7ts+kLTV8Nly7jA=;
+ b=Tqknu8zOCxa1xItApM7RqgY1yXASNkay9avxlwp4MOjtWEOFFOdVoHtYT1wohPVGig
+ zCIoQyuvW6woPcVaz8OGBXHxMKT/85KmsZxHwKsRjKAedLeHAxISbkdDc3DyzVVAw7A1
+ h69r3gVhZCSR0DBvXVFvvKNBI5cnxKZhAf8mfP66Z4VPFyEE5I0idbhRGH58CyleLpLK
+ HSyIMwCZt/pFvZ0tLbgN5Bp+uxkF7TaQX/P8P1/w44Dg+BeLCyekavGL0sLyeVhb5wkp
+ WKcx2m8kkJi2HphtS6mmdqes/bIfivHc+rkp74aJBYhHVxCBiqijYACM+93XX3i2COyO
+ r98w==
+X-Gm-Message-State: AOJu0Yx4jqk7h94tJEydk/7/lmt336CYWRCIty55d4GP/6Cg6jFKY6Lm
+ REuRomHUe9LWnqA6Y2oAOU7VAEzU+14JoC0Esfh0TwTR9qN3rfaP3Tzj9iH5psyxsu6whspLbtF
+ M0Sj0wu2JpG/ro2xoVYoVCNPYJJLrj9a8o3isxdsB+S7XYeLZc+u6IplcMZS+pVYr3g+7w70P6C
+ 0sHi8AJo5abFY2TL20hrgT0iepKNqdiUeM8+9y
+X-Received: by 2002:a17:906:7f95:b0:a44:2b:cdd0 with SMTP id
+ f21-20020a1709067f9500b00a44002bcdd0mr15934525ejr.20.1709903108895; 
+ Fri, 08 Mar 2024 05:05:08 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG/M4zCrTHYlgks1Gx8Zxkk1FkCZBqCOd8ATYUJIfxN0mF4c3CHR8lH2XyajN5XoJF6pQfe4g==
+X-Received: by 2002:a17:906:7f95:b0:a44:2b:cdd0 with SMTP id
+ f21-20020a1709067f9500b00a44002bcdd0mr15934507ejr.20.1709903108441; 
+ Fri, 08 Mar 2024 05:05:08 -0800 (PST)
+Received: from [192.168.10.118] ([151.49.77.21])
  by smtp.gmail.com with ESMTPSA id
- d21-20020a05600c34d500b004131bbbd9bfsm865101wmq.40.2024.03.08.05.03.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 08 Mar 2024 05:03:13 -0800 (PST)
-Message-ID: <2869ab33-c862-4a8f-892c-095aadab7fef@redhat.com>
-Date: Fri, 8 Mar 2024 14:03:12 +0100
+ fw17-20020a170906c95100b00a4576dd5a8csm4906778ejb.201.2024.03.08.05.05.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Mar 2024 05:05:08 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org
+Subject: [PATCH v2 0/2] ci: allow running Coverity Scan uploads via GitLab
+Date: Fri,  8 Mar 2024 14:05:05 +0100
+Message-ID: <20240308130507.582097-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/25] migration: Improve error reporting
-Content-Language: en-US, fr
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Markus Armbruster <armbru@redhat.com>,
- Prasad Pandit <pjp@fedoraproject.org>
-References: <20240306133441.2351700-1-clg@redhat.com> <ZerJDAdaakTCtECF@x1n>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <ZerJDAdaakTCtECF@x1n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -104,38 +98,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/8/24 09:15, Peter Xu wrote:
-> On Wed, Mar 06, 2024 at 02:34:15PM +0100, Cédric Le Goater wrote:
->> * [1-4] already queued in migration-next.
->>    
->>    migration: Report error when shutdown fails
->>    migration: Remove SaveStateHandler and LoadStateHandler typedefs
->>    migration: Add documentation for SaveVMHandlers
->>    migration: Do not call PRECOPY_NOTIFY_SETUP notifiers in case of error
->>    
->> * [5-9] are prequisite changes in other components related to the
->>    migration save_setup() handler. They make sure a failure is not
->>    returned without setting an error.
->>    
->>    s390/stattrib: Add Error** argument to set_migrationmode() handler
->>    vfio: Always report an error in vfio_save_setup()
->>    migration: Always report an error in block_save_setup()
->>    migration: Always report an error in ram_save_setup()
->>    migration: Add Error** argument to vmstate_save()
->>
->> * [10-15] are the core changes in migration and memory components to
->>    propagate an error reported in a save_setup() handler.
->>
->>    migration: Add Error** argument to qemu_savevm_state_setup()
->>    migration: Add Error** argument to .save_setup() handler
->>    migration: Add Error** argument to .load_setup() handler
-> 
-> Further queued 5-12 in migration-staging (until here), thanks.
+The machine that is used to upload QEMU builds to Coverity is used daily
+as a development machine by Emanuele and myself, and as a result sometimes
+its podman/docker setup gets messed up.  When this happens, Coverity
+uploads might stop for extended periods of time.
 
-Thanks Peter. All the prereq changes should reach 9.0, which leaves
-time to discuss the core changes for 9.1.
+In the interest of tightening this and of depending less on infrastructure
+maintained by specific people, replace the manually-managed crontab
+entry with a new job in GitLab's CI; this is also what Libvirt does.
 
-C.
+The only change from v1 is better documentation of the changes in the
+script exit code when the upload check fails, for example due to a bad
+token.
 
+Paolo
+
+Paolo Bonzini (2):
+  run-coverity-scan: add --check-upload-only option
+  gitlab-ci: add manual job to run Coverity
+
+ .gitlab-ci.d/base.yml                   |  4 ++
+ .gitlab-ci.d/buildtest.yml              | 37 ++++++++++++++++
+ .gitlab-ci.d/opensbi.yml                |  4 ++
+ scripts/coverity-scan/run-coverity-scan | 59 ++++++++++++++++++-------
+ 4 files changed, 87 insertions(+), 17 deletions(-)
+
+-- 
+2.43.2
 
 
