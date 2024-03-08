@@ -2,95 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16BC4876047
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 09:53:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E500287605D
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 09:56:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riVyi-00053s-J8; Fri, 08 Mar 2024 03:53:22 -0500
+	id 1riW0t-0006Sm-E3; Fri, 08 Mar 2024 03:55:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1riVyZ-00050U-Rd
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 03:53:14 -0500
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1riVyX-0007d0-2a
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 03:53:10 -0500
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-5673b5a356eso2151885a12.0
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 00:53:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709887987; x=1710492787; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=RmJizoCCaKyZaOF+64ZgaBez+SETXJzHPRiAn9QJy9s=;
- b=T8OJ1q0gWXfvbN72374jJbmuYr6QFUrr+xU2RsCMXFLEebDRSXH8/MJwIxuZiWYgDX
- nABZ+xOlO3giGyIpkHHCDBgaXe+aWy65269VbXLUYEiXXnHw3z2Hvm/g48W6gcBLYpEO
- J4pZFqRjrOt6OnTjuxwNzWb5SH1WT30KpKREOsccICBv8UihRRFmK+ujGt2TQh6iyMxR
- OPt2YygUEtFRizbLWFNsLls97p4miI8FG3lKIsoOFs0fTGlW38ty4FwY7jrbRFov2SWD
- VumfaoIg3XEgUe6UqvGsnvAKTx+SEgKvhIw9Db0yD/JDTni58j9BTUD1oXflgYEE8C/8
- kfeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709887987; x=1710492787;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=RmJizoCCaKyZaOF+64ZgaBez+SETXJzHPRiAn9QJy9s=;
- b=BSmMMu9l0L++TBrO6hRQof45ZjOzwlK8OWDSKh5BihsJhsEsDDxxU+ydfwp5VBBCqy
- YkTPewThLQzlV/SeehVgwgkN/OLq1aLIsXEXEh0pzkotDn/Z6zU4BAEHwpzr/rcWBDMb
- j56SmfsPvGt8EXSTY+MewluncoqdfinasAcGfOXNwTZxpm64yQWgc+s/idurRprWfsMc
- tLGbDXtSZnxOiTcEbxVn+Xpp1kDu9WozcJ2fNlzYagsQ2w05JrskJl9R7lA7xi1PZRmg
- 2aWhR+TcGWXEjWcInTAN3ZNzLE2/6BUx+Gzp0eLr5Y8jHPZEZ5yuNiqH4Q1L1VuDuisH
- cRhQ==
-X-Gm-Message-State: AOJu0YwQ5rixOQH+rw/jpJnnYdFKYfe4t8H56l82yoXaP+6CXLvNKfvG
- SuSe/u9+nFCxnXdDPBjIHiT/k3EvyJbArsKYl9ml88xAWGUNUwe8BSs0OtE+
-X-Google-Smtp-Source: AGHT+IGgLLyVFG2rJvOOSCDhoQXioweq9ufSAfT7mCXZM/hxQnyjPkUbnc4dJWXm0Jx6MZi+i4ZSDw==
-X-Received: by 2002:a50:9305:0:b0:567:a2d8:ca92 with SMTP id
- m5-20020a509305000000b00567a2d8ca92mr1506237eda.23.1709887986891; 
- Fri, 08 Mar 2024 00:53:06 -0800 (PST)
-Received: from [127.0.0.1] (dynamic-077-191-029-194.77.191.pool.telefonica.de.
- [77.191.29.194]) by smtp.gmail.com with ESMTPSA id
- es14-20020a056402380e00b00566d9c8e6cesm7681177edb.21.2024.03.08.00.53.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 08 Mar 2024 00:53:06 -0800 (PST)
-Date: Fri, 08 Mar 2024 08:53:04 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: Laszlo Ersek <lersek@redhat.com>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
-CC: qemu-devel@nongnu.org, "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
- Anton Johansson <anjo@rev.ng>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Peter Maydell <peter.maydell@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ani Sinha <anisinha@redhat.com>,
- =?ISO-8859-1?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BRFC_PATCH_4/5=5D_hw/i386/q35=3A_Wir?=
- =?US-ASCII?Q?e_virtual_SMI=23_lines_to_ICH9_chipset?=
-In-Reply-To: <7212177d-e4d2-5875-b6f0-77991e0e38af@redhat.com>
-References: <20240226164913.94077-1-philmd@linaro.org>
- <20240226164913.94077-5-philmd@linaro.org> <Zd9iz9aIwM3cOqwt@intel.com>
- <5a42a295-bb1e-49f6-ae1d-94aec1efb61c@redhat.com>
- <6be774d0-6277-4d50-b97b-a0177cad8fd8@linaro.org>
- <7212177d-e4d2-5875-b6f0-77991e0e38af@redhat.com>
-Message-ID: <CAB28920-F997-4E38-B170-5767AB57EE13@gmail.com>
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1riW0k-0006Ry-0Z
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 03:55:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1riW0i-0007tx-Gt
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 03:55:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709888121;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=kBYU1UcITG4ls7RJpyaftwAt2mK5SCt4Qo2RIKqC388=;
+ b=XuxUZZis98GVb2ZOvUtzSuuExShriavUv9nhX8CCI2Sdf3Olk94heQTthgkpt2ZVQZisV8
+ HbLSvmAjpMA6lJWuP00Xa+LD5amaK2NAnBaGnknD7YMqa8VdxZyLpes6yjOfiUB1nrGBe1
+ 3I2TxaNi1DY9E7QnGxAm+QdYihMQQrg=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-12-KQQeFmH6MEOzsO3JBiwbzA-1; Fri,
+ 08 Mar 2024 03:55:18 -0500
+X-MC-Unique: KQQeFmH6MEOzsO3JBiwbzA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 783FC1C41A1B
+ for <qemu-devel@nongnu.org>; Fri,  8 Mar 2024 08:55:18 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.11])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5EE30492BC6;
+ Fri,  8 Mar 2024 08:55:17 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PATCH 0/2] ui/dbus: optimize a bit message queuing
+Date: Fri,  8 Mar 2024 12:55:12 +0400
+Message-ID: <20240308085515.2445091-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.583,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,66 +79,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
+Hi,
 
-Am 8=2E M=C3=A4rz 2024 08:10:24 UTC schrieb Laszlo Ersek <lersek@redhat=2E=
-com>:
->On 3/8/24 09:08, Philippe Mathieu-Daud=C3=A9 wrote:
->> On 7/3/24 20:43, Thomas Huth wrote:
->>> On 28/02/2024 17=2E43, Zhao Liu wrote:
->>>> Hi Philippe,
->>>>
->>>>> +/*
->>>>> + * Real ICH9 contains a single SMI output line and doesn't
->>>>> broadcast CPUs=2E
->>>>> + * Virtualized ICH9 allows broadcasting upon negatiation with
->>>>> guest, see
->>>>> + * commit 5ce45c7a2b=2E
->>>>> + */
->>>>> +enum {
->>>>> +=C2=A0=C2=A0=C2=A0 ICH9_VIRT_SMI_BROADCAST,
->>>>> +=C2=A0=C2=A0=C2=A0 ICH9_VIRT_SMI_CURRENT,
->>>>> +#define ICH9_VIRT_SMI_COUNT 2
->>>>> +};
->>>>> +
->>>>
->>>> Just quick look here=2E Shouldn't ICH9_VIRT_SMI_COUNT be defined
->>>> outside of
->>>> enum {}?
->>>
->>> Or even better, do it without a #define:
->>>
->>> enum {
->>> =C2=A0=C2=A0=C2=A0=C2=A0 ICH9_VIRT_SMI_BROADCAST,
->>> =C2=A0=C2=A0=C2=A0=C2=A0 ICH9_VIRT_SMI_CURRENT,
->>> =C2=A0=C2=A0=C2=A0=C2=A0 ICH9_VIRT_SMI_COUNT
->>=20
->> This form isn't recommended as it confuses static analyzers,
->> considering ICH9_VIRT_SMI_COUNT as part of the enum=2E
->
->Side comment: I didn't know about this (so thanks for the info), but
->that's really a shame for those static analyzers=2E It's an ancient and
->valid pattern=2E :/
+Right now, all display updates are sent to the client, regardless of the speed
+at which it processes the messages. When QEMU queues a lot of updates, it can
+result in display delays. We don't have any optimization around this at this
+point (we may optimize the grouping of updates, or simply throttle with some
+fixes FPS etc). One simple and effective way already is to discard all pending
+updates when receiving a new complete scanout. This improves greatly the
+experience with remote displays.
 
-Another pattern would be:
+Marc-André Lureau (2):
+  ui/dbus: factor out sending a scanout
+  ui/dbus: filter out pending messages when scanout
 
-    enum {
-        ICH9_VIRT_SMI_BROADCAST,
-        ICH9_VIRT_SMI_CURRENT,
-        ICH9_VIRT_SMI_LAST =3D ICH9_VIRT_SMI_CURRENT
-    };
+ ui/dbus-listener.c | 75 +++++++++++++++++++++++++++++++++++-----------
+ ui/trace-events    |  1 +
+ 2 files changed, 58 insertions(+), 18 deletions(-)
 
-which should also work with GCC's `-Wswitch-enum`=2E
+-- 
+2.44.0
 
-Best regards,
-Bernhard
-
->
->>=20
->>> };
->>>
->>> =C2=A0=C2=A0Thomas
->>>
->>=20
->
 
