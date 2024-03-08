@@ -2,78 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C29C687670A
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:07:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD6C87675B
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:28:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ribns-0008Ob-Rq; Fri, 08 Mar 2024 10:06:32 -0500
+	id 1ric7m-00089J-VY; Fri, 08 Mar 2024 10:27:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1ribnq-0008OS-S0
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:06:30 -0500
-Received: from mgamail.intel.com ([192.198.163.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1ribnn-0000Vw-OE
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:06:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709910388; x=1741446388;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=S1lLvfwfWiUZB7ksaDxd1THBf9npT8bLhTIJUcP1pFw=;
- b=iyvK4vrc6fRX3IdwSDJAhnk2VyPniguFj6jsPPnuMKSDr/Q1HZXax95C
- woz41K48IEasuW7BdQ5o4Qgt86qFzSYRZxMEKjj0fGY5EKP9XryRDtBQL
- XpW9WpspObarr5fISDh5REEI8igncD9zUpq3COHU//fmOZVlrWyXRitrb
- xnLXKfFHzHwIr+tFbhXwwnu1ywIupeqRL5CGHdP6Suy5T7Kkjylgq8COE
- higgSgzUi233HEnOKRFd3iFX61s0zSFCIsFBwwhFQndq/NvY/mDXZvzQP
- P9LNIpGYFigAsOiUIVfxZo726/vunh+sOL2VunVTeaYQ3W5k5QiP2pwNc g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="8385060"
-X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; 
-   d="scan'208";a="8385060"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Mar 2024 07:06:25 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; d="scan'208";a="15149549"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 08 Mar 2024 07:06:20 -0800
-Date: Fri, 8 Mar 2024 23:20:07 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>,
- Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v9 00/21] Introduce smp.modules for x86 in QEMU
-Message-ID: <Zessp6A8CBpjM9qC@intel.com>
-References: <20240227103231.1556302-1-zhao1.liu@linux.intel.com>
- <Zd28YNJnUaJUtRlR@intel.com>
+ (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
+ id 1ric7h-00088s-KJ
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:27:01 -0500
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
+ id 1ric7a-0007Ff-TL
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:27:01 -0500
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-a45f257b81fso81405466b.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 07:26:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cloud.com; s=cloud; t=1709911611; x=1710516411; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=e6fF84qOgCfbCnvQXCr7ZNpbBHM03v5U9YhZ2Fgrw8A=;
+ b=BqeWc9WkM9ui660xWYbLOjgqdqEodbzxMRgjW6pB4EyUUGpdxiyZokVk7OCfElUryw
+ QfB3o9U4ziP26h4Z4tGPIYTBpmO+jyhdkvomUeKCn7IJzc+dQwjhHRZvU/+ldst1bEze
+ r1CqXBrBd84iM3FLUwXjxIEq65uckoDU2EaFU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709911611; x=1710516411;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=e6fF84qOgCfbCnvQXCr7ZNpbBHM03v5U9YhZ2Fgrw8A=;
+ b=ZhVNty9ePgrZWqXEAlKaSY9cdHh1IS/dclmOUzkWGs0v04vApmDc4FtZJIUCzFHeqG
+ zNh0qjGmQrqHndMvRfQ/9wnvW4nrOHwrUNamB+y1d7F7BJKrHcWy06I8iAlo2uMUI3i1
+ /7CJgeg2MpvGYIA0waK2Uf8MwJN/4SlohyiIaC9j0mr4wWU8TzIUmy/GqSCp2O5NVOaJ
+ 9fl7U0ipyyUVObFMrhEk3JSrr6lSp0NLzbC/22O6iY6nnKezy9mOC4myvzPsPMlVa1gB
+ PMpT0LeFiyh/lp5qCliDxoTn2fm9HJJIcnVh3/7QWs1vQVIm9aMk14tccZcuZa3qLqfw
+ yIxQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXXcy1VyEWGrirW8hKlW/PIUuJlK94a+bnSIbYx1sUi4X8Q+Q4fqmbAfJBfFv2zdKZ2wm+73Y3Uru7G6dyrkH0q/AI9QK0=
+X-Gm-Message-State: AOJu0Yys5T1fUot1Etm/sH+x2zkpHLhF0gTenAgfGNfSGgnDK8ZHWHIh
+ p4mkG7CB0lmdgwrK7wzSrEytIZl1w977Rfl3faTbIEI1IoZwHWXJPUIpxn2YIeI=
+X-Google-Smtp-Source: AGHT+IF8bpS/Lw7LZTkiFNoNorWDHb16BGAHMIBNBfb5gg03OYucnJeZMZZLnORdZk+jn66CYtXHuw==
+X-Received: by 2002:a17:907:100a:b0:a3e:b869:11b3 with SMTP id
+ ox10-20020a170907100a00b00a3eb86911b3mr14901522ejb.55.1709911611379; 
+ Fri, 08 Mar 2024 07:26:51 -0800 (PST)
+Received: from perard.uk.xensource.com (default-46-102-197-194.interdsl.co.uk.
+ [46.102.197.194]) by smtp.gmail.com with ESMTPSA id
+ af1-20020a170906998100b00a45aa7cb029sm3914977ejc.36.2024.03.08.07.26.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Mar 2024 07:26:51 -0800 (PST)
+Date: Fri, 8 Mar 2024 15:26:50 +0000
+From: Anthony PERARD <anthony.perard@cloud.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Zhao Liu <zhao1.liu@linux.intel.com>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Michael Tokarev <mjt@tls.msk.ru>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, qemu-trivial@nongnu.org,
+ Zhao Liu <zhao1.liu@intel.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Paul Durrant <paul@xen.org>, Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH 02/17] hw/net/xen_nic: Fix missing ERRP_GUARD() for
+ error_prepend()
+Message-ID: <eb9066fd-e332-41f4-a234-4ddcaed9564c@perard>
+References: <20240229143914.1977550-1-zhao1.liu@linux.intel.com>
+ <20240229143914.1977550-3-zhao1.liu@linux.intel.com>
+ <b353cdec-2d6e-4ab6-bd4e-3e9cee5091a1@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zd28YNJnUaJUtRlR@intel.com>
-Received-SPF: none client-ip=192.198.163.12;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.572,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+In-Reply-To: <b353cdec-2d6e-4ab6-bd4e-3e9cee5091a1@redhat.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=anthony.perard@cloud.com; helo=mail-ej1-x632.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,254 +98,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Paolo & Michael,
-
-Just a kindly ping, could you please take time to review this series
-when you're free?
-
-(This is also the foundation support of hybrid topology).
-
-Many thanks,
-Zhao
-
-On Tue, Feb 27, 2024 at 06:41:36PM +0800, Zhao Liu wrote:
-> Date: Tue, 27 Feb 2024 18:41:36 +0800
-> From: Zhao Liu <zhao1.liu@linux.intel.com>
-> Subject: Re: [PATCH v9 00/21] Introduce smp.modules for x86 in QEMU
-> 
-> Hi Paolo & Michael,
-> 
-> BTW, may I ask if this series could land in v9.0? ;-)
-> 
-> Thanks,
-> Zhao
-> 
-> On Tue, Feb 27, 2024 at 06:32:10PM +0800, Zhao Liu wrote:
-> > Date: Tue, 27 Feb 2024 18:32:10 +0800
-> > From: Zhao Liu <zhao1.liu@linux.intel.com>
-> > Subject: [PATCH v9 00/21] Introduce smp.modules for x86 in QEMU
-> > X-Mailer: git-send-email 2.34.1
-> > 
+On Thu, Feb 29, 2024 at 06:25:40PM +0100, Thomas Huth wrote:
+> On 29/02/2024 15.38, Zhao Liu wrote:
 > > From: Zhao Liu <zhao1.liu@intel.com>
 > > 
-> > Hi list,
+> > As the comment in qapi/error, passing @errp to error_prepend() requires
+> > ERRP_GUARD():
 > > 
-> > This is the our v9 patch series, rebased on the master branch at the
-> > commit 03d496a992d9 ("Merge tag 'pull-qapi-2024-02-26' of
-> > https://repo.or.cz/qemu/armbru into staging").
+> > * = Why, when and how to use ERRP_GUARD() =
+> > *
+> > * Without ERRP_GUARD(), use of the @errp parameter is restricted:
+> > ...
+> > * - It should not be passed to error_prepend(), error_vprepend() or
+> > *   error_append_hint(), because that doesn't work with &error_fatal.
+> > * ERRP_GUARD() lifts these restrictions.
+> > *
+> > * To use ERRP_GUARD(), add it right at the beginning of the function.
+> > * @errp can then be used without worrying about the argument being
+> > * NULL or &error_fatal.
 > > 
-> > Compared with v8 [1], v9 mainly added more module description in commit
-> > message and added missing smp.modules description/documentation.
+> > ERRP_GUARD() could avoid the case when @errp is the pointer of
+> > error_fatal, the user can't see this additional information, because
+> > exit() happens in error_setg earlier than information is added [1].
 > > 
-> > With the general introduction (with origial cluster level) of this
-> > secries in v7 [2] cover letter, the following sections are mainly about
-> > the description of the newly added smp.modules (since v8, changed x86
-> > cluster support to module) as supplement.
+> > The xen_netdev_connect() passes @errp to error_prepend(), and its @errp
+> > parameter is from xen_device_frontend_changed().
 > > 
-> > Since v4 [3], we've dropped the original L2 cache command line option
-> > (to configure L2 cache topology) and now we have the new RFC [4] to
-> > support the general cache topology configuration (as the supplement to
-> > this series).
+> > Though its @errp points to @local_err of xen_device_frontend_changed(),
+> > to follow the requirement of @errp, add missing ERRP_GUARD() at the
+> > beginning of this function.
 > > 
-> > Welcome your comments!
+> > [1]: Issue description in the commit message of commit ae7c80a7bd73
+> >       ("error: New macro ERRP_GUARD()").
 > > 
-> > 
-> > Why We Need a New CPU Topology Level
-> > ====================================
-> > 
-> > For the discussion in v7 about whether we should reuse current
-> > smp.clusters for x86 module, the core point is what's the essential
-> > differences between x86 module and general cluster.
-> > 
-> > Since, cluster (for ARM/riscv) lacks a comprehensive and rigorous
-> > hardware definition, and judging from the description of smp.clusters
-> > [5] when it was introduced by QEMU, x86 module is very similar to
-> > general smp.clusters: they are all a layer above existing core level
-> > to organize the physical cores and share L2 cache.
-> > 
-> > But there are following reasons that drive us to introduce the new
-> > smp.modules:
-> > 
-> >   * As the CPU topology abstraction in device tree [6], cluster supports
-> >     nesting (though currently QEMU hasn't support that). In contrast,
-> >     (x86) module does not support nesting.
-> > 
-> >   * Due to nesting, there is great flexibility in sharing resources
-> >     on cluster, rather than narrowing cluster down to sharing L2 (and
-> >     L3 tags) as the lowest topology level that contains cores.
-> > 
-> >   * Flexible nesting of cluster allows it to correspond to any level
-> >     between the x86 package and core.
-> > 
-> >   * In Linux kernel, x86's cluster only represents the L2 cache domain
-> >     but QEMU's smp.clusters is the CPU topology level. Linux kernel will
-> >     also expose module level topology information in sysfs for x86. To
-> >     avoid cluster ambiguity and keep a consistent CPU topology naming
-> >     style with the Linux kernel, we introduce module level for x86.
-> > 
-> > Based on the above considerations, and in order to eliminate the naming
-> > confusion caused by the mapping between general cluster and x86 module,
-> > we now formally introduce smp.modules as the new topology level.
-> > 
-> > 
-> > Where to Place Module in Existing Topology Levels
-> > =================================================
-> > 
-> > The module is, in existing hardware practice, the lowest layer that
-> > contains the core, while the cluster is able to have a higher topological
-> > scope than the module due to its nesting.
-> > 
-> > Therefore, we place the module between the cluster and the core:
-> > 
-> >     drawer/book/socket/die/cluster/module/core/thread
-> > 
-> > 
-> > Additional Consideration on CPU Topology
-> > ========================================
-> > 
-> > Beyond this patchset, nowadays, different arches have different topology
-> > requirements, and maintaining arch-agnostic general topology in SMP
-> > becomes to be an increasingly difficult thing due to differences in
-> > sharing resources and special flexibility (e.g., nesting):
-> > 
-> >   * It becomes difficult to put together all CPU topology hierarchies of
-> >     different arches to define complete topology order.
-> > 
-> >   * It also becomes complex to ensure the correctness of the topology
-> >     calculations.
-> >       - Now the max_cpus is calculated by multiplying all topology
-> >         levels, and too many topology levels can easily cause omissions.
-> > 
-> > Maybe we should consider implementing arch-specfic topology hierarchies.
-> > 
-> > 
-> > [1]: https://lore.kernel.org/qemu-devel/20240131101350.109512-1-zhao1.liu@linux.intel.com/
-> > [2]: https://lore.kernel.org/qemu-devel/20240108082727.420817-1-zhao1.liu@linux.intel.com/
-> > [3]: https://lore.kernel.org/qemu-devel/20231003085516-mutt-send-email-mst@kernel.org/
-> > [4]: https://lore.kernel.org/qemu-devel/20240220092504.726064-1-zhao1.liu@linux.intel.com/
-> > [5]: https://lore.kernel.org/qemu-devel/c3d68005-54e0-b8fe-8dc1-5989fe3c7e69@huawei.com/
-> > [6]: https://www.kernel.org/doc/Documentation/devicetree/bindings/cpu/cpu-topology.txt
-> > 
-> > Thanks and Best Regards,
-> > Zhao
+> > Cc: Stefano Stabellini <sstabellini@kernel.org>
+> > Cc: Anthony Perard <anthony.perard@citrix.com>
+> > Cc: Paul Durrant <paul@xen.org>
+> > Cc: Jason Wang <jasowang@redhat.com>
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 > > ---
-> > Changelog:
+> >   hw/net/xen_nic.c | 1 +
+> >   1 file changed, 1 insertion(+)
 > > 
-> > Changes since v8:
-> >  * Add the reason of why a new module level is needed in commit message.
-> >    (Markus).
-> >  * Add the description about how Linux kernel supports x86 module level
-> >    in commit message. (Daniel)
-> >  * Add module description in qemu_smp_opts.
-> >  * Add missing "modules" parameter of -smp example in documentation.
-> >  * Add Philippe's reviewed-by tag.
-> > 
-> > Changes since v7 (main changes):
-> >  * Introduced smp.modules as a new CPU topology level. (Xiaoyao)
-> >  * Fixed calculations of cache_info_passthrough case in the
-> >    patch "i386/cpu: Use APIC ID info to encode cache topo in
-> >    CPUID[4]". (Xiaoyao)
-> >  * Moved the patch "i386/cpu: Use APIC ID info get NumSharingCache
-> >    for CPUID[0x8000001D].EAX[bits 25:14]" after CPUID[4]'s similar
-> >    change ("i386/cpu: Use APIC ID offset to encode cache topo in
-> >    CPUID[4]"). (Xiaoyao)
-> >  * Introduced a bitmap in CPUX86State to cache available CPU topology
-> >    levels.
-> >  * Refactored the encode_topo_cpuid1f() to use traversal to search the
-> >    encoded level and avoid using static variables.
-> >  * Mapped x86 module to smp module instead of cluster.
-> >  * Dropped Michael/Babu's ACKed/Tested tags for most patches since the
-> >    code change.
-> > 
-> > Changes since v6:
-> >  * Updated the comment when check cluster-id. Since there's no
-> >    v8.2, the cluster-id support should at least start from v9.0.
-> >  * Rebased on commit d328fef93ae7 ("Merge tag 'pull-20231230' of
-> >    https://gitlab.com/rth7680/qemu into staging").
-> > 
-> > Changes since v5:
-> >  * The first four patches of v5 [1] have been merged, v6 contains
-> >    the remaining patches.
-> >  * Reabsed on the latest master.
-> >  * Updated the comment when check cluster-id. Since current QEMU is
-> >    v8.2, the cluster-id support should at least start from v8.3.
-> > 
-> > Changes since v4:
-> >  * Dropped the "x-l2-cache-topo" option. (Michael)
-> >  * Added A/R/T tags.
-> > 
-> > Changes since v3 (main changes):
-> >  * Exposed module level in CPUID[0x1F].
-> >  * Fixed compile warnings. (Babu)
-> >  * Fixed cache topology uninitialization bugs for some AMD CPUs. (Babu)
-> > 
-> > Changes since v2:
-> >  * Added "Tested-by", "Reviewed-by" and "ACKed-by" tags.
-> >  * Used newly added wrapped helper to get cores per socket in
-> >    qemu_init_vcpu().
-> > 
-> > Changes since v1:
-> >  * Reordered patches. (Yanan)
-> >  * Deprecated the patch to fix comment of machine_parse_smp_config().
-> >    (Yanan)
-> >  * Renamed test-x86-cpuid.c to test-x86-topo.c. (Yanan)
-> >  * Split the intel's l1 cache topology fix into a new separate patch.
-> >    (Yanan)
-> >  * Combined module_id and APIC ID for module level support into one
-> >    patch. (Yanan)
-> >  * Made cache_into_passthrough case of cpuid 0x04 leaf in
-> >  * cpu_x86_cpuid() used max_processor_ids_for_cache() and
-> >    max_core_ids_in_package() to encode CPUID[4]. (Yanan)
-> >  * Added the prefix "CPU_TOPO_LEVEL_*" for CPU topology level names.
-> >    (Yanan)
-> > ---
-> > Zhao Liu (20):
-> >   hw/core/machine: Introduce the module as a CPU topology level
-> >   hw/core/machine: Support modules in -smp
-> >   hw/core: Introduce module-id as the topology subindex
-> >   hw/core: Support module-id in numa configuration
-> >   i386/cpu: Fix i/d-cache topology to core level for Intel CPU
-> >   i386/cpu: Use APIC ID info to encode cache topo in CPUID[4]
-> >   i386/cpu: Use APIC ID info get NumSharingCache for
-> >     CPUID[0x8000001D].EAX[bits 25:14]
-> >   i386/cpu: Consolidate the use of topo_info in cpu_x86_cpuid()
-> >   i386/cpu: Introduce bitmap to cache available CPU topology levels
-> >   i386: Split topology types of CPUID[0x1F] from the definitions of
-> >     CPUID[0xB]
-> >   i386/cpu: Decouple CPUID[0x1F] subleaf with specific topology level
-> >   i386: Introduce module level cpu topology to CPUX86State
-> >   i386: Support modules_per_die in X86CPUTopoInfo
-> >   i386: Expose module level in CPUID[0x1F]
-> >   i386: Support module_id in X86CPUTopoIDs
-> >   i386/cpu: Introduce module-id to X86CPU
-> >   hw/i386/pc: Support smp.modules for x86 PC machine
-> >   i386: Add cache topology info in CPUCacheInfo
-> >   i386/cpu: Use CPUCacheInfo.share_level to encode CPUID[4]
-> >   i386/cpu: Use CPUCacheInfo.share_level to encode
-> >     CPUID[0x8000001D].EAX[bits 25:14]
-> > 
-> > Zhuocheng Ding (1):
-> >   tests: Add test case of APIC ID for module level parsing
-> > 
-> >  hw/core/machine-hmp-cmds.c |   4 +
-> >  hw/core/machine-smp.c      |  41 +++--
-> >  hw/core/machine.c          |  18 +++
-> >  hw/i386/pc.c               |   1 +
-> >  hw/i386/x86.c              |  67 ++++++--
-> >  include/hw/boards.h        |   4 +
-> >  include/hw/i386/topology.h |  60 +++++++-
-> >  qapi/machine.json          |   7 +
-> >  qemu-options.hx            |  18 ++-
-> >  system/vl.c                |   3 +
-> >  target/i386/cpu.c          | 304 +++++++++++++++++++++++++++++--------
-> >  target/i386/cpu.h          |  29 +++-
-> >  target/i386/kvm/kvm.c      |   3 +-
-> >  tests/unit/test-x86-topo.c |  56 ++++---
-> >  14 files changed, 489 insertions(+), 126 deletions(-)
-> > 
-> > -- 
-> > 2.34.1
-> > 
-> > 
+> > diff --git a/hw/net/xen_nic.c b/hw/net/xen_nic.c
+> > index 453fdb981983..89487b49baf9 100644
+> > --- a/hw/net/xen_nic.c
+> > +++ b/hw/net/xen_nic.c
+> > @@ -351,6 +351,7 @@ static bool net_event(void *_xendev)
+> >   static bool xen_netdev_connect(XenDevice *xendev, Error **errp)
+> >   {
+> > +    ERRP_GUARD();
+> >       XenNetDev *netdev = XEN_NET_DEVICE(xendev);
+> >       unsigned int port, rx_copy;
 > 
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+
+Acked-by: Anthony PERARD <anthony.perard@citrix.com>
+
+Thanks,
+
+-- 
+Anthony PERARD
 
