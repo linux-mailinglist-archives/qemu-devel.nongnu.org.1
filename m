@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 352E8876889
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 17:31:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42AEF8768A2
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 17:37:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rid84-0006Ja-CI; Fri, 08 Mar 2024 11:31:28 -0500
+	id 1ridDE-0000VE-DB; Fri, 08 Mar 2024 11:36:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rid81-0006J3-Ox
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 11:31:26 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ridDB-0000TM-FA
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 11:36:45 -0500
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rid80-0003Ak-5S
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 11:31:25 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-412fc5f5152so16635935e9.0
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 08:31:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ridD9-0004V9-Fw
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 11:36:45 -0500
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2d41f33eb05so10497581fa.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 08:36:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709915482; x=1710520282; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709915801; x=1710520601; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ZceiDNe4Pk4vwFUlsXaNjT4fs3ZZIBnah+BnXTL1+6Y=;
- b=boJuzn/XrDmrOQ6bHO/zrFJ/4sYRqPzfvveRMWSGvWReBu4aWpizeiPgzlWIKvhRad
- +uW22UqBtdnqYZ1im8DyrcHLWavGugK0hZ/OQK+EIezxmkos6vO7oZZD4ep76iF9tQx8
- KYYlRsiBRRpKHfk4MevRFVPBodut14vZ6Sm8hH1YHZUOPpmx/aM9MmxUgqd1Ji0mP8Ug
- n1sXeocdvE9BpS6dF4r5KhcgIdogDRV81/Kr5dI2OVFNRMnMj802/Kqp4F9PCGhTdjUC
- afpWWFahkCrXt4MwtJrA9bn6YEK65CFdhzTwL6EXhQA/uZiKsaTLS/ekNsh4Dtn79aL4
- xKBg==
+ bh=9kxjdR3vDvQpz/Ip9aq8t0PMrvrtVnYJozoO1Wh7/Qc=;
+ b=Y450VLFVwAEq0479n4RQfIeRxGVvKqms3yN6AjlEp9EIhf4v6Gg8ZX0Hz3c5sjLX8t
+ eWUN4XWWlr+WXCerwIBMgZPvyskp8efgGnqd/C35J0HTVfbrLk9bFKfEWh447UaqfC6s
+ j+X9DhuysPfM5GCUKBu1ld/YUSne66e5s6C7xq49b2QtFGFgtCG7rY81MOhARTVU4BkN
+ D0735DK73qliDFNalQ6VQw6xZAVqSNpz1p8dbhXBU7Jo0a3MN8KuPd25EXR/bIyadUgQ
+ v1IfqaE6KYWwDvIPPrB36Ji1v2z17vo2Uyo7LHlINk14WGVuwYBVEYWH1Q7FTlV4knJQ
+ BToA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709915482; x=1710520282;
+ d=1e100.net; s=20230601; t=1709915801; x=1710520601;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZceiDNe4Pk4vwFUlsXaNjT4fs3ZZIBnah+BnXTL1+6Y=;
- b=QteMioOAWpyGHsS5emBGhgf1Of+zEOtAQgGnxVUntyhgOkhxkCo60AN9EhE8GLy3kg
- tfuUsWMnU1Rh0MFPWg7tmqZC7B1pFe+qUvJF+4vSyZpvQLcsvM29jRSmaxPvS3mvn+wq
- ubs3MygYNokFJyBXPX/BdP4vewCKNwAJDJ8ylfIOokejRXYZ44CV5ND4KyZzoZNBv0yJ
- q0+l5lTazD3m6vx6KbOm5i7KLgH2zictxUt8OLU43/HwJOGaxUJa0WTZtwWA+rNhH48k
- JX53oisfqgw25HMmqvo4zJGnT92q8alRx8hvne9PpksSuHtajF0pdcqrJ+FaR/UXi6Mq
- tI4A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXyUT+bnvxVfmOaYdNUk67kQniQn/t24lRQ9HTeU+BpILCXfTKQlUQ89m9OdX8Deo1q7bxi3LwHWmj68hbclWdVqsck9S0=
-X-Gm-Message-State: AOJu0YzE1bxv4RLuaQXYmk4fwheHxzE3i05vlE3nmEdArXZEKEVZvIQP
- PGFU9Aj4oPumOwIS2Qa0a13dfGXf8RRasmvhL31MBvI0gnc75+w7Pw/1nUgRJek=
-X-Google-Smtp-Source: AGHT+IFlhBazuzAF3FH28Z3HmZoMmuiZJJ0wsDu4xMWhByq6ZdxgdFwkjGEP51AgqXk/+rSl5muYiQ==
-X-Received: by 2002:a05:600c:3111:b0:412:ffc9:d551 with SMTP id
- g17-20020a05600c311100b00412ffc9d551mr5533835wmo.14.1709915481622; 
- Fri, 08 Mar 2024 08:31:21 -0800 (PST)
+ bh=9kxjdR3vDvQpz/Ip9aq8t0PMrvrtVnYJozoO1Wh7/Qc=;
+ b=mlkjXQMNw0klseMIfTOr6pzPAUoio0ld4r7kAgKXzoh7/I7kKkMYGQ8s4QfCxDM49E
+ 3WNKLWSwPJeqs+t5tlphiaohxxFHQVYM4aYkVBxthyoSn97lO82Ksj5GKq3qkFbEHLvb
+ dj6dIvtaGCGRTEBIs6UeKZbFXe/95BGnwO/3w5E5qRngjejrW0zzP3Empx5MquXm7k3T
+ +noooQ371OZeHQlEUJYM/+Hfzb/1Ke2mSQDqQ/LDzdqRJnDc7YKYgYWxJJkKZ14YCWJz
+ MM5MtBOKeRl54bJijM910pi3jbgGe9oqhkZKbuMprg6R6yXalrbFwuuOiXm2Y9bHNdC6
+ RCkQ==
+X-Gm-Message-State: AOJu0Yx049RJgUErlOLQIBAglxfi/OfupkVOeUApDg+y6Jrdfb6LXP0M
+ OPTzi75R9j0uF3As8bqT6dyg3C+7eXAjjzxKguc8fQL9ty6CagOE9SCkLH5l03M=
+X-Google-Smtp-Source: AGHT+IEnDDdRzw+0WCAVFDAwMmQG+okbkjKuymonjjKaw1bTTp+uHBxxsuWDU3q+JUa4jsjl+CpT6w==
+X-Received: by 2002:a2e:3e15:0:b0:2d2:73d1:d259 with SMTP id
+ l21-20020a2e3e15000000b002d273d1d259mr3176513lja.23.1709915801587; 
+ Fri, 08 Mar 2024 08:36:41 -0800 (PST)
 Received: from [192.168.69.100] (cvl92-h01-176-184-49-62.dsl.sta.abo.bbox.fr.
  [176.184.49.62]) by smtp.gmail.com with ESMTPSA id
- t14-20020a05600c198e00b0041312c4865asm4682487wmq.2.2024.03.08.08.31.20
+ r19-20020a05600c35d300b0041316e91c99sm3000008wmq.1.2024.03.08.08.36.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 08 Mar 2024 08:31:21 -0800 (PST)
-Message-ID: <a6c12d41-2801-4425-98e9-351851e2f7a4@linaro.org>
-Date: Fri, 8 Mar 2024 17:31:19 +0100
+ Fri, 08 Mar 2024 08:36:40 -0800 (PST)
+Message-ID: <17444096-9602-43e1-9042-2a7ce02b5e79@linaro.org>
+Date: Fri, 8 Mar 2024 17:36:38 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/13] Cleanup on SMP and its test
+Subject: Re: [PATCH v9 00/21] Introduce smp.modules for x86 in QEMU
 Content-Language: en-US
 To: Zhao Liu <zhao1.liu@linux.intel.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Prasad Pandit <ppandit@redhat.com>, qemu-devel@nongnu.org
-Cc: Xiaoling Song <xiaoling.song@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-References: <20240308160148.3130837-1-zhao1.liu@linux.intel.com>
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>, Babu Moger <babu.moger@amd.com>,
+ Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+References: <20240227103231.1556302-1-zhao1.liu@linux.intel.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240308160148.3130837-1-zhao1.liu@linux.intel.com>
+In-Reply-To: <20240227103231.1556302-1-zhao1.liu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,39 +102,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhao,
-
-On 8/3/24 17:01, Zhao Liu wrote:
+On 27/2/24 11:32, Zhao Liu wrote:
 
 > ---
-> Zhao Liu (13):
->    hw/core/machine-smp: Remove deprecated "parameter=0" SMP
->      configurations
->    hw/core/machine-smp: Deprecate unsupported "parameter=1" SMP
->      configurations
->    hw/core/machine-smp: Calculate total CPUs once in
->      machine_parse_smp_config()
->    tests/unit/test-smp-parse: Drop the unsupported "dies=1" case
->    tests/unit/test-smp-parse: Use CPU number macros in invalid topology
->      case
->    tests/unit/test-smp-parse: Bump max_cpus to 4096
->    tests/unit/test-smp-parse: Make test cases aware of the book/drawer
->    tests/unit/test-smp-parse: Test "books" parameter in -smp
->    tests/unit/test-smp-parse: Test "drawers" parameter in -smp
->    tests/unit/test-smp-parse: Test "drawers" and "books" combination case
->    tests/unit/test-smp-parse: Test the full 7-levels topology hierarchy
->    tests/unit/test-smp-parse: Test smp_props.has_clusters
->    tests/unit/test-smp-parse: Test "parameter=0" SMP configurations
+> Zhao Liu (20):
+>    hw/core/machine: Introduce the module as a CPU topology level
+>    hw/core/machine: Support modules in -smp
+>    hw/core: Introduce module-id as the topology subindex
+>    hw/core: Support module-id in numa configuration
 
-Can you share your base commit please?
-
-Applying: hw/core/machine-smp: Remove deprecated "parameter=0" SMP 
-configurations
-Applying: hw/core/machine-smp: Deprecate unsupported "parameter=1" SMP 
-configurations
-error: patch failed: docs/about/deprecated.rst:47
-error: docs/about/deprecated.rst: patch does not apply
-Patch failed at 0002 hw/core/machine-smp: Deprecate unsupported 
-"parameter=1" SMP configurations
-
+Patches 1-4 queued, thanks!
 
