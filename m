@@ -2,84 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3403C876C87
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 22:55:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A93A1876D54
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 23:49:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riiB2-0007gx-0J; Fri, 08 Mar 2024 16:54:52 -0500
+	id 1rij0H-0003sA-Uw; Fri, 08 Mar 2024 17:47:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1riiB0-0007gV-At
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 16:54:50 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from
+ <3ipXrZQYKCpkL73GC59HH9E7.5HFJ7FN-67O7EGHG9GN.HK9@flex--seanjc.bounces.google.com>)
+ id 1rij0F-0003ri-Mp
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 17:47:47 -0500
+Received: from mail-yw1-x1149.google.com ([2607:f8b0:4864:20::1149])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1riiAy-0001pM-Rx
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 16:54:50 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1dc09556599so22257995ad.1
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 13:54:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from
+ <3ipXrZQYKCpkL73GC59HH9E7.5HFJ7FN-67O7EGHG9GN.HK9@flex--seanjc.bounces.google.com>)
+ id 1rij07-0004Jz-QU
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 17:47:47 -0500
+Received: by mail-yw1-x1149.google.com with SMTP id
+ 00721157ae682-60a08eb0956so13483677b3.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 14:47:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1709934887; x=1710539687; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vqdrEu+JdpuCyxKRmCNFt9jzGsTG0D7Mm4+hNkdQdMw=;
- b=j8kyjFXOb2kIc/xbO4XNA3eO4jzbfhgmb28CAoRqelEtT1RUtLYvKzjvWKI5UuEQs4
- ZeCeVS3++/2ko6QuByFBUsxsyD6vqF7vNWZiz9FS4W0GRl+fHqENGKJL0dQyTFKWw4os
- hMhyolNyiexbBWvgehxRYH+3FwHux3GF3kKP6RwvX79GES18JKZjUh0BH1M0GRY51bU2
- lsGvTsW/1lFsG2aV0955RIo7saKpBue9ETN6iWrqthuKc6CEcdSVigseWtAD44+uKgne
- SsPYdKtmAccxClL/gctuRtfu5dua17ygNOKNfPFqHyhaRP1chgJ9nUwujVIRx6sqDPR+
- IL8g==
+ d=google.com; s=20230601; t=1709938058; x=1710542858; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+ :date:from:to:cc:subject:date:message-id:reply-to;
+ bh=SKmvQ5PcWXT/71cgvqMhhqx5Wzq7n7WsxYjGNYsq8ec=;
+ b=ifS9j9AfY4WGCtWIhodfN20xzvmGM+RHTDY+lD6LRK+SXcAVdwVEdGVtxWagb1P95b
+ brsq5dQNueEUD5HkDYvGPSTemL7PEWIUIkeOCX0QEcdK+BRYzujolOvmxTQZ8RU6cMht
+ P9l2WbhV1FfhifN0E+0bn+gW2v1PCkZi5/Bgmwwme5jm0/67LKlVdz9C2rN6C4JeYjr0
+ HP6VcYvS69xNN0boyL8HyoiIIdgSHZwmZGmh305VtXRS42JBj+wqbqfJhi6ibL7BsodS
+ bBU/qQZs87id9hvYkmSAs3tCgJN1BFDA+P6YMape/cyo1IyMtjbUhE8i8Y0fCf57MB1H
+ GSXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709934887; x=1710539687;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vqdrEu+JdpuCyxKRmCNFt9jzGsTG0D7Mm4+hNkdQdMw=;
- b=C/xb5jWmRZdSHBqDIDmWcmsz2sfZSmZS+CoZwAVwi5Z4qb49Tlz5V+yrPGpjQta2Gl
- +spdwNA8eSXoy8JNfMW1N7O77LsFX5gZsLGYXWEp4LkVkf+r1e4qayD5iJdPTR3VGKJb
- WnH7m5TRfcv1kRuqN5Rg/GCtdqvsl8XfbABlWzez0W2azk6WNJ9f0G9UckgAvJ9NDV68
- 0rUkiAuV22kkPfkyD1G6cN4Dlph/Fi2Vxpu0EkWJAIDiJjAJSFHRHhUdxOSP+Bi/3EUZ
- l1BTYzI/u06oouSmkfseUXSbqOq9pUjBEHd9Npj5YWuKRkQCTQrm2ZWdwUqxJEBURZjs
- Qpdw==
-X-Gm-Message-State: AOJu0YxamSPQ2eGcLMlURlUi4nsfyWHQ+r9VSd6BIzfnzDyM6IEwvA3+
- TZahi9WF/tSmKXQ6ZreGOjvvAqTxmbT/gOdsP0Khr90cxl7WUMjJsOyNmhyFgVbP4Uan4a1lXly
- U
-X-Google-Smtp-Source: AGHT+IG1VeGv6gNKTA5/DkiD04JdE4ivV0RGgHvxk7pdlvehSFL+SHAw4amq1HYO8KaGWvX2oydYkw==
-X-Received: by 2002:a17:902:f688:b0:1dd:75c6:fab9 with SMTP id
- l8-20020a170902f68800b001dd75c6fab9mr508973plg.3.1709934886752; 
- Fri, 08 Mar 2024 13:54:46 -0800 (PST)
-Received: from grind.. ([177.94.15.159]) by smtp.gmail.com with ESMTPSA id
- d3-20020a170902b70300b001dd66e6ec91sm107702pls.140.2024.03.08.13.54.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Mar 2024 13:54:46 -0800 (PST)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- richard.henderson@linaro.org, philmd@linaro.org,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v8 10/10] target/riscv/vector_helper.c: optimize loops in ldst
- helpers
-Date: Fri,  8 Mar 2024 18:53:50 -0300
-Message-ID: <20240308215402.117405-11-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240308215402.117405-1-dbarboza@ventanamicro.com>
-References: <20240308215402.117405-1-dbarboza@ventanamicro.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ d=1e100.net; s=20230601; t=1709938058; x=1710542858;
+ h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+ :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=SKmvQ5PcWXT/71cgvqMhhqx5Wzq7n7WsxYjGNYsq8ec=;
+ b=rvhANnKlNAarv6HwWXLSVF6+Kfrq+fCd36mv4+kmbbMUaxeEOwLZxxN6LAhoSEU+rA
+ cELoeDgoeBbDSBCBaW8ZaJHt4VymPyaps8DhDgunir96JQg0IicnqjJuTbSvmIvNZzKc
+ qOkZKixaa31IX5XiyCjQYUo7KUHKLbnJ0f/xq2XXbDVBYu9r5sG8OFSQvChzJP6UxUSe
+ Il++5WcsMS6dN7xswfMxTfXvnpdCECT8wwB5rzGaLYTe0ZybNlZ7+njdrpZYZtnPJ7Qr
+ 67m2/0fCQTJmkWrccxSUqufNJaEgGvoz/NHQbCN+Pr3yvpbs3segrcXCAGNOZqJxHuPW
+ IIfw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVhCP4m+AA2qVF5Zc67t5q227roIOaYquK9TtdnmWxThOW7fw2yAhMzo+wFDKWATqMKtJAw5SiQ3TsqYwKFozl7i0di/SA=
+X-Gm-Message-State: AOJu0YzYBnhVxfJwDCEyjfa8Jk3P80XQ73yPRBdushx0RUPqtn+Asvga
+ sO1uJvLVqavUrx8bwWjZ2bNIXmeM5RExco1JNTijy0VnB5pcKQsvj/cF4fUL7VjigxGboDFYVLN
+ v8Q==
+X-Google-Smtp-Source: AGHT+IFqRwVOtamqH/NKTy0aNd2o9IZB1qaPOD/2a3NruNRdmlhFTn+MhqozJICSJlnbYsW/c2VqgNYGi+8=
+X-Received: from zagreus.c.googlers.com
+ ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a81:5201:0:b0:608:ecf3:ef8 with SMTP id
+ g1-20020a815201000000b00608ecf30ef8mr124505ywb.0.1709938058024; Fri, 08 Mar
+ 2024 14:47:38 -0800 (PST)
+Date: Fri, 8 Mar 2024 14:47:36 -0800
+In-Reply-To: <aa50a5ea6dbcd5f3f1df39dcf2fc4f5ee881ec8e.camel@infradead.org>
+Mime-Version: 1.0
+References: <cc1bb8e9bc3e1ab637700a4d3defeec95b55060a.camel@amazon.com>
+ <CA+i-1C34VT5oFQL7en1n+MdRrO7AXaAMdNVvjFPxOaTDGXu9Dw@mail.gmail.com>
+ <CALzav=fO2hpaErSRHGCJCKTrJKD7b9F5oEg7Ljhb0u1gB=VKwg@mail.gmail.com>
+ <aa50a5ea6dbcd5f3f1df39dcf2fc4f5ee881ec8e.camel@infradead.org>
+Message-ID: <ZeuVV3Jo31lcL41H@google.com>
+Subject: Re: Unmapping KVM Guest Memory from Host Kernel
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: David Matlack <dmatlack@google.com>, Brendan Jackman <jackmanb@google.com>,
+ James Gowans <jgowans@amazon.com>, 
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ Patrick Roy <roypat@amazon.co.uk>, 
+ "chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>,
+ Derek Manwaring <derekmn@amazon.com>, "rppt@kernel.org" <rppt@kernel.org>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+ Nikita Kalyazin <kalyazin@amazon.co.uk>,
+ "lstoakes@gmail.com" <lstoakes@gmail.com>, 
+ "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
+ "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+ "vbabka@suse.cz" <vbabka@suse.cz>, 
+ "mst@redhat.com" <mst@redhat.com>, "somlo@cmu.edu" <somlo@cmu.edu>,
+ Alexander Graf <graf@amazon.de>, 
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Content-Type: text/plain; charset="us-ascii"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1149;
+ envelope-from=3ipXrZQYKCpkL73GC59HH9E7.5HFJ7FN-67O7EGHG9GN.HK9@flex--seanjc.bounces.google.com;
+ helo=mail-yw1-x1149.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,50 +112,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Change the for loops in ldst helpers to do a single increment in the
-counter, and assign it env->vstart, to avoid re-reading from vstart
-every time.
+On Fri, Mar 08, 2024, David Woodhouse wrote:
+> On Fri, 2024-03-08 at 09:35 -0800, David Matlack wrote:
+> > I think what James is looking for (and what we are also interested
+> > in), is _eliminating_ the ability to access guest memory from the
+> > direct map entirely. And in general, eliminate the ability to access
+> > guest memory in as many ways as possible.
+> 
+> Well, pKVM does that... 
 
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/riscv/vector_helper.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Out-of-tree :-)
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 1941c0e5f3..2e50341806 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -190,7 +190,7 @@ vext_ldst_stride(void *vd, void *v0, target_ulong base,
-     uint32_t esz = 1 << log2_esz;
-     uint32_t vma = vext_vma(desc);
- 
--    for (i = env->vstart; i < env->vl; i++, env->vstart++) {
-+    for (i = env->vstart; i < env->vl; env->vstart = ++i) {
-         k = 0;
-         while (k < nf) {
-             if (!vm && !vext_elem_mask(v0, i)) {
-@@ -255,7 +255,7 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-     uint32_t esz = 1 << log2_esz;
- 
-     /* load bytes from guest memory */
--    for (i = env->vstart; i < evl; i++, env->vstart++) {
-+    for (i = env->vstart; i < evl; env->vstart = ++i) {
-         k = 0;
-         while (k < nf) {
-             target_ulong addr = base + ((i * nf + k) << log2_esz);
-@@ -368,7 +368,7 @@ vext_ldst_index(void *vd, void *v0, target_ulong base,
-     uint32_t vma = vext_vma(desc);
- 
-     /* load bytes from guest memory */
--    for (i = env->vstart; i < env->vl; i++, env->vstart++) {
-+    for (i = env->vstart; i < env->vl; env->vstart = ++i) {
-         k = 0;
-         while (k < nf) {
-             if (!vm && !vext_elem_mask(v0, i)) {
--- 
-2.43.2
-
+I'm not just being snarky; when pKVM lands this functionality upstream, I fully
+expect zapping direct map entries to be generic guest_memfd functionality that
+would be opt-in, either by the in-kernel technology, e.g. pKVM, or by userspace,
+or by some combination of the two, e.g. I can see making it optional to nuke the
+direct map when using guest_memfd for TDX guests so that rogue accesses from the
+host generate synchronous #PFs instead of latent #MCs.
 
