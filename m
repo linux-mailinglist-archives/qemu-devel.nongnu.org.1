@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1698587660D
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 15:12:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C827387660F
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 15:12:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riawK-0007WQ-8X; Fri, 08 Mar 2024 09:11:13 -0500
+	id 1riawN-0007WV-Qv; Fri, 08 Mar 2024 09:11:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1riawF-0007Uj-9i
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1riawF-0007Ui-83
  for qemu-devel@nongnu.org; Fri, 08 Mar 2024 09:11:07 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1riaw9-0000YC-6H
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1riawD-0000Z4-0X
  for qemu-devel@nongnu.org; Fri, 08 Mar 2024 09:11:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709907060;
+ s=mimecast20190719; t=1709907063;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3bKtB/YaN3PWPWXFJPdyJ5oWfRF1A7iAjFaT5FFBe6k=;
- b=fTEMrxSnhizFFcI+vPgczQJuuLnjNIUc9eVnlcIyKec8ULzqJWenXNGLVwF0aCr4nS1QVH
- AyuqzQlaRF0SqOHTq4ykPDuC+5vOdbxisG+YbIhC/M2GNEyLKYa31Xba/tofHlhqOv10jr
- NUr9/NsGG1TnBTwzVDCMqm7pw912CBc=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-92-ChqcXAGfOniqWgjkSF2N6g-1; Fri,
- 08 Mar 2024 09:10:57 -0500
-X-MC-Unique: ChqcXAGfOniqWgjkSF2N6g-1
+ bh=9w7OrnWjdHq2UoQPMPmpiUmfvtIv8fWk3DyuiCabn4s=;
+ b=etvyTMWxTB1QJx1xz4782rZMocZ42ZJFy4PI8ydQRJhrtcSNsNsu9ljZ19OBIWhOzY8SNT
+ qJGrVv+WytgsB46J8KI0H5a4if3aqt5ErBkSVyXx3n+po8aTEWTsjXhLKlis6cUYa/savf
+ SMhN+pVzlQ9rtwMNY1F1DAspcEUfmBc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-118-PTcFoHU6Pgm8_9gPimL5xQ-1; Fri, 08 Mar 2024 09:10:59 -0500
+X-MC-Unique: PTcFoHU6Pgm8_9gPimL5xQ-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1C0E33801F4D;
- Fri,  8 Mar 2024 14:10:57 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D1CD7101CC67;
+ Fri,  8 Mar 2024 14:10:58 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C6D8C492BD5;
- Fri,  8 Mar 2024 14:10:55 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 989FC492BC6;
+ Fri,  8 Mar 2024 14:10:57 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH v3 2/3] target/arm/tcg/m_helper.c: Include the full helpers
- only with CONFIG_ARM_V7M
-Date: Fri,  8 Mar 2024 15:10:50 +0100
-Message-ID: <20240308141051.536599-3-thuth@redhat.com>
+Subject: [PATCH v3 3/3] target/arm/Kconfig: Stop requiring CONFIG_ARM_V7M
+Date: Fri,  8 Mar 2024 15:10:51 +0100
+Message-ID: <20240308141051.536599-4-thuth@redhat.com>
 In-Reply-To: <20240308141051.536599-1-thuth@redhat.com>
 References: <20240308141051.536599-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -79,149 +78,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If CONFIG_ARM_V7M is not set, we don't want to include the full-fledged
-helper functions that require additional functions for linking. Use some
-stubs functions that call g_assert_not_reached() instead.
+Now that we made sure that ARM_V7M code only gets compiled if really
+needed, we can drop the hard requirement for CONFIG_ARM_V7M in the
+Kconfig file.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/arm/tcg/m_helper.c | 93 +++++++++++++++++++++++++--------------
- 1 file changed, 61 insertions(+), 32 deletions(-)
+ target/arm/Kconfig | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/target/arm/tcg/m_helper.c b/target/arm/tcg/m_helper.c
-index d1f1e02acc..d38becd975 100644
---- a/target/arm/tcg/m_helper.c
-+++ b/target/arm/tcg/m_helper.c
-@@ -22,8 +22,11 @@
- #endif
- #if !defined(CONFIG_USER_ONLY)
- #include "hw/intc/armv7m_nvic.h"
-+#include CONFIG_DEVICES
- #endif
+diff --git a/target/arm/Kconfig b/target/arm/Kconfig
+index bf57d739cd..3fffdcb61b 100644
+--- a/target/arm/Kconfig
++++ b/target/arm/Kconfig
+@@ -2,10 +2,6 @@ config ARM
+     bool
+     select ARM_COMPATIBLE_SEMIHOSTING if TCG
  
-+#if defined(CONFIG_USER_ONLY) || defined(CONFIG_ARM_V7M)
-+
- static void v7m_msr_xpsr(CPUARMState *env, uint32_t mask,
-                          uint32_t reg, uint32_t val)
- {
-@@ -58,6 +61,8 @@ static uint32_t v7m_mrs_xpsr(CPUARMState *env, uint32_t reg, unsigned el)
-     return xpsr_read(env) & mask;
- }
- 
-+#endif
-+
- uint32_t arm_v7m_mrs_control(CPUARMState *env, uint32_t secure)
- {
-     uint32_t value = env->v7m.control[secure];
-@@ -69,6 +74,40 @@ uint32_t arm_v7m_mrs_control(CPUARMState *env, uint32_t secure)
-     return value;
- }
- 
-+#if defined(CONFIG_USER_ONLY) || !defined(CONFIG_ARM_V7M)
-+
-+void HELPER(v7m_bxns)(CPUARMState *env, uint32_t dest)
-+{
-+    /* translate.c should never generate calls here in user-only mode */
-+    g_assert_not_reached();
-+}
-+
-+void HELPER(v7m_blxns)(CPUARMState *env, uint32_t dest)
-+{
-+    /* translate.c should never generate calls here in user-only mode */
-+    g_assert_not_reached();
-+}
-+
-+void HELPER(v7m_preserve_fp_state)(CPUARMState *env)
-+{
-+    /* translate.c should never generate calls here in user-only mode */
-+    g_assert_not_reached();
-+}
-+
-+void HELPER(v7m_vlstm)(CPUARMState *env, uint32_t fptr)
-+{
-+    /* translate.c should never generate calls here in user-only mode */
-+    g_assert_not_reached();
-+}
-+
-+void HELPER(v7m_vlldm)(CPUARMState *env, uint32_t fptr)
-+{
-+    /* translate.c should never generate calls here in user-only mode */
-+    g_assert_not_reached();
-+}
-+
-+#endif
-+
- #ifdef CONFIG_USER_ONLY
- 
- void HELPER(v7m_msr)(CPUARMState *env, uint32_t maskreg, uint32_t val)
-@@ -101,37 +140,6 @@ uint32_t HELPER(v7m_mrs)(CPUARMState *env, uint32_t reg)
-         return 0;
-     }
- }
+-    # We need to select this until we move m_helper.c and the
+-    # translate.c v7m helpers under ARM_V7M.
+-    select ARM_V7M if TCG
 -
--void HELPER(v7m_bxns)(CPUARMState *env, uint32_t dest)
--{
--    /* translate.c should never generate calls here in user-only mode */
--    g_assert_not_reached();
--}
--
--void HELPER(v7m_blxns)(CPUARMState *env, uint32_t dest)
--{
--    /* translate.c should never generate calls here in user-only mode */
--    g_assert_not_reached();
--}
--
--void HELPER(v7m_preserve_fp_state)(CPUARMState *env)
--{
--    /* translate.c should never generate calls here in user-only mode */
--    g_assert_not_reached();
--}
--
--void HELPER(v7m_vlstm)(CPUARMState *env, uint32_t fptr)
--{
--    /* translate.c should never generate calls here in user-only mode */
--    g_assert_not_reached();
--}
--
--void HELPER(v7m_vlldm)(CPUARMState *env, uint32_t fptr)
--{
--    /* translate.c should never generate calls here in user-only mode */
--    g_assert_not_reached();
--}
--
- uint32_t HELPER(v7m_tt)(CPUARMState *env, uint32_t addr, uint32_t op)
- {
-     /*
-@@ -160,7 +168,28 @@ ARMMMUIdx arm_v7m_mmu_idx_for_secstate(CPUARMState *env, bool secstate)
-     return ARMMMUIdx_MUser;
- }
- 
--#else /* !CONFIG_USER_ONLY */
-+#elif !defined(CONFIG_ARM_V7M)
-+
-+void HELPER(v7m_msr)(CPUARMState *env, uint32_t maskreg, uint32_t val)
-+{
-+    g_assert_not_reached();
-+}
-+
-+uint32_t HELPER(v7m_mrs)(CPUARMState *env, uint32_t reg)
-+{
-+    g_assert_not_reached();
-+}
-+uint32_t HELPER(v7m_tt)(CPUARMState *env, uint32_t addr, uint32_t op)
-+{
-+    g_assert_not_reached();
-+}
-+
-+ARMMMUIdx arm_v7m_mmu_idx_for_secstate(CPUARMState *env, bool secstate)
-+{
-+     g_assert_not_reached();
-+}
-+
-+#else
- 
- static ARMMMUIdx arm_v7m_mmu_idx_all(CPUARMState *env,
-                                      bool secstate, bool priv, bool negpri)
+ config AARCH64
+     bool
+     select ARM
 -- 
 2.44.0
 
