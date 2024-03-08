@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E1F8767BB
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:51:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7AE8767C5
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:53:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ricUq-0000AG-Jp; Fri, 08 Mar 2024 10:50:56 -0500
+	id 1ricUR-0007uc-FJ; Fri, 08 Mar 2024 10:50:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ricUN-0007cz-Ke
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:50:27 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1ricUO-0007l1-LI
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:50:28 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ricUI-0004Si-KE
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:50:27 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-33e122c8598so1204266f8f.1
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 07:50:22 -0800 (PST)
+ id 1ricUJ-0004TU-Ne
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:50:28 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-33e2248948bso1432644f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 07:50:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709913021; x=1710517821; darn=nongnu.org;
+ d=linaro.org; s=google; t=1709913022; x=1710517822; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=4ZUGIJ7Dxq6i5SHXLd7JYUtJZpNzX4uxBVkyL+7w0k8=;
- b=kqmqdEj06CpDcpuuKZG0kcNSmAauPNoBvvPj7oM59jvfUVra5WulwNlZA1bHg7WRUn
- Srio+qgbxTf+nEaa1zxUzrXgxnYMLmebzAqwFvnbtaY4bhXtN6/OYiilcjQ5aP9istng
- YItchuMlQfDdJAlaHKEKDQ9mP6tG7lfyNWfkIOKDSHLF+zmwVwoxqUpsPdekZN5Nh78E
- Ym1nvgdm0ORQA+bKL3b4y4ePyBdLXO5eWNGZqSgx84J5nEfuuDzyfp76CjbnNZOJp2Rz
- TwObtB4Gud4BWh+GdITghd2sUpCNpdF5veMBPP3iYx8MA9cSdAY7BrRpEaALswUJJ3RR
- aBfw==
+ :reply-to; bh=960OLSjqCMX++IpXUlryGWvsAGbqsr+uBib4BGSP5ns=;
+ b=hV5+8jk2sLexiP0hrK/43vWDub2vEVIbm1Kn+cGj0gkE+KGE0DVyT2mTxHhqetgxXg
+ CYVX3uZejMx8Lh/78wtFQbyAsK8hS0YW6VCMN1lcXkPU2SHlz04H+M4UlDy8hwLJjBdI
+ MoFt+HCKjyUcrn7UelmJavU8IOeMc4jFNrnWMBm2sqyd+ebK0fqE5ZPJaFFZeQq+G6QD
+ dyfyaPclXOHoYhQ1b3nSpyi5u8mD3JbT1AwpRn2HnN9A9JIbCSv257Oo7tYtAv28dqMY
+ HKsz3Gfeyu+Xg9V6ERB8u+kf8XZIDTfIFzvJE1lylrZRpwhh9ERYJoYG93+ZulKGGDEQ
+ jhxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709913021; x=1710517821;
+ d=1e100.net; s=20230601; t=1709913022; x=1710517822;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4ZUGIJ7Dxq6i5SHXLd7JYUtJZpNzX4uxBVkyL+7w0k8=;
- b=Y9UtqeYtRevGw40CYaChfkm47sep3Q8DJ5XJCysacdekmA5h2ZdfFrqiURmwpeGtsr
- 70+l7FWU8vAAt7WYIbmWBfZqFkVk5l4WPRDheoVYBRmLrjskEQxRGLgg7zCLYv6HIT5B
- QA0NH++WCy0CJ6foh9YapTrSaKrT5otnvfCUH5ZrZrpr/tmTfdX8HMcIXNte4ILZt5aO
- wukQxbygnLAhiTyhObkBForgzKnAHHG1qLhJ4Feu6OEEy57BLRCPVrU7n2CnXZ9oU/KU
- 4pAcZnh+w+qWByU4e/fzV0z072HyHB49n5jGvrviPo5ZfBEITpto5Gl1reZ7gsZuufGr
- YB9Q==
-X-Gm-Message-State: AOJu0YyBD/ocBcFD4ZMy8eX+b4r0Glj5eYZ8xrjDwdp7fxuMvqPZmxej
- cWaG6tOmbBU/hM67Lnxd9wxvkjtnwRvJD9XWlKKjktgGiUKmHvSRKg5WE0wxlBDQ0ixmOJtP6cv
- V
-X-Google-Smtp-Source: AGHT+IHQMscdsa47Vumu5Q0jWEx2iYJDHsp34b0dbpMeU+Pne8GTRy05mYLQATwoAIB2i5F3XoU81A==
-X-Received: by 2002:a5d:608b:0:b0:33e:4390:c039 with SMTP id
- w11-20020a5d608b000000b0033e4390c039mr9830898wrt.33.1709913021133; 
+ bh=960OLSjqCMX++IpXUlryGWvsAGbqsr+uBib4BGSP5ns=;
+ b=SQjhA8q6SYgARn8IAZrZucsxs6w6abYTgkZh0037rmnkewHIpygKLg6VDPtKhaYZDd
+ xJjwkvQqnc9UpK5Y3MHBiWxMgzKfI6Q7i2BSD9jbgoftY74HvBS7/k3iPcI8uG1WJD2y
+ AYnyMTraFP3XXgKQvcliKq/OUe79LRYAaKz6JPGGLrgYkVDD/hNia7Vg9WNH3EyeqQ89
+ Qg6HMEGuyKE4O9XwCC8ofXT9B+dFM/7FQfDur4r7n/3lNSV0Jyjpb0lwUT947VuiAgLe
+ o5mFu8aRsvxA0EDnrQvd1Z/XOggweoo86rBBCVG7LrcRHVSX236dmceBYlFoobOaeIxi
+ XeMA==
+X-Gm-Message-State: AOJu0YytN2Oqi95trargDGWgqB6Ce/nCNZlZCEr00R2V/oWwkMl976r9
+ XzzocVYhMT8755ARdK2vsBRLI22VITBpnTu8C7UG2fO9yAc+CRc7s2EfrC2TiB4dg6aYlN9VMuF
+ l
+X-Google-Smtp-Source: AGHT+IEm1/WMMjxyvqtPcljSt/qf8eRbMG90/VaDOBC3QKVlW6Ez9SlZgJ/JzzGZQPXu16GtBcDQxg==
+X-Received: by 2002:adf:ebcb:0:b0:33e:12eb:7822 with SMTP id
+ v11-20020adfebcb000000b0033e12eb7822mr14792828wrn.71.1709913021700; 
  Fri, 08 Mar 2024 07:50:21 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- f2-20020adff8c2000000b0033e7a204dc7sm856080wrq.32.2024.03.08.07.50.20
+ f2-20020adff8c2000000b0033e7a204dc7sm856080wrq.32.2024.03.08.07.50.21
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Mar 2024 07:50:20 -0800 (PST)
+ Fri, 08 Mar 2024 07:50:21 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 10/14] hw/arm: Connect STM32L4x5 GPIO to STM32L4x5 SoC
-Date: Fri,  8 Mar 2024 15:50:11 +0000
-Message-Id: <20240308155015.3637663-11-peter.maydell@linaro.org>
+Subject: [PULL 11/14] tests/qtest: Add STM32L4x5 GPIO QTest testcase
+Date: Fri,  8 Mar 2024 15:50:12 +0000
+Message-Id: <20240308155015.3637663-12-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240308155015.3637663-1-peter.maydell@linaro.org>
 References: <20240308155015.3637663-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,230 +94,610 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Inès Varhol <ines.varhol@telecom-paris.fr>
 
+The testcase contains :
+- `test_idr_reset_value()` :
+Checks the reset values of MODER, OTYPER, PUPDR, ODR and IDR.
+- `test_gpio_output_mode()` :
+Checks that writing a bit in register ODR results in the corresponding
+pin rising or lowering, if this pin is configured in output mode.
+- `test_gpio_input_mode()` :
+Checks that a input pin set high or low externally results
+in the pin rising and lowering.
+- `test_pull_up_pull_down()` :
+Checks that a floating pin in pull-up/down mode is actually high/down.
+- `test_push_pull()` :
+Checks that a pin set externally is disconnected when configured in
+push-pull output mode, and can't be set externally while in this mode.
+- `test_open_drain()` :
+Checks that a pin set externally high is disconnected when configured
+in open-drain output mode, and can't be set high while in this mode.
+- `test_bsrr_brr()` :
+Checks that writing to BSRR and BRR has the desired result in ODR.
+- `test_clock_enable()` :
+Checks that GPIO clock is at the right frequency after enabling it.
+
+Acked-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-id: 20240305210444.310665-3-ines.varhol@telecom-paris.fr
+Message-id: 20240305210444.310665-4-ines.varhol@telecom-paris.fr
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/stm32l4x5_soc.h     |  2 +
- include/hw/gpio/stm32l4x5_gpio.h   |  1 +
- include/hw/misc/stm32l4x5_syscfg.h |  3 +-
- hw/arm/stm32l4x5_soc.c             | 71 +++++++++++++++++++++++-------
- hw/misc/stm32l4x5_syscfg.c         |  1 +
- hw/arm/Kconfig                     |  3 +-
- 6 files changed, 63 insertions(+), 18 deletions(-)
+ tests/qtest/stm32l4x5_gpio-test.c | 551 ++++++++++++++++++++++++++++++
+ tests/qtest/meson.build           |   3 +-
+ 2 files changed, 553 insertions(+), 1 deletion(-)
+ create mode 100644 tests/qtest/stm32l4x5_gpio-test.c
 
-diff --git a/include/hw/arm/stm32l4x5_soc.h b/include/hw/arm/stm32l4x5_soc.h
-index af67b089efc..ee5f3624055 100644
---- a/include/hw/arm/stm32l4x5_soc.h
-+++ b/include/hw/arm/stm32l4x5_soc.h
-@@ -30,6 +30,7 @@
- #include "hw/misc/stm32l4x5_syscfg.h"
- #include "hw/misc/stm32l4x5_exti.h"
- #include "hw/misc/stm32l4x5_rcc.h"
-+#include "hw/gpio/stm32l4x5_gpio.h"
- #include "qom/object.h"
- 
- #define TYPE_STM32L4X5_SOC "stm32l4x5-soc"
-@@ -49,6 +50,7 @@ struct Stm32l4x5SocState {
-     OrIRQState exti_or_gates[NUM_EXTI_OR_GATES];
-     Stm32l4x5SyscfgState syscfg;
-     Stm32l4x5RccState rcc;
-+    Stm32l4x5GpioState gpio[NUM_GPIOS];
- 
-     MemoryRegion sram1;
-     MemoryRegion sram2;
-diff --git a/include/hw/gpio/stm32l4x5_gpio.h b/include/hw/gpio/stm32l4x5_gpio.h
-index 0d361f34105..878bd19fc9b 100644
---- a/include/hw/gpio/stm32l4x5_gpio.h
-+++ b/include/hw/gpio/stm32l4x5_gpio.h
-@@ -25,6 +25,7 @@
- #define TYPE_STM32L4X5_GPIO "stm32l4x5-gpio"
- OBJECT_DECLARE_SIMPLE_TYPE(Stm32l4x5GpioState, STM32L4X5_GPIO)
- 
-+#define NUM_GPIOS 8
- #define GPIO_NUM_PINS 16
- 
- struct Stm32l4x5GpioState {
-diff --git a/include/hw/misc/stm32l4x5_syscfg.h b/include/hw/misc/stm32l4x5_syscfg.h
-index 29c3522f9dd..23bb5641507 100644
---- a/include/hw/misc/stm32l4x5_syscfg.h
-+++ b/include/hw/misc/stm32l4x5_syscfg.h
-@@ -26,12 +26,11 @@
- 
- #include "hw/sysbus.h"
- #include "qom/object.h"
-+#include "hw/gpio/stm32l4x5_gpio.h"
- 
- #define TYPE_STM32L4X5_SYSCFG "stm32l4x5-syscfg"
- OBJECT_DECLARE_SIMPLE_TYPE(Stm32l4x5SyscfgState, STM32L4X5_SYSCFG)
- 
--#define NUM_GPIOS 8
--#define GPIO_NUM_PINS 16
- #define SYSCFG_NUM_EXTICR 4
- 
- struct Stm32l4x5SyscfgState {
-diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
-index bf9926057be..40e294f838f 100644
---- a/hw/arm/stm32l4x5_soc.c
-+++ b/hw/arm/stm32l4x5_soc.c
-@@ -28,6 +28,7 @@
- #include "sysemu/sysemu.h"
- #include "hw/or-irq.h"
- #include "hw/arm/stm32l4x5_soc.h"
-+#include "hw/gpio/stm32l4x5_gpio.h"
- #include "hw/qdev-clock.h"
- #include "hw/misc/unimp.h"
- 
-@@ -99,6 +100,22 @@ static const int exti_or_gate1_lines_in[EXTI_OR_GATE1_NUM_LINES_IN] = {
-     16, 35, 36, 37, 38,
- };
- 
-+static const struct {
-+    uint32_t addr;
-+    uint32_t moder_reset;
-+    uint32_t ospeedr_reset;
-+    uint32_t pupdr_reset;
-+} stm32l4x5_gpio_cfg[NUM_GPIOS] = {
-+    { 0x48000000, 0xABFFFFFF, 0x0C000000, 0x64000000 },
-+    { 0x48000400, 0xFFFFFEBF, 0x00000000, 0x00000100 },
-+    { 0x48000800, 0xFFFFFFFF, 0x00000000, 0x00000000 },
-+    { 0x48000C00, 0xFFFFFFFF, 0x00000000, 0x00000000 },
-+    { 0x48001000, 0xFFFFFFFF, 0x00000000, 0x00000000 },
-+    { 0x48001400, 0xFFFFFFFF, 0x00000000, 0x00000000 },
-+    { 0x48001800, 0xFFFFFFFF, 0x00000000, 0x00000000 },
-+    { 0x48001C00, 0x0000000F, 0x00000000, 0x00000000 },
+diff --git a/tests/qtest/stm32l4x5_gpio-test.c b/tests/qtest/stm32l4x5_gpio-test.c
+new file mode 100644
+index 00000000000..cc56be2031f
+--- /dev/null
++++ b/tests/qtest/stm32l4x5_gpio-test.c
+@@ -0,0 +1,551 @@
++/*
++ * QTest testcase for STM32L4x5_GPIO
++ *
++ * Copyright (c) 2024 Arnaud Minier <arnaud.minier@telecom-paris.fr>
++ * Copyright (c) 2024 Inès Varhol <ines.varhol@telecom-paris.fr>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
++
++#include "qemu/osdep.h"
++#include "libqtest-single.h"
++
++#define GPIO_BASE_ADDR 0x48000000
++#define GPIO_SIZE      0x400
++#define NUM_GPIOS      8
++#define NUM_GPIO_PINS  16
++
++#define GPIO_A 0x48000000
++#define GPIO_B 0x48000400
++#define GPIO_C 0x48000800
++#define GPIO_D 0x48000C00
++#define GPIO_E 0x48001000
++#define GPIO_F 0x48001400
++#define GPIO_G 0x48001800
++#define GPIO_H 0x48001C00
++
++#define MODER 0x00
++#define OTYPER 0x04
++#define PUPDR 0x0C
++#define IDR 0x10
++#define ODR 0x14
++#define BSRR 0x18
++#define BRR 0x28
++
++#define MODER_INPUT 0
++#define MODER_OUTPUT 1
++
++#define PUPDR_NONE 0
++#define PUPDR_PULLUP 1
++#define PUPDR_PULLDOWN 2
++
++#define OTYPER_PUSH_PULL 0
++#define OTYPER_OPEN_DRAIN 1
++
++const uint32_t moder_reset[NUM_GPIOS] = {
++    0xABFFFFFF,
++    0xFFFFFEBF,
++    0xFFFFFFFF,
++    0xFFFFFFFF,
++    0xFFFFFFFF,
++    0xFFFFFFFF,
++    0xFFFFFFFF,
++    0x0000000F
 +};
 +
- static void stm32l4x5_soc_initfn(Object *obj)
- {
-     Stm32l4x5SocState *s = STM32L4X5_SOC(obj);
-@@ -110,6 +127,11 @@ static void stm32l4x5_soc_initfn(Object *obj)
-     }
-     object_initialize_child(obj, "syscfg", &s->syscfg, TYPE_STM32L4X5_SYSCFG);
-     object_initialize_child(obj, "rcc", &s->rcc, TYPE_STM32L4X5_RCC);
++const uint32_t pupdr_reset[NUM_GPIOS] = {
++    0x64000000,
++    0x00000100,
++    0x00000000,
++    0x00000000,
++    0x00000000,
++    0x00000000,
++    0x00000000,
++    0x00000000
++};
 +
-+    for (unsigned i = 0; i < NUM_GPIOS; i++) {
-+        g_autofree char *name = g_strdup_printf("gpio%c", 'a' + i);
-+        object_initialize_child(obj, name, &s->gpio[i], TYPE_STM32L4X5_GPIO);
-+    }
- }
- 
- static void stm32l4x5_soc_realize(DeviceState *dev_soc, Error **errp)
-@@ -118,8 +140,9 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc, Error **errp)
-     Stm32l4x5SocState *s = STM32L4X5_SOC(dev_soc);
-     const Stm32l4x5SocClass *sc = STM32L4X5_SOC_GET_CLASS(dev_soc);
-     MemoryRegion *system_memory = get_system_memory();
--    DeviceState *armv7m;
-+    DeviceState *armv7m, *dev;
-     SysBusDevice *busdev;
-+    uint32_t pin_index;
- 
-     if (!memory_region_init_rom(&s->flash, OBJECT(dev_soc), "flash",
-                                 sc->flash_size, errp)) {
-@@ -160,17 +183,43 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc, Error **errp)
-         return;
-     }
- 
-+    /* GPIOs */
-+    for (unsigned i = 0; i < NUM_GPIOS; i++) {
-+        g_autofree char *name = g_strdup_printf("%c", 'A' + i);
-+        dev = DEVICE(&s->gpio[i]);
-+        qdev_prop_set_string(dev, "name", name);
-+        qdev_prop_set_uint32(dev, "mode-reset",
-+                             stm32l4x5_gpio_cfg[i].moder_reset);
-+        qdev_prop_set_uint32(dev, "ospeed-reset",
-+                             stm32l4x5_gpio_cfg[i].ospeedr_reset);
-+        qdev_prop_set_uint32(dev, "pupd-reset",
-+                            stm32l4x5_gpio_cfg[i].pupdr_reset);
-+        busdev = SYS_BUS_DEVICE(&s->gpio[i]);
-+        g_free(name);
-+        name = g_strdup_printf("gpio%c-out", 'a' + i);
-+        qdev_connect_clock_in(DEVICE(&s->gpio[i]), "clk",
-+            qdev_get_clock_out(DEVICE(&(s->rcc)), name));
-+        if (!sysbus_realize(busdev, errp)) {
-+            return;
-+        }
-+        sysbus_mmio_map(busdev, 0, stm32l4x5_gpio_cfg[i].addr);
-+    }
++const uint32_t idr_reset[NUM_GPIOS] = {
++    0x0000A000,
++    0x00000010,
++    0x00000000,
++    0x00000000,
++    0x00000000,
++    0x00000000,
++    0x00000000,
++    0x00000000
++};
 +
-     /* System configuration controller */
-     busdev = SYS_BUS_DEVICE(&s->syscfg);
-     if (!sysbus_realize(busdev, errp)) {
-         return;
-     }
-     sysbus_mmio_map(busdev, 0, SYSCFG_ADDR);
--    /*
--     * TODO: when the GPIO device is implemented, connect it
--     * to SYCFG using `qdev_connect_gpio_out`, NUM_GPIOS and
--     * GPIO_NUM_PINS.
--     */
++static uint32_t gpio_readl(unsigned int gpio, unsigned int offset)
++{
++    return readl(gpio + offset);
++}
 +
-+    for (unsigned i = 0; i < NUM_GPIOS; i++) {
-+        for (unsigned j = 0; j < GPIO_NUM_PINS; j++) {
-+            pin_index = GPIO_NUM_PINS * i + j;
-+            qdev_connect_gpio_out(DEVICE(&s->gpio[i]), j,
-+                                  qdev_get_gpio_in(DEVICE(&s->syscfg),
-+                                  pin_index));
-+        }
++static void gpio_writel(unsigned int gpio, unsigned int offset, uint32_t value)
++{
++    writel(gpio + offset, value);
++}
++
++static void gpio_set_bit(unsigned int gpio, unsigned int reg,
++                         unsigned int pin, uint32_t value)
++{
++    uint32_t mask = 0xFFFFFFFF & ~(0x1 << pin);
++    gpio_writel(gpio, reg, (gpio_readl(gpio, reg) & mask) | value << pin);
++}
++
++static void gpio_set_2bits(unsigned int gpio, unsigned int reg,
++                           unsigned int pin, uint32_t value)
++{
++    uint32_t offset = 2 * pin;
++    uint32_t mask = 0xFFFFFFFF & ~(0x3 << offset);
++    gpio_writel(gpio, reg, (gpio_readl(gpio, reg) & mask) | value << offset);
++}
++
++static unsigned int get_gpio_id(uint32_t gpio_addr)
++{
++    return (gpio_addr - GPIO_BASE_ADDR) / GPIO_SIZE;
++}
++
++static void gpio_set_irq(unsigned int gpio, int num, int level)
++{
++    g_autofree char *name = g_strdup_printf("/machine/soc/gpio%c",
++                                            get_gpio_id(gpio) + 'a');
++    qtest_set_irq_in(global_qtest, name, NULL, num, level);
++}
++
++static void disconnect_all_pins(unsigned int gpio)
++{
++    g_autofree char *path = g_strdup_printf("/machine/soc/gpio%c",
++                                            get_gpio_id(gpio) + 'a');
++    QDict *r;
++
++    r = qtest_qmp(global_qtest, "{ 'execute': 'qom-set', 'arguments': "
++        "{ 'path': %s, 'property': 'disconnected-pins', 'value': %d } }",
++        path, 0xFFFF);
++    g_assert_false(qdict_haskey(r, "error"));
++    qobject_unref(r);
++}
++
++static uint32_t get_disconnected_pins(unsigned int gpio)
++{
++    g_autofree char *path = g_strdup_printf("/machine/soc/gpio%c",
++                                            get_gpio_id(gpio) + 'a');
++    uint32_t disconnected_pins = 0;
++    QDict *r;
++
++    r = qtest_qmp(global_qtest, "{ 'execute': 'qom-get', 'arguments':"
++        " { 'path': %s, 'property': 'disconnected-pins'} }", path);
++    g_assert_false(qdict_haskey(r, "error"));
++    disconnected_pins = qdict_get_int(r, "return");
++    qobject_unref(r);
++    return disconnected_pins;
++}
++
++static uint32_t reset(uint32_t gpio, unsigned int offset)
++{
++    switch (offset) {
++    case MODER:
++        return moder_reset[get_gpio_id(gpio)];
++    case PUPDR:
++        return pupdr_reset[get_gpio_id(gpio)];
++    case IDR:
++        return idr_reset[get_gpio_id(gpio)];
 +    }
++    return 0x0;
++}
++
++static void system_reset(void)
++{
++    QDict *r;
++    r = qtest_qmp(global_qtest, "{'execute': 'system_reset'}");
++    g_assert_false(qdict_haskey(r, "error"));
++    qobject_unref(r);
++}
++
++static void test_idr_reset_value(void)
++{
++    /*
++     * Checks that the values in MODER, OTYPER, PUPDR and ODR
++     * after reset are correct, and that the value in IDR is
++     * coherent.
++     * Since AF and analog modes aren't implemented, IDR reset
++     * values aren't the same as with a real board.
++     *
++     * Register IDR contains the actual values of all GPIO pins.
++     * Its value depends on the pins' configuration
++     * (intput/output/analog : register MODER, push-pull/open-drain :
++     * register OTYPER, pull-up/pull-down/none : register PUPDR)
++     * and on the values stored in register ODR
++     * (in case the pin is in output mode).
++     */
++
++    gpio_writel(GPIO_A, MODER, 0xDEADBEEF);
++    gpio_writel(GPIO_A, ODR, 0xDEADBEEF);
++    gpio_writel(GPIO_A, OTYPER, 0xDEADBEEF);
++    gpio_writel(GPIO_A, PUPDR, 0xDEADBEEF);
++
++    gpio_writel(GPIO_B, MODER, 0xDEADBEEF);
++    gpio_writel(GPIO_B, ODR, 0xDEADBEEF);
++    gpio_writel(GPIO_B, OTYPER, 0xDEADBEEF);
++    gpio_writel(GPIO_B, PUPDR, 0xDEADBEEF);
++
++    gpio_writel(GPIO_C, MODER, 0xDEADBEEF);
++    gpio_writel(GPIO_C, ODR, 0xDEADBEEF);
++    gpio_writel(GPIO_C, OTYPER, 0xDEADBEEF);
++    gpio_writel(GPIO_C, PUPDR, 0xDEADBEEF);
++
++    gpio_writel(GPIO_H, MODER, 0xDEADBEEF);
++    gpio_writel(GPIO_H, ODR, 0xDEADBEEF);
++    gpio_writel(GPIO_H, OTYPER, 0xDEADBEEF);
++    gpio_writel(GPIO_H, PUPDR, 0xDEADBEEF);
++
++    system_reset();
++
++    uint32_t moder = gpio_readl(GPIO_A, MODER);
++    uint32_t odr = gpio_readl(GPIO_A, ODR);
++    uint32_t otyper = gpio_readl(GPIO_A, OTYPER);
++    uint32_t pupdr = gpio_readl(GPIO_A, PUPDR);
++    uint32_t idr = gpio_readl(GPIO_A, IDR);
++    /* 15: AF, 14: AF, 13: AF, 12: Analog ... */
++    /* here AF is the same as Analog and Input mode */
++    g_assert_cmphex(moder, ==, reset(GPIO_A, MODER));
++    g_assert_cmphex(odr, ==, reset(GPIO_A, ODR));
++    g_assert_cmphex(otyper, ==, reset(GPIO_A, OTYPER));
++    /* 15: pull-up, 14: pull-down, 13: pull-up, 12: neither ... */
++    g_assert_cmphex(pupdr, ==, reset(GPIO_A, PUPDR));
++    /* 15 : 1, 14: 0, 13: 1, 12 : reset value ... */
++    g_assert_cmphex(idr, ==, reset(GPIO_A, IDR));
++
++    moder = gpio_readl(GPIO_B, MODER);
++    odr = gpio_readl(GPIO_B, ODR);
++    otyper = gpio_readl(GPIO_B, OTYPER);
++    pupdr = gpio_readl(GPIO_B, PUPDR);
++    idr = gpio_readl(GPIO_B, IDR);
++    /* ... 5: Analog, 4: AF, 3: AF, 2: Analog ... */
++    /* here AF is the same as Analog and Input mode */
++    g_assert_cmphex(moder, ==, reset(GPIO_B, MODER));
++    g_assert_cmphex(odr, ==, reset(GPIO_B, ODR));
++    g_assert_cmphex(otyper, ==, reset(GPIO_B, OTYPER));
++    /* ... 5: neither, 4: pull-up, 3: neither ... */
++    g_assert_cmphex(pupdr, ==, reset(GPIO_B, PUPDR));
++    /* ... 5 : reset value, 4 : 1, 3 : reset value ... */
++    g_assert_cmphex(idr, ==, reset(GPIO_B, IDR));
++
++    moder = gpio_readl(GPIO_C, MODER);
++    odr = gpio_readl(GPIO_C, ODR);
++    otyper = gpio_readl(GPIO_C, OTYPER);
++    pupdr = gpio_readl(GPIO_C, PUPDR);
++    idr = gpio_readl(GPIO_C, IDR);
++    /* Analog, same as Input mode*/
++    g_assert_cmphex(moder, ==, reset(GPIO_C, MODER));
++    g_assert_cmphex(odr, ==, reset(GPIO_C, ODR));
++    g_assert_cmphex(otyper, ==, reset(GPIO_C, OTYPER));
++    /* no pull-up or pull-down */
++    g_assert_cmphex(pupdr, ==, reset(GPIO_C, PUPDR));
++    /* reset value */
++    g_assert_cmphex(idr, ==, reset(GPIO_C, IDR));
++
++    moder = gpio_readl(GPIO_H, MODER);
++    odr = gpio_readl(GPIO_H, ODR);
++    otyper = gpio_readl(GPIO_H, OTYPER);
++    pupdr = gpio_readl(GPIO_H, PUPDR);
++    idr = gpio_readl(GPIO_H, IDR);
++    /* Analog, same as Input mode */
++    g_assert_cmphex(moder, ==, reset(GPIO_H, MODER));
++    g_assert_cmphex(odr, ==, reset(GPIO_H, ODR));
++    g_assert_cmphex(otyper, ==, reset(GPIO_H, OTYPER));
++    /* no pull-up or pull-down */
++    g_assert_cmphex(pupdr, ==, reset(GPIO_H, PUPDR));
++    /* reset value */
++    g_assert_cmphex(idr, ==, reset(GPIO_H, IDR));
++}
++
++static void test_gpio_output_mode(const void *data)
++{
++    /*
++     * Checks that setting a bit in ODR sets the corresponding
++     * GPIO line high : it should set the right bit in IDR
++     * and send an irq to syscfg.
++     * Additionally, it checks that values written to ODR
++     * when not in output mode are stored and not discarded.
++     */
++    unsigned int pin = ((uint64_t)data) & 0xF;
++    uint32_t gpio = ((uint64_t)data) >> 32;
++    unsigned int gpio_id = get_gpio_id(gpio);
++
++    qtest_irq_intercept_in(global_qtest, "/machine/soc/syscfg");
++
++    /* Set a bit in ODR and check nothing happens */
++    gpio_set_bit(gpio, ODR, pin, 1);
++    g_assert_cmphex(gpio_readl(gpio, IDR), ==, reset(gpio, IDR));
++    g_assert_false(get_irq(gpio_id * NUM_GPIO_PINS + pin));
++
++    /* Configure the relevant line as output and check the pin is high */
++    gpio_set_2bits(gpio, MODER, pin, MODER_OUTPUT);
++    g_assert_cmphex(gpio_readl(gpio, IDR), ==, reset(gpio, IDR) | (1 << pin));
++    g_assert_true(get_irq(gpio_id * NUM_GPIO_PINS + pin));
++
++    /* Reset the bit in ODR and check the pin is low */
++    gpio_set_bit(gpio, ODR, pin, 0);
++    g_assert_cmphex(gpio_readl(gpio, IDR), ==, reset(gpio, IDR) & ~(1 << pin));
++    g_assert_false(get_irq(gpio_id * NUM_GPIO_PINS + pin));
++
++    /* Clean the test */
++    gpio_writel(gpio, ODR, reset(gpio, ODR));
++    gpio_writel(gpio, MODER, reset(gpio, MODER));
++    g_assert_cmphex(gpio_readl(gpio, IDR), ==, reset(gpio, IDR));
++    g_assert_false(get_irq(gpio_id * NUM_GPIO_PINS + pin));
++}
++
++static void test_gpio_input_mode(const void *data)
++{
++    /*
++     * Test that setting a line high/low externally sets the
++     * corresponding GPIO line high/low : it should set the
++     * right bit in IDR and send an irq to syscfg.
++     */
++    unsigned int pin = ((uint64_t)data) & 0xF;
++    uint32_t gpio = ((uint64_t)data) >> 32;
++    unsigned int gpio_id = get_gpio_id(gpio);
++
++    qtest_irq_intercept_in(global_qtest, "/machine/soc/syscfg");
++
++    /* Configure a line as input, raise it, and check that the pin is high */
++    gpio_set_2bits(gpio, MODER, pin, MODER_INPUT);
++    gpio_set_irq(gpio, pin, 1);
++    g_assert_cmphex(gpio_readl(gpio, IDR), ==, reset(gpio, IDR) | (1 << pin));
++    g_assert_true(get_irq(gpio_id * NUM_GPIO_PINS + pin));
++
++    /* Lower the line and check that the pin is low */
++    gpio_set_irq(gpio, pin, 0);
++    g_assert_cmphex(gpio_readl(gpio, IDR), ==, reset(gpio, IDR) & ~(1 << pin));
++    g_assert_false(get_irq(gpio_id * NUM_GPIO_PINS + pin));
++
++    /* Clean the test */
++    gpio_writel(gpio, MODER, reset(gpio, MODER));
++    disconnect_all_pins(gpio);
++    g_assert_cmphex(gpio_readl(gpio, IDR), ==, reset(gpio, IDR));
++}
++
++static void test_pull_up_pull_down(const void *data)
++{
++    /*
++     * Test that a floating pin with pull-up sets the pin
++     * high and vice-versa.
++     */
++    unsigned int pin = ((uint64_t)data) & 0xF;
++    uint32_t gpio = ((uint64_t)data) >> 32;
++    unsigned int gpio_id = get_gpio_id(gpio);
++
++    qtest_irq_intercept_in(global_qtest, "/machine/soc/syscfg");
++
++    /* Configure a line as input with pull-up, check the line is set high */
++    gpio_set_2bits(gpio, MODER, pin, MODER_INPUT);
++    gpio_set_2bits(gpio, PUPDR, pin, PUPDR_PULLUP);
++    g_assert_cmphex(gpio_readl(gpio, IDR), ==, reset(gpio, IDR) | (1 << pin));
++    g_assert_true(get_irq(gpio_id * NUM_GPIO_PINS + pin));
++
++    /* Configure the line with pull-down, check the line is low */
++    gpio_set_2bits(gpio, PUPDR, pin, PUPDR_PULLDOWN);
++    g_assert_cmphex(gpio_readl(gpio, IDR), ==, reset(gpio, IDR) & ~(1 << pin));
++    g_assert_false(get_irq(gpio_id * NUM_GPIO_PINS + pin));
++
++    /* Clean the test */
++    gpio_writel(gpio, MODER, reset(gpio, MODER));
++    gpio_writel(gpio, PUPDR, reset(gpio, PUPDR));
++    g_assert_cmphex(gpio_readl(gpio, IDR), ==, reset(gpio, IDR));
++}
++
++static void test_push_pull(const void *data)
++{
++    /*
++     * Test that configuring a line in push-pull output mode
++     * disconnects the pin, that the pin can't be set or reset
++     * externally afterwards.
++     */
++    unsigned int pin = ((uint64_t)data) & 0xF;
++    uint32_t gpio = ((uint64_t)data) >> 32;
++    uint32_t gpio2 = GPIO_BASE_ADDR + (GPIO_H - gpio);
++
++    qtest_irq_intercept_in(global_qtest, "/machine/soc/syscfg");
++
++    /* Setting a line high externally, configuring it in push-pull output */
++    /* And checking the pin was disconnected */
++    gpio_set_irq(gpio, pin, 1);
++    gpio_set_2bits(gpio, MODER, pin, MODER_OUTPUT);
++    g_assert_cmphex(get_disconnected_pins(gpio), ==, 0xFFFF);
++    g_assert_cmphex(gpio_readl(gpio, IDR), ==, reset(gpio, IDR) & ~(1 << pin));
++
++    /* Setting a line low externally, configuring it in push-pull output */
++    /* And checking the pin was disconnected */
++    gpio_set_irq(gpio2, pin, 0);
++    gpio_set_bit(gpio2, ODR, pin, 1);
++    gpio_set_2bits(gpio2, MODER, pin, MODER_OUTPUT);
++    g_assert_cmphex(get_disconnected_pins(gpio2), ==, 0xFFFF);
++    g_assert_cmphex(gpio_readl(gpio2, IDR), ==, reset(gpio2, IDR) | (1 << pin));
++
++    /* Trying to set a push-pull output pin, checking it doesn't work */
++    gpio_set_irq(gpio, pin, 1);
++    g_assert_cmphex(get_disconnected_pins(gpio), ==, 0xFFFF);
++    g_assert_cmphex(gpio_readl(gpio, IDR), ==, reset(gpio, IDR) & ~(1 << pin));
++
++    /* Trying to reset a push-pull output pin, checking it doesn't work */
++    gpio_set_irq(gpio2, pin, 0);
++    g_assert_cmphex(get_disconnected_pins(gpio2), ==, 0xFFFF);
++    g_assert_cmphex(gpio_readl(gpio2, IDR), ==, reset(gpio2, IDR) | (1 << pin));
++
++    /* Clean the test */
++    gpio_writel(gpio, MODER, reset(gpio, MODER));
++    gpio_writel(gpio2, ODR, reset(gpio2, ODR));
++    gpio_writel(gpio2, MODER, reset(gpio2, MODER));
++}
++
++static void test_open_drain(const void *data)
++{
++    /*
++     * Test that configuring a line in open-drain output mode
++     * disconnects a pin set high externally and that the pin
++     * can't be set high externally while configured in open-drain.
++     *
++     * However a pin set low externally shouldn't be disconnected,
++     * and it can be set low externally when in open-drain mode.
++     */
++    unsigned int pin = ((uint64_t)data) & 0xF;
++    uint32_t gpio = ((uint64_t)data) >> 32;
++    uint32_t gpio2 = GPIO_BASE_ADDR + (GPIO_H - gpio);
++
++    qtest_irq_intercept_in(global_qtest, "/machine/soc/syscfg");
++
++    /* Setting a line high externally, configuring it in open-drain output */
++    /* And checking the pin was disconnected */
++    gpio_set_irq(gpio, pin, 1);
++    gpio_set_bit(gpio, OTYPER, pin, OTYPER_OPEN_DRAIN);
++    gpio_set_2bits(gpio, MODER, pin, MODER_OUTPUT);
++    g_assert_cmphex(get_disconnected_pins(gpio), ==, 0xFFFF);
++    g_assert_cmphex(gpio_readl(gpio, IDR), ==, reset(gpio, IDR) & ~(1 << pin));
++
++    /* Setting a line low externally, configuring it in open-drain output */
++    /* And checking the pin wasn't disconnected */
++    gpio_set_irq(gpio2, pin, 0);
++    gpio_set_bit(gpio2, ODR, pin, 1);
++    gpio_set_bit(gpio2, OTYPER, pin, OTYPER_OPEN_DRAIN);
++    gpio_set_2bits(gpio2, MODER, pin, MODER_OUTPUT);
++    g_assert_cmphex(get_disconnected_pins(gpio2), ==, 0xFFFF & ~(1 << pin));
++    g_assert_cmphex(gpio_readl(gpio2, IDR), ==,
++                               reset(gpio2, IDR) & ~(1 << pin));
++
++    /* Trying to set a open-drain output pin, checking it doesn't work */
++    gpio_set_irq(gpio, pin, 1);
++    g_assert_cmphex(get_disconnected_pins(gpio), ==, 0xFFFF);
++    g_assert_cmphex(gpio_readl(gpio, IDR), ==, reset(gpio, IDR) & ~(1 << pin));
++
++    /* Trying to reset a open-drain output pin, checking it works */
++    gpio_set_bit(gpio, ODR, pin, 1);
++    gpio_set_irq(gpio, pin, 0);
++    g_assert_cmphex(get_disconnected_pins(gpio2), ==, 0xFFFF & ~(1 << pin));
++    g_assert_cmphex(gpio_readl(gpio2, IDR), ==,
++                               reset(gpio2, IDR) & ~(1 << pin));
++
++    /* Clean the test */
++    disconnect_all_pins(gpio2);
++    gpio_writel(gpio2, OTYPER, reset(gpio2, OTYPER));
++    gpio_writel(gpio2, ODR, reset(gpio2, ODR));
++    gpio_writel(gpio2, MODER, reset(gpio2, MODER));
++    g_assert_cmphex(gpio_readl(gpio2, IDR), ==, reset(gpio2, IDR));
++    disconnect_all_pins(gpio);
++    gpio_writel(gpio, OTYPER, reset(gpio, OTYPER));
++    gpio_writel(gpio, ODR, reset(gpio, ODR));
++    gpio_writel(gpio, MODER, reset(gpio, MODER));
++    g_assert_cmphex(gpio_readl(gpio, IDR), ==, reset(gpio, IDR));
++}
++
++static void test_bsrr_brr(const void *data)
++{
++    /*
++     * Test that writing a '1' in BSS and BSRR
++     * has the desired effect on ODR.
++     * In BSRR, BSx has priority over BRx.
++     */
++    unsigned int pin = ((uint64_t)data) & 0xF;
++    uint32_t gpio = ((uint64_t)data) >> 32;
++
++    gpio_writel(gpio, BSRR, (1 << pin));
++    g_assert_cmphex(gpio_readl(gpio, ODR), ==, reset(gpio, ODR) | (1 << pin));
++
++    gpio_writel(gpio, BSRR, (1 << (pin + NUM_GPIO_PINS)));
++    g_assert_cmphex(gpio_readl(gpio, ODR), ==, reset(gpio, ODR));
++
++    gpio_writel(gpio, BSRR, (1 << pin));
++    g_assert_cmphex(gpio_readl(gpio, ODR), ==, reset(gpio, ODR) | (1 << pin));
++
++    gpio_writel(gpio, BRR, (1 << pin));
++    g_assert_cmphex(gpio_readl(gpio, ODR), ==, reset(gpio, ODR));
++
++    /* BSx should have priority over BRx */
++    gpio_writel(gpio, BSRR, (1 << pin) | (1 << (pin + NUM_GPIO_PINS)));
++    g_assert_cmphex(gpio_readl(gpio, ODR), ==, reset(gpio, ODR) | (1 << pin));
++
++    gpio_writel(gpio, BRR, (1 << pin));
++    g_assert_cmphex(gpio_readl(gpio, ODR), ==, reset(gpio, ODR));
++
++    gpio_writel(gpio, ODR, reset(gpio, ODR));
++}
++
++int main(int argc, char **argv)
++{
++    int ret;
++
++    g_test_init(&argc, &argv, NULL);
++    g_test_set_nonfatal_assertions();
++    qtest_add_func("stm32l4x5/gpio/test_idr_reset_value",
++                   test_idr_reset_value);
++    /*
++     * The inputs for the tests (gpio and pin) can be changed,
++     * but the tests don't work for pins that are high at reset
++     * (GPIOA15, GPIO13 and GPIOB5).
++     * Specifically, rising the pin then checking `get_irq()`
++     * is problematic since the pin was already high.
++     */
++    qtest_add_data_func("stm32l4x5/gpio/test_gpioc5_output_mode",
++                        (void *)((uint64_t)GPIO_C << 32 | 5),
++                        test_gpio_output_mode);
++    qtest_add_data_func("stm32l4x5/gpio/test_gpioh3_output_mode",
++                        (void *)((uint64_t)GPIO_H << 32 | 3),
++                        test_gpio_output_mode);
++    qtest_add_data_func("stm32l4x5/gpio/test_gpio_input_mode1",
++                        (void *)((uint64_t)GPIO_D << 32 | 6),
++                        test_gpio_input_mode);
++    qtest_add_data_func("stm32l4x5/gpio/test_gpio_input_mode2",
++                        (void *)((uint64_t)GPIO_C << 32 | 10),
++                        test_gpio_input_mode);
++    qtest_add_data_func("stm32l4x5/gpio/test_gpio_pull_up_pull_down1",
++                        (void *)((uint64_t)GPIO_B << 32 | 5),
++                        test_pull_up_pull_down);
++    qtest_add_data_func("stm32l4x5/gpio/test_gpio_pull_up_pull_down2",
++                        (void *)((uint64_t)GPIO_F << 32 | 1),
++                        test_pull_up_pull_down);
++    qtest_add_data_func("stm32l4x5/gpio/test_gpio_push_pull1",
++                        (void *)((uint64_t)GPIO_G << 32 | 6),
++                        test_push_pull);
++    qtest_add_data_func("stm32l4x5/gpio/test_gpio_push_pull2",
++                        (void *)((uint64_t)GPIO_H << 32 | 3),
++                        test_push_pull);
++    qtest_add_data_func("stm32l4x5/gpio/test_gpio_open_drain1",
++                        (void *)((uint64_t)GPIO_C << 32 | 4),
++                        test_open_drain);
++    qtest_add_data_func("stm32l4x5/gpio/test_gpio_open_drain2",
++                        (void *)((uint64_t)GPIO_E << 32 | 11),
++                        test_open_drain);
++    qtest_add_data_func("stm32l4x5/gpio/test_bsrr_brr1",
++                        (void *)((uint64_t)GPIO_A << 32 | 12),
++                        test_bsrr_brr);
++    qtest_add_data_func("stm32l4x5/gpio/test_bsrr_brr2",
++                        (void *)((uint64_t)GPIO_D << 32 | 0),
++                        test_bsrr_brr);
++
++    qtest_start("-machine b-l475e-iot01a");
++    ret = g_test_run();
++    qtest_end();
++
++    return ret;
++}
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 31b9f4ede47..36c5c13a7bb 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -204,7 +204,8 @@ qtests_aspeed = \
+ qtests_stm32l4x5 = \
+   ['stm32l4x5_exti-test',
+    'stm32l4x5_syscfg-test',
+-   'stm32l4x5_rcc-test']
++   'stm32l4x5_rcc-test',
++   'stm32l4x5_gpio-test']
  
-     /* EXTI device */
-     busdev = SYS_BUS_DEVICE(&s->exti);
-@@ -217,7 +266,7 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc, Error **errp)
-         }
-     }
- 
--    for (unsigned i = 0; i < 16; i++) {
-+    for (unsigned i = 0; i < GPIO_NUM_PINS; i++) {
-         qdev_connect_gpio_out(DEVICE(&s->syscfg), i,
-                               qdev_get_gpio_in(DEVICE(&s->exti), i));
-     }
-@@ -302,14 +351,6 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc, Error **errp)
-     /* RESERVED:    0x40024400, 0x7FDBC00 */
- 
-     /* AHB2 BUS */
--    create_unimplemented_device("GPIOA",     0x48000000, 0x400);
--    create_unimplemented_device("GPIOB",     0x48000400, 0x400);
--    create_unimplemented_device("GPIOC",     0x48000800, 0x400);
--    create_unimplemented_device("GPIOD",     0x48000C00, 0x400);
--    create_unimplemented_device("GPIOE",     0x48001000, 0x400);
--    create_unimplemented_device("GPIOF",     0x48001400, 0x400);
--    create_unimplemented_device("GPIOG",     0x48001800, 0x400);
--    create_unimplemented_device("GPIOH",     0x48001C00, 0x400);
-     /* RESERVED:    0x48002000, 0x7FDBC00 */
-     create_unimplemented_device("OTG_FS",    0x50000000, 0x40000);
-     create_unimplemented_device("ADC",       0x50040000, 0x400);
-diff --git a/hw/misc/stm32l4x5_syscfg.c b/hw/misc/stm32l4x5_syscfg.c
-index fd68cb800bb..3dafc00b49d 100644
---- a/hw/misc/stm32l4x5_syscfg.c
-+++ b/hw/misc/stm32l4x5_syscfg.c
-@@ -27,6 +27,7 @@
- #include "hw/irq.h"
- #include "migration/vmstate.h"
- #include "hw/misc/stm32l4x5_syscfg.h"
-+#include "hw/gpio/stm32l4x5_gpio.h"
- 
- #define SYSCFG_MEMRMP 0x00
- #define SYSCFG_CFGR1 0x04
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index d58d820788c..893a7bff66b 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -473,9 +473,10 @@ config STM32L4X5_SOC
-     bool
-     select ARM_V7M
-     select OR_IRQ
--    select STM32L4X5_SYSCFG
-     select STM32L4X5_EXTI
-+    select STM32L4X5_SYSCFG
-     select STM32L4X5_RCC
-+    select STM32L4X5_GPIO
- 
- config XLNX_ZYNQMP_ARM
-     bool
+ qtests_arm = \
+   (config_all_devices.has_key('CONFIG_MPS2') ? ['sse-timer-test'] : []) + \
 -- 
 2.34.1
 
