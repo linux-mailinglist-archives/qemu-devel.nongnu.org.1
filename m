@@ -2,82 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 870D98767BC
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:51:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 836B28768A4
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 17:37:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ricUW-0008Jd-6Y; Fri, 08 Mar 2024 10:50:36 -0500
+	id 1ridDp-0000pK-H6; Fri, 08 Mar 2024 11:37:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ricUL-0007Uc-RP
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:50:25 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ricUF-0004GX-NH
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:50:25 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-33e17342ea7so617182f8f.2
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 07:50:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <prvs=790a7b1eb=jgowans@amazon.com>)
+ id 1ricUA-0006hM-5K
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:50:14 -0500
+Received: from smtp-fw-6002.amazon.com ([52.95.49.90])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <prvs=790a7b1eb=jgowans@amazon.com>)
+ id 1ricU8-0004Fe-4E
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:50:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709913018; x=1710517818; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=3cWuaoCkTQVu5qObgGDnDzWYB/sSDqmlrWjM/kbjq6Y=;
- b=YAMICA+YMQ08x0I5ifZP4dZOVXJGvGS0cbMWyVo5NEJcgAXkhz7VWGDUDopaQht967
- Yn6cI1rmoR8w+7dx8F7iEXnOsR0N9WXxk/UYixtsUXfARXDYYQ27L2hMxXPbvD7lOXML
- VTxyg6HNLTp/TE6yLJXEULYdtvjQa4hTKqymoVcVq55x+AH5jKGmc33Xi/zMW/Bw/fvQ
- LGoom9G74gyFDeuOS+qPDVNJotjPQHTeDDJSXXRBt9yiv4CjVsemMYH9jx838dP7/RXZ
- pnzu9SqSbfHtBav6Z+8lp07K7Nk8BInUPwMlPWmPSTvM9vnjtafnwhwFLSsGswaSSXTQ
- 3G+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709913018; x=1710517818;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=3cWuaoCkTQVu5qObgGDnDzWYB/sSDqmlrWjM/kbjq6Y=;
- b=e6gVKCzQKvhHVeCb2h1LO38deahQep27Dp0h/rdGCC6TewSgHjm3dw2+jzspyMSa6x
- KLCaIt8gQ+u0e1Dx5zb+0Ge+lIr1DSfDiFDzQ+KrIOfJvChb+xmXfWD1yXe35niV7qco
- WNhyDqHW5wf5Q3a0vuvfnH68za1DP8MEBLFBHUL2nEL98NdfaBwYsyTxsxiu9ll4CShM
- f9msaDwrZl+2a5lBjTnZh1SvcFmp2SZb3ghUmQPtAyxn/QoqULjnrvyFLj0CLpZ1WFnN
- uxBXq4/xhhyNQYxQeKNmeEzRdvuL7XDif4HnVl3+rAD3fxCwq+PBoS1GoiPTvvoy7kqJ
- 8Kuw==
-X-Gm-Message-State: AOJu0Yx65+x5jLVo/EEsgSv+y1OVz6JEKuYwRfC3yaRW82kq0nZYPZ0f
- kW1tRq7vkCEnNhuTn4mHLg8oHts1YUMiDllOcCjlYtZPutxhGYalKVI8K4abfKCBB8ESbKWnkyR
- W
-X-Google-Smtp-Source: AGHT+IEThre7/6PEGkb+BnZZJGbX3DXc0UHAF1SshUWoxiOtXgbuiQjFKrsG5CFrQyHHoZGodqvZYQ==
-X-Received: by 2002:a5d:6e48:0:b0:33d:7e99:babc with SMTP id
- j8-20020a5d6e48000000b0033d7e99babcmr14603150wrz.50.1709913018058; 
- Fri, 08 Mar 2024 07:50:18 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- f2-20020adff8c2000000b0033e7a204dc7sm856080wrq.32.2024.03.08.07.50.17
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Mar 2024 07:50:17 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 03/14] target/arm: use FIELD macro for CNTHCTL bit definitions
-Date: Fri,  8 Mar 2024 15:50:04 +0000
-Message-Id: <20240308155015.3637663-4-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240308155015.3637663-1-peter.maydell@linaro.org>
-References: <20240308155015.3637663-1-peter.maydell@linaro.org>
+ d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+ t=1709913012; x=1741449012;
+ h=from:to:cc:subject:date:message-id:content-id:
+ content-transfer-encoding:mime-version;
+ bh=QA4lHtqKxSjsxT9qHmwJmhLD+pT1DQH3Vc8P8ZDukqU=;
+ b=EuNgrDj6mxByizOqeufE0vuib8VJwjb/7H4YcOqCAVWdOveO2YZL7Whf
+ Mbbjz88vgw8DclOzCEySZOxUjs87uAUsJ4AipEc/CrS7q+LXR28IZPWok
+ l/cjqqLoS2CgsApZA/ZWaYwu6neNXZojzTjd+gKiBPLv0UtBVohd6KaEd g=;
+X-IronPort-AV: E=Sophos;i="6.07,110,1708387200"; d="scan'208";a="391958052"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO
+ smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+ by smtp-border-fw-6002.iad6.amazon.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2024 15:50:07 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [10.0.10.100:1988]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.25.203:2525]
+ with esmtp (Farcaster)
+ id 8c23d56c-2946-4ad1-a458-e638ebc96e22; Fri, 8 Mar 2024 15:50:05 +0000 (UTC)
+X-Farcaster-Flow-ID: 8c23d56c-2946-4ad1-a458-e638ebc96e22
+Received: from EX19D022EUC004.ant.amazon.com (10.252.51.159) by
+ EX19MTAEUC001.ant.amazon.com (10.252.51.155) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Fri, 8 Mar 2024 15:50:05 +0000
+Received: from EX19D014EUC004.ant.amazon.com (10.252.51.182) by
+ EX19D022EUC004.ant.amazon.com (10.252.51.159) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Fri, 8 Mar 2024 15:50:05 +0000
+Received: from EX19D014EUC004.ant.amazon.com ([fe80::76dd:4020:4ff2:1e41]) by
+ EX19D014EUC004.ant.amazon.com ([fe80::76dd:4020:4ff2:1e41%3]) with
+ mapi id 15.02.1258.028; Fri, 8 Mar 2024 15:50:05 +0000
+From: "Gowans, James" <jgowans@amazon.com>
+To: "seanjc@google.com" <seanjc@google.com>, "akpm@linux-foundation.org"
+ <akpm@linux-foundation.org>, "Roy, Patrick" <roypat@amazon.co.uk>,
+ "chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "Manwaring,
+ Derek" <derekmn@amazon.com>, "rppt@kernel.org" <rppt@kernel.org>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, "Woodhouse, David"
+ <dwmw@amazon.co.uk>
+CC: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>, "lstoakes@gmail.com"
+ <lstoakes@gmail.com>, "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "kirill.shutemov@linux.intel.com"
+ <kirill.shutemov@linux.intel.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
+ "mst@redhat.com" <mst@redhat.com>, "somlo@cmu.edu" <somlo@cmu.edu>, "Graf
+ (AWS), Alexander" <graf@amazon.de>, "kvm@vger.kernel.org"
+ <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+ <linux-coco@lists.linux.dev>
+Subject: Unmapping KVM Guest Memory from Host Kernel
+Thread-Topic: Unmapping KVM Guest Memory from Host Kernel
+Thread-Index: AQHacXBJeX10YUH0O0SiQBg1zQLaEw==
+Date: Fri, 8 Mar 2024 15:50:05 +0000
+Message-ID: <cc1bb8e9bc3e1ab637700a4d3defeec95b55060a.camel@amazon.com>
+Accept-Language: en-ZA, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.1.213.11]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <3D0CAAE8EB336B4C9323DDC23B24F0C0@amazon.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=52.95.49.90;
+ envelope-from=prvs=790a7b1eb=jgowans@amazon.com; helo=smtp-fw-6002.amazon.com
+X-Spam_score_int: -124
+X-Spam_score: -12.5
+X-Spam_bar: ------------
+X-Spam_report: (-12.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.572,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 08 Mar 2024 11:37:23 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,87 +105,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We prefer the FIELD macro over ad-hoc #defines for register bits;
-switch CNTHCTL to that style before we add any more bits.
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240301183219.2424889-4-peter.maydell@linaro.org
----
- target/arm/internals.h | 27 +++++++++++++++++++++++++--
- target/arm/helper.c    |  9 ++++-----
- 2 files changed, 29 insertions(+), 7 deletions(-)
-
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index d8622c8e0f1..dd3da211a3f 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -224,8 +224,31 @@ FIELD(VTCR, SL2, 33, 1)
- #define HSTR_TTEE (1 << 16)
- #define HSTR_TJDBX (1 << 17)
- 
--#define CNTHCTL_CNTVMASK      (1 << 18)
--#define CNTHCTL_CNTPMASK      (1 << 19)
-+/*
-+ * Depending on the value of HCR_EL2.E2H, bits 0 and 1
-+ * have different bit definitions, and EL1PCTEN might be
-+ * bit 0 or bit 10. We use _E2H1 and _E2H0 suffixes to
-+ * disambiguate if necessary.
-+ */
-+FIELD(CNTHCTL, EL0PCTEN_E2H1, 0, 1)
-+FIELD(CNTHCTL, EL0VCTEN_E2H1, 1, 1)
-+FIELD(CNTHCTL, EL1PCTEN_E2H0, 0, 1)
-+FIELD(CNTHCTL, EL1PCEN_E2H0, 1, 1)
-+FIELD(CNTHCTL, EVNTEN, 2, 1)
-+FIELD(CNTHCTL, EVNTDIR, 3, 1)
-+FIELD(CNTHCTL, EVNTI, 4, 4)
-+FIELD(CNTHCTL, EL0VTEN, 8, 1)
-+FIELD(CNTHCTL, EL0PTEN, 9, 1)
-+FIELD(CNTHCTL, EL1PCTEN_E2H1, 10, 1)
-+FIELD(CNTHCTL, EL1PTEN, 11, 1)
-+FIELD(CNTHCTL, ECV, 12, 1)
-+FIELD(CNTHCTL, EL1TVT, 13, 1)
-+FIELD(CNTHCTL, EL1TVCT, 14, 1)
-+FIELD(CNTHCTL, EL1NVPCT, 15, 1)
-+FIELD(CNTHCTL, EL1NVVCT, 16, 1)
-+FIELD(CNTHCTL, EVNTIS, 17, 1)
-+FIELD(CNTHCTL, CNTVMASK, 18, 1)
-+FIELD(CNTHCTL, CNTPMASK, 19, 1)
- 
- /* We use a few fake FSR values for internal purposes in M profile.
-  * M profile cores don't have A/R format FSRs, but currently our
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 978df6f2823..1c82d12a883 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -2652,8 +2652,8 @@ static void gt_update_irq(ARMCPU *cpu, int timeridx)
-      * It is RES0 in Secure and NonSecure state.
-      */
-     if ((ss == ARMSS_Root || ss == ARMSS_Realm) &&
--        ((timeridx == GTIMER_VIRT && (cnthctl & CNTHCTL_CNTVMASK)) ||
--         (timeridx == GTIMER_PHYS && (cnthctl & CNTHCTL_CNTPMASK)))) {
-+        ((timeridx == GTIMER_VIRT && (cnthctl & R_CNTHCTL_CNTVMASK_MASK)) ||
-+         (timeridx == GTIMER_PHYS && (cnthctl & R_CNTHCTL_CNTPMASK_MASK)))) {
-         irqstate = 0;
-     }
- 
-@@ -2968,12 +2968,11 @@ static void gt_cnthctl_write(CPUARMState *env, const ARMCPRegInfo *ri,
- {
-     ARMCPU *cpu = env_archcpu(env);
-     uint32_t oldval = env->cp15.cnthctl_el2;
--
-     raw_write(env, ri, value);
- 
--    if ((oldval ^ value) & CNTHCTL_CNTVMASK) {
-+    if ((oldval ^ value) & R_CNTHCTL_CNTVMASK_MASK) {
-         gt_update_irq(cpu, GTIMER_VIRT);
--    } else if ((oldval ^ value) & CNTHCTL_CNTPMASK) {
-+    } else if ((oldval ^ value) & R_CNTHCTL_CNTPMASK_MASK) {
-         gt_update_irq(cpu, GTIMER_PHYS);
-     }
- }
--- 
-2.34.1
-
+SGVsbG8gS1ZNLCBNTSBhbmQgbWVtZmRfc2VjcmV0IGZvbGtzLA0KDQpDdXJyZW50bHkgd2hlbiB1
+c2luZyBhbm9ueW1vdXMgbWVtb3J5IGZvciBLVk0gZ3Vlc3QgUkFNLCB0aGUgbWVtb3J5IGFsbA0K
+cmVtYWlucyBtYXBwZWQgaW50byB0aGUga2VybmVsIGRpcmVjdCBtYXAuIFdlIGFyZSBsb29raW5n
+IGF0IG9wdGlvbnMgdG8NCmdldCBLVk0gZ3Vlc3QgbWVtb3J5IG91dCBvZiB0aGUga2VybmVs4oCZ
+cyBkaXJlY3QgbWFwIGFzIGEgcHJpbmNpcGxlZA0KYXBwcm9hY2ggdG8gbWl0aWdhdGluZyBzcGVj
+dWxhdGl2ZSBleGVjdXRpb24gaXNzdWVzIGluIHRoZSBob3N0IGtlcm5lbC4NCk91ciBnb2FsIGlz
+IHRvIG1vcmUgY29tcGxldGVseSBhZGRyZXNzIHRoZSBjbGFzcyBvZiBpc3N1ZXMgd2hvc2UgbGVh
+aw0Kb3JpZ2luIGlzIGNhdGVnb3JpemVkIGFzICJNYXBwZWQgbWVtb3J5IiBbMV0uDQoNCldlIGN1
+cnJlbnRseSBoYXZlIGRvd25zdHJlYW0tb25seSBzb2x1dGlvbnMgdG8gdGhpcywgYnV0IHdlIHdh
+bnQgdG8gbW92ZQ0KdG8gcHVyZWx5IHVwc3RyZWFtIGNvZGUuDQoNClNvIGZhciB3ZSBoYXZlIGJl
+ZW4gbG9va2luZyBhdCB1c2luZyBtZW1mZF9zZWNyZXQsIHdoaWNoIHNlZW1zIHRvIGJlDQpkZXNp
+Z25lZCBleGFjdGx5IGZvciB1c2VjYXNlcyB3aGVyZSBpdCBpcyB1bmRlc2lyYWJsZSB0byBoYXZl
+IHNvbWUNCm1lbW9yeSByYW5nZSBhY2Nlc3NpYmxlIHRocm91Z2ggdGhlIGtlcm5lbOKAmXMgZGly
+ZWN0IG1hcC4NCg0KSG93ZXZlciwgbWVtZmRfc2VjcmV0IGRvZXNu4oCZdCB3b3JrIG91dCB0aGUg
+Ym94IGZvciBLVk0gZ3Vlc3QgbWVtb3J5OyB0aGUNCm1haW4gcmVhc29uIHNlZW1zIHRvIGJlIHRo
+YXQgdGhlIEdVUCBwYXRoIGlzIGludGVudGlvbmFsbHkgZGlzYWJsZWQgZm9yDQptZW1mZF9zZWNy
+ZXQsIHNvIGlmIHdlIHVzZSBhIG1lbWZkX3NlY3JldCBiYWNrZWQgVk1BIGZvciBhIG1lbXNsb3Qg
+dGhlbg0KS1ZNIGlzIG5vdCBhYmxlIHRvIGZhdWx0IHRoZSBtZW1vcnkgaW4uIElmIGl04oCZcyBi
+ZWVuIHByZS1mYXVsdGVkIGluIGJ5DQp1c2Vyc3BhY2UgdGhlbiBpdCBzZWVtcyB0byB3b3JrLg0K
+DQpUaGVyZSBhcmUgYSBmZXcgb3RoZXIgaXNzdWVzIGFyb3VuZCB3aGVuIEtWTSBhY2Nlc3NlcyB0
+aGUgZ3Vlc3QgbWVtb3J5Lg0KRm9yIGV4YW1wbGUgdGhlIEtWTSBQViBjbG9jayBjb2RlIGdvZXMg
+ZGlyZWN0bHkgdG8gdGhlIFBGTiB2aWEgdGhlDQpwZm5jYWNoZSwgYW5kIHRoYXQgYWxzbyBicmVh
+a3MgaWYgdGhlIFBGTiBpcyBub3QgaW4gdGhlIGRpcmVjdCBtYXAsIHNvDQp3ZeKAmWQgbmVlZCB0
+byBjaGFuZ2UgdGhhdCBzb3J0IG9mIHRoaW5nLCBwZXJoYXBzIGdvaW5nIHZpYSB1c2Vyc3BhY2UN
+CmFkZHJlc3Nlcy4NCg0KSWYgd2UgcmVtb3ZlIHRoZSBtZW1mZF9zZWNyZXQgY2hlY2sgZnJvbSB0
+aGUgR1VQIHBhdGgsIGFuZCBkaXNhYmxlIEtWTeKAmXMNCnB2Y2xvY2sgZnJvbSB1c2Vyc3BhY2Ug
+dmlhIEtWTV9DUFVJRF9GRUFUVVJFUywgd2UgYXJlIGFibGUgdG8gYm9vdCBhDQpzaW1wbGUgTGlu
+dXggaW5pdHJkIHVzaW5nIGEgRmlyZWNyYWNrZXIgVk1NIG1vZGlmaWVkIHRvIHVzZQ0KbWVtZmRf
+c2VjcmV0Lg0KDQpXZSBhcmUgYWxzbyBhd2FyZSBvZiBvbmdvaW5nIHdvcmsgb24gZ3Vlc3RfbWVt
+ZmQuIFRoZSBjdXJyZW50DQppbXBsZW1lbnRhdGlvbiB1bm1hcHMgZ3Vlc3QgbWVtb3J5IGZyb20g
+Vk1NIGFkZHJlc3Mgc3BhY2UsIGJ1dCBsZWF2ZXMgaXQNCmluIHRoZSBrZXJuZWzigJlzIGRpcmVj
+dCBtYXAuIFdl4oCZcmUgbm90IGxvb2tpbmcgYXQgdW5tYXBwaW5nIGZyb20gVk1NDQp1c2Vyc3Bh
+Y2UgeWV0OyB3ZSBzdGlsbCBuZWVkIGd1ZXN0IFJBTSB0aGVyZSBmb3IgUFYgZHJpdmVycyBsaWtl
+IHZpcnRpbw0KdG8gY29udGludWUgdG8gd29yay4gU28gS1ZN4oCZcyBnbWVtIGRvZXNu4oCZdCBz
+ZWVtIGxpa2UgdGhlIHJpZ2h0IHNvbHV0aW9uPw0KDQpXaXRoIHRoaXMgaW4gbWluZCwgd2hhdOKA
+mXMgdGhlIGJlc3Qgd2F5IHRvIHNvbHZlIGdldHRpbmcgZ3Vlc3QgUkFNIG91dCBvZg0KdGhlIGRp
+cmVjdCBtYXA/IElzIG1lbWZkX3NlY3JldCBpbnRlZ3JhdGlvbiB3aXRoIEtWTSB0aGUgd2F5IHRv
+IGdvLCBvcg0Kc2hvdWxkIHdlIGJ1aWxkIGEgc29sdXRpb24gb24gdG9wIG9mIGd1ZXN0X21lbWZk
+LCBmb3IgZXhhbXBsZSB2aWEgc29tZQ0KZmxhZyB0aGF0IGNhdXNlcyBpdCB0byBsZWF2ZSBtZW1v
+cnkgaW4gdGhlIGhvc3QgdXNlcnNwYWNl4oCZcyBwYWdlIHRhYmxlcywNCmJ1dCByZW1vdmVzIGl0
+IGZyb20gdGhlIGRpcmVjdCBtYXA/IA0KDQpXZSBhcmUga2VlbiB0byBoZWxwIGNvbnRyaWJ1dGUg
+dG8gZ2V0dGluZyB0aGlzIHdvcmtpbmcsIHdl4oCZcmUganVzdA0KbG9va2luZyBmb3IgZ3VpZGFu
+Y2UgZnJvbSBtYWludGFpbmVycyBvbiB3aGF0IHRoZSBjb3JyZWN0IHdheSB0byBzb2x2ZQ0KdGhp
+cyBpcy4NCg0KQ2hlZXJzLA0KSmFtZXMgKyBjb2xsZWFndWVzIERlcmVrIGFuZCBQYXRyaWNrDQoN
+Cg==
 
