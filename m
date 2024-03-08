@@ -2,88 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7DF87683A
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 17:17:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8143D8768A7
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 17:38:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ricuA-000120-Fn; Fri, 08 Mar 2024 11:17:07 -0500
+	id 1ridDq-0000vI-Lw; Fri, 08 Mar 2024 11:37:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rictx-0000zr-9D
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 11:16:56 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <jackmanb@google.com>)
+ id 1rid2Q-0004fL-7L
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 11:25:38 -0500
+Received: from mail-qt1-x82c.google.com ([2607:f8b0:4864:20::82c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rictv-0000aC-Mv
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 11:16:52 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5683247fd0fso853843a12.3
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 08:16:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jackmanb@google.com>)
+ id 1rid2O-0002FZ-Gb
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 11:25:37 -0500
+Received: by mail-qt1-x82c.google.com with SMTP id
+ d75a77b69052e-428405a0205so327021cf.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 08:25:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709914610; x=1710519410; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=VP2eBKDwKx+gPLsEVplNclfeo0f6GzdgsS4MMibtc0M=;
- b=q16D5hmVX9FaBR9ogEGtQnXrzIX7Q2NUj+5zJlLssjZ8mM4w4L67luC4R7HPNtp6jk
- +unF32tqmXdG6WWOHe6CMDV3eD6L1JvW3Rfpd+474EILydANrAeqYUBw1tnvDVCOynmp
- eVcXO8AmraKe6EdKJZsqW/ZKESuZduFbJaZhHDE46Y1aVZCqUSr7xCIcrg11JtpweMMh
- sJGakcJiwhOa5VV83MD9FyaP8Ukak1nhuQqw6+Y8F0P2kADyJrAwM1CdN2n1XqTUdu/e
- qEH/SkfVOAnjQeW7HE+8eT+6pelsYDjuq+wQTvOOvSTxPB7lO0jUp2dUzH3mb65JdP0f
- HgUw==
+ d=google.com; s=20230601; t=1709915135; x=1710519935; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bNKllj7mYvx/xxkLemA0fJHMcGlcVpU323BzoEH+uFQ=;
+ b=zGreXe3vKN28mx2LptZilJUuXZRAHGcUPDAfn4PvWJKx40ZQJrdl/xjOCgIvcl2bBv
+ wRNrOl2g6VlTw06HFekykIvVP9HCD9ofshqrsSBtlFN2bMHhB1LdxGvhqPEh9ktwZkSN
+ KXHeWNPaTKsui+yRhmC9O7Ws/uquJkj4Dmwg58HOkcgO26wXtdNOV3KtAHJ7atulUzkV
+ xL92LXF3/RECasdaZuiC9lNd1qDysSUUnf0oJ02E7PHD0NUyM7tTmwyNJIZ8tQUsC8iF
+ 2MWjHy/0taz+gOPsqwOzYg/wi0AxFGTB3y1+GJCKRzlPt8N26ZYTNBPeArjBsVkupi+c
+ YwsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709914610; x=1710519410;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VP2eBKDwKx+gPLsEVplNclfeo0f6GzdgsS4MMibtc0M=;
- b=UZ9MV6O846quW7HZ5FqkVJ6GwfpNPoaPrz+HcICFpmv5jU7SWbOpCzht0IVpad2pwf
- lIXH6tVmR/n9LBjuHEdeVJqqDLvNki7BHSes8fZEXJ8V2m7tMOQileYnOnml6fGaVsCv
- AGThCFSPLp35TTw1iwNoHHeNWeBqkgO8r8sKr2Er1iv2yRuHzrovoMmW1eKzGdsAFH3/
- tY2KjaOi3I7Q8+/mFzluQD2x+vvdM+/u1eHFx9Kc8piQFu2TWQlmIfl3ox6tq6ttlDVf
- kzQ4SpJYa1kEqxWAjwiSgrbwHnNNsr4L+sDpext+2DOcCdnAPQGc7ydBHm+AN8sd+K1z
- 3A0g==
+ d=1e100.net; s=20230601; t=1709915135; x=1710519935;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=bNKllj7mYvx/xxkLemA0fJHMcGlcVpU323BzoEH+uFQ=;
+ b=iblOVwMEm7l6wbaPnQ3IDcjI6gwt/vAtuS7Hl95z5Q1Zios6hQP9wY5nLLpLs/GN3X
+ TUXvfc8jS7JoqknlkmINfBGg2pnS/T2Q4L9YjoL2VHMS+dqF5ZOeph/lSi6gZ+kqOu6J
+ a+axcL5AzuRbCB5l3k03mqNd4CmMLu+wSZLvzqdjvTqzxNY0sGki0IbuHioUEtjnPaCY
+ Aw86jQ27SO2v21/GwqTV5K08lLvMB6Pp7pvF17Rb2cQP+J2uOs1RdyfMXHY1oEwKqqBm
+ xuyGfoo/V6HakgteHd4WfMt9bZvXG5mZ+pmrhCZ+Vk0SNeYjMRwwB6DpVRsLiHUn1zXn
+ ZVPg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUvL4DM3IW6DoNGltdptG2YtrWJHd0N170XXvm24sxT6/VkPIfgQKsMzMk8Z5jDS1D5gbdzGjJkcvdPkTHA4CrO4r+/mDQ=
-X-Gm-Message-State: AOJu0YwWZYfrGfYC3V7zzkr/Ex5Ggzfp+xjIBphPOMIxSUwrleq2uGLF
- kcJHEeYlDuDi08vHbvLnqammNTSSpsLqSUkBwGoYUwdA9ctJHQr05VET+XgIQ68=
-X-Google-Smtp-Source: AGHT+IEQcnyaJVu8R1Mh3SfFrKmPoltWVr5cbfmKQNyL4NaB2w8n1vxa44YEBKd85xNM92lrIDp5YA==
-X-Received: by 2002:a17:906:57d4:b0:a45:a2cc:eb8b with SMTP id
- u20-20020a17090657d400b00a45a2cceb8bmr8318465ejr.13.1709914609719; 
- Fri, 08 Mar 2024 08:16:49 -0800 (PST)
-Received: from [192.168.69.100] (pir44-h02-176-184-37-132.dsl.sta.abo.bbox.fr.
- [176.184.37.132]) by smtp.gmail.com with ESMTPSA id
- a14-20020a1709065f8e00b00a449756f727sm8255508eju.147.2024.03.08.08.16.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 08 Mar 2024 08:16:48 -0800 (PST)
-Message-ID: <6ea1d103-d6fe-4ca6-b522-d9a4cf4ef1d6@linaro.org>
-Date: Fri, 8 Mar 2024 17:16:47 +0100
+ AJvYcCVJRXH0uAHSX5dkuM+hX25fz1OYAVMOxWNTi0eXV2d21cke+26RMd/js+gqblSA1bOkco/uRh4bKyJ6jKWw6PlDw3gdPKo=
+X-Gm-Message-State: AOJu0YzNMX8FDuDkmqt6kuhIw4io50kJ/RTR425Nrn1VzTF62rr1q1T5
+ vxouhuEvw0OmaeZJH6y0pHZVFZvfa8Ozg9ySv13Z1yfBwv7sR9RKw6EWcwtLXPE0Y/qN0j5hQXs
+ bVuQBba5Plx2Nifpu0t17kOiZ7Kp3MweC7eEe
+X-Google-Smtp-Source: AGHT+IElQ3xjmycZ+6ORMpUoTkFmduy8rLaNpVKLnGA7x+Z+sC1aXJ1BEUZ5RKJmqqEgd0tD5BJWRtLMqwd9EMqbzds=
+X-Received: by 2002:ac8:7d41:0:b0:42f:a3c:2d53 with SMTP id
+ h1-20020ac87d41000000b0042f0a3c2d53mr675497qtb.20.1709915134720; Fri, 08 Mar
+ 2024 08:25:34 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/4] physmem: Fix MemoryRegion for second access to
- cached MMIO Address Space
-Content-Language: en-US
-To: Peter Xu <peterx@redhat.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org,
- linuxarm@huawei.com
-References: <20240307153710.30907-1-Jonathan.Cameron@huawei.com>
- <ZerADmIeh6XnbOkG@x1n>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <ZerADmIeh6XnbOkG@x1n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <AQHacXBJeX10YUH0O0SiQBg1zQLaEw==>
+ <cc1bb8e9bc3e1ab637700a4d3defeec95b55060a.camel@amazon.com>
+In-Reply-To: <cc1bb8e9bc3e1ab637700a4d3defeec95b55060a.camel@amazon.com>
+From: Brendan Jackman <jackmanb@google.com>
+Date: Fri, 8 Mar 2024 17:25:21 +0100
+Message-ID: <CA+i-1C34VT5oFQL7en1n+MdRrO7AXaAMdNVvjFPxOaTDGXu9Dw@mail.gmail.com>
+Subject: Re: Unmapping KVM Guest Memory from Host Kernel
+To: "Gowans, James" <jgowans@amazon.com>
+Cc: "seanjc@google.com" <seanjc@google.com>, 
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "Roy,
+ Patrick" <roypat@amazon.co.uk>, 
+ "chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "Manwaring,
+ Derek" <derekmn@amazon.com>, "rppt@kernel.org" <rppt@kernel.org>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+ "Woodhouse, David" <dwmw@amazon.co.uk>, "Kalyazin,
+ Nikita" <kalyazin@amazon.co.uk>, 
+ "lstoakes@gmail.com" <lstoakes@gmail.com>,
+ "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, 
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
+ "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+ "vbabka@suse.cz" <vbabka@suse.cz>, 
+ "mst@redhat.com" <mst@redhat.com>, "somlo@cmu.edu" <somlo@cmu.edu>, "Graf (AWS),
+ Alexander" <graf@amazon.de>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82c;
+ envelope-from=jackmanb@google.com; helo=mail-qt1-x82c.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 08 Mar 2024 11:37:23 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,12 +108,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/3/24 08:36, Peter Xu wrote:
+Hi James
 
-> I queued it in my migration tree (with my "memory API" hat..).
-> 
-> I won't send a pull until next Monday.  Please shoot if there's any objections!
+On Fri, 8 Mar 2024 at 16:50, Gowans, James <jgowans@amazon.com> wrote:
+> Our goal is to more completely address the class of issues whose leak
+> origin is categorized as "Mapped memory" [1].
 
-Thanks!
+Did you forget a link below? I'm interested in hearing about that
+categorisation.
 
+> ... what=E2=80=99s the best way to solve getting guest RAM out of
+> the direct map?
+
+It's perhaps a bigger hammer than you are looking for, but the
+solution we're working on at Google is "Address Space Isolation" (ASI)
+- the latest posting about that is [2].
+
+The sense in which it's a bigger hammer is that it doesn't only
+support removing guest memory from the direct map, but rather
+arbitrary data from arbitrary kernel mappings.
+
+[2] https://lore.kernel.org/linux-mm/CA+i-1C169s8pyqZDx+iSnFmftmGfssdQA29+p=
+Ym-gqySAYWgpg@mail.gmail.com/
 
