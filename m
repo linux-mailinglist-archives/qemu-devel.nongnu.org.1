@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30EF88762E6
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 12:16:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3189A8762E4
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 12:16:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riYA2-00071Y-M7; Fri, 08 Mar 2024 06:13:11 -0500
+	id 1riYA2-00070K-4l; Fri, 08 Mar 2024 06:13:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1riY9t-0006l1-5T
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:02 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1riY9u-0006l9-Ch
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:03 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1riY9r-0001e4-Bm
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:00 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1dca3951ad9so15459335ad.3
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 03:12:57 -0800 (PST)
+ id 1riY9s-0001eN-SN
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:02 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1d944e8f367so16289435ad.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 03:13:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709896376; x=1710501176; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1709896379; x=1710501179; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wEpRih6ORzdJDXGHz5nwlcHK1igTWX+SezuwlHiscb8=;
- b=My6GIFmupZtCZjvqyvXJVc+U5IpF60cqCabtPvOyOl8RANveTJ3GAw8Beoi0CbcWt6
- OCfMgTkdvz08Wktv3oLEzakRvJkJgNffoJCkVqyWTSf2flNvECndtHgiwVSxO1Pnqa7+
- MAtGhyn6X3gGzIidNFdOVFCBN3xMAMeX2XzhOxXnDGkjg8gmuw9A6PcXKQ/hLRvTz3+Z
- 5mWODeO0ol/GFsYFFf1hargqPGu6/WHQbpnFb1SD/pmov4VZoL3oebTrAkG+um78oVsA
- HBfeKWGLjNvTLs/bBksJmGtxFjm7YfzuZiQkVxU8+M8LwvV9Qp/SHQ4xZCzcEeOh2o5L
- ZAVg==
+ bh=pfK/Tg8g8bWnCRQD1V8j+GApjyIZdSkHfnDU96BAKhE=;
+ b=CM0VO7TxKyFABUhVEedtzZ6otHFikFUvWRL4pPV3yi9K113C7qM7le4Z1/wG2Jibmx
+ tqE46DeEGqhV08MujgMIJ+pPJRQRDJ35ogjr6y1T+Tr1FPXQKnrhEODiiIj5hipB135n
+ tJSxxpkBFT6f5AVSXDXmt67J6nbTbcLiyBbssU5R+cXY65tP0yZlydmFchPRTJTZfAw0
+ iithz/k8RPPSTSD5eodKHrTSi8LC9J1LkVZMyLzyDH+edZjwGMonbkcymhYAUWfjsc02
+ uWjUDa/msDP0rNrFH4MYTxTBpwsnSUOleRu2oS19r/Lyezg1igfAIe3N2ahS0UQ/oE2B
+ WwCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709896376; x=1710501176;
+ d=1e100.net; s=20230601; t=1709896379; x=1710501179;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wEpRih6ORzdJDXGHz5nwlcHK1igTWX+SezuwlHiscb8=;
- b=g+A8TevEFfG4ES+TkiFLH9GMwSboSmKwGS3jjgTICtEGhlTplF63NkI6rhiUTUUqm3
- NHNrcM+upzyF86bgL4whfbB//cDnPvRohd1WLRlVIdVntWHRTtFxr/+bn1db//hRTUmx
- RjWhmS7hS+Gvhlpe6LFZ3gfr4JDalsyxfGpbhVVWDeFau22sm3P2sfQT4ct6D5fE+a1c
- 2fbxdxQ31OkOtKRdr6dScrfkh7G+bN8RUarNY/HEop3BHMd1h5HtwXSQfbTfZ3ei6sDG
- 5K1MwB5hCGeyjkYkuXBmqkONV0Bu20VEJfnCPQNjqPAGkFDqMGHtmR/Hmrb24zhPvpUQ
- O1Jw==
-X-Gm-Message-State: AOJu0YwiKtHbMwjFp/BSoMJjuL+uUTB+syszsiyJZn4yEKhHtCg8YsAf
- ksHOa3hQ8tlwB4/KHxkdpx7QjOaUniQc2GOrf6k6AnZb1C1XoqvuhpZ0BWJN+fdUVQ==
-X-Google-Smtp-Source: AGHT+IEkAzhd090gQcng/Y13yUwBW58AvobQW8Q9B0Z5+B0/EE797ji6EwLXVCy365p6cIMdRLmUdA==
-X-Received: by 2002:a17:902:9881:b0:1dc:b531:839 with SMTP id
- s1-20020a170902988100b001dcb5310839mr8969123plp.25.1709896376311; 
- Fri, 08 Mar 2024 03:12:56 -0800 (PST)
+ bh=pfK/Tg8g8bWnCRQD1V8j+GApjyIZdSkHfnDU96BAKhE=;
+ b=n4tc/jQbHG1b7m9yZIlRWjT/5ym/hCD0fDqRWIPgUVga7TNKbd0VwIhs++uuPRXGOV
+ VXMptPbSHpXNQJpOQjrBqRwepkA8VBcxSHqOT5fsaTH0icjClowJLfYhnxRye20nMAkG
+ dYWjPUi43k3CVc7Mn4h30tLZftqmGnRpUdyLd/CQlmHUDhOglukHKcufpjUKvQeDjAjU
+ cfvvrdEr4+wb3T7MYKbdwzwWsH23AB9vYa9XPPjNoDG8Z1GhjdryTP1XgWQlOI4FdbOZ
+ EsLT8m5DArYXFzxqHOvnSF6ZI56f6PTrdq3xvcHlnJjC1xY7lr/Wh/wkKIvPAkVOl4kA
+ zKGw==
+X-Gm-Message-State: AOJu0YyAx1qKH1GGqM2hxjwKLkEDb7lPGfsfdaeZFfP3RpN57L9KdfQV
+ CNJlLX6dQVMUXtl4FjJe5sTkxUIf6LNKZB7vSGHjcLxoeWEWMJGSU8qzwBBnV04Ivw==
+X-Google-Smtp-Source: AGHT+IH/1XSpCs50hwZ0OTvHP3MrKaQMFj2385rUnXc6I3Txl78OOWHvBU79dZFfVhDVFwPBHxLg1w==
+X-Received: by 2002:a17:902:6f16:b0:1dd:651d:cc3d with SMTP id
+ w22-20020a1709026f1600b001dd651dcc3dmr2202159plk.4.1709896379313; 
+ Fri, 08 Mar 2024 03:12:59 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- a6-20020a170902ecc600b001dcfbbb1ca5sm12006468plh.35.2024.03.08.03.12.53
+ a6-20020a170902ecc600b001dcfbbb1ca5sm12006468plh.35.2024.03.08.03.12.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Mar 2024 03:12:55 -0800 (PST)
+ Fri, 08 Mar 2024 03:12:58 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Haibo Xu <haibo1.xu@intel.com>,
- Andrew Jones <ajones@ventanamicro.com>,
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 16/34] hw/riscv/virt-acpi-build.c: Add SRAT and SLIT ACPI tables
-Date: Fri,  8 Mar 2024 21:11:34 +1000
-Message-ID: <20240308111152.2856137-17-alistair.francis@wdc.com>
+Subject: [PULL 17/34] hw/riscv/virt.c: create '/soc/pci@...' fdt node earlier
+Date: Fri,  8 Mar 2024 21:11:35 +1000
+Message-ID: <20240308111152.2856137-18-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240308111152.2856137-1-alistair.francis@wdc.com>
 References: <20240308111152.2856137-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,109 +96,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Haibo Xu <haibo1.xu@intel.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Enable ACPI NUMA support by adding the following 2 ACPI tables:
-SRAT: provides the association for memory/Harts and Proximity Domains
-SLIT: provides the relative distance between Proximity Domains
+Hotplugged FDT nodes will attempt to write this node that, at this
+moment, is being created only in create_fdt_pcie() during
+finalize_fdt().
 
-The SRAT RINTC Affinity Structure definition[1] was based on the recently
-approved ACPI CodeFirst ECR[2].
+Create it earlier.
 
-[1] https://github.com/riscv-non-isa/riscv-acpi/issues/25
-[2] https://mantis.uefi.org/mantis/view.php?id=2433
-
-Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Message-ID: <20240129094200.3581037-1-haibo1.xu@intel.com>
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20240217192607.32565-4-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/virt-acpi-build.c | 60 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+ hw/riscv/virt.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-index 0baa902fea..ef72db018e 100644
---- a/hw/riscv/virt-acpi-build.c
-+++ b/hw/riscv/virt-acpi-build.c
-@@ -564,11 +564,61 @@ static void build_madt(GArray *table_data,
-     acpi_table_end(linker, &table);
- }
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index fd35c74781..b540f4d3da 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -826,7 +826,6 @@ static void create_fdt_pcie(RISCVVirtState *s, const MemMapEntry *memmap,
  
-+/*
-+ * ACPI spec, Revision 6.5+
-+ * 5.2.16 System Resource Affinity Table (SRAT)
-+ * REF: https://github.com/riscv-non-isa/riscv-acpi/issues/25
-+ *      https://drive.google.com/file/d/1YTdDx2IPm5IeZjAW932EYU-tUtgS08tX/view
-+ */
-+static void
-+build_srat(GArray *table_data, BIOSLinker *linker, RISCVVirtState *vms)
-+{
-+    int i;
-+    uint64_t mem_base;
-+    MachineClass *mc = MACHINE_GET_CLASS(vms);
-+    MachineState *ms = MACHINE(vms);
-+    const CPUArchIdList *cpu_list = mc->possible_cpu_arch_ids(ms);
-+    AcpiTable table = { .sig = "SRAT", .rev = 3, .oem_id = vms->oem_id,
-+                        .oem_table_id = vms->oem_table_id };
-+
-+    acpi_table_begin(&table, table_data);
-+    build_append_int_noprefix(table_data, 1, 4); /* Reserved */
-+    build_append_int_noprefix(table_data, 0, 8); /* Reserved */
-+
-+    for (i = 0; i < cpu_list->len; ++i) {
-+        uint32_t nodeid = cpu_list->cpus[i].props.node_id;
-+        /*
-+         * 5.2.16.8 RINTC Affinity Structure
-+         */
-+        build_append_int_noprefix(table_data, 7, 1);      /* Type */
-+        build_append_int_noprefix(table_data, 20, 1);     /* Length */
-+        build_append_int_noprefix(table_data, 0, 2);        /* Reserved */
-+        build_append_int_noprefix(table_data, nodeid, 4); /* Proximity Domain */
-+        build_append_int_noprefix(table_data, i, 4); /* ACPI Processor UID */
-+        /* Flags, Table 5-70 */
-+        build_append_int_noprefix(table_data, 1 /* Flags: Enabled */, 4);
-+        build_append_int_noprefix(table_data, 0, 4); /* Clock Domain */
-+    }
-+
-+    mem_base = vms->memmap[VIRT_DRAM].base;
-+    for (i = 0; i < ms->numa_state->num_nodes; ++i) {
-+        if (ms->numa_state->nodes[i].node_mem > 0) {
-+            build_srat_memory(table_data, mem_base,
-+                              ms->numa_state->nodes[i].node_mem, i,
-+                              MEM_AFFINITY_ENABLED);
-+            mem_base += ms->numa_state->nodes[i].node_mem;
-+        }
-+    }
-+
-+    acpi_table_end(linker, &table);
-+}
-+
- static void virt_acpi_build(RISCVVirtState *s, AcpiBuildTables *tables)
+     name = g_strdup_printf("/soc/pci@%lx",
+         (long) memmap[VIRT_PCIE_ECAM].base);
+-    qemu_fdt_add_subnode(ms->fdt, name);
+     qemu_fdt_setprop_cell(ms->fdt, name, "#address-cells",
+         FDT_PCI_ADDR_CELLS);
+     qemu_fdt_setprop_cell(ms->fdt, name, "#interrupt-cells",
+@@ -996,6 +995,7 @@ static void create_fdt(RISCVVirtState *s, const MemMapEntry *memmap)
  {
-     GArray *table_offsets;
-     unsigned dsdt, xsdt;
-     GArray *tables_blob = tables->table_data;
-+    MachineState *ms = MACHINE(s);
+     MachineState *ms = MACHINE(s);
+     uint8_t rng_seed[32];
++    g_autofree char *name = NULL;
  
-     table_offsets = g_array_new(false, true,
-                                 sizeof(uint32_t));
-@@ -604,6 +654,16 @@ static void virt_acpi_build(RISCVVirtState *s, AcpiBuildTables *tables)
-                    s->oem_table_id);
-     }
+     ms->fdt = create_device_tree(&s->fdt_size);
+     if (!ms->fdt) {
+@@ -1014,6 +1014,13 @@ static void create_fdt(RISCVVirtState *s, const MemMapEntry *memmap)
+     qemu_fdt_setprop_cell(ms->fdt, "/soc", "#size-cells", 0x2);
+     qemu_fdt_setprop_cell(ms->fdt, "/soc", "#address-cells", 0x2);
  
-+    if (ms->numa_state->num_nodes > 0) {
-+        acpi_add_table(table_offsets, tables_blob);
-+        build_srat(tables_blob, tables->linker, s);
-+        if (ms->numa_state->have_numa_distance) {
-+            acpi_add_table(table_offsets, tables_blob);
-+            build_slit(tables_blob, tables->linker, ms, s->oem_id,
-+                       s->oem_table_id);
-+        }
-+    }
++    /*
++     * The "/soc/pci@..." node is needed for PCIE hotplugs
++     * that might happen before finalize_fdt().
++     */
++    name = g_strdup_printf("/soc/pci@%lx", (long) memmap[VIRT_PCIE_ECAM].base);
++    qemu_fdt_add_subnode(ms->fdt, name);
 +
-     /* XSDT is pointed to by RSDP */
-     xsdt = tables_blob->len;
-     build_xsdt(tables_blob, tables->linker, table_offsets, s->oem_id,
+     qemu_fdt_add_subnode(ms->fdt, "/chosen");
+ 
+     /* Pass seed to RNG */
 -- 
 2.44.0
 
