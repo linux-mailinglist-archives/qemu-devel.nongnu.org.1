@@ -2,75 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9E5B8762EE
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 12:17:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABB528762D0
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 12:13:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riY9Q-0006Yu-3c; Fri, 08 Mar 2024 06:12:32 -0500
+	id 1riY9M-0006Yb-Gc; Fri, 08 Mar 2024 06:12:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1riY9I-0006XW-9r
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:12:25 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1riY9F-0006X8-QW
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:12:23 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1riY8z-0001Mi-NP
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:12:23 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1dc1ff3ba1aso15501695ad.3
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 03:12:05 -0800 (PST)
+ id 1riY93-0001Nq-5V
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:12:21 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1dc96f64c10so15382715ad.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 03:12:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709896323; x=1710501123; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=A6IIbrqJZkXOvG2Gdd5VDi3UGBuGvM83Fnh65GNOBvs=;
- b=YLnjtqSnIsnYqDoASKYvWNGe0kBr8MT3EnNHsFRudA4l4X7bawu9OIU88WN48VQqKg
- hBaWpuEkr6c5wUBXnjSEGu7GzawZKQgKHWxDxIAejv0VLkpjwgiY9wG1bjmyy4U/oHto
- Sxg+2XjtUM/W28zjNBHeHyhyFhLRx1ZyQ7xRPWzqeF14/dcyj0yz6QT3X10ZLGysT+3j
- oJAsJwbU89jEkqD+gpDUEyznKI6DWqAQ0nu7xlbpBNt4UqbvPA/bQD7WADSiKgOXiIB+
- 40mMOjPft+3cdoiGt7T0Jw/S7CBNsozrP8Byl7Y6durfHhkk6jgeUNxdYYuj3K52K5Oj
- JEdg==
+ d=gmail.com; s=20230601; t=1709896327; x=1710501127; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=syLEtoMRDneJrDhKp8oXy56RWMScuG+MxKEcSUXVGqA=;
+ b=fNSxLLjnOpO747bfpbNNN6KhK1qy5LjQQazwcdckvy43eFiPAepwFP6Dyf2OdnOQGS
+ PnIrzUGXv6crCzXjN5J6TF8SNis6j+R4SjQozA53vlNTj+eUOjljqQcCfISmF3VRURBt
+ DaWIHdo6o46Lrf/UV0yim3NQZ2qCX9cQZh5CLaCDdNK8ZQoPNozwSElZevu5z//xd4Up
+ 1hp0wyTXfReYaPMQzFkWG1weuWbUYsvHJ/xu3aoh70wm3OjaCcSiwbKU12P+p9iJ8H5s
+ jVlhWo7ept3imgTsSjL5H/biHPoAhSqS0vw6vjh93EQ+B713AEPZh4Qd8GV5gVnRdUXF
+ OAWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709896323; x=1710501123;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=A6IIbrqJZkXOvG2Gdd5VDi3UGBuGvM83Fnh65GNOBvs=;
- b=VA6PTmBOTFBrRu/ItPN1kZ5DsP07PAKDF+m8n8uA9oZeA8KmLHLAEVcU9kMmdtxtBy
- 9rxrbeZD5ETcreZ3N7I1Q+LzkHPQG+A9beeMSXpF4HVZ9Kwv2VKvA+nceM76SPrCCVyG
- 99uuPON+jIy2nG9V2qTvfI6jsBOVZmdKkcVP96RHvILrGPv6/OsTweLX8ckhNOZkrJVS
- ch9U5J43Sy7xU7vMqH5NMsqIfMpL6uHIZQdkuzvDcrvVO6PCeUbg+ce0YSw1HSi71Y+q
- HX3OYyOMq9HLBB4UUIXjCw/C66JfpMdq0hyBaiRlbodsVlqwbQF7rK8lHxac+1ghdsmz
- L9cw==
-X-Gm-Message-State: AOJu0Yy3BA8nGA/ntC5c+zNYe/IAHMSqYIEXdICPZFA3seT2OwskgjpQ
- 7sJtjL7UDkV3KjeAOSwu/0VFVM6/7cu/s6siS8t8lkNWtvpxFLeuOu5p1gRhoeXoIw==
-X-Google-Smtp-Source: AGHT+IFIf79G0dRAjfjmX/0pYSqJ/Gk2VV8ifDlpz5dznk/0vVpwEGrHsBcLP1xkHK7+5Ek3saDQIw==
-X-Received: by 2002:a17:902:ecc2:b0:1dc:fc0b:3d0 with SMTP id
- a2-20020a170902ecc200b001dcfc0b03d0mr13133280plh.14.1709896323469; 
- Fri, 08 Mar 2024 03:12:03 -0800 (PST)
+ d=1e100.net; s=20230601; t=1709896327; x=1710501127;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=syLEtoMRDneJrDhKp8oXy56RWMScuG+MxKEcSUXVGqA=;
+ b=CXeA77EuoVgRAVeg37tc8Xhb07HXlxAsIMMbTtbWoIeR9yDfDOhNWphQBZ+GjvjGya
+ uJH/V4YNfpLX9q4vaD0Nj1INxh6VsraKk1Hr5fnmIWhCA4N0bJvzFgyWX6Lfb0ZhmS/j
+ RzJYmj/51dWO8H1krssMdg2T2hx6PHEBIXcCIjd5MD1WffykD6MBV5fRucSCYr63f/mg
+ YN1rM6P9DHbRNnXbcQbvXqFo29EjCSomqVQg2PAOEP6EsP7UWPKo6P4DzfML3XikjPob
+ JOVlpyhhHLstzhMi2DDYJ00FOsrY4vK4AXYu6R13AuvCh/jwWHVfRItnHVbK/d0X7pzK
+ 7Isg==
+X-Gm-Message-State: AOJu0Yw43e7rPA+fqXWz88/4zwHElRly/etpwLeMiS2S6Ab0E0Hkz5i8
+ fC6Nh9BvWY+UIl+XFTi/hY5F/cV2uHak8WJao6KEvEH5ddqOFjq6SSXwEP5ww8nelA==
+X-Google-Smtp-Source: AGHT+IHHPKKaF0kngO87F9yF3oKTSPxjfK9OGFaXHVZXI2yWJApy+bb3qlnvr1CbUzlkggUq97VTpw==
+X-Received: by 2002:a17:903:11c6:b0:1dc:af70:9f78 with SMTP id
+ q6-20020a17090311c600b001dcaf709f78mr12418782plh.46.1709896327470; 
+ Fri, 08 Mar 2024 03:12:07 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- a6-20020a170902ecc600b001dcfbbb1ca5sm12006468plh.35.2024.03.08.03.12.00
+ a6-20020a170902ecc600b001dcfbbb1ca5sm12006468plh.35.2024.03.08.03.12.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Mar 2024 03:12:02 -0800 (PST)
+ Fri, 08 Mar 2024 03:12:06 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com,
-	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 00/34] riscv-to-apply queue
-Date: Fri,  8 Mar 2024 21:11:18 +1000
-Message-ID: <20240308111152.2856137-1-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Jason Chien <jason.chien@sifive.com>,
+ Frank Chang <frank.chang@sifive.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 01/34] target/riscv: Update $ra with current $pc in
+ trans_cm_jalt()
+Date: Fri,  8 Mar 2024 21:11:19 +1000
+Message-ID: <20240308111152.2856137-2-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240308111152.2856137-1-alistair.francis@wdc.com>
+References: <20240308111152.2856137-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,158 +99,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 8f6330a807f2642dc2a3cdf33347aa28a4c00a87:
+From: Jason Chien <jason.chien@sifive.com>
 
-  Merge tag 'pull-maintainer-updates-060324-1' of https://gitlab.com/stsquad/qemu into staging (2024-03-06 16:56:20 +0000)
+The original implementation sets $pc to the address read from the jump
+vector table first and links $ra with the address of the next instruction
+after the updated $pc. After jumping to the updated $pc and executing the
+next ret instruction, the program jumps to $ra, which is in the same
+function currently executing, which results in an infinite loop.
+This commit stores the jump address in a temporary, updates $ra with the
+current $pc, and copies the temporary to $pc.
 
-are available in the Git repository at:
+Signed-off-by: Jason Chien <jason.chien@sifive.com>
+Reviewed-by: Frank Chang <frank.chang@sifive.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20240207081820.28559-1-jason.chien@sifive.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ target/riscv/insn_trans/trans_rvzce.c.inc | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20240308-1
+diff --git a/target/riscv/insn_trans/trans_rvzce.c.inc b/target/riscv/insn_trans/trans_rvzce.c.inc
+index 2d992e14c4..cd234ad960 100644
+--- a/target/riscv/insn_trans/trans_rvzce.c.inc
++++ b/target/riscv/insn_trans/trans_rvzce.c.inc
+@@ -293,12 +293,14 @@ static bool trans_cm_jalt(DisasContext *ctx, arg_cm_jalt *a)
+ {
+     REQUIRE_ZCMT(ctx);
+ 
++    TCGv addr = tcg_temp_new();
++
+     /*
+      * Update pc to current for the non-unwinding exception
+      * that might come from cpu_ld*_code() in the helper.
+      */
+     gen_update_pc(ctx, 0);
+-    gen_helper_cm_jalt(cpu_pc, tcg_env, tcg_constant_i32(a->index));
++    gen_helper_cm_jalt(addr, tcg_env, tcg_constant_i32(a->index));
+ 
+     /* c.jt vs c.jalt depends on the index. */
+     if (a->index >= 32) {
+@@ -307,6 +309,8 @@ static bool trans_cm_jalt(DisasContext *ctx, arg_cm_jalt *a)
+         gen_set_gpr(ctx, xRA, succ_pc);
+     }
+ 
++    tcg_gen_mov_tl(cpu_pc, addr);
++
+     tcg_gen_lookup_and_goto_ptr();
+     ctx->base.is_jmp = DISAS_NORETURN;
+     return true;
+-- 
+2.44.0
 
-for you to fetch changes up to 301876597112218c1e465ecc2b2fef6b27d5c27b:
-
-  target/riscv: fix ACPI MCFG table (2024-03-08 21:00:37 +1000)
-
-----------------------------------------------------------------
-RISC-V PR for 9.0
-
-* Update $ra with current $pc in trans_cm_jalt
-* Enable SPCR for SCPI virt machine
-* Allow large kernels to boot by moving the initrd further away in RAM
-* Sync hwprobe keys with kernel
-* Named features riscv,isa, 'svade' rework
-* FIX xATP_MODE validation
-* Add missing include guard in pmu.h
-* Add SRAT and SLIT ACPI tables
-* libqos fixes and add a riscv machine
-* Add Ztso extension
-* Use 'zfa' instead of 'Zfa'
-* Update KVM exts to Linux 6.8
-* move ratified/frozen exts to non-experimental
-* Ensure mcountinhibit, mcounteren, scounteren, hcounteren are 32-bit
-* mark_vs_dirty() before loads and stores
-* Remove 'is_store' bool from load/store fns
-* Fix shift count overflow
-* Fix setipnum_le write emulation for APLIC MSI-mode
-* Fix in_clrip[x] read emulation
-* Fix privilege mode of G-stage translation for debugging
-* Fix ACPI MCFG table for virt machine
-
-----------------------------------------------------------------
-Alexandre Ghiti (1):
-      hw: riscv: Allow large kernels to boot by moving the initrd further away in RAM
-
-Andrew Jones (3):
-      target/riscv: Reset henvcfg to zero
-      target/riscv: Gate hardware A/D PTE bit updating
-      target/riscv: Promote svade to a normal extension
-
-Anup Patel (2):
-      hw/intc/riscv_aplic: Fix setipnum_le write emulation for APLIC MSI-mode
-      hw/intc/riscv_aplic: Fix in_clrip[x] read emulation
-
-Christoph Müllner (4):
-      linux-user/riscv: Add Zicboz extensions to hwprobe
-      linux-user/riscv: Sync hwprobe keys with Linux
-      linux-user/riscv: Add Ztso extension to hwprobe
-      tests: riscv64: Use 'zfa' instead of 'Zfa'
-
-Daniel Henrique Barboza (12):
-      target/riscv/tcg: set 'mmu' with 'satp' in cpu_set_profile()
-      target/riscv: add riscv,isa to named features
-      target/riscv: add remaining named features
-      hw/riscv/virt.c: create '/soc/pci@...' fdt node earlier
-      hw/riscv/virt.c: add virtio-iommu-pci hotplug support
-      hw/riscv/virt.c: make aclint compatible with 'qtest' accel
-      tests/libqos: add riscv/virt machine nodes
-      linux-headers: Update to Linux v6.8-rc6
-      target/riscv/kvm: update KVM exts to Linux 6.8
-      target/riscv: move ratified/frozen exts to non-experimental
-      trans_rvv.c.inc: mark_vs_dirty() before loads and stores
-      trans_rvv.c.inc: remove 'is_store' bool from load/store fns
-
-Frank Chang (1):
-      target/riscv: Add missing include guard in pmu.h
-
-Haibo Xu (1):
-      hw/riscv/virt-acpi-build.c: Add SRAT and SLIT ACPI tables
-
-Hiroaki Yamamoto (1):
-      target/riscv: Fix privilege mode of G-stage translation for debugging
-
-Ilya Chugin (1):
-      target/riscv: fix ACPI MCFG table
-
-Irina Ryapolova (2):
-      target/riscv: FIX xATP_MODE validation
-      target/riscv: UPDATE xATP write CSR
-
-Jason Chien (1):
-      target/riscv: Update $ra with current $pc in trans_cm_jalt()
-
-Palmer Dabbelt (1):
-      RISC-V: Add support for Ztso
-
-Sia Jee Heng (2):
-      hw/arm/virt-acpi-build.c: Migrate SPCR creation to common location
-      hw/riscv/virt-acpi-build.c: Generate SPCR table
-
-Vadim Shakirov (1):
-      target/riscv: mcountinhibit, mcounteren, scounteren, hcounteren is 32-bit
-
-demin.han (1):
-      target/riscv: Fix shift count overflow
-
- include/hw/acpi/acpi-defs.h                    |  33 ++++++
- include/hw/acpi/aml-build.h                    |   4 +
- include/standard-headers/drm/drm_fourcc.h      |  10 +-
- include/standard-headers/linux/ethtool.h       |  41 +++++---
- include/standard-headers/linux/virtio_config.h |   8 +-
- include/standard-headers/linux/virtio_pci.h    |  68 ++++++++++++
- include/standard-headers/linux/virtio_pmem.h   |   7 ++
- linux-headers/asm-generic/unistd.h             |  15 ++-
- linux-headers/asm-mips/mman.h                  |   2 +-
- linux-headers/asm-mips/unistd_n32.h            |   5 +
- linux-headers/asm-mips/unistd_n64.h            |   5 +
- linux-headers/asm-mips/unistd_o32.h            |   5 +
- linux-headers/asm-powerpc/unistd_32.h          |   5 +
- linux-headers/asm-powerpc/unistd_64.h          |   5 +
- linux-headers/asm-riscv/kvm.h                  |  40 +++++++
- linux-headers/asm-s390/unistd_32.h             |   5 +
- linux-headers/asm-s390/unistd_64.h             |   5 +
- linux-headers/asm-x86/kvm.h                    |   3 +
- linux-headers/asm-x86/unistd_32.h              |   5 +
- linux-headers/asm-x86/unistd_64.h              |   5 +
- linux-headers/asm-x86/unistd_x32.h             |   5 +
- linux-headers/linux/iommufd.h                  |  79 ++++++++++++++
- linux-headers/linux/kvm.h                      | 140 +++++++++----------------
- linux-headers/linux/userfaultfd.h              |  29 ++++-
- linux-headers/linux/vfio.h                     |   1 +
- target/riscv/cpu.h                             |   8 +-
- target/riscv/cpu_cfg.h                         |  13 ++-
- target/riscv/pmu.h                             |   5 +
- hw/acpi/aml-build.c                            |  53 ++++++++++
- hw/arm/virt-acpi-build.c                       |  68 +++++-------
- hw/intc/riscv_aplic.c                          |  37 +++++--
- hw/riscv/boot.c                                |  12 +--
- hw/riscv/virt-acpi-build.c                     | 103 +++++++++++++++++-
- hw/riscv/virt.c                                |  97 ++++++++++++-----
- linux-user/syscall.c                           | 104 ++++++++++++++++--
- target/riscv/cpu.c                             |  94 +++++++++++------
- target/riscv/cpu_helper.c                      |  21 +++-
- target/riscv/csr.c                             |  58 +++++-----
- target/riscv/kvm/kvm-cpu.c                     |  29 +++++
- target/riscv/machine.c                         |  16 +--
- target/riscv/tcg/tcg-cpu.c                     |  34 +++---
- target/riscv/translate.c                       |   3 +
- target/riscv/vector_helper.c                   |   5 +-
- tests/qtest/libqos/riscv-virt-machine.c        | 137 ++++++++++++++++++++++++
- target/riscv/insn_trans/trans_rva.c.inc        |  11 +-
- target/riscv/insn_trans/trans_rvi.c.inc        |  16 ++-
- target/riscv/insn_trans/trans_rvv.c.inc        |  97 +++++++++--------
- target/riscv/insn_trans/trans_rvzce.c.inc      |   6 +-
- tests/qtest/libqos/meson.build                 |   1 +
- tests/tcg/riscv64/Makefile.target              |   2 +-
- 50 files changed, 1213 insertions(+), 347 deletions(-)
- create mode 100644 tests/qtest/libqos/riscv-virt-machine.c
 
