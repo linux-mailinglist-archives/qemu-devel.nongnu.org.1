@@ -2,88 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF0D887676C
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:31:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9BA5876735
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:20:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ricBu-0001b2-Vj; Fri, 08 Mar 2024 10:31:22 -0500
+	id 1ric1A-0006RJ-P8; Fri, 08 Mar 2024 10:20:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
- id 1ricBm-0001ZX-4m
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:31:15 -0500
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
- id 1ricBh-00008i-Tr
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:31:13 -0500
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-a45bdf6e9c2so269487766b.0
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 07:31:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=cloud.com; s=cloud; t=1709911867; x=1710516667; darn=nongnu.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=YH6MlDPdnoLWWPXoTTEpelfujeDTtrM788RsOZVvSv0=;
- b=WONxwXMDk6E7LCigw/BR3neWahDiERIgQTCKucCQmcOoSSm3N3tGw1L8iZE6/pi1eo
- 7BV+OcC3HMQ8eelVEwRq7QS7+fdzrhPFfZm/wTupXI6YdOmv509yO2dNR/hOfDPDqmOh
- yODEWQd0IvtTp26K98q9jZ6Sy7XRS16ekijWM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709911867; x=1710516667;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YH6MlDPdnoLWWPXoTTEpelfujeDTtrM788RsOZVvSv0=;
- b=rQL/ayyoULebkXIlnhZwD353lYNoovcymKA5rY6Sm7ach3BTjH0xPykwR6AoHwUfZl
- EsG3are+ohGpQPssa8BLG2z58D6imIfOn40VYP/KUeQEJOeYhYluWXMGG16EpqkRLt+5
- JnjL0pDqy/1w1E4mCX7eMreY9wH7+/9A5UtLZIKlzlYPsqo5X91WlrnNVaTZeD5JS2vC
- x3iPfVLXkOJLHI95mc0g6vX9AFtDqRvM/4uUBrkMnW4iF/4dTnggHuKzjwCwotVdF8/t
- 1wcuhG07amGrycR7q4pqJiWP3f/YodpHjne9T7VnvQ6PRne1B1Etcoz3nBd9n34GrQWB
- GjKw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWNmjY0CKz8FEVsDPxwb383ZN7kjKNSbdvtBym374eF90m8tb+kX920H9cjWstpCBNRbla/ziaPqRuvcHmauxTPvQCzJfk=
-X-Gm-Message-State: AOJu0YwXitqH62/OIkiniiuFyXMKOuIE14QOr1wd5dTfBo1UyGoG5ehX
- 9kgcQiJASFmJjVN7Y2M5pOj7c3b58Ysv+0zuZ6PpzoOA17YvuugfOzEjJngJt1I=
-X-Google-Smtp-Source: AGHT+IEBfIxsts55MLYdgyvsm2syWKaIzZJ/gQRQnI55gvIt3Qc/sVGj1iaCCCcqY8M5YHKD4JUpqQ==
-X-Received: by 2002:a17:906:84e:b0:a43:b269:d27f with SMTP id
- f14-20020a170906084e00b00a43b269d27fmr13273755ejd.64.1709911867295; 
- Fri, 08 Mar 2024 07:31:07 -0800 (PST)
-Received: from perard.uk.xensource.com (default-46-102-197-194.interdsl.co.uk.
- [46.102.197.194]) by smtp.gmail.com with ESMTPSA id
- js18-20020a170906ca9200b00a45be04f00fsm2848497ejb.171.2024.03.08.07.31.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Mar 2024 07:31:06 -0800 (PST)
-Date: Fri, 8 Mar 2024 15:31:06 +0000
-From: Anthony PERARD <anthony.perard@cloud.com>
-To: Zhao Liu <zhao1.liu@linux.intel.com>
-Cc: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Michael Tokarev <mjt@tls.msk.ru>,
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1ric18-0006NV-3l
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:20:14 -0500
+Received: from mgamail.intel.com ([198.175.65.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1ric15-0004xR-QK
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:20:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1709911212; x=1741447212;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=37x1enO9CuT262PPueVsjTold9mUMUYf4OwlO+MhuoY=;
+ b=V4dw2kkCcgEm7TMnnTSgL23komvNmuF1K3a+eWNZjDYV1982L5Jei//k
+ wMCAwCXHI3AFdK6y3O1E4gplVNXyHAv8L+OB85sMy+oHGCDHwNIUSOpPX
+ RXWhllgrC5z9VsV1ntHTIf7TXoWhEu+qiJG3Em/SoA4yRQikT5kzQIURt
+ iVRC2XgPbozcqwu66lmTyjeb82jMkYy394wQgMII53LQLEC0qVqnp0gX9
+ L8Mt6JGTQbx0BsnEgIIshdCZwXxoIf7TdwrLooiMPXRxWQlVbwBk3cb6o
+ u+9UPjxuI4HSNbt3zaSONbl5CjG1vCU19zqfS/T4xJ0gmKPBqFWs5Xfbw g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="22086167"
+X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; d="scan'208";a="22086167"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Mar 2024 07:20:09 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; d="scan'208";a="15164654"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa003.jf.intel.com with ESMTP; 08 Mar 2024 07:20:06 -0800
+Date: Fri, 8 Mar 2024 23:33:53 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, qemu-trivial@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>,
- Stefano Stabellini <sstabellini@kernel.org>, Paul Durrant <paul@xen.org>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 14/16] hw/char/xen_console: Fix missing ERRP_GUARD() for
- error_prepend()
-Message-ID: <521de725-5d13-46ff-94d9-29e09fb90210@perard>
-References: <20240228163723.1775791-1-zhao1.liu@linux.intel.com>
- <20240228163723.1775791-15-zhao1.liu@linux.intel.com>
+ Yanan Wang <wangyanan55@huawei.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Prasad Pandit <ppandit@redhat.com>, qemu-devel@nongnu.org,
+ Xiaoling Song <xiaoling.song@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Prasad Pandit <pjp@fedoraproject.org>
+Subject: Re: [PATCH 03/14] hw/core/machine-smp: Simplify variables'
+ initialization in machine_parse_smp_config()
+Message-ID: <Zesv4W8DKteGeE/a@intel.com>
+References: <20240306095407.3058909-1-zhao1.liu@linux.intel.com>
+ <20240306095407.3058909-4-zhao1.liu@linux.intel.com>
+ <c2bd5503-7ab1-41b7-af81-2f5bf5992ad3@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240228163723.1775791-15-zhao1.liu@linux.intel.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=anthony.perard@cloud.com; helo=mail-ej1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <c2bd5503-7ab1-41b7-af81-2f5bf5992ad3@redhat.com>
+Received-SPF: none client-ip=198.175.65.10;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.572,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,54 +86,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Feb 29, 2024 at 12:37:21AM +0800, Zhao Liu wrote:
-> From: Zhao Liu <zhao1.liu@intel.com>
-> 
-> As the comment in qapi/error, passing @errp to error_prepend() requires
-> ERRP_GUARD():
-> 
-> * = Why, when and how to use ERRP_GUARD() =
-> *
-> * Without ERRP_GUARD(), use of the @errp parameter is restricted:
-> ...
-> * - It should not be passed to error_prepend(), error_vprepend() or
-> *   error_append_hint(), because that doesn't work with &error_fatal.
-> * ERRP_GUARD() lifts these restrictions.
-> *
-> * To use ERRP_GUARD(), add it right at the beginning of the function.
-> * @errp can then be used without worrying about the argument being
-> * NULL or &error_fatal.
-> 
-> ERRP_GUARD() could avoid the case when @errp is the pointer of
-> error_fatal, the user can't see this additional information, because
-> exit() happens in error_setg earlier than information is added [1].
-> 
-> The xen_console_connect() passes @errp to error_prepend() without
-> ERRP_GUARD().
-> 
-> There're 2 places will call xen_console_connect():
->  - xen_console_realize(): the @errp is from DeviceClass.realize()'s
-> 			  parameter.
->  - xen_console_frontend_changed(): the @errp points its caller's
->                                    @local_err.
-> 
-> To avoid the issue like [1] said, add missing ERRP_GUARD() at the
-> beginning of xen_console_connect().
-> 
-> [1]: Issue description in the commit message of commit ae7c80a7bd73
->      ("error: New macro ERRP_GUARD()").
-> 
-> Cc: Stefano Stabellini <sstabellini@kernel.org>
-> Cc: Anthony Perard <anthony.perard@citrix.com>
-> Cc: Paul Durrant <paul@xen.org>
-> Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Hi Thomas,
 
-Acked-by: Anthony PERARD <anthony.perard@citrix.com>
+On Fri, Mar 08, 2024 at 02:20:45PM +0100, Thomas Huth wrote:
+> Date: Fri, 8 Mar 2024 14:20:45 +0100
+> From: Thomas Huth <thuth@redhat.com>
+> Subject: Re: [PATCH 03/14] hw/core/machine-smp: Simplify variables'
+>  initialization in machine_parse_smp_config()
+> 
+> On 06/03/2024 10.53, Zhao Liu wrote:
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> > 
+> > SMPConfiguration initializes its int64_t members as 0 by default.
+> 
+> Can we always rely on that? ... or is this just by luck due to the current
+> implementation? In the latter case, I'd maybe rather drop this patch again.
+>
 
-Thanks,
+Thanks for the correction, I revisited and referenced more similar use
+cases, and indeed, only if the flag "has_*" is true, its corresponding
+field should be considered reliable.
 
--- 
-Anthony PERARD
+Keeping explicit checking on has_* and explicit initialization of these
+topology variables makes the code more readable.
+
+This patch is over-optimized and I would drop it.
+
+Regards,
+Zhao
+
+
 
