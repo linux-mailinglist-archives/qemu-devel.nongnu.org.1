@@ -2,98 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8143D8768A7
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 17:38:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41842876880
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 17:29:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ridDq-0000vI-Lw; Fri, 08 Mar 2024 11:37:26 -0500
+	id 1rid5I-0005Oq-64; Fri, 08 Mar 2024 11:28:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jackmanb@google.com>)
- id 1rid2Q-0004fL-7L
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 11:25:38 -0500
-Received: from mail-qt1-x82c.google.com ([2607:f8b0:4864:20::82c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rid5G-0005Og-Bu
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 11:28:34 -0500
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jackmanb@google.com>)
- id 1rid2O-0002FZ-Gb
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 11:25:37 -0500
-Received: by mail-qt1-x82c.google.com with SMTP id
- d75a77b69052e-428405a0205so327021cf.1
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 08:25:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rid5E-0002eL-MB
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 11:28:34 -0500
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-a45cdb790dfso263747466b.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 08:28:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1709915135; x=1710519935; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=bNKllj7mYvx/xxkLemA0fJHMcGlcVpU323BzoEH+uFQ=;
- b=zGreXe3vKN28mx2LptZilJUuXZRAHGcUPDAfn4PvWJKx40ZQJrdl/xjOCgIvcl2bBv
- wRNrOl2g6VlTw06HFekykIvVP9HCD9ofshqrsSBtlFN2bMHhB1LdxGvhqPEh9ktwZkSN
- KXHeWNPaTKsui+yRhmC9O7Ws/uquJkj4Dmwg58HOkcgO26wXtdNOV3KtAHJ7atulUzkV
- xL92LXF3/RECasdaZuiC9lNd1qDysSUUnf0oJ02E7PHD0NUyM7tTmwyNJIZ8tQUsC8iF
- 2MWjHy/0taz+gOPsqwOzYg/wi0AxFGTB3y1+GJCKRzlPt8N26ZYTNBPeArjBsVkupi+c
- YwsA==
+ d=linaro.org; s=google; t=1709915310; x=1710520110; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=sBG1yVNIsyQRq4v4zNQSqJ0XiEBJ86Vn80nHsc+3Mho=;
+ b=snd5p742XycAMCd6LWAcZGZ/dKoDUvTBDIH70yNbTo/TrW5OJ5sRzbxv7g0bV8tGrR
+ 26HtFa8m6OkAx9Eei21vEe0qJeyhHaZfi3dXtbxZGltX++zxcYxvjVVkpdUMdyvSCVyY
+ lLDVCZZDcwwJy2dioEY0DTSd6fRlhhyUmr3LKOTklvYYua+ynE3kUcGRWTEcT5nAQR9g
+ z5Uwz4V8HVNxOQ1L1e+vaTPIzM7qk+7Pcd8qUAgc00w9FguojzM0idh/fX5ouzetmLHJ
+ z11oI2AxO9jlGmEIb/RH5W/aZQqP5M3OoPHoKuHa1Z0WIpkfBaJO0V7PS8li2t87a9gY
+ wuXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709915135; x=1710519935;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bNKllj7mYvx/xxkLemA0fJHMcGlcVpU323BzoEH+uFQ=;
- b=iblOVwMEm7l6wbaPnQ3IDcjI6gwt/vAtuS7Hl95z5Q1Zios6hQP9wY5nLLpLs/GN3X
- TUXvfc8jS7JoqknlkmINfBGg2pnS/T2Q4L9YjoL2VHMS+dqF5ZOeph/lSi6gZ+kqOu6J
- a+axcL5AzuRbCB5l3k03mqNd4CmMLu+wSZLvzqdjvTqzxNY0sGki0IbuHioUEtjnPaCY
- Aw86jQ27SO2v21/GwqTV5K08lLvMB6Pp7pvF17Rb2cQP+J2uOs1RdyfMXHY1oEwKqqBm
- xuyGfoo/V6HakgteHd4WfMt9bZvXG5mZ+pmrhCZ+Vk0SNeYjMRwwB6DpVRsLiHUn1zXn
- ZVPg==
+ d=1e100.net; s=20230601; t=1709915310; x=1710520110;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=sBG1yVNIsyQRq4v4zNQSqJ0XiEBJ86Vn80nHsc+3Mho=;
+ b=mMSIBiIvhkWivJUi8FM2F6O8wN3AY78H1+XIOIOcG2ChC4nY+M4KciLxN1hiAvSVn+
+ fJm99qczKwIWv+SFbZ9fmcKbHlZJ+KsS9Z/YjujrWBfqne1xAyT9eEk5bC+UUxSKVDB0
+ utHSAj9gz8Cs0W19bBn3t7F23WPBAugBUwY0w7O7STBlwqAoW/dm5yhlkbRzLorh9JvX
+ /Rkf0ZAURfLws5CDWul9zttePARu0DvjIgvP22PclV87Cym75Z8TBRlddWcrybFONJKy
+ gt0klYwlRFsDEyJriacqJeeoobwXhPAOI0BT1UOnX29+hCyIsH9zwwJx+TDPViizfhom
+ 5JfQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVJRXH0uAHSX5dkuM+hX25fz1OYAVMOxWNTi0eXV2d21cke+26RMd/js+gqblSA1bOkco/uRh4bKyJ6jKWw6PlDw3gdPKo=
-X-Gm-Message-State: AOJu0YzNMX8FDuDkmqt6kuhIw4io50kJ/RTR425Nrn1VzTF62rr1q1T5
- vxouhuEvw0OmaeZJH6y0pHZVFZvfa8Ozg9ySv13Z1yfBwv7sR9RKw6EWcwtLXPE0Y/qN0j5hQXs
- bVuQBba5Plx2Nifpu0t17kOiZ7Kp3MweC7eEe
-X-Google-Smtp-Source: AGHT+IElQ3xjmycZ+6ORMpUoTkFmduy8rLaNpVKLnGA7x+Z+sC1aXJ1BEUZ5RKJmqqEgd0tD5BJWRtLMqwd9EMqbzds=
-X-Received: by 2002:ac8:7d41:0:b0:42f:a3c:2d53 with SMTP id
- h1-20020ac87d41000000b0042f0a3c2d53mr675497qtb.20.1709915134720; Fri, 08 Mar
- 2024 08:25:34 -0800 (PST)
+ AJvYcCVFzr3IRJs9PkT7fRNhjUGA1JGpy3L8YEYbrcuOOfxRV+TEQHhRFEogZhcdnniy9cqX82xqMMlH+Lt+LKfMvwAXOFMz0fY=
+X-Gm-Message-State: AOJu0Yy6DVa4SqLyPJ6CvBsaqY56NPmcqtV8MKpVnTpt78W02ZbjQIEE
+ QmkhUWcehuTLfd5clnbH5TLbS59d6pbgffo595VzWHKMOpZQle20idH+6H8Oor0=
+X-Google-Smtp-Source: AGHT+IGV+LaWniDgICUSGJYbGKVZO1S9H4XJ35ZNEpNOG8tAhX8KPJfx8wwk8IihXZmAa2OhcscXJQ==
+X-Received: by 2002:a17:906:19cf:b0:a43:f588:de2a with SMTP id
+ h15-20020a17090619cf00b00a43f588de2amr15701200ejd.66.1709915310505; 
+ Fri, 08 Mar 2024 08:28:30 -0800 (PST)
+Received: from [192.168.69.100] (cvl92-h01-176-184-49-62.dsl.sta.abo.bbox.fr.
+ [176.184.49.62]) by smtp.gmail.com with ESMTPSA id
+ z21-20020a170906715500b00a45aa673ae0sm4025715ejj.168.2024.03.08.08.28.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 08 Mar 2024 08:28:30 -0800 (PST)
+Message-ID: <67e36088-0ca2-4175-a672-0bf4c66e99e1@linaro.org>
+Date: Fri, 8 Mar 2024 17:28:28 +0100
 MIME-Version: 1.0
-References: <AQHacXBJeX10YUH0O0SiQBg1zQLaEw==>
- <cc1bb8e9bc3e1ab637700a4d3defeec95b55060a.camel@amazon.com>
-In-Reply-To: <cc1bb8e9bc3e1ab637700a4d3defeec95b55060a.camel@amazon.com>
-From: Brendan Jackman <jackmanb@google.com>
-Date: Fri, 8 Mar 2024 17:25:21 +0100
-Message-ID: <CA+i-1C34VT5oFQL7en1n+MdRrO7AXaAMdNVvjFPxOaTDGXu9Dw@mail.gmail.com>
-Subject: Re: Unmapping KVM Guest Memory from Host Kernel
-To: "Gowans, James" <jgowans@amazon.com>
-Cc: "seanjc@google.com" <seanjc@google.com>, 
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "Roy,
- Patrick" <roypat@amazon.co.uk>, 
- "chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "Manwaring,
- Derek" <derekmn@amazon.com>, "rppt@kernel.org" <rppt@kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, 
- "Woodhouse, David" <dwmw@amazon.co.uk>, "Kalyazin,
- Nikita" <kalyazin@amazon.co.uk>, 
- "lstoakes@gmail.com" <lstoakes@gmail.com>,
- "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, 
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
- "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
- "vbabka@suse.cz" <vbabka@suse.cz>, 
- "mst@redhat.com" <mst@redhat.com>, "somlo@cmu.edu" <somlo@cmu.edu>, "Graf (AWS),
- Alexander" <graf@amazon.de>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82c;
- envelope-from=jackmanb@google.com; helo=mail-qt1-x82c.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] docs/interop/firmware.json: Use full include paths
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Cc: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Kashyap Chamarthy <kchamart@redhat.com>, qemu-devel@nongnu.org
+References: <20240306-qapi-firmware-json-v1-0-619f7122a249@linutronix.de>
+ <20240306-qapi-firmware-json-v1-3-619f7122a249@linutronix.de>
+ <87le6s21kh.fsf@pond.sub.org> <Zes4PfcvOLIE3LPD@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <Zes4PfcvOLIE3LPD@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 08 Mar 2024 11:37:23 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,26 +97,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi James
+On 8/3/24 17:09, Daniel P. Berrangé wrote:
+> On Fri, Mar 08, 2024 at 04:19:42PM +0100, Markus Armbruster wrote:
+>> The coupling with the main QAPI schema is unfortunate.
+>>
+>> The purpose of docs/interop/firmware.json is to serve as schema for
+>> firmware descriptions: a firmware description is a JSON object that
+>> conforms to this schema's struct Firmware.
+>>
+>> Such a description should be installed along with each firmware binary.
+>>
+>> QAPI tooling can be used to check conformance: parse the firmware
+>> description JSON object, feed it to the generated visit_type_Firmware().
+>> Success implies conformance.
+>>
+>> If you find more uses for the C struct Firmware created by
+>> visit_type_Firmware(), more power to you.
+>>
+>> firmware.json needs machine.json for SysEmuTarget, and block-core.json
+>> for BlockdevDriver.  The largest and the third-largest QAPI module just
+>> for two enums.  Almost a quarter Mebibyte of code.
+> 
+> firmware.json can use BlockdevDriver, but we could question
+> whether it /should/ use BlockdevDriver. Is there really a
+> compelling reason to support every possible block driver for
+> readonly firmware and tiny nvram file ? I thin kit would be
+> totally reasonable to define a "FirmwareFormat" enum which
+> only permitted 'raw' and 'qcow2'.   If someone wants to
+> justify why we need another format, I'm all ears...
+> 
+> For SysEmuTarget its a little more useful, as in theory the
+> firmware could be extended to any QEMU target. In practice
+> thus far we've only used it todescribe EFI based firmware,
+> which is relevant for a subset of targets. It doesn't seem
+> to be a huge downside to define a FirmwareTarget enum with
+> only the arches we've actually got a use for so far. When
+> someone comes along with a need for non-EFI we can extend
+> it, and we'll need to extend libvirt at the same time anyway
+> 
+>> qapi-gen.py generates more than 12kSLOC.  Without the include (and with
+>> the enums dumbed down to 'str' to enable that), it generates less than
+>> 800.
+>>
+>> We could use Sphinx to generate a manual from firmware.json's document.
+>> Except that manual would be useless, because of its 11,000 lines of
+>> HTML, less than 800 are for firmware.json.
 
-On Fri, 8 Mar 2024 at 16:50, Gowans, James <jgowans@amazon.com> wrote:
-> Our goal is to more completely address the class of issues whose leak
-> origin is categorized as "Mapped memory" [1].
+=)
 
-Did you forget a link below? I'm interested in hearing about that
-categorisation.
+>>
+>> Options:
+>>
+>> * Live with the mess.
+>>
+>> * Refactor QAPI modules so firmware.json can include just the enums.
+>>
+>>    Drawback: we spread the mess into qapi/.  Ugh.
+>>
+>> * Copy the enums to firmware.json.
+>>
+>>    Drawback: we risk them going stale.
+> 
+> IMHO copy the enum. While the risk exists, I don't think it is a
+> risk worth worrying about in reality. If someone points out a gap
+> that's important is a matter of minutes to patch it.
 
-> ... what=E2=80=99s the best way to solve getting guest RAM out of
-> the direct map?
+Since I concur with Daniel PoV, I'm queuing patches 1 (with
+Markus reword) and 2 so far, so less to carry for v3.
 
-It's perhaps a bigger hammer than you are looking for, but the
-solution we're working on at Google is "Address Space Isolation" (ASI)
-- the latest posting about that is [2].
+Regards,
 
-The sense in which it's a bigger hammer is that it doesn't only
-support removing guest memory from the direct map, but rather
-arbitrary data from arbitrary kernel mappings.
-
-[2] https://lore.kernel.org/linux-mm/CA+i-1C169s8pyqZDx+iSnFmftmGfssdQA29+p=
-Ym-gqySAYWgpg@mail.gmail.com/
+Phil.
 
