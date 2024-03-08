@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7369F8762E5
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 12:16:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6FFF8762D9
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 12:14:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riYAR-0008Al-78; Fri, 08 Mar 2024 06:13:35 -0500
+	id 1riYAS-0008Q8-9u; Fri, 08 Mar 2024 06:13:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1riYAL-0007mC-Em
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:29 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1riYAN-00083t-T7
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:32 -0500
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1riYAI-0001iQ-RE
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:29 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1dc49b00bdbso5051465ad.3
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 03:13:26 -0800 (PST)
+ id 1riYAL-0001ij-Dr
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:31 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1dd4bc7a87aso3331465ad.2
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 03:13:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709896405; x=1710501205; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1709896408; x=1710501208; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1ie72vi7RW6BNE9TlURYsjSELR5HeYR9KkTQLpis4Is=;
- b=AoGy3PGnIEuFkJwOuTu4MVeKELTqa97mCLG8d325Y1I27Abz6l7CRA1vN+6qzt76iy
- tpc8XDhbA8MHQ+g78SDZpt+oFv+BVZJY0bbTGHAaUYwiFF+vUBkGZYH6O5i1QkYlLdFo
- IElrSNaF+9Q2PZcvuYyvLFqATbSP5IJa+c4bRa3JvxzQf1K7vEsQ/Wob16xGQTPQ+3wV
- +kpostSK1VeA/FcrSpHDtHZOxhwOV02oStc/WcmFYFIiN1H2fQy2btPvf3SrPfbwdEoU
- +7RZ/Zwo/ZKnmx/Oh8xG6ysLGJDdRSz/oIJusaawIwQwU2iydfatadbH2aYA0J3UOCAy
- b4ww==
+ bh=7LHlSEt3nIHxiJIJ/8DN83IHqazhaKxxga1sDtvaf/s=;
+ b=KJS9fmSvNCUzN7+v03c9SEGTC2LmYtIcXKDaVoPOOeiztOqiqcZXPX3V77FClA8JHx
+ CrciaYFxPsQvkgIS1iHeOn988YCeLuP4Y2zAhpiZJngakylboJaiIl0CJHTVpzY6lZ5h
+ eJRDRkZ87qUVQ3YW9l2jXI5Z1+TX++j2rX5J8CWq6DnpmOxv/adig0pr4gjvL42fJ9/q
+ 3sS2cn8Y1ALDZqjDZfHXM4w+SF7bNsSMhDZ8TCDGnL8JkQvUD+7YrKxJWLIv5d+GjDf4
+ /RGXr+FWgvOzf6wcYpakmlFpn7QQi32MJ9XNENBjns06e3iyrHp4pp+845ldDlhRUMlB
+ tUCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709896405; x=1710501205;
+ d=1e100.net; s=20230601; t=1709896408; x=1710501208;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1ie72vi7RW6BNE9TlURYsjSELR5HeYR9KkTQLpis4Is=;
- b=qDZaE8STO4V5YRH+xnLMNpt/xtJzY3Ip38hClTa2yrElmO5NorUo2E3YW2gaaGNxZ4
- C6m0ti4Qne4/3QAHanvHv1esxvEV+n56IsPoioH3mPCeBNE+zoDjBk0PbBmXOl7Y1RIT
- NEyjLIPhb2Z7jcR52NOw14fNsYlJ+wtQYUATnwzwFbBG3yRXVRfGz+N/UESeFqrhAJhm
- TSqMQFDDMo7fISv++qmsmni0EeS6wmKeSMNHO6RPvj8eR3Ey9kvi7So1CXWnjHC1kbxz
- uwXrcnMXO89H1cqs+xEVd62g3Cjm1qDu3PwOuTxKsSXVlnJp2DrJHZzGtAIDmbyOrlf2
- 5VdA==
-X-Gm-Message-State: AOJu0Yy0GmKitkBYNwR7M7odHd+HeHKKPEI4zut5VbYGmFW37b7wX7KN
- qK8KfynN+XFITSGi0TI3UvBE4DxEjY+2Kd3HN1yAmoZOFDKo2dy2Z/9sV96EiCG9hA==
-X-Google-Smtp-Source: AGHT+IG8IgJxC/MUAmiWIt59L/AZVS7IWCCtbn4WxCKr3IxgzP5H2JeQRlxaz2kvyeOF/rXcVHCY+w==
-X-Received: by 2002:a17:903:1104:b0:1dc:a40c:31c6 with SMTP id
- n4-20020a170903110400b001dca40c31c6mr12266359plh.25.1709896404901; 
- Fri, 08 Mar 2024 03:13:24 -0800 (PST)
+ bh=7LHlSEt3nIHxiJIJ/8DN83IHqazhaKxxga1sDtvaf/s=;
+ b=CYz9jtj6v8gxDc3y3LYOS2enaEWiRbSMbiHkpTFnvPnpPS9kDfMFOIoP4yYaQt7EWY
+ QNuN7sC1T5Rpc4yJ7croXKQWVVFmGngCMz+S5AI9zKgmcDhS8d3pLE8qyQctBAJgA5T8
+ dLIx/skEAx9eJnoUPD4sfTkfo6KAHFzDRL8Qwb0hVvg+VA8wl06MQO5jGDgJVks0JJdD
+ Nw530QZcUE2OJmI5c1zwe+NYFf9n5hGZErrifxeEZf4z/vjMAcV8ceMF3IcGZjxBIru4
+ 1R5lxRK4ZD29TCKagWaMovYffRnUUBBHIq04kK7mLLBdpP9D9N4cFLba0Xlnfp6mQBMG
+ cKmg==
+X-Gm-Message-State: AOJu0YwfOQW5/8Kg0m5A7crLZMP3ugdzyc58ZNiShx46Sm4bGaS2m+UA
+ HlmXwZnDyQBxCcseWt892bYvgZ+FwhfDqLXcw8lvAHlo3A5tiAdCRpVn9z4+F6EXgw==
+X-Google-Smtp-Source: AGHT+IHEA6MwveUMos7kfZO3w8mFvCT+bOBB4taN5KcMRXI9tKbBn00uH+TSK33a9r5qANKlq3+iSw==
+X-Received: by 2002:a17:902:e804:b0:1dc:93b:8981 with SMTP id
+ u4-20020a170902e80400b001dc093b8981mr14107920plg.14.1709896407871; 
+ Fri, 08 Mar 2024 03:13:27 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- a6-20020a170902ecc600b001dcfbbb1ca5sm12006468plh.35.2024.03.08.03.13.22
+ a6-20020a170902ecc600b001dcfbbb1ca5sm12006468plh.35.2024.03.08.03.13.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Mar 2024 03:13:24 -0800 (PST)
+ Fri, 08 Mar 2024 03:13:27 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 25/34] target/riscv/kvm: update KVM exts to Linux 6.8
-Date: Fri,  8 Mar 2024 21:11:43 +1000
-Message-ID: <20240308111152.2856137-26-alistair.francis@wdc.com>
+Subject: [PULL 26/34] target/riscv: move ratified/frozen exts to
+ non-experimental
+Date: Fri,  8 Mar 2024 21:11:44 +1000
+Message-ID: <20240308111152.2856137-27-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240308111152.2856137-1-alistair.francis@wdc.com>
 References: <20240308111152.2856137-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -80,8 +81,7 @@ X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,63 +99,80 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-The last KVM extensions added were back in 6.6. Sync them to Linux 6.8.
+smaia and ssaia were ratified in August 25th 2023 [1].
+
+zvfh and zvfhmin were ratified in August 2nd 2023 [2].
+
+zfbfmin and zvfbf(min|wma) are frozen and moved to public review since
+Dec 16th 2023 [3].
+
+zaamo and zalrsc are both marked as "Frozen" since January 24th 2024
+[4].
+
+[1] https://jira.riscv.org/browse/RVS-438
+[2] https://jira.riscv.org/browse/RVS-871
+[3] https://jira.riscv.org/browse/RVS-704
+[4] https://jira.riscv.org/browse/RVS-1995
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240304134732.386590-3-dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20240301144053.265964-1-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/kvm/kvm-cpu.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ target/riscv/cpu.c | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 422e4f121c..c7afdb1e81 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -275,13 +275,42 @@ static KVMCPUConfig kvm_multi_ext_cfgs[] = {
-     KVM_EXT_CFG("zicbom", ext_zicbom, KVM_RISCV_ISA_EXT_ZICBOM),
-     KVM_EXT_CFG("zicboz", ext_zicboz, KVM_RISCV_ISA_EXT_ZICBOZ),
-     KVM_EXT_CFG("zicntr", ext_zicntr, KVM_RISCV_ISA_EXT_ZICNTR),
-+    KVM_EXT_CFG("zicond", ext_zicond, KVM_RISCV_ISA_EXT_ZICOND),
-     KVM_EXT_CFG("zicsr", ext_zicsr, KVM_RISCV_ISA_EXT_ZICSR),
-     KVM_EXT_CFG("zifencei", ext_zifencei, KVM_RISCV_ISA_EXT_ZIFENCEI),
-+    KVM_EXT_CFG("zihintntl", ext_zihintntl, KVM_RISCV_ISA_EXT_ZIHINTNTL),
-     KVM_EXT_CFG("zihintpause", ext_zihintpause, KVM_RISCV_ISA_EXT_ZIHINTPAUSE),
-     KVM_EXT_CFG("zihpm", ext_zihpm, KVM_RISCV_ISA_EXT_ZIHPM),
-+    KVM_EXT_CFG("zfa", ext_zfa, KVM_RISCV_ISA_EXT_ZFA),
-+    KVM_EXT_CFG("zfh", ext_zfh, KVM_RISCV_ISA_EXT_ZFH),
-+    KVM_EXT_CFG("zfhmin", ext_zfhmin, KVM_RISCV_ISA_EXT_ZFHMIN),
-     KVM_EXT_CFG("zba", ext_zba, KVM_RISCV_ISA_EXT_ZBA),
-     KVM_EXT_CFG("zbb", ext_zbb, KVM_RISCV_ISA_EXT_ZBB),
-+    KVM_EXT_CFG("zbc", ext_zbc, KVM_RISCV_ISA_EXT_ZBC),
-+    KVM_EXT_CFG("zbkb", ext_zbkb, KVM_RISCV_ISA_EXT_ZBKB),
-+    KVM_EXT_CFG("zbkc", ext_zbkc, KVM_RISCV_ISA_EXT_ZBKC),
-+    KVM_EXT_CFG("zbkx", ext_zbkx, KVM_RISCV_ISA_EXT_ZBKX),
-     KVM_EXT_CFG("zbs", ext_zbs, KVM_RISCV_ISA_EXT_ZBS),
-+    KVM_EXT_CFG("zknd", ext_zknd, KVM_RISCV_ISA_EXT_ZKND),
-+    KVM_EXT_CFG("zkne", ext_zkne, KVM_RISCV_ISA_EXT_ZKNE),
-+    KVM_EXT_CFG("zknh", ext_zknh, KVM_RISCV_ISA_EXT_ZKNH),
-+    KVM_EXT_CFG("zkr", ext_zkr, KVM_RISCV_ISA_EXT_ZKR),
-+    KVM_EXT_CFG("zksed", ext_zksed, KVM_RISCV_ISA_EXT_ZKSED),
-+    KVM_EXT_CFG("zksh", ext_zksh, KVM_RISCV_ISA_EXT_ZKSH),
-+    KVM_EXT_CFG("zkt", ext_zkt, KVM_RISCV_ISA_EXT_ZKT),
-+    KVM_EXT_CFG("zvbb", ext_zvbb, KVM_RISCV_ISA_EXT_ZVBB),
-+    KVM_EXT_CFG("zvbc", ext_zvbc, KVM_RISCV_ISA_EXT_ZVBC),
-+    KVM_EXT_CFG("zvfh", ext_zvfh, KVM_RISCV_ISA_EXT_ZVFH),
-+    KVM_EXT_CFG("zvfhmin", ext_zvfhmin, KVM_RISCV_ISA_EXT_ZVFHMIN),
-+    KVM_EXT_CFG("zvkb", ext_zvkb, KVM_RISCV_ISA_EXT_ZVKB),
-+    KVM_EXT_CFG("zvkg", ext_zvkg, KVM_RISCV_ISA_EXT_ZVKG),
-+    KVM_EXT_CFG("zvkned", ext_zvkned, KVM_RISCV_ISA_EXT_ZVKNED),
-+    KVM_EXT_CFG("zvknha", ext_zvknha, KVM_RISCV_ISA_EXT_ZVKNHA),
-+    KVM_EXT_CFG("zvknhb", ext_zvknhb, KVM_RISCV_ISA_EXT_ZVKNHB),
-+    KVM_EXT_CFG("zvksed", ext_zvksed, KVM_RISCV_ISA_EXT_ZVKSED),
-+    KVM_EXT_CFG("zvksh", ext_zvksh, KVM_RISCV_ISA_EXT_ZVKSH),
-+    KVM_EXT_CFG("zvkt", ext_zvkt, KVM_RISCV_ISA_EXT_ZVKT),
-+    KVM_EXT_CFG("smstateen", ext_smstateen, KVM_RISCV_ISA_EXT_SMSTATEEN),
-     KVM_EXT_CFG("ssaia", ext_ssaia, KVM_RISCV_ISA_EXT_SSAIA),
-     KVM_EXT_CFG("sstc", ext_sstc, KVM_RISCV_ISA_EXT_SSTC),
-     KVM_EXT_CFG("svinval", ext_svinval, KVM_RISCV_ISA_EXT_SVINVAL),
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 37425e0e50..5a48d30828 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1464,17 +1464,26 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+     MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl, true),
+     MULTI_EXT_CFG_BOOL("zihintpause", ext_zihintpause, true),
+     MULTI_EXT_CFG_BOOL("zacas", ext_zacas, false),
++    MULTI_EXT_CFG_BOOL("zaamo", ext_zaamo, false),
++    MULTI_EXT_CFG_BOOL("zalrsc", ext_zalrsc, false),
+     MULTI_EXT_CFG_BOOL("zawrs", ext_zawrs, true),
+     MULTI_EXT_CFG_BOOL("zfa", ext_zfa, true),
++    MULTI_EXT_CFG_BOOL("zfbfmin", ext_zfbfmin, false),
+     MULTI_EXT_CFG_BOOL("zfh", ext_zfh, false),
+     MULTI_EXT_CFG_BOOL("zfhmin", ext_zfhmin, false),
+     MULTI_EXT_CFG_BOOL("zve32f", ext_zve32f, false),
+     MULTI_EXT_CFG_BOOL("zve64f", ext_zve64f, false),
+     MULTI_EXT_CFG_BOOL("zve64d", ext_zve64d, false),
++    MULTI_EXT_CFG_BOOL("zvfbfmin", ext_zvfbfmin, false),
++    MULTI_EXT_CFG_BOOL("zvfbfwma", ext_zvfbfwma, false),
++    MULTI_EXT_CFG_BOOL("zvfh", ext_zvfh, false),
++    MULTI_EXT_CFG_BOOL("zvfhmin", ext_zvfhmin, false),
+     MULTI_EXT_CFG_BOOL("sstc", ext_sstc, true),
+ 
++    MULTI_EXT_CFG_BOOL("smaia", ext_smaia, false),
+     MULTI_EXT_CFG_BOOL("smepmp", ext_smepmp, false),
+     MULTI_EXT_CFG_BOOL("smstateen", ext_smstateen, false),
++    MULTI_EXT_CFG_BOOL("ssaia", ext_ssaia, false),
+     MULTI_EXT_CFG_BOOL("svade", ext_svade, false),
+     MULTI_EXT_CFG_BOOL("svadu", ext_svadu, true),
+     MULTI_EXT_CFG_BOOL("svinval", ext_svinval, false),
+@@ -1563,19 +1572,6 @@ const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[] = {
+ 
+ /* These are experimental so mark with 'x-' */
+ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
+-    MULTI_EXT_CFG_BOOL("x-smaia", ext_smaia, false),
+-    MULTI_EXT_CFG_BOOL("x-ssaia", ext_ssaia, false),
+-
+-    MULTI_EXT_CFG_BOOL("x-zaamo", ext_zaamo, false),
+-    MULTI_EXT_CFG_BOOL("x-zalrsc", ext_zalrsc, false),
+-
+-    MULTI_EXT_CFG_BOOL("x-zvfh", ext_zvfh, false),
+-    MULTI_EXT_CFG_BOOL("x-zvfhmin", ext_zvfhmin, false),
+-
+-    MULTI_EXT_CFG_BOOL("x-zfbfmin", ext_zfbfmin, false),
+-    MULTI_EXT_CFG_BOOL("x-zvfbfmin", ext_zvfbfmin, false),
+-    MULTI_EXT_CFG_BOOL("x-zvfbfwma", ext_zvfbfwma, false),
+-
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
 -- 
 2.44.0
 
