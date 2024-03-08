@@ -2,32 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6A9C876942
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C62876943
 	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 18:04:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ridd6-0000V3-8t; Fri, 08 Mar 2024 12:03:32 -0500
+	id 1ridd9-0000Y1-BD; Fri, 08 Mar 2024 12:03:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1ridcy-0000PE-10
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 12:03:24 -0500
+ id 1ridd2-0000Uz-Ch
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 12:03:30 -0500
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1ridcw-0000jF-1q
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 12:03:23 -0500
+ id 1ridcy-0000k7-GT
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 12:03:27 -0500
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1ridck-0006GV-VX; Fri, 08 Mar 2024 18:03:10 +0100
+ id 1ridcq-0006GY-At; Fri, 08 Mar 2024 18:03:16 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/3] Hyper-V Dynamic Memory and VMBus misc small patches
-Date: Fri,  8 Mar 2024 18:02:42 +0100
-Message-ID: <cover.1709916836.git.maciej.szmigiero@oracle.com>
+Subject: [PULL 1/3] hv-balloon: avoid alloca() usage
+Date: Fri,  8 Mar 2024 18:02:43 +0100
+Message-ID: <1d3b82eabb1ad6b6fdeae0d94f2fb37506a351af.1709916836.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1709916836.git.maciej.szmigiero@oracle.com>
+References: <cover.1709916836.git.maciej.szmigiero@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -55,45 +57,56 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-The following changes since commit 8f6330a807f2642dc2a3cdf33347aa28a4c00a87:
+alloca() is frowned upon, replace it with g_malloc0() + g_autofree.
 
-  Merge tag 'pull-maintainer-updates-060324-1' of https://gitlab.com/stsquad/qemu into staging (2024-03-06 16:56:20 +0000)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+---
+ hw/hyperv/hv-balloon.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-are available in the Git repository at:
-
-  https://github.com/maciejsszmigiero/qemu.git tags/pull-hv-balloon-20240308
-
-for you to fetch changes up to 6093637b4d32875f98cd59696ffc5f26884aa0b4:
-
-  vmbus: Print a warning when enabled without the recommended set of features (2024-03-08 14:18:56 +0100)
-
-----------------------------------------------------------------
-Hyper-V Dynamic Memory and VMBus misc small patches
-
-This pull request contains two small patches to hv-balloon:
-the first one replacing alloca() usage with g_malloc0() + g_autofree
-and the second one adding additional declaration of a protocol message
-struct with an optional field explicitly defined to avoid a Coverity
-warning.
-
-Also included is a VMBus patch to print a warning when it is enabled
-without the recommended set of Hyper-V features (enlightenments) since
-some Windows versions crash at boot in this case.
-
-----------------------------------------------------------------
-Maciej S. Szmigiero (3):
-      hv-balloon: avoid alloca() usage
-      hv-balloon: define dm_hot_add_with_region to avoid Coverity warning
-      vmbus: Print a warning when enabled without the recommended set of features
-
- hw/hyperv/hv-balloon.c           | 18 ++++++++----------
- hw/hyperv/hyperv.c               | 12 ++++++++++++
- hw/hyperv/vmbus.c                |  6 ++++++
- include/hw/hyperv/dynmem-proto.h |  9 ++++++++-
- include/hw/hyperv/hyperv.h       |  4 ++++
- target/i386/kvm/hyperv-stub.c    |  4 ++++
- target/i386/kvm/hyperv.c         |  5 +++++
- target/i386/kvm/hyperv.h         |  2 ++
- target/i386/kvm/kvm.c            |  7 +++++++
- 9 files changed, 56 insertions(+), 11 deletions(-)
+diff --git a/hw/hyperv/hv-balloon.c b/hw/hyperv/hv-balloon.c
+index ade283335a68..35333dab2434 100644
+--- a/hw/hyperv/hv-balloon.c
++++ b/hw/hyperv/hv-balloon.c
+@@ -366,7 +366,7 @@ static void hv_balloon_unballoon_posting(HvBalloon *balloon, StateDesc *stdesc)
+     PageRangeTree dtree;
+     uint64_t *dctr;
+     bool our_range;
+-    struct dm_unballoon_request *ur;
++    g_autofree struct dm_unballoon_request *ur = NULL;
+     size_t ur_size = sizeof(*ur) + sizeof(ur->range_array[0]);
+     PageRange range;
+     bool bret;
+@@ -388,8 +388,7 @@ static void hv_balloon_unballoon_posting(HvBalloon *balloon, StateDesc *stdesc)
+     assert(dtree.t);
+     assert(dctr);
+ 
+-    ur = alloca(ur_size);
+-    memset(ur, 0, ur_size);
++    ur = g_malloc0(ur_size);
+     ur->hdr.type = DM_UNBALLOON_REQUEST;
+     ur->hdr.size = ur_size;
+     ur->hdr.trans_id = balloon->trans_id;
+@@ -531,7 +530,7 @@ static void hv_balloon_hot_add_posting(HvBalloon *balloon, StateDesc *stdesc)
+     PageRange *hot_add_range = &balloon->hot_add_range;
+     uint64_t *current_count = &balloon->ha_current_count;
+     VMBusChannel *chan = hv_balloon_get_channel(balloon);
+-    struct dm_hot_add *ha;
++    g_autofree struct dm_hot_add *ha = NULL;
+     size_t ha_size = sizeof(*ha) + sizeof(ha->range);
+     union dm_mem_page_range *ha_region;
+     uint64_t align, chunk_max_size;
+@@ -560,9 +559,8 @@ static void hv_balloon_hot_add_posting(HvBalloon *balloon, StateDesc *stdesc)
+      */
+     *current_count = MIN(hot_add_range->count, chunk_max_size);
+ 
+-    ha = alloca(ha_size);
++    ha = g_malloc0(ha_size);
+     ha_region = &(&ha->range)[1];
+-    memset(ha, 0, ha_size);
+     ha->hdr.type = DM_MEM_HOT_ADD_REQUEST;
+     ha->hdr.size = ha_size;
+     ha->hdr.trans_id = balloon->trans_id;
 
