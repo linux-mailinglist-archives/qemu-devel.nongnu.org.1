@@ -2,62 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E76487605C
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 09:56:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0692C876068
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 09:57:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riW13-0006UF-9S; Fri, 08 Mar 2024 03:55:46 -0500
+	id 1riW2F-0007x7-Fm; Fri, 08 Mar 2024 03:56:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1riW0t-0006TB-5D
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 03:55:35 -0500
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1riW29-0007pB-Qi
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 03:56:54 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1riW0o-00083L-NO
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 03:55:34 -0500
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1riW28-0000BN-2i
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 03:56:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709888129;
+ s=mimecast20190719; t=1709888210;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ObhuA3H8+Qw8iGJTgr6GIHo8x03k3oRryE1X3xAmIPA=;
- b=Wy9P/mmHvOA/ckS8ESsI2rLFCLvhSnbUmdiB3nmjHA4YCx0wempOkUpK7B3aYteIGH10rY
- 9bUI5rHv5xfpklHivP9FAXoSR6/JpYKrBNTNAoxRnByo+t+SizgeeJpsw3avj8zXfk9u2+
- D+QZroidJE/0XcGIwpRtw5doPwS6eJE=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=XWFb3+LYPuoMQX8v795JVbBqObfPygJr22lgK8KwDo4=;
+ b=SuP76UDd5zLLWql2FVepe1kHib8qMG0rQC2l/FUhLA0/vd0rZiQnC9+OpQq0/EeDL8hDDj
+ dCSDFEhGfeSX7ZIlQoJXydVX+IzSciOu2tSm/MIrav3NbT+CfDq47fMOA5/hqlCq80KfvU
+ KBKJWhbFhbN7w798t49HxYQ5U+oX3/A=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-CQ22z39hPUS125UoA-V7qA-1; Fri, 08 Mar 2024 03:55:27 -0500
-X-MC-Unique: CQ22z39hPUS125UoA-V7qA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-645-X5M980GeMa24bgSLG7w1lQ-1; Fri, 08 Mar 2024 03:56:46 -0500
+X-MC-Unique: X5M980GeMa24bgSLG7w1lQ-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0857C186E241
- for <qemu-devel@nongnu.org>; Fri,  8 Mar 2024 08:55:27 +0000 (UTC)
-Received: from localhost (unknown [10.39.208.11])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 148AB37F6;
- Fri,  8 Mar 2024 08:55:24 +0000 (UTC)
-From: marcandre.lureau@redhat.com
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 06F4080026E;
+ Fri,  8 Mar 2024 08:56:46 +0000 (UTC)
+Received: from lenovo-t14s.redhat.com (unknown [10.39.194.88])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B1BF7492B79;
+ Fri,  8 Mar 2024 08:56:44 +0000 (UTC)
+From: Laurent Vivier <lvivier@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH 2/2] ui/dbus: filter out pending messages when scanout
-Date: Fri,  8 Mar 2024 12:55:14 +0400
-Message-ID: <20240308085515.2445091-3-marcandre.lureau@redhat.com>
-In-Reply-To: <20240308085515.2445091-1-marcandre.lureau@redhat.com>
-References: <20240308085515.2445091-1-marcandre.lureau@redhat.com>
+Cc: Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Jason Wang <jasowang@redhat.com>, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Laurent Vivier <lvivier@redhat.com>
+Subject: [PATCH v3 1/2] igb: fix link state on resume
+Date: Fri,  8 Mar 2024 09:56:42 +0100
+Message-ID: <20240308085643.1264964-1-lvivier@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=marcandre.lureau@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=lvivier@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -81,141 +78,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+On resume igb_vm_state_change() always calls igb_autoneg_resume()
+that sets link_down to false, and thus activates the link even
+if we have disabled it.
 
-The "Listener" connection, being private and under the control of the
-qemu display, allows for the optimization of discarding pending
-intermediary messages when queuing a new scanout. This ensures that the
-client receives only the latest scanout update, improving communication
-efficiency.
+The problem can be reproduced starting qemu in paused state (-S) and
+then set the link to down. When we resume the machine the link appears
+to be up.
 
-While the current implementation does not provide a mechanism for
-clients who may wish to receive all updates, making this behavior
-optional could be considered in the future. For now, adopting this new
-default behavior accelerates the communication process without a
-guarantee of delivering all updates.
+Reproducer:
 
-The filter is removed when the connection is dropped.
+   # qemu-system-x86_64 ... -device igb,netdev=netdev0,id=net0 -S
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+   {"execute": "qmp_capabilities" }
+   {"execute": "set_link", "arguments": {"name": "net0", "up": false}}
+   {"execute": "cont" }
+
+To fix the problem, merge the content of igb_vm_state_change()
+into igb_core_post_load() as e1000 does.
+
+Buglink: https://issues.redhat.com/browse/RHEL-21867
+Suggested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
 ---
- ui/dbus-listener.c | 40 ++++++++++++++++++++++++++++++++++++++++
- ui/trace-events    |  1 +
- 2 files changed, 41 insertions(+)
+ hw/net/igb_core.c | 47 +++--------------------------------------------
+ hw/net/igb_core.h |  2 --
+ 2 files changed, 3 insertions(+), 46 deletions(-)
 
-diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
-index 3f4529dbbd..4a0a5d78f9 100644
---- a/ui/dbus-listener.c
-+++ b/ui/dbus-listener.c
-@@ -83,6 +83,9 @@ struct _DBusDisplayListener {
-     egl_fb fb;
- #endif
- #endif
-+
-+    guint dbus_filter;
-+    guint32 out_serial_to_discard;
- };
- 
- G_DEFINE_TYPE(DBusDisplayListener, dbus_display_listener, G_TYPE_OBJECT)
-@@ -90,6 +93,12 @@ G_DEFINE_TYPE(DBusDisplayListener, dbus_display_listener, G_TYPE_OBJECT)
- static void dbus_gfx_update(DisplayChangeListener *dcl,
-                             int x, int y, int w, int h);
- 
-+static void ddl_discard_pending_messages(DBusDisplayListener *ddl)
-+{
-+    ddl->out_serial_to_discard = g_dbus_connection_get_last_serial(
-+        g_dbus_proxy_get_connection(G_DBUS_PROXY(ddl->proxy)));
-+}
-+
- #ifdef CONFIG_OPENGL
- static void dbus_scanout_disable(DisplayChangeListener *dcl)
- {
-@@ -276,6 +285,8 @@ static void dbus_scanout_dmabuf(DisplayChangeListener *dcl,
-         return;
+diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
+index 2a7a11aa9ed5..31ab959ab8ff 100644
+--- a/hw/net/igb_core.c
++++ b/hw/net/igb_core.c
+@@ -160,14 +160,6 @@ igb_intmgr_timer_resume(IGBIntrDelayTimer *timer)
      }
- 
-+    ddl_discard_pending_messages(ddl);
-+
-     /* FIXME: add missing x/y/w/h support */
-     qemu_dbus_display1_listener_call_scanout_dmabuf(
-         ddl->proxy,
-@@ -323,6 +334,8 @@ static bool dbus_scanout_map(DBusDisplayListener *ddl)
-         return false;
-     }
- 
-+    ddl_discard_pending_messages(ddl);
-+
-     if (!qemu_dbus_display1_listener_win32_map_call_scanout_map_sync(
-             ddl->map_proxy,
-             GPOINTER_TO_UINT(target_handle),
-@@ -384,6 +397,8 @@ dbus_scanout_share_d3d_texture(
-         return false;
-     }
- 
-+    ddl_discard_pending_messages(ddl);
-+
-     qemu_dbus_display1_listener_win32_d3d11_call_scanout_texture2d(
-         ddl->d3d11_proxy,
-         GPOINTER_TO_INT(target_handle),
-@@ -639,6 +654,8 @@ static void ddl_scanout(DBusDisplayListener *ddl)
-         surface_stride(ddl->ds) * surface_height(ddl->ds), TRUE,
-         (GDestroyNotify)pixman_image_unref, pixman_image_ref(ddl->ds->image));
- 
-+    ddl_discard_pending_messages(ddl);
-+
-     qemu_dbus_display1_listener_call_scanout(
-         ddl->proxy, surface_width(ddl->ds), surface_height(ddl->ds),
-         surface_stride(ddl->ds), surface_format(ddl->ds), v_data,
-@@ -963,6 +980,28 @@ dbus_display_listener_setup_shared_map(DBusDisplayListener *ddl)
- #endif
  }
  
-+static GDBusMessage *
-+dbus_filter(GDBusConnection *connection,
-+            GDBusMessage    *message,
-+            gboolean         incoming,
-+            gpointer         user_data)
-+{
-+    DBusDisplayListener *ddl = DBUS_DISPLAY_LISTENER(user_data);
-+    guint32 serial;
-+
-+    if (incoming) {
-+        return message;
-+    }
-+
-+    serial = g_dbus_message_get_serial(message);
-+    if (serial <= ddl->out_serial_to_discard) {
-+        trace_dbus_filter(serial, ddl->out_serial_to_discard);
-+        return NULL;
-+    }
-+
-+    return message;
-+}
-+
- DBusDisplayListener *
- dbus_display_listener_new(const char *bus_name,
-                           GDBusConnection *conn,
-@@ -987,6 +1026,7 @@ dbus_display_listener_new(const char *bus_name,
-         return NULL;
+-static void
+-igb_intmgr_timer_pause(IGBIntrDelayTimer *timer)
+-{
+-    if (timer->running) {
+-        timer_del(timer->timer);
+-    }
+-}
+-
+ static void
+ igb_intrmgr_on_msix_throttling_timer(void *opaque)
+ {
+@@ -212,16 +204,6 @@ igb_intrmgr_resume(IGBCore *core)
      }
+ }
  
-+    ddl->dbus_filter = g_dbus_connection_add_filter(conn, dbus_filter, g_object_ref(ddl), g_object_unref);
-     ddl->bus_name = g_strdup(bus_name);
-     ddl->conn = conn;
-     ddl->console = console;
-diff --git a/ui/trace-events b/ui/trace-events
-index 16c35c9fd6..e6a2894303 100644
---- a/ui/trace-events
-+++ b/ui/trace-events
-@@ -161,6 +161,7 @@ dbus_clipboard_register(const char *bus_name) "peer %s"
- dbus_clipboard_unregister(const char *bus_name) "peer %s"
- dbus_scanout_texture(uint32_t tex_id, bool backing_y_0_top, uint32_t backing_width, uint32_t backing_height, uint32_t x, uint32_t y, uint32_t w, uint32_t h) "tex_id:%u y0top:%d back:%ux%u %u+%u-%ux%u"
- dbus_gl_gfx_switch(void *p) "surf: %p"
-+dbus_filter(unsigned int serial, unsigned int filter) "serial=%u (<= %u)"
+-static void
+-igb_intrmgr_pause(IGBCore *core)
+-{
+-    int i;
+-
+-    for (i = 0; i < IGB_INTR_NUM; i++) {
+-        igb_intmgr_timer_pause(&core->eitr[i]);
+-    }
+-}
+-
+ static void
+ igb_intrmgr_reset(IGBCore *core)
+ {
+@@ -4290,12 +4272,6 @@ igb_core_read(IGBCore *core, hwaddr addr, unsigned size)
+     return 0;
+ }
  
- # egl-helpers.c
- egl_init_d3d11_device(void *p) "d3d device: %p"
+-static inline void
+-igb_autoneg_pause(IGBCore *core)
+-{
+-    timer_del(core->autoneg_timer);
+-}
+-
+ static void
+ igb_autoneg_resume(IGBCore *core)
+ {
+@@ -4307,22 +4283,6 @@ igb_autoneg_resume(IGBCore *core)
+     }
+ }
+ 
+-static void
+-igb_vm_state_change(void *opaque, bool running, RunState state)
+-{
+-    IGBCore *core = opaque;
+-
+-    if (running) {
+-        trace_e1000e_vm_state_running();
+-        igb_intrmgr_resume(core);
+-        igb_autoneg_resume(core);
+-    } else {
+-        trace_e1000e_vm_state_stopped();
+-        igb_autoneg_pause(core);
+-        igb_intrmgr_pause(core);
+-    }
+-}
+-
+ void
+ igb_core_pci_realize(IGBCore        *core,
+                      const uint16_t *eeprom_templ,
+@@ -4335,8 +4295,6 @@ igb_core_pci_realize(IGBCore        *core,
+                                        igb_autoneg_timer, core);
+     igb_intrmgr_pci_realize(core);
+ 
+-    core->vmstate = qemu_add_vm_change_state_handler(igb_vm_state_change, core);
+-
+     for (i = 0; i < IGB_NUM_QUEUES; i++) {
+         net_tx_pkt_init(&core->tx[i].tx_pkt, E1000E_MAX_TX_FRAGS);
+     }
+@@ -4360,8 +4318,6 @@ igb_core_pci_uninit(IGBCore *core)
+ 
+     igb_intrmgr_pci_unint(core);
+ 
+-    qemu_del_vm_change_state_handler(core->vmstate);
+-
+     for (i = 0; i < IGB_NUM_QUEUES; i++) {
+         net_tx_pkt_uninit(core->tx[i].tx_pkt);
+     }
+@@ -4586,5 +4542,8 @@ igb_core_post_load(IGBCore *core)
+      */
+     nc->link_down = (core->mac[STATUS] & E1000_STATUS_LU) == 0;
+ 
++    igb_intrmgr_resume(core);
++    igb_autoneg_resume(core);
++
+     return 0;
+ }
+diff --git a/hw/net/igb_core.h b/hw/net/igb_core.h
+index bf8c46f26b51..d70b54e318f1 100644
+--- a/hw/net/igb_core.h
++++ b/hw/net/igb_core.h
+@@ -90,8 +90,6 @@ struct IGBCore {
+ 
+     IGBIntrDelayTimer eitr[IGB_INTR_NUM];
+ 
+-    VMChangeStateEntry *vmstate;
+-
+     uint32_t eitr_guest_value[IGB_INTR_NUM];
+ 
+     uint8_t permanent_mac[ETH_ALEN];
 -- 
-2.44.0
+2.43.0
 
 
