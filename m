@@ -2,84 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E237A8766ED
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:02:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C25487670C
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:08:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ribjE-0006aG-Jz; Fri, 08 Mar 2024 10:01:44 -0500
+	id 1ribp3-0000gL-RA; Fri, 08 Mar 2024 10:07:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1ribj8-0006ZN-Ct
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:01:39 -0500
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1ribj3-0007QA-C9
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:01:36 -0500
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-29b70bf6c58so749184a91.0
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 07:01:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1709910091; x=1710514891; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=wgb4/nwWcRVUazmGKiAvCcoOR0ZggHLtVCwE62RSFCs=;
- b=Z6fhbJBrpBF59OdtDEwr2O4lQrKNX6KJlmnBVopQrwwEP0OnPQgZ3Z6DtIv91yKA+/
- 7VW84EBHrlSHdY7oa8F6Wdv5oHbj9NWBCc4dYJADWRSFKd93e2+OR49E37kfX0/kqks7
- BvIDGoAltrwh+tT0j9sVvm/dZGMBe6ndTXsAdrahZR9LtOvnUAwZG59zFkhGjOx+Yv7A
- 366HJ++S+JRb+yAFEBAf5i2SfWxtEVexX3pD3i3Giwo87u51+pgL78hiGDcCUd1JsaLi
- D1pJxYBrqxXVyb8TFREqFXwdbWrSC77eLy+RbbFp9OlWeWCZ8sRE4SviK4oHnR6SSLAX
- TESg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709910091; x=1710514891;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=wgb4/nwWcRVUazmGKiAvCcoOR0ZggHLtVCwE62RSFCs=;
- b=ErD5TPKjt6g3A5mRgxORHgLq9vF1d5D8r9VJCcq524cqVNBnMD9EsTnyItQDuQyBEe
- F0zFhY+jGXZgI/+CiDu1AZK9/fCDMXBLZc0qeNMxtKu0usr5HKLFarn5KdlAJXmQmELk
- MkeFpa8SVKTBgPdy8MLAfky0qV1H+t8a27NQ4sImpBnHBY6wfq5MxE3xg30Ic8rwgDTk
- JdmfSK/bxOH0UGjYvH0pry3P3I1IVHzL9QjVG5Nu/5odtyjjxeQ1v80DGvPGaJohj2YL
- gT1vGksjU3pC9vbRhjWEoQEInSZ+d08fCB7LWAxNu311X5uUO6nBkaEg8LYaL/F+zBIW
- gASA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXC4CgE5q9VlqGeKeE7vGAHYMGraDYg2F9j6Lvy+LZLyNvuAyYvPpIoxVmJtMoRU2rTrGizSbrjZcXKUBQwC405RQfwI5M=
-X-Gm-Message-State: AOJu0YyaRY4BXQXQ8XSFx8t9K+z7Uf+Z6NfEkeiK1zParIfmrh/cywvz
- x7NBEjYq2CELo1RhDrHvf3cqfpyT8RcRr5YkF9+pJnfwAih5IjfCIaDRFB0dWCo0SNBlIFDX9F4
- KpSuGncb76ZrRFugt7bMlqTRLzkdJth+ddCdq
-X-Google-Smtp-Source: AGHT+IGpcKDhzHzRC0jynvLJzW/d6THioRVtB9D+SYqhSTmOgqw/WP3dRBW3ZF0NdNHNKGs1fVUZ93lR+ntNC5YMrUc=
-X-Received: by 2002:a17:90a:e544:b0:29b:178e:d9cb with SMTP id
- ei4-20020a17090ae54400b0029b178ed9cbmr208905pjb.44.1709910090977; Fri, 08 Mar
- 2024 07:01:30 -0800 (PST)
-MIME-Version: 1.0
-References: <20240215175752.82828-1-philmd@linaro.org>
- <20240215175752.82828-35-philmd@linaro.org>
- <CAFEAcA-HpKCk-n4HsnZPiz09xq9sk=Sh5nt05KpRymy-NQ2HEg@mail.gmail.com>
-In-Reply-To: <CAFEAcA-HpKCk-n4HsnZPiz09xq9sk=Sh5nt05KpRymy-NQ2HEg@mail.gmail.com>
-From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
-Date: Fri, 8 Mar 2024 16:01:19 +0100
-Message-ID: <CAJ307EhHYucqcYSDPzX6Bt9YYUxfWkOSEXLGwNTb2ivJhm=j3w@mail.gmail.com>
-Subject: Re: [PULL 34/56] hw/intc/grlib_irqmp: add ncpus property
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1riboz-0000bu-Sw
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:07:41 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1ribov-0000lH-6p
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:07:41 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TrqDk2757z6K9Bf;
+ Fri,  8 Mar 2024 23:03:34 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id 38054140136;
+ Fri,  8 Mar 2024 23:07:34 +0800 (CST)
+Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 8 Mar
+ 2024 15:07:33 +0000
+Date: Fri, 8 Mar 2024 15:07:33 +0000
 To: Peter Maydell <peter.maydell@linaro.org>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org, 
- qemu-block@nongnu.org, Frederic Konrad <konrad.frederic@yahoo.fr>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
- envelope-from=chigot@adacore.com; helo=mail-pj1-x1036.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+CC: "Michael S. Tsirkin" <mst@redhat.com>, <qemu-devel@nongnu.org>, Fan Ni
+ <fan.ni@samsung.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: [PULL 53/60] hw/cxl: Standardize all references on CXL r3.1 and
+ minor updates
+Message-ID: <20240308150733.00007e25@huawei.com>
+In-Reply-To: <CAFEAcA9jN7zO_tR3xmcDjSY3cuKimsdPwZtkE1JVhjAcpSreLg@mail.gmail.com>
+References: <cover.1707909001.git.mst@redhat.com>
+ <8700ee15de465a55e5c7281f87618ca4b4827441.1707909001.git.mst@redhat.com>
+ <CAFEAcA_W8BxG6rpcao2hCYntfU9aQfAzHQiy6RJQ-v3ZB4sNZg@mail.gmail.com>
+ <20240308143420.0000536e@Huawei.com>
+ <CAFEAcA9jN7zO_tR3xmcDjSY3cuKimsdPwZtkE1JVhjAcpSreLg@mail.gmail.com>
+Organization: Huawei Technologies R&D (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,69 +69,103 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Mar 8, 2024 at 2:27=E2=80=AFPM Peter Maydell <peter.maydell@linaro.=
-org> wrote:
->
-> On Thu, 15 Feb 2024 at 18:04, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.=
-org> wrote:
-> >
-> > From: Cl=C3=A9ment Chigot <chigot@adacore.com>
-> >
-> > This adds a "ncpus" property to the "grlib-irqmp" device to be used
-> > later, this required a little refactoring of how we initialize the
-> > device (ie: use realize instead of init).
-> >
-> > Co-developed-by: Frederic Konrad <konrad.frederic@yahoo.fr>
-> > Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
-> > Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> > Message-ID: <20240131085047.18458-3-chigot@adacore.com>
-> > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->
-> Hi; Coverity points out a bug in this commit (CID 1534914):
->
->
-> > -static void grlib_irqmp_init(Object *obj)
-> > +static void grlib_irqmp_realize(DeviceState *dev, Error **errp)
-> >  {
-> > -    IRQMP *irqmp =3D GRLIB_IRQMP(obj);
-> > -    SysBusDevice *dev =3D SYS_BUS_DEVICE(obj);
-> > +    IRQMP *irqmp =3D GRLIB_IRQMP(dev);
-> >
-> > -    qdev_init_gpio_in(DEVICE(obj), grlib_irqmp_set_irq, MAX_PILS);
-> > -    qdev_init_gpio_out_named(DEVICE(obj), &irqmp->irq, "grlib-irq", 1)=
-;
-> > -    memory_region_init_io(&irqmp->iomem, obj, &grlib_irqmp_ops, irqmp,
-> > +    if ((!irqmp->ncpus) || (irqmp->ncpus > IRQMP_MAX_CPU)) {
-> > +        error_setg(errp, "Invalid ncpus properties: "
-> > +                   "%u, must be 0 < ncpus =3D< %u.", irqmp->ncpus,
-> > +                   IRQMP_MAX_CPU);
-> > +    }
->
-> We detect the out-of-range 'ncpus' value, but forget the "return"
-> statement, so execution will continue onward regardless, and
-> overrun the irqmp->irq[] array when we call qdev_init_gpio_out_named().
+On Fri, 8 Mar 2024 14:38:55 +0000
+Peter Maydell <peter.maydell@linaro.org> wrote:
 
-Indeed, I'll send a patch.
-Thanks for pointing that out.
-
-Cl=C3=A9ment
-
-> > +
-> > +    qdev_init_gpio_in(dev, grlib_irqmp_set_irq, MAX_PILS);
-> > +    qdev_init_gpio_out_named(dev, &irqmp->irq, "grlib-irq", 1);
-> > +    memory_region_init_io(&irqmp->iomem, OBJECT(dev), &grlib_irqmp_ops=
-, irqmp,
-> >                            "irqmp", IRQMP_REG_SIZE);
+> On Fri, 8 Mar 2024 at 14:34, Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
 > >
-> >      irqmp->state =3D g_malloc0(sizeof *irqmp->state);
+> > On Fri, 8 Mar 2024 13:47:47 +0000
+> > Peter Maydell <peter.maydell@linaro.org> wrote:  
+> > > Is there a way we could write this that would catch this error?
+> > > I'm thinking maybe something like
+> > >
+> > > #define CXL_CREATE_DVSEC(CXL, DEVTYPE, TYPE, DATA) do { \
+> > >      assert(sizeof(*DATA) == TYPE##_LENGTH); \
+> > >      cxl_component_create_dvsec(CXL, DEVTYPE, TYPE##_LENGTH, \
+> > >                                 TYPE, TYPE##_REVID, (uint8_t*)DATA); \
+> > >      } while (0)  
 > >
-> > -    sysbus_init_mmio(dev, &irqmp->iomem);
-> > +    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &irqmp->iomem);
-> >  }
->
+> > We should be able to use the length definitions in the original assert.
+> > I'm not sure why that wasn't done before.  I think there were some cases
+> > where we supported multiple versions and so the length can be shorter
+> > than the structure defintion but that doesn't matter on this one.
+> >
+> > So I think minimal fix is u16 of padding and update the assert.
+> > Can circle back to tidy up the multiple places the value is defined.
+> > Any mismatch in which the wrong length define is used should be easy
+> > enough to spot so not sure we need the macro you suggest.  
+> 
+> Well, I mean, you didn't in fact spot the mismatch between
+> the struct type you were passing and the length value you
+> were using. That's why I think it would be helpful to
+> assert() that the size of the struct really does match
+> the length value you're passing in. At the moment the
+> code completely throws away the type information the compiler
+> has by casting the pointer to the struct to a uint8_t*.
+
+True, but the original assert at the structure definition would have
+fired if I'd actually used the define rather than a number :(
+
+There is definitely more to do here - but fix wants to be on the light
+side of all the options.
+
+cxl_component_create_dvsec() is an odd function in general as it has
+more code that varies depending on cxl_dev_type than is shared.
+
+So it might just make sense to split it up and provide some more
+trivial functions for the header writing. This is a case of code
+that has evolved and ended up as a far from ideal solution.
+
+We only carry the DVSECHeader in the structures so that the sizes can
+be read against the spec. It makes the code more complex though
+so maybe should consider dropping it and making the asserts next
+to the structure definitions more complex.
+
+The asserts in existing function can go (checking it fits etc is done
+by pcie_add_capability()).
+
+If not need something more like
+//awkward naming is because the second cxl needs to be there to match spec.
+void cxl_create_pcie_cxl_device_dvsec(CXLComponentState *cxl,
+				      CXLDVSECDevice *dvsec)
+{
+    PCIDevice *pdev = cxl->pdev;
+    uint16_t offset = cxl->dvsec_offset;
+    uint16_t length = sizeof(*dvsec);
+    uint8_t *wmask = pdev->wmask;
+
+    ///next block can probably be a helper or done in a simpler way.
+    /// A lot of what we have here is just to let us reuse this first call.
+    pcie_add_capability(pdev, PCI_EXT_CAP_ID_DVSEC, 1, offset, length);
+
+    ///These could be done by writing into dvsec, and memcpy ing more
+    ///but the offset will be even stranger if we do that.
+    pci_set_long(pdev->config + offset + PCIE_DVSEC_HEADER1_OFFSET,
+                 (length << 20) | (rev << 16) | CXL_VENDOR_ID);
+    pci_set_word(pdev->config + offset + PCIE_DEVSEC_ID_OFFSET,
+                 PCIE_CXL_DEVICE_DEVSEC);
+
+    memcpy(pdev->config + offset + sizeof(DVSEC_HEADER),
+           (uint8_t *)dvsec + sizeof(DVSECHeader),
+           length - sizeof(DVSECHEAEDR));
+
+// all the wmask stuff for this structure.
+}
+
+
+So I'm aiming for more drastic surgery than you were suggesting but
+not in the fix!
+
+Jonathan
+
+> 
 > thanks
 > -- PMM
+
 
