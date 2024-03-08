@@ -2,125 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E73C48766DB
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 15:58:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B838766D2
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 15:57:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ribdo-000377-DE; Fri, 08 Mar 2024 09:56:08 -0500
+	id 1ribdt-00039L-Nu; Fri, 08 Mar 2024 09:56:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ankita@nvidia.com>)
- id 1ribdg-0002tJ-E9; Fri, 08 Mar 2024 09:56:01 -0500
-Received: from mail-dm6nam04on20600.outbound.protection.outlook.com
- ([2a01:111:f403:2409::600]
- helo=NAM04-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1ribdm-00037Q-3N
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 09:56:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ankita@nvidia.com>)
- id 1ribdc-0005Ix-NC; Fri, 08 Mar 2024 09:55:58 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JM7s9lSMG2srz2uypziyWiHMJuxiBXkGoGU4YkNz14DwVN5+ugR6rYup23z5msj57JdQ0V7fLLKZEfcD0KLXe2/L2nNoPcB0yqrIVRB7s0aQhlvsI33XvfbrMj2VNCWBLWgmQrbGa6pt+akDXafqtjz8CjHC3k/4fUnv31vm70U8bQtXw/eQ9rwK6mNECNT8he0PlQ4l9nGttGeVgdF0e4X1gzIWq9wahFiWSQ3UOSK9Mahha0WHaquql4IVdvUlhmZEeWLvT/2KI6n7N8MrHaJu2wIHT37jYyFUiRIXsm56jHp1KTDb5WAGe5uJLaIj2kGRB146ewB5qkYOtnKhnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=46TmEwnba3f9pvo72kaw4E9+tlqVVNLLm5gs8smzUmY=;
- b=g9kBwql1wvQXtzIM2D6nOLnWVn10Nn8St3SkaXhAAwfYZ0pCDvNFcCRA1ofidDQ6svoIDCSbt4TltJR7+UAe6sPFcfq3MMO82lXHVh378E/Y7v113VrzvfcvuhJN+Fs1Ly2TIR4qLfODEYF07cRcQc61xIrBDaLJelKmc03FT+l4ZFIxLeLSINPKtkwsnt6wUqvFF3xX/5/tQZOwXvFyTTrrtYloeCoYCtBh3sadvjH41gMHQbjbIH3VVSgdUhnNkLVEMQUY8vudW6pstSFjHiRi4fvvmr3oEUMg0ZFUDgoCPL7asZQdjJ30S1N87QLhj13Au14sfoLleTcNQUW9pQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=huawei.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=46TmEwnba3f9pvo72kaw4E9+tlqVVNLLm5gs8smzUmY=;
- b=SzT7JpLTvUZyGncsbHaNDCqPrAhn/nYtSCouY1kKJy1Jn8OYoiPYIyoSfDYeuF+H9VOWjwN5U2Gy6UHECrvTzUUGIvNF9W+mMN0M/4YSUJJSmUHo6ojpkLW0cDDmtz5BTuC5QxVtYw+JzPKUKzxNACOFA9UDdNeo6ixkzl/TBHspKTRMWD1drfLM+JlGo6ro/2MR/oQdnuP3QY22HHzAb9AWpo+zIpAtS8W1D21ydF3Qbr5T/TirLoGkdVbAs+iwPFXWoP18Zfgp17ODam70I1g88W73H/iOK37bGXNQxr1wZiWd0P/emj/n1OoBA5JvF7IGcIfqMOc4HFe7u1F/0w==
-Received: from SN1PR12CA0105.namprd12.prod.outlook.com (2603:10b6:802:21::40)
- by SA3PR12MB7879.namprd12.prod.outlook.com (2603:10b6:806:306::5)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.26; Fri, 8 Mar
- 2024 14:55:49 +0000
-Received: from SN1PEPF0002636A.namprd02.prod.outlook.com
- (2603:10b6:802:21:cafe::8f) by SN1PR12CA0105.outlook.office365.com
- (2603:10b6:802:21::40) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.27 via Frontend
- Transport; Fri, 8 Mar 2024 14:55:49 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- SN1PEPF0002636A.mail.protection.outlook.com (10.167.241.135) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7362.11 via Frontend Transport; Fri, 8 Mar 2024 14:55:49 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Fri, 8 Mar 2024
- 06:55:27 -0800
-Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.12; Fri, 8 Mar 2024 06:55:26 -0800
-Received: from host-10-63-191-31.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.182) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12 via Frontend
- Transport; Fri, 8 Mar 2024 06:55:26 -0800
-From: <ankita@nvidia.com>
-To: <ankita@nvidia.com>, <jgg@nvidia.com>, <marcel.apfelbaum@gmail.com>,
- <philmd@linaro.org>, <wangyanan55@huawei.com>, <alex.williamson@redhat.com>,
- <pbonzini@redhat.com>, <clg@redhat.com>, <shannon.zhaosl@gmail.com>,
- <peter.maydell@linaro.org>, <ani@anisinha.ca>, <berrange@redhat.com>,
- <eduardo@habkost.net>, <imammedo@redhat.com>, <mst@redhat.com>,
- <eblake@redhat.com>, <armbru@redhat.com>, <david@redhat.com>,
- <gshan@redhat.com>, <Jonathan.Cameron@huawei.com>
-CC: <aniketa@nvidia.com>, <cjia@nvidia.com>, <kwankhede@nvidia.com>,
- <targupta@nvidia.com>, <vsethi@nvidia.com>, <acurrid@nvidia.com>,
- <mochs@nvidia.com>, <dnigam@nvidia.com>, <udhoke@nvidia.com>,
- <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
-Subject: [PATCH v9 3/3] hw/i386/acpi-build: Add support for SRAT Generic
- Initiator structures
-Date: Fri, 8 Mar 2024 14:55:25 +0000
-Message-ID: <20240308145525.10886-4-ankita@nvidia.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240308145525.10886-1-ankita@nvidia.com>
-References: <20240308145525.10886-1-ankita@nvidia.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1ribdj-0005OE-IU
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 09:56:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709909762;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:  content-type:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=pFRe+eNxjsQmTEV8XizhI98YKBf4MdVAbLm8WV/p8p8=;
+ b=clkFWEC1DiIa4TWEqJHK3roIDqrXE9pJgi4tFNS/6JIypn5kj4mAqrddTucey9v58jJuPN
+ 0hE0W+hybwIsnSHytplEts0UtqOnw9Q3D4SS9CpDIb+b3JAWXczz/OOOvhcGmIV8TFitYf
+ tbCuC0o7NQtqGmj6XsAdALtTlkjAkPs=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-282-thIJ6YcXNVenlIB0WfNL2A-1; Fri, 08 Mar 2024 09:55:58 -0500
+X-MC-Unique: thIJ6YcXNVenlIB0WfNL2A-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a44d0cb0596so62689966b.2
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 06:55:57 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709909756; x=1710514556;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pFRe+eNxjsQmTEV8XizhI98YKBf4MdVAbLm8WV/p8p8=;
+ b=NXsEEjVXbm6VpLzbQ9H8pLRwbZFDtF0XAcmCqXxLgCONlHHycf90dfs6ht3W3kAsRY
+ /vP8u9ovcZIGhy/wkjvjDk0rGXyV7wUifpJVBBKJhb1W7aLyi9FJjzRdFJWjnMcVJ5ry
+ wpJPAf+ujuONASJFfvx81bQ11EWjMj7KJbJsL+V2EgbtVZjsrULIXht4zRLqw6LPpgYA
+ Z+Hky0G/HjlMxSZw9z50GVGWMd8ehOTceGg4yLdOock6XUoC2CrbttQWG6N8ibFGg+uf
+ p4RPWTnjlMG/zWISo6AzNUy5YviGalXEx+pme3t793xHxBqrX4RCVJBiKkWos/lnmf68
+ Mrcw==
+X-Gm-Message-State: AOJu0YwtWEZOp+asm3YmOE9JF9dAde+3FyEOR9SbLJYnvJfNEEjPF2EY
+ SCQUxi1ALN7xGOX7n0eQp2wJoDkKfsuW4cJzUgLyZdjWavplG6Fabp22G5j0qMLiOoFpu2BXnuv
+ Q3Pkkrc7sAXWnndkPQfj9RaiqNS3LZx6GYowEIcE4b2567oj5jUjLiAwesKLXvAE28ycNKAV9id
+ /Z4BwVV5zFwEkn8etleeKvc3utno8e/CU1qEbs
+X-Received: by 2002:a17:906:1114:b0:a43:bb3b:3b5a with SMTP id
+ h20-20020a170906111400b00a43bb3b3b5amr15115343eja.22.1709909756282; 
+ Fri, 08 Mar 2024 06:55:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH05MVnRJV0Krzujp+rdnFt//rvtKnBeW9DZ6PgaCBskckSX0yl6IUxN9dq/gUwKu3YaMiwgQ==
+X-Received: by 2002:a17:906:1114:b0:a43:bb3b:3b5a with SMTP id
+ h20-20020a170906111400b00a43bb3b3b5amr15115332eja.22.1709909755764; 
+ Fri, 08 Mar 2024 06:55:55 -0800 (PST)
+Received: from [192.168.10.118] ([151.49.77.21])
+ by smtp.gmail.com with ESMTPSA id
+ mp7-20020a1709071b0700b00a440ceb4110sm9461772ejc.183.2024.03.08.06.55.55
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Mar 2024 06:55:55 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/12] Misc fixes, i386 TSTEQ/TSTNE, coverity CI for 2024-03-08
+Date: Fri,  8 Mar 2024 15:55:42 +0100
+Message-ID: <20240308145554.599614-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002636A:EE_|SA3PR12MB7879:EE_
-X-MS-Office365-Filtering-Correlation-Id: adbf5c4d-7c14-48fe-05f9-08dc3f7fd7f9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ErDLEGwXvoyqnPpb0J+b382RG06j9bQ7AaHVMYGKYu87vAsXxQP9jOrYlqECd2VwK8pP86sqAM+bhWmUrrDuJOSEzbpJ45deH8M0MvPAA4mCgOJD+2uvxvKGu0L7xBfMQcOEKptIO6wlmLLgQ93c777hkodNaD/+Jae5UhXepnZ4c44XAL74sbOiWNi62aEP7nvSuDmzk33RHJmWgst7yLzO2iXqRN0epBMK/O1NkSQc+re7w733zKAZW8Q9+ro1ie0oITh9QnQRcsGsOyglHdy/TEQlDuWB1WjgcWDCRnaoQ5A+7R3SQddXD0ZDGr2SfZ5SS1gkAN582o1H/UikKvLnrB16JLQQB04VT3JVrgM9yPK0OYVb6Dxo7aFsBdsJDf267NQJMA0HPFW4qt/sPetSmBm10D4Vu2Soj6bnLQGk9fAyunnHkMvzKhu+SDuJ+zAj+PnMq5h0g4XyMJhWSdz4pKF0hpwL2vj7PWgu0nZjy5GALyS/jA4skTkPkWHG68lj1acYFj8ffxGYzANpigK7h3v+LwYyyrgbDxDop3x2IXyDB3pTQ2zf9FkGn06GKTxBfqDrq8dA6wxY0EG0ci+QRmF/kqj7NHbTjeTgcDrW31UCwCPH+XTdJIoB0jVjXzDsO7Zz3uqTyp4p8m19dJKo6BHEWApzMWkJ1NYXjJ6u1YMxetJR2o1z7t+ofbNoFwUwb4FM2P+BmEJOHaTdFunJV/r0Jf5ZtMiXOVtvPCsXQ4lhZGoNWmy3p6dscVLZPy0O9u7d/QYol3AvOmRT4Q==
-X-Forefront-Antispam-Report: CIP:216.228.118.233; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge2.nvidia.com; CAT:NONE;
- SFS:(13230031)(1800799015)(36860700004)(376005)(82310400014)(7416005)(921011);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2024 14:55:49.5179 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: adbf5c4d-7c14-48fe-05f9-08dc3f7fd7f9
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.233];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF0002636A.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7879
-Received-SPF: softfail client-ip=2a01:111:f403:2409::600;
- envelope-from=ankita@nvidia.com;
- helo=NAM04-DM6-obe.outbound.protection.outlook.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.572,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -137,42 +98,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ankit Agrawal <ankita@nvidia.com>
+The following changes since commit 8f6330a807f2642dc2a3cdf33347aa28a4c00a87:
 
-The acpi-generic-initiator object is added to allow a host device
-to be linked with a NUMA node. Qemu use it to build the SRAT
-Generic Initiator Affinity structure [1]. Add support for i386.
+  Merge tag 'pull-maintainer-updates-060324-1' of https://gitlab.com/stsquad/qemu into staging (2024-03-06 16:56:20 +0000)
 
-[1] ACPI Spec 6.3, Section 5.2.16.6
+are available in the Git repository at:
 
-Suggested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
----
- hw/i386/acpi-build.c | 3 +++
- 1 file changed, 3 insertions(+)
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
 
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index 1e178341de..b65202fc07 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -68,6 +68,7 @@
- #include "hw/acpi/utils.h"
- #include "hw/acpi/pci.h"
- #include "hw/acpi/cxl.h"
-+#include "hw/acpi/acpi_generic_initiator.h"
- 
- #include "qom/qom-qobject.h"
- #include "hw/i386/amd_iommu.h"
-@@ -2056,6 +2057,8 @@ build_srat(GArray *table_data, BIOSLinker *linker, MachineState *machine)
-         build_srat_memory(table_data, 0, 0, 0, MEM_AFFINITY_NOFLAGS);
-     }
- 
-+    build_srat_generic_pci_initiator(table_data);
-+
-     /*
-      * Entry is required for Windows to enable memory hotplug in OS
-      * and for Linux to enable SWIOTLB when booted with less than
+for you to fetch changes up to 47791be8cc6efa0fb9c145a2b92da0417f4137b8:
+
+  gitlab-ci: add manual job to run Coverity (2024-03-08 15:52:26 +0100)
+
+----------------------------------------------------------------
+* target/i386: use TSTEQ/TSTNE
+* move Coverity builds to Gitlab CI
+* fix two memory leaks
+* bug fixes
+
+----------------------------------------------------------------
+Akihiko Odaki (1):
+      meson: Remove --warn-common ldflag
+
+Dmitrii Gavrilov (1):
+      system/qdev-monitor: move drain_call_rcu call under if (!dev) in qmp_device_add()
+
+Paolo Bonzini (8):
+      hw/intc/apic: fix memory leak
+      oslib-posix: fix memory leak in touch_all_pages
+      mips: do not list individual devices from configs/
+      target/i386: use TSTEQ/TSTNE to test low bits
+      target/i386: use TSTEQ/TSTNE to check flags
+      target/i386: remove mask from CCPrepare
+      run-coverity-scan: add --check-upload-only option
+      gitlab-ci: add manual job to run Coverity
+
+Sven Schnelle (2):
+      hw/scsi/lsi53c895a: add timer to scripts processing
+      hw/scsi/lsi53c895a: stop script on phase mismatch
+
+ configs/devices/mips-softmmu/common.mak      |  28 +------
+ configs/devices/mips64el-softmmu/default.mak |   3 -
+ meson.build                                  |   5 --
+ hw/intc/apic.c                               |   6 +-
+ hw/scsi/lsi53c895a.c                         |  59 ++++++++++----
+ system/qdev-monitor.c                        |  23 +++---
+ target/i386/tcg/translate.c                  | 115 ++++++++++++---------------
+ util/oslib-posix.c                           |   6 +-
+ target/i386/tcg/emit.c.inc                   |   5 +-
+ .gitlab-ci.d/base.yml                        |   4 +
+ .gitlab-ci.d/buildtest.yml                   |  39 ++++++++-
+ .gitlab-ci.d/opensbi.yml                     |   4 +
+ hw/display/Kconfig                           |   2 +-
+ hw/mips/Kconfig                              |  20 ++++-
+ hw/scsi/trace-events                         |   2 +
+ scripts/coverity-scan/run-coverity-scan      |  59 ++++++++++----
+ 16 files changed, 228 insertions(+), 152 deletions(-)
 -- 
-2.34.1
+2.43.2
 
 
