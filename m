@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A11958767A0
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:49:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ED8F8767BE
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:51:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ricSO-0000YE-8T; Fri, 08 Mar 2024 10:48:24 -0500
+	id 1ricSR-0000bL-2j; Fri, 08 Mar 2024 10:48:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1ricSL-0000Y4-1H
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:48:21 -0500
+ id 1ricSO-0000aN-FV
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:48:24 -0500
 Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1ricSJ-0003yA-7T
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:48:20 -0500
+ id 1ricSM-0003z8-Nc
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:48:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709912900; x=1741448900;
+ t=1709912903; x=1741448903;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=FUnxZMIQ+lkqlPhuVllZ5Kf+bp2ultRSFG+6HXooT8A=;
- b=RR3xSvWAzxC9E2mHEQXsa7ycodwvvgbR9bD5qtRNAlaFGejEMBS7HVPf
- SEjv6D2dVI1GFY3FZOwOAaVNAAUcoKjfSSnOzpkx670NIIiC0ZAWfuuZl
- kjFbB1Dk9KY3K0PdWVH2WIhkLmJ4t5HbfgPAy3vqNX1fiOa6sdONKdGG4
- todS2LfPb2U/O8eSqRtMCdAwpLsp4BiWOXpkvRa+VJORZucKNjV8yV4Vr
- anMYGud0QmKA2m2424AyEiD1WdzGL8sGhbyCs7fkb+ss4cATQrwOYzlb/
- nXzSMMwTb1qFWdk3gTyz54fLWUn8ExrtI0SwhQGOV7s7HLf/JXhiyb32S A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4561022"
+ bh=ZcFpjBwAuhrJzhfBzCyj7s6+EUBvYMXuJ0yqyGBK0eo=;
+ b=NIkOAp/gLcGFkbj2Zb9EP0SEZ7U5zDDnElrT3tLNXc6DrlptKHrrSexs
+ 8U52Ov3LzYmek/y5RvtC6kPkp+bLvgpYnuBfx+6C919IVaT9iVZhhkIFu
+ HVj7dOFipzOSgyVrMpx7xi+2JXdjkDr+ihvneYRl4F1yMb0F4nJQCeqSg
+ lX5b6mKg7YtX4XjaAFywSaLqzcJP9mdCkwJpX/mbtjhn8x9PpI7WZaNg8
+ CPi6L928cxkxMx0EHeBILJhKtFgocpF2gxG3GowNGKAbo6u1dsTxZZ7tg
+ q5ZB5pT/YgOQzloAnRjEERvOpsJqSD7edFVrjKJbdBapolX+lqDwhAYBK A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4561030"
 X-IronPort-AV: E=Sophos;i="6.07,110,1708416000"; 
-   d="scan'208";a="4561022"
+   d="scan'208";a="4561030"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Mar 2024 07:48:19 -0800
+ 08 Mar 2024 07:48:22 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,110,1708416000"; d="scan'208";a="10400318"
+X-IronPort-AV: E=Sophos;i="6.07,110,1708416000"; d="scan'208";a="10400324"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa007.fm.intel.com with ESMTP; 08 Mar 2024 07:48:16 -0800
+ by fmviesa007.fm.intel.com with ESMTP; 08 Mar 2024 07:48:19 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -50,14 +50,15 @@ To: Eduardo Habkost <eduardo@habkost.net>,
  Prasad Pandit <ppandit@redhat.com>, qemu-devel@nongnu.org
 Cc: Xiaoling Song <xiaoling.song@intel.com>,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 02/13] hw/core/machine-smp: Deprecate unsupported
- "parameter=1" SMP configurations
-Date: Sat,  9 Mar 2024 00:01:37 +0800
-Message-Id: <20240308160148.3130837-3-zhao1.liu@linux.intel.com>
+Subject: [PATCH v2 03/13] hw/core/machine-smp: Calculate total CPUs once in
+ machine_parse_smp_config()
+Date: Sat,  9 Mar 2024 00:01:38 +0800
+Message-Id: <20240308160148.3130837-4-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240308160148.3130837-1-zhao1.liu@linux.intel.com>
 References: <20240308160148.3130837-1-zhao1.liu@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=198.175.65.21;
  envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
@@ -85,138 +86,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Currently, it was allowed for users to specify the unsupported
-topology parameter as "1". For example, x86 PC machine doesn't
-support drawer/book/cluster topology levels, but user could specify
-"-smp drawers=1,books=1,clusters=1".
+In machine_parse_smp_config(), the number of total CPUs is calculated
+by:
 
-This is meaningless and confusing, so that the support for this kind of
-configurations is marked deprecated since 9.0. And report warning
-message for such case like:
+    drawers * books * sockets * dies * clusters * cores * threads
 
-qemu-system-x86_64: warning: Deprecated CPU topology (considered invalid):
-                    Unsupported clusters parameter mustn't be specified as 1
-qemu-system-x86_64: warning: Deprecated CPU topology (considered invalid):
-                    Unsupported books parameter mustn't be specified as 1
-qemu-system-x86_64: warning: Deprecated CPU topology (considered invalid):
-                    Unsupported drawers parameter mustn't be specified as 1
-
-Users have to ensure that all the topology members described with -smp
-are supported by the target machine.
+To avoid missing the future new topology level, use a local variable to
+cache the calculation result so that total CPUs are only calculated
+once.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- docs/about/deprecated.rst | 14 +++++++++
- hw/core/machine-smp.c     | 63 +++++++++++++++++++++++++++++----------
- 2 files changed, 61 insertions(+), 16 deletions(-)
+ hw/core/machine-smp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 872974640252..9cc22523be49 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -47,6 +47,20 @@ as short-form boolean values, and passed to plugins as ``arg_name=on``.
- However, short-form booleans are deprecated and full explicit ``arg_name=on``
- form is preferred.
- 
-+``-smp`` (Unsupported "parameter=1" SMP configurations) (since 9.0)
-+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-+
-+Specified CPU topology parameters must be supported by the machine.
-+
-+In the SMP configuration, users should provide the CPU topology parameters that
-+are supported by the target machine.
-+
-+However, historically it was allowed for users to specify the unsupported
-+topology parameter as "1", which is meaningless. So support for this kind of
-+configurations (e.g. -smp drawers=1,books=1,clusters=1 for x86 PC machine) is
-+marked deprecated since 9.0, users have to ensure that all the topology members
-+described with -smp are supported by the target machine.
-+
- QEMU Machine Protocol (QMP) commands
- ------------------------------------
- 
 diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
-index 96533886b14e..50a5a40dbc3d 100644
+index 50a5a40dbc3d..27864c950766 100644
 --- a/hw/core/machine-smp.c
 +++ b/hw/core/machine-smp.c
-@@ -112,30 +112,61 @@ void machine_parse_smp_config(MachineState *ms,
+@@ -91,6 +91,7 @@ void machine_parse_smp_config(MachineState *ms,
+     unsigned cores   = config->has_cores ? config->cores : 0;
+     unsigned threads = config->has_threads ? config->threads : 0;
+     unsigned maxcpus = config->has_maxcpus ? config->maxcpus : 0;
++    unsigned total_cpus;
  
      /*
-      * If not supported by the machine, a topology parameter must be
--     * omitted or specified equal to 1.
-+     * omitted.
-      */
--    if (!mc->smp_props.dies_supported && dies > 1) {
--        error_setg(errp, "dies not supported by this machine's CPU topology");
--        return;
--    }
--    if (!mc->smp_props.clusters_supported && clusters > 1) {
--        error_setg(errp, "clusters not supported by this machine's CPU topology");
--        return;
-+    if (!mc->smp_props.clusters_supported && config->has_clusters) {
-+        if (config->clusters > 1) {
-+            error_setg(errp, "clusters not supported by this "
-+                       "machine's CPU topology");
-+            return;
-+        } else {
-+            /* Here clusters only equals 1 since we've checked zero case. */
-+            warn_report("Deprecated CPU topology (considered invalid): "
-+                        "Unsupported clusters parameter mustn't be "
-+                        "specified as 1");
-+        }
+      * Specified CPU topology parameters must be greater than zero,
+@@ -211,8 +212,8 @@ void machine_parse_smp_config(MachineState *ms,
+         }
      }
-+    clusters = clusters > 0 ? clusters : 1;
  
-+    if (!mc->smp_props.dies_supported && config->has_dies) {
-+        if (config->dies > 1) {
-+            error_setg(errp, "dies not supported by this "
-+                       "machine's CPU topology");
-+            return;
-+        } else {
-+            /* Here dies only equals 1 since we've checked zero case. */
-+            warn_report("Deprecated CPU topology (considered invalid): "
-+                        "Unsupported dies parameter mustn't be "
-+                        "specified as 1");
-+        }
-+    }
-     dies = dies > 0 ? dies : 1;
--    clusters = clusters > 0 ? clusters : 1;
+-    maxcpus = maxcpus > 0 ? maxcpus : drawers * books * sockets * dies *
+-                                      clusters * cores * threads;
++    total_cpus = drawers * books * sockets * dies * clusters * cores * threads;
++    maxcpus = maxcpus > 0 ? maxcpus : total_cpus;
+     cpus = cpus > 0 ? cpus : maxcpus;
  
--    if (!mc->smp_props.books_supported && books > 1) {
--        error_setg(errp, "books not supported by this machine's CPU topology");
--        return;
-+    if (!mc->smp_props.books_supported && config->has_books) {
-+        if (config->books > 1) {
-+            error_setg(errp, "books not supported by this "
-+                       "machine's CPU topology");
-+            return;
-+        } else {
-+            /* Here books only equals 1 since we've checked zero case. */
-+            warn_report("Deprecated CPU topology (considered invalid): "
-+                        "Unsupported books parameter mustn't be "
-+                        "specified as 1");
-+        }
-     }
-     books = books > 0 ? books : 1;
+     ms->smp.cpus = cpus;
+@@ -228,8 +229,7 @@ void machine_parse_smp_config(MachineState *ms,
+     mc->smp_props.has_clusters = config->has_clusters;
  
--    if (!mc->smp_props.drawers_supported && drawers > 1) {
--        error_setg(errp,
--                   "drawers not supported by this machine's CPU topology");
--        return;
-+    if (!mc->smp_props.drawers_supported && config->has_drawers) {
-+        if (config->drawers > 1) {
-+            error_setg(errp, "drawers not supported by this "
-+                       "machine's CPU topology");
-+            return;
-+        } else {
-+            /* Here drawers only equals 1 since we've checked zero case. */
-+            warn_report("Deprecated CPU topology (considered invalid): "
-+                        "Unsupported drawers parameter mustn't be "
-+                        "specified as 1");
-+        }
-     }
-     drawers = drawers > 0 ? drawers : 1;
- 
+     /* sanity-check of the computed topology */
+-    if (drawers * books * sockets * dies * clusters * cores * threads !=
+-        maxcpus) {
++    if (total_cpus != maxcpus) {
+         g_autofree char *topo_msg = cpu_hierarchy_to_string(ms);
+         error_setg(errp, "Invalid CPU topology: "
+                    "product of the hierarchy must match maxcpus: "
 -- 
 2.34.1
 
