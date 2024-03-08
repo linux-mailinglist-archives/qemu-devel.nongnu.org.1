@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6FB58762DE
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 12:14:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30EF88762E6
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 12:16:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riYA1-0006r6-9l; Fri, 08 Mar 2024 06:13:09 -0500
+	id 1riYA2-00071Y-M7; Fri, 08 Mar 2024 06:13:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1riY9q-0006gX-L0
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:12:59 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1riY9t-0006l1-5T
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:02 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1riY9m-0001cz-Vj
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:12:56 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1dd70a43f7dso868155ad.1
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 03:12:54 -0800 (PST)
+ id 1riY9r-0001e4-Bm
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:00 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1dca3951ad9so15459335ad.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 03:12:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709896373; x=1710501173; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1709896376; x=1710501176; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=snb/WRfkioHftYdFrqU99dLAHxtfkwWfF+Km0NPB5xQ=;
- b=hHPKz7nLBcaCnFycq/UZcx1iawU6WgtdR5OSiIPeUp45yTAo+mI5T2mMZU8dUnyH75
- HOzjto8J5xWLJ9uYOm8HIcQu+0jm69v+UMTmouRe7dI7P6AR7UEMsSem1VDChNGp6VuH
- AfxSRFcKlZMCtMxtAC1DSGBXL0XgD3PbbzCXmtSCJx8SP0I6EVbMCsGAEpe/HMdkgTFj
- 91WLD2st28kiLlYi9sSlPEELSy8VjT8oNB8gMVokEaGxXcDnrx4jHhjKG9aUxyGP5j4X
- nVpIgn+HzlMH3rgprN6WNjBIKE1FbWG5TWCxOyiX2xarzsvdzFMGv9WfY4LlsdlxqI5Y
- eftg==
+ bh=wEpRih6ORzdJDXGHz5nwlcHK1igTWX+SezuwlHiscb8=;
+ b=My6GIFmupZtCZjvqyvXJVc+U5IpF60cqCabtPvOyOl8RANveTJ3GAw8Beoi0CbcWt6
+ OCfMgTkdvz08Wktv3oLEzakRvJkJgNffoJCkVqyWTSf2flNvECndtHgiwVSxO1Pnqa7+
+ MAtGhyn6X3gGzIidNFdOVFCBN3xMAMeX2XzhOxXnDGkjg8gmuw9A6PcXKQ/hLRvTz3+Z
+ 5mWODeO0ol/GFsYFFf1hargqPGu6/WHQbpnFb1SD/pmov4VZoL3oebTrAkG+um78oVsA
+ HBfeKWGLjNvTLs/bBksJmGtxFjm7YfzuZiQkVxU8+M8LwvV9Qp/SHQ4xZCzcEeOh2o5L
+ ZAVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709896373; x=1710501173;
+ d=1e100.net; s=20230601; t=1709896376; x=1710501176;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=snb/WRfkioHftYdFrqU99dLAHxtfkwWfF+Km0NPB5xQ=;
- b=kTD3jVs18wfll9yeP1Zmj7bHidKRkTr2SakD/h76hTsUTN1jtLt8oWjryGT5tslOWn
- msFVgBPcQw4phbZKMlP2yjS0qNETloqjwQqKfznZdUBXVNg0gxkJSIEg0gDlVJv7Wj6H
- YErNdobOkqvARzTZcnaT1cK9JD2NM5o13HIJsB94QDj6JkCzeCtp5H89sB3g6rFHB4En
- t6h95Fp3qh77ddldFN/Tji6RjyULcdMyWdSkGl2quy3RLCJL+C6DBOYc5UOlCvqxBm2g
- ekon2SFFRfcu8ikOvkarhDDm2JU/Ez+ea423Lo/cBEvYhFH9arcTWfwn5Ig9yc9P2DMN
- SL9w==
-X-Gm-Message-State: AOJu0YzA/TgA0nMa9QDOEW8CdRXKmyQ1E6HiRIHLyFrS8uDUPu/SFSuG
- BwWcZxAL6TdBpoqEY6rBd86XdPA35KHqycDs/LZwjTIWbciwDZxZRI98u8RL19hdZg==
-X-Google-Smtp-Source: AGHT+IE/jUCXc/r9AQdi/7knRTJChLVJ7Eu67HaEjXRrEHWZuI6BEqiNOiPrsohdRTTamZnkyK8nvw==
-X-Received: by 2002:a17:902:ec88:b0:1dd:911:19b1 with SMTP id
- x8-20020a170902ec8800b001dd091119b1mr13929252plg.19.1709896373247; 
- Fri, 08 Mar 2024 03:12:53 -0800 (PST)
+ bh=wEpRih6ORzdJDXGHz5nwlcHK1igTWX+SezuwlHiscb8=;
+ b=g+A8TevEFfG4ES+TkiFLH9GMwSboSmKwGS3jjgTICtEGhlTplF63NkI6rhiUTUUqm3
+ NHNrcM+upzyF86bgL4whfbB//cDnPvRohd1WLRlVIdVntWHRTtFxr/+bn1db//hRTUmx
+ RjWhmS7hS+Gvhlpe6LFZ3gfr4JDalsyxfGpbhVVWDeFau22sm3P2sfQT4ct6D5fE+a1c
+ 2fbxdxQ31OkOtKRdr6dScrfkh7G+bN8RUarNY/HEop3BHMd1h5HtwXSQfbTfZ3ei6sDG
+ 5K1MwB5hCGeyjkYkuXBmqkONV0Bu20VEJfnCPQNjqPAGkFDqMGHtmR/Hmrb24zhPvpUQ
+ O1Jw==
+X-Gm-Message-State: AOJu0YwiKtHbMwjFp/BSoMJjuL+uUTB+syszsiyJZn4yEKhHtCg8YsAf
+ ksHOa3hQ8tlwB4/KHxkdpx7QjOaUniQc2GOrf6k6AnZb1C1XoqvuhpZ0BWJN+fdUVQ==
+X-Google-Smtp-Source: AGHT+IEkAzhd090gQcng/Y13yUwBW58AvobQW8Q9B0Z5+B0/EE797ji6EwLXVCy365p6cIMdRLmUdA==
+X-Received: by 2002:a17:902:9881:b0:1dc:b531:839 with SMTP id
+ s1-20020a170902988100b001dcb5310839mr8969123plp.25.1709896376311; 
+ Fri, 08 Mar 2024 03:12:56 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- a6-20020a170902ecc600b001dcfbbb1ca5sm12006468plh.35.2024.03.08.03.12.49
+ a6-20020a170902ecc600b001dcfbbb1ca5sm12006468plh.35.2024.03.08.03.12.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Mar 2024 03:12:52 -0800 (PST)
+ Fri, 08 Mar 2024 03:12:55 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Frank Chang <frank.chang@sifive.com>,
- Atish Patra <atishp@rivosinc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: alistair23@gmail.com, Haibo Xu <haibo1.xu@intel.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 15/34] target/riscv: Add missing include guard in pmu.h
-Date: Fri,  8 Mar 2024 21:11:33 +1000
-Message-ID: <20240308111152.2856137-16-alistair.francis@wdc.com>
+Subject: [PULL 16/34] hw/riscv/virt-acpi-build.c: Add SRAT and SLIT ACPI tables
+Date: Fri,  8 Mar 2024 21:11:34 +1000
+Message-ID: <20240308111152.2856137-17-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240308111152.2856137-1-alistair.francis@wdc.com>
 References: <20240308111152.2856137-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,42 +97,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Frank Chang <frank.chang@sifive.com>
+From: Haibo Xu <haibo1.xu@intel.com>
 
-Add missing include guard in pmu.h to avoid the problem of double
-inclusion.
+Enable ACPI NUMA support by adding the following 2 ACPI tables:
+SRAT: provides the association for memory/Harts and Proximity Domains
+SLIT: provides the relative distance between Proximity Domains
 
-Signed-off-by: Frank Chang <frank.chang@sifive.com>
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240220110907.10479-1-frank.chang@sifive.com>
+The SRAT RINTC Affinity Structure definition[1] was based on the recently
+approved ACPI CodeFirst ECR[2].
+
+[1] https://github.com/riscv-non-isa/riscv-acpi/issues/25
+[2] https://mantis.uefi.org/mantis/view.php?id=2433
+
+Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Message-ID: <20240129094200.3581037-1-haibo1.xu@intel.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/pmu.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ hw/riscv/virt-acpi-build.c | 60 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
-diff --git a/target/riscv/pmu.h b/target/riscv/pmu.h
-index 505fc850d3..7c0ad661e0 100644
---- a/target/riscv/pmu.h
-+++ b/target/riscv/pmu.h
-@@ -16,6 +16,9 @@
-  * this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
+diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
+index 0baa902fea..ef72db018e 100644
+--- a/hw/riscv/virt-acpi-build.c
++++ b/hw/riscv/virt-acpi-build.c
+@@ -564,11 +564,61 @@ static void build_madt(GArray *table_data,
+     acpi_table_end(linker, &table);
+ }
  
-+#ifndef RISCV_PMU_H
-+#define RISCV_PMU_H
++/*
++ * ACPI spec, Revision 6.5+
++ * 5.2.16 System Resource Affinity Table (SRAT)
++ * REF: https://github.com/riscv-non-isa/riscv-acpi/issues/25
++ *      https://drive.google.com/file/d/1YTdDx2IPm5IeZjAW932EYU-tUtgS08tX/view
++ */
++static void
++build_srat(GArray *table_data, BIOSLinker *linker, RISCVVirtState *vms)
++{
++    int i;
++    uint64_t mem_base;
++    MachineClass *mc = MACHINE_GET_CLASS(vms);
++    MachineState *ms = MACHINE(vms);
++    const CPUArchIdList *cpu_list = mc->possible_cpu_arch_ids(ms);
++    AcpiTable table = { .sig = "SRAT", .rev = 3, .oem_id = vms->oem_id,
++                        .oem_table_id = vms->oem_table_id };
 +
- #include "cpu.h"
- #include "qapi/error.h"
++    acpi_table_begin(&table, table_data);
++    build_append_int_noprefix(table_data, 1, 4); /* Reserved */
++    build_append_int_noprefix(table_data, 0, 8); /* Reserved */
++
++    for (i = 0; i < cpu_list->len; ++i) {
++        uint32_t nodeid = cpu_list->cpus[i].props.node_id;
++        /*
++         * 5.2.16.8 RINTC Affinity Structure
++         */
++        build_append_int_noprefix(table_data, 7, 1);      /* Type */
++        build_append_int_noprefix(table_data, 20, 1);     /* Length */
++        build_append_int_noprefix(table_data, 0, 2);        /* Reserved */
++        build_append_int_noprefix(table_data, nodeid, 4); /* Proximity Domain */
++        build_append_int_noprefix(table_data, i, 4); /* ACPI Processor UID */
++        /* Flags, Table 5-70 */
++        build_append_int_noprefix(table_data, 1 /* Flags: Enabled */, 4);
++        build_append_int_noprefix(table_data, 0, 4); /* Clock Domain */
++    }
++
++    mem_base = vms->memmap[VIRT_DRAM].base;
++    for (i = 0; i < ms->numa_state->num_nodes; ++i) {
++        if (ms->numa_state->nodes[i].node_mem > 0) {
++            build_srat_memory(table_data, mem_base,
++                              ms->numa_state->nodes[i].node_mem, i,
++                              MEM_AFFINITY_ENABLED);
++            mem_base += ms->numa_state->nodes[i].node_mem;
++        }
++    }
++
++    acpi_table_end(linker, &table);
++}
++
+ static void virt_acpi_build(RISCVVirtState *s, AcpiBuildTables *tables)
+ {
+     GArray *table_offsets;
+     unsigned dsdt, xsdt;
+     GArray *tables_blob = tables->table_data;
++    MachineState *ms = MACHINE(s);
  
-@@ -31,3 +34,5 @@ int riscv_pmu_incr_ctr(RISCVCPU *cpu, enum riscv_pmu_event_idx event_idx);
- void riscv_pmu_generate_fdt_node(void *fdt, uint32_t cmask, char *pmu_name);
- int riscv_pmu_setup_timer(CPURISCVState *env, uint64_t value,
-                           uint32_t ctr_idx);
+     table_offsets = g_array_new(false, true,
+                                 sizeof(uint32_t));
+@@ -604,6 +654,16 @@ static void virt_acpi_build(RISCVVirtState *s, AcpiBuildTables *tables)
+                    s->oem_table_id);
+     }
+ 
++    if (ms->numa_state->num_nodes > 0) {
++        acpi_add_table(table_offsets, tables_blob);
++        build_srat(tables_blob, tables->linker, s);
++        if (ms->numa_state->have_numa_distance) {
++            acpi_add_table(table_offsets, tables_blob);
++            build_slit(tables_blob, tables->linker, ms, s->oem_id,
++                       s->oem_table_id);
++        }
++    }
 +
-+#endif /* RISCV_PMU_H */
+     /* XSDT is pointed to by RSDP */
+     xsdt = tables_blob->len;
+     build_xsdt(tables_blob, tables->linker, table_offsets, s->oem_id,
 -- 
 2.44.0
 
