@@ -2,74 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9BA5876735
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:20:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF307876781
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:43:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ric1A-0006RJ-P8; Fri, 08 Mar 2024 10:20:16 -0500
+	id 1ricMH-0003om-JA; Fri, 08 Mar 2024 10:42:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1ric18-0006NV-3l
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:20:14 -0500
-Received: from mgamail.intel.com ([198.175.65.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1ric15-0004xR-QK
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:20:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709911212; x=1741447212;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=37x1enO9CuT262PPueVsjTold9mUMUYf4OwlO+MhuoY=;
- b=V4dw2kkCcgEm7TMnnTSgL23komvNmuF1K3a+eWNZjDYV1982L5Jei//k
- wMCAwCXHI3AFdK6y3O1E4gplVNXyHAv8L+OB85sMy+oHGCDHwNIUSOpPX
- RXWhllgrC5z9VsV1ntHTIf7TXoWhEu+qiJG3Em/SoA4yRQikT5kzQIURt
- iVRC2XgPbozcqwu66lmTyjeb82jMkYy394wQgMII53LQLEC0qVqnp0gX9
- L8Mt6JGTQbx0BsnEgIIshdCZwXxoIf7TdwrLooiMPXRxWQlVbwBk3cb6o
- u+9UPjxuI4HSNbt3zaSONbl5CjG1vCU19zqfS/T4xJ0gmKPBqFWs5Xfbw g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="22086167"
-X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; d="scan'208";a="22086167"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Mar 2024 07:20:09 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; d="scan'208";a="15164654"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa003.jf.intel.com with ESMTP; 08 Mar 2024 07:20:06 -0800
-Date: Fri, 8 Mar 2024 23:33:53 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Prasad Pandit <ppandit@redhat.com>, qemu-devel@nongnu.org,
- Xiaoling Song <xiaoling.song@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
- Prasad Pandit <pjp@fedoraproject.org>
-Subject: Re: [PATCH 03/14] hw/core/machine-smp: Simplify variables'
- initialization in machine_parse_smp_config()
-Message-ID: <Zesv4W8DKteGeE/a@intel.com>
-References: <20240306095407.3058909-1-zhao1.liu@linux.intel.com>
- <20240306095407.3058909-4-zhao1.liu@linux.intel.com>
- <c2bd5503-7ab1-41b7-af81-2f5bf5992ad3@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ricMF-0003oV-RH
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:42:04 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ricMD-0002Mi-QU
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:42:03 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-565c6cf4819so5990588a12.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 07:42:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1709912520; x=1710517320; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=MuJCFhvqT3ZKlqVaY9a/O3yhRkZaw9B/8BBmGsdaLfI=;
+ b=pCL8rl6r5IsO4H6RqgmZyPTd2veJp14/jZk+Y2cW5fHkLUdpxASccxdxUvE7cYaWVb
+ JrJPdwQybghVhVfsswCCKPMwHmPAuUmSkTqS5UI/y6S1T4tHpDTgfeZ9FYjth0AGefva
+ 8P/pV2Kxuxr/cWKeRS11fwtCsyNS3+Jz9HnpmvQhUCBfzbBNGYbrDTbTt19TXLGpvNQQ
+ YtxCjRRO3AOtcFa4awiiipQE80AyRlmuEFOuxM0fPTxFPdAsD4WCdiu5+r7MXD1kWLaA
+ JnB7u7L6UzPJhjqmX1xLgpzOa8S6fKXCRXKdFJcwWJ0nqyjpps9UzkF4RUFf8WJaBylR
+ roEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709912520; x=1710517320;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=MuJCFhvqT3ZKlqVaY9a/O3yhRkZaw9B/8BBmGsdaLfI=;
+ b=onaj0/DAfQV8TjE6pEATge3vfOC4BOx3qhJwD0KRdsAm7NTerNMS0dY/ja30cHdKte
+ cXJp31ILV2wUarwcCE6U5yo92/SNnFSGsewvo1jivXDYgArHT9uQQueDH6fq/qcKbv1l
+ JQrZuUMmSmNFSikj8CbNYYA7Ay+o238oLxJBREBfCLB+ilddOhnPBHa+7qXp7Ce3B57w
+ bOB/rYlcr9CtzZ0fzL6jOIWEw929CSmdVNRpnQVMUnmdMYu6kGN/kEB8mwmd67/QAazm
+ m9h90WJUNuMz9fTMU4c3/7czjUyspn3erAbBJETEu7oJtXuhjsZSSk04Im23FSnZilta
+ Sdxg==
+X-Gm-Message-State: AOJu0Yz6K1N+XpjjSs+G5aed/5I6mJqt5w+B84cEo8AUxPJWSiYl0MDC
+ JKRN1AS9l3gxFAiRLPLz2TKZruEmwWRKkDp3fMWIOiwepkpkbn66GY7DI25acqVfxH9krmrBs1f
+ rHiy7qIM7gsEJjC2+ah1Rs8/TmnkO+8VZJnrjoQ==
+X-Google-Smtp-Source: AGHT+IG2TebH+X8C70I+HEzlziFQiuRt9TuV9e/9a5ltxwwODUeTQlbvCO2831bYkGno2KtggkHpVeDVEgX+AX5HQ+s=
+X-Received: by 2002:a50:9550:0:b0:565:9f59:b3b6 with SMTP id
+ v16-20020a509550000000b005659f59b3b6mr674446eda.3.1709912519417; Fri, 08 Mar
+ 2024 07:41:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c2bd5503-7ab1-41b7-af81-2f5bf5992ad3@redhat.com>
-Received-SPF: none client-ip=198.175.65.10;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
+ <fe5476c7-82e0-4353-a943-7f39b14e1b5b@roeck-us.net>
+ <CAFEAcA-bqOM4Ptws-tsEwo2HDZ6YSX1Y+xGkR0WueRD_dUd0+Q@mail.gmail.com>
+ <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net>
+In-Reply-To: <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 8 Mar 2024 15:41:48 +0000
+Message-ID: <CAFEAcA_-eTfF8tVaLk4yLgWMSA1+KjPBYyS3EjMQNC+59hT0Aw@mail.gmail.com>
+Subject: Re: possible deprecation and removal of some old QEMU Arm machine
+ types (pxa2xx, omap, sa1110)
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, qemu-arm <qemu-arm@nongnu.org>, 
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
+ linux-omap@vger.kernel.org, 
+ Arnd Bergmann <arnd@arndb.de>, Daniel Mack <daniel@zonque.org>, 
+ Robert Jarzmik <robert.jarzmik@free.fr>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>, Thomas Huth <thuth@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.572,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,34 +96,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Thomas,
-
-On Fri, Mar 08, 2024 at 02:20:45PM +0100, Thomas Huth wrote:
-> Date: Fri, 8 Mar 2024 14:20:45 +0100
-> From: Thomas Huth <thuth@redhat.com>
-> Subject: Re: [PATCH 03/14] hw/core/machine-smp: Simplify variables'
->  initialization in machine_parse_smp_config()
-> 
-> On 06/03/2024 10.53, Zhao Liu wrote:
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> > 
-> > SMPConfiguration initializes its int64_t members as 0 by default.
-> 
-> Can we always rely on that? ... or is this just by luck due to the current
-> implementation? In the latter case, I'd maybe rather drop this patch again.
+On Tue, 13 Feb 2024 at 15:36, Guenter Roeck <linux@roeck-us.net> wrote:
 >
+> On Tue, Feb 13, 2024 at 03:14:21PM +0000, Peter Maydell wrote:
+> > On Mon, 12 Feb 2024 at 14:36, Guenter Roeck <linux@roeck-us.net> wrote:
+> > > On 2/12/24 04:32, Peter Maydell wrote:
+> > > > The machines I have in mind are:
+> > > >
+> > > > PXA2xx machines:
+> > > >
+> > > > akita                Sharp SL-C1000 (Akita) PDA (PXA270)
+> > > > borzoi               Sharp SL-C3100 (Borzoi) PDA (PXA270)
+> > > > connex               Gumstix Connex (PXA255)
+> > > > mainstone            Mainstone II (PXA27x)
+> > > > spitz                Sharp SL-C3000 (Spitz) PDA (PXA270)
+> > > > terrier              Sharp SL-C3200 (Terrier) PDA (PXA270)
+> > > > tosa                 Sharp SL-6000 (Tosa) PDA (PXA255)
+> > > > verdex               Gumstix Verdex Pro XL6P COMs (PXA270)
+> > > > z2                   Zipit Z2 (PXA27x)
 
-Thanks for the correction, I revisited and referenced more similar use
-cases, and indeed, only if the flag "has_*" is true, its corresponding
-field should be considered reliable.
+> > > > OMAP1 machines:
+> > > >
+> > > > cheetah              Palm Tungsten|E aka. Cheetah PDA (OMAP310)
+> > > > sx1                  Siemens SX1 (OMAP310) V2
+> > > > sx1-v1               Siemens SX1 (OMAP310) V1
 
-Keeping explicit checking on has_* and explicit initialization of these
-topology variables makes the code more readable.
+> > > > OMAP2 machines:
+> > > >
+> > > > n800                 Nokia N800 tablet aka. RX-34 (OMAP2420)
+> > > > n810                 Nokia N810 tablet aka. RX-44 (OMAP2420)
 
-This patch is over-optimized and I would drop it.
+> > > > The one SA1110 machine:
+> > > >
+> > > > collie               Sharp SL-5500 (Collie) PDA (SA-1110)
 
-Regards,
-Zhao
+> I am copying Arnd, the OMAP1 Linux kernel maintainers, PXA2 maintainers,
+> and the Linux omap mailing list for input. Sorry for the noise for those
+> who don't care, but I think it is useful to have your voices heard.
 
+Thanks to everybody for your input on this thread. My
+proposal is to drop from QEMU:
+ * all the PXA2xx machines
+ * all the OMAP2 machines
+ * the cheetah OMAP1 machine
 
+leaving (at least for now) sx1, sx1-v1, collie.
+
+Rationale:
+ * for QEMU dropping individual machines is much less beneficial
+   than if we can drop support for an entire SoC
+ * the OMAP2 QEMU code in particular is large, old and unmaintained,
+   and none of the OMAP2 kernel maintainers said they were using
+   QEMU in any of their testing/development
+ * although Guenter is currently booting test kernels on some
+   of the PXA2xx machines, nobody seemed to be using them as part
+   of their active kernel development and my impression from the
+   thread is that PXA is the closest of all these SoC families to
+   being dropped from the kernel soon
+ * nobody said they were using cheetah, so it's entirely
+   untested and quite probably broken
+ * on the other hand the OMAP1 sx1 model does seem to be being
+   used as part of kernel development, and there was interest
+   in keeping collie around
+
+I'm going to mark these as deprecated for the QEMU 9.0 release,
+which by our deprecate-and-drop policy means they will be
+still present in 9.0 (due out in April) and 9.1 (August-ish),
+and removed in 9.2 (December).
+
+I'm potentially open to persuasion if anybody thinks I'm
+being too drastic here; persuasion that came attached to
+a desire to help modernise the QEMU code for the relevant
+machines would be the most effective :-)
+
+thanks
+-- PMM
 
