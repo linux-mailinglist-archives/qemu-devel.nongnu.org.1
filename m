@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED8F8767BE
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:51:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8E608767A4
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:49:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ricSR-0000bL-2j; Fri, 08 Mar 2024 10:48:27 -0500
+	id 1ricSR-0000bS-Ja; Fri, 08 Mar 2024 10:48:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1ricSO-0000aN-FV
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:48:24 -0500
+ id 1ricSQ-0000au-Ap
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:48:26 -0500
 Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1ricSM-0003z8-Nc
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:48:24 -0500
+ id 1ricSO-0003z8-OR
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:48:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709912903; x=1741448903;
+ t=1709912905; x=1741448905;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ZcFpjBwAuhrJzhfBzCyj7s6+EUBvYMXuJ0yqyGBK0eo=;
- b=NIkOAp/gLcGFkbj2Zb9EP0SEZ7U5zDDnElrT3tLNXc6DrlptKHrrSexs
- 8U52Ov3LzYmek/y5RvtC6kPkp+bLvgpYnuBfx+6C919IVaT9iVZhhkIFu
- HVj7dOFipzOSgyVrMpx7xi+2JXdjkDr+ihvneYRl4F1yMb0F4nJQCeqSg
- lX5b6mKg7YtX4XjaAFywSaLqzcJP9mdCkwJpX/mbtjhn8x9PpI7WZaNg8
- CPi6L928cxkxMx0EHeBILJhKtFgocpF2gxG3GowNGKAbo6u1dsTxZZ7tg
- q5ZB5pT/YgOQzloAnRjEERvOpsJqSD7edFVrjKJbdBapolX+lqDwhAYBK A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4561030"
+ bh=5zs8ZVODy/+ePQaXGpb2JhRIroLOZFAagBdrQ9Q4O6g=;
+ b=ExFFfybvNTwqK824DLfdeLKQEbdMW0Y9eRRz1TVJaAQUkjvApEFJMZTG
+ zhf8OARNPPVzrxSyRJMU2yg0xORXRnWfsJmNTEkQE/BXmPWolccd6zEup
+ kFXqxs6kTBj9Nte85g+dfMzMoTSwxIY7nkCBvGEBuseDQqafggwtLcRcR
+ ZZfzc9ep5z8JG+CCr32tSd1YPUJJ/v3evPx4P13E0DzjNi1z2VeLn3bs6
+ Md9GU78YGnYI1b1Me2rYii6VBMj8xqhhQxUZ0hC4FpvSFc89uTnL6ruPT
+ B5P+A8LdnIHxosz6S9tt3ossK1sE/QKt16etSFGssvljIDktC7MZL1Nys g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4561039"
 X-IronPort-AV: E=Sophos;i="6.07,110,1708416000"; 
-   d="scan'208";a="4561030"
+   d="scan'208";a="4561039"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Mar 2024 07:48:22 -0800
+ 08 Mar 2024 07:48:25 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,110,1708416000"; d="scan'208";a="10400324"
+X-IronPort-AV: E=Sophos;i="6.07,110,1708416000"; d="scan'208";a="10400328"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa007.fm.intel.com with ESMTP; 08 Mar 2024 07:48:19 -0800
+ by fmviesa007.fm.intel.com with ESMTP; 08 Mar 2024 07:48:21 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -50,15 +50,14 @@ To: Eduardo Habkost <eduardo@habkost.net>,
  Prasad Pandit <ppandit@redhat.com>, qemu-devel@nongnu.org
 Cc: Xiaoling Song <xiaoling.song@intel.com>,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 03/13] hw/core/machine-smp: Calculate total CPUs once in
- machine_parse_smp_config()
-Date: Sat,  9 Mar 2024 00:01:38 +0800
-Message-Id: <20240308160148.3130837-4-zhao1.liu@linux.intel.com>
+Subject: [PATCH v2 04/13] tests/unit/test-smp-parse: Drop the unsupported
+ "dies=1" case
+Date: Sat,  9 Mar 2024 00:01:39 +0800
+Message-Id: <20240308160148.3130837-5-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240308160148.3130837-1-zhao1.liu@linux.intel.com>
 References: <20240308160148.3130837-1-zhao1.liu@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=198.175.65.21;
  envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
@@ -86,54 +85,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-In machine_parse_smp_config(), the number of total CPUs is calculated
-by:
-
-    drawers * books * sockets * dies * clusters * cores * threads
-
-To avoid missing the future new topology level, use a local variable to
-cache the calculation result so that total CPUs are only calculated
-once.
+Unsupported "parameter=1" SMP configurations is marked as deprecated,
+so drop the related test case.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/core/machine-smp.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tests/unit/test-smp-parse.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
-index 50a5a40dbc3d..27864c950766 100644
---- a/hw/core/machine-smp.c
-+++ b/hw/core/machine-smp.c
-@@ -91,6 +91,7 @@ void machine_parse_smp_config(MachineState *ms,
-     unsigned cores   = config->has_cores ? config->cores : 0;
-     unsigned threads = config->has_threads ? config->threads : 0;
-     unsigned maxcpus = config->has_maxcpus ? config->maxcpus : 0;
-+    unsigned total_cpus;
+diff --git a/tests/unit/test-smp-parse.c b/tests/unit/test-smp-parse.c
+index 24972666a74d..1874bea08609 100644
+--- a/tests/unit/test-smp-parse.c
++++ b/tests/unit/test-smp-parse.c
+@@ -607,11 +607,6 @@ static void test_generic_valid(const void *opaque)
+         unsupported_params_init(mc, &data);
  
-     /*
-      * Specified CPU topology parameters must be greater than zero,
-@@ -211,8 +212,8 @@ void machine_parse_smp_config(MachineState *ms,
-         }
+         smp_parse_test(ms, &data, true);
+-
+-        /* Unsupported parameters can be provided with their values as 1 */
+-        data.config.has_dies = true;
+-        data.config.dies = 1;
+-        smp_parse_test(ms, &data, true);
      }
  
--    maxcpus = maxcpus > 0 ? maxcpus : drawers * books * sockets * dies *
--                                      clusters * cores * threads;
-+    total_cpus = drawers * books * sockets * dies * clusters * cores * threads;
-+    maxcpus = maxcpus > 0 ? maxcpus : total_cpus;
-     cpus = cpus > 0 ? cpus : maxcpus;
- 
-     ms->smp.cpus = cpus;
-@@ -228,8 +229,7 @@ void machine_parse_smp_config(MachineState *ms,
-     mc->smp_props.has_clusters = config->has_clusters;
- 
-     /* sanity-check of the computed topology */
--    if (drawers * books * sockets * dies * clusters * cores * threads !=
--        maxcpus) {
-+    if (total_cpus != maxcpus) {
-         g_autofree char *topo_msg = cpu_hierarchy_to_string(ms);
-         error_setg(errp, "Invalid CPU topology: "
-                    "product of the hierarchy must match maxcpus: "
+     object_unref(obj);
 -- 
 2.34.1
 
