@@ -2,77 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE558876784
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:44:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A65E98767B2
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:50:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ricOI-0005kn-8G; Fri, 08 Mar 2024 10:44:10 -0500
+	id 1ricTQ-0002wu-HR; Fri, 08 Mar 2024 10:49:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ricOC-0005ie-6O
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:44:04 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ricOA-0002ms-Lo
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:44:03 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-563bb51c36eso2407085a12.2
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 07:44:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709912640; x=1710517440; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=/yjIHGI8PiVw1qzNmSWLp6HHD4/WeGG/5twfE1v2y2s=;
- b=Na/e+wNV9gRApgR54qvSRNFPKG7zYdzIiC3cZIm7YP+uv68rJbPYGU8tyt+5G5ICDW
- Lg62tMAxAQ+fLg8FqgrKmkvGozPa3H2v5i9nV09TlBT8mL3n6CJUpJz59Wap1j2kA21X
- aGGMDqJHIDX/Xjdk048Eb5m1UaItMiWcEyHAJupCBMMuXUv3zOOxw9nyETnYrYXOiLOE
- NtEOpCTPLhXDl64u/fTpifsQy/v4XsZIT0tiyxnN3Pzte854H6CR77KNT4QZjfT3T1rg
- T8TVEUS135CCLK5BVPq5DevN9DK7z2HXho+cAP+AIbtqq3dZg6J2sqRRIH0dg20mJUUs
- KcXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709912640; x=1710517440;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/yjIHGI8PiVw1qzNmSWLp6HHD4/WeGG/5twfE1v2y2s=;
- b=iEFL9g4yF/BuhwYAz4ffDdyybXt28Oveow9ia9hOdvrrzF/UFwJeHv8uZoKXPPmVat
- STEa4eWHLR9kkO/d4HUpbQbWijsiXtbIZCfqwNNU3a+SHNBywTh3f+2ryvxIa9xQ8ZqH
- 6GAwdFVEMdTt5uGjUtEmubjDrvWirqfchQwAdhYHRUVEh4C666VJfdfoFMeSK2jXc0yh
- A0/KRs3YDuEeAX7u9mBuAgx1O+PRfSOCL1opkmoa+S3984Z4dIG/obwHWPbZ5Tfqm9Rt
- WWfyBZo+Dg+oMfV0I1mgZPGrfyhR/VPk4GD5jBxk9sxyExlcTZV95bohiaiHe0yvBbLl
- 0hEw==
-X-Gm-Message-State: AOJu0YxN7RxknKoOhBQ+5gGk8tx9BxlWAtBVvHNVa29nARcfjkOjW+mg
- 9usQdZD5U9baSWkBD2a1pdvLvoahU02uwMF6ge+jn7WUz9D2RtFVaooZkPWxBh/joI6TsCR3vRY
- 5OTj3XTqHrC8yyGgyfTGZFEaGlHR/hjbQuhlmvw==
-X-Google-Smtp-Source: AGHT+IEUJhCDxAYhFVGIiT4alT8yVf0AO7npBarUj7+6BQPQ9BKIPy1Gzx+EadZw8E4e7zKrj/63s7Cr9FsFh8VLbzY=
-X-Received: by 2002:a50:ccd6:0:b0:568:3362:cccf with SMTP id
- b22-20020a50ccd6000000b005683362cccfmr913267edj.7.1709912640090; Fri, 08 Mar
- 2024 07:44:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1ricTK-0002TF-Dy; Fri, 08 Mar 2024 10:49:22 -0500
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1ricTI-00047P-G4; Fri, 08 Mar 2024 10:49:22 -0500
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id A2585488C0;
+ Fri,  8 Mar 2024 16:49:09 +0100 (CET)
+Message-ID: <0f89dc73-cdf2-485e-8169-2c8ad7a07e95@proxmox.com>
+Date: Fri, 8 Mar 2024 16:49:08 +0100
 MIME-Version: 1.0
-References: <20240308152719.591232-1-chigot@adacore.com>
-In-Reply-To: <20240308152719.591232-1-chigot@adacore.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 8 Mar 2024 15:43:49 +0000
-Message-ID: <CAFEAcA9AmjW-7u2Vkv8vdrKLgq_5zWZ=mEXBQmSRvFsqtoKjrw@mail.gmail.com>
-Subject: Re: [PATCH] hw/intc/grlib_irqmp: abort realize when ncpus value is
- out of range
-To: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
-Cc: qemu-devel@nongnu.org, konrad.frederic@yahoo.fr, philmd@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/5] block/copy-before-write: support unligned
+ snapshot-discard
+Content-Language: en-US
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, armbru@redhat.com, eblake@redhat.com,
+ xiechanglong.d@gmail.com, wencongyang2@huawei.com, hreitz@redhat.com,
+ kwolf@redhat.com, jsnow@redhat.com, den@virtuozzo.com,
+ alexander.ivanov@virtuozzo.com
+References: <20240228141501.455989-1-vsementsov@yandex-team.ru>
+ <20240228141501.455989-3-vsementsov@yandex-team.ru>
+From: Fiona Ebner <f.ebner@proxmox.com>
+In-Reply-To: <20240228141501.455989-3-vsementsov@yandex-team.ru>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,33 +60,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 8 Mar 2024 at 15:27, Cl=C3=A9ment Chigot <chigot@adacore.com> wrote=
-:
->
-> Even if the error is set, the build is not aborted when the ncpus value
-> is wrong, the return is missing.
->
-> Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
-> ---
->  hw/intc/grlib_irqmp.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/hw/intc/grlib_irqmp.c b/hw/intc/grlib_irqmp.c
-> index 144b121d48..c6c51a349c 100644
-> --- a/hw/intc/grlib_irqmp.c
-> +++ b/hw/intc/grlib_irqmp.c
-> @@ -356,6 +356,7 @@ static void grlib_irqmp_realize(DeviceState *dev, Err=
-or **errp)
->          error_setg(errp, "Invalid ncpus properties: "
->                     "%u, must be 0 < ncpus =3D< %u.", irqmp->ncpus,
->                     IRQMP_MAX_CPU);
-> +        return;
->      }
->
->      qdev_init_gpio_in(dev, grlib_irqmp_set_irq, MAX_PILS);
+Am 28.02.24 um 15:14 schrieb Vladimir Sementsov-Ogievskiy:
+> First thing that crashes on unligned access here is
+> bdrv_reset_dirty_bitmap(). Correct way is to align-down the
+> snapshot-discard request.
+> 
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Fiona Ebner <f.ebner@proxmox.com>
 
-thanks
--- PMM
 
