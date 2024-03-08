@@ -2,86 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E77A875F46
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 09:19:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E2C3875F34
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 09:15:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riVS1-0007hF-On; Fri, 08 Mar 2024 03:19:33 -0500
+	id 1riVNV-0003yI-I9; Fri, 08 Mar 2024 03:14:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1riVRu-0007a7-U8
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 03:19:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1riVRl-0007cX-W4
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 03:19:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709885957;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=c1/Me4NoGcTNWa4pk8Mp0wZ2ZYBg+jup03SvVrDUqkE=;
- b=OyRKYvJIEaUBq6Qfk8WyFsBedP0hoawDSxJhBB1qIFyO7XAF11up5fODv2TVXJwtcyUI1Z
- twe0Zvb9RsSDbYVA7UledI8+ZEqqYIqWRni3wC+i16lPtZannVqfbBnvkbkc6salUpecUd
- rGlVBHdDLwuYoaJldbF0beUKPE/C9b0=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-QRAStQR5O7irGJZRL9tYfg-1; Fri, 08 Mar 2024 03:19:15 -0500
-X-MC-Unique: QRAStQR5O7irGJZRL9tYfg-1
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-299783294a6so1485027a91.3
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 00:19:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1riVNP-0003ot-Gh
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 03:14:48 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1riVNL-0006O4-RZ
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 03:14:47 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-412f1961101so15953225e9.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 00:14:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1709885682; x=1710490482; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=uftyk4hTRz63xlOMnWh6LPWaUO0VSX6yK69yiD36wvE=;
+ b=RmqdLhbdKZrmrAs8lNahNi8F+rqcrkIrN4+m4BLW9dtUIlQLG/Z3SYEso/BBvlr4/d
+ +/oTBWSBPp3bGd7LcYi9S+KY3ExaDVyt3ToMrKX+NWtrnKa10F10qPHofMWSBhAQw8ic
+ zZ05+7tzh/EONxQq9UUSNIZImYUYTGGyZD6zykfrj2YAqDKoop1qycdtJb05E0xcQaeM
+ DVc6a3YHtw7Iv4UfREltY8BbvoZ5MFEVIPhFirKDzNEBMuQvgzaXdGGjoaRndMsjGcvN
+ 6quXFc8qE/HNDA3jsc/MtKVVSyk65/jCTi1jZn0PX8thhDIhaT/OZ5WmnsYStYXp+1jW
+ xY3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709885654; x=1710490454;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=c1/Me4NoGcTNWa4pk8Mp0wZ2ZYBg+jup03SvVrDUqkE=;
- b=XFRYSKcwF+fGhr6fyIe3CmfAV54U5XxgfR8klnq1XqngwQUh7/Lp9XHKUu6NOtmPz9
- Lxhzx2UjLxPSuzK4zD3KFaMWE0Z69UKSHOCKPFu8uksCS+Nc4vu4izl9qfoA9A5q6SZ8
- KalQio67IA04w8ZU6m2NPIr1HbordmEMvSndVmlM1tZyiMNMUjQkJzxvSaqK/Ytq39u7
- rRA9REkpbsYR6IX6eW+8Kl4tdUb189BaPFsYoQZctZVT+WSdcrz4eaO6d3KnUM5qJzxU
- T7Xkzt03ZvEm2DnujbQF/6BJKx9TeprPtv2pFf+cB70t+UUIgDzHo6yGnix9oURzFI8k
- +SsQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXCIjmwP4zfGAGf4vNEuYetWxScT0Yz5GrhxziKT0yjgHF9nLhA1CVyIELzG/dnRUEmZtUFD839YAmkjUtbyS9FZOxb+Zk=
-X-Gm-Message-State: AOJu0YxPYm+zUUwX8Iz2gRv1JeWcK4oISxp/COSdma1o6jmeieF8lSI/
- FG7BgeU28Y+OW94TEexMJe7xd3JeJL9eXJyaGElcbPaZ4I9Cm8YjcElcKcpqSceoCiemT9oQwzU
- eAmWWNGEI0UXAYCmLzfznxyhYGYZhojLkjfE4CpVFmtlWg5GB/17yw6Icta7Pg/92l+Ge4YBCkF
- AUljdpztQswzYymR81tv6iWVK9JLM=
-X-Received: by 2002:a17:90a:fb46:b0:29b:bb75:8d14 with SMTP id
- iq6-20020a17090afb4600b0029bbb758d14mr120545pjb.23.1709885654630; 
- Fri, 08 Mar 2024 00:14:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGxT3q3TO20WPYT6SA66jcoFzj4FkDJmSvg09ERmGp00aTvxt9UjkUNut1iBaJOZyPzILZgMuuwmATjfu1mx/Y=
-X-Received: by 2002:a17:90a:fb46:b0:29b:bb75:8d14 with SMTP id
- iq6-20020a17090afb4600b0029bbb758d14mr120536pjb.23.1709885654381; Fri, 08 Mar
- 2024 00:14:14 -0800 (PST)
+ d=1e100.net; s=20230601; t=1709885682; x=1710490482;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=uftyk4hTRz63xlOMnWh6LPWaUO0VSX6yK69yiD36wvE=;
+ b=XWwtryz9lpeq87AAU7GP0kpAaAIyxKy95fxWDQ3FVrrrvPU92gerALeSaPlJKEL8Y9
+ DMoLwxc9ssngn+WZJxlH76IlGUbSJKDBFX0LtrjUjde1nzuhUIEVxrXk+EBXVXGi9fu2
+ 3+IyuccdDhHD1LqPm+AUYyaruY43gfZCVaHTwCnf6wEJaFrlV72xfHvOVDoLXgeJn3ro
+ D3bxrFObY9tOpKOxqj9Qit9XNtZ4ERcDthcdUelx9D6lDQW6uGL3BIkxAgy/Y7NhoyKU
+ TNICKrHzMrzeBcu5j3pA4di+hcMAYVKQYDnwtogwdysSxjc5U0HNSNUvOHLvqepxtNQN
+ N9Ww==
+X-Gm-Message-State: AOJu0YxIBzRAT163aTOldsBUlSBp78LW+aKozWfDJq2fWqpHbRTSQvHW
+ kwQq309ECch9CRfaKq12b5Ai4a4DZvtEY0PxivvquUfYmExZZSsJq6MUe8f8EVE=
+X-Google-Smtp-Source: AGHT+IGER1gN+KbAlQvATPKJZWG0/62jEfWfwyv9VOiebjgI8uCWtW3nFTubjmO2gmRaipmvXT6izg==
+X-Received: by 2002:a05:600c:4fcf:b0:412:ebfe:68fe with SMTP id
+ o15-20020a05600c4fcf00b00412ebfe68femr7293070wmq.35.1709885681970; 
+ Fri, 08 Mar 2024 00:14:41 -0800 (PST)
+Received: from [192.168.69.100] (pir44-h02-176-184-37-132.dsl.sta.abo.bbox.fr.
+ [176.184.37.132]) by smtp.gmail.com with ESMTPSA id
+ z11-20020a05600c0a0b00b00412f428aedasm5163173wmp.46.2024.03.08.00.14.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 08 Mar 2024 00:14:41 -0800 (PST)
+Message-ID: <b4ad4e19-6bb0-4eb2-93ca-4a746afa3816@linaro.org>
+Date: Fri, 8 Mar 2024 09:14:39 +0100
 MIME-Version: 1.0
-References: <20240205165437.1965981-1-andrew@daynix.com>
- <20240205165437.1965981-5-andrew@daynix.com>
-In-Reply-To: <20240205165437.1965981-5-andrew@daynix.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 8 Mar 2024 16:14:03 +0800
-Message-ID: <CACGkMEtdYosQAGYE47sMLDvC-OvFV7JM-mNvxirHwsZTDTtcOQ@mail.gmail.com>
-Subject: Re: [PATCH v9 4/5] qmp: Added new command to retrieve eBPF blob.
-To: Andrew Melnychenko <andrew@daynix.com>
-Cc: mst@redhat.com, armbru@redhat.com, eblake@redhat.com, 
- qemu-devel@nongnu.org, berrange@redhat.com, yuri.benditovich@daynix.com, 
- yan@daynix.com, akihiko.odaki@daynix.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] hw/scsi/lsi53c895a: add timer to scripts processing
+Content-Language: en-US
+To: Sven Schnelle <svens@stackframe.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, deller@gmx.de, BALATON Zoltan <balaton@eik.bme.hu>
+References: <20240304163727.2320861-1-svens@stackframe.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240304163727.2320861-1-svens@stackframe.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.583,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,51 +93,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 6, 2024 at 12:55=E2=80=AFAM Andrew Melnychenko <andrew@daynix.c=
-om> wrote:
->
-> Now, the binary objects may be retrieved by id.
-> It would require for future qmp commands that may require specific
-> eBPF blob.
->
-> Added command "request-ebpf". This command returns
-> eBPF program encoded base64. The program taken from the
-> skeleton and essentially is an ELF object that can be
-> loaded in the future with libbpf.
->
-> The reason to use the command to provide the eBPF object
-> instead of a separate artifact was to avoid issues related
-> to finding the eBPF itself. eBPF object is an ELF binary
-> that contains the eBPF program and eBPF map description(BTF).
-> Overall, eBPF object should contain the program and enough
-> metadata to create/load eBPF with libbpf. As the eBPF
-> maps/program should correspond to QEMU, the eBPF can't
-> be used from different QEMU build.
->
-> The first solution was a helper that comes with QEMU
-> and loads appropriate eBPF objects. And the issue is
-> to find a proper helper if the system has several
-> different QEMUs installed and/or built from the source,
-> which helpers may not be compatible.
->
-> Another issue is QEMU updating while there is a running
-> QEMU instance. With an updated helper, it may not be
-> possible to hotplug virtio-net device to the already
-> running QEMU. Overall, requesting the eBPF object from
-> QEMU itself solves possible failures with acceptable effort.
->
-> Links:
-> [PATCH 3/5] qmp: Added the helper stamp check.
-> https://lore.kernel.org/all/20230219162100.174318-4-andrew@daynix.com/
->
-> Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
+On 4/3/24 17:37, Sven Schnelle wrote:
+> HP-UX 10.20 seems to make the lsi53c895a spinning on a memory location
+> under certain circumstances. As the SCSI controller and CPU are not
+> running at the same time this loop will never finish. After some
+> time, the check loop interrupts with a unexpected device disconnect.
+> This works, but is slow because the kernel resets the scsi controller.
+> Instead of signaling UDC, start a timer and exit the loop. Until the
+> timer fires, the CPU can process instructions which might change the
+> memory location.
+> 
+> The limit of instructions is also reduced because scripts running on
+> the SCSI processor are usually very short. This keeps the time until
+> the loop is exited short.
+> 
+> Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Sven Schnelle <svens@stackframe.org>
+> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->  ebpf/ebpf.c           | 69 +++++++++++++++++++++++++++++++++++++++++++
+>   hw/scsi/lsi53c895a.c | 43 +++++++++++++++++++++++++++++++++----------
+>   hw/scsi/trace-events |  2 ++
+>   2 files changed, 35 insertions(+), 10 deletions(-)
 
-Let's add ebpf.c to MAINTAINERS otherwise CI may warn like:
-
-https://gitlab.com/jasowang/qemu/-/jobs/6349138969
-
-Thanks
-
+I suppose Paolo is going to take this patch, otherwise I can
+queue it via hw-misc tree.
 
