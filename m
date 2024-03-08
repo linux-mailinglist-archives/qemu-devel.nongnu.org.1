@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92B3E8762E1
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 12:15:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FF25876303
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 12:18:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riYA2-000713-DK; Fri, 08 Mar 2024 06:13:10 -0500
+	id 1riYA3-00071f-L8; Fri, 08 Mar 2024 06:13:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1riY9y-0006qe-Gv
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:07 -0500
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1riYA1-0006yL-0i
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:09 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1riY9w-0001et-Ni
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:06 -0500
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6e62c65865cso1643259b3a.2
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 03:13:03 -0800 (PST)
+ id 1riY9z-0001fM-4S
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:08 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1dca3951ad9so15460535ad.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 03:13:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709896382; x=1710501182; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1709896385; x=1710501185; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1kSgZU2AdvqFnrasTSR2vgVn0JCXJwTKFHBsMEqoOao=;
- b=cem7GhVyLTh3Maq8/c+EsjBl2mTCpgoPa3Hme3BJ/hEFxgizSYm6apAdrr/FhHnqBO
- D8vx5K47hI11C6PWmHlwhne0N3ruA0lsXoXI5FrifSb7JzTOmm0ZXD0tyCdDt5DpVNWO
- mnn0cAarcBLIYDaAwadyQHc/T3cm4Q6XeHCn19e/uoMTalvXR3pgv/hqf8z2COfY7o9W
- aT38ZCHfUpKsV8gyaTIrAzILj8WqgVseF/ZI+IP5NvzozyJM8eGeAD1dGAUDF3ncgnr5
- awNqrllDx2F2Ls9VbfeSxBow2b+0U0CJaZo7iETYHPM8OJRd+D5XtPckD8v6ZB/psYBp
- ni9g==
+ bh=nKUnQpiqEsfkuxpcBtNOoRuARAYL0hyyjMYpQNS/5lA=;
+ b=dwEDRWEetMgtrAha/qn+J3Vy3UNv2Jbqxm+mG4asXGANVf19i/n2XRzaIP1NeKLyG8
+ IyxBJO6sIfCgmqo0zQVPcRETNFWC3Jtgb1SUcJlU4NjHKhKHUh1uSd64sp/cdodaPHEt
+ xTSPtPpEPiR4IkY1q0qYHKTddyORK2p/IhexF56P0XWq4c9tFZlOJzpUQqt1Zd6LLlJD
+ aEaZqJDa4vWKqzVQBfIqZipQ61wsRpeGAwgpJoYTg8n2gNEtBjw7Zoo6ZL0O57y6jtSl
+ COBoJK3tP39OcdCnHXxMDOI4SLoJenCFBCJt82R5ZDwMzms3pIrA2sUxECrNzScWWTsl
+ QgDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709896382; x=1710501182;
+ d=1e100.net; s=20230601; t=1709896385; x=1710501185;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1kSgZU2AdvqFnrasTSR2vgVn0JCXJwTKFHBsMEqoOao=;
- b=SOuqyrqhhbYlHudgy/QtnnbW8t39eKY/R+TyDTMROauaQHX5lQ+wRSG6jEbNEIjsfH
- X7BFO4iRP0nO83yG21iyVKu91+4TKj6p2Nn5rSoIqbXOxDx3Ac/5JaO84O0Gnl3eb0Zh
- lL7Wc8pRputsBi11U2vBehuBpv1g8oDpXmPsrYH8VSwgJJbUqtM+rrLYKN2lnDVvC1JL
- ScEmIpwhRCc5z5iQceLCTUBufYz0KAjEsc3F32SzINKT2WC1UbGuspj9c/XvIHZCZrES
- aARIzyMmNBb2LIh7K3SCXFAZHgbZg0B8UA/c3AFPu1a33wgT2tGTVpILbxvYVbf/gvqe
- BQjg==
-X-Gm-Message-State: AOJu0Yz+uyt0Ce12a391OzSRZuXuKTgt5rShOoI8diVNZAYoelBvbiLz
- jb934BUoYPJv/Lv5LuF1XcC3YjV6Et7TRJA8dxMwyK+JJrLvXN3lgDJnkh/HD/2KWw==
-X-Google-Smtp-Source: AGHT+IGLi/8E6+o0FVX5E2a3BiYfH+N/tAb1p9L2n9Wuvni692tZhFIN8kNUGIeerIJFbJV3GMISQA==
-X-Received: by 2002:a05:6a20:3d08:b0:1a1:67c7:3ba4 with SMTP id
- y8-20020a056a203d0800b001a167c73ba4mr7913195pzi.51.1709896382252; 
- Fri, 08 Mar 2024 03:13:02 -0800 (PST)
+ bh=nKUnQpiqEsfkuxpcBtNOoRuARAYL0hyyjMYpQNS/5lA=;
+ b=buo3hTT7r29BG1fePnI//MGeNgMeEGJxgBzpmliHLE41vf4Z9VRQQmzR46z9frMIUY
+ CUKTLZTKxlBq9iCBDNsRhorvdkIVMXQCtPMeMWMpafRIjkNdxvEcZf5BoltwUBpIKSSG
+ fkiT2UwTkTEAf1qEbcCp45K+RaaWmfguGqrQm0SMKWSp/Ze6syjYHiUu+5EhM7luW74d
+ DPqUupR9tUEvGZEt1s+8eWQsxOioI74c3lBW2DSsTJZxnlLpUf22laeVIEgqdadp1mey
+ kXLoBy3H7lZjxNxK5cz0mkXjhD5HO2/gM5kA+zalkSP6Eoses8Wsk7E5peuRFhqdZOxW
+ lTDA==
+X-Gm-Message-State: AOJu0Yy9uq3m+CBmak/fEcVz7xQHX3C5VzlbDBsZV+07WdkZZ7VWY++U
+ r9+XTHhz+9dW1kmaCZQXvPgtpVcCgew8SFke+HD5sK1WLzSGZQpGZp7yYojSzJJk8g==
+X-Google-Smtp-Source: AGHT+IH7GLsOfktZbMKNqSq4oQIvo5b1hUpWOvkv564sjyYh4BXg5u0geNCNzuqcUYAAIet5BnCiDg==
+X-Received: by 2002:a17:902:e747:b0:1dd:5f85:1197 with SMTP id
+ p7-20020a170902e74700b001dd5f851197mr3273578plf.64.1709896385259; 
+ Fri, 08 Mar 2024 03:13:05 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- a6-20020a170902ecc600b001dcfbbb1ca5sm12006468plh.35.2024.03.08.03.12.59
+ a6-20020a170902ecc600b001dcfbbb1ca5sm12006468plh.35.2024.03.08.03.13.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Mar 2024 03:13:01 -0800 (PST)
+ Fri, 08 Mar 2024 03:13:04 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 18/34] hw/riscv/virt.c: add virtio-iommu-pci hotplug support
-Date: Fri,  8 Mar 2024 21:11:36 +1000
-Message-ID: <20240308111152.2856137-19-alistair.francis@wdc.com>
+Subject: [PULL 19/34] hw/riscv/virt.c: make aclint compatible with 'qtest'
+ accel
+Date: Fri,  8 Mar 2024 21:11:37 +1000
+Message-ID: <20240308111152.2856137-20-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240308111152.2856137-1-alistair.francis@wdc.com>
 References: <20240308111152.2856137-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,88 +99,156 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-We want to add a RISC-V 'virt' libqos machine to increase our test
-coverage. Some of the tests will try to plug a virtio-iommu-pci
-device into the board and do some tests with it.
+The 'virt' machine makes assumptions on the Advanced Core-Local
+Interruptor, or aclint, based on 'tcg_enabled()' conditionals.  This
+will impact MSI related tests support when adding a RISC-V 'virt' libqos
+machine. The accelerator used in that case, 'qtest', isn't being
+accounted for and we'll error out if we try to enable aclint.
 
-Enable virtio-iommu-pci in the 'virt' machine.
+Create a new virt_aclint_allowed() helper to gate the aclint code
+considering both TCG and 'qtest' accelerators. The error message is
+left untouched, mentioning TCG only, because we don't expect the
+regular user to be aware of 'qtest'.
+
+We want to add 'qtest' support for aclint only, leaving the TCG specific
+bits out of it. This is done by changing the current format we use
+today:
+
+if (tcg_enabled()) {
+   if (s->have_aclint) { - aclint logic - }
+   else { - non-aclint, TCG logic - }
+}
+
+into:
+
+if (virt_aclint_allowed() && s->have_aclint) {
+ - aclint logic -
+} else if (tcg_enabled()) {
+ - non-aclint, TCG logic -
+}
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240217192607.32565-5-dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20240217192607.32565-6-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/virt.c | 36 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ hw/riscv/virt.c | 52 +++++++++++++++++++++++++------------------------
+ 1 file changed, 27 insertions(+), 25 deletions(-)
 
 diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index b540f4d3da..54ad809b44 100644
+index 54ad809b44..a094af97c3 100644
 --- a/hw/riscv/virt.c
 +++ b/hw/riscv/virt.c
-@@ -53,6 +53,7 @@
+@@ -48,6 +48,7 @@
+ #include "sysemu/tcg.h"
+ #include "sysemu/kvm.h"
+ #include "sysemu/tpm.h"
++#include "sysemu/qtest.h"
+ #include "hw/pci/pci.h"
+ #include "hw/pci-host/gpex.h"
  #include "hw/display/ramfb.h"
- #include "hw/acpi/aml-build.h"
- #include "qapi/qapi-visit-common.h"
-+#include "hw/virtio/virtio-iommu.h"
- 
- /* KVM AIA only supports APLIC MSI. APLIC Wired is always emulated by QEMU. */
- static bool virt_use_kvm_aia(RISCVVirtState *s)
-@@ -971,6 +972,34 @@ static void create_fdt_fw_cfg(RISCVVirtState *s, const MemMapEntry *memmap)
-     qemu_fdt_setprop(ms->fdt, nodename, "dma-coherent", NULL, 0);
+@@ -61,6 +62,11 @@ static bool virt_use_kvm_aia(RISCVVirtState *s)
+     return kvm_irqchip_in_kernel() && s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC;
  }
  
-+static void create_fdt_virtio_iommu(RISCVVirtState *s, uint16_t bdf)
++static bool virt_aclint_allowed(void)
 +{
-+    const char compat[] = "virtio,pci-iommu\0pci1af4,1057";
-+    void *fdt = MACHINE(s)->fdt;
-+    uint32_t iommu_phandle;
-+    g_autofree char *iommu_node = NULL;
-+    g_autofree char *pci_node = NULL;
-+
-+    pci_node = g_strdup_printf("/soc/pci@%lx",
-+                               (long) virt_memmap[VIRT_PCIE_ECAM].base);
-+    iommu_node = g_strdup_printf("%s/virtio_iommu@%x,%x", pci_node,
-+                                 PCI_SLOT(bdf), PCI_FUNC(bdf));
-+    iommu_phandle = qemu_fdt_alloc_phandle(fdt);
-+
-+    qemu_fdt_add_subnode(fdt, iommu_node);
-+
-+    qemu_fdt_setprop(fdt, iommu_node, "compatible", compat, sizeof(compat));
-+    qemu_fdt_setprop_sized_cells(fdt, iommu_node, "reg",
-+                                 1, bdf << 8, 1, 0, 1, 0,
-+                                 1, 0, 1, 0);
-+    qemu_fdt_setprop_cell(fdt, iommu_node, "#iommu-cells", 1);
-+    qemu_fdt_setprop_cell(fdt, iommu_node, "phandle", iommu_phandle);
-+
-+    qemu_fdt_setprop_cells(fdt, pci_node, "iommu-map",
-+                           0, iommu_phandle, 0, bdf,
-+                           bdf + 1, iommu_phandle, bdf + 1, 0xffff - bdf);
++    return tcg_enabled() || qtest_enabled();
 +}
 +
- static void finalize_fdt(RISCVVirtState *s)
- {
-     uint32_t phandle = 1, irq_mmio_phandle = 1, msi_pcie_phandle = 1;
-@@ -1680,7 +1709,8 @@ static HotplugHandler *virt_machine_get_hotplug_handler(MachineState *machine,
- {
-     MachineClass *mc = MACHINE_GET_CLASS(machine);
+ static const MemMapEntry virt_memmap[] = {
+     [VIRT_DEBUG] =        {        0x0,         0x100 },
+     [VIRT_MROM] =         {     0x1000,        0xf000 },
+@@ -725,14 +731,12 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
  
--    if (device_is_dynamic_sysbus(mc, dev)) {
-+    if (device_is_dynamic_sysbus(mc, dev) ||
-+        object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
-         return HOTPLUG_HANDLER(machine);
-     }
-     return NULL;
-@@ -1699,6 +1729,10 @@ static void virt_machine_device_plug_cb(HotplugHandler *hotplug_dev,
-                                      SYS_BUS_DEVICE(dev));
+         create_fdt_socket_memory(s, memmap, socket);
+ 
+-        if (tcg_enabled()) {
+-            if (s->have_aclint) {
+-                create_fdt_socket_aclint(s, memmap, socket,
+-                    &intc_phandles[phandle_pos]);
+-            } else {
+-                create_fdt_socket_clint(s, memmap, socket,
+-                    &intc_phandles[phandle_pos]);
+-            }
++        if (virt_aclint_allowed() && s->have_aclint) {
++            create_fdt_socket_aclint(s, memmap, socket,
++                                     &intc_phandles[phandle_pos]);
++        } else if (tcg_enabled()) {
++            create_fdt_socket_clint(s, memmap, socket,
++                                    &intc_phandles[phandle_pos]);
          }
      }
-+
-+    if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
-+        create_fdt_virtio_iommu(s, pci_get_bdf(PCI_DEVICE(dev)));
-+    }
- }
  
- static void virt_machine_class_init(ObjectClass *oc, void *data)
+@@ -1409,7 +1413,7 @@ static void virt_machine_init(MachineState *machine)
+         exit(1);
+     }
+ 
+-    if (!tcg_enabled() && s->have_aclint) {
++    if (!virt_aclint_allowed() && s->have_aclint) {
+         error_report("'aclint' is only available with TCG acceleration");
+         exit(1);
+     }
+@@ -1446,23 +1450,22 @@ static void virt_machine_init(MachineState *machine)
+                                 hart_count, &error_abort);
+         sysbus_realize(SYS_BUS_DEVICE(&s->soc[i]), &error_fatal);
+ 
+-        if (tcg_enabled()) {
+-            if (s->have_aclint) {
+-                if (s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC) {
+-                    /* Per-socket ACLINT MTIMER */
+-                    riscv_aclint_mtimer_create(memmap[VIRT_CLINT].base +
++        if (virt_aclint_allowed() && s->have_aclint) {
++            if (s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC) {
++                /* Per-socket ACLINT MTIMER */
++                riscv_aclint_mtimer_create(memmap[VIRT_CLINT].base +
+                             i * RISCV_ACLINT_DEFAULT_MTIMER_SIZE,
+                         RISCV_ACLINT_DEFAULT_MTIMER_SIZE,
+                         base_hartid, hart_count,
+                         RISCV_ACLINT_DEFAULT_MTIMECMP,
+                         RISCV_ACLINT_DEFAULT_MTIME,
+                         RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ, true);
+-                } else {
+-                    /* Per-socket ACLINT MSWI, MTIMER, and SSWI */
+-                    riscv_aclint_swi_create(memmap[VIRT_CLINT].base +
++            } else {
++                /* Per-socket ACLINT MSWI, MTIMER, and SSWI */
++                riscv_aclint_swi_create(memmap[VIRT_CLINT].base +
+                             i * memmap[VIRT_CLINT].size,
+                         base_hartid, hart_count, false);
+-                    riscv_aclint_mtimer_create(memmap[VIRT_CLINT].base +
++                riscv_aclint_mtimer_create(memmap[VIRT_CLINT].base +
+                             i * memmap[VIRT_CLINT].size +
+                             RISCV_ACLINT_SWI_SIZE,
+                         RISCV_ACLINT_DEFAULT_MTIMER_SIZE,
+@@ -1470,21 +1473,20 @@ static void virt_machine_init(MachineState *machine)
+                         RISCV_ACLINT_DEFAULT_MTIMECMP,
+                         RISCV_ACLINT_DEFAULT_MTIME,
+                         RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ, true);
+-                    riscv_aclint_swi_create(memmap[VIRT_ACLINT_SSWI].base +
++                riscv_aclint_swi_create(memmap[VIRT_ACLINT_SSWI].base +
+                             i * memmap[VIRT_ACLINT_SSWI].size,
+                         base_hartid, hart_count, true);
+-                }
+-            } else {
+-                /* Per-socket SiFive CLINT */
+-                riscv_aclint_swi_create(
++            }
++        } else if (tcg_enabled()) {
++            /* Per-socket SiFive CLINT */
++            riscv_aclint_swi_create(
+                     memmap[VIRT_CLINT].base + i * memmap[VIRT_CLINT].size,
+                     base_hartid, hart_count, false);
+-                riscv_aclint_mtimer_create(memmap[VIRT_CLINT].base +
++            riscv_aclint_mtimer_create(memmap[VIRT_CLINT].base +
+                         i * memmap[VIRT_CLINT].size + RISCV_ACLINT_SWI_SIZE,
+                     RISCV_ACLINT_DEFAULT_MTIMER_SIZE, base_hartid, hart_count,
+                     RISCV_ACLINT_DEFAULT_MTIMECMP, RISCV_ACLINT_DEFAULT_MTIME,
+                     RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ, true);
+-            }
+         }
+ 
+         /* Per-socket interrupt controller */
 -- 
 2.44.0
 
