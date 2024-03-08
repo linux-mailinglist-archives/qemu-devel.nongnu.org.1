@@ -2,95 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0063487657F
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 14:40:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F7D87659B
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 14:49:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riaS4-00057d-Jl; Fri, 08 Mar 2024 08:39:56 -0500
+	id 1riaZx-000818-Cr; Fri, 08 Mar 2024 08:48:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1riaS3-00057H-ED
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 08:39:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1riaS1-0006dl-EE
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 08:39:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1709905192;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3/nzcf36H9h1M1ZVBO7XyYPyUTqK4LaY1YkD/FOK3pY=;
- b=Y9M08xHV0YiNJ6yiClFSyralM75ew5bCXSXOjTIVGCPF/RgNxQa/TkFtnw1cQjEPPAaey8
- e8XG7WiiSRPKQUjXY7Z4HQ8EohtKUKd00MXKqRzz5UoVG4As/JT1rP67i2IWp50Yx+Q43x
- Xav/Ttq0yP2IEuQy5j2iRUNlwtmunvo=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-122-3WHtUFQfMmyeZ1IcrF_BSg-1; Fri, 08 Mar 2024 08:39:50 -0500
-X-MC-Unique: 3WHtUFQfMmyeZ1IcrF_BSg-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-51325a4d003so2318388e87.3
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 05:39:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1riaZu-00080b-Lr
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 08:48:02 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1riaZs-0000ZZ-RR
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 08:48:02 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-568241f40e9so1042217a12.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 05:47:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1709905678; x=1710510478; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=hlJKeHuliWcDUbk17OKyfKYAWXWxnwxLDrZDjVS3SFg=;
+ b=JsH9WNTzF9xIKSyOk1FVVkHUqxvGQWux52GDP7vUFLZ1+flgA5LDPQW24WDKI0fbgA
+ wI/Qxxb1wY7ofhE7hpioBr34A5FgbhQWzmHyhC9WqWyjrdi7/B6EymTIdnyi/QtXLbWm
+ 3nqU9Db4eCe8SVrr/BOngNz9/p7hfXIwkYXq52fEd5cnSaV/dqFriLbCYiHRg9xwtIbE
+ RNZOSJAhu0F8FikNSh+UtO76Us5C5XN2G+zXSm3NL5pRPmhuN+jt8zeIKrdqYCK+8qxY
+ B0Lk5H0sezjo3ncZcrKEAQjpwaFoFF6BFE7hmWgoytuwebJIwDPxS/+D7TTonZ1BZdsj
+ dxSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709905189; x=1710509989;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3/nzcf36H9h1M1ZVBO7XyYPyUTqK4LaY1YkD/FOK3pY=;
- b=gS6r4Ozh65um/gJ7lwq7m9IoEMKAnR2lThxiyeg5MgXIk2eJGsckrvl3xETH9lp9fh
- +ZgXH06/SPse4qY/BUraXfVeiedwTm0bfnPwbGyHND2IM9VrpeIFKjDn8iAlCICqaTsS
- hzemMAUn48H+UCM2uGMiyOH1NJlySmC1u+QUg+mwzuRH53RvZst5HjAcal1F7rNNXYj4
- TeAPjz/wG1fTYWEWoUWSj0dGqsx6rQbimn6gCkW3Aohq06XJxi1BRVlaIF9oHBgQxfn8
- 2vywUDiU2GEBE3mZymow+8Oom7ExES9o+VCDJ5GE8Fb81UEWxMrQotGmYwih7L6xP7rA
- 90bA==
-X-Gm-Message-State: AOJu0YwhCa0spO4yk/PAtcepDobFyyyR84gbvMtLhaqYRIl+NGX3Rgx0
- 7lmzp88u8zssTjlKsEPJs71YjwJN0smgRFZokDQHggSBoUw2MFIRwG4VTaP/da8/VmNep3XEvBW
- uqo8b86zqChmn2YlcOq/+YWlVR+pprKZHBQHUWjaykuWZjphATEkd
-X-Received: by 2002:ac2:4e08:0:b0:513:8a5b:e3c7 with SMTP id
- e8-20020ac24e08000000b005138a5be3c7mr2390151lfr.0.1709905189420; 
- Fri, 08 Mar 2024 05:39:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHVBkLTJ4XrXXMMUnhdbvNNEZz8VzU1ChMQhY/9MGCI3ZYww4HWNPYFQnec5hwuV+5vMKb5ng==
-X-Received: by 2002:ac2:4e08:0:b0:513:8a5b:e3c7 with SMTP id
- e8-20020ac24e08000000b005138a5be3c7mr2390134lfr.0.1709905189037; 
- Fri, 08 Mar 2024 05:39:49 -0800 (PST)
-Received: from ?IPV6:2a01:cb19:853d:fa00:c28a:3e3d:34f3:3891?
- ([2a01:cb19:853d:fa00:c28a:3e3d:34f3:3891])
- by smtp.gmail.com with ESMTPSA id
- bu16-20020a056000079000b0033dc3f3d689sm23150895wrb.93.2024.03.08.05.39.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 08 Mar 2024 05:39:48 -0800 (PST)
-Message-ID: <cd1ec55d-acdc-4960-8a9c-24c42ff669fa@redhat.com>
-Date: Fri, 8 Mar 2024 14:39:46 +0100
+ d=1e100.net; s=20230601; t=1709905678; x=1710510478;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hlJKeHuliWcDUbk17OKyfKYAWXWxnwxLDrZDjVS3SFg=;
+ b=oI5BELGtBc/0W8XKT6ZbetfebNU+uJ9VsIo9pA6ooeS81X8cTHx/gFpVTk2E98xTiG
+ wirp7gGZrd7Ov3RZi1eBQsF44arybQs6PliGr8SHZq9DJx3D7WJBhyH1JFk2+BtgWSEP
+ ume0wnjxnfbxPp+uP49CO9mCu+KTFkOe7OWkRG0wREntWqnrhQONZXnBTV+TwkmFY+94
+ hH2Mf6img5xKSNJGug24X4+KiuAHGbiNpbFyQ/X7jQpKbJA33wfSR/G6O0NBatNFIiPr
+ hfPYJiBV7qGtoyISH8IurF1FAcFMNdCGRIpmQVXcEBDQHzWUM4jbroXhRQUb9Rs4edA1
+ DpJg==
+X-Gm-Message-State: AOJu0Yz+r1r31y2MBcaG6QxqrrUJb4plXG4r0xkmsLJvHG+UNGg3pvMp
+ 4579EFnFzKRMigJtlw3eXXcEq9Xv8GLr1mgJfK+hz84pPO9zpVzaIHeqv82x126rp3+T73UBzjw
+ yv+wmXdwNxJGNIi2MPtnkBAGOOOInKP3vJRKRsw==
+X-Google-Smtp-Source: AGHT+IHEBM8fsNpcF8p6yrwpR9ILcXeyV1VsdP3DXQe0uyhVh1k3TbL1/3QVFBBtCW4tJc0cpiRjYiPJb09PpHZIBJk=
+X-Received: by 2002:a50:d603:0:b0:566:2f24:b063 with SMTP id
+ x3-20020a50d603000000b005662f24b063mr2075479edi.23.1709905678526; Fri, 08 Mar
+ 2024 05:47:58 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 10/25] migration: Add Error** argument to
- qemu_savevm_state_setup()
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-To: Peter Xu <peterx@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Markus Armbruster <armbru@redhat.com>,
- Prasad Pandit <pjp@fedoraproject.org>
-References: <20240306133441.2351700-1-clg@redhat.com>
- <20240306133441.2351700-11-clg@redhat.com> <ZesLDCwh3r_pV2r3@x1n>
- <deec998e-cab5-4aff-8582-86031778b089@redhat.com>
-In-Reply-To: <deec998e-cab5-4aff-8582-86031778b089@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+References: <cover.1707909001.git.mst@redhat.com>
+ <8700ee15de465a55e5c7281f87618ca4b4827441.1707909001.git.mst@redhat.com>
+In-Reply-To: <8700ee15de465a55e5c7281f87618ca4b4827441.1707909001.git.mst@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 8 Mar 2024 13:47:47 +0000
+Message-ID: <CAFEAcA_W8BxG6rpcao2hCYntfU9aQfAzHQiy6RJQ-v3ZB4sNZg@mail.gmail.com>
+Subject: Re: [PULL 53/60] hw/cxl: Standardize all references on CXL r3.1 and
+ minor updates
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ Fan Ni <fan.ni@samsung.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.572,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,124 +88,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/8/24 14:14, Cédric Le Goater wrote:
-> On 3/8/24 13:56, Peter Xu wrote:
->> On Wed, Mar 06, 2024 at 02:34:25PM +0100, Cédric Le Goater wrote:
->>> This prepares ground for the changes coming next which add an Error**
->>> argument to the .save_setup() handler. Callers of qemu_savevm_state_setup()
->>> now handle the error and fail earlier setting the migration state from
->>> MIGRATION_STATUS_SETUP to MIGRATION_STATUS_FAILED.
->>>
->>> In qemu_savevm_state(), move the cleanup to preserve the error
->>> reported by .save_setup() handlers.
->>>
->>> Since the previous behavior was to ignore errors at this step of
->>> migration, this change should be examined closely to check that
->>> cleanups are still correctly done.
->>>
->>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
->>> ---
->>>
->>>   Changes in v4:
->>>   - Merged cleanup change in qemu_savevm_state()
->>>   Changes in v3:
->>>   - Set migration state to MIGRATION_STATUS_FAILED
->>>   - Fixed error handling to be done under lock in bg_migration_thread()
->>>   - Made sure an error is always set in case of failure in
->>>     qemu_savevm_state_setup()
->>>   migration/savevm.h    |  2 +-
->>>   migration/migration.c | 27 ++++++++++++++++++++++++---
->>>   migration/savevm.c    | 26 +++++++++++++++-----------
->>>   3 files changed, 40 insertions(+), 15 deletions(-)
->>>
->>> diff --git a/migration/savevm.h b/migration/savevm.h
->>> index 74669733dd63a080b765866c703234a5c4939223..9ec96a995c93a42aad621595f0ed58596c532328 100644
->>> --- a/migration/savevm.h
->>> +++ b/migration/savevm.h
->>> @@ -32,7 +32,7 @@
->>>   bool qemu_savevm_state_blocked(Error **errp);
->>>   void qemu_savevm_non_migratable_list(strList **reasons);
->>>   int qemu_savevm_state_prepare(Error **errp);
->>> -void qemu_savevm_state_setup(QEMUFile *f);
->>> +int qemu_savevm_state_setup(QEMUFile *f, Error **errp);
->>>   bool qemu_savevm_state_guest_unplug_pending(void);
->>>   int qemu_savevm_state_resume_prepare(MigrationState *s);
->>>   void qemu_savevm_state_header(QEMUFile *f);
->>> diff --git a/migration/migration.c b/migration/migration.c
->>> index a49fcd53ee19df1ce0182bc99d7e064968f0317b..6d1544224e96f5edfe56939a9c8395d88ef29581 100644
->>> --- a/migration/migration.c
->>> +++ b/migration/migration.c
->>> @@ -3408,6 +3408,8 @@ static void *migration_thread(void *opaque)
->>>       int64_t setup_start = qemu_clock_get_ms(QEMU_CLOCK_HOST);
->>>       MigThrError thr_error;
->>>       bool urgent = false;
->>> +    Error *local_err = NULL;
->>> +    int ret;
->>>       thread = migration_threads_add("live_migration", qemu_get_thread_id());
->>> @@ -3451,9 +3453,17 @@ static void *migration_thread(void *opaque)
->>>       }
->>>       bql_lock();
->>> -    qemu_savevm_state_setup(s->to_dst_file);
->>> +    ret = qemu_savevm_state_setup(s->to_dst_file, &local_err);
->>>       bql_unlock();
->>> +    if (ret) {
->>> +        migrate_set_error(s, local_err);
->>> +        error_free(local_err);
->>> +        migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
->>> +                          MIGRATION_STATUS_FAILED);
->>> +        goto out;
->>> +     }
->>
->> There's a small indent issue, I can fix it.
-> 
-> checkpatch did report anything.
-> 
->>
->> The bigger problem is I _think_ this will trigger a ci failure in the
->> virtio-net-failover test:
->>
->> ▶ 121/464 ERROR:../tests/qtest/virtio-net-failover.c:1203:test_migrate_abort_wait_unplug: assertion failed (status == "cancelling"): ("cancelled" == "cancelling") ERROR
->> 121/464 qemu:qtest+qtest-x86_64 / qtest-x86_64/virtio-net-failover    ERROR            4.77s   killed by signal 6 SIGABRT
->>>>> PYTHON=/builds/peterx/qemu/build/pyvenv/bin/python3.8 G_TEST_DBUS_DAEMON=/builds/peterx/qemu/tests/dbus-vmstate-daemon.sh MALLOC_PERTURB_=161 QTEST_QEMU_IMG=./qemu-img QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon QTEST_QEMU_BINARY=./qemu-system-x86_64 /builds/peterx/qemu/build/tests/qtest/virtio-net-failover --tap -k
->> ――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
->> stderr:
->> qemu-system-x86_64: ram_save_setup failed: Input/output error
->> **
->> ERROR:../tests/qtest/virtio-net-failover.c:1203:test_migrate_abort_wait_unplug: assertion failed (status == "cancelling"): ("cancelled" == "cancelling")
->> (test program exited with status code -6)
->> ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
->>
->> I am not familiar enough with the failover code, and may not have time
->> today to follow this up, copy Laurent.  Cedric, if you have time, please
->> have a look. 
-> 
-> 
-> Sure. Weird because I usually run make check on x86_64, s390x, ppc64 and
-> aarch64. Let me check again.
+On Wed, 14 Feb 2024 at 11:16, Michael S. Tsirkin <mst@redhat.com> wrote:
+>
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> Previously not all references mentioned any spec version at all.
+> Given r3.1 is the current specification available for evaluation at
+> www.computeexpresslink.org update references to refer to that.
+> Hopefully this won't become a never ending job.
+>
+> A few structure definitions have been updated to add new fields.
+> Defaults of 0 and read only are valid choices for these new DVSEC
+> registers so go with that for now.
+>
+> There are additional error codes and some of the 'questions' in
+> the comments are resolved now.
+>
+> Update documentation reference to point to the CXL r3.1 specification
+> with naming closer to what is on the cover.
+>
+> For cases where there are structure version numbers, add defines
+> so they can be found next to the register definitions.
 
-I see one timeout error on s390x but not always. See below. It occurs with
-or without this patchset. the other x86_64, ppc64 arches run fine (a part
-from one io  test failing from time to time)
+Hi; Coverity points out that this change has introduced a
+buffer overrun (CID 1534905). In hw/mem/cxl_type3.c:build_dvsecs()
+we create a local struct of type CXLDVSecDevice, and then we
+pass it to cxl_component_create_dvsec() as the body parameter,
+passing it a length argument PCIE_CXL_DEVICE_DVSEC_LENGTH.
 
-Thanks,
+Before this change, both sizeof(CXLDVSecDevice) and
+PCIE_CXL_DEVICE_DVSEC_LENGTH were 0x38, so this was fine.
+But now...
 
-C.
+> diff --git a/include/hw/cxl/cxl_pci.h b/include/hw/cxl/cxl_pci.h
+> index ddf01a543b..265db6c407 100644
+> --- a/include/hw/cxl/cxl_pci.h
+> +++ b/include/hw/cxl/cxl_pci.h
+> @@ -16,9 +16,8 @@
+>  #define PCIE_DVSEC_HEADER1_OFFSET 0x4 /* Offset from start of extend cap */
+>  #define PCIE_DVSEC_ID_OFFSET 0x8
+>
+> -#define PCIE_CXL_DEVICE_DVSEC_LENGTH 0x38
+> -#define PCIE_CXL1_DEVICE_DVSEC_REVID 0
+> -#define PCIE_CXL2_DEVICE_DVSEC_REVID 1
+> +#define PCIE_CXL_DEVICE_DVSEC_LENGTH 0x3C
+> +#define PCIE_CXL31_DEVICE_DVSEC_REVID 3
+>
+>  #define EXTENSIONS_PORT_DVSEC_LENGTH 0x28
+>  #define EXTENSIONS_PORT_DVSEC_REVID 0
 
+...PCIE_CXL_DEVICE_DVSEC_LENGTH is 0x3C...
 
+> -/* CXL 2.0 - 8.1.3 (ID 0001) */
+> +/*
+> + * CXL r3.1 Section 8.1.3: PCIe DVSEC for Devices
+> + * DVSEC ID: 0, Revision: 3
+> + */
+>  typedef struct CXLDVSECDevice {
+>      DVSECHeader hdr;
+>      uint16_t cap;
+> @@ -82,10 +91,14 @@ typedef struct CXLDVSECDevice {
+>      uint32_t range2_size_lo;
+>      uint32_t range2_base_hi;
+>      uint32_t range2_base_lo;
+> -} CXLDVSECDevice;
+> -QEMU_BUILD_BUG_ON(sizeof(CXLDVSECDevice) != 0x38);
+> +    uint16_t cap3;
+> +} QEMU_PACKED CXLDVSECDevice;
+> +QEMU_BUILD_BUG_ON(sizeof(CXLDVSECDevice) != 0x3A);
+
+...and CXLDVSECDevice is only size 0x3A, so we try to read off the
+end of the struct.
+
+What was supposed to happen here?
+
+> --- a/hw/mem/cxl_type3.c
+> +++ b/hw/mem/cxl_type3.c
+> @@ -319,7 +319,7 @@ static void build_dvsecs(CXLType3Dev *ct3d)
+>      cxl_component_create_dvsec(cxl_cstate, CXL2_TYPE3_DEVICE,
+>                                 PCIE_CXL_DEVICE_DVSEC_LENGTH,
+>                                 PCIE_CXL_DEVICE_DVSEC,
+> -                               PCIE_CXL2_DEVICE_DVSEC_REVID, dvsec);
+> +                               PCIE_CXL31_DEVICE_DVSEC_REVID, dvsec);
+>
+>      dvsec = (uint8_t *)&(CXLDVSECRegisterLocator){
+>          .rsvd         = 0,
+
+Perhaps this call to cxl_component_create_dvsec() was
+supposed to have the length argument changed, as seems
+to have been done with this other call:
+
+> @@ -346,9 +346,9 @@ static void build_dvsecs(CXLType3Dev *ct3d)
+>          .rcvd_mod_ts_data_phase1 = 0xef, /* WTF? */
+>      };
+>      cxl_component_create_dvsec(cxl_cstate, CXL2_TYPE3_DEVICE,
+> -                               PCIE_FLEXBUS_PORT_DVSEC_LENGTH_2_0,
+> +                               PCIE_CXL3_FLEXBUS_PORT_DVSEC_LENGTH,
+>                                 PCIE_FLEXBUS_PORT_DVSEC,
+> -                               PCIE_FLEXBUS_PORT_DVSEC_REVID_2_0, dvsec);
+> +                               PCIE_CXL3_FLEXBUS_PORT_DVSEC_REVID, dvsec);
+>  }
+
+ static void hdm_decoder_commit(CXLType3Dev *ct3d, int which)
 
 
+and with similar other calls in the commit ?
 
+Is there a way we could write this that would catch this error?
+I'm thinking maybe something like
 
-# Start of compress tests
-# Running /s390x/migration/postcopy/recovery/compress/plain
-# Using machine type: s390-ccw-virtio-9.0
-# starting QEMU: exec ./qemu-system-s390x -qtest unix:/tmp/qtest-3064311.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-3064311.qmp,id=char0 -mon chardev=char0,mode=control -display none -audio none -accel kvm -accel tcg -machine s390-ccw-virtio-9.0, -name source,debug-threads=on -m 128M -serial file:/tmp/migration-test-TO8BK2/src_serial -bios /tmp/migration-test-TO8BK2/bootsect    2>/dev/null -accel qtest
-# starting QEMU: exec ./qemu-system-s390x -qtest unix:/tmp/qtest-3064311.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-3064311.qmp,id=char0 -mon chardev=char0,mode=control -display none -audio none -accel kvm -accel tcg -machine s390-ccw-virtio-9.0, -name target,debug-threads=on -m 128M -serial file:/tmp/migration-test-TO8BK2/dest_serial -incoming defer -bios /tmp/migration-test-TO8BK2/bootsect    2>/dev/null -accel qtest
+#define CXL_CREATE_DVSEC(CXL, DEVTYPE, TYPE, DATA) do { \
+     assert(sizeof(*DATA) == TYPE##_LENGTH); \
+     cxl_component_create_dvsec(CXL, DEVTYPE, TYPE##_LENGTH, \
+                                TYPE, TYPE##_REVID, (uint8_t*)DATA); \
+     } while (0)
 
-**
-ERROR:../tests/qtest/migration-helpers.c:205:wait_for_migration_status: assertion failed: (g_test_timer_elapsed() < MIGRATION_STATUS_WAIT_TIMEOUT)
-Bail out! ERROR:../tests/qtest/migration-helpers.c:205:wait_for_migration_status: assertion failed: (g_test_timer_elapsed() < MIGRATION_STATUS_WAIT_TIMEOUT)
-../tests/qtest/libqtest.c:204: kill_qemu() detected QEMU death from signal 9 (Killed)
-Aborted (core dumped)
-
+thanks
+-- PMM
 
