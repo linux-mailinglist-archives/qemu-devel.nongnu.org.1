@@ -2,69 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD41875FFC
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 09:46:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DA5287601C
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 09:50:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riVrV-0001wY-8n; Fri, 08 Mar 2024 03:45:53 -0500
+	id 1riVvM-0003kS-EE; Fri, 08 Mar 2024 03:49:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1riVrR-0001wM-CP
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 03:45:49 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1riVrN-0006Mr-Rc
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 03:45:48 -0500
-Received: from loongson.cn (unknown [10.20.42.173])
- by gateway (Coremail) with SMTP id _____8AxOOg10Opl2joWAA--.35353S3;
- Fri, 08 Mar 2024 16:45:41 +0800 (CST)
-Received: from [10.20.42.173] (unknown [10.20.42.173])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Bx7c400Oplhi5RAA--.19252S3; 
- Fri, 08 Mar 2024 16:45:40 +0800 (CST)
-Subject: Re: [PATCH v6 17/17] hw/loongarch: Add cells missing from rtc node
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-References: <20240307164835.300412-1-gaosong@loongson.cn>
- <20240307164835.300412-18-gaosong@loongson.cn>
-From: maobibo <maobibo@loongson.cn>
-Message-ID: <9dfc5c9d-0642-bf79-95ad-c22ed49f8db3@loongson.cn>
-Date: Fri, 8 Mar 2024 16:45:39 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1riVvI-0003ju-7T
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 03:49:48 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1riVvG-0006vc-PN
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 03:49:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1709887786;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=pzv7in/SYP2w/qBa51YqARE4NVhqtRRLjFoeoRDXZWI=;
+ b=ObX9Vk1r69B7iVNcuRiC/Z1VRr5Mplj5jrEWJkFq3E4JhSCoeapt/I3w5fnN91lXF1BZqF
+ KCPU1wfbbpid1G8NEHHFgtDe3l/uyXwAwSFN/6NugXQyhb6hz0GaT9i16bld/HJ36iKYfq
+ tMMxrlQnqCERk8m6HUmi77CsuvKQUEE=
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
+ [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-207-Jej7ux6aORqxtrn4x9X9cw-1; Fri, 08 Mar 2024 03:49:44 -0500
+X-MC-Unique: Jej7ux6aORqxtrn4x9X9cw-1
+Received: by mail-oo1-f71.google.com with SMTP id
+ 006d021491bc7-5a032e40f41so1496047eaf.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 00:49:44 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1709887784; x=1710492584;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pzv7in/SYP2w/qBa51YqARE4NVhqtRRLjFoeoRDXZWI=;
+ b=FevCWH8Yv8WVGco6SacrbxqqMa7kNCwd6Qzx55j2hWq7b9EZIPV+3ryU23BQuLyWip
+ tVZ6Att8LIlq6g+OYUdv6grgx8jDfbnWvwuIREEipeRpJy5l34hL16m+rmuf6iNek78D
+ /kIat99YhVlXtzjrZnQu9o4meV3v7KFL7K34dYDed/YcFoqJ0cwnTwuBYO1ENgt2mFds
+ C4s5DnMXBo+//cFYBN20hvCVN4ZMSTIvjrANH+dvZsh2xllxffBckYrlXDk1gMJgDYX4
+ f5UW19tmAbZ2RzJX64ZdJyBX3hOh4BNmB38sBuiEHZtKZ+9MCjfU6L6lfnoSUqndb+P7
+ GI/Q==
+X-Gm-Message-State: AOJu0YxBhV8DEay/EzKRXzn/V6aO822+JFqLjDupB6yibYnDqXsxavnF
+ 6yQ7zxOvA+NaIUKKBXxiOQy4U7XjTonNJ/7UZvkiv4/SGtlzfBCpzaDY0t1fUb2JjzSN06wNCSm
+ Qj5rBIt9IEx4UmPfL+hZbXAFQm5WkY5gkO+4ziFYgSvMjkw45iT4c
+X-Received: by 2002:a05:6358:6f9e:b0:17b:f4cf:f51 with SMTP id
+ s30-20020a0563586f9e00b0017bf4cf0f51mr12729980rwn.17.1709887783881; 
+ Fri, 08 Mar 2024 00:49:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGABUDvjrkfg30CMAZFAWksbkY2Uy7OC6GvzKZekqaRN+Zr7dCF5qTa3p4XlPb+aw9Y6u2sJg==
+X-Received: by 2002:a05:6358:6f9e:b0:17b:f4cf:f51 with SMTP id
+ s30-20020a0563586f9e00b0017bf4cf0f51mr12729959rwn.17.1709887783540; 
+ Fri, 08 Mar 2024 00:49:43 -0800 (PST)
+Received: from [192.168.0.9] (ip-109-43-178-151.web.vodafone.de.
+ [109.43.178.151]) by smtp.gmail.com with ESMTPSA id
+ g11-20020ae9e10b000000b007883a071e67sm3175902qkm.63.2024.03.08.00.49.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 08 Mar 2024 00:49:43 -0800 (PST)
+Message-ID: <9b70c85e-0c4f-47f6-ade2-a227c5b70401@redhat.com>
+Date: Fri, 8 Mar 2024 09:49:35 +0100
 MIME-Version: 1.0
-In-Reply-To: <20240307164835.300412-18-gaosong@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] scripts/kernel-doc: teach kdoc about QLIST_ macros
 Content-Language: en-US
+To: Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ John G Johnson <john.g.johnson@oracle.com>,
+ Jagannathan Raman <jag.raman@oracle.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>, Eduardo Habkost
+ <eduardo@habkost.net>, Juan Quintela <quintela@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, peter.maydell@linaro.org,
+ David Hildenbrand <david@redhat.com>
+References: <20240307181105.4081793-1-alex.bennee@linaro.org>
+ <20240307181105.4081793-2-alex.bennee@linaro.org> <ZerA34BH9NNf_K1Y@x1n>
+ <87msr9taac.fsf@draig.linaro.org> <ZerK2iI7FAGuQH1O@x1n>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <ZerK2iI7FAGuQH1O@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Bx7c400Oplhi5RAA--.19252S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7tr18Zr4fCFW5AF1fWF1rGrX_yoW8Zr1DpF
- W7CFn8Za1UtF17WrZ2934F9F1fAr1Ikr1jgr12krW0kryDWw1DXr4xC3srtFyUZ34rJF4Y
- vFsYgryag3WIgrXCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q6rW5McIj6I8E87Iv
- 67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW5JVW7JwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jO
- db8UUUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.08,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.583,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,56 +154,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 08/03/2024 09.22, Peter Xu wrote:
+> On Fri, Mar 08, 2024 at 08:09:15AM +0000, Alex Bennée wrote:
+>> Peter Xu <peterx@redhat.com> writes:
+>>
+>>> On Thu, Mar 07, 2024 at 06:11:01PM +0000, Alex Bennée wrote:
+>>>> The kernel-doc script does some pre-processing on structure
+>>>> definitions before parsing for names. Teach it about QLIST and replace
+>>>> with simplified structures representing the base type.
+>>>>
+>>>> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+>>>> ---
+>>>>   scripts/kernel-doc | 9 ++++++++-
+>>>>   1 file changed, 8 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/scripts/kernel-doc b/scripts/kernel-doc
+>>>> index 240923d509a..26c47562e79 100755
+>>>> --- a/scripts/kernel-doc
+>>>> +++ b/scripts/kernel-doc
+>>>> @@ -1226,7 +1226,14 @@ sub dump_struct($$) {
+>>>>   	# replace DECLARE_KFIFO_PTR
+>>>>   	$members =~ s/DECLARE_KFIFO_PTR\s*\(([^,)]+),\s*([^,)]+)\)/$2 \*$1/gos;
+>>>>   
+>>>> -	my $declaration = $members;
+>>>> +        # QEMU Specific Macros
+>>>> +
+>>>> +        # replace QLIST_ENTRY with base type and variable name
+>>>> +        $members =~ s/QLIST_ENTRY\(([^)]+)\)\s+([^;]+)/$1 \*$2/gos;
+>>>> +        # replace QLIST_HEAD, optionally capturing an anonymous struct marker, and capture type and variable name
+>>>> +        $members =~ s/QLIST_HEAD\(\s*,\s*([^)]+)\)\s+([^;]+)/struct { $1 *lh_first; } $2/gos;
+>>>> +
+>>>> +        my $declaration = $members;
+>>>
+>>> May need a "tabify" here..
+>>
+>> Ugg that file is a mess. Any idea what we should use for perl, tabs or
+>> spaces? I can update editorconfig.
+> 
+> Indeed.. not perl expert here.
+> 
+> For this one it might be still good to keep the same with the code around
+> before an attempt to clean it up.
 
+I think this file originate from the Linux kernel repo, so it might be a 
+good idea to keep it in sync with the version from there?
 
-On 2024/3/8 上午12:48, Song Gao wrote:
-> rtc node need interrupts and interrupt-parent cells.
-> 
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> Message-Id: <20240301093839.663947-18-gaosong@loongson.cn>
-> ---
->   hw/loongarch/virt.c | 12 +++++++++---
->   1 file changed, 9 insertions(+), 3 deletions(-)
-> 
-> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-> index 58957a8d9a..676f1f5227 100644
-> --- a/hw/loongarch/virt.c
-> +++ b/hw/loongarch/virt.c
-> @@ -231,7 +231,8 @@ static void fdt_add_flash_node(LoongArchMachineState *lams)
->       g_free(nodename);
->   }
->   
-> -static void fdt_add_rtc_node(LoongArchMachineState *lams)
-> +static void fdt_add_rtc_node(LoongArchMachineState *lams,
-> +                             uint32_t *pch_pic_phandle)
->   {
->       char *nodename;
->       hwaddr base = VIRT_RTC_REG_BASE;
-> @@ -240,8 +241,13 @@ static void fdt_add_rtc_node(LoongArchMachineState *lams)
->   
->       nodename = g_strdup_printf("/rtc@%" PRIx64, base);
->       qemu_fdt_add_subnode(ms->fdt, nodename);
-> -    qemu_fdt_setprop_string(ms->fdt, nodename, "compatible", "loongson,ls7a-rtc");
-> +    qemu_fdt_setprop_string(ms->fdt, nodename, "compatible",
-> +                            "loongson,ls7a-rtc");
->       qemu_fdt_setprop_sized_cells(ms->fdt, nodename, "reg", 2, base, 2, size);
-> +    qemu_fdt_setprop_cells(ms->fdt, nodename, "interrupts",
-> +                           VIRT_RTC_IRQ - VIRT_GSI_BASE , 0x4);
-> +    qemu_fdt_setprop_cell(ms->fdt, nodename, "interrupt-parent",
-> +                          *pch_pic_phandle);
->       g_free(nodename);
->   }
->   
-> @@ -647,7 +653,7 @@ static void loongarch_devices_init(DeviceState *pch_pic,
->       sysbus_create_simple("ls7a_rtc", VIRT_RTC_REG_BASE,
->                            qdev_get_gpio_in(pch_pic,
->                            VIRT_RTC_IRQ - VIRT_GSI_BASE));
-> -    fdt_add_rtc_node(lams);
-> +    fdt_add_rtc_node(lams, pch_pic_phandle);
->   
->       /* acpi ged */
->       lams->acpi_ged = create_acpi_ged(pch_pic, lams);
-> 
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+  Thomas
+
 
 
