@@ -2,75 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97B838766D2
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 15:57:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 112688766DF
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 15:58:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ribdt-00039L-Nu; Fri, 08 Mar 2024 09:56:13 -0500
+	id 1ribe2-0003DZ-F9; Fri, 08 Mar 2024 09:56:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ribdm-00037Q-3N
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 09:56:06 -0500
+ id 1ribdv-00039p-4Q
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 09:56:15 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ribdj-0005OE-IU
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 09:56:05 -0500
+ id 1ribdj-0005OZ-QD
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 09:56:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1709909762;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:  content-type:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=pFRe+eNxjsQmTEV8XizhI98YKBf4MdVAbLm8WV/p8p8=;
- b=clkFWEC1DiIa4TWEqJHK3roIDqrXE9pJgi4tFNS/6JIypn5kj4mAqrddTucey9v58jJuPN
- 0hE0W+hybwIsnSHytplEts0UtqOnw9Q3D4SS9CpDIb+b3JAWXczz/OOOvhcGmIV8TFitYf
- tbCuC0o7NQtqGmj6XsAdALtTlkjAkPs=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=btK1kyt8BalfNBwPiYgdVCxNdJNeq5gpu69gZVwdFqg=;
+ b=JyNg9R1TBVojOXtxJmgoYpwELIixPoq/1Hf1ysdiRLBKiEaPJTNs20acjjrcVMqezYluWG
+ hjDVIFH789+Uq+/r7J1BEmS1KW4ajq8Iq/6YkWj8wAR8M4CaXDy+mmwSDj5p1bJ8f7YV9Y
+ BpLOB0uvG8/nODYt5yGj8A8+l+oGvcY=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-282-thIJ6YcXNVenlIB0WfNL2A-1; Fri, 08 Mar 2024 09:55:58 -0500
-X-MC-Unique: thIJ6YcXNVenlIB0WfNL2A-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a44d0cb0596so62689966b.2
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 06:55:57 -0800 (PST)
+ us-mta-442-3ucKmk94ND2BWiHIvJus9A-1; Fri, 08 Mar 2024 09:56:00 -0500
+X-MC-Unique: 3ucKmk94ND2BWiHIvJus9A-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a45b4f09107so77075466b.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 06:56:00 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709909756; x=1710514556;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pFRe+eNxjsQmTEV8XizhI98YKBf4MdVAbLm8WV/p8p8=;
- b=NXsEEjVXbm6VpLzbQ9H8pLRwbZFDtF0XAcmCqXxLgCONlHHycf90dfs6ht3W3kAsRY
- /vP8u9ovcZIGhy/wkjvjDk0rGXyV7wUifpJVBBKJhb1W7aLyi9FJjzRdFJWjnMcVJ5ry
- wpJPAf+ujuONASJFfvx81bQ11EWjMj7KJbJsL+V2EgbtVZjsrULIXht4zRLqw6LPpgYA
- Z+Hky0G/HjlMxSZw9z50GVGWMd8ehOTceGg4yLdOock6XUoC2CrbttQWG6N8ibFGg+uf
- p4RPWTnjlMG/zWISo6AzNUy5YviGalXEx+pme3t793xHxBqrX4RCVJBiKkWos/lnmf68
- Mrcw==
-X-Gm-Message-State: AOJu0YwtWEZOp+asm3YmOE9JF9dAde+3FyEOR9SbLJYnvJfNEEjPF2EY
- SCQUxi1ALN7xGOX7n0eQp2wJoDkKfsuW4cJzUgLyZdjWavplG6Fabp22G5j0qMLiOoFpu2BXnuv
- Q3Pkkrc7sAXWnndkPQfj9RaiqNS3LZx6GYowEIcE4b2567oj5jUjLiAwesKLXvAE28ycNKAV9id
- /Z4BwVV5zFwEkn8etleeKvc3utno8e/CU1qEbs
-X-Received: by 2002:a17:906:1114:b0:a43:bb3b:3b5a with SMTP id
- h20-20020a170906111400b00a43bb3b3b5amr15115343eja.22.1709909756282; 
- Fri, 08 Mar 2024 06:55:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH05MVnRJV0Krzujp+rdnFt//rvtKnBeW9DZ6PgaCBskckSX0yl6IUxN9dq/gUwKu3YaMiwgQ==
-X-Received: by 2002:a17:906:1114:b0:a43:bb3b:3b5a with SMTP id
- h20-20020a170906111400b00a43bb3b3b5amr15115332eja.22.1709909755764; 
- Fri, 08 Mar 2024 06:55:55 -0800 (PST)
+ d=1e100.net; s=20230601; t=1709909758; x=1710514558;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=btK1kyt8BalfNBwPiYgdVCxNdJNeq5gpu69gZVwdFqg=;
+ b=sbTEpqR1GdbxTrpNVOO47LaT1qrdi4pa4sflNP5ckzYOqjpjyh8nA7vOxDf6BoNk+D
+ gIGyFwXJS463VS9zld3srEv6N0hu9uiANTgGz9L5yMo5MhJvjeUgj9+XCIl3P937KfkZ
+ TFZ8WhTbPuOcWMwcWHRV3+AttY7AhlDNJsqYaJ2ePiJX4iCeKhr4+aXEaLL8dWNJDC3/
+ FIdLTApUH+dGjQ1q2NSLA8uVwwfdXI1b418pCXeu2iFwlTGTH6tjZe6kfoK7EN0UV4WW
+ aRaIOEJkCv/25hQHAkKHrJDqYQ4Jbv6VvZqswOLEqep5LGihRP3dsVG/T3spGQ6XZBOW
+ 2dlA==
+X-Gm-Message-State: AOJu0Yxkr8rK5KOUxTxej0wTTDJ10C3jJUY6+q7q/591JkFg1qP/oVIf
+ qOTOlvNWKXyLiWW/pCC94NjgxnqyKliBNlvfrnhEVSZzQZn9OEJFnnjoc8k7ijdu4Kgr3ZHko9c
+ 4TmAwvK138zTEiE4MWnLUsqiRVLEsAghY7mj2o1UwARsPaKHrRnCgSfyW/BkWqA4LjjDnekR27p
+ Y7HhTRm5oR8uNAIOndmhc/It/wvThu6sIBEajm
+X-Received: by 2002:a17:906:685:b0:a44:fe70:1b82 with SMTP id
+ u5-20020a170906068500b00a44fe701b82mr11577605ejb.8.1709909758493; 
+ Fri, 08 Mar 2024 06:55:58 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG0VGffbk36jcCV7Y26SP+aMC6xKRFASDcXqvVrOOFne37+9IJrzfKS2xxMs+P8JPHwDUGiFg==
+X-Received: by 2002:a17:906:685:b0:a44:fe70:1b82 with SMTP id
+ u5-20020a170906068500b00a44fe701b82mr11577586ejb.8.1709909758014; 
+ Fri, 08 Mar 2024 06:55:58 -0800 (PST)
 Received: from [192.168.10.118] ([151.49.77.21])
  by smtp.gmail.com with ESMTPSA id
- mp7-20020a1709071b0700b00a440ceb4110sm9461772ejc.183.2024.03.08.06.55.55
- for <qemu-devel@nongnu.org>
+ mp7-20020a1709071b0700b00a440ceb4110sm9461798ejc.183.2024.03.08.06.55.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Mar 2024 06:55:55 -0800 (PST)
+ Fri, 08 Mar 2024 06:55:56 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/12] Misc fixes, i386 TSTEQ/TSTNE, coverity CI for 2024-03-08
-Date: Fri,  8 Mar 2024 15:55:42 +0100
-Message-ID: <20240308145554.599614-1-pbonzini@redhat.com>
+Cc: Sven Schnelle <svens@stackframe.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 01/12] hw/scsi/lsi53c895a: add timer to scripts processing
+Date: Fri,  8 Mar 2024 15:55:43 +0100
+Message-ID: <20240308145554.599614-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240308145554.599614-1-pbonzini@redhat.com>
+References: <20240308145554.599614-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -81,8 +85,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.572,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,62 +102,174 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 8f6330a807f2642dc2a3cdf33347aa28a4c00a87:
+From: Sven Schnelle <svens@stackframe.org>
 
-  Merge tag 'pull-maintainer-updates-060324-1' of https://gitlab.com/stsquad/qemu into staging (2024-03-06 16:56:20 +0000)
+HP-UX 10.20 seems to make the lsi53c895a spinning on a memory location
+under certain circumstances. As the SCSI controller and CPU are not
+running at the same time this loop will never finish. After some
+time, the check loop interrupts with a unexpected device disconnect.
+This works, but is slow because the kernel resets the scsi controller.
+Instead of signaling UDC, start a timer and exit the loop. Until the
+timer fires, the CPU can process instructions which might changes the
+memory location.
 
-are available in the Git repository at:
+The limit of instructions is also reduced because scripts running on
+the SCSI processor are usually very short. This keeps the time until
+the loop is exit short.
 
-  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Sven Schnelle <svens@stackframe.org>
+Message-ID: <20240229204407.1699260-1-svens@stackframe.org>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ hw/scsi/lsi53c895a.c | 43 +++++++++++++++++++++++++++++++++----------
+ hw/scsi/trace-events |  2 ++
+ 2 files changed, 35 insertions(+), 10 deletions(-)
 
-for you to fetch changes up to 47791be8cc6efa0fb9c145a2b92da0417f4137b8:
-
-  gitlab-ci: add manual job to run Coverity (2024-03-08 15:52:26 +0100)
-
-----------------------------------------------------------------
-* target/i386: use TSTEQ/TSTNE
-* move Coverity builds to Gitlab CI
-* fix two memory leaks
-* bug fixes
-
-----------------------------------------------------------------
-Akihiko Odaki (1):
-      meson: Remove --warn-common ldflag
-
-Dmitrii Gavrilov (1):
-      system/qdev-monitor: move drain_call_rcu call under if (!dev) in qmp_device_add()
-
-Paolo Bonzini (8):
-      hw/intc/apic: fix memory leak
-      oslib-posix: fix memory leak in touch_all_pages
-      mips: do not list individual devices from configs/
-      target/i386: use TSTEQ/TSTNE to test low bits
-      target/i386: use TSTEQ/TSTNE to check flags
-      target/i386: remove mask from CCPrepare
-      run-coverity-scan: add --check-upload-only option
-      gitlab-ci: add manual job to run Coverity
-
-Sven Schnelle (2):
-      hw/scsi/lsi53c895a: add timer to scripts processing
-      hw/scsi/lsi53c895a: stop script on phase mismatch
-
- configs/devices/mips-softmmu/common.mak      |  28 +------
- configs/devices/mips64el-softmmu/default.mak |   3 -
- meson.build                                  |   5 --
- hw/intc/apic.c                               |   6 +-
- hw/scsi/lsi53c895a.c                         |  59 ++++++++++----
- system/qdev-monitor.c                        |  23 +++---
- target/i386/tcg/translate.c                  | 115 ++++++++++++---------------
- util/oslib-posix.c                           |   6 +-
- target/i386/tcg/emit.c.inc                   |   5 +-
- .gitlab-ci.d/base.yml                        |   4 +
- .gitlab-ci.d/buildtest.yml                   |  39 ++++++++-
- .gitlab-ci.d/opensbi.yml                     |   4 +
- hw/display/Kconfig                           |   2 +-
- hw/mips/Kconfig                              |  20 ++++-
- hw/scsi/trace-events                         |   2 +
- scripts/coverity-scan/run-coverity-scan      |  59 ++++++++++----
- 16 files changed, 228 insertions(+), 152 deletions(-)
+diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
+index d607a5f9fb1..4ff94703816 100644
+--- a/hw/scsi/lsi53c895a.c
++++ b/hw/scsi/lsi53c895a.c
+@@ -188,7 +188,7 @@ static const char *names[] = {
+ #define LSI_TAG_VALID     (1 << 16)
+ 
+ /* Maximum instructions to process. */
+-#define LSI_MAX_INSN    10000
++#define LSI_MAX_INSN    100
+ 
+ typedef struct lsi_request {
+     SCSIRequest *req;
+@@ -205,6 +205,7 @@ enum {
+     LSI_WAIT_RESELECT, /* Wait Reselect instruction has been issued */
+     LSI_DMA_SCRIPTS, /* processing DMA from lsi_execute_script */
+     LSI_DMA_IN_PROGRESS, /* DMA operation is in progress */
++    LSI_WAIT_SCRIPTS, /* SCRIPTS stopped because of instruction count limit */
+ };
+ 
+ enum {
+@@ -224,6 +225,7 @@ struct LSIState {
+     MemoryRegion ram_io;
+     MemoryRegion io_io;
+     AddressSpace pci_io_as;
++    QEMUTimer *scripts_timer;
+ 
+     int carry; /* ??? Should this be an a visible register somewhere?  */
+     int status;
+@@ -415,6 +417,7 @@ static void lsi_soft_reset(LSIState *s)
+     s->sbr = 0;
+     assert(QTAILQ_EMPTY(&s->queue));
+     assert(!s->current);
++    timer_del(s->scripts_timer);
+ }
+ 
+ static int lsi_dma_40bit(LSIState *s)
+@@ -1127,6 +1130,12 @@ static void lsi_wait_reselect(LSIState *s)
+     }
+ }
+ 
++static void lsi_scripts_timer_start(LSIState *s)
++{
++    trace_lsi_scripts_timer_start();
++    timer_mod(s->scripts_timer, qemu_clock_get_us(QEMU_CLOCK_VIRTUAL) + 500);
++}
++
+ static void lsi_execute_script(LSIState *s)
+ {
+     PCIDevice *pci_dev = PCI_DEVICE(s);
+@@ -1136,6 +1145,11 @@ static void lsi_execute_script(LSIState *s)
+     int insn_processed = 0;
+     static int reentrancy_level;
+ 
++    if (s->waiting == LSI_WAIT_SCRIPTS) {
++        timer_del(s->scripts_timer);
++        s->waiting = LSI_NOWAIT;
++    }
++
+     reentrancy_level++;
+ 
+     s->istat1 |= LSI_ISTAT1_SRUN;
+@@ -1143,8 +1157,8 @@ again:
+     /*
+      * Some windows drivers make the device spin waiting for a memory location
+      * to change. If we have executed more than LSI_MAX_INSN instructions then
+-     * assume this is the case and force an unexpected device disconnect. This
+-     * is apparently sufficient to beat the drivers into submission.
++     * assume this is the case and start a timer. Until the timer fires, the
++     * host CPU has a chance to run and change the memory location.
+      *
+      * Another issue (CVE-2023-0330) can occur if the script is programmed to
+      * trigger itself again and again. Avoid this problem by stopping after
+@@ -1152,13 +1166,8 @@ again:
+      * which should be enough for all valid use cases).
+      */
+     if (++insn_processed > LSI_MAX_INSN || reentrancy_level > 8) {
+-        if (!(s->sien0 & LSI_SIST0_UDC)) {
+-            qemu_log_mask(LOG_GUEST_ERROR,
+-                          "lsi_scsi: inf. loop with UDC masked");
+-        }
+-        lsi_script_scsi_interrupt(s, LSI_SIST0_UDC, 0);
+-        lsi_disconnect(s);
+-        trace_lsi_execute_script_stop();
++        s->waiting = LSI_WAIT_SCRIPTS;
++        lsi_scripts_timer_start(s);
+         reentrancy_level--;
+         return;
+     }
+@@ -2197,6 +2206,9 @@ static int lsi_post_load(void *opaque, int version_id)
+         return -EINVAL;
+     }
+ 
++    if (s->waiting == LSI_WAIT_SCRIPTS) {
++        lsi_scripts_timer_start(s);
++    }
+     return 0;
+ }
+ 
+@@ -2294,6 +2306,15 @@ static const struct SCSIBusInfo lsi_scsi_info = {
+     .cancel = lsi_request_cancelled
+ };
+ 
++static void scripts_timer_cb(void *opaque)
++{
++    LSIState *s = opaque;
++
++    trace_lsi_scripts_timer_triggered();
++    s->waiting = LSI_NOWAIT;
++    lsi_execute_script(s);
++}
++
+ static void lsi_scsi_realize(PCIDevice *dev, Error **errp)
+ {
+     LSIState *s = LSI53C895A(dev);
+@@ -2313,6 +2334,7 @@ static void lsi_scsi_realize(PCIDevice *dev, Error **errp)
+                           "lsi-ram", 0x2000);
+     memory_region_init_io(&s->io_io, OBJECT(s), &lsi_io_ops, s,
+                           "lsi-io", 256);
++    s->scripts_timer = timer_new_us(QEMU_CLOCK_VIRTUAL, scripts_timer_cb, s);
+ 
+     /*
+      * Since we use the address-space API to interact with ram_io, disable the
+@@ -2337,6 +2359,7 @@ static void lsi_scsi_exit(PCIDevice *dev)
+     LSIState *s = LSI53C895A(dev);
+ 
+     address_space_destroy(&s->pci_io_as);
++    timer_del(s->scripts_timer);
+ }
+ 
+ static void lsi_class_init(ObjectClass *klass, void *data)
+diff --git a/hw/scsi/trace-events b/hw/scsi/trace-events
+index d72f741ed85..f0f2a98c2ee 100644
+--- a/hw/scsi/trace-events
++++ b/hw/scsi/trace-events
+@@ -302,6 +302,8 @@ lsi_execute_script_stop(void) "SCRIPTS execution stopped"
+ lsi_awoken(void) "Woken by SIGP"
+ lsi_reg_read(const char *name, int offset, uint8_t ret) "Read reg %s 0x%x = 0x%02x"
+ lsi_reg_write(const char *name, int offset, uint8_t val) "Write reg %s 0x%x = 0x%02x"
++lsi_scripts_timer_triggered(void) "SCRIPTS timer triggered"
++lsi_scripts_timer_start(void) "SCRIPTS timer started"
+ 
+ # virtio-scsi.c
+ virtio_scsi_cmd_req(int lun, uint32_t tag, uint8_t cmd) "virtio_scsi_cmd_req lun=%u tag=0x%x cmd=0x%x"
 -- 
 2.43.2
 
