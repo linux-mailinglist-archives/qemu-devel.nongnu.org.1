@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57B6876941
+	by mail.lfdr.de (Postfix) with ESMTPS id A273D876940
 	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 18:04:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riddE-0000Y6-11; Fri, 08 Mar 2024 12:03:40 -0500
+	id 1riddH-0000au-BD; Fri, 08 Mar 2024 12:03:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1ridd2-0000Up-C5
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 12:03:30 -0500
+ id 1ridd8-0000YO-7v
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 12:03:34 -0500
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1ridcx-0000kP-5c
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 12:03:24 -0500
+ id 1ridd2-0000mT-RN
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 12:03:32 -0500
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1ridcv-0006Gi-KF; Fri, 08 Mar 2024 18:03:21 +0100
+ id 1ridd0-0006Gp-Ub; Fri, 08 Mar 2024 18:03:26 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: qemu-devel@nongnu.org
-Subject: [PULL 2/3] hv-balloon: define dm_hot_add_with_region to avoid
- Coverity warning
-Date: Fri,  8 Mar 2024 18:02:44 +0100
-Message-ID: <546987284a7da9106bbead1063553cbfe7ddd697.1709916836.git.maciej.szmigiero@oracle.com>
+Subject: [PULL 3/3] vmbus: Print a warning when enabled without the
+ recommended set of features
+Date: Fri,  8 Mar 2024 18:02:45 +0100
+Message-ID: <6093637b4d32875f98cd59696ffc5f26884aa0b4.1709916836.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1709916836.git.maciej.szmigiero@oracle.com>
 References: <cover.1709916836.git.maciej.szmigiero@oracle.com>
@@ -57,87 +57,130 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Since the presence of a hot add memory region is optional in hot add
-request message it wasn't part of this message declaration
-(struct dm_hot_add).
+Some Windows versions crash at boot or fail to enable the VMBus device if
+they don't see the expected set of Hyper-V features (enlightenments).
 
-Instead, the code allocated such enlarged message by simply adding the
-necessary size for this extra field to the size of basic hot add message
-struct.
+Since this provides poor user experience let's warn user if the VMBus
+device is enabled without the recommended set of Hyper-V features.
 
-However, Coverity considers accessing this extra member to be
-an out-of-bounds access, even thought the memory is actually there.
+The recommended set is the minimum set of Hyper-V features required to make
+the VMBus device work properly in Windows Server versions 2016, 2019 and
+2022.
 
-Fix this by adding an extended variant of this message that explicitly has
-an additional union dm_mem_page_range at its end.
-
-CID: #1523903
+Acked-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- hw/hyperv/hv-balloon.c           | 10 +++++-----
- include/hw/hyperv/dynmem-proto.h |  9 ++++++++-
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ hw/hyperv/hyperv.c            | 12 ++++++++++++
+ hw/hyperv/vmbus.c             |  6 ++++++
+ include/hw/hyperv/hyperv.h    |  4 ++++
+ target/i386/kvm/hyperv-stub.c |  4 ++++
+ target/i386/kvm/hyperv.c      |  5 +++++
+ target/i386/kvm/hyperv.h      |  2 ++
+ target/i386/kvm/kvm.c         |  7 +++++++
+ 7 files changed, 40 insertions(+)
 
-diff --git a/hw/hyperv/hv-balloon.c b/hw/hyperv/hv-balloon.c
-index 35333dab2434..3a9ef0769103 100644
---- a/hw/hyperv/hv-balloon.c
-+++ b/hw/hyperv/hv-balloon.c
-@@ -513,8 +513,8 @@ ret_idle:
- static void hv_balloon_hot_add_rb_wait(HvBalloon *balloon, StateDesc *stdesc)
- {
-     VMBusChannel *chan = hv_balloon_get_channel(balloon);
--    struct dm_hot_add *ha;
--    size_t ha_size = sizeof(*ha) + sizeof(ha->range);
-+    struct dm_hot_add_with_region *ha;
-+    size_t ha_size = sizeof(*ha);
+diff --git a/hw/hyperv/hyperv.c b/hw/hyperv/hyperv.c
+index 6c4a18dd0e2a..3ea54ba818b2 100644
+--- a/hw/hyperv/hyperv.c
++++ b/hw/hyperv/hyperv.c
+@@ -951,3 +951,15 @@ uint64_t hyperv_syndbg_query_options(void)
  
-     assert(balloon->state == S_HOT_ADD_RB_WAIT);
- 
-@@ -530,8 +530,8 @@ static void hv_balloon_hot_add_posting(HvBalloon *balloon, StateDesc *stdesc)
-     PageRange *hot_add_range = &balloon->hot_add_range;
-     uint64_t *current_count = &balloon->ha_current_count;
-     VMBusChannel *chan = hv_balloon_get_channel(balloon);
--    g_autofree struct dm_hot_add *ha = NULL;
--    size_t ha_size = sizeof(*ha) + sizeof(ha->range);
-+    g_autofree struct dm_hot_add_with_region *ha = NULL;
-+    size_t ha_size = sizeof(*ha);
-     union dm_mem_page_range *ha_region;
-     uint64_t align, chunk_max_size;
-     ssize_t ret;
-@@ -560,7 +560,7 @@ static void hv_balloon_hot_add_posting(HvBalloon *balloon, StateDesc *stdesc)
-     *current_count = MIN(hot_add_range->count, chunk_max_size);
- 
-     ha = g_malloc0(ha_size);
--    ha_region = &(&ha->range)[1];
-+    ha_region = &ha->region;
-     ha->hdr.type = DM_MEM_HOT_ADD_REQUEST;
-     ha->hdr.size = ha_size;
-     ha->hdr.trans_id = balloon->trans_id;
-diff --git a/include/hw/hyperv/dynmem-proto.h b/include/hw/hyperv/dynmem-proto.h
-index a657786a94b1..68b8b606f268 100644
---- a/include/hw/hyperv/dynmem-proto.h
-+++ b/include/hw/hyperv/dynmem-proto.h
-@@ -328,7 +328,8 @@ struct dm_unballoon_response {
- /*
-  * Hot add request message. Message sent from the host to the guest.
-  *
-- * mem_range: Memory range to hot add.
-+ * range: Memory range to hot add.
-+ * region: Explicit hot add memory region for guest to use. Optional.
-  *
-  */
- 
-@@ -337,6 +338,12 @@ struct dm_hot_add {
-     union dm_mem_page_range range;
- } QEMU_PACKED;
- 
-+struct dm_hot_add_with_region {
-+    struct dm_header hdr;
-+    union dm_mem_page_range range;
-+    union dm_mem_page_range region;
-+} QEMU_PACKED;
+     return msg.u.query_options.options;
+ }
 +
- /*
-  * Hot add response message.
-  * This message is sent by the guest to report the status of a hot add request.
++static bool vmbus_recommended_features_enabled;
++
++bool hyperv_are_vmbus_recommended_features_enabled(void)
++{
++    return vmbus_recommended_features_enabled;
++}
++
++void hyperv_set_vmbus_recommended_features_enabled(void)
++{
++    vmbus_recommended_features_enabled = true;
++}
+diff --git a/hw/hyperv/vmbus.c b/hw/hyperv/vmbus.c
+index 380239af2c7b..f33afeeea27d 100644
+--- a/hw/hyperv/vmbus.c
++++ b/hw/hyperv/vmbus.c
+@@ -2631,6 +2631,12 @@ static void vmbus_bridge_realize(DeviceState *dev, Error **errp)
+         return;
+     }
+ 
++    if (!hyperv_are_vmbus_recommended_features_enabled()) {
++        warn_report("VMBus enabled without the recommended set of Hyper-V features: "
++                    "hv-stimer, hv-vapic and hv-runtime. "
++                    "Some Windows versions might not boot or enable the VMBus device");
++    }
++
+     bridge->bus = VMBUS(qbus_new(TYPE_VMBUS, dev, "vmbus"));
+ }
+ 
+diff --git a/include/hw/hyperv/hyperv.h b/include/hw/hyperv/hyperv.h
+index 015c3524b1c2..d717b4e13d40 100644
+--- a/include/hw/hyperv/hyperv.h
++++ b/include/hw/hyperv/hyperv.h
+@@ -139,4 +139,8 @@ typedef struct HvSynDbgMsg {
+ } HvSynDbgMsg;
+ typedef uint16_t (*HvSynDbgHandler)(void *context, HvSynDbgMsg *msg);
+ void hyperv_set_syndbg_handler(HvSynDbgHandler handler, void *context);
++
++bool hyperv_are_vmbus_recommended_features_enabled(void);
++void hyperv_set_vmbus_recommended_features_enabled(void);
++
+ #endif
+diff --git a/target/i386/kvm/hyperv-stub.c b/target/i386/kvm/hyperv-stub.c
+index 778ed782e6fc..3263dcf05d31 100644
+--- a/target/i386/kvm/hyperv-stub.c
++++ b/target/i386/kvm/hyperv-stub.c
+@@ -52,3 +52,7 @@ void hyperv_x86_synic_reset(X86CPU *cpu)
+ void hyperv_x86_synic_update(X86CPU *cpu)
+ {
+ }
++
++void hyperv_x86_set_vmbus_recommended_features_enabled(void)
++{
++}
+diff --git a/target/i386/kvm/hyperv.c b/target/i386/kvm/hyperv.c
+index 6825c89af374..f2a3fe650a18 100644
+--- a/target/i386/kvm/hyperv.c
++++ b/target/i386/kvm/hyperv.c
+@@ -149,3 +149,8 @@ int kvm_hv_handle_exit(X86CPU *cpu, struct kvm_hyperv_exit *exit)
+         return -1;
+     }
+ }
++
++void hyperv_x86_set_vmbus_recommended_features_enabled(void)
++{
++    hyperv_set_vmbus_recommended_features_enabled();
++}
+diff --git a/target/i386/kvm/hyperv.h b/target/i386/kvm/hyperv.h
+index 67543296c3a4..e3982c8f4dd1 100644
+--- a/target/i386/kvm/hyperv.h
++++ b/target/i386/kvm/hyperv.h
+@@ -26,4 +26,6 @@ int hyperv_x86_synic_add(X86CPU *cpu);
+ void hyperv_x86_synic_reset(X86CPU *cpu);
+ void hyperv_x86_synic_update(X86CPU *cpu);
+ 
++void hyperv_x86_set_vmbus_recommended_features_enabled(void);
++
+ #endif
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 42970ab046fa..e68cbe929302 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -1650,6 +1650,13 @@ static int hyperv_init_vcpu(X86CPU *cpu)
+         }
+     }
+ 
++    /* Skip SynIC and VP_INDEX since they are hard deps already */
++    if (hyperv_feat_enabled(cpu, HYPERV_FEAT_STIMER) &&
++        hyperv_feat_enabled(cpu, HYPERV_FEAT_VAPIC) &&
++        hyperv_feat_enabled(cpu, HYPERV_FEAT_RUNTIME)) {
++        hyperv_x86_set_vmbus_recommended_features_enabled();
++    }
++
+     return 0;
+ }
+ 
 
