@@ -2,28 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14DDF8767AE
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:50:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A15018767CE
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:53:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ricTQ-0002zJ-Tm; Fri, 08 Mar 2024 10:49:29 -0500
+	id 1ricTZ-0003kw-P9; Fri, 08 Mar 2024 10:49:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1ricTL-0002iG-W0; Fri, 08 Mar 2024 10:49:24 -0500
+ id 1ricTX-0003d8-JE; Fri, 08 Mar 2024 10:49:35 -0500
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1ricTK-000481-CS; Fri, 08 Mar 2024 10:49:23 -0500
+ id 1ricTV-0004Al-Uy; Fri, 08 Mar 2024 10:49:35 -0500
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 4339C488C2;
- Fri,  8 Mar 2024 16:49:20 +0100 (CET)
-Message-ID: <0a7ac6dd-3100-498f-9669-6b888ecbdb8f@proxmox.com>
-Date: Fri, 8 Mar 2024 16:49:19 +0100
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 70BD6488C0;
+ Fri,  8 Mar 2024 16:49:32 +0100 (CET)
+Message-ID: <232bfccc-0ebf-4096-8f35-6a329beb492b@proxmox.com>
+Date: Fri, 8 Mar 2024 16:49:31 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/5] qapi: blockdev-backup: add discard-source parameter
+Subject: Re: [PATCH v3 5/5] iotests: add backup-discard-source
 Content-Language: en-US
 To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  qemu-block@nongnu.org
@@ -32,9 +32,9 @@ Cc: qemu-devel@nongnu.org, armbru@redhat.com, eblake@redhat.com,
  kwolf@redhat.com, jsnow@redhat.com, den@virtuozzo.com,
  alexander.ivanov@virtuozzo.com
 References: <20240228141501.455989-1-vsementsov@yandex-team.ru>
- <20240228141501.455989-5-vsementsov@yandex-team.ru>
+ <20240228141501.455989-6-vsementsov@yandex-team.ru>
 From: Fiona Ebner <f.ebner@proxmox.com>
-In-Reply-To: <20240228141501.455989-5-vsementsov@yandex-team.ru>
+In-Reply-To: <20240228141501.455989-6-vsementsov@yandex-team.ru>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
@@ -60,32 +60,32 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Am 28.02.24 um 15:15 schrieb Vladimir Sementsov-Ogievskiy:
-> Add a parameter that enables discard-after-copy. That is mostly useful
-> in "push backup with fleecing" scheme, when source is snapshot-access
-> format driver node, based on copy-before-write filter snapshot-access
-> API:
-> 
-> [guest]      [snapshot-access] ~~ blockdev-backup ~~> [backup target]
->    |            |
->    | root       | file
->    v            v
-> [copy-before-write]
->    |             |
->    | file        | target
->    v             v
-> [active disk]   [temp.img]
-> 
-> In this case discard-after-copy does two things:
-> 
->  - discard data in temp.img to save disk space
->  - avoid further copy-before-write operation in discarded area
-> 
-> Note that we have to declare WRITE permission on source in
-> copy-before-write filter, for discard to work. Still we can't take it
-> unconditionally, as it will break normal backup from RO source. So, we
-> have to add a parameter and pass it thorough bdrv_open flags.
+> Add test for a new backup option: discard-source.
 > 
 > Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> ---
+>  .../qemu-iotests/tests/backup-discard-source  | 151 ++++++++++++++++++
+>  .../tests/backup-discard-source.out           |   5 +
+>  2 files changed, 156 insertions(+)
+>  create mode 100755 tests/qemu-iotests/tests/backup-discard-source
+>  create mode 100644 tests/qemu-iotests/tests/backup-discard-source.out
+> 
+> diff --git a/tests/qemu-iotests/tests/backup-discard-source b/tests/qemu-iotests/tests/backup-discard-source
+> new file mode 100755
+> index 0000000000..8a88b0f6c4
+> --- /dev/null
+> +++ b/tests/qemu-iotests/tests/backup-discard-source
+> @@ -0,0 +1,151 @@
+> +#!/usr/bin/env python3
+> +#
+> +# Test removing persistent bitmap from backing
+> +#
+> +# Copyright (c) 2022 Virtuozzo International GmbH.
+> +#
+
+Title and copyright year are wrong.
+
+Apart from that:
 
 Reviewed-by: Fiona Ebner <f.ebner@proxmox.com>
 
