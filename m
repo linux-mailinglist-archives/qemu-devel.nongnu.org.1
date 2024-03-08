@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 311FE8767C2
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:52:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 134B18767CA
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 16:53:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ricUS-0007yy-HE; Fri, 08 Mar 2024 10:50:32 -0500
+	id 1ricUT-00083e-6a; Fri, 08 Mar 2024 10:50:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ricUP-0007pv-I4
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:50:29 -0500
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ id 1ricUO-0007jt-Dy
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:50:28 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ricUK-0004Ty-BB
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:50:29 -0500
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-5101cd91017so3605466e87.2
+ id 1ricUK-0004U9-99
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 10:50:28 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-33d6f26ff33so1556887f8f.0
  for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 07:50:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1709913022; x=1710517822; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=fVPAJQfr3UN8BQVOQpbEDXWDjmrmqgXmlBWCciOmKMk=;
- b=gQ9lL76VyT6JmRYqIpn+SdW8T43ZJ1aoYpSZ74Q8DJayHQSwNTpa2f1+EBhVzipIx1
- jWDXjhF/VnI+px6lbJaniIy/Utc9M+UHS4ZVBemchkH5X1SGhQOyfXFW9BEw5tWauvYX
- Q3DTyrDEQHdzcLp2xCDwVAWP99x0c+1Tn4zypN6cUaeMs4TKQgiPNF//hTS0G9/Ro90S
- YSR2AN7AuqGBoGdUIdr6T53qtWw503wiKDzVGnFR1vSmrbxIxuF8FQrA6xoeEKAHYj9F
- qYemb1bhjj1A4zfEKF/ZbrDnH/ha94pLKpWO8xcRiV8Xdgm3d9bpLpShNG30PWXok1uF
- 0MCA==
+ :reply-to; bh=xCyKHrVDgE4duKvrjOPXtlhJ/eSl12oKbAB88FqLRxs=;
+ b=n2py2XLKL48r2h1l8Tg05eE8L0IzMaRqDsuVCVYHXPzavLiT23/xnrJAogNT2Kvm6p
+ VkqeXmloPgpXdeTmJ4tsMc+8mQqSofiH7clZpj1ORqEm2P3qhlpIRiwkW1sW0Twt/qqD
+ uaI8TncLEWTZy9zb/GQzOoqspJIvcCs/PmOokZN3ST/y0UOLKZySRSkJSE/VxRfiNW45
+ o7MM0bjwPTeSQC28sso38hBzJeu2hhONengimG5ItbfPPbW+xnU/mBosD8iTk0qTHVcI
+ p1yk5kj7PRxSaiHqKizV8Vf6+yVrZG2Cn1AIAMZ4E0JIDjFce6YDih7pzSl2ILrVVJTi
+ tYfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1709913022; x=1710517822;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fVPAJQfr3UN8BQVOQpbEDXWDjmrmqgXmlBWCciOmKMk=;
- b=bzT4igmMCNLsmORmF7dJGfCKHWdeIgsPdDnI0Jmcxlq2288hwsJ2YFltpcOp8y50sN
- ruZ7zKAYzZQUGoONRH5sc4pmRknWCp/9El/25CTZ9BzrlN5Rj74J39vFLB4csahCAhhw
- EUzRDSZeW/CY9ANmM3BHQ8yn9JjvF5xc4mSRITvXbIH6+jfRq6XuvHDcvbit3DW26uTE
- ODxdcYzyjAA7As4C2Q+Iueej/iNd3IeWvDCG+vsJ+XDgBaDf8cAxxqe0qxR2GAPKLsxL
- ptvqS3/npWfZgRcJ6L2j/Ra5EllZTRmWxur/vYSfrauPaoJYuutzH9UFmRp30hWnfRUg
- ufpA==
-X-Gm-Message-State: AOJu0YzCwNGFkAMQprOdGpPag3SG65SSNrSfj/rqVdCBilWkMW+lXjEE
- YyjY2gI77LBjNf4fxvMUkKAmNOoSejriynYJSjVenWopt6wh47oU/2UrbIhHUruN10bhJ1Gh58a
- C
-X-Google-Smtp-Source: AGHT+IHvOIfSDGqw/+2cXASyQ5cY9dasj3E5UVHzlAw0+GG2hkZyiim4hCQ3gZ0Ra0obeLzZ5thOjA==
-X-Received: by 2002:a05:6512:543:b0:513:816d:464f with SMTP id
- h3-20020a056512054300b00513816d464fmr3419606lfl.62.1709913022161; 
+ bh=xCyKHrVDgE4duKvrjOPXtlhJ/eSl12oKbAB88FqLRxs=;
+ b=UI/WDX2h5A4tEHRu/ztqOMhU2Wu3OwftSsI73pwmJARp2jnt9C/+MLWDdUj2tqE+0e
+ HLz2eYIruKBCkWunscrC6IAxGPMwEORS7YVkYa4NzLDChzpHkJ6Vr4CCadCm8PZDEGs4
+ r/ssQe34OhC/QU5/2kh9ZSFdfUriUvH0N+LJdnVZa2GlOp9rBXR5J6tknz6u71Lf2BXl
+ Viv1isYHdoCvZRFGdEDBt1GAJKue8+QHh2QGPVKVBYtgmU8HBZbpEv/q3IoAggzgWwS2
+ XodgYMXRe2XfEK0SNxPgMI6juM9qgfDIB5gJFiZJcwOqzjieJh3JdBcPf/o+eK4Wp8PN
+ 4hFw==
+X-Gm-Message-State: AOJu0YwE0p+wVhf7Kg5cZJ41PoDALURRA88nduaUMpyV3Hb/XEpX0cY+
+ w8igiyKk4XUgGzoP46p5Y9zK60ePGR0RsJ9NNsxkfaYUx9XoF0GyGVOfrCg2P9+OvMfB6ZXGdN6
+ Q
+X-Google-Smtp-Source: AGHT+IEfkfBvQVWMgt8dCRSYT3dMtqU1gLjEAWOhwGXdkleyti3FAxugEJ1k4NZ1OYfbT2lvikohUg==
+X-Received: by 2002:a5d:5a03:0:b0:33e:737c:792a with SMTP id
+ bq3-20020a5d5a03000000b0033e737c792amr3943479wrb.68.1709913022592; 
  Fri, 08 Mar 2024 07:50:22 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- f2-20020adff8c2000000b0033e7a204dc7sm856080wrq.32.2024.03.08.07.50.21
+ f2-20020adff8c2000000b0033e7a204dc7sm856080wrq.32.2024.03.08.07.50.22
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Mar 2024 07:50:21 -0800 (PST)
+ Fri, 08 Mar 2024 07:50:22 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 12/14] target/arm: Fix 32-bit SMOPA
-Date: Fri,  8 Mar 2024 15:50:13 +0000
-Message-Id: <20240308155015.3637663-13-peter.maydell@linaro.org>
+Subject: [PULL 13/14] hw/rtc/sun4v-rtc: Relicense to GPLv2-or-later
+Date: Fri,  8 Mar 2024 15:50:14 +0000
+Message-Id: <20240308155015.3637663-14-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240308155015.3637663-1-peter.maydell@linaro.org>
 References: <20240308155015.3637663-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x131.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,258 +92,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+The sun4v RTC device model added under commit a0e893039cf2ce0 in 2016
+was unfortunately added with a license of GPL-v3-or-later, which is
+not compatible with other QEMU code which has a GPL-v2-only license.
 
-While the 8-bit input elements are sequential in the input vector,
-the 32-bit output elements are not sequential in the output matrix.
-Do not attempt to compute 2 32-bit outputs at the same time.
+Relicense the code in the .c and the .h file to GPL-v2-or-later,
+to make it compatible with the rest of QEMU.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 23a5e3859f5 ("target/arm: Implement SME integer outer product")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2083
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240305163931.242795-1-richard.henderson@linaro.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Paolo Bonzini (for Red Hat) <pbonzini@redhat.com>
+Signed-off-by: Artyom Tarasenko <atar4qemu@gmail.com>
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Acked-by: Alex Bennée <alex.bennee@linaro.org>
+Message-id: 20240223161300.938542-1-peter.maydell@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/sme_helper.c       | 77 ++++++++++++++++++-------------
- tests/tcg/aarch64/sme-smopa-1.c   | 47 +++++++++++++++++++
- tests/tcg/aarch64/sme-smopa-2.c   | 54 ++++++++++++++++++++++
- tests/tcg/aarch64/Makefile.target |  2 +-
- 4 files changed, 147 insertions(+), 33 deletions(-)
- create mode 100644 tests/tcg/aarch64/sme-smopa-1.c
- create mode 100644 tests/tcg/aarch64/sme-smopa-2.c
+ include/hw/rtc/sun4v-rtc.h | 2 +-
+ hw/rtc/sun4v-rtc.c         | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/tcg/sme_helper.c b/target/arm/tcg/sme_helper.c
-index 904bfdac43e..e2e05750399 100644
---- a/target/arm/tcg/sme_helper.c
-+++ b/target/arm/tcg/sme_helper.c
-@@ -1083,11 +1083,32 @@ void HELPER(sme_bfmopa)(void *vza, void *vzn, void *vzm, void *vpn,
-     }
- }
+diff --git a/include/hw/rtc/sun4v-rtc.h b/include/hw/rtc/sun4v-rtc.h
+index fc54dfcba47..26a9eb61967 100644
+--- a/include/hw/rtc/sun4v-rtc.h
++++ b/include/hw/rtc/sun4v-rtc.h
+@@ -5,7 +5,7 @@
+  *
+  * Copyright (c) 2016 Artyom Tarasenko
+  *
+- * This code is licensed under the GNU GPL v3 or (at your option) any later
++ * This code is licensed under the GNU GPL v2 or (at your option) any later
+  * version.
+  */
  
--typedef uint64_t IMOPFn(uint64_t, uint64_t, uint64_t, uint8_t, bool);
-+typedef uint32_t IMOPFn32(uint32_t, uint32_t, uint32_t, uint8_t, bool);
-+static inline void do_imopa_s(uint32_t *za, uint32_t *zn, uint32_t *zm,
-+                              uint8_t *pn, uint8_t *pm,
-+                              uint32_t desc, IMOPFn32 *fn)
-+{
-+    intptr_t row, col, oprsz = simd_oprsz(desc) / 4;
-+    bool neg = simd_data(desc);
+diff --git a/hw/rtc/sun4v-rtc.c b/hw/rtc/sun4v-rtc.c
+index e037acd1b56..ffcc0aa25d9 100644
+--- a/hw/rtc/sun4v-rtc.c
++++ b/hw/rtc/sun4v-rtc.c
+@@ -5,7 +5,7 @@
+  *
+  * Copyright (c) 2016 Artyom Tarasenko
+  *
+- * This code is licensed under the GNU GPL v3 or (at your option) any later
++ * This code is licensed under the GNU GPL v2 or (at your option) any later
+  * version.
+  */
  
--static inline void do_imopa(uint64_t *za, uint64_t *zn, uint64_t *zm,
--                            uint8_t *pn, uint8_t *pm,
--                            uint32_t desc, IMOPFn *fn)
-+    for (row = 0; row < oprsz; ++row) {
-+        uint8_t pa = (pn[H1(row >> 1)] >> ((row & 1) * 4)) & 0xf;
-+        uint32_t *za_row = &za[tile_vslice_index(row)];
-+        uint32_t n = zn[H4(row)];
-+
-+        for (col = 0; col < oprsz; ++col) {
-+            uint8_t pb = pm[H1(col >> 1)] >> ((col & 1) * 4);
-+            uint32_t *a = &za_row[H4(col)];
-+
-+            *a = fn(n, zm[H4(col)], *a, pa & pb, neg);
-+        }
-+    }
-+}
-+
-+typedef uint64_t IMOPFn64(uint64_t, uint64_t, uint64_t, uint8_t, bool);
-+static inline void do_imopa_d(uint64_t *za, uint64_t *zn, uint64_t *zm,
-+                              uint8_t *pn, uint8_t *pm,
-+                              uint32_t desc, IMOPFn64 *fn)
- {
-     intptr_t row, col, oprsz = simd_oprsz(desc) / 8;
-     bool neg = simd_data(desc);
-@@ -1107,25 +1128,16 @@ static inline void do_imopa(uint64_t *za, uint64_t *zn, uint64_t *zm,
- }
- 
- #define DEF_IMOP_32(NAME, NTYPE, MTYPE) \
--static uint64_t NAME(uint64_t n, uint64_t m, uint64_t a, uint8_t p, bool neg) \
-+static uint32_t NAME(uint32_t n, uint32_t m, uint32_t a, uint8_t p, bool neg) \
- {                                                                           \
--    uint32_t sum0 = 0, sum1 = 0;                                            \
-+    uint32_t sum = 0;                                                       \
-     /* Apply P to N as a mask, making the inactive elements 0. */           \
-     n &= expand_pred_b(p);                                                  \
--    sum0 += (NTYPE)(n >> 0) * (MTYPE)(m >> 0);                              \
--    sum0 += (NTYPE)(n >> 8) * (MTYPE)(m >> 8);                              \
--    sum0 += (NTYPE)(n >> 16) * (MTYPE)(m >> 16);                            \
--    sum0 += (NTYPE)(n >> 24) * (MTYPE)(m >> 24);                            \
--    sum1 += (NTYPE)(n >> 32) * (MTYPE)(m >> 32);                            \
--    sum1 += (NTYPE)(n >> 40) * (MTYPE)(m >> 40);                            \
--    sum1 += (NTYPE)(n >> 48) * (MTYPE)(m >> 48);                            \
--    sum1 += (NTYPE)(n >> 56) * (MTYPE)(m >> 56);                            \
--    if (neg) {                                                              \
--        sum0 = (uint32_t)a - sum0, sum1 = (uint32_t)(a >> 32) - sum1;       \
--    } else {                                                                \
--        sum0 = (uint32_t)a + sum0, sum1 = (uint32_t)(a >> 32) + sum1;       \
--    }                                                                       \
--    return ((uint64_t)sum1 << 32) | sum0;                                   \
-+    sum += (NTYPE)(n >> 0) * (MTYPE)(m >> 0);                               \
-+    sum += (NTYPE)(n >> 8) * (MTYPE)(m >> 8);                               \
-+    sum += (NTYPE)(n >> 16) * (MTYPE)(m >> 16);                             \
-+    sum += (NTYPE)(n >> 24) * (MTYPE)(m >> 24);                             \
-+    return neg ? a - sum : a + sum;                                         \
- }
- 
- #define DEF_IMOP_64(NAME, NTYPE, MTYPE) \
-@@ -1151,16 +1163,17 @@ DEF_IMOP_64(umopa_d, uint16_t, uint16_t)
- DEF_IMOP_64(sumopa_d, int16_t, uint16_t)
- DEF_IMOP_64(usmopa_d, uint16_t, int16_t)
- 
--#define DEF_IMOPH(NAME) \
--    void HELPER(sme_##NAME)(void *vza, void *vzn, void *vzm, void *vpn,      \
--                            void *vpm, uint32_t desc)                        \
--    { do_imopa(vza, vzn, vzm, vpn, vpm, desc, NAME); }
-+#define DEF_IMOPH(NAME, S) \
-+    void HELPER(sme_##NAME##_##S)(void *vza, void *vzn, void *vzm,          \
-+                                  void *vpn, void *vpm, uint32_t desc)      \
-+    { do_imopa_##S(vza, vzn, vzm, vpn, vpm, desc, NAME##_##S); }
- 
--DEF_IMOPH(smopa_s)
--DEF_IMOPH(umopa_s)
--DEF_IMOPH(sumopa_s)
--DEF_IMOPH(usmopa_s)
--DEF_IMOPH(smopa_d)
--DEF_IMOPH(umopa_d)
--DEF_IMOPH(sumopa_d)
--DEF_IMOPH(usmopa_d)
-+DEF_IMOPH(smopa, s)
-+DEF_IMOPH(umopa, s)
-+DEF_IMOPH(sumopa, s)
-+DEF_IMOPH(usmopa, s)
-+
-+DEF_IMOPH(smopa, d)
-+DEF_IMOPH(umopa, d)
-+DEF_IMOPH(sumopa, d)
-+DEF_IMOPH(usmopa, d)
-diff --git a/tests/tcg/aarch64/sme-smopa-1.c b/tests/tcg/aarch64/sme-smopa-1.c
-new file mode 100644
-index 00000000000..c62d5e00073
---- /dev/null
-+++ b/tests/tcg/aarch64/sme-smopa-1.c
-@@ -0,0 +1,47 @@
-+#include <stdio.h>
-+#include <string.h>
-+
-+int main()
-+{
-+    static const int cmp[4][4] = {
-+        {  110,  134,  158,  182 },
-+        {  390,  478,  566,  654 },
-+        {  670,  822,  974, 1126 },
-+        {  950, 1166, 1382, 1598 }
-+    };
-+    int dst[4][4];
-+    int *tmp = &dst[0][0];
-+
-+    asm volatile(
-+        ".arch armv8-r+sme\n\t"
-+        "smstart\n\t"
-+        "index z0.b, #0, #1\n\t"
-+        "movprfx z1, z0\n\t"
-+        "add z1.b, z1.b, #16\n\t"
-+        "ptrue p0.b\n\t"
-+        "smopa za0.s, p0/m, p0/m, z0.b, z1.b\n\t"
-+        "ptrue p0.s, vl4\n\t"
-+        "mov w12, #0\n\t"
-+        "st1w { za0h.s[w12, #0] }, p0, [%0]\n\t"
-+        "add %0, %0, #16\n\t"
-+        "st1w { za0h.s[w12, #1] }, p0, [%0]\n\t"
-+        "add %0, %0, #16\n\t"
-+        "st1w { za0h.s[w12, #2] }, p0, [%0]\n\t"
-+        "add %0, %0, #16\n\t"
-+        "st1w { za0h.s[w12, #3] }, p0, [%0]\n\t"
-+        "smstop"
-+        : "+r"(tmp) : : "memory");
-+
-+    if (memcmp(cmp, dst, sizeof(dst)) == 0) {
-+        return 0;
-+    }
-+
-+    /* See above for correct results. */
-+    for (int i = 0; i < 4; ++i) {
-+        for (int j = 0; j < 4; ++j) {
-+            printf("%6d", dst[i][j]);
-+        }
-+        printf("\n");
-+    }
-+    return 1;
-+}
-diff --git a/tests/tcg/aarch64/sme-smopa-2.c b/tests/tcg/aarch64/sme-smopa-2.c
-new file mode 100644
-index 00000000000..c9f48c3bfca
---- /dev/null
-+++ b/tests/tcg/aarch64/sme-smopa-2.c
-@@ -0,0 +1,54 @@
-+#include <stdio.h>
-+#include <string.h>
-+
-+int main()
-+{
-+    static const long cmp[4][4] = {
-+        {  110,  134,  158,  182 },
-+        {  390,  478,  566,  654 },
-+        {  670,  822,  974, 1126 },
-+        {  950, 1166, 1382, 1598 }
-+    };
-+    long dst[4][4];
-+    long *tmp = &dst[0][0];
-+    long svl;
-+
-+    /* Validate that we have a wide enough vector for 4 elements. */
-+    asm(".arch armv8-r+sme-i64\n\trdsvl %0, #1" : "=r"(svl));
-+    if (svl < 32) {
-+        return 0;
-+    }
-+
-+    asm volatile(
-+        "smstart\n\t"
-+        "index z0.h, #0, #1\n\t"
-+        "movprfx z1, z0\n\t"
-+        "add z1.h, z1.h, #16\n\t"
-+        "ptrue p0.b\n\t"
-+        "smopa za0.d, p0/m, p0/m, z0.h, z1.h\n\t"
-+        "ptrue p0.d, vl4\n\t"
-+        "mov w12, #0\n\t"
-+        "st1d { za0h.d[w12, #0] }, p0, [%0]\n\t"
-+        "add %0, %0, #32\n\t"
-+        "st1d { za0h.d[w12, #1] }, p0, [%0]\n\t"
-+        "mov w12, #2\n\t"
-+        "add %0, %0, #32\n\t"
-+        "st1d { za0h.d[w12, #0] }, p0, [%0]\n\t"
-+        "add %0, %0, #32\n\t"
-+        "st1d { za0h.d[w12, #1] }, p0, [%0]\n\t"
-+        "smstop"
-+        : "+r"(tmp) : : "memory");
-+
-+    if (memcmp(cmp, dst, sizeof(dst)) == 0) {
-+        return 0;
-+    }
-+
-+    /* See above for correct results. */
-+    for (int i = 0; i < 4; ++i) {
-+        for (int j = 0; j < 4; ++j) {
-+            printf("%6ld", dst[i][j]);
-+        }
-+        printf("\n");
-+    }
-+    return 1;
-+}
-diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
-index cded1d01fcd..ea3e232e65f 100644
---- a/tests/tcg/aarch64/Makefile.target
-+++ b/tests/tcg/aarch64/Makefile.target
-@@ -67,7 +67,7 @@ endif
- 
- # SME Tests
- ifneq ($(CROSS_AS_HAS_ARMV9_SME),)
--AARCH64_TESTS += sme-outprod1
-+AARCH64_TESTS += sme-outprod1 sme-smopa-1 sme-smopa-2
- endif
- 
- # System Registers Tests
 -- 
 2.34.1
 
