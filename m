@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5C088762FF
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 12:18:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E72198762D8
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 12:14:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riYAx-0002FH-Ad; Fri, 08 Mar 2024 06:14:07 -0500
+	id 1riYAy-0002X8-8C; Fri, 08 Mar 2024 06:14:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1riYAl-0001za-Cd
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:55 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1riYAn-00024K-0J
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:57 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1riYAj-0001nr-Sg
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:55 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1dd4bc7a87aso3332925ad.2
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 03:13:51 -0800 (PST)
+ id 1riYAl-0001oK-HR
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:13:56 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1dca3951ad9so15467065ad.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 03:13:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709896431; x=1710501231; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1709896434; x=1710501234; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mh4Cluhyk7eCO/+CZvVG6s2g2zmheEHhi69RmkvalhA=;
- b=SIFperr1YmlbiWpSBdJt6AaQmkbGesr2hPFKQ2pn5uxyZggPrlpUAPQgWIfWlCg3lA
- MBFAfkcHeF9nPaq90fw2vOearxcKAtm3evcAs/ZcC1MxCx+vKjeXYguUKnHTL78oz6ht
- aS2zdoDfo+Pz80EOf4lbz0V+d2JW4iXp5qGJIf+wA7z9fAjH0gMiPQ8+Q15IzfMpgXR3
- 3FYpJIbF2komgEvHRv5yRvXdLoT7NCkbq9DBRd2TuWOyurIOURsNwH11GrGR+bCE+uqL
- BAHb4x/J/KaEEfKS6f/67oPH8Vx0+AgZDzev6+tiS71PR9aQCQ+kbmY28C/VbsjdvLUp
- H9qQ==
+ bh=BUfHetbQTbtHMLLjzmHwMZ6ZjeZkaLJCNXyb36srtfk=;
+ b=EKhbPO4sWP/LNatDD7iYlxj3Ujk67XhwLAPsW673Qr926PuTh7XfoBeTqCYuLM7Itm
+ BYBmt1SPCbwu4GQ6ARS/VkOatOsCtniuBHUmmJUQuN2i9WyqDH0aEevHigT87gaA/wJJ
+ T+u30y5YQIHndXd4BQ1ItNGcaXDp7KfP9fterzgtwf5vuT2rEtJvX/3e0dEuPmTthgKi
+ 5AwjWY2yw3Xx11OCKD13B/Bm22dazZaX+Uj0DL7OR9MdcEHGJoL/DV/g8vciGBbWDDOF
+ 1ZPKP/rF1b8Dw/aYfsStrldACLmSh/8cr+MD6cwJ2ej/k01JS4HU5hzpPNJVUe5UlWH1
+ +2Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709896431; x=1710501231;
+ d=1e100.net; s=20230601; t=1709896434; x=1710501234;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mh4Cluhyk7eCO/+CZvVG6s2g2zmheEHhi69RmkvalhA=;
- b=MHT/fFYBOvPEI/h1AKsMaC4MTMtKdUmBw/BJF8jdj5PYcaqwe6lHdTBNwPtv/+1KAP
- wyl4NNnntGDIdgEu8oMn3MItjPClvfwKcCCrqvQ09ApERaaeTeVYnyws5dh8/uGnxc7Z
- 2EaLFwSrBsCY4tqB+OD8Ubf/CW2wLIgWP/rllTlULpK9hCxguH2AtZenEmKgzRxjdqx9
- OYWuhXVTtfaWNumVXqdkhc7IrxjU2MgNkJfzf17+FHmPRfStje9Jj/y9R0KEKdgd/npv
- MSRn6NZmVszdZq2zrkc+5C/JpP8/jfq6n8EaZd2xU13fakkm9dnf1s4uakOpnqZcrlT5
- 36lg==
-X-Gm-Message-State: AOJu0YwjWxJavvLG77teVMJMuhovWu5+XVIdckPapFLDQT+lxe7pKn0S
- zyp2znWIv648TebOLPGEcq1/Re7d0ay50Lowg0eoy97z+V2/WeonHO/LwKItvo5yBA==
-X-Google-Smtp-Source: AGHT+IE2d9Qg/vb/Cgag9uGIxJByERANiXEwS4th2yYGOnLRNFmJHBsi1q4bE5RYuxipwOyvDQfPvQ==
-X-Received: by 2002:a17:902:930c:b0:1dc:b7d2:3fc3 with SMTP id
- bc12-20020a170902930c00b001dcb7d23fc3mr9627354plb.68.1709896430605; 
- Fri, 08 Mar 2024 03:13:50 -0800 (PST)
+ bh=BUfHetbQTbtHMLLjzmHwMZ6ZjeZkaLJCNXyb36srtfk=;
+ b=HdhJv1SESJiZVSExACBVY2wsn+pY5CSeKhIIp3Ds4JD/J638LvRFEMXh8sFDXetZYs
+ 8kdtq7afP8ERDhaB47/HgkWe+0MsxELzZQFM5wPdtLodQ5Con8YWh58Ojq4RIg99HZ1z
+ QgcUCp7lVMEYp3KxtIO7gowkLxylVIMGE0Dz160RjQvVd/CgTocappP0UouypEZ7D6Xn
+ arGBflqDw7FjdcHPTjmxlwQYMUIwojyoV+/2rMTtPCbU8dBKDHBDz1RxwY32wFQp6JwE
+ r6dpBH/BeZQsypbEsjlm07hAy4izwKkRXDmD9dBEHFCgSjuxF/Ziv38TdtjArds9duJr
+ J1EA==
+X-Gm-Message-State: AOJu0YxpwMokmp5z2j5ZA8Zbb426fqagDYN3ES7YzNtIU9r11HDo80NC
+ xAHLXBSsFEsknp7sX2bfRoppZ+FEj57z5T30pFbyGCxreckV6I8YBsKBcERw5I2mrw==
+X-Google-Smtp-Source: AGHT+IGN/bycU2fMZHrmdfXOngBxT5q4J+/ZhHJfzjHp0B8dRswRFN6JYHMKGwyWx0dIJI96T0gCSA==
+X-Received: by 2002:a17:902:cec8:b0:1dc:588b:99c8 with SMTP id
+ d8-20020a170902cec800b001dc588b99c8mr13238461plg.36.1709896433996; 
+ Fri, 08 Mar 2024 03:13:53 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- a6-20020a170902ecc600b001dcfbbb1ca5sm12006468plh.35.2024.03.08.03.13.48
+ a6-20020a170902ecc600b001dcfbbb1ca5sm12006468plh.35.2024.03.08.03.13.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Mar 2024 03:13:50 -0800 (PST)
+ Fri, 08 Mar 2024 03:13:53 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Hiroaki Yamamoto <hrak1529@gmail.com>,
+Cc: alistair23@gmail.com, Ilya Chugin <danger_mail@list.ru>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Sunil V L <sunilvl@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 33/34] target/riscv: Fix privilege mode of G-stage translation
- for debugging
-Date: Fri,  8 Mar 2024 21:11:51 +1000
-Message-ID: <20240308111152.2856137-34-alistair.francis@wdc.com>
+Subject: [PULL 34/34] target/riscv: fix ACPI MCFG table
+Date: Fri,  8 Mar 2024 21:11:52 +1000
+Message-ID: <20240308111152.2856137-35-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240308111152.2856137-1-alistair.francis@wdc.com>
 References: <20240308111152.2856137-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,35 +99,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hiroaki Yamamoto <hrak1529@gmail.com>
+From: Ilya Chugin <danger_mail@list.ru>
 
-G-stage translation should be considered to be user-level access in
-riscv_cpu_get_phys_page_debug(), as already done in riscv_cpu_tlb_fill().
+MCFG segments should point to PCI configuration range, not BAR MMIO.
 
-This fixes a bug that prevents gdb from reading memory while the VM is
-running in VS-mode.
-
-Signed-off-by: Hiroaki Yamamoto <hrak1529@gmail.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240228081028.35081-1-hrak1529@gmail.com>
+Signed-off-by: Ilya Chugin <danger_mail@list.ru>
+Fixes: 55ecd83b36 ("hw/riscv/virt-acpi-build.c: Add IO controllers and devices")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+Message-ID: <180d236d-c8e4-411a-b4d2-632eb82092fa@list.ru>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/riscv/virt-acpi-build.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index c994a72634..ce7322011d 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1223,7 +1223,7 @@ hwaddr riscv_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
- 
-     if (env->virt_enabled) {
-         if (get_physical_address(env, &phys_addr, &prot, phys_addr, NULL,
--                                 0, mmu_idx, false, true, true)) {
-+                                 0, MMUIdx_U, false, true, true)) {
-             return -1;
-         }
-     }
+diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
+index ef72db018e..0925528160 100644
+--- a/hw/riscv/virt-acpi-build.c
++++ b/hw/riscv/virt-acpi-build.c
+@@ -647,8 +647,8 @@ static void virt_acpi_build(RISCVVirtState *s, AcpiBuildTables *tables)
+     acpi_add_table(table_offsets, tables_blob);
+     {
+         AcpiMcfgInfo mcfg = {
+-           .base = s->memmap[VIRT_PCIE_MMIO].base,
+-           .size = s->memmap[VIRT_PCIE_MMIO].size,
++           .base = s->memmap[VIRT_PCIE_ECAM].base,
++           .size = s->memmap[VIRT_PCIE_ECAM].size,
+         };
+         build_mcfg(tables_blob, tables->linker, &mcfg, s->oem_id,
+                    s->oem_table_id);
 -- 
 2.44.0
 
