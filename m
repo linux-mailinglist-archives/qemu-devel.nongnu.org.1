@@ -2,139 +2,181 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D498387657A
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 14:39:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0A9887657E
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 14:39:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riaQK-0004P0-1y; Fri, 08 Mar 2024 08:38:08 -0500
+	id 1riaRi-000507-5s; Fri, 08 Mar 2024 08:39:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <schalla@marvell.com>)
- id 1riaQH-0004Oq-Ho
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 08:38:05 -0500
-Received: from mx0b-0016f401.pphosted.com ([67.231.156.173])
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1riaRf-0004yM-SO; Fri, 08 Mar 2024 08:39:31 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <schalla@marvell.com>)
- id 1riaQF-0006Ey-Nc
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 08:38:05 -0500
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
- by mx0b-0016f401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
- 4288PKKQ020901; Fri, 8 Mar 2024 05:38:02 -0800
-Received: from nam10-bn7-obe.outbound.protection.outlook.com
- (mail-bn7nam10lp2100.outbound.protection.outlook.com [104.47.70.100])
- by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 3wqkj5tuvx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Mar 2024 05:38:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1riaRd-0006YV-TP; Fri, 08 Mar 2024 08:39:31 -0500
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 428DT1TC012370; Fri, 8 Mar 2024 13:39:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-11-20;
+ bh=d0T/vpFMEQD57U7ODoLZEA0AdS5KELHmKekGRZ6Tkgg=;
+ b=R2fgKhfmH3kWShnj/Fv12E92uU41kHy9wOhN7IeCu6FQ/c9nT9y0AnO6gZoofEAtNMCh
+ KC23uV3s9BgwUqrSNv+2BI6eZRP0VXr2JqBtGNR4njhcXFmd0B82kqZZ+zKK3JrzbCKz
+ G9t/0OAiIg15KKz/1vPogpSxiNQGVh1HH36PKAortyI6Shpl2bvfSFRJ9q9Z77q10O25
+ 3zPL/XqNZ8Z+x6mBgHkHGQn2zt1wytTRBxAwX6PSHGZ8pmJe5mR8gZiam1hm6KHv74ys
+ 1rqNVvr0o+KIDrqRlq1A5uzkNwLiCy55ZX6A/4rY3KQBiqOBEM8B1SnIarTsvy7peZ4Z Wg== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wkuqvprrg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 08 Mar 2024 13:39:08 +0000
+Received: from pps.filterd
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 428C1FsC013856; Fri, 8 Mar 2024 13:39:07 GMT
+Received: from nam11-co1-obe.outbound.protection.outlook.com
+ (mail-co1nam11lp2169.outbound.protection.outlook.com [104.47.56.169])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3wktjcju45-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 08 Mar 2024 13:39:07 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=E2hyBwEvU0CIcQT7DZ3zFxy+3ELmcMybQ4g6Cc18290PbEqy4rfPDsUmfhCKb8fTZNEhLIPawcnBrVGavDqALWXuvcu0ShneDWEtAdeUNpZ8AJu1MHUeXYzc3eShRmVZt3HA/ENtkVx3zS42265yHgQpDpPk2u1lomd3EVV/pyYuCkyAR3T8cOT+YF0dxxVwSmHNRIpbR/rE+Z/2Omg74VWWLd+nq6/fR/dra14rG9m0E2I9PC4UiRrkBynWbj58bfybk9GG4NN5i8x9U4kequnxHqXZDL/ZFIfwsZE7pf+Zn9c8A1GGxzB4ggio4u5iJG/qTFzcmfocVq4y+iCx/w==
+ b=kTqIkt42H78T1mLqfcio9F2N+wW3MnKcRHfZ69y+2TWtdKk3oQ5AUB+fZ4VKr/blm/UGuVFILTMRwU5LiUUMtf1t/2S+/eEnzn02zEGS6Ivu9G9ueQtkI7mitHSGzzBMzWLPGSrU/PwTfrLPqd3ff+NNKtL2vLcBfZX2VURNFXHjdYQPhI/3xq52fw3biPw/DjJ/UwhgycSlkjnYoCoZvTD0fTkEz0snj2zjwARtssh9DR6WVfR1s36kZ9HNuaXrcwXef7q6djyf/q3jDNTbrkkYyzviyuJ+1a332fd0KG2UGCmDv3nM1EMICHhmyyLnMOFKFzcbMLcWGVfO3xBwow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5SGmw+mxe8ae94a49kAJD2aoPIFZ8wFgCALEcayGHvk=;
- b=RTVRSEtlMYT5PTKrMwzEBrvUW1ld50+Ir7UYQDNXvj+V1SGOQe+ND+ArqR593FuWQMyZTwWP8DPKBmbuPNlopkBNBuwQRtHWUeJc6Al8lrOngpQBxOMEc2a2J+ZuK1HY9C6pQ4pjCKv+lDjBBHxecUS9c4Vl62dnaMZDIPhFCTKuCir7TopeutcZcbguMgdv0iA4BHNvAV728BhmrdHOr44iv5PALBVUqrhl1dpV4CYqFxvSacpDLA1uII2YrnYobI1tMFpkc5PHqcLZWDgnqoAvEXQ/X/HiXZASU/1TaQodmRSXoitsUIxHDK17fWAjxjzqo2+2w2Hmql9OdNYLJA==
+ bh=d0T/vpFMEQD57U7ODoLZEA0AdS5KELHmKekGRZ6Tkgg=;
+ b=LFyMw4ZEM91+90mS0EpEYDNflLy1N7wj8ZEi7YxJUP8be2FqWZzJ0WHWcI/14fbBH+XunejFSkkwny3rCi1THAJtCKtwEu8ElcmrddYbXGTD8mgOwHVscDQua3wLBKS7yo49DAm/hb5K9kOuj0arBI7yA0et/rlocXICpaAsAty8Q2EvOzCL7rCW/B/83qUb+Ep8IP6jeETECDEwb9+za/JxO8z34nq+0PiFKDLLOnS/3N8P0XLOTNE/2hSVZ1SxcfsMiPBS7Poi7VDtdQTd5SxEvGzUp4bhuDZM3Oi3l9Nx6mmLdWnCR9uLkfpPkivJUyUI5A+Ppp7y12BVqqRofA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
- dkim=pass header.d=marvell.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com;
- s=selector1;
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5SGmw+mxe8ae94a49kAJD2aoPIFZ8wFgCALEcayGHvk=;
- b=Xmnm4suG0qKeViKkIKdAtnGm/wTvkk5Cn+z2WqMknphUJtoK59MUgI2SPAa7aKC/evTj4bXAm0a9eAMQl2O1PolM6Ir8t3T2U8SPNSM5WxSusX6YLUctinE4JcCIYPl7Rh79ZF7tL5iKH1aAYubs5xjryBdgS3kfs8eNR3Lk7J4=
-Received: from DS0PR18MB5368.namprd18.prod.outlook.com (2603:10b6:8:12f::17)
- by SA1PR18MB5965.namprd18.prod.outlook.com (2603:10b6:806:3e5::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.29; Fri, 8 Mar
- 2024 13:37:59 +0000
-Received: from DS0PR18MB5368.namprd18.prod.outlook.com
- ([fe80::9728:b607:b464:a2dc]) by DS0PR18MB5368.namprd18.prod.outlook.com
- ([fe80::9728:b607:b464:a2dc%7]) with mapi id 15.20.7362.024; Fri, 8 Mar 2024
- 13:37:59 +0000
-From: Srujana Challa <schalla@marvell.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Vamsi Krishna Attunuru
- <vattunuru@marvell.com>, Jerin Jacob <jerinj@marvell.com>, Jason Wang
- <jasowang@redhat.com>
-Subject: RE: [EXT] Re: [PATCH] vhost_net: add NOTIFICATION_DATA and IN_ORDER
- feature bits to vdpa_feature_bits
-Thread-Topic: [EXT] Re: [PATCH] vhost_net: add NOTIFICATION_DATA and IN_ORDER
- feature bits to vdpa_feature_bits
-Thread-Index: AQHaYxhbwHf1xjJpq0Wux4yyZKaw7bERiJqQgARw4sCAF/RcIA==
-Date: Fri, 8 Mar 2024 13:37:58 +0000
-Message-ID: <DS0PR18MB53681809B96E8745691192A1A0272@DS0PR18MB5368.namprd18.prod.outlook.com>
-References: <20240102111432.36817-1-schalla@marvell.com>
- <20240219044352-mutt-send-email-mst@kernel.org>
- <DS0PR18MB5368BA5DBD8D8CDDE1A68573A0512@DS0PR18MB5368.namprd18.prod.outlook.com>
- <DS0PR18MB536881ACD91AFC00D2E24744A0562@DS0PR18MB5368.namprd18.prod.outlook.com>
-In-Reply-To: <DS0PR18MB536881ACD91AFC00D2E24744A0562@DS0PR18MB5368.namprd18.prod.outlook.com>
-Accept-Language: en-US
+ bh=d0T/vpFMEQD57U7ODoLZEA0AdS5KELHmKekGRZ6Tkgg=;
+ b=sHTMG7ge8em6KnUpcaNtmFs+mTjKTZtge2m9JRMUrZKft+faAiVvO4hcrtxpbW2nSoeC0ruS0R2d6K7TsqqOXcKzpugcfMXxf2xC/NjKvxc/4YlmIIhvADVgvkL8MWPAnki7AqHT60EMabNyC3NN5Vm3y7L0AHq7T0LZN7BIqhQ=
+Received: from PH0PR10MB4664.namprd10.prod.outlook.com (2603:10b6:510:41::11)
+ by MW6PR10MB7639.namprd10.prod.outlook.com (2603:10b6:303:244::14)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.27; Fri, 8 Mar
+ 2024 13:39:05 +0000
+Received: from PH0PR10MB4664.namprd10.prod.outlook.com
+ ([fe80::75a:a398:452a:90a9]) by PH0PR10MB4664.namprd10.prod.outlook.com
+ ([fe80::75a:a398:452a:90a9%6]) with mapi id 15.20.7362.024; Fri, 8 Mar 2024
+ 13:39:04 +0000
+Message-ID: <701ec0a8-0af0-4cad-af18-c5b66b955a6d@oracle.com>
+Date: Fri, 8 Mar 2024 08:39:00 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 0/8] virtio, vhost: Add VIRTIO_F_NOTIFICATION_DATA
+ support
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS0PR18MB5368:EE_|SA1PR18MB5965:EE_
-x-ms-office365-filtering-correlation-id: 10dfe74b-21e9-4d25-cfa4-08dc3f74f803
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: o8FDnPB6EYJBiQF3vNZhc5g2Y8Vtf75A6qowW1xCfBpmf6HT79jrDZijYHiOSOT7xJ6iFHJGzjdeo00qEd3ZWIg3MV8MTuRKzxpwcrGGsAKz0fWmOo9s7HCMIkuvfp+8D/xwTsU2lkI4EX/x4GwBX1fW4N9MZE9taRNPFao07P7EJ9liYCMKTDv2+c2SlZ9oEtYOQMAt2qEn52QED/y5u5wOD6xrWQVGR/z2/a68dRHNAJhRpnTv/kj57nTl8ojmT+yG8F/KhIG482uU/LWo7BXKq4C5waoVibeJYsjEUy1D/Y3TKkU9O4TIVw5E5kxMbC6Lq84B0Sk8GehKVdiGRY1DNdm990niTJ1E2io+ruCmuOVfvD8+V9PnnUSP1AEeVWo7lypPhdTsxTpM7qQPPLXHdjDypbaKzIrS4t6RecwzpAX2iWAXpspCu4v2IU+aMG62Afe6gSiNh7ccOlJ+EsgS/jFvjsNkXvE+6hBhhqmIhsp2kfHUka82R4niC0ctFJ4wjPL9EHhF0A6lWAyhUqLq8FKtV8yDS7ha4sMFe54j45K9eV7NxO+wyfNtv5ZiOfCyhTysk1qvVMmJy2YHh4TldEzC1TZetdkAIT7VzfVShWBihZuaI3w4rSqQEs8R6s/3newKpa4x/U3IC4HdggKEb9AXs37RnskeM20rdiGW7VLhTVcBpYXEmXyrlUbHBFB1QukRVFEa1NlBJNmSpwlM1BXU5X0+Op4Qfs+yyPY=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS0PR18MB5368.namprd18.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(1800799015)(376005)(38070700009); DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?FJmHW1jujglgDoZ7mubtGr8jSME5AFB+S1q2evhlif7BKvDyYpUyvDO5Tg3J?=
- =?us-ascii?Q?sBD0LNbb4N+s+1Y7zi+TOTVvZMV0OAvdVRmBQNceq+JbQnzvmkJeCYzijK1N?=
- =?us-ascii?Q?pTf3xWtTK8CJV6o3SDcq0z3X2oDcHjrowxgIHc1z3PicDBhdZMkIWMxODOro?=
- =?us-ascii?Q?Zac2QkvDy3dUodUMIS3C645IcYTTdrGyaNLZ9lrh95V94BuxXHmWzHNzcevn?=
- =?us-ascii?Q?y+InA7oH7Vimt8ZHPGupAwQZ0kWYXXpyyt56GbNWLlpB7A5xaRrCJJX+Posr?=
- =?us-ascii?Q?tHjjFNggj5jk/l/DbPO5SFOxR0HEvy7MlgmQy1AEiuuheJppeN7vMZ0SHIPO?=
- =?us-ascii?Q?/vFi58QsMpxY0HVcaP+u480sfU45EMHWcyVpHjnKuQqoq8gdKLgam+aqcM6m?=
- =?us-ascii?Q?DmK5bhK54WEQqBuv63hf38OmPVUNzJZPvRK7Rhmjk41p7F7wJ8tGPwgDg9IT?=
- =?us-ascii?Q?2l+OgqwIGwN+FgLn8t3cYfyMYUkflZWDHnfDioQTTFjxaxGlrID+AGc/OUKm?=
- =?us-ascii?Q?s5Feta4dREDS04Oldm5Jto8x7CmlwL/gSBXewLBSKSyiku8qQOhiwbSKlR4a?=
- =?us-ascii?Q?dZ3V9dR0A8xIlZBG7+a/Dj3lw3a+2jkY1D6rMtQYSjMWrXydonwdVi147+oO?=
- =?us-ascii?Q?1JB7QCIAjdy6fAgsIeVnc+Eq/0JA7iPDWw7+aGHcfj6IWVvvhve6KnAg1E7v?=
- =?us-ascii?Q?LXc+XZAOx1LOFIIsBI+2aj4Hf6hP7wMq/15Ck5vu7k1nkgcjwWRZVixE/ch8?=
- =?us-ascii?Q?XjP3QrNy/m4OmybAksm9c61G5imk+aTMX7vOWwg+81kweNXZEA4GBPI+IBqB?=
- =?us-ascii?Q?ln7Cnzxv8b91/VzqNPh09KJOfXHWlK+Wg/Ht3Ds3xDskw9YuAh2UApPG2tsJ?=
- =?us-ascii?Q?ykZYWoup9QgiHurkK9tFZ9T/fkKZaeCHsoR0Y8L4WmbV6dhI79XqTtBa+dbm?=
- =?us-ascii?Q?Qp5dXIwH2xOFn7/qmkQ/8mqJcEdOfFEOp8QWr4sBxidXOBbbrF19Y+C8s+Tr?=
- =?us-ascii?Q?j6wRzvgROpNC2YhC3mLuowlw4+Bbj1eOeCrQkZo1/Mk7C194KFw/V99PVqre?=
- =?us-ascii?Q?Orjbd27u5W/ev9MC6MdtV8UGOgMxjzcOcYuRW4dAIrYTFargw9I+kAamBG1L?=
- =?us-ascii?Q?4NbR3Z3MqscFc4OZmotX7IP0ALzd2wT5zndcsM7z2+oFfx1NMlnchhMbfhTc?=
- =?us-ascii?Q?e0zK77LWlMhRonTtVn9xWX38WgWNjH9LWJzmoLVsom3LcPTlyK+6zP6kVyvX?=
- =?us-ascii?Q?AOlplof2QPUITgPjiGkiHw/qo3kBO/h0JA9O9Mi+FdsO1fBZWa7eHFmvCe0k?=
- =?us-ascii?Q?0ZlmVNlnO+eRlYNdXi+pL8YdDhY9dHYuH6gOgTz8yrWttzbzN6nsOpaE9OxA?=
- =?us-ascii?Q?H/+91bguf3Ns9xsB8y9G5wzMKaYup5lbFz64ZpdT5jyBjKNvrL26EvDTDqbw?=
- =?us-ascii?Q?2Rss0eDZ/OXa71ARIM32ZHJGHZxUGEWGdq7T8o+QMYMQ0vE1Mbxq5o9L7jhV?=
- =?us-ascii?Q?lKHJ3mBvdhOh9KnujW47RWsOlDGNPLACtN6jNmCfG+A96B25T68XBYeE24ha?=
- =?us-ascii?Q?0KY9ALOzibpPW9fo+34350umUDkmDWua+a/QdE8u?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To: Lei Yang <leiyang@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ qemu-devel@nongnu.org, si-wei.liu@oracle.com,
+ boris.ostrovsky@oracle.com, raphael@enfabrica.net, kwolf@redhat.com,
+ hreitz@redhat.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+ farman@linux.ibm.com, thuth@redhat.com, richard.henderson@linaro.org,
+ david@redhat.com, iii@linux.ibm.com, cohuck@redhat.com,
+ Eugenio Perez Martin <eperezma@redhat.com>, pbonzini@redhat.com,
+ fam@euphon.net, stefanha@redhat.com, qemu-block@nongnu.org,
+ qemu-s390x@nongnu.org, virtio-fs@lists.linux.dev
+References: <20240304194612.611660-1-jonah.palmer@oracle.com>
+ <CACGkMEtoA3SN9e9WnNpFyR32rkf_pWUNj-6uj2TZBzjB0E+3SQ@mail.gmail.com>
+ <CAJaqyWdAFTkjGBJBmxvmTZT8UUiH86UGgE74X_bcq22nd-WwHA@mail.gmail.com>
+ <20240306023143-mutt-send-email-mst@kernel.org>
+ <CAJaqyWcDMu58H6P3FvyTM7L-GphLB1kj7fcOTBw6FC-O2DcpZA@mail.gmail.com>
+ <CAPpAL=xRiVfr4tObY_MwudQ0qyhWOqMzaHQaCdx7YtMnZc7GDw@mail.gmail.com>
+From: Jonah Palmer <jonah.palmer@oracle.com>
+In-Reply-To: <CAPpAL=xRiVfr4tObY_MwudQ0qyhWOqMzaHQaCdx7YtMnZc7GDw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BL1PR13CA0248.namprd13.prod.outlook.com
+ (2603:10b6:208:2ba::13) To PH0PR10MB4664.namprd10.prod.outlook.com
+ (2603:10b6:510:41::11)
 MIME-Version: 1.0
-X-OriginatorOrg: marvell.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB4664:EE_|MW6PR10MB7639:EE_
+X-MS-Office365-Filtering-Correlation-Id: cd62bf54-1031-42c4-c2e6-08dc3f751f3a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: xFAontxhxzIRP4kyo6Nd9wnmiWijY5UicrExW2Q/F3ZjYZBI021TMndfwdhRz/8qe8KYFgQ5mxHegFMqVIE3QqdA8ErjrpVrzh8q6nIQHjJU32QlQCKTB3OxmLgrjmisdEdbd9JtevDZSJOwjFsmWO0OP1qmSy62CnNfANJn1RN2uSqMX2Q+raNST8498ROPPL/QXUDc016stsH/tx96L2/kHw8v0WgcRD7LomcvitCo9Mra/DRDCreszTkvdlslMnfets+uSHJLu1CUjr6zsH0ZbqQlbrZTsdttiIg6lDwAz5KVnW+H1KIyoljtkvULvaBDJhiQQbj5J5HnzfmzeNpWh+X4V96nBZ3OrDxaUu0g28zwJ64GQfDLFwNLcTg4BlzV+8y9IR/AsQqkqafFy3W/hNKKaDNQXkVZFKzHzeuA7jvZ1Bg++jVh8GYjy2x9DXWDtaL1ighSh9hUx9I40WHq7hmpdoUOcVPhWGsSARBzYglqmKWCcSmaI3Y5MlCJXq8f02W9XXPl1MKsxEDkIZ+UJh6uMYCyyo06NWegad3mrsfsy12bOHAdySID2GhI0+0R7oqIgK0Nq0KAtG1eAuUVPsr54GIBdtoAjHfntvvw1/qitcev4IOR4jCRo12FOYG1ayYJQ7xaGUZyG0Uw525l3OrnR1cLgcWWt67prj8=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR10MB4664.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376005)(7416005)(1800799015); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T3dTVnNNNzhpamRVWUF4ZVJiaDFzMFY3T29jbkFCbWwxWXVYRGtCbWxkVXlv?=
+ =?utf-8?B?TjNUTnpZNi9CWTZFc0JCc3JaSm45TURiZWs1Uys1Qi9HYStCRk9wUCtjWVVM?=
+ =?utf-8?B?ODRsT3JhS3pnRCtsbG5YcGIrc05nZUd0blR3VFRhYVFya0tLZUhiSlg3L1pP?=
+ =?utf-8?B?TGFGMHRuYjNkMVkwY3AyM240aldJVmhPUFFVTTFuZEJYME8vcVdTVHN6cm9L?=
+ =?utf-8?B?S2RXYi8yN1ZWYXZnQmRUeGdUazhGak5xeXBPYUpwbUp1Z3NyVmtGY25BbG5a?=
+ =?utf-8?B?MWllMDZDSlpGQlNaVjZKMW5RVm1hZzF5cXVya0x5dG9jRWl0WnVkZW1TbURR?=
+ =?utf-8?B?RGNBVWZ0WWJSK3EzYzNLTDJtb1dlaDdqRWJ3ZGFHMjR2U2dxdE5BTW5zRXRE?=
+ =?utf-8?B?MisyNkNmYThWZWF6WXlNWGFOTkhrc1RMb0htdDBkME1ISDhPdUluU0RHdjlz?=
+ =?utf-8?B?K2Z6WUM2N3RoZWQxOWQ4RDJuUGdldjFFblZEVUpXKzh5UTBBWkRXM0R5cm5R?=
+ =?utf-8?B?cjJENUlkejBWeTU4UUVRcWdIN0U5M3krQy9JT0IyL1V6dWNSZU1kYXhNWUt5?=
+ =?utf-8?B?OFhxTFFqYnFTTHB6d2pvRXN4ODI2VnNLd0E5UmJ5emRsMnNsMHVXZTZTN24v?=
+ =?utf-8?B?Z3dFL2g3N2N0dytRcUxvL0lCWlZPRXZQUGpoa2RRVmJlblAwZjYwTEJaZi8r?=
+ =?utf-8?B?UVZGbTEvLys4N2o2S3hLK0JZVUN0QXdvUlh5dEdVaVU5VEIwOTNsMjAwMGhz?=
+ =?utf-8?B?a2s5ZEZLanFFVkw3WG9xSFNqUElVN2hMeVZOMUd3SDJ2Nk8wYjZuT05nbUYx?=
+ =?utf-8?B?V0dEcVRCdks4T3g4NituSU9qNXVrck5SNkFKT3BmaVNDYXlKTzJWYlhoQUpl?=
+ =?utf-8?B?cDRiODB1ZnlGVmdyNlBOUnFkUE1RL3ZHcm1hQ0kwd2VSZDFoSnVyamdscmxN?=
+ =?utf-8?B?L2tXNU9EUTNScUUzdEtteWFqRDEyMFZFdmxFUnRtMFdDTGZvbnBEM21IcHJ1?=
+ =?utf-8?B?RjVPUUFVMmFUNTViVDZuZ3NCTlBERS9IaGxnTTQ1QW9ZUkRoZjh6ZnFYa25P?=
+ =?utf-8?B?Yk96eDBVbExQMC9zWlEvS2JsOE5xRHpZNmxMNFQ0Z2ZDaStvdVNFeDNTYlhh?=
+ =?utf-8?B?UTcyWXAzK2ZPNXpTTndnY2lhNVEvWjdGQWVrUXVzOGp1ZUVrTUVGWFlSUjNt?=
+ =?utf-8?B?QmNCTUhBNDJuajNkUmduRHR6VTh4bmh0QWQ2S1RNcVJleU5aZ3kvR3IvenpH?=
+ =?utf-8?B?eWNlbFZuMldtY280ZVd5a3BPOVBGazMrK21LdG9IbExVa2kzK3o4c2I4ckMy?=
+ =?utf-8?B?RXhuL2xSRFBpS1FxRnE4NXVhdFFFa1RqZWhwYk92UnRoZkVXOEhtN0YrV21m?=
+ =?utf-8?B?dU44bjNjaFdMM0J5V21rbEtTNW5UeDJBanM3ZXBaWEFiL3dOczlNbFNERC9k?=
+ =?utf-8?B?S0ZzOUh2cGVkRkRjM2ZKOEtZMlhKck9SUTFpOENBR2J3NXNjSDlxdmxjWmF0?=
+ =?utf-8?B?a0o2cGc1NVo3d2hGUTJrem5vdElvZEVrNTdMcHNUa09kVGdQWndMK3RWOWln?=
+ =?utf-8?B?WjRjNE1BTStRUmRGMUIyS2pXdlRiOFhoWU8vRTYrRGZOWlRPckcyMk1ycmxZ?=
+ =?utf-8?B?QVVQS1ZFUjBLRENxZGFFbk9tNFJ0RlFuYUFwMUVzcHZuRnlVUTNxdnA2VFVt?=
+ =?utf-8?B?bGc0Tmk1WkVRTHl4dWNxMmhOQmpzVXN1UDFyNWNNMGIxaXd2cHUyendXSWRR?=
+ =?utf-8?B?amRJSk5lcm9LMlRWQUQ3Z1NTY254MmtzY0MwUWIwWFl4STZxbXlBRU00anVo?=
+ =?utf-8?B?dHo2cVFBazNPNVhZUG1RT3dLVXVib3M4aElGRTE0ckJJeW50eUg0LzFvZXNa?=
+ =?utf-8?B?UStpanA5c2swMGpIY3NvR1ZwWlNWelRyZVFmL2pZZWVjY0toVUFFYS9EZ21C?=
+ =?utf-8?B?UHNoam1hK2NQVHFiVjNUSTZHZWQ1ZWg2Tll6bmwzakgyRFFsdFhVV0tSeGw5?=
+ =?utf-8?B?OURZQm5xa3JwUWpZbklPeU9kTEUzRTVLVFIwSGdQSi90NTBiZDdkL1EvVUYr?=
+ =?utf-8?B?cXZVUEgwOWNzUkJiVjJ3eE9Jc1pONzQvczdlSmpoRkFDOG9oSzljTG5sZjNK?=
+ =?utf-8?B?cER1NGtZVVNrdTdMS2p1WDI4SEZoOTdEWldwa0szQktUWms1UE1wOFdHRGR3?=
+ =?utf-8?Q?vNhPpfeoLvDZ0j+stUN3p6w=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: NP7X6XHQ+AaKHWwBVO9CMmBZwwgq4u6ZfAAQ0tqC/0r8PsiRFfV9gpJs6yKKTTTokO9kYSfPfJzVntxFQ3+nRu8TjQVGvQmHj6veFQzhVz69QIFLK3tK5bfZ/94AF5k1T+Arw46iwsdXdAYzCF2yYQBG7vew93+WdVAxn4HWPB1zI++GZ8vtDg4+d05XYQiW0Xht4cmuRdd2KmxxcJ6Xg3GVMR0qoNnD+AOgMbiRmim6jCmadcCnSlpR/yoo+dsiuaAiTvSAdl1tE9ifXaGgK/PvpdYPWCxNZ6g+c8x5fMLePW9zC+iJHqv5ntaW38d+uzdRGzDPKhHXLgxWeavfCS8Y3PjaKFVnT4bzQI/hOFY1wyKXgf+b5Wr/8wf/MkahdCYjl3SJpGASCzNmAVw7MGXh7zgpY/Gf6UuSR6OCad9Ip4uMYWZCD0NgDGx+xEeA1bOFlm04tQC6pBSWtcVk7NKf4urBixGhTUVeSiEAu7XeGiD97pSYfZmtHo1aADsg5kGj2J5QludYbx8vSDNOXc5c6Mm/4VICfBoQGTuijV0+bJbolWDtIlnJETjnNd6bGH1aoJLGoqe7f38WrDYXVGoVpI+DoPXaOm8OpmDCdGw=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd62bf54-1031-42c4-c2e6-08dc3f751f3a
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4664.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR18MB5368.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 10dfe74b-21e9-4d25-cfa4-08dc3f74f803
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Mar 2024 13:37:58.9047 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: z3HiPEFPexem83+10f8Liq9LDCi7GQ9wwW9oJMIxBVutXVYBREAbDTWNzta2lZqervKITyBV5D3AEoND3f7Jvg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR18MB5965
-X-Proofpoint-GUID: UJRyux-IX4PTwoDY_OmrhD9bu_WSG159
-X-Proofpoint-ORIG-GUID: UJRyux-IX4PTwoDY_OmrhD9bu_WSG159
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2024 13:39:04.9185 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bSd9DK1VbZzPHXr/rsIr171xpK9INjrrjjNRecwTA62EeRUcRs9HDP6SkMMOOBRzQK55NHOBHCQP/IXFuwidmw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR10MB7639
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-03-08_08,2024-03-06_01,2023-05-22_02
-Received-SPF: pass client-ip=67.231.156.173; envelope-from=schalla@marvell.com;
- helo=mx0b-0016f401.pphosted.com
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ bulkscore=0 mlxscore=0
+ spamscore=0 phishscore=0 suspectscore=0 malwarescore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2403080109
+X-Proofpoint-GUID: sALB7JYiiP4HgbalNGTc96flNMaLSvjG
+X-Proofpoint-ORIG-GUID: sALB7JYiiP4HgbalNGTc96flNMaLSvjG
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -151,108 +193,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Michael,
 
-VIRTIO_F_NOTIFICATION_DATA needs to be exposed to make Marvell's device wor=
-ks
-with Qemu. Any other better ways to expose VIRTIO_F_NOTIFICATION_DATA featu=
-re
-bit for vhost vdpa use case?
 
-Thanks,
-Srujana.
+On 3/8/24 8:28 AM, Lei Yang wrote:
+> Hi Jonah
+> 
+> QE tested this series v1 with a tap device with vhost=off with
+> regression tests, everything works fine. And QE also add
+> "notification_data=true" to the qemu command line then got "1" when
+> performing the command [1] inside the guest.
+> [1] cut -c39 /sys/devices/pci0000:00/0000:00:01.3/0000:05:00.0/virtio1/features
+> 
+> Tested-by: Lei Yang <leiyang@redhat.com>
+> 
 
-> Subject: RE: [EXT] Re: [PATCH] vhost_net: add NOTIFICATION_DATA and
-> IN_ORDER feature bits to vdpa_feature_bits
->=20
-> Ping.
->=20
-> > Subject: RE: [EXT] Re: [PATCH] vhost_net: add NOTIFICATION_DATA and
-> > IN_ORDER feature bits to vdpa_feature_bits
-> >
-> >
-> >
-> > > -----Original Message-----
-> > > From: Michael S. Tsirkin <mst@redhat.com>
-> > > Sent: Monday, February 19, 2024 3:15 PM
-> > > To: Srujana Challa <schalla@marvell.com>
-> > > Cc: qemu-devel@nongnu.org; Vamsi Krishna Attunuru
-> > > <vattunuru@marvell.com>; Jerin Jacob <jerinj@marvell.com>; Jason
-> > > Wang <jasowang@redhat.com>
-> > > Subject: [EXT] Re: [PATCH] vhost_net: add NOTIFICATION_DATA and
-> > > IN_ORDER feature bits to vdpa_feature_bits
-> > >
-> > > External Email
-> > >
-> > > --------------------------------------------------------------------
-> > > -- On Tue, Jan 02, 2024 at 04:44:32PM +0530, Srujana Challa wrote:
-> > > > Enables VIRTIO_F_NOTIFICATION_DATA and VIRTIO_F_IN_ORDER
-> feature
-> > > bits
-> > > > for vhost vdpa backend. Also adds code to consider all feature
-> > > > bits supported by vhost net client type for feature negotiation,
-> > > > so that vhost backend device supported features can be negotiated w=
-ith
-> guest.
-> > > >
-> > > > Signed-off-by: Srujana Challa <schalla@marvell.com>
-> > > > ---
-> > > >  hw/net/vhost_net.c | 10 ++++++++++
-> > > >  net/vhost-vdpa.c   |  2 ++
-> > > >  2 files changed, 12 insertions(+)
-> > > >
-> > > > diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c index
-> > > > e8e1661646..65ae8bcece 100644
-> > > > --- a/hw/net/vhost_net.c
-> > > > +++ b/hw/net/vhost_net.c
-> > > > @@ -117,6 +117,16 @@ static const int
-> > > > *vhost_net_get_feature_bits(struct vhost_net *net)
-> > > >
-> > > >  uint64_t vhost_net_get_features(struct vhost_net *net, uint64_t
-> > > > features)  {
-> > > > +    const int *bit =3D vhost_net_get_feature_bits(net);
-> > > > +
-> > > > +    /*
-> > > > +     * Consider all feature bits for feature negotiation with vhos=
-t backend,
-> > > > +     * so that all backend device supported features can be negoti=
-ated.
-> > > > +     */
-> > > > +    while (*bit !=3D VHOST_INVALID_FEATURE_BIT) {
-> > > > +        features |=3D (1ULL << *bit);
-> > > > +        bit++;
-> > > > +    }
-> > > >      return vhost_get_features(&net->dev,
-> vhost_net_get_feature_bits(net),
-> > > >              features);
-> > > >  }
-> > >
-> > > I don't think we should do this part. With vdpa QEMU is in control
-> > > of which features are exposed and that is intentional since features
-> > > are often tied to other behaviour.
-> >
-> > Vdpa Qemu can negotiate all the features which vdpa backend device
-> > supports with the guest right?
-> > Guest drivers (it could be userspace or kernel drivers) will negotiate
-> > their own features, so that frontend supported features will get the
-> > precedence.
-> >
-> > >
-> > > > diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c index
-> > > > 3726ee5d67..51334fcfe2 100644
-> > > > --- a/net/vhost-vdpa.c
-> > > > +++ b/net/vhost-vdpa.c
-> > > > @@ -57,7 +57,9 @@ typedef struct VhostVDPAState {
-> > > >   */
-> > > >  const int vdpa_feature_bits[] =3D {
-> > > >      VIRTIO_F_ANY_LAYOUT,
-> > > > +    VIRTIO_F_IN_ORDER,
-> > > >      VIRTIO_F_IOMMU_PLATFORM,
-> > > > +    VIRTIO_F_NOTIFICATION_DATA,
-> > > >      VIRTIO_F_NOTIFY_ON_EMPTY,
-> > > >      VIRTIO_F_RING_PACKED,
-> > > >      VIRTIO_F_RING_RESET,
-> > > > --
-> > > > 2.25.1
+Thank you for double-checking this series for me Lei! I appreciate it :)
 
+Jonah
+
+> On Thu, Mar 7, 2024 at 7:18 PM Eugenio Perez Martin <eperezma@redhat.com> wrote:
+>>
+>> On Wed, Mar 6, 2024 at 8:34 AM Michael S. Tsirkin <mst@redhat.com> wrote:
+>>>
+>>> On Wed, Mar 06, 2024 at 08:07:31AM +0100, Eugenio Perez Martin wrote:
+>>>> On Wed, Mar 6, 2024 at 6:34 AM Jason Wang <jasowang@redhat.com> wrote:
+>>>>>
+>>>>> On Tue, Mar 5, 2024 at 3:46 AM Jonah Palmer <jonah.palmer@oracle.com> wrote:
+>>>>>>
+>>>>>> The goal of these patches are to add support to a variety of virtio and
+>>>>>> vhost devices for the VIRTIO_F_NOTIFICATION_DATA transport feature. This
+>>>>>> feature indicates that a driver will pass extra data (instead of just a
+>>>>>> virtqueue's index) when notifying the corresponding device.
+>>>>>>
+>>>>>> The data passed in by the driver when this feature is enabled varies in
+>>>>>> format depending on if the device is using a split or packed virtqueue
+>>>>>> layout:
+>>>>>>
+>>>>>>   Split VQ
+>>>>>>    - Upper 16 bits: shadow_avail_idx
+>>>>>>    - Lower 16 bits: virtqueue index
+>>>>>>
+>>>>>>   Packed VQ
+>>>>>>    - Upper 16 bits: 1-bit wrap counter & 15-bit shadow_avail_idx
+>>>>>>    - Lower 16 bits: virtqueue index
+>>>>>>
+>>>>>> Also, due to the limitations of ioeventfd not being able to carry the
+>>>>>> extra provided by the driver, ioeventfd is left disabled for any devices
+>>>>>> using this feature.
+>>>>>
+>>>>> Is there any method to overcome this? This might help for vhost.
+>>>>>
+>>>>
+>>>> As a half-baked idea, read(2)ing an eventfd descriptor returns an
+>>>> 8-byte integer already. The returned value of read depends on eventfd
+>>>> flags, but both have to do with the number of writes of the other end.
+>>>>
+>>>> My proposal is to replace this value with the last value written by
+>>>> the guest, so we can extract the virtio notification data from there.
+>>>> The behavior of read is similar to not-EFD_SEMAPHORE, reading a value
+>>>> and then blocking if read again without writes. The behavior of KVM
+>>>> writes is different, as it is not a counter anymore.
+>>>>
+>>>> Thanks!
+>>>
+>>>
+>>> I doubt you will be able to support this in ioeventfd...
+>>
+>> I agree.
+>>
+>>> But vhost does not really need the value at all.
+>>> So why mask out ioeventfd with vhost?
+>>
+>> The interface should not be able to start with vhost-kernel because
+>> the feature is not offered by the vhost-kernel device. So ioeventfd is
+>> always enabled with vhost-kernel.
+>>
+>> Or do you mean we should allow it and let vhost-kernel fetch data from
+>> the avail ring as usual? I'm ok with that but then the guest can place
+>> any value to it, so the driver cannot be properly "validated by
+>> software" that way.
+>>
+>>> vhost-vdpa is probably the only one that might need it...
+>>
+>> Right, but vhost-vdpa already supports doorbell memory regions so I
+>> guess it has little use, isn't it?
+>>
+>> Thanks!
+>>
+>>>
+>>>
+>>>
+>>>>> Thanks
+>>>>>
+>>>>>>
+>>>>>> A significant aspect of this effort has been to maintain compatibility
+>>>>>> across different backends. As such, the feature is offered by backend
+>>>>>> devices only when supported, with fallback mechanisms where backend
+>>>>>> support is absent.
+>>>>>>
+>>>>>> Jonah Palmer (8):
+>>>>>>    virtio/virtio-pci: Handle extra notification data
+>>>>>>    virtio-pci: Lock ioeventfd state with VIRTIO_F_NOTIFICATION_DATA
+>>>>>>    virtio-mmio: Handle extra notification data
+>>>>>>    virtio-mmio: Lock ioeventfd state with VIRTIO_F_NOTIFICATION_DATA
+>>>>>>    virtio-ccw: Handle extra notification data
+>>>>>>    virtio-ccw: Lock ioeventfd state with VIRTIO_F_NOTIFICATION_DATA
+>>>>>>    vhost/vhost-user: Add VIRTIO_F_NOTIFICATION_DATA to vhost feature bits
+>>>>>>    virtio: Add VIRTIO_F_NOTIFICATION_DATA property definition
+>>>>>>
+>>>>>>   hw/block/vhost-user-blk.c    |  1 +
+>>>>>>   hw/net/vhost_net.c           |  2 ++
+>>>>>>   hw/s390x/s390-virtio-ccw.c   | 16 ++++++++++++----
+>>>>>>   hw/s390x/virtio-ccw.c        |  6 ++++--
+>>>>>>   hw/scsi/vhost-scsi.c         |  1 +
+>>>>>>   hw/scsi/vhost-user-scsi.c    |  1 +
+>>>>>>   hw/virtio/vhost-user-fs.c    |  2 +-
+>>>>>>   hw/virtio/vhost-user-vsock.c |  1 +
+>>>>>>   hw/virtio/virtio-mmio.c      | 15 +++++++++++----
+>>>>>>   hw/virtio/virtio-pci.c       | 16 +++++++++++-----
+>>>>>>   hw/virtio/virtio.c           | 18 ++++++++++++++++++
+>>>>>>   include/hw/virtio/virtio.h   |  5 ++++-
+>>>>>>   net/vhost-vdpa.c             |  1 +
+>>>>>>   13 files changed, 68 insertions(+), 17 deletions(-)
+>>>>>>
+>>>>>> --
+>>>>>> 2.39.3
+>>>>>>
+>>>>>
+>>>
+>>
+>>
+> 
 
