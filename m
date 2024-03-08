@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A3F58762DF
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 12:14:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33EEC8762E9
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Mar 2024 12:16:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riY9p-0006fO-F8; Fri, 08 Mar 2024 06:12:57 -0500
+	id 1riY9x-0006gU-Uo; Fri, 08 Mar 2024 06:13:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1riY9e-0006f7-2r
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:12:47 -0500
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ id 1riY9k-0006fQ-Eq
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:12:53 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1riY9c-0001YN-El
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:12:45 -0500
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-517ab9a4a13so1723265a12.1
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 03:12:44 -0800 (PST)
+ id 1riY9f-0001ae-Mi
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 06:12:52 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1dc0e5b223eso4934755ad.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 03:12:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709896363; x=1710501163; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1709896366; x=1710501166; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=70LaACHuPy0nmyeYlSDuWjPnnxsGUPrekddZa3Ix8Gw=;
- b=XwamuOktu4GDJMHbO4U4hwO43ufVJZxMB3+rQrEJoHiPcggW3dCahXpPgQNz8/IY7j
- OZQ/tWbEYW9y9oruIS7niBQBl23+A+j/QlCIKiRHCJiA5JilHwrTopk7cda3rxhO8yzZ
- vhlX2bq2pfJ3L/DbCQtUhQktg39KOKUkO/zzM89vwNNxWdnCIFbf0ivH/Ec68EERpZ4i
- omAOGAxxwuPynTtfck8mGtRf0Q3CUdczK+2jq57XDjKX5p4jibZUc0BMurzVjvYWH5hV
- PwvPLLbIqYrFsmbFjjlHbchOGT0R5yEUY/o2GqMQu0L6RHwNGU1Cq3D7l80xTETi3PH8
- WZvA==
+ bh=8hMOgfT97lEwas5azcGeM/dlMzYi43I5zjS/KCNScj8=;
+ b=IVvl6B62cFn2Uk34gDQjwCS67iZWQGhYtDDQla5Xmz7NTJEnv6Uf1NEOs5fZ79MioO
+ MMVyst8oR6zzquWjoijcsuqkUDpU0VYhCgt5AGsSpK5dRa8VhVgEJIB2bhO7gs/bhit4
+ NcvMu63WlN6CKz1AQjvu0en86n6T6yUf874j1UV2czVfMYmgT5B3gOkNACxIfVVstHkq
+ nUDeqjVMnwsoqXl3Uy3WXVpVVWLIaSBB2WGldJ0RIcvyMP4aWjCdIIJiLK1y+V6ESMVD
+ mFxrSDvYeUvL+OxRcy2BOZ5EMhMf5AImN4VJiEs/nGGxr8hjmxojfOl1Ib9Hzp3/C4YA
+ ck4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709896363; x=1710501163;
+ d=1e100.net; s=20230601; t=1709896366; x=1710501166;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=70LaACHuPy0nmyeYlSDuWjPnnxsGUPrekddZa3Ix8Gw=;
- b=kuGfKK6/AUKMz6xxy7W29FcJpNcYl8oY5I8bq/p5VhLfgNC4X/88G3gXY6WXMaLmaz
- ojkH4L96gb2NTIlMJ/a2R9vfKE8o6WtMjNRnoEp22yKS4Y9eFn3yYfpLDqxjnxX39ZUD
- iCbk18C1dHkrmmwHstGDCebLJdl27MUrLKcsnikTJWZz/tRZMhcfcLQEt8fZDoibFmSS
- Lp31XXq+j5ZGLKcYQA9yyHwRaj2QBJnPSJRIR4K6QuWAuQJH0xLTpGdOo4TDeO4g9q9s
- l3U9bEQz9RN+rbjM6HSOkSOTApHSf31f0ppGUHf5FFufg/vrheMAD8h8KdzizwYmBO+X
- 9SnQ==
-X-Gm-Message-State: AOJu0YxgiypqsAVVA+XXVp/jQiVCCLcJu3hZzxIhw4DZG2GimFdESdeG
- GmjFF/dsiHUBUNTZP4ODlx6mJca/NObCMV9VeVRYvXfqFPDHkqHahLuQ3bvu8mvS1w==
-X-Google-Smtp-Source: AGHT+IEyjfVbp6nNtZifcjkLhwfBJ3bp0Z/vNSo7CFfk0Y0UzP8HCzzOXKdGV8XqKQ/RfHXYitYosw==
-X-Received: by 2002:a17:902:e552:b0:1dc:ce6e:bf06 with SMTP id
- n18-20020a170902e55200b001dcce6ebf06mr14032620plf.0.1709896362685; 
- Fri, 08 Mar 2024 03:12:42 -0800 (PST)
+ bh=8hMOgfT97lEwas5azcGeM/dlMzYi43I5zjS/KCNScj8=;
+ b=HRqXyBBQickWgBGjOepru0LPEmrw+lQyZs8UaHmszmPpX7b6Rzd3Ue+fMPG9OOVAXd
+ 3F4ego7m/Z6unNzHERX3irn1Uy01Cj0LKFQr5LDVl/nIzjQOmVM3ZAga1yLfudYEFq97
+ ayt3aRVSs6l3vkmd6SfsFSKp38JL0a7GfvKJTzEz0d4TYyJPtvkD9Wm5v3saPoTBRauc
+ O5DrVJdRE3YToDFDSLGEevppBxcKnoFuWBave8hqi+Ozgq/lTVmp+gtFsP3+CFTg3XzX
+ bZfzdM6ERm5U/aj/b/qdoD1Zj1HfCGlJEAB2Wvp/DVMKGlrQLgh4hbCV08Re3p32DYRi
+ jx1Q==
+X-Gm-Message-State: AOJu0Yzh+FzVJJgrSP3RMhEoHzhgDrmAtCAjGgHSNvuT3Q9T0qeLTIhR
+ 3vIFEBV9UKs8SylyctXid9ZCXU406X4vEEoZpCTSLV20zIXH/Xbh4bkG+FsjJLESgA==
+X-Google-Smtp-Source: AGHT+IHawxxd2iRlTC6cc7IKdgjV7B5AEYhq4gQRUX4MtVJVhwXoSMpvfmzRUSsGW8r0NU+b6SXOUA==
+X-Received: by 2002:a17:903:22cf:b0:1dd:2b9b:8898 with SMTP id
+ y15-20020a17090322cf00b001dd2b9b8898mr13594691plg.14.1709896365989; 
+ Fri, 08 Mar 2024 03:12:45 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- a6-20020a170902ecc600b001dcfbbb1ca5sm12006468plh.35.2024.03.08.03.12.39
+ a6-20020a170902ecc600b001dcfbbb1ca5sm12006468plh.35.2024.03.08.03.12.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Mar 2024 03:12:42 -0800 (PST)
+ Fri, 08 Mar 2024 03:12:45 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Andrew Jones <ajones@ventanamicro.com>,
+Cc: alistair23@gmail.com, Irina Ryapolova <irina.ryapolova@syntacore.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 12/34] target/riscv: Promote svade to a normal extension
-Date: Fri,  8 Mar 2024 21:11:30 +1000
-Message-ID: <20240308111152.2856137-13-alistair.francis@wdc.com>
+Subject: [PULL 13/34] target/riscv: FIX xATP_MODE validation
+Date: Fri,  8 Mar 2024 21:11:31 +1000
+Message-ID: <20240308111152.2856137-14-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240308111152.2856137-1-alistair.francis@wdc.com>
 References: <20240308111152.2856137-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x52c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,84 +97,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Andrew Jones <ajones@ventanamicro.com>
+From: Irina Ryapolova <irina.ryapolova@syntacore.com>
 
-Named features are extensions which don't make sense for users to
-control and are therefore not exposed on the command line. However,
-svade is an extension which makes sense for users to control, so treat
-it like a "normal" extension. The default is false, even for the max
-cpu type, since QEMU has always implemented hardware A/D PTE bit
-updating, so users must opt into svade (or get it from a CPU type
-which enables it by default).
+The SATP register is an SXLEN-bit read/write WARL register. It means that CSR fields are only defined
+for a subset of bit encodings, but allow any value to be written while guaranteeing to return a legal
+value whenever read (See riscv-privileged-20211203, SATP CSR).
 
+For example on rv64 we are trying to write to SATP CSR val = 0x1000000000000000 (SATP_MODE = 1 - Reserved for standard use)
+and after that we are trying to read SATP_CSR. We read from the SATP CSR value = 0x1000000000000000, which is not a correct
+operation (return illegal value).
+
+Signed-off-by: Irina Ryapolova <irina.ryapolova@syntacore.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240215223955.969568-7-dbarboza@ventanamicro.com>
+Message-ID: <20240109145923.37893-1-irina.ryapolova@syntacore.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c         | 9 ++-------
- target/riscv/tcg/tcg-cpu.c | 6 ++++++
- 2 files changed, 8 insertions(+), 7 deletions(-)
+ target/riscv/csr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index e9cf950d6b..71bdedc9bb 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1474,6 +1474,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index cc9cef3d85..805b972f6d 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -1295,8 +1295,8 @@ static RISCVException read_mstatus(CPURISCVState *env, int csrno,
  
-     MULTI_EXT_CFG_BOOL("smepmp", ext_smepmp, false),
-     MULTI_EXT_CFG_BOOL("smstateen", ext_smstateen, false),
-+    MULTI_EXT_CFG_BOOL("svade", ext_svade, false),
-     MULTI_EXT_CFG_BOOL("svadu", ext_svadu, true),
-     MULTI_EXT_CFG_BOOL("svinval", ext_svinval, false),
-     MULTI_EXT_CFG_BOOL("svnapot", ext_svnapot, false),
-@@ -1589,7 +1590,6 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
-  * and priv_ver like regular extensions.
-  */
- const RISCVCPUMultiExtConfig riscv_cpu_named_features[] = {
--    MULTI_EXT_CFG_BOOL("svade", ext_svade, true),
-     MULTI_EXT_CFG_BOOL("zic64b", ext_zic64b, true),
+ static bool validate_vm(CPURISCVState *env, target_ulong vm)
+ {
+-    return (vm & 0xf) <=
+-           satp_mode_max_from_map(riscv_cpu_cfg(env)->satp_mode.map);
++    uint64_t mode_supported = riscv_cpu_cfg(env)->satp_mode.map;
++    return get_field(mode_supported, (1 << vm));
+ }
  
-     /*
-@@ -2237,8 +2237,6 @@ static RISCVCPUProfile RVA22U64 = {
-  * Other named features that we already implement: Sstvecd, Sstvala,
-  * Sscounterenw
-  *
-- * Named features that we need to enable: svade
-- *
-  * The remaining features/extensions comes from RVA22U64.
-  */
- static RISCVCPUProfile RVA22S64 = {
-@@ -2250,10 +2248,7 @@ static RISCVCPUProfile RVA22S64 = {
-     .ext_offsets = {
-         /* rva22s64 exts */
-         CPU_CFG_OFFSET(ext_zifencei), CPU_CFG_OFFSET(ext_svpbmt),
--        CPU_CFG_OFFSET(ext_svinval),
--
--        /* rva22s64 named features */
--        CPU_CFG_OFFSET(ext_svade),
-+        CPU_CFG_OFFSET(ext_svinval), CPU_CFG_OFFSET(ext_svade),
- 
-         RISCV_PROFILE_EXT_LIST_END
-     }
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index ccfb7b2dd3..ab6db817db 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -1282,6 +1282,12 @@ static void riscv_init_max_cpu_extensions(Object *obj)
-         isa_ext_update_enabled(cpu, prop->offset, true);
-     }
- 
-+    /*
-+     * Some extensions can't be added without backward compatibilty concerns.
-+     * Disable those, the user can still opt in to them on the command line.
-+     */
-+    cpu->cfg.ext_svade = false;
-+
-     /* set vector version */
-     env->vext_ver = VEXT_VERSION_1_00_0;
- 
+ static target_ulong legalize_mpp(CPURISCVState *env, target_ulong old_mpp,
 -- 
 2.44.0
 
