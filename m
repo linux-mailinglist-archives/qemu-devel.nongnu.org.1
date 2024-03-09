@@ -2,34 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75A27877215
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 16:58:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D26887721F
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 17:01:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riz59-0007Jn-ON; Sat, 09 Mar 2024 10:57:57 -0500
+	id 1riz5M-0007Mr-9N; Sat, 09 Mar 2024 10:58:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1riz54-0007EF-A4; Sat, 09 Mar 2024 10:57:50 -0500
+ id 1riz55-0007H0-TY; Sat, 09 Mar 2024 10:57:51 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1riz52-0004HG-LW; Sat, 09 Mar 2024 10:57:50 -0500
+ id 1riz54-0004HT-6c; Sat, 09 Mar 2024 10:57:51 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B66E554529;
- Sat,  9 Mar 2024 18:58:31 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id D52065452A;
+ Sat,  9 Mar 2024 18:58:32 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7E480944BE;
- Sat,  9 Mar 2024 18:57:35 +0300 (MSK)
-Received: (nullmailer pid 1694656 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 565A9944BF;
+ Sat,  9 Mar 2024 18:57:36 +0300 (MSK)
+Received: (nullmailer pid 1694659 invoked by uid 1000);
  Sat, 09 Mar 2024 15:57:29 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
-Subject: [PULL 04/11] make-release: switch to .xz format by default
-Date: Sat,  9 Mar 2024 18:57:22 +0300
-Message-Id: <20240309155729.1694607-5-mjt@tls.msk.ru>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-trivial@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 05/11] char: Slightly better error reporting when chardev is in
+ use
+Date: Sat,  9 Mar 2024 18:57:23 +0300
+Message-Id: <20240309155729.1694607-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240309155729.1694607-1-mjt@tls.msk.ru>
 References: <20240309155729.1694607-1-mjt@tls.msk.ru>
@@ -59,33 +61,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For a long time, we provide two compression formats in the
-download area, .bz2 and .xz.  There's absolutely no reason
-to provide two in parallel, .xz compresses better, and all
-the links we use points to .xz.  Downstream distributions
-mostly use .xz too.
+From: Markus Armbruster <armbru@redhat.com>
 
-For the release maintenance providing two formats is definitely
-extra burden too.
+Both
 
+    $ qemu-system-x86_64 -chardev null,id=chr0,mux=on -mon chardev=chr0 -mon chardev=chr0 -mon chardev=chr0 -mon chardev=chr0 -mon chardev=chr0
+
+and
+
+    $ qemu-system-x86_64 -chardev null,id=chr0 -mon chardev=chr0 -mon chardev=chr0
+fail with
+
+    qemu-system-x86_64: -mon chardev=chr0: Device 'chr0' is in use
+
+Improve to
+
+    qemu-system-x86_64: -mon chardev=chr0: too many uses of multiplexed chardev 'chr0' (maximum is 4)
+
+and
+
+    qemu-system-x86_64: -mon chardev=chr0: chardev 'chr0' is already in use
+
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- scripts/make-release | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ chardev/char-fe.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/scripts/make-release b/scripts/make-release
-index 9c570b87f4..6e0433de24 100755
---- a/scripts/make-release
-+++ b/scripts/make-release
-@@ -47,5 +47,5 @@ meson subprojects download $SUBPROJECTS
-         CryptoPkg/Library/OpensslLib/openssl \
-         MdeModulePkg/Library/BrotliCustomDecompressLib/brotli)
- popd
--tar --exclude=.git -cjf ${destination}.tar.bz2 ${destination}
-+tar --exclude=.git -cJf ${destination}.tar.xz ${destination}
- rm -rf ${destination}
+diff --git a/chardev/char-fe.c b/chardev/char-fe.c
+index 20222a4cad..66cee8475a 100644
+--- a/chardev/char-fe.c
++++ b/chardev/char-fe.c
+@@ -199,13 +199,18 @@ bool qemu_chr_fe_init(CharBackend *b, Chardev *s, Error **errp)
+             MuxChardev *d = MUX_CHARDEV(s);
+ 
+             if (d->mux_cnt >= MAX_MUX) {
+-                goto unavailable;
++                error_setg(errp,
++                           "too many uses of multiplexed chardev '%s'"
++                           " (maximum is " stringify(MAX_MUX) ")",
++                           s->label);
++                return false;
+             }
+ 
+             d->backends[d->mux_cnt] = b;
+             tag = d->mux_cnt++;
+         } else if (s->be) {
+-            goto unavailable;
++            error_setg(errp, "chardev '%s' is already in use", s->label);
++            return false;
+         } else {
+             s->be = b;
+         }
+@@ -215,10 +220,6 @@ bool qemu_chr_fe_init(CharBackend *b, Chardev *s, Error **errp)
+     b->tag = tag;
+     b->chr = s;
+     return true;
+-
+-unavailable:
+-    error_setg(errp, QERR_DEVICE_IN_USE, s->label);
+-    return false;
+ }
+ 
+ void qemu_chr_fe_deinit(CharBackend *b, bool del)
 -- 
 2.39.2
 
