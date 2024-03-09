@@ -2,79 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8C268773C2
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:33:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC2328773B1
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:29:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj2Lp-0001ih-SG; Sat, 09 Mar 2024 14:27:21 -0500
+	id 1rj2Lq-0001qr-UE; Sat, 09 Mar 2024 14:27:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2L6-0007w8-EZ
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:26:38 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2L8-0007xO-OE
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:26:40 -0500
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2L0-0003ZW-Qf
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:26:34 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-a449c5411e1so409136966b.1
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:26:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2L6-0003a5-72
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:26:38 -0500
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-a460185d1a7so75796566b.0
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:26:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710012387; x=1710617187; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710012393; x=1710617193; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3KwrSf6l5lMKRNbxBtTiB9ULE3uG/bpbp4V2erGNe1I=;
- b=xek2MJMLHOBU6xUmmvY9xtDHjOjCIFggKBT7Tpatqn7ltm/hn7/gMJTzWocPOhJwZI
- aDEgn7BIX1LE6+SREZXfUaIGAFgK91pmlcgXXTrRBMcXUGJeRsyJpcm0h4igL5UxFEAr
- Ca3UAD1CSA1mpcrKOum5BVxB7x1ZoE2NiPXQfnpZxlPMk9hhFc0vtKt+/mrPiGjz2L0M
- S9nLKVQk9l/JXlXc1oyt4G7AsvQzHJPcGzKTjgPYE1Pb1/vfmfPTdvquSE+4ZxXhWWd6
- FGJbJ7cz5GSvWnpmBzETcdvDB0Wj5AVUVkmQsymjBL3zA5RqFrWl2vJ99Q1uYDx91PBd
- psWQ==
+ bh=+XiYruIl/Mk62y3f+ezGiMfqf4PWIQGmn/ntaltbgg8=;
+ b=Cr32ogUMNB0hteF1iaaW05vW7XjpElPE8zvNhxVnw81+J0EDe9HxEIKbCrDfPKKuEQ
+ TL/HuoIP2NcEvsf0SFxvmpXf17aOtmX2IXYTdg0J24JjW/UTtrHYvJoOKliK5FBjZveF
+ fY6vlQ/w2qb/z8BazEx0tpMDJkgpijIlhYUHhRQUaCQN8H2ZuzXX9c2hqbE01OGJwFLm
+ lTqxcFGm7VFNJIDFPZHQoAAZjnm8IZhnp+Mwb59idf6Y3aF29VzHpKlJl6z6jKVbx85P
+ 4Kim4sn4A1++dOJjyi5JYpk1P2NKz4jRu3eAPRihh5DXouWGcUMBKm8gsRgHn5CtG60S
+ 4K5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710012387; x=1710617187;
+ d=1e100.net; s=20230601; t=1710012393; x=1710617193;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3KwrSf6l5lMKRNbxBtTiB9ULE3uG/bpbp4V2erGNe1I=;
- b=Xja8apOyv/gj1rMpD7uiV8PDUvw1Nx+h59hu6HFCtvYcWKNLP2eQnsCNrhQefQB8jW
- F46GVJAG8CYY8bTEm0gmKM1EI09CJsu+ad7xt9mtYWvSMhCbbSNS3702VD0hJ8dXUEaF
- BGwx3jpvw4ypilHOsFFZGeXLP63mruy65bWV30naYNo+MPo66MuiufTRgodqptqt4Sms
- q/X3Aj8fAqOBA8cJKGHQfuQgW5onN1I7JjNFKLONT7eFbeUo3KSQRV0NxTSjBnTR7Xon
- OG1Fmxc6rVskQYAERnY2Py3JM6ICoxLCz2VER6c69y0KQ1dtYcywnlzyEr0KCa0qyIYn
- pcNQ==
-X-Gm-Message-State: AOJu0Yx3U5kZZ9lqZ6qmUlyUeJHdd9FYtMhhO6ESiwzdsSr2lbxmL9gr
- VrR/u6ET0rCtyLGwheqleL45zuzq43di0Pwlvi4lVYyCFTw9r9TPP3D0fsJHNAF5V6MSyf42swf
- h
-X-Google-Smtp-Source: AGHT+IGIElPanJe/Ti8VGRYv0LI2UfeWcMivTBMYYVD03n7ExNVD9uCJSCKKPHlIvMXxCAfFQoWpOg==
-X-Received: by 2002:a17:906:b082:b0:a45:c99d:3625 with SMTP id
- x2-20020a170906b08200b00a45c99d3625mr1214493ejy.23.1710012387502; 
- Sat, 09 Mar 2024 11:26:27 -0800 (PST)
+ bh=+XiYruIl/Mk62y3f+ezGiMfqf4PWIQGmn/ntaltbgg8=;
+ b=o1sMGGoZepxOlo53lvjwKgZUNLHUzvuj1mk/sKEkvGywPULyEnQGs+Tb/Y8BhppG9+
+ suzs5EJryvRRyc107kyQlFaxIELz+mQDrxso32Wd0C/KB/7MqLcOn408RtkkyGrwpVSe
+ W0efw4/oa43a4UuiaEfFuE311MhzC7t6ti2PhqzIUF9d51lzrex6a9iBDkQYUnG38AFE
+ xg4EhKwRXYiDHPLHo2kA6wzGc/XosGCTXzw2Alk5zeD0qD+dZNOVa07+OwFldcRp7zLq
+ qmMX4UGGXfIQ9CFDcXG1EIQhFXDXbI8WCldG2w6Ym3DLA3YtS1E2GGjXzeZPHNb/FERM
+ zXgA==
+X-Gm-Message-State: AOJu0YzDgDp8Oc/c3kIW3E/YHkY2zU5WbxA51niUwNyx98hM5gQJcs6y
+ ahbCcRXmcj8iBx07EXVezYTWxKUmJYTquf9vWKeFaeWG9B27B+zr9iSVhof7oM7o9r4cgORp27f
+ a
+X-Google-Smtp-Source: AGHT+IF5fXiTsXQM4PqHHP471lMuzrbFz64dQ8BACzdPeoX2Pnz8+csmIkUXGA5SOpRFZc8lVkCELA==
+X-Received: by 2002:a17:906:a1c8:b0:a44:1cb4:f496 with SMTP id
+ bx8-20020a170906a1c800b00a441cb4f496mr1343853ejb.75.1710012393290; 
+ Sat, 09 Mar 2024 11:26:33 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.237])
  by smtp.gmail.com with ESMTPSA id
- k16-20020a1709067ad000b00a4537466591sm1178153ejo.32.2024.03.09.11.26.26
+ pw2-20020a17090720a200b00a456573f9c5sm1187380ejb.0.2024.03.09.11.26.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 09 Mar 2024 11:26:27 -0800 (PST)
+ Sat, 09 Mar 2024 11:26:32 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>
-Subject: [PULL 42/43] tests/unit/test-smp-parse: Test "parameter=0" SMP
- configurations
-Date: Sat,  9 Mar 2024 20:22:09 +0100
-Message-ID: <20240309192213.23420-43-philmd@linaro.org>
+Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
+ Angelo Dureghello <angelo@kernel-space.org>,
+ Thomas Huth <huth@tuxfamily.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 43/43] hw/m68k/mcf5208: add support for reset
+Date: Sat,  9 Mar 2024 20:22:10 +0100
+Message-ID: <20240309192213.23420-44-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240309192213.23420-1-philmd@linaro.org>
 References: <20240309192213.23420-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,130 +94,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: Angelo Dureghello <angelo@kernel-space.org>
 
-The support for "parameter=0" SMP configurations is removed, and QEMU
-returns error for those cases.
+Add reset support for mcf5208.
 
-So add the related test cases to ensure parameters can't accept 0.
-
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240308160148.3130837-14-zhao1.liu@linux.intel.com>
+Signed-off-by: Angelo Dureghello <angelo@kernel-space.org>
+Reviewed-by: Thomas Huth <huth@tuxfamily.org>
+Message-ID: <20240309093459.984565-1-angelo@kernel-space.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/unit/test-smp-parse.c | 92 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 92 insertions(+)
+ hw/m68k/mcf5208.c | 44 ++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 42 insertions(+), 2 deletions(-)
 
-diff --git a/tests/unit/test-smp-parse.c b/tests/unit/test-smp-parse.c
-index d39cfdc19b..8994337e12 100644
---- a/tests/unit/test-smp-parse.c
-+++ b/tests/unit/test-smp-parse.c
-@@ -524,6 +524,91 @@ static const struct SMPTestData data_full_topo_invalid[] = {
-     },
+diff --git a/hw/m68k/mcf5208.c b/hw/m68k/mcf5208.c
+index 0cfb806c20..ec14096aa4 100644
+--- a/hw/m68k/mcf5208.c
++++ b/hw/m68k/mcf5208.c
+@@ -40,6 +40,8 @@
+ #define PCSR_PRE_SHIFT  8
+ #define PCSR_PRE_MASK   0x0f00
+ 
++#define RCR_SOFTRST     0x80
++
+ typedef struct {
+     MemoryRegion iomem;
+     qemu_irq irq;
+@@ -185,12 +187,50 @@ static const MemoryRegionOps m5208_sys_ops = {
+     .endianness = DEVICE_NATIVE_ENDIAN,
  };
  
-+static const struct SMPTestData data_zero_topo_invalid[] = {
-+    {
-+        /*
-+         * Test "cpus=0".
-+         * config: -smp 0,drawers=1,books=1,sockets=1,dies=1,\
-+         *              clusters=1,cores=1,threads=1,maxcpus=1
-+         */
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(0, 1, 1, 1, 1, 1, 1, 1, 1),
-+        .expect_error = "Invalid CPU topology: CPU topology parameters must "
-+                        "be greater than zero",
-+    }, {
-+        /*
-+         * Test "drawers=0".
-+         * config: -smp 1,drawers=0,books=1,sockets=1,dies=1,\
-+         *              clusters=1,cores=1,threads=1,maxcpus=1
-+         */
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 0, 1, 1, 1, 1, 1, 1, 1),
-+        .expect_error = "Invalid CPU topology: CPU topology parameters must "
-+                        "be greater than zero",
-+    }, {
-+        /*
-+         * Test "books=0".
-+         * config: -smp 1,drawers=1,books=0,sockets=1,dies=1,\
-+         *              clusters=1,cores=1,threads=1,maxcpus=1
-+         */
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 0, 1, 1, 1, 1, 1, 1),
-+        .expect_error = "Invalid CPU topology: CPU topology parameters must "
-+                        "be greater than zero",
-+    }, {
-+        /*
-+         * Test "sockets=0".
-+         * config: -smp 1,drawers=1,books=1,sockets=0,dies=1,\
-+         *              clusters=1,cores=1,threads=1,maxcpus=1
-+         */
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 0, 1, 1, 1, 1, 1),
-+        .expect_error = "Invalid CPU topology: CPU topology parameters must "
-+                        "be greater than zero",
-+    }, {
-+        /*
-+         * Test "dies=0".
-+         * config: -smp 1,drawers=1,books=1,sockets=1,dies=0,\
-+         *              clusters=1,cores=1,threads=1,maxcpus=1
-+         */
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 0, 1, 1, 1, 1),
-+        .expect_error = "Invalid CPU topology: CPU topology parameters must "
-+                        "be greater than zero",
-+    }, {
-+        /*
-+         * Test "clusters=0".
-+         * config: -smp 1,drawers=1,books=1,sockets=1,dies=1,\
-+         *              clusters=0,cores=1,threads=1,maxcpus=1
-+         */
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 0, 1, 1, 1),
-+        .expect_error = "Invalid CPU topology: CPU topology parameters must "
-+                        "be greater than zero",
-+    }, {
-+        /*
-+         * Test "cores=0".
-+         * config: -smp 1,drawers=1,books=1,sockets=1,dies=1,\
-+         *              clusters=1,cores=0,threads=1,maxcpus=1
-+         */
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 1, 0, 1, 1),
-+        .expect_error = "Invalid CPU topology: CPU topology parameters must "
-+                        "be greater than zero",
-+    }, {
-+        /*
-+         * Test "threads=0".
-+         * config: -smp 1,drawers=1,books=1,sockets=1,dies=1,\
-+         *              clusters=1,cores=1,threads=0,maxcpus=1
-+         */
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 1, 1, 0, 1),
-+        .expect_error = "Invalid CPU topology: CPU topology parameters must "
-+                        "be greater than zero",
-+    }, {
-+        /*
-+         * Test "maxcpus=0".
-+         * config: -smp 1,drawers=1,books=1,sockets=1,dies=1,\
-+         *              clusters=1,cores=1,threads=1,maxcpus=0
-+         */
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 1, 1, 1, 0),
-+        .expect_error = "Invalid CPU topology: CPU topology parameters must "
-+                        "be greater than zero",
-+    },
+-static void mcf5208_sys_init(MemoryRegion *address_space, qemu_irq *pic)
++static uint64_t m5208_rcm_read(void *opaque, hwaddr addr,
++                               unsigned size)
++{
++    return 0;
++}
++
++static void m5208_rcm_write(void *opaque, hwaddr addr,
++                            uint64_t value, unsigned size)
++{
++    M68kCPU *cpu = opaque;
++    CPUState *cs = CPU(cpu);
++    switch (addr) {
++    case 0x0: /* RCR */
++        if (value & RCR_SOFTRST) {
++            cpu_reset(cs);
++            cpu->env.aregs[7] = ldl_phys(cs->as, 0);
++            cpu->env.pc = ldl_phys(cs->as, 4);
++        }
++        break;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" HWADDR_PRIX "\n",
++                      __func__, addr);
++        break;
++    }
++}
++
++static const MemoryRegionOps m5208_rcm_ops = {
++    .read = m5208_rcm_read,
++    .write = m5208_rcm_write,
++    .endianness = DEVICE_NATIVE_ENDIAN,
 +};
 +
- static char *smp_config_to_string(const SMPConfiguration *config)
++static void mcf5208_sys_init(MemoryRegion *address_space, qemu_irq *pic,
++                             M68kCPU *cpu)
  {
-     return g_strdup_printf(
-@@ -1173,6 +1258,13 @@ static void test_full_topo(const void *opaque)
-         smp_parse_test(ms, &data, false);
-     }
+     MemoryRegion *iomem = g_new(MemoryRegion, 1);
++    MemoryRegion *iomem_rcm = g_new(MemoryRegion, 1);
+     m5208_timer_state *s;
+     int i;
  
-+    for (i = 0; i < ARRAY_SIZE(data_zero_topo_invalid); i++) {
-+        data = data_zero_topo_invalid[i];
-+        unsupported_params_init(mc, &data);
-+
-+        smp_parse_test(ms, &data, false);
-+    }
-+
-     object_unref(obj);
- }
++    /* RCM */
++    memory_region_init_io(iomem_rcm, NULL, &m5208_rcm_ops, cpu,
++                          "m5208-rcm", 0x00000080);
++    memory_region_add_subregion(address_space, 0xfc0a0000, iomem_rcm);
+     /* SDRAMC.  */
+     memory_region_init_io(iomem, NULL, &m5208_sys_ops, NULL, "m5208-sys", 0x00004000);
+     memory_region_add_subregion(address_space, 0xfc0a8000, iomem);
+@@ -265,7 +305,7 @@ static void mcf5208evb_init(MachineState *machine)
+     mcf_uart_create_mmap(0xfc064000, pic[27], serial_hd(1));
+     mcf_uart_create_mmap(0xfc068000, pic[28], serial_hd(2));
+ 
+-    mcf5208_sys_init(address_space_mem, pic);
++    mcf5208_sys_init(address_space_mem, pic, cpu);
+ 
+     mcf_fec_init(address_space_mem, 0xfc030000, pic + 36);
  
 -- 
 2.41.0
