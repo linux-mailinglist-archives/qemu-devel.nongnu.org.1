@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 855A48773BD
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:31:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59533877397
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:24:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj2Iq-0002sX-I3; Sat, 09 Mar 2024 14:24:16 -0500
+	id 1rj2Iw-0003Rz-FP; Sat, 09 Mar 2024 14:24:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2Io-0002lP-He
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:14 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2Iu-0003Ki-Hv
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:20 -0500
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2Im-0002k2-4D
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:14 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5684f95cc9bso26029a12.1
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:24:11 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2Ir-0002lL-R5
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:20 -0500
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-a293f2280c7so503146466b.1
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:24:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710012250; x=1710617050; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710012256; x=1710617056; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qjFrwxdzh9cIFuy3VrLZl1YDUiO+UYomEAH8YyqLi9E=;
- b=P7/bU2la/osimESifAkLanHeMCSxf8dYX3GeUifgR0pf3pcS7E5MaTlPj7fN3e+wV7
- h+tBcnWBLvFVFFmvET8ChI2a+tnW35VTa+/NczjcYTDNset2v2ahJU6fClZrNmrkVU7z
- zS2S//Eu4+XRRZD49WfZhvNpnGZlEisclAKZm4vQjQx+w3c3KamRt2KAbrw5udzafMjM
- d05f2FsMifBNjNytjWC5f1ds8JDf8xkJY71/1My2qYsb13WuKd41lIgLzKSwN1pG6MBD
- cpUsdNKCIYb24Ksl2aogcjdCSwVMg6q03On9Qr93jwHtrdInHxP4yLEm0bcjY6uHy/Li
- Owfg==
+ bh=97WMuYDRb3w8xARFK/GrtRAFlIvridMB6pm6DUjdKys=;
+ b=RW1+ZiNnMgLzrLGBaoUUPSwngxaNdd3W+WXdEhzOXZOWCy+yZcdobHSaXJ+zldWyTS
+ oGaMmb3fGBcRz0r8bZEFWshEt5SaC3h8hCe3P12d6WDYKfm4CmO+DvdYHSxoZCyHxlxh
+ w3QLC/LTMKMwc0nmImY0x6A28KOL49ikbvt7PZYYfNzKQ9Y/jxAFblXggbQnGWMvF18R
+ N1s/58tvUAU0pi4GiOMGpus95CSRR0lH7Vyfg+dtubUjISF+dzPZEHJUAUZXssAhE40o
+ 44v7ffVBpilwvuoRwMnOf2mBdV6ECRduBL1w4aHZFyio1NXPU6CxLgH0MwuHbV+LkGXH
+ mRGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710012250; x=1710617050;
+ d=1e100.net; s=20230601; t=1710012256; x=1710617056;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qjFrwxdzh9cIFuy3VrLZl1YDUiO+UYomEAH8YyqLi9E=;
- b=c7Ev/UOtZdZ2ozvBl9ZwGVyBzaqgWnvXxOQ4h89lqL9fKDgHH9lgWpu5/0vzktrLi5
- x/rg6KUfXoCKRw53M3/EputaEY0IVUZB5kimZWo5RsAbyu6nUh5+vkAfs1H6WiTu1Ifv
- SyJtCO8RgZWfWXaf4UJFeNGZeB1D+2+fX+OqV9e5CfH4Rb/XdKrvv1aLVE9CgJHnsosk
- nYWE5rO5kS5xuhCA/UZJS266lhO4MNhNw5F3BMF1uW66mQjUm7pQn6R35PRy+NGxA8Se
- DxUUPtjcYKdw+YXy2fnakWtl5o0xOnkcYf4ivDuCO4zkzXZQeKy6sRr25JNKYXCWBRHZ
- NXRw==
-X-Gm-Message-State: AOJu0YwMsZY10aAy9r1n+TXWzYPK4Y84+39fTYIk+vfbf0ZPpGIxMfia
- JavOZbAD36PoKVD6bj6VW1EGLDISUApSCb2SOuFBsaCcXnphU1VYNlYhueG2XjeUkaLeraY4jpK
- K
-X-Google-Smtp-Source: AGHT+IGuUctMA78NjZdtCAU9Y9aCkZkeDhz16yKH0hbVx551DJFp5YQmApTcRtGHo6YtY4fSt4CW5g==
-X-Received: by 2002:a05:6402:5c3:b0:566:cfca:e56f with SMTP id
- n3-20020a05640205c300b00566cfcae56fmr2549323edx.19.1710012250332; 
- Sat, 09 Mar 2024 11:24:10 -0800 (PST)
+ bh=97WMuYDRb3w8xARFK/GrtRAFlIvridMB6pm6DUjdKys=;
+ b=nyAYjVtqXijPiJC0AqRlthce9uJhPAbhFETSOYSkenhjpoZrr6//6RSXGruvGXY7RY
+ A/T0r8k7Viha1IWcwaNeYIzMoUBS/EvSADkDIfc80iN/IiUdcZT2xVgIhTEAOaCduJ6X
+ ZkXsXoH22Y7n5ezU6yH6t7AMeIzwNbOeT8fRDO41+UpyHhwLgaJP1S7KEUcr/mEf35Nq
+ 4rCFr0G7TyUQsR6lcOo6xC9TMzSeSq0B2cMPjIAfINSqs+X8bpqu7F36TUWV/K+NHGif
+ 4PNNP9Bq2mJU19G5CNJRRxFK9DcdtTSCbLm05Y0gEMzLu5Vl9213qIdj4FFF5cs0zfHC
+ Uykg==
+X-Gm-Message-State: AOJu0YyvIssTxKA1dX6WiCGyPjfEX+gbm/Y3lE0aAoUqgEQi6JhPuEP4
+ fg/X0XDKh8a2ejUTyn+QOTJjRG5L4m8XgOSs1wxLYHF0onZP2GSdsZUmCwj/Q9VuF82j9F5aPJC
+ 8
+X-Google-Smtp-Source: AGHT+IHu5x1rS7vf33hD/x5FbZhOzPD/xRWv1qGkw9cFC8XfZuY6JIqWN/Q1RZ95WsBkgIm3l4ycIw==
+X-Received: by 2002:a17:906:ba87:b0:a45:f262:bc2f with SMTP id
+ cu7-20020a170906ba8700b00a45f262bc2fmr1624704ejd.5.1710012256103; 
+ Sat, 09 Mar 2024 11:24:16 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.237])
  by smtp.gmail.com with ESMTPSA id
- 9-20020a0564021f4900b00567e27c72c4sm1153365edz.62.2024.03.09.11.24.09
+ l23-20020a170906a41700b00a440ec600e3sm1176464ejz.121.2024.03.09.11.24.14
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 09 Mar 2024 11:24:09 -0800 (PST)
+ Sat, 09 Mar 2024 11:24:15 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 19/43] hw/i386/pc: Remove pc_compat_1_4..1.7[] left over
- declarations
-Date: Sat,  9 Mar 2024 20:21:46 +0100
-Message-ID: <20240309192213.23420-20-philmd@linaro.org>
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 20/43] hw/i386/pc: Use generated NotifyVmexitOption_str()
+Date: Sat,  9 Mar 2024 20:21:47 +0100
+Message-ID: <20240309192213.23420-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240309192213.23420-1-philmd@linaro.org>
 References: <20240309192213.23420-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,39 +96,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These definitions were removed in commit ea985d235b
-("pc_piix: remove pc-i440fx-1.4 up to pc-i440fx-1.7").
+NotifyVmexitOption_str() is QAPI-generated in
+"qapi/qapi-types-run-state.h", which "sysemu/runstate.h"
+already includes.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240301185936.95175-2-philmd@linaro.org>
+Message-Id: <20240301185936.95175-3-philmd@linaro.org>
 ---
- include/hw/i386/pc.h | 12 ------------
- 1 file changed, 12 deletions(-)
+ hw/i386/pc_piix.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 5065590281..b958023187 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -288,18 +288,6 @@ extern const size_t pc_compat_2_1_len;
- extern GlobalProperty pc_compat_2_0[];
- extern const size_t pc_compat_2_0_len;
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index e123458bbc..ed777e3d61 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -61,6 +61,7 @@
+ #include "hw/xen/xen.h"
+ #include "migration/global_state.h"
+ #include "migration/misc.h"
++#include "sysemu/runstate.h"
+ #include "sysemu/numa.h"
+ #include "hw/hyperv/vmbus-bridge.h"
+ #include "hw/mem/nvdimm.h"
+@@ -383,9 +384,6 @@ static const QEnumLookup PCSouthBridgeOption_lookup = {
+     .size = PC_SOUTH_BRIDGE_OPTION_MAX
+ };
  
--extern GlobalProperty pc_compat_1_7[];
--extern const size_t pc_compat_1_7_len;
+-#define NotifyVmexitOption_str(val) \
+-    qapi_enum_lookup(&NotifyVmexitOption_lookup, (val))
 -
--extern GlobalProperty pc_compat_1_6[];
--extern const size_t pc_compat_1_6_len;
--
--extern GlobalProperty pc_compat_1_5[];
--extern const size_t pc_compat_1_5_len;
--
--extern GlobalProperty pc_compat_1_4[];
--extern const size_t pc_compat_1_4_len;
--
- #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
-     static void pc_machine_##suffix##_class_init(ObjectClass *oc, void *data) \
-     { \
+ static int pc_get_south_bridge(Object *obj, Error **errp)
+ {
+     PCMachineState *pcms = PC_MACHINE(obj);
 -- 
 2.41.0
 
