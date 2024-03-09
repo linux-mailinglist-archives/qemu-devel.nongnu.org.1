@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A965C8773A9
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:28:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6DD68773AB
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:28:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj2Ll-0001HA-3o; Sat, 09 Mar 2024 14:27:17 -0500
+	id 1rj2Li-00012V-Lp; Sat, 09 Mar 2024 14:27:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2KL-0007NQ-T5
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:25:54 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2KR-0007Qj-5m
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:26:03 -0500
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2KJ-0003NW-BF
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:25:49 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-5684db9147dso112896a12.2
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:25:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2KP-0003OS-HI
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:25:54 -0500
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-a4604c8bd61so45709166b.2
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:25:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710012345; x=1710617145; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710012351; x=1710617151; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=b8wT84tp5Ct3Koz7/1+DQ3KNhe44GTMwlt4WEbo2CyY=;
- b=wTAGvnU7iv8knhIc9QM/CApgXDYdur06A/RIpA3EnwHXT30pnBduKbE8jxFdDLpkm8
- lKPVdEEVsYEY5Ffp4AlujOMQq4YC4QQVT/iuaCOPX0n8s2Ti8SjVReIMFqqifIiYakXn
- LxLwPTh9Rn6zVNmvt/pPFx4LX+iSOnj6XTHgkt60EiI6Jr5g7/4DB4ozzN3m3FWi0eNY
- 5lkT1xHtK6mNb3K/1ZOdONNWx0ZKZj2VFrNjISN+UAmNAkMczQ5sIBou6XRYZT/BQFhU
- 0PeDplfTF1n2shOSLdJkXfGgPI/MVDEjRkDCvUSB73NyfGw6ERPFJa0De+o32dxfJAM2
- rZbg==
+ bh=O8i9QPEOlWhmU7xWF5BCURrysJXNiI85mOLr+pl+Sq0=;
+ b=y4zrCr6NEJnj7wLuGdTWAvRnxx1fixFoDxypupMViHonccW3SwDnTGeJdGvu3+mzPk
+ Kzf5h7ottiBT01ztt/V8/cXhSXfxjZ/be5eoNh3MZRBTrwqpr0jGGJhwZjd57wlyQcMq
+ 3n+XEHhxy9/3K/zLEP8PbS1X4El+1X/KEUzT2viklt02T0nlDXerB283M/aQhplOgsS3
+ bF69AaDWEvKc+QL3uX4eU5PKqlw33hbnxRG4lRV0MGmZWR4YtE5beW76cI6FhhVvIZq4
+ 3zXoUPXQuJwhFPXGrNiLZNiqD2heIUzXML7VqInfDn5Z7BTpQEt9MZ9rzzRZgMer+wIj
+ k9mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710012345; x=1710617145;
+ d=1e100.net; s=20230601; t=1710012351; x=1710617151;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=b8wT84tp5Ct3Koz7/1+DQ3KNhe44GTMwlt4WEbo2CyY=;
- b=T9sqak3maeybx/l8eGdgvHUfpD/fOwH7jSNriT7gtd5LCGMShp//ZJiMu+z+F0vBfw
- GoojSQkpvZWtcUeHVpdZVQcsOdu9pQmmpbXFKSrklcMdC1kzhMHAKhf+AsiLZ3YduhNC
- dpcx/zs5Zd4baCjXtHHktPKfHWpvs0LP92wvm4gQh1v6m4/D28h0tKcVHWYzYry2r7rt
- 2o5nChgAdk83k3tfW9H5Q+mNGWC0/1Se6WBJLfInKe3Xosmx/AstrHbmTcJ5TOu8v7ar
- b8+VTVCcFcRs2JHPpxZPyORj755VzhMEm1z9j+b5NVA8xj+9H0sUkKZoi++S7U2KPAsQ
- h9Ow==
-X-Gm-Message-State: AOJu0YyC6inb2g9IMx8z8I5shx05j7ZId2AeKZ+/d2D92Onf3q1Qkcc8
- KaxMiXYypolXTnzEv8BnWj1CTWfhEOo/suzUJWOvFQ7DEjlrvLmPHEDvXAgACI9t5KGqquN50zd
- o
-X-Google-Smtp-Source: AGHT+IHL2283zRWdp80KRzzkeAAhztph/YcLfqqeU3h8wTABynkHPOJPy2Af/Ap9CSy2HfDDt/3JMg==
-X-Received: by 2002:a50:ccd6:0:b0:566:d274:a41d with SMTP id
- b22-20020a50ccd6000000b00566d274a41dmr1546436edj.42.1710012345670; 
- Sat, 09 Mar 2024 11:25:45 -0800 (PST)
+ bh=O8i9QPEOlWhmU7xWF5BCURrysJXNiI85mOLr+pl+Sq0=;
+ b=PqIriR2bn7YFzUHJtgomHRyIh8cYHokhoAM8VtVLAfGRG2C1yvhxvSyAynUM1Ap5aZ
+ XXjvuXPzUzOOEbubjvnS72zgEH1SdtvILOo9RMdu0ZLuZlcJuPzDIgbVCLnYWr05P0vk
+ JQlm9skbfSfWTSZRmPK822y+w1rND+xl2J/IXvdTTkP1xpsv7aHfIy4e4+ahMDuhYcM2
+ FeCJU2M/MzwQNcMYd0HYWsOXS2kRjJkrrus60gKNI1yd50sZKX+29Eli/RDCZLaaOrQ5
+ kJ9n1loPOBLdQatRZlI05RfBZ+WDEQUhnmt+jZjWURM1cQgKahSWcxvnVRVaeaCYpC+3
+ x6zw==
+X-Gm-Message-State: AOJu0YwsJTtL6goT3yY7eTCNZRuMYxjWt2ilIWm56EQ3S+8dO7YSa2BO
+ 4amYlWzyzMAx6hdPLfsVOciHnk3n6DpuTbLa+I8cuMSfqyYzxsX92oC/bIUc5QVP99F9VjRPgPX
+ 9
+X-Google-Smtp-Source: AGHT+IHPWCYsTTLJR3Y5I7K9wr+9PlPTMOFzDgbyILfwcOWY9+UAhabN+Yjbc55cmBThQVWEk8mPng==
+X-Received: by 2002:a17:906:390:b0:a45:9347:e3d6 with SMTP id
+ b16-20020a170906039000b00a459347e3d6mr1362000eja.66.1710012351548; 
+ Sat, 09 Mar 2024 11:25:51 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.237])
  by smtp.gmail.com with ESMTPSA id
- y18-20020a056402359200b005648d0eebdbsm1143695edc.96.2024.03.09.11.25.44
+ lr1-20020a170906fb8100b00a442e2940fdsm1186112ejb.179.2024.03.09.11.25.50
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 09 Mar 2024 11:25:45 -0800 (PST)
+ Sat, 09 Mar 2024 11:25:51 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
@@ -63,17 +63,18 @@ Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Yanan Wang <wangyanan55@huawei.com>
-Subject: [PULL 35/43] tests/unit/test-smp-parse: Bump max_cpus to 4096
-Date: Sat,  9 Mar 2024 20:22:02 +0100
-Message-ID: <20240309192213.23420-36-philmd@linaro.org>
+Subject: [PULL 36/43] tests/unit/test-smp-parse: Make test cases aware of the
+ book/drawer
+Date: Sat,  9 Mar 2024 20:22:03 +0100
+Message-ID: <20240309192213.23420-37-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240309192213.23420-1-philmd@linaro.org>
 References: <20240309192213.23420-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,55 +99,101 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-The q35 machine is trying to support up to 4096 vCPUs [1], so it's
-necessary to bump max_cpus in test-smp-parse to 4096 to cover the
-topological needs of future machines.
+Currently, -smp supports 2 more new levels: book and drawer.
 
-[1]: https://lore.kernel.org/qemu-devel/20240228143351.3967-1-anisinha@redhat.com/
+It is necessary to consider the effects of book and drawer in the test
+cases to ensure that the calculations are correct. This is also the
+preparation to add new book and drawer test cases.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Tested-by: Xiaoling Song <xiaoling.song@intel.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240308160148.3130837-7-zhao1.liu@linux.intel.com>
+Message-ID: <20240308160148.3130837-8-zhao1.liu@linux.intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/unit/test-smp-parse.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ tests/unit/test-smp-parse.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
 diff --git a/tests/unit/test-smp-parse.c b/tests/unit/test-smp-parse.c
-index 84e3422774..2eb9533bc5 100644
+index 2eb9533bc5..f656bbb6da 100644
 --- a/tests/unit/test-smp-parse.c
 +++ b/tests/unit/test-smp-parse.c
-@@ -20,8 +20,8 @@
- #define T true
- #define F false
+@@ -384,6 +384,8 @@ static char *smp_config_to_string(const SMPConfiguration *config)
+     return g_strdup_printf(
+         "(SMPConfiguration) {\n"
+         "    .has_cpus     = %5s, cpus     = %" PRId64 ",\n"
++        "    .has_drawers  = %5s, drawers  = %" PRId64 ",\n"
++        "    .has_books    = %5s, books    = %" PRId64 ",\n"
+         "    .has_sockets  = %5s, sockets  = %" PRId64 ",\n"
+         "    .has_dies     = %5s, dies     = %" PRId64 ",\n"
+         "    .has_clusters = %5s, clusters = %" PRId64 ",\n"
+@@ -392,6 +394,8 @@ static char *smp_config_to_string(const SMPConfiguration *config)
+         "    .has_maxcpus  = %5s, maxcpus  = %" PRId64 ",\n"
+         "}",
+         config->has_cpus ? "true" : "false", config->cpus,
++        config->has_drawers ? "true" : "false", config->drawers,
++        config->has_books ? "true" : "false", config->books,
+         config->has_sockets ? "true" : "false", config->sockets,
+         config->has_dies ? "true" : "false", config->dies,
+         config->has_clusters ? "true" : "false", config->clusters,
+@@ -404,10 +408,10 @@ static char *smp_config_to_string(const SMPConfiguration *config)
+ static unsigned int cpu_topology_get_threads_per_socket(const CpuTopology *topo)
+ {
+     /* Check the divisor to avoid invalid topology examples causing SIGFPE. */
+-    if (!topo->sockets) {
++    if (!topo->drawers || !topo->books || !topo->sockets) {
+         return 0;
+     } else {
+-        return topo->max_cpus / topo->sockets;
++        return topo->max_cpus / topo->drawers / topo->books / topo->sockets;
+     }
+ }
  
--#define MIN_CPUS 1   /* set the min CPUs supported by the machine as 1 */
--#define MAX_CPUS 512 /* set the max CPUs supported by the machine as 512 */
-+#define MIN_CPUS 1    /* set the min CPUs supported by the machine as 1 */
-+#define MAX_CPUS 4096 /* set the max CPUs supported by the machine as 4096 */
+@@ -429,6 +433,8 @@ static char *cpu_topology_to_string(const CpuTopology *topo,
+     return g_strdup_printf(
+         "(CpuTopology) {\n"
+         "    .cpus               = %u,\n"
++        "    .drawers            = %u,\n"
++        "    .books              = %u,\n"
+         "    .sockets            = %u,\n"
+         "    .dies               = %u,\n"
+         "    .clusters           = %u,\n"
+@@ -438,7 +444,8 @@ static char *cpu_topology_to_string(const CpuTopology *topo,
+         "    .threads_per_socket = %u,\n"
+         "    .cores_per_socket   = %u,\n"
+         "}",
+-        topo->cpus, topo->sockets, topo->dies, topo->clusters,
++        topo->cpus, topo->drawers, topo->books,
++        topo->sockets, topo->dies, topo->clusters,
+         topo->cores, topo->threads, topo->max_cpus,
+         threads_per_socket, cores_per_socket);
+ }
+@@ -473,6 +480,8 @@ static void check_parse(MachineState *ms, const SMPConfiguration *config,
+     if (is_valid) {
+         if ((err == NULL) &&
+             (ms->smp.cpus == expect_topo->cpus) &&
++            (ms->smp.drawers == expect_topo->drawers) &&
++            (ms->smp.books == expect_topo->books) &&
+             (ms->smp.sockets == expect_topo->sockets) &&
+             (ms->smp.dies == expect_topo->dies) &&
+             (ms->smp.clusters == expect_topo->clusters) &&
+@@ -564,6 +573,16 @@ static void unsupported_params_init(const MachineClass *mc, SMPTestData *data)
+         data->expect_prefer_sockets.clusters = 1;
+         data->expect_prefer_cores.clusters = 1;
+     }
++
++    if (!mc->smp_props.books_supported) {
++        data->expect_prefer_sockets.books = 1;
++        data->expect_prefer_cores.books = 1;
++    }
++
++    if (!mc->smp_props.drawers_supported) {
++        data->expect_prefer_sockets.drawers = 1;
++        data->expect_prefer_cores.drawers = 1;
++    }
+ }
  
- #define SMP_MACHINE_NAME "TEST-SMP"
- 
-@@ -333,13 +333,13 @@ static const struct SMPTestData data_generic_invalid[] = {
-                         "by machine '" SMP_MACHINE_NAME "' is 2",
-     }, {
-         /*
--         * config: -smp 512
-+         * config: -smp 4096
-          * The test machine should tweak the supported max CPUs to
--         * 511 (MAX_CPUS - 1) for testing.
-+         * 4095 (MAX_CPUS - 1) for testing.
-          */
--        .config = SMP_CONFIG_GENERIC(T, MAX_CPUS, F, 0, F, 0, F, 0, F, 0),
--        .expect_error = "Invalid SMP CPUs 512. The max CPUs supported "
--                        "by machine '" SMP_MACHINE_NAME "' is 511",
-+        .config = SMP_CONFIG_GENERIC(T, 4096, F, 0, F, 0, F, 0, F, 0),
-+        .expect_error = "Invalid SMP CPUs 4096. The max CPUs supported "
-+                        "by machine '" SMP_MACHINE_NAME "' is 4095",
-     },
- };
- 
+ static void machine_base_class_init(ObjectClass *oc, void *data)
 -- 
 2.41.0
 
