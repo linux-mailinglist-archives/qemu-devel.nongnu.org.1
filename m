@@ -2,155 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A045876F87
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 08:43:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A582F876FA7
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 09:00:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rirLc-0002kl-Bk; Sat, 09 Mar 2024 02:42:24 -0500
+	id 1rirbD-00062N-JS; Sat, 09 Mar 2024 02:58:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1rirLI-0002kd-Sr
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 02:42:05 -0500
-Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
+ (Exim 4.90_1) (envelope-from <hao.xiang@linux.dev>)
+ id 1rirbB-000629-Gw
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 02:58:29 -0500
+Received: from out-178.mta1.migadu.com ([95.215.58.178])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1rirLD-0006uY-C4
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 02:42:04 -0500
-Received: from pps.filterd (m0127839.ppops.net [127.0.0.1])
- by mx0a-002c1b01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
- 4295F7eS004832; Fri, 8 Mar 2024 23:41:56 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- message-id:date:subject:to:cc:references:from:in-reply-to
- :content-type:content-transfer-encoding:mime-version; s=
- proofpoint20171006; bh=5Sat1qzMXZTqZYn+roSWUcD/5ykPz1JDFqLzQHctQ
- QQ=; b=jMs/41U0rsktniGoPLPoDQxse4l4wZAcHgw3APhQjqPKZ7NteytyVsYzh
- PtvLwb8NXRQusxbJahJpBBQKhDwH7CFLGC0QtwheZ7ATO0k32ss/UHpwoCC7Nq/N
- 0UWiUnhRBEz3x6UcAGJ8HaE3ccCUI2Y4stTnVe7xOPkPpIJJBrjnLV/NZUPbEsQ4
- DcveQ1CzZGQ7E0XxHRLk1Gkn53za1s3E+2jSjUIYzBaDZEFdCIPdWYKcDeI66sgA
- XQyXFCRHYx25jezdv+s4TtLp60kisUOc9xdX2RqXEbehkxAegQ72oIFg4HXG3KSi
- JBdh0sjNZ/JH+j47Yb/U89AHRf+Pg==
-Received: from nam11-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam11lp2168.outbound.protection.outlook.com [104.47.57.168])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 3wm42hpq64-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Mar 2024 23:41:56 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=drjIIQoIeEqjG3TYWl9xyG9hZzouhQmPZHqGBNQmEeDsw3nqxCRO919OlRn1fFjeivduEVGdFTGl5ruaWYo+xD3g+9jvi7nRh1ji7Eu2E5hk8sMsCJtmIIbdPXxA8cIH7vyD94VJiZh7Z61SEo3WEncgUnPMqXxRThmVLuQcKzNxhNWDnGTtROG7zhitHe0sYuML0IOap+aMOqYPoeI/D8x7rDukPnxAE0XAWvz3au2dEmao27HTcsUEys9/qHrZ8dfevzdFSi4xGpbrUcxwhA8AKeYY96sYEFFUitCYtP04HOoK/ip4cZunSb85EBhnOtufhdigvvglrT6b24xbRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5Sat1qzMXZTqZYn+roSWUcD/5ykPz1JDFqLzQHctQQQ=;
- b=dsU+BkQvXKjiRsU43wVFkGEEiokM6YRBWjRfzqmiVpKOa7XgH0Dn81oBdbmbkB7SVnsIDhc8/b+pgZpq2u2hJIRwcWomiiITR0GRWtksalNm0zEbFEP2nly1ZRRMyZXTBSuZjfbyT4hszi4VlxMJX6s34ouQJ1JljEZPuzUHphLfNgDC38yj3zvmWE4UrimnrxekAAkJU1Jv1lOkr/+4G7PBEadeLRpCdFSLzUJYO0n2CIR1+Sy1lwPlbKRioTNso+X9zfSqsR5SsdJTD6UEsa9TKvaj4r4AIOor1rdS0ALEiy11FG+EON8T8ZF5n1LLpetLWdqorYQI3BksAAx0Yw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5Sat1qzMXZTqZYn+roSWUcD/5ykPz1JDFqLzQHctQQQ=;
- b=gJRpy925XPoMdIVzjaw/Nde7110JOOg91QCH0dLaiPbHNM8YGpDNuOkKzxnA18EZJjBc1NsjCcbtuR9pPe4m+vMDKO/aIqDqfpG9WXmQzzwhW0Pu8LnoLu+FtGMPRXlRFzyIrp7SrrfrPAWpC7R797lrtNObZohNR2jZ2RME0BpevfOxjOyzqqbfkNxynX+OpIeDdrgyr865HY+x8udsHhoUGq8DB5FePg2LMrqQKB4kkQGwV6ABb2fj+YS+08lSQjBVhLAEiJnp2zCzlGqhl8/FG4DhRDiz916F9KGvZAk3PuvQoWlMYnQzecBY6xfDJayTF8iwbjvhID5mOox7Mg==
-Received: from SJ2PR02MB9955.namprd02.prod.outlook.com (2603:10b6:a03:55f::16)
- by BY5PR02MB6643.namprd02.prod.outlook.com (2603:10b6:a03:213::23)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.31; Sat, 9 Mar
- 2024 07:41:52 +0000
-Received: from SJ2PR02MB9955.namprd02.prod.outlook.com
- ([fe80::225c:2edd:87e:7cf0]) by SJ2PR02MB9955.namprd02.prod.outlook.com
- ([fe80::225c:2edd:87e:7cf0%7]) with mapi id 15.20.7362.019; Sat, 9 Mar 2024
- 07:41:52 +0000
-Message-ID: <1db9b780-a83d-4794-8ddd-1547615cdd9b@nutanix.com>
-Date: Sat, 9 Mar 2024 13:11:45 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/8] qtest: migration: Add tests for introducing
- 'channels' argument in migrate QAPIs
-To: qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com, thuth@redhat.com, lvivier@redhat.com,
- pbonzini@redhat.com
-References: <20240308205951.111747-1-het.gala@nutanix.com>
-Content-Language: en-US
-From: Het Gala <het.gala@nutanix.com>
-In-Reply-To: <20240308205951.111747-1-het.gala@nutanix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA0P287CA0014.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:d9::16) To SJ2PR02MB9955.namprd02.prod.outlook.com
- (2603:10b6:a03:55f::16)
+ (Exim 4.90_1) (envelope-from <hao.xiang@linux.dev>)
+ id 1rirb9-00010t-26
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 02:58:29 -0500
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
+ include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+ t=1709971104;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=tkFURI+9WbM7xcZNS/blKbhZxIHQ2PVPE5ykWi/iotM=;
+ b=CsTHlOlngzzzB850uDoHP6WKpF3snenRPV6RZlARjAp9oPXcvF6Cf2K2219zohdr67w0kk
+ BJMmQcvr4FWihk5iaBbdRtgyDiPrz6GEMqrWM28YTj881Z6OV0u5SqtgSstMGMPgFekSDi
+ VP9FXnbdDC+Maco5lvZkHcInNGB2gbE=
+From: Hao Xiang <hao.xiang@linux.dev>
+To: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
+ peterx@redhat.com, farosas@suse.de, eblake@redhat.com, armbru@redhat.com,
+ thuth@redhat.com, lvivier@redhat.com, jdenemar@redhat.com,
+ marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com,
+ qemu-devel@nongnu.org
+Cc: Hao Xiang <hao.xiang@bytedance.com>
+Subject: [PATCH v5 0/7] Introduce multifd zero page checking.
+Date: Sat,  9 Mar 2024 07:57:21 +0000
+Message-Id: <20240309075728.1487211-1-hao.xiang@linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR02MB9955:EE_|BY5PR02MB6643:EE_
-X-MS-Office365-Filtering-Correlation-Id: b22d180b-1f52-4eaf-1792-08dc400c62eb
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: /nFjllqm06o1Q4c2gP9Y7XtmKKEpmuh1uCrhiVvYOr8K1SaCpX/ah4zbRlWSpaUo1l+kKM9euDL0QevUrdkuR0/fzoTRC5v0v/ObZYScSwRmGZbP8sg6jVxDjVODI6z5lzj/+LezWq04rXQytqeERkpaVsuF5YwBott2Ep40ylwI8SxdmdJxi4j84QYOT6LHLXInKJ6lp4oJ0J/IB8f17Qz6lBWP5EwkCX6E9a/9KzRXIHnw/DjpzxrvMFymHaKHI+oPDOl52dYJNoEPAoHPyO3Ua7CyVmZgdY7rf+fFqIOfgebzD/xrqNnfImrgc1p0K4VlL1u8EeuhNtW7cqqeNaTZKhistZXqbeGg+K0/b0d2IdzsrCBVky5BZ9vPaiYxPY2GPefNQv6mzhHRHfXDpuMT1/eBLXRLKej/Dwzkw89UASH11mYJqvp6OmdyqT5QSc/DGkMM1TVQH3kaxegS5/OrFGeUbyQvMABz0hESdtf6jAt8SnnDHJUsM6HAb9UZSm5VVaroTk8Huaw9Ar/imrEGhQB0wlY5QAt8gms1O+SUS1MXTsH9T9su+tiQviB+6jpIhSMQDHCu4HUMEygVJun0xzS4UtaZ3YxKBYeMu9I=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ2PR02MB9955.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(1800799015)(376005); DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QzVWSGZCeDVlL0p6YmxpTFdINjdWSmJJWlVQRVNTU0RtWjZDNEN2cUhmN015?=
- =?utf-8?B?V2FnTnliWXUwdDJIUEE1NCtxQ2Rvd3FnK0FFWC95SjhzTGNyYWFKQWhyYlg5?=
- =?utf-8?B?Z0tVcDl5blEycjZMQWM1MWh5UEdmZmpybkIrZ2srcFdrT1VDdUlCNlVydmM2?=
- =?utf-8?B?SFJaWlIxZzd1NzlLMktiektyVjdQL2FSK2FDcHIzOXhScFRiODJJZXhJV1FP?=
- =?utf-8?B?cjAvNzdVS0RJQTBYdDYxajRnbXQwQWxkUUhwSnFhOWxHTlgycmVqUE92Y0Vs?=
- =?utf-8?B?cVlhRGVpeWcyOWlzdEY1V0Jhb2g0akUvanZoNVl4bXhwT1lzZE4xL0FGTlRa?=
- =?utf-8?B?TlIwc1E0SWhXNXQvaHVOdFloaVh0SDZDM3p4eldDYTdXanVoT0tmM08wZTZJ?=
- =?utf-8?B?dVMyTm1qUHlGRTRJRnl3dE1pR2xqQnFPM3F0QUw5aGQwWitVaEVJZTVtbkx5?=
- =?utf-8?B?TWpyM3NyMFFBdTJJRzBaM2FKN3c3cmFNS2F4U1BoWkQxMzFSOWxWOHZHNytk?=
- =?utf-8?B?Tm1xUnQxYVdJM0tMQm9lVzAraDVWRm5vVit0dWlGdlNxOWN2ckM1LzFCMG5z?=
- =?utf-8?B?Skw4bStESWNkQ1hVL240alhxSkRqRG5uUnNMWXQ3MXhCZEJTZXVQSHpWbzUr?=
- =?utf-8?B?QTcwN3FUZFE0QXJIa0xNZlN6c2hXNlJGbEVNenZEZEJ0cTNOblZ6TmZRdFlw?=
- =?utf-8?B?c1BJL0lTdkFSQkE0dmxyYy83T1M2RElFbDllSHVUYytFajJtNXJHdVVMS0or?=
- =?utf-8?B?UFNsclA1N3orYmx1dXZ4ZmVKcU81UWl3QmZPaThIYWhWL295SkdDU0h1bzhx?=
- =?utf-8?B?OXh0NEUxVDJ0ZU1yVjlNdEhPREN6RHFSTWtSM1VaREp1VEdiTExlTFZ4WHRZ?=
- =?utf-8?B?S25vUmZaY0xlMnR5Zzl2bVZQQzJ2eFNZc2JRMCtKZU85UjcrMWFtSk9iNkpM?=
- =?utf-8?B?citmdElXQW1XT1dXVHdsME10REZNWXRQQVhXMzBMMm5tb0xROWg3SGJDbkt5?=
- =?utf-8?B?bElYNFkrUW1KQmI4M2R3bW9QUTlYMGVrU0ZBNXNrQWFDWU1TWW9PSVg3alpD?=
- =?utf-8?B?Q2NpUUdKUnJBQUV3NjdqdEx3TEtwOUVTcUI2OGdySHRxUGdFK2k5SjRlUkd6?=
- =?utf-8?B?a2RPd2IxemZzdjBzNkNzc0t0YUhCY3VESU1TSlVPMzBGd1ErZUxiY3dYWFFa?=
- =?utf-8?B?eUhhc2RjMlZPOGYrRFNHVXBubE1yM0djWnFGbjVnWlJzY3NqdGJsV0o2TDE4?=
- =?utf-8?B?dkM3elBMY1JKTmRaQURtYUF4cWtISDNOajM4Nk1rQmtRTW56NWsyQTJPYjhF?=
- =?utf-8?B?QzhaWTRJYmZ2NkdGM09nWlFyOGdCdXltUjRjeEFlSHdiWmhrcDVkZVQ4d1Jo?=
- =?utf-8?B?RXNPUnBhRXRGRDNFSDBOSHNMSnJCYW1KYXcwUlZQYnNuZkxLbExYN1REZVZK?=
- =?utf-8?B?MWFFcHJFbXR3YWhFUWh6Rlg5eUVuMHdrQ3VRYkVGNktrY3llQ2FwTE5IZHdC?=
- =?utf-8?B?NG1iSXgvRHBmK01oOGhsVXovYjVoek0vdUc4MjF2bWdoVmRoeDdKSE9pRmpC?=
- =?utf-8?B?OG1CbU1PYmVBbk5WeUpOOVVBNEQ0cW1CeUxCWHlEM2Y5MlNKRGI5elhtbTZG?=
- =?utf-8?B?cjFXQ2hiZjB3RnJ0YWkzNGg5YUZzM01FanNmVVFTWm90NE1EU2ppTXA2Nlo5?=
- =?utf-8?B?NVFrSEw0Q01RNFZtY1VKNzREZ2JhRkZma1BaVVlERTVraC80UjA1dEpOOHJN?=
- =?utf-8?B?a2ttWHZ3TWZFaDRKVWJqOE52UHVRa2RKZ0pJOFUweEJZMTNFS25rWTk2aCtQ?=
- =?utf-8?B?TCthcVRKTHRidThNcEJJQU55a1YwMHp2bGJ3NFI5c25MRmw5Y0piMHBXWkhv?=
- =?utf-8?B?NHA5bjIwTW1nNys2STVMTUk5VTlpaE5hN3pBZjRmOUhDeEFPYlNSbkJGaDFm?=
- =?utf-8?B?dzcyckJuQVRqOGlROW9OOTF6S0pzME5hcnZUK0lEbFNEWWl1cHA0Q0x2UDZ0?=
- =?utf-8?B?ZmhwU0tCMVc0Q0tvVDdkWk5XRnZoTi9aS2MycUtncUhhd0JwRFhLZmZETFBK?=
- =?utf-8?B?TTlQbW5nelBPdGFSK1dTMXY4T01mMHZPTFNHYUhZaGQrVUxIb1BjMjgxYVJE?=
- =?utf-8?Q?1m03e99SkLV4A/lVgfkiWLJ1M?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b22d180b-1f52-4eaf-1792-08dc400c62eb
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR02MB9955.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2024 07:41:52.4183 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: buP/CakijiGJsrQADvVXZcpnFXyYstbWczrsBRHueZEmIdk8QwGLU3mfRI8Sz74fz/cLuVeGg1ZHqQgXl6V1bw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR02MB6643
-X-Proofpoint-ORIG-GUID: hg7tgH6XBRcKimZqVadGKP71G3d-nLNV
-X-Proofpoint-GUID: hg7tgH6XBRcKimZqVadGKP71G3d-nLNV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-08_08,2024-03-06_01,2023-05-22_02
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.151.68; envelope-from=het.gala@nutanix.com;
- helo=mx0a-002c1b01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+Received-SPF: pass client-ip=95.215.58.178; envelope-from=hao.xiang@linux.dev;
+ helo=out-178.mta1.migadu.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.572,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -166,78 +65,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Can find the reference to the githab pipeline (before patchset) : 
-https://gitlab.com/galahet/Qemu/-/pipelines/1207185095
+From: Hao Xiang <hao.xiang@bytedance.com>
 
-Can find the reference to the githab pipeline (after patchset) : 
-https://gitlab.com/galahet/Qemu/-/pipelines/1207183673
+v5 update:
+* Move QEMU9.0 -> QEMU8.2 migration backward compatibility handling into
+the patch where "multifd" zero page checking becomes the default option.
+* A few function renaming according to feedback.
+* Fix bug in multifd_send_zero_page_detect.
+* Rebase on the new mapped-ram feature.
+* Pulled in 2 commits from Fabiano.
 
-On 09/03/24 2:29 am, Het Gala wrote:
-> With recent migrate QAPI changes, enabling the direct use of the
-> 'channels' argument to avoid redundant URI string parsing is achieved.
->
-> To ensure backward compatibility, both 'uri' and 'channels' are kept as
-> optional parameters in migration QMP commands. However, they are mutually
-> exhaustive, requiring at least one for a successful migration connection.
-> This patchset adds qtests to validate 'uri' and 'channels' arguments'
-> mututally exhaustive behaviour.
->
-> Additionally, all migration qtests fail to employ 'channel' as the primary
-> method for validating migration QAPIs. This patchset also adds test to
-> enforce only use of 'channel' argument as the initial entry point for
-> migration QAPIs.
->
-> Patch Summary:
-> -------------
-> Patch 1-2:
-> ---------
-> Introduce 'to' object inside migrate_qmp() so and move the calls to
-> migrate_get_socket_address() inside migrate_qmp. Also, replace connect_uri
-> with args->connect_uri everywhere.
->
-> Patch 3-6:
-> ---------
-> Add channels argument to allow both migration QAPI arguments independently
-> into migrate_qmp and migrate_qmp_fail. migrate_qmp requires the port value to
-> be changed from 0 to port value coming from migrate_get_socket_address. Add
-> migrate_set_ports to address this change of port value.
->
-> Patch 7-8:
-> ---------
-> Add 2 negative tests to validate mutually exhaustive behaviour of migration
-> QAPIs. Add a positive multifd_tcp_plain qtest with only channels as the
-> initial entry point for migration QAPIs.
->
-> v3->v4 Changelog:
-> ----------------
-> 1. introduced migrate_get_connect_uri and migrate_get_connect_qdict to
->     both used migrate_get_socket_address to get dest uri in socket-
->     address, and then use SokcketAddress_to_qdict to convert it into qdict.
-> 2. Misc code changes.
->
-> v2->v3 Changelog:
-> -----------------
-> 1. 'channels' introduction is not required now for migrate_qmp_incoming
-> 2. Refactor the code into 7 different patches
-> 3. 'channels' introduction is not required now for migrate_qmp_incoming
-> 4. Remove custom function for converting string to MigrationChannelList
-> 5. move calls for migrate_get_socket_address inside migrate_qmp so that
->     migrate_set_ports can replace the QAPI's port with correct value.
->
-> Het Gala (8):
->    Add 'to' object into migrate_qmp()
->    Replace connect_uri and move migrate_get_socket_address inside
->      migrate_qmp
->    Replace migrate_get_connect_uri inplace of migrate_get_socket_address
->    Add channels parameter in migrate_qmp_fail
->    Add migrate_set_ports into migrate_qmp to update migration port value
->    Add channels parameter in migrate_qmp
->    Add multifd_tcp_plain test using list of channels instead of uri
->    Add negative tests to validate migration QAPIs
->
->   tests/qtest/migration-helpers.c | 158 +++++++++++++++++++++++++++-
->   tests/qtest/migration-helpers.h |  10 +-
->   tests/qtest/migration-test.c    | 177 ++++++++++++++++++--------------
->   3 files changed, 258 insertions(+), 87 deletions(-)
->
+v4 update:
+* Fix documentation for interface ZeroPageDetection.
+* Fix implementation in multifd_send_zero_page_check.
+* Rebase on top of c0c6a0e3528b88aaad0b9d333e295707a195587b.
+
+v3 update:
+* Change "zero" to "zero-pages" and use type size for "zero-bytes".
+* Fixed ZeroPageDetection interface description.
+* Move zero page unit tests to its own path.
+* Removed some asserts.
+* Added backward compatibility support for migration 9.0 -> 8.2.
+* Removed fields "zero" and "normal" page address arrays from v2. Now
+multifd_zero_page_check_send sorts normal/zero pages in the "offset" array.
+
+v2 update:
+* Implement zero-page-detection switch with enumeration "legacy",
+"none" and "multifd".
+* Move normal/zero pages from MultiFDSendParams to MultiFDPages_t.
+* Add zeros and zero_bytes accounting.
+
+This patchset is based on Juan Quintela's old series here
+https://lore.kernel.org/all/20220802063907.18882-1-quintela@redhat.com/
+
+In the multifd live migration model, there is a single migration main
+thread scanning the page map, queuing the pages to multiple multifd
+sender threads. The migration main thread runs zero page checking on
+every page before queuing the page to the sender threads. Zero page
+checking is a CPU intensive task and hence having a single thread doing
+all that doesn't scale well. This change introduces a new function
+to run the zero page checking on the multifd sender threads. This
+patchset also lays the ground work for future changes to offload zero
+page checking task to accelerator hardwares.
+
+Use two Intel 4th generation Xeon servers for testing.
+
+Architecture:        x86_64
+CPU(s):              192
+Thread(s) per core:  2
+Core(s) per socket:  48
+Socket(s):           2
+NUMA node(s):        2
+Vendor ID:           GenuineIntel
+CPU family:          6
+Model:               143
+Model name:          Intel(R) Xeon(R) Platinum 8457C
+Stepping:            8
+CPU MHz:             2538.624
+CPU max MHz:         3800.0000
+CPU min MHz:         800.0000
+
+Perform multifd live migration with below setup:
+1. VM has 100GB memory. All pages in the VM are zero pages.
+2. Use tcp socket for live migration.
+3. Use 4 multifd channels and zero page checking on migration main thread.
+4. Use 1/2/4 multifd channels and zero page checking on multifd sender
+threads.
+5. Record migration total time from sender QEMU console's "info migrate"
+command.
+
++------------------------------------+
+|zero-page-checking | total-time(ms) |
++------------------------------------+
+|main-thread        | 9629           |
++------------------------------------+
+|multifd-1-threads  | 6182           |
++------------------------------------+
+|multifd-2-threads  | 4643           |
++------------------------------------+
+|multifd-4-threads  | 4143           |
++------------------------------------+
+
+Apply this patchset on top of commit
+cbccded4a2b5d685a426a437e25f67d3a375b292
+
+Fabiano Rosas (2):
+  migration/multifd: Allow zero pages in file migration
+  migration/multifd: Allow clearing of the file_bmap from multifd
+
+Hao Xiang (5):
+  migration/multifd: Add new migration option zero-page-detection.
+  migration/multifd: Implement zero page transmission on the multifd
+    thread.
+  migration/multifd: Implement ram_save_target_page_multifd to handle
+    multifd version of MigrationOps::ram_save_target_page.
+  migration/multifd: Enable multifd zero page checking by default.
+  migration/multifd: Add new migration test cases for legacy zero page
+    checking.
+
+ hw/core/machine.c                   |  4 +-
+ hw/core/qdev-properties-system.c    | 10 ++++
+ include/hw/qdev-properties-system.h |  4 ++
+ migration/file.c                    |  2 +-
+ migration/meson.build               |  1 +
+ migration/migration-hmp-cmds.c      |  9 +++
+ migration/multifd-zero-page.c       | 87 +++++++++++++++++++++++++++
+ migration/multifd-zlib.c            | 21 +++++--
+ migration/multifd-zstd.c            | 20 +++++--
+ migration/multifd.c                 | 92 ++++++++++++++++++++++++-----
+ migration/multifd.h                 | 23 +++++++-
+ migration/options.c                 | 21 +++++++
+ migration/options.h                 |  1 +
+ migration/ram.c                     | 47 +++++++++++----
+ migration/ram.h                     |  3 +-
+ migration/trace-events              |  8 +--
+ qapi/migration.json                 | 38 +++++++++++-
+ tests/qtest/migration-test.c        | 52 ++++++++++++++++
+ 18 files changed, 395 insertions(+), 48 deletions(-)
+ create mode 100644 migration/multifd-zero-page.c
+
+-- 
+2.30.2
+
 
