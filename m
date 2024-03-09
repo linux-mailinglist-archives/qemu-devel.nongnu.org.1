@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36B608773B5
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:29:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6211A8773B4
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:29:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj2L5-0007DT-63; Sat, 09 Mar 2024 14:26:38 -0500
+	id 1rj2Ld-0008HE-26; Sat, 09 Mar 2024 14:27:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2Jc-0006pH-T1
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:25:07 -0500
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2Jl-00071k-Tr
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:25:16 -0500
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2JX-00035R-JQ
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:25:02 -0500
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-a460185d1a7so75719966b.0
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:24:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2Je-0003Gp-Qb
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:25:10 -0500
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2d269b2ff48so48620111fa.3
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:25:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710012298; x=1710617098; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710012303; x=1710617103; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LXk2FBAU/I+Gq91SQ8W6u6cQEBqnEw8TniXn77xAtfE=;
- b=hW/y+TVQNEGOV3R6xUfA6rbqvDgFVTmeyaeKF6nw4CdPPoWGD+YUtJ8uUeHtiSXO66
- Cs4lDp+wXeSNo6TvLWGy7bwR2U0tYGpFudeQ5osJ1nWOQ3I4D7CfbXmVHrHxjQUcln9J
- Joc48+Ki03C4j1Q24MnT9V5pwWHlZHoaTfPlQpZnnC+dYEuQjXF/OeUgUDIC6dRI4k0K
- uiPE1x6fypUQNsMoVcatwmuv53xrDWbnP2xCKz0vmNNJE9nD7Du/f/cGQxOsN8UcAKlu
- iy+1dHnqHFQubWdYPdt0bRL1H6ds8enlTXVFDGAYFJIKb5wvc3uaimWr75QWEkt8KKqK
- ip0g==
+ bh=7zPZ+tfLA0kEM+leCIAJpOJfakF+P7OF5niFNRbs0QA=;
+ b=AHBwVgXq9ZG3/uDg62TUf5rnj5n6AJIgCw2RdDjkDn7Re4d2QILaZs2k5kW71jtwoh
+ rm6zAao15W9zINZ3R2OKC+q/vdo6pbjLZ/UYX/3yMW5TSHtdn8pEMg1MQtHnENWpa/mG
+ PJM8e57q+iJIWQS1ZIlwzvhWDEGA0GTjnOV1uvZVQ3sed7toNFxtDOIMDVW74UnUBRWt
+ 2ZWnl7R/uDmtqOU36ZSmwOIcV+s9IzmarAuFOMHq8O/l/7uF9zWW1LcHd4G+eljxvGNH
+ 2mNgOMIj13yIqI/ddN4mp5asQKSunHm1p96NKJCoNZGg73gPwQ6KAmDfQFg6Xvr6iLI3
+ 6hPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710012298; x=1710617098;
+ d=1e100.net; s=20230601; t=1710012303; x=1710617103;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LXk2FBAU/I+Gq91SQ8W6u6cQEBqnEw8TniXn77xAtfE=;
- b=KNpY2RF7NMrfweWKolJNx5xKfK66KlMjAfUIr/0cV3SgU0CRG3cF2gJglTY/588xaX
- RF5XZAMb4QYyuRTtYWqU/C4pNVPr+6JxtsmcktCOb+q+wTzpb+NT3A9VdFX/wR5kkFIP
- bnwfq6uSUEO7h0aCqYdXmejWsF4FOYB+Wcbd273Ah6zto06LjqxE3O3t/8b1zx6Sl5n3
- lw/tPI7BARUtntJYrHAUj0+lfWqwZDrlWD3Zt4D5uqJ0roz9BDhD0mflqq5LjeLRv8zz
- PKfUrST0w5s+8i+/l1qJKonC3MFF/sCcX0LPvvNOAUZKQoMfR5ilcCTxH2CMRwmiEL0q
- 4A8A==
-X-Gm-Message-State: AOJu0Yy0nX9MBAl5yw6KH+sySnUC7U3BPh40Qx9zViKg3f4awQOaqjPZ
- UxW/umJd5lFtvh7g67E1u8QSfDCz+Z78q9PBp0rkCr9IpsHVBOvV/DBow2Vr0tA+/lHK9GUe8AP
- a
-X-Google-Smtp-Source: AGHT+IEBzyj8x5j88N4i5jH/viOl5H6aPx6/nwZq2TgA2iE6c8rg5hdcZ88xN/9OgOJKqQObdvKRMg==
-X-Received: by 2002:a17:906:310f:b0:a43:dc5f:f271 with SMTP id
- 15-20020a170906310f00b00a43dc5ff271mr1326849ejx.42.1710012297770; 
- Sat, 09 Mar 2024 11:24:57 -0800 (PST)
+ bh=7zPZ+tfLA0kEM+leCIAJpOJfakF+P7OF5niFNRbs0QA=;
+ b=Fo9rfDWgQaHDuz45XxuAmY3tUwVCt5OLkOk1+zIlsH4Q+iiehvFygxMCkSE4qwoFxl
+ yaqyaHFwjU5Z0hsfUJ/YPzZdBGcKNNnonhzsGbmNh1AI+I5O2qDCgD67R1adMOERICWx
+ Bryz+4VR/JTbxf1o8r4lehN3wI0/EX0cBU4ynzMBycygUjJUT9DXHDXJE9C1TTY9TqdS
+ 8fCtL8Rseg7xd9vmP46cbZtPvwBe0e+3ZqKpM9BiuBFl+k49dKFdgcR26UtsPugA+1+k
+ RN6dzd6jBPoWAAeJxEYRFwwKQVS1sgkSTyYE1KJNG/0ORhIEu4QYyQk2bcpZ/8W5pBf4
+ gI3A==
+X-Gm-Message-State: AOJu0YySule8H/LhPN7RyyXnmPDW2I32ZKom16AqXNJa+x8gWZEVaBp0
+ Yz4XeTAW8CzYN9SXLID6qJ2yFv+xS3d5l5Rxa5FIjcoNymQrbqtypCmT23scjH7IU9mNGfCrKCE
+ K
+X-Google-Smtp-Source: AGHT+IH24Ht406wouiE5qSs+XSE1JrmIm/ZKODAoIJUUNI0MaGtabmYkhIaVOzO3mcklEOuqeSwLfA==
+X-Received: by 2002:a2e:87d3:0:b0:2d4:31a0:6adf with SMTP id
+ v19-20020a2e87d3000000b002d431a06adfmr299482ljj.24.1710012303605; 
+ Sat, 09 Mar 2024 11:25:03 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.237])
  by smtp.gmail.com with ESMTPSA id
- r1-20020a170906364100b00a4320e22b31sm1195761ejb.19.2024.03.09.11.24.56
+ cn19-20020a0564020cb300b0056828004c75sm1167790edb.51.2024.03.09.11.25.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 09 Mar 2024 11:24:57 -0800 (PST)
+ Sat, 09 Mar 2024 11:25:03 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
- =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
- Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Frederic Konrad <konrad.frederic@yahoo.fr>
-Subject: [PULL 27/43] hw/intc/grlib_irqmp: abort realize when ncpus value is
- out of range
-Date: Sat,  9 Mar 2024 20:21:54 +0100
-Message-ID: <20240309192213.23420-28-philmd@linaro.org>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Kashyap Chamarthy <kchamart@redhat.com>
+Subject: [PULL 28/43] docs/interop/firmware.json: Align examples
+Date: Sat,  9 Mar 2024 20:21:55 +0100
+Message-ID: <20240309192213.23420-29-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240309192213.23420-1-philmd@linaro.org>
 References: <20240309192213.23420-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,33 +96,415 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Clément Chigot <chigot@adacore.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-Even if the error is set, the build is not aborted when the ncpus value
-is wrong, the return is missing.
+Adjust indentation for commit d23055b8db8 (qapi: Require descriptions
+and tagged sections to be indented).
 
-Signed-off-by: Clément Chigot <chigot@adacore.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Fixes: 6bf1478543 ("hw/intc/grlib_irqmp: add ncpus property")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240308152719.591232-1-chigot@adacore.com>
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Message-ID: <20240307-qapi-firmware-json-v2-1-3b29eabb9b9a@linutronix.de>
+[PMD: Reword description using Markus suggestion]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/intc/grlib_irqmp.c | 1 +
- 1 file changed, 1 insertion(+)
+ docs/interop/firmware.json | 374 ++++++++++++++++++-------------------
+ 1 file changed, 187 insertions(+), 187 deletions(-)
 
-diff --git a/hw/intc/grlib_irqmp.c b/hw/intc/grlib_irqmp.c
-index 144b121d48..c6c51a349c 100644
---- a/hw/intc/grlib_irqmp.c
-+++ b/hw/intc/grlib_irqmp.c
-@@ -356,6 +356,7 @@ static void grlib_irqmp_realize(DeviceState *dev, Error **errp)
-         error_setg(errp, "Invalid ncpus properties: "
-                    "%u, must be 0 < ncpus =< %u.", irqmp->ncpus,
-                    IRQMP_MAX_CPU);
-+        return;
-     }
- 
-     qdev_init_gpio_in(dev, grlib_irqmp_set_irq, MAX_PILS);
+diff --git a/docs/interop/firmware.json b/docs/interop/firmware.json
+index cc8f869186..a024f1b9bf 100644
+--- a/docs/interop/firmware.json
++++ b/docs/interop/firmware.json
+@@ -435,203 +435,203 @@
+ #
+ # Examples:
+ #
+-# {
+-#     "description": "SeaBIOS",
+-#     "interface-types": [
+-#         "bios"
+-#     ],
+-#     "mapping": {
+-#         "device": "memory",
+-#         "filename": "/usr/share/seabios/bios-256k.bin"
+-#     },
+-#     "targets": [
+-#         {
+-#             "architecture": "i386",
+-#             "machines": [
+-#                 "pc-i440fx-*",
+-#                 "pc-q35-*"
+-#             ]
++#     {
++#         "description": "SeaBIOS",
++#         "interface-types": [
++#             "bios"
++#         ],
++#         "mapping": {
++#             "device": "memory",
++#             "filename": "/usr/share/seabios/bios-256k.bin"
+ #         },
+-#         {
+-#             "architecture": "x86_64",
+-#             "machines": [
+-#                 "pc-i440fx-*",
+-#                 "pc-q35-*"
+-#             ]
+-#         }
+-#     ],
+-#     "features": [
+-#         "acpi-s3",
+-#         "acpi-s4"
+-#     ],
+-#     "tags": [
+-#         "CONFIG_BOOTSPLASH=n",
+-#         "CONFIG_ROM_SIZE=256",
+-#         "CONFIG_USE_SMM=n"
+-#     ]
+-# }
++#         "targets": [
++#             {
++#                 "architecture": "i386",
++#                 "machines": [
++#                     "pc-i440fx-*",
++#                     "pc-q35-*"
++#                 ]
++#             },
++#             {
++#                 "architecture": "x86_64",
++#                 "machines": [
++#                     "pc-i440fx-*",
++#                     "pc-q35-*"
++#                 ]
++#             }
++#         ],
++#         "features": [
++#             "acpi-s3",
++#             "acpi-s4"
++#         ],
++#         "tags": [
++#             "CONFIG_BOOTSPLASH=n",
++#             "CONFIG_ROM_SIZE=256",
++#             "CONFIG_USE_SMM=n"
++#         ]
++#     }
+ #
+-# {
+-#     "description": "OVMF with SB+SMM, empty varstore",
+-#     "interface-types": [
+-#         "uefi"
+-#     ],
+-#     "mapping": {
+-#         "device": "flash",
+-#         "executable": {
+-#             "filename": "/usr/share/OVMF/OVMF_CODE.secboot.fd",
+-#             "format": "raw"
++#     {
++#         "description": "OVMF with SB+SMM, empty varstore",
++#         "interface-types": [
++#             "uefi"
++#         ],
++#         "mapping": {
++#             "device": "flash",
++#             "executable": {
++#                 "filename": "/usr/share/OVMF/OVMF_CODE.secboot.fd",
++#                 "format": "raw"
++#             },
++#             "nvram-template": {
++#                 "filename": "/usr/share/OVMF/OVMF_VARS.fd",
++#                 "format": "raw"
++#             }
+ #         },
+-#         "nvram-template": {
+-#             "filename": "/usr/share/OVMF/OVMF_VARS.fd",
+-#             "format": "raw"
+-#         }
+-#     },
+-#     "targets": [
+-#         {
+-#             "architecture": "x86_64",
+-#             "machines": [
+-#                 "pc-q35-*"
+-#             ]
+-#         }
+-#     ],
+-#     "features": [
+-#         "acpi-s3",
+-#         "amd-sev",
+-#         "requires-smm",
+-#         "secure-boot",
+-#         "verbose-dynamic"
+-#     ],
+-#     "tags": [
+-#         "-a IA32",
+-#         "-a X64",
+-#         "-p OvmfPkg/OvmfPkgIa32X64.dsc",
+-#         "-t GCC48",
+-#         "-b DEBUG",
+-#         "-D SMM_REQUIRE",
+-#         "-D SECURE_BOOT_ENABLE",
+-#         "-D FD_SIZE_4MB"
+-#     ]
+-# }
++#         "targets": [
++#             {
++#                 "architecture": "x86_64",
++#                 "machines": [
++#                     "pc-q35-*"
++#                 ]
++#             }
++#         ],
++#         "features": [
++#             "acpi-s3",
++#             "amd-sev",
++#             "requires-smm",
++#             "secure-boot",
++#             "verbose-dynamic"
++#         ],
++#         "tags": [
++#             "-a IA32",
++#             "-a X64",
++#             "-p OvmfPkg/OvmfPkgIa32X64.dsc",
++#             "-t GCC48",
++#             "-b DEBUG",
++#             "-D SMM_REQUIRE",
++#             "-D SECURE_BOOT_ENABLE",
++#             "-D FD_SIZE_4MB"
++#         ]
++#     }
+ #
+-# {
+-#     "description": "OVMF with SB+SMM, SB enabled, MS certs enrolled",
+-#     "interface-types": [
+-#         "uefi"
+-#     ],
+-#     "mapping": {
+-#         "device": "flash",
+-#         "executable": {
+-#             "filename": "/usr/share/OVMF/OVMF_CODE.secboot.fd",
+-#             "format": "raw"
++#     {
++#         "description": "OVMF with SB+SMM, SB enabled, MS certs enrolled",
++#         "interface-types": [
++#             "uefi"
++#         ],
++#         "mapping": {
++#             "device": "flash",
++#             "executable": {
++#                 "filename": "/usr/share/OVMF/OVMF_CODE.secboot.fd",
++#                 "format": "raw"
++#             },
++#             "nvram-template": {
++#                 "filename": "/usr/share/OVMF/OVMF_VARS.secboot.fd",
++#                 "format": "raw"
++#             }
+ #         },
+-#         "nvram-template": {
+-#             "filename": "/usr/share/OVMF/OVMF_VARS.secboot.fd",
+-#             "format": "raw"
+-#         }
+-#     },
+-#     "targets": [
+-#         {
+-#             "architecture": "x86_64",
+-#             "machines": [
+-#                 "pc-q35-*"
+-#             ]
+-#         }
+-#     ],
+-#     "features": [
+-#         "acpi-s3",
+-#         "amd-sev",
+-#         "enrolled-keys",
+-#         "requires-smm",
+-#         "secure-boot",
+-#         "verbose-dynamic"
+-#     ],
+-#     "tags": [
+-#         "-a IA32",
+-#         "-a X64",
+-#         "-p OvmfPkg/OvmfPkgIa32X64.dsc",
+-#         "-t GCC48",
+-#         "-b DEBUG",
+-#         "-D SMM_REQUIRE",
+-#         "-D SECURE_BOOT_ENABLE",
+-#         "-D FD_SIZE_4MB"
+-#     ]
+-# }
++#         "targets": [
++#             {
++#                 "architecture": "x86_64",
++#                 "machines": [
++#                     "pc-q35-*"
++#                 ]
++#             }
++#         ],
++#         "features": [
++#             "acpi-s3",
++#             "amd-sev",
++#             "enrolled-keys",
++#             "requires-smm",
++#             "secure-boot",
++#             "verbose-dynamic"
++#         ],
++#         "tags": [
++#             "-a IA32",
++#             "-a X64",
++#             "-p OvmfPkg/OvmfPkgIa32X64.dsc",
++#             "-t GCC48",
++#             "-b DEBUG",
++#             "-D SMM_REQUIRE",
++#             "-D SECURE_BOOT_ENABLE",
++#             "-D FD_SIZE_4MB"
++#         ]
++#     }
+ #
+-# {
+-#     "description": "OVMF with SEV-ES support",
+-#     "interface-types": [
+-#         "uefi"
+-#     ],
+-#     "mapping": {
+-#         "device": "flash",
+-#         "executable": {
+-#             "filename": "/usr/share/OVMF/OVMF_CODE.fd",
+-#             "format": "raw"
++#     {
++#         "description": "OVMF with SEV-ES support",
++#         "interface-types": [
++#             "uefi"
++#         ],
++#         "mapping": {
++#             "device": "flash",
++#             "executable": {
++#                 "filename": "/usr/share/OVMF/OVMF_CODE.fd",
++#                 "format": "raw"
++#             },
++#             "nvram-template": {
++#                 "filename": "/usr/share/OVMF/OVMF_VARS.fd",
++#                 "format": "raw"
++#             }
+ #         },
+-#         "nvram-template": {
+-#             "filename": "/usr/share/OVMF/OVMF_VARS.fd",
+-#             "format": "raw"
+-#         }
+-#     },
+-#     "targets": [
+-#         {
+-#             "architecture": "x86_64",
+-#             "machines": [
+-#                 "pc-q35-*"
+-#             ]
+-#         }
+-#     ],
+-#     "features": [
+-#         "acpi-s3",
+-#         "amd-sev",
+-#         "amd-sev-es",
+-#         "verbose-dynamic"
+-#     ],
+-#     "tags": [
+-#         "-a X64",
+-#         "-p OvmfPkg/OvmfPkgX64.dsc",
+-#         "-t GCC48",
+-#         "-b DEBUG",
+-#         "-D FD_SIZE_4MB"
+-#     ]
+-# }
++#         "targets": [
++#             {
++#                 "architecture": "x86_64",
++#                 "machines": [
++#                     "pc-q35-*"
++#                 ]
++#             }
++#         ],
++#         "features": [
++#             "acpi-s3",
++#             "amd-sev",
++#             "amd-sev-es",
++#             "verbose-dynamic"
++#         ],
++#         "tags": [
++#             "-a X64",
++#             "-p OvmfPkg/OvmfPkgX64.dsc",
++#             "-t GCC48",
++#             "-b DEBUG",
++#             "-D FD_SIZE_4MB"
++#         ]
++#     }
+ #
+-# {
+-#     "description": "UEFI firmware for ARM64 virtual machines",
+-#     "interface-types": [
+-#         "uefi"
+-#     ],
+-#     "mapping": {
+-#         "device": "flash",
+-#         "executable": {
+-#             "filename": "/usr/share/AAVMF/AAVMF_CODE.fd",
+-#             "format": "raw"
++#     {
++#         "description": "UEFI firmware for ARM64 virtual machines",
++#         "interface-types": [
++#             "uefi"
++#         ],
++#         "mapping": {
++#             "device": "flash",
++#             "executable": {
++#                 "filename": "/usr/share/AAVMF/AAVMF_CODE.fd",
++#                 "format": "raw"
++#             },
++#             "nvram-template": {
++#                 "filename": "/usr/share/AAVMF/AAVMF_VARS.fd",
++#                 "format": "raw"
++#             }
+ #         },
+-#         "nvram-template": {
+-#             "filename": "/usr/share/AAVMF/AAVMF_VARS.fd",
+-#             "format": "raw"
+-#         }
+-#     },
+-#     "targets": [
+-#         {
+-#             "architecture": "aarch64",
+-#             "machines": [
+-#                 "virt-*"
+-#             ]
+-#         }
+-#     ],
+-#     "features": [
++#         "targets": [
++#             {
++#                 "architecture": "aarch64",
++#                 "machines": [
++#                     "virt-*"
++#                 ]
++#             }
++#         ],
++#         "features": [
+ #
+-#     ],
+-#     "tags": [
+-#         "-a AARCH64",
+-#         "-p ArmVirtPkg/ArmVirtQemu.dsc",
+-#         "-t GCC48",
+-#         "-b DEBUG",
+-#         "-D DEBUG_PRINT_ERROR_LEVEL=0x80000000"
+-#     ]
+-# }
++#         ],
++#         "tags": [
++#             "-a AARCH64",
++#             "-p ArmVirtPkg/ArmVirtQemu.dsc",
++#             "-t GCC48",
++#             "-b DEBUG",
++#             "-D DEBUG_PRINT_ERROR_LEVEL=0x80000000"
++#         ]
++#     }
+ ##
+ { 'struct' : 'Firmware',
+   'data'   : { 'description'     : 'str',
 -- 
 2.41.0
 
