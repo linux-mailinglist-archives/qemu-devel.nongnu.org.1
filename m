@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59533877397
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:24:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 090718773B7
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:29:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj2Iw-0003Rz-FP; Sat, 09 Mar 2024 14:24:22 -0500
+	id 1rj2J3-00040e-EB; Sat, 09 Mar 2024 14:24:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2Iu-0003Ki-Hv
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:20 -0500
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2J0-0003oT-Re
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:26 -0500
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2Ir-0002lL-R5
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:20 -0500
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a293f2280c7so503146466b.1
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:24:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2Iy-0002mV-CT
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:26 -0500
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2d382a78c38so36700091fa.1
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:24:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710012256; x=1710617056; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710012262; x=1710617062; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=97WMuYDRb3w8xARFK/GrtRAFlIvridMB6pm6DUjdKys=;
- b=RW1+ZiNnMgLzrLGBaoUUPSwngxaNdd3W+WXdEhzOXZOWCy+yZcdobHSaXJ+zldWyTS
- oGaMmb3fGBcRz0r8bZEFWshEt5SaC3h8hCe3P12d6WDYKfm4CmO+DvdYHSxoZCyHxlxh
- w3QLC/LTMKMwc0nmImY0x6A28KOL49ikbvt7PZYYfNzKQ9Y/jxAFblXggbQnGWMvF18R
- N1s/58tvUAU0pi4GiOMGpus95CSRR0lH7Vyfg+dtubUjISF+dzPZEHJUAUZXssAhE40o
- 44v7ffVBpilwvuoRwMnOf2mBdV6ECRduBL1w4aHZFyio1NXPU6CxLgH0MwuHbV+LkGXH
- mRGg==
+ bh=gNfhZGSEMDNFGE0Bt1N9Am3VGUZ7rx8bc74P/nXROpw=;
+ b=ne1rZ2Vf3nDTNU1KeRP3pQ0Lt+fHPTUsppkIg+7v1TPYIUOiMcBQXh6XwMaUTYVhVd
+ RMJfoLOozhUJTEGaj+XOBH4Ry/zMU9JYd30J3FLYBWOqOFJNyo6APzniQP8MJtDYnCmE
+ 02+SQsQmgQk69x9Qz7GfydSlp3iZlxgD5SCpSd9ehFL3KKbvtP6Kico/FFA4WjYdIPZg
+ BjX8lQKkKxZUjhsJ1NCAB2+bNrwbcY37axSFYxl66KVESr6oMs5Gc8EOp8SaqZbuV6Nh
+ uJVNBOcP4aFnNkihA3/ejWlspGhk02ondPBcgPvRz8fVfBmzjizdfZZw5WyZApNZDjsx
+ 4vxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710012256; x=1710617056;
+ d=1e100.net; s=20230601; t=1710012262; x=1710617062;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=97WMuYDRb3w8xARFK/GrtRAFlIvridMB6pm6DUjdKys=;
- b=nyAYjVtqXijPiJC0AqRlthce9uJhPAbhFETSOYSkenhjpoZrr6//6RSXGruvGXY7RY
- A/T0r8k7Viha1IWcwaNeYIzMoUBS/EvSADkDIfc80iN/IiUdcZT2xVgIhTEAOaCduJ6X
- ZkXsXoH22Y7n5ezU6yH6t7AMeIzwNbOeT8fRDO41+UpyHhwLgaJP1S7KEUcr/mEf35Nq
- 4rCFr0G7TyUQsR6lcOo6xC9TMzSeSq0B2cMPjIAfINSqs+X8bpqu7F36TUWV/K+NHGif
- 4PNNP9Bq2mJU19G5CNJRRxFK9DcdtTSCbLm05Y0gEMzLu5Vl9213qIdj4FFF5cs0zfHC
- Uykg==
-X-Gm-Message-State: AOJu0YyvIssTxKA1dX6WiCGyPjfEX+gbm/Y3lE0aAoUqgEQi6JhPuEP4
- fg/X0XDKh8a2ejUTyn+QOTJjRG5L4m8XgOSs1wxLYHF0onZP2GSdsZUmCwj/Q9VuF82j9F5aPJC
+ bh=gNfhZGSEMDNFGE0Bt1N9Am3VGUZ7rx8bc74P/nXROpw=;
+ b=Jnz8+X5qauhyNFMItKW4YYZX4zmdutuDqS9ZKcWbAyO7k1+s9iqXPUB/aZNRjENQHW
+ CQA9vdw1ywBTGLelFdR0/SvZc6kYWqzeyWwmeOB+q+2jde2iemJLBO2vXn4slXuA3PdV
+ Tg6UO6QDKI4FU2pqPj7UJDjBDwhc3ndcMpQsMD3BC7lr4SE7+eWUEXfK2A8NM8ZxV2Ok
+ SFMWkdGIPas1LHD1Yj0DKDHqifFp/uAb0S59Vw++FD/4ihqitCStVakngSH/v6vfPk1x
+ yNXwpJehiTYLeYbFKVUKXFSzFfW0l5JwR8JEqrF84rdQRnbd2bxVNkrk4MhnwOtJ2sOZ
+ 5fFA==
+X-Gm-Message-State: AOJu0Yzu/VwPKZG7OF3qCQPNQLtM4l64znpEnTeAn4+OqBX9gGEuWBAo
+ jQ/LyE4CtHJgHPMXmS01EAR5no4SUhtopZTJ4I3z7+dcePYRxCEknqU6VkWsBtZ4QQSLyRka0e1
  8
-X-Google-Smtp-Source: AGHT+IHu5x1rS7vf33hD/x5FbZhOzPD/xRWv1qGkw9cFC8XfZuY6JIqWN/Q1RZ95WsBkgIm3l4ycIw==
-X-Received: by 2002:a17:906:ba87:b0:a45:f262:bc2f with SMTP id
- cu7-20020a170906ba8700b00a45f262bc2fmr1624704ejd.5.1710012256103; 
- Sat, 09 Mar 2024 11:24:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH6VnIz1HhzZeWVzNFZZ81KnZan2vqiOitrnrYT+7W7ejewWsh1Bm28ZWgBPoyVvTrmJWk+3w==
+X-Received: by 2002:ac2:484a:0:b0:513:3741:7357 with SMTP id
+ 10-20020ac2484a000000b0051337417357mr1595051lfy.56.1710012262092; 
+ Sat, 09 Mar 2024 11:24:22 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.237])
  by smtp.gmail.com with ESMTPSA id
- l23-20020a170906a41700b00a440ec600e3sm1176464ejz.121.2024.03.09.11.24.14
+ l6-20020a1709060e0600b00a42ea946917sm1177309eji.130.2024.03.09.11.24.20
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 09 Mar 2024 11:24:15 -0800 (PST)
+ Sat, 09 Mar 2024 11:24:21 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 20/43] hw/i386/pc: Use generated NotifyVmexitOption_str()
-Date: Sat,  9 Mar 2024 20:21:47 +0100
-Message-ID: <20240309192213.23420-21-philmd@linaro.org>
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 21/43] hw/i386/pc: Remove 'host_type' argument from pc_init1()
+Date: Sat,  9 Mar 2024 20:21:48 +0100
+Message-ID: <20240309192213.23420-22-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240309192213.23420-1-philmd@linaro.org>
 References: <20240309192213.23420-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,39 +96,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-NotifyVmexitOption_str() is QAPI-generated in
-"qapi/qapi-types-run-state.h", which "sysemu/runstate.h"
-already includes.
+All callers use host_type=TYPE_I440FX_PCI_HOST_BRIDGE.
+Directly use this definition within pc_init1().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240301185936.95175-3-philmd@linaro.org>
+Message-Id: <20240301185936.95175-4-philmd@linaro.org>
 ---
- hw/i386/pc_piix.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ hw/i386/pc_piix.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
 diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index e123458bbc..ed777e3d61 100644
+index ed777e3d61..e14dce951d 100644
 --- a/hw/i386/pc_piix.c
 +++ b/hw/i386/pc_piix.c
-@@ -61,6 +61,7 @@
- #include "hw/xen/xen.h"
- #include "migration/global_state.h"
- #include "migration/misc.h"
-+#include "sysemu/runstate.h"
- #include "sysemu/numa.h"
- #include "hw/hyperv/vmbus-bridge.h"
- #include "hw/mem/nvdimm.h"
-@@ -383,9 +384,6 @@ static const QEnumLookup PCSouthBridgeOption_lookup = {
-     .size = PC_SOUTH_BRIDGE_OPTION_MAX
- };
+@@ -101,8 +101,7 @@ static void piix_intx_routing_notifier_xen(PCIDevice *dev)
+ }
  
--#define NotifyVmexitOption_str(val) \
--    qapi_enum_lookup(&NotifyVmexitOption_lookup, (val))
--
- static int pc_get_south_bridge(Object *obj, Error **errp)
+ /* PC hardware initialisation */
+-static void pc_init1(MachineState *machine,
+-                     const char *host_type, const char *pci_type)
++static void pc_init1(MachineState *machine, const char *pci_type)
  {
-     PCMachineState *pcms = PC_MACHINE(obj);
+     PCMachineState *pcms = PC_MACHINE(machine);
+     PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+@@ -194,7 +193,7 @@ static void pc_init1(MachineState *machine,
+         memory_region_init(pci_memory, NULL, "pci", UINT64_MAX);
+         rom_memory = pci_memory;
+ 
+-        phb = OBJECT(qdev_new(host_type));
++        phb = OBJECT(qdev_new(TYPE_I440FX_PCI_HOST_BRIDGE));
+         object_property_add_child(OBJECT(machine), "i440fx", phb);
+         object_property_set_link(phb, PCI_HOST_PROP_RAM_MEM,
+                                  OBJECT(ram_memory), &error_fatal);
+@@ -451,7 +450,7 @@ static void pc_compat_2_0_fn(MachineState *machine)
+ #ifdef CONFIG_ISAPC
+ static void pc_init_isa(MachineState *machine)
+ {
+-    pc_init1(machine, TYPE_I440FX_PCI_HOST_BRIDGE, TYPE_I440FX_PCI_DEVICE);
++    pc_init1(machine, TYPE_I440FX_PCI_DEVICE);
+ }
+ #endif
+ 
+@@ -461,9 +460,7 @@ static void pc_xen_hvm_init_pci(MachineState *machine)
+     const char *pci_type = xen_igd_gfx_pt_enabled() ?
+                 TYPE_IGD_PASSTHROUGH_I440FX_PCI_DEVICE : TYPE_I440FX_PCI_DEVICE;
+ 
+-    pc_init1(machine,
+-             TYPE_I440FX_PCI_HOST_BRIDGE,
+-             pci_type);
++    pc_init1(machine, pci_type);
+ }
+ 
+ static void pc_xen_hvm_init(MachineState *machine)
+@@ -488,8 +485,7 @@ static void pc_xen_hvm_init(MachineState *machine)
+         if (compat) { \
+             compat(machine); \
+         } \
+-        pc_init1(machine, TYPE_I440FX_PCI_HOST_BRIDGE, \
+-                 TYPE_I440FX_PCI_DEVICE); \
++        pc_init1(machine, TYPE_I440FX_PCI_DEVICE); \
+     } \
+     DEFINE_PC_MACHINE(suffix, name, pc_init_##suffix, optionfn)
+ 
 -- 
 2.41.0
 
