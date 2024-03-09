@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 272588773A3
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:28:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66BD18773AA
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:28:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj2IY-0001uc-Gg; Sat, 09 Mar 2024 14:23:58 -0500
+	id 1rj2Ie-0002DI-Ke; Sat, 09 Mar 2024 14:24:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2IW-0001tb-WD
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:23:57 -0500
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2Ic-0002Ba-Re
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:02 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2IU-0002fj-IB
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:23:56 -0500
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a45c006ab82so385732766b.3
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:23:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2Ia-0002gp-HN
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:02 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-5684f95cc9bso25879a12.1
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:24:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710012233; x=1710617033; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710012238; x=1710617038; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0qhkX9N0f7mv4U6Enm7PREVuXkmrXKzBrsiRapOf0sE=;
- b=D45f31p6YZNSPGyEI0JMwiP7W9vLR7q+9eAsn+HmAteLYhMy49YrwCppbmSS+Ik4kb
- Xq9enhSzrG7H5a1LfkOA5r0oW5dNhXOYwO1bGjkSu3ScXXkFWjdr2bntvDHhqTGobGlI
- N5eTJ4f49MJ2l2BKEkI2sN3FmoV2XN2cvOwWdvtnT0/hnLpReLwK0JBLsBKyHPS6floa
- dnYHW5JJKP2XoPR4pJ6DwtAdU1mmRi75oMhpxwxpkSepGw45x9GQthFbf9lBCLMAxHIT
- 18T8/IYJy8Nh8q5pjZbY5OWgHqSRMv5TpdDb9GI8vloYRI7hQhTtFDFtKq5EUKg5KDE+
- 9KWw==
+ bh=eUfL1w5ZY8ZGsSxKnH4ewPtSTSCallxtJeVJzhKEKHw=;
+ b=phxrHw2BBwh2uFzWHY3uVG2xMA2LfJche52MECwKCXkFyzZZjOGMreejZ3ItqQxILI
+ 4THaEuD/VGoiG+UbSgBcvh9t3H/lv3wYUMLlc+Ajg1XZDLt+XZfBHAwOfnPPffIA8fi+
+ s8405NdGqj3dF/hnV9qxuGdFKrSPl3FhsNKt6xbeneVHv/ii6yyt137JOC4XjKRcwCP0
+ L5d5M4hFiyk4VXWZWLKWzyvpDhKr5D83hnWj0DFzqSL1lUqXy4sDE5fghG+36PKakcq0
+ YiQsxsmg7eWHf+m/ihCmBm537rq3f73VRWAAAbZdJ5CX/kJSlXp5pW0KDnpuaKPQNKRl
+ oCFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710012233; x=1710617033;
+ d=1e100.net; s=20230601; t=1710012238; x=1710617038;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0qhkX9N0f7mv4U6Enm7PREVuXkmrXKzBrsiRapOf0sE=;
- b=twUggYnfnQHZFBSOQSi8z74EOZTpEQ/VkzmAbzh5edU8YT0ZEKikZVvWxVDdapX/kU
- 8dSrr8TT0nf5nIKyypKCfHiT7hB9ah0qfENGS0oETf9w1sK1wrDgGmHCfne6htRWvesI
- XLvjoFWXqB2KN7gPvd8u903/OHECsq7GMaOjhqG0KMmvvfMGYIcuJTu+7DzVP/3zLtf6
- m50tQXuYY35Y/dn4l6mB/c0Bd3xT3EVX/pfSyHtQGa5BlKOX2W/pEMRDIEY81NKavyoK
- EoIHd91M/gdiPvbXBkVnOxvgmRuMWiqtyV21LHwVkIEXbN6nHHUWq9E5e1PIWFqkqxVR
- ugLw==
-X-Gm-Message-State: AOJu0Yy6yaZqpAjlY7CnJYI7TjS5VevLiDg2ku5InZD3JxMBoPqK+AIw
- EKTB4DGEyYcRxkx5QfNkTokMibXRXQf7ASzNVOdQqChmCKmg4b00fSime/+FCNKZpkgby20P+6g
- P
-X-Google-Smtp-Source: AGHT+IE0pC1PtPPUFeJGmL9nn03Tms40CF9fkNhPdedtB8UjjmtZf/tpA8FjVipfHktzZdaLWkMqpQ==
-X-Received: by 2002:a17:907:c28a:b0:a43:900a:31c5 with SMTP id
- tk10-20020a170907c28a00b00a43900a31c5mr1698253ejc.4.1710012232757; 
- Sat, 09 Mar 2024 11:23:52 -0800 (PST)
+ bh=eUfL1w5ZY8ZGsSxKnH4ewPtSTSCallxtJeVJzhKEKHw=;
+ b=cZw12KB2Dk0Va041J+yhGhODXp74iOj3XsklwyX0levlDCacL8Se18UO7PpKdWiYQz
+ 9H1FqKIAlCPp9SkdV50oa2Ff4vUDi/1Jcu7PzIoMJI7Rgg99MIKPX15rrFulLTKBjpkO
+ oY9IhCbFQ+9tsVOASMbwVPApwyAs5HIk3ek4QkwFJtis4Dx+TEOGkMJnxMtkvirvNNgv
+ eGBsEMr+BdCHOmXASticgGrQe7xR4vR9FARPAqvguQSrztixf7cu2OXwbV2sxxr5eJVV
+ PwkxCTjzdAE5obx7uDINLBeMLeoRnaZCzYfjSJcF/d1ofcrKYlfj7C/UCOu3n0KA+YQO
+ PJVA==
+X-Gm-Message-State: AOJu0Yw72CvWtI6+UjeiTzPX3/UoOIa3I8cingQzTyCtdq5PBFKCD/Hx
+ N+pf+3ocYovxgCH+dzXrBdXM7UeJ84AOmo4ey4eFM7RbhaYdPO3K/E2oSHkMdvZL0sCvrbOmjRF
+ 4
+X-Google-Smtp-Source: AGHT+IFy8vQdWfIK3ozhS/fRZLOXohhmDLYe56O/gPHcpUJVtjcAsYxvO1Dhp7P3a/T5pumkkZy5uA==
+X-Received: by 2002:a50:8ad9:0:b0:566:1952:afc4 with SMTP id
+ k25-20020a508ad9000000b005661952afc4mr3675368edk.6.1710012238657; 
+ Sat, 09 Mar 2024 11:23:58 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.237])
  by smtp.gmail.com with ESMTPSA id
- k5-20020a170906578500b00a449ebf3d58sm1178448ejq.85.2024.03.09.11.23.51
+ et8-20020a056402378800b00566a4dec01fsm1154716edb.11.2024.03.09.11.23.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 09 Mar 2024 11:23:52 -0800 (PST)
+ Sat, 09 Mar 2024 11:23:58 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- Jason Wang <jasowang@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- xen-devel@lists.xenproject.org
-Subject: [PULL 16/43] hw/net/xen_nic: Fix missing ERRP_GUARD() for
- error_prepend()
-Date: Sat,  9 Mar 2024 20:21:43 +0100
-Message-ID: <20240309192213.23420-17-philmd@linaro.org>
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ Jagannathan Raman <jag.raman@oracle.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 17/43] hw/remote/remote-obj: hw/misc/ivshmem: Fix missing
+ ERRP_GUARD() for error_prepend()
+Date: Sat,  9 Mar 2024 20:21:44 +0100
+Message-ID: <20240309192213.23420-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240309192213.23420-1-philmd@linaro.org>
 References: <20240309192213.23420-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -118,40 +116,37 @@ ERRP_GUARD() could avoid the case when @errp is the pointer of
 error_fatal, the user can't see this additional information, because
 exit() happens in error_setg earlier than information is added [1].
 
-The xen_netdev_connect() passes @errp to error_prepend(), and its @errp
-parameter is from xen_device_frontend_changed().
+The remote_object_set_fd() passes @errp to error_prepend(), and as a
+PropertyInfo.set method, its @errp is so widely sourced that it is
+necessary to protect it with ERRP_GUARD().
 
-Though its @errp points to @local_err of xen_device_frontend_changed(),
-to follow the requirement of @errp, add missing ERRP_GUARD() at the
+To avoid the issue like [1] said, add missing ERRP_GUARD() at the
 beginning of this function.
 
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
 
-Cc: Stefano Stabellini <sstabellini@kernel.org>
-Cc: Anthony Perard <anthony.perard@citrix.com>
-Cc: Paul Durrant <paul@xen.org>
-Cc: Jason Wang <jasowang@redhat.com>
+Cc: Elena Ufimtseva <elena.ufimtseva@oracle.com>
+Cc: Jagannathan Raman <jag.raman@oracle.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Acked-by: Anthony PERARD <anthony.perard@citrix.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240229143914.1977550-3-zhao1.liu@linux.intel.com>
+Message-ID: <20240229143914.1977550-4-zhao1.liu@linux.intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/net/xen_nic.c | 1 +
+ hw/remote/remote-obj.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/hw/net/xen_nic.c b/hw/net/xen_nic.c
-index 453fdb9819..89487b49ba 100644
---- a/hw/net/xen_nic.c
-+++ b/hw/net/xen_nic.c
-@@ -351,6 +351,7 @@ static bool net_event(void *_xendev)
+diff --git a/hw/remote/remote-obj.c b/hw/remote/remote-obj.c
+index 65b6f7cc86..dc27cc8da1 100644
+--- a/hw/remote/remote-obj.c
++++ b/hw/remote/remote-obj.c
+@@ -49,6 +49,7 @@ struct RemoteObject {
  
- static bool xen_netdev_connect(XenDevice *xendev, Error **errp)
+ static void remote_object_set_fd(Object *obj, const char *str, Error **errp)
  {
 +    ERRP_GUARD();
-     XenNetDev *netdev = XEN_NET_DEVICE(xendev);
-     unsigned int port, rx_copy;
+     RemoteObject *o = REMOTE_OBJECT(obj);
+     int fd = -1;
  
 -- 
 2.41.0
