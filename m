@@ -2,73 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8918771BD
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 16:00:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8018771F7
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 16:34:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riyAG-0001sj-E3; Sat, 09 Mar 2024 09:59:08 -0500
+	id 1riyhG-0001bl-Hr; Sat, 09 Mar 2024 10:33:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1riyAC-0001sZ-Fo
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 09:59:04 -0500
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ (Exim 4.90_1) (envelope-from <isaacwoods.home@gmail.com>)
+ id 1riyZw-0000H8-BI
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 10:25:42 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1riyAA-000287-Sr
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 09:59:04 -0500
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2d382a78c38so34849161fa.1
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 06:59:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <isaacwoods.home@gmail.com>)
+ id 1riyZs-0007vx-V4
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 10:25:38 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-412fc5f5152so22444745e9.0
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 07:25:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709996341; x=1710601141; darn=nongnu.org;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :from:to:cc:subject:date:message-id:reply-to;
- bh=MUQMuURryrg2KG8fH7PIMcqoDO+ibKRgQeiWlNR7HyM=;
- b=Z++wjVeO/JPVhMpsKVW2A7Fk0ImkheR0c4XUETe80BYgekuQqyW0G+AkCWI4jzlb0d
- xrMRx5vTI9SuJtXJGgs111gqcK0sJTzPTNQ5MPtfWfYIJimlI4Tj2vhZS18jjkDmeIAO
- EZV4W8dPctoMrsgzUSaHUZBrdE233huZodnOeC1bazxyLXwYh96773HDJMGl41w155Q+
- F5xe+ewG4g+uXagGu80uG9oHKGEQuEMIOlSKKiwMR+BdvQUHUkw+e3q7RUdtmHH4ssIn
- vq/kDlpSNpzKj3I6G4bUt6erbOWILCOTzH9nJEQuulYR8qjbeB2pZGDU7lClHOoLynJk
- pBLA==
+ d=gmail.com; s=20230601; t=1709997926; x=1710602726; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=p8duqk3DQZ4pwtbBPDMsGhD+I9fcYJiGxlPhWsv3q6Y=;
+ b=YeJxoT8g1ukdv0joldVS46VSyLqruuwFa/j1KIyvvqmSS5U4xTGBjs2Q7Zg+hgHFYQ
+ ja+1y3mtZvhbYAEF9ac6kK9p9WdsB9rclkYKXTGSAJoEI3IcIm8GnxTIPZ7e66ecylcF
+ vgBqvso+0eV4hEuk145KIJOZnYVzt8KJ1KpOxAygzPSrih5Vg3ogDuLbouRooIZJii+H
+ ldMpZjBV1gGy+z7JQ8RFH1Xz/hoDKU3oQFcHqfUOclSjXT5xjnKrXucf1UmOI6aZtCMM
+ 8aTSl6ZQcXNiDp+Q70rlMlf0ZmuBkgFcmcorEoM88oUCXhOsodIaIHRtCYrhTDQbmn84
+ p7wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709996341; x=1710601141;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MUQMuURryrg2KG8fH7PIMcqoDO+ibKRgQeiWlNR7HyM=;
- b=hFnFmFvV2F2ug8A+DbaTHaJ2AA8Vj8I0brLJYxUhFmAsou24f2fuXcUF2fDg9yhGJt
- OecVT0aiilOhcZ7BDsc4eycvgcKW0N3WbeDjGQ5/o1vUyDQBRMz2vcohmt/es269Ynfe
- 07pwOcdhyNLd8FqJUk3vtPVqEhC8A7pBRotke5GZ47uVkBmNS0U6JPfNph2npEwd3L0S
- hLC4T7ufHbBAtvstTVhGLzUCGZ08fBEAIwL0V6Jqg9VjFuIq5ryffhhWZYDGOflSS6MA
- r8sijfsRXiM8+Lv6xkTSugs18w8D0zZN3oFrqFMNTOAciR03RzLis0BngItueA+MENqY
- /GuA==
-X-Gm-Message-State: AOJu0YyBUHyAx9n90PbVUSXj8YZgxGyQm6CJE7aByXbkIMmo0afIdH6F
- P0mkdZFY2qkmBnjGtxiAESY4obDVHxO47xiCyILjCkWQRX/Jqo3/YT6999XyaUGTmLF1Pk//8Af
- 9J51ZvnrC3gJHnX/TQuk0cDC9SxS568Q8S1MlmLgpfEqK5J1x
-X-Google-Smtp-Source: AGHT+IFZjRu253mY44roJ6kRG7Lyb/H9cw7FKMlCWBbLTZ1LT5VxgYb/fzDxBQTmhIxt2U/5L2ou/Ch9CRLW7QyZj10=
-X-Received: by 2002:a05:651c:1a12:b0:2d4:27b0:1712 with SMTP id
- by18-20020a05651c1a1200b002d427b01712mr1450217ljb.11.1709996341117; Sat, 09
- Mar 2024 06:59:01 -0800 (PST)
-MIME-Version: 1.0
-References: <20240308155015.3637663-1-peter.maydell@linaro.org>
-In-Reply-To: <20240308155015.3637663-1-peter.maydell@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Sat, 9 Mar 2024 14:58:50 +0000
-Message-ID: <CAFEAcA-mCWWXkMY1h1R_fidM4DZ13vY-3zEvyZKUV7=rXj2RjA@mail.gmail.com>
-Subject: Re: [PULL 00/14] target-arm queue
+ d=1e100.net; s=20230601; t=1709997926; x=1710602726;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=p8duqk3DQZ4pwtbBPDMsGhD+I9fcYJiGxlPhWsv3q6Y=;
+ b=dfK+22YO+UjSo6OgxZBWE3zfXGmFEYU5pHectx/+yfZOr/ERzAex/VZN7xwc3gPlcJ
+ yeieACOQWzcmNIGOdlrzmPAJ2Co26mS4urIq55TRdDmTA7MI10PeYFRVIsrAHdHGzrW8
+ FNbPEgK5L/mdPO8qB7J96x/+01ekqFuJkI6IM2qR8MQH1db93hKqXWcwbS1RkjZvn7RK
+ m1nFrhFcD/K+dknjH9cVXviDhAQlZnzb/6gl30a7DfiwCa9Mj81A4vHrginaBetUNBLp
+ BKx9gE6bRMjHWwBJBQJ6UfX4e2kiK32EHZiWahKKXM99AWelVwuUq8Zz+e57hfsfvFst
+ 2bBA==
+X-Gm-Message-State: AOJu0Yy6tl7AFqp43uJf1ypu8GbT84sutYSO/dqtjpTVbP2roy7VMwPT
+ xpKDgimOcmSkgil+K4cX6pbPGA1PT4zdMF10z0fp9CgYEf8X3soy6sHc7S+4/SY=
+X-Google-Smtp-Source: AGHT+IGJv20BhtepCG4TLGuqnAhJKZLpD11MZ4BgQFpzAxfpVP9PauGJyERuOPocWdxKGaw7dAWk2A==
+X-Received: by 2002:a05:600c:5020:b0:412:dc02:9824 with SMTP id
+ n32-20020a05600c502000b00412dc029824mr2025487wmr.9.1709997925480; 
+ Sat, 09 Mar 2024 07:25:25 -0800 (PST)
+Received: from localhost.localdomain (25.58.198.146.dyn.plus.net.
+ [146.198.58.25]) by smtp.gmail.com with ESMTPSA id
+ v9-20020a05600c470900b0041312e8ef2bsm2842322wmo.26.2024.03.09.07.25.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 09 Mar 2024 07:25:25 -0800 (PST)
+From: Isaac Woods <isaacwoods.home@gmail.com>
 To: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::233;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x233.google.com
+Cc: isaacwoods.home@gmail.com,
+	kraxel@redhat.com
+Subject: [PATCH] usb: add support for sending MSIs from EHCI PCI devices
+Date: Sat,  9 Mar 2024 15:10:32 +0000
+Message-ID: <20240309151031.29417-2-isaacwoods.home@gmail.com>
+X-Mailer: git-send-email 2.44.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=isaacwoods.home@gmail.com; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Sat, 09 Mar 2024 10:33:12 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,32 +90,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 8 Mar 2024 at 15:50, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> The following changes since commit 8f6330a807f2642dc2a3cdf33347aa28a4c00a87:
->
->   Merge tag 'pull-maintainer-updates-060324-1' of https://gitlab.com/stsquad/qemu into staging (2024-03-06 16:56:20 +0000)
->
-> are available in the Git repository at:
->
->   https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240308
->
-> for you to fetch changes up to bbf6c6dbead82292a20951eb1204442a6b838de9:
->
->   target/arm: Move v7m-related code from cpu32.c into a separate file (2024-03-08 14:45:03 +0000)
->
-> ----------------------------------------------------------------
-> target-arm queue:
->  * Implement FEAT_ECV
->  * STM32L4x5: Implement GPIO device
->  * Fix 32-bit SMOPA
->  * Refactor v7m related code from cpu32.c into its own file
->  * hw/rtc/sun4v-rtc: Relicense to GPLv2-or-later
+Signed-off-by: Isaac Woods <isaacwoods.home@gmail.com>
+---
+ hw/usb/hcd-ehci-pci.c    | 27 +++++++++++++++++++++++++++
+ hw/usb/hcd-ehci-sysbus.c |  7 +++++++
+ hw/usb/hcd-ehci.c        |  2 +-
+ hw/usb/hcd-ehci.h        |  2 ++
+ 4 files changed, 37 insertions(+), 1 deletion(-)
 
-Applied, thanks.
+diff --git a/hw/usb/hcd-ehci-pci.c b/hw/usb/hcd-ehci-pci.c
+index 3ff54edf62..8a714b6733 100644
+--- a/hw/usb/hcd-ehci-pci.c
++++ b/hw/usb/hcd-ehci-pci.c
+@@ -21,6 +21,8 @@
+ #include "migration/vmstate.h"
+ #include "qemu/module.h"
+ #include "qemu/range.h"
++#include "hw/pci/msi.h"
++#include "qapi/error.h"
+ 
+ typedef struct EHCIPCIInfo {
+     const char *name;
+@@ -30,11 +32,27 @@ typedef struct EHCIPCIInfo {
+     bool companion;
+ } EHCIPCIInfo;
+ 
++static void ehci_pci_intr_update(EHCIState *ehci, bool enable)
++{
++    EHCIPCIState *s = container_of(ehci, EHCIPCIState, ehci);
++    PCIDevice *pci_dev = PCI_DEVICE(s);
++
++    if (msi_enabled(pci_dev)) {
++        if (enable) {
++            msi_notify(pci_dev, 0);
++        }
++    } else {
++        pci_set_irq(pci_dev, enable);
++    }
++}
++
+ static void usb_ehci_pci_realize(PCIDevice *dev, Error **errp)
+ {
+     EHCIPCIState *i = PCI_EHCI(dev);
+     EHCIState *s = &i->ehci;
+     uint8_t *pci_conf = dev->config;
++    Error *err = NULL;
++    int ret;
+ 
+     pci_set_byte(&pci_conf[PCI_CLASS_PROG], 0x20);
+ 
+@@ -68,8 +86,17 @@ static void usb_ehci_pci_realize(PCIDevice *dev, Error **errp)
+     s->irq = pci_allocate_irq(dev);
+     s->as = pci_get_address_space(dev);
+ 
++    s->intr_update = ehci_pci_intr_update;
++
+     usb_ehci_realize(s, DEVICE(dev), NULL);
+     pci_register_bar(dev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY, &s->mem);
++
++    ret = msi_init(dev, 0x70, 1, true, false, &err);
++    if (ret) {
++        error_propagate(errp, err);
++    } else {
++        error_free(err);
++    }
+ }
+ 
+ static void usb_ehci_pci_init(Object *obj)
+diff --git a/hw/usb/hcd-ehci-sysbus.c b/hw/usb/hcd-ehci-sysbus.c
+index fe1dabd0bb..e08c856e2b 100644
+--- a/hw/usb/hcd-ehci-sysbus.c
++++ b/hw/usb/hcd-ehci-sysbus.c
+@@ -38,6 +38,11 @@ static Property ehci_sysbus_properties[] = {
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
++static void usb_ehci_sysbus_intr_update(EHCIState *ehci, bool level)
++{
++    qemu_set_irq(s->irq, level);
++}
++
+ static void usb_ehci_sysbus_realize(DeviceState *dev, Error **errp)
+ {
+     SysBusDevice *d = SYS_BUS_DEVICE(dev);
+@@ -70,6 +75,8 @@ static void ehci_sysbus_init(Object *obj)
+     s->portnr = sec->portnr;
+     s->as = &address_space_memory;
+ 
++    s->intr_update = usb_ehci_sysbus_intr_update;
++
+     usb_ehci_init(s, DEVICE(obj));
+     sysbus_init_mmio(d, &s->mem);
+ }
+diff --git a/hw/usb/hcd-ehci.c b/hw/usb/hcd-ehci.c
+index 01864d4649..e1f71dc445 100644
+--- a/hw/usb/hcd-ehci.c
++++ b/hw/usb/hcd-ehci.c
+@@ -209,7 +209,7 @@ static inline void ehci_update_irq(EHCIState *s)
+     }
+ 
+     trace_usb_ehci_irq(level, s->frindex, s->usbsts, s->usbintr);
+-    qemu_set_irq(s->irq, level);
++    (s->intr_update)(s, level);
+ }
+ 
+ /* flag interrupt condition */
+diff --git a/hw/usb/hcd-ehci.h b/hw/usb/hcd-ehci.h
+index 56a1c09d1f..bc017aec79 100644
+--- a/hw/usb/hcd-ehci.h
++++ b/hw/usb/hcd-ehci.h
+@@ -305,6 +305,8 @@ struct EHCIState {
+     EHCIQueueHead aqueues;
+     EHCIQueueHead pqueues;
+ 
++    void (*intr_update)(EHCIState *s, bool enable);
++
+     /* which address to look at next */
+     uint32_t a_fetch_addr;
+     uint32_t p_fetch_addr;
+-- 
+2.44.0
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
-for any user-visible changes.
-
--- PMM
 
