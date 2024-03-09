@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE6387738D
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:23:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5052877391
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:24:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj2HO-0000H9-0k; Sat, 09 Mar 2024 14:22:46 -0500
+	id 1rj2HY-0000JL-RZ; Sat, 09 Mar 2024 14:22:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2HK-0000G0-W2
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:22:43 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2HR-0000IJ-Pp
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:22:49 -0500
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2HI-0002TO-Sh
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:22:42 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5683089d4bbso1940853a12.2
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:22:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2HO-0002UO-Nw
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:22:49 -0500
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-a3122b70439so407739366b.3
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:22:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710012159; x=1710616959; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710012165; x=1710616965; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tC/kiuQFLzAJIELEDb51aw3s24kLy7eDbWP5W63QeD8=;
- b=LrTYXNRcvDKTSH6APYZi8ttX7KMHjSzNikukosk3P6FDhMnOvmM1U5zpMalSoQCA73
- 2S8pjOgjs52wILRm1dWrE8ntnCoy+gwqYmaHRUUH8DazlALIz9luec7mumfH3hj5gGWg
- gQQsMcJYkQ+pFlKOZ3JOQVckH0pvlSMK58EykPCJ/kt5xykZ/OIBX07g1MZm9ooidBBm
- z9axii3WqIrSjIwsOUwDv8YPtkbB9eJaRGcwdAayNoB8hYryX7BPUYoA22+PYxp6PeCk
- QwsemhQAwirijWLOB5fFkktJiD8PMGBl7IsiGAkDfHvOVvKJka7g+rcts5KyCViMFFnB
- vNXA==
+ bh=dvPLYlBQAWmf1NvUY3LgRzjhJOxAzzfQLYDmKAk6+Eg=;
+ b=uDPoWynIu2dvzNt3Ckd9UUX7TWwWMjKS5raMiqoWEz+PbBQJhFDo7WwtXUI6CdYlt8
+ gZ39MX/Yvedvd8FgIbGYtlt7KxB8Z0uV7I1pph3F4mv1Tx3lNwZmgO7NLSG0L5l9y6dj
+ 6x+VMRCRdD3Ew7kx9Zll3o3qS2qtalPXpu5kD8e10HuGg/tgdPpYLIyTdDEKdEi4DBIg
+ nB50eprbzaaIQp5tpddjTOpJxveydBA0zsJqstwSbfMq2SONQ0HZN+/7c6FyWNlWy50P
+ mNqfmIFp+hOzPSEuqdPPPUy/qZ8aqmZ/B2WUhEmO65Z+vZxduzgjS9NWoKhLxSTgaYoy
+ WONA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710012159; x=1710616959;
+ d=1e100.net; s=20230601; t=1710012165; x=1710616965;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tC/kiuQFLzAJIELEDb51aw3s24kLy7eDbWP5W63QeD8=;
- b=FCRRPnOLnE/8fVJPzi7nAqZex91euzM6t6M4Q+2soPYtcib2PPuE1/Pqr+ZVI7y4Nx
- kyG4SD1V6eJWJVuhN7Ycv5Ebfv+2R/CqZI2fKQ9lGvM0BTpvK1OCsJLyQUDtbNoa286M
- 7wCBsbYDCRSuMS7X3Bf3khM+qMuRwuAUln8V4Qmxp8wOGszoGkN6h8gDd8wAtjkd7egX
- R9cXEb79ptPuPywxf+J9qE2eJbnhFbKh4HaGNepngxb7Y4siqz1DbAcuCW5wd6/i7yD3
- hr4a6rsM9sI0e3HsqZ/RQrb5WJ8VxaEq7ayTTDradKCFzDFz/rX01ZuZiGoQTV6xh/mp
- h5xA==
-X-Gm-Message-State: AOJu0YxUQD5s2aEEJiYs9LnBSr1in7eytjQaLoGZ23fPT7HVB4ztYex8
- cwbfZ4FQuYsi9Zoe+pj6dQ5uQjTQpSAWT/82uOkC04Dk0kXwpuF089FX9AQCAqM9/Mdv4t5BmTb
- W
-X-Google-Smtp-Source: AGHT+IHu7iErUaQhb/iOqdqNUztKh6+iIcuL2bT4JOaVPS9pbXCOM/MCUyWhBzpVIGeMmuHeD9ew8g==
-X-Received: by 2002:a50:8717:0:b0:568:1b9f:d6b3 with SMTP id
- i23-20020a508717000000b005681b9fd6b3mr1590136edb.40.1710012159128; 
- Sat, 09 Mar 2024 11:22:39 -0800 (PST)
+ bh=dvPLYlBQAWmf1NvUY3LgRzjhJOxAzzfQLYDmKAk6+Eg=;
+ b=aDPNRI91dKi/6gjiT0p+gJJsxLnQ0TEbVtVLKY7qfZXHGhy3fumOKBSoRJOA/IlaUS
+ lhz5es16XDrQqz9hFZ/Ukwe0R3ODl+Qy0Bi+o3i+cOyrAF7pVo81eI/++IOE06UWzENs
+ smf9vfxrDUMW9J5n9YpwLpl+3Go6be5sq9rRLgRlD4sV5N0LoS7AqaRMw++jeOl9JUPv
+ ViL83s1bdfiJiytYuM1yjKsMlyzn3l5XSlU+VfIql7zMMKBizXgv9d06eK6a004LFDlR
+ 5jTh8mo+RVdLFjBSCgFOqOwsqAhbNbBpxNginGA8Btozpsl/08xEV+4+u8VHzzIN9FGU
+ Mu3g==
+X-Gm-Message-State: AOJu0YyHDNQtbQ0s1tGLvi0HksoCI5nrILKcdChuizB9bZ5LLtQzXUYk
+ tMYDOqS5vKCdQfbhJyg6xlhoIrr6eTdOBCu3Nd3n0zzd8jLw7Lca0uBrF+3TRY4OjvxDN8p/0R+
+ 8
+X-Google-Smtp-Source: AGHT+IGN8k3Sm6baTXPm79wHAuc6ayShgYcEDLvukc8XhwEnOb6ThROAcunL2w6kbhV8Y4RYVCKWXg==
+X-Received: by 2002:a17:906:c2d2:b0:a43:f22e:57a6 with SMTP id
+ ch18-20020a170906c2d200b00a43f22e57a6mr1137454ejb.67.1710012164856; 
+ Sat, 09 Mar 2024 11:22:44 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.237])
  by smtp.gmail.com with ESMTPSA id
- a3-20020a50e703000000b005661badcccesm1148488edn.87.2024.03.09.11.22.37
+ o23-20020a1709062e9700b00a44cf710cc3sm1170300eji.182.2024.03.09.11.22.43
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 09 Mar 2024 11:22:38 -0800 (PST)
+ Sat, 09 Mar 2024 11:22:44 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- David Woodhouse <dwmw@amazon.co.uk>, David Hildenbrand <david@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>
-Subject: [PULL 04/43] system/physmem: Do not include 'hw/xen/xen.h' but
- 'sysemu/xen.h'
-Date: Sat,  9 Mar 2024 20:21:31 +0100
-Message-ID: <20240309192213.23420-5-philmd@linaro.org>
+ David Woodhouse <dwmw@amazon.co.uk>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 05/43] hw/pci/msi: Restrict xen_is_pirq_msi() call to Xen
+Date: Sat,  9 Mar 2024 20:21:32 +0100
+Message-ID: <20240309192213.23420-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240309192213.23420-1-philmd@linaro.org>
 References: <20240309192213.23420-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,31 +94,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-physmem.c doesn't use any declaration from "hw/xen/xen.h",
-it only requires "sysemu/xen.h" and "system/xen-mapcache.h".
+Similarly to the restriction in hw/pci/msix.c (see commit
+e1e4bf2252 "msix: fix msix_vector_masked"), restrict the
+xen_is_pirq_msi() call in msi_is_masked() to Xen.
 
-Suggested-by: David Woodhouse <dwmw@amazon.co.uk>
+No functional change intended.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Message-Id: <20231114143816.71079-5-philmd@linaro.org>
+Message-Id: <20231114143816.71079-7-philmd@linaro.org>
 ---
- system/physmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/pci/msi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/system/physmem.c b/system/physmem.c
-index 3adda08ebf..6e9ed97597 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -35,7 +35,7 @@
- #include "hw/qdev-core.h"
- #include "hw/qdev-properties.h"
- #include "hw/boards.h"
--#include "hw/xen/xen.h"
+diff --git a/hw/pci/msi.c b/hw/pci/msi.c
+index 041b0bdbec..8104ac1d91 100644
+--- a/hw/pci/msi.c
++++ b/hw/pci/msi.c
+@@ -23,6 +23,7 @@
+ #include "hw/xen/xen.h"
+ #include "qemu/range.h"
+ #include "qapi/error.h"
 +#include "sysemu/xen.h"
- #include "sysemu/kvm.h"
- #include "sysemu/tcg.h"
- #include "sysemu/qtest.h"
+ 
+ #include "hw/i386/kvm/xen_evtchn.h"
+ 
+@@ -308,7 +309,7 @@ bool msi_is_masked(const PCIDevice *dev, unsigned int vector)
+     }
+ 
+     data = pci_get_word(dev->config + msi_data_off(dev, msi64bit));
+-    if (xen_is_pirq_msi(data)) {
++    if (xen_enabled() && xen_is_pirq_msi(data)) {
+         return false;
+     }
+ 
 -- 
 2.41.0
 
