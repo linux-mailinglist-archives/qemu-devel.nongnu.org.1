@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C676877214
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 16:58:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 723F9877219
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 16:59:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riz51-00079S-Fk; Sat, 09 Mar 2024 10:57:47 -0500
+	id 1riz55-0007BM-Fq; Sat, 09 Mar 2024 10:57:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1riz4y-000793-8D; Sat, 09 Mar 2024 10:57:44 -0500
+ id 1riz51-00079o-8R; Sat, 09 Mar 2024 10:57:47 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1riz4w-0004Fq-D7; Sat, 09 Mar 2024 10:57:44 -0500
+ id 1riz4z-0004Gr-JD; Sat, 09 Mar 2024 10:57:47 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 148EC54526;
- Sat,  9 Mar 2024 18:58:28 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 82D2A54527;
+ Sat,  9 Mar 2024 18:58:29 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7613B944BB;
- Sat,  9 Mar 2024 18:57:31 +0300 (MSK)
-Received: (nullmailer pid 1694647 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id CD6A8944BC;
+ Sat,  9 Mar 2024 18:57:32 +0300 (MSK)
+Received: (nullmailer pid 1694650 invoked by uid 1000);
  Sat, 09 Mar 2024 15:57:29 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-trivial@nongnu.org,
+Cc: Frediano Ziglio <freddy77@gmail.com>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 01/11] replay: Improve error messages about configuration
- conflicts
-Date: Sat,  9 Mar 2024 18:57:19 +0300
-Message-Id: <20240309155729.1694607-2-mjt@tls.msk.ru>
+Subject: [PULL 02/11] hw/vfio/pci.c: Make some structure static
+Date: Sat,  9 Mar 2024 18:57:20 +0300
+Message-Id: <20240309155729.1694607-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240309155729.1694607-1-mjt@tls.msk.ru>
 References: <20240309155729.1694607-1-mjt@tls.msk.ru>
@@ -61,56 +60,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Markus Armbruster <armbru@redhat.com>
+From: Frediano Ziglio <freddy77@gmail.com>
 
-Improve
+Not used outside C module.
 
-   Record/replay feature is not supported for '-rtc base=localtime'
-   Record/replay feature is not supported for 'smp'
-   Record/replay feature is not supported for '-snapshot'
-
-to
-
-   Record/replay is not supported with -rtc base=localtime
-   Record/replay is not supported with multiple CPUs
-   Record/replay is not supported with -snapshot
-
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
+Signed-off-by: Frediano Ziglio <frediano.ziglio@cloud.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- replay/replay.c | 2 +-
- system/vl.c     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/vfio/pci.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/replay/replay.c b/replay/replay.c
-index 3fd241a4fc..a2c576c16e 100644
---- a/replay/replay.c
-+++ b/replay/replay.c
-@@ -511,7 +511,7 @@ void replay_add_blocker(const char *feature)
- {
-     Error *reason = NULL;
- 
--    error_setg(&reason, "Record/replay feature is not supported for '%s'",
-+    error_setg(&reason, "Record/replay is not supported with %s",
-                feature);
-     replay_blockers = g_slist_prepend(replay_blockers, reason);
- }
-diff --git a/system/vl.c b/system/vl.c
-index 48aae6e053..70f4cece7f 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -1932,7 +1932,7 @@ static void qemu_apply_machine_options(QDict *qdict)
-     }
- 
-     if (current_machine->smp.cpus > 1) {
--        replay_add_blocker("smp");
-+        replay_add_blocker("multiple CPUs");
-     }
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 4fa387f043..a1522a011a 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -2558,7 +2558,7 @@ static bool vfio_display_migration_needed(void *opaque)
+         (vdev->ramfb_migrate == ON_OFF_AUTO_AUTO && vdev->enable_ramfb);
  }
  
+-const VMStateDescription vmstate_vfio_display = {
++static const VMStateDescription vmstate_vfio_display = {
+     .name = "VFIOPCIDevice/VFIODisplay",
+     .version_id = 1,
+     .minimum_version_id = 1,
+@@ -2570,7 +2570,7 @@ const VMStateDescription vmstate_vfio_display = {
+     }
+ };
+ 
+-const VMStateDescription vmstate_vfio_pci_config = {
++static const VMStateDescription vmstate_vfio_pci_config = {
+     .name = "VFIOPCIDevice",
+     .version_id = 1,
+     .minimum_version_id = 1,
 -- 
 2.39.2
 
