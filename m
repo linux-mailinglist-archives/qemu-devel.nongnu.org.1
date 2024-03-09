@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4175987728B
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 18:52:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1529877294
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 18:58:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj0qu-0005g4-RJ; Sat, 09 Mar 2024 12:51:20 -0500
+	id 1rj0xB-0000fu-Hq; Sat, 09 Mar 2024 12:57:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj0qs-0005fH-5P
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 12:51:18 -0500
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj0x8-0000fY-Cf
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 12:57:46 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj0qq-0004u9-Gu
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 12:51:17 -0500
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-51341a5aafbso3480413e87.0
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 09:51:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj0x6-0005hL-Pq
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 12:57:46 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4131804e695so9376315e9.0
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 09:57:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710006675; x=1710611475; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1710007062; x=1710611862; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=yAxhNVtJwDIKHDe0PoI3UANPa3khkv5nuvF+KnPYjXs=;
- b=ISKeG2Q5mRzwwVuMtgzqTHDkYG7mEfuIsggBbBZBKSUWv1nABB4SQtn44ugBZowEU8
- l4Wc+OIK6pCj+OzReoHZBLnKRadQnSR+8WM8+T0AJOPKAXrX15QFaP5FwZi2RclvAzZI
- o7UKab+xqux3Sp2nBuw6DBn2dC8655YYRc9LHqkLCXKp817bvt1nJDVRfzWmH5dqsXUt
- ed+jd8JqOWYbPbGqGknIho643fph7xKvvdWAtJGsNLOKw2iekHk7KYy6/57WZOptJU3B
- lB/6pSvZjamilo5Dk2zbaJqKm+mZsYWkZG/7rKq8z1k/928nrvQl+wyHrVWDDBvqAOXA
- 6MGg==
+ bh=IxhJSXqEKqcC23yHFxKKlvN5nLzDVZ7x48xn7IH8dks=;
+ b=VcwsTSQt9tNuDLV7hN6DcBdoqIIq3H42EbYZfNEkuOJm/L0zGees2+l+6+yBQKCKGP
+ Ev/EDz1QcqG70vg2puufkOr43KG96Wb8Ri072mmVowkImgEfAbpv/ZaQVWILWKdD34Vs
+ qafYgdEcElgAYVkjCOJnaFGpiz47vQkpDvKOOKNk9Arv/jVv2kBaCBNG6nmTm6dwMKZR
+ I7ylz3WGUrnl4JWrp2wzs/zB5vr8BKIGv/1XRs8YkyMuc/wmP3pqKGPD8nVV9XIEhhWE
+ KGXDgm4cq4M8f1fqGJYmxweSUIZC2NqTbxp3LZuy7Nju3Yy4QzR8hQq8xIeNaS1dQ66o
+ VfLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710006675; x=1710611475;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20230601; t=1710007062; x=1710611862;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yAxhNVtJwDIKHDe0PoI3UANPa3khkv5nuvF+KnPYjXs=;
- b=e9uHRqKEkmKqb6KBIpF1Ot7qmABc/h9BM9/XAiVgo+DQ7Kujql0lH3SvquVN3sUv5M
- Yi1NPOBty9fiyo3+KUNEFckImrac9lxlSDn3TkGbb6LX11wTKll/ahxteMQ+2KR8kn2L
- BtcSxmEponDCxs58mtjQVi0VuqKMaAm6oiJ+21FhXG3bJDvybYdv/TgTxwe46Dbtczfp
- onuAzvEVXM5XmkwsXyMP0Zg9A7wEU0uCP9Chyd0bfI1AcqFBENMa9PsTuuE7+8sCxWwr
- TGpw4hRb0Zfna9/CZCIRhTHkLuT8XEP0LwlNbM3y3U/AzoQWisttrBC9ZvDy6VhZghls
- 57Gw==
+ bh=IxhJSXqEKqcC23yHFxKKlvN5nLzDVZ7x48xn7IH8dks=;
+ b=SDlKbZsvHMo7hVF6zpNlaNQKeqSLiWI8jH6sUF2qOTh/itdovUW/6Ud5yEO9IOkCHo
+ Iir6QXqUxQ3o9AwpFhBQO7sLWwlRvSFzcniRaWMjYufEXPzdMkGTWh8UIFLLiEDMhiwI
+ 5aFyiicDNp9w6sTjyCFvvNoG1eSuhiAa4TmXjvx4bftEeNbvZZqecrAChha8IuJVvzmA
+ F35h+S7QsRFgT7HzpHN4sW4IehpUveHlUQVO6GiCsWEaUDUBC8z8ySSVc0oLx2Wykv7H
+ OLn42tyRVMPFH6wRbNdgft8rCUMFgVipvzzN3kNRShxjBZaYblY3GrytzEa/soaeR3Dd
+ SQHg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWR2zwt2hM8o/hhLOE4wWwgFShahyJFrqph5cC+mKBu5gGh3lJ2ekgbwvVAAG/Rl8QkHYPKdDktGmZCvYWPUGoymZMfp6w=
-X-Gm-Message-State: AOJu0YxSBwXe3m2HmAghDo77fpKcsEHizEeIf4gja+hZEZhk3ildoizt
- j4v6MajO8GhBZxprYO3mP9R+jN3EbTGMTgGlixyZDBV8fkLNJ/1Jigm7MO/FRo4=
-X-Google-Smtp-Source: AGHT+IE7qh6psHH71ybVDgEVknOEPDiSTmmoxeqby0DxSBFwUDmdoT93iQXJ+UHaB1L+ITQKrOLDvQ==
-X-Received: by 2002:a05:6512:31c8:b0:513:a0a3:8be2 with SMTP id
- j8-20020a05651231c800b00513a0a38be2mr1123163lfe.29.1710006674597; 
- Sat, 09 Mar 2024 09:51:14 -0800 (PST)
+ AJvYcCX6rz2YiIP5XyBdTyUJKfQZKw0IDO13YHFdyMVoLLjSnfKff4J2xo0+89bJ820RC1UimxlAqGxI+xE6QrudxbLk4iqgsps=
+X-Gm-Message-State: AOJu0Ywjv0F9R1cYfy9KTdubTT/z4Dz5yIhX/7zg83pz9RE4ZoHfy8dn
+ aI7SGOypl8VJ3L2z419M846k0e5fPyI9erHHz5DhTZuJOJDnn5r+BwWKMPc3l6M=
+X-Google-Smtp-Source: AGHT+IHJsIeY4EeBf7fylBaWPyNEY02hZjOrSlN/oeSpydAHABkxt5BgyhrNsQ+PlxZds0lWKb/XVQ==
+X-Received: by 2002:a05:600c:4708:b0:413:12bd:a8ac with SMTP id
+ v8-20020a05600c470800b0041312bda8acmr1976423wmo.7.1710007061802; 
+ Sat, 09 Mar 2024 09:57:41 -0800 (PST)
 Received: from [192.168.69.100] ([176.176.181.237])
  by smtp.gmail.com with ESMTPSA id
- t10-20020a05600c450a00b004131388d948sm7586304wmo.0.2024.03.09.09.51.13
+ n34-20020a05600c502200b004131b2d3b8esm5177319wmr.41.2024.03.09.09.57.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 09 Mar 2024 09:51:14 -0800 (PST)
-Message-ID: <f24730db-c9b4-4d08-b55c-bfdc594994bf@linaro.org>
-Date: Sat, 9 Mar 2024 18:51:12 +0100
+ Sat, 09 Mar 2024 09:57:41 -0800 (PST)
+Message-ID: <b37abc0b-8a7b-44f2-9eaa-c258214b161d@linaro.org>
+Date: Sat, 9 Mar 2024 18:57:39 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mac_newworld: change timebase frequency from 100MHz to
- 25MHz for mac99 machine
+Subject: Re: [PATCH 1/2] tcg/aarch64: Fix tcg_out_cmp for test comparisons
 Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-References: <20240304073548.2098806-1-mark.cave-ayland@ilande.co.uk>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, peter.maydell@linaro.org, qemu-stable@nongnu.org
+References: <20240309175102.726332-1-richard.henderson@linaro.org>
+ <20240309175102.726332-2-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240304073548.2098806-1-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20240309175102.726332-2-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,33 +94,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/3/24 08:35, Mark Cave-Ayland wrote:
-> MacOS X uses multiple techniques for calibrating timers depending upon the detected
-> hardware. One of these calibration routines compares the change in the timebase
-> against the KeyLargo timer and uses this to recalculate the clock frequency,
-> timebase frequency and bus frequency if the calibration exceeds certain limits.
-> This recalibration occurs despite the correct values being passed via the device
-> tree, and is likely due to buggy firmware on some hardware.
+On 9/3/24 18:51, Richard Henderson wrote:
+> Pass the type to tcg_out_logicali; remove the assert, duplicated
+> at the start of tcg_out_logicali.
 > 
-> The timebase frequency of 100MHz was set way back in 2005 by commit fa296b0fb4
-> ("PIC fix - changed back TB frequency to 100 MHz") and with this value on a
-> mac99,via=pmu machine the OSX 10.2 timer calibration incorrectly calculates the
-> bus frequency as 400MHz instead of 100MHz. The most noticeable side-effect is
-> the UI appears sluggish and not very responsive for normal use.
-> 
-> Change the timebase frequency from 100MHz to 25MHz which matches that of a real
-> G4 AGP machine (the closest match to QEMU's mac99 machine) and allows OSX 10.2
-> to correctly detect all of the clock frequency, timebase frequency and bus
-> frequency.
-> 
-> Tested on various MacOS images from OS 9.2 through to OSX 10.4, along with Linux
-> and NetBSD and I was unable to find any regressions from this change.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->   hw/ppc/mac_newworld.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> Cc: qemu-stable@nongnu.org
+> Fixes: 339adf2f38e ("tcg/aarch64: Support TCG_COND_TST{EQ,NE}")
+
+Oops, thanks.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   tcg/aarch64/tcg-target.c.inc | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
 
 
