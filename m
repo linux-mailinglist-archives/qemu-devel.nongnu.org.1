@@ -2,82 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2269D876EE6
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 04:12:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF73E876EF5
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 04:30:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rin6u-0000yR-Tl; Fri, 08 Mar 2024 22:10:56 -0500
+	id 1rinOz-0008DJ-3K; Fri, 08 Mar 2024 22:29:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1rin6d-0000u6-6w
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 22:10:40 -0500
-Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
+ (Exim 4.90_1) (envelope-from <jandryuk@gmail.com>)
+ id 1rinOq-0008D6-UV
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 22:29:29 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1rin6b-0004AS-JL
- for qemu-devel@nongnu.org; Fri, 08 Mar 2024 22:10:38 -0500
-Received: by mail-oi1-x22e.google.com with SMTP id
- 5614622812f47-3c2313de2ceso610697b6e.1
- for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 19:10:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jandryuk@gmail.com>)
+ id 1rinOp-0007qJ-L6
+ for qemu-devel@nongnu.org; Fri, 08 Mar 2024 22:29:28 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-567bac94719so1687386a12.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Mar 2024 19:29:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1709953835; x=1710558635; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1709954964; x=1710559764; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QNibj7GeqOVAWR9r/zV93h8cU6ZpKh+4GZhI7/K8upo=;
- b=tfqGqg+aOdEetvBGqy25S33KHmS9Nk2ZxA6cJO06boPn7mMM7qHpfd7lEgpwvR0nwO
- K146YB1owlalZBNHFsBvxdyJ4KGzti6u45F7ejxNIED6NvSYfaPtiaTyl98DbaNc7KGi
- qEuNZ+7Q2OmBU9/5ThtK1b45jyD3hsst6Jcfmi8VzeMVmUAq1UcIkKgSWEFneCCfjPGB
- I3IysZpgq9O30e9RkuTVdB54eCYs6Z7dQRl6+R1iqmmUPoRr2RfCncnSPRJuGWa7Um5h
- aSqwYw+YbF/WuZcqXQOx7tiiDBRdxzEKT3pH030aTpCJs3ODyGdyvadjZs4UC9mstA5c
- kkVQ==
+ bh=Va8ogusGZwdaKepctfLfXDDaga65WunO9ZGuU+9NtAE=;
+ b=Tc5/VxaKeNHrQCTRJPFfb6FhALA/UMDYeEAgKcSMs5na8rABTruNRNHlJjQ81ZttFP
+ KIN/4VjUCx/w+R/ih+thgEpsfG+0ZqQyiz6ELKQ9EeSrZAnaAl17Eaxa0yxmwvssMCzh
+ Pkr2UfBlPkYSBbzINttzfeZMp4N/Itl2V5quu1T0GahE3S10jhO3Om7Wn8lsS95aosul
+ lfIr35KZ3TGOZbxf+matIxkb2DJCAev7WJwpBJvwkBDqh6MaWe+ZUUvcNbTOu8BFx2PQ
+ F7Vc14W+/JoBbxs6ahsUdx14/PLt9cOQe3DOoUrRmWwjcDQMebyCR83SzIGjdTtbdnix
+ nyRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709953835; x=1710558635;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1709954964; x=1710559764;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QNibj7GeqOVAWR9r/zV93h8cU6ZpKh+4GZhI7/K8upo=;
- b=PJdUo1EB0JBU6tXESpUB7alb1sUv1/9/CSimB+bqPOYbfMVjL6/PWmKQPYsxHjeYjp
- LnP2Em0oMoMrFQUJgBklSovBbd79Dm77+KQquwZYVlTTSPefvveK4bQJbrvxfc4Gh0rP
- SUwUSoUCRyqOhOeP3sBSqB6GkbzPk9XCydHvCemvjeZ+FSCOZ39an2ThhKJLnyeDIZKu
- S1ZCwCmBpf1TpCFAbWHHFUt3wJW+YxjJ4Cd/xPEJbVvJfMjgyNyV1b+ZQufzFh3YkCHM
- lOBtD9kMZP3s+eriwq2pvtOUtkTLg/n31pTIbNIIgwK957vpHl42Wtr4NDmO+YDgPcD9
- /uPQ==
-X-Gm-Message-State: AOJu0Yxg+noAkLzFalzOoGtK5FABh4UOGmH6jx1wR+9vo08yqO8g6mfL
- mX2J6hrsTMGGziutGNrOkp3RnzuVbJoJjRlL9fPa4owfc3p1PaVB0xareah00hlsgqKcu/uBWQ8
- /T/E=
-X-Google-Smtp-Source: AGHT+IHRimvnBR/wyLhtkIwunOHerYCdZFbwV0cdRgFkXoxLAW6UMCHSGys0bLB6OAcxMog6IwCzsQ==
-X-Received: by 2002:a05:6808:118c:b0:3c2:1868:d9cf with SMTP id
- j12-20020a056808118c00b003c21868d9cfmr1151769oil.16.1709953835423; 
- Fri, 08 Mar 2024 19:10:35 -0800 (PST)
-Received: from amd.. ([2804:7f0:b401:7e8e:3e7c:3fff:fe7a:e83b])
- by smtp.gmail.com with ESMTPSA id
- w13-20020a170902d3cd00b001dd707d5fe6sm349566plb.158.2024.03.08.19.10.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Mar 2024 19:10:34 -0800 (PST)
-From: Gustavo Romero <gustavo.romero@linaro.org>
-To: qemu-devel@nongnu.org,
-	richard.henderson@linaro.org
-Cc: alex.bennee@linaro.org, peter.maydell@linaro.org, laurent@vivier.eu,
- philmd@linaro.org, gustavo.romero@linaro.org
-Subject: [PATCH v3 5/5] tests/tcg: Add multiarch test for Xfer:siginfo:read
- stub
-Date: Sat,  9 Mar 2024 03:09:01 +0000
-Message-Id: <20240309030901.1726211-6-gustavo.romero@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240309030901.1726211-1-gustavo.romero@linaro.org>
-References: <20240309030901.1726211-1-gustavo.romero@linaro.org>
+ bh=Va8ogusGZwdaKepctfLfXDDaga65WunO9ZGuU+9NtAE=;
+ b=bxUMyfrcOJJ6HHD4NNbTfvHKu7st3ZpTulH6s1Len6scehDN3cTH16BReOwulh/v7y
+ C3Fh/eWrHLHgrQLOvI6boTVY6p/zX4iUG648bzc3SXtKWoTBAl/kkirwSF09erjNGfN4
+ PsaWk/CiXDUYAozI3o9ejf3ZdhBF3+W1pssYMN6T8FYjLoegv3oygA3A8riSkLetEhQk
+ WRTyhoCMEpckJ3vozaMHL/HwYh2EIhSw40z0rQR8KBsITV4yhpB6aUqZfGdnn188RocN
+ zu948KZnM/XL5BaCAjRDrJcymt+5Piakpj7bRMKqMHQ7lc8skzHHbjbnPBLVKvRyDCS2
+ fx5A==
+X-Gm-Message-State: AOJu0YzOK5y5y2pGzEXBzwm2whoV9xou7IvZbHBnSzm+CpZwWrT3ok45
+ 4wFYZiQJR5Ze1epbmqWjMrLHRw9lVzTdP8EHLN+kQNV/D8TYurnEUUVU2+vFbdBxVND2daw6z3e
+ GG+D1sfK0MHK+Gm/9rw9AZoXWcA0=
+X-Google-Smtp-Source: AGHT+IGAGGrOzMwhBAKfnLe170l7WdnKP+Is5I9SeSwO++dhjS2Gz++v7KuOxzYPkHCn5T2VAxp61pjrLtMX0iV+cac=
+X-Received: by 2002:a50:d6d7:0:b0:568:1f9f:eca4 with SMTP id
+ l23-20020a50d6d7000000b005681f9feca4mr553180edj.42.1709954963873; Fri, 08 Mar
+ 2024 19:29:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
- envelope-from=gustavo.romero@linaro.org; helo=mail-oi1-x22e.google.com
+References: <20240305191312.321127-1-marmarek@invisiblethingslab.com>
+In-Reply-To: <20240305191312.321127-1-marmarek@invisiblethingslab.com>
+From: Jason Andryuk <jandryuk@gmail.com>
+Date: Fri, 8 Mar 2024 22:29:12 -0500
+Message-ID: <CAKf6xpte=2ugj187gw1cxY361XGgM2As67PgAQEEheVYbG2n5g@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] hw/xen: detect when running inside stubdomain
+To: =?UTF-8?Q?Marek_Marczykowski=2DG=C3=B3recki?=
+ <marmarek@invisiblethingslab.com>
+Cc: qemu-devel@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>, 
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>, 
+ "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=jandryuk@gmail.com; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,100 +90,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add multiarch test for testing if Xfer:siginfo:read query is properly
-handled by gdbstub.
+On Tue, Mar 5, 2024 at 2:13=E2=80=AFPM Marek Marczykowski-G=C3=B3recki
+<marmarek@invisiblethingslab.com> wrote:
+>
+> Introduce global xen_is_stubdomain variable when qemu is running inside
+> a stubdomain instead of dom0. This will be relevant for subsequent
+> patches, as few things like accessing PCI config space need to be done
+> differently.
+>
+> Signed-off-by: Marek Marczykowski-G=C3=B3recki <marmarek@invisiblethingsl=
+ab.com>
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- tests/tcg/multiarch/Makefile.target           | 10 ++++++-
- .../gdbstub/test-qxfer-siginfo-read.py        | 26 +++++++++++++++++++
- tests/tcg/multiarch/segfault.c                | 14 ++++++++++
- 3 files changed, 49 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/multiarch/gdbstub/test-qxfer-siginfo-read.py
- create mode 100644 tests/tcg/multiarch/segfault.c
-
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index f11f3b084d..5ab4ba89b2 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -71,6 +71,13 @@ run-gdbstub-qxfer-auxv-read: sha1
- 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/test-qxfer-auxv-read.py, \
- 	basic gdbstub qXfer:auxv:read support)
- 
-+run-gdbstub-qxfer-siginfo-read: segfault
-+	$(call run-test, $@, $(GDB_SCRIPT) \
-+		--gdb $(GDB) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-+		--bin "$< -s" --test $(MULTIARCH_SRC)/gdbstub/test-qxfer-siginfo-read.py, \
-+	basic gdbstub qXfer:siginfo:read support)
-+
- run-gdbstub-proc-mappings: sha1
- 	$(call run-test, $@, $(GDB_SCRIPT) \
- 		--gdb $(GDB) \
-@@ -113,7 +120,8 @@ endif
- EXTRA_RUNS += run-gdbstub-sha1 run-gdbstub-qxfer-auxv-read \
- 	      run-gdbstub-proc-mappings run-gdbstub-thread-breakpoint \
- 	      run-gdbstub-registers run-gdbstub-prot-none \
--	      run-gdbstub-catch-syscalls
-+	      run-gdbstub-catch-syscalls \
-+	      run-gdbstub-qxfer-siginfo-read
- 
- # ARM Compatible Semi Hosting Tests
- #
-diff --git a/tests/tcg/multiarch/gdbstub/test-qxfer-siginfo-read.py b/tests/tcg/multiarch/gdbstub/test-qxfer-siginfo-read.py
-new file mode 100644
-index 0000000000..862596b07a
---- /dev/null
-+++ b/tests/tcg/multiarch/gdbstub/test-qxfer-siginfo-read.py
-@@ -0,0 +1,26 @@
-+from __future__ import print_function
-+#
-+# Test gdbstub Xfer:siginfo:read stub.
-+#
-+# The test runs a binary that causes a SIGSEGV and then looks for additional
-+# info about the signal through printing GDB's '$_siginfo' special variable,
-+# which sends a Xfer:siginfo:read query to the gdbstub.
-+#
-+# The binary causes a SIGSEGV at dereferencing a pointer with value 0xdeadbeef,
-+# so the test looks for and checks if this address is correctly reported by the
-+# gdbstub.
-+#
-+# This is launched via tests/guest-debug/run-test.py
-+#
-+
-+import gdb
-+from test_gdbstub import main, report
-+
-+def run_test():
-+    "Run through the test"
-+
-+    gdb.execute("continue", False, True)
-+    resp = gdb.execute("print/x $_siginfo", False, True)
-+    report(resp.find("si_addr = 0xdeadbeef"), "Found fault address.")
-+
-+main(run_test)
-diff --git a/tests/tcg/multiarch/segfault.c b/tests/tcg/multiarch/segfault.c
-new file mode 100644
-index 0000000000..e6c8ff31ca
---- /dev/null
-+++ b/tests/tcg/multiarch/segfault.c
-@@ -0,0 +1,14 @@
-+#include <stdio.h>
-+#include <string.h>
-+
-+/* Cause a segfault for testing purposes. */
-+
-+int main(int argc, char *argv[])
-+{
-+    int *ptr = (void *)0xdeadbeef;
-+
-+    if (argc == 2 && strcmp(argv[1], "-s") == 0) {
-+        /* Cause segfault. */
-+        printf("%d\n", *ptr);
-+    }
-+}
--- 
-2.34.1
-
+Reviewed-by: Jason Andryuk <jandryuk@gmail.com>
 
