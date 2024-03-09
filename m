@@ -2,85 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0105187739B
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:24:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A79898773BF
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:32:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj2JE-00056m-BM; Sat, 09 Mar 2024 14:24:40 -0500
+	id 1rj2JK-0005WU-GS; Sat, 09 Mar 2024 14:24:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2JB-0004pU-Mu
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:37 -0500
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2JI-0005VG-Mn
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:44 -0500
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2J9-0002rw-F9
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:37 -0500
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a28a6cef709so272739066b.1
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:24:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2JG-0002wM-47
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:44 -0500
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-512f54fc2dbso2841812e87.1
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:24:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710012274; x=1710617074; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710012280; x=1710617080; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=b9ZBcWCorweFf+2JD84jMS2xk8ntDrtFmiyqB/cRtXw=;
- b=JrP5/veXhnTCbopgrBHIatDR4Kk0YJftX+qGahmc3Ocyr7/S3jvI4RsyTKVmVJzXXh
- mvVaNYbflIiy0XlwwO3vkttCT/MDByIO9FlndAOqfhsENaqVhVVjVhR67vRWEHXA9tfM
- ZbQUyDB6d1hemZlBEdZkohNwUbycuWQuOCZnA+1yOuSNU7ucP0j19ZscIOg8+G4NuzTU
- REkapdV68Fplq6VaElHzFhyWa1PIXdFawAfc4sVl+IMPgVBbOChB/rLpc5mCcLqEneoT
- rZY3RbntcrnFWL7Vk54NseDG+0/zNgkQ8auTJsHzJ03+T7WeJpjTn6bHDScgJXGTT4Uu
- GCKw==
+ bh=D23dj2T324O3GGxalmLgdyenzdMnRbpccgTLg/T9/aw=;
+ b=ERIDBqFzmZ17pH8SpnAgGNi8hOYLx4icONDj6FjNkH8a9Lu86H+sb5p714/R3MmdMI
+ tTUH/MCx004PSNJ3wsEPn89NsUoV8J/4Sh/boI3gwrhoBqepIm8kZh55/bJ+WzXUB3ra
+ kAR0/XJCG7N+4vOUVvIq4mJ74GmNh7SyGInoY8frLjvAK+SBJloJjBpVhHidlL00fBIJ
+ vw4XZkoXdP5AXC4BO4WeMEoOHqeThtvd8nyY6BWlm+IIEsKqm+89HhIXMJTSm9e9cH+a
+ Nx0FFYvs1LRIVBZzPsr2nrq+yNk4SHW+/91JRl2ldY56z3sY6pVa+6QRc8K+mJyY8aeq
+ ngzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710012274; x=1710617074;
+ d=1e100.net; s=20230601; t=1710012280; x=1710617080;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=b9ZBcWCorweFf+2JD84jMS2xk8ntDrtFmiyqB/cRtXw=;
- b=kvoQmQMTPbNY7QkTLeW/xPCbc90aLmP82actt7vVJsCJsXo+fNvnyZ3OGyV3duZevQ
- YXGxUuyJ2PcPrBM90LSjPVp42pCqQYzlzrHLomfUOrgoJFlt9eHBUh77ttNEdBrER8+X
- U68XY6QPhfM7u6YxHdvvvn+MoYr4d11IvuS0z1Jy4/3fB3cn2yrf3R71T4T3AeAocCJR
- jwwvAllwWC7wOP3tTh3o9V9T86ELub53edSTLWPIR2gkygakZl0vd7N9MtYc1ERL2i+v
- PfWN8TjFGfRhGDEtC/WVoFY9F2Iz/wOp+ARRR2BgXWPr+2v7R3ivcv77AyjrWYHP+ThV
- YUzA==
-X-Gm-Message-State: AOJu0YwJleDyk2QAw5LZQwebxTqFZTUQSmQDpTTSfRIVnZm82emtKELv
- EnZXejH1wk8IdQ0dxPjpD+YIf3LbucciW8HTQL+RXpcTZYId/Duqo0E4NvUZ3dtx8kGXbuNf0Un
- W
-X-Google-Smtp-Source: AGHT+IHgEf1VoGYbP8PX+uBQFBOrcqcJuu3+uWJK8B0gZBS4Ndlr4ufNHMEDWth1nZW5Ltal/PnjAQ==
-X-Received: by 2002:a17:906:9c8e:b0:a43:b50d:1074 with SMTP id
- fj14-20020a1709069c8e00b00a43b50d1074mr1601200ejc.23.1710012273937; 
- Sat, 09 Mar 2024 11:24:33 -0800 (PST)
+ bh=D23dj2T324O3GGxalmLgdyenzdMnRbpccgTLg/T9/aw=;
+ b=ntDEez+tGl/7z4ft651jjySZary/rgeuo5oOR/7zPKu9ol1WR+IIirkRNBH/+ZNF/v
+ X0zkTD5dU4eTiwvDJoJjJEnMpKsBraLPAtZtfEUYwDvJsNOw2UM/Ag2SZCnIjg1AaOHp
+ 4ZEB2tgwzxoakpqLSSNHblDdTVOFYKpDO88PmJGaJLbX+fxV+vxHwjFQ7r2ySMO6E04s
+ yXwho4Te/nMq1DVQ/LOIeCPkEi4ZEKrn7yf/pqdd72RjdtD8AiceNJDkg9x5VpePTAkj
+ lX4FwlMppS76l7rx0gs2h7mI41dJb/SZ75pqE2f+0x5UfSospROZZRN8gLtL+b7TFONx
+ 0vhA==
+X-Gm-Message-State: AOJu0YyqL5b6+tKO1AcFoSvpwopsaJaaHwclmC2nIm4F97pLv7eh0fBK
+ ozCyGuHQXAOi53mK5q3iSlW991xDvor4kX4nBLrDdAI/joHCj5iOcZFwBgjboFsq8vGerfCyHZR
+ +
+X-Google-Smtp-Source: AGHT+IFA50J8VdobEnvhTgONujOFAQqMGumZmVsqPZm2tigiFmqnxLyrWPJ3fo4dD/omaGVJjcrkYQ==
+X-Received: by 2002:a05:6512:a96:b0:513:1cc7:ae4b with SMTP id
+ m22-20020a0565120a9600b005131cc7ae4bmr2003705lfu.4.1710012280216; 
+ Sat, 09 Mar 2024 11:24:40 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.237])
  by smtp.gmail.com with ESMTPSA id
- gh16-20020a170906e09000b00a45380dfd09sm1168535ejb.105.2024.03.09.11.24.32
+ rn16-20020a170906d93000b00a441a7a75b5sm1174678ejb.209.2024.03.09.11.24.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 09 Mar 2024 11:24:33 -0800 (PST)
+ Sat, 09 Mar 2024 11:24:39 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
+ Eric Auger <eric.auger@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Bui Quang Minh <minhquangbui99@gmail.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PULL 23/43] hw/intc/apic: fix memory leak
-Date: Sat,  9 Mar 2024 20:21:50 +0100
-Message-ID: <20240309192213.23420-24-philmd@linaro.org>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PULL 24/43] qdev: Add a granule_mode property
+Date: Sat,  9 Mar 2024 20:21:51 +0100
+Message-ID: <20240309192213.23420-25-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240309192213.23420-1-philmd@linaro.org>
 References: <20240309192213.23420-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,62 +99,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Eric Auger <eric.auger@redhat.com>
 
-deliver_bitmask is allocated on the heap in apic_deliver(), but there
-are many paths in the function that return before the corresponding
-g_free() is reached.  Fix this by switching to g_autofree and, while at
-it, also switch to g_new.  Do the same in apic_deliver_irq() as well
-for consistency.
+Introduce a new enum type property allowing to set an
+IOMMU granule. Values are 4k, 8k, 16k, 64k and host.
+This latter indicates the vIOMMU granule will match
+the host page size.
 
-Fixes: b5ee0468e9d ("apic: add support for x2APIC mode", 2024-02-14)
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20240304224133.267640-1-pbonzini@redhat.com>
+A subsequent patch will add such a property to the
+virtio-iommu device.
+
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240227165730.14099-2-eric.auger@redhat.com>
 ---
- hw/intc/apic.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ qapi/virtio.json                    | 18 ++++++++++++++++++
+ include/hw/qdev-properties-system.h |  3 +++
+ hw/core/qdev-properties-system.c    | 14 ++++++++++++++
+ 3 files changed, 35 insertions(+)
 
-diff --git a/hw/intc/apic.c b/hw/intc/apic.c
-index 1d887d66b8..4186c57b34 100644
---- a/hw/intc/apic.c
-+++ b/hw/intc/apic.c
-@@ -291,14 +291,13 @@ static void apic_deliver_irq(uint32_t dest, uint8_t dest_mode,
-                              uint8_t delivery_mode, uint8_t vector_num,
-                              uint8_t trigger_mode)
- {
--    uint32_t *deliver_bitmask = g_malloc(max_apic_words * sizeof(uint32_t));
-+    g_autofree uint32_t *deliver_bitmask = g_new(uint32_t, max_apic_words);
+diff --git a/qapi/virtio.json b/qapi/virtio.json
+index a79013fe89..95745fdfd7 100644
+--- a/qapi/virtio.json
++++ b/qapi/virtio.json
+@@ -957,3 +957,21 @@
  
-     trace_apic_deliver_irq(dest, dest_mode, delivery_mode, vector_num,
-                            trigger_mode);
+ { 'struct': 'DummyVirtioForceArrays',
+   'data': { 'unused-iothread-vq-mapping': ['IOThreadVirtQueueMapping'] } }
++
++##
++# @GranuleMode:
++#
++# @4k: granule page size of 4KiB
++#
++# @8k: granule page size of 8KiB
++#
++# @16k: granule page size of 16KiB
++#
++# @64k: granule page size of 64KiB
++#
++# @host: granule matches the host page size
++#
++# Since: 9.0
++##
++{ 'enum': 'GranuleMode',
++  'data': [ '4k', '8k', '16k', '64k', 'host' ] }
+diff --git a/include/hw/qdev-properties-system.h b/include/hw/qdev-properties-system.h
+index 06c359c190..626be87dd3 100644
+--- a/include/hw/qdev-properties-system.h
++++ b/include/hw/qdev-properties-system.h
+@@ -8,6 +8,7 @@ extern const PropertyInfo qdev_prop_macaddr;
+ extern const PropertyInfo qdev_prop_reserved_region;
+ extern const PropertyInfo qdev_prop_multifd_compression;
+ extern const PropertyInfo qdev_prop_mig_mode;
++extern const PropertyInfo qdev_prop_granule_mode;
+ extern const PropertyInfo qdev_prop_losttickpolicy;
+ extern const PropertyInfo qdev_prop_blockdev_on_error;
+ extern const PropertyInfo qdev_prop_bios_chs_trans;
+@@ -47,6 +48,8 @@ extern const PropertyInfo qdev_prop_iothread_vq_mapping_list;
+ #define DEFINE_PROP_MIG_MODE(_n, _s, _f, _d) \
+     DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_mig_mode, \
+                        MigMode)
++#define DEFINE_PROP_GRANULE_MODE(_n, _s, _f, _d) \
++    DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_granule_mode, GranuleMode)
+ #define DEFINE_PROP_LOSTTICKPOLICY(_n, _s, _f, _d) \
+     DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_losttickpolicy, \
+                         LostTickPolicy)
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index 1a396521d5..b45e90edb2 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -679,6 +679,20 @@ const PropertyInfo qdev_prop_mig_mode = {
+     .set_default_value = qdev_propinfo_set_default_value_enum,
+ };
  
-     apic_get_delivery_bitmask(deliver_bitmask, dest, dest_mode);
-     apic_bus_deliver(deliver_bitmask, delivery_mode, vector_num, trigger_mode);
--    g_free(deliver_bitmask);
- }
++/* --- GranuleMode --- */
++
++QEMU_BUILD_BUG_ON(sizeof(GranuleMode) != sizeof(int));
++
++const PropertyInfo qdev_prop_granule_mode = {
++    .name = "GranuleMode",
++    .description = "granule_mode values, "
++                   "4k, 8k, 16k, 64k, host",
++    .enum_table = &GranuleMode_lookup,
++    .get = qdev_propinfo_get_enum,
++    .set = qdev_propinfo_set_enum,
++    .set_default_value = qdev_propinfo_set_default_value_enum,
++};
++
+ /* --- Reserved Region --- */
  
- bool is_x2apic_mode(DeviceState *dev)
-@@ -662,7 +661,7 @@ static void apic_deliver(DeviceState *dev, uint32_t dest, uint8_t dest_mode,
-     APICCommonState *s = APIC(dev);
-     APICCommonState *apic_iter;
-     uint32_t deliver_bitmask_size = max_apic_words * sizeof(uint32_t);
--    uint32_t *deliver_bitmask = g_malloc(deliver_bitmask_size);
-+    g_autofree uint32_t *deliver_bitmask = g_new(uint32_t, max_apic_words);
-     uint32_t current_apic_id;
- 
-     if (is_x2apic_mode(dev)) {
-@@ -708,7 +707,6 @@ static void apic_deliver(DeviceState *dev, uint32_t dest, uint8_t dest_mode,
-     }
- 
-     apic_bus_deliver(deliver_bitmask, delivery_mode, vector_num, trigger_mode);
--    g_free(deliver_bitmask);
- }
- 
- static bool apic_check_pic(APICCommonState *s)
+ /*
 -- 
 2.41.0
 
