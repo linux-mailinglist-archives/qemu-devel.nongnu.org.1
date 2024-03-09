@@ -2,35 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 528B5877218
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 16:59:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C676877214
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 16:58:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riz54-0007Ai-IK; Sat, 09 Mar 2024 10:57:51 -0500
+	id 1riz51-00079S-Fk; Sat, 09 Mar 2024 10:57:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1riz4y-00079E-O7; Sat, 09 Mar 2024 10:57:44 -0500
+ id 1riz4y-000793-8D; Sat, 09 Mar 2024 10:57:44 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1riz4w-0004Fp-EF; Sat, 09 Mar 2024 10:57:44 -0500
+ id 1riz4w-0004Fq-D7; Sat, 09 Mar 2024 10:57:44 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A5DC454525;
- Sat,  9 Mar 2024 18:58:26 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 148EC54526;
+ Sat,  9 Mar 2024 18:58:28 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 02976944BA;
- Sat,  9 Mar 2024 18:57:29 +0300 (MSK)
-Received: (nullmailer pid 1694643 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 7613B944BB;
+ Sat,  9 Mar 2024 18:57:31 +0300 (MSK)
+Received: (nullmailer pid 1694647 invoked by uid 1000);
  Sat, 09 Mar 2024 15:57:29 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
-Subject: [PULL 00/11] Trivial patches for 2024-03-09
-Date: Sat,  9 Mar 2024 18:57:18 +0300
-Message-Id: <20240309155729.1694607-1-mjt@tls.msk.ru>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-trivial@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 01/11] replay: Improve error messages about configuration
+ conflicts
+Date: Sat,  9 Mar 2024 18:57:19 +0300
+Message-Id: <20240309155729.1694607-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240309155729.1694607-1-mjt@tls.msk.ru>
+References: <20240309155729.1694607-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -57,57 +61,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 84644ac1b0f80d41b8a2f66547b83b2ad4a98576:
+From: Markus Armbruster <armbru@redhat.com>
 
-  Merge tag 'darwin-20240305' of https://github.com/philmd/qemu into staging (2024-03-08 18:19:25 +0000)
+Improve
 
-are available in the Git repository at:
+   Record/replay feature is not supported for '-rtc base=localtime'
+   Record/replay feature is not supported for 'smp'
+   Record/replay feature is not supported for '-snapshot'
 
-  https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
+to
 
-for you to fetch changes up to d65f1ed7de1559534d0a1fabca5bdd81c594c7ca:
+   Record/replay is not supported with -rtc base=localtime
+   Record/replay is not supported with multiple CPUs
+   Record/replay is not supported with -snapshot
 
-  docs/acpi/bits: add some clarity and details while also improving formating (2024-03-09 18:56:37 +0300)
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
+ replay/replay.c | 2 +-
+ system/vl.c     | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-----------------------------------------------------------------
-trivial patches for 2024-03-09
+diff --git a/replay/replay.c b/replay/replay.c
+index 3fd241a4fc..a2c576c16e 100644
+--- a/replay/replay.c
++++ b/replay/replay.c
+@@ -511,7 +511,7 @@ void replay_add_blocker(const char *feature)
+ {
+     Error *reason = NULL;
+ 
+-    error_setg(&reason, "Record/replay feature is not supported for '%s'",
++    error_setg(&reason, "Record/replay is not supported with %s",
+                feature);
+     replay_blockers = g_slist_prepend(replay_blockers, reason);
+ }
+diff --git a/system/vl.c b/system/vl.c
+index 48aae6e053..70f4cece7f 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -1932,7 +1932,7 @@ static void qemu_apply_machine_options(QDict *qdict)
+     }
+ 
+     if (current_machine->smp.cpus > 1) {
+-        replay_add_blocker("smp");
++        replay_add_blocker("multiple CPUs");
+     }
+ }
+ 
+-- 
+2.39.2
 
-----------------------------------------------------------------
-Ani Sinha (1):
-      docs/acpi/bits: add some clarity and details while also improving formating
-
-BALATON Zoltan (1):
-      hw/scsi/lsi53c895a: Fix typo in comment
-
-Frediano Ziglio (1):
-      hw/vfio/pci.c: Make some structure static
-
-Markus Armbruster (4):
-      replay: Improve error messages about configuration conflicts
-      char: Slightly better error reporting when chardev is in use
-      blockdev: Fix block_resize error reporting for op blockers
-      qerror: QERR_DEVICE_IN_USE is no longer used, drop
-
-Michael Tokarev (1):
-      make-release: switch to .xz format by default
-
-Thomas Huth (3):
-      hw/cxl/cxl-cdat: Fix type of buf in ct3_load_cdat()
-      hw/pci-bridge/cxl_upstream: Fix problem with g_steal_pointer()
-      hw/mem/cxl_type3: Fix problem with g_steal_pointer()
-
- blockdev.c                   |  3 +--
- chardev/char-fe.c            | 13 ++++++-----
- docs/devel/acpi-bits.rst     | 55 +++++++++++++++++++++++++++++++-------------
- hw/cxl/cxl-cdat.c            |  4 ++--
- hw/mem/cxl_type3.c           | 24 +++++++++----------
- hw/pci-bridge/cxl_upstream.c |  8 +++----
- hw/scsi/lsi53c895a.c         |  2 +-
- hw/vfio/pci.c                |  4 ++--
- include/hw/cxl/cxl_cdat.h    | 17 +++++++++-----
- include/qapi/qmp/qerror.h    |  3 ---
- replay/replay.c              |  2 +-
- scripts/make-release         |  2 +-
- system/vl.c                  |  2 +-
- 13 files changed, 82 insertions(+), 57 deletions(-)
 
