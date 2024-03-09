@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE108773EA
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 21:45:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FA3E8773EC
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 21:45:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj3Y2-0005eY-AF; Sat, 09 Mar 2024 15:44:03 -0500
+	id 1rj3Y6-0005fj-5H; Sat, 09 Mar 2024 15:44:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rj3Xy-0005eO-Ax
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 15:43:58 -0500
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1rj3Y1-0005ek-3n
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 15:44:01 -0500
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rj3Xw-0006RA-LU
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 15:43:58 -0500
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-6e6381df003so2807836b3a.0
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 12:43:56 -0800 (PST)
+ id 1rj3Xz-0006T3-M9
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 15:44:00 -0500
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6e6381df003so2807855b3a.0
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 12:43:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1710017034; x=1710621834; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=yXG2qEtw2Rl37dBuBZeUGOObNWpaVNNq+0Xav4YyjZ4=;
- b=nI+3dhNyCeAvOk6oxQvMQyu3MzwZNa0dEAyNIGsotOOLjuMdodL/eze/eTdsxjLodX
- yvko8afLnx7lPHWyXw3B1mdZjcYYpR1MgYUp7FaCsz3Oief6YjpkSpzzpmjyn+cBi7Qo
- U1zMJC7Ib77AQV7d8ySUvegjoUEkHzirZZX/EKkbZtlQCm3wTfO2WTLfnDckV7d1PtQT
- NFIUXGtUyL/qsSxzBCvxx8cWEqAIAe6H9Tyx5SJh8kO8kRvNWPBYyWj8kQG55Y98UHhP
- ctY8I3Vbh/+sS9/mKI7xOAxM3EVBo3ws0KYevCrtTVgrChGCGhI7O0l+Vx89Tvveqp2q
- nwAw==
+ d=ventanamicro.com; s=google; t=1710017037; x=1710621837; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8PUZYN/jxC55WgIbgr/YDIPnxwzEfC4uN3+8U/WL+Ts=;
+ b=fp0DPaMDZTOZUIy/5skvHEj7oFUvvOszbR1XlVnc4QX5W7Z+ZqCYLP+QI3hsaj4f2t
+ wfBgRq3FLY/S3a6oJqmmdBzGCGCDBtvn4iFGdTy296+7UNamuTe79gLaYXSkW4YF4R/0
+ DhHK+zo2ibl8TfkOFzNGQdgXvfV9KWAdfQHpjj30vNYrmvnShw9LMutX0qzWLHFbNo6P
+ iCfSRk1sEX8ZyfpoDXNPBKO+HXm79sbFkdZNFA7LxbldzaezyVx8UnKIXaLb/F73iNem
+ z1c46HQZkWiMGESWkaynNZ8aeYE/9CamZkyhsrkFOgQSF4gj06Xai/gMhhdEys4fbif8
+ sKwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710017034; x=1710621834;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=yXG2qEtw2Rl37dBuBZeUGOObNWpaVNNq+0Xav4YyjZ4=;
- b=Dez8Zwywk+AWlOyrjRzzQbvgZFXCmc+y1azANPxPw9m6pdFpZwjNmq63ZCBBgM49NU
- 5/YA0tGbQ88xX8fkvsAOydWOpZhElPKsjMkldhHqbNZjGgLaEk0BBYMcLGBfld/Uvf7D
- yNUHVieeR75nb2lSrk1Kf+ADa76N+rhsyQ+8HDQqi055VuPMB134tIpUdosBKlTWZNGf
- WH0yWBDnQHu+WI9Y/8Eu3aGcAT0HFj742++LGnBSI52BLvqyp58omQmylehXYdjLTHD4
- PDVtTGaQZINmEi1OBJnbJ8xeTFdnJKIZBr5rklDNnPHsatoU06vTBpbicPJSA+8tlJ2D
- n5Yw==
-X-Gm-Message-State: AOJu0YyajLrv10XU/Cg7wVDJ8+kZqVc6r1VJFxM/1GCGo/01LzJvwrP2
- 6ZkbsY0AyIxgFW6H/zWdXrvuhF99ULVV2kfU2ksq2dv1cLzUFY2DghN2namRJVeGYe37Wbg5xez
- a
-X-Google-Smtp-Source: AGHT+IEPxVhIUPOshEZpB9bViptmw1O6Fr0/gE4/9ngfLs+QSF1AwQOslCpYdJpYzKU1zyM7CC8GTg==
-X-Received: by 2002:a05:6a00:850:b0:6e4:8d81:50b with SMTP id
- q16-20020a056a00085000b006e48d81050bmr3475824pfk.31.1710017034459; 
- Sat, 09 Mar 2024 12:43:54 -0800 (PST)
+ d=1e100.net; s=20230601; t=1710017037; x=1710621837;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8PUZYN/jxC55WgIbgr/YDIPnxwzEfC4uN3+8U/WL+Ts=;
+ b=XUHKFOFVAfRBLHrHNg97yTwmSpsUvtePqoW8PQ+BwoM6cPKwRngeYPqrF6jA+Yr+1g
+ kcF+2sdgRzN3wT0bY//Sr7wBAMHQxPkeWe4h33kqlaYp876Q1hPHYSrdL0m0sf1Bxs8w
+ MjlAX8lXPnquwi/tb/bfsShRb1rt+m6EnX5bqFr/YRqx9ka6D5Xa88KL3EKPkukqgRyx
+ 2asWMfaNty37R8JDloH5IYv6vUdc8faK3GqLBhGxyn9Vt4qgWcm8+hqIcttYWwf3BIjA
+ AU3s3NY+pNfQeX4adhte7/bUBpmO5RQ61Zy8C+lBeRgMq0xt6rDDI32e0B/Q1k1hC/1W
+ y6yg==
+X-Gm-Message-State: AOJu0YxCW73aWv7QdAMTEZxugngrS8wnwx//HSVwwX7jebLC5skiQOAu
+ /jGo5alvH/6KMny6NylmO2Sq1aUgwvxbDpjn4TP13LoToRU3+kK4bcqUObhHl+hymYYtBhGB04G
+ G
+X-Google-Smtp-Source: AGHT+IGdzGvX7mrERarF76JhhcsgAy8gKj/MPyUvYbkJWErAuMmz7huIIdn+UAkIPc3UJcgL3hUeew==
+X-Received: by 2002:a05:6a00:4f8d:b0:6e6:412d:1cd2 with SMTP id
+ ld13-20020a056a004f8d00b006e6412d1cd2mr4085586pfb.14.1710017037753; 
+ Sat, 09 Mar 2024 12:43:57 -0800 (PST)
 Received: from grind.. ([177.94.15.159]) by smtp.gmail.com with ESMTPSA id
- ey15-20020a056a0038cf00b006e647716b6esm1656270pfb.149.2024.03.09.12.43.51
+ ey15-20020a056a0038cf00b006e647716b6esm1656270pfb.149.2024.03.09.12.43.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 09 Mar 2024 12:43:53 -0800 (PST)
+ Sat, 09 Mar 2024 12:43:57 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  richard.henderson@linaro.org, philmd@linaro.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v9 00/10] riscv: set vstart_eq_zero on mark_vs_dirty
-Date: Sat,  9 Mar 2024 17:43:35 -0300
-Message-ID: <20240309204347.174251-1-dbarboza@ventanamicro.com>
+Subject: [PATCH v9 01/10] target/riscv/vector_helper.c: set vstart = 0 in
+ GEN_VEXT_VSLIDEUP_VX()
+Date: Sat,  9 Mar 2024 17:43:36 -0300
+Message-ID: <20240309204347.174251-2-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240309204347.174251-1-dbarboza@ventanamicro.com>
+References: <20240309204347.174251-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,50 +95,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+The helper isn't setting env->vstart = 0 after its execution, as it is
+expected from every vector instruction that completes successfully.
 
-This new version has changes suggested by Richard in patches 2 and 6.
-Other patches are unchanged.
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ target/riscv/vector_helper.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Series based on alistair/riscv-to-apply.next.
-
-Patches missing review: 2, 3, 4, 5, 6.
-
-Changes from v8:
-- patch 2:
-  - do an early exit if vstart >= vl in vext_ldst_stride(), vext_ldst_us()
-    and vext_ldst_index() if vstart >= vl
-- patch 6:
-  - vec_set_vstart_zero() removed
-  - set cpu_vstart directly using tcg_gen_movi_tl()
-- v8 link: https://lore.kernel.org/qemu-riscv/20240308215402.117405-1-dbarboza@ventanamicro.com/
-
-
-Daniel Henrique Barboza (9):
-  target/riscv/vector_helper.c: set vstart = 0 in GEN_VEXT_VSLIDEUP_VX()
-  target/riscv: handle vstart >= vl in vext_set_tail_elems_1s()
-  target/riscv/vector_helper.c: do vstart=0 after updating tail
-  target/riscv/vector_helper.c: update tail with
-    vext_set_tail_elems_1s()
-  target/riscv: use vext_set_tail_elems_1s() in vcrypto insns
-  trans_rvv.c.inc: set vstart = 0 in int scalar move insns
-  target/riscv: remove 'over' brconds from vector trans
-  trans_rvv.c.inc: remove redundant mark_vs_dirty() calls
-  target/riscv/vector_helper.c: optimize loops in ldst helpers
-
-Ivan Klokov (1):
-  target/riscv: Clear vstart_qe_zero flag
-
- target/riscv/insn_trans/trans_rvbf16.c.inc |  18 +-
- target/riscv/insn_trans/trans_rvv.c.inc    | 198 +++++----------------
- target/riscv/insn_trans/trans_rvvk.c.inc   |  30 +---
- target/riscv/translate.c                   |   6 +
- target/riscv/vcrypto_helper.c              |  63 +++----
- target/riscv/vector_helper.c               | 192 +++++++++-----------
- target/riscv/vector_internals.c            |  29 +++
- target/riscv/vector_internals.h            |   4 +
- 8 files changed, 207 insertions(+), 333 deletions(-)
-
+diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+index fe56c007d5..ca79571ae2 100644
+--- a/target/riscv/vector_helper.c
++++ b/target/riscv/vector_helper.c
+@@ -4781,6 +4781,7 @@ void HELPER(NAME)(void *vd, void *v0, target_ulong s1, void *vs2,         \
+         }                                                                 \
+         *((ETYPE *)vd + H(i)) = *((ETYPE *)vs2 + H(i - offset));          \
+     }                                                                     \
++    env->vstart = 0;                                                      \
+     /* set tail elements to 1s */                                         \
+     vext_set_elems_1s(vd, vta, vl * esz, total_elems * esz);              \
+ }
 -- 
 2.43.2
 
