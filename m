@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E139C877399
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:24:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D0F987738E
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:23:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj2H4-00008M-R3; Sat, 09 Mar 2024 14:22:26 -0500
+	id 1rj2HB-0000Ap-QG; Sat, 09 Mar 2024 14:22:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2H2-00007p-P0
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:22:24 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2H9-0000AM-SN
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:22:31 -0500
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2H1-0002R1-69
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:22:24 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-a45f257b81fso194791266b.0
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:22:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2H7-0002S4-NM
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:22:31 -0500
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2d094bc2244so45046661fa.1
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:22:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710012141; x=1710616941; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710012147; x=1710616947; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AJ+tmUmaxk1VpVXptMjtzEM2Kqe3+MxYTD28YtS2upg=;
- b=fvCZl1qzhpAzWfi5gSdtuZaioWkP82AO+e2X1JVsKWcbp5Syc3VSbo3NtQzv6XkRFM
- CG0K4Mv5xVwR4kePOt+oBVAzUfjPFk/Qx52DdJNGEQUaMLbMHW7e349pVTJjlb1O1q0+
- eDYpMmn1rdh40T/e1o9CilmGi+80uV47xGcdDrw7bw8EC6/quSvWZBFncK4OY7SGdvYi
- wjmHtsfV/ZYbXlp2rhHk+5Tnqjb1hLnEb3iONv4GMMQLuc/D5IZCreRA60kJ5Q4Eunc8
- VqxWkhRQ4COQP6qB6CgPO8iRybNyv/3a5JJKASycc/5n2UY5FSWDIvy4nzWhW+BdArx9
- QPyg==
+ bh=9v68VdV/ZTxTWOB82N2ZE0IksCha8mce59bQC7Dz3io=;
+ b=y9EJGYm5tiwU7GvILWKfd+GRYVi0A0oTnRfXE26Mgv9cV3HJXpAKsg9vPuA2c18aYk
+ YW9drXOHrP20ue/Vs7Yd6RWs0GOgAo79zy+HfTJpP6Qav29a6YsundROXXvP9VFzhJNG
+ WoZl4BvgspQ0l4JP+ArxuJ6Fww7nJy7vBkUIGBqESHfqnCenX4sfiJfFe9HtzeaTV6Bs
+ g/iYPNA7tixh+y2qjejPYXGmdIyYKwUHIlKoxYmAZDnUWuR5yj/6VAh+qwlWnh7Pjgx6
+ DPO+qtmgCf3tiw/VYfWi88eay5P2kvfD/btzeIBoX4YoB9r9LGIU3yQ3NLl738/JIiX+
+ vdPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710012141; x=1710616941;
+ d=1e100.net; s=20230601; t=1710012147; x=1710616947;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AJ+tmUmaxk1VpVXptMjtzEM2Kqe3+MxYTD28YtS2upg=;
- b=XnlGAGvk5x+QytgnJXNEWpWgR5TokQNVF+hm2DmSdyAfRJsZO5bWfAZ0+tvLhbCwsJ
- FUIm57PwTpTJzoEOGIreUK/i+W/1sj1QRHU4dRzO0E/cG/DMiEoAE9FiMbSBC+wwOclM
- Gce8P4A35H9YIgLOBTRGgwTbG4p8fkQwoYLKtD8GQYRd4erK/EfJWNbAIC0W+YS/Q3b+
- umWsaI/il/bqtVjtPnAvYcjspnwUJLXAU7vt8DLqfjA6Hq3yfmhTyJewIr9Fa98O4lfZ
- 2tsMbplyRRy+ZOqYL/N4Lvdnyr+Mw9EyLj9Edm17rbTwoCy+JLmbwWjjdANSlWAvCd1o
- 1StA==
-X-Gm-Message-State: AOJu0YzVz21vvA+JZ9JxoT7ZH3eYX9mDjeqvFG2FiZlri3uYManocttk
- slfCLFFYUm4VJqG+wHqm7tJ4RrZ8kjMCtHr5QbLupnFsGmor81atuML4Jdqn6f4OxFgH6/DjcrX
- P
-X-Google-Smtp-Source: AGHT+IE66itJxflVZocCe80286+eXvG5IMQn5qkdouVWUYXYnbCypWRxLwZmJyuxo1eR2ZHoySbZqg==
-X-Received: by 2002:a17:907:a4c1:b0:a46:172c:e9cf with SMTP id
- vq1-20020a170907a4c100b00a46172ce9cfmr223212ejc.61.1710012141400; 
- Sat, 09 Mar 2024 11:22:21 -0800 (PST)
+ bh=9v68VdV/ZTxTWOB82N2ZE0IksCha8mce59bQC7Dz3io=;
+ b=uX/Mn9bRKf6+RhB4qDJXBP/yz5ZuNhuzISWYvSKfsLtJolKzNM3Jthg/IIEY+Rw/NT
+ +QM91AzS6h1v9kSRpFaO5thKoM2h3l507d//exjXFx4NojIO7SE6jKsZ1XFctDQHXoXP
+ XG/rnjrn1Aly6lKgCmcI1IAKWdvG1t3wbXFM/tirpyyFxa0ZJ9CG5vFwsaTvZoB205Pd
+ QkU6FwEgAbXmdsnJTApB8OgoWbGNvQ7zOehWCAeRyg9sLuORdis/ohX0QUxpLILUNXSQ
+ Vdvzcz0/LhtH4UbG+9m2tm5rUf9uIvvOa095lhgemcF4K8z8QYc0zWR+xrIMB+Yl8UhB
+ VIkA==
+X-Gm-Message-State: AOJu0YzegXNRd2f/K0W2cMGRUl+Ii9+wd7eXclYVOfdqpQifcvJWdK+A
+ JAEj84Kd54172EGz6RhsWDpY69ZQ3cojNC6jOIa5GI/HRfUlAn4ikkQFYkpgDAukrCUop+xWlDX
+ Q
+X-Google-Smtp-Source: AGHT+IEPUeAq3OvXQ6d5BNC7LVFINL5jOukf6dFmDeF5FkUQjdJ+zjK8mwm9i8o+ivn3j1gVM1bH4g==
+X-Received: by 2002:ac2:43d2:0:b0:513:486a:57af with SMTP id
+ u18-20020ac243d2000000b00513486a57afmr1542144lfl.7.1710012147310; 
+ Sat, 09 Mar 2024 11:22:27 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.237])
  by smtp.gmail.com with ESMTPSA id
- qk2-20020a170906d9c200b00a3fb9f1f10csm1162016ejb.161.2024.03.09.11.22.19
+ h27-20020a170906399b00b00a3ce60b003asm1185569eje.176.2024.03.09.11.22.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 09 Mar 2024 11:22:21 -0800 (PST)
+ Sat, 09 Mar 2024 11:22:26 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 01/43] hw/i386: Rename kvmvapic.c -> vapic.c
-Date: Sat,  9 Mar 2024 20:21:28 +0100
-Message-ID: <20240309192213.23420-2-philmd@linaro.org>
+ David Woodhouse <dwmw@amazon.co.uk>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ xen-devel@lists.xenproject.org
+Subject: [PULL 02/43] sysemu/xen: Forbid using Xen headers in user emulation
+Date: Sat,  9 Mar 2024 20:21:29 +0100
+Message-ID: <20240309192213.23420-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240309192213.23420-1-philmd@linaro.org>
 References: <20240309192213.23420-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,57 +97,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vAPIC isn't KVM specific, so having its name prefixed 'kvm'
-is misleading. Rename it simply 'vapic'. Rename the single
-function prefixed 'kvm'.
+Xen is a system specific accelerator, it makes no sense
+to include its headers in user emulation.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230905145159.7898-1-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+Message-Id: <20231114143816.71079-3-philmd@linaro.org>
 ---
- hw/i386/{kvmvapic.c => vapic.c} | 5 ++---
- hw/i386/meson.build             | 2 +-
- 2 files changed, 3 insertions(+), 4 deletions(-)
- rename hw/i386/{kvmvapic.c => vapic.c} (99%)
+ include/sysemu/xen.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/i386/kvmvapic.c b/hw/i386/vapic.c
-similarity index 99%
-rename from hw/i386/kvmvapic.c
-rename to hw/i386/vapic.c
-index 61a65ef2ab..f5b1db7e5f 100644
---- a/hw/i386/kvmvapic.c
-+++ b/hw/i386/vapic.c
-@@ -747,8 +747,7 @@ static void do_vapic_enable(CPUState *cs, run_on_cpu_data data)
-     s->state = VAPIC_ACTIVE;
- }
+diff --git a/include/sysemu/xen.h b/include/sysemu/xen.h
+index bc13ad5692..a9f591f26d 100644
+--- a/include/sysemu/xen.h
++++ b/include/sysemu/xen.h
+@@ -10,6 +10,10 @@
+ #ifndef SYSEMU_XEN_H
+ #define SYSEMU_XEN_H
  
--static void kvmvapic_vm_state_change(void *opaque, bool running,
--                                     RunState state)
-+static void vapic_vm_state_change(void *opaque, bool running, RunState state)
++#ifdef CONFIG_USER_ONLY
++#error Cannot include sysemu/xen.h from user emulation
++#endif
++
+ #include "exec/cpu-common.h"
+ 
+ #ifdef NEED_CPU_H
+@@ -26,16 +30,13 @@ extern bool xen_allowed;
+ 
+ #define xen_enabled()           (xen_allowed)
+ 
+-#ifndef CONFIG_USER_ONLY
+ void xen_hvm_modified_memory(ram_addr_t start, ram_addr_t length);
+ void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size,
+                    struct MemoryRegion *mr, Error **errp);
+-#endif
+ 
+ #else /* !CONFIG_XEN_IS_POSSIBLE */
+ 
+ #define xen_enabled() 0
+-#ifndef CONFIG_USER_ONLY
+ static inline void xen_hvm_modified_memory(ram_addr_t start, ram_addr_t length)
  {
-     MachineState *ms = MACHINE(qdev_get_machine());
-     VAPICROMState *s = opaque;
-@@ -793,7 +792,7 @@ static int vapic_post_load(void *opaque, int version_id)
- 
-     if (!s->vmsentry) {
-         s->vmsentry =
--            qemu_add_vm_change_state_handler(kvmvapic_vm_state_change, s);
-+            qemu_add_vm_change_state_handler(vapic_vm_state_change, s);
-     }
-     return 0;
+     /* nothing */
+@@ -45,7 +46,6 @@ static inline void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size,
+ {
+     g_assert_not_reached();
  }
-diff --git a/hw/i386/meson.build b/hw/i386/meson.build
-index b9c1ca39cb..d8b70ef3e9 100644
---- a/hw/i386/meson.build
-+++ b/hw/i386/meson.build
-@@ -1,7 +1,7 @@
- i386_ss = ss.source_set()
- i386_ss.add(files(
-   'fw_cfg.c',
--  'kvmvapic.c',
-+  'vapic.c',
-   'e820_memory_layout.c',
-   'multiboot.c',
-   'x86.c',
+-#endif
+ 
+ #endif /* CONFIG_XEN_IS_POSSIBLE */
+ 
 -- 
 2.41.0
 
