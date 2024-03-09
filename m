@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 785F3877216
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 16:58:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13B6287721E
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 17:00:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riz5K-0007Mp-B1; Sat, 09 Mar 2024 10:58:06 -0500
+	id 1riz5P-0007RS-EA; Sat, 09 Mar 2024 10:58:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1riz5B-0007LT-Qy; Sat, 09 Mar 2024 10:57:57 -0500
+ id 1riz5E-0007Lq-MV; Sat, 09 Mar 2024 10:58:01 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1riz59-0004IL-3p; Sat, 09 Mar 2024 10:57:56 -0500
+ id 1riz5C-0004Iu-JR; Sat, 09 Mar 2024 10:58:00 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 53DB35452D;
- Sat,  9 Mar 2024 18:58:37 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 8682F54531;
+ Sat,  9 Mar 2024 18:58:38 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 8A922944C2;
- Sat,  9 Mar 2024 18:57:40 +0300 (MSK)
-Received: (nullmailer pid 1694668 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 08292944C3;
+ Sat,  9 Mar 2024 18:57:41 +0300 (MSK)
+Received: (nullmailer pid 1694671 invoked by uid 1000);
  Sat, 09 Mar 2024 15:57:29 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 08/11] hw/cxl/cxl-cdat: Fix type of buf in ct3_load_cdat()
-Date: Sat,  9 Mar 2024 18:57:26 +0300
-Message-Id: <20240309155729.1694607-9-mjt@tls.msk.ru>
+Subject: [PULL 09/11] hw/pci-bridge/cxl_upstream: Fix problem with
+ g_steal_pointer()
+Date: Sat,  9 Mar 2024 18:57:27 +0300
+Message-Id: <20240309155729.1694607-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240309155729.1694607-1-mjt@tls.msk.ru>
 References: <20240309155729.1694607-1-mjt@tls.msk.ru>
@@ -61,44 +62,85 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-When setting GLIB_VERSION_MAX_ALLOWED to GLIB_VERSION_2_58 or higher
-(which we'll certainly do in the not too distant future), glib adds
-type safety checks to the g_steal_pointer() macro. This trigger an
-error in the ct3_load_cdat() function: The local char *buf variable is
-assigned to uint8_t *buf in CDATObject, i.e. a pointer of a different
-type. Change the local variable to the same type as buf in CDATObject
-to avoid the error.
+When setting GLIB_VERSION_MAX_ALLOWED to GLIB_VERSION_2_58 or higher,
+glib adds type safety checks to the g_steal_pointer() macro. This
+triggers errors in the build_cdat_table() function which uses the
+g_steal_pointer() for type-casting from one pointer type to the other
+(which also looks quite weird since the local pointers have all been
+declared with g_autofree though they are never freed here). Let's fix
+it by using a proper typecast instead. For making this possible, we
+have to remove the QEMU_PACKED attribute from some structs since GCC
+otherwise complains that the source and destination pointer might
+have different alignment restrictions. Removing the QEMU_PACKED should
+be fine here since the structs are already naturally aligned. Anyway,
+add some QEMU_BUILD_BUG_ON() statements to make sure that we've got
+the right sizes (without padding in the structs).
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/cxl/cxl-cdat.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/pci-bridge/cxl_upstream.c | 8 ++++----
+ include/hw/cxl/cxl_cdat.h    | 8 +++++---
+ 2 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/hw/cxl/cxl-cdat.c b/hw/cxl/cxl-cdat.c
-index 2fea975671..551545f782 100644
---- a/hw/cxl/cxl-cdat.c
-+++ b/hw/cxl/cxl-cdat.c
-@@ -114,7 +114,7 @@ static void ct3_build_cdat(CDATObject *cdat, Error **errp)
- static void ct3_load_cdat(CDATObject *cdat, Error **errp)
- {
-     g_autofree CDATEntry *cdat_st = NULL;
--    g_autofree char *buf = NULL;
-+    g_autofree uint8_t *buf = NULL;
-     uint8_t sum = 0;
-     int num_ent;
-     int i = 0, ent = 1;
-@@ -171,7 +171,7 @@ static void ct3_load_cdat(CDATObject *cdat, Error **errp)
-         cdat_st[ent].base = hdr;
-         cdat_st[ent].length = hdr->length;
+diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
+index e87eb40177..537f9affb8 100644
+--- a/hw/pci-bridge/cxl_upstream.c
++++ b/hw/pci-bridge/cxl_upstream.c
+@@ -192,8 +192,8 @@ enum {
  
--        while (buf + i < (char *)cdat_st[ent].base + cdat_st[ent].length) {
-+        while (buf + i < (uint8_t *)cdat_st[ent].base + cdat_st[ent].length) {
-             assert(i < file_size);
-             sum += buf[i++];
-         }
+ static int build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
+ {
+-    g_autofree CDATSslbis *sslbis_latency = NULL;
+-    g_autofree CDATSslbis *sslbis_bandwidth = NULL;
++    CDATSslbis *sslbis_latency;
++    CDATSslbis *sslbis_bandwidth;
+     CXLUpstreamPort *us = CXL_USP(priv);
+     PCIBus *bus = &PCI_BRIDGE(us)->sec_bus;
+     int devfn, sslbis_size, i;
+@@ -270,8 +270,8 @@ static int build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
+     *cdat_table = g_new0(CDATSubHeader *, CXL_USP_CDAT_NUM_ENTRIES);
+ 
+     /* Header always at start of structure */
+-    (*cdat_table)[CXL_USP_CDAT_SSLBIS_LAT] = g_steal_pointer(&sslbis_latency);
+-    (*cdat_table)[CXL_USP_CDAT_SSLBIS_BW] = g_steal_pointer(&sslbis_bandwidth);
++    (*cdat_table)[CXL_USP_CDAT_SSLBIS_LAT] = (CDATSubHeader *)sslbis_latency;
++    (*cdat_table)[CXL_USP_CDAT_SSLBIS_BW] = (CDATSubHeader *)sslbis_bandwidth;
+ 
+     return CXL_USP_CDAT_NUM_ENTRIES;
+ }
+diff --git a/include/hw/cxl/cxl_cdat.h b/include/hw/cxl/cxl_cdat.h
+index 8e3d094608..b44cefaad6 100644
+--- a/include/hw/cxl/cxl_cdat.h
++++ b/include/hw/cxl/cxl_cdat.h
+@@ -130,7 +130,8 @@ typedef struct CDATSslbisHeader {
+     uint8_t data_type;
+     uint8_t reserved[3];
+     uint64_t entry_base_unit;
+-} QEMU_PACKED CDATSslbisHeader;
++} CDATSslbisHeader;
++QEMU_BUILD_BUG_ON(sizeof(CDATSslbisHeader) != 16);
+ 
+ #define CDAT_PORT_ID_USP 0x100
+ /* Switch Scoped Latency and Bandwidth Entry - CDAT Table 10 */
+@@ -139,12 +140,13 @@ typedef struct CDATSslbe {
+     uint16_t port_y_id;
+     uint16_t latency_bandwidth;
+     uint16_t reserved;
+-} QEMU_PACKED CDATSslbe;
++} CDATSslbe;
++QEMU_BUILD_BUG_ON(sizeof(CDATSslbe) != 8);
+ 
+ typedef struct CDATSslbis {
+     CDATSslbisHeader sslbis_header;
+     CDATSslbe sslbe[];
+-} QEMU_PACKED CDATSslbis;
++} CDATSslbis;
+ 
+ typedef struct CDATEntry {
+     void *base;
 -- 
 2.39.2
 
