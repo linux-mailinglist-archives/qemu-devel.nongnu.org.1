@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090718773B7
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:29:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53AFD8773BC
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:31:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj2J3-00040e-EB; Sat, 09 Mar 2024 14:24:29 -0500
+	id 1rj2J8-0004Uk-Gs; Sat, 09 Mar 2024 14:24:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2J0-0003oT-Re
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:26 -0500
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2J6-0004PJ-FU
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:32 -0500
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2Iy-0002mV-CT
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:26 -0500
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2d382a78c38so36700091fa.1
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:24:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2J3-0002pN-NL
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:32 -0500
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-a45ba1f8e89so379418566b.1
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:24:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710012262; x=1710617062; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710012268; x=1710617068; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gNfhZGSEMDNFGE0Bt1N9Am3VGUZ7rx8bc74P/nXROpw=;
- b=ne1rZ2Vf3nDTNU1KeRP3pQ0Lt+fHPTUsppkIg+7v1TPYIUOiMcBQXh6XwMaUTYVhVd
- RMJfoLOozhUJTEGaj+XOBH4Ry/zMU9JYd30J3FLYBWOqOFJNyo6APzniQP8MJtDYnCmE
- 02+SQsQmgQk69x9Qz7GfydSlp3iZlxgD5SCpSd9ehFL3KKbvtP6Kico/FFA4WjYdIPZg
- BjX8lQKkKxZUjhsJ1NCAB2+bNrwbcY37axSFYxl66KVESr6oMs5Gc8EOp8SaqZbuV6Nh
- uJVNBOcP4aFnNkihA3/ejWlspGhk02ondPBcgPvRz8fVfBmzjizdfZZw5WyZApNZDjsx
- 4vxA==
+ bh=+fuJ29vWBRe9UmwN0pN4V44UAyM0aAmIqNcBSmPyHVo=;
+ b=TQBRYj9oVVvJad8rlOOGoPAGnUBtBMrNe/KfipJ2jsfgNFLgJxpMGrdpMZv15cBU66
+ wjguUt/JuktcOw2K0+vt8zScN+6wSx/NBgZHzKVh3KWtKc75qrERDku+w4XSChZfIO2z
+ bleR5uAlL4jsH5ceFZqO54jUW/jiIWkSiXejrD4rlD4dWsCPAkbZ01yZzxH1uookLpdV
+ Z8P9P417ZNiTMOIYk16VQR+EST5v513AththRotSyLW+rE1SBzpjR3NWje0/IRWVDagI
+ //pd4mf7Mn71K+mKquo3XfOoiATSQJRuBVXzuNdpXs+OtT+x+DDp7g8KjDHjCt8D+pQG
+ TFqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710012262; x=1710617062;
+ d=1e100.net; s=20230601; t=1710012268; x=1710617068;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gNfhZGSEMDNFGE0Bt1N9Am3VGUZ7rx8bc74P/nXROpw=;
- b=Jnz8+X5qauhyNFMItKW4YYZX4zmdutuDqS9ZKcWbAyO7k1+s9iqXPUB/aZNRjENQHW
- CQA9vdw1ywBTGLelFdR0/SvZc6kYWqzeyWwmeOB+q+2jde2iemJLBO2vXn4slXuA3PdV
- Tg6UO6QDKI4FU2pqPj7UJDjBDwhc3ndcMpQsMD3BC7lr4SE7+eWUEXfK2A8NM8ZxV2Ok
- SFMWkdGIPas1LHD1Yj0DKDHqifFp/uAb0S59Vw++FD/4ihqitCStVakngSH/v6vfPk1x
- yNXwpJehiTYLeYbFKVUKXFSzFfW0l5JwR8JEqrF84rdQRnbd2bxVNkrk4MhnwOtJ2sOZ
- 5fFA==
-X-Gm-Message-State: AOJu0Yzu/VwPKZG7OF3qCQPNQLtM4l64znpEnTeAn4+OqBX9gGEuWBAo
- jQ/LyE4CtHJgHPMXmS01EAR5no4SUhtopZTJ4I3z7+dcePYRxCEknqU6VkWsBtZ4QQSLyRka0e1
- 8
-X-Google-Smtp-Source: AGHT+IH6VnIz1HhzZeWVzNFZZ81KnZan2vqiOitrnrYT+7W7ejewWsh1Bm28ZWgBPoyVvTrmJWk+3w==
-X-Received: by 2002:ac2:484a:0:b0:513:3741:7357 with SMTP id
- 10-20020ac2484a000000b0051337417357mr1595051lfy.56.1710012262092; 
- Sat, 09 Mar 2024 11:24:22 -0800 (PST)
+ bh=+fuJ29vWBRe9UmwN0pN4V44UAyM0aAmIqNcBSmPyHVo=;
+ b=vVBqN4H/ReiXN3Qm2rQBB9KclYh0p7SBmO/kW2HSq4UpxmNZMtnzY1F5XMgHzFMWS/
+ by/vP6kKQgiZSIazJcQC23xDw0JDNB+3si5NGsCJ2L0K6+wlP0Og6IRCqeuv/00mLRMs
+ fKT+od9vCmu0t5F8QgLiWDWAcD3rSnrB31DBIe9WOWwjQe8lSv7JrW/HCPDFjTjem9fa
+ cYhP9TGheZsCux7t3DRwAbu4MGQNJcBc4tvarTnxvuCrOfCM1SOU7U1p+PUguVfSDLKn
+ WZOceVF35YXjYQoVpjjhtF7n8n+2UEXonGg1Z2bIx+Y7qk/T3K2jIIzuRxSXLn0izsjV
+ /h1g==
+X-Gm-Message-State: AOJu0YyTNsDgCJdUnCYKiFpaJn9V1Sp27gPvgNx3FqRcDJowkzcF7r9y
+ ncBk4aF8/bnY6wnY0b6dglW+FZhq5y/a4FB3hsoIDZFFjkGt9qWlK0IM8JCWSmyMYJXGtrEM65s
+ e
+X-Google-Smtp-Source: AGHT+IHBKp40+UGhTSq+bnnVjikzcWIqKwU0NtKt0/06ov0ZeaDcTOvxjP/0RQTp71adKFj8bvB30g==
+X-Received: by 2002:a17:906:52c8:b0:a45:a2cc:eb8d with SMTP id
+ w8-20020a17090652c800b00a45a2cceb8dmr1224240ejn.25.1710012268039; 
+ Sat, 09 Mar 2024 11:24:28 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.237])
  by smtp.gmail.com with ESMTPSA id
- l6-20020a1709060e0600b00a42ea946917sm1177309eji.130.2024.03.09.11.24.20
+ bk15-20020a170906b0cf00b00a4617dfc36bsm124195ejb.178.2024.03.09.11.24.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 09 Mar 2024 11:24:21 -0800 (PST)
+ Sat, 09 Mar 2024 11:24:27 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Bernhard Beschow <shentey@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Eduardo Habkost <eduardo@habkost.net>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 21/43] hw/i386/pc: Remove 'host_type' argument from pc_init1()
-Date: Sat,  9 Mar 2024 20:21:48 +0100
-Message-ID: <20240309192213.23420-22-philmd@linaro.org>
+Subject: [PULL 22/43] hw/i386/pc: Have pc_init_isa() pass a NULL pci_type
+ argument
+Date: Sat,  9 Mar 2024 20:21:49 +0100
+Message-ID: <20240309192213.23420-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240309192213.23420-1-philmd@linaro.org>
 References: <20240309192213.23420-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x234.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,68 +98,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All callers use host_type=TYPE_I440FX_PCI_HOST_BRIDGE.
-Directly use this definition within pc_init1().
+The "isapc" machine only provides an ISA bus, not a PCI one,
+and doesn't instanciate any i440FX south bridge.
+Its machine class defines PCMachineClass::pci_enabled = false,
+and pc_init1() only uses the pci_type argument when pci_enabled
+is true. Since for this machine the argument is not used,
+passing NULL makes more sense.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240301185936.95175-4-philmd@linaro.org>
+Reviewed-by: Bernhard Beschow <shentey@gmail.com>
+Message-Id: <20240301185936.95175-5-philmd@linaro.org>
 ---
- hw/i386/pc_piix.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ hw/i386/pc_piix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index ed777e3d61..e14dce951d 100644
+index e14dce951d..319bc4b180 100644
 --- a/hw/i386/pc_piix.c
 +++ b/hw/i386/pc_piix.c
-@@ -101,8 +101,7 @@ static void piix_intx_routing_notifier_xen(PCIDevice *dev)
- }
- 
- /* PC hardware initialisation */
--static void pc_init1(MachineState *machine,
--                     const char *host_type, const char *pci_type)
-+static void pc_init1(MachineState *machine, const char *pci_type)
- {
-     PCMachineState *pcms = PC_MACHINE(machine);
-     PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
-@@ -194,7 +193,7 @@ static void pc_init1(MachineState *machine,
-         memory_region_init(pci_memory, NULL, "pci", UINT64_MAX);
-         rom_memory = pci_memory;
- 
--        phb = OBJECT(qdev_new(host_type));
-+        phb = OBJECT(qdev_new(TYPE_I440FX_PCI_HOST_BRIDGE));
-         object_property_add_child(OBJECT(machine), "i440fx", phb);
-         object_property_set_link(phb, PCI_HOST_PROP_RAM_MEM,
-                                  OBJECT(ram_memory), &error_fatal);
-@@ -451,7 +450,7 @@ static void pc_compat_2_0_fn(MachineState *machine)
+@@ -450,7 +450,7 @@ static void pc_compat_2_0_fn(MachineState *machine)
  #ifdef CONFIG_ISAPC
  static void pc_init_isa(MachineState *machine)
  {
--    pc_init1(machine, TYPE_I440FX_PCI_HOST_BRIDGE, TYPE_I440FX_PCI_DEVICE);
-+    pc_init1(machine, TYPE_I440FX_PCI_DEVICE);
+-    pc_init1(machine, TYPE_I440FX_PCI_DEVICE);
++    pc_init1(machine, NULL);
  }
  #endif
- 
-@@ -461,9 +460,7 @@ static void pc_xen_hvm_init_pci(MachineState *machine)
-     const char *pci_type = xen_igd_gfx_pt_enabled() ?
-                 TYPE_IGD_PASSTHROUGH_I440FX_PCI_DEVICE : TYPE_I440FX_PCI_DEVICE;
- 
--    pc_init1(machine,
--             TYPE_I440FX_PCI_HOST_BRIDGE,
--             pci_type);
-+    pc_init1(machine, pci_type);
- }
- 
- static void pc_xen_hvm_init(MachineState *machine)
-@@ -488,8 +485,7 @@ static void pc_xen_hvm_init(MachineState *machine)
-         if (compat) { \
-             compat(machine); \
-         } \
--        pc_init1(machine, TYPE_I440FX_PCI_HOST_BRIDGE, \
--                 TYPE_I440FX_PCI_DEVICE); \
-+        pc_init1(machine, TYPE_I440FX_PCI_DEVICE); \
-     } \
-     DEFINE_PC_MACHINE(suffix, name, pc_init_##suffix, optionfn)
  
 -- 
 2.41.0
