@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B30687739D
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:26:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 855A48773BD
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:31:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj2It-000388-GI; Sat, 09 Mar 2024 14:24:19 -0500
+	id 1rj2Iq-0002sX-I3; Sat, 09 Mar 2024 14:24:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2Iq-0002wW-OW
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:16 -0500
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2Io-0002lP-He
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:14 -0500
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2Ig-0002hZ-4y
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:16 -0500
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a293f2280c7so503132666b.1
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:24:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2Im-0002k2-4D
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:14 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-5684f95cc9bso26029a12.1
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:24:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710012244; x=1710617044; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710012250; x=1710617050; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=w5JHLoxMjL6tDi9iKJsLNg13AWr77+ZJm44MiLunTng=;
- b=MmdwC1MMKT6KDmA3Pn+r4RpSuGSI8C7+rM0SgtGR6cwGOvYgZp2MR4UDT/QG/v19mx
- 3NNYJGQCskDz9cjNexhPl2ZbKvYMocnryyygfxtR7gYNLSgMICUk3DsvaOd5V4uoIPwD
- tNAUTcC+OzYhaDoVAOqQ1SH+A4TVqfVS4p96/Vr/ubemvSo6I34WHnJkbmPLNy5vNMf4
- xyZ1ImbyBR/ZN5o0YQeAaMgVvcWOWQhGmwM1IeWh4QCo2/XuvI5pI5f9enyDThF9E7TQ
- uagd9fxoRwoGigd2tDvmwMPBVr8/jeW/3cwXes9XLugzwajlR4o0+ibNl8DxXz7LX17a
- DMlg==
+ bh=qjFrwxdzh9cIFuy3VrLZl1YDUiO+UYomEAH8YyqLi9E=;
+ b=P7/bU2la/osimESifAkLanHeMCSxf8dYX3GeUifgR0pf3pcS7E5MaTlPj7fN3e+wV7
+ h+tBcnWBLvFVFFmvET8ChI2a+tnW35VTa+/NczjcYTDNset2v2ahJU6fClZrNmrkVU7z
+ zS2S//Eu4+XRRZD49WfZhvNpnGZlEisclAKZm4vQjQx+w3c3KamRt2KAbrw5udzafMjM
+ d05f2FsMifBNjNytjWC5f1ds8JDf8xkJY71/1My2qYsb13WuKd41lIgLzKSwN1pG6MBD
+ cpUsdNKCIYb24Ksl2aogcjdCSwVMg6q03On9Qr93jwHtrdInHxP4yLEm0bcjY6uHy/Li
+ Owfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710012244; x=1710617044;
+ d=1e100.net; s=20230601; t=1710012250; x=1710617050;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=w5JHLoxMjL6tDi9iKJsLNg13AWr77+ZJm44MiLunTng=;
- b=bzFeU5/ZBnjEfqQBWdbEf984Lsr6vfP4oVyF1HLaI7RqjyJiL8RkIkSLew3GlLyJX8
- Va+mVysWQrymEJ4X1X4sWBtMJ/R+Me9h7TNyf7S66q0mVkngF11TXNDQ17yYW27NrNnw
- 5W4XNcEyI1tqCxp+EL847qJvVKFp6WPCwi2rqWFij3IMIM0S4BBbG4vSeMTiiFHu7Rb+
- 3B7MwwbbBeDtKtRJqM3uB/ONUIfGFwsiF8aKKefyni9w80SGxCv88xLy59LACpZPuTbb
- xlndcHJzN3iDoAkfek+NZvAvV2CQCor3XT4uPSUmVXVXQyMQFzLIWhxHVz3J2PIyNdiO
- jqFg==
-X-Gm-Message-State: AOJu0YwUdgZpRSDNVCNAyjQCamRvwndPrZnqWXhigBULKe7x/xdWAN8J
- e4hinR83IzNJn8r6AkisYuxtDUVaEt8WohsjQZO7jDw0uEMuEvs7oTRqZPpAY8qcSHY3xCOtlXT
+ bh=qjFrwxdzh9cIFuy3VrLZl1YDUiO+UYomEAH8YyqLi9E=;
+ b=c7Ev/UOtZdZ2ozvBl9ZwGVyBzaqgWnvXxOQ4h89lqL9fKDgHH9lgWpu5/0vzktrLi5
+ x/rg6KUfXoCKRw53M3/EputaEY0IVUZB5kimZWo5RsAbyu6nUh5+vkAfs1H6WiTu1Ifv
+ SyJtCO8RgZWfWXaf4UJFeNGZeB1D+2+fX+OqV9e5CfH4Rb/XdKrvv1aLVE9CgJHnsosk
+ nYWE5rO5kS5xuhCA/UZJS266lhO4MNhNw5F3BMF1uW66mQjUm7pQn6R35PRy+NGxA8Se
+ DxUUPtjcYKdw+YXy2fnakWtl5o0xOnkcYf4ivDuCO4zkzXZQeKy6sRr25JNKYXCWBRHZ
+ NXRw==
+X-Gm-Message-State: AOJu0YwMsZY10aAy9r1n+TXWzYPK4Y84+39fTYIk+vfbf0ZPpGIxMfia
+ JavOZbAD36PoKVD6bj6VW1EGLDISUApSCb2SOuFBsaCcXnphU1VYNlYhueG2XjeUkaLeraY4jpK
  K
-X-Google-Smtp-Source: AGHT+IEXrInFPh+kH3SDE3Bme3IOcnebaToNGDjHAkJEJb0gjDW/apXugYdiDV8CxRddh/CblW6jVA==
-X-Received: by 2002:a17:906:3984:b0:a44:1f3:e474 with SMTP id
- h4-20020a170906398400b00a4401f3e474mr1261620eje.23.1710012244545; 
- Sat, 09 Mar 2024 11:24:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGuUctMA78NjZdtCAU9Y9aCkZkeDhz16yKH0hbVx551DJFp5YQmApTcRtGHo6YtY4fSt4CW5g==
+X-Received: by 2002:a05:6402:5c3:b0:566:cfca:e56f with SMTP id
+ n3-20020a05640205c300b00566cfcae56fmr2549323edx.19.1710012250332; 
+ Sat, 09 Mar 2024 11:24:10 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.237])
  by smtp.gmail.com with ESMTPSA id
- w22-20020a1709067c9600b00a45a72fadfcsm1180096ejo.23.2024.03.09.11.24.03
+ 9-20020a0564021f4900b00567e27c72c4sm1153365edz.62.2024.03.09.11.24.09
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 09 Mar 2024 11:24:04 -0800 (PST)
+ Sat, 09 Mar 2024 11:24:09 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
+Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- kvm@vger.kernel.org
-Subject: [PULL 18/43] target/i386/sev: Fix missing ERRP_GUARD() for
- error_prepend()
-Date: Sat,  9 Mar 2024 20:21:45 +0100
-Message-ID: <20240309192213.23420-19-philmd@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 19/43] hw/i386/pc: Remove pc_compat_1_4..1.7[] left over
+ declarations
+Date: Sat,  9 Mar 2024 20:21:46 +0100
+Message-ID: <20240309192213.23420-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240309192213.23420-1-philmd@linaro.org>
 References: <20240309192213.23420-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,59 +96,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+These definitions were removed in commit ea985d235b
+("pc_piix: remove pc-i440fx-1.4 up to pc-i440fx-1.7").
 
-As the comment in qapi/error, passing @errp to error_prepend() requires
-ERRP_GUARD():
-
-* = Why, when and how to use ERRP_GUARD() =
-*
-* Without ERRP_GUARD(), use of the @errp parameter is restricted:
-...
-* - It should not be passed to error_prepend(), error_vprepend() or
-*   error_append_hint(), because that doesn't work with &error_fatal.
-* ERRP_GUARD() lifts these restrictions.
-*
-* To use ERRP_GUARD(), add it right at the beginning of the function.
-* @errp can then be used without worrying about the argument being
-* NULL or &error_fatal.
-
-ERRP_GUARD() could avoid the case when @errp is the pointer of
-error_fatal, the user can't see this additional information, because
-exit() happens in error_setg earlier than information is added [1].
-
-The sev_inject_launch_secret() passes @errp to error_prepend(), and as
-an APIs defined in target/i386/sev.h, it is necessary to protect its
-@errp with ERRP_GUARD().
-
-To avoid the issue like [1] said, add missing ERRP_GUARD() at the
-beginning of this function.
-
-[1]: Issue description in the commit message of commit ae7c80a7bd73
-     ("error: New macro ERRP_GUARD()").
-
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240229143914.1977550-17-zhao1.liu@linux.intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240301185936.95175-2-philmd@linaro.org>
 ---
- target/i386/sev.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/hw/i386/pc.h | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 173de91afe..72930ff0dc 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -1044,6 +1044,7 @@ sev_encrypt_flash(uint8_t *ptr, uint64_t len, Error **errp)
- int sev_inject_launch_secret(const char *packet_hdr, const char *secret,
-                              uint64_t gpa, Error **errp)
- {
-+    ERRP_GUARD();
-     struct kvm_sev_launch_secret input;
-     g_autofree guchar *data = NULL, *hdr = NULL;
-     int error, ret = 1;
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 5065590281..b958023187 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -288,18 +288,6 @@ extern const size_t pc_compat_2_1_len;
+ extern GlobalProperty pc_compat_2_0[];
+ extern const size_t pc_compat_2_0_len;
+ 
+-extern GlobalProperty pc_compat_1_7[];
+-extern const size_t pc_compat_1_7_len;
+-
+-extern GlobalProperty pc_compat_1_6[];
+-extern const size_t pc_compat_1_6_len;
+-
+-extern GlobalProperty pc_compat_1_5[];
+-extern const size_t pc_compat_1_5_len;
+-
+-extern GlobalProperty pc_compat_1_4[];
+-extern const size_t pc_compat_1_4_len;
+-
+ #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
+     static void pc_machine_##suffix##_class_init(ObjectClass *oc, void *data) \
+     { \
 -- 
 2.41.0
 
