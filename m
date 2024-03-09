@@ -2,79 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 849868773C4
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:33:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 099938773A5
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:28:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj2JQ-0005wh-1o; Sat, 09 Mar 2024 14:24:52 -0500
+	id 1rj2K3-0006n3-Ks; Sat, 09 Mar 2024 14:25:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2JN-0005mI-Ep
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:49 -0500
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2JV-0006T4-9m
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:57 -0500
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2JL-00030L-NO
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:49 -0500
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-a4467d570cdso222999866b.3
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:24:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2JS-00034W-4L
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:56 -0500
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2d269b2ff48so48618121fa.3
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:24:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710012286; x=1710617086; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710012292; x=1710617092; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8IXK0wenZmYfT6yBITIHGYESwGfPru4qC6kLvjxG9yg=;
- b=TRpMwXKF63pdPAvGMgc6ixM4eoIBkr6yoc4X6K1oEkSpy9Wxpw4JPI+kljWmF0wg9D
- JE9PEE4DVSgebju7pEz34rvWN8LDjE6Tm8SYgT2BVCFRVZ2cTLc2/alKPlBFtEvr/csk
- 8GYG7NWZQwjgkGEseMrljxcEEbdVltS3/Ztk8VOZQZWAiM+FuNCcQ1Hh5OBGrXZ+VCDh
- sqUzjSBMrV25pyBviNeemAv0vw2EICEWfXOlAYAEQBWUxP+CvUms5441fmU2yYJ1jLUY
- GQSknB36f5mXe6W7Npw/Ei3aGNQjsbVgEQYPmnpH9/ksumQlzpavmapwQvXyfbkpX5B9
- T5/w==
+ bh=sOxMDvWG7fYCMvOESgkL1lEMXJ1JQ08vQMhMIpxGM9I=;
+ b=J38xq4PGGwtuqZGaJYM1qDPUggGtv+n5tzGS4pYERNsyVkqA7CDjhVHDXk31MW16bc
+ hhHWlc90iduw8WwVaHM32aJEIMcPLDc6O9Rf80Uu/llk9p4QamSL8FWHc17uyQ3P28Ej
+ OMNYvEfRbWivCBJ9bu8OEdfIZ5uG3vYlTsAaxqUw5LD2QS/nlcvRDDlzTJv4e3fsyY+5
+ KhVEBGQgZddbuwf2iD8L3jPXwPYgtB7sKt72wM/5lqcZhTvMmWBWVWe7nnc7ZDciE/cf
+ JMi6fPQ8nMpSBq+SyEZQF6kgDd7w5KWK2pPp60Bd3Pg/Eeg/YyaD38bu0ax94ZqrfFd/
+ ZKVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710012286; x=1710617086;
+ d=1e100.net; s=20230601; t=1710012292; x=1710617092;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8IXK0wenZmYfT6yBITIHGYESwGfPru4qC6kLvjxG9yg=;
- b=VU4fD9WTDwr5xjeufF6VM1BlpyRQUzh3bkm57T7lr5IljdfhWXr8Mzmdo8ss91cuOg
- KyZmdvr3mNddIyEHILWkG0J0DdVYxoAkOSAATsc2N7p43BcvaryHvEvDvdMW6wDKckpA
- SjdsB61SiSWbjdma5GoYREBSGwW2bkKAncF/OJd+0qJsoaI7i2v7u2uw3Eq4YE+yvZRX
- xocKhk8SKi92Ai8n7ablPrJh/gbdXizz+PLh7DCkjnULO7yrLChYGVOwunILp5YZMDOE
- 5TpwkQc0L4FosSsaeJgtf8rISlxBHO3J4Je6SWJhMn42LF8sb77/dZyN7iK/473ShEJL
- TVPA==
-X-Gm-Message-State: AOJu0YwiztgXDDydi0PxgXmKgEdlhkgTKJX1m+7UbsLOM5cNPxgeeL3q
- Oda6h63rry9kowsQL5lmrEss1naBAc/kCL0QdSwgCiVZ7kRzi1X4s+IjlBr1ldabTCRPE4gXNl4
- n
-X-Google-Smtp-Source: AGHT+IHdZOGcI74LpqpnrucOzRjs+bV7tLhNh0HZy5RFuXIPB4cAJdoJYfXFqX4U5X9g7UUqrm1EgQ==
-X-Received: by 2002:a17:906:d0c5:b0:a45:110e:568f with SMTP id
- bq5-20020a170906d0c500b00a45110e568fmr1452152ejb.37.1710012286153; 
- Sat, 09 Mar 2024 11:24:46 -0800 (PST)
+ bh=sOxMDvWG7fYCMvOESgkL1lEMXJ1JQ08vQMhMIpxGM9I=;
+ b=AnQH+jBjzRnaVfg9W5NU/8OP9wyR9iJQkBhHalxYRKiSCYqWVHzQ9xNJIDZhW/Asa+
+ 1m13kTr7zUlDjNh3n8ZeiTB100A/5AlmrZK/5q9yhnI/gX8wyjJn/vA/NzxQUzJ17K+F
+ DlJrD/hwJqkst2vS91kNbjBUEd+Imw8HTuYN14zwQXAbw/6Jcs33DkJS04SdAxnhD2FK
+ ROWj9mgOUTgKnHA1rI+EyfIVZZYWDybI1UmwvT3o/JNmzUfMXe7jvvY2x4rCQBY7H4ZF
+ ctE08OtPPEpkVxL2o8Rc9WZZNfWM/GG8P0Yl0/5up3o30ZLKXVGzfWE2z9gMiur+z473
+ J4Ag==
+X-Gm-Message-State: AOJu0YxOo33x5k9ef4I3bEH5awjw0Z6AO3YCmUyuixfbpeevwjfIggR7
+ hKWH65Rzw6G2/nOylfaItFqBLw16q5QnX9w3DR/zcAOpO3xur2kXmR89YzgIpM6kLvVL+PvEeoG
+ Z
+X-Google-Smtp-Source: AGHT+IEnx0UAhxsWu3vMT5zFaVAqvYzcPHl1DIzHmPysNIU33oUo3sm7kvUgkXVueeIazkYyYxJspA==
+X-Received: by 2002:a2e:9b8e:0:b0:2d3:fa6b:9104 with SMTP id
+ z14-20020a2e9b8e000000b002d3fa6b9104mr1393478lji.20.1710012292045; 
+ Sat, 09 Mar 2024 11:24:52 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.237])
  by smtp.gmail.com with ESMTPSA id
- kq17-20020a170906abd100b00a40f7ed6cb9sm1173609ejb.4.2024.03.09.11.24.44
+ n10-20020aa7d04a000000b0056826248468sm1156009edo.89.2024.03.09.11.24.50
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 09 Mar 2024 11:24:45 -0800 (PST)
+ Sat, 09 Mar 2024 11:24:51 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
- BALATON Zoltan <balaton@eik.bme.hu>,
- "Dr . David Alan Gilbert" <dave@treblig.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 25/43] hmp: Add option to info qtree to omit details
-Date: Sat,  9 Mar 2024 20:21:52 +0100
-Message-ID: <20240309192213.23420-26-philmd@linaro.org>
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 26/43] mac_newworld: change timebase frequency from 100MHz to
+ 25MHz for mac99 machine
+Date: Sat,  9 Mar 2024 20:21:53 +0100
+Message-ID: <20240309192213.23420-27-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240309192213.23420-1-philmd@linaro.org>
 References: <20240309192213.23420-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,107 +94,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-The output of info qtree monitor command is very long. Add an option
-to print a brief overview omitting all the details.
+MacOS X uses multiple techniques for calibrating timers depending upon the detected
+hardware. One of these calibration routines compares the change in the timebase
+against the KeyLargo timer and uses this to recalculate the clock frequency,
+timebase frequency and bus frequency if the calibration exceeds certain limits.
+This recalibration occurs despite the correct values being passed via the device
+tree, and is likely due to buggy firmware on some hardware.
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
-Message-ID: <20240307183812.0105D4E6004@zero.eik.bme.hu>
+The timebase frequency of 100MHz was set way back in 2005 by commit fa296b0fb4
+("PIC fix - changed back TB frequency to 100 MHz") and with this value on a
+mac99,via=pmu machine the OSX 10.2 timer calibration incorrectly calculates the
+bus frequency as 400MHz instead of 100MHz. The most noticeable side-effect is
+the UI appears sluggish and not very responsive for normal use.
+
+Change the timebase frequency from 100MHz to 25MHz which matches that of a real
+G4 AGP machine (the closest match to QEMU's mac99 machine) and allows OSX 10.2
+to correctly detect all of the clock frequency, timebase frequency and bus
+frequency.
+
+Tested on various MacOS images from OS 9.2 through to OSX 10.4, along with Linux
+and NetBSD and I was unable to find any regressions from this change.
+
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240304073548.2098806-1-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- system/qdev-monitor.c | 27 +++++++++++++++------------
- hmp-commands-info.hx  |  6 +++---
- 2 files changed, 18 insertions(+), 15 deletions(-)
+ hw/ppc/mac_newworld.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index a13db763e5..ad91e74181 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -744,7 +744,6 @@ DeviceState *qdev_device_add(QemuOpts *opts, Error **errp)
- }
+diff --git a/hw/ppc/mac_newworld.c b/hw/ppc/mac_newworld.c
+index 3e796d2f6d..ff9e490c4e 100644
+--- a/hw/ppc/mac_newworld.c
++++ b/hw/ppc/mac_newworld.c
+@@ -77,7 +77,7 @@
  
- #define qdev_printf(fmt, ...) monitor_printf(mon, "%*s" fmt, indent, "", ## __VA_ARGS__)
--static void qbus_print(Monitor *mon, BusState *bus, int indent);
- 
- static void qdev_print_props(Monitor *mon, DeviceState *dev, Property *props,
-                              int indent)
-@@ -784,13 +783,9 @@ static void bus_print_dev(BusState *bus, Monitor *mon, DeviceState *dev, int ind
- static void qdev_print(Monitor *mon, DeviceState *dev, int indent)
- {
-     ObjectClass *class;
--    BusState *child;
-     NamedGPIOList *ngl;
-     NamedClockList *ncl;
- 
--    qdev_printf("dev: %s, id \"%s\"\n", object_get_typename(OBJECT(dev)),
--                dev->id ? dev->id : "");
--    indent += 2;
-     QLIST_FOREACH(ngl, &dev->gpios, node) {
-         if (ngl->num_in) {
-             qdev_printf("gpio-in \"%s\" %d\n", ngl->name ? ngl->name : "",
-@@ -814,12 +809,9 @@ static void qdev_print(Monitor *mon, DeviceState *dev, int indent)
-         class = object_class_get_parent(class);
-     } while (class != object_class_by_name(TYPE_DEVICE));
-     bus_print_dev(dev->parent_bus, mon, dev, indent);
--    QLIST_FOREACH(child, &dev->child_bus, sibling) {
--        qbus_print(mon, child, indent);
--    }
- }
- 
--static void qbus_print(Monitor *mon, BusState *bus, int indent)
-+static void qbus_print(Monitor *mon, BusState *bus, int indent, bool details)
- {
-     BusChild *kid;
- 
-@@ -827,16 +819,27 @@ static void qbus_print(Monitor *mon, BusState *bus, int indent)
-     indent += 2;
-     qdev_printf("type %s\n", object_get_typename(OBJECT(bus)));
-     QTAILQ_FOREACH(kid, &bus->children, sibling) {
-+        BusState *child_bus;
-         DeviceState *dev = kid->child;
--        qdev_print(mon, dev, indent);
-+        qdev_printf("dev: %s, id \"%s\"\n", object_get_typename(OBJECT(dev)),
-+                    dev->id ? dev->id : "");
-+        if (details) {
-+            qdev_print(mon, dev, indent + 2);
-+        }
-+        QLIST_FOREACH(child_bus, &dev->child_bus, sibling) {
-+            qbus_print(mon, child_bus, indent + 2, details);
-+        }
-     }
- }
- #undef qdev_printf
- 
- void hmp_info_qtree(Monitor *mon, const QDict *qdict)
- {
--    if (sysbus_get_default())
--        qbus_print(mon, sysbus_get_default(), 0);
-+    bool details = !qdict_get_try_bool(qdict, "brief", false);
-+
-+    if (sysbus_get_default()) {
-+        qbus_print(mon, sysbus_get_default(), 0, details);
-+    }
- }
- 
- void hmp_info_qdm(Monitor *mon, const QDict *qdict)
-diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-index da120f82a3..ad1b1306e3 100644
---- a/hmp-commands-info.hx
-+++ b/hmp-commands-info.hx
-@@ -540,9 +540,9 @@ ERST
- 
-     {
-         .name       = "qtree",
--        .args_type  = "",
--        .params     = "",
--        .help       = "show device tree",
-+        .args_type  = "brief:-b",
-+        .params     = "[-b]",
-+        .help       = "show device tree (-b: brief, omit properties)",
-         .cmd        = hmp_info_qtree,
-     },
+ #define MAX_IDE_BUS 2
+ #define CFG_ADDR 0xf0000510
+-#define TBFREQ (100UL * 1000UL * 1000UL)
++#define TBFREQ (25UL * 1000UL * 1000UL)
+ #define CLOCKFREQ (900UL * 1000UL * 1000UL)
+ #define BUSFREQ (100UL * 1000UL * 1000UL)
  
 -- 
 2.41.0
