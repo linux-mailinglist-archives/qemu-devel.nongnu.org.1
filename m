@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EEC0876FA1
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 08:59:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31E48876FA3
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 08:59:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rirbW-00065c-Ad; Sat, 09 Mar 2024 02:58:50 -0500
+	id 1rirbd-00066R-FF; Sat, 09 Mar 2024 02:58:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hao.xiang@linux.dev>)
- id 1rirbU-00065H-2G
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 02:58:48 -0500
-Received: from out-183.mta1.migadu.com ([2001:41d0:203:375::b7])
+ id 1rirbW-000663-Sp
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 02:58:50 -0500
+Received: from out-173.mta1.migadu.com ([2001:41d0:203:375::ad])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hao.xiang@linux.dev>)
- id 1rirbS-00012b-9u
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 02:58:47 -0500
+ id 1rirbV-00013P-3a
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 02:58:50 -0500
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
  include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
- t=1709971124;
+ t=1709971127;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dxODd5ZxO9/P9gEHSiiY1oXemmST1kTlkGGEqbZBH50=;
- b=DZgZ+jzDNDIXH7oL8kmPxHWgVD7RF1zx/nKEmZbOn4bGQFc5cGQDz7UlPZLt50bpDYRIZc
- 4gWIvgTQAnQm0QZmMH5+doy98K/K5dQ9ahSF0XRYfMgB+NzTaFkpKiH6ZrHWPoCYYr4xMb
- zo4eatlyGqHyRLKWxHKGiWTFHe08yjY=
+ bh=raHbR+3aJ1OqO7Ee0/aS7Kg2+66MX0gCeuiZHMCm28s=;
+ b=xjsAr0737FL/uu+5urtlHGWf+mHSEbDWcHWDf7k9QzuQ6PPgd2A/rTQVUxxRTe7HdxEYu+
+ VxYleaphc4Bjs+45tWSAN/HV9Q3+vqnVDtxudRkzuUypwxDyzzgauS6GsuVPAylo+KqjEp
+ t5T4ku8ttr7hT8j1uwKtg+P/bFPnTt4=
 From: Hao Xiang <hao.xiang@linux.dev>
 To: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
  peterx@redhat.com, farosas@suse.de, eblake@redhat.com, armbru@redhat.com,
@@ -37,18 +37,17 @@ To: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
  marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com,
  qemu-devel@nongnu.org
 Cc: Hao Xiang <hao.xiang@bytedance.com>
-Subject: [PATCH v5 5/7] migration/multifd: Implement
- ram_save_target_page_multifd to handle multifd version of
- MigrationOps::ram_save_target_page.
-Date: Sat,  9 Mar 2024 07:57:26 +0000
-Message-Id: <20240309075728.1487211-6-hao.xiang@linux.dev>
+Subject: [PATCH v5 6/7] migration/multifd: Enable multifd zero page checking
+ by default.
+Date: Sat,  9 Mar 2024 07:57:27 +0000
+Message-Id: <20240309075728.1487211-7-hao.xiang@linux.dev>
 In-Reply-To: <20240309075728.1487211-1-hao.xiang@linux.dev>
 References: <20240309075728.1487211-1-hao.xiang@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-Received-SPF: pass client-ip=2001:41d0:203:375::b7;
- envelope-from=hao.xiang@linux.dev; helo=out-183.mta1.migadu.com
+Received-SPF: pass client-ip=2001:41d0:203:375::ad;
+ envelope-from=hao.xiang@linux.dev; helo=out-173.mta1.migadu.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -72,96 +71,79 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hao Xiang <hao.xiang@bytedance.com>
 
-1. Add a dedicated handler for MigrationOps::ram_save_target_page in
-multifd live migration.
-2. Refactor ram_save_target_page_legacy so that the legacy and multifd
-handlers don't have internal functions calling into each other.
+1. Set default "zero-page-detection" option to "multifd". Now
+zero page checking can be done in the multifd threads and this
+becomes the default configuration.
+2. Handle migration QEMU9.0 -> QEMU8.2 compatibility. We provide
+backward compatibility where zero page checking is done from the
+migration main thread.
 
 Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Message-Id: <20240226195654.934709-4-hao.xiang@bytedance.com>
 ---
- migration/ram.c | 42 +++++++++++++++++++++++++++++-------------
- 1 file changed, 29 insertions(+), 13 deletions(-)
+ hw/core/machine.c   | 4 +++-
+ migration/options.c | 2 +-
+ qapi/migration.json | 6 +++---
+ 3 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/migration/ram.c b/migration/ram.c
-index d1f97cf862..887e20bf5b 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -1140,10 +1140,6 @@ static int save_zero_page(RAMState *rs, PageSearchStatus *pss,
-     QEMUFile *file = pss->pss_channel;
-     int len = 0;
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 9ac5d5389a..0e9d646b61 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -32,7 +32,9 @@
+ #include "hw/virtio/virtio-net.h"
+ #include "audio/audio.h"
  
--    if (migrate_zero_page_detection() == ZERO_PAGE_DETECTION_NONE) {
--        return 0;
--    }
--
-     if (!buffer_is_zero(p, TARGET_PAGE_SIZE)) {
-         return 0;
-     }
-@@ -2079,7 +2075,6 @@ static bool save_compress_page(RAMState *rs, PageSearchStatus *pss,
-  */
- static int ram_save_target_page_legacy(RAMState *rs, PageSearchStatus *pss)
- {
--    RAMBlock *block = pss->block;
-     ram_addr_t offset = ((ram_addr_t)pss->page) << TARGET_PAGE_BITS;
-     int res;
+-GlobalProperty hw_compat_8_2[] = {};
++GlobalProperty hw_compat_8_2[] = {
++    { "migration", "zero-page-detection", "legacy"},
++};
+ const size_t hw_compat_8_2_len = G_N_ELEMENTS(hw_compat_8_2);
  
-@@ -2095,17 +2090,33 @@ static int ram_save_target_page_legacy(RAMState *rs, PageSearchStatus *pss)
-         return 1;
-     }
+ GlobalProperty hw_compat_8_1[] = {
+diff --git a/migration/options.c b/migration/options.c
+index 8c849620dd..d61d31be24 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -181,7 +181,7 @@ Property migration_properties[] = {
+                       MIG_MODE_NORMAL),
+     DEFINE_PROP_ZERO_PAGE_DETECTION("zero-page-detection", MigrationState,
+                        parameters.zero_page_detection,
+-                       ZERO_PAGE_DETECTION_LEGACY),
++                       ZERO_PAGE_DETECTION_MULTIFD),
  
-+    return ram_save_page(rs, pss);
-+}
-+
-+/**
-+ * ram_save_target_page_multifd: send one target page to multifd workers
-+ *
-+ * Returns 1 if the page was queued, -1 otherwise.
-+ *
-+ * @rs: current RAM state
-+ * @pss: data about the page we want to send
-+ */
-+static int ram_save_target_page_multifd(RAMState *rs, PageSearchStatus *pss)
-+{
-+    RAMBlock *block = pss->block;
-+    ram_addr_t offset = ((ram_addr_t)pss->page) << TARGET_PAGE_BITS;
-+
-     /*
--     * Do not use multifd in postcopy as one whole host page should be
--     * placed.  Meanwhile postcopy requires atomic update of pages, so even
--     * if host page size == guest page size the dest guest during run may
--     * still see partially copied pages which is data corruption.
-+     * While using multifd live migration, we still need to handle zero
-+     * page checking on the migration main thread.
-      */
--    if (migrate_multifd() && !migration_in_postcopy()) {
--        return ram_save_multifd_page(block, offset);
-+    if (migrate_zero_page_detection() == ZERO_PAGE_DETECTION_LEGACY) {
-+        if (save_zero_page(rs, pss, offset)) {
-+            return 1;
-+        }
-     }
- 
--    return ram_save_page(rs, pss);
-+    return ram_save_multifd_page(block, offset);
- }
- 
- /* Should be called before sending a host page */
-@@ -3113,7 +3124,12 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
-     }
- 
-     migration_ops = g_malloc0(sizeof(MigrationOps));
--    migration_ops->ram_save_target_page = ram_save_target_page_legacy;
-+
-+    if (migrate_multifd()) {
-+        migration_ops->ram_save_target_page = ram_save_target_page_multifd;
-+    } else {
-+        migration_ops->ram_save_target_page = ram_save_target_page_legacy;
-+    }
- 
-     bql_unlock();
-     ret = multifd_send_sync_main();
+     /* Migration capabilities */
+     DEFINE_PROP_MIG_CAP("x-xbzrle", MIGRATION_CAPABILITY_XBZRLE),
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 2684e4e9ac..aa1b39bce1 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -909,7 +909,7 @@
+ #        (Since 8.2)
+ #
+ # @zero-page-detection: Whether and how to detect zero pages.
+-#     See description in @ZeroPageDetection.  Default is 'legacy'.
++#     See description in @ZeroPageDetection.  Default is 'multifd'.
+ #     (since 9.0)
+ #
+ # Features:
+@@ -1106,7 +1106,7 @@
+ #        (Since 8.2)
+ #
+ # @zero-page-detection: Whether and how to detect zero pages.
+-#     See description in @ZeroPageDetection.  Default is 'legacy'.
++#     See description in @ZeroPageDetection.  Default is 'multifd'.
+ #     (since 9.0)
+ #
+ # Features:
+@@ -1339,7 +1339,7 @@
+ #        (Since 8.2)
+ #
+ # @zero-page-detection: Whether and how to detect zero pages.
+-#     See description in @ZeroPageDetection.  Default is 'legacy'.
++#     See description in @ZeroPageDetection.  Default is 'multifd'.
+ #     (since 9.0)
+ #
+ # Features:
 -- 
 2.30.2
 
