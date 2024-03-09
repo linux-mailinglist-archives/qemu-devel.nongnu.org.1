@@ -2,83 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC2328773B1
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:29:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E7E8773C7
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 21:12:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj2Lq-0001qr-UE; Sat, 09 Mar 2024 14:27:22 -0500
+	id 1rj32M-0006SC-Dd; Sat, 09 Mar 2024 15:11:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2L8-0007xO-OE
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:26:40 -0500
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rj32K-0006Rh-Ap
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 15:11:16 -0500
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2L6-0003a5-72
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:26:38 -0500
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a460185d1a7so75796566b.0
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:26:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rj32I-00020H-9t
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 15:11:16 -0500
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-5682360e095so2949335a12.1
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 12:11:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710012393; x=1710617193; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+XiYruIl/Mk62y3f+ezGiMfqf4PWIQGmn/ntaltbgg8=;
- b=Cr32ogUMNB0hteF1iaaW05vW7XjpElPE8zvNhxVnw81+J0EDe9HxEIKbCrDfPKKuEQ
- TL/HuoIP2NcEvsf0SFxvmpXf17aOtmX2IXYTdg0J24JjW/UTtrHYvJoOKliK5FBjZveF
- fY6vlQ/w2qb/z8BazEx0tpMDJkgpijIlhYUHhRQUaCQN8H2ZuzXX9c2hqbE01OGJwFLm
- lTqxcFGm7VFNJIDFPZHQoAAZjnm8IZhnp+Mwb59idf6Y3aF29VzHpKlJl6z6jKVbx85P
- 4Kim4sn4A1++dOJjyi5JYpk1P2NKz4jRu3eAPRihh5DXouWGcUMBKm8gsRgHn5CtG60S
- 4K5Q==
+ d=linaro.org; s=google; t=1710015072; x=1710619872; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=qVlU4OMX+YaJ+7hrZpRAdZX3eg6PYc7U8L42CwKIv+4=;
+ b=upklr5tUESL24XvowthK4k5pNHvQW5HbDtTvV/1Ay3/37+QJtIhQZmE4a0ZdFjB8AG
+ fs/BwZ6SSCk77SJfpnvsm9cK3FUqvAdHxllYJCae3mXELcHc+TlAUG/ttx4zZ2Kx4u5Z
+ VAeRxOhaoLRM9BdcicieccGzPy+RaPsJLs2EdQyArkKXxoxgFUYgV9Bm1tvrxuApbuQ1
+ fRilRzyrmLKNVeMGHe5Dp0xUUOqNCmBa623bifZVdf6vuyqmLdvU5z7FR11yN1s7Y3U1
+ CFdPw0+uz05pIdY9sEpLftJwChLmXI68Up4thtoyuWFDLxSLaqIzlD4HWBEqYR1muCVk
+ 0Xbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710012393; x=1710617193;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+XiYruIl/Mk62y3f+ezGiMfqf4PWIQGmn/ntaltbgg8=;
- b=o1sMGGoZepxOlo53lvjwKgZUNLHUzvuj1mk/sKEkvGywPULyEnQGs+Tb/Y8BhppG9+
- suzs5EJryvRRyc107kyQlFaxIELz+mQDrxso32Wd0C/KB/7MqLcOn408RtkkyGrwpVSe
- W0efw4/oa43a4UuiaEfFuE311MhzC7t6ti2PhqzIUF9d51lzrex6a9iBDkQYUnG38AFE
- xg4EhKwRXYiDHPLHo2kA6wzGc/XosGCTXzw2Alk5zeD0qD+dZNOVa07+OwFldcRp7zLq
- qmMX4UGGXfIQ9CFDcXG1EIQhFXDXbI8WCldG2w6Ym3DLA3YtS1E2GGjXzeZPHNb/FERM
- zXgA==
-X-Gm-Message-State: AOJu0YzDgDp8Oc/c3kIW3E/YHkY2zU5WbxA51niUwNyx98hM5gQJcs6y
- ahbCcRXmcj8iBx07EXVezYTWxKUmJYTquf9vWKeFaeWG9B27B+zr9iSVhof7oM7o9r4cgORp27f
- a
-X-Google-Smtp-Source: AGHT+IF5fXiTsXQM4PqHHP471lMuzrbFz64dQ8BACzdPeoX2Pnz8+csmIkUXGA5SOpRFZc8lVkCELA==
-X-Received: by 2002:a17:906:a1c8:b0:a44:1cb4:f496 with SMTP id
- bx8-20020a170906a1c800b00a441cb4f496mr1343853ejb.75.1710012393290; 
- Sat, 09 Mar 2024 11:26:33 -0800 (PST)
-Received: from m1x-phil.lan ([176.176.181.237])
- by smtp.gmail.com with ESMTPSA id
- pw2-20020a17090720a200b00a456573f9c5sm1187380ejb.0.2024.03.09.11.26.32
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 09 Mar 2024 11:26:32 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
- Angelo Dureghello <angelo@kernel-space.org>,
- Thomas Huth <huth@tuxfamily.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 43/43] hw/m68k/mcf5208: add support for reset
-Date: Sat,  9 Mar 2024 20:22:10 +0100
-Message-ID: <20240309192213.23420-44-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240309192213.23420-1-philmd@linaro.org>
-References: <20240309192213.23420-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1710015072; x=1710619872;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qVlU4OMX+YaJ+7hrZpRAdZX3eg6PYc7U8L42CwKIv+4=;
+ b=GOlgjd1sG3t2QNIgS539TS6yNbuq9lX/UV/0QeQBcuOi6omoD6IrDNZv1haeMgrjHE
+ Tk8kg5K8y1JlkfKEzKAMhwqtceSihaxHfyRBYAh1poSybvSb763KTKnexugZljrL+dI3
+ m5IVEk8bGbaHKVuTDg0grUnlncC0u1sefdpLZoKYisKUL0Acg1ZknffJ6sjShIrSh5sZ
+ R0cVS8Osf1C8hhpMcOFlctPIq+OjjQQQaRjSvFvAO95LR2Bt5dYBCnq9/7FyB1cFHZD+
+ erRgUobI+DYKH8QYKS+PQqwLDgaKkiP5d1Az7smLV2CzM/MRWo4n3AhRuK3SxhYSFk0w
+ 0oTQ==
+X-Gm-Message-State: AOJu0Ywu7Iaym4GaRclFNiQf1nSWOEg6TYijBUauTwbLusICDXjnBdgo
+ KbWtJFTyXZy84NXHKovhS33esClX1OGTej6lywz1ZOpNw55EyUzyf6TZiHHU2BeYCt6T2ys1NkH
+ 0y6qZ4yeHgqmkclHCwasqdhtxC+FC7C6ikxCM6w==
+X-Google-Smtp-Source: AGHT+IHI4uGRT+6IYZQSvTC+Qdb4AHCq6ul6QAiaVNTEMAJ0stpQ/DR7Yx7HEqCzALb40uKoKvHLv+rZX50k8+x5Ry0=
+X-Received: by 2002:a50:cc0c:0:b0:568:2578:f50c with SMTP id
+ m12-20020a50cc0c000000b005682578f50cmr1816061edi.36.1710015072073; Sat, 09
+ Mar 2024 12:11:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
+References: <20240308181202.617329-1-pbonzini@redhat.com>
+In-Reply-To: <20240308181202.617329-1-pbonzini@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Sat, 9 Mar 2024 20:11:00 +0000
+Message-ID: <CAFEAcA87jdkm+HdxJfFstrZMcsvFnPORR=yiBaW=i_wRiW6jEQ@mail.gmail.com>
+Subject: Re: [PULL v2 0/9] Misc fixes and coverity CI for 2024-03-08
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,93 +85,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Angelo Dureghello <angelo@kernel-space.org>
+On Fri, 8 Mar 2024 at 18:13, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>
+> The following changes since commit 8f6330a807f2642dc2a3cdf33347aa28a4c00a87:
+>
+>   Merge tag 'pull-maintainer-updates-060324-1' of https://gitlab.com/stsquad/qemu into staging (2024-03-06 16:56:20 +0000)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/bonzini/qemu.git tags/for-upstream
+>
+> for you to fetch changes up to 83aa1baa069c8f77aa9f7d9adfdeb11d90bdf78d:
+>
+>   gitlab-ci: add manual job to run Coverity (2024-03-08 19:08:23 +0100)
+>
+> Supersedes: <20240308145554.599614-1-pbonzini@redhat.com>
+> ----------------------------------------------------------------
+> * target/i386: use TSTEQ/TSTNE
+> * move Coverity builds to Gitlab CI
+> * fix two memory leaks
+> * bug fixes
 
-Add reset support for mcf5208.
 
-Signed-off-by: Angelo Dureghello <angelo@kernel-space.org>
-Reviewed-by: Thomas Huth <huth@tuxfamily.org>
-Message-ID: <20240309093459.984565-1-angelo@kernel-space.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/m68k/mcf5208.c | 44 ++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 42 insertions(+), 2 deletions(-)
+Applied, thanks.
 
-diff --git a/hw/m68k/mcf5208.c b/hw/m68k/mcf5208.c
-index 0cfb806c20..ec14096aa4 100644
---- a/hw/m68k/mcf5208.c
-+++ b/hw/m68k/mcf5208.c
-@@ -40,6 +40,8 @@
- #define PCSR_PRE_SHIFT  8
- #define PCSR_PRE_MASK   0x0f00
- 
-+#define RCR_SOFTRST     0x80
-+
- typedef struct {
-     MemoryRegion iomem;
-     qemu_irq irq;
-@@ -185,12 +187,50 @@ static const MemoryRegionOps m5208_sys_ops = {
-     .endianness = DEVICE_NATIVE_ENDIAN,
- };
- 
--static void mcf5208_sys_init(MemoryRegion *address_space, qemu_irq *pic)
-+static uint64_t m5208_rcm_read(void *opaque, hwaddr addr,
-+                               unsigned size)
-+{
-+    return 0;
-+}
-+
-+static void m5208_rcm_write(void *opaque, hwaddr addr,
-+                            uint64_t value, unsigned size)
-+{
-+    M68kCPU *cpu = opaque;
-+    CPUState *cs = CPU(cpu);
-+    switch (addr) {
-+    case 0x0: /* RCR */
-+        if (value & RCR_SOFTRST) {
-+            cpu_reset(cs);
-+            cpu->env.aregs[7] = ldl_phys(cs->as, 0);
-+            cpu->env.pc = ldl_phys(cs->as, 4);
-+        }
-+        break;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" HWADDR_PRIX "\n",
-+                      __func__, addr);
-+        break;
-+    }
-+}
-+
-+static const MemoryRegionOps m5208_rcm_ops = {
-+    .read = m5208_rcm_read,
-+    .write = m5208_rcm_write,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+};
-+
-+static void mcf5208_sys_init(MemoryRegion *address_space, qemu_irq *pic,
-+                             M68kCPU *cpu)
- {
-     MemoryRegion *iomem = g_new(MemoryRegion, 1);
-+    MemoryRegion *iomem_rcm = g_new(MemoryRegion, 1);
-     m5208_timer_state *s;
-     int i;
- 
-+    /* RCM */
-+    memory_region_init_io(iomem_rcm, NULL, &m5208_rcm_ops, cpu,
-+                          "m5208-rcm", 0x00000080);
-+    memory_region_add_subregion(address_space, 0xfc0a0000, iomem_rcm);
-     /* SDRAMC.  */
-     memory_region_init_io(iomem, NULL, &m5208_sys_ops, NULL, "m5208-sys", 0x00004000);
-     memory_region_add_subregion(address_space, 0xfc0a8000, iomem);
-@@ -265,7 +305,7 @@ static void mcf5208evb_init(MachineState *machine)
-     mcf_uart_create_mmap(0xfc064000, pic[27], serial_hd(1));
-     mcf_uart_create_mmap(0xfc068000, pic[28], serial_hd(2));
- 
--    mcf5208_sys_init(address_space_mem, pic);
-+    mcf5208_sys_init(address_space_mem, pic, cpu);
- 
-     mcf_fec_init(address_space_mem, 0xfc030000, pic + 36);
- 
--- 
-2.41.0
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
+for any user-visible changes.
 
+-- PMM
 
