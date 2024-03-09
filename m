@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D26887721F
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 17:01:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6C3877217
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 16:58:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riz5M-0007Mr-9N; Sat, 09 Mar 2024 10:58:08 -0500
+	id 1riz59-0007Jm-N5; Sat, 09 Mar 2024 10:57:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1riz55-0007H0-TY; Sat, 09 Mar 2024 10:57:51 -0500
+ id 1riz57-0007JF-JK; Sat, 09 Mar 2024 10:57:53 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1riz54-0004HT-6c; Sat, 09 Mar 2024 10:57:51 -0500
+ id 1riz55-0004Hh-QN; Sat, 09 Mar 2024 10:57:53 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D52065452A;
- Sat,  9 Mar 2024 18:58:32 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 286935452B;
+ Sat,  9 Mar 2024 18:58:34 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 565A9944BF;
- Sat,  9 Mar 2024 18:57:36 +0300 (MSK)
-Received: (nullmailer pid 1694659 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 637A0944C0;
+ Sat,  9 Mar 2024 18:57:37 +0300 (MSK)
+Received: (nullmailer pid 1694662 invoked by uid 1000);
  Sat, 09 Mar 2024 15:57:29 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 05/11] char: Slightly better error reporting when chardev is in
- use
-Date: Sat,  9 Mar 2024 18:57:23 +0300
-Message-Id: <20240309155729.1694607-6-mjt@tls.msk.ru>
+Subject: [PULL 06/11] blockdev: Fix block_resize error reporting for op
+ blockers
+Date: Sat,  9 Mar 2024 18:57:24 +0300
+Message-Id: <20240309155729.1694607-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240309155729.1694607-1-mjt@tls.msk.ru>
 References: <20240309155729.1694607-1-mjt@tls.msk.ru>
@@ -63,69 +63,69 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Markus Armbruster <armbru@redhat.com>
 
-Both
+When block_resize() runs into an op blocker, it creates an error like
+this:
 
-    $ qemu-system-x86_64 -chardev null,id=chr0,mux=on -mon chardev=chr0 -mon chardev=chr0 -mon chardev=chr0 -mon chardev=chr0 -mon chardev=chr0
+        error_setg(errp, "Device '%s' is in use", device);
 
-and
+Trouble is @device can be null.  My system formats null as "(null)",
+but other systems might crash.  Reproducer:
 
-    $ qemu-system-x86_64 -chardev null,id=chr0 -mon chardev=chr0 -mon chardev=chr0
-fail with
+1. Create two block devices
 
-    qemu-system-x86_64: -mon chardev=chr0: Device 'chr0' is in use
+    -> {"execute": "blockdev-add", "arguments": {"driver": "file", "node-name": "blk0", "filename": "64k.img"}}
+    <- {"return": {}}
+    -> {"execute": "blockdev-add", "arguments": {"driver": "file", "node-name": "blk1", "filename": "m.img"}}
+    <- {"return": {}}
 
-Improve to
+2. Put a blocker on one them
 
-    qemu-system-x86_64: -mon chardev=chr0: too many uses of multiplexed chardev 'chr0' (maximum is 4)
+    -> {"execute": "blockdev-mirror", "arguments": {"job-id": "job0", "device": "blk0", "target": "blk1", "sync": "full"}}
+    {"return": {}}
+    -> {"execute": "job-pause", "arguments": {"id": "job0"}}
+    {"return": {}}
+    -> {"execute": "job-complete", "arguments": {"id": "job0"}}
+    {"return": {}}
 
-and
+   Note: job events elided for brevity.
 
-    qemu-system-x86_64: -mon chardev=chr0: chardev 'chr0' is already in use
+3. Attempt to resize
 
+    -> {"execute": "block_resize", "arguments": {"node-name": "blk1", "size":32768}}
+    <- {"error": {"class": "GenericError", "desc": "Device '(null)' is in use"}}
+
+Broken when commit 3b1dbd11a60 made @device optional.  Fixed in commit
+ed3d2ec98a3 (block: Add errp to b{lk,drv}_truncate()), except for this
+one instance.
+
+Fix it by using the error message provided by the op blocker instead,
+so it fails like this:
+
+    <- {"error": {"class": "GenericError", "desc": "Node 'blk1' is busy: block device is in use by block job: mirror"}}
+
+Fixes: 3b1dbd11a60d (qmp: Allow block_resize to manipulate bs graph nodes.)
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- chardev/char-fe.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ blockdev.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/chardev/char-fe.c b/chardev/char-fe.c
-index 20222a4cad..66cee8475a 100644
---- a/chardev/char-fe.c
-+++ b/chardev/char-fe.c
-@@ -199,13 +199,18 @@ bool qemu_chr_fe_init(CharBackend *b, Chardev *s, Error **errp)
-             MuxChardev *d = MUX_CHARDEV(s);
+diff --git a/blockdev.c b/blockdev.c
+index f8bb0932f8..d8fb3399f5 100644
+--- a/blockdev.c
++++ b/blockdev.c
+@@ -2252,8 +2252,7 @@ void coroutine_fn qmp_block_resize(const char *device, const char *node_name,
+     }
  
-             if (d->mux_cnt >= MAX_MUX) {
--                goto unavailable;
-+                error_setg(errp,
-+                           "too many uses of multiplexed chardev '%s'"
-+                           " (maximum is " stringify(MAX_MUX) ")",
-+                           s->label);
-+                return false;
-             }
- 
-             d->backends[d->mux_cnt] = b;
-             tag = d->mux_cnt++;
-         } else if (s->be) {
--            goto unavailable;
-+            error_setg(errp, "chardev '%s' is already in use", s->label);
-+            return false;
-         } else {
-             s->be = b;
-         }
-@@ -215,10 +220,6 @@ bool qemu_chr_fe_init(CharBackend *b, Chardev *s, Error **errp)
-     b->tag = tag;
-     b->chr = s;
-     return true;
--
--unavailable:
--    error_setg(errp, QERR_DEVICE_IN_USE, s->label);
--    return false;
- }
- 
- void qemu_chr_fe_deinit(CharBackend *b, bool del)
+     bdrv_graph_co_rdlock();
+-    if (bdrv_op_is_blocked(bs, BLOCK_OP_TYPE_RESIZE, NULL)) {
+-        error_setg(errp, QERR_DEVICE_IN_USE, device);
++    if (bdrv_op_is_blocked(bs, BLOCK_OP_TYPE_RESIZE, errp)) {
+         bdrv_graph_co_rdunlock();
+         return;
+     }
 -- 
 2.39.2
 
