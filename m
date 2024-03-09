@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3804187728A
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 18:52:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86549877289
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 18:52:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj0qm-0005e3-GD; Sat, 09 Mar 2024 12:51:12 -0500
+	id 1rj0qo-0005eu-25; Sat, 09 Mar 2024 12:51:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rj0qk-0005dZ-9T
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 12:51:10 -0500
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ id 1rj0ql-0005ds-FL
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 12:51:11 -0500
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rj0qi-0004tK-R7
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 12:51:10 -0500
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-5dcc4076c13so2086329a12.0
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 09:51:07 -0800 (PST)
+ id 1rj0qj-0004tT-BJ
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 12:51:11 -0500
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-5dbf7b74402so2364573a12.0
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 09:51:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710006666; x=1710611466; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710006668; x=1710611468; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pxxy6rYsXE+YgbqfLQwa9qOUOHg4ePBRyOPqmtL2n8Q=;
- b=DAEoAIuTkSeNkp6FY4+Ik2YIG6lZOc/bwHop7S8ZMywcd+AE31J+coKADvHDkAwF6L
- Z65oHEnJu0htjzqU1o3s7nop7QBD6FX8RgoLnc2vr8Jt7DTwzgIxBbxQfxcUujDhgwXp
- S96o86C4aQgPkG3lWEENE87h28A3+5yH3OPAuvzsZuW+0AZutV0WYqUr4jzo9y5UZcIA
- vOEE1MyTmitgVkjQ2aYogZWOTpQXZZEeU5uXz4ZLDfb8jcJM5dbFyrTC02qN4lUHmWav
- McHgB4xw8qeHbc98D2vkuF0WS5lJsPjD80hoghBJ+n4Qo+/TlzVWmlg0bkn1ZbMqdwTg
- fhbg==
+ bh=zBOpPFxa99oMMIr44Hfw/UhqA7O7Buk86zQ/3jKmdU4=;
+ b=mtDEdYhuz3U155cz6PaeY6y7Gf7j9QQgxAq5skriq5jf5xDzXn8qJBlLpOmJytmnBX
+ gCsvxzGSV1TISdHYqZzAigE1Hemt0DdUCEDYDCzZeaZXQzQmx7JBrgiRztcuDkaWc7yD
+ ClNYxfA8UQ4PhrHv2tuQFN9dDh1pbSWiK5S02fJJd6BFDGSnaTuyeB+QgMYgyN55D4Fc
+ RfjTIgHCLfNzLpDcyXHPnNlH5/gAO4rvR6FXIiTJlhTmbaV0h1qKHbbGw5FnbBpA8O6Z
+ uiX2gB9ZjtIzGVLug4cUXtdODklHm4+kdzqSuxwe3xp8wugQuRkCbDAHxi9lYsjoFglN
+ LGFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710006666; x=1710611466;
+ d=1e100.net; s=20230601; t=1710006668; x=1710611468;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pxxy6rYsXE+YgbqfLQwa9qOUOHg4ePBRyOPqmtL2n8Q=;
- b=GXOXK60Q9GtUQZEpuEIDoNcyDK7MaG2g611X0tqP8IFr4vGdunq/8qxf8xTe+SEdIZ
- HcdPnm2csjbdFcpKsm6SwG8ytVKqzcaM/W3qB30ilKTuFOAl/l59xLN2/oDDBMVyM1fH
- COPKp77SChnXL6cjC6q2jspTjEtRA7W81zYdo+F91WF9myzqlIe80MZUfj7V3tqiPiIM
- AFr7ilSWKoXJwj/3GToSuk4Kdh3siqIo1YvRDu6eVmuWc2WZM4P5RfYLBIpqXFqoEOmW
- 6/K/sSy6k3EYa5EA35K1wLE8uusq+NTWhj5bzkyxty2S43eN78kPYDpjOFvfI8jS2e4Y
- QKEw==
-X-Gm-Message-State: AOJu0Yx5kvJtH5ax4SVorDFh/znGwmnkymwAHbAtAxjFXvKqNLRWpjxU
- Cv34B4gyhy/aFAG8RCsoo8DILpkm6ureSaSmRhSyBhUkPpVgjhuOV2BJB7YlyYK2+RzcF9wip60
- E
-X-Google-Smtp-Source: AGHT+IEx+bOvSOwMHksIVFxcsgcSP4rxnsTSVAF28Zp9s46pJ2NEMUab5ccR70BSrvz4juisze4qNw==
-X-Received: by 2002:a17:902:da8e:b0:1dc:6b26:d1cd with SMTP id
- j14-20020a170902da8e00b001dc6b26d1cdmr2951651plx.2.1710006666317; 
- Sat, 09 Mar 2024 09:51:06 -0800 (PST)
+ bh=zBOpPFxa99oMMIr44Hfw/UhqA7O7Buk86zQ/3jKmdU4=;
+ b=d8Hb5u/GVCY0BPe3ww/Mra9Sq2jX0eK3oEHL0kAbNHuUQaaM/I5jrVsYyZ+TkSKJSh
+ FJ1mN6GPxYyZ5HFRat2fNnZt7Mj7VEbEePfhnCtwG/nd+Gk0mMaen5Wzk+xYBCZJmUKH
+ cUXm0Oe+mNfo8DFM4Sk5bKxL8CpWrvuML13VThXX8CHcgvvJoLUPH46G0zdWGScLRrnc
+ zODab2ZcyS3SSX0c3UByD6j9sRuKyGeGLLLiM5+HBDAYd5MfHgflMgPILbMmuG8yJJsa
+ ytnYp1ifXWzOqkisKGrl/WsDiQ8wAgEFmqH+bAHRJuSAb1v7WntKUmBaZ7OdY5ii0/dm
+ WQYA==
+X-Gm-Message-State: AOJu0YyrhOojpSaeoR3AlOYBjAntgt02YMjZp1Tx8TqoxUTMWydQstim
+ OTWcdoz4+vCbLYCHpbGT8yqzFthBXooKBDFsyzHDdMs7Jfefc35lUjl/ePo7k9LEaOm3S0J/FJY
+ 8
+X-Google-Smtp-Source: AGHT+IGQwhZG2YWW4FS96ffwK9Y+/S6qOjRaDO89ASR0XvIwU91Kyh71xqE/tI7W2XHMo697mlEFBg==
+X-Received: by 2002:a17:902:e804:b0:1dd:7e09:45dd with SMTP id
+ u4-20020a170902e80400b001dd7e0945ddmr2249247plg.19.1710006667738; 
+ Sat, 09 Mar 2024 09:51:07 -0800 (PST)
 Received: from stoup.. (098-147-055-211.res.spectrum.com. [98.147.55.211])
  by smtp.gmail.com with ESMTPSA id
- o12-20020a170902d4cc00b001dcfbbb1ddesm1578556plg.7.2024.03.09.09.51.05
+ o12-20020a170902d4cc00b001dcfbbb1ddesm1578556plg.7.2024.03.09.09.51.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 09 Mar 2024 09:51:05 -0800 (PST)
+ Sat, 09 Mar 2024 09:51:07 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com,
 	peter.maydell@linaro.org,
 	qemu-stable@nongnu.org
-Subject: [PATCH 1/2] tcg/aarch64: Fix tcg_out_cmp for test comparisons
-Date: Sat,  9 Mar 2024 07:51:01 -1000
-Message-Id: <20240309175102.726332-2-richard.henderson@linaro.org>
+Subject: [PATCH 2/2] tcg/aarch64: Fix tcg_out_brcond for test comparisons
+Date: Sat,  9 Mar 2024 07:51:02 -1000
+Message-Id: <20240309175102.726332-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240309175102.726332-1-richard.henderson@linaro.org>
 References: <20240309175102.726332-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,30 +94,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pass the type to tcg_out_logicali; remove the assert, duplicated
-at the start of tcg_out_logicali.
+When converting test vs UINT32_MAX to compare vs 0, we need to
+adjust the condition to match.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 339adf2f38e ("tcg/aarch64: Support TCG_COND_TST{EQ,NE}")
+Fixes: 34aff3c2e06 ("tcg/aarch64: Generate CBNZ for TSTNE of UINT32_MAX")
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/aarch64/tcg-target.c.inc | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tcg/aarch64/tcg-target.c.inc | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
-index dec8ecc1b6..38446c167e 100644
+index 38446c167e..56fc9cb9e0 100644
 --- a/tcg/aarch64/tcg-target.c.inc
 +++ b/tcg/aarch64/tcg-target.c.inc
-@@ -1388,8 +1388,7 @@ static void tcg_out_cmp(TCGContext *s, TCGType ext, TCGCond cond, TCGReg a,
-         if (!const_b) {
-             tcg_out_insn(s, 3510, ANDS, ext, TCG_REG_XZR, a, b);
-         } else {
--            tcg_debug_assert(is_limm(b));
--            tcg_out_logicali(s, I3404_ANDSI, 0, TCG_REG_XZR, a, b);
-+            tcg_out_logicali(s, I3404_ANDSI, ext, TCG_REG_XZR, a, b);
-         }
-     } else {
-         if (!const_b) {
+@@ -1464,6 +1464,7 @@ static void tcg_out_brcond(TCGContext *s, TCGType ext, TCGCond c, TCGArg a,
+     case TCG_COND_TSTNE:
+         /* tst xN,0xffffffff; b.ne L -> cbnz wN,L */
+         if (b_const && b == UINT32_MAX) {
++            c = tcg_tst_eqne_cond(c);
+             ext = TCG_TYPE_I32;
+             need_cmp = false;
+             break;
 -- 
 2.34.1
 
