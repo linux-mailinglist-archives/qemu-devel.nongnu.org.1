@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D0F987738E
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:23:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E18DD87739C
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:26:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj2HB-0000Ap-QG; Sat, 09 Mar 2024 14:22:33 -0500
+	id 1rj2HH-0000CV-Fz; Sat, 09 Mar 2024 14:22:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2H9-0000AM-SN
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:22:31 -0500
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2HF-0000BW-9p
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:22:37 -0500
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2H7-0002S4-NM
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:22:31 -0500
-Received: by mail-lj1-x22e.google.com with SMTP id
- 38308e7fff4ca-2d094bc2244so45046661fa.1
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:22:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2HC-0002Si-Vw
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:22:37 -0500
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-a450bedffdfso408583966b.3
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:22:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710012147; x=1710616947; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710012153; x=1710616953; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9v68VdV/ZTxTWOB82N2ZE0IksCha8mce59bQC7Dz3io=;
- b=y9EJGYm5tiwU7GvILWKfd+GRYVi0A0oTnRfXE26Mgv9cV3HJXpAKsg9vPuA2c18aYk
- YW9drXOHrP20ue/Vs7Yd6RWs0GOgAo79zy+HfTJpP6Qav29a6YsundROXXvP9VFzhJNG
- WoZl4BvgspQ0l4JP+ArxuJ6Fww7nJy7vBkUIGBqESHfqnCenX4sfiJfFe9HtzeaTV6Bs
- g/iYPNA7tixh+y2qjejPYXGmdIyYKwUHIlKoxYmAZDnUWuR5yj/6VAh+qwlWnh7Pjgx6
- DPO+qtmgCf3tiw/VYfWi88eay5P2kvfD/btzeIBoX4YoB9r9LGIU3yQ3NLl738/JIiX+
- vdPQ==
+ bh=hXABjAaMhxHgVCCn4BlGHy0+qqoq0gDIyiPdTnOnZyc=;
+ b=mfsMsTYkDCpgjf2QMCF2eoAcYTW4ZyH08BAH20vmzKCLBsafDfXyM29j4rw9LIXOIp
+ Qg4s6KzOEXV6AwBmGF9ZrB2sfT0kPXUVt0KBKkuJLVjvimqXOjnQmACaqfAcIzX8UoHb
+ PKNFiK9jVQNKdkHJt9qow0RjOX382GViTFkKUH1nFZLImaTLiGC27cLjZ+R/uVGfQEV6
+ Bc1ZsC2wZeENotgdiXhULYMVlPp4rtrHjJ5VFBI4gEMrP04nlAmaVk7B15pGBoNNQmB7
+ sy9TexOj/3dLAqhM6YMHgx8/dWaVs5Vt6iVsEcNkD5AKgsLCbR+Qc8HzOoI+AOgT4t9C
+ zfgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710012147; x=1710616947;
+ d=1e100.net; s=20230601; t=1710012153; x=1710616953;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9v68VdV/ZTxTWOB82N2ZE0IksCha8mce59bQC7Dz3io=;
- b=uX/Mn9bRKf6+RhB4qDJXBP/yz5ZuNhuzISWYvSKfsLtJolKzNM3Jthg/IIEY+Rw/NT
- +QM91AzS6h1v9kSRpFaO5thKoM2h3l507d//exjXFx4NojIO7SE6jKsZ1XFctDQHXoXP
- XG/rnjrn1Aly6lKgCmcI1IAKWdvG1t3wbXFM/tirpyyFxa0ZJ9CG5vFwsaTvZoB205Pd
- QkU6FwEgAbXmdsnJTApB8OgoWbGNvQ7zOehWCAeRyg9sLuORdis/ohX0QUxpLILUNXSQ
- Vdvzcz0/LhtH4UbG+9m2tm5rUf9uIvvOa095lhgemcF4K8z8QYc0zWR+xrIMB+Yl8UhB
- VIkA==
-X-Gm-Message-State: AOJu0YzegXNRd2f/K0W2cMGRUl+Ii9+wd7eXclYVOfdqpQifcvJWdK+A
- JAEj84Kd54172EGz6RhsWDpY69ZQ3cojNC6jOIa5GI/HRfUlAn4ikkQFYkpgDAukrCUop+xWlDX
- Q
-X-Google-Smtp-Source: AGHT+IEPUeAq3OvXQ6d5BNC7LVFINL5jOukf6dFmDeF5FkUQjdJ+zjK8mwm9i8o+ivn3j1gVM1bH4g==
-X-Received: by 2002:ac2:43d2:0:b0:513:486a:57af with SMTP id
- u18-20020ac243d2000000b00513486a57afmr1542144lfl.7.1710012147310; 
- Sat, 09 Mar 2024 11:22:27 -0800 (PST)
+ bh=hXABjAaMhxHgVCCn4BlGHy0+qqoq0gDIyiPdTnOnZyc=;
+ b=MhpagmTUNjTxxxwaNfhMlLWxO+RMOhKEqrxCr9nRKOc4W3KtcqtW13c+ECZtpQg54O
+ c/+Zu8g8qphQFZaeV4fduMIzGtpL0WDDBsy+IWR4fqbPmvRf9PA61BlnHRO7vHPhvays
+ Ji/RHT4VEgN0bYPOYONFO+2gn/2xIjNCb/JES2hKKTYGAuaWVbOOLr2/wfU9BWlJ/C3t
+ S1/9hbhSlm9wePExcuyaHDXHMBEoQ4inBn3sLwUaDMXAeZ96ym8SxCWPYf4u/eidiZvA
+ gjwAnVU3AF2cn7WYvQGaJwO2HY9KaFQftXmBBpQzUk4WDuzqHdCw6vzifsFZ+ySvLRFe
+ 4vgg==
+X-Gm-Message-State: AOJu0YwXW/a39b9G5l1I8q3rBF7m8N+bTSGCEfIcBexsx3CmuBn2FLjK
+ XEOXRSfW9DZ6uxjrQ4a7Syzjo/V2HJDi0Umc7UR5kRryGPsZfgWEPNMnouDd2umjiQyklfyxccu
+ h
+X-Google-Smtp-Source: AGHT+IG1/vyvQGvmM09S/M6+IuzayHPuZieilQc2Rg23/rY/x2WN2KV9nhRWH7snP7zUoE6gG7SZXw==
+X-Received: by 2002:a17:906:4f02:b0:a44:446b:e99e with SMTP id
+ t2-20020a1709064f0200b00a44446be99emr1256763eju.31.1710012153357; 
+ Sat, 09 Mar 2024 11:22:33 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.237])
  by smtp.gmail.com with ESMTPSA id
- h27-20020a170906399b00b00a3ce60b003asm1185569eje.176.2024.03.09.11.22.25
+ sd21-20020a170906ce3500b00a45f3524ac3sm1161512ejb.118.2024.03.09.11.22.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 09 Mar 2024 11:22:26 -0800 (PST)
+ Sat, 09 Mar 2024 11:22:32 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
  David Woodhouse <dwmw@amazon.co.uk>,
  Stefano Stabellini <sstabellini@kernel.org>,
  Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
  xen-devel@lists.xenproject.org
-Subject: [PULL 02/43] sysemu/xen: Forbid using Xen headers in user emulation
-Date: Sat,  9 Mar 2024 20:21:29 +0100
-Message-ID: <20240309192213.23420-3-philmd@linaro.org>
+Subject: [PULL 03/43] sysemu/xen-mapcache: Check Xen availability with
+ CONFIG_XEN_IS_POSSIBLE
+Date: Sat,  9 Mar 2024 20:21:30 +0100
+Message-ID: <20240309192213.23420-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240309192213.23420-1-philmd@linaro.org>
 References: <20240309192213.23420-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,57 +97,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Xen is a system specific accelerator, it makes no sense
-to include its headers in user emulation.
+"sysemu/xen.h" defines CONFIG_XEN_IS_POSSIBLE as a target-agnostic
+version of CONFIG_XEN accelerator.
+Use it in order to use "sysemu/xen-mapcache.h" in target-agnostic files.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Message-Id: <20231114143816.71079-3-philmd@linaro.org>
+Message-Id: <20231114143816.71079-4-philmd@linaro.org>
 ---
- include/sysemu/xen.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/sysemu/xen-mapcache.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/sysemu/xen.h b/include/sysemu/xen.h
-index bc13ad5692..a9f591f26d 100644
---- a/include/sysemu/xen.h
-+++ b/include/sysemu/xen.h
-@@ -10,6 +10,10 @@
- #ifndef SYSEMU_XEN_H
- #define SYSEMU_XEN_H
+diff --git a/include/sysemu/xen-mapcache.h b/include/sysemu/xen-mapcache.h
+index c8e7c2f6cf..10c2e3082a 100644
+--- a/include/sysemu/xen-mapcache.h
++++ b/include/sysemu/xen-mapcache.h
+@@ -10,10 +10,11 @@
+ #define XEN_MAPCACHE_H
  
-+#ifdef CONFIG_USER_ONLY
-+#error Cannot include sysemu/xen.h from user emulation
-+#endif
-+
  #include "exec/cpu-common.h"
++#include "sysemu/xen.h"
  
- #ifdef NEED_CPU_H
-@@ -26,16 +30,13 @@ extern bool xen_allowed;
+ typedef hwaddr (*phys_offset_to_gaddr_t)(hwaddr phys_offset,
+                                          ram_addr_t size);
+-#ifdef CONFIG_XEN
++#ifdef CONFIG_XEN_IS_POSSIBLE
  
- #define xen_enabled()           (xen_allowed)
- 
--#ifndef CONFIG_USER_ONLY
- void xen_hvm_modified_memory(ram_addr_t start, ram_addr_t length);
- void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size,
-                    struct MemoryRegion *mr, Error **errp);
--#endif
- 
- #else /* !CONFIG_XEN_IS_POSSIBLE */
- 
- #define xen_enabled() 0
--#ifndef CONFIG_USER_ONLY
- static inline void xen_hvm_modified_memory(ram_addr_t start, ram_addr_t length)
- {
-     /* nothing */
-@@ -45,7 +46,6 @@ static inline void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size,
- {
-     g_assert_not_reached();
- }
--#endif
- 
- #endif /* CONFIG_XEN_IS_POSSIBLE */
- 
+ void xen_map_cache_init(phys_offset_to_gaddr_t f,
+                         void *opaque);
 -- 
 2.41.0
 
