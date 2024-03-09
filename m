@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E35C98773ED
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 21:45:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A98D8773E9
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 21:45:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj3Y8-0005iS-Bz; Sat, 09 Mar 2024 15:44:08 -0500
+	id 1rj3Y9-0005jF-Ux; Sat, 09 Mar 2024 15:44:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rj3Y5-0005fy-1J
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 15:44:05 -0500
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1rj3Y8-0005iV-2Z
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 15:44:08 -0500
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rj3Y3-0006XD-Aq
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 15:44:04 -0500
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6da202aa138so2072627b3a.2
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 12:44:02 -0800 (PST)
+ id 1rj3Y6-0006d1-Lv
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 15:44:07 -0500
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6da202aa138so2072650b3a.2
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 12:44:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1710017041; x=1710621841; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1710017044; x=1710621844; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=p/ejtrzarPrG0PNfpEFunidUoSZrIjXAq7l/f+eMwmY=;
- b=cFbb8WhLPclgiY0b7aQkGMOcggiaxreGUt5A8b1vXm8krp0GlfSXzOosTeXUvoxwZ8
- 1CUILjg2IuiIGQEPDOVuKerILMpAJkVOb8SD671Z/G5oaAVHf3aUws71rB8J9FUIGTz6
- JszyRD+9tk285mQQb4QEaBQgFS1oI0boD68zgluRcG2H+4IKdgIFYCmNDeJHvebq2xRX
- TgbAf2bd0Pbg6zD7aPwnOA0RlfoBr2Bl0Cdv3NjTvI9m6vOH9oyYnd6D4ziStnQRhQPP
- HldUKnaviVhYC85T9W0savUN0Hrkl4IvaW+yS63od2pZ3DhFrl3Jvhxq6gCFz4Q8ojUc
- Rzgg==
+ bh=w061jCPPwUR4u6cbb77XQauyX2K6ooNzzeN6qQfz33k=;
+ b=bAfRVOp+I1R3kqJoy03wqW+ixZSiSA6BafTqETn9KusbqxDOvwz1UZpUKqD3XTdnCC
+ aXL8utnzZ2WF9XXO45PFGrjVy8Ou+gykALqD1ba7qDpK2NISNsIriJ2VPQ9BrPj5r0MK
+ osg8TP2RcgGDsCFhQZvTDEJ66CDyzg/aWufKa4HaURCa7OIx6TKA7NqP14JnYUPTXdYt
+ 5makNZN3opBm//aobtH1RvVBZFow0VrZjnQaK9nQu4ZcAHW7cDyGARYiJlNRXM2M9hFW
+ zCfEPSNWFIndF8MCAV21MGUZENshBtNKCvSbW9d2zPVjfK6Uz8PXjTkaTUR05Ue8rhJ6
+ SShQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710017041; x=1710621841;
+ d=1e100.net; s=20230601; t=1710017044; x=1710621844;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=p/ejtrzarPrG0PNfpEFunidUoSZrIjXAq7l/f+eMwmY=;
- b=CvbzD3lMnYBoBNzOZsriOImTE1gK5g8Pmuc7u2ry0AWSpF9p1s9ny6uAfMEQBFTgNb
- jq3tGyEiK7UppGlWjeMUu79erKFHk09svPmZhFE260luhl+pzNPfNIl1v7mFjjuOrxya
- QrDzutx+xU43E2pD/TKVbzRirvFmJuZSDwsDyNPirMbMOLA3QCSTS1R9dyWixhm1UEFb
- 8z9WgwWpgl647fLyq8fgmsmw+k8LHZ9eXkdIcins4mELrZJibs1W2ltkm84trmh6QYvm
- 8C6KhM5pSSKyVxVfq4OXL8iohenTOESLWrj/zlgQ3vpxRALmVgF7hjVohRjykyTPsTzu
- 02/g==
-X-Gm-Message-State: AOJu0YzUj70jKby3373zK+AsHtWnO3STPzvcSJ7+xa1NUo+g14f84qdv
- o/4Qo+v1jA+05FFnxrhq2ci77uRDEC+JP/ppND8L48VJfRuqts0W8KfYCVUO3TnCHnjFzTXYlx4
- n
-X-Google-Smtp-Source: AGHT+IGJG/Zbmsx4FW7I0WxXPOtERhpY3LKM17mZSDGmQXR1SknHDOmPMKsdYUbuuoKxsoSQXCGAQg==
+ bh=w061jCPPwUR4u6cbb77XQauyX2K6ooNzzeN6qQfz33k=;
+ b=O8QQ83/CU29pctXESAEuWxjwL2vPSaLawArQwJOrVPJv7QMXcWmePrVU32xzh4Y5TV
+ 8tlUZ2Nsrvg4qLq39CGFuBUeEXJW1HGChCU+GOHzcrRpqudrwGB4EczZuiPrxFDrkMlj
+ 9QhIqNvG5bImRSAK2pPM6ZJ1Wj083L31OxBS2R5GDrBssht6tHeU+QiYdLtrEz5DjA2L
+ P6vme51jgCiGAUqxdgwNgUFtT0y8UZHwIOvSaKcyuBRLP/McXX50IS0eGFGRHugKf5il
+ qajk9lQZxYN9FAyQtinJanrFhYRS45g8EdYgfE72gV2nLyD5Ym1QPJeNx1XFaVEFE0zs
+ CX0Q==
+X-Gm-Message-State: AOJu0Yw7jovYt3feB0fahl47npcrZfMa64B6MACAdCZBaiaSQd0Z/P/g
+ 66S6UHeFRsQMD+Oabz/bSL0gx5CsrKjjUyTokfqC8XbHkDM7UrnYsKi1xuAzhgwRn9Wh5/Pnz8w
+ x
+X-Google-Smtp-Source: AGHT+IEvq2hVuT5gS2at6A+Ja0Cuen73LJt7ab+XcA/qaTvhcSOpUCiddI63qz5S1x3m+FuYewkHsA==
 X-Received: by 2002:a05:6a00:c95:b0:6e6:3406:26d3 with SMTP id
- a21-20020a056a000c9500b006e6340626d3mr4909450pfv.4.1710017040968; 
- Sat, 09 Mar 2024 12:44:00 -0800 (PST)
+ a21-20020a056a000c9500b006e6340626d3mr4909647pfv.4.1710017044607; 
+ Sat, 09 Mar 2024 12:44:04 -0800 (PST)
 Received: from grind.. ([177.94.15.159]) by smtp.gmail.com with ESMTPSA id
- ey15-20020a056a0038cf00b006e647716b6esm1656270pfb.149.2024.03.09.12.43.58
+ ey15-20020a056a0038cf00b006e647716b6esm1656270pfb.149.2024.03.09.12.44.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 09 Mar 2024 12:44:00 -0800 (PST)
+ Sat, 09 Mar 2024 12:44:04 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  richard.henderson@linaro.org, philmd@linaro.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v9 02/10] target/riscv: handle vstart >= vl in
- vext_set_tail_elems_1s()
-Date: Sat,  9 Mar 2024 17:43:37 -0300
-Message-ID: <20240309204347.174251-3-dbarboza@ventanamicro.com>
+Subject: [PATCH v9 03/10] target/riscv/vector_helper.c: do vstart=0 after
+ updating tail
+Date: Sat,  9 Mar 2024 17:43:38 -0300
+Message-ID: <20240309204347.174251-4-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240309204347.174251-1-dbarboza@ventanamicro.com>
 References: <20240309204347.174251-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,172 +95,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We're going to make changes that will required each helper to be
-responsible for the 'vstart' management, i.e. we will relieve the
-'vstart < vl' assumption that helpers have today.
+vext_vv_rm_1() and vext_vv_rm_2() are setting vstart = 0 before their
+respective callers (vext_vv_rm_2 and  vext_vx_rm_2) update the tail
+elements.
 
-To do that we'll need to deal with how we're updating tail elements
-first. We can't update them if vstart >= vl, but at this moment we're
-not guarding for it.
-
-We have the vext_set_tail_elems_1s() helper to update tail elements.
-Change it to accept an 'env' pointer, where we can read both vstart and
-vl, and make it a no-op if vstart >= vl. Note that callers will need to
-set env->start = 0 *after* the helper from now on.
-
-The exception are three helpers: vext_ldst_stride(), vext_ldst_us() and
-vext_ldst_index(). They are are incrementing env->vstart during
-execution and will end up with env->vstart = vl when tail updating. For
-these cases only, do an early check and exit if vstart >= vl, and set
-env->vstart = 0 before updating the tail.
-
-For everyone else we'll do vext_set_tail_elems_1s() and then clear
-env->vstart. This is the case of vext_ldff() that is already using
-set_tail_elems_1s(), and will be the case for the rest after the next
-patches.
-
-Let's also simplify the API a little by removing the 'nf' argument since
-it can be derived from 'desc'.
+This is benign now, but we'll convert the tail updates to use
+vext_set_tail_elems_1s(), and this function is sensitive to vstart
+changes. Do vstart = 0 after vext_set_elems_1s() now to make the
+conversion easier.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/vector_helper.c | 59 ++++++++++++++++++++++++++++++------
- 1 file changed, 49 insertions(+), 10 deletions(-)
+ target/riscv/vector_helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index ca79571ae2..a3b496b6e9 100644
+index a3b496b6e9..86b990ce03 100644
 --- a/target/riscv/vector_helper.c
 +++ b/target/riscv/vector_helper.c
-@@ -174,19 +174,32 @@ GEN_VEXT_ST_ELEM(ste_h, int16_t, H2, stw)
- GEN_VEXT_ST_ELEM(ste_w, int32_t, H4, stl)
- GEN_VEXT_ST_ELEM(ste_d, int64_t, H8, stq)
- 
--static void vext_set_tail_elems_1s(target_ulong vl, void *vd,
--                                   uint32_t desc, uint32_t nf,
--                                   uint32_t esz, uint32_t max_elems)
-+/*
-+ * This function is sensitive to env->vstart changes since
-+ * it'll be a no-op if vstart >= vl. Do not clear env->vstart
-+ * before calling it unless you're certain that vstart < vl.
-+ */
-+static void vext_set_tail_elems_1s(CPURISCVState *env, void *vd,
-+                                   uint32_t desc, uint32_t esz,
-+                                   uint32_t max_elems)
- {
-     uint32_t vta = vext_vta(desc);
-+    uint32_t nf = vext_nf(desc);
-     int k;
- 
--    if (vta == 0) {
-+    /*
-+     * Section 5.4 of the RVV spec mentions:
-+     * "When vstart ≥ vl, there are no body elements, and no
-+     *  elements are updated in any destination vector register
-+     *  group, including that no tail elements are updated
-+     *  with agnostic values."
-+     */
-+    if (vta == 0 || env->vstart >= env->vl) {
-         return;
-     }
- 
-     for (k = 0; k < nf; ++k) {
--        vext_set_elems_1s(vd, vta, (k * max_elems + vl) * esz,
-+        vext_set_elems_1s(vd, vta, (k * max_elems + env->vl) * esz,
-                           (k * max_elems + max_elems) * esz);
-     }
- }
-@@ -207,6 +220,11 @@ vext_ldst_stride(void *vd, void *v0, target_ulong base,
-     uint32_t esz = 1 << log2_esz;
-     uint32_t vma = vext_vma(desc);
- 
-+    if (env->vstart >= env->vl) {
-+        env->vstart = 0;
-+        return;
-+    }
-+
-     for (i = env->vstart; i < env->vl; i++, env->vstart++) {
-         k = 0;
-         while (k < nf) {
-@@ -222,9 +240,13 @@ vext_ldst_stride(void *vd, void *v0, target_ulong base,
-             k++;
+@@ -1962,7 +1962,6 @@ vext_vv_rm_1(void *vd, void *v0, void *vs1, void *vs2,
          }
+         fn(vd, vs1, vs2, i, env, vxrm);
      }
-+    /*
-+     * Set vstart before tail update - vstart changed during
-+     * execution and we already checked that vstart < vl.
-+     */
-     env->vstart = 0;
- 
--    vext_set_tail_elems_1s(env->vl, vd, desc, nf, esz, max_elems);
-+    vext_set_tail_elems_1s(env, vd, desc, esz, max_elems);
+-    env->vstart = 0;
  }
  
- #define GEN_VEXT_LD_STRIDE(NAME, ETYPE, LOAD_FN)                        \
-@@ -272,6 +294,11 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-     uint32_t max_elems = vext_max_elems(desc, log2_esz);
-     uint32_t esz = 1 << log2_esz;
+ static inline void
+@@ -1997,6 +1996,7 @@ vext_vv_rm_2(void *vd, void *v0, void *vs1, void *vs2,
+     }
+     /* set tail elements to 1s */
+     vext_set_elems_1s(vd, vta, vl * esz, total_elems * esz);
++    env->vstart = 0;
+ }
  
-+    if (env->vstart >= env->vl) {
-+        env->vstart = 0;
-+        return;
-+    }
-+
-     /* load bytes from guest memory */
-     for (i = env->vstart; i < evl; i++, env->vstart++) {
-         k = 0;
-@@ -281,9 +308,13 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-             k++;
+ /* generate helpers for fixed point instructions with OPIVV format */
+@@ -2087,7 +2087,6 @@ vext_vx_rm_1(void *vd, void *v0, target_long s1, void *vs2,
          }
+         fn(vd, s1, vs2, i, env, vxrm);
      }
-+    /*
-+     * Set vstart before tail update - vstart changed during
-+     * execution and we already checked that vstart < vl.
-+     */
-     env->vstart = 0;
- 
--    vext_set_tail_elems_1s(evl, vd, desc, nf, esz, max_elems);
-+    vext_set_tail_elems_1s(env, vd, desc, esz, max_elems);
+-    env->vstart = 0;
  }
  
- /*
-@@ -386,6 +417,11 @@ vext_ldst_index(void *vd, void *v0, target_ulong base,
-     uint32_t esz = 1 << log2_esz;
-     uint32_t vma = vext_vma(desc);
- 
-+    if (env->vstart >= env->vl) {
-+        env->vstart = 0;
-+        return;
-+    }
-+
-     /* load bytes from guest memory */
-     for (i = env->vstart; i < env->vl; i++, env->vstart++) {
-         k = 0;
-@@ -402,9 +438,13 @@ vext_ldst_index(void *vd, void *v0, target_ulong base,
-             k++;
-         }
+ static inline void
+@@ -2122,6 +2121,7 @@ vext_vx_rm_2(void *vd, void *v0, target_long s1, void *vs2,
      }
-+    /*
-+     * Set vstart before tail update - vstart changed during
-+     * execution and we already checked that vstart < vl.
-+     */
-     env->vstart = 0;
- 
--    vext_set_tail_elems_1s(env->vl, vd, desc, nf, esz, max_elems);
-+    vext_set_tail_elems_1s(env, vd, desc, esz, max_elems);
+     /* set tail elements to 1s */
+     vext_set_elems_1s(vd, vta, vl * esz, total_elems * esz);
++    env->vstart = 0;
  }
  
- #define GEN_VEXT_LD_INDEX(NAME, ETYPE, INDEX_FN, LOAD_FN)                  \
-@@ -532,9 +572,8 @@ ProbeSuccess:
-             k++;
-         }
-     }
-+    vext_set_tail_elems_1s(env, vd, desc, esz, max_elems);
-     env->vstart = 0;
--
--    vext_set_tail_elems_1s(env->vl, vd, desc, nf, esz, max_elems);
- }
- 
- #define GEN_VEXT_LDFF(NAME, ETYPE, LOAD_FN)               \
+ /* generate helpers for fixed point instructions with OPIVX format */
 -- 
 2.43.2
 
