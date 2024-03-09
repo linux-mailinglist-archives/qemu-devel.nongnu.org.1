@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1951987721D
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 17:00:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD1F87721A
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 16:59:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1riz5O-0007Q8-4V; Sat, 09 Mar 2024 10:58:10 -0500
+	id 1riz5P-0007RT-Lq; Sat, 09 Mar 2024 10:58:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1riz5G-0007NC-Gb; Sat, 09 Mar 2024 10:58:03 -0500
+ id 1riz5J-0007PX-CF; Sat, 09 Mar 2024 10:58:06 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1riz5D-0004JJ-6A; Sat, 09 Mar 2024 10:58:01 -0500
+ id 1riz5H-0004Jt-3O; Sat, 09 Mar 2024 10:58:05 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5577654532;
- Sat,  9 Mar 2024 18:58:39 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 2C4A654533;
+ Sat,  9 Mar 2024 18:58:40 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id ECE42944C4;
- Sat,  9 Mar 2024 18:57:42 +0300 (MSK)
-Received: (nullmailer pid 1694674 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id AFE37944C5;
+ Sat,  9 Mar 2024 18:57:43 +0300 (MSK)
+Received: (nullmailer pid 1694677 invoked by uid 1000);
  Sat, 09 Mar 2024 15:57:29 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
+Cc: Ani Sinha <anisinha@redhat.com>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 10/11] hw/mem/cxl_type3: Fix problem with g_steal_pointer()
-Date: Sat,  9 Mar 2024 18:57:28 +0300
-Message-Id: <20240309155729.1694607-11-mjt@tls.msk.ru>
+Subject: [PULL 11/11] docs/acpi/bits: add some clarity and details while also
+ improving formating
+Date: Sat,  9 Mar 2024 18:57:29 +0300
+Message-Id: <20240309155729.1694607-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240309155729.1694607-1-mjt@tls.msk.ru>
 References: <20240309155729.1694607-1-mjt@tls.msk.ru>
@@ -59,107 +60,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Ani Sinha <anisinha@redhat.com>
 
-When setting GLIB_VERSION_MAX_ALLOWED to GLIB_VERSION_2_58 or higher,
-glib adds type safety checks to the g_steal_pointer() macro. This
-triggers errors in the ct3_build_cdat_entries_for_mr() function which
-uses the g_steal_pointer() for type-casting from one pointer type to
-the other (which also looks quite weird since the local pointers have
-all been declared with g_autofree though they are never freed here).
-Fix it by using a proper typecast instead. For making this possible, we
-have to remove the QEMU_PACKED attribute from some structs since GCC
-otherwise complains that the source and destination pointer might
-have different alignment restrictions. Removing the QEMU_PACKED should
-be fine here since the structs are already naturally aligned. Anyway,
-add some QEMU_BUILD_BUG_ON() statements to make sure that we've got
-the right sizes (without padding in the structs).
+Update bios-bits docs to add more details on why a pre-OS environment for
+testing bioses is useful. Add author's FOSDEM talk link. Also improve the
+formating of the document while at it.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/mem/cxl_type3.c        | 24 ++++++++++++------------
- include/hw/cxl/cxl_cdat.h |  9 ++++++---
- 2 files changed, 18 insertions(+), 15 deletions(-)
+ docs/devel/acpi-bits.rst | 55 ++++++++++++++++++++++++++++------------
+ 1 file changed, 39 insertions(+), 16 deletions(-)
 
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index e8801805b9..b679dfae1c 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -46,12 +46,12 @@ static void ct3_build_cdat_entries_for_mr(CDATSubHeader **cdat_table,
-                                           int dsmad_handle, MemoryRegion *mr,
-                                           bool is_pmem, uint64_t dpa_base)
- {
--    g_autofree CDATDsmas *dsmas = NULL;
--    g_autofree CDATDslbis *dslbis0 = NULL;
--    g_autofree CDATDslbis *dslbis1 = NULL;
--    g_autofree CDATDslbis *dslbis2 = NULL;
--    g_autofree CDATDslbis *dslbis3 = NULL;
--    g_autofree CDATDsemts *dsemts = NULL;
-+    CDATDsmas *dsmas;
-+    CDATDslbis *dslbis0;
-+    CDATDslbis *dslbis1;
-+    CDATDslbis *dslbis2;
-+    CDATDslbis *dslbis3;
-+    CDATDsemts *dsemts;
+diff --git a/docs/devel/acpi-bits.rst b/docs/devel/acpi-bits.rst
+index 9677b0098f..1ec394f5fb 100644
+--- a/docs/devel/acpi-bits.rst
++++ b/docs/devel/acpi-bits.rst
+@@ -1,26 +1,48 @@
+ =============================================================================
+ ACPI/SMBIOS avocado tests using biosbits
+ =============================================================================
+-
++************
++Introduction
++************
+ Biosbits is a software written by Josh Triplett that can be downloaded
+ from https://biosbits.org/. The github codebase can be found
+-`here <https://github.com/biosbits/bits/tree/master>`__. It is a software that executes
+-the bios components such as acpi and smbios tables directly through acpica
+-bios interpreter (a freely available C based library written by Intel,
++`here <https://github.com/biosbits/bits/tree/master>`__. It is a software that
++executes the bios components such as acpi and smbios tables directly through
++acpica bios interpreter (a freely available C based library written by Intel,
+ downloadable from https://acpica.org/ and is included with biosbits) without an
+-operating system getting involved in between.
++operating system getting involved in between. Bios-bits has python integration
++with grub so actual routines that executes bios components can be written in
++python instead of bash-ish (grub's native scripting language).
+ There are several advantages to directly testing the bios in a real physical
+-machine or VM as opposed to indirectly discovering bios issues through the
+-operating system. For one thing, the OSes tend to hide bios problems from the
+-end user. The other is that we have more control of what we wanted to test
+-and how by directly using acpica interpreter on top of the bios on a running
+-system. More details on the inspiration for developing biosbits and its real
+-life uses can be found in [#a]_ and [#b]_.
++machine or in a VM as opposed to indirectly discovering bios issues through the
++operating system (the OS). Operating systems tend to bypass bios problems and
++hide them from the end user. We have more control of what we wanted to test and
++how by being as close to the bios on a running system as possible without a
++complicated software component such as an operating system coming in between.
++Another issue is that we cannot exercise bios components such as ACPI and
++SMBIOS without being in the highest hardware privilege level, ring 0 for
++example in case of x86. Since the OS executes from ring 0 whereas normal user
++land software resides in unprivileged ring 3, operating system must be modified
++in order to write our test routines that exercise and test the bios. This is
++not possible in all cases. Lastly, test frameworks and routines are preferably
++written using a high level scripting language such as python. OSes and
++OS modules are generally written using low level languages such as C and
++low level assembly machine language. Writing test routines in a low level
++language makes things more cumbersome. These and other reasons makes using
++bios-bits very attractive for testing bioses. More details on the inspiration
++for developing biosbits and its real life uses can be found in [#a]_ and [#b]_.
++
+ For QEMU, we maintain a fork of bios bits in gitlab along with all the
+-dependent submodules here: https://gitlab.com/qemu-project/biosbits-bits
++dependent submodules `here <https://gitlab.com/qemu-project/biosbits-bits>`__.
+ This fork contains numerous fixes, a newer acpica and changes specific to
+ running this avocado QEMU tests using bits. The author of this document
+-is the sole maintainer of the QEMU fork of bios bits repo.
++is the sole maintainer of the QEMU fork of bios bits repository. For more
++information, please see author's `FOSDEM talk on this bios-bits based test
++framework <https://fosdem.org/2024/schedule/event/fosdem-2024-2262-exercising-qemu-generated-acpi-smbios-tables-using-biosbits-from-within-a-guest-vm-/>`__.
++
++*********************************
++Description of the test framework
++*********************************
  
-     dsmas = g_malloc(sizeof(*dsmas));
-     *dsmas = (CDATDsmas) {
-@@ -135,12 +135,12 @@ static void ct3_build_cdat_entries_for_mr(CDATSubHeader **cdat_table,
-     };
+ Under the directory ``tests/avocado/``, ``acpi-bits.py`` is a QEMU avocado
+ test that drives all this.
+@@ -120,8 +142,9 @@ Under ``tests/avocado/`` as the root we have:
+        (b) Add a SPDX license header.
+        (c) Perform modifications to the test.
  
-     /* Header always at start of structure */
--    cdat_table[CT3_CDAT_DSMAS] = g_steal_pointer(&dsmas);
--    cdat_table[CT3_CDAT_DSLBIS0] = g_steal_pointer(&dslbis0);
--    cdat_table[CT3_CDAT_DSLBIS1] = g_steal_pointer(&dslbis1);
--    cdat_table[CT3_CDAT_DSLBIS2] = g_steal_pointer(&dslbis2);
--    cdat_table[CT3_CDAT_DSLBIS3] = g_steal_pointer(&dslbis3);
--    cdat_table[CT3_CDAT_DSEMTS] = g_steal_pointer(&dsemts);
-+    cdat_table[CT3_CDAT_DSMAS] = (CDATSubHeader *)dsmas;
-+    cdat_table[CT3_CDAT_DSLBIS0] = (CDATSubHeader *)dslbis0;
-+    cdat_table[CT3_CDAT_DSLBIS1] = (CDATSubHeader *)dslbis1;
-+    cdat_table[CT3_CDAT_DSLBIS2] = (CDATSubHeader *)dslbis2;
-+    cdat_table[CT3_CDAT_DSLBIS3] = (CDATSubHeader *)dslbis3;
-+    cdat_table[CT3_CDAT_DSEMTS] = (CDATSubHeader *)dsemts;
- }
+-   Commits (a), (b) and (c) should go under separate commits so that the original
+-   test script and the changes we have made are separated and clear.
++   Commits (a), (b) and (c) preferably should go under separate commits so that
++   the original test script and the changes we have made are separated and
++   clear. (a) and (b) can sometimes be combined into a single step.
  
- static int ct3_build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
-diff --git a/include/hw/cxl/cxl_cdat.h b/include/hw/cxl/cxl_cdat.h
-index b44cefaad6..17a09066dc 100644
---- a/include/hw/cxl/cxl_cdat.h
-+++ b/include/hw/cxl/cxl_cdat.h
-@@ -82,7 +82,8 @@ typedef struct CDATDsmas {
-     uint16_t reserved;
-     uint64_t DPA_base;
-     uint64_t DPA_length;
--} QEMU_PACKED CDATDsmas;
-+} CDATDsmas;
-+QEMU_BUILD_BUG_ON(sizeof(CDATDsmas) != 24);
- 
- /* Device Scoped Latency and Bandwidth Information Structure - CDAT Table 5 */
- typedef struct CDATDslbis {
-@@ -95,7 +96,8 @@ typedef struct CDATDslbis {
-     uint64_t entry_base_unit;
-     uint16_t entry[3];
-     uint16_t reserved2;
--} QEMU_PACKED CDATDslbis;
-+} CDATDslbis;
-+QEMU_BUILD_BUG_ON(sizeof(CDATDslbis) != 24);
- 
- /* Device Scoped Memory Side Cache Information Structure - CDAT Table 6 */
- typedef struct CDATDsmscis {
-@@ -122,7 +124,8 @@ typedef struct CDATDsemts {
-     uint16_t reserved;
-     uint64_t DPA_offset;
-     uint64_t DPA_length;
--} QEMU_PACKED CDATDsemts;
-+} CDATDsemts;
-+QEMU_BUILD_BUG_ON(sizeof(CDATDsemts) != 24);
- 
- /* Switch Scoped Latency and Bandwidth Information Structure - CDAT Table 9 */
- typedef struct CDATSslbisHeader {
+    The test framework will then use your modified test script to run the test.
+    No further changes would be needed. Please check the logs to make sure that
+@@ -141,4 +164,4 @@ References:
+ -----------
+ .. [#a] https://blog.linuxplumbersconf.org/2011/ocw/system/presentations/867/original/bits.pdf
+ .. [#b] https://www.youtube.com/watch?v=36QIepyUuhg
+-
++.. [#c] https://fosdem.org/2024/schedule/event/fosdem-2024-2262-exercising-qemu-generated-acpi-smbios-tables-using-biosbits-from-within-a-guest-vm-/
 -- 
 2.39.2
 
