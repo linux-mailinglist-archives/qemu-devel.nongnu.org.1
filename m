@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FF428773A4
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:28:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 272588773A3
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:28:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj2IT-0001kb-OA; Sat, 09 Mar 2024 14:23:53 -0500
+	id 1rj2IY-0001uc-Gg; Sat, 09 Mar 2024 14:23:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2IS-0001dB-0l
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:23:52 -0500
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2IW-0001tb-WD
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:23:57 -0500
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2IO-0002e8-TJ
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:23:51 -0500
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-a44f2d894b7so410841866b.1
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:23:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2IU-0002fj-IB
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:23:56 -0500
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-a45c006ab82so385732766b.3
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:23:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710012226; x=1710617026; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710012233; x=1710617033; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZjbUGqOjGDJ48BD/FCrBKjFot720kk8N7cpG04DHyuw=;
- b=cEFkM32oD0RRrFmm3ezWC4f/6Ro69Bk3Y2eijHCMbyThd3+mkkvOuxCUxwy+uPWwsW
- swfgcQA4cY4aHghj5zdS1EgxqQLf3Au0sZuadPK+LldR1Df4up2bnlKloPS9XoSy6CJQ
- Vlw0L7J3PdqRE5wj2zNX8NTxLbwmuhLGSRt8vR5wdCgi+3GsENyRQB+lZRecDNjvTLvC
- 8asWNO2CUvVTew0msoj7d7d/cwZwabrIbe/xU0hA5BaNU568f6bznJy8YWbNuK20KnOj
- 9YVFm4DyLcJ22JxDWMj8v87AMsqdQnvNjAYgP16wi1oKvjh9tLG0KOJS8uK7jfMeNlib
- FZIg==
+ bh=0qhkX9N0f7mv4U6Enm7PREVuXkmrXKzBrsiRapOf0sE=;
+ b=D45f31p6YZNSPGyEI0JMwiP7W9vLR7q+9eAsn+HmAteLYhMy49YrwCppbmSS+Ik4kb
+ Xq9enhSzrG7H5a1LfkOA5r0oW5dNhXOYwO1bGjkSu3ScXXkFWjdr2bntvDHhqTGobGlI
+ N5eTJ4f49MJ2l2BKEkI2sN3FmoV2XN2cvOwWdvtnT0/hnLpReLwK0JBLsBKyHPS6floa
+ dnYHW5JJKP2XoPR4pJ6DwtAdU1mmRi75oMhpxwxpkSepGw45x9GQthFbf9lBCLMAxHIT
+ 18T8/IYJy8Nh8q5pjZbY5OWgHqSRMv5TpdDb9GI8vloYRI7hQhTtFDFtKq5EUKg5KDE+
+ 9KWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710012227; x=1710617027;
+ d=1e100.net; s=20230601; t=1710012233; x=1710617033;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZjbUGqOjGDJ48BD/FCrBKjFot720kk8N7cpG04DHyuw=;
- b=pF4kWPCRTuRUV6YfQpJ5AcXIKQcY+1PaRao6z4d+sq8k1q2tdSrL5mW2hxThn7i0iv
- 5von888oANDKTgX6c2/yAE6WZhRHrlWJb+JVYMaGkkn7kNBUVRTBc7Z4FzWe0jxbvqyI
- M2+1O2kHVbtLNc83Yvo+tUcj1atLsLYtI9jcsFtGlVj9lVynMXnEGX5rZkkWRmOO7mju
- cBHxqmH4uxXpGwKjgUWOtPuk0QL978V67V4f/908j49Uc5GPjVUmRBgSziy+VoJSUgqR
- kFi6jvXs/qyiiUIkDHYDoSXmIcujw/NUEGlmEdRPZ7tPQd98WsiT7JWkRdkxXpXtU/pc
- MfOQ==
-X-Gm-Message-State: AOJu0Yww1cvlLX6gh7r6K1M6kHb1TukU0BFFCoQ0lgXoxf/IKVdblT+l
- fyYFoWqA6UmhjxJ02Rr9LjxYZGc21QbkwvvZWBaw6K21l83dnIiXLJSmTBAE3FbZ/wyZ++FSYq/
- l
-X-Google-Smtp-Source: AGHT+IHsirtIOeTRkWpIs3e5yCTD71AujDzccS4QPk7Rv1bmDdnDigFagjmowzpwOIomavcvEpokKQ==
-X-Received: by 2002:a17:906:b0d0:b0:a44:8c1b:8877 with SMTP id
- bk16-20020a170906b0d000b00a448c1b8877mr1523044ejb.50.1710012226664; 
- Sat, 09 Mar 2024 11:23:46 -0800 (PST)
+ bh=0qhkX9N0f7mv4U6Enm7PREVuXkmrXKzBrsiRapOf0sE=;
+ b=twUggYnfnQHZFBSOQSi8z74EOZTpEQ/VkzmAbzh5edU8YT0ZEKikZVvWxVDdapX/kU
+ 8dSrr8TT0nf5nIKyypKCfHiT7hB9ah0qfENGS0oETf9w1sK1wrDgGmHCfne6htRWvesI
+ XLvjoFWXqB2KN7gPvd8u903/OHECsq7GMaOjhqG0KMmvvfMGYIcuJTu+7DzVP/3zLtf6
+ m50tQXuYY35Y/dn4l6mB/c0Bd3xT3EVX/pfSyHtQGa5BlKOX2W/pEMRDIEY81NKavyoK
+ EoIHd91M/gdiPvbXBkVnOxvgmRuMWiqtyV21LHwVkIEXbN6nHHUWq9E5e1PIWFqkqxVR
+ ugLw==
+X-Gm-Message-State: AOJu0Yy6yaZqpAjlY7CnJYI7TjS5VevLiDg2ku5InZD3JxMBoPqK+AIw
+ EKTB4DGEyYcRxkx5QfNkTokMibXRXQf7ASzNVOdQqChmCKmg4b00fSime/+FCNKZpkgby20P+6g
+ P
+X-Google-Smtp-Source: AGHT+IE0pC1PtPPUFeJGmL9nn03Tms40CF9fkNhPdedtB8UjjmtZf/tpA8FjVipfHktzZdaLWkMqpQ==
+X-Received: by 2002:a17:907:c28a:b0:a43:900a:31c5 with SMTP id
+ tk10-20020a170907c28a00b00a43900a31c5mr1698253ejc.4.1710012232757; 
+ Sat, 09 Mar 2024 11:23:52 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.237])
  by smtp.gmail.com with ESMTPSA id
- lt10-20020a170906fa8a00b00a45ab830eabsm1179687ejb.51.2024.03.09.11.23.45
+ k5-20020a170906578500b00a449ebf3d58sm1178448ejq.85.2024.03.09.11.23.51
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 09 Mar 2024 11:23:46 -0800 (PST)
+ Sat, 09 Mar 2024 11:23:52 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
  Stefano Stabellini <sstabellini@kernel.org>,
  Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  xen-devel@lists.xenproject.org
-Subject: [PULL 15/43] hw/char/xen_console: Fix missing ERRP_GUARD() for
+Subject: [PULL 16/43] hw/net/xen_nic: Fix missing ERRP_GUARD() for
  error_prepend()
-Date: Sat,  9 Mar 2024 20:21:42 +0100
-Message-ID: <20240309192213.23420-16-philmd@linaro.org>
+Date: Sat,  9 Mar 2024 20:21:43 +0100
+Message-ID: <20240309192213.23420-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240309192213.23420-1-philmd@linaro.org>
 References: <20240309192213.23420-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -119,17 +118,12 @@ ERRP_GUARD() could avoid the case when @errp is the pointer of
 error_fatal, the user can't see this additional information, because
 exit() happens in error_setg earlier than information is added [1].
 
-The xen_console_connect() passes @errp to error_prepend() without
-ERRP_GUARD().
+The xen_netdev_connect() passes @errp to error_prepend(), and its @errp
+parameter is from xen_device_frontend_changed().
 
-There're 2 places will call xen_console_connect():
- - xen_console_realize(): the @errp is from DeviceClass.realize()'s
-			  parameter.
- - xen_console_frontend_changed(): the @errp points its caller's
-                                   @local_err.
-
-To avoid the issue like [1] said, add missing ERRP_GUARD() at the
-beginning of xen_console_connect().
+Though its @errp points to @local_err of xen_device_frontend_changed(),
+to follow the requirement of @errp, add missing ERRP_GUARD() at the
+beginning of this function.
 
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
@@ -137,27 +131,27 @@ beginning of xen_console_connect().
 Cc: Stefano Stabellini <sstabellini@kernel.org>
 Cc: Anthony Perard <anthony.perard@citrix.com>
 Cc: Paul Durrant <paul@xen.org>
-Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Acked-by: Anthony PERARD <anthony.perard@citrix.com>
-Message-ID: <20240228163723.1775791-15-zhao1.liu@linux.intel.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20240229143914.1977550-3-zhao1.liu@linux.intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/char/xen_console.c | 1 +
+ hw/net/xen_nic.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/hw/char/xen_console.c b/hw/char/xen_console.c
-index 5cbee2f184..683c92aca1 100644
---- a/hw/char/xen_console.c
-+++ b/hw/char/xen_console.c
-@@ -206,6 +206,7 @@ static bool con_event(void *_xendev)
+diff --git a/hw/net/xen_nic.c b/hw/net/xen_nic.c
+index 453fdb9819..89487b49ba 100644
+--- a/hw/net/xen_nic.c
++++ b/hw/net/xen_nic.c
+@@ -351,6 +351,7 @@ static bool net_event(void *_xendev)
  
- static bool xen_console_connect(XenDevice *xendev, Error **errp)
+ static bool xen_netdev_connect(XenDevice *xendev, Error **errp)
  {
 +    ERRP_GUARD();
-     XenConsole *con = XEN_CONSOLE_DEVICE(xendev);
-     unsigned int port, limit;
+     XenNetDev *netdev = XEN_NET_DEVICE(xendev);
+     unsigned int port, rx_copy;
  
 -- 
 2.41.0
