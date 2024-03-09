@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A79898773BF
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:32:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 849868773C4
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Mar 2024 20:33:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rj2JK-0005WU-GS; Sat, 09 Mar 2024 14:24:46 -0500
+	id 1rj2JQ-0005wh-1o; Sat, 09 Mar 2024 14:24:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2JI-0005VG-Mn
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:44 -0500
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2JN-0005mI-Ep
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:49 -0500
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2JG-0002wM-47
- for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:44 -0500
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-512f54fc2dbso2841812e87.1
- for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:24:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rj2JL-00030L-NO
+ for qemu-devel@nongnu.org; Sat, 09 Mar 2024 14:24:49 -0500
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-a4467d570cdso222999866b.3
+ for <qemu-devel@nongnu.org>; Sat, 09 Mar 2024 11:24:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710012280; x=1710617080; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710012286; x=1710617086; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=D23dj2T324O3GGxalmLgdyenzdMnRbpccgTLg/T9/aw=;
- b=ERIDBqFzmZ17pH8SpnAgGNi8hOYLx4icONDj6FjNkH8a9Lu86H+sb5p714/R3MmdMI
- tTUH/MCx004PSNJ3wsEPn89NsUoV8J/4Sh/boI3gwrhoBqepIm8kZh55/bJ+WzXUB3ra
- kAR0/XJCG7N+4vOUVvIq4mJ74GmNh7SyGInoY8frLjvAK+SBJloJjBpVhHidlL00fBIJ
- vw4XZkoXdP5AXC4BO4WeMEoOHqeThtvd8nyY6BWlm+IIEsKqm+89HhIXMJTSm9e9cH+a
- Nx0FFYvs1LRIVBZzPsr2nrq+yNk4SHW+/91JRl2ldY56z3sY6pVa+6QRc8K+mJyY8aeq
- ngzA==
+ bh=8IXK0wenZmYfT6yBITIHGYESwGfPru4qC6kLvjxG9yg=;
+ b=TRpMwXKF63pdPAvGMgc6ixM4eoIBkr6yoc4X6K1oEkSpy9Wxpw4JPI+kljWmF0wg9D
+ JE9PEE4DVSgebju7pEz34rvWN8LDjE6Tm8SYgT2BVCFRVZ2cTLc2/alKPlBFtEvr/csk
+ 8GYG7NWZQwjgkGEseMrljxcEEbdVltS3/Ztk8VOZQZWAiM+FuNCcQ1Hh5OBGrXZ+VCDh
+ sqUzjSBMrV25pyBviNeemAv0vw2EICEWfXOlAYAEQBWUxP+CvUms5441fmU2yYJ1jLUY
+ GQSknB36f5mXe6W7Npw/Ei3aGNQjsbVgEQYPmnpH9/ksumQlzpavmapwQvXyfbkpX5B9
+ T5/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710012280; x=1710617080;
+ d=1e100.net; s=20230601; t=1710012286; x=1710617086;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D23dj2T324O3GGxalmLgdyenzdMnRbpccgTLg/T9/aw=;
- b=ntDEez+tGl/7z4ft651jjySZary/rgeuo5oOR/7zPKu9ol1WR+IIirkRNBH/+ZNF/v
- X0zkTD5dU4eTiwvDJoJjJEnMpKsBraLPAtZtfEUYwDvJsNOw2UM/Ag2SZCnIjg1AaOHp
- 4ZEB2tgwzxoakpqLSSNHblDdTVOFYKpDO88PmJGaJLbX+fxV+vxHwjFQ7r2ySMO6E04s
- yXwho4Te/nMq1DVQ/LOIeCPkEi4ZEKrn7yf/pqdd72RjdtD8AiceNJDkg9x5VpePTAkj
- lX4FwlMppS76l7rx0gs2h7mI41dJb/SZ75pqE2f+0x5UfSospROZZRN8gLtL+b7TFONx
- 0vhA==
-X-Gm-Message-State: AOJu0YyqL5b6+tKO1AcFoSvpwopsaJaaHwclmC2nIm4F97pLv7eh0fBK
- ozCyGuHQXAOi53mK5q3iSlW991xDvor4kX4nBLrDdAI/joHCj5iOcZFwBgjboFsq8vGerfCyHZR
- +
-X-Google-Smtp-Source: AGHT+IFA50J8VdobEnvhTgONujOFAQqMGumZmVsqPZm2tigiFmqnxLyrWPJ3fo4dD/omaGVJjcrkYQ==
-X-Received: by 2002:a05:6512:a96:b0:513:1cc7:ae4b with SMTP id
- m22-20020a0565120a9600b005131cc7ae4bmr2003705lfu.4.1710012280216; 
- Sat, 09 Mar 2024 11:24:40 -0800 (PST)
+ bh=8IXK0wenZmYfT6yBITIHGYESwGfPru4qC6kLvjxG9yg=;
+ b=VU4fD9WTDwr5xjeufF6VM1BlpyRQUzh3bkm57T7lr5IljdfhWXr8Mzmdo8ss91cuOg
+ KyZmdvr3mNddIyEHILWkG0J0DdVYxoAkOSAATsc2N7p43BcvaryHvEvDvdMW6wDKckpA
+ SjdsB61SiSWbjdma5GoYREBSGwW2bkKAncF/OJd+0qJsoaI7i2v7u2uw3Eq4YE+yvZRX
+ xocKhk8SKi92Ai8n7ablPrJh/gbdXizz+PLh7DCkjnULO7yrLChYGVOwunILp5YZMDOE
+ 5TpwkQc0L4FosSsaeJgtf8rISlxBHO3J4Je6SWJhMn42LF8sb77/dZyN7iK/473ShEJL
+ TVPA==
+X-Gm-Message-State: AOJu0YwiztgXDDydi0PxgXmKgEdlhkgTKJX1m+7UbsLOM5cNPxgeeL3q
+ Oda6h63rry9kowsQL5lmrEss1naBAc/kCL0QdSwgCiVZ7kRzi1X4s+IjlBr1ldabTCRPE4gXNl4
+ n
+X-Google-Smtp-Source: AGHT+IHdZOGcI74LpqpnrucOzRjs+bV7tLhNh0HZy5RFuXIPB4cAJdoJYfXFqX4U5X9g7UUqrm1EgQ==
+X-Received: by 2002:a17:906:d0c5:b0:a45:110e:568f with SMTP id
+ bq5-20020a170906d0c500b00a45110e568fmr1452152ejb.37.1710012286153; 
+ Sat, 09 Mar 2024 11:24:46 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.237])
  by smtp.gmail.com with ESMTPSA id
- rn16-20020a170906d93000b00a441a7a75b5sm1174678ejb.209.2024.03.09.11.24.38
+ kq17-20020a170906abd100b00a40f7ed6cb9sm1173609ejb.4.2024.03.09.11.24.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 09 Mar 2024 11:24:39 -0800 (PST)
+ Sat, 09 Mar 2024 11:24:45 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
- Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 24/43] qdev: Add a granule_mode property
-Date: Sat,  9 Mar 2024 20:21:51 +0100
-Message-ID: <20240309192213.23420-25-philmd@linaro.org>
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 25/43] hmp: Add option to info qtree to omit details
+Date: Sat,  9 Mar 2024 20:21:52 +0100
+Message-ID: <20240309192213.23420-26-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240309192213.23420-1-philmd@linaro.org>
 References: <20240309192213.23420-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,98 +97,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eric Auger <eric.auger@redhat.com>
+From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Introduce a new enum type property allowing to set an
-IOMMU granule. Values are 4k, 8k, 16k, 64k and host.
-This latter indicates the vIOMMU granule will match
-the host page size.
+The output of info qtree monitor command is very long. Add an option
+to print a brief overview omitting all the details.
 
-A subsequent patch will add such a property to the
-virtio-iommu device.
-
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
+Message-ID: <20240307183812.0105D4E6004@zero.eik.bme.hu>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240227165730.14099-2-eric.auger@redhat.com>
 ---
- qapi/virtio.json                    | 18 ++++++++++++++++++
- include/hw/qdev-properties-system.h |  3 +++
- hw/core/qdev-properties-system.c    | 14 ++++++++++++++
- 3 files changed, 35 insertions(+)
+ system/qdev-monitor.c | 27 +++++++++++++++------------
+ hmp-commands-info.hx  |  6 +++---
+ 2 files changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/qapi/virtio.json b/qapi/virtio.json
-index a79013fe89..95745fdfd7 100644
---- a/qapi/virtio.json
-+++ b/qapi/virtio.json
-@@ -957,3 +957,21 @@
+diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+index a13db763e5..ad91e74181 100644
+--- a/system/qdev-monitor.c
++++ b/system/qdev-monitor.c
+@@ -744,7 +744,6 @@ DeviceState *qdev_device_add(QemuOpts *opts, Error **errp)
+ }
  
- { 'struct': 'DummyVirtioForceArrays',
-   'data': { 'unused-iothread-vq-mapping': ['IOThreadVirtQueueMapping'] } }
-+
-+##
-+# @GranuleMode:
-+#
-+# @4k: granule page size of 4KiB
-+#
-+# @8k: granule page size of 8KiB
-+#
-+# @16k: granule page size of 16KiB
-+#
-+# @64k: granule page size of 64KiB
-+#
-+# @host: granule matches the host page size
-+#
-+# Since: 9.0
-+##
-+{ 'enum': 'GranuleMode',
-+  'data': [ '4k', '8k', '16k', '64k', 'host' ] }
-diff --git a/include/hw/qdev-properties-system.h b/include/hw/qdev-properties-system.h
-index 06c359c190..626be87dd3 100644
---- a/include/hw/qdev-properties-system.h
-+++ b/include/hw/qdev-properties-system.h
-@@ -8,6 +8,7 @@ extern const PropertyInfo qdev_prop_macaddr;
- extern const PropertyInfo qdev_prop_reserved_region;
- extern const PropertyInfo qdev_prop_multifd_compression;
- extern const PropertyInfo qdev_prop_mig_mode;
-+extern const PropertyInfo qdev_prop_granule_mode;
- extern const PropertyInfo qdev_prop_losttickpolicy;
- extern const PropertyInfo qdev_prop_blockdev_on_error;
- extern const PropertyInfo qdev_prop_bios_chs_trans;
-@@ -47,6 +48,8 @@ extern const PropertyInfo qdev_prop_iothread_vq_mapping_list;
- #define DEFINE_PROP_MIG_MODE(_n, _s, _f, _d) \
-     DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_mig_mode, \
-                        MigMode)
-+#define DEFINE_PROP_GRANULE_MODE(_n, _s, _f, _d) \
-+    DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_granule_mode, GranuleMode)
- #define DEFINE_PROP_LOSTTICKPOLICY(_n, _s, _f, _d) \
-     DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_losttickpolicy, \
-                         LostTickPolicy)
-diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-index 1a396521d5..b45e90edb2 100644
---- a/hw/core/qdev-properties-system.c
-+++ b/hw/core/qdev-properties-system.c
-@@ -679,6 +679,20 @@ const PropertyInfo qdev_prop_mig_mode = {
-     .set_default_value = qdev_propinfo_set_default_value_enum,
- };
+ #define qdev_printf(fmt, ...) monitor_printf(mon, "%*s" fmt, indent, "", ## __VA_ARGS__)
+-static void qbus_print(Monitor *mon, BusState *bus, int indent);
  
-+/* --- GranuleMode --- */
-+
-+QEMU_BUILD_BUG_ON(sizeof(GranuleMode) != sizeof(int));
-+
-+const PropertyInfo qdev_prop_granule_mode = {
-+    .name = "GranuleMode",
-+    .description = "granule_mode values, "
-+                   "4k, 8k, 16k, 64k, host",
-+    .enum_table = &GranuleMode_lookup,
-+    .get = qdev_propinfo_get_enum,
-+    .set = qdev_propinfo_set_enum,
-+    .set_default_value = qdev_propinfo_set_default_value_enum,
-+};
-+
- /* --- Reserved Region --- */
+ static void qdev_print_props(Monitor *mon, DeviceState *dev, Property *props,
+                              int indent)
+@@ -784,13 +783,9 @@ static void bus_print_dev(BusState *bus, Monitor *mon, DeviceState *dev, int ind
+ static void qdev_print(Monitor *mon, DeviceState *dev, int indent)
+ {
+     ObjectClass *class;
+-    BusState *child;
+     NamedGPIOList *ngl;
+     NamedClockList *ncl;
  
- /*
+-    qdev_printf("dev: %s, id \"%s\"\n", object_get_typename(OBJECT(dev)),
+-                dev->id ? dev->id : "");
+-    indent += 2;
+     QLIST_FOREACH(ngl, &dev->gpios, node) {
+         if (ngl->num_in) {
+             qdev_printf("gpio-in \"%s\" %d\n", ngl->name ? ngl->name : "",
+@@ -814,12 +809,9 @@ static void qdev_print(Monitor *mon, DeviceState *dev, int indent)
+         class = object_class_get_parent(class);
+     } while (class != object_class_by_name(TYPE_DEVICE));
+     bus_print_dev(dev->parent_bus, mon, dev, indent);
+-    QLIST_FOREACH(child, &dev->child_bus, sibling) {
+-        qbus_print(mon, child, indent);
+-    }
+ }
+ 
+-static void qbus_print(Monitor *mon, BusState *bus, int indent)
++static void qbus_print(Monitor *mon, BusState *bus, int indent, bool details)
+ {
+     BusChild *kid;
+ 
+@@ -827,16 +819,27 @@ static void qbus_print(Monitor *mon, BusState *bus, int indent)
+     indent += 2;
+     qdev_printf("type %s\n", object_get_typename(OBJECT(bus)));
+     QTAILQ_FOREACH(kid, &bus->children, sibling) {
++        BusState *child_bus;
+         DeviceState *dev = kid->child;
+-        qdev_print(mon, dev, indent);
++        qdev_printf("dev: %s, id \"%s\"\n", object_get_typename(OBJECT(dev)),
++                    dev->id ? dev->id : "");
++        if (details) {
++            qdev_print(mon, dev, indent + 2);
++        }
++        QLIST_FOREACH(child_bus, &dev->child_bus, sibling) {
++            qbus_print(mon, child_bus, indent + 2, details);
++        }
+     }
+ }
+ #undef qdev_printf
+ 
+ void hmp_info_qtree(Monitor *mon, const QDict *qdict)
+ {
+-    if (sysbus_get_default())
+-        qbus_print(mon, sysbus_get_default(), 0);
++    bool details = !qdict_get_try_bool(qdict, "brief", false);
++
++    if (sysbus_get_default()) {
++        qbus_print(mon, sysbus_get_default(), 0, details);
++    }
+ }
+ 
+ void hmp_info_qdm(Monitor *mon, const QDict *qdict)
+diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
+index da120f82a3..ad1b1306e3 100644
+--- a/hmp-commands-info.hx
++++ b/hmp-commands-info.hx
+@@ -540,9 +540,9 @@ ERST
+ 
+     {
+         .name       = "qtree",
+-        .args_type  = "",
+-        .params     = "",
+-        .help       = "show device tree",
++        .args_type  = "brief:-b",
++        .params     = "[-b]",
++        .help       = "show device tree (-b: brief, omit properties)",
+         .cmd        = hmp_info_qtree,
+     },
+ 
 -- 
 2.41.0
 
