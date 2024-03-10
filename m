@@ -2,88 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1499877613
-	for <lists+qemu-devel@lfdr.de>; Sun, 10 Mar 2024 11:19:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26680877630
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Mar 2024 12:09:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjGFp-0005jN-Hp; Sun, 10 Mar 2024 06:18:05 -0400
+	id 1rjH2L-0006wO-15; Sun, 10 Mar 2024 07:08:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rjGFk-0005iG-4h
- for qemu-devel@nongnu.org; Sun, 10 Mar 2024 06:18:00 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rjGFh-0006WF-FI
- for qemu-devel@nongnu.org; Sun, 10 Mar 2024 06:17:59 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6e64a9df6c3so2826065b3a.3
- for <qemu-devel@nongnu.org>; Sun, 10 Mar 2024 03:17:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1710065874; x=1710670674; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=azdffTNh6udvmP3cv3bOT+TTLL69mPC4GDh7DQC14+A=;
- b=iqDug+rah4G5gzt8HUEDpGdSxEaXFDLUKydYpDYt3cA8TJyU09Gpkt8p4j/bRFOtCZ
- 6+Kw514Z/iAlGuAc41Z6H0deW9F2IPR/5sll7xGlYTaG3Iz8VM8+lz7z43w76/Unmgyx
- BUXx519ZZX+ZwIQBF9Qt9hsiHJGZ7pBvtV3OMQqFuGNJA+t/yTYxaLtAIPRIeI0Totrm
- rW4kHDz03gKxy3x+0SSjI9IA2nk5DItEMn7pUzEFw8hcumbQk6aPNDw+hvIHnU6djvaQ
- T8Ec48TMbj0A+aqFQMsW8XiXxKfhnYKd03OPuNe+a3peJz9VMSnUeaYHgJ/Q2OMRIDDS
- g5XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710065874; x=1710670674;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=azdffTNh6udvmP3cv3bOT+TTLL69mPC4GDh7DQC14+A=;
- b=KXxZFHdzAoCjWwHkHEnh+zsFunHrSmutEmZkdodtM6utTxBpKJTE2RDAikwtO8oWSt
- 5kmR9iDSJgX8FUd9er2nWpUe7npPeEJtOCfCwtlgcFgY+LOz/PKZNkGyNfctXm0JjhTb
- zKKDZNgREqfCulNuIoN/OpVO1Jt10YK79btVYc0s8LTIcVOpfZThCBc8k6sBEPj/3ovG
- /m5vdq39G8awYMDgrZ7vOA+UBTYu1OB2uOBIKElkuaDcYN9ESolJ16QtEzgCc3d9108z
- pIJxpfH/rX90bSsARPS44z4rtAMFeC1J1ZLWH3gNqQH25HRk37wyuIVYuLMmgS7KKwhe
- PR5w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXpuT6HDrWio/7mLLC8EOlq6P8DRDextrP0VRq/WaLpk0D7FsW3y5k2AFjom4gDLQDFN1H65sM+4SDozrmoQTytV38bDYw=
-X-Gm-Message-State: AOJu0Yzb8gqQwSTubhvBZHVANY8Bhtqb6PvG+4C1zpsF/AC03Rgva/D/
- 5lest0aedWMZE4d+SoE26JFPo2tjK45zn+1ixO5trUnKfOnFcJRoy4j2qrx4oSw=
-X-Google-Smtp-Source: AGHT+IG5e6rELQTRHMxIqKsCJQlM0w+o+pmxQ8+0eWVF8j7Dz2PAVkpQggFvSV8w0ELOe4UBQ1Z7Rw==
-X-Received: by 2002:a05:6a00:98e:b0:6e5:fb97:ed05 with SMTP id
- u14-20020a056a00098e00b006e5fb97ed05mr6384580pfg.25.1710065874417; 
- Sun, 10 Mar 2024 03:17:54 -0700 (PDT)
-Received: from [192.168.68.110] ([177.94.15.159])
- by smtp.gmail.com with ESMTPSA id
- o26-20020a056a001b5a00b006e66894df88sm2335300pfv.195.2024.03.10.03.17.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 10 Mar 2024 03:17:53 -0700 (PDT)
-Message-ID: <93e34ed6-9876-4a1c-897b-b0bc59831a01@ventanamicro.com>
-Date: Sun, 10 Mar 2024 07:17:50 -0300
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1rjH2G-0006v5-BG; Sun, 10 Mar 2024 07:08:08 -0400
+Received: from fhigh7-smtp.messagingengine.com ([103.168.172.158])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1rjH2C-0005jc-T4; Sun, 10 Mar 2024 07:08:07 -0400
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+ by mailfhigh.nyi.internal (Postfix) with ESMTP id 9626B1140064;
+ Sun, 10 Mar 2024 07:08:01 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute1.internal (MEProxy); Sun, 10 Mar 2024 07:08:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-transfer-encoding:content-type:content-type
+ :date:date:from:from:in-reply-to:message-id:mime-version
+ :reply-to:subject:subject:to:to; s=fm3; t=1710068881; x=
+ 1710155281; bh=63ZMpYFrSvLaOSintTqdxKjcQVNzy/0ic4rsbwOJIfA=; b=S
+ ChXkiHzJpkxRZ4R8jEooreBBs+8YcOup6owNauQ4m5znEgkGfq59K/yU8wdQG4XC
+ z3MxJhjguwwXU2KKMI4dlnuTLPL1I4j70KTPfjiy22KH2sSP8dmY00ApgKgoadpS
+ 9XtHIndwG8SggNx2sGDf5PCXMj0XNkoL1R2D0Z3b/1oggk4IZU9SzHqG5QQJ3Lt5
+ TpzwTj+Ow9BcvVd+0GdsYNv4ngxf6uBeK45jROPUkiD67ykq6sGu535TKEJ98XMv
+ RfwLUrSCBGo6T60I6SRI99weJFAXeQGlUSSUO40nITUu8XOIwaX4QdlevbmkJttG
+ 1+PWOAFqSqu32yURcxSZA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:message-id:mime-version:reply-to:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm1; t=1710068881; x=1710155281; bh=63ZMpYFrSvLaO
+ SintTqdxKjcQVNzy/0ic4rsbwOJIfA=; b=O0S7w9WVlXen0D+2xJhGfGMBbJzmp
+ 5BnGIkypC1tbgyvzEiJndWG9PEgE+GOevpbf5/5IcpLqzGZBOBeQr53plchtapfG
+ Km0BD4SY4IAi7FbBjzdU0T5b+OXfyVfckdn+8+WekXdwJDOX0+siDyvmhG5Hit7f
+ Zhf/2LjgfxMu9FfLlyT6ZxKI784ieDqWMtF5BBy1gnFsIv4JurThPbPT8sEb/N/6
+ 0odSkLMzdjws7hI6PZbO90ecxjARD0BsWu8Ynn11xxWcW3ejk6Mj04/xRX6jB1vK
+ rsi5U7grJEeBDhdU31nkbBgKN9P6kxj5d6GqZZGkCrvHIaEeazSNmWhFA==
+X-ME-Sender: <xms:kJTtZcQfhPjIemOEsq5knS_LrDnRAgiOPd-n3LMrnHTdHVdGKIa3OQ>
+ <xme:kJTtZZy6cQ22aWQ9xrMMDfAbA3CNY9aIgpFShLUvIsIf9QZhq-1MTOknHQbFn2Mdr
+ OlQigAaI1neN2GRQvg>
+X-ME-Received: <xmr:kJTtZZ30RC65Du6OViYuc3tfvaE58pjN6jBOT-XsRMvxA7lkNIIC2y7D7kuaRE_hilf0-fujAJ5WVdMw2fXoyIaG4uX7NjsdCKMcY0qoISJJg77sS0daA4h_PBlhHepqHjO9vuCxdMFkFg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrieelgddvgecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+ fjughrpefhufffkfggtgfgvfevofesthejredtredtjeenucfhrhhomhepmfhlrghushcu
+ lfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrthhtvg
+ hrnhepvdffhfehfeefuefgheehudelleeijeeuudfftdduvedtgfehhfdtfffgveekueef
+ necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihhtsh
+ esihhrrhgvlhgvvhgrnhhtrdgukh
+X-ME-Proxy: <xmx:kJTtZQChwJIUjNEm0_HB3dA_eCoFs95EB8mBE8BCH5YnAWtRL36EHQ>
+ <xmx:kJTtZVhR7jT3j9ssrmaAUZIhyeSd9ZAkhbVgg4093IWFlLwcxKHznA>
+ <xmx:kJTtZcpOlHRiWN_L2y2Z_2_hZ51FcfnTrBIY--a2Ie4k69BytnUBoQ>
+ <xmx:kZTtZabpa7kft41OEF4DSET5mFOD5aL9w2Y_G2qchyWK_pUGdIPEYw>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 10 Mar 2024 07:07:59 -0400 (EDT)
+From: Klaus Jensen <its@irrelevant.dk>
+Subject: [PATCH 0/2] hw/nvme: fix hibernation-based migration
+Date: Sun, 10 Mar 2024 12:07:24 +0100
+Message-Id: <20240310-fix-msix-exclusive-bar-v1-0-4483205ae22e@samsung.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 09/10] target/riscv: Clear vstart_qe_zero flag
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- philmd@linaro.org, Ivan Klokov <ivan.klokov@syntacore.com>
-References: <20240309204347.174251-1-dbarboza@ventanamicro.com>
- <20240309204347.174251-10-dbarboza@ventanamicro.com>
- <a3765207-28bb-44fd-b207-58327516a6cc@linaro.org>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <a3765207-28bb-44fd-b207-58327516a6cc@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x436.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-B4-Tracking: v=1; b=H4sIAGyU7WUC/x2MSwqAMAwFryJZG2hrdeFVxEWtUQP+aLAI4t0Nb
+ gYG5r0HhBKTQFs8kCiz8LGr2LKAuIR9JuRRHZxx3lTW4MQ3bqKgO66XcCYcQsKxqevGe+uDi6D
+ jM5GW/3HXv+8HbCO37WgAAAA=
+To: Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>, 
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Yanan Wang <wangyanan55@huawei.com>
+Cc: Julien Grall <julien@xen.org>, qemu-block@nongnu.org, 
+ qemu-devel@nongnu.org, Klaus Jensen <k.jensen@samsung.com>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=874; i=k.jensen@samsung.com;
+ h=from:subject:message-id; bh=+2PyS6j9QtGX9/hr9euhqlTWNZsl9k+6ghilZKFm3W0=;
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGXtlI7/r0uI8hCa9SWtlqua3IENTppxoF3jD
+ VnTk9+YwMr4BIkBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJl7ZSOAAoJEE3hrzFt
+ Tw3peysIAK6a/9cbqBhDCFGbnbMcSXXRToQRT7omn9SmHXfWUuAAi16JrLynnhzBMq7gJn0sHff
+ OxXyFpTGBM09LIMHmDJ4amhhMh+JEt+kYivQbirjLw+N/3+dMzZqUYSxc/F0Oga16JSYi1RuIn/
+ D5/egBw+OzaKUwzchlOyFsLJglNzbj3M0cg1eeqbz1bDLbv9B3Q+gJ5C3rbF6ZvxCtz5BPhIe62
+ PGDgd5714mJNiNRlBNK1fyhn4GeISaFB/GkIOuXNAfpcp8NvGRdLqVx/G/ijO9AlCSBzlkJ818P
+ IkPoLiUTFQG4s2TAJEVQgn2ONzc5I3eHqspvlRD4Wy4sm5X4RRKAnKsk
+X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
+ fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
+Received-SPF: pass client-ip=103.168.172.158; envelope-from=its@irrelevant.dk;
+ helo=fhigh7-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,40 +116,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Julien Grall, in #2184, reported that hibernation-based migration with
+hw/nvme is broken when suspending on a pre 6.0 QEMU and resuming on a
+more recent one. This is because the BAR layout was changed in 6.0.
 
+Fix this by adding a machine compatibility parameter that restores the
+old behavior.
 
-On 3/10/24 04:47, Richard Henderson wrote:
-> On 3/9/24 10:43, Daniel Henrique Barboza wrote:
->> From: Ivan Klokov <ivan.klokov@syntacore.com>
->>
->> The vstart_qe_zero flag is set at the beginning of the translation
-> 
-> Here and subject, s/qe/ne/.
+Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+---
+Klaus Jensen (2):
+      hw/nvme: generalize the mbar size helper
+      hw/nvme: add machine compatibility parameter to enable msix exclusive bar
 
-Hmmmm  ... the flag name is correct - vstart_qe_zero. But the patch isn't
-clearing it at the end of insns, the patch is setting it.
+ hw/core/machine.c |  1 +
+ hw/nvme/ctrl.c    | 73 ++++++++++++++++++++++++++++++++++++-------------------
+ hw/nvme/nvme.h    |  1 +
+ 3 files changed, 50 insertions(+), 25 deletions(-)
+---
+base-commit: f901bf11b3ddf852e591593b09b8aa7a177f9a0b
+change-id: 20240310-fix-msix-exclusive-bar-d65564414a2c
 
-I'll change the subject to "enable vstart_eq_zero in the end of insns".
+Best regards,
+-- 
+Klaus Jensen <k.jensen@samsung.com>
 
-And in this first quote I'll change 'set' to 'updated':
-
-"The vstart_qe_zero flag is updated at the beginning of the translation (...)"
-
-Because 'flag is set' can give the impression that we're enabling it. 'flag is
-updated' is more in line with what happens: vstart_eq_zero will track the result
-of vstart = 0.
-
-
-Thanks,
-
-
-Daniel
-
-
-
-
-
-> 
-> 
-> r~
 
