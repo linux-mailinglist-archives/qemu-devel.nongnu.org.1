@@ -2,84 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B78F9877684
-	for <lists+qemu-devel@lfdr.de>; Sun, 10 Mar 2024 12:55:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF4D4877685
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Mar 2024 12:56:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjHkh-0007ul-8j; Sun, 10 Mar 2024 07:54:03 -0400
+	id 1rjHmi-0006dX-Vy; Sun, 10 Mar 2024 07:56:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rjHkf-0007uB-DA
- for qemu-devel@nongnu.org; Sun, 10 Mar 2024 07:54:01 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rjHkc-00045e-Ue
- for qemu-devel@nongnu.org; Sun, 10 Mar 2024 07:54:01 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-6da9c834646so3324402b3a.3
- for <qemu-devel@nongnu.org>; Sun, 10 Mar 2024 04:53:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1710071636; x=1710676436; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TMn63prcVteRus1yYdprTy/N0umMjC+ArdoC3MJRmKA=;
- b=Gp7kAbyVzbhshiGoyksLjdrzntU+i9/DMdM22TRoqLP/s+XCxgCaVCDTiwhcx8MQdr
- fQjO7nhyDVULbmCUsxXKekUpQiiYZYh+gWk2jiJBvvJF8lGQW3qinoLM2wYgIpGExOJt
- jLFu/iuaFWaH/Dl7Fz+ULwN3wDfcX41VOZ6AApPuDCkwLl96rk35BN1tZOJWq6MTqP7r
- LNDLT97oFFbpS87ymG+IC3NcygmR8CRRx46aRrtAigXO7q+g8fudNHV+YcY2KlMBqhRo
- Ei0jkE1PEgUAmPZkKr096P4jTxhN1MX1FHI8jZMQpC41U5R0UXvmJ+axFcJBP9psDhAY
- K/ZA==
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1rjHmY-0006Y0-UZ
+ for qemu-devel@nongnu.org; Sun, 10 Mar 2024 07:55:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1rjHmX-0004XI-5I
+ for qemu-devel@nongnu.org; Sun, 10 Mar 2024 07:55:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710071754;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=1o4GtBOgV/b7S+ZfNrxZ1ut3KAwK6U0uVec1/5Hl0eY=;
+ b=ZcwPvARWbfXwSHa0aNBSjOJg7kyEhnQiTLBtsxs7hOKZaaLk5P5WKQEZ4iiv1GEskkKe4U
+ XuCtrWzEljOcwmPCL9x61zUMzr/XDOvgBHqEtlvmWBnbxKceZYdAAa0rLYyO2jRz3S7GeG
+ AuO42vNKzPDgWjQJ8+f18yaLrS9Hbew=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-453-1l3eiZgdNkym_AeRNLZ8JQ-1; Sun, 10 Mar 2024 07:55:51 -0400
+X-MC-Unique: 1l3eiZgdNkym_AeRNLZ8JQ-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-33e9203e775so182142f8f.3
+ for <qemu-devel@nongnu.org>; Sun, 10 Mar 2024 04:55:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710071636; x=1710676436;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TMn63prcVteRus1yYdprTy/N0umMjC+ArdoC3MJRmKA=;
- b=p/qfOEaUHA8IkSrIHt9ASyKTnQAxagG8EgB9bC+Cx3kGQwhA4obk3zMc7ZXC/Ax1aQ
- p99Frygqk5svrLkzGA4Pz9smzqLJA7BfWOvcvdNnOjRAgSf1axGkb78hewhb+Bixlee/
- N82ftuSp1yoGiZS7Dzd1aMKOFQ7mz8geb7of+d3+CgRCgvHO9SAhLYRyi61J0sEFfFdO
- Yh1sLzPGaicfw+8JRxKLBGgiIPerA8jsJV2Eujzu69Sk6y771LLmWt6W4ILC59GAFWyy
- FaB6Q0g4/9ldLrHKMs60TS3Wu42r8AKuCxntqUOBTuEYZ1VURcrhAapmOm8nQkoiv42S
- JDew==
-X-Gm-Message-State: AOJu0YyJ/XgHXGNMXfW1+okw5mr8VN9YjfGDcJfCUlJS64Klwp28Jw84
- EBN6icA7IqwJHYqVv5ekuiqe3EDUFxQXYnUXQxmROM1bO/74p1XWcRTmPjJlv4oyXQZIxQ03hJu
- k
-X-Google-Smtp-Source: AGHT+IFUwsA/jTOcAvz9/pkbzo5evtQFxHkRNBEKWYoGKUA0bYWWOOsoiPz9hsXp8ZDCHR6hSlZQiQ==
-X-Received: by 2002:a05:6a00:2e94:b0:6e6:16b5:2ea3 with SMTP id
- fd20-20020a056a002e9400b006e616b52ea3mr6030031pfb.27.1710071636621; 
- Sun, 10 Mar 2024 04:53:56 -0700 (PDT)
-Received: from grind.. ([177.94.15.159]) by smtp.gmail.com with ESMTPSA id
- g22-20020aa78196000000b006e647059cccsm2449253pfi.33.2024.03.10.04.53.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 10 Mar 2024 04:53:56 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- richard.henderson@linaro.org, philmd@linaro.org,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v10 10/10] target/riscv/vector_helper.c: optimize loops in
- ldst helpers
-Date: Sun, 10 Mar 2024 08:53:14 -0300
-Message-ID: <20240310115315.187283-11-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240310115315.187283-1-dbarboza@ventanamicro.com>
-References: <20240310115315.187283-1-dbarboza@ventanamicro.com>
+ d=1e100.net; s=20230601; t=1710071751; x=1710676551;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1o4GtBOgV/b7S+ZfNrxZ1ut3KAwK6U0uVec1/5Hl0eY=;
+ b=M9xjh4kH1SiLxLPSK8LvELR4ye3GHHjLktMIIdF7CNn0FW6kypsK+gmv5EuiA6LeFb
+ gk7m/RLhE0WzxNE9roSzFKrPzxPIo4FyNHxXXGZxMJKSn//H+4pbVhPGe5jLNlAv/CyE
+ JQxOwoluMjFwxisyCVkxhNG60NgCueW2XmG+oR9qkGoPS+L2H2K5WtEKs6AYgszQD0oD
+ oi6Oq0UFxYTJL3bLNL4rmclv6zg8EE97uvhUFlPtzTILg2VSkAMtV66lTv1k243HThmr
+ 1Pe32LVllFQAalBE6p/sF6ab6sh3w3VeH08IHrJwvQ0gIIGB21mEZuD9Kvf5z7MTptbs
+ Pagw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWKG7WGYHo6wadh76TeN94OlA2gb8dgjnIW0Dp0WFmcmIDhn/bKBqfncdjRMw6mzRbRfyYWjEYUC4hSUhbTN9RjrIDApgQ=
+X-Gm-Message-State: AOJu0Yyg3HHnFE86IJhWXYC9zdmql8ioK56BvhP4NrL2YvM6SkF/qq3g
+ 2qDEj6emE7AWT/FPB6sMQ3e43xcJBvI7e/Gc8mOvxEyLfEiaSeibLi3kgdsjoj7PfW5Q3W05rjx
+ 30XQUIsp6csG3aOXE4LZq207YIzC50H971GiCRyJZVGfgBTWSFa8jyLJ56O/9l8u7BC1oEupTjO
+ r7edV1OgvaPar+kRmdNh93fKEP0Vw=
+X-Received: by 2002:adf:efc5:0:b0:33e:6056:6b7d with SMTP id
+ i5-20020adfefc5000000b0033e60566b7dmr3167951wrp.52.1710071750885; 
+ Sun, 10 Mar 2024 04:55:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFYIBt7chZjAKMI+yt1xoBD2LE54vxVXuUVkrfkpwQvIzCxCMD0nPrxHZYSkpSVgbDX/vqUZEp9NemdJ9xHtOY=
+X-Received: by 2002:adf:efc5:0:b0:33e:6056:6b7d with SMTP id
+ i5-20020adfefc5000000b0033e60566b7dmr3167940wrp.52.1710071750576; Sun, 10 Mar
+ 2024 04:55:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+References: <20240306095407.3058909-1-zhao1.liu@linux.intel.com>
+ <20240306095407.3058909-4-zhao1.liu@linux.intel.com>
+ <c2bd5503-7ab1-41b7-af81-2f5bf5992ad3@redhat.com>
+ <Zesv4W8DKteGeE/a@intel.com>
+In-Reply-To: <Zesv4W8DKteGeE/a@intel.com>
+From: Prasad Pandit <ppandit@redhat.com>
+Date: Sun, 10 Mar 2024 17:25:34 +0530
+Message-ID: <CAE8KmOxHNTGkE-8Xd+RXOuHNmyHqPwU4HcYRO6qHBGVAy6nAew@mail.gmail.com>
+Subject: Re: [PATCH 03/14] hw/core/machine-smp: Simplify variables'
+ initialization in machine_parse_smp_config()
+To: Zhao Liu <zhao1.liu@linux.intel.com>
+Cc: Thomas Huth <thuth@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Yanan Wang <wangyanan55@huawei.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org, 
+ Xiaoling Song <xiaoling.song@intel.com>, Zhao Liu <zhao1.liu@intel.com>, 
+ Prasad Pandit <pjp@fedoraproject.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.945,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,50 +105,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Change the for loops in ldst helpers to do a single increment in the
-counter, and assign it env->vstart, to avoid re-reading from vstart
-every time.
+Hi,
 
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+On Fri, 8 Mar 2024 at 20:50, Zhao Liu <zhao1.liu@linux.intel.com> wrote:
+> On Fri, Mar 08, 2024 at 02:20:45PM +0100, Thomas Huth wrote:
+> > Can we always rely on that? ... or is this just by luck due to the current
+> > implementation? In the latter case, I'd maybe rather drop this patch again.
+>
+> Thanks for the correction, I revisited and referenced more similar use
+> cases, and indeed, only if the flag "has_*" is true, its corresponding
+> field should be considered reliable.
+
+* Is this because 'SMPConfiguration config'  fields are not always
+initialized with default values? Is that a bug? Having
+'SMPConfiguration' fields initialised to known default values could
+help to unify/simplify code which uses those fields.
+
+> Keeping explicit checking on has_* and explicit initialization of these
+> topology variables makes the code more readable.
+>
+> This patch is over-optimized and I would drop it.
+
+* Could we then simplify it in the following if <expression>
+===
+      if ((config->has_cpus && config->cpus == 0) ||
+          ... ||
+          (config->has_maxcpus && config->maxcpus == 0))
+
+could be
+
+      if (!cpus || !drawers || ... || !maxcpus) { ... }
+===
+
+Thank you.
 ---
- target/riscv/vector_helper.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 4fe8752eea..ee57300dc0 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -195,7 +195,7 @@ vext_ldst_stride(void *vd, void *v0, target_ulong base,
-         return;
-     }
- 
--    for (i = env->vstart; i < env->vl; i++, env->vstart++) {
-+    for (i = env->vstart; i < env->vl; env->vstart = ++i) {
-         k = 0;
-         while (k < nf) {
-             if (!vm && !vext_elem_mask(v0, i)) {
-@@ -270,7 +270,7 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-     }
- 
-     /* load bytes from guest memory */
--    for (i = env->vstart; i < evl; i++, env->vstart++) {
-+    for (i = env->vstart; i < evl; env->vstart = ++i) {
-         k = 0;
-         while (k < nf) {
-             target_ulong addr = base + ((i * nf + k) << log2_esz);
-@@ -393,7 +393,7 @@ vext_ldst_index(void *vd, void *v0, target_ulong base,
-     }
- 
-     /* load bytes from guest memory */
--    for (i = env->vstart; i < env->vl; i++, env->vstart++) {
-+    for (i = env->vstart; i < env->vl; env->vstart = ++i) {
-         k = 0;
-         while (k < nf) {
-             if (!vm && !vext_elem_mask(v0, i)) {
--- 
-2.43.2
+  - Prasad
 
 
