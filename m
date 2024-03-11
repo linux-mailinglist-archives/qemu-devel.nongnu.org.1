@@ -2,92 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1495D878A85
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 23:08:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA23D878A8E
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 23:10:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjngT-0000Mu-6E; Mon, 11 Mar 2024 17:59:49 -0400
+	id 1rjngT-0000MY-27; Mon, 11 Mar 2024 17:59:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngP-0000Hd-1z
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngR-0000Ia-0l
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngN-0003zJ-7e
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:44 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngP-0003zk-HN
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710194382;
+ s=mimecast20190719; t=1710194384;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0gY4gtbDoA8vveGI24uQ86jfhBn09tzoZ4ceN3ir39E=;
- b=MDFSlCOQF9z60kA+6Sa9vYaS/9H2CJqxxhi6OfrmrVOql4NpwEN8duaW9A7BFYucAY9Iej
- 4iTYlS6ydVtwv4XM5OEHY5iW8X6dDXQpYRz7EgBbIVlvKmJLdnEn5xFUEUe3XxRRVvj7/G
- 9aCD2II327yeyLQlLaZihXr+UKxQ3no=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=WuLmlhgoVqShMS6Vnf3dIC6HEgpMPj5YMMqJlGYRLLc=;
+ b=jN8EGyeSyV/sUKUzPKi0pJoTv06jbL8vxEG+QEtbN14MaTACtS0qkdeGdWNmmiijWNI0By
+ x+QlPwrG0piWWj/nOHo4UXKKndSDUCT1kOdGjJvbCdlON5v2LY/SyI0hj3YaAU5TFYt3Y6
+ 0fYqTnZ0SQwVhJhQYmdgviJP2XptZSY=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-247-_sh9AwjBODunqizGgXGRgw-1; Mon, 11 Mar 2024 17:59:41 -0400
-X-MC-Unique: _sh9AwjBODunqizGgXGRgw-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-690ca03e758so5295386d6.1
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 14:59:41 -0700 (PDT)
+ us-mta-102-91rwVLG_OSKl7W1GJoTj2Q-1; Mon, 11 Mar 2024 17:59:42 -0400
+X-MC-Unique: 91rwVLG_OSKl7W1GJoTj2Q-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-690ab2b0de1so15043856d6.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 14:59:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710194380; x=1710799180;
+ d=1e100.net; s=20230601; t=1710194381; x=1710799181;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0gY4gtbDoA8vveGI24uQ86jfhBn09tzoZ4ceN3ir39E=;
- b=C8grlHVqWKt9YYmCPzzkG98WipV3389YWRXI6cTAJw5Yub2T9IvMYFzp3gdoUHI7t5
- 17IKGrw2YnRN9HS/yaeuh94ta4j0eGXzLmsRk950GCkxq3yAeWoQMP27dCb2awJiVs5x
- 0hd0evfyXIT1UTa7rG9UHgwDqz4jG8KbK5Tg7oM+XDb/kraDpSxRxcFjb/k5mkRsAMrS
- mtVkwRp7e5Fr7R35sBfnMDWMdnI3oksBnV9Stx1RTJat2NMZuvdzEepWOpMdVvsxVmEL
- PzmeBQxY8bv8yksT3h6ot6Yzh0FTULM2GbCf6cvJZI7dFZyZXDOsXYf8yTn6NuS7ALSV
- Q+JA==
-X-Gm-Message-State: AOJu0Ywl5Tx+R+IdVXnS/UMqtahqfo4a3rAMQeNMnZxZL7+6cdiR1npc
- vTT2ngUPckYGxNG6slsnd3DqT/yr3V0ruWz/oT01609Pzi3DkC3IXE90j9hIGXt59DhdpsH2wcG
- m5HCrV9q+ZEuc5yW/YQ10ECnvIqgJCAb4JGvE8SsiumEc1IWA+MHprZz/yulv+vypzD57BKVAW2
- iMgBt5slZIrt2pX5luUlJ8vnIz++daVkGyjw==
-X-Received: by 2002:a0c:eb83:0:b0:68f:e779:70f2 with SMTP id
- x3-20020a0ceb83000000b0068fe77970f2mr136163qvo.3.1710194380647; 
- Mon, 11 Mar 2024 14:59:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGEoPP1WYLLpSMeU65gKxwcLLjZB4e+v4jIzD/uZCNUkeigL46BBe4tSeANo//Kh9Dh3b3NyQ==
-X-Received: by 2002:a0c:eb83:0:b0:68f:e779:70f2 with SMTP id
- x3-20020a0ceb83000000b0068fe77970f2mr136142qvo.3.1710194380149; 
- Mon, 11 Mar 2024 14:59:40 -0700 (PDT)
+ bh=WuLmlhgoVqShMS6Vnf3dIC6HEgpMPj5YMMqJlGYRLLc=;
+ b=LA5TXWkG/PRv4z5a1FU/2JjMqDVdzzW0TqnZB0CCLR2lEGX6MrtDEOh+1S6i0YbiWi
+ 6eyWEMNMsvoSCGAesT258vAebEV2pKjkEPsrt7mqZXgqMN3S3ClR38rmUPswxuunHHzV
+ iADhl/VcIsly767d2FMVcNCDl7KT6HBrfFJ39kuWGWS3iI3OQPRGh5/+m7K62iP3hEX5
+ oqxPbGX6UQh4roJXXkFZslTFWRUEZF4omWcJbg01DgXY4BhRgGFd/5NnTAR5PTyZnk+l
+ Y0eHpMH/qrS/C5zNF2CWZxKc9sI3zdy7L+oMOY+wFm2lMRsdtqKYFSCmc5QhsSKBHcIE
+ st+w==
+X-Gm-Message-State: AOJu0YxmIrXvQ38jMQnZ7tMH2YsBxzLGxmTUWItIY9sOwIs3uT5FPs8A
+ dqrXPd7euCrKrd/lk6StBorVXtyDsbs5NZlN+LdK8mrRwleO55UK3IZbny5i3u1zAkZJjhocfby
+ VGDe52PS6Q3324jbx2BMvEvTpAdG2PX/E/tNplbfq7k6kMyAmVcxbMDkYcZ+nn6KiurK+koIePy
+ 3mBwLO5Z59ujzRhCRC+lMnQNKZncxieI2pTQ==
+X-Received: by 2002:ad4:44af:0:b0:690:cdd5:ea47 with SMTP id
+ n15-20020ad444af000000b00690cdd5ea47mr130720qvt.4.1710194381590; 
+ Mon, 11 Mar 2024 14:59:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEv8d12NTCRvvsNd9wzrQScou0t1spnOSAsponO2Hhy5fuiAC1GN9sG08iGDSGNcIwuXZPIhQ==
+X-Received: by 2002:ad4:44af:0:b0:690:cdd5:ea47 with SMTP id
+ n15-20020ad444af000000b00690cdd5ea47mr130701qvt.4.1710194381131; 
+ Mon, 11 Mar 2024 14:59:41 -0700 (PDT)
 Received: from x1n.. (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- d6-20020a0ce446000000b00690cec16254sm1541932qvm.68.2024.03.11.14.59.38
+ d6-20020a0ce446000000b00690cec16254sm1541932qvm.68.2024.03.11.14.59.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 14:59:39 -0700 (PDT)
+ Mon, 11 Mar 2024 14:59:40 -0700 (PDT)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, peterx@redhat.com,
  Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
- Prasad Pandit <ppandit@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 09/34] migration/multifd: Don't fsync when closing
- QIOChannelFile
-Date: Mon, 11 Mar 2024 17:59:00 -0400
-Message-ID: <20240311215925.40618-10-peterx@redhat.com>
+ Prasad Pandit <ppandit@redhat.com>, Yu Zhang <yu.zhang@ionos.com>,
+ qemu-stable <qemu-stable@nongnu.org>, Li Zhijian <lizhijian@fujitsu.com>
+Subject: [PULL 10/34] migration/rdma: Fix a memory issue for migration
+Date: Mon, 11 Mar 2024 17:59:01 -0400
+Message-ID: <20240311215925.40618-11-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240311215925.40618-1-peterx@redhat.com>
 References: <20240311215925.40618-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
 X-Spam_bar: ---
 X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,106 +102,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Yu Zhang <yu.zhang@ionos.com>
 
-Commit bc38feddeb ("io: fsync before closing a file channel") added a
-fsync/fdatasync at the closing point of the QIOChannelFile to ensure
-integrity of the migration stream in case of QEMU crash.
+In commit 3fa9642ff7 change was made to convert the RDMA backend to
+accept MigrateAddress struct. However, the assignment of "host" leads
+to data corruption on the target host and the failure of migration.
 
-The decision to do the sync at qio_channel_close() was not the best
-since that function runs in the main thread and the fsync can cause
-QEMU to hang for several minutes, depending on the migration size and
-disk speed.
+    isock->host = rdma->host;
 
-To fix the hang, remove the fsync from qio_channel_file_close().
+By allocating the memory explicitly for it with g_strdup_printf(), the
+issue is fixed and the migration doesn't fail any more.
 
-At this moment, the migration code is the only user of the fsync and
-we're taking the tradeoff of not having a sync at all, leaving the
-responsibility to the upper layers.
-
-Fixes: bc38feddeb ("io: fsync before closing a file channel")
-Reviewed-by: "Daniel P. Berrangé" <berrange@redhat.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240305195629.9922-1-farosas@suse.de
-Link: https://lore.kernel.org/r/20240305174332.2553-1-farosas@suse.de
-[peterx: add more comment to the qio_channel_close()]
+Fixes: 3fa9642ff7 ("migration: convert rdma backend to accept MigrateAddress")
+Cc: qemu-stable <qemu-stable@nongnu.org>
+Cc: Li Zhijian <lizhijian@fujitsu.com>
+Link: https://lore.kernel.org/r/CAHEcVy4L_D6tuhJ8h=xLR4WaPaprJE3nnxZAEyUnoTrxQ6CF5w@mail.gmail.com
+Signed-off-by: Yu Zhang <yu.zhang@ionos.com>
+[peterx: use g_strdup() instead of g_strdup_printf(), per Zhijian]
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- docs/devel/migration/main.rst |  3 ++-
- io/channel-file.c             |  5 -----
- migration/multifd.c           | 28 +++++++++++++++++++---------
- 3 files changed, 21 insertions(+), 15 deletions(-)
+ migration/rdma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/docs/devel/migration/main.rst b/docs/devel/migration/main.rst
-index 8024275d6d..54385a23e5 100644
---- a/docs/devel/migration/main.rst
-+++ b/docs/devel/migration/main.rst
-@@ -44,7 +44,8 @@ over any transport.
- - file migration: do the migration using a file that is passed to QEMU
-   by path. A file offset option is supported to allow a management
-   application to add its own metadata to the start of the file without
--  QEMU interference.
-+  QEMU interference. Note that QEMU does not flush cached file
-+  data/metadata at the end of migration.
+diff --git a/migration/rdma.c b/migration/rdma.c
+index a355dcea89..855753c671 100644
+--- a/migration/rdma.c
++++ b/migration/rdma.c
+@@ -3357,7 +3357,7 @@ static int qemu_rdma_accept(RDMAContext *rdma)
+         goto err_rdma_dest_wait;
+     }
  
- In addition, support is included for migration using RDMA, which
- transports the page data using ``RDMA``, where the hardware takes care of
-diff --git a/io/channel-file.c b/io/channel-file.c
-index d4706fa592..a6ad7770c6 100644
---- a/io/channel-file.c
-+++ b/io/channel-file.c
-@@ -242,11 +242,6 @@ static int qio_channel_file_close(QIOChannel *ioc,
- {
-     QIOChannelFile *fioc = QIO_CHANNEL_FILE(ioc);
+-    isock->host = rdma->host;
++    isock->host = g_strdup(rdma->host);
+     isock->port = g_strdup_printf("%d", rdma->port);
  
--    if (qemu_fdatasync(fioc->fd) < 0) {
--        error_setg_errno(errp, errno,
--                         "Unable to synchronize file data with storage device");
--        return -1;
--    }
-     if (qemu_close(fioc->fd) < 0) {
-         error_setg_errno(errp, errno,
-                          "Unable to close file");
-diff --git a/migration/multifd.c b/migration/multifd.c
-index d4a44da559..bf9d483f7a 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -710,16 +710,26 @@ static bool multifd_send_cleanup_channel(MultiFDSendParams *p, Error **errp)
-     if (p->c) {
-         migration_ioc_unregister_yank(p->c);
-         /*
--         * An explicit close() on the channel here is normally not
--         * required, but can be helpful for "file:" iochannels, where it
--         * will include fdatasync() to make sure the data is flushed to the
--         * disk backend.
-+         * The object_unref() cannot guarantee the fd will always be
-+         * released because finalize() of the iochannel is only
-+         * triggered on the last reference and it's not guaranteed
-+         * that we always hold the last refcount when reaching here.
-          *
--         * The object_unref() cannot guarantee that because: (1) finalize()
--         * of the iochannel is only triggered on the last reference, and
--         * it's not guaranteed that we always hold the last refcount when
--         * reaching here, and, (2) even if finalize() is invoked, it only
--         * does a close(fd) without data flush.
-+         * Closing the fd explicitly has the benefit that if there is any
-+         * registered I/O handler callbacks on such fd, that will get a
-+         * POLLNVAL event and will further trigger the cleanup to finally
-+         * release the IOC.
-+         *
-+         * FIXME: It should logically be guaranteed that all multifd
-+         * channels have no I/O handler callback registered when reaching
-+         * here, because migration thread will wait for all multifd channel
-+         * establishments to complete during setup.  Since
-+         * migrate_fd_cleanup() will be scheduled in main thread too, all
-+         * previous callbacks should guarantee to be completed when
-+         * reaching here.  See multifd_send_state.channels_created and its
-+         * usage.  In the future, we could replace this with an assert
-+         * making sure we're the last reference, or simply drop it if above
-+         * is more clear to be justified.
-          */
-         qio_channel_close(p->c, &error_abort);
-         object_unref(OBJECT(p->c));
+     /*
 -- 
 2.44.0
 
