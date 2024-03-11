@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 407DF878A69
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 23:01:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF032878A93
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 23:12:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjngo-0000YR-0M; Mon, 11 Mar 2024 18:00:10 -0400
+	id 1rjngt-0000ps-78; Mon, 11 Mar 2024 18:00:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngX-0000Vq-QZ
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:55 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngZ-0000XA-Nr
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngV-00040b-NK
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:53 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngW-00041v-BR
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1710194391;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XAW4kNcipci25Ftdw678I9V9K89A2Ws6lDYWYUOgtX4=;
- b=ZUoxYQRW7bVQ8ESAgVrIjreUkx3ov2HIH4T5w5R+MC2id5yuaJPAvhJW6MFGDZeTybceJd
- eXS13H1/DGMft+uhnSomn0pLA+bOlzRHVse8SNRLCAJamuNRUibXF6/9/kB9govWfstZkS
- 0uKc4HlM5VajyRfgdHTzGMez+20qE9Y=
-Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
- [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=jQpFxxwXLTkQcHkAxj0keU82dn5pcaDLyf+EyopbQPc=;
+ b=OUbW80B0gXFYfF8ymxGxQ40+mQugA9Y+bc61EgpkHIvehvUV3t5D87ED7jkxpgQ6MVbsiE
+ kATW/iYYMmjf0L/l9ydELDJHrwurCEUgUL1jk88zqtZPLCx/ZqXwxZZNsArmx+lPL8bNLI
+ bahm7MDhHzzzPcA4b5pCzcs1dc2I9AE=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-311-jOP7hcuSPSC3P7IoR2LPcg-1; Mon, 11 Mar 2024 17:59:49 -0400
-X-MC-Unique: jOP7hcuSPSC3P7IoR2LPcg-1
-Received: by mail-ua1-f69.google.com with SMTP id
- a1e0cc1a2514c-7dc10e68417so93139241.0
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 14:59:48 -0700 (PDT)
+ us-mta-663-LcsL9Nz0MxOMfVgJGQpS-A-1; Mon, 11 Mar 2024 17:59:50 -0400
+X-MC-Unique: LcsL9Nz0MxOMfVgJGQpS-A-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-690ab2b0de1so15044036d6.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 14:59:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710194388; x=1710799188;
+ d=1e100.net; s=20230601; t=1710194389; x=1710799189;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XAW4kNcipci25Ftdw678I9V9K89A2Ws6lDYWYUOgtX4=;
- b=kFYgDLJp4ni+urjoDAE6UQEy8h6V6bUJeNLWVsVM2hoqDgWZuMQn4ErknmGqN+7wJn
- pblqsYGNycjP6E+MQOkGZ0llo1JSpok9eFcV8v7+nwAoGlqp7gg4kZKZHpPLLxE4XqBB
- H5+4WQBPfnQd+0A9bUsPpiF0Dboza4PDulMKGiX8NcmKrh32rtLfDFrg7HxsFy/ap0BE
- PcPBTnNrCwAHP7ZkCqhRhqaZ5aLW/r5H3Wtc985jhitLTlmGRd95qP+Mn50MwvGB5RzI
- 0vRBK6WeLLzJcj6/ewV4W5gPEKm6cAFo+oGBxBHXEL1x1vvPAb5pHuKCMXafLOhpD8HS
- Tbbg==
-X-Gm-Message-State: AOJu0YzRBXP/CWx1uVfLeM+qL1olPufO3EqKVWVZ45DHCH9Mncku7a9g
- iP94XzGOMkjZQOSYGTm8h7E4+lMt8GLuHhJHqQE9OtLEvgcHJtl5hHPKXuQb7S7E5AgsdFNpLKq
- VuXI2o9xpzPRmWqUm0kh1kzSXuI3MnA/BolQnaaZF4WkKWJM4AC2GctnLtiJzamQVM/w4At9SVf
- I/TllVRHDrAjgglNX+bGyY8fjVJCskndimXA==
-X-Received: by 2002:a05:6102:3667:b0:473:240f:36b9 with SMTP id
- bg7-20020a056102366700b00473240f36b9mr3694363vsb.1.1710194388155; 
- Mon, 11 Mar 2024 14:59:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE+3+LK98FLCI/uSUmdZukHEWonLNFKhMsYvtB6u7kOyQt/iv/MoaUDFp56HNLXUVJax8598w==
-X-Received: by 2002:a05:6102:3667:b0:473:240f:36b9 with SMTP id
- bg7-20020a056102366700b00473240f36b9mr3694342vsb.1.1710194387675; 
- Mon, 11 Mar 2024 14:59:47 -0700 (PDT)
+ bh=jQpFxxwXLTkQcHkAxj0keU82dn5pcaDLyf+EyopbQPc=;
+ b=tcmHKcPrfTRfVmC2Q/yyUpW/ZJj+OYxc6/QUT41uXZh6ON7jcfYSu25HL26DpGgoUM
+ eG7QmKDYeNVP8Z/b1vqZJ21Pl/QO2GQbSMUyf4GHDyzjGI1u3/dJYYf7E0pBSvFoe9/l
+ PFPrmLv3VJ7ZrxDpgDS6oZDrf+OtzrfZa7Au2fFqVsMOHiT9ko4InCRX73lrsaECcPgl
+ 3nyeN9GolRyYqNdQbOnRlmHnr2ZcnchPid06OFmAfxoLuCihwJDZ6FagBYn78ufZAgRD
+ Pi2SOF2jqFGWpSFpdk9NwhoMI34O8P6ZC/m55p8I6hEC0BcROYepxDbhw13aGihCh/WA
+ PBrg==
+X-Gm-Message-State: AOJu0YxbJcyyyTnSRzwkSOSeXiIAPd/GO0+HZtgcEgyds22Shx/cN/7t
+ OKo7mbQtLlsBB5BXNm9mj82wH5VeEk5Xy4ybleFZScH3Rkz3h/s/9RDVJQHK/7iOMtBMdFXIQZJ
+ JyHq5CbQ0RF72GQwC9/8bynrgie664MXMn/jddDdTjhpbmqn5UBHml/2YQRORpjkVIcLTNz7Tp8
+ ZiNbyqcC9d+XTZIPlmccCoH0ebx1socYUoog==
+X-Received: by 2002:ad4:44af:0:b0:690:cdd5:ea47 with SMTP id
+ n15-20020ad444af000000b00690cdd5ea47mr130943qvt.4.1710194389469; 
+ Mon, 11 Mar 2024 14:59:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGh9+VY42YGZ+FJEdnCNH+diWVLZIuv5WxcOKLZw+FA191OPB63jMazUrHr6f7b5poNrlwGPg==
+X-Received: by 2002:ad4:44af:0:b0:690:cdd5:ea47 with SMTP id
+ n15-20020ad444af000000b00690cdd5ea47mr130924qvt.4.1710194389011; 
+ Mon, 11 Mar 2024 14:59:49 -0700 (PDT)
 Received: from x1n.. (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- d6-20020a0ce446000000b00690cec16254sm1541932qvm.68.2024.03.11.14.59.46
+ d6-20020a0ce446000000b00690cec16254sm1541932qvm.68.2024.03.11.14.59.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 14:59:46 -0700 (PDT)
+ Mon, 11 Mar 2024 14:59:48 -0700 (PDT)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, peterx@redhat.com,
  Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
  Prasad Pandit <ppandit@redhat.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PULL 14/34] physmem: Fix wrong address in large
- address_space_read/write_cached_slow()
-Date: Mon, 11 Mar 2024 17:59:05 -0400
-Message-ID: <20240311215925.40618-15-peterx@redhat.com>
+ Anthony PERARD <anthony.perard@citrix.com>
+Subject: [PULL 15/34] migration: Fix format in error message
+Date: Mon, 11 Mar 2024 17:59:06 -0400
+Message-ID: <20240311215925.40618-16-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240311215925.40618-1-peterx@redhat.com>
 References: <20240311215925.40618-1-peterx@redhat.com>
@@ -102,120 +101,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Anthony PERARD <anthony.perard@citrix.com>
 
-If the access is bigger than the MemoryRegion supports,
-flatview_read/write_continue() will attempt to update the Memory Region.
-but the address passed to flatview_translate() is relative to the cache, not
-to the FlatView.
+In file_write_ramblock_iov(), "offset" is "uintptr_t" and not
+"ram_addr_t". While usually they are both equivalent, this is not the
+case with CONFIG_XEN_BACKEND.
 
-On arm/virt with interleaved CXL memory emulation and virtio-blk-pci this
-lead to the first part of descriptor being read from the CXL memory and the
-second part from PA 0x8 which happens to be a blank region
-of a flash chip and all ffs on this particular configuration.
-Note this test requires the out of tree ARM support for CXL, but
-the problem is more general.
+Use the right format. This will fix build on 32-bit.
 
-Avoid this by adding new address_space_read_continue_cached()
-and address_space_write_continue_cached() which share all the logic
-with the flatview versions except for the MemoryRegion lookup which
-is unnecessary as the MemoryRegionCache only covers one MemoryRegion.
-
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/20240307153710.30907-5-Jonathan.Cameron@huawei.com
+Fixes: f427d90b9898 ("migration/multifd: Support outgoing mapped-ram stream format")
+Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
+Link: https://lore.kernel.org/r/20240311123439.16844-1-anthony.perard@citrix.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- system/physmem.c | 63 +++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 57 insertions(+), 6 deletions(-)
+ migration/file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/system/physmem.c b/system/physmem.c
-index 737869a3f5..6cfb7a80ab 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -3370,6 +3370,59 @@ static inline MemoryRegion *address_space_translate_cached(
-     return section.mr;
- }
- 
-+/* Called within RCU critical section.  */
-+static MemTxResult address_space_write_continue_cached(MemTxAttrs attrs,
-+                                                       const void *ptr,
-+                                                       hwaddr len,
-+                                                       hwaddr mr_addr,
-+                                                       hwaddr l,
-+                                                       MemoryRegion *mr)
-+{
-+    MemTxResult result = MEMTX_OK;
-+    const uint8_t *buf = ptr;
-+
-+    for (;;) {
-+        result |= flatview_write_continue_step(attrs, buf, len, mr_addr, &l,
-+                                               mr);
-+
-+        len -= l;
-+        buf += l;
-+        mr_addr += l;
-+
-+        if (!len) {
-+            break;
-+        }
-+
-+        l = len;
-+    }
-+
-+    return result;
-+}
-+
-+/* Called within RCU critical section.  */
-+static MemTxResult address_space_read_continue_cached(MemTxAttrs attrs,
-+                                                      void *ptr, hwaddr len,
-+                                                      hwaddr mr_addr, hwaddr l,
-+                                                      MemoryRegion *mr)
-+{
-+    MemTxResult result = MEMTX_OK;
-+    uint8_t *buf = ptr;
-+
-+    for (;;) {
-+        result |= flatview_read_continue_step(attrs, buf, len, mr_addr, &l, mr);
-+        len -= l;
-+        buf += l;
-+        mr_addr += l;
-+
-+        if (!len) {
-+            break;
-+        }
-+        l = len;
-+    }
-+
-+    return result;
-+}
-+
- /* Called from RCU critical section. address_space_read_cached uses this
-  * out of line function when the target is an MMIO or IOMMU region.
-  */
-@@ -3383,9 +3436,8 @@ address_space_read_cached_slow(MemoryRegionCache *cache, hwaddr addr,
-     l = len;
-     mr = address_space_translate_cached(cache, addr, &mr_addr, &l, false,
-                                         MEMTXATTRS_UNSPECIFIED);
--    return flatview_read_continue(cache->fv,
--                                  addr, MEMTXATTRS_UNSPECIFIED, buf, len,
--                                  mr_addr, l, mr);
-+    return address_space_read_continue_cached(MEMTXATTRS_UNSPECIFIED,
-+                                              buf, len, mr_addr, l, mr);
- }
- 
- /* Called from RCU critical section. address_space_write_cached uses this
-@@ -3401,9 +3453,8 @@ address_space_write_cached_slow(MemoryRegionCache *cache, hwaddr addr,
-     l = len;
-     mr = address_space_translate_cached(cache, addr, &mr_addr, &l, true,
-                                         MEMTXATTRS_UNSPECIFIED);
--    return flatview_write_continue(cache->fv,
--                                   addr, MEMTXATTRS_UNSPECIFIED, buf, len,
--                                   mr_addr, l, mr);
-+    return address_space_write_continue_cached(MEMTXATTRS_UNSPECIFIED,
-+                                               buf, len, mr_addr, l, mr);
- }
- 
- #define ARG1_DECL                MemoryRegionCache *cache
+diff --git a/migration/file.c b/migration/file.c
+index 164b079966..5054a60851 100644
+--- a/migration/file.c
++++ b/migration/file.c
+@@ -191,7 +191,7 @@ int file_write_ramblock_iov(QIOChannel *ioc, const struct iovec *iov,
+          */
+         offset = (uintptr_t) iov[slice_idx].iov_base - (uintptr_t) block->host;
+         if (offset >= block->used_length) {
+-            error_setg(errp, "offset " RAM_ADDR_FMT
++            error_setg(errp, "offset %" PRIxPTR
+                        "outside of ramblock %s range", offset, block->idstr);
+             ret = -1;
+             break;
 -- 
 2.44.0
 
