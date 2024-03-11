@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3778B87888E
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 20:12:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9094878889
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 20:12:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjl3V-0001mX-SD; Mon, 11 Mar 2024 15:11:25 -0400
+	id 1rjl3a-0001nr-OD; Mon, 11 Mar 2024 15:11:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1rjl3S-0001kb-Vi; Mon, 11 Mar 2024 15:11:23 -0400
+ id 1rjl3Y-0001mm-1c; Mon, 11 Mar 2024 15:11:28 -0400
 Received: from wfhigh7-smtp.messagingengine.com ([64.147.123.158])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1rjl3R-0000CQ-7t; Mon, 11 Mar 2024 15:11:22 -0400
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
- by mailfhigh.west.internal (Postfix) with ESMTP id D36E318000CF;
- Mon, 11 Mar 2024 15:11:17 -0400 (EDT)
+ id 1rjl3W-0000EV-Es; Mon, 11 Mar 2024 15:11:27 -0400
+Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
+ by mailfhigh.west.internal (Postfix) with ESMTP id F1B43180008B;
+ Mon, 11 Mar 2024 15:11:22 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute2.internal (MEProxy); Mon, 11 Mar 2024 15:11:19 -0400
+ by compute7.internal (MEProxy); Mon, 11 Mar 2024 15:11:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
  h=cc:cc:content-transfer-encoding:content-type:date:date:from
  :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm3; t=1710184277; x=
- 1710270677; bh=l7VA1kmIdj5go01fibCCpJkzwEtHzwcL+nZbGerYsTM=; b=F
- 0qgqDc/1dbyTxDraVxmRbM8oB3KXN5U2rXHvLiMsryXFo9HOVAFMwCWx+XmpFii4
- xtEGM2NnQbVA3fHMc07LSlf0ZjMciXJhqMmuL0wkutTBlNL4UOQQozfJgcK39rS0
- gdYilo3HviDSG0F72lPuIxxAwgyKDT0nYtE1337OXu2SjV8VzvgONi0rIcN458FB
- qa33dzDsXDwLQX8Zo2DJk8ZIC6Gcf4robs1zWMBVy0/ebsRi5C2pLPC77hNsoymp
- yTXDi619Pyu1cVoEkNF2sy0jS7/uOkibrUKj/xqpV9gvdeUMJb+POgirb8Ec7rTU
- BY59GAeXOLsIXQnqwtj+A==
+ :reply-to:subject:subject:to:to; s=fm3; t=1710184282; x=
+ 1710270682; bh=13jK2IFXNV4aTtLcfKWBEUfG4qVN5gepwxltR43I56A=; b=N
+ eBw+O9Q0OO+wPdLZyok5rqRDdjGDC24TTdXE2AxTirW78wYXiA1uN0SoLZgug+4r
+ oC9xJtSY2doEDFTHiIVejtP3+imPmWarXIHfEJ+lviloS7+nRnTOpqz5omq3OUob
+ Tm6WKiHpypw1Mj6yLSFoEhaJAog4wfoV4utVVqcH/RtHbevRNKGFLRlXkgiYAMTE
+ bngMOPkFTNWYOom7L+E4aVH46DKVfmIvj42vo0yEYqJAhB8HJazI91CUjM9Tm1o7
+ pTaacmwQMiLIHIlMHQgbvblnks6uJc8FeKrc4PjmoXBujgSOPifa0utgbVx7Hnxq
+ tHvhfIqkwSkLOjP6yu92Q==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:date:date:feedback-id:feedback-id:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
  :reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1710184277; x=
- 1710270677; bh=l7VA1kmIdj5go01fibCCpJkzwEtHzwcL+nZbGerYsTM=; b=W
- VLYRFQJvlwXk5mdAlhPv3dr0/PCpqYB03s6F8FsW7Opchk5C1rtj7oXEivr1nns1
- MLAT/IGjVUDWwhrsl3/C7+2gbUuupRMpun5ruS/d2AYqli2fDo2eqt2UaYmoOQnM
- b49O/f3EW5Vo3KMX1/NjwIwTqC8Djq9N1pOdYgXSvdlSqxAaK5HSBVkgD1u4cPz9
- dSdhSlSP3V/inbgDfty6WNhliCHqC/U6iZYVdOfVFmZXNdAyIkmk+DnGGfH+YJRK
- 3j1VREkPE2iYJEwmwlN7nl5RInLloG8pFAu4R2QmyPhNN93RH8Y7hvWZH6jrs+Dg
- JPM2zkCkCzvU/RnCPWTRw==
-X-ME-Sender: <xms:VFfvZVEif5c7C_Mq_Wmh5uoIoFJlG0bEp3mCAkVCEJHFFFtku61Mzw>
- <xme:VFfvZaV-mOKrwpmHX8hbb_m6hY-5z6H4O4xuluuNZjDMcw1vhfomqv1qkG_aQiUSl
- SROZSCaM-rUlyXvmI8>
-X-ME-Received: <xmr:VFfvZXKCMkoIN1ZhkZ2qvWutZSIYtE5A6N2MdxGdIcPN3Qg82rdnDFXVh_8IKoJmBc4MX-yXYw>
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1710184282; x=
+ 1710270682; bh=13jK2IFXNV4aTtLcfKWBEUfG4qVN5gepwxltR43I56A=; b=e
+ TJ7UKXP0se+Th7OJBMKN6YvkCA4woZ1fQmOtUH6VIb8FX/XiUZe4P5Z6g+IePpa+
+ qHcuouuzDYXZPycHdno+/qEj8kZFb3Y32Nqn6Pt+qm0AwSC/jMlx77FDxtSLSiFb
+ AarUpcOxYvkfEI3ZPQLsBH/1zgSV025M7tKKuWJjo+6BrZeKvHEkKpWz2xEC15qq
+ BuKGkn/US6G3or5LuSCXKJeBOE5KTJMwNux4/kggdpDIV1xJAIa9ngqcIUbOyLGU
+ 3KfgJwK0sxm2qtuVKa06J3mWjmR/zqlJWzMP88mkWkgDW+rGx7vYL1V2nPxqhCHZ
+ OLa2UMrEUuuFM1BGm+80w==
+X-ME-Sender: <xms:WlfvZaYHRMj5IupAyviJrt8bL4xcpxA0-fQDiSi_xm7rNrFuJbieYA>
+ <xme:WlfvZdaB1KxAU0YtNG5sEH8ovaIf3D1Hiw0QljI0qoHamrcAZiDG8jPWFfzVJc71F
+ RZ0CiXCnB76e4i-xwQ>
+X-ME-Received: <xmr:WlfvZU_kyb-k1k8ajASAXClVjTx_-uCJpVn44O77Lz65tAL6TvT2bdOt4Y3TIZjVvXJemKvVzw>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrjedugdduvddvucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
@@ -57,13 +57,13 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrjedugdduvddvucetufdoteggod
  htvghrnhepjefgieelgfeiveehkeeuveehheekfeevgeeigfehfefgjeejhefffeegudej
  udegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepih
  htshesihhrrhgvlhgvvhgrnhhtrdgukh
-X-ME-Proxy: <xmx:VFfvZbFir1quLhQGC3fLfO-reDW89QZia-f2QlwucUVTjTFpHglFBg>
- <xmx:VFfvZbXPx-SW6pvg6-7B15h10Dp1M48rGJR_zTlWoYbP3jXJBOa8ZA>
- <xmx:VFfvZWOqct8_MCvxIE-PvgnYPgphUgacF4X5ZO2yjeKlhchrVXXtqg>
- <xmx:VVfvZYUu17mgIdRKDaVH_xtd_dLdM1KVi6GU_NDYuUNFu6rH83EGHyy7tpo>
+X-ME-Proxy: <xmx:WlfvZcqbzEvdxMlzITEIPrvuKepPC7gdWV82ZTXLPhpm3w6rwa7U3g>
+ <xmx:WlfvZVqVkSCfSvsf0YXC4IQv3kpyKdkGgoHz5PDhe-NupHXRNgKOFw>
+ <xmx:WlfvZaQPCuaJ6cFGnkFjzAUdKuoB8kGT2DyEp_7AvrB4NebIQUJVgw>
+ <xmx:WlfvZW78P9oV52G7WGe-RaaoVHPCz_Xh9xgo5TM9dKL-0VNVxvR9EFuQd6w>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 11 Mar 2024 15:11:14 -0400 (EDT)
+ 11 Mar 2024 15:11:19 -0400 (EDT)
 From: Klaus Jensen <its@irrelevant.dk>
 To: Peter Maydell <peter.maydell@linaro.org>,
 	qemu-devel@nongnu.org
@@ -72,24 +72,24 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Jesper Devantier <foss@defmacro.it>, Yanan Wang <wangyanan55@huawei.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Eduardo Habkost <eduardo@habkost.net>, Keith Busch <kbusch@kernel.org>,
- Minwoo Im <minwoo.im@samsung.com>, qemu-stable@nongnu.org,
- Klaus Jensen <k.jensen@samsung.com>
-Subject: [PULL 1/6] hw/nvme: separate 'serial' property for VFs
-Date: Mon, 11 Mar 2024 20:11:07 +0100
-Message-ID: <20240311191105.35224-9-its@irrelevant.dk>
+ Klaus Jensen <k.jensen@samsung.com>, qemu-stable@nongnu.org,
+ Minwoo Im <minwoo.im@samsung.com>
+Subject: [PULL 2/6] hw/nvme: fix invalid check on mcl
+Date: Mon, 11 Mar 2024 20:11:08 +0100
+Message-ID: <20240311191105.35224-10-its@irrelevant.dk>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240311191105.35224-8-its@irrelevant.dk>
 References: <20240311191105.35224-8-its@irrelevant.dk>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1724; i=k.jensen@samsung.com;
- h=from:subject; bh=XddK9fgznLnaxCGQz8aWhKGnoFKoCfbUCAuoljS2hIM=;
- b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGXvV0oZj5olpC72zzipnjwY6NMt1OnU4pj+p
- RI2dDcXbu+bZokBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJl71dKAAoJEE3hrzFt
- Tw3peDkH/jW4o08oZ/CXnRPync5YzdBE4EqeDL7PMB0O/G2U64s+QjhrVx8jaeKyIl6zZAbckgm
- vGjL9Yx6aEy8wQM5z+y9fne/dBUcRE85sAk1WqgWlICnbE27Mk6+67IsMWI21kgcRj0AzbpeQ+M
- orRGNGoNTNePo/Qzqb2g6EcRqOP7E1rCGtrQ3bvo0cYGf1IJaOyMju7C41MZhLSRvNTJ8k0xJI4
- 80USYzjOdXp/mO9lLhQ1OVuSzS+FsT6qska6sTorlUG3JHbMRwAMU+pbnGQjf7ciJRO2zbAAHXV
- mo4nD3Wp+UqYFiOr4LS2Z2Zc+qlTMd9ypMzD/qcvNKgHPNTqkm60Pqkf
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1006; i=k.jensen@samsung.com;
+ h=from:subject; bh=29IW2qUZendh/4uF6O1NNuOeOuNodGl0+hczTMx8y10=;
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGXvV0q3MM2YL4haIMM0TcnKl5nI/enGn4KRx
+ 98LSvMfPETdkYkBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJl71dKAAoJEE3hrzFt
+ Tw3plLMH/2niDmHuQ5okyCT6X2puLO9AZqkInlgSowAZUmwSbesqfkl7Ks2wdXBAevYa9ZrgNhZ
+ afUIT6rLOHLfeMkFHlob+LREbukx8Upy2l242Nc7uqc3/uVA+EigKlCkhL9Dkh1Q2yHbyO+5BgL
+ SsiUCGhVj4BjkdINvEWsku9mon3rvewwqYRrVhLbijEjn2aDDtJh8BxVtm4B45/KqhhjrV/DR5j
+ 0m9nXWrmTcou/yMjfSLp2LiAgFcbgUEU55ymcCmZpPJg5dE5St4lFynb4TXnmk1Xa2no1TfuJjl
+ XD8M5Lcuc2iaCgFRaFfjWd6q9Ir/85hcX0FZk9MfOnPlkiHORZMW5akP
 X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
  fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
 Content-Transfer-Encoding: 8bit
@@ -117,49 +117,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Minwoo Im <minwoo.im@samsung.com>
+From: Klaus Jensen <k.jensen@samsung.com>
 
-Currently, when a VF is created, it uses the 'params' object of the PF
-as it is. In other words, the 'params.serial' string memory area is also
-shared. In this situation, if the VF is removed from the system, the
-PF's 'params.serial' object is released with object_finalize() followed
-by object_property_del_all() which release the memory for 'serial'
-property. If that happens, the next VF created will inherit a serial
-from a corrupted memory area.
-
-If this happens, an error will occur when comparing subsys->serial and
-n->params.serial in the nvme_subsys_register_ctrl() function.
+The number of logical blocks within a source range is converted into a
+1s based number at the time of parsing. However, when verifying the copy
+length we add one again, causing the check against MCL to fail in error.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 44c2c09488db ("hw/nvme: Add support for SR-IOV")
-Signed-off-by: Minwoo Im <minwoo.im@samsung.com>
-Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
+Fixes: 381ab99d8587 ("hw/nvme: check maximum copy length (MCL) for COPY")
+Reviewed-by: Minwoo Im <minwoo.im@samsung.com>
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 ---
- hw/nvme/ctrl.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ hw/nvme/ctrl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 76fe0397045b..94ef63945725 100644
+index 94ef63945725..abc0387f2ca8 100644
 --- a/hw/nvme/ctrl.c
 +++ b/hw/nvme/ctrl.c
-@@ -8309,9 +8309,15 @@ static void nvme_realize(PCIDevice *pci_dev, Error **errp)
-     if (pci_is_vf(pci_dev)) {
-         /*
-          * VFs derive settings from the parent. PF's lifespan exceeds
--         * that of VF's, so it's safe to share params.serial.
-+         * that of VF's.
-          */
-         memcpy(&n->params, &pn->params, sizeof(NvmeParams));
-+
-+        /*
-+         * Set PF's serial value to a new string memory to prevent 'serial'
-+         * property object release of PF when a VF is removed from the system.
-+         */
-+        n->params.serial = g_strdup(pn->params.serial);
-         n->subsys = pn->subsys;
+@@ -2855,7 +2855,7 @@ static inline uint16_t nvme_check_copy_mcl(NvmeNamespace *ns,
+         uint32_t nlb;
+         nvme_copy_source_range_parse(iocb->ranges, idx, iocb->format, NULL,
+                                      &nlb, NULL, NULL, NULL);
+-        copy_len += nlb + 1;
++        copy_len += nlb;
      }
  
+     if (copy_len > ns->id_ns.mcl) {
 -- 
 2.44.0
 
