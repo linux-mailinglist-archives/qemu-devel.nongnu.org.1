@@ -2,53 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73B58877A09
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 04:26:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3CEB877A0E
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 04:26:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjWI6-0005jR-9F; Sun, 10 Mar 2024 23:25:30 -0400
+	id 1rjWI7-0005n6-M2; Sun, 10 Mar 2024 23:25:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjWI0-0005g4-Sw; Sun, 10 Mar 2024 23:25:24 -0400
+ id 1rjWI2-0005h5-Mi; Sun, 10 Mar 2024 23:25:27 -0400
 Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjWHz-0007rZ-B3; Sun, 10 Mar 2024 23:25:24 -0400
+ id 1rjWI0-00084P-Om; Sun, 10 Mar 2024 23:25:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710127523; x=1741663523;
+ t=1710127524; x=1741663524;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ixEs9dOFZnglqkPxeEdB/M9zEvYnvOWu4quv6IO1YXs=;
- b=YEyIpfvg1T1NDbRxM/IiMXoMXmyvv5LOs7hNgmBUx5ErrnmTL4EKq9PQ
- BXchLRmIWWtXGd3G2WxoEyncpmWwjIbuwhVxhmEiMWUvoJzHTW3+F2a+N
- NaMYDvhiP5WFEdXgppjeh2phxuKd7tR3OnJymKIZUHI9O+Dt5f75lY1fD
- vysa5zRUJL6hCgfLyujUnyLeeGwn8thp5MqwfxNeUOHE+ofRtGQ/prFZC
- ZZC/Sfqau5IzOuwYpzHyukrsgWb01nCxjWfYacftvxyEFe4tkTw0WtJKf
- M99U/h8GPvpHBW/O/xaArswcIPvLJKJuqDS7SrWNKWUCxtVuaNh1RUXjX g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="22229667"
-X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="22229667"
+ bh=EXIEbq8RUu3AQ/jzQwBooQoTcHTssVhpacUjMNBJKSg=;
+ b=nyYj3iRt1J6g9yP9JZ8NhMo4kvZmsH/WfgSw4q6G8YFPps2LD7vZuAr9
+ B+OeDPAubXlLvFMXxW+eHuzDfUbMgW4rWWElom0xEw/e0nJSDY1yeNk0w
+ LFN1kNvmLftxgzWXOJ21+KIr+wHpEmqXjongJabzsbSMizCPMVgUSsAGY
+ sDkwcMot70K+DROkND1IZvrcnQSU/1SspsTwQ5S69/PKdhuhtQVHk1/DB
+ 6ro+3c5wjQjlDhxcjHar7ATc9ZogiwKNLCvFTsPOrF3+ARd4m+EfYwrXS
+ 3ZAXKjR54WTZmueA2oNLTBcu0/eLJuBWC6RsD4DSBqdqKbwENththeJEP g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="22229686"
+X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="22229686"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2024 20:25:19 -0700
+ 10 Mar 2024 20:25:23 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="15593830"
+X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="15593863"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 10 Mar 2024 20:25:17 -0700
+ by fmviesa003.fm.intel.com with ESMTP; 10 Mar 2024 20:25:20 -0700
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Michael Roth <michael.roth@amd.com>, Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Fam Zheng <fam@euphon.net>, Kevin Wolf <kwolf@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org
-Subject: [PATCH v2 12/29] block/vmdk: Fix missing ERRP_GUARD() for
+Subject: [PATCH v2 13/29] block/virtio-blk: Fix missing ERRP_GUARD() for
  error_prepend()
-Date: Mon, 11 Mar 2024 11:38:05 +0800
-Message-Id: <20240311033822.3142585-13-zhao1.liu@linux.intel.com>
+Date: Mon, 11 Mar 2024 11:38:06 +0800
+Message-Id: <20240311033822.3142585-14-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240311033822.3142585-1-zhao1.liu@linux.intel.com>
 References: <20240311033822.3142585-1-zhao1.liu@linux.intel.com>
@@ -99,38 +100,39 @@ ERRP_GUARD() could avoid the case when @errp is &error_fatal, the user
 can't see this additional information, because exit() happens in
 error_setg earlier than information is added [1].
 
-The vmdk_parse_extents() passes @errp to error_prepend(), and its @errp
-is from vmdk_open().
+The virtio_blk_vq_aio_context_init() passes @errp to error_prepend().
 
-Though, vmdk_open(), as a BlockDriver.bdrv_open(), gets the @errp
-parameter which is pointer of its caller's local_err, to follow the
-requirement of @errp, add missing ERRP_GUARD() at the beginning of this
-function.
+Though its @errp points its caller's local @err variable, to follow the
+requirement of @errp, add missing ERRP_GUARD() at the beginning of
+virtio_blk_vq_aio_context_init().
 
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
 
-Cc: Fam Zheng <fam@euphon.net>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
 Cc: Kevin Wolf <kwolf@redhat.com>
 Cc: Hanna Reitz <hreitz@redhat.com>
 Cc: qemu-block@nongnu.org
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- block/vmdk.c | 1 +
+ hw/block/virtio-blk.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/block/vmdk.c b/block/vmdk.c
-index bf78e1238351..3b82979fdf42 100644
---- a/block/vmdk.c
-+++ b/block/vmdk.c
-@@ -1147,6 +1147,7 @@ static int GRAPH_RDLOCK
- vmdk_parse_extents(const char *desc, BlockDriverState *bs, QDict *options,
-                    Error **errp)
+diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
+index 738cb2ac367d..92de315f17f7 100644
+--- a/hw/block/virtio-blk.c
++++ b/hw/block/virtio-blk.c
+@@ -1682,6 +1682,7 @@ static bool apply_iothread_vq_mapping(
+ /* Context: BQL held */
+ static bool virtio_blk_vq_aio_context_init(VirtIOBlock *s, Error **errp)
  {
 +    ERRP_GUARD();
-     int ret;
-     int matches;
-     char access[11];
+     VirtIODevice *vdev = VIRTIO_DEVICE(s);
+     VirtIOBlkConf *conf = &s->conf;
+     BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
 -- 
 2.34.1
 
