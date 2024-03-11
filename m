@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8D6E878692
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:46:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C94878688
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:44:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjjfY-0003sg-13; Mon, 11 Mar 2024 13:42:36 -0400
+	id 1rjjfR-0003XU-D0; Mon, 11 Mar 2024 13:42:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjf2-0003UZ-A6
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:42:04 -0400
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjf0-0003Ix-Rk
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:42:03 -0400
 Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjes-0007QQ-JI
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:42:04 -0400
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjey-0007Qm-3t
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:42:02 -0400
 Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6e55b33ad14so2449205b3a.1
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 10:41:53 -0700 (PDT)
+ d2e1a72fcca58-6e5dddd3b95so3381944b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 10:41:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710178912; x=1710783712; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710178918; x=1710783718; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iM8ZZscE7pj+Z7J5S93rTnFI05PsMASFwHURBr43Ioo=;
- b=OyPfJ8c2aIWh9NlUHSrYkHL6C+9EEQpZn0JIlsrKIY96l8tfqN5/d6QH6mvBe3aPx7
- KGjTeZNWKD1ZCeyliC/j1a1vOgly9MqQK49/SBad0GH477n9d+3F+z60oJJdtu9NezHR
- xvrTQb8KlLl/z47oi4mag4al01lVfek/ioy7xUNhyfMEDdwvcoWasSdtdCroVGcVoYL5
- tSHuPhe58bHcOqPOj5sfd6C1Q8RwD1VnH298SjwGxEZa+yW9eg+GH5AEda5yWdR2dwW9
- k+AM8weY5TYv5fp/XtF3YO08rfnvJGRHgh7yQ6zRZBFrmU/ZT/LQUpU0caaHKlLxdc1M
- Y2Vg==
+ bh=/eazafKsUh9Gq+1jlyAtlIIMsQVJTUKsjooFoPTkUTU=;
+ b=EEz2UXclFZjsyfOBXgsGm4vyGiwoeo4+eSsPrX9ENO1CgfQEwcdlXWF19m14kWJ+DK
+ WEPy7VYaUK6yLDW6xZM9LYioYdD3MwSE9dL+emCL7pEeatEwG6fc+ty8uQpez//NV5wI
+ q5YDkEal92XHVJ1OpznwHSj0eMFaNkF5VlFdDkTuoPIIh16GDVu0hqGwO+2EB02M84mO
+ htVkKrzu/pEibjv/FAN77Ncugg/0/WmjpTiqYWDT3LdyI1WOKEfc/RuCvlbKB8CHTrJh
+ 6km5SAVlGO+hHnYzmFZCYEfUhg45NHFZKO5MIq4meKLMpwoRhGr4zOuukaI/sDej3UnU
+ LpxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710178912; x=1710783712;
+ d=1e100.net; s=20230601; t=1710178918; x=1710783718;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iM8ZZscE7pj+Z7J5S93rTnFI05PsMASFwHURBr43Ioo=;
- b=ipScIiHlG1K1HBuiIvEmYwUpECHQLyPzbaoU1XZHWmlmISYEm8TTzaUSkzW6kT1XSf
- UrZQt/S+1Lyk5eEKkim7HH5wegqo7yUmoveEkQqPmS0/xB6eb0B11mWVfHG06mnOHjiY
- NQeh3p7ih1gqfWoVM1YrgE3AemLeASLHHs06M2nGGRXhx8aEEEmYjmFdysoVZdArObD9
- U+h+P3tQhkgbFotls1C3kS7t1C8qIVgSmspzAiskz6kDmqnU0VT5RrpBIW41ipFLpWw6
- F6JtHKVdv5LZv5A9DLKBK5bQe9LvtFbvSZByAmd6ynjxz9Y5TF1PLCHN71ex8e9EC+vJ
- 61iA==
-X-Gm-Message-State: AOJu0YzKQYdf8jNmuXoaAKyQDAM4WK8kvELlGMnC6bk4oIvt7zGxi/3r
- WW1xEGUx/F1IpJ8hHQzr7uXScvyJaf/Fn5w+oW3gGFTY+mQjK/aTRt3ER+4WmUQ=
-X-Google-Smtp-Source: AGHT+IFimX/UevUYrOT5oEXpcXelUbnXSjgNGLHNF4s8AJb8uIw0Ck8Un2l/8dHsxwDid5ss5Q2fYw==
-X-Received: by 2002:a05:6a00:1988:b0:6e5:ec63:95dd with SMTP id
- d8-20020a056a00198800b006e5ec6395ddmr7492844pfl.21.1710178911957; 
- Mon, 11 Mar 2024 10:41:51 -0700 (PDT)
+ bh=/eazafKsUh9Gq+1jlyAtlIIMsQVJTUKsjooFoPTkUTU=;
+ b=AefF9+z+vcmIOaBnBPA8ir8fNUaDrOQh2t39NhJPszs2BanFo1XGaEVwa62/exvliS
+ zonN7m4DezhRu5gHBXwxgrmuhoDV7lxzYPhwQQt7yOVGH0Q4UW0awJ5gNFy1zbA7YHX8
+ lZugg6+ViG5yUOiU5uLb6fKbl3JU2DZDAEOOV2ILaheOwq7VvSVlg59mgO2bjy0Cg8ao
+ f/qcNHU+h+11p7UEzlcgItst9QXL+q/Lp/6T0K8/6+cbYgzdKzuupmRD+uHKyi+CYpXJ
+ 98x8Zoq4oMiaLU7gS2Kv5ONdBA5MKEJc+Ok75G336NkF5EcnVuV2VP2LXkZkQLpZXuR7
+ R84A==
+X-Gm-Message-State: AOJu0Ywe0c/jOFqpKenJoTBiQqilRmhm43dOiwn6/oRfmoelzfFgN2Lo
+ Qb2KAoMCxNCYym98ZgBX8NdHRoc8Kj1o/NTwkKlUQ6yUV25G86jeY+koPWM424U=
+X-Google-Smtp-Source: AGHT+IEwlmUuf3SMj1mN5Cry6+I5wPwFa1oeWtT5/HJBaYKr8kLP4c7r1U9FAggNX1PtQ+mN7DZp4g==
+X-Received: by 2002:a05:6a00:1309:b0:6e6:6e12:493f with SMTP id
+ j9-20020a056a00130900b006e66e12493fmr8739960pfu.2.1710178917635; 
+ Mon, 11 Mar 2024 10:41:57 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- a18-20020a62d412000000b006e67b4d7b74sm4593187pfh.197.2024.03.11.10.41.47
+ a18-20020a62d412000000b006e67b4d7b74sm4593187pfh.197.2024.03.11.10.41.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 10:41:51 -0700 (PDT)
+ Mon, 11 Mar 2024 10:41:57 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -65,15 +65,14 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH v4 14/24] tests/avocado/reverse_debugging.py: mark aarch64 and
- pseries as not flaky
-Date: Tue, 12 Mar 2024 03:40:16 +1000
-Message-ID: <20240311174026.2177152-15-npiggin@gmail.com>
+Subject: [PATCH v4 15/24] tests/avocado: reverse_debugging.py add test for
+ x86-64 q35 machine
+Date: Tue, 12 Mar 2024 03:40:17 +1000
+Message-ID: <20240311174026.2177152-16-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240311174026.2177152-1-npiggin@gmail.com>
 References: <20240311174026.2177152-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
  envelope-from=npiggin@gmail.com; helo=mail-pf1-x42c.google.com
@@ -99,57 +98,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These seem to be quite solid, including on several gitlab CI runs.
-Enabling them should help catch breakage in future.
+The x86-64 pc machine has a problem with record/replay. q35 seems
+to work well. Add a new q35 test and update the flaky message for
+pc.
 
-And update the powernv comment -- gitlab isn't the problem, there are
-known gaps in implementation.
-
-Tested-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- tests/avocado/reverse_debugging.py | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ tests/avocado/reverse_debugging.py | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse_debugging.py
-index 92855a02a5..8fe76ff921 100644
+index 8fe76ff921..e76cf54ad7 100644
 --- a/tests/avocado/reverse_debugging.py
 +++ b/tests/avocado/reverse_debugging.py
-@@ -223,9 +223,6 @@ class ReverseDebugging_AArch64(ReverseDebugging):
+@@ -206,8 +206,7 @@ def get_pc(self, g):
+             + self.get_reg_le(g, self.REG_CS) * 0x10
  
-     REG_PC = 32
- 
--    # unidentified gitlab timeout problem
+     # unidentified gitlab timeout problem
 -    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
 -
-     def test_aarch64_virt(self):
++    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'pc machine is unstable with replay')
+     def test_x86_64_pc(self):
          """
-         :avocado: tags=arch:aarch64
-@@ -248,14 +245,10 @@ class ReverseDebugging_ppc64(ReverseDebugging):
- 
-     REG_PC = 0x40
- 
--    # unidentified gitlab timeout problem
--    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
--
-     def test_ppc64_pseries(self):
-         """
-         :avocado: tags=arch:ppc64
-         :avocado: tags=machine:pseries
--        :avocado: tags=flaky
-         """
-         # SLOF branches back to its entry point, which causes this test
-         # to take the 'hit a breakpoint again' path. That's not a problem,
-@@ -264,7 +257,7 @@ def test_ppc64_pseries(self):
+         :avocado: tags=arch:x86_64
+@@ -216,6 +215,14 @@ def test_x86_64_pc(self):
+         # start with BIOS only
          self.reverse_debugging()
  
-     # See https://gitlab.com/qemu-project/qemu/-/issues/1992
--    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
-+    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'powernv migration support is incomplete so rr debugging is flaky')
- 
-     def test_ppc64_powernv(self):
-         """
++    def test_x86_64_q35(self):
++        """
++        :avocado: tags=arch:x86_64
++        :avocado: tags=machine:q35
++        """
++        # start with BIOS only
++        self.reverse_debugging()
++
+ class ReverseDebugging_AArch64(ReverseDebugging):
+     """
+     :avocado: tags=accel:tcg
 -- 
 2.42.0
 
