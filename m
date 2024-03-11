@@ -2,70 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C71877FDA
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 13:21:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12DD7878010
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 13:36:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjed6-0002z3-ON; Mon, 11 Mar 2024 08:19:44 -0400
+	id 1rjery-0000rN-G9; Mon, 11 Mar 2024 08:35:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rjecz-0002yA-QR
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 08:19:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rjecy-0007tU-Fv
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 08:19:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710159575;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Kfk/BADC8QS/5+v1rBIu2KBQ+fXJSUnRQidFPn+nsr4=;
- b=P69V3nqBTCnygyfA6E1zZsSVs5fOcIeeAegQr5j6A9eJhINsa3RRf5YW5dnBDmp5uoWvX5
- sThnfMtYsNoiTvqPPqGq5SuIs/HGLVw9YokO3VmYqXGwqFBrbCr6O3AnzzlLanho8kBrsW
- MIxWaKWuW04wSXTpU0C5+4wFMvzXAig=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-27-BvmBoOcKO2-DGPFf76YkPg-1; Mon, 11 Mar 2024 08:19:34 -0400
-X-MC-Unique: BvmBoOcKO2-DGPFf76YkPg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 10C2389CA01
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 12:19:34 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.132])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6C453C1576F;
- Mon, 11 Mar 2024 12:19:33 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
+ id 1rjerw-0000qt-Fb
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 08:35:04 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
+ id 1rjert-0002uu-TX
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 08:35:04 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4132a436086so5034865e9.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 05:35:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=citrix.com; s=google; t=1710160499; x=1710765299; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=rlPMa/qxborM8s490ri7DT2VZROhH4ERuCvOsPfS7eM=;
+ b=nebDNmtvU+MUtZa0vwbQWpiRKlEScf6PZDcA9E7h/VqFsHROdTOxhtYXeccjkobvGl
+ iHy6c3UQ0aryo3MYSiprVqW2KtD0lN/AerOXNe3foVZtDVjcbvlKLvyaYUAvg1CCBoaz
+ Kt347vb0ucoyRoMwvPkUndKLIsIzKxz/On8rY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710160499; x=1710765299;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rlPMa/qxborM8s490ri7DT2VZROhH4ERuCvOsPfS7eM=;
+ b=lXT3zmI7aU7kr4V+Elp2C5WOLZq/BlzH7sPZyPEKd9EGpMBPjGu7CSClRaLNJwh6Q1
+ iRnvsu+umFosI5YmVJdXu1LEpX9JtOVOdd7r0n5pFdhi23bg/LrT91h8SPBZyTXK3g8L
+ 6FTJANeu4g7dTzBtEPjc69/1mxlfqASaaQVuM0/aArx0bzWHS0NA1OQJi0g+BeI8hqUR
+ iVRQWn14dptpfxABL51FvQTc0vvJsX8WvbFfUR91bRuSPfb5MeyHrFcFx3yqFdx4QKc4
+ KdbSM8dtjfh7ZKqtV1yNjj+V3CyE86BnZZl1yspGdDfV9ZF5rlaA2WDZ2nCJJhkOGrNK
+ N80A==
+X-Gm-Message-State: AOJu0Yx//8vGhp/q9uM/RvEyHAUjmC0E9Xdn+cwBMks3QeXN2U/SYK3k
+ eg5LIGtOFll3OgLU+/h94gWkM9KX/NCGJPRwoqRgFcCCNoBdY37Mfl8lpj5IbKaTYtl7TLa0USk
+ k
+X-Google-Smtp-Source: AGHT+IGNVDb7sZG1ocbqJS/Hcf9B2VYTyLUFbrcHqEdOixXYj4DfOL6lzVnqAqkk11Sq1GbhwaJIAw==
+X-Received: by 2002:a05:600c:3f90:b0:413:28ee:22e5 with SMTP id
+ fs16-20020a05600c3f9000b0041328ee22e5mr2266589wmb.23.1710160499262; 
+ Mon, 11 Mar 2024 05:34:59 -0700 (PDT)
+Received: from localhost.localdomain
+ (cpc92320-cmbg19-2-0-cust35.5-4.cable.virginm.net. [82.13.64.36])
+ by smtp.gmail.com with ESMTPSA id
+ c6-20020a05600c0a4600b00412f2136793sm15792639wmq.44.2024.03.11.05.34.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 11 Mar 2024 05:34:58 -0700 (PDT)
+From: Anthony PERARD <anthony.perard@citrix.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH 4/4] crypto: report which ciphers are being skipped during
- tests
-Date: Mon, 11 Mar 2024 12:19:29 +0000
-Message-ID: <20240311121929.212472-5-berrange@redhat.com>
-In-Reply-To: <20240311121929.212472-1-berrange@redhat.com>
-References: <20240311121929.212472-1-berrange@redhat.com>
+Cc: qemu-trivial@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: [PATCH] migration: Fix format in error message
+Date: Mon, 11 Mar 2024 12:34:39 +0000
+Message-Id: <20240311123439.16844-1-anthony.perard@citrix.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=anthony.perard@cloud.com; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,31 +89,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since the ciphers can be dynamically disabled at runtime, when running
-unit tests it is helpful to report which ciphers we can skipped for
-testing.
+From: Anthony PERARD <anthony.perard@citrix.com>
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+In file_write_ramblock_iov(), "offset" is "uintptr_t" and not
+"ram_addr_t". While usually they are both equivalent, this is not the
+case with CONFIG_XEN_BACKEND.
+
+Use the right format. This will fix build on 32-bit.
+
+Fixes: f427d90b9898 ("migration/multifd: Support outgoing mapped-ram stream format")
+Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
 ---
- tests/unit/test-crypto-cipher.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ migration/file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/unit/test-crypto-cipher.c b/tests/unit/test-crypto-cipher.c
-index d0ea7b4d8e..f5152e569d 100644
---- a/tests/unit/test-crypto-cipher.c
-+++ b/tests/unit/test-crypto-cipher.c
-@@ -821,6 +821,10 @@ int main(int argc, char **argv)
-     for (i = 0; i < G_N_ELEMENTS(test_data); i++) {
-         if (qcrypto_cipher_supports(test_data[i].alg, test_data[i].mode)) {
-             g_test_add_data_func(test_data[i].path, &test_data[i], test_cipher);
-+        } else {
-+            g_printerr("# skip unsupported %s:%s\n",
-+                       QCryptoCipherAlgorithm_str(test_data[i].alg),
-+                       QCryptoCipherMode_str(test_data[i].mode));
-         }
-     }
- 
+diff --git a/migration/file.c b/migration/file.c
+index 164b079966..5054a60851 100644
+--- a/migration/file.c
++++ b/migration/file.c
+@@ -191,7 +191,7 @@ int file_write_ramblock_iov(QIOChannel *ioc, const struct iovec *iov,
+          */
+         offset = (uintptr_t) iov[slice_idx].iov_base - (uintptr_t) block->host;
+         if (offset >= block->used_length) {
+-            error_setg(errp, "offset " RAM_ADDR_FMT
++            error_setg(errp, "offset %" PRIxPTR
+                        "outside of ramblock %s range", offset, block->idstr);
+             ret = -1;
+             break;
 -- 
-2.43.0
+Anthony PERARD
 
 
