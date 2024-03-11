@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49EC8877F70
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 13:01:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D7C9877F7E
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 13:04:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjeLK-0002q4-Tr; Mon, 11 Mar 2024 08:01:23 -0400
+	id 1rjeNO-0004gr-FJ; Mon, 11 Mar 2024 08:03:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rjeKp-0002au-8a
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 08:00:54 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjeNJ-0004f1-9u
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 08:03:26 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rjeKi-0004g9-SQ
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 08:00:49 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-51344bebe2fso2781399e87.2
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 05:00:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjeNH-0005Ec-Hz
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 08:03:25 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-33e92b3b5c9so1277029f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 05:03:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710158443; x=1710763243; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uGAQ9vkbliJvxZscO7R8k+WrJmN8Sgb45sar6P183j4=;
- b=q7P8pE7CTUlsJQdW/OA9FlhVceZ3MDbHlAPtdpgq7ydp5pQJkVoi9OcsP1sOTt2X8T
- v+x7gEF2RXuTDGu7ndY81d536AYz8P4kFlNLQEpIe+Ge3vdG8lUS+4ypUaxdYxIr0NRZ
- 83Nct+UKkRGQdDXtgftRr/Tl9+sj8gwvWJE9dKMXx6aUG8dJr9y825YiuHX2XTN/nbLx
- GK2n+g10/ClRfsr3XAdOk9OhOKPOcEZ6PB6XbB0jH3jKgVEp6ewpOZQzrzRTuoHF8o2g
- k2vZ6Ny/rS0w2Vc9rjRLgoB2R0tiKvP7l2lvUpyOs2nimrd2v78G3v/p/HVz/w/PKXOd
- Ppng==
+ d=linaro.org; s=google; t=1710158602; x=1710763402; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=dV5UyBtfTTwJ57CNR7ZwV91eZXWHKrV3a0l3VoK3FYI=;
+ b=OZLavTV/xMOfKwQe5IbNpWB7jXKFT79MHbHeZIn68XnpUlKWDJJzijr3TKJnH4aH55
+ AtXnXKUe92YABWKzKMqIyHKwzHIB6IL4aL0CLe4xC8C2y+UCmm3dtst/TJA4EsTquPj0
+ Ot6yUdXsyt/w2JKM3qYKboyJ3QclwuirP+KNIBqJnv452koTF0BYHGYwkuv5Jt68DwuP
+ zG0fsqSE8S5r/H5SlAsoy+7ELSgGs9qK9YkbRhsGGmFJHSNHbGaXaeDh2LRrUM3ZhMP4
+ idfm/YR81Dg0JqCl6plxQPS1P36nXH2aGijd3Z4Q16HUvzu75Xijmf1hc4f9Hh0zh2aN
+ ppcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710158443; x=1710763243;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=uGAQ9vkbliJvxZscO7R8k+WrJmN8Sgb45sar6P183j4=;
- b=fE31Wiv/CS9RKXLCGinyKfbpYpVX3ezaL9dbD9KwbCEEGx/hjgyLwai6fqtDzJ/Rcp
- /wF1zrxh5RZ9wdZijHHgkH0jvuYhcRfSFkjlf524hCwtflAnh+LSdgaYHDbGxypZPsqw
- J19OwKcGMSYrLiHpBGg7mFJiODpCVpNAUTXjcqrg+Gi+hacztllCwHIFyCldd+4OPDit
- l2wij8fX6Y7WYOXEOXzZO5E8b5EZZATzfNJmaKgcQH0e3SMQxHc9hKB8034C0ru6ucjt
- Ni2Bqvs3DUADQRkAxc+9Ta09yGWO6b8jgGdQyydU9drh5AUtvhd1T5e9tt4mE6tndLO2
- hgNg==
-X-Gm-Message-State: AOJu0YzAlH1XlQKEZFpDMN5lww1PDp7ouWSI9OQcnQ4pgCTkSgYpAIVR
- +FQkGss4Pwa0z50dBZ+lkHFIQChWvLO/vh+Nu/557mPRE9HKV8UOjsa5sZ9Z+zQ=
-X-Google-Smtp-Source: AGHT+IEmNn6OBuOTVD+1Krn29J+oCHK/DUpZ2xMNpOYAMmUZuwIDpUaB4++aPnou20qv7NCZu/53JA==
-X-Received: by 2002:a19:f703:0:b0:513:572f:88ea with SMTP id
- z3-20020a19f703000000b00513572f88eamr3453294lfe.19.1710158442633; 
- Mon, 11 Mar 2024 05:00:42 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- p12-20020a05600c468c00b004130378fb77sm15625368wmo.6.2024.03.11.05.00.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 05:00:42 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0B4ED5F88A;
- Mon, 11 Mar 2024 12:00:41 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,  Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PULL 26/29] disas: introduce show_opcodes
-In-Reply-To: <9db53a92-42bd-4bd4-9b68-31b923f7fc9c@redhat.com> (Thomas Huth's
- message of "Mon, 11 Mar 2024 12:02:02 +0100")
-References: <20240306144041.3787188-1-alex.bennee@linaro.org>
- <20240306144041.3787188-27-alex.bennee@linaro.org>
- <9db53a92-42bd-4bd4-9b68-31b923f7fc9c@redhat.com>
-User-Agent: mu4e 1.12.1; emacs 29.1
-Date: Mon, 11 Mar 2024 12:00:41 +0000
-Message-ID: <875xxtq8pi.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1710158602; x=1710763402;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=dV5UyBtfTTwJ57CNR7ZwV91eZXWHKrV3a0l3VoK3FYI=;
+ b=UphLY+2+JaMmorzeRjRtfB/8iBucIpxuervLH6yty5IxxBiyv7BGPcTdJx1aF87vmj
+ cI067JDMSSwWPH4rUPmVfsvIsBGzhYWJtCYt+K3i9MGPL9YIvMy71p6iomOC4KELUdCz
+ oqd0mcTX03F3q1cvCSm6i850KDWvplAERIKqXpmf2uck4TuRv4u/YeSigt1dHtDreRUL
+ vsNH9UVCPe9TjJ3PK/81N1U4UGzrMURY/xaBRxWSexGkQrXMYkkSAKv0Epa5c+KjnzCx
+ CD+hn1WtpS3jeCTETvATc+D1KDJn5Yx/uRJtdcdQlJ6E/YR25DqT/p5DlYl3UJA4lerq
+ Iq0g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUG4BwFxL05/w2wMgmvs7Pu30Sy2J5c2CS6pTRJuGrx1liGgZq1OWdnUf7HTkA/zJ61WwmNTe9PhlbxU6kZQqWqr/J0FeQ=
+X-Gm-Message-State: AOJu0Yzw1CvvhfOTli1fME8YCp3cD1QhjgR+mrncQM9/UTxT6ppuZ/FK
+ P/gGa4/5ubkQAdTAjrQb5+oAkBInHfnUnesbwvRYTEyV6ZLeXLKtmA7TFb4z8wx0bbGFzsOB0be
+ z
+X-Google-Smtp-Source: AGHT+IHGRgPxaNb2OXRXi66p2l7v68iVE6maUO0oPpI1Si0YI0QNQuKxLXEldTpkKoKIkfAelhRUVQ==
+X-Received: by 2002:a05:6000:cc:b0:33d:226e:3769 with SMTP id
+ q12-20020a05600000cc00b0033d226e3769mr4174610wrx.55.1710158601759; 
+ Mon, 11 Mar 2024 05:03:21 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.167.228])
+ by smtp.gmail.com with ESMTPSA id
+ bj28-20020a0560001e1c00b0033e7de97214sm6355145wrb.40.2024.03.11.05.03.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Mar 2024 05:03:21 -0700 (PDT)
+Message-ID: <e7dc81df-1a51-4e0d-b865-5741803fb8cf@linaro.org>
+Date: Mon, 11 Mar 2024 13:03:19 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12d.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] hw: gpio: introduce pcf8574 driver
+Content-Language: en-US
+To: Dmitriy Sharikhin <d.sharikhin@yadro.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: Igor Kononenko <i.kononenko@yadro.com>,
+ "Alexander A. Filippov" <a.filippov@yadro.com>,
+ Alexander Amelkin <a.amelkin@yadro.com>
+References: <f1552d822276e878d84c01eba2cf2c7c9ebdde00.camel@yadro.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <f1552d822276e878d84c01eba2cf2c7c9ebdde00.camel@yadro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,58 +97,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> writes:
+On 11/3/24 10:58, Dmitriy Sharikhin wrote:
+> NXP PCF8574 and compatible ICs are simple I2C GPIO expanders.
+> PCF8574 incorporates quasi-bidirectional IO, and simple
+> communication protocol, when IO read is I2C byte read, and
+> IO write is I2C byte write. User can think of it as
+> open-drain port, when line high state is input and line low
+> state is output.
+> 
+> Signed-off-by: Dmitrii Sharikhin <d.sharikhin@yadro.com>
 
-> On 06/03/2024 15.40, Alex Benn=C3=A9e wrote:
->> For plugins we don't expect the raw opcodes in the disassembly. We
->> already deal with this by hand crafting our capstone call but for
->> other diassemblers we need a flag. Introduce show_opcodes which
->> defaults to off.
->> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->> Message-Id: <20240305121005.3528075-27-alex.bennee@linaro.org>
->> diff --git a/include/disas/dis-asm.h b/include/disas/dis-asm.h
->> index 2324f6b1a46..b26867b6417 100644
->> --- a/include/disas/dis-asm.h
->> +++ b/include/disas/dis-asm.h
->> @@ -396,6 +396,14 @@ typedef struct disassemble_info {
->>     /* Command line options specific to the target disassembler.  */
->>     char * disassembler_options;
->>   +  /*
->> +   * When true instruct the disassembler it may preface the
->> +   * disassembly with the opcodes values if it wants to. This is
->> +   * mainly for the benefit of the plugin interface which doesn't want
->> +   * that.
->> +   */
->> +  bool show_opcodes;
->> +
->>     /* Field intended to be used by targets in any way they deem suitabl=
-e.  */
->>     void *target_info;
->>   diff --git a/disas/disas.c b/disas/disas.c
->> index 0d2d06c2ecc..17170d291ec 100644
->> --- a/disas/disas.c
->> +++ b/disas/disas.c
->> @@ -299,6 +299,7 @@ void disas(FILE *out, const void *code, size_t size)
->>       s.info.buffer =3D code;
->>       s.info.buffer_vma =3D (uintptr_t)code;
->>       s.info.buffer_length =3D size;
->> +    s.info.show_opcodes =3D true;
->>         if (s.info.cap_arch >=3D 0 && cap_disas_host(&s.info, code,
->> size)) {
->>           return;
->
-> I know it's too late now for a patch review, but anyway: What about
-> the other spots that set up a "CPUDebug" struct? Like monitor_disas()
-> or target_disas() ? Shouldn't we initialize the new struct member
-> there, too?
+If a patch is reviewed, please carry reviewers' tag:
+https://www.qemu.org/docs/master/devel/submitting-a-patch.html#proper-use-of-reviewed-by-tags-can-aid-review
 
-Hmm maybe. I can post some follow up fixes.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
->
->  Thomas
+> ---
+>   MAINTAINERS               |   6 ++
+>   hw/gpio/Kconfig           |   4 +
+>   hw/gpio/meson.build       |   1 +
+>   hw/gpio/pcf8574.c         | 162 ++++++++++++++++++++++++++++++++++++++
+>   include/hw/gpio/pcf8574.h |  15 ++++
+>   5 files changed, 188 insertions(+)
+>   create mode 100644 hw/gpio/pcf8574.c
+>   create mode 100644 include/hw/gpio/pcf8574.h
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
