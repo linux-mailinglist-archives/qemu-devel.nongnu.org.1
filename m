@@ -2,59 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA2428786FB
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 19:07:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07333878705
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 19:10:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjk3P-00044F-OV; Mon, 11 Mar 2024 14:07:16 -0400
+	id 1rjk5Z-0004yv-Qs; Mon, 11 Mar 2024 14:09:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=0FuT=KR=kaod.org=clg@ozlabs.org>)
- id 1rjk3M-00040f-RL; Mon, 11 Mar 2024 14:07:13 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=0FuT=KR=kaod.org=clg@ozlabs.org>)
- id 1rjk3K-0003uA-HW; Mon, 11 Mar 2024 14:07:12 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Ttl934d3Gz4wyr;
- Tue, 12 Mar 2024 05:07:03 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Ttl9021CNz4wyh;
- Tue, 12 Mar 2024 05:06:59 +1100 (AEDT)
-Message-ID: <8d1567c8-794b-4d30-96ee-28b14b5b3eff@kaod.org>
-Date: Mon, 11 Mar 2024 19:06:56 +0100
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rjk4d-0004oD-QW
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 14:08:33 -0400
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rjk4b-0004HG-Qt
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 14:08:31 -0400
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-29bf9bd1907so947136a91.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 11:08:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1710180507; x=1710785307; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ov6rySqM2fYlrkg97PbmbHbkAA2FwOYsS7BQ+puwQd4=;
+ b=g6VJKE1VLFAVzzh4tQzfu5H781y3Cp2ad1JEnfPjn1+mO4tqfjKNFCQmaVCQM/zhv0
+ 8DGPBswRZsZFNqVSYubZ8axaIaCtxBq565PRCiPQqVTkohqlCOMVsEmXw5e8MlzBca6J
+ llVP5fks21MA6YTAWZ/YhvLoqySA0MBA9uRbJMReTe3NKCENjwUHM3MknMj4U/Gdi+Gh
+ Quug6stBaCKlD46WgBUTMbErBFso7fcRZ6tQkBdtBo8uYAWS6Un6whCBApEcz1Sdpntd
+ CkJgfM5OkLmIiybJRAi3sbWpkdUNDLfi6yopl8+NpHmMaqjNrlBqdE5gbuiFQFb6Mmqu
+ 5jUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710180507; x=1710785307;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Ov6rySqM2fYlrkg97PbmbHbkAA2FwOYsS7BQ+puwQd4=;
+ b=k7R2A5s07wpS8cTqRR5UIU051ZRHwAjA27wVwk30Q6dIiVOgPXtUFnsuc9ZIm9xi4z
+ 1uPiqOK5rHFAn8mq458+gT7AUejElzggpQWsS3mKjKJ7epZH79JEH3dyP5OASgA4k+1P
+ sf6DRun2a96anLaB2uzCeY07eM9PD0gKZPud17PcMkeyzwcJqIwGkzAR2IIrF8aHojn7
+ rRLQ5Sh4ptpU3pqdVaWe3vOruZweFXgzw4gPFLx0O5RqsJXMydtvyiBJICb/i3Wua/sx
+ Cnxe4RjG3CFrxGQTUm/hctmT3I0d4VcJ1RqK5BYSO34TJ+S4itOqBIPNm7w50SEFCiFk
+ ycxw==
+X-Gm-Message-State: AOJu0YyX9W9jGYE9gCgnE4Ix7YQViu3RMItxMR8hrPR4wHnFyym/Ssfl
+ yF/Q6z7fEhLgR8B3WIU39bhLVUyqIro1Hv0i+CWXKHYTCaWTOOKsz9Fy5EVwyZ4c5WiUDe1lCw4
+ +
+X-Google-Smtp-Source: AGHT+IHzuPkIDNUerHKgPFtxK/uwdROwitle00GUZx0e+UCYqmK7Ua8wjqhMCCZA/hHkeGPYgnQf7g==
+X-Received: by 2002:a17:90a:6047:b0:29b:789:802a with SMTP id
+ h7-20020a17090a604700b0029b0789802amr6095530pjm.31.1710180507611; 
+ Mon, 11 Mar 2024 11:08:27 -0700 (PDT)
+Received: from grind.dc1.ventanamicro.com ([177.94.15.159])
+ by smtp.gmail.com with ESMTPSA id
+ hk13-20020a17090b224d00b0029c2794d3f7sm525810pjb.7.2024.03.11.11.08.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 11 Mar 2024 11:08:27 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ philmd@linaro.org, richard.henderson@linaro.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v12 0/7] riscv: set vstart_eq_zero on vector insns
+Date: Mon, 11 Mar 2024 15:08:14 -0300
+Message-ID: <20240311180821.250469-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] spapr: Tag pseries-2.1 - 2.11 machines as deprecated
-Content-Language: en-US, fr
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Thomas Huth <thuth@redhat.com>
-Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-References: <20231214181723.1520854-1-clg@kaod.org>
- <f3e1fefc-0df3-4339-8373-7648597a78d0@linaro.org>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <f3e1fefc-0df3-4339-8373-7648597a78d0@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=0FuT=KR=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x1029.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,71 +93,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/11/24 18:46, Philippe Mathieu-Daudé wrote:
-> Hi,
-> 
-> On 14/12/23 19:17, Cédric Le Goater wrote:
->> pseries machines before version 2.11 have undergone many changes to
->> correct issues, mostly regarding migration compatibility. This is
->> obfuscating the code uselessly and makes maintenance more difficult.
->> Remove them and only keep the last version of the 2.x series, 2.12,
->> still in use by old distros.
-> 
-> By the time we get to QEMU v9.2, will pseries-2.12 still be used
-> by old distros? (which ones btw?)
+Hi,
 
-Using info from https://repology.org/api/v1/project/qemu :
+In this new version we reworked the commit message of patch 4, as
+suggested by Richard, since the solution we went for in patch 3
+trivialized the removal of 'brcond' since we're doing an early exit if
+vstart >= vl.
 
-alpine_3_8: 2.12.0
-aur: 2.10.0, 2.7.1, 8.2.0.r1767.g91e3bf2e92
-epel_7: 2.0.0
-fedora_26: 2.9.0, 2.9.1
-fedora_27: 2.10.0, 2.10.2
-fedora_28: 2.11.1, 2.11.2
-freshcode: 2.8.0
-gnuguix: 2.10.2, 8.1.3
-opensuse_leap_15_0: 2.11.1, 2.11.2, 3.1.1.1, 4.2.1, 5.2.0
-opensuse_leap_42_3: 2.9.0, 2.9.1
-openwrt_17_01_x86_64: 2.6.2
-openwrt_18_06_x86_64: 2.11.1
-rosa_2016_1: 2.10.1, 2.5.1.1
-slackbuilds: 2.12.0, 7.2.1
-slitaz_next: 2.0.2
-ubuntu_14_04: 2.0.0, 2.0.0~rc1
-ubuntu_16_04: 2.5
-ubuntu_18_04: 2.11
+No other changes made. Patches based on master.
 
-Thanks to Thomas !
+All patches acked.
 
-C.
+Changes from v11:
+- patch 4:
+  - commit msg rewritten taking VSTART_CHECK_EARLY_EXIT() into
+    consideration
+- v11 link: https://lore.kernel.org/qemu-riscv/20240311135855.225578-1-dbarboza@ventanamicro.com/
 
 
-> 
-> What about also deprecating pseries-2.12 and pseries-2.12-sxxm
-> which both set pre_3_0_migration, and suggest to use pseries-3.0
-> instead?
-> 
->>
->> Reviewed-by: Thomas Huth <thuth@redhat.com>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> ---
->>   docs/about/deprecated.rst | 7 +++++++
->>   hw/ppc/spapr.c            | 1 +
->>   2 files changed, 8 insertions(+)
->>
->> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
->> index 2e1504024658..c0e22b2b568f 100644
->> --- a/docs/about/deprecated.rst
->> +++ b/docs/about/deprecated.rst
->> @@ -269,6 +269,13 @@ Nios II ``10m50-ghrd`` and ``nios2-generic-nommu`` machines (since 8.2)
->>   The Nios II architecture is orphan.
->> +``pseries-2.1`` up to ``pseries-2.11`` (since 9.0)
->> +''''''''''''''''''''''''''''''''''''''''''''''''''
->> +
->> +Older pseries machines before version 2.12 have undergone many changes
->> +to correct issues, mostly regarding migration compatibility. These are
->> +no longer maintained and removing them will make the code easier to
->> +read and maintain. Use versions 2.12 and above as a replacement.
-> 
+Daniel Henrique Barboza (6):
+  target/riscv/vector_helper.c: set vstart = 0 in GEN_VEXT_VSLIDEUP_VX()
+  trans_rvv.c.inc: set vstart = 0 in int scalar move insns
+  target/riscv/vector_helpers: do early exit when vstart >= vl
+  target/riscv: remove 'over' brconds from vector trans
+  trans_rvv.c.inc: remove redundant mark_vs_dirty() calls
+  target/riscv/vector_helper.c: optimize loops in ldst helpers
+
+Ivan Klokov (1):
+  target/riscv: enable 'vstart_eq_zero' in the end of insns
+
+ target/riscv/insn_trans/trans_rvbf16.c.inc |  18 +-
+ target/riscv/insn_trans/trans_rvv.c.inc    | 198 +++++----------------
+ target/riscv/insn_trans/trans_rvvk.c.inc   |  30 +---
+ target/riscv/translate.c                   |   6 +
+ target/riscv/vcrypto_helper.c              |  32 ++++
+ target/riscv/vector_helper.c               |  97 +++++++++-
+ target/riscv/vector_internals.c            |   4 +
+ target/riscv/vector_internals.h            |   9 +
+ 8 files changed, 202 insertions(+), 192 deletions(-)
+
+-- 
+2.43.2
 
 
