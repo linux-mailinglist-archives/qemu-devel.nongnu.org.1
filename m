@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F64C878A92
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 23:12:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A39E878A74
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 23:03:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjngt-0000qD-7c; Mon, 11 Mar 2024 18:00:15 -0400
+	id 1rjnhT-00010R-56; Mon, 11 Mar 2024 18:00:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngc-0000YM-EU
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:59 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjnge-0000Yy-LN
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 18:00:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjnga-00042y-Jn
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:58 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngc-00043N-Ue
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 18:00:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710194395;
+ s=mimecast20190719; t=1710194398;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mNUhmEzp/58FEG6jAG2/JC7N9wqLD5mTyKauBdCXsmU=;
- b=JRi1Rn3/4vSSYTgrKaVhsd574CH2Ef6Dt3dLr+Rm1uBLgZnlvk6XcY2NMKKs17hxzYzI7B
- KHAsgpAYLYjNlKqv2T8vN5KWcP4dOnBcs9qCPXpXygW2s8nwJHU3KV1a4vMB2gmrgSbU7G
- w7g8h8BNeySFjUi85cpmAoIUPUbc8WQ=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=L9tqjm6MQlYl8InOWvUGruPRPvJCqkW54MwUESfEeMw=;
+ b=K9CgTU25Q2wdlJSYYNPC8BmVA0QEFDfLI/4TXPPtaXux2DhCMQDAfjtWWgfpct6w21BRcU
+ zfkd3CP74EkulcaWIkpOj5hWH26OW963ZEelaL9jHtehuM2IPdIo4yLO0c8DzAGBgvjh30
+ 3AdVfZpgaYnXBLnYz+KnIiIVPIqulZU=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-683-oKMTK-22NVS68bXqeu5tYw-1; Mon, 11 Mar 2024 17:59:54 -0400
-X-MC-Unique: oKMTK-22NVS68bXqeu5tYw-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-690ca03e758so5295856d6.1
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 14:59:54 -0700 (PDT)
+ us-mta-255-yMOVwB8UNxeCBfzcSb0YLw-1; Mon, 11 Mar 2024 17:59:56 -0400
+X-MC-Unique: yMOVwB8UNxeCBfzcSb0YLw-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-690b5ad0e61so15723876d6.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 14:59:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710194393; x=1710799193;
+ d=1e100.net; s=20230601; t=1710194396; x=1710799196;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mNUhmEzp/58FEG6jAG2/JC7N9wqLD5mTyKauBdCXsmU=;
- b=os5cZ16qt/aVqg+zorN8NLwPQxKXmC0gN1S4yVvx7S7ijNdHxV5Y9lrifZL5jAGIxH
- mJEi7JQqS8ULNWnPz7c9zMorIkTmNMA3BuZiNwdqYuI+BM5illBRpgtVdUXZByL6RSPl
- xKSOHc1HyHI2PT0sGQoHS3sujG+Y6cMGWn6aQtk8ZXgT0m9UXziZ41W/Co33CWJ40ZuR
- E1rssyzYN3OGDJWMUVUihHukPokeUiUQ+rK1GbGibAPw+pnr9yjVZy9G48oEVwWuMPJ6
- Mv6DkUp6mHyZq4Mb6tqBbptY8XPr66eRqXepXt7r/xsr0VfMy2ZPg9zxSWKlPubxgx0z
- WXNg==
-X-Gm-Message-State: AOJu0Yy++xPxe/5ynyhvbTbF5Gu2ywStd1duvFjK3gynLE1V/GMgOnQm
- a4UQfFKPbbGIVHQTGVxs/tZqXGRJguAOs0sNkBbas5ju97qYcuqxsJIyLkCKJA8dRv0J4L6wOin
- QeJ03aV64nld3k2WS2/wRzmhQ0gfqFcoTy/dLEp8aWn/uS5Msw6bIAnlF4teS5xdtOm+OsUfEAM
- WYXB1oHcfr6STu2TAy9w45I1AZSssLwB2ecA==
-X-Received: by 2002:a05:6214:1743:b0:690:27a:e6 with SMTP id
- dc3-20020a056214174300b00690027a00e6mr121558qvb.5.1710194393475; 
- Mon, 11 Mar 2024 14:59:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFtGL2Cn4/57l0PYp+7R/5Wfss794xgkYagX6VxOzxB+7gOfsH4BLXmjjWYJLoushhekcEHuw==
-X-Received: by 2002:a05:6214:1743:b0:690:27a:e6 with SMTP id
- dc3-20020a056214174300b00690027a00e6mr121523qvb.5.1710194392817; 
- Mon, 11 Mar 2024 14:59:52 -0700 (PDT)
+ bh=L9tqjm6MQlYl8InOWvUGruPRPvJCqkW54MwUESfEeMw=;
+ b=MkboWhdhsM1+2RxR+JOOhkfLigEmBxBozLRTpiY+/qBRQTHQ6AsmonOF0A5iqXl9/J
+ M90iSHvxB+OVT50Kn4QyWerRldNRU+bKyzv58fMcfQdVuUxWjo2liv79hcVk9MB2Hsza
+ LvMYU0Casc09K2RadXlv0J5MXgajdFLyo5M2x75ZOVIW3Bshqi3QBWBL84JRWH8ayBlw
+ mqC9r/sDhYpAstvcJHgI/Ml/3ETF1fRizW2bXTg9VACRdUL23931DAFTR4Fmjh2RxWZO
+ 6dnNIHD+5ZuDpkfcR8949ixbDBaJZ2q5gD0Q/Ains9iNqLpOvdP5bOXRfYtE6b9XQPui
+ 3CLg==
+X-Gm-Message-State: AOJu0YxCQRWw/TUrptLSioKPvb80iIsP5pyY06LR1SRMt9oZliQtWBz1
+ BNvfWHUyKE2ASpSHaqVys8YoywO2MBEJpe8RWh99/F6P+/EdmsWPNB4PQSi1eaIshfPPClNwpDj
+ 84zuBXYMacXKmIEiuUZVwDHhlVLcTaF6S1zSphRANpgfxi9BMlR7ibXqUWt8EHcpKgg9q42mvLR
+ tpWFnOx3YsNvdadfkv0VDBB0QL3W7YenRB0A==
+X-Received: by 2002:a05:6214:1903:b0:68f:5d43:5e94 with SMTP id
+ er3-20020a056214190300b0068f5d435e94mr7642141qvb.6.1710194396081; 
+ Mon, 11 Mar 2024 14:59:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHdb58FTINcFo/TyBnyBN4wza3Lw0FmwS44hJGnus24rZHw2UHWKIiW52EfVqFpw1ctBQBXyw==
+X-Received: by 2002:a05:6214:1903:b0:68f:5d43:5e94 with SMTP id
+ er3-20020a056214190300b0068f5d435e94mr7642114qvb.6.1710194395554; 
+ Mon, 11 Mar 2024 14:59:55 -0700 (PDT)
 Received: from x1n.. (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- d6-20020a0ce446000000b00690cec16254sm1541932qvm.68.2024.03.11.14.59.51
+ d6-20020a0ce446000000b00690cec16254sm1541932qvm.68.2024.03.11.14.59.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 14:59:52 -0700 (PDT)
+ Mon, 11 Mar 2024 14:59:53 -0700 (PDT)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, peterx@redhat.com,
  Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
  Prasad Pandit <ppandit@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 18/34] migration: export migration_is_setup_or_active
-Date: Mon, 11 Mar 2024 17:59:09 -0400
-Message-ID: <20240311215925.40618-19-peterx@redhat.com>
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [PULL 19/34] migration: export migration_is_active
+Date: Mon, 11 Mar 2024 17:59:10 -0400
+Message-ID: <20240311215925.40618-20-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240311215925.40618-1-peterx@redhat.com>
 References: <20240311215925.40618-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -105,144 +103,110 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-Delete the MigrationState parameter from migration_is_setup_or_active
-and move it to the public API in misc.h.
+Delete the MigrationState parameter from migration_is_active so it
+can be exported and used without including migration.h.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/r/1710179338-294359-3-git-send-email-steven.sistare@oracle.com
+Link: https://lore.kernel.org/r/1710179338-294359-4-git-send-email-steven.sistare@oracle.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- include/migration/misc.h |  1 +
- migration/migration.h    |  1 -
- hw/vfio/common.c         |  2 +-
- migration/migration.c    | 12 ++++++------
- migration/ram.c          |  5 ++---
- net/vhost-vdpa.c         |  3 +--
- 6 files changed, 11 insertions(+), 13 deletions(-)
+ include/migration/misc.h |  2 +-
+ hw/vfio/common.c         |  4 ++--
+ migration/migration.c    | 10 ++++++----
+ system/dirtylimit.c      |  2 +-
+ 4 files changed, 10 insertions(+), 8 deletions(-)
 
 diff --git a/include/migration/misc.h b/include/migration/misc.h
-index 4c226a40bb..79cff6224e 100644
+index 79cff6224e..e1f1bf853e 100644
 --- a/include/migration/misc.h
 +++ b/include/migration/misc.h
-@@ -61,6 +61,7 @@ void migration_object_init(void);
+@@ -60,7 +60,7 @@ void dump_vmstate_json_to_file(FILE *out_fp);
+ void migration_object_init(void);
  void migration_shutdown(void);
  bool migration_is_idle(void);
- bool migration_is_active(MigrationState *);
-+bool migration_is_setup_or_active(void);
+-bool migration_is_active(MigrationState *);
++bool migration_is_active(void);
+ bool migration_is_setup_or_active(void);
  bool migrate_mode_is_cpr(MigrationState *);
  
- typedef enum MigrationEventType {
-diff --git a/migration/migration.h b/migration/migration.h
-index 65c0b61cbd..736460aa8b 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -479,7 +479,6 @@ bool migrate_has_error(MigrationState *s);
- 
- void migrate_fd_connect(MigrationState *s, Error *error_in);
- 
--bool migration_is_setup_or_active(int state);
- bool migration_is_running(int state);
- 
- int migrate_init(MigrationState *s, Error **errp);
 diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 059bfdc07a..896eab8103 100644
+index 896eab8103..2dbbf62e15 100644
 --- a/hw/vfio/common.c
 +++ b/hw/vfio/common.c
-@@ -152,7 +152,7 @@ static void vfio_set_migration_error(int err)
- {
+@@ -182,7 +182,7 @@ static bool vfio_devices_all_dirty_tracking(VFIOContainerBase *bcontainer)
+     VFIODevice *vbasedev;
      MigrationState *ms = migrate_get_current();
  
--    if (migration_is_setup_or_active(ms->state)) {
-+    if (migration_is_setup_or_active()) {
-         WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
-             if (ms->to_dst_file) {
-                 qemu_file_set_error(ms->to_dst_file, err);
-diff --git a/migration/migration.c b/migration/migration.c
-index a49fcd53ee..af21403bad 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1081,9 +1081,11 @@ void migrate_send_rp_resume_ack(MigrationIncomingState *mis, uint32_t value)
-  * Return true if we're already in the middle of a migration
-  * (i.e. any of the active or setup states)
-  */
--bool migration_is_setup_or_active(int state)
-+bool migration_is_setup_or_active(void)
+-    if (ms->state != MIGRATION_STATUS_ACTIVE &&
++    if (!migration_is_active() &&
+         ms->state != MIGRATION_STATUS_DEVICE) {
+         return false;
+     }
+@@ -225,7 +225,7 @@ vfio_devices_all_running_and_mig_active(const VFIOContainerBase *bcontainer)
  {
--    switch (state) {
-+    MigrationState *s = current_migration;
-+
-+    switch (s->state) {
-     case MIGRATION_STATUS_ACTIVE:
-     case MIGRATION_STATUS_POSTCOPY_ACTIVE:
-     case MIGRATION_STATUS_POSTCOPY_PAUSED:
-@@ -1601,10 +1603,8 @@ bool migration_incoming_postcopy_advised(void)
+     VFIODevice *vbasedev;
  
- bool migration_in_bg_snapshot(void)
- {
--    MigrationState *s = migrate_get_current();
--
-     return migrate_background_snapshot() &&
--            migration_is_setup_or_active(s->state);
-+           migration_is_setup_or_active();
- }
- 
- bool migration_is_idle(void)
-@@ -2297,7 +2297,7 @@ static void *source_return_path_thread(void *opaque)
-     trace_source_return_path_thread_entry();
-     rcu_register_thread();
- 
--    while (migration_is_setup_or_active(ms->state)) {
-+    while (migration_is_setup_or_active()) {
-         trace_source_return_path_thread_loop_top();
- 
-         header_type = qemu_get_be16(rp);
-diff --git a/migration/ram.c b/migration/ram.c
-index 2cd936d9ce..3ee8cb47d3 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -2909,10 +2909,9 @@ void qemu_guest_free_page_hint(void *addr, size_t len)
-     RAMBlock *block;
-     ram_addr_t offset;
-     size_t used_len, start, npages;
--    MigrationState *s = migrate_get_current();
- 
-     /* This function is currently expected to be used during live migration */
--    if (!migration_is_setup_or_active(s->state)) {
-+    if (!migration_is_setup_or_active()) {
-         return;
+-    if (!migration_is_active(migrate_get_current())) {
++    if (!migration_is_active()) {
+         return false;
      }
  
-@@ -3263,7 +3262,7 @@ static int ram_save_iterate(QEMUFile *f, void *opaque)
+diff --git a/migration/migration.c b/migration/migration.c
+index af21403bad..17859cbaee 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -1406,7 +1406,7 @@ static void migrate_fd_cleanup(MigrationState *s)
+         qemu_fclose(tmp);
+     }
  
- out:
-     if (ret >= 0
--        && migration_is_setup_or_active(migrate_get_current()->state)) {
-+        && migration_is_setup_or_active()) {
-         if (migrate_multifd() && migrate_multifd_flush_after_each_section() &&
-             !migrate_mapped_ram()) {
-             ret = multifd_send_sync_main();
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index e6bdb4562d..8564817073 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -26,7 +26,6 @@
- #include <err.h>
- #include "standard-headers/linux/virtio_net.h"
- #include "monitor/monitor.h"
--#include "migration/migration.h"
- #include "migration/misc.h"
- #include "hw/virtio/vhost.h"
+-    assert(!migration_is_active(s));
++    assert(!migration_is_active());
  
-@@ -355,7 +354,7 @@ static int vhost_vdpa_net_data_start(NetClientState *nc)
-     assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA);
+     if (s->state == MIGRATION_STATUS_CANCELLING) {
+         migrate_set_state(&s->state, MIGRATION_STATUS_CANCELLING,
+@@ -1637,8 +1637,10 @@ bool migration_is_idle(void)
+     return false;
+ }
  
-     if (s->always_svq ||
--        migration_is_setup_or_active(migrate_get_current()->state)) {
-+        migration_is_setup_or_active()) {
-         v->shadow_vqs_enabled = true;
-     } else {
-         v->shadow_vqs_enabled = false;
+-bool migration_is_active(MigrationState *s)
++bool migration_is_active(void)
+ {
++    MigrationState *s = current_migration;
++
+     return (s->state == MIGRATION_STATUS_ACTIVE ||
+             s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE);
+ }
+@@ -3461,7 +3463,7 @@ static void *migration_thread(void *opaque)
+ 
+     trace_migration_thread_setup_complete();
+ 
+-    while (migration_is_active(s)) {
++    while (migration_is_active()) {
+         if (urgent || !migration_rate_exceeded(s->to_dst_file)) {
+             MigIterateState iter_state = migration_iteration_run(s);
+             if (iter_state == MIG_ITERATE_SKIP) {
+@@ -3607,7 +3609,7 @@ static void *bg_migration_thread(void *opaque)
+     migration_bh_schedule(bg_migration_vm_start_bh, s);
+     bql_unlock();
+ 
+-    while (migration_is_active(s)) {
++    while (migration_is_active()) {
+         MigIterateState iter_state = bg_migration_iteration_run(s);
+         if (iter_state == MIG_ITERATE_SKIP) {
+             continue;
+diff --git a/system/dirtylimit.c b/system/dirtylimit.c
+index 774ff44f79..051e0311c1 100644
+--- a/system/dirtylimit.c
++++ b/system/dirtylimit.c
+@@ -83,7 +83,7 @@ static void vcpu_dirty_rate_stat_collect(void)
+     int64_t period = DIRTYLIMIT_CALC_TIME_MS;
+ 
+     if (migrate_dirty_limit() &&
+-        migration_is_active(s)) {
++        migration_is_active()) {
+         period = s->parameters.x_vcpu_dirty_limit_period;
+     }
+ 
 -- 
 2.44.0
 
