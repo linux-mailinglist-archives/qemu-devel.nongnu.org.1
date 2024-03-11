@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9445B8788C9
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 20:22:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD9538788A1
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 20:16:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjl89-0005Yf-Lp; Mon, 11 Mar 2024 15:16:18 -0400
+	id 1rjl89-0005Yg-Lq; Mon, 11 Mar 2024 15:16:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rjl53-0003PJ-1x
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 15:13:03 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1rjl56-0003Qt-TN
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 15:13:08 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rjl4x-0000Ns-4n
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 15:13:00 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-41331166961so1665875e9.1
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 12:12:53 -0700 (PDT)
+ id 1rjl4v-0000Nz-V1
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 15:13:03 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4132600824bso9417305e9.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 12:12:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710184371; x=1710789171; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710184372; x=1710789172; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=yKKx3IOByUMeAMGSYuM0l0stWjxVzOikFpYz9umacLc=;
- b=CKAogRjR1/zANIGqogF7BS0hCbJyBf51vSWn7kuKGqETKdmwdaAaIhKTgOvge1EK+G
- ueceZAa0HXc/jF22wtAT9g1KSKFElFtNe3yvMoq6oaScV6t/PPiffERVa9dES03HGVac
- hlNUgxOC4jJmCuk/umuqf/iE29vLY4MiBkaGBr8Coa04KZlfCzRxc3pbceFFWaVdCwUF
- K+4hpPhuaDzOElvCxugFzPOVTVn8OHXuOSdEeIjTBrAiueMRhmOLcqR7QJf0w47PaBMa
- qcxmu7RAgVeuNKiJnSbCe2299lM5rHn9EKGhtkwY8aRMuNMErzQaSgCTjkfaWsIzleJq
- 0Z4Q==
+ :reply-to; bh=bC+LUFs+cDKcgliQteAEFQtfSzHpjUGJyBcf3ZG4pxI=;
+ b=P+k2VVBBKr35AZhwdStCq1bD1vcAtI/myZyGE13GwoRhIZQVSCaxkgFl62g6O1xtQI
+ pSd5y9grh8z0YnU2phGKJ9OcPgAa39/BZG33ePr0z2iaSC/dapN4L9Naj/lSIaMQ59eE
+ EDVKICcKfamHu9uC3BQuF/rtLkHPv4L09nXH/pCToWQGFnJq6IJhcf+1WsUgGyoi1vVp
+ 4TKO66aQut2iv3PYV4YJcAyKDBlt+uJvgzjbEXoizX5GrriTAzmod1ZqTaJTQTRUgkev
+ wvnYCEuJToy1FxhPMNyaivhJDPtl7PgzBLtUe7i2QrD2VwW6LVT16AU7UKyG1TVEefAa
+ jhyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710184371; x=1710789171;
+ d=1e100.net; s=20230601; t=1710184372; x=1710789172;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yKKx3IOByUMeAMGSYuM0l0stWjxVzOikFpYz9umacLc=;
- b=NmziGU5Xnh2nqskR/+ctkcuoJ+sIkBSgOfr9OOZfIRB/O8/xdJ7hwIV7bTU4K9kIPO
- bLUrM8ZW7HotLzR0SxcyBKxAN9HRtxnjImDbzTMgZNBI4cHwuIGnwaQKBk3xiWckxwdH
- xRdBINIjIsBcVDu6C1Nh90c9VSQm7PFGj81mxt2+2CebxJHGGP2ZWVThO/hoeKaCRpuE
- fNMH9haECq7zWgZ9DH2HXrGrGzqOPEi72rxv7VdXHDzQL0th/p/j5+XLWAbrBIxnJfgy
- bsgJ/GZ6JME6LyQQwWStpLtgFIjL676nBlaRdRas7SdU3HScdnduG05vqm83tRuFP5VN
- Iexg==
-X-Gm-Message-State: AOJu0YzK4Si4NAdrEO1rejNz+B1eoaKUWbP0tSF9TIlbZuDI7VPRZTkW
- wdakuTrLLhHxiTkpPAIoTS9Xj4nvO0MVnbScCi7F47nLwDCE+IIkzIOHFmSPrxIFLnxkooXmBBA
- t
-X-Google-Smtp-Source: AGHT+IGjga9VscIE24EwtSAb+HwGThVHxzA2jcWbqetdPuePYkOoa6uJ4R7t9iP6OReqePaYegKkDw==
-X-Received: by 2002:a05:600c:6a1a:b0:413:1285:6e40 with SMTP id
- jj26-20020a05600c6a1a00b0041312856e40mr5673901wmb.20.1710184371490; 
+ bh=bC+LUFs+cDKcgliQteAEFQtfSzHpjUGJyBcf3ZG4pxI=;
+ b=KXKq47XNPnU60noTa9M1bQZvNpwEO6ZWuHYDWvSE8qlqNzmxyjlPI9ZCjq2/92Q0HY
+ CacXPcdHy6HmzssuiKpNca2cfnN+RvLsrBnbtwOuG5PtY9Qe4zKuSxWWqauo+qj1fAFK
+ Hy3i5U4l77YBwj7AiwEGMabnX8mFPy0TYTATONPDr7jLspsJqWNI00g2oeWepON/auWe
+ d4g543gy9+w3VaRaeOgAjUsVfMGBC5G4ECws/Xv0Bv1tbVSa3edKl+wQD52yVNDjVYGL
+ q1qvj46UuJ/XBlGWyuHl3Ynke3z1qJw9RnEWC9YeDrsDwcG0EB7vb5810uBbCSuGf9+0
+ 4rRA==
+X-Gm-Message-State: AOJu0Yx+D8YqGO5WEQ39HlmAklxr/y/Zu1lPraJM5dBTvk/vEFFEfW1x
+ qLX/HS00D7X3WKh8f/HDbLDQioFtIpzc0q57s91tS4NFecU5VS81lORC2npQeKa77Hk336lREj0
+ w
+X-Google-Smtp-Source: AGHT+IGqHnK9sGWeI3Mn9yAeKAeFFX6c+9vqgQIgLwe0kJ1P1eZvTlX36z9r/dZ0QkH9NgEdyZbJzg==
+X-Received: by 2002:a05:600c:5405:b0:413:1921:8698 with SMTP id
+ he5-20020a05600c540500b0041319218698mr1076420wmb.41.1710184371875; 
  Mon, 11 Mar 2024 12:12:51 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,16 +59,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Mon, 11 Mar 2024 12:12:51 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 19/20] contrib/elf2dmp: Ensure phdrs fit in file
-Date: Mon, 11 Mar 2024 19:12:40 +0000
-Message-Id: <20240311191241.4177990-20-peter.maydell@linaro.org>
+Subject: [PULL 20/20] docs: update copyright date to the year 2024
+Date: Mon, 11 Mar 2024 19:12:41 +0000
+Message-Id: <20240311191241.4177990-21-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240311191241.4177990-1-peter.maydell@linaro.org>
 References: <20240311191241.4177990-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,47 +91,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Ani Sinha <anisinha@redhat.com>
 
-Callers of elf64_getphdr() and elf_getphdrnum() assume phdrs are
-accessible.
+We are already in the third month of 2024 but the copyright notices still refer
+to 2023. Update the date to 2024 in documentation and help texts.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2202
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Tested-by: Viktor Prutyanov <viktor.prutyanov@phystech.edu>
+Cc: peter.maydell@linaro.org
+Cc: qemu-trivial@nongnu.org
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240307-elf2dmp-v4-19-4f324ad4d99d@daynix.com
+Message-id: 20240311120346.9596-1-anisinha@redhat.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- contrib/elf2dmp/qemu_elf.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ docs/conf.py              | 2 +-
+ include/qemu/help-texts.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/contrib/elf2dmp/qemu_elf.c b/contrib/elf2dmp/qemu_elf.c
-index 8d750adf904..c9bad6e82cf 100644
---- a/contrib/elf2dmp/qemu_elf.c
-+++ b/contrib/elf2dmp/qemu_elf.c
-@@ -132,6 +132,7 @@ static void exit_states(QEMU_Elf *qe)
- static bool check_ehdr(QEMU_Elf *qe)
- {
-     Elf64_Ehdr *ehdr = qe->map;
-+    uint64_t phendoff;
+diff --git a/docs/conf.py b/docs/conf.py
+index 1b2afa241c0..aae0304ac6e 100644
+--- a/docs/conf.py
++++ b/docs/conf.py
+@@ -88,7 +88,7 @@
  
-     if (sizeof(Elf64_Ehdr) > qe->size) {
-         eprintf("Invalid input dump file size\n");
-@@ -173,6 +174,13 @@ static bool check_ehdr(QEMU_Elf *qe)
-         return false;
-     }
+ # General information about the project.
+ project = u'QEMU'
+-copyright = u'2023, The QEMU Project Developers'
++copyright = u'2024, The QEMU Project Developers'
+ author = u'The QEMU Project Developers'
  
-+    if (umul64_overflow(ehdr->e_phnum, sizeof(Elf64_Phdr), &phendoff) ||
-+        uadd64_overflow(phendoff, ehdr->e_phoff, &phendoff) ||
-+        phendoff > qe->size) {
-+        eprintf("phdrs do not fit in file\n");
-+        return false;
-+    }
-+
-     return true;
- }
+ # The version info for the project you're documenting, acts as replacement for
+diff --git a/include/qemu/help-texts.h b/include/qemu/help-texts.h
+index d0359f82e08..353ab2ad8b0 100644
+--- a/include/qemu/help-texts.h
++++ b/include/qemu/help-texts.h
+@@ -2,7 +2,7 @@
+ #define QEMU_HELP_TEXTS_H
  
+ /* Copyright string for -version arguments, About dialogs, etc */
+-#define QEMU_COPYRIGHT "Copyright (c) 2003-2023 " \
++#define QEMU_COPYRIGHT "Copyright (c) 2003-2024 " \
+     "Fabrice Bellard and the QEMU Project developers"
+ 
+ /* Bug reporting information for --help arguments, About dialogs, etc */
 -- 
 2.34.1
 
