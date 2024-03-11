@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 251128788C8
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 20:22:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C543878898
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 20:15:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjl9w-0007Hx-77; Mon, 11 Mar 2024 15:18:04 -0400
+	id 1rjl7C-0004jS-9A; Mon, 11 Mar 2024 15:15:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rjl57-0003R1-G2
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 15:13:09 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ id 1rjl4y-0003OU-6K
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 15:13:02 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rjl4s-0000Mc-HF
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 15:13:05 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-513173e8191so4648910e87.1
+ id 1rjl4s-0000Mh-AE
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 15:12:55 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4132fc7dea7so4379085e9.3
  for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 12:12:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1710184367; x=1710789167; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ZKRgQA/0ld0Nx08VQWNukHwwGQ+d9ybOAarqZYkU/Wk=;
- b=eSua3Q4pfY5Xj46/eQvHcGv0yDFxOuUH3hdFEYl75d+9CrMA4rJfFeXq4pPzkLbqol
- Ooa731wYNf0EagSFjwsIix6ph8H9KlQzyv8oo+9rtg4IeLPYqVjcAnk8avGz3GLG65ea
- LxQfXVMvq1dXk6Kc74mEUS2xqOnRJH7KChp2Ny4XUgdvjLnKeAhzvcAuzGlqRL53IW8X
- KgIgR1AJHfGnbO174kDWIym7cIqldabhHWu1luZ+7r0eK1j08K5R+rbx3QPWAnwhbUXK
- amNeXOC900+kJew3dd60PynNqUTEEWc4Ov4/ILEY/gtaKQaa7L+v5K89xehL/zivAFzz
- pPdw==
+ :reply-to; bh=yBgzhXasfX7o3A8onUx+4Fu5/1iVNFXdpdqXuKLdnRM=;
+ b=e6WxWNCbNLK1jix6sLXRHhLwWvaBTyHTvaYf9Vx37SMiQJoouy/8gVpLC4Pu/Jh8Xa
+ KEX1cilBGtw9TG6VW65h8JfecpIyNbC3/4/FsdyCfFDxgw/Ti8QjyzRABxze5wvHvgG4
+ 3kOPC+Poh0ZHcOmEG+gYFH+3m7QjTapF6LYQf09e/4ib9C31EJPRk4Q27G/KLKrJ8nKn
+ +WDLps1Aa8OItdc8iQ/ru0bh9iQ2k42gDJWdrKGIgEXGhk53TqUPgCbO9U0PUf+H04AD
+ DH1XW7VlfCPN8LLrtqf5S2bGdjsFx39b85BEfCoGR4mnaZCGXwMNiXIyi3VAJRXPsW8S
+ vqcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1710184367; x=1710789167;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZKRgQA/0ld0Nx08VQWNukHwwGQ+d9ybOAarqZYkU/Wk=;
- b=Uj9ycY0bos3R9qQPNIobCtpm9skI6QXuvDEc8czRgy4ssyRi9sQSsLfLnic0dTshyu
- 0IJeZandn8pEtX5WJ+qJN1bTHuF6eF+khLwop/t4TkRNv5mN63O6Brq5A17p4R/x0dPF
- 3++Z0IaKtwtFJfW1WUt1uq9DNktbYHSTZLbGPBRBs3KPWABp4hmZsVT6hNMN+f0MDFWx
- rdTo2iIjG82K+ens/8JD9sk8rKTdusUTYm7kOJrlcQYErmja6uedjS2WY4JZgVTRZEc6
- V2aY8K4K2IP9Si2gi21uaPxgMfFJDLqKMZuxeYKxzFKaTR2ZRMaOJv7XNxuppkrEWKXd
- 3PhQ==
-X-Gm-Message-State: AOJu0YzJ0GU62FxxQy3NfjD5puEAYw9k1gpcdqu60vZottnEAXMR1eGM
- v2Y1V4gkD+CyVDrjCiuwMLOiZFs7/T9aVFPjtJzcChHY5bz93iarf2hqqorRrvzKSTGIFL0h2bW
- X
-X-Google-Smtp-Source: AGHT+IGOJ1KoXZO237edtystrfVew5o+hfqMo2FwLdhI0++2yRKsF43Lzl985lHcFyaphFsVEkNQQA==
-X-Received: by 2002:a05:6512:2823:b0:513:42e:ddf0 with SMTP id
- cf35-20020a056512282300b00513042eddf0mr6981266lfb.36.1710184367095; 
+ bh=yBgzhXasfX7o3A8onUx+4Fu5/1iVNFXdpdqXuKLdnRM=;
+ b=X7q8bkonpR3c3H1G9OdTSQedvx43xDebtU+hTvp8NxKY2gKsriHKKFR+jOgpK3Tf22
+ KmtuuVTxWzz0EGjrQJUQ3L4y8ObxGjQW08xuOzFCge/pwTylIn35DqctenLaG57jsV5O
+ wESX0/Kx5Ev86F69/1+DEyh8It1LXsoPiI3ic32evoyvYjAtES1nOBOd7OG8WAvqy+Jh
+ 5JhK2RtCwlUf+Uox67JtW9z8yoUHcajLtR8eHNaPq3Zd0a66QyH0yheNrPAxfcTu7y4b
+ T715eoyrgzzbgkc9ZstoXHk1GCY99dq4AzvJeg/ym9lTDfNQ3D0C1WTp05ifgOh8TBA6
+ c6Aw==
+X-Gm-Message-State: AOJu0YzpxhnXEsp/Penlmnm5BVlOv8YlFeU8MAajlvPwrvtx+cX1Lj52
+ uL0syaiFP8d3bOW0XNsjSdtyeKCExQLgLWHBZH1wlPxA0ARqkb2KSu09V6iSDdIskbmawmCyclm
+ e
+X-Google-Smtp-Source: AGHT+IHvDfS9HqHHP9Zd+pVc+frB2xWO3K9rssSWyDCIlCIEo4HuFYcC8l4EBNhaPJYEhFUBhW82sg==
+X-Received: by 2002:a05:600c:5109:b0:413:2925:ffa0 with SMTP id
+ o9-20020a05600c510900b004132925ffa0mr3183632wms.18.1710184367619; 
  Mon, 11 Mar 2024 12:12:47 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- t10-20020a05600c450a00b004131388d948sm14425266wmo.0.2024.03.11.12.12.46
+ t10-20020a05600c450a00b004131388d948sm14425266wmo.0.2024.03.11.12.12.47
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 12:12:46 -0700 (PDT)
+ Mon, 11 Mar 2024 12:12:47 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/20] contrib/elf2dmp: Fix error reporting style in qemu_elf.c
-Date: Mon, 11 Mar 2024 19:12:30 +0000
-Message-Id: <20240311191241.4177990-10-peter.maydell@linaro.org>
+Subject: [PULL 10/20] contrib/elf2dmp: Fix error reporting style in main.c
+Date: Mon, 11 Mar 2024 19:12:31 +0000
+Message-Id: <20240311191241.4177990-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240311191241.4177990-1-peter.maydell@linaro.org>
 References: <20240311191241.4177990-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x131.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,155 +101,218 @@ include/qapi/error.h says:
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Tested-by: Viktor Prutyanov <viktor.prutyanov@phystech.edu>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240307-elf2dmp-v4-8-4f324ad4d99d@daynix.com
+Message-id: 20240307-elf2dmp-v4-9-4f324ad4d99d@daynix.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- contrib/elf2dmp/qemu_elf.h |  2 +-
- contrib/elf2dmp/main.c     |  2 +-
- contrib/elf2dmp/qemu_elf.c | 32 ++++++++++++++++----------------
- 3 files changed, 18 insertions(+), 18 deletions(-)
+ contrib/elf2dmp/main.c | 63 +++++++++++++++++++++---------------------
+ 1 file changed, 32 insertions(+), 31 deletions(-)
 
-diff --git a/contrib/elf2dmp/qemu_elf.h b/contrib/elf2dmp/qemu_elf.h
-index afa75f10b2d..adc50238b46 100644
---- a/contrib/elf2dmp/qemu_elf.h
-+++ b/contrib/elf2dmp/qemu_elf.h
-@@ -42,7 +42,7 @@ typedef struct QEMU_Elf {
-     int has_kernel_gs_base;
- } QEMU_Elf;
- 
--int QEMU_Elf_init(QEMU_Elf *qe, const char *filename);
-+bool QEMU_Elf_init(QEMU_Elf *qe, const char *filename);
- void QEMU_Elf_exit(QEMU_Elf *qe);
- 
- Elf64_Phdr *elf64_getphdr(void *map);
 diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
-index 7a3a7225905..cb28971789e 100644
+index cb28971789e..9347b0cd5a2 100644
 --- a/contrib/elf2dmp/main.c
 +++ b/contrib/elf2dmp/main.c
-@@ -535,7 +535,7 @@ int main(int argc, char *argv[])
-         return 1;
+@@ -186,13 +186,13 @@ static void win_context_init_from_qemu_cpu_state(WinContext64 *ctx,
+  * Finds paging-structure hierarchy base,
+  * if previously set doesn't give access to kernel structures
+  */
+-static int fix_dtb(struct va_space *vs, QEMU_Elf *qe)
++static bool fix_dtb(struct va_space *vs, QEMU_Elf *qe)
+ {
+     /*
+      * Firstly, test previously set DTB.
+      */
+     if (va_space_resolve(vs, SharedUserData)) {
+-        return 0;
++        return true;
      }
  
--    if (QEMU_Elf_init(&qemu_elf, argv[1])) {
-+    if (!QEMU_Elf_init(&qemu_elf, argv[1])) {
-         eprintf("Failed to initialize QEMU ELF dump\n");
-         return 1;
+     /*
+@@ -206,7 +206,7 @@ static int fix_dtb(struct va_space *vs, QEMU_Elf *qe)
+             va_space_set_dtb(vs, s->cr[3]);
+             printf("DTB 0x%016"PRIx64" has been found from CPU #%zu"
+                     " as system task CR3\n", vs->dtb, i);
+-            return !(va_space_resolve(vs, SharedUserData));
++            return va_space_resolve(vs, SharedUserData);
+         }
      }
-diff --git a/contrib/elf2dmp/qemu_elf.c b/contrib/elf2dmp/qemu_elf.c
-index 055e6f8792e..a22c057d3ec 100644
---- a/contrib/elf2dmp/qemu_elf.c
-+++ b/contrib/elf2dmp/qemu_elf.c
-@@ -60,7 +60,7 @@ Elf64_Half elf_getphdrnum(void *map)
-     return ehdr->e_phnum;
+ 
+@@ -220,16 +220,16 @@ static int fix_dtb(struct va_space *vs, QEMU_Elf *qe)
+         uint64_t *cr3 = va_space_resolve(vs, Prcb + 0x7000);
+ 
+         if (!cr3) {
+-            return 1;
++            return false;
+         }
+ 
+         va_space_set_dtb(vs, *cr3);
+         printf("DirectoryTableBase = 0x%016"PRIx64" has been found from CPU #0"
+                 " as interrupt handling CR3\n", vs->dtb);
+-        return !(va_space_resolve(vs, SharedUserData));
++        return va_space_resolve(vs, SharedUserData);
+     }
+ 
+-    return 1;
++    return true;
  }
  
--static int init_states(QEMU_Elf *qe)
-+static bool init_states(QEMU_Elf *qe)
- {
-     Elf64_Phdr *phdr = elf64_getphdr(qe->map);
-     Elf64_Nhdr *start = (void *)((uint8_t *)qe->map + phdr[0].p_offset);
-@@ -70,7 +70,7 @@ static int init_states(QEMU_Elf *qe)
+ static void try_merge_runs(struct pa_space *ps,
+@@ -268,9 +268,10 @@ static void try_merge_runs(struct pa_space *ps,
+     }
+ }
  
-     if (phdr[0].p_type != PT_NOTE) {
-         eprintf("Failed to find PT_NOTE\n");
+-static int fill_header(WinDumpHeader64 *hdr, struct pa_space *ps,
+-        struct va_space *vs, uint64_t KdDebuggerDataBlock,
+-        KDDEBUGGER_DATA64 *kdbg, uint64_t KdVersionBlock, int nr_cpus)
++static bool fill_header(WinDumpHeader64 *hdr, struct pa_space *ps,
++                        struct va_space *vs, uint64_t KdDebuggerDataBlock,
++                        KDDEBUGGER_DATA64 *kdbg, uint64_t KdVersionBlock,
++                        int nr_cpus)
+ {
+     uint32_t *suite_mask = va_space_resolve(vs, SharedUserData +
+             KUSD_OFFSET_SUITE_MASK);
+@@ -283,12 +284,12 @@ static int fill_header(WinDumpHeader64 *hdr, struct pa_space *ps,
+     QEMU_BUILD_BUG_ON(KUSD_OFFSET_PRODUCT_TYPE >= ELF2DMP_PAGE_SIZE);
+ 
+     if (!suite_mask || !product_type) {
 -        return 1;
 +        return false;
      }
  
-     qe->has_kernel_gs_base = 1;
-@@ -107,7 +107,7 @@ static int init_states(QEMU_Elf *qe)
+     if (!va_space_rw(vs, KdVersionBlock, &kvb, sizeof(kvb), 0)) {
+         eprintf("Failed to extract KdVersionBlock\n");
+-        return 1;
++        return false;
+     }
  
-     qe->state_nr = cpu_nr;
+     h = (WinDumpHeader64) {
+@@ -333,7 +334,7 @@ static int fill_header(WinDumpHeader64 *hdr, struct pa_space *ps,
+ 
+     *hdr = h;
  
 -    return 0;
 +    return true;
  }
  
- static void exit_states(QEMU_Elf *qe)
-@@ -162,7 +162,7 @@ static bool check_ehdr(QEMU_Elf *qe)
-     return true;
+ /*
+@@ -379,8 +380,8 @@ static void fill_context(KDDEBUGGER_DATA64 *kdbg,
+     }
  }
  
--static int QEMU_Elf_map(QEMU_Elf *qe, const char *filename)
-+static bool QEMU_Elf_map(QEMU_Elf *qe, const char *filename)
+-static int pe_get_data_dir_entry(uint64_t base, void *start_addr, int idx,
+-        void *entry, size_t size, struct va_space *vs)
++static bool pe_get_data_dir_entry(uint64_t base, void *start_addr, int idx,
++                                  void *entry, size_t size, struct va_space *vs)
  {
- #ifdef CONFIG_LINUX
-     struct stat st;
-@@ -173,13 +173,13 @@ static int QEMU_Elf_map(QEMU_Elf *qe, const char *filename)
-     fd = open(filename, O_RDONLY, 0);
-     if (fd == -1) {
-         eprintf("Failed to open ELF dump file \'%s\'\n", filename);
+     const char e_magic[2] = "MZ";
+     const char Signature[4] = "PE\0\0";
+@@ -393,38 +394,38 @@ static int pe_get_data_dir_entry(uint64_t base, void *start_addr, int idx,
+     QEMU_BUILD_BUG_ON(sizeof(*dos_hdr) >= ELF2DMP_PAGE_SIZE);
+ 
+     if (memcmp(&dos_hdr->e_magic, e_magic, sizeof(e_magic))) {
 -        return 1;
 +        return false;
      }
  
-     if (fstat(fd, &st)) {
-         eprintf("Failed to get size of ELF dump file\n");
-         close(fd);
--        return 1;
-+        return false;
-     }
-     qe->size = st.st_size;
- 
-@@ -188,7 +188,7 @@ static int QEMU_Elf_map(QEMU_Elf *qe, const char *filename)
-     if (qe->map == MAP_FAILED) {
-         eprintf("Failed to map ELF file\n");
-         close(fd);
+     if (!va_space_rw(vs, base + dos_hdr->e_lfanew,
+                      &nt_hdrs, sizeof(nt_hdrs), 0)) {
 -        return 1;
 +        return false;
      }
  
-     close(fd);
-@@ -201,14 +201,14 @@ static int QEMU_Elf_map(QEMU_Elf *qe, const char *filename)
-     if (gerr) {
-         eprintf("Failed to map ELF dump file \'%s\'\n", filename);
-         g_error_free(gerr);
+     if (memcmp(&nt_hdrs.Signature, Signature, sizeof(Signature)) ||
+             file_hdr->Machine != 0x8664 || opt_hdr->Magic != 0x020b) {
 -        return 1;
 +        return false;
      }
  
-     qe->map = g_mapped_file_get_contents(qe->gmf);
-     qe->size = g_mapped_file_get_length(qe->gmf);
- #endif
+     if (!va_space_rw(vs, base + data_dir[idx].VirtualAddress, entry, size, 0)) {
+-        return 1;
++        return false;
+     }
+ 
+     printf("Data directory entry #%d: RVA = 0x%08"PRIx32"\n", idx,
+             (uint32_t)data_dir[idx].VirtualAddress);
  
 -    return 0;
 +    return true;
  }
  
- static void QEMU_Elf_unmap(QEMU_Elf *qe)
-@@ -220,25 +220,25 @@ static void QEMU_Elf_unmap(QEMU_Elf *qe)
- #endif
- }
- 
--int QEMU_Elf_init(QEMU_Elf *qe, const char *filename)
-+bool QEMU_Elf_init(QEMU_Elf *qe, const char *filename)
+-static int write_dump(struct pa_space *ps,
+-        WinDumpHeader64 *hdr, const char *name)
++static bool write_dump(struct pa_space *ps,
++                       WinDumpHeader64 *hdr, const char *name)
  {
--    if (QEMU_Elf_map(qe, filename)) {
--        return 1;
-+    if (!QEMU_Elf_map(qe, filename)) {
-+        return false;
-     }
+     FILE *dmp_file = fopen(name, "wb");
+     size_t i;
  
-     if (!check_ehdr(qe)) {
-         eprintf("Input file has the wrong format\n");
-         QEMU_Elf_unmap(qe);
+     if (!dmp_file) {
+         eprintf("Failed to open output file \'%s\'\n", name);
 -        return 1;
 +        return false;
      }
  
--    if (init_states(qe)) {
-+    if (!init_states(qe)) {
-         eprintf("Failed to extract QEMU CPU states\n");
-         QEMU_Elf_unmap(qe);
+     printf("Writing header to file...\n");
+@@ -432,7 +433,7 @@ static int write_dump(struct pa_space *ps,
+     if (fwrite(hdr, sizeof(*hdr), 1, dmp_file) != 1) {
+         eprintf("Failed to write dump header\n");
+         fclose(dmp_file);
 -        return 1;
 +        return false;
      }
  
--    return 0;
-+    return true;
+     for (i = 0; i < ps->block_nr; i++) {
+@@ -443,11 +444,11 @@ static int write_dump(struct pa_space *ps,
+         if (fwrite(b->addr, b->size, 1, dmp_file) != 1) {
+             eprintf("Failed to write block\n");
+             fclose(dmp_file);
+-            return 1;
++            return false;
+         }
+     }
+ 
+-    return fclose(dmp_file);
++    return !fclose(dmp_file);
  }
  
- void QEMU_Elf_exit(QEMU_Elf *qe)
+ static bool pe_check_pdb_name(uint64_t base, void *start_addr,
+@@ -457,8 +458,8 @@ static bool pe_check_pdb_name(uint64_t base, void *start_addr,
+     IMAGE_DEBUG_DIRECTORY debug_dir;
+     char pdb_name[sizeof(PDB_NAME)];
+ 
+-    if (pe_get_data_dir_entry(base, start_addr, IMAGE_FILE_DEBUG_DIRECTORY,
+-                &debug_dir, sizeof(debug_dir), vs)) {
++    if (!pe_get_data_dir_entry(base, start_addr, IMAGE_FILE_DEBUG_DIRECTORY,
++                               &debug_dir, sizeof(debug_dir), vs)) {
+         eprintf("Failed to get Debug Directory\n");
+         return false;
+     }
+@@ -546,7 +547,7 @@ int main(int argc, char *argv[])
+     printf("CPU #0 CR3 is 0x%016"PRIx64"\n", state->cr[3]);
+ 
+     va_space_create(&vs, &ps, state->cr[3]);
+-    if (fix_dtb(&vs, &qemu_elf)) {
++    if (!fix_dtb(&vs, &qemu_elf)) {
+         eprintf("Failed to find paging base\n");
+         goto out_elf;
+     }
+@@ -611,14 +612,14 @@ int main(int argc, char *argv[])
+         goto out_pdb;
+     }
+ 
+-    if (fill_header(&header, &ps, &vs, KdDebuggerDataBlock, kdbg,
+-            KdVersionBlock, qemu_elf.state_nr)) {
++    if (!fill_header(&header, &ps, &vs, KdDebuggerDataBlock, kdbg,
++                     KdVersionBlock, qemu_elf.state_nr)) {
+         goto out_kdbg;
+     }
+ 
+     fill_context(kdbg, &vs, &qemu_elf);
+ 
+-    if (write_dump(&ps, &header, argv[2])) {
++    if (!write_dump(&ps, &header, argv[2])) {
+         eprintf("Failed to save dump\n");
+         goto out_kdbg;
+     }
 -- 
 2.34.1
 
