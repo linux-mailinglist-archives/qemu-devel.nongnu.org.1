@@ -2,92 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A20187896A
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 21:25:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B26878977
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 21:29:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjmCe-0001Tj-FA; Mon, 11 Mar 2024 16:24:56 -0400
+	id 1rjmGW-0002xr-0j; Mon, 11 Mar 2024 16:28:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjmCT-0001S0-AN
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 16:24:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjmGR-0002xf-Eh
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 16:28:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjmCQ-0004kD-5Z
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 16:24:45 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjmGP-0005RC-3J
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 16:28:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710188681;
+ s=mimecast20190719; t=1710188927;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Y7llX1vNK+UPk1uzVDsH7jLHPS5/rtezpZoINm5/hHQ=;
- b=JO8i9hWn+C3lqKRLzvPeQaJqIDLk5LPWT01gy6MciMHS9YYpbyPSKQw6qqFXbhwGBKOozm
- 72+zFzsFoiYJ7uWb+GCB6fXnPv7sGrUTKZwJv9gRpqhcKfE9QuBbzxk6fs233ccmFotKXa
- MrWdHP5WW+TMa8CIlFaH1pB20N+lyVQ=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=c2vv4sRGv3k/5RV6ThrSIcqwYxZscPYExrXYmn5yPbU=;
+ b=gaL4LDLNkiY9ijfpIXlo/h1eV1KY/FpxM3ZmDHwvcm48g72977UOReXIKl2scSdbMiPNPI
+ mdDRenGnqnoLKZzv6+NzSBHMfHNlnf70hqiGii/c9SWoyOinZ1u/HjW7nU76cG/u1gK2Jc
+ f/TQ4vrte0qRT1PWpNw94p1doWZRIKM=
+Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com
+ [209.85.160.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-322-_2X-_1juNx-aNH2mWgTL6w-1; Mon, 11 Mar 2024 16:24:39 -0400
-X-MC-Unique: _2X-_1juNx-aNH2mWgTL6w-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-78867b1d0beso61216385a.1
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 13:24:39 -0700 (PDT)
+ us-mta-491-0iUtxQd8PmSnPcK8B0uKSA-1; Mon, 11 Mar 2024 16:28:43 -0400
+X-MC-Unique: 0iUtxQd8PmSnPcK8B0uKSA-1
+Received: by mail-oa1-f70.google.com with SMTP id
+ 586e51a60fabf-2218be82ae7so1050589fac.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 13:28:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710188679; x=1710793479;
+ d=1e100.net; s=20230601; t=1710188923; x=1710793723;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Y7llX1vNK+UPk1uzVDsH7jLHPS5/rtezpZoINm5/hHQ=;
- b=k6BMsCg45AzvXbJpKYdiFEcBFX+R2f5naimQ/3NNOiY9EiMh2ZhYttEhFl8JaZ/OTB
- 2UpM/RyS5RGVEmAfncEo44O6emLCqN7lnxP81VW18Ax18hc7gsStAtJJesNiT2x9cM1i
- 5WEL3bxr66cEglxiUP/cvHd9kextUThYqo9ahfEAKkOphz2jOONBdUJ7XOmEMUyGffps
- lO/kipFZFadDXKhD9Kl1Ac2EQhnxMAcnShGwOwvkX0yFMfVQZqVEWMeo9PQ443ZQqwuE
- ENEASpx96PYfJKb2v6Rj+oqan8adkzHC6qTlqQdEiPPsKn7LZPL4waYMU4kasGOCnZOg
- GKMQ==
-X-Gm-Message-State: AOJu0YxXEtbfuzcSrEjlQCgm6rmjTpYMprFF+pKY325Ljc/P//rIwPOv
- Nz7LOr3+2Wqm0lbH/bkPx0uNiBPoDtMqKXCRqe4SXpAGXGoF9T5FwZ5aQi3gm+r25F8WnI+jUPj
- 1cbxON/UHMaVShDMfX2SQBcRSDpwPgRj4pwaI9cDm16EetYktuewe
-X-Received: by 2002:a05:620a:4107:b0:788:72cf:394b with SMTP id
- j7-20020a05620a410700b0078872cf394bmr2671869qko.3.1710188679042; 
- Mon, 11 Mar 2024 13:24:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEHwgFLrSAmMblmJeCmhT85CiOQ/52DpderPCyivxQpUUUrfgcyTKvaNEiTADiWWq2VXOX3QQ==
-X-Received: by 2002:a05:620a:4107:b0:788:72cf:394b with SMTP id
- j7-20020a05620a410700b0078872cf394bmr2671855qko.3.1710188678708; 
- Mon, 11 Mar 2024 13:24:38 -0700 (PDT)
+ bh=c2vv4sRGv3k/5RV6ThrSIcqwYxZscPYExrXYmn5yPbU=;
+ b=dTYTz4DNqdptxAK32S3P9o2y+TrNNFexzdxqLRklWR3ugBirFPGfIv81a30oq9KjKn
+ H7RswaYUS413J5+YJOwhxow3b4jKfScVijk3KymV2XnS1MXM/llA7yQ83LBo6RajnkQZ
+ AVpDAli15/FxZk9VrpC3dQW4NW3isFthq8N4V+VI1jsnwKC2Z+G5xLes4WW+Fe6wkvIP
+ GP4SSqGFMaZDOISIdjmKS2N0gft6d+vaJPr0t0/l0QKHxjNVOLLWMkZjE7AkMQtuEiwA
+ woCqtLA3KQo1OzqMixvd83L9j5HaSPnol2dHEeuMDhfSFNmdKB6N1MDQWDrnoEyRapXe
+ YFMw==
+X-Gm-Message-State: AOJu0YzwD/BvYjBX/N7TmCbKEyhaEvP/dgSufdkibQVfBWJdZZTKFqPD
+ CqKNGls0Upqcuy3kHieVqj4R6k7PL42OXkcAbtbvjTGU/CBVIAlO0TIiSEZ1pL07TSGXnwlxFcZ
+ RM57oOMM7EYeeK/S4xxLo7gqXjwRUwjHq76Js4rnLxz1qoi7icmcL
+X-Received: by 2002:a05:6871:829:b0:221:3a21:5b37 with SMTP id
+ q41-20020a056871082900b002213a215b37mr7644328oap.4.1710188923253; 
+ Mon, 11 Mar 2024 13:28:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHYGFjcyP2nv6bLiAMnMtL4dMHiXPtJ+ygKhJ2U7RUY6Nvr7npZsoRm/SXiIODsUuL8EMS0PA==
+X-Received: by 2002:a05:6871:829:b0:221:3a21:5b37 with SMTP id
+ q41-20020a056871082900b002213a215b37mr7644296oap.4.1710188922908; 
+ Mon, 11 Mar 2024 13:28:42 -0700 (PDT)
 Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- bj40-20020a05620a192800b007884db6b2absm3022130qkb.10.2024.03.11.13.24.37
+ h11-20020a37c44b000000b007883e49837bsm3008847qkm.86.2024.03.11.13.28.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 13:24:38 -0700 (PDT)
-Date: Mon, 11 Mar 2024 16:24:35 -0400
+ Mon, 11 Mar 2024 13:28:42 -0700 (PDT)
+Date: Mon, 11 Mar 2024 16:28:34 -0400
 From: Peter Xu <peterx@redhat.com>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- Prasad Pandit <pjp@fedoraproject.org>
-Subject: Re: [PATCH v4 00/25] migration: Improve error reporting
-Message-ID: <Ze9ogyFZT73gB-La@x1n>
-References: <20240306133441.2351700-1-clg@redhat.com>
- <ZerJDAdaakTCtECF@x1n>
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Hailiang Zhang <zhanghailiang@xfusion.com>,
+ Zhang Chen <chen.zhang@intel.com>, Li Zhijian <lizhijian@fujitsu.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Hyman Huang <yong.huang@smartx.com>, Song Gao <gaosong@loongson.cn>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: Re: [PATCH V2 00/11] privatize migration.h
+Message-ID: <Ze9pcgtMPVFM2CX8@x1n>
+References: <1710179338-294359-1-git-send-email-steven.sistare@oracle.com>
+ <Ze9b7JULHLUoYGgV@x1n>
+ <93cbe4f1-6451-4dc3-8150-f62a99f83f4a@oracle.com>
+ <fb3d25ca-4a46-4a59-b172-cade9dbcbe55@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZerJDAdaakTCtECF@x1n>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <fb3d25ca-4a46-4a59-b172-cade9dbcbe55@oracle.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
 X-Spam_bar: ---
 X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,39 +107,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Mar 08, 2024 at 04:15:08PM +0800, Peter Xu wrote:
-> On Wed, Mar 06, 2024 at 02:34:15PM +0100, Cédric Le Goater wrote:
-> > * [1-4] already queued in migration-next.
-> >   
-> >   migration: Report error when shutdown fails
-> >   migration: Remove SaveStateHandler and LoadStateHandler typedefs
-> >   migration: Add documentation for SaveVMHandlers
-> >   migration: Do not call PRECOPY_NOTIFY_SETUP notifiers in case of error
-> >   
-> > * [5-9] are prequisite changes in other components related to the
-> >   migration save_setup() handler. They make sure a failure is not
-> >   returned without setting an error.
-> >   
-> >   s390/stattrib: Add Error** argument to set_migrationmode() handler
-> >   vfio: Always report an error in vfio_save_setup()
-> >   migration: Always report an error in block_save_setup()
-> >   migration: Always report an error in ram_save_setup()
-> >   migration: Add Error** argument to vmstate_save()
+On Mon, Mar 11, 2024 at 04:24:14PM -0400, Steven Sistare wrote:
+> On 3/11/2024 3:45 PM, Steven Sistare wrote:
+> > On 3/11/2024 3:30 PM, Peter Xu wrote:
+> > > Steve,
+> > > 
+> > > On Mon, Mar 11, 2024 at 10:48:47AM -0700, Steve Sistare wrote:
+> > > > Changes in V2:
+> > > >    * rebase to migration-next, add RB
+> > > 
+> > > Not apply even to master branch.  Note that there're >=1 PULLs sent and
+> > > merged since my last reply..  Perhaps you rebased to the "old" next?
 > > 
-> > * [10-15] are the core changes in migration and memory components to
-> >   propagate an error reported in a save_setup() handler.
-> > 
-> >   migration: Add Error** argument to qemu_savevm_state_setup()
-> >   migration: Add Error** argument to .save_setup() handler
-> >   migration: Add Error** argument to .load_setup() handler
+> > I pulled from branch migration-next in https://gitlab.com/peterx/qemu a
+> > few hours ago, but I must have screwed up somewhere.  I'll figure it out
+> > and post a V4.
 > 
-> Further queued 5-12 in migration-staging (until here), thanks.
+> My pull was a fiew hours old, but my patches still apply cleanly to the
+> most recent tip:
+>   a1bb5dd169f4 ("migration: Fix format in error message")
+> 
+> I can sent that as V3, but ...
+> Note that you must apply "migration: export fewer options" before
+> "privatize migration.h".  If that does not help, I will send V3.
 
-Just to keep a record: due to the virtio failover test failure and the
-other block migration uncertainty in patch 7 (in which case we may want to
-have a fix on sectors==0 case), I unqueued this chunk for 9.0.
+Ouch, I forgot that dependency... Sorry.
 
-Thanks,
+Yeah it works now.  No need to resend for now.
 
 -- 
 Peter Xu
