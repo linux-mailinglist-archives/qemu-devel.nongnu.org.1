@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF7E8786B5
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:52:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 518C88786AD
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:50:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjjm6-00020O-LP; Mon, 11 Mar 2024 13:49:22 -0400
+	id 1rjjmU-00024T-QA; Mon, 11 Mar 2024 13:49:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rjjm4-0001zc-94
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:49:20 -0400
+ id 1rjjm7-00020x-PZ
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:49:23 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rjjm2-0008Vo-Jx
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:49:20 -0400
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ id 1rjjm6-0008WH-9C
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:49:23 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42BG40Ao008065; Mon, 11 Mar 2024 17:49:12 GMT
+ 42BG3q6W020998; Mon, 11 Mar 2024 17:49:14 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=zkKxsXar5+UvJQxlj+egXI79LphE/bIcj+yssMuzZok=;
- b=YLCbgwXCVX/Yo/R0yNk4hn0/K+kuLTiGHPKgHSmbNBRJA0+Yae6IvF0vKjXi7y65w4I7
- AnMbnHOZyTk4SaV8Mz+efw5oTZqH1WsD81sLB4cxSPJcP7uYA8Rkj/2bomSu8V0tSfUF
- GdmJC7Ys8R/eItZNp2jJFuAyZKrlh94XrwdGTRzkpHPe/VA8Ye81HsUOBCfqjfwWYHTf
- Hkw3oNQi5Bi7l1FcLd/6RilbOT42byVtwFeaDUnEsVzkwc7+ISab5Ji/Prz0JlwzOFCi
- 5pgLydLZf1EBFJUVF/0x8Oyfr+ChxWsNJiMnZ49hflw5BpXEDw+XHaLALUeMdcEXv9XB XA== 
+ bh=RHRxpHlsXEWnYO63GLr863Gs5AzWehL5+ShkwOEx400=;
+ b=UYJZ+a5zJY4VA1K6PfwVWRrphCRH3Ho5SoDP0xP8GZmt3jI7/VFM7fxqE8p1snxwLu5e
+ 2zqM5zmuLjiovb0y5qDXxWsEKM+4VSfeZoNrwOG17q3aXunjwnM12ZtpIeV8VfHWt4F4
+ t4Ooe732afvXLGQGw8tUKm/5drG27V4TgEUns9wNkEiDHhBVG9NPSHfUnnGQNd1qkeeO
+ JeHoJNC6QJ4eSf/Und5gROaaNT6OEBxhXenrlnvF6A4vyTEs4Wr6opG9DD4qFGU2NI2h
+ 55cWsMVvK0uPMFinG9VhaEkOANYWDIH6BQUmm4QSzQtIm4YajFkyPYc6oKctBrRY+V2v dg== 
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wrftdc234-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wrfcuc10j-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 11 Mar 2024 17:49:12 +0000
+ Mon, 11 Mar 2024 17:49:14 +0000
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 42BHVj70028519; Mon, 11 Mar 2024 17:49:11 GMT
+ with ESMTP id 42BHTh3Z028534; Mon, 11 Mar 2024 17:49:14 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3wre76337j-1
+ 3wre76339a-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 11 Mar 2024 17:49:11 +0000
+ Mon, 11 Mar 2024 17:49:13 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42BHlHcq020033;
- Mon, 11 Mar 2024 17:49:11 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42BHlHcs020033;
+ Mon, 11 Mar 2024 17:49:13 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3wre763302-7; Mon, 11 Mar 2024 17:49:11 +0000
+ ESMTP id 3wre763302-8; Mon, 11 Mar 2024 17:49:13 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -63,9 +63,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Song Gao <gaosong@loongson.cn>,
  Alistair Francis <alistair.francis@wdc.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V2 06/11] migration: migration_thread_is_self
-Date: Mon, 11 Mar 2024 10:48:53 -0700
-Message-Id: <1710179338-294359-7-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V2 07/11] migration: migration_is_device
+Date: Mon, 11 Mar 2024 10:48:54 -0700
+Message-Id: <1710179338-294359-8-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1710179338-294359-1-git-send-email-steven.sistare@oracle.com>
 References: <1710179338-294359-1-git-send-email-steven.sistare@oracle.com>
@@ -77,8 +77,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
  mlxscore=0 phishscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
  definitions=main-2403110136
-X-Proofpoint-ORIG-GUID: Bbtgc4ejMVfV18yiwEUswp4hp5d7FyXU
-X-Proofpoint-GUID: Bbtgc4ejMVfV18yiwEUswp4hp5d7FyXU
+X-Proofpoint-ORIG-GUID: b11IbecLZZszaLtqHmFgE7b6bNqoLW50
+X-Proofpoint-GUID: b11IbecLZZszaLtqHmFgE7b6bNqoLW50
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -104,70 +104,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define and export migration_thread_is_self to eliminate a dependency
+Define and export migration_is_device to eliminate a dependency
 on MigrationState.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
+ hw/vfio/common.c         | 4 +---
  include/migration/misc.h | 1 +
  migration/migration.c    | 7 +++++++
- system/dirtylimit.c      | 5 +----
- 3 files changed, 9 insertions(+), 4 deletions(-)
+ 3 files changed, 9 insertions(+), 3 deletions(-)
 
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index 2dbbf62..de01068 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -180,10 +180,8 @@ bool vfio_device_state_is_precopy(VFIODevice *vbasedev)
+ static bool vfio_devices_all_dirty_tracking(VFIOContainerBase *bcontainer)
+ {
+     VFIODevice *vbasedev;
+-    MigrationState *ms = migrate_get_current();
+ 
+-    if (!migration_is_active() &&
+-        ms->state != MIGRATION_STATUS_DEVICE) {
++    if (!migration_is_active() && !migration_is_device()) {
+         return false;
+     }
+ 
 diff --git a/include/migration/misc.h b/include/migration/misc.h
-index 7526977..c4b5416 100644
+index c4b5416..28cfaed 100644
 --- a/include/migration/misc.h
 +++ b/include/migration/misc.h
 @@ -61,6 +61,7 @@ void migration_object_init(void);
  void migration_shutdown(void);
  bool migration_is_idle(void);
  bool migration_is_active(void);
-+bool migration_thread_is_self(void);
++bool migration_is_device(void);
+ bool migration_thread_is_self(void);
  bool migration_is_setup_or_active(void);
  bool migrate_mode_is_cpr(MigrationState *);
- 
 diff --git a/migration/migration.c b/migration/migration.c
-index 546ba86..afe72af 100644
+index afe72af..db1e627 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
 @@ -1647,6 +1647,13 @@ bool migration_is_active(void)
              s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE);
  }
  
-+bool migration_thread_is_self(void)
++bool migration_is_device(void)
 +{
 +    MigrationState *s = current_migration;
 +
-+    return qemu_thread_is_self(&s->thread);
++    return s->state == MIGRATION_STATUS_DEVICE;
 +}
 +
- bool migrate_mode_is_cpr(MigrationState *s)
+ bool migration_thread_is_self(void)
  {
-     return s->parameters.mode == MIG_MODE_CPR_REBOOT;
-diff --git a/system/dirtylimit.c b/system/dirtylimit.c
-index b0afaa0..ab20da3 100644
---- a/system/dirtylimit.c
-+++ b/system/dirtylimit.c
-@@ -25,7 +25,6 @@
- #include "sysemu/kvm.h"
- #include "trace.h"
- #include "migration/misc.h"
--#include "migration/migration.h"
- 
- /*
-  * Dirtylimit stop working if dirty page rate error
-@@ -448,10 +447,8 @@ static void dirtylimit_cleanup(void)
-  */
- static bool dirtylimit_is_allowed(void)
- {
--    MigrationState *ms = migrate_get_current();
--
-     if (migration_is_running() &&
--        (!qemu_thread_is_self(&ms->thread)) &&
-+        !migration_thread_is_self() &&
-         migrate_dirty_limit() &&
-         dirtylimit_in_service()) {
-         return false;
+     MigrationState *s = current_migration;
 -- 
 1.8.3.1
 
