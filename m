@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58E52877B7F
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 08:59:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D542877B95
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 09:17:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjaYD-0004Vg-NP; Mon, 11 Mar 2024 03:58:25 -0400
+	id 1rjapo-0000RQ-3m; Mon, 11 Mar 2024 04:16:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rjaY3-0004V7-El
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 03:58:15 -0400
+ id 1rjaph-0000R6-AL
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 04:16:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rjaY2-0001PW-0m
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 03:58:15 -0400
+ id 1rjape-0005ug-FZ
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 04:16:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710143892;
+ s=mimecast20190719; t=1710144985;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding;
- bh=XjC5bz/hkAEhannpJoBtgr6jB3+kTcrlWgLxuWtXWGw=;
- b=UNLIlqy54QRf5b1L2IqvhxN7tOUoZVpjy9VuQpws8J2JoPNIkE9z0ZT2J5Vid+3LFEOZWS
- 6EPIjSkWy2ZeJv42ELVQ1atzU3xJcpzlUQeuY0WLSYouMK93Urn8/2myvnLnmHuac7ORX9
- UH7ie/AerpMmx0aMezSROVuXarQsQ+s=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=o6u5chL0ZKfspPibUdL3kaZu+1Hx9Y3Ha5YkUxPtjaI=;
+ b=M7htUTvr7AbN9F7fb8uHerLIoHrtJ5c+uPyHy0f9FTYd+5EmHxrd04z5PQWALNoWjHQa59
+ yucP25w7SVASNILkJrUGPDhXQVEeTxPeNDRcAWKSvPgWQJoBi36dR6zE6gpAITWkVonbQs
+ H2q8AeJc0nyrOHnKuIVRp25xjN1SKzY=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-UYSogrp5MFyKQZL46-UbfQ-1; Mon, 11 Mar 2024 03:58:10 -0400
-X-MC-Unique: UYSogrp5MFyKQZL46-UbfQ-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a448cfe2266so324997366b.2
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 00:58:10 -0700 (PDT)
+ us-mta-313-MjFDK3NfM2S8Fb_1t87KHg-1; Mon, 11 Mar 2024 04:16:23 -0400
+X-MC-Unique: MjFDK3NfM2S8Fb_1t87KHg-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a4488afb812so204333466b.3
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 01:16:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710143888; x=1710748688;
+ d=1e100.net; s=20230601; t=1710144981; x=1710749781;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=XjC5bz/hkAEhannpJoBtgr6jB3+kTcrlWgLxuWtXWGw=;
- b=uZXGmrNLi/5JNM/yCHlHy1xTZakGt0rYTn6YpqRIUErVV0jyoWHy1pCxaIMH823zfI
- J7cl/qZbTsQZA+blOTWu/S+9c2YqaKaqObDiNHzYP5KfhHZbZSnIjMNT9293rqTKfHnj
- Zf3cXnXSxfy7d5FTedr7dWptAh9lhUD9U2TLnXRoLus7lIzYstOEbzixQzUMywpCLRDr
- E9K7WBVMChOC2RXWOO/Gxp9iA/Nrr1TzPMC80uqkgwaHTizgynTUkzHgxtW0j02AHj4E
- fTisyBilBzZnm1kbkP2HDbQgGUoUbJzIdLHh/MaMtTN04fIU7RGqGyUvFiHMGTeOl3c3
- XVBQ==
-X-Gm-Message-State: AOJu0YwPjC2DVUqXY6ADpP1bEtHclKyaWnwdZX45ddC8vC0hEldmcMIi
- yqB+PJIhPhhhqv6A/w/5/7KvY5ERrZynp1dF/E/JX9AduCwBymVTpchoyVPltWyHpojq8eIJxdC
- k5YslQGO+LJVJHkEublj7xuzy4jPyG31QUkPiGfp7TWPlJEAAvULbhIKpkIWziP9MUq87bTPXxw
- rwRqzLtK+21tEACpw9m2td626JEJw1yXHM4cq6
-X-Received: by 2002:a17:906:a14c:b0:a45:432:cacc with SMTP id
- bu12-20020a170906a14c00b00a450432caccmr3060869ejb.61.1710143888493; 
- Mon, 11 Mar 2024 00:58:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG74FTQp0LwMAB8+X3EK2PTCYHZZUx6dcToJE7q02YveAhpKzL8Uxp2k44swd48YeAwWss3vw==
-X-Received: by 2002:a17:906:a14c:b0:a45:432:cacc with SMTP id
- bu12-20020a170906a14c00b00a450432caccmr3060860ejb.61.1710143888113; 
- Mon, 11 Mar 2024 00:58:08 -0700 (PDT)
+ bh=o6u5chL0ZKfspPibUdL3kaZu+1Hx9Y3Ha5YkUxPtjaI=;
+ b=OXlpjIJFV2cOK31OUvvrcF3ISH0RZUc6Zt11pQlfd2jGKnFdmOtP1FRaFwgVLRuqzS
+ mL9jo4HRsBIQUf3vL4ROmbk5VBZomUfoohMhfJWkvYmnKAa7OzvldMGA1b6J8Fs46TyU
+ Yhy2PqfZs+aHQkqHHW1V3QAau2+2lsMWNxWvy8VqVYoUey9p6YC1UcjTRs9/fDIwXFP5
+ 6/GVQ8FzbhOP8DJ9sqdPi+/IQlTrwy6nQsqJx0DkwcrlR3xtJ3vgrpP4crjXYl/tJqaz
+ gb9ajlftfKthZWMQaTrnsbQnztFQSgw5WmIlFwPoxSjn+v/pv9tIe/VIuTQkwDO14+cN
+ c0bg==
+X-Gm-Message-State: AOJu0YwS6s1kSOT9x7HfF9bdth6u5MuoZpMGo+zX3BDe561rPtfkM6We
+ ewQOLfPw7bxhnemiTYVUUdxTku0gPItPBY9QunM97uVH0ghjpD4a/+/p4LNOHcojeQ6qMZ6Qmph
+ dUgPSswaLEqbsilCFh6vE5rNiZzYTu2yxbfnCyffe50sD5BbXwVsbUYhmm6s/X1Vib5vH00mpiV
+ xP4vHEx/j9H6+I+XZ5UxreoZsH2+6Vre9zpuiY
+X-Received: by 2002:a17:906:bfe7:b0:a45:f89b:a915 with SMTP id
+ vr7-20020a170906bfe700b00a45f89ba915mr3246493ejb.45.1710144980893; 
+ Mon, 11 Mar 2024 01:16:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHb9a8psONN5/uGNiWlBvcaxrz1SgTp5rOmrnJ8QLzP+hCAmMKZf8O3I09u+R9+S6cgGepOXw==
+X-Received: by 2002:a17:906:bfe7:b0:a45:f89b:a915 with SMTP id
+ vr7-20020a170906bfe700b00a45f89ba915mr3246480ejb.45.1710144980485; 
+ Mon, 11 Mar 2024 01:16:20 -0700 (PDT)
 Received: from [192.168.10.118] ([151.49.77.21])
  by smtp.gmail.com with ESMTPSA id
- ho30-20020a1709070e9e00b00a3edb758561sm2597692ejc.129.2024.03.11.00.58.07
+ bh21-20020a170906a0d500b00a44efa48c24sm2626500ejb.117.2024.03.11.01.16.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 00:58:07 -0700 (PDT)
+ Mon, 11 Mar 2024 01:16:20 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
-	qemu-stable@nongnu.org
-Subject: [PATCH] target/i386: fix direction of "32-bit MMU" test
-Date: Mon, 11 Mar 2024 08:58:06 +0100
-Message-ID: <20240311075806.668555-1-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH] tests/plugins: fix use-after-free bug
+Date: Mon, 11 Mar 2024 09:16:19 +0100
+Message-ID: <20240311081619.669832-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
@@ -98,47 +98,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The low bit of MMU indices for x86 TCG indicates whether the processor is
-in 32-bit mode and therefore linear addresses have to be masked to 32 bits.
-However, the index was computed incorrectly, leading to possible conflicts
-in the TLB for any address above 4G.
+rec->count.score is inside rec, which is freed before rec->count.score is.
+Reorder the instructions
 
-Analyzed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Fixes: b1661801c18 ("target/i386: Fix physical address truncation", 2024-02-28)
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2206
+Reported by Coverity as CID 1539967.
+
+Cc: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h | 2 +-
- target/i386/cpu.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ contrib/plugins/howvec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 952174bb6f5..6b057380791 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2334,7 +2334,7 @@ static inline bool is_mmu_index_32(int mmu_index)
+diff --git a/contrib/plugins/howvec.c b/contrib/plugins/howvec.c
+index 2d10c87e0fb..94bbc53820a 100644
+--- a/contrib/plugins/howvec.c
++++ b/contrib/plugins/howvec.c
+@@ -167,9 +167,9 @@ static gint cmp_exec_count(gconstpointer a, gconstpointer b)
+ static void free_record(gpointer data)
+ {
+     InsnExecCount *rec = (InsnExecCount *) data;
++    qemu_plugin_scoreboard_free(rec->count.score);
+     g_free(rec->insn);
+     g_free(rec);
+-    qemu_plugin_scoreboard_free(rec->count.score);
+ }
  
- static inline int cpu_mmu_index_kernel(CPUX86State *env)
- {
--    int mmu_index_32 = (env->hflags & HF_LMA_MASK) ? 1 : 0;
-+    int mmu_index_32 = (env->hflags & HF_LMA_MASK) ? 0 : 1;
-     int mmu_index_base =
-         !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP64_IDX :
-         ((env->hflags & HF_CPL_MASK) < 3 && (env->eflags & AC_MASK)) ? MMU_KNOSMAP64_IDX : MMU_KSMAP64_IDX;
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 2666ef38089..78524bc6073 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7735,7 +7735,7 @@ static bool x86_cpu_has_work(CPUState *cs)
- static int x86_cpu_mmu_index(CPUState *cs, bool ifetch)
- {
-     CPUX86State *env = cpu_env(cs);
--    int mmu_index_32 = (env->hflags & HF_CS64_MASK) ? 1 : 0;
-+    int mmu_index_32 = (env->hflags & HF_CS64_MASK) ? 0 : 1;
-     int mmu_index_base =
-         (env->hflags & HF_CPL_MASK) == 3 ? MMU_USER64_IDX :
-         !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP64_IDX :
+ static void plugin_exit(qemu_plugin_id_t id, void *p)
 -- 
 2.43.2
 
