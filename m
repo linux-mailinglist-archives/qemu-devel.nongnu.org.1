@@ -2,88 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E53D878A29
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 22:40:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4DFF878A4D
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 22:56:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjnMK-00083T-OX; Mon, 11 Mar 2024 17:39:00 -0400
+	id 1rjnbc-0002vY-HQ; Mon, 11 Mar 2024 17:54:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjnMG-00083F-MT
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:38:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
+ id 1rjnbQ-0002tk-Bf
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:54:36 -0400
+Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjnME-0000gx-LD
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:38:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710193133;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=BeqaI/RCyv/smkfXMWXGSdkGTYvUsOJ9HlQ2OeHEgc0=;
- b=Ld0y4lPkKK2UhWqjAJv5cQuY4Z5WPXWem0ObYBjFMzjwqg8Pwj8GpxItG5K5MEdJMzRleG
- MN86mqE4G5awXRuRx6RrCHyoTnP2QzOF2DgN2vgkFJ+RoAT4mAON5kFj1lOoJSGl7HLb18
- 7VhWaiWhpHQpzOvqaKyuwMAK0Xyxdm0=
-Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
- [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-586--TAmvr1rO22kc8DNv7Ks0A-1; Mon, 11 Mar 2024 17:38:52 -0400
-X-MC-Unique: -TAmvr1rO22kc8DNv7Ks0A-1
-Received: by mail-ua1-f70.google.com with SMTP id
- a1e0cc1a2514c-7dc03020e3bso260458241.0
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 14:38:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710193132; x=1710797932;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BeqaI/RCyv/smkfXMWXGSdkGTYvUsOJ9HlQ2OeHEgc0=;
- b=utx+ZQV0h/cWhV5gJIHgY7eCFY2+ogF/vpKYXsSWel/9RK9epND+ZQBTiCsveaW3sA
- zMONQxDUp87O4Ch6lU3+FIBCtQluCNGM7BlNdcEK1ZqHpTVi2dztEaAzK2qBgMwMr/pG
- yh3BfMKWt9TDJX9IenKLRqlAulLB2OyhagWoiGJdi/R48jAvz6/Al+vEIDUqBqFlfFFc
- /z9DfNi0tQnVjCVNjVm1xDlqbgWWHQikEEYZ3XqUWb9xzIwJaCwG4N4SZ6hVdTKV61rr
- 9UvHaJdqnyTAt5WIvOlYWUGXZXu6HHzwh3CyFvq3tKoSc/8EPpDhP8+e/B0PVh3u/JjK
- REEA==
-X-Gm-Message-State: AOJu0Yz5fXh3eOFEF7oTmFVjsEUOLaXsadCxxLDuWKP2D1CHyzYyGXVp
- djYR1VMNxQrarzuyoghnsMkuSuzrCWRcRZ1cHjkTnrDQt8SQJ5j1koqT4pzKnnAiCpEf+NXAmDv
- dsoq4F2kjb/2LU8WK6vJ6Hjr0uKCCGuyj1njsb6Wih+C1YSwkWXh8
-X-Received: by 2002:a05:6102:4187:b0:472:e88d:6839 with SMTP id
- cd7-20020a056102418700b00472e88d6839mr4594778vsb.3.1710193131795; 
- Mon, 11 Mar 2024 14:38:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFxYuFLTm1ndlW1mZrjS8c9pScuCs6ywZnSPyqGdwvlJ2fzK4bM2RY/lo26LHqJeDKir16d5g==
-X-Received: by 2002:a05:6102:4187:b0:472:e88d:6839 with SMTP id
- cd7-20020a056102418700b00472e88d6839mr4594767vsb.3.1710193131354; 
- Mon, 11 Mar 2024 14:38:51 -0700 (PDT)
-Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- ee17-20020a0562140a5100b00690bdad8097sm2977420qvb.106.2024.03.11.14.38.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 14:38:51 -0700 (PDT)
-Date: Mon, 11 Mar 2024 17:38:49 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Het Gala <het.gala@nutanix.com>
-Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com, thuth@redhat.com,
- lvivier@redhat.com, pbonzini@redhat.com
-Subject: Re: [PATCH v4 0/8] qtest: migration: Add tests for introducing
- 'channels' argument in migrate QAPIs
-Message-ID: <Ze956ZixU-vaWPbM@x1n>
-References: <20240308205951.111747-1-het.gala@nutanix.com>
- <1db9b780-a83d-4794-8ddd-1547615cdd9b@nutanix.com>
- <Ze920doZYn99aLCn@x1n>
- <66416dbd-9038-4762-b39a-9395b778ea56@nutanix.com>
+ (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
+ id 1rjnbN-0003Bu-9f
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:54:36 -0400
+Received: from pps.filterd (m0127842.ppops.net [127.0.0.1])
+ by mx0b-002c1b01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
+ 42BD9aGo009722; Mon, 11 Mar 2024 14:54:32 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
+ from:to:cc:subject:date:message-id:content-type
+ :content-transfer-encoding:mime-version; s=proofpoint20171006;
+ bh=+GDOf+Zj8cPgxJrXPP8e+h2BTn7UN8YWwQItOxAbcTw=; b=wZYPFEkvYIiT
+ VL1MceR8VjFNEiGARu1QKAnhSGM+j99Wv7WuQTXv55mIaZkBdsJLLzwM9BK6LyK1
+ DB4RD6iF3sebPZyhKP6PTIbgVzqPrDFAbfVQaax962djQdu+ivoinFlNpmd4IdIm
+ /AU07ucT+0Fk02c8L9eRsBV3LqcC5ylPO31hMoTJLSufd4Uk1vU3Tal9rBITCFNo
+ w1DFthrnm1KFGOew/Glw6XbErLC1Rzqdac5w29ym10oPTdiLWHS7GKdQX5GB79YB
+ vnifh+J0LjHotlzLWF2/TZZ7NaqZXlg8Db/39YTmyOyWuM0pfaFfGT1APUGKSRzV
+ rxDmeyIAoA==
+Received: from nam10-mw2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10lp2101.outbound.protection.outlook.com [104.47.55.101])
+ by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3wrqygmc7y-7
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 11 Mar 2024 14:54:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SdOiJ1i9RhDK1SySv8QvfizvE56vXmvlNg094wRpuY1wzO+kqfKQyBs7UotxNozR/LSxJd+T/74rgobUWEnBMODzTqTrmwxg83WIZxZbJLrtBAMRt9+Vzp29GEsTUXz9M6HW/cYA56Lssz3ClRlMEe65TARnBWnbNrBCW2SvwHgtt1PFTidckqJYkJIjbm07a0hitjiMrEe20xD/pWl3t+3KaO6xy2YzR7ta3DEIgoNaFfr3FbuSmy8FStLtmnCDYYX9x5IoBEm7c91MTf67IqOCefdjMUYBToNJHgLsuCFeIjoNPfvhojryrXXchJF2sG96+ZmVFCMnJ+I75TVcSA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+GDOf+Zj8cPgxJrXPP8e+h2BTn7UN8YWwQItOxAbcTw=;
+ b=EIVjJUgNZe6ay3N1+VNSmV8VDd6Pd4R8SxXBH472jqKPDQAAL5I0Mv5koqKe2NwwA3l9Oj3P5zpcl6muCmDbQH6sLcp5VzQMelto/kLHGvoWvhcErhtZdXo+E7El49DyLP9XoAioO6nrDx70DLD1fjxLbLblCf4FClW7iE/Oysu1x5sq4dnkrG0KsJRZKzuwokmxmc4qIM20/NJieWERd4JRsWhCLp2Aq5ZoTOPvdeRLmKEsLeKbAFkhWl9IukVfBJeWLNaVB7udi0e1EHb1jmYxM8lmbSp5dIMbN4dC2/ESRrejMn602L4qxEQJVi1rlGJ/HZCXAnsxRsDB3r7W0w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+GDOf+Zj8cPgxJrXPP8e+h2BTn7UN8YWwQItOxAbcTw=;
+ b=km3MjHajwrbg4KgrIg5BpLOSye8JlVRiJwzIhbi0FJ4YjzPruARAn+0ddnwktTD+maD8pFy127mVnevxKT3vL9ZaMxvrpwhfqEc4XkaedbYaU9sukETFlV6v9vXKW2Lnnbjsvb76ueP29n8/iXLuo7TG+L6qMQD0Irf3DSbFPBYYGJUi78KKfWCR6fMGY/hQlho2q6wjxRFFCwTga3aowZ/YjKXcTNlsgUviHsMEv5uwvjtlKAOZk3/m17gf5Ox/iVLD0lHjJ1c0Yo77naDemV4/Xdwyd0bNOCoU4HmJLnNWuBaYYV9vSn3taSXLpcPm8TB+ZhlXSmoR+f7VRQnWxQ==
+Received: from SJ2PR02MB9955.namprd02.prod.outlook.com (2603:10b6:a03:55f::16)
+ by BY5PR02MB6849.namprd02.prod.outlook.com (2603:10b6:a03:20c::11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.35; Mon, 11 Mar
+ 2024 21:54:24 +0000
+Received: from SJ2PR02MB9955.namprd02.prod.outlook.com
+ ([fe80::225c:2edd:87e:7cf0]) by SJ2PR02MB9955.namprd02.prod.outlook.com
+ ([fe80::225c:2edd:87e:7cf0%7]) with mapi id 15.20.7362.035; Mon, 11 Mar 2024
+ 21:54:24 +0000
+From: Het Gala <het.gala@nutanix.com>
+To: qemu-devel@nongnu.org
+Cc: marcandre.lureau@redhat.com, thuth@redhat.com, lvivier@redhat.com,
+ pbonzini@redhat.com, peterx@redhat.com, farosas@suse.de,
+ Het Gala <het.gala@nutanix.com>
+Subject: [PATCH v5 0/8] qtest: migration: Add tests for introducing 'channels'
+ argument in migrate QAPIs
+Date: Mon, 11 Mar 2024 21:53:50 +0000
+Message-Id: <20240311215358.27476-1-het.gala@nutanix.com>
+X-Mailer: git-send-email 2.22.3
+Content-Type: text/plain; charset=y
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PH2PEPF0000385C.namprd17.prod.outlook.com
+ (2603:10b6:518:1::6a) To SJ2PR02MB9955.namprd02.prod.outlook.com
+ (2603:10b6:a03:55f::16)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <66416dbd-9038-4762-b39a-9395b778ea56@nutanix.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR02MB9955:EE_|BY5PR02MB6849:EE_
+X-MS-Office365-Filtering-Correlation-Id: 42efbb3c-4d7a-4085-985d-08dc4215c544
+x-proofpoint-crosstenant: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: vEc5HYr6/Uf+2M9l46dVFTOXpnBRCAKC7/nBI5ZSxd9xi+FnKMpJZCcFn3KdzCNFNJrZ0fTuROXsPm97Z9dPgwv2n39ua1/wu8kq5ToeD1llARr6ujnl7nnYKoKjTqDQMkw9tafujBCGGTBK0ryfGY42c1Fh1qPqMuTBoAHvGXV2WUcMeOpNB3jBne8g9oR2Amt3gEuNSubJJB5yjSchGIEhTrBxDWyxBgzSGEdbxwB4VLKbQ0Rj0FN5PTMnwBdV2F3hFHtOXQqI2xIKGZK2FAOfKOkjcTt48hws1fkvhapMvUvP7SFYbGV18KE1qwCQ2albV9gW3eYZdzlqqPbRlAIocs5tZEru0RQsSh6QHWs7UYcvZvfzTS/xnVihgLXlBtGZSWwLnByHae8bs0COqhhsZOCOnLp4c/Ds9fSA10tH3ONgaX2FetHlz2oWK7lvCeayN7cGER0KvNezMo0481DTiVMsOkV83mjT0uu8sUlmxymdB0U2xHTpawfeZfxCKVzex20i33z6hXxYewKAs8TYtE+KTWhPySDqKabnl1RpEE2y4+nIdLUBd7HDAeNkGg4wqsYgJZhwuEg0jRPPMbFMDY8W3ahJsJwHN6BobeQIvs+Te5TQztwu6I7YV0EAzexe3G7uygkA2Su95klqCX6hsnJqLRThQ9ZuAlV1qt2hlQl042V6ktBFE9eCmR0w+PLCJttO/75bCoCUO7xFiChCLk3nh4PB+ax0scWf/gQ=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ2PR02MB9955.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(52116005)(1800799015)(376005)(38350700005); DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?rcFZuO0nMXSTKewDR6yF5PcLSZd3k3LJLBhwKEepxdQGjXwNTX8w3Bz6fO7E?=
+ =?us-ascii?Q?gchbgdiZct77PdHygTZVxGtmdnivVh46v7rk/ltShZ1DqM7WvpuDvbaENXOu?=
+ =?us-ascii?Q?/d9zypb6LsnQBaS9Dp/2YfU4eCD2rm3NUPaj5nMfKXs8Cc3SaLoyFnb20lKQ?=
+ =?us-ascii?Q?pWHsy+89XMICuudrJlAxnX1hpF7OPU5oPR060e1gM8w6WI1xY/tmftxzTi6j?=
+ =?us-ascii?Q?4T3l0rx9akHCBS2zCZk/dFlNiAyTeBtR8Cp7oVGwRsIymgnMW9nAV1uQMMrZ?=
+ =?us-ascii?Q?6m8IkQt+5FLu2De4vgqLdBaeQqa7S35gPiLZP7s40HyW3CtEeodmVATyJLQ9?=
+ =?us-ascii?Q?9awjyOmm7sLIdRJpAhLnF8ulJ7VaP3SVC58LUjYm8rymaq8Hj7eXPm30qjXH?=
+ =?us-ascii?Q?rYZ2TIza/0mmLUUlbIeFSJrISY/rAlocQk/S0FfMhwp2pVetsQJrEcUhSkRl?=
+ =?us-ascii?Q?i1YUF/L5Zy46Vo3xi/sQnWZ8dyUBoZ6cbeQtzEZQr/EB5brJZu6RnKryKw8e?=
+ =?us-ascii?Q?plYurt3ZxSIx98suxCKF9aSle2+AMWQDTy7JdjUyjpd2KTtOLtLF1KYiGIWk?=
+ =?us-ascii?Q?ssCvmBtJnecbsYyUh8iaAn2hJJzRFqSosN/rbPJuLKls7Dv67xDW+o7KMXe/?=
+ =?us-ascii?Q?XO3wbjS9hZE/htf0booJHsJ7Cn/sxm4PwgnZopNYHsSAS14I4f6FgxIpcVGa?=
+ =?us-ascii?Q?BqO/uEdCus4JMqvs9v0ZkCKswyYaAwSlJapKOyEq86Tt08TC5FWNWCT1VV68?=
+ =?us-ascii?Q?DbS8JEsAr29XVbhV0jZ3De+/hYS/fLmMzFh/b/KqcoPqpg69bWh+cp1UTDxS?=
+ =?us-ascii?Q?HNMNByx/FclNHNROuZgmG4jHe+znMjACXVRoVjlhqLAZOr1W88gVP2m6Z4rI?=
+ =?us-ascii?Q?45NeYmyY2gzHyIffrYFjdURA3+5U06P1aCGhgVzRvC65JsX4IDuSIhe9JItV?=
+ =?us-ascii?Q?V0JKLj8K6GQIIUFDWEVjntoy9SZl9fXtWDiMX0L8H/qNy8MczaCNJqN8YC5N?=
+ =?us-ascii?Q?+6EVAPS6vN5CumNDe1S4wcRTNaKnSnnKaqFR2oeKWZXzZKxzrjJOcHtZuD2T?=
+ =?us-ascii?Q?GS7PyFA5EUvrOIjyVk4kc2GFMgnY+QSq2lstAIB9AI7Wfo2jzm9YEiYbmdNQ?=
+ =?us-ascii?Q?2cLNp0DRDelp/I4myJQ/7c98uGDKIL5JLqDT/dNW+47KloEH/3sLzy6Gs9vv?=
+ =?us-ascii?Q?Hoa0qbtwN/KABzETZXGDqaDn3Thyu1VqM/6s3y91Zl8N4OEewJfP1aXKYjXj?=
+ =?us-ascii?Q?0xUFWSi2KhUognm5oT0+jau8LtTwOuUuDSzAqFaFtiROxIz5+hoqJp4+Q3Sg?=
+ =?us-ascii?Q?d6kEXxclf5VY6bgwmEXFRnv7iiXG9t+RegiHUScjDfHNoBdmp4gSnAL9oXnn?=
+ =?us-ascii?Q?jTqEnUDwvUAnRTk4Di9Kp02MwmRCc3ds9xNeRNWbA8OOoh5Psks/ZkmuPpCP?=
+ =?us-ascii?Q?4VHtn6Lxek/e70rtv45Gy1Lsa280QNeyoG2baAmLsxe05LPoFG8NyYi4byBG?=
+ =?us-ascii?Q?v2koCe5JIUamaO8UB9+ELD2vjwkXR/eJqRALXQceYBWkA0PAnCQ9QWIGBrDe?=
+ =?us-ascii?Q?Nvpb+RenMa0J3xttGp9yvwtGWBr1wzFk4yqjcyBb?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 42efbb3c-4d7a-4085-985d-08dc4215c544
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR02MB9955.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2024 21:54:05.2176 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DWMvL0Y+/34HY0zYbMxkh7gYZzI2RgDa2Fen4jVNQoZzr3hu+olPmnSgmbVXfh1+AN9ufgoReF0SObVvvlCMBA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR02MB6849
+X-Proofpoint-ORIG-GUID: NLe5AcF6UBuUcFo0nijO0gfeoGhn7YvX
+X-Proofpoint-GUID: NLe5AcF6UBuUcFo0nijO0gfeoGhn7YvX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-11_11,2024-03-11_01,2023-05-22_02
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.155.12; envelope-from=het.gala@nutanix.com;
+ helo=mx0b-002c1b01.pphosted.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
 X-Spam_bar: ---
 X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,43 +155,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Mar 12, 2024 at 03:01:51AM +0530, Het Gala wrote:
-> 
-> On 12/03/24 2:55 am, Peter Xu wrote:
-> > On Sat, Mar 09, 2024 at 01:11:45PM +0530, Het Gala wrote:
-> > > Can find the reference to the githab pipeline (before patchset) :
-> > > https://urldefense.proofpoint.com/v2/url?u=https-3A__gitlab.com_galahet_Qemu_-2D_pipelines_1207185095&d=DwIBaQ&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=y2xUaOwvRVC5eTpFNEdxb37JYDdxN61W406HlCyx3CWIVyBRgLwjJhAYALZLinoi&s=vZRNX33_DuLO1TsfTpYR_s9bf_EMFm3oHHH_eg57zE0&e=
-> > > 
-> > > Can find the reference to the githab pipeline (after patchset) :
-> > > https://urldefense.proofpoint.com/v2/url?u=https-3A__gitlab.com_galahet_Qemu_-2D_pipelines_1207183673&d=DwIBaQ&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=y2xUaOwvRVC5eTpFNEdxb37JYDdxN61W406HlCyx3CWIVyBRgLwjJhAYALZLinoi&s=C73ka3k3ouAuRJYNVLPIBQiWx3jDFDDvVYDiEYqfE04&e=
-> > Het,
-> > 
-> > Please still copy me for any migration patches.  In this case Fabiano is
-> > looking it'll be all fine, but it will still help me on marking the emails.
-> > 
-> > Thanks,
-> So sorry about that Peter. I am aware that you and Fabiano are the go to
-> migration
-> maintainers. I thought I emailed or cc'd all the stakeholders that should be
-> involved
-> for this patchset series. Even in earlier series of this patchset, you were
-> cc'ed,
-> but somehow I just forgot to cc you for this patchset. Sure, will take care
-> from next
-> time. Again apologies for the mixup :)
+With recent migrate QAPI changes, enabling the direct use of the
+'channels' argument to avoid redundant URI string parsing is achieved.
 
-No problem at all.  As long as you have at least 1 maintainers copied,
-logically nothing will get lost.  It's just that it helps me in the routines.
+To ensure backward compatibility, both 'uri' and 'channels' are kept as
+optional parameters in migration QMP commands. However, they are mutually
+exhaustive, requiring at least one for a successful migration connection.
+This patchset adds qtests to validate 'uri' and 'channels' arguments'
+mututally exhaustive behaviour.
 
-Are you managing cc list manually for each version?  In that case I suggest
-you have a look at Stefan's tool:
+Additionally, all migration qtests fail to employ 'channel' as the primary
+method for validating migration QAPIs. This patchset also adds test to
+enforce only use of 'channel' argument as the initial entry point for
+migration QAPIs.
 
-https://github.com/stefanha/git-publish
+Patch Summary:
+-------------
+Patch 1-2:
+---------
+Introduce 'to' object inside migrate_qmp() so and move the calls to
+migrate_get_socket_address() inside migrate_qmp. Also, replace connect_uri
+with args->connect_uri everywhere.
 
-It might help a great deal in patch managements at least to me, and it
-definitely covers more than maintaining the cc list for a patchset.
+Patch 3-6:
+---------
+Add channels argument to allow both migration QAPI arguments independently
+into migrate_qmp and migrate_qmp_fail. migrate_qmp requires the port value to
+be changed from 0 to port value coming from migrate_get_socket_address. Add
+migrate_set_ports to address this change of port value.
+
+Patch 7-8:
+---------
+Add 2 negative tests to validate mutually exhaustive behaviour of migration
+QAPIs. Add a positive multifd_tcp_plain qtest with only channels as the
+initial entry point for migration QAPIs.
+
+
+v4->v5 Changelog:
+----------------
+1. Remove redundant imports from migration-test.c after moving helper
+   functions to migration-helpers.c
+2. call migrate_get_socket_address(to) and internally let qdict_get() call
+   “socket-address” parameter to make more sense to the reader.
+3. qdict needs to be freed, other small fixups.
+
+v3->v4 Changelog:
+----------------
+1. introduced migrate_get_connect_uri and migrate_get_connect_qdict to
+   both used migrate_get_socket_address to get dest uri in socket-
+   address, and then use SokcketAddress_to_qdict to convert it into qdict.
+2. Misc code changes.
+
+v2->v3 Changelog:
+-----------------
+1. 'channels' introduction is not required now for migrate_qmp_incoming
+2. Refactor the code into 7 different patches
+3. 'channels' introduction is not required now for migrate_qmp_incoming
+4. Remove custom function for converting string to MigrationChannelList
+5. move calls for migrate_get_socket_address inside migrate_qmp so that
+   migrate_set_ports can replace the QAPI's port with correct value.
+
+Het Gala (8):
+  Add 'to' object into migrate_qmp()
+  Replace connect_uri and move migrate_get_socket_address inside
+    migrate_qmp
+  Replace migrate_get_connect_uri inplace of migrate_get_socket_address
+  Add channels parameter in migrate_qmp_fail
+  Add migrate_set_ports into migrate_qmp to update migration port value
+  Add channels parameter in migrate_qmp
+  Add multifd_tcp_plain test using list of channels instead of uri
+  Add negative tests to validate migration QAPIs
+
+ tests/qtest/migration-helpers.c | 158 +++++++++++++++++++++++++++-
+ tests/qtest/migration-helpers.h |  10 +-
+ tests/qtest/migration-test.c    | 180 +++++++++++++++++---------------
+ 3 files changed, 257 insertions(+), 91 deletions(-)
 
 -- 
-Peter Xu
+2.22.3
 
 
