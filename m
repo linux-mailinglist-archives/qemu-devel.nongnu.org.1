@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CFD3878693
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:46:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03ADC87868B
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:45:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjjeg-0002bi-7u; Mon, 11 Mar 2024 13:41:42 -0400
+	id 1rjjf0-0002zE-L0; Mon, 11 Mar 2024 13:42:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjee-0002Zc-B9
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:41:40 -0400
-Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjej-0002j7-6v
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:41:45 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjec-0007Nc-PZ
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:41:40 -0400
-Received: by mail-oi1-x22c.google.com with SMTP id
- 5614622812f47-3bd4e6a7cb0so3004484b6e.3
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 10:41:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjeh-0007PR-Ji
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:41:44 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6e5d7f1f25fso2087367b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 10:41:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710178896; x=1710783696; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710178902; x=1710783702; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ypjlmGRHzY0uruaNOcG3LohKyREVxpMddX9iaQbvl0I=;
- b=Sm/MyGhYAs5i2hfbYnbqYbsyYTP1xMjoaYA3ayweCX4BsscU+g3cUVr+wP7ck6NZ+z
- LQ9LpCC/cNyXAPBKYXMN6K1C22KxuzbtMQnRjwuUapRpjz6SF1IY+OgT+xpjhiiiNUw4
- ldSra8493YjnIbRvv2vTWhX9U2POfOdleNk6rVMM2Vmt+44OjwyzNYx32tsvy+t6BX6F
- Wn5DgHzYTWEgXVTpw1fnMI4eYLNsN82FXsnvzEw+ESjhcqy8mvmmEQtSCsi12wplEIOX
- UTf04zUblu6QplheGKgIkG200iKLFxiv4JvSUmns/dKXL9wZXbxOQZij6PrI7mGghRGq
- jFdQ==
+ bh=TRcl63k4Enolg0XIOUbcFz2ceM8wzscJs4qT96hKv3M=;
+ b=gaXKD3ThBCJDUQqQpmtGnxqQtrdY8TNmvgQyI9NhOTG6cOrH42EfVTotCwhDQ1eA0t
+ ceWmXvGLUdRQRkEPa3hPnuXnmUu0AwYb5z6h5hLoS2K0990ouOIvwMdcfHd7l8WPWmb3
+ EIkj86UUTgvZhWYWRp0DA+tq4I8Zjj9DSFz9hVw0FWZavzgqAPYl40wfMl5q8ofEOcmp
+ HRW3s0h8Tbe6Uw5oUctUw4D2ypopiHiLUUkR+w+Xjn6ls6N/jlvYKOLyZzds5NfvjUI1
+ iSIBwC/2nCiMaYLafNiPkGk8hg4co0mTFO26+Rg49AndlpWeWYV2vPgAK/SJcwm5mh7C
+ lo3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710178896; x=1710783696;
+ d=1e100.net; s=20230601; t=1710178902; x=1710783702;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ypjlmGRHzY0uruaNOcG3LohKyREVxpMddX9iaQbvl0I=;
- b=gWUgYZWHacAcJNthbgQW1Q8R76ZOtUr+won9bIF6S+wRtB/a25bHWXOPohoC4cra/+
- jFqUhcey8i4NG6H2C0+Bn18phhxOMIVXnwYrm8xgHWc86Z6Azm0oUjCQ5bEnmFI/mHoP
- WyVe3mbKajwAcvEFlGu3FR0kd1VP+JIiydoIOwJtFQCwNi2VDiL+Z8y81EjP1JSUMiG2
- 8ccFqp9fC7DSxwXxf7/GRj57bin2QNMbEtIHor4txa2Hig0jYAes/ph8rENbwGJQmxwA
- 8DjtpeixBlQZkToK2q1QBw4xUaRdRxE00lHcA1rCgl4ohnwDQcweHGDDwUaCqZclFFmS
- Lwwg==
-X-Gm-Message-State: AOJu0YyoJmWqLhmHqU9VMsRqC0WT0zk0pKSr0fMThOiqEVZJ5oqZRAOq
- eI3iyUZDMJy4hqWTLWeEnfPoxJxgjzvXlgkZaKI7XZOGzny50HBF/3F8adDd9aU=
-X-Google-Smtp-Source: AGHT+IEc5s2/zyTKI8pG6Ai5VuVN1ci5ub1RvUw+Ry01K4ZqbVzzZFBLE9rQ65EOas04vid1hk18Zw==
-X-Received: by 2002:a05:6808:384d:b0:3c2:3fc6:a05a with SMTP id
- ej13-20020a056808384d00b003c23fc6a05amr1804850oib.33.1710178896206; 
- Mon, 11 Mar 2024 10:41:36 -0700 (PDT)
+ bh=TRcl63k4Enolg0XIOUbcFz2ceM8wzscJs4qT96hKv3M=;
+ b=LNaIDoPoR7JwxQqmw893MbVjKvXw+4MD9jiAo7hEk1xPmUI18R+gZaz6MMt7KSjRjc
+ KBniZBXBvbf5/3ywC+SUoWR9jGQxfx1kuAhFsO36kRPKu5A9wQl3jE/kOUvL8KezgETv
+ yl5Un1jVPb/Tk0gMl1fCkJgqgqN6GynmPTfdyUffYS4Syfh+jeWGO18fxfJIHMbt2vKF
+ Kt+//kGFHjkUtDbc/av3kIxSsbIXpY9Vgr9fXigERayb8AUvGgEnNQHtyzLuPw6bFWTL
+ VpAPQ7+moJ3EKHaSt0ed1teyVz5cwq8SJpbXuCtkqBX5orX3yu02iILLNLHUtE6WiERx
+ EmAw==
+X-Gm-Message-State: AOJu0Yxv4/iEt2lpOuQj9qXIvyimpiS5edsC5efbgXlkx4kaBp5nPvEJ
+ 2TA/tUEOF0cQomYeJYwlqBWONElJhI2pPWtwT2gDOaSOK7HGxhhXxSCLl18E+dw=
+X-Google-Smtp-Source: AGHT+IHwg71O/unBd/fPFI8XRs5TXQrJKcPahM8orTDTp4kUgbr5FfeBfckNcFfpp0nJYyeiKBuCbg==
+X-Received: by 2002:a05:6a00:27a0:b0:6e5:dff8:6e5f with SMTP id
+ bd32-20020a056a0027a000b006e5dff86e5fmr7645519pfb.34.1710178901589; 
+ Mon, 11 Mar 2024 10:41:41 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- a18-20020a62d412000000b006e67b4d7b74sm4593187pfh.197.2024.03.11.10.41.31
+ a18-20020a62d412000000b006e67b4d7b74sm4593187pfh.197.2024.03.11.10.41.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 10:41:35 -0700 (PDT)
+ Mon, 11 Mar 2024 10:41:41 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -65,16 +65,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH v4 11/24] net: Use virtual time for net announce
-Date: Tue, 12 Mar 2024 03:40:13 +1000
-Message-ID: <20240311174026.2177152-12-npiggin@gmail.com>
+Subject: [PATCH v4 12/24] savevm: Fix load_snapshot error path crash
+Date: Tue, 12 Mar 2024 03:40:14 +1000
+Message-ID: <20240311174026.2177152-13-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240311174026.2177152-1-npiggin@gmail.com>
 References: <20240311174026.2177152-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
- envelope-from=npiggin@gmail.com; helo=mail-oi1-x22c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,27 +97,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Using virtual time for announce ensures that guest visible effects
-are deterministic and don't break replay.
+An error path missed setting *errp, which can cause a NULL deref.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- net/announce.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ migration/savevm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/announce.c b/net/announce.c
-index 9e99044422..70b5d5e822 100644
---- a/net/announce.c
-+++ b/net/announce.c
-@@ -187,7 +187,7 @@ static void qemu_announce_self_once(void *opaque)
- 
- void qemu_announce_self(AnnounceTimer *timer, AnnounceParameters *params)
- {
--    qemu_announce_timer_reset(timer, params, QEMU_CLOCK_REALTIME,
-+    qemu_announce_timer_reset(timer, params, QEMU_CLOCK_VIRTUAL,
-                               qemu_announce_self_once, timer);
-     if (params->rounds) {
-         qemu_announce_self_once(timer);
+diff --git a/migration/savevm.c b/migration/savevm.c
+index dc1fb9c0d3..fee9318c06 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -3259,6 +3259,7 @@ bool load_snapshot(const char *name, const char *vmstate,
+     /* Don't even try to load empty VM states */
+     ret = bdrv_snapshot_find(bs_vm_state, &sn, name);
+     if (ret < 0) {
++        error_setg(errp, "Snapshot can not be found");
+         return false;
+     } else if (sn.vm_state_size == 0) {
+         error_setg(errp, "This is a disk-only snapshot. Revert to it "
 -- 
 2.42.0
 
