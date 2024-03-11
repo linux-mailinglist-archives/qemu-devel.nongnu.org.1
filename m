@@ -2,88 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CEB0878A5C
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 22:59:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5E8D878A6C
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 23:01:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjngG-0000AV-U2; Mon, 11 Mar 2024 17:59:36 -0400
+	id 1rjngG-0000AG-F9; Mon, 11 Mar 2024 17:59:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngF-00009z-7k
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:35 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngE-00009q-Kn
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:34 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngB-0003xD-0j
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngB-0003xS-UX
  for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710194370;
+ s=mimecast20190719; t=1710194371;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=uMS+nCF2NuJY5wFKbMCyMEHpALuR7K278nrHqjHzHBY=;
- b=S9AzYOnnD4ZIPIRvpDkl/obrFXp5ivZexF9OYpP0WGG1WqOlw3SOrhyhzJZ2fZ1EbEAdPP
- i2ADUIGQNQV55j3gcsAcWY8QC5EvmR2bQR/rpLJlfWZVRBzq7OyDJpBGF222IHutwCeBDC
- 8yC/fvzWwue5B6k1+gDcV9UnP/3D8Vo=
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
- [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jw41KY+8uC9noF71Dt+JCbXCA+1c3J79mVTzi6ld/Go=;
+ b=CJyPON0hZCSgAmRV7F8B2Andq4uIizRkRY83HEa96TUOJlztCKO1eb9QUSXzJrtvHZnYq+
+ fZocGElDoIMyMit12Xvu2iB3oGzU9QnNipNaPSpvgbuzB/9PVzjkO59/KBM+shCi+r9T4d
+ 8lS6f0yC0d2hOWmUL+xbfB9ctKq0QFo=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-70-EWVrUBjyOamtsevBRwcUMw-1; Mon, 11 Mar 2024 17:59:28 -0400
-X-MC-Unique: EWVrUBjyOamtsevBRwcUMw-1
-Received: by mail-ot1-f71.google.com with SMTP id
- 46e09a7af769-6e4e54fb7b4so2273591a34.0
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 14:59:28 -0700 (PDT)
+ us-mta-228-XnCpQiNFNgeJGX9n1SoPJg-1; Mon, 11 Mar 2024 17:59:30 -0400
+X-MC-Unique: XnCpQiNFNgeJGX9n1SoPJg-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-42f30752eb4so14718431cf.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 14:59:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710194368; x=1710799168;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=uMS+nCF2NuJY5wFKbMCyMEHpALuR7K278nrHqjHzHBY=;
- b=FKkigx1g+Z16/R/R5UlHuJH5xSJHihWEP0FGSGk5Ki5kqmb8YSFDqFJAEDudWuSG60
- ze/SqEHbCeo33acW4pA90DAtyIMr2B848fmIrs02N3KJe577N8NACoLaS0REogXvnrnn
- w7DiEl5fiZYGzmL5mkL4sX3QbrGaAr+CvAUKNUZ9trfIGJ2qsw8BgwAmgQxHh0tNdZfL
- GYshP/UWT5qMIegO68OmMatxIgEdjOeoBaWAKkBJZHIZdjGC9AoqU5/8yy9LHz8GHp5h
- 1Kwl77d972AQOncZLn4/k80b9Ce5oYpK41VzHJVoUv/AYYyuyt7YvZxX6wiX2UOhMqU9
- f6hw==
-X-Gm-Message-State: AOJu0Yw1Y4ijPgGojYszaZhCo/stK09h2OzeZWIEGdLAwvlZCki2rkbQ
- fm2V4eT4MpqRwGKGb4TLCeP8RnJQiQ8EbQ8N3vP614xxXn4QJWlvIDeT/Nld40aeamcmrOVSJBH
- 8U6S0ixRV/Kl/NMIVBt/w0NPiyQSAJsfKSwkUcpjWtfZTff0MSk/yJWll0la7R36jgZqwOeUzjR
- zvkE6x38omatyMUA3MwHt1ByrMlrKoiv5vSA==
-X-Received: by 2002:a05:6808:178c:b0:3c2:4a71:7084 with SMTP id
- bg12-20020a056808178c00b003c24a717084mr282192oib.2.1710194367777; 
- Mon, 11 Mar 2024 14:59:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGEeVDP6mIlrm2uMldGt/xygLxLZ7+vY5V/rVXG/lGErvYmO1SzfMW7NA89yxgL2kM2N67guQ==
-X-Received: by 2002:a05:6808:178c:b0:3c2:4a71:7084 with SMTP id
- bg12-20020a056808178c00b003c24a717084mr282174oib.2.1710194367314; 
- Mon, 11 Mar 2024 14:59:27 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1710194369; x=1710799169;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jw41KY+8uC9noF71Dt+JCbXCA+1c3J79mVTzi6ld/Go=;
+ b=ZlkbBvQvBJp7rjP8fJhe5Y0i5Pg9LMpbJv8YEus3363XgoCQDjq7AIZBWnyNAubaDc
+ jhvmswv7RgMnT4346NdV5L/nwnZqj5Obal6uj5np8pIExq9He7xoYDIjwFJxKXKpfObp
+ EC2BHZgAoYuHMiueBRlZOIqr+1tv62EEfZVWEI+akoggsBF9awOA4+VZWaZR4HKSbA2f
+ bFHt84jIWgw+fqjTv7MbfHvu5FUHcLTd/SqSey2VpspWqSg/yhYbP0mDf8s/2IbesW3U
+ Nj8Dp1b744hTlpUAfWjG1JU1fXQfW8jq/xVGgZDiLajIM/4AHBTwI8StVwRX5GDZiGYo
+ FPwQ==
+X-Gm-Message-State: AOJu0YyS7E6cDVunPEEVj+53EEeAwSF0kHPNW5zMAkyNFpk3OtFv8lpu
+ npYsBgvpGocV6oChfc2gruD44ugbuvw0ckER51n1tq0pdwQwGGLJsinpgk/Y0wtt0CgWVaj7J24
+ WqVbCxzIAS2xP/ofSgUI682/yThvRdcoOxDqZeKvklrSzmNdMkfh8BO7Ji+q1XHUOKX7JMBhqUe
+ i72lPohgYrAK1dowqh5epvBJs79dQ/+UwwUQ==
+X-Received: by 2002:a05:622a:1aa6:b0:42e:f7aa:834f with SMTP id
+ s38-20020a05622a1aa600b0042ef7aa834fmr9939863qtc.0.1710194369278; 
+ Mon, 11 Mar 2024 14:59:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFck49NC9NEODTXKIL/BjC6AljEr9ux2q/N4yBgMcaansN8+EXXhmxyU28U6E4f87DDuvogeQ==
+X-Received: by 2002:a05:622a:1aa6:b0:42e:f7aa:834f with SMTP id
+ s38-20020a05622a1aa600b0042ef7aa834fmr9939842qtc.0.1710194368788; 
+ Mon, 11 Mar 2024 14:59:28 -0700 (PDT)
 Received: from x1n.. (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- d6-20020a0ce446000000b00690cec16254sm1541932qvm.68.2024.03.11.14.59.26
+ d6-20020a0ce446000000b00690cec16254sm1541932qvm.68.2024.03.11.14.59.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 14:59:27 -0700 (PDT)
+ Mon, 11 Mar 2024 14:59:28 -0700 (PDT)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, peterx@redhat.com,
  Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
- Prasad Pandit <ppandit@redhat.com>
-Subject: [PULL 00/34] Migration 20240311 patches
-Date: Mon, 11 Mar 2024 17:58:51 -0400
-Message-ID: <20240311215925.40618-1-peterx@redhat.com>
+ Prasad Pandit <ppandit@redhat.com>, Avihai Horon <avihaih@nvidia.com>
+Subject: [PULL 01/34] migration: Don't serialize devices in
+ qemu_savevm_state_iterate()
+Date: Mon, 11 Mar 2024 17:58:52 -0400
+Message-ID: <20240311215925.40618-2-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240311215925.40618-1-peterx@redhat.com>
+References: <20240311215925.40618-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -15
-X-Spam_score: -1.6
-X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,140 +102,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Xu <peterx@redhat.com>
+From: Avihai Horon <avihaih@nvidia.com>
 
-The following changes since commit 7489f7f3f81dcb776df8c1b9a9db281fc21bf05f:
+Commit 90697be8896c ("live migration: Serialize vmstate saving in stage
+2") introduced device serialization in qemu_savevm_state_iterate(). The
+rationale behind it was to first complete migration of slower changing
+block devices and only then migrate the RAM, to avoid sending fast
+changing RAM pages over and over.
 
-  Merge tag 'hw-misc-20240309' of https://github.com/philmd/qemu into staging (2024-03-09 20:12:21 +0000)
+This commit was added a long time ago, and while it was useful back
+then, it is not the case anymore:
+1. Block migration is deprecated, see commit 66db46ca83b8 ("migration:
+   Deprecate block migration").
+2. Today there are other iterative devices besides RAM and block, such
+   as VFIO, which are registered for migration after RAM. With current
+   serialization behavior, a fast changing device can block other
+   devices from sending their data, which may prevent migration from
+   converging in some cases.
 
-are available in the Git repository at:
+The issue described in item 2 was observed in several VFIO migration
+scenarios with switchover-ack capability enabled, where some workload on
+the VM prevented RAM from ever reaching a hard zero, thus blocking VFIO
+initial pre-copy data from being sent. Hence, destination could not ack
+switchover and migration could not converge.
 
-  https://gitlab.com/peterx/qemu.git tags/migration-20240311-pull-request
+Fix that by not serializing iterative devices in
+qemu_savevm_state_iterate().
 
-for you to fetch changes up to 1815338df00fd0a3fe25085564c6966f74c8f43d:
+Note that this still doesn't fully prevent device starvation. As
+correctly pointed out by Peter [1], a fast changing device might
+constantly consume all allocated bandwidth and block the following
+devices. However, this scenario is more likely to happen only if
+max-bandwidth is low.
 
-  migration/multifd: Add new migration test cases for legacy zero page checking. (2024-03-11 16:57:09 -0400)
+[1] https://lore.kernel.org/qemu-devel/Zd6iw9dBhW6wKNxx@x1n/
 
-----------------------------------------------------------------
-Migration pull request
+Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Link: https://lore.kernel.org/r/20240304105339.20713-2-avihaih@nvidia.com
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ migration/savevm.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-- Avihai's fix to allow vmstate iterators to not starve for VFIO
-- Maksim's fix on additional check on precopy load error
-- Fabiano's fix on fdatasync() hang in mapped-ram
-- Jonathan's fix on vring cached access over MMIO regions
-- Cedric's cleanup patches 1-4 out of his error report series
-- Yu's fix for RDMA migration (which used to be broken even for 8.2)
-- Anthony's small cleanup/fix on err message
-- Steve's patches on privatize migration.h
-- Xiang's patchset to enable zero page detections in multifd threads
-
-----------------------------------------------------------------
-
-Anthony PERARD (1):
-  migration: Fix format in error message
-
-Avihai Horon (3):
-  migration: Don't serialize devices in qemu_savevm_state_iterate()
-  vfio/migration: Refactor vfio_save_state() return value
-  vfio/migration: Add a note about migration rate limiting
-
-Cédric Le Goater (4):
-  migration: Report error when shutdown fails
-  migration: Remove SaveStateHandler and LoadStateHandler typedefs
-  migration: Add documentation for SaveVMHandlers
-  migration: Do not call PRECOPY_NOTIFY_SETUP notifiers in case of error
-
-Fabiano Rosas (3):
-  migration/multifd: Don't fsync when closing QIOChannelFile
-  migration/multifd: Allow zero pages in file migration
-  migration/multifd: Allow clearing of the file_bmap from multifd
-
-Hao Xiang (5):
-  migration/multifd: Add new migration option zero-page-detection.
-  migration/multifd: Implement zero page transmission on the multifd
-    thread.
-  migration/multifd: Implement ram_save_target_page_multifd to handle
-    multifd version of MigrationOps::ram_save_target_page.
-  migration/multifd: Enable multifd zero page checking by default.
-  migration/multifd: Add new migration test cases for legacy zero page
-    checking.
-
-Jonathan Cameron (4):
-  physmem: Rename addr1 to more informative mr_addr in
-    flatview_read/write() and similar
-  physmem: Reduce local variable scope in flatview_read/write_continue()
-  physmem: Factor out body of flatview_read/write_continue() loop
-  physmem: Fix wrong address in large
-    address_space_read/write_cached_slow()
-
-Maksim Davydov (1):
-  migration/ram: add additional check
-
-Steve Sistare (12):
-  migration: export fewer options
-  migration: remove migration.h references
-  migration: export migration_is_setup_or_active
-  migration: export migration_is_active
-  migration: export migration_is_running
-  migration: export vcpu_dirty_limit_period
-  migration: migration_thread_is_self
-  migration: migration_is_device
-  migration: migration_file_set_error
-  migration: privatize colo interfaces
-  migration: delete unused accessors
-  migration: purge MigrationState from public interface
-
-Yu Zhang (1):
-  migration/rdma: Fix a memory issue for migration
-
- docs/devel/migration/main.rst       |   3 +-
- qapi/migration.json                 |  38 +++-
- include/hw/qdev-properties-system.h |   4 +
- include/migration/client-options.h  |  25 +++
- include/migration/misc.h            |  18 +-
- include/migration/register.h        | 267 +++++++++++++++++++++++++---
- include/qemu/typedefs.h             |   2 -
- migration/migration.h               |   7 +-
- migration/multifd.h                 |  23 ++-
- migration/options.h                 |   7 +-
- migration/ram.h                     |   3 +-
- hw/core/machine.c                   |   4 +-
- hw/core/qdev-properties-system.c    |  10 ++
- hw/vfio/common.c                    |  17 +-
- hw/vfio/container.c                 |   1 -
- hw/vfio/migration.c                 |  24 ++-
- hw/virtio/vhost-user.c              |   1 -
- hw/virtio/virtio-balloon.c          |   2 -
- io/channel-file.c                   |   5 -
- migration/colo.c                    |  17 +-
- migration/file.c                    |   4 +-
- migration/migration-hmp-cmds.c      |   9 +
- migration/migration.c               |  67 ++++---
- migration/multifd-zero-page.c       |  87 +++++++++
- migration/multifd-zlib.c            |  21 ++-
- migration/multifd-zstd.c            |  20 ++-
- migration/multifd.c                 | 120 ++++++++++---
- migration/options.c                 |  32 +++-
- migration/qemu-file.c               |   5 +-
- migration/ram.c                     |  62 +++++--
- migration/rdma.c                    |   2 +-
- migration/savevm.c                  |  23 +--
- net/colo-compare.c                  |   3 +-
- net/vhost-vdpa.c                    |   3 +-
- stubs/colo.c                        |   1 -
- system/dirtylimit.c                 |  13 +-
- system/physmem.c                    | 260 +++++++++++++++++----------
- system/qdev-monitor.c               |   1 -
- target/loongarch/kvm/kvm.c          |   1 -
- target/riscv/kvm/kvm-cpu.c          |   4 +-
- tests/qtest/migration-test.c        |  52 ++++++
- tests/unit/test-vmstate.c           |   1 -
- migration/meson.build               |   1 +
- migration/trace-events              |   8 +-
- 44 files changed, 981 insertions(+), 297 deletions(-)
- create mode 100644 include/migration/client-options.h
- create mode 100644 migration/multifd-zero-page.c
-
+diff --git a/migration/savevm.c b/migration/savevm.c
+index dc1fb9c0d3..e84b26e1c8 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -1390,7 +1390,8 @@ int qemu_savevm_state_resume_prepare(MigrationState *s)
+ int qemu_savevm_state_iterate(QEMUFile *f, bool postcopy)
+ {
+     SaveStateEntry *se;
+-    int ret = 1;
++    bool all_finished = true;
++    int ret;
+ 
+     trace_savevm_state_iterate();
+     QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
+@@ -1431,16 +1432,12 @@ int qemu_savevm_state_iterate(QEMUFile *f, bool postcopy)
+                          "%d(%s): %d",
+                          se->section_id, se->idstr, ret);
+             qemu_file_set_error(f, ret);
+-        }
+-        if (ret <= 0) {
+-            /* Do not proceed to the next vmstate before this one reported
+-               completion of the current stage. This serializes the migration
+-               and reduces the probability that a faster changing state is
+-               synchronized over and over again. */
+-            break;
++            return ret;
++        } else if (!ret) {
++            all_finished = false;
+         }
+     }
+-    return ret;
++    return all_finished;
+ }
+ 
+ static bool should_send_vmdesc(void)
 -- 
 2.44.0
 
