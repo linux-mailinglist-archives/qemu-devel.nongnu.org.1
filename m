@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96E8B878A90
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 23:11:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8CC1878A79
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 23:04:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjnhV-0001HB-KQ; Mon, 11 Mar 2024 18:00:57 -0400
+	id 1rjniM-0002Ok-Aw; Mon, 11 Mar 2024 18:01:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngp-0000nL-NN
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 18:00:11 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngp-0000nU-PC
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 18:00:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngm-0004HD-Vu
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngn-0004HG-UH
  for qemu-devel@nongnu.org; Mon, 11 Mar 2024 18:00:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1710194408;
@@ -22,46 +22,46 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=e+7z8zapbeRNv2trHhs1cLEOfHBQW8nwm253n8XWXpE=;
- b=LR+vfOPVpsq7IkSJJ6Qy0Jh9J+lHjfxbLhLj003/gdw/IeF6btWjNCShWy4PcXcibcATBr
- SE1abMr7BdJBjrZC4ZaDcxyrR8VSu3Gy4ACN8NWClXkPQIngt0gCquVd2Ob5OdJcVoffSc
- Q4PKYJKAfqni2alnRHzgNFt0C1bn4VM=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=2OZEcnrxRNvKPm1DvrVRTFALc0OvjfuvU5sOoiUMpdc=;
+ b=Kc3y99XE4uIInoZHuR7ptK2Fr0r/PR/nYJZoqzgPGjgzgYk2yvM6kV96YDiGJwNT2jX7Je
+ okFqe1GreptC4dP8ekd8Dh39jwUe5Lg4EXxXfi0noBLJ/kyx+dbD3yZyXKd++AU5C2Zxz/
+ +MvKN7xEVzoTEn4vFxRkWomZ/TojxH0=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-382-qpUt04RPNc2iA3kFBkbKUg-1; Mon, 11 Mar 2024 18:00:05 -0400
-X-MC-Unique: qpUt04RPNc2iA3kFBkbKUg-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6818b8cb840so15028106d6.1
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 15:00:05 -0700 (PDT)
+ us-mta-458-X6GrvQ-UMuieD-WPYlLCCg-1; Mon, 11 Mar 2024 18:00:06 -0400
+X-MC-Unique: X6GrvQ-UMuieD-WPYlLCCg-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-690becce69eso10938186d6.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 15:00:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710194404; x=1710799204;
+ d=1e100.net; s=20230601; t=1710194406; x=1710799206;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=e+7z8zapbeRNv2trHhs1cLEOfHBQW8nwm253n8XWXpE=;
- b=wSkMfWdRtUIHaVK383shYpoanHdGV4olaKrR/WGGhDdoEVWyUitPluF9qrx5vaWspR
- i/hDQ65N1LXHdQF/hpjVO/KNGuBD82RyayYyNUVO+Q4xj1p96teva4P0uKU4r6qPal64
- /H1Z5rjpmP708mpo7a5gGUvgBekmHTZnJJsIvp1ez3P6RPx3b0Zt1m/ukByUh0/eBLB0
- VUs8EGZDzMQngeuBJPlcXUdTa/evATvvMnMgyOJGydk/5vyXunaZjcwfC7JDdvu26utR
- nttWMRsyecR4pJH44cPWpFjqtamtLB4t8+haNLUSzJ2Rse5q+zR53v6kmDoAu41abKO3
- nt9g==
-X-Gm-Message-State: AOJu0Yx4+ldY4gJJgrx3PYnVz/S2ZqAxIPK+9sYTtDEBuBi0QXqPDMRb
- lCl8ktNMkmMIqtkYK1fv2AtAN/egVqbtKASydOGnboLz7k8TIiq/a63TNbRkotQ9O43fE3VXqf0
- 3v5YWPDkyxXeUlmKLTRgLAQ0c0IjDJcrIzpZsmh6AVMbRxpDQfb7EBtFynndGwMOIxxtLECn+6s
- Y5FFpcyBrFgXFzI98hrcYcMgVV//AqHvqw5A==
-X-Received: by 2002:ad4:5bec:0:b0:690:e47c:9bee with SMTP id
- k12-20020ad45bec000000b00690e47c9beemr407188qvc.4.1710194404578; 
- Mon, 11 Mar 2024 15:00:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH1VfYyBAPHBu1KugNzJwJ+S3wiVaovQYm2Cfi6Y0taRC/52wi3infIRzm50ZphWSVjaAmb1A==
-X-Received: by 2002:ad4:5bec:0:b0:690:e47c:9bee with SMTP id
- k12-20020ad45bec000000b00690e47c9beemr407156qvc.4.1710194404131; 
- Mon, 11 Mar 2024 15:00:04 -0700 (PDT)
+ bh=2OZEcnrxRNvKPm1DvrVRTFALc0OvjfuvU5sOoiUMpdc=;
+ b=BLKK3bTXwjXpL+OE5Q9n+lmitiwmUAqs7kh1X5slOoEr4Tq44BQJcWfsWzOZIviP5N
+ StE6/nTqF2xcIZAPO0fBXFIjcym9AgywbdVeDRxXT/eUG4I77jA29o6YyDDL7EmtcM+l
+ +E2DWBuogxiDeqDjxBd8ltZlQrJhV85AlEL3to6fmKhtgRd/J8M/SsqYDvXThb6nv3XR
+ OxXfp+IBlyWL4S0kIW+0GBqb2RRvfM+2xqFpL9QT2JYTJRvpftHXhPyjZghX9rCvlica
+ BcHeIlquHuiV8jT0Ivu6/T6BoBEgEkC0HHpqnnPl+rw5CDBE/E9Q1gBtBBRJvJKEu/Z3
+ ePFw==
+X-Gm-Message-State: AOJu0YwC8HWq1CepB3dTu3R2zAT8QgtEuEBXyhFquN/nPpzkjLNya4MM
+ MaIThSzT9PjRiyuKT4CzoqJt30fKzoausllYCycfyuubKcCQwM2iDijsox6SlA94amk1UXnnfy9
+ XwmRtN3CmB4ECTweY/PTLIJ8CLfayvBST+mgH3s0qk6V9R/w+oxmBWu53iU/Dl/rQnH35yZl3Fd
+ dwqkb4iRBNHj9nL6omNQIPz6c7A77HxfA/BA==
+X-Received: by 2002:ad4:58c5:0:b0:690:a974:5b79 with SMTP id
+ dh5-20020ad458c5000000b00690a9745b79mr7754134qvb.0.1710194405997; 
+ Mon, 11 Mar 2024 15:00:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEDcHw0Svf4tCIp0dAh9DyX/XvaH3ed8lUOCGSOkQbv5VkrBrNhaVdH72AsUUIxHRVOKlOPOw==
+X-Received: by 2002:ad4:58c5:0:b0:690:a974:5b79 with SMTP id
+ dh5-20020ad458c5000000b00690a9745b79mr7754102qvb.0.1710194405510; 
+ Mon, 11 Mar 2024 15:00:05 -0700 (PDT)
 Received: from x1n.. (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- d6-20020a0ce446000000b00690cec16254sm1541932qvm.68.2024.03.11.15.00.03
+ d6-20020a0ce446000000b00690cec16254sm1541932qvm.68.2024.03.11.15.00.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 15:00:03 -0700 (PDT)
+ Mon, 11 Mar 2024 15:00:04 -0700 (PDT)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
@@ -69,9 +69,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, peterx@redhat.com,
  Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
  Prasad Pandit <ppandit@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PULL 25/34] migration: privatize colo interfaces
-Date: Mon, 11 Mar 2024 17:59:16 -0400
-Message-ID: <20240311215925.40618-26-peterx@redhat.com>
+Subject: [PULL 26/34] migration: delete unused accessors
+Date: Mon, 11 Mar 2024 17:59:17 -0400
+Message-ID: <20240311215925.40618-27-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240311215925.40618-1-peterx@redhat.com>
 References: <20240311215925.40618-1-peterx@redhat.com>
@@ -104,111 +104,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-Remove private migration interfaces from net/colo-compare.c and push them
-to migration/colo.c.
-
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Link: https://lore.kernel.org/r/1710179338-294359-10-git-send-email-steven.sistare@oracle.com
+Link: https://lore.kernel.org/r/1710179338-294359-11-git-send-email-steven.sistare@oracle.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/colo.c   | 17 +++++++++++------
- net/colo-compare.c |  3 +--
- stubs/colo.c       |  1 -
- 3 files changed, 12 insertions(+), 9 deletions(-)
+ include/migration/misc.h |  3 ---
+ migration/migration.c    | 10 ----------
+ 2 files changed, 13 deletions(-)
 
-diff --git a/migration/colo.c b/migration/colo.c
-index 315e31fe32..84632a603e 100644
---- a/migration/colo.c
-+++ b/migration/colo.c
-@@ -63,9 +63,9 @@ static bool colo_runstate_is_stopped(void)
-     return runstate_check(RUN_STATE_COLO) || !runstate_is_running();
+diff --git a/include/migration/misc.h b/include/migration/misc.h
+index e521cd5229..d563d2c801 100644
+--- a/include/migration/misc.h
++++ b/include/migration/misc.h
+@@ -105,13 +105,10 @@ void migration_add_notifier_mode(NotifierWithReturn *notify,
+ void migration_remove_notifier(NotifierWithReturn *notify);
+ int migration_call_notifiers(MigrationState *s, MigrationEventType type,
+                              Error **errp);
+-bool migration_in_setup(MigrationState *);
+-bool migration_has_finished(MigrationState *);
+ bool migration_has_failed(MigrationState *);
+ bool migration_is_running(void);
+ void migration_file_set_error(int err);
+ 
+-/* ...and after the device transmission */
+ /* True if incoming migration entered POSTCOPY_INCOMING_DISCARD */
+ bool migration_in_incoming_postcopy(void);
+ /* True if incoming migration entered POSTCOPY_INCOMING_ADVISE */
+diff --git a/migration/migration.c b/migration/migration.c
+index 216f63d62b..644e073b7d 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -1548,16 +1548,6 @@ int migration_call_notifiers(MigrationState *s, MigrationEventType type,
+     return ret;
  }
  
--static void colo_checkpoint_notify(void *opaque)
-+static void colo_checkpoint_notify(void)
+-bool migration_in_setup(MigrationState *s)
+-{
+-    return s->state == MIGRATION_STATUS_SETUP;
+-}
+-
+-bool migration_has_finished(MigrationState *s)
+-{
+-    return s->state == MIGRATION_STATUS_COMPLETED;
+-}
+-
+ bool migration_has_failed(MigrationState *s)
  {
--    MigrationState *s = opaque;
-+    MigrationState *s = migrate_get_current();
-     int64_t next_notify_time;
- 
-     qemu_event_set(&s->colo_checkpoint_event);
-@@ -74,10 +74,15 @@ static void colo_checkpoint_notify(void *opaque)
-     timer_mod(s->colo_delay_timer, next_notify_time);
- }
- 
-+static void colo_checkpoint_notify_timer(void *opaque)
-+{
-+    colo_checkpoint_notify();
-+}
-+
- void colo_checkpoint_delay_set(void)
- {
-     if (migration_in_colo_state()) {
--        colo_checkpoint_notify(migrate_get_current());
-+        colo_checkpoint_notify();
-     }
- }
- 
-@@ -162,7 +167,7 @@ static void primary_vm_do_failover(void)
-      * kick COLO thread which might wait at
-      * qemu_sem_wait(&s->colo_checkpoint_sem).
-      */
--    colo_checkpoint_notify(s);
-+    colo_checkpoint_notify();
- 
-     /*
-      * Wake up COLO thread which may blocked in recv() or send(),
-@@ -518,7 +523,7 @@ out:
- 
- static void colo_compare_notify_checkpoint(Notifier *notifier, void *data)
- {
--    colo_checkpoint_notify(data);
-+    colo_checkpoint_notify();
- }
- 
- static void colo_process_checkpoint(MigrationState *s)
-@@ -642,7 +647,7 @@ void migrate_start_colo_process(MigrationState *s)
-     bql_unlock();
-     qemu_event_init(&s->colo_checkpoint_event, false);
-     s->colo_delay_timer =  timer_new_ms(QEMU_CLOCK_HOST,
--                                colo_checkpoint_notify, s);
-+                                colo_checkpoint_notify_timer, NULL);
- 
-     qemu_sem_init(&s->colo_exit_sem, 0);
-     colo_process_checkpoint(s);
-diff --git a/net/colo-compare.c b/net/colo-compare.c
-index f2dfc0ebdc..c4ad0ab71f 100644
---- a/net/colo-compare.c
-+++ b/net/colo-compare.c
-@@ -28,7 +28,6 @@
- #include "sysemu/iothread.h"
- #include "net/colo-compare.h"
- #include "migration/colo.h"
--#include "migration/migration.h"
- #include "util.h"
- 
- #include "block/aio-wait.h"
-@@ -189,7 +188,7 @@ static void colo_compare_inconsistency_notify(CompareState *s)
-         notify_remote_frame(s);
-     } else {
-         notifier_list_notify(&colo_compare_notifiers,
--                             migrate_get_current());
-+                             NULL);
-     }
- }
- 
-diff --git a/stubs/colo.c b/stubs/colo.c
-index 08c9f982d5..f8c069b739 100644
---- a/stubs/colo.c
-+++ b/stubs/colo.c
-@@ -2,7 +2,6 @@
- #include "qemu/notify.h"
- #include "net/colo-compare.h"
- #include "migration/colo.h"
--#include "migration/migration.h"
- #include "qemu/error-report.h"
- #include "qapi/qapi-commands-migration.h"
- 
+     return (s->state == MIGRATION_STATUS_CANCELLED ||
 -- 
 2.44.0
 
