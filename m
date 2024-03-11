@@ -2,69 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1367878840
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 19:53:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F08878848
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 19:54:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjkl6-0004ws-Na; Mon, 11 Mar 2024 14:52:26 -0400
+	id 1rjklB-00053E-A1; Mon, 11 Mar 2024 14:52:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rjkku-0004m6-7c; Mon, 11 Mar 2024 14:52:12 -0400
+ id 1rjkl0-0004uI-U7; Mon, 11 Mar 2024 14:52:20 -0400
 Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rjkks-0004yS-EV; Mon, 11 Mar 2024 14:52:11 -0400
+ id 1rjkkx-0004yd-47; Mon, 11 Mar 2024 14:52:17 -0400
 Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1dc49b00bdbso25423635ad.3; 
- Mon, 11 Mar 2024 11:52:09 -0700 (PDT)
+ d9443c01a7336-1d944e8f367so36504795ad.0; 
+ Mon, 11 Mar 2024 11:52:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710183128; x=1710787928; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=LFs81MFRDaIe8DzVKcIiiltsydhlBAYDpj9IfLrHQuQ=;
- b=eqyRNnWmaq3SuNpq844ZHf2o67HxqtXFAPFY9Gehi3ZveaG4y2cpjRqh9d41ukNMvy
- pUC9xlmDJCkbmZ21Bzwk51B3/8D9Pjmn3J653thBC37T6dDhc448X7zohkasW5veen31
- 8waAOGGYJToobUjpnhjW8ifBgP1BMYfKpV/MiD9nye2TzuAj62ojJqHOr0wkfuKX2YiD
- OO+6Q8/hnvOERtchg/nTmkEEH1673uMGqOnesVsLbZCnbOWgZgBvxzq1Xvq4tZtjuUgi
- 8pAWBCQPme084hEH6hNOZ8RkZJtHPSzqNs37z9g6PzBcsuDtlUxU3ViOPDstolT7PgVh
- 1kRA==
+ d=gmail.com; s=20230601; t=1710183131; x=1710787931; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nmMv63TVrq95FfXDjo4ojFa+1yY/QOY9ONxqne1eyHA=;
+ b=fdI3vaP/plDDlRnE8Gjbc0VXjoTzFOftN3FETrEA2G7crI3+tlD/SgsY+lEundBkar
+ 5MWjBLvOCsUf0WBjcDxVDImpuWbAaw/T+Zj9t9bM52osnn19Ap7xC4BeG2KmkeoAYEya
+ izjnXl6UR/DfHmRJbowhuA/VmeD4z3GHQH3+jbrZnwhUI3CsZOga+GLRuWwlwiTKCSBc
+ 9AM2ZVjaFGrdCmyUOSdmLrAadqAXpXAG7fYd72v0QGFzDVO7v8Pjt1YDbTxR/OKZQolY
+ tvKiEOnySiEivU6g0DaQEwbDPTYipqyfDCsGwsfK/2wjtDox3fm/BeuUE3CaVRjHclnd
+ CdTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710183128; x=1710787928;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=LFs81MFRDaIe8DzVKcIiiltsydhlBAYDpj9IfLrHQuQ=;
- b=v+LVYx9Ny3hW/f8VDgQouuPHgu0LdJz++rbVT1TwuaKWAwLaGzhieQAdK8RsjVyoAD
- kSAwSJ2JuvIcBHUPqVYRneZJ5Z76giltx0yUWujAtbs6dAWu2EBSoH+LofeHOcbIah7h
- /6WCJrlcm9RYZwtYnJHQyyugBiDQM7SCfiLOfFJbQX9s8bPGfuPb05LMLU4Zl1PwVXyX
- pFKtQm+ftvqQfX9OB0XpBbPOy07Q4yl16xr6N6mb/sEVhr2eOKTiHQWkQDfqGbbLvlSc
- 8Gyt4sQgQnSsBxZvb4JuAEHzMoRCByocm87trb2Xx4uiLxs+AX/J54wsveAOrEQwKir+
- RmbA==
+ d=1e100.net; s=20230601; t=1710183131; x=1710787931;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nmMv63TVrq95FfXDjo4ojFa+1yY/QOY9ONxqne1eyHA=;
+ b=m1aEfzUepgmMoQDzoh+bvv1SmlYRnPAYkn++HtDOTFdJfXI37nHeogMVhofp+zuyDc
+ u7d1PNOkfR4GUfBA0+PkbJZtVo3jKXN6op6uBOLo2GxC6LiwdySqT9R7lZYHCUhQdaGo
+ 7BvDnim7up7/fl4J52iaTaON8eiGuhNSeF2gsuhdHN/D4hgcr57132yBRqu1I7SU3jbf
+ dPYTR3iwnr89qCUd7Pmw957EYFfS3inj7o1hj12dK4UpT1PDGaVR4FeeXwBkZqLf/qaY
+ mnqfs8IZSvfgG/J5eqJZgHLNhaRlPjw6nDaxi1otH+EIO5AtV2en50RXe/D8r3RxEWZb
+ SuIA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXxE+plkK67U2OuLhj7e1pIba3v2+FfbaY/3swZPu6Wmie7X37fHg0z9O0dIDO4uuYqBqUmKHyExc6u7IOf+MHAVvryoZY=
-X-Gm-Message-State: AOJu0YxDlClaKU/S76YX5pnzc91l6O8XtvmqYj4iI+EVJPrrDUcG7xMv
- 5Cx1x8PDn3wsJCJEBDHv2mWa7qwskVCDRuwsZQaf1epYRVWjKzHu2lROZx15pXs=
-X-Google-Smtp-Source: AGHT+IFkGs0DE4Vnt1xphcpU1EDslehEriSAgtNps2iJU/yP09gtezo+/NldCHDU0g3f8MmOATqTbQ==
-X-Received: by 2002:a17:903:25c1:b0:1dd:6781:49ab with SMTP id
- jc1-20020a17090325c100b001dd678149abmr6491007plb.59.1710183128143; 
- Mon, 11 Mar 2024 11:52:08 -0700 (PDT)
+ AJvYcCWclKD2+kOyawohi2H/kqJFf7rLpOad8UnDK89rfU+WVrdoaBYYLFrR+pfKQ4D0nNxnuRmmQixkRPNDv18uMba9jLgr+UQ=
+X-Gm-Message-State: AOJu0YzFNwcHwaSiRp2vayx7mwmNhrJJWJIliaQSTl72K2KJbW8YDtZS
+ sIdZ+ipZ9yEQw0ZEgZ2jGidJtA62mD0PzzJEUMHei66sXb0j/HGJqzj9IqvKn/Q=
+X-Google-Smtp-Source: AGHT+IGVzfZQSd6isgkbpEak6b0ZOrB50Pe8S/Ykk/DUzIRfv2pPU3JYpuGVtaTGZTazDgEkGOCszw==
+X-Received: by 2002:a17:903:1209:b0:1dc:af70:9f78 with SMTP id
+ l9-20020a170903120900b001dcaf709f78mr6227729plh.46.1710183131455; 
+ Mon, 11 Mar 2024 11:52:11 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- z2-20020a170903018200b001dd7d00f7afsm4843887plg.18.2024.03.11.11.52.04
+ z2-20020a170903018200b001dd7d00f7afsm4843887plg.18.2024.03.11.11.52.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 11:52:07 -0700 (PDT)
+ Mon, 11 Mar 2024 11:52:11 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  David Gibson <david@gibson.dropbear.id.au>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PATCH 00/13] misc ppc patches
-Date: Tue, 12 Mar 2024 04:51:42 +1000
-Message-ID: <20240311185200.2185753-1-npiggin@gmail.com>
+Subject: [PATCH 01/13] ppc: Drop support for POWER9 and POWER10 DD1 chips
+Date: Tue, 12 Mar 2024 04:51:43 +1000
+Message-ID: <20240311185200.2185753-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20240311185200.2185753-1-npiggin@gmail.com>
+References: <20240311185200.2185753-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
@@ -91,52 +94,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Here's a bunch of patches that have been on the list in various
-forms, but haven't made it upstream yet. I would like to get
-them merged for 9.0 if possible. The checkstop and attn ones are
-bigger but they're not so important so I could defer them.
+The POWER9 DD1 and POWER10 DD1 chips are not public and are no longer of
+any use in QEMU. Remove them.
 
-Main change is merging Ben's DEXCR patch from last year with my
-POWER10 pa-features patch -- his was posted first and added a
-POWER10 entry so I took his but updated title and changelog.
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ hw/ppc/spapr_cpu_core.c |  2 --
+ target/ppc/cpu-models.c |  4 ----
+ target/ppc/cpu_init.c   |  7 ++-----
+ target/ppc/kvm.c        | 11 -----------
+ 4 files changed, 2 insertions(+), 22 deletions(-)
 
-And changing the SAO and copy-paste patches to always cease
-advertising them, rather than depending on the host, as per
-discussion with David.
-
-Thanks,
-Nick
-
-Benjamin Gray (1):
-  ppc/spapr: Add pa-features for POWER10 machines
-
-Nicholas Piggin (12):
-  ppc: Drop support for POWER9 and POWER10 DD1 chips
-  target/ppc: POWER10 does not have transactional memory
-  ppc/spapr|pnv: Remove SAO from pa-features
-  ppc/spapr: Remove copy-paste from pa-features
-  ppc/spapr: Adjust ibm,pa-features for POWER9
-  ppc/pnv: Permit ibm,pa-features set per machine variant
-  ppc/pnv: Set POWER9, POWER10 ibm,pa-features bits
-  target/ppc: Prevent supervisor from modifying MSR[ME]
-  spapr: set MSR[ME] and MSR[FP] on client entry
-  target/ppc: Make checkstop actually stop the system
-  target/ppc: improve checkstop logging
-  target/ppc: Implement attn instruction on BookS 64-bit processors
-
- target/ppc/cpu.h         |  16 +++++-
- target/ppc/helper.h      |   4 ++
- hw/ppc/pnv.c             | 104 ++++++++++++++++++++++++++++++++++-----
- hw/ppc/spapr.c           |  63 ++++++++++++++++++++----
- hw/ppc/spapr_cpu_core.c  |   4 +-
- target/ppc/cpu-models.c  |   4 --
- target/ppc/cpu_init.c    |  93 +++++++++++++++++++++++++++++-----
- target/ppc/excp_helper.c |  52 +++++++++++++++-----
- target/ppc/helper_regs.c |   5 ++
- target/ppc/kvm.c         |  11 -----
- target/ppc/translate.c   |  11 +++++
- 11 files changed, 304 insertions(+), 63 deletions(-)
-
+diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
+index 40b7c52f7f..50523ead25 100644
+--- a/hw/ppc/spapr_cpu_core.c
++++ b/hw/ppc/spapr_cpu_core.c
+@@ -394,10 +394,8 @@ static const TypeInfo spapr_cpu_core_type_infos[] = {
+     DEFINE_SPAPR_CPU_CORE_TYPE("power8_v2.0"),
+     DEFINE_SPAPR_CPU_CORE_TYPE("power8e_v2.1"),
+     DEFINE_SPAPR_CPU_CORE_TYPE("power8nvl_v1.0"),
+-    DEFINE_SPAPR_CPU_CORE_TYPE("power9_v1.0"),
+     DEFINE_SPAPR_CPU_CORE_TYPE("power9_v2.0"),
+     DEFINE_SPAPR_CPU_CORE_TYPE("power9_v2.2"),
+-    DEFINE_SPAPR_CPU_CORE_TYPE("power10_v1.0"),
+     DEFINE_SPAPR_CPU_CORE_TYPE("power10_v2.0"),
+ #ifdef CONFIG_KVM
+     DEFINE_SPAPR_CPU_CORE_TYPE("host"),
+diff --git a/target/ppc/cpu-models.c b/target/ppc/cpu-models.c
+index 36e465b390..f2301b43f7 100644
+--- a/target/ppc/cpu-models.c
++++ b/target/ppc/cpu-models.c
+@@ -728,14 +728,10 @@
+                 "POWER8 v2.0")
+     POWERPC_DEF("power8nvl_v1.0", CPU_POWERPC_POWER8NVL_v10,         POWER8,
+                 "POWER8NVL v1.0")
+-    POWERPC_DEF("power9_v1.0",   CPU_POWERPC_POWER9_DD1,             POWER9,
+-                "POWER9 v1.0")
+     POWERPC_DEF("power9_v2.0",   CPU_POWERPC_POWER9_DD20,            POWER9,
+                 "POWER9 v2.0")
+     POWERPC_DEF("power9_v2.2",   CPU_POWERPC_POWER9_DD22,            POWER9,
+                 "POWER9 v2.2")
+-    POWERPC_DEF("power10_v1.0",  CPU_POWERPC_POWER10_DD1,            POWER10,
+-                "POWER10 v1.0")
+     POWERPC_DEF("power10_v2.0",  CPU_POWERPC_POWER10_DD20,           POWER10,
+                 "POWER10 v2.0")
+ #endif /* defined (TARGET_PPC64) */
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 1d3d1db7c3..572cbdf25f 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -6350,10 +6350,7 @@ static bool ppc_pvr_match_power9(PowerPCCPUClass *pcc, uint32_t pvr, bool best)
+         return false;
+     }
+ 
+-    if ((pvr & 0x0f00) == 0x100) {
+-        /* DD1.x always matches power9_v1.0 */
+-        return true;
+-    } else if ((pvr & 0x0f00) == 0x200) {
++    if ((pvr & 0x0f00) == 0x200) {
+         if ((pvr & 0xf) < 2) {
+             /* DD2.0, DD2.1 match power9_v2.0 */
+             if ((pcc->pvr & 0xf) == 0) {
+@@ -6536,7 +6533,7 @@ static bool ppc_pvr_match_power10(PowerPCCPUClass *pcc, uint32_t pvr, bool best)
+     }
+ 
+     if ((pvr & 0x0f00) == (pcc->pvr & 0x0f00)) {
+-        /* Major DD version matches to power10_v1.0 and power10_v2.0 */
++        /* Major DD version matches power10_v2.0 */
+         return true;
+     }
+ 
+diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+index bcf30a5400..525fbe3892 100644
+--- a/target/ppc/kvm.c
++++ b/target/ppc/kvm.c
+@@ -2369,17 +2369,6 @@ static void kvmppc_host_cpu_class_init(ObjectClass *oc, void *data)
+ 
+ #if defined(TARGET_PPC64)
+     pcc->radix_page_info = kvmppc_get_radix_page_info();
+-
+-    if ((pcc->pvr & 0xffffff00) == CPU_POWERPC_POWER9_DD1) {
+-        /*
+-         * POWER9 DD1 has some bugs which make it not really ISA 3.00
+-         * compliant.  More importantly, advertising ISA 3.00
+-         * architected mode may prevent guests from activating
+-         * necessary DD1 workarounds.
+-         */
+-        pcc->pcr_supported &= ~(PCR_COMPAT_3_00 | PCR_COMPAT_2_07
+-                                | PCR_COMPAT_2_06 | PCR_COMPAT_2_05);
+-    }
+ #endif /* defined(TARGET_PPC64) */
+ }
+ 
 -- 
 2.42.0
 
