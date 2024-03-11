@@ -2,70 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C21B287874A
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 19:29:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D1987873E
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 19:26:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjkLO-00069s-BW; Mon, 11 Mar 2024 14:25:50 -0400
+	id 1rjkLw-0008Mz-Vw; Mon, 11 Mar 2024 14:26:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rjkKg-000622-4m
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 14:25:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rjkKe-00086g-73
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 14:25:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710181492;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=ZqSp48UUkbpqeui6N0nxaPtpILZYFkgE6PmsXB9uBi8=;
- b=Lqsedbi5sWYdu985GQEXZnzHmEulIdnMYXpj2tX6YMH9IVvN4iGOYz2cWLmzCSe1L2va1e
- vI8/b1BD/CcKHUj84RGzk1sl9zt5HCfVW4PlUtDriLghBSzuqCW8LwqTGDTGZAtSGsSloe
- mZ+1suAkxTXR9mlZy6CocE7/b7WzlaU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-602-ke4eFbJjP9aUOebHrzbuwg-1; Mon, 11 Mar 2024 14:24:50 -0400
-X-MC-Unique: ke4eFbJjP9aUOebHrzbuwg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6B97689C56D;
- Mon, 11 Mar 2024 18:24:50 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.132])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 1F2611121306;
- Mon, 11 Mar 2024 18:24:49 +0000 (UTC)
-Date: Mon, 11 Mar 2024 18:24:47 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, den@virtuozzo.com,
- andrey.drobyshev@virtuozzo.com, jsnow@redhat.com,
- vsementsov@yandex-team.ru, kwolf@redhat.com, hreitz@redhat.com
-Subject: Re: [PATCH] block: Use LVM tools for LV block device truncation
-Message-ID: <Ze9Mb6pHcTOdghCy@redhat.com>
-References: <20240311174044.67094-1-alexander.ivanov@virtuozzo.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjkLr-0008Cv-21
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 14:26:19 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjkLo-0008Sv-Tc
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 14:26:18 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-33e92b3b5c9so1740825f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 11:26:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1710181574; x=1710786374; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=kB6aU45OMO1SedRbUf1U8+DKRJvtswJ1XF4gExKfQ2I=;
+ b=SwvWMUCSGQMmrW8yXFEb/3tEvgzvtG1GIzTT2nweJGaHUY0ug2LvJ9aJhQU8gCoyez
+ +Sp0vhVrNndPrRvuZNqSFOUi+1lu+XbyKy/zQrJ5J787Q4ps0VNDtUCLOkA5TNdsO+0H
+ e7TMYHzJzuk3vZhBEmkSRDqsXZaG/j08orMpk1frAut1nIxxqvTgJsc4HqWwyyCdDeTR
+ owt7PsiKVLwJGhqAGx3hGqKremJF/LLGMInhSSvc0FxpeSOtmvDOnAONuBvWpgEednTY
+ XJAAjvt7AU0XQYqS/Q0X5BmbPDahyqpT7j3KqUiubDb71lRF+frXUzH0xxRLUyQoRvpp
+ rLbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710181574; x=1710786374;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=kB6aU45OMO1SedRbUf1U8+DKRJvtswJ1XF4gExKfQ2I=;
+ b=jtaToD30OAq9yrQN6NkTq432DetU9jgIPy94xyWbSRtzTOwIAX5LIUD6TDdnV5VNXr
+ Nl4V3ETFGRVASbg8Ay5j0DRfHi7NLKD4X2eZhhKkVd2He+pkYb/QFmuJ17lChdoNLWmd
+ XHUvOxaXUDXCiIPPorWuf+B/SIQhrvpYU3DlA/wWSceXQ0iRchZdkqZ8FuKOfmzcEYF5
+ PyVCyM9Gay7AuTEM6mQ96z5OczKQfGoiHeiTZpQRfg5iZHnA3X4Qm748upDK8JZimEM0
+ AA3Y/N69U/f/KZAx5Z+FsS1eaZXCmYUfAYSagk9120l+Ve3u9NIwIWdkfpAyiAeJN9B1
+ LMXw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVwKc5kI3/1UKV1RJYkiBpoRbKdHdNJir1aZl/KobkJOLXe5s2pJIH3szug5LV/lqqbCMPsc0Vzan+aspyuSRJfOU4G7qA=
+X-Gm-Message-State: AOJu0YxCJvibRCNwZOi+Ikw7N/lIBkD7Nr+DAlMSf3aDzJdZxYBIyio4
+ 0pBphXcgUxL19v/K24P3wQpBptlPKk3WbPvQOQGRPkGnmp3FFlFEZ6N0lvEwhTg=
+X-Google-Smtp-Source: AGHT+IHaUkxq0dZi7FzFhl5GYJiLgnVRA7XrpGtD5W3jCzatoyKrjoAhfIxbdeLa+ZCCr93kMQQoPw==
+X-Received: by 2002:adf:ee91:0:b0:33e:6833:8f9a with SMTP id
+ b17-20020adfee91000000b0033e68338f9amr5038291wro.48.1710181574525; 
+ Mon, 11 Mar 2024 11:26:14 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.167.228])
+ by smtp.gmail.com with ESMTPSA id
+ h3-20020adf9cc3000000b0033e73c58678sm7054063wre.15.2024.03.11.11.26.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Mar 2024 11:26:13 -0700 (PDT)
+Message-ID: <0297cf9b-4591-4622-96b0-83dae349dc1f@linaro.org>
+Date: Mon, 11 Mar 2024 19:26:10 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240311174044.67094-1-alexander.ivanov@virtuozzo.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] hw/core: Cleanup unused included headers in
+ cpu-common.c
+Content-Language: en-US
+To: Zhao Liu <zhao1.liu@linux.intel.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
+References: <20240311075621.3224684-1-zhao1.liu@linux.intel.com>
+ <20240311075621.3224684-2-zhao1.liu@linux.intel.com>
+ <752e3d2b-1834-4f6d-9764-3d7e951409c4@linaro.org>
+ <Ze8m4YvRQrWFlFpN@intel.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <Ze8m4YvRQrWFlFpN@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,92 +98,83 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Mar 11, 2024 at 06:40:44PM +0100, Alexander Ivanov wrote:
-> If a block device is an LVM logical volume we can resize it using
-> standard LVM tools.
+On 11/3/24 16:44, Zhao Liu wrote:
+> Hi Philippe,
 > 
-> In raw_co_truncate() check if the block device is a LV using lvdisplay
-> and resize it executing lvresize.
+> On Mon, Mar 11, 2024 at 12:40:23PM +0100, Philippe Mathieu-Daudé wrote:
+>> Date: Mon, 11 Mar 2024 12:40:23 +0100
+>> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Subject: Re: [PATCH v3 1/3] hw/core: Cleanup unused included headers in
+>>   cpu-common.c
+>>
+>> On 11/3/24 08:56, Zhao Liu wrote:
+>>> From: Zhao Liu <zhao1.liu@intel.com>
+>>>
+>>> Remove unused headers in cpu-common.c:
+>>> * qemu/notify.h
+>>> * exec/cpu-common.h
+>>> * qemu/error-report.h
+>>> * qemu/qemu-print.h
+>>>
+>>> Tested by "./configure" and then "make".
+>>
+>> This isn't often enough. The safest way to catch implicit
+>> includes is to add #error in them and compile the source.
+>>
+>>>
+>>> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+>>> ---
+>>>    hw/core/cpu-common.c | 4 ----
+>>>    1 file changed, 4 deletions(-)
+>>>
+>>> diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+>>> index 0108fb11dbc8..4bd9c70a83f1 100644
+>>> --- a/hw/core/cpu-common.c
+>>> +++ b/hw/core/cpu-common.c
+>>> @@ -22,14 +22,10 @@
+>>>    #include "qapi/error.h"
+>>>    #include "hw/core/cpu.h"
+>>>    #include "sysemu/hw_accel.h"
+>>> -#include "qemu/notify.h"
+>>>    #include "qemu/log.h"
+>>>    #include "qemu/main-loop.h"
+>>>    #include "exec/log.h"
+>>> -#include "exec/cpu-common.h"
+>>
+>> Watch out, "exec/cpu-common.h" is implicitly included:
+>>
+>> $ git diff -U0
+>> diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+>> index 6346df17ce..27961bacc6 100644
+>> --- a/include/exec/cpu-common.h
+>> +++ b/include/exec/cpu-common.h
+>> @@ -2,0 +3 @@
+>> +#error
+>>
+>> $ ninja libcommon.fa.p/hw_core_cpu-common.c.o
+>> In file included from ../../hw/core/cpu-common.c:34:
+>> In file included from include/hw/boards.h:6:
+>> In file included from include/exec/memory.h:19:
+>> include/exec/cpu-common.h:3:2: error:
+>> #error
 > 
-> Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-> ---
->  block/file-posix.c | 27 +++++++++++++++++++++++++++
->  1 file changed, 27 insertions(+)
+> Thanks for helpping me verify this!!
 > 
-> diff --git a/block/file-posix.c b/block/file-posix.c
-> index 35684f7e21..cf8a04e6f7 100644
-> --- a/block/file-posix.c
-> +++ b/block/file-posix.c
-> @@ -2670,6 +2670,33 @@ static int coroutine_fn raw_co_truncate(BlockDriverState *bs, int64_t offset,
->      if (S_ISCHR(st.st_mode) || S_ISBLK(st.st_mode)) {
->          int64_t cur_length = raw_getlength(bs);
->  
-> +        /*
-> +         * Check if the device is an LVM logical volume and try to resize
-> +         * it using LVM tools.
-> +         */
-> +        if (S_ISBLK(st.st_mode) && offset > 0) {
-> +            char cmd[PATH_MAX + 32];
-> +
-> +            snprintf(cmd, sizeof(cmd), "lvdisplay %s > /dev/null",
-> +                     bs->filename);
+> EMM, but I'm still not understanding how this approach distinguishes
+> whether hw/core/cpu-common.c needs the header (include/exec/cpu-common.h)
+> directly or just include/exec/memory.h needs that header? For the latter,
+> the header needn't be included in .c file.
 
-PATH_MAX + snprint is a bad practice - g_strdup_printf() is recommended
-for dynamic allocation, along with g_autofree for release.
+Yes, you are right, it might not be necessary.
 
-> +            ret = system(cmd);
-
-IMHO using 'system' for spawning processes is dubious in any non-trivial
-program.
-
-Historically at least it does not have well defined behaviour wrt signal
-handling in the child, before execve is called. ie potentially a signal
-handler registered by QEMU in the parent could run in the child having
-ill-effects.
-
-'system' also executes via the shell which opens up many risks with
-unsanitized files path being substituted into the command line.
-
-> +            if (ret != 0) {
-> +                error_setg(errp, "lvdisplay returned %d error for '%s'",
-> +                           ret, bs->filename);
-> +                return ret;
-> +            }
-
-Calling 'lvdisplay' doesn't seem to be needed. Surely 'lvresize' is
-going to report errors if it isn't an LVM device.
-
-If we want to detect an LVM device though, couldn't we lookup
-'device-mapper'  in /proc/devices and then major the device major
-node number.
-
-> +
-> +            snprintf(cmd, sizeof(cmd), "lvresize -f -L %ldB %s > /dev/null",
-> +                     offset, bs->filename);
-> +            ret = system(cmd);
-> +            if (ret != 0) {
-> +                error_setg(errp, "lvresize returned %d error for '%s'",
-> +                           ret, bs->filename);
-
-lvresize might display an message on stderr on failure but that's at best
-going to QEMU's stderr. Any error needs to be captured and put into
-this error message that's fed back to the user / QMP client.
-
-> +            }
-> +
-> +            return ret;
-> +        }
-> +
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+For all other headers in your series I checked that no function /
+definition is used in the source, but "exec/cpu-common.h" is too
+big to do that manually. I mostly skipped it because it is odd to
+have cpu-common.c not including the header with the same name...
+Also, in another series I split / reworked "exec/cpu-common.h" and
+IIRC a part of it will be included here. Bah, I'll stop writing
+and take your patch unmodified.
 
