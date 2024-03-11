@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F38A878124
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 15:00:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8706687812A
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 15:01:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjgBV-0005Ao-Ji; Mon, 11 Mar 2024 09:59:24 -0400
+	id 1rjgBa-0005ED-K8; Mon, 11 Mar 2024 09:59:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rjgBJ-00059g-Ko
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 09:59:09 -0400
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ id 1rjgBL-0005A4-UN
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 09:59:11 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rjgBH-0003ax-BA
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 09:59:09 -0400
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-29baec5f751so2026991a91.0
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 06:59:06 -0700 (PDT)
+ id 1rjgBK-0003bx-A2
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 09:59:11 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-5dbd519bde6so3687329a12.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 06:59:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1710165545; x=1710770345; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=nG1z1j5EYE/lIKY0fj2u8vHOJM10LttW3eQfJYDOipw=;
- b=YN4jeHHG7VgVjMWSBDNpV2rhvWfG/490KXOVjF+uLzHuhvdDP60jn6eLDF44Ek+sBF
- hR7VusBXD9VQ9jHxrCELkft4Hz++M8XmZOxIP6jK4jU0iQ3163Sjeg35jHpSVh4fQT39
- Rdg50Jgw34hziS1Ip8e5IIvp/2LGTFHtc9s5yC7rB72GZgm/MEkw0nEfYCANqQhjqP+F
- bMFe8PcxUPUaRWFl/GdlNug3/hvaxZiW9YOqN4k7QFqUYN/xAdAPlp+oHdsa0Rjuydbv
- ORKH72NdQBeVIQZ85D1e9d4Dh+HGkRXNj9c+sITaUK+dXaCOxOWhTHFK4z+vz3qvUC6l
- YdBQ==
+ d=ventanamicro.com; s=google; t=1710165548; x=1710770348; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8PUZYN/jxC55WgIbgr/YDIPnxwzEfC4uN3+8U/WL+Ts=;
+ b=N/UVGD2pM/qw2DyZc0j9TsrB5jZ19HEEkkuHJyadQbRDY9mleM6EVK2s3od73gY83H
+ NkDyKGQndNKb3DtxhNAjm1vntcfy+DOMqHawm5W7MklHTym+3oReY9UK7lY0rY6+iM1j
+ DotRO+U66WWeKTsXoAREnH1pfAvxaVTzudZ9KU9dPdJdMEhAIXBO/JjESD1k2PiTNA50
+ bP1YjwZ+J0y1V6Myy1v0x+kqOvbE+2Cu9o/sJOS0BfqzBPyHhU2a64f+QuWwcNxGyxz5
+ eQUPEr5zhYiXqd4Jk+G4bxyoOVD4gal3+7bsYbAvzMumjS1IB+hip4t8LFyHkiqHRFCL
+ zX5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710165545; x=1710770345;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=nG1z1j5EYE/lIKY0fj2u8vHOJM10LttW3eQfJYDOipw=;
- b=Cv47fZmFS1FTw2Yp0p/rnNpuqW8PxWm0KD6f/1sHfO+915j5KhVQLAS4gjllPqTyt4
- cXAflbPlWQIhB59cukMAW0/offq6Y5DcpvzCuOPNyjcM05hvqfSJWXHQbMQbFl98vqyU
- DQ7v1YkUlwJ4zFS91QKT5RLAQdNNRZf09eIjEoWs1b47sE1hAFCcLaQBK4du8xWSTXne
- wI8C7DwCYavCNN2NtoScN0berOxUMzBRiYjf3LRm02oH03Kem6LJ9XCwZTXh22wBwq3C
- veJs7hrntIKefHeTv290yBgceySSHKjmnW/cM0qgri+mvN1MV+5bWiJf0ZlKhmiEZl7r
- /JUQ==
-X-Gm-Message-State: AOJu0Yy9h5Ewc1bvphBJnvgfzkRJglKrbemxc/CW5sQJAzvwGoaDzFPU
- rumrdN6EOCb/rvwRlxAQz1DqjYizLNAlFgwbip46dZI7TAeh8+Do9jTbTtPUSvvEibil3sWQIXy
- n
-X-Google-Smtp-Source: AGHT+IGDyHCFL6uZDrLc8TS+ZG+Sdfhl4AhYsTR1Okv7JTsZb50nPgbjoF1obUKxMqDyGJcnsAXDoQ==
-X-Received: by 2002:a17:90a:578c:b0:29b:fb23:863e with SMTP id
- g12-20020a17090a578c00b0029bfb23863emr4403697pji.17.1710165544785; 
- Mon, 11 Mar 2024 06:59:04 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1710165548; x=1710770348;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8PUZYN/jxC55WgIbgr/YDIPnxwzEfC4uN3+8U/WL+Ts=;
+ b=KXpxm8jUiM3Md485jf75XJUm/70BJ8tdkAjLa5G6gLr5XNHzQ9SDPsBXPezMz7LOe5
+ agQmMtECLoEqdlGwBEFBwM17hQ2u0Nxg6v44mybdrfnor4QF6rbd0EL87+yFvMLArZqm
+ 7s0GCB1mTQAGbAERJJcHAqxbDsdsAaFIEDyAFaq6eMgHdMleNv/d8LVVjAUPf5u3Rar/
+ tOojPn+GMZTnuADscgw0757NxbMnntMJ1f/vaQUF/YRDObWYKuKt1VBCvyxfMRmbashu
+ 7xMoKn62Q49Z8yKaxr3VEzWH2iKxsBijyIeAo7Bzl9llWM8iFTmfCd0uQrNjya65e2Gs
+ TP2g==
+X-Gm-Message-State: AOJu0Yyc+kDCQBe9vxVxVOalybaxZI8Fem865Wr8N+aN2sTttYdIrbBI
+ cJnZEUpRkv0nyWAy++APGGOqpzEXU/ScrRzpItYv0UTRI7M9f4uoNayIc2kNqUx8TAYJG80FERl
+ p
+X-Google-Smtp-Source: AGHT+IETVT0UDqgwO63GGjCDlmdvM/j34+YEwKBmBsqum4mn0CF6PTKEIn09KvB0ZUym4bti1O4rYg==
+X-Received: by 2002:a17:90a:9483:b0:29b:b9ef:7345 with SMTP id
+ s3-20020a17090a948300b0029bb9ef7345mr4832350pjo.26.1710165547934; 
+ Mon, 11 Mar 2024 06:59:07 -0700 (PDT)
 Received: from grind.. ([177.94.15.159]) by smtp.gmail.com with ESMTPSA id
- nm3-20020a17090b19c300b0029c12fa64b9sm1324920pjb.4.2024.03.11.06.59.01
+ nm3-20020a17090b19c300b0029c12fa64b9sm1324920pjb.4.2024.03.11.06.59.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 06:59:04 -0700 (PDT)
+ Mon, 11 Mar 2024 06:59:07 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  richard.henderson@linaro.org, philmd@linaro.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v11 0/7] riscv: set vstart_eq_zero on vector insns
-Date: Mon, 11 Mar 2024 10:58:48 -0300
-Message-ID: <20240311135855.225578-1-dbarboza@ventanamicro.com>
+Subject: [PATCH v11 1/7] target/riscv/vector_helper.c: set vstart = 0 in
+ GEN_VEXT_VSLIDEUP_VX()
+Date: Mon, 11 Mar 2024 10:58:49 -0300
+Message-ID: <20240311135855.225578-2-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240311135855.225578-1-dbarboza@ventanamicro.com>
+References: <20240311135855.225578-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x1029.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,56 +95,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+The helper isn't setting env->vstart = 0 after its execution, as it is
+expected from every vector instruction that completes successfully.
 
-In this new version, after the comments from LIU Zhiwei in v9 [1], I
-decided to ditch all the patches that were trying to integrate the tail
-update process in a single function. Handling the right value for NF for
-every single function is out of the scope for this bug fix. The patches
-might be useful in the future if we decide that such integration adds
-value, but for now it's too much.
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ target/riscv/vector_helper.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-For this bug fix I decided to bring a sledgehammer and inserted an early
-exist in every vector helper if vstart >= vl. This will make the whole
-helper a no-op if vstart is out of bounds, and make it trivial for us to
-proceed with removing brconds and so on.
-
-I also took the opportunity to fix the flag name in patch 9 from v10,
-now patch 6.
-
-Series based on master. 
-
-Patches missing review: patch 3
-
-Changes from v10:
-- patches 2, 3, 4, 5 from v10: dropped
-- patch 3 (new):
-  - do an early exit in vector helpers if vstart >= vl
-- patch 6 (former patch 9):
-  - fix 'vstart_qe_zero' commit msg references to 'vstart_eq_zero' 
-- v10 link: https://lore.kernel.org/qemu-riscv/20240310115315.187283-1-dbarboza@ventanamicro.com/
-
-Daniel Henrique Barboza (6):
-  target/riscv/vector_helper.c: set vstart = 0 in GEN_VEXT_VSLIDEUP_VX()
-  trans_rvv.c.inc: set vstart = 0 in int scalar move insns
-  target/riscv/vector_helpers: do early exit when vstart >= vl
-  target/riscv: remove 'over' brconds from vector trans
-  trans_rvv.c.inc: remove redundant mark_vs_dirty() calls
-  target/riscv/vector_helper.c: optimize loops in ldst helpers
-
-Ivan Klokov (1):
-  target/riscv: enable 'vstart_eq_zero' in the end of insns
-
- target/riscv/insn_trans/trans_rvbf16.c.inc |  18 +-
- target/riscv/insn_trans/trans_rvv.c.inc    | 198 +++++----------------
- target/riscv/insn_trans/trans_rvvk.c.inc   |  30 +---
- target/riscv/translate.c                   |   6 +
- target/riscv/vcrypto_helper.c              |  32 ++++
- target/riscv/vector_helper.c               |  97 +++++++++-
- target/riscv/vector_internals.c            |   4 +
- target/riscv/vector_internals.h            |   9 +
- 8 files changed, 202 insertions(+), 192 deletions(-)
-
+diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+index fe56c007d5..ca79571ae2 100644
+--- a/target/riscv/vector_helper.c
++++ b/target/riscv/vector_helper.c
+@@ -4781,6 +4781,7 @@ void HELPER(NAME)(void *vd, void *v0, target_ulong s1, void *vs2,         \
+         }                                                                 \
+         *((ETYPE *)vd + H(i)) = *((ETYPE *)vs2 + H(i - offset));          \
+     }                                                                     \
++    env->vstart = 0;                                                      \
+     /* set tail elements to 1s */                                         \
+     vext_set_elems_1s(vd, vta, vl * esz, total_elems * esz);              \
+ }
 -- 
 2.43.2
 
