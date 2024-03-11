@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA7E7877A00
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD3B8779FF
 	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 04:25:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjWHf-0005aN-Mp; Sun, 10 Mar 2024 23:25:03 -0400
+	id 1rjWHm-0005bb-E4; Sun, 10 Mar 2024 23:25:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjWHY-0005Zm-Ig; Sun, 10 Mar 2024 23:24:56 -0400
+ id 1rjWHc-0005al-8m; Sun, 10 Mar 2024 23:25:00 -0400
 Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjWHW-0007rZ-Vu; Sun, 10 Mar 2024 23:24:56 -0400
+ id 1rjWHa-0007rZ-NN; Sun, 10 Mar 2024 23:25:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710127495; x=1741663495;
+ t=1710127498; x=1741663498;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=5dgSOzTTA45itG0zhwcLx2J6Kw1BqasX3E9AuDV3aEc=;
- b=i7rzigj8ulSjEVKl4jBdVTSK1E2pxGBSjAqEvg4nC1O6iAP8u+QvuVh2
- WkbFU0Nm19jD/ZW2Qg1ramCfBzIcEuyzstaIa0Qc38KTBvLDXfWkI68ZC
- uGx0LLTGCuWXtLmGmFhO9tfLDu3yK4GhNtnc1F7exIy1hmjiHFdJjK+ut
- p1jCTd+9t1uiV9PurHFtuUG/NVq2PAsO8Y7Wls9XIFMxk0jzy4P2AC9gR
- h/Jo8nWp6HHogL7F9Dcc3VyXUf36JAmTK3PASgNO71J2cuPiKASOzagNp
- 8GWW/2gqebM0CnvZzLBzBjqdLTFFoBUhZ21nkpPmt83hIrxB2hOADw+2R Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="22229598"
-X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="22229598"
+ bh=Ka71Ek3PnNyeK5aeuQsU7hwBRQ4pWyZd0PGtwm5w0L0=;
+ b=FagtFR01lYjFIyS+Ap2N5He/OIEJ3GaDP3gSdLg2ivJNt+FopcWsLbgO
+ rqHF0PSxRGOw0mSUPhKe3WmDQVDSVYnrzm8Z5ChxtKBBXfh5A49VkSWls
+ D3L9MCyETU2gXDIvo+OrUPofzFVw9KbRN4YMSwf8zkxKNSgIxVzZgywdL
+ /QhrAJuM8iS0HQQdC235q8waXTcfaJnFnIfaq+xEi4XZBYUDpO/mzIiIG
+ xn01SzuXNzcvYI17QWlSTr8Eto9W/vF1pV1Hk6YqonU7hbIVVJoJXDmXE
+ FDG70zAinYnXjqueo5rNIDGojB6640toRLC4vQ5/aY6wREhisNNf5oJsK Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="22229607"
+X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="22229607"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2024 20:24:53 -0700
+ 10 Mar 2024 20:24:57 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="15593732"
+X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="15593743"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 10 Mar 2024 20:24:50 -0700
+ by fmviesa003.fm.intel.com with ESMTP; 10 Mar 2024 20:24:54 -0700
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Michael Roth <michael.roth@amd.com>, Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- John Snow <jsnow@redhat.com>,
+ Eric Blake <eblake@redhat.com>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  qemu-block@nongnu.org
-Subject: [PATCH v2 04/29] block/copy-before-write: Fix missing ERRP_GUARD()
- for error_prepend()
-Date: Mon, 11 Mar 2024 11:37:57 +0800
-Message-Id: <20240311033822.3142585-5-zhao1.liu@linux.intel.com>
+Subject: [PATCH v2 05/29] block/nbd: Fix missing ERRP_GUARD() for
+ error_prepend()
+Date: Mon, 11 Mar 2024 11:37:58 +0800
+Message-Id: <20240311033822.3142585-6-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240311033822.3142585-1-zhao1.liu@linux.intel.com>
 References: <20240311033822.3142585-1-zhao1.liu@linux.intel.com>
@@ -101,17 +101,15 @@ ERRP_GUARD() could avoid the case when @errp is &error_fatal, the user
 can't see this additional information, because exit() happens in
 error_setg earlier than information is added [1].
 
-The cbw_open() passes @errp to error_prepend() without ERRP_GUARD().
-
-Though it is the BlockDriver.bdrv_open() method, and currently its
-@errp parameter only points to callers' local_err, to follow the
-requirement of @errp, add missing ERRP_GUARD() at the beginning of this
-function.
+The nbd_co_do_receive_one_chunk() passes @errp to error_prepend()
+without ERRP_GUARD(), and though its @errp parameter points to its
+caller's local_err, to follow the requirement of @errp, add missing
+ERRP_GUARD() at the beginning of this function.
 
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
 
-Cc: John Snow <jsnow@redhat.com>
+Cc: Eric Blake <eblake@redhat.com>
 Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Cc: Kevin Wolf <kwolf@redhat.com>
 Cc: Hanna Reitz <hreitz@redhat.com>
@@ -119,21 +117,21 @@ Cc: qemu-block@nongnu.org
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- block/copy-before-write.c | 1 +
+ block/nbd.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/block/copy-before-write.c b/block/copy-before-write.c
-index 0842a1a6dfbe..8aba27a71d6d 100644
---- a/block/copy-before-write.c
-+++ b/block/copy-before-write.c
-@@ -407,6 +407,7 @@ out:
- static int cbw_open(BlockDriverState *bs, QDict *options, int flags,
-                     Error **errp)
+diff --git a/block/nbd.c b/block/nbd.c
+index b9d4f935e017..ef05f7cdfd65 100644
+--- a/block/nbd.c
++++ b/block/nbd.c
+@@ -852,6 +852,7 @@ static coroutine_fn int nbd_co_do_receive_one_chunk(
+         BDRVNBDState *s, uint64_t cookie, bool only_structured,
+         int *request_ret, QEMUIOVector *qiov, void **payload, Error **errp)
  {
 +    ERRP_GUARD();
-     BDRVCopyBeforeWriteState *s = bs->opaque;
-     BdrvDirtyBitmap *bitmap = NULL;
-     int64_t cluster_size;
+     int ret;
+     int i = COOKIE_TO_INDEX(cookie);
+     void *local_payload = NULL;
 -- 
 2.34.1
 
