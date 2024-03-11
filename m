@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0124B878687
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:44:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA59A87868C
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:45:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjjfm-0005X1-17; Mon, 11 Mar 2024 13:42:50 -0400
+	id 1rjjft-0006In-9U; Mon, 11 Mar 2024 13:42:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rjjfg-0005Cq-Fx; Mon, 11 Mar 2024 13:42:44 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1rjjfn-0005zZ-Mm; Mon, 11 Mar 2024 13:42:51 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rjjfe-0007VU-Da; Mon, 11 Mar 2024 13:42:44 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6da202aa138so2990027b3a.2; 
- Mon, 11 Mar 2024 10:42:41 -0700 (PDT)
+ id 1rjjfl-0007W9-Qd; Mon, 11 Mar 2024 13:42:51 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6e5eb3dd2f8so3336585b3a.2; 
+ Mon, 11 Mar 2024 10:42:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710178960; x=1710783760; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710178966; x=1710783766; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+gGhZ4pjanpiywqqalSDcdpCIXre6mE3lC/dQog4JF4=;
- b=SFe1KojstCtfTIF8cNIyZSLX3o7CuCySBqintVPwfvynw3ReiQMHWcKqxBHs1O8ZAO
- TS1D3JajvQs+P/TjDQHkkxSPS2H6glMpkMVip1EaoPLTE9dlOO+nIKqfBYzTma6Tqeek
- xkFoH7GegiVxPWndi2UZxOw/84elTnEaEXN9e1TIYjgUsDm6muhbs2pY+a0SqjEkzJYF
- 12plJMqwbOzZdMWxaOaWf64T7DJKibv1XVowJ4B99QZ4ps1P5UPQgj3kCH93xG7ECRPW
- 4d/P6qUo2rh39Xl5nsgEo/09jxnxFlAPhDEB+Zf5U3yZKZnFvd9sEpZkm8SbpYXkYjLS
- 1scw==
+ bh=cJYmS7//KWqwEUzntf/7pcjsXnd3DRaeR+mHw8GRlas=;
+ b=XLgJLyZTgLL3dJgOO0vZ6LZKegh2SUg2zr4VZjCWUV1C3gPqfhy8YjzoO7ZvdEcaHl
+ gRIDaQSLY9oK1KOdlf+LvCRyYWu8/kqivhYhK8ji0pH5GB2H6rPe6pvFBeaApEL8d+YP
+ MM0baCr3HDSRaEWIif7FF7gu0a9ShYi69pcn/b8gQgDwanlS3uxKOpjdGr7T//bZVqn8
+ 389DgGM0PHQyL7OJRdn4R/bD0R2ChczL8hfmqzx1T9YsHjiiNFzmVjxYoUKaLvr7SI/2
+ 5TKX8tag50VVvNMMxuVWoSl7Id1AHUGo60MwsrOuB+pVWPCJ0gIk3BdPkSLwmQcqXZXj
+ m7cQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710178960; x=1710783760;
+ d=1e100.net; s=20230601; t=1710178966; x=1710783766;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+gGhZ4pjanpiywqqalSDcdpCIXre6mE3lC/dQog4JF4=;
- b=CYa8UegP4KyktNbvmE2lLD4X1LjTyXrv4js+YGF8IVluYr5+j1R9sBa3VqVktcM0gl
- dagaaVhw/YJhPSpK4SCXEmwLaeFGjHrXamPUHM0HwrnulWYGTxCcodpVocLg/yL1LFIQ
- UHUmJJxEOPtWVV5EFGoSYUsDBuh+BKcn1c97Kp4Xadwue9pZASt8NFYcLLE/MpXNO83K
- p0JKf+Wly2a3f2Hr8rDJC3nKvVNfnjzFPvqf3U43risdLwR0ZSGKSJH0bc7o7wVqin9e
- e9XP9pMluwVlyfUoEWS97aa4SlJfH8wto7Scs2S36kN9vabbVK7YbT59YUmzvtpoWeiY
- o7pg==
+ bh=cJYmS7//KWqwEUzntf/7pcjsXnd3DRaeR+mHw8GRlas=;
+ b=jLKWkqMdeGrfkbTsO6Xy7fGqJCpvw/EkIDNCiuGYMWJbs2/BqqtCzDVLqdCyrxHYMd
+ kt/gQPzy1FUX/NfBRicdJHxzuvSbS4jGhqxsaApPk75q+WqOHsDynyuMobmLuxAdjF2j
+ 0lmzfmNizdJH/MdL8R7qQBXyCdIIPlIuI98lywZGKr/VyV7D3Af5AJRHWzECWGpA87z8
+ YVzQUMK+TLmt8LyfIgePraiC9tuoVxe8YaOnggx7E493yi9kps/XW/STj8/af7WbcyaF
+ dsylE2RacaM3ctmXspH68EhlSyDXsr10xD54355tRsfL9ycIVNowLK4Zm8Ke7ex4WCWz
+ 5LFA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW0DbxxwTQJKFmSIxLnFida4zSkf3nW5ymAEvlbGe5VLg1H/JBQGFMxrQICxXsvzVRQ1s4x5y3+3qTZXK+osfrMXqRZ
-X-Gm-Message-State: AOJu0Yy2xw53fA3s34bxVTLGSLJV74PWtEO009VXxn7GQnCKBjBk63XX
- j3Gx67FkbCS831FeChcjXUm6RXo2EWr5TwEvBDwBiqt0KKakyG0BoFPna0y5RkE=
-X-Google-Smtp-Source: AGHT+IFXpF4I/OuGKg9bdj1uNNtQuY5XO0v1eM0+8uA0NMFwCIaow87hNqPWip66hzVEjuJrbOVthA==
-X-Received: by 2002:a05:6a20:258f:b0:1a0:f5b9:bd88 with SMTP id
- k15-20020a056a20258f00b001a0f5b9bd88mr10137112pzd.55.1710178960293; 
- Mon, 11 Mar 2024 10:42:40 -0700 (PDT)
+ AJvYcCW7Rd11U9KSUYNHacGk9GTcNR9ZLcSBXJRCJkgyqBjOolaOSgGMXef1LAdL5iqgbJ035O/uHSsG2hInVi6X3g0B2rG7
+X-Gm-Message-State: AOJu0YzelVHyzd/d+IXBGI0QkfYAKPKBNfHwy6qIs8Z5WxZBjIbqr9Nf
+ 30iFQvfUMT4o9uQ7u4PdST078cl6CqCo50yx7Fmkov6aZlUAFCTXoIyvbHKZaYo=
+X-Google-Smtp-Source: AGHT+IEuu6OMiP1EpBRtnn7qfNBbuxCvPVJwjj8e5BkI/v/tyS+D/utoINnLeC5mM6WfM1e9siMTPA==
+X-Received: by 2002:a05:6a20:3553:b0:1a1:82fc:94e2 with SMTP id
+ f19-20020a056a20355300b001a182fc94e2mr3627211pze.44.1710178965704; 
+ Mon, 11 Mar 2024 10:42:45 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- a18-20020a62d412000000b006e67b4d7b74sm4593187pfh.197.2024.03.11.10.42.35
+ a18-20020a62d412000000b006e67b4d7b74sm4593187pfh.197.2024.03.11.10.42.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 10:42:40 -0700 (PDT)
+ Mon, 11 Mar 2024 10:42:45 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -68,16 +68,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
  qemu-ppc@nongnu.org
-Subject: [PATCH v4 23/24] spapr: Fix vpa dispatch count for record-replay
-Date: Tue, 12 Mar 2024 03:40:25 +1000
-Message-ID: <20240311174026.2177152-24-npiggin@gmail.com>
+Subject: [PATCH v4 24/24] tests/avocado: replay_linux.py add ppc64 pseries test
+Date: Tue, 12 Mar 2024 03:40:26 +1000
+Message-ID: <20240311174026.2177152-25-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240311174026.2177152-1-npiggin@gmail.com>
 References: <20240311174026.2177152-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,167 +100,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The dispatch count is a field in guest memory that the hypervisor
-increments when preempting and dispatching the guest. This was not
-being done deterministically with respect to icount, because tcg
-exec exit is not deterministic (e.g., an async event could cause it).
-
-Change vpa dispatch count increment to keep track of whether the
-vCPU is considered dispatched or not, and only consider it preempted
-when calling cede / confer / join / stop-self / etc.
+Add a ppc64 pseries test. IO in SLOF is very slow when running in
+record-replay modes, so this this uses guestfish to extract the
+kernel and initrd and boot them directly.
 
 Cc: qemu-ppc@nongnu.org
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- include/hw/ppc/spapr_cpu_core.h |  3 +++
- hw/ppc/spapr.c                  | 36 ++-------------------------------
- hw/ppc/spapr_hcall.c            | 33 ++++++++++++++++++++++++++++++
- hw/ppc/spapr_rtas.c             |  1 +
- 4 files changed, 39 insertions(+), 34 deletions(-)
+The test takes about double the length of time of aarch64 and
+x86 tests (800s to 400s) for some reason. Not profiled it yet.
 
-diff --git a/include/hw/ppc/spapr_cpu_core.h b/include/hw/ppc/spapr_cpu_core.h
-index 69a52e39b8..5feb0ecc2a 100644
---- a/include/hw/ppc/spapr_cpu_core.h
-+++ b/include/hw/ppc/spapr_cpu_core.h
-@@ -47,6 +47,7 @@ typedef struct SpaprCpuState {
-     uint64_t vpa_addr;
-     uint64_t slb_shadow_addr, slb_shadow_size;
-     uint64_t dtl_addr, dtl_size;
-+    bool dispatched; /* for vpa dispatch counter tracking */
-     bool prod; /* not migrated, only used to improve dispatch latencies */
-     struct ICPState *icp;
-     struct XiveTCTX *tctx;
-@@ -61,4 +62,6 @@ static inline SpaprCpuState *spapr_cpu_state(PowerPCCPU *cpu)
-     return (SpaprCpuState *)cpu->machine_data;
- }
+ tests/avocado/replay_linux.py | 78 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 77 insertions(+), 1 deletion(-)
+
+diff --git a/tests/avocado/replay_linux.py b/tests/avocado/replay_linux.py
+index c0e50bb52b..1c11e48043 100644
+--- a/tests/avocado/replay_linux.py
++++ b/tests/avocado/replay_linux.py
+@@ -11,8 +11,9 @@
+ import os
+ import logging
+ import time
++import subprocess
  
-+void vpa_dispatch(CPUState *cs, SpaprCpuState *spapr_cpu, bool dispatch);
+-from avocado import skipUnless
++from avocado import skipIf, skipUnless
+ from avocado_qemu import BUILD_DIR
+ from avocado.utils import cloudinit
+ from avocado.utils import network
+@@ -55,11 +56,14 @@ def vm_add_disk(self, vm, path, id, device):
+             '%s,drive=disk%s-rr%s' % (device, id, bus_string))
+ 
+     def vm_add_cdrom(self, vm, path, id, device):
++        vm.add_args('-device',
++            '%s,drive=disk%s' % (device, id))
+         vm.add_args('-drive', 'file=%s,id=disk%s,if=none,media=cdrom' % (path, id))
+ 
+     def launch_and_wait(self, record, args, shift):
+         self.require_netdev('user')
+         vm = self.get_vm()
++        vm.add_args('-s')
+         vm.add_args('-smp', '1')
+         vm.add_args('-m', '1024')
+         vm.add_args('-netdev', 'user,id=vnet,hostfwd=:127.0.0.1:0-:22',
+@@ -207,3 +211,75 @@ def test_virt_gicv3(self):
+         self.run_rr(shift=3,
+                     args=(*self.get_common_args(),
+                           "-machine", "virt,gic-version=3"))
 +
- #endif
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 55263f0815..28ce5f263a 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -4572,47 +4572,15 @@ static void spapr_cpu_exec_enter(PPCVirtualHypervisor *vhyp, PowerPCCPU *cpu)
- {
-     SpaprCpuState *spapr_cpu = spapr_cpu_state(cpu);
- 
--    /* These are only called by TCG, KVM maintains dispatch state */
--
-     spapr_cpu->prod = false;
--    if (spapr_cpu->vpa_addr) {
-+    if (!spapr_cpu->dispatched) {
-         CPUState *cs = CPU(cpu);
--        uint32_t dispatch;
--
--        dispatch = ldl_be_phys(cs->as,
--                               spapr_cpu->vpa_addr + VPA_DISPATCH_COUNTER);
--        dispatch++;
--        if ((dispatch & 1) != 0) {
--            qemu_log_mask(LOG_GUEST_ERROR,
--                          "VPA: incorrect dispatch counter value for "
--                          "dispatched partition %u, correcting.\n", dispatch);
--            dispatch++;
--        }
--        stl_be_phys(cs->as,
--                    spapr_cpu->vpa_addr + VPA_DISPATCH_COUNTER, dispatch);
-+        vpa_dispatch(cs, spapr_cpu, true);
-     }
- }
- 
- static void spapr_cpu_exec_exit(PPCVirtualHypervisor *vhyp, PowerPCCPU *cpu)
- {
--    SpaprCpuState *spapr_cpu = spapr_cpu_state(cpu);
--
--    if (spapr_cpu->vpa_addr) {
--        CPUState *cs = CPU(cpu);
--        uint32_t dispatch;
--
--        dispatch = ldl_be_phys(cs->as,
--                               spapr_cpu->vpa_addr + VPA_DISPATCH_COUNTER);
--        dispatch++;
--        if ((dispatch & 1) != 1) {
--            qemu_log_mask(LOG_GUEST_ERROR,
--                          "VPA: incorrect dispatch counter value for "
--                          "preempted partition %u, correcting.\n", dispatch);
--            dispatch++;
--        }
--        stl_be_phys(cs->as,
--                    spapr_cpu->vpa_addr + VPA_DISPATCH_COUNTER, dispatch);
--    }
- }
- 
- static void spapr_machine_class_init(ObjectClass *oc, void *data)
-diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
-index 75c2d12978..5f68c02739 100644
---- a/hw/ppc/spapr_hcall.c
-+++ b/hw/ppc/spapr_hcall.c
-@@ -487,6 +487,36 @@ static target_ulong h_register_vpa(PowerPCCPU *cpu, SpaprMachineState *spapr,
-     return ret;
- }
- 
-+void vpa_dispatch(CPUState *cs, SpaprCpuState *spapr_cpu, bool dispatch)
-+{
-+    uint32_t counter;
++# ppc64 pseries test.
++#
++# This machine tends to fail replay and hang very close to the end of the
++# trace, with missing events, which is still an open issue.
++#
++# spapr-scsi IO driven by SLOF/grub is extremely slow in record/replay mode,
++# so jump through some hoops to boot the kernel directly. With this, the test
++# runs in about 5 minutes (modulo hang), which suggests other machines may
++# have similar issues and could benefit from bypassing bootloaders.
++#
++ppc_deps = ["guestfish"] # dependent tools needed in the test setup/box.
 +
-+    if (!dispatch) {
-+        assert(spapr_cpu->dispatched);
-+    } else {
-+        assert(!spapr_cpu->dispatched);
-+    }
-+    spapr_cpu->dispatched = dispatch;
++def which(tool):
++    """ looks up the full path for @tool, returns None if not found
++        or if @tool does not have executable permissions.
++    """
++    paths=os.getenv('PATH')
++    for p in paths.split(os.path.pathsep):
++        p = os.path.join(p, tool)
++        if os.path.exists(p) and os.access(p, os.X_OK):
++            return p
++    return None
 +
-+    return;
++def ppc_missing_deps():
++    """ returns True if any of the test dependent tools are absent.
++    """
++    for dep in ppc_deps:
++        if which(dep) is None:
++            return True
++    return False
 +
-+    if (!spapr_cpu->vpa_addr) {
-+        return;
-+    }
++class ReplayLinuxPPC64(ReplayLinux):
++    """
++    :avocado: tags=arch:ppc64
++    :avocado: tags=accel:tcg
++    """
 +
-+    /* These are only called by TCG, KVM maintains dispatch state */
-+    counter = ldl_be_phys(cs->as, spapr_cpu->vpa_addr + VPA_DISPATCH_COUNTER);
-+    counter++;
-+    if ((counter & 1) != dispatch) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "VPA: incorrect dispatch counter value for "
-+                      "%s partition %u, correcting.\n",
-+                      dispatch ? "preempted" : "running", counter);
-+        counter++;
-+    }
-+    stl_be_phys(cs->as, spapr_cpu->vpa_addr + VPA_DISPATCH_COUNTER, counter);
-+}
++    hdd = 'virtio-blk-pci'
++    cd = 'scsi-cd'
++    bus = None
 +
- static target_ulong h_cede(PowerPCCPU *cpu, SpaprMachineState *spapr,
-                            target_ulong opcode, target_ulong *args)
- {
-@@ -505,6 +535,7 @@ static target_ulong h_cede(PowerPCCPU *cpu, SpaprMachineState *spapr,
- 
-     if (!cpu_has_work(cs)) {
-         cs->halted = 1;
-+        vpa_dispatch(cs, spapr_cpu, false);
-         cs->exception_index = EXCP_HLT;
-         cs->exit_request = 1;
-         ppc_maybe_interrupt(env);
-@@ -531,6 +562,8 @@ static target_ulong h_confer_self(PowerPCCPU *cpu)
-     cs->exit_request = 1;
-     ppc_maybe_interrupt(&cpu->env);
- 
-+    vpa_dispatch(cs, spapr_cpu, false);
++    def setUp(self):
++        super().setUp()
 +
-     return H_SUCCESS;
- }
- 
-diff --git a/hw/ppc/spapr_rtas.c b/hw/ppc/spapr_rtas.c
-index f329693c55..8ce4230223 100644
---- a/hw/ppc/spapr_rtas.c
-+++ b/hw/ppc/spapr_rtas.c
-@@ -216,6 +216,7 @@ static void rtas_stop_self(PowerPCCPU *cpu, SpaprMachineState *spapr,
-      */
-     env->spr[SPR_PSSCR] |= PSSCR_EC;
-     cs->halted = 1;
-+    vpa_dispatch(cs, spapr_cpu_state(cpu), false);
-     ppc_store_lpcr(cpu, env->spr[SPR_LPCR] & ~pcc->lpcr_pm);
-     kvmppc_set_reg_ppc_online(cpu, 0);
-     qemu_cpu_kick(cs);
++        if not ppc_missing_deps():
++            # kernel, initramfs, and kernel cmdline are all taken by hand from
++            # the Fedora image.
++            self.kernel="vmlinuz-5.3.7-301.fc31.ppc64le"
++            self.initramfs="initramfs-5.3.7-301.fc31.ppc64le.img"
++            cmd = "guestfish --ro -a %s run " ": mount /dev/sda2 / " ": copy-out /boot/%s %s " ": copy-out /boot/%s %s " % (self.boot_path, self.kernel, self.workdir, self.initramfs, self.workdir)
++            subprocess.run(cmd.split())
++
++    @skipIf(ppc_missing_deps(), 'dependencies (%s) not installed' % ','.join(ppc_deps))
++    def test_pseries(self):
++        """
++        :avocado: tags=machine:pseries
++        """
++        kernel=os.path.normpath(os.path.join(self.workdir, self.kernel))
++        initramfs=os.path.normpath(os.path.join(self.workdir, self.initramfs))
++        cmdline="root=UUID=8a409ee6-3cb3-4b06-a266-39e2dae3e5fa ro no_timer_check net.fnames=0 console=tty1 console=ttyS0,115200n8"
++        self.run_rr(shift=3, args=("-device", "spapr-vscsi",
++                                   "-machine", "x-vof=on",
++                                   "-kernel", kernel,
++                                   "-initrd", initramfs,
++                                   "-append", cmdline))
++
++    # minimise the number of tests run by default because they are slow
++    # SLOF block IO is extremely slow when going through the blkreplay driver
++    @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
++    def test_pseries_slof(self):
++        self.run_rr(shift=3, args=("-device", "spapr-vscsi"))
 -- 
 2.42.0
 
