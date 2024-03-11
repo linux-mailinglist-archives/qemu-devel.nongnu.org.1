@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61CF9878A7C
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 23:05:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B353C878A73
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 23:03:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjnic-0003ZG-P2; Mon, 11 Mar 2024 18:02:04 -0400
+	id 1rjniY-0003XF-7e; Mon, 11 Mar 2024 18:01:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjnh7-00018Y-9L
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjnh7-00018Z-9D
  for qemu-devel@nongnu.org; Mon, 11 Mar 2024 18:00:34 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngy-0004Ic-FA
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 18:00:28 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjnh0-0004Ip-0Q
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 18:00:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710194418;
+ s=mimecast20190719; t=1710194421;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=W5D9hPe7YI8HTKjr9lPVCdDiZ9GlallD+BW1Y4cBBB8=;
- b=K2ZfXuiZE1lhCAog60PgBCgQ27/Vy0kJ/SDUt7fuF8HSz8SGmCt3Sqg0JcoSNtDvouFlZa
- +/+eXq+6HRmZUaMtS00IPGqO2Ihi2hyueEdBBPDG8y5t+CvGbIqAeudFhvz3Ezv4SpFENF
- zr2dQBrRRkQ8pOPAZyD9RFEt9cwOAOw=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=REz2gEz/LcPOkgLWctbrSURC4iwk9Gc0HnBo9jeImt8=;
+ b=edRgNGOQoQ9XIvmNOSyPG0uM7jZC2OEEhMcERd7PsN5VAyH4Nf6UlmwvA/5su3kNDg5NG+
+ 44Z4PLrMGT7pIOg05vbhFaU11KmCZ4qS4umqgqDejJ0G7tSRZ0xa7udBEMs7JSeNjR0wCo
+ 9q0kOc7//5DRNlMBuU9U/1TmPvaUMvg=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-307-OgqGKICIP0KCmXAq9CS5Jg-1; Mon, 11 Mar 2024 18:00:17 -0400
-X-MC-Unique: OgqGKICIP0KCmXAq9CS5Jg-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-68fba33cae0so6801206d6.1
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 15:00:16 -0700 (PDT)
+ us-mta-647-YSXwEwj6OUevg1LN2PyfCA-1; Mon, 11 Mar 2024 18:00:19 -0400
+X-MC-Unique: YSXwEwj6OUevg1LN2PyfCA-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-690d3f5af86so4507026d6.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 15:00:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710194416; x=1710799216;
+ d=1e100.net; s=20230601; t=1710194418; x=1710799218;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=W5D9hPe7YI8HTKjr9lPVCdDiZ9GlallD+BW1Y4cBBB8=;
- b=RY1ZkPFmANNMqlkOuc1/nvRRBEMO43WcrcHHAJ9y4XvdJt9IrfybpV2TdpmRQ0czS7
- R31Kpv9WrzFhV80EYt6ueyCZpsQS17eRjx9vNBwpD/IPDAyfREHd7FCdutX9MvLWAuKu
- NXmGiBcYjm4DF/PKmxwRNbUCih8pph6L77JXWn8HK6B3RSDzU8PhpoKkAtga0Q0N2iUQ
- jKFLZaelQjTt/tz/8dC5mBM/SMViVnorqplv/GIy3+CPaTwqBNknP0N7d1aHHuOLGORe
- Zj8PdEdropiY1tg5nfgizIXK76rfQ1K38TxagyEt5Zrn/Lz8tr3TN0uLvWP+5UCQ9Ygq
- 0AcQ==
-X-Gm-Message-State: AOJu0YzKEO+4+jAnOvYPABM6jXBX+gd+q6U6sJ3ia1uAl8rx1KnbZFAy
- Z9NngqdlBy7WAU84oAlWrLlAP+uxktfQGq4vESAvJHh7PamR9uld8MR6g1cvWNF6nWsx2HYH7zz
- 3P9R0noNHYaPB42EIA1SVJmDZArLzhcTJziffQiiXNSbc82XLflIfx6WuZ/B4YOkc4MFD/Xj5Xo
- QJ4FSkOh68uDD0Bkecij3d0gG4a/gdzn5muA==
-X-Received: by 2002:a05:6214:2dc7:b0:690:e44b:d739 with SMTP id
- nc7-20020a0562142dc700b00690e44bd739mr413654qvb.1.1710194416258; 
- Mon, 11 Mar 2024 15:00:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFXoiC4BlHAsGMjWzzkFWN55R4QoVKd6jom1q838J8px5fzau2GybR2f78afPLw+3NymwX9NA==
-X-Received: by 2002:a05:6214:2dc7:b0:690:e44b:d739 with SMTP id
- nc7-20020a0562142dc700b00690e44bd739mr413608qvb.1.1710194415717; 
- Mon, 11 Mar 2024 15:00:15 -0700 (PDT)
+ bh=REz2gEz/LcPOkgLWctbrSURC4iwk9Gc0HnBo9jeImt8=;
+ b=YaLPH+PmcbV72UMzZcRm0taaB88WuknCr+JhYHlckmeqPvE0A6Vxnjq1Ojos8YTwTr
+ m3+gb1u9mIexbfgWiQfYP+Tks19c1+uXrO3oOXgiQ9Br4hDPbDHKpeEhcUYbTsG21CjV
+ kIIHQV34Ody3ESKpfzoPkMawgr0Op5CaycDZp+B9NEKbbYhuwlz7psrKxMVkehNeYZck
+ TYj8gZmol72tv7gf8+MFuLygrb564lqk/uUOrsZ2PCcaSreOwt7vm05saXPBIOtRwDbH
+ NwmUm/+6z6LFOTlKBStY3GxEiI9boxEmsdNWoRT7WggMcjfVHR8yIeof48pKzVxnoeLJ
+ pgLw==
+X-Gm-Message-State: AOJu0YwD3jCsT/dRQaDE6CIoJZHARWsH6RCU2V5C46EfqnELW1ys7vol
+ ICEEFdUpvwlKxhFDylLQLYSRa2o7Gwzq7r5uH8tRJ84IUz0YqPofdDrF8mxkgEfhLsJRMcJg51f
+ DXgMnG/8CLoMotx4nrSWYIwCBuSkzKO8OmxfCs6z4oCDgy5YqxkP7kjQom7VWfe8PwJXuh1cLVp
+ gNwRmXCKDgW7fdxsRb6XNIYZw7f2H2JBJU3A==
+X-Received: by 2002:ad4:5bec:0:b0:690:e47c:9bee with SMTP id
+ k12-20020ad45bec000000b00690e47c9beemr408009qvc.4.1710194417626; 
+ Mon, 11 Mar 2024 15:00:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEqXBKIl4UNeZ9L8akaPDVFSXlHkTf69VoScNoH1FN1qove6x2Exrf9MVAVPijERX6oYaerCg==
+X-Received: by 2002:ad4:5bec:0:b0:690:e47c:9bee with SMTP id
+ k12-20020ad45bec000000b00690e47c9beemr407959qvc.4.1710194417079; 
+ Mon, 11 Mar 2024 15:00:17 -0700 (PDT)
 Received: from x1n.. (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- d6-20020a0ce446000000b00690cec16254sm1541932qvm.68.2024.03.11.15.00.14
+ d6-20020a0ce446000000b00690cec16254sm1541932qvm.68.2024.03.11.15.00.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 15:00:15 -0700 (PDT)
+ Mon, 11 Mar 2024 15:00:16 -0700 (PDT)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, peterx@redhat.com,
  Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
  Prasad Pandit <ppandit@redhat.com>, Hao Xiang <hao.xiang@bytedance.com>
-Subject: [PULL 33/34] migration/multifd: Enable multifd zero page checking by
- default.
-Date: Mon, 11 Mar 2024 17:59:24 -0400
-Message-ID: <20240311215925.40618-34-peterx@redhat.com>
+Subject: [PULL 34/34] migration/multifd: Add new migration test cases for
+ legacy zero page checking.
+Date: Mon, 11 Mar 2024 17:59:25 -0400
+Message-ID: <20240311215925.40618-35-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240311215925.40618-1-peterx@redhat.com>
 References: <20240311215925.40618-1-peterx@redhat.com>
@@ -103,83 +103,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hao Xiang <hao.xiang@bytedance.com>
 
-1. Set default "zero-page-detection" option to "multifd". Now
-zero page checking can be done in the multifd threads and this
-becomes the default configuration.
-2. Handle migration QEMU9.0 -> QEMU8.2 compatibility. We provide
-backward compatibility where zero page checking is done from the
+Now that zero page checking is done on the multifd sender threads by
+default, we still provide an option for backward compatibility. This
+change adds a qtest migration test case to set the zero-page-detection
+option to "legacy" and run multifd migration with zero page checking on the
 migration main thread.
 
 Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Link: https://lore.kernel.org/r/20240311180015.3359271-7-hao.xiang@linux.dev
+Link: https://lore.kernel.org/r/20240311180015.3359271-8-hao.xiang@linux.dev
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- qapi/migration.json | 6 +++---
- hw/core/machine.c   | 4 +++-
- migration/options.c | 2 +-
- 3 files changed, 7 insertions(+), 5 deletions(-)
+ tests/qtest/migration-test.c | 52 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 2684e4e9ac..aa1b39bce1 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -909,7 +909,7 @@
- #        (Since 8.2)
- #
- # @zero-page-detection: Whether and how to detect zero pages.
--#     See description in @ZeroPageDetection.  Default is 'legacy'.
-+#     See description in @ZeroPageDetection.  Default is 'multifd'.
- #     (since 9.0)
- #
- # Features:
-@@ -1106,7 +1106,7 @@
- #        (Since 8.2)
- #
- # @zero-page-detection: Whether and how to detect zero pages.
--#     See description in @ZeroPageDetection.  Default is 'legacy'.
-+#     See description in @ZeroPageDetection.  Default is 'multifd'.
- #     (since 9.0)
- #
- # Features:
-@@ -1339,7 +1339,7 @@
- #        (Since 8.2)
- #
- # @zero-page-detection: Whether and how to detect zero pages.
--#     See description in @ZeroPageDetection.  Default is 'legacy'.
-+#     See description in @ZeroPageDetection.  Default is 'multifd'.
- #     (since 9.0)
- #
- # Features:
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 9ac5d5389a..0e9d646b61 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -32,7 +32,9 @@
- #include "hw/virtio/virtio-net.h"
- #include "audio/audio.h"
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 4023d808f9..71895abb7f 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -2771,6 +2771,24 @@ test_migrate_precopy_tcp_multifd_start(QTestState *from,
+     return test_migrate_precopy_tcp_multifd_start_common(from, to, "none");
+ }
  
--GlobalProperty hw_compat_8_2[] = {};
-+GlobalProperty hw_compat_8_2[] = {
-+    { "migration", "zero-page-detection", "legacy"},
-+};
- const size_t hw_compat_8_2_len = G_N_ELEMENTS(hw_compat_8_2);
++static void *
++test_migrate_precopy_tcp_multifd_start_zero_page_legacy(QTestState *from,
++                                                        QTestState *to)
++{
++    test_migrate_precopy_tcp_multifd_start_common(from, to, "none");
++    migrate_set_parameter_str(from, "zero-page-detection", "legacy");
++    return NULL;
++}
++
++static void *
++test_migration_precopy_tcp_multifd_start_no_zero_page(QTestState *from,
++                                                      QTestState *to)
++{
++    test_migrate_precopy_tcp_multifd_start_common(from, to, "none");
++    migrate_set_parameter_str(from, "zero-page-detection", "none");
++    return NULL;
++}
++
+ static void *
+ test_migrate_precopy_tcp_multifd_zlib_start(QTestState *from,
+                                             QTestState *to)
+@@ -2812,6 +2830,36 @@ static void test_multifd_tcp_none(void)
+     test_precopy_common(&args);
+ }
  
- GlobalProperty hw_compat_8_1[] = {
-diff --git a/migration/options.c b/migration/options.c
-index 8f2a3a2fa5..9ed2fe4bee 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -181,7 +181,7 @@ Property migration_properties[] = {
-                       MIG_MODE_NORMAL),
-     DEFINE_PROP_ZERO_PAGE_DETECTION("zero-page-detection", MigrationState,
-                        parameters.zero_page_detection,
--                       ZERO_PAGE_DETECTION_LEGACY),
-+                       ZERO_PAGE_DETECTION_MULTIFD),
- 
-     /* Migration capabilities */
-     DEFINE_PROP_MIG_CAP("x-xbzrle", MIGRATION_CAPABILITY_XBZRLE),
++static void test_multifd_tcp_zero_page_legacy(void)
++{
++    MigrateCommon args = {
++        .listen_uri = "defer",
++        .start_hook = test_migrate_precopy_tcp_multifd_start_zero_page_legacy,
++        /*
++         * Multifd is more complicated than most of the features, it
++         * directly takes guest page buffers when sending, make sure
++         * everything will work alright even if guest page is changing.
++         */
++        .live = true,
++    };
++    test_precopy_common(&args);
++}
++
++static void test_multifd_tcp_no_zero_page(void)
++{
++    MigrateCommon args = {
++        .listen_uri = "defer",
++        .start_hook = test_migration_precopy_tcp_multifd_start_no_zero_page,
++        /*
++         * Multifd is more complicated than most of the features, it
++         * directly takes guest page buffers when sending, make sure
++         * everything will work alright even if guest page is changing.
++         */
++        .live = true,
++    };
++    test_precopy_common(&args);
++}
++
+ static void test_multifd_tcp_zlib(void)
+ {
+     MigrateCommon args = {
+@@ -3729,6 +3777,10 @@ int main(int argc, char **argv)
+     }
+     migration_test_add("/migration/multifd/tcp/plain/none",
+                        test_multifd_tcp_none);
++    migration_test_add("/migration/multifd/tcp/plain/zero-page/legacy",
++                       test_multifd_tcp_zero_page_legacy);
++    migration_test_add("/migration/multifd/tcp/plain/zero-page/none",
++                       test_multifd_tcp_no_zero_page);
+     migration_test_add("/migration/multifd/tcp/plain/cancel",
+                        test_multifd_tcp_cancel);
+     migration_test_add("/migration/multifd/tcp/plain/zlib",
 -- 
 2.44.0
 
