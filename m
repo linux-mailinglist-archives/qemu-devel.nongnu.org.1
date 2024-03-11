@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B576877A08
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 04:26:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31206877A02
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 04:26:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjWI3-0005g1-Df; Sun, 10 Mar 2024 23:25:27 -0400
+	id 1rjWI6-0005it-20; Sun, 10 Mar 2024 23:25:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjWHt-0005df-9g; Sun, 10 Mar 2024 23:25:17 -0400
+ id 1rjWHz-0005ex-KW; Sun, 10 Mar 2024 23:25:23 -0400
 Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjWHr-0007rZ-OP; Sun, 10 Mar 2024 23:25:17 -0400
+ id 1rjWHu-00084P-GC; Sun, 10 Mar 2024 23:25:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710127515; x=1741663515;
+ t=1710127518; x=1741663518;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=WjnL/LJyxGY93zRzyLMMGq6wyNW54EH5AJWek80Hj5k=;
- b=JPmjFOXBHLCXxmqGiwdHcObN4GIO5wInWG/mtW2x5nvboPkgI8AtClDg
- 42uEBBQeSd4RmrryrxInx1nP5JRHzYGLZWtXRWSXvW1ViQRz8WRito9qB
- 3LekPGE5NX6GVebIlDdoRtUlao/68W2G2+MW86Jmq3JnFU+AY/iozvyXu
- Px2oiOQQCaNWQZz8Bq3PgGK6IjjooA0YuKmFazt/jBTHQHbPaNbXWvRoe
- +VuLYlVLivWEOyBKn3OKGu0nQyiw2HUhNJwst7YI+rZz1kqJIN6yBtE9f
- 93q7iP4DioBDImmfsPbFNFTAeA9/ss4m0fuzthYOHWdT3rXgRe7jM390e w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="22229649"
-X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="22229649"
+ bh=Bes7rlwDGQ8CNIgLuQyKbZ+VZvPx2hyBnOndk7oQDqM=;
+ b=KPdH9Uq2MvFKUMpvKpl6bNuGocAaeLMSJAkaM4YnQtxiL5tyZOSxIzeU
+ Li2FdLdDnkRVieHACet2KrCMh/1kR+ZHKhN1/eE/sAfOcDxGjfnWO0NnF
+ QR3dXt13XT0r17i7W9jzCSvwcQ5iSlcLHDc59rUbTtLTRwyG3H3sVWQMk
+ 6GtDF1bK3JRciBb21SdOoJSiXpP5y0V/HpnIqVleaG9eXjRYkazMFJLre
+ 2eqoZtthEyFS8YoW6s02T1gc38YunFH7L0iKABl38hoMOA8wiEpj8PYD6
+ IpfgEIyP8F9HmvQg64LCA/ZTKlPrGyspsod7H/TR0R2XUEULhKWUQhKKD A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="22229656"
+X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="22229656"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2024 20:25:13 -0700
+ 10 Mar 2024 20:25:16 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="15593801"
+X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="15593811"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 10 Mar 2024 20:25:10 -0700
+ by fmviesa003.fm.intel.com with ESMTP; 10 Mar 2024 20:25:13 -0700
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Michael Roth <michael.roth@amd.com>, Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org
-Subject: [PATCH v2 10/29] block/snapshot: Fix missing ERRP_GUARD() for
+ Stefan Weil <sw@weilnetz.de>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org
+Subject: [PATCH v2 11/29] block/vdi: Fix missing ERRP_GUARD() for
  error_prepend()
-Date: Mon, 11 Mar 2024 11:38:03 +0800
-Message-Id: <20240311033822.3142585-11-zhao1.liu@linux.intel.com>
+Date: Mon, 11 Mar 2024 11:38:04 +0800
+Message-Id: <20240311033822.3142585-12-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240311033822.3142585-1-zhao1.liu@linux.intel.com>
 References: <20240311033822.3142585-1-zhao1.liu@linux.intel.com>
@@ -99,48 +99,37 @@ ERRP_GUARD() could avoid the case when @errp is &error_fatal, the user
 can't see this additional information, because exit() happens in
 error_setg earlier than information is added [1].
 
-In block/snapshot.c, there are 2 functions passing @errp to
-error_prepend() without ERRP_GUARD():
- - bdrv_all_delete_snapshot()
- - bdrv_all_goto_snapshot()
+The vdi_co_do_create() passes @errp to error_prepend() without
+ERRP_GUARD(), and its @errp parameter is so widely sourced that it is
+necessary to protect it with ERRP_GUARD().
 
-As the APIs exposed in include/block/snapshot.h, they could be called
-by other modules.
-
-To avoid potential issues as [1] said, add missing ERRP_GUARD() at the
-beginning of these 2 functions.
+To avoid the potential issues as [1] said, add missing ERRP_GUARD() at
+the beginning of this function.
 
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
 
+Cc: Stefan Weil <sw@weilnetz.de>
 Cc: Kevin Wolf <kwolf@redhat.com>
 Cc: Hanna Reitz <hreitz@redhat.com>
 Cc: qemu-block@nongnu.org
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- block/snapshot.c | 2 ++
- 1 file changed, 2 insertions(+)
+ block/vdi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/block/snapshot.c b/block/snapshot.c
-index 8694fc0a3eba..8242b4abac41 100644
---- a/block/snapshot.c
-+++ b/block/snapshot.c
-@@ -566,6 +566,7 @@ int bdrv_all_delete_snapshot(const char *name,
-                              bool has_devices, strList *devices,
-                              Error **errp)
+diff --git a/block/vdi.c b/block/vdi.c
+index 3b57becb9fe0..6363da08cee9 100644
+--- a/block/vdi.c
++++ b/block/vdi.c
+@@ -738,6 +738,7 @@ static int coroutine_fn GRAPH_UNLOCKED
+ vdi_co_do_create(BlockdevCreateOptions *create_options, size_t block_size,
+                  Error **errp)
  {
 +    ERRP_GUARD();
-     g_autoptr(GList) bdrvs = NULL;
-     GList *iterbdrvs;
- 
-@@ -605,6 +606,7 @@ int bdrv_all_goto_snapshot(const char *name,
-                            bool has_devices, strList *devices,
-                            Error **errp)
- {
-+    ERRP_GUARD();
-     g_autoptr(GList) bdrvs = NULL;
-     GList *iterbdrvs;
-     int ret;
+     BlockdevCreateOptionsVdi *vdi_opts;
+     int ret = 0;
+     uint64_t bytes = 0;
 -- 
 2.34.1
 
