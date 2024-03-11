@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70B6987868F
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:46:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D0D287868D
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:45:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjjeP-0002Xy-F4; Mon, 11 Mar 2024 13:41:25 -0400
+	id 1rjjeX-0002Yq-1u; Mon, 11 Mar 2024 13:41:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjeN-0002Xe-JK
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:41:23 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjeS-0002YM-94
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:41:28 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjeL-0007MR-IS
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:41:23 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-6e617b39877so3316088b3a.3
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 10:41:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjeQ-0007Mu-L4
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:41:27 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-6e5eaf5bb3eso3591782b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 10:41:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710178880; x=1710783680; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710178885; x=1710783685; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AMEZpjRyPRfKkDXLG/bfNm8VyDDx9klR1nHqEDUL4Y4=;
- b=NoG47XadnOeegq3RUZtOGPpnxz2ibQKaDIjj6ngl1xiocb/mfzTmWrC77WdUxyuo7b
- 5l+FBtckOf2s5pbKDI3TIMhO5yB5whBwANCIvwh31Ygxoe8jWIgzSdlr4v6LTYc1W8Gh
- PXyhupP+EDUm4xy80c8nEc6vF8pSNSogUkfPbmKPFl5e0U+yYom/GH/RLbIpDC8j6Fwj
- U5KGd+QwIssgZL3DbSTfKzLi5cIQSDvWc9mN9WRHnZ5qJK1o2ZRr1XSSKVjxRslFwmPM
- nM5hZdGd/hXFAaPtndCPcjVvHupFMSFFFfhR+W5c0h+hi/cegBjy5yAeNkVHKrJ2QKAc
- ZmuQ==
+ bh=KIe47Fwcl7aGXVqbunL4ff4uzd0bDZVnqiv3Rpt/7b0=;
+ b=Z7t4jNwj2Oc6Yy8ZoVPOLs/CEoxUWo5sTRPpn5AzlamyhU3/mmvAgkgqTJFcuKUNHb
+ bA35yWGzJN2AauFJcfz9cTTgyBwAs7xu/aZt59wy1DQCMwHr4e44AOac70Ioqhb6yNgG
+ a1W2oLF59G5K5o+9k32M1cxQlGkmbke8JM2tKpJHDECSFWAbBXi4cEMoc+q5JSFqG2j/
+ XGW9J3YAvRs9hImsUmKUuVyDRDWH106YSM+sqtw3nJtwiwjSiDtOl8JlDcNaBAX5eM96
+ 68MF7lNIkc5hT9QV0YneHrc3CwIqE1o33A/5701bw2DcCGvdvm+15phbtG8KBPG9Wlf7
+ AXew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710178880; x=1710783680;
+ d=1e100.net; s=20230601; t=1710178885; x=1710783685;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AMEZpjRyPRfKkDXLG/bfNm8VyDDx9klR1nHqEDUL4Y4=;
- b=WYovVl/VEjb2kUSKvci4Xt+9dvALeDrMHR3/CPFWAYB4fb1d+JROJPx93EK7gxEVOf
- 5jc06R9mpjUNtdaTMNbVNqf82qmSVk6iIdPKEwp1RUy5shRIpif4zvcROxHtuIva7IQL
- OcLejSlcfaps+LGwTJupeYkqLAhReKFnOVWTBP3lQLTZkVx6UXxmrOaRBXXxwzcHNu9v
- 1HEROQ5IVCr/P5md6/ud1CUUcML2U1/1iwD06p/b/bnpn1PihiWmADiYVTtI3869I67m
- 7z3JYtBbHA9jZOeeMOHmLlBXCksAC/BTJDYeNQc07tyQ6t4xFRUIeEVqtyrK7v1dj3GL
- xJJg==
-X-Gm-Message-State: AOJu0YzOMsqi0SJQliphQnZ6HpH2DFRD6nQ7c4wskJuEio8I0AYsrqOE
- pIgLvH/Sch52xlUyApSFhd0aOJsaycuSHahAbMGW9qCC0qjKwJy4oW4zcy3GDSk=
-X-Google-Smtp-Source: AGHT+IFSbzNsqPBt7WGMkK6pNoGKFww4ClleaAgRSG4GH7Y42cpjHhdZ9x236KQgswFfYshqns8Feg==
-X-Received: by 2002:a05:6a21:33a1:b0:1a1:6c6c:97d with SMTP id
- yy33-20020a056a2133a100b001a16c6c097dmr5344619pzb.57.1710178879905; 
- Mon, 11 Mar 2024 10:41:19 -0700 (PDT)
+ bh=KIe47Fwcl7aGXVqbunL4ff4uzd0bDZVnqiv3Rpt/7b0=;
+ b=mvast2e7ZE6f94hkkAcma23S/2GTSgYRsugr1yAr0ouqUsWpbSLzzEp7DrpPeT286A
+ 7PCEM0fjLb4CJN+0kboLviTHITTEYUXmLbFklxKkrkwvwyqVYSOi8WbYJ0UwRYxaxnx0
+ i/EXAS5WD/pMROLDA4bsQfwGAYokIyo93sY1aBbBUK6gDYe3dXwtMD1VLju390I2cezo
+ J/MjzLyFTfY8ugN6eKIPueX+bytX8BXjSGjoY4TFICwLjP7G5HWjuslfKc9fPhQmolYJ
+ wOo6UPU/HXZ1x5hr43aJf/2LOiEixW5ZgpbnVgFYrMhgxSBmIgvf9S7mS3Qi+GOgfqpG
+ ERvQ==
+X-Gm-Message-State: AOJu0YzBi6WCkmDCLg6JqTLRo3x0eZQdnsgDdudyr5Tto+pST27XbKr1
+ 3ec53tfyUfHx0PvWPj9uKhwZtd0GsZwsljRvbgpbzDsymFduXPkFDXc022B5KG8=
+X-Google-Smtp-Source: AGHT+IExsNqBUHeYWdkUF2ovNXfQoxprvKRcNuCTUrpYd+Yq1nhoNrmlK1iW2Y3V/V6S52GYJHabqw==
+X-Received: by 2002:a05:6a20:3947:b0:1a1:682d:cc4a with SMTP id
+ r7-20020a056a20394700b001a1682dcc4amr5429779pzg.43.1710178885213; 
+ Mon, 11 Mar 2024 10:41:25 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- a18-20020a62d412000000b006e67b4d7b74sm4593187pfh.197.2024.03.11.10.41.14
+ a18-20020a62d412000000b006e67b4d7b74sm4593187pfh.197.2024.03.11.10.41.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 10:41:19 -0700 (PDT)
+ Mon, 11 Mar 2024 10:41:25 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -65,16 +65,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH v4 08/24] replay: Fix migration replay_mutex locking
-Date: Tue, 12 Mar 2024 03:40:10 +1000
-Message-ID: <20240311174026.2177152-9-npiggin@gmail.com>
+Subject: [PATCH v4 09/24] virtio-net: Use replay_schedule_bh_event for bhs
+ that affect machine state
+Date: Tue, 12 Mar 2024 03:40:11 +1000
+Message-ID: <20240311174026.2177152-10-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240311174026.2177152-1-npiggin@gmail.com>
 References: <20240311174026.2177152-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,94 +98,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Migration causes a number of events that need to go in the replay
-trace, such as vm state transitions. The replay_mutex lock needs to
-be held for these.
-
-The simplest approach seems to be just take it up-front when taking
-the bql.
+The regular qemu_bh_schedule() calls result in non-deterministic
+execution of the bh in record-replay mode, which causes replay failure.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- migration/migration.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ hw/net/virtio-net.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 86093b34bf..7a24f94425 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -24,6 +24,7 @@
- #include "socket.h"
- #include "sysemu/runstate.h"
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index a3c711b56d..ad12d80677 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -40,6 +40,7 @@
+ #include "migration/misc.h"
+ #include "standard-headers/linux/ethtool.h"
  #include "sysemu/sysemu.h"
 +#include "sysemu/replay.h"
- #include "sysemu/cpu-throttle.h"
- #include "rdma.h"
- #include "ram.h"
-@@ -2525,6 +2526,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+ #include "trace.h"
+ #include "monitor/qdev.h"
+ #include "hw/pci/pci_device.h"
+@@ -415,7 +416,7 @@ static void virtio_net_set_status(struct VirtIODevice *vdev, uint8_t status)
+                 timer_mod(q->tx_timer,
+                                qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + n->tx_timeout);
+             } else {
+-                qemu_bh_schedule(q->tx_bh);
++                replay_bh_schedule_event(q->tx_bh);
+             }
+         } else {
+             if (q->tx_timer) {
+@@ -2668,7 +2669,7 @@ static void virtio_net_tx_complete(NetClientState *nc, ssize_t len)
+          */
+         virtio_queue_set_notification(q->tx_vq, 0);
+         if (q->tx_bh) {
+-            qemu_bh_schedule(q->tx_bh);
++            replay_bh_schedule_event(q->tx_bh);
+         } else {
+             timer_mod(q->tx_timer,
+                       qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + n->tx_timeout);
+@@ -2823,7 +2824,7 @@ static void virtio_net_handle_tx_bh(VirtIODevice *vdev, VirtQueue *vq)
+         return;
      }
- 
-     trace_postcopy_start();
-+    replay_mutex_lock();
-     bql_lock();
-     trace_postcopy_start_set_run();
- 
-@@ -2630,6 +2632,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-     migration_downtime_end(ms);
- 
-     bql_unlock();
-+    replay_mutex_unlock();
- 
-     if (migrate_postcopy_ram()) {
-         /*
-@@ -2671,6 +2674,7 @@ fail:
-     }
-     migration_call_notifiers(ms, MIG_EVENT_PRECOPY_FAILED, NULL);
-     bql_unlock();
-+    replay_mutex_unlock();
-     return -1;
+     virtio_queue_set_notification(vq, 0);
+-    qemu_bh_schedule(q->tx_bh);
++    replay_bh_schedule_event(q->tx_bh);
  }
  
-@@ -2722,6 +2726,7 @@ static int migration_completion_precopy(MigrationState *s,
- {
-     int ret;
- 
-+    replay_mutex_lock();
-     bql_lock();
- 
-     if (!migrate_mode_is_cpr(s)) {
-@@ -2747,6 +2752,7 @@ static int migration_completion_precopy(MigrationState *s,
-                                              s->block_inactive);
- out_unlock:
-     bql_unlock();
-+    replay_mutex_unlock();
-     return ret;
- }
- 
-@@ -3573,6 +3579,7 @@ static void *bg_migration_thread(void *opaque)
- 
-     trace_migration_thread_setup_complete();
- 
-+    replay_mutex_lock();
-     bql_lock();
- 
-     if (migration_stop_vm(s, RUN_STATE_PAUSED)) {
-@@ -3606,6 +3613,7 @@ static void *bg_migration_thread(void *opaque)
-      */
-     migration_bh_schedule(bg_migration_vm_start_bh, s);
-     bql_unlock();
-+    replay_mutex_unlock();
- 
-     while (migration_is_active(s)) {
-         MigIterateState iter_state = bg_migration_iteration_run(s);
-@@ -3635,6 +3643,7 @@ fail:
-         migrate_set_state(&s->state, MIGRATION_STATUS_ACTIVE,
-                 MIGRATION_STATUS_FAILED);
-         bql_unlock();
-+        replay_mutex_unlock();
+ static void virtio_net_tx_timer(void *opaque)
+@@ -2906,7 +2907,7 @@ static void virtio_net_tx_bh(void *opaque)
+     /* If we flush a full burst of packets, assume there are
+      * more coming and immediately reschedule */
+     if (ret >= n->tx_burst) {
+-        qemu_bh_schedule(q->tx_bh);
++        replay_bh_schedule_event(q->tx_bh);
+         q->tx_waiting = 1;
+         return;
      }
- 
-     bg_migration_iteration_finish(s);
+@@ -2920,7 +2921,7 @@ static void virtio_net_tx_bh(void *opaque)
+         return;
+     } else if (ret > 0) {
+         virtio_queue_set_notification(q->tx_vq, 0);
+-        qemu_bh_schedule(q->tx_bh);
++        replay_bh_schedule_event(q->tx_bh);
+         q->tx_waiting = 1;
+     }
+ }
 -- 
 2.42.0
 
