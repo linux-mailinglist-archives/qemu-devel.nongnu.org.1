@@ -2,69 +2,137 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D02EB877F62
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 13:00:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34204877F6F
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 13:01:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjeJq-0001zf-1r; Mon, 11 Mar 2024 07:59:50 -0400
+	id 1rjeLK-0002pw-Kb; Mon, 11 Mar 2024 08:01:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rjeJn-0001zG-5U
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 07:59:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rjeKb-0002Xx-TX
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 08:00:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rjeJl-000487-Oy
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 07:59:46 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rjeKY-0004c7-5U
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 08:00:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710158383;
+ s=mimecast20190719; t=1710158432;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=uRyEkCKNkPVnOj3uensDQWTBZOHL7iOI9MqexSDkxoM=;
- b=WhCcHBjgIX35ULgmyKutxD8/YlSHzF/zNMR6LUtW5D+x4xuM44EP367H+vUa0kGOBycfUA
- PCuz+F9tyzrQu0h436tAhTZCMMojeOS5SWnehtVgGPCKMoOcK8FnpAhQglCPlpyS+/EWtB
- n90hS9j9dSQw8uZwgc/O+1HPRVNTA+I=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-393-pzQ_R8s9N2264nbHyKsxiA-1; Mon,
- 11 Mar 2024 07:59:30 -0400
-X-MC-Unique: pzQ_R8s9N2264nbHyKsxiA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E97BE1C04330;
- Mon, 11 Mar 2024 11:59:29 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.192.160])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C60DB492BC4;
- Mon, 11 Mar 2024 11:59:29 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 8FBC91801A82; Mon, 11 Mar 2024 12:59:28 +0100 (CET)
-Date: Mon, 11 Mar 2024 12:59:28 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Tom Lendacky <thomas.lendacky@amd.com>, 
- Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] kvm: add support for guest physical bits
-Message-ID: <q6zckxcxwke2kdlootdq3s7m2ctcy7juuv3fsezhpw3nqyewxo@sqku62f25gdc>
-References: <20240305105233.617131-1-kraxel@redhat.com>
- <20240305105233.617131-3-kraxel@redhat.com>
- <CABgObfZ13WEHaGNzjy0GVE2EAZ=MHOSNHS_1iTOuBduOt5q_3g@mail.gmail.com>
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=OlgcVNfaSaMNOKULnTpDZzoKo+bpzQsC3Zl5sNB2xas=;
+ b=VgFNBOJ+AFP9P/AslW/2YmzWHYNSelZB90L2Ycka6Sf184tBucSoEiB2Bu1yEeLnhDO+l+
+ cdUVU2JnXB5tUB9cwGsKOTHKF0X3tq4LooI6EojEeBKdp/9Bpu9rSpaU3coRsFiIqKLJvX
+ T0GIbFrteToNJoCFvbpjJ3t1oL1RTFk=
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
+ [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-30-c_MGmgelOLCq3Orkmz9pNg-1; Mon, 11 Mar 2024 08:00:29 -0400
+X-MC-Unique: c_MGmgelOLCq3Orkmz9pNg-1
+Received: by mail-oo1-f71.google.com with SMTP id
+ 006d021491bc7-5a112a333ceso3159528eaf.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 05:00:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710158429; x=1710763229;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OlgcVNfaSaMNOKULnTpDZzoKo+bpzQsC3Zl5sNB2xas=;
+ b=nmY6prA846A/i7BXbBiRhzbXF8veOKwKeNuwekZ/3rc8puPlqqBxBcE8zbujm0YrDC
+ 9dpxvmDEZYF59DEZ6j31259Oh8z+nWGv9tosuAN9m+zrLH9H7WJ6nyG+cHrGfrKBCbB2
+ t/q7OCbiGk5UYQtL5sqRcwC4d7dPkDaU0hctoG/JjbqPWlWwyx7qxNGXFCeuLmYcSd42
+ C2DCQ/iuO/exa4Q7HUHXMnlMAnmKZJO8R97vpRKxYvxRWFiYz7roZwblcZCOOwJE5e++
+ K4lmzj04ss+F4qxdegtnUnYWQC2xHhcJ0obJb6qNXyAmu9zVsXcLcTU+3Mw2L2NW5+L+
+ 0Ebg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUM9q6P4cVv5RTLMGenwQQU7ot/hpO/AOBFCPiySWU53s4os4MBoczr3gcdKqGE+L7R7qvPVAMYDXJVoN0tBJ8Qg94Gpt4=
+X-Gm-Message-State: AOJu0YwvkswO7ENAjbrAbvr7IK68UjGe/VsinYQjXdmmDsq3JlDphHju
+ pwicGMyad0oxwbY6h+VYwy54LRNp9TTLsGLsvnDdL4ov2LMuIO2zutlVsEBNvC9KPDZK/uRMbIx
+ /bDX+PUXoLMqnsheugvIOU03eAWfk0YvVEHznpKDc+v7uH7pNAsPo
+X-Received: by 2002:a05:6358:561b:b0:17c:263a:5b8e with SMTP id
+ b27-20020a056358561b00b0017c263a5b8emr6623211rwf.14.1710158429115; 
+ Mon, 11 Mar 2024 05:00:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHoFGymcm/yCAcEXzXXsmjeeX+Fs1IldS/wF6FFttNQnURTeZ8GnelLPyh5pHMJNeHhLKyC/A==
+X-Received: by 2002:a05:6358:561b:b0:17c:263a:5b8e with SMTP id
+ b27-20020a056358561b00b0017c263a5b8emr6623190rwf.14.1710158428768; 
+ Mon, 11 Mar 2024 05:00:28 -0700 (PDT)
+Received: from [192.168.0.9] (ip-109-43-178-151.web.vodafone.de.
+ [109.43.178.151]) by smtp.gmail.com with ESMTPSA id
+ v11-20020ae9e30b000000b00788419961f1sm2616827qkf.35.2024.03.11.05.00.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Mar 2024 05:00:28 -0700 (PDT)
+Message-ID: <2a8d4e86-1e33-424d-bc13-b1ce5323cb0c@redhat.com>
+Date: Mon, 11 Mar 2024 13:00:24 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABgObfZ13WEHaGNzjy0GVE2EAZ=MHOSNHS_1iTOuBduOt5q_3g@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6] crypto: Introduce SM4 symmetric cipher algorithm
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Hyman Huang <yong.huang@smartx.com>, qemu-devel@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>
+References: <95b77afe68b898c95d381c9aa039c16b54d2e525.1701963950.git.yong.huang@smartx.com>
+ <ac13ac70-9894-48b2-97a9-ddb7a8077ac7@redhat.com>
+ <Ze7PsJV7eQar1hNe@redhat.com> <Ze7Zomg9YrhvrN2J@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <Ze7Zomg9YrhvrN2J@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
 X-Spam_bar: ---
 X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,58 +149,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  Hi,
-
-> > diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> > index 952174bb6f52..d427218827f6 100644
-> > --- a/target/i386/cpu.h
-> > +++ b/target/i386/cpu.h
-> > +    guest_phys_bits = kvm_get_guest_phys_bits(cs->kvm_state);
-> > +    if (guest_phys_bits &&
-> > +        (cpu->guest_phys_bits == 0 ||
-> > +         cpu->guest_phys_bits > guest_phys_bits)) {
-> > +        cpu->guest_phys_bits = guest_phys_bits;
-> > +    }
+On 11/03/2024 11.14, Daniel P. Berrangé wrote:
+> On Mon, Mar 11, 2024 at 09:32:32AM +0000, Daniel P. Berrangé wrote:
+>> On Fri, Mar 08, 2024 at 09:30:52PM +0100, Thomas Huth wrote:
+>>> On 07/12/2023 16.47, Hyman Huang wrote:
+>>>> Introduce the SM4 cipher algorithms (OSCCA GB/T 32907-2016).
+>>>>
+>>>> SM4 (GBT.32907-2016) is a cryptographic standard issued by the
+>>>> Organization of State Commercial Administration of China (OSCCA)
+>>>> as an authorized cryptographic algorithms for the use within China.
+>>>>
+>>>> Detect the SM4 cipher algorithms and enable the feature silently
+>>>> if it is available.
+>>>>
+>>>> Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+>>>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>>> ---
+>>>
+>>> FYI, starting with this commit, tests/unit/test-crypto-cipher is now failing
+>>> on s390x hosts (i.e. big endian machines)... could be that there is maybe an
+>>> endianess issue somewhere in here...
+>>
+>> Or more worringly the issue could be in nettle's impl of SM4, as
+>> I'm not seeing an obvious place in this QEMU glue layer which
+>> could cause endianness mistakes.
 > 
-> Like Xiaoyao mentioned, the right place for this is kvm_cpu_realizefn,
-> after host_cpu_realizefn returns. It should also be conditional on
-> cpu->host_phys_bits.
+> This is not a s390x problem in fact, it happens on all arches.
 
-Ok.
+Agreed, I can reproduce it on x86 on RHEL as well, so it's indeed a problem 
+with the libgcrypt there.
 
-> It also makes sense to:
-> 
-> - make kvm_get_guest_phys_bits() return bits 7:0 if bits 23:16 are zero
-> 
-> - here, set cpu->guest_phys_bits only if it is not equal to
-> cpu->phys_bits (this undoes the previous suggestion, but I think it's
-> cleaner)
+I guess we need a test in "configure" to make sure that SM4 is really available?
 
-Not sure about that.
+  Thomas
 
-I think it would be good to have a backward compatibility story.
-Currently neither the kernel nor qemu set guest_phys_bits.  So if the
-firmware finds guest_phys_bits == 0 it does not know whenever ...
-
-  (a) kernel or qemu being too old, or
-  (b) no restrictions apply, it is safe to go with phys_bits.
-
-One easy option would be to always let qemu pass through guest_phys_bits
-from the kernel, even in case it is equal to phys_bits.
-
-> - add a property in x86_cpu_properties[] to allow configuration with TCG.
-
-Was thinking about configuration too.  Not sure it is a good idea to
-add yet another phys-bits config option to the mix of options we already
-have ...
-
-In case host_phys_bits=true qemu could simply use
-min(kernel guest-phys-bits,host-phys-bits-limit)
-
-For the host_phys_bits=false case it would probably be best to just
-not set guest_phys_bits.
-
-take care,
-  Gerd
 
 
