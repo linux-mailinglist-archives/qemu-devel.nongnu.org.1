@@ -2,86 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E073878415
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 16:44:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1692C8783B8
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 16:32:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjhob-0000Eo-6L; Mon, 11 Mar 2024 11:43:49 -0400
+	id 1rjhcK-0004Im-4G; Mon, 11 Mar 2024 11:31:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rjhoY-0000Ea-SF
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 11:43:46 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rjhoX-00086q-2C
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 11:43:46 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-41329a665a8so6203425e9.3
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 08:43:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710171822; x=1710776622; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=q3Y3zS9CQ8NaFfD/jftOGx3sdvZq7h1i3dnbj28ehbg=;
- b=MlPJadPPBrARQtK1eWkciWJiCHG24/TKRmQO19aXeJkWxsBnIFoM0X9AHc8gFTnKOk
- 5trHQYYQ4NOO61AlYG9mbbbYp6q7N/hlyzG+0//BHSyi0gMjoLV2ueHz/N4xrix/HYzR
- ntXhJRwLijTt2eHuNg7YLV2NP/yqo+LdBt2o3i2YB4BPph8bTqRTxsaqB7bzJavFxwqs
- mkjndDlgEkXZinmWvomllRu+qrwcodPXKSCjgruNxJPa9inJBq41m/nMpCFh4PEyQjYq
- GfmSieqtKg8XGalzpkRpa5FbzfqF1O6Fi2jtEMadvyW9ntJjEyQWhUxmME4J9GY9Sjmj
- fE8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710171822; x=1710776622;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=q3Y3zS9CQ8NaFfD/jftOGx3sdvZq7h1i3dnbj28ehbg=;
- b=EMYCwLsHfAS5RX7zy/fvZ9FXYe8pI0YUup8zgmDOE9Fk9yt4I7eOqq7iHRknZQCveD
- jtjQvF/moRUNpxBwX8ETzkxb6Ooh5CVgbMFUUCJNd+hE3egg7axG09ntUy6fd32ZY+tJ
- ilnabSP0NJE1Sib/FljuOFxQ8bmGdQfqXnrAVp5hUwJTd4x5YMkv44lZxuxOQDx9YLS2
- wa6Zd0vGIrnND4YXj4Peu8NPT1UeY6EfoyKkaEaO7IPgqpajn9FivwfMCzVqah0bBZ5F
- W7sqpf9XCvuUnexptEcF15VL/cQUOjkBmiAxQKkoRmhS/SV52l+HzA6qb6gfMa5hUi9H
- CZLw==
-X-Gm-Message-State: AOJu0YzBTCXjuiG/yud6Dd6lWJDNqacHl5LeaAZH0g/pzXJb3dmN2a9t
- N4Nm3b2bi+udOwXagJAxouC4Q40VEyAy3ahzur2HMi9ws3nLLy5Qg5qOaDYGl10=
-X-Google-Smtp-Source: AGHT+IFG6zhvjdPEW/eNVnuNK0KYTM65QNAbz/Yk3UX8a2FI6Z7/wf+IPqASZ75ZOcHIdlQgtYCq1A==
-X-Received: by 2002:a05:600c:1e21:b0:413:2f40:1a8f with SMTP id
- ay33-20020a05600c1e2100b004132f401a8fmr565235wmb.28.1710171822140; 
- Mon, 11 Mar 2024 08:43:42 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- fl7-20020a05600c0b8700b004132b28209asm2944949wmb.24.2024.03.11.08.43.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 08:43:41 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 6F7585F756;
- Mon, 11 Mar 2024 15:43:41 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org,  Mahmoud Mandour <ma.mandourr@gmail.com>,  Paolo
- Bonzini <pbonzini@redhat.com>,  Alexandre Iooss <erdnaxe@crans.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH 4/5] plugins: conditional callbacks
-In-Reply-To: <20240229055359.972151-5-pierrick.bouvier@linaro.org> (Pierrick
- Bouvier's message of "Thu, 29 Feb 2024 09:53:58 +0400")
-References: <20240229055359.972151-1-pierrick.bouvier@linaro.org>
- <20240229055359.972151-5-pierrick.bouvier@linaro.org>
-User-Agent: mu4e 1.12.1; emacs 29.1
-Date: Mon, 11 Mar 2024 15:43:41 +0000
-Message-ID: <87zfv4pydu.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rjhcB-0004Hj-VD
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 11:31:01 -0400
+Received: from mgamail.intel.com ([198.175.65.14])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rjhc8-0005f8-Ll
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 11:30:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1710171056; x=1741707056;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=2p4rg6EVYAvyHflbUz0DDkb4ZOH34bOHun5RAo/d9Dg=;
+ b=ZH5pNeeqirGgQ0R+lgf+z41CFRtZuJ+cf3mRnpc73F/kf/KcLA9M+zI/
+ kK26s2d//vInNU0ZQjY8Z6K1dZ7Gi5MufDaRTbUWGCuYnibz45Nci5KJL
+ okyEfJuX6GP3/b5/0FImredzSvHBxjnxOk7dnARGrKZFOew7d6tBAsGgL
+ O2/75El9KQHm7rvp4XshWUKn+mipIjjptjqpM0n+O1pHrqlcLvi2jdaHt
+ wTQrXZUrjQ4l1zCF3FSsPUBhCGFYVB6oD4DuZfHsmbPrC+2Yw/Ta0IRr5
+ x9nAXLROOFqODXXSZkx4AvvyDynYdF+pSDCQCoPNXEmDk3ScuTdEAKMEF A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="8655522"
+X-IronPort-AV: E=Sophos;i="6.07,117,1708416000"; 
+   d="scan'208";a="8655522"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Mar 2024 08:30:46 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,117,1708416000"; d="scan'208";a="42116766"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa002.jf.intel.com with ESMTP; 11 Mar 2024 08:30:45 -0700
+Date: Mon, 11 Mar 2024 23:44:33 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v3 1/3] hw/core: Cleanup unused included headers in
+ cpu-common.c
+Message-ID: <Ze8m4YvRQrWFlFpN@intel.com>
+References: <20240311075621.3224684-1-zhao1.liu@linux.intel.com>
+ <20240311075621.3224684-2-zhao1.liu@linux.intel.com>
+ <752e3d2b-1834-4f6d-9764-3d7e951409c4@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <752e3d2b-1834-4f6d-9764-3d7e951409c4@linaro.org>
+Received-SPF: none client-ip=198.175.65.14;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,77 +85,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
+Hi Philippe,
 
-> Extend plugins API to support callback called with a given criteria
-> (evaluated inline).
->
-> Added functions:
-> - qemu_plugin_register_vcpu_tb_exec_cond_cb
-> - qemu_plugin_register_vcpu_insn_exec_cond_cb
->
-> They expect as parameter a condition, a qemu_plugin_u64_t (op1) and an
-> immediate (op2). Callback is called if op1 |cond| op2 is true.
->
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-<snip>
->=20=20
-> +static TCGCond plugin_cond_to_tcgcond(enum qemu_plugin_cond cond)
-> +{
-> +    switch (cond) {
-> +    case QEMU_PLUGIN_COND_EQ:
-> +        return TCG_COND_EQ;
-> +    case QEMU_PLUGIN_COND_NE:
-> +        return TCG_COND_NE;
-> +    case QEMU_PLUGIN_COND_LT:
-> +        return TCG_COND_LTU;
-> +    case QEMU_PLUGIN_COND_LE:
-> +        return TCG_COND_LEU;
-> +    case QEMU_PLUGIN_COND_GT:
-> +        return TCG_COND_GTU;
-> +    case QEMU_PLUGIN_COND_GE:
-> +        return TCG_COND_GEU;
-> +    default:
-> +        /* ALWAYS and NEVER conditions should never reach */
-> +        g_assert_not_reached();
-> +    }
-> +}
-> +
-> +static TCGOp *append_cond_udata_cb(const struct qemu_plugin_dyn_cb *cb,
-> +                                   TCGOp *begin_op, TCGOp *op, int *cb_i=
-dx)
-> +{
-> +    char *ptr =3D cb->cond_cb.entry.score->data->data;
-> +    size_t elem_size =3D g_array_get_element_size(
-> +        cb->cond_cb.entry.score->data);
-> +    size_t offset =3D cb->cond_cb.entry.offset;
-> +    /* Condition should be negated, as calling the cb is the "else" path=
- */
-> +    TCGCond cond =3D tcg_invert_cond(plugin_cond_to_tcgcond(cb->cond_cb.=
-cond));
-> +
-> +    op =3D copy_const_ptr(&begin_op, op, ptr);
-> +    op =3D copy_ld_i32(&begin_op, op);
-> +    op =3D copy_mul_i32(&begin_op, op, elem_size);
-> +    op =3D copy_ext_i32_ptr(&begin_op, op);
-> +    op =3D copy_const_ptr(&begin_op, op, ptr + offset);
-> +    op =3D copy_add_ptr(&begin_op, op);
-> +    op =3D copy_ld_i64(&begin_op, op);
-> +    op =3D copy_brcondi_i64(&begin_op, op, cond, cb->cond_cb.imm);
-> +    op =3D copy_call(&begin_op, op, cb->f.vcpu_udata, cb_idx);
-> +    op =3D copy_set_label(&begin_op, op);
-> +    return op;
+On Mon, Mar 11, 2024 at 12:40:23PM +0100, Philippe Mathieu-Daudé wrote:
+> Date: Mon, 11 Mar 2024 12:40:23 +0100
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: Re: [PATCH v3 1/3] hw/core: Cleanup unused included headers in
+>  cpu-common.c
+> 
+> On 11/3/24 08:56, Zhao Liu wrote:
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> > 
+> > Remove unused headers in cpu-common.c:
+> > * qemu/notify.h
+> > * exec/cpu-common.h
+> > * qemu/error-report.h
+> > * qemu/qemu-print.h
+> > 
+> > Tested by "./configure" and then "make".
+> 
+> This isn't often enough. The safest way to catch implicit
+> includes is to add #error in them and compile the source.
+> 
+> > 
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > ---
+> >   hw/core/cpu-common.c | 4 ----
+> >   1 file changed, 4 deletions(-)
+> > 
+> > diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+> > index 0108fb11dbc8..4bd9c70a83f1 100644
+> > --- a/hw/core/cpu-common.c
+> > +++ b/hw/core/cpu-common.c
+> > @@ -22,14 +22,10 @@
+> >   #include "qapi/error.h"
+> >   #include "hw/core/cpu.h"
+> >   #include "sysemu/hw_accel.h"
+> > -#include "qemu/notify.h"
+> >   #include "qemu/log.h"
+> >   #include "qemu/main-loop.h"
+> >   #include "exec/log.h"
+> > -#include "exec/cpu-common.h"
+> 
+> Watch out, "exec/cpu-common.h" is implicitly included:
+> 
+> $ git diff -U0
+> diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+> index 6346df17ce..27961bacc6 100644
+> --- a/include/exec/cpu-common.h
+> +++ b/include/exec/cpu-common.h
+> @@ -2,0 +3 @@
+> +#error
+> 
+> $ ninja libcommon.fa.p/hw_core_cpu-common.c.o
+> In file included from ../../hw/core/cpu-common.c:34:
+> In file included from include/hw/boards.h:6:
+> In file included from include/exec/memory.h:19:
+> include/exec/cpu-common.h:3:2: error:
+> #error
 
-I think we are missing something here to ensure that udata is set
-correctly for the callback, see my RFC:
+Thanks for helpping me verify this!!
 
-  Subject: [RFC PATCH] contrib/plugins: control flow plugin (WIP!)
-  Date: Mon, 11 Mar 2024 15:34:32 +0000
-  Message-Id: <20240311153432.1395190-1-alex.bennee@linaro.org>
+EMM, but I'm still not understanding how this approach distinguishes
+whether hw/core/cpu-common.c needs the header (include/exec/cpu-common.h)
+directly or just include/exec/memory.h needs that header? For the latter,
+the header needn't be included in .c file.
 
-which is seeing the same value every time in the callback.
+Thanks,
+Zhao
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
