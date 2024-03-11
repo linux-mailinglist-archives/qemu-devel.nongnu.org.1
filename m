@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95CD88780DF
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 14:49:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F38A878124
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 15:00:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjg0I-0002rC-Ed; Mon, 11 Mar 2024 09:47:46 -0400
+	id 1rjgBV-0005Ao-Ji; Mon, 11 Mar 2024 09:59:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1rjg0E-0002r3-Ql
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 09:47:42 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rjgBJ-00059g-Ko
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 09:59:09 -0400
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1rjg0C-0001Od-Ms
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 09:47:42 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1dd922cbcc7so8335595ad.2
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 06:47:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rjgBH-0003ax-BA
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 09:59:09 -0400
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-29baec5f751so2026991a91.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 06:59:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1710164858; x=1710769658; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=sRD4lzoNaOeNqbsIlf++4Qfp9O+9H+1BVdNtuHikfP4=;
- b=PuU6o9C+MXTJD5VDfyAvnWhEzmDdY/SIgerYtFlOmNEtbUr11Eyb7bEZGqmT7B04nn
- 2RzKDKKyU8M02QRH7JcVtaKwNCGsUvu78mXcOoSi1AqbFIGW6PG6wPLkmnm70Mx8XRDd
- mAA4Lfl+s3plHxyFNZxEWcRN9Zy+/sziziAeeecR4oMOhgb42ftmLvRqsiSWj4zTTUaQ
- v8QgtQ4i5bwFaeyL956uML9xtLY8ajnPo1wjD2NP37W4k4xJli+LI7DZbF0GGOgmMWCH
- xngZxW8vv+/myfu+toPEJxDATIKf6w1eg4sBxtHUIQNS6tnDh0bGjGDqOzpi0yXSwuWV
- CQuQ==
+ d=ventanamicro.com; s=google; t=1710165545; x=1710770345; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=nG1z1j5EYE/lIKY0fj2u8vHOJM10LttW3eQfJYDOipw=;
+ b=YN4jeHHG7VgVjMWSBDNpV2rhvWfG/490KXOVjF+uLzHuhvdDP60jn6eLDF44Ek+sBF
+ hR7VusBXD9VQ9jHxrCELkft4Hz++M8XmZOxIP6jK4jU0iQ3163Sjeg35jHpSVh4fQT39
+ Rdg50Jgw34hziS1Ip8e5IIvp/2LGTFHtc9s5yC7rB72GZgm/MEkw0nEfYCANqQhjqP+F
+ bMFe8PcxUPUaRWFl/GdlNug3/hvaxZiW9YOqN4k7QFqUYN/xAdAPlp+oHdsa0Rjuydbv
+ ORKH72NdQBeVIQZ85D1e9d4Dh+HGkRXNj9c+sITaUK+dXaCOxOWhTHFK4z+vz3qvUC6l
+ YdBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710164858; x=1710769658;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=sRD4lzoNaOeNqbsIlf++4Qfp9O+9H+1BVdNtuHikfP4=;
- b=oeOYrir3sToKdg9fiol7fSp5IL88my4FdAR8s6bsUjPXRjJm/oj8VUoD1nBnoPkDXr
- VIbBo1fFjckiWAsQG0OY2aWAKwEyEYhljJggcEJ4xiBJXXnf2mY63yFkdH04A05PMW58
- YKh4o0n2MDxYCfn6dZ//+myoRsyPwSgxlggBBcF3KaHw5Mb/PzIXngZXYS/9Q1Bt/cS8
- pE8mL5UK1lWCHU7F2Xi9qjSCEXAQFEb3JWFmvAszyVmCpyUt4YpN+PGYb2YT3DIY1EuJ
- +b0kSP21hiIWq+zPBQ2PSr80+L1FGXTCNlMiHbbHY538ov3xLKdc57i1lKruyYMVEdwU
- zwOw==
-X-Gm-Message-State: AOJu0YzBmbW+ph2/N4vWh+PoYY6GFQXs6fnZzilJOBbBLSgz4AkROb/K
- 1UubjRgS2+oiq88pR4/A2lFfYyhsN3KCAqZ1+gbQJwQMEAdCZ2HxXL51FWB6fUeSO9649NhsPiM
- F8umq3izI/snec5gbjTbDB6HOldlQlnZJ3d9j
-X-Google-Smtp-Source: AGHT+IGaJC2mm/1fSxfuh2YWxtn9MkZvNlo/QxUB1TEN3k+8aJtX0vrHC2NHIJ6jh0JKwYpXbLkckStNT9lWDSUkmvQ=
-X-Received: by 2002:a17:902:f683:b0:1dd:918d:33ae with SMTP id
- l3-20020a170902f68300b001dd918d33aemr4766497plg.60.1710164858484; Mon, 11 Mar
- 2024 06:47:38 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1710165545; x=1710770345;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=nG1z1j5EYE/lIKY0fj2u8vHOJM10LttW3eQfJYDOipw=;
+ b=Cv47fZmFS1FTw2Yp0p/rnNpuqW8PxWm0KD6f/1sHfO+915j5KhVQLAS4gjllPqTyt4
+ cXAflbPlWQIhB59cukMAW0/offq6Y5DcpvzCuOPNyjcM05hvqfSJWXHQbMQbFl98vqyU
+ DQ7v1YkUlwJ4zFS91QKT5RLAQdNNRZf09eIjEoWs1b47sE1hAFCcLaQBK4du8xWSTXne
+ wI8C7DwCYavCNN2NtoScN0berOxUMzBRiYjf3LRm02oH03Kem6LJ9XCwZTXh22wBwq3C
+ veJs7hrntIKefHeTv290yBgceySSHKjmnW/cM0qgri+mvN1MV+5bWiJf0ZlKhmiEZl7r
+ /JUQ==
+X-Gm-Message-State: AOJu0Yy9h5Ewc1bvphBJnvgfzkRJglKrbemxc/CW5sQJAzvwGoaDzFPU
+ rumrdN6EOCb/rvwRlxAQz1DqjYizLNAlFgwbip46dZI7TAeh8+Do9jTbTtPUSvvEibil3sWQIXy
+ n
+X-Google-Smtp-Source: AGHT+IGDyHCFL6uZDrLc8TS+ZG+Sdfhl4AhYsTR1Okv7JTsZb50nPgbjoF1obUKxMqDyGJcnsAXDoQ==
+X-Received: by 2002:a17:90a:578c:b0:29b:fb23:863e with SMTP id
+ g12-20020a17090a578c00b0029bfb23863emr4403697pji.17.1710165544785; 
+ Mon, 11 Mar 2024 06:59:04 -0700 (PDT)
+Received: from grind.. ([177.94.15.159]) by smtp.gmail.com with ESMTPSA id
+ nm3-20020a17090b19c300b0029c12fa64b9sm1324920pjb.4.2024.03.11.06.59.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 11 Mar 2024 06:59:04 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ richard.henderson@linaro.org, philmd@linaro.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v11 0/7] riscv: set vstart_eq_zero on vector insns
+Date: Mon, 11 Mar 2024 10:58:48 -0300
+Message-ID: <20240311135855.225578-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-References: <20240308111152.2856137-1-alistair.francis@wdc.com>
- <20240308111152.2856137-10-alistair.francis@wdc.com>
-In-Reply-To: <20240308111152.2856137-10-alistair.francis@wdc.com>
-From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
-Date: Mon, 11 Mar 2024 14:47:27 +0100
-Message-ID: <CAJ307EiYcXiiTKeZMgWYQNkZ2McOOOJYYGUMh1-CnuNoy7M0Gg@mail.gmail.com>
-Subject: Re: [PULL 09/34] target/riscv: add remaining named features
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Andrew Jones <ajones@ventanamicro.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=chigot@adacore.com; helo=mail-pl1-x629.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x1029.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,199 +92,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Alistair,
+Hi,
 
-Since this series, I'm getting warnings when using a CPU not
-supporting the latest ISA, such as the SIFIVE_E series.
-  | $ qemu-system-riscv32  -M sifive_e
-  | qemu-system-riscv32: warning: disabling zic64b extension for hart
-0x00000000 because privilege spec version does not match
-  | qemu-system-riscv32: warning: disabling ziccamoa extension for
-hart 0x00000000 because privilege spec version does not match
+In this new version, after the comments from LIU Zhiwei in v9 [1], I
+decided to ditch all the patches that were trying to integrate the tail
+update process in a single function. Handling the right value for NF for
+every single function is out of the scope for this bug fix. The patches
+might be useful in the future if we decide that such integration adds
+value, but for now it's too much.
 
-Those are always enabled during the initialization but
-riscv_cpu_disable_priv_spec_isa_exts is detecting them as unsupported
-by the CPU and thus disabling them.
-However, are those extensions different from zicnptr and zihpm
-extensions ? As they are not enabled by the same mean, I'm wondering
-about that ? Or do we want to skip their ISA verification as well ?
+For this bug fix I decided to bring a sledgehammer and inserted an early
+exist in every vector helper if vstart >= vl. This will make the whole
+helper a no-op if vstart is out of bounds, and make it trivial for us to
+proceed with removing brconds and so on.
 
-Thanks,
-Cl=C3=A9ment
+I also took the opportunity to fix the flag name in patch 9 from v10,
+now patch 6.
 
-On Fri, Mar 8, 2024 at 12:13=E2=80=AFPM Alistair Francis <alistair23@gmail.=
-com> wrote:
->
-> From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->
-> The RVA22U64 and RVA22S64 profiles mandates certain extensions that,
-> until now, we were implying that they were available.
->
-> We can't do this anymore since named features also has a riscv,isa
-> entry. Let's add them to riscv_cpu_named_features[].
->
-> Instead of adding one bool for each named feature that we'll always
-> implement, i.e. can't be turned off, add a 'ext_always_enabled' bool in
-> cpu->cfg. This bool will be set to 'true' in TCG accel init, and all
-> named features will point to it. This also means that KVM won't see
-> these features as always enable, which is our intention.
->
-> If any accelerator adds support to disable one of these features, we'll
-> have to promote them to regular extensions and allow users to disable it
-> via command line.
->
-> After this patch, here's the riscv,isa from a buildroot using the
-> 'rva22s64' CPU:
->
->  # cat /proc/device-tree/cpus/cpu@0/riscv,isa
-> rv64imafdc_zic64b_zicbom_zicbop_zicboz_ziccamoa_ziccif_zicclsm_ziccrse_
-> zicntr_zicsr_zifencei_zihintpause_zihpm_za64rs_zfhmin_zca_zcd_zba_zbb_
-> zbs_zkt_ssccptr_sscounterenw_sstvala_sstvecd_svade_svinval_svpbmt#
->
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-> Message-ID: <20240215223955.969568-4-dbarboza@ventanamicro.com>
-> Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-> ---
->  target/riscv/cpu_cfg.h     |  6 ++++++
->  target/riscv/cpu.c         | 42 +++++++++++++++++++++++++++++++-------
->  target/riscv/tcg/tcg-cpu.c |  2 ++
->  3 files changed, 43 insertions(+), 7 deletions(-)
->
-> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> index e68a4ddb92..be39870691 100644
-> --- a/target/riscv/cpu_cfg.h
-> +++ b/target/riscv/cpu_cfg.h
-> @@ -128,6 +128,12 @@ struct RISCVCPUConfig {
->      bool ext_svade;
->      bool ext_zic64b;
->
-> +    /*
-> +     * Always 'true' boolean for named features
-> +     * TCG always implement/can't be disabled.
-> +     */
-> +    bool ext_always_enabled;
-> +
->      /* Vendor-specific custom extensions */
->      bool ext_xtheadba;
->      bool ext_xtheadbb;
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index f0cd408237..4c4fa79145 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -102,6 +102,10 @@ const RISCVIsaExtData isa_edata_arr[] =3D {
->      ISA_EXT_DATA_ENTRY(zicbom, PRIV_VERSION_1_12_0, ext_zicbom),
->      ISA_EXT_DATA_ENTRY(zicbop, PRIV_VERSION_1_12_0, ext_zicbop),
->      ISA_EXT_DATA_ENTRY(zicboz, PRIV_VERSION_1_12_0, ext_zicboz),
-> +    ISA_EXT_DATA_ENTRY(ziccamoa, PRIV_VERSION_1_11_0, ext_always_enabled=
-),
-> +    ISA_EXT_DATA_ENTRY(ziccif, PRIV_VERSION_1_11_0, ext_always_enabled),
-> +    ISA_EXT_DATA_ENTRY(zicclsm, PRIV_VERSION_1_11_0, ext_always_enabled)=
-,
-> +    ISA_EXT_DATA_ENTRY(ziccrse, PRIV_VERSION_1_11_0, ext_always_enabled)=
-,
->      ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
->      ISA_EXT_DATA_ENTRY(zicntr, PRIV_VERSION_1_12_0, ext_zicntr),
->      ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_zicsr),
-> @@ -110,6 +114,7 @@ const RISCVIsaExtData isa_edata_arr[] =3D {
->      ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause=
-),
->      ISA_EXT_DATA_ENTRY(zihpm, PRIV_VERSION_1_12_0, ext_zihpm),
->      ISA_EXT_DATA_ENTRY(zmmul, PRIV_VERSION_1_12_0, ext_zmmul),
-> +    ISA_EXT_DATA_ENTRY(za64rs, PRIV_VERSION_1_12_0, ext_always_enabled),
->      ISA_EXT_DATA_ENTRY(zaamo, PRIV_VERSION_1_12_0, ext_zaamo),
->      ISA_EXT_DATA_ENTRY(zacas, PRIV_VERSION_1_12_0, ext_zacas),
->      ISA_EXT_DATA_ENTRY(zalrsc, PRIV_VERSION_1_12_0, ext_zalrsc),
-> @@ -173,8 +178,12 @@ const RISCVIsaExtData isa_edata_arr[] =3D {
->      ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
->      ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
->      ISA_EXT_DATA_ENTRY(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
-> +    ISA_EXT_DATA_ENTRY(ssccptr, PRIV_VERSION_1_11_0, ext_always_enabled)=
-,
->      ISA_EXT_DATA_ENTRY(sscofpmf, PRIV_VERSION_1_12_0, ext_sscofpmf),
-> +    ISA_EXT_DATA_ENTRY(sscounterenw, PRIV_VERSION_1_12_0, ext_always_ena=
-bled),
->      ISA_EXT_DATA_ENTRY(sstc, PRIV_VERSION_1_12_0, ext_sstc),
-> +    ISA_EXT_DATA_ENTRY(sstvala, PRIV_VERSION_1_12_0, ext_always_enabled)=
-,
-> +    ISA_EXT_DATA_ENTRY(sstvecd, PRIV_VERSION_1_12_0, ext_always_enabled)=
-,
->      ISA_EXT_DATA_ENTRY(svade, PRIV_VERSION_1_11_0, ext_svade),
->      ISA_EXT_DATA_ENTRY(svadu, PRIV_VERSION_1_12_0, ext_svadu),
->      ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
-> @@ -1567,6 +1576,11 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimenta=
-l_exts[] =3D {
->      DEFINE_PROP_END_OF_LIST(),
->  };
->
-> +#define ALWAYS_ENABLED_FEATURE(_name) \
-> +    {.name =3D _name, \
-> +     .offset =3D CPU_CFG_OFFSET(ext_always_enabled), \
-> +     .enabled =3D true}
-> +
->  /*
->   * 'Named features' is the name we give to extensions that we
->   * don't want to expose to users. They are either immutable
-> @@ -1578,6 +1592,23 @@ const RISCVCPUMultiExtConfig riscv_cpu_named_featu=
-res[] =3D {
->      MULTI_EXT_CFG_BOOL("svade", ext_svade, true),
->      MULTI_EXT_CFG_BOOL("zic64b", ext_zic64b, true),
->
-> +    /*
-> +     * cache-related extensions that are always enabled
-> +     * in TCG since QEMU RISC-V does not have a cache
-> +     * model.
-> +     */
-> +    ALWAYS_ENABLED_FEATURE("za64rs"),
-> +    ALWAYS_ENABLED_FEATURE("ziccif"),
-> +    ALWAYS_ENABLED_FEATURE("ziccrse"),
-> +    ALWAYS_ENABLED_FEATURE("ziccamoa"),
-> +    ALWAYS_ENABLED_FEATURE("zicclsm"),
-> +    ALWAYS_ENABLED_FEATURE("ssccptr"),
-> +
-> +    /* Other named features that TCG always implements */
-> +    ALWAYS_ENABLED_FEATURE("sstvecd"),
-> +    ALWAYS_ENABLED_FEATURE("sstvala"),
-> +    ALWAYS_ENABLED_FEATURE("sscounterenw"),
-> +
->      DEFINE_PROP_END_OF_LIST(),
->  };
->
-> @@ -2171,13 +2202,10 @@ static const PropertyInfo prop_marchid =3D {
->  };
->
->  /*
-> - * RVA22U64 defines some 'named features' or 'synthetic extensions'
-> - * that are cache related: Za64rs, Zic64b, Ziccif, Ziccrse, Ziccamoa
-> - * and Zicclsm. We do not implement caching in QEMU so we'll consider
-> - * all these named features as always enabled.
-> - *
-> - * There's no riscv,isa update for them (nor for zic64b, despite it
-> - * having a cfg offset) at this moment.
-> + * RVA22U64 defines some 'named features' that are cache
-> + * related: Za64rs, Zic64b, Ziccif, Ziccrse, Ziccamoa
-> + * and Zicclsm. They are always implemented in TCG and
-> + * doesn't need to be manually enabled by the profile.
->   */
->  static RISCVCPUProfile RVA22U64 =3D {
->      .parent =3D NULL,
-> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index 2307999387..ea763abb31 100644
-> --- a/target/riscv/tcg/tcg-cpu.c
-> +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -1315,6 +1315,8 @@ static void riscv_tcg_cpu_instance_init(CPUState *c=
-s)
->      RISCVCPU *cpu =3D RISCV_CPU(cs);
->      Object *obj =3D OBJECT(cpu);
->
-> +    cpu->cfg.ext_always_enabled =3D true;
-> +
->      misa_ext_user_opts =3D g_hash_table_new(NULL, g_direct_equal);
->      multi_ext_user_opts =3D g_hash_table_new(NULL, g_direct_equal);
->      riscv_cpu_add_user_properties(obj);
-> --
-> 2.44.0
->
->
+Series based on master. 
+
+Patches missing review: patch 3
+
+Changes from v10:
+- patches 2, 3, 4, 5 from v10: dropped
+- patch 3 (new):
+  - do an early exit in vector helpers if vstart >= vl
+- patch 6 (former patch 9):
+  - fix 'vstart_qe_zero' commit msg references to 'vstart_eq_zero' 
+- v10 link: https://lore.kernel.org/qemu-riscv/20240310115315.187283-1-dbarboza@ventanamicro.com/
+
+Daniel Henrique Barboza (6):
+  target/riscv/vector_helper.c: set vstart = 0 in GEN_VEXT_VSLIDEUP_VX()
+  trans_rvv.c.inc: set vstart = 0 in int scalar move insns
+  target/riscv/vector_helpers: do early exit when vstart >= vl
+  target/riscv: remove 'over' brconds from vector trans
+  trans_rvv.c.inc: remove redundant mark_vs_dirty() calls
+  target/riscv/vector_helper.c: optimize loops in ldst helpers
+
+Ivan Klokov (1):
+  target/riscv: enable 'vstart_eq_zero' in the end of insns
+
+ target/riscv/insn_trans/trans_rvbf16.c.inc |  18 +-
+ target/riscv/insn_trans/trans_rvv.c.inc    | 198 +++++----------------
+ target/riscv/insn_trans/trans_rvvk.c.inc   |  30 +---
+ target/riscv/translate.c                   |   6 +
+ target/riscv/vcrypto_helper.c              |  32 ++++
+ target/riscv/vector_helper.c               |  97 +++++++++-
+ target/riscv/vector_internals.c            |   4 +
+ target/riscv/vector_internals.h            |   9 +
+ 8 files changed, 202 insertions(+), 192 deletions(-)
+
+-- 
+2.43.2
+
 
