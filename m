@@ -2,122 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9121687866B
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:42:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00077878697
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:47:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjjeC-0002U4-P3; Mon, 11 Mar 2024 13:41:12 -0400
+	id 1rjjjr-0000NS-FR; Mon, 11 Mar 2024 13:47:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1rjjeA-0002T2-MG; Mon, 11 Mar 2024 13:41:10 -0400
-Received: from mail-am6eur05on20701.outbound.protection.outlook.com
- ([2a01:111:f403:2612::701]
- helo=EUR05-AM6-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1rjje0-0007Gj-Ar; Mon, 11 Mar 2024 13:41:10 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=O73+mssJaK7Vex5HwZKDtiI6Z88A663FHoTWuqPFgGq31C3++35kM0kIbNsbJ5qgWL2zYdQFiZiAJb32lBDZLfVAgZdRpsZsYEQrPy1ssqyM1rZPl2TnDeziw4k8PKUHeTLSrcJifEj7n4Y13Gkty4EDBdKfTsaKOPmWMsdYIUAKkEuaiVHIfgtJss6zjO5sbUR56R65L/6sd16+wlhIBHQyWdT42lEKddkNMBMRrHYSzYZXfl2k21jOvZf9pq+veWCJRhQKkOSbCKje2zoj++7LUmbybJksC3vTmeBmPnsRmD4S94PKAUPc4F7iQnQDfAiaFc+6pPW1beIN0KL71A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tK2Cj6njlDAyGObEKdX2inmYPA18t0n4TwcjCXYyBa0=;
- b=j3iPSA3b0ULtEozkjfCsjNM5YZlFw8V39a4GqLtFIdCttw4ReZDWRO/2HCt+wFflZFP8dzQI2KQ3f2fDPJB+HBCSGYV7q5O7h/eUTuyb6uvbvXS71p8IzFQBv1kdcYvqUt2VjjQG4cSp1TiKMIxmXJ9qF7A3O+56x+rIfWi6zEOd+x3+MrQoNLqXUlB2SqGAA9AP2JNoGYogCWC1sNscmYbLLRpWjhd1M4vJEaVl1btIcIbiS0FNl1SmPsfk6Fi99Xv1D68YlA22ULMNZ5TRMPaHbZWsq6YQUMGOPDqYPL46ys4K4TlK5kgbVSP+v1IuQFRdnWMuuF58axvUaiZn1A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tK2Cj6njlDAyGObEKdX2inmYPA18t0n4TwcjCXYyBa0=;
- b=URbQtf0wXuvh15X+X6tC5FSP6HDjCWf107/ls2ffQeG2Cbcx9Kc5LGrWNWeaN7zG7y5K4pp1mor9VRZDuFETXSUT/dbfvVo+oFJ0aHRgSAw9yprSvEaEWw/4jeyvdSYXtAX8jRCpH2ZhxZv6JusTnoEppsWzcuvJqLTZtZ4ooOkqBp1UxH7xubbhuxb2CfZ1UTgYfpkBtAhrJSreiIGM94VM2FYyHD3BiiAnB++ZqKzyj53Xk3GgLUFDpK0ik8a8JCGpwvZ5dmiB3C/bzTbFii4tNMlv7rCMg6NZQFqU8Yngq6fgIzhmmrsWrP830tFAeSuXJxti9Han+ihvrU50jQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from DBBPR08MB10721.eurprd08.prod.outlook.com (2603:10a6:10:530::22)
- by AS2PR08MB10322.eurprd08.prod.outlook.com (2603:10a6:20b:5ff::18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.35; Mon, 11 Mar
- 2024 17:40:52 +0000
-Received: from DBBPR08MB10721.eurprd08.prod.outlook.com
- ([fe80::fe49:a4b:7387:3fde]) by DBBPR08MB10721.eurprd08.prod.outlook.com
- ([fe80::fe49:a4b:7387:3fde%3]) with mapi id 15.20.7362.031; Mon, 11 Mar 2024
- 17:40:52 +0000
-From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, den@virtuozzo.com, andrey.drobyshev@virtuozzo.com,
- jsnow@redhat.com, vsementsov@yandex-team.ru, kwolf@redhat.com,
- hreitz@redhat.com
-Subject: [PATCH] block: Use LVM tools for LV block device truncation
-Date: Mon, 11 Mar 2024 18:40:44 +0100
-Message-Id: <20240311174044.67094-1-alexander.ivanov@virtuozzo.com>
-X-Mailer: git-send-email 2.40.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: VI1PR03CA0069.eurprd03.prod.outlook.com
- (2603:10a6:803:50::40) To DBBPR08MB10721.eurprd08.prod.outlook.com
- (2603:10a6:10:530::22)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjjjo-0000AK-Hz
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:47:00 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjjjm-0008CG-I7
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:47:00 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-41330a62bf7so2435885e9.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 10:46:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1710179216; x=1710784016; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=P94mp/Nb4ucHV343Y/FMYqLBRS0gkHikA9l9AmQ9xAU=;
+ b=NjYzZU+G+5vJYYpfaaFALbFcQitXUsgJYoF/oEqnMw31eq4mbjw/BL66W+JkRzPzQo
+ 1nx7+P6QdcWv0OBo4Y4EEhbWhIJnDjk5saTCho7/0Qh+qxkOdKi7AUDtqazYYDbwd8Yc
+ bfyOFtUZ6djoD9CFd2ZqZqi1L3a+Q2yxqsDM6G5ZACdeWlYLY0fYf8mPAWbwzVSSu2CY
+ YVsV8ragKwdV+mDS4mPZnXAKPRsNpxSWnDXSA2LDEdaEnFVlL8/hRndIL7RBhkYw5DJn
+ y4sij1Fw+0szByjFD63RSYzY5ZhU8Yzk402++qQgHFRTR7fDV3D2Exku/7pZWY8CZRXg
+ NINQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710179216; x=1710784016;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=P94mp/Nb4ucHV343Y/FMYqLBRS0gkHikA9l9AmQ9xAU=;
+ b=Gt2P9eyUrPi9jI9mYeb8mMYFV/9QFpVItrR1H5AFFbKe+w7qurO79IVPC+nbqk4Fjk
+ 7I/KuR0ycF/+NaFR4ChFG3v+3UE6P8E1cKHAbrHXRa1QfsOBDkAGdN6Nbzozthi+Jszd
+ tsiSzpvMSoVSIEsxMF7PgLoTp2n1bAtscyLLU5gCZCnH3/h/4UarMQ3217wQ9mLVlQXf
+ RpX5fvXb1W2NP5+u2sexlJjoIHLMf9GhHCqGRPUP8m0oxQ1dX6QD2tklRUub7C/pexZ5
+ U08T3ecDRZHJ+A5h0XRzjGSlfxPWg3n9p9mqKPgy5udBIaWDdaU4KUNDtyvhcOsQYSxH
+ m7aw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWaXSp10PcpF40umyup5CrOppHuUlFJR8I1gHmL+PSoMZoZoF8brR5eo5BooyVhIUQb4e9Ff+iBEA2SidOgTOMVotjia8o=
+X-Gm-Message-State: AOJu0Yzo1253OJMTiOTyCxYinaeEJuO0jZ5EtdgzHHxCYJ/FqHfJFovM
+ 2YP++xvQmQy30ACBoMSsvwT8gSiZRbQrWQR8r8yLaK/MzSvLQBPOBjpyFuwgtiE=
+X-Google-Smtp-Source: AGHT+IHX8xsUK9pPrZ5EnewxvgqZZqABTtW9DDerb/e17+fkvakSFIdqYI/qsmRuziL8cvRHmSxOiA==
+X-Received: by 2002:a05:600c:45c9:b0:413:1f65:ec19 with SMTP id
+ s9-20020a05600c45c900b004131f65ec19mr5250885wmo.37.1710179215983; 
+ Mon, 11 Mar 2024 10:46:55 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.167.228])
+ by smtp.gmail.com with ESMTPSA id
+ q27-20020a056000137b00b0033e72e104c5sm6945438wrz.34.2024.03.11.10.46.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Mar 2024 10:46:55 -0700 (PDT)
+Message-ID: <f3e1fefc-0df3-4339-8373-7648597a78d0@linaro.org>
+Date: Mon, 11 Mar 2024 18:46:53 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DBBPR08MB10721:EE_|AS2PR08MB10322:EE_
-X-MS-Office365-Filtering-Correlation-Id: a38f4eab-e176-4858-ba70-08dc41f2659a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: M+EvtvhI6MF59Z383udXtguhxgfawVbKV7g4HvCgoMAI63tbtOsJZlsDlBEZJFg6ayyPuoLJUXDw9aag99rzaB5iDEZDOSmgfFjQDHeBtiArmh6WUxRDqRc0aYs+A91Sr7m/9uhuxprdX8XCpBHLStaZXMCHmVWGmCOdnI4vqcE800pIxxHmigK2o4zKZDckc4wfDlTnzgnI73QdiOE7735XnnBWa/E2nNZnX9vTvlNG5ELKtorStvkgPmHXV0gRrguZWe5wWML4QzydV9rBrEC0bL+pzbZstIdjAoN2FSbc3DKPb+GNOqchxp6vxsquGbivnvbBmFS7BHR7w5Zbs90uorqSn9rZTnkeuoYcbCTdtDzBLEL70GfDTNGLXfXlEXD5+z1/lnT1OGxyxIhj1ZpiyTdup3GEgUBzZWKotewpkbVnGTBQTy9/fs+g+Ap2VtgxyAoWvxaUu88WmmUZxOhQSZMXHv0aUT94oROt6SIURKe1f0h3nd0lIud0uxsQXGfSdBpwIQZETQrlTEfJgf84fJZXzEaZKWhe35hXBPyRJHf7t7eiwQjIZs/ObShhuglyMz3BtSDjFlVlUkMMqA9bawIg6RBpbEl2vxwo975DzI+cOn8RW/0bQTRm6kIx0bvSOYpXI4vwYq2NakrOVk58SsMH2auaPjQI3luETpmeUJ1qLmcM5xXpGsgMQ51ttXK/9wfKlWGlFl/uYfdwVAoPWf7sk8l3rzgcp44VUMM=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DBBPR08MB10721.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(1800799015)(52116005)(376005)(38350700005); DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?68L6UDfHi7tdjHC2wtBFXDnEH8WxLSd87ajl2UKfb9XqrLd7MJizMFoOldlo?=
- =?us-ascii?Q?tkzCKg+wPUxYI8x4A8pLsuL7WYdtdvvaXnHrjvH2qDkcV+5FYbcRRtNpacy7?=
- =?us-ascii?Q?PImex5pZ8ZS4do8HPgC9sT1MkLpVjAInTG9eiC5P5AMtusqJd6oCca8IptWb?=
- =?us-ascii?Q?e0VRuFDiAcZ1Qs/qUKAm4EjHgKants9eaE2MNtolecIxtMZJtrZqHOui3x1E?=
- =?us-ascii?Q?fbs0nlDl7EBHG0bXVVZ8eErDlACEWxINOQ3zJRLQlTTGEu9ZCND2Hx82oUmm?=
- =?us-ascii?Q?Gnzzhb683oMHHjYv+KenCRbnC7osvtR241iaeJx1iFWRw40TyvHr36XLc1AV?=
- =?us-ascii?Q?Y+UiNxHCI+JFuvHv9lVYmV7cfa8gaaGz88iqTAjkbv1bg82lgYoduL4x57GP?=
- =?us-ascii?Q?ySdzZOHAeot8nNZLa4rLjJwxNwKyr9wdeXpuKySO/10WjEne7eSU4X7ifTL2?=
- =?us-ascii?Q?tCvfEjuhw3AgFNuI+BwtuJu9Y/+jTuhUm2/QSl60nj0WHHwYogYVu9od7cyC?=
- =?us-ascii?Q?8PYD12JPS0BD0S6ncGanuWMY5B1oFbDeAH58mJavMI0gwhNQtNdUih3yXk4t?=
- =?us-ascii?Q?UYesrayiZaxbBaR3NB/ayrqx9bpR3S43Nf93YbP/uTJdY08+wgmyEl5+EKqY?=
- =?us-ascii?Q?or2lCqbQ+qVvrBnCHQXQW4q4TKzPbD0uA38E/aax5ixXpa3sG5sSN7bsr5H6?=
- =?us-ascii?Q?CEn0gQsbtLZv6gWiyc515QTMXf7jlDqnRs2GD/geZUQrpKEQF4c6v5PmZ8kb?=
- =?us-ascii?Q?NqRKA6ls106z/uJnoRIJCEjyQyMFqJaSZt/nTfPw8O14rCLb0LQizSRo8mhA?=
- =?us-ascii?Q?IWffB8UB8UDu/LPa/M5M5VpkkmyYDjen6nNItqFwgYGmZENn/WYEUt27X7QZ?=
- =?us-ascii?Q?4in7IBFbbDwXXKaIvWkd+ge/trLdt/kiJdBHsFSAYL/H5nEZmln0OmoTJ/Xg?=
- =?us-ascii?Q?yVelBs5tZOUkw+r4rMF4LE73Lji9r1hoGP0lV2+v34wy2s8Mrg9UzqKWWZt1?=
- =?us-ascii?Q?BU08PbsspVObUT3VlDgPFYdgCTBNkhFBbUQYbUx9ztBT9ELVtd4YkFADijOZ?=
- =?us-ascii?Q?oB1hXTnBR+hXrGAPf1EO4RHpI/WuZirAkw2ORQPzrRwMtV+n7iw3e8j+7a+K?=
- =?us-ascii?Q?TL9m/KXSlewW0T/OTiYgRozIuTevrWGWQ+grmfhdaW5XNZ7LT8CJy77iL/rJ?=
- =?us-ascii?Q?QrM2Twugcbz/rO2hkZgb4Sz/BXDYrHuoKfmmwb3rFVXrFMjjvTEGAAMjE5o6?=
- =?us-ascii?Q?z7i6Acob+WKlHFS8Zzq4o98HeDKfvD4m8yUguTWjJ8LyOk/twTvnFSSG1iZO?=
- =?us-ascii?Q?cwxHhzHyztD5GTcxbFQw44Amv4iYMQF9HBFH/27FmNtayeuc8CCqHvM1smz0?=
- =?us-ascii?Q?8rqaxYf/8/darYGKjjRlpq0BsMz5u+AzJ6dQuEGnTJ/CwvMi+O2xCv9C+x3h?=
- =?us-ascii?Q?+mIlqG1oM+nzYOm0OFxNGChiCFSW1EwAvz2pTGz9d0DQL5PnR5PLerKfD2+q?=
- =?us-ascii?Q?FloGZLL/svvewCPThpuuUHelanm7QIRLxAoDKhnUs6dmD65askwpxvTzlV3R?=
- =?us-ascii?Q?kBkqUSGG0ODx7OJM61mzhjZlqkcmZrxQwPYxco2FX2OuwrFbdxiS6sAzy6sO?=
- =?us-ascii?Q?LWAcxm5h1mlBpihVVgPZ+Fs=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a38f4eab-e176-4858-ba70-08dc41f2659a
-X-MS-Exchange-CrossTenant-AuthSource: DBBPR08MB10721.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2024 17:40:52.3697 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qocuhjB1p0JTPRtPmLWopu25QxxCIKSqY4ISXfC897DzUC3YIzL2WpdwSpMnYh5QzEVsED+9NgToNh9ulqg9HP/xg/fJrU8VzofK2gNTnmQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR08MB10322
-Received-SPF: pass client-ip=2a01:111:f403:2612::701;
- envelope-from=alexander.ivanov@virtuozzo.com;
- helo=EUR05-AM6-obe.outbound.protection.outlook.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] spapr: Tag pseries-2.1 - 2.11 machines as deprecated
+Content-Language: en-US
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Thomas Huth <thuth@redhat.com>
+Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+References: <20231214181723.1520854-1-clg@kaod.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231214181723.1520854-1-clg@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -133,56 +98,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If a block device is an LVM logical volume we can resize it using
-standard LVM tools.
+Hi,
 
-In raw_co_truncate() check if the block device is a LV using lvdisplay
-and resize it executing lvresize.
+On 14/12/23 19:17, Cédric Le Goater wrote:
+> pseries machines before version 2.11 have undergone many changes to
+> correct issues, mostly regarding migration compatibility. This is
+> obfuscating the code uselessly and makes maintenance more difficult.
+> Remove them and only keep the last version of the 2.x series, 2.12,
+> still in use by old distros.
 
-Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
----
- block/file-posix.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+By the time we get to QEMU v9.2, will pseries-2.12 still be used
+by old distros? (which ones btw?)
 
-diff --git a/block/file-posix.c b/block/file-posix.c
-index 35684f7e21..cf8a04e6f7 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -2670,6 +2670,33 @@ static int coroutine_fn raw_co_truncate(BlockDriverState *bs, int64_t offset,
-     if (S_ISCHR(st.st_mode) || S_ISBLK(st.st_mode)) {
-         int64_t cur_length = raw_getlength(bs);
- 
-+        /*
-+         * Check if the device is an LVM logical volume and try to resize
-+         * it using LVM tools.
-+         */
-+        if (S_ISBLK(st.st_mode) && offset > 0) {
-+            char cmd[PATH_MAX + 32];
-+
-+            snprintf(cmd, sizeof(cmd), "lvdisplay %s > /dev/null",
-+                     bs->filename);
-+            ret = system(cmd);
-+            if (ret != 0) {
-+                error_setg(errp, "lvdisplay returned %d error for '%s'",
-+                           ret, bs->filename);
-+                return ret;
-+            }
-+
-+            snprintf(cmd, sizeof(cmd), "lvresize -f -L %ldB %s > /dev/null",
-+                     offset, bs->filename);
-+            ret = system(cmd);
-+            if (ret != 0) {
-+                error_setg(errp, "lvresize returned %d error for '%s'",
-+                           ret, bs->filename);
-+            }
-+
-+            return ret;
-+        }
-+
-         if (offset != cur_length && exact) {
-             error_setg(errp, "Cannot resize device files");
-             return -ENOTSUP;
--- 
-2.40.1
+What about also deprecating pseries-2.12 and pseries-2.12-sxxm
+which both set pre_3_0_migration, and suggest to use pseries-3.0
+instead?
+
+> 
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+> ---
+>   docs/about/deprecated.rst | 7 +++++++
+>   hw/ppc/spapr.c            | 1 +
+>   2 files changed, 8 insertions(+)
+> 
+> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> index 2e1504024658..c0e22b2b568f 100644
+> --- a/docs/about/deprecated.rst
+> +++ b/docs/about/deprecated.rst
+> @@ -269,6 +269,13 @@ Nios II ``10m50-ghrd`` and ``nios2-generic-nommu`` machines (since 8.2)
+>   
+>   The Nios II architecture is orphan.
+>   
+> +``pseries-2.1`` up to ``pseries-2.11`` (since 9.0)
+> +''''''''''''''''''''''''''''''''''''''''''''''''''
+> +
+> +Older pseries machines before version 2.12 have undergone many changes
+> +to correct issues, mostly regarding migration compatibility. These are
+> +no longer maintained and removing them will make the code easier to
+> +read and maintain. Use versions 2.12 and above as a replacement.
 
 
