@@ -2,58 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2CF87868A
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:44:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A33C878694
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:46:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjjfb-0004Sq-1A; Mon, 11 Mar 2024 13:42:39 -0400
+	id 1rjjfl-0005MH-Fe; Mon, 11 Mar 2024 13:42:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjfV-00041w-S9
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:42:35 -0400
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1rjjfa-0004YZ-MH; Mon, 11 Mar 2024 13:42:38 -0400
 Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjfS-0007TN-So
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:42:32 -0400
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1rjjfY-0007Tr-SZ; Mon, 11 Mar 2024 13:42:38 -0400
 Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6e6381df003so4061662b3a.0
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 10:42:30 -0700 (PDT)
+ d2e1a72fcca58-6e64a9df6c3so3792408b3a.3; 
+ Mon, 11 Mar 2024 10:42:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710178949; x=1710783749; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710178955; x=1710783755; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=B/XlsIofD/wjudMNjmydpE++GM2AoH7AyjDFCwRpOIY=;
- b=dKdExSpyAo4Vhr7tHH27ytmWMj+M+xBGOpsQWILHSyYs19GbBhiSdJtu+l1X9x1EeH
- /ZjuH72ahjw7xapcArzM4SbtEVMFP5b2JdDRMcMi3YJOplFQ6XLcECEClqxnQ8jfw7CY
- 4uc7EhBH8/zO9SvqaSkPdqxpKUtz8SCT33hcSpuoWLAQ0+jzeGZ9KoX7O109u20/C/SU
- VLmrzZsFaK3hlWyBO0i1NsufYLqqizzmn+pQci4/fcCF8jNZv9tjhCAxL9f3B+beXCCo
- ZMKtqRJK1udEtU9aawbyAVTQT+9IeMYdK18sopHB8PITo+Bzz31qFnLiwcWtJza73oF3
- +18Q==
+ bh=lDxLWuCdYHq+0UxHzHGZvZ93wYuuHZ500ruO/QvykEw=;
+ b=d4hS2BuTrkMMrc2JAmESC6/CAFonk0Zvenlutp5CXGUxBwJtSUJFKYhJXdW49m4eH1
+ Sxe+JX0+eSYh5IfOciLsAl1t2Obmz0gsjKcC6w1eIuRhqhaGMnOf9j5rqxWmoxEo832J
+ 9e6/W2TClAzfeCk66EOiwPvN0MStT3VgJplZZNQhyx6NGlS07iDYWpqGu9nw+qkRa/zo
+ Uj6mWpeArMNXZTwriNgCNn0WA7tNoKeHJW+Y35iVCFr0VPOrzAltEYXS7kh0c3bowDV3
+ MbFiWlqAIHp4m2HKubD6Br73M4Xk5PuXuPpszI1IF03V3JF4nUyHsfvqonfVmKyZCCiY
+ cw1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710178949; x=1710783749;
+ d=1e100.net; s=20230601; t=1710178955; x=1710783755;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=B/XlsIofD/wjudMNjmydpE++GM2AoH7AyjDFCwRpOIY=;
- b=rM4SnzpUaONQeHv32aVxrjo6JCZu4ypM65xKOZgLhdoovxxPyEtlFp0jGM9WH/Yt4x
- NLa3f+EdsKkKJVxBedbkEMRlsBj53M3p7fcmBuBCNLOpUxLPySeZxSXxJLfsjTKBezO0
- HFnrFxKnRDHKG8R0nDskA2IeFAWEVNXl5Xl0oBnWav4i5awgnWJ5JqB2caIPTHbOxHoI
- EFffN6FK4qPyVMYOxa9idm4FdL1lXz+SurOcL294Ml9kPn7VWVpm2Jt3I6WuZXXrB+lP
- Ol6YXc7YjNOEybq1lEHdN2TSWIi9tix7vLNh5TkU3WRw1Md2S5FNf32v8cmuLCDDwPd4
- 6GZw==
-X-Gm-Message-State: AOJu0Yx+tWGWQsNIchoePQSGdV0oY5lzcclR5OXaCQRNxeWjtMlaNg5W
- Q86pYZcX8WsMITwEXlEednTmbcA7ibs7Ix8usY3l6eAMky0MVMEyp/4TOWfBKzI=
-X-Google-Smtp-Source: AGHT+IF27GH2svtB2AKfHjQECJ98Nk3FJalKkgFnfyhrJpQ12c7nv8jDjsv/9cMHTZT89BAqbdEjEg==
-X-Received: by 2002:a05:6a20:914c:b0:1a1:8bdc:9dc2 with SMTP id
- x12-20020a056a20914c00b001a18bdc9dc2mr8921709pzc.31.1710178949094; 
- Mon, 11 Mar 2024 10:42:29 -0700 (PDT)
+ bh=lDxLWuCdYHq+0UxHzHGZvZ93wYuuHZ500ruO/QvykEw=;
+ b=reiTlCuYTOoSp3cLT27+EfmaE9aOlFVa1nrT5qh6B9Xfmy6/15Q19Xu12fjToI1B2m
+ WcpZDuAWDqkA1X/GkzBpjGwAQPt7LP89PRwNokK/3z5vMZ1+J83DP5tjcjd8+HVPRuGy
+ qnEqj5z1GPAyJwKFK5eIsEaWykoRugqKaPOZ7L7GENriHdMB0Zku0NPGn/IYkPlt2MLX
+ gLsPQCqQuRO5rgTMDd8KAT4jTky32k9fWYje5gPkT3OIZQRQKKOD5j2sFNbW5JIxo9QQ
+ 8+71xlglWFCxfpSSSMVdlXKzdA34uRX03k3r077a+gE9yvz3NTLabPMib0fhj9INvKkg
+ YijA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVh7CWtbwELgXIF7aPNSQYA+vPOf5bBCdFqMPXoJtTp0RvfD40wP5CjgwrBz0FDgGqMNOj+DXlZ3PvmJU2UYMtVn7tQ
+X-Gm-Message-State: AOJu0YwE/5nlkQUxM9gSyNv9oClzhTMNtyps23tI8zSggc7OCRyE6uQr
+ KQkdoWA+YSnsuLeUhl7ClV/+9Po5cPhlx5tpyfm+5qTbsFMgRGW+cozg3OKQZkI=
+X-Google-Smtp-Source: AGHT+IHLaZL2JscYhnGsK2pqMh8r6LSnh3vkWR9vWi0hxg7lKDfVoNfqVjyPzEUxES7b4ytZbGmZ9g==
+X-Received: by 2002:a05:6a00:22d2:b0:6e6:800f:9f84 with SMTP id
+ f18-20020a056a0022d200b006e6800f9f84mr9211371pfj.11.1710178954731; 
+ Mon, 11 Mar 2024 10:42:34 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- a18-20020a62d412000000b006e67b4d7b74sm4593187pfh.197.2024.03.11.10.42.24
+ a18-20020a62d412000000b006e67b4d7b74sm4593187pfh.197.2024.03.11.10.42.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 10:42:28 -0700 (PDT)
+ Mon, 11 Mar 2024 10:42:34 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -64,11 +66,11 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
  Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH v4 21/24] tests/avocado: reverse_debugging.py test
- auto-snapshot mode
-Date: Tue, 12 Mar 2024 03:40:23 +1000
-Message-ID: <20240311174026.2177152-22-npiggin@gmail.com>
+ Beraldo Leal <bleal@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ qemu-ppc@nongnu.org
+Subject: [PATCH v4 22/24] target/ppc: fix timebase register reset state
+Date: Tue, 12 Mar 2024 03:40:24 +1000
+Message-ID: <20240311174026.2177152-23-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240311174026.2177152-1-npiggin@gmail.com>
 References: <20240311174026.2177152-1-npiggin@gmail.com>
@@ -98,82 +100,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This runs the recording phase with a periodic auto-snapshot.
+(H)DEC and PURR get reset before icount does, which causes them to be
+skewed and not match the init state. This can cause replay to not
+match the recorded trace exactly. For DEC and HDEC this is usually not
+noticable since they tend to get programmed before affecting the
+target machine. PURR has been observed to cause replay bugs when
+running Linux.
 
-It also runs the machine for 5 seconds after creating the initial
-address map, so as to alow time for a some auto snapshots to be
-taken.
+Fix this by resetting using a time of 0.
 
-In the replay mode a reverse-debugging sequence is added where the
-test is run to the end, and reverse-stepped from there. This should
-load the last auto-snapshot taken.
-
-The test hangs on x86-64 and aarch64 with autosnapshots, so it is
-disabled for them.
-
+Cc: qemu-ppc@nongnu.org
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- tests/avocado/reverse_debugging.py | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ hw/ppc/ppc.c         | 11 ++++++++---
+ target/ppc/machine.c |  4 ++++
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse_debugging.py
-index 4bf4e6e1e5..67b72ce519 100644
---- a/tests/avocado/reverse_debugging.py
-+++ b/tests/avocado/reverse_debugging.py
-@@ -32,9 +32,11 @@ class ReverseDebugging(LinuxKernelTest):
-     that the execution is stopped at the last of them.
-     """
+diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+index fadb8f5239..f22321779e 100644
+--- a/hw/ppc/ppc.c
++++ b/hw/ppc/ppc.c
+@@ -1112,16 +1112,21 @@ void cpu_ppc_tb_reset(CPUPPCState *env)
+         timer_del(tb_env->hdecr_timer);
+         ppc_set_irq(cpu, PPC_INTERRUPT_HDECR, 0);
+         tb_env->hdecr_next = 0;
++        _cpu_ppc_store_hdecr(cpu, 0, 0, 0, 64);
+     }
  
--    timeout = 20
-+    timeout = 30
-     STEPS = 10
-     endian_is_le = True
-+    # x86-64 and aarch64 hang with autosnapshot so turn it off by default
-+    autosnapshot = False
+     /*
+      * There is a bug in Linux 2.4 kernels:
+      * if a decrementer exception is pending when it enables msr_ee at startup,
+      * it's not ready to handle it...
++     *
++     * On machine reset, in this is called before icount is reset, so
++     * for icount-mode, setting TB registers using now=qemu_clock_get_ns
++     * results in them being skewed when icount does get reset. Use an
++     * explicit 0 to get a consistent reset state.
+      */
+-    cpu_ppc_store_decr(env, -1);
+-    cpu_ppc_store_hdecr(env, -1);
+-    cpu_ppc_store_purr(env, 0x0000000000000000ULL);
++    _cpu_ppc_store_decr(cpu, 0, 0, -1, 64);
++    _cpu_ppc_store_purr(env, 0, 0);
+ }
  
-     def run_vm(self, record, shift, args, replay_path, image_path, port):
-         logger = logging.getLogger('replay')
-@@ -47,9 +49,14 @@ def run_vm(self, record, shift, args, replay_path, image_path, port):
-             logger.info('replaying the execution...')
-             mode = 'replay'
-         vm.add_args('-gdb', 'tcp::%d' % port, '-S')
--        vm.add_args('-icount', 'shift=%s,rr=%s,rrfile=%s,rrsnapshot=init' %
--                    (shift, mode, replay_path),
--                    '-net', 'none')
-+        if self.autosnapshot:
-+            vm.add_args('-icount', 'shift=%s,rr=%s,rrfile=%s,rrsnapshot=init'
-+                                   ',rrsnapmode=periodic,rrsnapcount=10,'
-+                                   'rrsnaptime=1' % (shift, mode, replay_path))
-+        else:
-+            vm.add_args('-icount', 'shift=%s,rr=%s,rrfile=%s,rrsnapshot=init'
-+                                   % (shift, mode, replay_path))
-+        vm.add_args('-net', 'none')
-         vm.add_args('-drive', 'file=%s,if=none,id=disk0' % image_path)
-         if args:
-             vm.add_args(*args)
-@@ -184,8 +191,12 @@ def reverse_debugging(self, shift=7, args=None, x86_workaround=False):
-         logger.info('continue running')
-         self.gdb_cont_nowait(g)
+ void cpu_ppc_tb_free(CPUPPCState *env)
+diff --git a/target/ppc/machine.c b/target/ppc/machine.c
+index 203fe28e01..4c4294eafe 100644
+--- a/target/ppc/machine.c
++++ b/target/ppc/machine.c
+@@ -215,6 +215,8 @@ static int cpu_pre_save(void *opaque)
+          * it here.
+          */
+         env->spr[SPR_DECR] = cpu_ppc_load_decr(env);
++        printf("cpu_ppc_pre_save  TB:0x%016lx\n", cpu_ppc_load_tbl(env));
++        printf("cpu_ppc_pre_save DEC:0x%016lx\n", cpu_ppc_load_decr(env));
+     }
  
--        logger.info('running for 1s...')
--        time.sleep(1)
-+        if self.autosnapshot:
-+            logger.info('running for 5s...')
-+            time.sleep(5)
-+        else:
-+            logger.info('running for 1s...')
-+            time.sleep(1)
-         logger.info('stopping to read final icount')
-         vm.qmp('stop')
-         self.gdb_break(g)
-@@ -365,6 +376,7 @@ def test_ppc64_pseries(self):
-         # to take the 'hit a breakpoint again' path. That's not a problem,
-         # just slightly different than the other machines.
-         self.endian_is_le = False
-+        self.autosnapshot = True
-         self.reverse_debugging()
+     return 0;
+@@ -333,6 +335,8 @@ static int cpu_post_load(void *opaque, int version_id)
+          * triggered types (including HDEC) would need to carry more state.
+          */
+         cpu_ppc_store_decr(env, env->spr[SPR_DECR]);
++        printf("cpu_ppc_post_ld   TB:0x%016lx\n", cpu_ppc_load_tbl(env));
++        printf("cpu_ppc_post_ld  DEC:0x%016lx\n", cpu_ppc_load_decr(env));
+         pmu_mmcr01_updated(env);
+     }
  
-     # See https://gitlab.com/qemu-project/qemu/-/issues/1992
 -- 
 2.42.0
 
