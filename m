@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1EB187884B
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E1087884A
 	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 19:54:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjklD-00054N-VC; Mon, 11 Mar 2024 14:52:31 -0400
+	id 1rjklE-00055f-Fg; Mon, 11 Mar 2024 14:52:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rjkl3-0004yD-P4; Mon, 11 Mar 2024 14:52:21 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1rjkl5-0004yi-MD; Mon, 11 Mar 2024 14:52:24 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rjkl0-0004ym-4O; Mon, 11 Mar 2024 14:52:19 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-6e68bab3e4cso1414821b3a.0; 
- Mon, 11 Mar 2024 11:52:15 -0700 (PDT)
+ id 1rjkl3-0004yx-SG; Mon, 11 Mar 2024 14:52:23 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1dc49b00bdbso25425075ad.3; 
+ Mon, 11 Mar 2024 11:52:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710183135; x=1710787935; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710183138; x=1710787938; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZWEvA/D4WyZmP6kLaipe4fEneiVN5g7kT/C/fgmaO8U=;
- b=WdY74lqsWQz8BW4A5pmHFlKQG1FhrdLdGmvQNeXN1OrNmVDssRkvwXovIQEYVYHoPl
- tPUE/DYZxwEOr7tLIDeMpNqGD+mpT9CF/4reXyW0Lq8dl5zLKxqsaBV3XVynGPYAfY0Y
- nQ7s9G2BNF9kK+1+ylSVc3K4nS8ss4pvLF8fEnPUu3QdIxYzA6sIq671uLVEhqvdBVAD
- yWlmmW5pkIihhbtsm+bv6pipBd2AiYFezUVIfZgNzPjdJzOZkIYZqthIa1E3BCOvpjYF
- PjTFWhPOnR2jIha79tg+bWZ/yTKZwvnqNnPDxnXd/ODDGKBmPPHPqgkm24g+kFdMCJ2c
- evag==
+ bh=m4I3uk5RgxokOhWwxSwUTZCQpUL3SWxu7Fy5Fxqrf1U=;
+ b=KURUuVHQ3wh4+E/F/HZhSGZWq7338xSG85S3IbftsXBL6AxVs8Q4o2cW6a0de7tglD
+ TYNd9JBZc2mtUCy3bKfVI+WiHYrUXhypNMU4tt6/3pIf3+UGGOe+LbNNcKIdioMkZ33N
+ 4oNE9Gvw00SG3okSXPDtea27Mp8/NEnXtUaWLsLEpncUmpcVNbpA9fEMDzK5HaJ/Vmfu
+ gYtRuwblb2UYAydfjga9eGVWJ2Plu9ncXo4o3lxATNYKhGaFvNBb1D8UxSqkSvwKRtFI
+ WTib8lHd2zhft9TUstl4rbq1IQpwCAx/UTcnEyCVKolEgXjmhkKUIZEDoiLuXR/U3QoH
+ a1xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710183135; x=1710787935;
+ d=1e100.net; s=20230601; t=1710183138; x=1710787938;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZWEvA/D4WyZmP6kLaipe4fEneiVN5g7kT/C/fgmaO8U=;
- b=raFZJhNYYbesptkDGwcFvy1ZLt+nYXRu1FAAQc7nJXJGm1PmPX37uMKUNS5tdnRUHB
- drdi5BZQqYa6PW4D+w5PgGE373hN5sjJIuAuYr2hs8IcEVMv8T16hB5ukAyNzkjOKcKP
- uszM/THEAaE54e9qcVw15YMipiKhe0cXSfLhNc3qPye7fC6yxzrK7wtQapRYBmqhsTuz
- M9jRqOf6O2N0Tx73W0aT/5ahqpm1R3rtqinfIVqa5MMnmJ9eG6Et8sJM74L3N/85UYlU
- xP7ywyN/2jZmYIorjw8XWvc2a6HFH8QZ/sy1+/sXZeo5uEouLoySWnF1PTyj/RJokrTI
- uG/Q==
+ bh=m4I3uk5RgxokOhWwxSwUTZCQpUL3SWxu7Fy5Fxqrf1U=;
+ b=vvGYlrX0L04OEFbTHRWiKYOqwc+3SLS+Hdl8UXiuX8S/nUmehhzfqV3HZpovG9MmYU
+ D8rj2kH7T8xuNL2/ZwdMG8gFosTEtF7jJTvUpMxz+QDKTId9S9LBTsTavR5FJK6GC/t2
+ tCK7FRLhCsYRT+JyMh9CosLM5X28ZZ/Sa1odaWRFo5+AYfyfeSYT0E+qIBBDfPSTlLle
+ DrYPIFZVKS0y0Jiie4PEQNGoPVdiRApQhMnYj2jzfxGAyWOGSxLKHaLiEjVVfFKEZMNi
+ 1dqtpblvnyvba00sMwMKcESYrVbW9ifLEAtstM4tBbvjmFK+nVpwrNIRmmjPU3sVAkyx
+ pNsg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWWmLioLhbNlJZZFF9+BDajrAjHc7ToN1XRwyz4ngXzbodzeobIKgyrWb/cJeRYd2uSXHYo6mF8din+qYyAF3FB3UTgBCs=
-X-Gm-Message-State: AOJu0YyxUARgmomSvQAX7NUolPBaX1OyumStEeOsGeCi3dN3c1YQI+WJ
- rSx8RL86urLh9JGhdIHtMrY8TvQCUW/dAgmlZXC82nn5TzRuRvfONlREsks0CGM=
-X-Google-Smtp-Source: AGHT+IHXeoVZHLxUNp4UYs+6n1lqgNdsK/0N+Rz2eRmeTFGsLeRrofgNPJDfUJbhqqoGqcftl9TV7A==
-X-Received: by 2002:a05:6a20:8411:b0:1a3:15e8:7e93 with SMTP id
- c17-20020a056a20841100b001a315e87e93mr4206489pzd.56.1710183134791; 
- Mon, 11 Mar 2024 11:52:14 -0700 (PDT)
+ AJvYcCVdcHYw0HD29Yu7fhKYvI9I6XHKReFS24TbP9Q0P0A7KuuvsSboAZ4608+//gxv6cj+vuykEiFRUfiD9J/JMoeSM0dKtrc=
+X-Gm-Message-State: AOJu0YzGtmDbBHDMGtcQ60gJvJT3MORdWroGAihqHd5vDV1Ju8vuDjmU
+ vVVg+EGboZ9E07q0H3C8J27SY/i8xObmaOD6XxH6WTAo1Ix9zRLVeIhPo9tpFEw=
+X-Google-Smtp-Source: AGHT+IGBsYLDmYSnyMPdfLEAm02/vjJmNAq+OuGOyKb+L9jpXu6qb9qRrmAmQ/oMnFYaGfJDjqS1RA==
+X-Received: by 2002:a17:902:ccc5:b0:1dd:9263:c3bd with SMTP id
+ z5-20020a170902ccc500b001dd9263c3bdmr4110899ple.12.1710183138573; 
+ Mon, 11 Mar 2024 11:52:18 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- z2-20020a170903018200b001dd7d00f7afsm4843887plg.18.2024.03.11.11.52.11
+ z2-20020a170903018200b001dd7d00f7afsm4843887plg.18.2024.03.11.11.52.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 11:52:14 -0700 (PDT)
+ Mon, 11 Mar 2024 11:52:18 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  David Gibson <david@gibson.dropbear.id.au>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PATCH 02/13] target/ppc: POWER10 does not have transactional memory
-Date: Tue, 12 Mar 2024 04:51:44 +1000
-Message-ID: <20240311185200.2185753-3-npiggin@gmail.com>
+Subject: [PATCH 03/13] ppc/spapr|pnv: Remove SAO from pa-features
+Date: Tue, 12 Mar 2024 04:51:45 +1000
+Message-ID: <20240311185200.2185753-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240311185200.2185753-1-npiggin@gmail.com>
 References: <20240311185200.2185753-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,38 +94,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-POWER10 hardware implements a degenerate transactional memory facility
-in POWER8/9 PCR compatibility modes to permit migration from older
-CPUs, but POWER10 / ISA v3.1 mode does not support it so the CPU model
-should not support it.
+SAO is a page table attribute that strengthens the memory ordering of
+accesses. QEMU with MTTCG does not implement this, so clear it in
+ibm,pa-features. This is an obscure feature that has been removed from
+POWER10 ISA v3.1, there isn't much concern with removing it.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/cpu_init.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/ppc/pnv.c   |  2 +-
+ hw/ppc/spapr.c | 14 ++++++++++----
+ 2 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 572cbdf25f..d7e84a2f40 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -6573,7 +6573,7 @@ POWERPC_FAMILY(POWER10)(ObjectClass *oc, void *data)
-                         PPC2_FP_TST_ISA206 | PPC2_BCTAR_ISA207 |
-                         PPC2_LSQ_ISA207 | PPC2_ALTIVEC_207 |
-                         PPC2_ISA205 | PPC2_ISA207S | PPC2_FP_CVT_S64 |
--                        PPC2_TM | PPC2_ISA300 | PPC2_PRCNTL | PPC2_ISA310 |
-+                        PPC2_ISA300 | PPC2_PRCNTL | PPC2_ISA310 |
-                         PPC2_MEM_LWSYNC | PPC2_BCDA_ISA206;
-     pcc->msr_mask = (1ull << MSR_SF) |
-                     (1ull << MSR_HV) |
-@@ -6617,7 +6617,7 @@ POWERPC_FAMILY(POWER10)(ObjectClass *oc, void *data)
-     pcc->flags = POWERPC_FLAG_VRE | POWERPC_FLAG_SE |
-                  POWERPC_FLAG_BE | POWERPC_FLAG_PMM |
-                  POWERPC_FLAG_BUS_CLK | POWERPC_FLAG_CFAR |
--                 POWERPC_FLAG_VSX | POWERPC_FLAG_TM | POWERPC_FLAG_SCV;
-+                 POWERPC_FLAG_VSX | POWERPC_FLAG_SCV;
-     pcc->l1_dcache_size = 0x8000;
-     pcc->l1_icache_size = 0x8000;
- }
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index 0b47b92baa..aa9786e970 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -150,7 +150,7 @@ static void pnv_dt_core(PnvChip *chip, PnvCore *pc, void *fdt)
+     uint32_t page_sizes_prop[64];
+     size_t page_sizes_prop_size;
+     const uint8_t pa_features[] = { 24, 0,
+-                                    0xf6, 0x3f, 0xc7, 0xc0, 0x80, 0xf0,
++                                    0xf6, 0x3f, 0xc7, 0xc0, 0x00, 0xf0,
+                                     0x80, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                     0x00, 0x00, 0x00, 0x00, 0x80, 0x00,
+                                     0x80, 0x00, 0x80, 0x00, 0x80, 0x00 };
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 55263f0815..5099f12cc6 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -234,16 +234,16 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
+                                  void *fdt, int offset)
+ {
+     uint8_t pa_features_206[] = { 6, 0,
+-        0xf6, 0x1f, 0xc7, 0x00, 0x80, 0xc0 };
++        0xf6, 0x1f, 0xc7, 0x00, 0x00, 0xc0 };
+     uint8_t pa_features_207[] = { 24, 0,
+-        0xf6, 0x1f, 0xc7, 0xc0, 0x80, 0xf0,
++        0xf6, 0x1f, 0xc7, 0xc0, 0x00, 0xf0,
+         0x80, 0x00, 0x00, 0x00, 0x00, 0x00,
+         0x00, 0x00, 0x00, 0x00, 0x80, 0x00,
+         0x80, 0x00, 0x80, 0x00, 0x00, 0x00 };
+     uint8_t pa_features_300[] = { 66, 0,
+         /* 0: MMU|FPU|SLB|RUN|DABR|NX, 1: fri[nzpm]|DABRX|SPRG3|SLB0|PP110 */
+-        /* 2: VPM|DS205|PPR|DS202|DS206, 3: LSD|URG, SSO, 5: LE|CFAR|EB|LSQ */
+-        0xf6, 0x1f, 0xc7, 0xc0, 0x80, 0xf0, /* 0 - 5 */
++        /* 2: VPM|DS205|PPR|DS202|DS206, 3: LSD|URG, 5: LE|CFAR|EB|LSQ */
++        0xf6, 0x1f, 0xc7, 0xc0, 0x00, 0xf0, /* 0 - 5 */
+         /* 6: DS207 */
+         0x80, 0x00, 0x00, 0x00, 0x00, 0x00, /* 6 - 11 */
+         /* 16: Vector */
+@@ -284,6 +284,12 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
+         return;
+     }
+ 
++    /*
++     * SSO (SAO) ordering is supported on KVM and thread=single hosts,
++     * but not MTTCG, so disable it. To advertise it, a cap would have
++     * to be added, or support implemented for MTTCG.
++     */
++
+     if (ppc_hash64_has(cpu, PPC_HASH64_CI_LARGEPAGE)) {
+         /*
+          * Note: we keep CI large pages off by default because a 64K capable
 -- 
 2.42.0
 
