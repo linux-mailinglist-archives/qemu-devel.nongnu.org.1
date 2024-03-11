@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3CB9878A82
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 23:07:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F31878A6D
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 23:01:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjngh-0000XQ-S7; Mon, 11 Mar 2024 18:00:05 -0400
+	id 1rjngd-0000Uu-KW; Mon, 11 Mar 2024 17:59:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngV-0000PR-FJ
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngV-0000Pc-IW
  for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngS-00040F-RH
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:50 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngT-00040L-8f
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1710194388;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yRGPg/czG58tLUCGpqFBbCYEw31JuRNr9OOpCiRQjy0=;
- b=ENQRDMj4Ie3GFkd3xiuyrKENvwAyDbTbJGE9TRJJu42zZE15pZIk0oALZWKcrzGt8yVmWJ
- aukyXLZRnSqvn5/zDPMHqFNFW6jO0ju4I9HI178LCCtvdq8dV+SJDzu7Reg2jE3qFtLKEn
- 9YKx8hjyVj0+oMyT5rwHDqp28Bd6pf4=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ZYSgvTN7t6/1mUzIu1ZJuxJpeE9c58Iqz1Li8XbeIy4=;
+ b=KKTDBxKP9w1swh+96f3iWCgnaXYD1IwHoVgyzaNB4bRAe2a9rCYxiXuysTNlv9z/hSDBnC
+ UNq8sbAo6Sui651+6VYmUUT76AZgWdCSA0kt/Pu1G1/CG3ZLiYxSnFTS1/5x2PCVMahOr6
+ zCdnkhl1i8aJd19cjVuP/FNjSlu5OcU=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-168-cFrAhoSZNYyDt_qie4EeQg-1; Mon, 11 Mar 2024 17:59:45 -0400
-X-MC-Unique: cFrAhoSZNYyDt_qie4EeQg-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-690d3f5af86so4505506d6.0
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 14:59:45 -0700 (PDT)
+ us-mta-608-Q6qJFhJuMdqhnQ7aF5jtYQ-1; Mon, 11 Mar 2024 17:59:47 -0400
+X-MC-Unique: Q6qJFhJuMdqhnQ7aF5jtYQ-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-690ab2b0de1so15043976d6.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 14:59:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710194385; x=1710799185;
+ d=1e100.net; s=20230601; t=1710194386; x=1710799186;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yRGPg/czG58tLUCGpqFBbCYEw31JuRNr9OOpCiRQjy0=;
- b=W1KvWT2tRY0wWw0nKTNivoH9rluTGl2dnttD38+yCPGFzSC64WbSNPEdfcDfV6Ty87
- pkcUbBHq1ydnYf1mDuUdyP3OgR396y/GbkAJY5WSKBxLcjIhXq2PeC0jOMpFUqQHVqrT
- teJyU4unVwBEm48O2B2GpsM6f1eSN/Jw0kW11zptYs/K25NJJzhf0vo8AJnr4wQ+9+Cg
- PKMAyavqEEKS+APd23nxFau9IV7OsXhImN3o8eTDsnzSENoGb2DU9h1/KNC8fSi7a0oo
- lkisOGK3+Hj8M0QUMtHh8yzDNJmQS4tmHuTh4r3DP7qWAfuL2NfNW8NOJLoku5aUtuu4
- W33A==
-X-Gm-Message-State: AOJu0YyOnHx/mTVBsl9/e0Bodin2QmniUFEGZKJaRX2/Od7qHaNnyjfR
- JeyTeTmAkO9v6jKT4kLXZ2Y6EAqxPi1nNgI3x42Br+9QJoE2Tk3h5pKuA7fP3N8HEzizpeC1Q4S
- 6JRXMa8Dzh4kKlxKxlx9mcql1j1QdnxSeHYsVEpicD7yk68qZ4MAyTlfwKI60F6hszzhbsNHToI
- 1nw6mDWcOQ2Rw7ThWP8O3320CJ7WWr36f3tA==
-X-Received: by 2002:ad4:5bec:0:b0:690:e47c:9bee with SMTP id
- k12-20020ad45bec000000b00690e47c9beemr406381qvc.4.1710194384861; 
- Mon, 11 Mar 2024 14:59:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFmNZoMikAaOW0gfJu6qy88OFt8U8twruAvieSn9O7B5S8Qzesk6AuVk9ZsOoQsvcC7OVnGCg==
-X-Received: by 2002:ad4:5bec:0:b0:690:e47c:9bee with SMTP id
- k12-20020ad45bec000000b00690e47c9beemr406360qvc.4.1710194384389; 
- Mon, 11 Mar 2024 14:59:44 -0700 (PDT)
+ bh=ZYSgvTN7t6/1mUzIu1ZJuxJpeE9c58Iqz1Li8XbeIy4=;
+ b=M276jH+59TL7jDehxmzzBveTBDSTPL2QOQE7c4v/lps7Mamv0gBaCLBWWGNNT7gK6o
+ gpCYmGDQEJEYShDl7feOiSinMSFpC/4jOttvNXCydiKVPnBt1t1jL95MnS4h65HwXsBN
+ qeLcj1SBrU81VKJnykGr7n7UVf05fAa9up7r2c2GX2b3oQPF8E4ka83uTqG9HyHrTg3t
+ uhRIFUSfdOLHX525fbCtvt/GzC0fBNyb3UgJjVDrnn+WgjTcVlDQMgvaX5AhkrzR7qjz
+ XQKubzshNDN1Z7N9iFoqHnOtiUZ3r1kjCERRRi+HIuW/Jg7LUNlJ3MfHblZvgkQBOfiV
+ Gxjw==
+X-Gm-Message-State: AOJu0Yyd8gw9eQthwvvGy2rPIIyEj/liwfrZ3Tw4TvWqegfGgABUuemj
+ o6lG9E1bUE6qG6xpI0lfOCLfXLv2pr/Ld5G1WaGrBGQzR7p+b7r+2UkHf6543nIaaSRiGuFmvPs
+ WOW/kz8zC/TcXAXoqD83LCx4sEjcEMhJ/e2GvBX0wpQtT2RQlPaTMOGiz667BRHHFw9LL5YPByB
+ c6hE4r1d2c4eOej9XWuR2WdPom4Ah3c8o0+A==
+X-Received: by 2002:a0c:eb83:0:b0:68f:e779:70f2 with SMTP id
+ x3-20020a0ceb83000000b0068fe77970f2mr136347qvo.3.1710194386549; 
+ Mon, 11 Mar 2024 14:59:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEEq9hjgHMwGjne1kqoTLcdFTY7SEPw50PVak5JmXopJTgKo+USkUHX9sc6GXJ1EBqsSqdrBA==
+X-Received: by 2002:a0c:eb83:0:b0:68f:e779:70f2 with SMTP id
+ x3-20020a0ceb83000000b0068fe77970f2mr136314qvo.3.1710194385967; 
+ Mon, 11 Mar 2024 14:59:45 -0700 (PDT)
 Received: from x1n.. (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- d6-20020a0ce446000000b00690cec16254sm1541932qvm.68.2024.03.11.14.59.43
+ d6-20020a0ce446000000b00690cec16254sm1541932qvm.68.2024.03.11.14.59.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 14:59:43 -0700 (PDT)
+ Mon, 11 Mar 2024 14:59:45 -0700 (PDT)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, peterx@redhat.com,
  Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
  Prasad Pandit <ppandit@redhat.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 12/34] physmem: Reduce local variable scope in
- flatview_read/write_continue()
-Date: Mon, 11 Mar 2024 17:59:03 -0400
-Message-ID: <20240311215925.40618-13-peterx@redhat.com>
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PULL 13/34] physmem: Factor out body of
+ flatview_read/write_continue() loop
+Date: Mon, 11 Mar 2024 17:59:04 -0400
+Message-ID: <20240311215925.40618-14-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240311215925.40618-1-peterx@redhat.com>
 References: <20240311215925.40618-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -107,117 +105,221 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Precursor to factoring out the inner loops for reuse.
+This code will be reused for the address_space_cached accessors
+shortly.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Also reduce scope of result variable now we aren't directly
+calling this in the loop.
+
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/r/20240307153710.30907-3-Jonathan.Cameron@huawei.com
+Link: https://lore.kernel.org/r/20240307153710.30907-4-Jonathan.Cameron@huawei.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- system/physmem.c | 40 ++++++++++++++++++++--------------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+ system/physmem.c | 169 +++++++++++++++++++++++++++--------------------
+ 1 file changed, 99 insertions(+), 70 deletions(-)
 
 diff --git a/system/physmem.c b/system/physmem.c
-index e92bed50a6..e35aa29343 100644
+index e35aa29343..737869a3f5 100644
 --- a/system/physmem.c
 +++ b/system/physmem.c
-@@ -2688,10 +2688,7 @@ static MemTxResult flatview_write_continue(FlatView *fv, hwaddr addr,
-                                            hwaddr len, hwaddr mr_addr,
-                                            hwaddr l, MemoryRegion *mr)
- {
--    uint8_t *ram_ptr;
--    uint64_t val;
-     MemTxResult result = MEMTX_OK;
--    bool release_lock = false;
+@@ -2681,6 +2681,56 @@ static bool flatview_access_allowed(MemoryRegion *mr, MemTxAttrs attrs,
+     return false;
+ }
+ 
++static MemTxResult flatview_write_continue_step(MemTxAttrs attrs,
++                                                const uint8_t *buf,
++                                                hwaddr len, hwaddr mr_addr,
++                                                hwaddr *l, MemoryRegion *mr)
++{
++    if (!flatview_access_allowed(mr, attrs, mr_addr, *l)) {
++        return MEMTX_ACCESS_ERROR;
++    }
++
++    if (!memory_access_is_direct(mr, true)) {
++        uint64_t val;
++        MemTxResult result;
++        bool release_lock = prepare_mmio_access(mr);
++
++        *l = memory_access_size(mr, *l, mr_addr);
++        /*
++         * XXX: could force current_cpu to NULL to avoid
++         * potential bugs
++         */
++
++        /*
++         * Assure Coverity (and ourselves) that we are not going to OVERRUN
++         * the buffer by following ldn_he_p().
++         */
++#ifdef QEMU_STATIC_ANALYSIS
++        assert((*l == 1 && len >= 1) ||
++               (*l == 2 && len >= 2) ||
++               (*l == 4 && len >= 4) ||
++               (*l == 8 && len >= 8));
++#endif
++        val = ldn_he_p(buf, *l);
++        result = memory_region_dispatch_write(mr, mr_addr, val,
++                                              size_memop(*l), attrs);
++        if (release_lock) {
++            bql_unlock();
++        }
++
++        return result;
++    } else {
++        /* RAM case */
++        uint8_t *ram_ptr = qemu_ram_ptr_length(mr->ram_block, mr_addr, l,
++                                               false);
++
++        memmove(ram_ptr, buf, *l);
++        invalidate_and_set_dirty(mr, mr_addr, *l);
++
++        return MEMTX_OK;
++    }
++}
++
+ /* Called within RCU critical section.  */
+ static MemTxResult flatview_write_continue(FlatView *fv, hwaddr addr,
+                                            MemTxAttrs attrs,
+@@ -2692,44 +2742,8 @@ static MemTxResult flatview_write_continue(FlatView *fv, hwaddr addr,
      const uint8_t *buf = ptr;
  
      for (;;) {
-@@ -2699,7 +2696,9 @@ static MemTxResult flatview_write_continue(FlatView *fv, hwaddr addr,
-             result |= MEMTX_ACCESS_ERROR;
-             /* Keep going. */
-         } else if (!memory_access_is_direct(mr, true)) {
--            release_lock |= prepare_mmio_access(mr);
-+            uint64_t val;
-+            bool release_lock = prepare_mmio_access(mr);
-+
-             l = memory_access_size(mr, l, mr_addr);
-             /* XXX: could force current_cpu to NULL to avoid
-                potential bugs */
-@@ -2717,18 +2716,21 @@ static MemTxResult flatview_write_continue(FlatView *fv, hwaddr addr,
-             val = ldn_he_p(buf, l);
-             result |= memory_region_dispatch_write(mr, mr_addr, val,
-                                                    size_memop(l), attrs);
-+            if (release_lock) {
-+                bql_unlock();
-+            }
-+
-+
-         } else {
-             /* RAM case */
--            ram_ptr = qemu_ram_ptr_length(mr->ram_block, mr_addr, &l, false);
-+
-+            uint8_t *ram_ptr = qemu_ram_ptr_length(mr->ram_block, mr_addr, &l,
-+                                                   false);
-+
-             memmove(ram_ptr, buf, l);
-             invalidate_and_set_dirty(mr, mr_addr, l);
-         }
- 
--        if (release_lock) {
--            bql_unlock();
--            release_lock = false;
--        }
+-        if (!flatview_access_allowed(mr, attrs, mr_addr, l)) {
+-            result |= MEMTX_ACCESS_ERROR;
+-            /* Keep going. */
+-        } else if (!memory_access_is_direct(mr, true)) {
+-            uint64_t val;
+-            bool release_lock = prepare_mmio_access(mr);
 -
+-            l = memory_access_size(mr, l, mr_addr);
+-            /* XXX: could force current_cpu to NULL to avoid
+-               potential bugs */
+-
+-            /*
+-             * Assure Coverity (and ourselves) that we are not going to OVERRUN
+-             * the buffer by following ldn_he_p().
+-             */
+-#ifdef QEMU_STATIC_ANALYSIS
+-            assert((l == 1 && len >= 1) ||
+-                   (l == 2 && len >= 2) ||
+-                   (l == 4 && len >= 4) ||
+-                   (l == 8 && len >= 8));
+-#endif
+-            val = ldn_he_p(buf, l);
+-            result |= memory_region_dispatch_write(mr, mr_addr, val,
+-                                                   size_memop(l), attrs);
+-            if (release_lock) {
+-                bql_unlock();
+-            }
+-
+-
+-        } else {
+-            /* RAM case */
+-
+-            uint8_t *ram_ptr = qemu_ram_ptr_length(mr->ram_block, mr_addr, &l,
+-                                                   false);
+-
+-            memmove(ram_ptr, buf, l);
+-            invalidate_and_set_dirty(mr, mr_addr, l);
+-        }
++        result |= flatview_write_continue_step(attrs, buf, len, mr_addr, &l,
++                                               mr);
+ 
          len -= l;
          buf += l;
-         addr += l;
-@@ -2767,10 +2769,7 @@ MemTxResult flatview_read_continue(FlatView *fv, hwaddr addr,
-                                    hwaddr len, hwaddr mr_addr, hwaddr l,
-                                    MemoryRegion *mr)
- {
--    uint8_t *ram_ptr;
--    uint64_t val;
-     MemTxResult result = MEMTX_OK;
--    bool release_lock = false;
-     uint8_t *buf = ptr;
+@@ -2763,6 +2777,52 @@ static MemTxResult flatview_write(FlatView *fv, hwaddr addr, MemTxAttrs attrs,
+                                    mr_addr, l, mr);
+ }
+ 
++static MemTxResult flatview_read_continue_step(MemTxAttrs attrs, uint8_t *buf,
++                                               hwaddr len, hwaddr mr_addr,
++                                               hwaddr *l,
++                                               MemoryRegion *mr)
++{
++    if (!flatview_access_allowed(mr, attrs, mr_addr, *l)) {
++        return MEMTX_ACCESS_ERROR;
++    }
++
++    if (!memory_access_is_direct(mr, false)) {
++        /* I/O case */
++        uint64_t val;
++        MemTxResult result;
++        bool release_lock = prepare_mmio_access(mr);
++
++        *l = memory_access_size(mr, *l, mr_addr);
++        result = memory_region_dispatch_read(mr, mr_addr, &val, size_memop(*l),
++                                             attrs);
++
++        /*
++         * Assure Coverity (and ourselves) that we are not going to OVERRUN
++         * the buffer by following stn_he_p().
++         */
++#ifdef QEMU_STATIC_ANALYSIS
++        assert((*l == 1 && len >= 1) ||
++               (*l == 2 && len >= 2) ||
++               (*l == 4 && len >= 4) ||
++               (*l == 8 && len >= 8));
++#endif
++        stn_he_p(buf, *l, val);
++
++        if (release_lock) {
++            bql_unlock();
++        }
++        return result;
++    } else {
++        /* RAM case */
++        uint8_t *ram_ptr = qemu_ram_ptr_length(mr->ram_block, mr_addr, l,
++                                               false);
++
++        memcpy(buf, ram_ptr, *l);
++
++        return MEMTX_OK;
++    }
++}
++
+ /* Called within RCU critical section.  */
+ MemTxResult flatview_read_continue(FlatView *fv, hwaddr addr,
+                                    MemTxAttrs attrs, void *ptr,
+@@ -2774,38 +2834,7 @@ MemTxResult flatview_read_continue(FlatView *fv, hwaddr addr,
  
      fuzz_dma_read_cb(addr, len, mr);
-@@ -2780,7 +2779,9 @@ MemTxResult flatview_read_continue(FlatView *fv, hwaddr addr,
-             /* Keep going. */
-         } else if (!memory_access_is_direct(mr, false)) {
-             /* I/O case */
--            release_lock |= prepare_mmio_access(mr);
-+            uint64_t val;
-+            bool release_lock = prepare_mmio_access(mr);
-+
-             l = memory_access_size(mr, l, mr_addr);
-             result |= memory_region_dispatch_read(mr, mr_addr, &val,
-                                                   size_memop(l), attrs);
-@@ -2796,17 +2797,16 @@ MemTxResult flatview_read_continue(FlatView *fv, hwaddr addr,
-                    (l == 8 && len >= 8));
- #endif
-             stn_he_p(buf, l, val);
-+            if (release_lock) {
-+                bql_unlock();
-+            }
-         } else {
-             /* RAM case */
--            ram_ptr = qemu_ram_ptr_length(mr->ram_block, mr_addr, &l, false);
-+            uint8_t *ram_ptr = qemu_ram_ptr_length(mr->ram_block, mr_addr, &l,
-+                                                   false);
-             memcpy(buf, ram_ptr, l);
-         }
- 
--        if (release_lock) {
--            bql_unlock();
--            release_lock = false;
--        }
+     for (;;) {
+-        if (!flatview_access_allowed(mr, attrs, mr_addr, l)) {
+-            result |= MEMTX_ACCESS_ERROR;
+-            /* Keep going. */
+-        } else if (!memory_access_is_direct(mr, false)) {
+-            /* I/O case */
+-            uint64_t val;
+-            bool release_lock = prepare_mmio_access(mr);
 -
+-            l = memory_access_size(mr, l, mr_addr);
+-            result |= memory_region_dispatch_read(mr, mr_addr, &val,
+-                                                  size_memop(l), attrs);
+-
+-            /*
+-             * Assure Coverity (and ourselves) that we are not going to OVERRUN
+-             * the buffer by following stn_he_p().
+-             */
+-#ifdef QEMU_STATIC_ANALYSIS
+-            assert((l == 1 && len >= 1) ||
+-                   (l == 2 && len >= 2) ||
+-                   (l == 4 && len >= 4) ||
+-                   (l == 8 && len >= 8));
+-#endif
+-            stn_he_p(buf, l, val);
+-            if (release_lock) {
+-                bql_unlock();
+-            }
+-        } else {
+-            /* RAM case */
+-            uint8_t *ram_ptr = qemu_ram_ptr_length(mr->ram_block, mr_addr, &l,
+-                                                   false);
+-            memcpy(buf, ram_ptr, l);
+-        }
++        result |= flatview_read_continue_step(attrs, buf, len, mr_addr, &l, mr);
+ 
          len -= l;
          buf += l;
-         addr += l;
 -- 
 2.44.0
 
