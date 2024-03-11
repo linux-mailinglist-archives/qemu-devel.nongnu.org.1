@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE237878841
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 19:53:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 636E7878858
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 19:55:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjklK-0005Cs-UA; Mon, 11 Mar 2024 14:52:38 -0400
+	id 1rjklM-0005FK-Bg; Mon, 11 Mar 2024 14:52:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rjklB-000551-6P; Mon, 11 Mar 2024 14:52:29 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1rjklE-00056q-DB; Mon, 11 Mar 2024 14:52:32 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rjkl9-0004za-Kt; Mon, 11 Mar 2024 14:52:28 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6e66da40b18so2020018b3a.0; 
- Mon, 11 Mar 2024 11:52:26 -0700 (PDT)
+ id 1rjklC-000503-Oz; Mon, 11 Mar 2024 14:52:32 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1dd84ecfc47so12023715ad.1; 
+ Mon, 11 Mar 2024 11:52:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710183145; x=1710787945; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710183149; x=1710787949; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3Czg2StR8XjybUCCLbM84Bm4x8Sx+Jf8gI13TFlmrKA=;
- b=j+qJRGihdBYT+g0tkxn5bn95h+NGeuFOybzOKIrPADRLv79pAjOdIH45k9nHpfp6l/
- Zb71RZ8HQVWGupfTFBry9tgy6IjZ8TxY/9XJdJhwBVL3R+gB+Udvm8HxmTIOZ0sebBA0
- +cP45IDwEn8sJZ5te5NAt3UGkRCWlzgMh/T5PJ9JIG25GD5tGVP+KdmwNcYjLnAKSKNM
- tTMWJZ8X/P1Ry5swWqAkF5Pxp2JMxG8W/NtrlJ3CDW0Y4eK+aTcImKysoPQeab1i2fBp
- DP/43kjkdobgVJi9pmixLZDMeQCbBSEmKH/8fmXJ3FW+2mZ6OC3RUJYe8801x6ey7Sd0
- GDjA==
+ bh=RCtRTqlehmWFfvspfl6T/mb2Q9OSyra/0KqMOq/ICUE=;
+ b=A9nG+taKXDdSzFzeBgR5Ct5LBJ1KxEU9VXSClsXk0da9X3d/h4JdfcCeK5iIioFWyT
+ qK5CWoJ5JYY6ScSJ5mAbb7jo3Qn/xngHFt9zr0qMXE8xvlr760iZKa+4vWcjNRdju2qh
+ E3iBheJmXmYtdts26pBK7eGILxkApAh5ETt7yO+InRMqmOyxoKNs+oj7eeQQhx/Rsy0m
+ 68KaNZS47kxXS7uB4QscbLoSCx0IuKXKhNv7QPhL4ruXKTTOwTMsoHK7Yk0xaYCmAPBw
+ W/RB3zwL7xHmqMADjT3MdJ2MzKdic6zsnzyrzbkXf/pbybBakWSleFJ/yYNoNKFek+UA
+ tP+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710183145; x=1710787945;
+ d=1e100.net; s=20230601; t=1710183149; x=1710787949;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3Czg2StR8XjybUCCLbM84Bm4x8Sx+Jf8gI13TFlmrKA=;
- b=veUTo3P9KCJfTR0jAnN3Py1ID5Y9UXnaf5qqUO9dz2FZYEMLHBVcKtmR+QnLhYPJEf
- eqNYkmbi4rmHb87KN60XhXtz+QBMZdOc0hLIBCDN+y3h6JCol+vCwGhK5CLr0ewKsNi2
- VJVRjZ0C4WZ3I/jtBGo0HKP4P1a7DaHe9gNOovuVdT2EcRZX2eccxpqOa3sN+DuYZEao
- hBzRfNhJR8UIY5PjvOvaBxg7sQnz7G9HBV+OuEe9om9Xwk6dqtwBWjpFMlNAQ2Rmt7yZ
- Ea4mreMqts0akVdkvM7oMjoizrSsVCIscbqcZpI7IauL2y5KTYPkeQgcmq53CnHZtSZ6
- 1kXQ==
+ bh=RCtRTqlehmWFfvspfl6T/mb2Q9OSyra/0KqMOq/ICUE=;
+ b=Cd5DBKmujt/6oZWXF1XgTxTH0OUQu+0kRns2w8/b85HCPK9/EKySrO0PidgqvZZXI4
+ sdLs+9jYE8e+MhuG3asU/PN/koaWVXAG7JMTjmVtiSn8dXRp8kUN8iQEnVqJMSY/eLQy
+ cmtGkSODRF3Fe+FZRHQEXDXvwMreXf5NUMF3Milun8rqOI1AkDd23G4N+wmJKM4WNBJb
+ 4IQI6N6OGVdn6YPZ24Be/Ui8O8xlzgTNcLiHQb2YInkTciUUqkgNlDs9mBoMg5H22TLo
+ XdN9gLpY6YJuwEOhhvWd9Ft4mOSCh04g/k/s5wlzkmugP2LtXP48saLmO7BAq1P8Cec7
+ qwVA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXCQLfBxx6DzcNwq7FQby1LoOMyjrI2KGt5aRJjBtXim4TO7U3bGyVoOGwOo5FHQ9l8mOnAsc2iiItdL6TV1PVvnPss9LE=
-X-Gm-Message-State: AOJu0YwAXPSbcl43M0JGmqcAQYein6guw7CtepnqxhL2BUZaUKOMRhtt
- 3RMFZSkpGkyFqydU3RTvOYA2o31ibtE77Wp4HpPNeM75mMADuBqtVtaK3LpWS5o=
-X-Google-Smtp-Source: AGHT+IE9GrKU41IPOzDNyNMBypUE/SDHbqY2egNUWA6P0FV9BY3m3xepWiiBOKzavqH9v2dpa5c+Rg==
-X-Received: by 2002:a05:6a21:a585:b0:1a1:6a75:143b with SMTP id
- gd5-20020a056a21a58500b001a16a75143bmr5658313pzc.5.1710183145223; 
- Mon, 11 Mar 2024 11:52:25 -0700 (PDT)
+ AJvYcCX1ThUlEwTaCnJokYCgvRtim3LpYnEJMV5c8kg1jpUsUM3nyUTYzYgwMQ1hQ4BBsWQ2vdOjpduVD0v8Ho8M5Djr3SoQpA0=
+X-Gm-Message-State: AOJu0YzeVgRQ+vKxqprerGXOCeQiXZaDlFFaur7dx5jMD3KiU+4YHzhP
+ CYkxOCk/qqBIMdZPfNXdevAuS9Ies8l/e5NCHN1E3fG3S+G8mkX/JVisB8xVgLw=
+X-Google-Smtp-Source: AGHT+IEkOxpn9fYx37nK+gdoN3oN/IvNdto+GIS1KUMPie/AEWQ5g1soTFZEJqdZjD2aCo2mttFcQA==
+X-Received: by 2002:a17:902:f705:b0:1dd:8a1b:2131 with SMTP id
+ h5-20020a170902f70500b001dd8a1b2131mr5902360plo.25.1710183148782; 
+ Mon, 11 Mar 2024 11:52:28 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- z2-20020a170903018200b001dd7d00f7afsm4843887plg.18.2024.03.11.11.52.22
+ z2-20020a170903018200b001dd7d00f7afsm4843887plg.18.2024.03.11.11.52.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 11:52:24 -0700 (PDT)
+ Mon, 11 Mar 2024 11:52:28 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PATCH 05/13] ppc/spapr: Adjust ibm,pa-features for POWER9
-Date: Tue, 12 Mar 2024 04:51:47 +1000
-Message-ID: <20240311185200.2185753-6-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Benjamin Gray <bgray@linux.ibm.com>
+Subject: [PATCH 06/13] ppc/spapr: Add pa-features for POWER10 machines
+Date: Tue, 12 Mar 2024 04:51:48 +1000
+Message-ID: <20240311185200.2185753-7-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240311185200.2185753-1-npiggin@gmail.com>
 References: <20240311185200.2185753-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,39 +95,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"MMR" and "SPR SO" are not implemented in POWER9, so clear those bits.
-HTM is not set by default, and only later if the cap is set, so remove
-the comment that suggests otherwise.
+From: Benjamin Gray <bgray@linux.ibm.com>
 
+Add POWER10 pa-features entry.
+
+Notably DEXCR and and [P]HASHST/[P]HASHCHK instruction support is
+advertised. Each DEXCR aspect is allocated a bit in the device tree,
+using the 68--71 byte range (inclusive). The functionality of the
+[P]HASHST/[P]HASHCHK instructions is separately declared in byte 72,
+bit 0 (BE).
+
+Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+[npiggin: reword title and changelog, adjust a few bits]
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ hw/ppc/spapr.c | 34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
 diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 7d7da30f60..247f920f07 100644
+index 247f920f07..128bfe11a8 100644
 --- a/hw/ppc/spapr.c
 +++ b/hw/ppc/spapr.c
-@@ -248,14 +248,14 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
-         0x80, 0x00, 0x00, 0x00, 0x00, 0x00, /* 6 - 11 */
-         /* 16: Vector */
-         0x00, 0x00, 0x00, 0x00, 0x80, 0x00, /* 12 - 17 */
--        /* 18: Vec. Scalar, 20: Vec. XOR, 22: HTM */
+@@ -265,6 +265,36 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
+         /* 60: NM atomic, 62: RNG */
+         0x80, 0x00, 0x80, 0x00, 0x00, 0x00, /* 60 - 65 */
+     };
++    /* 3.1 removes SAO, HTM support */
++    uint8_t pa_features_31[] = { 74, 0,
++        /* 0: MMU|FPU|SLB|RUN|DABR|NX, 1: fri[nzpm]|DABRX|SPRG3|SLB0|PP110 */
++        /* 2: VPM|DS205|PPR|DS202|DS206, 3: LSD|URG, 5: LE|CFAR|EB|LSQ */
++        0xf6, 0x1f, 0xc7, 0xc0, 0x00, 0xf0, /* 0 - 5 */
++        /* 6: DS207 */
++        0x80, 0x00, 0x00, 0x00, 0x00, 0x00, /* 6 - 11 */
++        /* 16: Vector */
++        0x00, 0x00, 0x00, 0x00, 0x80, 0x00, /* 12 - 17 */
 +        /* 18: Vec. Scalar, 20: Vec. XOR */
-         0x80, 0x00, 0x80, 0x00, 0x00, 0x00, /* 18 - 23 */
-         /* 24: Ext. Dec, 26: 64 bit ftrs, 28: PM ftrs */
-         0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 24 - 29 */
--        /* 30: MMR, 32: LE atomic, 34: EBB + ext EBB */
--        0x80, 0x00, 0x80, 0x00, 0xC0, 0x00, /* 30 - 35 */
--        /* 36: SPR SO, 40: Radix MMU */
--        0x80, 0x00, 0x00, 0x00, 0x80, 0x00, /* 36 - 41 */
++        0x80, 0x00, 0x80, 0x00, 0x00, 0x00, /* 18 - 23 */
++        /* 24: Ext. Dec, 26: 64 bit ftrs, 28: PM ftrs */
++        0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 24 - 29 */
 +        /* 32: LE atomic, 34: EBB + ext EBB */
 +        0x00, 0x00, 0x80, 0x00, 0xC0, 0x00, /* 30 - 35 */
 +        /* 40: Radix MMU */
 +        0x00, 0x00, 0x00, 0x00, 0x80, 0x00, /* 36 - 41 */
-         /* 42: PM, 44: PC RA, 46: SC vec'd */
-         0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 42 - 47 */
-         /* 48: SIMD, 50: QP BFP, 52: String */
++        /* 42: PM, 44: PC RA, 46: SC vec'd */
++        0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 42 - 47 */
++        /* 48: SIMD, 50: QP BFP, 52: String */
++        0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 48 - 53 */
++        /* 54: DecFP, 56: DecI, 58: SHA */
++        0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 54 - 59 */
++        /* 60: NM atomic, 62: RNG */
++        0x80, 0x00, 0x80, 0x00, 0x00, 0x00, /* 60 - 65 */
++        /* 68: DEXCR[SBHE|IBRTPDUS|SRAPD|NPHIE|PHIE] */
++        0x00, 0x00, 0xce, 0x00, 0x00, 0x00, /* 66 - 71 */
++        /* 72: [P]HASHCHK */
++        0x80, 0x00,                         /* 72 - 73 */
++    };
+     uint8_t *pa_features = NULL;
+     size_t pa_size;
+ 
+@@ -280,6 +310,10 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
+         pa_features = pa_features_300;
+         pa_size = sizeof(pa_features_300);
+     }
++    if (ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_10, 0, cpu->compat_pvr)) {
++        pa_features = pa_features_31;
++        pa_size = sizeof(pa_features_31);
++    }
+     if (!pa_features) {
+         return;
+     }
 -- 
 2.42.0
 
