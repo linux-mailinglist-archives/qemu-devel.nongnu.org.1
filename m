@@ -2,78 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD9538788A1
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 20:16:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C79C28788F7
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 20:33:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjl89-0005Yg-Lq; Mon, 11 Mar 2024 15:16:18 -0400
+	id 1rjlMv-0005Mu-3m; Mon, 11 Mar 2024 15:31:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rjl56-0003Qt-TN
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 15:13:08 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rjl4v-0000Nz-V1
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 15:13:03 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4132600824bso9417305e9.2
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 12:12:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710184372; x=1710789172; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=bC+LUFs+cDKcgliQteAEFQtfSzHpjUGJyBcf3ZG4pxI=;
- b=P+k2VVBBKr35AZhwdStCq1bD1vcAtI/myZyGE13GwoRhIZQVSCaxkgFl62g6O1xtQI
- pSd5y9grh8z0YnU2phGKJ9OcPgAa39/BZG33ePr0z2iaSC/dapN4L9Naj/lSIaMQ59eE
- EDVKICcKfamHu9uC3BQuF/rtLkHPv4L09nXH/pCToWQGFnJq6IJhcf+1WsUgGyoi1vVp
- 4TKO66aQut2iv3PYV4YJcAyKDBlt+uJvgzjbEXoizX5GrriTAzmod1ZqTaJTQTRUgkev
- wvnYCEuJToy1FxhPMNyaivhJDPtl7PgzBLtUe7i2QrD2VwW6LVT16AU7UKyG1TVEefAa
- jhyA==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjlMW-0005Li-JC
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 15:31:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjlMS-00049E-H2
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 15:31:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710185459;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=dghpxPpid9a3FQW/vWrfjY0GBwO957rIYOYvXoeh2bU=;
+ b=DQdvVC1thyyMtPNsl1TCUX6bqtRO6UsrTS+L6tFpyVtxfV2mWyrUgyMYKTh9EIIORZ4MeH
+ Or/eygXxfLr5SSrQplHe3UQs8omu36jypfo2iCf4abK4EicvWor5IgADz2Jdd4UySmq8os
+ 5ZaPMzgLkhf2bnKMwYXEoqNIKtlx0Qw=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-537-DJ2XrlGRNvCk1xIoiKp3QA-1; Mon, 11 Mar 2024 15:30:55 -0400
+X-MC-Unique: DJ2XrlGRNvCk1xIoiKp3QA-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-78315f4f5c2so164017585a.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 12:30:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710184372; x=1710789172;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bC+LUFs+cDKcgliQteAEFQtfSzHpjUGJyBcf3ZG4pxI=;
- b=KXKq47XNPnU60noTa9M1bQZvNpwEO6ZWuHYDWvSE8qlqNzmxyjlPI9ZCjq2/92Q0HY
- CacXPcdHy6HmzssuiKpNca2cfnN+RvLsrBnbtwOuG5PtY9Qe4zKuSxWWqauo+qj1fAFK
- Hy3i5U4l77YBwj7AiwEGMabnX8mFPy0TYTATONPDr7jLspsJqWNI00g2oeWepON/auWe
- d4g543gy9+w3VaRaeOgAjUsVfMGBC5G4ECws/Xv0Bv1tbVSa3edKl+wQD52yVNDjVYGL
- q1qvj46UuJ/XBlGWyuHl3Ynke3z1qJw9RnEWC9YeDrsDwcG0EB7vb5810uBbCSuGf9+0
- 4rRA==
-X-Gm-Message-State: AOJu0Yx+D8YqGO5WEQ39HlmAklxr/y/Zu1lPraJM5dBTvk/vEFFEfW1x
- qLX/HS00D7X3WKh8f/HDbLDQioFtIpzc0q57s91tS4NFecU5VS81lORC2npQeKa77Hk336lREj0
- w
-X-Google-Smtp-Source: AGHT+IGqHnK9sGWeI3Mn9yAeKAeFFX6c+9vqgQIgLwe0kJ1P1eZvTlX36z9r/dZ0QkH9NgEdyZbJzg==
-X-Received: by 2002:a05:600c:5405:b0:413:1921:8698 with SMTP id
- he5-20020a05600c540500b0041319218698mr1076420wmb.41.1710184371875; 
- Mon, 11 Mar 2024 12:12:51 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- t10-20020a05600c450a00b004131388d948sm14425266wmo.0.2024.03.11.12.12.51
- for <qemu-devel@nongnu.org>
+ d=1e100.net; s=20230601; t=1710185455; x=1710790255;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dghpxPpid9a3FQW/vWrfjY0GBwO957rIYOYvXoeh2bU=;
+ b=WuotbrQ4Y37bbRdY2+DZVFxRzTrlqXGoz6hyc8i9HKVW0hjz0pWTcf8sGe5rn6OGY3
+ NS8wGrgPbeCPrD7wk8nbZ7yIevCQRoUDo5RkzoUgGA/0umy/vGq7V1U9i+UlEzfcLcVf
+ v13BZT40dscAXEYf2qaGzJNlD+ZOASvCgSY8MUxX8IIvP8ZQCqcgm0cRSfhIDCnsmpJk
+ /uhhurDiW0z54m6rZFr9NlknMk1eUiwbtT2GWIaEs14WqMImUAFZf7Phn+3gkX+BnBjS
+ MrAhkdw6m0euhW9dgcdIbDyfAatK38O3POzYZx5ewFNszCaOUdwMN5k9sg8WYGKUFYL0
+ /Ajg==
+X-Gm-Message-State: AOJu0YzLeKns7Qtj7QoJKta+xNwqPdezzxflFXbF3DKj9FLoAt31MsfZ
+ XqdI4hyFEWElpxIX3IiFtDg9BJcldMfntrYrbStKab7yT6djEjW4mfhW3y6yTtl46UkKfjkDgra
+ fDn6UJxcfLT77tz7Kv/hXGgvst43bFaxcZ1hdZOIdxoWPyc0ULZ8H
+X-Received: by 2002:a05:620a:1a86:b0:788:7554:e529 with SMTP id
+ bl6-20020a05620a1a8600b007887554e529mr1878537qkb.4.1710185455305; 
+ Mon, 11 Mar 2024 12:30:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEhCp3eaO03LKAtOqMhdote0hm6JAyiTkiP7zIQ94OvuG3O6gYa60waDadQ8wDhsTcJniA9iA==
+X-Received: by 2002:a05:620a:1a86:b0:788:7554:e529 with SMTP id
+ bl6-20020a05620a1a8600b007887554e529mr1878516qkb.4.1710185454997; 
+ Mon, 11 Mar 2024 12:30:54 -0700 (PDT)
+Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ h25-20020a05620a21d900b00788577fcee4sm2964693qka.91.2024.03.11.12.30.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 12:12:51 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 20/20] docs: update copyright date to the year 2024
-Date: Mon, 11 Mar 2024 19:12:41 +0000
-Message-Id: <20240311191241.4177990-21-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240311191241.4177990-1-peter.maydell@linaro.org>
-References: <20240311191241.4177990-1-peter.maydell@linaro.org>
+ Mon, 11 Mar 2024 12:30:54 -0700 (PDT)
+Date: Mon, 11 Mar 2024 15:30:52 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Steve Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Hailiang Zhang <zhanghailiang@xfusion.com>,
+ Zhang Chen <chen.zhang@intel.com>, Li Zhijian <lizhijian@fujitsu.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Hyman Huang <yong.huang@smartx.com>, Song Gao <gaosong@loongson.cn>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: Re: [PATCH V2 00/11] privatize migration.h
+Message-ID: <Ze9b7JULHLUoYGgV@x1n>
+References: <1710179338-294359-1-git-send-email-steven.sistare@oracle.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1710179338-294359-1-git-send-email-steven.sistare@oracle.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,49 +102,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ani Sinha <anisinha@redhat.com>
+Steve,
 
-We are already in the third month of 2024 but the copyright notices still refer
-to 2023. Update the date to 2024 in documentation and help texts.
+On Mon, Mar 11, 2024 at 10:48:47AM -0700, Steve Sistare wrote:
+> Changes in V2:
+>   * rebase to migration-next, add RB
 
-Cc: peter.maydell@linaro.org
-Cc: qemu-trivial@nongnu.org
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240311120346.9596-1-anisinha@redhat.com
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- docs/conf.py              | 2 +-
- include/qemu/help-texts.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Not apply even to master branch.  Note that there're >=1 PULLs sent and
+merged since my last reply..  Perhaps you rebased to the "old" next?
 
-diff --git a/docs/conf.py b/docs/conf.py
-index 1b2afa241c0..aae0304ac6e 100644
---- a/docs/conf.py
-+++ b/docs/conf.py
-@@ -88,7 +88,7 @@
- 
- # General information about the project.
- project = u'QEMU'
--copyright = u'2023, The QEMU Project Developers'
-+copyright = u'2024, The QEMU Project Developers'
- author = u'The QEMU Project Developers'
- 
- # The version info for the project you're documenting, acts as replacement for
-diff --git a/include/qemu/help-texts.h b/include/qemu/help-texts.h
-index d0359f82e08..353ab2ad8b0 100644
---- a/include/qemu/help-texts.h
-+++ b/include/qemu/help-texts.h
-@@ -2,7 +2,7 @@
- #define QEMU_HELP_TEXTS_H
- 
- /* Copyright string for -version arguments, About dialogs, etc */
--#define QEMU_COPYRIGHT "Copyright (c) 2003-2023 " \
-+#define QEMU_COPYRIGHT "Copyright (c) 2003-2024 " \
-     "Fabrice Bellard and the QEMU Project developers"
- 
- /* Bug reporting information for --help arguments, About dialogs, etc */
 -- 
-2.34.1
+Peter Xu
 
 
