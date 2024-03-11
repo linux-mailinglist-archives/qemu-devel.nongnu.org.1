@@ -2,57 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C080B877A0A
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 04:26:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6999F877A06
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 04:26:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjWIc-0006mo-W2; Sun, 10 Mar 2024 23:26:03 -0400
+	id 1rjWIg-0006yU-BD; Sun, 10 Mar 2024 23:26:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjWIU-0006M5-RL; Sun, 10 Mar 2024 23:25:55 -0400
+ id 1rjWIW-0006Qy-Ll; Sun, 10 Mar 2024 23:25:57 -0400
 Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjWIS-00084P-1V; Sun, 10 Mar 2024 23:25:54 -0400
+ id 1rjWIU-0008BV-Ec; Sun, 10 Mar 2024 23:25:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710127552; x=1741663552;
+ t=1710127554; x=1741663554;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=+OGEjCDgDWgrBkE40f0La/lOl+AzgU5g8D4hjhE/uhg=;
- b=anylCoxq+7KSOofTGG8ZbvhE7yosnErIHidsxF72bmWZBIMAnkI83doL
- Ww46AD3cNV6Am1DJ6UxBIsPrtwmWjJDkJLQAUgo+4KXQ4DScF9m35ZpZU
- xlpOuip/UwlNZ1GCjA5ShW5KZthUZeP/tuqyqgEWnWiZ4sYrABd1176nl
- Nwrdq6pqEefvgxLEFFIusgCIOIyVYe87Mrwep2MU7W9Jw26xgYwpvX/qq
- i79B6Yl4MTMqLf2ckRvMU8/Vi0OGn0X/lS45ZpKN35jaa7vPV3hV62Nmy
- Cuq2GnfNiczgNUAEos5BCL9/AmZ0CkSDTEAGXANVWzX7W+mQld3KxaIDV w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="22229737"
-X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="22229737"
+ bh=vZshy9OBrsUTeZ3ltvu9CPOrZHXEn+0ngl/QLE5aqVA=;
+ b=MsqFjWKYa7qlZNYRnlveVAgH+qHNz40U3OhLFkxg+iYGh1vbUPjyd/TE
+ J3lfyfDnxBJ5Xvlrgue9S5BoJc5o759aDP6B+cV+XRfrpZ7JqCAgfEmT5
+ H3xY3h8sEkhwdjtJLKFitu4HItcXfca4s5p4O9R23UxVWbHfFW6/dZNOp
+ HI+bEyiGBdsA56qCU01Z80KOKkU4oKBDcAAmHUMwlseNCQL00NkR1F2H6
+ oASXzxNV3NBhsu5CGco8OoM/6cyW7lZip7BwjrrFrAoocT8r+fi/J0Qws
+ ivex6PK1kvt14uebQBsEEaMjiqd3Vu8MXyrFZQSg5L4GehxrebRELWYyi w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="22229745"
+X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="22229745"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2024 20:25:34 -0700
+ 10 Mar 2024 20:25:38 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="15593972"
+X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="15593992"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 10 Mar 2024 20:25:32 -0700
+ by fmviesa003.fm.intel.com with ESMTP; 10 Mar 2024 20:25:35 -0700
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Michael Roth <michael.roth@amd.com>, Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH v2 17/29] hw/scsi/vhost-scsi: Fix missing ERRP_GUARD() for
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Tony Krowiak <akrowiak@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Jason Herne <jjherne@linux.ibm.com>, qemu-s390x@nongnu.org
+Subject: [PATCH v2 18/29] hw/vfio/ap: Fix missing ERRP_GUARD() for
  error_prepend()
-Date: Mon, 11 Mar 2024 11:38:10 +0800
-Message-Id: <20240311033822.3142585-18-zhao1.liu@linux.intel.com>
+Date: Mon, 11 Mar 2024 11:38:11 +0800
+Message-Id: <20240311033822.3142585-19-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240311033822.3142585-1-zhao1.liu@linux.intel.com>
 References: <20240311033822.3142585-1-zhao1.liu@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=198.175.65.10;
  envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
@@ -99,10 +102,10 @@ ERRP_GUARD() could avoid the case when @errp is &error_fatal, the user
 can't see this additional information, because exit() happens in
 error_setg earlier than information is added [1].
 
-The vhost_scsi_realize() passes @errp to error_prepend(), and as a
-VirtioDeviceClass.realize method, its @errp is from DeviceClass.realize
-so that there is no guarantee that the @errp won't point to
-@error_fatal.
+The vfio_ap_realize() passes @errp to error_prepend(), and as a
+DeviceClass.realize method, there are too many possible callers to check
+the impact of this defect; it may or may not be harmless. Thus it is
+necessary to protect @errp with ERRP_GUARD().
 
 To avoid the issue like [1] said, add missing ERRP_GUARD() at the
 beginning of this function.
@@ -110,26 +113,32 @@ beginning of this function.
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
 
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Fam Zheng <fam@euphon.net>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Alex Williamson <alex.williamson@redhat.com>
+Cc: "Cédric Le Goater" <clg@redhat.com>
+Cc: Tony Krowiak <akrowiak@linux.ibm.com>
+Cc: Halil Pasic <pasic@linux.ibm.com>
+Cc: Jason Herne <jjherne@linux.ibm.com>
+Cc: Thomas Huth <thuth@redhat.com>
+Cc: qemu-s390x@nongnu.org
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/scsi/vhost-scsi.c | 1 +
+v2: Use Markus' sentence to polish commit message. (Markus)
+---
+ hw/vfio/ap.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-index 58a00336c2db..ae26bc19a457 100644
---- a/hw/scsi/vhost-scsi.c
-+++ b/hw/scsi/vhost-scsi.c
-@@ -220,6 +220,7 @@ static int vhost_scsi_set_workers(VHostSCSICommon *vsc, bool per_virtqueue)
+diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
+index e157aa1ff79c..7c4caa593863 100644
+--- a/hw/vfio/ap.c
++++ b/hw/vfio/ap.c
+@@ -155,6 +155,7 @@ static void vfio_ap_unregister_irq_notifier(VFIOAPDevice *vapdev,
  
- static void vhost_scsi_realize(DeviceState *dev, Error **errp)
+ static void vfio_ap_realize(DeviceState *dev, Error **errp)
  {
 +    ERRP_GUARD();
-     VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
-     VHostSCSICommon *vsc = VHOST_SCSI_COMMON(dev);
+     int ret;
      Error *err = NULL;
+     VFIOAPDevice *vapdev = VFIO_AP_DEVICE(dev);
 -- 
 2.34.1
 
