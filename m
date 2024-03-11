@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD0E08786AE
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:50:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E97748786C1
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:54:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjjm3-0001z5-BQ; Mon, 11 Mar 2024 13:49:19 -0400
+	id 1rjjm4-0001zU-IB; Mon, 11 Mar 2024 13:49:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rjjm0-0001yL-Nt
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:49:16 -0400
+ id 1rjjm1-0001yw-MF
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:49:17 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rjjly-0008Uo-C4
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:49:15 -0400
+ id 1rjjly-0008Ux-U1
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:49:16 -0400
 Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42BG40Fp008047; Mon, 11 Mar 2024 17:49:07 GMT
+ 42BG40VH008055; Mon, 11 Mar 2024 17:49:09 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=f8GCt+gZn671HVbv/xnXQbZVpwcvOqcAziuggFQOfUk=;
- b=MG2pIIMb+8ahRNuV7qW0kkvB+6HuSryKzhan0Yg1JUXfBsDXbncdBmn7VWmDHbMjcQmD
- ne64zD0NzIxUanjL4y5FuNAT/dd8GgNuoeJZdIemj2w4ouPLHMj9dnxJNe+2/UDGO7PV
- P+uNbBQ+3ZruJPq/7XMAKqoHx6uWJ2wLF90Dg9LawW9+O7NdxEsyaru87ErGSYYgQqKd
- dZ5eCbHB4sD0EZ0Zb+OBOYCv7SCxgcjQ811jzBr5FXLryfZzWQ7Zj7ZHEsXVzBOwpXEx
- qxNDse8Hf/OAPmnEGJfzzUwYG3qSFLNNw2nM7qC8c+YGus3tqFOeNG2VncVEW6BwBKOZ tA== 
+ bh=IVKZLe22DQsufeVB6WmtLdyngoZnPDBPar2qUtXJ1t0=;
+ b=kQPzX53cls/VsFNd40+K3UcRaee+PjWnHcY90Hk0cWUhg/0q0xyRJv16LFO1JLZWxyUy
+ LMGIsyXRoU2pV9JmrrlJc7zSW9vYupsitOVE8quktbbcz3Z9/6SxcWBQ7puTvao6VfHL
+ IS9nmlIIEs6N794yxJODsWIgA4TZW2jzXzQ2vKK9/Eme31XklsHBqQT+Dfyl4r7qvaMN
+ gP3jaGqyZm0P2TWVpjaminCK14VLx58iVt4QJNHT49k8dWl7I4UrN/UZmyJyCziLZ7V5
+ DNZ15zMVhF1k4l7+/DZcSlSzOHl5NXVDVYMHP1WkCIQwn9tETnk91/WddTmKPYrE4lRe Vg== 
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wrftdc22s-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wrftdc22x-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 11 Mar 2024 17:49:07 +0000
+ Mon, 11 Mar 2024 17:49:09 +0000
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 42BHkjb3028544; Mon, 11 Mar 2024 17:49:06 GMT
+ with ESMTP id 42BHcAAA028515; Mon, 11 Mar 2024 17:49:08 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3wre76334n-1
+ 3wre76335h-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 11 Mar 2024 17:49:06 +0000
+ Mon, 11 Mar 2024 17:49:08 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42BHlHck020033;
- Mon, 11 Mar 2024 17:49:06 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42BHlHcm020033;
+ Mon, 11 Mar 2024 17:49:07 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3wre763302-4; Mon, 11 Mar 2024 17:49:06 +0000
+ ESMTP id 3wre763302-5; Mon, 11 Mar 2024 17:49:07 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -63,9 +63,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Song Gao <gaosong@loongson.cn>,
  Alistair Francis <alistair.francis@wdc.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V2 03/11] migration: export migration_is_active
-Date: Mon, 11 Mar 2024 10:48:50 -0700
-Message-Id: <1710179338-294359-4-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V2 04/11] migration: export migration_is_running
+Date: Mon, 11 Mar 2024 10:48:51 -0700
+Message-Id: <1710179338-294359-5-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1710179338-294359-1-git-send-email-steven.sistare@oracle.com>
 References: <1710179338-294359-1-git-send-email-steven.sistare@oracle.com>
@@ -77,8 +77,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
  mlxscore=0 phishscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
  definitions=main-2403110136
-X-Proofpoint-ORIG-GUID: Q2jEYgQLbrNFgRAnVA59tM2moubwSzwA
-X-Proofpoint-GUID: Q2jEYgQLbrNFgRAnVA59tM2moubwSzwA
+X-Proofpoint-ORIG-GUID: HoiCUWpiS3xV9YqQM1q4V9FzplbRid1M
+X-Proofpoint-GUID: HoiCUWpiS3xV9YqQM1q4V9FzplbRid1M
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -104,108 +104,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Delete the MigrationState parameter from migration_is_active so it
-can be exported and used without including migration.h.
+Delete the MigrationState parameter from migration_is_running and move
+it to the public API in misc.h.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- hw/vfio/common.c         |  4 ++--
- include/migration/misc.h |  2 +-
- migration/migration.c    | 10 ++++++----
- system/dirtylimit.c      |  2 +-
- 4 files changed, 10 insertions(+), 8 deletions(-)
+ include/migration/misc.h   |  1 +
+ migration/migration.c      | 10 ++++++----
+ migration/migration.h      |  2 --
+ migration/options.c        |  4 ++--
+ migration/savevm.c         |  2 +-
+ system/dirtylimit.c        |  2 +-
+ target/riscv/kvm/kvm-cpu.c |  4 ++--
+ 7 files changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 896eab8..2dbbf62 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -182,7 +182,7 @@ static bool vfio_devices_all_dirty_tracking(VFIOContainerBase *bcontainer)
-     VFIODevice *vbasedev;
-     MigrationState *ms = migrate_get_current();
- 
--    if (ms->state != MIGRATION_STATUS_ACTIVE &&
-+    if (!migration_is_active() &&
-         ms->state != MIGRATION_STATUS_DEVICE) {
-         return false;
-     }
-@@ -225,7 +225,7 @@ vfio_devices_all_running_and_mig_active(const VFIOContainerBase *bcontainer)
- {
-     VFIODevice *vbasedev;
- 
--    if (!migration_is_active(migrate_get_current())) {
-+    if (!migration_is_active()) {
-         return false;
-     }
- 
 diff --git a/include/migration/misc.h b/include/migration/misc.h
-index 79cff62..e1f1bf8 100644
+index e1f1bf8..7526977 100644
 --- a/include/migration/misc.h
 +++ b/include/migration/misc.h
-@@ -60,7 +60,7 @@ void dump_vmstate_json_to_file(FILE *out_fp);
- void migration_object_init(void);
- void migration_shutdown(void);
- bool migration_is_idle(void);
--bool migration_is_active(MigrationState *);
-+bool migration_is_active(void);
- bool migration_is_setup_or_active(void);
- bool migrate_mode_is_cpr(MigrationState *);
- 
+@@ -106,6 +106,7 @@ int migration_call_notifiers(MigrationState *s, MigrationEventType type,
+ bool migration_in_setup(MigrationState *);
+ bool migration_has_finished(MigrationState *);
+ bool migration_has_failed(MigrationState *);
++bool migration_is_running(void);
+ /* ...and after the device transmission */
+ /* True if incoming migration entered POSTCOPY_INCOMING_DISCARD */
+ bool migration_in_incoming_postcopy(void);
 diff --git a/migration/migration.c b/migration/migration.c
-index af21403..17859cb 100644
+index 17859cb..546ba86 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -1406,7 +1406,7 @@ static void migrate_fd_cleanup(MigrationState *s)
-         qemu_fclose(tmp);
+@@ -1103,9 +1103,11 @@ bool migration_is_setup_or_active(void)
      }
- 
--    assert(!migration_is_active(s));
-+    assert(!migration_is_active());
- 
-     if (s->state == MIGRATION_STATUS_CANCELLING) {
-         migrate_set_state(&s->state, MIGRATION_STATUS_CANCELLING,
-@@ -1637,8 +1637,10 @@ bool migration_is_idle(void)
-     return false;
  }
  
--bool migration_is_active(MigrationState *s)
-+bool migration_is_active(void)
+-bool migration_is_running(int state)
++bool migration_is_running(void)
  {
+-    switch (state) {
 +    MigrationState *s = current_migration;
 +
-     return (s->state == MIGRATION_STATUS_ACTIVE ||
-             s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE);
- }
-@@ -3461,7 +3463,7 @@ static void *migration_thread(void *opaque)
++    switch (s->state) {
+     case MIGRATION_STATUS_ACTIVE:
+     case MIGRATION_STATUS_POSTCOPY_ACTIVE:
+     case MIGRATION_STATUS_POSTCOPY_PAUSED:
+@@ -1477,7 +1479,7 @@ static void migrate_fd_cancel(MigrationState *s)
  
-     trace_migration_thread_setup_complete();
- 
--    while (migration_is_active(s)) {
-+    while (migration_is_active()) {
-         if (urgent || !migration_rate_exceeded(s->to_dst_file)) {
-             MigIterateState iter_state = migration_iteration_run(s);
-             if (iter_state == MIG_ITERATE_SKIP) {
-@@ -3607,7 +3609,7 @@ static void *bg_migration_thread(void *opaque)
-     migration_bh_schedule(bg_migration_vm_start_bh, s);
-     bql_unlock();
- 
--    while (migration_is_active(s)) {
-+    while (migration_is_active()) {
-         MigIterateState iter_state = bg_migration_iteration_run(s);
-         if (iter_state == MIG_ITERATE_SKIP) {
-             continue;
-diff --git a/system/dirtylimit.c b/system/dirtylimit.c
-index 774ff44..051e031 100644
---- a/system/dirtylimit.c
-+++ b/system/dirtylimit.c
-@@ -83,7 +83,7 @@ static void vcpu_dirty_rate_stat_collect(void)
-     int64_t period = DIRTYLIMIT_CALC_TIME_MS;
- 
-     if (migrate_dirty_limit() &&
--        migration_is_active(s)) {
-+        migration_is_active()) {
-         period = s->parameters.x_vcpu_dirty_limit_period;
+     do {
+         old_state = s->state;
+-        if (!migration_is_running(old_state)) {
++        if (!migration_is_running()) {
+             break;
+         }
+         /* If the migration is paused, kick it out of the pause */
+@@ -1962,7 +1964,7 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
+         return true;
      }
  
+-    if (migration_is_running(s->state)) {
++    if (migration_is_running()) {
+         error_setg(errp, QERR_MIGRATION_ACTIVE);
+         return false;
+     }
+diff --git a/migration/migration.h b/migration/migration.h
+index 736460a..e4983db 100644
+--- a/migration/migration.h
++++ b/migration/migration.h
+@@ -479,8 +479,6 @@ bool migrate_has_error(MigrationState *s);
+ 
+ void migrate_fd_connect(MigrationState *s, Error *error_in);
+ 
+-bool migration_is_running(int state);
+-
+ int migrate_init(MigrationState *s, Error **errp);
+ bool migration_is_blocked(Error **errp);
+ /* True if outgoing migration has entered postcopy phase */
+diff --git a/migration/options.c b/migration/options.c
+index 40eb930..642cfb0 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -681,7 +681,7 @@ bool migrate_cap_set(int cap, bool value, Error **errp)
+     MigrationState *s = migrate_get_current();
+     bool new_caps[MIGRATION_CAPABILITY__MAX];
+ 
+-    if (migration_is_running(s->state)) {
++    if (migration_is_running()) {
+         error_setg(errp, QERR_MIGRATION_ACTIVE);
+         return false;
+     }
+@@ -725,7 +725,7 @@ void qmp_migrate_set_capabilities(MigrationCapabilityStatusList *params,
+     MigrationCapabilityStatusList *cap;
+     bool new_caps[MIGRATION_CAPABILITY__MAX];
+ 
+-    if (migration_is_running(s->state) || migration_in_colo_state()) {
++    if (migration_is_running() || migration_in_colo_state()) {
+         error_setg(errp, QERR_MIGRATION_ACTIVE);
+         return;
+     }
+diff --git a/migration/savevm.c b/migration/savevm.c
+index dc1fb9c..71974b6 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -1705,7 +1705,7 @@ static int qemu_savevm_state(QEMUFile *f, Error **errp)
+     MigrationState *ms = migrate_get_current();
+     MigrationStatus status;
+ 
+-    if (migration_is_running(ms->state)) {
++    if (migration_is_running()) {
+         error_setg(errp, QERR_MIGRATION_ACTIVE);
+         return -EINVAL;
+     }
+diff --git a/system/dirtylimit.c b/system/dirtylimit.c
+index 051e031..1622bb7 100644
+--- a/system/dirtylimit.c
++++ b/system/dirtylimit.c
+@@ -451,7 +451,7 @@ static bool dirtylimit_is_allowed(void)
+ {
+     MigrationState *ms = migrate_get_current();
+ 
+-    if (migration_is_running(ms->state) &&
++    if (migration_is_running() &&
+         (!qemu_thread_is_self(&ms->thread)) &&
+         migrate_dirty_limit() &&
+         dirtylimit_in_service()) {
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 422e4f1..cf046db 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -44,7 +44,7 @@
+ #include "kvm_riscv.h"
+ #include "sbi_ecall_interface.h"
+ #include "chardev/char-fe.h"
+-#include "migration/migration.h"
++#include "migration/misc.h"
+ #include "sysemu/runstate.h"
+ #include "hw/riscv/numa.h"
+ 
+@@ -700,7 +700,7 @@ static void kvm_riscv_put_regs_timer(CPUState *cs)
+      * frequency. Therefore, we should check whether they are the same here
+      * during the migration.
+      */
+-    if (migration_is_running(migrate_get_current()->state)) {
++    if (migration_is_running()) {
+         KVM_RISCV_GET_TIMER(cs, frequency, reg);
+         if (reg != env->kvm_timer_frequency) {
+             error_report("Dst Hosts timer frequency != Src Hosts");
 -- 
 1.8.3.1
 
