@@ -2,98 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CD9A877CBF
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 10:30:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F264877CC7
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 10:32:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjbzF-0008Mi-7H; Mon, 11 Mar 2024 05:30:25 -0400
+	id 1rjc1G-0000vl-V9; Mon, 11 Mar 2024 05:32:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tabba@google.com>) id 1rjbzD-0008MG-2b
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 05:30:23 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tabba@google.com>) id 1rjbyr-0001jN-Je
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 05:30:22 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-33e8e9a4edaso1702049f8f.2
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 02:29:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1710149397; x=1710754197; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yYwZNAyl9eI8xnn6G8iPccTROZ3bREOUqaEgbZaMdn4=;
- b=Ba6iGGtOrZRlnabXRdtjotfu1jFZ+AvNH7WjTkH2e86BZy5640kyGjHDfj2nh23BNM
- PImtht7waJV6tgMraJlO22nmPiXr2xSyLOwYtUXP4/uckHyij7j06P4c9nWBH9Qnip1F
- HIZyXuo/CV7M3HZTiYdOS3qhSBhmeiJKkxHO+MB95/ua2PFGiM3N64yp9i5Mck7GjeIB
- rK+uSMYupbJyIuZK2cF2TUADcO9bFv3edLV16x1CpJuVnMMCvK8z3DitwJ0rZ0g7AEFK
- Ll9m87yR+IiTbeoZn6U3nfks/KlAVx4qZUwuZWmhQfpHofgbCAHyf3VRLlY52pEktrhg
- T3Eg==
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rjc1C-0000vH-Uf
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 05:32:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rjc1A-0002d3-BD
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 05:32:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710149543;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=kex39lFy9ANnPpgQCEfEpdhJf5dk/xsaSoZC/D5Cndk=;
+ b=L4D313PignpfGo3twV5OeGUWIjC7BiWF1UzNcWagGtdxgGDpTU34vxq18AdiRSUi50sG2d
+ 0uArYrlq9nGWkJ5/yPI8G7OAuaf6DUZaQtzHYGRXGdA34KNRgx1cHBknjEAfjfh9d6zEhX
+ PVZ3dlLx1Pewr41csTuzaSQMqh8/cEU=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-121-ingLQzF7PLmlVQ5quK0f6g-1; Mon, 11 Mar 2024 05:32:21 -0400
+X-MC-Unique: ingLQzF7PLmlVQ5quK0f6g-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-33e7ef51078so1313068f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 02:32:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710149397; x=1710754197;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yYwZNAyl9eI8xnn6G8iPccTROZ3bREOUqaEgbZaMdn4=;
- b=S8g66EEk+pyWX71fx6LnRyW7XAwpLUzWmMSBQ04/lGg8AmJ50RX0SlJSCAm/zS/Rpw
- YUwG871hhokASP1mHlTM5U5kdXP3bmps5IJwRLvZ8h+qQKfSD+BOQs4uXYNJhc22ol2B
- P+5HloNaxmZDqi9RIKdjUusOykpq2qfxztXPJGG8tIHXX7Y/VkYf6D1UubkCJTYh420n
- IS1x6sWEhdMAwEgkqy7jLjc2crkSRngG+i3M939Em6lMUp7NfNAk4PSsYTUP0jXZqoXy
- M/OxRrxPOVuGMJNo8xbKJz14ChEQPzuTB6X4pUz8zYWZXvOcy/FHVd8Q09RjH9yveSk9
- HYDg==
+ d=1e100.net; s=20230601; t=1710149540; x=1710754340;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kex39lFy9ANnPpgQCEfEpdhJf5dk/xsaSoZC/D5Cndk=;
+ b=M0lpDd2v97K7ESIhAlh7dOMhop3FwxA6g6+RFgNpDPgF0pVFmLZvkSC3QWAb5ZgV7Z
+ 5iOUaThawmmjxvx9GR6Wz/Q2pVOSCnIP9DfosHYfd49f2jxqOIBjzcguHthlXX5vWGIj
+ aQJ4yhy2dim+8JLjwY2FJx/mMPivZZ2vD19sF+W3yS/HCwyJT1pBezs70ImPPhT0S7DT
+ hfy1a0xpd45Rd5CBGmALchwX+/pjvVjvpL5fbIZ7K4toFNvN9DMpjGb/W9QrkUvx+q2y
+ Prb+I1K+iQBoY6LW/DcZHppMOExkHOPNu/ATWF0Mh7YhmCRlgVaYmwrHz1EGQg383rRS
+ ae7Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVdiKs9mbWs5IOs4tmwVLtVuibGSsSxd05NfXNAOr9h5Xj8GzWkYrY7TkgHlz6moQvkjhPbDbm9CVGFnwBSaRa+BctLb9Y=
-X-Gm-Message-State: AOJu0YzgXUxFWplXk4b6j7/FgwTsoolci0K1NO/B0RZ5KDD0Gb+CmWDN
- TY1VBnoiu83979k43KBcBKD1xoVeE+fmodUuGuC4MOEkhHKhL2h3M4K5ujzXNqm+SAZ/s4+h8nI
- cYzwgH9FueiB9w6iuVyzRx8MYxXPg/1QP71xv
-X-Google-Smtp-Source: AGHT+IHSfs26GHVI09JkKNk9HoDRqOW4oeQ0rJHE/UNYx/wsSmfgrD7ev79myOziiYJpopiGSTSS0pKlBEG+6nVcKtI=
-X-Received: by 2002:a5d:5188:0:b0:33d:e1d2:2694 with SMTP id
- k8-20020a5d5188000000b0033de1d22694mr3718979wrv.63.1710149396551; Mon, 11 Mar
- 2024 02:29:56 -0700 (PDT)
+ AJvYcCXkGJP0AlflCF1VDXtOCuVOMMEywCsP/bPTK1hARUVTGkJetjRVoeLfjm+e3Is1hSdhbOtsnY3CDGOnZDFhSg06gIv0q5A=
+X-Gm-Message-State: AOJu0YxMFL8VIAIASsTdoTYIfq2rtY7azv2rEsZqTgU8SWxin6vw5FiW
+ bsKWLh6PBTUI8tZ7psnqaJf4L8u4OKFeN4gHUlmSZo4W4dp2QPVe16yU+mK2J8cp65L5nfMIUnt
+ X/f6QkmbYiPboIaOnoFPVCxbJjpra1PpWdwKhBogaqiFa8oiYknM0
+X-Received: by 2002:a05:600c:474b:b0:413:15f2:21da with SMTP id
+ w11-20020a05600c474b00b0041315f221damr4450726wmo.17.1710149539978; 
+ Mon, 11 Mar 2024 02:32:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEmEmuO6uMehVFchu3SzMe9Hs8lnbPRPYbfJrPMUbhFHus6bDIIeqyMW3SKS3IsOqoHob2yxg==
+X-Received: by 2002:a05:600c:474b:b0:413:15f2:21da with SMTP id
+ w11-20020a05600c474b00b0041315f221damr4450716wmo.17.1710149539666; 
+ Mon, 11 Mar 2024 02:32:19 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ m15-20020a05600c3b0f00b00413218ca719sm7564874wms.4.2024.03.11.02.32.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Mar 2024 02:32:19 -0700 (PDT)
+Message-ID: <66aae0d0-982a-4533-989f-cb53d9df6854@redhat.com>
+Date: Mon, 11 Mar 2024 10:32:17 +0100
 MIME-Version: 1.0
-References: <335E21FA-7F1E-4540-8A70-01A63D8C72FA@amazon.com>
- <CA+EHjTxpBM6LyqGfE_y--Uy1oR4oP7Ozcp3mBwFvAijOZe0i+Q@mail.gmail.com>
-In-Reply-To: <CA+EHjTxpBM6LyqGfE_y--Uy1oR4oP7Ozcp3mBwFvAijOZe0i+Q@mail.gmail.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Mon, 11 Mar 2024 09:29:11 +0000
-Message-ID: <CA+EHjTyqjTHN+b42THuppBwabbbPTE7+s3+4gzELN=SVddVtDg@mail.gmail.com>
-Subject: Re: Unmapping KVM Guest Memory from Host Kernel
-To: "Manwaring, Derek" <derekmn@amazon.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, David Matlack <dmatlack@google.com>,
- Brendan Jackman <jackmanb@google.com>,
- "qperret@google.com" <qperret@google.com>, 
- "jason.cj.chen@intel.com" <jason.cj.chen@intel.com>, "Gowans,
- James" <jgowans@amazon.com>, "seanjc@google.com" <seanjc@google.com>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
- "Roy, Patrick" <roypat@amazon.co.uk>, 
- "chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>,
- "rppt@kernel.org" <rppt@kernel.org>, 
- "pbonzini@redhat.com" <pbonzini@redhat.com>, "Kalyazin,
- Nikita" <kalyazin@amazon.co.uk>, 
- "lstoakes@gmail.com" <lstoakes@gmail.com>,
- "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, 
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
- "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
- "vbabka@suse.cz" <vbabka@suse.cz>, 
- "mst@redhat.com" <mst@redhat.com>, "somlo@cmu.edu" <somlo@cmu.edu>, "Graf (AWS),
- Alexander" <graf@amazon.de>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
- "kvmarm@lists.cs.columbia.edu" <kvmarm@lists.cs.columbia.edu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=tabba@google.com; helo=mail-wr1-x434.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/29] backends/iommufd: Fix missing ERRP_GUARD() for
+ error_prepend()
+Content-Language: en-US
+To: Zhao Liu <zhao1.liu@linux.intel.com>, Thomas Huth <thuth@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Michael Tokarev <mjt@tls.msk.ru>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
+ Yi Liu <yi.l.liu@intel.com>, Zhenzhong Duan <zhenzhong.duan@intel.com>
+References: <20240311033822.3142585-1-zhao1.liu@linux.intel.com>
+ <20240311033822.3142585-3-zhao1.liu@linux.intel.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20240311033822.3142585-3-zhao1.liu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.945,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01, T_SPF_TEMPERROR=0.01,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,58 +108,65 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Mar 11, 2024 at 9:26=E2=80=AFAM Fuad Tabba <tabba@google.com> wrote=
-:
->
-> Hi,
->
-> On Fri, Mar 8, 2024 at 9:05=E2=80=AFPM Manwaring, Derek <derekmn@amazon.c=
-om> wrote:
-> >
-> > On 2024-03-08 at 10:46-0700, David Woodhouse wrote:
-> > > On Fri, 2024-03-08 at 09:35 -0800, David Matlack wrote:
-> > > > I think what James is looking for (and what we are also interested
-> > > > in), is _eliminating_ the ability to access guest memory from the
-> > > > direct map entirely. And in general, eliminate the ability to acces=
-s
-> > > > guest memory in as many ways as possible.
-> > >
-> > > Well, pKVM does that...
-> >
-> > Yes we've been looking at pKVM and it accomplishes a lot of what we're =
-trying
-> > to do. Our initial inclination is that we want to stick with VHE for th=
-e lower
-> > overhead. We also want flexibility across server parts, so we would nee=
-d to
-> > get pKVM working on Intel & AMD if we went this route.
-> >
-> > Certainly there are advantages of pKVM on the perf side like the in-pla=
-ce
-> > memory sharing rather than copying as well as on the security side by s=
-imply
-> > reducing the TCB. I'd be interested to hear others' thoughts on pKVM vs
-> > memfd_secret or general ASI.
->
-> The work we've done for pKVM is still an RFC [*], but there is nothing
-> in it that limits it to nVHE (at least not intentionally). It should
-> work with VHE and hVHE as well. On respinning the patch series [*], we
-> plan on adding support for normal VMs to use guest_memfd() as well in
-> arm64, mainly for testing, and to make it easier for others to base
-> their work on it.
 
-Just to clarify, I am referring specifically to the work we did in
-porting guest_memfd() to pKVM/arm64. pKVM itself works only in nVHE
-mode.
+
+On 3/11/24 04:37, Zhao Liu wrote:
+> From: Zhao Liu <zhao1.liu@intel.com>
 >
-> Cheers,
-> /fuad
+> As the comment in qapi/error, passing @errp to error_prepend() requires
+> ERRP_GUARD():
 >
-> [*] https://lore.kernel.org/all/20240222161047.402609-1-tabba@google.com
-> >
-> > Derek
-> >
+> * = Why, when and how to use ERRP_GUARD() =
+> *
+> * Without ERRP_GUARD(), use of the @errp parameter is restricted:
+> ...
+> * - It should not be passed to error_prepend(), error_vprepend() or
+> *   error_append_hint(), because that doesn't work with &error_fatal.
+> * ERRP_GUARD() lifts these restrictions.
+> *
+> * To use ERRP_GUARD(), add it right at the beginning of the function.
+> * @errp can then be used without worrying about the argument being
+> * NULL or &error_fatal.
+>
+> ERRP_GUARD() could avoid the case when @errp is &error_fatal, the user
+> can't see this additional information, because exit() happens in
+> error_setg earlier than information is added [1].
+>
+> The iommufd_backend_set_fd() passes @errp to error_prepend(), to avoid
+> the above issue, add missing ERRP_GUARD() at the beginning of this
+> function.
+>
+> [1]: Issue description in the commit message of commit ae7c80a7bd73
+>      ("error: New macro ERRP_GUARD()").
+>
+> Cc: Yi Liu <yi.l.liu@intel.com>
+> Cc: Eric Auger <eric.auger@redhat.com>
+> Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+
+Eric
+> ---
+>  backends/iommufd.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/backends/iommufd.c b/backends/iommufd.c
+> index 1ef683c7b080..62a79fa6b049 100644
+> --- a/backends/iommufd.c
+> +++ b/backends/iommufd.c
+> @@ -43,6 +43,7 @@ static void iommufd_backend_finalize(Object *obj)
+>  
+>  static void iommufd_backend_set_fd(Object *obj, const char *str, Error **errp)
+>  {
+> +    ERRP_GUARD();
+>      IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
+>      int fd = -1;
+>  
+
 
