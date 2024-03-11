@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A4887884D
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 19:54:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B42B878856
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 19:55:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjklT-0005NP-IY; Mon, 11 Mar 2024 14:52:47 -0400
+	id 1rjklW-0005SP-SK; Mon, 11 Mar 2024 14:52:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rjklP-0005MS-J5; Mon, 11 Mar 2024 14:52:44 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1rjklT-0005Ot-Ek; Mon, 11 Mar 2024 14:52:47 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rjklO-00056Q-1j; Mon, 11 Mar 2024 14:52:43 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1dc09556599so39013825ad.1; 
- Mon, 11 Mar 2024 11:52:41 -0700 (PDT)
+ id 1rjklR-00058B-Vc; Mon, 11 Mar 2024 14:52:47 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1dd955753edso12903895ad.1; 
+ Mon, 11 Mar 2024 11:52:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710183160; x=1710787960; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710183163; x=1710787963; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=z09svf28Z0llAd2gDy+oDdnr0RjElQioiML8sz0N9IA=;
- b=HQNsrq8ZsXskl/t5jZEHtq2a/M9V3FWUI91YUPk6m7gAIdm2usDrki+pGJMoDP6xP9
- KEaAR4UfKHSYcJjWGsub+Y7brUxE4lMSiy7a0l+k4IlAYuGRhWcTl7uJVS00Hd/6/R2P
- 7ugbXDLwmLqC0T3UkYz0zLvuj5SiLRCHDYMubQfc6v1ckjTRuYShEHPrQJq4j6GdCu1x
- 5V7pWOC+UsGaI3cA8W8qzvoGMTmftfvKlfF1O/mmHFp+yF/xt0UNtuJRKLEyCdKxpToK
- ehItwPpjPxgDYbQNwVVtBcQfqAMn7sgPp96VS5yyhqmMBg5m2UfybzLxMkUsKna7VB3t
- Cm2g==
+ bh=ILc6eqa/vztnVjNaWFY1Tz+0fqSSJg3LmbPpscMupbo=;
+ b=YCAypNtmS/xIdpXrDmy9M40qzSUtHwOLLLC6JZEKfT0MuIC58HX8DCt2hpF1I882ld
+ aHv4qaxLK0a7ZO2hHMVyYhyFFJeJ7pFV+tkZVF2fu/bRKYXJUfED7olfczStsIW/46GH
+ 9ElU9sxTFjcgKdlhLpxmC31CIaLTqx94NC3k6AtxJ3b0+pywwrmkkYzYvfVMFMW7ucbl
+ kdDMQsSrAmYT7OkBiwvaQhfoX3X2mTHVl3t3JvtO6MOCiz1uRhwtSQoHpivM0Qfo/lrn
+ jJYvI043LPx3emYQ5iZQjmryfuo4I8+L1RwRKUMviBa0IXxcdwj8GyL2gZd94cvNYYNW
+ URsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710183160; x=1710787960;
+ d=1e100.net; s=20230601; t=1710183163; x=1710787963;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=z09svf28Z0llAd2gDy+oDdnr0RjElQioiML8sz0N9IA=;
- b=QGenPgYa78QIMK1HuVBSR+1J6jfBc3MR5vM00l0T4QdSGlZhS4DQ9J8ZQiFfyqT293
- yYqAK7mTK2WYbhEGxfIB1+4nA7QXEuIUYpA3605xWL5b5JgdG0JuMKaWhF33Q1beUc78
- Z/EhXrMYs+4M1LvEXKiY51Pj0xuCQAm1AQXZxjSNjawxhO9PAruZmA7hxY6PBzMxxnju
- OU+QEv0pNUETypQO+SlZNhgx1k2GURK0DdQ9OXxupMOujo7Ddyq/9mfX91L9vtj4u+5R
- Lhooe4w5nS10NHaXoPadCMbeEYC+5P8IsoaWN+L/2i0WpShCXlV8EBZ97FH2o2Ctj8qU
- OahQ==
+ bh=ILc6eqa/vztnVjNaWFY1Tz+0fqSSJg3LmbPpscMupbo=;
+ b=Jja5vcdpV2Zxjb2FoPkJAVTaw/825rKVjG0VnP5FTFZRAv1N861LgUjgOOFqVhyKFk
+ dNySSoRHDp0L0auM9Yst4F9sPw9H4N8zzgfKpZX0ouWdsCC7eb0hGMzOe2mGC84AZm1I
+ RBX7OyLuCvjheAXtM3Mn83CTDmExsAxDT2CpmWvZdy9/aCORarVJo1AMPFpBBt6oRHcN
+ aupgg6b2hyjwX+T59Mzk735ElwB1vKOjYIrF1d2W7H+omqTNsHk1KCCLBzEBnirmmkXg
+ 0tto9uRpuHKM1hLgx4UvuZO80zkXXc44RVuWvS7tYhA94BIb5jFw/SFL593OIX8b8ug0
+ 0PWw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUloLvzCcwIIcw0I8NFPEIiVMpF/YuvinbVHSuViuHriom4EoZmNaJE5BcbykN37esmhGSXUZG9EAbTi+U5wVOUcG9fWvw=
-X-Gm-Message-State: AOJu0YzvoWXy0DR1RIxWnnis8sguq9A2IoZrsUCOF0mlH3BMIuUoN9IK
- UdVOCOUaeX/uC7ghiG9wWWqwip332GHBD1TpPLpaia+Q7u2hF3cBBOnzcHBdklU=
-X-Google-Smtp-Source: AGHT+IGEGHMotarG6JJ8S3FrE+dcI4Naq359Pf2ibu6LQ+R9gnAB5gxHW0K9xDkCUywi+Bx+pq8Xqg==
-X-Received: by 2002:a17:903:24d:b0:1dc:affb:1f50 with SMTP id
- j13-20020a170903024d00b001dcaffb1f50mr10497345plh.47.1710183160060; 
- Mon, 11 Mar 2024 11:52:40 -0700 (PDT)
+ AJvYcCWmpBdvjdDVKB5HA0jkx/x3sPEZj8oOpBSDNSBB+L1LVMb9SvxCr2N5WNQmxagn3cATIeWV8JI8yAhbBfZyKnEGCnbg+YM=
+X-Gm-Message-State: AOJu0YwekFxgq5QlTR751CjQ4JCPZg+AjUlGzPhdxzNd00wp6D5ICQ8z
+ BBrXaskFIXnkv+W8K5BVqPE6xuSnIc0DAnI/QMNpLB7fDpu09U8i4DcxhGx2FJA=
+X-Google-Smtp-Source: AGHT+IFL0/mrChSalSLTFxonKfGW0fFYqNETkdafX2sqSgzj//aw0yXWUbPI5Va7WSlQn/WjTCADfQ==
+X-Received: by 2002:a17:902:e98a:b0:1dc:b531:833 with SMTP id
+ f10-20020a170902e98a00b001dcb5310833mr6238135plb.63.1710183163504; 
+ Mon, 11 Mar 2024 11:52:43 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- z2-20020a170903018200b001dd7d00f7afsm4843887plg.18.2024.03.11.11.52.37
+ z2-20020a170903018200b001dd7d00f7afsm4843887plg.18.2024.03.11.11.52.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 11:52:39 -0700 (PDT)
+ Mon, 11 Mar 2024 11:52:43 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  David Gibson <david@gibson.dropbear.id.au>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PATCH 09/13] target/ppc: Prevent supervisor from modifying MSR[ME]
-Date: Tue, 12 Mar 2024 04:51:51 +1000
-Message-ID: <20240311185200.2185753-10-npiggin@gmail.com>
+Subject: [PATCH 10/13] spapr: set MSR[ME] and MSR[FP] on client entry
+Date: Tue, 12 Mar 2024 04:51:52 +1000
+Message-ID: <20240311185200.2185753-11-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240311185200.2185753-1-npiggin@gmail.com>
 References: <20240311185200.2185753-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,32 +94,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prevent guest state modifying the MSR[ME] bit. Per ISA:
-
-  An attempt to modify MSRME in privileged but non-hypervisor state is
-  ignored (i.e., the bit is not changed).
+The initial MSR state for PAPR specifies MSR[ME] and MSR[FP] are set.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/helper_regs.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ hw/ppc/spapr_cpu_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
-index 410b39c231..25258986e3 100644
---- a/target/ppc/helper_regs.c
-+++ b/target/ppc/helper_regs.c
-@@ -264,6 +264,11 @@ int hreg_store_msr(CPUPPCState *env, target_ulong value, int alter_hv)
-         value &= ~MSR_HVB;
-         value |= env->msr & MSR_HVB;
-     }
-+    /* Attempt to modify MSR[ME] in guest state is ignored */
-+    if (is_book3s_arch2x(env) && !(env->msr & MSR_HVB)) {
-+        value &= ~(1 << MSR_ME);
-+        value |= env->msr & (1 << MSR_ME);
-+    }
-     if ((value ^ env->msr) & (R_MSR_IR_MASK | R_MSR_DR_MASK)) {
-         cpu_interrupt_exittb(cs);
-     }
+diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
+index 50523ead25..f3b01b0801 100644
+--- a/hw/ppc/spapr_cpu_core.c
++++ b/hw/ppc/spapr_cpu_core.c
+@@ -42,6 +42,8 @@ static void spapr_reset_vcpu(PowerPCCPU *cpu)
+      * as 32bit (MSR_SF=0) in "8.2.1. Initial Register Values".
+      */
+     env->msr &= ~(1ULL << MSR_SF);
++    env->msr |= (1ULL << MSR_ME) | (1ULL << MSR_FP);
++
+     env->spr[SPR_HIOR] = 0;
+ 
+     lpcr = env->spr[SPR_LPCR];
 -- 
 2.42.0
 
