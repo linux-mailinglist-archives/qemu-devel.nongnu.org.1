@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B62D877B85
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 09:10:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0D56877BAB
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 09:27:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjajm-0007Jn-OP; Mon, 11 Mar 2024 04:10:22 -0400
+	id 1rjazH-0002FD-Ez; Mon, 11 Mar 2024 04:26:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjajl-0007JF-8D
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 04:10:21 -0400
-Received: from mgamail.intel.com ([192.198.163.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjajj-0004HT-9K
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 04:10:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710144619; x=1741680619;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=T0YVqkROoTZT7ZXF1wX65oUz/qiMr4QFmWDX6GaS7gw=;
- b=Rl+guP6dVDApzaVS86rTT3Q5nEmBvkPLQczxabB4IAGJwyEf35JgqQsy
- abSWoyxANzkLzASA451IKQtjO/STkU5zsUhTUSFgPkC4MbPVWKk05IdkN
- ODqEr97KQkO80qeg8YfOLt4ATjYrmRac/svPm449rSZ8MseWoAT2KA3oV
- lDY9QKq+Dhvybs2ROyIQRPGEvriY3e00C07To2pbpOJTN4/R2yVTwvcBO
- 9KxpDCBfAUcOkfTAS7dA6hNlEMT3OkZl3e0irmQIzgyBJ6qPmqsmNsvxM
- KGZeeBzUqC1f8g/z78/kdUA5CaYeByx413w9I1TTzKf8QGMwwmMyUQaLt w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="4957969"
-X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; 
-   d="scan'208";a="4957969"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2024 01:10:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; d="scan'208";a="42017291"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa002.jf.intel.com with ESMTP; 11 Mar 2024 01:10:08 -0700
-Date: Mon, 11 Mar 2024 16:23:57 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>,
- Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, Robert Hoo <robert.hu@linux.intel.com>
-Subject: Re: [PATCH v9 06/21] i386/cpu: Use APIC ID info to encode cache topo
- in CPUID[4]
-Message-ID: <Ze6/naoIIXj/DfTv@intel.com>
-References: <20240227103231.1556302-1-zhao1.liu@linux.intel.com>
- <20240227103231.1556302-7-zhao1.liu@linux.intel.com>
- <c88ee253-f212-4aa7-9db9-e90a99a9a1e3@intel.com>
- <Ze23y7UzGxnsyo6O@intel.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjazE-0002Em-RB
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 04:26:20 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjazD-0008Go-Da
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 04:26:20 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-33e9df3416bso54532f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 01:26:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1710145577; x=1710750377; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=OzFHC9lkYm5S0YhYE2Qm7J8utw6WXcBvO3xMW4Tr9ME=;
+ b=aIg3PzpC2mjbQzFNQSLn0EXTEFvq4zRurKDiQbkT3G9yEUTyPNOBFHVM8ySNOEVFDc
+ jZ3HtEsGkDA6j9lr+mpwOkGXl23PrGtCsE4cT7fdyoC7Hjnolnqv0EpjlqXzONAntoQE
+ 0ZDCWzT6Q+VAVYZ9b5MMRNprQo086LpZ6BnBNs5KJrJfUl5c0wEK1Zi0yHRUl8wKjXU2
+ j0mPbncJ84Y5FdgIJKoQ56zIozWj0nm5f6H0LbsbVAj5N4U7nryU72asdcApskQFOXas
+ lIvt/WmrW4vo9/V1AQD5PfW4vN87+6LGMCsULYaZNY3OFZr9V30Jq2Hlp//W47AxUVQ/
+ mZAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710145577; x=1710750377;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OzFHC9lkYm5S0YhYE2Qm7J8utw6WXcBvO3xMW4Tr9ME=;
+ b=f+xfhZUW5KIJiximwLb1TjHfgL1ZiwzovJPYfk1bAWdANvmhXJ09wsLG4FY7JFmfnJ
+ nXSRLmnK5Xzu03rXcjUkMYZtuwLYyerPWd8rqSrFpAnLz3nFFzOT+uLJJ/giVIU3XnkN
+ 496sZa5ThM2KF3mpOe7TvgX4A+LxKEGtcP0tWPN+2jf08FXhwfMpl37hLwglsLQ5cdAq
+ EXQVXbl4Qz3ysGoxfaNeFp8et/zcm8y4oPa6nkitRXEQzBwz873v4obOprCCh8AE/cG1
+ Bqq+WO1VtMAgNeYPWYiNzozf5wzuZRXRGSE3uVEy04e8Y+Z8+KHMDQ+EkRD+SAASGh30
+ 1TXg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUBgO4UBByXAdIL9+WofJvaoVx4kXbzyqcl0BT+obDN4BPJPgCL3CREE1Ru9jk6AKRU1/A01iBzfdRE6EBVndxPy/VmDXs=
+X-Gm-Message-State: AOJu0Yyhsbw5Ak+N6mjr8V2ZXa5DVbrqxDFiEyhAzN/0+7i0UNWJwHis
+ YEyLOC7VJWqFVx/E0T6OklnDhna2nKsr9nn75hm/K/7+PcTNu0SnBJNGA/lZz8M=
+X-Google-Smtp-Source: AGHT+IHOz8bFXBF2iFanGnXroBf+7W+zBzZ1P5Bh4Ue3PVLk0/jeBf0BETTXt/7voMsw46Qevo95Pg==
+X-Received: by 2002:a05:6000:24f:b0:33d:6ef6:8762 with SMTP id
+ m15-20020a056000024f00b0033d6ef68762mr4044485wrz.29.1710145577194; 
+ Mon, 11 Mar 2024 01:26:17 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.167.228])
+ by smtp.gmail.com with ESMTPSA id
+ bk5-20020a0560001d8500b0033e699fc6b4sm5828645wrb.69.2024.03.11.01.26.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Mar 2024 01:26:16 -0700 (PDT)
+Message-ID: <35c47280-90e0-47e2-b9a3-aff6e15fbeca@linaro.org>
+Date: Mon, 11 Mar 2024 09:26:15 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Ze23y7UzGxnsyo6O@intel.com>
-Received-SPF: none client-ip=192.198.163.15;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.945,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tests/plugins: fix use-after-free bug
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <20240311081619.669832-1-pbonzini@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240311081619.669832-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,59 +93,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Xiaoyao,
+On 11/3/24 09:16, Paolo Bonzini wrote:
+> rec->count.score is inside rec, which is freed before rec->count.score is.
+> Reorder the instructions
+> 
+> Reported by Coverity as CID 1539967.
+> 
+> Cc: Alex Bennée <alex.bennee@linaro.org>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   contrib/plugins/howvec.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-Did the following reason convince you? Could I take your r/b tag with
-current code? ;-)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Thanks,
-Zhao
 
-On Sun, Mar 10, 2024 at 09:38:19PM +0800, Zhao Liu wrote:
-> Date: Sun, 10 Mar 2024 21:38:19 +0800
-> From: Zhao Liu <zhao1.liu@linux.intel.com>
-> Subject: Re: [PATCH v9 06/21] i386/cpu: Use APIC ID info to encode cache
->  topo in CPUID[4]
-> 
-> Hi Xiaoyao,
-> 
-> > >               case 3: /* L3 cache info */
-> > > -                die_offset = apicid_die_offset(&topo_info);
-> > >                   if (cpu->enable_l3_cache) {
-> > > +                    addressable_threads_width = apicid_die_offset(&topo_info);
-> > 
-> > Please get rid of the local variable @addressable_threads_width.
-> > 
-> > It is truly confusing.
-> 
-> There're several reasons for this:
-> 
-> 1. This commit is trying to use APIC ID topology layout to decode 2
-> cache topology fields in CPUID[4], CPUID.04H:EAX[bits 25:14] and
-> CPUID.04H:EAX[bits 31:26]. When there's a addressable_cores_width to map
-> to CPUID.04H:EAX[bits 31:26], it's more clear to also map
-> CPUID.04H:EAX[bits 25:14] to another variable.
-> 
-> 2. All these 2 variables are temporary in this commit, and they will be
-> replaed by 2 helpers in follow-up cleanup of this series.
-> 
-> 3. Similarly, to make it easier to clean up later with the helper and
-> for more people to review, it's neater to explicitly indicate the
-> CPUID.04H:EAX[bits 25:14] with a variable here.
-> 
-> 4. I call this field as addressable_threads_width since it's "Maximum
-> number of addressable IDs for logical processors sharing this cache".
-> 
-> Its own name is long, but given the length, only individual words could
-> be selected as names.
-> 
-> TBH, "addressable" deserves more emphasis than "sharing". The former
-> emphasizes the fact that the number of threads chosen here is based on
-> the APIC ID layout and does not necessarily correspond to actual threads.
-> 
-> Therefore, this variable is needed here.
-> 
-> Thanks,
-> Zhao
-> 
 
