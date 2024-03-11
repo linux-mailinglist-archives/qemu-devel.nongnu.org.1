@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA8087866E
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:42:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFD3878693
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:46:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjjeb-0002Z9-3j; Mon, 11 Mar 2024 13:41:37 -0400
+	id 1rjjeg-0002bi-7u; Mon, 11 Mar 2024 13:41:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjeY-0002Z0-Qf
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:41:34 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjee-0002Zc-B9
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:41:40 -0400
+Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjeW-0007NI-8f
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:41:34 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-6e627596554so2250876b3a.2
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 10:41:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjec-0007Nc-PZ
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:41:40 -0400
+Received: by mail-oi1-x22c.google.com with SMTP id
+ 5614622812f47-3bd4e6a7cb0so3004484b6e.3
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 10:41:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710178891; x=1710783691; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710178896; x=1710783696; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=N4Cx0ZaTSrFNoq7rJ39FkSsZPS8YFhgH7P+2DPv9QN4=;
- b=H/BnlesQf31DiRT2ZExe7QrAHDLSN1Go++WoiI5as4EcgXWKJaXyZwAlmpR37Ojuf8
- yLSwjZXmZGox9+G9sY5I10ggmKK/woZLMQgbc2lbvJNV8jZmf5YLvHYvLACx/N46CNVI
- 460GbP0OMDWww1SlpYlU+WWxFWmkjWISk2mlILfaCbTqUj/8etiFwiJGTs36tjQTYwGl
- 3QUXs5qAYBMqggXdIdJugKM4iNS5eNNp8EvQt8BvFkYqTmhXsAGkCdz+xtCJTF4tYkTo
- kZJUXE/AQZ+AeN2Yvbz70znu/GHNPgpCrcbfK2qDF6tkLsuc7eGjW862yejgNhaCzcGv
- XC3g==
+ bh=ypjlmGRHzY0uruaNOcG3LohKyREVxpMddX9iaQbvl0I=;
+ b=Sm/MyGhYAs5i2hfbYnbqYbsyYTP1xMjoaYA3ayweCX4BsscU+g3cUVr+wP7ck6NZ+z
+ LQ9LpCC/cNyXAPBKYXMN6K1C22KxuzbtMQnRjwuUapRpjz6SF1IY+OgT+xpjhiiiNUw4
+ ldSra8493YjnIbRvv2vTWhX9U2POfOdleNk6rVMM2Vmt+44OjwyzNYx32tsvy+t6BX6F
+ Wn5DgHzYTWEgXVTpw1fnMI4eYLNsN82FXsnvzEw+ESjhcqy8mvmmEQtSCsi12wplEIOX
+ UTf04zUblu6QplheGKgIkG200iKLFxiv4JvSUmns/dKXL9wZXbxOQZij6PrI7mGghRGq
+ jFdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710178891; x=1710783691;
+ d=1e100.net; s=20230601; t=1710178896; x=1710783696;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=N4Cx0ZaTSrFNoq7rJ39FkSsZPS8YFhgH7P+2DPv9QN4=;
- b=YpAexDsd95E7IptR/4N4Hl5pMGkMPz9vcmug1B0pqHLltLql0Obq7aXgOKkGT2Bo2L
- 1Q61PtQNhAXdYdzTPKyyEP5Kq7OAt8TXlDGBZU9ia5PMJdAvKYHR+FrzcTb9+OO/bQNB
- Irn0KU8G0U7bFD5fFWGbFbKQE/Je6LRZcFCQ/ouuHiGGvZJYCIzjFWk1ZA6Eyxe/PeZe
- f7gVLsRLNEpPuvCU1tWP5+YcXXiyMKfItD+K/MbruHvO+RhlKRr19eGPHjtw2bLjVa3q
- n6ACBk8FdphlF1zAWlDRhEdIzl1O73+PaJcpML7C/1DWc3Nk2kjjevF56j+29dLGmmMx
- HCUw==
-X-Gm-Message-State: AOJu0YxO6x1EyAyYKokkHZdPpz75QhDpBDlJ4YBqAIJSkrKVjjFB8O9E
- P8CUM7G1034AAjfr13LftI2uYA4tJmFHJdiOXSTz8ZG3PD67/rGXw6M/tMoVwcc=
-X-Google-Smtp-Source: AGHT+IE4OFlSOLVpgo5Wr4qd3RiOLb6X6AswktBcaG+MRqpCmwEUSoa8uBJv0Xe78ihuMIFNF241GA==
-X-Received: by 2002:a05:6a20:6a1d:b0:1a1:72ea:2da9 with SMTP id
- p29-20020a056a206a1d00b001a172ea2da9mr5835258pzk.19.1710178890752; 
- Mon, 11 Mar 2024 10:41:30 -0700 (PDT)
+ bh=ypjlmGRHzY0uruaNOcG3LohKyREVxpMddX9iaQbvl0I=;
+ b=gWUgYZWHacAcJNthbgQW1Q8R76ZOtUr+won9bIF6S+wRtB/a25bHWXOPohoC4cra/+
+ jFqUhcey8i4NG6H2C0+Bn18phhxOMIVXnwYrm8xgHWc86Z6Azm0oUjCQ5bEnmFI/mHoP
+ WyVe3mbKajwAcvEFlGu3FR0kd1VP+JIiydoIOwJtFQCwNi2VDiL+Z8y81EjP1JSUMiG2
+ 8ccFqp9fC7DSxwXxf7/GRj57bin2QNMbEtIHor4txa2Hig0jYAes/ph8rENbwGJQmxwA
+ 8DjtpeixBlQZkToK2q1QBw4xUaRdRxE00lHcA1rCgl4ohnwDQcweHGDDwUaCqZclFFmS
+ Lwwg==
+X-Gm-Message-State: AOJu0YyoJmWqLhmHqU9VMsRqC0WT0zk0pKSr0fMThOiqEVZJ5oqZRAOq
+ eI3iyUZDMJy4hqWTLWeEnfPoxJxgjzvXlgkZaKI7XZOGzny50HBF/3F8adDd9aU=
+X-Google-Smtp-Source: AGHT+IEc5s2/zyTKI8pG6Ai5VuVN1ci5ub1RvUw+Ry01K4ZqbVzzZFBLE9rQ65EOas04vid1hk18Zw==
+X-Received: by 2002:a05:6808:384d:b0:3c2:3fc6:a05a with SMTP id
+ ej13-20020a056808384d00b003c23fc6a05amr1804850oib.33.1710178896206; 
+ Mon, 11 Mar 2024 10:41:36 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- a18-20020a62d412000000b006e67b4d7b74sm4593187pfh.197.2024.03.11.10.41.25
+ a18-20020a62d412000000b006e67b4d7b74sm4593187pfh.197.2024.03.11.10.41.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 10:41:30 -0700 (PDT)
+ Mon, 11 Mar 2024 10:41:35 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -65,16 +65,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH v4 10/24] virtio-net: Use virtual time for RSC timers
-Date: Tue, 12 Mar 2024 03:40:12 +1000
-Message-ID: <20240311174026.2177152-11-npiggin@gmail.com>
+Subject: [PATCH v4 11/24] net: Use virtual time for net announce
+Date: Tue, 12 Mar 2024 03:40:13 +1000
+Message-ID: <20240311174026.2177152-12-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240311174026.2177152-1-npiggin@gmail.com>
 References: <20240311174026.2177152-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
+ envelope-from=npiggin@gmail.com; helo=mail-oi1-x22c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,46 +97,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Receive coalescing is visible to the target machine, so its timers
-should use virtual time like other timers in virtio-net, to be
-compatible with record-replay.
+Using virtual time for announce ensures that guest visible effects
+are deterministic and don't break replay.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/net/virtio-net.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/announce.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index ad12d80677..2ce1d53a0f 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -2120,7 +2120,7 @@ static void virtio_net_rsc_purge(void *opq)
-     chain->stat.timer++;
-     if (!QTAILQ_EMPTY(&chain->buffers)) {
-         timer_mod(chain->drain_timer,
--              qemu_clock_get_ns(QEMU_CLOCK_HOST) + chain->n->rsc_timeout);
-+              qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + chain->n->rsc_timeout);
-     }
- }
+diff --git a/net/announce.c b/net/announce.c
+index 9e99044422..70b5d5e822 100644
+--- a/net/announce.c
++++ b/net/announce.c
+@@ -187,7 +187,7 @@ static void qemu_announce_self_once(void *opaque)
  
-@@ -2356,7 +2356,7 @@ static size_t virtio_net_rsc_do_coalesce(VirtioNetRscChain *chain,
-         chain->stat.empty_cache++;
-         virtio_net_rsc_cache_buf(chain, nc, buf, size);
-         timer_mod(chain->drain_timer,
--              qemu_clock_get_ns(QEMU_CLOCK_HOST) + chain->n->rsc_timeout);
-+              qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + chain->n->rsc_timeout);
-         return size;
-     }
- 
-@@ -2594,7 +2594,7 @@ static VirtioNetRscChain *virtio_net_rsc_lookup_chain(VirtIONet *n,
-         chain->max_payload = VIRTIO_NET_MAX_IP6_PAYLOAD;
-         chain->gso_type = VIRTIO_NET_HDR_GSO_TCPV6;
-     }
--    chain->drain_timer = timer_new_ns(QEMU_CLOCK_HOST,
-+    chain->drain_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-                                       virtio_net_rsc_purge, chain);
-     memset(&chain->stat, 0, sizeof(chain->stat));
- 
+ void qemu_announce_self(AnnounceTimer *timer, AnnounceParameters *params)
+ {
+-    qemu_announce_timer_reset(timer, params, QEMU_CLOCK_REALTIME,
++    qemu_announce_timer_reset(timer, params, QEMU_CLOCK_VIRTUAL,
+                               qemu_announce_self_once, timer);
+     if (params->rounds) {
+         qemu_announce_self_once(timer);
 -- 
 2.42.0
 
