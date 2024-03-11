@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FDC2878A8B
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 23:09:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C1A878A8D
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 23:10:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjngK-0000CE-Nl; Mon, 11 Mar 2024 17:59:40 -0400
+	id 1rjngO-0000GG-NK; Mon, 11 Mar 2024 17:59:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngJ-0000Br-8q
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:39 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngM-0000FF-JU
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngH-0003yV-Jv
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:39 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngL-0003yn-0U
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710194376;
+ s=mimecast20190719; t=1710194379;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+T3rLu53eP93SiwWxcECCKMxAP2DCTkljq+aiGvFxI4=;
- b=eG4DsXcTzLsvxqRRjuq6qNahxiUlKXP4LwpQOEf4uAVUtlmw9kMeRIyV0lQTF8wvdTZlqu
- T6WxPo0fx2Hm64J+6Tnn3qKGmuVTaVazlTsY0LppQeysxLYGQVOibgytNlOwa72m7nRQGj
- mp6FPdzLVPnptU3Eo7sXs27lzrLGPUQ=
+ bh=fy9ven1kWN6KIHr7K9n1SATScv4YMRbuKCUFVtbSpwk=;
+ b=UDRLLCI7nhQait1osffc1rclHkoSO7MZKtydZ4+APIukodC2t6y4KCjateQr/RvwE96knN
+ E/O6UrFIWQcYK++PXW4Qi+iYJ7VMx+m4u7yuBCER7h9u2xDNQSTBCYDGj/FkNvWGvHtriV
+ NVbVkCdJuvzDSkMRVBOAhi7xoThEkKw=
 Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
  [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-651-N8TqUTR0PBqkrixC9m3SUw-1; Mon, 11 Mar 2024 17:59:35 -0400
-X-MC-Unique: N8TqUTR0PBqkrixC9m3SUw-1
+ us-mta-227-GXyH86IANMe3JBxfUUEzmA-1; Mon, 11 Mar 2024 17:59:36 -0400
+X-MC-Unique: GXyH86IANMe3JBxfUUEzmA-1
 Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-6818b8cb840so15026526d6.1
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 14:59:35 -0700 (PDT)
+ 6a1803df08f44-690d3f5af86so4505126d6.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 14:59:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710194375; x=1710799175;
+ d=1e100.net; s=20230601; t=1710194376; x=1710799176;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+T3rLu53eP93SiwWxcECCKMxAP2DCTkljq+aiGvFxI4=;
- b=A5qlU0MLO1ZTuXzwFve0nY5vnvtW1dcSPWS6PKW7LGUq6eHGfvAPNRrDDsqpdCvyQ5
- H/5NorgPJiffJ0+OiAmfCeKrY62zgyGBMsxy8jf+x+VeMFQyhaDakIWUoLdvR1Vplx5t
- gRifCvntyX1tAulbq0Ud+4V4giRJAGYkoJc1blIfs3LGkmfZ12oGA5Swk3FI65GRdqCU
- 9FSuSTi8iC+lg9H9U/rptaINEa3CYgXvFj8c9PKyM5ksiJ0iB63iS0I+U4ojQgARW1O1
- FJ84G3YB/aN/zBLB3MywM+c0GJrD/PI4xh/9W6MJ2k42YCcnaSM/Nhk/2q9z1YJc3jhy
- BqJQ==
-X-Gm-Message-State: AOJu0YyuymR+a5Lnxindr2iDk4vHuKSdbqUQdDwBub7+Vd/VPN9ZIsw+
- gnznnPAeECWsjA0SS7mhqfC9eHI+LEy2HmJO/Or3ZMxDNaQNKgBP1jKNF0eNcuSz0GIi2Ej70kc
- lLUR+sBD3R4oZZAJ78ej2eImwVbY+cGc3NYun1raX9DUhiTzOcIPybDnpf8SqYQ6JrcsEj+C2dS
- g3yF7Wfqjn21knYKrP+r0M1dTJprY9PaS0uQ==
-X-Received: by 2002:a05:6214:4c11:b0:690:de72:316f with SMTP id
- qh17-20020a0562144c1100b00690de72316fmr1714533qvb.1.1710194374883; 
- Mon, 11 Mar 2024 14:59:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFledxb02XIcVimWBw7Swd7/bBA4koJR+YAws4GER3eGEKY5lu/AlbFGVIb99KYWEIsDlC6Aw==
-X-Received: by 2002:a05:6214:4c11:b0:690:de72:316f with SMTP id
- qh17-20020a0562144c1100b00690de72316fmr1714509qvb.1.1710194374437; 
- Mon, 11 Mar 2024 14:59:34 -0700 (PDT)
+ bh=fy9ven1kWN6KIHr7K9n1SATScv4YMRbuKCUFVtbSpwk=;
+ b=kDkdi9MsX6Lvyx0yqAkMLU60RldBKVEdzHoRIIKIupmPgh5yiQjccGeIqay+6Ihbv/
+ O9hQGA0IYGa3Rd6kCzmdco0ivReC7lK+eKfuuGUMWoWZsbDcSrhPhEl1qyzIVYFA0MQZ
+ p13E7cfxVYdGPFLyn/UbcYALvAx4ygnK0jsp1nuE2aePI37ul3D+RE7QWuNwwSoRAi0s
+ nLWCn6BxVksdydZDslHbSuZB4VX8toUfXa3S7/3qGrntH141G2nFtvwEG1wp6p+uu8/Q
+ VGVwh53pk5PKj4WAlbcG5a1SiW2ltWT8jwqFm6iGsJTzj8hBp2ixdDopmOwHznZ2TiMz
+ 5cuw==
+X-Gm-Message-State: AOJu0YwlJUBGNxDdS1qYYZ71C8HwUT+Ct/HEEsmYTM86uKfmINdOaOuJ
+ 0AIGUEc1QJ/ol7mUqECiltBJ4ctfgJxPR1eabDYuHaamxRkOnkCv2E/tvR/cDfPFaI3Gbk/pmPQ
+ jxF4Ra5xuYENYkro7Acd8/vRZQin6NWVgUg35XQrYZXR7iqUjeZbZyBReNuTgna56Tp8Gnxe9ad
+ 7mRjQoGupj/dnjtEl1GmykzeHbwoiRRfbTlw==
+X-Received: by 2002:a0c:e141:0:b0:690:a71a:d381 with SMTP id
+ c1-20020a0ce141000000b00690a71ad381mr7862214qvl.6.1710194376148; 
+ Mon, 11 Mar 2024 14:59:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEJtZGA5BfIepUNIgay/2QytymBVXHAVshBpDfYFXh4F3Q1HqzsO/DJv6DO8nosaVPXVmuDdA==
+X-Received: by 2002:a0c:e141:0:b0:690:a71a:d381 with SMTP id
+ c1-20020a0ce141000000b00690a71ad381mr7862192qvl.6.1710194375797; 
+ Mon, 11 Mar 2024 14:59:35 -0700 (PDT)
 Received: from x1n.. (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- d6-20020a0ce446000000b00690cec16254sm1541932qvm.68.2024.03.11.14.59.33
+ d6-20020a0ce446000000b00690cec16254sm1541932qvm.68.2024.03.11.14.59.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 14:59:33 -0700 (PDT)
+ Mon, 11 Mar 2024 14:59:35 -0700 (PDT)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, peterx@redhat.com,
  Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
  Prasad Pandit <ppandit@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 05/34] migration: Report error when shutdown fails
-Date: Mon, 11 Mar 2024 17:58:56 -0400
-Message-ID: <20240311215925.40618-6-peterx@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 06/34] migration: Remove SaveStateHandler and LoadStateHandler
+ typedefs
+Date: Mon, 11 Mar 2024 17:58:57 -0400
+Message-ID: <20240311215925.40618-7-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240311215925.40618-1-peterx@redhat.com>
 References: <20240311215925.40618-1-peterx@redhat.com>
@@ -105,40 +105,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Cédric Le Goater <clg@redhat.com>
 
-This will help detect issues regarding I/O channels usage.
+They are only used once.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/r/20240304122844.1888308-7-clg@redhat.com
+Link: https://lore.kernel.org/r/20240304122844.1888308-8-clg@redhat.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/qemu-file.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/migration/register.h | 4 ++--
+ include/qemu/typedefs.h      | 2 --
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index b10c882629..a10882d47f 100644
---- a/migration/qemu-file.c
-+++ b/migration/qemu-file.c
-@@ -63,6 +63,8 @@ struct QEMUFile {
-  */
- int qemu_file_shutdown(QEMUFile *f)
- {
-+    Error *err = NULL;
-+
+diff --git a/include/migration/register.h b/include/migration/register.h
+index 9ab1f79512..2e6a7d766e 100644
+--- a/include/migration/register.h
++++ b/include/migration/register.h
+@@ -18,7 +18,7 @@
+ 
+ typedef struct SaveVMHandlers {
+     /* This runs inside the BQL.  */
+-    SaveStateHandler *save_state;
++    void (*save_state)(QEMUFile *f, void *opaque);
+ 
      /*
-      * We must set qemufile error before the real shutdown(), otherwise
-      * there can be a race window where we thought IO all went though
-@@ -91,7 +93,8 @@ int qemu_file_shutdown(QEMUFile *f)
-         return -ENOSYS;
-     }
+      * save_prepare is called early, even before migration starts, and can be
+@@ -71,7 +71,7 @@ typedef struct SaveVMHandlers {
+     /* This calculate the exact remaining data to transfer */
+     void (*state_pending_exact)(void *opaque, uint64_t *must_precopy,
+                                 uint64_t *can_postcopy);
+-    LoadStateHandler *load_state;
++    int (*load_state)(QEMUFile *f, void *opaque, int version_id);
+     int (*load_setup)(QEMUFile *f, void *opaque);
+     int (*load_cleanup)(void *opaque);
+     /* Called when postcopy migration wants to resume from failure */
+diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
+index a028dba4d0..50c277cf0b 100644
+--- a/include/qemu/typedefs.h
++++ b/include/qemu/typedefs.h
+@@ -151,8 +151,6 @@ typedef struct IRQState *qemu_irq;
+ /*
+  * Function types
+  */
+-typedef void SaveStateHandler(QEMUFile *f, void *opaque);
+-typedef int LoadStateHandler(QEMUFile *f, void *opaque, int version_id);
+ typedef void (*qemu_irq_handler)(void *opaque, int n, int level);
  
--    if (qio_channel_shutdown(f->ioc, QIO_CHANNEL_SHUTDOWN_BOTH, NULL) < 0) {
-+    if (qio_channel_shutdown(f->ioc, QIO_CHANNEL_SHUTDOWN_BOTH, &err) < 0) {
-+        error_report_err(err);
-         return -EIO;
-     }
- 
+ #endif /* QEMU_TYPEDEFS_H */
 -- 
 2.44.0
 
