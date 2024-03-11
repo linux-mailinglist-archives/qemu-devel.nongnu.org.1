@@ -2,87 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00077878697
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:47:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 458008786BC
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:53:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjjjr-0000NS-FR; Mon, 11 Mar 2024 13:47:03 -0400
+	id 1rjjm6-00020M-5z; Mon, 11 Mar 2024 13:49:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjjjo-0000AK-Hz
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:47:00 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjjjm-0008CG-I7
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:47:00 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-41330a62bf7so2435885e9.1
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 10:46:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710179216; x=1710784016; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=P94mp/Nb4ucHV343Y/FMYqLBRS0gkHikA9l9AmQ9xAU=;
- b=NjYzZU+G+5vJYYpfaaFALbFcQitXUsgJYoF/oEqnMw31eq4mbjw/BL66W+JkRzPzQo
- 1nx7+P6QdcWv0OBo4Y4EEhbWhIJnDjk5saTCho7/0Qh+qxkOdKi7AUDtqazYYDbwd8Yc
- bfyOFtUZ6djoD9CFd2ZqZqi1L3a+Q2yxqsDM6G5ZACdeWlYLY0fYf8mPAWbwzVSSu2CY
- YVsV8ragKwdV+mDS4mPZnXAKPRsNpxSWnDXSA2LDEdaEnFVlL8/hRndIL7RBhkYw5DJn
- y4sij1Fw+0szByjFD63RSYzY5ZhU8Yzk402++qQgHFRTR7fDV3D2Exku/7pZWY8CZRXg
- NINQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710179216; x=1710784016;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=P94mp/Nb4ucHV343Y/FMYqLBRS0gkHikA9l9AmQ9xAU=;
- b=Gt2P9eyUrPi9jI9mYeb8mMYFV/9QFpVItrR1H5AFFbKe+w7qurO79IVPC+nbqk4Fjk
- 7I/KuR0ycF/+NaFR4ChFG3v+3UE6P8E1cKHAbrHXRa1QfsOBDkAGdN6Nbzozthi+Jszd
- tsiSzpvMSoVSIEsxMF7PgLoTp2n1bAtscyLLU5gCZCnH3/h/4UarMQ3217wQ9mLVlQXf
- RpX5fvXb1W2NP5+u2sexlJjoIHLMf9GhHCqGRPUP8m0oxQ1dX6QD2tklRUub7C/pexZ5
- U08T3ecDRZHJ+A5h0XRzjGSlfxPWg3n9p9mqKPgy5udBIaWDdaU4KUNDtyvhcOsQYSxH
- m7aw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWaXSp10PcpF40umyup5CrOppHuUlFJR8I1gHmL+PSoMZoZoF8brR5eo5BooyVhIUQb4e9Ff+iBEA2SidOgTOMVotjia8o=
-X-Gm-Message-State: AOJu0Yzo1253OJMTiOTyCxYinaeEJuO0jZ5EtdgzHHxCYJ/FqHfJFovM
- 2YP++xvQmQy30ACBoMSsvwT8gSiZRbQrWQR8r8yLaK/MzSvLQBPOBjpyFuwgtiE=
-X-Google-Smtp-Source: AGHT+IHX8xsUK9pPrZ5EnewxvgqZZqABTtW9DDerb/e17+fkvakSFIdqYI/qsmRuziL8cvRHmSxOiA==
-X-Received: by 2002:a05:600c:45c9:b0:413:1f65:ec19 with SMTP id
- s9-20020a05600c45c900b004131f65ec19mr5250885wmo.37.1710179215983; 
- Mon, 11 Mar 2024 10:46:55 -0700 (PDT)
-Received: from [192.168.69.100] ([176.176.167.228])
- by smtp.gmail.com with ESMTPSA id
- q27-20020a056000137b00b0033e72e104c5sm6945438wrz.34.2024.03.11.10.46.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Mar 2024 10:46:55 -0700 (PDT)
-Message-ID: <f3e1fefc-0df3-4339-8373-7648597a78d0@linaro.org>
-Date: Mon, 11 Mar 2024 18:46:53 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] spapr: Tag pseries-2.1 - 2.11 machines as deprecated
-Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Thomas Huth <thuth@redhat.com>
-Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-References: <20231214181723.1520854-1-clg@kaod.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231214181723.1520854-1-clg@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1rjjm4-0001zV-1Y
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:49:20 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1rjjlo-0008Tj-Fa
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:49:19 -0400
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 42BG46gs011922; Mon, 11 Mar 2024 17:49:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id; s=corp-2023-11-20;
+ bh=6y8I3EaPx19dsJG+yzx2YDiAWapdAcWTjFgfCVHmZEo=;
+ b=c0M03AnLxiWOWQ7oUn1yhYA2Ev+Pao/X8m5OF8e7HH1IQDTXvEivzzO89DT8akgafNN9
+ FuH/Z9aVQe6om/NUAzDl1jL6HSjQpl1oSV5+d3R7O+n4EG6Y2fIu2/7AexXU2m1Ntb3r
+ T+YSTpRsQ4Ojn4tMwuH3rATNq1KMw5JLkmzENapuk3ylszLOsWqg+u82ZeKG6jBOPdRq
+ 04SCveTiTODZsoodFNvcypdlEiBQ6fI6maEbmmVWStkmRg18nU+boOzuXeILolhPprTM
+ TwhdJQorgdPXmOeL5jAUD7tkXgmkxE7Ybh3Ql3/vkvQflUT6IP9I20mLsAZRVvvrEHEh cw== 
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wre6ec0xv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 11 Mar 2024 17:49:00 +0000
+Received: from pps.filterd
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 42BHIji1028602; Mon, 11 Mar 2024 17:48:44 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3wre7632qn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 11 Mar 2024 17:48:44 +0000
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42BHmhbU024177;
+ Mon, 11 Mar 2024 17:48:43 GMT
+Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
+ ESMTP id 3wre7632me-1; Mon, 11 Mar 2024 17:48:43 +0000
+From: Steve Sistare <steven.sistare@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Leonardo Bras <leobras@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [PATCH V3] migration: export fewer options
+Date: Mon, 11 Mar 2024 10:48:39 -0700
+Message-Id: <1710179319-294320-1-git-send-email-steven.sistare@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-11_10,2024-03-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ bulkscore=0 adultscore=0
+ mlxscore=0 phishscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2403110136
+X-Proofpoint-GUID: 1ljBWEZLoNVrrs-PN31tPVKIN_8ZjAUj
+X-Proofpoint-ORIG-GUID: 1ljBWEZLoNVrrs-PN31tPVKIN_8ZjAUj
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,44 +94,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+A small number of migration options are accessed by migration clients,
+but to see them clients must include all of options.h, which is mostly
+for migration core code.  migrate_mode() in particular will be needed by
+multiple clients.
 
-On 14/12/23 19:17, Cédric Le Goater wrote:
-> pseries machines before version 2.11 have undergone many changes to
-> correct issues, mostly regarding migration compatibility. This is
-> obfuscating the code uselessly and makes maintenance more difficult.
-> Remove them and only keep the last version of the 2.x series, 2.12,
-> still in use by old distros.
+Refactor the option declarations so clients can see the necessary few via
+misc.h, which already exports a portion of the client API.
 
-By the time we get to QEMU v9.2, will pseries-2.12 still be used
-by old distros? (which ones btw?)
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+---
+Changes in V3:
+  * rebase to migration-next
+---
+---
+ hw/vfio/migration.c                |  1 -
+ hw/virtio/virtio-balloon.c         |  1 -
+ include/migration/client-options.h | 24 ++++++++++++++++++++++++
+ include/migration/misc.h           |  1 +
+ migration/options.h                |  6 +-----
+ system/dirtylimit.c                |  1 -
+ 6 files changed, 26 insertions(+), 8 deletions(-)
+ create mode 100644 include/migration/client-options.h
 
-What about also deprecating pseries-2.12 and pseries-2.12-sxxm
-which both set pre_3_0_migration, and suggest to use pseries-3.0
-instead?
-
-> 
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> ---
->   docs/about/deprecated.rst | 7 +++++++
->   hw/ppc/spapr.c            | 1 +
->   2 files changed, 8 insertions(+)
-> 
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index 2e1504024658..c0e22b2b568f 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -269,6 +269,13 @@ Nios II ``10m50-ghrd`` and ``nios2-generic-nommu`` machines (since 8.2)
->   
->   The Nios II architecture is orphan.
->   
-> +``pseries-2.1`` up to ``pseries-2.11`` (since 9.0)
-> +''''''''''''''''''''''''''''''''''''''''''''''''''
-> +
-> +Older pseries machines before version 2.12 have undergone many changes
-> +to correct issues, mostly regarding migration compatibility. These are
-> +no longer maintained and removing them will make the code easier to
-> +read and maintain. Use versions 2.12 and above as a replacement.
+diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+index 50140ed..5d4a23c 100644
+--- a/hw/vfio/migration.c
++++ b/hw/vfio/migration.c
+@@ -18,7 +18,6 @@
+ #include "sysemu/runstate.h"
+ #include "hw/vfio/vfio-common.h"
+ #include "migration/migration.h"
+-#include "migration/options.h"
+ #include "migration/savevm.h"
+ #include "migration/vmstate.h"
+ #include "migration/qemu-file.h"
+diff --git a/hw/virtio/virtio-balloon.c b/hw/virtio/virtio-balloon.c
+index 89f853f..a59ff17 100644
+--- a/hw/virtio/virtio-balloon.c
++++ b/hw/virtio/virtio-balloon.c
+@@ -32,7 +32,6 @@
+ #include "qemu/error-report.h"
+ #include "migration/misc.h"
+ #include "migration/migration.h"
+-#include "migration/options.h"
+ 
+ #include "hw/virtio/virtio-bus.h"
+ #include "hw/virtio/virtio-access.h"
+diff --git a/include/migration/client-options.h b/include/migration/client-options.h
+new file mode 100644
+index 0000000..887fea1
+--- /dev/null
++++ b/include/migration/client-options.h
+@@ -0,0 +1,24 @@
++/*
++ * QEMU public migration capabilities
++ *
++ * Copyright (c) 2012-2023 Red Hat Inc
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
++
++#ifndef QEMU_MIGRATION_CLIENT_OPTIONS_H
++#define QEMU_MIGRATION_CLIENT_OPTIONS_H
++
++/* capabilities */
++
++bool migrate_background_snapshot(void);
++bool migrate_dirty_limit(void);
++bool migrate_postcopy_ram(void);
++bool migrate_switchover_ack(void);
++
++/* parameters */
++
++MigMode migrate_mode(void);
++
++#endif
+diff --git a/include/migration/misc.h b/include/migration/misc.h
+index 5d1aa59..4c226a4 100644
+--- a/include/migration/misc.h
++++ b/include/migration/misc.h
+@@ -17,6 +17,7 @@
+ #include "qemu/notify.h"
+ #include "qapi/qapi-types-migration.h"
+ #include "qapi/qapi-types-net.h"
++#include "migration/client-options.h"
+ 
+ /* migration/ram.c */
+ 
+diff --git a/migration/options.h b/migration/options.h
+index 6ddd8da..b6b69c2 100644
+--- a/migration/options.h
++++ b/migration/options.h
+@@ -16,6 +16,7 @@
+ 
+ #include "hw/qdev-properties.h"
+ #include "hw/qdev-properties-system.h"
++#include "migration/client-options.h"
+ 
+ /* migration properties */
+ 
+@@ -24,12 +25,10 @@ extern Property migration_properties[];
+ /* capabilities */
+ 
+ bool migrate_auto_converge(void);
+-bool migrate_background_snapshot(void);
+ bool migrate_block(void);
+ bool migrate_colo(void);
+ bool migrate_compress(void);
+ bool migrate_dirty_bitmaps(void);
+-bool migrate_dirty_limit(void);
+ bool migrate_events(void);
+ bool migrate_mapped_ram(void);
+ bool migrate_ignore_shared(void);
+@@ -38,11 +37,9 @@ bool migrate_multifd(void);
+ bool migrate_pause_before_switchover(void);
+ bool migrate_postcopy_blocktime(void);
+ bool migrate_postcopy_preempt(void);
+-bool migrate_postcopy_ram(void);
+ bool migrate_rdma_pin_all(void);
+ bool migrate_release_ram(void);
+ bool migrate_return_path(void);
+-bool migrate_switchover_ack(void);
+ bool migrate_validate_uuid(void);
+ bool migrate_xbzrle(void);
+ bool migrate_zero_blocks(void);
+@@ -84,7 +81,6 @@ uint8_t migrate_max_cpu_throttle(void);
+ uint64_t migrate_max_bandwidth(void);
+ uint64_t migrate_avail_switchover_bandwidth(void);
+ uint64_t migrate_max_postcopy_bandwidth(void);
+-MigMode migrate_mode(void);
+ int migrate_multifd_channels(void);
+ MultiFDCompression migrate_multifd_compression(void);
+ int migrate_multifd_zlib_level(void);
+diff --git a/system/dirtylimit.c b/system/dirtylimit.c
+index b5607eb..774ff44 100644
+--- a/system/dirtylimit.c
++++ b/system/dirtylimit.c
+@@ -26,7 +26,6 @@
+ #include "trace.h"
+ #include "migration/misc.h"
+ #include "migration/migration.h"
+-#include "migration/options.h"
+ 
+ /*
+  * Dirtylimit stop working if dirty page rate error
+-- 
+1.8.3.1
 
 
