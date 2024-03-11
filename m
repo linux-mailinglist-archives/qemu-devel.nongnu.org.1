@@ -2,86 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D542877B95
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 09:17:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65E28877B81
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 09:06:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjapo-0000RQ-3m; Mon, 11 Mar 2024 04:16:36 -0400
+	id 1rjafR-0006EW-QR; Mon, 11 Mar 2024 04:05:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rjaph-0000R6-AL
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 04:16:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rjafN-0006EB-1s
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 04:05:49 -0400
+Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rjape-0005ug-FZ
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 04:16:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710144985;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=o6u5chL0ZKfspPibUdL3kaZu+1Hx9Y3Ha5YkUxPtjaI=;
- b=M7htUTvr7AbN9F7fb8uHerLIoHrtJ5c+uPyHy0f9FTYd+5EmHxrd04z5PQWALNoWjHQa59
- yucP25w7SVASNILkJrUGPDhXQVEeTxPeNDRcAWKSvPgWQJoBi36dR6zE6gpAITWkVonbQs
- H2q8AeJc0nyrOHnKuIVRp25xjN1SKzY=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-313-MjFDK3NfM2S8Fb_1t87KHg-1; Mon, 11 Mar 2024 04:16:23 -0400
-X-MC-Unique: MjFDK3NfM2S8Fb_1t87KHg-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a4488afb812so204333466b.3
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 01:16:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710144981; x=1710749781;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=o6u5chL0ZKfspPibUdL3kaZu+1Hx9Y3Ha5YkUxPtjaI=;
- b=OXlpjIJFV2cOK31OUvvrcF3ISH0RZUc6Zt11pQlfd2jGKnFdmOtP1FRaFwgVLRuqzS
- mL9jo4HRsBIQUf3vL4ROmbk5VBZomUfoohMhfJWkvYmnKAa7OzvldMGA1b6J8Fs46TyU
- Yhy2PqfZs+aHQkqHHW1V3QAau2+2lsMWNxWvy8VqVYoUey9p6YC1UcjTRs9/fDIwXFP5
- 6/GVQ8FzbhOP8DJ9sqdPi+/IQlTrwy6nQsqJx0DkwcrlR3xtJ3vgrpP4crjXYl/tJqaz
- gb9ajlftfKthZWMQaTrnsbQnztFQSgw5WmIlFwPoxSjn+v/pv9tIe/VIuTQkwDO14+cN
- c0bg==
-X-Gm-Message-State: AOJu0YwS6s1kSOT9x7HfF9bdth6u5MuoZpMGo+zX3BDe561rPtfkM6We
- ewQOLfPw7bxhnemiTYVUUdxTku0gPItPBY9QunM97uVH0ghjpD4a/+/p4LNOHcojeQ6qMZ6Qmph
- dUgPSswaLEqbsilCFh6vE5rNiZzYTu2yxbfnCyffe50sD5BbXwVsbUYhmm6s/X1Vib5vH00mpiV
- xP4vHEx/j9H6+I+XZ5UxreoZsH2+6Vre9zpuiY
-X-Received: by 2002:a17:906:bfe7:b0:a45:f89b:a915 with SMTP id
- vr7-20020a170906bfe700b00a45f89ba915mr3246493ejb.45.1710144980893; 
- Mon, 11 Mar 2024 01:16:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHb9a8psONN5/uGNiWlBvcaxrz1SgTp5rOmrnJ8QLzP+hCAmMKZf8O3I09u+R9+S6cgGepOXw==
-X-Received: by 2002:a17:906:bfe7:b0:a45:f89b:a915 with SMTP id
- vr7-20020a170906bfe700b00a45f89ba915mr3246480ejb.45.1710144980485; 
- Mon, 11 Mar 2024 01:16:20 -0700 (PDT)
-Received: from [192.168.10.118] ([151.49.77.21])
- by smtp.gmail.com with ESMTPSA id
- bh21-20020a170906a0d500b00a44efa48c24sm2626500ejb.117.2024.03.11.01.16.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 01:16:20 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH] tests/plugins: fix use-after-free bug
-Date: Mon, 11 Mar 2024 09:16:19 +0100
-Message-ID: <20240311081619.669832-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.43.2
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rjafL-0003F1-0Q
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 04:05:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1710144347; x=1741680347;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=F/IuLV+s9yUiWzJMY+p2Y7SPDRn/5q14hfmZENra7ig=;
+ b=UbZSxrISLJZaOEY6MNahbJNiQzYPtQ6ApHoyKtse87JzB1c6D7y+Dhdp
+ RTwMpBoJsMWKXNoHpuv2u5RzUjsf0qRoxHzZYKOPUsnZlX5T1rgztR7Vy
+ FTx+sCB/IJcgyhQtXcNWqu58+HuZy9fQ7ar5n8Wk0GvYymez5zMW8j1rb
+ BNasBISByFmzcW4BzHv5RyL9JnnAuO9Agm3mv4nowxWimN5MjwuFuGK1d
+ hujASL1AjEqz5IkZe8DIpeGIL+6XJeQc07/T1CPrOuAzNt4Z/W09jxtUI
+ /wcPYanhlpy/T3KME1Tc2ZV7vVCv3FSQduKXxRS6P+Sa+DMDmZsld8kln A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="4716423"
+X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; 
+   d="scan'208";a="4716423"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Mar 2024 01:05:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; d="scan'208";a="15687880"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa004.fm.intel.com with ESMTP; 11 Mar 2024 01:05:40 -0700
+Date: Mon, 11 Mar 2024 16:19:28 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>,
+ Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v9 09/21] i386/cpu: Introduce bitmap to cache available
+ CPU topology levels
+Message-ID: <Ze6+kCvWklX8JxSE@intel.com>
+References: <20240227103231.1556302-1-zhao1.liu@linux.intel.com>
+ <20240227103231.1556302-10-zhao1.liu@linux.intel.com>
+ <770fe9ab-c9cc-4062-b841-180036a3d050@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <770fe9ab-c9cc-4062-b841-180036a3d050@intel.com>
+Received-SPF: none client-ip=198.175.65.21;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
 X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.945,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.945,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,33 +93,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-rec->count.score is inside rec, which is freed before rec->count.score is.
-Reorder the instructions
+On Mon, Mar 11, 2024 at 02:28:17PM +0800, Xiaoyao Li wrote:
+> Date: Mon, 11 Mar 2024 14:28:17 +0800
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: Re: [PATCH v9 09/21] i386/cpu: Introduce bitmap to cache available
+>  CPU topology levels
+> 
+> On 2/27/2024 6:32 PM, Zhao Liu wrote:
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> > 
+> > Currently, QEMU checks the specify number of topology domains to detect
+> > if there's extended topology levels (e.g., checking nr_dies).
+> > 
+> > With this bitmap, the extended CPU topology (the levels other than SMT,
+> > core and package) could be easier to detect without touching the
+> > topology details.
+> > 
+> > This is also in preparation for the follow-up to decouple CPUID[0x1F]
+> > subleaf with specific topology level.
+> > 
+> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> 
+> 
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Reported by Coverity as CID 1539967.
+Thanks for your review! 
 
-Cc: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- contrib/plugins/howvec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/contrib/plugins/howvec.c b/contrib/plugins/howvec.c
-index 2d10c87e0fb..94bbc53820a 100644
---- a/contrib/plugins/howvec.c
-+++ b/contrib/plugins/howvec.c
-@@ -167,9 +167,9 @@ static gint cmp_exec_count(gconstpointer a, gconstpointer b)
- static void free_record(gpointer data)
- {
-     InsnExecCount *rec = (InsnExecCount *) data;
-+    qemu_plugin_scoreboard_free(rec->count.score);
-     g_free(rec->insn);
-     g_free(rec);
--    qemu_plugin_scoreboard_free(rec->count.score);
- }
- 
- static void plugin_exit(qemu_plugin_id_t id, void *p)
--- 
-2.43.2
+Regrads,
+Zhao
 
 
