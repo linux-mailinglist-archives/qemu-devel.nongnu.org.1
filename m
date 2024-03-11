@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FFF2877A01
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 04:25:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FA12877A04
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 04:26:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjWHU-0005YQ-0h; Sun, 10 Mar 2024 23:24:52 -0400
+	id 1rjWHX-0005ZC-Bn; Sun, 10 Mar 2024 23:24:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjWHR-0005XP-J8; Sun, 10 Mar 2024 23:24:49 -0400
+ id 1rjWHV-0005Yo-TL; Sun, 10 Mar 2024 23:24:53 -0400
 Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjWHQ-0007qJ-24; Sun, 10 Mar 2024 23:24:49 -0400
+ id 1rjWHU-0007rZ-7b; Sun, 10 Mar 2024 23:24:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710127488; x=1741663488;
+ t=1710127492; x=1741663492;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Ku/zdz8Cve9RNOFOIfrMmxPdZkjkIFoafU6wceTFb3Q=;
- b=Z9IMVOIn7eZBNdVUO8W2jCM9Hbe79eSb27gCwXNUxPB1Y51XTIvBUKh4
- K8/N4ZwiHibzVPHb1PTIrYqdFFB8tFU+svkCpu32lRaz/GgdsvEVU+F8v
- oUGoTlSZbTg04ZyVlB36hcT3xoNAczw4AGGm1Sfz92y/2QrIaQMMK33tN
- SBwn/34vqhrc3vjtHxFrJdcaQy0+6ZAAmh5egqx5bAmSZCyWPG9lO0ygH
- tERAdOLeMiJUMA5pFv2aGwxoOcBqFph9ZA3OmISs7lWOIisJbVdD9ivHY
- 0Lg4nuvcbKdhUwXFvfEixPyDI6a22Gax57XEty3cWTrT2lW3NKmo5sKnd A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="22229581"
-X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="22229581"
+ bh=Df8TZAiYBeLcQdJvojI1ZKKv4azS1j0SO2PFl2TxogE=;
+ b=K6bM2Kz7eZsM83IaZTznFuzrnP6Mef06H7QopGDVja4iZ9ByPivy0/zA
+ oTp3Qo8PHsp/IOLlvCF5zFeKKGRDd1yfuweB3eQA/bOgmp29JmqwI/lke
+ 6aIsnRZle6pncrPKuA0txUgy5ZbIz0vlhBRL6IynpjXLrxhHxfaMjRpsE
+ vYKZaOXSrOp/uk6rSSH6kSZ9nw5RxlPU3QucGREXrd+gURUCxysSiDUwT
+ dU4AqPewHpS7MkAl2IrSxhg57G5resg2UBV4GUzK32A9cwIiL1GbSAFKh
+ FvNZ7IJDfrASaHyQq/A4gCRbsgR9zWp03M1sJIeSkyCWnG4lcTrx7ZGzn A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="22229589"
+X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="22229589"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2024 20:24:46 -0700
+ 10 Mar 2024 20:24:50 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="15593716"
+X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="15593723"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 10 Mar 2024 20:24:44 -0700
+ by fmviesa003.fm.intel.com with ESMTP; 10 Mar 2024 20:24:47 -0700
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Michael Roth <michael.roth@amd.com>, Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v2 02/29] backends/iommufd: Fix missing ERRP_GUARD() for
- error_prepend()
-Date: Mon, 11 Mar 2024 11:37:55 +0800
-Message-Id: <20240311033822.3142585-3-zhao1.liu@linux.intel.com>
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org, Eric Blake <eblake@redhat.com>
+Subject: [PATCH v2 03/29] block: Fix missing ERRP_GUARD() for error_prepend()
+Date: Mon, 11 Mar 2024 11:37:56 +0800
+Message-Id: <20240311033822.3142585-4-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240311033822.3142585-1-zhao1.liu@linux.intel.com>
 References: <20240311033822.3142585-1-zhao1.liu@linux.intel.com>
@@ -99,34 +98,75 @@ ERRP_GUARD() could avoid the case when @errp is &error_fatal, the user
 can't see this additional information, because exit() happens in
 error_setg earlier than information is added [1].
 
-The iommufd_backend_set_fd() passes @errp to error_prepend(), to avoid
-the above issue, add missing ERRP_GUARD() at the beginning of this
-function.
+In block.c, there are 4 functions passing @errp to error_prepend()
+without ERRP_GUARD():
+ - bdrv_co_create_opts_simple()
+ - parse_json_filename()
+ - bdrv_open_backing_file()
+ - bdrv_append_temp_snapshot()
+
+bdrv_co_create_opts_simple(), is an implementation of
+BlockDriver.bdrv_co_create_opts(). There are too many possible callers
+to check the impact of this defect; it may or may not be harmless. Thus
+it is necessary to protect @errp with ERRP_GUARD().
+
+Though the @errp parameters passed to parse_json_filename(),
+bdrv_open_backing_file() and bdrv_append_temp_snapshot() points to their
+callers' local_err, to follow the requirement of @errp, also add missing
+ERRP_GUARD() at their beginning.
 
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
 
-Cc: Yi Liu <yi.l.liu@intel.com>
-Cc: Eric Auger <eric.auger@redhat.com>
-Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Cc: Kevin Wolf <kwolf@redhat.com>
+Cc: Hanna Reitz <hreitz@redhat.com>
+Cc: qemu-block@nongnu.org
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Eric Blake <eblake@redhat.com>
 ---
- backends/iommufd.c | 1 +
- 1 file changed, 1 insertion(+)
+v2:
+ * Use Markus' sentence to polish commit message. (Markus)
+ * Fix typo. (Eric)
+---
+ block.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/backends/iommufd.c b/backends/iommufd.c
-index 1ef683c7b080..62a79fa6b049 100644
---- a/backends/iommufd.c
-+++ b/backends/iommufd.c
-@@ -43,6 +43,7 @@ static void iommufd_backend_finalize(Object *obj)
- 
- static void iommufd_backend_set_fd(Object *obj, const char *str, Error **errp)
+diff --git a/block.c b/block.c
+index 1ed9214f66ed..cf66c767a011 100644
+--- a/block.c
++++ b/block.c
+@@ -633,6 +633,7 @@ int coroutine_fn bdrv_co_create_opts_simple(BlockDriver *drv,
+                                             QemuOpts *opts,
+                                             Error **errp)
  {
 +    ERRP_GUARD();
-     IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
-     int fd = -1;
+     BlockBackend *blk;
+     QDict *options;
+     int64_t size = 0;
+@@ -1998,6 +1999,7 @@ fail_opts:
  
+ static QDict *parse_json_filename(const char *filename, Error **errp)
+ {
++    ERRP_GUARD();
+     QObject *options_obj;
+     QDict *options;
+     int ret;
+@@ -3585,6 +3587,7 @@ int bdrv_set_backing_hd(BlockDriverState *bs, BlockDriverState *backing_hd,
+ int bdrv_open_backing_file(BlockDriverState *bs, QDict *parent_options,
+                            const char *bdref_key, Error **errp)
+ {
++    ERRP_GUARD();
+     char *backing_filename = NULL;
+     char *bdref_key_dot;
+     const char *reference = NULL;
+@@ -3851,6 +3854,7 @@ static BlockDriverState *bdrv_append_temp_snapshot(BlockDriverState *bs,
+                                                    QDict *snapshot_options,
+                                                    Error **errp)
+ {
++    ERRP_GUARD();
+     g_autofree char *tmp_filename = NULL;
+     int64_t total_size;
+     QemuOpts *opts = NULL;
 -- 
 2.34.1
 
