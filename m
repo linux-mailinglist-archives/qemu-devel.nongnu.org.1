@@ -2,52 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE45877A03
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 04:26:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FFF2877A01
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 04:25:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjWHT-0005Xp-Ge; Sun, 10 Mar 2024 23:24:51 -0400
+	id 1rjWHU-0005YQ-0h; Sun, 10 Mar 2024 23:24:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjWHP-0005W8-E3; Sun, 10 Mar 2024 23:24:47 -0400
+ id 1rjWHR-0005XP-J8; Sun, 10 Mar 2024 23:24:49 -0400
 Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjWHN-0007qJ-DL; Sun, 10 Mar 2024 23:24:47 -0400
+ id 1rjWHQ-0007qJ-24; Sun, 10 Mar 2024 23:24:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710127485; x=1741663485;
+ t=1710127488; x=1741663488;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=9u2qpUQw+97M2ytR4D9PH0ERtHP9EM+bxi7PUz1J0MM=;
- b=f+5F5Oh0AUwUKO3ZQFnhLZRafbXONiq4LZ7t91ncgJXDQFeujqgaUtCZ
- C8O2k3loJlSr86qOk9EjZqd2pfKV2mcokdlcUAhTiNiw/WZcaZbYgQssN
- Wdtd0JxQTU1F84hki38zLPApLk1MU482a2s/Hb46TTW1AzAPA65sud+l8
- pRsKldQP7BK8jL8Wm3qJ6QgaJnOf1h8UzeUaWjoGGb9Gpxq5H8N/IebZX
- Lut5YmP9PMUv4/PRTqJ+PxWYRmAeWzjwa8EsLJbBZzLwn6W2GlNO4YcrH
- cdvA7YtIpD7B5t/xQQ/alEGAcugpnKfZOeoB7XgivDv7yAjfMLK6pjzTP A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="22229576"
-X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="22229576"
+ bh=Ku/zdz8Cve9RNOFOIfrMmxPdZkjkIFoafU6wceTFb3Q=;
+ b=Z9IMVOIn7eZBNdVUO8W2jCM9Hbe79eSb27gCwXNUxPB1Y51XTIvBUKh4
+ K8/N4ZwiHibzVPHb1PTIrYqdFFB8tFU+svkCpu32lRaz/GgdsvEVU+F8v
+ oUGoTlSZbTg04ZyVlB36hcT3xoNAczw4AGGm1Sfz92y/2QrIaQMMK33tN
+ SBwn/34vqhrc3vjtHxFrJdcaQy0+6ZAAmh5egqx5bAmSZCyWPG9lO0ygH
+ tERAdOLeMiJUMA5pFv2aGwxoOcBqFph9ZA3OmISs7lWOIisJbVdD9ivHY
+ 0Lg4nuvcbKdhUwXFvfEixPyDI6a22Gax57XEty3cWTrT2lW3NKmo5sKnd A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="22229581"
+X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="22229581"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2024 20:24:43 -0700
+ 10 Mar 2024 20:24:46 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="15593711"
+X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="15593716"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 10 Mar 2024 20:24:42 -0700
+ by fmviesa003.fm.intel.com with ESMTP; 10 Mar 2024 20:24:44 -0700
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Michael Roth <michael.roth@amd.com>, Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 01/29] error: Add error_vprepend() in comment of
- ERRP_GUARD() rules
-Date: Mon, 11 Mar 2024 11:37:54 +0800
-Message-Id: <20240311033822.3142585-2-zhao1.liu@linux.intel.com>
+Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
+ Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH v2 02/29] backends/iommufd: Fix missing ERRP_GUARD() for
+ error_prepend()
+Date: Mon, 11 Mar 2024 11:37:55 +0800
+Message-Id: <20240311033822.3142585-3-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240311033822.3142585-1-zhao1.liu@linux.intel.com>
 References: <20240311033822.3142585-1-zhao1.liu@linux.intel.com>
@@ -79,39 +80,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-The error_vprepend() should use ERRP_GUARD() just as the documentation
-of ERRP_GUARD() says:
+As the comment in qapi/error, passing @errp to error_prepend() requires
+ERRP_GUARD():
 
-> It must be used when the function dereferences @errp or passes
-> @errp to error_prepend(), error_vprepend(), or error_append_hint().
+* = Why, when and how to use ERRP_GUARD() =
+*
+* Without ERRP_GUARD(), use of the @errp parameter is restricted:
+...
+* - It should not be passed to error_prepend(), error_vprepend() or
+*   error_append_hint(), because that doesn't work with &error_fatal.
+* ERRP_GUARD() lifts these restrictions.
+*
+* To use ERRP_GUARD(), add it right at the beginning of the function.
+* @errp can then be used without worrying about the argument being
+* NULL or &error_fatal.
 
-Considering that error_vprepend() is also an API provided in error.h,
-it is necessary to add it to the description of the rules for using
-ERRP_GUARD().
+ERRP_GUARD() could avoid the case when @errp is &error_fatal, the user
+can't see this additional information, because exit() happens in
+error_setg earlier than information is added [1].
 
-Cc: Markus Armbruster <armbru@redhat.com>
-Cc: Michael Roth <michael.roth@amd.com>
+The iommufd_backend_set_fd() passes @errp to error_prepend(), to avoid
+the above issue, add missing ERRP_GUARD() at the beginning of this
+function.
+
+[1]: Issue description in the commit message of commit ae7c80a7bd73
+     ("error: New macro ERRP_GUARD()").
+
+Cc: Yi Liu <yi.l.liu@intel.com>
+Cc: Eric Auger <eric.auger@redhat.com>
+Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
-v2: Add a comma after error_vprepend(). (Markus)
----
- include/qapi/error.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ backends/iommufd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/qapi/error.h b/include/qapi/error.h
-index f21a231bb1a6..71f8fb2c50ee 100644
---- a/include/qapi/error.h
-+++ b/include/qapi/error.h
-@@ -207,7 +207,7 @@
-  *
-  * Without ERRP_GUARD(), use of the @errp parameter is restricted:
-  * - It must not be dereferenced, because it may be null.
-- * - It should not be passed to error_prepend() or
-+ * - It should not be passed to error_prepend(), error_vprepend(), or
-  *   error_append_hint(), because that doesn't work with &error_fatal.
-  * ERRP_GUARD() lifts these restrictions.
-  *
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+index 1ef683c7b080..62a79fa6b049 100644
+--- a/backends/iommufd.c
++++ b/backends/iommufd.c
+@@ -43,6 +43,7 @@ static void iommufd_backend_finalize(Object *obj)
+ 
+ static void iommufd_backend_set_fd(Object *obj, const char *str, Error **errp)
+ {
++    ERRP_GUARD();
+     IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
+     int fd = -1;
+ 
 -- 
 2.34.1
 
