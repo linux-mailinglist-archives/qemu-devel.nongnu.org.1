@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AFA3878897
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 20:14:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 833198788DF
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 20:24:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjl5V-0003TP-VS; Mon, 11 Mar 2024 15:13:31 -0400
+	id 1rjl9a-0006es-Er; Mon, 11 Mar 2024 15:17:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rjl4q-0003IZ-Oe
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 15:12:51 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ id 1rjl4r-0003Js-D5
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 15:12:53 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rjl4n-0000Lx-MC
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 15:12:48 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-513af1a29b1so1089744e87.1
+ id 1rjl4p-0000M4-CC
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 15:12:49 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-41332865b05so379135e9.0
  for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 12:12:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710184364; x=1710789164; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710184365; x=1710789165; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=cG+mNjXKngqOkSeG7u+wCX4BlFv1Veow5VunaRM/YT4=;
- b=mGTiREYibluVYg94H8xMB3Z2/9Wwic4qVJYHSoZ4IT2XGSLO3euNHmBrZAASwgq8DF
- b70MayJBvB/IZGnTTsNd8d88X/ae5eO4J6Nol9fDie43TaRzdc+189N7QYRDfsLS9fCK
- VpDP07ANiOHtKtqPxPdigocJD9Wdkp4PuQ/I5CToNaLkvc8r2qv/sQZq5ZUp0+1wytN4
- HBz1s/yxcnv7OZwBc0tTBQg/jSZVFVXjhdkHxkBJNZ9SfVV9gS/6vWpnW+QlIdWCjeSS
- fGj4lJ/kU/ouvFxD8+2N992AzSqSjr1cEHiV+YF6GN6k8Sbm9+7Vp4trEcEieTHQLrSc
- 8xZw==
+ :reply-to; bh=zc+ckQmpBvqBoIUO6cJJ2qIcD3yUGjjQZyKjrxix+5k=;
+ b=p8059nxJ/VmA2lq1S2u6oaqz3fQHYPU8WQxweqyMc2Vf96A1t4WqTUeUTLJr9OkSp2
+ YQ0YySl8tOJOk7Xq0jVxIaw8Q8FqN8KW7HliCxV5iIgZilVTG2qjVcu0OjFlYrQpx1Rt
+ 8JqlzqvsSk4KWX+edQfxS0w2J6sRRVXws+ig893alqvin2BLQcGyZZReGDTBzlt3yFI4
+ hzTz2YZ90sLXsAt+LnNexZhuiRR7FsTHkzvzz4UCvVO8TBKP5KiHM55mAeAFmJXo4/ST
+ Bo8/OY9xrdAYprR3lbr5a3N95TGFRO2fQVBZZJdV6OfeAoX3WAmsYNNI6oXdnY4Saxjv
+ CpGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710184364; x=1710789164;
+ d=1e100.net; s=20230601; t=1710184365; x=1710789165;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cG+mNjXKngqOkSeG7u+wCX4BlFv1Veow5VunaRM/YT4=;
- b=BRoZjsTuqf3C1+4RHBriLPpqQz8mm2UnJaSgkvycw+YcbeRirkveuTXE3CIb4dMSHf
- BZWvw3c8xv5oebdIWHdfeqNrdY+179BYkPtTKRIXbjXWdG/znLRLBiIGjeJmhO2zgOqy
- r7C109gbp4TViX8Mfsw8JYBslhj9yeT1XBHxy4iYYmsP0Tp5ae5DsOrMQXH0/6wl5y/f
- nzVKuXMckm2EDV73jNQR9a3xGr0t6QxTRxvegqRKUgyQD5aBX6ElplFazfo2dEHvUmta
- aG2Yxwq3ia+q4Q/P7xfjF0nWn7x1Zc/etJGIxxbyPSND+VonBR62obGaG2ooSXnZI051
- sBMw==
-X-Gm-Message-State: AOJu0Yxttk/jMBv1/3dh52Leg4EFKgEalJTI7O3qzI/0zHh5Eg3rKWAs
- J4KA9pZIfP3/tF1Y1ToIz+UaGzgtgbOUxz7ATt3uuHjUZt6sUTAqK8WKqM8vae+EvqBETBJTaWs
- S
-X-Google-Smtp-Source: AGHT+IH/6TAU32H8FjzKRLrI2WoOkk8GpWd9XrBXPWdFnvl2Nq4okV7R+a2o70kADfLTMul27ntRIg==
-X-Received: by 2002:a19:3807:0:b0:513:8f53:cab0 with SMTP id
- f7-20020a193807000000b005138f53cab0mr5061837lfa.27.1710184363768; 
- Mon, 11 Mar 2024 12:12:43 -0700 (PDT)
+ bh=zc+ckQmpBvqBoIUO6cJJ2qIcD3yUGjjQZyKjrxix+5k=;
+ b=dwX9xjsf1Rsxnx70/Jl9Z7KO0IfxNrMaSHpNrTCT3flsQ5fuzOMecg/DVrnV/f6jqw
+ dH7yMelKL+QtI2NTvpDNR00e7cSO+hYlz4oouoeJdKT5uWIN2FgHnPccANpT0CekrCZp
+ 1F1oiAmS1A2EJbE9ReXaKM6yqk367aEQSsJ4gIj7WsKQB3UZ5wZSLc8bK1Lz/vMtPqYL
+ 6wM3oYsgKl6ayZOh2t4TnzELjR34p8cZGI6ruju+kzDSQsuZg4A1lUoXRYQvUyc88OH0
+ tW9TWe2iGd7sf03CSqjsF1TvXotp5drBsRzc6g0edwGGh6CHuxxx5dymRQrvW8X3kvys
+ 6plA==
+X-Gm-Message-State: AOJu0YyOgqG67tSljY4OfzVboHQ9PoVsfBBeWSq9iiokK3QyAfyd10Z5
+ j+pHCP9R/yo885GLhrYmL/bIidmQY8cZJaeXz3SqdcMJlfZeaWV3yVKqcZqDuJMknz/9wthMHef
+ d
+X-Google-Smtp-Source: AGHT+IEKiT/PkSaXQlafu0tV4AKLhIPMNb/4pDzsx/RwpwrPDX6IYdQwMVK8KWACiQs1fLhB8G8YFA==
+X-Received: by 2002:a05:600c:4e4e:b0:413:15fc:231 with SMTP id
+ e14-20020a05600c4e4e00b0041315fc0231mr5142454wmq.29.1710184364730; 
+ Mon, 11 Mar 2024 12:12:44 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  t10-20020a05600c450a00b004131388d948sm14425266wmo.0.2024.03.11.12.12.43
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 12:12:43 -0700 (PDT)
+ Mon, 11 Mar 2024 12:12:44 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/20] contrib/elf2dmp: Assume error by default
-Date: Mon, 11 Mar 2024 19:12:24 +0000
-Message-Id: <20240311191241.4177990-4-peter.maydell@linaro.org>
+Subject: [PULL 04/20] contrib/elf2dmp: Continue even contexts are lacking
+Date: Mon, 11 Mar 2024 19:12:25 +0000
+Message-Id: <20240311191241.4177990-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240311191241.4177990-1-peter.maydell@linaro.org>
 References: <20240311191241.4177990-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x131.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,143 +93,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-A common construct in contrib/elf2dmp is to set "err" flag and goto
-in error paths. In such a construct, there is only one successful path
-while there are several error paths, so it will be more simpler to
-initialize "err" flag set, and clear it in the successful path.
+Let fill_context() continue even if it fails to fill contexts of some
+CPUs. A dump may still contain valuable information even if it lacks
+contexts of some CPUs due to dump corruption or a failure before
+starting CPUs.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Tested-by: Viktor Prutyanov <viktor.prutyanov@phystech.edu>
-Message-id: 20240307-elf2dmp-v4-2-4f324ad4d99d@daynix.com
+Message-id: 20240307-elf2dmp-v4-3-4f324ad4d99d@daynix.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- contrib/elf2dmp/download.c |  4 +---
- contrib/elf2dmp/main.c     | 15 +++------------
- 2 files changed, 4 insertions(+), 15 deletions(-)
+ contrib/elf2dmp/main.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/contrib/elf2dmp/download.c b/contrib/elf2dmp/download.c
-index bd7650a7a27..902dc04ffa5 100644
---- a/contrib/elf2dmp/download.c
-+++ b/contrib/elf2dmp/download.c
-@@ -11,7 +11,7 @@
- 
- int download_url(const char *name, const char *url)
- {
--    int err = 0;
-+    int err = 1;
-     FILE *file;
-     CURL *curl = curl_easy_init();
- 
-@@ -21,7 +21,6 @@ int download_url(const char *name, const char *url)
- 
-     file = fopen(name, "wb");
-     if (!file) {
--        err = 1;
-         goto out_curl;
-     }
- 
-@@ -33,7 +32,6 @@ int download_url(const char *name, const char *url)
-             || curl_easy_perform(curl) != CURLE_OK) {
-         unlink(name);
-         fclose(file);
--        err = 1;
-     } else {
-         err = fclose(file);
-     }
 diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
-index cbc38a7c103..9b278f392e3 100644
+index 9b278f392e3..86e709e6da3 100644
 --- a/contrib/elf2dmp/main.c
 +++ b/contrib/elf2dmp/main.c
-@@ -511,7 +511,7 @@ static void pe_get_pdb_symstore_hash(OMFSignatureRSDS *rsds, char *hash)
+@@ -336,8 +336,13 @@ static int fill_header(WinDumpHeader64 *hdr, struct pa_space *ps,
+     return 0;
+ }
  
- int main(int argc, char *argv[])
+-static int fill_context(KDDEBUGGER_DATA64 *kdbg,
+-        struct va_space *vs, QEMU_Elf *qe)
++/*
++ * fill_context() continues even if it fails to fill contexts of some CPUs.
++ * A dump may still contain valuable information even if it lacks contexts of
++ * some CPUs due to dump corruption or a failure before starting CPUs.
++ */
++static void fill_context(KDDEBUGGER_DATA64 *kdbg,
++                         struct va_space *vs, QEMU_Elf *qe)
  {
--    int err = 0;
-+    int err = 1;
-     QEMU_Elf qemu_elf;
-     struct pa_space ps;
-     struct va_space vs;
-@@ -542,7 +542,6 @@ int main(int argc, char *argv[])
+     int i;
  
-     if (pa_space_create(&ps, &qemu_elf)) {
-         eprintf("Failed to initialize physical address space\n");
--        err = 1;
-         goto out_elf;
+@@ -350,7 +355,7 @@ static int fill_context(KDDEBUGGER_DATA64 *kdbg,
+         if (va_space_rw(vs, kdbg->KiProcessorBlock + sizeof(Prcb) * i,
+                     &Prcb, sizeof(Prcb), 0)) {
+             eprintf("Failed to read CPU #%d PRCB location\n", i);
+-            return 1;
++            continue;
+         }
+ 
+         if (!Prcb) {
+@@ -361,7 +366,7 @@ static int fill_context(KDDEBUGGER_DATA64 *kdbg,
+         if (va_space_rw(vs, Prcb + kdbg->OffsetPrcbContext,
+                     &Context, sizeof(Context), 0)) {
+             eprintf("Failed to read CPU #%d ContextFrame location\n", i);
+-            return 1;
++            continue;
+         }
+ 
+         printf("Filling context for CPU #%d...\n", i);
+@@ -369,11 +374,9 @@ static int fill_context(KDDEBUGGER_DATA64 *kdbg,
+ 
+         if (va_space_rw(vs, Context, &ctx, sizeof(ctx), 1)) {
+             eprintf("Failed to fill CPU #%d context\n", i);
+-            return 1;
++            continue;
+         }
      }
+-
+-    return 0;
+ }
  
-@@ -552,7 +551,6 @@ int main(int argc, char *argv[])
-     va_space_create(&vs, &ps, state->cr[3]);
-     if (fix_dtb(&vs, &qemu_elf)) {
-         eprintf("Failed to find paging base\n");
--        err = 1;
-         goto out_elf;
-     }
- 
-@@ -561,7 +559,6 @@ int main(int argc, char *argv[])
-     if (va_space_rw(&vs, state->idt.base,
-                 &first_idt_desc, sizeof(first_idt_desc), 0)) {
-         eprintf("Failed to get CPU #0 IDT[0]\n");
--        err = 1;
-         goto out_ps;
-     }
-     printf("CPU #0 IDT[0] -> 0x%016"PRIx64"\n", idt_desc_addr(first_idt_desc));
-@@ -586,7 +583,6 @@ int main(int argc, char *argv[])
- 
-     if (!kernel_found) {
-         eprintf("Failed to find NT kernel image\n");
--        err = 1;
-         goto out_ps;
-     }
- 
-@@ -600,45 +596,40 @@ int main(int argc, char *argv[])
- 
-     if (download_url(PDB_NAME, pdb_url)) {
-         eprintf("Failed to download PDB file\n");
--        err = 1;
-         goto out_ps;
-     }
- 
-     if (pdb_init_from_file(PDB_NAME, &pdb)) {
-         eprintf("Failed to initialize PDB reader\n");
--        err = 1;
-         goto out_pdb_file;
-     }
- 
-     if (!SYM_RESOLVE(KernBase, &pdb, KdDebuggerDataBlock) ||
-             !SYM_RESOLVE(KernBase, &pdb, KdVersionBlock)) {
--        err = 1;
-         goto out_pdb;
-     }
- 
-     kdbg = get_kdbg(KernBase, &pdb, &vs, KdDebuggerDataBlock);
-     if (!kdbg) {
--        err = 1;
-         goto out_pdb;
-     }
- 
-     if (fill_header(&header, &ps, &vs, KdDebuggerDataBlock, kdbg,
-             KdVersionBlock, qemu_elf.state_nr)) {
--        err = 1;
+ static int pe_get_data_dir_entry(uint64_t base, void *start_addr, int idx,
+@@ -619,9 +622,7 @@ int main(int argc, char *argv[])
          goto out_kdbg;
      }
  
-     if (fill_context(kdbg, &vs, &qemu_elf)) {
--        err = 1;
-         goto out_kdbg;
-     }
+-    if (fill_context(kdbg, &vs, &qemu_elf)) {
+-        goto out_kdbg;
+-    }
++    fill_context(kdbg, &vs, &qemu_elf);
  
      if (write_dump(&ps, &header, argv[2])) {
          eprintf("Failed to save dump\n");
--        err = 1;
-         goto out_kdbg;
-     }
- 
-+    err = 0;
-+
- out_kdbg:
-     g_free(kdbg);
- out_pdb:
 -- 
 2.34.1
 
