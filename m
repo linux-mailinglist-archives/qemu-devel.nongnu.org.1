@@ -2,73 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1692C8783B8
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 16:32:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B835D878420
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 16:46:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjhcK-0004Im-4G; Mon, 11 Mar 2024 11:31:08 -0400
+	id 1rjhqg-0000yw-04; Mon, 11 Mar 2024 11:45:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjhcB-0004Hj-VD
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 11:31:01 -0400
-Received: from mgamail.intel.com ([198.175.65.14])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjhc8-0005f8-Ll
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 11:30:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710171056; x=1741707056;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=2p4rg6EVYAvyHflbUz0DDkb4ZOH34bOHun5RAo/d9Dg=;
- b=ZH5pNeeqirGgQ0R+lgf+z41CFRtZuJ+cf3mRnpc73F/kf/KcLA9M+zI/
- kK26s2d//vInNU0ZQjY8Z6K1dZ7Gi5MufDaRTbUWGCuYnibz45Nci5KJL
- okyEfJuX6GP3/b5/0FImredzSvHBxjnxOk7dnARGrKZFOew7d6tBAsGgL
- O2/75El9KQHm7rvp4XshWUKn+mipIjjptjqpM0n+O1pHrqlcLvi2jdaHt
- wTQrXZUrjQ4l1zCF3FSsPUBhCGFYVB6oD4DuZfHsmbPrC+2Yw/Ta0IRr5
- x9nAXLROOFqODXXSZkx4AvvyDynYdF+pSDCQCoPNXEmDk3ScuTdEAKMEF A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="8655522"
-X-IronPort-AV: E=Sophos;i="6.07,117,1708416000"; 
-   d="scan'208";a="8655522"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2024 08:30:46 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,117,1708416000"; d="scan'208";a="42116766"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa002.jf.intel.com with ESMTP; 11 Mar 2024 08:30:45 -0700
-Date: Mon, 11 Mar 2024 23:44:33 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v3 1/3] hw/core: Cleanup unused included headers in
- cpu-common.c
-Message-ID: <Ze8m4YvRQrWFlFpN@intel.com>
-References: <20240311075621.3224684-1-zhao1.liu@linux.intel.com>
- <20240311075621.3224684-2-zhao1.liu@linux.intel.com>
- <752e3d2b-1834-4f6d-9764-3d7e951409c4@linaro.org>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rjhqM-0000yX-OY
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 11:45:39 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rjhqJ-0000FR-Qm
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 11:45:37 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-412f55695d1so32636695e9.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 08:45:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1710171934; x=1710776734; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cujt6V1A/XvR6NaGuI706u7cr0TAQ/6i6YLDHIasSDo=;
+ b=fLDBiMH/QpSczE6QAnDvNAbIqa8NIIjXuDXFa2Xv6/vOUlRSs9Rr7cozNHQiicD/lP
+ 5KHsvp02Z2sGKSpdixeVE3ufEvzpZydWZhjPSCkSRoE9w67SQKA6DEPhJ/0IxYu7ymR7
+ S6CNbXHD6TcxNH/gEV3l9TgcJ6R9MxnNbpDGt2xQMsToQ++Omq5WiTDl7NU1JKDZKWV9
+ GJ3tNgnOWApbb1YuJMsSHVezJebrGmJGyU9YX07/2MvNPVTv9pqdEz4VCM2NHk26t1ib
+ tp8zWlbHiAgXNpQAtFRwi5XtIEtIchSllYZAMbatTIToNpfZS6Ax2QK1OvNrtxb7UftP
+ CHZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710171934; x=1710776734;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=cujt6V1A/XvR6NaGuI706u7cr0TAQ/6i6YLDHIasSDo=;
+ b=RXUlvxD6A0c5/Pu8NJ1aBNQNJqCzUxVOcBniozo274mB2gk96xPE83O87GyHfBbCqz
+ /cgA7q6PrZ4poKSMdK9v9Xpfgzt8hpIAStaKFwdqMsfm4gID4uFiAsuo10zahkCrl76e
+ JtLPZefBCOs7xW+9ufanNCtSQHxZt02lYCYkcgjCthO6EsJC9WqN5CwLpJSZuy58l9td
+ HYKf3JnEemrMWs9+vkgEXBeTWvG8NIMJbp/F+skihI4Jh/2ZqqgPpoNDd4vMxJ6AAurE
+ JzmuJph7OVb/4DQUYN+4arM17Av53BAiLsrX/bdliEM7asLBq2VzGlMT89YhzKePBs8G
+ oIHw==
+X-Gm-Message-State: AOJu0YybUHyi1525H8dcvURuREMzWI/E4XNxQtjLASdi+Jdn5o8uStBx
+ duLN9iX6v8tr9Wroe5bZUrITadXe/u1AHkRro3FB0lGqgkF1WjJanwUz65g58eNBohCcL2Qur8J
+ P
+X-Google-Smtp-Source: AGHT+IEX+ao8TTZ2HndQFfIhbB6OIpJgilxWL4O0pNrIBIufbfWXmQBeEQHKDyMjBl6c+k7PzABLlQ==
+X-Received: by 2002:a05:600c:45cb:b0:412:d0ab:a34a with SMTP id
+ s11-20020a05600c45cb00b00412d0aba34amr5079478wmo.31.1710171934179; 
+ Mon, 11 Mar 2024 08:45:34 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ bg13-20020a05600c3c8d00b00412fe0eb806sm15993561wmb.14.2024.03.11.08.45.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 11 Mar 2024 08:45:33 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 8447F5F756;
+ Mon, 11 Mar 2024 15:45:33 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Gustavo Romero <gustavo.romero@linaro.org>
+Cc: qemu-devel@nongnu.org,  richard.henderson@linaro.org,
+ peter.maydell@linaro.org,  laurent@vivier.eu,  philmd@linaro.org
+Subject: Re: [PATCH v3 0/5] Add stub to handle Xfer:siginfo:read query
+In-Reply-To: <20240309030901.1726211-1-gustavo.romero@linaro.org> (Gustavo
+ Romero's message of "Sat, 9 Mar 2024 03:08:56 +0000")
+References: <20240309030901.1726211-1-gustavo.romero@linaro.org>
+User-Agent: mu4e 1.12.1; emacs 29.1
+Date: Mon, 11 Mar 2024 15:45:33 +0000
+Message-ID: <87ttlcpyaq.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <752e3d2b-1834-4f6d-9764-3d7e951409c4@linaro.org>
-Received-SPF: none client-ip=198.175.65.14;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,73 +97,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Philippe,
+Gustavo Romero <gustavo.romero@linaro.org> writes:
 
-On Mon, Mar 11, 2024 at 12:40:23PM +0100, Philippe Mathieu-Daudé wrote:
-> Date: Mon, 11 Mar 2024 12:40:23 +0100
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: Re: [PATCH v3 1/3] hw/core: Cleanup unused included headers in
->  cpu-common.c
-> 
-> On 11/3/24 08:56, Zhao Liu wrote:
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> > 
-> > Remove unused headers in cpu-common.c:
-> > * qemu/notify.h
-> > * exec/cpu-common.h
-> > * qemu/error-report.h
-> > * qemu/qemu-print.h
-> > 
-> > Tested by "./configure" and then "make".
-> 
-> This isn't often enough. The safest way to catch implicit
-> includes is to add #error in them and compile the source.
-> 
-> > 
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > ---
-> >   hw/core/cpu-common.c | 4 ----
-> >   1 file changed, 4 deletions(-)
-> > 
-> > diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-> > index 0108fb11dbc8..4bd9c70a83f1 100644
-> > --- a/hw/core/cpu-common.c
-> > +++ b/hw/core/cpu-common.c
-> > @@ -22,14 +22,10 @@
-> >   #include "qapi/error.h"
-> >   #include "hw/core/cpu.h"
-> >   #include "sysemu/hw_accel.h"
-> > -#include "qemu/notify.h"
-> >   #include "qemu/log.h"
-> >   #include "qemu/main-loop.h"
-> >   #include "exec/log.h"
-> > -#include "exec/cpu-common.h"
-> 
-> Watch out, "exec/cpu-common.h" is implicitly included:
-> 
-> $ git diff -U0
-> diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-> index 6346df17ce..27961bacc6 100644
-> --- a/include/exec/cpu-common.h
-> +++ b/include/exec/cpu-common.h
-> @@ -2,0 +3 @@
-> +#error
-> 
-> $ ninja libcommon.fa.p/hw_core_cpu-common.c.o
-> In file included from ../../hw/core/cpu-common.c:34:
-> In file included from include/hw/boards.h:6:
-> In file included from include/exec/memory.h:19:
-> include/exec/cpu-common.h:3:2: error:
-> #error
+> Xfer:siginfo:read query is received, usually, when GDB catches a signal
+> and needs additional info about it, like the si_code and the si_addr, so
+> GDB can show the user interesting info about the signal. This query can
+> also be received when an user explicitly asks for more information via
+> printing GBD's special purpose variable '$_siginfo'.
 
-Thanks for helpping me verify this!!
+Queued to gdbstub/next, thanks.
 
-EMM, but I'm still not understanding how this approach distinguishes
-whether hw/core/cpu-common.c needs the header (include/exec/cpu-common.h)
-directly or just include/exec/memory.h needs that header? For the latter,
-the header needn't be included in .c file.
-
-Thanks,
-Zhao
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
