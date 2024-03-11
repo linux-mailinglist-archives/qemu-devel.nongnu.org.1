@@ -2,85 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10FD88787EE
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 19:45:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1367878840
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 19:53:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjkdq-00085A-2d; Mon, 11 Mar 2024 14:44:54 -0400
+	id 1rjkl6-0004ws-Na; Mon, 11 Mar 2024 14:52:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rjkdj-00081a-RG
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 14:44:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rjkdi-0003YH-0S
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 14:44:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710182684;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Sw3GeKk39KyNMMZmj4VnbSwyDIiOAbCZcbkxdviJ2fE=;
- b=diD9acexDG6CNcEUNOAjjDG2hwCWuHR90tSncHDxLKpxto4DDP2cVuP3eVSZGOKOJ8iWII
- //H+hkipUfIvzcAbFSm1dBSEDqpY6zbg44LkLsZP5agId0LTG9zse6RcasEOANHiqxCO7t
- 7G7VKoGNSax3UAkkGJQUrnLEvIPsXzU=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-202-rTG2fkLXNTON0gejDGt-_g-1; Mon, 11 Mar 2024 14:44:43 -0400
-X-MC-Unique: rTG2fkLXNTON0gejDGt-_g-1
-Received: by mail-pj1-f72.google.com with SMTP id
- 98e67ed59e1d1-29bda2d3ea3so1981437a91.3
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 11:44:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1rjkku-0004m6-7c; Mon, 11 Mar 2024 14:52:12 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1rjkks-0004yS-EV; Mon, 11 Mar 2024 14:52:11 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1dc49b00bdbso25423635ad.3; 
+ Mon, 11 Mar 2024 11:52:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1710183128; x=1710787928; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=LFs81MFRDaIe8DzVKcIiiltsydhlBAYDpj9IfLrHQuQ=;
+ b=eqyRNnWmaq3SuNpq844ZHf2o67HxqtXFAPFY9Gehi3ZveaG4y2cpjRqh9d41ukNMvy
+ pUC9xlmDJCkbmZ21Bzwk51B3/8D9Pjmn3J653thBC37T6dDhc448X7zohkasW5veen31
+ 8waAOGGYJToobUjpnhjW8ifBgP1BMYfKpV/MiD9nye2TzuAj62ojJqHOr0wkfuKX2YiD
+ OO+6Q8/hnvOERtchg/nTmkEEH1673uMGqOnesVsLbZCnbOWgZgBvxzq1Xvq4tZtjuUgi
+ 8pAWBCQPme084hEH6hNOZ8RkZJtHPSzqNs37z9g6PzBcsuDtlUxU3ViOPDstolT7PgVh
+ 1kRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710182682; x=1710787482;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Sw3GeKk39KyNMMZmj4VnbSwyDIiOAbCZcbkxdviJ2fE=;
- b=VdBgbv0vfMWGIVC874c3HiNUO8i7Y310O1kGyUOrqcQjy+PVEhdMXwIgJIDKXf09B3
- rUi2Bix0QTGVUBmFKEp7H3R3fyyf3jw9D+rrUGuUT/8uppY69Wpct68aUOfxMTZ1d9gw
- 0AK0VRlCUT0YiiTrhZQ+5pS4xWZDfeJ69tE98aUa04XjNBRHa4bGhVQu0ZjGqQ3b3eHH
- W6cil/8hIE/v/cswT9MIU4AisCNrzh+HwxC77L4c/UHRsFdzSPZFkLIfCSpLKXLcJSbc
- gyu0W3XadEETTPrqc6DFuVyftxXs4rnF7JEBQfxxz5OeIJBErH356KN2EnirlF3pCse+
- SS4w==
-X-Gm-Message-State: AOJu0Yy/6CdLVT+iEOMKlOhM7Nd/vBYrTEN+VisqAHuRRP6Xa3kIR7sn
- +zVDQwvyXtkIZjx6KyR1H+9m1rk5eR3blUTu+BwpWC+FKrCYoNhsf5iicRPZQW3kHmRosGsHX5I
- bW2j0IuuQVhiRI7tzKsYxBOIbacYDtenxLRDMQSZFM9QTWVACJvJSrFMWX6qGCPdyiHzb1L1wA1
- qb0bokXRMBDuzkKetzleRNEOqKxvs=
-X-Received: by 2002:a17:90b:3804:b0:29b:aea0:1883 with SMTP id
- mq4-20020a17090b380400b0029baea01883mr5579552pjb.2.1710182681811; 
- Mon, 11 Mar 2024 11:44:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IErBmjQO5nd5/J7CZBnwYSMGmv6/G6ZznOZxARSmnJvRnH1U13d5MGjAlENEnD8hMfjt0qhoNH/EcN8mSHcmJU=
-X-Received: by 2002:a17:90b:3804:b0:29b:aea0:1883 with SMTP id
- mq4-20020a17090b380400b0029baea01883mr5579540pjb.2.1710182681504; Mon, 11 Mar
- 2024 11:44:41 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1710183128; x=1710787928;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=LFs81MFRDaIe8DzVKcIiiltsydhlBAYDpj9IfLrHQuQ=;
+ b=v+LVYx9Ny3hW/f8VDgQouuPHgu0LdJz++rbVT1TwuaKWAwLaGzhieQAdK8RsjVyoAD
+ kSAwSJ2JuvIcBHUPqVYRneZJ5Z76giltx0yUWujAtbs6dAWu2EBSoH+LofeHOcbIah7h
+ /6WCJrlcm9RYZwtYnJHQyyugBiDQM7SCfiLOfFJbQX9s8bPGfuPb05LMLU4Zl1PwVXyX
+ pFKtQm+ftvqQfX9OB0XpBbPOy07Q4yl16xr6N6mb/sEVhr2eOKTiHQWkQDfqGbbLvlSc
+ 8Gyt4sQgQnSsBxZvb4JuAEHzMoRCByocm87trb2Xx4uiLxs+AX/J54wsveAOrEQwKir+
+ RmbA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXxE+plkK67U2OuLhj7e1pIba3v2+FfbaY/3swZPu6Wmie7X37fHg0z9O0dIDO4uuYqBqUmKHyExc6u7IOf+MHAVvryoZY=
+X-Gm-Message-State: AOJu0YxDlClaKU/S76YX5pnzc91l6O8XtvmqYj4iI+EVJPrrDUcG7xMv
+ 5Cx1x8PDn3wsJCJEBDHv2mWa7qwskVCDRuwsZQaf1epYRVWjKzHu2lROZx15pXs=
+X-Google-Smtp-Source: AGHT+IFkGs0DE4Vnt1xphcpU1EDslehEriSAgtNps2iJU/yP09gtezo+/NldCHDU0g3f8MmOATqTbQ==
+X-Received: by 2002:a17:903:25c1:b0:1dd:6781:49ab with SMTP id
+ jc1-20020a17090325c100b001dd678149abmr6491007plb.59.1710183128143; 
+ Mon, 11 Mar 2024 11:52:08 -0700 (PDT)
+Received: from wheely.local0.net ([118.208.155.46])
+ by smtp.gmail.com with ESMTPSA id
+ z2-20020a170903018200b001dd7d00f7afsm4843887plg.18.2024.03.11.11.52.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 11 Mar 2024 11:52:07 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: [PATCH 00/13] misc ppc patches
+Date: Tue, 12 Mar 2024 04:51:42 +1000
+Message-ID: <20240311185200.2185753-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-References: <20240201224246.39480-1-jsnow@redhat.com>
- <20240201224246.39480-11-jsnow@redhat.com>
- <87h6i35fmj.fsf@pond.sub.org>
-In-Reply-To: <87h6i35fmj.fsf@pond.sub.org>
-From: John Snow <jsnow@redhat.com>
-Date: Mon, 11 Mar 2024 14:44:29 -0400
-Message-ID: <CAFn=p-Y38th3qn+xFU-5eiQXVhtgjzzD662eKSrEXY=0+aZtbw@mail.gmail.com>
-Subject: Re: [PATCH v3 10/20] qapi: use schema.resolve_type instead of
- schema.lookup_type
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, 
- Michael Roth <michael.roth@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,99 +91,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 20, 2024 at 10:18=E2=80=AFAM Markus Armbruster <armbru@redhat.c=
-om> wrote:
->
-> John Snow <jsnow@redhat.com> writes:
->
-> > the function lookup_type() is capable of returning None, but some
-> > callers aren't prepared for that and assume it will always succeed. For
-> > static type analysis purposes, this creates problems at those callsites=
-.
-> >
-> > Modify resolve_type() - which already cannot ever return None - to allo=
-w
-> > 'info' and 'what' parameters to be elided, which infers that the type
-> > lookup is a built-in type lookup.
-> >
-> > Change several callsites to use the new form of resolve_type to avoid
-> > the more laborious strictly-typed error-checking scaffolding:
-> >
-> >   ret =3D lookup_type("foo")
-> >   assert ret is not None
-> >   typ: QAPISchemaType =3D ret
-> >
-> > which can be replaced with the simpler:
-> >
-> >   typ =3D resolve_type("foo")
-> >
-> > Signed-off-by: John Snow <jsnow@redhat.com>
-> > ---
-> >  scripts/qapi/introspect.py | 4 ++--
-> >  scripts/qapi/schema.py     | 5 ++---
-> >  2 files changed, 4 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/scripts/qapi/introspect.py b/scripts/qapi/introspect.py
-> > index 67c7d89aae0..c38df61a6d5 100644
-> > --- a/scripts/qapi/introspect.py
-> > +++ b/scripts/qapi/introspect.py
-> > @@ -227,10 +227,10 @@ def _use_type(self, typ: QAPISchemaType) -> str:
-> >
-> >          # Map the various integer types to plain int
-> >          if typ.json_type() =3D=3D 'int':
-> > -            typ =3D self._schema.lookup_type('int')
-> > +            typ =3D self._schema.resolve_type('int')
-> >          elif (isinstance(typ, QAPISchemaArrayType) and
-> >                typ.element_type.json_type() =3D=3D 'int'):
-> > -            typ =3D self._schema.lookup_type('intList')
-> > +            typ =3D self._schema.resolve_type('intList')
-> >          # Add type to work queue if new
-> >          if typ not in self._used_types:
-> >              self._used_types.append(typ)
-> > diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-> > index 573be7275a6..074897ee4fb 100644
-> > --- a/scripts/qapi/schema.py
-> > +++ b/scripts/qapi/schema.py
-> > @@ -650,8 +650,7 @@ def check(self, schema, seen):
-> >                      "discriminator '%s' is not a member of %s"
-> >                      % (self._tag_name, base))
-> >              # Here we do:
-> > -            base_type =3D schema.lookup_type(self.tag_member.defined_i=
-n)
-> > -            assert base_type
-> > +            base_type =3D schema.resolve_type(self.tag_member.defined_=
-in)
-> >              if not base_type.is_implicit():
-> >                  base =3D "base type '%s'" % self.tag_member.defined_in
-> >              if not isinstance(self.tag_member.type, QAPISchemaEnumType=
-):
-> > @@ -1001,7 +1000,7 @@ def lookup_type(self, name):
-> >          assert typ is None or isinstance(typ, QAPISchemaType)
-> >          return typ
-> >
-> > -    def resolve_type(self, name, info, what):
-> > +    def resolve_type(self, name, info=3DNone, what=3DNone):
-> >          typ =3D self.lookup_type(name)
-> >          if not typ:
-> >              assert info and what  # built-in types must not fail looku=
-p
->
-> I still dislike this, but I don't think discussing this more will help.
-> I can either accept it as the price of all your other work, or come up
-> with my own solution.
->
-> Let's focus on the remainder of the series.
+Here's a bunch of patches that have been on the list in various
+forms, but haven't made it upstream yet. I would like to get
+them merged for 9.0 if possible. The checkstop and attn ones are
+bigger but they're not so important so I could defer them.
 
-You're absolutely more than welcome to take the series and fork it to
-help bring it home - as long as it passes type checking at the end, I
-won't really mind what happens to it in the interim :)
+Main change is merging Ben's DEXCR patch from last year with my
+POWER10 pa-features patch -- his was posted first and added a
+POWER10 entry so I took his but updated title and changelog.
 
-Sorry if that comes across as being stubborn, it's more the case that
-I genuinely don't think I see your point of view, and feel unable to
-target it.
+And changing the SAO and copy-paste patches to always cease
+advertising them, rather than depending on the host, as per
+discussion with David.
 
-(Sorry.)
+Thanks,
+Nick
 
---js
+Benjamin Gray (1):
+  ppc/spapr: Add pa-features for POWER10 machines
+
+Nicholas Piggin (12):
+  ppc: Drop support for POWER9 and POWER10 DD1 chips
+  target/ppc: POWER10 does not have transactional memory
+  ppc/spapr|pnv: Remove SAO from pa-features
+  ppc/spapr: Remove copy-paste from pa-features
+  ppc/spapr: Adjust ibm,pa-features for POWER9
+  ppc/pnv: Permit ibm,pa-features set per machine variant
+  ppc/pnv: Set POWER9, POWER10 ibm,pa-features bits
+  target/ppc: Prevent supervisor from modifying MSR[ME]
+  spapr: set MSR[ME] and MSR[FP] on client entry
+  target/ppc: Make checkstop actually stop the system
+  target/ppc: improve checkstop logging
+  target/ppc: Implement attn instruction on BookS 64-bit processors
+
+ target/ppc/cpu.h         |  16 +++++-
+ target/ppc/helper.h      |   4 ++
+ hw/ppc/pnv.c             | 104 ++++++++++++++++++++++++++++++++++-----
+ hw/ppc/spapr.c           |  63 ++++++++++++++++++++----
+ hw/ppc/spapr_cpu_core.c  |   4 +-
+ target/ppc/cpu-models.c  |   4 --
+ target/ppc/cpu_init.c    |  93 +++++++++++++++++++++++++++++-----
+ target/ppc/excp_helper.c |  52 +++++++++++++++-----
+ target/ppc/helper_regs.c |   5 ++
+ target/ppc/kvm.c         |  11 -----
+ target/ppc/translate.c   |  11 +++++
+ 11 files changed, 304 insertions(+), 63 deletions(-)
+
+-- 
+2.42.0
 
 
