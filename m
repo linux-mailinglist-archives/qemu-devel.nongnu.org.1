@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62770878A77
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 23:04:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86502878A68
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 23:01:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjngp-0000aM-78; Mon, 11 Mar 2024 18:00:11 -0400
+	id 1rjngq-0000kl-Bh; Mon, 11 Mar 2024 18:00:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjnga-0000XR-2y
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngb-0000XZ-65
  for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngY-00042S-2C
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:55 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rjngZ-00042c-GC
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 17:59:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710194393;
+ s=mimecast20190719; t=1710194394;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WhLf5HZmmN9ikX3euKyXfeHxTjLkTSEYvxHa358xsjk=;
- b=Ywbn0TsKFnUBidh6lKaN+DjLO9ReSFwPXsDcrReXOf05/tZrLMd8x1QlCxg8C+Pb3eRFXf
- 8KNJtXn3+e5T5YBd5NZ50quhymazs1nvRgh0a2nzJaFJwrOjYWYc9tewz+Jxblx8pygoSO
- +4ewmMtrSCEXUjdWzUWF07KJjibevb8=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=LdiPgufqKfGIeW6VzqT6zIl2qsu21GpUL7tBaZiFfOE=;
+ b=BJKkRQGCdpZkaprjUv6R6t5oObcweoAc56PH9tezIWMaHFxLuVezbjtTZbmjCKDIVKLSaf
+ VOMOhJ6w4vJuvBFEMr+o7xo0o/9myMGwqhIUPJOc3ImrOXqLP01PfdmkN3cB95+LGFzMt+
+ 3XTA73Cijx41yBdGHWJ0e/bZQ6xiFw8=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-466-A6ys1P3aN6W3rsEBNjPrdA-1; Mon, 11 Mar 2024 17:59:52 -0400
-X-MC-Unique: A6ys1P3aN6W3rsEBNjPrdA-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-690d3f5af86so4505686d6.0
+ us-mta-668--flSIQIvPHaymtQ6WrMl9g-1; Mon, 11 Mar 2024 17:59:52 -0400
+X-MC-Unique: -flSIQIvPHaymtQ6WrMl9g-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-690ab2b0de1so15044076d6.0
  for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 14:59:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710194391; x=1710799191;
+ d=1e100.net; s=20230601; t=1710194392; x=1710799192;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WhLf5HZmmN9ikX3euKyXfeHxTjLkTSEYvxHa358xsjk=;
- b=eOhAl6k7lYoN3ShhM+RfOkTnfKLl9TFAYtDQW8ATFcj9GLGovfzjg8k6oDrWooxCJ1
- 60M1tL92tL9PuOuVWSR/TI9vAP/EbgTtF7o6LGcLlX09KIpPYhxQcdsnrDxJQm7tM4Yg
- uHOygOfNjVQnYLy09FP1JMYkcpg7Ctw6iso99y/9VRSmRKBKOka1j9g2se4fTKFr/v4T
- JfRqF8vnsTxZwp+jbWfbOGu5ffX9tQjvvaULuvWYLxuFI4878wqTBLFbH5oL6P8CCS3X
- HXvIVOZx4KtkgyH49k1yJPqHBDOsvztCspm6KCnKeBxhF8obzc5dE1lW+DYUnf2s9REB
- KsIw==
-X-Gm-Message-State: AOJu0YzPd1zq2SaASiOlpW/xD+2pW81ym2ypvXPrQ2N0g0E8Xroc6A7t
- fHRb4BO9oABqHHdSiXy3K586oeaM6Br5kHYZCcHn+0C7ld+Fw1UYz8c53aAT59DXGPxsau6NBsP
- K9dvv3TR0818r6wquQT5D1eGTeTkOiN9f0MbsjAQy40/p3iIEZR0B0tNNiiCaqbmUkO1Di3F61X
- sno/E9jRzdShT99xUq2h2zDELVcHL5e4uwig==
-X-Received: by 2002:a0c:f04a:0:b0:68f:dc8d:8ad3 with SMTP id
- b10-20020a0cf04a000000b0068fdc8d8ad3mr7986269qvl.0.1710194391071; 
+ bh=LdiPgufqKfGIeW6VzqT6zIl2qsu21GpUL7tBaZiFfOE=;
+ b=LqY5dse8pQ56MXgIdH2GcOfj8ZcoKs+8QbzKWWVSxWCSOOwWt33BJPX7CV5seNR12+
+ frdjILeoNBLz2QKur9ZrtdFaDxg5zezP3HrwxfHK2iu7074y41PjAQ4afjSsur+BHtBB
+ im/mxNjS5ph6RoylixDgyoLfHMi1+Y4Bm8yWli/7ASBm+iZtaPK8zeLKHAUbASn1ekEB
+ 5tt+RyXbOeQwbkz8Xib0ENbGMNbUfiqIH88xVuXGO2TJuyCUbjoLeRk3fR/ldjbHDS2N
+ c8mV5RfCXeAK8+HJCsgg7u2/5q6GGCldM7FhCgs9WVrxq2XKfBuEESB5F4rW2t8Cs1XG
+ Bfuw==
+X-Gm-Message-State: AOJu0Yw9QDZwFszSAvByFcUVUAg/tOo9y3Z9dN6DkLgKnhzmbGyDpNxD
+ LU5E8f0rfVxlnNLcG+CWEtkeNcmI71+UKJlSDOyKowjqmwOI2hrSvnlE4WyRBPiYIXNPb1BOkcL
+ 0BCJwhUkTEU+zA8+ef71JC8DxgTPRxOSVO8IpO5JuoSR6+pnqhrAuTCZu5TxZfDTaFmeOJMlmMZ
+ I+xiqxydw2mSDe7ltH5fIeLyxR13bLY8vo5w==
+X-Received: by 2002:a0c:ea50:0:b0:690:c345:369b with SMTP id
+ u16-20020a0cea50000000b00690c345369bmr182983qvp.0.1710194391939; 
  Mon, 11 Mar 2024 14:59:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJxKbmjh2sRX/zSB5/FmIRrIWBuL9JriqraGQcSeX+ou3L0u6BZg3VwVy/kBVQrXtpWumOBw==
-X-Received: by 2002:a0c:f04a:0:b0:68f:dc8d:8ad3 with SMTP id
- b10-20020a0cf04a000000b0068fdc8d8ad3mr7986231qvl.0.1710194390151; 
- Mon, 11 Mar 2024 14:59:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEHFQKS5O5FHgxznSgb3d70/N9RWf8Zv5DqjPVpCRxfdS5XAAlmNU1/g29PL1gzNNmMlrMeiQ==
+X-Received: by 2002:a0c:ea50:0:b0:690:c345:369b with SMTP id
+ u16-20020a0cea50000000b00690c345369bmr182952qvp.0.1710194391450; 
+ Mon, 11 Mar 2024 14:59:51 -0700 (PDT)
 Received: from x1n.. (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- d6-20020a0ce446000000b00690cec16254sm1541932qvm.68.2024.03.11.14.59.49
+ d6-20020a0ce446000000b00690cec16254sm1541932qvm.68.2024.03.11.14.59.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 14:59:49 -0700 (PDT)
+ Mon, 11 Mar 2024 14:59:51 -0700 (PDT)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
@@ -69,9 +69,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, peterx@redhat.com,
  Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
  Prasad Pandit <ppandit@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PULL 16/34] migration: export fewer options
-Date: Mon, 11 Mar 2024 17:59:07 -0400
-Message-ID: <20240311215925.40618-17-peterx@redhat.com>
+Subject: [PULL 17/34] migration: remove migration.h references
+Date: Mon, 11 Mar 2024 17:59:08 -0400
+Message-ID: <20240311215925.40618-18-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240311215925.40618-1-peterx@redhat.com>
 References: <20240311215925.40618-1-peterx@redhat.com>
@@ -104,150 +104,93 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-A small number of migration options are accessed by migration clients,
-but to see them clients must include all of options.h, which is mostly
-for migration core code.  migrate_mode() in particular will be needed by
-multiple clients.
-
-Refactor the option declarations so clients can see the necessary few via
-misc.h, which already exports a portion of the client API.
+Remove migration.h from files that no longer need it due to
+previous commits.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Link: https://lore.kernel.org/r/1710179319-294320-1-git-send-email-steven.sistare@oracle.com
+Link: https://lore.kernel.org/r/1710179338-294359-2-git-send-email-steven.sistare@oracle.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- include/migration/client-options.h | 24 ++++++++++++++++++++++++
- include/migration/misc.h           |  1 +
- migration/options.h                |  6 +-----
- hw/vfio/migration.c                |  1 -
- hw/virtio/virtio-balloon.c         |  1 -
- system/dirtylimit.c                |  1 -
- 6 files changed, 26 insertions(+), 8 deletions(-)
- create mode 100644 include/migration/client-options.h
+ hw/vfio/container.c        | 1 -
+ hw/virtio/vhost-user.c     | 1 -
+ hw/virtio/virtio-balloon.c | 1 -
+ system/qdev-monitor.c      | 1 -
+ target/loongarch/kvm/kvm.c | 1 -
+ tests/unit/test-vmstate.c  | 1 -
+ 6 files changed, 6 deletions(-)
 
-diff --git a/include/migration/client-options.h b/include/migration/client-options.h
-new file mode 100644
-index 0000000000..887fea1565
---- /dev/null
-+++ b/include/migration/client-options.h
-@@ -0,0 +1,24 @@
-+/*
-+ * QEMU public migration capabilities
-+ *
-+ * Copyright (c) 2012-2023 Red Hat Inc
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#ifndef QEMU_MIGRATION_CLIENT_OPTIONS_H
-+#define QEMU_MIGRATION_CLIENT_OPTIONS_H
-+
-+/* capabilities */
-+
-+bool migrate_background_snapshot(void);
-+bool migrate_dirty_limit(void);
-+bool migrate_postcopy_ram(void);
-+bool migrate_switchover_ack(void);
-+
-+/* parameters */
-+
-+MigMode migrate_mode(void);
-+
-+#endif
-diff --git a/include/migration/misc.h b/include/migration/misc.h
-index 5d1aa593ed..4c226a40bb 100644
---- a/include/migration/misc.h
-+++ b/include/migration/misc.h
-@@ -17,6 +17,7 @@
- #include "qemu/notify.h"
- #include "qapi/qapi-types-migration.h"
- #include "qapi/qapi-types-net.h"
-+#include "migration/client-options.h"
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index bd25b9fbad..ff081a12c2 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -32,7 +32,6 @@
+ #include "sysemu/reset.h"
+ #include "trace.h"
+ #include "qapi/error.h"
+-#include "migration/migration.h"
+ #include "pci.h"
  
- /* migration/ram.c */
- 
-diff --git a/migration/options.h b/migration/options.h
-index 6ddd8dad9b..b6b69c2bb7 100644
---- a/migration/options.h
-+++ b/migration/options.h
-@@ -16,6 +16,7 @@
- 
- #include "hw/qdev-properties.h"
- #include "hw/qdev-properties-system.h"
-+#include "migration/client-options.h"
- 
- /* migration properties */
- 
-@@ -24,12 +25,10 @@ extern Property migration_properties[];
- /* capabilities */
- 
- bool migrate_auto_converge(void);
--bool migrate_background_snapshot(void);
- bool migrate_block(void);
- bool migrate_colo(void);
- bool migrate_compress(void);
- bool migrate_dirty_bitmaps(void);
--bool migrate_dirty_limit(void);
- bool migrate_events(void);
- bool migrate_mapped_ram(void);
- bool migrate_ignore_shared(void);
-@@ -38,11 +37,9 @@ bool migrate_multifd(void);
- bool migrate_pause_before_switchover(void);
- bool migrate_postcopy_blocktime(void);
- bool migrate_postcopy_preempt(void);
--bool migrate_postcopy_ram(void);
- bool migrate_rdma_pin_all(void);
- bool migrate_release_ram(void);
- bool migrate_return_path(void);
--bool migrate_switchover_ack(void);
- bool migrate_validate_uuid(void);
- bool migrate_xbzrle(void);
- bool migrate_zero_blocks(void);
-@@ -84,7 +81,6 @@ uint8_t migrate_max_cpu_throttle(void);
- uint64_t migrate_max_bandwidth(void);
- uint64_t migrate_avail_switchover_bandwidth(void);
- uint64_t migrate_max_postcopy_bandwidth(void);
--MigMode migrate_mode(void);
- int migrate_multifd_channels(void);
- MultiFDCompression migrate_multifd_compression(void);
- int migrate_multifd_zlib_level(void);
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index f82dcabc49..49c0016add 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -18,7 +18,6 @@
+ VFIOGroupList vfio_group_list =
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index a1eea8547e..1af8621481 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -26,7 +26,6 @@
+ #include "qemu/sockets.h"
  #include "sysemu/runstate.h"
- #include "hw/vfio/vfio-common.h"
- #include "migration/migration.h"
--#include "migration/options.h"
- #include "migration/savevm.h"
- #include "migration/vmstate.h"
- #include "migration/qemu-file.h"
+ #include "sysemu/cryptodev.h"
+-#include "migration/migration.h"
+ #include "migration/postcopy-ram.h"
+ #include "trace.h"
+ #include "exec/ramblock.h"
 diff --git a/hw/virtio/virtio-balloon.c b/hw/virtio/virtio-balloon.c
-index 89f853fa9e..a59ff172bd 100644
+index a59ff172bd..609e39a821 100644
 --- a/hw/virtio/virtio-balloon.c
 +++ b/hw/virtio/virtio-balloon.c
-@@ -32,7 +32,6 @@
+@@ -31,7 +31,6 @@
+ #include "trace.h"
  #include "qemu/error-report.h"
  #include "migration/misc.h"
- #include "migration/migration.h"
--#include "migration/options.h"
+-#include "migration/migration.h"
  
  #include "hw/virtio/virtio-bus.h"
  #include "hw/virtio/virtio-access.h"
-diff --git a/system/dirtylimit.c b/system/dirtylimit.c
-index b5607eb8c2..774ff44f79 100644
---- a/system/dirtylimit.c
-+++ b/system/dirtylimit.c
-@@ -26,7 +26,6 @@
- #include "trace.h"
+diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+index 09e07cab9b..c1243891c3 100644
+--- a/system/qdev-monitor.c
++++ b/system/qdev-monitor.c
+@@ -38,7 +38,6 @@
+ #include "qemu/option_int.h"
+ #include "sysemu/block-backend.h"
  #include "migration/misc.h"
- #include "migration/migration.h"
--#include "migration/options.h"
+-#include "migration/migration.h"
+ #include "qemu/cutils.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/clock.h"
+diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
+index c19978a970..11a69a3b4e 100644
+--- a/target/loongarch/kvm/kvm.c
++++ b/target/loongarch/kvm/kvm.c
+@@ -22,7 +22,6 @@
+ #include "hw/irq.h"
+ #include "qemu/log.h"
+ #include "hw/loader.h"
+-#include "migration/migration.h"
+ #include "sysemu/runstate.h"
+ #include "cpu-csr.h"
+ #include "kvm_loongarch.h"
+diff --git a/tests/unit/test-vmstate.c b/tests/unit/test-vmstate.c
+index c4f9faa273..63f28f26f4 100644
+--- a/tests/unit/test-vmstate.c
++++ b/tests/unit/test-vmstate.c
+@@ -24,7 +24,6 @@
  
- /*
-  * Dirtylimit stop working if dirty page rate error
+ #include "qemu/osdep.h"
+ 
+-#include "../migration/migration.h"
+ #include "migration/vmstate.h"
+ #include "migration/qemu-file-types.h"
+ #include "../migration/qemu-file.h"
 -- 
 2.44.0
 
