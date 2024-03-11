@@ -2,99 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C0A877B6D
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 08:43:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65DB7877B70
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 08:44:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjaIs-0006ed-Pu; Mon, 11 Mar 2024 03:42:34 -0400
+	id 1rjaJr-0007j7-BM; Mon, 11 Mar 2024 03:43:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1rjaIr-0006e9-6L
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 03:42:33 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rjaJR-0007Gr-RA
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 03:43:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1rjaId-0006JB-Cz
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 03:42:32 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rjaJK-0006S6-Oa
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 03:43:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710142938;
+ s=mimecast20190719; t=1710142981;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NdKaBwIYTS5kAgFX4EAlzXqT8OITpef6c+klwQHgjk8=;
- b=PZvq3kev1fkubX4GY1tBNBfrwGrUOKTrqy6AlKuPUvYN/uziLW7t2uyo5bvGZ6FXDd2fzn
- kfqf5u/ZyK4gzhl6tmnMLnpFLlypaFvMUyQiiz2kA+GQvYSkS1dutBUAz8I4+GC8Vz+7oN
- QAb0bZQhdDI1W/5Di9GHO52kidOEqTM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=4ndLsTUJdWXeHBwCp7awI2MLMa+us9lOQ7mqsN4q6v0=;
+ b=i9tY30kI2GfIjJC9ABViZMOhRU9u0Z+AiasFu8KVVFSE+uTXDfBzukhyux6S5C1uZD+euZ
+ cOq+ktSKm0e/dAbAqrX9lsUC9uge/p6Zmd64G/zZl7WuENMeyNyB0wlptZtzaYZY0FBd0O
+ Hg8Ygy1+pl6JUqAbFJyIbQwoeHpkIRQ=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-125-ZBpkOo2sN8KzB-llBNOFzA-1; Mon, 11 Mar 2024 03:42:16 -0400
-X-MC-Unique: ZBpkOo2sN8KzB-llBNOFzA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4132cf5b950so1162745e9.0
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 00:42:16 -0700 (PDT)
+ us-mta-299-vQRe42iKMTGA2yMAWdXjMg-1; Mon, 11 Mar 2024 03:42:59 -0400
+X-MC-Unique: vQRe42iKMTGA2yMAWdXjMg-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2d30bed153fso33709931fa.3
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 00:42:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710142935; x=1710747735;
+ d=1e100.net; s=20230601; t=1710142977; x=1710747777;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NdKaBwIYTS5kAgFX4EAlzXqT8OITpef6c+klwQHgjk8=;
- b=Tie8icDBENQj3TqEnKzDWBrTJzm1AaeUE9VYIoDkaXb5UhjSem4wpbH370WF4ZLXGE
- blgE7PRb2XMadxDLmksHMtTmRIWgKqzbw9CakLQ/sQ294L/5JaNN+kW0uhh5EUSrd86n
- CJyFpziZTmxDKaq19RNO7BBTqqwYSaAg8Awnn4GkUMr5VNbqEinoALnQK+xXzj0XpAfJ
- loFkr2Ro7lNRaLbPHO8oecy2LbKub/ghI7JGXpNsO444ou6mUYOojTD9AxQO3L+1fb/0
- jfiQ58rzw0nnGGc3FANMp00fE5ohxmvZCQ9RMPt+JjiJGsWouhhcBkahJvEEANFW9KhP
- tWMg==
+ bh=4ndLsTUJdWXeHBwCp7awI2MLMa+us9lOQ7mqsN4q6v0=;
+ b=sVKmFQvOwxn5c9Fzpei2tZWBku+mkwBtHvs+H4n6uWv752OJkLCkrLldboDWOggY0m
+ fLDdS2jfqwI9Unx/lBaBX9H6GZbtdK34HrMMokohk0VTAPaZiBCx5vICCLB7eWDdExmb
+ fYuF/D9eCh2O11azhdv2b00L6Q2g3mu6NiksccQf4XXPSc/JHv0W581/6kSng9uK46GH
+ gGU5BXW6rRR3TUaUDlTcEtu0RKyOYkc5uzcgLVuIQy9EOog5l8ysgIi+ZaCbP9sRc9FL
+ ZWsfZVRCqVKOkN6BFE0nFoAJh9R/GHnkaHlywCDDww4yTMGbIMkIyzgRa2s7FW7Akf8/
+ J1LQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWTc5biTHzJjK+9H0PzdWFZ/SSnh9fPk5Rxm36k3PQM2cG3YS/OccpJE/ld/M19ZO+tZkUVSb075bYPowis/rk9IXZbBek=
-X-Gm-Message-State: AOJu0YxCpr18iUGe+wr3hKluFlBKUcbgHE7Bo/0n3JhnkANYun91CjHN
- uK6sJ7+kkGv1qAFkVlVDsmuVmhDVBj858J46CXWhjIBSXrOw0GlyQJh8xu6bs+zyrzeOO9GHtDV
- HlTaAJPJv218882VO97JQQzAbWh3BsXpVvR5C1Au8levGhfpSsFST
-X-Received: by 2002:a05:600c:4f50:b0:412:ee33:db93 with SMTP id
- m16-20020a05600c4f5000b00412ee33db93mr5147968wmq.3.1710142935823; 
- Mon, 11 Mar 2024 00:42:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHaC+vmNUs5IeDU5nUBD1wW16ZGHUDGeZPHVSeY+NX35mFIgdWI8bksTsuSE/th1aPIErPZAw==
-X-Received: by 2002:a05:600c:4f50:b0:412:ee33:db93 with SMTP id
- m16-20020a05600c4f5000b00412ee33db93mr5147942wmq.3.1710142935527; 
- Mon, 11 Mar 2024 00:42:15 -0700 (PDT)
+ AJvYcCU9pb0b/hOmq4gNZNqA6QpjCWbt21yeX7/dI8k/KpNYbBOu0YLx6dIRdNknidrNjKvd21jQANAJk1MEdMtZePzZzVpPChk=
+X-Gm-Message-State: AOJu0Yx3CwW+VnQ4HI5NTO7EzHfsN6sivLRyI7xgT3FBPf50FOna1WtY
+ OqtQ60/5KG+cKEeLbPnqJS3FCq6o1leSLP7Iep+4iot7CDrafGKWJmgndIbkkhdG9cm6Ho8oNwW
+ 6OBjvQ+UPyo1kympdxmEt383Ik3ruZpH+showF+KjWKDuNHkteJHe
+X-Received: by 2002:a2e:3e15:0:b0:2d3:fa9a:a905 with SMTP id
+ l21-20020a2e3e15000000b002d3fa9aa905mr2841605lja.30.1710142977727; 
+ Mon, 11 Mar 2024 00:42:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGyYZbaGlKEpKfI0Crnx9FMSVeh+1jbr0qIs22OTVttem2B9uAv8A0FKkNn/HVXZpgB2zsNgg==
+X-Received: by 2002:a2e:3e15:0:b0:2d3:fa9a:a905 with SMTP id
+ l21-20020a2e3e15000000b002d3fa9aa905mr2841584lja.30.1710142977364; 
+ Mon, 11 Mar 2024 00:42:57 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- m38-20020a05600c3b2600b00412b6fbb9b5sm14797294wms.8.2024.03.11.00.42.14
+ m38-20020a05600c3b2600b00412b6fbb9b5sm14797294wms.8.2024.03.11.00.42.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Mar 2024 00:42:15 -0700 (PDT)
-Message-ID: <8c190ff9-137e-4f1e-ba74-b4beaaa90e7f@redhat.com>
-Date: Mon, 11 Mar 2024 08:42:12 +0100
+ Mon, 11 Mar 2024 00:42:56 -0700 (PDT)
+Message-ID: <6ccb8dc6-8870-4f70-9c3f-fd2601651938@redhat.com>
+Date: Mon, 11 Mar 2024 08:42:54 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 29/29] target/s390x/cpu_models: Fix missing
- ERRP_GUARD() for error_prepend()
+Subject: Re: [PATCH v2 18/29] hw/vfio/ap: Fix missing ERRP_GUARD() for
+ error_prepend()
 Content-Language: en-US, fr
 To: Zhao Liu <zhao1.liu@linux.intel.com>, Thomas Huth <thuth@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Michael Tokarev <mjt@tls.msk.ru>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
  <philmd@linaro.org>, qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- David Hildenbrand <david@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org
+ Alex Williamson <alex.williamson@redhat.com>,
+ Tony Krowiak <akrowiak@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Jason Herne <jjherne@linux.ibm.com>, qemu-s390x@nongnu.org
 References: <20240311033822.3142585-1-zhao1.liu@linux.intel.com>
- <20240311033822.3142585-30-zhao1.liu@linux.intel.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clegoate@redhat.com>
-In-Reply-To: <20240311033822.3142585-30-zhao1.liu@linux.intel.com>
+ <20240311033822.3142585-19-zhao1.liu@linux.intel.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20240311033822.3142585-19-zhao1.liu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clegoate@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
 X-Spam_bar: ---
 X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.945,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -133,25 +131,25 @@ On 3/11/24 04:38, Zhao Liu wrote:
 > can't see this additional information, because exit() happens in
 > error_setg earlier than information is added [1].
 > 
-> In target/s390x/cpu_models.c, there are 2 functions passing @errp to
-> error_prepend() without ERRP_GUARD():
-> - check_compatibility()
-> - s390_realize_cpu_model()
+> The vfio_ap_realize() passes @errp to error_prepend(), and as a
+> DeviceClass.realize method, there are too many possible callers to check
+> the impact of this defect; it may or may not be harmless. Thus it is
+> necessary to protect @errp with ERRP_GUARD().
 > 
-> Though both their @errp parameters point to their callers' local @err
-> virables and don't cause the issue as [1] said, to follow the
-> requirement of @errp, also add missing ERRP_GUARD() at their beginning.
+> To avoid the issue like [1] said, add missing ERRP_GUARD() at the
+> beginning of this function.
 > 
 > [1]: Issue description in the commit message of commit ae7c80a7bd73
 >       ("error: New macro ERRP_GUARD()").
 > 
-> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Alex Williamson <alex.williamson@redhat.com>
+> Cc: "Cédric Le Goater" <clg@redhat.com>
+> Cc: Tony Krowiak <akrowiak@linux.ibm.com>
+> Cc: Halil Pasic <pasic@linux.ibm.com>
+> Cc: Jason Herne <jjherne@linux.ibm.com>
 > Cc: Thomas Huth <thuth@redhat.com>
-> Cc: Richard Henderson <richard.henderson@linaro.org>
-> Cc: Ilya Leoshkevich <iii@linux.ibm.com>
 > Cc: qemu-s390x@nongnu.org
 > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> ---
 
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
@@ -160,5 +158,24 @@ Thanks,
 
 C.
 
+
+> ---
+> v2: Use Markus' sentence to polish commit message. (Markus)
+> ---
+>   hw/vfio/ap.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
+> index e157aa1ff79c..7c4caa593863 100644
+> --- a/hw/vfio/ap.c
+> +++ b/hw/vfio/ap.c
+> @@ -155,6 +155,7 @@ static void vfio_ap_unregister_irq_notifier(VFIOAPDevice *vapdev,
+>   
+>   static void vfio_ap_realize(DeviceState *dev, Error **errp)
+>   {
+> +    ERRP_GUARD();
+>       int ret;
+>       Error *err = NULL;
+>       VFIOAPDevice *vapdev = VFIO_AP_DEVICE(dev);
 
 
