@@ -2,53 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FE598779F4
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 04:11:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E5E58779FD
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 04:25:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjW2r-00030d-Sp; Sun, 10 Mar 2024 23:09:45 -0400
+	id 1rjWHR-0005Wp-TI; Sun, 10 Mar 2024 23:24:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yumin686@andestech.com>)
- id 1rjW2p-000304-MI; Sun, 10 Mar 2024 23:09:43 -0400
-Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
- helo=Atcsqr.andestech.com)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rjWHP-0005W9-FV; Sun, 10 Mar 2024 23:24:47 -0400
+Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yumin686@andestech.com>)
- id 1rjW2n-0004f3-23; Sun, 10 Mar 2024 23:09:43 -0400
-Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
- by Atcsqr.andestech.com with ESMTP id 42B39GDd034893;
- Mon, 11 Mar 2024 11:09:16 +0800 (+08)
- (envelope-from yumin686@andestech.com)
-Received: from lubuntu-vb.andestech.com (10.0.12.42) by ATCPCS16.andestech.com
- (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0;
- Mon, 11 Mar 2024 11:09:15 +0800
-To: <palmer@dabbelt.com>, <alistair.francis@wdc.com>, <bin.meng@windriver.com>,
- <liwei1518@gmail.com>, <dbarboza@ventanamicro.com>,
- <zhiwei_liu@linux.alibaba.com>
-CC: <qemu-riscv@nongnu.org>, <qemu-devel@nongnu.org>, Yu-Ming Chang
- <yumin686@andestech.com>
-Subject: [PATCH v2] target/riscv: raise an exception when CSRRS/CSRRC writes a
- read-only CSR
-Date: Mon, 11 Mar 2024 11:08:52 +0800
-Message-ID: <20240311030852.53831-1-yumin686@andestech.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rjWHM-0007pt-SU; Sun, 10 Mar 2024 23:24:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1710127484; x=1741663484;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=JAM6+G4yDz8y4QcV7DPPrucHLoQHW4LHLnC6OjZkHA8=;
+ b=cknS6WIQKQxr873/aR/A9frsp7HlyXFL8z3P/Yw3al6nfWmIalPgwKgU
+ RkC9eZIITVBz3zoMHTOs7qSqgAeM5CblCp7sy0RzfCcETg6v2dlw9y9a5
+ uA0PLsyH8iFlcGqz8XRa1dGvy/ze6Mh2Kr/bXQz7O6OiI7EhIPCzxWR+r
+ LylUnAsSqBduoBKfY4ZOqkBSlHXNFxfS4Op1IGTYV2r3j+Hk4/ot4jKzF
+ 64N8bFDzv6XNKz6nve9Zf169giXs9e0P3pN/b5BNLQ16/vU6cL+Md9Kys
+ h1CRCVtjvrhvtWcQu9dHyWdgWmVXlekFH+SOpKOJOblXbjFylfi0Y94HL A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="22229571"
+X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="22229571"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Mar 2024 20:24:41 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; d="scan'208";a="15593702"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by fmviesa003.fm.intel.com with ESMTP; 10 Mar 2024 20:24:39 -0700
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Michael Roth <michael.roth@amd.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v2 00/29] Cleanup up to fix missing ERRP_GUARD() for
+ error_prepend()
+Date: Mon, 11 Mar 2024 11:37:53 +0800
+Message-Id: <20240311033822.3142585-1-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.0.12.42]
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL: Atcsqr.andestech.com 42B39GDd034893
-Received-SPF: pass client-ip=60.248.80.70; envelope-from=yumin686@andestech.com;
- helo=Atcsqr.andestech.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: none client-ip=198.175.65.10;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.945,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,101 +73,107 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Yu-Ming Chang <yumin686@andestech.com>
-From:  Yu-Ming Chang via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both CSRRS and CSRRC always read the addressed CSR and cause any read side
-effects regardless of rs1 and rd fields. Note that if rs1 specifies a register
-holding a zero value other than x0, the instruction will still attempt to write
-the unmodified value back to the CSR and will cause any attendant side effects.
+From: Zhao Liu <zhao1.liu@intel.com>
 
-So if CSRRS or CSRRC tries to write a read-only CSR with rs1 which specifies
-a register holding a zero value, an illegal instruction exception should be
-raised.
+Hi,
 
-Signed-off-by: Yu-Ming Chang <yumin686@andestech.com>
+This series is the v2 to add missing ERRP_GUARD() for error_prepend(),
+which collects the previous v1 part 1 [1] and v1 part 2 (and excludes
+the 4 patches that have already been merged).
+
+The @errp's second restriction (in qapi/error) said:
+
+* Without ERRP_GUARD(), use of the @errp parameter is restricted:
+...
+* - It should not be passed to error_prepend() or
+*   error_append_hint(), because that doesn't work with &error_fatal.
+* ERRP_GUARD() lifts these restrictions.
+
+With this series, all error_prepend() will follow the above usage rules.
+
+In this series, 2 cases of error_prepend() with &error_fatal are
+recognized (patch 30 & patch 31).
+
+And there are some remaining TODOs:
+* follow-up cleanup for related @err use cases. (Suggested by Thomas)
+* continue to cleanup error_append_hint().
+
+
+The cleanup looks very trivial and thanks for your review!
+
+[1]: https://lore.kernel.org/qemu-devel/20240228163723.1775791-1-zhao1.liu@linux.intel.com/
+[2]: https://lore.kernel.org/qemu-devel/20240229143914.1977550-1-zhao1.liu@linux.intel.com/
+
+Thanks and Best Regards,
+Zhao
+
 ---
-This incorporated the comments from Richard. Thank you.
+Zhao Liu (29):
+  error: Add error_vprepend() in comment of ERRP_GUARD() rules
+  backends/iommufd: Fix missing ERRP_GUARD() for error_prepend()
+  block: Fix missing ERRP_GUARD() for error_prepend()
+  block/copy-before-write: Fix missing ERRP_GUARD() for error_prepend()
+  block/nbd: Fix missing ERRP_GUARD() for error_prepend()
+  block/nvme: Fix missing ERRP_GUARD() for error_prepend()
+  block/qcow2-bitmap: Fix missing ERRP_GUARD() for error_prepend()
+  block/qcow2: Fix missing ERRP_GUARD() for error_prepend()
+  block/qed: Fix missing ERRP_GUARD() for error_prepend()
+  block/snapshot: Fix missing ERRP_GUARD() for error_prepend()
+  block/vdi: Fix missing ERRP_GUARD() for error_prepend()
+  block/vmdk: Fix missing ERRP_GUARD() for error_prepend()
+  block/virtio-blk: Fix missing ERRP_GUARD() for error_prepend()
+  hw/core/loader-fit: Fix missing ERRP_GUARD() for error_prepend()
+  hw/core/qdev-properties-system: Fix missing ERRP_GUARD() for
+    error_prepend()
+  hw/misc/ivshmem: Fix missing ERRP_GUARD() for error_prepend()
+  hw/scsi/vhost-scsi: Fix missing ERRP_GUARD() for error_prepend()
+  hw/vfio/ap: Fix missing ERRP_GUARD() for error_prepend()
+  hw/vfio/container: Fix missing ERRP_GUARD() for error_prepend()
+  hw/vfio/helpers: Fix missing ERRP_GUARD() for error_prepend()
+  hw/vfio/iommufd: Fix missing ERRP_GUARD() for error_prepend()
+  hw/vfio/pci-quirks: Fix missing ERRP_GUARD() for error_prepend()
+  hw/vfio/pci: Fix missing ERRP_GUARD() for error_prepend()
+  hw/vfio/platform: Fix missing ERRP_GUARD() for error_prepend()
+  hw/virtio/vhost-vsock: Fix missing ERRP_GUARD() for error_prepend()
+  hw/virtio/vhost: Fix missing ERRP_GUARD() for error_prepend()
+  migration/option: Fix missing ERRP_GUARD() for error_prepend()
+  net/vhost-vdpa: Fix missing ERRP_GUARD() for error_prepend()
+  target/s390x/cpu_models: Fix missing ERRP_GUARD() for error_prepend()
 
- target/riscv/cpu.h       |  2 ++
- target/riscv/csr.c       | 17 ++++++++++++++---
- target/riscv/op_helper.c |  2 +-
- 3 files changed, 17 insertions(+), 4 deletions(-)
+ backends/iommufd.c               | 1 +
+ block.c                          | 4 ++++
+ block/copy-before-write.c        | 1 +
+ block/nbd.c                      | 1 +
+ block/nvme.c                     | 3 +++
+ block/qcow2-bitmap.c             | 1 +
+ block/qcow2.c                    | 2 ++
+ block/qed.c                      | 1 +
+ block/snapshot.c                 | 2 ++
+ block/vdi.c                      | 1 +
+ block/vmdk.c                     | 1 +
+ hw/block/virtio-blk.c            | 1 +
+ hw/core/loader-fit.c             | 2 ++
+ hw/core/qdev-properties-system.c | 1 +
+ hw/misc/ivshmem.c                | 1 +
+ hw/scsi/vhost-scsi.c             | 1 +
+ hw/vfio/ap.c                     | 1 +
+ hw/vfio/container.c              | 1 +
+ hw/vfio/helpers.c                | 3 +++
+ hw/vfio/iommufd.c                | 1 +
+ hw/vfio/pci-quirks.c             | 2 ++
+ hw/vfio/pci.c                    | 2 ++
+ hw/vfio/platform.c               | 1 +
+ hw/virtio/vhost-vsock.c          | 1 +
+ hw/virtio/vhost.c                | 2 ++
+ include/qapi/error.h             | 2 +-
+ migration/options.c              | 2 ++
+ net/vhost-vdpa.c                 | 1 +
+ target/s390x/cpu_models.c        | 2 ++
+ 29 files changed, 44 insertions(+), 1 deletion(-)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 5d291a7092..452841ae2f 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -710,6 +710,8 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
- void riscv_cpu_update_mask(CPURISCVState *env);
- bool riscv_cpu_is_32bit(RISCVCPU *cpu);
- 
-+RISCVException riscv_csrr(CPURISCVState *env, int csrno,
-+                          target_ulong *ret_value);
- RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
-                            target_ulong *ret_value,
-                            target_ulong new_value, target_ulong write_mask);
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index d4e8ac13b9..0d14ba2ba5 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -4306,7 +4306,7 @@ static RISCVException rmw_seed(CPURISCVState *env, int csrno,
- 
- static inline RISCVException riscv_csrrw_check(CPURISCVState *env,
-                                                int csrno,
--                                               bool write_mask)
-+                                               bool write)
- {
-     /* check privileges and return RISCV_EXCP_ILLEGAL_INST if check fails */
-     bool read_only = get_field(csrno, 0xC00) == 3;
-@@ -4328,7 +4328,7 @@ static inline RISCVException riscv_csrrw_check(CPURISCVState *env,
-     }
- 
-     /* read / write check */
--    if (write_mask && read_only) {
-+    if (write && read_only) {
-         return RISCV_EXCP_ILLEGAL_INST;
-     }
- 
-@@ -4415,11 +4415,22 @@ static RISCVException riscv_csrrw_do64(CPURISCVState *env, int csrno,
-     return RISCV_EXCP_NONE;
- }
- 
-+RISCVException riscv_csrr(CPURISCVState *env, int csrno,
-+                           target_ulong *ret_value)
-+{
-+    RISCVException ret = riscv_csrrw_check(env, csrno, false);
-+    if (ret != RISCV_EXCP_NONE) {
-+        return ret;
-+    }
-+
-+    return riscv_csrrw_do64(env, csrno, ret_value, 0, 0);
-+}
-+
- RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
-                            target_ulong *ret_value,
-                            target_ulong new_value, target_ulong write_mask)
- {
--    RISCVException ret = riscv_csrrw_check(env, csrno, write_mask);
-+    RISCVException ret = riscv_csrrw_check(env, csrno, true);
-     if (ret != RISCV_EXCP_NONE) {
-         return ret;
-     }
-diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-index f414aaebdb..f3aa705be8 100644
---- a/target/riscv/op_helper.c
-+++ b/target/riscv/op_helper.c
-@@ -51,7 +51,7 @@ target_ulong helper_csrr(CPURISCVState *env, int csr)
-     }
- 
-     target_ulong val = 0;
--    RISCVException ret = riscv_csrrw(env, csr, &val, 0, 0);
-+    RISCVException ret = riscv_csrr(env, csr, &val);
- 
-     if (ret != RISCV_EXCP_NONE) {
-         riscv_raise_exception(env, ret, GETPC());
 -- 
 2.34.1
 
