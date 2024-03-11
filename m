@@ -2,65 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73FD6877FA3
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 13:09:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B627D877FDB
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 13:21:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjeT2-0000FN-ML; Mon, 11 Mar 2024 08:09:21 -0400
+	id 1rjeed-0005Gy-CX; Mon, 11 Mar 2024 08:21:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <d.sharikhin@yadro.com>)
- id 1rjeSp-00008M-Tl
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 08:09:07 -0400
-Received: from mta-04.yadro.com ([89.207.88.248])
+ (Exim 4.90_1) (envelope-from <vkale@nvidia.com>) id 1rjeea-00054U-52
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 08:21:16 -0400
+Received: from mail-mw2nam04on2078.outbound.protection.outlook.com
+ ([40.107.101.78] helo=NAM04-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <d.sharikhin@yadro.com>)
- id 1rjeSj-0006Bk-AX
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 08:09:06 -0400
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com B3074C0002
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
- t=1710158936; bh=Mwg53bp56TP3Ffs/sjgvascjTTWv+3lykGsJlcB+Pmc=;
- h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:From;
- b=n9DWhO6xXxsiasm/UOl5hW/zhGlnD8o3D/KkEGQgVtJE2+TLgIaBY0/prxKQ0FttX
- G/wszxaS8+LiG+3RBhVsrrUWXiIcuAxBOeGklc1H8EqwgzT/hDmja0e2gmjmX8vpSJ
- i0dkg72IKWiq5kSF60Y+NACwgU/BTX31Ls8+K3CkSBOolqSDOKjk/8sf3wUCSYhpBF
- i0ko82GYaR67Nf1v1cNn5s2p/mcLM5SgWnK6y9Xwd+GHmiNuSl/j6tkLeTW7ubhOP6
- QrBzwmwfNtPgnQE7p8/NDT4ogevS7NXJ5U4pqnzvBZQ+FEHX4xB+6fJmJwfQTZ5Iv7
- LiifLpODJntwA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
- t=1710158936; bh=Mwg53bp56TP3Ffs/sjgvascjTTWv+3lykGsJlcB+Pmc=;
- h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:From;
- b=uvaHyvOWRoXBTv6gF0XjWEE1YJklxpJgE2CJu9+1/ZEDtqc0j3v6h6B+8xIt+Zm15
- +v1g0brQAh0rBOAfv+yKuMHKFJtViVkDDBH18S3BSrs4WEofwj8RX+/DO3WluxnlqU
- XDh1pkzquylC+zU+tLKfUnJWjL77iessBo8rn/LzoRfTAVa4rz7q0vtq46kq1b1TWc
- 07Wheo+6++JhEOJcy3pXmq/r0RWni5VKf42BvvZGjFuqtR7qjuO4znTmFski1MsmNO
- RGOfKHwYp01K4Ev4JXdx2k8KB0AgDiwJm/hQIBjtIKa3a+E9m42iLKk97Iwkzt8kDB
- losQK8+KDmz6g==
-From: Dmitriy Sharikhin <d.sharikhin@yadro.com>
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: Igor Kononenko <i.kononenko@yadro.com>, "Alexander A. Filippov"
- <a.filippov@yadro.com>, Alexander Amelkin <a.amelkin@yadro.com>
-Subject: [PATCH v4] hw: gpio: introduce pcf8574 driver
-Thread-Topic: [PATCH v4] hw: gpio: introduce pcf8574 driver
-Thread-Index: AQHac6zj8ifOw+dLbkagdkOQ33eyTA==
-Date: Mon, 11 Mar 2024 12:08:55 +0000
-Message-ID: <1b8c60df8941590b06c739f0a8c1a5dd6b462214.camel@yadro.com>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Content-Type: text/plain; charset="utf-7"
-Content-ID: <7973D345F1F4804E8736485C30F777A0@yadro.com>
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <vkale@nvidia.com>) id 1rjeeW-0008Lt-1w
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 08:21:15 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CdFIPWZbW35cnjoWZxVS/lcsWz3PCbDlY8cXZrWAA67UGR9nYFWOBTx55t7x+mnpks1PQbqNbTRFmQ2u73R9uPkJkJ+riaIeoJw9/rZKr5kH873NfxIbWmFKl1Xifj5TT6C7oWGvLCusMHov+hY+2cMg9x2fm1GmYF7gDvKYqd64c4mEvp5YwSfjTjYeV2juWHdJGbKZldg2nWYK4OwNz8Ih+SKA13qrLbQlDzHc6VyJ9BfS1VgUwmyvLPIMK+fpjoQUNCWqEJCpyBjHiHPdmSDf5/FevpJ7COVgcqIUGNBQz65RTQaoconcZCM9IJ5OkmorLDBVCCZ2Oc5MLGtRKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tnYlo/jpCzeKmtItcUAolkia80g+SLSC9y26UXblya4=;
+ b=NjH8huwgq90mOy1TjhaO7fvbW/liNmLCgN0sRhhHMP93Vn141IeRc3QbzDfdufXQIs/hlWwaR05+G5acPk7aw0NA6/q+Qr8eMsxfEyejteMVnYGLTrA1LxbxgS+vIWl86jjGHIgCYxghqLV4HhRoshVSK9dH61KthsUT3BhIOig1BxdAqfuaPMDq//ZTHIvldRSS3nrV3BE91WXAFn78FDhbrO8mXdayneioAllCNFvcqvbNiid7ldvcqaw4Fv+EWJAdSfWqI1ILfhAjD0CzxkjQeP6XWrfETPY54OJvimKCMDwqG06C9f3CLQQSiNjyOi/T93tMPhe+CBsIlJ7CVA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tnYlo/jpCzeKmtItcUAolkia80g+SLSC9y26UXblya4=;
+ b=s0czAKY7and0gp6ScASvukO9okw370PvrQJhBGOjlld3YqG3W2KVcUAk4tScx97h5ORWLp2YZ9/Mzj4aKYT9cIf7QUy4XLVgdis/uNliLO0EuiQw9PV6sOlTL8SH3cpIEBpc11i3++KiVpkiI5jYA6ctng196CubXUcBRlXLsC47jGNDHL/HSpHXe1r8PT3OMfb8DLc5IrWdPyLphzHqx6y/imJrPxdtn85yTwYAHUJxQYdeJeahITVE4via4idFk2vjyUhgc+ZibAoVYNVDzlQb4Icuh5eoyNEI/ZzqaxojNBgW0ls4AZOWYSIMxTj0y2a3Y7M5aKtQgwCSxR+FnA==
+Received: from BN9P223CA0014.NAMP223.PROD.OUTLOOK.COM (2603:10b6:408:10b::19)
+ by BY5PR12MB4306.namprd12.prod.outlook.com (2603:10b6:a03:206::17)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.35; Mon, 11 Mar
+ 2024 12:16:05 +0000
+Received: from BN2PEPF000044A6.namprd04.prod.outlook.com
+ (2603:10b6:408:10b:cafe::4d) by BN9P223CA0014.outlook.office365.com
+ (2603:10b6:408:10b::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.35 via Frontend
+ Transport; Mon, 11 Mar 2024 12:16:05 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ BN2PEPF000044A6.mail.protection.outlook.com (10.167.243.100) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7386.12 via Frontend Transport; Mon, 11 Mar 2024 12:16:05 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Mon, 11 Mar
+ 2024 05:15:53 -0700
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.12; Mon, 11 Mar 2024 05:15:52 -0700
+Received: from vkale-dev-linux.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.180) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12 via Frontend
+ Transport; Mon, 11 Mar 2024 05:15:49 -0700
+From: Vinayak Kale <vkale@nvidia.com>
+To: <qemu-devel@nongnu.org>
+CC: <alex.williamson@redhat.com>, <mst@redhat.com>,
+ <marcel.apfelbaum@gmail.com>, <avihaih@nvidia.com>, <acurrid@nvidia.com>,
+ <cjia@nvidia.com>, <zhiw@nvidia.com>, <targupta@nvidia.com>,
+ <kvm@vger.kernel.org>, Vinayak Kale <vkale@nvidia.com>
+Subject: [PATCH v2] vfio/pci: migration: Skip config space check for vendor
+ specific capability during restore/load
+Date: Mon, 11 Mar 2024 17:45:19 +0530
+Message-ID: <20240311121519.1481732-1-vkale@nvidia.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Received-SPF: pass client-ip=89.207.88.248; envelope-from=d.sharikhin@yadro.com;
- helo=mta-04.yadro.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+X-NVConfidentiality: public
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A6:EE_|BY5PR12MB4306:EE_
+X-MS-Office365-Filtering-Correlation-Id: 53078364-ad67-4d3d-1441-08dc41c50684
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: NXXpz8nRrLWeXJ3x4b+r5erAp2lUoRh+h8LJQ2iGL+8xQUm3ToCF6fEi72Qv1cO2UQEHOTt6tU1L324sYWylGVCogg4AXkwAzzJFtBIFNvEzNscdnPtcRQpycBx5M9j0CnrsUJHDYkyKQfuFPX9SrkX5F55Zn9xG2tCeUX6B5cMyybZ7P7YlWtKR8xM5U+dnM7m+UmPsleiiBIIpJXE9GhsgJ9FYwDNJuqhmebebGnK4ukgKwrDuaOLCU1p9MdbUYCils5aXAFsIObc6KxSUNTMcjAA7IkNyZE9j0mEbMl0NYSj1ZoToa+K0NdrY36XUe+wUUNSt0aa4Ye1yxrWPqf+NOsgmOcpO2+/jVgfbrEZN2kjd3EDDPL+IxkYsJJWSFORBnwzv1CAXg6FHO+uqPJWu+SsQkM+1bvR3NLxGX3bSfj52p3gEI07PHQvEpehdOKMGvgqQw+uaqKlheyvXKaxhcUiZaasAF2uB5H3+8lUELxN0qR3xsbneLTaRLSwkcGH3ZN1wOYZTjUPGcYFIld0roESEjSqXdgl3S8s/qy5xHDJeHg3w+jqyWKixMlxyEi7492zzkmYVV7nk/pJzi8MC6QAi3WHaet1UDq21OeLsWMDYfHHwnfpULFcdqwaGQI9bQlrcfwHFI8rgkLW9FJGMVTNS4GFRtCyUSe2zHdNqxm+NR93TvLt+sE/3QsqpOds2u8k17yHq6DiKn5D/YXk6oUhbM5/vVKJj7BUJzK81Faj8xHq5msWOLOd6XSLy
+X-Forefront-Antispam-Report: CIP:216.228.118.233; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge2.nvidia.com; CAT:NONE;
+ SFS:(13230031)(82310400014)(376005)(1800799015)(36860700004); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2024 12:16:05.1574 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 53078364-ad67-4d3d-1441-08dc41c50684
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.233];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000044A6.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4306
+Received-SPF: softfail client-ip=40.107.101.78; envelope-from=vkale@nvidia.com;
+ helo=NAM04-MW2-obe.outbound.protection.outlook.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,271 +128,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-NXP PCF8574 and compatible ICs are simple I2C GPIO expanders.
-PCF8574 incorporates quasi-bidirectional IO, and simple
-communication protocol, when IO read is I2C byte read, and
-IO write is I2C byte write. User can think of it as
-open-drain port, when line high state is input and line low
-state is output.
+In case of migration, during restore operation, qemu checks config space of the
+pci device with the config space in the migration stream captured during save
+operation. In case of config space data mismatch, restore operation is failed.
 
-Signed-off-by: Dmitrii Sharikhin +ADw-d.sharikhin+AEA-yadro.com+AD4-
-Reviewed-by: Philippe Mathieu-Daud+AOk- +ADw-philmd+AEA-linaro.org+AD4-
+config space check is done in function get_pci_config_device(). By default VSC
+(vendor-specific-capability) in config space is checked.
+
+Ideally qemu should not check VSC for VFIO-PCI device during restore/load as
+qemu is not aware of VSC ABI.
+
+This patch skips the check for VFIO-PCI device by clearing pdev->cmask[] for VSC
+offsets. If cmask[] is not set for an offset, then qemu skips config space check
+for that offset.
+
+Signed-off-by: Vinayak Kale <vkale@nvidia.com>
 ---
- MAINTAINERS               +AHw-   6 +-+-
- hw/gpio/Kconfig           +AHw-   4 +-
- hw/gpio/meson.build       +AHw-   1 +-
- hw/gpio/pcf8574.c         +AHw- 162 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-=
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
- include/hw/gpio/pcf8574.h +AHw-  15 +-+-+-+-
- 5 files changed, 188 insertions(+-)
- create mode 100644 hw/gpio/pcf8574.c
- create mode 100644 include/hw/gpio/pcf8574.h
+Version History
+v1->v2:
+    - Limited scope of change to vfio-pci devices instead of all pci devices.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 4d96f855de..72c23e3682 100644
---- a/MAINTAINERS
-+-+-+- b/MAINTAINERS
-+AEAAQA- -2503,6 +-2503,12 +AEAAQA- S: Maintained
- F: hw/i2c/i2c+AF8-mux+AF8-pca954x.c
- F: include/hw/i2c/i2c+AF8-mux+AF8-pca954x.h
-=20
-+-pcf8574
-+-M: Dmitrii Sharikhin +ADw-d.sharikhin+AEA-yadro.com+AD4-
-+-S: Maintained
-+-F: hw/gpio/pcf8574.c
-+-F: include/gpio/pcf8574.h
-+-
- Generic Loader
- M: Alistair Francis +ADw-alistair+AEA-alistair23.me+AD4-
- S: Maintained
-diff --git a/hw/gpio/Kconfig b/hw/gpio/Kconfig
-index 712940b8e0..19c97cc823 100644
---- a/hw/gpio/Kconfig
-+-+-+- b/hw/gpio/Kconfig
-+AEAAQA- -19,3 +-19,7 +AEAAQA- config SIFIVE+AF8-GPIO
-=20
- config STM32L4X5+AF8-GPIO
-     bool
-+-
-+-config PCF8574
-+-    bool
-+-    depends on I2C
-diff --git a/hw/gpio/meson.build b/hw/gpio/meson.build
-index 3454b503ae..791e93a97b 100644
---- a/hw/gpio/meson.build
-+-+-+- b/hw/gpio/meson.build
-+AEAAQA- -16,3 +-16,4 +AEAAQA- system+AF8-ss.add(when: 'CONFIG+AF8-RASPI', =
-if+AF8-true: files(
- system+AF8-ss.add(when: 'CONFIG+AF8-STM32L4X5+AF8-SOC', if+AF8-true: files=
-('stm32l4x5+AF8-gpio.c'))
- system+AF8-ss.add(when: 'CONFIG+AF8-ASPEED+AF8-SOC', if+AF8-true: files('a=
-speed+AF8-gpio.c'))
- system+AF8-ss.add(when: 'CONFIG+AF8-SIFIVE+AF8-GPIO', if+AF8-true: files('=
-sifive+AF8-gpio.c'))
-+-system+AF8-ss.add(when: 'CONFIG+AF8-PCF8574', if+AF8-true: files('pcf8574=
-.c'))
-diff --git a/hw/gpio/pcf8574.c b/hw/gpio/pcf8574.c
-new file mode 100644
-index 0000000000..d37909e2ad
---- /dev/null
-+-+-+- b/hw/gpio/pcf8574.c
-+AEAAQA- -0,0 +-1,162 +AEAAQA-
-+-/+ACo- SPDX-License-Identifier: GPL-2.0-only +ACo-/
-+-
-+-/+ACo-
-+- +ACo- NXP PCF8574 8-port I2C GPIO expansion chip.
-+- +ACo- Copyright (c) 2024 KNS Group (YADRO).
-+- +ACo- Written by Dmitrii Sharikhin +ADw-d.sharikhin+AEA-yadro.com+AD4-
-+- +ACo-/
-+-
-+-+ACM-include +ACI-qemu/osdep.h+ACI-
-+-+ACM-include +ACI-hw/i2c/i2c.h+ACI-
-+-+ACM-include +ACI-hw/gpio/pcf8574.h+ACI-
-+-+ACM-include +ACI-hw/irq.h+ACI-
-+-+ACM-include +ACI-migration/vmstate.h+ACI-
-+-+ACM-include +ACI-qemu/log.h+ACI-
-+-+ACM-include +ACI-qemu/module.h+ACI-
-+-+ACM-include +ACI-qom/object.h+ACI-
-+-
-+-/+ACo-
-+- +ACo- PCF8574 and compatible chips incorporate quasi-bidirectional
-+- +ACo- IO. Electrically it means that device sustain pull-up to line
-+- +ACo- unless IO port is configured as output +AF8-and+AF8- driven low.
-+- +ACo-
-+- +ACo- IO access is implemented as simple I2C single-byte read
-+- +ACo- or write operation. So, to configure line to input user write 1
-+- +ACo- to corresponding bit. To configure line to output and drive it low
-+- +ACo- user write 0 to corresponding bit.
-+- +ACo-
-+- +ACo- In essence, user can think of quasi-bidirectional IO as
-+- +ACo- open-drain line, except presence of builtin rising edge accelerati=
-on
-+- +ACo- embedded in PCF8574 IC
-+- +ACo-
-+- +ACo- PCF8574 has interrupt request line, which is being pulled down whe=
-n
-+- +ACo- port line state differs from last read. Port read operation clears
-+- +ACo- state and INT line returns to high state via pullup.
-+- +ACo-/
-+-
-+-OBJECT+AF8-DECLARE+AF8-SIMPLE+AF8-TYPE(PCF8574State, PCF8574)
-+-
-+-+ACM-define PORTS+AF8-COUNT (8)
-+-
-+-struct PCF8574State +AHs-
-+-    I2CSlave parent+AF8-obj+ADs-
-+-    uint8+AF8-t  lastrq+ADs-     /+ACo- Last requested state. If changed =
-- assert irq +ACo-/
-+-    uint8+AF8-t  input+ADs-      /+ACo- external electrical line state +A=
-Co-/
-+-    uint8+AF8-t  output+ADs-     /+ACo- Pull-up (1) or drive low (0) on b=
-it +ACo-/
-+-    qemu+AF8-irq handler+AFs-PORTS+AF8-COUNT+AF0AOw-
-+-    qemu+AF8-irq intrq+ADs-      /+ACo- External irq request +ACo-/
-+-+AH0AOw-
-+-
-+-static void pcf8574+AF8-reset(DeviceState +ACo-dev)
-+-+AHs-
-+-    PCF8574State +ACo-s +AD0- PCF8574(dev)+ADs-
-+-    s-+AD4-lastrq +AD0- MAKE+AF8-64BIT+AF8-MASK(0, PORTS+AF8-COUNT)+ADs-
-+-    s-+AD4-input  +AD0- MAKE+AF8-64BIT+AF8-MASK(0, PORTS+AF8-COUNT)+ADs-
-+-    s-+AD4-output +AD0- MAKE+AF8-64BIT+AF8-MASK(0, PORTS+AF8-COUNT)+ADs-
-+-+AH0-
-+-
-+-static inline uint8+AF8-t pcf8574+AF8-line+AF8-state(PCF8574State +ACo-s)
-+-+AHs-
-+-    /+ACo- we driving line low or external circuit does that +ACo-/
-+-    return s-+AD4-input +ACY- s-+AD4-output+ADs-
-+-+AH0-
-+-
-+-static uint8+AF8-t pcf8574+AF8-rx(I2CSlave +ACo-i2c)
-+-+AHs-
-+-    PCF8574State +ACo-s +AD0- PCF8574(i2c)+ADs-
-+-    uint8+AF8-t linestate +AD0- pcf8574+AF8-line+AF8-state(s)+ADs-
-+-    if (s-+AD4-lastrq +ACEAPQ- linestate) +AHs-
-+-        s-+AD4-lastrq +AD0- linestate+ADs-
-+-        if (s-+AD4-intrq) +AHs-
-+-            qemu+AF8-set+AF8-irq(s-+AD4-intrq, 1)+ADs-
-+-        +AH0-
-+-    +AH0-
-+-    return linestate+ADs-
-+-+AH0-
-+-
-+-static int pcf8574+AF8-tx(I2CSlave +ACo-i2c, uint8+AF8-t data)
-+-+AHs-
-+-    PCF8574State +ACo-s +AD0- PCF8574(i2c)+ADs-
-+-    uint8+AF8-t prev+ADs-
-+-    uint8+AF8-t diff+ADs-
-+-    uint8+AF8-t actual+ADs-
-+-    int line +AD0- 0+ADs-
-+-
-+-    prev +AD0- pcf8574+AF8-line+AF8-state(s)+ADs-
-+-    s-+AD4-output +AD0- data+ADs-
-+-    actual +AD0- pcf8574+AF8-line+AF8-state(s)+ADs-
-+-
-+-    for (diff +AD0- (actual +AF4- prev)+ADs- diff+ADs- diff +ACYAPQ- +AH4=
--(1 +ADwAPA- line)) +AHs-
-+-        line +AD0- ctz32(diff)+ADs-
-+-        if (s-+AD4-handler+AFs-line+AF0-) +AHs-
-+-            qemu+AF8-set+AF8-irq(s-+AD4-handler+AFs-line+AF0-, (actual +A=
-D4APg- line) +ACY- 1)+ADs-
-+-        +AH0-
-+-    +AH0-
-+-
-+-    if (s-+AD4-intrq) +AHs-
-+-        qemu+AF8-set+AF8-irq(s-+AD4-intrq, actual +AD0APQ- s-+AD4-lastrq)=
-+ADs-
-+-    +AH0-
-+-
-+-    return 0+ADs-
-+-+AH0-
-+-
-+-static const VMStateDescription vmstate+AF8-pcf8574 +AD0- +AHs-
-+-    .name               +AD0- +ACI-pcf8574+ACI-,
-+-    .version+AF8-id         +AD0- 0,
-+-    .minimum+AF8-version+AF8-id +AD0- 0,
-+-    .fields +AD0- (VMStateField+AFsAXQ-) +AHs-
-+-        VMSTATE+AF8-I2C+AF8-SLAVE(parent+AF8-obj, PCF8574State),
-+-        VMSTATE+AF8-UINT8(lastrq, PCF8574State),
-+-        VMSTATE+AF8-UINT8(input,  PCF8574State),
-+-        VMSTATE+AF8-UINT8(output, PCF8574State),
-+-        VMSTATE+AF8-END+AF8-OF+AF8-LIST()
-+-    +AH0-
-+-+AH0AOw-
-+-
-+-static void pcf8574+AF8-gpio+AF8-set(void +ACo-opaque, int line, int leve=
-l)
-+-+AHs-
-+-    PCF8574State +ACo-s +AD0- (PCF8574State +ACo-) opaque+ADs-
-+-    assert(line +AD4APQ- 0 +ACYAJg- line +ADw- ARRAY+AF8-SIZE(s-+AD4-hand=
-ler))+ADs-
-+-
-+-    if (level) +AHs-
-+-        s-+AD4-input +AHwAPQ-  (1 +ADwAPA- line)+ADs-
-+-    +AH0- else +AHs-
-+-        s-+AD4-input +ACYAPQ- +AH4-(1 +ADwAPA- line)+ADs-
-+-    +AH0-
-+-
-+-    if (pcf8574+AF8-line+AF8-state(s) +ACEAPQ- s-+AD4-lastrq +ACYAJg- s-+=
-AD4-intrq) +AHs-
-+-        qemu+AF8-set+AF8-irq(s-+AD4-intrq, 0)+ADs-
-+-    +AH0-
-+-+AH0-
-+-
-+-static void pcf8574+AF8-realize(DeviceState +ACo-dev, Error +ACoAKg-errp)
-+-+AHs-
-+-    PCF8574State +ACo-s +AD0- PCF8574(dev)+ADs-
-+-
-+-    qdev+AF8-init+AF8-gpio+AF8-in(dev, pcf8574+AF8-gpio+AF8-set, ARRAY+AF=
-8-SIZE(s-+AD4-handler))+ADs-
-+-    qdev+AF8-init+AF8-gpio+AF8-out(dev, s-+AD4-handler, ARRAY+AF8-SIZE(s-=
-+AD4-handler))+ADs-
-+-    qdev+AF8-init+AF8-gpio+AF8-out+AF8-named(dev, +ACY-s-+AD4-intrq, +ACI=
--nINT+ACI-, 1)+ADs-
-+-+AH0-
-+-
-+-static void pcf8574+AF8-class+AF8-init(ObjectClass +ACo-klass, void +ACo-=
-data)
-+-+AHs-
-+-    DeviceClass   +ACo-dc +AD0- DEVICE+AF8-CLASS(klass)+ADs-
-+-    I2CSlaveClass +ACo-k  +AD0- I2C+AF8-SLAVE+AF8-CLASS(klass)+ADs-
-+-
-+-    k-+AD4-recv     +AD0- pcf8574+AF8-rx+ADs-
-+-    k-+AD4-send     +AD0- pcf8574+AF8-tx+ADs-
-+-    dc-+AD4-realize +AD0- pcf8574+AF8-realize+ADs-
-+-    dc-+AD4-reset   +AD0- pcf8574+AF8-reset+ADs-
-+-    dc-+AD4-vmsd    +AD0- +ACY-vmstate+AF8-pcf8574+ADs-
-+-+AH0-
-+-
-+-static const TypeInfo pcf8574+AF8-infos+AFsAXQ- +AD0- +AHs-
-+-    +AHs-
-+-        .name          +AD0- TYPE+AF8-PCF8574,
-+-        .parent        +AD0- TYPE+AF8-I2C+AF8-SLAVE,
-+-        .instance+AF8-size +AD0- sizeof(PCF8574State),
-+-        .class+AF8-init    +AD0- pcf8574+AF8-class+AF8-init,
-+-    +AH0-
-+-+AH0AOw-
-+-
-+-DEFINE+AF8-TYPES(pcf8574+AF8-infos)+ADs-
-diff --git a/include/hw/gpio/pcf8574.h b/include/hw/gpio/pcf8574.h
-new file mode 100644
-index 0000000000..3291d7dbbc
---- /dev/null
-+-+-+- b/include/hw/gpio/pcf8574.h
-+AEAAQA- -0,0 +-1,15 +AEAAQA-
-+-/+ACo- SPDX-License-Identifier: GPL-2.0-only +ACo-/
-+-
-+-/+ACo-
-+- +ACo- NXP PCF8574 8-port I2C GPIO expansion chip.
-+- +ACo-
-+- +ACo- Copyright (c) 2024 KNS Group (YADRO).
-+- +ACo- Written by Dmitrii Sharikhin +ADw-d.sharikhin+AEA-yadro.com+AD4-
-+- +ACo-/
-+-
-+-+ACM-ifndef +AF8-HW+AF8-GPIO+AF8-PCF8574
-+-+ACM-define +AF8-HW+AF8-GPIO+AF8-PCF8574
-+-
-+-+ACM-define TYPE+AF8-PCF8574 +ACI-pcf8574+ACI-
-+-
-+-+ACM-endif /+ACo- +AF8-HW+AF8-GPIO+AF8-PCF8574 +ACo-/
+ hw/vfio/pci.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index d7fe06715c..9edaff4b37 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -2132,6 +2132,22 @@ static void vfio_check_af_flr(VFIOPCIDevice *vdev, uint8_t pos)
+     }
+ }
+ 
++static int vfio_add_vendor_specific_cap(VFIOPCIDevice *vdev, int pos,
++                                        uint8_t size, Error **errp)
++{
++    PCIDevice *pdev = &vdev->pdev;
++
++    pos = pci_add_capability(pdev, PCI_CAP_ID_VNDR, pos, size, errp);
++    if (pos < 0) {
++        return pos;
++    }
++
++    /* Exempt config space check for VSC during restore/load  */
++    memset(pdev->cmask + pos, 0, size);
++
++    return pos;
++}
++
+ static int vfio_add_std_cap(VFIOPCIDevice *vdev, uint8_t pos, Error **errp)
+ {
+     PCIDevice *pdev = &vdev->pdev;
+@@ -2199,6 +2215,9 @@ static int vfio_add_std_cap(VFIOPCIDevice *vdev, uint8_t pos, Error **errp)
+         vfio_check_af_flr(vdev, pos);
+         ret = pci_add_capability(pdev, cap_id, pos, size, errp);
+         break;
++    case PCI_CAP_ID_VNDR:
++        ret = vfio_add_vendor_specific_cap(vdev, pos, size, errp);
++        break;
+     default:
+         ret = pci_add_capability(pdev, cap_id, pos, size, errp);
+         break;
+-- 
+2.34.1
+
 
