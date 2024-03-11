@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0706F878674
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:42:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3DFD878676
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Mar 2024 18:42:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjje7-0002RQ-UB; Mon, 11 Mar 2024 13:41:07 -0400
+	id 1rjjeB-0002T0-4i; Mon, 11 Mar 2024 13:41:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjdr-0002Qr-ON
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:40:55 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjdy-0002Rd-SG
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:41:04 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjdq-0007Em-2V
- for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:40:51 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-6e617b39877so3315635b3a.3
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 10:40:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rjjdv-0007Gi-Dz
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 13:40:56 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-6e5760eeb7aso3333514b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 10:40:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710178848; x=1710783648; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710178854; x=1710783654; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SLLsOmMfH6Hic0UmOy3GbMHG10bAawMzfOEyo9niiZA=;
- b=cN8XEqtXy53TKbiqAz9A4LdMOxqZ4fWU+Kble8POdw8i4HXZv8ISZG2ahxZxJPoMIy
- lJa3P4j1CNthpLl9UNqF1YjQ46jhr0Riz4yD0MMRFhiLsB81Ocxb3mq6TfO45wG13gH5
- y898Oc3yB0F4g4yCxRDFmAvKRscF6WstS/Ih+tQAR3/O0LWMHWhVf0C7rUwg+0DHM/lV
- 6PpHVy1jrBKVWoYgvllS0+bAO3ScXE+q6LA9boICELxxOOaOmVuz6ryodQrgcABZf1EO
- hj8JQWG6tOGdT04avO32/1/lgBR98ga0pSqjs0gdmmkH7fVvOJeoQyLeMPQNI/2c171S
- z0jQ==
+ bh=t8pTdHOu/KkX0pwRoNGA2mZXJ19/ldsaYMuXilqmIPg=;
+ b=JelzcW+ML4w6Uiiftu3se+PVGmF1mQhgmO6nyYYe5fis0fUrfzECcEFsR3voqU8ryh
+ 1x6ubPqRRv8LJ8PqG81ecfOMIRzoWDJN3/2H5c8FTpIqofk6yvNlKQmuNKpDkfMb0m2P
+ 1QI3Vym/Vhrzu/9XPhdvsqNmd/2EeO8n+RrSmRS3ftjj0BQgt42cl9JeoPqENC7qW3rO
+ 6HGiJAXpSjrHILolduFsGFbqMMOCMzjPYt+wapnyaejHKJWKAEu8QRkNLSeu21yup9zz
+ sa1JhH9mdcAUG2ux6ToS71H9qKyqE+WZ2Zv8twr+fFjwdQYO0zs0ocstnJyrFxgnS1w6
+ /Hpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710178848; x=1710783648;
+ d=1e100.net; s=20230601; t=1710178854; x=1710783654;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SLLsOmMfH6Hic0UmOy3GbMHG10bAawMzfOEyo9niiZA=;
- b=ul9ryb8rqUgxBabSimYM5UOiRyoWZ4qp6Qbm5i/X6QcK+U8w6QcxZKwsVzhDcju1kt
- gmeqrPC1Vu9Lqg0KRv7hppDl+ck3ZZgZ9T5Ec1DvgyYJc697+FuPTwwklb+ggkkeMX0a
- USbGuwiJPix2w5VBnnGt0xM+99qixw2uCFK3v4l0zdgTlJrESvB9cnqk1IhGt8ygiTTQ
- CbMzQ3hXCfu7Iy64nA2hs35T9NbO6vCFh7hA3RdK5PjRm5cTneWVEwXda5ggns9vs6g1
- cdu5RozNc+05G5U+IUx9MS6FxS7GNRMvPPVr72nmiD1/MtZY0NMeZmiRojIkN+ZgNIqM
- gG1g==
-X-Gm-Message-State: AOJu0YwtPmIKkryQOkH2yiICGRtC7JplcNBB7aGZr4GWpbtsqahxVCoY
- RPfdFjWzPRxe8U/fq+cT6J4Iz21g+FQSAiWPSbhEp5eTC8VYTyKlYIprIk9h8+s=
-X-Google-Smtp-Source: AGHT+IHDM362me8XuQ5UtEkx6swaUt2CjXepH7skR6Fvw1xUz7/hB84F3jlJID+WEBOiEailxWB7Tw==
-X-Received: by 2002:a05:6a20:729c:b0:1a3:1595:d3dc with SMTP id
- o28-20020a056a20729c00b001a31595d3dcmr3265715pzk.46.1710178848307; 
- Mon, 11 Mar 2024 10:40:48 -0700 (PDT)
+ bh=t8pTdHOu/KkX0pwRoNGA2mZXJ19/ldsaYMuXilqmIPg=;
+ b=sb67ZqeuKclQM63cO1ZQC6qjtSmhuvluE+JC58UVCP0QKL0sclfapAiSy7UWpEalMd
+ o5FcGMlvrJwEn9goE+UNnDAEv0zar2/rj6m6OVcXnzbsMbaTss1WaDBfSxMNBx/ghOHU
+ K+XH6Tqm6zHsUQrV1j4oLu3RHue8xVZ57ljTrFGxldBh0gI1vOVc7d1W/up61QydreEj
+ 2Mt5S17F6Z+NYic6YZjd50Rv1vlD0nMLwQN3H9xSsQNyah1gKpjOlX4fU1A65rdYDLFF
+ IWUQcB1TbHwxBsHxCGqARdba6Z4A9VSM/bPeudsjSguNA1YJ+PqLGRrefpsK5WM0ntb8
+ sqUA==
+X-Gm-Message-State: AOJu0Ywa59yma8Uq94jeXcK4ywnnQShFKndJfdSA/Db112Q94HlXub7M
+ exxiu2PE0A1rxe8Fvnn2GO3ONGmhUWEur79tnz6GkIgZvl5vvFXi3+nJoUsotws=
+X-Google-Smtp-Source: AGHT+IGh2TZiYexDEXrWEPDhN2KGU3JWtYh+3S9FbRP4OEpZ3EaImwFAwix38Ra+7QCfRql1bNKRAQ==
+X-Received: by 2002:a05:6a21:1a0:b0:1a1:8c28:c4a0 with SMTP id
+ le32-20020a056a2101a000b001a18c28c4a0mr8694629pzb.30.1710178853701; 
+ Mon, 11 Mar 2024 10:40:53 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- a18-20020a62d412000000b006e67b4d7b74sm4593187pfh.197.2024.03.11.10.40.43
+ a18-20020a62d412000000b006e67b4d7b74sm4593187pfh.197.2024.03.11.10.40.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 10:40:48 -0700 (PDT)
+ Mon, 11 Mar 2024 10:40:53 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -65,18 +65,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH v4 02/24] scripts/replay-dump.py: rejig decoders in event
- number order
-Date: Tue, 12 Mar 2024 03:40:04 +1000
-Message-ID: <20240311174026.2177152-3-npiggin@gmail.com>
+Subject: [PATCH v4 03/24] tests/avocado: excercise scripts/replay-dump.py in
+ replay tests
+Date: Tue, 12 Mar 2024 03:40:05 +1000
+Message-ID: <20240311174026.2177152-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240311174026.2177152-1-npiggin@gmail.com>
 References: <20240311174026.2177152-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,103 +98,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sort decoder functions to be ascending in order of event number,
-same as the decoder tables.
+This runs replay-dump.py after recording a trace, and fails the test if
+the script fails.
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+replay-dump.py is modified to exit with non-zero if an error is
+encountered while parsing, to support this.
+
+Reviewed-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- scripts/replay-dump.py | 56 +++++++++++++++++++++---------------------
- 1 file changed, 28 insertions(+), 28 deletions(-)
+ scripts/replay-dump.py         |  6 ++++--
+ tests/avocado/replay_kernel.py | 11 +++++++++++
+ tests/avocado/replay_linux.py  | 10 ++++++++++
+ 3 files changed, 25 insertions(+), 2 deletions(-)
 
 diff --git a/scripts/replay-dump.py b/scripts/replay-dump.py
-index 419ee3257b..b82659cfb6 100755
+index b82659cfb6..4ce7ff51cc 100755
 --- a/scripts/replay-dump.py
 +++ b/scripts/replay-dump.py
-@@ -139,6 +139,19 @@ def swallow_bytes(eid, name, dumpfile, nr):
-     """Swallow nr bytes of data without looking at it"""
-     dumpfile.seek(nr, os.SEEK_CUR)
+@@ -21,6 +21,7 @@
+ import argparse
+ import struct
+ import os
++import sys
+ from collections import namedtuple
+ from os import path
  
-+total_insns = 0
-+
-+def decode_instruction(eid, name, dumpfile):
-+    global total_insns
-+    ins_diff = read_dword(dumpfile)
-+    total_insns += ins_diff
-+    print_event(eid, name, "+ %d -> %d" % (ins_diff, total_insns))
-+    return True
-+
-+def decode_interrupt(eid, name, dumpfile):
-+    print_event(eid, name)
-+    return True
-+
- def decode_exception(eid, name, dumpfile):
-     print_event(eid, name)
-     return True
-@@ -198,15 +211,6 @@ def decode_async_net(eid, name, dumpfile):
-     print_event(eid, name, "net:%x flags:%x bytes:%d" % (net_id, flags, size))
-     return True
+@@ -100,7 +101,7 @@ def call_decode(table, index, dumpfile):
+         print("Could not decode index: %d" % (index))
+         print("Entry is: %s" % (decoder))
+         print("Decode Table is:\n%s" % (table))
+-        return False
++        raise(Exception("unknown event"))
+     else:
+         return decoder.fn(decoder.eid, decoder.name, dumpfile)
  
--total_insns = 0
--
--def decode_instruction(eid, name, dumpfile):
--    global total_insns
--    ins_diff = read_dword(dumpfile)
--    total_insns += ins_diff
--    print_event(eid, name, "+ %d -> %d" % (ins_diff, total_insns))
--    return True
--
- def decode_shutdown(eid, name, dumpfile):
-     print_event(eid, name)
-     return True
-@@ -222,6 +226,21 @@ def decode_audio_out(eid, name, dumpfile):
-     print_event(eid, name, "%d" % (audio_data))
-     return True
+@@ -121,7 +122,7 @@ def print_event(eid, name, string=None, event_count=None):
+ def decode_unimp(eid, name, _unused_dumpfile):
+     "Unimplemented decoder, will trigger exit"
+     print("%s not handled - will now stop" % (name))
+-    return False
++    raise(Exception("unhandled event"))
  
-+def decode_random(eid, name, dumpfile):
-+    ret = read_dword(dumpfile)
-+    size = read_dword(dumpfile)
-+    swallow_bytes(eid, name, dumpfile, size)
-+    if (ret):
-+        print_event(eid, name, "%d bytes (getrandom failed)" % (size))
-+    else:
-+        print_event(eid, name, "%d bytes" % (size))
-+    return True
+ def decode_plain(eid, name, _unused_dumpfile):
+     "Plain events without additional data"
+@@ -434,6 +435,7 @@ def decode_file(filename):
+                                     dumpfile)
+     except Exception as inst:
+         print(f"error {inst}")
++        sys.exit(1)
+ 
+     finally:
+         print(f"Reached {dumpfile.tell()} of {dumpsize} bytes")
+diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
+index 10d99403a4..2b61ed21d8 100644
+--- a/tests/avocado/replay_kernel.py
++++ b/tests/avocado/replay_kernel.py
+@@ -13,6 +13,7 @@
+ import shutil
+ import logging
+ import time
++import subprocess
+ 
+ from avocado import skip
+ from avocado import skipUnless
+@@ -63,6 +64,8 @@ def run_vm(self, kernel_path, kernel_command_line, console_pattern,
+             vm.shutdown()
+             logger.info('finished the recording with log size %s bytes'
+                         % os.path.getsize(replay_path))
++            self.run_replay_dump(replay_path)
++            logger.info('successfully tested replay-dump.py')
+         else:
+             vm.wait()
+             logger.info('successfully finished the replay')
+@@ -70,6 +73,14 @@ def run_vm(self, kernel_path, kernel_command_line, console_pattern,
+         logger.info('elapsed time %.2f sec' % elapsed)
+         return elapsed
+ 
++    def run_replay_dump(self, replay_path):
++        try:
++            subprocess.check_call(["./scripts/replay-dump.py",
++                                   "-f", replay_path],
++                                  stdout=subprocess.DEVNULL)
++        except subprocess.CalledProcessError:
++            self.fail('replay-dump.py failed')
 +
-+def decode_clock(eid, name, dumpfile):
-+    clock_data = read_qword(dumpfile)
-+    print_event(eid, name, "0x%x" % (clock_data))
-+    return True
+     def run_rr(self, kernel_path, kernel_command_line, console_pattern,
+                shift=7, args=None):
+         replay_path = os.path.join(self.workdir, 'replay.bin')
+diff --git a/tests/avocado/replay_linux.py b/tests/avocado/replay_linux.py
+index f3a43dc98c..b3b91ddd9a 100644
+--- a/tests/avocado/replay_linux.py
++++ b/tests/avocado/replay_linux.py
+@@ -94,6 +94,8 @@ def launch_and_wait(self, record, args, shift):
+             vm.shutdown()
+             logger.info('finished the recording with log size %s bytes'
+                 % os.path.getsize(replay_path))
++            self.run_replay_dump(replay_path)
++            logger.info('successfully tested replay-dump.py')
+         else:
+             vm.event_wait('SHUTDOWN', self.timeout)
+             vm.wait()
+@@ -108,6 +110,14 @@ def run_rr(self, args=None, shift=7):
+         logger = logging.getLogger('replay')
+         logger.info('replay overhead {:.2%}'.format(t2 / t1 - 1))
+ 
++    def run_replay_dump(self, replay_path):
++        try:
++            subprocess.check_call(["./scripts/replay-dump.py",
++                                   "-f", replay_path],
++                                  stdout=subprocess.DEVNULL)
++        except subprocess.CalledProcessError:
++            self.fail('replay-dump.py failed')
 +
- def __decode_checkpoint(eid, name, dumpfile, old):
-     """Decode a checkpoint.
- 
-@@ -252,25 +271,6 @@ def decode_checkpoint_init(eid, name, dumpfile):
-     print_event(eid, name)
-     return True
- 
--def decode_interrupt(eid, name, dumpfile):
--    print_event(eid, name)
--    return True
--
--def decode_clock(eid, name, dumpfile):
--    clock_data = read_qword(dumpfile)
--    print_event(eid, name, "0x%x" % (clock_data))
--    return True
--
--def decode_random(eid, name, dumpfile):
--    ret = read_dword(dumpfile)
--    size = read_dword(dumpfile)
--    swallow_bytes(eid, name, dumpfile, size)
--    if (ret):
--        print_event(eid, name, "%d bytes (getrandom failed)" % (size))
--    else:
--        print_event(eid, name, "%d bytes" % (size))
--    return True
--
- def decode_end(eid, name, dumpfile):
-     print_event(eid, name)
-     return False
+ @skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
+ class ReplayLinuxX8664(ReplayLinux):
+     """
 -- 
 2.42.0
 
