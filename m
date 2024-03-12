@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 543F5879A0D
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:07:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51CBA879A03
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:06:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk5WQ-00007D-0I; Tue, 12 Mar 2024 13:02:38 -0400
+	id 1rk5W0-0007sG-KN; Tue, 12 Mar 2024 13:02:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk5UA-0005Yr-14; Tue, 12 Mar 2024 13:00:18 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1rk5U9-0005Yq-W8; Tue, 12 Mar 2024 13:00:18 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk5U6-0008GH-C6; Tue, 12 Mar 2024 13:00:17 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6e5760eeb7aso4198354b3a.1; 
- Tue, 12 Mar 2024 10:00:09 -0700 (PDT)
+ id 1rk5U6-0008HC-Mk; Tue, 12 Mar 2024 13:00:17 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6e5dddd3b95so28154b3a.1; 
+ Tue, 12 Mar 2024 10:00:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710262807; x=1710867607; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710262811; x=1710867611; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rVf/h4PI+3Z76hKAbw499YFjHfc8Pmr7sIWjABUIFRU=;
- b=j6ivl4oREg+0hFBLs2TkCwe5Z3BHqPpGxXG4azhtxuAQDUDzhCrv6dv8mvIrbIvXxR
- YUPreFpeEROekVIIsEmGxNTvATfqnuZWAMnptdK0iP+nNfNHDdFmudhxLzVFoZ85YIrs
- Sz3XtqfS+j2skOaUwuaFt9ixnREE9DroRDup4LhCN+zFdcIskeePe07NEBVJ46jq20oX
- v7rNkUzw2FRL64hFyGRiyIka+ZCDBl0FOQbFwICrG43JU7KhqqI+UCP0jJIgQEFiSJEV
- 8mTgkdOeyIsdHNnOSsY/Ek4/5Tc1uaQfVSq6OfBO1KYuEppLMvvhoRGOWyBFfL434yD9
- OV6Q==
+ bh=D3JKe0TJbmxuyIYttlWu8sUSbcX+C6UWX04Pn1Totdg=;
+ b=YUkF6fRgFuvcprAOxKP7clKp0Wn1IhpLZsveWbqsz8ITNQ4WNtqgeTyL0PqGhlC7Vn
+ htzoCXPqjT5YkIhBFX9og7n+UbU9qU6kSJOhv+1wxLRp6awTfejYdIp8wvQp1Mdd3bG1
+ thfO52TT/t7bKxq9wPDBxXZILSr4MSRf6y04j+1vU4CxPfS6CSMjEw8ECJdAp57+jVO4
+ BXA4xfRXn9xEFgjHjd4xkh0bKxjWBGFBeGItmU7UIW/bbfTm7Ge+t4cAl2An3TBJaPki
+ bsxFcjcvddWS4RrjDSFtRUrU7nL8I40Xxqu/ZoXqq9Y1dHTSafPrLE0n9seDkhSNr9KE
+ Fdug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710262807; x=1710867607;
+ d=1e100.net; s=20230601; t=1710262811; x=1710867611;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rVf/h4PI+3Z76hKAbw499YFjHfc8Pmr7sIWjABUIFRU=;
- b=YBd4rW1HBfDfZd+Jjv79gxAlPSeS7HziTApC/h0EcvZWbkY3xUqfqF84r79Qmnpfgi
- oQnCmVq1IsksnVXjUz3ulP90tAsC1eygfQBCRH6McmLgtOxyAqU0udGmMjjBOqhUXlR7
- EsfwFV/5sXWjep8mBIuBRTjqE6afiwUrcN0Lz6ZgaQS5N2BFlc10LKbjOHnU9WSWYpgg
- SrUI3O6p6BzVw3VKoEopllKsuVUFa39tVUawaK5jvTJl+Zsoxp0qvZZrgG7YQQ7N2e9z
- hJjELANUItA41ZO6z6SASTSJLxnyUzae/tHPWoBoqiNjSFLlkw85bl4mvcmHh1EsF6h5
- 98EQ==
+ bh=D3JKe0TJbmxuyIYttlWu8sUSbcX+C6UWX04Pn1Totdg=;
+ b=FVmq2TjolZ5WVhnqXWUHv4vQNDfzAoLcyhrAVFlpMf0Q+50bX1+ePRxWJCP+z6XlGu
+ Z2UHcSl+/1p1kXwQde+i1x2V+ZUq2Sscv+i/V3mUPBZgrVp2pdtEfV/U6eU2H6QnkdwS
+ ZxT2XPXMNXKPIwYXMq6VfedCTh2NK28pCGR24EFIm8CP17OS8HLjiotRFvJLnrY/MYL9
+ mpgwSuENhGuk5oZq1fDeLXzo2WZJknB0fqXgVCdaz3Da73xQx3kiJ8aXm1ZqD91Ev1J5
+ EWfbgNloI9KsakAsUpyHuAamQ6cNLpHSZsamFIgkSx0K5MDzATS7OTFKESP0L/qP7cfk
+ JReg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWaMHEYqyIEu8xNzjtJuOB1yR8GE2rUFnG8R+VPNPE71jxp2a02Efxs1NcJowV8PFWJ0uPystprOBsdCBMcxwxmAJt+
-X-Gm-Message-State: AOJu0Yx9Lu+CVlSwZu0DmOdsnbHBQZjE9y4JEYGGlRIURWTfcZDEAv9x
- Uu3xWvh/3LnCJnj9I7sj/sMHCjfjIbVWXf4HwlzvC76BJDWylCFt+/v83weutbs=
-X-Google-Smtp-Source: AGHT+IE2BWYpxkin3d2quXeWGkHTSNyrpq3ejZ4Khbf1skactvbitmdRvtpAS22JzEH5Fh2a0bV29Q==
-X-Received: by 2002:a05:6a20:72a0:b0:1a3:1553:b425 with SMTP id
- o32-20020a056a2072a000b001a31553b425mr7674251pzk.15.1710262807455; 
- Tue, 12 Mar 2024 10:00:07 -0700 (PDT)
+ AJvYcCUXRcBGBNK9R30H0YL8MlvJcEqr4+P7F5Co3Ux7dRm67SY7O01yHfL5AesjplhxvuN/S7umVLAxleW4bGefAZDCkUgL
+X-Gm-Message-State: AOJu0YwVEN3sT73yn99fX+WbSw+CXM5kfhuFFZ2l6HdZGacCtK97C0UQ
+ TCCP7RC1d4rs+fUTZGzzZryAx1O8hW70S0X/Wr+BQxjnNPA1XZdeS7bV4NiXozg=
+X-Google-Smtp-Source: AGHT+IEskltlhsoxre2zLCNOSsty/tDCmNGkmRYkwQWp2Co+ZSeQm8B2eJeRIa9THswOKBTAgdSGlQ==
+X-Received: by 2002:a05:6a00:a0c:b0:6e6:75d8:3d19 with SMTP id
+ p12-20020a056a000a0c00b006e675d83d19mr30954pfh.8.1710262811212; 
+ Tue, 12 Mar 2024 10:00:11 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- t34-20020a056a0013a200b006e6a684a6ddsm1362330pfg.220.2024.03.12.10.00.04
+ t34-20020a056a0013a200b006e6a684a6ddsm1362330pfg.220.2024.03.12.10.00.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 10:00:07 -0700 (PDT)
+ Tue, 12 Mar 2024 10:00:10 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 18/38] target/ppc: Use env_cpu for cpu_abort in excp_helper
-Date: Wed, 13 Mar 2024 02:58:29 +1000
-Message-ID: <20240312165851.2240242-19-npiggin@gmail.com>
+ BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PULL 19/38] target/ppc: Readability improvements in exception
+ handlers
+Date: Wed, 13 Mar 2024 02:58:30 +1000
+Message-ID: <20240312165851.2240242-20-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240312165851.2240242-1-npiggin@gmail.com>
 References: <20240312165851.2240242-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,438 +97,516 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Use the env_cpu function to get the CPUState for cpu_abort. These are
-only needed in case of fatal errors so this allows to avoid casting
-and storing CPUState in a local variable wnen not needed.
+Improve readability by shortening some long comments, removing
+comments that state the obvious and dropping some empty lines so they
+don't distract when reading the code.
 
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/excp_helper.c | 118 +++++++++++++++++++++------------------
- 1 file changed, 63 insertions(+), 55 deletions(-)
+ target/ppc/cpu.h         |   1 +
+ target/ppc/excp_helper.c | 179 +++++++--------------------------------
+ 2 files changed, 33 insertions(+), 147 deletions(-)
 
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index ed04351f27..7c48b2eadb 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -2954,6 +2954,7 @@ static inline bool ppc_has_spr(PowerPCCPU *cpu, int spr)
+ }
+ 
+ #if !defined(CONFIG_USER_ONLY)
++/* Sort out endianness of interrupt. Depends on the CPU, HV mode, etc. */
+ static inline bool ppc_interrupts_little_endian(PowerPCCPU *cpu, bool hv)
+ {
+     PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
 diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 98952de267..56a5fe7f3b 100644
+index 56a5fe7f3b..c15cd904d1 100644
 --- a/target/ppc/excp_helper.c
 +++ b/target/ppc/excp_helper.c
-@@ -445,7 +445,6 @@ static void powerpc_mcheck_checkstop(CPUPPCState *env)
- 
- static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
+@@ -403,9 +403,8 @@ static void powerpc_set_excp_state(PowerPCCPU *cpu, target_ulong vector,
+      * We don't use hreg_store_msr here as already have treated any
+      * special case that could occur. Just store MSR and update hflags
+      *
+-     * Note: We *MUST* not use hreg_store_msr() as-is anyway because it
+-     * will prevent setting of the HV bit which some exceptions might need
+-     * to do.
++     * Note: We *MUST* not use hreg_store_msr() as-is anyway because it will
++     * prevent setting of the HV bit which some exceptions might need to do.
+      */
+     env->nip = vector;
+     env->msr = msr;
+@@ -447,25 +446,15 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
  {
--    CPUState *cs = CPU(cpu);
      CPUPPCState *env = &cpu->env;
      target_ulong msr, new_msr, vector;
-     int srr0, srr1;
-@@ -473,8 +472,8 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
+-    int srr0, srr1;
++    int srr0 = SPR_SRR0, srr1 = SPR_SRR1;
  
-     vector = env->excp_vectors[excp];
-     if (vector == (target_ulong)-1ULL) {
--        cpu_abort(cs, "Raised an exception without defined vector %d\n",
--                  excp);
-+        cpu_abort(env_cpu(env),
-+                  "Raised an exception without defined vector %d\n", excp);
+     /* new srr1 value excluding must-be-zero bits */
+     msr = env->msr & ~0x783f0000ULL;
+ 
+-    /*
+-     * new interrupt handler msr preserves existing ME unless
+-     * explicitly overridden.
+-     */
++    /* new interrupt handler msr preserves ME unless explicitly overridden */
+     new_msr = env->msr & (((target_ulong)1 << MSR_ME));
+ 
+-    /* target registers */
+-    srr0 = SPR_SRR0;
+-    srr1 = SPR_SRR1;
+-
+-    /*
+-     * Hypervisor emulation assistance interrupt only exists on server
+-     * arch 2.05 server or later.
+-     */
++    /* HV emu assistance interrupt only exists on server arch 2.05 or later */
+     if (excp == POWERPC_EXCP_HV_EMU) {
+         excp = POWERPC_EXCP_PROGRAM;
      }
- 
+@@ -475,7 +464,6 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
+         cpu_abort(env_cpu(env),
+                   "Raised an exception without defined vector %d\n", excp);
+     }
+-
      vector |= env->excp_prefix;
-@@ -523,7 +522,7 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
-             env->spr[SPR_40x_ESR] = ESR_PTR;
-             break;
-         default:
--            cpu_abort(cs, "Invalid program exception %d. Aborting\n",
-+            cpu_abort(env_cpu(env), "Invalid program exception %d. Aborting\n",
-                       env->error_code);
-             break;
-         }
-@@ -550,11 +549,12 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
-         trace_ppc_excp_print("PIT");
+ 
+     switch (excp) {
+@@ -487,7 +475,6 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
+         powerpc_mcheck_checkstop(env);
+         /* machine check exceptions don't have ME set */
+         new_msr &= ~((target_ulong)1 << MSR_ME);
+-
+         srr0 = SPR_40x_SRR2;
+         srr1 = SPR_40x_SRR3;
          break;
-     case POWERPC_EXCP_DEBUG:     /* Debug interrupt                          */
--        cpu_abort(cs, "%s exception not implemented\n",
-+        cpu_abort(env_cpu(env), "%s exception not implemented\n",
-                   powerpc_excp_name(excp));
-         break;
-     default:
--        cpu_abort(cs, "Invalid PowerPC exception %d. Aborting\n", excp);
-+        cpu_abort(env_cpu(env), "Invalid PowerPC exception %d. Aborting\n",
-+                  excp);
+@@ -558,12 +545,8 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
          break;
      }
  
-@@ -569,7 +569,6 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
+-    /* Save PC */
+     env->spr[srr0] = env->nip;
+-
+-    /* Save MSR */
+     env->spr[srr1] = msr;
+-
+     powerpc_set_excp_state(cpu, vector, new_msr);
+ }
  
- static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
- {
--    CPUState *cs = CPU(cpu);
-     CPUPPCState *env = &cpu->env;
-     target_ulong msr, new_msr, vector;
+@@ -575,16 +558,10 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
+     /* new srr1 value excluding must-be-zero bits */
+     msr = env->msr & ~0x783f0000ULL;
  
-@@ -592,8 +591,8 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
+-    /*
+-     * new interrupt handler msr preserves existing ME unless
+-     * explicitly overridden
+-     */
++    /* new interrupt handler msr preserves ME unless explicitly overridden */
+     new_msr = env->msr & ((target_ulong)1 << MSR_ME);
  
-     vector = env->excp_vectors[excp];
-     if (vector == (target_ulong)-1ULL) {
--        cpu_abort(cs, "Raised an exception without defined vector %d\n",
--                  excp);
-+        cpu_abort(env_cpu(env),
-+                  "Raised an exception without defined vector %d\n", excp);
+-    /*
+-     * Hypervisor emulation assistance interrupt only exists on server
+-     * arch 2.05 server or later.
+-     */
++    /* HV emu assistance interrupt only exists on server arch 2.05 or later */
+     if (excp == POWERPC_EXCP_HV_EMU) {
+         excp = POWERPC_EXCP_PROGRAM;
      }
- 
+@@ -594,7 +571,6 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
+         cpu_abort(env_cpu(env),
+                   "Raised an exception without defined vector %d\n", excp);
+     }
+-
      vector |= env->excp_prefix;
-@@ -653,7 +652,7 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
-             break;
-         default:
-             /* Should never occur */
--            cpu_abort(cs, "Invalid program exception %d. Aborting\n",
-+            cpu_abort(env_cpu(env), "Invalid program exception %d. Aborting\n",
-                       env->error_code);
-             break;
-         }
-@@ -675,8 +674,9 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
+ 
+     switch (excp) {
+@@ -604,7 +580,6 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
+         powerpc_mcheck_checkstop(env);
+         /* machine check exceptions don't have ME set */
+         new_msr &= ~((target_ulong)1 << MSR_ME);
+-
          break;
-     case POWERPC_EXCP_RESET:     /* System reset exception                   */
-         if (FIELD_EX64(env->msr, MSR, POW)) {
--            cpu_abort(cs, "Trying to deliver power-saving system reset "
--                      "exception %d with no HV support\n", excp);
-+            cpu_abort(env_cpu(env),
-+                      "Trying to deliver power-saving system reset exception "
-+                      "%d with no HV support\n", excp);
-         }
-         break;
-     case POWERPC_EXCP_TRACE:     /* Trace exception                          */
-@@ -703,11 +703,12 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
-     case POWERPC_EXCP_SMI:       /* System management interrupt              */
-     case POWERPC_EXCP_MEXTBR:    /* Maskable external breakpoint             */
-     case POWERPC_EXCP_NMEXTBR:   /* Non maskable external breakpoint         */
--        cpu_abort(cs, "%s exception not implemented\n",
-+        cpu_abort(env_cpu(env), "%s exception not implemented\n",
-                   powerpc_excp_name(excp));
-         break;
-     default:
--        cpu_abort(cs, "Invalid PowerPC exception %d. Aborting\n", excp);
-+        cpu_abort(env_cpu(env), "Invalid PowerPC exception %d. Aborting\n",
-+                  excp);
-         break;
-     }
- 
-@@ -730,7 +731,6 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
- 
- static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
- {
--    CPUState *cs = CPU(cpu);
-     CPUPPCState *env = &cpu->env;
-     target_ulong msr, new_msr, vector;
- 
-@@ -753,8 +753,8 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
- 
-     vector = env->excp_vectors[excp];
-     if (vector == (target_ulong)-1ULL) {
--        cpu_abort(cs, "Raised an exception without defined vector %d\n",
--                  excp);
-+        cpu_abort(env_cpu(env),
-+                  "Raised an exception without defined vector %d\n", excp);
-     }
- 
-     vector |= env->excp_prefix;
-@@ -812,7 +812,7 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
-             break;
-         default:
-             /* Should never occur */
--            cpu_abort(cs, "Invalid program exception %d. Aborting\n",
-+            cpu_abort(env_cpu(env), "Invalid program exception %d. Aborting\n",
-                       env->error_code);
-             break;
-         }
-@@ -854,8 +854,9 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
-         break;
-     case POWERPC_EXCP_RESET:     /* System reset exception                   */
-         if (FIELD_EX64(env->msr, MSR, POW)) {
--            cpu_abort(cs, "Trying to deliver power-saving system reset "
--                      "exception %d with no HV support\n", excp);
-+            cpu_abort(env_cpu(env),
-+                      "Trying to deliver power-saving system reset exception "
-+                      "%d with no HV support\n", excp);
-         }
-         break;
-     case POWERPC_EXCP_TRACE:     /* Trace exception                          */
-@@ -875,11 +876,12 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
-     case POWERPC_EXCP_SMI:       /* System management interrupt              */
-     case POWERPC_EXCP_THERM:     /* Thermal interrupt                        */
-     case POWERPC_EXCP_PERFM:     /* Embedded performance monitor interrupt   */
--        cpu_abort(cs, "%s exception not implemented\n",
-+        cpu_abort(env_cpu(env), "%s exception not implemented\n",
-                   powerpc_excp_name(excp));
-         break;
-     default:
--        cpu_abort(cs, "Invalid PowerPC exception %d. Aborting\n", excp);
-+        cpu_abort(env_cpu(env), "Invalid PowerPC exception %d. Aborting\n",
-+                  excp);
-         break;
-     }
- 
-@@ -902,7 +904,6 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
- 
- static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
- {
--    CPUState *cs = CPU(cpu);
-     CPUPPCState *env = &cpu->env;
-     target_ulong msr, new_msr, vector;
- 
-@@ -925,8 +926,8 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
- 
-     vector = env->excp_vectors[excp];
-     if (vector == (target_ulong)-1ULL) {
--        cpu_abort(cs, "Raised an exception without defined vector %d\n",
--                  excp);
-+        cpu_abort(env_cpu(env),
-+                  "Raised an exception without defined vector %d\n", excp);
-     }
- 
-     vector |= env->excp_prefix;
-@@ -984,7 +985,7 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
-             break;
-         default:
-             /* Should never occur */
--            cpu_abort(cs, "Invalid program exception %d. Aborting\n",
-+            cpu_abort(env_cpu(env), "Invalid program exception %d. Aborting\n",
-                       env->error_code);
-             break;
-         }
-@@ -1026,7 +1027,8 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
-         break;
-     case POWERPC_EXCP_RESET:     /* System reset exception                   */
-         if (FIELD_EX64(env->msr, MSR, POW)) {
--            cpu_abort(cs, "Trying to deliver power-saving system reset "
-+            cpu_abort(env_cpu(env),
-+                      "Trying to deliver power-saving system reset "
-                       "exception %d with no HV support\n", excp);
-         }
-         break;
-@@ -1039,11 +1041,12 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
-     case POWERPC_EXCP_THERM:     /* Thermal interrupt                        */
-     case POWERPC_EXCP_PERFM:     /* Embedded performance monitor interrupt   */
-     case POWERPC_EXCP_VPUA:      /* Vector assist exception                  */
--        cpu_abort(cs, "%s exception not implemented\n",
-+        cpu_abort(env_cpu(env), "%s exception not implemented\n",
-                   powerpc_excp_name(excp));
-         break;
-     default:
--        cpu_abort(cs, "Invalid PowerPC exception %d. Aborting\n", excp);
-+        cpu_abort(env_cpu(env), "Invalid PowerPC exception %d. Aborting\n",
-+                  excp);
-         break;
-     }
- 
-@@ -1066,7 +1069,6 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
- 
- static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
- {
--    CPUState *cs = CPU(cpu);
-     CPUPPCState *env = &cpu->env;
-     target_ulong msr, new_msr, vector;
-     int srr0, srr1;
-@@ -1103,8 +1105,8 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
- 
-     vector = env->excp_vectors[excp];
-     if (vector == (target_ulong)-1ULL) {
--        cpu_abort(cs, "Raised an exception without defined vector %d\n",
--                  excp);
-+        cpu_abort(env_cpu(env),
-+                  "Raised an exception without defined vector %d\n", excp);
-     }
- 
-     vector |= env->excp_prefix;
-@@ -1135,6 +1137,7 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
-         break;
-     case POWERPC_EXCP_EXTERNAL:  /* External input                           */
-         if (env->mpic_proxy) {
-+            CPUState *cs = env_cpu(env);
-             /* IACK the IRQ on delivery */
-             env->spr[SPR_BOOKE_EPR] = ldl_phys(cs->as, env->mpic_iack);
-         }
-@@ -1173,7 +1176,7 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
-             break;
-         default:
-             /* Should never occur */
--            cpu_abort(cs, "Invalid program exception %d. Aborting\n",
-+            cpu_abort(env_cpu(env), "Invalid program exception %d. Aborting\n",
-                       env->error_code);
-             break;
-         }
-@@ -1214,7 +1217,8 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
- 
-             /* DBSR already modified by caller */
-         } else {
--            cpu_abort(cs, "Debug exception triggered on unsupported model\n");
-+            cpu_abort(env_cpu(env),
-+                      "Debug exception triggered on unsupported model\n");
-         }
-         break;
-     case POWERPC_EXCP_SPEU:   /* SPE/embedded floating-point unavailable/VPU  */
-@@ -1228,17 +1232,19 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
-         break;
-     case POWERPC_EXCP_RESET:     /* System reset exception                   */
-         if (FIELD_EX64(env->msr, MSR, POW)) {
--            cpu_abort(cs, "Trying to deliver power-saving system reset "
-+            cpu_abort(env_cpu(env),
-+                      "Trying to deliver power-saving system reset "
-                       "exception %d with no HV support\n", excp);
-         }
-         break;
-     case POWERPC_EXCP_EFPDI:     /* Embedded floating-point data interrupt   */
-     case POWERPC_EXCP_EFPRI:     /* Embedded floating-point round interrupt  */
--        cpu_abort(cs, "%s exception not implemented\n",
-+        cpu_abort(env_cpu(env), "%s exception not implemented\n",
-                   powerpc_excp_name(excp));
-         break;
-     default:
--        cpu_abort(cs, "Invalid PowerPC exception %d. Aborting\n", excp);
-+        cpu_abort(env_cpu(env), "Invalid PowerPC exception %d. Aborting\n",
-+                  excp);
-         break;
-     }
- 
-@@ -1376,7 +1382,6 @@ static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
- 
- static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
- {
--    CPUState *cs = CPU(cpu);
-     CPUPPCState *env = &cpu->env;
-     target_ulong msr, new_msr, vector;
-     int srr0, srr1, lev = -1;
-@@ -1415,8 +1420,8 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
- 
-     vector = env->excp_vectors[excp];
-     if (vector == (target_ulong)-1ULL) {
--        cpu_abort(cs, "Raised an exception without defined vector %d\n",
--                  excp);
-+        cpu_abort(env_cpu(env),
-+                  "Raised an exception without defined vector %d\n", excp);
-     }
- 
-     vector |= env->excp_prefix;
-@@ -1512,7 +1517,7 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
-             break;
-         default:
-             /* Should never occur */
--            cpu_abort(cs, "Invalid program exception %d. Aborting\n",
-+            cpu_abort(env_cpu(env), "Invalid program exception %d. Aborting\n",
-                       env->error_code);
-             break;
-         }
-@@ -1578,7 +1583,8 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
-             new_msr |= (target_ulong)MSR_HVB;
-         } else {
-             if (FIELD_EX64(env->msr, MSR, POW)) {
--                cpu_abort(cs, "Trying to deliver power-saving system reset "
-+                cpu_abort(env_cpu(env),
-+                          "Trying to deliver power-saving system reset "
-                           "exception %d with no HV support\n", excp);
+     case POWERPC_EXCP_DSI:       /* Data storage exception                   */
+         trace_ppc_excp_dsi(env->spr[SPR_DSISR], env->spr[SPR_DAR]);
+@@ -632,11 +607,9 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
+                 powerpc_reset_excp_state(cpu);
+                 return;
              }
-         }
-@@ -1650,11 +1656,12 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
-     case POWERPC_EXCP_VPUA:      /* Vector assist exception                  */
-     case POWERPC_EXCP_MAINT:     /* Maintenance exception                    */
-     case POWERPC_EXCP_HV_MAINT:  /* Hypervisor Maintenance exception         */
--        cpu_abort(cs, "%s exception not implemented\n",
-+        cpu_abort(env_cpu(env), "%s exception not implemented\n",
-                   powerpc_excp_name(excp));
-         break;
-     default:
--        cpu_abort(cs, "Invalid PowerPC exception %d. Aborting\n", excp);
-+        cpu_abort(env_cpu(env), "Invalid PowerPC exception %d. Aborting\n",
-+                  excp);
+-
+             /*
+-             * FP exceptions always have NIP pointing to the faulting
+-             * instruction, so always use store_next and claim we are
+-             * precise in the MSR.
++             * NIP always points to the faulting instruction for FP exceptions,
++             * so always use store_next and claim we are precise in the MSR.
+              */
+             msr |= 0x00100000;
+             break;
+@@ -712,20 +685,11 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
          break;
      }
  
-@@ -1687,8 +1694,8 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+-    /*
+-     * Sort out endianness of interrupt, this differs depending on the
+-     * CPU, the HV mode, etc...
+-     */
+     if (ppc_interrupts_little_endian(cpu, !!(new_msr & MSR_HVB))) {
+         new_msr |= (target_ulong)1 << MSR_LE;
+     }
+-
+-    /* Save PC */
+     env->spr[SPR_SRR0] = env->nip;
+-
+-    /* Save MSR */
+     env->spr[SPR_SRR1] = msr;
+-
+     powerpc_set_excp_state(cpu, vector, new_msr);
+ }
+ 
+@@ -737,16 +701,10 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
+     /* new srr1 value excluding must-be-zero bits */
+     msr = env->msr & ~0x783f0000ULL;
+ 
+-    /*
+-     * new interrupt handler msr preserves existing ME unless
+-     * explicitly overridden
+-     */
++    /* new interrupt handler msr preserves ME unless explicitly overridden */
+     new_msr = env->msr & ((target_ulong)1 << MSR_ME);
+ 
+-    /*
+-     * Hypervisor emulation assistance interrupt only exists on server
+-     * arch 2.05 server or later.
+-     */
++    /* HV emu assistance interrupt only exists on server arch 2.05 or later */
+     if (excp == POWERPC_EXCP_HV_EMU) {
+         excp = POWERPC_EXCP_PROGRAM;
+     }
+@@ -756,7 +714,6 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
+         cpu_abort(env_cpu(env),
+                   "Raised an exception without defined vector %d\n", excp);
+     }
+-
+     vector |= env->excp_prefix;
+ 
+     switch (excp) {
+@@ -764,7 +721,6 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
+         powerpc_mcheck_checkstop(env);
+         /* machine check exceptions don't have ME set */
+         new_msr &= ~((target_ulong)1 << MSR_ME);
+-
+         break;
+     case POWERPC_EXCP_DSI:       /* Data storage exception                   */
+         trace_ppc_excp_dsi(env->spr[SPR_DSISR], env->spr[SPR_DAR]);
+@@ -792,11 +748,9 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
+                 powerpc_reset_excp_state(cpu);
+                 return;
+             }
+-
+             /*
+-             * FP exceptions always have NIP pointing to the faulting
+-             * instruction, so always use store_next and claim we are
+-             * precise in the MSR.
++             * NIP always points to the faulting instruction for FP exceptions,
++             * so always use store_next and claim we are precise in the MSR.
+              */
+             msr |= 0x00100000;
+             break;
+@@ -865,12 +819,10 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
+     case POWERPC_EXCP_DLTLB:     /* Data load TLB miss                       */
+     case POWERPC_EXCP_DSTLB:     /* Data store TLB miss                      */
+         ppc_excp_debug_sw_tlb(env, excp);
+-
+         msr |= env->crf[0] << 28;
+         msr |= env->error_code; /* key, D/I, S/L bits */
+         /* Set way using a LRU mechanism */
+         msr |= ((env->last_way + 1) & (env->nb_ways - 1)) << 17;
+-
+         break;
+     case POWERPC_EXCP_IABR:      /* Instruction address breakpoint           */
+     case POWERPC_EXCP_SMI:       /* System management interrupt              */
+@@ -885,20 +837,11 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
+         break;
+     }
+ 
+-    /*
+-     * Sort out endianness of interrupt, this differs depending on the
+-     * CPU, the HV mode, etc...
+-     */
+     if (ppc_interrupts_little_endian(cpu, !!(new_msr & MSR_HVB))) {
+         new_msr |= (target_ulong)1 << MSR_LE;
+     }
+-
+-    /* Save PC */
+     env->spr[SPR_SRR0] = env->nip;
+-
+-    /* Save MSR */
+     env->spr[SPR_SRR1] = msr;
+-
+     powerpc_set_excp_state(cpu, vector, new_msr);
+ }
+ 
+@@ -910,16 +853,10 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
+     /* new srr1 value excluding must-be-zero bits */
+     msr = env->msr & ~0x783f0000ULL;
+ 
+-    /*
+-     * new interrupt handler msr preserves existing ME unless
+-     * explicitly overridden
+-     */
++    /* new interrupt handler msr preserves ME unless explicitly overridden */
+     new_msr = env->msr & ((target_ulong)1 << MSR_ME);
+ 
+-    /*
+-     * Hypervisor emulation assistance interrupt only exists on server
+-     * arch 2.05 server or later.
+-     */
++    /* HV emu assistance interrupt only exists on server arch 2.05 or later */
+     if (excp == POWERPC_EXCP_HV_EMU) {
+         excp = POWERPC_EXCP_PROGRAM;
+     }
+@@ -929,7 +866,6 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
+         cpu_abort(env_cpu(env),
+                   "Raised an exception without defined vector %d\n", excp);
+     }
+-
+     vector |= env->excp_prefix;
+ 
+     switch (excp) {
+@@ -937,7 +873,6 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
+         powerpc_mcheck_checkstop(env);
+         /* machine check exceptions don't have ME set */
+         new_msr &= ~((target_ulong)1 << MSR_ME);
+-
+         break;
+     case POWERPC_EXCP_DSI:       /* Data storage exception                   */
+         trace_ppc_excp_dsi(env->spr[SPR_DSISR], env->spr[SPR_DAR]);
+@@ -965,11 +900,9 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
+                 powerpc_reset_excp_state(cpu);
+                 return;
+             }
+-
+             /*
+-             * FP exceptions always have NIP pointing to the faulting
+-             * instruction, so always use store_next and claim we are
+-             * precise in the MSR.
++             * NIP always points to the faulting instruction for FP exceptions,
++             * so always use store_next and claim we are precise in the MSR.
+              */
+             msr |= 0x00100000;
+             break;
+@@ -1050,20 +983,11 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
+         break;
+     }
+ 
+-    /*
+-     * Sort out endianness of interrupt, this differs depending on the
+-     * CPU, the HV mode, etc...
+-     */
+     if (ppc_interrupts_little_endian(cpu, !!(new_msr & MSR_HVB))) {
+         new_msr |= (target_ulong)1 << MSR_LE;
+     }
+-
+-    /* Save PC */
+     env->spr[SPR_SRR0] = env->nip;
+-
+-    /* Save MSR */
+     env->spr[SPR_SRR1] = msr;
+-
+     powerpc_set_excp_state(cpu, vector, new_msr);
+ }
+ 
+@@ -1071,24 +995,18 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
+ {
+     CPUPPCState *env = &cpu->env;
+     target_ulong msr, new_msr, vector;
+-    int srr0, srr1;
+-
+-    msr = env->msr;
++    int srr0 = SPR_SRR0, srr1 = SPR_SRR1;
+ 
+     /*
+-     * new interrupt handler msr preserves existing ME unless
+-     * explicitly overridden
++     * Book E does not play games with certain bits of xSRR1 being MSR save
++     * bits and others being error status. xSRR1 is the old MSR, period.
+      */
+-    new_msr = env->msr & ((target_ulong)1 << MSR_ME);
++    msr = env->msr;
+ 
+-    /* target registers */
+-    srr0 = SPR_SRR0;
+-    srr1 = SPR_SRR1;
++    /* new interrupt handler msr preserves ME unless explicitly overridden */
++    new_msr = env->msr & ((target_ulong)1 << MSR_ME);
+ 
+-    /*
+-     * Hypervisor emulation assistance interrupt only exists on server
+-     * arch 2.05 server or later.
+-     */
++    /* HV emu assistance interrupt only exists on server arch 2.05 or later */
+     if (excp == POWERPC_EXCP_HV_EMU) {
+         excp = POWERPC_EXCP_PROGRAM;
+     }
+@@ -1108,7 +1026,6 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
+         cpu_abort(env_cpu(env),
+                   "Raised an exception without defined vector %d\n", excp);
+     }
+-
+     vector |= env->excp_prefix;
+ 
+     switch (excp) {
+@@ -1152,11 +1069,9 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
+                 powerpc_reset_excp_state(cpu);
+                 return;
+             }
+-
+             /*
+-             * FP exceptions always have NIP pointing to the faulting
+-             * instruction, so always use store_next and claim we are
+-             * precise in the MSR.
++             * NIP always points to the faulting instruction for FP exceptions,
++             * so always use store_next and claim we are precise in the MSR.
+              */
+             msr |= 0x00100000;
+             env->spr[SPR_BOOKE_ESR] = ESR_FP;
+@@ -1257,12 +1172,8 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
+     }
+ #endif
+ 
+-    /* Save PC */
+     env->spr[srr0] = env->nip;
+-
+-    /* Save MSR */
+     env->spr[srr1] = msr;
+-
+     powerpc_set_excp_state(cpu, vector, new_msr);
+ }
+ 
+@@ -1384,21 +1295,17 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+ {
+     CPUPPCState *env = &cpu->env;
+     target_ulong msr, new_msr, vector;
+-    int srr0, srr1, lev = -1;
++    int srr0 = SPR_SRR0, srr1 = SPR_SRR1, lev = -1;
+ 
+     /* new srr1 value excluding must-be-zero bits */
+     msr = env->msr & ~0x783f0000ULL;
+ 
+     /*
+-     * new interrupt handler msr preserves existing HV and ME unless
+-     * explicitly overridden
++     * new interrupt handler msr preserves HV and ME unless explicitly
++     * overridden
+      */
+     new_msr = env->msr & (((target_ulong)1 << MSR_ME) | MSR_HVB);
+ 
+-    /* target registers */
+-    srr0 = SPR_SRR0;
+-    srr1 = SPR_SRR1;
+-
+     /*
+      * check for special resume at 0x100 from doze/nap/sleep/winkle on
+      * P7/P8/P9
+@@ -1423,7 +1330,6 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+         cpu_abort(env_cpu(env),
+                   "Raised an exception without defined vector %d\n", excp);
+     }
+-
+     vector |= env->excp_prefix;
+ 
+     if (is_prefix_insn_excp(cpu, excp)) {
+@@ -1440,7 +1346,6 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+              */
+             new_msr |= (target_ulong)MSR_HVB;
+         }
+-
+         /* machine check exceptions don't have ME set */
+         new_msr &= ~((target_ulong)1 << MSR_ME);
+ 
+@@ -1458,23 +1363,17 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+     {
+         bool lpes0;
+ 
+-        /*
+-         * LPES0 is only taken into consideration if we support HV
+-         * mode for this CPU.
+-         */
++        /* LPES0 is only taken into consideration if we support HV mode */
+         if (!env->has_hv_mode) {
+             break;
+         }
+-
+         lpes0 = !!(env->spr[SPR_LPCR] & LPCR_LPES0);
+-
+         if (!lpes0) {
+             new_msr |= (target_ulong)MSR_HVB;
+             new_msr |= env->msr & ((target_ulong)1 << MSR_RI);
+             srr0 = SPR_HSRR0;
+             srr1 = SPR_HSRR1;
+         }
+-
+         break;
+     }
+     case POWERPC_EXCP_ALIGN:     /* Alignment exception                      */
+@@ -1497,11 +1396,9 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+                 powerpc_reset_excp_state(cpu);
+                 return;
+             }
+-
+             /*
+-             * FP exceptions always have NIP pointing to the faulting
+-             * instruction, so always use store_next and claim we are
+-             * precise in the MSR.
++             * NIP always points to the faulting instruction for FP exceptions,
++             * so always use store_next and claim we are precise in the MSR.
+              */
+             msr |= 0x00100000;
+             break;
+@@ -1665,21 +1562,13 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+         break;
+     }
+ 
+-    /*
+-     * Sort out endianness of interrupt, this differs depending on the
+-     * CPU, the HV mode, etc...
+-     */
+     if (ppc_interrupts_little_endian(cpu, !!(new_msr & MSR_HVB))) {
+         new_msr |= (target_ulong)1 << MSR_LE;
+     }
+-
+     new_msr |= (target_ulong)1 << MSR_SF;
+ 
+     if (excp != POWERPC_EXCP_SYSCALL_VECTORED) {
+-        /* Save PC */
+         env->spr[srr0] = env->nip;
+-
+-        /* Save MSR */
+         env->spr[srr1] = msr;
+     }
+ 
+@@ -1688,19 +1577,15 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+             PPC_VIRTUAL_HYPERVISOR_GET_CLASS(cpu->vhyp);
+         /* Deliver interrupt to L1 by returning from the H_ENTER_NESTED call */
+         vhc->deliver_hv_excp(cpu, excp);
+-
+         powerpc_reset_excp_state(cpu);
+-
      } else {
          /* Sanity check */
          if (!(env->msr_mask & MSR_HVB) && srr0 == SPR_HSRR0) {
--            cpu_abort(cs, "Trying to deliver HV exception (HSRR) %d with "
--                      "no HV support\n", excp);
-+            cpu_abort(env_cpu(env), "Trying to deliver HV exception (HSRR) %d "
-+                      "with no HV support\n", excp);
+             cpu_abort(env_cpu(env), "Trying to deliver HV exception (HSRR) %d "
+                       "with no HV support\n", excp);
          }
- 
+-
          /* This can update new_msr and vector if AIL applies */
-@@ -1706,11 +1713,11 @@ static inline void powerpc_excp_books(PowerPCCPU *cpu, int excp)
- 
- static void powerpc_excp(PowerPCCPU *cpu, int excp)
- {
--    CPUState *cs = CPU(cpu);
-     CPUPPCState *env = &cpu->env;
- 
-     if (excp <= POWERPC_EXCP_NONE || excp >= POWERPC_EXCP_NB) {
--        cpu_abort(cs, "Invalid PowerPC exception %d. Aborting\n", excp);
-+        cpu_abort(env_cpu(env), "Invalid PowerPC exception %d. Aborting\n",
-+                  excp);
-     }
- 
-     qemu_log_mask(CPU_LOG_INT, "Raise exception at " TARGET_FMT_lx
-@@ -2244,7 +2251,6 @@ void ppc_maybe_interrupt(CPUPPCState *env)
- static void p7_deliver_interrupt(CPUPPCState *env, int interrupt)
- {
-     PowerPCCPU *cpu = env_archcpu(env);
--    CPUState *cs = env_cpu(env);
- 
-     switch (interrupt) {
-     case PPC_INTERRUPT_MCK: /* Machine check exception */
-@@ -2288,14 +2294,14 @@ static void p7_deliver_interrupt(CPUPPCState *env, int interrupt)
-         assert(!env->resume_as_sreset);
-         break;
-     default:
--        cpu_abort(cs, "Invalid PowerPC interrupt %d. Aborting\n", interrupt);
-+        cpu_abort(env_cpu(env), "Invalid PowerPC interrupt %d. Aborting\n",
-+                  interrupt);
+         ppc_excp_apply_ail(cpu, excp, msr, &new_msr, &vector);
+-
+         powerpc_set_excp_state(cpu, vector, new_msr);
      }
  }
- 
- static void p8_deliver_interrupt(CPUPPCState *env, int interrupt)
- {
-     PowerPCCPU *cpu = env_archcpu(env);
--    CPUState *cs = env_cpu(env);
- 
-     switch (interrupt) {
-     case PPC_INTERRUPT_MCK: /* Machine check exception */
-@@ -2359,7 +2365,8 @@ static void p8_deliver_interrupt(CPUPPCState *env, int interrupt)
-         assert(!env->resume_as_sreset);
-         break;
-     default:
--        cpu_abort(cs, "Invalid PowerPC interrupt %d. Aborting\n", interrupt);
-+        cpu_abort(env_cpu(env), "Invalid PowerPC interrupt %d. Aborting\n",
-+                  interrupt);
-     }
- }
- 
-@@ -2438,7 +2445,8 @@ static void p9_deliver_interrupt(CPUPPCState *env, int interrupt)
-         assert(!env->resume_as_sreset);
-         break;
-     default:
--        cpu_abort(cs, "Invalid PowerPC interrupt %d. Aborting\n", interrupt);
-+        cpu_abort(env_cpu(env), "Invalid PowerPC interrupt %d. Aborting\n",
-+                  interrupt);
-     }
- }
- #endif
-@@ -2446,7 +2454,6 @@ static void p9_deliver_interrupt(CPUPPCState *env, int interrupt)
- static void ppc_deliver_interrupt_generic(CPUPPCState *env, int interrupt)
- {
-     PowerPCCPU *cpu = env_archcpu(env);
--    CPUState *cs = env_cpu(env);
- 
-     switch (interrupt) {
-     case PPC_INTERRUPT_RESET: /* External reset */
-@@ -2543,7 +2550,8 @@ static void ppc_deliver_interrupt_generic(CPUPPCState *env, int interrupt)
-         assert(!env->resume_as_sreset);
-         break;
-     default:
--        cpu_abort(cs, "Invalid PowerPC interrupt %d. Aborting\n", interrupt);
-+        cpu_abort(env_cpu(env), "Invalid PowerPC interrupt %d. Aborting\n",
-+                  interrupt);
-     }
- }
- 
 -- 
 2.42.0
 
