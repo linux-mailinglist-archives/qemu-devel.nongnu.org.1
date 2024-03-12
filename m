@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 290DF878CA8
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 03:01:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E94878CA5
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 03:01:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjrRt-00063a-Pj; Mon, 11 Mar 2024 22:01:01 -0400
+	id 1rjrS6-0006Cg-5y; Mon, 11 Mar 2024 22:01:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1rjrRn-000637-3e; Mon, 11 Mar 2024 22:00:55 -0400
+ id 1rjrRz-00068T-UP; Mon, 11 Mar 2024 22:01:07 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1rjrRj-0004Gl-C2; Mon, 11 Mar 2024 22:00:54 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TtxZr0hYHz6K9Q2;
- Tue, 12 Mar 2024 09:56:36 +0800 (CST)
+ id 1rjrRw-0004a9-3H; Mon, 11 Mar 2024 22:01:07 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TtxbD5gKxz6K9Pw;
+ Tue, 12 Mar 2024 09:56:56 +0800 (CST)
 Received: from lhrpeml500001.china.huawei.com (unknown [7.191.163.213])
- by mail.maildlp.com (Postfix) with ESMTPS id DBFC1140CB9;
- Tue, 12 Mar 2024 10:00:40 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 91C18140B3C;
+ Tue, 12 Mar 2024 10:01:01 +0800 (CST)
 Received: from A190218597.china.huawei.com (10.48.148.5) by
  lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 12 Mar 2024 02:00:23 +0000
+ 15.1.2507.35; Tue, 12 Mar 2024 02:00:41 +0000
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
@@ -41,13 +41,15 @@ CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
  <linuxarm@huawei.com>
-Subject: [PATCH V8 0/8] Add architecture agnostic code to support vCPU Hotplug
-Date: Tue, 12 Mar 2024 01:59:52 +0000
-Message-ID: <20240312020000.12992-1-salil.mehta@huawei.com>
+Subject: [PATCH V8 1/8] accel/kvm: Extract common KVM vCPU {creation,
+ parking} code
+Date: Tue, 12 Mar 2024 01:59:53 +0000
+Message-ID: <20240312020000.12992-2-salil.mehta@huawei.com>
 X-Mailer: git-send-email 2.8.3
+In-Reply-To: <20240312020000.12992-1-salil.mehta@huawei.com>
+References: <20240312020000.12992-1-salil.mehta@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.48.148.5]
 X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
  lhrpeml500001.china.huawei.com (7.191.163.213)
@@ -76,124 +78,202 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Virtual CPU hotplug support is being added across various architectures[1][3].
-This series adds various code bits common across all architectures:
+KVM vCPU creation is done once during the vCPU realization when Qemu vCPU thread
+is spawned. This is common to all the architectures as of now.
 
-1. vCPU creation and Parking code refactor [Patch 1]
-2. Update ACPI GED framework to support vCPU Hotplug [Patch 2,3]
-3. ACPI CPUs AML code change [Patch 4,5]
-4. Helper functions to support unrealization of CPU objects [Patch 6,7]
-5. Docs [Patch 8]
+Hot-unplug of vCPU results in destruction of the vCPU object in QOM but the
+corresponding KVM vCPU object in the Host KVM is not destroyed as KVM doesn't
+support vCPU removal. Therefore, its representative KVM vCPU object/context in
+Qemu is parked.
 
+Refactor architecture common logic so that some APIs could be reused by vCPU
+Hotplug code of some architectures likes ARM, Loongson etc. Update new/old APIs
+with trace events instead of DPRINTF. No functional change is intended here.
 
-Repository:
+Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Tested-by: Xianglai Li <lixianglai@loongson.cn>
+Tested-by: Miguel Luis <miguel.luis@oracle.com>
+Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
+---
+ accel/kvm/kvm-all.c    | 64 ++++++++++++++++++++++++++++++++----------
+ accel/kvm/trace-events |  5 +++-
+ include/sysemu/kvm.h   | 16 +++++++++++
+ 3 files changed, 69 insertions(+), 16 deletions(-)
 
-[*] https://github.com/salil-mehta/qemu.git virt-cpuhp-armv8/rfc-v2.common.v8
-
-
-Revision History:
-
-Patch-set V7 -> V8
-
-1. Rebased and Fixed the conflicts
-
-Patch-set  V6 -> V7
-1. Addressed Alex Bennée's comments
-   - Updated the docs
-2. Addressed Igor Mammedov's comments
-   - Merged patches [Patch V6 3/9] & [Patch V6 7/9] with [Patch V6 4/9]
-   - Updated commit-log of [Patch V6 1/9] and [Patch V6 5/9]     
-3. Added Shaoqin Huang's Reviewed-by tags for whole series.
-Link: https://lore.kernel.org/qemu-devel/20231013105129.25648-1-salil.mehta@huawei.com/
-
-Patch-set  V5 -> V6
-1. Addressed Gavin Shan's comments
-   - Fixed the assert() ranges of address spaces
-   - Rebased the patch-set to latest changes in the qemu.git
-   - Added Reviewed-by tags for patches {8,9}
-2. Addressed Jonathan Cameron's comments
-   - Updated commit-log for [Patch V5 1/9] with mention of trace events
-   - Added Reviewed-by tags for patches {1,5}
-3. Added Tested-by tags from Xianglai Li
-4. Fixed checkpatch.pl error "Qemu -> QEMU" in [Patch V5 1/9] 
-Link: https://lore.kernel.org/qemu-devel/20231011194355.15628-1-salil.mehta@huawei.com/
-
-Patch-set  V4 -> V5
-1. Addressed Gavin Shan's comments
-   - Fixed the trace events print string for kvm_{create,get,park,destroy}_vcpu
-   - Added Reviewed-by tag for patch {1}
-2. Added Shaoqin Huang's Reviewed-by tags for Patches {2,3}
-3. Added Tested-by Tag from Vishnu Pajjuri to the patch-set
-4. Dropped the ARM specific [Patch V4 10/10]
-Link: https://lore.kernel.org/qemu-devel/20231009203601.17584-1-salil.mehta@huawei.com/
-
-Patch-set  V3 -> V4
-1. Addressed David Hilderbrand's comments
-   - Fixed the wrong doc comment of kvm_park_vcpu API prototype
-   - Added Reviewed-by tags for patches {2,4}
-Link: https://lore.kernel.org/qemu-devel/20231009112812.10612-1-salil.mehta@huawei.com/
-
-Patch-set  V2 -> V3
-1. Addressed Jonathan Cameron's comments
-   - Fixed 'vcpu-id' type wrongly changed from 'unsigned long' to 'integer'
-   - Removed unnecessary use of variable 'vcpu_id' in kvm_park_vcpu
-   - Updated [Patch V2 3/10] commit-log with details of ACPI_CPU_SCAN_METHOD macro
-   - Updated [Patch V2 5/10] commit-log with details of conditional event handler method
-   - Added Reviewed-by tags for patches {2,3,4,6,7}
-2. Addressed Gavin Shan's comments
-   - Remove unnecessary use of variable 'vcpu_id' in kvm_par_vcpu
-   - Fixed return value in kvm_get_vcpu from -1 to -ENOENT
-   - Reset the value of 'gdb_num_g_regs' in gdb_unregister_coprocessor_all
-   - Fixed the kvm_{create,park}_vcpu prototypes docs
-   - Added Reviewed-by tags for patches {2,3,4,5,6,7,9,10}
-3. Addressed one earlier missed comment by Alex Bennée in RFC V1
-   - Added traces instead of DPRINTF in the newly added and some existing functions
-Link: https://lore.kernel.org/qemu-devel/20230930001933.2660-1-salil.mehta@huawei.com/
-
-Patch-set V1 -> V2
-1. Addressed Alex Bennée's comments
-   - Refactored the kvm_create_vcpu logic to get rid of goto
-   - Added the docs for kvm_{create,park}_vcpu prototypes
-   - Splitted the gdbstub and AddressSpace destruction change into separate patches
-   - Added Reviewed-by tags for patches {2,10}
-Link: https://lore.kernel.org/qemu-devel/20230929124304.13672-1-salil.mehta@huawei.com/
-
-References:
-
-[1] https://lore.kernel.org/qemu-devel/20230926100436.28284-1-salil.mehta@huawei.com/
-[2] https://lore.kernel.org/all/20230913163823.7880-1-james.morse@arm.com/
-[3] https://lore.kernel.org/qemu-devel/cover.1695697701.git.lixianglai@loongson.cn/
-
-
-
-Salil Mehta (8):
-  accel/kvm: Extract common KVM vCPU {creation,parking} code
-  hw/acpi: Move CPU ctrl-dev MMIO region len macro to common header file
-  hw/acpi: Update ACPI GED framework to support vCPU Hotplug
-  hw/acpi: Update GED _EVT method AML with CPU scan
-  hw/acpi: Update CPUs AML with cpu-(ctrl)dev change
-  physmem: Add helper function to destroy CPU AddressSpace
-  gdbstub: Add helper function to unregister GDB register space
-  docs/specs/acpi_hw_reduced_hotplug: Add the CPU Hotplug Event Bit
-
- accel/kvm/kvm-all.c                    | 64 ++++++++++++++++++++------
- accel/kvm/trace-events                 |  5 +-
- docs/specs/acpi_hw_reduced_hotplug.rst |  3 +-
- gdbstub/gdbstub.c                      | 12 +++++
- hw/acpi/acpi-cpu-hotplug-stub.c        |  6 +++
- hw/acpi/cpu.c                          | 27 +++++++----
- hw/acpi/generic_event_device.c         | 21 +++++++++
- hw/i386/acpi-build.c                   |  3 +-
- include/exec/cpu-common.h              |  8 ++++
- include/exec/gdbstub.h                 |  6 +++
- include/hw/acpi/cpu.h                  |  5 +-
- include/hw/acpi/cpu_hotplug.h          |  4 ++
- include/hw/acpi/generic_event_device.h |  4 ++
- include/hw/core/cpu.h                  |  1 +
- include/sysemu/kvm.h                   | 16 +++++++
- system/physmem.c                       | 29 ++++++++++++
- 16 files changed, 185 insertions(+), 29 deletions(-)
-
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index a8cecd040e..3bc3207bda 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -126,6 +126,7 @@ static QemuMutex kml_slots_lock;
+ #define kvm_slots_unlock()  qemu_mutex_unlock(&kml_slots_lock)
+ 
+ static void kvm_slot_init_dirty_bitmap(KVMSlot *mem);
++static int kvm_get_vcpu(KVMState *s, unsigned long vcpu_id);
+ 
+ static inline void kvm_resample_fd_remove(int gsi)
+ {
+@@ -314,14 +315,53 @@ err:
+     return ret;
+ }
+ 
++void kvm_park_vcpu(CPUState *cpu)
++{
++    struct KVMParkedVcpu *vcpu;
++
++    trace_kvm_park_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
++
++    vcpu = g_malloc0(sizeof(*vcpu));
++    vcpu->vcpu_id = kvm_arch_vcpu_id(cpu);
++    vcpu->kvm_fd = cpu->kvm_fd;
++    QLIST_INSERT_HEAD(&kvm_state->kvm_parked_vcpus, vcpu, node);
++}
++
++int kvm_create_vcpu(CPUState *cpu)
++{
++    unsigned long vcpu_id = kvm_arch_vcpu_id(cpu);
++    KVMState *s = kvm_state;
++    int kvm_fd;
++
++    trace_kvm_create_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
++
++    /* check if the KVM vCPU already exist but is parked */
++    kvm_fd = kvm_get_vcpu(s, vcpu_id);
++    if (kvm_fd < 0) {
++        /* vCPU not parked: create a new KVM vCPU */
++        kvm_fd = kvm_vm_ioctl(s, KVM_CREATE_VCPU, vcpu_id);
++        if (kvm_fd < 0) {
++            error_report("KVM_CREATE_VCPU IOCTL failed for vCPU %lu", vcpu_id);
++            return kvm_fd;
++        }
++    }
++
++    cpu->kvm_fd = kvm_fd;
++    cpu->kvm_state = s;
++    cpu->vcpu_dirty = true;
++    cpu->dirty_pages = 0;
++    cpu->throttle_us_per_full = 0;
++
++    return 0;
++}
++
+ static int do_kvm_destroy_vcpu(CPUState *cpu)
+ {
+     KVMState *s = kvm_state;
+     long mmap_size;
+-    struct KVMParkedVcpu *vcpu = NULL;
+     int ret = 0;
+ 
+-    trace_kvm_destroy_vcpu();
++    trace_kvm_destroy_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
+ 
+     ret = kvm_arch_destroy_vcpu(cpu);
+     if (ret < 0) {
+@@ -347,10 +387,7 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
+         }
+     }
+ 
+-    vcpu = g_malloc0(sizeof(*vcpu));
+-    vcpu->vcpu_id = kvm_arch_vcpu_id(cpu);
+-    vcpu->kvm_fd = cpu->kvm_fd;
+-    QLIST_INSERT_HEAD(&kvm_state->kvm_parked_vcpus, vcpu, node);
++    kvm_park_vcpu(cpu);
+ err:
+     return ret;
+ }
+@@ -371,6 +408,8 @@ static int kvm_get_vcpu(KVMState *s, unsigned long vcpu_id)
+         if (cpu->vcpu_id == vcpu_id) {
+             int kvm_fd;
+ 
++            trace_kvm_get_vcpu(vcpu_id);
++
+             QLIST_REMOVE(cpu, node);
+             kvm_fd = cpu->kvm_fd;
+             g_free(cpu);
+@@ -378,7 +417,7 @@ static int kvm_get_vcpu(KVMState *s, unsigned long vcpu_id)
+         }
+     }
+ 
+-    return kvm_vm_ioctl(s, KVM_CREATE_VCPU, (void *)vcpu_id);
++    return -ENOENT;
+ }
+ 
+ int kvm_init_vcpu(CPUState *cpu, Error **errp)
+@@ -389,19 +428,14 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
+ 
+     trace_kvm_init_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
+ 
+-    ret = kvm_get_vcpu(s, kvm_arch_vcpu_id(cpu));
++    ret = kvm_create_vcpu(cpu);
+     if (ret < 0) {
+-        error_setg_errno(errp, -ret, "kvm_init_vcpu: kvm_get_vcpu failed (%lu)",
++        error_setg_errno(errp, -ret,
++                         "kvm_init_vcpu: kvm_create_vcpu failed (%lu)",
+                          kvm_arch_vcpu_id(cpu));
+         goto err;
+     }
+ 
+-    cpu->kvm_fd = ret;
+-    cpu->kvm_state = s;
+-    cpu->vcpu_dirty = true;
+-    cpu->dirty_pages = 0;
+-    cpu->throttle_us_per_full = 0;
+-
+     mmap_size = kvm_ioctl(s, KVM_GET_VCPU_MMAP_SIZE, 0);
+     if (mmap_size < 0) {
+         ret = mmap_size;
+diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
+index a25902597b..5558cff0dc 100644
+--- a/accel/kvm/trace-events
++++ b/accel/kvm/trace-events
+@@ -9,6 +9,10 @@ kvm_device_ioctl(int fd, int type, void *arg) "dev fd %d, type 0x%x, arg %p"
+ kvm_failed_reg_get(uint64_t id, const char *msg) "Warning: Unable to retrieve ONEREG %" PRIu64 " from KVM: %s"
+ kvm_failed_reg_set(uint64_t id, const char *msg) "Warning: Unable to set ONEREG %" PRIu64 " to KVM: %s"
+ kvm_init_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d id: %lu"
++kvm_create_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d id: %lu"
++kvm_get_vcpu(unsigned long arch_cpu_id) "id: %lu"
++kvm_destroy_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d id: %lu"
++kvm_park_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d id: %lu"
+ kvm_irqchip_commit_routes(void) ""
+ kvm_irqchip_add_msi_route(char *name, int vector, int virq) "dev %s vector %d virq %d"
+ kvm_irqchip_update_msi_route(int virq) "Updating MSI route virq=%d"
+@@ -25,7 +29,6 @@ kvm_dirty_ring_reaper(const char *s) "%s"
+ kvm_dirty_ring_reap(uint64_t count, int64_t t) "reaped %"PRIu64" pages (took %"PRIi64" us)"
+ kvm_dirty_ring_reaper_kick(const char *reason) "%s"
+ kvm_dirty_ring_flush(int finished) "%d"
+-kvm_destroy_vcpu(void) ""
+ kvm_failed_get_vcpu_mmap_size(void) ""
+ kvm_cpu_exec(void) ""
+ kvm_interrupt_exit_request(void) ""
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index fad9a7e8ff..2ed928aa71 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -435,6 +435,22 @@ void kvm_set_sigmask_len(KVMState *s, unsigned int sigmask_len);
+ int kvm_physical_memory_addr_from_host(KVMState *s, void *ram_addr,
+                                        hwaddr *phys_addr);
+ 
++/**
++ * kvm_create_vcpu - Gets a parked KVM vCPU or creates a KVM vCPU
++ * @cpu: QOM CPUState object for which KVM vCPU has to be fetched/created.
++ *
++ * @returns: 0 when success, errno (<0) when failed.
++ */
++int kvm_create_vcpu(CPUState *cpu);
++
++/**
++ * kvm_park_vcpu - Park QEMU KVM vCPU context
++ * @cpu: QOM CPUState object for which QEMU KVM vCPU context has to be parked.
++ *
++ * @returns: none
++ */
++void kvm_park_vcpu(CPUState *cpu);
++
+ #endif /* NEED_CPU_H */
+ 
+ void kvm_cpu_synchronize_state(CPUState *cpu);
 -- 
 2.34.1
 
