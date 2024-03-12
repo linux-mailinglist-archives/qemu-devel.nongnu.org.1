@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A4F287945F
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:44:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B125879492
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:55:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk1U4-00028r-F0; Tue, 12 Mar 2024 08:43:56 -0400
+	id 1rk1Ue-00034p-Kf; Tue, 12 Mar 2024 08:44:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Tz-00028L-CB
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:43:52 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1UK-0002OF-PP
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Tw-0008UQ-UD
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:43:50 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1UF-00008X-PX
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710247427;
+ s=mimecast20190719; t=1710247445;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kQVCXsbvBIxcOjD4sxUVR/VwVD9STGf9+3WG1172Bwk=;
- b=XfdLB3zsij7t/+6+nI0lPuRMZXwlMiTSlwRg/DwQuOy07dvZixsrSHtHrECfUsx8pFkcFi
- JMl4v013S3y9ExGzp/bEOXyZn2m1A1sOS7cX1hWbtn3d7z/M8vbbcoJcBHYYV7oV9AmIwe
- T5AiwQD2pDo9f2ANabIULuZ0jwnvYl0=
+ bh=b1l6WbAUCt0bM585OCGgo0YKxZvXleO/qSAwsOqY+TA=;
+ b=fee1+6VZqJgW69pnLAl85rkcgeErAaCIx/UHEwvmw1pjzqDMKSHDrX0JRB8MlO2APqfdYe
+ I305+d7E3KoU1033a0Klbr+BGLEuZ/9kgasLOzVEQXJ3vVxxnjyXjwYK1xvUEhc9zdhQKo
+ reOtua5MRLMxDedk2w1NOBeg+uw3Zro=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-6W4tbV1ZPKuwHaaAeKupJQ-1; Tue, 12 Mar 2024 08:43:43 -0400
-X-MC-Unique: 6W4tbV1ZPKuwHaaAeKupJQ-1
+ us-mta-307-MzZ7g4qLNuS9D3MUPaetLA-1; Tue, 12 Mar 2024 08:44:02 -0400
+X-MC-Unique: MzZ7g4qLNuS9D3MUPaetLA-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9099B89C662;
- Tue, 12 Mar 2024 12:43:43 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E3B818007A2;
+ Tue, 12 Mar 2024 12:43:44 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.69])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2671A492BC4;
- Tue, 12 Mar 2024 12:43:42 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D5E20492BC4;
+ Tue, 12 Mar 2024 12:43:43 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 01/55] hw/cxl/cxl-host: Fix missing ERRP_GUARD() in
- cxl_fixed_memory_window_config()
-Date: Tue, 12 Mar 2024 13:42:45 +0100
-Message-ID: <20240312124339.761630-2-thuth@redhat.com>
+Subject: [PULL 02/55] hw/display/macfb: Fix missing ERRP_GUARD() in
+ macfb_nubus_realize()
+Date: Tue, 12 Mar 2024 13:42:46 +0100
+Message-ID: <20240312124339.761630-3-thuth@redhat.com>
 In-Reply-To: <20240312124339.761630-1-thuth@redhat.com>
 References: <20240312124339.761630-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -97,54 +97,44 @@ ERRP_GUARD():
 * Using it when it's not needed is safe, but please avoid cluttering
 * the source with useless code.
 
-But in cxl_fixed_memory_window_config(), @errp is dereferenced in 2
-places without ERRP_GUARD():
+But in macfb_nubus_realize(), @errp is dereferenced without
+ERRP_GUARD():
 
-fw->enc_int_ways = cxl_interleave_ways_enc(fw->num_targets, errp);
+ndc->parent_realize(dev, errp);
 if (*errp) {
     return;
 }
 
-and
-
-fw->enc_int_gran =
-    cxl_interleave_granularity_enc(object->interleave_granularity,
-                                   errp);
-if (*errp) {
-    return;
-}
-
-For the above 2 places, we check "*errp", because neither function
-returns a suitable error code. And since machine_set_cfmw() - the caller
-of cxl_fixed_memory_window_config() - doesn't get the NULL @errp
-parameter as the "set" method of object property,
-cxl_fixed_memory_window_config() hasn't triggered the bug that
-dereferencing the NULL @errp.
+Here we check *errp, because the ndc->parent_realize(), as a
+DeviceClass.realize() callback, returns void. And since
+macfb_nubus_realize(), also as a DeviceClass.realize(), doesn't get the
+NULL @errp parameter, it hasn't triggered the bug that dereferencing the
+NULL @errp.
 
 To follow the requirement of @errp, add missing ERRP_GUARD() in
-cxl_fixed_memory_window_config().
+macfb_nubus_realize().
 
 Suggested-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240223085653.1255438-2-zhao1.liu@linux.intel.com>
+Message-ID: <20240223085653.1255438-3-zhao1.liu@linux.intel.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/cxl/cxl-host.c | 1 +
+ hw/display/macfb.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
-index 2aa776c79c..c5f5fcfd64 100644
---- a/hw/cxl/cxl-host.c
-+++ b/hw/cxl/cxl-host.c
-@@ -26,6 +26,7 @@ static void cxl_fixed_memory_window_config(CXLState *cxl_state,
-                                            CXLFixedMemoryWindowOptions *object,
-                                            Error **errp)
+diff --git a/hw/display/macfb.c b/hw/display/macfb.c
+index 418e99c8e1..1ace341a0f 100644
+--- a/hw/display/macfb.c
++++ b/hw/display/macfb.c
+@@ -714,6 +714,7 @@ static void macfb_nubus_set_irq(void *opaque, int n, int level)
+ 
+ static void macfb_nubus_realize(DeviceState *dev, Error **errp)
  {
 +    ERRP_GUARD();
-     g_autofree CXLFixedWindow *fw = g_malloc0(sizeof(*fw));
-     strList *target;
-     int i;
+     NubusDevice *nd = NUBUS_DEVICE(dev);
+     MacfbNubusState *s = NUBUS_MACFB(dev);
+     MacfbNubusDeviceClass *ndc = NUBUS_MACFB_GET_CLASS(dev);
 -- 
 2.44.0
 
