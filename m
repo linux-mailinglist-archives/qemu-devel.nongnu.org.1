@@ -2,60 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A639878D09
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 03:38:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCE3E878D9B
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 04:37:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjs0M-0000W6-NO; Mon, 11 Mar 2024 22:36:38 -0400
+	id 1rjsvk-0000c2-1T; Mon, 11 Mar 2024 23:35:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1rjs0F-0000Vk-Q4; Mon, 11 Mar 2024 22:36:32 -0400
-Received: from out30-100.freemail.mail.aliyun.com ([115.124.30.100])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1rjs09-0002SP-Kd; Mon, 11 Mar 2024 22:36:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux.alibaba.com; s=default;
- t=1710210973; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
- bh=bj8e0iChBUvFH/+hfLkQPtJuF7Ib3Y/H7e85fmCJnBk=;
- b=dHu8uburIRmzMLOWQ6N4uiHytE9BiyvdCEaEjzwGJ/6YHyI1BAdE24B9k1eKyV7F/lR6VL5y8DIvSLoMfSEzGSO6+eLdBDP1U/9546gEzNSjM7BN4+tkXgRPbIgvBKDX6OanILzl5foymRH5ASciuS6+UkxSM2JFNeKHB2uz/9A=
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R111e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018045168;
- MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=8; SR=0;
- TI=SMTPD_---0W2KElfp_1710210970; 
-Received: from 30.198.0.173(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0W2KElfp_1710210970) by smtp.aliyun-inc.com;
- Tue, 12 Mar 2024 10:36:11 +0800
-Message-ID: <c68ea7b8-5c6c-4045-a759-667ce9873efe@linux.alibaba.com>
-Date: Tue, 12 Mar 2024 10:36:13 +0800
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1rjsvh-0000bo-9H
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 23:35:53 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lixianglai@loongson.cn>) id 1rjsvd-0003nR-TM
+ for qemu-devel@nongnu.org; Mon, 11 Mar 2024 23:35:52 -0400
+Received: from loongson.cn (unknown [10.20.42.32])
+ by gateway (Coremail) with SMTP id _____8AxuuiEze9lUW0XAA--.37663S3;
+ Tue, 12 Mar 2024 11:35:33 +0800 (CST)
+Received: from [10.20.42.32] (unknown [10.20.42.32])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Dx_xOBze9l_8hWAA--.3632S2; 
+ Tue, 12 Mar 2024 11:35:31 +0800 (CST)
+Subject: Re: [PATCH V3 1/1] target/loongarch: Fixed tlb huge page loading issue
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ wuruiyang@loongson.cn
+Cc: maobibo@loongson.cn, Song Gao <gaosong@loongson.cn>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, zhaotianrui@loongson.cn,
+ yijun@loongson.cn
+References: <cover.1709796364.git.lixianglai@loongson.cn>
+ <de249feeab14b46d4b7bd842335a4e6e4b654681.1709796364.git.lixianglai@loongson.cn>
+ <167331cd-068b-470f-b08c-6687e426bd15@linaro.org>
+From: lixianglai <lixianglai@loongson.cn>
+Message-ID: <9b475a8e-e628-91ba-2909-869ddb013811@loongson.cn>
+Date: Tue, 12 Mar 2024 11:35:29 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] target/riscv: raise an exception when CSRRS/CSRRC
- writes a read-only CSR
+In-Reply-To: <167331cd-068b-470f-b08c-6687e426bd15@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-To: Yu-Ming Chang <yumin686@andestech.com>, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
- dbarboza@ventanamicro.com
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org
-References: <20240311030852.53831-1-yumin686@andestech.com>
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <20240311030852.53831-1-yumin686@andestech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=115.124.30.100;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-100.freemail.mail.aliyun.com
-X-Spam_score_int: -174
-X-Spam_score: -17.5
-X-Spam_bar: -----------------
-X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01, UNPARSEABLE_RELAY=0.001,
- USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+X-CM-TRANSID: AQAAf8Dx_xOBze9l_8hWAA--.3632S2
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW3ArWUGFyktFW8AF1kKF4kAFc_yoWxtFW8pF
+ 4kGrW3AryUJryvyr1UGw1UJry5Xr4jyw4DJr1UtFyjvw1UJry0gr4UWrnF9r17Jr48JF48
+ Zr17tr1DZr13GrgCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GF
+ ylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1wL
+ 05UUUUU==
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.065,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,109 +85,196 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-On 2024/3/11 11:08, Yu-Ming Chang wrote:
-> Both CSRRS and CSRRC always read the addressed CSR and cause any read side
-> effects regardless of rs1 and rd fields. Note that if rs1 specifies a register
-> holding a zero value other than x0, the instruction will still attempt to write
-> the unmodified value back to the CSR and will cause any attendant side effects.
+Hi Richard:
 >
-> So if CSRRS or CSRRC tries to write a read-only CSR with rs1 which specifies
-> a register holding a zero value, an illegal instruction exception should be
-> raised.
+>> @@ -495,30 +508,10 @@ target_ulong helper_lddir(CPULoongArchState 
+>> *env, target_ulong base,
+>>       shift = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTEWIDTH);
+>>       shift = (shift + 1) * 3;
+>>   -    if (huge) {
+>> -        return base;
+>> -    }
+>> -    switch (level) {
+>> -    case 1:
+>> -        dir_base = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, DIR1_BASE);
+>> -        dir_width = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, DIR1_WIDTH);
+>> -        break;
+>> -    case 2:
+>> -        dir_base = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, DIR2_BASE);
+>> -        dir_width = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, DIR2_WIDTH);
+>> -        break;
+>> -    case 3:
+>> -        dir_base = FIELD_EX64(env->CSR_PWCH, CSR_PWCH, DIR3_BASE);
+>> -        dir_width = FIELD_EX64(env->CSR_PWCH, CSR_PWCH, DIR3_WIDTH);
+>> -        break;
+>> -    case 4:
+>> -        dir_base = FIELD_EX64(env->CSR_PWCH, CSR_PWCH, DIR4_BASE);
+>> -        dir_width = FIELD_EX64(env->CSR_PWCH, CSR_PWCH, DIR4_WIDTH);
+>> -        break;
+>> -    default:
+>> -        do_raise_exception(env, EXCCODE_INE, GETPC());
+>> +    if (get_dir_base_width(env, &dir_base, &dir_width, level) != 0) {
+>>           return 0;
+>>       }
 >
-> Signed-off-by: Yu-Ming Chang <yumin686@andestech.com>
-> ---
-> This incorporated the comments from Richard. Thank you.
+> I believe that we should not raise an exception here at all.  This 
+> illegal instruction exception is based on the LDDIR immediate operand, 
+> so we should have diagnosed this error and raised an exception in 
+> trans_lddir().
+
+After consulting the hardware technician, when the level value is 
+greater than 4,
+
+the hardware does not report an exception, we can check the level in 
+helper_lddir,
+
+if the parameter is not valid, we will directly return to base,
+
+and it is not reasonable to check the validity of the immediate number 
+in trans_lddir.
+
+The actual action should be implemented in the instruction 
+simulation,and the log should be printed and recorded,
+
+like this:
+
+target_ulong helper_lddir( )
+
+{
+
+     if ((level == 0) || (level > 4)) {
+
+        qemu_log_mask(LOG_GUEST_ERROR, "Illegal instruction level 
+%lu\n",  level);
+
+         return base;
+
+     }
+
+......
+
+}
+
 >
->   target/riscv/cpu.h       |  2 ++
->   target/riscv/csr.c       | 17 ++++++++++++++---
->   target/riscv/op_helper.c |  2 +-
->   3 files changed, 17 insertions(+), 4 deletions(-)
+> Therefore the default label should use only g_assert_not_reached(), 
+> and there need not be a error return from get_dir_base_width at all.
 >
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index 5d291a7092..452841ae2f 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -710,6 +710,8 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
->   void riscv_cpu_update_mask(CPURISCVState *env);
->   bool riscv_cpu_is_32bit(RISCVCPU *cpu);
->   
-> +RISCVException riscv_csrr(CPURISCVState *env, int csrno,
-> +                          target_ulong *ret_value);
->   RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
->                              target_ulong *ret_value,
->                              target_ulong new_value, target_ulong write_mask);
-> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-> index d4e8ac13b9..0d14ba2ba5 100644
-> --- a/target/riscv/csr.c
-> +++ b/target/riscv/csr.c
-> @@ -4306,7 +4306,7 @@ static RISCVException rmw_seed(CPURISCVState *env, int csrno,
->   
->   static inline RISCVException riscv_csrrw_check(CPURISCVState *env,
->                                                  int csrno,
-> -                                               bool write_mask)
-> +                                               bool write)
->   {
->       /* check privileges and return RISCV_EXCP_ILLEGAL_INST if check fails */
->       bool read_only = get_field(csrno, 0xC00) == 3;
-> @@ -4328,7 +4328,7 @@ static inline RISCVException riscv_csrrw_check(CPURISCVState *env,
->       }
->   
->       /* read / write check */
-> -    if (write_mask && read_only) {
-> +    if (write && read_only) {
->           return RISCV_EXCP_ILLEGAL_INST;
->       }
->   
-> @@ -4415,11 +4415,22 @@ static RISCVException riscv_csrrw_do64(CPURISCVState *env, int csrno,
->       return RISCV_EXCP_NONE;
->   }
->   
-> +RISCVException riscv_csrr(CPURISCVState *env, int csrno,
-> +                           target_ulong *ret_value)
-> +{
-> +    RISCVException ret = riscv_csrrw_check(env, csrno, false);
-> +    if (ret != RISCV_EXCP_NONE) {
-> +        return ret;
-> +    }
-> +
-> +    return riscv_csrrw_do64(env, csrno, ret_value, 0, 0);
-> +}
-> +
->   RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
->                              target_ulong *ret_value,
->                              target_ulong new_value, target_ulong write_mask)
->   {
-> -    RISCVException ret = riscv_csrrw_check(env, csrno, write_mask);
-> +    RISCVException ret = riscv_csrrw_check(env, csrno, true);
->       if (ret != RISCV_EXCP_NONE) {
->           return ret;
->       }
-> diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-> index f414aaebdb..f3aa705be8 100644
-> --- a/target/riscv/op_helper.c
-> +++ b/target/riscv/op_helper.c
-> @@ -51,7 +51,7 @@ target_ulong helper_csrr(CPURISCVState *env, int csr)
->       }
->   
->       target_ulong val = 0;
-> -    RISCVException ret = riscv_csrrw(env, csr, &val, 0, 0);
-> +    RISCVException ret = riscv_csrr(env, csr, &val);
->   
->       if (ret != RISCV_EXCP_NONE) {
->           riscv_raise_exception(env, ret, GETPC());
+>
+>> @@ -534,17 +527,38 @@ void helper_ldpte(CPULoongArchState *env, 
+>> target_ulong base, target_ulong odd,
+>>       bool huge = (base >> LOONGARCH_PAGE_HUGE_SHIFT) & 0x1;
+>>       uint64_t ptbase = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTBASE);
+>>       uint64_t ptwidth = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTWIDTH);
+>> +    uint64_t dir_base, dir_width;
+>> +    uint64_t huge_page_level;
+>>         base = base & TARGET_PHYS_MASK;
+>>         if (huge) {
+>> -        /* Huge Page. base is paddr */
+>> +        /*
+>> +         * Gets the huge page level
+>> +         * Clears the huge page level information in the address
+>> +         * Clears huge page bit
+>> +         * Gets huge page size
+>> +         */
+>> +        huge_page_level = (base & HUGE_PAGE_LEVEL_MASK) >>
+>> +                          HUGE_PAGE_LEVEL_SHIFT;
+>> +
+>> +        base &= ~HUGE_PAGE_LEVEL_MASK;
+>> +
+>>           tmp0 = base ^ (1 << LOONGARCH_PAGE_HUGE_SHIFT);
+>>           /* Move Global bit */
+>>           tmp0 = ((tmp0 & (1 << LOONGARCH_HGLOBAL_SHIFT))  >>
+>>                   LOONGARCH_HGLOBAL_SHIFT) << R_TLBENTRY_G_SHIFT |
+>>                   (tmp0 & (~(1 << LOONGARCH_HGLOBAL_SHIFT)));
+>> -        ps = ptbase + ptwidth - 1;
+>> +
+>> +        huge_page_level++;
+>
+> Why are you incrementing the level?
 
-Hi Yu-Ming,
+level plus 1 is to obtain the dir_base of the upper level,
 
-The 128-bit CSR operations have the similar errors. Could you solve the 
-similar bug in this patch set?
+because I directly use the dir_base of the upper level as the size of 
+the huge page when calculating the page size,
 
-Otherwise,
+this practice is different from the hardware implementation,
 
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+the hardware implementation is explained below,
 
-Thanks,
-Zhiwei
+the next version I will refer to the hardware implementation method to 
+calculate the size of the huge page.
+
+>
+> I think you want
+>
+>     level = MIN(level, 1);
+>
+> Google translates the documentation for LDPTE as "bits [14:13] ... 
+> should be a non-zero value".  I don't know if "should" is precisely 
+> correct here (english technical documents prefer "shall" or "may" to 
+> indicate a hard requirement vs optional behaviour). The document does 
+> not appear to say what happens if the value is zero.
+>
+
+After consulting hardware technicians, LDPTE uses dir_base + dir_width 
+corresponding to [14..13]bits as the page size,
+
+and when [14..13]bits is 0, the page size should be PTbase + PTwidth.
+
+So [14..13]bits can be zero and we should revise the manual.
+
+And The get_dir_base_width function plans to add the handling of case 0,
+
+so that get_dir_base_width will not receive illegal level arguments when 
+ldpte,
+
+and because of the validity of the level at the entry of the lddir 
+function,
+
+the get_dir_base_width function will not receive illegal level arguments.
+
+So you will not receive level == 0 and level > 4:
+
+
+static void get_dir_base_width(CPULoongArchState *env, uint64_t *dir_base,
+                                uint64_t *dir_width, target_ulong level)
+{
+     switch (level) {
+     case 0:
+         *dir_base = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTBASE);
+         *dir_width = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTWIDTH);
+         break;
+     case 1:
+         *dir_base = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, DIR1_BASE);
+         *dir_width = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, DIR1_WIDTH);
+         break;
+     case 2:
+         *dir_base = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, DIR2_BASE);
+         *dir_width = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, DIR2_WIDTH);
+         break;
+     case 3:
+         *dir_base = FIELD_EX64(env->CSR_PWCH, CSR_PWCH, DIR3_BASE);
+         *dir_width = FIELD_EX64(env->CSR_PWCH, CSR_PWCH, DIR3_WIDTH);
+         break;
+     case 4:
+         *dir_base = FIELD_EX64(env->CSR_PWCH, CSR_PWCH, DIR4_BASE);
+         *dir_width = FIELD_EX64(env->CSR_PWCH, CSR_PWCH, DIR4_WIDTH);
+         break;
+     default:
+         g_assert_not_reached();
+     }
+}
+
+
+> Since an earlier version of the specification did not have bits 
+> [14:13], my suspicion is that the the current version of the 
+> specification is intended to be compatible, which would map [14:13] == 
+> 0 to level == 1.
+>
+> In any case, incrementing the level such that [14:13] == 1 -> level == 
+> 2 definitely seems wrong.
+>
+>
+> r~
 
 
