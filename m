@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2806C8798BF
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 17:15:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CB238798B9
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 17:14:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk4jN-0006ym-5M; Tue, 12 Mar 2024 12:11:58 -0400
+	id 1rk4j8-0006XJ-Ty; Tue, 12 Mar 2024 12:11:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1rk4io-0006BV-Ls
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 12:11:23 -0400
+ id 1rk4in-00067z-Kr
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 12:11:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1rk4im-0007Jq-BR
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 12:11:22 -0400
+ id 1rk4im-0007Jf-6U
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 12:11:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710259879;
+ s=mimecast20190719; t=1710259878;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NX+1pUcb26oyJWxuy8qD9M8Pf9c6lEpEj7bKRXsqTus=;
- b=MLk0OdE5WLjqINVMUlYqN3LCKniLnp0hrndk39uOU0p+2lPk/dEVaRHsKK3GF8478ZCMeF
- F2qITvkNU1/jTT1ZzM2bsAg5vhrmmVUheNOjodOfXYOZnbdX4irWUFhzKKeu4cwoQNDjKq
- ZX1d73MYx+QDekmnr1NH/h4+w/KJlio=
+ bh=gu/myyffSH5c+2Tatf3S7yexqX/32ZFWbLbXva6hqGY=;
+ b=N5cSJyvBbGl7TIpjcOCGEII7GLMED6fmOefm/ztQ9SSsZ8OxOHL80PFu/Y8vjdmcOviJd0
+ sq3o7a254HhSahOBIxuncChcn9fuYARCyC/n+KKD4spIhm33RpMYfH5su+ForMxbjG6ljQ
+ mtx8ZeghQuFauvmb/BX3rFZTYPMIdAY=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-251-OczK7HlsM1KDT531lisNIw-1; Tue,
- 12 Mar 2024 12:11:16 -0400
-X-MC-Unique: OczK7HlsM1KDT531lisNIw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-593-g7g4TVVpM9uUUOvXXarkQw-1; Tue,
+ 12 Mar 2024 12:11:17 -0400
+X-MC-Unique: g7g4TVVpM9uUUOvXXarkQw-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D4CAE1C07F4D;
- Tue, 12 Mar 2024 16:11:15 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E63EB1C07F46
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 16:11:16 +0000 (UTC)
 Received: from dell-r430-03.lab.eng.brq2.redhat.com
  (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D9E6D3C23;
- Tue, 12 Mar 2024 16:11:14 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 11B353C21;
+ Tue, 12 Mar 2024 16:11:15 +0000 (UTC)
 From: Igor Mammedov <imammedo@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: imammedo@redhat.com, mst@redhat.com, Ani Sinha <anisinha@redhat.com>,
- Fiona Ebner <f.ebner@proxmox.com>
-Subject: [PATCH v3 19/20] pc/q35: set SMBIOS entry point type to 'auto' by
- default
-Date: Tue, 12 Mar 2024 17:10:49 +0100
-Message-Id: <20240312161050.2248814-20-imammedo@redhat.com>
+Cc: imammedo@redhat.com,
+	mst@redhat.com,
+	Ani Sinha <anisinha@redhat.com>
+Subject: [PATCH v3 20/20] tests: acpi: update expected SSDT.dimmpxm blob
+Date: Tue, 12 Mar 2024 17:10:50 +0100
+Message-Id: <20240312161050.2248814-21-imammedo@redhat.com>
 In-Reply-To: <20240312161050.2248814-1-imammedo@redhat.com>
 References: <20240312161050.2248814-1-imammedo@redhat.com>
 MIME-Version: 1.0
@@ -82,79 +82,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use smbios-entry-point-type='auto' for newer machine types as a workaround
-for Windows not detecting SMBIOS tables. Which makes QEMU pick SMBIOS tables
-based on configuration (with 2.x preferred and fallback to 3.x if the former
-isn't compatible with configuration)
+address shift is caused by switch to 32-bit SMBIOS entry point
+which has slightly different size from 64-bit one and happens
+to trigger a bit different memory layout.
 
-Default compat setting of smbios-entry-point-type after series
-for pc/q35 machines:
-  * 9.0-newer: 'auto'
-  * 8.1-8.2: '64'
-  * 8.0-older: '32'
+Expected diff:
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2008
+-    Name (MEMA, 0x07FFE000)
++    Name (MEMA, 0x07FFF000)
+
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Reviewed-by: Ani Sinha <anisinha@redhat.com>
-Tested-by: Fiona Ebner <f.ebner@proxmox.com>
+Acked-by: Ani Sinha <anisinha@redhat.com>
 ---
- hw/i386/pc.c      | 2 +-
- hw/i386/pc_piix.c | 4 ++++
- hw/i386/pc_q35.c  | 3 +++
- 3 files changed, 8 insertions(+), 1 deletion(-)
+ tests/qtest/bios-tables-test-allowed-diff.h |   1 -
+ tests/data/acpi/q35/SSDT.dimmpxm            | Bin 1815 -> 1815 bytes
+ 2 files changed, 1 deletion(-)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index a8e8aa2ac8..cf16337341 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1847,7 +1847,7 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
-     mc->nvdimm_supported = true;
-     mc->smp_props.dies_supported = true;
-     mc->default_ram_id = "pc.ram";
--    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_64;
-+    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_AUTO;
- 
-     object_class_property_add(oc, PC_MACHINE_MAX_RAM_BELOW_4G, "size",
-         pc_machine_get_max_ram_below_4g, pc_machine_set_max_ram_below_4g,
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 319bc4b180..bb80c10b96 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -526,12 +526,16 @@ DEFINE_I440FX_MACHINE(v9_0, "pc-i440fx-9.0", NULL,
- 
- static void pc_i440fx_8_2_machine_options(MachineClass *m)
- {
-+    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-+
-     pc_i440fx_9_0_machine_options(m);
-     m->alias = NULL;
-     m->is_default = false;
- 
-     compat_props_add(m->compat_props, hw_compat_8_2, hw_compat_8_2_len);
-     compat_props_add(m->compat_props, pc_compat_8_2, pc_compat_8_2_len);
-+    /* For pc-i44fx-8.2 and 8.1, use SMBIOS 3.X by default */
-+    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_64;
- }
- 
- DEFINE_I440FX_MACHINE(v8_2, "pc-i440fx-8.2", NULL,
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 45a4102e75..6fef3b17bb 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -369,10 +369,13 @@ DEFINE_Q35_MACHINE(v9_0, "pc-q35-9.0", NULL,
- 
- static void pc_q35_8_2_machine_options(MachineClass *m)
- {
-+    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-     pc_q35_9_0_machine_options(m);
-     m->alias = NULL;
-     compat_props_add(m->compat_props, hw_compat_8_2, hw_compat_8_2_len);
-     compat_props_add(m->compat_props, pc_compat_8_2, pc_compat_8_2_len);
-+    /* For pc-q35-8.2 and 8.1, use SMBIOS 3.X by default */
-+    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_64;
- }
- 
- DEFINE_Q35_MACHINE(v8_2, "pc-q35-8.2", NULL,
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index 81148a604f..dfb8523c8b 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1,2 +1 @@
+ /* List of comma-separated changed AML files to ignore */
+-"tests/data/acpi/q35/SSDT.dimmpxm",
+diff --git a/tests/data/acpi/q35/SSDT.dimmpxm b/tests/data/acpi/q35/SSDT.dimmpxm
+index 70f133412f5e0aa128ab210245a8de7304eeb843..9ea4e0d0ceaa8a5cbd706afb6d49de853fafe654 100644
+GIT binary patch
+delta 23
+ecmbQvH=U0wIM^jboSlJzam_|9E_UV*|JeaVTLvQl
+
+delta 23
+ecmbQvH=U0wIM^jboSlJzanD9BE_UVz|JeaVy9Ofw
+
 -- 
 2.39.3
 
