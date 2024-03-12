@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 966BF878FA0
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 09:23:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C32878FAC
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 09:26:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjxPw-0005ne-S7; Tue, 12 Mar 2024 04:23:25 -0400
+	id 1rjxQ2-0005sn-CN; Tue, 12 Mar 2024 04:23:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxPt-0005mI-7O
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:23:21 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxPy-0005rj-He
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:23:26 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxPp-0001AW-Ci
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:23:19 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-33ddd1624beso3095375f8f.1
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 01:23:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxPv-0001BM-RZ
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:23:26 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4131b1f8c91so25236155e9.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 01:23:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710231794; x=1710836594; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710231801; x=1710836601; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QyCNdGxEUzn56uZqvjtKqW1lxcPgF0npDxgJEUvvre8=;
- b=lesFdg4HTUSflfoAzyWIKAOpzPkDoogKt6NUsFGz/EQjOpVxrG6XxgfCDPR4H/Lm3T
- 7xO+/UjqxJ/79LtMN8or/470jknfzLB0KlpoJ0O9Ny1zd7nWd56p+rJ7jG6aHWE88Kdb
- V4uHpXRjyyKHcY+1FEviUnbUKFPbxDznjfBaT/n3hQ14I9AvHmgWHXL6rg4L5kViiaqn
- QN4Saxe+Jb2/cNqBwtp/LzmKEtfNBYX8zpR/OTiGLh5EwpPQayI+9hkaPEdQw+c5uJzM
- kHlxasfAnpBqJaPIDD8Gv2VV+6OPOneiyqu9uTQ974IUlJkDEw79GxoT5rjKxhYXbr21
- gqlA==
+ bh=29XjHGwit3vYXMB9dG4vvP3w+ZRgmYEAu29xmgeR40E=;
+ b=AX4t/VahYZcM87BIA5LZ0LFDZ899y3UkP1QNKUqZRGY1b0s10GoKAdJXtJMeJY7KHz
+ 7drWnOAcSx1IthKJR2u9JZ+UCE4gIqgiD2E4jza07NjkiTqD5KMQpUyOn70tlJhotcwf
+ /jWuvbra6vCETc3LeA9Szgc9yIYqWelcQ/gL9gCNCpoCpP6hfJiL2VRQRVj2oVqzRpMu
+ GTQtjuQoF5aedpn7+ip3Zi9TSNYHoCRW+YFUp3+j3f2CkiGFy+dR0YYg9ASxLjaHvHOH
+ gdDgOvC7vZj+Gkb75n2UwgoyTclB7wqU2XSUIzKqnVASViZzlhbFImVMWXLtYFBDTgW+
+ Uw+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710231794; x=1710836594;
+ d=1e100.net; s=20230601; t=1710231801; x=1710836601;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QyCNdGxEUzn56uZqvjtKqW1lxcPgF0npDxgJEUvvre8=;
- b=gPB0KS+5S0hemXnfp7NYDrv9bLJatP2aUFfipEscoCjE4UofBVBO9uEjXvFtXOE/5M
- Im3r7XvjrKaXszfdF/dEI1otq44IZKBDl9YdVnBlkloDb/Q7a7h/LGf8JEtZv8kBKDjc
- h8rFm6ht7Yu5qU3fksDn4hRi1RYEire0kxkk4ElA+kwLr2kZSj/ojY69adv0OzpU+9bD
- fwk3ALaCqZQe2/UA/FnMuD1Y/0ZQj4VRLvEyKQHyD3rHMISb8tsildqi2gCG5a58SsSN
- k3hDZyONniiHmQc/qRhm7ETn9f54XVPOWMKXlLLyEBw4qxe4UXLfgY597OGKrHPbn81V
- MPHw==
-X-Gm-Message-State: AOJu0YxcfBUbtlpUMVoSi/l69pQqLVNRemcjIEkEn2XSY22T88pEjhp1
- DlR7VyFFY+CWmZpvsvHAnpCfkb4T9qpD8royvkhVJvdFGq31RKjKm7SOoyUzW2zfod93kMfR47m
- U
-X-Google-Smtp-Source: AGHT+IEt61EFIIXe78sgAnGpd4Hm/swxGXcKdWRvf9p4g6dYVBmS6WsyIxUMLJUudHeQgJv2okIlCg==
-X-Received: by 2002:adf:a15a:0:b0:33e:9ce8:407a with SMTP id
- r26-20020adfa15a000000b0033e9ce8407amr3030528wrr.13.1710231794245; 
- Tue, 12 Mar 2024 01:23:14 -0700 (PDT)
+ bh=29XjHGwit3vYXMB9dG4vvP3w+ZRgmYEAu29xmgeR40E=;
+ b=noD13LpemdhPA/IQhQmRPHwNf4OJMn9E6lIczPnCO+NDfmnIxQ931ZL4GyAcTGLsuf
+ 9K9UEQ4kqFRbCJdfI+X9IL85HXEgMYN58lndvCm8xEDvdclmhP7INnT0wMmRdx01HK7Q
+ MJHGr+GVYsydtEyJoKVITveQNsiiga2rAxB9/F83wLqbJeqRtQp5rjrGNzA9oHJg4vPN
+ ChOY6dTE7Y8Nup7XWjsDSQua5B7JoJ4w2zv29/5hb3g675I1MqrOK5W7/qdXkY9mLy+g
+ WTtnmNp1Sdi62zxKsnGTsFSLkM1oupReX3d5a4NxljRAC3jyyG+sdP8uMsa6X/q8XaJI
+ ngBg==
+X-Gm-Message-State: AOJu0Yw6JA1oaBrm568HHtUtqjNfhSxFNjXgrB1Qo8y9pK343r2XeJwj
+ FfUZIZawavEyi79r6EWTPldLpxEXR0TMpP5rNN7zEjn03pCWK+h5Vv7pwjseVIz5A0tNNAWDXQE
+ b
+X-Google-Smtp-Source: AGHT+IFoVsmNpQuLbqfqPyDiurVI8kvgNzArr/AiPDLgxLg6ygTQnedi38jg1zpokb5Jo2ZwV0KXIw==
+X-Received: by 2002:a05:600c:5190:b0:413:27d0:44ff with SMTP id
+ fa16-20020a05600c519000b0041327d044ffmr4080264wmb.8.1710231801005; 
+ Tue, 12 Mar 2024 01:23:21 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.206.139])
  by smtp.gmail.com with ESMTPSA id
- c13-20020adfe74d000000b0033cf4e47496sm8443384wrn.51.2024.03.12.01.23.12
+ a7-20020a05600c348700b0041330d49604sm2480108wmq.45.2024.03.12.01.23.19
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Mar 2024 01:23:13 -0700 (PDT)
+ Tue, 12 Mar 2024 01:23:20 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 05/13] hw/core/qdev-properties-system: Fix missing ERRP_GUARD()
- for error_prepend()
-Date: Tue, 12 Mar 2024 09:22:30 +0100
-Message-ID: <20240312082239.69696-6-philmd@linaro.org>
+ Zhao Liu <zhao1.liu@intel.com>, Juan Quintela <quintela@trasno.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Michael Galaxy <mgalaxy@akamai.com>,
+ Steve Sistare <steven.sistare@oracle.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 06/13] hw/misc/ivshmem: Fix missing ERRP_GUARD() for
+ error_prepend()
+Date: Tue, 12 Mar 2024 09:22:31 +0100
+Message-ID: <20240312082239.69696-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240312082239.69696-1-philmd@linaro.org>
 References: <20240312082239.69696-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -118,11 +118,10 @@ ERRP_GUARD() could avoid the case when @errp is &error_fatal, the user
 can't see this additional information, because exit() happens in
 error_setg earlier than information is added [1].
 
-The set_chr() passes @errp to error_prepend() without ERRP_GUARD().
-
-As a PropertyInfo.set method, there are too many possible callers to
-check the impact of this defect; it may or may not be harmless. Thus it
-is necessary to protect @errp with ERRP_GUARD().
+The ivshmem_common_realize() passes @errp to error_prepend(), and as a
+DeviceClass.realize method, there are too many possible callers to check
+the impact of this defect; it may or may not be harmless. Thus it is
+necessary to protect @errp with ERRP_GUARD().
 
 To avoid the issue like [1] said, add missing ERRP_GUARD() at the
 beginning of this function.
@@ -130,29 +129,29 @@ beginning of this function.
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
 
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Daniel P. Berrangé" <berrange@redhat.com
-Cc: Eduardo Habkost <eduardo@habkost.net>
+Cc: Juan Quintela <quintela@trasno.org>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: Michael Galaxy <mgalaxy@akamai.com>
+Cc: Steve Sistare <steven.sistare@oracle.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240311033822.3142585-16-zhao1.liu@linux.intel.com>
+Message-ID: <20240311033822.3142585-17-zhao1.liu@linux.intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/core/qdev-properties-system.c | 1 +
+ hw/misc/ivshmem.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-index b45e90edb2..00c968f4f5 100644
---- a/hw/core/qdev-properties-system.c
-+++ b/hw/core/qdev-properties-system.c
-@@ -242,6 +242,7 @@ static void get_chr(Object *obj, Visitor *v, const char *name, void *opaque,
- static void set_chr(Object *obj, Visitor *v, const char *name, void *opaque,
-                     Error **errp)
+diff --git a/hw/misc/ivshmem.c b/hw/misc/ivshmem.c
+index a2fd0bc365..de49d1b8a8 100644
+--- a/hw/misc/ivshmem.c
++++ b/hw/misc/ivshmem.c
+@@ -832,6 +832,7 @@ static void ivshmem_write_config(PCIDevice *pdev, uint32_t address,
+ 
+ static void ivshmem_common_realize(PCIDevice *dev, Error **errp)
  {
 +    ERRP_GUARD();
-     Property *prop = opaque;
-     CharBackend *be = object_field_prop_ptr(obj, prop);
-     Chardev *s;
+     IVShmemState *s = IVSHMEM_COMMON(dev);
+     Error *err = NULL;
+     uint8_t *pci_conf;
 -- 
 2.41.0
 
