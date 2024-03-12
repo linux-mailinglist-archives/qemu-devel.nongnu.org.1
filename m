@@ -2,85 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8263879675
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 15:35:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3624387968A
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 15:41:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk3DY-0001rF-Np; Tue, 12 Mar 2024 10:35:00 -0400
+	id 1rk3HN-0003VW-Lm; Tue, 12 Mar 2024 10:38:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk3DW-0001lZ-CI; Tue, 12 Mar 2024 10:34:58 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rk3HL-0003V5-P2
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:38:55 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk3DT-0006w7-8i; Tue, 12 Mar 2024 10:34:58 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-6e5dddd3b95so16180b3a.1; 
- Tue, 12 Mar 2024 07:34:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rk3HD-0007iF-2E
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:38:55 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-6e6b22af648so37799b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 07:38:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710254093; x=1710858893; darn=nongnu.org;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=etAG06ZPmlDB4lRPJUkmDhc4BVIz8mW8ThuFfuOP6Ug=;
- b=GnP7hzlbklkRsgji0x0ytjALUu9VdxEuIswpjxvA+J0TN+trgdiIGNZGKxtrOL0dOE
- d488TCuZldoZ/WYWx29TbF/UXORKukLc+HWY0eWSwbEoRbkoXAJEvB64I/xcmOZp9FiZ
- H0rC6utacFpWeDtPLlQL+a/yaQ48C7thOFTz/qy3Xmguu2b8ERc+jHGrsskcHxEuM5NV
- Q9VbSanHpbleG6FL+YIHo2X+x6ohxUAKOdZTKMRweI4CH8l7OAdjE3ytSGITcrJjrZYF
- HbezQG/P4Xk0jTYJIAIAuCO8fmBkTrpZ72VZ+15v/uUwkdEaRTWBiMEnUqgc8xKWwJ0x
- 7sSA==
+ d=linaro.org; s=google; t=1710254323; x=1710859123; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=R0UZa/Kqkq/XhvVg7z6ft3YJNiymrdk7cLXPp9kdhQ8=;
+ b=XMiJaYQKXE7U1o0j3zvC0nec5mmGjYPKjzok/U4Oqug7Df7cDX/soPFn3XfGK5X6bk
+ uiChtZWQ4sPiv87/9uW+O8vWoOyZypgA7xsjD4n29Sr9/buKL++1dT2a/1yT54Oa6/2S
+ g+O/fMinehqvpM2rRg3TrxX5Vd8Oplnlvg75C18jr7VQm3TnxYar7UeWKFt687V0OpJX
+ x1+TzPBVWS36uzTuD/oHCSq6NUc0c2Csjh2+FWQiyWRVwsrceh13rU3ulrMLgbis7bix
+ hLvpnBt51DdFHjcsczp14F6fLA3bhl8MvX8FCDLLR+5msH6dJ2311sRuiKWkcO4R249h
+ FLvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710254093; x=1710858893;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=etAG06ZPmlDB4lRPJUkmDhc4BVIz8mW8ThuFfuOP6Ug=;
- b=jTOwuuOXFKIr2tRmU440RVGfc6ztrtMQ4jMNY4TffpozTPG9TbqsQaHyqx8HaehnY4
- rxxigb6W4dsm12iCmIHqewImEEyMJS6ygmV2TPr5AUfvUcA8WdnQ20zJ8IHhlDenRA6F
- KT6u322a4x3qH2WS4FLMN4NL0bXAbBCkYgohdA2Fp9OA7/TYEAbQLhWmkvNmm0hiqbFQ
- OnjEZBgJB2djCNYI0zjUyQd6DxrMyTAy9JrCu1Pl/XvpuCVmO+cpzSvjrJAss0zr4nEW
- H+es82WHiG59BN8ene/nSNO7N17eMwYFiy/dT+0Z45wwywYyG7aAjmH4/kQIklu5EpL9
- GokA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWpolK/kVIp9bdAEWdn5H5BPI0RTxJIrAUAV6jlaytmriU9JOh533o+i4bMDm5nRDM79HT4guaTYPkT1mjHt7J9W8FIbKaZUfV8GVhsWVypkvHzSI35aZZyyhQ=
-X-Gm-Message-State: AOJu0YxLJJWucg3hbsAxSL9TBLC+IbjhOy4TaFsW/3dAZK2FTUqajooU
- N2B0u+mLFq2/y9JF5MZZ5Tq/BHolshvQtZ7WG2yewmkbCmdNnjXf
-X-Google-Smtp-Source: AGHT+IE0bjZuD08A5k37kxWIZFSe3vrBt9psIAMGzWck8ErYarWjEY7mG/gvuoaF6tC13mLGGHLleQ==
-X-Received: by 2002:a05:6a00:1309:b0:6e6:6e12:493f with SMTP id
- j9-20020a056a00130900b006e66e12493fmr12200315pfu.2.1710254093175; 
- Tue, 12 Mar 2024 07:34:53 -0700 (PDT)
-Received: from localhost ([118.208.155.46]) by smtp.gmail.com with ESMTPSA id
- a24-20020a62e218000000b006e6755f0f6bsm6361472pfi.172.2024.03.12.07.34.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Mar 2024 07:34:52 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 13 Mar 2024 00:34:47 +1000
-Message-Id: <CZRUH5CRDRDU.3NS44E5KB0SSY@wheely>
-Subject: Re: [PATCH v3] docs/system/ppc: Document running Linux on AmigaNG
- machines
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Nicholas Piggin" <npiggin@gmail.com>, "Bernhard Beschow"
- <shentey@gmail.com>, "BALATON Zoltan" <balaton@eik.bme.hu>,
- <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>
-Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>, <clg@kaod.org>
-X-Mailer: aerc 0.15.2
-References: <20240220232200.042DA4E6005@zero.eik.bme.hu>
- <c9dc84be-c7bf-c676-491b-2c6b1164d502@eik.bme.hu>
- <a9814b1b-98d7-29d8-36f9-228f20206917@eik.bme.hu>
- <3E4E29CA-AE91-4C8D-BB51-B3759CF3110F@gmail.com>
- <CZRPETJSO62V.5YV22F323JKC@wheely>
-In-Reply-To: <CZRPETJSO62V.5YV22F323JKC@wheely>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x432.google.com
+ d=1e100.net; s=20230601; t=1710254323; x=1710859123;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=R0UZa/Kqkq/XhvVg7z6ft3YJNiymrdk7cLXPp9kdhQ8=;
+ b=YM0V2l/j8WpUJqTeFaPvtdXFzet4178fYKDDOFHGUU1XY58G3bbnSXDnyMJ3wVl4bt
+ zG+sw84Mdp7FsuaxL1gHyCT4B5FsszivDu3jgpCpwCXLUyFAIgtI2/n7uDfKVu4e9CnQ
+ ewsI6c8OfXx/bDv+BHtzSfOaGuKUM6hYTdcrsGm+U+hi36KCE4DzEtPc1rIKtYhd7HqU
+ qbweQx7PG640SyLJiaSKQUFtMac5g/XzfbSHcaCwpwqeueYCpZMT3B9nZD0LI7BaOqeo
+ mpbWoF1QYuk3s1hAaJr6BJQGFqMOJTuaHfd0TeGohEc7pwD0pk1eYKSTW/+VFOcPVEiu
+ AY6w==
+X-Gm-Message-State: AOJu0YwhLebC1X0Mx6/dzZOYLBae/RyIIssG8Yn4k3H8xfjSpjP1dTZo
+ Mlx7rjma870AEJAnxdO1f34Ullsfcjcjmksp/mpPA+3n4TMgmmJUYYT4TZD3ULbnojiA+ixPMCI
+ 1
+X-Google-Smtp-Source: AGHT+IHJFyWXCQF1B6FPOBD9OUtT9kTq2qgjT0DcxE7A/VV0qmAO50OLMnBie3tOrC0ZCZmqd1Ue7g==
+X-Received: by 2002:a17:90a:f40d:b0:29b:a1de:32d3 with SMTP id
+ ch13-20020a17090af40d00b0029ba1de32d3mr15086588pjb.17.1710254323601; 
+ Tue, 12 Mar 2024 07:38:43 -0700 (PDT)
+Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
+ by smtp.gmail.com with ESMTPSA id
+ jx15-20020a17090b46cf00b0029baa0b1a6csm7492214pjb.24.2024.03.12.07.38.42
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Mar 2024 07:38:43 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PATCH for-9.1 00/15] tcg: Canonicalize operations during optimize
+Date: Tue, 12 Mar 2024 04:38:24 -1000
+Message-Id: <20240312143839.136408-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,61 +88,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Mar 12, 2024 at 8:36 PM AEST, Nicholas Piggin wrote:
-> On Tue Mar 12, 2024 at 7:28 PM AEST, Bernhard Beschow wrote:
-> >
-> >
-> > Am 9. M=C3=A4rz 2024 11:34:56 UTC schrieb BALATON Zoltan <balaton@eik.b=
-me.hu>:
-> > >On Thu, 29 Feb 2024, BALATON Zoltan wrote:
-> > >> On Wed, 21 Feb 2024, BALATON Zoltan wrote:
-> > >>> Documentation on how to run Linux on the amigaone, pegasos2 and
-> > >>> sam460ex machines is currently buried in the depths of the qemu-dev=
-el
-> > >>> mailing list and in the source code. Let's collect the information =
-in
-> > >>> the QEMU handbook for a one stop solution.
-> > >>=20
-> > >> Ping? (Just so it's not missed from next pull.)
-> > >
-> > >Ping for freeze.
-> >
-> > Has this patch been tagged yet? It would really be a pity if it didn't =
-make it into 9.0.
->
-> Will send out a PR today and I'll include it.
->
-> >
-> > FWIW:
-> >
-> > Reviewed-by: Bernhard Beschow <shentey@gmail.com>
->
-> Thanks, always helpful.
+This is a follow-on to 6334a968eec3 ("tcg/optimize: Canonicalize
+subi to addi during optimization"), which I wrote at the end of
+the previous devel cycle, then forgot about during the current.
 
-Oh you are Co-author. Sorry, took some time for light bulb
-to turn on... In that case it needs your SOB to merge.
+In addition to sub->add, canonicalize andc->and etc.
 
-I will have to leave it out of the PR if I don't get that in
-time, but we should be able to get a doc improvement past
-the soft freeze. It's essentially a usability bug-fix.
+The early expansion that we produce for deposit does not fold
+constants well; expand unsupported deposit during optimize.
 
-Thanks,
-Nick
 
->
-> Thanks,
-> Nick
->
-> >
-> > >
-> > >> Regards,
-> > >> BALATON Zoltan
-> > >>=20
-> > >>> Co-authored-by: Bernhard Beschow <shentey@gmail.com>
-> > >>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> > >>> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-> > >>> Tested-by: Bernhard Beschow <shentey@gmail.com>
+r~
 
-[...]
+
+Richard Henderson (15):
+  tcg/optimize: Fold andc with immediate to and
+  tcg/optimize: Fold orc with immediate to or
+  tcg/optimize: Fold eqv with immediate to xor
+  tcg/i386: Do not accept immediate operand for andc
+  tcg/aarch64: Do not accept immediate operand for andc, orc, eqv
+  tcg/arm: Do not accept immediate operand for andc
+  tcg/ppc: Do not accept immediate operand for andc, orc, eqv
+  tcg/loongarch64: Do not accept immediate operand for andc, orc
+  tcg/s390x: Do not accept immediate operand for andc, orc
+  tcg/riscv: Do not accept immediate operand for andc, orc, eqv
+  tcg/riscv: Do not accept immediate operands for sub
+  tcg/riscv: Do not accept zero operands for logicals, multiply or
+    divide
+  tcg/optimize: Fold and to extu during optimize
+  tcg: Use arg_is_const_val in fold_sub_to_neg
+  tcg/optimize: Lower unsupported deposit during optimize
+
+ tcg/i386/tcg-target-con-set.h        |   3 +-
+ tcg/i386/tcg-target-con-str.h        |   1 -
+ tcg/loongarch64/tcg-target-con-set.h |   2 +-
+ tcg/loongarch64/tcg-target-con-str.h |   1 -
+ tcg/riscv/tcg-target-con-set.h       |   4 +-
+ tcg/riscv/tcg-target-con-str.h       |   2 -
+ tcg/optimize.c                       | 318 +++++++++++++++++++++++----
+ tcg/tcg-op.c                         | 244 +++++---------------
+ tcg/aarch64/tcg-target.c.inc         |  50 ++---
+ tcg/arm/tcg-target.c.inc             |   6 +-
+ tcg/i386/tcg-target.c.inc            |  20 +-
+ tcg/loongarch64/tcg-target.c.inc     |  31 +--
+ tcg/ppc/tcg-target.c.inc             |  32 +--
+ tcg/riscv/tcg-target.c.inc           |  58 +----
+ tcg/s390x/tcg-target.c.inc           |  56 +----
+ 15 files changed, 393 insertions(+), 435 deletions(-)
+
+-- 
+2.34.1
 
 
