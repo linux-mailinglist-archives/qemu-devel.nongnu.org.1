@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18FFB879A37
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:08:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9423C879A36
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:08:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk5ZV-0000xY-1C; Tue, 12 Mar 2024 13:05:51 -0400
+	id 1rk5Wa-000258-S4; Tue, 12 Mar 2024 13:02:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk5Vg-00087z-4C; Tue, 12 Mar 2024 13:01:55 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rk5UG-0005xr-Re
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 13:00:35 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk5Vd-0000AH-8G; Tue, 12 Mar 2024 13:01:51 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6e6ac741ff7so545058b3a.0; 
- Tue, 12 Mar 2024 10:01:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rk5UC-0008Jn-H2
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 13:00:23 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2d208be133bso65234561fa.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 10:00:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710262907; x=1710867707; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lX04aDkXFvlRCQh6VqYz9F4OSVcE/Z+9u7GVIjBUl0g=;
- b=d9CIxTmwwwjO0NSWvHtxUV/ZUibzdH3otTp2OFllS5pYGspHy2uVnw+oM/XP7mjiPQ
- Blsn+cFjJLzh7PM6ZtTPObA0pBzKpj1XMLXKrGe3zvd0zaWPiXYCPBm0gks+Ns8BeGXN
- 2wGta1rvgNPpYJpBQPRWbh3V3jArsfGO/54YJK1XllS/jes23Gg6ai5A/gqXeUlOywrl
- hlN8s7IzF+sSxOajwees5zHJkk3UbIWol8E2dA0agZNtWJ/+rjcg3fEwt5VAD//jmNck
- 8Pc1k6DZi6k34UUQl+uZGOeQCuaTYtdd8bQ+gRuQsKqpDe6rsd0MSLTwXWlZfPYmd8T9
- h24g==
+ d=linaro.org; s=google; t=1710262818; x=1710867618; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=D/uNmK++/ud7f+ngB6fiXfdhnqeNrD4IIe9hghiHPPk=;
+ b=WmYFHUY6jzw4kZoE+Q0r9hg4HYTv90gx+w5tTq3c5FqkfzuYCR18MeDAwQdrsVTI+P
+ 8qeNUMklu4uylb7u1mFRWYashBFTivZ+3yxzPIcoNSEVoCvvFJkQgkPV1K7y5mmHxg1E
+ d6khbT3a1QkJ/LBgUM+DpLjOgisUUV5tz+FHiOdskHFYuY/t+XwkyIz9uq/1gCajObna
+ k5+4cz36x00NZbAbF0A01MF7LWRQrCeSWxsxj7sOgeeLoAdJ6f+8BY5HDE5kcc3Gxec8
+ 7VdVgjJaAn0FUOldwr8BV17M24dz7dUDCf0f1a9hOUpMDr3LIGqKUhcPtOPPWFTMehgO
+ JiYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710262907; x=1710867707;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=lX04aDkXFvlRCQh6VqYz9F4OSVcE/Z+9u7GVIjBUl0g=;
- b=tYa0hpIXZ6vuS2vFcMUuMJlP6LYxkThGaD0gpqcs5yJwpBDyJ+GA0TDOmUw978k0oz
- B0zDxw28Dn+udoZ5F3mHrprk4Tb+OgSqoXnYOXoh9BK9EweUP7zu0NTns7aem0FVEHRw
- qlWOHPmqpBXV1HVYDfVLiGc7civW7PGzI/JnkQndzMuOYxHAq1hC/bqYhgoKf/4Gc3oN
- A2fD17VigBwwVZMtvvVR+t4bJTtLjSoa6Ye1hedXtzBkqYcrF5njXA1di9GRcy8GEszr
- nqTmBVu6J2UQkW1kpEDN0BdoyMoyrp52wt6Dj1d9QluMZHPwbvelxsN5wBD4qC4SHxrP
- WC0A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXODQAriTn/D1yiYa9RQIXiL1P2Mx05bcx9gm5SjjNWHxeVMAr31qflnt/6maMj4L1GstsHJxYJI+6pDM8oXVwjxK2u
-X-Gm-Message-State: AOJu0YyIPDpZLNmz3M+HULwepHUrdxvMFWjETiyikghtiKqP4mHZ+kYT
- 9TIGI6c3EdaF2/RMK5/9KLiVmA/Kxfe9phlWkRYWiwCMM/p9IvYtwxT6EX3uBiE=
-X-Google-Smtp-Source: AGHT+IHHFobD/lume3I6+6DrjoB1PFYIfOvW3njMOKAlzt47rWA9eZLOMaGcsQ2ht4ZMbybwaI9dcw==
-X-Received: by 2002:a05:6a20:3d25:b0:1a3:25f9:102b with SMTP id
- y37-20020a056a203d2500b001a325f9102bmr1014246pzi.12.1710262906960; 
- Tue, 12 Mar 2024 10:01:46 -0700 (PDT)
-Received: from wheely.local0.net ([118.208.155.46])
- by smtp.gmail.com with ESMTPSA id
- t34-20020a056a0013a200b006e6a684a6ddsm1362330pfg.220.2024.03.12.10.01.44
+ d=1e100.net; s=20230601; t=1710262818; x=1710867618;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=D/uNmK++/ud7f+ngB6fiXfdhnqeNrD4IIe9hghiHPPk=;
+ b=s/fmtvQmN3ww+XMzmXSIqZDx1vBN8KFGAFz1o/Vo+E7Toj1aUXIsxZ7z3gK2zi64Kw
+ Tu9y+9T4wYosxItKnj05hl3t44PrEglX+WZw1ykFajyRPVlgfXPuALm3AmoCpSnPjyyW
+ UiQ5Y0La9X3AxliARvpY0VowgiNnxQ08+7ZRGMNUrjk+Bci9etantWLXo9ZPNKASZSma
+ BZneU4pcu9qr4GZH77DjiKijwf2XB6og4zVn5n3VVmf21iIytxklbH/QwVYACfY4lxLS
+ oWBj8s8k9eveG0Uijz/j9irQXU9mTJwBjUxDWBeWyblLkri8Bkl5Q605cs71Lozom/Sq
+ SHqQ==
+X-Gm-Message-State: AOJu0YwfvohA7M9kU/SmNvJGYE7P572mQLqwu3rLZeSdAdnbPOP5oBMe
+ LpASSl5exZynNB/O6T3RBls2hBkQncDPNqBuEF/RF+1zacKZh5Pf6MgrFCJCxeA=
+X-Google-Smtp-Source: AGHT+IFDvjuetJIW2htdTjG1Mw0v+5yWjl056nZ8maZa3fQe8R5LysxvlZ0O65wF0tCF7kQ0E1gduQ==
+X-Received: by 2002:a2e:9550:0:b0:2d4:2faa:d93 with SMTP id
+ t16-20020a2e9550000000b002d42faa0d93mr5159573ljh.45.1710262818085; 
+ Tue, 12 Mar 2024 10:00:18 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ x21-20020aa7d395000000b00567fa27e75fsm4079742edq.32.2024.03.12.10.00.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 10:01:46 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
+ Tue, 12 Mar 2024 10:00:17 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 164FC5F7D6;
+ Tue, 12 Mar 2024 17:00:17 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Michael Neuling <mikey@neuling.org>
-Subject: [PULL 38/38] spapr: nested: Introduce cap-nested-papr for Nested PAPR
- API
-Date: Wed, 13 Mar 2024 02:58:49 +1000
-Message-ID: <20240312165851.2240242-39-npiggin@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240312165851.2240242-1-npiggin@gmail.com>
-References: <20240312165851.2240242-1-npiggin@gmail.com>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Yonggang Luo <luoyonggang@gmail.com>
+Subject: [PATCH v2] gitlab: aggressively avoid extra GIT data
+Date: Tue, 12 Mar 2024 17:00:11 +0000
+Message-Id: <20240312170011.1688444-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,178 +95,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+This avoids fetching blobs and tree references for branches we are not
+going to worry about. Also skip tag references which are similarly not
+useful and keep the default --prune. This keeps the .git data to
+around 100M rather than the ~400M even a shallow clone takes.
 
-Introduce a SPAPR capability cap-nested-papr which enables nested PAPR
-API for nested guests. This new API is to enable support for KVM on PowerVM
-and the support in Linux kernel has already merged upstream.
+So we can check the savings we also run a quick du while setting up
+the build.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Neuling <mikey@neuling.org>
-Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+We also have to have special settings of GIT_FETCH_EXTRA_FLAGS for the
+Windows build, the migration legacy test and the custom runners. In
+the case of the custom runners we also move the free floating variable
+to the runner template.
+
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+
 ---
- hw/ppc/spapr.c         |  2 ++
- hw/ppc/spapr_caps.c    | 54 ++++++++++++++++++++++++++++++++++++++++++
- hw/ppc/spapr_nested.c  |  8 ++++---
- include/hw/ppc/spapr.h |  6 ++++-
- 4 files changed, 66 insertions(+), 4 deletions(-)
+v2
+  - make custom runners follow the legacy options
+---
+ .gitlab-ci.d/base.yml               | 4 ++++
+ .gitlab-ci.d/buildtest-template.yml | 1 +
+ .gitlab-ci.d/buildtest.yml          | 2 ++
+ .gitlab-ci.d/custom-runners.yml     | 5 +++--
+ .gitlab-ci.d/windows.yml            | 2 ++
+ 5 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index aaf73781b0..99d3fcb185 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -2166,6 +2166,7 @@ static const VMStateDescription vmstate_spapr = {
-         &vmstate_spapr_cap_fwnmi,
-         &vmstate_spapr_fwnmi,
-         &vmstate_spapr_cap_rpt_invalidate,
-+        &vmstate_spapr_cap_nested_papr,
-         NULL
-     }
- };
-@@ -4732,6 +4733,7 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
-     smc->default_caps.caps[SPAPR_CAP_IBS] = SPAPR_CAP_WORKAROUND;
-     smc->default_caps.caps[SPAPR_CAP_HPT_MAXPAGESIZE] = 16; /* 64kiB */
-     smc->default_caps.caps[SPAPR_CAP_NESTED_KVM_HV] = SPAPR_CAP_OFF;
-+    smc->default_caps.caps[SPAPR_CAP_NESTED_PAPR] = SPAPR_CAP_OFF;
-     smc->default_caps.caps[SPAPR_CAP_LARGE_DECREMENTER] = SPAPR_CAP_ON;
-     smc->default_caps.caps[SPAPR_CAP_CCF_ASSIST] = SPAPR_CAP_ON;
-     smc->default_caps.caps[SPAPR_CAP_FWNMI] = SPAPR_CAP_ON;
-diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
-index e889244e52..62abf1ba9d 100644
---- a/hw/ppc/spapr_caps.c
-+++ b/hw/ppc/spapr_caps.c
-@@ -487,6 +487,50 @@ static void cap_nested_kvm_hv_apply(SpaprMachineState *spapr,
-             error_append_hint(errp, "Try appending -machine cap-nested-hv=off "
-                                     "or use threads=1 with -smp\n");
-         }
-+        if (spapr_nested_api(spapr) &&
-+            spapr_nested_api(spapr) != NESTED_API_KVM_HV) {
-+            error_setg(errp, "Nested-HV APIs are mutually exclusive");
-+            error_append_hint(errp, "Please use either cap-nested-hv or "
-+                                    "cap-nested-papr to proceed.\n");
-+            return;
-+        } else {
-+            spapr->nested.api = NESTED_API_KVM_HV;
-+        }
-+    }
-+}
-+
-+static void cap_nested_papr_apply(SpaprMachineState *spapr,
-+                                    uint8_t val, Error **errp)
-+{
-+    ERRP_GUARD();
-+    PowerPCCPU *cpu = POWERPC_CPU(first_cpu);
-+    CPUPPCState *env = &cpu->env;
-+
-+    if (!val) {
-+        /* capability disabled by default */
-+        return;
-+    }
-+
-+    if (tcg_enabled()) {
-+        if (!(env->insns_flags2 & PPC2_ISA300)) {
-+            error_setg(errp, "Nested-PAPR only supported on POWER9 and later");
-+            error_append_hint(errp,
-+                              "Try appending -machine cap-nested-papr=off\n");
-+            return;
-+        }
-+        if (spapr_nested_api(spapr) &&
-+            spapr_nested_api(spapr) != NESTED_API_PAPR) {
-+            error_setg(errp, "Nested-HV APIs are mutually exclusive");
-+            error_append_hint(errp, "Please use either cap-nested-hv or "
-+                                    "cap-nested-papr to proceed.\n");
-+            return;
-+        } else {
-+            spapr->nested.api = NESTED_API_PAPR;
-+        }
-+    } else if (kvm_enabled()) {
-+        error_setg(errp, "KVM implementation does not support Nested-PAPR");
-+        error_append_hint(errp,
-+                          "Try appending -machine cap-nested-papr=off\n");
-     }
- }
+diff --git a/.gitlab-ci.d/base.yml b/.gitlab-ci.d/base.yml
+index 2dd8a9b57c..bf3d8efab6 100644
+--- a/.gitlab-ci.d/base.yml
++++ b/.gitlab-ci.d/base.yml
+@@ -24,6 +24,10 @@ variables:
+     # Each script line from will be in a collapsible section in the job output
+     # and show the duration of each line.
+     FF_SCRIPT_SECTIONS: 1
++    # The project has a fairly fat GIT repo so we try and avoid bringing in things
++    # we don't need. The --filter options avoid blobs and tree references we aren't going to use
++    # and we also avoid fetching tags.
++    GIT_FETCH_EXTRA_FLAGS: --filter=blob:none --filter=tree:0 --no-tags --prune --quiet
  
-@@ -735,6 +779,15 @@ SpaprCapabilityInfo capability_table[SPAPR_CAP_NUM] = {
-         .type = "bool",
-         .apply = cap_nested_kvm_hv_apply,
-     },
-+    [SPAPR_CAP_NESTED_PAPR] = {
-+        .name = "nested-papr",
-+        .description = "Allow Nested HV (PAPR API)",
-+        .index = SPAPR_CAP_NESTED_PAPR,
-+        .get = spapr_cap_get_bool,
-+        .set = spapr_cap_set_bool,
-+        .type = "bool",
-+        .apply = cap_nested_papr_apply,
-+    },
-     [SPAPR_CAP_LARGE_DECREMENTER] = {
-         .name = "large-decr",
-         .description = "Allow Large Decrementer",
-@@ -919,6 +972,7 @@ SPAPR_CAP_MIG_STATE(sbbc, SPAPR_CAP_SBBC);
- SPAPR_CAP_MIG_STATE(ibs, SPAPR_CAP_IBS);
- SPAPR_CAP_MIG_STATE(hpt_maxpagesize, SPAPR_CAP_HPT_MAXPAGESIZE);
- SPAPR_CAP_MIG_STATE(nested_kvm_hv, SPAPR_CAP_NESTED_KVM_HV);
-+SPAPR_CAP_MIG_STATE(nested_papr, SPAPR_CAP_NESTED_PAPR);
- SPAPR_CAP_MIG_STATE(large_decr, SPAPR_CAP_LARGE_DECREMENTER);
- SPAPR_CAP_MIG_STATE(ccf_assist, SPAPR_CAP_CCF_ASSIST);
- SPAPR_CAP_MIG_STATE(fwnmi, SPAPR_CAP_FWNMI);
-diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
-index ce3490bcf2..936659b4c0 100644
---- a/hw/ppc/spapr_nested.c
-+++ b/hw/ppc/spapr_nested.c
-@@ -13,13 +13,15 @@
- void spapr_nested_reset(SpaprMachineState *spapr)
- {
-     if (spapr_get_cap(spapr, SPAPR_CAP_NESTED_KVM_HV)) {
--        spapr->nested.api = NESTED_API_KVM_HV;
-         spapr_unregister_nested_hv();
-         spapr_register_nested_hv();
--    } else {
--        spapr->nested.api = 0;
-+    } else if (spapr_get_cap(spapr, SPAPR_CAP_NESTED_PAPR)) {
-         spapr->nested.capabilities_set = false;
-+        spapr_unregister_nested_papr();
-+        spapr_register_nested_papr();
-         spapr_nested_gsb_init();
-+    } else {
-+        spapr->nested.api = 0;
-     }
- }
+   interruptible: true
  
-diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-index 6223873641..4aaf23d28f 100644
---- a/include/hw/ppc/spapr.h
-+++ b/include/hw/ppc/spapr.h
-@@ -81,8 +81,10 @@ typedef enum {
- #define SPAPR_CAP_RPT_INVALIDATE        0x0B
- /* Support for AIL modes */
- #define SPAPR_CAP_AIL_MODE_3            0x0C
-+/* Nested PAPR */
-+#define SPAPR_CAP_NESTED_PAPR           0x0D
- /* Num Caps */
--#define SPAPR_CAP_NUM                   (SPAPR_CAP_AIL_MODE_3 + 1)
-+#define SPAPR_CAP_NUM                   (SPAPR_CAP_NESTED_PAPR + 1)
+diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
+index 4fbfeb6667..22045add80 100644
+--- a/.gitlab-ci.d/buildtest-template.yml
++++ b/.gitlab-ci.d/buildtest-template.yml
+@@ -14,6 +14,7 @@
+     - export CCACHE_DIR="$CCACHE_BASEDIR/ccache"
+     - export CCACHE_MAXSIZE="500M"
+     - export PATH="$CCACHE_WRAPPERSDIR:$PATH"
++    - du -sh .git
+     - mkdir build
+     - cd build
+     - ccache --zero-stats
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index c7d92fc301..cfdff175c3 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -187,6 +187,8 @@ build-previous-qemu:
+   variables:
+     IMAGE: opensuse-leap
+     TARGETS: x86_64-softmmu aarch64-softmmu
++    # Override the default flags as we need more to grab the old version
++    GIT_FETCH_EXTRA_FLAGS: --prune --quiet
+   before_script:
+     - export QEMU_PREV_VERSION="$(sed 's/\([0-9.]*\)\.[0-9]*/v\1.0/' VERSION)"
+     - git remote add upstream https://gitlab.com/qemu-project/qemu
+diff --git a/.gitlab-ci.d/custom-runners.yml b/.gitlab-ci.d/custom-runners.yml
+index 8e5b9500f4..a0e79acd39 100644
+--- a/.gitlab-ci.d/custom-runners.yml
++++ b/.gitlab-ci.d/custom-runners.yml
+@@ -10,13 +10,14 @@
+ # gitlab-runner.  To avoid problems that gitlab-runner can cause while
+ # reusing the GIT repository, let's enable the clone strategy, which
+ # guarantees a fresh repository on each job run.
+-variables:
+-  GIT_STRATEGY: clone
  
- /*
-  * Capability Values
-@@ -592,6 +594,7 @@ struct SpaprMachineState {
- #define H_GUEST_CREATE_VCPU      0x474
- #define H_GUEST_GET_STATE        0x478
- #define H_GUEST_SET_STATE        0x47C
-+#define H_GUEST_RUN_VCPU         0x480
- #define H_GUEST_DELETE           0x488
- 
- #define MAX_HCALL_OPCODE         H_GUEST_DELETE
-@@ -996,6 +999,7 @@ extern const VMStateDescription vmstate_spapr_cap_sbbc;
- extern const VMStateDescription vmstate_spapr_cap_ibs;
- extern const VMStateDescription vmstate_spapr_cap_hpt_maxpagesize;
- extern const VMStateDescription vmstate_spapr_cap_nested_kvm_hv;
-+extern const VMStateDescription vmstate_spapr_cap_nested_papr;
- extern const VMStateDescription vmstate_spapr_cap_large_decr;
- extern const VMStateDescription vmstate_spapr_cap_ccf_assist;
- extern const VMStateDescription vmstate_spapr_cap_fwnmi;
+ # All custom runners can extend this template to upload the testlog
+ # data as an artifact and also feed the junit report
+ .custom_runner_template:
+   extends: .base_job_template
++  variables:
++    GIT_STRATEGY: clone
++    GIT_FETCH_EXTRA_FLAGS: --no-tags --prune --quiet
+   artifacts:
+     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
+     expire_in: 7 days
+diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
+index f116b8012d..94834269ec 100644
+--- a/.gitlab-ci.d/windows.yml
++++ b/.gitlab-ci.d/windows.yml
+@@ -28,6 +28,8 @@ msys2-64bit:
+     # qTests don't run successfully with "--without-default-devices",
+     # so let's exclude the qtests from CI for now.
+     TEST_ARGS: --no-suite qtest
++    # The Windows git is a bit older so override the default
++    GIT_FETCH_EXTRA_FLAGS: --no-tags --prune --quiet
+   artifacts:
+     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
+     expire_in: 7 days
 -- 
-2.42.0
+2.39.2
 
 
