@@ -2,87 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF4D4878FA4
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 09:24:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0480A878FAA
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 09:26:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjxQw-0007ZT-Ol; Tue, 12 Mar 2024 04:24:26 -0400
+	id 1rjxR2-0008Mb-BF; Tue, 12 Mar 2024 04:24:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxQb-0006xF-1b
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:24:08 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxQj-00073f-Of
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:24:18 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxQX-0001Iy-Os
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:24:04 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-51344bebe2fso3943224e87.2
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 01:24:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxQe-0001Jr-03
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:24:13 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4132e548343so8268215e9.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 01:24:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710231839; x=1710836639; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710231846; x=1710836646; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6MhT9qADAUndB9gfklgv3b9HSVnHfN7uCmsIepMqwLg=;
- b=xWL/6C/BEhhR51C6D4BIFCZ9he3dZhe3h8yGjAGuPxPUynaUstIjNGhv3hfM8WHMUr
- IpbDVflnh/lI4PFxfYZU/he+8bdUBvD73vaVLh5IodJ7TY/9dfloteeu8sIVgfk4d0t4
- XogbT/MWRl16O9NXDorttmePUj9RV1xsKVWPSsbNCAClCvbTDYmBE8rPVj8lUBg5kZIn
- 6DaVzbTaZTDAubClBWVxE7QTrD9gjqKu6WOid3UV/ZAwbcHOP+9YDtIv0QyNLEY+8NEX
- TigUGhlb6D04q+t5fA2n+DLe5Z+CeoUhVf6+z1S/Mm5qllXInkRPPCw0+qR3Z25Du7r4
- v1YA==
+ bh=fRVInX4y8Fynbgdt9Z+8X8kf5kplDmxUXnVvwmK5Gtw=;
+ b=N9i8HuGZkXNEGHjItbgxRDdhWxckjjRcqMu4wHR15NuXt5uWOD0fw1C3x+hP0gpgsp
+ kVPYStImkB2auRj8MPgPSpL0xisXKEuW1eGzv9caRJyE34oh319cHZ0QNoFrvCRO+2og
+ NELFdSpKx106/mnjH3o0nGiDICNRGdzKGedApoBO2yZ+hf/aJ5OadaVJQrnNGyCNunua
+ aJ6JJ4RhYmRRkxKl6+qhZhCZNvUTbvK+qSL9Tba54jnotTOXVhDPhTZ5ZYlSD2JwhzmF
+ xjBBgU0HrLVbDolKwH+nxwY/j5v/+vCalXbyv0bbvLr7lQxmpaZJeVRHp7c+vgSe4bhm
+ +cfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710231839; x=1710836639;
+ d=1e100.net; s=20230601; t=1710231846; x=1710836646;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6MhT9qADAUndB9gfklgv3b9HSVnHfN7uCmsIepMqwLg=;
- b=cjrlnKiXSlcwPi6waP3ZU18JxsQMffMdBOc/Dq+CzLO7QWk3AlstSyrTg12OyiBlcd
- yNsg0MT+wbEMkd43By/C4iY/x8CvXWq/Z+UOLD15UKKVlwx4ycPXiPjbVIP9zQwLOhOD
- 8QgzzzLQhhygNxvDMFqFHf2mDtHWn35EK79Lig3n8/YniXNf5AcgC6sVMKLLcj1C9AZb
- wCz/4ZueVESers9GgxIfXfgveN+agxhUq2puXw+H59Ho/v833U1VOY9+YoSd2O/UwFZ2
- Sq26TivOEclqr3836xAs6xQPJbukfLh/DhAmSLeQ04XyDzj2vLaszsMVUoOh2t0k/0co
- A3Mg==
-X-Gm-Message-State: AOJu0YyDjXGJcwIF0EIXlJUfwKjtcgsa9FHc6o6P4LCiqb6HcS9lHLLK
- JcRwcRbZGauZpfeZy0HeeevFS61uL+PZzaABjrtWGBcpPSvtn1YnHyJ4Rfmx8Mw5Z7bZNHA03mO
- N
-X-Google-Smtp-Source: AGHT+IHoqlh31+dI74u90bk1+IwHt2YR/TWPB1r4Y+swRDaL9d/DUXa3yzuFzikZXHElZo/cUxSlGQ==
-X-Received: by 2002:ac2:42c8:0:b0:512:d78e:90fa with SMTP id
- n8-20020ac242c8000000b00512d78e90famr5379719lfl.15.1710231839612; 
- Tue, 12 Mar 2024 01:23:59 -0700 (PDT)
+ bh=fRVInX4y8Fynbgdt9Z+8X8kf5kplDmxUXnVvwmK5Gtw=;
+ b=J09HgxQ0NHF9ksbq2pKIymuUXuOLNK0qQPaBwJMGDzX3o+CUR+dMZlyIzhEk3WpkcO
+ X3NhZEzcooUeg2Yt5+TxaiuQb9cglky9Whg6XcphvXFiVMQO7Z4myOGjKIO5RZHsK7r9
+ 6s1XUjuTB8ddQNYIYLuCTpojSZ2tHvWK/8PwucdDeXNAXJDXhDpDRMHdK9c/SuykxKUi
+ L1w+O6V4Fge9gT0RbI1eS02E/kTDP0bdFkfEL5XJoxz3ysfLSIYDPvzYEkSmqEDMEuDO
+ 2JgnEoHIxxhXoDOrSpLSAkFqRfaZ7hJBvXmur5eB4kk7R926V6cixbnbErusdY3iCnit
+ HJjA==
+X-Gm-Message-State: AOJu0YwXihJmt+WeoG1lDSXGFISdfapI6Sox6rGysZUtwxnd6WIGHVk1
+ 3hFf5Lcyn0KTWqd2hDF7iq7CJer5ibdr3modUEx6htc0cq9rfs5vzx7x1NQ490yLFtVIvxYuTzp
+ O
+X-Google-Smtp-Source: AGHT+IHx0OY2tF7nRKlO0N7m57X7g11lE1rN9UvJzvw3qyBrIGrBcuYUvjn+D2+UiWWFRc9EiSXhnQ==
+X-Received: by 2002:a05:600c:3108:b0:412:7489:c8c0 with SMTP id
+ g8-20020a05600c310800b004127489c8c0mr6935572wmo.34.1710231846062; 
+ Tue, 12 Mar 2024 01:24:06 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.206.139])
  by smtp.gmail.com with ESMTPSA id
- l5-20020a056000022500b0033e712b1d9bsm8482375wrz.77.2024.03.12.01.23.57
+ m15-20020a05600c3b0f00b00413218ca719sm10882749wms.4.2024.03.12.01.24.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Mar 2024 01:23:59 -0700 (PDT)
+ Tue, 12 Mar 2024 01:24:05 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 12/13] meson.build: Always require an objc compiler on macos
- hosts
-Date: Tue, 12 Mar 2024 09:22:37 +0100
-Message-ID: <20240312082239.69696-13-philmd@linaro.org>
+ devel@lists.libvirt.org
+Subject: [PULL 13/13] docs/about/deprecated.rst: Move SMP configurations item
+ to system emulator section
+Date: Tue, 12 Mar 2024 09:22:38 +0100
+Message-ID: <20240312082239.69696-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240312082239.69696-1-philmd@linaro.org>
 References: <20240312082239.69696-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,46 +95,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Zhao Liu <zhao1.liu@intel.com>
 
-We currently only insist that an ObjectiveC compiler is present on
-macos hosts if we're building the Cocoa UI.  However, since then
-we've added some other parts of QEMU which are also written in ObjC:
-the coreaudio audio backend, and the vmnet net backend.  This means
-that if you try to configure QEMU on macos with --disable-cocoa the
-build will fail:
+In the commit 54c4ea8f3ae6 ("hw/core/machine-smp: Deprecate unsupported
+'parameter=1' SMP configurations"), the SMP related item is put under
+the section "User-mode emulator command line arguments" instead of
+"System emulator command line arguments".
 
-../meson.build:3741:13: ERROR: No host machine compiler for 'audio/coreaudio.m'
+-smp is a system emulator command, so move SMP configurations item to
+system emulator section.
 
-Since in practice any macos host will have an ObjC compiler
-available, rather than trying to gate the compiler detection on an
-increasingly complicated list of every bit of QEMU that uses ObjC,
-just require it unconditionally on macos hosts.
-
-Resolves https://gitlab.com/qemu-project/qemu/-/issues/2138
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20240311133334.3991537-1-peter.maydell@linaro.org>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20240312071512.3283513-1-zhao1.liu@linux.intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/about/deprecated.rst | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index f9dbe7634e..e3fab8ce9f 100644
---- a/meson.build
-+++ b/meson.build
-@@ -66,7 +66,7 @@ if host_os == 'windows' and add_languages('cpp', required: false, native: false)
-   cxx = meson.get_compiler('cpp')
- endif
- if host_os == 'darwin' and \
--   add_languages('objc', required: get_option('cocoa'), native: false)
-+   add_languages('objc', required: true, native: false)
-   all_languages += ['objc']
-   objc = meson.get_compiler('objc')
- endif
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index dfd681cd02..2f9277c915 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -47,16 +47,6 @@ as short-form boolean values, and passed to plugins as ``arg_name=on``.
+ However, short-form booleans are deprecated and full explicit ``arg_name=on``
+ form is preferred.
+ 
+-User-mode emulator command line arguments
+------------------------------------------
+-
+-``-p`` (since 9.0)
+-''''''''''''''''''
+-
+-The ``-p`` option pretends to control the host page size.  However,
+-it is not possible to change the host page size, and using the
+-option only causes failures.
+-
+ ``-smp`` (Unsupported "parameter=1" SMP configurations) (since 9.0)
+ '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+@@ -71,6 +61,16 @@ configurations (e.g. -smp drawers=1,books=1,clusters=1 for x86 PC machine) is
+ marked deprecated since 9.0, users have to ensure that all the topology members
+ described with -smp are supported by the target machine.
+ 
++User-mode emulator command line arguments
++-----------------------------------------
++
++``-p`` (since 9.0)
++''''''''''''''''''
++
++The ``-p`` option pretends to control the host page size.  However,
++it is not possible to change the host page size, and using the
++option only causes failures.
++
+ QEMU Machine Protocol (QMP) commands
+ ------------------------------------
+ 
 -- 
 2.41.0
 
