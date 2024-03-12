@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CEFD87997B
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 17:59:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4EA879997
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:03:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk5TK-0004Zi-Ot; Tue, 12 Mar 2024 12:59:26 -0400
+	id 1rk5TL-0004eI-SN; Tue, 12 Mar 2024 12:59:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk5T3-0004WO-Kf; Tue, 12 Mar 2024 12:59:09 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1rk5T6-0004YW-Tp; Tue, 12 Mar 2024 12:59:16 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk5T1-0007uI-Lw; Tue, 12 Mar 2024 12:59:09 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6e649a2548cso4017740b3a.3; 
- Tue, 12 Mar 2024 09:59:05 -0700 (PDT)
+ id 1rk5T4-0007ug-4t; Tue, 12 Mar 2024 12:59:12 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6e6a9fafacdso560625b3a.2; 
+ Tue, 12 Mar 2024 09:59:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710262745; x=1710867545; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=vB/tXVL4GK4kgvODQSwg7p24l5SVJznS/b4/tkZTlvg=;
- b=Adf12ePbQ09tLR57qnDQIYgBAAj+ebLMb1FxjDt3jwXIPFVW/cZ3TI1g8vbcbbDRiZ
- ka170oWve+5iFG+TarzYfT2LhVJL2V1Rhk4aDoYHATAEdw/6cLWgSBzCEr6n9oY5pDt4
- IweheLuzos59qPdzqFbZ/Huk6bK33LW//RmvPDV1NPz5qJ+hB5qThF+RWoS6KnuRUT3r
- 02qMn+/jYJDFGXvJSwmr7bc9XsKP7Gbr9L80bwIQmZVP9a5hBhLdib2wwkMkzhvJC0rz
- fQ2xSMABSdENYU5tE5j+tQe6DRyFUtzQ7D1vJTLpbGOdmiog2dkw4+fyYn4SwIMLr2L2
- O5eA==
+ d=gmail.com; s=20230601; t=1710262748; x=1710867548; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=AVLie48lBIC5AzjD7aKAS9bkmqBPGd9+Xi/qx49qlpw=;
+ b=lezqaG75+25ck6m3g3SDed714nGhLZS2M/heiQf0j+ifOMBJQTZZ4CDU6APW92A7D9
+ 8Qp6fIbF05Z2MiUMMmeG9udS1FSl7J1Y/wLp5no71vRhfckC6OS5ANEk9aaxszCf7XPX
+ JYWrrnhG1JRY00FsGJZn6dcRYd+fQvuDSzWFROKoo0JGh/A9J2reKzfD58Ze2Oc9SV/N
+ wU8iX8OcaUwMFiIsgc3+yH/pXJibL6xixAknyYN45noCl1k690nCGCAc1tFRQYfnDOT2
+ LUwYMQNcIK9E1ruFgUEt86Phh8ZWYWBr71QDML95q8G/qKJFka05QtnWHdBuEdHGoVDz
+ 2mfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710262745; x=1710867545;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=vB/tXVL4GK4kgvODQSwg7p24l5SVJznS/b4/tkZTlvg=;
- b=Nv+CzxlrowcEsbAYDNQSKQvBI+0eXInGaFFjq/2hsnehOOjs9A40EreAbacjQbXsTH
- /6txIdiZflTJij9YckrAWLEBJDM12iH3bhlTuw9TW+ktjJwMZKkNyGkQJsTCS1Os+aIm
- s9LC6ReK4/bGWZB7IaJWklkVT4qb4sB8CcYZnJYcxMtLmWBI4yqTbrDixjE7PbEKXf6x
- TPaJRUZZLrTG+B2WuGlKRebTPp53ruMDfjFKhzwr97rfd36SYHBkBzyVJmZ7iKlBUU31
- pA1x/FSDRj659bb9eli0ehR5ATpIHeoaXNZX3misrlV+gMLNoJtgW/pTsCI0Leb3j1HJ
- 684g==
+ d=1e100.net; s=20230601; t=1710262748; x=1710867548;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=AVLie48lBIC5AzjD7aKAS9bkmqBPGd9+Xi/qx49qlpw=;
+ b=QcRshae4g+HVWxBUz0QjAcuKHcjYGpgIlM7ydEpswaUfogEOFiPnHT9YXd1ufegBEa
+ Kl/Do4DiCU3W74c+ggPTGfgo/B+M/t1FaWW8YnLRClp5pXTawuBx33w6RpAjKoWl7iqt
+ KbGbBgHfH/PfsWum/Xnu6GjtpWIl+3Ok2sXZpozyVIyKVMEVPfEfJKfY+f8qgifOoMyP
+ qIBgSZTVs4gRBW7nCgpitclpbTHdYSiFwkxpPIpuSCtwaJHxYGUfJAwac6v+4BIux9Vj
+ XVnH0+i2YxxnT+CYACFIiBYGSn1UcnH2f3u+FrVzngAYOd81KWWmqlwZre5RT3GNTfPU
+ vc/w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWIyWjFDsqllmkfOUz5fY5cyt1ARNSEcQ2tGF6KiUagV+CqTI8MeAWwqoLWcUwJzQaSsauDyAGhAQyh0OkTLqG2h0e+
-X-Gm-Message-State: AOJu0YwjFtz6huhw8sDWxNPJaMS8KWiG7MdXAE1xUMomwH++7G5vCLkW
- FzSsYFOLL5dOczTtZ4jq9/cVly5Mm8stCeCD9x08LfI5U1OQJR8PW+gMDDVeONw=
-X-Google-Smtp-Source: AGHT+IE4TfgGYa3uXa7dlDTsogiB3zGs2t1hjj3KJjmRoLpTMjQxjxSAJnb2u8aEI1eM0h8Ky5ShYQ==
-X-Received: by 2002:a05:6a20:9c8e:b0:1a3:1b95:7cf with SMTP id
- mj14-20020a056a209c8e00b001a31b9507cfmr992569pzb.56.1710262744505; 
- Tue, 12 Mar 2024 09:59:04 -0700 (PDT)
+ AJvYcCV5HAkwPGOj20aTLtMOMYQOkQlKllsByM511SGkZKQ13ARzoCqr08DyPxR2sk0pZHswh2lqVevZ+S67BjBeQfsDSYCR
+X-Gm-Message-State: AOJu0Ywismwtaeb3iZk8KUHtZ/YPd7BeaW1jStJIlyl9MI+FZqY52kad
+ GUxfYbxwlR4IA3+1Jpb2LsKIoOoXL55fOvGVdQipP52XfyMIHrJoPYXD+Rp0oek=
+X-Google-Smtp-Source: AGHT+IHhWglLuzxH6nmx7sh/7myZzdrDAM4wrIOPgfoKRBf1P9RDHyfLgSZTEanFlO1G9GnFXsw8gw==
+X-Received: by 2002:a05:6a00:3a2a:b0:6e6:4705:a07f with SMTP id
+ fj42-20020a056a003a2a00b006e64705a07fmr11329pfb.31.1710262748005; 
+ Tue, 12 Mar 2024 09:59:08 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- t34-20020a056a0013a200b006e6a684a6ddsm1362330pfg.220.2024.03.12.09.59.01
+ t34-20020a056a0013a200b006e6a684a6ddsm1362330pfg.220.2024.03.12.09.59.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 09:59:04 -0700 (PDT)
+ Tue, 12 Mar 2024 09:59:07 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 00/38] ppc-for-9.0-2 queue
-Date: Wed, 13 Mar 2024 02:58:11 +1000
-Message-ID: <20240312165851.2240242-1-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PULL 01/38] target/ppc: Fix GDB SPR regnum indexing
+Date: Wed, 13 Mar 2024 02:58:12 +1000
+Message-ID: <20240312165851.2240242-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20240312165851.2240242-1-npiggin@gmail.com>
+References: <20240312165851.2240242-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,115 +94,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 35ac6831d98e18e2c78c85c93e3a6ca1f1ae3e58:
+Fix an off by one bug.
 
-  Merge tag 'net-pull-request' of https://github.com/jasowang/qemu into staging (2024-03-12 13:42:57 +0000)
+Fixes: 1b53948ff8f70 ("target/ppc: Use GDBFeature for dynamic XML")
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ target/ppc/gdbstub.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-are available in the Git repository at:
+diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
+index 122ea9d0c0..80a2e7990b 100644
+--- a/target/ppc/gdbstub.c
++++ b/target/ppc/gdbstub.c
+@@ -324,6 +324,9 @@ static void gdb_gen_spr_feature(CPUState *cs)
+             continue;
+         }
+ 
++        gdb_feature_builder_append_reg(&builder, g_ascii_strdown(spr->name, -1),
++                                       TARGET_LONG_BITS, num_regs,
++                                       "int", "spr");
+         /*
+          * GDB identifies registers based on the order they are
+          * presented in the XML. These ids will not match QEMU's
+@@ -334,10 +337,6 @@ static void gdb_gen_spr_feature(CPUState *cs)
+          */
+         spr->gdb_id = num_regs;
+         num_regs++;
+-
+-        gdb_feature_builder_append_reg(&builder, g_ascii_strdown(spr->name, -1),
+-                                       TARGET_LONG_BITS, num_regs,
+-                                       "int", "spr");
+     }
+ 
+     gdb_feature_builder_end(&builder);
+-- 
+2.42.0
 
-  https://gitlab.com/npiggin/qemu.git tags/pull-ppc-for-9.0-2-20240313
-
-for you to fetch changes up to e1617b845104032f0aaad9b91dcda56c7c437998:
-
-  spapr: nested: Introduce cap-nested-papr for Nested PAPR API (2024-03-13 02:47:04 +1000)
-
-----------------------------------------------------------------
-* PAPR nested hypervisor host implementation for spapr TCG
-* excp_helper.c code cleanups and improvements
-* Move more ops to decodetree
-* Deprecate pseries-2.12 machines and P9 and P10 DD1.0 CPUs
-* Document running Linux on AmigaNG
-* Update dt feature advertising POWER CPUs.
-* Add P10 PMU SPRs
-* Improve pnv topology calculation for SMT8 CPUs.
-* Various bug fixes.
-
-----------------------------------------------------------------
-BALATON Zoltan (8):
-      docs/system/ppc: Document running Linux on AmigaNG machines
-      target/ppc: Use env_cpu for cpu_abort in excp_helper
-      target/ppc: Readability improvements in exception handlers
-      target/ppc: Add gen_exception_err_nip() function
-      target/ppc: Clean up ifdefs in excp_helper.c, part 1
-      target/ppc: Clean up ifdefs in excp_helper.c, part 2
-      target/ppc: Clean up ifdefs in excp_helper.c, part 3
-      target/ppc: Remove interrupt handler wrapper functions
-
-Benjamin Gray (1):
-      ppc/spapr: Add pa-features for POWER10 machines
-
-Caleb Schlossin (1):
-      ppc/pnv: Improve pervasive topology calculation for big-core
-
-Chinmay Rath (1):
-      target/ppc: Move add and subf type fixed-point arithmetic instructions to decodetree
-
-Cédric Le Goater (1):
-      MAINTAINERS: Remove myself as reviewer from PPC
-
-Harsh Prateek Bora (14):
-      spapr: nested: register nested-hv api hcalls only for cap-nested-hv
-      spapr: nested: move nested part of spapr_get_pate into spapr_nested.c
-      spapr: nested: Introduce SpaprMachineStateNested to store related info.
-      spapr: nested: keep nested-hv related code restricted to its API.
-      spapr: nested: Document Nested PAPR API
-      spapr: nested: Introduce H_GUEST_[GET|SET]_CAPABILITIES hcalls.
-      spapr: nested: Introduce H_GUEST_[CREATE|DELETE] hcalls.
-      spapr: nested: Introduce H_GUEST_CREATE_VCPU hcall.
-      spapr: nested: Extend nested_ppc_state for nested PAPR API
-      spapr: nested: Initialize the GSB elements lookup table.
-      spapr: nested: Introduce H_GUEST_[GET|SET]_STATE hcalls.
-      spapr: nested: Use correct source for parttbl info for nested PAPR API.
-      spapr: nested: Introduce H_GUEST_RUN_VCPU hcall.
-      spapr: nested: Introduce cap-nested-papr for Nested PAPR API
-
-Madhavan Srinivasan (1):
-      target/ppc: Add power10 pmu SPRs
-
-Nicholas Piggin (10):
-      target/ppc: Fix GDB SPR regnum indexing
-      target/ppc: Prevent supervisor from modifying MSR[ME]
-      spapr: set MSR[ME] and MSR[FP] on client entry
-      ppc: Drop support for POWER9 and POWER10 DD1 chips
-      target/ppc: POWER10 does not have transactional memory
-      ppc/spapr|pnv: Remove SAO from pa-features
-      ppc/spapr: Remove copy-paste from pa-features
-      ppc/spapr: Adjust ibm,pa-features for POWER9
-      ppc/pnv: Permit ibm,pa-features set per machine variant
-      ppc/pnv: Set POWER9, POWER10 ibm,pa-features bits
-
-Philippe Mathieu-Daudé (1):
-      docs: Deprecate the pseries-2.12 machines
-
- MAINTAINERS                                |    4 +-
- docs/about/deprecated.rst                  |    6 +-
- docs/devel/nested-papr.txt                 |  119 +++
- docs/system/ppc/amigang.rst                |  161 +++
- docs/system/target-ppc.rst                 |    1 +
- hw/ppc/pnv.c                               |  175 +++-
- hw/ppc/pnv_core.c                          |    8 +-
- hw/ppc/ppc.c                               |   10 +
- hw/ppc/spapr.c                             |   98 +-
- hw/ppc/spapr_caps.c                        |   54 +
- hw/ppc/spapr_cpu_core.c                    |    8 +-
- hw/ppc/spapr_hcall.c                       |   24 +-
- hw/ppc/spapr_nested.c                      | 1556 +++++++++++++++++++++++++++-
- include/hw/ppc/pnv_chip.h                  |    2 +-
- include/hw/ppc/pnv_core.h                  |    1 +
- include/hw/ppc/spapr.h                     |   27 +-
- include/hw/ppc/spapr_nested.h              |  427 +++++++-
- target/ppc/cpu-models.c                    |    4 -
- target/ppc/cpu.h                           |   11 +
- target/ppc/cpu_init.c                      |   46 +-
- target/ppc/excp_helper.c                   |  418 +++-----
- target/ppc/gdbstub.c                       |    7 +-
- target/ppc/helper_regs.c                   |    5 +
- target/ppc/insn32.decode                   |   26 +
- target/ppc/kvm.c                           |   11 -
- target/ppc/misc_helper.c                   |    3 -
- target/ppc/translate.c                     |  164 +--
- target/ppc/translate/fixedpoint-impl.c.inc |   70 ++
- 28 files changed, 2883 insertions(+), 563 deletions(-)
- create mode 100644 docs/devel/nested-papr.txt
- create mode 100644 docs/system/ppc/amigang.rst
 
