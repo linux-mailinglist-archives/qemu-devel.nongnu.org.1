@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ACFE8798D6
+	by mail.lfdr.de (Postfix) with ESMTPS id 737B58798D5
 	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 17:22:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk4rs-0003Iz-1w; Tue, 12 Mar 2024 12:20:44 -0400
+	id 1rk4rs-0003Jb-P9; Tue, 12 Mar 2024 12:20:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1rk4rn-0003IT-W2
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 12:20:40 -0400
-Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
+ id 1rk4rq-0003Ir-4F
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 12:20:42 -0400
+Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1rk4rj-0000iT-WC
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 12:20:38 -0400
-Received: from pps.filterd (m0127837.ppops.net [127.0.0.1])
- by mx0a-002c1b01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
- 42C8KOtl002774; Tue, 12 Mar 2024 09:20:34 -0700
+ id 1rk4rn-0000ih-Ef
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 12:20:41 -0400
+Received: from pps.filterd (m0127844.ppops.net [127.0.0.1])
+ by mx0b-002c1b01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
+ 42CBVurR027478; Tue, 12 Mar 2024 09:20:37 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
  from:to:cc:subject:date:message-id:in-reply-to:references
  :content-transfer-encoding:content-type:mime-version; s=
- proofpoint20171006; bh=CxCJbh1J+F1g/3hkhkhwxypNhNvcLs4MqSzGo8O+S
- /I=; b=YBzdgeHG7GRDy/DuwMaILyHSqK4OV+uqqpi8BZ3pk91iSgZ3h6bfGOcNy
- UtcIepG9WN6IE+onR/UHPBzKD7Adtcpu0YyHWKFZxw0W8LOAaTX7TcpJb+pofQXf
- IQeY1QzfOF9dmTs+K53Q93Dt7OC4XSVxjAm5mMkep85CxR1SF6+1OG7QK3qjKc/X
- KsC8KAr3AK1d1UIJPxW5BZfcDg7reQCH708sm++9ZDvRqTtrLctk/k0xaJ62eu9e
- sG3hi5O/QMfEeQMOoSAC+HC/ZVIENyCYDGow18qTvrz7IdP/Lx8Wbli3R3BXYIkB
- gb434Rl9jWlViOGq+u9TLJvcdx/pg==
-Received: from nam12-mw2-obe.outbound.protection.outlook.com
- (mail-mw2nam12lp2040.outbound.protection.outlook.com [104.47.66.40])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 3wrmj9ph0g-1
+ proofpoint20171006; bh=i4RdRFaxUEsxSzTGZvX2O+moHmZD0N8FE2jJrQg7e
+ CU=; b=Rl9ZJkjamGo70QdUbITTeq+8UEmS8o3pTyuPU5uGfpA1E9SUfmb2F1M6F
+ HRJtOoSqUgwd+8BZJnWAlgBukZS52HWbrJD3CRh4PULOxnY6N+ZAvcXD6WYeFFGz
+ LaMYMcj0thdIdGzo2Xw6B8JIwSPAeWQmk99pYF1uoXbU2CfnJ4hM462he0WkzsJD
+ BzPLIiO4jc92871P4AlTcmmWMo8l8iU40lVfaaowu2cTyxwbBvKsJD8twLuhGcci
+ oQkBFs9XchOuxL8OGxTPttAW7gSOv78i7mfslzokHzI15ql1REp6O4JWbz+YHfcd
+ 1fR3BDRjeBYVY0I5OsSUY8nDN8vXg==
+Received: from nam10-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10lp2100.outbound.protection.outlook.com [104.47.58.100])
+ by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3wrr63pa36-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Mar 2024 09:20:34 -0700 (PDT)
+ Tue, 12 Mar 2024 09:20:36 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YcJtxyN56Zrg/ceznGJAY3x3e8HPyfsEW+YuxT5gbHy7d7Vz9ZCYCQJTiRauNDTDwjl55JwoDfBoc+AC9b6ADHsH1zpONmKpzi4ZPEQvoNf5W1iDi17brC3MYgG7ZaGrFO8AnbvXYw3ZCcXTDr4cMNPVXQhQknXa7G98AivRswqE0aSSrIStoqPA7AUlutCpxV3s5Gb6gL9rvzJkY2kODEcHqHUCHA+rqV//Pk7wmmP96+eJl8DRsiPMMGwMQHbh6VpE6+5rMD4hJOCrMkEmXRlYQat3939Mk0VkvYy2l/lHzPJNeBSBp6O33/5FuUA2TRmzASKDTHjA1XimQMoHpQ==
+ b=M4Pf3vEyyn6DJB00EBgzpGw3x7tEfC7qHKr0xEIKHGm9ozsl8NBMotUYBb1Gzj5o8AAmXxoq+EoaeqxQaSMtat2Bf+6QFOgu1VuW9DeEyWqBDTPOZrMompO04o8aoznivBj5LpDrzhrEwcgBDmcWtUd7W4p8fw4YzhcLTwSyir721bvV5sBUQM4Et3PIVpXd5d9NsgwH4o9IHDOTXi55lKMgfV6alJZpR5hBxAlCciIWlB1G/45NvmeZfzQcnDYDNImWFl68jNOIS4MjrGbsGUPqCab9e3z3dgS3OrtOf/4At6GxKVWfyXIt86Ol2rmUlwlcKmp6SoG7L3973oIJuQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CxCJbh1J+F1g/3hkhkhwxypNhNvcLs4MqSzGo8O+S/I=;
- b=aom3yNzv2VYVrLra+5KRMp0mLTGXnGZMyqOAWKwDUYIMqXeERJgrvJBCykQhTjAzgXVmw5chDbFWJ36MXVOAXSfP3p2w+w7pyCVWvehkE/w7zQms6iT9M/XFfCKw2tGFkbIUMNvVS5canokbMfHlVCxQ5HIHoPesk/MCRM25omuEkgR8hrRJqv52rleFpRZpqW7Fmj+iWtYYytawzrdmblABkzdEzsd5buLkRqMm0A9KS7Lb2tWxE6oX797h/Le1P0hIrnRMzL5Yj4zQT94Aq8p4qxyJ+yUcOrPgWAjDIwnnPiMhCzJH0hLSmGUpiv4Tvm9D/xsM9v9+ReXRCTpMMw==
+ bh=i4RdRFaxUEsxSzTGZvX2O+moHmZD0N8FE2jJrQg7eCU=;
+ b=jcgNy2FxkkvA13eCD4OnJwCzZT0XOfHlTWW6kAJOsiDhbYP+9tGrh4b9lF0v62ViAogMDJlvA0GF/zHCroYIzotOsQPQLYawM5Q8fS/WS2uDRmCpwIcsjKzs7HStwF/PlQiwE2p4KS6upJQDWI7v1/EBgAHYVQnUCMEDjVImVxZNZoqUTnd9cEiGHwcc7iCVnwfRPgOmHlq9859Oj26l6XqvnALt2uBpG5LEFIYwGvmRSG0c26fGtQBFWkq0KSzkDmD9McuyOUfI/vmq2HhWamRvxQlNeWPfEAdLWut5qHEbxoMBmKjwK+xcqOM2DgO0gxeFLPOsoXWgWUul2ngAWw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
  dkim=pass header.d=nutanix.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CxCJbh1J+F1g/3hkhkhwxypNhNvcLs4MqSzGo8O+S/I=;
- b=UAZlDLDa/HhCOJkmp7TGErZEDxRi7RivuOuNbJ68T0GvMYty39K5DCCB4KZW5Y/2XT31wzgNdjY2eeeC05glwjnadfQg5lwm2hNMHCmbyt0qhGxgInms+mFdbujmRqB9Bi1OT1DbxU45/SLOzBZQF0d/J5XK9+bGXEnkbKE7QqKbvQTS4w2yZJqwOJI8RzmI6Ph2gOMqugEooJ/oaI8ruvfxcqW+XubnPPMiEclpfWuu5kUVNLG6UsasX06/MJUFZIVOSR1mt1bsHHtM5LK3DOQqNyla3+1xnthq6m+Iau1L+46/JDGbnZ7O2wp4NBNAyJ//py/TygGsC57bXpRcVg==
+ bh=i4RdRFaxUEsxSzTGZvX2O+moHmZD0N8FE2jJrQg7eCU=;
+ b=ULCexHpS+fE7/UPh5CGNwuEzsgtIaOdcGf264x+n90JFGBbLwWHyGwFTKbUU7/09x/PEOtb8+esJF8jSsf8yoW1NZDqJhdpVsuC0JrglEQ8L4LX04aKI9tupWLc29EIZ6rkgTzG9b10S/QnJi3+4RBdi9JiFf2bYlvZQ6gMeSUTBBX/q1+2PrCwgRCpN4EXLdYb5Fo9VSALjCiKprteIWD6Irp1bVTWT42y0fCu8p8rBYVQxuoTUulqjjuwU2Xsvoj/xaLHOBV/k2sncZAYecEy5vP+f6cVa4AC5+s1xKoxVfR68IwG5MApTBvs5Cm2ldQpYOCEg5tG02G3bvG5r+g==
 Received: from SJ2PR02MB9955.namprd02.prod.outlook.com (2603:10b6:a03:55f::16)
- by CYXPR02MB10225.namprd02.prod.outlook.com (2603:10b6:930:d7::7)
+ by CO6PR02MB7570.namprd02.prod.outlook.com (2603:10b6:303:a7::23)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.35; Tue, 12 Mar
- 2024 16:20:32 +0000
+ 2024 16:20:35 +0000
 Received: from SJ2PR02MB9955.namprd02.prod.outlook.com
  ([fe80::225c:2edd:87e:7cf0]) by SJ2PR02MB9955.namprd02.prod.outlook.com
  ([fe80::225c:2edd:87e:7cf0%7]) with mapi id 15.20.7362.035; Tue, 12 Mar 2024
- 16:20:32 +0000
+ 16:20:34 +0000
 From: Het Gala <het.gala@nutanix.com>
 To: qemu-devel@nongnu.org
 Cc: marcandre.lureau@redhat.com, thuth@redhat.com, lvivier@redhat.com,
  pbonzini@redhat.com, peterx@redhat.com, farosas@suse.de,
  Het Gala <het.gala@nutanix.com>
-Subject: [PATCH v6 2/8] Replace connect_uri and move
- migrate_get_socket_address inside migrate_qmp
-Date: Tue, 12 Mar 2024 16:20:19 +0000
-Message-Id: <20240312162025.44212-3-het.gala@nutanix.com>
+Subject: [PATCH v6 3/8] Replace migrate_get_connect_uri inplace of
+ migrate_get_socket_address
+Date: Tue, 12 Mar 2024 16:20:20 +0000
+Message-Id: <20240312162025.44212-4-het.gala@nutanix.com>
 X-Mailer: git-send-email 2.22.3
 In-Reply-To: <20240312162025.44212-1-het.gala@nutanix.com>
 References: <20240312162025.44212-1-het.gala@nutanix.com>
@@ -79,63 +79,63 @@ X-ClientProxiedBy: PH7PR10CA0011.namprd10.prod.outlook.com
  (2603:10b6:a03:55f::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR02MB9955:EE_|CYXPR02MB10225:EE_
-X-MS-Office365-Filtering-Correlation-Id: fc5f242e-ef68-4135-9352-08dc42b0573f
+X-MS-TrafficTypeDiagnostic: SJ2PR02MB9955:EE_|CO6PR02MB7570:EE_
+X-MS-Office365-Filtering-Correlation-Id: c9d5a5f6-3a76-4b0c-fd80-08dc42b0584f
 x-proofpoint-crosstenant: true
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: DrVPuIYGt+gHUZWl9vXI9VOz6k1NG1jWK3Rze4ZG6ODQcSr+YVxrfq52fl8W/ppXG/7Ig7/8uyt8lOyPJUzhSuKPB3dd7VbErHC/n/5nLFvV/28sUeL7layFbljr/kDQc6Me+8G/O7O2jNbqSvjtWdHCziXymjvPvKR5JHSRTHNllp2Et17tNVSuCjC/dwBk7Lot+GbtzDcLAKEEgtYiZf5S5I7VlzKkcASwUXv/7o2qA4Xp+IP2tVncSjqre5ny3PlkZpNTU/DxSHFPhCDGynaOi3Q1jX3jUprygDl+xWanGYYsztdrkVhbaklEBJjREuXxMHZWSZTzEPUBHPF74LgzxUaSv+KzeleyPrfUTsUqNPm29mfWRfxZjNpykCJ0ivyKwsKe1lykrIuI2AZlSnlsWzqvrZIeITXTRQBg3W5mPqDt+Mq5uhQWay6how1XEL5n3Cj+dDzKV9j1YTU0mPO2pknZpwMGURsuOttsI83fgkxaKKJ3mTVFk2VcfqNS3BBJH9jVHYl0eOUGxFTQWpiQ2stfQQPssKShh6Z0jytSddYmUCACoJ7PtZNs1RrxZC1NpA+cyViyQpF1GbpptJvEL1/jteZ1TrCkMdh73GZEHzlgy+r4JsXtaw9IIQCDbM3REbz8poeM0HT2D1CRx6t+2Ro/lbWomu5NH46vkUj13r6pHVlwvIjNYCEpCTOIutH2t/mU3GfWG2QjapY4y3KvCsJqqQUdqWJytm5IO2s=
+X-Microsoft-Antispam-Message-Info: wEIt8AbSz3ycALG7peEYoKH11fnz8pZF8SHhB3o2aUSRQ0r5ByYl57gcCd2tnS7jPntM40/Afx+5wQ6Ps/Eds5BQ+xCxo94UJIUhIPX0n9q4gXLR8t2JoNpT0/E7QRLI/9YXiQc9rw7lq6d3LMRf5TFPyGBuVN2e4oduQBMJGXxStKv9RIvEVZmn/LTAiOub/4PGPUhCy0UHGh29A49q4oTyxxU8p19yoN6w6QbzFoS65PC7Olq23Ua9Xm7oVf7qsKXJyb1Q4EWi54aBdSzSDX7Dcd9a15UrnWRftPJEOUxnENChehmWLZ1hbGGZfny/3pUb5nmMl+Y/t3v0yiJUYv2EE3ZsABFc72BUkAsh1wAaN8s/j7GS3ZDx5IAJspxLTlPvJ2InjXhbSe5qfobksi3NGuiY/I2cdlB+2rdtN7fcjcmBppHymkCgSe0Rb0PVbwB9MdmD6L3tEoh/RdOHyu8+d2mHTLzD96pY0oCsEz5O6Y+OCo6CVvPWA7VhLNvKChmuZH/11sXYOfFJ9tHa2G69Zv1OGQN5e3LRZcUQwLa2FjZ0ybL/zpn/D9Bdm9su6U0OiCgFT6DsZuBfEYEQTyqQoXrbWitWkP3wi3/z6CYYP/RM4lOLu7FfyV+Jsxa2Af6ymqGY9SYTOVnWqFJyuqL0lUEC1pPYZ/t7AyCTwXzl4wFOjBc7JmBLGC/7kFeInc8c+Xy6Oo5mjbBlVlcMLQcSZE5Hmrf+/U5nJXniriw=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:SJ2PR02MB9955.namprd02.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230031)(1800799015)(52116005)(376005)(38350700005); DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?hygO/DGoGMvisWPCCxY8+VDfZ9eGQiaSOWS8pt2AKxbWO0RGWkQ4PESQ/vUJ?=
- =?us-ascii?Q?GTuu41W/E/uUJctJV3t0Ro8y4NI88o1SGUQWjw+eAek5n6wKdjUTh5W7mOAs?=
- =?us-ascii?Q?CxFUVx/34JW/MAaKhBxhu+lA/SKvGlzVG7j5MiK8G15GMyo+SYqnYREIo9g2?=
- =?us-ascii?Q?kld1a2pCJpRFkrsW3StKT+8VwITz2KfUZDdBLv2vNOO/v5eLL+58IPIpwmf5?=
- =?us-ascii?Q?9QHmX22/BfybQ8vlKk8pmyYkY5gYIqTk34Qv/xcDl7pmX/qE4/moZ/WtaSLV?=
- =?us-ascii?Q?TuD/RjfasGmqT/I08EmrDraLEO2KWAUDC5AjLTigqiUMoxayzRw8n45NGLZI?=
- =?us-ascii?Q?MLbyCuVj1hEgeqhvqsqfAsTCCmfxJFsO7af7UyvGMy9Cl+K3ElqJIOXp3thz?=
- =?us-ascii?Q?mziDtF+gZovZ+kjYfoZxlanxGE2AUTTLA8EKuG6cPsL1HnMEfea1Qv3K0CSo?=
- =?us-ascii?Q?DPerWZW5UY3DmeIQJfvA+2Zu6elYL11/xS6h+UbRNaQgh7tdl7KE1XMcGNO7?=
- =?us-ascii?Q?SCTwiNUk3SvYVigUX/XAz417B7pORtFo76pe4rwP0j5kjb6NbyN0tWU8wQw6?=
- =?us-ascii?Q?cF1xunLseN7Oa5Jf2p+VEIsGOhxLSYPx1LW6iYa9MXmT2sQhk0z7VfBEuMr2?=
- =?us-ascii?Q?OO4lE9vkUt3WC65kGkOfEJ3nDSG9+NzcE+GKyBJnYZESDYg/0oYSmZu+v1KM?=
- =?us-ascii?Q?/a2O/S8M0JnXkGtDYQZbb6RQb+RcBBLXChhvfz6K0P9UI4XdRLwntcV9fnZR?=
- =?us-ascii?Q?CoJXnsIPg+/WQX6F2k/t9W2VrOmTlANiDZ4htv5CjfVrsDLyLNLS5DJC/P5c?=
- =?us-ascii?Q?Z7vI1J0AxmhZ48CLGb23+Ozt5vpVEXB7fk4+7BRLVjDieYyTC2+KZB0VOmK1?=
- =?us-ascii?Q?0niexG5/JCSHBLFtrgOUnsHiIM7kbk/xy92q4LHwa551vTv0v3hYHEjIRC1S?=
- =?us-ascii?Q?e/D8NGscaZYOURigmjacp84rUl8tlNzVzwLsGd3bmUV7rziP7KtPq8Or/3DO?=
- =?us-ascii?Q?A76mkGPPRbvZvT021RPrZtFAb6EWctNs37jOq52xjKxbPEv13cVhPoEs3q60?=
- =?us-ascii?Q?udLYbm1J2MkALmwiURoemyVx99gKixiffPdynhJUUBqGFxxwHhoP3yFU+6wn?=
- =?us-ascii?Q?cComS2HxrPt8k/nyMzEeetksYajZ6OKpt/ZxiDLDaLbdyMPkl/H0GdWWNcVf?=
- =?us-ascii?Q?5m9TIG2AG3Obzv8rGbrRVrORKm0v/GC9oVgFnzNEMmIKmkBnXzT7kpTPwVhZ?=
- =?us-ascii?Q?y8V17NbEEpG3TBUUEpzn24iQPfiyJRmdbmLfha/lWPKV3Tv/K9KATi1M+Ceq?=
- =?us-ascii?Q?R9PnNWJpuoC2YAkwFZz326LVuArSkOh8vctkMf6Kya+vtDPPuXlkNjAAAyZf?=
- =?us-ascii?Q?+hA+QL9eXUaUIOls/xltPi31zz8aBO7LR4sTi+jtR3uzGZplEOgArgxgWOkh?=
- =?us-ascii?Q?RdQnLRMyLse3XwSv/p1jlxA1XQuQBIPLQ8SkdxWPTb2hviqe1HwLVoVQxbNG?=
- =?us-ascii?Q?7WNr1LVFxmw4QLr8BQyJiHUKJbaByIBC9jzqSUMVC7uo9SDc6zvxxOnQohOP?=
- =?us-ascii?Q?XwLGv+sF9Mjo2347ARg6nW5uNlaH2twfJYQ6VzKwkAdlQwPumvabBNkr0i3L?=
- =?us-ascii?Q?8Q=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?k+i4r6qwUw+Ia2vbmuVL5IpZtLIG5+Z5DeZecGqgWg4cynnqENAW9bchslrJ?=
+ =?us-ascii?Q?tR/SShDZLz8O4jV0eWQwFKZFgYKxgNEkWtQ0aqgJ9uUMARiTAZumi1kPkCut?=
+ =?us-ascii?Q?Qq8z70N7ky7B192JSJELM09YOCaOm/BD0Y2w7mtzVgt5XzWhzoK3hLQda/Jc?=
+ =?us-ascii?Q?Whj814xKFmOe5hk0/ohbOUcIJPpq2mJT8b8s5inHqd54qqxREnniKTQu6XwJ?=
+ =?us-ascii?Q?IbdR/9I+fjqtq5BUnj2DfHwqISWU4rBkujLYj6JDhx3zijPnD/2wprfPBsij?=
+ =?us-ascii?Q?tQpUd8N2VSzg236IWazJO3PU5C2GHNB6AiszPZ0Xa8XucRHyWt+R/DC6bxE+?=
+ =?us-ascii?Q?N+4nLbFyNv7vT24MBQK3qxXolPw/JomQqVeZwpED0HWyUqCnmBEltySQovNc?=
+ =?us-ascii?Q?qdXoJriVhLWaMoILisL+GH7iGGHKtnHmlzmYPHYqAyMaJmFX8/1ZtIIfqMv0?=
+ =?us-ascii?Q?VwKALrqZGToGHQyke8s2nbNYoCElNxlmeWtKaye1jobgWD9/W+NBsaXP1LLa?=
+ =?us-ascii?Q?2UnZ3BAy5meM4bH4dMmMHJ8D4KuiA/gnz6DDnN+YKWXsuBpO464JSeBYHucq?=
+ =?us-ascii?Q?zeWuPFRlC7hio/YqUEKwecMT8JBuCdfuYG8EcWQIRXOGnO/2ZBFJW4IzRhJH?=
+ =?us-ascii?Q?iFsTrPjEoMPNLtJj6SFfi/go1TiJH3d6eLpEkrvohdkdrCgHRZLrysQi0ZNr?=
+ =?us-ascii?Q?jG7ib7JGdLYJwf7mqHuSD2IPUfTZePNjVwPjZ3XARsXyCu432MnxG9OaXRDr?=
+ =?us-ascii?Q?ZZs0Ich0gH3KwZGpZRk3vtnwOPgho9DaPa5uZEzSidMLDKLUwqKo9n29Axu0?=
+ =?us-ascii?Q?2oFVf8VWwymtz9iAFoHUFw1FmpKoognU+ebkNuuIGz0t1WgstYDRsQwKylvm?=
+ =?us-ascii?Q?8irjBF9iLGQJMGLw1A4sgzkLMHJBzNyG3VTtvgb0dRBIRwjzhoKf/D+Z14hm?=
+ =?us-ascii?Q?ZYv2Sr7y/Y21hOKj05madX9Q1lxlybpaGsD8ledpQDcyYddu3kcWQEtDPHed?=
+ =?us-ascii?Q?XXLlgSfDcjXgaLvyr7QhjMLBgpA7Oc1WxxZ6OmJ+GBJlxoRD2kPVR/0+GKGQ?=
+ =?us-ascii?Q?q6AMKdYktEKGXrndnHo/AX7yWhkBt0OhTzg2ZK2QQ1k2/2CUhlM49AZUg6G8?=
+ =?us-ascii?Q?86X8P4/6Tp8RkEOtmsYrvmRhDjQGkFr4Tu3g+Aq31scP+0gJ0kpWVAMJDsUN?=
+ =?us-ascii?Q?pMP1ZSmSiVpqllVsi3bT/TXQOrcMyKI8HRhQ66b1G6WFwmSkpHuAriXV4ZU4?=
+ =?us-ascii?Q?ijG8QXrsaKSQMvjsQ96YVBy5d9kbatl53WhtPqH7pBU23xmDfNDCrld1ryBg?=
+ =?us-ascii?Q?M0LW45Hnt0QCnohvW+eXnfmbjp7TcN+Kk1jjlBrYXjJgJfzlMGxmlGTnxKvo?=
+ =?us-ascii?Q?Oe2OCjoeb+ox4VFpDCwiqst3Olqv5IjJTPq7mWOLlP3FJnYzm5wuJOZjnH54?=
+ =?us-ascii?Q?Go03sonK837m0rFlLJw/GdQUpH47wMF1iD5BMA2ksb+ZtRA2KsA8emOCYxcE?=
+ =?us-ascii?Q?zoAyo3Yn1pb3I5tNK3efXEFpTexpH8iMdUilZZAuw4FO3O3VDYF1ZS4twd89?=
+ =?us-ascii?Q?FL0ysGXgSCnNK/wLdxS+yPFSLiWnZcAequS3KN6vrdXBoAXV7/j/4LkOQYPY?=
+ =?us-ascii?Q?MA=3D=3D?=
 X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fc5f242e-ef68-4135-9352-08dc42b0573f
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9d5a5f6-3a76-4b0c-fd80-08dc42b0584f
 X-MS-Exchange-CrossTenant-AuthSource: SJ2PR02MB9955.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2024 16:20:32.6584 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2024 16:20:34.4348 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qsSGtNaRy8vzw+t0qkq+Eq3d62KLIn3rNKO60SH+Lk8HCzr3PfaLMHI/KnShzho5tKJngUW8QpXLTv9E+RQ73Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR02MB10225
-X-Proofpoint-GUID: ttZaiK3Qko3JJUoW4Kk5dq4vyCFZSlxv
-X-Proofpoint-ORIG-GUID: ttZaiK3Qko3JJUoW4Kk5dq4vyCFZSlxv
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8VxgjLfuKjHhlT9gwKEaMVSt/+TkMNoSIvMzHpwRoINZhqgfpip0DIj9tz7rWcggZ+vicpr3hs3zTTVKtD8quA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR02MB7570
+X-Proofpoint-GUID: USqbM155EbOLzkT-DMQmDZuLL3WZmSCq
+X-Proofpoint-ORIG-GUID: USqbM155EbOLzkT-DMQmDZuLL3WZmSCq
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-03-12_10,2024-03-12_01,2023-05-22_02
 X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.151.68; envelope-from=het.gala@nutanix.com;
- helo=mx0a-002c1b01.pphosted.com
+Received-SPF: pass client-ip=148.163.155.12; envelope-from=het.gala@nutanix.com;
+ helo=mx0b-002c1b01.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -158,297 +158,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the calls to migrate_get_socket_address() into migrate_qmp().
-Get rid of connect_uri and replace it with args->connect_uri only
-because 'to' object will help to generate connect_uri with the
-correct port number.
+Refactor migrate_get_socket_address to internally utilize 'socket-address'
+parameter, reducing redundancy in the function definition.
+
+migrate_get_socket_address implicitly converts SocketAddress into str.
+Move migrate_get_socket_address inside migrate_get_connect_uri which
+should return the uri string instead.
 
 Signed-off-by: Het Gala <het.gala@nutanix.com>
 Suggested-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration-helpers.c | 54 ++++++++++++++++++++-
- tests/qtest/migration-test.c    | 83 ++++-----------------------------
- 2 files changed, 63 insertions(+), 74 deletions(-)
+ tests/qtest/migration-helpers.c | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
 diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
-index b6206a04fb..3e8c19c4de 100644
+index 3e8c19c4de..8806dc841e 100644
 --- a/tests/qtest/migration-helpers.c
 +++ b/tests/qtest/migration-helpers.c
-@@ -13,6 +13,9 @@
- #include "qemu/osdep.h"
- #include "qemu/ctype.h"
- #include "qapi/qmp/qjson.h"
-+#include "qapi/qapi-visit-sockets.h"
-+#include "qapi/qobject-input-visitor.h"
-+#include "qapi/error.h"
- 
- #include "migration-helpers.h"
- 
-@@ -24,6 +27,51 @@
-  */
- #define MIGRATION_STATUS_WAIT_TIMEOUT 120
- 
-+static char *SocketAddress_to_str(SocketAddress *addr)
-+{
-+    switch (addr->type) {
-+    case SOCKET_ADDRESS_TYPE_INET:
-+        return g_strdup_printf("tcp:%s:%s",
-+                               addr->u.inet.host,
-+                               addr->u.inet.port);
-+    case SOCKET_ADDRESS_TYPE_UNIX:
-+        return g_strdup_printf("unix:%s",
-+                               addr->u.q_unix.path);
-+    case SOCKET_ADDRESS_TYPE_FD:
-+        return g_strdup_printf("fd:%s", addr->u.fd.str);
-+    case SOCKET_ADDRESS_TYPE_VSOCK:
-+        return g_strdup_printf("tcp:%s:%s",
-+                               addr->u.vsock.cid,
-+                               addr->u.vsock.port);
-+    default:
-+        return g_strdup("unknown address type");
-+    }
-+}
-+
-+static char *
-+migrate_get_socket_address(QTestState *who, const char *parameter)
-+{
-+    QDict *rsp;
-+    char *result;
-+    SocketAddressList *addrs;
-+    Visitor *iv = NULL;
-+    QObject *object;
-+
-+    rsp = migrate_query(who);
-+    object = qdict_get(rsp, parameter);
-+
-+    iv = qobject_input_visitor_new(object);
-+    visit_type_SocketAddressList(iv, NULL, &addrs, &error_abort);
-+    visit_free(iv);
-+
-+    /* we are only using a single address */
-+    result = SocketAddress_to_str(addrs->value);
-+
-+    qapi_free_SocketAddressList(addrs);
-+    qobject_unref(rsp);
-+    return result;
-+}
-+
- bool migrate_watch_for_events(QTestState *who, const char *name,
-                               QDict *event, void *opaque)
- {
-@@ -73,13 +121,17 @@ void migrate_qmp(QTestState *who, QTestState *to, const char *uri,
- {
-     va_list ap;
-     QDict *args;
-+    g_autofree char *connect_uri = NULL;
- 
-     va_start(ap, fmt);
-     args = qdict_from_vjsonf_nofail(fmt, ap);
-     va_end(ap);
- 
-     g_assert(!qdict_haskey(args, "uri"));
--    qdict_put_str(args, "uri", uri);
-+    if (!uri) {
-+        connect_uri = migrate_get_socket_address(to, "socket-address");
-+    }
-+    qdict_put_str(args, "uri", uri ? uri : connect_uri);
- 
-     qtest_qmp_assert_success(who,
-                              "{ 'execute': 'migrate', 'arguments': %p}", args);
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index d9b4e28c12..9bb24fd7c5 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -13,16 +13,12 @@
- #include "qemu/osdep.h"
- 
- #include "libqtest.h"
--#include "qapi/error.h"
- #include "qapi/qmp/qdict.h"
- #include "qemu/module.h"
- #include "qemu/option.h"
- #include "qemu/range.h"
- #include "qemu/sockets.h"
- #include "chardev/char.h"
--#include "qapi/qapi-visit-sockets.h"
--#include "qapi/qobject-input-visitor.h"
--#include "qapi/qobject-output-visitor.h"
- #include "crypto/tlscredspsk.h"
- #include "qapi/qmp/qlist.h"
- 
-@@ -369,50 +365,6 @@ static void cleanup(const char *filename)
-     unlink(path);
+@@ -48,28 +48,37 @@ static char *SocketAddress_to_str(SocketAddress *addr)
+     }
  }
  
--static char *SocketAddress_to_str(SocketAddress *addr)
--{
--    switch (addr->type) {
--    case SOCKET_ADDRESS_TYPE_INET:
--        return g_strdup_printf("tcp:%s:%s",
--                               addr->u.inet.host,
--                               addr->u.inet.port);
--    case SOCKET_ADDRESS_TYPE_UNIX:
--        return g_strdup_printf("unix:%s",
--                               addr->u.q_unix.path);
--    case SOCKET_ADDRESS_TYPE_FD:
--        return g_strdup_printf("fd:%s", addr->u.fd.str);
--    case SOCKET_ADDRESS_TYPE_VSOCK:
--        return g_strdup_printf("tcp:%s:%s",
--                               addr->u.vsock.cid,
--                               addr->u.vsock.port);
--    default:
--        return g_strdup("unknown address type");
--    }
--}
--
--static char *migrate_get_socket_address(QTestState *who, const char *parameter)
--{
--    QDict *rsp;
+-static char *
+-migrate_get_socket_address(QTestState *who, const char *parameter)
++static SocketAddress *migrate_get_socket_address(QTestState *who)
+ {
+     QDict *rsp;
 -    char *result;
--    SocketAddressList *addrs;
--    Visitor *iv = NULL;
--    QObject *object;
--
--    rsp = migrate_query(who);
+     SocketAddressList *addrs;
++    SocketAddress *addr;
+     Visitor *iv = NULL;
+     QObject *object;
+ 
+     rsp = migrate_query(who);
 -    object = qdict_get(rsp, parameter);
--
--    iv = qobject_input_visitor_new(object);
--    visit_type_SocketAddressList(iv, NULL, &addrs, &error_abort);
--    visit_free(iv);
--
++    object = qdict_get(rsp, "socket-address");
+ 
+     iv = qobject_input_visitor_new(object);
+     visit_type_SocketAddressList(iv, NULL, &addrs, &error_abort);
++    addr = addrs->value;
+     visit_free(iv);
+ 
 -    /* we are only using a single address */
 -    result = SocketAddress_to_str(addrs->value);
 -
 -    qapi_free_SocketAddressList(addrs);
--    qobject_unref(rsp);
+     qobject_unref(rsp);
 -    return result;
--}
--
- static long long migrate_get_parameter_int(QTestState *who,
-                                            const char *parameter)
- {
-@@ -1349,8 +1301,7 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
-     wait_for_serial("src_serial");
-     wait_for_suspend(from, &src_state);
++    return addr;
++}
++
++static char *
++migrate_get_connect_uri(QTestState *who)
++{
++    SocketAddress *addrs;
++    char *connect_uri;
++
++    addrs = migrate_get_socket_address(who);
++    connect_uri = SocketAddress_to_str(addrs);
++
++    qapi_free_SocketAddress(addrs);
++    return connect_uri;
+ }
  
--    g_autofree char *uri = migrate_get_socket_address(to, "socket-address");
--    migrate_qmp(from, to, uri, "{}");
-+    migrate_qmp(from, to, NULL, "{}");
+ bool migrate_watch_for_events(QTestState *who, const char *name,
+@@ -129,7 +138,7 @@ void migrate_qmp(QTestState *who, QTestState *to, const char *uri,
  
-     migrate_wait_for_dirty_mem(from, to);
- 
-@@ -1733,7 +1684,6 @@ static void test_precopy_common(MigrateCommon *args)
- {
-     QTestState *from, *to;
-     void *data_hook = NULL;
--    g_autofree char *connect_uri = NULL;
- 
-     if (test_migrate_start(&from, &to, args->listen_uri, &args->start)) {
-         return;
-@@ -1766,18 +1716,12 @@ static void test_precopy_common(MigrateCommon *args)
-         }
-     }
- 
--    if (!args->connect_uri) {
+     g_assert(!qdict_haskey(args, "uri"));
+     if (!uri) {
 -        connect_uri = migrate_get_socket_address(to, "socket-address");
--    } else {
--        connect_uri = g_strdup(args->connect_uri);
--    }
--
-     if (args->result == MIG_TEST_QMP_ERROR) {
--        migrate_qmp_fail(from, connect_uri, "{}");
-+        migrate_qmp_fail(from, args->connect_uri, "{}");
-         goto finish;
++        connect_uri = migrate_get_connect_uri(to);
      }
+     qdict_put_str(args, "uri", uri ? uri : connect_uri);
  
--    migrate_qmp(from, to, connect_uri, "{}");
-+    migrate_qmp(from, to, args->connect_uri, "{}");
- 
-     if (args->result != MIG_TEST_SUCCEED) {
-         bool allow_active = args->result == MIG_TEST_FAIL;
-@@ -1843,7 +1787,6 @@ static void test_file_common(MigrateCommon *args, bool stop_src)
- {
-     QTestState *from, *to;
-     void *data_hook = NULL;
--    g_autofree char *connect_uri = g_strdup(args->connect_uri);
- 
-     if (test_migrate_start(&from, &to, args->listen_uri, &args->start)) {
-         return;
-@@ -1869,18 +1812,18 @@ static void test_file_common(MigrateCommon *args, bool stop_src)
-     }
- 
-     if (args->result == MIG_TEST_QMP_ERROR) {
--        migrate_qmp_fail(from, connect_uri, "{}");
-+        migrate_qmp_fail(from, args->connect_uri, "{}");
-         goto finish;
-     }
- 
--    migrate_qmp(from, to, connect_uri, "{}");
-+    migrate_qmp(from, to, args->connect_uri, "{}");
-     wait_for_migration_complete(from);
- 
-     /*
-      * We need to wait for the source to finish before starting the
-      * destination.
-      */
--    migrate_incoming_qmp(to, connect_uri, "{}");
-+    migrate_incoming_qmp(to, args->connect_uri, "{}");
-     wait_for_migration_complete(to);
- 
-     if (stop_src) {
-@@ -3006,7 +2949,6 @@ static void test_multifd_tcp_cancel(void)
-         .hide_stderr = true,
-     };
-     QTestState *from, *to, *to2;
--    g_autofree char *uri = NULL;
- 
-     if (test_migrate_start(&from, &to, "defer", &args)) {
-         return;
-@@ -3027,9 +2969,7 @@ static void test_multifd_tcp_cancel(void)
-     /* Wait for the first serial output from the source */
-     wait_for_serial("src_serial");
- 
--    uri = migrate_get_socket_address(to, "socket-address");
--
--    migrate_qmp(from, to, uri, "{}");
-+    migrate_qmp(from, to, NULL, "{}");
- 
-     migrate_wait_for_dirty_mem(from, to);
- 
-@@ -3054,14 +2994,11 @@ static void test_multifd_tcp_cancel(void)
-     /* Start incoming migration from the 1st socket */
-     migrate_incoming_qmp(to2, "tcp:127.0.0.1:0", "{}");
- 
--    g_free(uri);
--    uri = migrate_get_socket_address(to2, "socket-address");
--
-     wait_for_migration_status(from, "cancelled", NULL);
- 
-     migrate_ensure_non_converge(from);
- 
--    migrate_qmp(from, to2, uri, "{}");
-+    migrate_qmp(from, to2, NULL, "{}");
- 
-     migrate_wait_for_dirty_mem(from, to2);
- 
-@@ -3394,7 +3331,7 @@ static void test_migrate_dirty_limit(void)
-     migrate_dirty_limit_wait_showup(from, dirtylimit_period, dirtylimit_value);
- 
-     /* Start migrate */
--    migrate_qmp(from, to, uri, "{}");
-+    migrate_qmp(from, to, args.connect_uri, "{}");
- 
-     /* Wait for dirty limit throttle begin */
-     throttle_us_per_full = 0;
-@@ -3435,7 +3372,7 @@ static void test_migrate_dirty_limit(void)
-     }
- 
-     /* Start migrate */
--    migrate_qmp(from, to, uri, "{}");
-+    migrate_qmp(from, to, args.connect_uri, "{}");
- 
-     /* Wait for dirty limit throttle begin */
-     throttle_us_per_full = 0;
 -- 
 2.22.3
 
