@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 079C58795DC
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 15:16:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 127C28795D7
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 15:15:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk2uN-0002TK-Tx; Tue, 12 Mar 2024 10:15:11 -0400
+	id 1rk2th-0000Zr-7F; Tue, 12 Mar 2024 10:14:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rk2tL-0000fJ-9G
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:14:15 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rk2t8-0000WV-Gf
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:13:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rk2t8-0002Cd-4m
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:14:06 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rk2t4-00029F-1l
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:13:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710252833;
+ s=mimecast20190719; t=1710252826;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=a1BAftT8z48Vt5DWdMlzg8ja8eBDK/wd67jBTXaOBwk=;
- b=Pfa/hsyiv/7zJ3ev5U4xYMF+GuWn5Zbh6qzOo3fA0ZVR5FbXXbSF6FMhxvQPlEFFTwXVco
- sE3rhe0IrT1Lu34XoLZLM33dLxSEWkqArDCfKk4rvmqlNnJfLB4Bbn9I81ZspT9V1RVt6T
- Wyas0QrXwyaTaZ35WrTOv7yphqlnSa0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-321-tCub1hvOM8WywVSZL0cnXA-1; Tue,
- 12 Mar 2024 10:13:46 -0400
-X-MC-Unique: tCub1hvOM8WywVSZL0cnXA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ bh=pOLH+strOaKKcjBOz7lvead/NQ2pWb64J4IWeJN+W4I=;
+ b=NNZN2TFETXiLTkcigiV6bHiPMZ6XCfih7lfzUbiIBt6MoxDaXkNWu6ZiZ/o9nRBnjBoRvG
+ dA/LNCGDybUMsfvRnI/sR5To9k1pep0Mw5DXtsAbVO4B65vNcJo+O7mdyHJ67gzC7b82c+
+ 7mTEwSi1HZXrbGV2kjZQgR5bJcCsqg4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-277-anzAephTMNyZJw6A3o3L9w-1; Tue, 12 Mar 2024 10:13:45 -0400
+X-MC-Unique: anzAephTMNyZJw6A3o3L9w-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 70C0B1C54038;
- Tue, 12 Mar 2024 14:13:45 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 73B6D100DEBD;
+ Tue, 12 Mar 2024 14:13:44 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.138])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 4C5AD40C6CB1;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4C6371C05E1C;
  Tue, 12 Mar 2024 14:13:44 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2E8DB21E692E; Tue, 12 Mar 2024 15:13:43 +0100 (CET)
+ id 3188421E6939; Tue, 12 Mar 2024 15:13:43 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org,
 	qemu-block@nongnu.org,
 	philmd@linaro.org
-Subject: [PATCH 03/10] qapi: Inline and remove QERR_DEVICE_HAS_NO_MEDIUM
+Subject: [PATCH 04/10] qapi: Inline and remove QERR_DEVICE_NO_HOTPLUG
  definition
-Date: Tue, 12 Mar 2024 15:13:36 +0100
-Message-ID: <20240312141343.3168265-4-armbru@redhat.com>
+Date: Tue, 12 Mar 2024 15:13:37 +0100
+Message-ID: <20240312141343.3168265-5-armbru@redhat.com>
 In-Reply-To: <20240312141343.3168265-1-armbru@redhat.com>
 References: <20240312141343.3168265-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
@@ -98,69 +98,59 @@ Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
  include/qapi/qmp/qerror.h | 3 ---
- block/snapshot.c          | 7 ++++---
- blockdev.c                | 2 +-
- 3 files changed, 5 insertions(+), 7 deletions(-)
+ hw/core/qdev.c            | 4 ++--
+ system/qdev-monitor.c     | 2 +-
+ 3 files changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
-index 06a1d2248e..daa889809b 100644
+index daa889809b..e93211085a 100644
 --- a/include/qapi/qmp/qerror.h
 +++ b/include/qapi/qmp/qerror.h
 @@ -17,9 +17,6 @@
   * add new ones!
   */
  
--#define QERR_DEVICE_HAS_NO_MEDIUM \
--    "Device '%s' has no medium"
+-#define QERR_DEVICE_NO_HOTPLUG \
+-    "Device '%s' does not support hotplugging"
 -
- #define QERR_DEVICE_NO_HOTPLUG \
-     "Device '%s' does not support hotplugging"
+ #define QERR_INVALID_PARAMETER \
+     "Invalid parameter '%s'"
  
-diff --git a/block/snapshot.c b/block/snapshot.c
-index 8694fc0a3e..e2c18d3f8f 100644
---- a/block/snapshot.c
-+++ b/block/snapshot.c
-@@ -28,7 +28,6 @@
- #include "block/qdict.h"
+diff --git a/hw/core/qdev.c b/hw/core/qdev.c
+index c68d0f7c51..00efaf1bd1 100644
+--- a/hw/core/qdev.c
++++ b/hw/core/qdev.c
+@@ -29,7 +29,6 @@
  #include "qapi/error.h"
+ #include "qapi/qapi-events-qdev.h"
  #include "qapi/qmp/qdict.h"
 -#include "qapi/qmp/qerror.h"
- #include "qapi/qmp/qstring.h"
+ #include "qapi/visitor.h"
+ #include "qemu/error-report.h"
  #include "qemu/option.h"
- #include "sysemu/block-backend.h"
-@@ -359,7 +358,8 @@ int bdrv_snapshot_delete(BlockDriverState *bs,
-     GLOBAL_STATE_CODE();
+@@ -479,7 +478,8 @@ static void device_set_realized(Object *obj, bool value, Error **errp)
+     static int unattached_count;
  
-     if (!drv) {
--        error_setg(errp, QERR_DEVICE_HAS_NO_MEDIUM, bdrv_get_device_name(bs));
-+        error_setg(errp, "Device '%s' has no medium",
-+                   bdrv_get_device_name(bs));
-         return -ENOMEDIUM;
-     }
-     if (!snapshot_id && !name) {
-@@ -437,7 +437,8 @@ int bdrv_snapshot_load_tmp(BlockDriverState *bs,
-     GRAPH_RDLOCK_GUARD_MAINLOOP();
- 
-     if (!drv) {
--        error_setg(errp, QERR_DEVICE_HAS_NO_MEDIUM, bdrv_get_device_name(bs));
-+        error_setg(errp, "Device '%s' has no medium",
-+                   bdrv_get_device_name(bs));
-         return -ENOMEDIUM;
-     }
-     if (!snapshot_id && !name) {
-diff --git a/blockdev.c b/blockdev.c
-index d8fb3399f5..bd408e3e75 100644
---- a/blockdev.c
-+++ b/blockdev.c
-@@ -1395,7 +1395,7 @@ static void external_snapshot_action(TransactionAction *action,
-     bdrv_drained_begin(state->old_bs);
- 
-     if (!bdrv_is_inserted(state->old_bs)) {
--        error_setg(errp, QERR_DEVICE_HAS_NO_MEDIUM, device);
-+        error_setg(errp, "Device '%s' has no medium", device);
+     if (dev->hotplugged && !dc->hotpluggable) {
+-        error_setg(errp, QERR_DEVICE_NO_HOTPLUG, object_get_typename(obj));
++        error_setg(errp, "Device '%s' does not support hotplugging",
++                   object_get_typename(obj));
          return;
      }
  
+diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+index 842c142c79..e2eea7d96e 100644
+--- a/system/qdev-monitor.c
++++ b/system/qdev-monitor.c
+@@ -918,7 +918,7 @@ void qdev_unplug(DeviceState *dev, Error **errp)
+     }
+ 
+     if (!dc->hotpluggable) {
+-        error_setg(errp, QERR_DEVICE_NO_HOTPLUG,
++        error_setg(errp, "Device '%s' does not support hotplugging",
+                    object_get_typename(OBJECT(dev)));
+         return;
+     }
 -- 
 2.44.0
 
