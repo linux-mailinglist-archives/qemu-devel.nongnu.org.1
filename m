@@ -2,112 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D3A87960A
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 15:25:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C67787962C
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 15:29:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk341-0003Uh-Ik; Tue, 12 Mar 2024 10:25:09 -0400
+	id 1rk37N-0005U7-7J; Tue, 12 Mar 2024 10:28:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rk33h-0003Ss-2f
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:24:51 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
+ id 1rk36x-0005NB-OD
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:28:13 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rk33e-0004cr-Nw
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:24:48 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id C108A5D5EE;
- Tue, 12 Mar 2024 14:24:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1710253482; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nHjQF+TdCFN0n6us4ZUxG4y9iNkDIXLEZQLNoJnTKjg=;
- b=SoQg6EkgeSh1L13OGVTztwpjHPXlwI43zNbSo11Ve6E3W9gqQS2fqg+YGi5OtjHtjGtGY5
- QBZofLjt+7M+hZNBuBAmPCT5gPzNiyIBqtyA3kmXux/qNQ+kOx5R1Q4X887qaY0gG+kgkT
- wJ+lhUsSHPphU/ooIqagWdzUh5IBSjQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1710253482;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nHjQF+TdCFN0n6us4ZUxG4y9iNkDIXLEZQLNoJnTKjg=;
- b=p8lzZTo4fnbwZXlKN4qnu06/OR1f7TvY9TuyxCPKTEwak/Gaac5ddcwkyB3OBomdsDredT
- /0bAyheWPXvkbHDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1710253482; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nHjQF+TdCFN0n6us4ZUxG4y9iNkDIXLEZQLNoJnTKjg=;
- b=SoQg6EkgeSh1L13OGVTztwpjHPXlwI43zNbSo11Ve6E3W9gqQS2fqg+YGi5OtjHtjGtGY5
- QBZofLjt+7M+hZNBuBAmPCT5gPzNiyIBqtyA3kmXux/qNQ+kOx5R1Q4X887qaY0gG+kgkT
- wJ+lhUsSHPphU/ooIqagWdzUh5IBSjQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1710253482;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nHjQF+TdCFN0n6us4ZUxG4y9iNkDIXLEZQLNoJnTKjg=;
- b=p8lzZTo4fnbwZXlKN4qnu06/OR1f7TvY9TuyxCPKTEwak/Gaac5ddcwkyB3OBomdsDredT
- /0bAyheWPXvkbHDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4C46413795;
- Tue, 12 Mar 2024 14:24:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 6lo9Bapl8GUbIAAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 12 Mar 2024 14:24:42 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Alex Williamson
- <alex.williamson@redhat.com>, Avihai Horon <avihaih@nvidia.com>, Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Markus Armbruster
- <armbru@redhat.com>, Prasad Pandit <pjp@fedoraproject.org>
-Subject: Re: [PATCH v4 10/25] migration: Add Error** argument to
- qemu_savevm_state_setup()
-In-Reply-To: <b2b52017-c4cd-43e9-a67b-2ccbb92ad99e@redhat.com>
-References: <20240306133441.2351700-1-clg@redhat.com>
- <20240306133441.2351700-11-clg@redhat.com> <87plw44wps.fsf@suse.de>
- <1566715b-a9a5-4df6-8e64-f4f912e2ea2f@redhat.com> <87le6omw0d.fsf@suse.de>
- <9071affc-ffb5-435a-99d1-ca829703e31b@redhat.com>
- <8ba5dba7-1849-46ff-b708-a9caac66be27@redhat.com>
- <b2b52017-c4cd-43e9-a67b-2ccbb92ad99e@redhat.com>
-Date: Tue, 12 Mar 2024 11:24:39 -0300
-Message-ID: <874jdbmst4.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
+ id 1rk36v-0005O1-AI
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:28:11 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4132a436086so13584145e9.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 07:28:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=citrix.com; s=google; t=1710253686; x=1710858486; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=dXi5tmsrXivALkRrCcWzIonKD+Tj1f5wxXwS4HZXIxk=;
+ b=CxLOBL/gMflmqCJ4FDo12JMrDZgyikta565BaxMFt21lpVGWzbMnf4wotInR9oiRKX
+ wqyYwb8oMBNL6S46jdHkSKKKwaJ3Cd+wqQ8dOxrm+s08rpeTmMKzXCNSIycN6yR0wlg/
+ nvdtl5NJ4jHmRM+BgikyjmFC7nkKYqLifG9Fw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710253686; x=1710858486;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=dXi5tmsrXivALkRrCcWzIonKD+Tj1f5wxXwS4HZXIxk=;
+ b=Q9+FMOfxRVjR0WeSBcqLoMd7cZQ2Siftvbd5Iwfj+Z4hNVv7ggYjDgKI0aAI3RB6Eo
+ /UkeoxigRBfm2k4tD44XPZuiBdNE9NIwXspsXrhu8g3TpsAWp5ApSXeUdIjuJpiwozF/
+ Tbgskrlwj/72Z3baB9+vIz0FA7a+LFITBZRW74ebsbSA1sydlFDZVIFjpfjs+htXw3rn
+ R9Jueq8xKJUXPfpqV+jWoJYqW8z+4F041JHfIvSPPGraF62B6sUOh2/ehr5jPxEPyxXY
+ XbJslYG+DTCoVqJoPOPDrah8Q0KkqSPu9MCUmTKR6mFb5AYF1H4Nnp1LT8nExsYvA75y
+ peLw==
+X-Gm-Message-State: AOJu0YxhaSZ2igOUtTnlX5V/yTa5dCtEvoYL4Kz1rKd6Eo127pR3XdSz
+ Ou+3ZarmY2xdTVILUNILQDtFH5bJXfHRVm+YWdMPIYL4ddVz0eFW/9jsAA34g5BXXoT31LHirbe
+ M
+X-Google-Smtp-Source: AGHT+IH/E/aFCGLF4xzgbjjOVu2GKK0+gMwSyGkeprPV2pz9FhPy/+j6qXF7gKxgPz/lcZ8pKdM7LA==
+X-Received: by 2002:a05:600c:b8c:b0:413:3391:2f23 with SMTP id
+ fl12-20020a05600c0b8c00b0041333912f23mr1511084wmb.35.1710253686050; 
+ Tue, 12 Mar 2024 07:28:06 -0700 (PDT)
+Received: from localhost.localdomain
+ (cpc92320-cmbg19-2-0-cust35.5-4.cable.virginm.net. [82.13.64.36])
+ by smtp.gmail.com with ESMTPSA id
+ t13-20020a05600c198d00b00412b0e51ef9sm12810270wmq.31.2024.03.12.07.28.05
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Mar 2024 07:28:05 -0700 (PDT)
+From: Anthony PERARD <anthony.perard@citrix.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/3] Xen queue 2024-03-12
+Date: Tue, 12 Mar 2024 14:27:54 +0000
+Message-Id: <20240312142757.34141-1-anthony.perard@citrix.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spamd-Result: default: False [-3.10 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- URIBL_BLOCKED(0.00)[mail-archive.com:url,ozlabs.org:url];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_SEVEN(0.00)[8]; FUZZY_BLOCKED(0.00)[rspamd.com];
- FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
- RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Score: -3.10
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=anthony.perard@cloud.com; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -124,195 +88,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-C=C3=A9dric Le Goater <clg@redhat.com> writes:
+The following changes since commit 8f3f329f5e0117bd1a23a79ab751f8a7d3471e4b:
 
-> On 3/12/24 14:34, C=C3=A9dric Le Goater wrote:
->> On 3/12/24 13:32, C=C3=A9dric Le Goater wrote:
->>> On 3/11/24 20:03, Fabiano Rosas wrote:
->>>> C=C3=A9dric Le Goater <clg@redhat.com> writes:
->>>>
->>>>> On 3/8/24 15:36, Fabiano Rosas wrote:
->>>>>> C=C3=A9dric Le Goater <clg@redhat.com> writes:
->>>>>>
->>>>>>> This prepares ground for the changes coming next which add an Error=
-**
->>>>>>> argument to the .save_setup() handler. Callers of qemu_savevm_state=
-_setup()
->>>>>>> now handle the error and fail earlier setting the migration state f=
-rom
->>>>>>> MIGRATION_STATUS_SETUP to MIGRATION_STATUS_FAILED.
->>>>>>>
->>>>>>> In qemu_savevm_state(), move the cleanup to preserve the error
->>>>>>> reported by .save_setup() handlers.
->>>>>>>
->>>>>>> Since the previous behavior was to ignore errors at this step of
->>>>>>> migration, this change should be examined closely to check that
->>>>>>> cleanups are still correctly done.
->>>>>>>
->>>>>>> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
->>>>>>> ---
->>>>>>>
->>>>>>> =C2=A0=C2=A0 Changes in v4:
->>>>>>> =C2=A0=C2=A0 - Merged cleanup change in qemu_savevm_state()
->>>>>>> =C2=A0=C2=A0 Changes in v3:
->>>>>>> =C2=A0=C2=A0 - Set migration state to MIGRATION_STATUS_FAILED
->>>>>>> =C2=A0=C2=A0 - Fixed error handling to be done under lock in bg_mig=
-ration_thread()
->>>>>>> =C2=A0=C2=A0 - Made sure an error is always set in case of failure =
-in
->>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0 qemu_savevm_state_setup()
->>>>>>> =C2=A0=C2=A0 migration/savevm.h=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
->>>>>>> =C2=A0=C2=A0 migration/migration.c | 27 ++++++++++++++++++++++++---
->>>>>>> =C2=A0=C2=A0 migration/savevm.c=C2=A0=C2=A0=C2=A0 | 26 ++++++++++++=
-+++-----------
->>>>>>> =C2=A0=C2=A0 3 files changed, 40 insertions(+), 15 deletions(-)
->>>>>>>
->>>>>>> diff --git a/migration/savevm.h b/migration/savevm.h
->>>>>>> index 74669733dd63a080b765866c703234a5c4939223..9ec96a995c93a42aad6=
-21595f0ed58596c532328 100644
->>>>>>> --- a/migration/savevm.h
->>>>>>> +++ b/migration/savevm.h
->>>>>>> @@ -32,7 +32,7 @@
->>>>>>> =C2=A0=C2=A0 bool qemu_savevm_state_blocked(Error **errp);
->>>>>>> =C2=A0=C2=A0 void qemu_savevm_non_migratable_list(strList **reasons=
-);
->>>>>>> =C2=A0=C2=A0 int qemu_savevm_state_prepare(Error **errp);
->>>>>>> -void qemu_savevm_state_setup(QEMUFile *f);
->>>>>>> +int qemu_savevm_state_setup(QEMUFile *f, Error **errp);
->>>>>>> =C2=A0=C2=A0 bool qemu_savevm_state_guest_unplug_pending(void);
->>>>>>> =C2=A0=C2=A0 int qemu_savevm_state_resume_prepare(MigrationState *s=
-);
->>>>>>> =C2=A0=C2=A0 void qemu_savevm_state_header(QEMUFile *f);
->>>>>>> diff --git a/migration/migration.c b/migration/migration.c
->>>>>>> index a49fcd53ee19df1ce0182bc99d7e064968f0317b..6d1544224e96f5edfe5=
-6939a9c8395d88ef29581 100644
->>>>>>> --- a/migration/migration.c
->>>>>>> +++ b/migration/migration.c
->>>>>>> @@ -3408,6 +3408,8 @@ static void *migration_thread(void *opaque)
->>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int64_t setup_start =3D qemu_c=
-lock_get_ms(QEMU_CLOCK_HOST);
->>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 MigThrError thr_error;
->>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool urgent =3D false;
->>>>>>> +=C2=A0=C2=A0=C2=A0 Error *local_err =3D NULL;
->>>>>>> +=C2=A0=C2=A0=C2=A0 int ret;
->>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 thread =3D migration_threads_a=
-dd("live_migration", qemu_get_thread_id());
->>>>>>> @@ -3451,9 +3453,17 @@ static void *migration_thread(void *opaque)
->>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bql_lock();
->>>>>>> -=C2=A0=C2=A0=C2=A0 qemu_savevm_state_setup(s->to_dst_file);
->>>>>>> +=C2=A0=C2=A0=C2=A0 ret =3D qemu_savevm_state_setup(s->to_dst_file,=
- &local_err);
->>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bql_unlock();
->>>>>>> +=C2=A0=C2=A0=C2=A0 if (ret) {
->>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 migrate_set_error(s, lo=
-cal_err);
->>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_free(local_err);
->>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 migrate_set_state(&s->s=
-tate, MIGRATION_STATUS_SETUP,
->>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 MIGRATION_STATUS_FAILED);
->>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto out;
->>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0 }
->>>>>>> +
->>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qemu_savevm_wait_unplug(s, MIG=
-RATION_STATUS_SETUP,
->>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 MIGRATION_STATUS_=
-ACTIVE);
->>>>>>
->>>>>> This^ should be before the new block it seems:
->>>>>>
->>>>>> GOOD:
->>>>>> migrate_set_state new state setup
->>>>>> migrate_set_state new state wait-unplug
->>>>>> migrate_fd_cancel
->>>>>> migrate_set_state new state cancelling
->>>>>> migrate_fd_cleanup
->>>>>> migrate_set_state new state cancelled
->>>>>> migrate_fd_cancel
->>>>>> ok 1 /x86_64/failover-virtio-net/migrate/abort/wait-unplug
->>>>>>
->>>>>> BAD:
->>>>>> migrate_set_state new state setup
->>>>>> migrate_fd_cancel
->>>>>> migrate_set_state new state cancelling
->>>>>> migrate_fd_cleanup
->>>>>> migrate_set_state new state cancelled
->>>>>> qemu-system-x86_64: ram_save_setup failed: Input/output error
->>>>>> **
->>>>>> ERROR:../tests/qtest/virtio-net-failover.c:1203:test_migrate_abort_w=
-ait_unplug:
->>>>>> assertion failed (status =3D=3D "cancelling"): ("cancelled" =3D=3D "=
-cancelling")
->>>>>>
->>>>>> Otherwise migration_iteration_finish() will schedule the cleanup BH =
-and
->>>>>> that will run concurrently with migrate_fd_cancel() issued by the te=
-st
->>>>>> and bad things happens.
->>>>>
->>>>> This hack makes things work :
->>>>>
->>>>> @@ -3452,6 +3452,9 @@ static void *migration_thread(void *opaq
->>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qemu_sav=
-evm_send_colo_enable(s->to_dst_file);
->>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>>>> +=C2=A0=C2=A0=C2=A0 qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP,
->>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 MIGRATION_STATUS_SETUP);
->>>>> +
->>>>
->>>> Why move it all the way up here? Has moving the wait_unplug before the
->>>> 'if (ret)' block not worked for you?
->>>
->>> We could be sleeping while holding the BQL. It looked wrong.
->>=20
->> Sorry wrong answer. Yes I can try moving it before the 'if (ret)' block.
->> I can reproduce easily with an x86 guest running on PPC64.
->
-> That works just the same.
->
-> Peter, Fabiano,
->
-> What would you prefer  ?
->
-> 1. move qemu_savevm_wait_unplug() before qemu_savevm_state_setup(),
->     means one new patch.
+  Merge tag 'migration-20240311-pull-request' of https://gitlab.com/peterx/qemu into staging (2024-03-12 11:35:41 +0000)
 
-Is there a point to this except "because we can"? Honest question, I
-might have missed the motivation.
+are available in the Git repository at:
 
-Also a couple of points:
+  https://xenbits.xen.org/git-http/people/aperard/qemu-dm.git tags/pull-xen-20240312
 
-- The current version of this proposal seems it will lose the transition
-from SETUP->ACTIVE no? As in, after qemu_savevm_state_setup, there's
-nothing changing the state to ACTIVE anymore.
+for you to fetch changes up to 918a7f706b69a8c725bac0694971d2831f688ebb:
 
-- You also need to change the bg migration path.
+  i386: load kernel on xen using DMA (2024-03-12 14:13:08 +0000)
 
->
-> 2. leave qemu_savevm_wait_unplug() after qemu_savevm_state_setup()
->     and handle state_setup() errors after waiting. means an update
->     of this patch.
+----------------------------------------------------------------
+Xen queue:
 
-I vote for this. This failover feature is a pretty complex one, let's
-not risk changing the behavior for no good reason. Just look at the
-amount of head-banging going on in these threads:
+* In Xen PCI passthrough, emulate multifunction bit.
+* Fix in Xen mapcache.
+* Improve performance of kernel+initrd loading in an Xen HVM Direct
+  Kernel Boot scenario.
 
-https://patchwork.ozlabs.org/project/qemu-devel/cover/20181025140631.634922=
--1-sameeh@daynix.com/
-https://www.mail-archive.com/qemu-devel@nongnu.org/msg609296.html
+----------------------------------------------------------------
+Marek Marczykowski-Górecki (1):
+      i386: load kernel on xen using DMA
 
->
->
-> Thanks,
->
-> C.
->
->
->=20=20=20
+Peng Fan (1):
+      xen: Drop out of coroutine context xen_invalidate_map_cache_entry
+
+Ross Lagerwall (1):
+      xen/pt: Emulate multifunction bit in header type
+
+ hw/i386/pc.c                |  3 ++-
+ hw/xen/xen-mapcache.c       | 30 ++++++++++++++++++++++++++++--
+ hw/xen/xen_pt_config_init.c |  7 +++++--
+ 3 files changed, 35 insertions(+), 5 deletions(-)
 
