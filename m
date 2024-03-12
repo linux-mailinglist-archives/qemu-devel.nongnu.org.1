@@ -2,67 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F160887971A
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 16:05:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7F687975F
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 16:20:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk3g9-0005O2-AL; Tue, 12 Mar 2024 11:04:33 -0400
+	id 1rk3uJ-0000Ty-P4; Tue, 12 Mar 2024 11:19:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rk3g6-0005Mz-Pq; Tue, 12 Mar 2024 11:04:30 -0400
-Received: from mgamail.intel.com ([198.175.65.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rk3g4-0003wS-B5; Tue, 12 Mar 2024 11:04:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710255868; x=1741791868;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=zKVu4CIIFGU5Pv0k8/n8uDFwylm40wNiRfakYrrfwEI=;
- b=RjMSxj0rEjTGQUhaEkAtqq3lmaEcxfgkUvnwM7CQzHeR9XEZ57YU4wRh
- w0wFnuB+E7ReZ1LS/be5rwLWbStIcLYshh5KbQEpt3hTa8HHiRP+LGExC
- eF+DTNhLNUV/j50Peeha/WSbSC6l8uIfqgKJDftaZ03SJm0EBeBij1MNj
- QWz74Gwo6zLDzO0LUvNPUk1Zz/MHa0ylb97grqYILGHMngHuqE3/0UgL0
- bVsrgBqHuiAnSrR9QZrsX3xSnmtMiGCPsURhL1ztraxR/LT1aVDO14W9a
- 0Ffc6Y7C+Rl17uVJ37r/SmDwRi5euktpW5cHqEX6MwBgDq0cbEZbMs59z g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="8785603"
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="8785603"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2024 08:04:24 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="16134554"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 12 Mar 2024 08:04:22 -0700
-Date: Tue, 12 Mar 2024 23:18:11 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-block@nongnu.org,
- philmd@linaro.org
-Subject: Re: [PATCH 06/10] qapi: Inline QERR_INVALID_PARAMETER_TYPE
- definition (constant value)
-Message-ID: <ZfByM/+eJYxHsIbm@intel.com>
-References: <20240312141343.3168265-1-armbru@redhat.com>
- <20240312141343.3168265-7-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rk3uI-0000Th-6P
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 11:19:10 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rk3uF-0006VQ-Ff
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 11:19:09 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5654f700705so7316297a12.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 08:19:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1710256745; x=1710861545; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vckrPcfv6XciLm9Q/kHa2ZdTPe3qu0tjvxznEZ5BDnY=;
+ b=mZeqkZB5JXQidpA5VJaVDtRAkleMO9Tl+oQc59cbAFeQMztBPMWamuuhhyvYcmZrT8
+ FyEa2Nrq4z7KBMFmkldj5bulQbT/kcmnXKUC6JuPW+Vh3ZisT2brJRNnM3O6Zow1Npmy
+ 5w9eJ00Mav+3Q+put1xNUX2s7lqM1UDMfZUztSbDuue1P9gIM9cCrKtWFzGQU4bLJu6d
+ gl6Do69Om+cS3JH6Rs6LD3vfw5GDKebbsbTUWYjQqg7kNNCrtf/wTPkKcb7ZroMtUrJc
+ rqgjAbdgNdjRbvnVUJ5y98/Lweghnluu5LkgOW6sZRtYTpKkoFsXyz5P7Qp3V/JD0R67
+ llYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710256745; x=1710861545;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vckrPcfv6XciLm9Q/kHa2ZdTPe3qu0tjvxznEZ5BDnY=;
+ b=iZ4QAXHTizkwDWTqvcxaF32KKohrKRqZ1kLHr1kLXtehVYoHoDLzlGi+xj003EX3ZD
+ W+7qWfTIJ+n42jYCjxXffh73Koofy1vJgMJLIqLvmdjvkfNx5pfS2O9eUpl2oZiRy8Iw
+ qCUThjbmFAqKakYQ6tjpqdugrRXfwHKnxQcsWkDqA0HQc8HTzlXRjDztUt1SW89BzvFe
+ lRYa9gXk4kLgulBY5/ZfJy7LgnNHOVrG090D6LkxuCJKxZ3IqJsK/PxIFrrLwB5q9fFz
+ 60iT9duZu1e25n5MoR/CrnXG9hv4CcKCFncR9ICLnAs39sAMWCQgNJIXhSXrX56D4+GF
+ MeAA==
+X-Gm-Message-State: AOJu0Yw37OX90Jksih0plZpCtokmUOx4d+wzODMANDn+2tig6yZvsNaN
+ D0WvALOWGAMzUULFNAQvpi/Id8j/FfLmSCREYtJg3wFnCBswXxRszdaWBqfxfcdXJfH9QCGMdrz
+ Orj6isXmSFagusWwrIWfh0goDNaoRHhxdvpCibQ==
+X-Google-Smtp-Source: AGHT+IF2jpls+rejUnX0ifRBg5YS9H6/iV7o/8+LYOw7vp/2g8hUbuqh/kbNUon7fXUAL6KCwQ7Hlh/xvL7OYfnoPjc=
+X-Received: by 2002:a50:cd95:0:b0:567:45e2:c4db with SMTP id
+ p21-20020a50cd95000000b0056745e2c4dbmr3121824edi.39.1710256745357; Tue, 12
+ Mar 2024 08:19:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240312141343.3168265-7-armbru@redhat.com>
-Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+References: <20240228120215.277717-1-ines.varhol@telecom-paris.fr>
+ <20240228120215.277717-2-ines.varhol@telecom-paris.fr>
+In-Reply-To: <20240228120215.277717-2-ines.varhol@telecom-paris.fr>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 12 Mar 2024 15:18:54 +0000
+Message-ID: <CAFEAcA8LWa70KZMO1ajVLvKxwcbKQEQOHZ8Jy6JM75pr4jB9Cg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/5] hw/display : Add device DM163
+To: =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Laurent Vivier <lvivier@redhat.com>, Samuel Tardieu <sam@rfc1149.net>, 
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Alistair Francis <alistair@alistair23.me>, qemu-arm@nongnu.org, 
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Alistair Francis <alistair.francis@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,56 +96,289 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Mar 12, 2024 at 03:13:39PM +0100, Markus Armbruster wrote:
-> Date: Tue, 12 Mar 2024 15:13:39 +0100
-> From: Markus Armbruster <armbru@redhat.com>
-> Subject: [PATCH 06/10] qapi: Inline QERR_INVALID_PARAMETER_TYPE definition
->  (constant value)
-> 
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> 
-> Address the comment added in commit 4629ed1e98
-> ("qerror: Finally unused, clean up"), from 2015:
-> 
->   /*
->    * These macros will go away, please don't use
->    * in new code, and do not add new ones!
->    */
-> 
-> Mechanical transformation using the following
-> coccinelle semantic patch:
-> 
->     @match@
->     expression errp;
->     expression param;
->     constant value;
->     @@
->          error_setg(errp, QERR_INVALID_PARAMETER_TYPE, param, value);
-> 
->     @script:python strformat depends on match@
->     value << match.value;
->     fixedfmt; // new var
->     @@
->     fixedfmt = f'"Invalid parameter type for \'%s\', expected: {value[1:-1]}"'
->     coccinelle.fixedfmt = cocci.make_ident(fixedfmt)
-> 
->     @replace@
->     expression match.errp;
->     expression match.param;
->     constant match.value;
->     identifier strformat.fixedfmt;
->     @@
->     -    error_setg(errp, QERR_INVALID_PARAMETER_TYPE, param, value);
->     +    error_setg(errp, fixedfmt, param);
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+On Wed, 28 Feb 2024 at 12:02, In=C3=A8s Varhol <ines.varhol@telecom-paris.f=
+r> wrote:
+>
+> This device implements the IM120417002 colors shield v1.1 for Arduino
+> (which relies on the DM163 8x3-channel led driving logic) and features
+> a simple display of an 8x8 RGB matrix. The columns of the matrix are
+> driven by the DM163 and the rows are driven externally.
+>
+> Acked-by: Alistair Francis <alistair.francis@wdc.com>
+> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+> Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 > ---
->  qapi/qobject-input-visitor.c | 32 ++++++++++++++++----------------
->  qapi/string-input-visitor.c  |  8 ++++----
->  qom/object.c                 | 12 ++++++++----
->  3 files changed, 28 insertions(+), 24 deletions(-)
+>  docs/system/arm/b-l475e-iot01a.rst |   3 +-
+>  include/hw/display/dm163.h         |  57 ++++++
+>  hw/display/dm163.c                 | 308 +++++++++++++++++++++++++++++
+>  hw/display/Kconfig                 |   3 +
+>  hw/display/meson.build             |   1 +
+>  hw/display/trace-events            |  13 ++
+>  6 files changed, 384 insertions(+), 1 deletion(-)
+>  create mode 100644 include/hw/display/dm163.h
+>  create mode 100644 hw/display/dm163.c
+>
+> diff --git a/docs/system/arm/b-l475e-iot01a.rst b/docs/system/arm/b-l475e=
+-iot01a.rst
+> index 0afef8e4f4..60b9611167 100644
+> --- a/docs/system/arm/b-l475e-iot01a.rst
+> +++ b/docs/system/arm/b-l475e-iot01a.rst
+> @@ -12,13 +12,14 @@ USART, I2C, SPI, CAN and USB OTG, as well as a variet=
+y of sensors.
+>  Supported devices
+>  """""""""""""""""
+>
+> -Currently B-L475E-IOT01A machine's only supports the following devices:
+> +Currently B-L475E-IOT01A machine's supports the following devices:
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+"machines support"
 
+>
+>  - Cortex-M4F based STM32L4x5 SoC
+>  - STM32L4x5 EXTI (Extended interrupts and events controller)
+>  - STM32L4x5 SYSCFG (System configuration controller)
+>  - STM32L4x5 RCC (Reset and clock control)
+>  - STM32L4x5 GPIOs (General-purpose I/Os)
+> +- optional 8x8 led display (based on DM163 driver)
+>
+>  Missing devices
+>  """""""""""""""
+> diff --git a/include/hw/display/dm163.h b/include/hw/display/dm163.h
+> new file mode 100644
+> index 0000000000..aa775e51e1
+> --- /dev/null
+> +++ b/include/hw/display/dm163.h
+> @@ -0,0 +1,57 @@
+> +/*
+> + * QEMU DM163 8x3-channel constant current led driver
+> + * driving columns of associated 8x8 RGB matrix.
+> + *
+> + * Copyright (C) 2024 Samuel Tardieu <sam@rfc1149.net>
+> + * Copyright (C) 2024 Arnaud Minier <arnaud.minier@telecom-paris.fr>
+> + * Copyright (C) 2024 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#ifndef HW_DISPLAY_DM163_H
+> +#define HW_DISPLAY_DM163_H
+> +
+> +#include "qom/object.h"
+> +#include "hw/qdev-core.h"
+> +
+> +#define TYPE_DM163 "dm163"
+> +OBJECT_DECLARE_SIMPLE_TYPE(DM163State, DM163);
+> +
+> +#define DM163_NUM_LEDS 24
+> +#define RGB_MATRIX_NUM_ROWS 8
+> +#define RGB_MATRIX_NUM_COLS (DM163_NUM_LEDS / 3)
+> +#define COLOR_BUFFER_SIZE RGB_MATRIX_NUM_ROWS
+> +
+> +typedef struct DM163State {
+> +    DeviceState parent_obj;
+> +
+> +    /* DM163 driver */
+> +    uint64_t bank0_shift_register[3];
+> +    uint64_t bank1_shift_register[3];
+> +    uint16_t latched_outputs[DM163_NUM_LEDS];
+> +    uint16_t outputs[DM163_NUM_LEDS];
+> +    qemu_irq sout;
+> +
+> +    uint8_t dck;
+> +    uint8_t en_b;
+> +    uint8_t lat_b;
+> +    uint8_t rst_b;
+> +    uint8_t selbk;
+> +    uint8_t sin;
+> +
+> +    /* IM120417002 colors shield */
+> +    uint8_t activated_rows;
+> +
+> +    /* 8x8 RGB matrix */
+> +    QemuConsole *console;
+> +    /* Rows currently being displayed on the matrix. */
+> +    /* The last row is filled with 0 (turned off row) */
+> +    uint32_t buffer[COLOR_BUFFER_SIZE + 1][RGB_MATRIX_NUM_COLS];
+> +    uint8_t last_buffer_idx;
+> +    uint8_t buffer_idx_of_row[RGB_MATRIX_NUM_ROWS];
+> +    /* Used to simulate retinal persistance of rows */
+
+"persistence" (I think there are some other instances of this
+typo below as well.)
+
+> +    uint8_t age_of_row[RGB_MATRIX_NUM_ROWS];
+> +} DM163State;
+> +
+> +#endif /* HW_DISPLAY_DM163_H */
+> diff --git a/hw/display/dm163.c b/hw/display/dm163.c
+> new file mode 100644
+> index 0000000000..87e886356a
+> --- /dev/null
+> +++ b/hw/display/dm163.c
+> @@ -0,0 +1,308 @@
+> +/*
+> + * QEMU DM163 8x3-channel constant current led driver
+> + * driving columns of associated 8x8 RGB matrix.
+> + *
+> + * Copyright (C) 2024 Samuel Tardieu <sam@rfc1149.net>
+> + * Copyright (C) 2024 Arnaud Minier <arnaud.minier@telecom-paris.fr>
+> + * Copyright (C) 2024 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +/*
+> + * The reference used for the DM163 is the following :
+> + * http://www.siti.com.tw/product/spec/LED/DM163.pdf
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qapi/error.h"
+> +#include "migration/vmstate.h"
+> +#include "hw/irq.h"
+> +#include "hw/qdev-properties.h"
+> +#include "hw/display/dm163.h"
+> +#include "ui/console.h"
+> +#include "trace.h"
+> +
+> +#define LED_SQUARE_SIZE 100
+> +/* Number of frames a row stays visible after being turned off. */
+> +#define ROW_PERSISTANCE 4
+> +
+> +static const VMStateDescription vmstate_dm163 =3D {
+> +    .name =3D TYPE_DM163,
+> +    .version_id =3D 1,
+> +    .minimum_version_id =3D 1,
+> +    .fields =3D (const VMStateField[]) {
+> +        VMSTATE_UINT8(activated_rows, DM163State),
+> +        VMSTATE_UINT64_ARRAY(bank0_shift_register, DM163State, 3),
+> +        VMSTATE_UINT64_ARRAY(bank1_shift_register, DM163State, 3),
+> +        VMSTATE_UINT16_ARRAY(latched_outputs, DM163State, DM163_NUM_LEDS=
+),
+> +        VMSTATE_UINT16_ARRAY(outputs, DM163State, DM163_NUM_LEDS),
+> +        VMSTATE_UINT8(dck, DM163State),
+> +        VMSTATE_UINT8(en_b, DM163State),
+> +        VMSTATE_UINT8(lat_b, DM163State),
+> +        VMSTATE_UINT8(rst_b, DM163State),
+> +        VMSTATE_UINT8(selbk, DM163State),
+> +        VMSTATE_UINT8(sin, DM163State),
+> +        VMSTATE_UINT32_2DARRAY(buffer, DM163State,
+> +            COLOR_BUFFER_SIZE + 1, RGB_MATRIX_NUM_COLS),
+> +        VMSTATE_UINT8(last_buffer_idx, DM163State),
+> +        VMSTATE_UINT8_ARRAY(buffer_idx_of_row, DM163State, RGB_MATRIX_NU=
+M_ROWS),
+> +        VMSTATE_UINT8_ARRAY(age_of_row, DM163State, RGB_MATRIX_NUM_ROWS)=
+,
+> +        VMSTATE_END_OF_LIST()
+> +    }
+> +};
+> +
+> +static void dm163_reset_hold(Object *obj)
+> +{
+> +    DM163State *s =3D DM163(obj);
+> +
+> +    /* Reset only stops the PWM. */
+> +    memset(s->outputs, 0, sizeof(s->outputs));
+> +
+> +    /* The last row of the buffer stores a turned off row */
+> +    memset(s->buffer[COLOR_BUFFER_SIZE], 0, sizeof(s->buffer[0]));
+
+This reset function seems to be missing reset handling for
+a lot of this device's state.
+
+> +}
+
+
+> +static void dm163_invalidate_display(void *opaque)
+> +{
+> +}
+
+I'm not sure but I think the invalidate_display method is supposed
+to at least do a qemu_console_resize() to the correct size.
+It also typically sets a flag to tell the update_display method
+that it needs to redraw the whole window.
+
+> +
+> +static void dm163_update_display(void *opaque)
+> +{
+> +    DM163State *s =3D (DM163State *)opaque;
+> +    DisplaySurface *surface =3D qemu_console_surface(s->console);
+> +    uint32_t *dest;
+> +    unsigned bits_ppi =3D surface_bits_per_pixel(surface);
+> +
+> +    /* Should the code be updated to handle other bpp than 32 ? */
+
+No. The UI layer guarantees that the console surface is always
+32 bits per pixel. You don't need to assert that this is true.
+(We still have some old display driver models which have legacy
+code we never cleaned up from back when they had to cope with
+possibly different console surface bit depths; but the handling
+of other depths is just dead code in those devices.)
+
+> +    /* trace_dm163_bits_ppi(bits_ppi); */
+> +    g_assert((bits_ppi =3D=3D 32));
+> +    dest =3D surface_data(surface);
+> +    for (unsigned y =3D 0; y < RGB_MATRIX_NUM_ROWS; y++) {
+> +        for (unsigned _ =3D 0; _ < LED_SQUARE_SIZE; _++) {
+> +            for (int x =3D RGB_MATRIX_NUM_COLS * LED_SQUARE_SIZE - 1; x =
+>=3D 0; x--) {
+> +                *dest++ =3D s->buffer[s->buffer_idx_of_row[y]][x / LED_S=
+QUARE_SIZE];
+> +            }
+> +        }
+> +        if (s->age_of_row[y]) {
+> +            s->age_of_row[y]--;
+> +            if (!s->age_of_row[y]) {
+> +                /*
+> +                 * If the ROW_PERSISTANCE delay is up,
+> +                 * the row is turned off.
+> +                 * (s->buffer[COLOR_BUFFER] is filled with 0)
+> +                 */
+> +                s->buffer_idx_of_row[y] =3D COLOR_BUFFER_SIZE;
+> +            }
+> +        }
+> +    }
+> +    /*
+> +     * Ideally set the refresh rate so that the row persistance
+> +     * doesn't need to be changed.
+> +     *
+> +     * Currently `dpy_ui_info_supported(s->console)` returns false
+> +     * which makes it impossible to get or set UIInfo.
+> +     */
+> +    if (dpy_ui_info_supported(s->console)) {
+> +        trace_dm163_refresh_rate(dpy_get_ui_info(s->console)->refresh_ra=
+te);
+> +    } else {
+> +        trace_dm163_refresh_rate(0);
+> +    }
+
+Why does this device care about the console's refresh rate at all?
+It should just be displaying what it needs to display.
+No other device in hw/display calls dpy_get_ui_info().
+
+(The reason it returns false is because your GraphicHwOps struct
+doesn't define a ui_info function -- dpy_get_ui_info()/dpy_set_ui_info()
+is for the UI layer to tell the display device about changes in things
+like refresh rate and window size, not for the display device to ask
+something else for this information. This is typically only needed by
+virtual devices like virtio-vga or xenfb, though, so I wouldn't
+expect you to need to set a ui_info function.)
+
+> +
+> +    dpy_gfx_update(s->console, 0, 0, RGB_MATRIX_NUM_COLS * LED_SQUARE_SI=
+ZE,
+> +                   RGB_MATRIX_NUM_ROWS * LED_SQUARE_SIZE);
+
+This will redraw the entire 800x800 window every time, which is
+not very efficient. Do we really need to do that?
+
+> +}
+> +
+> +static const GraphicHwOps dm163_ops =3D {
+> +    .invalidate  =3D dm163_invalidate_display,
+> +    .gfx_update  =3D dm163_update_display,
+> +};
+
+thanks
+-- PMM
 
