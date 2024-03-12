@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E36879E98
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:27:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A6AC879EEA
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:39:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkAak-00077e-4B; Tue, 12 Mar 2024 18:27:26 -0400
+	id 1rkAb4-0007dj-FW; Tue, 12 Mar 2024 18:27:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAaf-0006Yi-OK
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:27:21 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAak-0007Lz-MX
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:27:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAae-0004Nh-4p
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:27:21 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAaj-0004OJ-6a
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:27:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710282439;
+ s=mimecast20190719; t=1710282443;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=tOh3XMBYaTXqwwXatODmJZBdFVP40l8SCuosqwHz9Dw=;
- b=ii1iK+WkwFh73+BkYZVSb+Pdsrx0lio9MABqJgCrfXbiQs8EmxralwvrNcIlrAgJfyKVzz
- Nj01Q8Hc0EKmKjuQm4kN6PW2JP3yqXZ73ZoZk2f1tBMggqft3a7SXgK3/EmauWLKN2mGVj
- h+ZePIaWy7cmeOxf7yUuyDSxPUihxLI=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=faJjZcgxeJc4r0dC1qxSrJM/ByQyn32iy5RAHwtp21Y=;
+ b=a3cZDmUfEVgHZb9WiAmhjpvGwkDo0UskJQTJj1nBwk+vLC7Y6f0V+lmobdI9DJ7B5HIcZv
+ y3oheOjMTlPCdQ+IBlpHKkLQM9GUQQ+bkWeJqM0mrJRYi2GRIe5hNp3OKTXre9NQ4bIJFu
+ kM/i9yVgy1bWcwaNC2zZDKL73+MnMMQ=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-36-ILpux4BcPtGBPqoRS-_61Q-1; Tue, 12 Mar 2024 18:27:18 -0400
-X-MC-Unique: ILpux4BcPtGBPqoRS-_61Q-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-56864b8f5f9so1354730a12.3
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:27:18 -0700 (PDT)
+ us-mta-2-YenIqga5MXaBxcbXBuU7jA-1; Tue, 12 Mar 2024 18:27:22 -0400
+X-MC-Unique: YenIqga5MXaBxcbXBuU7jA-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2d45f5bfdd6so8794541fa.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:27:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710282436; x=1710887236;
+ d=1e100.net; s=20230601; t=1710282440; x=1710887240;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tOh3XMBYaTXqwwXatODmJZBdFVP40l8SCuosqwHz9Dw=;
- b=TNBB36HZdgGwX3wE7Gnl5m4YT2SqAoLN3038QZNd0hNkegA20Iy4EuHz7KkAq8jCPe
- ox+/i9jhjOTZ7nGRHpft602IKNWFte4Cnvk0pzLsQS6PGryDmO2M7s9xRCFO1d+MSMfL
- 4FkVqRTkC6IcShBV1dv1SA5PoXgtQlr1PdO65zdP/Tx/q+JCZ6MqPeZAksTbyNkY/Wcc
- gSbCFZxn85P3vRkFBmwbq0HwCkiAzcGVgcq2KOx2APV0c3gAT1BOvxYIDFjvCeBW4i9y
- d7o7vcBsUyFiWGzDgmh4GdqaixdRnPiSns0BipkuH+We44J/p7kKh8H2diVx/dPDD2ml
- P5ow==
-X-Gm-Message-State: AOJu0YwCWJ+lJfxyFXGyd5Xzu98hPmSKybUXh1X6VBRsngtQTsNX2EOn
- nyBWUOb3P6KhtqIdrB6jIF8tlZw8KyjioojQsA+V/HjTH1Y6xsxVPJ3rnprMObliy/7+1eMceoD
- iaz03VFh7i9U8PvbqPofC6EvGryodK406GmMK8VNqh6z/5bs8Gjqi8TSCfz5mbXy0zOKNU0fTST
- pNvMwUYBGwY5Id1AX/djxMx3oI1pEHfpWg
-X-Received: by 2002:a50:c315:0:b0:566:1127:4bb5 with SMTP id
- a21-20020a50c315000000b0056611274bb5mr8334967edb.1.1710282436390; 
- Tue, 12 Mar 2024 15:27:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFm4qsXUUXmwGcv9qOYj47DS6cCLXV96uTaaYGD6Tno7zfR92dtE36eMtWzlJW8oTvz41fALg==
-X-Received: by 2002:a50:c315:0:b0:566:1127:4bb5 with SMTP id
- a21-20020a50c315000000b0056611274bb5mr8334950edb.1.1710282435946; 
- Tue, 12 Mar 2024 15:27:15 -0700 (PDT)
+ bh=faJjZcgxeJc4r0dC1qxSrJM/ByQyn32iy5RAHwtp21Y=;
+ b=gsV7i2LAKCYd53AWdpu8x1mOqryAO6FHnCY38VPJ0J3muEgjE04qlKAROllqwmtGdl
+ toJ1zCLaY+UEtREf+vvFGJDmAmJ9rBX08YsPVX5OGOS2jJjQSUkrmO39ctgueFCYhra5
+ OKHN04p1WTzBJ3jf9TYl/mqyfrueemV0MyKLnXzbr8NAo51Z20djTiIwgSwIq5AU5MGo
+ sn/klqhsmn58ok1QKw3yAQiE67rLJQ0Os3zYZbltlKyigHnJjSFT+7z6az5XraEXBz8l
+ GhiCmSe5mr/Mr7ugltsR4KYiLZFY6vfQRoq96dpa6yQEixRytBRT4VgQtOzeOhzziae/
+ osqA==
+X-Gm-Message-State: AOJu0YwuWu5HnjAUtp4FMcG9GcF2SBWLalfkzC8OskNhdM+JjXsIUCQU
+ IRupbvUCRfKSxWpEaFF5mpdov44Z5ysPAoLzfbPZna/fy3EOISaj7ak4wc4Revg6kFUkTjd9xUN
+ 9XLxeCN9TvKsAYhOUEuD6WmTCd2OvbYkwW+OFPKg9A3r5NIeD6m7tuHV2BaYe/DOv6lK+06R06z
+ fyiKrQVF1/6kFWZwXKDULz0EPvAeIAT3xt
+X-Received: by 2002:a2e:9b92:0:b0:2d4:3df6:5330 with SMTP id
+ z18-20020a2e9b92000000b002d43df65330mr4505707lji.38.1710282439966; 
+ Tue, 12 Mar 2024 15:27:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG3YX9G6WbZMkL7HIiFH3dR6CIOBVpQSNi87CHPEqh8tgYkMZAXGYT9x6vL+ERqSREaGP/ztw==
+X-Received: by 2002:a2e:9b92:0:b0:2d4:3df6:5330 with SMTP id
+ z18-20020a2e9b92000000b002d43df65330mr4505691lji.38.1710282439509; 
+ Tue, 12 Mar 2024 15:27:19 -0700 (PDT)
 Received: from redhat.com ([2.52.134.16]) by smtp.gmail.com with ESMTPSA id
- fe5-20020a056402390500b005684173e413sm2318047edb.72.2024.03.12.15.27.14
+ e20-20020a056402149400b00568229390f2sm4359050edv.70.2024.03.12.15.27.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 15:27:15 -0700 (PDT)
-Date: Tue, 12 Mar 2024 18:27:12 -0400
+ Tue, 12 Mar 2024 15:27:18 -0700 (PDT)
+Date: Tue, 12 Mar 2024 18:27:16 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
- Markus Armbruster <armbru@redhat.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
-Subject: [PULL 33/68] hw/cxl/cxl-host: Fix missing ERRP_GUARD() in
- cxl_fixed_memory_window_config()
-Message-ID: <2a0e0a35002db7ac64f4e82ea2a4ad2fb6d934b0.1710282274.git.mst@redhat.com>
+ Markus Armbruster <armbru@redhat.com>, Laurent Vivier <laurent@vivier.eu>
+Subject: [PULL 34/68] hw/display/macfb: Fix missing ERRP_GUARD() in
+ macfb_nubus_realize()
+Message-ID: <5aa4a6417b0f7acbfd7f4c21dca26293bc3d9348.1710282274.git.mst@redhat.com>
 References: <cover.1710282274.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -120,56 +119,45 @@ ERRP_GUARD():
 * Using it when it's not needed is safe, but please avoid cluttering
 * the source with useless code.
 
-But in cxl_fixed_memory_window_config(), @errp is dereferenced in 2
-places without ERRP_GUARD():
+But in macfb_nubus_realize(), @errp is dereferenced without
+ERRP_GUARD():
 
-fw->enc_int_ways = cxl_interleave_ways_enc(fw->num_targets, errp);
+ndc->parent_realize(dev, errp);
 if (*errp) {
     return;
 }
 
-and
-
-fw->enc_int_gran =
-    cxl_interleave_granularity_enc(object->interleave_granularity,
-                                   errp);
-if (*errp) {
-    return;
-}
-
-For the above 2 places, we check "*errp", because neither function
-returns a suitable error code. And since machine_set_cfmw() - the caller
-of cxl_fixed_memory_window_config() - doesn't get the NULL @errp
-parameter as the "set" method of object property,
-cxl_fixed_memory_window_config() hasn't triggered the bug that
-dereferencing the NULL @errp.
+Here we check *errp, because the ndc->parent_realize(), as a
+DeviceClass.realize() callback, returns void. And since
+macfb_nubus_realize(), also as a DeviceClass.realize(), doesn't get the
+NULL @errp parameter, it hasn't triggered the bug that dereferencing the
+NULL @errp.
 
 To follow the requirement of @errp, add missing ERRP_GUARD() in
-cxl_fixed_memory_window_config().
+macfb_nubus_realize().
 
 Suggested-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Message-Id: <20240223085653.1255438-2-zhao1.liu@linux.intel.com>
+Message-Id: <20240223085653.1255438-3-zhao1.liu@linux.intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- hw/cxl/cxl-host.c | 1 +
+ hw/display/macfb.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
-index 2aa776c79c..c5f5fcfd64 100644
---- a/hw/cxl/cxl-host.c
-+++ b/hw/cxl/cxl-host.c
-@@ -26,6 +26,7 @@ static void cxl_fixed_memory_window_config(CXLState *cxl_state,
-                                            CXLFixedMemoryWindowOptions *object,
-                                            Error **errp)
+diff --git a/hw/display/macfb.c b/hw/display/macfb.c
+index 418e99c8e1..1ace341a0f 100644
+--- a/hw/display/macfb.c
++++ b/hw/display/macfb.c
+@@ -714,6 +714,7 @@ static void macfb_nubus_set_irq(void *opaque, int n, int level)
+ 
+ static void macfb_nubus_realize(DeviceState *dev, Error **errp)
  {
 +    ERRP_GUARD();
-     g_autofree CXLFixedWindow *fw = g_malloc0(sizeof(*fw));
-     strList *target;
-     int i;
+     NubusDevice *nd = NUBUS_DEVICE(dev);
+     MacfbNubusState *s = NUBUS_MACFB(dev);
+     MacfbNubusDeviceClass *ndc = NUBUS_MACFB_GET_CLASS(dev);
 -- 
 MST
 
