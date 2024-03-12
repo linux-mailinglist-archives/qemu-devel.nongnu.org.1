@@ -2,83 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9423C879A36
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:08:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E0DD8799F9
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:06:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk5Wa-000258-S4; Tue, 12 Mar 2024 13:02:48 -0400
+	id 1rk5Y0-0005x5-7U; Tue, 12 Mar 2024 13:04:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rk5UG-0005xr-Re
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 13:00:35 -0400
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rk5UC-0008Jn-H2
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 13:00:23 -0400
-Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-2d208be133bso65234561fa.2
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 10:00:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710262818; x=1710867618; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=D/uNmK++/ud7f+ngB6fiXfdhnqeNrD4IIe9hghiHPPk=;
- b=WmYFHUY6jzw4kZoE+Q0r9hg4HYTv90gx+w5tTq3c5FqkfzuYCR18MeDAwQdrsVTI+P
- 8qeNUMklu4uylb7u1mFRWYashBFTivZ+3yxzPIcoNSEVoCvvFJkQgkPV1K7y5mmHxg1E
- d6khbT3a1QkJ/LBgUM+DpLjOgisUUV5tz+FHiOdskHFYuY/t+XwkyIz9uq/1gCajObna
- k5+4cz36x00NZbAbF0A01MF7LWRQrCeSWxsxj7sOgeeLoAdJ6f+8BY5HDE5kcc3Gxec8
- 7VdVgjJaAn0FUOldwr8BV17M24dz7dUDCf0f1a9hOUpMDr3LIGqKUhcPtOPPWFTMehgO
- JiYw==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rk5Xb-0005PW-Qb
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 13:03:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rk5XZ-0000OE-PW
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 13:03:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710263027;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=rz0ihC0jHCYEZG2/MEdzd7dbq7ihTki2jY6XLgouo9E=;
+ b=GudCN/LDD0/VsMe4w3f3tAK9pk+G+Gy/JpcDCqDjJ+vFzUc8zJCW2gCUmUEZuciJU1PxZu
+ vJYMkYC/J5XooPWxgIyGve9RGZIYrjdy9LXeWZISI0BD22M6iNXlU2fXcM4EWhEzbi9JMw
+ Ely2vXc3lSY8MR6R4UUHYRcpb7MjFck=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-94-rdzuboCFMiyeE1xgatl09g-1; Tue, 12 Mar 2024 13:03:46 -0400
+X-MC-Unique: rdzuboCFMiyeE1xgatl09g-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2d359de20dcso40816661fa.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 10:03:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710262818; x=1710867618;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=D/uNmK++/ud7f+ngB6fiXfdhnqeNrD4IIe9hghiHPPk=;
- b=s/fmtvQmN3ww+XMzmXSIqZDx1vBN8KFGAFz1o/Vo+E7Toj1aUXIsxZ7z3gK2zi64Kw
- Tu9y+9T4wYosxItKnj05hl3t44PrEglX+WZw1ykFajyRPVlgfXPuALm3AmoCpSnPjyyW
- UiQ5Y0La9X3AxliARvpY0VowgiNnxQ08+7ZRGMNUrjk+Bci9etantWLXo9ZPNKASZSma
- BZneU4pcu9qr4GZH77DjiKijwf2XB6og4zVn5n3VVmf21iIytxklbH/QwVYACfY4lxLS
- oWBj8s8k9eveG0Uijz/j9irQXU9mTJwBjUxDWBeWyblLkri8Bkl5Q605cs71Lozom/Sq
- SHqQ==
-X-Gm-Message-State: AOJu0YwfvohA7M9kU/SmNvJGYE7P572mQLqwu3rLZeSdAdnbPOP5oBMe
- LpASSl5exZynNB/O6T3RBls2hBkQncDPNqBuEF/RF+1zacKZh5Pf6MgrFCJCxeA=
-X-Google-Smtp-Source: AGHT+IFDvjuetJIW2htdTjG1Mw0v+5yWjl056nZ8maZa3fQe8R5LysxvlZ0O65wF0tCF7kQ0E1gduQ==
-X-Received: by 2002:a2e:9550:0:b0:2d4:2faa:d93 with SMTP id
- t16-20020a2e9550000000b002d42faa0d93mr5159573ljh.45.1710262818085; 
- Tue, 12 Mar 2024 10:00:18 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- x21-20020aa7d395000000b00567fa27e75fsm4079742edq.32.2024.03.12.10.00.17
+ d=1e100.net; s=20230601; t=1710263025; x=1710867825;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rz0ihC0jHCYEZG2/MEdzd7dbq7ihTki2jY6XLgouo9E=;
+ b=jzPi0TN3SFyCAj0Q8Uwbf6m8yXOaotc8BU3b+E9uLHTJQgJHcXNhPWSFP9Wx76ziOK
+ z4xz58uSoKUzuYuJ47W29IDTsSnD3wKuUIIpv9MqqvGFboOZzQ1+CLpfefLtW1/uep7k
+ pDaE5ebVMrEnZ6PP7O6RoeZ9VjClZ2yPKWtygv+2oE/q4P13V2P1V0XmiWOq7eGWecbc
+ b6BVfgFyUB+9yZW8A9mpaDGwoqYKr68so5Wc4mQV8WFKvQTqQjEbmm3T6CXYaxKc0fmj
+ 44s3V/aW/PygAkUrBI5O9Lf1oHTgR/q5+/oF7kxHs3BbM6/lFQTf/H7BldAlzXrqD7D3
+ jwpw==
+X-Gm-Message-State: AOJu0YyqwOjaUuwT+w6qiEkjavnmiRIbQOPwzfRSsdOt3ftWhpGs25sC
+ Ziiru3nY7BkhoVfuSgeWKhO5J1k2yd+ttCM+dvHZPVJTBVSv303ksnkPbFORy9HZnMnAI/mIg0c
+ Pt8zYq+/vtSSCskOMh8wV960xqLex6xw0+vSihWPJhF7X+m/sa/z2
+X-Received: by 2002:a2e:7c0e:0:b0:2d4:49d5:d9f with SMTP id
+ x14-20020a2e7c0e000000b002d449d50d9fmr2965503ljc.11.1710263024571; 
+ Tue, 12 Mar 2024 10:03:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGoBz0m74ibo/jV33RCk9RRcHgIs82jCfI1rb/sLDsr2B3ZXGWp+hmfT/ELc0zaCAIS9iC3Kg==
+X-Received: by 2002:a2e:7c0e:0:b0:2d4:49d5:d9f with SMTP id
+ x14-20020a2e7c0e000000b002d449d50d9fmr2965464ljc.11.1710263023931; 
+ Tue, 12 Mar 2024 10:03:43 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:1f0:532c:5ae4:fce6:76e1:fa1a])
+ by smtp.gmail.com with ESMTPSA id
+ ay6-20020a05600c1e0600b004133825e6cfsm2567056wmb.24.2024.03.12.10.03.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 10:00:17 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 164FC5F7D6;
- Tue, 12 Mar 2024 17:00:17 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Yonggang Luo <luoyonggang@gmail.com>
-Subject: [PATCH v2] gitlab: aggressively avoid extra GIT data
-Date: Tue, 12 Mar 2024 17:00:11 +0000
-Message-Id: <20240312170011.1688444-1-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
+ Tue, 12 Mar 2024 10:03:43 -0700 (PDT)
+Date: Tue, 12 Mar 2024 13:03:38 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Cc: qemu-devel@nongnu.org, alex.williamson@redhat.com, clg@redhat.com,
+ eric.auger@redhat.com, peterx@redhat.com, jasowang@redhat.com,
+ jgg@nvidia.com, nicolinc@nvidia.com, joao.m.martins@oracle.com,
+ kevin.tian@intel.com, yi.l.liu@intel.com, yi.y.sun@intel.com,
+ chao.p.peng@intel.com, Yi Sun <yi.y.sun@linux.intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: [PATCH v1 3/6] intel_iommu: Add a framework to check and sync
+ host IOMMU cap/ecap
+Message-ID: <20240312130058-mutt-send-email-mst@kernel.org>
+References: <20240228094432.1092748-1-zhenzhong.duan@intel.com>
+ <20240228094432.1092748-4-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240228094432.1092748-4-zhenzhong.duan@intel.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,107 +106,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This avoids fetching blobs and tree references for branches we are not
-going to worry about. Also skip tag references which are similarly not
-useful and keep the default --prune. This keeps the .git data to
-around 100M rather than the ~400M even a shallow clone takes.
+On Wed, Feb 28, 2024 at 05:44:29PM +0800, Zhenzhong Duan wrote:
+> From: Yi Liu <yi.l.liu@intel.com>
+> 
+> Add a framework to check and synchronize host IOMMU cap/ecap with
+> vIOMMU cap/ecap.
+> 
+> The sequence will be:
+> 
+> vtd_cap_init() initializes iommu->cap/ecap.
+> vtd_check_hdev() update iommu->cap/ecap based on host cap/ecap.
+> iommu->cap_frozen set when machine create done, iommu->cap/ecap become readonly.
+> 
+> Implementation details for different backends will be in following patches.
+> 
+> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>  include/hw/i386/intel_iommu.h |  1 +
+>  hw/i386/intel_iommu.c         | 50 ++++++++++++++++++++++++++++++++++-
+>  2 files changed, 50 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
+> index bbc7b96add..c71a133820 100644
+> --- a/include/hw/i386/intel_iommu.h
+> +++ b/include/hw/i386/intel_iommu.h
+> @@ -283,6 +283,7 @@ struct IntelIOMMUState {
+>  
+>      uint64_t cap;                   /* The value of capability reg */
+>      uint64_t ecap;                  /* The value of extended capability reg */
+> +    bool cap_frozen;                /* cap/ecap become read-only after frozen */
+>  
+>      uint32_t context_cache_gen;     /* Should be in [1,MAX] */
+>      GHashTable *iotlb;              /* IOTLB */
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index ffa1ad6429..a9f9dfd6a7 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -35,6 +35,8 @@
+>  #include "sysemu/kvm.h"
+>  #include "sysemu/dma.h"
+>  #include "sysemu/sysemu.h"
+> +#include "hw/vfio/vfio-common.h"
+> +#include "sysemu/iommufd.h"
+>  #include "hw/i386/apic_internal.h"
+>  #include "kvm/kvm_i386.h"
+>  #include "migration/vmstate.h"
+> @@ -3819,6 +3821,38 @@ VTDAddressSpace *vtd_find_add_as(IntelIOMMUState *s, PCIBus *bus,
+>      return vtd_dev_as;
+>  }
+>  
+> +static int vtd_check_legacy_hdev(IntelIOMMUState *s,
+> +                                 IOMMULegacyDevice *ldev,
+> +                                 Error **errp)
+> +{
+> +    return 0;
+> +}
+> +
+> +static int vtd_check_iommufd_hdev(IntelIOMMUState *s,
+> +                                  IOMMUFDDevice *idev,
+> +                                  Error **errp)
+> +{
+> +    return 0;
+> +}
+> +
+> +static int vtd_check_hdev(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hdev,
+> +                          Error **errp)
+> +{
+> +    HostIOMMUDevice *base_dev = vtd_hdev->dev;
+> +    IOMMUFDDevice *idev;
+> +
+> +    if (base_dev->type == HID_LEGACY) {
+> +        IOMMULegacyDevice *ldev = container_of(base_dev,
+> +                                               IOMMULegacyDevice, base);
+> +
+> +        return vtd_check_legacy_hdev(s, ldev, errp);
+> +    }
+> +
+> +    idev = container_of(base_dev, IOMMUFDDevice, base);
+> +
+> +    return vtd_check_iommufd_hdev(s, idev, errp);
+> +}
+> +
+>  static int vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
+>                                      HostIOMMUDevice *base_dev, Error **errp)
+>  {
+> @@ -3829,6 +3863,7 @@ static int vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
+>          .devfn = devfn,
+>      };
+>      struct vtd_as_key *new_key;
+> +    int ret;
+>  
+>      assert(base_dev);
+>  
+> @@ -3848,6 +3883,13 @@ static int vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
+>      vtd_hdev->iommu_state = s;
+>      vtd_hdev->dev = base_dev;
+>  
+> +    ret = vtd_check_hdev(s, vtd_hdev, errp);
+> +    if (ret) {
+> +        g_free(vtd_hdev);
+> +        vtd_iommu_unlock(s);
+> +        return ret;
+> +    }
+> +
+>      new_key = g_malloc(sizeof(*new_key));
+>      new_key->bus = bus;
+>      new_key->devfn = devfn;
 
-So we can check the savings we also run a quick du while setting up
-the build.
 
-We also have to have special settings of GIT_FETCH_EXTRA_FLAGS for the
-Windows build, the migration legacy test and the custom runners. In
-the case of the custom runners we also move the free floating variable
-to the runner template.
+Okay. So when VFIO device is created, it will call vtd_dev_set_iommu_device
+and that in turn will update caps.
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
----
-v2
-  - make custom runners follow the legacy options
----
- .gitlab-ci.d/base.yml               | 4 ++++
- .gitlab-ci.d/buildtest-template.yml | 1 +
- .gitlab-ci.d/buildtest.yml          | 2 ++
- .gitlab-ci.d/custom-runners.yml     | 5 +++--
- .gitlab-ci.d/windows.yml            | 2 ++
- 5 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/.gitlab-ci.d/base.yml b/.gitlab-ci.d/base.yml
-index 2dd8a9b57c..bf3d8efab6 100644
---- a/.gitlab-ci.d/base.yml
-+++ b/.gitlab-ci.d/base.yml
-@@ -24,6 +24,10 @@ variables:
-     # Each script line from will be in a collapsible section in the job output
-     # and show the duration of each line.
-     FF_SCRIPT_SECTIONS: 1
-+    # The project has a fairly fat GIT repo so we try and avoid bringing in things
-+    # we don't need. The --filter options avoid blobs and tree references we aren't going to use
-+    # and we also avoid fetching tags.
-+    GIT_FETCH_EXTRA_FLAGS: --filter=blob:none --filter=tree:0 --no-tags --prune --quiet
- 
-   interruptible: true
- 
-diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
-index 4fbfeb6667..22045add80 100644
---- a/.gitlab-ci.d/buildtest-template.yml
-+++ b/.gitlab-ci.d/buildtest-template.yml
-@@ -14,6 +14,7 @@
-     - export CCACHE_DIR="$CCACHE_BASEDIR/ccache"
-     - export CCACHE_MAXSIZE="500M"
-     - export PATH="$CCACHE_WRAPPERSDIR:$PATH"
-+    - du -sh .git
-     - mkdir build
-     - cd build
-     - ccache --zero-stats
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index c7d92fc301..cfdff175c3 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -187,6 +187,8 @@ build-previous-qemu:
-   variables:
-     IMAGE: opensuse-leap
-     TARGETS: x86_64-softmmu aarch64-softmmu
-+    # Override the default flags as we need more to grab the old version
-+    GIT_FETCH_EXTRA_FLAGS: --prune --quiet
-   before_script:
-     - export QEMU_PREV_VERSION="$(sed 's/\([0-9.]*\)\.[0-9]*/v\1.0/' VERSION)"
-     - git remote add upstream https://gitlab.com/qemu-project/qemu
-diff --git a/.gitlab-ci.d/custom-runners.yml b/.gitlab-ci.d/custom-runners.yml
-index 8e5b9500f4..a0e79acd39 100644
---- a/.gitlab-ci.d/custom-runners.yml
-+++ b/.gitlab-ci.d/custom-runners.yml
-@@ -10,13 +10,14 @@
- # gitlab-runner.  To avoid problems that gitlab-runner can cause while
- # reusing the GIT repository, let's enable the clone strategy, which
- # guarantees a fresh repository on each job run.
--variables:
--  GIT_STRATEGY: clone
- 
- # All custom runners can extend this template to upload the testlog
- # data as an artifact and also feed the junit report
- .custom_runner_template:
-   extends: .base_job_template
-+  variables:
-+    GIT_STRATEGY: clone
-+    GIT_FETCH_EXTRA_FLAGS: --no-tags --prune --quiet
-   artifacts:
-     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
-     expire_in: 7 days
-diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
-index f116b8012d..94834269ec 100644
---- a/.gitlab-ci.d/windows.yml
-+++ b/.gitlab-ci.d/windows.yml
-@@ -28,6 +28,8 @@ msys2-64bit:
-     # qTests don't run successfully with "--without-default-devices",
-     # so let's exclude the qtests from CI for now.
-     TEST_ARGS: --no-suite qtest
-+    # The Windows git is a bit older so override the default
-+    GIT_FETCH_EXTRA_FLAGS: --no-tags --prune --quiet
-   artifacts:
-     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
-     expire_in: 7 days
--- 
-2.39.2
+
+> @@ -4083,7 +4125,9 @@ static void vtd_init(IntelIOMMUState *s)
+>      s->iq_dw = false;
+>      s->next_frcd_reg = 0;
+>  
+> -    vtd_cap_init(s);
+> +    if (!s->cap_frozen) {
+> +        vtd_cap_init(s);
+> +    }
+>  
+
+If it's fronzen it's because VFIO was added after machine done.
+And then what? I think caps are just wrong?
+
+
+I think the way to approach this is just by specifying this
+as an option on command line.
+
+So if one wants VFIO one has to sync caps with host.
+No?
+
+
+
+>      /*
+>       * Rsvd field masks for spte
+> @@ -4254,6 +4298,10 @@ static int vtd_machine_done_notify_one(Object *child, void *unused)
+>  
+>  static void vtd_machine_done_hook(Notifier *notifier, void *unused)
+>  {
+> +    IntelIOMMUState *iommu = INTEL_IOMMU_DEVICE(x86_iommu_get_default());
+> +
+> +    iommu->cap_frozen = true;
+> +
+>      object_child_foreach_recursive(object_get_root(),
+>                                     vtd_machine_done_notify_one, NULL);
+>  }
+> -- 
+> 2.34.1
 
 
