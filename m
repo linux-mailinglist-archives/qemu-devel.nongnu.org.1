@@ -2,56 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F27E879481
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:51:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB9D87947A
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:49:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk1VP-0004jO-8m; Tue, 12 Mar 2024 08:45:19 -0400
+	id 1rk1VR-0004vC-1n; Tue, 12 Mar 2024 08:45:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Ux-0004Gr-56
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:51 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1V0-0004LZ-5n
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Uv-0000UL-Ki
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:50 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Uy-0000WE-Of
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710247488;
+ s=mimecast20190719; t=1710247492;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=m8vUYNd9Ki6M5gdhRX2pkPt/a9p+YgJkGpstm7/35MA=;
- b=IDv5z9zEOTmMQWdeYclDmuZ+W53PP7wwl5b5zhjFLBAzVlV0yNWkH1oOJDKxRrmJbmW4Uv
- wIyh3m8iFpgqU23/aDrNG7ePubwvBM8CHuUUVrASi3AeSAH85ppKe9YSYEoqzBczFa6iD4
- C//smO+QR8mMZWdakluf/J4nLO5+2Pg=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-248-u5vgfWMhMqWPuYYeYpWAag-1; Tue,
- 12 Mar 2024 08:44:44 -0400
-X-MC-Unique: u5vgfWMhMqWPuYYeYpWAag-1
+ bh=DZ/e7YBX7j//SByv1JvzhSaP2XKpGRVPPx38TORqnIY=;
+ b=ZtmKOhQmDgzX7dV7hohZVbP5jKPXFONMT7+VzP9GpwpU8PKgq/kdtREN3aMnPanbmJqDFL
+ 95/ztCQ6uuSvFwzGhHNffSHkXOds3pe3OarluwCYAGV3jzHkOHW0A5qheUENHuHheKbi1C
+ GW/u90r72EYAdnSZq0lgsB5ByLycXiM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-660--9VcnYsXPAyRwBwh1B1IzQ-1; Tue, 12 Mar 2024 08:44:47 -0400
+X-MC-Unique: -9VcnYsXPAyRwBwh1B1IzQ-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 65A18386A0C9;
- Tue, 12 Mar 2024 12:44:44 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D41188007A2;
+ Tue, 12 Mar 2024 12:44:46 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.69])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7E813492BD7;
- Tue, 12 Mar 2024 12:44:43 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id AF05F492BD0;
+ Tue, 12 Mar 2024 12:44:44 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
- Jason Wang <jasowang@redhat.com>
-Subject: [PULL 31/55] net/vhost-vdpa: Fix missing ERRP_GUARD() for
+ David Hildenbrand <david@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 32/55] target/s390x/cpu_models: Fix missing ERRP_GUARD() for
  error_prepend()
-Date: Tue, 12 Mar 2024 13:43:15 +0100
-Message-ID: <20240312124339.761630-32-thuth@redhat.com>
+Date: Tue, 12 Mar 2024 13:43:16 +0100
+Message-ID: <20240312124339.761630-33-thuth@redhat.com>
 In-Reply-To: <20240312124339.761630-1-thuth@redhat.com>
 References: <20240312124339.761630-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -100,41 +105,52 @@ ERRP_GUARD() could avoid the case when @errp is &error_fatal, the user
 can't see this additional information, because exit() happens in
 error_setg earlier than information is added [1].
 
-The net_init_vhost_vdpa() passes @errp to error_prepend(), and as a
-member of net_client_init_fun[], it's called in net_client_init1() and
-gets @errp from this caller.
+In target/s390x/cpu_models.c, there are 2 functions passing @errp to
+error_prepend() without ERRP_GUARD():
+- check_compatibility()
+- s390_realize_cpu_model()
 
-But because netdev_init_modern() passes &error_fatal to
-net_client_init1(), then @errp parameter of net_init_vhost_vdpa() would
-point to @error_fatal. This causes the error message in error_prepend()
-to be lost because of the above issue.
-
-To fix this, add missing ERRP_GUARD() at the beginning of this function.
+Though both their @errp parameters point to their callers' local @err
+virables and don't cause the issue as [1] said, to follow the
+requirement of @errp, also add missing ERRP_GUARD() at their beginning.
 
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
 
-Cc: Jason Wang <jasowang@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: qemu-s390x@nongnu.org
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240311033822.3142585-29-zhao1.liu@linux.intel.com>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Message-ID: <20240311033822.3142585-30-zhao1.liu@linux.intel.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- net/vhost-vdpa.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/s390x/cpu_models.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index e6bdb4562d..d81baecbc1 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -1751,6 +1751,7 @@ static int vhost_vdpa_get_max_queue_pairs(int fd, uint64_t features,
- int net_init_vhost_vdpa(const Netdev *netdev, const char *name,
-                         NetClientState *peer, Error **errp)
+diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
+index a63d990e4e..1a1c096122 100644
+--- a/target/s390x/cpu_models.c
++++ b/target/s390x/cpu_models.c
+@@ -503,6 +503,7 @@ static void error_prepend_missing_feat(const char *name, void *opaque)
+ static void check_compatibility(const S390CPUModel *max_model,
+                                 const S390CPUModel *model, Error **errp)
  {
 +    ERRP_GUARD();
-     const NetdevVhostVDPAOptions *opts;
-     uint64_t features;
-     int vdpa_device_fd;
+     S390FeatBitmap missing;
+ 
+     if (model->def->gen > max_model->def->gen) {
+@@ -566,6 +567,7 @@ S390CPUModel *get_max_cpu_model(Error **errp)
+ 
+ void s390_realize_cpu_model(CPUState *cs, Error **errp)
+ {
++    ERRP_GUARD();
+     Error *err = NULL;
+     S390CPUClass *xcc = S390_CPU_GET_CLASS(cs);
+     S390CPU *cpu = S390_CPU(cs);
 -- 
 2.44.0
 
