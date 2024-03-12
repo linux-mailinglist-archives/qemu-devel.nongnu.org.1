@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E058879C3B
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 20:24:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6C19879C3C
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 20:25:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk7i2-0008Fe-SU; Tue, 12 Mar 2024 15:22:46 -0400
+	id 1rk7k6-0001go-1u; Tue, 12 Mar 2024 15:24:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk7ht-0008CJ-Ln
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 15:22:38 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk7k2-0001aC-Bs
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 15:24:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk7hs-0000Yf-62
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 15:22:37 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk7jm-0000lt-MY
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 15:24:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710271355;
+ s=mimecast20190719; t=1710271473;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Xi4TIvOaencI0MEp0ynLOaxqX36+24Q63nmc9fM5rTs=;
- b=GOjPhJBV8iPZS+O0dwa4lBhPy6RbG2Wu7H6cMM1U6AZhJW2HqyAmogd++Ne4+U+7N3BEP0
- KhENIYOSedyp14wRpP7auHrhOi4yBakRLCL26yra2eRqD9BtE1tRSRcIFFcHsbT4nGPCyX
- EcY/YKvnyQfiixFjNAWsSIIrr9d2FNM=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=RTsKUZX5IKpC422GXjPMiUTnpKW+/AR3Z6eYRgR/tTU=;
+ b=ifs2HnqyvP/7O81yHqV07wzjXxlwEqfYXSz55lOFSfTKwIAG2mcnJhvfoiN6Akk+l4A8T3
+ 5a8xCtYC2xeYrh9FHf+nodtkxgKO+IwKjm/8SiNSFrWFjWf92mBUwimHcvQNRb8vY0dX+t
+ swgnT04F1ekZ6hnJslLE3BtEjkgpcuE=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-582-A964MRqZPTOXUtSe1XU20A-1; Tue, 12 Mar 2024 15:22:33 -0400
-X-MC-Unique: A964MRqZPTOXUtSe1XU20A-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2d449d2db37so14954681fa.3
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 12:22:32 -0700 (PDT)
+ us-mta-534-HJr7ICHlPUa4UBBlQlBAPg-1; Tue, 12 Mar 2024 15:24:32 -0400
+X-MC-Unique: HJr7ICHlPUa4UBBlQlBAPg-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-5687a5239f7so543596a12.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 12:24:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710271351; x=1710876151;
+ d=1e100.net; s=20230601; t=1710271470; x=1710876270;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Xi4TIvOaencI0MEp0ynLOaxqX36+24Q63nmc9fM5rTs=;
- b=BCe32ZPQhoq486XyCVJSg3Gh7WMUqy+Xv6Yb7se/jc8WjnSCisKz5jCVsu8Fn1MiFr
- z6iJX2buA4GZfTDfEfO4Q9rDZJVdNOjLag2xC7/9v2hLdoS+GX11eiPk5kbWT7mL5s0d
- P6UeV2/mz8pLjsK624KfZFWqxItoFHklRrm4H+bXptP09Bt59xfJKdDXxDAoa3PsSgm8
- R2hU7yiCA+7/LJUs19ZIJPVIyrAH0mDxvlml6Uv+yPjxuDgk64W6qAmnAItUjGFyqKXR
- zBN0oZXCnZ4seoryHzUZ/t9bBK+bWMxJQJtogKgR88RRsH2B3aNCR8BkTIAXbPjXvqDI
- IJxA==
+ bh=RTsKUZX5IKpC422GXjPMiUTnpKW+/AR3Z6eYRgR/tTU=;
+ b=kqnESK6JK/oBjrr2MQE/IrErC5/1DyWthTzszAefTel1glw4Ouw2vCa4uXnZG9+e9N
+ ntykkicqFs22LsuORjJreBxbeRXg8NG5kiXpThQM3NSnG7lDIk/i1PE5ZoEA2eZtn2pT
+ kl/AUd+D5hx0o778ipNc6XCNGy6ayFcldaIDHgsXwzXegkB5MYAnMcnqIe92cNcREV5H
+ uvfbRh3JkX5h4lwDwMYcfUjackq7BvYNfxXYZZUXd15Z2nsmG/0VshQ2b7jeSYYKlzUf
+ JKyujtwwHs/eXhoUe0yQz+cy76wc81g78y0I7m9t5veUN1Az3FMjNGHhVlwUB8zPQHR7
+ YBYA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVpUG0vpYlc20cVR3nzZln1eqPZ+751vkDOjLIymAbyg99KfS1HH0EgzRrHR9oxwYCZeO/PKMf+bGWfB9Gbg+N5RuGDTCE=
-X-Gm-Message-State: AOJu0YzY4PGmwTrsfuh6PlofjGhSOdIjGwZqtcgs7Bb/Y6AALWMoa0EV
- fsHWoqVhpGVqNuDYkxrMNaPGwwF3vhJATATMpj8P331n12IF1tTtVFDpy89cQx50OxQmL20sOn2
- W0sBvb7SJ4sSUmng2fm5XLKePaBnIAaqkMRaLi/w7dfLR67pROtuG
-X-Received: by 2002:a2e:b178:0:b0:2d4:35d6:1984 with SMTP id
- a24-20020a2eb178000000b002d435d61984mr5223540ljm.6.1710271351681; 
- Tue, 12 Mar 2024 12:22:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGEyhIn618CD3pNYMyrwZRCOzP8U0Ax9cC8I3OdcGbsttAGmY5jkZcTKCUja3/SrqwmpaH2kg==
-X-Received: by 2002:a2e:b178:0:b0:2d4:35d6:1984 with SMTP id
- a24-20020a2eb178000000b002d435d61984mr5223529ljm.6.1710271351293; 
- Tue, 12 Mar 2024 12:22:31 -0700 (PDT)
+ AJvYcCVMBvsrBtieYRnMo81Obg6pTuuo3gDUXnKhK2a7Ef+ho2lzc1iT2Cf267PORZXJeA7myA4hpRvNKFKh+T1Hv+zbIbNXZKw=
+X-Gm-Message-State: AOJu0Yw9ajyWoEDotJerqbXdJ1l/ytvOCJj+3jaXYqGwYApwh0eaDzo+
+ eTqfSZs1P6qyB5Bq3E+Ms6L1VIAc2k9jEsxdggsyp55z977J6t31VSpwKHc0+5gejDxj4Bp6JwQ
+ kkKyOdB2jAnFtHSP9JaAtgkxupNRA52QpQsXC9mJjlrHB4NESjA5CnT5Q9ETE
+X-Received: by 2002:a50:8d58:0:b0:566:28ae:55d4 with SMTP id
+ t24-20020a508d58000000b0056628ae55d4mr1068576edt.39.1710271470846; 
+ Tue, 12 Mar 2024 12:24:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE8k/uRi9SRbpTPnDuk/1rN8GtW9nw33M+zkbBB22ECOfjuJo5K1RAm9ZHODef7nmTv9wqtDQ==
+X-Received: by 2002:a50:8d58:0:b0:566:28ae:55d4 with SMTP id
+ t24-20020a508d58000000b0056628ae55d4mr1068567edt.39.1710271470569; 
+ Tue, 12 Mar 2024 12:24:30 -0700 (PDT)
 Received: from [192.168.0.9] (ip-109-43-177-86.web.vodafone.de.
  [109.43.177.86]) by smtp.gmail.com with ESMTPSA id
- d23-20020a056402001700b0056857701bf5sm2474962edu.81.2024.03.12.12.22.30
+ d23-20020a056402001700b0056857701bf5sm2474962edu.81.2024.03.12.12.23.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Mar 2024 12:22:30 -0700 (PDT)
-Message-ID: <1d3ed049-c1c9-4cc8-a3b3-db71f3d88d6a@redhat.com>
-Date: Tue, 12 Mar 2024 20:22:29 +0100
+ Tue, 12 Mar 2024 12:23:39 -0700 (PDT)
+Message-ID: <1047e3a1-2396-452b-8a53-14c756c7d796@redhat.com>
+Date: Tue, 12 Mar 2024 20:23:13 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/7] tests/unit/test-throttle: Avoid unintended integer
- division
+Subject: Re: [PATCH 1/7] tests/qtest/npcm7xx_emc_test: Don't leak cmd_line
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
 References: <20240312183810.557768-1-peter.maydell@linaro.org>
- <20240312183810.557768-7-peter.maydell@linaro.org>
+ <20240312183810.557768-2-peter.maydell@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -116,7 +115,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240312183810.557768-7-peter.maydell@linaro.org>
+In-Reply-To: <20240312183810.557768-2-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -126,7 +125,6 @@ X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -145,42 +143,38 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/03/2024 19.38, Peter Maydell wrote:
-> In test_compute_wait() we do
->   double units = bkt.max / 10;
-> which does an integer division and then assigns it to a double variable,
-> and similarly later on in the expression for an assertion.
+> In test_rx() and test_tx() we allocate a GString *cmd_line
+> but never free it. This is pretty harmless in a test case, but
+> Coverity spotted it.
 > 
-> Use 10.0 so that we do a floating point division and calculate the
-> exact value, rather than doing an integer division.
-> 
-> Spotted by Coverity.
-> 
-> Resolves: Coverity CID 1432564
+> Resolves: Coverity CID 1507122
 > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->   tests/unit/test-throttle.c | 4 ++--
+>   tests/qtest/npcm7xx_emc-test.c | 4 ++--
 >   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/tests/unit/test-throttle.c b/tests/unit/test-throttle.c
-> index 2146cfacd36..24032a02667 100644
-> --- a/tests/unit/test-throttle.c
-> +++ b/tests/unit/test-throttle.c
-> @@ -127,13 +127,13 @@ static void test_compute_wait(void)
->       bkt.avg = 10;
->       bkt.max = 200;
->       for (i = 0; i < 22; i++) {
-> -        double units = bkt.max / 10;
-> +        double units = bkt.max / 10.0;
->           bkt.level += units;
->           bkt.burst_level += units;
->           throttle_leak_bucket(&bkt, NANOSECONDS_PER_SECOND / 10);
->           wait = throttle_compute_wait(&bkt);
->           g_assert(double_cmp(bkt.burst_level, 0));
-> -        g_assert(double_cmp(bkt.level, (i + 1) * (bkt.max - bkt.avg) / 10));
-> +        g_assert(double_cmp(bkt.level, (i + 1) * (bkt.max - bkt.avg) / 10.0));
->           /* We can do bursts for the 2 seconds we have configured in
->            * burst_length. We have 100 extra milliseconds of burst
->            * because bkt.level has been leaking during this time.
+> diff --git a/tests/qtest/npcm7xx_emc-test.c b/tests/qtest/npcm7xx_emc-test.c
+> index 63f6cadb5cc..2e1a1a6d702 100644
+> --- a/tests/qtest/npcm7xx_emc-test.c
+> +++ b/tests/qtest/npcm7xx_emc-test.c
+> @@ -789,7 +789,7 @@ static void emc_test_ptle(QTestState *qts, const EMCModule *mod, int fd)
+>   static void test_tx(gconstpointer test_data)
+>   {
+>       const TestData *td = test_data;
+> -    GString *cmd_line = g_string_new("-machine quanta-gsj");
+> +    g_autoptr(GString) cmd_line = g_string_new("-machine quanta-gsj");
+>       int *test_sockets = packet_test_init(emc_module_index(td->module),
+>                                            cmd_line);
+>       QTestState *qts = qtest_init(cmd_line->str);
+> @@ -814,7 +814,7 @@ static void test_tx(gconstpointer test_data)
+>   static void test_rx(gconstpointer test_data)
+>   {
+>       const TestData *td = test_data;
+> -    GString *cmd_line = g_string_new("-machine quanta-gsj");
+> +    g_autoptr(GString) cmd_line = g_string_new("-machine quanta-gsj");
+>       int *test_sockets = packet_test_init(emc_module_index(td->module),
+>                                            cmd_line);
+>       QTestState *qts = qtest_init(cmd_line->str);
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
