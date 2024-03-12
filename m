@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B125879492
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:55:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC26879462
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:44:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk1Ue-00034p-Kf; Tue, 12 Mar 2024 08:44:32 -0400
+	id 1rk1U8-0002D2-Ge; Tue, 12 Mar 2024 08:44:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1UK-0002OF-PP
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:19 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1U0-00028b-LS
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:43:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1UF-00008X-PX
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:10 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Tz-0008VH-4m
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:43:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710247445;
+ s=mimecast20190719; t=1710247430;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=b1l6WbAUCt0bM585OCGgo0YKxZvXleO/qSAwsOqY+TA=;
- b=fee1+6VZqJgW69pnLAl85rkcgeErAaCIx/UHEwvmw1pjzqDMKSHDrX0JRB8MlO2APqfdYe
- I305+d7E3KoU1033a0Klbr+BGLEuZ/9kgasLOzVEQXJ3vVxxnjyXjwYK1xvUEhc9zdhQKo
- reOtua5MRLMxDedk2w1NOBeg+uw3Zro=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-307-MzZ7g4qLNuS9D3MUPaetLA-1; Tue, 12 Mar 2024 08:44:02 -0400
-X-MC-Unique: MzZ7g4qLNuS9D3MUPaetLA-1
+ bh=FUKoTLeTxfFWfzT1Hk4oshCWhioL2/n7PsIJ/oYzl9M=;
+ b=SJw8qs3wAmnTRRyXemDL5OIBMwr8bNzUPocj+Zl6I0igeiF/AKPy/B9sV49Nn7ThUe489G
+ YKEJV27/MxwEJSHxQhYdX8zn7Q3lmTPw8eUIr/Vh4f0N0SckEANiy+VtEZzrStlziqAQDG
+ VZF+sAVRGaSXuVhaLKrB8+Vh9WnoqyY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-45-Uo96sfJUMdixp5llT2oYkg-1; Tue,
+ 12 Mar 2024 08:43:47 -0400
+X-MC-Unique: Uo96sfJUMdixp5llT2oYkg-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E3B818007A2;
- Tue, 12 Mar 2024 12:43:44 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A15B31C07265;
+ Tue, 12 Mar 2024 12:43:46 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.69])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D5E20492BC4;
- Tue, 12 Mar 2024 12:43:43 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 39F0D492BC4;
+ Tue, 12 Mar 2024 12:43:45 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 02/55] hw/display/macfb: Fix missing ERRP_GUARD() in
- macfb_nubus_realize()
-Date: Tue, 12 Mar 2024 13:42:46 +0100
-Message-ID: <20240312124339.761630-3-thuth@redhat.com>
+Subject: [PULL 03/55] hw/mem/cxl_type3: Fix missing ERRP_GUARD() in
+ ct3_realize()
+Date: Tue, 12 Mar 2024 13:42:47 +0100
+Message-ID: <20240312124339.761630-4-thuth@redhat.com>
 In-Reply-To: <20240312124339.761630-1-thuth@redhat.com>
 References: <20240312124339.761630-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -97,44 +97,42 @@ ERRP_GUARD():
 * Using it when it's not needed is safe, but please avoid cluttering
 * the source with useless code.
 
-But in macfb_nubus_realize(), @errp is dereferenced without
-ERRP_GUARD():
+But in ct3_realize(), @errp is dereferenced without ERRP_GUARD():
 
-ndc->parent_realize(dev, errp);
+cxl_doe_cdat_init(cxl_cstate, errp);
 if (*errp) {
-    return;
+    goto err_free_special_ops;
 }
 
-Here we check *errp, because the ndc->parent_realize(), as a
-DeviceClass.realize() callback, returns void. And since
-macfb_nubus_realize(), also as a DeviceClass.realize(), doesn't get the
-NULL @errp parameter, it hasn't triggered the bug that dereferencing the
-NULL @errp.
+Here we check *errp, because cxl_doe_cdat_init() returns void. And
+ct3_realize() - as a PCIDeviceClass.realize() method - doesn't get the
+NULL @errp parameter, it hasn't triggered the bug that dereferencing
+the NULL @errp.
 
 To follow the requirement of @errp, add missing ERRP_GUARD() in
-macfb_nubus_realize().
+ct3_realize().
 
 Suggested-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240223085653.1255438-3-zhao1.liu@linux.intel.com>
+Message-ID: <20240223085653.1255438-4-zhao1.liu@linux.intel.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/display/macfb.c | 1 +
+ hw/mem/cxl_type3.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/hw/display/macfb.c b/hw/display/macfb.c
-index 418e99c8e1..1ace341a0f 100644
---- a/hw/display/macfb.c
-+++ b/hw/display/macfb.c
-@@ -714,6 +714,7 @@ static void macfb_nubus_set_irq(void *opaque, int n, int level)
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index b679dfae1c..b0a7e9f11b 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -645,6 +645,7 @@ static DOEProtocol doe_cdat_prot[] = {
  
- static void macfb_nubus_realize(DeviceState *dev, Error **errp)
+ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
  {
 +    ERRP_GUARD();
-     NubusDevice *nd = NUBUS_DEVICE(dev);
-     MacfbNubusState *s = NUBUS_MACFB(dev);
-     MacfbNubusDeviceClass *ndc = NUBUS_MACFB_GET_CLASS(dev);
+     CXLType3Dev *ct3d = CXL_TYPE3(pci_dev);
+     CXLComponentState *cxl_cstate = &ct3d->cxl_cstate;
+     ComponentRegisters *regs = &cxl_cstate->crb;
 -- 
 2.44.0
 
