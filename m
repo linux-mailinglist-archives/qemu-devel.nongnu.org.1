@@ -2,70 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 127C28795D7
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 15:15:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C9D48795DF
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 15:16:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk2th-0000Zr-7F; Tue, 12 Mar 2024 10:14:29 -0400
+	id 1rk2tl-0000s0-AA; Tue, 12 Mar 2024 10:14:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rk2t8-0000WV-Gf
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:13:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rk2tH-0000cu-W3
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:14:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rk2t4-00029F-1l
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:13:54 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rk2t5-0002Bb-Ok
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:14:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710252826;
+ s=mimecast20190719; t=1710252831;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pOLH+strOaKKcjBOz7lvead/NQ2pWb64J4IWeJN+W4I=;
- b=NNZN2TFETXiLTkcigiV6bHiPMZ6XCfih7lfzUbiIBt6MoxDaXkNWu6ZiZ/o9nRBnjBoRvG
- dA/LNCGDybUMsfvRnI/sR5To9k1pep0Mw5DXtsAbVO4B65vNcJo+O7mdyHJ67gzC7b82c+
- 7mTEwSi1HZXrbGV2kjZQgR5bJcCsqg4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-277-anzAephTMNyZJw6A3o3L9w-1; Tue, 12 Mar 2024 10:13:45 -0400
-X-MC-Unique: anzAephTMNyZJw6A3o3L9w-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ bh=FifKAvUbL64Bg1vJWQk8QWQL3zgV+zzzfE0KS8FRLG8=;
+ b=Cw6ZPKSbGU2po7HCy/KuwUP4qmYIKZvjh27WKHsZYv4jnGV6iHOYXD6yFF9GEq5x7tnMWo
+ NBQrwGhrCs81fCD+NFIU44ixy+UxZkPd/q/Iw5+oGIu47bGTSEI5y72ReJ5VSYqnHQbjXP
+ RiVPw1ArUEVq4yTTcX/ylkBt8z2/Pxk=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-70-y9WNXmlgMti35wH4wkYUvw-1; Tue,
+ 12 Mar 2024 10:13:46 -0400
+X-MC-Unique: y9WNXmlgMti35wH4wkYUvw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 73B6D100DEBD;
- Tue, 12 Mar 2024 14:13:44 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BF37A3C0C898;
+ Tue, 12 Mar 2024 14:13:45 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.138])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 4C6371C05E1C;
- Tue, 12 Mar 2024 14:13:44 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9A3B340C6DAE;
+ Tue, 12 Mar 2024 14:13:45 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3188421E6939; Tue, 12 Mar 2024 15:13:43 +0100 (CET)
+ id 3493221E6889; Tue, 12 Mar 2024 15:13:43 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org,
 	qemu-block@nongnu.org,
 	philmd@linaro.org
-Subject: [PATCH 04/10] qapi: Inline and remove QERR_DEVICE_NO_HOTPLUG
+Subject: [PATCH 05/10] qapi: Inline and remove QERR_INVALID_PARAMETER
  definition
-Date: Tue, 12 Mar 2024 15:13:37 +0100
-Message-ID: <20240312141343.3168265-5-armbru@redhat.com>
+Date: Tue, 12 Mar 2024 15:13:38 +0100
+Message-ID: <20240312141343.3168265-6-armbru@redhat.com>
 In-Reply-To: <20240312141343.3168265-1-armbru@redhat.com>
 References: <20240312141343.3168265-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,65 +93,98 @@ Address the comment added in commit 4629ed1e98
    * in new code, and do not add new ones!
    */
 
-Mechanical transformation using sed, and manual cleanup.
+Mechanical transformation using:
+
+  $ sed -i -e "s/QERR_INVALID_PARAMETER,/\"Invalid parameter '%s'\",/" \
+    $(git grep -lw QERR_INVALID_PARAMETER)
+
+Manually simplify qemu_opts_create(), and remove the macro definition
+in include/qapi/qmp/qerror.h.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- include/qapi/qmp/qerror.h | 3 ---
- hw/core/qdev.c            | 4 ++--
- system/qdev-monitor.c     | 2 +-
- 3 files changed, 3 insertions(+), 6 deletions(-)
+ include/qapi/qmp/qerror.h |  3 ---
+ qapi/opts-visitor.c       |  2 +-
+ util/qemu-option.c        | 10 +++++-----
+ 3 files changed, 6 insertions(+), 9 deletions(-)
 
 diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
-index daa889809b..e93211085a 100644
+index e93211085a..63ab775dc5 100644
 --- a/include/qapi/qmp/qerror.h
 +++ b/include/qapi/qmp/qerror.h
 @@ -17,9 +17,6 @@
   * add new ones!
   */
  
--#define QERR_DEVICE_NO_HOTPLUG \
--    "Device '%s' does not support hotplugging"
+-#define QERR_INVALID_PARAMETER \
+-    "Invalid parameter '%s'"
 -
- #define QERR_INVALID_PARAMETER \
-     "Invalid parameter '%s'"
+ #define QERR_INVALID_PARAMETER_TYPE \
+     "Invalid parameter type for '%s', expected: %s"
  
-diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index c68d0f7c51..00efaf1bd1 100644
---- a/hw/core/qdev.c
-+++ b/hw/core/qdev.c
-@@ -29,7 +29,6 @@
- #include "qapi/error.h"
- #include "qapi/qapi-events-qdev.h"
- #include "qapi/qmp/qdict.h"
--#include "qapi/qmp/qerror.h"
- #include "qapi/visitor.h"
- #include "qemu/error-report.h"
- #include "qemu/option.h"
-@@ -479,7 +478,8 @@ static void device_set_realized(Object *obj, bool value, Error **errp)
-     static int unattached_count;
+diff --git a/qapi/opts-visitor.c b/qapi/opts-visitor.c
+index 8f1efab8b9..3d1a28b419 100644
+--- a/qapi/opts-visitor.c
++++ b/qapi/opts-visitor.c
+@@ -184,7 +184,7 @@ opts_check_struct(Visitor *v, Error **errp)
+         const QemuOpt *first;
  
-     if (dev->hotplugged && !dc->hotpluggable) {
--        error_setg(errp, QERR_DEVICE_NO_HOTPLUG, object_get_typename(obj));
-+        error_setg(errp, "Device '%s' does not support hotplugging",
-+                   object_get_typename(obj));
-         return;
+         first = g_queue_peek_head(any);
+-        error_setg(errp, QERR_INVALID_PARAMETER, first->name);
++        error_setg(errp, "Invalid parameter '%s'", first->name);
+         return false;
+     }
+     return true;
+diff --git a/util/qemu-option.c b/util/qemu-option.c
+index eedd08929b..201f7a87f3 100644
+--- a/util/qemu-option.c
++++ b/util/qemu-option.c
+@@ -498,7 +498,7 @@ static bool opt_validate(QemuOpt *opt, Error **errp)
+ 
+     desc = find_desc_by_name(list->desc, opt->name);
+     if (!desc && !opts_accepts_any(list)) {
+-        error_setg(errp, QERR_INVALID_PARAMETER, opt->name);
++        error_setg(errp, "Invalid parameter '%s'", opt->name);
+         return false;
      }
  
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index 842c142c79..e2eea7d96e 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -918,7 +918,7 @@ void qdev_unplug(DeviceState *dev, Error **errp)
+@@ -531,7 +531,7 @@ bool qemu_opt_set_bool(QemuOpts *opts, const char *name, bool val,
+ 
+     desc = find_desc_by_name(list->desc, name);
+     if (!desc && !opts_accepts_any(list)) {
+-        error_setg(errp, QERR_INVALID_PARAMETER, name);
++        error_setg(errp, "Invalid parameter '%s'", name);
+         return false;
      }
  
-     if (!dc->hotpluggable) {
--        error_setg(errp, QERR_DEVICE_NO_HOTPLUG,
-+        error_setg(errp, "Device '%s' does not support hotplugging",
-                    object_get_typename(OBJECT(dev)));
-         return;
+@@ -554,7 +554,7 @@ bool qemu_opt_set_number(QemuOpts *opts, const char *name, int64_t val,
+ 
+     desc = find_desc_by_name(list->desc, name);
+     if (!desc && !opts_accepts_any(list)) {
+-        error_setg(errp, QERR_INVALID_PARAMETER, name);
++        error_setg(errp, "Invalid parameter '%s'", name);
+         return false;
      }
+ 
+@@ -612,7 +612,7 @@ QemuOpts *qemu_opts_create(QemuOptsList *list, const char *id,
+ 
+     if (list->merge_lists) {
+         if (id) {
+-            error_setg(errp, QERR_INVALID_PARAMETER, "id");
++            error_setg(errp, "Invalid parameter 'id'");
+             return NULL;
+         }
+         opts = qemu_opts_find(list, NULL);
+@@ -1103,7 +1103,7 @@ bool qemu_opts_validate(QemuOpts *opts, const QemuOptDesc *desc, Error **errp)
+     QTAILQ_FOREACH(opt, &opts->head, next) {
+         opt->desc = find_desc_by_name(desc, opt->name);
+         if (!opt->desc) {
+-            error_setg(errp, QERR_INVALID_PARAMETER, opt->name);
++            error_setg(errp, "Invalid parameter '%s'", opt->name);
+             return false;
+         }
+ 
 -- 
 2.44.0
 
