@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25FD18798BE
+	by mail.lfdr.de (Postfix) with ESMTPS id E48DF8798C0
 	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 17:15:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk4jG-0006j6-68; Tue, 12 Mar 2024 12:11:50 -0400
+	id 1rk4jG-0006po-NH; Tue, 12 Mar 2024 12:11:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1rk4ij-00060m-87
+ id 1rk4ij-00060k-3R
  for qemu-devel@nongnu.org; Tue, 12 Mar 2024 12:11:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1rk4ih-0007IU-ON
+ id 1rk4ih-0007IO-E5
  for qemu-devel@nongnu.org; Tue, 12 Mar 2024 12:11:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710259875;
+ s=mimecast20190719; t=1710259874;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IzIyBHphGbPNS4xIl9gbBGxoZiLCXyGk+veHTAfrusM=;
- b=IYZL6XJiL5U38G8M2I9NBAovTBsQY3TbDkugAnVA6fzKYt/h1mEl/bGgXxZfXO1oAIjOAE
- avtEHGEos9sKG9qaKjgWZfPvOpv48AIR5BKQyeeOogGCvL2bUjZiQ0BA0SZmEjuWlnOgp+
- p2a8V4jI1d1c8ZjWPMfSzD1CCyKYPs8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-501-aZO3EuyyOHuhal9PwEGXEQ-1; Tue,
- 12 Mar 2024 12:11:12 -0400
-X-MC-Unique: aZO3EuyyOHuhal9PwEGXEQ-1
+ bh=WEhRrgn7jhef1qjl5d34NM0T+BDoeV1Zh9D6DKBAsDI=;
+ b=h4xv7eOnVoTJqrannxgToMmPgKAUXHXsjuRA2qVsklMXXo69zjETukiKXbhtlFQorCfnmP
+ 2Xl6bpRaSWhWABg3U4TMOwywyEsuqMYuXkbzGDzi6xGqT9uTGAKSt2wS0wKTVGAmV1NsXK
+ 5qA7Nou1tsz0uwQQFwcdkdoRnoT+AEk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-187-PnevPRyiNxGqjaP8oWU_uw-1; Tue, 12 Mar 2024 12:11:11 -0400
+X-MC-Unique: PnevPRyiNxGqjaP8oWU_uw-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EE1F71C02D39;
- Tue, 12 Mar 2024 16:11:09 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3FF7D857E74;
+ Tue, 12 Mar 2024 16:11:11 +0000 (UTC)
 Received: from dell-r430-03.lab.eng.brq2.redhat.com
  (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 18C023C21;
- Tue, 12 Mar 2024 16:11:08 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2AD083C22;
+ Tue, 12 Mar 2024 16:11:10 +0000 (UTC)
 From: Igor Mammedov <imammedo@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: imammedo@redhat.com,
-	mst@redhat.com,
-	Fiona Ebner <f.ebner@proxmox.com>
-Subject: [PATCH v3 14/20] smbios: clear smbios_type4_count before building
- tables
-Date: Tue, 12 Mar 2024 17:10:44 +0100
-Message-Id: <20240312161050.2248814-15-imammedo@redhat.com>
+Cc: imammedo@redhat.com, mst@redhat.com, Markus Armbruster <armbru@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Fiona Ebner <f.ebner@proxmox.com>
+Subject: [PATCH v3 15/20] smbios: extend smbios-entry-point-type with 'auto'
+ value
+Date: Tue, 12 Mar 2024 17:10:45 +0100
+Message-Id: <20240312161050.2248814-16-imammedo@redhat.com>
 In-Reply-To: <20240312161050.2248814-1-imammedo@redhat.com>
 References: <20240312161050.2248814-1-imammedo@redhat.com>
 MIME-Version: 1.0
@@ -83,27 +82,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-it will help to keep type 4 tables accounting correct in case
-SMBIOS tables are built multiple times.
+later patches will use it to pick SMBIOS version at runtime
+depending on configuration.
 
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Acked-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
 Tested-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
- hw/smbios/smbios.c | 1 +
- 1 file changed, 1 insertion(+)
+v3:
+    - make sure i2nd line of comment is indented on 4 spaces only
+---
+ qapi/machine.json | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-index 5a791fd9eb..d3d89b4dd0 100644
---- a/hw/smbios/smbios.c
-+++ b/hw/smbios/smbios.c
-@@ -973,6 +973,7 @@ void smbios_get_tables(MachineState *ms,
-            ep_type == SMBIOS_ENTRY_POINT_TYPE_64);
+diff --git a/qapi/machine.json b/qapi/machine.json
+index bb5a178909..0840c91e70 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -1797,10 +1797,13 @@
+ #
+ # @64: SMBIOS version 3.0 (64-bit) Entry Point
+ #
++# @auto: Either 2.x or 3.x SMBIOS version, 2.x if configuration can be
++#     described by it and 3.x otherwise (since: 9.0)
++#
+ # Since: 7.0
+ ##
+ { 'enum': 'SmbiosEntryPointType',
+-  'data': [ '32', '64' ] }
++  'data': [ '32', '64', 'auto' ] }
  
-     g_free(smbios_tables);
-+    smbios_type4_count = 0;
-     smbios_tables = g_memdup2(usr_blobs, usr_blobs_len);
-     smbios_tables_len = usr_blobs_len;
-     smbios_table_max = usr_table_max;
+ ##
+ # @MemorySizeConfiguration:
 -- 
 2.39.3
 
