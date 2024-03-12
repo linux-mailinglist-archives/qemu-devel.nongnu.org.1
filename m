@@ -2,97 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46B5879498
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:56:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 392098794B8
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 14:02:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk1cn-0003HY-Sc; Tue, 12 Mar 2024 08:52:58 -0400
+	id 1rk1l5-0007dy-0N; Tue, 12 Mar 2024 09:01:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rk1ch-00032k-6R
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:52:51 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rk1cY-0001ry-Sc
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:52:50 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1ddbad11823so4277755ad.0
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 05:52:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1710247961; x=1710852761; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=yc6iRIfEDdUlwWA7oqFfy6lGyjMJI0wLwlAMhYZQvcg=;
- b=Y9YTXFTPvUjIDGQPSTHzG+SxwTd+JTNaBdS3IkEAyRBU1dkVZi1ZAYReCM8IwKTwIL
- Ycm9HHheZ2U1ktuSgIEwds4XdE/ZNs1LmdPrX5LQi67Xwu+eoMdqEelQFK5ZK09wMnhL
- dS/BeSp2kvbJGeXMNZ2djQLIIKNKgm53+5g2DhWcJ32tAkM7w/bNlubpGXtI6E11cC7w
- c7vp2jfP2UnD3k+y890z8Iy3q9De7SaxyXVs13FXLHiIJ74FChMtnoNeneEvSAIN+3F+
- C866u4xphL37Z3KM38OKc2l+w9yKiMvnEy2YzNpkIEz84Cjb14VmY26pirDIcanrfXsO
- Xv3A==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rk1kw-0007Av-Cg
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 09:01:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rk1ku-0003dv-Dy
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 09:01:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710248478;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=iQzPC0z3BctsKNNNkbLL9lLnz/Zvh1nSbVFdh3KFE3E=;
+ b=LDWwTRs5CsjbZF2DrYQnH5WWfFHEGiCPJBA+X7BbSlqsXUo9pdUpSOr+z4zAskycsJL/R+
+ TAIZxJZDiCQD0Lk+wib81tVmQvJnkRB/BmtK7Xww40y1qq+rmEg2oKhgWXRkJrbQkrokZV
+ RmBdvD58Y8ZD0Xc8EkveGxkcAmpzc2I=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-619-g_BSPRslPQqvZYC2SOLUmQ-1; Tue, 12 Mar 2024 09:01:16 -0400
+X-MC-Unique: g_BSPRslPQqvZYC2SOLUmQ-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6903ea40d25so37573216d6.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 06:01:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710247961; x=1710852761;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20230601; t=1710248475; x=1710853275;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yc6iRIfEDdUlwWA7oqFfy6lGyjMJI0wLwlAMhYZQvcg=;
- b=ZNdzUndWt7/q0RBRqHPNVcuMC8VS35T1Pkw7Wt7IeiYWjzmYTVNOc7eNoZJ4sEpNiY
- NiRlSNAPzaMqGqUAGZhH2rBWBLA/TRJR1ZA0b91cH/dao4bUuh2+FxyGMwQg17R7wj/h
- Y037hlbWYzaSIOpuMoOFwvwkULldU0nRZI6aOCbz0045DbzhkDqJo2twvVbG71P4RQB/
- qxFcfgxBRxu2xMXFHFxIOtp4yst91oKLYA09jmid9BCWP4G+lzHba9WlJ3fmZMNMr1OV
- SW8Ty48EbIGijs9Fvm5MMDLppjOhORj+aulZw10YoLTcezluercFkPc8WOGVbA+a2lLB
- foLQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVWfggiX936dws20VJ7nbSAM+e72Wn4fRDmns0bEDJxccW5baLFZyfpApESLqYah8HBiOm0NfRuTViQSfOH4bMWSJbbG5Y=
-X-Gm-Message-State: AOJu0Yx6JkAoZmXn0UgC9MPx6T1BIyZE/cnfk6wzoinvtQfev08ZjkV2
- nYF4BmNQ/YrL3BLPXPNq90xRsv7y5Outal67rhIGBc3XNxE8CRckdI+IVWUfVnw=
-X-Google-Smtp-Source: AGHT+IEXkQ0eshI5KSh9PduugLLBzgadc+SxJ8VB1qqNgm1aOY1mjEvILlpVc/balqG7IfgEnlrbbA==
-X-Received: by 2002:a17:902:7441:b0:1dc:7279:8a3e with SMTP id
- e1-20020a170902744100b001dc72798a3emr8862563plt.21.1710247961160; 
- Tue, 12 Mar 2024 05:52:41 -0700 (PDT)
-Received: from [192.168.68.110] ([177.94.15.159])
+ bh=iQzPC0z3BctsKNNNkbLL9lLnz/Zvh1nSbVFdh3KFE3E=;
+ b=F16fX3fmFMc9ZhQz3ApltJlpJSrS3cKMqq3wh2OK3tOIVKpekfTbVCTwgqEgFQ4lST
+ VGi65TqthyW9760OhG3gqiw6jzNuZTsXWTjie9XKKZ0SC7qFaoE1eRYLtqa6nxN7Ccdy
+ q9CaY9f3IEdCPTAdOCGl3e2MiurkHPDCsRuG2BN9tpb0YHNy40f7CJKsKueVnI2OURbE
+ RhZcUQ7QByLNysJxKLP7lBbpkzgq7dCbciKEnAntYl/oGoMckFHPo+WkH3G5PkMm7lBj
+ 36Truz2d5Zwfv2MXPByY36GtA4rBXL2w7c9y7kwr/tf3Xa5foY5jqHINMPwMDVc1K15r
+ 7VtQ==
+X-Gm-Message-State: AOJu0YwTinr3eJMZIH7WghBI8Qt6+nNPadD3RyFM+/3aLAdeVYFGP4cw
+ IWS/o0E3lx93G8RPbnKG/Ak89DEgmSH6meGmggsEF7LDDn6gRRkCvypIw2CdeZ4Am//jeBejIuT
+ jZAAd8XByU3QOE942ZZpeAgYrCuBxyw5FrW7PFtF+uNKYC//GSHQE
+X-Received: by 2002:a0c:f80d:0:b0:690:c3ed:b174 with SMTP id
+ r13-20020a0cf80d000000b00690c3edb174mr8277853qvn.49.1710248475010; 
+ Tue, 12 Mar 2024 06:01:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH1wbeCWT08wN2wJxpj1KfkXJuO+lwZC64HXiLbAuBeoNRmOzGCPrRYheVRNFBDxSL6qT7NAg==
+X-Received: by 2002:a0c:f80d:0:b0:690:c3ed:b174 with SMTP id
+ r13-20020a0cf80d000000b00690c3edb174mr8277831qvn.49.1710248474681; 
+ Tue, 12 Mar 2024 06:01:14 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- b15-20020a170903228f00b001dd1bdee6d9sm6608666plh.31.2024.03.12.05.52.35
+ kc19-20020a056214411300b00690d13f07f8sm2029160qvb.55.2024.03.12.06.01.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Mar 2024 05:52:40 -0700 (PDT)
-Message-ID: <4b4c39ef-3315-48fb-a8ed-f9d3fc1c7865@ventanamicro.com>
-Date: Tue, 12 Mar 2024 09:52:33 -0300
+ Tue, 12 Mar 2024 06:01:14 -0700 (PDT)
+Message-ID: <849dcde8-d20a-471c-ba59-fd1f1c60bef0@redhat.com>
+Date: Tue, 12 Mar 2024 14:01:11 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RISC-V][tech-server-soc] [RFC 2/2] target/riscv: Add server
- platform reference cpu
-Content-Language: en-US
-To: "Wu, Fei" <fei2.wu@intel.com>, tech-server-soc@lists.riscv.org,
- pbonzini@redhat.com, palmer@dabbelt.com, alistair.francis@wdc.com,
- bin.meng@windriver.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
- qemu-devel@nongnu.org, qemu-riscv@nongnu.org, andrei.warkentin@intel.com,
- shaolin.xie@alibaba-inc.com, ved@rivosinc.com, sunilvl@ventanamicro.com,
- haibo1.xu@intel.com, evan.chai@intel.com, yin.wang@intel.com,
- tech-server-platform@lists.riscv.org
-References: <20240304102540.2789225-1-fei2.wu@intel.com>
- <20240304102540.2789225-3-fei2.wu@intel.com>
- <bd34501b-3dda-40eb-aa92-73ea289297d1@ventanamicro.com>
- <8ad091f3-c00f-4786-a89b-799304eace73@intel.com>
- <56448108-c655-4684-bab9-b8d7747f79f7@intel.com>
- <4e16f394-fe9b-4edf-80eb-fc3220bcf6e1@intel.com>
- <52159cae-2f95-45e4-85c5-14b36984039c@ventanamicro.com>
- <603b8000-3949-4710-bcd1-7ce2f0fb9fbc@intel.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <603b8000-3949-4710-bcd1-7ce2f0fb9fbc@intel.com>
+Subject: Re: [PATCH v4 10/25] migration: Add Error** argument to
+ qemu_savevm_state_setup()
+Content-Language: en-US, fr
+To: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Markus Armbruster <armbru@redhat.com>,
+ Prasad Pandit <pjp@fedoraproject.org>
+References: <20240306133441.2351700-1-clg@redhat.com>
+ <20240306133441.2351700-11-clg@redhat.com> <87plw44wps.fsf@suse.de>
+ <1566715b-a9a5-4df6-8e64-f4f912e2ea2f@redhat.com> <87le6omw0d.fsf@suse.de>
+ <Ze9lSAS2COx7s17l@x1n>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <Ze9lSAS2COx7s17l@x1n>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -12
+X-Spam_score: -1.3
+X-Spam_bar: -
+X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,363 +106,199 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 3/12/24 09:33, Wu, Fei wrote:
-> On 3/8/2024 3:15 AM, Daniel Henrique Barboza wrote:
+On 3/11/24 21:10, Peter Xu wrote:
+> On Mon, Mar 11, 2024 at 04:03:14PM -0300, Fabiano Rosas wrote:
+>> Cédric Le Goater <clg@redhat.com> writes:
 >>
->>
->> On 3/7/24 04:36, Wu, Fei wrote:
->>> On 3/6/2024 9:26 PM, Wu, Fei wrote:
->>>> On 3/5/2024 1:58 PM, Wu, Fei wrote:
->>>>> On 3/5/2024 3:43 AM, Daniel Henrique Barboza wrote:
->>>>>>
->>>>>>
->>>>>> On 3/4/24 07:25, Fei Wu wrote:
->>>>>>> The harts requirements of RISC-V server platform [1] require RVA23
->>>>>>> ISA
->>>>>>> profile support, plus Sv48, Svadu, H, Sscofmpf etc. This patch
->>>>>>> provides
->>>>>>> a virt CPU type (rvsp-ref) as compliant as possible.
->>>>>>>
->>>>>>> [1]
->>>>>>> https://github.com/riscv-non-isa/riscv-server-platform/blob/main/server_platform_requirements.adoc
->>>>>>>
->>>>>>> Signed-off-by: Fei Wu <fei2.wu@intel.com>
->>>>>>> --->   hw/riscv/server_platform_ref.c |  6 +++-
->>>>>>>     target/riscv/cpu-qom.h         |  1 +
->>>>>>>     target/riscv/cpu.c             | 62
->>>>>>> ++++++++++++++++++++++++++++++++++
->>>>>>>     3 files changed, 68 insertions(+), 1 deletion(-)
->>>>>>>
->>>>>>> diff --git a/hw/riscv/server_platform_ref.c
->>>>>>> b/hw/riscv/server_platform_ref.c
->>>>>>> index ae90c4b27a..52ec607cee 100644
->>>>>>> --- a/hw/riscv/server_platform_ref.c
->>>>>>> +++ b/hw/riscv/server_platform_ref.c
->>>>>>> @@ -1205,11 +1205,15 @@ static void
->>>>>>> rvsp_ref_machine_class_init(ObjectClass *oc, void *data)
->>>>>>>     {
->>>>>>>         char str[128];
->>>>>>>         MachineClass *mc = MACHINE_CLASS(oc);
->>>>>>> +    static const char * const valid_cpu_types[] = {
->>>>>>> +        TYPE_RISCV_CPU_RVSP_REF,
->>>>>>> +    };
->>>>>>>           mc->desc = "RISC-V Server SoC Reference board";
->>>>>>>         mc->init = rvsp_ref_machine_init;
->>>>>>>         mc->max_cpus = RVSP_CPUS_MAX;
->>>>>>> -    mc->default_cpu_type = TYPE_RISCV_CPU_BASE;
->>>>>>> +    mc->default_cpu_type = TYPE_RISCV_CPU_RVSP_REF;
->>>>>>> +    mc->valid_cpu_types = valid_cpu_types;
->>>>>>
->>>>>> I suggest introducing this patch first, then the new machine type that
->>>>>> will use it as a default
->>>>>> CPU. The reason is to facilitate future bisects. If we introduce the
->>>>>> board first, a future bisect
->>>>>> might hit the previous patch, the board will be run using RV64 instead
->>>>>> of the correct CPU, and
->>>>>> we'll have different results because of it.
->>>>>>
->>>>> Good suggestion.
+>>> On 3/8/24 15:36, Fabiano Rosas wrote:
+>>>> Cédric Le Goater <clg@redhat.com> writes:
+>>>>
+>>>>> This prepares ground for the changes coming next which add an Error**
+>>>>> argument to the .save_setup() handler. Callers of qemu_savevm_state_setup()
+>>>>> now handle the error and fail earlier setting the migration state from
+>>>>> MIGRATION_STATUS_SETUP to MIGRATION_STATUS_FAILED.
 >>>>>
->>>>>>>         mc->pci_allow_0_address = true;
->>>>>>>         mc->default_nic = "e1000e";
->>>>>>>         mc->possible_cpu_arch_ids = riscv_numa_possible_cpu_arch_ids;
->>>>>>> diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
->>>>>>> index 3670cfe6d9..adb934d19e 100644
->>>>>>> --- a/target/riscv/cpu-qom.h
->>>>>>> +++ b/target/riscv/cpu-qom.h
->>>>>>> @@ -49,6 +49,7 @@
->>>>>>>     #define TYPE_RISCV_CPU_SIFIVE_U54
->>>>>>> RISCV_CPU_TYPE_NAME("sifive-u54")
->>>>>>>     #define TYPE_RISCV_CPU_THEAD_C906
->>>>>>> RISCV_CPU_TYPE_NAME("thead-c906")
->>>>>>>     #define TYPE_RISCV_CPU_VEYRON_V1
->>>>>>> RISCV_CPU_TYPE_NAME("veyron-v1")
->>>>>>> +#define TYPE_RISCV_CPU_RVSP_REF
->>>>>>> RISCV_CPU_TYPE_NAME("rvsp-ref")
->>>>>>>     #define TYPE_RISCV_CPU_HOST
->>>>>>> RISCV_CPU_TYPE_NAME("host")
->>>>>>>       OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
->>>>>>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->>>>>>> index 5ff0192c52..bc91be702b 100644
->>>>>>> --- a/target/riscv/cpu.c
->>>>>>> +++ b/target/riscv/cpu.c
->>>>>>> @@ -2282,6 +2282,67 @@ static void
->>>>>>> rva22s64_profile_cpu_init(Object *obj)
->>>>>>>           RVA22S64.enabled = true;
->>>>>>>     }
->>>>>>> +
->>>>>>> +static void rv64_rvsp_ref_cpu_init(Object *obj)
->>>>>>> +{
->>>>>>> +    CPURISCVState *env = &RISCV_CPU(obj)->env;
->>>>>>> +    RISCVCPU *cpu = RISCV_CPU(obj);
->>>>>>> +
->>>>>>> +    riscv_cpu_set_misa_ext(env, RVG | RVC | RVS | RVU | RVH | RVV);
->>>>>>> +
->>>>>>> +    /* FIXME: change to 1.13 */
->>>>>>> +    env->priv_ver = PRIV_VERSION_1_12_0;
->>>>>>> +
->>>>>>> +    /* RVA22U64 */
->>>>>>> +    cpu->cfg.mmu = true;
->>>>>>> +    cpu->cfg.ext_zifencei = true;
->>>>>>> +    cpu->cfg.ext_zicsr = true;
->>>>>>> +    cpu->cfg.ext_zicntr = true;
->>>>>>> +    cpu->cfg.ext_zihpm = true;
->>>>>>> +    cpu->cfg.ext_zihintpause = true;
->>>>>>> +    cpu->cfg.ext_zba = true;
->>>>>>> +    cpu->cfg.ext_zbb = true;
->>>>>>> +    cpu->cfg.ext_zbs = true;
->>>>>>> +    cpu->cfg.zic64b = true;
->>>>>>> +    cpu->cfg.ext_zicbom = true;
->>>>>>> +    cpu->cfg.ext_zicbop = true;
->>>>>>> +    cpu->cfg.ext_zicboz = true;
->>>>>>> +    cpu->cfg.cbom_blocksize = 64;
->>>>>>> +    cpu->cfg.cbop_blocksize = 64;
->>>>>>> +    cpu->cfg.cboz_blocksize = 64;
->>>>>>> +    cpu->cfg.ext_zfhmin = true;
->>>>>>> +    cpu->cfg.ext_zkt = true;
->>>>>>
->>>>>> You can change this whole block with:
->>>>>>
->>>>>> RVA22U64.enabled = true;
->>>>>>
->>>>>>
->>>>>> riscv_cpu_add_profiles() will check if we have a profile enabled
->>>>>> and, if
->>>>>> that's the
->>>>>> case, we'll enable all its extensions in the CPU.
->>>>>>
->>>>>> In the near future, when we implement a proper RVA23 support, we'll be
->>>>>> able to just do
->>>>>> a single RVA23S64.enabled = true in this cpu_init(). But for now we
->>>>>> can
->>>>>> at least declare
->>>>>> RVA22U64 (perhaps RVA22S64) support for this CPU.
->>>>>>
+>>>>> In qemu_savevm_state(), move the cleanup to preserve the error
+>>>>> reported by .save_setup() handlers.
+>>>>>
+>>>>> Since the previous behavior was to ignore errors at this step of
+>>>>> migration, this change should be examined closely to check that
+>>>>> cleanups are still correctly done.
+>>>>>
+>>>>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>>>>> ---
+>>>>>
+>>>>>    Changes in v4:
+>>>>>    
+>>>>>    - Merged cleanup change in qemu_savevm_state()
+>>>>>      
+>>>>>    Changes in v3:
+>>>>>    
+>>>>>    - Set migration state to MIGRATION_STATUS_FAILED
+>>>>>    - Fixed error handling to be done under lock in bg_migration_thread()
+>>>>>    - Made sure an error is always set in case of failure in
+>>>>>      qemu_savevm_state_setup()
+>>>>>      
+>>>>>    migration/savevm.h    |  2 +-
+>>>>>    migration/migration.c | 27 ++++++++++++++++++++++++---
+>>>>>    migration/savevm.c    | 26 +++++++++++++++-----------
+>>>>>    3 files changed, 40 insertions(+), 15 deletions(-)
+>>>>>
+>>>>> diff --git a/migration/savevm.h b/migration/savevm.h
+>>>>> index 74669733dd63a080b765866c703234a5c4939223..9ec96a995c93a42aad621595f0ed58596c532328 100644
+>>>>> --- a/migration/savevm.h
+>>>>> +++ b/migration/savevm.h
+>>>>> @@ -32,7 +32,7 @@
+>>>>>    bool qemu_savevm_state_blocked(Error **errp);
+>>>>>    void qemu_savevm_non_migratable_list(strList **reasons);
+>>>>>    int qemu_savevm_state_prepare(Error **errp);
+>>>>> -void qemu_savevm_state_setup(QEMUFile *f);
+>>>>> +int qemu_savevm_state_setup(QEMUFile *f, Error **errp);
+>>>>>    bool qemu_savevm_state_guest_unplug_pending(void);
+>>>>>    int qemu_savevm_state_resume_prepare(MigrationState *s);
+>>>>>    void qemu_savevm_state_header(QEMUFile *f);
+>>>>> diff --git a/migration/migration.c b/migration/migration.c
+>>>>> index a49fcd53ee19df1ce0182bc99d7e064968f0317b..6d1544224e96f5edfe56939a9c8395d88ef29581 100644
+>>>>> --- a/migration/migration.c
+>>>>> +++ b/migration/migration.c
+>>>>> @@ -3408,6 +3408,8 @@ static void *migration_thread(void *opaque)
+>>>>>        int64_t setup_start = qemu_clock_get_ms(QEMU_CLOCK_HOST);
+>>>>>        MigThrError thr_error;
+>>>>>        bool urgent = false;
+>>>>> +    Error *local_err = NULL;
+>>>>> +    int ret;
+>>>>>    
+>>>>>        thread = migration_threads_add("live_migration", qemu_get_thread_id());
+>>>>>    
+>>>>> @@ -3451,9 +3453,17 @@ static void *migration_thread(void *opaque)
+>>>>>        }
+>>>>>    
+>>>>>        bql_lock();
+>>>>> -    qemu_savevm_state_setup(s->to_dst_file);
+>>>>> +    ret = qemu_savevm_state_setup(s->to_dst_file, &local_err);
+>>>>>        bql_unlock();
+>>>>>    
+>>>>> +    if (ret) {
+>>>>> +        migrate_set_error(s, local_err);
+>>>>> +        error_free(local_err);
+>>>>> +        migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
+>>>>> +                          MIGRATION_STATUS_FAILED);
+>>>>> +        goto out;
+>>>>> +     }
+>>>>> +
+>>>>>        qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP,
+>>>>>                                   MIGRATION_STATUS_ACTIVE);
 >>>>
->>>> Hi Daniel,
+>>>> This^ should be before the new block it seems:
 >>>>
->>>> I'm not sure if it's a regression or the usage has been changed. I'm not
->>>> able to use '-cpu rva22s64' on latest qemu (db596ae190).
+>>>> GOOD:
+>>>> migrate_set_state new state setup
+>>>> migrate_set_state new state wait-unplug
+>>>> migrate_fd_cancel
+>>>> migrate_set_state new state cancelling
+>>>> migrate_fd_cleanup
+>>>> migrate_set_state new state cancelled
+>>>> migrate_fd_cancel
+>>>> ok 1 /x86_64/failover-virtio-net/migrate/abort/wait-unplug
 >>>>
->>> I did a quick git bisect and found that commit d06f28db6 "target/riscv:
->>> move 'mmu' to riscv_cpu_properties[]" disabled mmu by default, so that
->>> an explicit mmu option should be added to qemu command line like '-cpu
->>> rva22s64,mmu=true', I think rva22s64 should enable it by default.
+>>>> BAD:
+>>>> migrate_set_state new state setup
+>>>> migrate_fd_cancel
+>>>> migrate_set_state new state cancelling
+>>>> migrate_fd_cleanup
+>>>> migrate_set_state new state cancelled
+>>>> qemu-system-x86_64: ram_save_setup failed: Input/output error
+>>>> **
+>>>> ERROR:../tests/qtest/virtio-net-failover.c:1203:test_migrate_abort_wait_unplug:
+>>>> assertion failed (status == "cancelling"): ("cancelled" == "cancelling")
+>>>>
+>>>> Otherwise migration_iteration_finish() will schedule the cleanup BH and
+>>>> that will run concurrently with migrate_fd_cancel() issued by the test
+>>>> and bad things happens.
 >>>
+>>> This hack makes things work :
+>>>
+>>> @@ -3452,6 +3452,9 @@ static void *migration_thread(void *opaq
+>>>            qemu_savevm_send_colo_enable(s->to_dst_file);
+>>>        }
+>>>    
+>>> +    qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP,
+>>> +                            MIGRATION_STATUS_SETUP);
+>>> +
 >>
->> This is fixed in alistair/riscv-to-apply.next by this commit:
+>> Why move it all the way up here? Has moving the wait_unplug before the
+>> 'if (ret)' block not worked for you?
 >>
-> Hi Daniel,
+>>>        bql_lock();
+>>>        ret = qemu_savevm_state_setup(s->to_dst_file, &local_err);
+>>>        bql_unlock();
+>>>
+>>> We should fix the test instead :) Unless waiting for failover devices
+>>> to unplug before the save_setup handlers and not after is ok.
+>>>
+>>> commit c7e0acd5a3f8 ("migration: add new migration state wait-unplug")
+>>> is not clear about the justification.:
+>>>
+>>>       This patch adds a new migration state called wait-unplug.  It is entered
+>>>       after the SETUP state if failover devices are present. It will transition
+>>>       into ACTIVE once all devices were succesfully unplugged from the guest.
+>>
+>> This is not clear indeed, but to me it seems having the wait-unplug
+>> after setup was important.
 > 
-> The following still doesn't work for me with this commit (already
-> upstreamed now)
+> Finally got some time to read this code..
 > 
->    RVA22S64.enabled = true;
+> So far I didn't see an issue if it's called before the setup hooks.
+> Actually it looks to me it should better do that before those hooks.
+>
+> IIUC what that qemu_savevm_wait_unplug() does is waiting for all the
+> primary devices to be completely unplugged before moving on the migration.
 > 
-> cpu_set_profile() does nothing for vendor cpu as it checks
-> riscv_cpu_is_vendor() at the beginning, and it's still not working even
-> if it's removed. I think rvsp-ref is supposed to be
-> TYPE_RISCV_VENDOR_CPU, changing to other type such as DYNAMIC doesn't
-> work either, how to make this work?
+> Here setup() hook, or to be explicit, the primary devices' VMSDs (if ever
+> existed, and if that was the concern) should have zero impact on such wait,
+> because the "unplug" should also contain one step to unregister those
+> vmsds; see the virtio_net_handle_migration_primary() where it has:
+> 
+>          if (failover_unplug_primary(n, dev)) {
+>              vmstate_unregister(VMSTATE_IF(dev), qdev_get_vmsd(dev), dev);
+>              ...
+>          }
+> 
+> So qemu_savevm_wait_unplug() looks like a pure wait function to me until
+> all the unplug is processed by the guest OS.  And it makes some sense to me
+> to avoid calling setup() (which can start to hold resources, like in RAM we
+> create bitmaps etc to prepare for migration) before such possible long halts.
 
-Hmm yeah, set_profile() is filtering vendor CPUs because, although we are exposing
-profiles as command line options, users would be able to enable profiles in vendor
-CPUs, pottentialy enable extensions that the CPU doesn't have, and we don't want
-that.
+I think so too now. VFIO is already sending state.
 
-One way to keep this behavior but allowing the usage I mentioned for rvsp-ref is
-to put everything that's after this point in cpu_set_profile():
+> 
+> In all cases, I guess it's still too rush to figure out a plan, meanwhile
+> anything proposed for either test/code changes would better get some
+> reviews from either Laurent or other virtio-net guys.  I think I'll go
+> ahead the pull without the 2nd batch of patches.
+> 
+>>
+>>>
+>>>
+>>>> =====
+>>>> PS: I guess the next level in our Freestyle Concurrency video-game is to
+>>>> make migrate_fd_cancel() stop setting state and poking files and only
+>>>> set a flag that's tested in the other parts of the code.
+>>>
+>>> Is that a new item on the TODO list?
+>>
+>> Yep, I'll add it to the wiki.
+> 
+> Sounds like a good thing, however let's be aware of the evils (that are
+> always in the details..), where there can be users/tests relying on that
+> "CANCELLING" state, so it can be part of the ABIs.. :-(
 
-     if (!visit_type_bool(v, name, &value, errp)) {
-         return;
-     }
-
-in it's own helper, and then we would be able to enable profile extensions for
-vendor CPUs outside of this setter.
-
-
-This is out of scope for your RFC though. I thought this was a use case we can use for
-rvsp-ref right now, but I was wrong. I believe we can keep what you've already done
-(i.e. setting all exts by hand). We can rework in a generic way to enable profile
-extensions for all CPUs later.
-
+That's a good reason to move qemu_savevm_wait_unplug() and avoid breaking
+the ABI.
 
 Thanks,
 
-Daniel
+C.
 
 
-> 
-> Thanks,
-> Fei.
-> 
->> commit 5b8d66e6bf7904535ee277e9c70b332c4462f10a
->> Author: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> Date:   Thu Feb 15 19:39:50 2024 -0300
->>
->>      target/riscv/tcg: set 'mmu' with 'satp' in cpu_set_profile()
->>          Recent changes in options handling removed the 'mmu' default the
->> bare
->>      CPUs had, meaning that we must enable 'mmu' by hand when using the
->>      rva22s64 profile CPU.
->>          Given that this profile is setting a satp mode, it already
->> implies that
->>      we need a 'mmu'. Enable the 'mmu' in this case.
->>
->>
->>
->> Thanks,
->>
->> Daniel
->>
->>
->>> Thanks,
->>> Fei.
->>>
->>>> -- latest qemu, cannot see linux boot message and blocked
->>>>
->>>> $Q -machine virt -nographic -m 2G -smp 2 \
->>>>     -cpu rva22s64 \
->>>>     -bios /usr/lib/riscv64-linux-gnu/opensbi/generic/fw_jump.elf \
->>>>     -kernel $Kernel
->>>>
->>>> Boot HART ID              : 1
->>>> Boot HART Domain          : root
->>>> Boot HART Priv Version    : v1.12
->>>> Boot HART Base ISA        : rv64imafdc
->>>> Boot HART ISA Extensions  : time
->>>> Boot HART PMP Count       : 0
->>>> Boot HART PMP Granularity : 0
->>>> Boot HART PMP Address Bits: 0
->>>> Boot HART MHPM Count      : 16
->>>> Boot HART MIDELEG         : 0x0000000000000222
->>>> Boot HART MEDELEG         : 0x000000000000b109
->>>>
->>>> -- latest qemu, w/o rva22s64, looks good
->>>>
->>>> $Q -machine virt -nographic -m 2G -smp 2 \
->>>>     -bios /usr/lib/riscv64-linux-gnu/opensbi/generic/fw_jump.elf \
->>>>     -kernel $Kernel
->>>>
->>>> Boot HART ID              : 0
->>>> Boot HART Domain          : root
->>>> Boot HART Priv Version    : v1.12
->>>> Boot HART Base ISA        : rv64imafdch
->>>> Boot HART ISA Extensions  : time,sstc
->>>> Boot HART PMP Count       : 16
->>>> Boot HART PMP Granularity : 4
->>>> Boot HART PMP Address Bits: 54
->>>> Boot HART MHPM Count      : 16
->>>> Boot HART MIDELEG         : 0x0000000000001666
->>>> Boot HART MEDELEG         : 0x0000000000f0b509
->>>> [    0.000000] Linux version 6.8.0-rc6+ (box@riscv-sw-lvm-1)
->>>> (riscv64-linux-gnu-gcc (Ubuntu 9.4.0-1ubuntu1~20.04) 9.4.0, GNU ld (GNU
->>>> Binutils for Ubuntu) 2.34) #17 SMP Wed Feb 28 08:38:42 UTC 2024
->>>>
->>>> -- commit dfa3c4c57, patch to enable rva22s64, looks good
->>>>
->>>> $Q -machine virt -nographic -m 2G -smp 2 \
->>>>     -cpu rva22s64 \
->>>>     -bios /usr/lib/riscv64-linux-gnu/opensbi/generic/fw_jump.elf \
->>>>     -kernel $Kernel
->>>>
->>>> Boot HART ID              : 0
->>>> Boot HART Domain          : root
->>>> Boot HART Priv Version    : v1.12
->>>> Boot HART Base ISA        : rv64imafdc
->>>> Boot HART ISA Extensions  : time
->>>> Boot HART PMP Count       : 16
->>>> Boot HART PMP Granularity : 4
->>>> Boot HART PMP Address Bits: 54
->>>> Boot HART MHPM Count      : 16
->>>> Boot HART MIDELEG         : 0x0000000000000222
->>>> Boot HART MEDELEG         : 0x000000000000b109
->>>> [    0.000000] Linux version 6.8.0-rc6+ (box@riscv-sw-lvm-1)
->>>> (riscv64-linux-gnu-gcc (Ubuntu 9.4.0-1ubuntu1~20.04) 9.4.0, GNU ld (GNU
->>>> Binutils for Ubuntu) 2.34) #17 SMP Wed Feb 28 08:38:42 UTC 2024
->>>>
->>>> Thanks,
->>>> Fei
->>>>
->>>>> Let me try.
->>>>>
->>>>> Thanks,
->>>>> Fei.
->>>>>
->>>>>>
->>>>>> Thanks,
->>>>>>
->>>>>> Daniel
->>>>>>
->>>>>>
->>>>>>> +
->>>>>>> +    /* RVA23U64 */
->>>>>>> +    cpu->cfg.ext_zvfhmin = true;
->>>>>>> +    cpu->cfg.ext_zvbb = true;
->>>>>>> +    cpu->cfg.ext_zvkt = true;
->>>>>>> +    cpu->cfg.ext_zihintntl = true;
->>>>>>> +    cpu->cfg.ext_zicond = true;
->>>>>>> +    cpu->cfg.ext_zcb = true;
->>>>>>> +    cpu->cfg.ext_zfa = true;
->>>>>>> +    cpu->cfg.ext_zawrs = true;
->>>>>>> +
->>>>>>> +    /* RVA23S64 */
->>>>>>> +    cpu->cfg.ext_zifencei = true;
->>>>>>> +    cpu->cfg.svade = true;
->>>>>>> +    cpu->cfg.ext_svpbmt = true;
->>>>>>> +    cpu->cfg.ext_svinval = true;
->>>>>>> +    cpu->cfg.ext_svnapot = true;
->>>>>>> +    cpu->cfg.ext_sstc = true;
->>>>>>> +    cpu->cfg.ext_sscofpmf = true;
->>>>>>> +    cpu->cfg.ext_smstateen = true;
->>>>>>> +
->>>>>>> +    cpu->cfg.ext_smaia = true;
->>>>>>> +    cpu->cfg.ext_ssaia = true;
->>>>>>> +
->>>>>>> +    /* Server Platform */
->>>>>>> +#ifndef CONFIG_USER_ONLY
->>>>>>> +    set_satp_mode_max_supported(cpu, VM_1_10_SV48);
->>>>>>> +#endif
->>>>>>> +    cpu->cfg.ext_svadu = true;
->>>>>>> +    cpu->cfg.ext_zkr = true;
->>>>>>> +}
->>>>>>>     #endif
->>>>>>>       static const gchar *riscv_gdb_arch_name(CPUState *cs)
->>>>>>> @@ -2547,6 +2608,7 @@ static const TypeInfo riscv_cpu_type_infos[]
->>>>>>> = {
->>>>>>>         DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV64E,        MXL_RV64,
->>>>>>> rv64e_bare_cpu_init),
->>>>>>>         DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22U64,  MXL_RV64,
->>>>>>> rva22u64_profile_cpu_init),
->>>>>>>         DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22S64,  MXL_RV64,
->>>>>>> rva22s64_profile_cpu_init),
->>>>>>> +    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_RVSP_REF,   MXL_RV64,
->>>>>>> rv64_rvsp_ref_cpu_init),
->>>>>>>     #endif
->>>>>>>     };
->>>>>>>     
->>>>>>
->>>>>>
->>>>>>
->>>>>>
->>>>>>
->>>>>
->>>>
->>>
->>
->>
->> -=-=-=-=-=-=-=-=-=-=-=-
->> Links: You receive all messages sent to this group.
->> View/Reply Online (#135):
->> https://lists.riscv.org/g/tech-server-soc/message/135
->> Mute This Topic: https://lists.riscv.org/mt/104719379/7152971
->> Group Owner: tech-server-soc+owner@lists.riscv.org
->> Unsubscribe:
->> https://lists.riscv.org/g/tech-server-soc/leave/12737993/7152971/1793629631/xyzzy [fei2.wu@intel.com]
->> -=-=-=-=-=-=-=-=-=-=-=-
->>
->>
-> 
 
