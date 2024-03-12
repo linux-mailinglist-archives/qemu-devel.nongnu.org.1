@@ -2,77 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4979879EE5
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:37:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F9F3879EE9
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:39:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkAag-0006Sr-6k; Tue, 12 Mar 2024 18:27:22 -0400
+	id 1rkAae-00062C-BB; Tue, 12 Mar 2024 18:27:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAaU-0005FT-01
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:27:12 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAaU-0005Jr-RX
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:27:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAaP-0004LL-SF
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:27:09 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAaT-0004Li-A8
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:27:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710282425;
+ s=mimecast20190719; t=1710282428;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Fp9mS7QfM+i2wlqzdpjfyEOvEAobNn6YKxIWUVqj07Y=;
- b=f2nDNgNCLqkpLr1JCfwC/b3KEjUIu32fdTYNzLc6A1+pjylvinp6VmOckFOgAnFj3uopI1
- r2BuHlttTEiFZ3WjKAz3YrFgQHwEFL622tF80fXyE2TX2xUlSeJECcEUMstvu9CgmLuWk6
- DgZ9IgXCUQoXsbNOw7/BX/tDWtPj7Yk=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HZviP4yQ6PlfNYlhjLnO9O0fDmhpIErXsX1IdIBxhxY=;
+ b=Sz1k3gH8Bw4DCRAuHxGXQDE+xRu4C9/7DYOborcbXIsWNyOnVYsov6VfTLBXGdYjryasgW
+ TKJTntR/d8wlR+nAMTd2yv8MlT9mUEk+EIeuiT/mnQrBp+YIpyKyeKDpG5QC9MsKT+8wxT
+ HPKsLXCY/SqVfxMnkXyhu5M73HSFRsw=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-684-UX_qX2bnNyqpzBH8LA0_gA-1; Tue, 12 Mar 2024 18:27:04 -0400
-X-MC-Unique: UX_qX2bnNyqpzBH8LA0_gA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a4488afb812so23111366b.3
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:27:04 -0700 (PDT)
+ us-mta-606-d4WTOU5SM_OTp5vbNf6guA-1; Tue, 12 Mar 2024 18:27:07 -0400
+X-MC-Unique: d4WTOU5SM_OTp5vbNf6guA-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-5684650b00bso197475a12.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:27:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710282423; x=1710887223;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Fp9mS7QfM+i2wlqzdpjfyEOvEAobNn6YKxIWUVqj07Y=;
- b=Kaj4R5oW0XZxVWsbnWKTdj6WJqcrvJLJrOEA/eeYkwmTf8R3vFJvVjEHT+hOyKBzLZ
- zVczOMRwTZiJDT1AMblJVzseniHo6V/brNEP6XjxumHN5zv2QHH8WOcGUH52zh/qW1UC
- Xs18PPr2lixW28zOK9Cmv3dOrsCWukF91gCa3jHaLH38SoO0qG/qbuDbSgImfIdYyXCq
- +oNP5sSqfrHjjMBuxtWyq9l0jgS+g1HECxsJCFhpqVn2Q5+2V39kwEXX9WOVSVp/d30m
- pXtqPZOfcmfZkr9im2kB1Y5Ey29BmKUu/X0dxPVZtALVzF3NOIHy6tNWZ389kwvcSltd
- +sAg==
-X-Gm-Message-State: AOJu0YxQhX1sNFKOVB2Q+c0r8t7CmdjAyEi1Daza+gaVEM7FX2XAAq6V
- 3OYpb8vLhDwfyMwKrpCcY5vqRPZmHm/oQPm8leHEIGCepCNMd8PAqNXUL0NLDGwJZWr1yFDbjzT
- G7bSjOmB02pV4JHe3JAoGZyriDb4d3jtPAr2UpP7ZqYg04Tx/FKRTCzpKrOiJ+ty3YE0zmHrF+G
- /Uj+KEpn+uasMO30EVlgOKDT6b/IQhjBmt
-X-Received: by 2002:a17:906:6b97:b0:a46:5277:79b0 with SMTP id
- l23-20020a1709066b9700b00a46527779b0mr358970ejr.21.1710282422667; 
- Tue, 12 Mar 2024 15:27:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEMxoGdSAd7PH+l40CgdNm6iIezqlbzyxoxMV/n5yoxszf5Y1pTfDtct88ikFByTxy+KBcZ1Q==
-X-Received: by 2002:a17:906:6b97:b0:a46:5277:79b0 with SMTP id
- l23-20020a1709066b9700b00a46527779b0mr358954ejr.21.1710282422088; 
- Tue, 12 Mar 2024 15:27:02 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1710282426; x=1710887226;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=HZviP4yQ6PlfNYlhjLnO9O0fDmhpIErXsX1IdIBxhxY=;
+ b=GbkEJJUB1nAieTIg25lkxX7O5JJftRUbSXT36rNHQ4D8bDDxPZhWaXR+uzgdlqDgsk
+ Ndujii3gHqcqXHlB65zO6N2s7h3v80hwmb2EvH8oyo/RsXLi6iq3k69vJarA6MVYTAXV
+ En81/qlK5lmNE0NYsrBgVTHT4IfwxcnKipr5DTo396d/ZlE76dRzSuiGpV6jq7qrf/Yz
+ MxzBBpFXi07BML+z5bAKbaIeXc0PKojxCIY8DNn0viVHDd2W4HzNHCagXHh/UMA6Qdi/
+ LdWD6Uk7TSEXtFeXL+Av4zqEqATv5hru8MBXLsunCyeXQ/ZgcOU9jHRWv7iV1nyctYuD
+ XGdw==
+X-Gm-Message-State: AOJu0Yxu9WdgjQ7FSfVMx+CgB8A8Keslf78RuxNIA55vYh4+OovtU7pg
+ kDTA3U7xgf1fde++shrBIjP1chkjOlSZup4Hfm2ewMu42MHynbfLeHw4Hn8LYy/lIXUoER/VS79
+ m7I2QrvNGGBpiWohewfUMT5oSSgrhpqv9mRdP3lpYE+5MnFDKXZLZFRSeUC8VmC6RPooso53F/P
+ AROcNh+jca2zqKzQfQxqVy9h+1+0nSVjsW
+X-Received: by 2002:a50:d69b:0:b0:568:1c9c:95a7 with SMTP id
+ r27-20020a50d69b000000b005681c9c95a7mr3130005edi.40.1710282426083; 
+ Tue, 12 Mar 2024 15:27:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFfHQzJ1JyQ7t76fDjre6/5htUCC57Xu8nWAgvtBGdQOxE6DKGNxgCsu4K3e7aDb+q3J0GZbQ==
+X-Received: by 2002:a50:d69b:0:b0:568:1c9c:95a7 with SMTP id
+ r27-20020a50d69b000000b005681c9c95a7mr3129989edi.40.1710282425662; 
+ Tue, 12 Mar 2024 15:27:05 -0700 (PDT)
 Received: from redhat.com ([2.52.134.16]) by smtp.gmail.com with ESMTPSA id
- o23-20020a1709062e9700b00a44cf710cc3sm4213832eji.182.2024.03.12.15.27.00
+ r14-20020aa7cfce000000b005687f8721f9sm296397edy.82.2024.03.12.15.27.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 15:27:01 -0700 (PDT)
-Date: Tue, 12 Mar 2024 18:26:59 -0400
+ Tue, 12 Mar 2024 15:27:05 -0700 (PDT)
+Date: Tue, 12 Mar 2024 18:27:02 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Fan Ni <fan.ni@samsung.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 29/68] hw/pci-bridge/pxb-cxl: Drop RAS capability from host
- bridge.
-Message-ID: <3a95f572112ab4c789d66af666644adcdb2b45a6.1710282274.git.mst@redhat.com>
+ Volker =?utf-8?Q?R=C3=BCmelin?= <vr_qemu@t-online.de>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PULL 30/68] hw/audio/virtio-sound: return correct command response
+ size
+Message-ID: <633487df8d303b37a88584d5a57a39dbcd91c7bf.1710282274.git.mst@redhat.com>
 References: <cover.1710282274.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1710282274.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -101,94 +105,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Volker Rümelin <vr_qemu@t-online.de>
 
-This CXL component isn't allowed to have a RAS capability.
-Whilst this should be harmless as software is not expected to look
-here, good to clean it up.
+The payload size returned by command VIRTIO_SND_R_PCM_INFO is
+wrong. The code in process_cmd() assumes that all commands
+return only a virtio_snd_hdr payload, but some commands like
+VIRTIO_SND_R_PCM_INFO may return an additional payload.
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20240215155206.2736-1-Jonathan.Cameron@huawei.com>
+Add a zero initialized payload_size variable to struct
+virtio_snd_ctrl_command to allow for additional payloads.
+
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
+Message-Id: <20240218083351.8524-1-vr_qemu@t-online.de>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/cxl/cxl_component.h      |  1 +
- hw/cxl/cxl-component-utils.c        | 21 +++++++++++++++++----
- hw/pci-bridge/pci_expander_bridge.c |  2 +-
- 3 files changed, 19 insertions(+), 5 deletions(-)
+ include/hw/audio/virtio-snd.h | 1 +
+ hw/audio/virtio-snd.c         | 7 +++++--
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_component.h
-index 0e5d35c263..5012fab6f7 100644
---- a/include/hw/cxl/cxl_component.h
-+++ b/include/hw/cxl/cxl_component.h
-@@ -25,6 +25,7 @@ enum reg_type {
-     CXL2_TYPE3_DEVICE,
-     CXL2_LOGICAL_DEVICE,
-     CXL2_ROOT_PORT,
-+    CXL2_RC,
-     CXL2_UPSTREAM_PORT,
-     CXL2_DOWNSTREAM_PORT,
-     CXL3_SWITCH_MAILBOX_CCI,
-diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
-index 84ab503325..cd116c0401 100644
---- a/hw/cxl/cxl-component-utils.c
-+++ b/hw/cxl/cxl-component-utils.c
-@@ -297,6 +297,7 @@ void cxl_component_register_init_common(uint32_t *reg_state,
-         caps = 3;
-         break;
-     case CXL2_ROOT_PORT:
-+    case CXL2_RC:
-         /* + Extended Security, + Snoop */
-         caps = 5;
-         break;
-@@ -326,8 +327,19 @@ void cxl_component_register_init_common(uint32_t *reg_state,
-                        CXL_##reg##_REGISTERS_OFFSET);                         \
-     } while (0)
- 
-+    switch (type) {
-+    case CXL2_DEVICE:
-+    case CXL2_TYPE3_DEVICE:
-+    case CXL2_LOGICAL_DEVICE:
-+    case CXL2_ROOT_PORT:
-+    case CXL2_UPSTREAM_PORT:
-+    case CXL2_DOWNSTREAM_PORT:
-     init_cap_reg(RAS, 2, CXL_RAS_CAPABILITY_VERSION);
--    ras_init_common(reg_state, write_msk);
-+        ras_init_common(reg_state, write_msk);
-+        break;
-+    default:
-+        break;
-+    }
- 
-     init_cap_reg(LINK, 4, CXL_LINK_CAPABILITY_VERSION);
- 
-@@ -335,9 +347,10 @@ void cxl_component_register_init_common(uint32_t *reg_state,
-         return;
+diff --git a/include/hw/audio/virtio-snd.h b/include/hw/audio/virtio-snd.h
+index c3767f442b..3d79181364 100644
+--- a/include/hw/audio/virtio-snd.h
++++ b/include/hw/audio/virtio-snd.h
+@@ -230,6 +230,7 @@ struct virtio_snd_ctrl_command {
+     VirtQueue *vq;
+     virtio_snd_hdr ctrl;
+     virtio_snd_hdr resp;
++    size_t payload_size;
+     QTAILQ_ENTRY(virtio_snd_ctrl_command) next;
+ };
+ #endif
+diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
+index ea2aeaef14..e604d8f30c 100644
+--- a/hw/audio/virtio-snd.c
++++ b/hw/audio/virtio-snd.c
+@@ -243,12 +243,13 @@ static void virtio_snd_handle_pcm_info(VirtIOSound *s,
+         memset(&pcm_info[i].padding, 0, 5);
      }
  
--    init_cap_reg(HDM, 5, CXL_HDM_CAPABILITY_VERSION);
--    hdm_init_common(reg_state, write_msk, type);
--
-+    if (type != CXL2_ROOT_PORT) {
-+        init_cap_reg(HDM, 5, CXL_HDM_CAPABILITY_VERSION);
-+        hdm_init_common(reg_state, write_msk, type);
-+    }
-     if (caps < 5) {
-         return;
-     }
-diff --git a/hw/pci-bridge/pci_expander_bridge.c b/hw/pci-bridge/pci_expander_bridge.c
-index 535889f7c2..0411ad31ea 100644
---- a/hw/pci-bridge/pci_expander_bridge.c
-+++ b/hw/pci-bridge/pci_expander_bridge.c
-@@ -290,7 +290,7 @@ static void pxb_cxl_dev_reset(DeviceState *dev)
-     uint32_t *write_msk = cxl_cstate->crb.cache_mem_regs_write_mask;
-     int dsp_count = 0;
++    cmd->payload_size = sizeof(virtio_snd_pcm_info) * count;
+     cmd->resp.code = cpu_to_le32(VIRTIO_SND_S_OK);
+     iov_from_buf(cmd->elem->in_sg,
+                  cmd->elem->in_num,
+                  sizeof(virtio_snd_hdr),
+                  pcm_info,
+-                 sizeof(virtio_snd_pcm_info) * count);
++                 cmd->payload_size);
+ }
  
--    cxl_component_register_init_common(reg_state, write_msk, CXL2_ROOT_PORT);
-+    cxl_component_register_init_common(reg_state, write_msk, CXL2_RC);
-     /*
-      * The CXL specification allows for host bridges with no HDM decoders
-      * if they only have a single root port.
+ /*
+@@ -749,7 +750,8 @@ process_cmd(VirtIOSound *s, virtio_snd_ctrl_command *cmd)
+                  0,
+                  &cmd->resp,
+                  sizeof(virtio_snd_hdr));
+-    virtqueue_push(cmd->vq, cmd->elem, sizeof(virtio_snd_hdr));
++    virtqueue_push(cmd->vq, cmd->elem,
++                   sizeof(virtio_snd_hdr) + cmd->payload_size);
+     virtio_notify(VIRTIO_DEVICE(s), cmd->vq);
+ }
+ 
+@@ -808,6 +810,7 @@ static void virtio_snd_handle_ctrl(VirtIODevice *vdev, VirtQueue *vq)
+         cmd->elem = elem;
+         cmd->vq = vq;
+         cmd->resp.code = cpu_to_le32(VIRTIO_SND_S_OK);
++        /* implicit cmd->payload_size = 0; */
+         QTAILQ_INSERT_TAIL(&s->cmdq, cmd, next);
+         elem = virtqueue_pop(vq, sizeof(VirtQueueElement));
+     }
 -- 
 MST
 
