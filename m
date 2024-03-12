@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E2DD879493
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:55:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D408794A8
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:58:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk1Y2-0000gg-95; Tue, 12 Mar 2024 08:48:02 -0400
+	id 1rk1Xu-00005K-FT; Tue, 12 Mar 2024 08:47:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1VL-0004gc-Lo
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:45:17 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1VI-0004bo-IK
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:45:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1VG-0000bM-BX
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:45:14 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1VB-0000ag-9R
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:45:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710247507;
+ s=mimecast20190719; t=1710247504;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1ysobHKgjBV89d+fnYnHJUmiT/TwlUt5KEIpL4LfkIU=;
- b=CHZX90+QyA52dE9j3dqnPWpgvA0crZWiA9uzX1A/t72yRYmmBydyzu/Ek7HSfZwT45d6pM
- hdX9sal7Drw7X6qz0NTvh57+HYq4EfcTdxXnFQxrWgSoF/WbPG00a3m2XUdS/tXKvTLxXT
- bGvDGDNE/duzMAnh14MnlLhPrfCzHv0=
+ bh=03aM9ZkSlQzTFx1pPNJmZ+WHNGA5kWbpYfHnIYTnn7w=;
+ b=bggdwVil89ZqR6lgLAfwqyQm4BTRy17kVDnOP02kHBnO3kLzTCCmtKuYWRs4xtxnXAi5Rk
+ KcntYir3cREAkOPDTZnshVHiBamZCVxnF+PUsnYZz3DFUSLlD0xB+7XMFqBQV8dgFyFPZ4
+ 7LpwGR+h+TpYl25snHKGlyAnqIynWmc=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-108-GFMcQvkMOe24Wk0uVepiHw-1; Tue,
- 12 Mar 2024 08:45:01 -0400
-X-MC-Unique: GFMcQvkMOe24Wk0uVepiHw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-390-HGlgJFTGP1Cvx2s0O71RCw-1; Tue,
+ 12 Mar 2024 08:45:03 -0400
+X-MC-Unique: HGlgJFTGP1Cvx2s0O71RCw-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 629EF1C41A20;
- Tue, 12 Mar 2024 12:45:01 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CEA36386A0A9;
+ Tue, 12 Mar 2024 12:45:02 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.69])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B944D492BC4;
- Tue, 12 Mar 2024 12:44:59 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B681F492BC4;
+ Tue, 12 Mar 2024 12:45:01 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 42/55] target/i386/hvf: Use CPUState typedef
-Date: Tue, 12 Mar 2024 13:43:26 +0100
-Message-ID: <20240312124339.761630-43-thuth@redhat.com>
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 43/55] target/loongarch: Prefer fast cpu_env() over slower CPU
+ QOM cast macro
+Date: Tue, 12 Mar 2024 13:43:27 +0100
+Message-ID: <20240312124339.761630-44-thuth@redhat.com>
 In-Reply-To: <20240312124339.761630-1-thuth@redhat.com>
 References: <20240312124339.761630-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -83,358 +83,318 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-QEMU coding style recommend using structure typedefs:
-https://www.qemu.org/docs/master/devel/style.html#typedefs
+Mechanical patch produced running the command documented
+in scripts/coccinelle/cpu_env.cocci_template header.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240129164514.73104-16-philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-ID: <20240129164514.73104-14-philmd@linaro.org>
-[thuth: Break long lines to avoid checkpatch.pl errors]
+[thuth: Adjusted patch for hunk that moved to cpu_helper.c]
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/i386/hvf/x86.h       | 26 +++++++++++++-------------
- target/i386/hvf/x86_descr.h | 14 +++++++-------
- target/i386/hvf/x86_emu.h   |  4 ++--
- target/i386/hvf/x86_mmu.h   |  6 +++---
- target/i386/hvf/x86.c       | 26 +++++++++++++-------------
- target/i386/hvf/x86_descr.c | 11 +++++++----
- target/i386/hvf/x86_mmu.c   | 14 +++++++-------
- 7 files changed, 52 insertions(+), 49 deletions(-)
+ target/loongarch/cpu.c            | 39 ++++++++---------------------
+ target/loongarch/cpu_helper.c     |  3 +--
+ target/loongarch/gdbstub.c        |  6 ++---
+ target/loongarch/kvm/kvm.c        | 41 +++++++++----------------------
+ target/loongarch/tcg/tlb_helper.c |  3 +--
+ 5 files changed, 26 insertions(+), 66 deletions(-)
 
-diff --git a/target/i386/hvf/x86.h b/target/i386/hvf/x86.h
-index 947b98da41..3570f29aa9 100644
---- a/target/i386/hvf/x86.h
-+++ b/target/i386/hvf/x86.h
-@@ -248,30 +248,30 @@ typedef struct x68_segment_selector {
- #define BH(cpu)        RH(cpu, R_EBX)
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index e935c79b68..f6ffb3aadb 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -91,18 +91,12 @@ void G_NORETURN do_raise_exception(CPULoongArchState *env,
  
- /* deal with GDT/LDT descriptors in memory */
--bool x86_read_segment_descriptor(struct CPUState *cpu,
-+bool x86_read_segment_descriptor(CPUState *cpu,
-                                  struct x86_segment_descriptor *desc,
-                                  x68_segment_selector sel);
--bool x86_write_segment_descriptor(struct CPUState *cpu,
-+bool x86_write_segment_descriptor(CPUState *cpu,
-                                   struct x86_segment_descriptor *desc,
-                                   x68_segment_selector sel);
- 
--bool x86_read_call_gate(struct CPUState *cpu, struct x86_call_gate *idt_desc,
-+bool x86_read_call_gate(CPUState *cpu, struct x86_call_gate *idt_desc,
-                         int gate);
- 
- /* helpers */
--bool x86_is_protected(struct CPUState *cpu);
--bool x86_is_real(struct CPUState *cpu);
--bool x86_is_v8086(struct CPUState *cpu);
--bool x86_is_long_mode(struct CPUState *cpu);
--bool x86_is_long64_mode(struct CPUState *cpu);
--bool x86_is_paging_mode(struct CPUState *cpu);
--bool x86_is_pae_enabled(struct CPUState *cpu);
-+bool x86_is_protected(CPUState *cpu);
-+bool x86_is_real(CPUState *cpu);
-+bool x86_is_v8086(CPUState *cpu);
-+bool x86_is_long_mode(CPUState *cpu);
-+bool x86_is_long64_mode(CPUState *cpu);
-+bool x86_is_paging_mode(CPUState *cpu);
-+bool x86_is_pae_enabled(CPUState *cpu);
- 
- enum X86Seg;
--target_ulong linear_addr(struct CPUState *cpu, target_ulong addr, enum X86Seg seg);
--target_ulong linear_addr_size(struct CPUState *cpu, target_ulong addr, int size,
-+target_ulong linear_addr(CPUState *cpu, target_ulong addr, enum X86Seg seg);
-+target_ulong linear_addr_size(CPUState *cpu, target_ulong addr, int size,
-                               enum X86Seg seg);
--target_ulong linear_rip(struct CPUState *cpu, target_ulong rip);
-+target_ulong linear_rip(CPUState *cpu, target_ulong rip);
- 
- static inline uint64_t rdtscp(void)
+ static void loongarch_cpu_set_pc(CPUState *cs, vaddr value)
  {
-diff --git a/target/i386/hvf/x86_descr.h b/target/i386/hvf/x86_descr.h
-index c356932fa4..9f06014b56 100644
---- a/target/i386/hvf/x86_descr.h
-+++ b/target/i386/hvf/x86_descr.h
-@@ -29,29 +29,29 @@ typedef struct vmx_segment {
- } vmx_segment;
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
+-
+-    set_pc(env, value);
++    set_pc(cpu_env(cs), value);
+ }
  
- /* deal with vmstate descriptors */
--void vmx_read_segment_descriptor(struct CPUState *cpu,
-+void vmx_read_segment_descriptor(CPUState *cpu,
-                                  struct vmx_segment *desc, enum X86Seg seg);
- void vmx_write_segment_descriptor(CPUState *cpu, struct vmx_segment *desc,
-                                   enum X86Seg seg);
- 
--x68_segment_selector vmx_read_segment_selector(struct CPUState *cpu,
-+x68_segment_selector vmx_read_segment_selector(CPUState *cpu,
-                                                enum X86Seg seg);
--void vmx_write_segment_selector(struct CPUState *cpu,
-+void vmx_write_segment_selector(CPUState *cpu,
-                                 x68_segment_selector selector,
-                                 enum X86Seg seg);
- 
--uint64_t vmx_read_segment_base(struct CPUState *cpu, enum X86Seg seg);
--void vmx_write_segment_base(struct CPUState *cpu, enum X86Seg seg,
-+uint64_t vmx_read_segment_base(CPUState *cpu, enum X86Seg seg);
-+void vmx_write_segment_base(CPUState *cpu, enum X86Seg seg,
-                             uint64_t base);
- 
--void x86_segment_descriptor_to_vmx(struct CPUState *cpu,
-+void x86_segment_descriptor_to_vmx(CPUState *cpu,
-                                    x68_segment_selector selector,
-                                    struct x86_segment_descriptor *desc,
-                                    struct vmx_segment *vmx_desc);
- 
- uint32_t vmx_read_segment_limit(CPUState *cpu, enum X86Seg seg);
- uint32_t vmx_read_segment_ar(CPUState *cpu, enum X86Seg seg);
--void vmx_segment_to_x86_descriptor(struct CPUState *cpu,
-+void vmx_segment_to_x86_descriptor(CPUState *cpu,
-                                    struct vmx_segment *vmx_desc,
-                                    struct x86_segment_descriptor *desc);
- 
-diff --git a/target/i386/hvf/x86_emu.h b/target/i386/hvf/x86_emu.h
-index 4b846ba80e..8bd97608c4 100644
---- a/target/i386/hvf/x86_emu.h
-+++ b/target/i386/hvf/x86_emu.h
-@@ -26,8 +26,8 @@
- void init_emu(void);
- bool exec_instruction(CPUX86State *env, struct x86_decode *ins);
- 
--void load_regs(struct CPUState *cpu);
--void store_regs(struct CPUState *cpu);
-+void load_regs(CPUState *cpu);
-+void store_regs(CPUState *cpu);
- 
- void simulate_rdmsr(CPUX86State *env);
- void simulate_wrmsr(CPUX86State *env);
-diff --git a/target/i386/hvf/x86_mmu.h b/target/i386/hvf/x86_mmu.h
-index 9ae8a548de..9447ae072c 100644
---- a/target/i386/hvf/x86_mmu.h
-+++ b/target/i386/hvf/x86_mmu.h
-@@ -36,9 +36,9 @@
- #define MMU_PAGE_US             (1 << 2)
- #define MMU_PAGE_NX             (1 << 3)
- 
--bool mmu_gva_to_gpa(struct CPUState *cpu, target_ulong gva, uint64_t *gpa);
-+bool mmu_gva_to_gpa(CPUState *cpu, target_ulong gva, uint64_t *gpa);
- 
--void vmx_write_mem(struct CPUState *cpu, target_ulong gva, void *data, int bytes);
--void vmx_read_mem(struct CPUState *cpu, void *data, target_ulong gva, int bytes);
-+void vmx_write_mem(CPUState *cpu, target_ulong gva, void *data, int bytes);
-+void vmx_read_mem(CPUState *cpu, void *data, target_ulong gva, int bytes);
- 
- #endif /* X86_MMU_H */
-diff --git a/target/i386/hvf/x86.c b/target/i386/hvf/x86.c
-index 8ceea6398e..80e36136d0 100644
---- a/target/i386/hvf/x86.c
-+++ b/target/i386/hvf/x86.c
-@@ -46,7 +46,7 @@
-    return ar;
- }*/
- 
--bool x86_read_segment_descriptor(struct CPUState *cpu,
-+bool x86_read_segment_descriptor(CPUState *cpu,
-                                  struct x86_segment_descriptor *desc,
-                                  x68_segment_selector sel)
+ static vaddr loongarch_cpu_get_pc(CPUState *cs)
  {
-@@ -76,7 +76,7 @@ bool x86_read_segment_descriptor(struct CPUState *cpu,
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
+-
+-    return env->pc;
++    return cpu_env(cs)->pc;
+ }
+ 
+ #ifndef CONFIG_USER_ONLY
+@@ -157,8 +151,7 @@ static inline bool cpu_loongarch_hw_interrupts_pending(CPULoongArchState *env)
+ #ifndef CONFIG_USER_ONLY
+ static void loongarch_cpu_do_interrupt(CPUState *cs)
+ {
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
++    CPULoongArchState *env = cpu_env(cs);
+     bool update_badinstr = 1;
+     int cause = -1;
+     const char *name;
+@@ -308,8 +301,7 @@ static void loongarch_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
+                                                 MemTxResult response,
+                                                 uintptr_t retaddr)
+ {
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
++    CPULoongArchState *env = cpu_env(cs);
+ 
+     if (access_type == MMU_INST_FETCH) {
+         do_raise_exception(env, EXCCODE_ADEF, retaddr);
+@@ -321,8 +313,7 @@ static void loongarch_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
+ static bool loongarch_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+ {
+     if (interrupt_request & CPU_INTERRUPT_HARD) {
+-        LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-        CPULoongArchState *env = &cpu->env;
++        CPULoongArchState *env = cpu_env(cs);
+ 
+         if (cpu_loongarch_hw_interrupts_enabled(env) &&
+             cpu_loongarch_hw_interrupts_pending(env)) {
+@@ -339,21 +330,15 @@ static bool loongarch_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+ static void loongarch_cpu_synchronize_from_tb(CPUState *cs,
+                                               const TranslationBlock *tb)
+ {
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
+-
+     tcg_debug_assert(!(cs->tcg_cflags & CF_PCREL));
+-    set_pc(env, tb->pc);
++    set_pc(cpu_env(cs), tb->pc);
+ }
+ 
+ static void loongarch_restore_state_to_opc(CPUState *cs,
+                                            const TranslationBlock *tb,
+                                            const uint64_t *data)
+ {
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
+-
+-    set_pc(env, data[0]);
++    set_pc(cpu_env(cs), data[0]);
+ }
+ #endif /* CONFIG_TCG */
+ 
+@@ -362,12 +347,10 @@ static bool loongarch_cpu_has_work(CPUState *cs)
+ #ifdef CONFIG_USER_ONLY
      return true;
- }
+ #else
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
+     bool has_work = false;
  
--bool x86_write_segment_descriptor(struct CPUState *cpu,
-+bool x86_write_segment_descriptor(CPUState *cpu,
-                                   struct x86_segment_descriptor *desc,
-                                   x68_segment_selector sel)
- {
-@@ -99,7 +99,7 @@ bool x86_write_segment_descriptor(struct CPUState *cpu,
-     return true;
- }
- 
--bool x86_read_call_gate(struct CPUState *cpu, struct x86_call_gate *idt_desc,
-+bool x86_read_call_gate(CPUState *cpu, struct x86_call_gate *idt_desc,
-                         int gate)
- {
-     target_ulong base  = rvmcs(cpu->accel->fd, VMCS_GUEST_IDTR_BASE);
-@@ -115,30 +115,30 @@ bool x86_read_call_gate(struct CPUState *cpu, struct x86_call_gate *idt_desc,
-     return true;
- }
- 
--bool x86_is_protected(struct CPUState *cpu)
-+bool x86_is_protected(CPUState *cpu)
- {
-     uint64_t cr0 = rvmcs(cpu->accel->fd, VMCS_GUEST_CR0);
-     return cr0 & CR0_PE_MASK;
- }
- 
--bool x86_is_real(struct CPUState *cpu)
-+bool x86_is_real(CPUState *cpu)
- {
-     return !x86_is_protected(cpu);
- }
- 
--bool x86_is_v8086(struct CPUState *cpu)
-+bool x86_is_v8086(CPUState *cpu)
- {
-     X86CPU *x86_cpu = X86_CPU(cpu);
-     CPUX86State *env = &x86_cpu->env;
-     return x86_is_protected(cpu) && (env->eflags & VM_MASK);
- }
- 
--bool x86_is_long_mode(struct CPUState *cpu)
-+bool x86_is_long_mode(CPUState *cpu)
- {
-     return rvmcs(cpu->accel->fd, VMCS_GUEST_IA32_EFER) & MSR_EFER_LMA;
- }
- 
--bool x86_is_long64_mode(struct CPUState *cpu)
-+bool x86_is_long64_mode(CPUState *cpu)
- {
-     struct vmx_segment desc;
-     vmx_read_segment_descriptor(cpu, &desc, R_CS);
-@@ -146,24 +146,24 @@ bool x86_is_long64_mode(struct CPUState *cpu)
-     return x86_is_long_mode(cpu) && ((desc.ar >> 13) & 1);
- }
- 
--bool x86_is_paging_mode(struct CPUState *cpu)
-+bool x86_is_paging_mode(CPUState *cpu)
- {
-     uint64_t cr0 = rvmcs(cpu->accel->fd, VMCS_GUEST_CR0);
-     return cr0 & CR0_PG_MASK;
- }
- 
--bool x86_is_pae_enabled(struct CPUState *cpu)
-+bool x86_is_pae_enabled(CPUState *cpu)
- {
-     uint64_t cr4 = rvmcs(cpu->accel->fd, VMCS_GUEST_CR4);
-     return cr4 & CR4_PAE_MASK;
- }
- 
--target_ulong linear_addr(struct CPUState *cpu, target_ulong addr, X86Seg seg)
-+target_ulong linear_addr(CPUState *cpu, target_ulong addr, X86Seg seg)
- {
-     return vmx_read_segment_base(cpu, seg) + addr;
- }
- 
--target_ulong linear_addr_size(struct CPUState *cpu, target_ulong addr, int size,
-+target_ulong linear_addr_size(CPUState *cpu, target_ulong addr, int size,
-                               X86Seg seg)
- {
-     switch (size) {
-@@ -179,7 +179,7 @@ target_ulong linear_addr_size(struct CPUState *cpu, target_ulong addr, int size,
-     return linear_addr(cpu, addr, seg);
- }
- 
--target_ulong linear_rip(struct CPUState *cpu, target_ulong rip)
-+target_ulong linear_rip(CPUState *cpu, target_ulong rip)
- {
-     return linear_addr(cpu, rip, R_CS);
- }
-diff --git a/target/i386/hvf/x86_descr.c b/target/i386/hvf/x86_descr.c
-index c2d2e9ee84..f33836d6cb 100644
---- a/target/i386/hvf/x86_descr.c
-+++ b/target/i386/hvf/x86_descr.c
-@@ -67,12 +67,12 @@ x68_segment_selector vmx_read_segment_selector(CPUState *cpu, X86Seg seg)
-     return sel;
- }
- 
--void vmx_write_segment_selector(struct CPUState *cpu, x68_segment_selector selector, X86Seg seg)
-+void vmx_write_segment_selector(CPUState *cpu, x68_segment_selector selector, X86Seg seg)
- {
-     wvmcs(cpu->accel->fd, vmx_segment_fields[seg].selector, selector.sel);
- }
- 
--void vmx_read_segment_descriptor(struct CPUState *cpu, struct vmx_segment *desc, X86Seg seg)
-+void vmx_read_segment_descriptor(CPUState *cpu, struct vmx_segment *desc, X86Seg seg)
- {
-     desc->sel = rvmcs(cpu->accel->fd, vmx_segment_fields[seg].selector);
-     desc->base = rvmcs(cpu->accel->fd, vmx_segment_fields[seg].base);
-@@ -90,7 +90,9 @@ void vmx_write_segment_descriptor(CPUState *cpu, struct vmx_segment *desc, X86Se
-     wvmcs(cpu->accel->fd, sf->ar_bytes, desc->ar);
- }
- 
--void x86_segment_descriptor_to_vmx(struct CPUState *cpu, x68_segment_selector selector, struct x86_segment_descriptor *desc, struct vmx_segment *vmx_desc)
-+void x86_segment_descriptor_to_vmx(CPUState *cpu, x68_segment_selector selector,
-+                                   struct x86_segment_descriptor *desc,
-+                                   struct vmx_segment *vmx_desc)
- {
-     vmx_desc->sel = selector.sel;
-     vmx_desc->base = x86_segment_base(desc);
-@@ -107,7 +109,8 @@ void x86_segment_descriptor_to_vmx(struct CPUState *cpu, x68_segment_selector se
-                     desc->type;
- }
- 
--void vmx_segment_to_x86_descriptor(struct CPUState *cpu, struct vmx_segment *vmx_desc, struct x86_segment_descriptor *desc)
-+void vmx_segment_to_x86_descriptor(CPUState *cpu, struct vmx_segment *vmx_desc,
-+                                   struct x86_segment_descriptor *desc)
- {
-     x86_set_segment_limit(desc, vmx_desc->limit);
-     x86_set_segment_base(desc, vmx_desc->base);
-diff --git a/target/i386/hvf/x86_mmu.c b/target/i386/hvf/x86_mmu.c
-index 8cd08622a1..649074a7d2 100644
---- a/target/i386/hvf/x86_mmu.c
-+++ b/target/i386/hvf/x86_mmu.c
-@@ -49,7 +49,7 @@ struct gpt_translation {
-     bool exec_access;
- };
- 
--static int gpt_top_level(struct CPUState *cpu, bool pae)
-+static int gpt_top_level(CPUState *cpu, bool pae)
- {
-     if (!pae) {
-         return 2;
-@@ -73,7 +73,7 @@ static inline int pte_size(bool pae)
- }
- 
- 
--static bool get_pt_entry(struct CPUState *cpu, struct gpt_translation *pt,
-+static bool get_pt_entry(CPUState *cpu, struct gpt_translation *pt,
-                          int level, bool pae)
- {
-     int index;
-@@ -95,7 +95,7 @@ static bool get_pt_entry(struct CPUState *cpu, struct gpt_translation *pt,
- }
- 
- /* test page table entry */
--static bool test_pt_entry(struct CPUState *cpu, struct gpt_translation *pt,
-+static bool test_pt_entry(CPUState *cpu, struct gpt_translation *pt,
-                           int level, bool *is_large, bool pae)
- {
-     uint64_t pte = pt->pte[level];
-@@ -166,7 +166,7 @@ static inline uint64_t large_page_gpa(struct gpt_translation *pt, bool pae)
- 
- 
- 
--static bool walk_gpt(struct CPUState *cpu, target_ulong addr, int err_code,
-+static bool walk_gpt(CPUState *cpu, target_ulong addr, int err_code,
-                      struct gpt_translation *pt, bool pae)
- {
-     int top_level, level;
-@@ -205,7 +205,7 @@ static bool walk_gpt(struct CPUState *cpu, target_ulong addr, int err_code,
- }
- 
- 
--bool mmu_gva_to_gpa(struct CPUState *cpu, target_ulong gva, uint64_t *gpa)
-+bool mmu_gva_to_gpa(CPUState *cpu, target_ulong gva, uint64_t *gpa)
- {
-     bool res;
-     struct gpt_translation pt;
-@@ -225,7 +225,7 @@ bool mmu_gva_to_gpa(struct CPUState *cpu, target_ulong gva, uint64_t *gpa)
-     return false;
- }
- 
--void vmx_write_mem(struct CPUState *cpu, target_ulong gva, void *data, int bytes)
-+void vmx_write_mem(CPUState *cpu, target_ulong gva, void *data, int bytes)
- {
-     uint64_t gpa;
- 
-@@ -246,7 +246,7 @@ void vmx_write_mem(struct CPUState *cpu, target_ulong gva, void *data, int bytes
+     if ((cs->interrupt_request & CPU_INTERRUPT_HARD) &&
+-        cpu_loongarch_hw_interrupts_pending(env)) {
++        cpu_loongarch_hw_interrupts_pending(cpu_env(cs))) {
+         has_work = true;
      }
- }
  
--void vmx_read_mem(struct CPUState *cpu, void *data, target_ulong gva, int bytes)
-+void vmx_read_mem(CPUState *cpu, void *data, target_ulong gva, int bytes)
+@@ -509,9 +492,8 @@ static void loongarch_max_initfn(Object *obj)
+ static void loongarch_cpu_reset_hold(Object *obj)
  {
-     uint64_t gpa;
+     CPUState *cs = CPU(obj);
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+     LoongArchCPUClass *lacc = LOONGARCH_CPU_GET_CLASS(obj);
+-    CPULoongArchState *env = &cpu->env;
++    CPULoongArchState *env = cpu_env(cs);
  
+     if (lacc->parent_phases.hold) {
+         lacc->parent_phases.hold(obj);
+@@ -694,8 +676,7 @@ static ObjectClass *loongarch_cpu_class_by_name(const char *cpu_model)
+ 
+ void loongarch_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+ {
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
++    CPULoongArchState *env = cpu_env(cs);
+     int i;
+ 
+     qemu_fprintf(f, " PC=%016" PRIx64 " ", env->pc);
+diff --git a/target/loongarch/cpu_helper.c b/target/loongarch/cpu_helper.c
+index 45f821d086..960eec9567 100644
+--- a/target/loongarch/cpu_helper.c
++++ b/target/loongarch/cpu_helper.c
+@@ -218,8 +218,7 @@ int get_physical_address(CPULoongArchState *env, hwaddr *physical,
+ 
+ hwaddr loongarch_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
+ {
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
++    CPULoongArchState *env = cpu_env(cs);
+     hwaddr phys_addr;
+     int prot;
+ 
+diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
+index 22c6889011..a0e1439bd0 100644
+--- a/target/loongarch/gdbstub.c
++++ b/target/loongarch/gdbstub.c
+@@ -33,8 +33,7 @@ void write_fcc(CPULoongArchState *env, uint64_t val)
+ 
+ int loongarch_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+ {
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
++    CPULoongArchState *env = cpu_env(cs);
+     uint64_t val;
+ 
+     if (0 <= n && n < 32) {
+@@ -60,8 +59,7 @@ int loongarch_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+ 
+ int loongarch_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+ {
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
++    CPULoongArchState *env = cpu_env(cs);
+     target_ulong tmp;
+     int read_length;
+     int length = 0;
+diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
+index c19978a970..df5e199860 100644
+--- a/target/loongarch/kvm/kvm.c
++++ b/target/loongarch/kvm/kvm.c
+@@ -38,8 +38,7 @@ static int kvm_loongarch_get_regs_core(CPUState *cs)
+     int ret = 0;
+     int i;
+     struct kvm_regs regs;
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
++    CPULoongArchState *env = cpu_env(cs);
+ 
+     /* Get the current register set as KVM seems it */
+     ret = kvm_vcpu_ioctl(cs, KVM_GET_REGS, &regs);
+@@ -62,8 +61,7 @@ static int kvm_loongarch_put_regs_core(CPUState *cs)
+     int ret = 0;
+     int i;
+     struct kvm_regs regs;
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
++    CPULoongArchState *env = cpu_env(cs);
+ 
+     /* Set the registers based on QEMU's view of things */
+     for (i = 0; i < 32; i++) {
+@@ -82,8 +80,7 @@ static int kvm_loongarch_put_regs_core(CPUState *cs)
+ static int kvm_loongarch_get_csr(CPUState *cs)
+ {
+     int ret = 0;
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
++    CPULoongArchState *env = cpu_env(cs);
+ 
+     ret |= kvm_get_one_reg(cs, KVM_IOC_CSRID(LOONGARCH_CSR_CRMD),
+                            &env->CSR_CRMD);
+@@ -253,8 +250,7 @@ static int kvm_loongarch_get_csr(CPUState *cs)
+ static int kvm_loongarch_put_csr(CPUState *cs, int level)
+ {
+     int ret = 0;
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
++    CPULoongArchState *env = cpu_env(cs);
+ 
+     ret |= kvm_set_one_reg(cs, KVM_IOC_CSRID(LOONGARCH_CSR_CRMD),
+                            &env->CSR_CRMD);
+@@ -430,9 +426,7 @@ static int kvm_loongarch_get_regs_fp(CPUState *cs)
+ {
+     int ret, i;
+     struct kvm_fpu fpu;
+-
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
++    CPULoongArchState *env = cpu_env(cs);
+ 
+     ret = kvm_vcpu_ioctl(cs, KVM_GET_FPU, &fpu);
+     if (ret < 0) {
+@@ -456,9 +450,7 @@ static int kvm_loongarch_put_regs_fp(CPUState *cs)
+ {
+     int ret, i;
+     struct kvm_fpu fpu;
+-
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
++    CPULoongArchState *env = cpu_env(cs);
+ 
+     fpu.fcsr = env->fcsr0;
+     fpu.fcc = 0;
+@@ -487,8 +479,7 @@ static int kvm_loongarch_get_mpstate(CPUState *cs)
+ {
+     int ret = 0;
+     struct kvm_mp_state mp_state;
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
++    CPULoongArchState *env = cpu_env(cs);
+ 
+     if (cap_has_mp_state) {
+         ret = kvm_vcpu_ioctl(cs, KVM_GET_MP_STATE, &mp_state);
+@@ -505,12 +496,8 @@ static int kvm_loongarch_get_mpstate(CPUState *cs)
+ static int kvm_loongarch_put_mpstate(CPUState *cs)
+ {
+     int ret = 0;
+-
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
+-
+     struct kvm_mp_state mp_state = {
+-        .mp_state = env->mp_state
++        .mp_state = cpu_env(cs)->mp_state
+     };
+ 
+     if (cap_has_mp_state) {
+@@ -527,8 +514,7 @@ static int kvm_loongarch_get_cpucfg(CPUState *cs)
+ {
+     int i, ret = 0;
+     uint64_t val;
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
++    CPULoongArchState *env = cpu_env(cs);
+ 
+     for (i = 0; i < 21; i++) {
+         ret = kvm_get_one_reg(cs, KVM_IOC_CPUCFG(i), &val);
+@@ -549,8 +535,7 @@ static int kvm_check_cpucfg2(CPUState *cs)
+         .attr = 2,
+         .addr = (uint64_t)&val,
+     };
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
++    CPULoongArchState *env = cpu_env(cs);
+ 
+     ret = kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, &attr);
+ 
+@@ -575,8 +560,7 @@ static int kvm_check_cpucfg2(CPUState *cs)
+ static int kvm_loongarch_put_cpucfg(CPUState *cs)
+ {
+     int i, ret = 0;
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
++    CPULoongArchState *env = cpu_env(cs);
+     uint64_t val;
+ 
+     for (i = 0; i < 21; i++) {
+@@ -758,8 +742,7 @@ bool kvm_arch_cpu_check_are_resettable(void)
+ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
+ {
+     int ret = 0;
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
++    CPULoongArchState *env = cpu_env(cs);
+     MemTxAttrs attrs = {};
+ 
+     attrs.requester_id = env_cpu(env)->cpu_index;
+diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
+index a08c08b05a..22be031ac7 100644
+--- a/target/loongarch/tcg/tlb_helper.c
++++ b/target/loongarch/tcg/tlb_helper.c
+@@ -449,8 +449,7 @@ bool loongarch_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+                             MMUAccessType access_type, int mmu_idx,
+                             bool probe, uintptr_t retaddr)
+ {
+-    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+-    CPULoongArchState *env = &cpu->env;
++    CPULoongArchState *env = cpu_env(cs);
+     hwaddr physical;
+     int prot;
+     int ret;
 -- 
 2.44.0
 
