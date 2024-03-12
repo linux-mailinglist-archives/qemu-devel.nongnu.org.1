@@ -2,78 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C31878FA6
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 09:25:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2336D878F9D
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 09:23:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjxPN-0005Q9-Ib; Tue, 12 Mar 2024 04:22:49 -0400
+	id 1rjxPU-0005Tt-CE; Tue, 12 Mar 2024 04:22:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxPK-0005P7-MS
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:22:47 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxPR-0005Sq-Kl
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:22:53 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxPI-00014f-NH
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:22:46 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-412f1961101so39739925e9.0
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 01:22:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxPO-000172-WC
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:22:53 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-41329b6286bso10538135e9.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 01:22:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710231763; x=1710836563; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=9ThlkXWuH/LZwgUYhcSMxtjhxxhNUZ7hP3Buj6LguH0=;
- b=bhfa8VBqBmsjIWEjgspU4nAA85uO9SGQ4eQmzry3Li3gBA44GzSHj9GFjL0iYZ0IP/
- M5mOlQvHyyLwAIVF7YsYNPv7ZfSgyiHqFy//T6h5wuOU9SdyI4Irkp1WAXyBbWf/7sVg
- LKqrNsGcmBKurFTbDfgkj8ogtCm2lH8tVgB9UAp8xsZVlZvVIPywb/QTc505piQA2QOU
- 2QZrh39Fj7Z8+yj8qamRZswftWpWwF338CX9fIdJhdsgei/hvYIKoCJnJz2uYUd2XyKP
- +GlwEf6t4LdpEBSlRVPK5o/fvCfN+olqVUsgUIJpKb02LbEq3hzoYoCwBLtLTDNW2+1b
- 9Q8Q==
+ d=linaro.org; s=google; t=1710231769; x=1710836569; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Y7t8ToQvoKJ38Eour/5JL7+zSxhmxaS/0ISJ7lI4Kdc=;
+ b=QL0r5xmqh3146A1Ybqwsgpaz0Z/RI85sU7uuwNECqQlwCNcw7GXaIx7dpeipi3FznM
+ ir/oGuKq6k7M20nowBjqHTg7XbawV5jXbj73/hTJMHvSaEOdLsUbo0bOGq4QsYLnMkhj
+ BSOHEdy9k+pfNhDXsqf4+M7jJmHhONxtza1wFuS/nHeE0cpOSx8tzKFbO2KGZXbDH1zL
+ iipvTPOBkgF5jv93E/Z+Sd7StUG7rlCPO16OfE/9ruDfft4I+15nrp1EQuhAZEGdBkw9
+ sIkgWLOq8qEMHGx6TTJRNveHFr5Zp+9uS8mMsbs3TnaqblHaV9m9zgXSgvKGMXXG4NzM
+ h4yQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710231763; x=1710836563;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9ThlkXWuH/LZwgUYhcSMxtjhxxhNUZ7hP3Buj6LguH0=;
- b=OZUclel1b8AiHkeTk+9oWTNI2QthfDRIWmLNlyCh87D1on5VzJSTNk4dVwiQlRcXli
- gu49i5QK2T/wMa03WyBz8X1G+pJ1b0j2jDxxkC0b8giwyC+HydCFGOKkIRHsGLliw41/
- hZDW7QEulXd67+YUCoWiGxISOf1DLBaG5FdliNGCyKRYN5Hp/EW6zA7k4ATF42GZvNS+
- /C2/Wel+eWf76gm/sNir0ShqP1hvWQhKQzMtyrMeU0DfdZJweaTa42gHjRM7v7A+g305
- lah/kTY4z6YVwhKvKTrLavaIs6HQ0EgINz3PsX5tUA+2kRuvnO3LuzJhRwLrJKlQGvak
- RKZw==
-X-Gm-Message-State: AOJu0YwGt8DUbWKRp8MJU73Vns+TQfNoeWUg/I/pO058qiADui0DYsPc
- UgvNEcVIaI7Hr2WFHdoft1wkARzplKsIzYUlsNWL2sXlGSPheosJU+YTxnFBexGe/QBFl2ofXbH
- W
-X-Google-Smtp-Source: AGHT+IF4KEp8l5BZo2YsWhHu5YcT1lZyrsV8gPnzRWxahkhIpd51aj2XtPgtBakIL0si3nUsKO7x0Q==
-X-Received: by 2002:a05:600c:518b:b0:413:38f6:c62c with SMTP id
- fa11-20020a05600c518b00b0041338f6c62cmr609523wmb.1.1710231762803; 
- Tue, 12 Mar 2024 01:22:42 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1710231769; x=1710836569;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Y7t8ToQvoKJ38Eour/5JL7+zSxhmxaS/0ISJ7lI4Kdc=;
+ b=T67xoitdJOKO2pqlLcRV29PM2eoe2Ux00K4S2/uAGQfTFv3N9iqnVPI3PigrRlBAlJ
+ L91CuctdARiv9G7Si9pTV/4d1ISmwcKEF+dFDa9iWlqpCVg/NP4cKEEs+PI9ZlKPkXDg
+ DGQFWGtHOITn8pZizo1JfqJqpzkDVirK14LMKTkyVlRd1pPm7hjeYfCVqobO9YXz6tb7
+ ZveojEEkglmps6aPGSliG3xSEObrjYzFbvPOrsQchJpWTT4rc14JEHAx6XoNYTjFZGQ/
+ 0C6q9DuwgG132c8ufpvZNFemKgpMDbtTGXR9H4mu1M8R9xwPXkKYf997PzTA+TlXQ/4s
+ crmQ==
+X-Gm-Message-State: AOJu0Ywtj0Xb7q7jz0e1rsRH2t7mRktkeChRwhsswW6oYfh/O12nMIB5
+ UKiYjvifDcgD0VGzKiP/FfFjOY+RDSyPcwlSr4LBifB9fjMLtX0fXErnEZCGtaMbGRXwESlDcPj
+ 1
+X-Google-Smtp-Source: AGHT+IG0QqIGogzMqwbFvEHg2eLWebIzfILzC8eVhOUbTh/vO+/88ZKK3HzQuK61STvYsUctEl6H7g==
+X-Received: by 2002:adf:f48c:0:b0:33d:ca56:a61f with SMTP id
+ l12-20020adff48c000000b0033dca56a61fmr6912288wro.49.1710231769187; 
+ Tue, 12 Mar 2024 01:22:49 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.206.139])
  by smtp.gmail.com with ESMTPSA id
- i17-20020a05600c355100b00413079f9065sm11717694wmq.8.2024.03.12.01.22.41
+ n2-20020a5d4002000000b0033de2f2a88dsm8320603wrp.103.2024.03.12.01.22.47
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Mar 2024 01:22:42 -0700 (PDT)
+ Tue, 12 Mar 2024 01:22:48 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 00/13] Misc HW patches for 2024-03-12
-Date: Tue, 12 Mar 2024 09:22:25 +0100
-Message-ID: <20240312082239.69696-1-philmd@linaro.org>
+ BALATON Zoltan <balaton@eik.bme.hu>, Markus Armbruster <armbru@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ John Snow <jsnow@redhat.com>
+Subject: [PULL 01/13] hw/ide/ahci: Rename ahci_internal.h to ahci-internal.h
+Date: Tue, 12 Mar 2024 09:22:26 +0100
+Message-ID: <20240312082239.69696-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240312082239.69696-1-philmd@linaro.org>
+References: <20240312082239.69696-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,87 +95,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 7489f7f3f81dcb776df8c1b9a9db281fc21bf05f:
+From: BALATON Zoltan <balaton@eik.bme.hu>
 
-  Merge tag 'hw-misc-20240309' of https://github.com/philmd/qemu into staging (2024-03-09 20:12:21 +0000)
+Other headers now use dash instead of underscore. Rename
+ahci_internal.h accordingly for consistency.
 
-are available in the Git repository at:
-
-  https://github.com/philmd/qemu.git tags/hw-misc-20240312
-
-for you to fetch changes up to afc8b05cea14b2eea6f1eaa640f74b21486fca48:
-
-  docs/about/deprecated.rst: Move SMP configurations item to system emulator section (2024-03-12 09:19:04 +0100)
-
-----------------------------------------------------------------
-Misc HW patch queue
-
-- Rename hw/ide/ahci-internal.h for consistency (Zoltan)
-- More convenient PCI hotplug trace events (Vladimir)
-- Short CLI option to add drives for sam460ex machine (Zoltan)
-- More missing ERRP_GUARD() macros (Zhao)
-- Avoid faulting when unmapped I/O BAR is accessed on SPARC EBUS (Mark)
-- Remove unused includes in hw/core/ (Zhao)
-- New PCF8574 GPIO over I2C model (Dmitriy)
-- Require ObjC on Darwin macOS by default (Peter)
-- Corrected "-smp parameter=1" placement in docs/ (Zhao)
-
-----------------------------------------------------------------
-
-BALATON Zoltan (2):
-  hw/ide/ahci: Rename ahci_internal.h to ahci-internal.h
-  hw/ppc/sam460ex: Support short options for adding drives
-
-Dmitriy Sharikhin (1):
-  hw/gpio: introduce pcf8574 driver
-
-Mark Cave-Ayland (1):
-  sun4u: remap ebus BAR0 to use unassigned_io_ops instead of alias to
-    PCI IO space
-
-Peter Maydell (1):
-  meson.build: Always require an objc compiler on macos hosts
-
-Vladimir Sementsov-Ogievskiy (1):
-  hw/pci: add some convenient trace-events for pcie and shpc hotplug
-
-Zhao Liu (7):
-  hw/core/loader-fit: Fix missing ERRP_GUARD() for error_prepend()
-  hw/core/qdev-properties-system: Fix missing ERRP_GUARD() for
-    error_prepend()
-  hw/misc/ivshmem: Fix missing ERRP_GUARD() for error_prepend()
-  hw/core: Cleanup unused included headers in cpu-common.c
-  hw/core: Cleanup unused included header in machine-qmp-cmds.c
-  hw/core: Cleanup unused included headers in numa.c
-  docs/about/deprecated.rst: Move SMP configurations item to system
-    emulator section
-
- MAINTAINERS                                 |   6 +
- docs/about/deprecated.rst                   |  20 +--
- meson.build                                 |   2 +-
- hw/ide/{ahci_internal.h => ahci-internal.h} |   0
- include/hw/gpio/pcf8574.h                   |  15 ++
- hw/core/cpu-common.c                        |   4 -
- hw/core/loader-fit.c                        |   2 +
- hw/core/machine-qmp-cmds.c                  |   1 -
- hw/core/numa.c                              |   2 -
- hw/core/qdev-properties-system.c            |   1 +
- hw/gpio/pcf8574.c                           | 162 ++++++++++++++++++++
- hw/ide/ahci.c                               |   2 +-
- hw/ide/ich.c                                |   2 +-
- hw/misc/ivshmem.c                           |   1 +
- hw/pci/pcie.c                               |  56 +++++++
- hw/pci/shpc.c                               |  46 ++++++
- hw/ppc/sam460ex.c                           |  24 ++-
- hw/sparc64/sun4u.c                          |   9 +-
- hw/gpio/Kconfig                             |   4 +
- hw/gpio/meson.build                         |   1 +
- hw/pci/trace-events                         |   6 +
- 21 files changed, 339 insertions(+), 27 deletions(-)
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240227131310.C24EB4E6005@zero.eik.bme.hu>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/ide/{ahci_internal.h => ahci-internal.h} | 0
+ hw/ide/ahci.c                               | 2 +-
+ hw/ide/ich.c                                | 2 +-
+ 3 files changed, 2 insertions(+), 2 deletions(-)
  rename hw/ide/{ahci_internal.h => ahci-internal.h} (100%)
- create mode 100644 include/hw/gpio/pcf8574.h
- create mode 100644 hw/gpio/pcf8574.c
 
+diff --git a/hw/ide/ahci_internal.h b/hw/ide/ahci-internal.h
+similarity index 100%
+rename from hw/ide/ahci_internal.h
+rename to hw/ide/ahci-internal.h
+diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
+index b8123bc73d..bfefad2965 100644
+--- a/hw/ide/ahci.c
++++ b/hw/ide/ahci.c
+@@ -37,7 +37,7 @@
+ #include "hw/ide/pci.h"
+ #include "hw/ide/ahci-pci.h"
+ #include "hw/ide/ahci-sysbus.h"
+-#include "ahci_internal.h"
++#include "ahci-internal.h"
+ #include "ide-internal.h"
+ 
+ #include "trace.h"
+diff --git a/hw/ide/ich.c b/hw/ide/ich.c
+index 3ea793d790..9b909c87f3 100644
+--- a/hw/ide/ich.c
++++ b/hw/ide/ich.c
+@@ -70,7 +70,7 @@
+ #include "sysemu/dma.h"
+ #include "hw/ide/pci.h"
+ #include "hw/ide/ahci-pci.h"
+-#include "ahci_internal.h"
++#include "ahci-internal.h"
+ 
+ #define ICH9_MSI_CAP_OFFSET     0x80
+ #define ICH9_SATA_CAP_OFFSET    0xA8
 -- 
 2.41.0
 
