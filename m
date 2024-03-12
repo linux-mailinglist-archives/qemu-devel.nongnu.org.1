@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A9C88792EF
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 12:26:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D61868792EB
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 12:26:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk0GT-0002wW-Hw; Tue, 12 Mar 2024 07:25:49 -0400
+	id 1rk0GL-0002pr-UH; Tue, 12 Mar 2024 07:25:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rk0GP-0002uF-AJ
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 07:25:45 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1rk0GI-0002ku-Q9
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 07:25:38 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rk0GK-0000jH-8J
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 07:25:43 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-33e672e10cfso2660343f8f.0
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 04:25:37 -0700 (PDT)
+ id 1rk0GF-0000gp-N7
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 07:25:37 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-412e784060cso37658925e9.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 04:25:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710242736; x=1710847536; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710242734; x=1710847534; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=likgvKugk4b8t9l89CQl3BfsUjLIPBB3WZoVAljees8=;
- b=DW08WxMF+B9rMlbuk/1FXC8SRiNlybQcsMlufn10lYW1lD9iQUeCgSAKTLErF6+gWr
- VwZmpM3TOqE6EfOfEEUAU+JuMCsLmvjeTMJxrhPWKJEhpIeBi6+oH3L86jYI9A8+xGdL
- dXGlX6mMTNqJ9S0Ip5EBR2fLrBes68eaRZQO0i2yT1scSWS1O+NtgBfF4Lnuj4JbUWE+
- Oh9IjIJeXy+7TE1R74yamIk+pKLtSFzy1XuWw5V1xOTM223O1tD7us7FRvkBRzuzfpmx
- Q9OuOmcOO+iRXPx2zQveLRtWvl9XKjcQmwLAjGlxEbMZwTRGl46PGlo+ZUNFOE5laerB
- 5MaA==
+ bh=T/TnnwpHa6+cyA8uGT7QNYUXfL4ZfkLpAJU45+MsrCA=;
+ b=n4uJV1YiLWsgQgp1dY+laz1pcbL9o9J0xdvCGCbS8/ihSrKCEuB23kMtt6H0ER5A2w
+ Nl6Fg/auvQlQ8Pabn2nlNuThZ5q8fSD5zI1hDb0mahC44AZN2mEEtPkrTt0E8+rg3M2U
+ WCLurpzHyWgcQ4jI5Of1wq/qYOIdxXf0iUN5ktllkT2vB0c8wwcAE0pXxdmfCN5otlWk
+ ULGpziuda6xDQpuwk2sb3y+bUDy/b0sI68saWk2syL+bL6R+2L6vT/rT8zo5vGLDteTQ
+ BFNBH70Vnkknk7VeCs5CzZNzLRUYBDLEF50szAKBqJGCgnOtF5MEl9YZSPJI6XAdW0FH
+ Z2YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710242736; x=1710847536;
+ d=1e100.net; s=20230601; t=1710242734; x=1710847534;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=likgvKugk4b8t9l89CQl3BfsUjLIPBB3WZoVAljees8=;
- b=OzxXLdZ27PU6f9w8kSPQlsAGE7fklbOdH8jJQ221bfH1Lndj8na+r9KEeVi2U4LIpp
- UICdOHvCbyW9EVT0SRidT3IFrjeK0XjLt9gqjsgjmuVGtbdFx3sw//j6AAnleIIW2t0w
- CeBOkqyP6UAlmPVTJPK8hCRHTLatQx6++SmevXhlGHSFtVAm2MZP3zJ1cu0Y00sDw9Zr
- MZ21cSENU0A56ZSQ4wU4kiZvYPe4hWgFpYwIbZcz0nb833N0kML+y1gox2ugZwSLIIqx
- KO6r2WEcatwkJLnfy+6xsh1XL+duSK4n6SuTFqGajYVxtgYmA1KGztrtV81pndqQSqXd
- DZ2g==
-X-Gm-Message-State: AOJu0YyM8Fs7wCbmatjcKeA/YCgm14fb4rxGg5lW9qBx17UFYry1Y9OE
- gE23uMY/WLMDFJ/b9XJCTygz/S9j/hp5vU/rzRsaJWx98yf/WHolakWViesioW4=
-X-Google-Smtp-Source: AGHT+IHPit1NXoSm5SCOXYpz5veD40FZDYcwT3cLMIan4pT5sEjVA4tmuOIU+pnxMj43WBmsYaYSTw==
-X-Received: by 2002:adf:da4f:0:b0:33e:9113:a21d with SMTP id
- r15-20020adfda4f000000b0033e9113a21dmr4769899wrl.28.1710242736339; 
- Tue, 12 Mar 2024 04:25:36 -0700 (PDT)
+ bh=T/TnnwpHa6+cyA8uGT7QNYUXfL4ZfkLpAJU45+MsrCA=;
+ b=XkNrRJQMnKJChzhLXaR7SbEw+ABMuXXKWoIyRlBESXNrgGgt8dqGPdAE5ucejjb0xg
+ 4Nkj7p+OTDu5+CNHuaio2/Mpe9Walqz3H+V4RpyS51tdfwWjOmrANxPDecS6GEB/ak9L
+ mFvC6qdB/jyYt2q1+bzHlkKjTYbQYvY83JNPoE+mcrqsltDbrMQCimqoohg1Y88AgMVP
+ jZsvbrKUUyvbo8hms+CmLvcerxWJMc8gzqzoho7c45P8M8RoblghSSWxgg78OIfuSPEs
+ SAdDf4huOkIX5a5/nwDZaru0uytrrDjsvtH0tqOb+GuMoi9BWOo3A9vYzNfa+kBJPuRX
+ L5nQ==
+X-Gm-Message-State: AOJu0YwLv9LBHjS5x3Tz+wyn525VGnkZHdjJczcoULTGq73uQYPcHm+m
+ 6sYuXH0IVcIXKHji0dmAU/8taqrX01yFPp2MdZu9Tey3x2kxZsK62o8qnKP3Oz2AG81KC9oHhgM
+ p
+X-Google-Smtp-Source: AGHT+IEWcScdWkZZSFA3fhfyySTZM6qshOpTGB7e9ilrLU/nlvoATnJYwNdFnP+6FHZj8HpUDomcGQ==
+X-Received: by 2002:a05:600c:35c8:b0:413:1619:a78 with SMTP id
+ r8-20020a05600c35c800b0041316190a78mr8585316wmq.4.1710242733914; 
+ Tue, 12 Mar 2024 04:25:33 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a22-20020a5d4576000000b0033e68338fbasm8766559wrc.81.2024.03.12.04.25.33
+ s13-20020a5d6a8d000000b0033d202abf01sm8785691wru.28.2024.03.12.04.25.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 12 Mar 2024 04:25:33 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C108F5F8D5;
+ by draig.lan (Postfix) with ESMTP id D715C5F8DA;
  Tue, 12 Mar 2024 11:25:32 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
+Cc: Gustavo Romero <gustavo.romero@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [PULL 2/8] tests/vm: ensure we build everything by default
-Date: Tue, 12 Mar 2024 11:25:26 +0000
-Message-Id: <20240312112532.1558319-3-alex.bennee@linaro.org>
+ Laurent Vivier <laurent@vivier.eu>
+Subject: [PULL 3/8] gdbstub: Rename back gdb_handlesig
+Date: Tue, 12 Mar 2024 11:25:27 +0000
+Message-Id: <20240312112532.1558319-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240312112532.1558319-1-alex.bennee@linaro.org>
 References: <20240312112532.1558319-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,28 +99,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The "check" target by itself is not enough to ensure we build the user
-mode binaries. While we can't test them with check-tcg we can at least
-include them in the build.
+From: Gustavo Romero <gustavo.romero@linaro.org>
 
+Rename gdb_handlesig_reason back to gdb_handlesig. There is no need to
+add a wrapper for gdb_handlesig and rename it when a new parameter is
+added.
+
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240309030901.1726211-2-gustavo.romero@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Cc: Gustavo Romero <gustavo.romero@linaro.org>
 
-diff --git a/tests/vm/basevm.py b/tests/vm/basevm.py
-index f8fd751eb1..4a1af04b9a 100644
---- a/tests/vm/basevm.py
-+++ b/tests/vm/basevm.py
-@@ -606,7 +606,7 @@ def get_default_jobs():
-     parser.add_argument("--build-qemu",
-                         help="build QEMU from source in guest")
-     parser.add_argument("--build-target",
--                        help="QEMU build target", default="check")
-+                        help="QEMU build target", default="all check")
-     parser.add_argument("--build-path", default=None,
-                         help="Path of build directory, "\
-                         "for using build tree QEMU binary. ")
+diff --git a/include/gdbstub/user.h b/include/gdbstub/user.h
+index 4c4e5c4c58..4fc88f8a25 100644
+--- a/include/gdbstub/user.h
++++ b/include/gdbstub/user.h
+@@ -10,7 +10,7 @@
+ #define GDBSTUB_USER_H
+ 
+ /**
+- * gdb_handlesig_reason() - yield control to gdb
++ * gdb_handlesig() - yield control to gdb
+  * @cpu: CPU
+  * @sig: if non-zero, the signal number which caused us to stop
+  * @reason: stop reason for stop reply packet or NULL
+@@ -25,18 +25,7 @@
+  * or 0 if no signal should be delivered, ie the signal that caused
+  * us to stop should be ignored.
+  */
+-int gdb_handlesig_reason(CPUState *, int, const char *);
+-
+-/**
+- * gdb_handlesig() - yield control to gdb
+- * @cpu CPU
+- * @sig: if non-zero, the signal number which caused us to stop
+- * @see gdb_handlesig_reason()
+- */
+-static inline int gdb_handlesig(CPUState *cpu, int sig)
+-{
+-    return gdb_handlesig_reason(cpu, sig, NULL);
+-}
++int gdb_handlesig(CPUState *, int, const char *);
+ 
+ /**
+  * gdb_signalled() - inform remote gdb of sig exit
+diff --git a/gdbstub/user.c b/gdbstub/user.c
+index 7f9f19a124..520987fddc 100644
+--- a/gdbstub/user.c
++++ b/gdbstub/user.c
+@@ -190,7 +190,7 @@ void gdb_qemu_exit(int code)
+     exit(code);
+ }
+ 
+-int gdb_handlesig_reason(CPUState *cpu, int sig, const char *reason)
++int gdb_handlesig(CPUState *cpu, int sig, const char *reason)
+ {
+     char buf[256];
+     int n;
+@@ -746,7 +746,7 @@ void gdb_breakpoint_remove_all(CPUState *cs)
+ void gdb_syscall_handling(const char *syscall_packet)
+ {
+     gdb_put_packet(syscall_packet);
+-    gdb_handlesig(gdbserver_state.c_cpu, 0);
++    gdb_handlesig(gdbserver_state.c_cpu, 0, NULL);
+ }
+ 
+ static bool should_catch_syscall(int num)
+@@ -764,7 +764,7 @@ void gdb_syscall_entry(CPUState *cs, int num)
+ {
+     if (should_catch_syscall(num)) {
+         g_autofree char *reason = g_strdup_printf("syscall_entry:%x;", num);
+-        gdb_handlesig_reason(cs, gdb_target_sigtrap(), reason);
++        gdb_handlesig(cs, gdb_target_sigtrap(), reason);
+     }
+ }
+ 
+@@ -772,7 +772,7 @@ void gdb_syscall_return(CPUState *cs, int num)
+ {
+     if (should_catch_syscall(num)) {
+         g_autofree char *reason = g_strdup_printf("syscall_return:%x;", num);
+-        gdb_handlesig_reason(cs, gdb_target_sigtrap(), reason);
++        gdb_handlesig(cs, gdb_target_sigtrap(), reason);
+     }
+ }
+ 
+diff --git a/linux-user/main.c b/linux-user/main.c
+index 41caa77cb5..55aa11c9b4 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -1018,7 +1018,7 @@ int main(int argc, char **argv, char **envp)
+                     gdbstub);
+             exit(EXIT_FAILURE);
+         }
+-        gdb_handlesig(cpu, 0);
++        gdb_handlesig(cpu, 0, NULL);
+     }
+ 
+ #ifdef CONFIG_SEMIHOSTING
+diff --git a/linux-user/signal.c b/linux-user/signal.c
+index cc7dd78e41..bca44c295d 100644
+--- a/linux-user/signal.c
++++ b/linux-user/signal.c
+@@ -1180,7 +1180,7 @@ static void handle_pending_signal(CPUArchState *cpu_env, int sig,
+     /* dequeue signal */
+     k->pending = 0;
+ 
+-    sig = gdb_handlesig(cpu, sig);
++    sig = gdb_handlesig(cpu, sig, NULL);
+     if (!sig) {
+         sa = NULL;
+         handler = TARGET_SIG_IGN;
 -- 
 2.39.2
 
