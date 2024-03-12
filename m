@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CD1F87918A
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 10:59:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E9F387918E
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 10:59:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjytU-0004nn-Sa; Tue, 12 Mar 2024 05:58:00 -0400
+	id 1rjyuS-0005m4-V7; Tue, 12 Mar 2024 05:59:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjytG-0004n4-QS
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 05:57:47 -0400
-Received: from mgamail.intel.com ([198.175.65.20])
+ id 1rjyuQ-0005jJ-VG
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 05:58:58 -0400
+Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjytD-0000Ch-9c
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 05:57:46 -0400
+ id 1rjyuP-0000TT-2L
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 05:58:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710237462; x=1741773462;
+ t=1710237537; x=1741773537;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=m4NiaKsQ27utBVnDv39yTWwqiXt/Umj7/8ZxBQI5cT4=;
- b=hA1kWqqy3bswrTw+YE+xxLt5si8Pn6au2IhFhBV5PrP+8st4LTBSCYYF
- K7I2Ub5jeDMqeQK3MWB9TOZ+cWnyWGAwHEZ1fLe0KgN0eq8bY3BxNZ0Q2
- dtA624VKu0tqFzX2jm95t65M9g/eMJ0/6rCJhF0ti3Ya+lqmO9l9znoyd
- lnb1duWYZ50Cc/O/aX9QhDwZEpqToCdn6SE+r0wBRnO29qrxl7OYP+1uA
- hEZHO/YpbM/YbOICyIQ964X9j2bni6wMRp10VYHYamAPXKA54om53fdiz
- YJpQjVimlU83a32UrFU60I78/Iol5yRhjQVbVvKJRx313IYArnTme2mQ2 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="4808984"
+ bh=Y6VdP9faqh72Mn6LhmNnwRXRt34XCvhHGJdaTZngvro=;
+ b=YWeULdGXQS4BDGFDsCIqd+Ez+gFu0km5J2WhmtsjUH2NGyICvAlYG2oX
+ VKRidzGuvw/nW0JBWt+/jdCTAvZc756OVny0+eL1UVnGd2mdBJ7/Vz4f3
+ Wr0W/aIA3jzEX7sZ3vfzGytO9TSZ8EYK/ckioeXxyh1T08914Miaqa6/A
+ X0SzET2Gsz3yw4em4Qed1dSjtVmV3VDZrvZrSIJgJzE5dDFGAWqobDwOV
+ u1fjwEDxAuSM48c6ImrEJw9yVrgabPIQDYPAjvwIQr/4UaYsosybJsZ8j
+ KG4p8o99xEAMyJp66KHar1O0oVDyGn8kGq7Fp0V+Pwpt3iA7dEopDmxWC A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="5109253"
 X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="4808984"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2024 02:57:39 -0700
+   d="scan'208";a="5109253"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2024 02:58:54 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="11550428"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="11560026"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orviesa009.jf.intel.com with ESMTP; 12 Mar 2024 02:57:36 -0700
-Date: Tue, 12 Mar 2024 18:11:24 +0800
+ by fmviesa006.fm.intel.com with ESMTP; 12 Mar 2024 02:58:48 -0700
+Date: Tue, 12 Mar 2024 18:12:38 +0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
+To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
 Cc: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
@@ -54,22 +54,21 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  Markus Armbruster <armbru@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>,
  Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
  Zhuocheng Ding <zhuocheng.ding@intel.com>,
  Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v9 11/21] i386/cpu: Decouple CPUID[0x1F] subleaf with
- specific topology level
-Message-ID: <ZfAqTEN8pvvgZ8IO@intel.com>
+Subject: Re: [PATCH v9 02/21] hw/core/machine: Support modules in -smp
+Message-ID: <ZfAqltds4Bcr2Ruj@intel.com>
 References: <20240227103231.1556302-1-zhao1.liu@linux.intel.com>
- <20240227103231.1556302-12-zhao1.liu@linux.intel.com>
- <005c1649-43d3-494f-951a-166e7200ffd5@intel.com>
+ <20240227103231.1556302-3-zhao1.liu@linux.intel.com>
+ <e730da3c-42be-45d0-aa11-279ee47bb933@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <005c1649-43d3-494f-951a-166e7200ffd5@intel.com>
-Received-SPF: none client-ip=198.175.65.20;
+In-Reply-To: <e730da3c-42be-45d0-aa11-279ee47bb933@linux.intel.com>
+Received-SPF: none client-ip=192.198.163.15;
  envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -29
 X-Spam_score: -3.0
@@ -93,128 +92,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Mar 11, 2024 at 04:45:41PM +0800, Xiaoyao Li wrote:
-> Date: Mon, 11 Mar 2024 16:45:41 +0800
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: Re: [PATCH v9 11/21] i386/cpu: Decouple CPUID[0x1F] subleaf with
->  specific topology level
+> > @@ -51,6 +51,10 @@ static char *cpu_hierarchy_to_string(MachineState *ms)
+> >           g_string_append_printf(s, " * clusters (%u)", ms->smp.clusters);
+> >       }
+> > +    if (mc->smp_props.modules_supported) {
+> > +        g_string_append_printf(s, " * modules (%u)", ms->smp.clusters);
+> > +    }
 > 
-> On 2/27/2024 6:32 PM, Zhao Liu wrote:
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> > 
-> > At present, the subleaf 0x02 of CPUID[0x1F] is bound to the "die" level.
-> > 
-> > In fact, the specific topology level exposed in 0x1F depends on the
-> > platform's support for extension levels (module, tile and die).
-> > 
-> > To help expose "module" level in 0x1F, decouple CPUID[0x1F] subleaf
-> > with specific topology level.
-> > 
-> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> 
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-
-Thanks!
-
-> Besides, some nits below.
+> smp.clusters -> smp.modules?
 >
 
-[snip]
+Good catch! Thanks!
 
-> > +static void encode_topo_cpuid1f(CPUX86State *env, uint32_t count,
-> > +                                X86CPUTopoInfo *topo_info,
-> > +                                uint32_t *eax, uint32_t *ebx,
-> > +                                uint32_t *ecx, uint32_t *edx)
-> > +{
-> > +    X86CPU *cpu = env_archcpu(env);
-> > +    unsigned long level;
-> > +    uint32_t num_threads_next_level, offset_next_level;
-> > +
-> > +    assert(count + 1 < CPU_TOPO_LEVEL_MAX);
-> > +
-> > +    /*
-> > +     * Find the No.count topology levels in avail_cpu_topo bitmap.
-> > +     * Start from bit 0 (CPU_TOPO_LEVEL_INVALID).
-> 
-> AFAICS, it starts from bit 1 (CPU_TOPO_LEVEL_SMT). Because the initial value
-> of level is CPU_TOPO_LEVEL_INVALID, but the first round of the loop is to
-> find the valid bit starting from (level + 1).
+-Zhao
 
-Yes, this description is much clearer.
-
-> > +     */
-> > +    level = CPU_TOPO_LEVEL_INVALID;
-> > +    for (int i = 0; i <= count; i++) {
-> > +        level = find_next_bit(env->avail_cpu_topo,
-> > +                              CPU_TOPO_LEVEL_PACKAGE,
-> > +                              level + 1);
-> > +
-> > +        /*
-> > +         * CPUID[0x1f] doesn't explicitly encode the package level,
-> > +         * and it just encode the invalid level (all fields are 0)
-> > +         * into the last subleaf of 0x1f.
-> > +         */
-> 
-> QEMU will never set bit CPU_TOPO_LEVEL_PACKAGE in env->avail_cpu_topo.
-
-In the patch 9 [1], I set the CPU_TOPO_LEVEL_PACKAGE in bitmap. This
-level is a basic topology level in general, so it's worth being set.
-
-Only in Intel's 0x1F, it doesn't have a corresponding type, and where
-I use it as a termination condition for 0x1F encoding (not an error case).
-
-[1]: https://lore.kernel.org/qemu-devel/20240227103231.1556302-10-zhao1.liu@linux.intel.com/
-
-> So I think we should assert() it instead of fixing it silently.
-> 
-> > +        if (level == CPU_TOPO_LEVEL_PACKAGE) {
-> > +            level = CPU_TOPO_LEVEL_INVALID;
-> > +            break;
-> > +        }
-> > +    }
-> > +
-> > +    if (level == CPU_TOPO_LEVEL_INVALID) {
-> > +        num_threads_next_level = 0;
-> > +        offset_next_level = 0;
-> > +    } else {
-> > +        unsigned long next_level;
-> 
-> please define it at the beginning of the function. e.g.,
-
-Okay, I'll put the declaration of "next_level" at the beginning of this
-function with a current variable "level".
-
-> 
-> > +        next_level = find_next_bit(env->avail_cpu_topo,
-> > +                                   CPU_TOPO_LEVEL_PACKAGE,
-> > +                                   level + 1);
-> > +        num_threads_next_level = num_threads_by_topo_level(topo_info,
-> > +                                                           next_level);
-> > +        offset_next_level = apicid_offset_by_topo_level(topo_info,
-> > +                                                        next_level);
-> > +    }
-> > +
-> > +    *eax = offset_next_level;
-> > +    *ebx = num_threads_next_level;
-> > +    *ebx &= 0xffff; /* The count doesn't need to be reliable. */
-> 
-> we can combine them together. e.g.,
-> 
-> *ebx = num_threads_next_level & 0xffff; /* ... */
-> 
-> > +    *ecx = count & 0xff;
-> > +    *ecx |= cpuid1f_topo_type(level) << 8;
-> 
-> Ditto,
-> 
-> *ecx = count & 0xff | cpuid1f_topo_type(level) << 8;
-
-OK, will combine these.
-
-> > +    *edx = cpu->apic_id;
-> > +
-> > +    assert(!(*eax & ~0x1f));
-> > +}
-> > +
 
