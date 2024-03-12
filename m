@@ -2,82 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155ED879353
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 12:52:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D01A879363
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 12:55:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk0fK-0002Vz-4J; Tue, 12 Mar 2024 07:51:30 -0400
+	id 1rk0j1-00051V-9O; Tue, 12 Mar 2024 07:55:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk0fA-0002VO-Cl; Tue, 12 Mar 2024 07:51:20 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk0f6-0006Dk-42; Tue, 12 Mar 2024 07:51:17 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6e66da40b18so2582828b3a.0; 
- Tue, 12 Mar 2024 04:51:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710244274; x=1710849074; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=dSFeAUb09gKdDgGXWSbsmWgtF2mQ7BysLkdDFCKCb94=;
- b=cKMD02TuWswbPxF1+rQvZh3PKNtUkvkskkwNs/pSII43rGSgyWPxT0G5nij58xDBnt
- l/ftlyg0V07eOeX4MdRjFR6tIiKDuAJdd5ecEvw9rxZ2IDY1VpfQJoqN2HVqx38jEjoo
- hC67I0JD72Fhd6spI5gkP4O3xaLmCME8Vn4G40TmBO/4mlNM7zyFBgKS2vCMjT3110iS
- 8K66Ql3izRrx8tNrHduJ2lJ1UkNA11WTBtAPD3D3LAJf/bBQsaDF9fyT+dV0NNOYA92r
- 1/EX8mqM/y/b18e0yS0JdaFpgw2OoSWSnqDE7DXbRycHMD2OBZp++0hciRQxjmGrb6m2
- WoYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710244274; x=1710849074;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=dSFeAUb09gKdDgGXWSbsmWgtF2mQ7BysLkdDFCKCb94=;
- b=nnjHcvwFJVRoYyubeNIEF6ytbJt5LN6tk3UeFHbgVaH01hlBM+xxieRr24Vz3GgUeo
- p1IUDpg9IxAvdUT/FjDNERyItxwHDvx8GB1UigMKOmGeXhkv6K0TPmLCmXg7387nV49M
- MgUnpAQtdkCRNsIrMb3hVtvkT7p9jK9CcPfKBbobi21RvzGysjZc3c2w/RG866FH9QhS
- 2iarHp1BBHz2F3IAt4OxSIFdPdsiQFTiHZSi9XJHSEtB961ViR/W5XlLMjuEE5QThtj4
- 8y3t6sqBEmd6Gpi3rejjXDwldNxt3mJArzZte3rdKzqz2hJsNupV93sr346u8oQglkFE
- UP3A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWySEdoJV7rB+O1TpMTTkXVa+m0Qjhzd4JKtIohwWgmSvgo6JMAVJ3bSKMt2kVYS52bPvjCuNyywsqzLqOGYhYFHtMHbTKYhJ9WRlXjz2JzFy/+nm8pGXqnmJs=
-X-Gm-Message-State: AOJu0YyPVV5aayxFe4P8sgoftfUFvPUAqItYLjz94j3yv1eguVCsdOWE
- Ze3Zvywz3lUh+23siGhLOBK+hnuX8C4iHghM3Pi9VuOF/DkhAj81
-X-Google-Smtp-Source: AGHT+IFlVc/0F8TvVbcNG1rotcSqC6+jiCKwQXArLctpRVZaNKEK+FkI6km+V5DUBw92MhdckhdgRw==
-X-Received: by 2002:a05:6a20:258e:b0:1a1:4d41:3570 with SMTP id
- k14-20020a056a20258e00b001a14d413570mr1673757pzd.59.1710244274257; 
- Tue, 12 Mar 2024 04:51:14 -0700 (PDT)
-Received: from localhost ([118.208.155.46]) by smtp.gmail.com with ESMTPSA id
- n2-20020a170902d2c200b001dd9da359c5sm3888949plc.4.2024.03.12.04.51.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Mar 2024 04:51:14 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 12 Mar 2024 21:51:08 +1000
-Message-Id: <CZRQZUIK2SFV.1WJ6FACW9RGSQ@wheely>
-Cc: <clg@kaod.org>, <mikey@neuling.org>, <amachhiw@linux.vnet.ibm.com>,
- <vaibhav@linux.ibm.com>, <sbhat@linux.ibm.com>, <danielhb413@gmail.com>,
- <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v5 14/14] spapr: nested: Introduce cap-nested-papr for
- Nested PAPR API
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.15.2
-References: <20240308111940.1617660-1-harshpb@linux.ibm.com>
- <20240308111940.1617660-15-harshpb@linux.ibm.com>
-In-Reply-To: <20240308111940.1617660-15-harshpb@linux.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rk0iv-0004zl-NY
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 07:55:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rk0ir-0006bS-7O
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 07:55:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710244507;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=tMEMoR3icCTuVbPoJ2Cpw7yvBKgCw2zlKNjuhIDNF+0=;
+ b=NQ0bxPkLF2pohcaLyIC+mDNs8THThR6qcM0wPsBC3SUPcyjaRh9Z9CDlJN+xtHYerLIryn
+ QRm1Vp71043zamNnQPcZyflCHieyGScn6nXD/fEhTL4R43ayeumzvS2dQutaTtAOUwYnft
+ 95VN1g9mjTzh9xbH4gJGRsvqs/KMSls=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-563-CTr-FpbyM1CYUqjP5GKN8w-1; Tue, 12 Mar 2024 07:55:03 -0400
+X-MC-Unique: CTr-FpbyM1CYUqjP5GKN8w-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7053B800265;
+ Tue, 12 Mar 2024 11:55:03 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.52])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 975741121337;
+ Tue, 12 Mar 2024 11:55:02 +0000 (UTC)
+Date: Tue, 12 Mar 2024 07:55:00 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ Sanjay Rao <srao@redhat.com>, Boaz Ben Shabat <bbenshab@redhat.com>
+Subject: Re: [PATCH] virtio-blk: iothread-vq-mapping coroutine pool sizing
+Message-ID: <20240312115500.GA405123@fedora>
+References: <20240311201423.387622-1-stefanha@redhat.com>
+ <ZfA7bhciuvDtO3fI@redhat.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="zhxse36WNB2G4TbT"
+Content-Disposition: inline
+In-Reply-To: <ZfA7bhciuvDtO3fI@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,200 +82,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri Mar 8, 2024 at 9:19 PM AEST, Harsh Prateek Bora wrote:
-> Introduce a SPAPR capability cap-nested-papr which enables nested PAPR
-> API for nested guests. This new API is to enable support for KVM on Power=
-VM
-> and the support in Linux kernel has already merged upstream.
->
-> Signed-off-by: Michael Neuling <mikey@neuling.org>
-> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-> ---
->  include/hw/ppc/spapr.h |  6 +++-
->  hw/ppc/spapr.c         |  2 ++
->  hw/ppc/spapr_caps.c    | 62 ++++++++++++++++++++++++++++++++++++++++++
->  hw/ppc/spapr_nested.c  |  8 ++++--
->  4 files changed, 74 insertions(+), 4 deletions(-)
->
-> diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-> index 6223873641..4aaf23d28f 100644
-> --- a/include/hw/ppc/spapr.h
-> +++ b/include/hw/ppc/spapr.h
-> @@ -81,8 +81,10 @@ typedef enum {
->  #define SPAPR_CAP_RPT_INVALIDATE        0x0B
->  /* Support for AIL modes */
->  #define SPAPR_CAP_AIL_MODE_3            0x0C
-> +/* Nested PAPR */
-> +#define SPAPR_CAP_NESTED_PAPR           0x0D
->  /* Num Caps */
-> -#define SPAPR_CAP_NUM                   (SPAPR_CAP_AIL_MODE_3 + 1)
-> +#define SPAPR_CAP_NUM                   (SPAPR_CAP_NESTED_PAPR + 1)
-> =20
->  /*
->   * Capability Values
-> @@ -592,6 +594,7 @@ struct SpaprMachineState {
->  #define H_GUEST_CREATE_VCPU      0x474
->  #define H_GUEST_GET_STATE        0x478
->  #define H_GUEST_SET_STATE        0x47C
-> +#define H_GUEST_RUN_VCPU         0x480
->  #define H_GUEST_DELETE           0x488
-> =20
->  #define MAX_HCALL_OPCODE         H_GUEST_DELETE
-> @@ -996,6 +999,7 @@ extern const VMStateDescription vmstate_spapr_cap_sbb=
-c;
->  extern const VMStateDescription vmstate_spapr_cap_ibs;
->  extern const VMStateDescription vmstate_spapr_cap_hpt_maxpagesize;
->  extern const VMStateDescription vmstate_spapr_cap_nested_kvm_hv;
-> +extern const VMStateDescription vmstate_spapr_cap_nested_papr;
->  extern const VMStateDescription vmstate_spapr_cap_large_decr;
->  extern const VMStateDescription vmstate_spapr_cap_ccf_assist;
->  extern const VMStateDescription vmstate_spapr_cap_fwnmi;
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index 54fc01e462..beb23fae8f 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -2121,6 +2121,7 @@ static const VMStateDescription vmstate_spapr =3D {
->          &vmstate_spapr_cap_fwnmi,
->          &vmstate_spapr_fwnmi,
->          &vmstate_spapr_cap_rpt_invalidate,
-> +        &vmstate_spapr_cap_nested_papr,
->          NULL
->      }
->  };
-> @@ -4687,6 +4688,7 @@ static void spapr_machine_class_init(ObjectClass *o=
-c, void *data)
->      smc->default_caps.caps[SPAPR_CAP_IBS] =3D SPAPR_CAP_WORKAROUND;
->      smc->default_caps.caps[SPAPR_CAP_HPT_MAXPAGESIZE] =3D 16; /* 64kiB *=
-/
->      smc->default_caps.caps[SPAPR_CAP_NESTED_KVM_HV] =3D SPAPR_CAP_OFF;
-> +    smc->default_caps.caps[SPAPR_CAP_NESTED_PAPR] =3D SPAPR_CAP_OFF;
->      smc->default_caps.caps[SPAPR_CAP_LARGE_DECREMENTER] =3D SPAPR_CAP_ON=
-;
->      smc->default_caps.caps[SPAPR_CAP_CCF_ASSIST] =3D SPAPR_CAP_ON;
->      smc->default_caps.caps[SPAPR_CAP_FWNMI] =3D SPAPR_CAP_ON;
-> diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
-> index e889244e52..d6d5a6b8df 100644
-> --- a/hw/ppc/spapr_caps.c
-> +++ b/hw/ppc/spapr_caps.c
-> @@ -487,6 +487,58 @@ static void cap_nested_kvm_hv_apply(SpaprMachineStat=
-e *spapr,
->              error_append_hint(errp, "Try appending -machine cap-nested-h=
-v=3Doff "
->                                      "or use threads=3D1 with -smp\n");
->          }
-> +        if (spapr_nested_api(spapr) &&
-> +            spapr_nested_api(spapr) !=3D NESTED_API_KVM_HV) {
-> +            error_setg(errp, "Nested-HV APIs are mutually exclusive/inco=
-mpatible");
-> +            error_append_hint(errp, "Please use either cap-nested-hv or =
-"
-> +                                    "cap-nested-papr to proceed.\n");
-> +            return;
-> +        } else {
-> +            spapr->nested.api =3D NESTED_API_KVM_HV;
-> +        }
-> +    }
-> +}
-> +
-> +static void cap_nested_papr_apply(SpaprMachineState *spapr,
-> +                                    uint8_t val, Error **errp)
-> +{
-> +    ERRP_GUARD();
-> +    PowerPCCPU *cpu =3D POWERPC_CPU(first_cpu);
-> +    CPUPPCState *env =3D &cpu->env;
-> +
-> +    if (!val) {
-> +        /* capability disabled by default */
-> +        return;
-> +    }
-> +
-> +    if (tcg_enabled()) {
-> +        if (!(env->insns_flags2 & PPC2_ISA300)) {
-> +            error_setg(errp, "Nested-PAPR only supported on POWER9 and l=
-ater");
-> +            error_append_hint(errp,
-> +                              "Try appending -machine cap-nested-papr=3D=
-off\n");
-> +            return;
-> +        }
-> +        if (spapr_nested_api(spapr) &&
-> +            spapr_nested_api(spapr) !=3D NESTED_API_PAPR) {
-> +            error_setg(errp, "Nested-HV APIs are mutually exclusive/inco=
-mpatible");
-> +            error_append_hint(errp, "Please use either cap-nested-hv or =
-"
-> +                                    "cap-nested-papr to proceed.\n");
-> +            return;
-> +        } else {
-> +            spapr->nested.api =3D NESTED_API_PAPR;
-> +        }
-> +
-> +    } else if (kvm_enabled()) {
-> +        /*
-> +         * this gets executed in L1 qemu when L2 is launched,
-> +         * needs kvm-hv support in L1 kernel.
-> +         */
-> +        if (!kvmppc_has_cap_nested_kvm_hv()) {
-> +            error_setg(errp,
-> +                       "KVM implementation does not support Nested-HV");
-> +        } else if (kvmppc_set_cap_nested_kvm_hv(val) < 0) {
-> +            error_setg(errp, "Error enabling Nested-HV with KVM");
-> +        }
 
-I'll just disable this on KVM for now. With that changed,
+--zhxse36WNB2G4TbT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+On Tue, Mar 12, 2024 at 12:24:30PM +0100, Kevin Wolf wrote:
+> Am 11.03.2024 um 21:14 hat Stefan Hajnoczi geschrieben:
+> > It is possible to hit the sysctl vm.max_map_count limit when the
+> > coroutine pool size becomes large. Each coroutine requires two mappings
+> > (one for the stack and one for the guard page). QEMU can crash with
+> > "failed to set up stack guard page" or "failed to allocate memory for
+> > stack" when this happens.
+> >=20
+> > Coroutine pool sizing is simple when there is only one AioContext: sum
+> > up all I/O requests across all virtqueues.
+> >=20
+> > When the iothread-vq-mapping option is used we should calculate tighter
+> > bounds: take the maximum number of the number of I/O requests across all
+> > virtqueues. This number is lower than simply summing all virtqueues when
+> > only a subset of the virtqueues is handled by each AioContext.
+>=20
+> The reasoning is that each thread has its own coroutine pool for which
+> the pool size applies individually, and it doesn't need to have space
+> for coroutines running in a different thread, right? I'd like to have
+> this recorded in the commit message.
 
->      }
->  }
-> =20
-> @@ -735,6 +787,15 @@ SpaprCapabilityInfo capability_table[SPAPR_CAP_NUM] =
-=3D {
->          .type =3D "bool",
->          .apply =3D cap_nested_kvm_hv_apply,
->      },
-> +    [SPAPR_CAP_NESTED_PAPR] =3D {
-> +        .name =3D "nested-papr",
-> +        .description =3D "Allow Nested HV (PAPR API)",
-> +        .index =3D SPAPR_CAP_NESTED_PAPR,
-> +        .get =3D spapr_cap_get_bool,
-> +        .set =3D spapr_cap_set_bool,
-> +        .type =3D "bool",
-> +        .apply =3D cap_nested_papr_apply,
-> +    },
->      [SPAPR_CAP_LARGE_DECREMENTER] =3D {
->          .name =3D "large-decr",
->          .description =3D "Allow Large Decrementer",
-> @@ -919,6 +980,7 @@ SPAPR_CAP_MIG_STATE(sbbc, SPAPR_CAP_SBBC);
->  SPAPR_CAP_MIG_STATE(ibs, SPAPR_CAP_IBS);
->  SPAPR_CAP_MIG_STATE(hpt_maxpagesize, SPAPR_CAP_HPT_MAXPAGESIZE);
->  SPAPR_CAP_MIG_STATE(nested_kvm_hv, SPAPR_CAP_NESTED_KVM_HV);
-> +SPAPR_CAP_MIG_STATE(nested_papr, SPAPR_CAP_NESTED_PAPR);
->  SPAPR_CAP_MIG_STATE(large_decr, SPAPR_CAP_LARGE_DECREMENTER);
->  SPAPR_CAP_MIG_STATE(ccf_assist, SPAPR_CAP_CCF_ASSIST);
->  SPAPR_CAP_MIG_STATE(fwnmi, SPAPR_CAP_FWNMI);
-> diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
-> index 597dba7fdc..8db9dc19e3 100644
-> --- a/hw/ppc/spapr_nested.c
-> +++ b/hw/ppc/spapr_nested.c
-> @@ -13,13 +13,15 @@
->  void spapr_nested_reset(SpaprMachineState *spapr)
->  {
->      if (spapr_get_cap(spapr, SPAPR_CAP_NESTED_KVM_HV)) {
-> -        spapr->nested.api =3D NESTED_API_KVM_HV;
->          spapr_unregister_nested_hv();
->          spapr_register_nested_hv();
-> -    } else {
-> -        spapr->nested.api =3D 0;
-> +    } else if (spapr_get_cap(spapr, SPAPR_CAP_NESTED_PAPR)) {
->          spapr->nested.capabilities_set =3D false;
-> +        spapr_unregister_nested_papr();
-> +        spapr_register_nested_papr();
->          spapr_nested_gsb_init();
-> +    } else {
-> +        spapr->nested.api =3D 0;
->      }
->  }
-> =20
+Right, I'll update the commit description to mention this.
+
+I also forgot to include Joe Mario in the Reported-by tags. Joe has been
+helping investigate the issue.
+
+> Of course, this also makes me wonder if a global coroutine pool size
+> really makes sense or if it should be per thread. One thread could be
+> serving only one queue (maybe the main thread with a CD-ROM device) and
+> another thread 32 queues (the iothread with the interesting disks).
+> There is no reason for the first thread to have a coroutine pool as big
+> as the second one.
+
+Agreed. The main loop thread, in particular, has very different
+coroutine pool sizing requirements from the IOThreads that are
+performing the bulk of the I/O.
+
+> But before we make the size thread-local, maybe having thread-local
+> pools wasn't right to begin with because multiple threads can run main
+> context code and they should therefore share the same coroutine pool (we
+> already had the problem earlier that coroutines start on the vcpu thread
+> and terminate on the main thread and this plays havoc with coroutine
+> pools).
+>=20
+> Maybe per-AioContext pools with per-AioContext sizes would make more
+> sense?
+
+That's a good observation. Originally I hoped we could keep the
+coroutine code independent of AioContext, but it is already connected in
+other ways (e.g. co->ctx) so there's no reason to avoid it.
+
+I'm not happy with how coroutine pools perform. I reproduced the
+max_map_count failures that Sanjay, Boaz, and Joe have encountered and
+found that one IOThread had 10k coroutines pooled while another
+IOThread's pool was empty. Using timers to decay the pool size when it's
+not actively in use has come to mind.
+
+On the other hand, the fundamental problem is that the guest has access
+to more virtqueue space than QEMU can allocate coroutines. Adding timers
+to decay the pool size might hide issues but a guest could fill all
+virtqueues at once and still crash.
+
+QEMU needs to be reliable and run out of resources. There is no
+accounting code in place capable of tracking all possible coroutine
+usage, but maybe QEMU should refuse to launch when the virtqueue
+resources promised to the guest exceed vm.max_map_count...
+
+> > This is not a solution to hitting vm.max_map_count, but it helps. A
+> > guest with 64 vCPUs (hence 64 virtqueues) across 4 IOThreads with one
+> > iothread-vq-mapping virtio-blk device and a root disk without goes from
+> > pool_max_size 16,448 to 10,304.
+> >=20
+> > Reported-by: Sanjay Rao <srao@redhat.com>
+> > Reported-by: Boaz Ben Shabat <bbenshab@redhat.com>
+> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+>=20
+> Either way, this should already strictly improve the situation, so I'm
+> happy to apply this change for now.
+
+Thanks, I will send a v2.
+
+Stefan
+
+--zhxse36WNB2G4TbT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmXwQpQACgkQnKSrs4Gr
+c8hMQAgAt6AoaNXUdr+IpkkNLOKZaxXGzqjpdKd9g4MjyTEoEshJqEx4nYG9QvvO
+RvxI0qXRrzvp51ZbqwggW2SFwhlm8JGa7ww7Bz8ttCRdmHavLF+K+oCvWdFjpMr3
+Zq8AmI6sNN3ZY0AWnPRkyaRyXmJfg7QO2fGHBrwV4fXbY0tbH+qF6FcbrhbhjWKu
+W5yPfbakbFqdOSg6bPM3xxk3Gt9DUzcyUhIrGj5+woeJ8oIk3CUpZQQgDaLqUdXK
+1wa8Te5B0HAY2leSodljWZyGNQtYQFh71lCuOQJ3nPGHz3kwyIs1dHjmo8TRlf64
+veLesev1lD31qtYK/M6nJvnhPCPtmg==
+=+HJ1
+-----END PGP SIGNATURE-----
+
+--zhxse36WNB2G4TbT--
 
 
