@@ -2,80 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B4A879855
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 16:50:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49BAD879876
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 16:59:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk4OT-0004Mf-NO; Tue, 12 Mar 2024 11:50:21 -0400
+	id 1rk4W5-0000Ox-23; Tue, 12 Mar 2024 11:58:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rk4OB-0004Jv-Fp
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 11:50:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
+ id 1rk4W2-0000On-FT
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 11:58:10 -0400
+Received: from jedlik.phy.bme.hu ([152.66.102.83])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rk4O9-0003O6-K6
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 11:50:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710258600;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lY188FiJ2YuM7uSFDgQLN8tycDgILAK9Yyk3onuPocA=;
- b=Sk1gtF/bOazfHIixhUxoH1pxYwX+OLNTZiQKxwg7O2CK2Px21MXu25wwfRyabX42+thTT9
- NcuoAIang4ZZpL8Fsyoly4NuBX/WVP0WhHxATpH5LpmtdHBRTltMRbL1X31MnEP8U/vydj
- gD1tg9oLDEH/JIyKwWsirzre6LdKeM4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-138-_Hjyh2LPOBuNEVBq8xCizQ-1; Tue, 12 Mar 2024 11:49:57 -0400
-X-MC-Unique: _Hjyh2LPOBuNEVBq8xCizQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A99EB822486;
- Tue, 12 Mar 2024 15:49:56 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.111])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D6FA62166AE5;
- Tue, 12 Mar 2024 15:49:54 +0000 (UTC)
-Date: Tue, 12 Mar 2024 16:49:53 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: Peter Krempa <pkrempa@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org, eblake@redhat.com, hreitz@redhat.com,
- jsnow@redhat.com, den@virtuozzo.com, t.lamprecht@proxmox.com,
- alexander.ivanov@virtuozzo.com
-Subject: Re: [PATCH v2 00/10] mirror: allow switching from background to
- active mode
-Message-ID: <ZfB5oaFgYJ8SuSm1@redhat.com>
-References: <87o7gbyy8w.fsf@pond.sub.org> <ZUTffE0wfjLH2u+e@redhat.com>
- <87cywqn84g.fsf@pond.sub.org>
- <1310efb0-e211-46f5-b166-d7d529507a43@yandex-team.ru>
- <ZeWnFhLKCamlP97y@redhat.com> <ZeWr3ZGrRUrciHH4@angien.pipo.sk>
- <65f517cd-3a1b-41bd-b326-e509cb208b92@yandex-team.ru>
- <ZerRzZj-NrDZUeAF@redhat.com>
- <306d2ca4-de7d-4318-b461-a06354e3b975@yandex-team.ru>
- <1d6ba74e-b1d8-4292-9825-ea53d9bc77af@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
+ id 1rk4W0-0005AV-09
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 11:58:10 -0400
+Received: by jedlik.phy.bme.hu (Postfix, from userid 1000)
+ id 1D514A0121; Tue, 12 Mar 2024 16:50:07 +0100 (CET)
+Date: Tue, 12 Mar 2024 16:50:07 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Nicholas Piggin <npiggin@gmail.com>
+cc: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org, 
+ qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ clg@kaod.org
+Subject: Re: [PATCH v3] docs/system/ppc: Document running Linux on AmigaNG
+ machines
+In-Reply-To: <CZRUH5CRDRDU.3NS44E5KB0SSY@wheely>
+Message-ID: <alpine.LMD.2.03.2403121645090.11217@eik.bme.hu>
+References: <20240220232200.042DA4E6005@zero.eik.bme.hu>
+ <c9dc84be-c7bf-c676-491b-2c6b1164d502@eik.bme.hu>
+ <a9814b1b-98d7-29d8-36f9-228f20206917@eik.bme.hu>
+ <3E4E29CA-AE91-4C8D-BB51-B3759CF3110F@gmail.com>
+ <CZRPETJSO62V.5YV22F323JKC@wheely>
+ <CZRUH5CRDRDU.3NS44E5KB0SSY@wheely>
+User-Agent: Alpine 2.03 (LMD 1266 2009-07-14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1d6ba74e-b1d8-4292-9825-ea53d9bc77af@yandex-team.ru>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: MULTIPART/MIXED;
+ BOUNDARY="1117279078-408705468-1710258607=:11217"
+Received-SPF: pass client-ip=152.66.102.83;
+ envelope-from=balaton@jedlik.phy.bme.hu; helo=jedlik.phy.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,126 +63,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 12.03.2024 um 14:44 hat Vladimir Sementsov-Ogievskiy geschrieben:
-> On 11.03.24 18:15, Vladimir Sementsov-Ogievskiy wrote:
-> > On 08.03.24 11:52, Kevin Wolf wrote:
-> > > Am 07.03.2024 um 20:42 hat Vladimir Sementsov-Ogievskiy geschrieben:
-> > > > On 04.03.24 14:09, Peter Krempa wrote:
-> > > > > On Mon, Mar 04, 2024 at 11:48:54 +0100, Kevin Wolf wrote:
-> > > > > > Am 28.02.2024 um 19:07 hat Vladimir Sementsov-Ogievskiy geschrieben:
-> > > > > > > On 03.11.23 18:56, Markus Armbruster wrote:
-> > > > > > > > Kevin Wolf<kwolf@redhat.com>  writes:
-> > > > > 
-> > > > > [...]
-> > > > > 
-> > > > > > > > Is the job abstraction a failure?
-> > > > > > > > 
-> > > > > > > > We have
-> > > > > > > > 
-> > > > > > > >        block-job- command      since   job- command    since
-> > > > > > > >        -----------------------------------------------------
-> > > > > > > >        block-job-set-speed     1.1
-> > > > > > > >        block-job-cancel        1.1     job-cancel      3.0
-> > > > > > > >        block-job-pause         1.3     job-pause       3.0
-> > > > > > > >        block-job-resume        1.3     job-resume      3.0
-> > > > > > > >        block-job-complete      1.3     job-complete    3.0
-> > > > > > > >        block-job-dismiss       2.12    job-dismiss     3.0
-> > > > > > > >        block-job-finalize      2.12    job-finalize    3.0
-> > > > > > > >        block-job-change        8.2
-> > > > > > > >        query-block-jobs        1.1     query-jobs
-> > > > > 
-> > > > > [...]
-> > > > > 
-> > > > > > I consider these strictly optional. We don't really have strong reasons
-> > > > > > to deprecate these commands (they are just thin wrappers), and I think
-> > > > > > libvirt still uses block-job-* in some places.
-> > > > > 
-> > > > > Libvirt uses 'block-job-cancel' because it has different semantics from
-> > > > > 'job-cancel' which libvirt documented as the behaviour of the API that
-> > > > > uses it. (Semantics regarding the expectation of what is written to the
-> > > > > destination node at the point when the job is cancelled).
-> > > > > 
-> > > > 
-> > > > That's the following semantics:
-> > > > 
-> > > >    # Note that if you issue 'block-job-cancel' after 'drive-mirror' has
-> > > >    # indicated (via the event BLOCK_JOB_READY) that the source and
-> > > >    # destination are synchronized, then the event triggered by this
-> > > >    # command changes to BLOCK_JOB_COMPLETED, to indicate that the
-> > > >    # mirroring has ended and the destination now has a point-in-time copy
-> > > >    # tied to the time of the cancellation.
-> > > > 
-> > > > Hmm. Looking at this, it looks for me, that should probably a
-> > > > 'block-job-complete" command (as leading to BLOCK_JOB_COMPLETED).
-> > > 
-> > > Yes, it's just a different completion mode.
-> > > 
-> > > > Actually, what is the difference between block-job-complete and
-> > > > block-job-cancel(force=false) for mirror in ready state?
-> > > > 
-> > > > I only see the following differencies:
-> > > > 
-> > > > 1. block-job-complete documents that it completes the job
-> > > >     synchronously.. But looking at mirror code I see it just set
-> > > >     s->should_complete = true, which will be then handled
-> > > >     asynchronously..  So I doubt that documentation is correct.
-> > > > 
-> > > > 2. block-job-complete will trigger final graph changes.
-> > > >     block-job-cancel will not.
-> > > > 
-> > > > Is [2] really useful? Seems yes: in case of some failure before
-> > > > starting migration target, we'd like to continue executing source. So,
-> > > > no reason to break block-graph in source, better keep it unchanged.
-> > > > 
-> > > > But I think, such behavior better be setup by mirror-job start
-> > > > parameter, rather then by special option for cancel (or even
-> > > > compelete) command, useful only for mirror.
-> > > 
-> > > I'm not sure, having the option on the complete command makes more sense
-> > > to me than having it in blockdev-mirror.
-> > > 
-> > > I do see the challenge of representing this meaningfully in QAPI,
-> > > though. Semantically it should be a union with job-specific options and
-> > > only mirror adds the graph-changes option. But the union variant
-> > > can't be directly selected from another option - instead we have a job
-> > > ID, and the variant is the job type of the job with this ID.
-> > 
-> > We already have such command: block-job-change. Which has id and type parameters, so user have to pass both, to identify the job itself and pick corresponding variant of the union type.
-> > 
-> > That would be good to somehow teach QAPI to get the type automatically from the job itself...
-> 
-> 
-> Seems, that's easy enough to implement such a possibility, I'll try. At least now I have a prototype, which compiles
-> 
-> diff --git a/qapi/block-core.json b/qapi/block-core.json
-> index 0ae8ae62dc..332de67e52 100644
-> --- a/qapi/block-core.json
-> +++ b/qapi/block-core.json
-> @@ -3116,13 +3116,11 @@
->  #
->  # @id: The job identifier
->  #
-> -# @type: The job type
-> -#
->  # Since: 8.2
->  ##
->  { 'union': 'BlockJobChangeOptions',
-> -  'base': { 'id': 'str', 'type': 'JobType' },
-> -  'discriminator': 'type',
-> +  'base': { 'id': 'str' },
-> +  'discriminator': 'JobType',
->    'data': { 'mirror': 'BlockJobChangeOptionsMirror' } }
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-We probably need some different syntax because I think in theory we
-could get conflicts between option names and type names. But I'll leave
-this discussion to Markus. I hope you can figure out something that he
-is willing to accept, getting the variant from a callback looks like
-useful functionality.
+--1117279078-408705468-1710258607=:11217
+Content-Type: TEXT/PLAIN; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-For output, your implementation is probably not optimal because you're
-going to look up things the calling code already knows, but it's
-probably not the end of the world.
+On Wed, 13 Mar 2024, Nicholas Piggin wrote:
+> On Tue Mar 12, 2024 at 8:36 PM AEST, Nicholas Piggin wrote:
+>> On Tue Mar 12, 2024 at 7:28 PM AEST, Bernhard Beschow wrote:
+>>>
+>>>
+>>> Am 9. M=C3=A4rz 2024 11:34:56 UTC schrieb BALATON Zoltan <balaton@eik.b=
+me.hu>:
+>>>> On Thu, 29 Feb 2024, BALATON Zoltan wrote:
+>>>>> On Wed, 21 Feb 2024, BALATON Zoltan wrote:
+>>>>>> Documentation on how to run Linux on the amigaone, pegasos2 and
+>>>>>> sam460ex machines is currently buried in the depths of the qemu-deve=
+l
+>>>>>> mailing list and in the source code. Let's collect the information i=
+n
+>>>>>> the QEMU handbook for a one stop solution.
+>>>>>
+>>>>> Ping? (Just so it's not missed from next pull.)
+>>>>
+>>>> Ping for freeze.
+>>>
+>>> Has this patch been tagged yet? It would really be a pity if it didn't =
+make it into 9.0.
+>>
+>> Will send out a PR today and I'll include it.
+>>
+>>>
+>>> FWIW:
+>>>
+>>> Reviewed-by: Bernhard Beschow <shentey@gmail.com>
+>>
+>> Thanks, always helpful.
+>
+> Oh you are Co-author. Sorry, took some time for light bulb
+> to turn on... In that case it needs your SOB to merge.
+>
+> I will have to leave it out of the PR if I don't get that in
+> time, but we should be able to get a doc improvement past
+> the soft freeze. It's essentially a usability bug-fix.
 
-Kevin
+This was the original submission that compiled my previous emails and=20
+cover letters into some docs so the text was mine and editorship was=20
+Bernhard:
+https://patchew.org/QEMU/20231216123013.67978-1-shentey@gmail.com/
+which I then took over and enhanced further so you can take his SoB from=20
+that patch I just forgot to retain it as I did not think it would be=20
+needed.
 
+Regards,
+BALATON Zoltan
+--1117279078-408705468-1710258607=:11217--
 
