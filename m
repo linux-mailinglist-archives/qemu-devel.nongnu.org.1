@@ -2,146 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65817879CDF
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 21:28:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE7C2879CEF
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 21:32:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk8iB-0002CN-UQ; Tue, 12 Mar 2024 16:26:59 -0400
+	id 1rk8nb-0007qJ-To; Tue, 12 Mar 2024 16:32:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1rk8i6-0002AY-5J
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 16:26:54 -0400
-Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1rk8i2-0003C2-FS
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 16:26:53 -0400
-Received: from pps.filterd (m0127844.ppops.net [127.0.0.1])
- by mx0b-002c1b01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
- 42CCE6eK010077; Tue, 12 Mar 2024 13:26:49 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- from:to:cc:subject:date:message-id:in-reply-to:references
- :content-transfer-encoding:content-type:mime-version; s=
- proofpoint20171006; bh=5Sf2kCtS0xadPN9mj4qZn01slTsmgbkM5fV3CbjG1
- HY=; b=JCy7lPyRUkEuYP2TM/b5abtnRUZWlOAuurAE1Hovp+42ynHLvHcJbmZi/
- zwhYl/tFtVWTblWp4I4/oVpnWCY0mWz2rGQrePSULsmFshGkufgCOEQoxCd6MyWO
- q8FiBAzzYgD75S2vD7Iongty69re2mTQBDgGNjY0Er/J0N+B8s+u5A5XsHBgtsV6
- 95cJpmEphWw8sYhdfE2ryISOsoy64rxl7Xp3faciI3f6gGWslskdd2qV+H8uV8dv
- QR6Ssp1j6jApBIYDF6WvRwXV+IaPVhTe4H2vMI8ty3jJoCLhLkmW/R7K1v1rOQS3
- k2U7GTYathVyqsh/szj9eXZcCQJqg==
-Received: from nam11-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam11lp2169.outbound.protection.outlook.com [104.47.57.169])
- by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3wrr63pt25-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Mar 2024 13:26:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ry/jRsf+0PaA1gnO9VPk2293v0nub+1JvcRvGAbOmS5Cp7o3aIV1lBIrqLb8MT4l7JGyh5CfSLfUYlu/DhqLuXDLVlWQM+PsdPzhKEDo+1/s7BVVmhe0CgqNtXv59fd/m36i+B+ib5y6ryhUCfWiYSnAcDajxlvbR+hc6wb0sWTd52sTG0XvmxpcYYjc2g3pUi5vRYQTNxwqmV6dfF98R1NtI0335tCU24Vgv5Rl/VdekqHs0vZtUZMzul7GSa5Bf6h7/6tHAGv0TUMhTzCtwxrXcW/cogPHbdsU7XHD919yMFUCOlgejkngogFGb//6M7h5jwI7iFauseiKtFgvuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5Sf2kCtS0xadPN9mj4qZn01slTsmgbkM5fV3CbjG1HY=;
- b=B7HGNoXjuPmUT1Gvc7xnBCpIAK4HuRrCsrYhB46fMXXk5cNCnsAbD2OSnJkFI9ju4QZav/Gu/tO5Ncw+9jVqCAMV28B5erHKZOBSI5JttUiFfSmwrAYTpFLQEdDL28V/Vc3xSI7mVbxm72R4c7a7XaOy1lZhm4SBOpBf2ohjyHfOaKHDbNx61fkBA4Scv7qkIYwOrrcq4dvAtR6nPFvKR0s04ITSeqBa9mLPZCUxWhwWmXxd1d7bV+3sQ9TRe6KScxtaUgMRKG5cdzdaqBSJtWOsnCZ5EQ68IGoFINY4wz/ZNbd556ml5hymCpeZ4L/aowI3YoZzCG2qKhnX5k1+mA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5Sf2kCtS0xadPN9mj4qZn01slTsmgbkM5fV3CbjG1HY=;
- b=NkAUiKQZ6xmOSBvqALoLa3aQTH3aumtOQeF9DdK1Q/KX1opOZHcI68trshsnjw+igQN1hQ6tGiZbb39UXCMy2H+yYkWlzTGlo44ri2tmYJCQYZ+bXXCabpHiKrPiuAo8xyFHBhwBO5V6Kp3NdPfif4ZO1HogUzG2/cOYmVp2LWX4doRFucUM5PMebnMyOFXS5u6CR+mBD52dpqwSfdOHtCFKJiefwy/krcgbERwR29mHtKKaz0P8N3r0VluOvTc8jSy6rTFC31u3fqSh6d5fK/fmqVKoIZW3cKGqAQs7FVZ795X+l4VSiIJUNSI7cgEYPqq3pAunc35UkipZ8WzhZw==
-Received: from SJ2PR02MB9955.namprd02.prod.outlook.com (2603:10b6:a03:55f::16)
- by CH3PR02MB10057.namprd02.prod.outlook.com (2603:10b6:610:19b::9)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.36; Tue, 12 Mar
- 2024 20:26:47 +0000
-Received: from SJ2PR02MB9955.namprd02.prod.outlook.com
- ([fe80::225c:2edd:87e:7cf0]) by SJ2PR02MB9955.namprd02.prod.outlook.com
- ([fe80::225c:2edd:87e:7cf0%7]) with mapi id 15.20.7362.035; Tue, 12 Mar 2024
- 20:26:47 +0000
-From: Het Gala <het.gala@nutanix.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rk8nT-0007pw-QZ
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 16:32:27 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rk8nQ-0004Qd-6T
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 16:32:27 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1dd9066b7c3so2682235ad.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 13:32:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1710275541; x=1710880341; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=1Ia/DsVaAmgDqUUNq1KADfnBbG3g+rNXvyh6Uhg6+UM=;
+ b=Q/3RDv4/xi0kp+cZc4tFlUmOrZmnV0zmK6XEv5tvBUoZM60FaXwPl49tgRZgWK/WbA
+ Im4nQzehNh6gEEDxyNLU9kYzxIxZnufd6wVB4PlT4Sl9F/o1h5DIsL3O0T0q8C9ypSuj
+ DQcKnGg4amX9mdAnTsGWMVHzvlZijmUKTsQn+di4DNV9kPaXkHP5Gudibkp0O1C4IfiZ
+ Ei/vRMCyvqbjyiT9bQP2tPfdmwlrnDnepA+PkgcnbIrRE3ARafhQV/SyCqxzZWmt1Lm1
+ 74WZWHbvZdyvVoxRZyiTOgB4APfEIOe0MkdGfq1J5ztj0Vs3uz/9EUQRgHvX6QZ2RsgA
+ CYVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710275541; x=1710880341;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1Ia/DsVaAmgDqUUNq1KADfnBbG3g+rNXvyh6Uhg6+UM=;
+ b=JV3GD8TDy3mLu+OWS/iyB36yN8w6ab0e2tEIwgFELXPlph3SvTCSkf5Hde6yi/tdXW
+ P9f+/n1shoHWmN88zY1kQ1xmKld2EN071CFPHDBpGewBDwY/3acMkqzBL6JmWGQEyla4
+ VvlCYM+wb9xddf0QWVFCxwr1U79BFLBmZzRp+2eaL3m6VsCYMjQlfz7CqMvjNZIW1b8D
+ K14R43Mma0upuD9XlPyJ5HNwo1u9Tj7WCTSLSokQc2VpiNQFZzuEOhdrnr1Z9uE8bP91
+ AIwa16/hImTo7u9rLCRLmTWHyl0JQLnIhqW4qtCg+wdXrAX9gmmi4B95jWqh5Fxhbmks
+ DGUw==
+X-Gm-Message-State: AOJu0Yx/oRj6o/t6WV30yrpy+7EKZerqk/S7d+9vmDi3nZjgDtcLl8fp
+ h6mUPm2uSQY2351dFN4HmH/HI0QyNNEC2vQCkvugbD3sNo+FvMfQFASLzWWEG0KbUFnk/XKCwj3
+ 0
+X-Google-Smtp-Source: AGHT+IESMwDd/sjj7MqLb603inuWjWlugUnAT2Lmi3emCKxmirsi0Aju3F2hv6yZcDjBRvlKddHldg==
+X-Received: by 2002:a17:903:124c:b0:1db:fc02:f96e with SMTP id
+ u12-20020a170903124c00b001dbfc02f96emr5082762plh.24.1710275541597; 
+ Tue, 12 Mar 2024 13:32:21 -0700 (PDT)
+Received: from grind.dc1.ventanamicro.com ([177.94.15.159])
+ by smtp.gmail.com with ESMTPSA id
+ v3-20020a170902d08300b001dbcfb23d6csm7154191plv.267.2024.03.12.13.32.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Mar 2024 13:32:21 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com, thuth@redhat.com, lvivier@redhat.com,
- pbonzini@redhat.com, peterx@redhat.com, farosas@suse.de,
- Het Gala <het.gala@nutanix.com>
-Subject: [PATCH v7 8/8] tests/qtest/migration: Add negative tests to validate
- migration QAPIs
-Date: Tue, 12 Mar 2024 20:26:34 +0000
-Message-Id: <20240312202634.63349-9-het.gala@nutanix.com>
-X-Mailer: git-send-email 2.22.3
-In-Reply-To: <20240312202634.63349-1-het.gala@nutanix.com>
-References: <20240312202634.63349-1-het.gala@nutanix.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BY5PR03CA0024.namprd03.prod.outlook.com
- (2603:10b6:a03:1e0::34) To SJ2PR02MB9955.namprd02.prod.outlook.com
- (2603:10b6:a03:55f::16)
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
+ Andrew Jones <ajones@ventanamicro.com>
+Subject: [PATCH for-9.0] target/riscv: do not enable all named features by
+ default
+Date: Tue, 12 Mar 2024 17:32:14 -0300
+Message-ID: <20240312203214.350980-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR02MB9955:EE_|CH3PR02MB10057:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8238d0a7-6354-40d8-8f53-08dc42d2bdcc
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Pa6xhp8w0hmLj+UhCGxFf69v6wnBkZm/1JRFQObSffficTQRqxJNelpu823wnBS6m3gPtAahxQl4yZ9VbtkGTtZpn/oeUNjqEeN/FHd1prre/Qhjo0QxEXzgl+3J3x8xgfZEvbhnPR6FQR8obdypzTTuLQ+GY8eWU34BgqYq7mjwWcjquy2cJcnSzkSQhSwlphJiRUDPyDoOwCzbknmedDaRbico4kgl7oFkvh32gjjMDy8CsO5bAsodrLMXmfi2MGNMm2m5ozIUXpdcwlGX7mmMS5vW8Ojf1qFOkxKHSZoN6Ejdpli5SlclTIcTCkZbpSPEDhse+BCOox+wA2VuTX1NBP6CuaUeSDktFdJro+M6FJTlbLe2oOtQekJx1DPePFYcpeTOiQsQtc9aEShxP42tG8bk70VlwIOiU0atoTRgP5SgMy2/bHGnDAuQ+AYbhvo6WK1Y28suIYzgWhkKO9Sedq9AWslJpwmLPCrrer/AwqGqSkSWxt1Z4U1uwGdWsHM1zfSFzqUBvuoJ3zFAdWvBT+TXKFb3zEPGo6uUlPldKK5vV2psh87eLqpBRxgXhzVnGHhiHLk7y1IUy29yuLLUlh/OW3n58RhI8muSSN+0+/S26fZSroD1sMqWq1oHnZi8p4kdE0x6ltb41ESTk6t4jtE5jkEd8HbMAcWLjNou/RlOe1KSxot677QdDgO8aGbqSqa//R72Hiz9XasohV2tXRaLD3eiFckjVh7vGAU=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ2PR02MB9955.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376005)(52116005)(1800799015)(38350700005); DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?o1EvNWcOC3VJiGEnrCZ6eOH+HXTpGyanidE1OsHkMxU12r9IInbZg8UC2mX5?=
- =?us-ascii?Q?dpY4JM8Du8LxVdUUbY1A7sGysXiZk3sHFb+VNJw6TT3jHwbHY9joWIGlUmaB?=
- =?us-ascii?Q?LGIav1Rh5mzc6nLYBXonkm+UJvCVhAKcaokECDEpTVBcnr9Ig4ykLT0zAzt8?=
- =?us-ascii?Q?JNmx0YO9LSnDiVf+MOBciv1FG+k9ZmEHHofZ157m2P0Va0n6n+B4tRtM82Yu?=
- =?us-ascii?Q?Kd6gKhvV97hja68aNowZLHtsNVhy2WuL+GKr1wj4Dk7TuCt0DbGlimhep4D1?=
- =?us-ascii?Q?0bYQAVNsRsOj9ad9dgi/ReLDfTVKhiNLZ7laa05WSvRaIquVdzsXgpwndWku?=
- =?us-ascii?Q?8/GTMJRGl/RpSVB/DLgoi5rza/N4SLcYxAyRBNSeeUHpiFLASJjmeJf/UO2B?=
- =?us-ascii?Q?F8gkt4A2ZL1LhdYLA3rjJHwpYgxf1OejW4MU6msxvqhxvW6ePqlum0UE8+m8?=
- =?us-ascii?Q?ejwW7VtL854JF0L6WbewOv/DfoUZ6nQwvZF8eVQubxZyzQwSh+JJ2oK7ND2i?=
- =?us-ascii?Q?edLpebzkz7Z1dgI8JehTttIQ0czQOljZGgWGtige7K1o98I//S/tide5hDI7?=
- =?us-ascii?Q?T5npj3FwN0m3QkkliwP3XrguSY74vlmk9LsbRW0I9Jx197W56WhGjp8GXLZD?=
- =?us-ascii?Q?8s/UKQGCJFfNCJwLWlmkIXUQ/WZrBdKevuXa/+5TzWgoZI7XI9j1mdgvr6BJ?=
- =?us-ascii?Q?ZS2ImcrrYSdVc7T4i0E1xl55IiK+/pfc35hvDRJ5LRAAN2hph/7oUxm9OgWm?=
- =?us-ascii?Q?ShcjdazhQHSoJ5fLFNCyU76Krpgg3UplpPi7jEDeD2WS2+FElI0V7tt9DNo5?=
- =?us-ascii?Q?usybLdl4LCMEj4UuFJaCWkeuloYa90/KkPvLJqy1h+aHFmZ93i4yRlXSD0Ml?=
- =?us-ascii?Q?spaWnq3L3/X8WELrAleYVgWK66DzlyO45xXwWz4VeDwJDBcw+DAuZHby76LA?=
- =?us-ascii?Q?cy3NQKZSTG72HC6doEy/b873SbEo6P9VkiOch/Dlgx41+3kr9C3/DLC2rPU4?=
- =?us-ascii?Q?kHUfaoi+5S0PsnFXsL5NX0naRCSCx7W1ZzpjBdN41zrk5Zsfv258nHFZqJtk?=
- =?us-ascii?Q?GtwfI66FM+ZCx1X89NuwYAdM6KzuUmG3oxISumDUo+1llPfIZeWv5g/bUiOz?=
- =?us-ascii?Q?eNcjFArD3utWUqJ2qqMigP658nk86X7Lk7e6fQzm7y1ezKR3vA4qbJl5U6J0?=
- =?us-ascii?Q?8HZN4gpyl83uchjx1+p+iWr9bIPQbHOReTd/+JQLD95EYfwtYJppdviZrCco?=
- =?us-ascii?Q?wO3D8jcowFUaO7xiomOgyaif4T211nC6K3AIwyEG/Wbw9g8zhAFbVs4lvqNW?=
- =?us-ascii?Q?TqyzLoSbv5Pf8OMRUKrwky4DP97z7DwFo1+O29Kh0mBRYaz7xR3459v3Ri2F?=
- =?us-ascii?Q?ub8+YgH5Tz3ux+fPKXM8CUYICEjBaL3O+qKjHYqHBaJiH1l6H6/8Tq3DMlos?=
- =?us-ascii?Q?87iIKS41VC+xeJlzNNwfwmkvHbLsp+ewcK4U9iLHZQL30FTCNsBGLYNHesS9?=
- =?us-ascii?Q?GCg9dhEQhO70tr5akwfU9flOVGVf+9lZJPYsay4k+LNDmu+pBS6pPn8UdOxK?=
- =?us-ascii?Q?w7VdlwEdTtjiizrR+VYCMpWkJVfCuxPGR/PVUxXuAM0t3tNQWCU2DmDsd62W?=
- =?us-ascii?Q?6g=3D=3D?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8238d0a7-6354-40d8-8f53-08dc42d2bdcc
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR02MB9955.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2024 20:26:47.5810 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wTIS2aItBQgjgreibtL3MRP0ClZ/XDE1ZBlOwS5PbevqK+LRR+ZTfGyo+/x1/datiCLJpyO1yC5GCGFG+wgXoQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR02MB10057
-X-Proofpoint-GUID: RBz2EZE6rfVkqvQOGf0XaVYbI9TwDJWX
-X-Proofpoint-ORIG-GUID: RBz2EZE6rfVkqvQOGf0XaVYbI9TwDJWX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-12_13,2024-03-12_01,2023-05-22_02
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.155.12; envelope-from=het.gala@nutanix.com;
- helo=mx0b-002c1b01.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -158,98 +95,184 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Migration QAPI arguments - uri and channels are mutually exhaustive.
-Add negative validation tests, one with both arguments present and
-one with none present.
+Commit 3b8022269c added the capability of named features/profile
+extensions to be added in riscv,isa. To do that we had to assign priv
+versions for each one of them in isa_edata_arr[]. But this resulted in a
+side-effect: vendor CPUs that aren't running priv_version_latest started
+to experience warnings for these profile extensions [1]:
 
-Signed-off-by: Het Gala <het.gala@nutanix.com>
-Suggested-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+  | $ qemu-system-riscv32  -M sifive_e
+  | qemu-system-riscv32: warning: disabling zic64b extension for hart
+0x00000000 because privilege spec version does not match
+  | qemu-system-riscv32: warning: disabling ziccamoa extension for
+hart 0x00000000 because privilege spec version does not match
+
+This is benign as far as the CPU behavior is concerned since disabling
+both extensions is a no-op (aside from riscv,isa). But the warnings are
+unpleasant to deal with, especially because we're sending user warnings
+for extensions that users can't enable/disable.
+
+Instead of enabling all named features all the time, separate them by
+priv version. During finalize() time, after we decided which
+priv_version the CPU is running, enable/disable all the named extensions
+based on the priv spec chosen. This will be enough for a bug fix, but as
+a future work we should look into how we can name these extensions in a
+way that we don't need an explicit ext_name => priv_ver as we're doing
+here.
+
+The named extensions being added in isa_edata_arr[] that will be
+enabled/disabled based solely on priv version can be removed from
+riscv_cpu_named_features[]. 'zic64b' is an extension that can be
+disabled based on block sizes so it'll retain its own flag and entry.
+
+[1] https://lists.gnu.org/archive/html/qemu-devel/2024-03/msg02592.html
+
+Reported-by: Clément Chigot <chigot@adacore.com>
+Fixes: 3b8022269c ("target/riscv: add riscv,isa to named features")
+Suggested-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- tests/qtest/migration-test.c | 55 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 54 insertions(+), 1 deletion(-)
+ target/riscv/cpu.c         | 40 +++++++++-----------------------------
+ target/riscv/cpu_cfg.h     |  8 +++++---
+ target/riscv/tcg/tcg-cpu.c | 14 ++++++++++---
+ 3 files changed, 25 insertions(+), 37 deletions(-)
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 7ea13c8e5b..bd9f4b9dbb 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -1724,7 +1724,7 @@ static void test_precopy_common(MigrateCommon *args)
-     }
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 5a48d30828..1da5417764 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -102,10 +102,10 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zicbom, PRIV_VERSION_1_12_0, ext_zicbom),
+     ISA_EXT_DATA_ENTRY(zicbop, PRIV_VERSION_1_12_0, ext_zicbop),
+     ISA_EXT_DATA_ENTRY(zicboz, PRIV_VERSION_1_12_0, ext_zicboz),
+-    ISA_EXT_DATA_ENTRY(ziccamoa, PRIV_VERSION_1_11_0, ext_always_enabled),
+-    ISA_EXT_DATA_ENTRY(ziccif, PRIV_VERSION_1_11_0, ext_always_enabled),
+-    ISA_EXT_DATA_ENTRY(zicclsm, PRIV_VERSION_1_11_0, ext_always_enabled),
+-    ISA_EXT_DATA_ENTRY(ziccrse, PRIV_VERSION_1_11_0, ext_always_enabled),
++    ISA_EXT_DATA_ENTRY(ziccamoa, PRIV_VERSION_1_11_0, has_priv_1_11),
++    ISA_EXT_DATA_ENTRY(ziccif, PRIV_VERSION_1_11_0, has_priv_1_11),
++    ISA_EXT_DATA_ENTRY(zicclsm, PRIV_VERSION_1_11_0, has_priv_1_11),
++    ISA_EXT_DATA_ENTRY(ziccrse, PRIV_VERSION_1_11_0, has_priv_1_11),
+     ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
+     ISA_EXT_DATA_ENTRY(zicntr, PRIV_VERSION_1_12_0, ext_zicntr),
+     ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_zicsr),
+@@ -114,7 +114,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
+     ISA_EXT_DATA_ENTRY(zihpm, PRIV_VERSION_1_12_0, ext_zihpm),
+     ISA_EXT_DATA_ENTRY(zmmul, PRIV_VERSION_1_12_0, ext_zmmul),
+-    ISA_EXT_DATA_ENTRY(za64rs, PRIV_VERSION_1_12_0, ext_always_enabled),
++    ISA_EXT_DATA_ENTRY(za64rs, PRIV_VERSION_1_12_0, has_priv_1_11),
+     ISA_EXT_DATA_ENTRY(zaamo, PRIV_VERSION_1_12_0, ext_zaamo),
+     ISA_EXT_DATA_ENTRY(zacas, PRIV_VERSION_1_12_0, ext_zacas),
+     ISA_EXT_DATA_ENTRY(zalrsc, PRIV_VERSION_1_12_0, ext_zalrsc),
+@@ -179,12 +179,12 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
+     ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
+     ISA_EXT_DATA_ENTRY(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
+-    ISA_EXT_DATA_ENTRY(ssccptr, PRIV_VERSION_1_11_0, ext_always_enabled),
++    ISA_EXT_DATA_ENTRY(ssccptr, PRIV_VERSION_1_11_0, has_priv_1_11),
+     ISA_EXT_DATA_ENTRY(sscofpmf, PRIV_VERSION_1_12_0, ext_sscofpmf),
+-    ISA_EXT_DATA_ENTRY(sscounterenw, PRIV_VERSION_1_12_0, ext_always_enabled),
++    ISA_EXT_DATA_ENTRY(sscounterenw, PRIV_VERSION_1_12_0, has_priv_1_12),
+     ISA_EXT_DATA_ENTRY(sstc, PRIV_VERSION_1_12_0, ext_sstc),
+-    ISA_EXT_DATA_ENTRY(sstvala, PRIV_VERSION_1_12_0, ext_always_enabled),
+-    ISA_EXT_DATA_ENTRY(sstvecd, PRIV_VERSION_1_12_0, ext_always_enabled),
++    ISA_EXT_DATA_ENTRY(sstvala, PRIV_VERSION_1_12_0, has_priv_1_12),
++    ISA_EXT_DATA_ENTRY(sstvecd, PRIV_VERSION_1_12_0, has_priv_1_12),
+     ISA_EXT_DATA_ENTRY(svade, PRIV_VERSION_1_11_0, ext_svade),
+     ISA_EXT_DATA_ENTRY(svadu, PRIV_VERSION_1_12_0, ext_svadu),
+     ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
+@@ -1575,11 +1575,6 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
+     DEFINE_PROP_END_OF_LIST(),
+ };
  
-     if (args->result == MIG_TEST_QMP_ERROR) {
--        migrate_qmp_fail(from, args->connect_uri, NULL, "{}");
-+        migrate_qmp_fail(from, args->connect_uri, args->connect_uri, "{}");
-         goto finish;
-     }
+-#define ALWAYS_ENABLED_FEATURE(_name) \
+-    {.name = _name, \
+-     .offset = CPU_CFG_OFFSET(ext_always_enabled), \
+-     .enabled = true}
+-
+ /*
+  * 'Named features' is the name we give to extensions that we
+  * don't want to expose to users. They are either immutable
+@@ -1590,23 +1585,6 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
+ const RISCVCPUMultiExtConfig riscv_cpu_named_features[] = {
+     MULTI_EXT_CFG_BOOL("zic64b", ext_zic64b, true),
  
-@@ -2608,6 +2608,55 @@ static void test_validate_uuid_dst_not_set(void)
-     do_test_validate_uuid(&args, false);
- }
+-    /*
+-     * cache-related extensions that are always enabled
+-     * in TCG since QEMU RISC-V does not have a cache
+-     * model.
+-     */
+-    ALWAYS_ENABLED_FEATURE("za64rs"),
+-    ALWAYS_ENABLED_FEATURE("ziccif"),
+-    ALWAYS_ENABLED_FEATURE("ziccrse"),
+-    ALWAYS_ENABLED_FEATURE("ziccamoa"),
+-    ALWAYS_ENABLED_FEATURE("zicclsm"),
+-    ALWAYS_ENABLED_FEATURE("ssccptr"),
+-
+-    /* Other named features that TCG always implements */
+-    ALWAYS_ENABLED_FEATURE("sstvecd"),
+-    ALWAYS_ENABLED_FEATURE("sstvala"),
+-    ALWAYS_ENABLED_FEATURE("sscounterenw"),
+-
+     DEFINE_PROP_END_OF_LIST(),
+ };
  
-+static void do_test_validate_uri_channel(MigrateCommon *args)
-+{
-+    QTestState *from, *to;
-+
-+    if (test_migrate_start(&from, &to, args->listen_uri, &args->start)) {
-+        return;
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index 2040b90da0..cb750154bd 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -130,10 +130,12 @@ struct RISCVCPUConfig {
+     bool ext_zic64b;
+ 
+     /*
+-     * Always 'true' boolean for named features
+-     * TCG always implement/can't be disabled.
++     * Always 'true' booleans for named features
++     * TCG always implement/can't be user disabled,
++     * based on spec version.
+      */
+-    bool ext_always_enabled;
++    bool has_priv_1_12;
++    bool has_priv_1_11;
+ 
+     /* Vendor-specific custom extensions */
+     bool ext_xtheadba;
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index ab6db817db..63192ef54f 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -315,9 +315,19 @@ static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
+ 
+ static void riscv_cpu_update_named_features(RISCVCPU *cpu)
+ {
++    if (cpu->env.priv_ver >= PRIV_VERSION_1_11_0) {
++        cpu->cfg.has_priv_1_11 = true;
 +    }
 +
-+    /* Wait for the first serial output from the source */
-+    wait_for_serial("src_serial");
++    if (cpu->env.priv_ver >= PRIV_VERSION_1_12_0) {
++        cpu->cfg.has_priv_1_12 = true;
++    }
 +
-+    /*
-+     * 'uri' and 'channels' validation is checked even before the migration
-+     * starts.
-+     */
-+    migrate_qmp_fail(from, args->connect_uri, args->connect_channels, "{}");
-+    test_migrate_end(from, to, false);
-+}
-+
-+static void test_validate_uri_channels_both_set(void)
-+{
-+    MigrateCommon args = {
-+        .start = {
-+            .hide_stderr = true,
-+        },
-+        .listen_uri = "defer",
-+        .connect_uri = "tcp:127.0.0.1:0",
-+        .connect_channels = "[ { 'channel-type': 'main',"
-+                            "    'addr': { 'transport': 'socket',"
-+                            "              'type': 'inet',"
-+                            "              'host': '127.0.0.1',"
-+                            "              'port': '0' } } ]",
-+    };
-+
-+    do_test_validate_uri_channel(&args);
-+}
-+
-+static void test_validate_uri_channels_none_set(void)
-+{
-+    MigrateCommon args = {
-+        .start = {
-+            .hide_stderr = true,
-+        },
-+        .listen_uri = "defer",
-+    };
-+
-+    do_test_validate_uri_channel(&args);
-+}
-+
- /*
-  * The way auto_converge works, we need to do too many passes to
-  * run this test.  Auto_converge logic is only run once every
-@@ -3722,6 +3771,10 @@ int main(int argc, char **argv)
-                        test_validate_uuid_src_not_set);
-     migration_test_add("/migration/validate_uuid_dst_not_set",
-                        test_validate_uuid_dst_not_set);
-+    migration_test_add("/migration/validate_uri/channels/both_set",
-+                       test_validate_uri_channels_both_set);
-+    migration_test_add("/migration/validate_uri/channels/none_set",
-+                       test_validate_uri_channels_none_set);
-     /*
-      * See explanation why this test is slow on function definition
-      */
++    /* zic64b is 1.12 or later */
+     cpu->cfg.ext_zic64b = cpu->cfg.cbom_blocksize == 64 &&
+                           cpu->cfg.cbop_blocksize == 64 &&
+-                          cpu->cfg.cboz_blocksize == 64;
++                          cpu->cfg.cboz_blocksize == 64 &&
++                          cpu->cfg.has_priv_1_12;
+ }
+ 
+ static void riscv_cpu_validate_g(RISCVCPU *cpu)
+@@ -1316,8 +1326,6 @@ static void riscv_tcg_cpu_instance_init(CPUState *cs)
+     RISCVCPU *cpu = RISCV_CPU(cs);
+     Object *obj = OBJECT(cpu);
+ 
+-    cpu->cfg.ext_always_enabled = true;
+-
+     misa_ext_user_opts = g_hash_table_new(NULL, g_direct_equal);
+     multi_ext_user_opts = g_hash_table_new(NULL, g_direct_equal);
+     riscv_cpu_add_user_properties(obj);
 -- 
-2.22.3
+2.43.2
 
 
