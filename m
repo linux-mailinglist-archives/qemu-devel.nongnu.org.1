@@ -2,73 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E9F387918E
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 10:59:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 924CB8791B7
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 11:14:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjyuS-0005m4-V7; Tue, 12 Mar 2024 05:59:00 -0400
+	id 1rjz7o-0002uk-Ps; Tue, 12 Mar 2024 06:12:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjyuQ-0005jJ-VG
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 05:58:58 -0400
-Received: from mgamail.intel.com ([192.198.163.15])
+ id 1rjz7d-0002u3-Gz; Tue, 12 Mar 2024 06:12:37 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjyuP-0000TT-2L
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 05:58:58 -0400
+ id 1rjz7a-0002n1-4f; Tue, 12 Mar 2024 06:12:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710237537; x=1741773537;
+ t=1710238354; x=1741774354;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=Y6VdP9faqh72Mn6LhmNnwRXRt34XCvhHGJdaTZngvro=;
- b=YWeULdGXQS4BDGFDsCIqd+Ez+gFu0km5J2WhmtsjUH2NGyICvAlYG2oX
- VKRidzGuvw/nW0JBWt+/jdCTAvZc756OVny0+eL1UVnGd2mdBJ7/Vz4f3
- Wr0W/aIA3jzEX7sZ3vfzGytO9TSZ8EYK/ckioeXxyh1T08914Miaqa6/A
- X0SzET2Gsz3yw4em4Qed1dSjtVmV3VDZrvZrSIJgJzE5dDFGAWqobDwOV
- u1fjwEDxAuSM48c6ImrEJw9yVrgabPIQDYPAjvwIQr/4UaYsosybJsZ8j
- KG4p8o99xEAMyJp66KHar1O0oVDyGn8kGq7Fp0V+Pwpt3iA7dEopDmxWC A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="5109253"
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="5109253"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2024 02:58:54 -0700
+ bh=wSqSiLG+NZqdAqTMJRfPpQD42L3+mQM4qj6rqb8R/OU=;
+ b=mXz8m8i3gQJjOCOO0+PZLyNmMPe+4CdR3381BoEEiX9UAkaY9z/5TEfY
+ HJdBMGNlQSZfZXIx1bKt7Q1puLR2IUFzuU5r9Pcs9EG7fUMhO5aBNf2Pf
+ yylFA/7LpaeebmydEji+P0Lfdvd47d2/voUOVN8XFSzcRo43XmkYH/KJE
+ 3dt7sXdpxaxRmckOvEcSLvyvnGXnW5xHsPRQtiBqNLWwlylazgusEAfJa
+ 5wZnHrrq6Nq3lcZRWpI+yc0uSAFuzAsVXoT7hOOC4bvtRqNc5rUDRldrL
+ F1yhjnK5sId8OFOiGrUys7+FSibrahPpO8cti3+FDGWK4kJpZ8vVca3yb Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="15665663"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="15665663"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2024 03:12:29 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="11560026"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="11944790"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by fmviesa006.fm.intel.com with ESMTP; 12 Mar 2024 02:58:48 -0700
-Date: Tue, 12 Mar 2024 18:12:38 +0800
+ by orviesa007.jf.intel.com with ESMTP; 12 Mar 2024 03:12:26 -0700
+Date: Tue, 12 Mar 2024 18:26:15 +0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>,
- Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v9 02/21] hw/core/machine: Support modules in -smp
-Message-ID: <ZfAqltds4Bcr2Ruj@intel.com>
-References: <20240227103231.1556302-1-zhao1.liu@linux.intel.com>
- <20240227103231.1556302-3-zhao1.liu@linux.intel.com>
- <e730da3c-42be-45d0-aa11-279ee47bb933@linux.intel.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>, Markus Armbruster <armbru@redhat.com>,
+ Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
+ qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v2 00/29] Cleanup up to fix missing ERRP_GUARD() for
+ error_prepend()
+Message-ID: <ZfAtx3fBR9KgsAWa@intel.com>
+References: <20240311033822.3142585-1-zhao1.liu@linux.intel.com>
+ <d48e5d05-0e1e-4bb0-b10a-f0c943b055f6@linaro.org>
+ <ZfAVsQTIOgAOjd0Y@intel.com>
+ <4ba8e5dc-cda0-4ed4-8baa-82687a235627@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e730da3c-42be-45d0-aa11-279ee47bb933@linux.intel.com>
-Received-SPF: none client-ip=192.198.163.15;
+In-Reply-To: <4ba8e5dc-cda0-4ed4-8baa-82687a235627@redhat.com>
+Received-SPF: none client-ip=192.198.163.9;
  envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -29
 X-Spam_score: -3.0
@@ -92,18 +80,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > @@ -51,6 +51,10 @@ static char *cpu_hierarchy_to_string(MachineState *ms)
-> >           g_string_append_printf(s, " * clusters (%u)", ms->smp.clusters);
-> >       }
-> > +    if (mc->smp_props.modules_supported) {
-> > +        g_string_append_printf(s, " * modules (%u)", ms->smp.clusters);
-> > +    }
+On Tue, Mar 12, 2024 at 09:50:25AM +0100, Thomas Huth wrote:
+> Date: Tue, 12 Mar 2024 09:50:25 +0100
+> From: Thomas Huth <thuth@redhat.com>
+> Subject: Re: [PATCH v2 00/29] Cleanup up to fix missing ERRP_GUARD() for
+>  error_prepend()
 > 
-> smp.clusters -> smp.modules?
->
+> On 12/03/2024 09.43, Zhao Liu wrote:
+> > Hi Thomas/Markus/Michael,
+> > 
+> > For the remaing patches, could you please help me merge them next?
+> > 
+> > Many thanks!
+> 
+> Yes, I'm currently reviewing the ones that don't have a Reviewed-by yet. I
+> can pick up the remaining patches if the other maintainers won't pick them
+> up for the softfreeze today.
+> 
 
-Good catch! Thanks!
+Appreciate that you can help me get on the last train of releases.
 
--Zhao
+If possible, could you please also help me pick up two other ERRP_GUARD()
+related cleanups (total 8 patches, both got r/b)? ;-)
+
+My cleanup is too fragmented, I'll try to centralize my work to make it easier
+for maintainer to review and merge in the future!
+
+[1]: https://lore.kernel.org/qemu-devel/20240223085653.1255438-1-zhao1.liu@linux.intel.com/
+[2]: https://lore.kernel.org/qemu-devel/20240312060337.3240965-1-zhao1.liu@linux.intel.com/
+
+Many thanks,
+Zhao
 
 
