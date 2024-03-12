@@ -2,89 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A6AA879ED4
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:34:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACCEC879F07
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:41:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkAb7-00088l-VJ; Tue, 12 Mar 2024 18:27:50 -0400
+	id 1rkAbO-0000Pl-Qr; Tue, 12 Mar 2024 18:28:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAan-0007Tn-LL
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAap-0007ZR-M7
  for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:27:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAak-0004OU-Jz
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:27:27 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAao-0004Oy-5E
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:27:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710282446;
+ s=mimecast20190719; t=1710282449;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=D2lpmRuQpB9vA5OA++aQfNEAFEu+9OfR1snJEg9JCvg=;
- b=QNWHfJateMJOpd5zofEo7uc7oGrmwB+q60va+CjFMPwiQzGLSLrmqHWr4BVRSRLqFSyHdR
- WEWLKQr9Wb22Z7J7PTnKJ9ecIeUQ1giFEUyP2YYZ590scnGQApaFd+JqodnZfQ/1YnCqUk
- t1cjiThexcg3/XrslbHASWom9v1y0AA=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DBULQTyw/cBuXLWadxHOJ8GjlhZzF81MHpi5mkmgU0I=;
+ b=WUvAHO5XM7ThL5C0mM54i06sZrjpqRqDxUUXd+9A7o5k9fYwymI6GoAVH7WZwoNX2eJkn1
+ V6IHK3t1aNAK56hqwy7wl+nslw2ZKs/VfTFVjYxho5G9KTC40kXux5W8K6R0yY7kDowYJZ
+ ep+THSmh0JpmnivH0sb5MFQazkL7fmk=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-65-lr1Wul9_NUyt_XQBe1GpzQ-1; Tue, 12 Mar 2024 18:27:24 -0400
-X-MC-Unique: lr1Wul9_NUyt_XQBe1GpzQ-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-5684c1abc33so2350501a12.2
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:27:24 -0700 (PDT)
+ us-mta-290-eGKl3PvKP2We7xRUD4-1hQ-1; Tue, 12 Mar 2024 18:27:28 -0400
+X-MC-Unique: eGKl3PvKP2We7xRUD4-1hQ-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2d468f7779cso3600881fa.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:27:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710282443; x=1710887243;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=D2lpmRuQpB9vA5OA++aQfNEAFEu+9OfR1snJEg9JCvg=;
- b=tLRb/Y4S3ja4DbpznNiV27QpFzmZU/ZfU1dQXQ9hAa25xvobQX2i3DnREXOBzAf5nJ
- PYlfbXu/aiu7YTwkjHz5hdsOz3t6DZRvIjVDBsM1b+UEUihFFO5Mc06iMuW2480meqZI
- VGtwQxst9z8/f0J+fwY4vKSEc+KPcqbbgqmUqvbiCLTo26HqI7ABzjDIZVbR9S9j491M
- FX/6Oaus68sNnARFP784ghRBDLuRlgKQaciKc7OmkhGM1bEEYnza+pqzZy4cVhnjC2/f
- o3Y7pi8xaiMwT1aIlOtqumWekd1TOW3/UP63NNmZYm1Dj9Oje8O3RFEWIpLKQT0SvPUP
- OLwg==
-X-Gm-Message-State: AOJu0YzRuB350MT4JbsQ11swVVingKc4DEg0tzNdxAzv9e0nlx4ZWy14
- ga84WmxGHBbJKDTKqlA+wPdi2dnFfJcPesmO5FnJTuu4C40zs47tjaEEhxAAYFujI313yQOBe8g
- Q1EakLK0kL0OlMqhqIGzNiqf/44vlnA34YkKQRgbV7fUaWw3NUcSL/LUPYrnLKp4xpiYgF++6/Y
- 5MZBgOz7oSMeskIU0k9Sc2j3VVvTJ/49Tg
-X-Received: by 2002:a50:9e48:0:b0:566:ab45:e6c5 with SMTP id
- z66-20020a509e48000000b00566ab45e6c5mr2157423ede.28.1710282443024; 
- Tue, 12 Mar 2024 15:27:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHxDO4TGc3w2tLD2JLb7Y5kfREmjXSbzSX6P7SIcBHWNwfLLoRHL27m3wQgi5keSuq/qBGa+A==
-X-Received: by 2002:a50:9e48:0:b0:566:ab45:e6c5 with SMTP id
- z66-20020a509e48000000b00566ab45e6c5mr2157407ede.28.1710282442491; 
- Tue, 12 Mar 2024 15:27:22 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1710282446; x=1710887246;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DBULQTyw/cBuXLWadxHOJ8GjlhZzF81MHpi5mkmgU0I=;
+ b=kojqw2up9N16bC+nOP6L24JxPw4tqFOoIgvLlAgFJQ+G0zlRl5v85zIAsLEwvbH8Xs
+ 0mMJC3O1S5sr1F1R9wpJFrX/Xcv1W3eOjiTII81p0ZcCcyA2rjDQdZrPj9lSIMVDekgL
+ Rc2XqdNLmEr2VLKDomeAb4JTA4xRTiVUxAvNpsYA2WPkfbmTlpAWngozq69jNUHz99ZE
+ XjEh0ISlCyaK5UcEfcvMi7TsivjYi9MdXOTI/2jSVHesjgy8GJt+L5I5iA6dYqkTGo/T
+ lj9OzpetJoWtRuWKZySNUAZ3Lzfu3pFLvgkQgOEERD5VWvgsngoQdPpGeFr7UG22YSky
+ DkVw==
+X-Gm-Message-State: AOJu0YxjDPWyD0gbQyUAn0SNfr3SWHl3eNaOhq2odgJ+QuVJYjL7RS3x
+ QC1nHOdQBS4s3swA/gi30946tcEs+eLIOQtrpUjtVeTn6gR9kKCD3cQe8yQzTQe76As7c3jdO7m
+ 4HVrnMl2cbYvCbOi7siPy5xfMlImlMU5qQqTWjxzTkyhUQcprQw4QYagO3yWdTVtdJN1bvh4wi6
+ TIE8OP3xqkrJy+FrRUwYzsmE90dZWYYhe4
+X-Received: by 2002:a05:6512:ac1:b0:513:27a1:24cb with SMTP id
+ n1-20020a0565120ac100b0051327a124cbmr1220494lfu.51.1710282446264; 
+ Tue, 12 Mar 2024 15:27:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEBJlRJm45tw8nSf3m96fIX0dBg9+ATVRCHcfVPcXIrv3z5nzZBbV0/mkZh64QXI68PAG9kbA==
+X-Received: by 2002:a05:6512:ac1:b0:513:27a1:24cb with SMTP id
+ n1-20020a0565120ac100b0051327a124cbmr1220469lfu.51.1710282445684; 
+ Tue, 12 Mar 2024 15:27:25 -0700 (PDT)
 Received: from redhat.com ([2.52.134.16]) by smtp.gmail.com with ESMTPSA id
- b2-20020aa7c902000000b00564e489ce9asm4411838edt.12.2024.03.12.15.27.20
+ hg22-20020a1709072cd600b00a463c821e4dsm1260636ejc.10.2024.03.12.15.27.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 15:27:21 -0700 (PDT)
-Date: Tue, 12 Mar 2024 18:27:19 -0400
+ Tue, 12 Mar 2024 15:27:25 -0700 (PDT)
+Date: Tue, 12 Mar 2024 18:27:22 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
  Markus Armbruster <armbru@redhat.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
-Subject: [PULL 35/68] hw/mem/cxl_type3: Fix missing ERRP_GUARD() in
- ct3_realize()
-Message-ID: <d477d07a5d2c392c7aa99cb76921ed3e40d141ef.1710282274.git.mst@redhat.com>
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alistair Francis <alistair@alistair23.me>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, qemu-arm@nongnu.org
+Subject: [PULL 36/68] hw/misc/xlnx-versal-trng: Check returned bool in
+ trng_prop_fault_event_set()
+Message-ID: <305446015848f0b5d71b817b53e7e02b08c36ede.1710282274.git.mst@redhat.com>
 References: <cover.1710282274.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1710282274.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,44 +124,46 @@ ERRP_GUARD():
 * Using it when it's not needed is safe, but please avoid cluttering
 * the source with useless code.
 
-But in ct3_realize(), @errp is dereferenced without ERRP_GUARD():
+But in trng_prop_fault_event_set, @errp is dereferenced without
+ERRP_GUARD():
 
-cxl_doe_cdat_init(cxl_cstate, errp);
+visit_type_uint32(v, name, events, errp);
 if (*errp) {
-    goto err_free_special_ops;
+    return;
 }
 
-Here we check *errp, because cxl_doe_cdat_init() returns void. And
-ct3_realize() - as a PCIDeviceClass.realize() method - doesn't get the
-NULL @errp parameter, it hasn't triggered the bug that dereferencing
-the NULL @errp.
+Currently, since trng_prop_fault_event_set() doesn't get the NULL @errp
+parameter as a "set" method of object property, it hasn't triggered the
+bug that dereferencing the NULL @errp.
 
-To follow the requirement of @errp, add missing ERRP_GUARD() in
-ct3_realize().
+And since visit_type_uint32() returns bool, check the returned bool
+directly instead of dereferencing @errp, then we needn't the add missing
+ERRP_GUARD().
 
 Suggested-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Message-Id: <20240223085653.1255438-4-zhao1.liu@linux.intel.com>
+Message-Id: <20240223085653.1255438-5-zhao1.liu@linux.intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/mem/cxl_type3.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/misc/xlnx-versal-trng.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index b679dfae1c..b0a7e9f11b 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -645,6 +645,7 @@ static DOEProtocol doe_cdat_prot[] = {
+diff --git a/hw/misc/xlnx-versal-trng.c b/hw/misc/xlnx-versal-trng.c
+index b8111b8b66..6495188dc7 100644
+--- a/hw/misc/xlnx-versal-trng.c
++++ b/hw/misc/xlnx-versal-trng.c
+@@ -644,8 +644,7 @@ static void trng_prop_fault_event_set(Object *obj, Visitor *v,
+     Property *prop = opaque;
+     uint32_t *events = object_field_prop_ptr(obj, prop);
  
- static void ct3_realize(PCIDevice *pci_dev, Error **errp)
- {
-+    ERRP_GUARD();
-     CXLType3Dev *ct3d = CXL_TYPE3(pci_dev);
-     CXLComponentState *cxl_cstate = &ct3d->cxl_cstate;
-     ComponentRegisters *regs = &cxl_cstate->crb;
+-    visit_type_uint32(v, name, events, errp);
+-    if (*errp) {
++    if (!visit_type_uint32(v, name, events, errp)) {
+         return;
+     }
+ 
 -- 
 MST
 
