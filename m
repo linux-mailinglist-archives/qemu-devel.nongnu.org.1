@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 670AB879EF1
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:39:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC58879F89
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 00:12:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkAeI-0006T8-J4; Tue, 12 Mar 2024 18:31:06 -0400
+	id 1rkBHD-0001v0-4h; Tue, 12 Mar 2024 19:11:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAcx-0004Wk-CU
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:29:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAcw-0004h0-24
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:29:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710282579;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type;
- bh=9rpR2mubP+HGapvPEtzweij3vxVaeaCtxnw4CpB2h9c=;
- b=VsE6TvgrbFSwFYi5Mh6vbPuajF0PNbYK0yB3DmUitI5ZNsGUmE0yn+i7fW0lDQ9uXkRuO2
- Of3yzKwQMFUAkfQP0Zn1xyW4YPP1DQV7Lx12Z/YvF3n6rmGlc2WdaVIW07fGBTf+YOYrXd
- YK9isQWsfP/txG8NQrnPWYNOtnb6/8U=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-270-8weMgKyqOCm16VEHX3g5Fw-1; Tue, 12 Mar 2024 18:29:38 -0400
-X-MC-Unique: 8weMgKyqOCm16VEHX3g5Fw-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-568653cff80so1460550a12.2
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:29:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rkBHB-0001uq-PY
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 19:11:17 -0400
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rkBH9-0003es-Lg
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 19:11:17 -0400
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2d27184197cso79911141fa.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 16:11:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1710285073; x=1710889873;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JDc12UD/gFlaTF+z8O3YbbaOS5ioVNd6BYvQQVOmQx0=;
+ b=NMhgJy+Hzfzhl5/g5WHD7GJMJlHKIsA2zZCH9iULqoWeG7fw42HvfM69MmDddXbnW3
+ geRGWWIT+C6GPSlyf2hntKIpnvg7w0cLN8FJwXvra1PBetLisCI2/75YIp8rTJm0FqEf
+ um6eycL15/mtquh7I7bg7tXFfI/G0rScA7jzTa/t+X2n5OUlY+T0m1Tok8dAU15+YDl9
+ 53f4oviNn480azEm7ItK19HzRtZ3AIRzA8SFSL6SI8Wvq3BzFeG5rPQwMKoRwtvVyiuA
+ 55RoqketG5T4xLfuFliSoD99K3K4SLKDT9HielCNpFh7mhyjdXVRjb8sI2C9DwMZcIFV
+ eTDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710282576; x=1710887376;
- h=content-disposition:mime-version:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9rpR2mubP+HGapvPEtzweij3vxVaeaCtxnw4CpB2h9c=;
- b=BwEPOAWUZXhU6wlkkUok9bejTLxpwowT0scuExmLultETcHvodogF6k7vhvxCzZW5q
- fDs6s/HqBfYCOgQJrdmGxGQ3ZFg89kgBupSJsya/64DDQTZoBTGuzjEatsDAn3l7huQL
- WpLnQ5VYcwsiDrVzOcfkhluk+PmZZHZ9bK50mv0thPGG9Rcp/IdcgRNc2AnQ9UbTvlZ0
- 5aKjloWCTtl8QkeGyLoL6sSlGjWtVDzDrQ8G5cvRWwsjG5lxWYt7ZDp9vEF1xppSTHuW
- m06USqjlh+ooTUne6+Dl1bVdfvW1GC8mnUSKL+C1awzdhpWGsYasJYz/CR57WQ9MY72P
- Kp3w==
-X-Gm-Message-State: AOJu0YzVcp8BvLz/S+QAlR1+dysJNQU5vM6Vurg5TQcRbGqn3cKghHVe
- PwknQGsUUysg1bR2Y1SdXAlC/ejUvZKZ2TMcEjLVVZz8jZOiCzu/+wxBRkubBgLqfPDXXRl0+Kw
- fT7CScdbywm9OpW20FvMcGb5N8deRzKhDNIEbux7/jy0lzNFzHeaTX2MmErnhahNQY1+9+NBipS
- 0QMnYnKaoomV7z4B/oc8lLVsmlxrzhzBQv
-X-Received: by 2002:a05:6402:5c4:b0:564:5764:a5d8 with SMTP id
- n4-20020a05640205c400b005645764a5d8mr7410126edx.25.1710282576227; 
- Tue, 12 Mar 2024 15:29:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHNwcoC1wlbA8vogIh3AblChCVBZlWTNhCTai/iAie5NblNY1vE0LjGN87M3A6dOOoe9jB21g==
-X-Received: by 2002:a05:6402:5c4:b0:564:5764:a5d8 with SMTP id
- n4-20020a05640205c400b005645764a5d8mr7410109edx.25.1710282575742; 
- Tue, 12 Mar 2024 15:29:35 -0700 (PDT)
-Received: from redhat.com ([2.52.134.16]) by smtp.gmail.com with ESMTPSA id
- ev19-20020a056402541300b0056742460f68sm4271821edb.66.2024.03.12.15.29.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 15:29:35 -0700 (PDT)
-Date: Tue, 12 Mar 2024 18:29:33 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH] SMBIOS: fix long lines
-Message-ID: <9bce53c4f7ffda8e4a49353902626702fa01e5a6.1710282571.git.mst@redhat.com>
+ d=1e100.net; s=20230601; t=1710285073; x=1710889873;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=JDc12UD/gFlaTF+z8O3YbbaOS5ioVNd6BYvQQVOmQx0=;
+ b=mJp9ZiZ2sPERNcL2jrg8UvQ2S0lAiFUwHSonfr29MhjRvxObGmbPxh2EpnWPlr35Ox
+ aI5SE2K2jMdsxRG2lxZ5chjAZzJuPuciBum8LIrRCON5l/4P3Qo1hEtfXeDECQMk9O5+
+ mUE+WxdyEe6GpP4DaJS/eZjKB9+uYqEjDTjgLxLGZea5tWkBRF2hoLLx95l4IFhcsNcV
+ MReq9og7GuWXmJI6kCppK+MyKN7wX82HUW8Tt1/h8wAh3muFqajeXycM7aVziINqGF1x
+ tLRThXn/0IjqO3XTAr8FvFFJIPi366OYDJCMy2w9QMMVY2Ofx/Lq3dZzf44SZEibzPrb
+ AdPw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW+eeCnV/aCyTapfY3hppikkcJlbVBf7OybtZTNK9xGGbTwoRk0wpYZlND1aaY2V4YuCAg7x50Qfx7gwBNwH+8EglACjfA=
+X-Gm-Message-State: AOJu0YzXRPlH/aVfYgPBmIJ8N5Jk29DjyHLgAtKR4PyoTGVbTie3tlRU
+ FhwEaEz/UuNCWFT4bCic0DfPgk+5WNPG6FNn+POt9AUxxKPAToRNNnJnyzICOB58MnGTKQxfZaz
+ apVpxX+OIyc2e2nYWgVcCR1ofxSXC1A9FkhksxQ==
+X-Google-Smtp-Source: AGHT+IEwD7aS4Twe1jNbir9tSyMd8SKhXhCpry9YwHnKsRdOlnHrmeN009dXFd5VUeMQGqrAHMS5MQrIXVC9+QAJYeA=
+X-Received: by 2002:a2e:99d0:0:b0:2d4:3044:9311 with SMTP id
+ l16-20020a2e99d0000000b002d430449311mr6160255ljj.53.1710285073283; Tue, 12
+ Mar 2024 16:11:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20240205165437.1965981-1-andrew@daynix.com>
+ <CABcq3pGy+Lp8YZnMZVC61wu6jDvE0BYj3kuuvuXCA+ewOtJVfg@mail.gmail.com>
+ <CACGkMEs9B+7SEy1naQCQwXQDd7bzRZGjxv2h_QHx8g_az6E=Fg@mail.gmail.com>
+ <CACGkMEvMoK+MZx7WkMzzVpyHw+agac38Td-aVq3Ygwb4jNhXmQ@mail.gmail.com>
+In-Reply-To: <CACGkMEvMoK+MZx7WkMzzVpyHw+agac38Td-aVq3Ygwb4jNhXmQ@mail.gmail.com>
+From: Andrew Melnichenko <andrew@daynix.com>
+Date: Wed, 13 Mar 2024 00:45:45 +0200
+Message-ID: <CABcq3pEqCdha49FAs8knQDcp1RzA6MFxC3zwRU2oyvHcX_7EkA@mail.gmail.com>
+Subject: Re: [PATCH v9 0/5] eBPF RSS through QMP support.
+To: Jason Wang <jasowang@redhat.com>
+Cc: mst@redhat.com, armbru@redhat.com, eblake@redhat.com, 
+ qemu-devel@nongnu.org, berrange@redhat.com, yuri.benditovich@daynix.com, 
+ yan@daynix.com, akihiko.odaki@daynix.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: none client-ip=2a00:1450:4864:20::22e;
+ envelope-from=andrew@daynix.com; helo=mail-lj1-x22e.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,37 +92,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Break up long lines to fit under 80/90 char limit.
+Hi all,
+Apparently, eBPF code from ebpf/* can't be a part of the 'common'
+library - that breaks non-system/user build. I'll change it to be a
+'system' library.
 
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- hw/smbios/smbios.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-index e3d5d8f2e2..949c2d74a1 100644
---- a/hw/smbios/smbios.c
-+++ b/hw/smbios/smbios.c
-@@ -1592,12 +1592,15 @@ void smbios_entry_add(QemuOpts *opts, Error **errp)
-             t = g_new0(struct type9_instance, 1);
-             save_opt(&t->slot_designation, opts, "slot_designation");
-             t->slot_type = qemu_opt_get_number(opts, "slot_type", 0);
--            t->slot_data_bus_width = qemu_opt_get_number(opts, "slot_data_bus_width", 0);
-+            t->slot_data_bus_width =
-+                qemu_opt_get_number(opts, "slot_data_bus_width", 0);
-             t->current_usage = qemu_opt_get_number(opts, "current_usage", 0);
-             t->slot_length = qemu_opt_get_number(opts, "slot_length", 0);
-             t->slot_id = qemu_opt_get_number(opts, "slot_id", 0);
--            t->slot_characteristics1 = qemu_opt_get_number(opts, "slot_characteristics1", 0);
--            t->slot_characteristics2 = qemu_opt_get_number(opts, "slot_characteristics2", 0);
-+            t->slot_characteristics1 =
-+                qemu_opt_get_number(opts, "slot_characteristics1", 0);
-+            t->slot_characteristics2 =
-+                qemu_opt_get_number(opts, "slot_characteristics2", 0);
-             save_opt(&t->pcidev, opts, "pcidev");
-             QTAILQ_INSERT_TAIL(&type9, t, next);
-             return;
--- 
-MST
-
+On Fri, Mar 8, 2024 at 10:06=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
+ote:
+>
+> On Fri, Mar 8, 2024 at 2:30=E2=80=AFPM Jason Wang <jasowang@redhat.com> w=
+rote:
+> >
+> > On Mon, Feb 26, 2024 at 6:23=E2=80=AFPM Andrew Melnichenko <andrew@dayn=
+ix.com> wrote:
+> > >
+> > > Hi all,
+> > > Jason, can you please review the patch set, thank you.
+> >
+> > Queued.
+> >
+> > Thanks
+>
+> This seems to fail CI at:
+>
+> https://gitlab.com/jasowang/qemu/-/jobs/6348725269
+>
+> Please fix this.
+>
+> Thanks
+>
 
