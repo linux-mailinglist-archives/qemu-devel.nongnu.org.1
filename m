@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E63AB879EC8
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:32:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAB2D879ECC
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:33:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkAdj-0006GM-2l; Tue, 12 Mar 2024 18:30:32 -0400
+	id 1rkAeE-0006LD-4k; Tue, 12 Mar 2024 18:31:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAca-0002wp-1Q
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:29:23 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAch-0003gs-RZ
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:29:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAcU-0004eV-Im
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:29:15 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAcY-0004eq-0Z
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:29:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710282554;
+ s=mimecast20190719; t=1710282557;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9Q3ZMhxuiBKQgwWVuadLMzxaLaVsdjhfX4rDv2UGsEo=;
- b=Rt8tTZ6k2tXTHHFO1N39I2xLVWGCx2JCYVhMNLalH1HoWvmNj3/q60BJchiJhacE3R4oFt
- xNyOIU5JNOLNAsGri6ItnqJAJhDnUw/Ksw0vk3uiQMitIt7mnm8jevGfV7h3JTmfvwb/Gy
- KIfCjWdsxH4HgWgORl14AYNAZTY//9s=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5PeMFDO4130XoQfHKpWr48T0PbkJVOHJ4wOnTCp2Y/U=;
+ b=GXDJCBzsDFRXWaKaCgn6GGBCaBXTHPcY/86nM+TvEy1hGeQ9YszuzeqmGop7S7MN7I2r+p
+ x8J5oc4WJaHTFMZMcwj5GSH5RPFXPJe/+KspZIbTLKuKd0ajjrDzRTAOHKvZJzhXEVj3cO
+ jUW18scqc45reW596Kz+eH8BNlnqHpo=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-226-BJLYu9CHOcOKtr9LNGA8zg-1; Tue, 12 Mar 2024 18:29:12 -0400
-X-MC-Unique: BJLYu9CHOcOKtr9LNGA8zg-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a45acc7f191so403167666b.0
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:29:12 -0700 (PDT)
+ us-mta-554-H9iHv4UANqyhMI7SR3RrsQ-1; Tue, 12 Mar 2024 18:29:16 -0400
+X-MC-Unique: H9iHv4UANqyhMI7SR3RrsQ-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-564fec337b1so276122a12.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:29:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710282551; x=1710887351;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9Q3ZMhxuiBKQgwWVuadLMzxaLaVsdjhfX4rDv2UGsEo=;
- b=gTZq3IPy7K1X+LD0Lti+eUyYBhVN+Zkl3hjLzHRTWblmF+2Ymslr6l15NPPtwXM+OH
- pj8cRiA0ePdmHIT+yaA2dOmLaMCEd9vv7UiGl6KxLaHxHBw+OxaH3/6L54iA6i+gaYoY
- uaGGyOxRUAJ3K/p0Eq/3c1M6Tfh4ha9d9oPaAHI2DyFrqwm0iO3jWj2xPQ9sSHN7FMVI
- BeB8Iu0AzGNUlHzMEqAy04bn7qy8oDudYA9rIG6BhQEU0xu/QnDer0LtOImGGY6F1L6/
- VMuIlN24bZ4xEifqrZZuEXSFtemEMFC3FeDzO6HfLpwTuVhIj2ZXvc9fPgU2hmkFCUvq
- Hz8A==
-X-Gm-Message-State: AOJu0YyxZymH5oyYnfQt3YAVNyOO7jXldaasYmuh0c0Y+e6dD4/FjL0a
- /PYoETNXJKONtYttLAmo4LlDl+moAUJW4n0DnntEMAAALLJ4QtVfWIkfWGrdZfz2YEa1RrA6sNS
- jDFIEMW4m4CsaWqrVmA4WI0bqTboIBD/NQYgBclmf5EyuatrG1X/mMDIpp30Rlwnhhp8Qpc9YyJ
- /9MovYzu4l8mT2NxhMTg7I4jQnFbHh/9j0
-X-Received: by 2002:a17:907:8749:b0:a46:2b07:5334 with SMTP id
- qo9-20020a170907874900b00a462b075334mr4717116ejc.48.1710282551071; 
- Tue, 12 Mar 2024 15:29:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGQ07Jy5RT2nxEDcvs+D9Txc5FhbTkeaabAnwIDZRnVrBlgpFrUvVI6LAQOJjHu1D1i5W47bA==
-X-Received: by 2002:a17:907:8749:b0:a46:2b07:5334 with SMTP id
- qo9-20020a170907874900b00a462b075334mr4717103ejc.48.1710282550623; 
- Tue, 12 Mar 2024 15:29:10 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1710282555; x=1710887355;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5PeMFDO4130XoQfHKpWr48T0PbkJVOHJ4wOnTCp2Y/U=;
+ b=eKUOa39jXAfXrlEPA5b9RYcjN7a6rzj+LJiT6CbVjdXjkogqxw6xCt1urXzLaSN6vY
+ rF8pKiuaDQMd/2C6suJRZFA0NXyevf4qzL9b1ig0DHB3XtUkviyZwhoSBvx9dtgxmJwJ
+ 52sXZ/l517CO2d3yU1RIFggAml/0GBlYfYA+lOIjzF1Hy/nAYWnp5d8bPTYriAUeqPtD
+ FrqRyDNmUO4dOyfo5fPD4dwx3T0QaWhGT9pDI24l989hU1++iWBEc3OSKmltV8RqooKS
+ JMHxti85O3HTJDoYMt1cpomMaIVDUV7oOMSleE55795BgK+WmCB8Tu5mTcE1r00QmF5G
+ 9giQ==
+X-Gm-Message-State: AOJu0Yy2GhUMPqi2XDVkaDxlPKvNo/uPRRibwbDl+LVuEFImc1PkkVSO
+ jcrBTdcLfmU2EskSayYJCRLG2SyfE+rR/CWGSW16EykiUVtAJObz5/wLJ8QzQyul42Wd1YRPObi
+ JGsXixGENaszjTSGEjKaB/KW3+eHEyqHcdNyrF4IScZURqlUdMTmfLPQS4OJ2OFNmln2yngqNhB
+ bhFBl2B1xnsgkAQPb3gADeJ3mC6lgeLhHC
+X-Received: by 2002:a17:906:6d4a:b0:a46:38aa:a649 with SMTP id
+ a10-20020a1709066d4a00b00a4638aaa649mr745271ejt.34.1710282554844; 
+ Tue, 12 Mar 2024 15:29:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGbwlQGCQgW49cMn3mEBZA0YljSpO2uGzdfkTp0+iwD9p2uJjuSB+9NCod5iLFMNAzQPtOKjQ==
+X-Received: by 2002:a17:906:6d4a:b0:a46:38aa:a649 with SMTP id
+ a10-20020a1709066d4a00b00a4638aaa649mr745256ejt.34.1710282554487; 
+ Tue, 12 Mar 2024 15:29:14 -0700 (PDT)
 Received: from redhat.com ([2.52.134.16]) by smtp.gmail.com with ESMTPSA id
- gh16-20020a170906e09000b00a45380dfd09sm4218155ejb.105.2024.03.12.15.29.09
+ n3-20020a170906118300b00a451e507cfcsm4218421eja.52.2024.03.12.15.29.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 15:29:10 -0700 (PDT)
-Date: Tue, 12 Mar 2024 18:29:07 -0400
+ Tue, 12 Mar 2024 15:29:13 -0700 (PDT)
+Date: Tue, 12 Mar 2024 18:29:10 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
-Subject: [PULL 67/68] hw/cxl: Fix missing reserved data in CXL Device DVSEC
-Message-ID: <bfc2f7a6caa6843e50019ee2511ad11cd5582711.1710282274.git.mst@redhat.com>
+ Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 68/68] docs/specs/pvpanic: document shutdown event
+Message-ID: <73279cecca03f7c2b4489c5fea994e7349eaafaa.1710282274.git.mst@redhat.com>
 References: <cover.1710282274.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1710282274.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -99,42 +102,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Thomas Weißschuh <thomas@t-8ch.de>
 
-The r3.1 specification introduced a new 2 byte field, but
-to maintain DWORD alignment, a additional 2 reserved bytes
-were added. Forgot those in updating the structure definition
-but did include them in the size define leading to a buffer
-overrun.
+Shutdown requests are normally hardware dependent.
+By extending pvpanic to also handle shutdown requests, guests can
+submit such requests with an easily implementable and cross-platform
+mechanism.
 
-Also use the define so that we don't duplicate the value.
-
-Fixes: Coverity ID 1534095 buffer overrun
-Fixes: 8700ee15de ("hw/cxl: Standardize all references on CXL r3.1 and minor updates")
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20240308143831.6256-1-Jonathan.Cameron@huawei.com>
+Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
+Message-Id: <20240310-pvpanic-shutdown-spec-v1-1-b258e182ce55@t-8ch.de>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/cxl/cxl_pci.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ docs/specs/pvpanic.rst | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/hw/cxl/cxl_pci.h b/include/hw/cxl/cxl_pci.h
-index 265db6c407..d0855ed78b 100644
---- a/include/hw/cxl/cxl_pci.h
-+++ b/include/hw/cxl/cxl_pci.h
-@@ -92,8 +92,9 @@ typedef struct CXLDVSECDevice {
-     uint32_t range2_base_hi;
-     uint32_t range2_base_lo;
-     uint16_t cap3;
-+    uint16_t resv;
- } QEMU_PACKED CXLDVSECDevice;
--QEMU_BUILD_BUG_ON(sizeof(CXLDVSECDevice) != 0x3A);
-+QEMU_BUILD_BUG_ON(sizeof(CXLDVSECDevice) != PCIE_CXL_DEVICE_DVSEC_LENGTH);
+diff --git a/docs/specs/pvpanic.rst b/docs/specs/pvpanic.rst
+index f894bc1955..61a80480ed 100644
+--- a/docs/specs/pvpanic.rst
++++ b/docs/specs/pvpanic.rst
+@@ -29,6 +29,8 @@ bit 1
+   a guest panic has happened and will be handled by the guest;
+   the host should record it or report it, but should not affect
+   the execution of the guest.
++bit 2
++  a regular guest shutdown has happened and should be processed by the host
  
- /*
-  * CXL r3.1 Section 8.1.5: CXL Extensions DVSEC for Ports
+ PCI Interface
+ -------------
 -- 
 MST
 
