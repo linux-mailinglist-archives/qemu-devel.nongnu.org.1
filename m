@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B87DE879BC2
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 19:42:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE0D0879BC8
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 19:42:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk74H-0000S0-Le; Tue, 12 Mar 2024 14:41:41 -0400
+	id 1rk74H-0000R7-7z; Tue, 12 Mar 2024 14:41:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rk741-0000LI-Sx
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:41:27 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1rk743-0000M3-PY
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:41:29 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rk740-0001MJ-FC
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:41:25 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1dd8d586126so2017965ad.0
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 11:41:24 -0700 (PDT)
+ id 1rk741-0001Mg-Vg
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:41:27 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1dd6198c4e2so42112265ad.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 11:41:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710268883; x=1710873683; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710268885; x=1710873685; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=W8vhO1WDf0+YkBR/iCx/R6UcOGD7cvxq9c3tWVgAEV4=;
- b=UWk8Uy+zxiKaFc+TDbuBEkUT++UwrcCRM5ziy18KT2qAMFFbc52Hnlw63xXMx7PRIC
- XaFU4614XtGP5X88xk9gtnR09LI+vwfdiV1cWOkYZWYRduTyZq1T9ss+CxNaCdZz/8Nl
- G0PidEi6FR1f9GC2YFT8G+rbFiA8MhxOGoeMUxzONrEwOgutL2XOgi8JIz/AFA1+VNvI
- CYv+6qoEGifwqf0mK0CM4IiNjLblnvdtc3cHXlRRyXS2PjwLgRAfkzluhgJXepfmIEWi
- ImiCkm8a7unWgu0JW4rgyLNHzE14mNif2wmPRnitXF6lL3r2anrs9v+vnPtUT6UOaQBu
- 4CAg==
+ bh=y8yJZyZJiNVVbuKzyGfMGin5zE/uxoHiQcze56MZlR4=;
+ b=KZNt0slGng7poeIOdYs+yobdIjOy+smH+WzuHHgnax6BF9psn6o5rTjpZk+IoHRlsf
+ ggMpWQlm2+x3PgwgN8Y6Y3jlukd4fFATURSPR91iPiP8ERxmYudOwiQKqapCmtgv9veC
+ M8Wj37THjKcVQGRlqtz8o7JF1aq6tNa7dG8bm9fpmkH/tC9miLHW4cQR6UcHC0pTBtLy
+ kMCe94t2b/YSLdKPbIXvw8sLWQy57OGVvrA/fCrI5ndzxDABOZ+mprP3Htsy+epxyA1I
+ MSCG0kyFQgV0GoStIKSSP0fAwqVuJZDLSQKC6zc3lA6hCeXYAH/aMZGEgblZdPR+kK/G
+ 6Uow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710268883; x=1710873683;
+ d=1e100.net; s=20230601; t=1710268885; x=1710873685;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=W8vhO1WDf0+YkBR/iCx/R6UcOGD7cvxq9c3tWVgAEV4=;
- b=A5MVmtYjdJoPLNerMokLPupaKBZpC2DUeou/V7i2cCgpWRJ02VVGGuDF7xoUG7Z3up
- igBluuzRwFt018WjsZ38Pxpz2bVWS7tWw7DHNa/r3g9+75ceGoe4kLpFFdEZxl5fbkqW
- poOHZkgKZeK6SXKDrWrg+dwJnOqKFFsFIPHfCG1BRYtZdVMzx4giwfwXlCe5G+DmzEQh
- JV83dXAscAPDKbdI0/irNuAWvgHjiH4mHjUV5UISKtLJfQgRzZe5/Ja3yDk7hOi6CCAe
- 4Qtle1w5vCrDYdF5pFFaUgPa7IDpoMCB6p3LGAM6kBSh7LThzAM8R7UFwqGoYbqXEyD7
- kSrA==
-X-Gm-Message-State: AOJu0Yxr1MKLFg/HclyS5KsGlJVyVvvVlmzl71CFg+kTJjRywsUxj08A
- pVPDt/43BERVCcOilziAQV6iMQr6ZjJl6cDV1ykP8e9XWvcKQN9EDSfBy84JHH8W4OP+tRpwR2p
- o
-X-Google-Smtp-Source: AGHT+IEU+pyNZVpa1n1RM/GtoQ8LLz7HxxQw5TaZ2ZbibbdLPUBwFF4MAZqbeosPWTVwEy39wn8FgA==
-X-Received: by 2002:a17:903:2441:b0:1dd:63e2:2478 with SMTP id
- l1-20020a170903244100b001dd63e22478mr5745106pls.57.1710268883176; 
- Tue, 12 Mar 2024 11:41:23 -0700 (PDT)
+ bh=y8yJZyZJiNVVbuKzyGfMGin5zE/uxoHiQcze56MZlR4=;
+ b=S7AgAvxgukahheNrdbB15KkGXkbE1/F9HVMiOfPF2kj4OpGbpOHDlmlDFZ8LfJC8Rt
+ n+vwWCyalOj+V25Y977QMbfonwugJ/QhnD+c7kU3ZhiRyVRWKlMpL3pI6gV+pf9QeaHX
+ WmWBX3jLW4d+21vC4Fqm7iatwLQ7qPnyQNBQEG9vOxQqSl/Tg/4PlNjPeD8M93g/y9Zr
+ dOp1LZhVAwVFfZV8mtZgv8fxKAUAncPVER1rWuWLyh1i3s6zOGDK1+cffjN8CDFZLGDX
+ OOy955jasrnpMGT+xHy94wLUGrf3Arl7qQs1Q1HVEZuMumBVhrhWhgFmk74AqROB98JU
+ yXBQ==
+X-Gm-Message-State: AOJu0Yxq+53mh4hh/XjgbMTM46gaWQw/FxOdlDDdrVlWv56Yk4oUJ+Lh
+ r+613E13v4NKT2VfI4y55q46gFVjD8AOz80BpHlyZTAfHyECcbsbntR9rSY5QX3Is2RCVrMRNXz
+ e
+X-Google-Smtp-Source: AGHT+IGf+U777NCt5vIKm1BsY+fov+23IUuEjlcYgPW+9qj2VVXSLBCD76nMGW88q3w+m/6MIoxxJQ==
+X-Received: by 2002:a17:902:d583:b0:1dd:72ea:58cd with SMTP id
+ k3-20020a170902d58300b001dd72ea58cdmr16199160plh.3.1710268884703; 
+ Tue, 12 Mar 2024 11:41:24 -0700 (PDT)
 Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
  by smtp.gmail.com with ESMTPSA id
- b11-20020a170903228b00b001dca40bb727sm6951739plh.88.2024.03.12.11.41.22
+ b11-20020a170903228b00b001dca40bb727sm6951739plh.88.2024.03.12.11.41.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 11:41:22 -0700 (PDT)
+ Tue, 12 Mar 2024 11:41:24 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 4/8] linux-user: Implement PR_GET_TID_ADDRESS
-Date: Tue, 12 Mar 2024 08:41:11 -1000
-Message-Id: <20240312184115.365415-5-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 5/8] linux-user/elfload: Don't close an unopened file descriptor
+Date: Tue, 12 Mar 2024 08:41:12 -1000
+Message-Id: <20240312184115.365415-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240312184115.365415-1-richard.henderson@linaro.org>
 References: <20240312184115.365415-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,29 +93,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes Coverity CID: 1534964
+Fixes: 106f8da664 ("linux-user/elfload: Open core file after vma_init")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ linux-user/elfload.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 4871c4b648..e12d969c2e 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -6468,8 +6468,10 @@ static abi_long do_prctl(CPUArchState *env, abi_long option, abi_long arg2,
-         }
- 
-     case PR_GET_TID_ADDRESS:
--        /* TODO */
--        return -TARGET_EINVAL;
-+        {
-+            TaskState *ts = env_cpu(env)->opaque;
-+            return put_user_ual(ts->child_tidptr, arg2);
-+        }
- 
-     case PR_GET_FPEXC:
-     case PR_SET_FPEXC:
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 4dbca05646..26d4c1d6b3 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -4522,7 +4522,9 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+     ret = -errno;
+     mmap_unlock();
+     cpu_list_unlock();
+-    close(fd);
++    if (fd >= 0) {
++        close(fd);
++    }
+     return ret;
+ }
+ #endif /* USE_ELF_CORE_DUMP */
 -- 
 2.34.1
 
