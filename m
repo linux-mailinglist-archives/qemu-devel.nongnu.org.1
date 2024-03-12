@@ -2,82 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1E7878FFB
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 09:51:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8701987905F
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 10:07:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjxqU-0004HL-1F; Tue, 12 Mar 2024 04:50:50 -0400
+	id 1rjy5z-0004gO-RF; Tue, 12 Mar 2024 05:06:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjxqM-00047F-Gu
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:50:44 -0400
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1rjy5n-0004fi-AS; Tue, 12 Mar 2024 05:06:40 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjxqJ-0005n0-NZ
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:50:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710233440; x=1741769440;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=tA7oWp+GjC17n46OR1Cu4CFWGzTsKORFW9MJUrRGwSc=;
- b=SKwdfOai2WmSwpkUrsxlT3CMKXELFfDw7M9W8psv3RqRHwKWwmpIU4Vf
- i5CeL3s6hufPaDl0YRE2mXHZnv292ijqcCb0RA/ZLKF/hHEEy+T6EP3yq
- KerZlWVa3pKjHi7aQUoXjZ87jx6wSVyk9Ci0+2z9bJ5SIX3ij2Pqu6HIe
- KAcfU8OxaUbb96qkytaje4mkxxfCc72peDBSiiZpyl05Nuq21JP7r021f
- UkVoQMAhzmFZk4OZlb31J+lV9jOUuGOBhojbcDK8yOMRMWxt8lyd44O0x
- 7SNEsfJqiADXEqV9kSUscT4VjYUKYzgEKt7HHm/chimutFVuHLLQUuHsl g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="27403845"
-X-IronPort-AV: E=Sophos;i="6.07,118,1708416000"; d="scan'208";a="27403845"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2024 01:50:37 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,118,1708416000"; d="scan'208";a="16043565"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 12 Mar 2024 01:50:31 -0700
-Date: Tue, 12 Mar 2024 17:04:21 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>,
- Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, Robert Hoo <robert.hu@linux.intel.com>
-Subject: Re: [PATCH v9 06/21] i386/cpu: Use APIC ID info to encode cache topo
- in CPUID[4]
-Message-ID: <ZfAalR49aErs2/M1@intel.com>
-References: <20240227103231.1556302-1-zhao1.liu@linux.intel.com>
- <20240227103231.1556302-7-zhao1.liu@linux.intel.com>
- <c88ee253-f212-4aa7-9db9-e90a99a9a1e3@intel.com>
- <Ze23y7UzGxnsyo6O@intel.com>
- <164e9fe1-c89d-4354-a7f7-a565c624934e@intel.com>
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1rjy5l-0008PU-Cf; Tue, 12 Mar 2024 05:06:39 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 42C8WoDu003672; Tue, 12 Mar 2024 09:06:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=iyZdgENo+MzeChYfW62BYgBOUa+9ixXK4d5CikQHVK8=;
+ b=ldB6MTEKEbhhfZjoMNovy2x47ZU+3MnhXlMeWe0DMjxtXLd8JbcWnr6Uve9afj5hIEmQ
+ 9/Gjgvx6Fi7HOgcmgz++mgYUSIbPd0Lupd4rtGGiGO/w9WMBY5siVMFVPtHvPzbyCtJq
+ c6n2hZY7/r5e/lP8lZbDcjX+EzXH+0Y1b4nwZ7LayJfY4wQD7TNaag2CnjVaZJoYymaG
+ noBU3hAUZBaEzTwflqo/kc0ZlOxtvUXlhTECl0l156WRyXHxDPRYBEDefYzya6BmJqgN
+ 7YoOajdRq6zfbhNRbcorWugo8OTpx1VQUU/wD7kwSqMK7UnZJ3FnwO0FEMoKkDo5lbP2 8A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wtkmsgdru-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Mar 2024 09:06:28 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42C8fwxV025092;
+ Tue, 12 Mar 2024 09:06:28 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wtkmsgdrd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Mar 2024 09:06:28 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 42C7sfsl018557; Tue, 12 Mar 2024 09:06:27 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ws4t1wj91-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Mar 2024 09:06:27 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 42C96PIR32834038
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 12 Mar 2024 09:06:27 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C71775806A;
+ Tue, 12 Mar 2024 09:06:23 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F05DF5807F;
+ Tue, 12 Mar 2024 09:06:21 +0000 (GMT)
+Received: from [9.109.243.35] (unknown [9.109.243.35])
+ by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 12 Mar 2024 09:06:21 +0000 (GMT)
+Message-ID: <7fd9a5be-b998-4a58-a98d-da587a9f7fa8@linux.ibm.com>
+Date: Tue, 12 Mar 2024 14:36:20 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <164e9fe1-c89d-4354-a7f7-a565c624934e@intel.com>
-Received-SPF: none client-ip=198.175.65.9;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/13] ppc: Drop support for POWER9 and POWER10 DD1 chips
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>
+References: <20240311185200.2185753-1-npiggin@gmail.com>
+ <20240311185200.2185753-2-npiggin@gmail.com>
+ <5f8b269f-1f43-42ab-b4bf-d0314b739493@linux.ibm.com>
+ <d1b34bf3-e9b7-48e6-9e46-ec396068b888@linux.ibm.com>
+ <CZRNC9YHEMML.VNDNEAS6FEG2@wheely>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <CZRNC9YHEMML.VNDNEAS6FEG2@wheely>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: XMBnScB14I6kYLI_GKVoQzMFaE33KxPW
+X-Proofpoint-GUID: 7p4Iycbt0cvMXo_QD4TTLp-2rlPf33Q3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-12_08,2024-03-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0
+ spamscore=0 mlxscore=0 lowpriorityscore=0 priorityscore=1501 adultscore=0
+ bulkscore=0 malwarescore=0 mlxlogscore=789 suspectscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2403120070
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,57 +117,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Mar 11, 2024 at 05:03:02PM +0800, Xiaoyao Li wrote:
-> Date: Mon, 11 Mar 2024 17:03:02 +0800
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: Re: [PATCH v9 06/21] i386/cpu: Use APIC ID info to encode cache
->  topo in CPUID[4]
-> 
-> On 3/10/2024 9:38 PM, Zhao Liu wrote:
-> > Hi Xiaoyao,
-> > 
-> > > >                case 3: /* L3 cache info */
-> > > > -                die_offset = apicid_die_offset(&topo_info);
-> > > >                    if (cpu->enable_l3_cache) {
-> > > > +                    addressable_threads_width = apicid_die_offset(&topo_info);
-> > > 
-> > > Please get rid of the local variable @addressable_threads_width.
-> > > 
-> > > It is truly confusing.
-> > 
-> > There're several reasons for this:
-> > 
-> > 1. This commit is trying to use APIC ID topology layout to decode 2
-> > cache topology fields in CPUID[4], CPUID.04H:EAX[bits 25:14] and
-> > CPUID.04H:EAX[bits 31:26]. When there's a addressable_cores_width to map
-> > to CPUID.04H:EAX[bits 31:26], it's more clear to also map
-> > CPUID.04H:EAX[bits 25:14] to another variable.
-> 
-> I don't dislike using a variable. I dislike the name of that variable since
-> it's misleading
 
-Names are hard to choose...
 
+On 3/12/24 14:29, Nicholas Piggin wrote:
+> On Tue Mar 12, 2024 at 2:55 PM AEST, Harsh Prateek Bora wrote:
+>>
+>>
+>> On 3/12/24 10:20, Harsh Prateek Bora wrote:
+>>>
+>>>
+>>> On 3/12/24 00:21, Nicholas Piggin wrote:
+>>>> The POWER9 DD1 and POWER10 DD1 chips are not public and are no longer of
+>>>> any use in QEMU. Remove them.
+>>>>
+>>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>>> ---
+>>>>    hw/ppc/spapr_cpu_core.c |  2 --
+>>>>    target/ppc/cpu-models.c |  4 ----
+>>>>    target/ppc/cpu_init.c   |  7 ++-----
+>>>>    target/ppc/kvm.c        | 11 -----------
+>>>>    4 files changed, 2 insertions(+), 22 deletions(-)
+>>>
+>>> Do we want to squash in removal of the macro as well?
+>>>
+>>
+>> <snip>
+>> Actually both, correcting diff:
+>>
+>> diff --git a/target/ppc/cpu-models.h b/target/ppc/cpu-models.h
+>> index 0229ef3a9a..7d89b41214 100644
+>> --- a/target/ppc/cpu-models.h
+>> +++ b/target/ppc/cpu-models.h
+>> @@ -348,11 +348,9 @@ enum {
+>>        CPU_POWERPC_POWER8NVL_BASE     = 0x004C0000,
+>>        CPU_POWERPC_POWER8NVL_v10      = 0x004C0100,
+>>        CPU_POWERPC_POWER9_BASE        = 0x004E0000,
+>> -    CPU_POWERPC_POWER9_DD1         = 0x004E1100,
+>>        CPU_POWERPC_POWER9_DD20        = 0x004E1200,
+>>        CPU_POWERPC_POWER9_DD22        = 0x004E1202,
+>>        CPU_POWERPC_POWER10_BASE       = 0x00800000,
+>> -    CPU_POWERPC_POWER10_DD1        = 0x00801100,
+>>        CPU_POWERPC_POWER10_DD20       = 0x00801200,
+>>        CPU_POWERPC_970_v22            = 0x00390202,
+>>        CPU_POWERPC_970FX_v10          = 0x00391100,
 > 
-> > 2. All these 2 variables are temporary in this commit, and they will be
-> > replaed by 2 helpers in follow-up cleanup of this series.
+> That would make sense, but we do seem to use this list as somewhat of a
+> reference or at least historic graveyard too (note all the other CPUs we
+> no longer support). So I was going to just leave them there.
+
+Oh ok, in that case, it's fine.
+
+regards,
+Harsh
 > 
-> you mean patch 20?
-> 
-> I don't see how removing the local variable @addressable_threads_width
-> conflicts with patch 20. As a con, it introduces code churn.
-
-Yes...I prefer to wrap it in variables in advance, then the meaning of
-the fields is clearer I think.
-
-> > 3. Similarly, to make it easier to clean up later with the helper and
-> > for more people to review, it's neater to explicitly indicate the
-> > CPUID.04H:EAX[bits 25:14] with a variable here.
-> 
-> If you do want keeping the variable. Please add a comment above it to
-> explain the meaning.
->
-
-OK, I'll add comments for both 2 variables. Thanks!
-
+> Thanks,
+> Nick
 
