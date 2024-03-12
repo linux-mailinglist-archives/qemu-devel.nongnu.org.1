@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3624387968A
+	by mail.lfdr.de (Postfix) with ESMTPS id 6066087968C
 	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 15:41:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk3HN-0003VW-Lm; Tue, 12 Mar 2024 10:38:57 -0400
+	id 1rk3HO-0003Vw-1Q; Tue, 12 Mar 2024 10:38:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rk3HL-0003V5-P2
+ id 1rk3HL-0003V3-KR
  for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:38:55 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rk3HD-0007iF-2E
+ id 1rk3HD-0007iL-Qb
  for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:38:55 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6e6b22af648so37799b3a.0
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 07:38:44 -0700 (PDT)
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-5dc949f998fso5126932a12.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 07:38:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710254323; x=1710859123; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=R0UZa/Kqkq/XhvVg7z6ft3YJNiymrdk7cLXPp9kdhQ8=;
- b=XMiJaYQKXE7U1o0j3zvC0nec5mmGjYPKjzok/U4Oqug7Df7cDX/soPFn3XfGK5X6bk
- uiChtZWQ4sPiv87/9uW+O8vWoOyZypgA7xsjD4n29Sr9/buKL++1dT2a/1yT54Oa6/2S
- g+O/fMinehqvpM2rRg3TrxX5Vd8Oplnlvg75C18jr7VQm3TnxYar7UeWKFt687V0OpJX
- x1+TzPBVWS36uzTuD/oHCSq6NUc0c2Csjh2+FWQiyWRVwsrceh13rU3ulrMLgbis7bix
- hLvpnBt51DdFHjcsczp14F6fLA3bhl8MvX8FCDLLR+5msH6dJ2311sRuiKWkcO4R249h
- FLvg==
+ d=linaro.org; s=google; t=1710254325; x=1710859125; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=+H4gb0JZklIT8hGflGjARBk523KJUlTbHGv63Qa3NVo=;
+ b=L5VtP5TBMzfW6z190PqZObdPrXZIvMQGknkJRBgCmYZ8hK4Gh3GItTE6o0YsZFraWe
+ hS3Mhk6SqH8rtEsrOiq7yaMabTkogJn7OT04tqudTAyu/C/cKtUIueKQXwaN9LZqP7S/
+ TeXW/y6wvandxsE5gtQ6AneyuQSazMOq3ULbkIiGPygZzvy9NRai0OXnqbEc7c64DOBx
+ thyOoPEIpjc2qTbf4ejw6OgCGHF9ShnOvSnk6eiUQ3iz4KDeVBjWG9XRRPc7PFnkwqF4
+ 5t3H2Ca6unZ63//zI/E5c5Hod/OoYsLf1ISjOebfxggWrPelL1WQK9/e96Fu7I8nOBRj
+ XFAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710254323; x=1710859123;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=R0UZa/Kqkq/XhvVg7z6ft3YJNiymrdk7cLXPp9kdhQ8=;
- b=YM0V2l/j8WpUJqTeFaPvtdXFzet4178fYKDDOFHGUU1XY58G3bbnSXDnyMJ3wVl4bt
- zG+sw84Mdp7FsuaxL1gHyCT4B5FsszivDu3jgpCpwCXLUyFAIgtI2/n7uDfKVu4e9CnQ
- ewsI6c8OfXx/bDv+BHtzSfOaGuKUM6hYTdcrsGm+U+hi36KCE4DzEtPc1rIKtYhd7HqU
- qbweQx7PG640SyLJiaSKQUFtMac5g/XzfbSHcaCwpwqeueYCpZMT3B9nZD0LI7BaOqeo
- mpbWoF1QYuk3s1hAaJr6BJQGFqMOJTuaHfd0TeGohEc7pwD0pk1eYKSTW/+VFOcPVEiu
- AY6w==
-X-Gm-Message-State: AOJu0YwhLebC1X0Mx6/dzZOYLBae/RyIIssG8Yn4k3H8xfjSpjP1dTZo
- Mlx7rjma870AEJAnxdO1f34Ullsfcjcjmksp/mpPA+3n4TMgmmJUYYT4TZD3ULbnojiA+ixPMCI
- 1
-X-Google-Smtp-Source: AGHT+IHJFyWXCQF1B6FPOBD9OUtT9kTq2qgjT0DcxE7A/VV0qmAO50OLMnBie3tOrC0ZCZmqd1Ue7g==
-X-Received: by 2002:a17:90a:f40d:b0:29b:a1de:32d3 with SMTP id
- ch13-20020a17090af40d00b0029ba1de32d3mr15086588pjb.17.1710254323601; 
- Tue, 12 Mar 2024 07:38:43 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1710254325; x=1710859125;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=+H4gb0JZklIT8hGflGjARBk523KJUlTbHGv63Qa3NVo=;
+ b=FiSMXem3GjD6O8DKgIkFYUBZ322j2p2zFcETEMmXc3cdF00XKX8AX+lfosjB1UsVn2
+ PqlYYc1zPW94It7JmTrBqVN9t4+4KoQp+qSA0Gw2i2886ft6ThR4y9jW48T5G9TouMQU
+ 6kZDiiHc3ig4dviLkuBqMpTpPMgjPq69sXBbOAOqdPa2SifjwHbcJhVTNiiL5HYwwNWT
+ 1uLa/GopWsqIWTwHL7/lP75h3so3j5/Kdv02BXAvktz1/0xEBey7KqyO4ZUp43SGZ+yV
+ YAmoQAOPUy77uz8bZKWNhb5CTBOS2Ee3AngYIBlyLC2QsJjA2JslIgdh6X+6voizM5FH
+ LTKg==
+X-Gm-Message-State: AOJu0YyI5uZ6dleuaSu6hNhcF9mtZOyx5TQc5sg8pvkPAX1zeRnxxUQm
+ Uf0G1ND3YAQ23REZqGDWMGgCf1IMLQRabKnyfzp47EgT0SbH/CP+mc5RKtbCORf77oCNvl4WUAy
+ A
+X-Google-Smtp-Source: AGHT+IGTpWip/BLsisPEtx6zSjrRYDA9hCDrR8obtFb2GrDS7YZvoENFAVJrNYKU8yoxignOJ8dS9Q==
+X-Received: by 2002:a17:90a:390c:b0:29b:a509:30aa with SMTP id
+ y12-20020a17090a390c00b0029ba50930aamr2148609pjb.14.1710254324815; 
+ Tue, 12 Mar 2024 07:38:44 -0700 (PDT)
 Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
  by smtp.gmail.com with ESMTPSA id
- jx15-20020a17090b46cf00b0029baa0b1a6csm7492214pjb.24.2024.03.12.07.38.42
+ jx15-20020a17090b46cf00b0029baa0b1a6csm7492214pjb.24.2024.03.12.07.38.43
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 07:38:43 -0700 (PDT)
+ Tue, 12 Mar 2024 07:38:44 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH for-9.1 00/15] tcg: Canonicalize operations during optimize
-Date: Tue, 12 Mar 2024 04:38:24 -1000
-Message-Id: <20240312143839.136408-1-richard.henderson@linaro.org>
+Subject: [PATCH 01/15] tcg/optimize: Fold andc with immediate to and
+Date: Tue, 12 Mar 2024 04:38:25 -1000
+Message-Id: <20240312143839.136408-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240312143839.136408-1-richard.henderson@linaro.org>
+References: <20240312143839.136408-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,54 +91,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a follow-on to 6334a968eec3 ("tcg/optimize: Canonicalize
-subi to addi during optimization"), which I wrote at the end of
-the previous devel cycle, then forgot about during the current.
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tcg/optimize.c | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-In addition to sub->add, canonicalize andc->and etc.
-
-The early expansion that we produce for deposit does not fold
-constants well; expand unsupported deposit during optimize.
-
-
-r~
-
-
-Richard Henderson (15):
-  tcg/optimize: Fold andc with immediate to and
-  tcg/optimize: Fold orc with immediate to or
-  tcg/optimize: Fold eqv with immediate to xor
-  tcg/i386: Do not accept immediate operand for andc
-  tcg/aarch64: Do not accept immediate operand for andc, orc, eqv
-  tcg/arm: Do not accept immediate operand for andc
-  tcg/ppc: Do not accept immediate operand for andc, orc, eqv
-  tcg/loongarch64: Do not accept immediate operand for andc, orc
-  tcg/s390x: Do not accept immediate operand for andc, orc
-  tcg/riscv: Do not accept immediate operand for andc, orc, eqv
-  tcg/riscv: Do not accept immediate operands for sub
-  tcg/riscv: Do not accept zero operands for logicals, multiply or
-    divide
-  tcg/optimize: Fold and to extu during optimize
-  tcg: Use arg_is_const_val in fold_sub_to_neg
-  tcg/optimize: Lower unsupported deposit during optimize
-
- tcg/i386/tcg-target-con-set.h        |   3 +-
- tcg/i386/tcg-target-con-str.h        |   1 -
- tcg/loongarch64/tcg-target-con-set.h |   2 +-
- tcg/loongarch64/tcg-target-con-str.h |   1 -
- tcg/riscv/tcg-target-con-set.h       |   4 +-
- tcg/riscv/tcg-target-con-str.h       |   2 -
- tcg/optimize.c                       | 318 +++++++++++++++++++++++----
- tcg/tcg-op.c                         | 244 +++++---------------
- tcg/aarch64/tcg-target.c.inc         |  50 ++---
- tcg/arm/tcg-target.c.inc             |   6 +-
- tcg/i386/tcg-target.c.inc            |  20 +-
- tcg/loongarch64/tcg-target.c.inc     |  31 +--
- tcg/ppc/tcg-target.c.inc             |  32 +--
- tcg/riscv/tcg-target.c.inc           |  58 +----
- tcg/s390x/tcg-target.c.inc           |  56 +----
- 15 files changed, 393 insertions(+), 435 deletions(-)
-
+diff --git a/tcg/optimize.c b/tcg/optimize.c
+index 752cc5c56b..2ec52df368 100644
+--- a/tcg/optimize.c
++++ b/tcg/optimize.c
+@@ -1324,17 +1324,23 @@ static bool fold_andc(OptContext *ctx, TCGOp *op)
+ 
+     z1 = arg_info(op->args[1])->z_mask;
+ 
+-    /*
+-     * Known-zeros does not imply known-ones.  Therefore unless
+-     * arg2 is constant, we can't infer anything from it.
+-     */
+     if (arg_is_const(op->args[2])) {
+-        uint64_t z2 = ~arg_info(op->args[2])->z_mask;
+-        ctx->a_mask = z1 & ~z2;
+-        z1 &= z2;
+-    }
+-    ctx->z_mask = z1;
++        uint64_t val = ~arg_info(op->args[2])->val;
+ 
++        /* Fold andc r,x,i to and r,x,~i. */
++        op->opc = (ctx->type == TCG_TYPE_I32
++                   ? INDEX_op_and_i32 : INDEX_op_and_i64);
++        op->args[2] = arg_new_constant(ctx, val);
++
++        /*
++         * Known-zeros does not imply known-ones.  Therefore unless
++         * arg2 is constant, we can't infer anything from it.
++         */
++        ctx->a_mask = z1 & ~val;
++        z1 &= val;
++    }
++
++    ctx->z_mask = z1;
+     ctx->s_mask = arg_info(op->args[1])->s_mask
+                 & arg_info(op->args[2])->s_mask;
+     return fold_masks(ctx, op);
 -- 
 2.34.1
 
