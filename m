@@ -2,96 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 937C4879C6F
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 20:55:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68771879CB4
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 21:16:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk8C4-0001g4-94; Tue, 12 Mar 2024 15:53:48 -0400
+	id 1rk8X3-0001mH-2W; Tue, 12 Mar 2024 16:15:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rk8Bz-0001fe-K0
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 15:53:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rk8Bw-00068G-GT
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 15:53:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710273219;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=YPce8+PUPJlFhGHUdxA77BN+a2S6zQKvoy4P0HGC2oo=;
- b=KskywSy8gNl0ujLpoke9ZetqjTFLc5Ns08XrMSIxerLKa6z/Jxein6Lq4VZ2+tdkaX4pDf
- wKhbRGeiU8Y/3EbfC/Agu7oZ42NtzJfzrAYfBANs1cyP+HIrkWyIXbpXpkLUd6s4tkSNr7
- HFyk24jGBYjrYjwr3Lv3g4m0HC5EkU8=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-225-yvM5XZG0NW2ROAYGsmBoKg-1; Tue, 12 Mar 2024 15:53:38 -0400
-X-MC-Unique: yvM5XZG0NW2ROAYGsmBoKg-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a448cfe2266so485241566b.2
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 12:53:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rk8Wp-0001lo-IW
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 16:15:15 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rk8Wl-0001JH-OD
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 16:15:12 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-33e9623c3a8so205916f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 13:15:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1710274503; x=1710879303; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=mHESGhfLSlYehDJfOaQNs3o0t0nyr1FSmJX5b5N9tss=;
+ b=e1Yc6XCqhUc1m32uJpkjIOer3Wa3w1VjJRrY9fV50NhhNGNyxBnBwhkX/KJQM1aGOz
+ XzkEFYgj1tjC1gbZ7vukQmQ46uEhyJn3JV9xBz1IpZacAxfa2hxkIIszrbHl6vF6FRPG
+ VsBHge1f1XHLKDsNCdLeQ6EsyAeLcsI4DlIM6xI9JSu+IvsaU6viV8MpTD0668TmYZ06
+ JpdMDIQfe+b1cdOS5Izvxi050vmcHc/pa98ojTNu2YeeaEMVv701PgvrcPxrr7tFXPtE
+ 7Rkv/e36x+gzElk4iorHK/sBQtb4SPq/dzXWc4FBodKibu8ZmES/jUV2t30rL9JKzNzA
+ 6uyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710273217; x=1710878017;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YPce8+PUPJlFhGHUdxA77BN+a2S6zQKvoy4P0HGC2oo=;
- b=RcS/zuEZ0uYLLpVb0vVGc7MDgBi53GWmuWgge2J3MH+eLvB9w6mqyIF8sSbzErClJZ
- 98+WN01bTEBn7e5Iq+VwnL4w+s9YCwTA2Zop+HPICZOiKMw04re3SIX7W+I8th4pb00r
- gEdjseG9J6CVJhY5e5W2tR7adAIiaZcflHNDddwpeJWgxUma6qf3je8qBlrM4x2y9Msc
- gpbBMy7eehDCKMb3rYJOLBM1PuG5FZIBvynZn0E1gX1mVgB0LLU3zqd2OcEHEFIXX0Jq
- dHjSHCpVXzDdtyzo3A+9fjiRT4zOLZ8aH1Upva1BsY9/k/J2gvKCjHbGWteNe1D+tzA7
- p59g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWq9D7YKhsg9B2IjNGudMy+AtGO2gGraf5oKAI2TtYrqnP/mEDY5BTfuZBXROjgNFMK6LhlE2ooES80qi+LvFNvGeXXF7E=
-X-Gm-Message-State: AOJu0YzzksZF4T0BH+1jUVMaLCqW3lTqjWQeWvODSJufj/418P3GpXkx
- yD0914VmpSU+O7J4xXQy09i96wAYZe9X6a/IDzEqL8LY3NEPHBfrxWw7uGZJFIs5WlhVlZfZ3Dl
- 7JMznm/beUTOe/J0XGw0ncBh1gETE3O3q6Pb7w8Gt+PzAypfcoZu/
-X-Received: by 2002:a17:906:3c4c:b0:a46:329b:d569 with SMTP id
- i12-20020a1709063c4c00b00a46329bd569mr3719778ejg.8.1710273216682; 
- Tue, 12 Mar 2024 12:53:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG/aFfHq8kiLgR1YXU76eHM9WBFRtO4KeDh1On8EdnMyZamgCju+q9FC7DZntApDYICSjrPLw==
-X-Received: by 2002:a17:906:3c4c:b0:a46:329b:d569 with SMTP id
- i12-20020a1709063c4c00b00a46329bd569mr3719757ejg.8.1710273216217; 
- Tue, 12 Mar 2024 12:53:36 -0700 (PDT)
-Received: from redhat.com ([2.52.134.16]) by smtp.gmail.com with ESMTPSA id
- fx3-20020a170906b74300b00a4380e85e5csm4128030ejb.202.2024.03.12.12.53.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 12:53:34 -0700 (PDT)
-Date: Tue, 12 Mar 2024 15:53:29 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>,
- Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org, qemu-stable@nongnu.org
-Subject: Re: [PATCH v8 00/15] hw/pci: SR-IOV related fixes and improvements
-Message-ID: <20240312155304-mutt-send-email-mst@kernel.org>
-References: <20240228-reuse-v8-0-282660281e60@daynix.com>
+ d=1e100.net; s=20230601; t=1710274503; x=1710879303;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=mHESGhfLSlYehDJfOaQNs3o0t0nyr1FSmJX5b5N9tss=;
+ b=jsT+2S2dH2H9NrA6FyD+z5cASeUu36LoxpOtF9Wih76ah0CPiVUkjR9ftemSvSJT9e
+ 7e5xAmBIw5hlMEVPQTwfuqociq5ArZk8+Nyt1S4D9asDMYezY2v07C7la6iHuNYDpwh6
+ lyR4rY/QINcmU609WdCZksB2PGJyfoIpk6TUF53MgzuSi/PNU/XAL8IbMZHJcpNPgcjL
+ c9C1RBTJq17lCZKXj8cR+JAEiLvnFgwpFJOsi9vablXLfxQzceWtd4NtuUGRhnmsBy7v
+ YYS5puEWqzLUvO3CFu7mlM2M/lTwNWY/Iz8X6Ww+E1uSL1ftoToRnhTEIjjcf4u9N+8x
+ 1ksA==
+X-Gm-Message-State: AOJu0YyZx+l4Lo3NEwTI9WO9R85iBnRVpIEHyW9blK/wuLMar6vhLOTY
+ bgiTk+AN5XrJkGr0Pzvj6POvHugv3yk2FnQ5tDsFm5mT3ePKSr80xORTafp6XmvHB5N3upfpOBL
+ Nw0Q=
+X-Google-Smtp-Source: AGHT+IFFNhr6FsPwRbnZ6h1VGysDGqZQVUwW5jOqwmTz4qurqqcQPorVmx7i/FlrBR1aqhDZnQDyqg==
+X-Received: by 2002:a5d:65c4:0:b0:33d:ca56:a616 with SMTP id
+ e4-20020a5d65c4000000b0033dca56a616mr335770wrw.36.1710274502887; 
+ Tue, 12 Mar 2024 13:15:02 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.206.139])
+ by smtp.gmail.com with ESMTPSA id
+ v9-20020a5d59c9000000b0033e22a7b3f8sm9744832wry.75.2024.03.12.13.15.00
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 12 Mar 2024 13:15:01 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: David Hildenbrand <david@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Peter Xu <peterx@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-9.0 v2 0/3] system/physmem: Fix migration dirty bitmap
+ coherency with TCG memory access
+Date: Tue, 12 Mar 2024 21:14:55 +0100
+Message-ID: <20240312201458.79532-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240228-reuse-v8-0-282660281e60@daynix.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -109,116 +93,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Feb 28, 2024 at 08:33:11PM +0900, Akihiko Odaki wrote:
-> I submitted a RFC series[1] to add support for SR-IOV emulation to
-> virtio-net-pci. During the development of the series, I fixed some
-> trivial bugs and made improvements that I think are independently
-> useful. This series extracts those fixes and improvements from the RFC
-> series.
+Respin of Nicholas patch, without introducing
+tcg_cpu_physical_memory_dirty_bits_cleared(),
+and split in more digestible parts.
 
+Nicholas Piggin (2):
+  physmem: Factor cpu_physical_memory_dirty_bits_cleared() out
+  physmem: Fix migration dirty bitmap coherency with TCG memory access
 
-I picked 1-6 the rest will have to go in after release.
+Philippe Mathieu-DaudÃ© (1):
+  physmem: Expose tlb_reset_dirty_range_all()
 
-> [1]: https://patchew.org/QEMU/20231210-sriov-v2-0-b959e8a6dfaf@daynix.com/
-> 
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
-> Changes in v8:
-> - Clarified that "hw/pci: Replace -1 with UINT32_MAX for romsize" is
->   not a bug fix. (Markus Armbruster)
-> - Squashed patch "vfio: Avoid inspecting option QDict for rombar" into
->   "hw/pci: Determine if rombar is explicitly enabled".
->   (Markus Armbruster)
-> - Noted the minor semantics change for patch "hw/pci: Determine if
->   rombar is explicitly enabled". (Markus Armbruster)
-> - Link to v7: https://lore.kernel.org/r/20240224-reuse-v7-0-29c14bcb952e@daynix.com
-> 
-> Changes in v7:
-> - Replaced -1 with UINT32_MAX when expressing uint32_t.
->   (Markus Armbruster)
-> - Added patch "hw/pci: Replace -1 with UINT32_MAX for romsize".
-> - Link to v6: https://lore.kernel.org/r/20240220-reuse-v6-0-2e42a28b0cf2@daynix.com
-> 
-> Changes in v6:
-> - Fixed migration.
-> - Added patch "pcie_sriov: Do not manually unrealize".
-> - Restored patch "pcie_sriov: Release VFs failed to realize" that was
->   missed in v5.
-> - Link to v5: https://lore.kernel.org/r/20240218-reuse-v5-0-e4fc1c19b5a9@daynix.com
-> 
-> Changes in v5:
-> - Added patch "hw/pci: Always call pcie_sriov_pf_reset()".
-> - Added patch "pcie_sriov: Reset SR-IOV extended capability".
-> - Removed a reference to PCI_SRIOV_CTRL_VFE in hw/nvme.
->   (Michael S. Tsirkin)
-> - Noted the impact on the guest of patch "pcie_sriov: Do not reset
->   NumVFs after unregistering VFs". (Michael S. Tsirkin)
-> - Changed to use pcie_sriov_num_vfs().
-> - Restored pci_set_power() and changed it to call pci_set_enabled() only
->   for PFs with an expalanation. (Michael S. Tsirkin)
-> - Reordered patches.
-> - Link to v4: https://lore.kernel.org/r/20240214-reuse-v4-0-89ad093a07f4@daynix.com
-> 
-> Changes in v4:
-> - Reverted the change to pci_rom_bar_explicitly_enabled().
->   (Michael S. Tsirkin)
-> - Added patch "pcie_sriov: Do not reset NumVFs after unregistering VFs".
-> - Added patch "hw/nvme: Refer to dev->exp.sriov_pf.num_vfs".
-> - Link to v3: https://lore.kernel.org/r/20240212-reuse-v3-0-8017b689ce7f@daynix.com
-> 
-> Changes in v3:
-> - Extracted patch "hw/pci: Use -1 as a default value for rombar" from
->   patch "hw/pci: Determine if rombar is explicitly enabled"
->   (Philippe Mathieu-Daudé)
-> - Added an audit result of PCIDevice::rom_bar to the message of patch
->   "hw/pci: Use -1 as a default value for rombar"
->   (Philippe Mathieu-Daudé)
-> - Link to v2: https://lore.kernel.org/r/20240210-reuse-v2-0-24ba2a502692@daynix.com
-> 
-> Changes in v2:
-> - Reset after enabling a function so that NVMe VF state gets updated.
-> - Link to v1: https://lore.kernel.org/r/20240203-reuse-v1-0-5be8c5ce6338@daynix.com
-> 
-> ---
-> Akihiko Odaki (15):
->       hw/nvme: Use pcie_sriov_num_vfs()
->       pcie_sriov: Validate NumVFs
->       pcie_sriov: Reset SR-IOV extended capability
->       pcie_sriov: Do not reset NumVFs after disabling VFs
->       hw/pci: Always call pcie_sriov_pf_reset()
->       hw/pci: Rename has_power to enabled
->       pcie_sriov: Do not manually unrealize
->       pcie_sriov: Reuse SR-IOV VF device instances
->       pcie_sriov: Release VFs failed to realize
->       pcie_sriov: Remove num_vfs from PCIESriovPF
->       pcie_sriov: Register VFs after migration
->       hw/pci: Replace -1 with UINT32_MAX for romsize
->       hw/pci: Use UINT32_MAX as a default value for rombar
->       hw/pci: Determine if rombar is explicitly enabled
->       hw/qdev: Remove opts member
-> 
->  docs/pcie_sriov.txt         |   8 ++-
->  include/hw/pci/pci.h        |   2 +-
->  include/hw/pci/pci_device.h |  22 +++++-
->  include/hw/pci/pcie_sriov.h |  13 ++--
->  include/hw/qdev-core.h      |   4 --
->  hw/core/qdev.c              |   1 -
->  hw/net/igb.c                |  15 ++--
->  hw/nvme/ctrl.c              |  54 +++++++-------
->  hw/pci/pci.c                |  32 +++++----
->  hw/pci/pci_host.c           |   4 +-
->  hw/pci/pcie_sriov.c         | 170 ++++++++++++++++++++++++--------------------
->  hw/vfio/pci.c               |   3 +-
->  hw/xen/xen_pt_load_rom.c    |   2 +-
->  system/qdev-monitor.c       |  12 ++--
->  hw/pci/trace-events         |   2 +-
->  15 files changed, 194 insertions(+), 150 deletions(-)
-> ---
-> base-commit: 5005aed8a7e728d028efb40e243ecfc2b4f3df3a
-> change-id: 20240129-reuse-faae22b11934
-> 
-> Best regards,
-> -- 
-> Akihiko Odaki <akihiko.odaki@daynix.com>
+ include/exec/exec-all.h |  1 +
+ include/exec/ram_addr.h | 12 ++++++++++++
+ system/physmem.c        | 10 ++++------
+ 3 files changed, 17 insertions(+), 6 deletions(-)
+
+-- 
+2.41.0
 
 
