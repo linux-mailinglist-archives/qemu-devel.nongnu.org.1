@@ -2,97 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C34E878EB0
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 07:19:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4227D878ED6
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 07:35:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjvSk-00072K-46; Tue, 12 Mar 2024 02:18:10 -0400
+	id 1rjvjK-0002Sq-14; Tue, 12 Mar 2024 02:35:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <horenchuang@bytedance.com>)
- id 1rjvSg-00071Y-Rh
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 02:18:07 -0400
-Received: from mail-qk1-x730.google.com ([2607:f8b0:4864:20::730])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <horenchuang@bytedance.com>)
- id 1rjvSc-0004XQ-UG
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 02:18:06 -0400
-Received: by mail-qk1-x730.google.com with SMTP id
- af79cd13be357-78863dc4247so118006585a.3
- for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 23:18:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1710224279; x=1710829079; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=3g1w+Bq/HKayQEtXVRZT/0IpFF4Q07xqLAcu8q3O3ps=;
- b=hGcjg/2Xp7ANW66YU1rXijSkClaZibJxEKI/DOLU9ii8k3YsYPhkkEa5NW4lMzltaf
- 216h+ctVCzYCltjNvgrZicvWAaGof1MjUE7suQQ50c96y6sfxDynpgY+Rd/UhMz53T4v
- VZYVp7EvGKwC6CeSwE83k1l8dExJ2AfzMrJlLozyryKQ0CBpMQU3tbfBlfj2jTipnIqu
- aP4MwdwFXGZR53z2FOyIBrW/Xlgm9VfKA8LEeb/s5aJAihXe5ncIJlWNjXxFMqNthVNr
- mrQkevlasFMBWUq3fbndbC8ZflB/5oOHYtnwswogWUqW+cdtSa8yhZ6KBMhMkKI1HUaG
- Dz5g==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1rjvjH-0002Po-DG
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 02:35:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1rjvjD-0007p7-AP
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 02:35:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710225309;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=eBymwbgPeuBPCSYJOcJrGFVUmq22EB8PlJ1s5HaAJJI=;
+ b=YlN7DmYhmYkqmO+ZIxog0xfrRavJCtCY7abDCVw0anGMbnX+kkmSTO8LRnMJ9cqp1KlQBq
+ nO5/d/Gq51WF+mWFR53d+9jBIWr4eOH0fXl4UofVrgh8mDsXi3fTXvmq3yzjRxzjGKGSr7
+ ngIhaKEiwY8rtmzo7d0cG/VdxwKzXUQ=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-171-J646YV62NqeMv-fTlBEBBw-1; Tue, 12 Mar 2024 02:34:54 -0400
+X-MC-Unique: J646YV62NqeMv-fTlBEBBw-1
+Received: by mail-pg1-f198.google.com with SMTP id
+ 41be03b00d2f7-5dbddee3694so3073625a12.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 23:34:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710224279; x=1710829079;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1710225294; x=1710830094;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3g1w+Bq/HKayQEtXVRZT/0IpFF4Q07xqLAcu8q3O3ps=;
- b=iTbJXd25vfj8NJPKawlfu82VrSKXMGAVQx/IQzj2cOar95NTXzkmZmVXEFoajgvlf6
- Oy7IUlYj9COL0ngRApanwPLxI1uMRqemWboy2Y9rZHiMkjk6pr51bxy19o5aj3qcaEMb
- i2VdLo4JX+MYnFKkVyRqwr9zxxh6V5A7E8FKeUSRbo8SpnWg5zp5LFwSBpKO6fZKkLdH
- s/ki4h6hJ4TdU8u8Y11T0d4JIiDzPe09mkFBeLxeaZL5Qm1sHWXBX5pNEWLkTTILgbpi
- eB9NTVrvYAw6OmjIRnI8WH3zqVfFTL0fAXPA7hODUy3JdKiFE/X38egjST0B2aCkRBxm
- Q53w==
+ bh=eBymwbgPeuBPCSYJOcJrGFVUmq22EB8PlJ1s5HaAJJI=;
+ b=C3R8m7qqZcSurJqauZmHrB5v20b7AvBr723xUYVM/Kg6sSjWe1Z6iVv8qKFr1Ssedb
+ Dx9bNFS6Pu4ZsEB4/KIVCbTT5qfkV/mIrO4uAjR5lPBEHX+XQ1iJlq2f1cpF2+GIAm5E
+ LvrGC7Iv6wl6mkeemMaDAevoSN46mOM3JDFuMza4jlsuMZmOu29ChpHEZv4luQxDgbPs
+ ggyKDUjkx9Y69Punc1JeCLqnkssE8SiVDdKxuYaD2OUYgiUdWfuswi6FJPhUq3ENDPXh
+ 5lkSVEVAKM7OuvAfTHl2NeCRnT3LXgNL23BwKJNxmQCmvhYyYn4QdFUQFldWNBMMAhxy
+ RmQw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXFe+AF4D06AgWyjQ+j/RpTMz67fdlfuiVmEG5fhD3uHEIM71VlFj6gqDgyNrrdJNJnasMEGKCZbJsP3G0hRlPq9ewKsL8=
-X-Gm-Message-State: AOJu0YyuIhMzIoLh1HiELugssjApe/uRatI6WJbSOslnP5M4Dl7ibTb7
- AZ7qSi6+ki/r3m5H08trGH7I2zua2Wdj+KAdTM+L7AhyqlM8xjaVrDVBpAHZfQw=
-X-Google-Smtp-Source: AGHT+IFtueu2hHzThmvc/JKtQbFGEvZGODzMhvBN+JE313AMau+fPRj/Wh1ccpFe+lfa9yfwLLS1Ww==
-X-Received: by 2002:a05:620a:15bc:b0:788:70b4:159 with SMTP id
- f28-20020a05620a15bc00b0078870b40159mr4209916qkk.42.1710224279479; 
- Mon, 11 Mar 2024 23:17:59 -0700 (PDT)
-Received: from n231-228-171.byted.org ([147.160.184.133])
+ AJvYcCVEAMmRwGGjdxeF/Ysl5C+zn46YhYzihLC1nNOxVKcjF5/yjIpRzIbF4382lF/ZFkT/WE68jqGtQTxbRdq8MT0WKmixtbA=
+X-Gm-Message-State: AOJu0YzgMn48vJtZbJ7T5pG8166YJLjw5fumwJHdZ87/G1SInBUWxvGj
+ 6eyTkBIX9Pt7WFedyorpKUdweRjlnx+tzYeUMGidQgTaBirawS4hP/0277VcgzfK8jhiuhM7s7E
+ vJGrhZoO/bDc0PLEwP+up5PRuPftFoI6oP9j4h0oRx+QpdusUZI44
+X-Received: by 2002:a17:90a:c586:b0:29a:9dd1:d45b with SMTP id
+ l6-20020a17090ac58600b0029a9dd1d45bmr12430115pjt.3.1710225293708; 
+ Mon, 11 Mar 2024 23:34:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHrVgr4rNs1Y7D80gfJJ8vjkgKeB+HDYSv9r8IunYDqSt3uT/Kxn+9Mr+zfEA670hS4N88wMg==
+X-Received: by 2002:a17:90a:c586:b0:29a:9dd1:d45b with SMTP id
+ l6-20020a17090ac58600b0029a9dd1d45bmr12430095pjt.3.1710225293284; 
+ Mon, 11 Mar 2024 23:34:53 -0700 (PDT)
+Received: from smtpclient.apple ([115.96.117.102])
  by smtp.gmail.com with ESMTPSA id
- m18-20020a05620a221200b00787b93d8df1sm3394396qkh.99.2024.03.11.23.17.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Mar 2024 23:17:59 -0700 (PDT)
-From: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
-To: "Gregory Price" <gourry.memverge@gmail.com>, aneesh.kumar@linux.ibm.com,
- mhocko@suse.com, tj@kernel.org, john@jagalactic.com,
- "Eishan Mirakhur" <emirakhur@micron.com>,
- "Vinicius Tavares Petrucci" <vtavarespetr@micron.com>,
- "Ravis OpenSrc" <Ravis.OpenSrc@micron.com>,
- "Alistair Popple" <apopple@nvidia.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Dan Williams <dan.j.williams@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Huang Ying <ying.huang@intel.com>,
- "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, linux-mm@kvack.org
-Cc: "Ho-Ren (Jack) Chuang" <horenc@vt.edu>,
- "Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>, qemu-devel@nongnu.org,
- Hao Xiang <hao.xiang@bytedance.com>
-Subject: [PATCH v2 1/1] memory tier: acpi/hmat: create CPUless memory tiers
- after obtaining HMAT info
-Date: Tue, 12 Mar 2024 06:17:27 +0000
-Message-Id: <20240312061729.1997111-2-horenchuang@bytedance.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20240312061729.1997111-1-horenchuang@bytedance.com>
-References: <20240312061729.1997111-1-horenchuang@bytedance.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::730;
- envelope-from=horenchuang@bytedance.com; helo=mail-qk1-x730.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ h3-20020a17090a130300b0029b1ce04ca0sm4998537pja.32.2024.03.11.23.34.49
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 11 Mar 2024 23:34:52 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
+Subject: Re: [PATCH v5] pc: q35: Bump max_cpus to 4096 vcpus
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <20240228143351.3967-1-anisinha@redhat.com>
+Date: Tue, 12 Mar 2024 12:04:37 +0530
+Cc: =?utf-8?Q?=22Daniel_P_=2E_Berrang=C3=A9=22?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Julia Suvorova <jusual@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, QEMU Developers <qemu-devel@nongnu.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <8F921979-45DC-4235-9F6E-8F54DDE33FB7@redhat.com>
+References: <20240228143351.3967-1-anisinha@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+X-Mailer: Apple Mail (2.3774.400.31)
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -110,285 +108,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current implementation treats emulated memory devices, such as
-CXL1.1 type3 memory, as normal DRAM when they are emulated as normal memory
-(E820_TYPE_RAM). However, these emulated devices have different
-characteristics than traditional DRAM, making it important to
-distinguish them. Thus, we modify the tiered memory initialization process
-to introduce a delay specifically for CPUless NUMA nodes. This delay
-ensures that the memory tier initialization for these nodes is deferred
-until HMAT information is obtained during the boot process. Finally,
-demotion tables are recalculated at the end.
 
-* Abstract common functions into `find_alloc_memory_type()`
-Since different memory devices require finding or allocating a memory type,
-these common steps are abstracted into a single function,
-`find_alloc_memory_type()`, enhancing code scalability and conciseness.
 
-* Handle cases where there is no HMAT when creating memory tiers
-There is a scenario where a CPUless node does not provide HMAT information.
-If no HMAT is specified, it falls back to using the default DRAM tier.
+> On 28-Feb-2024, at 20:03, Ani Sinha <anisinha@redhat.com> wrote:
+>=20
+> Since commit f10a570b093e6 ("KVM: x86: Add CONFIG_KVM_MAX_NR_VCPUS to =
+allow up to 4096 vCPUs")
+> Linux kernel can support upto a maximum number of 4096 vcpus when =
+MAXSMP is
+> enabled in the kernel. At present, QEMU has been tested to correctly =
+boot a
+> linux guest with 4096 vcpus using the current edk2 upstream master =
+branch that
+> has the fixes corresponding to the following two PRs:
+>=20
+> https://github.com/tianocore/edk2/pull/5410
+> https://github.com/tianocore/edk2/pull/5418
+>=20
+> The changes merged into edk2 with the above PRs will be in the =
+upcoming 2024-05
+> release. With current seabios firmware, it boots fine with 4096 vcpus =
+already.
+> So bump up the value max_cpus to 4096 for q35 machines versions 9 and =
+newer.
+> Q35 machines versions 8.2 and older continue to support 1024 maximum =
+vcpus
+> as before for compatibility reasons.
+>=20
+> If KVM is not able to support the specified number of vcpus, QEMU =
+would
+> return the following error messages:
+>=20
+> $ ./qemu-system-x86_64 -cpu host -accel kvm -machine q35 -smp 1728
+> qemu-system-x86_64: -accel kvm: warning: Number of SMP cpus requested =
+(1728) exceeds the recommended cpus supported by KVM (12)
+> qemu-system-x86_64: -accel kvm: warning: Number of hotpluggable cpus =
+requested (1728) exceeds the recommended cpus supported by KVM (12)
+> Number of SMP cpus requested (1728) exceeds the maximum cpus supported =
+by KVM (1024)
+>=20
+> Cc: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> Cc: Igor Mammedov <imammedo@redhat.com>
+> Cc: Michael S. Tsirkin <mst@redhat.com>
+> Cc: Julia Suvorova <jusual@redhat.com>
+> Cc: kraxel@redhat.com
+> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+> Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
 
-* Change adist calculation code to use another new lock, mt_perf_lock.
-In the current implementation, iterating through CPUlist nodes requires
-holding the `memory_tier_lock`. However, `mt_calc_adistance()` will end up
-trying to acquire the same lock, leading to a potential deadlock.
-Therefore, we propose introducing a standalone `mt_perf_lock` to protect
-`default_dram_perf`. This approach not only avoids deadlock but also
-prevents holding a large lock simultaneously.
+Ping .. who is picking this up? The soft code freeze starts today?
 
-Signed-off-by: Ho-Ren (Jack) Chuang <horenchuang@bytedance.com>
-Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
----
- drivers/acpi/numa/hmat.c     | 11 ++++++
- drivers/dax/kmem.c           | 13 +------
- include/linux/acpi.h         |  6 ++++
- include/linux/memory-tiers.h |  8 +++++
- mm/memory-tiers.c            | 70 +++++++++++++++++++++++++++++++++---
- 5 files changed, 92 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-index d6b85f0f6082..28812ec2c793 100644
---- a/drivers/acpi/numa/hmat.c
-+++ b/drivers/acpi/numa/hmat.c
-@@ -38,6 +38,8 @@ static LIST_HEAD(targets);
- static LIST_HEAD(initiators);
- static LIST_HEAD(localities);
- 
-+static LIST_HEAD(hmat_memory_types);
-+
- static DEFINE_MUTEX(target_lock);
- 
- /*
-@@ -149,6 +151,12 @@ int acpi_get_genport_coordinates(u32 uid,
- }
- EXPORT_SYMBOL_NS_GPL(acpi_get_genport_coordinates, CXL);
- 
-+struct memory_dev_type *hmat_find_alloc_memory_type(int adist)
-+{
-+	return find_alloc_memory_type(adist, &hmat_memory_types);
-+}
-+EXPORT_SYMBOL_GPL(hmat_find_alloc_memory_type);
-+
- static __init void alloc_memory_initiator(unsigned int cpu_pxm)
- {
- 	struct memory_initiator *initiator;
-@@ -1038,6 +1046,9 @@ static __init int hmat_init(void)
- 	if (!hmat_set_default_dram_perf())
- 		register_mt_adistance_algorithm(&hmat_adist_nb);
- 
-+	/* Post-create CPUless memory tiers after getting HMAT info */
-+	memory_tier_late_init();
-+
- 	return 0;
- out_put:
- 	hmat_free_structures();
-diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-index 42ee360cf4e3..aee17ab59f4f 100644
---- a/drivers/dax/kmem.c
-+++ b/drivers/dax/kmem.c
-@@ -55,21 +55,10 @@ static LIST_HEAD(kmem_memory_types);
- 
- static struct memory_dev_type *kmem_find_alloc_memory_type(int adist)
- {
--	bool found = false;
- 	struct memory_dev_type *mtype;
- 
- 	mutex_lock(&kmem_memory_type_lock);
--	list_for_each_entry(mtype, &kmem_memory_types, list) {
--		if (mtype->adistance == adist) {
--			found = true;
--			break;
--		}
--	}
--	if (!found) {
--		mtype = alloc_memory_type(adist);
--		if (!IS_ERR(mtype))
--			list_add(&mtype->list, &kmem_memory_types);
--	}
-+	mtype = find_alloc_memory_type(adist, &kmem_memory_types);
- 	mutex_unlock(&kmem_memory_type_lock);
- 
- 	return mtype;
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index b7165e52b3c6..3f927ff01f02 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -434,12 +434,18 @@ int thermal_acpi_critical_trip_temp(struct acpi_device *adev, int *ret_temp);
- 
- #ifdef CONFIG_ACPI_HMAT
- int acpi_get_genport_coordinates(u32 uid, struct access_coordinate *coord);
-+struct memory_dev_type *hmat_find_alloc_memory_type(int adist);
- #else
- static inline int acpi_get_genport_coordinates(u32 uid,
- 					       struct access_coordinate *coord)
- {
- 	return -EOPNOTSUPP;
- }
-+
-+static inline struct memory_dev_type *hmat_find_alloc_memory_type(int adist)
-+{
-+	return NULL;
-+}
- #endif
- 
- #ifdef CONFIG_ACPI_NUMA
-diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
-index 69e781900082..4bc2596c5774 100644
---- a/include/linux/memory-tiers.h
-+++ b/include/linux/memory-tiers.h
-@@ -48,6 +48,9 @@ int mt_calc_adistance(int node, int *adist);
- int mt_set_default_dram_perf(int nid, struct access_coordinate *perf,
- 			     const char *source);
- int mt_perf_to_adistance(struct access_coordinate *perf, int *adist);
-+struct memory_dev_type *find_alloc_memory_type(int adist,
-+							struct list_head *memory_types);
-+void memory_tier_late_init(void);
- #ifdef CONFIG_MIGRATION
- int next_demotion_node(int node);
- void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
-@@ -136,5 +139,10 @@ static inline int mt_perf_to_adistance(struct access_coordinate *perf, int *adis
- {
- 	return -EIO;
- }
-+
-+static inline void memory_tier_late_init(void)
-+{
-+
-+}
- #endif	/* CONFIG_NUMA */
- #endif  /* _LINUX_MEMORY_TIERS_H */
-diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
-index 0537664620e5..79f748d60e6f 100644
---- a/mm/memory-tiers.c
-+++ b/mm/memory-tiers.c
-@@ -6,6 +6,7 @@
- #include <linux/memory.h>
- #include <linux/memory-tiers.h>
- #include <linux/notifier.h>
-+#include <linux/acpi.h>
- 
- #include "internal.h"
- 
-@@ -35,6 +36,7 @@ struct node_memory_type_map {
- };
- 
- static DEFINE_MUTEX(memory_tier_lock);
-+static DEFINE_MUTEX(mt_perf_lock);
- static LIST_HEAD(memory_tiers);
- static struct node_memory_type_map node_memory_types[MAX_NUMNODES];
- struct memory_dev_type *default_dram_type;
-@@ -623,6 +625,58 @@ void clear_node_memory_type(int node, struct memory_dev_type *memtype)
- }
- EXPORT_SYMBOL_GPL(clear_node_memory_type);
- 
-+struct memory_dev_type *find_alloc_memory_type(int adist, struct list_head *memory_types)
-+{
-+	bool found = false;
-+	struct memory_dev_type *mtype;
-+
-+	list_for_each_entry(mtype, memory_types, list) {
-+		if (mtype->adistance == adist) {
-+			found = true;
-+			break;
-+		}
-+	}
-+	if (!found) {
-+		mtype = alloc_memory_type(adist);
-+		if (!IS_ERR(mtype))
-+			list_add(&mtype->list, memory_types);
-+	}
-+
-+	return mtype;
-+}
-+EXPORT_SYMBOL_GPL(find_alloc_memory_type);
-+
-+static void memory_tier_late_create(int node)
-+{
-+	struct memory_dev_type *mtype = NULL;
-+	int adist = MEMTIER_ADISTANCE_DRAM;
-+
-+	mt_calc_adistance(node, &adist);
-+	if (adist != MEMTIER_ADISTANCE_DRAM) {
-+		mtype = hmat_find_alloc_memory_type(adist);
-+		if (!IS_ERR(mtype))
-+			__init_node_memory_type(node, mtype);
-+		else
-+			pr_err("Failed to allocate a memory type at %s()\n", __func__);
-+	}
-+
-+	set_node_memory_tier(node);
-+}
-+
-+void memory_tier_late_init(void)
-+{
-+	int nid;
-+
-+	mutex_lock(&memory_tier_lock);
-+	for_each_node_state(nid, N_MEMORY)
-+		if (!node_state(nid, N_CPU))
-+			memory_tier_late_create(nid);
-+
-+	establish_demotion_targets();
-+	mutex_unlock(&memory_tier_lock);
-+}
-+EXPORT_SYMBOL_GPL(memory_tier_late_init);
-+
- static void dump_hmem_attrs(struct access_coordinate *coord, const char *prefix)
- {
- 	pr_info(
-@@ -636,7 +690,7 @@ int mt_set_default_dram_perf(int nid, struct access_coordinate *perf,
- {
- 	int rc = 0;
- 
--	mutex_lock(&memory_tier_lock);
-+	mutex_lock(&mt_perf_lock);
- 	if (default_dram_perf_error) {
- 		rc = -EIO;
- 		goto out;
-@@ -684,7 +738,7 @@ int mt_set_default_dram_perf(int nid, struct access_coordinate *perf,
- 	}
- 
- out:
--	mutex_unlock(&memory_tier_lock);
-+	mutex_unlock(&mt_perf_lock);
- 	return rc;
- }
- 
-@@ -700,7 +754,7 @@ int mt_perf_to_adistance(struct access_coordinate *perf, int *adist)
- 	    perf->read_bandwidth + perf->write_bandwidth == 0)
- 		return -EINVAL;
- 
--	mutex_lock(&memory_tier_lock);
-+	mutex_lock(&mt_perf_lock);
- 	/*
- 	 * The abstract distance of a memory node is in direct proportion to
- 	 * its memory latency (read + write) and inversely proportional to its
-@@ -713,7 +767,7 @@ int mt_perf_to_adistance(struct access_coordinate *perf, int *adist)
- 		(default_dram_perf.read_latency + default_dram_perf.write_latency) *
- 		(default_dram_perf.read_bandwidth + default_dram_perf.write_bandwidth) /
- 		(perf->read_bandwidth + perf->write_bandwidth);
--	mutex_unlock(&memory_tier_lock);
-+	mutex_unlock(&mt_perf_lock);
- 
- 	return 0;
- }
-@@ -836,6 +890,14 @@ static int __init memory_tier_init(void)
- 	 * types assigned.
- 	 */
- 	for_each_node_state(node, N_MEMORY) {
-+		if (!node_state(node, N_CPU))
-+			/*
-+			 * Defer memory tier initialization on CPUless numa nodes.
-+			 * These will be initialized when HMAT information is
-+			 * available.
-+			 */
-+			continue;
-+
- 		memtier = set_node_memory_tier(node);
- 		if (IS_ERR(memtier))
- 			/*
--- 
-Ho-Ren (Jack) Chuang
+> ---
+> hw/i386/pc_q35.c | 3 ++-
+> 1 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> Changelog:
+> v5: mention the PRs in the commit message. Add tags.
+> v4: tweaked commit message as per suggestion from danpb explicitly
+> stating that 4096 vcpus work with edk2 fixes that are going to be
+> available in the coming edk2 release.
+> v3: bump up to 4096 vcpus. It has now been tested to work with edk2.
+> See RH Jira: https://issues.redhat.com/browse/RHEL-22202
+> v2: bump up the vcpu number to 1856. Add failure messages from ekd2 in
+> the commit description.
+>=20
+> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+> index 45a4102e75..df63a92b78 100644
+> --- a/hw/i386/pc_q35.c
+> +++ b/hw/i386/pc_q35.c
+> @@ -350,7 +350,7 @@ static void pc_q35_machine_options(MachineClass =
+*m)
+>     m->default_nic =3D "e1000e";
+>     m->default_kernel_irqchip_split =3D false;
+>     m->no_floppy =3D 1;
+> -    m->max_cpus =3D 1024;
+> +    m->max_cpus =3D 4096;
+>     m->no_parallel =3D =
+!module_object_class_by_name(TYPE_ISA_PARALLEL);
+>     machine_class_allow_dynamic_sysbus_dev(m, TYPE_AMD_IOMMU_DEVICE);
+>     machine_class_allow_dynamic_sysbus_dev(m, =
+TYPE_INTEL_IOMMU_DEVICE);
+> @@ -371,6 +371,7 @@ static void =
+pc_q35_8_2_machine_options(MachineClass *m)
+> {
+>     pc_q35_9_0_machine_options(m);
+>     m->alias =3D NULL;
+> +    m->max_cpus =3D 1024;
+>     compat_props_add(m->compat_props, hw_compat_8_2, =
+hw_compat_8_2_len);
+>     compat_props_add(m->compat_props, pc_compat_8_2, =
+pc_compat_8_2_len);
+> }
+> --=20
+> 2.42.0
+>=20
 
 
