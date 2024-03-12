@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97720879EA3
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:28:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4979879EE5
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:37:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkAai-0006qZ-I3; Tue, 12 Mar 2024 18:27:24 -0400
+	id 1rkAag-0006Sr-6k; Tue, 12 Mar 2024 18:27:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAaP-0005Cr-2x
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:27:08 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAaU-0005FT-01
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:27:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAaN-0004L9-Kr
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:27:04 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAaP-0004LL-SF
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:27:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710282423;
+ s=mimecast20190719; t=1710282425;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AurzQqFpLzlXuBxIL8RZRvJLoJVHujck2MunJ5OHm/A=;
- b=TkEGZAAC023Wk4Od/24M7nYvAE7e8Bt12uAHsKH6TxhZmMoKqBdvRe0n/Bcyfw7MoUHmav
- /2HAi73PPVLpL78hl/4NBdVbGBfLidJmVxzapMbUmeNFsBpO9T0peEBEszSd1exWjeMozk
- ZSEOczvxod9B8YGDzyI+MB4qHhElxdU=
+ bh=Fp9mS7QfM+i2wlqzdpjfyEOvEAobNn6YKxIWUVqj07Y=;
+ b=f2nDNgNCLqkpLr1JCfwC/b3KEjUIu32fdTYNzLc6A1+pjylvinp6VmOckFOgAnFj3uopI1
+ r2BuHlttTEiFZ3WjKAz3YrFgQHwEFL622tF80fXyE2TX2xUlSeJECcEUMstvu9CgmLuWk6
+ DgZ9IgXCUQoXsbNOw7/BX/tDWtPj7Yk=
 Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
  [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-668-iVtBERrFOf-8rWQyqUohXA-1; Tue, 12 Mar 2024 18:27:01 -0400
-X-MC-Unique: iVtBERrFOf-8rWQyqUohXA-1
+ us-mta-684-UX_qX2bnNyqpzBH8LA0_gA-1; Tue, 12 Mar 2024 18:27:04 -0400
+X-MC-Unique: UX_qX2bnNyqpzBH8LA0_gA-1
 Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a4651c22fd2so13431966b.3
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:27:01 -0700 (PDT)
+ a640c23a62f3a-a4488afb812so23111366b.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:27:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710282419; x=1710887219;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AurzQqFpLzlXuBxIL8RZRvJLoJVHujck2MunJ5OHm/A=;
- b=wmLqc7GSw0oX7T3boca5yBolys1qVN84wPq+SccF9RLOfinX50XJYIL6Xsb0r7jrL2
- Y76A/GgY/j02tH66Ol6isttPGEc1t2x7FkR+iXqSg7p8BRhO+vSCig+sYNCuh69ZmTkY
- 8QoivkGcIMvbze6ynXt/edJqfG/u/7cZ1Ntm+RHIid9ZPy4HPp8sHTMxIn8n/g6vvXOT
- fgb2t+XicwkLtBTqZMnx8uiCeng+n/0qw4WoclXS1k84pk8EMYzHCyMqZ93wPwwVke8m
- 1q+bcCqJ2U0Cpsn+yEGNZLWrQGb33ebS6T1GuEK1WWloQyEtfuPJ54E+I14AmKS69Xwn
- OT1Q==
-X-Gm-Message-State: AOJu0Yz9GwDd3POXxpRpTiqur4wKnELcPkwZwHtIRlu7d7V50UKIKwZZ
- tKOwRc8kmlBKubvRzPKKS/WxFCDarV5PiNhJTzonDiuTWKYmVNc7WPMTpnBH0fl/PgEq4c9NXeY
- deTW4G1HKVGkLFvS1xIsBFE81A/BV9cvu8U1f/DgZggK70iMZ7jZwnhAEZH96HXR72lGD/HYUPk
- RC5U9/QHRwIMAcdDZX8wLORt6Wn9I4pJ+g
-X-Received: by 2002:a17:906:3984:b0:a44:1f3:e474 with SMTP id
- h4-20020a170906398400b00a4401f3e474mr6422436eje.23.1710282419582; 
- Tue, 12 Mar 2024 15:26:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGYD/1NG1Sa14VJz3wbarGz8hPiW7rFJxlXu8xjn1LlPtMm9umoofuX94IQIgERRJIL/ZRTIw==
-X-Received: by 2002:a17:906:3984:b0:a44:1f3:e474 with SMTP id
- h4-20020a170906398400b00a4401f3e474mr6422425eje.23.1710282419137; 
- Tue, 12 Mar 2024 15:26:59 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1710282423; x=1710887223;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Fp9mS7QfM+i2wlqzdpjfyEOvEAobNn6YKxIWUVqj07Y=;
+ b=Kaj4R5oW0XZxVWsbnWKTdj6WJqcrvJLJrOEA/eeYkwmTf8R3vFJvVjEHT+hOyKBzLZ
+ zVczOMRwTZiJDT1AMblJVzseniHo6V/brNEP6XjxumHN5zv2QHH8WOcGUH52zh/qW1UC
+ Xs18PPr2lixW28zOK9Cmv3dOrsCWukF91gCa3jHaLH38SoO0qG/qbuDbSgImfIdYyXCq
+ +oNP5sSqfrHjjMBuxtWyq9l0jgS+g1HECxsJCFhpqVn2Q5+2V39kwEXX9WOVSVp/d30m
+ pXtqPZOfcmfZkr9im2kB1Y5Ey29BmKUu/X0dxPVZtALVzF3NOIHy6tNWZ389kwvcSltd
+ +sAg==
+X-Gm-Message-State: AOJu0YxQhX1sNFKOVB2Q+c0r8t7CmdjAyEi1Daza+gaVEM7FX2XAAq6V
+ 3OYpb8vLhDwfyMwKrpCcY5vqRPZmHm/oQPm8leHEIGCepCNMd8PAqNXUL0NLDGwJZWr1yFDbjzT
+ G7bSjOmB02pV4JHe3JAoGZyriDb4d3jtPAr2UpP7ZqYg04Tx/FKRTCzpKrOiJ+ty3YE0zmHrF+G
+ /Uj+KEpn+uasMO30EVlgOKDT6b/IQhjBmt
+X-Received: by 2002:a17:906:6b97:b0:a46:5277:79b0 with SMTP id
+ l23-20020a1709066b9700b00a46527779b0mr358970ejr.21.1710282422667; 
+ Tue, 12 Mar 2024 15:27:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEMxoGdSAd7PH+l40CgdNm6iIezqlbzyxoxMV/n5yoxszf5Y1pTfDtct88ikFByTxy+KBcZ1Q==
+X-Received: by 2002:a17:906:6b97:b0:a46:5277:79b0 with SMTP id
+ l23-20020a1709066b9700b00a46527779b0mr358954ejr.21.1710282422088; 
+ Tue, 12 Mar 2024 15:27:02 -0700 (PDT)
 Received: from redhat.com ([2.52.134.16]) by smtp.gmail.com with ESMTPSA id
- lt9-20020a170906fa8900b00a45c4d3ee11sm4224960ejb.123.2024.03.12.15.26.57
+ o23-20020a1709062e9700b00a44cf710cc3sm4213832eji.182.2024.03.12.15.27.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 15:26:58 -0700 (PDT)
-Date: Tue, 12 Mar 2024 18:26:56 -0400
+ Tue, 12 Mar 2024 15:27:01 -0700 (PDT)
+Date: Tue, 12 Mar 2024 18:26:59 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>
-Subject: [PULL 28/68] vdpa: trace skipped memory sections
-Message-ID: <a8516e5c9719cf45fd81d6790bc9ffdcf753376b.1710282274.git.mst@redhat.com>
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Fan Ni <fan.ni@samsung.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 29/68] hw/pci-bridge/pxb-cxl: Drop RAS capability from host
+ bridge.
+Message-ID: <3a95f572112ab4c789d66af666644adcdb2b45a6.1710282274.git.mst@redhat.com>
 References: <cover.1710282274.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1710282274.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -101,49 +101,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eugenio Pérez <eperezma@redhat.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Sometimes, certain parts are not being skipped in
-vhost_vdpa_listener_region_del, but they are skipped in
-vhost_vdpa_listener_region_add, or vice versa.  The vhost-vdpa code
-expects all parts to maintain their properties, so we're adding a trace
-to help with debugging when any part is skipped.
+This CXL component isn't allowed to have a RAS capability.
+Whilst this should be harmless as software is not expected to look
+here, good to clean it up.
 
-Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <20240215103616.330518-3-eperezma@redhat.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-Id: <20240215155206.2736-1-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/vhost-vdpa.c | 3 +++
- hw/virtio/trace-events | 1 +
- 2 files changed, 4 insertions(+)
+ include/hw/cxl/cxl_component.h      |  1 +
+ hw/cxl/cxl-component-utils.c        | 21 +++++++++++++++++----
+ hw/pci-bridge/pci_expander_bridge.c |  2 +-
+ 3 files changed, 19 insertions(+), 5 deletions(-)
 
-diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index 5559d4f89c..3bcd05cc22 100644
---- a/hw/virtio/vhost-vdpa.c
-+++ b/hw/virtio/vhost-vdpa.c
-@@ -55,6 +55,9 @@ static bool vhost_vdpa_listener_skipped_section(MemoryRegionSection *section,
-     bool is_ram_device = memory_region_is_ram_device(section->mr);
+diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_component.h
+index 0e5d35c263..5012fab6f7 100644
+--- a/include/hw/cxl/cxl_component.h
++++ b/include/hw/cxl/cxl_component.h
+@@ -25,6 +25,7 @@ enum reg_type {
+     CXL2_TYPE3_DEVICE,
+     CXL2_LOGICAL_DEVICE,
+     CXL2_ROOT_PORT,
++    CXL2_RC,
+     CXL2_UPSTREAM_PORT,
+     CXL2_DOWNSTREAM_PORT,
+     CXL3_SWITCH_MAILBOX_CCI,
+diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
+index 84ab503325..cd116c0401 100644
+--- a/hw/cxl/cxl-component-utils.c
++++ b/hw/cxl/cxl-component-utils.c
+@@ -297,6 +297,7 @@ void cxl_component_register_init_common(uint32_t *reg_state,
+         caps = 3;
+         break;
+     case CXL2_ROOT_PORT:
++    case CXL2_RC:
+         /* + Extended Security, + Snoop */
+         caps = 5;
+         break;
+@@ -326,8 +327,19 @@ void cxl_component_register_init_common(uint32_t *reg_state,
+                        CXL_##reg##_REGISTERS_OFFSET);                         \
+     } while (0)
  
-     if ((!is_ram && !is_iommu) || is_protected || is_ram_device) {
-+        trace_vhost_vdpa_skipped_memory_section(is_ram, is_iommu, is_protected,
-+                                                is_ram_device, iova_min,
-+                                                iova_max, page_mask);
-         return true;
++    switch (type) {
++    case CXL2_DEVICE:
++    case CXL2_TYPE3_DEVICE:
++    case CXL2_LOGICAL_DEVICE:
++    case CXL2_ROOT_PORT:
++    case CXL2_UPSTREAM_PORT:
++    case CXL2_DOWNSTREAM_PORT:
+     init_cap_reg(RAS, 2, CXL_RAS_CAPABILITY_VERSION);
+-    ras_init_common(reg_state, write_msk);
++        ras_init_common(reg_state, write_msk);
++        break;
++    default:
++        break;
++    }
+ 
+     init_cap_reg(LINK, 4, CXL_LINK_CAPABILITY_VERSION);
+ 
+@@ -335,9 +347,10 @@ void cxl_component_register_init_common(uint32_t *reg_state,
+         return;
      }
  
-diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
-index 20577aa584..9df24864a2 100644
---- a/hw/virtio/trace-events
-+++ b/hw/virtio/trace-events
-@@ -30,6 +30,7 @@ vhost_user_write(uint32_t req, uint32_t flags) "req:%d flags:0x%"PRIx32""
- vhost_user_create_notifier(int idx, void *n) "idx:%d n:%p"
+-    init_cap_reg(HDM, 5, CXL_HDM_CAPABILITY_VERSION);
+-    hdm_init_common(reg_state, write_msk, type);
+-
++    if (type != CXL2_ROOT_PORT) {
++        init_cap_reg(HDM, 5, CXL_HDM_CAPABILITY_VERSION);
++        hdm_init_common(reg_state, write_msk, type);
++    }
+     if (caps < 5) {
+         return;
+     }
+diff --git a/hw/pci-bridge/pci_expander_bridge.c b/hw/pci-bridge/pci_expander_bridge.c
+index 535889f7c2..0411ad31ea 100644
+--- a/hw/pci-bridge/pci_expander_bridge.c
++++ b/hw/pci-bridge/pci_expander_bridge.c
+@@ -290,7 +290,7 @@ static void pxb_cxl_dev_reset(DeviceState *dev)
+     uint32_t *write_msk = cxl_cstate->crb.cache_mem_regs_write_mask;
+     int dsp_count = 0;
  
- # vhost-vdpa.c
-+vhost_vdpa_skipped_memory_section(int is_ram, int is_iommu, int is_protected, int is_ram_device, uint64_t first, uint64_t last, int page_mask) "is_ram=%d, is_iommu=%d, is_protected=%d, is_ram_device=%d iova_min=0x%"PRIx64" iova_last=0x%"PRIx64" page_mask=0x%x"
- vhost_vdpa_dma_map(void *vdpa, int fd, uint32_t msg_type, uint32_t asid, uint64_t iova, uint64_t size, uint64_t uaddr, uint8_t perm, uint8_t type) "vdpa_shared:%p fd: %d msg_type: %"PRIu32" asid: %"PRIu32" iova: 0x%"PRIx64" size: 0x%"PRIx64" uaddr: 0x%"PRIx64" perm: 0x%"PRIx8" type: %"PRIu8
- vhost_vdpa_dma_unmap(void *vdpa, int fd, uint32_t msg_type, uint32_t asid, uint64_t iova, uint64_t size, uint8_t type) "vdpa_shared:%p fd: %d msg_type: %"PRIu32" asid: %"PRIu32" iova: 0x%"PRIx64" size: 0x%"PRIx64" type: %"PRIu8
- vhost_vdpa_listener_begin_batch(void *v, int fd, uint32_t msg_type, uint8_t type)  "vdpa_shared:%p fd: %d msg_type: %"PRIu32" type: %"PRIu8
+-    cxl_component_register_init_common(reg_state, write_msk, CXL2_ROOT_PORT);
++    cxl_component_register_init_common(reg_state, write_msk, CXL2_RC);
+     /*
+      * The CXL specification allows for host bridges with no HDM decoders
+      * if they only have a single root port.
 -- 
 MST
 
