@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4187879CDA
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 21:27:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65817879CDF
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 21:28:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk8iA-0002CC-4U; Tue, 12 Mar 2024 16:26:58 -0400
+	id 1rk8iB-0002CN-UQ; Tue, 12 Mar 2024 16:26:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1rk8i6-0002Aa-6F
+ id 1rk8i6-0002AY-5J
  for qemu-devel@nongnu.org; Tue, 12 Mar 2024 16:26:54 -0400
 Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1rk8i1-0003Bm-1v
+ id 1rk8i2-0003C2-FS
  for qemu-devel@nongnu.org; Tue, 12 Mar 2024 16:26:53 -0400
-Received: from pps.filterd (m0127841.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0127844.ppops.net [127.0.0.1])
  by mx0b-002c1b01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
- 42CJgASb018660; Tue, 12 Mar 2024 13:26:48 -0700
+ 42CCE6eK010077; Tue, 12 Mar 2024 13:26:49 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
  from:to:cc:subject:date:message-id:in-reply-to:references
  :content-transfer-encoding:content-type:mime-version; s=
- proofpoint20171006; bh=a8i/sEB0bP9Bt3NfwKvZ0XupNjb/yphsk7Y4bu8rd
- F0=; b=hAV6bdf7y26zntFkjWUxIu9bNegIYgnswNaCeTfLzYqAYkyi4rSatjV1y
- vbcDE74kdDmUXqOo6phNFmz4jbk828v8U34zvT+nxS/jAbnWB181wC3Jk6dmULz8
- JfATkNsIvPpFnpAgsF4CuJq3eViL4aRCTN/FhzqduAEhID+DI4zLItgokZ02zhg/
- vtICUzN+fJMYBU9vMTA7vjd7PiE7Nb3RvJxJETHZhBaNeJM0TuriaJcQW0ABtPGc
- W4wGpqpV9fGMqZH8NQEQT7ZknziVKGyK3rORKv1VDYZ6l+qcKscXgqIgyqzP0Cha
- bU5EnUN3Cu0j4Lgd0CkJeYvmWHWlg==
+ proofpoint20171006; bh=5Sf2kCtS0xadPN9mj4qZn01slTsmgbkM5fV3CbjG1
+ HY=; b=JCy7lPyRUkEuYP2TM/b5abtnRUZWlOAuurAE1Hovp+42ynHLvHcJbmZi/
+ zwhYl/tFtVWTblWp4I4/oVpnWCY0mWz2rGQrePSULsmFshGkufgCOEQoxCd6MyWO
+ q8FiBAzzYgD75S2vD7Iongty69re2mTQBDgGNjY0Er/J0N+B8s+u5A5XsHBgtsV6
+ 95cJpmEphWw8sYhdfE2ryISOsoy64rxl7Xp3faciI3f6gGWslskdd2qV+H8uV8dv
+ QR6Ssp1j6jApBIYDF6WvRwXV+IaPVhTe4H2vMI8ty3jJoCLhLkmW/R7K1v1rOQS3
+ k2U7GTYathVyqsh/szj9eXZcCQJqg==
 Received: from nam11-dm6-obe.outbound.protection.outlook.com
  (mail-dm6nam11lp2169.outbound.protection.outlook.com [104.47.57.169])
- by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3wrp6axxgk-2
+ by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3wrr63pt25-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Mar 2024 13:26:48 -0700 (PDT)
+ Tue, 12 Mar 2024 13:26:49 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TZYHd8QmaPFfH84GiMAwYPyC6dT832+0qgoGf7NJ0zazcnt1vEaiin4BKHggHx2NJ/S47/EHIHE1abswk/fBVyqmPSIscYCpNqxR4SAJP5el2IpIq6aE3WBqfRmImXsT0aoka5J5z3W2fGeoaD/mu5A0Da2Ys7/JxK1Xx8HddqdVee2vwMtASVMah3FxziUdBO1Jz80J+QlpKSJuJHghrR1F2v7y367mTapD1Dj5vs4BcTCQc25arB26wVXsmdrVcQ3vnrTggis5rEOwqRkgBf4grKN72a6V4ilzwPVjoUGWIHPeNveBcb9HwFs9pmPIOTe0TqsSoZzJ0ypTE1ft7w==
+ b=Ry/jRsf+0PaA1gnO9VPk2293v0nub+1JvcRvGAbOmS5Cp7o3aIV1lBIrqLb8MT4l7JGyh5CfSLfUYlu/DhqLuXDLVlWQM+PsdPzhKEDo+1/s7BVVmhe0CgqNtXv59fd/m36i+B+ib5y6ryhUCfWiYSnAcDajxlvbR+hc6wb0sWTd52sTG0XvmxpcYYjc2g3pUi5vRYQTNxwqmV6dfF98R1NtI0335tCU24Vgv5Rl/VdekqHs0vZtUZMzul7GSa5Bf6h7/6tHAGv0TUMhTzCtwxrXcW/cogPHbdsU7XHD919yMFUCOlgejkngogFGb//6M7h5jwI7iFauseiKtFgvuQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=a8i/sEB0bP9Bt3NfwKvZ0XupNjb/yphsk7Y4bu8rdF0=;
- b=ES4NZ+pgPsr+kdQQOLFGdBsJy3FvQOi2chp/baj1rV7UVr36t5qqHS1RgNioTwcJYS+WdpO+in8sOpLccJD9DOuR7Eu5RP+jBwNPdnvkCcFa3TTGJj+1ck36k94ipNXLkso+H0hhrZPX6M2vDZvwJLUr2qmMi39vUtwBYYoYWjdaLNfU27FolDEJ4InQaGKhNwjAijSP7Fns6G9OX8Mx1YdbufkBnQs1gv8U7DYkPu4AeaN6X+RSkptayIdkhd4uIErhwjMZMvwAhlrJnA6iENaUxM7VEO60KsK9EeDEWGwfqH9GEXsr1z42uRtiaoJPaS7xlBx2ALR/CYLCF5katw==
+ bh=5Sf2kCtS0xadPN9mj4qZn01slTsmgbkM5fV3CbjG1HY=;
+ b=B7HGNoXjuPmUT1Gvc7xnBCpIAK4HuRrCsrYhB46fMXXk5cNCnsAbD2OSnJkFI9ju4QZav/Gu/tO5Ncw+9jVqCAMV28B5erHKZOBSI5JttUiFfSmwrAYTpFLQEdDL28V/Vc3xSI7mVbxm72R4c7a7XaOy1lZhm4SBOpBf2ohjyHfOaKHDbNx61fkBA4Scv7qkIYwOrrcq4dvAtR6nPFvKR0s04ITSeqBa9mLPZCUxWhwWmXxd1d7bV+3sQ9TRe6KScxtaUgMRKG5cdzdaqBSJtWOsnCZ5EQ68IGoFINY4wz/ZNbd556ml5hymCpeZ4L/aowI3YoZzCG2qKhnX5k1+mA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
  dkim=pass header.d=nutanix.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a8i/sEB0bP9Bt3NfwKvZ0XupNjb/yphsk7Y4bu8rdF0=;
- b=GkFSRXC8DJDWpw6QsT3tgAQjARUfNrJWVgw76A7HRxUaWzf7H8HWrV1tGTPP0gGQ1QCRcm0dOWlfOkx2wAiu6NIhA1oy5TO/Q03HCRIsh6G/xiubR3u4XOW7Y+WwBDO2oL7Q2V03FNVQrwaH79UvgvcFvUMcIGi+pQm/08h/4QenU7dNOgsbFcfWm9Paviks3o9Uj5KiAu9Folfg9TggsBJij7cbS8b9LZ4SMt58SOqZ9nnjTVhUTclOfkru24NIY6C9ZatvzXveF8aAS5ciKGCixXD7socn0WTB9Qd57gZr/P7aehdyk8GVxnQ/3u5X25gR710YR/QVHfGA7ieiOQ==
+ bh=5Sf2kCtS0xadPN9mj4qZn01slTsmgbkM5fV3CbjG1HY=;
+ b=NkAUiKQZ6xmOSBvqALoLa3aQTH3aumtOQeF9DdK1Q/KX1opOZHcI68trshsnjw+igQN1hQ6tGiZbb39UXCMy2H+yYkWlzTGlo44ri2tmYJCQYZ+bXXCabpHiKrPiuAo8xyFHBhwBO5V6Kp3NdPfif4ZO1HogUzG2/cOYmVp2LWX4doRFucUM5PMebnMyOFXS5u6CR+mBD52dpqwSfdOHtCFKJiefwy/krcgbERwR29mHtKKaz0P8N3r0VluOvTc8jSy6rTFC31u3fqSh6d5fK/fmqVKoIZW3cKGqAQs7FVZ795X+l4VSiIJUNSI7cgEYPqq3pAunc35UkipZ8WzhZw==
 Received: from SJ2PR02MB9955.namprd02.prod.outlook.com (2603:10b6:a03:55f::16)
  by CH3PR02MB10057.namprd02.prod.outlook.com (2603:10b6:610:19b::9)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.36; Tue, 12 Mar
- 2024 20:26:46 +0000
+ 2024 20:26:47 +0000
 Received: from SJ2PR02MB9955.namprd02.prod.outlook.com
  ([fe80::225c:2edd:87e:7cf0]) by SJ2PR02MB9955.namprd02.prod.outlook.com
  ([fe80::225c:2edd:87e:7cf0%7]) with mapi id 15.20.7362.035; Tue, 12 Mar 2024
- 20:26:46 +0000
+ 20:26:47 +0000
 From: Het Gala <het.gala@nutanix.com>
 To: qemu-devel@nongnu.org
 Cc: marcandre.lureau@redhat.com, thuth@redhat.com, lvivier@redhat.com,
  pbonzini@redhat.com, peterx@redhat.com, farosas@suse.de,
  Het Gala <het.gala@nutanix.com>
-Subject: [PATCH v7 7/8] tests/qtest/migration: Add multifd_tcp_plain test
- using list of channels instead of uri
-Date: Tue, 12 Mar 2024 20:26:33 +0000
-Message-Id: <20240312202634.63349-8-het.gala@nutanix.com>
+Subject: [PATCH v7 8/8] tests/qtest/migration: Add negative tests to validate
+ migration QAPIs
+Date: Tue, 12 Mar 2024 20:26:34 +0000
+Message-Id: <20240312202634.63349-9-het.gala@nutanix.com>
 X-Mailer: git-send-email 2.22.3
 In-Reply-To: <20240312202634.63349-1-het.gala@nutanix.com>
 References: <20240312202634.63349-1-het.gala@nutanix.com>
@@ -80,56 +80,56 @@ X-ClientProxiedBy: BY5PR03CA0024.namprd03.prod.outlook.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SJ2PR02MB9955:EE_|CH3PR02MB10057:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8ddd55d1-1c2b-4602-95bf-08dc42d2bceb
+X-MS-Office365-Filtering-Correlation-Id: 8238d0a7-6354-40d8-8f53-08dc42d2bdcc
 x-proofpoint-crosstenant: true
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: nfou6iCIyBtzfuDd8LiirIjGNqqouIt8wpGaASPneEOrs8AHYaWaM8ZEjhlaAxzkRAQZC+hCBaD588fiXgJoTPlIFtpjpyRALfTw9XKLmBJO2nY3CnGbIawgxAJ/MXao3D0TklDJy+TRGLSdY5SiRAG1Hk9MG3m3PudTxiVvRqpC0vYM3Q909lQuunF5DeCuU65MIlZ/UIGjLp72TkmlvkVG9CvUntfIdYkUcRBh0xeMIxAOvzx+BKgXemtxApIz/MKP/xpUXUdPxZpHT6yS3zCQOganQSKzmbMhgiuhFy5Bph2/4/z5fCiLdzQiBMtUtH8jXTZju6UdyQiYxuWzPS8bGAl18GZbJLPdyFdluuTS9vCq7HvH/TWT6U7L1t5mq67h4CEaSwwV4MPQhW+Q13U0W7O1G14D0dxtSGekrAGcCCUndQjylN2kwUxLCZKbg9blafXCnxUHsfEQ9XAI4ddOFBEWf2OACKTNfpLoR4EK4QuzEO8gKrwc/qudQ1N4c9inPf9MDhDN7OtJcx9aBLcUBoAPyQs+8B/TTsn26rZvtCTMTrbEr+x1xSRFQXsyosGr6EheeO+dMWJLa124tKHUSKSs3Wz86QnNftObzUlyGfSdLhej8OwUpbdb6R/ek1blwGkR+j2MVjjT/WfGW/v5cTrACKZLm/cPQ0ZIOzTPOjnkr6Fqdx2faV8dQb3EINQSGtxkoOFkE7mLxxbiRUrEJyu6YMB1VTT1pGKewQo=
+X-Microsoft-Antispam-Message-Info: Pa6xhp8w0hmLj+UhCGxFf69v6wnBkZm/1JRFQObSffficTQRqxJNelpu823wnBS6m3gPtAahxQl4yZ9VbtkGTtZpn/oeUNjqEeN/FHd1prre/Qhjo0QxEXzgl+3J3x8xgfZEvbhnPR6FQR8obdypzTTuLQ+GY8eWU34BgqYq7mjwWcjquy2cJcnSzkSQhSwlphJiRUDPyDoOwCzbknmedDaRbico4kgl7oFkvh32gjjMDy8CsO5bAsodrLMXmfi2MGNMm2m5ozIUXpdcwlGX7mmMS5vW8Ojf1qFOkxKHSZoN6Ejdpli5SlclTIcTCkZbpSPEDhse+BCOox+wA2VuTX1NBP6CuaUeSDktFdJro+M6FJTlbLe2oOtQekJx1DPePFYcpeTOiQsQtc9aEShxP42tG8bk70VlwIOiU0atoTRgP5SgMy2/bHGnDAuQ+AYbhvo6WK1Y28suIYzgWhkKO9Sedq9AWslJpwmLPCrrer/AwqGqSkSWxt1Z4U1uwGdWsHM1zfSFzqUBvuoJ3zFAdWvBT+TXKFb3zEPGo6uUlPldKK5vV2psh87eLqpBRxgXhzVnGHhiHLk7y1IUy29yuLLUlh/OW3n58RhI8muSSN+0+/S26fZSroD1sMqWq1oHnZi8p4kdE0x6ltb41ESTk6t4jtE5jkEd8HbMAcWLjNou/RlOe1KSxot677QdDgO8aGbqSqa//R72Hiz9XasohV2tXRaLD3eiFckjVh7vGAU=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:SJ2PR02MB9955.namprd02.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230031)(376005)(52116005)(1800799015)(38350700005); DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?pfC41BoOnzmc46IXQNV7rIRSdqx6gmPFGedKgXAx3Kkfc/CghIPxUCFt9+Vf?=
- =?us-ascii?Q?jUimAC9zaeWtUpGKPswZRNIB14VqsK5s6hQxBmLdUOZnohUV3v5P0f2Hqhx6?=
- =?us-ascii?Q?TkGXCJbdOK1oULHdDEgXjY9/zq62gPmNNKKurvoa8xep4q9r51jVpkxDd7Or?=
- =?us-ascii?Q?eciCjdYLCfwdMXBmoUtH7KpFQjaS3gVXa0xacz21dmCDIHqXvC7QomCOnop2?=
- =?us-ascii?Q?MV6w3aDMmlM9JayXrCN+INr+avjLWAim5KdAS4NC0ey6fIFcAYCcCuJt4ntx?=
- =?us-ascii?Q?t3fN+VlhezqU1ahNYibxYWm8Xz1HL51jaUOc40BhrQ+hN9NNnSnKosrwhKh5?=
- =?us-ascii?Q?mebbJv1pRjTK0SMfDf6RnZvHiEPC89A4vrkKhrFYKVzQ2bSc2J0IbV4VPLDW?=
- =?us-ascii?Q?CWpDuJbdEB9U50BiqENxlv65aZUELps4I4He7oNLtFMxKmC7IhOFl1mUxjgc?=
- =?us-ascii?Q?wbxlAIZFznIg82RVMIZpsXElteQmNDXdZ1NIGUSlrkwV3IYoGCRt0LKI2VsL?=
- =?us-ascii?Q?MhBGvRy9ousGixvdF8WpPA3FHGjHeJUWX+lBsmF5kXEF/Fve/ZxfDM4WQKzn?=
- =?us-ascii?Q?N37WB7MfmZmI56Q31zbOS8lqbm8UFumY6vWTmwBmJPnMsrxFxKTG8bsF1Sul?=
- =?us-ascii?Q?ovgA9OSJ78FpvgdQhtTr9ZxKLHqSdCV18yuHywqsKImGw2pCljzJ5F3i8jmz?=
- =?us-ascii?Q?EW1LZCdecqOP15VadAkYwRkRjkrZFs9H7SJJI9LGOMky6QVechhweDyvTa56?=
- =?us-ascii?Q?orJoz4NFoDYWReB0rtNZVk/xQbsx5iONi1DI9TJun+4JyAvpkiMtWApfZ/FR?=
- =?us-ascii?Q?a8cBdZmG4arCKLDXPtBtiGQEA/33bYUtLKKUgNad2MaTx1eAjGhBhDVy3kDA?=
- =?us-ascii?Q?R33FUQpAnWcfMbO3UnvNKIxwM2vhfUx48RkulJL+Y9iNT6WgvWgAFosQHhiE?=
- =?us-ascii?Q?B0dlXDYnmAhG1VkVLFN1lfpkFANfbIeCaW54gEy+MY1nAVfTILJE9yz/u/uO?=
- =?us-ascii?Q?dYVGZbh+9Cd0a7JS9nJ6IpVqHbZlZGVtyyvvpB++iwUGTnjiVcTPXpzNvqSZ?=
- =?us-ascii?Q?XeUvOjRgMMlLeC2uIhUrGj4igJcD016+MqCTcJBqbK1rsoas12lnkdNyviVC?=
- =?us-ascii?Q?wglrEW+hhRYYpWcQ8T9bOPfBxLhKh3uzoizWMXWtIdITlkorUd1OvKLGgfvF?=
- =?us-ascii?Q?RTZ9GWdx4DiVEuGf2tc6vmrJib0TfE793cQkeNXngIoSNi+VfPT+uCYeiiHN?=
- =?us-ascii?Q?XJ5MIw3XVdXmaMN0d1KbZ8hYAK6bE3jUHsoJxw4ZfZ+d+Z9rc2SnCF+XLEF8?=
- =?us-ascii?Q?LgCxY6zESTO15P3KatYGUN6u2qN4Vx8Su+ZdGNxnx7rhzyBq52j4l9kthPjZ?=
- =?us-ascii?Q?ltfVZU0nw1MQdIbJ6VWe9h0zq7s9VT3UNBiiC/NO4EKaxr+P35mZNN8Lozik?=
- =?us-ascii?Q?6+TG2fAiA3BMXkxgAGr/1h0pNxykKf3/zCoKYi43qbQxhz0zxEAMIFvOqjjC?=
- =?us-ascii?Q?CRcT2zXFTC/sC0jTUkmJVNco+JcA74OSqoJ+eQMJeQqcK0EOPb5DwZYi/usF?=
- =?us-ascii?Q?/WV3pTz2sXb2WRxGRmGow3XzbU4xJ/eFvVovJhm+shaPPit+xS7SJRuNn090?=
- =?us-ascii?Q?ig=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?o1EvNWcOC3VJiGEnrCZ6eOH+HXTpGyanidE1OsHkMxU12r9IInbZg8UC2mX5?=
+ =?us-ascii?Q?dpY4JM8Du8LxVdUUbY1A7sGysXiZk3sHFb+VNJw6TT3jHwbHY9joWIGlUmaB?=
+ =?us-ascii?Q?LGIav1Rh5mzc6nLYBXonkm+UJvCVhAKcaokECDEpTVBcnr9Ig4ykLT0zAzt8?=
+ =?us-ascii?Q?JNmx0YO9LSnDiVf+MOBciv1FG+k9ZmEHHofZ157m2P0Va0n6n+B4tRtM82Yu?=
+ =?us-ascii?Q?Kd6gKhvV97hja68aNowZLHtsNVhy2WuL+GKr1wj4Dk7TuCt0DbGlimhep4D1?=
+ =?us-ascii?Q?0bYQAVNsRsOj9ad9dgi/ReLDfTVKhiNLZ7laa05WSvRaIquVdzsXgpwndWku?=
+ =?us-ascii?Q?8/GTMJRGl/RpSVB/DLgoi5rza/N4SLcYxAyRBNSeeUHpiFLASJjmeJf/UO2B?=
+ =?us-ascii?Q?F8gkt4A2ZL1LhdYLA3rjJHwpYgxf1OejW4MU6msxvqhxvW6ePqlum0UE8+m8?=
+ =?us-ascii?Q?ejwW7VtL854JF0L6WbewOv/DfoUZ6nQwvZF8eVQubxZyzQwSh+JJ2oK7ND2i?=
+ =?us-ascii?Q?edLpebzkz7Z1dgI8JehTttIQ0czQOljZGgWGtige7K1o98I//S/tide5hDI7?=
+ =?us-ascii?Q?T5npj3FwN0m3QkkliwP3XrguSY74vlmk9LsbRW0I9Jx197W56WhGjp8GXLZD?=
+ =?us-ascii?Q?8s/UKQGCJFfNCJwLWlmkIXUQ/WZrBdKevuXa/+5TzWgoZI7XI9j1mdgvr6BJ?=
+ =?us-ascii?Q?ZS2ImcrrYSdVc7T4i0E1xl55IiK+/pfc35hvDRJ5LRAAN2hph/7oUxm9OgWm?=
+ =?us-ascii?Q?ShcjdazhQHSoJ5fLFNCyU76Krpgg3UplpPi7jEDeD2WS2+FElI0V7tt9DNo5?=
+ =?us-ascii?Q?usybLdl4LCMEj4UuFJaCWkeuloYa90/KkPvLJqy1h+aHFmZ93i4yRlXSD0Ml?=
+ =?us-ascii?Q?spaWnq3L3/X8WELrAleYVgWK66DzlyO45xXwWz4VeDwJDBcw+DAuZHby76LA?=
+ =?us-ascii?Q?cy3NQKZSTG72HC6doEy/b873SbEo6P9VkiOch/Dlgx41+3kr9C3/DLC2rPU4?=
+ =?us-ascii?Q?kHUfaoi+5S0PsnFXsL5NX0naRCSCx7W1ZzpjBdN41zrk5Zsfv258nHFZqJtk?=
+ =?us-ascii?Q?GtwfI66FM+ZCx1X89NuwYAdM6KzuUmG3oxISumDUo+1llPfIZeWv5g/bUiOz?=
+ =?us-ascii?Q?eNcjFArD3utWUqJ2qqMigP658nk86X7Lk7e6fQzm7y1ezKR3vA4qbJl5U6J0?=
+ =?us-ascii?Q?8HZN4gpyl83uchjx1+p+iWr9bIPQbHOReTd/+JQLD95EYfwtYJppdviZrCco?=
+ =?us-ascii?Q?wO3D8jcowFUaO7xiomOgyaif4T211nC6K3AIwyEG/Wbw9g8zhAFbVs4lvqNW?=
+ =?us-ascii?Q?TqyzLoSbv5Pf8OMRUKrwky4DP97z7DwFo1+O29Kh0mBRYaz7xR3459v3Ri2F?=
+ =?us-ascii?Q?ub8+YgH5Tz3ux+fPKXM8CUYICEjBaL3O+qKjHYqHBaJiH1l6H6/8Tq3DMlos?=
+ =?us-ascii?Q?87iIKS41VC+xeJlzNNwfwmkvHbLsp+ewcK4U9iLHZQL30FTCNsBGLYNHesS9?=
+ =?us-ascii?Q?GCg9dhEQhO70tr5akwfU9flOVGVf+9lZJPYsay4k+LNDmu+pBS6pPn8UdOxK?=
+ =?us-ascii?Q?w7VdlwEdTtjiizrR+VYCMpWkJVfCuxPGR/PVUxXuAM0t3tNQWCU2DmDsd62W?=
+ =?us-ascii?Q?6g=3D=3D?=
 X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8ddd55d1-1c2b-4602-95bf-08dc42d2bceb
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8238d0a7-6354-40d8-8f53-08dc42d2bdcc
 X-MS-Exchange-CrossTenant-AuthSource: SJ2PR02MB9955.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2024 20:26:46.1346 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2024 20:26:47.5810 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Zn8CWeHljR9zK3O6GJlu7T29XF4XVBCJCmWzDrnMzcu5O6kqE+6+cGK8oJzVQalZ0dmgQSiJjHr3FBY6Qevr5g==
+X-MS-Exchange-CrossTenant-UserPrincipalName: wTIS2aItBQgjgreibtL3MRP0ClZ/XDE1ZBlOwS5PbevqK+LRR+ZTfGyo+/x1/datiCLJpyO1yC5GCGFG+wgXoQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR02MB10057
-X-Proofpoint-ORIG-GUID: jWXKO766XxKOX_RUqmDRxCdOYktGy7bq
-X-Proofpoint-GUID: jWXKO766XxKOX_RUqmDRxCdOYktGy7bq
+X-Proofpoint-GUID: RBz2EZE6rfVkqvQOGf0XaVYbI9TwDJWX
+X-Proofpoint-ORIG-GUID: RBz2EZE6rfVkqvQOGf0XaVYbI9TwDJWX
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-03-12_13,2024-03-12_01,2023-05-22_02
@@ -158,79 +158,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a positive test to check multifd live migration but this time
-using list of channels (restricted to 1) as the starting point
-instead of simple uri string.
+Migration QAPI arguments - uri and channels are mutually exhaustive.
+Add negative validation tests, one with both arguments present and
+one with none present.
 
 Signed-off-by: Het Gala <het.gala@nutanix.com>
 Suggested-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration-test.c | 30 +++++++++++++++++++++++++++---
- 1 file changed, 27 insertions(+), 3 deletions(-)
+ tests/qtest/migration-test.c | 55 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 54 insertions(+), 1 deletion(-)
 
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 62e52a29cc..7ea13c8e5b 100644
+index 7ea13c8e5b..bd9f4b9dbb 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -655,6 +655,13 @@ typedef struct {
-      */
-     const char *connect_uri;
+@@ -1724,7 +1724,7 @@ static void test_precopy_common(MigrateCommon *args)
+     }
  
-+    /*
-+     * Optional: JSON-formatted list of src QEMU URIs. If a port is
-+     * defined as '0' in any QDict key a value of '0' will be
-+     * automatically converted to the correct destination port.
-+     */
-+    const char *connect_channels;
+     if (args->result == MIG_TEST_QMP_ERROR) {
+-        migrate_qmp_fail(from, args->connect_uri, NULL, "{}");
++        migrate_qmp_fail(from, args->connect_uri, args->connect_uri, "{}");
+         goto finish;
+     }
+ 
+@@ -2608,6 +2608,55 @@ static void test_validate_uuid_dst_not_set(void)
+     do_test_validate_uuid(&args, false);
+ }
+ 
++static void do_test_validate_uri_channel(MigrateCommon *args)
++{
++    QTestState *from, *to;
 +
-     /* Optional: callback to run at start to set migration parameters */
-     TestMigrateStartHook start_hook;
-     /* Optional: callback to run at finish to cleanup */
-@@ -2758,7 +2765,7 @@ test_migrate_precopy_tcp_multifd_zstd_start(QTestState *from,
- }
- #endif /* CONFIG_ZSTD */
- 
--static void test_multifd_tcp_none(void)
-+static void test_multifd_tcp_uri_none(void)
- {
-     MigrateCommon args = {
-         .listen_uri = "defer",
-@@ -2803,6 +2810,21 @@ static void test_multifd_tcp_no_zero_page(void)
-     test_precopy_common(&args);
- }
- 
-+static void test_multifd_tcp_channels_none(void)
++    if (test_migrate_start(&from, &to, args->listen_uri, &args->start)) {
++        return;
++    }
++
++    /* Wait for the first serial output from the source */
++    wait_for_serial("src_serial");
++
++    /*
++     * 'uri' and 'channels' validation is checked even before the migration
++     * starts.
++     */
++    migrate_qmp_fail(from, args->connect_uri, args->connect_channels, "{}");
++    test_migrate_end(from, to, false);
++}
++
++static void test_validate_uri_channels_both_set(void)
 +{
 +    MigrateCommon args = {
++        .start = {
++            .hide_stderr = true,
++        },
 +        .listen_uri = "defer",
-+        .start_hook = test_migrate_precopy_tcp_multifd_start,
-+        .live = true,
++        .connect_uri = "tcp:127.0.0.1:0",
 +        .connect_channels = "[ { 'channel-type': 'main',"
 +                            "    'addr': { 'transport': 'socket',"
 +                            "              'type': 'inet',"
 +                            "              'host': '127.0.0.1',"
 +                            "              'port': '0' } } ]",
 +    };
-+    test_precopy_common(&args);
++
++    do_test_validate_uri_channel(&args);
 +}
 +
- static void test_multifd_tcp_zlib(void)
- {
-     MigrateCommon args = {
-@@ -3712,8 +3734,10 @@ int main(int argc, char **argv)
-                                test_migrate_dirty_limit);
-         }
-     }
--    migration_test_add("/migration/multifd/tcp/plain/none",
--                       test_multifd_tcp_none);
-+    migration_test_add("/migration/multifd/tcp/uri/plain/none",
-+                       test_multifd_tcp_uri_none);
-+    migration_test_add("/migration/multifd/tcp/channels/plain/none",
-+                       test_multifd_tcp_channels_none);
-     migration_test_add("/migration/multifd/tcp/plain/zero-page/legacy",
-                        test_multifd_tcp_zero_page_legacy);
-     migration_test_add("/migration/multifd/tcp/plain/zero-page/none",
++static void test_validate_uri_channels_none_set(void)
++{
++    MigrateCommon args = {
++        .start = {
++            .hide_stderr = true,
++        },
++        .listen_uri = "defer",
++    };
++
++    do_test_validate_uri_channel(&args);
++}
++
+ /*
+  * The way auto_converge works, we need to do too many passes to
+  * run this test.  Auto_converge logic is only run once every
+@@ -3722,6 +3771,10 @@ int main(int argc, char **argv)
+                        test_validate_uuid_src_not_set);
+     migration_test_add("/migration/validate_uuid_dst_not_set",
+                        test_validate_uuid_dst_not_set);
++    migration_test_add("/migration/validate_uri/channels/both_set",
++                       test_validate_uri_channels_both_set);
++    migration_test_add("/migration/validate_uri/channels/none_set",
++                       test_validate_uri_channels_none_set);
+     /*
+      * See explanation why this test is slow on function definition
+      */
 -- 
 2.22.3
 
