@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78597878FAD
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 09:26:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8BB878FA7
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 09:25:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjxQs-0006sk-2v; Tue, 12 Mar 2024 04:24:22 -0400
+	id 1rjxQz-0007ko-9L; Tue, 12 Mar 2024 04:24:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxQH-0006fe-8m
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:23:47 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxQN-0006jY-NL
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:23:53 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxQE-0001EV-4U
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:23:45 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-41342849a15so1418175e9.3
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 01:23:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxQK-0001FF-Fc
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:23:51 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-33e99b62e01so1297923f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 01:23:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710231820; x=1710836620; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710231826; x=1710836626; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kBwjgCbKhXeLtpORHnsvbw0J9Mzl7MSsZnlOxv2Y6SQ=;
- b=fSs6qo0GFAkMGB2bmquhsIJCIKlQ/JxQuCNk2gDul700mC6BlkRhybHda4s4OUUpj2
- xCN3jsP7xefOko3NNUcO09csX8dQuGxbUBS5Ih4swfRV+oktVTIygn/2I6KnCwgxJy9P
- Xj/CotK5P2lSMpE17ycZ1NA9K1tB4dqEQbkEHweXuVJWr0rX1Zwvx+mfX/+7ulJ7KJMp
- wG/ZcUhxIrrAG5AaxF4FxHDXODrCyuDYxdMkhKlSxvgDEHHex+4X7z0zAXDmP2me/8sg
- F54CHTPtDwPsazrGG2m4QrVtsDccCrAH7MvTXQJZxlabDZzrmbqfg+IBpwW30hv4A9c5
- vPhw==
+ bh=5JAXlhORARNjQs7nWpFZ95k476OBclGaSf7/Vye9/fo=;
+ b=ju4fWBiwBCwdTJKt2t3qyXgaZuu2mXQl3zlgrIu3YujM3iU/2DI//l0ti3zOOEF70B
+ jyt+55k2avdI3ryJ9hKaH2z4GsKlP6qyy/2lGI8zjWJp8B3BOHP4H3fldetCIKSVM5LK
+ Vben6YEWfTJkRRXHaZoUM7wPgWMK5Cz8IAhkaRlVsGGiT1wsptefj51YO1g/wUXanPEV
+ HKSTo4C+iokfn2CUF1IqNtUav9HAsXFw9YZ6p1ru4bL/g9jR+iMGjr7taiTqb9wk3Xkw
+ JYNy8d+t0D1DLch8pvo2FOhTquuJRJ8UItfpWz7umFuTJXk1/U8w6BWzCHRKYcO+KSoQ
+ PeCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710231820; x=1710836620;
+ d=1e100.net; s=20230601; t=1710231826; x=1710836626;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kBwjgCbKhXeLtpORHnsvbw0J9Mzl7MSsZnlOxv2Y6SQ=;
- b=ltRRbpdrT6PnIROK+XKtIDJzLUE3EFdGZ+Gyzgl58pCg0F1fRKVqTYYefYdrWl8fm/
- CI205AcqKFcCX824YEnw+9xuOtJVF2RnOlKWQiKOyixt8tyfFRE2iutlQw4/LeqfEqiq
- nA+CSIHGBiFTe9W3VwmtVWxhvuW0iErxKEc26T9XtIXVkWud+1eFXeRMBdelB33U8FdI
- km4qQvDpOlmDsS2tAdo7ZxhN7btyQrh6m4kvPr6g/MnpSDDMSv9xwLniqyuyVlHNE2w/
- gGiLuMyqxSQiAMwEQc4t6w/61vuIId4H+xhZwFuwFBE72rCR9m5xrMPrSK+pOOCBc+L1
- jvsw==
-X-Gm-Message-State: AOJu0YxNCkabSyP3lTxHjQwYUXf2BgwoGtCI3uIdPIiS0EivqSU7oKf4
- twyHygBp3OE1KMnbjbb7DWAEOAyj5/ENIytKXEKaOw8KKnea+J3EoIw8C4ifsFIuTuNqy1ZsHYR
- V
-X-Google-Smtp-Source: AGHT+IFKMPz742VVxfOXPDOCyls5ivetWrL3C+e6jIArHI8sLt4W+63N1BHtF6w734LprexC/BLouw==
-X-Received: by 2002:a05:600c:5253:b0:413:166e:ad51 with SMTP id
- fc19-20020a05600c525300b00413166ead51mr6524890wmb.2.1710231819983; 
- Tue, 12 Mar 2024 01:23:39 -0700 (PDT)
+ bh=5JAXlhORARNjQs7nWpFZ95k476OBclGaSf7/Vye9/fo=;
+ b=EgZM0opZCa/1hkPPpq1DmFdBuzUHLFZSKjpYYfjmhnIlx1NC+esckZArAiEXsDjPIq
+ T4yk5oXdJxFdcokSOV8Yv7EhrAowUgLaWee259Zlu6sh1RgotZ0YmCVItBprkcbP8B5w
+ bpWs7oVlwD5gbO5704y417na+s3SDVlUEM8Ym0ghIzK4SQ0+AJlwfuIpjjJbvkKeOjPY
+ ktOdR7d4hw8ZW25Oo2q1nMkWaGG707o1GaS3rNunn6rlpTO7ppDvcnG1PQbmSbKQFZGX
+ TAPMKWvm41SVPMTz+vccqnzwsK4fwHkTqPfhumJbfvgIkQJNXFmyqedSzmB9Mj4JrSqp
+ wErw==
+X-Gm-Message-State: AOJu0YwB8K8tNadq1zpbFHtM6T4MhyeLyqui4r73wEedKsyFaZSZFaVK
+ ZM9XleH8CDxkVTAYkIlSUivydeRnfcWyeUfBcc2d3BHSX2aLsQYI92YhqoNAhlNFabk9/DUCkhN
+ d
+X-Google-Smtp-Source: AGHT+IG7fv0aLTCNgJ2w/N49HLsFCBWvGTU5em0E+Dty5lVgQHQ773xt1o7j9QniVoBZxzgBJoLXKQ==
+X-Received: by 2002:a5d:4650:0:b0:33e:3efc:ff93 with SMTP id
+ j16-20020a5d4650000000b0033e3efcff93mr845742wrs.1.1710231826455; 
+ Tue, 12 Mar 2024 01:23:46 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.206.139])
  by smtp.gmail.com with ESMTPSA id
- ea13-20020a05600c674d00b004132ae838absm5185974wmb.43.2024.03.12.01.23.38
+ bk5-20020a0560001d8500b0033e699fc6b4sm8505455wrb.69.2024.03.12.01.23.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Mar 2024 01:23:39 -0700 (PDT)
+ Tue, 12 Mar 2024 01:23:46 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
@@ -63,18 +63,17 @@ Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Yanan Wang <wangyanan55@huawei.com>
-Subject: [PULL 09/13] hw/core: Cleanup unused included header in
- machine-qmp-cmds.c
-Date: Tue, 12 Mar 2024 09:22:34 +0100
-Message-ID: <20240312082239.69696-10-philmd@linaro.org>
+Subject: [PULL 10/13] hw/core: Cleanup unused included headers in numa.c
+Date: Tue, 12 Mar 2024 09:22:35 +0100
+Message-ID: <20240312082239.69696-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240312082239.69696-1-philmd@linaro.org>
 References: <20240312082239.69696-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,30 +98,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Remove unused header (qemu/main-loop.h) in machine-qmp-cmds.c.
+Remove unused header in numa.c:
+* qemu/bitmap.h
+* migration/vmstate.h
+
+Note: Though parse_numa_hmat_lb() has the variable named "bitmap_copy",
+it doesn't use the normal bitmap ops so that it's safe to exclude
+qemu/bitmap.h header.
 
 Tested by "./configure" and then "make".
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240311075621.3224684-3-zhao1.liu@linux.intel.com>
+Message-ID: <20240311075621.3224684-4-zhao1.liu@linux.intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/core/machine-qmp-cmds.c | 1 -
- 1 file changed, 1 deletion(-)
+ hw/core/numa.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
-index 3860a50c3b..4b72009cd3 100644
---- a/hw/core/machine-qmp-cmds.c
-+++ b/hw/core/machine-qmp-cmds.c
-@@ -19,7 +19,6 @@
- #include "qapi/qmp/qobject.h"
- #include "qapi/qobject-input-visitor.h"
- #include "qapi/type-helpers.h"
--#include "qemu/main-loop.h"
- #include "qemu/uuid.h"
- #include "qom/qom-qobject.h"
- #include "sysemu/hostmem.h"
+diff --git a/hw/core/numa.c b/hw/core/numa.c
+index f08956ddb0..81d2124349 100644
+--- a/hw/core/numa.c
++++ b/hw/core/numa.c
+@@ -28,7 +28,6 @@
+ #include "sysemu/numa.h"
+ #include "exec/cpu-common.h"
+ #include "exec/ramlist.h"
+-#include "qemu/bitmap.h"
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
+ #include "qapi/opts-visitor.h"
+@@ -36,7 +35,6 @@
+ #include "sysemu/qtest.h"
+ #include "hw/core/cpu.h"
+ #include "hw/mem/pc-dimm.h"
+-#include "migration/vmstate.h"
+ #include "hw/boards.h"
+ #include "hw/mem/memory-device.h"
+ #include "qemu/option.h"
 -- 
 2.41.0
 
