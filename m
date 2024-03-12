@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0303E87997E
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B92187997F
 	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 17:59:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk5TN-0004ho-JO; Tue, 12 Mar 2024 12:59:29 -0400
+	id 1rk5TO-0004it-Bj; Tue, 12 Mar 2024 12:59:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk5TG-0004ay-HP; Tue, 12 Mar 2024 12:59:23 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1rk5TK-0004d5-GF; Tue, 12 Mar 2024 12:59:26 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk5TE-0007x6-Sy; Tue, 12 Mar 2024 12:59:22 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6e6afd8da93so496030b3a.3; 
- Tue, 12 Mar 2024 09:59:19 -0700 (PDT)
+ id 1rk5TH-0007xM-Ay; Tue, 12 Mar 2024 12:59:25 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-6e5c0be115aso80380b3a.3; 
+ Tue, 12 Mar 2024 09:59:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710262758; x=1710867558; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710262761; x=1710867561; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vQN5FrIT5FE3k5QbCnhPfKluszDyxySXf7QR9utsA34=;
- b=jCJSrY+5ahaCxQ/iiVYorUBq2YmXdNPqoGCQQ5P3TUfdhEt60FKrfP3ZpYZMfjTfMO
- axBK1DPCmCaalh7oaZ09A1Yx/GbNMRvHrAWS7ro8L8Un/BC4rXz99Z0qRgkMjJ/2SV15
- xXIBoQK7OrR4ttWpw8dzv33cOOmkEzEXcpxwjy1TwcYbVn/RSytIuAaquRuig1BgissR
- nAKA2EQ3yOMoSvSt5hLCKQVj6uSkAPJp0pBIzAtIW8/EmGd0oobjjO6up7zvAakZPB+I
- Q3YsftwE1cTVZ7qGdDtSrQ+KfurARlCCJ112nz1uSzgYbMMtqhz/lbcD1W9O9iM9l2CG
- 5I1g==
+ bh=2hIrP+GOO7mqBVQBlneIZNaQyZ+Zlpvjob7t6Cp/ux0=;
+ b=HJb7wkV9Xory+0sMHc5wcGXZUAuE9AA20v5f9E42YDlGDOFcZ0KxfYgt24000iVf7R
+ Av80iu8tiohxNHnuPSXINxChS/O2UvCDtSVNjwMYP2GDu9B6fmnzagQbpaRpVGEJKB5R
+ aDdVb6o9GEGEs5utkDr8jyhsw1kiOAzrTPw1uX6A1YjOBs5XWzRPu/amikCkgwmlYNNc
+ z0ZLGgLS2mTAZyap6RHx2LdJNqdLeWLzqHkpSFkB09XajlRhCSp1B3EZ2VJxbDwdhC6m
+ IbEDkVRZFtVzAV3qz035J3MEHAx/mBVzAICNObMCMRTHE7XJeWJt5Q5bgfP4oFQsc8j0
+ USCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710262758; x=1710867558;
+ d=1e100.net; s=20230601; t=1710262761; x=1710867561;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vQN5FrIT5FE3k5QbCnhPfKluszDyxySXf7QR9utsA34=;
- b=CXhEL3g1yPFs9v4kGmK4GvfwGj/RXBtyLoPnK5m54WndGRVUTq0PPRvb06APv7HJMd
- 8cNT0JNb75NLglEfLHDqYdqlKv6QBCTnyq+wM3B5ndBCyV3f2u46fsu1uAVFaXy2IFL/
- IrwfkMFhUw2t4NTJXk9o3ceW6RKEYUoeP2p3EOfXW0S+HM8Vtos43eVg8dQCCbwURndj
- miozoxCaoZtrBAJl3iXsUC/6FGq/6iY/mPJSjS9cr50Geyifu1wSmKmzhSxRcoLVBrkU
- QAOiT1+z+oYEM57fnJdR1c41uAy0UGn5RGXAET+YfUVX42H0KrUejxkRKCMdNb3UYFA7
- kiOg==
+ bh=2hIrP+GOO7mqBVQBlneIZNaQyZ+Zlpvjob7t6Cp/ux0=;
+ b=jhYinOvoUP4wERzaomNTvInqyuceSTA/K0jRAiosCwPQkKV/YnnAvA8ihMkaaY9u/6
+ otf9U2mdTZ6OsjeWaJErYMQwLZKrcm1+TO+Fq3VWzgD66ibj0kN0PpK+uT5T/P6NGT1L
+ iQorI+IaJzE0ac14lf//b6KgPk19j8RJAQ0ybCyj6Errdk7vY3vFa+eZlf0scGDOpAfB
+ xGdN47oyJwAULhtH5VqWd9AU1/+Nfr2UO83m94bIvEODAh0YupUeOTJYLB8XRT3GfjgK
+ kbfHRMoLqT1XRK4AJJLLf+XKgYTcsluI1PuFMm6nWj32JYqK7KkAOJ9ihtOuk/iT2F+w
+ jcpg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUlCpnlQxWYoiCfneS6cxSCCBlSu7TUMTMNThFEwQYJ5x0y9fBsJsaRbbnA3HpQ3rrvVSlNpavbIx+yG1cJWBwy1pez
-X-Gm-Message-State: AOJu0YzaXXYFrqyIHRxiKEspUKJzHmMkzyxQXZaH/LiV6Hsj+g/nAGSV
- fMaklidQqwOCF0clg991NxbXTfjqJwEkg0reuW7IAH4dPsyzitlm61kll9uKcXs=
-X-Google-Smtp-Source: AGHT+IFK60JQMRYcSX8UFhpY2xqloPriSHO2VH/ub9lJcgSE60yi1Gf0irI01fYPYTfbG0wkZAeRag==
-X-Received: by 2002:a05:6a21:3403:b0:1a3:1048:3dfe with SMTP id
- yn3-20020a056a21340300b001a310483dfemr7310687pzb.38.1710262757982; 
- Tue, 12 Mar 2024 09:59:17 -0700 (PDT)
+ AJvYcCWYP+ji8EOQLL58UDjMta6P39xxtsN+Qfzugrs1mQIyuduNI+uTXUEjph2RmncYpbTi9SpXxfsGO4wHRzD03Ggk2dX3
+X-Gm-Message-State: AOJu0YxmHCVqo4tSzVFz9exLXTuef0eObU0vEf8aRsWNwGViiZMwnRy1
+ DC7lSudNmTTUqObq/Cv8AhwR2u0DGQeOzKTuBB+NkfBUzoDSApnRDbA9L1+IHMA=
+X-Google-Smtp-Source: AGHT+IG5cDMQmDShI4v5/qJWIFcWmnXg36TxA1wPQkWCdPcpo+/gYQqwvMMo7rTJSCGOjkTsYkPGwg==
+X-Received: by 2002:a05:6a00:2d0a:b0:6e2:de02:598e with SMTP id
+ fa10-20020a056a002d0a00b006e2de02598emr14132pfb.33.1710262761034; 
+ Tue, 12 Mar 2024 09:59:21 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- t34-20020a056a0013a200b006e6a684a6ddsm1362330pfg.220.2024.03.12.09.59.15
+ t34-20020a056a0013a200b006e6a684a6ddsm1362330pfg.220.2024.03.12.09.59.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 09:59:17 -0700 (PDT)
+ Tue, 12 Mar 2024 09:59:20 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 04/38] ppc: Drop support for POWER9 and POWER10 DD1 chips
-Date: Wed, 13 Mar 2024 02:58:15 +1000
-Message-ID: <20240312165851.2240242-5-npiggin@gmail.com>
+Subject: [PULL 05/38] target/ppc: POWER10 does not have transactional memory
+Date: Wed, 13 Mar 2024 02:58:16 +1000
+Message-ID: <20240312165851.2240242-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240312165851.2240242-1-npiggin@gmail.com>
 References: <20240312165851.2240242-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,99 +93,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The POWER9 DD1 and POWER10 DD1 chips are not public and are no longer of
-any use in QEMU. Remove them.
+POWER10 hardware implements a degenerate transactional memory facility
+in POWER8/9 PCR compatibility modes to permit migration from older
+CPUs, but POWER10 / ISA v3.1 mode does not support it so the CPU model
+should not support it.
 
 Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr_cpu_core.c |  2 --
- target/ppc/cpu-models.c |  4 ----
- target/ppc/cpu_init.c   |  7 ++-----
- target/ppc/kvm.c        | 11 -----------
- 4 files changed, 2 insertions(+), 22 deletions(-)
+ target/ppc/cpu_init.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
-index 58cb992609..e7c9edd033 100644
---- a/hw/ppc/spapr_cpu_core.c
-+++ b/hw/ppc/spapr_cpu_core.c
-@@ -398,10 +398,8 @@ static const TypeInfo spapr_cpu_core_type_infos[] = {
-     DEFINE_SPAPR_CPU_CORE_TYPE("power8_v2.0"),
-     DEFINE_SPAPR_CPU_CORE_TYPE("power8e_v2.1"),
-     DEFINE_SPAPR_CPU_CORE_TYPE("power8nvl_v1.0"),
--    DEFINE_SPAPR_CPU_CORE_TYPE("power9_v1.0"),
-     DEFINE_SPAPR_CPU_CORE_TYPE("power9_v2.0"),
-     DEFINE_SPAPR_CPU_CORE_TYPE("power9_v2.2"),
--    DEFINE_SPAPR_CPU_CORE_TYPE("power10_v1.0"),
-     DEFINE_SPAPR_CPU_CORE_TYPE("power10_v2.0"),
- #ifdef CONFIG_KVM
-     DEFINE_SPAPR_CPU_CORE_TYPE("host"),
-diff --git a/target/ppc/cpu-models.c b/target/ppc/cpu-models.c
-index 36e465b390..f2301b43f7 100644
---- a/target/ppc/cpu-models.c
-+++ b/target/ppc/cpu-models.c
-@@ -728,14 +728,10 @@
-                 "POWER8 v2.0")
-     POWERPC_DEF("power8nvl_v1.0", CPU_POWERPC_POWER8NVL_v10,         POWER8,
-                 "POWER8NVL v1.0")
--    POWERPC_DEF("power9_v1.0",   CPU_POWERPC_POWER9_DD1,             POWER9,
--                "POWER9 v1.0")
-     POWERPC_DEF("power9_v2.0",   CPU_POWERPC_POWER9_DD20,            POWER9,
-                 "POWER9 v2.0")
-     POWERPC_DEF("power9_v2.2",   CPU_POWERPC_POWER9_DD22,            POWER9,
-                 "POWER9 v2.2")
--    POWERPC_DEF("power10_v1.0",  CPU_POWERPC_POWER10_DD1,            POWER10,
--                "POWER10 v1.0")
-     POWERPC_DEF("power10_v2.0",  CPU_POWERPC_POWER10_DD20,           POWER10,
-                 "POWER10 v2.0")
- #endif /* defined (TARGET_PPC64) */
 diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 1d3d1db7c3..572cbdf25f 100644
+index 572cbdf25f..b160926a93 100644
 --- a/target/ppc/cpu_init.c
 +++ b/target/ppc/cpu_init.c
-@@ -6350,10 +6350,7 @@ static bool ppc_pvr_match_power9(PowerPCCPUClass *pcc, uint32_t pvr, bool best)
-         return false;
-     }
- 
--    if ((pvr & 0x0f00) == 0x100) {
--        /* DD1.x always matches power9_v1.0 */
--        return true;
--    } else if ((pvr & 0x0f00) == 0x200) {
-+    if ((pvr & 0x0f00) == 0x200) {
-         if ((pvr & 0xf) < 2) {
-             /* DD2.0, DD2.1 match power9_v2.0 */
-             if ((pcc->pvr & 0xf) == 0) {
-@@ -6536,7 +6533,7 @@ static bool ppc_pvr_match_power10(PowerPCCPUClass *pcc, uint32_t pvr, bool best)
-     }
- 
-     if ((pvr & 0x0f00) == (pcc->pvr & 0x0f00)) {
--        /* Major DD version matches to power10_v1.0 and power10_v2.0 */
-+        /* Major DD version matches power10_v2.0 */
-         return true;
-     }
- 
-diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
-index bcf30a5400..525fbe3892 100644
---- a/target/ppc/kvm.c
-+++ b/target/ppc/kvm.c
-@@ -2369,17 +2369,6 @@ static void kvmppc_host_cpu_class_init(ObjectClass *oc, void *data)
- 
- #if defined(TARGET_PPC64)
-     pcc->radix_page_info = kvmppc_get_radix_page_info();
--
--    if ((pcc->pvr & 0xffffff00) == CPU_POWERPC_POWER9_DD1) {
--        /*
--         * POWER9 DD1 has some bugs which make it not really ISA 3.00
--         * compliant.  More importantly, advertising ISA 3.00
--         * architected mode may prevent guests from activating
--         * necessary DD1 workarounds.
--         */
--        pcc->pcr_supported &= ~(PCR_COMPAT_3_00 | PCR_COMPAT_2_07
--                                | PCR_COMPAT_2_06 | PCR_COMPAT_2_05);
--    }
- #endif /* defined(TARGET_PPC64) */
+@@ -6573,11 +6573,10 @@ POWERPC_FAMILY(POWER10)(ObjectClass *oc, void *data)
+                         PPC2_FP_TST_ISA206 | PPC2_BCTAR_ISA207 |
+                         PPC2_LSQ_ISA207 | PPC2_ALTIVEC_207 |
+                         PPC2_ISA205 | PPC2_ISA207S | PPC2_FP_CVT_S64 |
+-                        PPC2_TM | PPC2_ISA300 | PPC2_PRCNTL | PPC2_ISA310 |
++                        PPC2_ISA300 | PPC2_PRCNTL | PPC2_ISA310 |
+                         PPC2_MEM_LWSYNC | PPC2_BCDA_ISA206;
+     pcc->msr_mask = (1ull << MSR_SF) |
+                     (1ull << MSR_HV) |
+-                    (1ull << MSR_TM) |
+                     (1ull << MSR_VR) |
+                     (1ull << MSR_VSX) |
+                     (1ull << MSR_EE) |
+@@ -6617,7 +6616,7 @@ POWERPC_FAMILY(POWER10)(ObjectClass *oc, void *data)
+     pcc->flags = POWERPC_FLAG_VRE | POWERPC_FLAG_SE |
+                  POWERPC_FLAG_BE | POWERPC_FLAG_PMM |
+                  POWERPC_FLAG_BUS_CLK | POWERPC_FLAG_CFAR |
+-                 POWERPC_FLAG_VSX | POWERPC_FLAG_TM | POWERPC_FLAG_SCV;
++                 POWERPC_FLAG_VSX | POWERPC_FLAG_SCV;
+     pcc->l1_dcache_size = 0x8000;
+     pcc->l1_icache_size = 0x8000;
  }
- 
 -- 
 2.42.0
 
