@@ -2,71 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E8F879ACC
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:44:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF0A9879AF8
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 19:07:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk69o-0004Cr-Km; Tue, 12 Mar 2024 13:43:20 -0400
+	id 1rk6Wj-0004uY-3G; Tue, 12 Mar 2024 14:07:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rk69k-0004CV-Cz
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 13:43:16 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rk69i-00009n-CI
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 13:43:16 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DED355557D;
- Tue, 12 Mar 2024 20:44:04 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 23C0D972C1;
- Tue, 12 Mar 2024 20:43:02 +0300 (MSK)
-Message-ID: <26ab2b48-3fdf-447a-8149-b9455ebff4e2@tls.msk.ru>
-Date: Tue, 12 Mar 2024 20:43:01 +0300
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rk6WV-0004qH-Ow
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:06:49 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rk6WU-0004Dx-6Z
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:06:47 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-513173e8191so6186555e87.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 11:06:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1710266803; x=1710871603; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=xR5iGUQZiCoR8k2pSi0KOW7ASeWFuNA9cHveRST8/e8=;
+ b=FnazQzBcj56hv9Iz8Ya85ajgHriYyG2Kb3epCRKQIIcMMQIE8yWi6NtWJX5L7t/iv9
+ JXhcUoqhM+FqYNf1uyJ9/gjyNLf53KSwoUxZmviElKSk56p2Oi6Wme6QAsPxINBlB4SY
+ SLVWjboMplwOsNhfehcXGePyiD8pYLRBPm0NNMikTh2SLvcf9gopuJSe190EPmL2q3Tc
+ nAKwsayusUkjeOFLbOzaeNxvDzjVwtD+xPgwMWUsz7SVPKkrNnM1mUs6LqJ2tZsRia4n
+ Xv+W3F7tOIxiISihwVq6xRCMFWxRyMwMSevF/NiBhwzagpjXrcX7bHIU5EYSwAGU61Rl
+ l0pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710266803; x=1710871603;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xR5iGUQZiCoR8k2pSi0KOW7ASeWFuNA9cHveRST8/e8=;
+ b=tC1VTpBVIgPVDZqVRXLIQFiiwnX3zzZc15Q0AKW+XvlcTShQhaUhjvoGbGt03z72/t
+ JuEEqLkyavtrdsFP0cI4g3QDbSLTtaZMPmh8be01a0LL8K+tRYBhZvdsb65aLgrPenmB
+ il9i9kHR1BLak6WbGrUm5LstpX/H9cFE4tg1/+dzkWGik0rMDlXLN9c2F7jQsO87FKFm
+ 1OXL7b36nhJKlFhlExZxwBQluNRIMclEGaw8072FswbdzbKa4JH+c5VVI4yGcp8BuJ72
+ xtKs88N6NPDIgOHc5kKPB9+4LTXXF1Y2YVEqBv5sdPe/P8NxoxVbFDZ/zBQdVciW8K00
+ 7PWg==
+X-Gm-Message-State: AOJu0YwQxRBjynCWHVWOzEVXcUVOA0vD8mPU5k55saPstBlX70/8mezu
+ zCwSiCtSWmxtEDbYe1pfhnuOrf+13MXMxBTWsWDvtlNITy75S6YcvSLplfJcnas=
+X-Google-Smtp-Source: AGHT+IGlEBG40OBhYaUrcYn7hzV7aIkFm7Gb8sYx514Q95Jbzc32qkiM+I91vty2BOw9gju8nB1Z9w==
+X-Received: by 2002:ac2:4da7:0:b0:513:b062:98bf with SMTP id
+ h7-20020ac24da7000000b00513b06298bfmr535934lfe.20.1710266802251; 
+ Tue, 12 Mar 2024 11:06:42 -0700 (PDT)
+Received: from [192.168.122.175] (93.red-88-29-160.dynamicip.rima-tde.net.
+ [88.29.160.93]) by smtp.gmail.com with ESMTPSA id
+ f6-20020a05600c154600b004131ae36ac4sm15361917wmg.20.2024.03.12.11.06.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Mar 2024 11:06:41 -0700 (PDT)
+Message-ID: <4b17e2fa-3b6c-4c7e-a888-661d1bf1324b@linaro.org>
+Date: Tue, 12 Mar 2024 18:51:15 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] migration/multifd: Don't fsync when closing
- QIOChannelFile
+Subject: Re: [PATCH 08/10] qapi: Correct error message for 'vcpu_dirty_limit'
+ parameter
 Content-Language: en-US
-To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
-Cc: berrange@redhat.com, peterx@redhat.com
-References: <20240305195629.9922-1-farosas@suse.de>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240305195629.9922-1-farosas@suse.de>
+To: Zhao Liu <zhao1.liu@intel.com>, Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-block@nongnu.org,
+ Juan Quintela <quintela@redhat.com>
+References: <20240312141343.3168265-1-armbru@redhat.com>
+ <20240312141343.3168265-9-armbru@redhat.com> <ZfB0Oq7SSQgiqbz5@intel.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <ZfB0Oq7SSQgiqbz5@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,13 +94,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-05.03.2024 22:56, Fabiano Rosas :
-> Commit bc38feddeb ("io: fsync before closing a file channel") added a
+On 12/3/24 16:26, Zhao Liu wrote:
+> On Tue, Mar 12, 2024 at 03:13:41PM +0100, Markus Armbruster wrote:
+>> Date: Tue, 12 Mar 2024 15:13:41 +0100
+>> From: Markus Armbruster <armbru@redhat.com>
+>> Subject: [PATCH 08/10] qapi: Correct error message for 'vcpu_dirty_limit'
+>>   parameter
+>>
+>> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>
+>> QERR_INVALID_PARAMETER_VALUE is defined as:
+>>
+>>    #define QERR_INVALID_PARAMETER_VALUE \
+>>        "Parameter '%s' expects %s"
+>>
+>> The current error is formatted as:
+>>
+>>    "Parameter 'vcpu_dirty_limit' expects is invalid, it must greater then 1 MB/s"
+>>
+>> Replace by:
+>>
+>>    "Parameter 'vcpu_dirty_limit' is invalid, it must greater than 1 MB/s"
+> 
+> Is there a grammar error here? Maybe
+> 
+> s/it must greater/it must be greater/
 
-> Fixes: bc38feddeb ("io: fsync before closing a file channel")
+Oops indeed!
 
-FWIW, this is commit c05dfcb7f2 in master, not bc38feddeb.
-It's too late to change that now though.
+> 
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Reviewed-by: Juan Quintela <quintela@redhat.com>
+>> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>> ---
+>>   migration/options.c | 5 ++---
+>>   1 file changed, 2 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/migration/options.c b/migration/options.c
+>> index 40eb930940..c5115f1b5c 100644
+>> --- a/migration/options.c
+>> +++ b/migration/options.c
+>> @@ -1264,9 +1264,8 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
+>>   
+>>       if (params->has_vcpu_dirty_limit &&
+>>           (params->vcpu_dirty_limit < 1)) {
+>> -        error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
+>> -                   "vcpu_dirty_limit",
+>> -                   "is invalid, it must greater then 1 MB/s");
+>> +        error_setg(errp, "Parameter 'vcpu_dirty_limit' is invalid,"
+>> +                         " it must greater than 1 MB/s");
 
-/mjt
+So s/it must greater/it must be greater/ :)
+
+>>           return false;
+>>       }
+>>
+> 
+> Otherwise,
+> 
+> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+> 
+
 
