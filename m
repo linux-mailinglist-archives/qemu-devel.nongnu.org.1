@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94721879A34
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:08:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB915879A5E
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:11:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk5Wc-00020J-2V; Tue, 12 Mar 2024 13:02:50 -0400
+	id 1rk5X2-0003so-U4; Tue, 12 Mar 2024 13:03:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk5Un-0006Ta-8S; Tue, 12 Mar 2024 13:00:59 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1rk5Ur-0006ZI-9f; Tue, 12 Mar 2024 13:01:02 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk5Uk-0008UL-QA; Tue, 12 Mar 2024 13:00:56 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6e6ab012eb1so791126b3a.3; 
- Tue, 12 Mar 2024 10:00:53 -0700 (PDT)
+ id 1rk5Uo-0008Um-BB; Tue, 12 Mar 2024 13:01:01 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6e649a2548cso4019269b3a.3; 
+ Tue, 12 Mar 2024 10:00:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710262852; x=1710867652; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710262856; x=1710867656; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=D823XPpwMiJ34nimbNh5Jem7KoFIgSxF2nxMRNRXUM0=;
- b=X3MefoNFDB8j3+WSp9f38md6wuBNqrGvOZ+FRDeq+PU/cKGY/Zf328DKvfgjVyy4LU
- hLKgkiGLUqgIsepvLoRHs/tcLn8w64Cx/91ns6BR5cHtLZiUK6qAW/u+I1pkm9J0LB/X
- X+YnvCKSTTYvTXoa5GUGhQGjMnpAUzj56QTXkxM4fjf0lWWdJCUBOHKcK/oZssmjbV7I
- EXUOgi1NSTrypwXGn00baEynWJl2HIP28LGSHjAtWWxYH/+SuiRGCHlCQ/gpKcCwCzaQ
- xXZUDGlXxoeehA0tcqyDl4x1Z/IUcnYJPtV9lToXbZ06YwTxrqCAW13NndSg09EHDSD5
- AoQA==
+ bh=2rcEzjFiw//Qjpwo4SWUe5/5IQxOZFXiJDgJn5KABlY=;
+ b=ebMV48tOZyzh3w+ILTvGsZ+k+CX5lU90GaLucmtDErd8DNxYW3EXrpSxnVdaK1dVER
+ KvZ1KECfWtYFvEldjkviTC+ySll1RIa+TsJcF19XsyrJzggib1EAOP2BGIDX27v0Wbvb
+ a2v2eNIBpZ2ey3+u9Q/yPlOmQ8wVKX01pm658TywJCXz8st/gtJNAY3pjMOHUuT10e7A
+ i2lSxXCsz6dlSFA6uAuvYfnn2jFeioPOYqq2rwMdtNpJhZ+b/KK39MA5zcTfzHZi6aGK
+ xUH38nYfcAvTp+rxP1nGJ/puYV1FJYSj85iDnIiDG4J+huKR4r3wngHT2MihVpBzOv6/
+ 1fyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710262852; x=1710867652;
+ d=1e100.net; s=20230601; t=1710262856; x=1710867656;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D823XPpwMiJ34nimbNh5Jem7KoFIgSxF2nxMRNRXUM0=;
- b=HsSlACGk/Ev+beS25JJWZZjJvmyP/vgp9e2GmO5RwW9xvDFlbybzqn1f+/76PS4WAv
- Ss+LidzRD5ryzYquuGmqiZ92H/i5M0tgEKMYs7jJbc3YuHGrv18WySjdGFQSwJjQunzm
- VZPPU3cOCYeEinxiS4bPkf/GBEszqd1htu8O4dtJmJMpUe7iuie0vxc5SrNvMZvR3Usz
- Uv+G9MyBfE1pb7Apd+OGlaI+mw7EjOaKQ9Y6xl3X7kCfg1iHdwdRLQ2AinMLMSy7pN65
- yItYoqnIticzEJF/2AivnJxAKLrpdhzJJrYe0YKxfFMo6llDwLDbvXhtD2ZhZMKPFBZe
- QrtQ==
+ bh=2rcEzjFiw//Qjpwo4SWUe5/5IQxOZFXiJDgJn5KABlY=;
+ b=Fca2w32YfHEQ2HB/TGZffHe0N0PJmK69EEvvwnP5WtdWxOmxf/LUv4LbSdy1T1bW26
+ OQ5IHgx91GiDA0dU0rG2HE6NtXa/N/6M1tMlWzz5zhm+Dd8Yg8I06wd0ScgyMO6ueg5m
+ J8MMYUH3ejL9bA7bxjxj2652VP63qzj+u9bJl8TSHkmiFxhDtQK8p8aYbyY0Uq8g3ckn
+ meuCYWrgLtXy6AgrHJICM/iiBit7fS1N8blaatMd8pRd06CCEAULNoIUt5B1SPO2f7GY
+ U4HiZwFuSdEIkX5n70aP6/IdvjglJZvesNWgsxVDp0nnAzJv5OAfi8U9E7URN8z/oIb9
+ EuvQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXn1B/w+RVro71djlB91O9qEWzCfg4NWmHdjjabLn+60LA5w47Bly9wmF6PzKr1gWbiva+absHrRGOLc0FxHn5XUw9j
-X-Gm-Message-State: AOJu0YxTUFoE+kR2VOqct+COBOs4b1/3Rajy1MjX40FALOEHImH7QB/f
- qFLsXoI+xFJfeNhb0UpqyqJsAW+CgJ735D3dUnWY9ae/RifJG5YGxISEvi5Sse0=
-X-Google-Smtp-Source: AGHT+IGmiOiDuQdNm+F5+HoovQ+uw/LYqQR0k3LM1nwb67XW4ps2rTzUdBGljuGpdB/JxYOptTT97Q==
-X-Received: by 2002:a05:6a00:801:b0:6e6:a3b3:923c with SMTP id
- m1-20020a056a00080100b006e6a3b3923cmr54942pfk.6.1710262852028; 
- Tue, 12 Mar 2024 10:00:52 -0700 (PDT)
+ AJvYcCW7wvGR2Lrs8BdRJS/G+OPv55KEjAyNYkjY7zlmp/MNRGdfs0j0n2fdy7wNPtB8ZAdvXrcdZR61R0G6KfsBaPvKAPE2
+X-Gm-Message-State: AOJu0YzkcKgPj9cA6TKfISVVeofh1s0y20ssjgWlSH5w0ACPisPWRtuB
+ l/nrKZIDBPNqzmofinJngErvje/M8dH6+01pMO40wF5ThGDGp/DjLzKguNnd8cc=
+X-Google-Smtp-Source: AGHT+IEn+h/SnxXCJXoyjUFH13z513+W0Mud8C2VR3i/IzrPuUy2s4QZCmgUAiT64afjE13BEYZxCw==
+X-Received: by 2002:a05:6a00:b49:b0:6e6:1b89:aef3 with SMTP id
+ p9-20020a056a000b4900b006e61b89aef3mr37867pfo.14.1710262855996; 
+ Tue, 12 Mar 2024 10:00:55 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- t34-20020a056a0013a200b006e6a684a6ddsm1362330pfg.220.2024.03.12.10.00.48
+ t34-20020a056a0013a200b006e6a684a6ddsm1362330pfg.220.2024.03.12.10.00.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 10:00:51 -0700 (PDT)
+ Tue, 12 Mar 2024 10:00:55 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Michael Neuling <mikey@neuling.org>,
- Amit Machhiwal <amachhiw@linux.vnet.ibm.com>
-Subject: [PULL 30/38] spapr: nested: Introduce H_GUEST_[GET|SET]_CAPABILITIES
- hcalls.
-Date: Wed, 13 Mar 2024 02:58:41 +1000
-Message-ID: <20240312165851.2240242-31-npiggin@gmail.com>
+ Michael Neuling <mikey@neuling.org>
+Subject: [PULL 31/38] spapr: nested: Introduce H_GUEST_[CREATE|DELETE] hcalls.
+Date: Wed, 13 Mar 2024 02:58:42 +1000
+Message-ID: <20240312165851.2240242-32-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240312165851.2240242-1-npiggin@gmail.com>
 References: <20240312165851.2240242-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,233 +97,192 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
 Introduce the nested PAPR hcalls:
- - H_GUEST_GET_CAPABILITIES which is used to query the capabilities
-   of the API and the L2 guests it provides.
- - H_GUEST_SET_CAPABILITIES which is used to set the Guest API
-   capabilities that the Host Partition supports and may use.
-
-[amachhiw: support for p9 compat mode and return register bug fixes]
+    - H_GUEST_CREATE which is used to create and allocate resources for
+nested guest being created.
+    - H_GUEST_DELETE which is used to delete and deallocate resources
+for the nested guest being deleted. It also supports deleting all nested
+guests at once using a deleteAll flag.
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Michael Neuling <mikey@neuling.org>
-Signed-off-by: Amit Machhiwal <amachhiw@linux.vnet.ibm.com>
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr_nested.c         | 115 ++++++++++++++++++++++++++++++++++
- include/hw/ppc/spapr.h        |   7 ++-
- include/hw/ppc/spapr_nested.h |  12 ++++
- 3 files changed, 133 insertions(+), 1 deletion(-)
+ hw/ppc/spapr_nested.c         | 103 ++++++++++++++++++++++++++++++++++
+ include/hw/ppc/spapr.h        |   4 +-
+ include/hw/ppc/spapr_nested.h |   7 +++
+ 3 files changed, 113 insertions(+), 1 deletion(-)
 
 diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
-index 12fdbe2aba..c35acee51f 100644
+index c35acee51f..1f6eb68b93 100644
 --- a/hw/ppc/spapr_nested.c
 +++ b/hw/ppc/spapr_nested.c
-@@ -7,6 +7,7 @@
- #include "hw/ppc/spapr_cpu_core.h"
- #include "hw/ppc/spapr_nested.h"
- #include "mmu-book3s-v3.h"
-+#include "cpu-models.h"
- 
- void spapr_nested_reset(SpaprMachineState *spapr)
- {
-@@ -16,6 +17,7 @@ void spapr_nested_reset(SpaprMachineState *spapr)
-         spapr_register_nested_hv();
-     } else {
-         spapr->nested.api = 0;
-+        spapr->nested.capabilities_set = false;
+@@ -521,6 +521,105 @@ static target_ulong h_guest_set_capabilities(PowerPCCPU *cpu,
      }
  }
  
-@@ -432,6 +434,93 @@ void spapr_exit_nested(PowerPCCPU *cpu, int excp)
-     }
- }
- 
-+static target_ulong h_guest_get_capabilities(PowerPCCPU *cpu,
-+                                             SpaprMachineState *spapr,
-+                                             target_ulong opcode,
-+                                             target_ulong *args)
++static void
++destroy_guest_helper(gpointer value)
 +{
-+    CPUPPCState *env = &cpu->env;
-+    target_ulong flags = args[0];
-+
-+    if (flags) { /* don't handle any flags capabilities for now */
-+        return H_PARAMETER;
-+    }
-+
-+    /* P10 capabilities */
-+    if (ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_10, 0,
-+        spapr->max_compat_pvr)) {
-+        env->gpr[4] |= H_GUEST_CAPABILITIES_P10_MODE;
-+    }
-+
-+    /* P9 capabilities */
-+    if (ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_00, 0,
-+        spapr->max_compat_pvr)) {
-+        env->gpr[4] |= H_GUEST_CAPABILITIES_P9_MODE;
-+    }
-+
-+    return H_SUCCESS;
++    struct SpaprMachineStateNestedGuest *guest = value;
++    g_free(guest);
 +}
 +
-+static target_ulong h_guest_set_capabilities(PowerPCCPU *cpu,
-+                                             SpaprMachineState *spapr,
-+                                             target_ulong opcode,
-+                                              target_ulong *args)
++static target_ulong h_guest_create(PowerPCCPU *cpu,
++                                   SpaprMachineState *spapr,
++                                   target_ulong opcode,
++                                   target_ulong *args)
 +{
 +    CPUPPCState *env = &cpu->env;
 +    target_ulong flags = args[0];
-+    target_ulong capabilities = args[1];
-+    env->gpr[4] = 0;
++    target_ulong continue_token = args[1];
++    uint64_t guestid;
++    int nguests = 0;
++    struct SpaprMachineStateNestedGuest *guest;
 +
-+    if (flags) { /* don't handle any flags capabilities for now */
-+        return H_PARAMETER;
++    if (flags) { /* don't handle any flags for now */
++        return H_UNSUPPORTED_FLAG;
 +    }
 +
-+    if (capabilities & H_GUEST_CAPABILITIES_COPY_MEM) {
-+        env->gpr[4] = 1;
-+        return H_P2; /* isn't supported */
-+    }
-+
-+    /*
-+     * If there are no capabilities configured, set the R5 to the index of
-+     * the first supported Power Processor Mode
-+     */
-+    if (!capabilities) {
-+        env->gpr[4] = 1;
-+
-+        /* set R5 to the first supported Power Processor Mode */
-+        if (ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_10, 0,
-+                             spapr->max_compat_pvr)) {
-+            env->gpr[5] = H_GUEST_CAP_P10_MODE_BMAP;
-+        } else if (ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_00, 0,
-+                                    spapr->max_compat_pvr)) {
-+            env->gpr[5] = H_GUEST_CAP_P9_MODE_BMAP;
-+        }
-+
-+        return H_P2;
-+    }
-+
-+    /*
-+     * If an invalid capability is set, R5 should contain the index of the
-+     * invalid capability bit
-+     */
-+    if (capabilities & ~H_GUEST_CAP_VALID_MASK) {
-+        env->gpr[4] = 1;
-+
-+        /* Set R5 to the index of the invalid capability */
-+        env->gpr[5] = 63 - ctz64(capabilities);
-+
++    if (continue_token != -1) {
 +        return H_P2;
 +    }
 +
 +    if (!spapr->nested.capabilities_set) {
-+        spapr->nested.capabilities_set = true;
-+        spapr->nested.pvr_base = env->spr[SPR_PVR];
-+        return H_SUCCESS;
-+    } else {
 +        return H_STATE;
 +    }
++
++    if (!spapr->nested.guests) {
++        spapr->nested.guests = g_hash_table_new_full(NULL,
++                                                     NULL,
++                                                     NULL,
++                                                     destroy_guest_helper);
++    }
++
++    nguests = g_hash_table_size(spapr->nested.guests);
++
++    if (nguests == PAPR_NESTED_GUEST_MAX) {
++        return H_NO_MEM;
++    }
++
++    /* Lookup for available guestid */
++    for (guestid = 1; guestid < PAPR_NESTED_GUEST_MAX; guestid++) {
++        if (!(g_hash_table_lookup(spapr->nested.guests,
++                                  GINT_TO_POINTER(guestid)))) {
++            break;
++        }
++    }
++
++    if (guestid == PAPR_NESTED_GUEST_MAX) {
++        return H_NO_MEM;
++    }
++
++    guest = g_try_new0(struct SpaprMachineStateNestedGuest, 1);
++    if (!guest) {
++        return H_NO_MEM;
++    }
++
++    guest->pvr_logical = spapr->nested.pvr_base;
++    g_hash_table_insert(spapr->nested.guests, GINT_TO_POINTER(guestid), guest);
++    env->gpr[4] = guestid;
++
++    return H_SUCCESS;
++}
++
++static target_ulong h_guest_delete(PowerPCCPU *cpu,
++                                   SpaprMachineState *spapr,
++                                   target_ulong opcode,
++                                   target_ulong *args)
++{
++    target_ulong flags = args[0];
++    target_ulong guestid = args[1];
++    struct SpaprMachineStateNestedGuest *guest;
++
++    /*
++     * handle flag deleteAllGuests, if set:
++     * guestid is ignored and all guests are deleted
++     *
++     */
++    if (flags & ~H_GUEST_DELETE_ALL_FLAG) {
++        return H_UNSUPPORTED_FLAG; /* other flag bits reserved */
++    } else if (flags & H_GUEST_DELETE_ALL_FLAG) {
++        g_hash_table_destroy(spapr->nested.guests);
++        return H_SUCCESS;
++    }
++
++    guest = g_hash_table_lookup(spapr->nested.guests, GINT_TO_POINTER(guestid));
++    if (!guest) {
++        return H_P2;
++    }
++
++    g_hash_table_remove(spapr->nested.guests, GINT_TO_POINTER(guestid));
++
++    return H_SUCCESS;
 +}
 +
  void spapr_register_nested_hv(void)
  {
      spapr_register_hypercall(KVMPPC_H_SET_PARTITION_TABLE, h_set_ptbl);
-@@ -447,6 +536,21 @@ void spapr_unregister_nested_hv(void)
-     spapr_unregister_hypercall(KVMPPC_H_TLB_INVALIDATE);
-     spapr_unregister_hypercall(KVMPPC_H_COPY_TOFROM_GUEST);
+@@ -543,12 +642,16 @@ void spapr_register_nested_papr(void)
+                              h_guest_get_capabilities);
+     spapr_register_hypercall(H_GUEST_SET_CAPABILITIES,
+                              h_guest_set_capabilities);
++    spapr_register_hypercall(H_GUEST_CREATE, h_guest_create);
++    spapr_register_hypercall(H_GUEST_DELETE, h_guest_delete);
  }
-+
-+void spapr_register_nested_papr(void)
-+{
-+    spapr_register_hypercall(H_GUEST_GET_CAPABILITIES,
-+                             h_guest_get_capabilities);
-+    spapr_register_hypercall(H_GUEST_SET_CAPABILITIES,
-+                             h_guest_set_capabilities);
-+}
-+
-+void spapr_unregister_nested_papr(void)
-+{
-+    spapr_unregister_hypercall(H_GUEST_GET_CAPABILITIES);
-+    spapr_unregister_hypercall(H_GUEST_SET_CAPABILITIES);
-+}
-+
+ 
+ void spapr_unregister_nested_papr(void)
+ {
+     spapr_unregister_hypercall(H_GUEST_GET_CAPABILITIES);
+     spapr_unregister_hypercall(H_GUEST_SET_CAPABILITIES);
++    spapr_unregister_hypercall(H_GUEST_CREATE);
++    spapr_unregister_hypercall(H_GUEST_DELETE);
+ }
+ 
  #else
- void spapr_exit_nested(PowerPCCPU *cpu, int excp)
- {
-@@ -468,4 +572,15 @@ bool spapr_get_pate_nested_hv(SpaprMachineState *spapr, PowerPCCPU *cpu,
- {
-     return false;
- }
-+
-+void spapr_register_nested_papr(void)
-+{
-+    /* DO NOTHING */
-+}
-+
-+void spapr_unregister_nested_papr(void)
-+{
-+    /* DO NOTHING */
-+}
-+
- #endif
 diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-index 0eb01ea6fd..2906d59137 100644
+index 2906d59137..13416fc3d7 100644
 --- a/include/hw/ppc/spapr.h
 +++ b/include/hw/ppc/spapr.h
-@@ -364,6 +364,7 @@ struct SpaprMachineState {
- #define H_NOOP            -63
- #define H_UNSUPPORTED     -67
- #define H_OVERLAP         -68
-+#define H_STATE           -75
- #define H_UNSUPPORTED_FLAG -256
- #define H_MULTI_THREADS_ACTIVE -9005
- 
-@@ -583,8 +584,10 @@ struct SpaprMachineState {
- #define H_RPT_INVALIDATE        0x448
- #define H_SCM_FLUSH             0x44C
+@@ -586,8 +586,10 @@ struct SpaprMachineState {
  #define H_WATCHDOG              0x45C
-+#define H_GUEST_GET_CAPABILITIES 0x460
-+#define H_GUEST_SET_CAPABILITIES 0x464
+ #define H_GUEST_GET_CAPABILITIES 0x460
+ #define H_GUEST_SET_CAPABILITIES 0x464
++#define H_GUEST_CREATE           0x470
++#define H_GUEST_DELETE           0x488
  
--#define MAX_HCALL_OPCODE        H_WATCHDOG
-+#define MAX_HCALL_OPCODE         H_GUEST_SET_CAPABILITIES
+-#define MAX_HCALL_OPCODE         H_GUEST_SET_CAPABILITIES
++#define MAX_HCALL_OPCODE         H_GUEST_DELETE
  
  /* The hcalls above are standardized in PAPR and implemented by pHyp
   * as well.
-@@ -1033,5 +1036,7 @@ void spapr_watchdog_init(SpaprMachineState *spapr);
- void spapr_register_nested_hv(void);
- void spapr_unregister_nested_hv(void);
- void spapr_nested_reset(SpaprMachineState *spapr);
-+void spapr_register_nested_papr(void);
-+void spapr_unregister_nested_papr(void);
- 
- #endif /* HW_SPAPR_H */
 diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.h
-index bf3a7b8d89..73687e03e4 100644
+index 73687e03e4..56d43e540b 100644
 --- a/include/hw/ppc/spapr_nested.h
 +++ b/include/hw/ppc/spapr_nested.h
-@@ -7,8 +7,20 @@ typedef struct SpaprMachineStateNested {
-     uint64_t ptcr;
-     uint8_t api;
+@@ -9,8 +9,13 @@ typedef struct SpaprMachineStateNested {
  #define NESTED_API_KVM_HV  1
-+    bool capabilities_set;
-+    uint32_t pvr_base;
+     bool capabilities_set;
+     uint32_t pvr_base;
++    GHashTable *guests;
  } SpaprMachineStateNested;
  
-+/* Nested PAPR API related macros */
-+#define H_GUEST_CAPABILITIES_COPY_MEM 0x8000000000000000
-+#define H_GUEST_CAPABILITIES_P9_MODE  0x4000000000000000
-+#define H_GUEST_CAPABILITIES_P10_MODE 0x2000000000000000
-+#define H_GUEST_CAP_VALID_MASK        (H_GUEST_CAPABILITIES_P10_MODE | \
-+                                       H_GUEST_CAPABILITIES_P9_MODE)
-+#define H_GUEST_CAP_COPY_MEM_BMAP     0
-+#define H_GUEST_CAP_P9_MODE_BMAP      1
-+#define H_GUEST_CAP_P10_MODE_BMAP     2
++typedef struct SpaprMachineStateNestedGuest {
++    uint32_t pvr_logical;
++} SpaprMachineStateNestedGuest;
 +
+ /* Nested PAPR API related macros */
+ #define H_GUEST_CAPABILITIES_COPY_MEM 0x8000000000000000
+ #define H_GUEST_CAPABILITIES_P9_MODE  0x4000000000000000
+@@ -20,6 +25,8 @@ typedef struct SpaprMachineStateNested {
+ #define H_GUEST_CAP_COPY_MEM_BMAP     0
+ #define H_GUEST_CAP_P9_MODE_BMAP      1
+ #define H_GUEST_CAP_P10_MODE_BMAP     2
++#define PAPR_NESTED_GUEST_MAX         4096
++#define H_GUEST_DELETE_ALL_FLAG       0x8000000000000000ULL
+ 
  /*
   * Register state for entering a nested guest with H_ENTER_NESTED.
-  * New member must be added at the end.
 -- 
 2.42.0
 
