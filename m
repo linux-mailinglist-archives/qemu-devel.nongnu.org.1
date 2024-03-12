@@ -2,57 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74DE1878E47
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 06:48:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 825F1878E4A
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 06:53:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjuz0-00078e-O9; Tue, 12 Mar 2024 01:47:26 -0400
+	id 1rjv4W-0000dF-O6; Tue, 12 Mar 2024 01:53:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.huang@linux.alibaba.com>)
- id 1rjuyn-00075p-PX; Tue, 12 Mar 2024 01:47:18 -0400
-Received: from out30-97.freemail.mail.aliyun.com ([115.124.30.97])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.huang@linux.alibaba.com>)
- id 1rjuyY-0007do-Em; Tue, 12 Mar 2024 01:47:13 -0400
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1rjv4P-0000cc-1Z; Tue, 12 Mar 2024 01:53:01 -0400
+Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1rjv4L-0008T2-Tm; Tue, 12 Mar 2024 01:53:00 -0400
+Received: by mail-oi1-x229.google.com with SMTP id
+ 5614622812f47-3c1a2f7e302so2478802b6e.0; 
+ Mon, 11 Mar 2024 22:52:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux.alibaba.com; s=default;
- t=1710222408; h=From:To:Subject:Date:Message-ID:MIME-Version;
- bh=n3lFD/Eap30yyY91QJ2Yy23T+51QoULRPSQPw9NBZrU=;
- b=n/XvU0uxMmNW0rF6sl2oSKN4Jz2uifB+GGlEtGXGbE+fE9zNWtOunXzHXJ+3r0L/cD1oliHhRDw2I5oDFns3Xg9Mu2Qu5SmFf+7VPdxQXTlI5PLPGt8fgd9T4kc/iBl4l9EqB5zumi7rwKP6FgZ1MQBs5Bh+8uL35E2b6joEjGc=
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R481e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046049;
- MF=eric.huang@linux.alibaba.com; NM=1; PH=DS; RN=10; SR=0;
- TI=SMTPD_---0W2KhSFI_1710222404; 
-Received: from localhost.localdomain(mailfrom:eric.huang@linux.alibaba.com
- fp:SMTPD_---0W2KhSFI_1710222404) by smtp.aliyun-inc.com;
- Tue, 12 Mar 2024 13:46:45 +0800
-From: Huang Tao <eric.huang@linux.alibaba.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, zhiwei_liu@linux.alibaba.com,
- dbarboza@ventanamicro.com, liwei1518@gmail.com, bin.meng@windriver.com,
- alistair.francis@wdc.com, palmer@dabbelt.com,
- Huang Tao <eric.huang@linux.alibaba.com>,
- Christoph Muellner <christoph.muellner@vrull.eu>
-Subject: [PATCH v2] target/riscv: Implement dynamic establishment of custom
- decoder
-Date: Tue, 12 Mar 2024 13:45:53 +0800
-Message-ID: <20240312054553.11811-1-eric.huang@linux.alibaba.com>
-X-Mailer: git-send-email 2.41.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.97;
- envelope-from=eric.huang@linux.alibaba.com;
- helo=out30-97.freemail.mail.aliyun.com
-X-Spam_score_int: -174
-X-Spam_score: -17.5
-X-Spam_bar: -----------------
-X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01, T_SPF_HELO_TEMPERROR=0.01,
- UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+ d=gmail.com; s=20230601; t=1710222776; x=1710827576; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=xLST/+LxPFJFeiKQZp5C4/yG7knQNlqjhhzs4+zCE9M=;
+ b=KCn+h2kpcWiY/o1hAe9KJ3LAN8b3MTpLP1wQy3HpogJGagl/z2XhBULPFeipoUSYVZ
+ 3S2NEuPY/6LFgprlR1VFHlB4TjOA5vtBjEMVedssOKhwHpv+HReCMm7f+lwrMi/srgfv
+ HxzNQVksDbEmhrVE4wyaIqieuWgbJM3t1EO2em6vj5BMVMcIsPkoZ/mNBZEOp6KWOin6
+ JJF9HYS/QMquyf2X66E3WfYcT7wCoW+lHrz1ato3tgSCX/O3ibNWGzyrFYVhYIE82RM0
+ afR1VnaxAdSZwdONcQQxlTJjGVG+ZtYH6/Emrg1ETiQvLCDAxnVlif3YPU5izwUzrRKG
+ Yo2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710222776; x=1710827576;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=xLST/+LxPFJFeiKQZp5C4/yG7knQNlqjhhzs4+zCE9M=;
+ b=OKYKCSDF2/stzJHz7QtcFX97uwRRyp8ULnh7RkIYOnaoce62ODu1dqEKUpvXcr79+m
+ txy82wC+waivU9zOBW2SZXPb93Q/uMeC6UGhKKdSCpKGJlb8KcBEF1sU8K/kzh1Q6cGM
+ P0sdzu9oqwJbmeg5YSaPEHIT2NAo3esWCfSWCJEiqFQzPHLczppJ2XFFR8gLe2hbgG71
+ EsUvc4CyCEgNmOpI0gRWhaTCIy5f6VWfsmfjfifriEHvcAhGOlfL6hwg379KKw8U8Z3M
+ B3RawaRT5EO0rjwTmxa4bFDvoeghFPShErGrzNsygywmoqvt0Rb/LaCsmALrSixtKuzE
+ /hUA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXLyznvJIe+qDpa1PpACPDMGa3Fl5T2QMyD9+vHjPGkzIsSWmKKe6fYLA38uyw4LlEp6lEsVIsb2kq0pbjtjH0UZQTf5RJNsMe85y020e8VdW6Dnxs5BRAm0Q8=
+X-Gm-Message-State: AOJu0Yx653VTAn68Bjd1bGZx6ULhlZw6mCQW780/8MsOFaXf20y5xs71
+ MW7q1Cq4yZYSf5tdsF+mmN7LEKWLd3N+hSp1/exadydSoXBXtCTU
+X-Google-Smtp-Source: AGHT+IFl8RN0ibzoWHUitI6aPMczNZpijpS11q75Z2xrAJzx8yyD7Kj5bhZgWuTS4Jipt13LfXnmWw==
+X-Received: by 2002:a05:6808:6487:b0:3c2:54c7:2073 with SMTP id
+ fh7-20020a056808648700b003c254c72073mr2256312oib.33.1710222776271; 
+ Mon, 11 Mar 2024 22:52:56 -0700 (PDT)
+Received: from localhost ([1.146.55.44]) by smtp.gmail.com with ESMTPSA id
+ p1-20020a62b801000000b006e66a76d877sm5536450pfe.153.2024.03.11.22.52.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Mar 2024 22:52:55 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 12 Mar 2024 15:52:50 +1000
+Message-Id: <CZRJDIF198N3.HBI9LR13HIA0@wheely>
+Cc: <clg@kaod.org>, <mikey@neuling.org>, <amachhiw@linux.vnet.ibm.com>,
+ <vaibhav@linux.ibm.com>, <sbhat@linux.ibm.com>, <danielhb413@gmail.com>,
+ <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v5 00/14] Nested PAPR API (KVM on PowerVM)
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <qemu-ppc@nongnu.org>
+X-Mailer: aerc 0.15.2
+References: <20240308111940.1617660-1-harshpb@linux.ibm.com>
+In-Reply-To: <20240308111940.1617660-1-harshpb@linux.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::229;
+ envelope-from=npiggin@gmail.com; helo=mail-oi1-x229.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,202 +93,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In this patch, we modify the decoder to be a freely composable data
-structure instead of a hardcoded one. It can be dynamically builded up
-according to the extensions.
-This approach has several benefits:
-1. Provides support for heterogeneous cpu architectures. As we add decoder in
-   RISCVCPU, each cpu can have their own decoder, and the decoders can be
-   different due to cpu's features.
-2. Improve the decoding efficiency. We run the guard_func to see if the decoder
-   can be added to the dynamic_decoder when building up the decoder. Therefore,
-   there is no need to run the guard_func when decoding each instruction. It can
-   improve the decoding efficiency
-3. For vendor or dynamic cpus, it allows them to customize their own decoder
-   functions to improve decoding efficiency, especially when vendor-defined
-   instruction sets increase. Because of dynamic building up, it can skip the other
-   decoder guard functions when decoding.
-4. Pre patch for allowing adding a vendor decoder before decode_insn32() with minimal
-   overhead for users that don't need this particular vendor deocder.
+On Fri Mar 8, 2024 at 9:19 PM AEST, Harsh Prateek Bora wrote:
+> There is an existing Nested-HV API to enable nested guests on powernv
+> machines. However, that is not supported on pseries/PowerVM LPARs.
+> This patch series implements required hcall interfaces to enable nested
+> guests with KVM on PowerVM.
+> Unlike Nested-HV, with this API, entire L2 state is retained by L0
+> during guest entry/exit and uses pre-defined Guest State Buffer (GSB)
+> format to communicate guest state between L1 and L2 via L0.
+>
+> L0 here refers to the phyp/PowerVM, or launching a Qemu TCG L0 with the
+> newly introduced option cap-nested-papr=3Dtrue.
+> L1 refers to the LPAR host on PowerVM or Linux booted on Qemu TCG with
+> above mentioned option cap-nested-papr=3Dtrue.
+> L2 refers to nested guest running on top of L1 using KVM.
+> No SW changes needed for Qemu running in L1 Linux as well as L2 Kernel.
+>
+> Linux Kernel side support is already merged upstream:
 
-Signed-off-by: Huang Tao <eric.huang@linux.alibaba.com>
-Suggested-by: Christoph Muellner <christoph.muellner@vrull.eu>
-Co-authored-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
----
- target/riscv/cpu.c         | 19 +++++++++++++++++++
- target/riscv/cpu.h         |  2 ++
- target/riscv/cpu_decoder.h | 34 ++++++++++++++++++++++++++++++++++
- target/riscv/translate.c   | 28 ++++++++++++----------------
- 4 files changed, 67 insertions(+), 16 deletions(-)
- create mode 100644 target/riscv/cpu_decoder.h
+This is all looking pretty good to me now. Considering it's quite
+self-contained and adding a new feature, I think it's good to
+merge.
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 5ff0192c52..5ea5232ed8 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -38,6 +38,7 @@
- #include "kvm/kvm_riscv.h"
- #include "tcg/tcg-cpu.h"
- #include "tcg/tcg.h"
-+#include "cpu_decoder.h"
- 
- /* RISC-V CPU definitions */
- static const char riscv_single_letter_exts[] = "IEMAFDQCBPVH";
-@@ -1102,6 +1103,22 @@ static void riscv_cpu_satp_mode_finalize(RISCVCPU *cpu, Error **errp)
- }
- #endif
- 
-+static void riscv_cpu_finalize_dynamic_decoder(RISCVCPU *cpu)
-+{
-+    decode_fn *dynamic_decoders;
-+    dynamic_decoders = g_new0(decode_fn, decoder_table_size);
-+    int j = 0;
-+    for (size_t i = 0; i < decoder_table_size; ++i) {
-+        if (decoder_table[i].guard_func &&
-+            decoder_table[i].guard_func(&cpu->cfg)) {
-+            dynamic_decoders[j] = decoder_table[i].decode_fn;
-+            j++;
-+        }
-+    }
-+
-+    cpu->decoders = dynamic_decoders;
-+}
-+
- void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
- {
-     Error *local_err = NULL;
-@@ -1127,6 +1144,8 @@ void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
-             return;
-         }
-     }
-+
-+    riscv_cpu_finalize_dynamic_decoder(cpu);
- }
- 
- static void riscv_cpu_realize(DeviceState *dev, Error **errp)
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 5d291a7092..bb96af97f9 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -30,6 +30,7 @@
- #include "qemu/int128.h"
- #include "cpu_bits.h"
- #include "cpu_cfg.h"
-+#include "cpu_decoder.h"
- #include "qapi/qapi-types-common.h"
- #include "cpu-qom.h"
- 
-@@ -457,6 +458,7 @@ struct ArchCPU {
-     uint32_t pmu_avail_ctrs;
-     /* Mapping of events to counters */
-     GHashTable *pmu_event_ctr_map;
-+    const decode_fn *decoders;
- };
- 
- /**
-diff --git a/target/riscv/cpu_decoder.h b/target/riscv/cpu_decoder.h
-new file mode 100644
-index 0000000000..549414ce4c
---- /dev/null
-+++ b/target/riscv/cpu_decoder.h
-@@ -0,0 +1,34 @@
-+/*
-+ * QEMU RISC-V CPU Decoder
-+ *
-+ * Copyright (c) 2023-2024 Alibaba Group
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2 or later, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along with
-+ * this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#ifndef RISCV_CPU_DECODER_H
-+#define RISCV_CPU_DECODER_H
-+
-+struct DisasContext;
-+struct RISCVCPUConfig;
-+typedef struct RISCVDecoder {
-+    bool (*guard_func)(const struct RISCVCPUConfig *);
-+    bool (*decode_fn)(struct DisasContext *, uint32_t);
-+} RISCVDecoder;
-+
-+typedef bool (*decode_fn)(struct DisasContext *, uint32_t);
-+
-+extern const size_t decoder_table_size;
-+
-+extern const RISCVDecoder decoder_table[];
-+#endif
-diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index 177418b2b9..3f50737a50 100644
---- a/target/riscv/translate.c
-+++ b/target/riscv/translate.c
-@@ -115,6 +115,7 @@ typedef struct DisasContext {
-     bool frm_valid;
-     /* TCG of the current insn_start */
-     TCGOp *insn_start;
-+    const decode_fn *decoders;
- } DisasContext;
- 
- static inline bool has_ext(DisasContext *ctx, uint32_t ext)
-@@ -1118,21 +1119,16 @@ static inline int insn_len(uint16_t first_word)
-     return (first_word & 3) == 3 ? 4 : 2;
- }
- 
-+const RISCVDecoder decoder_table[] = {
-+    { always_true_p, decode_insn32 },
-+    { has_xthead_p, decode_xthead},
-+    { has_XVentanaCondOps_p, decode_XVentanaCodeOps},
-+};
-+
-+const size_t decoder_table_size = ARRAY_SIZE(decoder_table);
-+
- static void decode_opc(CPURISCVState *env, DisasContext *ctx, uint16_t opcode)
- {
--    /*
--     * A table with predicate (i.e., guard) functions and decoder functions
--     * that are tested in-order until a decoder matches onto the opcode.
--     */
--    static const struct {
--        bool (*guard_func)(const RISCVCPUConfig *);
--        bool (*decode_func)(DisasContext *, uint32_t);
--    } decoders[] = {
--        { always_true_p,  decode_insn32 },
--        { has_xthead_p, decode_xthead },
--        { has_XVentanaCondOps_p,  decode_XVentanaCodeOps },
--    };
--
-     ctx->virt_inst_excp = false;
-     ctx->cur_insn_len = insn_len(opcode);
-     /* Check for compressed insn */
-@@ -1153,9 +1149,8 @@ static void decode_opc(CPURISCVState *env, DisasContext *ctx, uint16_t opcode)
-                                              ctx->base.pc_next + 2));
-         ctx->opcode = opcode32;
- 
--        for (size_t i = 0; i < ARRAY_SIZE(decoders); ++i) {
--            if (decoders[i].guard_func(ctx->cfg_ptr) &&
--                decoders[i].decode_func(ctx, opcode32)) {
-+        for (size_t i = 0; ctx->decoders[i]; ++i) {
-+            if (ctx->decoders[i](ctx, opcode32)) {
-                 return;
-             }
-         }
-@@ -1199,6 +1194,7 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
-     ctx->itrigger = FIELD_EX32(tb_flags, TB_FLAGS, ITRIGGER);
-     ctx->zero = tcg_constant_tl(0);
-     ctx->virt_inst_excp = false;
-+    ctx->decoders = cpu->decoders;
- }
- 
- static void riscv_tr_tb_start(DisasContextBase *db, CPUState *cpu)
--- 
-2.41.0
+I would like to have an avocado test for it, but the avocado
+framework has a bug that's causing issues with the ppc hv test,
+and we might have to move to a new host kernel with the KVM
+support merged. I can take a look at that, I think we can add
+new tests after soft-freeze.
+
+Thanks,
+Nick
+
+> ---
+> commit 19d31c5f115754c369c0995df47479c384757f82
+> Author: Jordan Niethe <jniethe5@gmail.com>
+> Date:   Thu Sep 14 13:05:59 2023 +1000
+>
+>     KVM: PPC: Add support for nestedv2 guests
+> ---
+> For more details, documentation can be referred in either of patch
+> series.
+>
+> There are scripts available to assist in setting up an environment for
+> testing nested guests at https://github.com/iamjpn/kvm-powervm-test
+>
+> A tree with this series is available at:
+> https://github.com/planetharsh/qemu/tree/upstream-0305-v5
+>
+> Thanks to Michael Neuling, Shivaprasad Bhat, Amit Machhiwal, Kautuk
+> Consul, Vaibhav Jain and Jordan Niethe.
+>
+> Changelog:
+> v5: addressed review comments from Nick on v4
+> v4: https://lore.kernel.org/qemu-devel/20240220083609.748325-1-harshpb@li=
+nux.ibm.com/
+> v3: https://lore.kernel.org/qemu-devel/20240118052438.1475437-1-harshpb@l=
+inux.ibm.com/
+> v2: https://lore.kernel.org/qemu-devel/20231012104951.194876-1-harshpb@li=
+nux.ibm.com/
+> v1: https://lore.kernel.org/qemu-devel/20230906043333.448244-1-harshpb@li=
+nux.ibm.com/
+>
+> Harsh Prateek Bora (14):
+>   spapr: nested: register nested-hv api hcalls only for cap-nested-hv
+>   spapr: nested: move nested part of spapr_get_pate into spapr_nested.c
+>   spapr: nested: Introduce SpaprMachineStateNested to store related
+>     info.
+>   spapr: nested: keep nested-hv related code restricted to its API.
+>   spapr: nested: Document Nested PAPR API
+>   spapr: nested: Introduce H_GUEST_[GET|SET]_CAPABILITIES hcalls.
+>   spapr: nested: Introduce H_GUEST_[CREATE|DELETE] hcalls.
+>   spapr: nested: Introduce H_GUEST_CREATE_VCPU hcall.
+>   spapr: nested: Extend nested_ppc_state for nested PAPR API
+>   spapr: nested: Initialize the GSB elements lookup table.
+>   spapr: nested: Introduce H_GUEST_[GET|SET]_STATE hcalls.
+>   spapr: nested: Use correct source for parttbl info for nested PAPR
+>     API.
+>   spapr: nested: Introduce H_GUEST_RUN_VCPU hcall.
+>   spapr: nested: Introduce cap-nested-papr for Nested PAPR API
+>
+>  docs/devel/nested-papr.txt    |  119 +++
+>  include/hw/ppc/spapr.h        |   27 +-
+>  include/hw/ppc/spapr_nested.h |  428 ++++++++-
+>  target/ppc/cpu.h              |    4 +
+>  hw/ppc/ppc.c                  |   10 +
+>  hw/ppc/spapr.c                |   35 +-
+>  hw/ppc/spapr_caps.c           |   62 ++
+>  hw/ppc/spapr_hcall.c          |   24 +-
+>  hw/ppc/spapr_nested.c         | 1550 ++++++++++++++++++++++++++++++++-
+>  9 files changed, 2204 insertions(+), 55 deletions(-)
+>  create mode 100644 docs/devel/nested-papr.txt
 
 
