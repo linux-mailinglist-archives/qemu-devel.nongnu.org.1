@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D788799CC
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:04:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9161D879A21
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:07:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk5WS-0000su-TR; Tue, 12 Mar 2024 13:02:40 -0400
+	id 1rk5Xx-0005PU-IW; Tue, 12 Mar 2024 13:04:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk5Ub-0006Mq-DD; Tue, 12 Mar 2024 13:00:48 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1rk5Ul-0006Q5-7T; Tue, 12 Mar 2024 13:00:57 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk5UZ-0008S0-HW; Tue, 12 Mar 2024 13:00:45 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6e55731af5cso3023720b3a.0; 
- Tue, 12 Mar 2024 10:00:42 -0700 (PDT)
+ id 1rk5Ud-0008Ss-9T; Tue, 12 Mar 2024 13:00:52 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6e55731af5cso3023750b3a.0; 
+ Tue, 12 Mar 2024 10:00:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710262841; x=1710867641; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710262844; x=1710867644; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=F1WSS859ppO453pGVNhu4iKbtEfJ5LrxUVyPjlrAMcE=;
- b=P/xoBKkjSDDS+BKAcGAr9JcJEqDvuFDFBlBFb4Mgby5VfBOkBNBQzpi0zx1SQqJfZD
- HDSQC9oUtyawr3bx4imwTI7HpAdJ0o1sc2DBlpOPjqRvxTbCtVjMf5AKcgmAR4sAnSZq
- D2G8Z6i6zMiVFib3DJ3wzOPetXKnsnz4+xotfppueqvIRfb0mDZ75YOKWGKo5Xw2a+qV
- CUwonHrnMaJvtbmTZrrNkMgKxzT4F6hHKK4cDWKJFpU9+vgHT0gUPgb21BevBUYy+DRg
- P4IuP2x1W7jzh8GtfUEE8gY/+omne09B9k/YKSH9XhUauOcRRObo3sl/aJiqLoC2mG1L
- cUzA==
+ bh=g1D76JqJ2U58FMi1RODuDn/OgN6fCV9pAj01Xlhk49w=;
+ b=XdenP9VJqdJQ1/LmWYmO0Yg+Z53J3ZeF+VPwCeGpQMirngLWm/YMqFxoYE7VyPwe4K
+ KOnr2QdWBLmvp4kNZMKKKCKbPuva3V5+5KCfnqhhLP39PsYKAKMvPckvjkw0jpNYOVbR
+ 6uO6ceMcev5Srx2QIKchMm3t80DsrEchhY9EVGwYmLdxjigbl+/8+G8fGHSG6TVoQv6s
+ XSnItcg6kP9BXUmzKsvGKY+fsbg+VkMBw4fGyhNwCuQ4E5YExuyNLLe2Bc9NvOggnSeF
+ mgq/Ah11vYHFt/vOjp1oDFm+PK5Tkpuuj3ln8fOv8mEijK6hg2z2wn3zqCktUJu8V+9G
+ afrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710262841; x=1710867641;
+ d=1e100.net; s=20230601; t=1710262844; x=1710867644;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=F1WSS859ppO453pGVNhu4iKbtEfJ5LrxUVyPjlrAMcE=;
- b=xDxtncNyfme6Y1Y2TQMMb35c61f1NLPE6Q90ewco1LgZY1ctD1PP2/h8+rcRiY3YcB
- AxODHl9n71+ITQhkMR/CZY1jsL/iKZMq1TywFiPG1ASGUCUbtSt4zenIUkroE7QpCnxb
- GRdtn6uvPGBcNd8eLR/Xmq/phzYrLQYzhW3bpxIHHQZM+lHYqwjUYHKwirTVmvO6DLOb
- M1qhETDkfswDbiTvFPkv2meFw3UQY9t0kYmOebaF/YcJOT9cE/zKpOIe9u88GwWgKVFF
- 0MUSlQfqhD0NvqTRvm/9SNmoZPLToLWLAVoA+rNe8uEN2ZcceX6kHTuxrFI/IDlObSa9
- hnGA==
+ bh=g1D76JqJ2U58FMi1RODuDn/OgN6fCV9pAj01Xlhk49w=;
+ b=FggXoP8xaOa4ASdscacZ3POKJmhGJosQxlihPtiMXcmGvhrZNVFqXnp7WobXSKpn0f
+ 1YIycIKcZlHqxnoBzao5zLMFTTq6VLJ9rhO/6QzBtaeX2v/mvG8rIYR7jdvrjB9w82ao
+ y7nnFO1kM1s41Y6/qzMbxZbY8ajDo/aQcuEZ6CQlH2J322NCxKZjcV9vRpX7XN1VwI2n
+ Zhdebw4d1wGrTXuaNWT8cMVE/TtEkOh96kQ1bPJVQqTFxNdibMQFlSNNkDqsmvNfxCKp
+ wKc9Ez9b82nvkhSpv9JB4gqiHEYUnV+Bl/EXH5Rcl+fgnvD8b35Wcq5eQZ7yOIPi7fG3
+ fleg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUzblY6F6Y9cEnN9+3aq0iBxCjvNd1d0nn+TBD4dDwcNkRuciFqyx08CVOrNgzc8junDIDGwaDfPnAbDGBHxc4t3TGj
-X-Gm-Message-State: AOJu0Yx8LY+tHzT+7f47wBEPoxbfc6QZXBANB3ZT/ZB/xFo7BEbh6FI8
- //9QO30uH27Dgstr4JzW81KuHYusakRV7rZyoujrubSQmnAdvhl7hLOLs9Wfhfc=
-X-Google-Smtp-Source: AGHT+IFkqRswDGTa2+iWUSxZpSrlPg9KFrz4LA/N0SJaxFFhK//tGMwK+7xHkg1zRKwoLgyXkYtx2g==
-X-Received: by 2002:a05:6a00:c8b:b0:6e6:a004:aaf1 with SMTP id
- a11-20020a056a000c8b00b006e6a004aaf1mr38003pfv.1.1710262840870; 
- Tue, 12 Mar 2024 10:00:40 -0700 (PDT)
+ AJvYcCW2PH/9OEqoqPjikFOOjQouMLB2bpMT/85XqLrRGTW6iPMwasJqrMC52oufa/v9YWgXLb90YRHJvZHZbZxl0b4VsHDy
+X-Gm-Message-State: AOJu0YzFxVcMdo8NdlzYS/CC0TkzYhTCaIC9vPKid3ai6XdlsZWIHOcs
+ cFNKlJ3+MYdF6yyAqwvv1VEBDxHmDRj8JFUZSXCGtvCQGoOVasaMmEhFoAxEOKQ=
+X-Google-Smtp-Source: AGHT+IEiwrhGU/MbOuCWoouRzs2qRHau/Bb2N1QT2z9BIlx+xTLFWoJydDgWSfX9Ghx52uozenN8fw==
+X-Received: by 2002:a05:6a20:5485:b0:1a1:4d8b:6f2c with SMTP id
+ i5-20020a056a20548500b001a14d8b6f2cmr8696437pzk.2.1710262844392; 
+ Tue, 12 Mar 2024 10:00:44 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- t34-20020a056a0013a200b006e6a684a6ddsm1362330pfg.220.2024.03.12.10.00.37
+ t34-20020a056a0013a200b006e6a684a6ddsm1362330pfg.220.2024.03.12.10.00.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 10:00:40 -0700 (PDT)
+ Tue, 12 Mar 2024 10:00:43 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Michael Neuling <mikey@neuling.org>
-Subject: [PULL 27/38] spapr: nested: Introduce SpaprMachineStateNested to
- store related info.
-Date: Wed, 13 Mar 2024 02:58:38 +1000
-Message-ID: <20240312165851.2240242-28-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: [PULL 28/38] spapr: nested: keep nested-hv related code restricted to
+ its API.
+Date: Wed, 13 Mar 2024 02:58:39 +1000
+Message-ID: <20240312165851.2240242-29-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240312165851.2240242-1-npiggin@gmail.com>
 References: <20240312165851.2240242-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,97 +96,117 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-Currently, nested_ptcr is being used by existing nested-hv API to store
-nested guest related info. This need to be organised to extend support
-for the nested PAPR API which would need to store additional info
-related to nested guests in next series of patches.
+spapr_exit_nested and spapr_get_pate_nested_hv contains code which
+is specific to nested-hv API. Isolating code flows based on API
+helps extending it to be used with different API as well.
 
+Suggested-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Neuling <mikey@neuling.org>
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr_nested.c         | 8 ++++----
- include/hw/ppc/spapr.h        | 3 ++-
- include/hw/ppc/spapr_nested.h | 5 +++++
- 3 files changed, 11 insertions(+), 5 deletions(-)
+ hw/ppc/spapr.c                |  6 +++++-
+ hw/ppc/spapr_nested.c         | 25 ++++++++++++++++++++++---
+ include/hw/ppc/spapr_nested.h |  3 +++
+ 3 files changed, 30 insertions(+), 4 deletions(-)
 
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index ff429d0ffe..e001ffe06f 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -1421,7 +1421,11 @@ static bool spapr_get_pate(PPCVirtualHypervisor *vhyp, PowerPCCPU *cpu,
+         entry->dw1 = spapr->patb_entry;
+         return true;
+     } else {
+-        return spapr_get_pate_nested_hv(spapr, cpu, lpid, entry);
++        assert(spapr_nested_api(spapr));
++        if (spapr_nested_api(spapr) == NESTED_API_KVM_HV) {
++            return spapr_get_pate_nested_hv(spapr, cpu, lpid, entry);
++        }
++        return false;
+     }
+ }
+ 
 diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
-index f7888ca8bd..c2a33fc3a9 100644
+index c2a33fc3a9..12fdbe2aba 100644
 --- a/hw/ppc/spapr_nested.c
 +++ b/hw/ppc/spapr_nested.c
-@@ -25,8 +25,8 @@ bool spapr_get_pate_nested_hv(SpaprMachineState *spapr, PowerPCCPU *cpu,
- 
-     assert(lpid != 0);
- 
--    patb = spapr->nested_ptcr & PTCR_PATB;
--    pats = spapr->nested_ptcr & PTCR_PATS;
-+    patb = spapr->nested.ptcr & PTCR_PATB;
-+    pats = spapr->nested.ptcr & PTCR_PATS;
- 
-     /* Check if partition table is properly aligned */
-     if (patb & MAKE_64BIT_MASK(0, pats + 12)) {
-@@ -63,7 +63,7 @@ static target_ulong h_set_ptbl(PowerPCCPU *cpu,
-         return H_PARAMETER;
+@@ -11,11 +11,19 @@
+ void spapr_nested_reset(SpaprMachineState *spapr)
+ {
+     if (spapr_get_cap(spapr, SPAPR_CAP_NESTED_KVM_HV)) {
++        spapr->nested.api = NESTED_API_KVM_HV;
+         spapr_unregister_nested_hv();
+         spapr_register_nested_hv();
++    } else {
++        spapr->nested.api = 0;
      }
- 
--    spapr->nested_ptcr = ptcr; /* Save new partition table */
-+    spapr->nested.ptcr = ptcr; /* Save new partition table */
- 
-     return H_SUCCESS;
  }
-@@ -195,7 +195,7 @@ static target_ulong h_enter_nested(PowerPCCPU *cpu,
+ 
++uint8_t spapr_nested_api(SpaprMachineState *spapr)
++{
++    return spapr->nested.api;
++}
++
+ #ifdef CONFIG_TCG
+ 
+ bool spapr_get_pate_nested_hv(SpaprMachineState *spapr, PowerPCCPU *cpu,
+@@ -310,7 +318,7 @@ static target_ulong h_enter_nested(PowerPCCPU *cpu,
+     return env->gpr[3];
+ }
+ 
+-void spapr_exit_nested(PowerPCCPU *cpu, int excp)
++static void spapr_exit_nested_hv(PowerPCCPU *cpu, int excp)
+ {
+     CPUPPCState *env = &cpu->env;
+     SpaprCpuState *spapr_cpu = spapr_cpu_state(cpu);
+@@ -322,8 +330,6 @@ void spapr_exit_nested(PowerPCCPU *cpu, int excp)
      struct kvmppc_pt_regs *regs;
      hwaddr len;
  
--    if (spapr->nested_ptcr == 0) {
-+    if (spapr->nested.ptcr == 0) {
-         return H_NOT_AVAILABLE;
-     }
+-    assert(spapr_cpu->in_nested);
+-
+     nested_save_state(&l2_state, cpu);
+     hsrr0 = env->spr[SPR_HSRR0];
+     hsrr1 = env->spr[SPR_HSRR1];
+@@ -413,6 +419,19 @@ void spapr_exit_nested(PowerPCCPU *cpu, int excp)
+     address_space_unmap(CPU(cpu)->as, regs, len, len, true);
+ }
  
-diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-index 78a736297b..0eb01ea6fd 100644
---- a/include/hw/ppc/spapr.h
-+++ b/include/hw/ppc/spapr.h
-@@ -12,6 +12,7 @@
- #include "hw/ppc/spapr_xive.h"  /* For SpaprXive */
- #include "hw/ppc/xics.h"        /* For ICSState */
- #include "hw/ppc/spapr_tpm_proxy.h"
-+#include "hw/ppc/spapr_nested.h" /* For SpaprMachineStateNested */
- 
- struct SpaprVioBus;
- struct SpaprPhbState;
-@@ -213,7 +214,7 @@ struct SpaprMachineState {
-     uint32_t vsmt;       /* Virtual SMT mode (KVM's "core stride") */
- 
-     /* Nested HV support (TCG only) */
--    uint64_t nested_ptcr;
-+    SpaprMachineStateNested nested;
- 
-     Notifier epow_notifier;
-     QTAILQ_HEAD(, SpaprEventLogEntry) pending_events;
++void spapr_exit_nested(PowerPCCPU *cpu, int excp)
++{
++    SpaprMachineState *spapr = SPAPR_MACHINE(qdev_get_machine());
++    SpaprCpuState *spapr_cpu = spapr_cpu_state(cpu);
++
++    assert(spapr_cpu->in_nested);
++    if (spapr_nested_api(spapr) == NESTED_API_KVM_HV) {
++        spapr_exit_nested_hv(cpu, excp);
++    } else {
++        g_assert_not_reached();
++    }
++}
++
+ void spapr_register_nested_hv(void)
+ {
+     spapr_register_hypercall(KVMPPC_H_SET_PARTITION_TABLE, h_set_ptbl);
 diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.h
-index 1df1ce14f6..2488ea98da 100644
+index 2488ea98da..bf3a7b8d89 100644
 --- a/include/hw/ppc/spapr_nested.h
 +++ b/include/hw/ppc/spapr_nested.h
-@@ -3,6 +3,10 @@
+@@ -5,6 +5,8 @@
  
- #include "target/ppc/cpu.h"
+ typedef struct SpaprMachineStateNested {
+     uint64_t ptcr;
++    uint8_t api;
++#define NESTED_API_KVM_HV  1
+ } SpaprMachineStateNested;
  
-+typedef struct SpaprMachineStateNested {
-+    uint64_t ptcr;
-+} SpaprMachineStateNested;
-+
  /*
-  * Register state for entering a nested guest with H_ENTER_NESTED.
-  * New member must be added at the end.
-@@ -96,6 +100,7 @@ struct nested_ppc_state {
- };
- 
- void spapr_exit_nested(PowerPCCPU *cpu, int excp);
-+typedef struct SpaprMachineState SpaprMachineState;
+@@ -103,4 +105,5 @@ void spapr_exit_nested(PowerPCCPU *cpu, int excp);
+ typedef struct SpaprMachineState SpaprMachineState;
  bool spapr_get_pate_nested_hv(SpaprMachineState *spapr, PowerPCCPU *cpu,
                                target_ulong lpid, ppc_v3_pate_t *entry);
++uint8_t spapr_nested_api(SpaprMachineState *spapr);
  #endif /* HW_SPAPR_NESTED_H */
 -- 
 2.42.0
