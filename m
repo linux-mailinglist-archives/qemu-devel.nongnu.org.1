@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F97B879EF0
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:39:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97720879EA3
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:28:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkAab-0005hc-H6; Tue, 12 Mar 2024 18:27:17 -0400
+	id 1rkAai-0006qZ-I3; Tue, 12 Mar 2024 18:27:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAaM-0005CY-C8
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:27:05 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAaP-0005Cr-2x
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:27:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAaK-0004Ks-SW
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:27:02 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAaN-0004L9-Kr
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:27:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710282420;
+ s=mimecast20190719; t=1710282423;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wh6YuVoxx+DYLxPaX83mzfkVZkTHaR33Y90YpXonUkk=;
- b=Kfk0QgKzsJS4GswQ0AxDnSjUz2tVEkbpNVmeBmocB41Giq0Hk6xhHZwE2Q0fy7YVs6T7Aa
- 9p74TjHQOifjYWhNTK3/UK6uioFoxvimcs/WG8/VTfsGYZsmX2bwwBzxC7SvVA/0yFHu4M
- t3Ru6fgCJTePpA9mUsv2/J8M+fLBw8Y=
+ bh=AurzQqFpLzlXuBxIL8RZRvJLoJVHujck2MunJ5OHm/A=;
+ b=TkEGZAAC023Wk4Od/24M7nYvAE7e8Bt12uAHsKH6TxhZmMoKqBdvRe0n/Bcyfw7MoUHmav
+ /2HAi73PPVLpL78hl/4NBdVbGBfLidJmVxzapMbUmeNFsBpO9T0peEBEszSd1exWjeMozk
+ ZSEOczvxod9B8YGDzyI+MB4qHhElxdU=
 Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
  [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-38-Lho1bPFlNP6Pm3q_YxlnUA-1; Tue, 12 Mar 2024 18:26:59 -0400
-X-MC-Unique: Lho1bPFlNP6Pm3q_YxlnUA-1
+ us-mta-668-iVtBERrFOf-8rWQyqUohXA-1; Tue, 12 Mar 2024 18:27:01 -0400
+X-MC-Unique: iVtBERrFOf-8rWQyqUohXA-1
 Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a44143c8908so27848466b.1
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:26:59 -0700 (PDT)
+ a640c23a62f3a-a4651c22fd2so13431966b.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:27:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710282417; x=1710887217;
+ d=1e100.net; s=20230601; t=1710282419; x=1710887219;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wh6YuVoxx+DYLxPaX83mzfkVZkTHaR33Y90YpXonUkk=;
- b=ZvwlLb40IaDsJzi1FXvl6iWtisDtcv3wuzTQbXfhwIZsImsv57HzW2Qx1foUhZh/dd
- 6eXayy4qu6o5Oin6E58WTSWp12eCtfhrYZ7HdaN8iK+NOgnQaZTuq26fBPg3WF72a9v9
- V/z6BF2+9txan/zXL9j66LDepMvBR6mUCGGimeU2FR2h8u/iuRQv9iB0AY6qu/GbMTB9
- RNZK/W98WMU5Di/QoGrmmrITtll8Fj6xLmCp2gBLj4X+jLCHS3m/9hBlUlVkNIlsWTKk
- 85BlWHx+9lEvduEijMfYx10SyyhdcU9Kw4idCI4XRNP0H7/DTAr3zg7maT+wWu617yTb
- qAew==
-X-Gm-Message-State: AOJu0YwSq9O93I4viCONsQSFO5vYmvCwamNl03a6JXYD8ly3prkSlRS5
- GCoPhojtblEF+YxuZvz0fbLV33L8t2p5+bOp6v8bfZ28vLqJVrPIDHfvodkR3YveIkSqWyS3GRf
- GfQTGw7fm0TfdgV9lTtFVi5WiAc0lumu8jk2PvaNZRdcSUBPGSVL4O5llLq7/2fFJxUJXZxYp5g
- UfouKa/CPxn7DyomPsUApLM+cHDftymIP2
-X-Received: by 2002:a17:906:3511:b0:a46:371b:c4d5 with SMTP id
- r17-20020a170906351100b00a46371bc4d5mr815102eja.22.1710282417132; 
- Tue, 12 Mar 2024 15:26:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEBwZQhv8wXOSlf5kWVr6MCyK/Jh40PObLKzbVq92mpJ+119Eo9rJiLpnqS4I8QG/+u+duFAw==
-X-Received: by 2002:a17:906:3511:b0:a46:371b:c4d5 with SMTP id
- r17-20020a170906351100b00a46371bc4d5mr815084eja.22.1710282416607; 
- Tue, 12 Mar 2024 15:26:56 -0700 (PDT)
+ bh=AurzQqFpLzlXuBxIL8RZRvJLoJVHujck2MunJ5OHm/A=;
+ b=wmLqc7GSw0oX7T3boca5yBolys1qVN84wPq+SccF9RLOfinX50XJYIL6Xsb0r7jrL2
+ Y76A/GgY/j02tH66Ol6isttPGEc1t2x7FkR+iXqSg7p8BRhO+vSCig+sYNCuh69ZmTkY
+ 8QoivkGcIMvbze6ynXt/edJqfG/u/7cZ1Ntm+RHIid9ZPy4HPp8sHTMxIn8n/g6vvXOT
+ fgb2t+XicwkLtBTqZMnx8uiCeng+n/0qw4WoclXS1k84pk8EMYzHCyMqZ93wPwwVke8m
+ 1q+bcCqJ2U0Cpsn+yEGNZLWrQGb33ebS6T1GuEK1WWloQyEtfuPJ54E+I14AmKS69Xwn
+ OT1Q==
+X-Gm-Message-State: AOJu0Yz9GwDd3POXxpRpTiqur4wKnELcPkwZwHtIRlu7d7V50UKIKwZZ
+ tKOwRc8kmlBKubvRzPKKS/WxFCDarV5PiNhJTzonDiuTWKYmVNc7WPMTpnBH0fl/PgEq4c9NXeY
+ deTW4G1HKVGkLFvS1xIsBFE81A/BV9cvu8U1f/DgZggK70iMZ7jZwnhAEZH96HXR72lGD/HYUPk
+ RC5U9/QHRwIMAcdDZX8wLORt6Wn9I4pJ+g
+X-Received: by 2002:a17:906:3984:b0:a44:1f3:e474 with SMTP id
+ h4-20020a170906398400b00a4401f3e474mr6422436eje.23.1710282419582; 
+ Tue, 12 Mar 2024 15:26:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGYD/1NG1Sa14VJz3wbarGz8hPiW7rFJxlXu8xjn1LlPtMm9umoofuX94IQIgERRJIL/ZRTIw==
+X-Received: by 2002:a17:906:3984:b0:a44:1f3:e474 with SMTP id
+ h4-20020a170906398400b00a4401f3e474mr6422425eje.23.1710282419137; 
+ Tue, 12 Mar 2024 15:26:59 -0700 (PDT)
 Received: from redhat.com ([2.52.134.16]) by smtp.gmail.com with ESMTPSA id
- bx4-20020a170906a1c400b00a4528658771sm4212653ejb.31.2024.03.12.15.26.55
+ lt9-20020a170906fa8900b00a45c4d3ee11sm4224960ejb.123.2024.03.12.15.26.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 15:26:56 -0700 (PDT)
-Date: Tue, 12 Mar 2024 18:26:54 -0400
+ Tue, 12 Mar 2024 15:26:58 -0700 (PDT)
+Date: Tue, 12 Mar 2024 18:26:56 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>
-Subject: [PULL 27/68] vdpa: stash memory region properties in vars
-Message-ID: <a55834579aa65f27519f948275d5efd9e2173bef.1710282274.git.mst@redhat.com>
+Subject: [PULL 28/68] vdpa: trace skipped memory sections
+Message-ID: <a8516e5c9719cf45fd81d6790bc9ffdcf753376b.1710282274.git.mst@redhat.com>
 References: <cover.1710282274.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -103,50 +103,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eugenio Pérez <eperezma@redhat.com>
 
-Next changes uses this variables, so avoid call repeatedly to memory
-region functions. No functional change intended.
+Sometimes, certain parts are not being skipped in
+vhost_vdpa_listener_region_del, but they are skipped in
+vhost_vdpa_listener_region_add, or vice versa.  The vhost-vdpa code
+expects all parts to maintain their properties, so we're adding a trace
+to help with debugging when any part is skipped.
 
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <20240215103616.330518-2-eperezma@redhat.com>
+Message-Id: <20240215103616.330518-3-eperezma@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/vhost-vdpa.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ hw/virtio/vhost-vdpa.c | 3 +++
+ hw/virtio/trace-events | 1 +
+ 2 files changed, 4 insertions(+)
 
 diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index c968278e70..5559d4f89c 100644
+index 5559d4f89c..3bcd05cc22 100644
 --- a/hw/virtio/vhost-vdpa.c
 +++ b/hw/virtio/vhost-vdpa.c
-@@ -47,12 +47,14 @@ static bool vhost_vdpa_listener_skipped_section(MemoryRegionSection *section,
-                                                 int page_mask)
- {
-     Int128 llend;
-+    bool is_ram = memory_region_is_ram(section->mr);
-+    bool is_iommu = memory_region_is_iommu(section->mr);
-+    bool is_protected = memory_region_is_protected(section->mr);
+@@ -55,6 +55,9 @@ static bool vhost_vdpa_listener_skipped_section(MemoryRegionSection *section,
+     bool is_ram_device = memory_region_is_ram_device(section->mr);
  
--    if ((!memory_region_is_ram(section->mr) &&
--         !memory_region_is_iommu(section->mr)) ||
--        memory_region_is_protected(section->mr) ||
--        /* vhost-vDPA doesn't allow MMIO to be mapped  */
--        memory_region_is_ram_device(section->mr)) {
-+    /* vhost-vDPA doesn't allow MMIO to be mapped  */
-+    bool is_ram_device = memory_region_is_ram_device(section->mr);
-+
-+    if ((!is_ram && !is_iommu) || is_protected || is_ram_device) {
+     if ((!is_ram && !is_iommu) || is_protected || is_ram_device) {
++        trace_vhost_vdpa_skipped_memory_section(is_ram, is_iommu, is_protected,
++                                                is_ram_device, iova_min,
++                                                iova_max, page_mask);
          return true;
      }
  
-@@ -69,7 +71,7 @@ static bool vhost_vdpa_listener_skipped_section(MemoryRegionSection *section,
-      * size that maps to the kernel
-      */
+diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
+index 20577aa584..9df24864a2 100644
+--- a/hw/virtio/trace-events
++++ b/hw/virtio/trace-events
+@@ -30,6 +30,7 @@ vhost_user_write(uint32_t req, uint32_t flags) "req:%d flags:0x%"PRIx32""
+ vhost_user_create_notifier(int idx, void *n) "idx:%d n:%p"
  
--    if (!memory_region_is_iommu(section->mr)) {
-+    if (!is_iommu) {
-         llend = vhost_vdpa_section_end(section, page_mask);
-         if (int128_gt(llend, int128_make64(iova_max))) {
-             error_report("RAM section out of device range (max=0x%" PRIx64
+ # vhost-vdpa.c
++vhost_vdpa_skipped_memory_section(int is_ram, int is_iommu, int is_protected, int is_ram_device, uint64_t first, uint64_t last, int page_mask) "is_ram=%d, is_iommu=%d, is_protected=%d, is_ram_device=%d iova_min=0x%"PRIx64" iova_last=0x%"PRIx64" page_mask=0x%x"
+ vhost_vdpa_dma_map(void *vdpa, int fd, uint32_t msg_type, uint32_t asid, uint64_t iova, uint64_t size, uint64_t uaddr, uint8_t perm, uint8_t type) "vdpa_shared:%p fd: %d msg_type: %"PRIu32" asid: %"PRIu32" iova: 0x%"PRIx64" size: 0x%"PRIx64" uaddr: 0x%"PRIx64" perm: 0x%"PRIx8" type: %"PRIu8
+ vhost_vdpa_dma_unmap(void *vdpa, int fd, uint32_t msg_type, uint32_t asid, uint64_t iova, uint64_t size, uint8_t type) "vdpa_shared:%p fd: %d msg_type: %"PRIu32" asid: %"PRIu32" iova: 0x%"PRIx64" size: 0x%"PRIx64" type: %"PRIu8
+ vhost_vdpa_listener_begin_batch(void *v, int fd, uint32_t msg_type, uint8_t type)  "vdpa_shared:%p fd: %d msg_type: %"PRIu32" type: %"PRIu8
 -- 
 MST
 
