@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094A08799BE
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:04:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F2F1879987
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:01:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk5VG-0006WS-6L; Tue, 12 Mar 2024 13:01:31 -0400
+	id 1rk5U7-0005JZ-68; Tue, 12 Mar 2024 13:00:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk5Th-0004r5-36; Tue, 12 Mar 2024 12:59:50 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1rk5Tn-00052j-QA; Tue, 12 Mar 2024 12:59:57 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk5Tf-00080f-Lx; Tue, 12 Mar 2024 12:59:48 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6e6ac00616cso651183b3a.0; 
- Tue, 12 Mar 2024 09:59:46 -0700 (PDT)
+ id 1rk5Tj-00081L-8o; Tue, 12 Mar 2024 12:59:55 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-6e6adc557f3so572407b3a.1; 
+ Tue, 12 Mar 2024 09:59:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710262786; x=1710867586; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710262789; x=1710867589; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RR4P414fAdBrmZ13qWAjaQrr8Q0qRPrUxoYoLYFQP4Y=;
- b=CWdsxo4P4KMjjJJgIPWsDWgzaVz3FYUdnL6fccBl/yqVT/EhmvNrKVPMylmBF0ZHNh
- lmzBsKt60VWc87WaRoTuFbl5iy0mmJpJ1MPNio/zcEwvYu4K3kWoVV1M/Jr8oRdVhiMg
- nTs0qPQv7DHwPmOKboBQbRsPKSX6dejQ3dv2H2jBm3p3EkeWwWE1LRMPtuILmpth4H1Z
- wOBo7dzeCSeh6uZZFT8z0WfCva45fcoLSJWI/ckmOysMIlbbLtfADJ+X4WdYLe+VP7tz
- OEfA9fVdGEoTN1T+/6EQ7fC/t83xV2s3YM8IgWJwoXlrWmkVSBvK0NuMCzxT+SAFJ4xT
- R29w==
+ bh=M7kmXgqtdcMD9RJbt2RdUSSdzZ9tGHMF/tncpvYDkjQ=;
+ b=CnQzzrw8BUsv8dgX3bl5Q+DMzDv2v8LmjwQL/ahLTxT71PIKdHpeIZn5iqnu9BRq6E
+ jNeuQbVFtUya4d2JfS60EtFM8iff/sk+zev6RcQBLWvt/XDMkCO1dupo6STNgt3JPzaK
+ nxpZCeZXshR5bD/7zGLyzrd/54PB2Wm1h4R6j1kTMweHU2X7yJRmQ8eParEIzOC5+R0Y
+ NXqog4klTi6heqTSBznO5EksaxAttk7KqxR5o+KrpRKPQ3JsMyjs+qJkjo+8SEdd/clC
+ sMhh0wTwfDT2T7pBaOxodir410mWb2AutSnPL1ZCMhYmcsXop9B97U8ShX0c/PsTlWhL
+ wkHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710262786; x=1710867586;
+ d=1e100.net; s=20230601; t=1710262789; x=1710867589;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RR4P414fAdBrmZ13qWAjaQrr8Q0qRPrUxoYoLYFQP4Y=;
- b=FD0WLs1H3oFSqWqLR4w7hVwYBVJoxMnwNf/vF8fyg/SyJRq6iKSS4ZtrBCAX5vkk7v
- 9GaeroHE7o0Q1jFXkKXN+51cgZ8Goee51RksA9lgDjKb1YIw8fUH8xv1nLbe7m7VaUxk
- S7ZMfztzUNyb0Eoto1KzmuQrA/cfuoI4sgD3K/ld7BwlWJTDVXrbEKSF57EKHd5dbdae
- vhqM5+jN/priknKbODjL+O7Gmg9qjPL+b+7AeK4RZc5ycLelCbUUvFH0a1KOkKM0jCt5
- WSFxeMjMDcnABs+5Yq+Nn9ZUa9PMqUj2/RaDNpTw/NQBeujk08tFBt8zf607BkBF/Cju
- QRMw==
+ bh=M7kmXgqtdcMD9RJbt2RdUSSdzZ9tGHMF/tncpvYDkjQ=;
+ b=lhvfgMNhFG1PwTp17S4cKV5aWwPmXbEudfwKhpee9rFbO6kSA43gEd8E2nn7XW0FEN
+ GLaCgVpYZ/e7pZbhWTmbX8TnIjnNEoUSJKgUSfQ5xjluBFf3ZOZCTrGRV8vd3HMpEMpr
+ qlKmi2rDGq6mxw5qfZEhMMd/YGTQSPbN11hagpDkKIX7qeL5MlrSJwAnIJj6fOLH9OQL
+ KTR2ykpJrWJDJ/ZWJ9eInvoqv0X+lLIMaUIjX2wFzf5vNTYN2JKJgt1OYdByRdIsv9+2
+ PBSYkKzMKcuVuuVK7ZbROFvu+8UN1L6PKjcNo8S6YpvXlzgd+K8bbEmwgfEAaec16u2h
+ hf/g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUB2bvz2xw6xm+edzqLJfePjuUG8BaIp9+nChKnBY4MRwhnyplvv+MfSWF9wBBsqzygMfEuZAr0YsNqXbizHviipxvr
-X-Gm-Message-State: AOJu0YyeUvnY0kS7IxLkhQX9SJhBICuVA2ZiAyUv8Bpev3PDQP71QwOR
- 9VIE7rE5i5p6ykDV5LCe3KJlbAvbHt+9on4h+fBbrniBeH5RIxJ+uTKydtOC95Y=
-X-Google-Smtp-Source: AGHT+IF+oq9z/eloDRaOHluE8HjeVBydTbPXJSa4y/gGhkG92aTj2q8M68vn8dHitimbZ47Aukzzhw==
-X-Received: by 2002:a05:6a20:d807:b0:1a3:18be:9b18 with SMTP id
- iv7-20020a056a20d80700b001a318be9b18mr6155005pzb.26.1710262785750; 
- Tue, 12 Mar 2024 09:59:45 -0700 (PDT)
+ AJvYcCUc/IrVQEvLV4GCVFpwNxItXJNhCDjJVcA3R8vaVTKaX6/bGorBLRE36cvxafl+WpoYyO1AmMkEb4j5tPzCfqfOwD2y
+X-Gm-Message-State: AOJu0YzLGb4Zo4MQvfl2860dnuAu9bzkC2HqLuFl/Bu5U9Mxr8gwhIy5
+ 3hlUmpn6HTLMCW8OgGEDBTqjamOTMsbF4i/QFHIj86OqsQAZ8rONsXQPd2qSnv8=
+X-Google-Smtp-Source: AGHT+IExJJzpys6WiWWedS4/RTEYMS7L60ZlSWHvW9TgnXeE2wvWKCq6ozj+BRzBAikBr9nZr+DLCg==
+X-Received: by 2002:a05:6a20:9591:b0:1a3:2f5e:d4fb with SMTP id
+ iu17-20020a056a20959100b001a32f5ed4fbmr716528pzb.61.1710262789198; 
+ Tue, 12 Mar 2024 09:59:49 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- t34-20020a056a0013a200b006e6a684a6ddsm1362330pfg.220.2024.03.12.09.59.42
+ t34-20020a056a0013a200b006e6a684a6ddsm1362330pfg.220.2024.03.12.09.59.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 09:59:45 -0700 (PDT)
+ Tue, 12 Mar 2024 09:59:48 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 12/38] MAINTAINERS: Remove myself as reviewer from PPC
-Date: Wed, 13 Mar 2024 02:58:23 +1000
-Message-ID: <20240312165851.2240242-13-npiggin@gmail.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 13/38] docs: Deprecate the pseries-2.12 machines
+Date: Wed, 13 Mar 2024 02:58:24 +1000
+Message-ID: <20240312165851.2240242-14-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240312165851.2240242-1-npiggin@gmail.com>
 References: <20240312165851.2240242-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,45 +95,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cédric Le Goater <clg@kaod.org>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-PPC maintainership has been a side activity for the last 2 years and
-it is time to let go some of it now that Nick has taken over.
+pSeries machines before 3.0 have complex migration back
+compatibility code we'd like to get ride of. The last
+one is 2.12, which is 6 years old. We just deprecated up
+to the 2.11 machine in commit 1392617d35 ("spapr: Tag
+pseries-2.1 - 2.11 machines as deprecated").
+Take to opportunity to also deprecate the 2.12 machines.
 
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
+Acked-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- MAINTAINERS | 3 ---
- 1 file changed, 3 deletions(-)
+ docs/about/deprecated.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0087e4f1c7..fe8a7454ba 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -316,7 +316,6 @@ F: tests/tcg/openrisc/
- PowerPC TCG CPUs
- M: Nicholas Piggin <npiggin@gmail.com>
- M: Daniel Henrique Barboza <danielhb413@gmail.com>
--R: Cédric Le Goater <clg@kaod.org>
- L: qemu-ppc@nongnu.org
- S: Odd Fixes
- F: target/ppc/
-@@ -468,7 +467,6 @@ F: target/mips/sysemu/
- PPC KVM CPUs
- M: Nicholas Piggin <npiggin@gmail.com>
- R: Daniel Henrique Barboza <danielhb413@gmail.com>
--R: Cédric Le Goater <clg@kaod.org>
- S: Odd Fixes
- F: target/ppc/kvm.c
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 4fb86608e4..7b548519b5 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -237,13 +237,13 @@ The Nios II architecture is orphan.
+ The machine is no longer in existence and has been long unmaintained
+ in QEMU. This also holds for the TC51828 16MiB flash that it uses.
  
-@@ -1508,7 +1506,6 @@ F: tests/avocado/ppc_prep_40p.py
- sPAPR (pseries)
- M: Nicholas Piggin <npiggin@gmail.com>
- R: Daniel Henrique Barboza <danielhb413@gmail.com>
--R: Cédric Le Goater <clg@kaod.org>
- R: David Gibson <david@gibson.dropbear.id.au>
- R: Harsh Prateek Bora <harshpb@linux.ibm.com>
- L: qemu-ppc@nongnu.org
+-``pseries-2.1`` up to ``pseries-2.11`` (since 9.0)
++``pseries-2.1`` up to ``pseries-2.12`` (since 9.0)
+ ''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+-Older pseries machines before version 2.12 have undergone many changes
++Older pseries machines before version 3.0 have undergone many changes
+ to correct issues, mostly regarding migration compatibility. These are
+ no longer maintained and removing them will make the code easier to
+-read and maintain. Use versions 2.12 and above as a replacement.
++read and maintain. Use versions 3.0 and above as a replacement.
+ 
+ Arm machines ``akita``, ``borzoi``, ``cheetah``, ``connex``, ``mainstone``, ``n800``, ``n810``, ``spitz``, ``terrier``, ``tosa``, ``verdex``, ``z2`` (since 9.0)
+ ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 -- 
 2.42.0
 
