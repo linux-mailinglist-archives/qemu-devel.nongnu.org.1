@@ -2,54 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BE36879467
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:45:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9813E87946B
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:46:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk1Us-0003qo-Lw; Tue, 12 Mar 2024 08:44:46 -0400
+	id 1rk1Ut-0003sS-LG; Tue, 12 Mar 2024 08:44:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Un-0003dA-Ff
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:41 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Up-0003kS-RH
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Uj-0000OC-Oc
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:41 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Uo-0000Rs-BD
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710247476;
+ s=mimecast20190719; t=1710247481;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8EHejkwkyDLPWMERkw6wW83IgV9nTzrw4V2C3E9KZ1U=;
- b=E7ITycbGKlo/hlvda/JoksuQh0MQPqcpVOBOUU4pIkYh9D4yIFpxTDWOsig3eGhWs3Qh8l
- 4685cEMd9qencfuuHehzcfYgWUnEX2U76oJeMZYhsyoV2oWYQFlLpJpC7jybg+EXglCttO
- UyZnnE88FeXHJXrhU+EjmTANBjCr1tE=
+ bh=18SYLjuj9x9faimkaD2HRkXdtBWSNLBUSVwaRa1fslA=;
+ b=N6qOm67a8zapFthOI24UGCX/NYNAM3iKE56d2xipruv/XnJPGwFv5k8hOsksR9+05/jaOZ
+ sh2pAlnjg1iiy7UzVimJDI1PNxiPkglGIr6zAVd4CU8HIvYk+saMTzkeCnQsEIXRqukojz
+ +ZU5ST+RBEwVJD/35CizFEfYO9jLfM4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-100-rWkwyuEiOEeuM6CYHPTVOQ-1; Tue, 12 Mar 2024 08:44:33 -0400
-X-MC-Unique: rWkwyuEiOEeuM6CYHPTVOQ-1
+ us-mta-132-GSBDtvLoPzyVnS4MZ2quZQ-1; Tue, 12 Mar 2024 08:44:35 -0400
+X-MC-Unique: GSBDtvLoPzyVnS4MZ2quZQ-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 399DE101A523;
- Tue, 12 Mar 2024 12:44:33 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0FB04101A526;
+ Tue, 12 Mar 2024 12:44:35 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.69])
- by smtp.corp.redhat.com (Postfix) with ESMTP id BCBA6492BC4;
- Tue, 12 Mar 2024 12:44:31 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7D6E8492BD0;
+ Tue, 12 Mar 2024 12:44:33 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 25/55] hw/vfio/pci-quirks: Fix missing ERRP_GUARD() for
- error_prepend()
-Date: Tue, 12 Mar 2024 13:43:09 +0100
-Message-ID: <20240312124339.761630-26-thuth@redhat.com>
+Subject: [PULL 26/55] hw/vfio/pci: Fix missing ERRP_GUARD() for error_prepend()
+Date: Tue, 12 Mar 2024 13:43:10 +0100
+Message-ID: <20240312124339.761630-27-thuth@redhat.com>
 In-Reply-To: <20240312124339.761630-1-thuth@redhat.com>
 References: <20240312124339.761630-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -102,17 +101,18 @@ ERRP_GUARD() could avoid the case when @errp is &error_fatal, the user
 can't see this additional information, because exit() happens in
 error_setg earlier than information is added [1].
 
-In hw/vfio/pci-quirks.c, there are 2 functions passing @errp to
-error_prepend() without ERRP_GUARD():
-- vfio_add_nv_gpudirect_cap()
-- vfio_add_vmd_shadow_cap()
+In hw/vfio/pci.c, there are 2 functions passing @errp to error_prepend()
+without ERRP_GUARD():
+- vfio_add_std_cap()
+- vfio_realize()
 
-There are too many possible callers to check the impact of this defect;
-it may or may not be harmless. Thus it is necessary to protect their
-@errp with ERRP_GUARD().
+The @errp of vfio_add_std_cap() is also from vfio_realize(). And
+vfio_realize(), as a PCIDeviceClass.realize method, its @errp is from
+DeviceClass.realize so that there is no guarantee that the @errp won't
+point to @error_fatal.
 
-To avoid the issue like [1] said, add missing ERRP_GUARD() at the
-beginning of this function.
+To avoid the issue like [1] said, add missing ERRP_GUARD() at their
+beginning.
 
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
@@ -121,32 +121,32 @@ Cc: Alex Williamson <alex.williamson@redhat.com>
 Cc: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Message-ID: <20240311033822.3142585-23-zhao1.liu@linux.intel.com>
+Message-ID: <20240311033822.3142585-24-zhao1.liu@linux.intel.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/vfio/pci-quirks.c | 2 ++
+ hw/vfio/pci.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
-index 84b1a7b948..496fd1ee86 100644
---- a/hw/vfio/pci-quirks.c
-+++ b/hw/vfio/pci-quirks.c
-@@ -1538,6 +1538,7 @@ static bool is_valid_std_cap_offset(uint8_t pos)
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index a1522a011a..64780d1b79 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -2136,6 +2136,7 @@ static void vfio_check_af_flr(VFIOPCIDevice *vdev, uint8_t pos)
  
- static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
+ static int vfio_add_std_cap(VFIOPCIDevice *vdev, uint8_t pos, Error **errp)
  {
 +    ERRP_GUARD();
      PCIDevice *pdev = &vdev->pdev;
-     int ret, pos;
-     bool c8_conflict = false, d4_conflict = false;
-@@ -1630,6 +1631,7 @@ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
- #define VMD_SHADOW_CAP_LEN 24
- static int vfio_add_vmd_shadow_cap(VFIOPCIDevice *vdev, Error **errp)
+     uint8_t cap_id, next, size;
+     int ret;
+@@ -2942,6 +2943,7 @@ static void vfio_unregister_req_notifier(VFIOPCIDevice *vdev)
+ 
+ static void vfio_realize(PCIDevice *pdev, Error **errp)
  {
 +    ERRP_GUARD();
-     uint8_t membar_phys[16];
-     int ret, pos = 0xE8;
- 
+     VFIOPCIDevice *vdev = VFIO_PCI(pdev);
+     VFIODevice *vbasedev = &vdev->vbasedev;
+     char *tmp, *subsys;
 -- 
 2.44.0
 
