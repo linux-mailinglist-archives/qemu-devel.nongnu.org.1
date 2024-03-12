@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36AD78798BA
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 17:15:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B3D8798AA
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 17:13:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk4io-00063l-4t; Tue, 12 Mar 2024 12:11:22 -0400
+	id 1rk4iy-0006Hk-HH; Tue, 12 Mar 2024 12:11:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1rk4iV-0005xN-Bv
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 12:11:04 -0400
+ id 1rk4iX-0005y4-T8
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 12:11:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1rk4iS-00079p-NF
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 12:11:02 -0400
+ id 1rk4iV-0007Bn-4z
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 12:11:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710259858;
+ s=mimecast20190719; t=1710259861;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mEysAxw1rtqLbi7QK6dBGnD+kHUMmHQF+OEuJnW7U90=;
- b=PWlSif5zJElAY7gIhcythS1WEBdF7uqS87DgCbDOZ9Sve4kfd5JthpSaPIIw1lGxeBFRyr
- nihk8xqLbpSkscEnPvKSSLz7h48E53f75wPJK6wRScdwe7ZE+ekMK5mvsbQp3Up8jY5bSo
- gm/j/NorYzJSn3tQcZ1wAQTcJA4pY+g=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-295-gzSZ8MBdPvqXzaUzD-p20g-1; Tue,
- 12 Mar 2024 12:10:57 -0400
-X-MC-Unique: gzSZ8MBdPvqXzaUzD-p20g-1
+ bh=f4c9OhW/hQJQKbDD3J0uL/RxP31+gk21VGQFZ1SY7OM=;
+ b=IEWA6mK2J75YZfyfhYjnl38/ZB6GMvg5/gN6rZZENlFhiPC4vRXNMhNGl0Mqp3KHe6UT6q
+ G4JHfs4793bgQ2MTiMS+Y0NXS1qbCnfEO3eqXaCjfXrgYYj2c9Jzm3umkoL42vyJuoPKOR
+ qDs6bi/sBNalFEAFvefC0+AOFzeo5LE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-583-5Atmn7RtMbCFuCI867FFkw-1; Tue, 12 Mar 2024 12:10:58 -0400
+X-MC-Unique: 5Atmn7RtMbCFuCI867FFkw-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A69472804626;
- Tue, 12 Mar 2024 16:10:56 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D2445800265;
+ Tue, 12 Mar 2024 16:10:57 +0000 (UTC)
 Received: from dell-r430-03.lab.eng.brq2.redhat.com
  (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
- by smtp.corp.redhat.com (Postfix) with ESMTP id ABEF53C24;
- Tue, 12 Mar 2024 16:10:55 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D7C8A3C21;
+ Tue, 12 Mar 2024 16:10:56 +0000 (UTC)
 From: Igor Mammedov <imammedo@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: imammedo@redhat.com, mst@redhat.com, Ani Sinha <anisinha@redhat.com>,
  Fiona Ebner <f.ebner@proxmox.com>
-Subject: [PATCH v3 03/20] tests: smbios: add test for legacy mode CLI options
-Date: Tue, 12 Mar 2024 17:10:33 +0100
-Message-Id: <20240312161050.2248814-4-imammedo@redhat.com>
+Subject: [PATCH v3 04/20] smbios: cleanup smbios_get_tables() from legacy
+ handling
+Date: Tue, 12 Mar 2024 17:10:34 +0100
+Message-Id: <20240312161050.2248814-5-imammedo@redhat.com>
 In-Reply-To: <20240312161050.2248814-1-imammedo@redhat.com>
 References: <20240312161050.2248814-1-imammedo@redhat.com>
 MIME-Version: 1.0
@@ -81,67 +82,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unfortunately having 2.0 machine type deprecated is not enough
-to get rid of legacy SMBIOS handling since 'isapc' also uses
-that and it's staying around.
+smbios_get_tables() bails out right away if leagacy mode is enabled
+and won't generate any SMBIOS tables. At the same time x86 specific
+fw_cfg_build_smbios() will genarate legacy tables and then proceed
+to preparing temporary mem_array for useless call to
+smbios_get_tables() and then discard it.
 
-Hence add test for CLI options handling to be sure that it
-ain't broken during SMBIOS code refactoring.
+Drop legacy related check in smbios_get_tables() and return from
+fw_cfg_build_smbios() early if legacy tables where built without
+proceeding to non legacy part of the function.
 
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Ani Sinha <anisinha@redhat.com>
 Tested-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
- tests/data/smbios/type11_blob.legacy | Bin 0 -> 10 bytes
- tests/qtest/bios-tables-test.c       |  17 +++++++++++++++++
- 2 files changed, 17 insertions(+)
- create mode 100644 tests/data/smbios/type11_blob.legacy
+ hw/i386/fw_cfg.c   | 1 +
+ hw/smbios/smbios.c | 6 ------
+ 2 files changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/tests/data/smbios/type11_blob.legacy b/tests/data/smbios/type11_blob.legacy
-new file mode 100644
-index 0000000000000000000000000000000000000000..aef463aab903405958b0a85f85c5980671c08bee
-GIT binary patch
-literal 10
-Rcmd;PW!S(N;u;*n000Tp0s;U4
-
-literal 0
-HcmV?d00001
-
-diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-index a116f88e1d..d1ff4db7a2 100644
---- a/tests/qtest/bios-tables-test.c
-+++ b/tests/qtest/bios-tables-test.c
-@@ -2106,6 +2106,21 @@ static void test_acpi_pc_smbios_blob(void)
-     free_test_data(&data);
- }
+diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
+index 98a478c276..a635234e68 100644
+--- a/hw/i386/fw_cfg.c
++++ b/hw/i386/fw_cfg.c
+@@ -74,6 +74,7 @@ void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg)
+     if (smbios_tables) {
+         fw_cfg_add_bytes(fw_cfg, FW_CFG_SMBIOS_ENTRIES,
+                          smbios_tables, smbios_tables_len);
++        return;
+     }
  
-+static void test_acpi_isapc_smbios_legacy(void)
-+{
-+    uint8_t req_type11[] = { 1, 11 };
-+    test_data data = {
-+        .machine = "isapc",
-+        .variant = ".pc_smbios_legacy",
-+        .required_struct_types = req_type11,
-+        .required_struct_types_len = ARRAY_SIZE(req_type11),
-+    };
-+
-+    test_smbios("-smbios file=tests/data/smbios/type11_blob.legacy "
-+                "-smbios type=1,family=TEST", &data);
-+    free_test_data(&data);
-+}
-+
- static void test_oem_fields(test_data *data)
+     /* build the array of physical mem area from e820 table */
+diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
+index a3c4e52ce9..8e86c62184 100644
+--- a/hw/smbios/smbios.c
++++ b/hw/smbios/smbios.c
+@@ -1106,12 +1106,6 @@ void smbios_get_tables(MachineState *ms,
  {
-     int i;
-@@ -2261,6 +2276,8 @@ int main(int argc, char *argv[])
-                            test_acpi_pc_smbios_options);
-             qtest_add_func("acpi/piix4/smbios-blob",
-                            test_acpi_pc_smbios_blob);
-+            qtest_add_func("acpi/piix4/smbios-legacy",
-+                           test_acpi_isapc_smbios_legacy);
-         }
-         if (qtest_has_machine(MACHINE_Q35)) {
-             qtest_add_func("acpi/q35", test_acpi_q35_tcg);
+     unsigned i, dimm_cnt, offset;
+ 
+-    if (smbios_legacy) {
+-        *tables = *anchor = NULL;
+-        *tables_len = *anchor_len = 0;
+-        return;
+-    }
+-
+     if (!smbios_immutable) {
+         smbios_build_type_0_table();
+         smbios_build_type_1_table();
 -- 
 2.39.3
 
