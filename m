@@ -2,110 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6220879BEA
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 19:51:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFFB6879C03
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 20:03:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk7D9-0004QA-T8; Tue, 12 Mar 2024 14:50:51 -0400
+	id 1rk7OF-0002jN-VS; Tue, 12 Mar 2024 15:02:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rk7D7-000432-1H
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:50:49 -0400
-Received: from smtp-out2.suse.de ([195.135.223.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rk7D0-0003IB-M0
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:50:48 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rk7OC-0002h9-80
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 15:02:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rk7OA-0005HK-OS
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 15:02:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710270134;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=oSDtm5zvcwto5PRbuw1B3KDgHFY5VH5ss8AqxSTgCoE=;
+ b=Pa5vOd4tHl05+3cohqIKuMWuA2oGWkDZIrpGaEljZFWV8piKJDJiR0ea2qejhpVeEHBAG4
+ L6pdXN2OwtWQchfek0a8TEowIaK4aazH/mwb6pEH49mYEUwTE67Ou7/a1QH7ct7xuHl+w6
+ Sw123SAHvlzNwvYVb5cIYAqVd0enXSw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-626-4hCAqajhPEeccnKzIewVOg-1; Tue, 12 Mar 2024 15:02:10 -0400
+X-MC-Unique: 4hCAqajhPEeccnKzIewVOg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 06C941F450;
- Tue, 12 Mar 2024 18:50:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1710269439; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=EUKc4/vNeZsktTzS1/b8mkNHGrHbrfONtJn2q0r2DVc=;
- b=h7sYP7LChdsGsBqPyIMB2eUB/IcQacXHVR/HWiCinFQkIuYNXYHWe+HhWXkf5IofMzLOzU
- sAeU1WycTJVmdodxfu3KnZwsq7JsNmyZog4ULyvakRZS5ujFTvHElmtUMdkHbccrlbG4m7
- XKQUsHPisARlixdNS3FMqptrCYpgzCs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1710269439;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=EUKc4/vNeZsktTzS1/b8mkNHGrHbrfONtJn2q0r2DVc=;
- b=RRjwuEsWM2JLgps2vSYbO4NGY1JdOloq/EEKOVaGz40Zd4qhj8ORY11aOmrq1vM6o450MY
- DW5S9RL+vXcSENAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1710269439; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=EUKc4/vNeZsktTzS1/b8mkNHGrHbrfONtJn2q0r2DVc=;
- b=h7sYP7LChdsGsBqPyIMB2eUB/IcQacXHVR/HWiCinFQkIuYNXYHWe+HhWXkf5IofMzLOzU
- sAeU1WycTJVmdodxfu3KnZwsq7JsNmyZog4ULyvakRZS5ujFTvHElmtUMdkHbccrlbG4m7
- XKQUsHPisARlixdNS3FMqptrCYpgzCs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1710269439;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=EUKc4/vNeZsktTzS1/b8mkNHGrHbrfONtJn2q0r2DVc=;
- b=RRjwuEsWM2JLgps2vSYbO4NGY1JdOloq/EEKOVaGz40Zd4qhj8ORY11aOmrq1vM6o450MY
- DW5S9RL+vXcSENAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7D10B13795;
- Tue, 12 Mar 2024 18:50:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id /UDdEP6j8GXdeAAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 12 Mar 2024 18:50:38 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com, thuth@redhat.com, lvivier@redhat.com,
- pbonzini@redhat.com, peterx@redhat.com, Het Gala <het.gala@nutanix.com>
-Subject: Re: [PATCH v6 8/8] Add negative tests to validate migration QAPIs
-In-Reply-To: <20240312162025.44212-9-het.gala@nutanix.com>
-References: <20240312162025.44212-1-het.gala@nutanix.com>
- <20240312162025.44212-9-het.gala@nutanix.com>
-Date: Tue, 12 Mar 2024 15:50:36 -0300
-Message-ID: <87frwvl1xf.fsf@suse.de>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 89C65800268;
+ Tue, 12 Mar 2024 19:02:09 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.51])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D2D9C492BC7;
+ Tue, 12 Mar 2024 19:02:08 +0000 (UTC)
+Date: Tue, 12 Mar 2024 14:50:57 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH 1/2] tracetool: remove redundant --target-type /
+ --target-name args
+Message-ID: <20240312185057.GE389553@fedora>
+References: <20240108171356.1037059-1-berrange@redhat.com>
+ <20240108171356.1037059-2-berrange@redhat.com>
+ <CAFn=p-bJNzH7_iFDjV-Fwg_yO3HPvwaSSxBnuhXD-T6tCTR1Fg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=h7sYP7LC;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RRjwuEsW
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-8.00 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; BAYES_HAM(-2.99)[99.96%];
- MIME_GOOD(-0.10)[text/plain];
- DWL_DNSWL_HI(-3.50)[suse.de:dkim];
- NEURAL_HAM_LONG(-1.00)[-1.000]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
- RCPT_COUNT_SEVEN(0.00)[8];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,nutanix.com:email]; 
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Score: -8.00
-X-Rspamd-Queue-Id: 06C941F450
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="osJ9JKGD4wSD0OZh"
+Content-Disposition: inline
+In-Reply-To: <CAFn=p-bJNzH7_iFDjV-Fwg_yO3HPvwaSSxBnuhXD-T6tCTR1Fg@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -122,14 +89,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Het Gala <het.gala@nutanix.com> writes:
 
-> Migration QAPI arguments - uri and channels are mutually exhaustive.
-> Add negative validation tests, one with both arguments present and
-> one with none present.
->
-> Signed-off-by: Het Gala <het.gala@nutanix.com>
-> Suggested-by: Fabiano Rosas <farosas@suse.de>
+--osJ9JKGD4wSD0OZh
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+On Mon, Jan 08, 2024 at 04:50:40PM -0500, John Snow wrote:
+> On Mon, Jan 8, 2024 at 12:14=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange=
+@redhat.com> wrote:
+> >
+> > The --target-type and --target-name args are used to construct
+> > the default probe prefix if '--probe-prefix' is not given. The
+> > meson.build will always pass '--probe-prefix', so the other args
+> > are effectively redundant.
+> >
+> > Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>=20
+> Fine by me, provided there's no reason anyone is calling tracetool
+> manually for some reason I haven't thought about. I assume we'll hear
+> about it if so...
+
+That's okay. tracetool.py is internal to QEMU so we're free to change
+the command-line options.
+
+Stefan
+
+--osJ9JKGD4wSD0OZh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmXwpBEACgkQnKSrs4Gr
+c8h21gf/SMcf9XIyW6TAT3xx+rVCmOoopASAeLxXrcrKRH4Nk9CJUZ2L+qwUYdrB
+/VgBPi+qKiayKtJQkMHTzqU39Gz9hDY0m6aFW7p6TPPJu8TrWzzJtyKOXCSsnX/H
+Qvt5/OSklzTLGOHtpY6xcEJ8L77W16ARvlYAMlKJOkm/wuwQAVJ2Dvahd6jetB5P
+5+5f0UCi/ouD9XpJ1KWvZ5B9kFepb0UYCXCeUfpiliZVcPp34a01XdqlwucXoDg9
+cw1bnsxOJEzdkF5rc8brR0wUXSfSPl1BHsK0Vu5dkYgJ60g0Rj5oN6dCx1lSrNpX
+vxxdSv8NzM/qWX5HNc6ASMvL43sygA==
+=EOJr
+-----END PGP SIGNATURE-----
+
+--osJ9JKGD4wSD0OZh--
+
 
