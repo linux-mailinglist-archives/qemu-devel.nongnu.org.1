@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFAB5879EDE
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:35:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5103C879EEB
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:39:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkAbs-0002cg-4R; Tue, 12 Mar 2024 18:28:36 -0400
+	id 1rkAbo-0002Nk-Fv; Tue, 12 Mar 2024 18:28:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAbS-0001DF-55
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:28:10 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAbV-0001Tq-0i
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:28:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAbQ-0004Vn-An
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:28:09 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAbT-0004W8-As
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:28:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710282487;
+ s=mimecast20190719; t=1710282490;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=etBZs3HX2lGuBR1hbVUB0rO/sMf1IGM8GxytboDqRdM=;
- b=O1/1AcEyI9TRYBPOepTRs1L8Wnry4vD8MS8OMnWnZsXeKtkzv2wM8Sw66WqxhhODjw9a4m
- bOeXgf1S36VF5tsHYk8u410f90nlF2feWRfPoqgj6FNkT7XEJwAzxCYYWd/10SRe3oVjYy
- rZKHFSx28uRo0OlGs8y0HGrfZiR2S5g=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rnobKvRBI1kxmZ+zEo4/9xYhnFk0DiLD2cKoeuPWbew=;
+ b=GRhNtTjemHO9+X/1YAUmBla9XknTzx9Zg7h+1MkP/kjdr3g/0Y4fnse+0jL1iDi5H4NYK0
+ MPCj/g3x4aP8bYoQ14ItP06kyc7lSpzd0yn7ZeLNnBem2TPmkCOpM0rZzXVCR5MZ6jMeiU
+ j57V9P8QKZZpKBX4dplc3FFAzEGU2hA=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-620-GzzxZA9xPHmCU2_lKKWONA-1; Tue, 12 Mar 2024 18:28:06 -0400
-X-MC-Unique: GzzxZA9xPHmCU2_lKKWONA-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-513c65ffba5so471443e87.2
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:28:05 -0700 (PDT)
+ us-mta-422-UULgOr5OOMSnecr7gP9Qiw-1; Tue, 12 Mar 2024 18:28:09 -0400
+X-MC-Unique: UULgOr5OOMSnecr7gP9Qiw-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a448cfe2266so494039266b.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:28:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710282484; x=1710887284;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=etBZs3HX2lGuBR1hbVUB0rO/sMf1IGM8GxytboDqRdM=;
- b=v8eGxFmZktfUtYCs4oqlGRYqrOauRWVhlKdJCHm95ht9lq7IVEyojfEPJ0KzWq47J/
- LAuB+gfh3kq9FcZWNfYPheBviSjuoqQa5LVLTwdDiHfJginw9E7hyWZ6Sg9Jg9IAJdeD
- Sf5sfhmM0APTTXJ9y16voJHGKDWnsX2abjlm8juTZyaGUYWqpKHm0MMBlPBO1K9Wune7
- hJGEnMmmy18i1+xKMzTUBlv6Ei7XZ351s0WDuDuLQ8B4wECXlIxrFETssIUUb3KX3Axi
- GHvkE0rDebrEDanBs+7n08FKD8tYvCmyJIW9arDPXj3o4w+u/Wd22RbEUWWYPMJ2E+NO
- bEww==
-X-Gm-Message-State: AOJu0Yz4KLMhP2tF9GYyY9fgKH7Eln5HWyuvQkYfeor9xz7t/W0y8X6y
- mtyk8MyilzCM62euhKHvJHvzGhP64M7wh9LTAZnI3F9XTKwvf9tkqAOGE+wVQei56M1iDAPCCuG
- T2ww1Vg7ICoW2Ge5TL5xPf1SM1jsn0vZdyJz9M0XupY97so8yLNHrd8xx7SLFeEq7tz1e6wlpd5
- ZuHShOMl8Fr5joX51VaaF2N7tMJSvgt48M
-X-Received: by 2002:a2e:731a:0:b0:2d2:869a:55af with SMTP id
- o26-20020a2e731a000000b002d2869a55afmr1159329ljc.17.1710282483747; 
- Tue, 12 Mar 2024 15:28:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHSFqKvR2UcFJXgi5mGcjFeYUWNfakFoXm8r2jVygLNu+yNQcChYg+JznZMhc4eaNfM6rgQiQ==
-X-Received: by 2002:a2e:731a:0:b0:2d2:869a:55af with SMTP id
- o26-20020a2e731a000000b002d2869a55afmr1159305ljc.17.1710282483136; 
- Tue, 12 Mar 2024 15:28:03 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1710282487; x=1710887287;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rnobKvRBI1kxmZ+zEo4/9xYhnFk0DiLD2cKoeuPWbew=;
+ b=wQVIOocvuG6sHrDSZnT6LnyKC+ZLhdeQjXQ4hqWWVqzk+Oq+l8ab2Y+sFep+mns+hF
+ HCMx4W5lmyS+hW0gs/dlVNfJfM9kssA5WkcJHdJH7Vnc7UpNCNKS9MNrVukWNNcO1tk7
+ wFzb/K7LZi9DxM3pZh41qo3h+cC1tT16YVNjExKcggGP59PcVaLE/22TKnnqss2lsewG
+ 8WD/OsgTVOLzAfsHd1Z7ArErFa97HlkHHfh/GAmxsMicumLLjsTYi1TG4YFVbz8abmE5
+ aNiQktMiRqHvAADvJH6Ps1fLZ6my6JlZrzCKRszsZSAZkJEABE1TWt3FKl3c9jxoPpC0
+ UBZA==
+X-Gm-Message-State: AOJu0YxBbWg14f8aXJw/icvmEdgOYAAp+zlBJr8paPL5oP7wQRHnqdhA
+ 2NSeeCDPB5wHME1B2MioZiVqHAyRRT2xKru00GQ898fSrsbmwq77p9Ej3qqzH4twQ4EEfaPmFQW
+ WIHQaglqX54p3Pzn1wuG+USd/ZA8r20Zoc6kmheXWflooEA4s9q3oyko7Ei7WcDcFfjrT2swi2O
+ oR7ZJqyWKxH29ySOf4VmRgVBFd5NY7KAod
+X-Received: by 2002:a17:906:58d:b0:a43:e63b:2ecc with SMTP id
+ 13-20020a170906058d00b00a43e63b2eccmr6034334ejn.67.1710282487337; 
+ Tue, 12 Mar 2024 15:28:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFTrLNq7Dbg6AfyrLulJW5b8yqFhP3W0+WDTcknfkVMZI8z6z/xvHj6UMDaeEFZbP0lSHu6eQ==
+X-Received: by 2002:a17:906:58d:b0:a43:e63b:2ecc with SMTP id
+ 13-20020a170906058d00b00a43e63b2eccmr6034316ejn.67.1710282486817; 
+ Tue, 12 Mar 2024 15:28:06 -0700 (PDT)
 Received: from redhat.com ([2.52.134.16]) by smtp.gmail.com with ESMTPSA id
- f8-20020a056402004800b00568550a0762sm2805946edu.6.2024.03.12.15.28.00
+ bx21-20020a170906a1d500b00a45ff890df0sm4116271ejb.35.2024.03.12.15.28.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 15:28:02 -0700 (PDT)
-Date: Tue, 12 Mar 2024 18:27:59 -0400
+ Tue, 12 Mar 2024 15:28:06 -0700 (PDT)
+Date: Tue, 12 Mar 2024 18:28:03 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Ani Sinha <anisinha@redhat.com>,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Julia Suvorova <jusual@redhat.com>, kraxel@redhat.com,
- Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Bernhard Beschow <shentey@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 47/68] pc: q35: Bump max_cpus to 4096 vcpus
-Message-ID: <e4e98c7eebfab0f844784cdf5c108bb3d60ac9a2.1710282274.git.mst@redhat.com>
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 48/68] Revert "hw/i386/pc_sysfw: Inline
+ pc_system_flash_create() and remove it"
+Message-ID: <0fbe8d7c4c7e44fc86986217dc3ab65ec4e6a302.1710282274.git.mst@redhat.com>
 References: <cover.1710282274.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1710282274.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -107,69 +105,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ani Sinha <anisinha@redhat.com>
+From: Bernhard Beschow <shentey@gmail.com>
 
-Since commit f10a570b093e6 ("KVM: x86: Add CONFIG_KVM_MAX_NR_VCPUS to allow up to 4096 vCPUs")
-Linux kernel can support upto a maximum number of 4096 vcpus when MAXSMP is
-enabled in the kernel. At present, QEMU has been tested to correctly boot a
-linux guest with 4096 vcpus using the current edk2 upstream master branch that
-has the fixes corresponding to the following two PRs:
+Commit 6f6ad2b24582 "hw/i386/pc: Confine system flash handling to pc_sysfw"
+causes a regression when specifying the property `-M pflash0` in the PCI PC
+machines:
+  qemu-system-x86_64: Property 'pc-q35-9.0-machine.pflash0' not found
+In order to revert the commit, the commit below must be reverted first.
 
-https://github.com/tianocore/edk2/pull/5410
-https://github.com/tianocore/edk2/pull/5418
+This reverts commit cb05cc16029bb0a61ac5279ab7b3b90dcf2aa69f.
 
-The changes merged into edk2 with the above PRs will be in the upcoming 2024-05
-release. With current seabios firmware, it boots fine with 4096 vcpus already.
-So bump up the value max_cpus to 4096 for q35 machines versions 9 and newer.
-Q35 machines versions 8.2 and older continue to support 1024 maximum vcpus
-as before for compatibility reasons.
-
-If KVM is not able to support the specified number of vcpus, QEMU would
-return the following error messages:
-
-$ ./qemu-system-x86_64 -cpu host -accel kvm -machine q35 -smp 1728
-qemu-system-x86_64: -accel kvm: warning: Number of SMP cpus requested (1728) exceeds the recommended cpus supported by KVM (12)
-qemu-system-x86_64: -accel kvm: warning: Number of hotpluggable cpus requested (1728) exceeds the recommended cpus supported by KVM (12)
-Number of SMP cpus requested (1728) exceeds the maximum cpus supported by KVM (1024)
-
-Cc: Daniel P. Berrangé <berrange@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: Julia Suvorova <jusual@redhat.com>
-Cc: kraxel@redhat.com
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Message-Id: <20240228143351.3967-1-anisinha@redhat.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Message-Id: <20240226215909.30884-2-shentey@gmail.com>
+Tested-by: Alex Williamson <alex.williamson@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/pc_q35.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/i386/pc_sysfw.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 45a4102e75..df63a92b78 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -350,7 +350,7 @@ static void pc_q35_machine_options(MachineClass *m)
-     m->default_nic = "e1000e";
-     m->default_kernel_irqchip_split = false;
-     m->no_floppy = 1;
--    m->max_cpus = 1024;
-+    m->max_cpus = 4096;
-     m->no_parallel = !module_object_class_by_name(TYPE_ISA_PARALLEL);
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_AMD_IOMMU_DEVICE);
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_INTEL_IOMMU_DEVICE);
-@@ -371,6 +371,7 @@ static void pc_q35_8_2_machine_options(MachineClass *m)
- {
-     pc_q35_9_0_machine_options(m);
-     m->alias = NULL;
-+    m->max_cpus = 1024;
-     compat_props_add(m->compat_props, hw_compat_8_2, hw_compat_8_2_len);
-     compat_props_add(m->compat_props, pc_compat_8_2, pc_compat_8_2_len);
+diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
+index b02e285579..b9c1eb352d 100644
+--- a/hw/i386/pc_sysfw.c
++++ b/hw/i386/pc_sysfw.c
+@@ -91,6 +91,18 @@ static PFlashCFI01 *pc_pflash_create(PCMachineState *pcms,
+     return PFLASH_CFI01(dev);
  }
+ 
++static void pc_system_flash_create(PCMachineState *pcms)
++{
++    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
++
++    if (pcmc->pci_enabled) {
++        pcms->flash[0] = pc_pflash_create(pcms, "system.flash0",
++                                          "pflash0");
++        pcms->flash[1] = pc_pflash_create(pcms, "system.flash1",
++                                          "pflash1");
++    }
++}
++
+ static void pc_system_flash_cleanup_unused(PCMachineState *pcms)
+ {
+     char *prop_name;
+@@ -198,8 +210,7 @@ void pc_system_firmware_init(PCMachineState *pcms,
+         return;
+     }
+ 
+-    pcms->flash[0] = pc_pflash_create(pcms, "system.flash0", "pflash0");
+-    pcms->flash[1] = pc_pflash_create(pcms, "system.flash1", "pflash1");
++    pc_system_flash_create(pcms);
+ 
+     /* Map legacy -drive if=pflash to machine properties */
+     for (i = 0; i < ARRAY_SIZE(pcms->flash); i++) {
 -- 
 MST
 
