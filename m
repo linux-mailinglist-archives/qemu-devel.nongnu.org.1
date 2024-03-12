@@ -2,73 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53870879C26
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 20:14:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B42A879BDD
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 19:48:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk7Ya-0001Qh-UI; Tue, 12 Mar 2024 15:13:00 -0400
+	id 1rk7A2-0007Rn-7I; Tue, 12 Mar 2024 14:47:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <senserk71@gmail.com>)
- id 1rk78A-0006bN-89
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:45:42 -0400
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rk79q-0007L1-KV
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:47:28 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <senserk71@gmail.com>)
- id 1rk786-00027P-6w
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:45:39 -0400
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-29bad5f4ae8so3404155a91.1
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 11:45:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710269136; x=1710873936; darn=nongnu.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=l0yLCiTMOODG7pxbVyIL8karU7sUlMb3byO13Y4KVyo=;
- b=QLcu91yuO9MpS1FLCjDdQz+0bOKj6onCt3EtFFCuqZQUBIp1K7GXeernOPB331LJGm
- 5GWa34I7uYpYcD2w9Q1wcP1Z5cwm8agq75u75xCx40Z+4933qI3Fw6mWSDH8biHIgw+x
- 4ciLAbCuv5XoD3Bx50Fw/LjwfmjKicYalJGfWBeJRcW3y/9NSGyDP9pbW79z8JMO0G9P
- t7K4Bda0FJ2E/ONX/jJIBoHzBWiFKc/JrLnEudc1IAzqNbup0t4IovKkWGFFoopQegzj
- PbrpoLUZ3vCSsg3fuWOFcSasxh7OA7aNlcs56CZusUAYBhFHAHla+UxmpBGuOx4TrmIL
- H9Lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710269136; x=1710873936;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=l0yLCiTMOODG7pxbVyIL8karU7sUlMb3byO13Y4KVyo=;
- b=QlzPbnRGhAd+4yWJqtPQsCMqM5wWTZY3yREnCpYp0R3/1etCTvqUNo5SKTND9jhJUr
- RWiLy4jnCReojvBBuA5ZM4OKf3nVrXcWXNgZzh2Gw5rSXZ23pWEmzb/cc/ED8bW2Um0P
- KtFNGSs8E4bDKi6Nv2B47ofnpnflClcaVY6BSqbAUZJjOT28YILi5w1p/M82wJd/oYcY
- gnui1TBKuBuvis1fl8lz9/90AKaHeYG8D4gcQMDeOKMbCIhLxp+uzG8QJD4HUW0MhqXn
- mMXxfAGBPuXW49PajTwIyoqWt0oCu/5yA3H08BUAsMsxBTAzo9ZKZFnnNtlai/48/LFg
- OzBQ==
-X-Gm-Message-State: AOJu0YzOqZrTqo1H4GpIlPxtQGyU8052zepWgI+Yx2e0wHL4QVJ2p8uK
- U7ST7PUYtYlXo8qjMvIIf39byres+qyAzOKtH3NWeHnmz3ikxkUeL202iZ7R6F3yL6CnlCVKikF
- bPGP/WlycGyi8UTLNoNw7KuV+1JdxJ7nI1oWYZg==
-X-Google-Smtp-Source: AGHT+IG32IaZ9N+5bgFXYTWbX6E3U3J4VMBATkbjvl8r6iIJvn9QigLsZiCQ6eJbyUmN9dwUJS8I10PVfivmoVgbDlI=
-X-Received: by 2002:a17:90b:4b4c:b0:29b:ae33:6ffe with SMTP id
- mi12-20020a17090b4b4c00b0029bae336ffemr8770336pjb.2.1710269135807; Tue, 12
- Mar 2024 11:45:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rk79n-0002Gi-Er
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:47:24 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 0B2451F441;
+ Tue, 12 Mar 2024 18:47:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1710269241; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/eY9lGsNliQpLsIDSUQwpV5Cti3Bf8d1i8AsgH4hnSw=;
+ b=oklfuLkUZr3Hro1BcKQvVGLpRjCvMSPkcUICG0mfQeSzh6BemNU0/cpHmbkhIKPYiz5on/
+ mL4zwYilFDP0xTNonEKHkv4kUUW5W2xjen4HsmlqFza0LZ5VCq9UMSvABx9wGKlVUEU1yH
+ t8VdpHtKLrErrkPMOZzE9R+ZAZeboGM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1710269241;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/eY9lGsNliQpLsIDSUQwpV5Cti3Bf8d1i8AsgH4hnSw=;
+ b=WNCB5OvlDFXxiV5eRTv7enL4GENZYLsccPnx8DSmtwGZg+Sy3rU7E0OzLMSVRUS6t2mVe8
+ KxxQr9t7Ax7U/yBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1710269239; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/eY9lGsNliQpLsIDSUQwpV5Cti3Bf8d1i8AsgH4hnSw=;
+ b=Au3choySULIL0Z+Sn3s26P1lIRTn7hP0WChiKSU+RYMjnBJ+af1EaPKMbclJLnfCSaw84+
+ X1Y2fPJNSfu1AO/M6aoaQG78XSAXn3SyR7aov3gDWDcRiR26Mx4RT5dvI7sA/4lds4sw+n
+ 1jEGpWqf+YqaOn6+eVjS1U1RyV3RmR0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1710269239;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/eY9lGsNliQpLsIDSUQwpV5Cti3Bf8d1i8AsgH4hnSw=;
+ b=xUVrNfMvjIhBwBVmcDwQdHVnzXhVTdUw6DMz6WNgx1Mr7NiazIAcR1mrtPcl0Bt1vxk2Kw
+ dz5wYWXIOlxFwjCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8B96113795;
+ Tue, 12 Mar 2024 18:47:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id IcTEFDaj8GXKdwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 12 Mar 2024 18:47:18 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org
+Cc: marcandre.lureau@redhat.com, thuth@redhat.com, lvivier@redhat.com,
+ pbonzini@redhat.com, peterx@redhat.com, Het Gala <het.gala@nutanix.com>
+Subject: Re: [PATCH v6 5/8] Add migrate_set_ports into migrate_qmp to update
+ migration port value
+In-Reply-To: <20240312162025.44212-6-het.gala@nutanix.com>
+References: <20240312162025.44212-1-het.gala@nutanix.com>
+ <20240312162025.44212-6-het.gala@nutanix.com>
+Date: Tue, 12 Mar 2024 15:47:16 -0300
+Message-ID: <87r0gfl22z.fsf@suse.de>
 MIME-Version: 1.0
-From: =?UTF-8?B?0JzQuNGF0LDQuNC7INCh0LXQstC10YDQvtCy?= <senserk71@gmail.com>
-Date: Tue, 12 Mar 2024 21:45:24 +0300
-Message-ID: <CAL1vMp0KdjfVMOnLcDxr9Cdcvr34jp2aHorZ3F6ibiSRavLiiw@mail.gmail.com>
-Subject: Possible memory release problem
-To: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="0000000000004f6c9b06137b1070"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=senserk71@gmail.com; helo=mail-pj1-x1035.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Au3choyS;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xUVrNfMv
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-8.00 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; BAYES_HAM(-2.99)[99.96%];
+ MIME_GOOD(-0.10)[text/plain];
+ DWL_DNSWL_HI(-3.50)[suse.de:dkim];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
+ RCPT_COUNT_SEVEN(0.00)[8];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[nutanix.com:email,suse.de:dkim,suse.de:email]; 
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
+X-Spam-Score: -8.00
+X-Rspamd-Queue-Id: 0B2451F441
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 12 Mar 2024 15:12:58 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,17 +123,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000004f6c9b06137b1070
-Content-Type: text/plain; charset="UTF-8"
+Het Gala <het.gala@nutanix.com> writes:
 
-Colleagues, can you tell me in /migration/ram.c :2837 whether it is not
-necessary to perform memory release for block->bmap, after memory has been
-allocated in :2831. If not please explain why
+> migrate_get_connect_qdict gets qdict with the dst QEMU parameters.
+>
+> migrate_set_ports() from list of channels reads each QDict for port,
+> and fills the port with correct value in case it was 0 in the test.
+>
+> Signed-off-by: Het Gala <het.gala@nutanix.com>
+> Suggested-by: Fabiano Rosas <farosas@suse.de>
 
---0000000000004f6c9b06137b1070
-Content-Type: text/html; charset="UTF-8"
-
-<div dir="ltr">Colleagues, can you tell me in /migration/ram.c :2837 whether it is not necessary to perform memory release for block-&gt;bmap, after memory has been allocated in :2831. If not please explain why<br></div>
-
---0000000000004f6c9b06137b1070--
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
