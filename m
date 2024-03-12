@@ -2,68 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B791879544
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 14:42:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2628879545
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 14:43:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk2Nv-0007W4-DH; Tue, 12 Mar 2024 09:41:39 -0400
+	id 1rk2P4-00023J-12; Tue, 12 Mar 2024 09:42:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rk2Nj-0007NZ-Nq
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 09:41:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rk2NW-0003do-76
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 09:41:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710250873;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=1WcUTy+akApizBaxjoVsyLwVwAl1LGxafwYZv6uq034=;
- b=C0ACiYCPn279/t7O+1SZ9wg6UYiwOLgKnIiuv50uSs6bCHKZOBi0Yi/wjVS8MzNcOTEUBH
- yCnhourKnMlorhodcgaweKjOeK03+AMk0tq+rBG2s97BIlL2GhfnxbQgh22JSeXENTi4mc
- ULa6YUzRONeauEhJzxStQKnwWPq+8Lg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-350-0NVYtER5PJ-kVOpOdrHJIA-1; Tue, 12 Mar 2024 09:41:10 -0400
-X-MC-Unique: 0NVYtER5PJ-kVOpOdrHJIA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 308538007AD;
- Tue, 12 Mar 2024 13:41:10 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.138])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0E024112132A;
- Tue, 12 Mar 2024 13:41:10 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E576421E6939; Tue, 12 Mar 2024 14:41:08 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-Subject: [PULL 4/4] target/loongarch: Fix query-cpu-model-expansion to reject
- props
-Date: Tue, 12 Mar 2024 14:41:08 +0100
-Message-ID: <20240312134108.3030801-5-armbru@redhat.com>
-In-Reply-To: <20240312134108.3030801-1-armbru@redhat.com>
-References: <20240312134108.3030801-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rk2P1-0001uN-No
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 09:42:47 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rk2Oz-0003l6-ID
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 09:42:47 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-56877761303so698657a12.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 06:42:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1710250964; x=1710855764; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rlr2qjgtUSWk7GyxjUfmV13M45JiuI79pZ+72BqfW7s=;
+ b=l67z4jNlxM0QCbz5ONbtT+Ar/OSa+l0H9b83SCrdOa44qLi4yEHfLWjsnewbdjEOWF
+ U7sLw8vrillaqLRkq60sXO0LjPXRI7v4a0fGycDc55c/HSiyaaFe3VDLDXoB1Oo8IH9a
+ qv/Ww1VsyGluJhcQOxGokaRwZs3gnOJt9ZXF6+n4UTZm0G5ss//V+XK8ydOJyw54H3yA
+ JDd49tMuD5YENAi4O4xDG5LuhkabqnfpNSqeCDu0bKKNbDOmqqK85SQfsXWn2ZvFBcKC
+ XWTSWD2Pff54ciJxCE3NAZm+xAmxG8hWA/+e7Dz3LFN2Z8/dEp/+r5DIzes8px4iLhFj
+ io1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710250964; x=1710855764;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=rlr2qjgtUSWk7GyxjUfmV13M45JiuI79pZ+72BqfW7s=;
+ b=JJFzxw5/lYEAkzE+29lkO0V6Qx2+phkMOnAFcK5gQW3oosvx5QhyFVnvWcSod+taxG
+ B51PmwZcf+j9/XqhXEg+uQQbx40KAX1OGdi8iBqXp6LTnF0QpYYZRTsJafPxBY5yF1aX
+ O0UyAz+QHho0IKV57x3NzQd6V1mSCJHiCy+ayiAVO93vcpe4Imt4rhhyhkXv7fIDmQKF
+ LZv454A9ne1A2tLOYDiDWAHkPtIky8ZqYhz0yDSEADy+ofFTaIBe50X5nRw7691Xem30
+ dvZ4l/QziDq35j3OsetqD+VMkAaDflBJrtCfFbGDv3Sm1tABYu5lEW12lfzxQZHhtxwW
+ EQwg==
+X-Gm-Message-State: AOJu0YxLXrvK0qxYXWo4UmQK6frVr4my0VNm9KAhsto/4edaRjUnFXKo
+ q3Zxohue9/QlN39UgQ+MHVtU6UjP84u1WCNqwMTYAb8dUvfdeAREwAPDhY6uF2zP9kgOYIqBua+
+ w8y1b0ZTjKh23JVfgSUV9Jdqk3PVmjwHKRFTXWA==
+X-Google-Smtp-Source: AGHT+IHRBRcF3SXk2BTuLSTHMm8DS9J72iec9+IZb2TaBQv3BWCQnxAOB3oBHv9uvyjpXl+kA+GTM23xre3exrAv6tg=
+X-Received: by 2002:a50:9f28:0:b0:566:4a85:ceb3 with SMTP id
+ b37-20020a509f28000000b005664a85ceb3mr1396461edf.9.1710250963904; Tue, 12 Mar
+ 2024 06:42:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+References: <20240312112532.1558319-1-alex.bennee@linaro.org>
+In-Reply-To: <20240312112532.1558319-1-alex.bennee@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 12 Mar 2024 13:42:32 +0000
+Message-ID: <CAFEAcA_Vok6GcphdFv_NZv7iCeLpebS9JWZW5yHeRx1w9EY00g@mail.gmail.com>
+Subject: Re: [PULL for 9.0 0/8] final maintainer updates (testing, gdbstub)
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,78 +87,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-query-cpu-model-expansion takes a CpuModelInfo argument.  The
-loongarch version of the command silently ignores the argument's
-member @props.  For instance,
+On Tue, 12 Mar 2024 at 11:26, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
+>
+> The following changes since commit 7489f7f3f81dcb776df8c1b9a9db281fc21bf0=
+5f:
+>
+>   Merge tag 'hw-misc-20240309' of https://github.com/philmd/qemu into sta=
+ging (2024-03-09 20:12:21 +0000)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/stsquad/qemu.git tags/pull-maintainer-final-120324-1
+>
+> for you to fetch changes up to 0532045e8112c13a8a949e696576672e64c6fa14:
+>
+>   gdbstub: Fix double close() of the follow-fork-mode socket (2024-03-12 =
+10:48:35 +0000)
+>
+> ----------------------------------------------------------------
+> final updates for 9.0 (testing, gdbstub):
+>
+>   - avoid transferring pointless git data
+>   - fix the over rebuilding of test VMs
+>   - support Xfer:siginfo:read in gdbstub
+>   - fix double close() in gdbstub
+>
 
-    {"execute": "query-cpu-model-expansion", "arguments": {"type": "static", "model": {"name": "la464", "props": null}}}
+This makes the s390 CI jobs fail:
 
-and
+https://gitlab.com/qemu-project/qemu/-/jobs/6374182015
+https://gitlab.com/qemu-project/qemu/-/jobs/6374182020
 
-    {"execute": "query-cpu-model-expansion", "arguments": {"type": "static", "model": {"name": "la464", "props": {"prop": null}}}}
+fatal: --filter can only be used when extensions.partialClone is set
 
-succeed.
 
-Add skeleton code for property processing that recognizes no
-properties.  Now the two commands fail as they should:
-
-    {"error": {"class": "GenericError", "desc": "Invalid parameter type for 'model.props', expected: object"}}
-
-and
-
-    {"error": {"class": "GenericError", "desc": "Parameter 'model.props.prop' is unexpected"}}
-
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240305145919.2186971-5-armbru@redhat.com>
-[Drop #include now superfluous]
----
- target/loongarch/loongarch-qmp-cmds.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
-
-diff --git a/target/loongarch/loongarch-qmp-cmds.c b/target/loongarch/loongarch-qmp-cmds.c
-index ec33ce81f0..8721a5eb13 100644
---- a/target/loongarch/loongarch-qmp-cmds.c
-+++ b/target/loongarch/loongarch-qmp-cmds.c
-@@ -10,7 +10,6 @@
- #include "qapi/error.h"
- #include "qapi/qapi-commands-machine-target.h"
- #include "cpu.h"
--#include "qapi/qmp/qerror.h"
- #include "qapi/qmp/qdict.h"
- #include "qapi/qobject-input-visitor.h"
- #include "qom/qom-qobject.h"
-@@ -48,6 +47,8 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
-                                                      CpuModelInfo *model,
-                                                      Error **errp)
- {
-+    Visitor *visitor;
-+    bool ok;
-     CpuModelExpansionInfo *expansion_info;
-     QDict *qdict_out;
-     ObjectClass *oc;
-@@ -60,6 +61,21 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
-         return NULL;
-     }
- 
-+    if (model->props) {
-+        visitor = qobject_input_visitor_new(model->props);
-+        if (!visit_start_struct(visitor, "model.props", NULL, 0, errp)) {
-+            visit_free(visitor);
-+            return NULL;
-+        }
-+
-+        ok = visit_check_struct(visitor, errp);
-+        visit_end_struct(visitor, NULL);
-+        visit_free(visitor);
-+        if (!ok) {
-+            return NULL;
-+        }
-+    }
-+
-     oc = cpu_class_by_name(TYPE_LOONGARCH_CPU, model->name);
-     if (!oc) {
-         error_setg(errp, "The CPU type '%s' is not a recognized LoongArch CPU type",
--- 
-2.44.0
-
+thanks
+-- PMM
 
