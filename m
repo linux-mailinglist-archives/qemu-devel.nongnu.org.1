@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E55FC87946D
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:46:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FA30879478
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:49:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk1VT-00050O-Kt; Tue, 12 Mar 2024 08:45:23 -0400
+	id 1rk1W6-0005Pq-Qc; Tue, 12 Mar 2024 08:46:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Uw-0004FV-EK
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:51 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Uu-00041M-01
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Ur-0000T5-Ps
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:50 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Ur-0000T3-Pq
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1710247485;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rIgnOsfFSMsEGyT7FNEqh+sTvP35EQ6b4LH2suBdKa0=;
- b=W1bLiYCd2XagLFVw3gxcqZzGQj6EgkIK6Ng2GLFNA6r737nIhzlxr6LmCSuDxiNZoqpvbf
- R49CL1e5YnDZ1faqAqhC6QwJR3zwmY1/6jObUaIGsBQBWaKaOri4j11s5GFR2ZJzGgPp+H
- FBYqz7JFvwoDXMwQsFcCM+fYE2e1joI=
+ bh=xlq8mYH4EDZirP63Qalj7mp8w+7b8raxrbqmISSjRbc=;
+ b=bxlQYVOSrbAPMNfD4vmx0nzrnyqrXmL5txnrngBSWHYCJet2mwzVYqAkUlrMr8JwWcjIcR
+ 1AK445bi6u8NOgD0ymulq5H45eEPWiT5bMIEzxvwzh6KIBUaDvHY5Iq8JG188h/vTWpQwB
+ 5H6ibkJRGW/4T0II30RHXk2gdUbyuVY=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-637-dJ5XrLoIMhuJ21aBty9TrQ-1; Tue, 12 Mar 2024 08:44:42 -0400
-X-MC-Unique: dJ5XrLoIMhuJ21aBty9TrQ-1
+ us-mta-629-Ya4scxDpOxmLz9cYqKk4zw-1; Tue, 12 Mar 2024 08:44:43 -0400
+X-MC-Unique: Ya4scxDpOxmLz9cYqKk4zw-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BBD29810FDA;
- Tue, 12 Mar 2024 12:44:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3FD7C800274;
+ Tue, 12 Mar 2024 12:44:43 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.69])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9A530492BD4;
- Tue, 12 Mar 2024 12:44:40 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 07C5A492BC4;
+ Tue, 12 Mar 2024 12:44:41 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PULL 29/55] hw/virtio/vhost: Fix missing ERRP_GUARD() for
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Subject: [PULL 30/55] migration/option: Fix missing ERRP_GUARD() for
  error_prepend()
-Date: Tue, 12 Mar 2024 13:43:13 +0100
-Message-ID: <20240312124339.761630-30-thuth@redhat.com>
+Date: Tue, 12 Mar 2024 13:43:14 +0100
+Message-ID: <20240312124339.761630-31-thuth@redhat.com>
 In-Reply-To: <20240312124339.761630-1-thuth@redhat.com>
 References: <20240312124339.761630-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -99,50 +99,42 @@ ERRP_GUARD() could avoid the case when @errp is &error_fatal, the user
 can't see this additional information, because exit() happens in
 error_setg earlier than information is added [1].
 
-In hw/virtio/vhost.c, there are 2 functions passing @errp to
-error_prepend() without ERRP_GUARD():
-- vhost_save_backend_state()
-- vhost_load_backend_state()
+The migrate_params_check() passes @errp to error_prepend() without
+ERRP_GUARD(), and it could be called from migration_object_init(),
+where the passed @errp points to @error_fatal.
 
-Their @errp both points to callers' @local_err. However, as the APIs
-defined in include/hw/virtio/vhost.h, it is necessary to protect their
-@errp with ERRP_GUARD().
+Therefore, the error message echoed in error_prepend() will be lost
+because of the above issue.
 
-To follow the requirement of @errp, add missing ERRP_GUARD() at their
-beginning.
+To fix this, add missing ERRP_GUARD() at the beginning of this function.
 
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
 
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Message-ID: <20240311033822.3142585-27-zhao1.liu@linux.intel.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Acked-by: Peter Xu <peterx@redhat.com>
+Message-ID: <20240311033822.3142585-28-zhao1.liu@linux.intel.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/virtio/vhost.c | 2 ++
+ migration/options.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 2c9ac79468..2e4e040db8 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -2199,6 +2199,7 @@ int vhost_check_device_state(struct vhost_dev *dev, Error **errp)
- 
- int vhost_save_backend_state(struct vhost_dev *dev, QEMUFile *f, Error **errp)
+diff --git a/migration/options.c b/migration/options.c
+index 40eb930940..caff0a271d 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -1085,6 +1085,8 @@ void migrate_params_init(MigrationParameters *params)
+  */
+ bool migrate_params_check(MigrationParameters *params, Error **errp)
  {
 +    ERRP_GUARD();
-     /* Maximum chunk size in which to transfer the state */
-     const size_t chunk_size = 1 * 1024 * 1024;
-     g_autofree void *transfer_buf = NULL;
-@@ -2291,6 +2292,7 @@ fail:
- 
- int vhost_load_backend_state(struct vhost_dev *dev, QEMUFile *f, Error **errp)
- {
-+    ERRP_GUARD();
-     size_t transfer_buf_size = 0;
-     g_autofree void *transfer_buf = NULL;
-     g_autoptr(GError) g_err = NULL;
++
+     if (params->has_compress_level &&
+         (params->compress_level > 9)) {
+         error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "compress_level",
 -- 
 2.44.0
 
