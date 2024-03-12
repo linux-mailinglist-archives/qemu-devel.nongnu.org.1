@@ -2,85 +2,143 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B192A879244
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 11:37:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D429E87924E
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 11:40:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjzVA-00043A-Hr; Tue, 12 Mar 2024 06:36:56 -0400
+	id 1rjzY7-0005dY-Rd; Tue, 12 Mar 2024 06:39:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rjzV4-00042c-Ag; Tue, 12 Mar 2024 06:36:50 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rjzV0-00076p-FG; Tue, 12 Mar 2024 06:36:50 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1dd10a37d68so46095415ad.2; 
- Tue, 12 Mar 2024 03:36:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710239805; x=1710844605; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=N/feAvFsiQEEYbBfbw2VoGB58BoW/awLOfmKBRsXW+s=;
- b=gaQ6kYDlWbWPreK5pAbj1O+1visStydGI0uNUlU3SZVFAofSNBGXzZjmCSNdoJPm3N
- /WnypPLMBNWjNPkgrhNaS3ZqQt3rv7tpkhpRpbPGx5xuo7d0yKvqdhBOwF9D0FaqHNzP
- ll7+eqd7td4UEXTGxORkuNREkya9t2HKUmE6VKoNlgb/TFJA7u5B3mVJfCeXmtfSkUvP
- zQ7UBmcNjDCSDOWSnSeo56XGt+3nAgx221p/HkyK613FFC2Au1FtElXeslBozoGnsINv
- VZalSUKk5tdr4DWM47cEds/YhCa065KuapTOklAI72u+vTp/WloCoPSU2T2eAkQyRBIF
- eeKQ==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rjzY5-0005dK-84
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 06:39:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rjzXt-0007ac-TT
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 06:39:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710239983;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=et5Uje11bZaT7gWbvP/juN1LLlgzevBdIHvM/JA7Lnw=;
+ b=EyC7mlMvP9t+FbQyHA9h+Ac0PVmAMvNEHN2WtZxpbhjVMvKoFX3mpEGkmB86fUoC3ODENo
+ NSg8KxsxG9z6npcIXIKylwX8OOZsXu/fgAJkvoObtA8xTEVwDqDRw9gI5t4QVjmp46qg7K
+ soelIlIUTPSMS5m3qJjnLMvWG7cl64c=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-611-zDAFhVNdOVeN2RSI7nwbTA-1; Tue, 12 Mar 2024 06:39:42 -0400
+X-MC-Unique: zDAFhVNdOVeN2RSI7nwbTA-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-33e6aca1bb0so3458388f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 03:39:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710239805; x=1710844605;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=N/feAvFsiQEEYbBfbw2VoGB58BoW/awLOfmKBRsXW+s=;
- b=TgEA5iWYZ4mhsWGxEPaZEY+6U5jhnL0N5oxSTRJRL+wI9aOZ2FUJWwcs8sNX5c/XyN
- fc1JPgN4uyhyA3KRiXbJQYXvPgFnGwbZVwysO4KPXZERnD+ZiSi9ff7D7iRGMPWcKO7D
- FEmQySqwHIxb1Si8L1OBb8cwMaHT7/6Gd5He5gPNoUO81zHh9ssAX5YvWbiQISBLFLFZ
- C1E4voRmEWNcKXC+RLHxCQt5g0ecdmqxdGGh+CUYgpP3Y6bkSC9qGlTFXWLmRRRi9sp5
- LSrXTcuzPR2BIG0Q1T2gVSY/7qeHp171B80WLW+rgKd734g/b8+wqPxLwWcWc3whGALc
- OF6Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUy+xswr+zsJCRunJQYRVrnSEzQGdG2BYJyC26wkOroD5Fu55M1pxTISFMdtEM/57BpusLi5DXWYZ0iKfIQhK3Ji3Nx94iQtrm7XpW2v5WoK/VwLll0mYozVq8=
-X-Gm-Message-State: AOJu0YyZbQaut/y3smJ2TY1HDY/ojuZqAmrL/6qn7h8462K+CGIWo4HE
- +W7GokKaxhKSPq2+2NARJ4SYkyulGsTdp4Otcx6oDrd459Rho1NC
-X-Google-Smtp-Source: AGHT+IFgNZ/pAfaLbH2iMa9g0DYLiSpmEfmVKJSlsON7EcO9+kkyouQaomQZKgDsWDj8oWldGHVmng==
-X-Received: by 2002:a17:902:7c07:b0:1dd:6211:e26 with SMTP id
- x7-20020a1709027c0700b001dd62110e26mr6855371pll.15.1710239804513; 
- Tue, 12 Mar 2024 03:36:44 -0700 (PDT)
-Received: from localhost ([118.208.155.46]) by smtp.gmail.com with ESMTPSA id
- a15-20020a170902eccf00b001dcf91da5c8sm184186plh.95.2024.03.12.03.36.41
+ d=1e100.net; s=20230601; t=1710239981; x=1710844781;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=et5Uje11bZaT7gWbvP/juN1LLlgzevBdIHvM/JA7Lnw=;
+ b=naUu+mixNCdxYkBC9H8peZWmZfhz+Sj1rkeCiV9SBbTQCkllv0XJ7bafxVFzBB6azF
+ MMcF3w1OvuYOuBhNFVLvX+fwDadVwb3LK1E8W08ASzWFlTCgQT/TrpwMJaMi+esHAs3S
+ b04aR4fE4GZK+7gpRDujg19ZzpwaE/xqbsKKSXTFHYtVrXCtBEYteK01c/hsVhqyyEdP
+ RlCG/bllt6CsFQEWU1Uni6ISrmtZpUiYf6KZchsNKXlqAd2t4o7xXep+PXyPZj2huEL8
+ WmtNq0nXuLQDNjotXk68HN1nIb7jzEd0OaVmdbsdiVSDbJHy2pV8BtKHJH6Ly3A1WIy4
+ 8Klg==
+X-Gm-Message-State: AOJu0Yz6Rk+FEU6dKVt+STGh5DQlyofFZ2tFp7w1nqrBIZhlqN+y+Cfz
+ lAYijLDMuHcf/LxGtePog4eGaZzhyJSDbAJqMpBPLZAY/0EzgeLaadyv4NJgeBmsXiAFvBfcWOE
+ YOKQkePh8q5pX/rAgbp3E4AHXV5dDBO+RIhiuSSD3Ajn8IQiZ/8/x
+X-Received: by 2002:adf:f7ce:0:b0:33e:a1e3:87b3 with SMTP id
+ a14-20020adff7ce000000b0033ea1e387b3mr2019729wrq.41.1710239981074; 
+ Tue, 12 Mar 2024 03:39:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEtvK4BHlXf38/mj69Utmko7XSqwLnA7Lif63XTsquTC4/grAhE7Gp9u5yM0KCjwPYLtq2zrQ==
+X-Received: by 2002:adf:f7ce:0:b0:33e:a1e3:87b3 with SMTP id
+ a14-20020adff7ce000000b0033ea1e387b3mr2019706wrq.41.1710239980753; 
+ Tue, 12 Mar 2024 03:39:40 -0700 (PDT)
+Received: from [192.168.0.9] (ip-109-43-177-86.web.vodafone.de.
+ [109.43.177.86]) by smtp.gmail.com with ESMTPSA id
+ i5-20020adfb645000000b0033e87c6bcb2sm7582116wre.8.2024.03.12.03.39.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Mar 2024 03:36:44 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 12 Mar 2024 20:36:39 +1000
-Message-Id: <CZRPETJSO62V.5YV22F323JKC@wheely>
-Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>, <clg@kaod.org>
-Subject: Re: [PATCH v3] docs/system/ppc: Document running Linux on AmigaNG
- machines
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Bernhard Beschow" <shentey@gmail.com>, "BALATON Zoltan"
- <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.15.2
-References: <20240220232200.042DA4E6005@zero.eik.bme.hu>
- <c9dc84be-c7bf-c676-491b-2c6b1164d502@eik.bme.hu>
- <a9814b1b-98d7-29d8-36f9-228f20206917@eik.bme.hu>
- <3E4E29CA-AE91-4C8D-BB51-B3759CF3110F@gmail.com>
-In-Reply-To: <3E4E29CA-AE91-4C8D-BB51-B3759CF3110F@gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ Tue, 12 Mar 2024 03:39:40 -0700 (PDT)
+Message-ID: <5c84e9e9-8beb-4357-ace7-96f44973e15c@redhat.com>
+Date: Tue, 12 Mar 2024 11:39:38 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/7] hw/pci-bridge/cxl_upstream: Fix missing
+ ERRP_GUARD() in cxl_usp_realize()
+Content-Language: en-US
+To: Zhao Liu <zhao1.liu@linux.intel.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>,
+ Laurent Vivier <laurent@vivier.eu>, Alistair Francis
+ <alistair@alistair23.me>, "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-trivial@nongnu.org,
+ Zhao Liu <zhao1.liu@intel.com>
+References: <20240223085653.1255438-1-zhao1.liu@linux.intel.com>
+ <20240223085653.1255438-6-zhao1.liu@linux.intel.com>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240223085653.1255438-6-zhao1.liu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,278 +154,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Mar 12, 2024 at 7:28 PM AEST, Bernhard Beschow wrote:
->
->
-> Am 9. M=C3=A4rz 2024 11:34:56 UTC schrieb BALATON Zoltan <balaton@eik.bme=
-.hu>:
-> >On Thu, 29 Feb 2024, BALATON Zoltan wrote:
-> >> On Wed, 21 Feb 2024, BALATON Zoltan wrote:
-> >>> Documentation on how to run Linux on the amigaone, pegasos2 and
-> >>> sam460ex machines is currently buried in the depths of the qemu-devel
-> >>> mailing list and in the source code. Let's collect the information in
-> >>> the QEMU handbook for a one stop solution.
-> >>=20
-> >> Ping? (Just so it's not missed from next pull.)
-> >
-> >Ping for freeze.
->
-> Has this patch been tagged yet? It would really be a pity if it didn't ma=
-ke it into 9.0.
+On 23/02/2024 09.56, Zhao Liu wrote:
+> From: Zhao Liu <zhao1.liu@intel.com>
+> 
+> As the comment in qapi/error, dereferencing @errp requires
+> ERRP_GUARD():
+> 
+> * = Why, when and how to use ERRP_GUARD() =
+> *
+> * Without ERRP_GUARD(), use of the @errp parameter is restricted:
+> * - It must not be dereferenced, because it may be null.
+> ...
+> * ERRP_GUARD() lifts these restrictions.
+> *
+> * To use ERRP_GUARD(), add it right at the beginning of the function.
+> * @errp can then be used without worrying about the argument being
+> * NULL or &error_fatal.
+> *
+> * Using it when it's not needed is safe, but please avoid cluttering
+> * the source with useless code.
+> 
+> But in cxl_usp_realize(), @errp is dereferenced without ERRP_GUARD():
+> 
+> cxl_doe_cdat_init(cxl_cstate, errp);
+> if (*errp) {
+>      goto err_cap;
+> }
+> 
+> Here we check *errp, because cxl_doe_cdat_init() returns void. And since
+> cxl_usp_realize() - as a PCIDeviceClass.realize() method - doesn't get
+> the NULL @errp parameter, it hasn't triggered the bug that dereferencing
+> the NULL @errp.
+> 
+> To follow the requirement of @errp, add missing ERRP_GUARD() in
+> cxl_usp_realize().
+> 
+> Suggested-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> Reviewed-by: Markus Armbruster <armbru@redhat.com>
+> ---
+> Suggested by credit:
+>   Markus: Referred his explanation about ERRP_GUARD().
+> ---
+> v2:
+>   * Add the @errp dereference code in commit message to make review
+>     easier. (Markus)
+> ---
+>   hw/pci-bridge/cxl_upstream.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
+> index e87eb4017713..03d123cca0ef 100644
+> --- a/hw/pci-bridge/cxl_upstream.c
+> +++ b/hw/pci-bridge/cxl_upstream.c
+> @@ -289,6 +289,7 @@ static void free_default_cdat_table(CDATSubHeader **cdat_table, int num,
+>   
+>   static void cxl_usp_realize(PCIDevice *d, Error **errp)
+>   {
+> +    ERRP_GUARD();
+>       PCIEPort *p = PCIE_PORT(d);
+>       CXLUpstreamPort *usp = CXL_USP(d);
+>       CXLComponentState *cxl_cstate = &usp->cxl_cstate;
 
-Will send out a PR today and I'll include it.
-
->
-> FWIW:
->
-> Reviewed-by: Bernhard Beschow <shentey@gmail.com>
-
-Thanks, always helpful.
-
-Thanks,
-Nick
-
->
-> >
-> >> Regards,
-> >> BALATON Zoltan
-> >>=20
-> >>> Co-authored-by: Bernhard Beschow <shentey@gmail.com>
-> >>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> >>> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-> >>> Tested-by: Bernhard Beschow <shentey@gmail.com>
-> >>> ---
-> >>> v3: Apply changes and Tested-by tag from Bernhard
-> >>> v2: Move top level title one level up so subsections will be below it=
- in TOC
-> >>>=20
-> >>> MAINTAINERS                 |   1 +
-> >>> docs/system/ppc/amigang.rst | 161 +++++++++++++++++++++++++++++++++++=
-+
-> >>> docs/system/target-ppc.rst  |   1 +
-> >>> 3 files changed, 163 insertions(+)
-> >>> create mode 100644 docs/system/ppc/amigang.rst
-> >>>=20
-> >>> diff --git a/MAINTAINERS b/MAINTAINERS
-> >>> index 7d61fb9319..0aef8cb2a6 100644
-> >>> --- a/MAINTAINERS
-> >>> +++ b/MAINTAINERS
-> >>> @@ -1562,6 +1562,7 @@ F: hw/rtc/m41t80.c
-> >>> F: pc-bios/canyonlands.dt[sb]
-> >>> F: pc-bios/u-boot-sam460ex-20100605.bin
-> >>> F: roms/u-boot-sam460ex
-> >>> +F: docs/system/ppc/amigang.rst
-> >>>=20
-> >>> pegasos2
-> >>> M: BALATON Zoltan <balaton@eik.bme.hu>
-> >>> diff --git a/docs/system/ppc/amigang.rst b/docs/system/ppc/amigang.rs=
-t
-> >>> new file mode 100644
-> >>> index 0000000000..ba1a3d80b9
-> >>> --- /dev/null
-> >>> +++ b/docs/system/ppc/amigang.rst
-> >>> @@ -0,0 +1,161 @@
-> >>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >>> +AmigaNG boards (``amigaone``, ``pegasos2``, ``sam460ex``)
-> >>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >>> +
-> >>> +These PowerPC machines emulate boards that are primarily used for
-> >>> +running Amiga like OSes (AmigaOS 4, MorphOS and AROS) but these can
-> >>> +also run Linux which is what this section documents.
-> >>> +
-> >>> +Eyetech AmigaOne/Mai Logic Teron (``amigaone``)
-> >>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >>> +
-> >>> +The ``amigaone`` machine emulates an AmigaOne XE mainboard by Eyetec=
-h
-> >>> +which is a rebranded Mai Logic Teron board with modified U-Boot
-> >>> +firmware to support AmigaOS 4.
-> >>> +
-> >>> +Emulated devices
-> >>> +----------------
-> >>> +
-> >>> + * PowerPC 7457 CPU (can also use``-cpu g3, 750cxe, 750fx`` or ``750=
-gx``)
-> >>> + * Articia S north bridge
-> >>> + * VIA VT82C686B south bridge
-> >>> + * PCI VGA compatible card (guests may need other card instead)
-> >>> + * PS/2 keyboard and mouse
-> >>> +
-> >>> +Firmware
-> >>> +--------
-> >>> +
-> >>> +A firmware binary is necessary for the boot process. It is a modifie=
-d
-> >>> +U-Boot under GPL but its source is lost so it cannot be included in
-> >>> +QEMU. A binary is available at
-> >>> +https://www.hyperion-entertainment.com/index.php/downloads?view=3Dfi=
-les&parent=3D28.
-> >>> +The ROM image is in the last 512kB which can be extracted with the
-> >>> +following command:
-> >>> +
-> >>> +.. code-block:: bash
-> >>> +
-> >>> +  $ tail -c 524288 updater.image > u-boot-amigaone.bin
-> >>> +
-> >>> +The BIOS emulator in the firmware is unable to run QEMU=E2=80=98s st=
-andard
-> >>> +vgabios so ``VGABIOS-lgpl-latest.bin`` is needed instead which can b=
-e
-> >>> +downloaded from http://www.nongnu.org/vgabios.
-> >>> +
-> >>> +Running Linux
-> >>> +-------------
-> >>> +
-> >>> +There are some Linux images under the following link that work on th=
-e
-> >>> +``amigaone`` machine:
-> >>> +https://sourceforge.net/projects/amigaone-linux/files/debian-install=
-er/.
-> >>> +To boot the system run:
-> >>> +
-> >>> +.. code-block:: bash
-> >>> +
-> >>> +  $ qemu-system-ppc -machine amigaone -bios u-boot-amigaone.bin \
-> >>> +                    -cdrom "A1 Linux Net Installer.iso" \
-> >>> +                    -device ati-vga,model=3Drv100,romfile=3DVGABIOS-=
-lgpl-latest.bin
-> >>> +
-> >>> +From the firmware menu that appears select ``Boot sequence`` =E2=86=
-=92
-> >>> +``Amiga Multiboot Options`` and set ``Boot device 1`` to
-> >>> +``Onboard VIA IDE CDROM``. Then hit escape until the main screen app=
-ears again,
-> >>> +hit escape once more and from the exit menu that appears select eith=
-er
-> >>> +``Save settings and exit`` or ``Use settings for this session only``=
-. It may
-> >>> +take a long time loading the kernel into memory but eventually it bo=
-ots and the
-> >>> +installer becomes visible. The ``ati-vga`` RV100 emulation is not
-> >>> +complete yet so only frame buffer works, DRM and 3D is not available=
-.
-> >>> +
-> >>> +Genesi/bPlan Pegasos II (``pegasos2``)
-> >>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >>> +
-> >>> +The ``pegasos2`` machine emulates the Pegasos II sold by Genesi and
-> >>> +designed by bPlan. Its schematics are available at
-> >>> +https://www.powerdeveloper.org/platforms/pegasos/schematics.
-> >>> +
-> >>> +Emulated devices
-> >>> +----------------
-> >>> +
-> >>> + * PowerPC 7457 CPU (can also use``-cpu g3`` or ``750cxe``)
-> >>> + * Marvell MV64361 Discovery II north bridge
-> >>> + * VIA VT8231 south bridge
-> >>> + * PCI VGA compatible card (guests may need other card instead)
-> >>> + * PS/2 keyboard and mouse
-> >>> +
-> >>> +Firmware
-> >>> +--------
-> >>> +
-> >>> +The Pegasos II board has an Open Firmware compliant ROM based on
-> >>> +SmartFirmware with some changes that are not open-sourced therefore
-> >>> +the ROM binary cannot be included in QEMU. An updater was available
-> >>> +from bPlan, it can be found in the `Internet Archive
-> >>> +<http://web.archive.org/web/20071021223056/http://www.bplan-gmbh.de/=
-up050404/up050404>`_.
-> >>> +The ROM image can be extracted from it with the following command:
-> >>> +
-> >>> +.. code-block:: bash
-> >>> +
-> >>> +  $ tail -c +85581 up050404 | head -c 524288 > pegasos2.rom
-> >>> +
-> >>> +Running Linux
-> >>> +-------------
-> >>> +
-> >>> +The PowerPC version of Debian 8.11 supported Pegasos II. The BIOS
-> >>> +emulator in the firmware binary is unable to run QEMU=E2=80=98s stan=
-dard
-> >>> +vgabios so it needs to be disabled. To boot the system run:
-> >>> +
-> >>> +.. code-block:: bash
-> >>> +
-> >>> +  $ qemu-system-ppc -machine pegasos2 -bios pegasos2.rom \
-> >>> +                    -cdrom debian-8.11.0-powerpc-netinst.iso \
-> >>> +                    -device VGA,romfile=3D"" -serial stdio
-> >>> +
-> >>> +At the firmware ``ok`` prompt enter ``boot cd install/pegasos``.
-> >>> +
-> >>> +Alternatively, it is possible to boot the kernel directly without
-> >>> +firmware ROM using the QEMU built-in minimal Virtual Open Firmware
-> >>> +(VOF) emulation which is also supported on ``pegasos2``. For this,
-> >>> +extract the kernel ``install/powerpc/vmlinuz-chrp.initrd`` from the =
-CD
-> >>> +image, then run:
-> >>> +
-> >>> +.. code-block:: bash
-> >>> +
-> >>> +  $ qemu-system-ppc -machine pegasos2 -serial stdio \
-> >>> +                    -kernel vmlinuz-chrp.initrd -append "---" \
-> >>> +                    -cdrom debian-8.11.0-powerpc-netinst.iso
-> >>> +
-> >>> +aCube Sam460ex (``sam460ex``)
-> >>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D
-> >>> +
-> >>> +The ``sam460ex`` machine emulates the Sam460ex board by aCube which =
-is
-> >>> +based on the AMCC PowerPC 460EX SoC (that despite its name has a
-> >>> +PPC440 CPU core).
-> >>> +
-> >>> +Firmware
-> >>> +--------
-> >>> +
-> >>> +The board has a firmware based on an older U-Boot version with
-> >>> +modifications to support booting AmigaOS 4. The firmware ROM is
-> >>> +included with QEMU.
-> >>> +
-> >>> +Emulated devices
-> >>> +----------------
-> >>> +
-> >>> + * PowerPC 460EX SoC
-> >>> + * M41T80 serial RTC chip
-> >>> + * Silicon Motion SM501 display parts (identical to SM502 on real bo=
-ard)
-> >>> + * Silicon Image SiI3112 2 port SATA controller
-> >>> + * USB keyboard and mouse
-> >>> +
-> >>> +Running Linux
-> >>> +-------------
-> >>> +
-> >>> +The only Linux distro that supported Sam460ex out of box was CruxPPC
-> >>> +2.x. It can be booted by running:
-> >>> +
-> >>> +.. code-block:: bash
-> >>> +
-> >>> +  $ qemu-system-ppc -machine sam460ex -serial stdio \
-> >>> +                    -drive if=3Dnone,id=3Dcd,format=3Draw,file=3Dcru=
-x-ppc-2.7a.iso \
-> >>> +                    -device ide-cd,drive=3Dcd,bus=3Dide.1
-> >>> +
-> >>> +There are some other kernels and instructions for booting other
-> >>> +distros on aCube's product page at
-> >>> +https://www.acube-systems.biz/index.php?page=3Dhardware&pid=3D5
-> >>> +but those are untested.
-> >>> diff --git a/docs/system/target-ppc.rst b/docs/system/target-ppc.rst
-> >>> index 4f6eb93b17..87bf412ce5 100644
-> >>> --- a/docs/system/target-ppc.rst
-> >>> +++ b/docs/system/target-ppc.rst
-> >>> @@ -17,6 +17,7 @@ help``.
-> >>> .. toctree::
-> >>>    :maxdepth: 1
-> >>>=20
-> >>> +   ppc/amigang
-> >>>    ppc/embedded
-> >>>    ppc/powermac
-> >>>    ppc/powernv
-> >>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
