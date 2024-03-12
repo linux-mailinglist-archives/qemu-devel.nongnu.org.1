@@ -2,81 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E82879BC7
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 19:42:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 815C4879C05
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 20:03:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk74H-0000SC-S0; Tue, 12 Mar 2024 14:41:41 -0400
+	id 1rk7OE-0002iv-QP; Tue, 12 Mar 2024 15:02:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rk74C-0000PH-Et
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:41:37 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rk747-0001NV-A8
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:41:35 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6e6b54a28d0so116368b3a.2
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 11:41:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710268888; x=1710873688; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=owm/IAg32HMjFxsQJhlmbOKm3Qbhqz7rn/KBgK1esIo=;
- b=u/1qTk7cT2fZF1eZy4QnoayvVMZm92JJpojggpmRr0A0Tqyh2k5OH+LoZ4W/xKagc8
- /UTBztR6iVcJgWLa5cSAHiP65L489/qqx/f0IdkhSt2yjZf8iWqJ+Gl8iTf031GjBKZd
- 2MWfQ6q96z/pb6s7r09yBdjbgUQgN/JCsDk7JMNXte9MGvWW15ySmxy6EcitPf6vFKGT
- szNajtR7ix5uejkO7T8NPnbyhKxoqiLL57Ns33znOYrBJjAj+9IMgUaaOHT9aCY4i2Hy
- tcb0bTJ8fTbc/ARPI4DL3RlKzxMR+4hP1c2ZeiFxURYguLTjfIayeml71elMOgE0MGIc
- L4OQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710268888; x=1710873688;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=owm/IAg32HMjFxsQJhlmbOKm3Qbhqz7rn/KBgK1esIo=;
- b=M3AKTwSZpHqgKu377cp9ziimqvDRhtzCFlFRHR00rZOueuczK/tuv0T96QKXPG/ZCq
- f2qcGcYX3ln8hcVXoW4Y0K4xIut2jVNKABCqIlcZm20j9msMWOmYZ3sFM13qbvpyY2IB
- rVhl4QltTOzBxulvQnjYKh7sXOJp0nNahdgRXHokIMLZ6//fpH92FvQLQXacnLViYNkG
- UlTF6Im6M9gF4kxGfOVDaB+gc9tGL6AAfsTmttgMHWVC/IHFEV7FA/6Re9ZEX0xkWMoS
- p+Uh6u1f6o54+XTGE1+22Q5Ftq+S9PZajzO0+WK5mjvzE+G1hQxQFmtaoB2+ZBbEakki
- DN9A==
-X-Gm-Message-State: AOJu0YxF0vuTCDf940fyf1vSi/+/l5sA1qoZB/vQq8vs3TixxbnU56uW
- BRs7WxaVXZ8pUKg1bUC7IH1EEmXyI+qcmw1Ic5w6QBCDzJLJELlGDQ+s7VXSa0ScZ3yLT3kMDej
- p
-X-Google-Smtp-Source: AGHT+IHHw1S+E4zXfdKc15L8gOiA8O5NKoRm3BygvXogYUWXLG+GG6YYLxhCTY+0OrdKDAL4mSweFg==
-X-Received: by 2002:a17:902:f7c7:b0:1dd:61a6:ecd1 with SMTP id
- h7-20020a170902f7c700b001dd61a6ecd1mr9066513plw.32.1710268888728; 
- Tue, 12 Mar 2024 11:41:28 -0700 (PDT)
-Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
- by smtp.gmail.com with ESMTPSA id
- b11-20020a170903228b00b001dca40bb727sm6951739plh.88.2024.03.12.11.41.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 11:41:28 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 8/8] tcg/aarch64: Fix tcg_out_brcond for test comparisons
-Date: Tue, 12 Mar 2024 08:41:15 -1000
-Message-Id: <20240312184115.365415-9-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240312184115.365415-1-richard.henderson@linaro.org>
-References: <20240312184115.365415-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rk7O9-0002gs-GQ
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 15:02:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rk7O8-0005Gr-2R
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 15:02:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710270131;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=j1UprhdJa1cyA3COiycxa9Oa9JLFO+7ER3vFO5RlsgQ=;
+ b=K9HUHD/jhOV86ZGQLzDbHwckAYZNkO8pZgXu47u/TzNc4LyCxrxPLfhDIyLckyLCP8PPu8
+ wBXO26hO6ilwf4+2BEJTlYdMCg8UXEKNuP2H4bhRIdU+FHYH5xqvqY9PzG+0k02c3m7wQB
+ ZM9jSGixAbaeF7sKRAKkGVxuHaVfepM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-6-ZppjLN63Nfmtu8in9SjYAw-1; Tue,
+ 12 Mar 2024 15:02:07 -0400
+X-MC-Unique: ZppjLN63Nfmtu8in9SjYAw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 545C03802B85;
+ Tue, 12 Mar 2024 19:02:07 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.51])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6C2511C060A4;
+ Tue, 12 Mar 2024 19:02:06 +0000 (UTC)
+Date: Tue, 12 Mar 2024 14:42:45 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Eric Blake <eblake@redhat.com>, John Snow <jsnow@redhat.com>,
+ Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH 0/2] trace: fix ability to use systemtap with qemu tools
+Message-ID: <20240312184245.GD389553@fedora>
+References: <20240108171356.1037059-1-berrange@redhat.com>
+ <Zc9ejRbEun9VF7fh@redhat.com> <ZfA9vRfC_6xEKmL2@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="mXzIrmNrlyhok+QB"
+Content-Disposition: inline
+In-Reply-To: <ZfA9vRfC_6xEKmL2@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,29 +86,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When converting test vs UINT32_MAX to compare vs 0, we need to
-adjust the condition to match.
 
-Fixes: 34aff3c2e06 ("tcg/aarch64: Generate CBNZ for TSTNE of UINT32_MAX")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tcg/aarch64/tcg-target.c.inc | 1 +
- 1 file changed, 1 insertion(+)
+--mXzIrmNrlyhok+QB
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
-index 38446c167e..56fc9cb9e0 100644
---- a/tcg/aarch64/tcg-target.c.inc
-+++ b/tcg/aarch64/tcg-target.c.inc
-@@ -1464,6 +1464,7 @@ static void tcg_out_brcond(TCGContext *s, TCGType ext, TCGCond c, TCGArg a,
-     case TCG_COND_TSTNE:
-         /* tst xN,0xffffffff; b.ne L -> cbnz wN,L */
-         if (b_const && b == UINT32_MAX) {
-+            c = tcg_tst_eqne_cond(c);
-             ext = TCG_TYPE_I32;
-             need_cmp = false;
-             break;
--- 
-2.34.1
+On Tue, Mar 12, 2024 at 11:34:21AM +0000, Daniel P. Berrang=E9 wrote:
+> Ping again for these patches to get into this release.
+>=20
+> On Fri, Feb 16, 2024 at 01:09:33PM +0000, Daniel P. Berrang=E9 wrote:
+> > Ping: Stefan, are you OK with picking up these trace patches
+> > for merge ?
+
+Sorry, I missed them.
+
+Stefan
+
+--mXzIrmNrlyhok+QB
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmXwoiUACgkQnKSrs4Gr
+c8hSpwf/RnMCrcSkAM02M2nwEwzMfxdgA1/x1zSwF6JB8twnCVcbRrhnHMopHm1N
+roWZY6Vb6JxIvh20L1HKHifyGCQCYrPcHgisK+KA49MoALFIBBgopBaLiJ20y8xs
+Te3+Khksr8ygcZTmrJGcbJol2SM8ZLXhKuNREMd7+mJeg2Gy6BSA+Dt6lvLsQzQ2
+ji+WsZr+iFiSIPS3V8KIPSnz/YsgyKaTQH32YI6rN2F4UhA7/M3b1g1sLRrN1ZM3
+mXIB9/RcrEuZ32DWpgw4Sqfux7Z0pKPPMDhxfzAEaw1tEdKG3itwuGhHzuNWKX7i
+TINt1rpOYaEQNTfZPfieRxcEj5TW9w==
+=LqCB
+-----END PGP SIGNATURE-----
+
+--mXzIrmNrlyhok+QB--
 
 
