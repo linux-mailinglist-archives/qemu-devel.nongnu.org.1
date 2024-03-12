@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 959E887947E
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:49:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD8C879470
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:47:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk1UZ-0002O7-Gt; Tue, 12 Mar 2024 08:44:27 -0400
+	id 1rk1UG-0002K2-LZ; Tue, 12 Mar 2024 08:44:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1U4-0002C5-TH
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1U4-0002CH-VG
  for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:43:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1U2-0008W9-FE
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1U3-000055-5M
  for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:43:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710247433;
+ s=mimecast20190719; t=1710247434;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FOKrKMyT2ukDGxAlUsPRwLMrD1B3DgCHTeDMUkyTB9w=;
- b=P8HEZJMpQAZZGApbOvlA+j2ch8f5jR2B7jbtPvMfqTZT0unMK+SylkX7iILeIUEuwVhMvT
- JIlrE8uS/qTZ7W1GF4zAvnH5uK0WpKQFeIqeGtacSnpo/ld6c9ZYFZovPKGliYeQLYHydZ
- rj5+mZ/xWokfKRvvqTnG4mbwEwaqAGk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-605-v9D2fcdgPvmq9ZQZSP71QQ-1; Tue,
- 12 Mar 2024 08:43:50 -0400
-X-MC-Unique: v9D2fcdgPvmq9ZQZSP71QQ-1
+ bh=oz9V+k8P7fQA+YQobIcdIxZu5AQW2Cg11DH7VWZVgeM=;
+ b=F4AQ758ZKCPYYMY41KNpigYg6GhktdEoomieKT95WQC4arU4EA08C1DtJj049rokiaSPWY
+ og905jTVhqqN2/tMyuBsdeZSH7+3S+ntN/5qWq+Dim+dzAR3PVYP0UdDOspSSU+rU8gZC5
+ xRhWvGkdweSzDL8mJyTyDsSIxhOsuBw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-389-PpZ2VFodPI-Kb3Wo4b2nVQ-1; Tue, 12 Mar 2024 08:43:51 -0400
+X-MC-Unique: PpZ2VFodPI-Kb3Wo4b2nVQ-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D26441C07266;
- Tue, 12 Mar 2024 12:43:49 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 016A1101A526;
+ Tue, 12 Mar 2024 12:43:51 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.69])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 54DB4492BC4;
- Tue, 12 Mar 2024 12:43:48 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2582F492BC4;
+ Tue, 12 Mar 2024 12:43:50 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 05/55] hw/pci-bridge/cxl_upstream: Fix missing ERRP_GUARD() in
- cxl_usp_realize()
-Date: Tue, 12 Mar 2024 13:42:49 +0100
-Message-ID: <20240312124339.761630-6-thuth@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 06/55] hw/intc: Check @errp to handle the error of
+ IOAPICCommonClass.realize()
+Date: Tue, 12 Mar 2024 13:42:50 +0100
+Message-ID: <20240312124339.761630-7-thuth@redhat.com>
 In-Reply-To: <20240312124339.761630-1-thuth@redhat.com>
 References: <20240312124339.761630-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -80,60 +81,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-As the comment in qapi/error, dereferencing @errp requires
-ERRP_GUARD():
+IOAPICCommonClass implements its own private realize(), and this private
+realize() allows error.
 
-* = Why, when and how to use ERRP_GUARD() =
-*
-* Without ERRP_GUARD(), use of the @errp parameter is restricted:
-* - It must not be dereferenced, because it may be null.
-...
-* ERRP_GUARD() lifts these restrictions.
-*
-* To use ERRP_GUARD(), add it right at the beginning of the function.
-* @errp can then be used without worrying about the argument being
-* NULL or &error_fatal.
-*
-* Using it when it's not needed is safe, but please avoid cluttering
-* the source with useless code.
+Since IOAPICCommonClass.realize() returns void, to check the error,
+dereference @errp with ERRP_GUARD().
 
-But in cxl_usp_realize(), @errp is dereferenced without ERRP_GUARD():
-
-cxl_doe_cdat_init(cxl_cstate, errp);
-if (*errp) {
-    goto err_cap;
-}
-
-Here we check *errp, because cxl_doe_cdat_init() returns void. And since
-cxl_usp_realize() - as a PCIDeviceClass.realize() method - doesn't get
-the NULL @errp parameter, it hasn't triggered the bug that dereferencing
-the NULL @errp.
-
-To follow the requirement of @errp, add missing ERRP_GUARD() in
-cxl_usp_realize().
-
-Suggested-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240223085653.1255438-6-zhao1.liu@linux.intel.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240223085653.1255438-8-zhao1.liu@linux.intel.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/pci-bridge/cxl_upstream.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/intc/ioapic_common.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
-index 537f9affb8..783fa6adac 100644
---- a/hw/pci-bridge/cxl_upstream.c
-+++ b/hw/pci-bridge/cxl_upstream.c
-@@ -289,6 +289,7 @@ static void free_default_cdat_table(CDATSubHeader **cdat_table, int num,
+diff --git a/hw/intc/ioapic_common.c b/hw/intc/ioapic_common.c
+index cb9bf62146..efbe6958c8 100644
+--- a/hw/intc/ioapic_common.c
++++ b/hw/intc/ioapic_common.c
+@@ -152,6 +152,7 @@ static int ioapic_dispatch_post_load(void *opaque, int version_id)
  
- static void cxl_usp_realize(PCIDevice *d, Error **errp)
+ static void ioapic_common_realize(DeviceState *dev, Error **errp)
  {
 +    ERRP_GUARD();
-     PCIEPort *p = PCIE_PORT(d);
-     CXLUpstreamPort *usp = CXL_USP(d);
-     CXLComponentState *cxl_cstate = &usp->cxl_cstate;
+     IOAPICCommonState *s = IOAPIC_COMMON(dev);
+     IOAPICCommonClass *info;
+ 
+@@ -162,6 +163,9 @@ static void ioapic_common_realize(DeviceState *dev, Error **errp)
+ 
+     info = IOAPIC_COMMON_GET_CLASS(s);
+     info->realize(dev, errp);
++    if (*errp) {
++        return;
++    }
+ 
+     sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->io_memory);
+     ioapic_no++;
 -- 
 2.44.0
 
