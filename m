@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B35BD87969B
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 15:42:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1F398796A0
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 15:44:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk3I6-0003ez-3V; Tue, 12 Mar 2024 10:39:42 -0400
+	id 1rk3I6-0003ey-1g; Tue, 12 Mar 2024 10:39:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rk3He-0003YM-GD
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:39:15 -0400
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ id 1rk3Hh-0003Yi-GD
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:39:19 -0400
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rk3HS-0007l6-O6
+ id 1rk3HW-0007lH-Ip
  for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:39:14 -0400
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-29c4fe68666so244025a91.0
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 07:39:01 -0700 (PDT)
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-29bf9bd1907so1663736a91.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 07:39:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710254341; x=1710859141; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710254342; x=1710859142; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=5KtrDk5IPnNDG0tAWNMkEiXDVZJDwN45mTz+TeCGBQA=;
- b=GdMEGvaUAI3jnHq49kTWvoiiWe5LDGy3ml45e5dJnDNmXF0Ic5r1iYsV5DS/zTQ4pf
- udfN449lfTbk0DqaRDH4nfuJD0i6aYt/O8GuzT5yVN6BpzHqLaUaNQHtpaa9QLQfozUC
- EQsv45T3XLNPPxJEhHtAzgjrHrkkv6kQaF5+dQwAIZcPJxdu85PPvEmRvgPMlcbem7A0
- Vb4WsiD0IYE+j2Wd2LAyxOcs/vwdKE2hrIm/ZsXVNI/ekmAGaVs8m0xF4OkiGFnFiQOh
- /qAjt2ZdCJvyxsnxOI4p/6RERR/fr3anpE7SBI+15cD+G8vfVYM0Om642f047t75TfuY
- 4Csw==
+ :reply-to; bh=4kGtxvZdOI4O7h397wt7Rdsn7HhdcYY3ZpxBI2vFnmQ=;
+ b=ddrgLnUhYTpUf8096/8VR6xp9aWJcJ013OVE6LR5U6S6ZMpF6flZHIht5LlZnvh03h
+ timKwhZ7cnQ6X13TNUpmQgOrHLslSwjvWExUnaZcl7NgOJeB1RqcL25QnVXNkCnnwdib
+ cw/fokdx6uyB6zFfEvyMRjB5351x8QYGIhlTh9j1EeZXm24rAS57HQafMfF3iabjEoBx
+ uNTPxJuCmivMQgcGrGcjh9ObVhXK+vf0wAjgfxAV+001VYN0bS2iTwQsCQgjnIIGG1vM
+ Rwn6vjdglsorayZGQ0U47SEgGsTQ2TpV02+886EoFG3RxFA0w4cSbBAZhntpuhmS2JQy
+ 41Ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710254341; x=1710859141;
+ d=1e100.net; s=20230601; t=1710254342; x=1710859142;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5KtrDk5IPnNDG0tAWNMkEiXDVZJDwN45mTz+TeCGBQA=;
- b=iCOhjnEDB32ORabnIfSOR8xWVCbIT2R4Hmio6HTib0gSoruQ6q2VpSFP0G/jznt1tC
- vWJxoYmbWcL42F1aAQvdBVX42ItHMo/0dc4KusE2QVLekkfAcYLb7u1ZekSP0Ulhj+pt
- TJZwXxOCi+W8fT2AsTLzF5FnTRWEDVmjpom+eVzoSHyExO9F1ephyvCY+3g6VOW49Asf
- pOUVe6E/3K11mi3IcldfSZDGOfEH686hAHaQ+dGGgNKMA8bKE6eHUbuhDYDm2Y72ee1V
- JURUKFLFYAfWHAiI6uBqeOJSkWVhiXJU1YJwpiDj4/nA1uyuQzwaDSB1AE9YCgUpGRKM
- qiwQ==
-X-Gm-Message-State: AOJu0YwAHb6BiHzvWgArMXe56QT1AM4CDzjYjxvJq0h/a7PQ+X3vtJRU
- 6Ff5HRL/3BGZlRlCbvCUUdbbsOZjfiNPFhkQpGz1xXIQYQ8tKpaQn4cXMh4nvAveMvIrj9PX5Ge
- B
-X-Google-Smtp-Source: AGHT+IGu6IfMQkCydRLVGkB/KcOR1hZjtaBiz8+25roD1Zv6WvvtF9fxvyv+DBxAFUBZYfPFGFuUFw==
-X-Received: by 2002:a17:90a:f011:b0:29a:8ac0:9fd2 with SMTP id
- bt17-20020a17090af01100b0029a8ac09fd2mr510545pjb.49.1710254341049; 
- Tue, 12 Mar 2024 07:39:01 -0700 (PDT)
+ bh=4kGtxvZdOI4O7h397wt7Rdsn7HhdcYY3ZpxBI2vFnmQ=;
+ b=D8thayn55LrLWGmldcC5JY5+YVm658s5E1rlPH1EsyU1zhjEnbl8JEGEDhb2UDJfQH
+ TbQ2P2hR8K6RknRmzBO0NKmfyz0iyFDCaBzUSZgiqOeR4UIqCwetvE/qx21KMkNHGEI0
+ Mr4TsiCkwoPLM/175tn/9kZ8La4huR7X4OLfd4a47KPUXB7tviM0zSx+widNkBhMOpao
+ ejO+PRVVTH/50KOJ+UxiMCXUfs409PnuJ5dYVqr7uF9mJ+sdOlHYVVi0u3DXaM9k1+Qi
+ FdmKT+sYC3zOnBBPhoonxjNZRlQ1LCnAOQ7FkMiwiTeg5La6QIGrj95ucZ7uiKsUb9Qb
+ xZkg==
+X-Gm-Message-State: AOJu0YyZ4HeD/MONucvdms1zMqZKuhPUheWMpc3XNwYLJCgR0lYcOjAV
+ VTm0P7ru0rU1DWv7/ZK/iVbUB9HGpkDHM2VZZdR77NWvnaILzkeDZvm5UtXzmX09JqN8NLSaxGA
+ 0
+X-Google-Smtp-Source: AGHT+IHlOS2xj0anKavqKlad4CNIkDBOcuEN+KGtRwjo5Ro7M+z1bC+QgOjkAEJccs0T/S2StX4HVg==
+X-Received: by 2002:a17:90b:48d2:b0:299:3ebf:d180 with SMTP id
+ li18-20020a17090b48d200b002993ebfd180mr634093pjb.6.1710254342569; 
+ Tue, 12 Mar 2024 07:39:02 -0700 (PDT)
 Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
  by smtp.gmail.com with ESMTPSA id
- jx15-20020a17090b46cf00b0029baa0b1a6csm7492214pjb.24.2024.03.12.07.39.00
+ jx15-20020a17090b46cf00b0029baa0b1a6csm7492214pjb.24.2024.03.12.07.39.01
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 07:39:00 -0700 (PDT)
+ Tue, 12 Mar 2024 07:39:02 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 13/15] tcg/optimize: Fold and to extu during optimize
-Date: Tue, 12 Mar 2024 04:38:37 -1000
-Message-Id: <20240312143839.136408-14-richard.henderson@linaro.org>
+Subject: [PATCH 14/15] tcg: Use arg_is_const_val in fold_sub_to_neg
+Date: Tue, 12 Mar 2024 04:38:38 -1000
+Message-Id: <20240312143839.136408-15-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240312143839.136408-1-richard.henderson@linaro.org>
 References: <20240312143839.136408-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,62 +93,20 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/optimize.c | 43 +++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 39 insertions(+), 4 deletions(-)
+ tcg/optimize.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tcg/optimize.c b/tcg/optimize.c
-index c6b0ab35c8..39bcd32f72 100644
+index 39bcd32f72..f3867ce9e6 100644
 --- a/tcg/optimize.c
 +++ b/tcg/optimize.c
-@@ -1300,11 +1300,46 @@ static bool fold_and(OptContext *ctx, TCGOp *op)
-     ctx->s_mask = arg_info(op->args[1])->s_mask
-                 & arg_info(op->args[2])->s_mask;
+@@ -2451,7 +2451,7 @@ static bool fold_sub_to_neg(OptContext *ctx, TCGOp *op)
+     TCGOpcode neg_op;
+     bool have_neg;
  
--    /*
--     * Known-zeros does not imply known-ones.  Therefore unless
--     * arg2 is constant, we can't infer affected bits from it.
--     */
-     if (arg_is_const(op->args[2])) {
-+        TCGOpcode ext8 = 0, ext16 = 0, ext32 = 0;
-+
-+        /* Canonicalize as zero-extend, if supported. */
-+        switch (ctx->type) {
-+        case TCG_TYPE_I32:
-+            ext8 = TCG_TARGET_HAS_ext8u_i32 ? INDEX_op_ext8u_i32 : 0;
-+            ext16 = TCG_TARGET_HAS_ext16u_i32 ? INDEX_op_ext16u_i32 : 0;
-+            break;
-+        case TCG_TYPE_I64:
-+            ext8 = TCG_TARGET_HAS_ext8u_i64 ? INDEX_op_ext8u_i64 : 0;
-+            ext16 = TCG_TARGET_HAS_ext16u_i64 ? INDEX_op_ext16u_i64 : 0;
-+            ext32 = TCG_TARGET_HAS_ext32u_i64 ? INDEX_op_ext32u_i64 : 0;
-+            break;
-+        default:
-+            break;
-+        }
-+
-+        switch (arg_info(op->args[2])->val) {
-+        case 0xff:
-+            if (ext8) {
-+                op->opc = ext8;
-+            }
-+            break;
-+        case 0xffff:
-+            if (ext16) {
-+                op->opc = ext16;
-+            }
-+            break;
-+        case UINT32_MAX:
-+            if (ext32) {
-+                op->opc = ext32;
-+            }
-+            break;
-+        }
-+
-+        /*
-+         * Known-zeros does not imply known-ones.  Therefore unless
-+         * arg2 is constant, we can't infer affected bits from it.
-+         */
-         ctx->a_mask = z1 & ~z2;
+-    if (!arg_is_const(op->args[1]) || arg_info(op->args[1])->val != 0) {
++    if (!arg_is_const_val(op->args[1], 0)) {
+         return false;
      }
  
 -- 
