@@ -2,61 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B23B87903B
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 10:01:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B1E7878FFB
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 09:51:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjy0m-0002dS-2r; Tue, 12 Mar 2024 05:01:28 -0400
+	id 1rjxqU-0004HL-1F; Tue, 12 Mar 2024 04:50:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1rjy0U-0002WK-Lf
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 05:01:10 -0400
-Received: from mail.ispras.ru ([83.149.199.84])
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1rjy0N-0007bS-Lv
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 05:01:09 -0400
-Received: from [10.12.10.172] (unknown [78.37.10.254])
- by mail.ispras.ru (Postfix) with ESMTPSA id 9A4EA4076729;
- Tue, 12 Mar 2024 09:00:38 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 9A4EA4076729
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
- s=default; t=1710234038;
- bh=kDhZM/jAMv/8L1Zxv/74+dJQUgnW6qcYk9HxxU8kW1s=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=TBDB3t2Q3u0+UfBSnAImXY0zi8eyEthZfJg3mjmguzTT9a5ZMd1csMjNuXuyuD559
- pHpezUaDg7gizKGjVL4R6jzg8Vj2i9LAXj1XYRZ5BsVhyg8SNN36WbFzdwTIv7h5P8
- vQMjLyt1p+4JiJhCsu1kv8c2XcTXvdPC/jLtBBUg=
-Message-ID: <42f7335c-5e0c-4640-af10-878a4c8732c9@ispras.ru>
-Date: Tue, 12 Mar 2024 12:00:38 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 20/24] replay: simple auto-snapshot mode for record
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rjxqM-00047F-Gu
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:50:44 -0400
+Received: from mgamail.intel.com ([198.175.65.9])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rjxqJ-0005n0-NZ
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:50:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1710233440; x=1741769440;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=tA7oWp+GjC17n46OR1Cu4CFWGzTsKORFW9MJUrRGwSc=;
+ b=SKwdfOai2WmSwpkUrsxlT3CMKXELFfDw7M9W8psv3RqRHwKWwmpIU4Vf
+ i5CeL3s6hufPaDl0YRE2mXHZnv292ijqcCb0RA/ZLKF/hHEEy+T6EP3yq
+ KerZlWVa3pKjHi7aQUoXjZ87jx6wSVyk9Ci0+2z9bJ5SIX3ij2Pqu6HIe
+ KAcfU8OxaUbb96qkytaje4mkxxfCc72peDBSiiZpyl05Nuq21JP7r021f
+ UkVoQMAhzmFZk4OZlb31J+lV9jOUuGOBhojbcDK8yOMRMWxt8lyd44O0x
+ 7SNEsfJqiADXEqV9kSUscT4VjYUKYzgEKt7HHm/chimutFVuHLLQUuHsl g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="27403845"
+X-IronPort-AV: E=Sophos;i="6.07,118,1708416000"; d="scan'208";a="27403845"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2024 01:50:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,118,1708416000"; d="scan'208";a="16043565"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa003.fm.intel.com with ESMTP; 12 Mar 2024 01:50:31 -0700
+Date: Tue, 12 Mar 2024 17:04:21 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
- Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-References: <20240311174026.2177152-1-npiggin@gmail.com>
- <20240311174026.2177152-21-npiggin@gmail.com>
-From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
-In-Reply-To: <20240311174026.2177152-21-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=83.149.199.84;
- envelope-from=pavel.dovgalyuk@ispras.ru; helo=mail.ispras.ru
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>,
+ Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Robert Hoo <robert.hu@linux.intel.com>
+Subject: Re: [PATCH v9 06/21] i386/cpu: Use APIC ID info to encode cache topo
+ in CPUID[4]
+Message-ID: <ZfAalR49aErs2/M1@intel.com>
+References: <20240227103231.1556302-1-zhao1.liu@linux.intel.com>
+ <20240227103231.1556302-7-zhao1.liu@linux.intel.com>
+ <c88ee253-f212-4aa7-9db9-e90a99a9a1e3@intel.com>
+ <Ze23y7UzGxnsyo6O@intel.com>
+ <164e9fe1-c89d-4354-a7f7-a565c624934e@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <164e9fe1-c89d-4354-a7f7-a565c624934e@intel.com>
+Received-SPF: none client-ip=198.175.65.9;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,256 +94,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11.03.2024 20:40, Nicholas Piggin wrote:
-> record makes an initial snapshot when the machine is created, to enable
-> reverse-debugging. Often the issue being debugged appears near the end of
-> the trace, so it is important for performance to keep snapshots close to
-> the end.
+On Mon, Mar 11, 2024 at 05:03:02PM +0800, Xiaoyao Li wrote:
+> Date: Mon, 11 Mar 2024 17:03:02 +0800
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: Re: [PATCH v9 06/21] i386/cpu: Use APIC ID info to encode cache
+>  topo in CPUID[4]
 > 
-> This implements a periodic snapshot mode that keeps a rolling set of
-> recent snapshots. This could be done by the debugger or other program
-> that talks QMP, but for setting up simple scenarios and tests, this is
-> more convenient.
+> On 3/10/2024 9:38 PM, Zhao Liu wrote:
+> > Hi Xiaoyao,
+> > 
+> > > >                case 3: /* L3 cache info */
+> > > > -                die_offset = apicid_die_offset(&topo_info);
+> > > >                    if (cpu->enable_l3_cache) {
+> > > > +                    addressable_threads_width = apicid_die_offset(&topo_info);
+> > > 
+> > > Please get rid of the local variable @addressable_threads_width.
+> > > 
+> > > It is truly confusing.
+> > 
+> > There're several reasons for this:
+> > 
+> > 1. This commit is trying to use APIC ID topology layout to decode 2
+> > cache topology fields in CPUID[4], CPUID.04H:EAX[bits 25:14] and
+> > CPUID.04H:EAX[bits 31:26]. When there's a addressable_cores_width to map
+> > to CPUID.04H:EAX[bits 31:26], it's more clear to also map
+> > CPUID.04H:EAX[bits 25:14] to another variable.
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   docs/system/replay.rst   |  5 ++++
->   include/sysemu/replay.h  | 11 ++++++++
->   replay/replay-snapshot.c | 57 ++++++++++++++++++++++++++++++++++++++++
->   replay/replay.c          | 27 +++++++++++++++++--
->   system/vl.c              |  9 +++++++
->   qemu-options.hx          |  9 +++++--
->   6 files changed, 114 insertions(+), 4 deletions(-)
+> I don't dislike using a variable. I dislike the name of that variable since
+> it's misleading
+
+Names are hard to choose...
+
 > 
-> diff --git a/docs/system/replay.rst b/docs/system/replay.rst
-> index ca7c17c63d..1ae8614475 100644
-> --- a/docs/system/replay.rst
-> +++ b/docs/system/replay.rst
-> @@ -156,6 +156,11 @@ for storing VM snapshots. Here is the example of the command line for this:
->   ``empty.qcow2`` drive does not connected to any virtual block device and used
->   for VM snapshots only.
->   
-> +``rrsnapmode`` can be used to select just an initial snapshot or periodic
-> +snapshots, with ``rrsnapcount`` specifying the number of periodic snapshots
-> +to maintain, and ``rrsnaptime`` the amount of run time in seconds between
-> +periodic snapshots.
-> +
->   .. _network-label:
->   
->   Network devices
-> diff --git a/include/sysemu/replay.h b/include/sysemu/replay.h
-> index 8102fa54f0..92fa82842b 100644
-> --- a/include/sysemu/replay.h
-> +++ b/include/sysemu/replay.h
-> @@ -48,6 +48,17 @@ typedef enum ReplayCheckpoint ReplayCheckpoint;
->   
->   typedef struct ReplayNetState ReplayNetState;
->   
-> +enum ReplaySnapshotMode {
-> +    REPLAY_SNAPSHOT_MODE_INITIAL,
-> +    REPLAY_SNAPSHOT_MODE_PERIODIC,
-> +};
+> > 2. All these 2 variables are temporary in this commit, and they will be
+> > replaed by 2 helpers in follow-up cleanup of this series.
+> 
+> you mean patch 20?
+> 
+> I don't see how removing the local variable @addressable_threads_width
+> conflicts with patch 20. As a con, it introduces code churn.
 
-This should be defined in replay-internal.h, because it is internal for 
-replay.
+Yes...I prefer to wrap it in variables in advance, then the meaning of
+the fields is clearer I think.
 
-> +typedef enum ReplaySnapshotMode ReplaySnapshotMode;
-> +
-> +extern ReplaySnapshotMode replay_snapshot_mode;
-> +
-> +extern uint64_t replay_snapshot_periodic_delay;
-> +extern int replay_snapshot_periodic_nr_keep;
+> > 3. Similarly, to make it easier to clean up later with the helper and
+> > for more people to review, it's neater to explicitly indicate the
+> > CPUID.04H:EAX[bits 25:14] with a variable here.
+> 
+> If you do want keeping the variable. Please add a comment above it to
+> explain the meaning.
+>
 
-These ones are internal too.
-
-> +
->   /* Name of the initial VM snapshot */
->   extern char *replay_snapshot;
->   
-> diff --git a/replay/replay-snapshot.c b/replay/replay-snapshot.c
-> index ccb4d89dda..762555feaa 100644
-> --- a/replay/replay-snapshot.c
-> +++ b/replay/replay-snapshot.c
-> @@ -70,6 +70,53 @@ void replay_vmstate_register(void)
->       vmstate_register(NULL, 0, &vmstate_replay, &replay_state);
->   }
->   
-> +static QEMUTimer *replay_snapshot_timer;
-> +static int replay_snapshot_count;
-> +
-> +static void replay_snapshot_timer_cb(void *opaque)
-> +{
-> +    Error *err = NULL;
-> +    char *name;
-> +
-> +    if (!replay_can_snapshot()) {
-> +        /* Try again soon */
-> +        timer_mod(replay_snapshot_timer,
-> +                  qemu_clock_get_ms(QEMU_CLOCK_REALTIME) +
-> +                  replay_snapshot_periodic_delay / 10);
-> +        return;
-> +    }
-> +
-> +    name = g_strdup_printf("%s-%d", replay_snapshot, replay_snapshot_count);
-> +    if (!save_snapshot(name,
-> +                       true, NULL, false, NULL, &err)) {
-> +        error_report_err(err);
-> +        error_report("Could not create periodic snapshot "
-> +                     "for icount record, disabling");
-> +        g_free(name);
-> +        return;
-> +    }
-> +    g_free(name);
-> +    replay_snapshot_count++;
-> +
-> +    if (replay_snapshot_periodic_nr_keep >= 1 &&
-> +        replay_snapshot_count > replay_snapshot_periodic_nr_keep) {
-> +        int del_nr;
-> +
-> +        del_nr = replay_snapshot_count - replay_snapshot_periodic_nr_keep - 1;
-> +        name = g_strdup_printf("%s-%d", replay_snapshot, del_nr);
-
-Copy-paste of snapshot name format.
-
-> +        if (!delete_snapshot(name, false, NULL, &err)) {
-> +            error_report_err(err);
-> +            error_report("Could not delete periodic snapshot "
-> +                         "for icount record");
-> +        }
-> +        g_free(name);
-> +    }
-> +
-> +    timer_mod(replay_snapshot_timer,
-> +              qemu_clock_get_ms(QEMU_CLOCK_REALTIME) +
-> +              replay_snapshot_periodic_delay);
-> +}
-> +
->   void replay_vmstate_init(void)
->   {
->       Error *err = NULL;
-> @@ -82,6 +129,16 @@ void replay_vmstate_init(void)
->                   error_report("Could not create snapshot for icount record");
->                   exit(1);
->               }
-> +
-> +            if (replay_snapshot_mode == REPLAY_SNAPSHOT_MODE_PERIODIC) {
-> +                replay_snapshot_timer = timer_new_ms(QEMU_CLOCK_REALTIME,
-> +                                                     replay_snapshot_timer_cb,
-> +                                                     NULL);
-> +                timer_mod(replay_snapshot_timer,
-> +                          qemu_clock_get_ms(QEMU_CLOCK_REALTIME) +
-> +                          replay_snapshot_periodic_delay);
-> +            }
-> +
->           } else if (replay_mode == REPLAY_MODE_PLAY) {
->               if (!load_snapshot(replay_snapshot, NULL, false, NULL, &err)) {
->                   error_report_err(err);
-> diff --git a/replay/replay.c b/replay/replay.c
-> index 895fa6b67a..c916e71d30 100644
-> --- a/replay/replay.c
-> +++ b/replay/replay.c
-> @@ -29,6 +29,10 @@
->   ReplayMode replay_mode = REPLAY_MODE_NONE;
->   char *replay_snapshot;
->   
-> +ReplaySnapshotMode replay_snapshot_mode;
-> +uint64_t replay_snapshot_periodic_delay;
-> +int replay_snapshot_periodic_nr_keep;
-> +
->   /* Name of replay file  */
->   static char *replay_filename;
->   ReplayState replay_state;
-> @@ -424,6 +428,27 @@ void replay_configure(QemuOpts *opts)
->       }
->   
->       replay_snapshot = g_strdup(qemu_opt_get(opts, "rrsnapshot"));
-> +    if (replay_snapshot && mode == REPLAY_MODE_RECORD) {
-> +        const char *snapmode;
-> +
-> +        snapmode = qemu_opt_get(opts, "rrsnapmode");
-> +        if (!snapmode || !strcmp(snapmode, "initial")) {
-> +            replay_snapshot_mode = REPLAY_SNAPSHOT_MODE_INITIAL;
-> +        } else if (!strcmp(snapmode, "periodic")) {
-> +            replay_snapshot_mode = REPLAY_SNAPSHOT_MODE_PERIODIC;
-> +        } else {
-> +            error_report("Invalid rrsnapmode option: %s", snapmode);
-> +            exit(1);
-> +        }
-> +
-> +        /* Default 10 host seconds of machine runtime per snapshot. */
-> +        replay_snapshot_periodic_delay =
-> +                           qemu_opt_get_number(opts, "rrsnaptime", 10) * 1000;
-
-Can user set it to zero here?
-
-> +
-> +        /* Default 2, to cover at least the last 10 host seconds of runtime. */
-> +        replay_snapshot_periodic_nr_keep =
-> +                           qemu_opt_get_number(opts, "rrsnapcount", 2);
-> +    }
->       replay_vmstate_register();
->       replay_enable(fname, mode);
->   
-> @@ -446,8 +471,6 @@ void replay_start(void)
->           exit(1);
->       }
->   
-> -    /* Timer for snapshotting will be set up here. */
-> -
->       replay_enable_events();
->   }
->   
-> diff --git a/system/vl.c b/system/vl.c
-> index 70f4cece7f..8070cee6da 100644
-> --- a/system/vl.c
-> +++ b/system/vl.c
-> @@ -447,6 +447,15 @@ static QemuOptsList qemu_icount_opts = {
->           }, {
->               .name = "rrsnapshot",
->               .type = QEMU_OPT_STRING,
-> +        }, {
-> +            .name = "rrsnapmode",
-> +            .type = QEMU_OPT_STRING,
-> +        }, {
-> +            .name = "rrsnaptime",
-> +            .type = QEMU_OPT_NUMBER,
-> +        }, {
-> +            .name = "rrsnapcount",
-> +            .type = QEMU_OPT_NUMBER,
->           },
->           { /* end of list */ }
->       },
-> diff --git a/qemu-options.hx b/qemu-options.hx
-> index ac4a30fa83..9eb547bf52 100644
-> --- a/qemu-options.hx
-> +++ b/qemu-options.hx
-> @@ -4651,13 +4651,13 @@ SRST
->   ERST
->   
->   DEF("icount", HAS_ARG, QEMU_OPTION_icount, \
-> -    "-icount [shift=N|auto][,align=on|off][,sleep=on|off][,rr=record|replay,rrfile=<filename>[,rrsnapshot=<snapshot>]]\n" \
-> +    "-icount [shift=N|auto][,align=on|off][,sleep=on|off][,rr=record|replay,rrfile=<filename>[,rrsnapshot=<snapshot>][,rrsnapmode=initial|periodic][,rrsnaptime=secs][,rrsnapcount=N]\n" \
->       "                enable virtual instruction counter with 2^N clock ticks per\n" \
->       "                instruction, enable aligning the host and virtual clocks\n" \
->       "                or disable real time cpu sleeping, and optionally enable\n" \
->       "                record-and-replay mode\n", QEMU_ARCH_ALL)
->   SRST
-> -``-icount [shift=N|auto][,align=on|off][,sleep=on|off][,rr=record|replay,rrfile=filename[,rrsnapshot=snapshot]]``
-> +``-icount [shift=N|auto][,align=on|off][,sleep=on|off][,rr=record|replay,rrfile=filename[,rrsnapshot=snapshot][,rrsnapmode=initial|periodic][,rrsnaptime=secs][,rrsnapcount=N]]``
->       Enable virtual instruction counter. The virtual cpu will execute one
->       instruction every 2^N ns of virtual time. If ``auto`` is specified
->       then the virtual cpu speed will be automatically adjusted to keep
-> @@ -4699,6 +4699,11 @@ SRST
->       name. In record mode, a new VM snapshot with the given name is created
->       at the start of execution recording. In replay mode this option
->       specifies the snapshot name used to load the initial VM state.
-> +    ``rrsnapmode=periodic`` will additionally cause a periodic snapshot to
-> +    be created after ``rrsnaptime=secs`` seconds of real runtime. The last
-> +    ``rrsnapcount=N`` periodic snapshots (not including the initial) will
-> +    be kept (0 for infinite). Periodic snapshots are useful to speed
-> +    reverse debugging operations near the end of the recorded trace.
->   ERST
->   
->   DEF("watchdog-action", HAS_ARG, QEMU_OPTION_watchdog_action, \
+OK, I'll add comments for both 2 variables. Thanks!
 
 
