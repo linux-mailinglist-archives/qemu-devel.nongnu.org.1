@@ -2,58 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A6ED8795DE
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 15:16:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CF278795D1
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 15:14:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk2t7-0000Uo-Ko; Tue, 12 Mar 2024 10:13:53 -0400
+	id 1rk2t8-0000V8-3J; Tue, 12 Mar 2024 10:13:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rk2t4-0000SY-Lu
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:13:50 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rk2t5-0000To-U1
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:13:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rk2t2-000299-Mh
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:13:50 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rk2t3-0002A2-RV
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:13:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710252826;
+ s=mimecast20190719; t=1710252829;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=RAVCMyqNfzJes3QALpyL/fS1d46jiltFvhj2ojqru+8=;
- b=PO34LT5LmO5p6FWb47ZCvjLwPT0RVNFv03C8EgJ1CqLmYoIRLf78oATEu6u6aHlCrIxMvs
- h61zbbixY+hnfJX6pQNC1b8Lo2vMHkuftyUt1yaFT8TH9Qi1gkONW97om+zOYNsanX62eX
- vBXBwVbq5DlZdSGnPcwGpD1d9q3RnBw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-315-RIKKU0sOMGi3nopdcz2L6g-1; Tue, 12 Mar 2024 10:13:44 -0400
-X-MC-Unique: RIKKU0sOMGi3nopdcz2L6g-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=YlnmlMi3dcbqchz+KoSAHpZIzmTzVVBCXEwz8D++n9E=;
+ b=KIto4XHXqogmID55ocs3Cmaydi67k3PHmGqFCKaWifs+ioN3XbfqIqxCMww8QYGNv7ihZ/
+ hwXF5/Uk7RcyxMY68mE46XnXoyPARztsm5VYFN3Snns/dSIJ2ub1rvtd1dPPzlMOPfZ6qd
+ Nl3hqedvz+wd9hZKYMJMW0wzubfDkw4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-417-IPKRXQxZOFKNvoc-yAKcNw-1; Tue,
+ 12 Mar 2024 10:13:44 -0400
+X-MC-Unique: IPKRXQxZOFKNvoc-yAKcNw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 712D5803F81;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6F6F23C0C8B6;
  Tue, 12 Mar 2024 14:13:44 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.138])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 4C7EA492BC6;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4C6782166AE5;
  Tue, 12 Mar 2024 14:13:44 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2693221E6A24; Tue, 12 Mar 2024 15:13:43 +0100 (CET)
+ id 282F221E6A28; Tue, 12 Mar 2024 15:13:43 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org,
 	qemu-block@nongnu.org,
 	philmd@linaro.org
-Subject: [PATCH 00/10] Reduce usage of QERR_ macros further
-Date: Tue, 12 Mar 2024 15:13:33 +0100
-Message-ID: <20240312141343.3168265-1-armbru@redhat.com>
+Subject: [PATCH 01/10] error: Drop superfluous #include "qapi/qmp/qerror.h"
+Date: Tue, 12 Mar 2024 15:13:34 +0100
+Message-ID: <20240312141343.3168265-2-armbru@redhat.com>
+In-Reply-To: <20240312141343.3168265-1-armbru@redhat.com>
+References: <20240312141343.3168265-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
@@ -62,7 +65,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,45 +81,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe posted "[PATCH v2 00/22] qapi: Kill 'qapi/qmp/qerror.h' for
-good" a couple of months ago.  I cherry-picked just its simplest parts
-for now.
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+---
+ backends/iommufd.c | 1 -
+ chardev/char-fe.c  | 1 -
+ system/rtc.c       | 1 -
+ 3 files changed, 3 deletions(-)
 
-Markus Armbruster (1):
-  error: Drop superfluous #include "qapi/qmp/qerror.h"
-
-Philippe Mathieu-Daudé (9):
-  qapi: Inline and remove QERR_BUS_NO_HOTPLUG definition
-  qapi: Inline and remove QERR_DEVICE_HAS_NO_MEDIUM definition
-  qapi: Inline and remove QERR_DEVICE_NO_HOTPLUG definition
-  qapi: Inline and remove QERR_INVALID_PARAMETER definition
-  qapi: Inline QERR_INVALID_PARAMETER_TYPE definition (constant value)
-  qapi: Inline and remove QERR_INVALID_PARAMETER_TYPE definition
-  qapi: Correct error message for 'vcpu_dirty_limit' parameter
-  qapi: Inline and remove QERR_MIGRATION_ACTIVE definition
-  qapi: Inline and remove QERR_PROPERTY_VALUE_BAD definition
-
- include/qapi/qmp/qerror.h    | 21 ---------------------
- backends/iommufd.c           |  1 -
- block/snapshot.c             |  7 ++++---
- blockdev.c                   |  2 +-
- chardev/char-fe.c            |  1 -
- hw/core/qdev-properties.c    |  3 +--
- hw/core/qdev.c               |  4 ++--
- hw/ppc/spapr_pci.c           |  5 ++---
- migration/migration.c        |  2 +-
- migration/options.c          |  9 ++++-----
- migration/savevm.c           |  2 +-
- qapi/opts-visitor.c          |  2 +-
- qapi/qobject-input-visitor.c | 32 ++++++++++++++++----------------
- qapi/string-input-visitor.c  |  8 ++++----
- qom/object.c                 | 16 ++++++++++------
- system/qdev-monitor.c        | 10 ++++++----
- system/rtc.c                 |  1 -
- util/qemu-option.c           | 10 +++++-----
- scripts/qapi/visit.py        |  5 ++---
- 19 files changed, 60 insertions(+), 81 deletions(-)
-
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+index 1ef683c7b0..922d75e49e 100644
+--- a/backends/iommufd.c
++++ b/backends/iommufd.c
+@@ -13,7 +13,6 @@
+ #include "qemu/osdep.h"
+ #include "sysemu/iommufd.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/module.h"
+ #include "qom/object_interfaces.h"
+ #include "qemu/error-report.h"
+diff --git a/chardev/char-fe.c b/chardev/char-fe.c
+index 66cee8475a..b214ba3802 100644
+--- a/chardev/char-fe.c
++++ b/chardev/char-fe.c
+@@ -24,7 +24,6 @@
+ #include "qemu/osdep.h"
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "sysemu/replay.h"
+ 
+ #include "chardev/char-fe.h"
+diff --git a/system/rtc.c b/system/rtc.c
+index 4904581abe..dc44576686 100644
+--- a/system/rtc.c
++++ b/system/rtc.c
+@@ -25,7 +25,6 @@
+ #include "qemu/osdep.h"
+ #include "qemu/cutils.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/error-report.h"
+ #include "qemu/option.h"
+ #include "qemu/timer.h"
 -- 
 2.44.0
 
