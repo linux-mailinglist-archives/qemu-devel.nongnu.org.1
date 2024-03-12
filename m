@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B92E7879984
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:00:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CAD3879991
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:02:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk5Te-0004ln-Ji; Tue, 12 Mar 2024 12:59:46 -0400
+	id 1rk5U2-0004qn-93; Tue, 12 Mar 2024 13:00:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk5TP-0004jZ-Cv; Tue, 12 Mar 2024 12:59:31 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1rk5TS-0004mD-R5; Tue, 12 Mar 2024 12:59:36 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk5TN-0007yY-LC; Tue, 12 Mar 2024 12:59:30 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-6e6ab012eb1so789511b3a.3; 
- Tue, 12 Mar 2024 09:59:28 -0700 (PDT)
+ id 1rk5TQ-0007z1-VV; Tue, 12 Mar 2024 12:59:34 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6e55731af5cso3022828b3a.0; 
+ Tue, 12 Mar 2024 09:59:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710262767; x=1710867567; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710262771; x=1710867571; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KRNFEd2YKSH0GA9c/OZVzyVQTq0v73fyutt9t+Ehgsc=;
- b=hc7dq1M/EV5VCGd/tyRWW/ke6HVsBaFvlFLIN2IJ3nUCTjOwl7r8Yll/PQbu+491Bv
- gNPl+RYToH4ikTPHCxEb/3zLmH8c0EZZ91+apmutiKZuoC8w4akn8o3eJ9rTIHGNK5JG
- qFtAweMH47An7SclcJgQkv1gwRZCnD4mpwAlKWN5DbM1EFQFS4Mk22SedgdFO6cmOrwx
- HIIvFt3bDbUurrm5bqp8cCBTL9GGwzKjr0vtxD0ymLhosOAKUYMDg4q+pIUJFp/AOTkl
- JTNb9DoqURbfMEv0jPP832f60skPykXWYGNH0N6Vn46Y8l87GIxqF2CZjRt1gkrZEE8N
- j8Yg==
+ bh=PcqLLu3u5PZ1llo42lrjUzLPqI0T1odBfRlVjyR5kEI=;
+ b=kj6IpqmogIbVH8ZHZ9ln0KZOIsdM0yCS4bPOtptK+7R1tCkmf9NhjaeT0gI5VEYLvu
+ lIRnRwEXE2vmaz/D1je9cUWbMalVm9ZYitPe2WxiR+S9utzpeQ0WhXD+e8L4/6+CpR5k
+ Kre2soHO24Gxn8WII4cQXrHunT1eiIjfpf5mqyLl2fYk+FJilmCSa2GgdIfsNDjgyHnb
+ BEnnfs58vevzCEPEAzcBTC6LsY4SNfbqhYEQVjADB076YV3id9JT/5n+ic1Bp2UpA+qH
+ Qvy1YAceTaJ7FUW7YD3Wa9aNGV7M1BihonvSpgrJufLKSMWn3YMCeqirAXo5S5C2ZsQz
+ 9/vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710262767; x=1710867567;
+ d=1e100.net; s=20230601; t=1710262771; x=1710867571;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KRNFEd2YKSH0GA9c/OZVzyVQTq0v73fyutt9t+Ehgsc=;
- b=iZm89YPHCkYOgb2f/cPUqCwAibTRXnJXc9iGDHSjpTZPe3p4rEtYZZsS9ttdhvw1Ub
- atyp1liH887pgKQeCKMQ8nydj7xXkTmtcw2LB81GzqRk/WTvnp00MtSu4HUq/ei5hIyf
- ag9K8RlegeZjKjTn4k8dasCzkdqlK1C+OmaSpq5ecCiR5vE+9Dq9e/B3aM7WEbIJ1XbS
- oxieneZpKtwrVxVR9ECUXGd+ktwUZxSprA7DMY8Q/mk1VxjfLKtl1dcMv+FtvMlJBX1y
- /eYcF9h6PwiNOw3K+TSXurcKaSe6tqpCCXjoyXgiVo89D2hprLrdnlGSVcw412sXvOwk
- HNTQ==
+ bh=PcqLLu3u5PZ1llo42lrjUzLPqI0T1odBfRlVjyR5kEI=;
+ b=hIrmKFKfs5jI9rULfACVzSIcUVQs+jNkBY07VD4qbAdcxYD3mx2B9XadkCfTCpBjPA
+ 24wBbqY5EK3whp801r/C1MMvTUnwXBHtuEH95ZaHe80j4+rvEyGoLoFHMdbBTbUVlLXD
+ J+nPJQLbFqKh5yyMuZSQ67p3/X3Ec+cjXyvf+tuxMxX1AfFZexoS3SavsIuyVXL7THzf
+ yqgldRXkrqe7CvTvYOIPMmvwDhofQdJTyYFcmFngqb2MYXhQlQEHfriS08Y4ETytR/Sx
+ pwH45ZeUIxXeEusxEncoEhaFB6IUsOS4lH5UvJRCdj1AjzZjcJRQ5BZ1WEKxv2M2MlsH
+ dptw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWn+Lh4kTjv6XURD5SafHmUllWbfG0XtgIKsFvOsfl1sAss/vmf91KsX5QXqyIq99u5oEUJy6trYxQApOJUeS0AvImf
-X-Gm-Message-State: AOJu0YxhzGmQs85tFUqjp1M1T2wEoKCNzjesTr/l2CDSo//Yxgv7FPN+
- g0xI8to81dGvQEfo7KDlYySyog1VpT7stGPRRh59RJZ8xVfagCzLopNSLp92oMw=
-X-Google-Smtp-Source: AGHT+IG28lI/09tFi8g+Up8daFHwEYz6/TUsGvDHno3TwhIpI1pyKc0SgKP5ufOOsFOO6deJWVwwug==
-X-Received: by 2002:a05:6a00:22d4:b0:6e4:e43e:dc1f with SMTP id
- f20-20020a056a0022d400b006e4e43edc1fmr12415pfj.32.1710262767620; 
- Tue, 12 Mar 2024 09:59:27 -0700 (PDT)
+ AJvYcCVgRSMWWODP4NuyUNBFyZLAl7t5lzZjhotIaKEP/JxmlVYaaHN5azh0DCUdZiTb+3QmCmAnZ/AqVxM5j6tKKX1T8il6
+X-Gm-Message-State: AOJu0YybjFkXx3Z2g0rYrFJc730oC05YxMn/wy45emQPh5L/5xDyfkHg
+ QUIHdy2msp7C3eafEnHZBuDiPRNVkFU5RpHzNyVWTQOhnQElLARvPOwhwmUDx0g=
+X-Google-Smtp-Source: AGHT+IHKYY55vw/e3nunZ/pBaebhhFimXzjk3cW/BrNnJDjU4cAXY0Yjo+VZYzsCDjgPRpOzhG+brg==
+X-Received: by 2002:a05:6a00:2309:b0:6e6:8dac:5c74 with SMTP id
+ h9-20020a056a00230900b006e68dac5c74mr48509pfh.12.1710262770995; 
+ Tue, 12 Mar 2024 09:59:30 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- t34-20020a056a0013a200b006e6a684a6ddsm1362330pfg.220.2024.03.12.09.59.24
+ t34-20020a056a0013a200b006e6a684a6ddsm1362330pfg.220.2024.03.12.09.59.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 09:59:27 -0700 (PDT)
+ Tue, 12 Mar 2024 09:59:30 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 07/38] ppc/spapr: Remove copy-paste from pa-features
-Date: Wed, 13 Mar 2024 02:58:18 +1000
-Message-ID: <20240312165851.2240242-8-npiggin@gmail.com>
+Subject: [PULL 08/38] ppc/spapr: Adjust ibm,pa-features for POWER9
+Date: Wed, 13 Mar 2024 02:58:19 +1000
+Message-ID: <20240312165851.2240242-9-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240312165851.2240242-1-npiggin@gmail.com>
 References: <20240312165851.2240242-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,39 +93,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TCG does not support copy/paste instructions. Remove it from
-ibm,pa-features. This has never been implemented under TCG or
-practically usable under KVM, so it won't be missed.
+"MMR" and "SPR SO" are not implemented in POWER9, so clear those bits.
+HTM is not set by default, and only later if the cap is set, so remove
+the comment that suggests otherwise.
 
 Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ hw/ppc/spapr.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 3108d7c532..4192cd8d6c 100644
+index 4192cd8d6c..5bbd0d7a04 100644
 --- a/hw/ppc/spapr.c
 +++ b/hw/ppc/spapr.c
-@@ -237,6 +237,10 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
-      * SSO (SAO) ordering is supported on KVM and thread=single hosts,
-      * but not MTTCG, so disable it. To advertise it, a cap would have
-      * to be added, or support implemented for MTTCG.
-+     *
-+     * Copy/paste is not supported by TCG, so it is not advertised. KVM
-+     * can execute them but it has no accelerator drivers which are usable,
-+     * so there isn't much need for it anyway.
-      */
- 
-     uint8_t pa_features_206[] = { 6, 0,
-@@ -260,8 +264,8 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
+@@ -258,14 +258,14 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
+         0x80, 0x00, 0x00, 0x00, 0x00, 0x00, /* 6 - 11 */
+         /* 16: Vector */
+         0x00, 0x00, 0x00, 0x00, 0x80, 0x00, /* 12 - 17 */
+-        /* 18: Vec. Scalar, 20: Vec. XOR, 22: HTM */
++        /* 18: Vec. Scalar, 20: Vec. XOR */
+         0x80, 0x00, 0x80, 0x00, 0x00, 0x00, /* 18 - 23 */
+         /* 24: Ext. Dec, 26: 64 bit ftrs, 28: PM ftrs */
          0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 24 - 29 */
-         /* 30: MMR, 32: LE atomic, 34: EBB + ext EBB */
-         0x80, 0x00, 0x80, 0x00, 0xC0, 0x00, /* 30 - 35 */
--        /* 36: SPR SO, 38: Copy/Paste, 40: Radix MMU */
--        0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 36 - 41 */
-+        /* 36: SPR SO, 40: Radix MMU */
-+        0x80, 0x00, 0x00, 0x00, 0x80, 0x00, /* 36 - 41 */
+-        /* 30: MMR, 32: LE atomic, 34: EBB + ext EBB */
+-        0x80, 0x00, 0x80, 0x00, 0xC0, 0x00, /* 30 - 35 */
+-        /* 36: SPR SO, 40: Radix MMU */
+-        0x80, 0x00, 0x00, 0x00, 0x80, 0x00, /* 36 - 41 */
++        /* 32: LE atomic, 34: EBB + ext EBB */
++        0x00, 0x00, 0x80, 0x00, 0xC0, 0x00, /* 30 - 35 */
++        /* 40: Radix MMU */
++        0x00, 0x00, 0x00, 0x00, 0x80, 0x00, /* 36 - 41 */
          /* 42: PM, 44: PC RA, 46: SC vec'd */
          0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 42 - 47 */
          /* 48: SIMD, 50: QP BFP, 52: String */
