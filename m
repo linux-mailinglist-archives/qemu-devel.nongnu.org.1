@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6DF58794AA
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:58:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA7B879496
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:56:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk1Wq-0006Yk-7n; Tue, 12 Mar 2024 08:46:48 -0400
+	id 1rk1WC-00064J-Qo; Tue, 12 Mar 2024 08:46:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1VO-0004q7-Mm
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1VP-0004rN-3t
  for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:45:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1VL-0000e5-Dz
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1VL-0000dm-EJ
  for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:45:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710247514;
+ s=mimecast20190719; t=1710247513;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xieoYGueSKQRx2dY4qb6pT/kLUxu+l9alBvnl/FYwuk=;
- b=GMiko05jsMlvha4nOLJZZ0EmXIq4D4Ys5JOJjYrL4bY4sUnTW9HYVA3L8vMrbs5y1eTv32
- JQYLQ+BecadkEP2od9wZMR2C1J2f9oKsFT0loDRfJXemXIdzpMab3jzqlskbxbzxGWSQcV
- zgJSY2u4igZuF5f194lMsLW+iLhPauw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-679-X1DmHwTUPdilceCizWY65A-1; Tue,
- 12 Mar 2024 08:45:10 -0400
-X-MC-Unique: X1DmHwTUPdilceCizWY65A-1
+ bh=dPBLvJtmZt/V5XmTVh2Kpqf3n4PfUcn0CyV12CErBiM=;
+ b=K//7U/DxkwIRPwUCnshhSPq2tNTd/eY+2KtoDF2eSbANi9e4W8UawtiswBBx0GonT7PEkW
+ aTfkXy2kB58IFDYaI03IxsH0tD4qVGJU7tIzceQ1YEWG7oR7FsJEc7A/p7b0AkiY33T2jX
+ jOblX3GLM5ndDDnWEJgtW6bHyjCF+Ew=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-647-CrRMgCH4N-2ZMHDRVSNDXw-1; Tue, 12 Mar 2024 08:45:11 -0400
+X-MC-Unique: CrRMgCH4N-2ZMHDRVSNDXw-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1B320386A0AC;
- Tue, 12 Mar 2024 12:45:10 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5A57286C049;
+ Tue, 12 Mar 2024 12:45:11 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.69])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D20CB492BC4;
- Tue, 12 Mar 2024 12:45:08 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 59F96492BC4;
+ Tue, 12 Mar 2024 12:45:10 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 48/55] target/openrisc: Prefer fast cpu_env() over slower CPU
- QOM cast macro
-Date: Tue, 12 Mar 2024 13:43:32 +0100
-Message-ID: <20240312124339.761630-49-thuth@redhat.com>
+Subject: [PULL 49/55] target/ppc: Prefer fast cpu_env() over slower CPU QOM
+ cast macro
+Date: Tue, 12 Mar 2024 13:43:33 +0100
+Message-ID: <20240312124339.761630-50-thuth@redhat.com>
 In-Reply-To: <20240312124339.761630-1-thuth@redhat.com>
 References: <20240312124339.761630-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -87,87 +87,298 @@ in scripts/coccinelle/cpu_env.cocci_template header.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240129164514.73104-21-philmd@linaro.org>
+Message-ID: <20240129164514.73104-22-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/openrisc/gdbstub.c   | 6 ++----
- target/openrisc/interrupt.c | 6 ++----
- target/openrisc/translate.c | 6 ++----
- 3 files changed, 6 insertions(+), 12 deletions(-)
+ hw/ppc/mpc8544_guts.c         |  3 +--
+ hw/ppc/pnv.c                  |  3 +--
+ hw/ppc/pnv_xscom.c            |  5 +----
+ hw/ppc/ppce500_spin.c         |  3 +--
+ hw/ppc/spapr.c                |  3 +--
+ hw/ppc/spapr_caps.c           |  7 ++-----
+ target/ppc/cpu_init.c         | 11 +++--------
+ target/ppc/excp_helper.c      |  3 +--
+ target/ppc/gdbstub.c          | 12 ++++--------
+ target/ppc/kvm.c              | 12 ++++--------
+ target/ppc/ppc-qmp-cmds.c     |  3 +--
+ target/ppc/user_only_helper.c |  3 +--
+ 12 files changed, 21 insertions(+), 47 deletions(-)
 
-diff --git a/target/openrisc/gdbstub.c b/target/openrisc/gdbstub.c
-index d1074a0581..c2a77d5d4d 100644
---- a/target/openrisc/gdbstub.c
-+++ b/target/openrisc/gdbstub.c
-@@ -23,8 +23,7 @@
- 
- int openrisc_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+diff --git a/hw/ppc/mpc8544_guts.c b/hw/ppc/mpc8544_guts.c
+index a26e83d048..e3540b0281 100644
+--- a/hw/ppc/mpc8544_guts.c
++++ b/hw/ppc/mpc8544_guts.c
+@@ -71,8 +71,7 @@ static uint64_t mpc8544_guts_read(void *opaque, hwaddr addr,
+                                   unsigned size)
  {
--    OpenRISCCPU *cpu = OPENRISC_CPU(cs);
--    CPUOpenRISCState *env = &cpu->env;
-+    CPUOpenRISCState *env = cpu_env(cs);
+     uint32_t value = 0;
+-    PowerPCCPU *cpu = POWERPC_CPU(current_cpu);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(current_cpu);
  
-     if (n < 32) {
-         return gdb_get_reg32(mem_buf, cpu_get_gpr(env, n));
-@@ -48,9 +47,8 @@ int openrisc_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+     addr &= MPC8544_GUTS_MMIO_SIZE - 1;
+     switch (addr) {
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index 93d550988f..c2f2cc27be 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -2412,8 +2412,7 @@ static void pnv_machine_set_hb(Object *obj, bool value, Error **errp)
  
- int openrisc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+ static void pnv_cpu_do_nmi_on_cpu(CPUState *cs, run_on_cpu_data arg)
  {
--    OpenRISCCPU *cpu = OPENRISC_CPU(cs);
-     CPUClass *cc = CPU_GET_CLASS(cs);
--    CPUOpenRISCState *env = &cpu->env;
-+    CPUOpenRISCState *env = cpu_env(cs);
-     uint32_t tmp;
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
  
-     if (n > cc->gdb_num_core_regs) {
-diff --git a/target/openrisc/interrupt.c b/target/openrisc/interrupt.c
-index d4fdb8ce8e..b3b5b40577 100644
---- a/target/openrisc/interrupt.c
-+++ b/target/openrisc/interrupt.c
-@@ -29,8 +29,7 @@
+     cpu_synchronize_state(cs);
+     ppc_cpu_do_system_reset(cs);
+diff --git a/hw/ppc/pnv_xscom.c b/hw/ppc/pnv_xscom.c
+index 805b1d0c87..a17816d072 100644
+--- a/hw/ppc/pnv_xscom.c
++++ b/hw/ppc/pnv_xscom.c
+@@ -44,15 +44,12 @@ static void xscom_complete(CPUState *cs, uint64_t hmer_bits)
+      * passed for the cpu, and no CPU completion is generated.
+      */
+     if (cs) {
+-        PowerPCCPU *cpu = POWERPC_CPU(cs);
+-        CPUPPCState *env = &cpu->env;
+-
+         /*
+          * TODO: Need a CPU helper to set HMER, also handle generation
+          * of HMIs
+          */
+         cpu_synchronize_state(cs);
+-        env->spr[SPR_HMER] |= hmer_bits;
++        cpu_env(cs)->spr[SPR_HMER] |= hmer_bits;
+     }
+ }
  
- void openrisc_cpu_do_interrupt(CPUState *cs)
+diff --git a/hw/ppc/ppce500_spin.c b/hw/ppc/ppce500_spin.c
+index bbce63e8a4..dfbe759481 100644
+--- a/hw/ppc/ppce500_spin.c
++++ b/hw/ppc/ppce500_spin.c
+@@ -90,8 +90,7 @@ static void mmubooke_create_initial_mapping(CPUPPCState *env,
+ 
+ static void spin_kick(CPUState *cs, run_on_cpu_data data)
  {
--    OpenRISCCPU *cpu = OPENRISC_CPU(cs);
--    CPUOpenRISCState *env = &cpu->env;
-+    CPUOpenRISCState *env = cpu_env(cs);
-     int exception = cs->exception_index;
- 
-     env->epcr = env->pc;
-@@ -105,8 +104,7 @@ void openrisc_cpu_do_interrupt(CPUState *cs)
- 
- bool openrisc_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     SpinInfo *curspin = data.host_ptr;
+     hwaddr map_size = 64 * MiB;
+     hwaddr map_start;
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index f8980b62ec..394091830d 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -3481,8 +3481,7 @@ static void spapr_machine_finalizefn(Object *obj)
+ void spapr_do_system_reset_on_cpu(CPUState *cs, run_on_cpu_data arg)
  {
--    OpenRISCCPU *cpu = OPENRISC_CPU(cs);
--    CPUOpenRISCState *env = &cpu->env;
-+    CPUOpenRISCState *env = cpu_env(cs);
-     int idx = -1;
+     SpaprMachineState *spapr = SPAPR_MACHINE(qdev_get_machine());
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
  
-     if ((interrupt_request & CPU_INTERRUPT_HARD) && (env->sr & SR_IEE)) {
-diff --git a/target/openrisc/translate.c b/target/openrisc/translate.c
-index 785bcb6552..23fff46084 100644
---- a/target/openrisc/translate.c
-+++ b/target/openrisc/translate.c
-@@ -1564,8 +1564,7 @@ static void openrisc_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
- static void openrisc_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+     cpu_synchronize_state(cs);
+     /* If FWNMI is inactive, addr will be -1, which will deliver to 0x100 */
+diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
+index e889244e52..cc91d59c57 100644
+--- a/hw/ppc/spapr_caps.c
++++ b/hw/ppc/spapr_caps.c
+@@ -194,8 +194,7 @@ static void cap_htm_apply(SpaprMachineState *spapr, uint8_t val, Error **errp)
+ static void cap_vsx_apply(SpaprMachineState *spapr, uint8_t val, Error **errp)
  {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    OpenRISCCPU *cpu = OPENRISC_CPU(cs);
--    uint32_t insn = translator_ldl(&cpu->env, &dc->base, dc->base.pc_next);
-+    uint32_t insn = translator_ldl(cpu_env(cs), &dc->base, dc->base.pc_next);
+     ERRP_GUARD();
+-    PowerPCCPU *cpu = POWERPC_CPU(first_cpu);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(first_cpu);
  
-     if (!decode(dc, insn)) {
-         gen_illegal_exception(dc);
-@@ -1668,8 +1667,7 @@ void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
- 
- void openrisc_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+     if (!val) {
+         /* TODO: We don't support disabling vsx yet */
+@@ -213,14 +212,12 @@ static void cap_vsx_apply(SpaprMachineState *spapr, uint8_t val, Error **errp)
+ static void cap_dfp_apply(SpaprMachineState *spapr, uint8_t val, Error **errp)
  {
--    OpenRISCCPU *cpu = OPENRISC_CPU(cs);
--    CPUOpenRISCState *env = &cpu->env;
-+    CPUOpenRISCState *env = cpu_env(cs);
+     ERRP_GUARD();
+-    PowerPCCPU *cpu = POWERPC_CPU(first_cpu);
+-    CPUPPCState *env = &cpu->env;
+ 
+     if (!val) {
+         /* TODO: We don't support disabling dfp yet */
+         return;
+     }
+-    if (!(env->insns_flags2 & PPC2_DFP)) {
++    if (!(cpu_env(first_cpu)->insns_flags2 & PPC2_DFP)) {
+         error_setg(errp, "DFP support not available");
+         error_append_hint(errp, "Try appending -machine cap-dfp=off\n");
+     }
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 6d9c5a6c9a..1487e2e3c0 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -7196,12 +7196,9 @@ static void ppc_cpu_reset_hold(Object *obj)
+ 
+ static bool ppc_cpu_is_big_endian(CPUState *cs)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
+-
+     cpu_synchronize_state(cs);
+ 
+-    return !FIELD_EX64(env->msr, MSR, LE);
++    return !FIELD_EX64(cpu_env(cs)->msr, MSR, LE);
+ }
+ 
+ static bool ppc_get_irq_stats(InterruptStatsProvider *obj,
+@@ -7288,8 +7285,7 @@ static bool ppc_pvr_match_default(PowerPCCPUClass *pcc, uint32_t pvr, bool best)
+ 
+ static void ppc_disas_set_info(CPUState *cs, disassemble_info *info)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+ 
+     if ((env->hflags >> MSR_LE) & 1) {
+         info->endian = BFD_ENDIAN_LITTLE;
+@@ -7445,8 +7441,7 @@ void ppc_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+ #define RGPL  4
+ #define RFPL  4
+ 
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
      int i;
  
-     qemu_fprintf(f, "PC=%08x\n", env->pc);
+     qemu_fprintf(f, "NIP " TARGET_FMT_lx "   LR " TARGET_FMT_lx " CTR "
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index 98952de267..6bb6fee8f6 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -2597,8 +2597,7 @@ void ppc_cpu_do_fwnmi_machine_check(CPUState *cs, target_ulong vector)
+ 
+ bool ppc_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     int interrupt;
+ 
+     if ((interrupt_request & CPU_INTERRUPT_HARD) == 0) {
+diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
+index 122ea9d0c0..769551e0ab 100644
+--- a/target/ppc/gdbstub.c
++++ b/target/ppc/gdbstub.c
+@@ -108,8 +108,7 @@ void ppc_maybe_bswap_register(CPUPPCState *env, uint8_t *mem_buf, int len)
+ 
+ int ppc_cpu_gdb_read_register(CPUState *cs, GByteArray *buf, int n)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     uint8_t *mem_buf;
+     int r = ppc_gdb_register_len(n);
+ 
+@@ -152,8 +151,7 @@ int ppc_cpu_gdb_read_register(CPUState *cs, GByteArray *buf, int n)
+ 
+ int ppc_cpu_gdb_read_register_apple(CPUState *cs, GByteArray *buf, int n)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     uint8_t *mem_buf;
+     int r = ppc_gdb_register_len_apple(n);
+ 
+@@ -206,8 +204,7 @@ int ppc_cpu_gdb_read_register_apple(CPUState *cs, GByteArray *buf, int n)
+ 
+ int ppc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     int r = ppc_gdb_register_len(n);
+ 
+     if (!r) {
+@@ -253,8 +250,7 @@ int ppc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+ }
+ int ppc_cpu_gdb_write_register_apple(CPUState *cs, uint8_t *mem_buf, int n)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     int r = ppc_gdb_register_len_apple(n);
+ 
+     if (!r) {
+diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+index 9f5a890655..6dfa5de444 100644
+--- a/target/ppc/kvm.c
++++ b/target/ppc/kvm.c
+@@ -546,8 +546,7 @@ static void kvm_sw_tlb_put(PowerPCCPU *cpu)
+ 
+ static void kvm_get_one_spr(CPUState *cs, uint64_t id, int spr)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     /* Init 'val' to avoid "uninitialised value" Valgrind warnings */
+     union {
+         uint32_t u32;
+@@ -581,8 +580,7 @@ static void kvm_get_one_spr(CPUState *cs, uint64_t id, int spr)
+ 
+ static void kvm_put_one_spr(CPUState *cs, uint64_t id, int spr)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     union {
+         uint32_t u32;
+         uint64_t u64;
+@@ -615,8 +613,7 @@ static void kvm_put_one_spr(CPUState *cs, uint64_t id, int spr)
+ 
+ static int kvm_put_fp(CPUState *cs)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     struct kvm_one_reg reg;
+     int i;
+     int ret;
+@@ -682,8 +679,7 @@ static int kvm_put_fp(CPUState *cs)
+ 
+ static int kvm_get_fp(CPUState *cs)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     struct kvm_one_reg reg;
+     int i;
+     int ret;
+diff --git a/target/ppc/ppc-qmp-cmds.c b/target/ppc/ppc-qmp-cmds.c
+index ee0b99fce7..a25d86a8d1 100644
+--- a/target/ppc/ppc-qmp-cmds.c
++++ b/target/ppc/ppc-qmp-cmds.c
+@@ -137,8 +137,7 @@ static int ppc_cpu_get_reg_num(const char *numstr, int maxnum, int *pregnum)
+ int target_get_monitor_def(CPUState *cs, const char *name, uint64_t *pval)
+ {
+     int i, regnum;
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+ 
+     /* General purpose registers */
+     if ((qemu_tolower(name[0]) == 'r') &&
+diff --git a/target/ppc/user_only_helper.c b/target/ppc/user_only_helper.c
+index 7ff76f7a06..a4d07a0d0d 100644
+--- a/target/ppc/user_only_helper.c
++++ b/target/ppc/user_only_helper.c
+@@ -27,8 +27,7 @@ void ppc_cpu_record_sigsegv(CPUState *cs, vaddr address,
+                             MMUAccessType access_type,
+                             bool maperr, uintptr_t retaddr)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     int exception, error_code;
+ 
+     /*
 -- 
 2.44.0
 
