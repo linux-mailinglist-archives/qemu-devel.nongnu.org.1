@@ -2,103 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BF5878F7E
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 09:11:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED2A1879245
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 11:37:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjxE3-0005v6-Oo; Tue, 12 Mar 2024 04:11:07 -0400
+	id 1rjzVB-00044P-Jf; Tue, 12 Mar 2024 06:36:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1rjxDx-0005rw-CZ; Tue, 12 Mar 2024 04:11:03 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1rjxDq-0006qZ-E7; Tue, 12 Mar 2024 04:10:59 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42C86WL0015395; Tue, 12 Mar 2024 08:10:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=NCkYxn1/Tm/Mq/TFNGQFcpRi8E6u6TqwK25UFuaAHo4=;
- b=DNNyfWS2yafY551cOhwCWHYt6h9gwqSmfR50izeWca0X6NGuPFO13l27tNb0audBGKJb
- Coln2ZpKHa1FRpsYe8cNFUHtWN3YTae4OBhGIngQYfRKvX8g00x+dJtxziLb4lxq0LIx
- PlveFTxGnKuJgIRjMyY/p/h0JxBwjpUnZQoZ4sZu8rfT/7oxms+iTywxpraSv4K7e9KD
- zlKRuOaWAMhSbJIhgus/jZvyRdlrdg7sBF30/c4gze1A6abknCzlEIWFtjg2p4QwqTb3
- Ytm67BG/EHpiR9oAKmRP54l+fhHxv7DwQvu2peNMy/OKQ5bcfOvBFY/9IpP8G4Pd+aLK YA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wtk4483rn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Mar 2024 08:10:40 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42C86fD3016261;
- Tue, 12 Mar 2024 08:10:39 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wtk4483rd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Mar 2024 08:10:39 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42C5BhQf018112; Tue, 12 Mar 2024 08:10:38 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ws23t6127-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Mar 2024 08:10:38 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
- [10.241.53.103])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 42C8AZp328967264
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 12 Mar 2024 08:10:37 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A27D75806D;
- Tue, 12 Mar 2024 08:10:33 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D6A7358063;
- Tue, 12 Mar 2024 08:10:31 +0000 (GMT)
-Received: from [9.109.243.35] (unknown [9.109.243.35])
- by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 12 Mar 2024 08:10:31 +0000 (GMT)
-Message-ID: <df3f326b-2519-4a0b-9734-f425a9ba0972@linux.ibm.com>
-Date: Tue, 12 Mar 2024 13:40:30 +0530
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rjzVA-00043x-4s
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 06:36:56 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rjzUz-00075x-Bm
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 06:36:55 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-56878bb1abdso418402a12.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 03:36:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1710239803; x=1710844603; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2eg8lYdEsxAvAiX+Iihf9b9DdHc5YRHAbquME+iv17g=;
+ b=kFJa6r49VDJN81Dq+RCYbo3Hs8FLj8LjeQ7Ws9CJsBh045XEKfRvVfXYBjgZWxVw/6
+ haIYJjgS2yP19fvowSsuTvJSbU2vV+l6W/EYTGSMHxzyuT6z6jRLTQdhXrfsLMgzZDkd
+ m/czhaecMfyQvN4OFr2a91BjgNzaZ6feCyqCwAERUC9w72I18VAt5bvfv5woJiCUx57t
+ rNFUEA8McovNsbaYmqhY6yD89EqD1Q0Egp7qSvC0kk6PxeX4tDJnpbSqXdupLGr6wp/T
+ LppCUp9/uHBMW1i3NwWiUkj9Ne9C0e3hFoZE1xbQ89M5PnVWfpdyTlX5d14hYreMFr6b
+ XUfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710239803; x=1710844603;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=2eg8lYdEsxAvAiX+Iihf9b9DdHc5YRHAbquME+iv17g=;
+ b=VkyK9gpFe9KfSmDLRKpSarZ/ArTGmJys/tJpnPvcqQ8I1jcmFns5XjKiVo49FoFROu
+ kBInZEKnwDwsw7BJ3iNot/8BzTUKVZeNAI1lrMAxOv6j0fAepPOW2uTDnFtt5KWF61Md
+ zsWfoBhIg0ijHxEVe7IOObdSkx+x1SSq27zhMurR62pGfZQXowLpGO1QrvxHBmwob++V
+ kU4+Rxq4QT0S/dScf6XvsTBVHd4UZRomFlFfpZTsA+H1KRtplnmu0YnN7qLrtInkQ3aV
+ Rc6/H0ii7p84s/+UWew4RxvC0+5+wY9PQPKpOl3f+oFDTpqpeUdPMBNzhxHwKqgEEfvp
+ 9Fxg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXs9AVO1GHDLReohrrY0pGiSkK+wBUgP3nEmslLr0414NN5vi0l5HMYFRpiZ0FYV6qHKBqg4TadFhgusZYW9bpbiJBhG5w=
+X-Gm-Message-State: AOJu0YxjknVaI3oaEmgxTbNtANNgZhnjSVyRhRii15oKdQbFeIEJS/oh
+ mVYt6qqahnYOjpkxaiiXeuhlqz4KslWAAnfCvKAM6wbW917jGILYVnmCNkidHMM=
+X-Google-Smtp-Source: AGHT+IF7h9W8TnkrBA0Y70d0W1sC+QfWZv3+Fha8VO6Cy2idM9xl+7uwdDGpC4fCoerYGDha/Ag6wg==
+X-Received: by 2002:a50:8ad7:0:b0:566:4dc1:522c with SMTP id
+ k23-20020a508ad7000000b005664dc1522cmr1063846edk.15.1710239803414; 
+ Tue, 12 Mar 2024 03:36:43 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ fj10-20020a0564022b8a00b00565af2ea649sm3785110edb.14.2024.03.12.03.36.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Mar 2024 03:36:43 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 4E4EA5F873;
+ Tue, 12 Mar 2024 08:10:48 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,  qemu-devel@nongnu.org
+Subject: Re: [PATCH] gdbstub: Fix double close() of the follow-fork-mode socket
+In-Reply-To: <20240312001813.13720-1-iii@linux.ibm.com> (Ilya Leoshkevich's
+ message of "Tue, 12 Mar 2024 01:07:01 +0100")
+References: <20240312001813.13720-1-iii@linux.ibm.com>
+User-Agent: mu4e 1.12.1; emacs 29.1
+Date: Tue, 12 Mar 2024 08:10:48 +0000
+Message-ID: <87il1rq393.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/13] target/ppc: POWER10 does not have transactional
- memory
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>
-References: <20240311185200.2185753-1-npiggin@gmail.com>
- <20240311185200.2185753-3-npiggin@gmail.com>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20240311185200.2185753-3-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: xpW5cssffRHBLEEMVnGajWM_8XZ0G4m4
-X-Proofpoint-GUID: Mcr5a_dY0uAGgyEaudU59u-0z4c26iKj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-12_06,2024-03-11_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- clxscore=1015 mlxlogscore=999 priorityscore=1501 suspectscore=0 mlxscore=0
- adultscore=0 phishscore=0 malwarescore=0 impostorscore=0 bulkscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2403120062
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,60 +97,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Nick,
+Ilya Leoshkevich <iii@linux.ibm.com> writes:
 
-One query/comment below:
+> When the terminal GDB_FORK_ENABLED state is reached, the coordination
+> socket is not needed anymore and is therefore closed. However, if there
+> is a communication error between QEMU gdbstub and GDB, the generic
+> error handling code attempts to close it again.
+>
+> Fix by closing it later - before returning - instead.
+>
+> Fixes: Coverity CID 1539966
+> Fixes: d547e711a8a5 ("gdbstub: Implement follow-fork-mode child")
+> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 
-On 3/12/24 00:21, Nicholas Piggin wrote:
-> POWER10 hardware implements a degenerate transactional memory facility
-> in POWER8/9 PCR compatibility modes to permit migration from older
-> CPUs, but POWER10 / ISA v3.1 mode does not support it so the CPU model
-> should not support it.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   target/ppc/cpu_init.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-> index 572cbdf25f..d7e84a2f40 100644
-> --- a/target/ppc/cpu_init.c
-> +++ b/target/ppc/cpu_init.c
-> @@ -6573,7 +6573,7 @@ POWERPC_FAMILY(POWER10)(ObjectClass *oc, void *data)
->                           PPC2_FP_TST_ISA206 | PPC2_BCTAR_ISA207 |
->                           PPC2_LSQ_ISA207 | PPC2_ALTIVEC_207 |
->                           PPC2_ISA205 | PPC2_ISA207S | PPC2_FP_CVT_S64 |
-> -                        PPC2_TM | PPC2_ISA300 | PPC2_PRCNTL | PPC2_ISA310 |
-> +                        PPC2_ISA300 | PPC2_PRCNTL | PPC2_ISA310 |
->                           PPC2_MEM_LWSYNC | PPC2_BCDA_ISA206;
->       pcc->msr_mask = (1ull << MSR_SF) |
->                       (1ull << MSR_HV) |
-> @@ -6617,7 +6617,7 @@ POWERPC_FAMILY(POWER10)(ObjectClass *oc, void *data)
->       pcc->flags = POWERPC_FLAG_VRE | POWERPC_FLAG_SE |
->                    POWERPC_FLAG_BE | POWERPC_FLAG_PMM |
->                    POWERPC_FLAG_BUS_CLK | POWERPC_FLAG_CFAR |
-> -                 POWERPC_FLAG_VSX | POWERPC_FLAG_TM | POWERPC_FLAG_SCV;
-> +                 POWERPC_FLAG_VSX | POWERPC_FLAG_SCV;
->       pcc->l1_dcache_size = 0x8000;
->       pcc->l1_icache_size = 0x8000;
->   }
+Queued to gdbstub/next, thanks.
 
-Shouldn't we also have below change included with this:
-
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index aac095e5fd..faefc0420e 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -6641,7 +6641,6 @@ POWERPC_FAMILY(POWER10)(ObjectClass *oc, void *data)
-                          PPC2_MEM_LWSYNC | PPC2_BCDA_ISA206 | PPC2_ATTN;
-      pcc->msr_mask = (1ull << MSR_SF) |
-                      (1ull << MSR_HV) |
--                    (1ull << MSR_TM) |
-                      (1ull << MSR_VR) |
-                      (1ull << MSR_VSX) |
-                      (1ull << MSR_EE) |
-
-Otherwise,
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
