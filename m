@@ -2,64 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5FCF878E48
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 06:50:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC159878E67
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 07:04:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjv1V-00086j-OE; Tue, 12 Mar 2024 01:50:01 -0400
+	id 1rjvEz-0002cG-B6; Tue, 12 Mar 2024 02:03:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjv1S-00086U-U2
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 01:49:59 -0400
-Received: from mgamail.intel.com ([192.198.163.17])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjv1Q-0007yJ-DS
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 01:49:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710222596; x=1741758596;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=poBSj/TwH45qU4orRVv9VqC5G11e9zHu2p+rfihjyoI=;
- b=ffGNwfyttzhfuHBqcfm0hzMPhnFOYsZ4R7tguYVK2ejcfOeD3s5f9HKU
- SQ/pFOk9t4SNAnxWC2Asf6Yg8+39L5bzaPtDQcLQe4vTE9xruVmNSk6I0
- sG1GWkOtKkDxIBsJQf5eHve2WEUWjd38FJlIZYVRgSt7VoHyjrtIZ9tSV
- yKer9z92FFuQytKGqvgUKm+39j+3fpAAcd+SD+LMdJIm/AKL5blTxgote
- ADSG7Z1SFQy6fqwK9aE+fvfV8jGYEpHo0UKQlML55FJA3Z0oFcQXd8M0Y
- WziIXDSPmRU+BxkPfAZmRJ8K5Y2stA8AMLJWh5ByJmDiz5uDq+nTObVde Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="4769769"
-X-IronPort-AV: E=Sophos;i="6.07,118,1708416000"; 
-   d="scan'208";a="4769769"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2024 22:49:54 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,118,1708416000"; d="scan'208";a="42415161"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa001.fm.intel.com with ESMTP; 11 Mar 2024 22:49:52 -0700
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH] error: Move ERRP_GUARD() to the beginning of the function
-Date: Tue, 12 Mar 2024 14:03:37 +0800
-Message-Id: <20240312060337.3240965-1-zhao1.liu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rjvEu-0002bb-SH
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 02:03:54 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rjvEr-00025w-T7
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 02:03:52 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-33e7ae72312so3234029f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Mar 2024 23:03:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1710223426; x=1710828226; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=MEOtTxTKxg85esuTz7jcj45Ytw6I/5CMlOpI5vm2kUk=;
+ b=vGpBAx0C25jwFdAjr7GOzUGmj359aCYpYOh82aDAQmt+xrVt4tQGCYd/GCFhKDWxD8
+ fFmAzIhvWQZ5f3kvgHwp4g9dqyVyjTs6/2kj7mImb14KTkCG0po4feXa3KwkLQiY8tXQ
+ lpB7VpPPDSvdFvKX8e/QkY3bEafH8XNt5l33fNeySo7atRKRRtqw5yv80sVoa+5FkGVl
+ r4XcMz3WzyrGryBwtdwYeXF+zZy2IKs3W5rRbzXgNDxVEiyOi5Zr4/t6hpQoaUamIPDF
+ oSsI/LtK2llIySgYiXtflbM9y5T0+IH9B9DIQbCfoHYVZlePvUdVgYPIm1PPzHK9XJ0R
+ HPZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710223426; x=1710828226;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=MEOtTxTKxg85esuTz7jcj45Ytw6I/5CMlOpI5vm2kUk=;
+ b=qn05PXB8pYy1GzUdHtLe0CLu/Ye61/iti3/3LAkGZlRafae5fhZIUS8TkxpGVhAg0O
+ ew+fWqBVfEYSbBY1nFWFnTUeeRBRDOufY7uU3L2aau9PJNRf7RTIrqZ+VIvmQMiVPyPf
+ VavZxzJWfqJHSsmmEwCICHKAr71xPLoXu8/PXTkdRqyYzRIDdzPDlhmonfXWohvaEz2w
+ l3CDBXqAdKH8nB3eR429L8tRo0K12oVs5hQ2fC2jldd9vd1cRB92ny+3PdSM0PRocE9R
+ 6Dwl3wqX9f2pP0Z6DlRS70BZ+eu5Lu83ZNCBnw30zXy7ig3Eksl4kk45d9lHcc9bwe1f
+ lwlA==
+X-Gm-Message-State: AOJu0YyubvGdAbAEJiuvg9vXtn2xYIRXmCTh2R32xHosgMYzQZsWD8C9
+ HeMVM/RzLn9G4VrXBjynPLnW18vMOZj2zxFF42Met3mpZijkvVTZL8t//QmY0Ck=
+X-Google-Smtp-Source: AGHT+IGOG0kikLqWZoNP3uiwtwr4PjRh5Wf8Rd6/NGdPMEaNgtDRHxDKDOACmj1A+Co7SXQg1xoP8w==
+X-Received: by 2002:adf:eac2:0:b0:33e:7896:a9d7 with SMTP id
+ o2-20020adfeac2000000b0033e7896a9d7mr7207778wrn.67.1710223425597; 
+ Mon, 11 Mar 2024 23:03:45 -0700 (PDT)
+Received: from [192.168.1.24] ([102.35.208.160])
+ by smtp.gmail.com with ESMTPSA id
+ c11-20020adfe70b000000b0033e41e1ad93sm8112889wrm.57.2024.03.11.23.03.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Mar 2024 23:03:45 -0700 (PDT)
+Message-ID: <595d141e-67d7-46c0-8471-fc52f2d4af0f@linaro.org>
+Date: Tue, 12 Mar 2024 10:03:43 +0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=192.198.163.17;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] plugins: conditional callbacks
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20240229055359.972151-1-pierrick.bouvier@linaro.org>
+ <20240229055359.972151-5-pierrick.bouvier@linaro.org>
+ <87zfv4pydu.fsf@draig.linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <87zfv4pydu.fsf@draig.linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-wr1-x433.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,167 +97,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
-
-Since the commit 05e385d2a9 ("error: Move ERRP_GUARD() to the beginning
-of the function"), there are new codes that don't put ERRP_GUARD() at
-the beginning of the functions.
-
-As stated in the commit 05e385d2a9: "include/qapi/error.h advises to put
-ERRP_GUARD() right at the beginning of the function, because only then
-can it guard the whole function.", so clean up the few spots
-disregarding the advice.
-
-Inspired-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- * Inspired by Markus' original cleanup and copied his commit message.
----
- block.c                    | 2 +-
- block/qapi.c               | 6 +++---
- hw/s390x/s390-virtio-ccw.c | 2 +-
- migration/options.c        | 2 +-
- migration/postcopy-ram.c   | 4 ++--
- net/vhost-vdpa.c           | 3 +--
- 6 files changed, 9 insertions(+), 10 deletions(-)
-
-diff --git a/block.c b/block.c
-index 1ed9214f66ed..8a43a83c11ca 100644
---- a/block.c
-+++ b/block.c
-@@ -534,9 +534,9 @@ typedef struct CreateCo {
- int coroutine_fn bdrv_co_create(BlockDriver *drv, const char *filename,
-                                 QemuOpts *opts, Error **errp)
- {
-+    ERRP_GUARD();
-     int ret;
-     GLOBAL_STATE_CODE();
--    ERRP_GUARD();
- 
-     if (!drv->bdrv_co_create_opts) {
-         error_setg(errp, "Driver '%s' does not support image creation",
-diff --git a/block/qapi.c b/block/qapi.c
-index 9e806fa230d8..31183d493341 100644
---- a/block/qapi.c
-+++ b/block/qapi.c
-@@ -46,11 +46,11 @@ BlockDeviceInfo *bdrv_block_device_info(BlockBackend *blk,
-                                         bool flat,
-                                         Error **errp)
- {
-+    ERRP_GUARD();
-     ImageInfo **p_image_info;
-     ImageInfo *backing_info;
-     BlockDriverState *backing;
-     BlockDeviceInfo *info;
--    ERRP_GUARD();
- 
-     if (!bs->drv) {
-         error_setg(errp, "Block device %s is ejected", bs->node_name);
-@@ -330,8 +330,8 @@ void bdrv_query_image_info(BlockDriverState *bs,
-                            bool skip_implicit_filters,
-                            Error **errp)
- {
--    ImageInfo *info;
-     ERRP_GUARD();
-+    ImageInfo *info;
- 
-     info = g_new0(ImageInfo, 1);
-     bdrv_do_query_node_info(bs, qapi_ImageInfo_base(info), errp);
-@@ -382,10 +382,10 @@ void bdrv_query_block_graph_info(BlockDriverState *bs,
-                                  BlockGraphInfo **p_info,
-                                  Error **errp)
- {
-+    ERRP_GUARD();
-     BlockGraphInfo *info;
-     BlockChildInfoList **children_list_tail;
-     BdrvChild *c;
--    ERRP_GUARD();
- 
-     info = g_new0(BlockGraphInfo, 1);
-     bdrv_do_query_node_info(bs, qapi_BlockGraphInfo_base(info), errp);
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 62804cc2281d..4b6aab8eef98 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -312,9 +312,9 @@ static void ccw_init(MachineState *machine)
- static void s390_cpu_plug(HotplugHandler *hotplug_dev,
-                         DeviceState *dev, Error **errp)
- {
-+    ERRP_GUARD();
-     MachineState *ms = MACHINE(hotplug_dev);
-     S390CPU *cpu = S390_CPU(dev);
--    ERRP_GUARD();
- 
-     g_assert(!ms->possible_cpus->cpus[cpu->env.core_id].cpu);
-     ms->possible_cpus->cpus[cpu->env.core_id].cpu = OBJECT(dev);
-diff --git a/migration/options.c b/migration/options.c
-index 40eb9309401c..80f49a6a8562 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -478,9 +478,9 @@ static bool migrate_incoming_started(void)
-  */
- bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
- {
-+    ERRP_GUARD();
-     MigrationIncomingState *mis = migration_incoming_get_current();
- 
--    ERRP_GUARD();
- #ifndef CONFIG_LIVE_BLOCK_MIGRATION
-     if (new_caps[MIGRATION_CAPABILITY_BLOCK]) {
-         error_setg(errp, "QEMU compiled without old-style (blk/-b, inc/-i) "
-diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-index 0273dc6a94ac..eccff499cb20 100644
---- a/migration/postcopy-ram.c
-+++ b/migration/postcopy-ram.c
-@@ -283,10 +283,10 @@ static bool request_ufd_features(int ufd, uint64_t features)
- static bool ufd_check_and_apply(int ufd, MigrationIncomingState *mis,
-                                 Error **errp)
- {
-+    ERRP_GUARD();
-     uint64_t asked_features = 0;
-     static uint64_t supported_features;
- 
--    ERRP_GUARD();
-     /*
-      * it's not possible to
-      * request UFFD_API twice per one fd
-@@ -371,6 +371,7 @@ static int test_ramblock_postcopiable(RAMBlock *rb, Error **errp)
-  */
- bool postcopy_ram_supported_by_host(MigrationIncomingState *mis, Error **errp)
- {
-+    ERRP_GUARD();
-     long pagesize = qemu_real_host_page_size();
-     int ufd = -1;
-     bool ret = false; /* Error unless we change it */
-@@ -380,7 +381,6 @@ bool postcopy_ram_supported_by_host(MigrationIncomingState *mis, Error **errp)
-     uint64_t feature_mask;
-     RAMBlock *block;
- 
--    ERRP_GUARD();
-     if (qemu_target_page_size() > pagesize) {
-         error_setg(errp, "Target page size bigger than host page size");
-         goto out;
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index e6bdb4562dde..a80d8d974f4a 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -1557,14 +1557,13 @@ static const VhostShadowVirtqueueOps vhost_vdpa_net_svq_ops = {
- static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t features,
-                                           int cvq_index, Error **errp)
- {
-+    ERRP_GUARD();
-     uint64_t backend_features;
-     int64_t cvq_group;
-     uint8_t status = VIRTIO_CONFIG_S_ACKNOWLEDGE |
-                      VIRTIO_CONFIG_S_DRIVER;
-     int r;
- 
--    ERRP_GUARD();
--
-     r = ioctl(device_fd, VHOST_GET_BACKEND_FEATURES, &backend_features);
-     if (unlikely(r < 0)) {
-         error_setg_errno(errp, errno, "Cannot get vdpa backend_features");
--- 
-2.34.1
-
+T24gMy8xMS8yNCAxOTo0MywgQWxleCBCZW5uw6llIHdyb3RlOg0KPiBQaWVycmljayBCb3V2
+aWVyIDxwaWVycmljay5ib3V2aWVyQGxpbmFyby5vcmc+IHdyaXRlczoNCj4gDQo+PiBFeHRl
+bmQgcGx1Z2lucyBBUEkgdG8gc3VwcG9ydCBjYWxsYmFjayBjYWxsZWQgd2l0aCBhIGdpdmVu
+IGNyaXRlcmlhDQo+PiAoZXZhbHVhdGVkIGlubGluZSkuDQo+Pg0KPj4gQWRkZWQgZnVuY3Rp
+b25zOg0KPj4gLSBxZW11X3BsdWdpbl9yZWdpc3Rlcl92Y3B1X3RiX2V4ZWNfY29uZF9jYg0K
+Pj4gLSBxZW11X3BsdWdpbl9yZWdpc3Rlcl92Y3B1X2luc25fZXhlY19jb25kX2NiDQo+Pg0K
+Pj4gVGhleSBleHBlY3QgYXMgcGFyYW1ldGVyIGEgY29uZGl0aW9uLCBhIHFlbXVfcGx1Z2lu
+X3U2NF90IChvcDEpIGFuZCBhbg0KPj4gaW1tZWRpYXRlIChvcDIpLiBDYWxsYmFjayBpcyBj
+YWxsZWQgaWYgb3AxIHxjb25kfCBvcDIgaXMgdHJ1ZS4NCj4+DQo+PiBTaWduZWQtb2ZmLWJ5
+OiBQaWVycmljayBCb3V2aWVyIDxwaWVycmljay5ib3V2aWVyQGxpbmFyby5vcmc+DQo+IDxz
+bmlwPg0KPj4gICANCj4+ICtzdGF0aWMgVENHQ29uZCBwbHVnaW5fY29uZF90b190Y2djb25k
+KGVudW0gcWVtdV9wbHVnaW5fY29uZCBjb25kKQ0KPj4gK3sNCj4+ICsgICAgc3dpdGNoIChj
+b25kKSB7DQo+PiArICAgIGNhc2UgUUVNVV9QTFVHSU5fQ09ORF9FUToNCj4+ICsgICAgICAg
+IHJldHVybiBUQ0dfQ09ORF9FUTsNCj4+ICsgICAgY2FzZSBRRU1VX1BMVUdJTl9DT05EX05F
+Og0KPj4gKyAgICAgICAgcmV0dXJuIFRDR19DT05EX05FOw0KPj4gKyAgICBjYXNlIFFFTVVf
+UExVR0lOX0NPTkRfTFQ6DQo+PiArICAgICAgICByZXR1cm4gVENHX0NPTkRfTFRVOw0KPj4g
+KyAgICBjYXNlIFFFTVVfUExVR0lOX0NPTkRfTEU6DQo+PiArICAgICAgICByZXR1cm4gVENH
+X0NPTkRfTEVVOw0KPj4gKyAgICBjYXNlIFFFTVVfUExVR0lOX0NPTkRfR1Q6DQo+PiArICAg
+ICAgICByZXR1cm4gVENHX0NPTkRfR1RVOw0KPj4gKyAgICBjYXNlIFFFTVVfUExVR0lOX0NP
+TkRfR0U6DQo+PiArICAgICAgICByZXR1cm4gVENHX0NPTkRfR0VVOw0KPj4gKyAgICBkZWZh
+dWx0Og0KPj4gKyAgICAgICAgLyogQUxXQVlTIGFuZCBORVZFUiBjb25kaXRpb25zIHNob3Vs
+ZCBuZXZlciByZWFjaCAqLw0KPj4gKyAgICAgICAgZ19hc3NlcnRfbm90X3JlYWNoZWQoKTsN
+Cj4+ICsgICAgfQ0KPj4gK30NCj4+ICsNCj4+ICtzdGF0aWMgVENHT3AgKmFwcGVuZF9jb25k
+X3VkYXRhX2NiKGNvbnN0IHN0cnVjdCBxZW11X3BsdWdpbl9keW5fY2IgKmNiLA0KPj4gKyAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgVENHT3AgKmJlZ2luX29wLCBUQ0dP
+cCAqb3AsIGludCAqY2JfaWR4KQ0KPj4gK3sNCj4+ICsgICAgY2hhciAqcHRyID0gY2ItPmNv
+bmRfY2IuZW50cnkuc2NvcmUtPmRhdGEtPmRhdGE7DQo+PiArICAgIHNpemVfdCBlbGVtX3Np
+emUgPSBnX2FycmF5X2dldF9lbGVtZW50X3NpemUoDQo+PiArICAgICAgICBjYi0+Y29uZF9j
+Yi5lbnRyeS5zY29yZS0+ZGF0YSk7DQo+PiArICAgIHNpemVfdCBvZmZzZXQgPSBjYi0+Y29u
+ZF9jYi5lbnRyeS5vZmZzZXQ7DQo+PiArICAgIC8qIENvbmRpdGlvbiBzaG91bGQgYmUgbmVn
+YXRlZCwgYXMgY2FsbGluZyB0aGUgY2IgaXMgdGhlICJlbHNlIiBwYXRoICovDQo+PiArICAg
+IFRDR0NvbmQgY29uZCA9IHRjZ19pbnZlcnRfY29uZChwbHVnaW5fY29uZF90b190Y2djb25k
+KGNiLT5jb25kX2NiLmNvbmQpKTsNCj4+ICsNCj4+ICsgICAgb3AgPSBjb3B5X2NvbnN0X3B0
+cigmYmVnaW5fb3AsIG9wLCBwdHIpOw0KPj4gKyAgICBvcCA9IGNvcHlfbGRfaTMyKCZiZWdp
+bl9vcCwgb3ApOw0KPj4gKyAgICBvcCA9IGNvcHlfbXVsX2kzMigmYmVnaW5fb3AsIG9wLCBl
+bGVtX3NpemUpOw0KPj4gKyAgICBvcCA9IGNvcHlfZXh0X2kzMl9wdHIoJmJlZ2luX29wLCBv
+cCk7DQo+PiArICAgIG9wID0gY29weV9jb25zdF9wdHIoJmJlZ2luX29wLCBvcCwgcHRyICsg
+b2Zmc2V0KTsNCj4+ICsgICAgb3AgPSBjb3B5X2FkZF9wdHIoJmJlZ2luX29wLCBvcCk7DQo+
+PiArICAgIG9wID0gY29weV9sZF9pNjQoJmJlZ2luX29wLCBvcCk7DQo+PiArICAgIG9wID0g
+Y29weV9icmNvbmRpX2k2NCgmYmVnaW5fb3AsIG9wLCBjb25kLCBjYi0+Y29uZF9jYi5pbW0p
+Ow0KPj4gKyAgICBvcCA9IGNvcHlfY2FsbCgmYmVnaW5fb3AsIG9wLCBjYi0+Zi52Y3B1X3Vk
+YXRhLCBjYl9pZHgpOw0KPj4gKyAgICBvcCA9IGNvcHlfc2V0X2xhYmVsKCZiZWdpbl9vcCwg
+b3ApOw0KPj4gKyAgICByZXR1cm4gb3A7DQo+IA0KPiBJIHRoaW5rIHdlIGFyZSBtaXNzaW5n
+IHNvbWV0aGluZyBoZXJlIHRvIGVuc3VyZSB0aGF0IHVkYXRhIGlzIHNldA0KPiBjb3JyZWN0
+bHkgZm9yIHRoZSBjYWxsYmFjaywgc2VlIG15IFJGQzoNCj4gDQo+ICAgIFN1YmplY3Q6IFtS
+RkMgUEFUQ0hdIGNvbnRyaWIvcGx1Z2luczogY29udHJvbCBmbG93IHBsdWdpbiAoV0lQISkN
+Cj4gICAgRGF0ZTogTW9uLCAxMSBNYXIgMjAyNCAxNTozNDozMiArMDAwMA0KPiAgICBNZXNz
+YWdlLUlkOiA8MjAyNDAzMTExNTM0MzIuMTM5NTE5MC0xLWFsZXguYmVubmVlQGxpbmFyby5v
+cmc+DQo+IA0KPiB3aGljaCBpcyBzZWVpbmcgdGhlIHNhbWUgdmFsdWUgZXZlcnkgdGltZSBp
+biB0aGUgY2FsbGJhY2suDQo+IA0KDQpJJ20gdHJ5aW5nIHRvIHJlcHJvZHVjZSBhbmQgd2ls
+bCBhbnN3ZXIgb24gdGhpcyB0aHJlYWQuDQo=
 
