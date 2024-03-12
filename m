@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C59AD879ECD
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:33:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B3E879F04
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:41:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkAab-0005lD-OW; Tue, 12 Mar 2024 18:27:17 -0400
+	id 1rkAac-0005tj-JJ; Tue, 12 Mar 2024 18:27:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAZx-0004vd-PR
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:26:39 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAa2-000515-8m
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:26:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAZv-0004Ha-Rm
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:26:37 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAZz-0004JB-8H
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:26:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710282394;
+ s=mimecast20190719; t=1710282398;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=B6OhfpIW75q+gyT4clF9x+dnePUQGPnZ4oMwJv+v17w=;
- b=IfnLTV1kAXl4748ZDrTYKLLwdioRqkl8levVLiDB8D1eeRbtq2Lx/w2HVQVjBIGDur7rxH
- ARmH0BG6h+xdvhxJohknV7kYli96pMJNmVx/8BCLfcquvaIUtQsGBWMWyYW0TTiA4DLOLC
- W+HsTNOgRxf+2ONBfj3hRvO7XCG4gg8=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=tiNY6DUe9/nrekxQjna/PMEUvIOJcBoh6jUWaAmbJLw=;
+ b=dVSp/B2KSGXqpgblI3c0ymG2QPrb3HiO/gAupNrod7E62Y4IUVKLehoOXt+OvM3YEzfOby
+ x+yZVEl2LRNOTvhJ8n4bv4pO1pR6QLXzpVKzad7L62BxJiCXwg9RoRuEu3qgk7hSr+tPaU
+ 3D4gx7DuB74JrYjkUS3JVLxrZ6vxTTI=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-597-6y-MYXH_MHWN4QGe133sbQ-1; Tue, 12 Mar 2024 18:26:33 -0400
-X-MC-Unique: 6y-MYXH_MHWN4QGe133sbQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a45acc7f191so403091066b.0
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:26:32 -0700 (PDT)
+ us-mta-455-1HCqYbXHOi2TeS2xMR8RyQ-1; Tue, 12 Mar 2024 18:26:37 -0400
+X-MC-Unique: 1HCqYbXHOi2TeS2xMR8RyQ-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2d45c064742so13199641fa.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:26:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710282391; x=1710887191;
+ d=1e100.net; s=20230601; t=1710282395; x=1710887195;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=B6OhfpIW75q+gyT4clF9x+dnePUQGPnZ4oMwJv+v17w=;
- b=ui+NZ3Ev8+YsGKx+EfEC7pHLmYimM+jW3tOv+lqU/U5m8nsTvcAfk+b+EbDK+bLTwj
- APJKdnQHy0/XUPREj28X4O1cmVEkEuPssfl92ohcXRGM5v+cehnT7kj29/ZQGhQkCZqp
- vDazPMAsjNeqagTCoyZluY0beHTrMrulA75U9zTRKJonybUZ3+szmTZj6WCKi/MUvKyw
- xKmn1u956QKvaT3aCrIcbyIWqzpToVzhzb4SiCa2BehPJDxvv7LlCVrE7OsGdDStQOFp
- +FvUpGlQJbBtIluDEMNWmfmql9wXVfeeP2xu8bsGP2gr0WlBt+809DTT8zmLFF+4lhrC
- 1EGA==
-X-Gm-Message-State: AOJu0Yx6HKAPQzQ5yJlL1z6ksggEhQY2S/1QI/fPVL4waYLf8fkL34us
- 7jN4CjZ0ghb3ErByS3jgu88CAKKuhqz5THzDqEg/RnOR4lGdXBe+Ua53S5zt4EXD4uqeOym4/fj
- IXzNSnMQw+kgnmtA95U6pBO6GOisLa+3/svHnuATcC54MCmH2pRrNmPSNJd7CzOHQBfi++F6oL2
- OrMUtSaH/CMWc6FPA4ALx3TgJInJRLbNr2
-X-Received: by 2002:a17:906:a388:b0:a46:4bbb:5f66 with SMTP id
- k8-20020a170906a38800b00a464bbb5f66mr1445536ejz.9.1710282391355; 
- Tue, 12 Mar 2024 15:26:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEViuvageTK2HlYNK6QQmlb0Y5s66yvCyHA0i7BKMtXL8cizjuXADhOmA86g92r95IOvBSvrg==
-X-Received: by 2002:a17:906:a388:b0:a46:4bbb:5f66 with SMTP id
- k8-20020a170906a38800b00a464bbb5f66mr1445523ejz.9.1710282390899; 
- Tue, 12 Mar 2024 15:26:30 -0700 (PDT)
+ bh=tiNY6DUe9/nrekxQjna/PMEUvIOJcBoh6jUWaAmbJLw=;
+ b=CcyGZYqaYgtyWp0niopx0wIZr4rzbMN+6ttjdW+EYAEBFX+ACq0Vbeks+VDzGw4Vyn
+ ku+Sn2pDAV8o1ZddjLQhJ6hZFwjx+Q2vQqAb6a55JTVo8IHrv6Hk4VWq9r8uB9yLCV9q
+ WGaoJlYEHdlLBhzBZ72jvMC/+P4S/V29clcrQQieDFptYqsYkMkGl2nNrgTSXrmboflP
+ CswfnQHufjIYkmn7Im8SzdutUzxcGtRWUDGfhHT1Eefed4MOMP0rWl84sLObQzfKh3LE
+ jZsKPBTq9sWqlH6f4g8/l3KUJ+PQErEG5IdLnE8YnIsx4hcagEWol7z2T+4YAf9Mmplk
+ b3Fw==
+X-Gm-Message-State: AOJu0YxiR30a6M38gwqFoNZ+Hti0BaFsfB6TSSwFs9gRLrvtXBQefv1S
+ db+cuIo70DGj5hlUymjR0WUrETXxICh5Mso3mzb7QNpIIDvzwm0PVd6qrHooy2VfIpFEDl0k6Gx
+ 9qczZttS26ycVeta1+sSFYLrk79Ycz5ytlRogmRAhrHVm6Fc/+N0S3VeLuvHbiTriIEnJFjzmVJ
+ 2M/7TT07qwGhRPSSb3KxjONiIrhwlUFYI+
+X-Received: by 2002:a05:651c:c6:b0:2d2:4108:72a with SMTP id
+ 6-20020a05651c00c600b002d24108072amr1945678ljr.12.1710282394852; 
+ Tue, 12 Mar 2024 15:26:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGXtvTWfvO2ebBTyTRSa+iWBU1PPnXrcd6I1dON3MnrLYLeO5N8ZJLkUV156h574SXl0pmJBw==
+X-Received: by 2002:a05:651c:c6:b0:2d2:4108:72a with SMTP id
+ 6-20020a05651c00c600b002d24108072amr1945662ljr.12.1710282394296; 
+ Tue, 12 Mar 2024 15:26:34 -0700 (PDT)
 Received: from redhat.com ([2.52.134.16]) by smtp.gmail.com with ESMTPSA id
- jy21-20020a170907763500b00a4652efd795sm163830ejc.83.2024.03.12.15.26.29
+ h19-20020aa7c613000000b005673e29cc0fsm4296218edq.54.2024.03.12.15.26.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 15:26:30 -0700 (PDT)
-Date: Tue, 12 Mar 2024 18:26:27 -0400
+ Tue, 12 Mar 2024 15:26:33 -0700 (PDT)
+Date: Tue, 12 Mar 2024 18:26:31 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -68,9 +68,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Raphael Norwitz <raphael@enfabrica.net>,
  Stefano Garzarella <sgarzare@redhat.com>,
  Mario Casquero <mcasquer@redhat.com>
-Subject: [PULL 19/68] libvhost-user: Don't search for duplicates when
- removing memory regions
-Message-ID: <9c254cb413a631f6601e6e34429547759d7d63a6.1710282274.git.mst@redhat.com>
+Subject: [PULL 20/68] libvhost-user: Factor out search for memory region by
+ GPA and simplify
+Message-ID: <60ccdca42d96f730f57478caaf376da90c3d97f3.1710282274.git.mst@redhat.com>
 References: <cover.1710282274.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -104,36 +104,151 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Hildenbrand <david@redhat.com>
 
-We cannot have duplicate memory regions, something would be deeply
-flawed elsewhere. Let's just stop the search once we found an entry.
+Memory regions cannot overlap, and if we ever hit that case something
+would be really flawed.
 
-We'll add more sanity checks when adding memory regions later.
+For example, when vhost code in QEMU decides to increase the size of memory
+regions to cover full huge pages, it makes sure to never create overlaps,
+and if there would be overlaps, it would bail out.
+
+QEMU commits 48d7c9757749 ("vhost: Merge sections added to temporary
+list"), c1ece84e7c93 ("vhost: Huge page align and merge") and
+e7b94a84b6cb ("vhost: Allow adjoining regions") added and clarified that
+handling and how overlaps are impossible.
+
+Consequently, each GPA can belong to at most one memory region, and
+everything else doesn't make sense. Let's factor out our search to prepare
+for further changes.
 
 Reviewed-by: Raphael Norwitz <raphael@enfabrica.net>
 Acked-by: Stefano Garzarella <sgarzare@redhat.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
-Message-Id: <20240214151701.29906-9-david@redhat.com>
+Message-Id: <20240214151701.29906-10-david@redhat.com>
 Tested-by: Mario Casquero <mcasquer@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- subprojects/libvhost-user/libvhost-user.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ subprojects/libvhost-user/libvhost-user.c | 79 +++++++++++++----------
+ 1 file changed, 45 insertions(+), 34 deletions(-)
 
 diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/libvhost-user/libvhost-user.c
-index 2e8b611385..7f29e01c30 100644
+index 7f29e01c30..d72f25396d 100644
 --- a/subprojects/libvhost-user/libvhost-user.c
 +++ b/subprojects/libvhost-user/libvhost-user.c
-@@ -896,8 +896,7 @@ vu_rem_mem_reg(VuDev *dev, VhostUserMsg *vmsg) {
-             i--;
+@@ -195,30 +195,47 @@ vu_panic(VuDev *dev, const char *msg, ...)
+      */
+ }
  
-             found = true;
--
--            /* Continue the search for eventual duplicates. */
-+            break;
-         }
++/* Search for a memory region that covers this guest physical address. */
++static VuDevRegion *
++vu_gpa_to_mem_region(VuDev *dev, uint64_t guest_addr)
++{
++    unsigned int i;
++
++    /*
++     * Memory regions cannot overlap in guest physical address space. Each
++     * GPA belongs to exactly one memory region, so there can only be one
++     * match.
++     */
++    for (i = 0; i < dev->nregions; i++) {
++        VuDevRegion *cur = &dev->regions[i];
++
++        if (guest_addr >= cur->gpa && guest_addr < cur->gpa + cur->size) {
++            return cur;
++        }
++    }
++    return NULL;
++}
++
+ /* Translate guest physical address to our virtual address.  */
+ void *
+ vu_gpa_to_va(VuDev *dev, uint64_t *plen, uint64_t guest_addr)
+ {
+-    unsigned int i;
++    VuDevRegion *r;
+ 
+     if (*plen == 0) {
+         return NULL;
      }
  
+-    /* Find matching memory region.  */
+-    for (i = 0; i < dev->nregions; i++) {
+-        VuDevRegion *r = &dev->regions[i];
+-
+-        if ((guest_addr >= r->gpa) && (guest_addr < (r->gpa + r->size))) {
+-            if ((guest_addr + *plen) > (r->gpa + r->size)) {
+-                *plen = r->gpa + r->size - guest_addr;
+-            }
+-            return (void *)(uintptr_t)
+-                guest_addr - r->gpa + r->mmap_addr + r->mmap_offset;
+-        }
++    r = vu_gpa_to_mem_region(dev, guest_addr);
++    if (!r) {
++        return NULL;
+     }
+ 
+-    return NULL;
++    if ((guest_addr + *plen) > (r->gpa + r->size)) {
++        *plen = r->gpa + r->size - guest_addr;
++    }
++    return (void *)(uintptr_t)guest_addr - r->gpa + r->mmap_addr +
++           r->mmap_offset;
+ }
+ 
+ /* Translate qemu virtual address to our virtual address.  */
+@@ -854,8 +871,8 @@ static inline bool reg_equal(VuDevRegion *vudev_reg,
+ static bool
+ vu_rem_mem_reg(VuDev *dev, VhostUserMsg *vmsg) {
+     VhostUserMemoryRegion m = vmsg->payload.memreg.region, *msg_region = &m;
+-    unsigned int i;
+-    bool found = false;
++    unsigned int idx;
++    VuDevRegion *r;
+ 
+     if (vmsg->fd_num > 1) {
+         vmsg_close_fds(vmsg);
+@@ -882,28 +899,22 @@ vu_rem_mem_reg(VuDev *dev, VhostUserMsg *vmsg) {
+     DPRINT("    mmap_offset      0x%016"PRIx64"\n",
+            msg_region->mmap_offset);
+ 
+-    for (i = 0; i < dev->nregions; i++) {
+-        if (reg_equal(&dev->regions[i], msg_region)) {
+-            VuDevRegion *r = &dev->regions[i];
+-
+-            munmap((void *)(uintptr_t)r->mmap_addr, r->size + r->mmap_offset);
+-
+-            /* Shift all affected entries by 1 to close the hole at index. */
+-            memmove(dev->regions + i, dev->regions + i + 1,
+-                    sizeof(VuDevRegion) * (dev->nregions - i - 1));
+-            DPRINT("Successfully removed a region\n");
+-            dev->nregions--;
+-            i--;
+-
+-            found = true;
+-            break;
+-        }
+-    }
+-
+-    if (!found) {
++    r = vu_gpa_to_mem_region(dev, msg_region->guest_phys_addr);
++    if (!r || !reg_equal(r, msg_region)) {
++        vmsg_close_fds(vmsg);
+         vu_panic(dev, "Specified region not found\n");
++        return false;
+     }
+ 
++    munmap((void *)(uintptr_t)r->mmap_addr, r->size + r->mmap_offset);
++
++    idx = r - dev->regions;
++    assert(idx < dev->nregions);
++    /* Shift all affected entries by 1 to close the hole. */
++    memmove(r, r + 1, sizeof(VuDevRegion) * (dev->nregions - idx - 1));
++    DPRINT("Successfully removed a region\n");
++    dev->nregions--;
++
+     vmsg_close_fds(vmsg);
+ 
+     return false;
 -- 
 MST
 
