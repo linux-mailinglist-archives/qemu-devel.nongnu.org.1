@@ -2,57 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B18E78794A3
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:58:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D4E987949F
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:57:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk1Um-0003ST-FP; Tue, 12 Mar 2024 08:44:40 -0400
+	id 1rk1Uq-0003iI-2Y; Tue, 12 Mar 2024 08:44:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Uj-0003QZ-Nn
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:37 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Ul-0003TJ-RZ
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Ua-0000Hw-Dh
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:37 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Uc-0000JK-Pp
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710247467;
+ s=mimecast20190719; t=1710247470;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Y8ZGn25pUg5nt8d9Lnqgfgo1Ka7ZiROViIWkQYWoVog=;
- b=aq+teAohBMsgyDi6/wYuObd75Oj84HuvJ6Dl+maKjaYGsDMEuVPM6mU7jNzeHCul7e5KQ1
- /QPPhj+QRehnhV5g0nEdnZzDCOtDIwb8qsNjAECyclj9O4subVFDfOBvMmD5zElQVHEwvs
- yTtaV4gnKwVg87WjT9SqejCtggU6DjI=
+ bh=n5xUWZ4cbjNKa/g+yiid0o3lAjXDSQFM0aD8HNUVLZM=;
+ b=ZBTq3fsz4I+ASn6H57jF1uYLJtrK5sIvLiuMNeMbmH5Doe70USCNw5Hh6qgAZEJpeWDmlP
+ cSbKO0jYjDOaSqxXDhXp/tTTmD9MY8eTLBCryQUgqbwwXdVWMyOKcYJVJnbBskxz27x8/m
+ tSFk1ex0G8o8RwNgRqqunCabXoFmwvA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-437-g61_iFNrNfqbq-nz1AfqWQ-1; Tue, 12 Mar 2024 08:44:24 -0400
-X-MC-Unique: g61_iFNrNfqbq-nz1AfqWQ-1
+ us-mta-113-YHZ-6d1QNdmGlS8iYGcm1Q-1; Tue, 12 Mar 2024 08:44:26 -0400
+X-MC-Unique: YHZ-6d1QNdmGlS8iYGcm1Q-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 27ED9185A78E;
- Tue, 12 Mar 2024 12:44:24 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 64CBE185A78E;
+ Tue, 12 Mar 2024 12:44:26 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.69])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 74085492BC4;
- Tue, 12 Mar 2024 12:44:22 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6AE19492BD0;
+ Tue, 12 Mar 2024 12:44:24 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PULL 20/55] hw/scsi/vhost-scsi: Fix missing ERRP_GUARD() for
- error_prepend()
-Date: Tue, 12 Mar 2024 13:43:04 +0100
-Message-ID: <20240312124339.761630-21-thuth@redhat.com>
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Tony Krowiak <akrowiak@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Jason Herne <jjherne@linux.ibm.com>, qemu-s390x@nongnu.org
+Subject: [PULL 21/55] hw/vfio/ap: Fix missing ERRP_GUARD() for error_prepend()
+Date: Tue, 12 Mar 2024 13:43:05 +0100
+Message-ID: <20240312124339.761630-22-thuth@redhat.com>
 In-Reply-To: <20240312124339.761630-1-thuth@redhat.com>
 References: <20240312124339.761630-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -100,10 +102,10 @@ ERRP_GUARD() could avoid the case when @errp is &error_fatal, the user
 can't see this additional information, because exit() happens in
 error_setg earlier than information is added [1].
 
-The vhost_scsi_realize() passes @errp to error_prepend(), and as a
-VirtioDeviceClass.realize method, its @errp is from DeviceClass.realize
-so that there is no guarantee that the @errp won't point to
-@error_fatal.
+The vfio_ap_realize() passes @errp to error_prepend(), and as a
+DeviceClass.realize method, there are too many possible callers to check
+the impact of this defect; it may or may not be harmless. Thus it is
+necessary to protect @errp with ERRP_GUARD().
 
 To avoid the issue like [1] said, add missing ERRP_GUARD() at the
 beginning of this function.
@@ -111,29 +113,33 @@ beginning of this function.
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
 
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Fam Zheng <fam@euphon.net>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Alex Williamson <alex.williamson@redhat.com>
+Cc: Cédric Le Goater <clg@redhat.com>
+Cc: Tony Krowiak <akrowiak@linux.ibm.com>
+Cc: Halil Pasic <pasic@linux.ibm.com>
+Cc: Jason Herne <jjherne@linux.ibm.com>
+Cc: Thomas Huth <thuth@redhat.com>
+Cc: qemu-s390x@nongnu.org
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Message-ID: <20240311033822.3142585-18-zhao1.liu@linux.intel.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Message-ID: <20240311033822.3142585-19-zhao1.liu@linux.intel.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/scsi/vhost-scsi.c | 1 +
+ hw/vfio/ap.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-index 58a00336c2..ae26bc19a4 100644
---- a/hw/scsi/vhost-scsi.c
-+++ b/hw/scsi/vhost-scsi.c
-@@ -220,6 +220,7 @@ static int vhost_scsi_set_workers(VHostSCSICommon *vsc, bool per_virtqueue)
+diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
+index e157aa1ff7..7c4caa5938 100644
+--- a/hw/vfio/ap.c
++++ b/hw/vfio/ap.c
+@@ -155,6 +155,7 @@ static void vfio_ap_unregister_irq_notifier(VFIOAPDevice *vapdev,
  
- static void vhost_scsi_realize(DeviceState *dev, Error **errp)
+ static void vfio_ap_realize(DeviceState *dev, Error **errp)
  {
 +    ERRP_GUARD();
-     VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
-     VHostSCSICommon *vsc = VHOST_SCSI_COMMON(dev);
+     int ret;
      Error *err = NULL;
+     VFIOAPDevice *vapdev = VFIO_AP_DEVICE(dev);
 -- 
 2.44.0
 
