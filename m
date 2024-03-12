@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64719879ED2
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:34:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB139879ED1
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:34:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkAeE-0006OK-Mj; Tue, 12 Mar 2024 18:31:02 -0400
+	id 1rkAeI-0006Ul-UD; Tue, 12 Mar 2024 18:31:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAcC-0002qv-Ji
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:28:58 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAcG-0002rc-Pg
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:29:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAc2-0004bN-9l
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:28:47 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAc6-0004bn-Gf
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:28:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710282525;
+ s=mimecast20190719; t=1710282529;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eKrjNhHTN2bPQP/9cRYriG9FH7mBRIe1f63zB2PVbVw=;
- b=ES5cmuHfO73k3iFI8yPrTMLcY/4OoS0NoxuCUnzzNUr2A/TcdV3cU3x6XCsSTqMbfPBvEU
- o89iSH14TCf5VCdaA4vX68zu0Twnfu35RBz78WpnDvxLDWFGChBHZFJzukJeQMaC5cabuG
- forRJxAk0RJ/igyu1W2BHW7E58tG5FQ=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=q+KmS4ZjhMpglK5yf3m23Viq3SpbBkSkvKu7CqYvcy0=;
+ b=PSirbAlGDkovQUQDNlLEzJPL6q+oUzOcEizgccJXzZTT1prjg7fImExjl53EO8oIEPJpqy
+ FMwulPDQCniEv8dJumBM+2wSZJc0I4LGWCSoke4Z4FLk3GWXAr4bIoTjjJ40UjtGh/e+Pt
+ Esy4wBccP0htKRtEjt1+jrUBy/lmqwQ=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-672-gCok1JwIMdS2QJvfDSsfpQ-1; Tue, 12 Mar 2024 18:28:44 -0400
-X-MC-Unique: gCok1JwIMdS2QJvfDSsfpQ-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-558aafe9bf2so4144768a12.1
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:28:44 -0700 (PDT)
+ us-mta-694-Dr4quDAbOkC9A4Ca48DfrQ-1; Tue, 12 Mar 2024 18:28:47 -0400
+X-MC-Unique: Dr4quDAbOkC9A4Ca48DfrQ-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-513332823cfso6021450e87.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:28:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710282523; x=1710887323;
+ d=1e100.net; s=20230601; t=1710282526; x=1710887326;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=eKrjNhHTN2bPQP/9cRYriG9FH7mBRIe1f63zB2PVbVw=;
- b=N23n0FrTGjt/JjIuij4rere5Q+1IdpdSXPdVgwx892F+XCjb+rWmhACYBAzv8T0Hq+
- ZHdsQ8v9nMRIotwHLhn6Y8hvTgp8yktKegym6MAbgdU4P8tlMA5dHsBQo5nVxIXxo6eH
- BmhapBZsYbRPXr+rWCQn+wk5Pkp5kdb6pCerkhhI3L7jIuLM5jIeh9idhX4KYTdHUd/s
- Sh1fspns5s+Ptf+fn5wAEfdSHlxEJX7qUVXEe1i6JXMsrq4Ds00XW++K5yIvYOnoZhGg
- 8zou2aem1E60VzWO2JeQasMl+meznlW3sdumgrW80YvGfPSAXhVqA+cQPDa4f0v8GQtI
- +fgQ==
-X-Gm-Message-State: AOJu0Yy6SS7hRlHcB5xvr8HTDYO1zDri8DqP4xHWKmUzbLXGK2ih/jY3
- AgOzfat4okGa9TXb5LH/wnrVTEvSpawtlq15PnMLk8QolY5/s4lMA6loNsKjMwNCyWEyttnBXyW
- UIGL6nhmJWiv9VF6bSUN159mTwrYDlpeeR4QzahJGdEKVv/TVjSdCS2zcfq/erT/kL8uVdCUAVC
- xwpEpJzihkUEyzk/AK5h0uNR+RLQTEO1On
-X-Received: by 2002:a50:ab48:0:b0:566:825b:98 with SMTP id
- t8-20020a50ab48000000b00566825b0098mr1245567edc.6.1710282522958; 
- Tue, 12 Mar 2024 15:28:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHHsKh62kUegGSPD66dBTmSIcnTJFZISZxwV9K1n6JmG5gn76XpggUKe4TMUIWl1pS9MDTy3w==
-X-Received: by 2002:a50:ab48:0:b0:566:825b:98 with SMTP id
- t8-20020a50ab48000000b00566825b0098mr1245547edc.6.1710282522417; 
- Tue, 12 Mar 2024 15:28:42 -0700 (PDT)
+ bh=q+KmS4ZjhMpglK5yf3m23Viq3SpbBkSkvKu7CqYvcy0=;
+ b=Nm4Yte1qCcLZ9jujALwaQVq9berGs1edpur1fgIvapk+b8Xky7VOIKYaTkoR//dEp+
+ xZAMqrNXBiKti/wwB/qDn9hNIn7glmPqbf9TtZcGluhhWtCgPv0ohOT89TnYg6rCpmso
+ +DA379YzHB95fbbJ3MvKd7hHg69HMTlza+ED8hQ+bPcbTQF+r2hT1sOImgmn71r7Dz/V
+ Qv+Dehh+4x4S2X55QJ82PcoatZDYNyvfTj9ox1s29v5tPNNnIulPSHKVIxGBTdeDj3vc
+ 3TGGVvmGvB9Z3HSb63r0dUOTWhvdce/SCumShdVMIHaabFNhbzmj4NBtSfMyOANs6a+x
+ F3RQ==
+X-Gm-Message-State: AOJu0YzXseb+K9hTfG5gBxBfLAUCbwn0ZhBskUGwkYfL+po0l7zD3occ
+ 8BnDsxENoxsy2VzNOUeILuK4FvXU9paBAPILH5Nb96Kd2fokrfTlB01Ge65bd0YUPk4SNEuyThZ
+ bACGdy4IJ2YahXitrvRMOnPNgQ8qk1Cz8LAnqSV4aVuj8DbCkuolPAUsFM9IWvFovfEC+LSfl8e
+ NonaTbxEdKUnyk5B6f1xHcEJu85TsQmm9P
+X-Received: by 2002:a19:f706:0:b0:513:9e39:e8b7 with SMTP id
+ z6-20020a19f706000000b005139e39e8b7mr2232214lfe.16.1710282525913; 
+ Tue, 12 Mar 2024 15:28:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEo3qlAKiLGgeTkL9KtX7dBkt5NvQ6u03phXTDQ8n4klSi8/G06Mw7YCVgp5Fpf9JdaR+4MKg==
+X-Received: by 2002:a19:f706:0:b0:513:9e39:e8b7 with SMTP id
+ z6-20020a19f706000000b005139e39e8b7mr2232195lfe.16.1710282525378; 
+ Tue, 12 Mar 2024 15:28:45 -0700 (PDT)
 Received: from redhat.com ([2.52.134.16]) by smtp.gmail.com with ESMTPSA id
- cn19-20020a0564020cb300b0056828004c75sm4397850edb.51.2024.03.12.15.28.40
+ p26-20020a170906b21a00b00a4655a71a27sm73803ejz.163.2024.03.12.15.28.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 15:28:41 -0700 (PDT)
-Date: Tue, 12 Mar 2024 18:28:39 -0400
+ Tue, 12 Mar 2024 15:28:45 -0700 (PDT)
+Date: Tue, 12 Mar 2024 18:28:42 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Eric Auger <eric.auger@redhat.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>
-Subject: [PULL 58/68] virtio-iommu: Change the default granule to the host
- page size
-Message-ID: <9dd5e808fc17ac92180965178a6e867c1e96ac57.1710282274.git.mst@redhat.com>
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PULL 59/68] qemu-options.hx: Document the virtio-iommu-pci granule
+ option
+Message-ID: <695012903f99d42c03a5bc87fe24f591b6bf7153.1710282274.git.mst@redhat.com>
 References: <cover.1710282274.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -109,82 +107,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eric Auger <eric.auger@redhat.com>
 
-We used to set the default granule to 4KB but with VFIO assignment
-it makes more sense to use the actual host page size.
-
-Indeed when hotplugging a VFIO device protected by a virtio-iommu
-on a 64kB/64kB host/guest config, we current get a qemu crash:
-
-"vfio: DMA mapping failed, unable to continue"
-
-This is due to the hot-attached VFIO device calling
-memory_region_iommu_set_page_size_mask() with 64kB granule
-whereas the virtio-iommu granule was already frozen to 4KB on
-machine init done.
-
-Set the granule property to "host" and introduce a new compat.
-The page size mask used before 9.0 was qemu_target_page_mask().
-Since the virtio-iommu currently only supports x86_64 and aarch64,
-this matched a 4KB granule.
-
-Note that the new default will prevent 4kB guest on 64kB host
-because the granule will be set to 64kB which would be larger
-than the guest page size. In that situation, the virtio-iommu
-driver fails on viommu_domain_finalise() with
-"granule 0x10000 larger than system page size 0x1000".
-
-In that case the workaround is to request 4K granule.
-
-The current limitation of global granule in the virtio-iommu
-should be removed and turned into per domain granule. But
-until we get this upgraded, this new default is probably
-better because I don't think anyone is currently interested in
-running a 4KB page size guest with virtio-iommu on a 64KB host.
-However supporting 64kB guest on 64kB host with virtio-iommu and
-VFIO looks a more important feature.
+We are missing an entry for the virtio-iommu-pci device. Add the
+information on which machine it is currently supported and document
+the new granule option.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Message-Id: <20240307134445.92296-4-eric.auger@redhat.com>
+
+Message-Id: <20240307134445.92296-5-eric.auger@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/core/machine.c        | 5 ++++-
- hw/virtio/virtio-iommu.c | 2 +-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ qemu-options.hx | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 9ac5d5389a..6bd09d4592 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -30,9 +30,12 @@
- #include "exec/confidential-guest-support.h"
- #include "hw/virtio/virtio-pci.h"
- #include "hw/virtio/virtio-net.h"
-+#include "hw/virtio/virtio-iommu.h"
- #include "audio/audio.h"
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 937fd7ed84..c6f3d2e76d 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -1172,6 +1172,14 @@ SRST
+     Please also refer to the wiki page for general scenarios of VT-d
+     emulation in QEMU: https://wiki.qemu.org/Features/VT-d.
  
--GlobalProperty hw_compat_8_2[] = {};
-+GlobalProperty hw_compat_8_2[] = {
-+    { TYPE_VIRTIO_IOMMU_PCI, "granule", "4k" },
-+};
- const size_t hw_compat_8_2_len = G_N_ELEMENTS(hw_compat_8_2);
++``-device virtio-iommu-pci[,option=...]``
++    This is only supported by ``-machine q35`` (x86_64) and ``-machine virt`` (ARM).
++    It supports below options:
++
++    ``granule=val`` (possible values are 4k, 8k, 16k, 64k and host; default: host)
++        This decides the default granule to be be exposed by the
++        virtio-iommu. If host, the granule matches the host page size.
++
+ ERST
  
- GlobalProperty hw_compat_8_1[] = {
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index 84d6819d3b..aab97e1527 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -1543,7 +1543,7 @@ static Property virtio_iommu_properties[] = {
-                      TYPE_PCI_BUS, PCIBus *),
-     DEFINE_PROP_BOOL("boot-bypass", VirtIOIOMMU, boot_bypass, true),
-     DEFINE_PROP_GRANULE_MODE("granule", VirtIOIOMMU, granule_mode,
--                             GRANULE_MODE_4K),
-+                             GRANULE_MODE_HOST),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
+ DEF("name", HAS_ARG, QEMU_OPTION_name,
 -- 
 MST
 
