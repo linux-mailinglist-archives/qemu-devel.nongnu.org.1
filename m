@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C4A87948A
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:53:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1B508794B0
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:59:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk1Up-0003d0-35; Tue, 12 Mar 2024 08:44:43 -0400
+	id 1rk1Ur-0003lD-4F; Tue, 12 Mar 2024 08:44:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Ul-0003U4-T7
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:39 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Un-0003bS-5S
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Uf-0000Kc-Gl
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:39 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Ug-0000L8-A9
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710247471;
+ s=mimecast20190719; t=1710247473;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=99QgxR3ONMdrU2vEVyveIr1/PSdkGksjhl8FbVEITvg=;
- b=UI8S9fwLooyUVRbytNKNmdcum7TeoFW+VTkLI08Oxxl78CU3xvROJN43daF72/EC4rQdul
- 4S6YSm7fpBxDLoap3xyHil8ypcy9QZ6Rcso/rFmVI9BNy7b68KIKO9iT7OzIr2sgZxgoU6
- h/cRFLtOWJEEz6oWOdLHiHEFr4fYSZQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-190-6E926wodN8CpUf9Z7NnPLg-1; Tue, 12 Mar 2024 08:44:28 -0400
-X-MC-Unique: 6E926wodN8CpUf9Z7NnPLg-1
+ bh=f5lm0VnfXsNWt+FRa/MBqsb4VrTEIB76yLlxjX43jvA=;
+ b=OglKjXl3MrWjtSLe1yRnZD7/Ool4XV0LTxn2Xlkqs0sDWemJjUTyi7OdW8DlzuDVkd1Q+n
+ ZQTXmunNvIYzQar2sNXmIVX5JoMgekBX8E7eZw6mGT6mIRkzEQXJX94mI7uXe+TPEG4M6l
+ mHfxKqRYSHGpSfFjCi3Vt8apuE+wx5k=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-620-K0pOP1TLOie2Z7IXsK6mAw-1; Tue,
+ 12 Mar 2024 08:44:30 -0400
+X-MC-Unique: K0pOP1TLOie2Z7IXsK6mAw-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 20773101A56C;
- Tue, 12 Mar 2024 12:44:28 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CA81B1C07F39;
+ Tue, 12 Mar 2024 12:44:29 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.69])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A5594492BC4;
- Tue, 12 Mar 2024 12:44:26 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 60014492BD0;
+ Tue, 12 Mar 2024 12:44:28 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 22/55] hw/vfio/container: Fix missing ERRP_GUARD() for
+Subject: [PULL 23/55] hw/vfio/helpers: Fix missing ERRP_GUARD() for
  error_prepend()
-Date: Tue, 12 Mar 2024 13:43:06 +0100
-Message-ID: <20240312124339.761630-23-thuth@redhat.com>
+Date: Tue, 12 Mar 2024 13:43:07 +0100
+Message-ID: <20240312124339.761630-24-thuth@redhat.com>
 In-Reply-To: <20240312124339.761630-1-thuth@redhat.com>
 References: <20240312124339.761630-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -102,13 +102,18 @@ ERRP_GUARD() could avoid the case when @errp is &error_fatal, the user
 can't see this additional information, because exit() happens in
 error_setg earlier than information is added [1].
 
-The vfio_get_group() passes @errp to error_prepend(). Its @errp is
-from vfio_attach_device(), and there are too many possible callers to
-check the impact of this defect; it may or may not be harmless. Thus it
-is necessary to protect @errp with ERRP_GUARD().
+In hw/vfio/helpers.c, there are 3 functions passing @errp to
+error_prepend() without ERRP_GUARD():
+ - vfio_set_irq_signaling()
+ - vfio_device_get_name()
+ - vfio_device_set_fd()
 
-To avoid the issue like [1] said, add missing ERRP_GUARD() at the
-beginning of this function.
+There are too many possible callers to check the impact of this defect;
+it may or may not be harmless. Thus it is necessary to protect their
+@errp with ERRP_GUARD().
+
+To avoid the issue like [1] said, add missing ERRP_GUARD() at their
+beginning.
 
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
@@ -116,26 +121,41 @@ beginning of this function.
 Cc: Alex Williamson <alex.williamson@redhat.com>
 Cc: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Message-ID: <20240311033822.3142585-20-zhao1.liu@linux.intel.com>
+Message-ID: <20240311033822.3142585-21-zhao1.liu@linux.intel.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/vfio/container.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/vfio/helpers.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index bd25b9fbad..f66bb01f5b 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -719,6 +719,7 @@ static void vfio_disconnect_container(VFIOGroup *group)
- 
- static VFIOGroup *vfio_get_group(int groupid, AddressSpace *as, Error **errp)
+diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
+index 6789870802..47b4096c05 100644
+--- a/hw/vfio/helpers.c
++++ b/hw/vfio/helpers.c
+@@ -110,6 +110,7 @@ static const char *index_to_str(VFIODevice *vbasedev, int index)
+ int vfio_set_irq_signaling(VFIODevice *vbasedev, int index, int subindex,
+                            int action, int fd, Error **errp)
  {
 +    ERRP_GUARD();
-     VFIOGroup *group;
-     char path[32];
-     struct vfio_group_status status = { .argsz = sizeof(status) };
+     struct vfio_irq_set *irq_set;
+     int argsz, ret = 0;
+     const char *name;
+@@ -613,6 +614,7 @@ bool vfio_has_region_cap(VFIODevice *vbasedev, int region, uint16_t cap_type)
+ 
+ int vfio_device_get_name(VFIODevice *vbasedev, Error **errp)
+ {
++    ERRP_GUARD();
+     struct stat st;
+ 
+     if (vbasedev->fd < 0) {
+@@ -644,6 +646,7 @@ int vfio_device_get_name(VFIODevice *vbasedev, Error **errp)
+ 
+ void vfio_device_set_fd(VFIODevice *vbasedev, const char *str, Error **errp)
+ {
++    ERRP_GUARD();
+     int fd = monitor_fd_param(monitor_cur(), str, errp);
+ 
+     if (fd < 0) {
 -- 
 2.44.0
 
