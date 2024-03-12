@@ -2,66 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2465987973C
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 16:14:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C227D879797
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 16:32:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk3op-0004b1-1o; Tue, 12 Mar 2024 11:13:31 -0400
+	id 1rk45W-0001qK-1E; Tue, 12 Mar 2024 11:30:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rk3oX-0004SO-Hv; Tue, 12 Mar 2024 11:13:15 -0400
-Received: from mgamail.intel.com ([192.198.163.16])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rk459-0001hX-TD
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 11:30:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rk3oQ-0005rh-KV; Tue, 12 Mar 2024 11:13:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710256387; x=1741792387;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=4k9kmlLv+Q4tCeHDI4fUCwyPrd+stXUe1HJIrf8HOYc=;
- b=d8S24qZUrwE1imgIAaBqNzcH3qGScKY4tBp3bfFMxTVMNpvnfwT6zDwW
- mGFtghCrEwRHyNMW34FsJZ8hgZiFi6XHDgpuIkznW1Y3ikFMlRczT0Q8b
- WEJPa3Jaj2rpefb1rB5DszewZ0tlFGMp7JrnUyUijfzevxZe8HlFZfMEE
- jkOMoQrKupJcf3IwJ5KW4K3jJEV5FzuIsdf0y3mmMWHrxy5FaxQF0Uqja
- fTELvPd7yyHSaRIb1F5jw8AYpKQqSWhSFwuK1zNU7RhvcHc9/kYfSrKl7
- YbZkOv9psNSTb7OUqTUs9+ey4gooU91OIV5DUnv/5KFhZgvS06ROoaVgd A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="5576087"
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="5576087"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2024 08:13:04 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="11472078"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa007.fm.intel.com with ESMTP; 12 Mar 2024 08:13:01 -0700
-Date: Tue, 12 Mar 2024 23:26:50 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-block@nongnu.org,
- philmd@linaro.org, Juan Quintela <quintela@redhat.com>
-Subject: Re: [PATCH 08/10] qapi: Correct error message for 'vcpu_dirty_limit'
- parameter
-Message-ID: <ZfB0Oq7SSQgiqbz5@intel.com>
-References: <20240312141343.3168265-1-armbru@redhat.com>
- <20240312141343.3168265-9-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rk452-0000EP-AR
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 11:30:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710257414;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=W8VyTvR5PrFnJnJ7a46rsJN039Y09OF2/36ICSHpR0c=;
+ b=JhhA43Yzlg8nh2SqkJcdVWvgQ0G9J3mvtvCIzo6VbvSW25C7XqsGxqI63fgOJGGmgRy1fN
+ 6NZng5o2A0/iycBQn4vDE+7Dd8AGWJfFvQZbCXIuHiuP4myyWHeSmjANIArl7sZVfV/xJN
+ +TJ8kA+PqfdoXpdA/oeIJx+tv/KzYWo=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-128-ZRYev3GCNW6I5KtunAPqow-1; Tue, 12 Mar 2024 11:30:12 -0400
+X-MC-Unique: ZRYev3GCNW6I5KtunAPqow-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-33e8adeffe6so1569081f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 08:30:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710257411; x=1710862211;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=W8VyTvR5PrFnJnJ7a46rsJN039Y09OF2/36ICSHpR0c=;
+ b=XcDJMDB0Kot4Iiksp9uIoQYq1N04hziOJv4X1w6lqHRfRtmtDeR9DNTU3jB06pOHy7
+ yXWEaDfhz/clJ9v/LlXq3UmXxg8we5roty+WW6nilzldo/wXZAkiadCorhwSZJue/MQG
+ JMPr6iAB/W9+qEG2vCFfCeNBW2LPBumt2Hl/nAkopmXw8kVCsIh753DEQNcFZ+VCtjCt
+ +lPz1NEzzyjI6ocM/a5gCCEm/Q2G+oWWQ3vRQuN433/yTfwaU+xwUDK7J84YaynExX8F
+ bSzf19ZhdO8iqXc5OyuM6/KQv9jc0p/puhbEqu3Ziq0dn92yAmUxDSFyqIpwZ5dA0r5N
+ yvew==
+X-Gm-Message-State: AOJu0Yw6eCR4OaHhzXcCWTkFDHTHMBpHanKdnMe+gnOBgcNyJPOsFZkK
+ RkSFbkGK6GZDKvm3heqCuvhnMMtCevlzGSzb5fLwnfKV1gkd4LSh1sBSMPC9me+oyfd2ol5FDzk
+ JSkT9aTyk09BuZJ8U6u+G0yNyRSBlBNUqJwEwOJNrDTcPP+pGz7Kq
+X-Received: by 2002:a05:6000:4c5:b0:33e:4238:8615 with SMTP id
+ h5-20020a05600004c500b0033e42388615mr1551837wri.40.1710257411241; 
+ Tue, 12 Mar 2024 08:30:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHK5WS+eGqgp3kYusTzwQf+XUw1rUYo2gh6xiOZyJOnU1q4ssFtxrQ6mKai2iGpgF2zpb7ogQ==
+X-Received: by 2002:a05:6000:4c5:b0:33e:4238:8615 with SMTP id
+ h5-20020a05600004c500b0033e42388615mr1551828wri.40.1710257410716; 
+ Tue, 12 Mar 2024 08:30:10 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:1f0:532c:5ae4:fce6:76e1:fa1a])
+ by smtp.gmail.com with ESMTPSA id
+ i17-20020adfefd1000000b0033e7503ce7esm9265547wrp.46.2024.03.12.08.30.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Mar 2024 08:30:10 -0700 (PDT)
+Date: Tue, 12 Mar 2024 11:30:07 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: qemu-devel@nongnu.org, Fan Ni <nifan.cxl@gmail.com>,
+ linuxarm@huawei.com, linux-cxl@vger.kernel.org
+Subject: Re: [PATCH qemu] hw/pci-bridge/pxb-cxl: Drop RAS capability from
+ host bridge.
+Message-ID: <20240312112942-mutt-send-email-mst@kernel.org>
+References: <20240215155206.2736-1-Jonathan.Cameron@huawei.com>
+ <20240215111117-mutt-send-email-mst@kernel.org>
+ <20240215174212.000057c9@Huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240312141343.3168265-9-armbru@redhat.com>
-Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+In-Reply-To: <20240215174212.000057c9@Huawei.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,57 +100,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Mar 12, 2024 at 03:13:41PM +0100, Markus Armbruster wrote:
-> Date: Tue, 12 Mar 2024 15:13:41 +0100
-> From: Markus Armbruster <armbru@redhat.com>
-> Subject: [PATCH 08/10] qapi: Correct error message for 'vcpu_dirty_limit'
->  parameter
+On Thu, Feb 15, 2024 at 05:42:12PM +0000, Jonathan Cameron wrote:
+> On Thu, 15 Feb 2024 11:11:47 -0500
+> "Michael S. Tsirkin" <mst@redhat.com> wrote:
 > 
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> > On Thu, Feb 15, 2024 at 03:52:06PM +0000, Jonathan Cameron wrote:
+> > > This CXL component isn't allowed to have a RAS capability.
+> > > Whilst this should be harmless as software is not expected to look
+> > > here, good to clean it up.
+> > > 
+> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
+> > 
+> > Isn't this device migrateable? If yes you need compat
+> > handling.
 > 
-> QERR_INVALID_PARAMETER_VALUE is defined as:
+> Not yet. Migrating these is broken in lots of ways :(
 > 
->   #define QERR_INVALID_PARAMETER_VALUE \
->       "Parameter '%s' expects %s"
+> Given they are functional emulation only I've never cared that much.
+> We'll need to fix this as part of adding support for virtualization
+> use cases which start to make sense when dynamic capacity
+> support lands in kernel + QEMU (probably later this year)
 > 
-> The current error is formatted as:
-> 
->   "Parameter 'vcpu_dirty_limit' expects is invalid, it must greater then 1 MB/s"
-> 
-> Replace by:
-> 
->   "Parameter 'vcpu_dirty_limit' is invalid, it must greater than 1 MB/s"
+> Jonathan
 
-Is there a grammar error here? Maybe
 
-s/it must greater/it must be greater/
+should probably block migration then?
 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Juan Quintela <quintela@redhat.com>
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->  migration/options.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/migration/options.c b/migration/options.c
-> index 40eb930940..c5115f1b5c 100644
-> --- a/migration/options.c
-> +++ b/migration/options.c
-> @@ -1264,9 +1264,8 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
->  
->      if (params->has_vcpu_dirty_limit &&
->          (params->vcpu_dirty_limit < 1)) {
-> -        error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
-> -                   "vcpu_dirty_limit",
-> -                   "is invalid, it must greater then 1 MB/s");
-> +        error_setg(errp, "Parameter 'vcpu_dirty_limit' is invalid,"
-> +                         " it must greater than 1 MB/s");
->          return false;
->      }
->
-
-Otherwise,
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+> > 
+> > 
+> > > ---
+> > >  I've been carrying this on my tree for quite a while.
+> > >  This wasn't in previous fixes set because it's low priority and
+> > >  rebasing it across cleanup series that followed those fixes was
+> > >  too fiddly to bother.
+> > >  
+> > >  include/hw/cxl/cxl_component.h      |  1 +
+> > >  hw/cxl/cxl-component-utils.c        | 21 +++++++++++++++++----
+> > >  hw/pci-bridge/pci_expander_bridge.c |  2 +-
+> > >  3 files changed, 19 insertions(+), 5 deletions(-)
+> > > 
+> > > diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_component.h
+> > > index 0e5d35c263..5012fab6f7 100644
+> > > --- a/include/hw/cxl/cxl_component.h
+> > > +++ b/include/hw/cxl/cxl_component.h
+> > > @@ -25,6 +25,7 @@ enum reg_type {
+> > >      CXL2_TYPE3_DEVICE,
+> > >      CXL2_LOGICAL_DEVICE,
+> > >      CXL2_ROOT_PORT,
+> > > +    CXL2_RC,
+> > >      CXL2_UPSTREAM_PORT,
+> > >      CXL2_DOWNSTREAM_PORT,
+> > >      CXL3_SWITCH_MAILBOX_CCI,
+> > > diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
+> > > index 84ab503325..cd116c0401 100644
+> > > --- a/hw/cxl/cxl-component-utils.c
+> > > +++ b/hw/cxl/cxl-component-utils.c
+> > > @@ -297,6 +297,7 @@ void cxl_component_register_init_common(uint32_t *reg_state,
+> > >          caps = 3;
+> > >          break;
+> > >      case CXL2_ROOT_PORT:
+> > > +    case CXL2_RC:
+> > >          /* + Extended Security, + Snoop */
+> > >          caps = 5;
+> > >          break;
+> > > @@ -326,8 +327,19 @@ void cxl_component_register_init_common(uint32_t *reg_state,
+> > >                         CXL_##reg##_REGISTERS_OFFSET);                         \
+> > >      } while (0)
+> > >  
+> > > +    switch (type) {
+> > > +    case CXL2_DEVICE:
+> > > +    case CXL2_TYPE3_DEVICE:
+> > > +    case CXL2_LOGICAL_DEVICE:
+> > > +    case CXL2_ROOT_PORT:
+> > > +    case CXL2_UPSTREAM_PORT:
+> > > +    case CXL2_DOWNSTREAM_PORT:
+> > >      init_cap_reg(RAS, 2, CXL_RAS_CAPABILITY_VERSION);
+> > > -    ras_init_common(reg_state, write_msk);
+> > > +        ras_init_common(reg_state, write_msk);
+> > > +        break;
+> > > +    default:
+> > > +        break;
+> > > +    }
+> > >  
+> > >      init_cap_reg(LINK, 4, CXL_LINK_CAPABILITY_VERSION);
+> > >  
+> > > @@ -335,9 +347,10 @@ void cxl_component_register_init_common(uint32_t *reg_state,
+> > >          return;
+> > >      }
+> > >  
+> > > -    init_cap_reg(HDM, 5, CXL_HDM_CAPABILITY_VERSION);
+> > > -    hdm_init_common(reg_state, write_msk, type);
+> > > -
+> > > +    if (type != CXL2_ROOT_PORT) {
+> > > +        init_cap_reg(HDM, 5, CXL_HDM_CAPABILITY_VERSION);
+> > > +        hdm_init_common(reg_state, write_msk, type);
+> > > +    }
+> > >      if (caps < 5) {
+> > >          return;
+> > >      }
+> > > diff --git a/hw/pci-bridge/pci_expander_bridge.c b/hw/pci-bridge/pci_expander_bridge.c
+> > > index 535889f7c2..0411ad31ea 100644
+> > > --- a/hw/pci-bridge/pci_expander_bridge.c
+> > > +++ b/hw/pci-bridge/pci_expander_bridge.c
+> > > @@ -290,7 +290,7 @@ static void pxb_cxl_dev_reset(DeviceState *dev)
+> > >      uint32_t *write_msk = cxl_cstate->crb.cache_mem_regs_write_mask;
+> > >      int dsp_count = 0;
+> > >  
+> > > -    cxl_component_register_init_common(reg_state, write_msk, CXL2_ROOT_PORT);
+> > > +    cxl_component_register_init_common(reg_state, write_msk, CXL2_RC);
+> > >      /*
+> > >       * The CXL specification allows for host bridges with no HDM decoders
+> > >       * if they only have a single root port.
+> > > -- 
+> > > 2.39.2  
+> > 
 
 
