@@ -2,53 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0238879B96
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 19:39:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC602879B93
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 19:39:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk71A-0003N1-Sl; Tue, 12 Mar 2024 14:38:29 -0400
+	id 1rk71H-0003aT-AQ; Tue, 12 Mar 2024 14:38:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rk70x-0003MR-HN
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:38:15 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1rk711-0003NE-R5
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:38:20 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rk70v-0000c5-Fp
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:38:15 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-41331166961so8584225e9.1
+ id 1rk70w-0000c9-I0
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:38:19 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-41342849a15so1965085e9.3
  for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 11:38:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710268691; x=1710873491; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=4gPCByx8mAmPa3WgEs07nx3Ff/naJHLFmK+kpZLMiRY=;
- b=bTP0Ep5b0C4QE5i4b/f9ebCKKS6ilIrhQJHrSePMYIviVi95d3/gWeVCOg6clt3MJp
- xO2DbkjuqxVBkzlXdvx/qI5X2NUErt5T37dPqTLxciGYhk8v5Vy7aM4Vn01mkvtLq14K
- Asa1WtLb53TLAfmqeWotiuvJV6Dbcr2jiJ5mjy0SwO9dPAI7VDmUDA/aO37Pp8T1BxWB
- P/X2edtreZPc0zU2DydJjtMKmzQwpYpEqJloThD6caqXn2fkBrw0wWhLuzRm62SCFALH
- c6O5zp3KgLXt8TwFCDGQ09Z77ZuavOQ8H0VwoxpBLxWX03fnCwXu4DKS1xStsFnj0fFF
- 4qjw==
+ d=linaro.org; s=google; t=1710268692; x=1710873492; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=YLwrLK6pe4v4As4FiQrlSek3puRi+quH0IgezmVNfJ4=;
+ b=HcRIvthYq4A0mQf2YXObfenS22poAr8WP07lH/HI+PHs/eVo/EX45zagQmSu/zky5l
+ KvJdCXezzTIsYmiqRYo2HJhVF6rYZSRi8+ZCiw/UsEKG6SIFHCHN9w6j8gtS62Q7uTt8
+ PoT6s9SL34EJsFerAqZPN3bPbEQGm/MMKuShqMRAGHTv4XlDQu6fMAU7RgSQJCbMqiC0
+ OOep0it2IvzMPehED/Q+z8KCX8LP1DVvkMfUOjnu3SpGByTObeX0tzY+6EQeD6zIQuVg
+ WFGHv5Y+beVPzSv9o2NKnVfRddTyWerqSN1XW8aGNA6/dR6zJwP/K7+L6iu6bUNCRuL0
+ 7nUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710268691; x=1710873491;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4gPCByx8mAmPa3WgEs07nx3Ff/naJHLFmK+kpZLMiRY=;
- b=Cl+rY1WEH9W5zZnNLHq/yGWQYJPW6vebisLiz4QEdRaTwuAMgBYfgfz4AxFXOd9emT
- gZH8RgEpVIuqNexg48uUOkVAWMPgGXIImEsdc+S3KJOsV+m5QmxhjnS9n0fenqaMrgDR
- JEqIz5x1fKiHNR+DIMu5I84KIh3JepNMKZikPVkC9x8qnr60gSjMDVZ4SWeca7m5p1MZ
- i6AtiQxBb+mWsruyw5OAmCr8n+MQffwZuuon/R9EuPTAsFaJkCFy0sRCKxNQL0prwqe6
- dLXuM429o4srgxjNq60ZHkSFg8GWEYczWlKGlza5W2jQMtANMUzRPcZ5y5S+AZh3QU0C
- vkAg==
-X-Gm-Message-State: AOJu0Yz+7O1RPFW83enZXqYFxeYO5kUAKANH90ivJm85hCslex92FJVn
- 0pJMEC6oXMvxowh5xB/A24xOQJYXL+JCYcP+vgGBmIDZX+au3Q1olWK7MquWSMPALaEnhxSWZhq
- 0
-X-Google-Smtp-Source: AGHT+IFUxPtrSeS1JwpdHjPdCXG99JnFmcVMrZnTpJ5WIQGPZs/hN4gN1iCUx9vYvcOtyfsZLf02ng==
-X-Received: by 2002:a05:600c:1d0e:b0:412:f6ce:8152 with SMTP id
- l14-20020a05600c1d0e00b00412f6ce8152mr7656123wms.31.1710268691506; 
+ d=1e100.net; s=20230601; t=1710268692; x=1710873492;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=YLwrLK6pe4v4As4FiQrlSek3puRi+quH0IgezmVNfJ4=;
+ b=X7EPUvmmbOUmwVolrSlsHKlFd35sYqnhJk6qFnSXZm6H7qBsMObzmg5F053BRPZMSX
+ a+mZyB8xE+tmU0uTPctpfwkv3RbHsxJq53X1n7Z3YoY3chTd/+yM8vcZ8FZxDTesNCLD
+ SRIcu2laqrPjS99DVeJUngCS97wt8zRN1c6f3Fipd8OgU7lwhjGSozQGbvPB0hnE1j/Q
+ MpQD+tuHUx3GEpGT4PBzDxQHoK+YeHX5ZAQUess2GwDTdg40BDKxoH+TooBiNCoeZ5xi
+ ANxgtIHJAjEMxI+LcMABt90Y3O53CpaPCVxagZqRMSZLME0GmnTVeANs+4jmlkgcNMEo
+ GibQ==
+X-Gm-Message-State: AOJu0YyN5KcYsHorpQIVo/4HGnzPvQnyWSXonJkUcG9i1dTqojeum7VZ
+ abYzvolSw2HpKYTxA7TYXC/EhKgWltC9MYoIX1eE9sEPSWtEEgmWlJ6Ze8XsGMk7+Z68uTv9XwZ
+ f
+X-Google-Smtp-Source: AGHT+IExvX9etNjG2m9zYy8K6UGpWBI2GcYWr81eEb9/KCcQ75QINY31KfIJcjROtSG7maBP2G1IXQ==
+X-Received: by 2002:a05:600c:4e56:b0:413:1645:29a6 with SMTP id
+ e22-20020a05600c4e5600b00413164529a6mr733115wmq.22.1710268691930; 
  Tue, 12 Mar 2024 11:38:11 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,21 +59,23 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 12 Mar 2024 11:38:11 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 0/7] various: 7 minor Coverity fixes
-Date: Tue, 12 Mar 2024 18:38:03 +0000
-Message-Id: <20240312183810.557768-1-peter.maydell@linaro.org>
+Subject: [PATCH 1/7] tests/qtest/npcm7xx_emc_test: Don't leak cmd_line
+Date: Tue, 12 Mar 2024 18:38:04 +0000
+Message-Id: <20240312183810.557768-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240312183810.557768-1-peter.maydell@linaro.org>
+References: <20240312183810.557768-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,37 +91,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset fixes seven minor Coverity issues:
- * four minor nits in test code
- * a happens-once memory leak in the af-xdp netdev
- * a harmless wrong-bounds-check in pca9554
- * add a report-write-errors-to-user in mac_nvram
+In test_rx() and test_tx() we allocate a GString *cmd_line
+but never free it. This is pretty harmless in a test case, but
+Coverity spotted it.
 
-I don't think any of these are worth backporting to stable;
-I just picked them as easy fixes that reduce the number of open
-Coverity issues we have.
-
-thanks
--- PMM
-
-Peter Maydell (7):
-  tests/qtest/npcm7xx_emc_test: Don't leak cmd_line
-  tests/unit/socket-helpers: Don't close(-1)
-  net/af-xdp.c: Don't leak sock_fds array in net_init_af_xdp()
-  hw/misc/pca9554: Correct error check bounds in get/set pin functions
-  hw/nvram/mac_nvram: Report failure to write data
-  tests/unit/test-throttle: Avoid unintended integer division
-  tests/qtest/libqtest.c: Check for g_setenv() failure
-
- hw/misc/pca9554.c              | 4 ++--
- hw/nvram/mac_nvram.c           | 5 ++++-
- net/af-xdp.c                   | 3 +--
- tests/qtest/libqtest.c         | 6 +++++-
+Resolves: Coverity CID 1507122
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
  tests/qtest/npcm7xx_emc-test.c | 4 ++--
- tests/unit/socket-helpers.c    | 4 +++-
- tests/unit/test-throttle.c     | 4 ++--
- 7 files changed, 19 insertions(+), 11 deletions(-)
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/tests/qtest/npcm7xx_emc-test.c b/tests/qtest/npcm7xx_emc-test.c
+index 63f6cadb5cc..2e1a1a6d702 100644
+--- a/tests/qtest/npcm7xx_emc-test.c
++++ b/tests/qtest/npcm7xx_emc-test.c
+@@ -789,7 +789,7 @@ static void emc_test_ptle(QTestState *qts, const EMCModule *mod, int fd)
+ static void test_tx(gconstpointer test_data)
+ {
+     const TestData *td = test_data;
+-    GString *cmd_line = g_string_new("-machine quanta-gsj");
++    g_autoptr(GString) cmd_line = g_string_new("-machine quanta-gsj");
+     int *test_sockets = packet_test_init(emc_module_index(td->module),
+                                          cmd_line);
+     QTestState *qts = qtest_init(cmd_line->str);
+@@ -814,7 +814,7 @@ static void test_tx(gconstpointer test_data)
+ static void test_rx(gconstpointer test_data)
+ {
+     const TestData *td = test_data;
+-    GString *cmd_line = g_string_new("-machine quanta-gsj");
++    g_autoptr(GString) cmd_line = g_string_new("-machine quanta-gsj");
+     int *test_sockets = packet_test_init(emc_module_index(td->module),
+                                          cmd_line);
+     QTestState *qts = qtest_init(cmd_line->str);
 -- 
 2.34.1
 
