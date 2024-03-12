@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34D1879EBC
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:31:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A3CD879E8B
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 23:26:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkAZe-0004Xw-86; Tue, 12 Mar 2024 18:26:18 -0400
+	id 1rkAZS-0004Rh-HV; Tue, 12 Mar 2024 18:26:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAZ7-0004Op-Np
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAZ9-0004Ox-KH
  for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:25:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAZ2-0004CL-TZ
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:25:43 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rkAZ7-0004CY-1p
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 18:25:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710282340;
+ s=mimecast20190719; t=1710282342;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=krVRp63g5I+fEEA6M4zx0/VUoa56zmARDX83eYqmjT0=;
- b=iv9XIQa5l9zo7qePeuXQallJGrAAJJ/NZGmWFfEgd6K38ibV6dLt0+9ba7kCNSgyM9UmS3
- 9vvUmmdOjSdyZYOMrQN+jG13K5GxZkCkYnMuPEI5e0scQ82VlWsnrg8XkNF+iX6ehwiRu1
- fAk8gjreWVegVysvS6Z6lmhIZrc+zgM=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=oWHeCTwjwE1j/gB8xg8GGFC+NRd4QASP7jVSN89iyRY=;
+ b=ezJYepoeUIhBNjRcvybbxlfeZJj1aW9+wEpvdwOoW9//G0SND8lIy8vTkl+6/+7D1H8Q1E
+ TOKiSiWp7Z6SCquEzOzEFNd9KgCHPBAQJQfEYyxU6ml22rcfoxLcQcU5Lvc1y8i0xTurCd
+ pAFeI8Z1JW/QMagIVFLgLL2pgFaWQ70=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-594-mtUONPT4PnmiInIu_7OAMw-1; Tue, 12 Mar 2024 18:25:39 -0400
-X-MC-Unique: mtUONPT4PnmiInIu_7OAMw-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-513c6e69b85so348555e87.0
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:25:38 -0700 (PDT)
+ us-mta-463-qmvZRCV-N5mpVwQA-Tj-Ag-1; Tue, 12 Mar 2024 18:25:41 -0400
+X-MC-Unique: qmvZRCV-N5mpVwQA-Tj-Ag-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2d449d2db37so16052141fa.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 15:25:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710282336; x=1710887136;
+ d=1e100.net; s=20230601; t=1710282339; x=1710887139;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=krVRp63g5I+fEEA6M4zx0/VUoa56zmARDX83eYqmjT0=;
- b=cvVpkjkChD+cxNFYn1OjVxQunmjkQQ6rUMFZb7dDGxhHzJ0avQ/2Q1bVulyqRfdcmX
- J3AiW2iDxqkiLORLZIWOPvX6dR5kUpW1qpP0MumPVwFjq77+vspQUNFYH9N1VZedqqwV
- DJCKYqRlV2LAycmwLtkDYQhhfngf2q6t9KZLxNSPSkO+JdaxgMgcQFBO5DqATJcvzl+X
- wNU3E2ucpob5s1zUG2v7SzqXsp5bvAtwRxCq3PuYhgqTtu3GyYctX1cm4Nekb+ovDna2
- /LXrCX9jg9BqMApJYEBCGXw4u9Mab+JYx+N8q1kmo2y1eZJWHEkOhAjvrV4I7B39G9yP
- wxgA==
-X-Gm-Message-State: AOJu0Yx2/kDJgjsZYsj7WqoiGrlswkbfy2bLkb5AApAEqOx8lh3kKUbk
- Y+u2ondEzj/oRAHXs7cUzfSJ+c1gzNzn/6KGPxtSWzvm3lPYCbsPobgODVXBWPyCthLpgafVS73
- m6leBcChAkmqegb7KYANoKJJzTTR5WNpWf8pmYyXQJemzN0F1V3xfvCf9HuexX/in9fqGupDWYr
- MeHCphaTPGJ+s7mO8gyU1RZCmkhtwX/g9K
-X-Received: by 2002:ac2:4c9c:0:b0:513:7ef5:1059 with SMTP id
- d28-20020ac24c9c000000b005137ef51059mr7631689lfl.18.1710282336475; 
- Tue, 12 Mar 2024 15:25:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGiPRmz0z8sAT7zaOzl680KYS5WmcNdKjtBRGKMACegR27ISQ3JMkUPDnJ1/4EnuR7x79M9WA==
-X-Received: by 2002:ac2:4c9c:0:b0:513:7ef5:1059 with SMTP id
- d28-20020ac24c9c000000b005137ef51059mr7631666lfl.18.1710282335763; 
- Tue, 12 Mar 2024 15:25:35 -0700 (PDT)
+ bh=oWHeCTwjwE1j/gB8xg8GGFC+NRd4QASP7jVSN89iyRY=;
+ b=P9+OPPFglA/N/TrdaAV9GY32Tph7B+xrAQAugiQM3IQp1PJbFh17r6NCem+iokM9WE
+ TbxSs+pTXZETfwP6JCv0MctXtSUAnaKzWKrt3rwKuG6gPD1agkS7FUGtUTzCShrwIypB
+ O03mb96KMAx7PXkMC6im138Vf7FXMtIl89nn9LSK923cm6dMo+b/I9cuSX7y/gASS7F6
+ z9hQBfM1E+OjdpRztnRDkB8353G/Ny1qomD3tnniP4e5QwZ+0lUwqomG2AM26hnjGdC7
+ nDNvLEWeioX/tfw248wb9yYbHlPpI6wwn52pGd4Rbatjs4Tmb9f88hCaT7A9HG1W4eu0
+ A/UQ==
+X-Gm-Message-State: AOJu0YxqKroCiczm8nfOk0AgWEEH/CcfSrn+8tOrOXjQ7CX4w09Duzxl
+ iHFllfxQxGY0M5DFonohi/w8t4+rKfYkAwBTQMPvdM0IMcwL0U1+Z97t6nuTGunpG4T6fPRIDW8
+ 31irNLsA//QBDuQMidiDwndHsRucQqWP13CuXGYGVIm+VVBwbp7BH/PBUKbwVPj54qQLA02Er3Z
+ aZtqR9OgOvueHTshvyxx9dNXbJ9QTvP8gy
+X-Received: by 2002:a05:651c:222c:b0:2d4:64fc:65bb with SMTP id
+ y44-20020a05651c222c00b002d464fc65bbmr1673380ljq.48.1710282339312; 
+ Tue, 12 Mar 2024 15:25:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEnR0lKcptk0t7HrPsNHLjXPb0w+I5sMcXvf3J5hlqPyVi0JBLSHVVENXtLZlb25IjGtJ5HwQ==
+X-Received: by 2002:a05:651c:222c:b0:2d4:64fc:65bb with SMTP id
+ y44-20020a05651c222c00b002d464fc65bbmr1673363ljq.48.1710282338667; 
+ Tue, 12 Mar 2024 15:25:38 -0700 (PDT)
 Received: from redhat.com ([2.52.134.16]) by smtp.gmail.com with ESMTPSA id
- ws7-20020a170907704700b00a42f6d17123sm4176501ejb.46.2024.03.12.15.25.34
+ e12-20020a056402104c00b005686037bc12sm2248238edu.29.2024.03.12.15.25.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 15:25:35 -0700 (PDT)
-Date: Tue, 12 Mar 2024 18:25:33 -0400
+ Tue, 12 Mar 2024 15:25:38 -0700 (PDT)
+Date: Tue, 12 Mar 2024 18:25:35 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Si-Wei Liu <si-wei.liu@oracle.com>,
  Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
  Jason Wang <jasowang@redhat.com>
-Subject: [PULL 01/68] vdpa: add back vhost_vdpa_net_first_nc_vdpa
-Message-ID: <573581b18dfd458ddac22f832bfb3f6fc9b585dc.1710282274.git.mst@redhat.com>
+Subject: [PULL 02/68] vdpa: factor out vhost_vdpa_last_dev
+Message-ID: <c812b0655f8ccd1def48f14b89cec07e8fb68d83.1710282274.git.mst@redhat.com>
 References: <cover.1710282274.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -78,15 +78,14 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1710282274.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,58 +104,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Si-Wei Liu <si-wei.liu@oracle.com>
 
-Previous commits had it removed. Now adding it back because
-this function will be needed by future patches.
+Generalize duplicated condition check for the last vq of vdpa
+device to a common function.
 
-Message-Id: <1707910082-10243-2-git-send-email-si-wei.liu@oracle.com>
+Message-Id: <1707910082-10243-4-git-send-email-si-wei.liu@oracle.com>
 Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- net/vhost-vdpa.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ hw/virtio/vhost-vdpa.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index e6bdb4562d..1d9496cdd9 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -287,6 +287,16 @@ static ssize_t vhost_vdpa_receive(NetClientState *nc, const uint8_t *buf,
-     return size;
+diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+index ddae494ca8..8bd62e8dd2 100644
+--- a/hw/virtio/vhost-vdpa.c
++++ b/hw/virtio/vhost-vdpa.c
+@@ -555,6 +555,11 @@ static bool vhost_vdpa_first_dev(struct vhost_dev *dev)
+     return v->index == 0;
  }
  
-+
-+/** From any vdpa net client, get the netclient of the first queue pair */
-+static VhostVDPAState *vhost_vdpa_net_first_nc_vdpa(VhostVDPAState *s)
++static bool vhost_vdpa_last_dev(struct vhost_dev *dev)
 +{
-+    NICState *nic = qemu_get_nic(s->nc.peer);
-+    NetClientState *nc0 = qemu_get_peer(nic->ncs, 0);
-+
-+    return DO_UPCAST(VhostVDPAState, nc, nc0);
++    return dev->vq_index + dev->nvqs == dev->vq_index_end;
 +}
 +
- static void vhost_vdpa_net_log_global_enable(VhostVDPAState *s, bool enable)
+ static int vhost_vdpa_get_dev_features(struct vhost_dev *dev,
+                                        uint64_t *features)
  {
-     struct vhost_vdpa *v = &s->vhost_vdpa;
-@@ -511,7 +521,7 @@ dma_map_err:
+@@ -1315,7 +1320,7 @@ static int vhost_vdpa_dev_start(struct vhost_dev *dev, bool started)
+         vhost_vdpa_host_notifiers_uninit(dev, dev->nvqs);
+     }
  
- static int vhost_vdpa_net_cvq_start(NetClientState *nc)
+-    if (dev->vq_index + dev->nvqs != dev->vq_index_end) {
++    if (!vhost_vdpa_last_dev(dev)) {
+         return 0;
+     }
+ 
+@@ -1337,7 +1342,7 @@ static void vhost_vdpa_reset_status(struct vhost_dev *dev)
  {
--    VhostVDPAState *s;
-+    VhostVDPAState *s, *s0;
-     struct vhost_vdpa *v;
-     int64_t cvq_group;
-     int r;
-@@ -522,7 +532,8 @@ static int vhost_vdpa_net_cvq_start(NetClientState *nc)
-     s = DO_UPCAST(VhostVDPAState, nc, nc);
-     v = &s->vhost_vdpa;
+     struct vhost_vdpa *v = dev->opaque;
  
--    v->shadow_vqs_enabled = v->shared->shadow_data;
-+    s0 = vhost_vdpa_net_first_nc_vdpa(s);
-+    v->shadow_vqs_enabled = s0->vhost_vdpa.shadow_vqs_enabled;
-     s->vhost_vdpa.address_space_id = VHOST_VDPA_GUEST_PA_ASID;
+-    if (dev->vq_index + dev->nvqs != dev->vq_index_end) {
++    if (!vhost_vdpa_last_dev(dev)) {
+         return;
+     }
  
-     if (v->shared->shadow_data) {
 -- 
 MST
 
